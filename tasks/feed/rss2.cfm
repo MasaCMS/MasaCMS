@@ -27,7 +27,7 @@
 		<link>http://#application.settingsManager.getSite(feedBean.getSiteID()).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()#</link> 
 		<description>#XMLFormat(feedBean.getDescription())#</description> 
 		<webMaster>#application.settingsManager.getSite(feedBean.getSiteID()).getContact()#</webMaster>
-		<generator>http://www.gosava.com</generator>
+		<generator>http://www.getmura.com</generator>
 		<pubDate>#XMLformat(pubDate)#</pubDate> 
 		<language>#XMLFormat(feedBean.getLang())#</language>
 <cfloop query="rs"><cfsilent>
