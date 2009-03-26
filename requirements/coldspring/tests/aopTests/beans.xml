@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+	
+	<bean id="bfAdvOne" class="coldspring.tests.aopTests.bfAdvOne" />
+	<bean id="interceptOne" class="coldspring.tests.aopTests.interceptOne" />
+	<bean id="interceptTwo" class="coldspring.tests.aopTests.interceptTwo" />
+	<bean id="aftAdvOne" class="coldspring.tests.aopTests.aftAdvOne" />
+	
+	<bean id="beforeAdvisor" class="coldspring.aop.support.NamedMethodPointcutAdvisor">
+		<property name="advice">
+			<ref bean="bfAdvOne" />
+		</property>
+		<property name="mappedNames">
+			<value>say*,*oops</value>
+		</property>
+	</bean>
+	
+	<bean id="interceptOneAdvisor" class="coldspring.aop.support.NamedMethodPointcutAdvisor">
+		<property name="advice">
+			<ref bean="interceptOne" />
+		</property>
+		<property name="mappedNames">
+			<value>*</value>
+		</property>
+	</bean>
+	
+	<bean id="interceptTwoAdvisor" class="coldspring.aop.support.NamedMethodPointcutAdvisor">
+		<property name="advice">
+			<ref bean="interceptTwo" />
+		</property>
+		<property name="mappedNames">
+			<value>*</value>
+		</property>
+	</bean>
+	
+	<bean id="afterAdvisor" class="coldspring.aop.support.NamedMethodPointcutAdvisor">
+		<property name="advice">
+			<ref bean="aftAdvOne" />
+		</property>
+		<property name="mappedNames">
+			<value>sayHello</value>
+		</property>
+	</bean>
+
+	<bean id="myTarget" class="coldspring.tests.aopTests.helloBean" />
+	
+	<bean id="myProxy" class="coldspring.aop.framework.ProxyFactoryBean">
+		<property name="target">
+			<ref bean="myTarget" />
+		</property>
+		<property name="interceptorNames">
+			<list>
+				<value>beforeAdvisor</value>
+				<value>interceptOneAdvisor</value>
+				<value>interceptTwoAdvisor</value>
+				<value>afterAdvisor</value>
+			</list>
+		</property>
+	</bean>
+	
+</beans>

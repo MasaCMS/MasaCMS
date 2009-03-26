@@ -1,0 +1,121 @@
+<bean class="ModelGlue.Bean.CommonBeans.Example" singleton="true">
+	<!-- This property shows how to store a simple value -->
+  <property name="SimpleProperty">
+  	<value>SimpleValue</value>
+  </property>
+  
+	<!-- This property shows how to store a property that's an array -->
+  <property name="ArrayProperty">
+  	<array>
+	  	<value>Array_0</value>
+	  	<value>Array_1</value>
+	  	<value>Array_2</value>
+	  </array>
+  </property>
+	
+	<!-- This property shows how to store a property that's a structure -->
+  <property name="StructProperty">
+  	<struct>
+  		<element key="Key_Struct_1">
+		  	<value>Value_Struct_1</value>
+		  </element>
+  		<element key="Key_Struct_2">
+		  	<value>Value_Struct_2</value>
+		  </element>
+  		<element key="Key_Struct_3">
+		  	<value>Value_Struct_3</value>
+		  </element>
+	  </struct>
+  </property>
+
+	<!-- This property shows how to store a property that's "complex," an array of structs -->
+  <property name="ComplexProperty">
+		<array>
+	  	<struct>
+	  		<element key="Key_Struct_1_1">
+			  	<value>Value_Struct_1_1</value>
+			  </element>
+	  		<element key="Key_Struct_1_2">
+			  	<value>Value_Struct_1_2</value>
+			  </element>
+	  		<element key="Key_Struct_1_3">
+			  	<value>Value_Struct_1_3</value>
+			  </element>
+		  </struct>
+	  	<struct>
+	  		<element key="Key_Struct_2_1">
+			  	<value>Value_Struct_2_1</value>
+			  </element>
+	  		<element key="Key_Struct_2_2">
+			  	<value>Value_Struct_2_2</value>
+			  </element>
+	  		<element key="Key_Struct_2_3">
+			  	<value>Value_Struct_2_3</value>
+			  </element>
+		  </struct>
+		</array>
+  </property>
+
+	<!-- This property just shows how things can be infinitely nested - it's a struct of arrays of structs -->
+  <property name="MegaComplexProperty">
+  	<struct>
+  		<element key="array_1_">
+				<array>
+			  	<struct>
+			  		<element key="array_1_Key_Struct_1_1">
+					  	<value>array_1_Value_Struct_1_1</value>
+					  </element>
+			  		<element key="array_1_Key_Struct_1_2">
+					  	<value>array_1_Value_Struct_1_2</value>
+					  </element>
+			  		<element key="array_1_Key_Struct_1_3">
+					  	<value>array_1_Value_Struct_1_3</value>
+					  </element>
+				  </struct>
+			  	<struct>
+			  		<element key="array_1_Key_Struct_2_1">
+					  	<value>array_1_Value_Struct_2_1</value>
+					  </element>
+			  		<element key="array_1_Key_Struct_2_2">
+					  	<value>array_1_Value_Struct_2_2</value>
+					  </element>
+			  		<element key="array_1_Key_Struct_2_3">
+					  	<value>array_1_Value_Struct_2_3</value>
+					  </element>
+				  </struct>
+				</array>
+			</element>
+  		<element key="array_2_">
+				<array>
+			  	<struct>
+			  		<element key="array_2_Key_Struct_1_1">
+					  	<value>array_2_Value_Struct_1_1</value>
+					  </element>
+			  		<element key="array_2_Key_Struct_1_2">
+					  	<value>array_2_Value_Struct_1_2</value>
+					  </element>
+			  		<element key="array_2_Key_Struct_1_3">
+					  	<value>array_2_Value_Struct_1_3</value>
+					  </element>
+				  </struct>
+			  	<struct>
+			  		<element key="array_2_Key_Struct_2_1">
+					  	<value>array_2_Value_Struct_2_1</value>
+					  </element>
+			  		<element key="array_2_Key_Struct_2_2">
+					  	<value>array_2_Value_Struct_2_2</value>
+					  </element>
+			  		<element key="array_2_Key_Struct_2_3">
+					  	<value>array_2_Value_Struct_2_3</value>
+					  </element>
+				  </struct>
+				</array>
+			</element>
+		</struct>
+  </property>
+
+	<!-- This property shows that properties can be other beans -->
+  <property name="BeanProperty">
+		<ref bean="ExampleDatasourceBean.xml" />
+	</property>
+</bean>

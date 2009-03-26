@@ -1,0 +1,10 @@
+<cf_bhcaptcha 	datasource="#application.configBean.getDatasource()#" username="#application.configBean.getDBUsername()#" password="#application.configBean.getDBPassword()#"
+				datasourcetype="SQLServer"
+			 	imgurl="#application.configBean.getContext()#/tasks/captcha" 
+			 	stringlength="5,7" 
+			 	imgheight="25" 
+				hiddenkey="hKey" 
+				keyfield="uKey" 
+			 	imgpath="#getDirectoryFromPath(ExpandPath('*.*'))#"
+				action="captcha" 
+				imgtype="gif">

@@ -1,0 +1,76 @@
+<beans>
+  <!-- This is your Model-Glue configuration -->
+	<bean id="modelGlueConfiguration" class="ModelGlue.unity.framework.ModelGlueConfiguration">
+    <!-- Be sure to change reload to false when you go to production! -->
+    <property name="reload"><value>true</value></property>
+		<!-- Rescaffold is overridden by reload - if reload is false, rescaffold's setting doesn't matter -->
+    <property name="rescaffold"><value>true</value></property>
+    <!-- Be sure to change debug to false when you go to production! -->
+    <property name="debug"><value>true</value></property>
+    <property name="defaultEvent"><value>page.index</value></property>
+    <property name="reloadPassword"><value>true</value></property>
+    <property name="viewMappings"><value>/root/default/includes/display_objects/custom/modelgluetemplate/views</value></property>
+    <property name="generatedViewMapping"><value>/root/default/includes/display_objects/custom/modelgluetemplate/views/generated</value></property>
+    <property name="configurationPath"><value>/root/default/includes/display_objects/custom/modelgluetemplate/config/ModelGlue.xml</value></property>
+    <property name="scaffoldPath"><value>config/scaffolds/Scaffolds.xml</value></property>
+    <property name="statePrecedence"><value>form</value></property>
+    <property name="reloadKey"><value>init</value></property>
+    <property name="eventValue"><value>event</value></property>
+    <property name="defaultTemplate"><value>index.cfm</value></property>
+    <property name="defaultExceptionHandler"><value>exception</value></property>
+    <property name="defaultCacheTimeout"><value>5</value></property>
+    <property name="defaultScaffolds"><value>list,edit,view,commit,delete</value></property>
+  </bean>
+  
+	<!-- Put definitions for your own beans and services here -->
+
+	<!-- ORM Framework Configuration -->
+		
+	<!--
+			The following explains how to connect Model-Glue to either the
+			Transfer or Reactor ORM frameworks.
+		
+			If you've got the lastest (from CVS) version of ColdSpring, the commented-out
+			code below will work.
+		
+			Otherwise, do the following:
+			
+			1.  Choose whether to use Reactor or Transfer for this project
+			2.  Open up /ModelGlue/unity/config/Configuration.xml
+			3.  Uncomment the appropriate "To use xxxx as an ORM Framework..." block below
+			4.  Delete the <alias /> tags in the ORM block you uncommented
+			5.  If using Reactor, copy/paste the beans named "ormAdapter.Reactor" and
+					"ormService.Reactor" to this file (from Configuration.xml) and remove 
+					the ".Reactor" from their name attributes.
+			6.  If using Transfer, copy/paste the beans named "ormAdapter.Transfer" and
+					"ormService.Transfer" to this file (from Configuration.xml) and remove 
+					the ".Transfer" from their name attributes.
+	-->
+	
+  <!-- 
+		Transfer:
+
+		<alias alias="ormAdapter" name="ormAdapter.Transfer" />
+		<alias alias="ormService" name="ormService.Transfer" />
+		<bean id="transferConfiguration" class="transfer.com.config.Configuration">
+		 <constructor-arg name="datasourcePath"><value>/modelglueapplicationtemplate/config/transfer/Datasource.xml</value></constructor-arg>
+		 <constructor-arg name="configPath"><value>/modelglueapplicationtemplate/config/transfer/Transfer.xml</value></constructor-arg>
+		 <constructor-arg name="definitionPath"><value>/modelglueapplicationtemplate/model/data/transfer</value></constructor-arg>
+		</bean>
+	-->	
+  
+  <!-- 
+		Reactor:
+		
+		<alias alias="ormAdapter" name="ormAdapter.Reactor" />
+		<alias alias="ormService" name="ormService.Reactor" />
+		<bean id="reactorConfiguration" class="reactor.config.config">
+			<constructor-arg name="pathToConfigXml"><value>/modelglueapplicationtemplate/config/reactor/Reactor.xml</value></constructor-arg>
+			<property name="project"><value>modelglueapplicationtemplate</value></property>
+			<property name="dsn"><value>modelglueapplicationtemplate</value></property>
+			<property name="type"><value>mysql</value></property>
+			<property name="mapping"><value>/modelglueapplicationtemplate/model/data/reactor</value></property>
+			<property name="mode"><value>development</value></property>
+		</bean>
+	-->
+</beans>

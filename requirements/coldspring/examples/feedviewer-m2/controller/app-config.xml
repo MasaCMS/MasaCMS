@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    
+    Copyright (c) 2002-2005	David Ross,	Chris Scott
+    
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+    
+    http://www.apache.org/licenses/LICENSE-2.0
+    
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+    
+    
+    $Id: app-config.xml,v 1.3 2005/11/17 19:24:21 rossd Exp $
+    
+-->
+     
+<mach-ii>
+    <properties>
+        
+        <property name="applicationRoot" value="/coldspring/examples/feedviewer" />
+		<property name="applicationVersion" value="0.1" />
+		<property name="defaultEvent" value="c.showHome" />
+		<property name="eventParameter" value="event" />
+		<property name="parameterPrecedence" value="form" />
+		<property name="maxEvents" value="100" />
+		<property name="exceptionEvent" value="exceptionEvent" />
+		
+		<property name="styleSheetPath" value="../feedviewer/view/css/style.css" />
+		
+		<!-- configuration file for coldspring managed services -->
+		<property name="ColdspringComponentRelativePath" value="../feedviewer/services.xml" /> 
+	
+	    <!-- properties needed for xml storage... the ${} will make the coldspring plugin evaluate the property -->
+	    <property name="xmlstoragepath" value="${expandPath('../feedviewer/data/xml/')}"/>
+	
+	    <!-- properties needed for rdbms storage -->
+	        <!-- datasource name -->
+    	    <property name="dsn" value="dbAggregator_mssql" />
+    	    <!-- datasource vendor -->
+    	    <property name="dsvendor" value="mssql" />
+    	
+    </properties>
+  
+    <listeners>
+		<listener name="categoryListener" type="coldspring.examples.feedviewer-m2.controller.categoryListener">
+			<invoker type="MachII.framework.invokers.CFCInvoker_Event" />	
+		</listener>     
+
+		<listener name="channelListener" type="coldspring.examples.feedviewer-m2.controller.channelListener">
+			<invoker type="MachII.framework.invokers.CFCInvoker_Event" />	
+		</listener> 
+
+		<listener name="entryListener" type="coldspring.examples.feedviewer-m2.controller.entryListener">
+			<invoker type="MachII.framework.invokers.CFCInvoker_Event" />	
+		</listener>     
+    
+		<listener name="aggregatorListener" type="coldspring.examples.feedviewer-m2.controller.aggregatorListener">
+			<invoker type="MachII.framework.invokers.CFCInvoker_Event" />	
+		</listener>     
+    </listeners>
+
+    <event-filters>
+    
+    
+    
+    </event-filters>
+   
+
+    <event-handlers>
+        <event-handler event="c.showHome" access="public">
+            <announce event="viewNav"/>
+            <announce event="viewEntries"/>
+        </event-handler>        
+        
+        <event-handler event="viewNav" access="private">
+            <notify listener="categoryListener" method="getAllCategories" resultKey="request.categories"/>
+            <event-arg name="categories" variable="request.categories"/>
+
+            <notify listener="channelListener" method="getAllChannels" resultKey="request.channels"/>
+            <event-arg name="channels" variable="request.channels"/>
+
+            
+            <view-page name="allCategories" contentKey="request.leftColContent"/>
+            <view-page name="allChannels" contentKey="request.leftColContent" append="true"/>
+            
+        </event-handler>
+        
+        <event-handler event="viewEntries" access="private">
+            <notify listener="entryListener" method="getAllEntries" resultKey="request.entries"/>
+            <event-arg name="entries" variable="request.entries"/>
+            <view-page name="entries" contentKey="request.mainContent"/>
+        </event-handler>        
+          
+        
+         <!-- category operations -->   
+        <event-handler event="c.showCategory" access="public">
+            <announce event="viewNav"/>
+            <announce event="viewExistingCategory"/>
+        </event-handler> 
+         
+        <event-handler event="c.newCategory" access="public">
+            <announce event="viewNav"/>
+            <announce event="viewNewCategory"/>
+        </event-handler>  
+         
+        <event-handler event="c.saveCategory" access="public">
+            <announce event="viewNav"/>
+            <event-bean name="category" type="coldspring.examples.feedviewer.model.category.category"/>
+            <notify listener="categoryListener" method="saveCategory"/>
+        </event-handler>          
+           
+        <event-handler event="c.removeCategory" access="public">
+            <announce event="viewNav"/>
+            <notify listener="categoryListener" method="getCategoryById" resultKey="request.category"/>
+            <event-arg name="category" variable="request.category"/>
+            <notify listener="categoryListener" method="removeCategory"/>
+        </event-handler>         
+        
+        <!-- category private events -->
+        <event-handler event="viewExistingCategory" access="private">
+            <notify listener="categoryListener" method="getCategoryById" resultKey="request.category"/>
+            <event-arg name="category" variable="request.category"/>
+                        
+            <notify listener="channelListener" method="getChannelsByCategoryId" resultKey="request.categorychannels"/>
+            <event-arg name="categorychannels" variable="request.categorychannels"/>
+       
+            <announce event="renderCategory"/>
+        </event-handler> 
+        
+        <event-handler event="viewNewCategory" access="private">
+            <event-bean name="category" type="coldspring.examples.feedviewer.model.category.category"/>
+             <announce event="renderCategory"/>
+         </event-handler> 
+        
+        <event-handler event="renderCategory" access="private">
+               <view-page name="Category" contentKey="request.mainContent"/>
+        </event-handler> 
+          
+        <!-- channel operations -->
+        <event-handler event="c.showChannel" access="public">
+            <announce event="viewNav"/>
+            <announce event="viewExistingChannel"/>
+        </event-handler> 
+    
+        <event-handler event="c.newChannel" access="public">
+            <announce event="viewNav"/>
+            <announce event="viewNewChannel"/>
+        </event-handler> 
+
+        <event-handler event="c.saveChannel" access="public">
+            <announce event="viewNav"/>
+            <event-bean name="channel" type="coldspring.examples.feedviewer.model.channel.channel"/>
+            <notify listener="channelListener" method="saveChannel"/>
+            <notify listener="aggregatorListener" method="aggregrateChannelFeed"/>
+        </event-handler>  
+
+       <event-handler event="c.removeChannel" access="public">
+            <announce event="viewNav"/>
+            <notify listener="channelListener" method="getChannelById" resultKey="request.channel"/>
+            <event-arg name="channel" variable="request.channel"/>
+            <notify listener="channelListener" method="removeChannel"/>
+        </event-handler>        
+             
+        <!-- channel private events -->
+        <event-handler event="viewExistingChannel" access="private">
+            <notify listener="channelListener" method="getChannelById" resultKey="request.channel"/>
+            <event-arg name="channel" variable="request.channel"/>
+            
+            <notify listener="entryListener" method="getEntriesByChannelId" resultKey="request.channelentries"/>
+            <event-arg name="channelentries" variable="request.channelentries"/>
+             
+            <announce event="renderChannel"/>
+        </event-handler> 
+  
+        <event-handler event="viewNewChannel" access="private">
+            <event-bean name="channel" type="coldspring.examples.feedviewer.model.channel.channel"/>
+            <announce event="renderChannel"/>
+        </event-handler>        
+        
+        <event-handler event="renderChannel" access="private">
+               <notify listener="categoryListener" method="getAllCategories" resultKey="request.categories"/>
+               <event-arg name="categories" variable="request.categories"/>
+            
+               <view-page name="Channel" contentKey="request.mainContent"/>
+        </event-handler>        
+        
+         
+        <!-- re-aggregates a single channel's entries -->
+        <event-handler event="c.refreshChannelEntries" access="public">
+            <announce event="viewNav"/>
+            
+            <notify listener="channelListener" method="getChannelById" resultKey="request.channel"/>
+            <event-arg name="channel" variable="request.channel"/>
+
+            <notify listener="aggregatorListener" method="aggregrateChannelFeed"/>
+
+            <notify listener="entryListener" method="getEntriesByChannelId" resultKey="request.channelentries"/>
+            <event-arg name="channelentries" variable="request.channelentries"/>            
+            
+            <announce event="renderChannel"/> 
+        </event-handler>
+                       
+        
+        <event-handler event="exceptionEvent" access="public">
+			<!-- exception handler --> 
+			<view-page name="exception" contentKey="request.mainContent"/>
+            <event-arg name="mainContent" variable="request.mainContent"/> 
+			<announce event="renderPage"/> 
+		</event-handler>
+    
+    
+   		<event-handler event="renderPage" access="public">
+   		    <view-page name="header" contentKey="request.headerContent"/>
+            <event-arg name="headerContent" variable="request.headerContent"/> 
+            <view-page name="footer" contentKey="request.footerContent"/>
+            <event-arg name="footerContent" variable="request.footerContent"/> 
+             
+   		    
+            <view-page name="mainLayout" /> 
+		</event-handler>
+    
+    </event-handlers>
+    
+
+    <page-views>
+        <page-view name="allCategories" page="/view/html/dspAllCategories.cfm" />
+        <page-view name="allChannels" page="/view/html/dspAllChannels.cfm" />
+        
+        <page-view name="entries" page="/view/html/dspEntries.cfm" />
+
+        <page-view name="Category" page="/view/html/dspCategory.cfm" />
+        <page-view name="Channel" page="/view/html/dspChannel.cfm" />        
+
+        <page-view name="header" page="/view/html/dspHeader.cfm" />
+        <page-view name="footer" page="/view/html/dspFooter.cfm" />
+        <page-view name="mainLayout" page="/view/html/dspMainLayout.cfm" />
+        <page-view name="exception" page="/view/html/dspException.cfm" />
+    </page-views>
+    
+    
+    <plugins>
+        <plugin name="appPlugin" type="coldspring.examples.feedviewer-m2.controller.appPlugin">
+        	<parameters>
+				<parameter name="renderEventName" value="renderPage"/>
+		    </parameters>
+        </plugin>
+        
+   		<plugin name="coldSpringPlugin" type="coldspring.machii.ColdspringPlugin">
+			<parameters>
+				<parameter name="beanFactoryPropertyName" value="serviceFactory"/>
+				<parameter name="configFilePropertyName" value="ColdspringComponentRelativePath"/>
+				<parameter name="configFilePathIsRelative" value="true"/>
+			</parameters>
+		</plugin>
+    
+    </plugins>
+
+</mach-ii>

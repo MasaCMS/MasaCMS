@@ -1,0 +1,9 @@
+<bean class="ModelGlue.Bean.CommonBeans.SimpleConfig" singleton="true">
+  <property name="Config">
+    <struct>
+      <entry key="locale"><value>en-us</value></entry>
+      <entry key="mapping"><value>/myAppMapping</value></entry>
+      <entry key="filestore"><value>c:\someDirectory\or\something</value></entry>
+    </struct>
+  </property>
+</bean>

@@ -1,0 +1,5 @@
+<cffunction name="init" access="public" returntype="any" hint="Constructor.">
+	<cfargument name="datasourceName" type="string" />
+	<cfset variables.instance['datasourceName'] = arguments.datasourceName />
+	<cfreturn this />
+</cffunction>

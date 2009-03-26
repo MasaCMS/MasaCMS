@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+			<channels>
+				
+					<channel id="1"
+							title="David Ross"
+							description=""
+							url="http://www.d-ross.org/xml/rss.xml"
+							categoryIds="1"/>
+				
+					<channel id="2"
+							title="Chris Scott"
+							description=""
+							url="http://feeds.feedburner.com/TruthsAndLies"
+							categoryIds="1"/>
+				
+			</channels>
+		

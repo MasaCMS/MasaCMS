@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+	  
+  Copyright (c) 2005, Chris Scott, David Ross
+  All rights reserved.
+	
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+  
+       http://www.apache.org/licenses/LICENSE-2.0
+  
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+  $Id: klondike-services.xml,v 1.1 2005/10/09 20:12:06 scottc Exp $
+  $Log: klondike-services.xml,v $
+  Revision 1.1  2005/10/09 20:12:06  scottc
+  First commit of the record store example app. Contains a hopefully detailed readme file on usage.
+
+
+-->
+
+<beans>
+	
+	<!-- logging service -->
+	<bean id="loggingService"
+                class="net.klondike.component.LoggingService" />
+	
+	<!-- set up the logging advice -->
+	<bean id="loggingAdvice" class="net.klondike.aspects.loggingAroundAdvice">
+		<property name="loggingService">
+			<ref bean="loggingService" />
+         </property>
+	</bean>
+	
+	<bean id="loggingAdvisor" class="coldspring.aop.support.NamedMethodPointcutAdvisor">
+		<property name="advice">
+			<ref bean="loggingAdvice" />
+		</property>
+		<property name="mappedNames">
+			<value>*</value>
+		</property>
+	</bean>  
+	
+	<!-- security service -->
+	<bean id="securityService"
+                class="net.klondike.component.SecurityService" />
+				
+	<!-- set up the security advice -->
+	<bean id="securityAdvice" class="net.klondike.aspects.securityAdvice">
+		<property name="securityService">
+			<ref bean="securityService" />
+         </property>
+	</bean>
+	
+	<bean id="securityAdvisor" class="coldspring.aop.support.NamedMethodPointcutAdvisor">
+		<property name="advice">
+			<ref bean="securityAdvice" />
+		</property>
+		<property name="mappedNames">
+			<value>save</value>
+		</property>
+	</bean>
+	
+	<!-- set up a proxy for the gateway -->
+	<bean id="catalogGatewayTarget"
+			  class="net.klondike.component.catalogGateway">
+         <property name="dsn">
+			<value>klondike</value>
+         </property>
+    </bean> 
+	
+	<bean id="catalogGateway" class="coldspring.aop.framework.ProxyFactoryBean">
+		<property name="target">
+			<ref bean="catalogGatewayTarget" />
+		</property>
+		<property name="interceptorNames">
+			<list>
+				<value>loggingAdvisor</value>
+			</list>
+		</property>
+	</bean>
+	
+	<!-- set up a proxy for the dao -->
+	<bean id="catalogDAOTarget"
+			  class="net.klondike.component.catalogDAO">
+         <property name="dsn">
+			<value>klondike</value>
+         </property>
+    </bean>
+	
+	<bean id="catalogDAO" class="coldspring.aop.framework.ProxyFactoryBean">
+		<property name="target">
+			<ref bean="catalogDAOTarget" />
+		</property>
+		<property name="interceptorNames">
+			<list>
+				<value>loggingAdvisor</value>
+				<value>securityAdvisor</value>
+			</list>
+		</property>
+	</bean> 
+	
+	<!-- catalog service -->
+	<bean id="catalogService"
+        class="net.klondike.component.CatalogService">
+		<property name="catalogDAO">
+			<ref bean="catalogDAO" />
+         </property>
+         <property name="catalogGateway">
+			<ref bean="catalogGateway" />
+         </property>
+    </bean> 
+
+</beans>

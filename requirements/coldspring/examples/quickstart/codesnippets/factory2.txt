@@ -1,0 +1,19 @@
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+	
+	<bean id="transferFactory" class="transfer.transferFactory">
+	   <constructor-arg name="datasourcePath"><value>datasource.xml</value></constructor-arg>
+	   <constructor-arg name="configPath"><value>transfer.xml</value></constructor-arg>
+	   <constructor-arg name="definitionPath"><value>/definitions</value></constructor-arg>
+	</bean>
+	
+	<bean id="transfer" factory-bean="transferFactory" factory-method="getTransfer" />
+	
+	<bean id="userGateway" class="coldspring.examples.quickstart.components.UserGateway">
+		<property name="transfer">
+			<ref bean="transfer" />
+		</property>
+	</bean>
+	
+</beans>

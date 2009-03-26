@@ -1,0 +1,402 @@
+<!--- This file is part of Mura CMS.
+
+    Mura CMS is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, Version 2 of the License.
+
+    Mura CMS is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Mura CMS.  If not, see <http://www.gnu.org/licenses/>. --->
+<cfcomponent extends="mura.cfobject" output="false">
+
+<cffunction name="init" returntype="any" access="public" output="false">
+<cfargument name="configBean" type="any" required="yes"/>
+<cfargument name="settingsManager" type="any" required="yes"/>
+<cfargument name="contentRenderer" type="any" required="yes"/>
+		<cfset variables.configBean=arguments.configBean />
+		<cfset variables.settingsManager=arguments.settingsManager />
+		<cfset variables.contentRenderer=arguments.contentRenderer />
+<cfreturn this />
+</cffunction>
+
+<cffunction name="send" returntype="void" output="false">
+<cfargument name="args" type="struct" default="#structNew()#">
+<cfargument name="sendto" type="string" default="">
+<cfargument name="from" type="string" default="">
+<cfargument name="subject" type="string" default="">
+<cfargument name="siteid" type="string" default="">
+<cfargument name="replyto" type="string" default="">
+
+<cfset var mailserverUsername=""/>
+<cfset var mailserverIP=""/>
+<cfset var mailserverPassword=""/>
+<cfset var mailserverUsernameEmail=""/>
+<cfset var mailserverPort=80/>
+<cfset var mailServerTLS=false />
+<cfset var mailServerSSL=false />
+<cfset var tmt_mail_body=""/>
+<cfset var tmt_cr=""/>
+<cfset var tmt_mail_head=""/>
+<cfset var form_element= "" />
+<cfset var attachments=arrayNew(1) />
+<cfset var a =1  />
+<cfset var redirectID=""/>
+<cfset var reviewLink=""/>
+<cfset var fields=""/>
+<cfset var fn=""/>
+<cfset var useDefaultSMTPServer=0/>
+
+	<cfif arguments.siteid neq ''>
+		<cfset useDefaultSMTPServer=variables.settingsManager.getSite(arguments.siteid).getUseDefaultSMTPServer()>
+		<cfset mailServerUsername=variables.settingsManager.getSite(arguments.siteid).getMailserverUsername(true)/>
+		<cfset mailServerUsernameEmail=variables.settingsManager.getSite(arguments.siteid).getMailserverUsernameEmail()/>
+		<cfset mailServerIP=variables.settingsManager.getSite(arguments.siteid).getMailserverIP()/>
+		<cfset mailServerPassword=variables.settingsManager.getSite(arguments.siteid).getMailserverPassword()/>
+		<cfset mailServerPort=variables.settingsManager.getSite(arguments.siteid).getMailserverSMTPPort()/>
+		<cfset mailServerTLS=variables.settingsManager.getSite(arguments.siteid).getMailserverTLS()/>
+		<cfset mailServerSSL=variables.settingsManager.getSite(arguments.siteid).getMailserverSSL()/>
+	<cfelse>
+		<cfset useDefaultSMTPServer=variables.configBean.getUseDefaultSMTPServer()>
+		<cfset mailServerUsername=variables.configBean.getMailserverUsername(true)/>
+		<cfset mailServerUsernameEmail=variables.configBean.getMailserverUsernameEmail()/>
+		<cfset mailServerIP=variables.configBean.getMailserverIP()/>
+		<cfset mailServerPassword=variables.configBean.getMailserverPassword()/>
+		<cfset mailServerPort=variables.configBean.getMailserverSMTPPort()/>
+		<cfset mailServerTLS=variables.configBean.getMailserverTLS()/>
+		<cfset mailServerSSL=variables.configBean.getMailserverSSL()/>
+	</cfif>
+
+<cfif isStruct(arguments.args) and REFindNoCase("^[^@%*<>' ]+@[^@%*<>' ]{2,255}\.[^@%*<>' ]{2,5}", trim(arguments.sendto)) neq 0>
+	
+	<cfset fields=arguments.args>
+	
+	<cfif not structKeyExists(fields,"fieldnames")>
+	<cfset fields.fieldnames=""/>
+	<cfloop collection="#fields#" item="fn">
+		<cfset fields.fieldnames=listAppend(fields.fieldnames,fn) />
+	</cfloop>
+	</cfif>
+
+
+	<cfset tmt_mail_body = "">
+	<cfset tmt_cr = Chr(13) & Chr(10)>
+	<cfset tmt_mail_head = "This form was sent at: #LSDateFormat(Now())# #LSTimeFormat(Now(),'short')#">
+	<cfloop index="form_element" list="#fields.fieldnames#">
+	
+		<cfif form_element neq 'siteid' 
+				and right(form_element,2) neq ".X" 
+				and right(form_element,2) neq ".Y" 
+				and form_element neq 'doaction' 
+				and form_element neq 'userid' 
+				and  form_element neq 'password2' 
+				and form_element neq 'submit' 
+				and form_element neq 'sendto'
+				and form_element neq 'HKEY'
+				and form_element neq 'UKEY'>
+			
+			<cfif findNoCase('attachment',form_element) and isValid("UUID",fields['#form_element#'])>
+				
+				<cfset redirectID=createUUID() />
+				<cfset reviewLink='http://#application.settingsManager.getSite(arguments.siteID).getDomain()##variables.configBean.getServerPort()##application.configBean.getContext()#/tasks/render/file/index.cfm?fileID=#fields["#form_element#"]#&method=attachment' />
+	
+				<cfquery datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+				insert into tredirects (redirectID,URL,created) values(
+				<cfqueryparam cfsqltype="cf_sql_varchar" value="#redirectID#" >,
+				<cfqueryparam cfsqltype="cf_sql_varchar" value="#reviewLink#" >,
+				#createODBCDateTime(now())#
+				)
+				</cfquery>
+				
+				<cfset tmt_mail_body = tmt_mail_body & form_element & ": " & "http://#application.settingsManager.getSite(arguments.siteID).getDomain()##variables.configBean.getServerPort()##application.configBean.getContext()##variables.contentRenderer.getURLStem(arguments.siteID,redirectID)#" & tmt_cr>
+				
+			<cfelse>
+				<cfset tmt_mail_body = tmt_mail_body & form_element & ": " & fields['#form_element#'] & tmt_cr>
+			</cfif>
+		
+		</cfif>
+	
+	</cfloop>
+<cftry>
+<cfif useDefaultSMTPServer>
+<cfmail to="#arguments.sendto#" 
+		from='"#arguments.from#" <#MailServerUsernameEmail#>' 
+		subject="#arguments.subject#" 
+		replyto="#arguments.replyto#">#tmt_mail_head#
+#trim(tmt_mail_body)#
+</cfmail>
+<cfelse>
+<cfmail to="#arguments.sendto#" 
+		from='"#arguments.from#" <#MailServerUsernameEmail#>' 
+		subject="#arguments.subject#" 
+		server="#MailServerIp#" 
+		username="#MailServerUsername#" 
+		password="#MailServerPassword#"
+		port="#mailserverPort#"
+		useTLS="#mailserverTLS#"
+		useSSL="#mailserverSSL#"
+		replyto="#arguments.replyto#">#tmt_mail_head#
+#trim(tmt_mail_body)#
+</cfmail>
+</cfif>
+<cfcatch>
+<cfif len(arguments.siteid)>
+<cfthrow type="Invalid Mail Settings" 
+            message="The current mail server settings for the site '#arguments.siteID#'are not valid.">
+			
+<cfelse>
+<cfthrow type="Invalid Mail Settings" 
+            message="The current mail server settings in the settings.ini are not valid.">
+</cfif>
+</cfcatch>
+</cftry>
+
+</cfif>
+</cffunction>
+
+<cffunction name="sendText" returntype="void" output="false">
+<cfargument name="text" type="string" default="">
+<cfargument name="sendto" type="string" default="">
+<cfargument name="from" type="string" default="">
+<cfargument name="subject" type="string" default="">
+<cfargument name="siteid" type="string" default="">
+<cfargument name="replyTo" type="string" default="">
+<cfargument name="failto" type="string" default="">
+<cfargument name="mailerID" type="string" default="">
+<cfset var mailserverUsername=""/>
+<cfset var mailserverIP=""/>
+<cfset var mailserverPassword=""/>
+<cfset var mailserverUsernameEmail=""/>
+<cfset var useDefaultSMTPServer=0/>
+<cfset var mailserverPort=80/>
+<cfset var mailServerTLS=false />
+<cfset var mailServerSSL=false />
+
+<cfif REFindNoCase("^[^@%*<>' ]+@[^@%*<>' ]{2,255}\.[^@%*<>' ]{2,5}", trim(arguments.sendto)) neq 0>
+	<cfif arguments.siteid neq ''>
+		<cfset useDefaultSMTPServer=variables.settingsManager.getSite(arguments.siteid).getUseDefaultSMTPServer()>
+		<cfset mailServerUsername=variables.settingsManager.getSite(arguments.siteid).getMailserverUsername(true)/>
+		<cfset mailServerUsernameEmail=variables.settingsManager.getSite(arguments.siteid).getMailserverUsernameEmail()/>
+		<cfset mailServerIP=variables.settingsManager.getSite(arguments.siteid).getMailserverIP()/>
+		<cfset mailServerPassword=variables.settingsManager.getSite(arguments.siteid).getMailserverPassword()/>
+		<cfset mailServerPort=variables.settingsManager.getSite(arguments.siteid).getMailserverSMTPPort()/>
+		<cfset mailServerTLS=variables.settingsManager.getSite(arguments.siteid).getMailserverTLS()/>
+		<cfset mailServerSSL=variables.settingsManager.getSite(arguments.siteid).getMailserverSSL()/>
+	<cfelse>
+		<cfset useDefaultSMTPServer=variables.configBean.getUseDefaultSMTPServer()>
+		<cfset mailServerUsername=variables.configBean.getMailserverUsername(true)/>
+		<cfset mailServerUsernameEmail=variables.configBean.getMailserverUsernameEmail()/>
+		<cfset mailServerIP=variables.configBean.getMailserverIP()/>
+		<cfset mailServerPassword=variables.configBean.getMailserverPassword()/>
+		<cfset mailServerPort=variables.configBean.getMailserverSMTPPort()/>
+		<cfset mailServerTLS=variables.configBean.getMailserverTLS()/>
+		<cfset mailServerSSL=variables.configBean.getMailserverSSL()/>
+	</cfif>
+
+	<cftry>
+	<cfif useDefaultSMTPServer>
+		<cfmail to="#arguments.sendto#" 
+				from='"#arguments.from#" <#MailServerUsernameEmail#>' 
+				subject="#arguments.subject#" 
+				replyto="#arguments.replyto#"
+				failto="#mailServerUsernameEmail#"
+				type="text"
+				mailerid="#arguments.mailerID#">#trim(arguments.text)#</cfmail>
+	<cfelse>
+		<cfmail to="#arguments.sendto#" 
+				from='"#arguments.from#" <#MailServerUsernameEmail#>' 
+				subject="#arguments.subject#" 
+				server="#MailServerIp#" 
+				username="#MailServerUsername#" 
+				password="#MailServerPassword#"
+				port="#mailserverPort#"
+				useTLS="#mailserverTLS#"
+				useSSL="#mailserverSSL#"
+				replyto="#arguments.replyto#"
+				failto="#mailServerUsernameEmail#"
+				type="text"
+				mailerid="#arguments.mailerID#">#trim(arguments.text)#</cfmail>
+	</cfif>
+	<cfcatch>
+		<cfif len(arguments.siteid)>
+			<cfthrow type="Invalid Mail Settings" 
+	            message="The current mail server settings for the site '#arguments.siteID#'are not valid.">
+				
+		<cfelse>
+			<cfthrow type="Invalid Mail Settings" 
+	            message="The current mail server settings in the settings.ini are not valid.">
+		</cfif>
+	</cfcatch>
+	</cftry>
+
+</cfif>
+</cffunction>
+
+<cffunction name="sendHTML" returntype="void" output="false">
+<cfargument name="html" type="string" default="">
+<cfargument name="sendto" type="string" default="">
+<cfargument name="from" type="string" default="">
+<cfargument name="subject" type="string" default="">
+<cfargument name="siteid" type="string" default="">
+<cfargument name="replyTo" type="string" default="">
+<cfargument name="failto" type="string" default="">
+<cfargument name="mailerID" type="string" default="">
+
+<cfset var mailserverUsername=""/>
+<cfset var mailserverIP=""/>
+<cfset var mailserverPassword=""/>
+<cfset var mailserverUsernameEmail=""/>
+<cfset var useDefaultSMTPServer=0/>
+<cfset var mailserverPort=80/>
+<cfset var mailServerTLS=false />
+<cfset var mailServerSSL=false />
+
+<cfif REFindNoCase("^[^@%*<>' ]+@[^@%*<>' ]{2,255}\.[^@%*<>' ]{2,5}", trim(arguments.sendto)) neq 0>
+	<cfif arguments.siteid neq ''>
+		<cfset useDefaultSMTPServer=variables.settingsManager.getSite(arguments.siteid).getUseDefaultSMTPServer()>
+		<cfset mailServerUsername=variables.settingsManager.getSite(arguments.siteid).getMailserverUsername(true)/>
+		<cfset mailServerUsernameEmail=variables.settingsManager.getSite(arguments.siteid).getMailserverUsernameEmail()/>
+		<cfset mailServerIP=variables.settingsManager.getSite(arguments.siteid).getMailserverIP()/>
+		<cfset mailServerPassword=variables.settingsManager.getSite(arguments.siteid).getMailserverPassword()/>
+		<cfset mailServerPort=variables.settingsManager.getSite(arguments.siteid).getMailserverSMTPPort()/>
+		<cfset mailServerTLS=variables.settingsManager.getSite(arguments.siteid).getMailserverTLS()/>
+		<cfset mailServerSSL=variables.settingsManager.getSite(arguments.siteid).getMailserverSSL()/>
+	<cfelse>
+		<cfset useDefaultSMTPServer=variables.configBean.getUseDefaultSMTPServer()>
+		<cfset mailServerUsername=variables.configBean.getMailserverUsername(true)/>
+		<cfset mailServerUsernameEmail=variables.configBean.getMailserverUsernameEmail()/>
+		<cfset mailServerIP=variables.configBean.getMailserverIP()/>
+		<cfset mailServerPassword=variables.configBean.getMailserverPassword()/>
+		<cfset mailServerPort=variables.configBean.getMailserverSMTPPort()/>
+		<cfset mailServerTLS=variables.configBean.getMailserverTLS()/>
+		<cfset mailServerSSL=variables.configBean.getMailserverSSL()/>
+	</cfif>
+
+	<cftry>
+	<cfif useDefaultSMTPServer>
+		<cfmail to="#arguments.sendto#" 
+				from='"#arguments.from#" <#MailServerUsernameEmail#>' 
+				subject="#arguments.subject#" 
+				replyto="#arguments.replyto#"
+				failto="#mailServerUsernameEmail#"
+				type="html"
+				mailerid="#arguments.mailerID#">#trim(arguments.html)#</cfmail>
+	<cfelse>
+		<cfmail to="#arguments.sendto#" 
+				from='"#arguments.from#" <#MailServerUsernameEmail#>' 
+				subject="#arguments.subject#" 
+				server="#MailServerIp#" 
+				username="#MailServerUsername#" 
+				password="#MailServerPassword#"
+				port="#mailserverPort#"
+				useTLS="#mailserverTLS#"
+				useSSL="#mailserverSSL#"
+				replyto="#arguments.replyto#"
+				failto="#mailServerUsernameEmail#"
+				type="html"
+				mailerid="#arguments.mailerID#">#trim(arguments.html)#</cfmail>
+	</cfif>
+	<cfcatch>
+		<cfif len(arguments.siteid)>
+			<cfthrow type="Invalid Mail Settings" 
+	            message="The current mail server settings for the site '#arguments.siteID#'are not valid.">
+				
+		<cfelse>
+			<cfthrow type="Invalid Mail Settings" 
+	            message="The current mail server settings in the settings.ini are not valid.">
+		</cfif>
+	</cfcatch>
+	</cftry>
+
+</cfif>
+</cffunction>
+
+<cffunction name="sendTextAndHTML" returntype="void" output="false">
+<cfargument name="text" type="string" default="">
+<cfargument name="html" type="string" default="">
+<cfargument name="sendto" type="string" default="">
+<cfargument name="from" type="string" default="">
+<cfargument name="subject" type="string" default="">
+<cfargument name="siteid" type="string" default="">
+<cfargument name="replyTo" type="string" default="">
+<cfargument name="mailerID" type="string" default="">
+
+<cfset var mailserverUsername=""/>
+<cfset var mailserverIP=""/>
+<cfset var mailserverPassword=""/>
+<cfset var mailserverUsernameEmail=""/>
+<cfset var useDefaultSMTPServer=0/>
+<cfset var mailserverPort=80/>
+<cfset var mailServerTLS=false />
+<cfset var mailServerSSL=false />
+
+<cfif REFindNoCase("^[^@%*<>' ]+@[^@%*<>' ]{2,255}\.[^@%*<>' ]{2,5}", trim(arguments.sendto)) neq 0>
+	<cfif arguments.siteid neq ''>
+		<cfset useDefaultSMTPServer=variables.settingsManager.getSite(arguments.siteid).getUseDefaultSMTPServer()>
+		<cfset mailServerUsername=variables.settingsManager.getSite(arguments.siteid).getMailserverUsername(true)/>
+		<cfset mailServerUsernameEmail=variables.settingsManager.getSite(arguments.siteid).getMailserverUsernameEmail()/>
+		<cfset mailServerIP=variables.settingsManager.getSite(arguments.siteid).getMailserverIP()/>
+		<cfset mailServerPassword=variables.settingsManager.getSite(arguments.siteid).getMailserverPassword()/>
+		<cfset mailServerPort=variables.settingsManager.getSite(arguments.siteid).getMailserverSMTPPort()/>
+		<cfset mailServerTLS=variables.settingsManager.getSite(arguments.siteid).getMailserverTLS()/>
+		<cfset mailServerSSL=variables.settingsManager.getSite(arguments.siteid).getMailserverSSL()/>
+	<cfelse>
+		<cfset useDefaultSMTPServer=variables.configBean.getUseDefaultSMTPServer()>
+		<cfset mailServerUsername=variables.configBean.getMailserverUsername(true)/>
+		<cfset mailServerUsernameEmail=variables.configBean.getMailserverUsernameEmail()/>
+		<cfset mailServerIP=variables.configBean.getMailserverIP()/>
+		<cfset mailServerPassword=variables.configBean.getMailserverPassword()/>
+		<cfset mailServerPort=variables.configBean.getMailserverSMTPPort()/>
+		<cfset mailServerTLS=variables.configBean.getMailserverTLS()/>
+		<cfset mailServerSSL=variables.configBean.getMailserverSSL()/>
+	</cfif>
+
+	<cftry>
+	<cfif useDefaultSMTPServer>
+		<cfmail to="#arguments.sendto#" 
+				from='"#arguments.from#" <#MailServerUsernameEmail#>' 
+				subject="#arguments.subject#" 
+				replyto="#arguments.replyto#"
+				failto="#mailServerUsernameEmail#"
+				type="html"
+				mailerid="#arguments.mailerID#">
+					<cfmailpart type="html">#trim(arguments.html)#</cfmailpart>
+					<cfmailpart type="text">#trim(arguments.text)#</cfmailpart>
+				</cfmail>
+	<cfelse>
+		<cfmail to="#arguments.sendto#" 
+				from='"#arguments.from#" <#MailServerUsernameEmail#>' 
+				subject="#arguments.subject#" 
+				server="#MailServerIp#" 
+				username="#MailServerUsername#" 
+				password="#MailServerPassword#"
+				port="#mailserverPort#"
+				useTLS="#mailserverTLS#"
+				useSSL="#mailserverSSL#"
+				replyto="#arguments.replyto#"
+				failto="#mailServerUsernameEmail#"
+				type="html"
+				mailerid="#arguments.mailerID#">
+					<cfmailpart type="html">#trim(arguments.html)#</cfmailpart>
+					<cfmailpart type="text">#trim(arguments.text)#</cfmailpart>
+				</cfmail>
+	</cfif>
+	<cfcatch>
+		<cfif len(arguments.siteid)>
+			<cfthrow type="Invalid Mail Settings" 
+	            message="The current mail server settings for the site '#arguments.siteID#'are not valid.">
+				
+		<cfelse>
+			<cfthrow type="Invalid Mail Settings" 
+	            message="The current mail server settings in the settings.ini are not valid.">
+		</cfif>
+	</cfcatch>
+	</cftry>
+
+</cfif>
+</cffunction>
+
+</cfcomponent>

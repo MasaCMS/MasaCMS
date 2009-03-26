@@ -1,0 +1,1 @@
+<cfset timeNow = now() />

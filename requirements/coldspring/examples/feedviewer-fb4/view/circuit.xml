@@ -1,0 +1,38 @@
+<circuit access="internal">
+
+	<fuseaction name="showCategories">
+		<include template="../../feedviewer/view/html/dspAllCategories" contentVariable="request.leftColContent"/>		
+	</fuseaction>
+
+    <fuseaction name="showChannels">
+		<include template="../../feedviewer/view/html/dspAllChannels" contentVariable="request.leftColContent" append="true"/>		
+	</fuseaction>
+
+    <fuseaction name="showEntries">
+		<include template="../../feedviewer/view/html/dspEntries" contentVariable="request.mainContent"/>		
+	</fuseaction>
+
+	<fuseaction name="renderCategory">
+	    <include template="../../feedviewer/view/html/dspCategory" contentVariable="request.mainContent"/>		
+	</fuseaction>
+
+	<fuseaction name="renderChannel">
+	    <include template="../../feedviewer/view/html/dspChannel" contentVariable="request.mainContent"/>		
+	</fuseaction>
+
+
+
+
+
+	<fuseaction name="renderPage">
+		<include template="../../feedviewer/view/html/dspHeader" contentVariable="request.eventArgs.headerContent" />		
+		<include template="../../feedviewer/view/html/dspFooter" contentVariable="request.eventArgs.footerContent" />		
+		<do action="renderLayout"/>
+	</fuseaction>
+
+    <fuseaction name="renderLayout">
+		 <include template="../../feedviewer/view/html/dspMainLayout" /> 
+	</fuseaction>
+	
+</circuit>
+

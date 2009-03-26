@@ -1,0 +1,27 @@
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+	
+	<bean id="languageService" class="coldspring.aop.framework.ProxyFactoryBean">
+		<property name="target">
+			<bean class="coldspring.examples.quickstart.components.LanguageService" />
+		</property>
+		<property name="interceptorNames">
+			<list>
+				<value>loggingAdvisor</value>
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="loggingAdvice" class="coldspring.examples.quickstart.components.LoggingAdvice" />
+
+	<bean id="loggingAdvisor" class="coldspring.aop.support.NamedMethodPointcutAdvisor">
+		<property name="advice">
+			<ref bean="loggingAdvice" />
+		</property>
+		<property name="mappedNames">
+			<value>*</value>
+		</property>
+	</bean>
+		
+</beans>

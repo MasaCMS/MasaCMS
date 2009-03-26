@@ -1,0 +1,103 @@
+<!--- This file is part of Mura CMS.
+
+    Mura CMS is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, Version 2 of the License.
+
+    Mura CMS is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Mura CMS.  If not, see <http://www.gnu.org/licenses/>. --->
+
+<cfoutput>
+	<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+	<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+	<title>#application.configBean.getTitle()#</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<cfheader name="cache-control" value="no-cache, no-store, must-revalidate">
+	<cfheader name="expires" value="06 Nov 1994 08:37:34 GMT">
+	<meta http-equiv="cache control" content="no-cache, no-store, must-revalidate" />
+	<script src="js/admin.js" type="text/javascript" language="Javascript"></script>
+	<script src="js/prototype.js" type="text/javascript" language="Javascript"></script>
+	#fusebox.ajax#
+	<cfif myfusebox.originalcircuit neq "cLogin">
+		<script language="JavaScript">
+			var start=new Date();
+			start=Date.parse(start)/1000;
+			var counts=10800;
+			function CountDown(){
+				var now=new Date();
+				now=Date.parse(now)/1000;
+				var x=parseInt(counts-(now-start),10);
+				var hours = Math.floor(x/3600); 
+				var minutes = Math.floor((x-(hours*3600))/60); 
+				var seconds = x-((hours*3600)+(minutes*60));
+				minutes=(minutes <= 9)?'0' + minutes:minutes;
+				seconds=(seconds <= 9)?'0' + seconds:seconds;
+				
+				//if(document.getElementById('clock').innerHTML != undefined ){document.getElementById('clock').innerHTML = hours  + ':' + minutes + ':' + seconds ;}
+			
+				if(x>0){
+					timerID=setTimeout("CountDown()", 100)
+				}else{
+					location.href="index.cfm?fuseaction=cLogin.logout"
+				}
+			}
+		//  End -->
+		</script>
+	</cfif>
+	<link href="css/admin.css" rel="stylesheet" type="text/css" />
+	<!--[if IE]>
+	<link href="css/ie.css" rel="stylesheet" type="text/css" />
+	<![endif]-->
+		<!--[if IE 6]>
+	<link href="css/ie6.css" rel="stylesheet" type="text/css" />
+	<![endif]-->
+	<!---<cfif myfusebox.originalcircuit eq "cArch" and (myfusebox.originalfuseaction eq "list" or myfusebox.originalfuseaction eq "search") and (attributes.moduleid eq '00000000000000000000000000000000000' or attributes.moduleid eq '')>
+	<cfinclude template="../../view/vArchitecture/dsp_content_nav.cfm">
+	</cfif>--->
+	</head>
+	<body id="#myfusebox.originalcircuit#" class="compact">
+	<!---<cfinclude template="header.cfm">--->
+	<div id="container">
+		<!---<div id="navigation" class="sidebar">
+			<cfset hidelist="cLogin">
+			<!---<cfif not listfind(hidelist,myfusebox.originalcircuit)><cfinclude template="dsp_secondary_menu_main.cfm"></cfif>--->
+			<!---<p id="blueriver"><img src="images/blueriver.gif" border="0" /></p>--->
+			<p id="copyright">
+				<cfif application.configBean.getMode() eq 'Staging' and session.siteid neq '' and not listfind(hidelist,myfusebox.originalcircuit)>
+					Last Deployment:<br/>
+					#LSDateFormat(application.settingsManager.getSite(session.siteid).getLastDeployment(),session.dateKeyFormat)# #LSTimeFormat(application.settingsManager.getSite(session.siteid).getLastDeployment())# 					<br />
+					<br />
+					<br />
+				</cfif>
+				Version #application.configBean.getVersion()# </p>
+		</div>--->
+		<div id="content">#fusebox.layout# </div>
+	</div>
+	<cfif myfusebox.originalcircuit neq 'cLogin' and myfusebox.originalcircuit neq 'cFilemanager'>
+		<script type="text/javascript" language="javascript">
+			if(document.forms[2] != undefined && !document.forms[2].elements[0].disabled && document.forms[2].elements[0].focus){
+			document.forms[2].elements[0].focus();
+			}
+		</script>
+	<cfelseif  myfusebox.originalcircuit neq 'cFilemanager'>
+		<script type="text/javascript" language="javascript">
+			document.forms[0].elements[0].focus();
+		</script>
+	</cfif>
+	<script type="text/javascript" language="javascript">
+		stripe('stripe');
+	</script>
+	<cfif myfusebox.originalcircuit neq 'cLogin'>
+		<script type="text/javascript" language="javascript">
+			window.setTimeout('CountDown()',100);
+		</script>
+	</cfif>
+	</body>
+	</html>
+</cfoutput>

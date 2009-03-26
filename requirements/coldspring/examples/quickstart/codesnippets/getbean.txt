@@ -1,0 +1,11 @@
+<!--- Get the User Service CFC from ColdSpring. --->
+<cfset userService = beanFactory.getBean('userService') />	
+<cfdump var="#userService#" />
+
+<!--- Now get the Gateway that ColdSpring set into the User Service. --->
+<cfset userGateway = userService.getUserGateway() />	
+<cfdump var="#userGateway#" />
+
+<!--- Now get the Config Bean that ColdSpring set into my User Gateway. --->
+<cfset configBean = userGateway.getConfigBean() />
+<cfdump var="#configBean#" />

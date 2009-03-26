@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- DTD for Fusebox 4.1 circuit.xml file (http://www.fusebox.org), version 4.1.0 -->
+<!-- $Id: circuit.dtd,v 1.6 2005/01/08 05:46:17 johnq Exp $ -->
+<!ELEMENT circuit (fuseaction*, ((prefuseaction?, fuseaction*, postfuseaction?) | (postfuseaction?, fuseaction*, prefuseaction?)), fuseaction*)>
+<!ATTLIST circuit
+	access (internal | public | private) #FIXED "internal"
+	permissions CDATA #IMPLIED
+>
+
+<!ELEMENT prefuseaction (set | xfa | do | include | relocate | loop | if | invoke | instantiate | assert)*>
+<!ATTLIST prefuseaction
+	callsuper (true | false) "false"
+>
+<!ELEMENT postfuseaction (set | xfa | do | include | relocate | loop | if | invoke | instantiate | assert)*>
+<!ATTLIST postfuseaction
+	callsuper (true | false) "false"
+>
+<!ELEMENT fuseaction (set | xfa | do | include | relocate | loop | if | invoke | instantiate | assert)*>
+<!ATTLIST fuseaction
+	name CDATA #REQUIRED
+	permissions CDATA #IMPLIED
+	access (internal | public | private) #IMPLIED
+>
+
+<!ELEMENT set EMPTY>
+<!ATTLIST set
+	name CDATA #REQUIRED
+	value CDATA #REQUIRED
+	evaluate (true | false) "false"
+	overwrite (true | false) "true"
+>
+
+<!ELEMENT xfa EMPTY>
+<!ATTLIST xfa
+	name CDATA #REQUIRED
+	value CDATA #REQUIRED
+	evaluate (true | false) "false"
+	overwrite (true | false) "true"
+>
+
+<!ELEMENT do EMPTY>
+<!ATTLIST do
+	action CDATA #REQUIRED
+	contentvariable CDATA #IMPLIED
+	append (true | false) "false"
+	prepend (true | false) "false"	
+	overwrite (true | false) "true"
+>
+
+<!ELEMENT include EMPTY>
+<!ATTLIST include
+	template CDATA #REQUIRED
+	required (true | false) "true"
+	contentvariable CDATA #IMPLIED
+	append (true | false) "false"
+	prepend (true | false) "false"
+	overwrite (true | false) "true"
+>
+
+<!ELEMENT relocate EMPTY>
+<!ATTLIST relocate
+	url CDATA #REQUIRED
+	type (client | server | javascript) "client"
+	addtoken (true | false) "false"
+>
+
+<!ELEMENT loop (set | xfa | do | include | relocate | invoke | instantiate | assert)*>
+<!ATTLIST loop
+	condition CDATA #IMPLIED
+	query CDATA #IMPLIED
+	from CDATA #IMPLIED
+	to CDATA #IMPLIED
+	index CDATA #IMPLIED
+	step CDATA #IMPLIED
+>
+
+<!ELEMENT if ((true, false?) | (false, true?))>
+<!ATTLIST if
+	condition CDATA #REQUIRED
+>
+
+<!ELEMENT true (set | xfa | do | include | relocate | invoke | instantiate | assert)*>
+
+<!ELEMENT false (set | xfa | do | include | relocate | invoke | instantiate | assert)*>
+
+<!ELEMENT invoke EMPTY>
+<!ATTLIST invoke
+	returnvariable CDATA #IMPLIED
+	overwrite (true | false) "true"
+	object CDATA #IMPLIED
+	class CDATA #IMPLIED
+	webservice CDATA #IMPLIED
+	methodcall CDATA #IMPLIED
+>
+
+<!ELEMENT instantiate EMPTY>
+<!ATTLIST instantiate
+	arguments CDATA #IMPLIED
+	overwrite (true | false) "true"
+	object CDATA #REQUIRED
+	class CDATA #IMPLIED
+	webservice CDATA #IMPLIED
+>
+
+<!ELEMENT assert EMPTY>
+<!ATTLIST assert
+	message CDATA #IMPLIED
+	expression CDATA #REQUIRED
+>

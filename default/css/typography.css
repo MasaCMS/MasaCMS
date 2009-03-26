@@ -1,0 +1,143 @@
+/*  This file is part of Mura CMS (www.gosava.com).
+
+    Mura CMS is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, Version 2 of the License.
+
+    Mura CMS is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Mura CMS.  If not, see <http://www.gnu.org/licenses/>.
+
+*/
+
+/*
+	typography.css
+	These styles control type styles on the front-end of a site as well as in the editor on the back-end,
+	allowing consistent typographic display in both places and elimintaing the need to edit 2 stylesheets.
+
+	If you prefer to have a single .css file (and not use this file),
+	just comment out or remove the '@import url(typography.css);' line in style.css
+	and add your type styles into your preferred stylesheet (usually 'site.css').
+*/
+
+/*	Some styles, ideas, and concepts derived from:
+
+	Eric Meyer Reset - http://meyerweb.com/eric/tools/css/reset/index.html
+	BlueprintCSS - http://code.google.com/p/blueprintcss/
+	YUI - http://developer.yahoo.com/yui/
+*/
+
+
+
+/* @group General Text Elements
+===================================== */
+
+body {
+	font-family: "Lucida Grande", "Lucida Sans", Verdana, Helvetica, Arial, sans-serif;
+	color: #444;
+	}
+
+p, ul, ol, table, blockquote {
+	margin-bottom: 1em;
+	line-height: 1.5;
+	}
+
+p, li, dt, dd, table { font-size: 1.2em; }
+
+p.intro { font-size: 1.5em; }
+
+li *, dt *, dd *, td *, th * { font-size: 1em !important; }
+
+blockquote, q { padding: 0 4em; quotes: none; }
+blockquote:before, blockquote:after, q:before, q:after { content: ''; content: none; }
+blockquote p {} /* Reminder to always include blockquote content in a <p> */
+blockquote div cite { font-style: italic; }
+
+strong, b { font-weight: bold; }
+em, i { font-style: italic; }
+
+ins { text-decoration: #ddd; }
+del { text-decoration: line-through; }
+
+abbr, acronym { border-bottom: 1px dotted; cursor: help; }
+
+pre, code { margin: 1.5em 0; white-space: pre; }
+pre, code, tt { font-size: 1em; font-family: 'andale mono', 'lucida console', monospace; line-height: 1.5; }
+
+/* @end General Text Elements
+-------------------------------- */
+
+
+/* @group Headings (H1-H6)
+===================================== */
+
+h1 {
+	font-size: 3.6em;
+	}
+h1 a {
+	display: block;
+	}
+h1 img {
+	display: none;  /* hide for screen. Show for printing in print.css */
+	}
+
+h2, h3, h4, h5, h6 {
+	margin: 0 0 .5em;
+	line-height: 1.2;
+	font-weight: bold;
+	}
+
+h2 {
+	margin: 0 0 .5em;
+	font-size: 2.8em;
+	font-weight: normal;
+	}
+
+h3 {
+	margin: 0 0 .25em;
+	font-size: 2.2em;
+	}
+.sidebar h3 {
+	font-size: 1.6em;
+	}
+
+h4 {
+	margin: 0 0 .35em;
+	font-size: 1.8em;
+	}
+.sidebar h4 {
+	font-size: 1.4em;
+	}
+
+h5 {
+	font-size: 1.4em;
+	}
+.sidebar h5 {
+	font-size: 1.2em;
+	}
+
+h6 {
+	font-size: 1.2em;
+	}
+.sidebar h6 {
+	font-size: 1.1em;
+	}
+
+/* extra top margin for headings preceded by other text-based elements.
+If you use these styles, keep in mind they will not work in IE6. */
+/*
+p + h3, ul + h3, ol + h3, dl + h3, table + h3, blockquote + h3, hr + h3 { margin-top: 1em; }
+p + h4, ul + h4, ol + h4, dl + h4, table + h4, blockquote + h4, hr + h4 { margin-top: 1.2em; }
+p + h5, ul + h5, ol + h5, dl + h5, table + h5, blockquote + h5, hr + h5 { margin-top: 1.4em; }
+p + h6, ul + h6, ol + h6, dl + h6, table + h6, blockquote + h6, hr + h6 { margin-top: 1.8em; }
+*/
+
+/* @end Headings (H1-H6)
+-------------------------------- */
+
+
+/* EOF */

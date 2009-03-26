@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">-->
+
+<beans>
+	
+	<!-- logging service -->
+	<bean id="loggingService"
+                class="net.klondike.component.LoggingService" />
+	
+	<!-- set up the logging advice -->
+	<bean id="loggingAdvice" class="net.klondike.aspects.loggingAroundAdvice">
+		<property name="loggingService">
+			<ref bean="loggingService" />
+         </property>
+	</bean>
+	
+	<bean id="loggingAdvisor" class="coldspring.aop.support.NamedMethodPointcutAdvisor">
+		<property name="advice">
+			<ref bean="loggingAdvice" />
+		</property>
+		<property name="mappedNames">
+			<value>*</value>
+		</property>
+	</bean>  
+	
+	<!-- security service -->
+	<bean id="securityService"
+                class="net.klondike.component.SecurityService" />
+				
+	<!-- set up the security advisor -->
+	<bean id="securityAdvice" class="net.klondike.aspects.securityAdvice">
+		<property name="securityService">
+			<ref bean="securityService" />
+         </property>
+	</bean>
+	
+	<bean id="securityAdvisor" class="coldspring.aop.support.NamedMethodPointcutAdvisor">
+		<property name="advice">
+			<ref bean="securityAdvice" />
+		</property>
+		<property name="mappedNames">
+			<value>save</value>
+		</property>
+	</bean>
+
+	<!-- caching service -->
+	<bean id="cachingService"
+                class="net.klondike.component.CachingService" />
+	
+	<!-- set up the caching advisors -->
+	<bean id="catalogCachingAdvice" class="net.klondike.aspects.cachingAdvice">
+		<property name="cachingService">
+			<ref bean="cachingService" />
+         </property>
+		<property name="objectType">
+			<value>net.klondike.component.Record</value>
+         </property>
+		<property name="objectKey">
+			<value>recordID</value>
+         </property>
+		<property name="objectName">
+			<value>record</value>
+         </property>
+	</bean>
+	
+	<bean id="catalogCachingAdvisor" class="coldspring.aop.support.NamedMethodPointcutAdvisor">
+		<property name="advice">
+			<ref bean="catalogCachingAdvice" />
+		</property>
+		<property name="mappedNames">
+			<value>fetch,save,getHighlights,getRecords</value>
+		</property>
+	</bean>
+	
+	<!-- set up a proxy for the gateway -->
+	<bean id="catalogGatewayTarget"
+			  class="net.klondike.component.catalogGateway">
+         <property name="dsn">
+			<value>klondike</value>
+         </property>
+    </bean> 
+	
+	<bean id="catalogGateway" class="coldspring.aop.framework.ProxyFactoryBean">
+		<property name="target">
+			<ref bean="catalogGatewayTarget" />
+		</property>
+		<property name="interceptorNames">
+			<list>
+				<value>loggingAdvisor</value>
+				<value>catalogCachingAdvisor</value>
+			</list>
+		</property>
+	</bean>
+	
+	<!-- set up a proxy for the dao -->
+	<bean id="catalogDAOTarget"
+			  class="net.klondike.component.CatalogDAO">
+         <property name="dsn">
+			<value>klondike</value>
+         </property>
+    </bean>
+	
+	<bean id="catalogDAO" class="coldspring.aop.framework.ProxyFactoryBean">
+		<property name="target">
+			<ref bean="catalogDAOTarget" />
+		</property>
+		<property name="interceptorNames">
+			<list>
+				<value>loggingAdvisor</value>
+				<value>securityAdvisor</value>
+				<value>catalogCachingAdvisor</value>
+			</list>
+		</property>
+	</bean> 
+	
+	<!-- catalog service -->
+	<bean id="catalogService"
+        class="net.klondike.component.CatalogService">
+		<property name="catalogDAO">
+			<ref bean="catalogDAO" />
+         </property>
+         <property name="catalogGateway">
+			<ref bean="catalogGateway" />
+         </property>
+    </bean> 
+	
+	
+	<!-- A ColdSpring provided service that inconjunction with flashUtilityService can map 
+		ActionScript objects to CFCs. -->
+	<bean id="flashMappings" class="coldspring.remoting.flash.flashMappings">
+		<constructor-arg name="mappings">
+			<!-- Here we use a "list" element to pass in an array of structures to the constructor -->
+			<list>
+				<map>
+					<entry key="cfcType"><value>net.klondike.component.Record</value></entry>
+					<entry key="asType"><value>RecordVO</value></entry>
+				</map>		
+			</list>
+		</constructor-arg>		
+	</bean> 
+    
+	<!-- A service object which can be acces for any remote facade which can be used to convert CFCs to 
+		ActionScript classes and vis versa -->
+	<bean id="flashUtilityService" class="coldspring.remoting.flash.flashUtilityService">
+		<property name="flashMappings"><ref bean="flashMappings"/></property>		
+	</bean>
+	
+	
+	<!-- test a remote service bean -->
+	<bean id="remoteCatalogService" class="coldspring.aop.framework.RemoteFactoryBean">
+		<property name="target">
+			<ref bean="catalogService" />
+		</property>
+		<property name="serviceName">
+			<value>RemoteCatalogService</value>
+		</property>
+		<!-- 
+		<property name="absolutePath">
+			<value>/usr/local/cf7/htdocs/klondike/machii/remoting/</value>
+		</property>
+		-->
+		<property name="relativePath">
+			<value>klondike/machii/remoting</value>
+		</property>
+		<property name="flashUtilityService">
+			<ref bean="flashUtilityService" />
+		</property>
+		<property name="interceptorNames">
+			<list>
+				<value>loggingAdvisor</value>
+				<value>securityAdvisor</value>
+			</list>
+		</property>
+		<property name="remoteMethodNames">
+			<value>get*</value>
+		</property>
+	</bean>
+
+</beans>

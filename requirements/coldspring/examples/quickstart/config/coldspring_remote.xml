@@ -1,0 +1,25 @@
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+	
+	<bean id="languageService" class="coldspring.examples.quickstart.components.LanguageService" />
+	
+	<bean id="remoteLanguageService" class="coldspring.aop.framework.RemoteFactoryBean" lazy-init="false">
+		<property name="target">
+			<ref bean="languageService" />
+		</property>
+		<property name="serviceName">
+			<value>RemoteLanguageService</value>
+		</property>
+		<property name="relativePath">
+			<value>/coldspring/examples/quickstart/components</value>
+		</property>
+		<property name="remoteMethodNames">
+			<value>reverseString,duplicateString</value>
+		</property>
+		<property name="beanFactoryName">
+			<value>beanFactory</value>
+		</property>
+	</bean>
+			
+</beans>

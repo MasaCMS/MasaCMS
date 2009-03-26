@@ -1,0 +1,68 @@
+<!--- This file is part of Mura CMS.
+
+    Mura CMS is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, Version 2 of the License.
+
+    Mura CMS is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Mura CMS.  If not, see <http://www.gnu.org/licenses/>. --->
+
+<cfsilent><cfparam name="attributes.siteID" default="">
+<cfparam name="attributes.parentID" default="">
+<cfparam name="attributes.nestLevel" default="1">
+<cfparam name="request.catNo" default="0">
+<cfset rslist=application.categoryManager.getCategories(attributes.siteID,attributes.ParentID) />
+</cfsilent>
+
+<cfif rslist.recordcount>
+<ul>
+<cfoutput query="rslist">
+<cfsilent>
+<cfset request.catNo=request.catNo+1 />	
+<cfquery name="rsIsMember" dbtype="query">
+select * from request.rsCategoryAssign
+where categoryID='#rslist.categoryID#' and ContentHistID='#request.contentBean.getcontentHistID()#'
+</cfquery>
+<cfset catTrim=replace(rslist.categoryID,'-','','ALL') />
+<cfif not application.permUtility.getCategoryPerm(rslist.restrictGroups,attributes.siteid)>
+<cfset disabled="disabled" />
+<cfelse>
+<cfset disabled="" />
+</cfif>
+</cfsilent>
+<li><div <cfif request.catNo mod 2>class="alt"</cfif>>#rslist.name#<cfif rslist.isOpen eq 1>
+<div class="column" <cfif request.catNo mod 2>class="alt"</cfif>>
+<select class="displayOptions" class="categoryid" categoryid="#rslist.categoryID#" name="categoryAssign#catTrim#" #disabled#  onchange="javascript: this.selectedIndex==3?loadCategoryFeatureStartStop('editDates#catTrim#',true,'#attributes.siteID#'):loadCategoryFeatureStartStop('editDates#catTrim#',false,'#attributes.siteID#');checkExtendSetTargeting(this.value);">
+<option <cfif not rsIsMember.recordcount>selected</cfif> value="">#application.rbFactory.getKeyValue(session.rb,'sitemanager.no')#</option>
+<option <cfif rsIsMember.recordcount and not rsIsMember.isFeature>selected</cfif> value="0">#application.rbFactory.getKeyValue(session.rb,'sitemanager.yes')#</option>
+<option value="1" <cfif rsIsMember.recordcount and rsIsMember.isFeature eq 1>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.feature')#</option>
+<option value="2" <cfif rsIsMember.recordcount and rsIsMember.isFeature eq 2>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.scheduledfeature')#</option>
+</select>
+	  <dl id="editDates#catTrim#" <cfif not (rsIsMember.recordcount and rsIsMember.isFeature eq 2)>style="display: none;"</cfif>>
+		<cfif rsIsMember.recordcount and rsIsMember.isFeature eq 2><dt class="start">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.startdatetime')#</dt>
+		<dd class="start"><input type="text" name="featureStart#catTrim#" #disabled#  <cfif LSisDate(rsIsMember.featurestart)>value="#LSDateFormat(rsIsMember.featurestart,session.dateKeyFormat)#"<cfelse>value="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.startdate')#" onclick="if(this.value=='Start Date'){this.value=''};"</cfif> class="textAlt"><img class="calendar" type="image" src="images/icons/cal_24.png" #disabled#  hidefocus onclick="window.open('date_picker/index.cfm?form=contentForm&field=featureStart#catTrim#&format=MDY','refWin','toolbar=no,location=no,directories=no,status=no,menubar=no,resizable=yes,copyhistory=no,scrollbars=no,width=190,height=220,top=250,left=250');return false;">
+		<select name="starthour#catTrim#" #disabled#  class="dropdown"><cfloop from="1" to="12" index="h"><option value="#h#" <cfif not LSisDate(rsIsMember.featurestart)  and h eq 12 or (LSisDate(rsIsMember.featurestart) and (hour(rsIsMember.featurestart) eq h or (hour(rsIsMember.featurestart) - 12) eq h or hour(rsIsMember.featurestart) eq 0 and h eq 12))>selected</cfif>>#h#</option></cfloop></select>
+		<select name="startMinute#catTrim#" #disabled# class="dropdown"><cfloop from="0" to="59" index="m"><option value="#m#" <cfif LSisDate(rsIsMember.featurestart) and minute(rsIsMember.featurestart) eq m>selected</cfif>>#iif(len(m) eq 1,de('0#m#'),de('#m#'))#</option></cfloop></select>
+		<select name="startDayPart#catTrim#" class="dropdown"><option value="AM">AM</option><option value="PM" <cfif LSisDate(rsIsMember.featurestart) and hour(rsIsMember.featurestart) gte 12>selected</cfif>>PM</option></select>
+		</dd>
+		<dt class="stop">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.stopdatetime')#</dt>
+		<dd class="stop"><input type="text" name="featureStop#catTrim#" #disabled# <cfif LSisDate(rsIsMember.featurestop)>value="#LSDateFormat(rsIsMember.featurestop,session.dateKeyFormat)#"<cfelse>value="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.stopdate')#"  onclick="if(this.value=='Stop Date'){this.value=''};"</cfif> class="textAlt"><img class="calendar" type="image" src="images/icons/cal_24.png" #disabled#  hidefocus onclick="window.open('date_picker/index.cfm?form=contentForm&field=featureStop#catTrim#&format=MDY','refWin','toolbar=no,location=no,directories=no,status=no,menubar=no,resizable=yes,copyhistory=no,scrollbars=no,width=190,height=220,top=250,left=250');return false;">
+	<select name="stophour#catTrim#" class="dropdown"><cfloop from="1" to="12" index="h"><option value="#h#" <cfif not LSisDate(rsIsMember.featurestop)  and h eq 11 or (LSisDate(rsIsMember.featurestop) and (hour(rsIsMember.featurestop) eq h or (hour(rsIsMember.featurestop) - 12) eq h or hour(rsIsMember.featurestop) eq 0 and h eq 12))>selected</cfif>>#h#</option></cfloop></select>
+		<select name="stopMinute#catTrim#" #disabled#  class="dropdown"><cfloop from="0" to="59" index="m"><option value="#m#" <cfif (not LSisDate(rsIsMember.featurestop) and m eq 59) or (LSisDate(rsIsMember.featurestop) and minute(rsIsMember.featurestop) eq m)>selected</cfif>>#iif(len(m) eq 1,de('0#m#'),de('#m#'))#</option></cfloop></select>
+		<select name="stopDayPart#catTrim#" #disabled# class="dropdown"><option value="AM">AM</option><option value="PM" <cfif (LSisDate(rsIsMember.featurestop) and (hour(rsIsMember.featurestop) gte 12)) or not LSisDate(rsIsMember.featurestop)>selected</cfif>>PM</option></select>
+		</dd></cfif>
+		</dl>
+		</div>
+</cfif></div>
+<cfif rslist.hasKids>
+<cf_dsp_categories_nest siteID="#attributes.siteID#" parentID="#rslist.categoryID#" nestLevel="#evaluate(attributes.nestLevel +1)#" >
+</cfif>
+</li>
+</cfoutput>
+</ul>
+</cfif>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+	
+	<bean id="beanOne"
+			class="coldspringAOP.tests.factoryTests.beanOne"
+			singleton="true">
+		<property name="message"><value>Hello</value></property>
+		<property name="messageTwo"><value>There</value></property>
+		<property name="helper">
+			<ref bean="beanThree" />
+		</property>
+	</bean>
+	
+	<bean id="beanTwo"
+			class="coldspringAOP.tests.factoryTests.beanTwo"
+			singleton="true">
+		<property name="helper">
+			<ref bean="beanOne" />
+		</property>
+	</bean>
+	
+	<bean id="beanThree"
+			class="coldspringAOP.tests.factoryTests.beanThree"
+			singleton="true">
+		<property name="helper">
+			<ref bean="beanOne" />
+		</property>
+		<property name="innerBean">
+			<bean id="notused" class="coldspringAOP.tests.factoryTests.beanFour" />
+		</property>
+	</bean>
+	
+</beans>

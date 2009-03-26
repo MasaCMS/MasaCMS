@@ -1,0 +1,5 @@
+<bean id="configBean" class="coldspring.examples.quickstart.components.ConfigBean">
+	<constructor-arg name="datasourceName">
+		<value>myDSN</value>
+	</constructor-arg>
+</bean>

@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+	  
+  Copyright (c) 2005, Chris Scott, David Ross
+  All rights reserved.
+	
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+  
+       http://www.apache.org/licenses/LICENSE-2.0
+  
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+  $Id: klondike-conf.xml,v 1.5 2005/10/10 03:00:15 rossd Exp $
+  $Log: klondike-conf.xml,v $
+  Revision 1.5  2005/10/10 03:00:15  rossd
+  minor fixes
+
+  Revision 1.4  2005/10/10 02:57:09  scottc
+  removed login events that can't work
+
+  Revision 1.3  2005/10/10 02:03:14  rossd
+  ok, moved all controller cfcs into net/klondike/controller
+
+  Revision 1.2  2005/10/10 01:52:05  rossd
+  renamed /model to /controller to reflect best practice
+
+  Revision 1.1  2005/10/09 20:12:06  scottc
+  First commit of the record store example app. Contains a hopefully detailed readme file on usage.
+
+
+-->
+	
+<mach-ii version="1.0">
+
+	<!-- PROPERTIES -->
+	<properties>
+		<property name="applicationRoot" value="/coldspring/examples/klondikeRecords" />
+		<property name="defaultEvent" value="home" />
+		<property name="eventParameter" value="event" />
+		<property name="parameterPrecedence" value="form" />
+		<property name="maxEvents" value="10" />
+		<property name="exceptionEvent" value="exceptionEvent" />
+
+		<!-- configuration file for coldspring managed services -->
+		<property name="ColdspringConfigFile" value="./config/klondike-services.xml" /> 
+		<property name="dsn" value="klondike" />
+	</properties>
+
+	<!-- LISTENERS -->
+	<listeners>
+		<listener name="breadcrumb" type="net.klondike.controller.Breadcrumb">
+			<invoker type="MachII.framework.invokers.CFCInvoker_EventArgs" />	
+		</listener>
+		
+		<listener name="catalog" type="net.klondike.controller.CatalogListener">
+			<invoker type="MachII.framework.invokers.CFCInvoker_Event" />
+		</listener>
+	</listeners>
+	
+	<!-- EVENT-FILTERS -->
+	<event-filters>
+		<event-filter name="eventArgs" type="MachII.filters.EventArgsFilter" />
+		<event-filter name="requiredFields" type="net.klondike.controller.RequiredFieldsFilter">
+			<parameters>
+				<parameter name="allowZeroValues" value="false" />
+				<parameter name="copyEventArgs" value="true" />
+			</parameters>	
+		</event-filter>
+		<event-filter name="relocate" type="net.klondike.controller.RelocateFitler" />
+	</event-filters>
+
+	<!-- EVENT-HANDLERS -->
+	<event-handlers>
+	
+		<!-- login, for now default event -->
+		<event-handler event="loginForm" access="public">
+			<filter name="eventArgs">
+				<parameter name="crumb" value="Login|logout" />
+				<parameter name="reset" value="true" />
+				<parameter name="submitEvent" value="home" />
+			</filter>
+			<notify listener="breadcrumb" method="addCrumb" resultKey="request.breadcrumb" />
+			<view-page name="loginForm" contentKey="request.content" />
+			<view-page name="mainLayout" />
+		</event-handler>
+		
+		<!-- home (highlights) -->
+		<event-handler event="home" access="public">
+			<filter name="eventArgs">
+				<parameter name="crumb" value="Home|home" />
+				<!-- <parameter name="reset" value="true" /> -->
+			</filter>
+			<notify listener="breadcrumb" method="addCrumb" resultKey="request.breadcrumb" />
+			<notify listener="catalog" method="getHighlights" resultKey="request.records" />
+			
+			<announce event="genres" />
+			<announce event="artists" />
+			<announce event="records" />
+			<announce event="layoutPage" />
+		</event-handler>
+		
+		<event-handler event="genres" access="private">
+			<notify listener="catalog" method="getGenres" resultKey="request.genres" />
+			<event-arg name="genres" variable="request.genres"/>
+			<view-page name="genres" contentKey="request.contentLeft" append="true" />
+		</event-handler>
+		
+		<event-handler event="artists" access="private">
+			<notify listener="catalog" method="getArtists" resultKey="request.artists" />
+			<event-arg name="artists" variable="request.artists"/>
+			<view-page name="artists" contentKey="request.contentLeft" append="true" />
+		</event-handler>
+		
+		<event-handler event="records" access="private">
+			<event-arg name="records" variable="request.records"/>
+			<event-arg name="genres" variable="request.genres"/>
+			<event-arg name="artists" variable="request.artists"/>
+			<view-page name="records" contentKey="request.content" append="true" />
+		</event-handler>
+		
+		<!-- show records by genre / artist -->
+		
+		<event-handler event="showRecords" access="public">
+			<filter name="eventArgs">
+				<parameter name="crumb" value="Records|showRecords" />
+				<!-- <parameter name="reset" value="true" /> -->
+			</filter>
+			<notify listener="breadcrumb" method="addCrumb" resultKey="request.breadcrumb" />
+			<notify listener="catalog" method="getRecords" resultKey="request.records" />
+			
+			<announce event="genres" />
+			<announce event="artists" />
+			<announce event="records" />
+			<announce event="layoutPage" />
+		</event-handler>
+		
+		<event-handler event="layoutPage" access="private">
+			<view-page name="mainLayout" />
+		</event-handler>
+		
+		<!-- add/edit records --> 
+		<event-handler event="addRecord" access="public">
+			<filter name="eventArgs">
+				<parameter name="submitEvent" value="insertRecord" />
+				<parameter name="submitLabel" value="Add" />
+				<parameter name="cancelEvent" value="home" />
+			</filter>
+			<filter name="eventArgs">
+				<parameter name="crumb" value="Add Record|addRecord" />
+			</filter>
+			<notify listener="breadcrumb" method="addCrumb" resultKey="request.breadcrumb" />
+			<event-bean name="record" type="net.klondike.component.Record" />
+			<announce event="recordForm" copyEventArgs="true" />
+		</event-handler>
+		
+		<event-handler event="editRecord" access="public">
+			<filter name="requiredFields">
+				<parameter name="requiredFields" value="rdID" />
+				<parameter name="invalidEvent" value="home" />
+			</filter>
+			<filter name="eventArgs">
+				<parameter name="submitEvent" value="updateRecord" />
+				<parameter name="submitLabel" value="Edit" />
+				<parameter name="cancelEvent" value="home" />
+			</filter>
+			<filter name="eventArgs">
+				<parameter name="crumb" value="Edit Record|editRecord" />
+			</filter>
+			<notify listener="breadcrumb" method="addCrumb" resultKey="request.breadcrumb" />
+			<notify listener="catalog" method="getRecordForID" resultKey="request.record" />
+			<event-arg name="record" variable="request.record" />
+			<announce event="recordForm" copyEventArgs="true" />
+		</event-handler>
+		
+		<event-handler event="recordForm" access="private">
+			<notify listener="catalog" method="getArtists" resultKey="request.artists" />
+			<notify listener="catalog" method="getGenres" resultKey="request.genres" />
+			<event-arg name="artists" variable="request.artists" />
+			<event-arg name="genres" variable="request.genres" />
+			<notify listener="breadcrumb" method="getCrumbs" resultKey="request.breadcrumb" />
+			<view-page name="recordForm" contentKey="request.content" />
+			<view-page name="mainLayout" />
+		</event-handler>
+		
+		<event-handler event="insertRecord" access="public">
+			<event-bean name="record" type="net.klondike.component.Record" />
+			<filter name="eventArgs">
+				<parameter name="submitEvent" value="insertRecord" />
+				<parameter name="submitLabel" value="Add" />
+				<parameter name="cancelEvent" value="home" />
+			</filter>
+			<filter name="requiredFields">
+				<parameter name="requiredFields" value="artistID,genreID,title,releaseDate,image,price" />
+				<parameter name="invalidEvent" value="recordForm" />
+			</filter>
+			<notify listener="catalog" method="saveRecord" />
+			<filter name="relocate">
+				<parameter name="newEvent" value="home" />
+			</filter>
+		</event-handler>
+		
+		<event-handler event="updateRecord" access="public">
+			<event-bean name="record" type="net.klondike.component.Record" />
+			<filter name="eventArgs">
+				<parameter name="submitEvent" value="updateRecord" />
+				<parameter name="submitLabel" value="Edit" />
+				<parameter name="cancelEvent" value="home" />
+			</filter>
+			<filter name="requiredFields">
+				<parameter name="requiredFields" value="recordID,artistID,genreID,title,releaseDate,image,price" />
+				<parameter name="invalidEvent" value="recordForm" />
+			</filter>
+			<notify listener="catalog" method="saveRecord" />
+			<filter name="relocate">
+				<parameter name="newEvent" value="home" />
+			</filter>
+		</event-handler>
+		
+		<event-handler event="exceptionEvent" access="private">
+			<view-page name="exception" contentKey="request.content" />
+			<view-page name="mainLayout" />
+		</event-handler>
+	</event-handlers>
+	
+	<!-- PAGE-VIEWS -->
+	<page-views>
+		<page-view name="loginForm" page="/views/loginForm.cfm" />
+		<page-view name="records" page="/views/records.cfm" />
+		<page-view name="genres" page="/views/genres.cfm" />
+		<page-view name="artists" page="/views/artists.cfm" />
+		<page-view name="recordForm" page="/views/recordForm.cfm" />
+		
+		<page-view name="mainLayout" page="/views/mainLayout.cfm" />
+		<page-view name="exception" page="/views/exception.cfm" />
+	</page-views>
+	
+	<!-- PLUGINS -->
+	<plugins>
+		
+		<!-- coldspring plugin -->
+		<plugin name="coldSpringPlugin" type="coldspring.machii.coldspringPlugin">
+			<parameters>
+				<parameter name="beanFactoryPropertyName" value="serviceFactory"/>
+				<parameter name="configFilePropertyName" value="ColdspringConfigFile"/>
+				<parameter name="configFilePathIsRelative" value="true"/>
+			</parameters>
+		</plugin>
+		
+	</plugins>
+
+</mach-ii>

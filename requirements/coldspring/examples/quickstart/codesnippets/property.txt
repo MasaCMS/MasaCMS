@@ -1,0 +1,5 @@
+<bean id="userGateway" class="coldspring.examples.quickstart.components.UserGateway">
+	<property name="configBean">
+		<ref bean="configBean" />
+	</property>
+</bean>

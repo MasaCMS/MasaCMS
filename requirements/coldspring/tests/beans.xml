@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans>
+	
+	<bean id="beanOne"
+			class="coldspring.tests.beanOne">
+		<constructor-arg name="helperStruct">
+			<map>
+				<entry key="stuff"><value>hello</value></entry>				
+				<entry key="stuffedinnerbean">
+					<bean id="notused" class="coldspring.tests.beanSix">
+						<property name="message"><value>ummmm</value></property>
+						<property name="moreStuff">
+							<map>
+								<entry key="hmmm">
+									<value>asdasdasdsad</value>
+								</entry>	
+								<entry key="shouldBeBeanSeven">
+									<ref bean="beanSeven" />
+								</entry>			
+							</map>
+						</property>
+						<property name="evenMoreStuff">
+							<list>
+								<value>asdasdads</value>
+								<value>asdasdads</value>
+								<map>
+									<entry key="qweqwe"><value>adasd</value></entry>									
+								</map>
+								<list>
+									<value>2</value>
+									<value>1</value>
+								</list>
+							</list>
+						</property>
+					</bean>		
+				</entry>
+			</map>		
+		</constructor-arg>
+		<property name="message"><value>Hello</value></property>
+		<property name="messageTwo"><value>There</value></property>		
+	</bean>
+	
+	<bean id="beanTwo"
+			class="coldspring.tests.beanTwo"
+			singleton="true">
+		<constructor-arg name="helper">
+			<bean id="notused" class="coldspring.tests.beanFive">
+				<constructor-arg name="innerhelper">
+					<ref bean="beanThree" />
+				</constructor-arg>
+			</bean>
+		</constructor-arg>
+		<property name="helper">
+			<ref bean="beanOne" />
+		</property>
+	</bean>
+	
+	<bean id="beanThree"
+			class="coldspring.tests.beanThree"
+			singleton="true">
+		<property name="helper">
+			<ref bean="beanOne" />
+		</property>
+		<property name="innerBean">
+			<bean id="notused" class="coldspring.tests.beanFour" />
+		</property>
+	</bean>
+	
+	<bean id="beanSeven"
+		class="coldspring.tests.beanSeven"
+		singleton="false">
+		<constructor-arg name="beanEight">
+			<ref bean="beanEight" />
+		</constructor-arg>
+	</bean>
+		
+	<bean id="beanEight"
+		class="coldspring.tests.beanEight"/>
+		
+	<bean id="beanNine"
+		class="coldspring.tests.beanNine"/>		
+	
+</beans>

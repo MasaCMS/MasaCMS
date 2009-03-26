@@ -1,0 +1,8 @@
+<cffunction name="reverseString" access="public" returntype="string" output="false">
+	<cfargument name="string" type="string" required="true" />
+	
+	<!--- Log the method name and arguments. --->
+	<cfset getLogger().log('reverseString', arguments) />
+	
+	<cfreturn Reverse(arguments.string) />
+</cffunction>

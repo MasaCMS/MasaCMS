@@ -1,0 +1,105 @@
+<!--- This file is part of Mura CMS.
+
+    Mura CMS is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, Version 2 of the License.
+
+    Mura CMS is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Mura CMS.  If not, see <http://www.gnu.org/licenses/>. --->
+<cfsilent>
+	<cfif LSisDate(attributes.date1)>
+		<cfset attributes.date1=attributes.date1>
+	<cfelse>
+		<cfset attributes.date1=request.rsDataInfo.firstentered>
+	</cfif>
+
+	<cfif LSisDate(attributes.date2)>
+		<cfset attributes.date2=attributes.date2>
+	<cfelse>
+		<cfset attributes.date2=request.rsDataInfo.lastentered>
+	</cfif>
+</cfsilent>
+
+<div id="manageData">
+<cfif request.rsDataInfo.CountEntered>
+<cfparam name="attributes.columns" default="fixed" />
+<cfoutput>
+<form action="index.cfm" method="get" name="download" onsubmit="return validate(this);">
+<dl class="oneColumn">
+<dt>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.from')#</dt>
+<dd><input type="text" class="text" name="date1"  validate="date" message="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.tovalidate')#" required="true" value="#LSDateFormat(attributes.date1,session.dateKeyFormat)#"><input class="calendar" type="image" src="images/icons/cal_24.png" width="14" height="14" onclick="window.open('date_picker/index.cfm?form=download&field=date1&format=MDY','refWin','toolbar=no,location=no,directories=no,status=no,menubar=no,resizable=yes,copyhistory=no,scrollbars=no,width=190,height=220,top=250,left=250');return false;">
+   <select name="hour1"  class="dropdown"><cfloop from="0"to="23" index="h"><option value="#h#" <cfif hour(request.rsDataInfo.firstentered) eq h>selected</cfif>><cfif h eq 0>12 AM<cfelseif h lt 12>#iif(len(h) lt 2,de('0#h#'),de('#h#'))# AM<cfelseif h eq 12>#iif(len(h) lt 2,de('0#h#'),de('#h#'))# PM<cfelse><cfset h2=h-12>#iif(len(h2) lt 2,de('0#h2#'),de('#h2#'))# PM</cfif></option></cfloop></select>
+    <select name="minute1"  class="dropdown"><cfloop from="0"to="59" index="mn"><option value="#mn#" <cfif minute(request.rsDataInfo.firstentered) eq mn>selected</cfif>>#iif(len(mn) lt 2,de('0#mn#'),de('#mn#'))#</option></cfloop></select>
+</dd>
+<dt>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.to')#</dt>
+<dd><input type="text" class="text" name="date2" validate="date" message="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.tovalidate')#" required="true" value="#LSDateFormat(attributes.date2,session.dateKeyFormat)#"><input class="calendar" type="image" src="images/icons/cal_24.png" width="14" height="14" onclick="window.open('date_picker/index.cfm?form=download&field=date2&format=MDY','refWin','toolbar=no,location=no,directories=no,status=no,menubar=no,resizable=yes,copyhistory=no,scrollbars=no,width=190,height=220,top=250,left=250');return false;">
+    <select name="hour2"  class="dropdown"><cfloop from="0"to="23" index="h"><option value="#h#" <cfif hour(request.rsDataInfo.Lastentered) eq h>selected</cfif>><cfif h eq 0>12 AM<cfelseif h lt 12>#iif(len(h) lt 2,de('0#h#'),de('#h#'))# AM<cfelseif h eq 12>#iif(len(h) lt 2,de('0#h#'),de('#h#'))# PM<cfelse><cfset h2=h-12>#iif(len(h2) lt 2,de('0#h2#'),de('#h2#'))# PM</cfif></option></cfloop></select>
+    <select name="minute2"  class="dropdown"><cfloop from="0"to="59" index="mn"><option value="#mn#" <cfif minute(request.rsDataInfo.lastentered) eq mn>selected</cfif>>#iif(len(mn) lt 2,de('0#mn#'),de('#mn#'))#</option></cfloop></select>
+</dd>
+<dt>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.sortby')#</dt>
+<dd><select name="sortBy" class="dropdown">
+<option value="Entered" <cfif "Entered" eq attributes.sortBy>selected</cfif>>ENTERED</option>
+<cfloop list="#attributes.fieldnames#" index="f">
+<option value="#f#" <cfif f eq attributes.sortBy>selected</cfif>>#f#</option>
+</cfloop>
+</select>
+<select name="sortDirection" class="dropdown">
+<option value="asc" <cfif attributes.sortDirection eq 'asc'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.ascending')#</option>
+<option value="desc" <cfif attributes.sortDirection eq 'desc'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.descending')#</option>
+</select></dd>
+<dt>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.keywordsearch')#</dt>
+<dd><select name="filterBy" class="dropdown">
+<cfloop list="#attributes.fieldnames#" index="f">
+<option value="#f#" <cfif f eq session.filterBy>selected</cfif>>#f#</option>
+</cfloop>
+</select>
+<input type="text" class="text" name="keywords" value="#session.datakeywords#">
+</dd>
+</dl>
+
+<br/>
+<input type="hidden" name="fuseaction" value="cArch.datamanager" />
+<input type="hidden" name="contentid" value="#attributes.contentid#" />
+<input type="hidden" name="siteid" value="#session.siteid#" />
+<input type="hidden" name="moduleid" value="#attributes.moduleid#" />
+<input type="hidden" name="newSearch" value="1" />
+<a class="submit" href="javascript:;" onclick="return submitForm(document.forms.download);"><span>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.viewdata')#</span></a>
+<a class="submit" href="javascript:location.href='index.cfm?fuseaction=cArch.downloaddata&siteid=#attributes.siteid#&contentid=#attributes.contentid#&date1=' + document.download.date1.value + '&hour1=' +document.download.hour1.value + '&minute1=' +document.download.minute1.value + '&date2=' + document.download.date2.value + '&hour2=' + document.download.hour2.value + '&minute2=' + document.download.minute2.value + '&sortBy=' +  document.download.sortBy.value + '&sortDirection=' +  document.download.sortDirection.value + '&filterBy='  + document.download.filterBy.value + '&keywords=' + document.download.keywords.value + '&columns=#attributes.columns#';"><span>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.download')#</span></a>
+</form></cfoutput>
+</cfif>
+<cfif isdefined ('attributes.minute1')>
+<cfsilent>
+<cfset rsData=application.dataCollectionManager.getData(attributes)/>
+</cfsilent><br/><br/>
+<cfif rsData.recordcount>
+<table class="stripe">
+<tr>
+<th>&nbsp;</th>
+<th <cfoutput>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.datetimeentered')#</cfoutput></th>
+<cfloop list="#attributes.fieldnames#" index="f">
+<th><cfoutput>#f#</cfoutput></th>
+</cfloop>
+
+</tr>
+<cfoutput query="rsData">
+<tr>
+<cfsilent><cfwddx action="wddx2cfml" input="#rsdata.data#" output="info"></cfsilent>
+<td class="administration"><ul class="two"><li class="edit"><a href="index.cfm?fuseaction=cArch.datamanager&contentid=#attributes.contentid#&siteid=#attributes.siteid#&date1=#attributes.date1#&hour1=#attributes.hour1#&minute1=#attributes.minute1#&date2=#attributes.date2#&hour2=#attributes.hour2#&minute2=#attributes.minute2#&responseid=#rsdata.responseid#&action=edit&moduleid=#attributes.moduleid#&sortBy=#urlEncodedFormat(attributes.sortBy)#&sortDirection=#attributes.sortDirection#&filterBy=#urlEncodedFormat(attributes.filterBy)#&keywords=#urlEncodedFormat(attributes.keywords)#"><img src="images/icons/edit_24.png" width="14" height="14" border="0" />#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.edit')#</a></li><li class="delete"><a href="index.cfm?fuseaction=cArch.datamanager&contentid=#attributes.contentid#&siteid=#attributes.siteid#&date1=#attributes.date1#&hour1=#attributes.hour1#&minute1=#attributes.minute1#&date2=#attributes.date2#&hour2=#attributes.hour2#&minute2=#attributes.minute2#&responseid=#rsdata.responseid#&action=delete&moduleid=#attributes.moduleid#&sortBy=#urlEncodedFormat(attributes.sortBy)#&sortDirection=#attributes.sortDirection#&filterBy=#urlEncodedFormat(attributes.filterBy)#&keywords=#urlEncodedFormat(attributes.keywords)#" onclick="return confirm('#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.deleteresponseconfirm'))#')"><img src="images/icons/remov_24.png" width="14" height="14" border="0" />#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.deleteresponse')#</a></li></ul></td>
+<td class="dateSubmitted">#lsdateformat(rsdata.entered,session.dateKeyFormat)# #lstimeformat(rsdata.entered,"short")#</td>
+<cfloop list="#attributes.fieldnames#" index="f">
+	<cftry><cfset fValue=info['#f#']><cfcatch><cfset fValue=""></cfcatch></cftry>
+<td><cfif findNoCase('attachment',f) and isValid("UUID",fvalue)><a  href="javascript:preview('http://#application.settingsManager.getSite(attributes.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()#/tasks/render/file/?fileID=#fvalue#');">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.viewattachment')#</a><cfelse>#application.contentRenderer.setParagraphs(htmleditformat(fvalue))#</cfif></td>
+</cfloop>
+
+</tr>
+</cfoutput>
+</table>
+
+</cfif>
+</cfif>
+</div>

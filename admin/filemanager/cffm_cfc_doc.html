@@ -1,0 +1,2349 @@
+
+
+
+
+
+
+
+	
+		
+		
+		
+					
+		
+
+	
+
+
+
+		
+		
+			
+
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+			
+
+
+<html>
+<head>
+<title>Component cffm</title>
+<style>
+body  {
+	font-family: verdana, arial, helvetica, sans-serif;
+	background-color: #FFFFFF;
+	font-size: 12px;
+	margin-top: 10px;
+	margin-left: 10px;
+}
+
+table	{
+	font-size: 11px;
+	font-family: Verdana, arial, helvetica, sans-serif;
+	width: 90%;
+}
+
+th {
+	padding: 6px;
+	font-size: 12px;
+	background-color: #cccccc;
+}
+
+td {
+	padding: 6px;
+	background-color: #eeeeee;
+	vertical-align : top;
+}
+
+code {
+	color: #000099 ;
+}
+</style>
+
+</head>
+<body style="padding-bottom : 800px;">
+
+
+
+
+
+
+
+<font size="-2">temp.cffm.cffm</font><br>
+<font size="+1"><b>Component cffm
+(cffm)
+</b></font>
+
+
+
+
+
+<br><br><br>
+<table>
+<tr><td>hierarchy:</td><td>
+
+
+
+	<a href="/CFIDE/componentutils/cfcexplorer.cfc?method=getcfcinhtml&name=WEB-INF.cftags.component">WEB-INF.cftags.component</a><br>
+	
+
+
+
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;temp.cffm.cffm<br>
+	
+
+
+
+</td></tr>
+<tr><td>path:</td>
+	<td>E:\Inetpub\wwwroot\temp\CFFM\cffm.cfc</td>
+</tr>
+
+
+
+ 
+
+
+
+<p>Configuration data and methods for CFFM</p>
+
+<tr><td>properties:</td>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<br>
+	<td> <a href="#property_allowedExtensions">allowedExtensions</a>, <a href="#property_cffmFilename">cffmFilename</a>, <a href="#property_debug">debug</a>, <a href="#property_disallowedExtensions">disallowedExtensions</a>, <a href="#property_editableExtensions">editableExtensions</a>, <a href="#property_iconPath">iconPath</a>, <a href="#property_includeDir">includeDir</a>, <a href="#property_includeDirWeb">includeDirWeb</a>, <a href="#property_overwriteDefault">overwriteDefault</a>, <a href="#property_templateWrapperAbove">templateWrapperAbove</a>, <a href="#property_templateWrapperBelow">templateWrapperBelow</a></td>
+</tr>
+<tr><td>methods:</td>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+		
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+		
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<td> <a href="#method_checkExtension">checkExtension</a>, <a href="#method_checkSubdirValue">checkSubdirValue</a>, <a href="#method_copyDirectory">copyDirectory</a>*, <a href="#method_createFile">createFile</a>, <a href="#method_createServerPath">createServerPath</a>, <a href="#method_createVariables">createVariables</a>, <a href="#method_createWebPath">createWebPath</a>, <a href="#method_deleteDirectory">deleteDirectory</a>, <a href="#method_deleteFile">deleteFile</a>, <a href="#method_directoryList">directoryList</a>, <a href="#method_forceNumeric">forceNumeric</a>, <a href="#method_getDirectoryMetadata">getDirectoryMetadata</a>, <a href="#method_getDirectorySeparator">getDirectorySeparator</a>, <a href="#method_getPathInfo">getPathInfo</a>, <a href="#method_getPathType">getPathType</a>, <a href="#method_init">init</a>, <a href="#method_moveDirectory">moveDirectory</a>*, <a href="#method_readFile">readFile</a>, <a href="#method_renameFile">renameFile</a>, <a href="#method_saveFile">saveFile</a>, <a href="#method_unzipFile">unzipFile</a>, <a href="#method_viewZipFile">viewZipFile</a></td>
+</tr>
+
+
+
+
+
+</table>
+<font size="-2">* - private method</font>
+
+
+
+
+
+<br><br><table>
+<tr>
+	<th>Property</th>
+	<th>Hint</th>
+	<th>Type</th>
+	<th>Req.</th>
+	<th>Implemented In</th>
+	<th>Default Value</th>
+</tr>
+
+	
+	
+	<tr>
+		<td><a name="property_allowedExtensions"><b>allowedExtensions</b></a> 
+			</td>
+		<td>Extensions that are allowed to be uploaded.  Overrides disallowedExtensions for increased security.  Useful if you only want people to upload images.</td>
+		<td>
+				String
+			</td>
+		<td></td>
+		<td>cffm
+		</td>
+		<td>
+				
+					
+				
+			</td>
+		</tr>
+
+	
+	
+	<tr>
+		<td><a name="property_cffmFilename"><b>cffmFilename</b></a> 
+			</td>
+		<td>Filename used by the file manager, if other than "cffm.cfm"</td>
+		<td>
+				string
+			</td>
+		<td></td>
+		<td>cffm
+		</td>
+		<td>
+				
+					cffm.cfm
+				
+			</td>
+		</tr>
+
+	
+	
+	<tr>
+		<td><a name="property_debug"><b>debug</b></a> 
+			</td>
+		<td>Specifies whether or not debug output will be generated.</td>
+		<td>
+				boolean
+			</td>
+		<td></td>
+		<td>cffm
+		</td>
+		<td>
+				
+					false
+				
+			</td>
+		</tr>
+
+	
+	
+	<tr>
+		<td><a name="property_disallowedExtensions"><b>disallowedExtensions</b></a> 
+			</td>
+		<td>Extensions that are not allowed to be uploaded.  This also affects files being unzipped from a zip archive.</td>
+		<td>
+				String
+			</td>
+		<td></td>
+		<td>cffm
+		</td>
+		<td>
+				
+					
+				
+			</td>
+		</tr>
+
+	
+	
+	<tr>
+		<td><a name="property_editableExtensions"><b>editableExtensions</b></a> 
+			</td>
+		<td>File extensions that specify editable files.</td>
+		<td>
+				String
+			</td>
+		<td></td>
+		<td>cffm
+		</td>
+		<td>
+				
+					
+				
+			</td>
+		</tr>
+
+	
+	
+	<tr>
+		<td><a name="property_iconPath"><b>iconPath</b></a> 
+			</td>
+		<td>Path to the icons used by CFFM.</td>
+		<td>
+				string
+			</td>
+		<td></td>
+		<td>cffm
+		</td>
+		<td>
+				
+					./cffmIcons
+				
+			</td>
+		</tr>
+
+	
+	
+	<tr>
+		<td><a name="property_includeDir"><b>includeDir</b></a> 
+			</td>
+		<td>Physical directory path to the main directory which CFFM has access to.</td>
+		<td>
+				string
+			</td>
+		<td></td>
+		<td>cffm
+		</td>
+		<td>
+				-
+			</td>
+		</tr>
+
+	
+	
+	<tr>
+		<td><a name="property_includeDirWeb"><b>includeDirWeb</b></a> 
+			</td>
+		<td>The logical web path to the directory specified by the includeDir property.</td>
+		<td>
+				String
+			</td>
+		<td></td>
+		<td>cffm
+		</td>
+		<td>
+				-
+			</td>
+		</tr>
+
+	
+	
+	<tr>
+		<td><a name="property_overwriteDefault"><b>overwriteDefault</b></a> 
+			</td>
+		<td>Default value for the overwrite existing files checkbox in various CFFM forms.</td>
+		<td>
+				boolean
+			</td>
+		<td></td>
+		<td>cffm
+		</td>
+		<td>
+				
+					true
+				
+			</td>
+		</tr>
+
+	
+	
+	<tr>
+		<td><a name="property_templateWrapperAbove"><b>templateWrapperAbove</b></a> 
+			</td>
+		<td>File that will be cfincluded above all CFFM output.  Should include CFFM specific CSS.</td>
+		<td>
+				string
+			</td>
+		<td></td>
+		<td>cffm
+		</td>
+		<td>
+				
+					above.cfm
+				
+			</td>
+		</tr>
+
+	
+	
+	<tr>
+		<td><a name="property_templateWrapperBelow"><b>templateWrapperBelow</b></a> 
+			</td>
+		<td>File that will be cfincluded below all CFFM output.</td>
+		<td>
+				string
+			</td>
+		<td></td>
+		<td>cffm
+		</td>
+		<td>
+				
+					below.cfm
+				
+			</td>
+		</tr>
+
+</table>
+
+
+
+
+
+
+
+
+
+<br><br><table>
+
+
+	
+	
+	
+	
+	
+	<tr><th align="left" colspan="1">
+		<a name="method_checkExtension">checkExtension</a>
+		
+		</th></tr>
+	<tr><td>
+	
+	
+	
+	<code>
+	
+		<i>public</i>
+	
+	
+		<i>boolean</i>
+	
+	<b>checkExtension</b>
+	
+	(
+ 	
+		
+		<i>
+		required
+		string
+		</i>
+		ext
+		
+	)
+	</i>
+	</code>
+	<br><br>	
+	
+	
+	Checks an extension against the configured list of allowed and disallowed extensions.<br><br>
+	
+	Output: supressed<br>
+	
+	
+	
+		Parameters:<br>
+		
+			
+			&nbsp;&nbsp; <b>ext:</b>
+			string,
+			required,
+			ext
+			
+			<br>
+		
+	
+	
+	<br>
+	</td></tr>
+
+
+	
+	
+	
+	
+	
+	<tr><th align="left" colspan="1">
+		<a name="method_checkSubdirValue">checkSubdirValue</a>
+		
+		</th></tr>
+	<tr><td>
+	
+	
+	
+	<code>
+	
+		<i>public</i>
+	
+	
+		<i>string</i>
+	
+	<b>checkSubdirValue</b>
+	
+	(
+ 	
+		
+		<i>
+		required
+		string
+		</i>
+		checkValue,
+	
+		
+		<i>
+		
+		string
+		</i>
+		defaultValue="[runtime expression]"
+		
+	)
+	</i>
+	</code>
+	<br><br>	
+	
+	
+	Make sure the subdir parameter, which determines hte current working directory, is valid and within the acceptable directory structure.<br><br>
+	
+	Output: enabled<br>
+	
+	
+	
+		Parameters:<br>
+		
+			
+			&nbsp;&nbsp; <b>checkValue:</b>
+			string,
+			required,
+			checkValue
+			
+			<br>
+		
+			
+			&nbsp;&nbsp; <b>defaultValue:</b>
+			string,
+			optional,
+			defaultValue
+			
+			<br>
+		
+	
+	
+	<br>
+	</td></tr>
+
+
+	
+	
+	
+	
+	
+	<tr><th align="left" colspan="1">
+		<a name="method_copyDirectory">copyDirectory</a>*
+		
+		</th></tr>
+	<tr><td>
+	
+	
+	
+	<code>
+	
+		<i>private</i>
+	
+	
+		<i>boolean</i>
+	
+	<b>copyDirectory</b>
+	
+	(
+ 	
+		
+		<i>
+		required
+		string
+		</i>
+		Source,
+	
+		
+		<i>
+		required
+		string
+		</i>
+		Destination,
+	
+		
+		<i>
+		
+		boolean
+		</i>
+		Recurse="False",
+	
+		
+		<i>
+		
+		boolean
+		</i>
+		OverWrite="True",
+	
+		
+		<i>
+		
+		boolean
+		</i>
+		calledItself="False"
+		
+	)
+	</i>
+	</code>
+	<br><br>	
+	
+	
+	Copy a directory, optionally recursing into subdirectories and optionally overwriting existing files.<br><br>
+	
+	Output: enabled<br>
+	
+	
+	
+		Parameters:<br>
+		
+			
+			&nbsp;&nbsp; <b>Source:</b>
+			string,
+			required,
+			Source
+			
+			<br>
+		
+			
+			&nbsp;&nbsp; <b>Destination:</b>
+			string,
+			required,
+			Destination
+			
+			<br>
+		
+			
+			&nbsp;&nbsp; <b>Recurse:</b>
+			boolean,
+			optional,
+			Recurse
+			
+			<br>
+		
+			
+			&nbsp;&nbsp; <b>OverWrite:</b>
+			boolean,
+			optional,
+			OverWrite
+			
+			<br>
+		
+			
+			&nbsp;&nbsp; <b>calledItself:</b>
+			boolean,
+			optional,
+			calledItself
+			
+			<br>
+		
+	
+	
+	<br>
+	</td></tr>
+
+
+	
+	
+	
+	
+	
+	<tr><th align="left" colspan="1">
+		<a name="method_createFile">createFile</a>
+		
+		</th></tr>
+	<tr><td>
+	
+	
+	
+	<code>
+	
+		<i>public</i>
+	
+	
+		<i>struct</i>
+	
+	<b>createFile</b>
+	
+	(
+ 	
+		
+		<i>
+		required
+		string
+		</i>
+		filename,
+	
+		
+		<i>
+		required
+		string
+		</i>
+		filetype
+		
+	)
+	</i>
+	</code>
+	<br><br>	
+	
+	
+	Create a blank file or directory.<br><br>
+	
+	Output: supressed<br>
+	
+	
+	
+		Parameters:<br>
+		
+			
+			&nbsp;&nbsp; <b>filename:</b>
+			string,
+			required,
+			filename
+			
+			<br>
+		
+			
+			&nbsp;&nbsp; <b>filetype:</b>
+			string,
+			required,
+			filetype
+			
+			<br>
+		
+	
+	
+	<br>
+	</td></tr>
+
+
+	
+	
+	
+	
+	
+	<tr><th align="left" colspan="1">
+		<a name="method_createServerPath">createServerPath</a>
+		
+		</th></tr>
+	<tr><td>
+	
+	
+	
+	<code>
+	
+		<i>public</i>
+	
+	
+		<i>string</i>
+	
+	<b>createServerPath</b>
+	
+	(
+ 	
+		
+		<i>
+		required
+		string
+		</i>
+		subdir,
+	
+		
+		<i>
+		
+		string
+		</i>
+		filename=""
+		
+	)
+	</i>
+	</code>
+	<br><br>	
+	
+	
+	Giving a specified subdir value and a filename, generate a physical server path to the file.<br><br>
+	
+	Output: supressed<br>
+	
+	
+	
+		Parameters:<br>
+		
+			
+			&nbsp;&nbsp; <b>subdir:</b>
+			string,
+			required,
+			subdir
+			
+			<br>
+		
+			
+			&nbsp;&nbsp; <b>filename:</b>
+			string,
+			optional,
+			filename
+			
+			<br>
+		
+	
+	
+	<br>
+	</td></tr>
+
+
+	
+	
+	
+	
+	
+	<tr><th align="left" colspan="1">
+		<a name="method_createVariables">createVariables</a>
+		
+		</th></tr>
+	<tr><td>
+	
+	
+	
+	<code>
+	
+		<i>public</i>
+	
+	
+		<i>Struct</i>
+	
+	<b>createVariables</b>
+	
+	(
+ 	
+		
+		<i>
+		required
+		Struct
+		</i>
+		scopeVariables,
+	
+		
+		<i>
+		required
+		Struct
+		</i>
+		scopeForm,
+	
+		
+		<i>
+		required
+		Struct
+		</i>
+		scopeUrl,
+	
+		
+		<i>
+		required
+		String
+		</i>
+		varList
+		
+	)
+	</i>
+	</code>
+	<br><br>	
+	
+	
+	Sets specified variable names from form, url, or variables scoped variables, and applies a default value if the variable is undefined.<br><br>
+	
+	Output: supressed<br>
+	
+	
+	
+		Parameters:<br>
+		
+			
+			&nbsp;&nbsp; <b>scopeVariables:</b>
+			Struct,
+			required,
+			scopeVariables
+			
+			<br>
+		
+			
+			&nbsp;&nbsp; <b>scopeForm:</b>
+			Struct,
+			required,
+			scopeForm
+			
+			<br>
+		
+			
+			&nbsp;&nbsp; <b>scopeUrl:</b>
+			Struct,
+			required,
+			scopeUrl
+			
+			<br>
+		
+			
+			&nbsp;&nbsp; <b>varList:</b>
+			String,
+			required,
+			varList
+			
+			<br>
+		
+	
+	
+	<br>
+	</td></tr>
+
+
+	
+	
+	
+	
+	
+	<tr><th align="left" colspan="1">
+		<a name="method_createWebPath">createWebPath</a>
+		
+		</th></tr>
+	<tr><td>
+	
+	
+	
+	<code>
+	
+		<i>public</i>
+	
+	
+		<i>string</i>
+	
+	<b>createWebPath</b>
+	
+	(
+ 	
+		
+		<i>
+		required
+		string
+		</i>
+		subdir,
+	
+		
+		<i>
+		
+		string
+		</i>
+		filename=""
+		
+	)
+	</i>
+	</code>
+	<br><br>	
+	
+	
+	Giving a specified subdir value and a filename, generate a URL link to the file.<br><br>
+	
+	Output: supressed<br>
+	
+	
+	
+		Parameters:<br>
+		
+			
+			&nbsp;&nbsp; <b>subdir:</b>
+			string,
+			required,
+			subdir
+			
+			<br>
+		
+			
+			&nbsp;&nbsp; <b>filename:</b>
+			string,
+			optional,
+			filename
+			
+			<br>
+		
+	
+	
+	<br>
+	</td></tr>
+
+
+	
+	
+	
+	
+	
+	<tr><th align="left" colspan="1">
+		<a name="method_deleteDirectory">deleteDirectory</a>
+		
+		</th></tr>
+	<tr><td>
+	
+	
+	
+	<code>
+	
+		<i>public</i>
+	
+	
+		<i>Struct</i>
+	
+	<b>deleteDirectory</b>
+	
+	(
+ 	
+		
+		<i>
+		required
+		string
+		</i>
+		directory,
+	
+		
+		<i>
+		
+		boolean
+		</i>
+		Recurse="False"
+		
+	)
+	</i>
+	</code>
+	<br><br>	
+	
+	
+	Delete a directory, and optionally delete its contents.<br><br>
+	
+	Output: enabled<br>
+	
+	
+	
+		Parameters:<br>
+		
+			
+			&nbsp;&nbsp; <b>directory:</b>
+			string,
+			required,
+			directory
+			
+			<br>
+		
+			
+			&nbsp;&nbsp; <b>Recurse:</b>
+			boolean,
+			optional,
+			Recurse
+			
+			<br>
+		
+	
+	
+	<br>
+	</td></tr>
+
+
+	
+	
+	
+	
+	
+	<tr><th align="left" colspan="1">
+		<a name="method_deleteFile">deleteFile</a>
+		
+		</th></tr>
+	<tr><td>
+	
+	
+	
+	<code>
+	
+		<i>public</i>
+	
+	
+		<i>struct</i>
+	
+	<b>deleteFile</b>
+	
+	(
+ 	
+		
+		<i>
+		required
+		string
+		</i>
+		deleteFile
+		
+	)
+	</i>
+	</code>
+	<br><br>	
+	
+	
+	Delete a file.<br><br>
+	
+	Output: supressed<br>
+	
+	
+	
+		Parameters:<br>
+		
+			
+			&nbsp;&nbsp; <b>deleteFile:</b>
+			string,
+			required,
+			deleteFile
+			
+			<br>
+		
+	
+	
+	<br>
+	</td></tr>
+
+
+	
+	
+	
+	
+	
+	<tr><th align="left" colspan="1">
+		<a name="method_directoryList">directoryList</a>
+		
+		</th></tr>
+	<tr><td>
+	
+	
+	
+	<code>
+	
+		<i>public</i>
+	
+	
+		<i>query</i>
+	
+	<b>directoryList</b>
+	
+	(
+ 	
+		
+		<i>
+		required
+		string
+		</i>
+		directory,
+	
+		
+		<i>
+		
+		boolean
+		</i>
+		recurse="false",
+	
+		
+		<i>
+		
+		query
+		</i>
+		dirInfo,
+	
+		
+		<i>
+		
+		query
+		</i>
+		thisDir
+		
+	)
+	</i>
+	</code>
+	<br><br>	
+	
+	
+	List the contents of a directory, optionally recursing into subdirectories.  This was implemented due to inconsistencies between Coldfusion and Bluedragon.<br><br>
+	
+	Output: enabled<br>
+	
+	
+	
+		Parameters:<br>
+		
+			
+			&nbsp;&nbsp; <b>directory:</b>
+			string,
+			required,
+			directory
+			
+			<br>
+		
+			
+			&nbsp;&nbsp; <b>recurse:</b>
+			boolean,
+			optional,
+			recurse
+			
+			<br>
+		
+			
+			&nbsp;&nbsp; <b>dirInfo:</b>
+			query,
+			optional,
+			dirInfo
+			
+			<br>
+		
+			
+			&nbsp;&nbsp; <b>thisDir:</b>
+			query,
+			optional,
+			thisDir
+			
+			<br>
+		
+	
+	
+	<br>
+	</td></tr>
+
+
+	
+	
+	
+	
+	
+	<tr><th align="left" colspan="1">
+		<a name="method_forceNumeric">forceNumeric</a>
+		
+		</th></tr>
+	<tr><td>
+	
+	
+	
+	<code>
+	
+		<i>public</i>
+	
+	
+		<i>Struct</i>
+	
+	<b>forceNumeric</b>
+	
+	(
+ 	
+		
+		<i>
+		required
+		Struct
+		</i>
+		scopeVariables,
+	
+		
+		<i>
+		required
+		String
+		</i>
+		varList
+		
+	)
+	</i>
+	</code>
+	<br><br>	
+	
+	
+	Forces specified variables within the variables scope to be numeric values.  This is required for certain variables when interacting with the java image library.<br><br>
+	
+	Output: supressed<br>
+	
+	
+	
+		Parameters:<br>
+		
+			
+			&nbsp;&nbsp; <b>scopeVariables:</b>
+			Struct,
+			required,
+			scopeVariables
+			
+			<br>
+		
+			
+			&nbsp;&nbsp; <b>varList:</b>
+			String,
+			required,
+			varList
+			
+			<br>
+		
+	
+	
+	<br>
+	</td></tr>
+
+
+	
+	
+	
+	
+	
+	<tr><th align="left" colspan="1">
+		<a name="method_getDirectoryMetadata">getDirectoryMetadata</a>
+		
+		</th></tr>
+	<tr><td>
+	
+	
+	
+	<code>
+	
+		<i>public</i>
+	
+	
+		<i>struct</i>
+	
+	<b>getDirectoryMetadata</b>
+	
+	(
+ 	
+		
+		<i>
+		required
+		query
+		</i>
+		dirlist
+		
+	)
+	</i>
+	</code>
+	<br><br>	
+	
+	
+	Gets meta data for a directory listing - number of files and number of directories.<br><br>
+	
+	Output: supressed<br>
+	
+	
+	
+		Parameters:<br>
+		
+			
+			&nbsp;&nbsp; <b>dirlist:</b>
+			query,
+			required,
+			dirlist
+			
+			<br>
+		
+	
+	
+	<br>
+	</td></tr>
+
+
+	
+	
+	
+	
+	
+	<tr><th align="left" colspan="1">
+		<a name="method_getDirectorySeparator">getDirectorySeparator</a>
+		
+		</th></tr>
+	<tr><td>
+	
+	
+	
+	<code>
+	
+		<i>public</i>
+	
+	
+		<i>string</i>
+	
+	<b>getDirectorySeparator</b>
+	
+	(
+ 		
+	)
+	</i>
+	</code>
+	<br><br>	
+	
+	
+	
+	
+	Output: supressed<br>
+	
+	
+	
+	<br>
+	</td></tr>
+
+
+	
+	
+	
+	
+	
+	<tr><th align="left" colspan="1">
+		<a name="method_getPathInfo">getPathInfo</a>
+		
+		</th></tr>
+	<tr><td>
+	
+	
+	
+	<code>
+	
+		<i>public</i>
+	
+	
+		<i>string</i>
+	
+	<b>getPathInfo</b>
+	
+	(
+ 	
+		
+		<i>
+		required
+		Struct
+		</i>
+		scopeCgi
+		
+	)
+	</i>
+	</code>
+	<br><br>	
+	
+	
+	
+	
+	Output: supressed<br>
+	
+	
+	
+		Parameters:<br>
+		
+			
+			&nbsp;&nbsp; <b>scopeCgi:</b>
+			Struct,
+			required,
+			scopeCgi
+			
+			<br>
+		
+	
+	
+	<br>
+	</td></tr>
+
+
+	
+	
+	
+	
+	
+	<tr><th align="left" colspan="1">
+		<a name="method_getPathType">getPathType</a>
+		
+		</th></tr>
+	<tr><td>
+	
+	
+	
+	<code>
+	
+		<i>public</i>
+	
+	
+		<i>string</i>
+	
+	<b>getPathType</b>
+	
+	(
+ 	
+		
+		<i>
+		required
+		string
+		</i>
+		pathValue
+		
+	)
+	</i>
+	</code>
+	<br><br>	
+	
+	
+	Determines if a string is a directory or file path.  Returns an empty string if the path does not exist.<br><br>
+	
+	Output: supressed<br>
+	
+	
+	
+		Parameters:<br>
+		
+			
+			&nbsp;&nbsp; <b>pathValue:</b>
+			string,
+			required,
+			pathValue
+			
+			<br>
+		
+	
+	
+	<br>
+	</td></tr>
+
+
+	
+	
+	
+	
+	
+	<tr><th align="left" colspan="1">
+		<a name="method_init">init</a>
+		
+		</th></tr>
+	<tr><td>
+	
+	
+	
+	<code>
+	
+		<i>public</i>
+	
+	
+		<i>void</i>
+	
+	<b>init</b>
+	
+	(
+ 	
+		
+		<i>
+		required
+		string
+		</i>
+		includeDir,
+	
+		
+		<i>
+		required
+		String
+		</i>
+		includeDirWeb,
+	
+		
+		<i>
+		
+		String
+		</i>
+		disallowedExtensions="",
+	
+		
+		<i>
+		
+		String
+		</i>
+		allowedExtensions="",
+	
+		
+		<i>
+		
+		String
+		</i>
+		editableExtensions="",
+	
+		
+		<i>
+		
+		boolean
+		</i>
+		overwriteDefault="true",
+	
+		
+		<i>
+		
+		string
+		</i>
+		iconPath="./cffmIcons",
+	
+		
+		<i>
+		
+		numeric
+		</i>
+		debug="0",
+	
+		
+		<i>
+		
+		string
+		</i>
+		templateWrapperAbove="above.cfm",
+	
+		
+		<i>
+		
+		string
+		</i>
+		templateWrapperBelow="below.cfm",
+	
+		
+		<i>
+		
+		string
+		</i>
+		cffmFilename="cffm.cfm"
+		
+	)
+	</i>
+	</code>
+	<br><br>	
+	
+	
+	
+	
+	Output: supressed<br>
+	
+	
+	
+		Parameters:<br>
+		
+			
+			&nbsp;&nbsp; <b>includeDir:</b>
+			string,
+			required,
+			includeDir
+			
+			<br>
+		
+			
+			&nbsp;&nbsp; <b>includeDirWeb:</b>
+			String,
+			required,
+			includeDirWeb
+			
+			<br>
+		
+			
+			&nbsp;&nbsp; <b>disallowedExtensions:</b>
+			String,
+			optional,
+			disallowedExtensions
+			
+			<br>
+		
+			
+			&nbsp;&nbsp; <b>allowedExtensions:</b>
+			String,
+			optional,
+			allowedExtensions
+			
+			<br>
+		
+			
+			&nbsp;&nbsp; <b>editableExtensions:</b>
+			String,
+			optional,
+			editableExtensions
+			
+			<br>
+		
+			
+			&nbsp;&nbsp; <b>overwriteDefault:</b>
+			boolean,
+			optional,
+			overwriteDefault
+			
+			<br>
+		
+			
+			&nbsp;&nbsp; <b>iconPath:</b>
+			string,
+			optional,
+			iconPath
+			
+			<br>
+		
+			
+			&nbsp;&nbsp; <b>debug:</b>
+			numeric,
+			optional,
+			debug
+			
+			<br>
+		
+			
+			&nbsp;&nbsp; <b>templateWrapperAbove:</b>
+			string,
+			optional,
+			templateWrapperAbove
+			
+			<br>
+		
+			
+			&nbsp;&nbsp; <b>templateWrapperBelow:</b>
+			string,
+			optional,
+			templateWrapperBelow
+			
+			<br>
+		
+			
+			&nbsp;&nbsp; <b>cffmFilename:</b>
+			string,
+			optional,
+			cffmFilename
+			
+			<br>
+		
+	
+	
+	<br>
+	</td></tr>
+
+
+	
+	
+	
+	
+	
+	<tr><th align="left" colspan="1">
+		<a name="method_moveDirectory">moveDirectory</a>*
+		
+		</th></tr>
+	<tr><td>
+	
+	
+	
+	<code>
+	
+		<i>private</i>
+	
+	
+		<i>boolean</i>
+	
+	<b>moveDirectory</b>
+	
+	(
+ 	
+		
+		<i>
+		required
+		string
+		</i>
+		Source,
+	
+		
+		<i>
+		required
+		string
+		</i>
+		Destination,
+	
+		
+		<i>
+		
+		boolean
+		</i>
+		OverWrite="True"
+		
+	)
+	</i>
+	</code>
+	<br><br>	
+	
+	
+	Move a directory to a new location, and optionally overwrite existing files.<br><br>
+	
+	Output: enabled<br>
+	
+	
+	
+		Parameters:<br>
+		
+			
+			&nbsp;&nbsp; <b>Source:</b>
+			string,
+			required,
+			Source
+			
+			<br>
+		
+			
+			&nbsp;&nbsp; <b>Destination:</b>
+			string,
+			required,
+			Destination
+			
+			<br>
+		
+			
+			&nbsp;&nbsp; <b>OverWrite:</b>
+			boolean,
+			optional,
+			OverWrite
+			
+			<br>
+		
+	
+	
+	<br>
+	</td></tr>
+
+
+	
+	
+	
+	
+	
+	<tr><th align="left" colspan="1">
+		<a name="method_readFile">readFile</a>
+		
+		</th></tr>
+	<tr><td>
+	
+	
+	
+	<code>
+	
+		<i>public</i>
+	
+	
+		<i>struct</i>
+	
+	<b>readFile</b>
+	
+	(
+ 	
+		
+		<i>
+		required
+		string
+		</i>
+		filename
+		
+	)
+	</i>
+	</code>
+	<br><br>	
+	
+	
+	Read the contents of a file.<br><br>
+	
+	Output: supressed<br>
+	
+	
+	
+		Parameters:<br>
+		
+			
+			&nbsp;&nbsp; <b>filename:</b>
+			string,
+			required,
+			filename
+			
+			<br>
+		
+	
+	
+	<br>
+	</td></tr>
+
+
+	
+	
+	
+	
+	
+	<tr><th align="left" colspan="1">
+		<a name="method_renameFile">renameFile</a>
+		
+		</th></tr>
+	<tr><td>
+	
+	
+	
+	<code>
+	
+		<i>public</i>
+	
+	
+		<i>struct</i>
+	
+	<b>renameFile</b>
+	
+	(
+ 	
+		
+		<i>
+		required
+		string
+		</i>
+		oldFile,
+	
+		
+		<i>
+		required
+		string
+		</i>
+		newFile,
+	
+		
+		<i>
+		
+		
+		</i>
+		action="rename",
+	
+		
+		<i>
+		
+		
+		</i>
+		overWrite="false"
+		
+	)
+	</i>
+	</code>
+	<br><br>	
+	
+	
+	Rename or move a file OR directory, optionally overwriting existing files/directories.<br><br>
+	
+	Output: supressed<br>
+	
+	
+	
+		Parameters:<br>
+		
+			
+			&nbsp;&nbsp; <b>oldFile:</b>
+			string,
+			required,
+			oldFile
+			
+			<br>
+		
+			
+			&nbsp;&nbsp; <b>newFile:</b>
+			string,
+			required,
+			newFile
+			
+			<br>
+		
+			
+			&nbsp;&nbsp; <b>action:</b>
+			any,
+			optional,
+			action
+			
+			<br>
+		
+			
+			&nbsp;&nbsp; <b>overWrite:</b>
+			any,
+			optional,
+			overWrite
+			
+			<br>
+		
+	
+	
+	<br>
+	</td></tr>
+
+
+	
+	
+	
+	
+	
+	<tr><th align="left" colspan="1">
+		<a name="method_saveFile">saveFile</a>
+		
+		</th></tr>
+	<tr><td>
+	
+	
+	
+	<code>
+	
+		<i>public</i>
+	
+	
+		<i>struct</i>
+	
+	<b>saveFile</b>
+	
+	(
+ 	
+		
+		<i>
+		required
+		string
+		</i>
+		filename,
+	
+		
+		<i>
+		required
+		string
+		</i>
+		fileContent
+		
+	)
+	</i>
+	</code>
+	<br><br>	
+	
+	
+	Save a text file.<br><br>
+	
+	Output: supressed<br>
+	
+	
+	
+		Parameters:<br>
+		
+			
+			&nbsp;&nbsp; <b>filename:</b>
+			string,
+			required,
+			filename
+			
+			<br>
+		
+			
+			&nbsp;&nbsp; <b>fileContent:</b>
+			string,
+			required,
+			fileContent
+			
+			<br>
+		
+	
+	
+	<br>
+	</td></tr>
+
+
+	
+	
+	
+	
+	
+	<tr><th align="left" colspan="1">
+		<a name="method_unzipFile">unzipFile</a>
+		
+		</th></tr>
+	<tr><td>
+	
+	
+	
+	<code>
+	
+		<i>public</i>
+	
+	
+	<b>unzipFile</b>
+	
+	(
+ 	
+		
+		<i>
+		required
+		string
+		</i>
+		zipFilePath,
+	
+		
+		<i>
+		
+		string
+		</i>
+		outputPath="",
+	
+		
+		<i>
+		
+		
+		</i>
+		overWrite="false"
+		
+	)
+	</i>
+	</code>
+	<br><br>	
+	
+	
+	Unzip a specified zip file to a optionally specified output path (defaults to the same directory) and optionally overwrite existing files.<br><br>
+	
+	Output: supressed<br>
+	
+	
+	
+		Parameters:<br>
+		
+			
+			&nbsp;&nbsp; <b>zipFilePath:</b>
+			string,
+			required,
+			zipFilePath
+			
+			<br>
+		
+			
+			&nbsp;&nbsp; <b>outputPath:</b>
+			string,
+			optional,
+			outputPath
+			
+			<br>
+		
+			
+			&nbsp;&nbsp; <b>overWrite:</b>
+			any,
+			optional,
+			overWrite
+			
+			<br>
+		
+	
+	
+	<br>
+	</td></tr>
+
+
+	
+	
+	
+	
+	
+	<tr><th align="left" colspan="1">
+		<a name="method_viewZipFile">viewZipFile</a>
+		
+		</th></tr>
+	<tr><td>
+	
+	
+	
+	<code>
+	
+		<i>public</i>
+	
+	
+		<i>query</i>
+	
+	<b>viewZipFile</b>
+	
+	(
+ 	
+		
+		<i>
+		required
+		string
+		</i>
+		zipFilePath
+		
+	)
+	</i>
+	</code>
+	<br><br>	
+	
+	
+	View the contents of a specified zip file.<br><br>
+	
+	Output: supressed<br>
+	
+	
+	
+		Parameters:<br>
+		
+			
+			&nbsp;&nbsp; <b>zipFilePath:</b>
+			string,
+			required,
+			zipFilePath
+			
+			<br>
+		
+	
+	
+	<br>
+	</td></tr>
+
+	
+</table>
+
+
+
+</body></html>
+
+
+		
+
+		
+		
+	

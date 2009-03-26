@@ -1,0 +1,15 @@
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans default-autowire="byName">
+	
+	<bean id="productService" class="coldspring.examples.quickstart.components.ProductService" />
+	
+	<bean id="productFactory" factory-bean="genericFactory" factory-method="createFactory">
+		<constructor-arg name="factoryType">
+			<value>Product</value>
+		</constructor-arg>
+	</bean>
+	
+	<bean id="genericFactory" class="coldspring.examples.quickstart.components.GenericFactory" />
+		
+</beans>

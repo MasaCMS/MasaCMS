@@ -1,0 +1,251 @@
+<!--
+	
+	Copyright (c) 2002-2005	David Ross,	Chris Scott
+	
+	Licensed under the Apache License, Version 2.0 (the "License");
+	you may not use this file except in compliance with the License.
+	You may obtain a copy of the License at
+	
+	http://www.apache.org/licenses/LICENSE-2.0
+	
+	Unless required by applicable law or agreed to in writing, software
+	distributed under the License is distributed on an "AS IS" BASIS,
+	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+	See the License for the specific language governing permissions and
+	limitations under the License.
+	
+	
+	$Id: circuit.xml,v 1.2 2005/09/26 02:01:04 rossd Exp $
+	
+-->
+
+
+<circuit access="public">
+
+	<fuseaction name="showHome">
+		<do action="viewNav" />
+		<do action="viewEntries" />
+	</fuseaction>
+
+	<fuseaction name="viewNav">
+		<invoke object="appManagers.categoryManager" methodcall="getAllCategories()"
+				returnVariable="request.eventargs.categories" />
+				
+		<do action="v.showCategories"/>
+		
+		<invoke object="appManagers.channelManager" methodcall="getAllChannels()"
+				returnVariable="request.eventargs.channels" />
+				
+		<do action="v.showChannels"/>
+				
+	</fuseaction>
+
+	<fuseaction name="viewEntries">
+	    
+		<invoke object="appManagers.entryManager" methodcall="getAllEntries( request.event )"
+				returnVariable="request.eventargs.entries" />
+				
+		<do action="v.showEntries"/>
+				
+	</fuseaction>
+
+    <!--category fuseactions -->
+
+	<fuseaction name="showCategory">
+	    <do action="viewNav" />
+	    <do action="viewExistingCategory" />		
+	</fuseaction>
+	
+	
+	<fuseaction name="viewExistingCategory">
+	   <invoke object="appManagers.categoryManager" methodcall="getCategoryById( request.event )"
+				returnVariable="request.eventargs.category" />	
+				
+	   <do action="copyEventArgs"/>
+	   
+	   <invoke object="appManagers.channelManager" methodcall="getChannelsByCategoryId( request.event )"
+				returnVariable="request.eventargs.categorychannels" />	
+				
+       <do action="v.renderCategory" />	
+	</fuseaction>
+    	
+	<fuseaction name="newCategory">
+	   <do action="viewNav" />
+	   
+	   <instantiate object="request.eventargs.category" 
+	                   class="category"/>
+	   		
+       <do action="v.renderCategory" />	
+	</fuseaction>	
+	
+	
+	<fuseaction name="saveCategory">
+	   <instantiate object="request.eventargs.category" 
+	                   class="category"/>
+	   <if condition="structkeyexists(attributes,'id')">
+           <true>
+               <invoke object="request.eventargs.category"  methodcall="setId(attributes.id)"/>
+           </true>
+	   </if>
+	   
+       <invoke object="request.eventargs.category"  methodcall="setName(attributes.name)"/>
+       <invoke object="request.eventargs.category"  methodcall="setDescription(attributes.description)"/>
+	   
+	   <do action="copyEventArgs"/>
+	   
+       <invoke object="appManagers.categoryManager" methodcall="saveCategory( request.event )" returnVariable="bIsSuccess" />
+       
+       <if condition="bIsSuccess">
+           <true>
+               <do action="showHome"/>
+           </true>
+           <false>
+              <do action="viewNav" />
+              <do action="v.renderCategory" />
+           </false>
+	   </if>
+       
+	</fuseaction>	
+	
+	<fuseaction name="removeCategory">
+        <invoke object="appManagers.categoryManager" methodcall="getCategoryById( request.event )"
+            returnVariable="request.eventargs.category" />
+
+        <do action="copyEventArgs"/>
+
+        <invoke object="appManagers.categoryManager" methodcall="removeCategory( request.event )"
+            returnVariable="bIsSuccess" />
+
+        <if condition="bIsSuccess">
+            <true>
+                <do action="showHome"/>
+            </true>
+            <false>
+                <do action="viewNav" />
+                <do action="v.renderCategory" />
+            </false>
+        </if>
+		 
+	</fuseaction>
+	
+	
+    <!--channel fuseactions -->
+
+	<fuseaction name="showchannel">
+	    <do action="viewNav" />
+	    <do action="viewExistingchannel" />		
+	</fuseaction>
+	
+	
+	<fuseaction name="viewExistingchannel">
+	   <invoke object="appManagers.channelManager" methodcall="getChannelById( request.event )"
+				returnVariable="request.eventargs.channel" />	
+	   
+	   <do action="copyEventArgs"/>		
+	   
+	   <invoke object="appManagers.entryManager" methodcall="getEntriesByChannelId( request.event )"
+				returnVariable="request.eventargs.channelentries" />	
+	 
+	   <do action="v.renderchannel" />	
+	</fuseaction>
+    	
+	<fuseaction name="newchannel">
+	   <do action="viewNav" />
+	   
+	   <instantiate object="request.eventargs.channel" 
+	                   class="channel"/>
+	   		
+       <do action="v.renderchannel" />	
+	</fuseaction>	
+	
+	
+	<fuseaction name="savechannel">
+	   <instantiate object="request.eventargs.channel" 
+	                   class="channel"/>
+	   <if condition="structkeyexists(attributes,'id')">
+           <true>
+            <invoke object="request.eventargs.channel"  methodcall="setId(attributes.id)"/>
+           </true>
+	   </if>
+       <invoke object="request.eventargs.channel"  methodcall="setTitle(attributes.title)"/>
+       <invoke object="request.eventargs.channel"  methodcall="setUrl(attributes.url)"/>
+       <invoke object="request.eventargs.channel"  methodcall="setDescription(attributes.description)"/>
+	   
+	   <if condition="structkeyexists(attributes,'categoryIds')">
+           <true>
+				<invoke object="request.eventargs.channel"  methodcall="setCategoryIds(attributes.categoryIds)"/>
+           </true>
+	   </if>
+	   
+	   
+	   <do action="copyEventArgs"/>
+	   
+       <invoke object="appManagers.channelManager" methodcall="saveChannel( request.event )" returnVariable="bIsSuccess" />
+       <if condition="bIsSuccess">
+           <true>
+               <invoke object="appManagers.aggregatorManager" methodcall="aggregrateChannelFeed( request.event )"/>
+               <do action="showHome"/>
+           </true>
+           <false>
+              <do action="viewNav" />
+              <do action="v.renderchannel" />
+           </false>
+	   </if>
+       
+	</fuseaction>	
+	
+	<fuseaction name="removechannel">
+        <invoke object="appManagers.channelManager" methodcall="getchannelById( request.event )"
+            returnVariable="request.eventargs.channel" />
+
+        <do action="copyEventArgs"/>
+
+        <invoke object="appManagers.channelManager" methodcall="removechannel( request.event )"
+            returnVariable="bIsSuccess" />
+
+        <if condition="bIsSuccess">
+            <true>
+                <do action="showHome"/>
+            </true>
+            <false>
+                <do action="viewNav" />
+                <do action="v.renderchannel" />
+            </false>
+        </if>
+		 
+	</fuseaction>
+	
+	
+	<fuseaction name="refreshChannelEntries">
+	   <do action="viewNav" />
+	   
+	    <invoke object="appManagers.channelManager" methodcall="getchannelById( request.event )"
+            returnVariable="request.eventargs.channel" />
+        
+        <do action="copyEventArgs"/>
+
+	    <invoke object="appManagers.aggregatorManager" methodcall="aggregrateChannelFeed( request.event )"/>
+        
+        <invoke object="appManagers.entryManager" methodcall="getEntriesByChannelId( request.event )"
+				returnVariable="request.eventargs.channelentries" />	
+	 
+        <do action="v.renderchannel" />	
+	</fuseaction>
+	
+	
+	
+	
+	
+	<fuseaction name="copyEventArgs">
+        <!-- calling this fuseaction will force request.eventargs into the request.event cfc 
+             because of the preFuseaction plugin defined, we don't actually have to DO anything here
+        -->
+	</fuseaction>
+
+	<fuseaction name="killEventArgs">
+	    <instantiate object="request.event" 
+	                   class="event"/>	    
+	</fuseaction>
+
+</circuit>
+

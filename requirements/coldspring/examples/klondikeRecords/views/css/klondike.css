@@ -1,0 +1,500 @@
+/***
+	  
+  Copyright (c) 2005, Chris Scott, David Ross
+  All rights reserved.
+	
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+  
+       http://www.apache.org/licenses/LICENSE-2.0
+  
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+  $Id: klondike.css,v 1.1 2005/10/09 20:12:06 scottc Exp $
+  $Log: klondike.css,v $
+  Revision 1.1  2005/10/09 20:12:06  scottc
+  First commit of the record store example app. Contains a hopefully detailed readme file on usage.
+
+
+***/
+
+body	{
+	margin: 14px 0 5px 0;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-weight: normal;
+	color: #333;
+	padding: 0;
+	background-color: #adf;
+	}
+	
+#content {
+	width: 800px;
+	margin-left: auto;
+	margin-right: auto;
+	padding: 0px;
+	background-color: #fff;
+	border: 1px solid #333333;
+}
+
+#content .left	{
+	width: 200px;
+	float: left;
+	padding: 6px;
+}
+	
+#content .center {
+	width: 570px;
+	float: left;
+	padding: 6px;
+}
+	
+.scrollBox	{
+	border: 1px solid #59d;
+	height: 220px;
+	overflow: auto;
+	margin-bottom: 16px;
+	}
+	
+.links {
+    font-size: 10px;
+    line-height: 24px;
+}
+
+
+	
+.alert	{
+	color: #c00;
+	background-color: transparent;
+	font-weight: bold;
+	}
+	
+.box-lg	{
+	padding: 6px;
+	background-color: #fafad2;
+	border-style: solid;
+	border-color: #ccc;
+	border-width: 1px;
+	margin-bottom: 5px;
+	margin-left: auto;
+	margin-right: auto;
+	}
+		
+.box-med	{
+	padding: 6px;
+	background-color: #fafad2;
+	border-style: solid;
+	border-color: #ccc;
+	border-width: 1px;
+	margin-bottom: 5px;
+	margin-left: auto;
+	margin-right: auto;
+	width: 75%;
+	}
+	
+.box-sm	{
+	padding: 6px;
+	background-color: #fafad2;
+	border-style: solid;
+	border-color: #ccc;
+	border-width: 1px;
+	margin-bottom: 5px;
+	margin-left: auto;
+	margin-right: auto;
+	width: 50%;
+	}	
+
+.menu	{
+	padding: 10px;
+	background-color: #eee8aa;
+	border-style: solid;
+	border-color: #ccc;
+	border-width: 1px;
+	}
+	
+.name	{
+	text-transform: uppercase;
+	}
+	
+.noframes	{
+	margin: 10px 50px 20px 50px;
+	}
+
+.primary-nav	{
+	background-color: #000;
+	width: 100%;
+	}
+		
+#questions	{
+	float: left;
+	width: 400px;
+	background-color: #fff;
+	border: 1px solid #ccc;
+	margin: 20px 0 20px 0;
+	overflow: auto;
+	height: 800px;
+	}
+
+#results	{
+	float: left;
+	width: 320px;
+	margin-top: 20px;
+	margin-left: 20px;
+	}
+		
+#select	{
+	border: 1px solid #59d;
+	background-color: #c7e3fe;
+	padding: 2px 4px 2px 4px;
+	margin-bottom: 5px;
+	}
+	
+/* ---------- table elements ----------*/
+	
+.box-med table,
+.box-lg table	{
+	margin-top: 0;
+	margin-right: auto;
+	margin-bottom: 0;
+	margin-left: auto;
+	width: 100%;
+	}	
+		
+.box-sm table	{
+	margin-top: 0;
+	margin-right: auto;
+	margin-bottom: 0;
+	margin-left: auto;
+	width: 100%;
+	}
+	
+#select table	{
+	margin-left: auto;
+	margin-right: auto;
+	}
+	
+table.stripes	{
+	margin-right: auto;
+	margin-left: auto;
+	border: 1px solid #59d;
+	background-color: #c7e3fe;
+	border-collapse: collapse;
+	padding: 0;
+	width: 100%;
+	}
+	
+table.stripes2	{
+	margin-right: auto;
+	margin-left: auto;
+	border-collapse: collapse;
+	padding: 0;
+	width: 100%;
+	}
+	
+tr.even	{
+	background-color: #fff;
+	}
+	
+tr.odd	{
+	background-color: #e7f1fb;
+	}
+
+td	{
+	font-size: 12px;
+	line-height: 140%;
+	padding: 0;
+	margin: 0;
+	text-align: left;
+	}
+
+td.actions	{
+	white-space: nowrap;
+	text-align: center;
+	border-left: 1px solid #ccc;
+	color: #aaa;
+	}	
+	
+.box-med table td,
+.box-lg table td	{
+	padding: 4px;
+	}
+	
+.box-sm table td	{
+	padding: 4px;
+	}
+	
+td.button	{
+	text-align: center;
+	margin: 0;
+	padding: 0;
+	}
+
+table.menu td	{
+	}
+	
+tr.odd-yours td,
+tr.even-yours td		{
+	font-weight: bold;
+	}
+		
+#select td	{
+	padding: 4px;
+	}
+		
+table.stripes td,
+table.stripes2 td	{
+	padding: 4px;
+	}
+	
+td .header	{
+	font-size: 11px;
+	text-transform: uppercase;
+	color: #000;
+	text-align: center;
+	}
+	
+table.stripes2 td .header	{
+	font-size: 11px;
+	text-transform: uppercase;
+	color: #000;
+	padding: 4px 4px 4px 10px;
+	text-align: center;
+	}
+
+td.label-l	{
+	text-align: right;
+	}
+
+table.stripes2 td.label-l	{
+	text-align: right;
+	padding: 4px 4px 4px 20px;
+	}
+
+table.stripes2 td.input-r	{
+	text-align: left;
+	padding: 4px 20px 4px 4px;
+	}
+
+td.label-r	{
+	line-height: 140%;
+	text-align: left;
+	padding: 0 0 5px 5px;
+	}
+	
+td.nav1	{
+	background-color: #000;
+	text-align: left;
+	font-size: 10px;
+	font-weight: bold;
+	line-height: 120%;
+	padding: 0 15px 5px 15px;
+	margin: 0;
+	}
+
+td.nav2	{
+	background-color: #000;
+	text-align: left;
+	font-size: 10px;
+	font-weight: bold;
+	line-height: 120%;
+	padding: 0 15px 5px 15px;
+	margin: 0;
+	}
+	
+td.number	{
+	text-align: center;
+	border-left: 1px solid #ccc;
+	}
+	
+/*td.radio	{
+	font-size: 12px;
+	line-height: 140%;
+	padding: 0;
+	margin: 0;
+	width: 10px;
+	background-color: transparent;
+	vertical-align: top;
+	}*/
+	
+td.text	{
+	border-left: 1px solid #ccc;
+	}
+	
+/*---------- standard tags ----------*/
+
+h1	{
+	font-size: 18px;
+	line-height: 140%;
+	font-weight: bold;
+	margin-bottom: 10px;
+	}
+
+.head	{
+	font-size: 11px;
+	font-weight: bold;
+	text-transform: uppercase;
+	letter-spacing: 3px;
+	}
+	
+h2	{
+	font-size: 13px;
+	line-height: 140%;
+	font-weight: bold;
+	}
+		
+.box-sm h2	{
+	font-size: 13px;
+	background-color: #c7e3fe;
+	padding: 5px;
+	margin: 0 0 0 0;
+	}
+	
+.box-med h2,
+.box-lg h2,
+.box-sm h2	{
+	font-size: 13px;
+	background-color: #c7e3fe;
+	padding: 5px;
+	margin: 0 0 0 0;
+	}
+	
+table.stripes td h2	{
+	margin: 0 0 5px 0;
+	}
+
+p	{
+	font-size: 13px;
+	line-height: 140%;
+	font-weight: normal;
+	text-align: left;
+	margin: 0 0 10px 0;
+	}
+
+p.add	{
+	font-size: 12px;
+	text-align: right;
+	margin-bottom: 5px;
+	}
+	
+p.breadcrumb	{
+	background-color: #dcdcdc;
+	padding: 10px;
+	font-size: 11px;
+	line-height: 140%;
+	margin: 0 0 5px 0;
+	}
+
+p.fine	{
+	font-size: 10px;
+	text-align: center;
+	// border-style: solid;
+	// border-color: #ccc;
+	// border-width: 1px; 
+	color: #666;
+	// margin-top: 20px;
+	padding: 5px;
+	// clear: left;
+	}
+	
+p.pagination	{
+	font-size: 11px;
+	text-align: center;
+	margin: 5px 0 5px 0;
+	}	
+		
+ol	{
+	font-size: 13px;
+	line-height: 140%;
+	}
+	
+li	{
+	margin-bottom: 10px;
+	margin-right: 10px;
+	}
+
+/* ---------- link elements ---------- */
+
+a	{
+	font-weight: normal;
+	text-decoration: none;
+	}
+	
+a:link	{
+	color: #009;
+	text-decoration: none;
+	}
+	
+a.current:link	{
+	text-decoration: underline;
+	color: #ed1b23;
+	}
+
+a:visited	{
+	color: #009;
+	text-decoration: none;
+	}
+	
+a:hover	{
+	color: #ed1b23;
+	}
+
+a:active	{
+	color: #222;
+	}
+
+a img	{
+	color: #903;
+	background-color: transparent;
+	border: none;
+	}
+
+a.rev:link	{
+	color: #ccc;
+	background-color: transparent;
+	text-decoration: none;
+	}
+
+a.rev:visited	{
+	color: #ccc;
+	background-color: transparent;
+	text-decoration: none;
+	}
+
+a.rev:active	{
+	color: #ccc;
+	background-color: transparent;
+	text-decoration: none;
+	}
+
+a.rev:hover	{
+	color: #f00;
+	background-color: transparent;
+	text-decoration: none;
+	}
+	
+/* ---------- form elements ---------- */
+
+form	{
+	margin-top: 0;
+	margin-bottom: 0;
+	}
+	
+select	{	
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	color: #333;
+	background-color: #fff;
+	}
+ 
+input.alert	{
+ 	background-color: #fbb;
+ 	}
+
+input.buttonprocess	{	
+	color: #fff;
+	background-color: #c00;	
+	font-weight: bold;
+	}

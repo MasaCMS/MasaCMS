@@ -1,0 +1,1385 @@
+/*  This file is part of Mura CMS (www.gosava.com).
+
+    Mura CMS is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, Version 2 of the License.
+
+    Mura CMS is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Mura CMS.  If not, see <http://www.gnu.org/licenses/>.
+
+*/
+
+/*	Some styles, ideas, and concepts derived from:
+
+	Eric Meyer Reset - http://meyerweb.com/eric/tools/css/reset/index.html
+	BlueprintCSS - http://code.google.com/p/blueprintcss/
+	YUI - http://developer.yahoo.com/yui/
+*/
+
+
+
+/* @group GLOBALS
+===================================== */
+
+/* @group Globals - Text Resets
+===================================== */
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, font, /*img,*/ ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	outline: 0;
+	font-size: 100%;
+	vertical-align: baseline;
+	background: transparent;
+	}
+
+body { line-height: 1; }
+
+* { -moz-outline: 0; }
+
+a img { border: none; }
+
+hr {
+	clear: both;
+	height: 0;
+	margin: 0 0 1em;
+	border: 1px solid #ccc;
+	border-width: 1px 0 0;
+	}
+
+/* @end Globals - Text Resets
+-------------------------------- */
+
+
+/* @group Globals - Lists (OL, UL)
+===================================== */
+
+ul { margin: 0 0 1em 4em; }
+
+ol { margin-left: 5em; }
+
+p + ul, p + ol { margin-top: -0.5em; } /* get lists below paragraphs closer to the paragraph */
+
+li ul, li ol { margin-top: .5em; margin-bottom: .75em; } /* lists inside of LI's need room to breathe on top and don't need as much space on bottom */
+
+li { margin: 0 0 .5em; }
+
+/* change bullet style when nesting lists */
+ul { list-style: disc; }
+ul ul { list-style: circle; }
+ul ul ul { list-style: square; }
+ol { list-style: decimal; }
+ol ol, ol.alpha { list-style: lower-alpha; } /* ol.alpha is optional in fckeditor */
+ol ol ol { list-style: lower-roman; }
+
+/* @end Globals - Lists (OL, UL)
+-------------------------------- */
+
+
+/* @group Globals - Definition Lists (DL)
+===================================== */
+
+dl { clear: both; }
+
+dt {
+	margin: 0 0 .2em;
+	line-height: 1.2;
+	font-weight: bold;
+	}
+
+dt a { text-decoration: none; }
+
+dd {
+	margin: 0 0 .75em;
+	padding: 0;
+	line-height: 1.25;
+	}
+
+dd p {
+	margin: 0 0 .5em;
+	padding: 0;
+	}
+
+dd img {}
+
+
+/* @group Globals - Definition Lists - 2 Column
+===================================== */
+
+dl.twoColumn {
+	margin: 0;
+	text-align: left;
+	}
+
+dl.twoColumn dt {
+	float: left;
+	clear: left;
+	width: 33%;
+	}
+
+dl.twoColumn dd {
+	clear: right;
+	margin: 0 0 0 35%;
+	padding: 0;
+	}
+
+/* @end Globals - Definition Lists - 2 Column
+-------------------------------- */
+
+/* @end Globals - Definition Lists (DL)
+-------------------------------- */
+
+
+/* @group Globals - Tables
+===================================== */
+
+table { /* tables still need 'cellspacing="0"' in the markup? */
+	border-collapse: collapse;
+	border-spacing: 0;
+	}
+
+caption {
+	font-weight: normal;
+	text-align: left;
+	}
+
+th {
+	padding: .5em;
+	border: 1px solid #ccc;
+	font-weight: bold;
+	text-align: left;
+	vertical-align: top;
+	background: #ccc;
+	}
+
+td {
+	padding: .5em;
+	border: 1px solid #ccc;
+	line-height: 1.2;
+	vertical-align: top;
+	}
+
+tr.alt td { background: #eee; }
+
+/* @end Globals - Tables
+-------------------------------- */
+
+
+/* @group Globals - Forms
+===================================== */
+
+form { margin-bottom: 2em; }
+
+form ul,
+form ol,
+.content form ul,
+.content form ol { margin: 0; }
+
+fieldset ol { padding-top: 15px; }
+
+form li {
+	clear: both;
+	width: 100%;
+	margin-bottom: 1em;
+	list-style: none !important;
+	}
+
+form li#svCaptcha {
+	width: auto;
+	margin-left: 27%;
+	padding-left: 7px;
+	}
+
+form li#svCaptcha img {
+	width: auto !important;
+	padding: 0 !important;
+	border: 0 !important;
+	}
+
+fieldset {
+	clear: both;
+	margin: 0 0 2em;
+	padding: 0 15px .5em;
+	border: 1px solid #ccc;
+	}
+
+legend {
+	margin-left: -10px;
+	padding: 0 10px;
+	font-size: 1.4em;
+	line-height: 1.2;
+	font-weight: normal;
+	}
+
+label,
+p.fieldLabel {
+	float: left;
+	width: 25%;
+	margin-right: 2%;
+	padding-right: 7px;
+	font-weight: bold;
+	line-height: 1.4;
+	text-align: right;
+	}
+
+.multiInputs {
+	float: left;
+	width: 65%;
+	}
+
+.inputNote {
+	font-size: .9em;
+	color: #777;
+	}
+
+form li a { margin-left: 135px; } /* Margin to account for width of label, label margin. */
+
+form li span { font-weight: normal; }
+
+input.text { width: 60%; }
+
+form textarea {
+	width: 60%;
+	height: 10em;
+	}
+
+form .buttons { text-align: right; }
+
+button, .buttons input { cursor: pointer; }
+input[type=submit] { cursor: pointer; }
+
+.sidebar form {
+	float: left;
+	width: 100%;
+	margin-bottom: 2em;
+	}
+
+.sidebar form li {
+	float: none;
+	width: auto;
+	margin: 0 0 .5em;
+	display: block;
+	text-align: left;
+	}
+
+.sidebar label {
+	float: none;
+	width: auto;
+	margin: 0 0 .25em;
+	text-align: left;
+	}
+
+.sidebar input.text {
+	width: 95%;
+	margin: 0;
+	}
+
+.required {
+	margin: 0 0 .5em .25em;
+	font-weight: normal;
+	color: #b00;
+	}
+
+p.required {
+	float: left;
+	clear: left;
+	margin: 0;
+	padding-left: 7px;
+	background: url(../images/icon_star.png) no-repeat;
+	}
+
+p#loginMsg.required {
+	margin-bottom: 2em;
+	}
+
+input.first { margin-left: 0; }
+
+.flow label { float: none; width: auto; }
+
+
+/* @group Globals - Forms - Required Fields
+===================================== */
+
+form li.req {} /* could add background color */
+
+.req label { background: url(../images/icon_star.png) no-repeat 100% 0; } /* could add color */
+
+.req ins {
+	position: absolute;
+	left: -9999px;
+	}
+
+li span.req {
+	padding-right: 7px;
+	background: url(../images/icon_star.png) no-repeat 100% 0;
+	}
+
+.req input {} /* could do { border: 1px solid darkred; color: darkred; } */
+
+
+/* @end Globals - Forms - Required Fields
+-------------------------------- */
+
+/* @end Globals - Forms
+-------------------------------- */
+
+/* @end GLOBALS
+-------------------------------- */
+
+
+
+/* @group HELPER CLASSES
+===================================== */
+
+.hide { display: none !important; }
+
+.left { float: left !important; }
+.right { float: right !important; }
+
+img.left { margin: 0 1em 1em 0; }
+img.right { margin: 0 0 1em 1em; }
+img.center { display: block; margin: 1em auto; }
+
+p.center { text-align: center; }
+
+.callToAction {
+	padding-left: 10px;
+	background: url(../images/pointer_red.gif) no-repeat 0 50%;
+	}
+
+
+/* @group Helper Classes - Clearfix
+===================================== */
+
+/* Clearing floats without extra markup
+	Based on How To Clear Floats Without Structural Markup by PiE
+	[http://www.positioniseverything.net/easyclearing.html] */
+
+.clearfix:after {
+	content: ".";
+	display: block;
+	height: 0;
+	clear: both;
+	visibility: hidden;
+	}
+
+.clearfix { display: inline-block; }
+
+* html .clearfix { height: 1%; }
+
+.clearfix { display: block; }
+
+/* @end Helper Classes - Clearfix
+-------------------------------- */
+
+/* @end HELPER CLASSES
+-------------------------------- */
+
+
+
+/* @group NAVIGATION/UI
+===================================== */
+
+/* @group Nav - Breadcrumb
+===================================== */
+
+#crumbList {
+	margin: 0 0 1em;
+	padding: 0;
+	list-style: none;
+	}
+
+#crumbList li {
+	display: inline;
+	margin: 0;
+	font-size: 1em;
+	}
+
+#crumbList a { text-decoration: none; }
+
+/* @end Nav - Breadcrumb
+-------------------------------- */
+
+
+/* @group Nav - Sequential, More Results
+===================================== */
+
+.navSequential,
+.moreResults ul {
+	margin: 0 !important;
+	padding: 0;
+	list-style: none;
+	}
+
+.navSequential li,
+.moreResults li {
+	display: inline;
+	margin: 0 !important;
+	padding: 0;
+	text-align: center;
+	}
+
+.navSequential a,
+.moreResults a {
+	padding: .1em .2em;
+	text-decoration: none;
+	}
+
+.navSequential .current a {
+	border: 1px solid #e4e4e4;
+	color: #000;
+	}
+
+.navSequential a:hover {
+	background: #e4e4e4;
+	}
+
+/* @end Nav - Sequential, More Results
+-------------------------------- */
+
+
+/* @group Nav - Session
+===================================== */
+
+#navSession {
+	margin: 0;
+	list-style: none;
+	}
+
+#navSession li {
+	display: inline;
+	margin: 0;
+	padding: 0;
+	}
+
+#navSession a { text-decoration: none; }
+
+#navEditProfile a {
+	border-right: 1px solid #ccc;
+	padding-right: .5em;
+	}
+
+#navLogout {
+	padding-right: 0;
+	padding-left: 2px;
+	}
+
+/* @end Nav - Session
+-------------------------------- */
+
+/* @end NAVIGATION/UI
+-------------------------------- */
+
+
+
+/* @group DISPLAY OBJECTS, SYSTEM COMPONENTS
+===================================== */
+
+/* @group Add Comment Component
+===================================== */
+
+#svComments dl {
+	margin-bottom: 1em;
+	padding-bottom: 1em;
+	border-bottom: 1px dotted #ccc;
+	line-height: 1.2;
+	}
+#svComments dl.last {
+	margin-bottom: 2em;
+	border-bottom: 0;
+	}
+
+#svComments dt { margin-bottom: .25em; }
+#svComments dd { margin-bottom: .25em; }
+#svComments dd.comment p { margin-bottom: 0; }
+#svComments dd.comment p:last-child { margin-bottom: 1em; }
+
+#svComments dd.dateTime {
+	font-size: 1em;
+	color: #666;
+	}
+
+/* @end Add Comment Component
+-------------------------------- */
+
+
+/* @group Advertisements
+===================================== */
+
+div.svAd { margin: 0 0 2em; }
+
+/* @end Advertisements
+-------------------------------- */
+
+
+/* @group Asset Detail
+===================================== */
+
+#svAssetDetail {}
+
+a#svAsset {
+	display: block;
+	margin: 2em 0;
+	padding-left: 20px;
+	line-height: 2;
+	background-position: 0 50%;
+	background-repeat: no-repeat;
+	}
+.image a#svAsset {
+	padding-left: 0;
+	line-height: 1.5;
+	background: transparent;
+	}
+
+a#svAsset.file { background-image: url(../images/file-icons/generic.gif); }
+
+a#svAsset.ai { background-image: url(../images/file-icons/ai.gif); }
+a#svAsset.css { background-image: url(../images/file-icons/css.gif); }
+a#svAsset.doc { background-image: url(../images/file-icons/doc.gif); }
+a#svAsset.gif { background-image: url(../images/file-icons/gif.gif); }
+a#svAsset.html, a#svAsset.htm { background-image: url(../images/file-icons/generic.gif); }
+a#svAsset.graffle { background-image: url(../images/file-icons/graffle.gif); }
+a#svAsset.jpg { background-image: url(../images/file-icons/jpg.gif); }
+a#svAsset.mdb { background-image: url(../images/file-icons/mdb.gif); }
+a#svAsset.mp3 { background-image: url(../images/file-icons/mp3.gif); }
+a#svAsset.mpp { background-image: url(../images/file-icons/mpp.gif); }
+a#svAsset.ndd { background-image: url(../images/file-icons/ndd.gif); }
+a#svAsset.oo3 { background-image: url(../images/file-icons/oo3.gif); }
+a#svAsset.pdf { background-image: url(../images/file-icons/pdf.gif); }
+a#svAsset.png { background-image: url(../images/file-icons/png.gif); }
+a#svAsset.ppt { background-image: url(../images/file-icons/ppt.gif); }
+a#svAsset.psd { background-image: url(../images/file-icons/psd.gif); }
+a#svAsset.txt { background-image: url(../images/file-icons/txt.gif); }
+a#svAsset.url { background-image: url(../images/file-icons/url.gif); }
+a#svAsset.vsd { background-image: url(../images/file-icons/vsd.gif); }
+a#svAsset.xls { background-image: url(../images/file-icons/xls.gif); }
+a#svAsset.zip { background-image: url(../images/file-icons/zip.gif); }
+
+
+#svAssetDetail.image #svAsset {
+	float: left;
+	margin: .25em 1.5em .5em 0;
+	}
+
+#svAssetDetail.image #svAsset img {
+	float: none;
+	display: block;
+	margin: 0;
+	}
+
+/* @end Asset Detail
+-------------------------------- */
+
+
+/* @group Associated Image
+===================================== */
+
+/* This image gets output only if a specific image has been uploaded for a specific content type.
+It gets output between the h2 and the body content and launches the large image in shadowbox when clicked */
+
+.content#primary .imgMed {
+	float: right;
+	margin-bottom: 1em;
+	margin-left: 1em;
+	}
+
+/* @end Associated Image
+-------------------------------- */
+
+
+/* @group Calendar
+===================================== */
+
+#svCalendar { text-align: center; }
+
+#svCalendar table { width: 100%; }
+
+#svCalendar th {
+	padding: 0;
+	border: 1px solid #666;
+	font-style: normal;
+	font-weight: normal;
+	text-align: center;
+	color: #fff;
+	background: #666;
+	}
+
+#svCalendar th a {
+	display: block;
+	padding: .5em 2px;
+	text-align: center;
+	color: #fff;
+	}
+
+#svCalendar th a:hover {
+	text-decoration: none;
+	color: #fff;
+	background: #333;
+	}
+
+#svCalendar .dayofweek td {
+	height: auto;
+	padding: 6px .5em;
+	font-style: normal;
+	font-weight: bold;
+	text-align: center;
+	background: #ccc;
+	}
+
+#svCalendar .dayofweek td a {}
+
+#svCalendar td {
+	width: 14%;
+	height: 60px;
+	padding: .5em;
+	border: 1px solid #ccc;
+	font-size: 9px;
+	line-height: 1;
+	text-align: left;
+	vertical-align: top;
+	}
+
+#svCalendar td .date { font-style: italic; }
+
+.content #svCalendar td ul {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	}
+
+#svCalendar td li a {
+	display: block;
+	margin: 2px 0;
+	padding: 0 0 2px;
+	border: 0;
+	text-align: left;
+	text-decoration: none;
+	}
+
+#svCalendar td li a:hover,
+#svCalendar td li a#today {
+	text-decoration: underline;
+	}
+
+/* @end Calendar
+-------------------------------- */
+
+
+/* @group Calendar Date Picker
+===================================== */
+
+#datePicker {
+	width: 190px;
+	text-align: center;
+	background: #fff;
+	}
+
+#datePickerContainer {
+	width: 178px;
+	margin: 6px auto;
+	padding: 0;
+	text-align: center;
+	}
+
+#datePicker form {}
+
+#datePicker select.dropdown {
+	margin: 0;
+	font-size: 11px;
+	vertical-align: middle;
+	}
+
+#datePicker input.submit { vertical-align: middle; }
+
+#datePicker #calendarDates {
+	margin: 6px auto;
+	padding: 0;
+	background: #fff;
+	}
+
+#datePicker #calendarDates th {
+	font-size: 1em;
+	font-style: normal;
+	font-weight: normal;
+	text-align: center;
+	color: #fff;
+	background: #333;
+	}
+
+#datePicker #calendarDates th a { color: #fff; }
+
+#datePicker #calendarDates .dayofweek td {
+	padding: .5em;
+	font-size: 1em;
+	font-style: normal;
+	font-weight: bold;
+	text-align: center;
+	color: #333;
+	background: #EAE7E7;
+	}
+
+#datePicker #calendarDates td {
+	border: 1px solid #EAE7E7;
+	font-size: 1em;
+	font-style: normal;
+	font-weight: normal;
+	text-align: center;
+	color: #333;
+	background: #f6f6f6;
+	}
+
+#datePicker #calendarDates a {
+	display: block;
+	padding: .5em;
+	text-decoration: none;
+	color: #333;
+	}
+
+#datePicker #calendarDates a:hover,
+#calendar a#today {
+	display: block;
+	padding: .5em;
+	text-decoration: none;
+	color: #fff;
+	background: #f6f6f6;
+	}
+
+/* @end Calendar Date Selector
+-------------------------------- */
+
+
+/* @group Columns
+===================================== */
+/* For use with fckEditor Templates (2, 3, and 4 column templates) */
+
+/* HTML example:
+<div class="columns3">
+	<div class="col"></div>
+	<div class="col"></div>
+	<div class="col"></div>
+</div>
+*/
+
+.col {
+	float: left;
+	margin-right: 1.5%;
+	display: inline; /* ie6 double-margin float fix */
+	}
+
+.columns2 .col { width: 48%; }
+.columns3 .col { width: 31%; }
+.columns4 .col { width: 23%; }
+.columns5 .col { width: 18%; }
+.columns6 .col { width: 14%; }
+.columns7 .col { width: 12%; }
+.columns8 .col { width: 10%; }
+
+/* @end Columns
+-------------------------------- */
+
+
+/* @group Flash Player
+===================================== */
+/* For FLV Player Plugin in FCK Editor */
+
+table.svFlvPlayer td {
+	padding: 0;
+	border: 0;
+	}
+
+/* @end Flash Player
+-------------------------------- */
+
+
+/* @group Galleries
+===================================== */
+
+#svGallery ul {
+	margin: 0;
+	list-style: none;
+	}
+#svGallery li {
+	float: left;
+	width: 23%;
+	margin: 0 1%;
+	padding: 0 0 1.5em;
+	list-style: none;
+	font-size: 1.1em;
+	text-align: center;
+	}
+
+#svGallery li img { margin: 0; }
+
+#svGallery li p {
+	margin: 0;
+	font-size: .9em;
+	text-align: center;
+	}
+
+#svGallery dl {
+	margin: 0;
+	padding: 0;
+	}
+
+#svGallery dt {
+	margin: 0;
+	padding: 0;
+	}
+
+#svGallery dd {
+	float: none;
+	margin: 0;
+	padding: 0;
+	line-height: 1.25;
+	background: transparent;
+	}
+
+#svGallery .comments a {
+	padding-left: 13px;
+	background: url(../images/icon_comments.gif) no-repeat 0 50%;
+	}
+
+/* @end Galleries
+-------------------------------- */
+
+
+/* @group Portals, Feeds
+===================================== */
+
+.svSyndLocal,
+.svSyndRemote {
+	margin-bottom: 2em;
+	}
+
+.svSyndLocal dd img,
+.svSyndRemote dd img {}
+
+
+#svPortal {
+	margin-bottom: 1em;
+	border-top: 1px solid #ccc;
+	}
+
+#svPortal dl {
+	margin: 1em 0;
+	padding-top: 1em;
+	border-top: 1px dotted #ccc;
+	}
+
+#svPortal dl.first {
+	padding-top: 0;
+	border-top: 0;
+	}
+
+.content dt { margin-bottom: .75em; }
+
+#svPortal dt.releaseDate {
+	margin-bottom: .5em;
+	font-size: 1em;
+	font-weight: normal;
+	color: #999;
+	}
+
+#svPortal dd { margin-bottom: .75em; }
+
+.content dd.summary span.readMore { font-size: .9em; }
+
+.content dd.credits {
+	float: left;
+	margin-right: .75em;
+	margin-bottom: 1.2em;
+	font-size: 1em;
+	line-height: 1.2;
+	color: #666;
+	}
+
+.content dd.comments,
+.content dd.tags,
+.content dd.ratings {
+	float: left;
+	margin-bottom: 1em;
+	padding: 0 .5em 0 0;
+	font-size: 1em;
+	}
+	
+.content dd.comments,
+.content dd.tags,
+.content dd.credits {
+	line-height: 20px; /* acommodate height of stars */
+	}
+	
+img.ratestars {
+	margin: 0 !important;
+	padding: 0 !important;
+	border: 0 !important;
+	}
+
+.content dd.comments {
+	padding: 0 .5em 0 13px;
+	background: url(../images/icon_comments.gif) no-repeat 0 50%;
+	}
+
+.content dd ul { list-style: none; }
+	
+.content dd li {
+	display: inline;
+	margin: 0;
+	padding-right: 1em;
+	}
+
+.content dd li a { border: 0; }
+
+
+dl.hasImage .image { 
+	float: left;
+	margin: 0 1em 1em 0;
+	}
+
+/* @end Portals, Feeds
+-------------------------------- */
+
+
+/* @group Portal Features
+===================================== */
+
+div.portalFeatures {
+	margin: 0 0 1em;
+	padding: 0 0 1em;
+	border-bottom: 1px dotted #ccc;
+	font-weight: bold;
+	}
+
+.portalFeatures dl {
+	margin: 6px 0 0;
+	list-style: none;
+	}
+
+.portalFeatures dt {
+	clear: both;
+	margin: 0 0 .5em;
+	padding: 0;
+	font-weight: bold;
+	}
+
+.portalFeatures dt.releaseDate {
+	margin: 0 0 2px;
+	font-size: 1em;
+	font-weight: normal !important;
+	color: #666;
+	}
+
+.portalFeatures dd {
+	clear: both;
+	margin: 0 0 1em;
+	padding: 0;
+	font-weight: normal;
+	}
+.portalFeatures dd p {
+	margin: 0 0 .5em;
+	padding: 0;
+	font-weight: normal;
+	}
+.portalFeatures dd img {
+	margin: 0 .5em .5em 0;
+	padding: 0;
+	float: left;
+	}
+
+.portalFeatures a { text-decoration: none; }
+
+/* @end Portal Features
+-------------------------------- */
+
+
+/* @group RSS Feed List
+===================================== */
+/* for the public feeds table display object */
+
+table#svRssFeedsList td {
+	vertical-align: middle;
+	}
+	
+table#svRssFeedsList img {
+	border: 0;
+	padding: 0;
+	}
+
+/* @end RSS Feed List
+-------------------------------- */
+
+
+/* @group Session Tools
+===================================== */
+
+#svSessionTools {
+	margin-bottom: 1em;
+	}
+
+#svSessionTools p#welcome {
+	margin-bottom: .5em;
+	font-size: 1.1em;
+	}
+	
+/* @end Session Tools
+-------------------------------- */
+
+
+/* @group Site Map
+===================================== */
+
+ul#svSiteMap {
+	margin: 1em 0;
+	list-style: none;
+	}
+
+#svSiteMap ul {
+	margin: 0;
+	list-style: none;
+	}
+
+#svSiteMap li {
+	margin-left: 0;
+	font-weight: normal;
+	}
+
+#svSiteMap li li {
+	margin: 1em 2em;
+	font-weight: bold;
+	}
+
+#svSiteMap li li li {
+	font-weight: normal;
+	}
+
+/* @end Site Map
+-------------------------------- */
+
+
+/* @group Tag Clouds
+===================================== */
+
+#svTagCloud ol { margin: 0 0 2em; }
+#svTagCloud li { display: inline; }
+#svTagCloud span { position: absolute; left: -9999px; width: 990px; }
+
+#svTagCloud .not-popular { font-size: .9em; }
+#svTagCloud .not-very-popular { font-size: 1em; }
+#svTagCloud .somewhat-popular { font-size: 1.3em; }
+#svTagCloud .popular { font-size: 1.6em; }
+#svTagCloud .very-popular { font-size: 1.9em; }
+#svTagCloud .ultra-popular { font-size: 2.2em; }
+
+/* @end Tag Clouds
+-------------------------------- */
+
+
+/* @group User Tools
+===================================== */
+
+#svPageTools {
+	margin: 0 0 2em;
+	padding: 0;
+	}
+
+#svPageTools ul {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	}
+
+#svPageTools li {
+	margin: 0;
+	padding: 0 0 0 20px;
+	font-size: 11px;
+	line-height: 1.5;
+	}
+
+#svPageTools li a { line-height: 20px; }
+
+#svPageTools li#addFavorite { background: url(../images/icon_addfavorite.gif) no-repeat; }
+
+#svPageTools li#sendToFriend { background: url(../images/icon_emailarticle.gif) no-repeat; }
+
+#svPageTools li#print { background: url(../images/icon_print.gif) no-repeat; }
+
+#svPageTools li#discuss { background: url(../images/icon_discuss.gif) no-repeat; }
+
+/* @end User Tools
+-------------------------------- */
+
+
+/* @group User Tools - Favorites
+===================================== */
+
+ul#favoriteList {
+	margin: 0 0 1em;
+	list-style: none;
+	font-size: 11px;
+	}
+
+#favoriteList li {
+	margin: 0 0 .5em;
+	padding: 0;
+	border: none;
+	font-size: 11px;
+	}
+
+#favoriteList li.defaultMsg {
+	margin: 0;
+	list-style: none !important;
+	font-size: 1em;
+	line-height: 1.2;
+	color: #666;
+	}
+
+#favoriteList li a {
+	margin: 0 0 0 1em;
+	padding: 0;
+	}
+
+/* @end User Tools - Favorites
+-------------------------------- */
+
+
+/* @group User Tools - Send to Friend Pop-Up
+===================================== */
+
+.sendToFriend input.text { width: 300px; }
+
+.sendToFriend textarea {
+	width: 300px;
+	height: 100px;
+	}
+
+/* @end User Tools - Send to Friend Pop-Up
+-------------------------------- */
+
+/* @end DISPLAY OBJECTS, SYSTEM COMPONENTS
+-------------------------------- */
+
+
+
+/* @group SYSTEM FORMS
+===================================== */
+
+/* @group System Forms - Login
+===================================== */
+
+#svLoginContainer {
+	width: 370px;
+	margin: 0 auto;
+	}
+
+form#login { margin-bottom: .5em; }
+
+form#sendLogin { margin-bottom: 2em; }
+
+.sidebar #login h3 {
+	padding-bottom: 0;
+	border-bottom: 0;
+	}
+
+#login fieldset { margin-bottom: 0; }
+
+#svLoginContainer p.required {
+	margin: .5em 0 2em;
+	}
+
+#login label,
+#sendLogin label {
+	float: none;
+	width: auto;
+	text-align: left;
+	}
+
+#loginContainer input.text,
+#sendLogin input.text {
+	width: 240px;
+	}
+
+#sendLogin p { margin: 1em 0 0; }
+
+#notRegistered {}
+#notRegistered h3 {}
+#notRegistered a {}
+
+/* @end System Forms - Login
+-------------------------------- */
+
+
+/* @group System Forms - Mailing Lists
+===================================== */
+
+.sidebar .svMailingList fieldset {
+	padding: 0;
+	border: 0;
+	}
+
+.sidebar .svMailingList ol {
+	padding: 0;
+	}
+
+.sidebar .svMailingList legend { display: none; }
+
+#svMasterEmail {}
+
+/* @end System Forms - Mailing Lists
+-------------------------------- */
+
+
+/* @group System Forms - Search
+===================================== */
+
+#svSearchForm {
+	margin: 0 0 1em;
+	padding: 0 0 1em;
+	border-bottom: 1px dotted #ccc;
+	}
+
+#svSearchForm input.text {
+	width: 100px;
+	margin: 0 .5em 0 0;
+	}
+
+#svSearchForm input.submit {
+	float: none;
+	clear: none;
+	width: auto;
+	margin: 0 .5em 0 0;
+	}
+
+#svSearchResults dl#svPortal {
+	margin: 0 0 1em;
+	padding: 0;
+	border: 0;
+	}
+
+#svSearchResults dt {
+	margin: 1em 0 .5em;
+	padding: 1em 0 0;
+	border-top: 1px dotted #ccc;
+	}
+
+#svSearchResults dt.first { border-top: 0; }
+
+#svSearchResults dd {
+	margin: 0 0 1em;
+	padding: 0;
+	}
+
+#svSearchResults dd.last {
+	margin: 0;
+	padding: 0 0 1em;
+	border-bottom: 0;
+	}
+
+#svSearchResults dd h3 {
+	margin: 0 0 .5em;
+	font-weight: normal;
+	}
+
+#svSearchResults dl img { display: none; }
+
+#svSearchResults .moreResults {
+	margin: .75em 0;
+	padding: .75em;
+	background: #f2f2f2;
+	}
+
+#svSearchResults .bottom {
+	margin-bottom: 2em;
+	}
+
+#svSearchAgain p {
+	margin-bottom: .5em;
+	font-weight: bold;
+	}
+
+#svSearchResults form {}
+
+#svSearchResults .submit { float: none; }
+
+span.keywords,
+span.highlight {
+	padding: .2em;
+	background: yellow;
+	}
+
+/* @end System Forms - Search
+-------------------------------- */
+
+
+/* @group System Forms - Send to a Friend
+===================================== */
+
+#svSendToFriend {
+	padding: 1em 2em 0;
+	background: #fff;
+	}
+
+#svSendToFriend h1 {
+	font-size: 1.5em;
+	text-align: center;
+	}
+
+/* @end System Forms - Send to a Friend
+-------------------------------- */
+
+
+/* @group System Forms - Responses
+===================================== */
+
+.sidebar .responseMessage { color: red; }
+
+.sidebar .responseMessage em { font-style: normal; }
+
+#dsp_response.dataCollection .pollResults { list-style: none; }
+
+#dsp_list.dataResponses {}
+
+#dsp_detail.dataResponses {}
+
+.pollResults li {
+	margin: 0 0 2px;
+	padding: 0;
+	list-style: none;
+	}
+
+.pollValue {}
+
+.pollPercent { font-style: italic; }
+
+.pollQty { display: none; }
+
+
+.error, .notice, .success { padding: .8em; margin-bottom: 1em; border: 2px solid #ddd; }
+
+.error { background: #FBE3E4; color: #8a1f11; border-color: #FBC2C4; }
+.notice { background: #FFF6BF; color: #514721; border-color: #FFD324; }
+.success { background: #E6EFC2; color: #264409; border-color: #C6D880; }
+.error a { color: #8a1f11; }
+.notice a { color: #514721; }
+.success a { color: #264409; }
+
+/* @end System Forms - Responses
+-------------------------------- */
+
+/* @end SYSTEM FORMS
+-------------------------------- */
+
+
+/* EOF */

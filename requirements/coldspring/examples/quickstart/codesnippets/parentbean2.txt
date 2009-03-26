@@ -1,0 +1,17 @@
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+	
+	<bean id="parentGateway" abstract="true">
+		<property name="configBean">
+			<ref bean="configBean" />
+		</property>
+	</bean>
+	
+	<bean id="userGateway" parent="parentGateway" class="coldspring.examples.quickstart.components.UserGateway" />
+	<bean id="invoiceGateway" parent="parentGateway" class="coldspring.examples.quickstart.components.InvoiceGateway" />
+	<bean id="productGateway" parent="parentGateway" class="coldspring.examples.quickstart.components.ProductGateway" />
+	
+	<bean id="configBean" class="coldspring.examples.quickstart.components.ConfigBean" />
+	
+</beans>

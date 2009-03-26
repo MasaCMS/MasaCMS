@@ -1,0 +1,7 @@
+<cfscript>
+configBean = CreateObject('component', 'coldspring.examples.quickstart.components.ConfigBean').init();
+userGateway = CreateObject('component', 'coldspring.examples.quickstart.components.UserGateway').init();
+userService = CreateObject('component', 'coldspring.examples.quickstart.components.UserService').init();
+userGateway.setConfigBean(configBean);
+userService.setUserGateway(userGateway);
+</cfscript>

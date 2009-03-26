@@ -1,0 +1,27 @@
+<cffunction name="reverseString" access="public" returntype="string" output="false">
+	<cfargument name="string" type="string" required="true" />
+	
+	<!--- Log the method name and arguments. --->
+	<cfset getLogger().log('reverseString', arguments) />
+	
+	<cfreturn Reverse(arguments.string) />
+</cffunction>
+
+<cffunction name="duplicateString" access="public" returntype="string" output="false">
+	<cfargument name="string" type="string" required="true" />
+	<cfargument name="numberOfDuplicates" type="numeric" required="true" />
+	
+	<!--- Log the method name and arguments. --->
+	<cfset getLogger().log('duplicateString', arguments) />
+	
+	<cfreturn RepeatString(arguments.string, arguments.numberOfDuplicates) />
+</cffunction>
+	
+<cffunction name="capitalizeString" access="public" returntype="string" output="false">
+	<cfargument name="string" type="string" required="true" />
+	
+	<!--- Log the method name and arguments. --->
+	<cfset getLogger().log('capitalizeString', arguments) />
+	
+	<cfreturn Ucase(arguments.string) />
+</cffunction>

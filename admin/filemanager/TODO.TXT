@@ -1,0 +1,6 @@
+Things to do:
+
+- ability to store files in a database instead of the filesystem
+- accessibility.  I don't know very much about accessibility.
+- multilanguage capability.  I don't know anything about doing things multilingually.
+

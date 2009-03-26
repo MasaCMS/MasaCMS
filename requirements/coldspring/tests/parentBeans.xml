@@ -1,0 +1,289 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+	
+	<!-- Standard Factory bean (extends coldspring.beans.factory.FactoryBean) -->
+	<bean id="beanEight.factory" class="coldspring.tests.BeanEightFactory" lazy-init="false"/>
+	
+	<!-- Test Bean for Collection Factories -->
+	<bean id="beanFour" class="coldspring.tests.beanFour" lazy-init="false">
+		<property name="myList">
+			<ref bean="list.factory"/>
+		</property>
+		<property name="myMap">
+			<ref bean="map.factory"/>
+		</property>
+	</bean>
+	
+	<!--  factories for the above bean -->
+	<bean id="list.factory" class="coldspring.beans.factory.config.ListFactoryBean">
+		<property name="sourceList">
+			<list>
+				<value>one</value>
+				<value>two</value>
+				<value>three</value>
+			</list>
+		</property>
+	</bean>
+	<bean id="map.factory" class="coldspring.beans.factory.config.MapFactoryBean">
+		<property name="sourceMap">
+			<map>
+				<entry key="one"><value>hello</value></entry>	
+				<entry key="two"><value>there</value></entry>	
+			</map>
+		</property>
+	</bean>
+	
+	<!-- Session Service -->
+	<bean id="sessionService" class="net.litepost.component.session.SessionService"/>
+	
+	<!-- Security Service -->
+	<bean id="securityService" class="net.litepost.component.security.SecurityService">
+		<property name="sessionService">
+			<ref bean="sessionService"/>
+		</property>
+	</bean>
+	
+	 <!-- set up the security advice -->
+    <bean id="securityAdvice" class="net.litepost.aspects.securityAdvice">
+        <property name="securityService">
+            <ref bean="securityService" /> 
+        </property>
+    </bean>
+	
+	<bean id="securityAdvisor" class="coldspring.aop.support.NamedMethodPointcutAdvisor">
+		<property name="advice">
+			<ref bean="loggingAdvice" />
+		</property>
+		<property name="mappedNames">
+			<value>save</value>
+		</property>
+	</bean>
+	
+	<!-- logging service, with cflog -->
+	<bean id="loggingService" class="net.litepost.component.logging.LoggingService">
+		<property name="filename">
+			<value>LitePost</value>
+		</property>
+	</bean>
+	
+	<!-- set up the logging advice -->
+	<bean id="loggingAdvice" class="net.litepost.aspects.loggingAdvice">
+		<property name="loggingService">
+			<ref bean="loggingService" />
+         </property>
+	</bean>
+	
+	<bean id="loggingAdvisor" class="coldspring.aop.support.NamedMethodPointcutAdvisor">
+		<property name="advice">
+			<ref bean="loggingAdvice" />
+		</property>
+		<property name="mappedNames">
+			<value>*</value>
+		</property>
+	</bean>
+	
+	<!-- caching service -->
+	<bean id="cachingService" class="net.litepost.component.caching.CachingService">
+		<property name="loggingService">
+			<ref bean="loggingService" />
+         </property>
+	</bean>
+	
+	<!-- set up the caching advisors -->
+	<bean id="cachingAdvice" class="net.litepost.aspects.cachingAdvice">
+		<property name="cachingService">
+			<ref bean="cachingService" />
+         </property>
+	</bean>
+	
+	<bean id="cachingAdvisor" class="coldspring.aop.support.RegexMethodPointcutAdvisor">
+		<property name="advice">
+			<ref bean="cachingAdvice" />
+		</property>
+		<property name="pattern">
+			<value>^((?!set).)*$</value>
+		</property>
+	</bean>
+	
+	<!-- User Service -->
+	<bean id="userService" class="net.litepost.component.user.UserService">
+		<property name="userDAO">
+			<bean class="net.litepost.component.user.UserDAO">
+         		<property name="dsn">
+					<value>litepost</value>
+				 </property>
+			</bean>
+         </property>
+		<property name="userGateway">
+			<bean class="net.litepost.component.user.UserGateway">
+         		<property name="dsn">
+					<value>litepost</value>
+				 </property>
+			</bean>
+         </property>
+		<property name="sessionService">
+			<ref bean="sessionService"/>
+		</property>
+	</bean>
+	
+	<!-- Blog Entry Service -->
+	<bean id="entryServiceTarget" class="net.litepost.component.entry.EntryService">
+		<property name="entryDAO">
+			<bean class="net.litepost.component.entry.EntryDAO">
+         		<property name="dsn">
+					<value>litepost</value>
+				 </property>
+			</bean>
+         </property>
+		<property name="entryGateway">
+			<bean class="net.litepost.component.entry.EntryGateway">
+         		<property name="dsn">
+					<value>litepost</value>
+				 </property>
+			</bean>
+         </property>
+		<property name="commentService">
+			<ref bean="commentService"/>
+		</property>
+		<property name="sessionService">
+			<ref bean="sessionService" />
+		</property>
+	</bean>
+	
+	<bean id="entryService" class="coldspring.aop.framework.ProxyFactoryBean">
+		<property name="target">
+			<ref bean="entryServiceTarget" />
+		</property>
+		<property name="interceptorNames">
+			<list>
+				<value>loggingAdvisor</value>
+				<value>securityAdvisor</value>
+				<value>cachingAdvisor</value>
+			</list>
+		</property>
+	</bean>
+	
+	<!-- Comments Service -->
+	<bean id="commentServiceTarget" class="net.litepost.component.comment.CommentService">
+		<property name="commentDAO">
+			<bean class="net.litepost.component.comment.CommentDAO">
+         		<property name="dsn">
+					<value>litepost</value>
+				 </property>
+			</bean>
+		</property>
+		<property name="commentGateway">
+			<bean class="net.litepost.component.comment.CommentGateway">
+         		<property name="dsn">
+					<value>litepost</value>
+				 </property>
+			</bean>
+		</property>
+	</bean>
+	
+	<bean id="commentService" class="coldspring.aop.framework.ProxyFactoryBean">
+		<property name="target">
+			<ref bean="commentServiceTarget" />
+		</property>
+		<property name="interceptorNames">
+			<list>
+				<value>loggingAdvisor</value>
+			</list>
+		</property>
+	</bean>
+	
+	<!-- Category Service -->
+	<bean id="categoryServiceTarget" class="net.litepost.component.category.CategoryService"
+			lazy-init="false">
+		<property name="categoryDAO">
+			<bean class="net.litepost.component.category.CategoryDAO">
+         		<property name="dsn">
+					<value>litepost</value>
+				 </property>
+			</bean>
+		</property>
+		<property name="categoryGateway">
+			<bean class="net.litepost.component.category.CategoryGateway">
+         		<property name="dsn">
+					<value>litepost</value>
+				 </property>
+			</bean>
+		</property>
+		<property name="entryService">
+			<ref bean="entryService" />
+		</property>
+	</bean>
+	
+	<bean id="categoryService" class="coldspring.aop.framework.ProxyFactoryBean">
+		<property name="target">
+			<ref bean="categoryServiceTarget" />
+		</property>
+		<property name="interceptorNames">
+			<list>
+				<value>loggingAdvisor</value>
+				<value>securityAdvisor</value>
+				<value>cachingAdvisor</value>
+			</list>
+		</property>
+	</bean>
+	
+	<!-- Bookmark Service -->
+	<bean id="bookmarkServiceTarget" class="net.litepost.component.bookmark.BookmarkService">
+		<property name="bookmarkDAO">
+			<bean class="net.litepost.component.bookmark.BookmarkDAO">
+         		<property name="dsn">
+					<value>litepost</value>
+				 </property>
+			</bean>
+		</property>
+		<property name="bookmarkGateway">
+			<bean class="net.litepost.component.bookmark.BookmarkGateway">
+         		<property name="dsn">
+					<value>litepost</value>
+				 </property>
+			</bean>
+		</property>
+	</bean>
+	
+	<bean id="bookmarkService" parent="secureCachedService">
+		<property name="target">
+			<ref bean="bookmarkServiceTarget" />
+		</property>
+	</bean>
+	
+	<!-- 
+	<bean id="bookmarkService" class="coldspring.aop.framework.ProxyFactoryBean">
+		<property name="target">
+			<ref bean="bookmarkServiceTarget" />
+		</property>
+		<property name="interceptorNames">
+			<list>
+				<value>loggingAdvisor</value>
+				<value>securityAdvisor</value>
+				<value>cachingAdvisor</value>
+			</list>
+		</property>
+	</bean> -->
+	
+	<!-- RSS Service -->
+	<bean id="rssService" class="net.litepost.component.rss.RSSService">
+		<property name="entryService">
+			<ref bean="entryService" />
+		</property>
+	</bean>
+	
+	<!-- abstract service bean -->
+	
+	
+	<bean id="secureCachedService" class="coldspring.aop.framework.ProxyFactoryBean" abstract="true">
+		<property name="interceptorNames">
+			<list>
+				<value>loggingAdvisor</value>
+				<value>securityAdvisor</value>
+				<value>cachingAdvisor</value>
+			</list>
+		</property>
+	</bean>
+</beans>

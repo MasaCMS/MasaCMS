@@ -1,0 +1,283 @@
+/*This file is part of Mura CMS.
+
+    Mura CMS is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, Version 2 of the License.
+
+    Mura CMS is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Mura CMS.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
+/* @group Modal Dialog */
+
+#dialog_overlay {
+	background-color: #000000;
+	display: none;
+	height: 100%;
+	left:0;
+	position: absolute;
+	top:0;
+	width: 100%;
+	z-index: 5000;
+	opacity: 0.7;
+	filter: alpha(opacity:70);
+}
+
+#dialog_overlay[id] {
+	position: fixed;
+}
+
+.editForm { /* Holds the edit content, iframe, etc. */
+	display: none;
+	padding: 2%;
+	position: absolute;
+	text-align: center;
+	top: 2%;
+	width: 90%;
+	height: 90%;
+	z-index: 9998;
+}
+
+.editForm[id] {
+	position: fixed;
+}
+
+#editFormIframeContainer {
+	background-color: #fff;
+	height: 100%;
+	position: relative;
+}
+
+#closeDiv {
+	position: absolute;
+	left: -10px;
+	top: -10px;
+}
+
+/*
+a#editFormCloseLink {
+	display: block;
+	position: absolute;
+	top: -12px;
+	left: -12px;
+	width: 24px;
+	height: 24px;
+	text-indent: -999em;
+	background: transparent url(/admin/images/dialog/close.png) no-repeat;
+}
+*/
+
+/* @end */
+
+/* @group Toolbar */
+
+#frontEndTools {
+	background: transparent url(../images/bg_fetools.png) repeat-x scroll 0% !important;
+	height: 45px !important;
+	left: 0px !important;
+	position: fixed !important;
+	top: 0px !important;
+	width: 100% !important;
+	z-index: 999 !important;
+	text-align: left !important;
+	font-weight: normal !important;
+	font-family: "Lucida Grande", Arial, Helvetica, sans-serif !important;
+}
+
+#frontEndToolsHandle {
+	background: transparent !important;
+	left: 20px !important;
+	position: fixed !important;
+	top: 0px !important;
+	z-index: 1000 !important;
+	cursor: pointer !important;
+	border: 0 !important;
+}
+
+#frontEndTools ul {
+	height: 45px !important;
+	list-style: none !important;
+	margin: 0 0 0 70px !important;
+	padding: 0 !important;
+}
+
+#frontEndTools ul li {
+	color: #333 !important;
+	float: left !important;
+	font-size: 11px !important;
+	line-height: 34px !important;
+	margin:0 20px 0 0 !important;
+	list-style: none !important;
+	font-weight: normal !important;
+	font-family: "Lucida Grande", Arial, Helvetica, sans-serif !important;
+}
+
+#frontEndTools ul li a {
+	color: #666 !important;
+	line-height: 34px !important;
+	padding: 2px 0 2px 18px !important;
+	text-decoration: none !important;font-weight: normal !important;
+	font-family: "Lucida Grande", Arial, Helvetica, sans-serif !important;
+}
+
+#frontEndTools ul li a:hover {
+	color: #000 !important;
+}
+
+#frontEndTools ul li#adminEditPage a {
+	background: url(../images/icons/edit_24.png) no-repeat scroll left center !important;
+}
+
+#frontEndTools ul li#adminAddContent a {
+	background: url(../images/icons/add_24.png) no-repeat scroll left center !important;
+}
+
+#frontEndTools ul li#adminDelete a {
+	background: url(../images/icons/remov_24.png) no-repeat scroll left center !important;
+}
+
+#frontEndTools ul li#adminVersionHistory a {
+	background: url(../images/icons/hist_24.png) no-repeat scroll left center !important;
+}
+
+#frontEndTools ul li#adminDashboard a {
+	background: url(../images/icons/dashboard_14.png) no-repeat scroll left center !important;
+}
+
+#frontEndTools ul li#adminPlugIns a {
+	background: url(../images/icons/apps_24.png) no-repeat scroll left center !important;
+}
+
+
+#frontEndTools ul li#adminSiteManager {
+	background: url(../images/bg_fetools_site_manager.gif) no-repeat scroll left center !important;
+	padding-left: 21px !important;
+}
+
+#frontEndTools ul li#adminSiteManager a {
+	background: url(../images/icons/ntwrk_24.png) no-repeat scroll left center !important;
+}
+
+#frontEndTools ul li#adminSiteManager404 a {
+	background: url(../images/icons/ntwrk_24.png) no-repeat scroll left center !important;
+}
+
+#frontEndTools ul li#adminWelcome {
+	float: right !important;
+	margin-right: 10px !important;
+}
+
+#frontEndTools ul li#adminLogOut {
+	background: transparent url(../images/bg_fetools_logout.gif) no-repeat scroll left center !important;
+	float: right !important;
+	font-size: 10px !important;
+	line-height: 28px !important;
+	margin-right: 14px !important;
+	padding: 0 !important;
+	text-align: center !important;
+	width: 98px !important;
+}
+
+#frontEndTools ul li#adminLogOut a {
+	padding: 0 !important;
+		line-height: 1 !important;
+}
+
+/* @group Add Content Nav */
+
+#frontEndTools li ul { /* all lists */
+	padding: .75em 1em .75em !important;
+	margin: 0 0 0 -16px !important;
+	list-style: none !important;
+	line-height: 1 !important;
+	background-image: none !important;
+	position: absolute !important;
+	background: #ccc !important;
+	width: 12em !important;
+	left: -999em !important; /* using left instead of display to hide menus because display: none isn't read by screen readers */
+	height: auto !important;
+}
+
+#frontEndTools li li { /* all list items */
+	float: left !important;
+	width: 100% !important; /* width needed or else Opera goes nuts */
+	padding: 0 !important;
+	margin: 0 !important;
+	border-bottom: 1px dotted #999 !important;
+}
+
+#frontEndTools li li a {
+	display: block !important;
+	width: 10em !important;
+	padding: 0 0 0 2em !important;
+	margin: 1px 0 !important;
+	line-height: 2.25 !important;
+	color: #000 !important;
+}
+
+#frontEndTools li li a:hover {
+	background-color: #999 !important;
+	color: #fff !important;
+}
+
+#frontEndTools li:hover ul, #frontEndTools li.sfhover ul { /* lists nested under hovered list items */
+	left: auto !important;
+}
+
+#frontEndTools li:hover a, #frontEndTools li.sfhover a { /* lists nested under hovered list items */
+	color: #000 !important;
+}
+
+#frontEndTools li li#adminNewPage a {
+	background: url(../images/icons/docs_24.png) no-repeat 4px center !important;
+}
+
+#frontEndTools li li#adminNewLink a {
+	background: url(../images/icons/web_24.png) no-repeat 4px center !important;
+}
+
+#frontEndTools li li#adminNewFile a {
+	background: url(../images/icons/cms_file.png) no-repeat 3px center !important;
+}
+
+#frontEndTools li li#adminNewPortal a {
+	background: url(../images/icons/foldr_24.png) no-repeat 4px center !important;
+}
+
+#frontEndTools li li#adminNewCalendar a {
+	background: url(../images/icons/cal_24.png) no-repeat 4px center !important;
+}
+
+#frontEndTools li li#adminNewGallery a {
+	background: url(../images/icons/smicn_24.png) no-repeat 4px center !important;
+}
+
+#frontEndTools li li#adminNewGalleryItem a {
+	background: url(../images/icons/image_24.png) no-repeat 4px center !important;
+}
+
+#frontEndTools li li#adminNewGalleryItemMulti a {
+	background: url(../images/icons/image_24.png) no-repeat 4px center !important;
+}
+
+#frontEndTools li li:last-child {
+	border: 0 !important;
+}
+
+/* @end */
+
+/* @group IE7 Fixes */
+
+*:first-child+html #frontEndTools li ul { /* http://thatnorwegianguy.wordpress.com/2007/03/20/ie7-css-filter-hack/ */
+	margin: 24px 0 0 -70px !important;
+}
+
+/* @end */
+
+/* @end */
+

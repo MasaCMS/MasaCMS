@@ -1,0 +1,65 @@
+<beans>
+	
+	<bean id="properties" class="coldspring.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="location">
+			<value>/coldspring/unitTests/myprops.properties</value>
+		</property>
+	</bean>
+	
+	<bean id="stringBean" class="coldspring.tests.stringBean">
+		<property name="message">
+			<value>${message}</value>
+		</property>
+	</bean>
+	
+	<bean id="abstractBean" abstract="true">
+		<property name="message">
+			<value>${abstractMessage}</value>
+		</property>
+	</bean>	
+	
+	<bean id="childBean" parent="abstractBean" class="coldspring.tests.stringBean" />
+	
+	<bean id="initSingletonBean" class="coldspring.tests.initMethodBean" init-method="setup"/>
+	
+	<bean id="initNonSingletonBean" class="coldspring.tests.initMethodBean" init-method="setup" singleton="false"/>
+	
+	<bean id="subclassBean" class="coldspring.tests.SubclassBean">
+		<constructor-arg name="superclassArg">
+			<value>${superclassArg}</value>
+		</constructor-arg>
+		<property name="stringBean">
+			<ref bean="stringBean" />
+		</property>
+	</bean>			
+	
+	<bean id="structBean" class="coldspring.tests.structBean">
+		<property name="data">
+			<map>
+				<entry key="intOne">
+					<value>${interceptOne}</value>
+				</entry>
+				<entry key="intTwo">
+					<list>
+						<value>${big}</value>
+						<value>${small}</value>
+						<value>${number}</value>
+					</list>
+				</entry>
+				<entry key="intThree">
+					<map>
+						<entry key="subOne">
+							<value>${interceptTwo}</value>
+						</entry>
+						<entry key="subTwo">
+							<list>
+								<value>${interceptThree}</value>
+								<value>${message}</value>
+							</list>
+						</entry>
+					</map>
+				</entry>
+			</map>
+		</property>
+	</bean>
+</beans>

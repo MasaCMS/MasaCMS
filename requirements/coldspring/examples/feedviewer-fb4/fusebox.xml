@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+	
+	Copyright (c) 2002-2005	David Ross,	Chris Scott
+	
+	Licensed under the Apache License, Version 2.0 (the "License");
+	you may not use this file except in compliance with the License.
+	You may obtain a copy of the License at
+	
+	http://www.apache.org/licenses/LICENSE-2.0
+	
+	Unless required by applicable law or agreed to in writing, software
+	distributed under the License is distributed on an "AS IS" BASIS,
+	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+	See the License for the specific language governing permissions and
+	limitations under the License.
+	
+	
+	$Id: fusebox.xml,v 1.2 2005/09/26 02:01:04 rossd Exp $
+	
+-->
+
+<fusebox>	
+
+	<circuits>
+		<circuit alias="c" path="controller/" parent=""/>		
+		<circuit alias="v" path="view/" parent=""/>
+	</circuits>
+	
+	<classes>
+	    <class alias="event" 
+	            classpath="coldspring.examples.feedviewer-fb4.plugins.event" 
+	            type="component"
+	            constructor="init"/>
+	    <class alias="category" 
+	            classpath="coldspring.examples.feedviewer.model.category.category" 
+	            type="component"
+	            constructor="init"/>
+         <class alias="channel" 
+	            classpath="coldspring.examples.feedviewer.model.channel.channel" 
+	            type="component"
+	            constructor="init"/>
+	    
+	</classes>	
+	
+	<parameters>
+		<parameter name="fuseactionVariable" value="event" />
+		<parameter name="defaultFuseaction" value="c.showHome" />
+		<parameter name="precedenceFormOrUrl" value="form"/>
+		<parameter name="password" value="" />
+		<parameter name="execute" value="true" />
+		<parameter name="reparse" value="true" />
+		<parameter name="parseWithComments" value="true" />
+		<parameter name="mode" value="production" />
+		<parameter name="scriptlanguage" value="cfmx" />
+		<parameter name="scriptFileDelimiter" value="cfm"/>
+		<parameter name="maskedFileDelimiters" value="htm,cfm,cfml,php,php4,asp,aspx"/>
+	</parameters> 
+	
+	<globalfuseactions>
+		<preprocess>
+		</preprocess>
+		<postprocess>	
+			<do action="v.renderPage"/>
+		</postprocess>
+	</globalfuseactions>
+	
+	<plugins>
+		<phase name="preProcess">
+		</phase>
+		<phase name="preFuseaction">
+			<plugin name="EventArgs" template="eventArgs.cfm"/>
+		</phase>
+		<phase name="postFuseaction">	
+		</phase>
+		<phase name="fuseactionException">
+		</phase>		
+		<phase name="postProcess">
+		</phase>
+		<phase name="processError">
+		</phase>
+		
+	</plugins>
+
+</fusebox>

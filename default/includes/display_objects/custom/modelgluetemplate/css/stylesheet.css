@@ -1,0 +1,110 @@
+body, td  {
+	font-family: "Trebuchet MS", verdana, arial, sans-serif; 
+	font-size:13px;
+}
+
+#banner {
+	font-size:30px;
+}
+
+#footer {
+	font-size:10pt;
+	color:#999;	
+	text-align:center;
+	clear:both;
+}
+
+.list {
+	border-collapse:collapse;
+	width:100%;
+}
+
+.list thead th {
+	text-align:left;
+	padding:2px;
+}
+
+.list tbody td {
+	padding:2px;
+	border:1px Solid #d7d7d7;
+	vertical-align:top;
+}
+
+.list .even {
+	background:#f4f4f4;	
+}
+
+.list tfoot td {
+	padding:2px;
+	border:1px Solid #d7d7d7;
+}
+
+.edit {
+	border:1px Solid #d7d7d7;
+	background:#f4f4f4;
+	margin:0px;
+	padding:10px;
+}
+
+.edit fieldset {
+	border:0px;
+}
+
+.edit .formfield {
+	padding-top:10px;
+}
+
+.edit label {
+	width:250px;
+	text-align:right;
+	padding:0px 5px 0px 0px;
+	clear:both;
+	float:left;
+}
+
+.error {
+	color:#f00;
+}
+
+.disabled {
+	color:#999;
+}
+
+.description {
+	color:#999;
+	font-size:11px;	
+}
+.edit .error {
+}
+
+.edit .error ul {
+	margin:0px 0px 0px 255px;;
+	padding:0px;
+	list-style:none;
+}
+
+.edit .error ul li {
+}
+
+.edit .formfield {
+	clear:both;
+}
+
+.edit .formfieldinputstack {
+	float:left;
+	padding:0px 0px 10px 0px;
+}
+
+.edit .formfieldinputstack label {
+	float:none;
+	width:auto;	
+}
+
+.edit .input {
+	width:40%;
+}
+
+.edit .controls {
+	clear:both;
+	padding:10px 0px 0px 255px;
+}

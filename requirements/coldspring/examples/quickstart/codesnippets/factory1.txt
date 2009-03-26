@@ -1,0 +1,3 @@
+<cfset productService = beanFactory.getBean('productService') />
+<cfset product = productService.getProduct(14) />
+Should return 14 since that is the Product ID we used to create the Product: #product.getProductID()#

@@ -1,0 +1,15 @@
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans default-autowire="byName">
+	
+	<bean id="userService" class="coldspring.examples.quickstart.components.UserService" />
+	
+	<bean id="userGateway" autowire="no" class="coldspring.examples.quickstart.components.UserGateway">
+		<property name="configBean">
+			<ref bean="configBean" />
+		</property>
+	</bean>
+	
+	<bean id="configBean" class="coldspring.examples.quickstart.components.ConfigBean" />
+	
+</beans>

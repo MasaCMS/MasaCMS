@@ -1,0 +1,149 @@
+<!--- This file is part of Mura CMS.
+
+    Mura CMS is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, Version 2 of the License.
+
+    Mura CMS is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Mura CMS.  If not, see <http://www.gnu.org/licenses/>. --->
+
+<cfset request.perm=application.permUtility.getPerm(attributes.moduleid,attributes.siteid)>
+
+<cfparam name="attributes.sortBy" default="">
+<cfparam name="attributes.sortDirection" default="">
+<cfparam name="attributes.searchString" default="">
+
+<cfset titleDirection = "asc">
+<cfset displayDirection = "asc">
+<cfset lastUpdatedDirection = "desc">
+
+<cfswitch expression="#attributes.sortBy#">
+	<cfcase value="title">
+		 <cfif attributes.sortDirection eq "asc">
+			<cfset titleDirection = "desc">
+		</cfif>
+	</cfcase>
+	<cfcase value="display">
+		<cfif attributes.sortDirection eq "asc">
+			<cfset displayDirection = "desc">
+		</cfif>
+	</cfcase>
+	<cfcase value="lastupdate">
+		<cfif attributes.sortDirection eq "desc">
+			<cfset lastUpdatedDirection = "asc">
+		</cfif>
+	</cfcase>
+</cfswitch>
+
+<cfoutput>
+<cfif attributes.moduleid eq '00000000000000000000000000000000004'>
+<h2>#application.rbFactory.getKeyValue(session.rb,'sitemanager.formsmanager')#</h2>
+<cfelse>
+<h2>#application.rbFactory.getKeyValue(session.rb,'sitemanager.componentmanager')#</h2>	
+</cfif>
+
+<ul id="navTask"><cfif attributes.moduleid eq '00000000000000000000000000000000003'><li><a href="index.cfm?fuseaction=cArch.edit&type=Component&contentid=&topid=#attributes.topid#&parentid=#attributes.topid#&siteid=#attributes.siteid#&moduleid=#attributes.moduleid#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.addcomponent')#</a></li><cfelse><li><a href="index.cfm?fuseaction=cArch.edit&type=Form&contentid=&topid=#attributes.topid#&parentid=#attributes.topid#&siteid=#attributes.siteid#&moduleid=#attributes.moduleid#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.addform')#</a></li></cfif></ul>
+
+  <h3 class="alt">#application.rbFactory.getKeyValue(session.rb,'sitemanager.filterview')#:</h3>
+  <form id="filterByTitle" action="index.cfm" method="get">
+	  <h4>#application.rbFactory.getKeyValue(session.rb,'sitemanager.filterviewdesc')#</h4>
+	  <input type="text" name="searchString" value="#HTMLEditFormat(attributes.searchString)#" class="text">
+	  <a class="submit" href="javascript:;" onclick="document.getElementById('filterByTitle').submit();"><span>#application.rbFactory.getKeyValue(session.rb,'sitemanager.filter')#</span></a>
+	  <input type="hidden" name="siteid" value="#attributes.siteid#" />
+	  <input type="hidden" name="topid" value="#attributes.topID#" />
+	  <input type="hidden" name="parentid" value="#attributes.parentID#" />
+	  <input type="hidden" name="moduleid" value="#attributes.moduleID#" />
+	  <input type="hidden" name="sortBy" value="" />
+	  <input type="hidden" name="sortDirection" value="" />
+	  <input type="hidden" name="fuseaction" value="cArch.list" />
+  </form>
+  
+  </cfoutput>
+  <table class="stripe">
+    
+	<cfoutput>
+	<tr> 
+      <th class="varWidth"><a href="index.cfm?fuseaction=cArch.list&siteid=#attributes.siteid#&topid=#attributes.topID#&parentid=#attributes.parentID#&moduleid=#attributes.moduleID#&sortBy=title&sortDirection=#titleDirection#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.title')#</a></th>
+    <!--- <cfif request.perm eq 'editor'><th class="order" width="30">Order</th></cfif>--->
+      <th><a href="index.cfm?fuseaction=cArch.list&siteid=#attributes.siteid#&topid=#attributes.topID#&parentid=#attributes.parentID#&moduleid=#attributes.moduleID#&sortBy=display&sortDirection=#displayDirection#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.display')#</a></th>
+      <th><a href="index.cfm?fuseaction=cArch.list&siteid=#attributes.siteid#&topid=#attributes.topID#&parentid=#attributes.parentID#&moduleid=#attributes.moduleID#&sortBy=lastUpdate&sortDirection=#lastUpdatedDirection#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.lastupdated')#</a></th>
+      <th class="administration">&nbsp;</th>
+    </tr>
+	</cfoutput>
+    <cfif request.rstop.recordcount>
+     <cfoutput query="request.rsTop" maxrows="#request.nextn.recordsperPage#" startrow="#attributes.startrow#">
+	<cfsilent><cfif request.perm neq 'editor'>
+	<cfset verdict=application.permUtility.getPerm(request.rstop.contentid, attributes.siteid)>
+	
+	<cfif verdict neq 'deny'>
+		<cfif verdict eq 'none'>
+			<cfset verdict=request.perm>
+		</cfif>
+	<cfelse>
+		<cfset verdict = "none">
+	</cfif>
+	
+	<cfelse>
+<cfset verdict='editor'>
+</cfif>
+</cfsilent>
+        <tr>  
+          <td class="varWidth"><cfif verdict neq 'none'><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.edit')#" href="index.cfm?fuseaction=cArch.edit&contenthistid=#request.rstop.ContentHistID#&contentid=#request.rstop.ContentID#&type=#request.rstop.type#&parentid=#request.rstop.parentID#&topid=#attributes.topid#&siteid=#attributes.siteid#&moduleid=#attributes.moduleid#">#left(request.rstop.menutitle,90)#</a><cfelse>#left(request.rstop.menutitle,90)#</cfif></td>
+          <!--- <cfif verdict eq 'editor'><td nowrap class="order"><cfif request.rstop.currentrow neq 1><a href="index.cfm?fuseaction=cArch.order&contentid=#request.rstop.contentid#&parentid=#request.rstop.parentid#&direction=down&topid=#attributes.topid#&siteid=#attributes.siteid#&startrow=#attributes.startrow#&moduleid=#attributes.moduleid#"><img src="images/icons/up_on.gif" width="9" height="6" border="0"></a><cfelse><img src="images/icons/up_off.gif" width="9" height="6" border="0"></cfif><cfif request.rstop.currentrow lt request.rstop.recordcount><a href="index.cfm?fuseaction=cArch.order&contentid=#request.rstop.contentid#&parentid=#request.rstop.parentid#&direction=up&topid=#attributes.topid#&siteid=#attributes.siteid#&startrow=#attributes.startrow#&moduleid=#attributes.moduleid#"><img src="images/icons/down_on.gif" width="9" height="6" border="0"></a><cfelse><img src="images/icons/down_off.gif" width="9" height="6" border="0"></cfif></td>	--->  
+			   <td> 
+	    <cfif request.rstop.Display and (request.rstop.Display eq 1 and request.rstop.approved and request.rstop.approved)>#application.rbFactory.getKeyValue(session.rb,'sitemanager.yes')#<cfelseif(request.rstop.Display eq 2 and request.rstop.approved and request.rstop.approved)>#LSDateFormat(request.rstop.displaystart,"short")# - #LSDateFormat(request.rstop.displaystop,"short")#<cfelse>#application.rbFactory.getKeyValue(session.rb,'sitemanager.no')#</cfif></td>
+		<td>#LSDateFormat(request.rstop.lastupdate,session.dateKeyFormat)#</td>
+          <td class="administration">
+			<ul class="#lcase(request.rstop.type)#">
+				<cfif verdict neq 'none'>
+				<li class="edit">
+					<a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.edit')#" href="index.cfm?fuseaction=cArch.edit&contenthistid=#request.rstop.ContentHistID#&contentid=#request.rstop.ContentID#&type=#request.rstop.type#&parentid=#request.rstop.parentID#&topid=#attributes.topid#&siteid=#attributes.siteid#&moduleid=#attributes.moduleid#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.edit')#</a></li>
+					<li class="versionHistory"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.versionhistory')#" href="index.cfm?fuseaction=cArch.hist&contentid=#request.rstop.ContentID#&type=#request.rstop.type#&parentid=#request.rstop.parentID#&topid=#attributes.topid#&siteid=#attributes.siteid#&moduleid=#attributes.moduleid#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.versionhistory')#</a></li>
+					<cfif attributes.moduleid eq '00000000000000000000000000000000004'>
+						<li class="manageData"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.managedata')#" href="index.cfm?fuseaction=cArch.datamanager&contentid=#request.rstop.ContentID#&siteid=#attributes.siteid#&moduleid=#attributes.moduleid#&contenthistid=#request.rstop.ContentHistID#&topid=#attributes.topid#&parentid=#attributes.parentid#&type=Form">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.managedata')#</a></li>
+					</cfif>
+					<cfif isUserInRole('Admin;#application.settingsManager.getSite(attributes.siteid).getPrivateUserPoolID()#;0') or isUserInRole('S2')>
+						<li class="permissions"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.permissions')#" href="index.cfm?fuseaction=cPerm.main&contentid=#request.rstop.ContentID#&type=#request.rstop.type#&parentid=#request.rstop.parentID#&topid=#attributes.topid#&siteid=#attributes.siteid#&moduleid=#attributes.moduleid#&startrow=#attributes.startrow#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.permissions')#</a>
+					<cfelse>
+						<li class="permissionsOff"><a>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.permissions')#</a></li>
+					</cfif>
+				<cfelse>
+					<li class="editOff">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.edit')#</li>
+					<li class="versionHistoryOff">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.versionhistory')#</li>
+					<cfif attributes.moduleid eq '00000000000000000000000000000000004'>
+						<li class="manageDataOff">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.managedata')#</li>
+					</cfif>
+					<li class="permissionsOff"><a>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.permissions')#</a></li>
+				</cfif>
+				<cfif ((attributes.parentid neq '#attributes.topid#' and attributes.locking neq 'all') or (attributes.parentid eq '#attributes.topid#' and attributes.locking eq 'none')) and (verdict eq 'editor') and not request.rsTop.isLocked eq 1>
+					<li class="delete"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.delete')#" href="index.cfm?fuseaction=cArch.update&contentid=#request.rstop.ContentID#&type=#request.rstop.type#&action=deleteall&topid=#attributes.topid#&siteid=#attributes.siteid#&moduleid=#attributes.moduleid#&parentid=#attributes.parentid#" onClick="return confirm('#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.deleteconfirm'))#')">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.delete')#</a></li>
+				<cfelseif attributes.locking neq 'all'>
+					<li class="deleteOff">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.delete')#</li>
+				</cfif>
+			</ul></td></tr>
+       </cfoutput>
+      <cfelse>
+      <tr> 
+        <td colspan="7" class="noResults"><cfoutput>#application.rbFactory.getKeyValue(session.rb,'sitemanager.noitemsinsection')#</cfoutput></td>
+      </tr>
+    </cfif>
+	
+  <!---   <cfif request.nextn.numberofpages gt 1><tr> 
+      <td colspan="7" class="noResults">More Results: <cfloop from="1"  to="#request.nextn.numberofpages#" index="i"><cfoutput><cfif request.nextn.currentpagenumber eq i> #i# <cfelse> <a href="index.cfm?fuseaction=cArch.list&siteid=#attributes.siteid#&moduleid=#attributes.moduleid#&topid=#attributes.topid#&startrow=#evaluate('(#i#*#request.nextn.recordsperpage#)-#request.nextn.recordsperpage#+1')#&sortBy=#attributes.sortBy#&sortDirection=#attributes.sortDirection#&searchString=#attributes.searchString#">#i#</a> </cfif></cfoutput></cfloop></td></tr></cfif> --->
+  </table>
+</td></tr></table>
+
+  <cfif request.nextn.numberofpages gt 1>
+    <cfoutput> 
+ 	#application.rbFactory.getKeyValue(session.rb,'sitemanager.moreresults')#: 
+		
+		 <cfif request.nextN.currentpagenumber gt 1> <a href="index.cfm?fuseaction=cArch.list&siteid=#attributes.siteid#&moduleid=#attributes.moduleid#&topid=#attributes.topid#&startrow=#request.nextN.previous#&sortBy=#attributes.sortBy#&sortDirection=#attributes.sortDirection#&searchString=#attributes.searchString#">&laquo;&nbsp;#application.rbFactory.getKeyValue(session.rb,'sitemanager.prev')#</a></cfif>
+		<cfloop from="#request.nextn.firstPage#"  to="#request.nextn.lastPage#" index="i"><cfif request.nextn.currentpagenumber eq i> #i# <cfelse> <a href="index.cfm?fuseaction=cArch.list&siteid=#attributes.siteid#&moduleid=#attributes.moduleid#&topid=#attributes.topid#&startrow=#evaluate('(#i#*#request.nextn.recordsperpage#)-#request.nextn.recordsperpage#+1')#&sortBy=#attributes.sortBy#&sortDirection=#attributes.sortDirection#&searchString=#attributes.searchString#">#i#</a> </cfif></cfloop>
+		 <cfif request.nextN.currentpagenumber lt request.nextN.NumberOfPages><a href="index.cfm?fuseaction=cArch.list&siteid=#attributes.siteid#&moduleid=#attributes.moduleid#&topid=#attributes.topid#&startrow=#request.nextN.next#&sortBy=#attributes.sortBy#&sortDirection=#attributes.sortDirection#&searchString=#attributes.searchString#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.next')#&nbsp;&raquo;</a></cfif>
+		</cfoutput>
+   </cfif>

@@ -1,0 +1,10 @@
+<cfset languageService = beanFactory.getBean('languageService') />
+
+Result for duplicate: #languageService.duplicateString('foo', 3)#
+<cfdump var="#request.logData#" label="Log data for duplicate">	
+
+Result for reverse: #languageService.reverseString('ColdSpring')#
+<cfdump var="#request.logData#" label="Log data for reverse">	
+
+Result for capitalize: #languageService.capitalizeString('Dependency Injection')#
+<cfdump var="#request.logData#" label="Log data for capitalize">	

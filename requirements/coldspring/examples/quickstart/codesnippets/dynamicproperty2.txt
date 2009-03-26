@@ -1,0 +1,5 @@
+<cfset coldspringConfig = '/coldspring/examples/quickstart/config/coldspring.xml' />
+<cfset properties = StructNew() />
+<cfset properties.dsnName = "myDSN" />
+<cfset beanFactory = CreateObject('component', 'coldspring.beans.DefaultXmlBeanFactory').init(defaultProperties=properties) />
+<cfset beanFactory.loadBeans(coldspringConfig) />

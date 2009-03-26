@@ -1,0 +1,6 @@
+<cfinvoke 
+	webservice="http://#cgi.server_name#:#cgi.server_port#/coldspring/examples/quickstart/components/RemoteLanguageService.cfc?wsdl" 
+	method="reverseString" 
+	returnvariable="remoteResult">
+	<cfinvokeargument name="string" value="A Remote String!" />	
+</cfinvoke>

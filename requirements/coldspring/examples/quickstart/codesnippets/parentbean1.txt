@@ -1,0 +1,25 @@
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+	
+	<bean id="userGateway" class="coldspring.examples.quickstart.components.UserGateway">
+		<property name="configBean">
+			<ref bean="configBean" />
+		</property>
+	</bean>
+	
+	<bean id="invoiceGateway" class="coldspring.examples.quickstart.components.InvoiceGateway">
+		<property name="configBean">
+			<ref bean="configBean" />
+		</property>
+	</bean>
+	
+	<bean id="productGateway" class="coldspring.examples.quickstart.components.ProductGateway">
+		<property name="configBean">
+			<ref bean="configBean" />
+		</property>
+	</bean>
+	
+	<bean id="configBean" class="coldspring.examples.quickstart.components.ConfigBean" />
+	
+</beans>
