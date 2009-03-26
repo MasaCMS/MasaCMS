@@ -1429,7 +1429,7 @@
 	<cfset var body=arguments.str>
 	<cfset var errorStr="">
 	<cfset var regex1="\[sava\].+?\[/sava\]">
-	<cfset var regex2="\[eval\].+?\[/eval\]">
+	<cfset var regex2="\[mura\].+?\[/mura\]">
 	<cfset var finder=refind(regex1,body,1,"true")>
 	
 	<!---  still looks for the Sava tag for backward compatibility --->
