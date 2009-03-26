@@ -160,7 +160,7 @@ Select EmailID from temails where deliverydate <=#createodbcdatetime(now())# and
 															rsemail.subject,
 															rsemail.siteid,
 															rsemail.replyto,
-															"sava_BROADCASTER_START#rsemail.EmailID#sava_BROADCASTER_END"
+															"mura_BROADCASTER_START#rsemail.EmailID#mura_BROADCASTER_END"
 															) />
 								</cfcase>
 								<cfcase value="Text">
@@ -170,7 +170,7 @@ Select EmailID from temails where deliverydate <=#createodbcdatetime(now())# and
 															rsemail.subject,
 															rsemail.siteid,
 															rsemail.replyto,
-															"sava_BROADCASTER_START#rsemail.EmailID#sava_BROADCASTER_END"
+															"mura_BROADCASTER_START#rsemail.EmailID#mura_BROADCASTER_END"
 															) />
 								</cfcase>
 								<cfcase value="HTML & Text">
@@ -184,7 +184,7 @@ Select EmailID from temails where deliverydate <=#createodbcdatetime(now())# and
 															rsemail.subject,
 															rsemail.siteid,
 															rsemail.replyto,
-															"sava_BROADCASTER_START#rsemail.EmailID#sava_BROADCASTER_END"
+															"mura_BROADCASTER_START#rsemail.EmailID#mura_BROADCASTER_END"
 															) />
 								</cfcase>
 							</cfswitch> 
@@ -193,7 +193,7 @@ Select EmailID from temails where deliverydate <=#createodbcdatetime(now())# and
 						    <cfset prevEmail=rsAddresses.email />
 						    <cfset counter=counter+1 />
 					<cfcatch>
-						 <cfset variables.utility.logEvent("EmailID:#rsemail.emailid# Subject:#rsemail.subject# Email#rsAddresses.email# was not sent","sava-mail","Error",true) />
+						 <cfset variables.utility.logEvent("EmailID:#rsemail.emailid# Subject:#rsemail.subject# Email#rsAddresses.email# was not sent","mura-mail","Error",true) />
 						 <cfset track(rsEmail.emailid, rsAddresses.email, "bounce") />
 					 </cfcatch>
 				  </cftry> 
@@ -210,7 +210,7 @@ Select EmailID from temails where deliverydate <=#createodbcdatetime(now())# and
 				</cfquery>
 				</cfif>
 				
-				<cfset variables.utility.logEvent("EmailID:#rsemail.emailid# Subject:#rsemail.subject# was sent","sava-email","Information",true) />
+				<cfset variables.utility.logEvent("EmailID:#rsemail.emailid# Subject:#rsemail.subject# was sent","mura-email","Information",true) />
 				
 			</cfif>
 		
@@ -352,7 +352,7 @@ Select EmailID from temails where deliverydate <=#createodbcdatetime(now())# and
 								</cfcase>
 							</cfswitch> 
 						<cfcatch>
-							<cfset variables.utility.logEvent("#rsemail.subject#^#t#","sava-mail","Error",true) />
+							<cfset variables.utility.logEvent("#rsemail.subject#^#t#","mura-mail","Error",true) />
 						</cfcatch>
 					</cftry>
 				</cfif>
@@ -454,8 +454,8 @@ Select EmailID from temails where deliverydate <=#createodbcdatetime(now())# and
 	<cfset newLine = Chr(13) & Chr(10)>
 	
 	<cfloop query = "getEmail">	
-		<cfset startPos = findNoCase("sava_broadcaster_start", body)>
-		<cfset endPos = findNoCase("sava_broadcaster_end", body)>
+		<cfset startPos = findNoCase("mura_broadcaster_start", body)>
+		<cfset endPos = findNoCase("mura_broadcaster_end", body)>
 		<cfif startPos gt 0 and endPos gt 0>
 			<cfset messageList = listAppend(messageList, UID) />
 			<cfset startPos = startPos + 26>

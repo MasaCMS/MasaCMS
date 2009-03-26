@@ -570,7 +570,7 @@
 	
 	<cfset variables.contentDAO.createTags(newBean) />
 	
-	<cfset variables.utility.logEvent("ContentID:#newBean.getcontentID()# ContentHistID:#newBean.getcontentHistID()# MenuTitle:#newBean.getMenuTitle()# Type:#newBean.getType()# was created","sava-content","Information",true) />
+	<cfset variables.utility.logEvent("ContentID:#newBean.getcontentID()# ContentHistID:#newBean.getcontentHistID()# MenuTitle:#newBean.getMenuTitle()# Type:#newBean.getType()# was created","mura-content","Information",true) />
 	<cfset variables.contentDAO.create(newBean) />
 	<!--- END CONTENT TYPE: ALL CONTENT TYPES --->
 	
@@ -640,7 +640,7 @@
 							</cfquery>
 					</cfif>
 				
-				<cfset variables.utility.logEvent("ContentID:#currentBean.getcontentID()# MenuTitle:#currentBean.getMenuTitle()# Type:#currentBean.getType()# was completely deleted","sava-content","Information",true) />		
+				<cfset variables.utility.logEvent("ContentID:#currentBean.getcontentID()# MenuTitle:#currentBean.getMenuTitle()# Type:#currentBean.getType()# was completely deleted","mura-content","Information",true) />		
 				<cfset variables.contentDAO.delete(currentBean) />
 				
 			</cfif>
@@ -693,7 +693,7 @@
 			</cfif>			
 		</cfloop>
 		
-		<cfset variables.utility.logEvent("ContentID:#currentBean.getcontentID()# MenuTitle:#currentBean.getMenuTitle()# Type:#currentBean.getType()# version history was deleted","sava-content","Information",true) />
+		<cfset variables.utility.logEvent("ContentID:#currentBean.getcontentID()# MenuTitle:#currentBean.getMenuTitle()# Type:#currentBean.getType()# version history was deleted","mura-content","Information",true) />
 		<cfset variables.contentDAO.deletehistall(data.contentid,data.siteid) />
 		
 	</cffunction>
@@ -727,7 +727,7 @@
 			</cfif>
 		</cfif>
 		
-		<cfset variables.utility.logEvent("ContentID:#versionBean.getcontentID()# ContentHistID:#versionBean.getcontentHistID()# MenuTitle:#versionBean.getMenuTitle()# Type:#versionBean.getType()#  version was deleted","sava-content","Information",true) />		
+		<cfset variables.utility.logEvent("ContentID:#versionBean.getcontentID()# ContentHistID:#versionBean.getcontentHistID()# MenuTitle:#versionBean.getMenuTitle()# Type:#versionBean.getType()#  version was deleted","mura-content","Information",true) />		
 		<cfset variables.contentDAO.deletehist(arguments.data.contenthistid,arguments.data.siteid) />
 		<cfset variables.contentDAO.deleteTagHist(arguments.data.contenthistid,arguments.data.siteid) />
 		<cfset variables.contentDAO.deleteObjectsHist(arguments.data.contenthistid,arguments.data.siteid) />

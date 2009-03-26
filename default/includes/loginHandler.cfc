@@ -68,7 +68,7 @@
 			 	</cfcatch>
 			 </cftry>
 			 
-			  <!--- Check if the user is a member of any SAVA groups with the same name. --->
+			  <!--- Check if the user is a member of any Mura groups with the same name. --->
 		<cftry>
 			<cfldap
 				 action="QUERY"

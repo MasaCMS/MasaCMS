@@ -58,7 +58,7 @@
 	<cfif structIsEmpty(campaignBean.getErrors())>
 		<cfset campaignBean.setLastUpdateBy("#listGetAt(getAuthUser(),2,'^')#") />
 		<cfset campaignBean.setCampaignID("#createUUID()#") />
-		<cfset variables.instance.globalUtility.logEvent("CampaignID:#campaignBean.getCampaignID()# Name:#campaignBean.getName()# was created","sava-advertising","Information",true) />
+		<cfset variables.instance.globalUtility.logEvent("CampaignID:#campaignBean.getCampaignID()# Name:#campaignBean.getName()# was created","mura-advertising","Information",true) />
 		<cfset variables.instance.DAO.create(campaignBean) />
 	</cfif>
 	
@@ -79,7 +79,7 @@
 	<cfset campaignBean.set(arguments.data) />
 	
 	<cfif structIsEmpty(campaignBean.getErrors())>
-		<cfset variables.instance.globalUtility.logEvent("CampaignID:#campaignBean.getCampaignID()# Name:#campaignBean.getName()# was updated","sava-advertising","Information",true) />
+		<cfset variables.instance.globalUtility.logEvent("CampaignID:#campaignBean.getCampaignID()# Name:#campaignBean.getName()# was updated","mura-advertising","Information",true) />
 		<cfset campaignBean.setLastUpdateBy("#listGetAt(getAuthUser(),2,'^')#") />
 		<cfset variables.instance.DAO.update(campaignBean) />
 	</cfif>
@@ -91,7 +91,7 @@
 	<cfargument name="campaignID" type="String" />		
 	
 	<cfset var campaignBean=read(arguments.campaignID) />
-	<cfset variables.instance.globalUtility.logEvent("CampaignID:#arguments.campaignID# Name:#campaignBean.getName()# was deleted","sava-advertising","Information",true) />
+	<cfset variables.instance.globalUtility.logEvent("CampaignID:#arguments.campaignID# Name:#campaignBean.getName()# was deleted","mura-advertising","Information",true) />
 	<cfset variables.instance.DAO.delete(arguments.campaignID) />
 	<cfset variables.instance.placementManager.deleteByCampaign(arguments.campaignID) />
 	

@@ -94,14 +94,14 @@
 		<cfset emailBean.set(data) />
 		<cfset emailBean.setLastUpdateBy("#listGetAt(getAuthUser(),2,"^")#") />
 		<cfset emailBean.setLastUpdateByID("#listGetAt(getAuthUser(),1,"^")#") />
-		<cfset variables.globalUtility.logEvent("EmailID: #emailBean.getEmailID()# Subject:#emailBean.getSubject()# was updated","sava-email","Information",true) />
+		<cfset variables.globalUtility.logEvent("EmailID: #emailBean.getEmailID()# Subject:#emailBean.getSubject()# was updated","mura-email","Information",true) />
 		<cfset variables.emailDAO.update(emailbean) />
 		<cfset variables.emailUtility.send() />
 	</cfcase>
 	
 	<cfcase value="Delete">
 		<cfset emailBean=read(data.emailid) />
-		<cfset variables.globalUtility.logEvent("EmailID:#data.emailid# Subject:#emailBean.getSubject()# was deleted","sava-email","Information",true) />
+		<cfset variables.globalUtility.logEvent("EmailID:#data.emailid# Subject:#emailBean.getSubject()# was deleted","mura-email","Information",true) />
 		<cfset variables.emailDAO.delete(data.emailid) />
 	</cfcase>
 	
@@ -135,7 +135,7 @@
 		<cfset emailBean.setLastUpdateBy("#listGetAt(getAuthUser(),2,"^")#") />
 		<cfset emailBean.setLastUpdateByID("#listGetAt(getAuthUser(),1,"^")#") />
 		<cfset emailBean.setEmailID(createuuid()) />
-		<cfset variables.globalUtility.logEvent("Email:#emailBean.getEmailID()# Subject:#emailBean.getSubject()# was created","sava-email","Information",true) />
+		<cfset variables.globalUtility.logEvent("Email:#emailBean.getEmailID()# Subject:#emailBean.getSubject()# was created","mura-email","Information",true) />
 		<cfset variables.emailDAO.create(emailbean) />
 		<cfset variables.emailUtility.send() />
 		

@@ -42,7 +42,7 @@
 	<cfif structIsEmpty(adZoneBean.getErrors())>
 		<cfset adZoneBean.setLastUpdateBy("#listGetAt(getAuthUser(),2,'^')#") />
 		<cfset adZoneBean.setAdZoneID("#createUUID()#") />
-		<cfset variables.instance.globalUtility.logEvent("AdZoneID:#adZoneBean.getAdZoneID()# Name:#adZoneBean.getName()# was created","sava-advertising","Information",true) />
+		<cfset variables.instance.globalUtility.logEvent("AdZoneID:#adZoneBean.getAdZoneID()# Name:#adZoneBean.getName()# was created","mura-advertising","Information",true) />
 		<cfset variables.instance.DAO.create(adZoneBean) />
 	</cfif>
 	
@@ -63,7 +63,7 @@
 	<cfset adZoneBean.set(arguments.data) />
 	
 	<cfif structIsEmpty(adZoneBean.getErrors())>
-		<cfset variables.instance.globalUtility.logEvent("AdZoneID:#adZoneBean.getAdZoneID()# Name:#adZoneBean.getName()# was updated","sava-advertising","Information",true) />
+		<cfset variables.instance.globalUtility.logEvent("AdZoneID:#adZoneBean.getAdZoneID()# Name:#adZoneBean.getName()# was updated","mura-advertising","Information",true) />
 		<cfset adZoneBean.setLastUpdateBy("#listGetAt(getAuthUser(),2,'^')#") />
 		<cfset variables.instance.DAO.update(adZoneBean) />
 	</cfif>
@@ -75,7 +75,7 @@
 	<cfargument name="adZoneID" type="String" />		
 	
 	<cfset var adZoneBean=read(arguments.adZoneID) />
-	<cfset variables.instance.globalUtility.logEvent("AdZoneID:#arguments.adZoneID# Name:#adZoneBean.getName()# was created","sava-advertising","Information",true) />
+	<cfset variables.instance.globalUtility.logEvent("AdZoneID:#arguments.adZoneID# Name:#adZoneBean.getName()# was created","mura-advertising","Information",true) />
 	<cfset variables.instance.DAO.delete(arguments.adZoneID) />
 
 </cffunction>

@@ -296,7 +296,7 @@
 <cfparam name="session.rb" default=""/>
 <cfparam name="session.locale" default=""/>
 
-<!---  session.rb is used to tell sava what resource bundle to use for lan translations --->
+<!---  session.rb is used to tell mura what resource bundle to use for lan translations --->
 <cfif not Len(session.rb)>
 	<cfif application.configBean.getDefaultLocale() neq "Server">
 		<cfif application.configBean.getDefaultLocale() eq "Client">
@@ -315,7 +315,7 @@
 </cfif>
 
 
-<!--- session.locale  is the locale that sava uses for date formating --->
+<!--- session.locale  is the locale that mura uses for date formating --->
 <cfif not Len(session.locale)>
 	<cfif application.configBean.getDefaultLocale() neq "Server">
 		<cfif application.configBean.getDefaultLocale() eq "Client">

@@ -44,7 +44,7 @@
 	<cfif structIsEmpty(placementBean.getErrors())>
 		<cfset placementBean.setLastUpdateBy("#listGetAt(getAuthUser(),2,'^')#") />
 		<cfset placementBean.setPlacementID("#createUUID()#") />
-		<cfset variables.instance.globalUtility.logEvent("PlacementID:#placementBean.getPlacementID()# CampaignID:#placementBean.getCampaignID()# was created","sava-advertising","Information",true) />
+		<cfset variables.instance.globalUtility.logEvent("PlacementID:#placementBean.getPlacementID()# CampaignID:#placementBean.getCampaignID()# was created","mura-advertising","Information",true) />
 		<cfset variables.instance.DAO.create(placementBean) />
 	</cfif>
 	
@@ -65,7 +65,7 @@
 	<cfset placementBean.set(arguments.data) />
 	
 	<cfif structIsEmpty(placementBean.getErrors())>
-		<cfset variables.instance.globalUtility.logEvent("PlacementID:#placementBean.getPlacementID()# Name:#placementBean.getCampaignID()# was updated","sava-advertising","Information",true) />
+		<cfset variables.instance.globalUtility.logEvent("PlacementID:#placementBean.getPlacementID()# Name:#placementBean.getCampaignID()# was updated","mura-advertising","Information",true) />
 		<cfset placementBean.setLastUpdateBy("#listGetAt(getAuthUser(),2,'^')#") />
 		<cfset variables.instance.DAO.update(placementBean) />
 	</cfif>
@@ -77,7 +77,7 @@
 	<cfargument name="placementID" type="String" />		
 	
 	<cfset var placementBean=read(arguments.placementID) />
-	<cfset variables.instance.globalUtility.logEvent("PlacementID:#arguments.placementID# CampaignID:#placementBean.getCampaignID()# was deleted","sava-advertising","Information",true) />
+	<cfset variables.instance.globalUtility.logEvent("PlacementID:#arguments.placementID# CampaignID:#placementBean.getCampaignID()# was deleted","mura-advertising","Information",true) />
 	<cfset variables.instance.DAO.delete(arguments.placementID) />
 
 </cffunction>
@@ -85,7 +85,7 @@
 <cffunction name="deleteByCampaign" access="public" returntype="void" output="false">
 	<cfargument name="campaignID" type="String" />		
 	
-	<cfset variables.instance.globalUtility.logEvent("All Placements for CampaignID:#arguments.campaignID# were deleted","sava-advertising","Information",true) />
+	<cfset variables.instance.globalUtility.logEvent("All Placements for CampaignID:#arguments.campaignID# were deleted","mura-advertising","Information",true) />
 	<cfset variables.instance.DAO.deleteByCampaign(arguments.campaignID) />
 
 </cffunction>

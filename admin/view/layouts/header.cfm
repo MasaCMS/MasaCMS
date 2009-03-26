@@ -34,12 +34,12 @@
           </li>
         </cfif>
         <li id="navEditProfile"><a href="#application.configBean.getContext()#/admin/index.cfm?fuseaction=cEditProfile.edit">#application.rbFactory.getKeyValue(session.rb,"layout.editprofile")#</a></li>
-        <li id="navHelp"><a href="http://www.gosava.com/go/sava/support/index.cfm">#application.rbFactory.getKeyValue(session.rb,"layout.help")#</a>
-          <ul><li><a id="navHelpDocs" href="http://docs.gosava.com/go/v5/index.cfm">#application.rbFactory.getKeyValue(session.rb,"layout.cmsdocumentation")#</a></li>
+        <li id="navHelp"><a href="http://www.getmura.com/go/sava/support/index.cfm">#application.rbFactory.getKeyValue(session.rb,"layout.help")#</a>
+          <ul><li><a id="navHelpDocs" href="http://docs.getmura.com/go/v5/index.cfm">#application.rbFactory.getKeyValue(session.rb,"layout.cmsdocumentation")#</a></li>
 	    	<li><a id="navFckEditorDocs" href="http://docs.fckeditor.net/" target="_blank">#application.rbFactory.getKeyValue(session.rb,"layout.editordocumentation")#</a></li>
 	    	<li><a id="navProg-API" href="http://documentation.blueriver.com/sava/5/components/" target="_blank">Programmer API</a></li>
-	    	<li><a id="navCSS-API" href="http://docs.gosava.com/go/v5/developer-guide/front-end-development/" target="_blank">#application.rbFactory.getKeyValue(session.rb,"layout.xhtmlcssapi")#</a></li>
-           <li class="last"><a id="navHelpForums" href="http://www.gosava.com/sava/forum/" target="_blank">#application.rbFactory.getKeyValue(session.rb,"layout.supportforum")#</a></li>
+	    	<li><a id="navCSS-API" href="http://docs.getmura.com/go/v5/developer-guide/front-end-development/" target="_blank">#application.rbFactory.getKeyValue(session.rb,"layout.xhtmlcssapi")#</a></li>
+           <li class="last"><a id="navHelpForums" href="http://www.getmura.com/sava/forum/" target="_blank">#application.rbFactory.getKeyValue(session.rb,"layout.supportforum")#</a></li>
           </ul>
         </li>
         <li id="navLogout"><a href="#application.configBean.getContext()#/admin/index.cfm?fuseaction=cLogin.logout">#application.rbFactory.getKeyValue(session.rb,"layout.logout")#</a></li>

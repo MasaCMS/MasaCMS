@@ -12,4 +12,4 @@
     You should have received a copy of the GNU General Public License
     along with Mura CMS.  If not, see <http://www.gnu.org/licenses/>. --->
 
-<!--- you can place custom <li></li> in this file and they'll show up in the sava admin --->
+<!--- you can place custom <li></li> in this file and they'll show up in the Mura admin --->

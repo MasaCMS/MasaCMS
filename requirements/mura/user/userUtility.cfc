@@ -192,7 +192,7 @@
 				WHERE tusers.UserID='#rsUser.UserID#'
 				</cfquery>
 				
-				<cfset variables.globalUtility.logEvent("UserID:#rsuser.userid# Name:#rsuser.fname# #rsuser.lname# logged in at #now()#","sava-users","Information",true) />
+				<cfset variables.globalUtility.logEvent("UserID:#rsuser.userid# Name:#rsuser.fname# #rsuser.lname# logged in at #now()#","mura-users","Information",true) />
 
 
 </cffunction>

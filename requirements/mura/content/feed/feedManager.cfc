@@ -65,7 +65,7 @@
 	<cfif structIsEmpty(feedBean.getErrors())>
 		<cfset feedBean.setLastUpdateBy("#listGetAt(getAuthUser(),2,'^')#") />
 		<cfset feedBean.setFeedID("#createUUID()#") />
-		<cfset variables.globalUtility.logEvent("feedID:#feedBean.getfeedID()# Name:#feedBean.getName()# was created","sava-content","Information",true) />
+		<cfset variables.globalUtility.logEvent("feedID:#feedBean.getfeedID()# Name:#feedBean.getName()# was created","mura-content","Information",true) />
 		<cfset variables.feedDAO.create(feedBean) />
 		<cfset pluginEvent.setValue("feedBean",feedBean)>
 		<cfset variables.pluginManager.executeScripts("onFeedSave",feedBean.getSiteID(),pluginEvent)>
@@ -96,7 +96,7 @@
 	<cfset feedBean.set(arguments.data) />
 	
 	<cfif structIsEmpty(feedBean.getErrors())>
-		<cfset variables.globalUtility.logEvent("feedID:#feedBean.getfeedID()# Name:#feedBean.getName()# was updated","sava-content","Information",true) />
+		<cfset variables.globalUtility.logEvent("feedID:#feedBean.getfeedID()# Name:#feedBean.getName()# was updated","mura-content","Information",true) />
 		<cfset feedBean.setLastUpdateBy("#listGetAt(getAuthUser(),2,'^')#") />
 		<cfset variables.feedDAO.update(feedBean) />
 		<cfset pluginEvent.setValue("feedBean",feedBean)>
@@ -111,7 +111,7 @@
 	
 	<cfset var feedBean=read(arguments.feedID) />
 	<cfset var pluginEvent = createObject("component","mura.event") />
-	<cfset variables.globalUtility.logEvent("feedID:#feedBean.getfeedID()# Name:#feedBean.getName()# was deleted","sava-content","Information",true) />
+	<cfset variables.globalUtility.logEvent("feedID:#feedBean.getfeedID()# Name:#feedBean.getName()# was deleted","mura-content","Information",true) />
 	<cfset variables.feedDAO.delete(arguments.feedID) />
 	
 	<cfset pluginEvent.setValue("feedBean",feedBean)>

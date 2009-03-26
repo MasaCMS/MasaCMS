@@ -109,7 +109,7 @@
 		<cfset variables.userDAO.updateAddress(addressBean) />
 		</cfif>
 		
-		<cfset variables.globalUtility.logEvent("UserID:#userBean.getUserID()# Type:#userBean.getType()# User:#userBean.getFName()# #userBean.getFName()# Group:#userBean.getGroupName()# was updated","sava-users","Information",true) />
+		<cfset variables.globalUtility.logEvent("UserID:#userBean.getUserID()# Type:#userBean.getType()# User:#userBean.getFName()# #userBean.getFName()# Group:#userBean.getGroupName()# was updated","mura-users","Information",true) />
 		<cfset setLastUpdateInfo(userBean) />
 		<cfset variables.userDAO.update(userBean,arguments.updateGroups,arguments.updateInterests,arguments.OriginID) />
 	
@@ -161,7 +161,7 @@
 		</cfif>
 		
 		<cfif structIsEmpty(userBean.getErrors())>
-		<cfset variables.globalUtility.logEvent("UserID:#userBean.getUserID()# Type:#userBean.getType()# User:#userBean.getFName()# #userBean.getFName()# Group:#userBean.getGroupName()# was created","sava-users","Information",true) />
+		<cfset variables.globalUtility.logEvent("UserID:#userBean.getUserID()# Type:#userBean.getType()# User:#userBean.getFName()# #userBean.getFName()# Group:#userBean.getGroupName()# was created","mura-users","Information",true) />
 		<cfset setLastUpdateInfo(userBean) />
 		<cfset variables.userDAO.create(userBean) />
 		<cfset variables.userDAO.createAddress(addressBean) />
@@ -194,7 +194,7 @@
 		<cfset variables.pluginManager.executeScripts("onUserDelete",userBean.getSiteID(),pluginEvent)>	
 	</cfif>
 	
-	<cfset variables.globalUtility.logEvent("UserID:#arguments.userid# Type:#userBean.getType()# User:#userBean.getFName()# #userBean.getFName()# Group:#userBean.getGroupName()# was deleted","sava-users","Information",true) />
+	<cfset variables.globalUtility.logEvent("UserID:#arguments.userid# Type:#userBean.getType()# User:#userBean.getFName()# #userBean.getFName()# Group:#userBean.getGroupName()# was deleted","mura-users","Information",true) />
 	<cfif len(userBean.getPhotoFileID())>
 		<cfset variables.fileManager.deleteVersion(userBean.getPhotoFileID()) />
 	</cfif>

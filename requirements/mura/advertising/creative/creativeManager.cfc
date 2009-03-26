@@ -53,7 +53,7 @@
 	<cfif structIsEmpty(creativeBean.getErrors())>
 		<cfset creativeBean.setLastUpdateBy("#listGetAt(getAuthUser(),2,'^')#") />
 		<cfset creativeBean.setCreativeID("#createUUID()#") />
-		<cfset variables.instance.globalUtility.logEvent("CreativeID:#creativeBean.getCreativeID()# Name:#creativeBean.getName()# was created","sava-advertising","Information",true) />
+		<cfset variables.instance.globalUtility.logEvent("CreativeID:#creativeBean.getCreativeID()# Name:#creativeBean.getName()# was created","mura-advertising","Information",true) />
 		<cfset uploadMedia(creativeBean,arguments.data.newFile,arguments.data.siteid) />
 		<cfset variables.instance.DAO.create(creativeBean) />
 	</cfif>
@@ -74,7 +74,7 @@
 	<cfset creativeBean.set(arguments.data) />
 	
 	<cfif structIsEmpty(creativeBean.getErrors())>
-		<cfset variables.instance.globalUtility.logEvent("CreativeID:#creativeBean.getCreativeID()# Name:#creativeBean.getName()# was updated","sava-advertising","Information",true) />
+		<cfset variables.instance.globalUtility.logEvent("CreativeID:#creativeBean.getCreativeID()# Name:#creativeBean.getName()# was updated","mura-advertising","Information",true) />
 		<cfset uploadMedia(creativeBean,arguments.data.newFile,arguments.data.siteid) />
 		<cfset creativeBean.setLastUpdateBy("#listGetAt(getAuthUser(),2,'^')#") />
 		<cfset variables.instance.DAO.update(creativeBean) />
@@ -89,7 +89,7 @@
 	<cfset var creativeBean=variables.instance.DAO.read(arguments.creativeID) />	
 	<cfset deleteMedia(creativeBean) />
 	<cfset variables.instance.DAO.delete(arguments.creativeID) />
-	<cfset variables.instance.globalUtility.logEvent("CreativeID:#creativeBean.getCreativeID()# Name:#creativeBean.getName()# was deleted","sava-advertising","Information",true) />
+	<cfset variables.instance.globalUtility.logEvent("CreativeID:#creativeBean.getCreativeID()# Name:#creativeBean.getName()# was deleted","mura-advertising","Information",true) />
 
 </cffunction>
 

@@ -155,7 +155,7 @@
 		<cfset categoryBean.setLastUpdateBy("#listGetAt(getAuthUser(),2,'^')#") />
 		<cfset categoryBean.setCategoryID("#createUUID()#") />
 		<cfset setMaterializedPath(categoryBean) />
-		<cfset variables.utility.logEvent("CategoryID:#categoryBean.getCategoryID()# Name:#categoryBean.getName()# was created","sava-content","Information",true) />
+		<cfset variables.utility.logEvent("CategoryID:#categoryBean.getCategoryID()# Name:#categoryBean.getName()# was created","mura-content","Information",true) />
 		<cfset variables.DAO.create(categoryBean) />
 	</cfif>
 	
@@ -194,7 +194,7 @@
 		</cfif>
 	</cfif>
 	
-	<cfset variables.utility.logEvent("CategoryID:#categoryBean.getCategoryID()# Name:#categoryBean.getName()# was updated","sava-content","Information",true) />
+	<cfset variables.utility.logEvent("CategoryID:#categoryBean.getCategoryID()# Name:#categoryBean.getName()# was updated","mura-content","Information",true) />
 	
 	<cfreturn categoryBean />
 </cffunction>
@@ -210,7 +210,7 @@
 		<cfset newPath=listDeleteAt(categoryBean.getPath(),listLen(categoryBean.getPath())) /> 
 		<cfset updateMaterializedPath(newPath,currentPath,categoryBean.getSiteID())>
 	</cfif>
-	<cfset variables.utility.logEvent("CategoryID:#categoryBean.getCategoryID()# Name:#categoryBean.getName()# was deleted","sava-content","Information",true) />
+	<cfset variables.utility.logEvent("CategoryID:#categoryBean.getCategoryID()# Name:#categoryBean.getName()# was deleted","mura-content","Information",true) />
 	<cfset variables.DAO.delete(arguments.categoryID) />
 
 </cffunction>

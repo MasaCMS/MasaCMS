@@ -35,7 +35,7 @@
 	
 	<cfset var listBean=application.serviceFactory.getBean("mailinglistBean") />
 	<cfset listBean.set(arguments.data) />
-	<cfset variables.utility.logEvent("MLID:#listBean.getMLID()# Name:#listBean.getName()# was created","sava-mailinglists","Information",true) />
+	<cfset variables.utility.logEvent("MLID:#listBean.getMLID()# Name:#listBean.getName()# was created","mura-mailinglists","Information",true) />
 	<cfset variables.mailinglistDAO.update(listbean) />
 	<cfif isdefined('arguments.data.listfile') and arguments.data.listfile neq ''>
 		<cfset variables.mailinglistUtility.upload(arguments.data.direction,listbean) />
@@ -52,7 +52,7 @@
 	<cfset var listBean=application.serviceFactory.getBean("mailinglistBean") />
 	<cfset listBean.set(arguments.data) />
 	<cfset listBean.setMLID(createuuid()) />
-	<cfset variables.utility.logEvent("MLID:#listBean.getMLID()# Name:#listBean.getName()# was updated","sava-mailinglists","Information",true) />
+	<cfset variables.utility.logEvent("MLID:#listBean.getMLID()# Name:#listBean.getName()# was updated","mura-mailinglists","Information",true) />
 	<cfset variables.mailinglistDAO.create(listbean) />
 	<cfif isdefined('arguments.data.listfile') and arguments.data.listfile neq ''>
 		<cfset variables.mailinglistUtility.upload(arguments.data.direction,listbean) />
@@ -67,7 +67,7 @@
 	<cfargument name="siteid" type="string" />
 	
 	<cfset var listBean=read(arguments.mlid,arguments.siteid) />
-	<cfset variables.utility.logEvent("MLID:#arguments.mlid# Name:#listBean.getName()# was deleted","sava-mailinglists","Information",true) />
+	<cfset variables.utility.logEvent("MLID:#arguments.mlid# Name:#listBean.getName()# was deleted","mura-mailinglists","Information",true) />
 	<cfset variables.mailinglistDAO.delete(arguments.mlid,arguments.siteid) />
 	<cfset variables.utility.flushCache(arguments.siteid)/>
 	

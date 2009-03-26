@@ -92,7 +92,7 @@
 	<cfset bean.set(arguments.data) />
 	
 	<cfif structIsEmpty(bean.getErrors())>
-		<cfset variables.utility.logEvent("SiteID:#bean.getSiteID()# Site:#bean.getSite()# was updated","sava-settings","Information",true) />
+		<cfset variables.utility.logEvent("SiteID:#bean.getSiteID()# Site:#bean.getSite()# was updated","mura-settings","Information",true) />
 		<cfset variables.DAO.update(bean) />
 		<cfset setSites()/>
 		<cfset variables.utility.flushCache(arguments.data.siteid)/>
@@ -106,7 +106,7 @@
 	<cfargument name="siteid" type="string" />
 	
 	<cfset var bean=read(arguments.siteid) />
-	<cfset variables.utility.logEvent("SiteID:#arguments.siteid# Site:#bean.getSite()# was deleted","sava-settings","Information",true) />
+	<cfset variables.utility.logEvent("SiteID:#arguments.siteid# Site:#bean.getSite()# was deleted","mura-settings","Information",true) />
 	<cfset variables.DAO.delete(arguments.siteid) />
 	<cfset variables.utility.flushCache(arguments.siteid)/>
 	<cfset setSites() />
@@ -131,7 +131,7 @@
 			<cfabort>
 		</cfif>
 		
-		<cfset variables.utility.logEvent("SiteID:#bean.getSiteID()# Site:#bean.getSite()# was created","sava-settings","Information",true) />
+		<cfset variables.utility.logEvent("SiteID:#bean.getSiteID()# Site:#bean.getSite()# was created","mura-settings","Information",true) />
 		<cfset variables.DAO.create(bean) />
 		<cfset variables.utility.copyDir("#variables.configBean.getWebRoot()##variables.configBean.getFileDelim()#default#variables.configBean.getFileDelim()#", "#variables.configBean.getWebRoot()##variables.configBean.getFileDelim()##bean.getSiteID()##variables.configBean.getFileDelim()#") />
 		<cfset variables.utility.createRequiredSiteDirectories(bean.getSiteID()) />
