@@ -987,4 +987,30 @@
 
 </cffunction>
 
+<cffunction name="setCategory" returntype="any" access="public" output="false">
+	<cfargument name="categoryID"  required="true" default=""/>
+	<cfargument name="membership"  required="true" default="0"/>
+	<cfargument name="featureStart"  required="true" default=""/>	
+	<cfargument name="featureStop"  required="true" default=""/>	
+	
+	<cfset var catTrim=replace(arguments.categoryID,'-','','ALL')>
+	
+	<cfset variables.instance["categoryAssign#catTrim#"]=arguments.membership />
+	
+	<cfif arguments.membership eq "2">
+		<cfif isdate(arguments.featureStart)>
+		<cfset variables.instance['featureStart#catTrim#']=arguments.featureStart />
+		<cfset variables.instance['starthour#catTrim#']=hour(arguments.featureStart)+1 />
+		<cfset variables.instance['startMinute#catTrim#']=minute(arguments.featureStart) />
+		<cfset variables.instance['startDayPart#catTrim#']=dateFormat(arguments.featureStart,"tt") />
+		</cfif>
+		<cfif isdate(arguments.featureStop)>
+		<cfset variables.instance['featureStop#catTrim#']=arguments.featureStop />
+		<cfset variables.instance['stophour#catTrim#']=hour(arguments.featureStop)+1 />
+		<cfset variables.instance['stopMinute#catTrim#']=minute(arguments.featureStop) />
+		<cfset variables.instance['stopDayPart#catTrim#']=dateFormat(arguments.featureStop,"tt") />
+		</cfif>
+	</cfif>
+</cffunction>
+
 </cfcomponent>
