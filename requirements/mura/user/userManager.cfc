@@ -66,18 +66,69 @@
 	<cfreturn variables.userDAO.readByRemoteID(arguments.remoteID,arguments.siteid) />
 </cffunction>
 
+<cffunction name="save" access="public" returntype="any" output="false">
+	<cfargument name="data" type="any" default="#structnew()#"/>	
+	<cfargument name="updateGroups" type="boolean" default="true" required="yes" />
+	<cfargument name="updateInterests" type="boolean" default="true" required="yes" />
+	<cfargument name="OriginID" type="string" default="" required="yes" />
+	
+	<cfset var userID="">
+	<cfset var rs="">
+	
+	<cfif isObject(arguments.data)>
+		<cfif getMetaData(arguments.data).name eq "mura.user.userBean">
+		<cfset userID=arguments.data.getUserID()>
+		<cfelse>
+			<cfthrow type="custom" message="The attribute 'DATA' is not of type 'mura.user.userBean'">
+		</cfif>
+	<cfelseif structKeyExists(arguments.data,"userID")>
+		<cfset userID=arguments.data.userID>
+	<cfelse>
+		<cfthrow type="custom" message="The attribute 'USERID' is required when saving a user.">
+	</cfif>
+	
+	<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#" name="rs">
+	select userID from tusers where userID=<cfqueryparam value="#userID#">
+	</cfquery>
+	
+	<cfif rs.recordcount>
+		<cfreturn update(arguments.data,arguments.updateGroups,arguments.updateInterests,originID)>	
+	<cfelse>
+		<cfreturn create(arguments.data)>
+	</cfif>
+
+</cffunction>
+
 <cffunction name="update" access="public" returntype="any" output="false">
-	<cfargument name="data" type="struct" default="#structnew()#"/>	
+	<cfargument name="data" type="any" default="#structnew()#"/>	
 	<cfargument name="updateGroups" type="boolean" default="true" required="yes" />
 	<cfargument name="updateInterests" type="boolean" default="true" required="yes" />
 	<cfargument name="OriginID" type="string" default="" required="yes" />
 	
 	<cfset var error =""/>
 	<cfset var addressBean =""/>
-	<cfset var userBean=variables.userDAO.read(arguments.data.userid) />
-	<cfset var pluginEvent = createObject("component","mura.event").init(arguments.data) />
-				
+	<cfset var userBean="" />
+	<cfset var pluginEvent = createObject("component","mura.event") />
+	
+	<cfif isObject(arguments.data)>
+		<cfset arguments.data=arguments.data.getAllValues() />
+	</cfif>
+	
+	
+	<cfif not structKeyExists(arguments.data,"userID") or (structKeyExists(arguments.data,"userID") and not len(arguments.data.userID))>
+		<cfreturn create(arguments.data) />
+	</cfif>
+	
+	<cfif not structKeyExists(arguments.data,"siteID") or (structKeyExists(arguments.data,"siteID") and not len(arguments.data.siteID))>
+		<cfthrow type="custom" message="The attribute 'SITEID' is required when saving a user.">
+	</cfif>
+		
+	<cfset pluginEvent = createObject("component","mura.event").init(arguments.data) />
+	
+	<cfset userBean=variables.userDAO.read(arguments.data.userid)/>
+	
 	<cfset userBean.set(arguments.data) />
+	
 
 	<!--- <cfif userBean.getType() eq 2 and  userBean.getAddressID() neq ''> --->
 	<cfif userBean.getAddressID() neq ''>
@@ -127,14 +178,30 @@
 </cffunction>
 
 <cffunction name="create" access="public" returntype="struct" output="false">
-	<cfargument name="data" type="struct" default="#structnew()#"/>		
+	<cfargument name="data" type="any" default="#structnew()#"/>		
 	
 	<cfset var addressBean = "" />
 	<cfset var userBean=application.serviceFactory.getBean("userBean") />
-	<cfset var pluginEvent = createObject("component","mura.event").init(arguments.data) />
+	<cfset var pluginEvent = createObject("component","mura.event") />
+	
+	<cfif isObject(arguments.data)>
+		<cfset arguments.data=arguments.data.getAllValues() />
+	</cfif>
+	
+	<cfset pluginEvent = createObject("component","mura.event").init(arguments.data) />
 	
 	<cfset userBean.set(arguments.data) />
-	<cfset userBean.setUserID(createuuid()) />
+	
+	<!--- MAKE SURE ALL REQUIRED DATA IS THERE--->
+	<cfif not structKeyExists(arguments.data,"userID") or (structKeyExists(arguments.data,"userID") and not len(arguments.data.userID))>
+		<cfset userBean.setUserID(createuuid()) />
+	<cfelse>
+		<cfset userBean.setUserID(arguments.data.userID) />
+	</cfif>
+	
+	<cfif not structKeyExists(arguments.data,"siteID") or (structKeyExists(arguments.data,"siteID") and not len(arguments.data.siteID))>
+		<cfthrow type="custom" message="The attribute 'SITEID' is required when saving a user.">
+	</cfif>
 	
 	<!--- <cfif userBean.getType() eq 2> --->
 	<cfset addressBean=application.serviceFactory.getBean("addressBean") />
@@ -284,14 +351,25 @@
 </cffunction>
 
 <cffunction name="createAddress" access="public" returntype="struct" output="false">
-	<cfargument name="data" type="struct" default="#structnew()#"/>		
+	<cfargument name="data" type="any" default="#structnew()#"/>		
 	
 	<cfset var addressBean=application.serviceFactory.getBean("addressBean") />
 	
+	<cfif isObject(arguments.data)>
+		<cfset arguments.data=arguments.data.getAllValues() />
+	</cfif>
+	
+	<cfif not structKeyExists(arguments.data,"userID") or (structKeyExists(arguments.data,"userID") and not len(arguments.data.userID))>
+		<cfthrow type="custom" message="The attribute 'USERID' is required when saving an address.">
+	</cfif>
+	
 	<cfset addressBean.set(arguments.data) />
-	<cfset addressBean.setAddressID(createuuid()) />
 	
-	
+	<cfif not structKeyExists(arguments.data,"addressID") or (structKeyExists(arguments.data,"addressID") and not len(arguments.data.addressID))>
+		<cfset addressBean.setAddressID(createuuid()) />
+	<cfelse>
+		<cfset addressBean.setAddressID(arguments.data.addressID) />
+	</cfif>
 	
 	<cfif structIsEmpty(addressBean.getErrors())>
 		<cfset variables.userDAO.createAddress(addressBean) />
@@ -301,10 +379,23 @@
 </cffunction>
 
 <cffunction name="updateAddress" access="public" returntype="any" output="false">
-	<cfargument name="data" type="struct" default="#structnew()#"/>	
+	<cfargument name="data" type="any" default="#structnew()#"/>	
 	
 	<cfset var error =""/>
 	<cfset var addressBean=variables.userDAO.readAddress(arguments.data.addressid) />
+	
+	<cfif isObject(arguments.data)>
+		<cfset arguments.data=arguments.data.getAllValues() />
+	</cfif>
+	
+	<cfif not structKeyExists(arguments.data,"userID") or (structKeyExists(arguments.data,"userID") and not len(arguments.data.userID))>
+		<cfthrow type="custom" message="The attribute 'USERID' is required when saving an address.">
+	</cfif>
+	
+	<cfif not structKeyExists(arguments.data,"addressID") or (structKeyExists(arguments.data,"addressID") and not len(arguments.data.addressID))>
+		<cfreturn createAddress(arguments.data) />
+	</cfif>
+	
 	<cfset addressBean.set(arguments.data) />
 	
 	<cfif structIsEmpty(addressBean.getErrors())>

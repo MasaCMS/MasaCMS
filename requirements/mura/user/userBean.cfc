@@ -21,8 +21,6 @@
 	<cfset variables.instance.username="" />
 	<cfset variables.instance.password="" />
 	<cfset variables.instance.passwordCreated="#now()#" />
-	<cfset variables.instance.usernameNoCache="Placeholder" />
-	<cfset variables.instance.passwordNoCache="Placeholder" />
 	<cfset variables.instance.email="" />
 	<cfset variables.instance.company="" />
 	<cfset variables.instance.jobtitle="" />
@@ -601,11 +599,12 @@
 	
 	<cfif structKeyExists(this,"get#property#")>
 		<cfreturn evaluate("get#property#(arguments.propertyValue") />
-	<cfelseif structKeyExists(request,"#arguments.property#")>
-		<cfreturn request["#arguments.property#"] />
+	<cfelseif structKeyExists(variables.instance,"#arguments.property#")>
+		<cfreturn variables.instance["#arguments.property#"] />
 	<cfelse>
 		<cfreturn getExtendedAttribute(arguments.property) />
 	</cfif>
 
 </cffunction>
+
 </cfcomponent>

@@ -267,9 +267,16 @@
     <cfreturn variables.instance.IsPrimary />
   </cffunction>
   
-    <cffunction name="getErrors" returnType="struct" output="false" access="public">
+<cffunction name="getErrors" returnType="struct" output="false" access="public">
     <cfreturn variables.instance.errors />
-  </cffunction>
+ </cffunction>
+
+ <cffunction name="setErrors" returnType="void" output="false" access="public">
+  <cfargument name="errors"> 
+	<cfif isStruct(arguments.errors)>
+	 <cfset variables.instance.errors = arguments.errors />
+	</cfif> 
+ </cffunction>
 
 <cffunction name="setAddressNotes" returnType="void" output="false" access="public">
     <cfargument name="AddressNotes" type="string" required="true">
