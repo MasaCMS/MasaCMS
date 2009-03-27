@@ -263,7 +263,7 @@
 </cffunction>
 
 <cffunction name="add" access="public" returntype="any" output="false">
-	<cfargument name="data" type="struct"/>
+	<cfargument name="data" type="any"/>
 	<cfset var newBean=""/>
 	<cfset var currentBean=""/>
 	<cfset var deletedList=""/>
@@ -279,7 +279,41 @@
 	<cfset var rsFile="" />
 	<cfset var rsDrafts = "" />
 	<cfset var d = "" />
-	<cfset var pluginEvent = createObject("component","mura.event").init(arguments.data) />
+	<cfset var pluginEvent = createObject("component","mura.event") />
+	
+	<!---IF THE DATA WAS SUBMITTED AS AN OBJECT UNPACK THE VALUES --->
+	<cfif isObject(arguments.data)>
+		<cfset arguments.data=arguments.data.getAllValues() />
+	</cfif>
+	
+	<!--- MAKE SURE ALL REQUIRED DATA IS THERE--->
+	<cfif not structKeyExists(arguments.data,"parentID") or (structKeyExists(arguments.data,"parentID") and not len(arguments.data.parentID))>
+		<cfthrow type="custom" message="The attribute 'PARENT' is required when saving content.">
+	</cfif>
+	
+	<cfif not structKeyExists(arguments.data,"type") or (structKeyExists(arguments.data,"type") and not listFindNoCase("Form,Component,Page,Portal,Gallery,Calendar,File,Link",arguments.data.type))>
+		<cfthrow type="custom" message="A valid 'TYPE' is required when saving content.">
+	</cfif>
+	
+	<cfif (not structKeyExists(arguments.data,"title") or (structKeyExists(arguments.data,"title") and not len(arguments.data.title))) and
+		(not structKeyExists(arguments.data,"menutitle") or (structKeyExists(arguments.data,"menutitle") and not len(arguments.data.menutitle)))>
+		<cfthrow type="custom" message="The attribute 'TITLE' is required when saving content.">
+	</cfif>
+	
+	<cfif not structKeyExists(arguments.data,"display") or (structKeyExists(arguments.data,"display") and not isNumeric(arguments.data.display))>
+		<cfset arguments.data.display=1 />
+	</cfif>
+	
+	<cfif not structKeyExists(arguments.data,"isNav") or (structKeyExists(arguments.data,"isNav") and not isNumeric(arguments.data.isNav))>
+		<cfset arguments.data.isNav=1 />
+	</cfif>
+	
+	<cfif not structKeyExists(arguments.data,"approved") or (structKeyExists(arguments.data,"approved") and not isNumeric(arguments.data.approved))>
+		<cfset arguments.data.approved=0 />
+	</cfif>
+	<!--- END REQUIRED DATA CHECK--->
+	
+	<cfset pluginEvent.init(arguments.data)/>
 	
 	<cflock type="exclusive" name="editingContent#arguments.data.siteid#" timeout="600">
 	<cftransaction>
