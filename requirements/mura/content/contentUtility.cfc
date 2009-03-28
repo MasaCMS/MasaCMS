@@ -475,7 +475,13 @@ http://#cgi.SERVER_NAME##variables.configBean.getServerPort()##variables.configB
 
 
 				<cfquery datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-				insert into tcontentpublicsubmissionapprovals (contentid,isApproved,email,siteid)
+				insert into 
+				<cfif variables.configBean.getDBType() eq "Oracle">
+				TCONTENTPUBLICSUBMISSIONAPPROV
+				<cfelse>
+				tcontentpublicsubmissionapprovals
+				</cfif> 
+				(contentid,isApproved,email,siteid)
 				values(
 				<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentBean.getContentID()#"/>,
 				0,
@@ -501,7 +507,12 @@ http://#cgi.SERVER_NAME##variables.configBean.getServerPort()##variables.configB
 	
 
 	<cfquery datasource="#variables.dsn#" name="rsApproval"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-	select * from tcontentpublicsubmissionapprovals 
+	select * from 
+	<cfif variables.configBean.getDBType() eq "Oracle">
+		TCONTENTPUBLICSUBMISSIONAPPROV
+	<cfelse>
+		tcontentpublicsubmissionapprovals
+	</cfif> 				
 	where contentid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentBean.getContentHistID()#"/> and isApproved=0 
 	</cfquery>
 				
@@ -554,7 +565,13 @@ Sincerely,
 			rsemail.email) />
 				
 				<cfquery datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-				update tcontentpublicsubmissionapprovals set isApproved=1
+				update 
+				<cfif variables.configBean.getDBType() eq "Oracle">
+				TCONTENTPUBLICSUBMISSIONAPPROV
+				<cfelse>
+				tcontentpublicsubmissionapprovals
+				</cfif> 
+				set isApproved=1
 				where contentid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentBean.getcontentID()#"/> and isApproved=0 
 				</cfquery>
 </cfif>
