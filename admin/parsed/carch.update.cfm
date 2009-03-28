@@ -147,7 +147,7 @@
 <cfset myFusebox.thisCircuit = "cArch">
 <cfset myFusebox.thisFuseaction = "update">
 <cfelse>
-<cfif attributes.action eq 'delete' or attributes.action eq 'deletehistall' or (len(attributes.returnURL) and attributes.preview eq 0)>
+<cfif len(attributes.returnURL) and (attributes.action eq 'delete' or attributes.action eq 'deletehistall' or attributes.preview eq 0)>
 <cflocation url="#attributes.returnURL#" addtoken="false">
 <cfabort>
 </cfif>

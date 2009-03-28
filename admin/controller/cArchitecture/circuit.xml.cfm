@@ -180,7 +180,7 @@
 			<do action="layout.empty" />
 		</true>
 		<false>
-			<if condition="attributes.action eq 'delete' or attributes.action eq 'deletehistall' or (len(attributes.returnURL) and attributes.preview eq 0)">
+			<if condition="len(attributes.returnURL) and (attributes.action eq 'delete' or attributes.action eq 'deletehistall' or attributes.preview eq 0)">
 				<true>
 					<relocate url="#attributes.returnURL#" addtoken="false"/>
 				</true>
