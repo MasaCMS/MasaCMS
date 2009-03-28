@@ -13,7 +13,7 @@
     along with Mura CMS.  If not, see <http://www.gnu.org/licenses/>. --->
 
 <cfsilent>
-<cfprocessingdirective pageencoding="utf-8">
+<cfprocessingdirective pageencoding="utf-8"/>
 <cfsetting requestTimeout = "1000">
 <cfset server.enable21=true>
 
@@ -44,16 +44,10 @@
 	<cfset application.appStarting=false/>
 </cfif>
 
-<!--- <cfif (not application.appInitialized or isdefined('url.#application.appReloadKey#')) and not application.appStarting> --->
 <cfif (not application.appInitialized or isdefined('url.#application.appReloadKey#'))>
-<!--- 	<cftry> --->
 
 	<cfset variables.iniPath="#getDirectoryFromPath(getCurrentTemplatePath())#settings.ini.cfm" />
 
-	<!--- <cflock name="startApp" timeout="500">
-		<cfset application.appStarting=true />
-	</cflock> --->
-	
 	<cfif isdefined('url.#application.appReloadKey#')>
 		<cfparam name="url.loadlist" default="" />
 		<cfset application.appLoadList=url.loadList />
@@ -229,39 +223,18 @@
 	</cftry>
 
 	<cfset application.pluginManager.executeScripts('onApplicationLoad')>
-	<!---<cfset structClear( session ) />--->
 
-	<cflock name="startApp" timeout="500">
-		<cfset application.appStarting=false />
-	</cflock>
-	
-	<!--- <cfcatch>
-		<cflock name="startApp" timeout="500">
-			<cfset application.appStarting=false />
-		</cflock>
-	</cfcatch>
-	</cftry> --->
-
-<cfelseif application.appStarting>
-	<cfinclude template="appStarting.html">
-	<cfabort>
 </cfif>
 
 
-<!--- <cftry> --->
-	<cfquery name="variables.checkMe" datasource="#application.configBean.getDatasource()#" username="#application.configBean.getDBUsername()#" password="#application.configBean.getDBPassword()#" timeout="5">
-		SELECT * FROM tglobals
-	</cfquery>
-	
-	<cfif isdate(variables.checkMe.appreload)  and application.appInitializedTime lt variables.checkMe.appreload>
-		<cfset application.appInitialized=false />
-		<cfset application.appLoadList=variables.checkMe.loadList />
-	</cfif>
-<!--- <cfcatch>
-		<cfinclude template="error.html">
-		<cfabort>
-	</cfcatch>
-</cftry>  --->
+<cfquery name="variables.checkMe" datasource="#application.configBean.getDatasource()#" username="#application.configBean.getDBUsername()#" password="#application.configBean.getDBPassword()#" timeout="5">
+	SELECT * FROM tglobals
+</cfquery>
+
+<cfif isdate(variables.checkMe.appreload)  and application.appInitializedTime lt variables.checkMe.appreload>
+	<cfset application.appInitialized=false />
+	<cfset application.appLoadList=variables.checkMe.loadList />
+</cfif>
 
 <cfif cookie.userid eq '' and session.rememberMe eq 1 and getAuthUser() neq ''>
 <cfcookie name="userid" value="#listFirst(getAuthUser(),'^')#" expires="never" />
@@ -288,7 +261,6 @@
 		mailto="#application.configBean.getMailserverusername()#"
 		type="Exception">
 </cfif>
-
 
 <!--- make sure that a locale and language resouce bundle have been set in the users session --->
 <cfparam name="session.datekey" default=""/>
@@ -378,19 +350,7 @@ var dtFormat =[#dtFormat#];
 </cfsavecontent>
 
 </cfif>
-<!--- <cfscript>
-theurl="jdbc:oracle:thin:@10.211.55.3:1521:XE";
-user="muradb";
-password="7uca$99";
 
-props = CreateObject("java", "java.util.Properties").init();
-props.put("user", user );
-props.put("password", password);
-props.put("SetBigStringTryClob", "true");
-
-con = CreateObject("java", "java.sql.DriverManager").getConnection( theurl, props ); 
-
-</cfscript> --->
 <cfinclude template="settings.custom.vars.cfm">
 <cfset application.pluginManager.executeScripts('onGlobalRequestStart')>
 </cfsilent>

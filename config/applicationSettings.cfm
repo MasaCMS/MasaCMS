@@ -19,7 +19,6 @@
 	<!--- Where should cflogin stuff persist --->
 	<cfset this.loginStorage = "cookie">
 	
-	
 	<cfset request.userAgent = LCase( CGI.http_user_agent ) />
 	<!--- Should we even use sessions? --->
 	<cfset request.trackSession = not (NOT Len( request.userAgent ) OR
@@ -66,7 +65,6 @@
 	2. Change basedir to point to your webroot
 	3. Uncomment the code below
 	--->
-	
 	
 	<!--- Define the location of your frameworks 
 		The default here is dynamically pointing at the webroot
