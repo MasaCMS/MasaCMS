@@ -1,5 +1,5 @@
 <cfquery name="rsCheck" datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
-select count(*) counter from tcontent where path like <cfqueryparam cfsqltype="cf_sql_type" value="%'%">
+select count(*) counter from tcontent where path like <cfqueryparam cfsqltype="cf_sql_varchar" value="%'%">
 </cfquery>
 
 <cfif rsCheck.counter>
