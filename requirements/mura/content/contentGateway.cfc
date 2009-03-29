@@ -24,9 +24,11 @@
 </cffunction>
 
 <cffunction name="getCrumblist" returntype="array" access="public" output="false">
-			<cfargument name="contentid" required="yes" type="string">
-			<cfargument name="siteid" required="yes" type="string">
-			<cfargument name="setInheritance" required="yes" type="boolean" default="false">
+			<cfargument name="contentid" required="true" default="">
+			<cfargument name="siteid" required="true" default="">
+			<cfargument name="setInheritance" required="true" type="boolean" default="false">
+			<cfargument name="path" required="true" default="">
+			
 			<cfset var ID=arguments.contentid>
 			<cfset var I=0>
 			<cfset var rscontent = "" />
@@ -35,6 +37,8 @@
 			<cfset var parentArray=arraynew(1) />
 			
 			<cfif arguments.setInheritance><cfset request.inheritedObjects=""></cfif>
+			
+			<cfif not len(arguments.path)>
 			<cftry>
 			
 			<cfloop condition="ID neq '00000000000000000000000000000000END'">
@@ -79,6 +83,50 @@
 			<cfcatch type="custom"></cfcatch>
 			</cftry>
 			
+			<cfelse>
+			
+			<cfquery name="rsContent" datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+			select contenthistid, contentid, menutitle, filename, parentid, type, target, targetParams, siteid, restricted, restrictgroups,template,inheritObjects,metadesc,metakeywords,sortBy,sortDirection, length(path) depth from tcontent where 
+			contentID in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#arguments.path#">)
+			and active=1 
+			and siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
+			order by depth desc
+			</cfquery>
+		
+			<cfloop query="rsContent">
+			<cfset crumb=structNew() />
+			<cfset crumb.type='#rscontent.type#' />
+			<cfset crumb.filename='#rscontent.filename#' />
+			<cfset crumb.menutitle='#rscontent.menutitle#' />
+			<cfset crumb.target='#rscontent.target#' />
+			<cfset crumb.contentid='#rscontent.contentid#' />
+			<cfset crumb.parentid='#rscontent.parentid#' />
+			<cfset crumb.siteid='#rscontent.siteid#' />
+			<cfset crumb.restricted='#rscontent.restricted#' />
+			<cfset crumb.restrictGroups='#rscontent.restrictgroups#' />
+			<cfset crumb.template='#rscontent.template#' />
+			<cfset crumb.contenthistid='#rscontent.contenthistid#' />
+			<cfset crumb.targetPrams='#rscontent.targetParams#' />
+			<cfset crumb.metadesc='#rscontent.metadesc#' />
+			<cfset crumb.metakeywords='#rscontent.metakeywords#' />
+			<cfset crumb.sortBy='#rscontent.sortBy#' />
+			<cfset crumb.sortDirection='#rscontent.sortDirection#' />
+			
+			<cfset arrayAppend(crumbdata,crumb) />
+			<cfif arguments.setInheritance and request.inheritedObjects eq "" and rscontent.inheritObjects eq 'cascade'>
+				<cfset request.inheritedObjects=rscontent.contenthistid>
+			</cfif>
+			
+			<cfset arrayAppend(parentArray,rscontent.contentid) />
+			
+			</cfloop>
+			
+			<cfif rsContent.recordcount>
+				<cfset crumbdata[1].parentArray=parentArray />
+			</cfif>
+			
+			</cfif>
+			
 			<cfreturn crumbdata>
 
 </cffunction>
@@ -121,7 +169,7 @@
 				tcontent.fileid, credits, remoteSource, remoteSourceURL, remoteURL,
 				tfiles.fileSize,tfiles.fileExt, audience, keypoints
 				,tcontentstats.rating,tcontentstats.totalVotes,tcontentstats.downVotes,tcontentstats.upVotes
-				,tcontentstats.comments, '' parentType, <cfif doKids> qKids.kids<cfelse>0 as kids</cfif>
+				,tcontentstats.comments, '' parentType, <cfif doKids> qKids.kids<cfelse>0 as kids</cfif>,tcontent.path
 				
 				FROM tcontent Left Join tfiles ON (tcontent.fileID=tfiles.fileID)
 				left Join tcontentstats on (tcontent.contentid=tcontentstats.contentid
@@ -872,7 +920,7 @@
 	
 	<cfquery name="rs" datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	select menutitle, contentid, contenthistid, fileID, type, lastupdateby, active, approved, lastupdate, 
-	display, displaystart, displaystop, moduleid, isnav, notes,isfeature,inheritObjects,filename,targetParams,releaseDate
+	display, displaystart, displaystop, moduleid, isnav, notes,isfeature,inheritObjects,filename,targetParams,releaseDate,path
 	from tcontent where contentid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentID#"/>
 	and siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/> 
 	and approved=0 
@@ -941,7 +989,7 @@
 	SELECT tcontent.ContentHistID, tcontent.ContentID, tcontent.Approved, tcontent.filename, tcontent.Active, tcontent.Type, tcontent.OrderNo, tcontent.ParentID, 
 	tcontent.Title, tcontent.menuTitle, tcontent.lastUpdate, tcontent.lastUpdateBy, tcontent.lastUpdateByID, tcontent.Display, tcontent.DisplayStart, 
 	tcontent.DisplayStop,  tcontent.isnav, tcontent.restricted, count(tcontent2.parentid) AS hasKids,tcontent.isfeature,tcontent.inheritObjects,tcontent.target,tcontent.targetParams,
-	tcontent.islocked,tcontent.releaseDate,tfiles.fileSize,tfiles.fileExt
+	tcontent.islocked,tcontent.releaseDate,tfiles.fileSize,tfiles.fileExt,tcontent.path
 	FROM tcontent LEFT JOIN tcontent tcontent2 ON (tcontent.contentid=tcontent2.parentid)
 	Left Join tfiles ON (tcontent.fileID=tfiles.fileID)
 	<cfif len(arguments.tag)>
@@ -1004,7 +1052,7 @@
 	tcontent.credits, tcontent.remoteSource, tcontent.remoteSourceURL, 
 	tcontent.remoteURL,tfiles.fileSize,tfiles.fileExt,tcontent.fileID,tcontent.audience,tcontent.keyPoints,
 	tcontentstats.rating,tcontentstats.totalVotes,tcontentstats.downVotes,tcontentstats.upVotes, 0 as kids, 
-	tparent.type parentType
+	tparent.type parentType,tcontent.path
 	from tcontent Left Join tfiles ON (tcontent.fileID=tfiles.fileID)
 	Left Join tcontent tparent on (tcontent.parentid=tparent.contentid
 						    			and tcontent.siteid=tparent.siteid
@@ -1095,7 +1143,7 @@
 	SELECT title, releasedate, menuTitle, lastupdate, summary, tcontent.filename, type, tcontent.contentid,
 	target,targetParams, restricted, restrictgroups, displaystart, displaystop, orderno,sortBy,sortDirection,
 	tcontent.fileid, credits, remoteSource, remoteSourceURL, remoteURL,
-	tfiles.fileSize,tfiles.fileExt
+	tfiles.fileSize,tfiles.fileExt,path
 	FROM  tcontent Left Join tfiles ON (tcontent.fileID=tfiles.fileID)
 	WHERE
 	tcontent.siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>

@@ -672,7 +672,7 @@ and active=1
 </cfquery>
 
 	<cfloop query="rs">
-		<cfset newPath=#listappend(arguments.path,"'#rs.contentID#'")# />
+		<cfset newPath=#listappend(arguments.path,"#rs.contentID#")# />
 		<cfquery datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 		update tcontent
 		set path=<cfqueryparam cfsqltype="cf_sql_longvarchar" value="#newPath#" />

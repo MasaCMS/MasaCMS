@@ -97,7 +97,7 @@
 	tfiles.fileSize,tfiles.fileExt,tcontent.fileid,
 	tcontent.tags,tcontent.credits,tcontent.audience,
 	tcontentstats.rating,tcontentstats.totalVotes,tcontentstats.downVotes,tcontentstats.upVotes,
-	tcontentstats.comments, tparent.type parentType, <cfif doKids> qKids.kids<cfelse> 0 as kids</cfif>
+	tcontentstats.comments, tparent.type parentType, <cfif doKids> qKids.kids<cfelse> 0 as kids</cfif>,tcontent.path
 	
 	from tcontent
 	left Join tfiles on (tcontent.fileid=tfiles.fileid)

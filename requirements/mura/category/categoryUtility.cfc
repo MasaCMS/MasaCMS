@@ -45,7 +45,7 @@ and parentID is null
 </cfquery>
 
 	<cfloop query="rs">
-		<cfset newPath=#listappend(arguments.path,"'#rs.categoryID#'")# />
+		<cfset newPath=#listappend(arguments.path,"#rs.categoryID#")# />
 		<cfquery datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 		update tcontentcategories
 		set path=<cfqueryparam cfsqltype="cf_sql_longvarchar" value="#newPath#" />

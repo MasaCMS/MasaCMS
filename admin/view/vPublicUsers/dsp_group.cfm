@@ -34,7 +34,7 @@ select * from rsSubTypes where subType <> 'Default'
 <div id="page_tabView">
 <div class="page_aTab">
 </cfif>
-<dl>
+<dl class="oneColumn">
 <cfif rsNonDefault.recordcount>
 		<dt class="first">#application.rbFactory.getKeyValue(session.rb,'user.type')#</dt>
 		<dd><select name="subtype" class="dropdown" onchange="resetExtendedAttributes('#request.userBean.getUserID()#','1',this.value,'#application.settingsManager.getSite(attributes.siteID).getPublicUserPoolID()#');">

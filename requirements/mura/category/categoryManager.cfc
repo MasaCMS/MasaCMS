@@ -103,7 +103,7 @@
 
 <cfset var rsCat= ""/>		
 <cfset var ID = arguments.categoryBean.getParentID() />	
-<cfset var path = "'#categoryBean.getCategoryID()#'" />
+<cfset var path = "#categoryBean.getCategoryID()#" />
 <cfset var reversePath = "" />
 <cfset var i =0 />
 	

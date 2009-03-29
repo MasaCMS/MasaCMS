@@ -539,13 +539,18 @@ username="#variables.configBean.getDBUsername()#" password="#variables.configBea
 	<cfset var rows=0/>
 	<cfset var r=""/>
 	<cfset var rs=arguments.resultQuery />
+	<cfset var hasPath=listFind(arguments.rawQuery.columnList,"PATH")>
 	
 	<cfif not isBoolean(arguments.hasModuleAccess)>
 		<cfset arguments.hasModuleAccess=getModulePerm('00000000000000000000000000000000000',arguments.siteID)>
 	</cfif>
 	
 	<cfloop query="arguments.rawQuery">
-	<cfset r=setRestriction(application.contentGateway.getCrumblist('#arguments.rawQuery.contentid#','#arguments.siteid#',false))/>
+	<cfif hasPath>
+		<cfset r=setRestriction(application.contentGateway.getCrumblist('#arguments.rawQuery.contentid#','#arguments.siteid#',false,arguments.rawQuery.path))/>
+	<cfelse>
+		<cfset r=setRestriction(application.contentGateway.getCrumblist('#arguments.rawQuery.contentid#','#arguments.siteid#',false))/>
+	</cfif>
 	<cfif not r.restrict or r.restrict and r.allow>
 	<cfset rows=rows+1/>
 	<cfset queryAddRow(rs,1)/>

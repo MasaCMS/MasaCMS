@@ -147,7 +147,7 @@
 		<cflocation url="?doaction=logout">
 	</cfif> --->
 
-	<cfset request.crumbdata=application.contentGateway.getCrumbList(request.contentBean.getcontentid(),request.siteid,true) />
+	<cfset request.crumbdata=application.contentGateway.getCrumbList(request.contentBean.getcontentid(),request.siteid,true,request.contentBean.getPath()) />
 	<cfif request.doaction neq ''><cfloop list="#request.doaction#" index="a"><cfset doAction(a)></cfloop></cfif>
 
 	<cfset request.forceSSL = request.contentBean.getForceSSL() />

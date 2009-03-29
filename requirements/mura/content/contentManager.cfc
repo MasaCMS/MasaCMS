@@ -236,10 +236,10 @@
 	<cfset var I = 0 />
 	
 	<cfloop from="#arrayLen(crumbdata)#" to="1" index="I" step="-1">
-		<cfset path =  listAppend(path,"'#crumbdata[I].contentID#'")>
+		<cfset path =  listAppend(path,"#crumbdata[I].contentID#")>
 	</cfloop>
 		
-	<cfset path = listAppend(path,"'#arguments.contentBean.getcontentID()#'")>
+	<cfset path = listAppend(path,"#arguments.contentBean.getcontentID()#")>
 	
 	<cfset arguments.contentBean.setPath(path)>
 
