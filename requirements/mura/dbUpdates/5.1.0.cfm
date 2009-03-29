@@ -4,9 +4,9 @@ select count(*) counter from tcontent where path like <cfqueryparam cfsqltype="c
 
 <cfif rsCheck.counter>
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
-		update tcontent set path=replace(path,'''','')
+		update tcontent set path=replace(path,<cfqueryparam cfsqltype="cf_sql_varchar" value="'">,'')
 	</cfquery>
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
-		update tcontentcategories set path=replace(path,'''','')
+		update tcontentcategories set path=replace(path,<cfqueryparam cfsqltype="cf_sql_varchar" value="'">,'')
 	</cfquery>
 </cfif>
