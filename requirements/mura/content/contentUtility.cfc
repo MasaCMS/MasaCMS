@@ -439,7 +439,6 @@ http://#cgi.SERVER_NAME##variables.configBean.getServerPort()##variables.configB
 			</cfif>
 </cffunction>	
 
-
 <cffunction name="isOnDisplay" returntype="numeric" output="false" access="public">
 			<cfargument name="display"  type="numeric">
 			<cfargument name="displaystart"  type="string">
@@ -655,7 +654,6 @@ Sincerely,
 	
 </cffunction>
 
-
 <cffunction name="updateGlobalMaterializedPath" returntype="any" output="false">
 <cfargument name="siteID">
 <cfargument name="parentID" required="true" default="00000000000000000000000000000000END">
@@ -672,7 +670,7 @@ and active=1
 </cfquery>
 
 	<cfloop query="rs">
-		<cfset newPath=#listappend(arguments.path,"#rs.contentID#")# />
+		<cfset newPath=listappend(arguments.path,rs.contentID) />
 		<cfquery datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 		update tcontent
 		set path=<cfqueryparam cfsqltype="cf_sql_longvarchar" value="#newPath#" />
@@ -683,7 +681,6 @@ and active=1
 	</cfloop>
 
 </cffunction>
-
 
 <cffunction name="findAndReplace" returntype="void" output="false">
 	<cfargument name="find" type="string" default="" required="true">
@@ -724,7 +721,6 @@ and active=1
 	</cfloop> 
 
 </cffunction>
-
 
 <cffunction name="removeUnicode" returntype="string" output="false">
 	<cfargument name="str">
