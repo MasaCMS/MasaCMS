@@ -15,6 +15,8 @@
 <cfset msg="">
 	
 <cffunction name="init" returntype="any" access="public" output="false">
+<cfargument name="_event">
+<cfset variables.event=arguments._event>
 <cfreturn this />
 </cffunction>
 
@@ -29,80 +31,80 @@
 
 		<cfswitch expression="#arguments.theaction#">
 			<cfcase value="login">
-				<cfset createObject("component","#application.configBean.getWebRootMap()#.#request.siteid#.includes.loginHandler").init().handleLogin(request)>
+				<cfset createObject("component","#application.configBean.getWebRootMap()#.#request.siteid#.includes.loginHandler").init().handleLogin(event.getAllValues())>
 			</cfcase>
 			
 			<cfcase value="return">
-				<cfset application.emailManager.track(request.emailid,request.email,'returnClick')>
+				<cfset application.emailManager.track(event.getValue('emailID'),event.getValue('email'),'returnClick')>
 			</cfcase>
 			
 			<cfcase value="logout">
 				<cfset application.loginManager.logout()>
-				<cflocation url="#application.contentRenderer.getCurrentURL()#">
+				<cflocation url="#event.getValue('contentRenderer').getCurrentURL()#">
 			</cfcase>
 			
 			<cfcase value="updateprofile">
 				<cfif getAuthUser() neq ''>
 					<cfif isDefined('request.addressAction')>
-						<cfif request.addressAction eq "create">
-							<cfset application.userManager.createAddress(request)>
-						<cfelseif request.addressAction eq "update">
-							<cfset application.userManager.updateAddress(request)>
-						<cfelseif request.addressAction eq "delete">
-							<cfset application.userManager.deleteAddress(request.addressID)>
+						<cfif event.getValue('addressAction') eq "create">
+							<cfset application.userManager.createAddress(event.getAllValues())>
+						<cfelseif event.getValue('addressAction') eq "update">
+							<cfset application.userManager.updateAddress(event.getAllValues())>
+						<cfelseif event.getValue('addressAction') eq "delete">
+							<cfset application.userManager.deleteAddress(event.getValue('addressID'))>
 						</cfif>
 						<!--- reset the form --->
-						<cfset request.addressID = "">
-						<cfset request.addressAction = "">
+						<cfset event.setValue('addressID','')>
+						<cfset event.setValue('addressAction','')>
 					<cfelse>
-						<cfset request.userBean=application.userManager.update(request,iif(isdefined('request.groupid'),de('true'),de('false')),iif(isdefined('request.categoryid'),de('true'),de('false')),request.siteid) />
-						<cfif structIsEmpty(request.userBean.getErrors())>
-							<cfset application.loginManager.loginByUserID(request)>
+						<cfset event.setValue('userBean',application.userManager.update(request,iif(event.valueExists('groupID'),de('true'),de('false')),iif(event.getValue('categoryID'),de('true'),de('false')),event.getValue('siteID'))) />
+						<cfif structIsEmpty(event.getValue('userBean').getErrors())>
+							<cfset application.loginManager.loginByUserID(event.getAllValues())>
 						</cfif>
 					</cfif>
 				</cfif>
 			</cfcase>
 			
 			<cfcase value="createprofile">
-				<cfif application.settingsManager.getSite(request.siteid).getextranetpublicreg() eq 1>
-					<cfset request.userBean=application.userManager.create(request) />		
-					<cfif structIsEmpty(request.userBean.getErrors()) and not isDefined('request.passwordNoCache')>
-						<cfset application.userManager.sendLoginByUser(request.userBean,request.siteid,application.contentRenderer.getCurrentURL(),true) />
-					<cfelseif structIsEmpty(request.userBean.getErrors()) and isDefined('request.passwordNoCache') and request.userBean.getInactive() eq 0>	
-						<cfset request.userID=request.userBean.getUserID() />
-						<cfset application.loginManager.loginByUserID(request)>
+				<cfif application.settingsManager.getSite(event.getValue('siteid')).getextranetpublicreg() eq 1>
+					<cfset event.setValue('userBean',application.userManager.create(event.getAllValues())) />		
+					<cfif structIsEmpty(event.getValue('userBean').getErrors()) and not event.valueExists('passwordNoCache')>
+						<cfset application.userManager.sendLoginByUser(event.getValue('userBean'),event.getValue('siteid'),event.getValue('contentRenderer').getCurrentURL(),true) />
+					<cfelseif structIsEmpty(event.getValue('userBean').getErrors()) and event.valueExists('passwordNoCache') and event.getValue('userBean').getInactive() eq 0>	
+						<cfset event.setValue('userID',event.getValue('userBean').getUserID()) />
+						<cfset application.loginManager.loginByUserID(event.getAllValues())>
 					</cfif>
 				</cfif>
 			</cfcase>
 			
 			<cfcase value="contactsend">
 				<cfparam name="request.company" default="">
-				<cfset application.serviceFactory.getBean("mailer").send(request,'#request.sendto#','#iif(request.fname eq '' and request.lname eq '',de('#request.company#'),de('#request.fname# #request.lname#'))#','#request.subject#','#request.siteid#','#request.email#')>
+				<cfset application.serviceFactory.getBean("mailer").send(event.getAllValues(),event.getValue('sendTo'),'#iif(event.getValue('fname') eq '' and event.getValue('lname') eq '',de('#event.getValue('company')#'),de('#event.getValue('fname')# #event.getValue('lname')#'))#',event.getValue('subject'),event.getValue('siteID'),event.getValue('email'))>
 			</cfcase>
 			
 			<cfcase value="subscribe">
-				<cfset application.mailinglistManager.createMember(request)>
+				<cfset application.mailinglistManager.createMember(event.getAllValues())>
 			</cfcase>
 			
 			<cfcase value="unsubscribe">
-				<cfset application.mailinglistManager.deleteMember(request)>
+				<cfset application.mailinglistManager.deleteMember(event.getAllValues())>
 			</cfcase>
 			
 			<cfcase value="masterSubscribe">
-				<cfset application.mailinglistManager.masterSubscribe(request)/>
+				<cfset application.mailinglistManager.masterSubscribe(event.getAllValues())/>
 			</cfcase>
 			
 			<cfcase value="setReminder">
-				<cfset application.contentManager.setReminder(request.contentBean.getcontentid(),request.siteid,request.email,request.contentBean.getdisplaystart(),request.interval) />
+				<cfset application.contentManager.setReminder(event.getValue('contentBean').getcontentid(),event.getValue('siteID'),event.getValue('email'),event.getValue('contentBean').getdisplaystart(),event.getValue('interval')) />
 			</cfcase>
 			
 			<cfcase value="forwardEmail">
-				<cfset request.to=request.to1/>
-				<cfset request.to=listAppend(request.to,request.to2)/>
-				<cfset request.to=listAppend(request.to,request.to3)/>
-				<cfset request.to=listAppend(request.to,request.to4)/>
-				<cfset request.to=listAppend(request.to,request.to5)/>
-				<cfset application.emailManager.forward(request) />
+				<cfset event.setValue('to',event.getValue('to1'))/>
+				<cfset event.setValue('to',listAppend(event.getValue('to'),event.getValue('to2'))) />
+				<cfset event.setValue('to',listAppend(event.getValue('to'),event.getValue('to3'))) />
+				<cfset event.setValue('to',listAppend(event.getValue('to'),event.getValue('to4'))) />
+				<cfset event.setValue('to',listAppend(event.getValue('to'),event.getValue('to5'))) />
+				<cfset application.emailManager.forward(event.getAllValues()) />
 			</cfcase>
 			
 		</cfswitch>
@@ -114,25 +116,25 @@
 <cffunction name="doRequest" returntype="any"  access="public" output="false">
 	<cfset var a=""/>
 		
-	<cfif structKeyExists(request,'previewid')>
-		<cfset request.track=0>
-		<cfset request.nocache=1>
-		<cfset request.contentBean=application.contentManager.getcontentVersion(request.previewID,request.siteid) />
+	<cfif event.valueExists('previewID')>
+		<cfset event.setValue('track',0)>
+		<cfset event.setValue('nocache',1)>
+		<cfset event.setValue('contentBean',application.contentManager.getcontentVersion(event.getValue('previewID'),event.getValue('siteID'))) />
 	<cfelse>
-		<cfif request.trackSession>
-			<cfset request.track=1>
+		<cfif event.getValue('trackSession')>
+			<cfset event.setValue('track',1)>
 		<cfelse>
-			<cfset request.track=0>
+			<cfset event.setValue('track',0)>
 		</cfif>
-		<cfif len(request.linkServID)>
-			<cfset request.contentBean=application.contentManager.getActiveContent(request.linkServID,request.siteid) />
+		<cfif len(event.getValue('linkServID'))>
+			<cfset event.setValue('contentBean',application.contentManager.getActiveContent(event.getValue('linkServID'),event.getValue('siteid'))) />
 		<cfelse>
-			<cfset request.contentBean=application.contentManager.getActiveContentByFilename(request.currentFilename,request.siteid) />
+			<cfset event.setValue('contentBean',application.contentManager.getActiveContentByFilename(event.getValue('currentFilename'),event.getValue('siteid'))) />
 		</cfif>
 	</cfif>
 	
-	<cfif request.contentBean.getIsNew() eq 1>
-		<cfset request.contentBean=application.contentManager.getActiveContentByFilename("404",request.siteid,true) />
+	<cfif event.getValue('contentBean').getIsNew() eq 1>
+		<cfset event.setValue('contentBean',application.contentManager.getActiveContentByFilename("404",event.getValue('siteid'),true)) />
 		<cfheader statuscode="404" statustext="Content Not Found" /> 
 	</cfif>
 	
@@ -140,33 +142,33 @@
 		<cflocation addtoken="no" url="http://#application.settingsManager.getSite(request.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##application.contentRenderer.getURLStem(request.siteid,request.contentBean.getFilename())#">
 	</cfif>	
 	
-	<cfif request.trackSession and (len(request.contentBean.getcontentID()) and not request.contentBean.getIsNew() eq 1 and not structKeyExists(request,'previewid'))>
-		<cfset application.sessionTrackingManager.trackRequest(request.siteid,request.path,request.keywords,request.contentBean.getcontentID()) />
+	<cfif event.getValue('trackSession') and (len(event.getValue('contentBean').getcontentID()) and not event.getValue('contentBean').getIsNew() eq 1 and not event.valueExists('previewID'))>
+		<cfset application.sessionTrackingManager.trackRequest(event.getValue('siteID'),event.getValue('path'),event.getValue('keywords'),event.getValue('contentBean').getcontentID()) />
 	</cfif>
 	<!--- <cfif trim(application.sessionTrackingManager.trackRequest(request.siteid,cgi.SCRIPT_NAME,request.contentBean.getcontentID())) eq "killSession" or session.REMOTE_ADDR neq cgi.REMOTE_ADDR>
 		<cflocation url="?doaction=logout">
 	</cfif> --->
 
-	<cfset request.crumbdata=application.contentGateway.getCrumbList(request.contentBean.getcontentid(),request.siteid,true,request.contentBean.getPath()) />
-	<cfif request.doaction neq ''><cfloop list="#request.doaction#" index="a"><cfset doAction(a)></cfloop></cfif>
+	<cfset event.setValue('crumbData',application.contentGateway.getCrumbList(event.getValue('contentBean').getcontentid(),event.getValue('siteid'),true,event.getValue('contentBean').getPath())) />
+	<cfif event.getValue('doaction') neq ''><cfloop list="#event.getValue('doaction')#" index="a"><cfset doAction(a)></cfloop></cfif>
 
-	<cfset request.forceSSL = request.contentBean.getForceSSL() />
+	<cfset event.setValue('forceSSL',event.getValue('contentBean').getForceSSL())/>
 	
-	<cfset request.r=application.permUtility.setRestriction(request.crumbdata)>
+	<cfset event.setValue('r',application.permUtility.setRestriction(event.getValue('crumbData')))>
 	
-	<cfif structKeyExists(request,'previewid')>
-		<cfset request.isOnDisplay=1>
-	<cfelseif request.contentBean.getapproved() eq 0>
-		<cfset request.track=0>
-		<cfset request.nocache=1>
-		<cfset request.isOnDisplay=0>
-	<cfelseif arrayLen(request.crumbdata) gt 1>
-		<cfset request.isOnDisplay=application.contentUtility.isOnDisplay(request.contentBean.getdisplay(),request.contentBean.getdisplaystart(),request.contentBean.getdisplaystop(),request.siteid,request.contentBean.getparentid(),request.crumbdata[2].type)>
+	<cfif event.valueExists('previewID')>
+		<cfset event.setValue('isOnDisplay',1)>
+	<cfelseif event.getValue('contentBean').getapproved() eq 0>
+		<cfset event.setValue('track',0)>
+		<cfset event.setValue('nocache',1)>
+		<cfset event.setValue('isOnDisplay',0)>
+	<cfelseif arrayLen(event.getValue('crumbData')) gt 1>
+		<cfset event.setValue('isOnDisplay',application.contentUtility.isOnDisplay(event.getValue('contentBean').getdisplay(),event.getValue('contentBean').getdisplaystart(),event.getValue('contentBean').getdisplaystop(),event.getValue('siteID'),event.getValue('contentBean').getparentid(),event.getValue('crumbData')[2].type))>
 	<cfelse>
-		<cfset request.isOnDisplay=1>
+		<cfset event.setValue('isOnDisplay',0)>
 	</cfif>
  	
-	<cfif request.isOnDisplay and request.r.restrict and not request.r.loggedIn and (request.display neq 'login' and request.display neq 'editProfile')>
+	<cfif event.getValue('isOnDisplay') and event.getValue('r').restrict and not event.getValue('r').loggedIn and (event.getValue('display') neq 'login' and event.getValue('display') neq 'editProfile')>
 		<cflocation addtoken="no" url="#application.settingsManager.getSite(request.siteid).getLoginURL()#&returnURL=#URLEncodedFormat(application.contentRenderer.getCurrentURL())#">
 	</cfif>
 	
@@ -179,35 +181,35 @@
 	<cfset var renderer=""/>
 	
 	<cfif request.exportHtmlSite>
-			<cfset renderer = createObject("component","#application.configBean.getWebRootMap()#.#request.siteid#.includes.staticContentRenderer").init() />
+			<cfset renderer = createObject("component","#application.configBean.getWebRootMap()#.#request.siteid#.includes.staticContentRenderer").init(event) />
 		<cfelse>
-			<cfset renderer = createObject("component","#application.configBean.getWebRootMap()#.#request.siteid#.includes.contentRenderer").init() />
+			<cfset renderer = createObject("component","#application.configBean.getWebRootMap()#.#request.siteid#.includes.contentRenderer").init(event) />
 	</cfif>
 	
-	<cfset request.contentRenderer=renderer />
+	<cfset event.setValue('contentRenderer',renderer) />
 	
-	<cfset application.pluginManager.executeScripts('onRenderStart',request.siteID,request.servletEvent)/>
+	<cfset application.pluginManager.executeScripts('onRenderStart',event.getValue('siteID'), event)/>
 	
-	<cfswitch expression="#request.contentBean.getType()#">
+	<cfswitch expression="#event.getValue('contentBean').getType()#">
 	<cfcase value="File,Link">
 	
-		<cfif request.isOnDisplay and ((not request.r.restrict) or (request.r.restrict and request.r.allow))>			
+		<cfif event.getValue('isOnDisplay') and ((not event.getValue('r').restrict) or (event.getValue('r').restrict and event.getValue('r').allow))>			
 			<cfif request.showMeta neq 1>
-				<cfswitch expression="#request.contentBean.getType()#">
+				<cfswitch expression="#event.getValue('contentBean').getType()#">
 					<cfcase value="Link">
-						<cfif not renderer.showItemMeta("Link") or request.showMeta eq 2>
-							<cflocation addtoken="no" url="#renderer.setDynamicContent(request.contentBean.getFilename())#">
+						<cfif not renderer.showItemMeta("Link") or event.getValue('showMeta') eq 2>
+							<cflocation addtoken="no" url="#renderer.setDynamicContent(event.getValue('contentBean').getFilename())#">
 						<cfelse>
 							<cfreturn doHTML(renderer) />	
 						</cfif>
 					</cfcase>
 					<cfcase value="File">
-						<cfif not renderer.showItemMeta(request.contentBean.getFileExt()) or request.showMeta eq 2>
+						<cfif not renderer.showItemMeta(event.getValue('contentBean').getFileExt()) or event.getValue('showMeta') eq 2>
 							<cftry>
-							<cfset renderer.renderFile(request.contentBean.getFileID()) />
+							<cfset renderer.renderFile(event.getValue('contentBean').getFileID()) />
 							<cfreturn ""/>
 							<cfcatch>
-								<cfset request.contentBean=application.contentManager.getActiveContentByFilename("404",request.siteid) />
+								<cfset event.setValue('contentBean',application.contentManager.getActiveContentByFilename("404",event.getValue('siteID'))) />
 								<cfreturn doHTML(renderer) />
 							</cfcatch>
 						</cftry>
@@ -239,23 +241,21 @@
 		<cfset var page = "" />
 		
 		<cfsavecontent variable="page">
-			<cfinclude template="/#application.configBean.getWebRootMap()#/#request.siteid#/includes/templates/#arguments.renderer.getTemplate()#">
+			<cfinclude template="/#application.configBean.getWebRootMap()#/#event.getValue('siteID')#/includes/templates/#arguments.renderer.getTemplate()#">
 		</cfsavecontent>
 		
 		<cfif request.exportHtmlSite>
-			<cfset page=replace(page,"#application.configBean.getContext()##renderer.getURLStem(request.siteid,'')#","/#application.settingsManager.getSite(request.siteid).getExportLocation()#/","ALL")> 
-			<cfset page=replace(page,"/#request.siteid#/","/#application.settingsManager.getSite(request.siteid).getExportLocation()#/","ALL")> 
+			<cfset page=replace(page,"#application.configBean.getContext()##renderer.getURLStem(event.getValue('siteID'),'')#","/#application.settingsManager.getSite(event.getValue('siteID')).getExportLocation()#/","ALL")> 
+			<cfset page=replace(page,"/#event.getValue('siteID')#/","/#application.settingsManager.getSite(event.getValue('siteID')).getExportLocation()#/","ALL")> 
 		</cfif>
 		
-		
-		
-			<cfif (request.forceSSL or (request.r.restrict and application.settingsManager.getSite(request.siteid).getExtranetSSL() eq 1)) and listFindNoCase('Off,False',cgi.https)>
-				<cflocation addtoken="no" url="https://#application.settingsManager.getSite(request.siteid).getDomain()##application.configBean.getServerPort()##arguments.renderer.getCurrentURL(false)#">
-			</cfif>
+		<cfif (event.getValue('forceSSL') or (event.getValue('r').restrict and application.settingsManager.getSite(event.getValue('siteID')).getExtranetSSL() eq 1)) and listFindNoCase('Off,False',cgi.https)>
+			<cflocation addtoken="no" url="https://#application.settingsManager.getSite(event.getValue('siteID')).getDomain()##application.configBean.getServerPort()##arguments.renderer.getCurrentURL(false)#">
+		</cfif>
 	
-			<cfif not (request.r.restrict or request.forceSSL) and listFindNoCase('On,True',cgi.https)>
-				<cflocation addtoken="no" url="http://#application.settingsManager.getSite(request.siteid).getDomain()##application.configBean.getServerPort()##arguments.renderer.getCurrentURL(false)#">
-			</cfif>
+		<cfif not (event.getValue('r').restrict or event.getValue('forceSSL')) and listFindNoCase('On,True',cgi.https)>
+			<cflocation addtoken="no" url="http://#application.settingsManager.getSite(event.getValue('siteID')).getDomain()##application.configBean.getServerPort()##arguments.renderer.getCurrentURL(false)#">
+		</cfif>
 			
 		<cfset arguments.renderer.renderHTMLHeadQueue() />
 		<cfreturn page>

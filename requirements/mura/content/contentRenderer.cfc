@@ -30,6 +30,11 @@
 <cfset this.renderHTMLHead=true/>
 
 <cffunction name="init" returntype="any" access="public" output="false">
+<cfargument name="_event" required="true" default="">
+
+<cfif isObject(arguments._event)>
+	<cfset event=arguments._event>
+</cfif>
 
 <cfreturn this />
 </cffunction>
@@ -123,7 +128,7 @@
 
 <cffunction name="setNavOffSet" returntype="void" output="false">
 <cfargument name="navOffSet">
-	<cfif not request.contentBean.getIsNew()>
+	<cfif not event.getValue('contentBean').getIsNew()>
 		<cfset this.navOffSet=arguments.navOffSet />
 	</cfif>
 </cffunction>
@@ -133,8 +138,8 @@
 
 	<cfset this.navDepthLimit=arguments.navDepthLimit />
 	
-	<cfif arrayLen(request.crumbData) gt this.navDepthLimit >
-		<cfset this.navDepthAjust=arraylen(request.crumbdata)-this.navDepthLimit />
+	<cfif arrayLen(event.getValue('crumbData')) gt this.navDepthLimit >
+		<cfset this.navDepthAjust=arraylen(event.getValue('crumbData'))-this.navDepthLimit />
 		<cfset this.navGrandParentIdx= 3 + this.navDepthAjust />
 		<cfset this.navParentIdx=2 + this.navDepthAjust />
 		<cfset this.navSelfIdx= 1 + this.navDepthAjust />
@@ -147,7 +152,7 @@
 	<cfif listFind(this.showMetaList,lcase(arguments.fileExt))>
 	<cfreturn 1>
 	<cfelse>
-	<cfreturn request.showMeta>
+	<cfreturn event.getValue('showMeta')>
 	</cfif>
 </cffunction>
 
@@ -165,12 +170,12 @@
 			<cfset var allowLink=true>
 			<cfset var G = 0 />
 			<cfif  arguments.loggedIn and (arguments.restrict)>
-						<cfif arguments.restrictgroups eq '' or isUserInRole('s2IsPrivate;#application.settingsManager.getSite(request.siteid).getPrivateUserPoolID()#') or isUserInRole('S2')>
+						<cfif arguments.restrictgroups eq '' or isUserInRole('s2IsPrivate;#application.settingsManager.getSite(event.getValue('siteID')).getPrivateUserPoolID()#') or isUserInRole('S2')>
 									<cfset allowLink=True>
 							<cfelseif arguments.restrictgroups neq ''>
 									<cfset allowLink=False>
 									<cfloop list="#arguments.restrictgroups#" index="G">
-										<cfif isUserInRole("#G#;#application.settingsManager.getSite(request.siteid).getPublicUserPoolID()#;1")>
+										<cfif isUserInRole("#G#;#application.settingsManager.getSite(event.getValue('siteID')).getPublicUserPoolID()#;1")>
 										<cfset allowLink=true>
 										</cfif>
 									</cfloop>
@@ -190,13 +195,13 @@
 			<cfset offset=1+this.navOffset/>
 		</cfif>
 		
-		<cfif arrayLen(request.crumbdata) gt offset>
+		<cfif arrayLen(event.getValue('crumbData')) gt offset>
 			<cfset topID = replace(getCrumbVarByLevel("filename",offset),"_"," ","ALL")>
 			<cfset topID = setCamelback(topID)>
 			<cfset id = "#Left(LCase(topID), 1)##Right(topID, Len(topID)-1)#">
 		</cfif>
 		
-		<cfif request.contentBean.getIsNew() eq 1>
+		<cfif event.getValue('contentBean').getIsNew() eq 1>
 			<cfset id = "fourzerofour">
 		</cfif>
 		
@@ -221,8 +226,8 @@
 	<cfargument name="theVar" required="true" default="" type="String">
 	<cfargument name="level" required="true" type="numeric" default="1">
 						
-		<cfif arrayLen(request.crumbdata) gt arguments.level>
-			<cfreturn request.crumbdata[arrayLen(request.crumbdata)-arguments.level][arguments.theVar]>
+		<cfif arrayLen(event.getValue('crumbData')) gt arguments.level>
+			<cfreturn event.getValue('crumbData')[arrayLen(event.getValue('crumbData'))-arguments.level][arguments.theVar]>
 		<cfelse>
 			<cfreturn "">
 		</cfif>
@@ -280,7 +285,7 @@
 		<cfargument name="categoryID" type="string" default="">
 		<cfargument name="relatedID" type="string" default="">
 		
-		<cfset var rsSection=application.contentGateway.getKids('00000000000000000000000000000000000',request.siteid,arguments.contentid,arguments.type,arguments.today,50,'',0,arguments.sortBy,arguments.sortDirection,arguments.categoryID,arguments.relatedID)>
+		<cfset var rsSection=application.contentGateway.getKids('00000000000000000000000000000000000',event.getValue('siteID'),arguments.contentid,arguments.type,arguments.today,50,'',0,arguments.sortBy,arguments.sortDirection,arguments.categoryID,arguments.relatedID)>
 		<cfset var adjust=0>
 		<cfset var current=0>
 		<cfset var link=''>
@@ -289,28 +294,28 @@
 		<cfset var nest=''>
 		<cfset var subnav=false>
 		<cfset var theNav="">
-		<cfif rsSection.recordcount and ((request.r.restrict and request.r.allow) or (not request.r.restrict))>
+		<cfif rsSection.recordcount and ((event.getValue('r').restrict and event.getValue('r').allow) or (not event.getValue('r').restrict))>
 			<cfset adjust=rsSection.recordcount>
 			<cfsavecontent variable="theNav">
 			<cfoutput>
-			<ul #iif(arguments.class neq '',de(' class="#arguments.class #"'),de(''))#><cfloop query="rsSection"><cfif allowLink(rssection.restricted,rssection.restrictgroups,request.r.loggedIn)><cfsilent>
+			<ul #iif(arguments.class neq '',de(' class="#arguments.class #"'),de(''))#><cfloop query="rsSection"><cfif allowLink(rssection.restricted,rssection.restrictgroups,event.getValue('r').loggedIn)><cfsilent>
 			
 			<cfset current=current+1>
 			<cfset nest=''>
-			<cfset subnav=(((rsSection.type eq 'Page' or  rsSection.type eq 'Calendar' or rsSection.type eq 'Portal') and arguments.class eq 'navSecondary' and (request.crumbdata[this.navSelfIdx].contentID eq rsSection.contentid or request.crumbdata[this.navSelfIdx].parentID eq rsSection.contentid) ) or ((rsSection.type eq 'Page' or  rsSection.type eq 'Calendar' ) and arguments.class neq 'navSecondary')) and arguments.currDepth lt arguments.viewDepth and rsSection.type neq 'Gallery' and not (rsSection.restricted and not len(getAuthUser())) >
+			<cfset subnav=(((rsSection.type eq 'Page' or  rsSection.type eq 'Calendar' or rsSection.type eq 'Portal') and arguments.class eq 'navSecondary' and (event.getValue('crumbData')[this.navSelfIdx].contentID eq rsSection.contentid or event.getValue('crumbData')[this.navSelfIdx].parentID eq rsSection.contentid) ) or ((rsSection.type eq 'Page' or  rsSection.type eq 'Calendar' ) and arguments.class neq 'navSecondary')) and arguments.currDepth lt arguments.viewDepth and rsSection.type neq 'Gallery' and not (rsSection.restricted and not len(getAuthUser())) >
 			
 			<cfif subnav>
 				<cfset nest=dspNestedNav(rssection.contentid,arguments.viewDepth,arguments.currDepth+1,iif(rssection.type eq 'calendar',de('fixed'),de('default')),now(),'','',rsSection.sortBy,rsSection.sortDirection,arguments.context,arguments.stub,arguments.categoryID,arguments.relatedID) />
 			</cfif>
 			
 			<cfset itemClass=iif(current eq 1,de('first'),de(iif(current eq adjust,de('last'),de('')))) />
-			<cfset isCurrent=listFind(request.contentBean.getPath(),"'#rsSection.contentid#'") />
+			<cfset isCurrent=listFind(event.getValue('contentBean').getPath(),"'#rsSection.contentid#'") />
 			
 			<cfif isCurrent>
 				<cfset itemClass=listAppend(itemClass,"current"," ")>
 			</cfif>
 			
-			<cfset link=addlink(rsSection.type,rsSection.filename,rsSection.menutitle,rsSection.target,rsSection.targetParams,rsSection.contentid,request.siteid,arguments.querystring,arguments.context,arguments.stub)>
+			<cfset link=addlink(rsSection.type,rsSection.filename,rsSection.menutitle,rsSection.target,rsSection.targetParams,rsSection.contentid,event.getValue('siteID'),arguments.querystring,arguments.context,arguments.stub)>
 			</cfsilent>
 			<li<cfif len(itemClass)> class="#itemClass#"</cfif>>#link#<cfif subnav and find("<li",nest)>#nest#</cfif></li><cfelse><cfset adjust=adjust-1></cfif></cfloop>
 			</ul></cfoutput>
@@ -323,19 +328,19 @@
 <cfargument name="id" type="string" default="crumblist">
 <cfargument name="separator" type="string" default="">
 <cfset var thenav="" />
-<cfset var theOffset=arrayLen(request.crumbdata)- this.navOffSet />
+<cfset var theOffset=arrayLen(event.getValue('crumbData'))- this.navOffSet />
 <cfset var I = 0 />
-	<cfif arrayLen(request.crumbdata) gt (1 + this.navOffSet)>
+	<cfif arrayLen(event.getValue('crumbData')) gt (1 + this.navOffSet)>
 		<cfsavecontent variable="theNav">
 			<cfoutput><ul id="#arguments.id#">
 				<cfloop from="#theOffset#" to="1" index="I" step="-1">
 					<cfif I neq 1>
 						<li class="#iif(I eq theOffset,de('first'),de(''))#">
 						<cfif i neq theOffset>#arguments.separator#</cfif>
-						#addlink(request.crumbdata[I].type,request.crumbdata[I].filename,request.crumbdata[I].menutitle,'_self','',request.crumbdata[I].contentid,request.crumbdata[I].siteid,'',application.configBean.getContext(),application.configBean.getStub(),application.configBean.getIndexFile(),request.showMeta,0)#</li>
+						#addlink(event.getValue('crumbData')[I].type,event.getValue('crumbData')[I].filename,event.getValue('crumbData')[I].menutitle,'_self','',event.getValue('crumbData')[I].contentid,event.getValue('crumbData')[I].siteid,'',application.configBean.getContext(),application.configBean.getStub(),application.configBean.getIndexFile(),event.getValue('showMeta'),0)#</li>
 					<cfelse>
-						<li class="#iif(arraylen(request.crumbdata),de('last'),de('first'))#">
-							#arguments.separator##addlink(request.crumbdata[1].type,request.crumbdata[1].filename,request.crumbdata[1].menutitle,'_self','',request.crumbdata[1].contentid,request.crumbdata[1].siteid,'',application.configBean.getContext(),application.configBean.getStub(),application.configBean.getIndexFile(),request.showMeta,0)#
+						<li class="#iif(arraylen(event.getValue('crumbData')),de('last'),de('first'))#">
+							#arguments.separator##addlink(event.getValue('crumbData')[1].type,event.getValue('crumbData')[1].filename,event.getValue('crumbData')[1].menutitle,'_self','',event.getValue('crumbData')[1].contentid,event.getValue('crumbData')[1].siteid,'',application.configBean.getContext(),application.configBean.getStub(),application.configBean.getIndexFile(),event.getValue('showMeta'),0)#
 						</li>
 					</cfif>
 				</cfloop>
@@ -362,17 +367,17 @@
 	<cfset var thenav="" />
 	<cfset var menutype="" />
 
-			<cfif request.contentBean.getType() eq 'Portal' or request.contentBean.getType() eq 'Gallery'>
-				<cfif arraylen(request.crumbdata) gt (this.navParentIdx+this.navOffSet)>
-					<cfif arraylen(request.crumbdata) gt (this.navGrandParentIdx+this.navOffSet) and (request.crumbdata[this.navGrandParentIdx].type neq 'Portal' or request.crumbdata[this.navGrandParentIdx].type neq 'Gallery') and not application.contentGateway.getCount(request.siteid,request.crumbdata[this.navSelfIdx].contentID)>
-						<cfset theNav = dspNestedNav(request.crumbdata[this.navGrandParentIdx].contentid,2,1,'default',now(),'navSecondary','',request.crumbData[this.navGrandParentIdx].sortBy,request.crumbData[this.navGrandParentIdx].sortDirection,application.configBean.getContext(),application.configBean.getStub(),request.categoryID) />
+			<cfif event.getValue('contentBean').getType() eq 'Portal' or event.getValue('contentBean').getType() eq 'Gallery'>
+				<cfif arraylen(event.getValue('crumbData')) gt (this.navParentIdx+this.navOffSet)>
+					<cfif arraylen(event.getValue('crumbData')) gt (this.navGrandParentIdx+this.navOffSet) and (event.getValue('crumbData')[this.navGrandParentIdx].type neq 'Portal' or event.getValue('crumbData')[this.navGrandParentIdx].type neq 'Gallery') and not application.contentGateway.getCount(event.getValue('siteID'),event.getValue('crumbData')[this.navSelfIdx].contentID)>
+						<cfset theNav = dspNestedNav(event.getValue('crumbData')[this.navGrandParentIdx].contentid,2,1,'default',now(),'navSecondary','',event.getValue('crumbData')[this.navGrandParentIdx].sortBy,event.getValue('crumbData')[this.navGrandParentIdx].sortDirection,application.configBean.getContext(),application.configBean.getStub(),event.getValue('categoryID')) />
 					<cfelse>
 						<cfset thenav=dspPeerNav() />
 					</cfif>
 				</cfif>
-			<cfelseif arrayLen(request.crumbdata) gt (this.navSelfIdx+this.navOffSet) and request.crumbdata[this.navParentIdx].type eq 'Portal' or (arraylen(request.crumbdata) gt (this.navGrandParentIdx+this.navOffSet) and request.crumbdata[this.navGrandParentIdx].type eq 'Portal')>
-				<cfif arraylen(request.crumbdata) gt (this.navGrandParentIdx+this.navOffSet) and request.crumbdata[this.navGrandParentIdx].type neq 'Portal' and not application.contentGateway.getCount(request.siteid,request.crumbdata[this.navSelfIdx].contentID)>
-					<cfset theNav = dspNestedNav(request.crumbdata[this.navGrandParentIdx].contentid,1,1,'default',now(),'navSecondary','',request.crumbData[this.navGrandParentIdx].sortBy,request.crumbData[this.navGrandParentIdx].sortDirection,application.configBean.getContext(),application.configBean.getStub(),request.categoryID) />
+			<cfelseif arrayLen(event.getValue('crumbData')) gt (this.navSelfIdx+this.navOffSet) and event.getValue('crumbData')[this.navParentIdx].type eq 'Portal' or (arraylen(event.getValue('crumbData')) gt (this.navGrandParentIdx+this.navOffSet) and event.getValue('crumbData')[this.navGrandParentIdx].type eq 'Portal')>
+				<cfif arraylen(event.getValue('crumbData')) gt (this.navGrandParentIdx+this.navOffSet) and event.getValue('crumbData')[this.navGrandParentIdx].type neq 'Portal' and not application.contentGateway.getCount(event.getValue('siteID'),event.getValue('crumbData')[this.navSelfIdx].contentID)>
+					<cfset theNav = dspNestedNav(event.getValue('crumbData')[this.navGrandParentIdx].contentid,1,1,'default',now(),'navSecondary','',event.getValue('crumbData')[this.navGrandParentIdx].sortBy,event.getValue('crumbData')[this.navGrandParentIdx].sortDirection,application.configBean.getContext(),application.configBean.getStub(),event.getValue('categoryID')) />
 				<cfelse>
 					<cfset thenav=dspSubNav() />
 				</cfif>
@@ -387,17 +392,17 @@
 	<cfset var thenav="" />
 	<cfset var menutype="" />
 	
-	<cfif request.contentBean.getType() neq 'Gallery'>
-			<cfif arraylen(request.crumbdata) gt (this.navParentIdx+this.navOffSet)>
-				<cfif request.crumbdata[this.navParentIdx].type eq 'calendar'>
+	<cfif event.getValue('contentBean').getType() neq 'Gallery'>
+			<cfif arraylen(event.getValue('crumbData')) gt (this.navParentIdx+this.navOffSet)>
+				<cfif event.getValue('crumbData')[this.navParentIdx].type eq 'calendar'>
 					<cfset menutype='fixed'>
 				<cfelse>
 					<cfset menutype='default'>
 				</cfif>
-				<cfif arraylen(request.crumbdata) gt (this.navGrandParentIdx+this.navOffSet) and not application.contentGateway.getCount(request.siteid,request.crumbdata[this.navSelfIdx].contentID)>
-					<cfset theNav = dspNestedNav(request.crumbdata[this.navGrandParentIdx].contentid,2,1,menutype,now(),'navSecondary','',request.crumbData[this.navGrandParentIdx].sortBy,request.crumbData[this.navGrandParentIdx].sortDirection,application.configBean.getContext(),application.configBean.getStub()) />	
+				<cfif arraylen(event.getValue('crumbData')) gt (this.navGrandParentIdx+this.navOffSet) and not application.contentGateway.getCount(event.getValue('siteID'),event.getValue('crumbData')[this.navSelfIdx].contentID)>
+					<cfset theNav = dspNestedNav(event.getValue('crumbData')[this.navGrandParentIdx].contentid,2,1,menutype,now(),'navSecondary','',event.getValue('crumbData')[this.navGrandParentIdx].sortBy,event.getValue('crumbData')[this.navGrandParentIdx].sortDirection,application.configBean.getContext(),application.configBean.getStub()) />	
 				<cfelse>
-					<cfset theNav = dspNestedNav(request.crumbdata[this.navParentIdx].contentid,2,1,menutype,now(),'navSecondary','',request.crumbData[this.navParentIdx].sortBy,request.crumbData[this.navParentIdx].sortDirection,application.configBean.getContext(),application.configBean.getStub()) />	
+					<cfset theNav = dspNestedNav(event.getValue('crumbData')[this.navParentIdx].contentid,2,1,menutype,now(),'navSecondary','',event.getValue('crumbData')[this.navParentIdx].sortBy,event.getValue('crumbData')[this.navParentIdx].sortDirection,application.configBean.getContext(),application.configBean.getStub()) />	
 				</cfif>			
 			<cfelse>
 			<cfset theNav=dspSubNav() />
@@ -412,9 +417,9 @@
 <cffunction name="dspSubNav" output="false" returntype="string">
 	<cfset var thenav="" />
 	<cfset var menutype="">
-			<cfif arraylen(request.crumbdata) gt (this.navSelfIdx+this.navOffSet)>
-			<cfif request.crumbdata[this.navSelfIdx].type eq 'Calendar'><cfset menutype='fixed'><cfelse><cfset menutype='default'></cfif>
-			<cfset theNav = dspNestedNav(request.crumbdata[this.navSelfIdx].contentID,1,1,menutype,now(),'navSecondary','',request.crumbdata[this.navSelfIdx].sortBy,request.crumbdata[this.navSelfIdx].sortDirection,application.configBean.getContext(),application.configBean.getStub()) />
+			<cfif arraylen(event.getValue('crumbData')) gt (this.navSelfIdx+this.navOffSet)>
+			<cfif event.getValue('crumbData')[this.navSelfIdx].type eq 'Calendar'><cfset menutype='fixed'><cfelse><cfset menutype='default'></cfif>
+			<cfset theNav = dspNestedNav(event.getValue('crumbData')[this.navSelfIdx].contentID,1,1,menutype,now(),'navSecondary','',event.getValue('crumbData')[this.navSelfIdx].sortBy,event.getValue('crumbData')[this.navSelfIdx].sortDirection,application.configBean.getContext(),application.configBean.getStub()) />
 			</cfif>
 			
 			<cfreturn thenav />
@@ -424,20 +429,20 @@
 	<cfset var thenav="" />
 	<cfset var menutype = "" />
 	
-			<cfif arraylen(request.crumbdata) gt (this.navParentIdx+this.navOffSet)>
-				<cfif request.crumbdata[this.navParentIdx].type eq 'calendar'>
+			<cfif arraylen(event.getValue('crumbData')) gt (this.navParentIdx+this.navOffSet)>
+				<cfif event.getValue('crumbData')[this.navParentIdx].type eq 'calendar'>
 					<cfset menutype='fixed'>
 				<cfelse>
 					<cfset menutype='default'>
 				</cfif>
-				<cfset theNav = dspNestedNav(request.crumbdata[this.navParentIdx].contentID,1,1,menutype,now(),'navSecondary','',request.crumbData[this.navParentIdx].sortBy,request.crumbData[this.navParentIdx].sortDirection,application.configBean.getContext(),application.configBean.getStub()) />
+				<cfset theNav = dspNestedNav(event.getValue('crumbData')[this.navParentIdx].contentID,1,1,menutype,now(),'navSecondary','',event.getValue('crumbData')[this.navParentIdx].sortBy,event.getValue('crumbData')[this.navParentIdx].sortDirection,application.configBean.getContext(),application.configBean.getStub()) />
 			</cfif>
 			
 			<cfreturn theNav />
 </cffunction>
 
 <cffunction name="dspSequentialNav" output="false" returntype="string">
-		<cfset var rsSection=application.contentGateway.getKids('00000000000000000000000000000000000','#request.siteid#','#request.contentBean.getparentid()#','default',now(),0,'',0,'#request.crumbData[2].sortBy#','#request.crumbData[2].sortDirection#')>
+		<cfset var rsSection=application.contentGateway.getKids('00000000000000000000000000000000000','#event.getValue('siteID')#','#event.getValue('contentBean').getparentid()#','default',now(),0,'',0,'#event.getValue('crumbData')[2].sortBy#','#event.getValue('crumbData')[2].sortDirection#')>
 		<cfset var link=''>
 		<cfset var class=''>
 		<cfset var itemClass=''>
@@ -446,9 +451,9 @@
 		<cfset var next=1>
 		<cfset var prev=1>
 	
-		<cfif rsSection.recordcount and ((request.r.restrict and request.r.allow) or (not request.r.restrict))>
+		<cfif rsSection.recordcount and ((event.getValue('r').restrict and event.getValue('r').allow) or (not event.getValue('r').restrict))>
 			<cfloop query="rsSection">
-			<cfif rssection.filename eq request.contentBean.getfilename()>
+			<cfif rssection.filename eq event.getValue('contentBean').getfilename()>
 				<cfset prev=iif((rsSection.currentrow - 1) lt 1,de(rsSection.recordcount),de(rsSection.currentrow-1)) />
 				<cfset current=rsSection.currentrow />
 				<cfset next=iif((rsSection.currentrow + 1) gt rsSection.recordcount,de(1),de(rsSection.currentrow + 1)) />
@@ -458,17 +463,17 @@
 			<cfsavecontent variable="theNav">
 			<cfoutput>
 			<ul class="navSequential">
-			<cfif rsSection.contentID[1] neq request.contentBean.getContentID()>
+			<cfif rsSection.contentID[1] neq event.getValue('contentBean').getContentID()>
 			<li><a href="index.cfm?linkServID=#rsSection.contentID[prev]#">&laquo; #application.rbFactory.getKeyValue(session.rb,"sitemanager.prev")#</a></li>
 			</cfif>
 			<cfloop query="rsSection">
 			<cfsilent>
-				<cfset itemClass=iif(request.contentBean.getfilename() eq rsSection.filename,de('current'),de('')) />
-				<cfset link=addlink(rsSection.type,rsSection.filename,rssection.currentrow,'','',rsSection.contentid,request.siteid,'',application.configBean.getContext(),application.configBean.getStub(),application.configBean.getIndexFile(),showItemMeta(rsSection.fileExt))>
+				<cfset itemClass=iif(event.getValue('contentBean').getfilename() eq rsSection.filename,de('current'),de('')) />
+				<cfset link=addlink(rsSection.type,rsSection.filename,rssection.currentrow,'','',rsSection.contentid,event.getValue('siteID'),'',application.configBean.getContext(),application.configBean.getStub(),application.configBean.getIndexFile(),showItemMeta(rsSection.fileExt))>
 			</cfsilent>
 			<li class="#itemClass#">#link#</li>
 			</cfloop>
-			<cfif rsSection.contentID[rsSection.recordcount] neq request.contentBean.getContentID()>
+			<cfif rsSection.contentID[rsSection.recordcount] neq event.getValue('contentBean').getContentID()>
 			<li><a href="index.cfm?linkServID=#rsSection.contentID[next]#">&raquo; #application.rbFactory.getKeyValue(session.rb,"sitemanager.next")#</a></li>
 			</cfif>
 			</ul></cfoutput>
@@ -478,7 +483,7 @@
 </cffunction>
 
 <cffunction name="dspGalleryNav" output="false" returntype="string">
-		<cfset var rsSection=application.contentGateway.getKids('00000000000000000000000000000000000',request.siteid,request.contentBean.getcontentID(),'default',now(),0,'',0,request.contentBean.getsortBy(),request.contentBean.getsortDirection(),request.categoryID,request.relatedID)>
+		<cfset var rsSection=application.contentGateway.getKids('00000000000000000000000000000000000',event.getValue('siteID'),event.getValue('contentBean').getcontentID(),'default',now(),0,'',0,event.getValue('contentBean').getsortBy(),event.getValue('contentBean').getsortDirection(),event.getValue('categoryID'),event.getValue('relatedID'))>
 		<cfset var link=''>
 		<cfset var class=''>
 		<cfset var itemClass=''>
@@ -487,10 +492,10 @@
 		<cfset var next=1>
 		<cfset var prev=1>
 		
-		<cfif rsSection.recordcount and ((request.r.restrict and request.r.allow) or (not request.r.restrict))>
+		<cfif rsSection.recordcount and ((event.getValue('r').restrict and event.getValue('r').allow) or (not event.getValue('r').restrict))>
 			
 			<cfloop query="rsSection">
-			<cfif rssection.contentID eq request.galleryItemID>
+			<cfif rssection.contentID eq event.getValue('galleryItemID')>
 				<cfset prev=iif((rsSection.currentrow - 1) lt 1,de(rsSection.recordcount),de(rsSection.currentrow-1)) />
 				<cfset current=rsSection.currentrow />
 				<cfset next=iif((rsSection.currentrow + 1) gt rsSection.recordcount,de(1),de(rsSection.currentrow + 1)) />
@@ -501,16 +506,16 @@
 			<cfoutput>
 			<ul class="navSequential">
 			<li class="first">
-			 <a href="#application.configBean.getIndexFile()#?startrow=#request.startrow#&galleryItemID=#rsSection.contentid[prev]#&categoryID=#request.categoryID#&relatedID=#request.relatedID#">&laquo; Prev</a>
+			 <a href="#application.configBean.getIndexFile()#?startrow=#event.getValue('startRow')#&galleryItemID=#rsSection.contentid[prev]#&categoryID=#event.getValue('categoryID')#&relatedID=#event.getValue('relatedID')#">&laquo; Prev</a>
 			</li>
 			<cfloop query="rsSection">
 			<cfsilent>
-				<cfset itemClass=iif(request.galleryItemID eq rsSection.contentID,de('current'),de('')) />
-				<cfset link='<a href="#application.configBean.getIndexFile()#?startrow=#request.startrow#&galleryItemID=#rsSection.contentID#&categoryID=#request.categoryID#">#rsSection.currentRow#</a>'>
+				<cfset itemClass=iif(event.getValue('galleryItemID') eq rsSection.contentID,de('current'),de('')) />
+				<cfset link='<a href="#application.configBean.getIndexFile()#?startrow=#event.getValue('startRow')#&galleryItemID=#rsSection.contentID#&categoryID=#event.getValue('categoryID')#">#rsSection.currentRow#</a>'>
 			</cfsilent>
 			<li class="#itemClass#">#link#</li>
 			</cfloop>
-			<li class="last"> <a href="#application.configBean.getIndexFile()#?startrow=#request.startrow#&galleryItemID=#rsSection.contentid[next]#&categoryID=#request.categoryID#">Next &raquo;</a></li>
+			<li class="last"> <a href="#application.configBean.getIndexFile()#?startrow=#event.getValue('startRow')#&galleryItemID=#rsSection.contentid[next]#&categoryID=#event.getValue('categoryID')#">Next &raquo;</a></li>
 			</ul></cfoutput>
 			</cfsavecontent>
 		</cfif>
@@ -522,15 +527,15 @@
 	<cfset var returnUrl = "" />
 	<cfset var thenav = "" />
 
-	<cfif request.returnUrl neq "">
-		<cfset returnUrl = request.returnURL>
+	<cfif event.getValue('returnURL') neq "">
+		<cfset returnUrl = event.getValue('returnURL')>
 	<cfelse>
 		<cfset returnURL = URLEncodedFormat('#application.contentRenderer.getCurrentURL()#')>
 	</cfif>
 		
 	<cfsavecontent variable="theNav">
 		<cfif getSite().getExtranet() eq 1 and getAuthUser() neq ''>
-			<cfoutput><ul id="#arguments.id#"><li><a href="#application.configBean.getIndexFile()#?doaction=logout&nocache=1">Log Out #listGetAt(getAuthUser(),2,"^")#</a></li><li><a href="#application.settingsManager.getSite(request.siteid).getEditProfileURL()#&returnURL=#returnURL#&nocache=1">Edit Profile</a></li></ul></cfoutput>
+			<cfoutput><ul id="#arguments.id#"><li><a href="#application.configBean.getIndexFile()#?doaction=logout&nocache=1">Log Out #listGetAt(getAuthUser(),2,"^")#</a></li><li><a href="#application.settingsManager.getSite(event.getValue('siteID')).getEditProfileURL()#&returnURL=#returnURL#&nocache=1">Edit Profile</a></li></ul></cfoutput>
 		</cfif>
 	</cfsavecontent>
 			
@@ -541,7 +546,7 @@
 <cfargument name="parentID" type="any"  required="true" default="" />
 <cfargument name="categoryID"  type="any" required="true" default="" />
 <cfargument name="rsContent"  type="any"  required="true"  default="" />
-<cfset var theDisplayPoolID = application.settingsManager.getSite(request.siteid).getDisplayPoolID() />
+<cfset var theDisplayPoolID = application.settingsManager.getSite(event.getValue('siteID')).getDisplayPoolID() />
 <cfset var str ="" />
 
 <cfsavecontent variable="str">
@@ -655,11 +660,11 @@
 			<cfset var href ="">
 			<cfset var theClass =arguments.class>
 			
-			<cfif arguments.showCurrent and listFind(request.contentBean.getPath(),"'#arguments.contentID#'")>					
+			<cfif arguments.showCurrent and listFind(event.getValue('contentBean').getPath(),"'#arguments.contentID#'")>					
 				<cfset theClass=listAppend(theClass,"current"," ") />
 			</cfif>
 			
-			<cfset href=createHREF(arguments.type,arguments.filename,arguments.siteid,arguments.contentid,arguments.target,iif(arguments.filename eq request.contentBean.getfilename(),de(''),de(arguments.targetParams)),arguments.queryString,arguments.context,arguments.stub,arguments.indexFile,false,arguments.showMeta)>
+			<cfset href=createHREF(arguments.type,arguments.filename,arguments.siteid,arguments.contentid,arguments.target,iif(arguments.filename eq event.getValue('contentBean').getfilename(),de(''),de(arguments.targetParams)),arguments.queryString,arguments.context,arguments.stub,arguments.indexFile,false,arguments.showMeta)>
 			<cfset link='<a href="#href#" #iif(len(theClass),de('class="#theClass#"'),de(""))#>#HTMLEditFormat(arguments.title)#</a>' />
 
 		<cfreturn link>
@@ -668,7 +673,7 @@
 <cffunction name="dspObject" access="public" output="false" returntype="string">
 <cfargument name="object" type="string">
 <cfargument name="objectid" type="string">
-<cfargument name="siteid" type="string" required="true" default="#request.siteID#">
+<cfargument name="siteid" type="string" required="true" default="#event.getValue('siteID')#">
 
 	<cfset var theObject = "" />
 	<cfset var theDisplayPoolID = application.settingsManager.getSite(arguments.siteid).getDisplayPoolID() />
@@ -678,32 +683,32 @@
 		<cfsavecontent variable="theObject">
 			<cfswitch expression="#arguments.object#">
 				<cfcase value="sub_nav">
-					<cf_CacheOMatic key="#arguments.object##request.contentBean.getcontentID()#" nocache="#request.r.restrict#">
+					<cf_CacheOMatic key="#arguments.object##event.getValue('contentBean').getcontentID()#" nocache="#event.getValue('r').restrict#">
 					<cfinclude  template="/#application.configBean.getWebRootMap()#/#theDisplayPoolID#/includes/display_objects/nav/dsp_sub.cfm">
 					</cf_cacheomatic>
 				</cfcase>
 				<cfcase value="peer_nav">
-					<cf_CacheOMatic key="#arguments.object##request.contentBean.getcontentID()#" nocache="#request.r.restrict#">
+					<cf_CacheOMatic key="#arguments.object##event.getValue('contentBean').getcontentID()#" nocache="#event.getValue('r').restrict#">
 					<cfinclude  template="/#application.configBean.getWebRootMap()#/#theDisplayPoolID#/includes/display_objects/nav/dsp_peer.cfm">
 					</cf_cacheomatic>
 				</cfcase>
 				<cfcase value="standard_nav">
-					<cf_CacheOMatic key="#arguments.object##request.contentBean.getcontentID()#" nocache="#request.r.restrict#">
+					<cf_CacheOMatic key="#arguments.object##event.getValue('contentBean').getcontentID()#" nocache="#event.getValue('r').restrict#">
 					<cfinclude  template="/#application.configBean.getWebRootMap()#/#theDisplayPoolID#/includes/display_objects/nav/dsp_standard.cfm">
 					</cf_cacheomatic>
 				</cfcase>
 				<cfcase value="portal_nav">
-					<cf_CacheOMatic key="#arguments.object##request.contentBean.getcontentID()#" nocache="#request.r.restrict#">
+					<cf_CacheOMatic key="#arguments.object##event.getValue('contentBean').getcontentID()#" nocache="#event.getValue('r').restrict#">
 					<cfinclude  template="/#application.configBean.getWebRootMap()#/#theDisplayPoolID#/includes/display_objects/nav/dsp_portal.cfm">
 					</cf_cacheomatic>
 				</cfcase>
 				<cfcase value="seq_nav">
-					<cf_CacheOMatic key="#arguments.object##arguments.objectid##request.startrow#" nocache="#request.r.restrict#">
+					<cf_CacheOMatic key="#arguments.object##arguments.objectid##event.getValue('startRow')#" nocache="#event.getValue('r').restrict#">
 					<cfinclude  template="/#application.configBean.getWebRootMap()#/#theDisplayPoolID#/includes/display_objects/nav/dsp_sequential.cfm">
 					</cf_cacheomatic>
 				</cfcase>
 				<cfcase value="top_nav">
-					<cf_CacheOMatic key="#arguments.object##request.contentBean.getcontentID()#" nocache="#request.r.restrict#">
+					<cf_CacheOMatic key="#arguments.object##event.getValue('contentBean').getcontentID()#" nocache="#event.getValue('r').restrict#">
 					<cfinclude  template="/#application.configBean.getWebRootMap()#/#theDisplayPoolID#/includes/display_objects/nav/dsp_top.cfm">
 					</cf_cacheomatic>
 				</cfcase>
@@ -714,7 +719,7 @@
 					<cfinclude  template="/#application.configBean.getWebRootMap()#/#theDisplayPoolID#/includes/display_objects/nav/calendarNav/index.cfm">
 				</cfcase>
 				<cfcase value="plugin">
-					<cf_CacheOMatic key="#arguments.object##arguments.siteID##arguments.objectid#" nocache="#request.r.restrict#">
+					<cf_CacheOMatic key="#arguments.object##arguments.siteID##arguments.objectid#" nocache="#event.getValue('r').restrict#">
 					<cfoutput>#application.pluginManager.displayObject(arguments.objectid,arguments.siteID)#</cfoutput>
 					</cf_cacheomatic>
 				</cfcase>
@@ -725,60 +730,60 @@
 					<cfinclude  template="/#application.configBean.getWebRootMap()#/#theDisplayPoolID#/includes/display_objects/dsp_mailing_list_master.cfm">
 				</cfcase>
 				<cfcase value="site_map">
-					<cf_CacheOMatic key="#arguments.object##arguments.objectid#" nocache="#request.r.restrict#">
+					<cf_CacheOMatic key="#arguments.object##arguments.objectid#" nocache="#event.getValue('r').restrict#">
 					<cfinclude  template="/#application.configBean.getWebRootMap()#/#theDisplayPoolID#/includes/display_objects/dsp_site_map.cfm">
 					</cf_cacheomatic>
 				</cfcase>
 				<cfcase value="features">
-					<cf_CacheOMatic key="#arguments.object##arguments.objectid#" nocache="#request.r.restrict#">
+					<cf_CacheOMatic key="#arguments.object##arguments.objectid#" nocache="#event.getValue('r').restrict#">
 					<cfset hasSummary=true>
 					<cfinclude template="/#application.configBean.getWebRootMap()#/#theDisplayPoolID#/includes/display_objects/dsp_features.cfm">
 					</cf_cacheomatic>
 				</cfcase>
 				<cfcase value="features_no_summary">
-					<cf_CacheOMatic key="#arguments.object##arguments.objectid#" nocache="#request.r.restrict#">
+					<cf_CacheOMatic key="#arguments.object##arguments.objectid#" nocache="#event.getValue('r').restrict#">
 					<cfset hasSummary=false>
 					<cfinclude  template="/#application.configBean.getWebRootMap()#/#theDisplayPoolID#/includes/display_objects/dsp_features.cfm">
 					</cf_cacheomatic>
 				</cfcase>
 				<cfcase value="category_features">
-					<cf_CacheOMatic key="#arguments.object##arguments.objectid#" nocache="#request.r.restrict#">
+					<cf_CacheOMatic key="#arguments.object##arguments.objectid#" nocache="#event.getValue('r').restrict#">
 					<cfset hasSummary=true>
 					<cfinclude  template="/#application.configBean.getWebRootMap()#/#theDisplayPoolID#/includes/display_objects/dsp_category_features.cfm">
 					</cf_cacheomatic>
 				</cfcase>
 				<cfcase value="category_features_no_summary">
-					<cf_CacheOMatic key="#arguments.object##arguments.objectid#" nocache="#request.r.restrict#">
+					<cf_CacheOMatic key="#arguments.object##arguments.objectid#" nocache="#event.getValue('r').restrict#">
 					<cfset hasSummary=false>
 					<cfinclude  template="/#application.configBean.getWebRootMap()#/#theDisplayPoolID#/includes/display_objects/dsp_category_features.cfm">
 					</cf_cacheomatic>
 				</cfcase>
 				<cfcase value="category_portal_features">
-					<cf_CacheOMatic key="#arguments.object##arguments.objectid#" nocache="#request.r.restrict#">
+					<cf_CacheOMatic key="#arguments.object##arguments.objectid#" nocache="#event.getValue('r').restrict#">
 					<cfset hasSummary=true>
 					<cfinclude  template="/#application.configBean.getWebRootMap()#/#theDisplayPoolID#/includes/display_objects/dsp_category_portal_features.cfm">
 					</cf_cacheomatic>
 				</cfcase>
 				<cfcase value="category_portal_features_no_summary">
-					<cf_CacheOMatic key="#arguments.object##arguments.objectid#" nocache="#request.r.restrict#">
+					<cf_CacheOMatic key="#arguments.object##arguments.objectid#" nocache="#event.getValue('r').restrict#">
 					<cfset hasSummary=false>
 					<cfinclude  template="/#application.configBean.getWebRootMap()#/#theDisplayPoolID#/includes/display_objects/dsp_category_portal_features.cfm">
 					</cf_cacheomatic>
 				</cfcase>
 				<cfcase value="category_summary">
-					<cf_CacheOMatic key="#arguments.object##arguments.objectid##request.categoryid#" nocache="#request.r.restrict#">
+					<cf_CacheOMatic key="#arguments.object##arguments.objectid##event.getValue('categoryID')#" nocache="#event.getValue('r').restrict#">
 					<cfset useRSS=false>
 					<cfinclude  template="/#application.configBean.getWebRootMap()#/#theDisplayPoolID#/includes/display_objects/dsp_category_summary.cfm">
 					</cf_cacheomatic>
 				</cfcase>
 				<cfcase value="category_summary_rss">
-					<cf_CacheOMatic key="#arguments.object##arguments.objectid##request.categoryid#" nocache="#request.r.restrict#">
+					<cf_CacheOMatic key="#arguments.object##arguments.objectid##event.getValue('categoryID')#" nocache="#event.getValue('r').restrict#">
 					<cfset useRSS=true>
 					<cfinclude  template="/#application.configBean.getWebRootMap()#/#theDisplayPoolID#/includes/display_objects/dsp_category_summary.cfm">
 					</cf_cacheomatic>
 				</cfcase>
 				<cfcase value="form">
-					<cf_CacheOMatic key="#arguments.object##arguments.objectid#" nocache="#request.nocache#">
+					<cf_CacheOMatic key="#arguments.object##arguments.objectid#" nocache="#event.getValue('noCache')#">
 					<cfinclude  template="/#application.configBean.getWebRootMap()#/#theDisplayPoolID#/includes/display_objects/datacollection/index.cfm">
 					</cf_cacheomatic>
 				</cfcase>
@@ -786,7 +791,7 @@
 					<cfinclude  template="/#application.configBean.getWebRootMap()#/#theDisplayPoolID#/includes/display_objects/dataresponses/index.cfm">
 				</cfcase>
 				<cfcase value="component">
-					<cf_CacheOMatic key="#arguments.object##arguments.objectid#" nocache="#request.r.restrict#">
+					<cf_CacheOMatic key="#arguments.object##arguments.objectid#" nocache="#event.getValue('r').restrict#">
 					<cfinclude  template="/#application.configBean.getWebRootMap()#/#theDisplayPoolID#/includes/display_objects/dsp_template.cfm">
 					</cf_cacheomatic>
 				</cfcase>
@@ -797,7 +802,7 @@
 					<cfinclude  template="/#application.configBean.getWebRootMap()#/#theDisplayPoolID#/includes/display_objects/dsp_comments.cfm">
 				</cfcase>
 				<cfcase value="submit_event">
-					<cf_CacheOMatic key="#arguments.object##arguments.objectid#" nocache="#request.nocache#">
+					<cf_CacheOMatic key="#arguments.object##arguments.objectid#" nocache="#event.getValue('noCache')#">
 					<cfinclude  template="/#application.configBean.getWebRootMap()#/#theDisplayPoolID#/includes/display_objects/dsp_submit_event.cfm">
 					</cf_cacheomatic>
 				</cfcase>
@@ -808,7 +813,7 @@
 					<cfinclude  template="/#application.configBean.getWebRootMap()#/#theDisplayPoolID#/includes/display_objects/dsp_public_content_form.cfm">
 				</cfcase>
 				<cfcase value="event_reminder_form">
-					<cf_CacheOMatic key="#arguments.object##arguments.objectid#" nocache="#request.nocache#">
+					<cf_CacheOMatic key="#arguments.object##arguments.objectid#" nocache="#event.getValue('noCache')#">
 					<cfinclude  template="/#application.configBean.getWebRootMap()#/#theDisplayPoolID#/includes/display_objects/dsp_event_reminder_form.cfm">
 					</cf_cacheomatic>
 				</cfcase>
@@ -819,19 +824,19 @@
 					<cfinclude  template="/#application.configBean.getWebRootMap()#/#theDisplayPoolID#/includes/display_objects/dsp_adZone.cfm">
 				</cfcase>
 				<cfcase value="feed">
-					<cf_CacheOMatic key="#arguments.object##arguments.objectid#" nocache="#request.r.restrict#">
+					<cf_CacheOMatic key="#arguments.object##arguments.objectid#" nocache="#event.getValue('r').restrict#">
 					<cfset hasSummary=true>
 					<cfinclude  template="/#application.configBean.getWebRootMap()#/#theDisplayPoolID#/includes/display_objects/dsp_feed.cfm">
 					</cf_cacheomatic>
 				</cfcase>
 				<cfcase value="feed_no_summary">
-					<cf_CacheOMatic key="#arguments.object##arguments.objectid#" nocache="#request.r.restrict#">
+					<cf_CacheOMatic key="#arguments.object##arguments.objectid#" nocache="#event.getValue('r').restrict#">
 					<cfset hasSummary=false>
 					<cfinclude  template="/#application.configBean.getWebRootMap()#/#theDisplayPoolID#/includes/display_objects/dsp_feed.cfm">
 					</cf_cacheomatic>
 				</cfcase>
 				<cfcase value="feed_table">
-					<cf_CacheOMatic key="#arguments.object#" nocache="#request.r.restrict#">
+					<cf_CacheOMatic key="#arguments.object#" nocache="#event.getValue('r').restrict#">
 					<cfset hasSummary=false>
 					<cfinclude  template="/#application.configBean.getWebRootMap()#/#theDisplayPoolID#/includes/display_objects/feedtable/index.cfm">
 					</cf_cacheomatic>
@@ -841,7 +846,7 @@
 					<cfinclude  template="/#application.configBean.getWebRootMap()#/#theDisplayPoolID#/includes/display_objects/paypalcart/index.cfm">
 				</cfcase>
 			<!--- 	<cfcase value="workspace">
-				<cfset request.nocache=1>
+				<cfset event.getValue('noCache')=1>
 					<cfinclude  template="/#application.configBean.getWebRootMap()#/#theDisplayPoolID#/includes/display_objects/workspace/index.cfm">
 				</cfcase> --->
 				<cfcase value="rater">
@@ -854,18 +859,18 @@
 					<cfinclude template="/#application.configBean.getWebRootMap()#/#theDisplayPoolID#/includes/display_objects/dragablefeeds/index.cfm">
 				</cfcase>
 				<cfcase value="related_content">
-					<cf_CacheOMatic key="#arguments.object##arguments.objectid#" nocache="#request.r.restrict#">
+					<cf_CacheOMatic key="#arguments.object##arguments.objectid#" nocache="#event.getValue('r').restrict#">
 					<cfinclude template="/#application.configBean.getWebRootMap()#/#theDisplayPoolID#/includes/display_objects/dsp_related_content.cfm">
 					</cf_cacheomatic>
 				</cfcase>
 				<cfcase value="related_section_content">
-					<cf_CacheOMatic key="#arguments.object##arguments.objectid#" nocache="#request.r.restrict#">
+					<cf_CacheOMatic key="#arguments.object##arguments.objectid#" nocache="#event.getValue('r').restrict#">
 					<cfset hasSummary=true>
 					<cfinclude template="/#application.configBean.getWebRootMap()#/#theDisplayPoolID#/includes/display_objects/dsp_related_section_content.cfm">
 					</cf_cacheomatic>
 				</cfcase>
 				<cfcase value="related_section_content_no_summary">
-					<cf_CacheOMatic key="#arguments.object##arguments.objectid#" nocache="#request.r.restrict#">
+					<cf_CacheOMatic key="#arguments.object##arguments.objectid#" nocache="#event.getValue('r').restrict#">
 					<cfset hasSummary=false>
 					<cfinclude template="/#application.configBean.getWebRootMap()#/#theDisplayPoolID#/includes/display_objects/dsp_related_section_content.cfm">
 					</cf_cacheomatic>
@@ -890,27 +895,27 @@
 
 <cffunction name="dspObjects" access="public" output="false" returntype="string">
 <cfargument name="columnID" required="yes" type="numeric" default="1">
-<cfargument name="ContentHistID" required="yes" type="string" default="#request.contentBean.getcontenthistid()#">
+<cfargument name="ContentHistID" required="yes" type="string" default="#event.getValue('contentBean').getcontenthistid()#">
 <cfset var rsObjects="">	
 <cfset var theRegion= ""/>
 
-<cfif (request.isOnDisplay 
-		and ((not request.r.restrict) 
-			or (request.r.restrict and request.r.allow))) 
-				and not (request.display neq '' and  getSIte().getPrimaryColumn() eq arguments.columnid)>
+<cfif (event.getValue('isOnDisplay') 
+		and ((not event.getValue('r').restrict) 
+			or (event.getValue('r').restrict and event.getValue('r').allow))) 
+				and not (event.getValue('display') neq '' and  getSite().getPrimaryColumn() eq arguments.columnid)>
 
-	<cfif request.contentBean.getinheritObjects() eq 'inherit' 
-		and request.inheritedObjects neq ''
-		and request.contentBean.getcontenthistid() eq arguments.contentHistID>
-			<cfset rsObjects=application.contentGateway.getObjectInheritance(arguments.columnID,request.inheritedObjects,request.siteid)>	
+	<cfif event.getValue('contentBean').getinheritObjects() eq 'inherit' 
+		and event.getValue('inheritedObjects') neq ''
+		and event.getValue('contentBean').getcontenthistid() eq arguments.contentHistID>
+			<cfset rsObjects=application.contentGateway.getObjectInheritance(arguments.columnID,event.getValue('inheritedObjects'),event.getValue('siteID'))>	
 			<cfloop query="rsObjects">
-				<cfset theRegion = theRegion & dspObject(rsObjects.object,rsObjects.objectid,request.siteid) />
+				<cfset theRegion = theRegion & dspObject(rsObjects.object,rsObjects.objectid,event.getValue('siteID')) />
 			</cfloop>	
 	</cfif>
 
-	<cfset rsObjects=application.contentGateway.getObjects(arguments.columnID,arguments.contentHistID,request.siteID)>	
+	<cfset rsObjects=application.contentGateway.getObjects(arguments.columnID,arguments.contentHistID,event.getValue('siteID'))>	
 	<cfloop query="rsObjects">
-		<cfset theRegion = theRegion & dspObject(rsObjects.object,rsObjects.objectid,request.siteid) />
+		<cfset theRegion = theRegion & dspObject(rsObjects.object,rsObjects.objectid,event.getValue('siteID')) />
 	</cfloop>
 </cfif>
 
@@ -924,26 +929,26 @@
 	<cfargument name="crumbseparator" type="string" default="&raquo;&nbsp;">
 	<cfargument name="showMetaImage" type="numeric" default="1">
 	
-	<cfset var theDisplayPoolID = application.settingsManager.getSite(request.siteid).getDisplayPoolID() />
+	<cfset var theDisplayPoolID = application.settingsManager.getSite(event.getValue('siteID')).getDisplayPoolID() />
 	<cfset var str = "" />
 	<cfset var fileDelim= application.configBean.getFileDelim() />
 	<cfsavecontent variable="str">
-		<cfif (request.isOnDisplay and ((not request.r.restrict) or (request.r.restrict and request.r.allow)))
-			or (getSite().getextranetpublicreg() and request.display eq 'editprofile' and getAuthUser() eq '') 
-			or (request.display eq 'editprofile' and getAuthUser() neq '')>
-			<cfif request.display neq ''>
-				<cfswitch expression="#request.display#">
+		<cfif (event.getValue('isOnDisplay') and ((not event.getValue('r').restrict) or (event.getValue('r').restrict and event.getValue('r').allow)))
+			or (getSite().getextranetpublicreg() and event.getValue('display') eq 'editprofile' and getAuthUser() eq '') 
+			or (event.getValue('display') eq 'editprofile' and getAuthUser() neq '')>
+			<cfif event.getValue('display') neq ''>
+				<cfswitch expression="#event.getValue('display')#">
 					<cfcase value="editprofile">
-						<cfset request.nocache=1>
-						<cfset request.forceSSL=getSite().getExtranetSSL()/>
+						<cfset event.getValue('noCache',1)>
+						<cfset event.getValue('forceSSL',getSite().getExtranetSSL())/>
 						<cfinclude template="/#application.configBean.getWebRootMap()#/#theDisplayPoolID#/includes/display_objects/dsp_edit_profile.cfm">
 					</cfcase>
 					<cfcase value="search">
-						<cfset request.nocache=1>
+						<cfset event.getValue('noCache',1)>
 						<cfinclude template="/#application.configBean.getWebRootMap()#/#theDisplayPoolID#/includes/display_objects/dsp_search_results.cfm">
 					</cfcase> 
 					<cfcase value="login">
-						<cfset request.nocache=1>
+						<cfset event.getValue('noCache',1)>
 						<cfinclude  template="/#application.configBean.getWebRootMap()#/#theDisplayPoolID#/includes/display_objects/dsp_login.cfm">
 					</cfcase>
 				</cfswitch>
@@ -956,67 +961,67 @@
 						#dspCrumbListLinks("crumblist",arguments.crumbseparator)#
 					</cfif>			
 				</cfoutput>
-				<cfif fileExists(application.configBean.getWebRoot() & fileDelim & theDisplayPoolID & fileDelim & "includes" & fileDelim & "display_objects" & fileDelim & "custom" & fileDelim & "extensions" & fileDelim & "dsp_" & request.contentBean.getType() & "_" & request.contentBean.getSubType() & ".cfm")>
-					 <cfinclude template="/#application.configBean.getWebRootMap()#/#theDisplayPoolID#/includes/display_objects/custom/extensions/dsp_#request.contentBean.getType()#_#request.contentBean.getSubType()#.cfm">
+				<cfif fileExists(application.configBean.getWebRoot() & fileDelim & theDisplayPoolID & fileDelim & "includes" & fileDelim & "display_objects" & fileDelim & "custom" & fileDelim & "extensions" & fileDelim & "dsp_" & event.getValue('contentBean').getType() & "_" & event.getValue('contentBean').getSubType() & ".cfm")>
+					 <cfinclude template="/#application.configBean.getWebRootMap()#/#theDisplayPoolID#/includes/display_objects/custom/extensions/dsp_#event.getValue('contentBean').getType()#_#event.getValue('contentBean').getSubType()#.cfm">
 				<cfelse>
 					<cfoutput>
-					<cfswitch expression="#request.contentBean.getType()#">
+					<cfswitch expression="#event.getValue('contentBean').getType()#">
 					<cfcase value="File">
-						<cfif request.contentBean.getContentType() eq "Image" 
-							and listFind("jpg,jpeg,gif,png",lcase(request.contentBean.getFileExt()))>
+						<cfif event.getValue('contentBean').getContentType() eq "Image" 
+							and listFind("jpg,jpeg,gif,png",lcase(event.getValue('contentBean').getFileExt()))>
 								<cfset loadShadowBoxJS() />
 								<div id="svAssetDetail" class="image">
-								<a href="#application.configBean.getContext()#/tasks/render/file/?fileID=#request.contentBean.getFileID()#&ext=.#request.contentBean.getFileExt()#" title="#HTMLEditFormat(request.contentBean.getMenuTitle())#" rel="shadowbox[body]" id="svAsset"><img src="#application.configBean.getContext()#/tasks/render/medium/?fileID=#request.contentBean.getFileID()#" class="imgMed" alt="#HTMLEditFormat(request.contentBean.getMenuTitle())#" /></a>
-								#setDynamicContent(request.contentBean.getSummary(),request.keywords)#
+								<a href="#application.configBean.getContext()#/tasks/render/file/?fileID=#event.getValue('contentBean').getFileID()#&ext=.#event.getValue('contentBean').getFileExt()#" title="#HTMLEditFormat(event.getValue('contentBean').getMenuTitle())#" rel="shadowbox[body]" id="svAsset"><img src="#application.configBean.getContext()#/tasks/render/medium/?fileID=#event.getValue('contentBean').getFileID()#" class="imgMed" alt="#HTMLEditFormat(event.getValue('contentBean').getMenuTitle())#" /></a>
+								#setDynamicContent(event.getValue('contentBean').getSummary(),event.getValue('keywords'))#
 								</div>
 						<cfelse>
 								<div id="svAssetDetail" class="file">
-								#setDynamicContent(request.contentBean.getSummary(),request.keywords)#
-								<a href="#application.configBean.getContext()#/#request.siteid#/?linkServID=#request.contentBean.getContentID()#&showMeta=2" title="#HTMLEditFormat(request.contentBean.getMenuTitle())#" id="svAsset" class="#lcase(request.contentBean.getFileExt())#">Download File</a>							
+								#setDynamicContent(event.getValue('contentBean').getSummary(),event.getValue('keywords'))#
+								<a href="#application.configBean.getContext()#/#event.getValue('siteID')#/?linkServID=#event.getValue('contentBean').getContentID()#&showMeta=2" title="#HTMLEditFormat(event.getValue('contentBean').getMenuTitle())#" id="svAsset" class="#lcase(event.getValue('contentBean').getFileExt())#">Download File</a>							
 								</div>
 						</cfif>				
 					</cfcase>
 					<cfcase value="Link">
 						<div id="svAssetDetail" class="link">
-							#setDynamicContent(request.contentBean.getSummary(),request.keywords)#
-							<a href="#application.configBean.getContext()#/#request.siteid#/?linkServID=#request.contentBean.getContentID()#&showMeta=2" title="#HTMLEditFormat(request.contentBean.getMenuTitle())#" id="svAsset" class="url">View Link</a>							
+							#setDynamicContent(event.getValue('contentBean').getSummary(),event.getValue('keywords'))#
+							<a href="#application.configBean.getContext()#/#event.getValue('siteID')#/?linkServID=#event.getValue('contentBean').getContentID()#&showMeta=2" title="#HTMLEditFormat(event.getValue('contentBean').getMenuTitle())#" id="svAsset" class="url">View Link</a>							
 						</div>
 					</cfcase>
 					<cfdefaultcase>
 						<cfif arguments.showMetaImage
-							and len(request.contentBean.getFileID()) 
-							and request.contentBean.getContentType() eq "Image" 
-							and listFind("jpg,jpeg,gif,png",lcase(request.contentBean.getFileExt()))>
+							and len(event.getValue('contentBean').getFileID()) 
+							and event.getValue('contentBean').getContentType() eq "Image" 
+							and listFind("jpg,jpeg,gif,png",lcase(event.getValue('contentBean').getFileExt()))>
 								<cfset loadShadowBoxJS() />
-								<a href="#application.configBean.getContext()#/tasks/render/file/?fileID=#request.contentBean.getFileID()#&ext=.#request.contentBean.getFileExt()#" title="#HTMLEditFormat(request.contentBean.getMenuTitle())#" rel="shadowbox[body]" id="svAsset"><img src="#application.configBean.getContext()#/tasks/render/medium/?fileID=#request.contentBean.getFileID()#" class="imgMed" alt="#HTMLEditFormat(request.contentBean.getMenuTitle())#" /></a>	
+								<a href="#application.configBean.getContext()#/tasks/render/file/?fileID=#event.getValue('contentBean').getFileID()#&ext=.#event.getValue('contentBean').getFileExt()#" title="#HTMLEditFormat(event.getValue('contentBean').getMenuTitle())#" rel="shadowbox[body]" id="svAsset"><img src="#application.configBean.getContext()#/tasks/render/medium/?fileID=#event.getValue('contentBean').getFileID()#" class="imgMed" alt="#HTMLEditFormat(event.getValue('contentBean').getMenuTitle())#" /></a>	
 						</cfif>		
-								#setDynamicContent(arguments.body,request.keywords)#	
+								#setDynamicContent(arguments.body,event.getValue('keywords'))#	
 					</cfdefaultcase>
 					</cfswitch>
 					</cfoutput>
-					<cfswitch expression="#request.contentBean.gettype()#">
+					<cfswitch expression="#event.getValue('contentBean').gettype()#">
 					<cfcase value="Portal">
-						<cf_CacheOMatic key="portalBody#request.contentBean.getcontentID()##request.startrow#" nocache="#request.r.restrict#">
+						<cf_CacheOMatic key="portalBody#event.getValue('contentBean').getcontentID()##event.getValue('startRow')#" nocache="#event.getValue('r').restrict#">
 						 <cfinclude template="/#application.configBean.getWebRootMap()#/#theDisplayPoolID#/includes/display_objects/dsp_portal.cfm">
 						</cf_CacheOMatic>
 					</cfcase> 
 					<cfcase value="Calendar">
-						 <cf_CacheOMatic key="portalBody#request.contentBean.getcontentID()##request.year##request.month#" nocache="#request.r.restrict#">
+						 <cf_CacheOMatic key="portalBody#event.getValue('contentBean').getcontentID()##event.getValue('year')##event.getValue('month')#" nocache="#event.getValue('r').restrict#">
 						 <cfinclude template="/#application.configBean.getWebRootMap()#/#theDisplayPoolID#/includes/display_objects/calendar/index.cfm">
 						 </cf_CacheOMatic>
 					</cfcase> 
 					<cfcase value="Gallery">
-						<cfif not isdefined('request.galleryItemID')><cfset request.galleryItemID=""></cfif>
-						<cf_CacheOMatic key="portalBody#request.contentBean.getcontentID()##request.startrow##request.galleryItemID#" nocache="#request.r.restrict#">
+						<cfif not event.valueExists('galleryItemID')><cfset event.setValue('galleryItemID','')></cfif>
+						<cf_CacheOMatic key="portalBody#event.getValue('contentBean').getcontentID()##event.getValue('startRow')##event.getValue('galleryItemID')#" nocache="#event.getValue('r').restrict#">
 						<cfinclude template="/#application.configBean.getWebRootMap()#/#theDisplayPoolID#/includes/display_objects/gallery/index.cfm">
 						</cf_CacheOMatic>
 					</cfcase> 
 				</cfswitch>
 				</cfif>		
 			</cfif> 
-		<cfelseif request.isOnDisplay and request.r.restrict and request.r.loggedIn and not request.r.allow >
+		<cfelseif event.getValue('isOnDisplay') and event.getValue('r').restrict and event.getValue('r').loggedIn and not event.getValue('r').allow >
 			<cfinclude template="/#application.configBean.getWebRootMap()#/#theDisplayPoolID#/includes/display_objects/dsp_deny.cfm">
-		<cfelseif request.isOnDisplay and request.r.restrict and not request.r.loggedIn>
+		<cfelseif event.getValue('isOnDisplay') and event.getValue('r').restrict and not event.getValue('r').loggedIn>
 			<cfinclude template="/#application.configBean.getWebRootMap()#/#theDisplayPoolID#/includes/display_objects/dsp_login.cfm">
 		<cfelse>
 			<cfinclude template="/#application.configBean.getWebRootMap()#/#theDisplayPoolID#/includes/display_objects/dsp_offline.cfm">
@@ -1030,7 +1035,7 @@
 <cffunction name="queryPermFilter" returntype="query" access="public" output="false">
 	<cfargument name="rawQuery" type="query">
 	
-	<cfreturn application.permUtility.queryPermFilter(arguments.rawQuery,newResultQuery(),request.siteID,request.r.hasModuleAccess)/>
+	<cfreturn application.permUtility.queryPermFilter(arguments.rawQuery,newResultQuery(),event.getValue('siteID'),event.getValue('r').hasModuleAccess)/>
 </cffunction>
 	
 <cffunction name="newResultQuery" returntype="query" access="public" output="false">
@@ -1086,13 +1091,13 @@
 <cffunction name="getTemplate"  output="false" returntype="string">
 		<cfset var I = 0 />
 		
-		<cfif request.contentBean.getIsNew() neq 1>
-			<cfif len(request.contentBean.getTemplate())>
-				<cfreturn request.contentBean.getTemplate() />
-			<cfelseif arrayLen(request.crumbdata) gt 1> 
-				<cfloop from="2" to="#arrayLen(request.crumbdata)#" index="I">
-					<cfif  request.crumbdata[I].template neq ''>
-						<cfreturn request.crumbdata[I].template />
+		<cfif event.getValue('contentBean').getIsNew() neq 1>
+			<cfif len(event.getValue('contentBean').getTemplate())>
+				<cfreturn event.getValue('contentBean').getTemplate() />
+			<cfelseif arrayLen(event.getValue('crumbData')) gt 1> 
+				<cfloop from="2" to="#arrayLen(event.getValue('crumbData'))#" index="I">
+					<cfif  event.getValue('crumbData')[I].template neq ''>
+						<cfreturn event.getValue('crumbData')[I].template />
 					</cfif>
 				</cfloop>
 			</cfif>
@@ -1104,9 +1109,9 @@
 <cffunction name="getMetaDesc"  output="false" returntype="string">
 		<cfset var I = 0 />
 
-		<cfloop from="1" to="#arrayLen(request.crumbdata)#" index="I">
-		<cfif  request.crumbdata[I].metaDesc neq ''>
-		<cfreturn request.crumbdata[I].metaDesc />
+		<cfloop from="1" to="#arrayLen(event.getValue('crumbData'))#" index="I">
+		<cfif  event.getValue('crumbData')[I].metaDesc neq ''>
+		<cfreturn event.getValue('crumbData')[I].metaDesc />
 		</cfif>
 		</cfloop>
 		
@@ -1116,9 +1121,9 @@
 <cffunction name="getMetaKeyWords"  output="false" returntype="string">
 		<cfset var I = 0 />
 
-		<cfloop from="1" to="#arrayLen(request.crumbdata)#" index="I">
-		<cfif  request.crumbdata[I].metaKeyWords neq ''>
-		<cfreturn request.crumbdata[I].metaKeyWords />
+		<cfloop from="1" to="#arrayLen(event.getValue('crumbData'))#" index="I">
+		<cfif  event.getValue('crumbData')[I].metaKeyWords neq ''>
+		<cfreturn event.getValue('crumbData')[I].metaKeyWords />
 		</cfif>
 		</cfloop>
 		
@@ -1143,7 +1148,7 @@
 </cffunction>
 
 <cffunction name="getSite" returntype="any" output="false">
-	<cfreturn application.settingsManager.getSite(request.siteid) />
+	<cfreturn application.settingsManager.getSite(event.getValue('siteID')) />
 </cffunction>
 
 <cffunction name="dspNestedNavPrimary" output="false" returntype="string">
@@ -1162,7 +1167,7 @@
 		<cfargument name="openPortals" type="string" default="">	
 		
 
-		<cfset var rsSection=application.contentGateway.getKids('00000000000000000000000000000000000','#request.siteid#','#arguments.contentid#','#arguments.type#',arguments.today,0,'',0,'orderNo','asc','','','',true)>
+		<cfset var rsSection=application.contentGateway.getKids('00000000000000000000000000000000000',event.getValue('siteID'),arguments.contentid,arguments.type,arguments.today,0,'',0,'orderNo','asc','','','',true)>
 		<cfset var adjust=0>
 		<cfset var current=0>
 		<cfset var link=''>
@@ -1172,7 +1177,7 @@
 		<cfset var subnav=false>
 		<cfset var theNav="">
 		<cfset var crumbContentID="">
-		<cfset var topIndex= arrayLen(request.crumbData)-this.navOffSet />
+		<cfset var topIndex= arrayLen(event.getValue('crumbData'))-this.navOffSet />
 		<cfset var rsHome=0>
 		<cfset var homeLink = "" />
 		<cfset var isLimitingOn = false>
@@ -1190,10 +1195,10 @@
 			</cfif>
 		</cfif>
 			
-		<cfif rsSection.recordcount and ((request.r.restrict and request.r.allow) or (not request.r.restrict) or (request.r.restrict and getAuthUser() eq ""))>
+		<cfif rsSection.recordcount and ((event.getValue('r').restrict and event.getValue('r').allow) or (not event.getValue('r').restrict) or (event.getValue('r').restrict and getAuthUser() eq ""))>
 			<cfset adjust=rsSection.recordcount>
 			<cfsavecontent variable="theNav"><cfoutput>
-			<ul#iif(arguments.id neq '',de(' id="#arguments.id#"'),de(''))#><cfloop query="rsSection"><cfif allowLink(rssection.restricted,rssection.restrictgroups,request.r.loggedIn)><cfsilent>
+			<ul#iif(arguments.id neq '',de(' id="#arguments.id#"'),de(''))#><cfloop query="rsSection"><cfif allowLink(rssection.restricted,rssection.restrictgroups,event.getValue('r').loggedIn)><cfsilent>
 			
 			<cfset current=current+1>
 			<cfset nest=''>
@@ -1213,7 +1218,7 @@
 			<cfset subnav= isNumeric(rsSection.kids) and rsSection.kids and arguments.currDepth lt arguments.viewDepth 
 			and (
 					(
-					isNotLimited and arguments.id eq 'navSecondary' and listFind(request.contentBean.getPath(),"'#rsSection.contentID#'") 
+					isNotLimited and arguments.id eq 'navSecondary' and listFind(event.getValue('contentBean').getPath(),"'#rsSection.contentID#'") 
 					) 
 				or (
 					isNotLimited and arguments.id neq 'navSecondary'
@@ -1229,26 +1234,26 @@
 			<cfset class=iif(current eq 1,de('first'),de(iif(current eq adjust,de('last'),de('')))) />
 
 			<cfif topIndex gte 2>
-				<cfset crumbContentID = request.crumbdata[topIndex-1].contentid>
+				<cfset crumbContentID = event.getValue('crumbData')[topIndex-1].contentid>
 			</cfif>
 			
-			<cfif (request.contentBean.getcontentid() eq rsSection.contentid) or (rsSection.contentid eq crumbContentid)>
+			<cfif (event.getValue('contentBean').getcontentid() eq rsSection.contentid) or (rsSection.contentid eq crumbContentid)>
 				<cfset class=listAppend(class,"current"," ")/>
 			</cfif>
 			
-			<cfset itemId="nav" & setCamelback('#rsSection.menutitle#')>
+			<cfset itemId="nav" & setCamelback(rsSection.menutitle)>
 			
-			<cfset link=addlink('#rsSection.type#','#rsSection.filename#','#rsSection.menutitle#','#rsSection.target#','#rsSection.targetParams#','#rsSection.contentid#','#request.siteid#','','#arguments.context#','#application.configBean.getStub()#','#application.configBean.getIndexFile()#')>
+			<cfset link=addlink(rsSection.type,rsSection.filename,rsSection.menutitle,rsSection.target,rsSection.targetParams,rsSection.contentid,event.getValue('siteID'),'',arguments.context,application.configBean.getStub(),application.configBean.getIndexFile())>
 			
 			</cfsilent>
-				<cfif rsSection.currentrow eq 1 and currDepth eq 1 and (arguments.displayHome eq "Always" or (arguments.displayHome eq "Conditional" and request.contentBean.getcontentid() neq "00000000000000000000000000000000001" and listFind(class,"first"," ")))>
+				<cfif rsSection.currentrow eq 1 and currDepth eq 1 and (arguments.displayHome eq "Always" or (arguments.displayHome eq "Conditional" and event.getValue('contentBean').getcontentid() neq "00000000000000000000000000000000001" and listFind(class,"first"," ")))>
 				<cfsilent>
 					<cfquery name="rsHome" datasource="#application.configBean.getDatasource()#" username="#application.configBean.getDBUsername()#" password="#application.configBean.getDBPassword()#">
-					select menutitle,filename from tcontent where contentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentID#"> and siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#request.siteid#"> and active=1
+					select menutitle,filename from tcontent where contentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentID#"> and siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#event.getValue('siteID')#"> and active=1
 					</cfquery>
-					<cfset homeLink="#application.configBean.getContext()##getURLStem(request.siteID,rsHome.filename)#">
+					<cfset homeLink="#application.configBean.getContext()##getURLStem(event.getValue('siteID'),rsHome.filename)#">
 				</cfsilent>
-				<li class="first<cfif request.contentBean.getcontentid() eq "00000000000000000000000000000000001"> current</cfif>" id="navHome"><a href="#homeLink#">#HTMLEditFormat(rsHome.menuTitle)#</a></li>
+				<li class="first<cfif event.getValue('contentBean').getcontentid() eq "00000000000000000000000000000000001"> current</cfif>" id="navHome"><a href="#homeLink#">#HTMLEditFormat(rsHome.menuTitle)#</a></li>
 				<cfset class=listRest(class," ")/>
 				</cfif>
 				<li<cfif len(class)> class="#class#"</cfif> id="#itemId#">#link#<cfif subnav and find("<li",nest)>#nest#</cfif></li>
@@ -1266,9 +1271,9 @@
 	<cfargument name="openPortals" type="string" default="">
 
 	<cfset var thenav="" />
-	<cfset var topIndex= arrayLen(request.crumbData)-this.navOffSet />
+	<cfset var topIndex= arrayLen(event.getValue('crumbData'))-this.navOffSet />
 
-	<cfset theNav = dspNestedNavPrimary(request.crumbData[topIndex].contentID,arguments.viewDepth+1,1,'default',now(),arguments.id,'','orderno',application.configBean.getContext(),application.configBean.getStub(),arguments.displayHome,arguments.closePortals,arguments.openPortals) />
+	<cfset theNav = dspNestedNavPrimary(event.getValue('crumbData')[topIndex].contentID,arguments.viewDepth+1,1,'default',now(),arguments.id,'','orderno',application.configBean.getContext(),application.configBean.getStub(),arguments.displayHome,arguments.closePortals,arguments.openPortals) />
 
 	<cfreturn thenav />
 </cffunction>
@@ -1378,10 +1383,10 @@
 		</cfif>
 	</cfif>
 	
-	<cfif structKeyExists(request,"contentBean") and not listFind("Link,File",request.contentBean.getType())>		
-		<cfreturn host & application.configBean.getContext() & getURLStem(request.siteid,request.contentBean.getFilename()) & qrystr >
+	<cfif event.valueExists("contentBean") and not listFind("Link,File",event.getValue('contentBean').getType())>		
+		<cfreturn host & application.configBean.getContext() & getURLStem(event.getValue('siteID'),event.getValue('contentBean').getFilename()) & qrystr >
 	<cfelse>
-		<cfreturn host &  application.configBean.getContext() & "/" & request.siteID & "/" & qrystr >
+		<cfreturn host &  application.configBean.getContext() & "/" & event.getValue('siteID') & "/" & qrystr >
 	</cfif>
 	
 	
@@ -1402,7 +1407,7 @@
 <cffunction name="dspUserTools" access="public" output="false" returntype="string">
 
 	<cfset var theObject = "" />
-	<cfset var theDisplayPoolID = application.settingsManager.getSite(request.siteid).getDisplayPoolID() />
+	<cfset var theDisplayPoolID = application.settingsManager.getSite(event.getValue('siteID')).getDisplayPoolID() />
 
 	<cfsavecontent variable="theObject">
 		<cfinclude template="/#application.configBean.getWebRootMap()#/#theDisplayPoolID#/includes/display_objects/dsp_user_tools.cfm">
@@ -1415,7 +1420,7 @@
 <cffunction name="dspSection" access="public" output="false" returntype="string">
 	<cfargument name="level" default="1" required="true">		
 	<cftry>
-		<cfreturn request.crumbdata[arrayLen(request.crumbdata)-arguments.level].menutitle >
+		<cfreturn event.getValue('crumbData')[arrayLen(event.getValue('crumbData'))-arguments.level].menutitle >
 		<cfcatch>
 			<cfreturn "">
 		</cfcatch>
@@ -1462,7 +1467,7 @@
 
 <cffunction name="dspCaptcha" returntype="string" output="false">
 	<cfset var theObject = "" />
-	<cfset var theDisplayPoolID = application.settingsManager.getSite(request.siteid).getDisplayPoolID() />
+	<cfset var theDisplayPoolID = application.settingsManager.getSite(event.getValue('siteID')).getDisplayPoolID() />
 	
 	<cfsavecontent variable="theObject">
 		<cfinclude template="/#application.configBean.getWebRootMap()#/#theDisplayPoolID#/includes/display_objects/dsp_captcha.cfm">
@@ -1477,7 +1482,7 @@
 
 	<cfif arguments.template neq ''>
 		<cfsavecontent variable="str">
-			<cfinclude template="/#application.configBean.getWebRootMap()#/#request.siteID#/includes/#arguments.template#">
+			<cfinclude template="/#application.configBean.getWebRootMap()#/#event.getValue('siteID')#/includes/#arguments.template#">
 		</cfsavecontent>
 	</cfif>
 	
@@ -1492,14 +1497,14 @@
 </cffunction> 
 
 <cffunction name="sendToFriendLink" output="false" returnType="String">
-<cfreturn "javascript:sendtofriend=window.open('http://#application.settingsManager.getSite(request.siteid).getDomain()#/#request.siteid#/utilities/sendtofriend.cfm?link=#urlEncodedFormat(getCurrentURL())#&siteID=#request.siteID#', 'sendtofriend', 'scrollbars=yes,resizable=yes,screenX=0,screenY=0,width=570,height=390');sendtofriend.focus();void(0);"/>
+<cfreturn "javascript:sendtofriend=window.open('http://#application.settingsManager.getSite(event.getValue('siteID')).getDomain()#/#event.getValue('siteID')#/utilities/sendtofriend.cfm?link=#urlEncodedFormat(getCurrentURL())#&siteID=#event.getValue('siteID')#', 'sendtofriend', 'scrollbars=yes,resizable=yes,screenX=0,screenY=0,width=570,height=390');sendtofriend.focus();void(0);"/>
 </cffunction>
 
 <cffunction name="addToHTMLHeadQueue" output="false">
 	<cfargument name="text">
 		
-	<cfif not listFind(request.servletEvent.getValue('HTMLHeadQueue'),arguments.text)>
-		<cfset request.servletEvent.setValue('HTMLHeadQueue',listappend(request.servletEvent.getValue('HTMLHeadQueue'),arguments.text)) />
+	<cfif not listFind(event.getValue('HTMLHeadQueue'),arguments.text)>
+		<cfset event.setValue('HTMLHeadQueue',listappend(event.getValue('HTMLHeadQueue'),arguments.text)) />
 	</cfif>
 </cffunction>
 
@@ -1508,7 +1513,7 @@
 	<cfset var HTMLHeadQueue="" />
 	<cfset var i = "" />
 	<cfset var iLen = 0 />
-	<cfset var showModal= (isUserInRole('S2IsPrivate;#application.settingsManager.getSite(request.siteid).getPrivateUserPoolID()#') or isUserInRole("S2")) and getShowAdminToolBar() />
+	<cfset var showModal= (isUserInRole('S2IsPrivate;#application.settingsManager.getSite(event.getValue('siteID')).getPrivateUserPoolID()#') or isUserInRole("S2")) and getShowAdminToolBar() />
 	<cfset var headerFound=false />	
 	<cfset var pluginBasePath="" />
 	<cfset var pluginPath="" />
@@ -1517,7 +1522,7 @@
 	<cfif getRenderHTMLHead()>	
 		<!--- Add global.js --->
 		<cfsavecontent variable="headerStr">
-				<cfinclude  template="/#application.configBean.getWebRootMap()#/#application.settingsmanager.getSite(request.siteid).getDisplayPoolID()#/includes/display_objects/htmlhead/global.cfm">
+				<cfinclude  template="/#application.configBean.getWebRootMap()#/#application.settingsmanager.getSite(event.getValue('siteID')).getDisplayPoolID()#/includes/display_objects/htmlhead/global.cfm">
 		</cfsavecontent>
 		<cfhtmlhead text="#headerStr#">
 					
@@ -1527,13 +1532,13 @@
 		</cfif>
 		
 		<!--- Loop through the HTML Head Que--->
-		<cfset HTMLHeadQueue=request.servletEvent.getValue('HTMLHeadQueue') />
+		<cfset HTMLHeadQueue=event.getValue('HTMLHeadQueue') />
 		<cfloop list="#HTMLHeadQueue#" index="i">
 		<cfset headerFound=false/>
 		<cfsavecontent variable="headerStr">
 			<!--- look in default htmlHead directory --->
 			
-			<cfset pluginBasePath="/#application.settingsmanager.getSite(request.siteid).getDisplayPoolID()#/includes/display_objects/htmlhead/">
+			<cfset pluginBasePath="/#application.settingsmanager.getSite(event.getValue('siteID')).getDisplayPoolID()#/includes/display_objects/htmlhead/">
 			<cfif fileExists(expandPath("/#application.configBean.getWebRootMap()##pluginbasePath#") & i)>
 				<cfset pluginPath= application.configBean.getContext() & pluginBasePath >
 				<cfinclude  template="/#application.configBean.getWebRootMap()##pluginbasePath##i#">
@@ -1542,7 +1547,7 @@
 					
 			<!--- If not found, look in display_objects directory --->
 			<cfif not headerFound>
-				<cfset pluginBasePath="/#application.settingsmanager.getSite(request.siteid).getDisplayPoolID()#/includes/display_objects/">
+				<cfset pluginBasePath="/#application.settingsmanager.getSite(event.getValue('siteID')).getDisplayPoolID()#/includes/display_objects/">
 				<cfif fileExists(expandPath("/#application.configBean.getWebRootMap()##pluginbasePath#") & i)>
 					<cfset pluginPath= application.configBean.getContext() & pluginBasePath >	
 					<cfinclude  template="/#application.configBean.getWebRootMap()##pluginBasePath##i#">
@@ -1552,15 +1557,16 @@
 			
 			<!--- If not found, look in local plugins directory --->
 			<cfif not headerFound>
-				<cfset pluginBasePath="/#application.settingsmanager.getSite(request.siteid).getDisplayPoolID()#/includes/plugins/">		
+				<cfset pluginBasePath="/#application.settingsmanager.getSite(event.getValue('siteID')).getDisplayPoolID()#/includes/plugins/">		
 				<cfif fileExists(expandPath("/#application.configBean.getWebRootMap()##pluginbasePath#") & i)>
 					<cfset pluginPath= application.configBean.getContext() & pluginBasePath & pluginID & "/" >
 					<cfset pluginID=listFirst(i,"/")>
-					<cfset request.pluginConfig=application.pluginManager.getConfig(pluginID)>
-					<cfset request.pluginConfig.setSetting('pluginPath',pluginPath)>
+					<cfset event.setValue('pluginConfig',application.pluginManager.getConfig(pluginID))>
+					<cfset event.setValue('pluginPath',pluginConfig.setSetting('pluginPath',pluginPath))>
 					<cfinclude  template="/#application.configBean.getWebRootMap()##pluginBasePath##i#">
 					<cfset headerFound=true />
-					<cfset structDelete(request,"pluginConfig")>
+					<cfset event.removeValue("pluginPath")>
+					<cfset event.removeValue("pluginConfig")>
 				</cfif>
 			</cfif>
 			
@@ -1570,11 +1576,12 @@
 				<cfif fileExists(expandPath("/#application.configBean.getWebRootMap()##pluginbasePath#") & i)>
 					<cfset pluginID=listFirst(i,"/")>
 					<cfset pluginPath= application.configBean.getContext() & pluginBasePath & pluginID & "/" >		
-					<cfset request.pluginConfig=application.pluginManager.getConfig(pluginID)>
-					<cfset request.pluginConfig.setSetting('pluginPath',pluginPath)>
+					<cfset event.setValue('pluginConfig',application.pluginManager.getConfig(pluginID))>
+					<cfset event.setValue('pluginPath',pluginConfig.setSetting('pluginPath',pluginPath))>
 					<cfinclude  template="/#application.configBean.getWebRootMap()##pluginBasePath##i#">
 					<cfset headerFound=true />
-					<cfset structDelete(request,"pluginConfig")>
+					<cfset event.removeValue("pluginPath")>
+					<cfset event.removeValue("pluginConfig")>
 				</cfif>
 			</cfif>
 			

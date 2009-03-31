@@ -14,6 +14,32 @@
 <cfcomponent output="false">
 
 <cffunction name="init" returntype="any" access="public" output="false">
+		
+	<cfscript>
+	if (NOT IsDefined("request"))
+	    request=structNew();
+	StructAppend(request, url, "no");
+	StructAppend(request, form, "no");
+	</cfscript>
+	
+	<cfparam name="request.doaction" default=""/>
+	<cfparam name="request.month" default="#month(now())#"/>
+	<cfparam name="request.year" default="#year(now())#"/>
+	<cfparam name="request.display" default=""/>
+	<cfparam name="request.startrow" default="1"/>
+	<cfparam name="request.keywords" default=""/>
+	<cfparam name="request.tag" default=""/>
+	<cfparam name="request.mlid" default=""/>
+	<cfparam name="request.noCache" default="0"/>
+	<cfparam name="request.categoryID" default=""/>
+	<cfparam name="request.relatedID" default=""/>
+	<cfparam name="request.linkServID" default=""/>
+	<cfparam name="request.track" default="1"/>
+	<cfparam name="request.exportHTMLSite" default="0"/>
+	<cfparam name="request.returnURL" default=""/>
+	<cfparam name="request.showMeta" default="0"/>
+	<cfparam name="request.rb" default="#session.rb#"/>
+	<cfset request.rb=application.settingsManager.getSite(request.siteID).getJavaLocale() />
 	<cfreturn this />
 </cffunction>
 
