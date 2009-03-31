@@ -65,40 +65,14 @@
 <cfif right(request.currentFilename,1) eq "/">
 	<cfset request.currentFilename=left(request.currentFilename,len(request.currentFilename)-1)/>
 </cfif>
-<cfscript>
-if (NOT IsDefined("request"))
-    request=structNew();
-StructAppend(request, url, "no");
-StructAppend(request, form, "no");
-</cfscript>
 
-<cfparam name="request.doaction" default=""/>
-<cfparam name="request.month" default="#month(now())#"/>
-<cfparam name="request.year" default="#year(now())#"/>
-<cfparam name="request.display" default=""/>
-<cfparam name="request.startrow" default="1"/>
-<cfparam name="request.keywords" default=""/>
-<cfparam name="request.tag" default=""/>
-<cfparam name="request.mlid" default=""/>
-<cfparam name="request.noCache" default="0"/>
-<cfparam name="request.categoryID" default=""/>
-<cfparam name="request.relatedID" default=""/>
-<cfparam name="request.linkServID" default=""/>
-<cfparam name="request.track" default="1"/>
-<cfparam name="request.exportHTMLSite" default="0"/>
-<cfparam name="request.returnURL" default=""/>
-<cfparam name="request.showMeta" default="0"/>
-<cfparam name="request.rb" default="#session.rb#"/>
-
-<cfset request.rb=application.settingsManager.getSite(request.siteID).getJavaLocale() />
-	
 <cfset request.servletEvent = createObject("component","mura.servletEvent").init() />
-<cfset request.servlet = createObject("component","#application.configBean.getWebRootMap()#.#request.siteid#.includes.servlet").init() />
-<cfset application.pluginManager.executeScripts('onSiteRequestStart',request.siteID,request.servletEvent)/>
+<cfset request.servlet = createObject("component","#application.configBean.getWebRootMap()#.#request.siteid#.includes.servlet").init(request.servletEvent) />
+<cfset application.pluginManager.executeScripts('onSiteRequestStart',request.servletEvent.getValue('siteid'),request.servletEvent)/>
 <cfset request.servlet.onRequestStart() />
 <cfset layout=request.servlet.doRequest()>
 <cfset request.servlet.onRequestEnd() />
-<cfset application.pluginManager.executeScripts('onSiteRequestEnd',request.siteID,request.servletEvent)/>
+<cfset application.pluginManager.executeScripts('onSiteRequestEnd',request.servletEvent.getValue('siteid'),request.servletEvent)/>
 
 <cfoutput>#layout#</cfoutput>
 
