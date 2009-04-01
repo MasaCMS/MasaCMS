@@ -133,6 +133,12 @@
 				<entry key="imageInterpolation">
 					<value>#XMLFormat(GetProfileString("#variables.iniPath#", mode, "imageInterpolation"))#</value>
 				</entry>
+				<entry key="clusterIPList">
+					<value>#XMLFormat(GetProfileString("#variables.iniPath#", mode, "clusterIPList"))#</value>
+				</entry>
+				<entry key="appreloadKey">
+					<value>#XMLFormat(application.appreloadKey)#</value>
+				</entry>
 				</map>
 			</constructor-arg>
 		</bean>

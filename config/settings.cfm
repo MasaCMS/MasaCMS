@@ -31,7 +31,6 @@
 
 <cfparam name="application.appInitializedTime" default="" />
 <cfparam name="application.appInitialized" default="false" />
-<cfparam name="application.appLoadList" default="" />
 <cfparam name="application.appReloadKey" default="appreload" />
 <cfparam name="application.appStarting" default="false" />
 
@@ -44,15 +43,9 @@
 	<cfset application.appStarting=false/>
 </cfif>
 
-<cfif (not application.appInitialized or isdefined('url.#application.appReloadKey#'))>
+<cfif (not application.appInitialized or structKeyExists(url,application.appReloadKey))>
 
 	<cfset variables.iniPath="#getDirectoryFromPath(getCurrentTemplatePath())#settings.ini.cfm" />
-
-	<cfif isdefined('url.#application.appReloadKey#')>
-		<cfparam name="url.loadlist" default="" />
-		<cfset application.appLoadList=url.loadList />
-	</cfif>
-
 	<cfset application.appReloadKey=GetProfileString("#getDirectoryFromPath(getCurrentTemplatePath())#settings.ini.cfm", "settings", "appReloadKey") />
 	<cfset variables.mode=GetProfileString("#variables.iniPath#", "settings", "mode") />
 	<cfset variables.mapdir=GetProfileString("#variables.iniPath#", mode, "mapdir") />
@@ -69,124 +62,49 @@
 			
 			<cfobjectcache action="clear" />
 			<cfset application.configBean=application.serviceFactory.getBean("configBean") />
+			<cfset application.settingsManager=application.serviceFactory.getBean("settingsManager") />
+]			<cfset application.contentManager=application.serviceFactory.getBean("contentManager") />
+			<cfset application.utility=application.serviceFactory.getBean("utility") />
+			<cfset application.permUtility=application.serviceFactory.getBean("permUtility") />
+			<cfset application.contentUtility=application.serviceFactory.getBean("contentUtility") />
+			<cfset application.contentRenderer=application.serviceFactory.getBean("contentRenderer") />
+			<cfset application.contentGateway=application.serviceFactory.getBean("contentGateway") />
+			<cfset application.emailManager=application.serviceFactory.getBean("emailManager") />
+			<cfset application.loginManager=application.serviceFactory.getBean("loginManager") />
+			<cfset application.mailinglistManager=application.serviceFactory.getBean("mailinglistManager") />
+			<cfset application.userManager=application.serviceFactory.getBean("userManager") />
+			<cfset application.dataCollectionManager=application.serviceFactory.getBean("dataCollectionManager") />
+			<cfset application.advertiserManager=application.serviceFactory.getBean("advertiserManager") />
+			<cfset application.categoryManager=application.serviceFactory.getBean("categoryManager") />
+			<cfset application.feedManager=application.serviceFactory.getBean("feedManager") />
+			<cfset application.sessionTrackingManager=application.serviceFactory.getBean("sessionTrackingManager") />
+			<cfset application.favoriteManager=application.serviceFactory.getBean("favoriteManager") />
+			<cfset application.raterManager=application.serviceFactory.getBean("raterManager") />
+			<cfsavecontent variable="variables.temp"><cfoutput><cfinclude template="/mura/bad_words.txt"></cfoutput></cfsavecontent>
+			<cfset application.badwords = ReReplaceNoCase(variables.temp, "," , "|" , "ALL")/> 
+			<cfset application.dashboardManager=application.serviceFactory.getBean("dashboardManager") />
+			<cfset application.classExtensionManager=application.configBean.getClassExtensionManager() />
+			<cfset application.rbFactory=application.serviceFactory.getBean("resourceBundleFactory") />
+			<cfset application.pluginManager=application.serviceFactory.getBean("pluginManager") />
 			
-			<cfif application.appLoadList eq "" or listFindNoCase(application.appLoadList,"settingsManager")>
-				<cfset application.settingsManager=application.serviceFactory.getBean("settingsManager") />
-			</cfif>
-			
-			<cfif application.appLoadList eq "" or listFindNoCase(application.appLoadList,"contentManager")>
-				<cfset application.contentManager=application.serviceFactory.getBean("contentManager") />
-			</cfif>
-			
-			<cfif application.appLoadList eq "" or listFindNoCase(application.appLoadList,"utility")>
-				<cfset application.utility=application.serviceFactory.getBean("utility") />
-			</cfif>
-			
-			<cfif application.appLoadList eq "" or listFindNoCase(application.appLoadList,"permUtility")>
-				<cfset application.permUtility=application.serviceFactory.getBean("permUtility") />
-			</cfif>
-			
-			<cfif application.appLoadList eq "" or listFindNoCase(application.appLoadList,"contentUtility")>
-				<cfset application.contentUtility=application.serviceFactory.getBean("contentUtility") />
-			</cfif>
-			
-			<cfif application.appLoadList eq "" or listFindNoCase(application.appLoadList,"contentRenderer")>
-				<cfset application.contentRenderer=application.serviceFactory.getBean("contentRenderer") />
-			</cfif>
-			
-			<cfif application.appLoadList eq "" or listFindNoCase(application.appLoadList,"contentGateway")>
-				<cfset application.contentGateway=application.serviceFactory.getBean("contentGateway") />
-			</cfif>
-			
-			<cfif application.appLoadList eq "" or listFindNoCase(application.appLoadList,"emailManager")>
-				<cfset application.emailManager=application.serviceFactory.getBean("emailManager") />
-			</cfif>
-			
-			<cfif application.appLoadList eq "" or listFindNoCase(application.appLoadList,"loginManager")>
-				<cfset application.loginManager=application.serviceFactory.getBean("loginManager") />
-			</cfif>
-			
-			<cfif application.appLoadList eq "" or listFindNoCase(application.appLoadList,"mailingListManager")>
-				<cfset application.mailinglistManager=application.serviceFactory.getBean("mailinglistManager") />
-			</cfif>
-			
-			<cfif application.appLoadList eq "" or listFindNoCase(application.appLoadList,"userManager")>
-				<cfset application.userManager=application.serviceFactory.getBean("userManager") />
-			</cfif>
-			
-			<cfif application.appLoadList eq "" or listFindNoCase(application.appLoadList,"dataCollectionManager")>
-				<cfset application.dataCollectionManager=application.serviceFactory.getBean("dataCollectionManager") />
-			</cfif>
-			
-			<cfif application.appLoadList eq "" or listFindNoCase(application.appLoadList,"advertiserManager")>
-				<cfset application.advertiserManager=application.serviceFactory.getBean("advertiserManager") />
-			</cfif>
-			
-			<cfif application.appLoadList eq "" or listFindNoCase(application.appLoadList,"categoryManager")>
-				<cfset application.categoryManager=application.serviceFactory.getBean("categoryManager") />
-			</cfif>
-			
-			<cfif application.appLoadList eq "" or listFindNoCase(application.appLoadList,"feedManager")>
-				<cfset application.feedManager=application.serviceFactory.getBean("feedManager") />
-			</cfif>
-			
-			<cfif application.appLoadList eq "" or listFindNoCase(application.appLoadList,"sessionTrackingManager")>
-				<cfset application.sessionTrackingManager=application.serviceFactory.getBean("sessionTrackingManager") />
-			</cfif>
-			
-			<cfif application.appLoadList eq "" or listFindNoCase(application.appLoadList,"favoriteManager")>
-				<cfset application.favoriteManager=application.serviceFactory.getBean("favoriteManager") />
-			</cfif>
-			
-			<cfif application.appLoadList eq "" or listFindNoCase(application.appLoadList,"raterManager")>
-				<cfset application.raterManager=application.serviceFactory.getBean("raterManager") />
-			</cfif>
-			
-			<cfif application.appLoadList eq "" or listFindNoCase(application.appLoadList,"badwords")>
-				<cfsavecontent variable="variables.temp"><cfoutput><cfinclude template="/mura/bad_words.txt"></cfoutput></cfsavecontent>
-				<cfset application.badwords = ReReplaceNoCase(variables.temp, "," , "|" , "ALL")/> 
-			</cfif>
-			
-			<cfif application.appLoadList eq "" or listFindNoCase(application.appLoadList,"dashboardManager")>
-				<cfset application.dashboardManager=application.serviceFactory.getBean("dashboardManager") />
-			</cfif>
-			
-			<cfif application.appLoadList eq "" or listFindNoCase(application.appLoadList,"flushCache")>
-				<cfset application.utility.flushCache('')/>
-			</cfif>
-			
-			<cfif application.appLoadList eq "" or listFindNoCase(application.appLoadList,"classExtensionManager")>
-				<cfset application.classExtensionManager=application.configBean.getClassExtensionManager() />
-			</cfif>
-			
-			<cfif application.appLoadList eq "" or listFindNoCase(application.appLoadList,"rbFactory")>
-				<cfset application.rbFactory=application.serviceFactory.getBean("resourceBundleFactory") />
-			</cfif>
-			
-			<cfif application.appLoadList eq "" or listFindNoCase(application.appLoadList,"pluginManager")>
-				<cfset application.pluginManager=application.serviceFactory.getBean("pluginManager") />
-			</cfif>
-
 			<cfinclude template="settings.custom.managers.cfm">
 	 	
 			<cfquery name="variables.checkMe" datasource="#application.configBean.getDatasource()#" username="#application.configBean.getDBUsername()#" password="#application.configBean.getDBPassword()#" timeout="5">
 			SELECT * FROM tglobals
 			</cfquery>
 			
-			<cfif isdefined('url.#application.appReloadKey#') 
+			<cfif structKeyExists(url,application.appReloadKey) 
 				or not isdate(variables.Checkme.appreload)
 				or not isdate(application.appInitializedTime)>
 				
 				<cfif not isdate(variables.Checkme.appreload) or isdefined('url.#application.appReloadKey#')>
 					<cfset application.appInitializedTime=now()/>
-					<cfset application.utility.broadcastAppreload(application.appInitializedTime,application.appLoadList)/>
+					<cfset application.utility.broadcastAppreload(application.appInitializedTime,"")/>
 				<cfelse>
 					<cfset application.appInitializedTime=variables.Checkme.appreload/>
-					<cfset application.appLoadList=variables.Checkme.loadList />
 				</cfif>
 			<cfelse>
 				<cfset application.appInitializedTime=variables.Checkme.appreload/>
-				<cfset application.appLoadList=variables.Checkme.loadList />
 			</cfif>
 			
 			<cfset application.appInitialized=true/>
@@ -226,17 +144,16 @@
 
 </cfif>
 
-
 <cfquery name="variables.checkMe" datasource="#application.configBean.getDatasource()#" username="#application.configBean.getDBUsername()#" password="#application.configBean.getDBPassword()#" timeout="5">
 	SELECT * FROM tglobals
 </cfquery>
 
 <cfif isdate(variables.checkMe.appreload)  and application.appInitializedTime lt variables.checkMe.appreload>
 	<cfset application.appInitialized=false />
-	<cfset application.appLoadList=variables.checkMe.loadList />
 </cfif>
 
-<cfif cookie.userid eq '' and session.rememberMe eq 1 and getAuthUser() neq ''>
+<cftry>
+<cfif cookie.userid eq '' and structKeyExists(session,"rememberMe") and session.rememberMe eq 1 and getAuthUser() neq ''>
 <cfcookie name="userid" value="#listFirst(getAuthUser(),'^')#" expires="never" />
 <cfcookie name="userHash" value="#application.userManager.readUserHash(listFirst(getAuthUser(),'^')).userHash#" expires="never" />
 </cfif>
@@ -245,15 +162,17 @@
 <cfset application.loginManager.rememberMe(cookie.userid,cookie.userHash) />
 </cfif>
 
-<cfif cookie.userid neq '' and session.rememberMe eq 0 and getAuthUser() neq ''>
+<cfif cookie.userid neq '' and structKeyExists(session,"rememberMe") and session.rememberMe eq 0 and getAuthUser() neq ''>
 <cfcookie name="userid" value="" expires="never" />
 <cfcookie name="userHash" value="" expires="never" />
 </cfif>
 
-<cfif not isDefined('cookie.originalURLToken')>
+<cfif not structKeyExists(cookie,"originalURLToken")>
 <cfparam name="session.trackingID" default="#application.utility.getUUID()#">
 <cfcookie name="originalURLToken" value="#session.trackingID#" expires="never" />
 </cfif>
+<cfcatch></cfcatch>
+</cftry>
 
 <cfif application.configBean.getDebuggingEnabled() eq "false">
 	<cferror 
@@ -288,7 +207,7 @@
 
 
 <!--- session.locale  is the locale that mura uses for date formating --->
-<cfif not Len(session.locale)>
+<cfif not len(session.locale)>
 	<cfif application.configBean.getDefaultLocale() neq "Server">
 		<cfif application.configBean.getDefaultLocale() eq "Client">
 			<cfset session.locale=listFirst(cgi.HTTP_ACCEPT_LANGUAGE,';') />
@@ -308,7 +227,6 @@
 
 <!--- set locale for current page request --->
 <cfset setLocale(session.locale) />
-
 
 <!--- now we create a date so we can parse it and figure out the date format and then create a date validation key --->
 <cfif not len(session.dateKey) or not len(session.dateKeyFormat)>
