@@ -37,7 +37,7 @@
 </cfloop>
 
 <cfif (minute(theTime) eq 0 and hour(theTime) eq 0) or (addPrev and (minute(application.lastMonitored) eq 0 and hour(application.lastmonitored) eq 0))>
-	<cfset application.utility.flushCache('')/>
+	<cfset application.settingsManager.purgeAllCache() />
 	<cftry>
 	<cfset application.projectManager.sendReminders() />
 	<cfcatch></cfcatch>
@@ -56,7 +56,7 @@
 	
 	<cfif rsChanges.recordcount>
 		<cfloop query="rsChanges">
-			<cfset application.utility.flushCache(rsChanges.siteid)/>
+			<cfset application.settingsManager.getSite(rsChanges.siteid).purgeCache() />
 		</cfloop>
 	</cfif>
 </cfif>
