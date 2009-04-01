@@ -23,11 +23,11 @@
 </cfif>
 <cfif attributes.action eq 'Update'>
 <cfset request.adZoneBean = application.advertiserManager.updateAdZone(attributes) >
-<cfset application.utility.flushCache('') >
+<cfset application.settingsManager.purgeAllCache() >
 </cfif>
 <cfif attributes.action eq 'Delete'>
 <cfset application.advertiserManager.deleteAdZone(attributes.adZoneid) >
-<cfset application.utility.flushCache('') >
+<cfset application.settingsManager.purgeAllCache() >
 </cfif>
 <cfif attributes.action eq 'Add'>
 <cfset request.adZoneBean = application.advertiserManager.createAdZone(attributes) >

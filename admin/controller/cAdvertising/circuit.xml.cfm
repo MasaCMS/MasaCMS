@@ -148,14 +148,14 @@
 	  <if condition="attributes.action eq 'Update'">
 	  <true>
 	  	<invoke object="application.advertiserManager" methodcall="updateAdZone(attributes)" returnVariable="request.adZoneBean" />
-	  	<invoke object="application.utility" methodcall="flushCache('')" />
+	  	<invoke object="application.settingsManager" methodcall="purgeAllCache()" />
 	  </true>
 	  </if>
   
 	  <if condition="attributes.action eq 'Delete'">
 	  <true>
 	  	<invoke object="application.advertiserManager" methodcall="deleteAdZone(attributes.adZoneid)" />
-	 	<invoke object="application.utility" methodcall="flushCache('')" />
+	 	<invoke object="application.settingsManager" methodcall="purgeAllCache()" />
 	  </true>
 	  </if>
   
