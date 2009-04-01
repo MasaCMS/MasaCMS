@@ -14,6 +14,7 @@
 
 
 <!--- <cftry> --->
+  <cfparam name="hasSummary" default="true"/>
   <cfset feedBean=application.feedManager.read(arguments.objectID) />
   <cfif feedBean.getIsActive()>
 	<cfset cssID=createCSSid(feedBean.renderName())>
