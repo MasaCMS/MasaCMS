@@ -41,3 +41,4 @@ sessionHistory=30
 locale=Server
 ping=0
 imageInterpolation=highestQuality
+clusterIPList=
