@@ -16,12 +16,12 @@
 </cfif>
 <cfif attributes.action eq 'Update'>
 <cfset application.settingsManager.update(attributes) >
-<cfset application.utility.broadcastAppreload(now(),'settingsManager') >
+<cfset application.clusterManager.reload() >
 </cfif>
 <cfif attributes.action eq 'Add'>
 <cfset application.settingsManager.create(attributes) >
 <cfset application.settingsManager.setSites() >
-<cfset application.utility.broadcastAppreload(now(),'settingsManager') >
+<cfset application.clusterManager.reload() >
 </cfif>
 <cfif attributes.action eq 'Delete'>
 <cfset application.settingsManager.delete(attributes.siteid) >
