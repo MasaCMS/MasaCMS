@@ -149,7 +149,6 @@
 	<cffunction name="getActiveByRemoteID" access="public" returntype="any" output="false">
 		<cfargument name="remoteID" type="string" required="yes" />
 		<cfargument name="siteID" type="string" required="yes" />
-		<cfreturn variables.contentDAO.readActiveByRemoteID(arguments.remoteID,arguments.siteid) />
 		
 		<cfset var key="remote" & arguments.siteid & arguments.remoteID />
 		<cfset var cacheFactory=variables.settingsManager.getSite(arguments.siteid).getCacheFactory()>
