@@ -222,7 +222,7 @@
 	<cfargument name="siteid" type="string" default=""/>
 	
 	<cfset variables.DAO.setListOrder(arguments.categoryID,arguments.orderID,arguments.orderno,arguments.siteid) />
-	<cfset variables.utility.flushCache(arguments.siteid) />
+	<cfset variables.settingsManager.getSite(arguments.siteid).purgeCache() />
 
 </cffunction>
 

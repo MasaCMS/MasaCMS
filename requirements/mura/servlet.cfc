@@ -165,12 +165,15 @@
 	<cfelseif arrayLen(event.getValue('crumbData')) gt 1>
 		<cfset event.setValue('isOnDisplay',application.contentUtility.isOnDisplay(event.getValue('contentBean').getdisplay(),event.getValue('contentBean').getdisplaystart(),event.getValue('contentBean').getdisplaystop(),event.getValue('siteID'),event.getValue('contentBean').getparentid(),event.getValue('crumbData')[2].type))>
 	<cfelse>
-		<cfset event.setValue('isOnDisplay',0)>
+		<cfset event.setValue('isOnDisplay',1)>
 	</cfif>
  	
 	<cfif event.getValue('isOnDisplay') and event.getValue('r').restrict and not event.getValue('r').loggedIn and (event.getValue('display') neq 'login' and event.getValue('display') neq 'editProfile')>
 		<cflocation addtoken="no" url="#application.settingsManager.getSite(request.siteid).getLoginURL()#&returnURL=#URLEncodedFormat(application.contentRenderer.getCurrentURL())#">
 	</cfif>
+
+	<cfset request.rb=application.settingsManager.getSite(event.getValue('siteid')).getJavaLocale() />
+	<cfset setLocale(request.rb) />
 	
  	<cfreturn doResponse() />
 	
@@ -180,7 +183,7 @@
 <cffunction name="doResponse" access="public" returntype="any" output="false">
 	<cfset var renderer=""/>
 	
-	<cfif request.exportHtmlSite>
+	<cfif event.getValue('exportHtmlSite')>
 			<cfset renderer = createObject("component","#application.configBean.getWebRootMap()#.#request.siteid#.includes.staticContentRenderer").init(event) />
 		<cfelse>
 			<cfset renderer = createObject("component","#application.configBean.getWebRootMap()#.#request.siteid#.includes.contentRenderer").init(event) />

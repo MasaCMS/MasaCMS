@@ -59,7 +59,8 @@
 <cfset variables.instance.reactor=""/>
 <cfset variables.instance.locale="Server" />
 <cfset variables.instance.imageInterpolation="highestQuality" />
-
+<cfset variables.instance.clusterIPList="" />
+<cfset variables.instance.appreloadKey=application.appreloadKey />
 <cffunction name="init" returntype="any" output="true" access="public">
 	<cfargument name="config" type="struct"> 	
 	
@@ -120,6 +121,14 @@
 	
 	<cfif structKeyExists(config,"mailserverSSL")>
 	<cfset setMailServerSSL(config.mailserverSSL)/>
+	</cfif>
+	
+	<cfif structKeyExists(config,"clusterIPList")>
+	<cfset setClusterIPList(config.clusterIPList)/>
+	</cfif>
+	
+	<cfif structKeyExists(config,"appreloadKey")>
+	<cfset setAppreloadKey(config.appreloadKey)/>
 	</cfif>
 	
 	<cfswitch expression="#server.coldfusion.productName#">
@@ -646,5 +655,23 @@
 	<cfif isBoolean(arguments.mailServerSSL)>
 	<cfset variables.instance.mailServerSSL = arguments.mailServerSSL />
 	</cfif>
+</cffunction>
+
+<cffunction name="getClusterIPList" returntype="String" access="public" output="false">
+	<cfreturn variables.instance.clusterIPList />
+</cffunction>
+
+<cffunction name="setClusterIPList" access="public" output="false">
+	<cfargument name="clusterIPList" type="String" />
+	<cfset variables.instance.clusterIPList = trim(arguments.clusterIPList) />
+</cffunction>
+
+<cffunction name="getAppreloadKey" returntype="String" access="public" output="false">
+	<cfreturn variables.instance.appreloadKey />
+</cffunction>
+
+<cffunction name="setAppreloadKey" access="public" output="false">
+	<cfargument name="AppreloadKey" type="String" />
+	<cfset variables.instance.appreloadKey = arguments.appreloadKey />
 </cffunction>
 </cfcomponent>

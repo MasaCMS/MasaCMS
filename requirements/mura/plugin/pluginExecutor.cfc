@@ -18,8 +18,8 @@
 
 <cffunction name="displayObject" output="true" returntype="any">
 <cfargument name="objectID">
-<cfargument name="siteID" required="true" default="">
-<cfargument name="rsDisplayObject" required="true" default="">
+<cfargument name="_event">
+<cfargument name="rsDisplayObject">
 	<cfset var rs=""/>
 	<cfset var str=""/>
 	<cfset var pluginConfig=""/>
@@ -27,7 +27,7 @@
 	<cfset request.pluginConfig=variables.pluginManager.getConfig(arguments.rsDisplayObject.pluginID)>
 	<cfset request.pluginConfig.setSetting("pluginMode","object")/>
 	<cfset pluginConfig=request.pluginConfig/>
-	
+	<cfset event=arguments._event/>
 	<cftry>
 	<cfif arguments.rsDisplayObject.location eq "global">
 	
@@ -38,9 +38,9 @@
 	</cfsavecontent>
 	<cfelse>
 	
-	<cfset pluginConfig.setSetting("pluginPath","#variables.configBean.getContext()#/#variables.settingsManager.getSite(arguments.siteID).getDisplayPoolID()#/includes/plugins/#arguments.rsDisplayObject.pluginID#/")/>
+	<cfset pluginConfig.setSetting("pluginPath","#variables.configBean.getContext()#/#variables.settingsManager.getSite(event.getValue('siteID')).getDisplayPoolID()#/includes/plugins/#arguments.rsDisplayObject.pluginID#/")/>
 	<cfsavecontent variable="str">
-	<cfinclude template="/#variables.configBean.getWebRootMap()#/#variables.settingsManager.getSite(arguments.siteID).getDisplayPoolID()#/includes/plugins/#arguments.rsDisplayObject.pluginID#/#arguments.rsDisplayObject.displayObjectFile#">
+	<cfinclude template="/#variables.configBean.getWebRootMap()#/#variables.settingsManager.getSite(event.getValue('siteID')).getDisplayPoolID()#/includes/plugins/#arguments.rsDisplayObject.pluginID#/#arguments.rsDisplayObject.displayObjectFile#">
 	</cfsavecontent>
 	</cfif>
 	<cfcatch>
@@ -56,12 +56,15 @@
 <cffunction name="executeScript" output="false" returntype="any">
 <cfargument name="runat">
 <cfargument name="siteID" required="true" default="">
-<cfargument name="scriptEvent" required="true" default="" type="any">
+<cfargument name="_event" required="true" default="" type="any">
 <cfargument name="scriptFile" required="true" default="" type="any">
-<cfargument name="pluginConfig" required="true" default="" type="any">
+<cfargument name="_pluginConfig" required="true" default="" type="any">
 	
-	<cfset request.pluginConfig=arguments.pluginConfig/>
-	<cfset request.scriptEvent=arguments.scriptEvent/>
+	<cfset request.pluginConfig=arguments._pluginConfig/>
+	<cfset request.scriptEvent=arguments._event/>
+	<cfset event=request.scriptEvent/>
+	<cfset scriptEvent=request.scriptEvent/>
+	<cfset pluginConfig=request.pluginConfig/>
 	<cfinclude template="#arguments.scriptFile#">
 	<cfset structDelete(request,"pluginConfig")>
 	<cfset structDelete(request,"scriptEvent")>

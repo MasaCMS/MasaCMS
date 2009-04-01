@@ -572,7 +572,7 @@ select * from tplugins order by pluginID
 
 <cffunction name="displayObject" output="true" returntype="any">
 <cfargument name="objectID">
-<cfargument name="siteID" required="true" default="">
+<cfargument name="event" required="true" default="">
 	
 	<cfset var rs=""/>
 	
@@ -581,7 +581,7 @@ select * from tplugins order by pluginID
 	where objectID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.objectID#">
 	group by pluginID, displayObjectFile, location
 	</cfquery>
-	<cfreturn getExecutor().displayObject(arguments.objectID,arguments.siteID,rs) />
+	<cfreturn getExecutor().displayObject(arguments.objectID,arguments.event,rs) />
 </cffunction>
 
 <cffunction name="getExecutor" returntype="any" output="false">

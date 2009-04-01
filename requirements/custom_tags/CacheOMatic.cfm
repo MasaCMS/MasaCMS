@@ -21,27 +21,19 @@ uses the query string as the key --->
 <cfparam name="Attributes.nocache" default="0">
 <cfparam name="Attributes.siteid" default="#request.siteid#">
 <cfparam name="request.cacheItem" default="true">
+
 <cfif NOT attributes.nocache and application.settingsManager.getSite(request.siteid).getCache()>
-
-	<cfset CacheFN=application.configBean.getFileDir() & application.configBean.getFileDelim() & attributes.siteid & application.configBean.getFileDelim() & "cache" & application.configBean.getFileDelim() & "component" & application.configBean.getFileDelim() & hash(attributes.key) & ".cache">
-
+	<cfset cacheFactory=application.settingsManager.getSite(request.siteid).getCacheFactory()/>
+	
 	<cfif thisTag.executionMode IS "Start">
-		<cfif fileExists(cacheFN)>
-			<cfdirectory action="LIST"
-				directory="#getDirectoryFromPath(cacheFN)#"
-				filter="#getFileFromPath(cacheFN)#"
-				name="qDate">
-			<cfif val(qDate.dateLastModified+attributes.expiration) gt val(now()+0)>
-				<cffile action="read" file="#cacheFN#" variable="foo">
-				<cfoutput>#foo#</cfoutput>
-				<cfsetting enableCFOutputOnly="No">
-				<cfexit method="EXITTAG">
-			<cfelse>
-				<cffile action="DELETE" file="#cacheFN#">
-			</cfif>
+		<cfif cacheFactory.has( attributes.key )>
+			<cfset content=cacheFactory.get( attributes.key )>
+			<cfoutput>#content#</cfoutput>
+			<cfsetting enableCFOutputOnly="No">
+			<cfexit method="EXITTAG">	
 		</cfif>
-	<cfelseif isBoolean(request.cacheItem) and request.cacheItem>
-		<cffile action="Write" file="#cacheFN#" output="#thisTag.generatedContent#">
+	<cfelseif isBoolean(request.cacheItem) and request.cacheItem>	
+		<cfset cacheFactory.get( attributes.key ,thisTag.generatedContent)>
 		<cfset request.cacheItem=true/>
 	</cfif>
 <cfelse>

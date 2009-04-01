@@ -34,6 +34,8 @@
 
 <cfif isObject(arguments._event)>
 	<cfset event=arguments._event>
+<cfelse>
+	<cfset event=createObject("component","mura.servletEvent").init()>
 </cfif>
 
 <cfreturn this />
@@ -720,7 +722,7 @@
 				</cfcase>
 				<cfcase value="plugin">
 					<cf_CacheOMatic key="#arguments.object##arguments.siteID##arguments.objectid#" nocache="#event.getValue('r').restrict#">
-					<cfoutput>#application.pluginManager.displayObject(arguments.objectid,arguments.siteID)#</cfoutput>
+					<cfoutput>#application.pluginManager.displayObject(arguments.objectid,event)#</cfoutput>
 					</cf_cacheomatic>
 				</cfcase>
 				<cfcase value="mailing_list">
@@ -932,8 +934,9 @@
 	<cfset var theDisplayPoolID = application.settingsManager.getSite(event.getValue('siteID')).getDisplayPoolID() />
 	<cfset var str = "" />
 	<cfset var fileDelim= application.configBean.getFileDelim() />
+	
 	<cfsavecontent variable="str">
-		<cfif (event.getValue('isOnDisplay') and ((not event.getValue('r').restrict) or (event.getValue('r').restrict and event.getValue('r').allow)))
+		<cfif (event.getValue('isOnDisplay') and (not event.getValue('r').restrict or (event.getValue('r').restrict and event.getValue('r').allow)))
 			or (getSite().getextranetpublicreg() and event.getValue('display') eq 'editprofile' and getAuthUser() eq '') 
 			or (event.getValue('display') eq 'editprofile' and getAuthUser() neq '')>
 			<cfif event.getValue('display') neq ''>
@@ -1488,14 +1491,7 @@
 	
 	<cfreturn trim(str) />
 </cffunction>
-
-<cffunction name="XHTMLFormat" access="public" returntype="string" output="false">
-    <cfargument name="str" type="string" required="Yes" />
-
-    <!--- add more as needed --->
-    <cfreturn HTMLEditFormat(arguments.str) />
-</cffunction> 
-
+ 
 <cffunction name="sendToFriendLink" output="false" returnType="String">
 <cfreturn "javascript:sendtofriend=window.open('http://#application.settingsManager.getSite(event.getValue('siteID')).getDomain()#/#event.getValue('siteID')#/utilities/sendtofriend.cfm?link=#urlEncodedFormat(getCurrentURL())#&siteID=#event.getValue('siteID')#', 'sendtofriend', 'scrollbars=yes,resizable=yes,screenX=0,screenY=0,width=570,height=390');sendtofriend.focus();void(0);"/>
 </cffunction>
@@ -1613,6 +1609,5 @@
 	</cfif>
 	
 </cffunction>
-
 
 </cfcomponent>

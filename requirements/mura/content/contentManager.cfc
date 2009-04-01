@@ -133,20 +133,51 @@
 		<cfargument name="filename" type="string" required="yes" />
 		<cfargument name="siteID" type="string" required="yes" />
 		<cfargument name="use404" type="boolean" required="yes" default="false"/>
-		<cfreturn variables.contentDAO.readActiveByFilename(arguments.filename,arguments.siteid,arguments.use404) />
+		
+		<cfset var key=arguments.siteid & arguments.filename />
+		<cfset var cacheFactory=variables.settingsManager.getSite(arguments.siteid).getCacheFactory()>
+		<!--- check to see if it is cached. if not then pass in the context --->
+		<!--- otherwise grab it from the cache --->
+		<cfif NOT cacheFactory.has( key )>
+			<cfreturn cacheFactory.get( key, variables.contentDAO.readActiveByFilename(arguments.filename,arguments.siteid,arguments.use404) ) />
+		<cfelse>
+			<cfreturn cacheFactory.get( key ) />
+		</cfif>
+	
 	</cffunction>
 	
 	<cffunction name="getActiveByRemoteID" access="public" returntype="any" output="false">
 		<cfargument name="remoteID" type="string" required="yes" />
 		<cfargument name="siteID" type="string" required="yes" />
 		<cfreturn variables.contentDAO.readActiveByRemoteID(arguments.remoteID,arguments.siteid) />
+		
+		<cfset var key="remote" & arguments.siteid & arguments.remoteID />
+		<cfset var cacheFactory=variables.settingsManager.getSite(arguments.siteid).getCacheFactory()>
+		<!--- check to see if it is cached. if not then pass in the context --->
+		<!--- otherwise grab it from the cache --->
+		<cfif NOT cacheFactory.has( key )>
+			<cfreturn cacheFactory.get( key, variables.contentDAO.readActiveByRemoteID(arguments.remoteID,arguments.siteid) ) />
+		<cfelse>
+			<cfreturn cacheFactory.get( key ) />
+		</cfif>
+		
 	</cffunction>
 
 	<cffunction name="getActiveContent" access="public" returntype="any" output="false">
 		<cfargument name="contentID" type="string" required="yes" />
 		<cfargument name="siteID" type="string" required="yes" />
 		<cfargument name="use404" type="boolean" required="yes" default="false"/>
-		<cfreturn variables.contentDAO.readActive(arguments.contentID,arguments.siteid,arguments.use404) />
+		
+		<cfset var key=arguments.siteid & arguments.contentID />
+		<cfset var cacheFactory=variables.settingsManager.getSite(arguments.siteid).getCacheFactory()>
+		<!--- check to see if it is cached. if not then pass in the context --->
+		<!--- otherwise grab it from the cache --->
+		<cfif NOT cacheFactory.has( key )>
+			<cfreturn cacheFactory.get( key, variables.contentDAO.readActive(arguments.contentID,arguments.siteid,arguments.use404) ) />
+		<cfelse>
+			<cfreturn cacheFactory.get( key ) />
+		</cfif>
+	
 	</cffunction>
 
 	<cffunction name="getPageCount" access="public" returntype="query" output="false">
@@ -555,7 +586,7 @@
 	</cfif>
 		
 	<cfif newBean.getapproved()>
-		<cfset variables.utility.flushCache(newBean.getsiteid())/>
+		<cfset variables.settingsManager.getSite(arguments.data.siteid).purgeCache() />
 	</cfif>
 		
 		
@@ -693,7 +724,7 @@
 	
 	</cflock>
 	
-	<cfset variables.utility.flushCache(currentBean.getsiteid())/>
+	<cfset variables.settingsManager.getSite(arguments.siteid).purgeCache() />
 	
 	<cfif structKeyExists(data,"topID")>
 		<cfif data.topid eq currentBean.getcontentid()>

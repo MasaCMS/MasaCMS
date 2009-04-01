@@ -95,7 +95,6 @@
 		<cfset variables.utility.logEvent("SiteID:#bean.getSiteID()# Site:#bean.getSite()# was updated","mura-settings","Information",true) />
 		<cfset variables.DAO.update(bean) />
 		<cfset setSites()/>
-		<cfset variables.utility.flushCache(arguments.data.siteid)/>
 	</cfif>
 
 	<cfreturn bean />
@@ -108,7 +107,6 @@
 	<cfset var bean=read(arguments.siteid) />
 	<cfset variables.utility.logEvent("SiteID:#arguments.siteid# Site:#bean.getSite()# was deleted","mura-settings","Information",true) />
 	<cfset variables.DAO.delete(arguments.siteid) />
-	<cfset variables.utility.flushCache(arguments.siteid)/>
 	<cfset setSites() />
 	<cfset variables.utility.deleteDir("#variables.configBean.getWebRoot()##variables.configBean.getFileDelim()##arguments.siteid##variables.configBean.getFileDelim()#") />
 	<cfset variables.utility.deleteDir("#variables.configBean.getFileDir()##variables.configBean.getFileDelim()##arguments.siteid##variables.configBean.getFileDelim()#") />
@@ -167,6 +165,25 @@
 
 <cffunction name="getSites" access="public" output="false" returntype="any">
 	<cfreturn variables.sites />
+</cffunction>
+
+<cffunction name="purgeAllCache" access="public" output="false" returntype="void">
+	<cfset var rs=getList()>
+	<cfset var clusterIPList=variables.configBean.getClusterIPList()>
+	<cfset var ip="">
+	
+	<cfloop query="rs">
+		<cfset getSite(rs.siteid).getCacheFactory().purgeAll()/>
+	</cfloop>
+	
+	<cfif len(clusterIPList)>
+		<cfloop list="#clusterIPList#" index="ip">
+			<cfinvoke webservice="http://#ip##variables.configBean.getPort()##variables.configBean.getContext()#/mura.cfc?wsdl" method="purgeSiteCache">
+			<cfinvokeargument name="siteID" value="">
+			<cfinvokeargument name="appreloadkey" value="#variables.configBean.getAppreloadKey()#">
+		 	</cfinvoke>
+		</cfloop>
+	</cfif>
 </cffunction>
 
 <cffunction name="getUserSites" access="public" output="false" returntype="query">

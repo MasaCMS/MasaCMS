@@ -38,8 +38,7 @@
 	<cfparam name="request.exportHTMLSite" default="0"/>
 	<cfparam name="request.returnURL" default=""/>
 	<cfparam name="request.showMeta" default="0"/>
-	<cfparam name="request.rb" default="#session.rb#"/>
-	<cfset request.rb=application.settingsManager.getSite(request.siteID).getJavaLocale() />
+	
 	<cfreturn this />
 </cffunction>
 

@@ -24,19 +24,23 @@
 </cffunction>
 
 <cffunction name="getCrumblist" returntype="array" access="public" output="false">
-			<cfargument name="contentid" required="true" default="">
-			<cfargument name="siteid" required="true" default="">
-			<cfargument name="setInheritance" required="true" type="boolean" default="false">
-			<cfargument name="path" required="true" default="">
+		<cfargument name="contentid" required="true" default="">
+		<cfargument name="siteid" required="true" default="">
+		<cfargument name="setInheritance" required="true" type="boolean" default="false">
+		<cfargument name="path" required="true" default="">
 			
-			<cfset var ID=arguments.contentid>
-			<cfset var I=0>
-			<cfset var rscontent = "" />
-			<cfset var crumbdata=arraynew(1) />
-			<cfset var crumb= ""/>
-			<cfset var parentArray=arraynew(1) />
+		<cfset var ID=arguments.contentid>
+		<cfset var I=0>
+		<cfset var rscontent = "" />
+		<cfset var crumbdata=arraynew(1) />
+		<cfset var crumb= ""/>
+		<cfset var parentArray=arraynew(1) />
+		<cfset var key="crumb" & arguments.contentID & arguments.setInheritance />
+		<cfset var cacheFactory=variables.settingsManager.getSite(arguments.siteid).getCacheFactory()>
 			
-			<cfif arguments.setInheritance><cfset request.inheritedObjects=""></cfif>
+		<cfif NOT cacheFactory.has( key )>
+			
+			<cfif arguments.setInheritance or not structkeyExists(request,"inheritedObjects")><cfset request.inheritedObjects=""></cfif>
 			
 			<cfif not len(arguments.path)>
 			<cftry>
@@ -127,7 +131,10 @@
 			
 			</cfif>
 			
-			<cfreturn crumbdata>
+			<cfreturn cacheFactory.get( key, crumbdata ) />
+		<cfelse>
+			<cfreturn cacheFactory.get( key ) />
+		</cfif>
 
 </cffunction>
 

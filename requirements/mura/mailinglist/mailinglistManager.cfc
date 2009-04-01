@@ -43,7 +43,7 @@
 	<cfif isdefined('arguments.data.clearMembers')>
 		<cfset  variables.mailinglistDAO.deleteMembers(arguments.data.mlid,arguments.data.siteid) />
 	</cfif>
-	<cfset variables.utility.flushCache(arguments.data.siteid)/>
+	<cfset variables.settingsManager.getSite(arguments.data.siteid).purgeCache() />
 </cffunction>
 
 <cffunction name="create" access="public" output="false" returntype="any" >
@@ -57,7 +57,7 @@
 	<cfif isdefined('arguments.data.listfile') and arguments.data.listfile neq ''>
 		<cfset variables.mailinglistUtility.upload(arguments.data.direction,listbean) />
 	</cfif>
-	<cfset variables.utility.flushCache(arguments.data.siteid)/>
+	<cfset variables.settingsManager.getSite(arguments.data.siteid).purgeCache() />
 	
 	<cfreturn listBean />
 </cffunction>
@@ -69,7 +69,7 @@
 	<cfset var listBean=read(arguments.mlid,arguments.siteid) />
 	<cfset variables.utility.logEvent("MLID:#arguments.mlid# Name:#listBean.getName()# was deleted","mura-mailinglists","Information",true) />
 	<cfset variables.mailinglistDAO.delete(arguments.mlid,arguments.siteid) />
-	<cfset variables.utility.flushCache(arguments.siteid)/>
+	<cfset variables.settingsManager.getSite(arguments.siteid).purgeCache() />
 	
 </cffunction>
 

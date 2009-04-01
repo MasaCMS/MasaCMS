@@ -378,6 +378,7 @@
 
 </cfloop>
 
+	<cfset variables.settingsManager.getSite(arguments.data.siteid).purgeCache()>
 </cffunction>
 
 <cffunction name="updateGroup" returntype="void" access="public" output="true">
@@ -415,6 +416,8 @@
 
 </cftransaction>
 
+	<cfset variables.settingsManager.getSite(arguments.data.siteid).purgeCache()>
+	
 </cffunction>
 
 <cffunction name="getModule" access="public" returntype="query" output="false">
@@ -496,7 +499,7 @@ username="#variables.configBean.getDBUsername()#" password="#variables.configBea
 	<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.data.siteid#"/>
 	)</cfquery>
 	
-	
+	<cfset variables.settingsManager.getSite(arguments.data.siteid).purgeCache()>
 
 </cfloop>
 
@@ -539,8 +542,7 @@ username="#variables.configBean.getDBUsername()#" password="#variables.configBea
 	<cfset var rows=0/>
 	<cfset var r=""/>
 	<cfset var rs=arguments.resultQuery />
-	<cfset var hasPath=listFind(arguments.rawQuery.columnList,"PATH")>
-	
+	<cfset var hasPath=listFind(arguments.rawQuery.columnList,"PATH")/>
 	<cfif not isBoolean(arguments.hasModuleAccess)>
 		<cfset arguments.hasModuleAccess=getModulePerm('00000000000000000000000000000000000',arguments.siteID)>
 	</cfif>

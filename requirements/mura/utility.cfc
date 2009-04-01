@@ -91,24 +91,6 @@
 <cfreturn str />
 </cffunction> 
 
-<cffunction name="flushCache" returntype="void" output="false" access="public">
-<cfargument name="siteid" type="string" default="" required="yes"/>
-<cfargument name="class" type="string" default="component" required="yes"/>
-<cfset var componentCache ="#variables.configBean.getFileDir()##variables.configBean.getFileDelim()##arguments.siteid##variables.configBean.getFileDelim()#cache#variables.configBean.getFileDelim()##arguments.class##variables.configBean.getFileDelim()#" />
-<cfset var dirQuery=""/>	
-
-	<cfif directoryExists("#componentCache#")>
-	<cfdirectory action="list" directory="#componentCache#" name="dirQuery">
-	<cfloop query="dirQuery">
-		<cfif dirQuery.type eq "dir">
-			<cfdirectory action="delete" directory="#componentCache##dirQuery.name#" recurse="yes">
-		<cfelseif dirQuery.type eq "file">
-			<cffile action="delete" file="#componentCache##dirQuery.name#">
-		</cfif>
-	</cfloop>
-	
-	</cfif>
-</cffunction>
 
 <cffunction name="createRequiredSiteDirectories" returntype="void" output="false" access="public">
 <cfargument name="siteid" type="string" default="" required="yes"/>
