@@ -53,7 +53,7 @@ update tcontent set orderno= #rsSetOrder.currentrow# where contentid ='#rsSetOrd
 </cfloop>
 </cfif>
 
-<cfset application.utility.flushCache(attributes.siteid) />
+<cfset application.settingsManager.getSite(attributes.siteid).purgeCache()>
 </cflock>
 </cfif>
 
