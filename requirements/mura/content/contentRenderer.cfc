@@ -28,6 +28,7 @@
 <cfset this.personalization="user">
 <cfset this.showAdminToolBar=true/>
 <cfset this.renderHTMLHead=true/>
+<cfset this.crumbdata=arrayNew(1)/>
 
 <cffunction name="init" returntype="any" access="public" output="false">
 <cfargument name="_event" required="true" default="">
@@ -36,6 +37,10 @@
 	<cfset event=arguments._event>
 <cfelse>
 	<cfset event=createObject("component","mura.servletEvent").init()>
+</cfif>
+
+<cfif isArray(event.getValue("crumbdata"))>
+	<cfset this.crumbdata=event.getValue("crumbdata")/>
 </cfif>
 
 <cfreturn this />
@@ -140,8 +145,8 @@
 
 	<cfset this.navDepthLimit=arguments.navDepthLimit />
 	
-	<cfif arrayLen(event.getValue('crumbData')) gt this.navDepthLimit >
-		<cfset this.navDepthAjust=arraylen(event.getValue('crumbData'))-this.navDepthLimit />
+	<cfif arrayLen(this.crumbdata) gt this.navDepthLimit >
+		<cfset this.navDepthAjust=arraylen(this.crumbdata)-this.navDepthLimit />
 		<cfset this.navGrandParentIdx= 3 + this.navDepthAjust />
 		<cfset this.navParentIdx=2 + this.navDepthAjust />
 		<cfset this.navSelfIdx= 1 + this.navDepthAjust />
@@ -197,7 +202,7 @@
 			<cfset offset=1+this.navOffset/>
 		</cfif>
 		
-		<cfif arrayLen(event.getValue('crumbData')) gt offset>
+		<cfif arrayLen(this.crumbdata) gt offset>
 			<cfset topID = replace(getCrumbVarByLevel("filename",offset),"_"," ","ALL")>
 			<cfset topID = setCamelback(topID)>
 			<cfset id = "#Left(LCase(topID), 1)##Right(topID, Len(topID)-1)#">
@@ -228,8 +233,8 @@
 	<cfargument name="theVar" required="true" default="" type="String">
 	<cfargument name="level" required="true" type="numeric" default="1">
 						
-		<cfif arrayLen(event.getValue('crumbData')) gt arguments.level>
-			<cfreturn event.getValue('crumbData')[arrayLen(event.getValue('crumbData'))-arguments.level][arguments.theVar]>
+		<cfif arrayLen(this.crumbData) gt arguments.level>
+			<cfreturn this.crumbData[arrayLen(this.crumbData)-arguments.level][arguments.theVar]>
 		<cfelse>
 			<cfreturn "">
 		</cfif>
@@ -304,7 +309,7 @@
 			
 			<cfset current=current+1>
 			<cfset nest=''>
-			<cfset subnav=(((rsSection.type eq 'Page' or  rsSection.type eq 'Calendar' or rsSection.type eq 'Portal') and arguments.class eq 'navSecondary' and (event.getValue('crumbData')[this.navSelfIdx].contentID eq rsSection.contentid or event.getValue('crumbData')[this.navSelfIdx].parentID eq rsSection.contentid) ) or ((rsSection.type eq 'Page' or  rsSection.type eq 'Calendar' ) and arguments.class neq 'navSecondary')) and arguments.currDepth lt arguments.viewDepth and rsSection.type neq 'Gallery' and not (rsSection.restricted and not len(getAuthUser())) >
+			<cfset subnav=(((rsSection.type eq 'Page' or  rsSection.type eq 'Calendar' or rsSection.type eq 'Portal') and arguments.class eq 'navSecondary' and (this.crumbData[this.navSelfIdx].contentID eq rsSection.contentid or this.crumbData[this.navSelfIdx].parentID eq rsSection.contentid) ) or ((rsSection.type eq 'Page' or  rsSection.type eq 'Calendar' ) and arguments.class neq 'navSecondary')) and arguments.currDepth lt arguments.viewDepth and rsSection.type neq 'Gallery' and not (rsSection.restricted and not len(getAuthUser())) >
 			
 			<cfif subnav>
 				<cfset nest=dspNestedNav(rssection.contentid,arguments.viewDepth,arguments.currDepth+1,iif(rssection.type eq 'calendar',de('fixed'),de('default')),now(),'','',rsSection.sortBy,rsSection.sortDirection,arguments.context,arguments.stub,arguments.categoryID,arguments.relatedID) />
@@ -330,19 +335,19 @@
 <cfargument name="id" type="string" default="crumblist">
 <cfargument name="separator" type="string" default="">
 <cfset var thenav="" />
-<cfset var theOffset=arrayLen(event.getValue('crumbData'))- this.navOffSet />
+<cfset var theOffset=arrayLen(this.crumbdata)- this.navOffSet />
 <cfset var I = 0 />
-	<cfif arrayLen(event.getValue('crumbData')) gt (1 + this.navOffSet)>
+	<cfif arrayLen(this.crumbdata) gt (1 + this.navOffSet)>
 		<cfsavecontent variable="theNav">
 			<cfoutput><ul id="#arguments.id#">
 				<cfloop from="#theOffset#" to="1" index="I" step="-1">
 					<cfif I neq 1>
 						<li class="#iif(I eq theOffset,de('first'),de(''))#">
 						<cfif i neq theOffset>#arguments.separator#</cfif>
-						#addlink(event.getValue('crumbData')[I].type,event.getValue('crumbData')[I].filename,event.getValue('crumbData')[I].menutitle,'_self','',event.getValue('crumbData')[I].contentid,event.getValue('crumbData')[I].siteid,'',application.configBean.getContext(),application.configBean.getStub(),application.configBean.getIndexFile(),event.getValue('showMeta'),0)#</li>
+						#addlink(this.crumbdata[I].type,this.crumbdata[I].filename,this.crumbdata[I].menutitle,'_self','',this.crumbdata[I].contentid,this.crumbdata[I].siteid,'',application.configBean.getContext(),application.configBean.getStub(),application.configBean.getIndexFile(),event.getValue('showMeta'),0)#</li>
 					<cfelse>
-						<li class="#iif(arraylen(event.getValue('crumbData')),de('last'),de('first'))#">
-							#arguments.separator##addlink(event.getValue('crumbData')[1].type,event.getValue('crumbData')[1].filename,event.getValue('crumbData')[1].menutitle,'_self','',event.getValue('crumbData')[1].contentid,event.getValue('crumbData')[1].siteid,'',application.configBean.getContext(),application.configBean.getStub(),application.configBean.getIndexFile(),event.getValue('showMeta'),0)#
+						<li class="#iif(arraylen(this.crumbdata),de('last'),de('first'))#">
+							#arguments.separator##addlink(this.crumbdata[1].type,this.crumbdata[1].filename,this.crumbdata[1].menutitle,'_self','',this.crumbdata[1].contentid,this.crumbdata[1].siteid,'',application.configBean.getContext(),application.configBean.getStub(),application.configBean.getIndexFile(),event.getValue('showMeta'),0)#
 						</li>
 					</cfif>
 				</cfloop>
@@ -370,16 +375,16 @@
 	<cfset var menutype="" />
 
 			<cfif event.getValue('contentBean').getType() eq 'Portal' or event.getValue('contentBean').getType() eq 'Gallery'>
-				<cfif arraylen(event.getValue('crumbData')) gt (this.navParentIdx+this.navOffSet)>
-					<cfif arraylen(event.getValue('crumbData')) gt (this.navGrandParentIdx+this.navOffSet) and (event.getValue('crumbData')[this.navGrandParentIdx].type neq 'Portal' or event.getValue('crumbData')[this.navGrandParentIdx].type neq 'Gallery') and not application.contentGateway.getCount(event.getValue('siteID'),event.getValue('crumbData')[this.navSelfIdx].contentID)>
-						<cfset theNav = dspNestedNav(event.getValue('crumbData')[this.navGrandParentIdx].contentid,2,1,'default',now(),'navSecondary','',event.getValue('crumbData')[this.navGrandParentIdx].sortBy,event.getValue('crumbData')[this.navGrandParentIdx].sortDirection,application.configBean.getContext(),application.configBean.getStub(),event.getValue('categoryID')) />
+				<cfif arraylen(this.crumbdata) gt (this.navParentIdx+this.navOffSet)>
+					<cfif arraylen(this.crumbdata) gt (this.navGrandParentIdx+this.navOffSet) and (this.crumbdata[this.navGrandParentIdx].type neq 'Portal' or this.crumbdata[this.navGrandParentIdx].type neq 'Gallery') and not application.contentGateway.getCount(event.getValue('siteID'),this.crumbdata[this.navSelfIdx].contentID)>
+						<cfset theNav = dspNestedNav(this.crumbdata[this.navGrandParentIdx].contentid,2,1,'default',now(),'navSecondary','',this.crumbdata[this.navGrandParentIdx].sortBy,this.crumbdata[this.navGrandParentIdx].sortDirection,application.configBean.getContext(),application.configBean.getStub(),event.getValue('categoryID')) />
 					<cfelse>
 						<cfset thenav=dspPeerNav() />
 					</cfif>
 				</cfif>
-			<cfelseif arrayLen(event.getValue('crumbData')) gt (this.navSelfIdx+this.navOffSet) and event.getValue('crumbData')[this.navParentIdx].type eq 'Portal' or (arraylen(event.getValue('crumbData')) gt (this.navGrandParentIdx+this.navOffSet) and event.getValue('crumbData')[this.navGrandParentIdx].type eq 'Portal')>
-				<cfif arraylen(event.getValue('crumbData')) gt (this.navGrandParentIdx+this.navOffSet) and event.getValue('crumbData')[this.navGrandParentIdx].type neq 'Portal' and not application.contentGateway.getCount(event.getValue('siteID'),event.getValue('crumbData')[this.navSelfIdx].contentID)>
-					<cfset theNav = dspNestedNav(event.getValue('crumbData')[this.navGrandParentIdx].contentid,1,1,'default',now(),'navSecondary','',event.getValue('crumbData')[this.navGrandParentIdx].sortBy,event.getValue('crumbData')[this.navGrandParentIdx].sortDirection,application.configBean.getContext(),application.configBean.getStub(),event.getValue('categoryID')) />
+			<cfelseif arrayLen(this.crumbdata) gt (this.navSelfIdx+this.navOffSet) and this.crumbdata[this.navParentIdx].type eq 'Portal' or (arraylen(this.crumbdata) gt (this.navGrandParentIdx+this.navOffSet) and this.crumbdata[this.navGrandParentIdx].type eq 'Portal')>
+				<cfif arraylen(this.crumbdata) gt (this.navGrandParentIdx+this.navOffSet) and this.crumbdata[this.navGrandParentIdx].type neq 'Portal' and not application.contentGateway.getCount(event.getValue('siteID'),this.crumbdata[this.navSelfIdx].contentID)>
+					<cfset theNav = dspNestedNav(this.crumbdata[this.navGrandParentIdx].contentid,1,1,'default',now(),'navSecondary','',this.crumbdata[this.navGrandParentIdx].sortBy,this.crumbdata[this.navGrandParentIdx].sortDirection,application.configBean.getContext(),application.configBean.getStub(),event.getValue('categoryID')) />
 				<cfelse>
 					<cfset thenav=dspSubNav() />
 				</cfif>
@@ -395,16 +400,16 @@
 	<cfset var menutype="" />
 	
 	<cfif event.getValue('contentBean').getType() neq 'Gallery'>
-			<cfif arraylen(event.getValue('crumbData')) gt (this.navParentIdx+this.navOffSet)>
-				<cfif event.getValue('crumbData')[this.navParentIdx].type eq 'calendar'>
+			<cfif arraylen(this.crumbdata) gt (this.navParentIdx+this.navOffSet)>
+				<cfif this.crumbdata[this.navParentIdx].type eq 'calendar'>
 					<cfset menutype='fixed'>
 				<cfelse>
 					<cfset menutype='default'>
 				</cfif>
-				<cfif arraylen(event.getValue('crumbData')) gt (this.navGrandParentIdx+this.navOffSet) and not application.contentGateway.getCount(event.getValue('siteID'),event.getValue('crumbData')[this.navSelfIdx].contentID)>
-					<cfset theNav = dspNestedNav(event.getValue('crumbData')[this.navGrandParentIdx].contentid,2,1,menutype,now(),'navSecondary','',event.getValue('crumbData')[this.navGrandParentIdx].sortBy,event.getValue('crumbData')[this.navGrandParentIdx].sortDirection,application.configBean.getContext(),application.configBean.getStub()) />	
+				<cfif arraylen(this.crumbdata) gt (this.navGrandParentIdx+this.navOffSet) and not application.contentGateway.getCount(event.getValue('siteID'),this.crumbdata[this.navSelfIdx].contentID)>
+					<cfset theNav = dspNestedNav(this.crumbdata[this.navGrandParentIdx].contentid,2,1,menutype,now(),'navSecondary','',this.crumbdata[this.navGrandParentIdx].sortBy,this.crumbdata[this.navGrandParentIdx].sortDirection,application.configBean.getContext(),application.configBean.getStub()) />	
 				<cfelse>
-					<cfset theNav = dspNestedNav(event.getValue('crumbData')[this.navParentIdx].contentid,2,1,menutype,now(),'navSecondary','',event.getValue('crumbData')[this.navParentIdx].sortBy,event.getValue('crumbData')[this.navParentIdx].sortDirection,application.configBean.getContext(),application.configBean.getStub()) />	
+					<cfset theNav = dspNestedNav(this.crumbdata[this.navParentIdx].contentid,2,1,menutype,now(),'navSecondary','',this.crumbdata[this.navParentIdx].sortBy,this.crumbdata[this.navParentIdx].sortDirection,application.configBean.getContext(),application.configBean.getStub()) />	
 				</cfif>			
 			<cfelse>
 			<cfset theNav=dspSubNav() />
@@ -419,9 +424,9 @@
 <cffunction name="dspSubNav" output="false" returntype="string">
 	<cfset var thenav="" />
 	<cfset var menutype="">
-			<cfif arraylen(event.getValue('crumbData')) gt (this.navSelfIdx+this.navOffSet)>
-			<cfif event.getValue('crumbData')[this.navSelfIdx].type eq 'Calendar'><cfset menutype='fixed'><cfelse><cfset menutype='default'></cfif>
-			<cfset theNav = dspNestedNav(event.getValue('crumbData')[this.navSelfIdx].contentID,1,1,menutype,now(),'navSecondary','',event.getValue('crumbData')[this.navSelfIdx].sortBy,event.getValue('crumbData')[this.navSelfIdx].sortDirection,application.configBean.getContext(),application.configBean.getStub()) />
+			<cfif arraylen(this.crumbdata) gt (this.navSelfIdx+this.navOffSet)>
+			<cfif this.crumbdata[this.navSelfIdx].type eq 'Calendar'><cfset menutype='fixed'><cfelse><cfset menutype='default'></cfif>
+			<cfset theNav = dspNestedNav(this.crumbdata[this.navSelfIdx].contentID,1,1,menutype,now(),'navSecondary','',this.crumbdata[this.navSelfIdx].sortBy,this.crumbdata[this.navSelfIdx].sortDirection,application.configBean.getContext(),application.configBean.getStub()) />
 			</cfif>
 			
 			<cfreturn thenav />
@@ -431,20 +436,20 @@
 	<cfset var thenav="" />
 	<cfset var menutype = "" />
 	
-			<cfif arraylen(event.getValue('crumbData')) gt (this.navParentIdx+this.navOffSet)>
-				<cfif event.getValue('crumbData')[this.navParentIdx].type eq 'calendar'>
+			<cfif arraylen(this.crumbdata) gt (this.navParentIdx+this.navOffSet)>
+				<cfif this.crumbdata[this.navParentIdx].type eq 'calendar'>
 					<cfset menutype='fixed'>
 				<cfelse>
 					<cfset menutype='default'>
 				</cfif>
-				<cfset theNav = dspNestedNav(event.getValue('crumbData')[this.navParentIdx].contentID,1,1,menutype,now(),'navSecondary','',event.getValue('crumbData')[this.navParentIdx].sortBy,event.getValue('crumbData')[this.navParentIdx].sortDirection,application.configBean.getContext(),application.configBean.getStub()) />
+				<cfset theNav = dspNestedNav(this.crumbdata[this.navParentIdx].contentID,1,1,menutype,now(),'navSecondary','',this.crumbdata[this.navParentIdx].sortBy,this.crumbdata[this.navParentIdx].sortDirection,application.configBean.getContext(),application.configBean.getStub()) />
 			</cfif>
 			
 			<cfreturn theNav />
 </cffunction>
 
 <cffunction name="dspSequentialNav" output="false" returntype="string">
-		<cfset var rsSection=application.contentGateway.getKids('00000000000000000000000000000000000','#event.getValue('siteID')#','#event.getValue('contentBean').getparentid()#','default',now(),0,'',0,'#event.getValue('crumbData')[2].sortBy#','#event.getValue('crumbData')[2].sortDirection#')>
+		<cfset var rsSection=application.contentGateway.getKids('00000000000000000000000000000000000','#event.getValue('siteID')#','#event.getValue('contentBean').getparentid()#','default',now(),0,'',0,'#this.crumbdata[2].sortBy#','#this.crumbdata[2].sortDirection#')>
 		<cfset var link=''>
 		<cfset var class=''>
 		<cfset var itemClass=''>
@@ -1097,10 +1102,10 @@
 		<cfif event.getValue('contentBean').getIsNew() neq 1>
 			<cfif len(event.getValue('contentBean').getTemplate())>
 				<cfreturn event.getValue('contentBean').getTemplate() />
-			<cfelseif arrayLen(event.getValue('crumbData')) gt 1> 
-				<cfloop from="2" to="#arrayLen(event.getValue('crumbData'))#" index="I">
-					<cfif  event.getValue('crumbData')[I].template neq ''>
-						<cfreturn event.getValue('crumbData')[I].template />
+			<cfelseif arrayLen(this.crumbdata) gt 1> 
+				<cfloop from="2" to="#arrayLen(this.crumbdata)#" index="I">
+					<cfif  this.crumbdata[I].template neq ''>
+						<cfreturn this.crumbdata[I].template />
 					</cfif>
 				</cfloop>
 			</cfif>
@@ -1112,9 +1117,9 @@
 <cffunction name="getMetaDesc"  output="false" returntype="string">
 		<cfset var I = 0 />
 
-		<cfloop from="1" to="#arrayLen(event.getValue('crumbData'))#" index="I">
-		<cfif  event.getValue('crumbData')[I].metaDesc neq ''>
-		<cfreturn event.getValue('crumbData')[I].metaDesc />
+		<cfloop from="1" to="#arrayLen(this.crumbdata)#" index="I">
+		<cfif  this.crumbdata[I].metaDesc neq ''>
+		<cfreturn this.crumbdata[I].metaDesc />
 		</cfif>
 		</cfloop>
 		
@@ -1124,9 +1129,9 @@
 <cffunction name="getMetaKeyWords"  output="false" returntype="string">
 		<cfset var I = 0 />
 
-		<cfloop from="1" to="#arrayLen(event.getValue('crumbData'))#" index="I">
-		<cfif  event.getValue('crumbData')[I].metaKeyWords neq ''>
-		<cfreturn event.getValue('crumbData')[I].metaKeyWords />
+		<cfloop from="1" to="#arrayLen(this.crumbdata)#" index="I">
+		<cfif  this.crumbdata[I].metaKeyWords neq ''>
+		<cfreturn this.crumbdata[I].metaKeyWords />
 		</cfif>
 		</cfloop>
 		
@@ -1180,7 +1185,7 @@
 		<cfset var subnav=false>
 		<cfset var theNav="">
 		<cfset var crumbContentID="">
-		<cfset var topIndex= arrayLen(event.getValue('crumbData'))-this.navOffSet />
+		<cfset var topIndex= arrayLen(this.crumbdata)-this.navOffSet />
 		<cfset var rsHome=0>
 		<cfset var homeLink = "" />
 		<cfset var isLimitingOn = false>
@@ -1237,7 +1242,7 @@
 			<cfset class=iif(current eq 1,de('first'),de(iif(current eq adjust,de('last'),de('')))) />
 
 			<cfif topIndex gte 2>
-				<cfset crumbContentID = event.getValue('crumbData')[topIndex-1].contentid>
+				<cfset crumbContentID = this.crumbdata[topIndex-1].contentid>
 			</cfif>
 			
 			<cfif (event.getValue('contentBean').getcontentid() eq rsSection.contentid) or (rsSection.contentid eq crumbContentid)>
@@ -1274,9 +1279,9 @@
 	<cfargument name="openPortals" type="string" default="">
 
 	<cfset var thenav="" />
-	<cfset var topIndex= arrayLen(event.getValue('crumbData'))-this.navOffSet />
+	<cfset var topIndex= arrayLen(this.crumbdata)-this.navOffSet />
 
-	<cfset theNav = dspNestedNavPrimary(event.getValue('crumbData')[topIndex].contentID,arguments.viewDepth+1,1,'default',now(),arguments.id,'','orderno',application.configBean.getContext(),application.configBean.getStub(),arguments.displayHome,arguments.closePortals,arguments.openPortals) />
+	<cfset theNav = dspNestedNavPrimary(this.crumbdata[topIndex].contentID,arguments.viewDepth+1,1,'default',now(),arguments.id,'','orderno',application.configBean.getContext(),application.configBean.getStub(),arguments.displayHome,arguments.closePortals,arguments.openPortals) />
 
 	<cfreturn thenav />
 </cffunction>
@@ -1423,7 +1428,7 @@
 <cffunction name="dspSection" access="public" output="false" returntype="string">
 	<cfargument name="level" default="1" required="true">		
 	<cftry>
-		<cfreturn event.getValue('crumbData')[arrayLen(event.getValue('crumbData'))-arguments.level].menutitle >
+		<cfreturn this.crumbdata[arrayLen(this.crumbdata)-arguments.level].menutitle >
 		<cfcatch>
 			<cfreturn "">
 		</cfcatch>

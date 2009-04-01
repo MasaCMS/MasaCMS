@@ -115,6 +115,7 @@
 
 <cffunction name="doRequest" returntype="any"  access="public" output="false">
 	<cfset var a=""/>
+	<cfset var crumbdata=""/>
 		
 	<cfif event.valueExists('previewID')>
 		<cfset event.setValue('track',0)>
@@ -163,11 +164,12 @@
 		<cfset event.setValue('nocache',1)>
 		<cfset event.setValue('isOnDisplay',0)>
 	<cfelseif arrayLen(event.getValue('crumbData')) gt 1>
-		<cfset event.setValue('isOnDisplay',application.contentUtility.isOnDisplay(event.getValue('contentBean').getdisplay(),event.getValue('contentBean').getdisplaystart(),event.getValue('contentBean').getdisplaystop(),event.getValue('siteID'),event.getValue('contentBean').getparentid(),event.getValue('crumbData')[2].type))>
+		<cfset crumbdata=event.getValue('crumbdata')>
+		<cfset event.setValue('isOnDisplay',application.contentUtility.isOnDisplay(event.getValue('contentBean').getdisplay(),event.getValue('contentBean').getdisplaystart(),event.getValue('contentBean').getdisplaystop(),event.getValue('siteID'),event.getValue('contentBean').getparentid(),crumbdata[2].type))>
 	<cfelse>
 		<cfset event.setValue('isOnDisplay',1)>
 	</cfif>
- 	
+ 
 	<cfif event.getValue('isOnDisplay') and event.getValue('r').restrict and not event.getValue('r').loggedIn and (event.getValue('display') neq 'login' and event.getValue('display') neq 'editProfile')>
 		<cflocation addtoken="no" url="#application.settingsManager.getSite(request.siteid).getLoginURL()#&returnURL=#URLEncodedFormat(application.contentRenderer.getCurrentURL())#">
 	</cfif>
