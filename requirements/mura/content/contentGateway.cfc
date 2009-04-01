@@ -38,35 +38,39 @@
 		<cfset var key="crumb" & arguments.contentID & arguments.setInheritance />
 		<cfset var cacheFactory=variables.settingsManager.getSite(arguments.siteid).getCacheFactory()>
 			
+		<cfif arguments.setInheritance>
+			<cfset request.inheritedObjects="">
+		</cfif>
+		
 		<cfif NOT cacheFactory.has( key )>
-			
-			<cfif arguments.setInheritance or not structkeyExists(request,"inheritedObjects")><cfset request.inheritedObjects=""></cfif>
 			
 			<cfif not len(arguments.path)>
 			<cftry>
 			
 			<cfloop condition="ID neq '00000000000000000000000000000000END'">
-			<cfset crumb=structNew() />
+
 			<cfquery name="rsContent" datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 			select contenthistid, contentid, menutitle, filename, parentid, type, target, targetParams, siteid, restricted, restrictgroups,template,inheritObjects,metadesc,metakeywords,sortBy,sortDirection from tcontent where active=1 and contentid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#ID#"/> and siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
 			</cfquery>
 			
-			<cfset crumb.type='#rscontent.type#' />
-			<cfset crumb.filename='#rscontent.filename#' />
-			<cfset crumb.menutitle='#rscontent.menutitle#' />
-			<cfset crumb.target='#rscontent.target#' />
-			<cfset crumb.contentid='#rscontent.contentid#' />
-			<cfset crumb.parentid='#rscontent.parentid#' />
-			<cfset crumb.siteid='#rscontent.siteid#' />
-			<cfset crumb.restricted='#rscontent.restricted#' />
-			<cfset crumb.restrictGroups='#rscontent.restrictgroups#' />
-			<cfset crumb.template='#rscontent.template#' />
-			<cfset crumb.contenthistid='#rscontent.contenthistid#' />
-			<cfset crumb.targetPrams='#rscontent.targetParams#' />
-			<cfset crumb.metadesc='#rscontent.metadesc#' />
-			<cfset crumb.metakeywords='#rscontent.metakeywords#' />
-			<cfset crumb.sortBy='#rscontent.sortBy#' />
-			<cfset crumb.sortDirection='#rscontent.sortDirection#' />
+			<cfset crumb=structNew() />
+			<cfset crumb.type=rscontent.type />
+			<cfset crumb.filename=rscontent.filename />
+			<cfset crumb.menutitle=rscontent.menutitle />
+			<cfset crumb.target=rscontent.target />
+			<cfset crumb.contentid=rscontent.contentid />
+			<cfset crumb.parentid=rscontent.parentid />
+			<cfset crumb.siteid=rscontent.siteid />
+			<cfset crumb.restricted=rscontent.restricted />
+			<cfset crumb.restrictGroups=rscontent.restrictgroups />
+			<cfset crumb.template=rscontent.template />
+			<cfset crumb.contenthistid=rscontent.contenthistid />
+			<cfset crumb.targetPrams=rscontent.targetParams />
+			<cfset crumb.metadesc=rscontent.metadesc />
+			<cfset crumb.metakeywords=rscontent.metakeywords />
+			<cfset crumb.sortBy=rscontent.sortBy />
+			<cfset crumb.sortDirection=rscontent.sortDirection />
+			<cfset crumb.inheritObjects=rscontent.inheritObjects />
 				
 			<cfset I=I+1>
 			<cfset arrayAppend(crumbdata,crumb) />
@@ -99,22 +103,23 @@
 		
 			<cfloop query="rsContent">
 			<cfset crumb=structNew() />
-			<cfset crumb.type='#rscontent.type#' />
-			<cfset crumb.filename='#rscontent.filename#' />
-			<cfset crumb.menutitle='#rscontent.menutitle#' />
-			<cfset crumb.target='#rscontent.target#' />
-			<cfset crumb.contentid='#rscontent.contentid#' />
-			<cfset crumb.parentid='#rscontent.parentid#' />
-			<cfset crumb.siteid='#rscontent.siteid#' />
-			<cfset crumb.restricted='#rscontent.restricted#' />
-			<cfset crumb.restrictGroups='#rscontent.restrictgroups#' />
-			<cfset crumb.template='#rscontent.template#' />
-			<cfset crumb.contenthistid='#rscontent.contenthistid#' />
-			<cfset crumb.targetPrams='#rscontent.targetParams#' />
-			<cfset crumb.metadesc='#rscontent.metadesc#' />
-			<cfset crumb.metakeywords='#rscontent.metakeywords#' />
-			<cfset crumb.sortBy='#rscontent.sortBy#' />
-			<cfset crumb.sortDirection='#rscontent.sortDirection#' />
+			<cfset crumb.type=rscontent.type />
+			<cfset crumb.filename=rscontent.filename />
+			<cfset crumb.menutitle=rscontent.menutitle />
+			<cfset crumb.target=rscontent.target />
+			<cfset crumb.contentid=rscontent.contentid />
+			<cfset crumb.parentid=rscontent.parentid />
+			<cfset crumb.siteid=rscontent.siteid />
+			<cfset crumb.restricted=rscontent.restricted />
+			<cfset crumb.restrictGroups=rscontent.restrictgroups />
+			<cfset crumb.template=rscontent.template />
+			<cfset crumb.contenthistid=rscontent.contenthistid />
+			<cfset crumb.targetPrams=rscontent.targetParams />
+			<cfset crumb.metadesc=rscontent.metadesc />
+			<cfset crumb.metakeywords=rscontent.metakeywords />
+			<cfset crumb.sortBy=rscontent.sortBy />
+			<cfset crumb.sortDirection=rscontent.sortDirection />
+			<cfset crumb.inheritObjects=rscontent.inheritObjects />
 			
 			<cfset arrayAppend(crumbdata,crumb) />
 			<cfif arguments.setInheritance and request.inheritedObjects eq "" and rscontent.inheritObjects eq 'cascade'>
@@ -133,7 +138,16 @@
 			
 			<cfreturn cacheFactory.get( key, crumbdata ) />
 		<cfelse>
-			<cfreturn cacheFactory.get( key ) />
+			<cfset crumbdata=cacheFactory.get( key ) />
+			<cfif arguments.setInheritance>
+				<cfloop from="1" to="#arrayLen(crumbdata)#" index="I">
+					<cfif crumbdata[I].inheritObjects eq 'cascade'>
+						<cfset request.inheritedObjects=crumbdata[I].inheritObjects>
+						<cfbreak>
+					</cfif>
+				</cfloop>
+			</cfif>	
+			<cfreturn crumbdata />
 		</cfif>
 
 </cffunction>
