@@ -59,7 +59,7 @@
 			<cfobjectcache action="clear" />
 			<cfset application.configBean=application.serviceFactory.getBean("configBean") />
 			<cfset application.settingsManager=application.serviceFactory.getBean("settingsManager") />
-]			<cfset application.contentManager=application.serviceFactory.getBean("contentManager") />
+			<cfset application.contentManager=application.serviceFactory.getBean("contentManager") />
 			<cfset application.utility=application.serviceFactory.getBean("utility") />
 			<cfset application.permUtility=application.serviceFactory.getBean("permUtility") />
 			<cfset application.contentUtility=application.serviceFactory.getBean("contentUtility") />
