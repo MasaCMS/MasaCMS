@@ -15,12 +15,14 @@
 
 <cffunction name="init" access="public" returntype="any" output="false">
 <cfargument name="configBean" type="any" required="yes"/>
+<cfargument name="clusterManager" type="any" required="yes"/>
 		<cfset variables.configBean=arguments.configBean />
+		<cfset variables.clusterManager=arguments.clusterManager />
 <cfreturn this />
 </cffunction>
 
 <cffunction name="getBean" access="public" returntype="any">
-	<cfreturn createObject("component","mura.settings.settingsBean").init(variables.configBean)>
+	<cfreturn createObject("component","mura.settings.settingsBean").init(variables.configBean,variables.clusterManager)>
 </cffunction>
 
 <cffunction name="read" access="public" output="false" returntype="any">

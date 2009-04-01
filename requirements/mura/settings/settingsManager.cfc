@@ -18,11 +18,13 @@
 <cfargument name="utility" type="any" required="yes"/>
 <cfargument name="settingsGateway" type="any" required="yes"/>
 <cfargument name="settingsDAO" type="any" required="yes"/>
+<cfargument name="clusterManager" type="any" required="yes"/>
 
 		<cfset variables.configBean=arguments.configBean />
 		<cfset variables.utility=arguments.utility />
 		<cfset variables.Gateway=arguments.settingsGateway />
 		<cfset variables.DAO=arguments.settingsDAO />
+		<cfset variables.clusterManager=arguments.clusterManager />
 		
 		<cfset setSites() />
 
@@ -141,7 +143,7 @@
 
 <cffunction name="setSites" access="public" output="false" returntype="void">
 	<cfset var rs="" />
-	<cfobjectcache action="clear">
+	<cfobjectcache action="clear"/>
 	<cfset rs=getList() />
 	<cfset variables.sites=structNew() />
 
@@ -169,21 +171,12 @@
 
 <cffunction name="purgeAllCache" access="public" output="false" returntype="void">
 	<cfset var rs=getList()>
-	<cfset var clusterIPList=variables.configBean.getClusterIPList()>
-	<cfset var ip="">
 	
 	<cfloop query="rs">
 		<cfset getSite(rs.siteid).getCacheFactory().purgeAll()/>
 	</cfloop>
 	
-	<cfif len(clusterIPList)>
-		<cfloop list="#clusterIPList#" index="ip">
-			<cfinvoke webservice="http://#ip##variables.configBean.getPort()##variables.configBean.getContext()#/mura.cfc?wsdl" method="purgeSiteCache">
-			<cfinvokeargument name="siteID" value="">
-			<cfinvokeargument name="appreloadkey" value="#variables.configBean.getAppreloadKey()#">
-		 	</cfinvoke>
-		</cfloop>
-	</cfif>
+	<cfset variables.clusterManager.purgeCache()>
 </cffunction>
 
 <cffunction name="getUserSites" access="public" output="false" returntype="query">

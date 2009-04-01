@@ -245,15 +245,18 @@
 			<constructor-arg name="settingsDAO"><ref bean="settingsDAO" /></constructor-arg>
 			<constructor-arg name="utility"><ref bean="utility" /></constructor-arg>
 			<constructor-arg name="configBean"><ref bean="configBean" /></constructor-arg>
+			<constructor-arg name="clusterManager"><ref bean="clusterManager" /></constructor-arg>
 		</bean>
 		<bean id="settingsGateway" class="mura.settings.settingsGateway" singleton="true">
 			<constructor-arg name="configBean"><ref bean="configBean" /></constructor-arg>
 		</bean>
 		<bean id="settingsDAO" class="mura.settings.settingsDAO" singleton="true">
 			<constructor-arg name="configBean"><ref bean="configBean" /></constructor-arg>
+			<constructor-arg name="clusterManager"><ref bean="clusterManager" /></constructor-arg>
 		</bean>
 		<bean id="settingsBean" class="mura.settings.settingsBean" singleton="false">
 			<constructor-arg name="configBean"><ref bean="configBean" /></constructor-arg>
+			<constructor-arg name="clusterManager"><ref bean="clusterManager" /></constructor-arg>
 		</bean>
 		<bean id="userManager" class="mura.user.userManager" singleton="true">
 			<constructor-arg name="configBean"><ref bean="configBean" /></constructor-arg>
@@ -494,6 +497,9 @@
 			<constructor-arg name="configBean"><ref bean="configBean" /></constructor-arg>
 			<constructor-arg name="settingsManager"><ref bean="settingsManager" /></constructor-arg>
 			<constructor-arg name="utility"><ref bean="utility" /></constructor-arg>
+		</bean>
+		<bean id="clusterManager" class="mura.cluster.clusterManager" singleton="true">
+			<constructor-arg name="configBean"><ref bean="configBean" /></constructor-arg>
 		</bean>
 		<cfinclude template="coldspring.custom.xml.cfm">
 	</beans></cfoutput>

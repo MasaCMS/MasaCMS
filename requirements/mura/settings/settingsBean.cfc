@@ -78,10 +78,12 @@
 <cfset variables.instance.rbFactory=""/>    
 <cfset variables.instance.javaLocale=""/> 
 <cfset variables.instance.cacheFactory=""/> 
-
+ 
 <cffunction name="init" returntype="any" output="false" access="public">
 <cfargument name="configBean" type="any" required="yes"/>
+<cfargument name="clusterManager" type="any" required="yes"/>
 	<cfset variables.configBean=arguments.configBean />
+	<cfset variables.clusterManager=arguments.clusterManager />
 	<cfreturn this />
 </cffunction>
 
@@ -834,21 +836,12 @@
 </cffunction>
 
 <cffunction name="purgeCache" returntype="void" access="public" output="false">
-	<cfset var clusterIPList=variables.configBean.getClusterIPList()>
-	<cfset var ip="">
 	
 	<cfif isObject(variables.instance.cacheFactory)>
 		<cfset variables.instance.cacheFactory.purgeAll() />
 	</cfif>
 	
-	<cfif len(clusterIPList)>
-		<cfloop list="#clusterIPList#" index="ip">
-			<cfinvoke webservice="http://#ip##variables.configBean.getPort()##variables.configBean.getContext()#/mura.cfc?wsdl" method="purgeSiteCache">
-			<cfinvokeargument name="siteID" value="">
-			<cfinvokeargument name="appreloadkey" value="#variables.configBean.getAppreloadKey()#">
-		 	</cfinvoke>
-		</cfloop>
-	</cfif>
+	<cfset variables.clusterManager.purgeCache(getSiteID())>
 	
 </cffunction>
 

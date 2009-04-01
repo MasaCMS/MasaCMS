@@ -91,7 +91,6 @@
 <cfreturn str />
 </cffunction> 
 
-
 <cffunction name="createRequiredSiteDirectories" returntype="void" output="false" access="public">
 <cfargument name="siteid" type="string" default="" required="yes"/>
 
@@ -205,31 +204,6 @@
 	<cfreturn i>
 </cffunction>
 
-<cffunction name="broadcastAppreload" output="false" returntype="void">
-<cfargument name="appInitializedTime" required="true" type="string" default="#now()#">
-<cfargument name="loadlist" required="true" type="string" default="">
-
-<cfset var rs= ""/>
-
-	<cfquery name="rs" datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-		select * from tglobals
-	</cfquery>
-	
-
-	<cfif rs.recordcount>
-		<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-			Update tglobals set appreload=#createodbcdatetime(arguments.appInitializedTime)#, loadlist=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.loadlist#" />
-		</cfquery>
-	<cfelse>
-		<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-			Insert Into  tglobals (appreload,loadlist) values (
-			 #createodbcdatetime(arguments.appInitializedTime)#, 
-			<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.loadlist#" />
-			)
-		</cfquery>
-	</cfif>
-	
-</cffunction>
 
 <cffunction name="createRedirectID" access="public" returntype="string" output="false">
 	<cfargument name="theLink" required="true">

@@ -32,15 +32,12 @@
 <cfparam name="application.appInitializedTime" default="" />
 <cfparam name="application.appInitialized" default="false" />
 <cfparam name="application.appReloadKey" default="appreload" />
-<cfparam name="application.appStarting" default="false" />
+<cfparam name="application.broadcastInit" default="true" />
+
 
 <cfif not IsDefined("Cookie.CFID") AND IsDefined("Session.CFID")>
 	<cfcookie name="CFID" value="#Session.CFID#">
 	<cfcookie name="CFTOKEN" value="#Session.CFTOKEN#">
-</cfif>
-
-<cfif isdefined('url.override')>
-	<cfset application.appStarting=false/>
 </cfif>
 
 <cfif (not application.appInitialized or structKeyExists(url,application.appReloadKey))>
@@ -54,7 +51,6 @@
 	
 	<cfinclude template="coldspring.xml.cfm">
 	
-
 	<cfset application.serviceFactory=createObject("component","coldspring.beans.DefaultXmlBeanFactory").init() />
 	<cfset application.serviceFactory.loadBeansFromXMLRaw(servicesXML,true) />
 
@@ -86,29 +82,16 @@
 			<cfset application.classExtensionManager=application.configBean.getClassExtensionManager() />
 			<cfset application.rbFactory=application.serviceFactory.getBean("resourceBundleFactory") />
 			<cfset application.pluginManager=application.serviceFactory.getBean("pluginManager") />
+			<cfset application.clusterManager=application.serviceFactory.getBean("clusterManager") />
 			
 			<cfinclude template="settings.custom.managers.cfm">
 	 	
-			<cfquery name="variables.checkMe" datasource="#application.configBean.getDatasource()#" username="#application.configBean.getDBUsername()#" password="#application.configBean.getDBPassword()#" timeout="5">
-			SELECT * FROM tglobals
-			</cfquery>
-			
-			<cfif structKeyExists(url,application.appReloadKey) 
-				or not isdate(variables.Checkme.appreload)
-				or not isdate(application.appInitializedTime)>
-				
-				<cfif not isdate(variables.Checkme.appreload) or isdefined('url.#application.appReloadKey#')>
-					<cfset application.appInitializedTime=now()/>
-					<cfset application.utility.broadcastAppreload(application.appInitializedTime,"")/>
-				<cfelse>
-					<cfset application.appInitializedTime=variables.Checkme.appreload/>
-				</cfif>
-			<cfelse>
-				<cfset application.appInitializedTime=variables.Checkme.appreload/>
-			</cfif>
-			
 			<cfset application.appInitialized=true/>
 			
+			<cfif application.broadcastInit>
+				<cfset application.clusterManager.reload()>
+			</cfif>
+			<cfset application.broadcastInit=true/>
 	</cflock>
 
 	<!--- Set up scheduled tasks --->
@@ -142,14 +125,6 @@
 
 	<cfset application.pluginManager.executeScripts('onApplicationLoad')>
 
-</cfif>
-
-<cfquery name="variables.checkMe" datasource="#application.configBean.getDatasource()#" username="#application.configBean.getDBUsername()#" password="#application.configBean.getDBPassword()#" timeout="5">
-	SELECT * FROM tglobals
-</cfquery>
-
-<cfif isdate(variables.checkMe.appreload)  and application.appInitializedTime lt variables.checkMe.appreload>
-	<cfset application.appInitialized=false />
 </cfif>
 
 <cftry>

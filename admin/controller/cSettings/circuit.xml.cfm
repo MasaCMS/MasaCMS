@@ -71,14 +71,14 @@
 	<if condition="attributes.action eq 'Update'">
 		<true>
 			<invoke object="application.settingsManager" methodcall="update(attributes)"  />
-			<invoke object="application.utility" methodcall="broadcastAppreload(now(),'settingsManager')" />
+			<invoke object="application.cluster" methodcall="reload()" />
 		</true>
 	</if>
 	<if condition="attributes.action eq 'Add'">
 		<true>
 			<invoke object="application.settingsManager" methodcall="create(attributes)"  />
 			<invoke object="application.settingsManager" methodcall="setSites()"  />
-			<invoke object="application.utility" methodcall="broadcastAppreload(now(),'settingsManager')" />
+			<invoke object="application.cluster" methodcall="reload()" />
 		</true>
 	</if>
 	<if condition="attributes.action eq 'Delete'">
