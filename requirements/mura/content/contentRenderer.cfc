@@ -1563,7 +1563,7 @@
 					<cfset pluginPath= application.configBean.getContext() & pluginBasePath & pluginID & "/" >
 					<cfset pluginID=listFirst(i,"/")>
 					<cfset event.setValue('pluginConfig',application.pluginManager.getConfig(pluginID))>
-					<cfset event.setValue('pluginPath',pluginConfig.setSetting('pluginPath',pluginPath))>
+					<cfset event.setValue('pluginPath',pluginPath)>
 					<cfset pluginConfig=event.getValue('pluginConfig')>
 					<cfinclude  template="/#application.configBean.getWebRootMap()##pluginBasePath##i#">
 					<cfset headerFound=true />
