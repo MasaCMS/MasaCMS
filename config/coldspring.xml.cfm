@@ -174,7 +174,6 @@
 		</bean>
 		<bean id="contentBean" class="mura.content.contentBean" singleton="false" >
 			<constructor-arg name="configBean"><ref bean="configBean" /></constructor-arg>
-			<constructor-arg name="settingsManager"><ref bean="settingsManager" /></constructor-arg>
 		</bean>
 		<bean id="fileManager" class="mura.content.file.fileManager" singleton="true" >
 			<constructor-arg name="fileDAO"><ref bean="fileDAO" /></constructor-arg>

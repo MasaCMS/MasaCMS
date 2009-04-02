@@ -30,11 +30,6 @@
 		<cfset var key=arguments.type & arguments.groupID & arguments.ContentID & arguments.siteid />
 		<cfset var site=variables.settingsManager.getSite(arguments.siteid)/>
 		<cfset var cacheFactory=site.getCacheFactory()>
-		<cfset var perm=0>
-		
-		<cfif arguments.setInheritance>
-			<cfset request.inheritedObjects="">
-		</cfif>
 			
 		<cfif site.getCache()>
 			<!--- check to see if it is cached. if not then pass in the context --->
@@ -121,11 +116,11 @@
 			<cfset rsPermited=getPermVerdictQuery(arguments.contentID,arguments.type,arguments.siteid) />
 		</cfif>
 		
-		<cfloop query="rsPermited1">
-		<cfif rsPermited1.isPublic>
-		<cfif isUserInRole("#rsPermited1.groupname#;#application.settingsManager.getSite(arguments.siteid).getPublicUserPoolID()#;1")><cfset perm=1><cfbreak></cfif>
+		<cfloop query="rsPermited">
+		<cfif rsPermited.isPublic>
+		<cfif isUserInRole("#rsPermited.groupname#;#application.settingsManager.getSite(arguments.siteid).getPublicUserPoolID()#;1")><cfset perm=1><cfbreak></cfif>
 		<cfelse>
-		<cfif isUserInRole("#rsPermited1.groupname#;#application.settingsManager.getSite(arguments.siteid).getPrivateUserPoolID()#;0")><cfset perm=1><cfbreak></cfif>
+		<cfif isUserInRole("#rsPermited.groupname#;#application.settingsManager.getSite(arguments.siteid).getPrivateUserPoolID()#;0")><cfset perm=1><cfbreak></cfif>
 		</cfif>
 		</cfloop>
 		
@@ -230,14 +225,32 @@
 		<cfargument name="siteid" type="string" required="true">
 		<cfset var Verdict=0>
 		<cfset var rsgroups="">
+		<cfset var key="perm" & arguments.moduleID & arguments.siteid  />
+		<cfset var site=variables.settingsManager.getSite(arguments.siteid)/>
+		<cfset var cacheFactory=site.getCacheFactory()>
 
 			<cfif isUserInRole('Admin;#variables.settingsManager.getSite(arguments.siteid).getPrivateUserPoolID()#;0') or  isUserInRole('S2') >
 				<cfset Verdict=1>
 			<cfelse>
-				<cfquery datasource="#variables.configBean.getDatasource()#" name="rsgroups" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-				select tusers.groupname,isPublic from tusers INNER JOIN tpermissions ON (tusers.userid = tpermissions.groupid) where tpermissions.contentid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.moduleID#"/> and tpermissions.siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/> 
-				</cfquery>
-				
+				<cfif site.getCache()>
+					<!--- check to see if it is cached. if not then pass in the context --->
+					<!--- otherwise grab it from the cache --->		
+					<cfif NOT cacheFactory.has( key )>
+						
+						<cfset rsgroups=getModulePermQuery(arguments.moduleID,arguments.siteid) />
+						<cfset cacheFactory.get( key, rsgroups.recordcount  ) />
+					<cfelse>
+							
+						<cfif cacheFactory.get( key ) >
+							<cfset rsgroups=getModulePermQuery(arguments.moduleID,arguments.siteid) />
+						<cfelse>
+							<cfreturn Verdict />	
+						</cfif>
+					</cfif>
+				<cfelse><
+					<cfset rsgroups=getModulePermQuery(arguments.moduleID,arguments.siteid) />
+				</cfif>
+			
 				<cfloop query="rsgroups">
 				<cfif rsGroups.isPublic>
 				<cfif isUserInRole("#rsgroups.groupname#;#variables.settingsManager.getSite(arguments.siteid).getPublicUserPoolID()#;1")><cfset verdict=1></cfif>
@@ -251,6 +264,18 @@
 
 </cffunction>
 
+<cffunction name="getModulePermQuery" returntype="query" access="public" output="false">
+		<cfargument name="moduleID" type="string" required="true">
+		<cfargument name="siteid" type="string" required="true">
+		<cfset var rs="">
+		
+		<cfquery datasource="#variables.configBean.getDatasource()#" name="rs" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+			select tusers.groupname,isPublic from tusers INNER JOIN tpermissions ON (tusers.userid = tpermissions.groupid) where tpermissions.contentid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.moduleID#"/> and tpermissions.siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/> 
+		</cfquery>
+
+		
+		<cfreturn rs>
+</cffunction>
 <cffunction name="setRestriction" returntype="struct" access="public" output="false">
 			<cfargument name="crumbdata" required="yes" type="array">
 			<cfargument name="hasModuleAccess" required="yes" default="">

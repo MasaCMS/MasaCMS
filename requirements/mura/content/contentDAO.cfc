@@ -23,7 +23,7 @@
 </cffunction>
 
 <cffunction name="getBean" access="public" returntype="any">
-	<cfreturn createObject("component","#variables.configBean.getMapDir()#.content.contentBean").init(variables.configBean,variables.settingsManager)>
+	<cfreturn createObject("component","#variables.configBean.getMapDir()#.content.contentBean").init(variables.configBean)>
 </cffunction>
 
 <cffunction name="readVersion" access="public" returntype="any" output="false">

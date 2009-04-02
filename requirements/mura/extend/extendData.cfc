@@ -27,6 +27,7 @@
 	<cfset variables.dsn=variables.configBean.getDatasource()/>
 	<cfset setBaseID(arguments.baseID)/>
 	<cfset setDataTable(arguments.dataTable)/>
+	<cfset loadData()/>
 	
 	<cfreturn this />
 </cffunction>
