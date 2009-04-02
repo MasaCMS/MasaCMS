@@ -137,14 +137,19 @@
 		<cfset var key=arguments.siteid & arguments.filename />
 		<cfset var site=variables.settingsManager.getSite(arguments.siteid)/>
 		<cfset var cacheFactory=site.getCacheFactory()>
+		<cfset var contentBean="">
 		
 		<cfif site.getCache()>
 			<!--- check to see if it is cached. if not then pass in the context --->
 			<!--- otherwise grab it from the cache --->
 			<cfif NOT cacheFactory.has( key )>
-				<cfreturn cacheFactory.get( key, variables.contentDAO.readActiveByFilename(arguments.filename,arguments.siteid,arguments.use404) ) />
+				<cfset contentBean=variables.contentDAO.readActiveByFilename(arguments.filename,arguments.siteid,arguments.use404) />
+				<cfset cacheFactory.get( key, contentBean.getAllValues() ) />
+				<cfreturn contentBean/>
 			<cfelse>
-				<cfreturn cacheFactory.get( key ) />
+				<cfset contentBean=variables.contentDAO.getBean()/>
+				<cfset contentBean.set(cacheFactory.get( key ))>
+				<cfreturn contentBean />
 			</cfif>
 		<cfelse>
 			<cfreturn variables.contentDAO.readActiveByFilename(arguments.filename,arguments.siteid,arguments.use404)/>
@@ -158,15 +163,20 @@
 		
 		<cfset var key="remote" & arguments.siteid & arguments.remoteID />
 		<cfset var site=variables.settingsManager.getSite(arguments.siteid)/>
-		<cfset var cacheFactory=site.getCacheFactory()>
+		<cfset var cacheFactory=site.getCacheFactory()/>
+		<cfset var contentBean=""/>
 		
 		<cfif site.getCache()>
 			<!--- check to see if it is cached. if not then pass in the context --->
 			<!--- otherwise grab it from the cache --->
 			<cfif NOT cacheFactory.has( key )>
-				<cfreturn cacheFactory.get( key, variables.contentDAO.readActiveByRemoteID(arguments.remoteID,arguments.siteid) ) />
+				<cfset contentBean=variables.contentDAO.readActiveByRemoteID(arguments.remoteID,arguments.siteid)  />
+				<cfset cacheFactory.get( key, contentBean.getAllValues() ) />
+				<cfreturn contentBean/>
 			<cfelse>
-				<cfreturn cacheFactory.get( key ) />
+				<cfset contentBean=variables.contentDAO.getBean()/>
+				<cfset contentBean.set(cacheFactory.get( key ))>
+				<cfreturn contentBean />
 			</cfif>
 		<cfelse>
 			<cfreturn variables.contentDAO.readActiveByRemoteID(arguments.remoteID,arguments.siteid)/>
@@ -181,15 +191,20 @@
 		
 		<cfset var key=arguments.siteid & arguments.contentID />
 		<cfset var site=variables.settingsManager.getSite(arguments.siteid)/>
-		<cfset var cacheFactory=site.getCacheFactory()>
+		<cfset var cacheFactory=site.getCacheFactory()/>
+		<cfset var contentBean=""/>
 		
 		<cfif site.getCache()>
 			<!--- check to see if it is cached. if not then pass in the context --->
 			<!--- otherwise grab it from the cache --->
 			<cfif NOT cacheFactory.has( key )>
-				<cfreturn cacheFactory.get( key, variables.contentDAO.readActive(arguments.contentID,arguments.siteid,arguments.use404) ) />
+				<cfset contentBean=variables.contentDAO.readActive(arguments.contentID,arguments.siteid,arguments.use404)  />
+				<cfset cacheFactory.get( key, contentBean.getAllValues() ) />
+				<cfreturn contentBean/>
 			<cfelse>
-				<cfreturn cacheFactory.get( key ) />
+				<cfset contentBean=variables.contentDAO.getBean()/>
+				<cfset contentBean.set(cacheFactory.get( key ))>
+				<cfreturn contentBean />
 			</cfif>
 		<cfelse>
 			<cfreturn variables.contentDAO.readActive(arguments.contentID,arguments.siteid,arguments.use404) />
