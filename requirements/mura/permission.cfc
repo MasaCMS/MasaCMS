@@ -26,6 +26,36 @@
 		<cfargument name="GroupID" type="string" required="true">
 		<cfargument name="Type" type="string" required="false" default="Editor">
 		<cfargument name="siteid" type="string" required="true">
+		
+		<cfset var key=arguments.type & arguments.groupID & arguments.ContentID & arguments.siteid />
+		<cfset var site=variables.settingsManager.getSite(arguments.siteid)/>
+		<cfset var cacheFactory=site.getCacheFactory()>
+		<cfset var perm=0>
+		
+		<cfif arguments.setInheritance>
+			<cfset request.inheritedObjects="">
+		</cfif>
+			
+		<cfif site.getCache()>
+			<!--- check to see if it is cached. if not then pass in the context --->
+			<!--- otherwise grab it from the cache --->
+			
+			<cfif NOT cacheFactory.has( key )>
+				<cfreturn cacheFactory.get( key, buildGroupPermVerdict(arguments.contentID,arguments.groupID,arguments.type,arguments.siteid)  ) />
+			<cfelse>
+				<cfreturn cacheFactory.get( key ) />
+			</cfif>
+		<cfelse>
+			<cfreturn buildGroupPermVerdict(arguments.contentID,arguments.groupID,arguments.type,arguments.siteid)/>
+		</cfif>
+
+</cffunction>
+
+<cffunction name="buildGroupPermVerdict" returntype="numeric" access="public" output="false">
+		<cfargument name="ContentID" type="string" required="true">
+		<cfargument name="GroupID" type="string" required="true">
+		<cfargument name="Type" type="string" required="false" default="Editor">
+		<cfargument name="siteid" type="string" required="true">
 		<cfset var perm=0>
 		<cfset var rsPermited="">
 		
@@ -33,12 +63,12 @@
 		Select GroupID from tpermissions where ContentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentID#"/> and type=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.type#"/> and siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/> and groupid='#arguments.groupid#'
 		</cfquery>
 		
-	<cfif rsPermited.recordcount>
-	<cfset perm=1>
-	</cfif>
+		<cfif rsPermited.recordcount>
+		<cfset perm=1>
+		</cfif>
 		
 		 <cfreturn perm>
-	</cffunction>
+</cffunction>
 
 <cffunction name="getGroupPerm" returntype="string" access="public" output="false">
 		<cfargument name="GroupID" type="string" required="true">
@@ -63,18 +93,33 @@
 		<cfreturn verdict>
 </cffunction>
 
+
 <cffunction name="getPermVerdict" returntype="numeric" access="public" output="false">
 		<cfargument name="ContentID" type="string" required="true">
 		<cfargument name="Type" type="string" required="false" default="Editor">
 		<cfargument name="siteid" type="string" required="true">
-		<cfset var rsPermited1="">
-		<cfset var rsPermited2=""/>
 		<cfset var perm=0>
+		<cfset var rsPermited="">
+		<cfset var key=arguments.type & arguments.ContentID & arguments.siteid />
+		<cfset var site=variables.settingsManager.getSite(arguments.siteid)/>
+		<cfset var cacheFactory=site.getCacheFactory()>
 		
-		<cfquery name="rsPermited1" datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-		Select GroupName, isPublic from tusers where userid in
-		(Select GroupID from tpermissions where ContentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentID#"/> and type=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.type#"/> and siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>) 
-		</cfquery>
+		<cfif site.getCache()>
+			<!--- check to see if it is cached. if not then pass in the context --->
+			<!--- otherwise grab it from the cache --->		
+			<cfif NOT cacheFactory.has( key )>
+				<cfset rsPermited=getPermVerdictQuery(arguments.contentID,arguments.type,arguments.siteid) />
+				<cfset cacheFactory.get( key, rsPermited.recordcount  ) />
+			<cfelse>		
+				<cfif cacheFactory.get( key ) >
+					<cfset rsPermited=getPermVerdictQuery(arguments.contentID,arguments.type,arguments.siteid) />
+				<cfelse>
+					<cfreturn perm />	
+				</cfif>
+			</cfif>
+		<cfelse>
+			<cfset rsPermited=getPermVerdictQuery(arguments.contentID,arguments.type,arguments.siteid) />
+		</cfif>
 		
 		<cfloop query="rsPermited1">
 		<cfif rsPermited1.isPublic>
@@ -83,21 +128,22 @@
 		<cfif isUserInRole("#rsPermited1.groupname#;#application.settingsManager.getSite(arguments.siteid).getPrivateUserPoolID()#;0")><cfset perm=1><cfbreak></cfif>
 		</cfif>
 		</cfloop>
-		<!---
-		<cfif perm neq 1>
-				<cfquery name="rsPermited2" datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#" >
-				Select GroupName from tusers where userid in
-				(Select GroupID from tpermissions where ContentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentID#"/> and type=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.type#"/> and siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>) 
-				 and isPublic=0
-				</cfquery>
-				
-				<cfloop query="rsPermited2">
-				<cfif isUserInRole(rsPermited2.groupname)><cfset perm=1></cfif>
-				</cfloop>
 		
-		</cfif>--->
+		<cfreturn perm>
+</cffunction>
+
+<cffunction name="getPermVerdictQuery" returntype="query" access="public" output="false">
+		<cfargument name="ContentID" type="string" required="true">
+		<cfargument name="Type" type="string" required="false" default="Editor">
+		<cfargument name="siteid" type="string" required="true">
+		<cfset var rs="">
 		
-		 <cfreturn perm>
+		<cfquery name="rs" datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+		Select GroupName, isPublic from tusers where userid in
+		(Select GroupID from tpermissions where ContentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentID#"/> and type=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.type#"/> and siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>) 
+		</cfquery>
+		
+		<cfreturn rs>
 </cffunction>
 
 <cffunction name="getPerm" returntype="string" access="public" output="false">
@@ -160,32 +206,8 @@
 		<cfreturn verdict>
 </cffunction>
 
-<cffunction name="getNodePermPublic" output="false" returntype="string">
-		<cfargument name="crumbdata" required="yes" type="array">
-		<cfset var verdictlist="" />
-		<cfset var verdict="" />
-		<cfset var I = "" />
-		<cfset var key= "perm" & arguments.crumbdata[1].siteid & arguments.crumbdata[1].contentID />
-		<cfset var site=variables.settingsManager.getSite(arguments.siteid)/>
-		<cfset var cacheFactory=site.getCacheFactory()>
-		
-		<cfif site.getCache()>
-		
-			<cfif NOT cacheFactory.has( key )>
-			
-				<cfset verdict=buildNodePermPublic(arguments.crumbData)>
-				
-				<cfreturn cacheFactory.get( key, verdict ) />
-			<cfelse>
-				<cfreturn cacheFactory.get( key ) />
-			</cfif>
-		<cfelse>
-			<cfreturn buildNodePermPublic(arguments.crumbData)/>
-		</cfif>
-			
-</cffunction>
 
-<cffunction name="buildNodePermPublic" output="false" returntype="string">
+<cffunction name="getNodePermPublic" output="false" returntype="string">
 		<cfargument name="crumbdata" required="yes" type="array">
 		<cfset var verdictlist="" />
 		<cfset var verdict="" />
@@ -204,29 +226,6 @@
 </cffunction>
 
 <cffunction name="getModulePerm" returntype="boolean" access="public" output="false">
-		<cfargument name="moduleID" type="string" required="true">
-		<cfargument name="siteid" type="string" required="true">
-		<cfset var Verdict=0>
-		<cfset var key="mod" & arguments.siteid & arguments.moduleID />
-		<cfset var site=variables.settingsManager.getSite(arguments.siteid)/>
-		<cfset var cacheFactory=site.getCacheFactory()>
-		
-		<cfif site.getCache()>
-			<cfif NOT cacheFactory.has( key )>
-	
-				<cfset verdict=buildModulePerm(arguments.moduleID,arguments.siteID)>
-				
-				<cfreturn cacheFactory.get( key, verdict ) />
-			<cfelse>
-				<cfreturn cacheFactory.get( key ) />
-			</cfif>
-		<cfelse>
-			<cfreturn buildModulePerm(arguments.moduleID,arguments.siteID) />
-		</cfif>
-
-</cffunction>
-
-<cffunction name="buildModulePerm" returntype="boolean" access="public" output="false">
 		<cfargument name="moduleID" type="string" required="true">
 		<cfargument name="siteid" type="string" required="true">
 		<cfset var Verdict=0>
