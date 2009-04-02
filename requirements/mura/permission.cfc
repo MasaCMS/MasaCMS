@@ -88,7 +88,6 @@
 		<cfreturn verdict>
 </cffunction>
 
-
 <cffunction name="getPermVerdict" returntype="numeric" access="public" output="false">
 		<cfargument name="ContentID" type="string" required="true">
 		<cfargument name="Type" type="string" required="false" default="Editor">
@@ -276,9 +275,11 @@
 		
 		<cfreturn rs>
 </cffunction>
+
 <cffunction name="setRestriction" returntype="struct" access="public" output="false">
 			<cfargument name="crumbdata" required="yes" type="array">
 			<cfargument name="hasModuleAccess" required="yes" default="">
+	
 			<cfset var r=structnew() />
 			<cfset var I = "">
 			<cfset var G=0/>
@@ -321,7 +322,7 @@
 					<cfset r.perm="editor" />
 					<cfreturn r>
 				
-				<!--- If use had module access Check for  user assignments--->
+				<!--- If use had module access Check for user assignments--->
 				<cfelseif r.hasModuleAccess>
 					<cfset r.perm=getNodePermPublic(arguments.crumbdata)>
 					<cfif r.perm neq 'none' >
@@ -621,9 +622,9 @@ username="#variables.configBean.getDBUsername()#" password="#variables.configBea
 	
 	<cfloop query="arguments.rawQuery">
 	<cfif hasPath>
-		<cfset r=setRestriction(application.contentGateway.getCrumblist('#arguments.rawQuery.contentid#','#arguments.siteid#',false,arguments.rawQuery.path))/>
+		<cfset r=setRestriction(application.contentGateway.getCrumblist('#arguments.rawQuery.contentid#','#arguments.siteid#',false,arguments.rawQuery.path),arguments.hasModuleAccess)/>
 	<cfelse>
-		<cfset r=setRestriction(application.contentGateway.getCrumblist('#arguments.rawQuery.contentid#','#arguments.siteid#',false))/>
+		<cfset r=setRestriction(application.contentGateway.getCrumblist('#arguments.rawQuery.contentid#','#arguments.siteid#',false),arguments.hasModuleAccess)/>
 	</cfif>
 	<cfif not r.restrict or r.restrict and r.allow>
 	<cfset rows=rows+1/>
