@@ -1013,7 +1013,7 @@
 	</cfif>
 </cffunction>
 
-<cffunction name="setInstance" returntype="any" access="public" output="false">
+<cffunction name="setAllValues" returntype="any" access="public" output="false">
 	<cfargument name="instance">
 	<cfset variables.instance=arguments.instance/>
 </cffunction>

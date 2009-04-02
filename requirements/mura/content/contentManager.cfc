@@ -148,7 +148,7 @@
 				<cfreturn contentBean/>
 			<cfelse>
 				<cfset contentBean=variables.contentDAO.getBean()/>
-				<cfset contentBean.setInstance(cacheFactory.get( key ))>
+				<cfset contentBean.setAllValues(cacheFactory.get( key ))>
 				<cfreturn contentBean />
 			</cfif>
 		<cfelse>
@@ -175,7 +175,7 @@
 				<cfreturn contentBean/>
 			<cfelse>
 				<cfset contentBean=variables.contentDAO.getBean()/>
-				<cfset contentBean.setInstance(cacheFactory.get( key ))>
+				<cfset contentBean.setAllValues(cacheFactory.get( key ))>
 				<cfreturn contentBean />
 			</cfif>
 		<cfelse>
@@ -203,7 +203,7 @@
 				<cfreturn contentBean/>
 			<cfelse>
 				<cfset contentBean=variables.contentDAO.getBean()/>
-				<cfset contentBean.setInstance(cacheFactory.get( key ))>
+				<cfset contentBean.setAllValues(cacheFactory.get( key ))>
 				<cfreturn contentBean />
 			</cfif>
 		<cfelse>
