@@ -200,7 +200,6 @@
 		<cfreturn verdict>
 </cffunction>
 
-
 <cffunction name="getNodePermPublic" output="false" returntype="string">
 		<cfargument name="crumbdata" required="yes" type="array">
 		<cfset var verdictlist="" />
@@ -211,7 +210,7 @@
 			<cfset verdict=getPermPublic(arguments.crumbdata[I].contentid,arguments.crumbdata[I].siteid)/>
 			<cfif verdict neq 'none'><cfbreak></cfif>
 		</cfloop>
-				
+		
 		<cfif verdict eq 'deny'>
 			<cfset verdict='none'>
 		</cfif>
@@ -325,8 +324,11 @@
 				<!--- If use had module access Check for user assignments--->
 				<cfelseif r.hasModuleAccess>
 					<cfset r.perm=getNodePermPublic(arguments.crumbdata)>
-					<cfif r.perm neq 'none' >
+					<cfif r.perm neq "none" >
 						<cfset r.allow=1>
+						<cfreturn r>
+					<cfelse>
+						<cfset r.allow=0>
 						<cfreturn r>
 					</cfif>
 				</cfif>
