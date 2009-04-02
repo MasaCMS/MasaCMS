@@ -27,7 +27,6 @@
 	<cfset variables.dsn=variables.configBean.getDatasource()/>
 	<cfset setBaseID(arguments.baseID)/>
 	<cfset setDataTable(arguments.dataTable)/>
-	<cfset loadData() />
 	
 	<cfreturn this />
 </cffunction>
@@ -88,5 +87,12 @@
 		
 </cffunction>
 
+<cffunction name="setAllValues" returntype="any" access="public" output="false">
+	<cfargument name="instance">
+	<cfset variables.instance=arguments.instance/>
+</cffunction>
 
+<cffunction name="getAllValues" access="public" returntype="struct" output="false">
+		<cfreturn variables.instance />
+</cffunction>
 </cfcomponent>

@@ -58,10 +58,14 @@
 </cffunction>
 
 <cffunction name="getExtendedData" access="public" returntype="any">
-<cfargument name="baseID">
-<cfargument name="dataTable" required="true" default="tclassextenddata"/>
-<cfset var extendData=createObject("component","mura.extend.extendData").init(variables.configBean,arguments.baseID,arguments.dataTable) />
-			
+	<cfargument name="baseID">
+	<cfargument name="dataTable" required="true" default="tclassextenddata"/>
+	<cfargument name="lazyload" required="true" default="false"/>
+	
+	<cfset var extendData=createObject("component","mura.extend.extendData").init(variables.configBean,arguments.baseID,arguments.dataTable) />
+	<cfif not arguments.lazyLoad>
+		<cfset extendData.loadData()>
+	</cfif>
 	<cfreturn extendData/>
 </cffunction>
 

@@ -89,11 +89,13 @@
 <cfset variables.instance.extendData="" />
 <cfset variables.instance.doCache = 1 />
 
-	<cffunction name="Init" access="public" returntype="any" output="false">
-		<cfargument name="configBean" required="true" default=""/>
-		<cfset variables.configBean=arguments.configBean />
-		<cfreturn this />
-	</cffunction>
+<cffunction name="Init" access="public" returntype="any" output="false">
+	<cfargument name="configBean" required="true" default=""/>
+	<cfargument name="settingsManager" required="true" default=""/>
+	<cfset variables.configBean=arguments.configBean />
+	<cfset variables.settingsManager=arguments.settingsManager />
+	<cfreturn this />
+</cffunction>
 
  <cffunction name="set" returnType="void" output="false" access="public">
     <cfargument name="content" type="any" required="true">
@@ -955,10 +957,25 @@
   <cffunction name="getExtendedAttribute" returnType="string" output="false" access="public">
  	<cfargument name="key" type="string" required="true">
 	<cfargument name="useMuraDefault" type="boolean" required="true" default="false"> 
-
+	
+	<cfset var cachekey="ext" & getSiteID() & getContentHistID() />
+	<cfset var site=variables.settingsManager.getSite(getSiteID())/>
+	<cfset var cacheFactory=site.getCacheFactory()/>
+	
 	<cfif not isObject(variables.instance.extendData)>
-	<cfset variables.instance.extendData=variables.configBean.getClassExtensionManager().getExtendedData(getcontentHistID())/>
+		<cfif site.getCache()>
+			<!--- check to see if it is cached. if not then pass in the context --->
+			<!--- otherwise grab it from the cache --->
+			<cfif NOT cacheFactory.has( cachekey )>
+				<cfset variables.instance.extendData=variables.configBean.getClassExtensionManager().getExtendedData(baseID=getcontentHistID())  />
+				<cfset cacheFactory.get( cachekey, variables.instance.extendData.getAllValues() ) />
+			<cfelse>
+				<cfset variables.instance.extendData=variables.configBean.getClassExtensionManager().getExtendedData(baseID=getcontentHistID(),lazyLoad=true)/>
+				<cfset variables.instance.extendData.setAllValues(cacheFactory.get( cachekey ))>
+			</cfif>
+		</cfif>
 	</cfif> 
+	
   	<cfreturn variables.instance.extendData.getAttribute(arguments.key,arguments.useMuraDefault) />
   </cffunction>
 
