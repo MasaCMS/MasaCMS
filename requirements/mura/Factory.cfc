@@ -49,7 +49,7 @@
 
 	</cffunction>
 	
-	<cffunction name="size" access="private" returntype="void" output="false">
+	<cffunction name="size" access="public" returntype="any" output="false">
 		<cfreturn structCount( variables.collection ) />
 	</cffunction>
 	

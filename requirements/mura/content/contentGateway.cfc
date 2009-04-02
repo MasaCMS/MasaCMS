@@ -29,22 +29,56 @@
 		<cfargument name="setInheritance" required="true" type="boolean" default="false">
 		<cfargument name="path" required="true" default="">
 			
+		<cfset var I=0>
+		<cfset var key="crumb" & arguments.contentID & arguments.setInheritance />
+		<cfset var site=variables.settingsManager.getSite(arguments.siteid)/>
+		<cfset var cacheFactory=site.getCacheFactory()>
+		
+		<cfif arguments.setInheritance>
+			<cfset request.inheritedObjects="">
+		</cfif>
+			
+		<cfif site.getCache()>
+			<!--- check to see if it is cached. if not then pass in the context --->
+			<!--- otherwise grab it from the cache --->
+			
+			<cfif NOT cacheFactory.has( key )>
+				
+				<cfset crumbdata=buildCrumblist(arguments.contentID,arguments.siteID,arguments.setInheritance,arguments.path) />
+				
+				<cfreturn cacheFactory.get( key, crumbdata ) />
+			<cfelse>
+				<cfset crumbdata=cacheFactory.get( key ) />
+				<cfif arguments.setInheritance>
+					<cfloop from="1" to="#arrayLen(crumbdata)#" index="I">
+						<cfif crumbdata[I].inheritObjects eq 'cascade'>
+							<cfset request.inheritedObjects=crumbdata[I].inheritObjects>
+							<cfbreak>
+						</cfif>
+					</cfloop>
+				</cfif>	
+				<cfreturn crumbdata />
+			</cfif>
+		<cfelse>
+			<cfreturn buildCrumblist(arguments.contentID,arguments.siteID,arguments.setInheritance,arguments.path)/>
+		</cfif>
+
+</cffunction>
+
+<cffunction name="buildCrumblist" returntype="array" access="public" output="false">
+		<cfargument name="contentid" required="true" default="">
+		<cfargument name="siteid" required="true" default="">
+		<cfargument name="setInheritance" required="true" type="boolean" default="false">
+		<cfargument name="path" required="true" default="">
+			
 		<cfset var ID=arguments.contentid>
 		<cfset var I=0>
 		<cfset var rscontent = "" />
 		<cfset var crumbdata=arraynew(1) />
 		<cfset var crumb= ""/>
 		<cfset var parentArray=arraynew(1) />
-		<cfset var key="crumb" & arguments.contentID & arguments.setInheritance />
-		<cfset var cacheFactory=variables.settingsManager.getSite(arguments.siteid).getCacheFactory()>
-			
-		<cfif arguments.setInheritance>
-			<cfset request.inheritedObjects="">
-		</cfif>
 		
-		<cfif NOT cacheFactory.has( key )>
-			
-			<cfif not len(arguments.path)>
+		<cfif not len(arguments.path)>
 			<cftry>
 			
 			<cfloop condition="ID neq '00000000000000000000000000000000END'">
@@ -136,20 +170,8 @@
 			
 			</cfif>
 			
-			<cfreturn cacheFactory.get( key, crumbdata ) />
-		<cfelse>
-			<cfset crumbdata=cacheFactory.get( key ) />
-			<cfif arguments.setInheritance>
-				<cfloop from="1" to="#arrayLen(crumbdata)#" index="I">
-					<cfif crumbdata[I].inheritObjects eq 'cascade'>
-						<cfset request.inheritedObjects=crumbdata[I].inheritObjects>
-						<cfbreak>
-					</cfif>
-				</cfloop>
-			</cfif>	
-			<cfreturn crumbdata />
-		</cfif>
-
+			<cfreturn crumbdata/>
+			
 </cffunction>
 
 <cffunction name="getKids" returntype="query" output="false">

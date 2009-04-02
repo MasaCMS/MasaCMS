@@ -165,43 +165,91 @@
 		<cfset var verdictlist="" />
 		<cfset var verdict="" />
 		<cfset var I = "" />
+		<cfset var key= "perm" & arguments.crumbdata[1].siteid & arguments.crumbdata[1].contentID />
+		<cfset var site=variables.settingsManager.getSite(arguments.siteid)/>
+		<cfset var cacheFactory=site.getCacheFactory()>
 		
-		<cfloop from="1" to="#arrayLen(arguments.crumbdata)#" index="I">
-		<cfset verdict=getPermPublic(arguments.crumbdata[I].contentid,arguments.crumbdata[I].siteid)/>
-		<cfif verdict neq 'none'><cfbreak></cfif>
-		</cfloop>
+		<cfif site.getCache()>
+		
+			<cfif NOT cacheFactory.has( key )>
 			
+				<cfset verdict=buildNodePermPublic(arguments.crumbData)>
+				
+				<cfreturn cacheFactory.get( key, verdict ) />
+			<cfelse>
+				<cfreturn cacheFactory.get( key ) />
+			</cfif>
+		<cfelse>
+			<cfreturn buildNodePermPublic(arguments.crumbData)/>
+		</cfif>
+			
+</cffunction>
+
+<cffunction name="buildNodePermPublic" output="false" returntype="string">
+		<cfargument name="crumbdata" required="yes" type="array">
+		<cfset var verdictlist="" />
+		<cfset var verdict="" />
+		<cfset var I = "" />
+	
+		<cfloop from="1" to="#arrayLen(arguments.crumbdata)#" index="I">
+			<cfset verdict=getPermPublic(arguments.crumbdata[I].contentid,arguments.crumbdata[I].siteid)/>
+			<cfif verdict neq 'none'><cfbreak></cfif>
+		</cfloop>
+				
 		<cfif verdict eq 'deny'>
-		<cfset verdict='none'>
+			<cfset verdict='none'>
 		</cfif>
 		
-		<cfreturn verdict>
+		<cfreturn verdict/>
 </cffunction>
 
 <cffunction name="getModulePerm" returntype="boolean" access="public" output="false">
 		<cfargument name="moduleID" type="string" required="true">
 		<cfargument name="siteid" type="string" required="true">
 		<cfset var Verdict=0>
-		<cfset var rsgroups="">
+		<cfset var key="mod" & arguments.siteid & arguments.moduleID />
+		<cfset var site=variables.settingsManager.getSite(arguments.siteid)/>
+		<cfset var cacheFactory=site.getCacheFactory()>
 		
-		<cfif isUserInRole('Admin;#variables.settingsManager.getSite(arguments.siteid).getPrivateUserPoolID()#;0') or  isUserInRole('S2') >
-			<cfset Verdict=1>
-		<cfelse>
-			<cfquery datasource="#variables.configBean.getDatasource()#" name="rsgroups" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-			select tusers.groupname,isPublic from tusers INNER JOIN tpermissions ON (tusers.userid = tpermissions.groupid) where tpermissions.contentid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.moduleID#"/> and tpermissions.siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/> 
-			</cfquery>
-			
-			<cfloop query="rsgroups">
-			<cfif rsGroups.isPublic>
-			<cfif isUserInRole("#rsgroups.groupname#;#variables.settingsManager.getSite(arguments.siteid).getPublicUserPoolID()#;1")><cfset verdict=1></cfif>
+		<cfif site.getCache()>
+			<cfif NOT cacheFactory.has( key )>
+	
+				<cfset verdict=buildModulePerm(arguments.moduleID,arguments.siteID)>
+				
+				<cfreturn cacheFactory.get( key, verdict ) />
 			<cfelse>
-			<cfif isUserInRole("#rsgroups.groupname#;#variables.settingsManager.getSite(arguments.siteid).getPrivateUserPoolID()#;0")><cfset verdict=1></cfif>
+				<cfreturn cacheFactory.get( key ) />
 			</cfif>
-			</cfloop>
-
+		<cfelse>
+			<cfreturn buildModulePerm(arguments.moduleID,arguments.siteID) />
 		</cfif>
 
-		 <cfreturn verdict>
+</cffunction>
+
+<cffunction name="buildModulePerm" returntype="boolean" access="public" output="false">
+		<cfargument name="moduleID" type="string" required="true">
+		<cfargument name="siteid" type="string" required="true">
+		<cfset var Verdict=0>
+		<cfset var rsgroups="">
+
+			<cfif isUserInRole('Admin;#variables.settingsManager.getSite(arguments.siteid).getPrivateUserPoolID()#;0') or  isUserInRole('S2') >
+				<cfset Verdict=1>
+			<cfelse>
+				<cfquery datasource="#variables.configBean.getDatasource()#" name="rsgroups" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+				select tusers.groupname,isPublic from tusers INNER JOIN tpermissions ON (tusers.userid = tpermissions.groupid) where tpermissions.contentid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.moduleID#"/> and tpermissions.siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/> 
+				</cfquery>
+				
+				<cfloop query="rsgroups">
+				<cfif rsGroups.isPublic>
+				<cfif isUserInRole("#rsgroups.groupname#;#variables.settingsManager.getSite(arguments.siteid).getPublicUserPoolID()#;1")><cfset verdict=1></cfif>
+				<cfelse>
+				<cfif isUserInRole("#rsgroups.groupname#;#variables.settingsManager.getSite(arguments.siteid).getPrivateUserPoolID()#;0")><cfset verdict=1></cfif>
+				</cfif>
+				</cfloop>
+			</cfif>
+	
+			<cfreturn verdict>
+
 </cffunction>
 
 <cffunction name="setRestriction" returntype="struct" access="public" output="false">
