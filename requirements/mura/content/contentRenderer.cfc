@@ -723,7 +723,9 @@
 					<cfinclude  template="/#application.configBean.getWebRootMap()#/#theDisplayPoolID#/includes/display_objects/dsp_contact.cfm">
 				</cfcase>
 				<cfcase value="calendar_nav">
+					<cf_CacheOMatic key="#arguments.object##arguments.siteID##arguments.objectid##event.getValue('month')##event.getvalue('year')#" nocache="#event.getValue('r').restrict#">
 					<cfinclude  template="/#application.configBean.getWebRootMap()#/#theDisplayPoolID#/includes/display_objects/nav/calendarNav/index.cfm">
+					</cf_cacheomatic>
 				</cfcase>
 				<cfcase value="plugin">
 					<cf_CacheOMatic key="#arguments.object##arguments.siteID##arguments.objectid#" nocache="#event.getValue('r').restrict#">
