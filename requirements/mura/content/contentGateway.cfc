@@ -1032,7 +1032,7 @@
 	SELECT tcontent.ContentHistID, tcontent.ContentID, tcontent.Approved, tcontent.filename, tcontent.Active, tcontent.Type, tcontent.OrderNo, tcontent.ParentID, 
 	tcontent.Title, tcontent.menuTitle, tcontent.lastUpdate, tcontent.lastUpdateBy, tcontent.lastUpdateByID, tcontent.Display, tcontent.DisplayStart, 
 	tcontent.DisplayStop,  tcontent.isnav, tcontent.restricted, count(tcontent2.parentid) AS hasKids,tcontent.isfeature,tcontent.inheritObjects,tcontent.target,tcontent.targetParams,
-	tcontent.islocked,tcontent.releaseDate,tfiles.fileSize,tfiles.fileExt,tcontent.path
+	tcontent.islocked,tcontent.releaseDate,tfiles.fileSize,tfiles.fileExt
 	FROM tcontent LEFT JOIN tcontent tcontent2 ON (tcontent.contentid=tcontent2.parentid)
 	Left Join tfiles ON (tcontent.fileID=tfiles.fileID)
 	<cfif len(arguments.tag)>
@@ -1095,7 +1095,7 @@
 	tcontent.credits, tcontent.remoteSource, tcontent.remoteSourceURL, 
 	tcontent.remoteURL,tfiles.fileSize,tfiles.fileExt,tcontent.fileID,tcontent.audience,tcontent.keyPoints,
 	tcontentstats.rating,tcontentstats.totalVotes,tcontentstats.downVotes,tcontentstats.upVotes, 0 as kids, 
-	tparent.type parentType,tcontent.path
+	tparent.type parentType
 	from tcontent Left Join tfiles ON (tcontent.fileID=tfiles.fileID)
 	Left Join tcontent tparent on (tcontent.parentid=tparent.contentid
 						    			and tcontent.siteid=tparent.siteid
