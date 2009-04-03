@@ -327,7 +327,7 @@
 					<cfif r.perm neq "none" >
 						<cfset r.allow=1>
 						<cfreturn r>
-					<cfelse>
+					<cfelseif not len(r.restrictGroups) >
 						<cfset r.allow=0>
 						<cfreturn r>
 					</cfif>
