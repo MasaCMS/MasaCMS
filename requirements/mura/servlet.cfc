@@ -57,7 +57,7 @@
 						<cfset event.setValue('addressID','')>
 						<cfset event.setValue('addressAction','')>
 					<cfelse>
-						<cfset event.setValue('userBean',application.userManager.update(request,iif(event.valueExists('groupID'),de('true'),de('false')),iif(event.getValue('categoryID'),de('true'),de('false')),event.getValue('siteID'))) />
+						<cfset event.setValue('userBean',application.userManager.update(request,iif(event.valueExists('groupID'),de('true'),de('false')),true,event.getValue('siteID'))) />
 						<cfif structIsEmpty(event.getValue('userBean').getErrors())>
 							<cfset application.loginManager.loginByUserID(event.getAllValues())>
 						</cfif>
