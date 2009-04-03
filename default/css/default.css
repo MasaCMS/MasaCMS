@@ -933,17 +933,6 @@ img.ratestars {
 	background: url(../images/icon_comments.gif) no-repeat 0 50%;
 	}
 
-.content dd ul { list-style: none; }
-	
-.content dd li {
-	display: inline;
-	margin: 0;
-	padding-right: 1em;
-	}
-
-.content dd li a { border: 0; }
-
-
 dl.hasImage .image { 
 	float: left;
 	margin: 0 1em 1em 0;
