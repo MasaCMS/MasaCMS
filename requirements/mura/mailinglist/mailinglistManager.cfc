@@ -20,12 +20,14 @@
 <cfargument name="mailinglistUtility" type="any" required="yes"/>
 <cfargument name="memberManager" type="any" required="yes"/>
 <cfargument name="utility" type="any" required="yes"/>
+<cfargument name="settingsManager" type="any" required="yes"/>
 		<cfset variables.configBean=arguments.configbean />
 		<cfset variables.mailinglistDAO=arguments.mailinglistDAO />
 		<cfset variables.mailinglistGateway=arguments.mailinglistGateway />
 		<cfset variables.mailinglistUtility=arguments.mailinglistUtility />
 		<cfset variables.memberManager=arguments.memberManager />
 		<cfset variables.utility=arguments.utility />
+		<cfset variables.settingsManager=arguments.settingsManager />
 	<cfreturn this />
 	
 </cffunction>

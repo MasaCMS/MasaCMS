@@ -308,6 +308,7 @@
 			<constructor-arg name="mailinglistUtility"><ref bean="mailinglistUtility" /></constructor-arg>
 			<constructor-arg name="memberManager"><ref bean="memberManager" /></constructor-arg>
 			<constructor-arg name="utility"><ref bean="utility" /></constructor-arg>
+			<constructor-arg name="settingsManager"><ref bean="settingsManager" /></constructor-arg>
 		</bean>
 		<bean id="mailinglistBean" class="mura.mailinglist.mailinglistBean" singleton="false" />
 		<bean id="memberBean" class="mura.mailinglist.memberBean" singleton="false" />
