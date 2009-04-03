@@ -949,16 +949,16 @@
 			<cfif event.getValue('display') neq ''>
 				<cfswitch expression="#event.getValue('display')#">
 					<cfcase value="editprofile">
-						<cfset event.getValue('noCache',1)>
-						<cfset event.getValue('forceSSL',getSite().getExtranetSSL())/>
+						<cfset event.setValue('noCache',1)>
+						<cfset event.setValue('forceSSL',getSite().getExtranetSSL())/>
 						<cfinclude template="/#application.configBean.getWebRootMap()#/#theDisplayPoolID#/includes/display_objects/dsp_edit_profile.cfm">
 					</cfcase>
 					<cfcase value="search">
-						<cfset event.getValue('noCache',1)>
+						<cfset event.setValue('noCache',1)>
 						<cfinclude template="/#application.configBean.getWebRootMap()#/#theDisplayPoolID#/includes/display_objects/dsp_search_results.cfm">
 					</cfcase> 
 					<cfcase value="login">
-						<cfset event.getValue('noCache',1)>
+						<cfset event.setValue('noCache',1)>
 						<cfinclude  template="/#application.configBean.getWebRootMap()#/#theDisplayPoolID#/includes/display_objects/dsp_login.cfm">
 					</cfcase>
 				</cfswitch>
