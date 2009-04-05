@@ -67,13 +67,8 @@
 </cfif>
 
 <cfset request.servletEvent = createObject("component","mura.servletEvent").init() />
-<cfset request.servlet = createObject("component","#application.configBean.getWebRootMap()#.#request.siteid#.includes.servlet").init(request.servletEvent) />
-<cfset application.pluginManager.executeScripts('onSiteRequestStart',request.servletEvent.getValue('siteid'),request.servletEvent)/>
-<cfset request.servlet.onRequestStart() />
-<cfset layout=request.servlet.doRequest()>
-<cfset request.servlet.onRequestEnd() />
-<cfset application.pluginManager.executeScripts('onSiteRequestEnd',request.servletEvent.getValue('siteid'),request.servletEvent)/>
-
+<cfset request.servletEvent.setValue('siteid',request.servletEvent.getValue('siteid'))>
+<cfset layout=createObject("component","mura.Mura").init().doRequest(request.servletEvent)>
 <cfoutput>#layout#</cfoutput>
 
 <cfsetting enablecfoutputonly="no">  
