@@ -15,15 +15,20 @@
 
 <cfset variables.configBean="">
 <cfset variables.settingsManager="">
+<cfset variables.utility="">
+<cfset variables.genericManager="">
+<cfset variables.eventManagers=structNew()>
 
 <cffunction name="init" returntype="any" access="public" output="false">
 	<cfargument name="configBean">
 	<cfargument name="settingsManager">
 	<cfargument name="utility">
+	<cfargument name="genericManager">
 	
 	<cfset setConfigBean(arguments.configBean)>
 	<cfset setSettingsManager(arguments.settingsManager)>
 	<cfset setUtility(arguments.utility)>
+	<cfset setGenericManager(arguments.genericManager)>
 	
 <cfreturn this />
 </cffunction>
@@ -39,6 +44,11 @@
 <cffunction name="setSettingsManager" returntype="void" access="public" output="false">
 <cfargument name="settingsManager">
 <cfset variables.settingsManager=arguments.settingsManager />
+</cffunction>
+
+<cffunction name="setGenericManager" returntype="void" access="public" output="false">
+<cfargument name="genericManager">
+<cfset variables.genericManager=arguments.genericManager />
 </cffunction>
 
 <cffunction name="setUtility" returntype="void" access="public" output="false">
@@ -86,6 +96,8 @@ tplugindisplayobjects.displayObjectfile, tplugins.pluginID, tcontent.siteID, tco
 from tplugindisplayobjects inner join tplugins on (tplugindisplayobjects.moduleID=tplugins.moduleID)
 inner join tcontent on (tplugins.moduleID=tcontent.moduleID)
 </cfquery>
+
+<cfset purgeEventManagers()/>
 
 </cffunction>
 
@@ -595,6 +607,20 @@ select * from tplugins order by pluginID
 
 <cffunction name="getScriptBean" returntype="any" output="false">
 <cfreturn createObject("component","pluginScriptBean").init(variables.configBean) />
+</cffunction>
+
+<cffunction name="purgeEventManagers" returntype="any" output="false">
+<cfset variables.eventManagers=structNew()/>
+</cffunction>
+
+<cffunction name="getEventManager" returntype="any" output="false">
+<cfargument name="siteid" required="true" default="">
+
+	<cfif not structKeyExists(variables.eventManagers,arguments.siteid)>
+		<cfset variables.eventManagers[arguments.siteid]=createObject("component","pluginEventManager").init(arguments.siteID,variables.genericManager,this)>
+	</cfif>
+	
+	<cfreturn variables.eventManagers[arguments.siteid]>
 </cffunction>
 
 <cffunction name="renderAdminTemplate" returntype="any" output="false">

@@ -78,7 +78,7 @@
 <cfset variables.instance.rbFactory=""/>    
 <cfset variables.instance.javaLocale=""/> 
 <cfset variables.instance.cacheFactory=""/> 
- 
+
 <cffunction name="init" returntype="any" output="false" access="public">
 <cfargument name="configBean" type="any" required="yes"/>
 <cfargument name="clusterManager" type="any" required="yes"/>
@@ -834,6 +834,7 @@
 	</cfif>
 	
 </cffunction>
+
 
 <cffunction name="purgeCache" returntype="void" access="public" output="false">
 	

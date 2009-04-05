@@ -39,10 +39,6 @@
 	<cfset event=createObject("component","mura.servletEvent").init()>
 </cfif>
 
-<cfif isArray(event.getValue("crumbdata"))>
-	<cfset this.crumbdata=event.getValue("crumbdata")/>
-</cfif>
-
 <cfreturn this />
 </cffunction>
 

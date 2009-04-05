@@ -13,7 +13,7 @@
 	
 	<cfif len(clusterIPList)>
 		<cfloop list="#clusterIPList#" index="ip">
-			<cfinvoke webservice="http://#ip##variables.configBean.getServerPort()##variables.configBean.getContext()#/mura.cfc?wsdl" method="purgeSiteCache">
+			<cfinvoke webservice="http://#ip##variables.configBean.getServerPort()##variables.configBean.getContext()#/MuraProxy.cfc?wsdl" method="purgeSiteCache">
 			<cfinvokeargument name="siteID" value="#arguments.siteid#">
 		 	</cfinvoke>
 		</cfloop>
@@ -27,7 +27,7 @@
 	
 	<cfif len(clusterIPList)>
 		<cfloop list="#clusterIPList#" index="ip">
-			<cfinvoke webservice="http://#ip##variables.configBean.getServerPort()##variables.configBean.getContext()#/mura.cfc?wsdl" method="reload"/>
+			<cfinvoke webservice="http://#ip##variables.configBean.getServerPort()##variables.configBean.getContext()#/MuraProxy.cfc?wsdl" method="reload"/>
 		</cfloop>
 	</cfif>
 	

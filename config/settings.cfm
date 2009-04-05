@@ -83,6 +83,7 @@
 			<cfset application.rbFactory=application.serviceFactory.getBean("resourceBundleFactory") />
 			<cfset application.pluginManager=application.serviceFactory.getBean("pluginManager") />
 			<cfset application.clusterManager=application.serviceFactory.getBean("clusterManager") />
+			<cfset application.genericManager=application.serviceFactory.getBean("genericManager") />
 			
 			<cfinclude template="settings.custom.managers.cfm">
 	 	

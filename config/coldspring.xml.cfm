@@ -498,10 +498,12 @@
 			<constructor-arg name="configBean"><ref bean="configBean" /></constructor-arg>
 			<constructor-arg name="settingsManager"><ref bean="settingsManager" /></constructor-arg>
 			<constructor-arg name="utility"><ref bean="utility" /></constructor-arg>
+			<constructor-arg name="genericManager"><ref bean="genericManager" /></constructor-arg>
 		</bean>
 		<bean id="clusterManager" class="mura.cluster.clusterManager" singleton="true">
 			<constructor-arg name="configBean"><ref bean="configBean" /></constructor-arg>
 		</bean>
+		<bean id="genericManager" class="mura.generic.genericManager" singleton="true" />
 		<cfinclude template="coldspring.custom.xml.cfm">
 	</beans></cfoutput>
 	</cfsavecontent>
