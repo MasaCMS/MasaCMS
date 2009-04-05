@@ -1,6 +1,6 @@
 <cfcomponent extends="Translator" output="false">
 	
-<cffunction name="execute" output="false" returnType="any">
+<cffunction name="translate" output="false" returnType="any">
 	<cfargument name="event" required="true">
 	
 	<cfset var page = "" />

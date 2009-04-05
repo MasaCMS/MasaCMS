@@ -1,6 +1,6 @@
 <cfcomponent extends="Handler" output="false">
 	
-<cffunction name="execute" output="false" returnType="any">
+<cffunction name="handle" output="false" returnType="any">
 	<cfargument name="event" required="true">
 	
 	<cfif event.valueExists('previewID')>

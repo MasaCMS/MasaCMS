@@ -1,6 +1,6 @@
 <cfcomponent extends="Validator" output="false">
 	
-<cffunction name="execute" output="false" returnType="any">
+<cffunction name="validate" output="false" returnType="any">
 	<cfargument name="event" required="true">
 	
 	<cfif  (
@@ -9,7 +9,7 @@
 			or	(
 				not (event.getValue('r').restrict or event.getValue('forceSSL')) and listFindNoCase('On,True',cgi.https)		
 			)>
-		<cfset event.getValue('HandlerFactory').get("standardForceSSL").execute(event)>
+		<cfset event.getValue('HandlerFactory').get("standardForceSSL").handle(event)>
 	</cfif>
 </cffunction>
 

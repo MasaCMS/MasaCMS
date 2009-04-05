@@ -19,7 +19,7 @@
 	
 	<cfset variables.event=arguments.event>
 	<cfset setFactories()>
-	<cfset getHandler("standardSetContentRenderer").execute(event)>
+	<cfset getHandler("standardSetContentRenderer").handle(event)>
 	
 	<cfreturn this />
 </cffunction>
@@ -34,25 +34,25 @@
 		
 	<cfset setFactories()>
 	
-	<cfset getHandler("standardSetContent").execute(event)>
+	<cfset getHandler("standardSetContent").handle(event)>
 	
-	<cfset getValidator("standard404").execute(event)>
+	<cfset getValidator("standard404").validate(event)>
 	
-	<cfset getValidator("standardWrongDomain").execute(event)> 
+	<cfset getValidator("standardWrongDomain").validate(event)> 
 	
-	<cfset getValidator("standardTrackSession").execute(event)>
+	<cfset getValidator("standardTrackSession").validate(event)>
 	
-	<cfset getHandler("standardSetPermissions").execute(event)>
+	<cfset getHandler("standardSetPermissions").handle(event)>
 	
-	<cfset getHandler("standardSetIsOnDisplay").execute(event)>
+	<cfset getHandler("standardSetIsOnDisplay").handle(event)>
 	
-	<cfset getValidator("standardRequireLogin").execute(event)>
+	<cfset getValidator("standardRequireLogin").validate(event)>
 	
-	<cfset getHandler("standardSetLocale").execute(event)>
+	<cfset getHandler("standardSetLocale").handle(event)>
 
-	<cfset getHandler("standardDoActions").execute(event)>
+	<cfset getHandler("standardDoActions").handle(event)>
 	
- 	<cfreturn getHandler("standardDoResponse").execute(event)>
+ 	<cfreturn getHandler("standardDoResponse").handle(event)>
 	
 </cffunction>
 

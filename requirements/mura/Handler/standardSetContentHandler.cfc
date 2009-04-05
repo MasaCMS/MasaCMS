@@ -1,14 +1,14 @@
 <cfcomponent extends="Handler" output="false">
 	
-<cffunction name="execute" output="false" returnType="any">
+<cffunction name="handle" output="false" returnType="any">
 	<cfargument name="event" required="true">
 	
 	<cfset var renderer=event.getValue("contentRenderer")>
 	
 	<cfif event.valueExists('previewID')>
-		<cfset event.getValue('HandlerFactory').get("standardSetPreview").execute(event)>
+		<cfset event.getValue('HandlerFactory').get("standardSetPreview").handle(event)>
 	<cfelse>
-		<cfset event.getValue('HandlerFactory').get("standardSetAdTracking").execute(event)>
+		<cfset event.getValue('HandlerFactory').get("standardSetAdTracking").handle(event)>
 		
 		<cfif len(event.getValue('linkServID'))>
 			<cfset event.setValue('contentBean',application.contentManager.getActiveContent(event.getValue('linkServID'),event.getValue('siteid'))) />
