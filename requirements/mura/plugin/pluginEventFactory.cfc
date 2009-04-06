@@ -32,7 +32,7 @@
 		</cfif>
 		
 		<cfif variables.collection[ hashCheckKey ]>
-			<cfreturn variables.collection[ hashCheckKey ]>
+			<cfreturn variables.collection[ hashKey ]>
 		<cfelse>
 			<!--- return cached context --->		
 			<cfreturn variables.genericManager.getFactory(variables.class).get(arguments.key) />
