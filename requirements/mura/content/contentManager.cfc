@@ -756,7 +756,7 @@
 	
 	</cflock>
 	
-	<cfset variables.settingsManager.getSite(arguments.siteid).purgeCache() />
+	<cfset variables.settingsManager.getSite(arguments.data.siteid).purgeCache() />
 	
 	<cfif structKeyExists(data,"topID")>
 		<cfif data.topid eq currentBean.getcontentid()>
