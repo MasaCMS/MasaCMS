@@ -31,12 +31,12 @@
 <cfset this.crumbdata=arrayNew(1)/>
 
 <cffunction name="init" returntype="any" access="public" output="false">
-<cfargument name="_event" required="true" default="">
+<cfargument name="event" required="true" default="">
 
-<cfif isObject(arguments._event)>
-	<cfset event=arguments._event>
+<cfif isObject(arguments.event)>
+	<cfset variables.event=arguments.event>
 <cfelse>
-	<cfset event=createObject("component","mura.servletEvent").init()>
+	<cfset variables.event=createObject("component","mura.servletEvent").init()>
 </cfif>
 
 <cfreturn this />

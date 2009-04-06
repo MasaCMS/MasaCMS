@@ -9,7 +9,7 @@
 			or	(
 				not (event.getValue('r').restrict or event.getValue('forceSSL')) and listFindNoCase('On,True',cgi.https)		
 			)>
-		<cfset event.getValue('HandlerFactory').get("standardForceSSL").handle(event)>
+		<cfset event.getHandler("standardForceSSL").handle(event)>
 	</cfif>
 </cffunction>
 

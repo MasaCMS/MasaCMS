@@ -5,7 +5,7 @@
 	
 	<cfif event.getValue('trackSession') and (len(event.getValue('contentBean').getcontentID()) 
 			and not event.getValue('contentBean').getIsNew() eq 1 and not event.valueExists('previewID'))>
-			<cfset event.getValue('HandlerFactory').get("standardTrackSession").handle(event)>
+			<cfset event.getHandler("standardTrackSession").handle(event)>
 	</cfif>
 </cffunction>
 

@@ -11,44 +11,42 @@
 				<cfswitch expression="#event.getValue('contentBean').getType()#">
 					<cfcase value="Link">
 						<cfif not event.getValue('contentRenderer').showItemMeta("Link") or event.getValue('showMeta') eq 2>
-							<cflocation addtoken="no" url="#event.getValue('contentRenderer').setDynamicContent(event.getValue('contentBean').getFilename())#">
+							<cfset event.getHandler('standardLinkTranslation').handle(event) />
 						<cfelse>
-							<cfset response=event.getValue('TranslatorFactory').get('standardHTML').translate(event) />	
+							<cfset event.getHandler('standardTranslation').handle(event) />	
 						</cfif>
 					</cfcase>
-					<cfcase value="File">
+					<cfcase value="File">		
 						<cfif not event.getValue('contentRenderer').showItemMeta(event.getValue('contentBean').getFileExt()) or event.getValue('showMeta') eq 2>
 							<cftry>
-							<cfset event.getValue('contentRenderer').renderFile(event.getValue('contentBean').getFileID()) />
-							<cfreturn ""/>
+							<cfset event.getHandler('standardFileTranslation').handle(event) />
 							<cfcatch>
 								<cfset event.setValue('contentBean',application.contentManager.getActiveContentByFilename("404",event.getValue('siteID'))) />
-								<cfset response= event.getValue('TranslatorFactory').get('standardHTML').translate(event) />
+								<cfset event.getHandler('standardTranslation').handle(event) />
 							</cfcatch>
 						</cftry>
 						<cfelse>
-							<cfset response= event.getValue('TranslatorFactory').get('standardHTML').translate(event) />
+							<cfset event.getHandler('standardTranslation').handle(event) />
 						</cfif>
 					</cfcase>
 				</cfswitch>
 			<cfelse>
-				<cfset response= event.getValue('TranslatorFactory').get('standardHTML').translate(event) />
+				<cfset event.getHandler('standardTranslation').handle(event) />
 			</cfif>
 		<cfelse>
-			<cfset response= event.getValue('TranslatorFactory').get('standardHTML').translate(event) />
+			<cfset event.getHandler('standardTranslation').handle(event) />
 		</cfif>
 		
 	</cfcase>
 	
 	<cfdefaultcase>
-		<cfset response= event.getValue('TranslatorFactory').get('standardHTML').translate(event) />
+		<cfset event.getHandler('standardTranslation').handle(event) />
 	</cfdefaultcase>
 	
 	</cfswitch>
 	
-	<cfset event.getValue('ValidatorFactory').get('standardForceSSL').validate(event)>
+	<cfset event.getValidator('standardForceSSL').validate(event)>
 
-	<cfreturn response>
 </cffunction>
 
 </cfcomponent>

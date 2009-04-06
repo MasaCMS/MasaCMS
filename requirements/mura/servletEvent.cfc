@@ -38,7 +38,11 @@
 	<cfparam name="request.exportHTMLSite" default="0"/>
 	<cfparam name="request.returnURL" default=""/>
 	<cfparam name="request.showMeta" default="0"/>
-	
+		
+	<cfset setValue('ValidatorFactory',application.pluginManager.getEventManager(getValue('siteid')).getFactory("Validator"))>
+	<cfset setValue('HandlerFactory',application.pluginManager.getEventManager(getValue('siteid')).getFactory("Handler"))>
+	<cfset setValue('TranslatorFactory',application.pluginManager.getEventManager(getValue('siteid')).getFactory("Translator"))>
+
 	<cfreturn this />
 </cffunction>
 
@@ -116,6 +120,21 @@
 	<cfargument name="scope" default="request" required="true">
 		<cfset var theScope=getScope(arguments.scope) />
 		<cfset structDelete(theScope,arguments.property) />
+</cffunction>
+
+<cffunction name="getHandler" returntype="any" access="public">
+	<cfargument name="handler">
+	<cfreturn getValue('HandlerFactory').get(arguments.handler) />	
+</cffunction>
+
+<cffunction name="getValidator" returntype="any" access="public">
+	<cfargument name="validation">
+	<cfreturn getValue('ValidatorFactory').get(arguments.validation) />	
+</cffunction>
+
+<cffunction name="getTranslator" returntype="any" access="public">
+	<cfargument name="translator">
+	<cfreturn getValue('TranslatorFactory').get(arguments.translator) />	
 </cffunction>
 
 </cfcomponent>

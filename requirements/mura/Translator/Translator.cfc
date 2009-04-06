@@ -2,7 +2,7 @@
 
 <cffunction name="translate" output="false" returnType="any">
 	<cfargument name="event" required="true">
-	<cfreturn "The 'translate' method has not been implemented">
+	<cfthrow message="The 'translate' method has not been implemented">
 </cffunction>
 
 </cfcomponent>

@@ -6,7 +6,7 @@
 	<cfif event.getValue('isOnDisplay') and event.getValue('r').restrict 
 			and not event.getValue('r').loggedIn 
 			and (event.getValue('display') neq 'login' and event.getValue('display') neq 'editProfile')>
-			<cfset event.getValue('HandlerFactory').get("standardRequireLogin").handle(event)>
+			<cfset event.getHandler("standardRequireLogin").handle(event)>
 	</cfif>
 </cffunction>
 

@@ -2,7 +2,7 @@
 
 <cffunction name="validate" output="false" returnType="any">
 	<cfargument name="event" required="true">
-	<cfreturn "The 'validate' method has not been implemented">
+	<cfthrow message="The 'validate' method has not been implemented">
 </cffunction>
 
 </cfcomponent>

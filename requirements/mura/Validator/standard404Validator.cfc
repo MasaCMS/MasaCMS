@@ -4,7 +4,7 @@
 	<cfargument name="event" required="true">
 	
 	<cfif event.getValue('contentBean').getIsNew() eq 1>
-		<cfset event.getValue('HandlerFactory').get("standard404").handle(event)>
+		<cfset event.getHandler("standard404").handle(event)>
 	</cfif>
 
 </cffunction>

@@ -18,8 +18,7 @@
 	<cfargument name="event">
 	
 	<cfset variables.event=arguments.event>
-	<cfset setFactories()>
-	<cfset getHandler("standardSetContentRenderer").handle(event)>
+	<cfset event.getHandler("standardSetContentRenderer").handle(event)>
 	
 	<cfreturn this />
 </cffunction>
@@ -31,45 +30,29 @@
 </cffunction>
 
 <cffunction name="doRequest" returntype="any"  access="public" output="false">
-		
-	<cfset setFactories()>
 	
-	<cfset getHandler("standardSetContent").handle(event)>
+	<cfset event.getHandler("standardSetContent").handle(event)>
 	
-	<cfset getValidator("standard404").validate(event)>
+	<cfset event.getValidator("standard404").validate(event)>
 	
-	<cfset getValidator("standardWrongDomain").validate(event)> 
+	<cfset event.getValidator("standardWrongDomain").validate(event)> 
 	
-	<cfset getValidator("standardTrackSession").validate(event)>
+	<cfset event.getValidator("standardTrackSession").validate(event)>
 	
-	<cfset getHandler("standardSetPermissions").handle(event)>
+	<cfset event.getHandler("standardSetPermissions").handle(event)>
 	
-	<cfset getHandler("standardSetIsOnDisplay").handle(event)>
+	<cfset event.getHandler("standardSetIsOnDisplay").handle(event)>
 	
-	<cfset getValidator("standardRequireLogin").validate(event)>
+	<cfset event.getValidator("standardRequireLogin").validate(event)>
 	
-	<cfset getHandler("standardSetLocale").handle(event)>
+	<cfset event.getHandler("standardSetLocale").handle(event)>
 
-	<cfset getHandler("standardDoActions").handle(event)>
+	<cfset event.getHandler("standardDoActions").handle(event)>
 	
- 	<cfreturn getHandler("standardDoResponse").handle(event)>
+ 	<cfset event.getHandler("standardDoResponse").handle(event)>
 	
-</cffunction>
-
-<cffunction name="getHandler" returntype="any" access="public">
-	<cfargument name="handler">
-	<cfreturn event.getValue('HandlerFactory').get(arguments.handler) />	
-</cffunction>
-
-<cffunction name="getValidator" returntype="any" access="public">
-	<cfargument name="validation">
-	<cfreturn event.getValue('ValidatorFactory').get(arguments.validation) />	
-</cffunction>
-
-<cffunction name="setFactories" returntype="any" access="public">	
-	<cfset event.setValue('ValidatorFactory',application.pluginManager.getEventManager(event.getValue('siteid')).getFactory("Validator"))>
-	<cfset event.setValue('HandlerFactory',application.pluginManager.getEventManager(event.getValue('siteid')).getFactory("Handler"))>
-	<cfset event.setValue('TranslatorFactory',application.pluginManager.getEventManager(event.getValue('siteid')).getFactory("Translator"))>
+	<cfreturn event.getValue("__MuraResponse__")>
+	
 </cffunction>
 
 </cfcomponent>

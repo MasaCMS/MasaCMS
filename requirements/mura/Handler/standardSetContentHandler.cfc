@@ -6,9 +6,9 @@
 	<cfset var renderer=event.getValue("contentRenderer")>
 	
 	<cfif event.valueExists('previewID')>
-		<cfset event.getValue('HandlerFactory').get("standardSetPreview").handle(event)>
+		<cfset event.getHandler("standardSetPreview").handle(event)>
 	<cfelse>
-		<cfset event.getValue('HandlerFactory').get("standardSetAdTracking").handle(event)>
+		<cfset event.getHandler("standardSetAdTracking").handle(event)>
 		
 		<cfif len(event.getValue('linkServID'))>
 			<cfset event.setValue('contentBean',application.contentManager.getActiveContent(event.getValue('linkServID'),event.getValue('siteid'))) />
