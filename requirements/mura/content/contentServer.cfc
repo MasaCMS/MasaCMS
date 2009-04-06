@@ -14,6 +14,8 @@
 <cfcomponent extends="mura.cfobject">
 
 <cffunction name="doRequest" output="false" returntype="any" access="remote">	
+	
+<!--- This method needs a previous siteID and either filename or linkServID set in either the request, url or form scopes--->	
 <cfset request.servletEvent = createObject("component","mura.servletEvent").init() />
 <cfset request.servletEvent.setValue('siteid',request.servletEvent.getValue('siteid'))>
 <cfreturn createObject("component","mura.Mura").init().doRequest(request.servletEvent)>
@@ -43,187 +45,188 @@
 </cffunction>
 
 <cffunction name="bindToDomain" output="false" returntype="any" access="remote">
-<cfset siteID= "" />
-<cfset rsSites=application.settingsManager.getList() />
-
-<!--- check for exact host match to find siteID --->
-<cfloop query="rsSites">
-<cftry>
-<cfif cgi.SERVER_NAME eq application.settingsManager.getSite(rsSites.siteID).getDomain()>
-<cfset variables.siteID = rsSites.siteID />
-<cfbreak/>
-</cfif>
-<cfcatch></cfcatch>
-</cftry>
-</cfloop>
-
-<!--- if not found look for a partial match and redirect--->
-<cfif not len(siteID)>
-<cfloop query="rssites">
-<cftry>
-<cfif find(cgi.SERVER_NAME,application.settingsManager.getSite(rsSites.siteID).getDomain())>
-	<cflocation addtoken="no" url="http://#application.settingsManager.getSite(rsSites.siteID).getDomain()#">
-</cfif>
-<cfcatch></cfcatch>
-</cftry>
-</cfloop>
-</cfif>
-
-<!--- if still not found site the siteID to default --->
-<cfif not len(siteID) >
-	<cfif cgi.SERVER_NAME eq application.configBean.getAdminDomain()>
-		<cfset application.contentRenderer.redirect("#application.configBean.getContext()#/admin/")>
-	<cfelse>
-		<cfset siteID=rsSites.siteID>
-	 </cfif>
-</cfif>
+	<cfset siteID= "" />
+	<cfset rsSites=application.settingsManager.getList() />
+	
+	<!--- check for exact host match to find siteID --->
+	<cfloop query="rsSites">
+	<cftry>
+	<cfif cgi.SERVER_NAME eq application.settingsManager.getSite(rsSites.siteID).getDomain()>
+	<cfset variables.siteID = rsSites.siteID />
+	<cfbreak/>
+	</cfif>
+	<cfcatch></cfcatch>
+	</cftry>
+	</cfloop>
+	
+	<!--- if not found look for a partial match and redirect--->
+	<cfif not len(siteID)>
+	<cfloop query="rssites">
+	<cftry>
+	<cfif find(cgi.SERVER_NAME,application.settingsManager.getSite(rsSites.siteID).getDomain())>
+		<cflocation addtoken="no" url="http://#application.settingsManager.getSite(rsSites.siteID).getDomain()#">
+	</cfif>
+	<cfcatch></cfcatch>
+	</cftry>
+	</cfloop>
+	</cfif>
+	
+	<!--- if still not found site the siteID to default --->
+	<cfif not len(siteID) >
+		<cfif cgi.SERVER_NAME eq application.configBean.getAdminDomain()>
+			<cfset application.contentRenderer.redirect("#application.configBean.getContext()#/admin/")>
+		<cfelse>
+			<cfset siteID=rsSites.siteID>
+		 </cfif>
+	</cfif>
+	
 </cffunction>
 
 <cffunction name="parseURL" output="false" returntype="any" access="remote">
 	
-<cfif isDefined('url.path') and url.path neq application.configBean.getContext() & application.configBean.getStub() & "/">
-<cfsetting enablecfoutputonly="yes">
-
-
-<cfset last=listLast(url.path,"/") />
-
-<cfif not structKeyExists(request,"preformated")>
-<cfif last neq application.configBean.getIndexFile() and right(url.path,1) neq "/">
-	<cfset application.contentRenderer.redirect("#url.path#/")>
-</cfif>
-</cfif>
-
-<cfif isValid("UUID",last)>
-	<cfquery name="rsRedirect" datasource="#application.configBean.getDatasource()#"  username="#application.configBean.getDBUsername()#" password="#application.configBean.getDBPassword()#">
-	select * from tredirects where redirectID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#last#">
-	</cfquery>
+	<cfif isDefined('url.path') and url.path neq application.configBean.getContext() & application.configBean.getStub() & "/">
 	
-	<cfif rsRedirect.url neq ''>
-		<cflocation url="#rsRedirect.url#" addtoken="false">
-	</cfif>
-</cfif>
-
-<cfset theStart = find(application.configBean.getStub(),url.path)>
-<cfif theStart>
-	<cfset url.path=mid(url.path,theStart,len(url.path)) />
-</cfif>
-
-<cfset trimLen=len(application.configBean.getStub())+1 />
-<cfset tempfilename=right(url.path,len(url.path)-trimLen) />
-<cfset request.siteid=listFirst(tempfilename,"/") />
-<cfset request.currentFilename="" />
-
-<cftry>
-	<cfset application.settingsManager.getSite(request.siteid) />
-	<cfcatch>
-		<cflocation url="/" addtoken="false">
-	</cfcatch>
-</cftry>
-
-<cfif listLen(tempfilename,'/') gt 1>
-	<cfset theLen=listLen(tempfilename,'/')/>
-	<cfloop from="2" to="#theLen#" index="n">
-	<cfset item=listgetat(tempfilename,n,"/")/>
-	<cfif not find(".",item)>
-		<cfset request.currentFilename=listappend(request.currentFilename,item,"/") />
-	</cfif>
-	</cfloop>
-</cfif>
-
-<cfif right(request.currentFilename,1) eq "/">
-	<cfset request.currentFilename=left(request.currentFilename,len(request.currentFilename)-1)/>
-</cfif>
-
-<cfset request.servletEvent = createObject("component","mura.servletEvent").init() />
-<cfset request.servletEvent.setValue('siteid',request.servletEvent.getValue('siteid'))>
-<cfreturn createObject("component","mura.Mura").init().doRequest(request.servletEvent)>
-
-<cfelse>
-	<cfset redirect()>
-</cfif> 
+		<cfset last=listLast(url.path,"/") />
+		
+		<cfif not structKeyExists(request,"preformated")>
+		<cfif last neq application.configBean.getIndexFile() and right(url.path,1) neq "/">
+			<cfset application.contentRenderer.redirect("#url.path#/")>
+		</cfif>
+		</cfif>
+		
+		<cfif isValid("UUID",last)>
+			<cfquery name="rsRedirect" datasource="#application.configBean.getDatasource()#"  username="#application.configBean.getDBUsername()#" password="#application.configBean.getDBPassword()#">
+			select * from tredirects where redirectID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#last#">
+			</cfquery>
+			
+			<cfif rsRedirect.url neq ''>
+				<cflocation url="#rsRedirect.url#" addtoken="false">
+			</cfif>
+		</cfif>
+		
+		<cfset theStart = find(application.configBean.getStub(),url.path)>
+		<cfif theStart>
+			<cfset url.path=mid(url.path,theStart,len(url.path)) />
+		</cfif>
+		
+		<cfset trimLen=len(application.configBean.getStub())+1 />
+		<cfset tempfilename=right(url.path,len(url.path)-trimLen) />
+		<cfset request.siteid=listFirst(tempfilename,"/") />
+		<cfset request.currentFilename="" />
+		
+		<cftry>
+			<cfset application.settingsManager.getSite(request.siteid) />
+			<cfcatch>
+				<cflocation url="/" addtoken="false">
+			</cfcatch>
+		</cftry>
+		
+		<cfif listLen(tempfilename,'/') gt 1>
+			<cfset theLen=listLen(tempfilename,'/')/>
+			<cfloop from="2" to="#theLen#" index="n">
+			<cfset item=listgetat(tempfilename,n,"/")/>
+			<cfif not find(".",item)>
+				<cfset request.currentFilename=listappend(request.currentFilename,item,"/") />
+			</cfif>
+			</cfloop>
+		</cfif>
+		
+		<cfif right(request.currentFilename,1) eq "/">
+			<cfset request.currentFilename=left(request.currentFilename,len(request.currentFilename)-1)/>
+		</cfif>
+		
+		<cfset request.servletEvent = createObject("component","mura.servletEvent").init() />
+		<cfset request.servletEvent.setValue('siteid',request.servletEvent.getValue('siteid'))>
+		<cfreturn createObject("component","mura.Mura").init().doRequest(request.servletEvent)>
+		
+	<cfelse>
+		<cfset redirect()>
+	</cfif> 
+	
 </cffunction>
 
 <cffunction name="parseURLLocal" output="false" returntype="any" access="remote">
 
-<cfparam name="url.path" default="" />
-
-<cfset setCGIPath()>
-
-<cfset siteID = listGetAt(cgi.script_name,listLen(cgi.script_name,"/")-1,"/") />
-
-<cfset forcePathDirectoryStructure()>
-
-<cfset url.path="#application.configBean.getStub()#/#siteID#/#url.path#" />
-<cfset request.preformated=true/>
-
-<cfreturn parseURL()>
+	<cfparam name="url.path" default="" />
+	
+	<cfset setCGIPath()>
+	
+	<cfset siteID = listGetAt(cgi.script_name,listLen(cgi.script_name,"/")-1,"/") />
+	
+	<cfset forcePathDirectoryStructure()>
+	
+	<cfset url.path="#application.configBean.getStub()#/#siteID#/#url.path#" />
+	<cfset request.preformated=true/>
+	
+	<cfreturn parseURL()>
 </cffunction>
 
 <cffunction name="parseURLRoot" output="false" returntype="any" access="remote">
-
-<cfset bindToDomain()>
-
-<cfparam name="url.path" default="" />
-
-<cfset setCGIPath()>
-<cfset forceDirectoryStructure()>
-
-<cfset url.path="#application.configBean.getStub()#/#siteID#/#url.path#" />
-<cfset request.preformated=true/>
-
-<cfreturn parseURL()>
+	
+	<cfset bindToDomain()>
+	
+	<cfparam name="url.path" default="" />
+	
+	<cfset setCGIPath()>
+	<cfset forcePathDirectoryStructure()>
+	
+	<cfset url.path="#application.configBean.getStub()#/#siteID#/#url.path#" />
+	<cfset request.preformated=true/>
+	
+	<cfreturn parseURL()>
 </cffunction>
 
 <cffunction name="parseURLRootStub" output="false" returntype="any" access="remote">
 	
-<cfset bindToDomain()>
-
-<cfparam name="url.path" default="" />
-<cfset urlStem=application.configBean.getContext() & application.configBean.getStub() & "/" & siteid />
-
-<cfif listFind("/go,/go/",url.path)>
-	<cfset application.contentRenderer.redirect("/")>
-</cfif>
-
-<cfif left(url.path,len(urlStem)) neq urlStem>
-<cfset url.path=right(url.path,len(url.path)-len(application.configBean.getContext() & application.configBean.getStub()) - 1)>
-<cfset url.pathIsComplete=false />
-<cfelse>
-<cfset url.pathIsComplete=true />
-</cfif>
-
-<cfset last=listLast(url.path,"/") />
-<cfif last neq application.configBean.getIndexFile() and right(url.path,1) neq "/">
-	<cfset application.contentRenderer.redirect("#url.path#/")>
-</cfif>
-
-<cfif not url.pathIsComplete>
-<cfset url.path="#application.configBean.getStub()#/#siteID#/#url.path#" />
-</cfif>
-
-<cfset request.preformated=true/>
+	<cfset bindToDomain()>
+	
+	<cfparam name="url.path" default="" />
+	<cfset urlStem=application.configBean.getContext() & application.configBean.getStub() & "/" & siteid />
+	
+	<cfif listFind("/go,/go/",url.path)>
+		<cfset application.contentRenderer.redirect("/")>
+	</cfif>
+	
+	<cfif left(url.path,len(urlStem)) neq urlStem>
+	<cfset url.path=right(url.path,len(url.path)-len(application.configBean.getContext() & application.configBean.getStub()) - 1)>
+	<cfset url.pathIsComplete=false />
+	<cfelse>
+	<cfset url.pathIsComplete=true />
+	</cfif>
+	
+	<cfset last=listLast(url.path,"/") />
+	<cfif last neq application.configBean.getIndexFile() and right(url.path,1) neq "/">
+		<cfset application.contentRenderer.redirect("#url.path#/")>
+	</cfif>
+	
+	<cfif not url.pathIsComplete>
+	<cfset url.path="#application.configBean.getStub()#/#siteID#/#url.path#" />
+	</cfif>
+	
+	<cfset request.preformated=true/>
 
 <cfreturn parseURL()>
 </cffunction>
 
 <cffunction name="Redirect" output="false" returntype="any">
 
-<cfset var rsSites=application.settingsManager.getList() />
-<cfloop query="rssites">
-<cftry>
-<cfif find(cgi.SERVER_NAME,application.settingsManager.getSite(rsSites.siteID).getDomain())>
-<cfset application.contentRenderer.redirect("#application.configBean.getContext()##application.contentRenderer.getURLStem(rsSites.siteid,"")#")>
-</cfif>
-<cfcatch></cfcatch>
-</cftry>
-</cfloop>
-
-
-<cfif cgi.SERVER_NAME eq application.configBean.getAdminDomain()>
-	<cfset application.contentRenderer.redirect("#application.configBean.getContext()#/admin/")>
-<cfelse>
-	<cfset application.contentRenderer.redirect("http://#rsSites.domain##application.configBean.getServerPort()##application.configBean.getContext()##application.contentRenderer.getURLStem(rsSites.siteid,"")#")>
-</cfif>
+	<cfset var rsSites=application.settingsManager.getList() />
+	<cfloop query="rssites">
+	<cftry>
+	<cfif find(cgi.SERVER_NAME,application.settingsManager.getSite(rsSites.siteID).getDomain())>
+	<cfset application.contentRenderer.redirect("#application.configBean.getContext()##application.contentRenderer.getURLStem(rsSites.siteid,"")#")>
+	</cfif>
+	<cfcatch></cfcatch>
+	</cftry>
+	</cfloop>
+	
+	
+	<cfif cgi.SERVER_NAME eq application.configBean.getAdminDomain()>
+		<cfset application.contentRenderer.redirect("#application.configBean.getContext()#/admin/")>
+	<cfelse>
+		<cfset application.contentRenderer.redirect("http://#rsSites.domain##application.configBean.getServerPort()##application.configBean.getContext()##application.contentRenderer.getURLStem(rsSites.siteid,"")#")>
+	</cfif>
+	
 </cffunction>
 
 </cfcomponent>
