@@ -61,6 +61,7 @@
 			<cfset application.settingsManager=application.serviceFactory.getBean("settingsManager") />
 			<cfset application.contentManager=application.serviceFactory.getBean("contentManager") />
 			<cfset application.utility=application.serviceFactory.getBean("utility") />
+			<cfset application.pluginManager=application.serviceFactory.getBean("pluginManager") />
 			<cfset application.permUtility=application.serviceFactory.getBean("permUtility") />
 			<cfset application.contentUtility=application.serviceFactory.getBean("contentUtility") />
 			<cfset application.contentRenderer=application.serviceFactory.getBean("contentRenderer") />
@@ -81,7 +82,6 @@
 			<cfset application.dashboardManager=application.serviceFactory.getBean("dashboardManager") />
 			<cfset application.classExtensionManager=application.configBean.getClassExtensionManager() />
 			<cfset application.rbFactory=application.serviceFactory.getBean("resourceBundleFactory") />
-			<cfset application.pluginManager=application.serviceFactory.getBean("pluginManager") />
 			<cfset application.clusterManager=application.serviceFactory.getBean("clusterManager") />
 			<cfset application.genericManager=application.serviceFactory.getBean("genericManager") />
 			
