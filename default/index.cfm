@@ -11,5 +11,4 @@
 
     You should have received a copy of the GNU General Public License
     along with Mura CMS.  If not, see <http://www.gnu.org/licenses/>. --->
-
-<cfinclude template="/#application.configBean.getWebRootMap()#/tasks/content/contentServerLocal.cfm" >
+<cfoutput>#createObject("component","mura.content.contentServer").parseURLLocal()#</cfoutput>
