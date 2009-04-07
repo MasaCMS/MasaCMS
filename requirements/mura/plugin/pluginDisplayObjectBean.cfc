@@ -17,6 +17,7 @@
 <cfset variables.instance.moduleID=""/>
 <cfset variables.instance.name=""/>
 <cfset variables.instance.location=""/>
+<cfset variables.instance.displayMethod=""/>
 <cfset variables.instance.displayObjectFile=""/>
 
 
@@ -40,6 +41,7 @@
 				<cfset setName(arguments.data.name) />
 				<cfset setLocation(arguments.data.location) />
 				<cfset setDisplayObjectFile(arguments.data.displayObjectFile) />
+				<cfset setDisplayMethod(arguments.data.displayMethod) />
 				<cfset setModuleID(arguments.data.moduleID) />
 			</cfif>
 			
@@ -78,7 +80,6 @@
 	<cfset variables.instance.objectID = trim(arguments.objectID) />
 </cffunction>
 
-
 <cffunction name="getModuleID" returntype="String" access="public" output="false">
 	<cfreturn variables.instance.moduleID />
 </cffunction>
@@ -106,6 +107,15 @@
 	<cfset variables.instance.displayObjectFile = trim(arguments.displayObjectFile) />
 </cffunction>
 
+<cffunction name="getDisplayMethod" returntype="String" access="public" output="false">
+	<cfreturn variables.instance.displayMethod />
+</cffunction>
+
+<cffunction name="setDisplayMethod" access="public" output="false">
+	<cfargument name="displayMethod" type="String" />
+	<cfset variables.instance.displayMethod = trim(arguments.displayMethod) />
+</cffunction>
+
 <cffunction name="getLocation" returntype="String" access="public" output="false">
 	<cfreturn variables.instance.location />
 </cffunction>
@@ -124,7 +134,8 @@
 <cffunction name="loadByName"  access="public" output="false" returntype="void">
 	<cfset var rs=""/>
 	<cfquery name="rs" datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-	select * from tplugindisplayobjects 
+	select objectID,moduleID,name,location,displayobjectfile,displaymethod
+	from tplugindisplayobjects 
 	where moduleID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getModuleID()#">
 	and name=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getName()#">
 	</cfquery>
@@ -135,7 +146,9 @@
 <cffunction name="getQuery"  access="public" output="false" returntype="query">
 	<cfset var rs=""/>
 	<cfquery name="rs" datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-	select * from tplugindisplayobjects where objectID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getObjectID()#">
+	select objectID,moduleID,name,location,displayobjectfile,displaymethod
+	from tplugindisplayobjects 
+	where objectID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getObjectID()#">
 	</cfquery>
 	
 	<cfreturn rs/>
@@ -178,19 +191,21 @@
 			moduleID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getModuleID()#">,
 			name=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getName()#">,
 			location=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getLocation()#">,
-			displayObjectFile=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getDisplayObjectFile()#">
+			displayObjectFile=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getDisplayObjectFile()#">,
+			displayMethod=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getDisplayMethod()#">
 		where objectID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getObjectID()#">
 		</cfquery>
 		
 	<cfelse>
 	
 		<cfquery datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-			insert into tplugindisplayobjects (objectID,moduleID,name,location,displayobjectfile) values (
+			insert into tplugindisplayobjects (objectID,moduleID,name,location,displayobjectfile,displaymethod) values (
 			<cfqueryparam cfsqltype="cf_sql_varchar" value="#getObjectID()#">,
 			<cfqueryparam cfsqltype="cf_sql_varchar" value="#getModuleID()#">,
 			<cfqueryparam cfsqltype="cf_sql_varchar" value="#getName()#">,
 			<cfqueryparam cfsqltype="cf_sql_varchar" value="#getLocation()#">,
-			<cfqueryparam cfsqltype="cf_sql_varchar" value="#getDisplayObjectFile()#">
+			<cfqueryparam cfsqltype="cf_sql_varchar" value="#getDisplayObjectFile()#">,
+			<cfqueryparam cfsqltype="cf_sql_varchar" value="#getDisplayMethod()#">
 			)
 		</cfquery>
 		

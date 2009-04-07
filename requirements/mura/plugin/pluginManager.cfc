@@ -93,7 +93,8 @@ select * from rsScripts2
 
 <cfquery name="variables.rsDisplayObjects" datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 select tplugindisplayobjects.objectID, tplugindisplayobjects.moduleID, tplugindisplayobjects.name, 
-tplugindisplayobjects.displayObjectfile, tplugins.pluginID, tcontent.siteID, tcontent.title,tplugindisplayobjects.location
+tplugindisplayobjects.displayObjectfile, tplugins.pluginID, tcontent.siteID, tcontent.title,
+tplugindisplayobjects.location, tplugindisplayobjects.displaymethod
 from tplugindisplayobjects inner join tplugins on (tplugindisplayobjects.moduleID=tplugins.moduleID)
 inner join tcontent on (tplugins.moduleID=tcontent.moduleID)
 </cfquery>
@@ -266,7 +267,16 @@ select * from tplugins order by pluginID
 				<cfset displayObject.setName(pluginXML.plugin.displayobjects.displayobject[i].xmlAttributes.name) />
 				<cfset displayObject.loadByName() />
 				<cfset displayObject.setLocation(pluginXML.plugin.displayobjects.xmlAttributes.location) />
-				<cfset displayObject.setDisplayObjectFile(pluginXML.plugin.displayobjects.displayobject[i].xmlAttributes.displayobjectfile) />
+				<cfif structKeyExists(pluginXML.plugin.displayobjects.displayobject[i].xmlAttributes,"displayobjectfile")>
+					<cfset displayObject.setDisplayObjectFile(pluginXML.plugin.displayobjects.displayobject[i].xmlAttributes.displayobjectfile) />
+				<cfelse>
+					<cfset displayObject.setDisplayObjectFile(pluginXML.plugin.displayobjects.displayobject[i].xmlAttributes.component) />
+				</cfif>
+				<cfif structKeyExists(pluginXML.plugin.displayobjects.displayobject[i].xmlAttributes,"displaymethod")>
+					<cfset displayObject.setDisplayMethod(pluginXML.plugin.displayobjects.displayobject[i].xmlAttributes.displaymethod) />
+				<cfelse>
+					<cfset displayObject.setDisplayMethod("") />
+				</cfif>
 				<cfset displayObject.save() />
 			</cfloop>
 			
@@ -594,18 +604,10 @@ select * from tplugins order by pluginID
 		
 		<cfif listLast(rs.scriptfile,".") neq "cfm">
 			<cfset componentPath="plugins.#rs.pluginID#.#rs.scriptfile#">
-			<cfif NOT getCacheFactory(arguments.siteid).has( componentPath )>
-				<cfset pluginConfig=application.pluginManager.getConfig(rs.pluginID)>			
-				<cfset eventHandler = getCacheFactory(arguments.siteid).get( componentPath, createObject("component",componentPath).init(pluginConfig) ) />
-				<cfinvoke component="#eventHandler#" method="#arguments.runat#">
-					<cfinvokeargument name="event" value="#arguments.event#">
-				</cfinvoke>	
-			<cfelse>
-				<cfset eventHandler = getCacheFactory(arguments.siteid).get( componentPath) />
-				<cfinvoke component="#eventHandler#" method="#arguments.runat#">
-					<cfinvokeargument name="event" value="#arguments.event#">
-				</cfinvoke>	
-			</cfif>
+			<cfset eventHandler=getHandler(componentPath, rs.pluginID, arguments.siteID)>
+			<cfinvoke component="#eventHandler#" method="#arguments.runat#">
+				<cfinvokeargument name="event" value="#arguments.event#">
+			</cfinvoke>	
 		<cfelse>
 			<cfset pluginConfig=application.pluginManager.getConfig(rs.pluginID)>
 			<cfset getExecutor().executeScript(event,"/plugins/#rs.pluginID#/#rs.scriptfile#",pluginConfig)>
@@ -650,13 +652,44 @@ select * from tplugins order by pluginID
 <cfargument name="event" required="true" default="">
 	
 	<cfset var rs=""/>
+	<cfset var componentPath=""/>
+	<cfset var pluginConfig=""/>
+	<cfset var eventHandler=""/>
+	<cfset var theDisplay=""/>
 	
 	<cfquery name="rs" dbtype="query">
-	select pluginID, displayObjectFile,location from variables.rsDisplayObjects 
+	select pluginID, displayObjectFile,location,displaymethod from variables.rsDisplayObjects 
 	where objectID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.objectID#">
-	group by pluginID, displayObjectFile, location
+	group by pluginID, displayObjectFile, location, displaymethod
 	</cfquery>
-	<cfreturn getExecutor().displayObject(arguments.objectID,arguments.event,rs) />
+	
+	<cfif listLast(rs.displayobjectfile,".") neq "cfm">
+		<cfset componentPath="plugins.#rs.pluginID#.#rs.displayobjectfile#">
+		<cfset eventHandler=getHandler(componentPath, rs.pluginID, event.getValue('siteID'))>
+		<cfinvoke component="#eventHandler#" method="#rs.displaymethod#" returnVariable="theDisplay">
+			<cfinvokeargument name="event" value="#arguments.event#">
+		</cfinvoke>	
+		<cfreturn theDisplay>
+	<cfelse>
+		<cfreturn getExecutor().displayObject(arguments.objectID,arguments.event,rs) />
+	</cfif>
+		
+</cffunction>
+
+<cffunction name="getHandler" returntype="any" output="false">
+<cfargument name="componentPath">
+<cfargument name="pluginID">
+<cfargument name="siteID">
+	
+	<cfset var pluginConfig="">
+
+	<cfif NOT getCacheFactory(arguments.siteid).has( componentPath ) or variables.configBean.getMode() eq "development">
+		<cfset pluginConfig=application.pluginManager.getConfig(arguments.pluginID)>	
+		<cfreturn getCacheFactory(arguments.siteid).get( componentPath, createObject("component",componentPath).init(pluginConfig,configBean) ) />	
+	<cfelse>
+		<cfreturn getCacheFactory(arguments.siteid).get( componentPath) />
+	</cfif>
+
 </cffunction>
 
 <cffunction name="getExecutor" returntype="any" output="false">
