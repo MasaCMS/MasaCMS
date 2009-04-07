@@ -529,7 +529,9 @@
 				   	and  variables.settingsManager.getSite(newBean.getsiteid()).getlocking() eq 'top'
 					) 
 			and not variables.settingsManager.getSite(newBean.getSiteID()).getlocking() eq 'all'
-			)>
+			)
+			
+			and not (not newBean.getIsNew() and newBean.getIsLocked())>
 						
 			<cfset variables.contentUtility.setUniqueFilename(newBean) />
 			<!---<cfset variables.contentUtility.createFile(newBean) />--->
