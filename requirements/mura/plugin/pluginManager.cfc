@@ -604,7 +604,7 @@ select * from tplugins order by pluginID
 		
 		<cfif listLast(rs.scriptfile,".") neq "cfm">
 			<cfset componentPath="plugins.#rs.pluginID#.#rs.scriptfile#">
-			<cfset eventHandler=getHandler(componentPath, rs.pluginID, arguments.siteID)>
+			<cfset eventHandler=getComponent(componentPath, rs.pluginID, arguments.siteID)>
 			<cfinvoke component="#eventHandler#" method="#arguments.runat#">
 				<cfinvokeargument name="event" value="#arguments.event#">
 			</cfinvoke>	
@@ -665,7 +665,7 @@ select * from tplugins order by pluginID
 	
 	<cfif listLast(rs.displayobjectfile,".") neq "cfm">
 		<cfset componentPath="plugins.#rs.pluginID#.#rs.displayobjectfile#">
-		<cfset eventHandler=getHandler(componentPath, rs.pluginID, event.getValue('siteID'))>
+		<cfset eventHandler=getComponent(componentPath, rs.pluginID, event.getValue('siteID'))>
 		<cfinvoke component="#eventHandler#" method="#rs.displaymethod#" returnVariable="theDisplay">
 			<cfinvokeargument name="event" value="#arguments.event#">
 		</cfinvoke>	
@@ -676,7 +676,7 @@ select * from tplugins order by pluginID
 		
 </cffunction>
 
-<cffunction name="getHandler" returntype="any" output="false">
+<cffunction name="getComponent" returntype="any" output="false">
 <cfargument name="componentPath">
 <cfargument name="pluginID">
 <cfargument name="siteID">

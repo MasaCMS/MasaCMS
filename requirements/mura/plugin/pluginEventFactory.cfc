@@ -27,7 +27,7 @@
 			<cfset rs=variables.pluginManager.getScripts(arguments.key,variables.siteid)>
 			<cfset variables.collection[ hashCheckKey ] = rs.recordcount />
 			<cfif rs.recordcount>
-				<cfset variables.collection[ hashKey ] = getExecutor().getEvent(arguments.key,variables.siteID,"plugins.#rs.pluginID#.#rs.scriptfile#",variables.pluginManager.getConfig(rs.pluginID))>
+				<cfset variables.collection[ hashKey ] = variables.pluginManager.getComponent("plugins.#rs.pluginID#.#rs.scriptfile#", rs.pluginID, variables.siteID)>
 			</cfif>
 		</cfif>
 		
