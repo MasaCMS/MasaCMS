@@ -29,7 +29,6 @@
 	<cfset request.scriptEvent=arguments.event />
 	<cfset pluginConfig=request.pluginConfig/>
 	
-	<cftry>
 	<cfif arguments.rsDisplayObject.location eq "global">
 	
 	<cfset pluginConfig.setSetting("pluginPath","#variables.configBean.getContext()#/plugins/#arguments.rsDisplayObject.pluginID#/")/>
@@ -44,10 +43,6 @@
 	<cfinclude template="/#variables.configBean.getWebRootMap()#/#variables.settingsManager.getSite(event.getValue('siteID')).getDisplayPoolID()#/includes/plugins/#arguments.rsDisplayObject.pluginID#/#arguments.rsDisplayObject.displayObjectFile#">
 	</cfsavecontent>
 	</cfif>
-	<cfcatch>
-		 <cfsavecontent variable="str"><cfdump var="#cfcatch#"></cfsavecontent>
-	</cfcatch>
-	</cftry>
 	
 	<cfset structDelete(request,"pluginConfig")>
 	<cfset structDelete(request,"scriptEvent")>

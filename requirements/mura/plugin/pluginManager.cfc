@@ -663,6 +663,7 @@ select * from tplugins order by pluginID
 	group by pluginID, displayObjectFile, location, displaymethod
 	</cfquery>
 	
+	<cftry>
 	<cfif listLast(rs.displayobjectfile,".") neq "cfm">
 		<cfset componentPath="plugins.#rs.pluginID#.#rs.displayobjectfile#">
 		<cfset eventHandler=getComponent(componentPath, rs.pluginID, event.getValue('siteID'))>
@@ -673,6 +674,11 @@ select * from tplugins order by pluginID
 	<cfelse>
 		<cfreturn getExecutor().displayObject(arguments.objectID,arguments.event,rs) />
 	</cfif>
+	<cfcatch>
+		 <cfsavecontent variable="theDisplay"><cfdump var="#cfcatch#"></cfsavecontent>
+		 <cfreturn theDisplay>
+	</cfcatch>
+	</cftry>
 		
 </cffunction>
 
