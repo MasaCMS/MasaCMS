@@ -11,15 +11,15 @@
 
     You should have received a copy of the GNU General Public License
     along with Mura CMS.  If not, see <http://www.gnu.org/licenses/>. --->
-
-<cfset contentUtility = application.serviceFactory.getBean("contentUtility") />
-<cfset categoryUtility = application.serviceFactory.getBean("categoryUtility") />
-<cfset rslist=application.settingsManager.getlist() />
-
-<cfloop query="rslist">
-	<cfset contentUtility.updateGlobalMaterializedPath(rslist.siteID)/>
-	<cfset categoryUtility.updateGlobalMaterializedPath(rslist.siteID)/>
-</cfloop>
-		
+<cfif isUserInRole('S2')>
+	<cfset contentUtility = application.serviceFactory.getBean("contentUtility") />
+	<cfset categoryUtility = application.serviceFactory.getBean("categoryUtility") />
+	<cfset rslist=application.settingsManager.getlist() />
+	
+	<cfloop query="rslist">
+		<cfset contentUtility.updateGlobalMaterializedPath(rslist.siteID)/>
+		<cfset categoryUtility.updateGlobalMaterializedPath(rslist.siteID)/>
+	</cfloop>
+</cfif>
 
 			
