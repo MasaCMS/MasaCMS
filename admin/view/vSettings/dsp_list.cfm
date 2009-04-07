@@ -57,6 +57,7 @@ Upload New Plugin<br/>
 <th>Version</th>
 <th>Provider</th>
 <th>Provider URL</th>
+<th>Plugin ID</th>
 <th class="administration">&nbsp;</th></tr>
 <cfif request.rsPlugins.recordcount>
 <cfoutput query="request.rsPlugins">
@@ -66,13 +67,14 @@ Upload New Plugin<br/>
 <td>#htmlEditFormat(request.rsPlugins.version)#</td>
 <td>#htmlEditFormat(request.rsPlugins.provider)#</td>
 <td><a href="#request.rsPlugins.providerurl#" target="_blank">#htmlEditFormat(request.rsPlugins.providerurl)#</a></td>
+<td>#request.rsPlugins.pluginID#</td
 <td class="administration"><ul class="two"><li class="edit"><a title="Edit" href="index.cfm?fuseaction=cSettings.editPlugin&moduleID=#request.rsPlugins.moduleID#">Edit</a></li>
 <li class="delete"><a title="Delete" href="index.cfm?fuseaction=cSettings.deletePlugin&moduleID=#request.rsPlugins.moduleID#" onclick="return confirm('Delete Plugin?');">Delete</a></li>
 </ul></td></tr>
 </cfoutput>
 <cfelse>
 <tr>
-<td class="noResults" colspan="6">There are currently no installed plugins.</td>
+<td class="noResults" colspan="7">There are currently no installed plugins.</td>
 </tr>
 </cfif>
 </table>

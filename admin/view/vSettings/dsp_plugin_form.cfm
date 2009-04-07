@@ -12,7 +12,7 @@
     You should have received a copy of the GNU General Public License
     along with Mura CMS.  If not, see <http://www.gnu.org/licenses/>. --->
 <cfhtmlhead text="#session.dateKey#">
-
+<cfset rsPlugin=application.pluginManager.getPlugin(attributes.moduleID)>
 <h2>Plugin Settings</h2>
 <cfoutput>
 <ul class="metadata">
@@ -21,9 +21,10 @@
 <li><strong>Version:</strong> #htmlEditFormat(request.pluginXML.plugin.version.xmlText)#</li>
 <li><strong>Provider:</strong> #htmlEditFormat(request.pluginXML.plugin.provider.xmlText)#</li>
 <li><strong>Provider URL:</strong> <a href="#request.pluginXML.plugin.providerURL.xmlText#" target="_blank">#htmlEditFormat(request.pluginXML.plugin.providerURL.xmlText)#</a></li>
+<li><strong>Plugin ID:</strong> #rsplugin.pluginID#</li>
 </ul>
 
-<cfset rsPlugin=application.pluginManager.getPlugin(attributes.moduleID)>
+
 <cfif rsPlugin.recordcount and rsPlugin.deployed>
 <ul id="navTask"
 <li><a href="index.cfm?fuseaction=cSettings.updatePluginVersion&moduleid=#attributes.moduleid#">Update Plugin Version</a></li>
@@ -54,11 +55,20 @@
 <cfset settingsLen=0>
 </cfif>
 
-<cfif structKeyExists(request.pluginXML.plugin.scripts,"script")>
+
+<cfif structKeyExists(request.pluginXML.plugin,"scripts") and structKeyExists(request.pluginXML.plugin.scripts,"script")>
 <cfset scriptsLen=arraylen(request.pluginXML.plugin.scripts.script)/>
 <cfelse>
 <cfset scriptsLen=0>
 </cfif>
+
+
+<cfif structKeyExists(request.pluginXML.plugin,"eventHandlers") and structKeyExists(request.pluginXML.plugin.eventHandlers,"eventHandler")>
+<cfset eventHandlersLen=arraylen(request.pluginXML.plugin.eventHandlers.eventHandler)/>
+<cfelse>
+<cfset eventHandlersLen=0>
+</cfif>
+
 
 <cfif structKeyExists(request.pluginXML.plugin.displayobjects,"displayobject")>
 <cfset objectsLen=arraylen(request.pluginXML.plugin.displayobjects.displayobject)/>
@@ -120,7 +130,17 @@
 <dt>Scripts</dt>
 <dd><ul>
 <cfloop from="1" to="#scriptsLen#" index="i">
-	<li>#htmlEditFormat(request.pluginXML.plugin.scripts.script[i].XmlAttributes.runat)#</li>
+	<li><cfif structKeyExists(request.pluginXML.plugin.scripts.script[i].XmlAttributes,"runat")>#htmlEditFormat(request.pluginXML.plugin.scripts.script[i].XmlAttributes.runat)#<cfelse>#htmlEditFormat(request.pluginXML.plugin.scripts.script[i].XmlAttributes.event)#</cfif></li>
+</cfloop>
+</ul>
+</dd>
+</cfif> 
+
+<cfif eventHandlersLen>
+<dt>Event Handlers</dt>
+<dd><ul>
+<cfloop from="1" to="#eventHandlersLen#" index="i">
+	<li><cfif structKeyExists(request.pluginXML.plugin.eventHandlers.eventHandler[i].XmlAttributes,"runat")>#htmlEditFormat(request.pluginXML.plugin.eventHandlers.eventHandler[i].XmlAttributes.runat)#<cfelse>#htmlEditFormat(request.pluginXML.plugin.eventHandlers.eventHandler[i].XmlAttributes.event)#</cfif></li>
 </cfloop>
 </ul>
 </dd>

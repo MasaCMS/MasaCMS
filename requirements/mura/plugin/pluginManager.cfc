@@ -18,6 +18,7 @@
 <cfset variables.utility="">
 <cfset variables.genericManager="">
 <cfset variables.eventManagers=structNew()>
+<cfset variables.cacheFactories=structNew()>
 
 <cffunction name="init" returntype="any" access="public" output="false">
 	<cfargument name="configBean">
@@ -98,6 +99,7 @@ inner join tcontent on (tplugins.moduleID=tcontent.moduleID)
 </cfquery>
 
 <cfset purgeEventManagers()/>
+<cfset purgeCacheFactories()/>
 
 </cffunction>
 
@@ -124,10 +126,12 @@ select * from tplugins order by pluginID
 <cfset var rsPlugin="" />
 <cfset var pluginXML="" />
 <cfset var scriptsLen=0 />
+<cfset var eventHandlersLen=0 />
 <cfset var objectsLen=0 />
 <cfset var i=1 />
 <cfset var displayObject="" />
 <cfset var script="" />
+<cfset var eventHandler=""/>
 <cfset var isNew=false />
 <cfset var zipTool=createObject("component","mura.Zip")>
 
@@ -141,7 +145,6 @@ select * from tplugins order by pluginID
 	</cfif>
 	
 	<cffile action="upload" filefield="NewPlugin" nameconflict="makeunique" destination="#getTempDirectory()#">	
-	
 	
 	<cfif isNew>
 	<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
@@ -172,15 +175,30 @@ select * from tplugins order by pluginID
 	
 	<cffile action="delete" file="#getTempDirectory()##delim##file.serverfile#">
 	
-	<cfif fileExists("#location#plugin#delim#config.xml.cfm")>
-		<cfsavecontent variable="pluginXML">
-		<cfinclude template="/#variables.configBean.getWebRootMap()#/plugins/#rsPlugin.pluginID#/config.xml.cfm">
-		</cfsavecontent>
-	<cfelse>
-		<cffile action="read" file="#location#plugin#delim#config.xml" variable="pluginXML">
-`	</cfif>	
+</cflock>
 
-	<cfset pluginXML=xmlParse(trim(pluginXML)) />
+<cfset savePluginXML(modID) />
+<cfset loadPlugins() />
+
+<cfreturn modID/>
+
+</cffunction>
+
+<cffunction name="savePluginXML" output="false" access="public">
+<cfargument name="modID">
+
+	<cfset var scriptsLen=0 />
+	<cfset var eventHandlersLen=0 />
+	<cfset var objectsLen=0 />
+	<cfset var i=1 />
+	<cfset var displayObject="" />
+	<cfset var script="" />
+	<cfset var eventHandler=""/>
+	<cfset var rsPlugin=getPlugin(modID,false) />
+	<cfset var location=getLocation(rsPlugin.pluginID) />
+	<cfset var delim=variables.configBean.getFileDelim() />
+	<cfset var pluginXML=getPluginXML(modID)>
+
 	
 	<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	update tplugins set
@@ -193,18 +211,50 @@ select * from tplugins order by pluginID
 	where moduleID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#modID#">
 	</cfquery>
 	
-	<cfif structKeyExists(pluginXML.plugin.scripts,"script")>
-	<cfset scriptsLen=arraylen(pluginXML.plugin.scripts.script)/>
-		<cfif scriptsLen>
-			<cfloop from="1" to="#scriptsLen#" index="i">
-				<cfset script=getScriptBean() />
-				<cfset script.setModuleID(modID) />
-				<cfset script.setScriptFile(pluginXML.plugin.scripts.script[i].xmlAttributes.scriptfile) />
-				<cfset script.setRunAt(pluginXML.plugin.scripts.script[i].xmlAttributes.runat) />
-				<cfset script.save() />
-			</cfloop>
+	<cfif structKeyExists(pluginXML.plugin,"scripts")>
+		<cfif structKeyExists(pluginXML.plugin.scripts,"script")>
+			<cfset scriptsLen=arraylen(pluginXML.plugin.scripts.script)/>
+				<cfif scriptsLen>
+					<cfloop from="1" to="#scriptsLen#" index="i">
+						<cfset script=getScriptBean() />
+						<cfset script.setModuleID(modID) />>
+						<cfif structKeyExists(pluginXML.plugin.scripts.script[i].xmlAttributes,"runat")>
+							<cfset script.setRunAt(pluginXML.plugin.scripts.script[i].xmlAttributes.runat) />
+						<cfelse>
+							<cfset script.setRunAt(pluginXML.plugin.scripts.script[i].xmlAttributes.event) />
+						</cfif>
+						<cfif structKeyExists(pluginXML.plugin.scripts.script[i].xmlAttributes,"component")>
+							<cfset script.setScriptFile(pluginXML.plugin.scripts.script[i].xmlAttributes.component) />
+						<cfelse>
+							<cfset script.setScriptFile(pluginXML.plugin.scripts.script[i].xmlAttributes.scriptfile) />
+						</cfif>
+						<cfset script.save() />
+					</cfloop>
+				</cfif>
 		</cfif>
-
+	</cfif>
+	
+	<cfif structKeyExists(pluginXML.plugin,"eventHandlers")>
+		<cfif structKeyExists(pluginXML.plugin.eventHandlers,"eventHandler")>
+			<cfset eventHandlersLen=arraylen(pluginXML.plugin.eventHandlers.eventHandler)/>
+				<cfif eventHandlersLen>
+					<cfloop from="1" to="#eventHandlersLen#" index="i">
+						<cfset eventHandler=getScriptBean() />
+						<cfset eventHandler.setModuleID(modID) />
+						<cfif structKeyExists(pluginXML.plugin.eventHandlers.eventHandler[i].xmlAttributes,"event")>
+							<cfset eventHandler.setRunAt(pluginXML.plugin.eventHandlers.eventHandler[i].xmlAttributes.event) />
+						<cfelse>
+							<cfset eventHandler.setRunAt(pluginXML.plugin.eventHandlers.eventHandler[i].xmlAttributes.runat) />
+						</cfif>
+						<cfif structKeyExists(pluginXML.plugin.eventHandlers.eventHandler[i].xmlAttributes,"component")>
+							<cfset eventHandler.setScriptFile(pluginXML.plugin.eventHandlers.eventHandler[i].xmlAttributes.component) />
+						<cfelse>
+							<cfset eventHandler.setScriptFile(pluginXML.plugin.eventHandlers.eventHandler[i].xmlAttributes.scriptfile) />
+						</cfif>
+						<cfset eventHandler.save() />
+					</cfloop>
+				</cfif>
+		</cfif>
 	</cfif>
 	
 	<cfif structKeyExists(pluginXML.plugin.displayobjects,"displayobject")>
@@ -222,15 +272,8 @@ select * from tplugins order by pluginID
 			
 		</cfif>
 	</cfif>
-
 	
-</cflock>
-	
-<cfset loadPlugins() />
-
-<cfreturn modID/>
-
-</cffunction>
+</cffunction>	
 
 <cffunction name="getPlugin" returntype="query" output="false">
 <cfargument name="ID">
@@ -364,6 +407,10 @@ select * from tplugins order by pluginID
 			</cfquery>
 		</cfloop>
 	</cfif>
+	
+	<cfset deleteScripts(arguments.args.moduleID) />
+	
+	<cfset savePluginXML(arguments.args.moduleID) />
 	
 	<cfset deleteAssignedSites(arguments.args.moduleID) />
 	
@@ -520,34 +567,49 @@ select * from tplugins order by pluginID
 <cffunction name="executeScripts" output="false" returntype="any">
 <cfargument name="runat">
 <cfargument name="siteID" required="true" default="">
-<cfargument name="_scriptEvent" required="true" default="" type="any">
+<cfargument name="_event" required="true" default="" type="any">
 	<cfset var rs=""/>
-	<cfset var scriptEvent="">
+	<cfset var event="">
 	<cfset var pluginConfig="">
+	<cfset var componentPath="">
+	<cfset var eventHandler="">
 	
-	<cfif not isObject(arguments._scriptEvent)>
-		<cfif isStruct(arguments._scriptEvent)>
-			<cfset scriptEvent=createObject("component","mura.event").init(arguments._scriptEvent)/>
+	<cfif not isObject(arguments._event)>
+		<cfif isStruct(arguments._event)>
+			<cfset variables.event=createObject("component","mura.event").init(arguments._event)/>
 		<cfelse>				
 			<cfif structKeyExists(request,"servletEvent")>
-				<cfset scriptEvent=request.servletEvent />
+				<cfset event=request.servletEvent />
 			<cfelse>
-				<cfset scriptEvent=createObject("component","mura.event")/>
+				<cfset event=createObject("component","mura.event")/>
 			</cfif>
 		</cfif>
 	<cfelse>
-		<cfset scriptEvent = arguments._scriptEvent />
+		<cfset event = arguments._event />
 	</cfif>
 	
 	<cfset rs=getScripts(arguments.runat,arguments.siteid) />
 	
 	<cfloop query="rs">
-		<cfset pluginConfig=application.pluginManager.getConfig(rs.pluginID)>
-		<cfset pluginConfig.setSetting("pluginMode","script")/>
-		<cfset scriptEvent=getExecutor().executeScript(arguments.runAt,arguments.siteID,scriptEvent,"/#variables.configBean.getWebRootMap()#/plugins/#rs.pluginID#/#rs.scriptfile#",pluginConfig)>
+		<cfif listLast(rs.scriptfile,".") neq "cfm">
+			<cfset componentPath="plugins.#rs.pluginID#.#rs.scriptfile#">
+			<cfif NOT getCacheFactory(arguments.siteid).has( componentPath )>
+				<cfset pluginConfig=application.pluginManager.getConfig(rs.pluginID)>			
+				<cfset eventHandler = getCacheFactory(arguments.siteid).get( key, createObject("component",componentPath).init(pluginConfig) ) />
+				<cfinvoke component="#eventHandler#" method="#arguments.runat#">
+					<cfinvokeargument name="event" value="#event#">
+				</cfinvoke>	
+			<cfelse>
+				<cfset eventHandler = getCacheFactory(arguments.siteid).get( key) />
+				<cfinvoke component="#eventHandler#" method="#arguments.runat#">
+					<cfinvokeargument name="event" value="#event#">
+				</cfinvoke>	
+			</cfif>
+		<cfelse>
+			<cfset pluginConfig=application.pluginManager.getConfig(rs.pluginID)>
+			<cfset getExecutor().executeScript(arguments.runAt,arguments.siteID,event,"/plugins/#rs.pluginID#/#rs.scriptfile#",pluginConfig)>
+		</cfif>
 	</cfloop>
-
-	<cfreturn scriptEvent/>
 
 </cffunction>
 
@@ -616,11 +678,27 @@ select * from tplugins order by pluginID
 <cffunction name="getEventManager" returntype="any" output="false">
 <cfargument name="siteid" required="true" default="">
 
+
 	<cfif not structKeyExists(variables.eventManagers,arguments.siteid)>
 		<cfset variables.eventManagers[arguments.siteid]=createObject("component","pluginEventManager").init(arguments.siteID,variables.genericManager,this)>
 	</cfif>
 	
 	<cfreturn variables.eventManagers[arguments.siteid]>
+</cffunction>
+
+<cffunction name="getCacheFactory" returntype="any" output="false">
+<cfargument name="siteid" required="true" default="">
+
+
+	<cfif not structKeyExists(variables.cacheFactories,arguments.siteid)>
+		<cfset variables.cacheFactories[arguments.siteid]=createObject("component","mura.cache.cacheFactory").init()>
+	</cfif>
+	
+	<cfreturn variables.cacheFactories[arguments.siteid]>
+</cffunction>
+
+<cffunction name="purgeCacheFactories" returntype="any" output="false">
+<cfset variables.cacheFactories=structNew()/>
 </cffunction>
 
 <cffunction name="renderAdminTemplate" returntype="any" output="false">

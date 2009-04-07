@@ -72,12 +72,4 @@
 
 </cffunction>
 
-<cffunction name="getEvent" output="false" returntype="any">
-<cfargument name="classPath" required="true" default="" type="any">
-<cfargument name="pluginConfig" required="true" default="" type="any">
-	
-	<cfreturn createObject("component",classPath).init(arguments.classPath)/>
-
-</cffunction>
-
 </cfcomponent>
