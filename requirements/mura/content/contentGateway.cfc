@@ -30,6 +30,7 @@
 		<cfargument name="path" required="true" default="">
 			
 		<cfset var I=0>
+		<cfset var crumbdata="">
 		<cfset var key="crumb" & arguments.contentID & arguments.setInheritance />
 		<cfset var site=variables.settingsManager.getSite(arguments.siteid)/>
 		<cfset var cacheFactory=site.getCacheFactory()>

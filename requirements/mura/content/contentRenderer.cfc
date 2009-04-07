@@ -1517,6 +1517,7 @@
 	<cfset var pluginBasePath="" />
 	<cfset var pluginPath="" />
 	<cfset var pluginID=0 />
+	<cfset var pluginConfig="" />
 	
 	<cfif getRenderHTMLHead()>	
 		<!--- Add global.js --->

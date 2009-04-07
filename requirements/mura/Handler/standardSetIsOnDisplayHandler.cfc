@@ -2,7 +2,7 @@
 	
 <cffunction name="handle" output="false" returnType="any">
 	<cfargument name="event" required="true">
-	
+	<cfset var crumbdata="">
 	<cfif event.valueExists('previewID')>
 		<cfset event.setValue('isOnDisplay',1)>
 	<cfelseif event.getValue('contentBean').getapproved() eq 0>

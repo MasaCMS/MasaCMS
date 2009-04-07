@@ -22,6 +22,8 @@
 </cffunction>
 
 <cffunction name="forcePathDirectoryStructure" output="false" returntype="any" access="remote">
+<cfargument name="cgi_path">
+<cfset var qstring="">
 <cfif len(url.path) and right(cgi_path,1) neq "/"  and right(cgi_path,len(application.configBean.getIndexfile())) neq application.configBean.getIndexfile()>
 	<cfif len(cgi.query_string)>
 	<cfset qstring="?" & cgi.query_string>
@@ -33,6 +35,7 @@
 </cffunction>
 
 <cffunction name="setCGIPath" output="false" returntype="any" access="remote">
+<cfset var cgi_path="">
 <cfif cgi.path_info eq cgi.script_name>
 	<cfset cgi_path=""/>
 <cfelse>
@@ -42,11 +45,12 @@
 <cfif left(cgi_path,1) eq "/" and cgi_path neq "/">
 	<cfset url.path=right(cgi_path,len(cgi_path)-1) />
 </cfif>
+<cfreturn cgi_path>
 </cffunction>
 
 <cffunction name="bindToDomain" output="false" returntype="any" access="remote">
-	<cfset siteID= "" />
-	<cfset rsSites=application.settingsManager.getList() />
+	<cfset var siteID= "" />
+	<cfset var rsSites=application.settingsManager.getList() />
 	
 	<!--- check for exact host match to find siteID --->
 	<cfloop query="rsSites">
@@ -83,6 +87,14 @@
 </cffunction>
 
 <cffunction name="parseURL" output="false" returntype="any" access="remote">
+	<cfset var last="">
+	<cfset var theStart=0>
+	<cfset var trimLen=0>
+	<cfset var tempfilename="">
+	<cfset var thelen=0>
+	<cfset var item="">
+	<cfset var n="">
+	<cfset var rsRedirect="">
 	
 	<cfif isDefined('url.path') and url.path neq application.configBean.getContext() & application.configBean.getStub() & "/">
 	
@@ -146,14 +158,16 @@
 </cffunction>
 
 <cffunction name="parseURLLocal" output="false" returntype="any" access="remote">
-
+	<cfset var siteID="">
+	<cfset var cgi_path="">
 	<cfparam name="url.path" default="" />
 	
-	<cfset setCGIPath()>
+	
+	<cfset cgi_path=setCGIPath()>
 	
 	<cfset siteID = listGetAt(cgi.script_name,listLen(cgi.script_name,"/")-1,"/") />
 	
-	<cfset forcePathDirectoryStructure()>
+	<cfset forcePathDirectoryStructure(cgi_path)>
 	
 	<cfset url.path="#application.configBean.getStub()#/#siteID#/#url.path#" />
 	<cfset request.preformated=true/>
@@ -162,13 +176,13 @@
 </cffunction>
 
 <cffunction name="parseURLRoot" output="false" returntype="any" access="remote">
-	
+	<cfset var cgi_path="">
 	<cfset bindToDomain()>
 	
 	<cfparam name="url.path" default="" />
 	
-	<cfset setCGIPath()>
-	<cfset forcePathDirectoryStructure()>
+	<cfset cgi_path=setCGIPath()>
+	<cfset forcePathDirectoryStructure(cgi_path)>
 	
 	<cfset url.path="#application.configBean.getStub()#/#siteID#/#url.path#" />
 	<cfset request.preformated=true/>
@@ -177,7 +191,8 @@
 </cffunction>
 
 <cffunction name="parseURLRootStub" output="false" returntype="any" access="remote">
-	
+	<cfset var urlStem="">
+	<cfset var last="">
 	<cfset bindToDomain()>
 	
 	<cfparam name="url.path" default="" />

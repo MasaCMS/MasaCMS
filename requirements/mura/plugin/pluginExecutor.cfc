@@ -59,10 +59,9 @@
 <cfargument name="event" required="true" default="" type="any">
 <cfargument name="scriptFile" required="true" default="" type="any">
 <cfargument name="pluginConfig" required="true" default="" type="any">
-	
+	<cfset var scriptEvent=arguments.event>
 	<cfset request.pluginConfig=arguments.pluginConfig/>
 	<cfset request.scriptEvent=arguments.event/>
-	<cfset scriptEvent=request.scriptEvent/>
 	<cfinclude template="#arguments.scriptFile#">
 	<cfset structDelete(request,"pluginConfig")>
 	<cfset structDelete(request,"scriptEvent")>

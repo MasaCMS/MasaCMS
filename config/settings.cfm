@@ -83,7 +83,7 @@
 			<cfset application.classExtensionManager=application.configBean.getClassExtensionManager() />
 			<cfset application.rbFactory=application.serviceFactory.getBean("resourceBundleFactory") />
 			<cfset application.clusterManager=application.serviceFactory.getBean("clusterManager") />
-			<cfset application.genericManager=application.serviceFactory.getBean("genericManager") />
+			<cfset application.contentServer=application.serviceFactory.getBean("contentServer") />
 			
 			<cfinclude template="settings.custom.managers.cfm">
 	 	
