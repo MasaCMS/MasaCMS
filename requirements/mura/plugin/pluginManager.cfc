@@ -567,47 +567,48 @@ select * from tplugins order by pluginID
 <cffunction name="executeScripts" output="false" returntype="any">
 <cfargument name="runat">
 <cfargument name="siteID" required="true" default="">
-<cfargument name="_event" required="true" default="" type="any">
+<cfargument name="event" required="true" default="" type="any">
 	<cfset var rs=""/>
-	<cfset var event="">
+	
 	<cfset var pluginConfig="">
 	<cfset var componentPath="">
+	<cfset var scriptPath="">
 	<cfset var eventHandler="">
 	
-	<cfif not isObject(arguments._event)>
-		<cfif isStruct(arguments._event)>
-			<cfset variables.event=createObject("component","mura.event").init(arguments._event)/>
+	<cfif not isObject(arguments.event)>
+		<cfif isStruct(arguments.event)>
+			<cfset variables.event=createObject("component","mura.event").init(arguments.event)/>
 		<cfelse>				
 			<cfif structKeyExists(request,"servletEvent")>
-				<cfset event=request.servletEvent />
+				<cfset arguments.event=request.servletEvent />
 			<cfelse>
-				<cfset event=createObject("component","mura.event")/>
+				<cfset arguments.event=createObject("component","mura.event")/>
 			</cfif>
 		</cfif>
-	<cfelse>
-		<cfset event = arguments._event />
 	</cfif>
 	
 	<cfset rs=getScripts(arguments.runat,arguments.siteid) />
 	
 	<cfloop query="rs">
+		<cfset event.setValue("siteid",arguments.siteID)>
+		
 		<cfif listLast(rs.scriptfile,".") neq "cfm">
 			<cfset componentPath="plugins.#rs.pluginID#.#rs.scriptfile#">
 			<cfif NOT getCacheFactory(arguments.siteid).has( componentPath )>
 				<cfset pluginConfig=application.pluginManager.getConfig(rs.pluginID)>			
-				<cfset eventHandler = getCacheFactory(arguments.siteid).get( key, createObject("component",componentPath).init(pluginConfig) ) />
+				<cfset eventHandler = getCacheFactory(arguments.siteid).get( componentPath, createObject("component",componentPath).init(pluginConfig) ) />
 				<cfinvoke component="#eventHandler#" method="#arguments.runat#">
-					<cfinvokeargument name="event" value="#event#">
+					<cfinvokeargument name="event" value="#arguments.event#">
 				</cfinvoke>	
 			<cfelse>
-				<cfset eventHandler = getCacheFactory(arguments.siteid).get( key) />
+				<cfset eventHandler = getCacheFactory(arguments.siteid).get( componentPath) />
 				<cfinvoke component="#eventHandler#" method="#arguments.runat#">
-					<cfinvokeargument name="event" value="#event#">
+					<cfinvokeargument name="event" value="#arguments.event#">
 				</cfinvoke>	
 			</cfif>
 		<cfelse>
 			<cfset pluginConfig=application.pluginManager.getConfig(rs.pluginID)>
-			<cfset getExecutor().executeScript(arguments.runAt,arguments.siteID,event,"/plugins/#rs.pluginID#/#rs.scriptfile#",pluginConfig)>
+			<cfset getExecutor().executeScript(event,"/plugins/#rs.pluginID#/#rs.scriptfile#",pluginConfig)>
 		</cfif>
 	</cfloop>
 
