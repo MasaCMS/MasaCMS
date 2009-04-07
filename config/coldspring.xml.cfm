@@ -503,6 +503,7 @@
 		<bean id="clusterManager" class="mura.cluster.clusterManager" singleton="true">
 			<constructor-arg name="configBean"><ref bean="configBean" /></constructor-arg>
 		</bean>
+		<bean id="genericManager" class="mura.generic.genericManager" singleton="true" />
 		<bean id="contentServer" class="mura.content.contentServer" singleton="true" />
 		<cfinclude template="coldspring.custom.xml.cfm">
 	</beans></cfoutput>
