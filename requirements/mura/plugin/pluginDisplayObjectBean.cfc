@@ -19,7 +19,7 @@
 <cfset variables.instance.location=""/>
 <cfset variables.instance.displayMethod=""/>
 <cfset variables.instance.displayObjectFile=""/>
-
+<cfset variables.instance.docache="false"/>
 
 <cffunction name="init" returntype="any" output="false" access="public">
 	<cfargument name="configBean">
@@ -43,6 +43,7 @@
 				<cfset setDisplayObjectFile(arguments.data.displayObjectFile) />
 				<cfset setDisplayMethod(arguments.data.displayMethod) />
 				<cfset setModuleID(arguments.data.moduleID) />
+				<cfset setDoCache(arguments.data.docache) />
 			</cfif>
 			
 		<cfelseif isStruct(arguments.data)>
@@ -127,6 +128,17 @@
 	</cfif>
 </cffunction>
 
+<cffunction name="getDoCache" returntype="String" access="public" output="false">
+	<cfreturn variables.instance.docache />
+</cffunction>
+
+<cffunction name="setDoCache" access="public" output="false">
+	<cfargument name="docache" type="String" />
+	<cfif isBoolean(arguments.docache)>
+		<cfset variables.instance.docache = arguments.docache />
+	</cfif>
+</cffunction>
+
 <cffunction name="load"  access="public" output="false" returntype="void">
 	<cfset set(getQuery()) />
 </cffunction>
@@ -134,7 +146,7 @@
 <cffunction name="loadByName"  access="public" output="false" returntype="void">
 	<cfset var rs=""/>
 	<cfquery name="rs" datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-	select objectID,moduleID,name,location,displayobjectfile,displaymethod
+	select objectID,moduleID,name,location,displayobjectfile,displaymethod, docache
 	from tplugindisplayobjects 
 	where moduleID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getModuleID()#">
 	and name=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getName()#">
@@ -146,7 +158,7 @@
 <cffunction name="getQuery"  access="public" output="false" returntype="query">
 	<cfset var rs=""/>
 	<cfquery name="rs" datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-	select objectID,moduleID,name,location,displayobjectfile,displaymethod
+	select objectID,moduleID,name,location,displayobjectfile,displaymethod, docache
 	from tplugindisplayobjects 
 	where objectID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getObjectID()#">
 	</cfquery>
@@ -192,20 +204,22 @@
 			name=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getName()#">,
 			location=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getLocation()#">,
 			displayObjectFile=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getDisplayObjectFile()#">,
-			displayMethod=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getDisplayMethod()#">
+			displayMethod=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getDisplayMethod()#">,
+			docache=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getDoCache()#">
 		where objectID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getObjectID()#">
 		</cfquery>
 		
 	<cfelse>
 	
 		<cfquery datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-			insert into tplugindisplayobjects (objectID,moduleID,name,location,displayobjectfile,displaymethod) values (
+			insert into tplugindisplayobjects (objectID,moduleID,name,location,displayobjectfile,displaymethod,docache) values (
 			<cfqueryparam cfsqltype="cf_sql_varchar" value="#getObjectID()#">,
 			<cfqueryparam cfsqltype="cf_sql_varchar" value="#getModuleID()#">,
 			<cfqueryparam cfsqltype="cf_sql_varchar" value="#getName()#">,
 			<cfqueryparam cfsqltype="cf_sql_varchar" value="#getLocation()#">,
 			<cfqueryparam cfsqltype="cf_sql_varchar" value="#getDisplayObjectFile()#">,
-			<cfqueryparam cfsqltype="cf_sql_varchar" value="#getDisplayMethod()#">
+			<cfqueryparam cfsqltype="cf_sql_varchar" value="#getDisplayMethod()#">,
+			<cfqueryparam cfsqltype="cf_sql_varchar" value="#getDoCache()#">
 			)
 		</cfquery>
 		

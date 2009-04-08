@@ -17,6 +17,7 @@
 <cfset variables.instance.moduleID=""/>
 <cfset variables.instance.runat=""/>
 <cfset variables.instance.scriptfile=""/>
+<cfset variables.instance.docache="false"/>
 
 <cffunction name="init" returntype="any" output="false" access="public">
 	<cfargument name="configBean">
@@ -38,6 +39,7 @@
 				<cfset setRunAt(arguments.data.runAt) />
 				<cfset setScriptFile(arguments.data.scriptFile) />
 				<cfset setModuleID(arguments.data.moduleID) />
+				<cfset setDoCache(arguments.data.docache) />
 			</cfif>
 			
 		<cfelseif isStruct(arguments.data)>
@@ -103,6 +105,17 @@
 	<cfset variables.instance.scriptFile = trim(arguments.scriptFile) />
 </cffunction>
 
+<cffunction name="getDoCache" returntype="String" access="public" output="false">
+	<cfreturn variables.instance.docache />
+</cffunction>
+
+<cffunction name="setDoCache" access="public" output="false">
+	<cfargument name="docache" type="String" />
+	<cfif isBoolean(arguments.docache)>
+		<cfset variables.instance.docache = arguments.docache />
+	</cfif>
+</cffunction>
+
 <cffunction name="load"  access="public" output="false" returntype="void">
 	<cfset set(getQuery()) />
 </cffunction>
@@ -110,7 +123,7 @@
 <cffunction name="getQuery"  access="public" output="false" returntype="query">
 	<cfset var rs=""/>
 	<cfquery name="rs" datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-	select * from tpluginscripts where scriptID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getScriptID()#">
+	select scriptID, moduleID, scriptfile, runat, docache from tpluginscripts where scriptID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getScriptID()#">
 	</cfquery>
 	
 	<cfreturn rs/>
@@ -134,18 +147,20 @@
 		update tpluginscripts set
 			moduleID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getModuleID()#">,
 			runat=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getRunAt()#">,
-			scriptFile=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getScriptFile()#">
+			scriptFile=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getScriptFile()#">,
+			docache=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getDoCache()#">
 		where scriptID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getScriptID()#">
 		</cfquery>
 		
 	<cfelse>
 	
 		<cfquery datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-			insert into tpluginscripts (scriptID,moduleID,runat,scriptfile) values (
+			insert into tpluginscripts (scriptID,moduleID,runat,scriptfile,docache) values (
 			<cfqueryparam cfsqltype="cf_sql_varchar" value="#getScriptID()#">,
 			<cfqueryparam cfsqltype="cf_sql_varchar" value="#getModuleID()#">,
 			<cfqueryparam cfsqltype="cf_sql_varchar" value="#getRunAt()#">,
-			<cfqueryparam cfsqltype="cf_sql_varchar" value="#getScriptFile()#">
+			<cfqueryparam cfsqltype="cf_sql_varchar" value="#getScriptFile()#">,
+			<cfqueryparam cfsqltype="cf_sql_varchar" value="#getDoCache()#">
 			)
 		</cfquery>
 		

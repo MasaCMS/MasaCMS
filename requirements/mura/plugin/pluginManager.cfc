@@ -70,7 +70,8 @@ select * from tpluginsettings
 </cfquery>
 
 <cfquery name="rsScripts1" datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-select tplugins.name,tpluginscripts.moduleID, tplugins.pluginID, tpluginscripts.runat, tpluginscripts.scriptfile, tcontent.siteID from tpluginscripts
+select tplugins.name,tpluginscripts.moduleID, tplugins.pluginID, tpluginscripts.runat, tpluginscripts.scriptfile, 
+tcontent.siteID, tpluginscripts.docache from tpluginscripts
 inner join tplugins on (tpluginscripts.moduleID=tplugins.moduleID)
 inner join tcontent on (tplugins.moduleID=tcontent.moduleID)
 where tpluginscripts.runat not in ('onGlobalLogin','onGlobalRequestStart','onApplicationLoad')
@@ -78,7 +79,7 @@ and tplugins.deployed=1
 </cfquery>
 
 <cfquery name="rsScripts2" datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-select tplugins.name,tpluginscripts.moduleID, tplugins.pluginID, tpluginscripts.runat, tpluginscripts.scriptfile, '' siteID from tpluginscripts
+select tplugins.name,tpluginscripts.moduleID, tplugins.pluginID, tpluginscripts.runat, tpluginscripts.scriptfile, '' siteID, tpluginscripts.docache from tpluginscripts
 inner join tplugins on (tpluginscripts.moduleID=tplugins.moduleID)
 where tpluginscripts.runat in ('onGlobalLogin','onGlobalRequestStart','onApplicationLoad')
 and tplugins.deployed=1
@@ -94,7 +95,7 @@ select * from rsScripts2
 <cfquery name="variables.rsDisplayObjects" datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 select tplugindisplayobjects.objectID, tplugindisplayobjects.moduleID, tplugindisplayobjects.name, 
 tplugindisplayobjects.displayObjectfile, tplugins.pluginID, tcontent.siteID, tcontent.title,
-tplugindisplayobjects.location, tplugindisplayobjects.displaymethod
+tplugindisplayobjects.location, tplugindisplayobjects.displaymethod, tplugindisplayobjects.docache
 from tplugindisplayobjects inner join tplugins on (tplugindisplayobjects.moduleID=tplugins.moduleID)
 inner join tcontent on (tplugins.moduleID=tcontent.moduleID)
 </cfquery>
@@ -229,6 +230,11 @@ select * from tplugins order by pluginID
 						<cfelse>
 							<cfset script.setScriptFile(pluginXML.plugin.scripts.script[i].xmlAttributes.scriptfile) />
 						</cfif>
+						<cfif structKeyExists(pluginXML.plugin.scripts.script[i].xmlAttributes,"cache")>
+							<cfset script.setDoCache(pluginXML.plugin.scripts.script[i].xmlAttributes.cache) />
+						<cfelse>
+							<cfset script.setDoCache("false") />
+						</cfif>
 						<cfset script.save() />
 					</cfloop>
 				</cfif>
@@ -251,6 +257,11 @@ select * from tplugins order by pluginID
 							<cfset eventHandler.setScriptFile(pluginXML.plugin.eventHandlers.eventHandler[i].xmlAttributes.component) />
 						<cfelse>
 							<cfset eventHandler.setScriptFile(pluginXML.plugin.eventHandlers.eventHandler[i].xmlAttributes.scriptfile) />
+						</cfif>
+						<cfif structKeyExists(pluginXML.plugin.eventHandlers.eventHandler[i].xmlAttributes,"cache")>
+							<cfset eventHandler.setDoCache(pluginXML.plugin.eventHandlers.eventHandler[i].xmlAttributes.cache) />
+						<cfelse>
+							<cfset eventHandler.setDoCache("false") />
 						</cfif>
 						<cfset eventHandler.save() />
 					</cfloop>
@@ -276,6 +287,11 @@ select * from tplugins order by pluginID
 					<cfset displayObject.setDisplayMethod(pluginXML.plugin.displayobjects.displayobject[i].xmlAttributes.displaymethod) />
 				<cfelse>
 					<cfset displayObject.setDisplayMethod("") />
+				</cfif>
+				<cfif structKeyExists(pluginXML.plugin.displayobjects.displayobject[i].xmlAttributes,"cache")>
+					<cfset displayObject.setDoCache(pluginXML.plugin.displayobjects.displayobject[i].xmlAttributes.cache) />
+				<cfelse>
+					<cfset displayObject.setDoCache("false") />
 				</cfif>
 				<cfset displayObject.save() />
 			</cfloop>
@@ -604,7 +620,7 @@ select * from tplugins order by pluginID
 		
 		<cfif listLast(rs.scriptfile,".") neq "cfm">
 			<cfset componentPath="plugins.#rs.pluginID#.#rs.scriptfile#">
-			<cfset eventHandler=getComponent(componentPath, rs.pluginID, arguments.siteID)>
+			<cfset eventHandler=getComponent(componentPath, rs.pluginID, arguments.siteID, rs.docache)>
 			<cfinvoke component="#eventHandler#" method="#arguments.runat#">
 				<cfinvokeargument name="event" value="#arguments.event#">
 			</cfinvoke>	
@@ -622,7 +638,7 @@ select * from tplugins order by pluginID
 <cfset var rs="">
 
 	<cfquery name="rs" dbtype="query">
-	select pluginID, scriptfile,name from variables.rsScripts 
+	select pluginID, scriptfile,name, docache from variables.rsScripts 
 	where runat=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.runat#">
 	<cfif len(arguments.siteID)>
 	and siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#">
@@ -658,7 +674,7 @@ select * from tplugins order by pluginID
 	<cfset var theDisplay=""/>
 	
 	<cfquery name="rs" dbtype="query">
-	select pluginID, displayObjectFile,location,displaymethod from variables.rsDisplayObjects 
+	select pluginID, displayObjectFile,location,displaymethod, docache from variables.rsDisplayObjects 
 	where objectID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.objectID#">
 	group by pluginID, displayObjectFile, location, displaymethod
 	</cfquery>
@@ -666,7 +682,7 @@ select * from tplugins order by pluginID
 	<cftry>
 	<cfif listLast(rs.displayobjectfile,".") neq "cfm">
 		<cfset componentPath="plugins.#rs.pluginID#.#rs.displayobjectfile#">
-		<cfset eventHandler=getComponent(componentPath, rs.pluginID, event.getValue('siteID'))>
+		<cfset eventHandler=getComponent(componentPath, rs.pluginID, event.getValue('siteID'),rs.docache)>
 		<cfinvoke component="#eventHandler#" method="#rs.displaymethod#" returnVariable="theDisplay">
 			<cfinvokeargument name="event" value="#arguments.event#">
 		</cfinvoke>	
@@ -686,14 +702,19 @@ select * from tplugins order by pluginID
 <cfargument name="componentPath">
 <cfargument name="pluginID">
 <cfargument name="siteID">
+<cfargument name="cache" required="true" default="true">
 	
 	<cfset var pluginConfig="">
-
-	<cfif NOT getCacheFactory(arguments.siteid).has( componentPath ) or variables.configBean.getMode() eq "development">
-		<cfset pluginConfig=application.pluginManager.getConfig(arguments.pluginID)>	
-		<cfreturn getCacheFactory(arguments.siteid).get( componentPath, createObject("component",componentPath).init(pluginConfig,configBean) ) />	
+	<cfif isBoolean(arguments.cache) and arguments.cache>
+		<cfif NOT getCacheFactory(arguments.siteid).has( componentPath ) or variables.configBean.getMode() eq "development">
+			<cfset pluginConfig=application.pluginManager.getConfig(arguments.pluginID)>	
+			<cfreturn getCacheFactory(arguments.siteid).get( componentPath, createObject("component",componentPath).init(pluginConfig,configBean) ) />	
+		<cfelse>
+			<cfreturn getCacheFactory(arguments.siteid).get( componentPath) />
+		</cfif>
 	<cfelse>
-		<cfreturn getCacheFactory(arguments.siteid).get( componentPath) />
+		<cfset pluginConfig=application.pluginManager.getConfig(arguments.pluginID)>
+		<cfreturn createObject("component",componentPath).init(pluginConfig,configBean) />
 	</cfif>
 
 </cffunction>
