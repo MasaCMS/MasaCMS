@@ -682,7 +682,7 @@ select * from tplugins order by pluginID
 	group by pluginID, displayObjectFile, location, displaymethod, docache, objectID
 	</cfquery>
 	
-	<cfset key= rs.objectID>
+	<cfset key= rs.objectID & event.getValue('siteID')>
 	
 	<cfif site.getCache() and isBoolean(rs.docache) and rs.docache>
 		<cfif NOT cacheFactory.has( key )>
