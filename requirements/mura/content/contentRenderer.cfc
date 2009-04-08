@@ -724,9 +724,7 @@
 					</cf_cacheomatic>
 				</cfcase>
 				<cfcase value="plugin">
-					<cf_CacheOMatic key="#arguments.object##arguments.siteID##arguments.objectid#" nocache="#event.getValue('r').restrict#">
-					<cfoutput>#application.pluginManager.displayObject(arguments.objectid,event)#</cfoutput>
-					</cf_cacheomatic>
+					<cfreturn application.pluginManager.displayObject(arguments.objectid,event)>
 				</cfcase>
 				<cfcase value="mailing_list">
 					<cfinclude  template="/#application.configBean.getWebRootMap()#/#theDisplayPoolID#/includes/display_objects/dsp_mailing_list.cfm">
