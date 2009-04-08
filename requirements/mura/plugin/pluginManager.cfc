@@ -673,8 +673,8 @@ select * from tplugins order by pluginID
 	<cfset var pluginConfig=""/>
 	<cfset var eventHandler=""/>
 	<cfset var theDisplay=""/>
-	<cfset var site=variables.settingsManager.getSite(arguments.event.getValue('siteID'))/>
-	<cfset var cacheFactory=site.getCacheFactory()/>
+	<!--- <cfset var site=variables.settingsManager.getSite(arguments.event.getValue('siteID'))/>
+	<cfset var cacheFactory=getCacheFactory(arguments.event.getValue('siteID'))/> --->
 	
 	<cfquery name="rs" dbtype="query">
 	select pluginID, displayObjectFile,location,displaymethod, docache, objectID from variables.rsDisplayObjects 
@@ -682,7 +682,7 @@ select * from tplugins order by pluginID
 	group by pluginID, displayObjectFile, location, displaymethod, docache, objectID
 	</cfquery>
 	
-	<cfset key= rs.objectID & event.getValue('siteID')>
+	<!--- <cfset key= rs.objectID & event.getValue('siteID')>
 	
 	<cfif site.getCache() and isBoolean(rs.docache) and rs.docache>
 		<cfif NOT cacheFactory.has( key )>
@@ -705,7 +705,7 @@ select * from tplugins order by pluginID
 		<cfelse>
 			<cfreturn cacheFactory.get(key)>
 		</cfif>
-	<cfelse>
+	<cfelse> --->
 		<cftry>
 		<cfif listLast(rs.displayobjectfile,".") neq "cfm">
 			<cfset componentPath="plugins.#rs.pluginID#.#rs.displayobjectfile#">
@@ -722,7 +722,7 @@ select * from tplugins order by pluginID
 			 <cfreturn theDisplay>
 		</cfcatch>
 		</cftry>
-	</cfif>
+	<!--- </cfif> --->
 		
 </cffunction>
 
