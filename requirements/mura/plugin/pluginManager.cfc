@@ -668,33 +668,61 @@ select * from tplugins order by pluginID
 <cfargument name="event" required="true" default="">
 	
 	<cfset var rs=""/>
+	<cfset var key=""/>
 	<cfset var componentPath=""/>
 	<cfset var pluginConfig=""/>
 	<cfset var eventHandler=""/>
 	<cfset var theDisplay=""/>
+	<cfset var site=variables.settingsManager.getSite(arguments.event.getValue('siteID'))/>
+	<cfset var cacheFactory=site.getCacheFactory()/>
 	
 	<cfquery name="rs" dbtype="query">
-	select pluginID, displayObjectFile,location,displaymethod, docache from variables.rsDisplayObjects 
+	select pluginID, displayObjectFile,location,displaymethod, docache, objectID from variables.rsDisplayObjects 
 	where objectID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.objectID#">
-	group by pluginID, displayObjectFile, location, displaymethod, docache
+	group by pluginID, displayObjectFile, location, displaymethod, docache, objectID
 	</cfquery>
 	
-	<cftry>
-	<cfif listLast(rs.displayobjectfile,".") neq "cfm">
-		<cfset componentPath="plugins.#rs.pluginID#.#rs.displayobjectfile#">
-		<cfset eventHandler=getComponent(componentPath, rs.pluginID, event.getValue('siteID'),rs.docache)>
-		<cfinvoke component="#eventHandler#" method="#rs.displaymethod#" returnVariable="theDisplay">
-			<cfinvokeargument name="event" value="#arguments.event#">
-		</cfinvoke>	
-		<cfreturn theDisplay>
+	<cfset key= rs.objectID>
+	
+	<cfif site.getCache() and isBoolean(rs.docache) and rs.docache>
+		<cfif NOT cacheFactory.has( key )>
+		 	<cftry>
+				<cfif listLast(rs.displayobjectfile,".") neq "cfm">
+					<cfset componentPath="plugins.#rs.pluginID#.#rs.displayobjectfile#">
+					<cfset eventHandler=getComponent(componentPath, rs.pluginID, event.getValue('siteID'),rs.docache)>
+					<cfinvoke component="#eventHandler#" method="#rs.displaymethod#" returnVariable="theDisplay">
+						<cfinvokeargument name="event" value="#arguments.event#">
+					</cfinvoke>	
+					<cfreturn cacheFactory.get( key, theDisplay ) />
+				<cfelse>
+					<cfreturn cacheFactory.get( key, getExecutor().displayObject(arguments.objectID,arguments.event,rs)  ) />
+				</cfif>
+			<cfcatch>
+				 <cfsavecontent variable="theDisplay"><cfdump var="#cfcatch#"></cfsavecontent>
+				 <cfreturn theDisplay>
+			</cfcatch>
+			</cftry>
+		<cfelse>
+			<cfreturn cacheFactory.get(key)>
+		</cfif>
 	<cfelse>
-		<cfreturn getExecutor().displayObject(arguments.objectID,arguments.event,rs) />
+		<cftry>
+		<cfif listLast(rs.displayobjectfile,".") neq "cfm">
+			<cfset componentPath="plugins.#rs.pluginID#.#rs.displayobjectfile#">
+			<cfset eventHandler=getComponent(componentPath, rs.pluginID, event.getValue('siteID'),rs.docache)>
+			<cfinvoke component="#eventHandler#" method="#rs.displaymethod#" returnVariable="theDisplay">
+				<cfinvokeargument name="event" value="#arguments.event#">
+			</cfinvoke>	
+			<cfreturn theDisplay>
+		<cfelse>
+			<cfreturn getExecutor().displayObject(arguments.objectID,arguments.event,rs) />
+		</cfif>
+		<cfcatch>
+			 <cfsavecontent variable="theDisplay"><cfdump var="#cfcatch#"></cfsavecontent>
+			 <cfreturn theDisplay>
+		</cfcatch>
+		</cftry>
 	</cfif>
-	<cfcatch>
-		 <cfsavecontent variable="theDisplay"><cfdump var="#cfcatch#"></cfsavecontent>
-		 <cfreturn theDisplay>
-	</cfcatch>
-	</cftry>
 		
 </cffunction>
 
