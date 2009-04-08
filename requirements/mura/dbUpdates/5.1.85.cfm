@@ -8,20 +8,76 @@ select * from tplugindisplayobjects testdisplaymethod where 0=1
 <cfswitch expression="#getDbType()#">
 <cfcase value="mssql">
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
-	ALTER TABLE tplugindisplayobjects ADD displaymethod [nvarchar](50) default NULL
+	ALTER TABLE tplugindisplayobjects ADD displaymethod [nvarchar](100) default NULL
 	</cfquery>
 </cfcase>
 <cfcase value="mysql">
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
-	ALTER TABLE tplugindisplayobjects ADD COLUMN displaymethod varchar(50) default NULL
+	ALTER TABLE tplugindisplayobjects ADD COLUMN displaymethod varchar(100) default NULL
 	</cfquery>
 </cfcase>
 <cfcase value="oracle">
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
-	ALTER TABLE "TPLUGINDISPLAYOBJECTS" ADD "DISPLAYMETHOD" varchar2(50)
+	ALTER TABLE "TPLUGINDISPLAYOBJECTS" ADD "DISPLAYMETHOD" varchar2(100)
 	</cfquery>
 </cfcase>
 </cfswitch>
+</cfif>
+
+<cfquery name="rsCheck" datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+select *,'' test from tplugindisplayobjects testdisplaydocache where 0=1
+</cfquery>
+
+<cfif not listFindNoCase(rsCheck.columnlist,"docache")>
+<cfswitch expression="#getDbType()#">
+<cfcase value="mssql">
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	ALTER TABLE tplugindisplayobjects ADD docache [nvarchar](5) default NULL
+	</cfquery>
+</cfcase>
+<cfcase value="mysql">
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	ALTER TABLE tplugindisplayobjects ADD COLUMN docache varchar(5) default NULL
+	</cfquery>
+</cfcase>
+<cfcase value="oracle">
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	ALTER TABLE "TPLUGINDISPLAYOBJECTS" ADD "DOCACHE" varchar2(5)
+	</cfquery>
+</cfcase>
+</cfswitch>
+
+<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	update tplugindisplayobjects set docache='false'
+</cfquery>
+</cfif>
+
+<cfquery name="rsCheck" datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+select *,'' test from tpluginscripts testscriptdocache where 0=1
+</cfquery>
+
+<cfif not listFindNoCase(rsCheck.columnlist,"docache")>
+<cfswitch expression="#getDbType()#">
+<cfcase value="mssql">
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	ALTER TABLE tpluginscripts ADD docache [nvarchar](5) default NULL
+	</cfquery>
+</cfcase>
+<cfcase value="mysql">
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	ALTER TABLE tpluginscripts ADD COLUMN docache varchar(5) default NULL
+	</cfquery>
+</cfcase>
+<cfcase value="oracle">
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	ALTER TABLE "TPLUGINSCRIPTS" ADD "DOCACHE" varchar2(5)
+	</cfquery>
+</cfcase>
+</cfswitch>
+
+<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	update tpluginscripts set docache='false'
+</cfquery>
 </cfif>
 
 
