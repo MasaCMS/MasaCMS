@@ -676,7 +676,7 @@ select * from tplugins order by pluginID
 	<cfquery name="rs" dbtype="query">
 	select pluginID, displayObjectFile,location,displaymethod, docache from variables.rsDisplayObjects 
 	where objectID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.objectID#">
-	group by pluginID, displayObjectFile, location, displaymethod
+	group by pluginID, displayObjectFile, location, displaymethod, docache
 	</cfquery>
 	
 	<cftry>
