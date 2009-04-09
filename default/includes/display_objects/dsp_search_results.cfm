@@ -11,8 +11,10 @@
 
     You should have received a copy of the GNU General Public License
     along with Mura CMS.  If not, see <http://www.gnu.org/licenses/>. --->
-
-<h2>Search Results</h2>
+<cfsilent>
+<cfset rbFactory=getSite().getRBFactory() />
+</cfsilent>
+<h2><cfoutput>#rbFactory.getKey('search.searchresults')#</cfoutput></h2>
 <div id="svSearchResults">
 <cfsilent>
 <cfset rbFactory=getSite().getRBFactory() />
