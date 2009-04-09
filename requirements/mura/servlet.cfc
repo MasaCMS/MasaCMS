@@ -43,12 +43,12 @@
 	
 	<cfset event.getHandler("standardSetIsOnDisplay").handle(event)>
 	
+	<cfset event.getHandler("standardDoActions").handle(event)>
+	
 	<cfset event.getValidator("standardRequireLogin").validate(event)>
 	
 	<cfset event.getHandler("standardSetLocale").handle(event)>
 
-	<cfset event.getHandler("standardDoActions").handle(event)>
-	
  	<cfset event.getHandler("standardDoResponse").handle(event)>
 	
 	<cfreturn event.getValue("__MuraResponse__")>

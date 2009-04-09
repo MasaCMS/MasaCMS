@@ -53,7 +53,7 @@
 				<cfif arguments.setInheritance>
 					<cfloop from="1" to="#arrayLen(crumbdata)#" index="I">
 						<cfif crumbdata[I].inheritObjects eq 'cascade'>
-							<cfset request.inheritedObjects=crumbdata[I].inheritObjects>
+							<cfset request.inheritedObjects=crumbdata[I].contenthistid>
 							<cfbreak>
 						</cfif>
 					</cfloop>
