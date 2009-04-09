@@ -232,6 +232,8 @@ select * from tplugins order by pluginID
 						</cfif>
 						<cfif structKeyExists(pluginXML.plugin.scripts.script[i].xmlAttributes,"cache")>
 							<cfset script.setDoCache(pluginXML.plugin.scripts.script[i].xmlAttributes.cache) />
+						<cfelseif structKeyExists(pluginXML.plugin.scripts.script[i].xmlAttributes,"persist")>
+							<cfset script.setDoCache(pluginXML.plugin.scripts.script[i].xmlAttributes.persist) />
 						<cfelse>
 							<cfset script.setDoCache("false") />
 						</cfif>
@@ -260,6 +262,8 @@ select * from tplugins order by pluginID
 						</cfif>
 						<cfif structKeyExists(pluginXML.plugin.eventHandlers.eventHandler[i].xmlAttributes,"cache")>
 							<cfset eventHandler.setDoCache(pluginXML.plugin.eventHandlers.eventHandler[i].xmlAttributes.cache) />
+						<cfelseif structKeyExists(pluginXML.plugin.eventHandlers.eventHandler[i].xmlAttributes,"persist")>
+							<cfset eventHandler.setDoCache(pluginXML.plugin.eventHandlers.eventHandler[i].xmlAttributes.persist) />
 						<cfelse>
 							<cfset eventHandler.setDoCache("false") />
 						</cfif>
@@ -290,6 +294,8 @@ select * from tplugins order by pluginID
 				</cfif>
 				<cfif structKeyExists(pluginXML.plugin.displayobjects.displayobject[i].xmlAttributes,"cache")>
 					<cfset displayObject.setDoCache(pluginXML.plugin.displayobjects.displayobject[i].xmlAttributes.cache) />
+				<cfelseif structKeyExists(pluginXML.plugin.displayobjects.displayobject[i].xmlAttributes,"persist")>
+					<cfset displayObject.setDoCache(pluginXML.plugin.displayobjects.displayobject[i].xmlAttributes.persist) />
 				<cfelse>
 					<cfset displayObject.setDoCache("false") />
 				</cfif>
