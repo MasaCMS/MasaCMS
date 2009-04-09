@@ -24,7 +24,7 @@
 		<!--- Check if the prelook for plugins has been made --->
 		<cfif NOT has( checkKey )>
 			<!--- If it has not then get it--->
-			<cfset rs=variables.pluginManager.getScripts(arguments.key,variables.siteid)>
+			<cfset rs=variables.pluginManager.getScripts(arguments.key & variables.class,variables.siteid)>
 			<cfset variables.collection[ hashCheckKey ] = rs.recordcount />
 			<cfif rs.recordcount>
 				<cfset variables.collection[ hashKey ] = variables.pluginManager.getComponent("plugins.#rs.pluginID#.#rs.scriptfile#", rs.pluginID, variables.siteID, rs.docache)>
