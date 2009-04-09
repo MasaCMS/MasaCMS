@@ -45,7 +45,7 @@
       <dd>
 		<select name="siteLocale">
 		<option value="">Default</option>	
-		<cfloop list="#server.coldfusion.supportedLocales#" index="l">
+		<cfloop list="#listSort(server.coldfusion.supportedLocales,'textnocase','ASC')#" index="l">
         <option value="#l#"<cfif request.siteBean.getSiteLocale() eq l> selected</cfif>>#l#</option>
 		</cfloop>
 		</select>
