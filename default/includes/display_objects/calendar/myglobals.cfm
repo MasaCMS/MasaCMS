@@ -15,16 +15,16 @@
 <cfparam name="request.month" default="#month(now())#">
 <cfparam name="request.year" default="#year(now())#">
 <cfparam name="request.day" default="#day(now())#">
-
+<cfset rbFactory=getSite().getRBFactory()>
 <cfscript>
 currentDate=now();
 selectedMonth = createDate(request.year,request.month,1);
 daysInMonth=daysInMonth(selectedMonth);
 firstDayOfWeek=dayOfWeek(selectedMonth)-1;
-weekdayShort="S,M,T,W,T,F,S";
-weekdayLong="Sunday,Monday,Tuesday,Wednesday,Thursday,Friday,Saturday";
-monthShort="Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sept,Oct,Nov,Dec";
-monthLong="January,February,March,April,May,June,July,August,September,October,November,December";
+weekdayShort=rbFactory.getKey('calendar.weekdayshort');
+weekdayLong=rbFactory.getKey('calendar.weekdaylong');
+monthShort=rbFactory.getKey('calendar.monthshort');
+monthLong=rbFactory.getKey('calendar.monthlong');
 dateLong = "#listGetAt(monthLong,request.month,",")# #request.year#";
 dateShort = "#listGetAt(monthShort,request.month,",")# #request.year#";
 previousMonth = request.month-1;
