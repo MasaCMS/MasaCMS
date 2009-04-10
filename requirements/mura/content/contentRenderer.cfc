@@ -312,7 +312,7 @@
 			</cfif>
 			
 			<cfset itemClass=iif(current eq 1,de('first'),de(iif(current eq adjust,de('last'),de('')))) />
-			<cfset isCurrent=listFind(event.getValue('contentBean').getPath(),"'#rsSection.contentid#'") />
+			<cfset isCurrent=listFind(event.getValue('contentBean').getPath(),"#rsSection.contentid#") />
 			
 			<cfif isCurrent>
 				<cfset itemClass=listAppend(itemClass,"current"," ")>
@@ -663,7 +663,7 @@
 			<cfset var href ="">
 			<cfset var theClass =arguments.class>
 			
-			<cfif arguments.showCurrent and listFind(event.getValue('contentBean').getPath(),"'#arguments.contentID#'")>					
+			<cfif arguments.showCurrent and listFind(event.getValue('contentBean').getPath(),"#arguments.contentID#")>					
 				<cfset theClass=listAppend(theClass,"current"," ") />
 			</cfif>
 			
@@ -1222,7 +1222,7 @@
 			<cfset subnav= isNumeric(rsSection.kids) and rsSection.kids and arguments.currDepth lt arguments.viewDepth 
 			and (
 					(
-					isNotLimited and arguments.id eq 'navSecondary' and listFind(event.getValue('contentBean').getPath(),"'#rsSection.contentID#'") 
+					isNotLimited and arguments.id eq 'navSecondary' and listFind(event.getValue('contentBean').getPath(),"#rsSection.contentID#") 
 					) 
 				or (
 					isNotLimited and arguments.id neq 'navSecondary'

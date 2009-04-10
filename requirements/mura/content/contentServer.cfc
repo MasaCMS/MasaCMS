@@ -56,7 +56,7 @@
 	<cfloop query="rsSites">
 	<cftry>
 	<cfif cgi.SERVER_NAME eq application.settingsManager.getSite(rsSites.siteID).getDomain()>
-	<cfset variables.siteID = rsSites.siteID />
+	<cfset siteID = rsSites.siteID />
 	<cfbreak/>
 	</cfif>
 	<cfcatch></cfcatch>
@@ -84,6 +84,7 @@
 		 </cfif>
 	</cfif>
 	
+	<cfreturn siteid>
 </cffunction>
 
 <cffunction name="parseURL" output="false" returntype="any" access="remote">
@@ -177,7 +178,7 @@
 
 <cffunction name="parseURLRoot" output="false" returntype="any" access="remote">
 	<cfset var cgi_path="">
-	<cfset bindToDomain()>
+	<cfset var siteid=bindToDomain()>
 	
 	<cfparam name="url.path" default="" />
 	
@@ -193,7 +194,7 @@
 <cffunction name="parseURLRootStub" output="false" returntype="any" access="remote">
 	<cfset var urlStem="">
 	<cfset var last="">
-	<cfset bindToDomain()>
+	<cfset var siteid=bindToDomain()>
 	
 	<cfparam name="url.path" default="" />
 	<cfset urlStem=application.configBean.getContext() & application.configBean.getStub() & "/" & siteid />
