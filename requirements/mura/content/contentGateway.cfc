@@ -85,7 +85,9 @@
 			<cfloop condition="ID neq '00000000000000000000000000000000END'">
 
 			<cfquery name="rsContent" datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-			select contenthistid, contentid, menutitle, filename, parentid, type, target, targetParams, siteid, restricted, restrictgroups,template,inheritObjects,metadesc,metakeywords,sortBy,sortDirection from tcontent where active=1 and contentid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#ID#"/> and siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
+			select contenthistid, contentid, menutitle, filename, parentid, type, target, targetParams, 
+			siteid, restricted, restrictgroups,template,inheritObjects,metadesc,metakeywords,sortBy,
+			sortDirection from tcontent where active=1 and contentid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#ID#"/> and siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
 			</cfquery>
 			
 			<cfset crumb=structNew() />
@@ -129,7 +131,16 @@
 			<cfelse>
 			
 			<cfquery name="rsContent" datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-			select contenthistid, contentid, menutitle, filename, parentid, type, target, targetParams, siteid, restricted, restrictgroups,template,inheritObjects,metadesc,metakeywords,sortBy,sortDirection, length(path) depth from tcontent where 
+			select contenthistid, contentid, menutitle, filename, parentid, type, target, targetParams, 
+			siteid, restricted, restrictgroups,template,inheritObjects,metadesc,metakeywords,sortBy,
+			sortDirection,
+			<cfif variables.configBean.getDBType() eq "MSSQL">
+			len(Cast(path as varchar(1000))) depth
+			<cfelse>
+			length(path) depth
+			</cfif> 
+			
+			from tcontent where 
 			contentID in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#arguments.path#">)
 			and active=1 
 			and siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>

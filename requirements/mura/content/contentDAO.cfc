@@ -43,6 +43,7 @@
 		<cfelse>
 			<cfset contentBean.setIsNew(1) />
 			<cfset contentBean.setActive(1) />
+			<cfset contentBean.setSiteID(arguments.siteid) />
 		</cfif>
 		
 		<cfreturn contentBean />
@@ -81,6 +82,7 @@
 		<cfelse>
 			<cfset contentBean.setIsNew(1) />
 			<cfset contentBean.setActive(1) />
+			<cfset contentBean.setSiteID(arguments.siteid) />
 		</cfif>
 		
 		<cfreturn contentBean />
@@ -105,6 +107,7 @@
 		<cfelse>
 			<cfset contentBean.setIsNew(1) />
 			<cfset contentBean.setActive(1) />
+			<cfset contentBean.setSiteID(arguments.siteid) />
 		</cfif>
 		
 		<cfreturn contentBean />
@@ -149,6 +152,7 @@
 		<cfelse>
 			<cfset contentBean.setIsNew(1) />
 			<cfset contentBean.setActive(1) />
+			<cfset contentBean.setSiteID(arguments.siteid) />
 		</cfif>
 		<cfreturn contentBean />
 </cffunction>
