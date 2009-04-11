@@ -1,7 +1,7 @@
 <!--- make sure tadcreatives.target exists --->
 
 <cfquery name="rsCheck" datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
-select * from tplugindisplayobjects testdisplaymethod where 0=1
+select * from tplugindisplayobjects  where 0=1
 </cfquery>
 
 <cfif not listFindNoCase(rsCheck.columnlist,"displaymethod")>
@@ -17,6 +17,7 @@ select * from tplugindisplayobjects testdisplaymethod where 0=1
 	</cfquery>
 </cfcase>
 <cfcase value="oracle">
+	<cfdump var="#rsCheck#"><cfabort>
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 	ALTER TABLE "TPLUGINDISPLAYOBJECTS" ADD "DISPLAYMETHOD" varchar2(100)
 	</cfquery>
@@ -25,7 +26,7 @@ select * from tplugindisplayobjects testdisplaymethod where 0=1
 </cfif>
 
 <cfquery name="rsCheck" datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
-select *,'' test from tplugindisplayobjects testdisplaydocache where 0=1
+select * from tplugindisplayobjects where 0=1
 </cfquery>
 
 <cfif not listFindNoCase(rsCheck.columnlist,"docache")>
@@ -53,7 +54,7 @@ select *,'' test from tplugindisplayobjects testdisplaydocache where 0=1
 </cfif>
 
 <cfquery name="rsCheck" datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
-select *,'' test from tpluginscripts testscriptdocache where 0=1
+select * from tpluginscripts  where 0=1
 </cfquery>
 
 <cfif not listFindNoCase(rsCheck.columnlist,"docache")>
