@@ -786,7 +786,7 @@ select * from tplugins order by pluginID
 
 
 	<cfif not structKeyExists(variables.cacheFactories,arguments.siteid)>
-		<cfset variables.cacheFactories[arguments.siteid]=createObject("component","mura.cache.cacheFactory").init()>
+		<cfset variables.cacheFactories[arguments.siteid]=createObject("component","mura.cache.cacheFactory").init(isSoft=false)>
 	</cfif>
 	
 	<cfreturn variables.cacheFactories[arguments.siteid]>

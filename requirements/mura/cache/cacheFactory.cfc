@@ -21,12 +21,14 @@ Modification History:
 <cfcomponent output="false" extends="mura.Factory">
 	
 	<cffunction name="init" access="public" output="false" returntype="any" hint="Constructor">
+		<cfargument name="isSoft" type="boolean" required="true" default="true"/>
 		<cfscript>
 			var Collections = createObject("java", "java.util.Collections");
 			/* Create the reference maps */
 			var Map = CreateObject("java","java.util.HashMap").init();
 			var SoftRefKeyMap = CreateObject("java","java.util.HashMap").init();
 			
+			variables.isSoft=arguments.isSoft;
 			/* Prepare instance */
 			variables.instance = structnew();
 			
@@ -45,11 +47,10 @@ Modification History:
 	<cffunction name="get" access="public" returntype="any" output="false">
 		<cfargument name="key" type="string" required="true" />
 		<cfargument name="context" type="any" required="false" />
-		
 		<cfset var hashKey = getHashKey( arguments.key ) />
 		
 		<!--- if the key cannot be found and context is passed then push it in --->
-		<cfif NOT has( arguments.key ) AND isDefined( "arguments.context" )>
+		<cfif NOT has( arguments.key ) AND isDefined("arguments.context")>
 			<!--- create object --->
 			<cfset set(hashKey,arguments.context) />
 		</cfif>
@@ -68,8 +69,15 @@ Modification History:
 		<!--- ************************************************************* --->
 		<cfargument name="objectKey" type="any" required="true">
 		<!--- ************************************************************* --->
+		<cfset var refLocal = structnew()>
+		<cfset var hashLocal=getHashKey(arguments.objectKey) >
 		<!--- Check for Object in Cache. --->
-		<cfreturn structKeyExists(variables.collection, getHashKey(arguments.objectKey)) >
+		<cfif structKeyExists(variables.collection, hashLocal)>
+			<cfset refLocal[hashLocal]=variables.collection[hashLocal]>
+			<cfreturn structKeyExists(refLocal, hashLocal) >
+		<cfelse>
+			<cfreturn false>
+		</cfif>		
 	</cffunction>
 	
 	<cffunction name="lookup" access="public" output="false" returntype="boolean" hint="Check if an object is in cache, it doesn't tell you if the soft reference expired or not">
@@ -110,11 +118,16 @@ Modification History:
 			
 			var targetObj = 0;
 			
-			/* Check for eternal object */
-			targetObj = createSoftReference(arguments.objectKey,arguments.MyObject);
+			if(variables.isSoft){
+				/* Check for eternal object */
+				targetObj = createSoftReference(arguments.objectKey,arguments.MyObject);
+				
+				/* Set new Object into cache pool */
+				variables.collection[arguments.objectKey] = targetObj;
 			
-			/* Set new Object into cache pool */
-			variables.collection[arguments.objectKey] = targetObj;
+			} else {
+				variables.collection[arguments.objectKey] = arguments.myObject;
+			}
 		
 		</cfscript>
 	</cffunction>
