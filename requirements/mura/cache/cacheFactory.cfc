@@ -12,11 +12,6 @@ Author 	    :	Luis Majano
 Date        :	January 18, 2007
 Description :
 	This is an object cache pool.
-
-Modification History:
-01/18/2007 - Created
-
-
 ----------------------------------------------------------------------->
 <cfcomponent output="false" extends="mura.Factory">
 	
@@ -71,10 +66,12 @@ Modification History:
 		<!--- ************************************************************* --->
 		<cfset var refLocal = structnew()>
 		<cfset var hashLocal=getHashKey(arguments.objectKey) >
+		<cfset reLocal.tmpObj=0 >
+		
 		<!--- Check for Object in Cache. --->
 		<cfif structKeyExists(variables.collection, hashLocal)>
-			<cfset refLocal[hashLocal]=variables.collection[hashLocal]>
-			<cfreturn structKeyExists(refLocal, hashLocal) >
+			<cfset refLocal.tmpObj=getFromPool(hashLocal)>
+			<cfreturn structKeyExists(refLocal, "tmpObj") >
 		<cfelse>
 			<cfreturn false>
 		</cfif>		
