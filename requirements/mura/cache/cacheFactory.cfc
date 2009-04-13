@@ -28,11 +28,8 @@ Description :
 			variables.instance = structnew();
 			
 			/* Instantiate object pools */
-			setpool( Collections.synchronizedMap( Map ) );
-			
-			/* Register the reference queue for our soft references */
-			setReferenceQueue( CreateObject("java","java.lang.ref.ReferenceQueue").init() );
-			
+			setcollection( Collections.synchronizedMap( Map ) );
+		
 			/* Return pool */
 			return this;
 		</cfscript>
@@ -59,7 +56,7 @@ Description :
 		</cfif>
 
 		<!--- return cached context --->		
-		<cfreturn getFromPool( hashKey) />
+		<cfreturn getFromCache( hashKey) />
 
 	</cffunction>
 	
@@ -73,14 +70,14 @@ Description :
 		
 		<!--- Check for Object in Cache. --->
 		<cfif structKeyExists(variables.collection, hashLocal)>
-			<cfset refLocal.tmpObj=getFromPool(hashLocal)>
+			<cfset refLocal.tmpObj=getFromCache(hashLocal)>
 			<cfreturn structKeyExists(refLocal, "tmpObj") >
 		<cfelse>
 			<cfreturn false>
 		</cfif>		
 	</cffunction>
 	
-	<cffunction name="getFromPool" access="public" output="false" returntype="any" hint="Get an object from cache. If its a soft reference object it might return a null value.">
+	<cffunction name="getFromCache" access="public" output="false" returntype="any" hint="Get an object from cache. If its a soft reference object it might return a null value.">
 		<!--- ************************************************************* --->
 		<cfargument name="objectKey" type="any" required="true">
 		<!--- ************************************************************* --->
@@ -99,7 +96,6 @@ Description :
 			}
 		</cfscript>
 	</cffunction>
-
 
 	<cffunction name="set" access="public" output="false" returntype="void" hint="sets an object in cache.">
 		<!--- ************************************************************* --->
@@ -125,15 +121,9 @@ Description :
 	</cffunction>
 
 	<!--- Set the object pool --->
-	<cffunction name="setpool" access="private" returntype="void" output="false" hint="Set the cache pool">
-		<cfargument name="pool" type="struct" required="true">
-		<cfset variables.collection = arguments.pool>
-	</cffunction>
-
-	<!--- Set the reference queue --->
-	<cffunction name="setReferenceQueue" access="private" output="false" returntype="void" hint="Set ReferenceQueue">
-		<cfargument name="ReferenceQueue" type="any" required="true"/>
-		<cfset variables.ReferenceQueue = arguments.ReferenceQueue/>
+	<cffunction name="setCollection" access="private" returntype="void" output="false" hint="Set the cache pool">
+		<cfargument name="collection" type="struct" required="true">
+		<cfset variables.collection = arguments.collection>
 	</cffunction>
 
 	
@@ -145,7 +135,7 @@ Description :
 		<!--- ************************************************************* --->
 		<cfscript>
 			/* Create Soft Reference Wrapper and register with Queue */
-			var softRef = CreateObject("java","java.lang.ref.SoftReference").init(arguments.MyObject,getReferenceQueue());
+			var softRef = CreateObject("java","java.lang.ref.SoftReference").init(arguments.MyObject);
 			return softRef;
 		</cfscript>
 	</cffunction>
@@ -162,10 +152,5 @@ Description :
 			}			
 		</cfscript>
 	</cffunction>
-	
-		<!--- Get/Set the Ref Queue --->
-	<cffunction name="getReferenceQueue" access="public" output="false" returntype="any" hint="Get ReferenceQueue">
-		<cfreturn variables.ReferenceQueue/>
-	</cffunction>	
 	
 </cfcomponent>
