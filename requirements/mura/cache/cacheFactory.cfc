@@ -14,6 +14,7 @@ Description :
 	This is an object cache pool.
 ----------------------------------------------------------------------->
 <cfcomponent output="false" extends="mura.Factory">
+	<cfset variables.isSoft=true>
 	
 	<cffunction name="init" access="public" output="false" returntype="any" hint="Constructor">
 		<cfargument name="isSoft" type="boolean" required="true" default="true"/>
@@ -21,7 +22,6 @@ Description :
 			var Collections = createObject("java", "java.util.Collections");
 			/* Create the reference maps */
 			var Map = CreateObject("java","java.util.HashMap").init();
-			var SoftRefKeyMap = CreateObject("java","java.util.HashMap").init();
 			
 			variables.isSoft=arguments.isSoft;
 			/* Prepare instance */
@@ -29,7 +29,6 @@ Description :
 			
 			/* Instantiate object pools */
 			setpool( Collections.synchronizedMap( Map ) );
-			setSoftRefKeyMap( Collections.synchronizedMap(SoftRefKeyMap) );
 			
 			/* Register the reference queue for our soft references */
 			setReferenceQueue( CreateObject("java","java.lang.ref.ReferenceQueue").init() );
@@ -37,6 +36,10 @@ Description :
 			/* Return pool */
 			return this;
 		</cfscript>
+	</cffunction>
+	
+	<cffunction name="purgeAll" access="public" returntype="void" output="false">
+		<cfset init(variables.isSoft)>
 	</cffunction>
 
 	<cffunction name="get" access="public" returntype="any" output="false">
@@ -77,14 +80,6 @@ Description :
 		</cfif>		
 	</cffunction>
 	
-	<cffunction name="lookup" access="public" output="false" returntype="boolean" hint="Check if an object is in cache, it doesn't tell you if the soft reference expired or not">
-		<!--- ************************************************************* --->
-		<cfargument name="objectKey" type="any" required="true">
-		<!--- ************************************************************* --->
-		<!--- Check for Object in Cache. --->
-		<cfreturn structKeyExists(variables.collection, arguments.objectKey) >
-	</cffunction>
-	
 	<cffunction name="getFromPool" access="public" output="false" returntype="any" hint="Get an object from cache. If its a soft reference object it might return a null value.">
 		<!--- ************************************************************* --->
 		<cfargument name="objectKey" type="any" required="true">
@@ -106,7 +101,7 @@ Description :
 	</cffunction>
 
 
-<cffunction name="set" access="public" output="false" returntype="void" hint="sets an object in cache.">
+	<cffunction name="set" access="public" output="false" returntype="void" hint="sets an object in cache.">
 		<!--- ************************************************************* --->
 		<cfargument name="objectKey" 			type="any"  required="true">
 		<cfargument name="MyObject"				type="any" 	required="true">
@@ -140,12 +135,7 @@ Description :
 		<cfargument name="ReferenceQueue" type="any" required="true"/>
 		<cfset variables.ReferenceQueue = arguments.ReferenceQueue/>
 	</cffunction>
-	
-	<!--- Set the soft ref key map --->
-	<cffunction name="setSoftRefKeyMap" access="private" output="false" returntype="void" hint="Set SoftRefKeyMap">
-		<cfargument name="SoftRefKeyMap" type="any" required="true"/>
-		<cfset variables.SoftRefKeyMap = arguments.SoftRefKeyMap/>
-	</cffunction>
+
 	
 	<!--- Create a soft referenec --->
 	<cffunction name="createSoftReference" access="private" returntype="any" hint="Create SR, register cached object and reference" output="false" >
@@ -156,12 +146,6 @@ Description :
 		<cfscript>
 			/* Create Soft Reference Wrapper and register with Queue */
 			var softRef = CreateObject("java","java.lang.ref.SoftReference").init(arguments.MyObject,getReferenceQueue());
-			var RefKeyMap = getSoftRefKeyMap();
-			
-			/* Create Reverse Mapping */
-			RefKeyMap[softRef] = arguments.objectKey;
-			
-			/* Return object */
 			return softRef;
 		</cfscript>
 	</cffunction>
@@ -184,14 +168,4 @@ Description :
 		<cfreturn variables.ReferenceQueue/>
 	</cffunction>	
 	
-	<!--- Get/Set Soft Reference KeyMap --->
-	<cffunction name="getSoftRefKeyMap" access="public" output="false" returntype="any" hint="Get SoftRefKeyMap">
-		<cfreturn variables.SoftRefKeyMap/>
-	</cffunction>	
-		
-	<!--- Check if the soft reference exists --->
-	<cffunction name="softRefLookup" access="public" returntype="boolean" hint="See if the soft reference is in the key map" output="false" >
-		<cfargument name="softRef" required="true" type="any" hint="The soft reference to check">
-		<cfreturn structKeyExists(getSoftRefKeyMap(),arguments.softRef)>
-	</cffunction>
 </cfcomponent>
