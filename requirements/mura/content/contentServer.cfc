@@ -13,14 +13,6 @@
     along with Mura CMS.  If not, see <http://www.gnu.org/licenses/>. --->
 <cfcomponent extends="mura.cfobject">
 
-<cffunction name="doRequest" output="false" returntype="any" access="remote">	
-	
-<!--- This method needs a previous siteID and either filename or linkServID set in either the request, url or form scopes--->	
-<cfset request.servletEvent = createObject("component","mura.servletEvent").init() />
-<cfset request.servletEvent.setValue('siteid',request.servletEvent.getValue('siteid'))>
-<cfreturn createObject("component","mura.Mura").init().doRequest(request.servletEvent)>
-</cffunction>
-
 <cffunction name="forcePathDirectoryStructure" output="false" returntype="any" access="remote">
 <cfargument name="cgi_path">
 <cfset var qstring="">
@@ -149,7 +141,6 @@
 		</cfif>
 		
 		<cfset request.servletEvent = createObject("component","mura.servletEvent").init() />
-		<cfset request.servletEvent.setValue('siteid',request.servletEvent.getValue('siteid'))>
 		<cfreturn createObject("component","mura.Mura").init().doRequest(request.servletEvent)>
 		
 	<cfelse>
