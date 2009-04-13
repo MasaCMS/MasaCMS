@@ -137,5 +137,21 @@
 	<cfreturn getValue('TranslatorFactory').get(arguments.translator) />	
 </cffunction>
 
+<cffunction name="getContentRenderer" returntype="any" access="public">
+	<cfreturn getValue('contentRenderer') />	
+</cffunction>
+
+<cffunction name="getContentBean" returntype="any" access="public">
+	<cfreturn getValue('contentBean') />	
+</cffunction>
+
+<cffunction name="getCrumbData" returntype="any" access="public">
+	<cfreturn getValue('crumdata') />	
+</cffunction>
+
+<cffunction name="getConfig" returntype="any" access="public">
+	<cfreturn application.configBean />	
+</cffunction>
+
 </cfcomponent>
 
