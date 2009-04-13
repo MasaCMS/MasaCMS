@@ -135,8 +135,8 @@ function previewFeed(){
 <dd>
 <cf_dsp_categories_nest siteID="#attributes.siteID#" parentID="" nestLevel="0" feedID="#attributes.feedID#">
 <dd>
-</cfif>
-<dt>#application.rbFactory.getKeyValue(session.rb,'collections.includefeaturesonly')#</dt>
+
+</cfif><dt>#application.rbFactory.getKeyValue(session.rb,'collections.includefeaturesonly')#</dt>
 <dd>
 <input name="isFeaturesOnly" type="radio" value="1" class="radio" <cfif request.feedBean.getIsFeaturesOnly()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.yes')# 
 <input name="isFeaturesOnly" type="radio" value="0" class="radio" <cfif not request.feedBean.getIsFeaturesOnly()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.no')# 
@@ -230,6 +230,7 @@ function previewFeed(){
 		<option value="title" <cfif request.feedBean.getsortBy() eq 'title'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'params.longtitle')#</option>
 		<option value="rating" <cfif request.feedBean.getsortBy() eq 'rating'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'params.rating')#</option>
 		<option value="comments" <cfif request.feedBean.getsortBy() eq 'comments'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'params.comments')#</option>
+		<option value="created" <cfif request.feedBean.getsortBy() eq 'created'>selected</cfif>#application.rbFactory.getKeyValue(session.rb,'params.created')#</option>
 	</select>
 	</dd>
 	<dt>#application.rbFactory.getKeyValue(session.rb,'collections.sortdirection')#</dt>

@@ -97,7 +97,7 @@
 	tfiles.fileSize,tfiles.fileExt,tcontent.fileid,
 	tcontent.tags,tcontent.credits,tcontent.audience,
 	tcontentstats.rating,tcontentstats.totalVotes,tcontentstats.downVotes,tcontentstats.upVotes,
-	tcontentstats.comments, tparent.type parentType, <cfif doKids> qKids.kids<cfelse> 0 as kids</cfif>,tcontent.path
+	tcontentstats.comments, tparent.type parentType, <cfif doKids> qKids.kids<cfelse> 0 as kids</cfif>,tcontent.path, tcontent.created
 	
 	from tcontent
 	left Join tfiles on (tcontent.fileid=tfiles.fileid)
@@ -377,7 +377,7 @@
 	order by 
 	
 	<cfswitch expression="#arguments.feedBean.getSortBy()#">
-	<cfcase value="menutitle,title,lastupdate,releasedate,orderno,displayStart">
+	<cfcase value="menutitle,title,lastupdate,releasedate,orderno,displayStart,created">
 	tcontent.#arguments.feedBean.getSortBy()# #arguments.feedBean.getSortDirection()#
 	</cfcase>
 	<cfcase value="rating">
