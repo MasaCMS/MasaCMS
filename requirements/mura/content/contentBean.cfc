@@ -88,6 +88,7 @@
 <cfset variables.instance.tags = "">
 <cfset variables.instance.extendData="" />
 <cfset variables.instance.doCache = 1 />
+<cfset variables.instance.created = now() />
 
 <cffunction name="init" access="public" returntype="any" output="false">
 	<cfargument name="configBean" required="true" default=""/>
@@ -170,6 +171,7 @@
 		<cfset setPath(arguments.Content.path) />
 		<cfset setTags(arguments.Content.tags) />
 		<cfset setdoCache(arguments.Content.doCache) />
+		<cfset setCreated(arguments.Content.created) />
 		
 	<cfelseif isStruct(arguments.content)>
 	
@@ -950,6 +952,24 @@
 
   <cffunction name="getDoCache" returnType="numeric" output="false" access="public">
     <cfreturn variables.instance.doCache />
+  </cffunction>
+
+  <cffunction name="setCreated" returnType="void" output="false" access="public">
+    <cfargument name="Created" type="string" required="true">
+	<cfif lsisDate(arguments.created)>
+		<cftry>
+		<cfset variables.instance.created = lsparseDateTime(arguments.created) />
+		<cfcatch>
+			<cfset variables.instance.created = arguments.created />
+		</cfcatch>
+		</cftry>
+		<cfelse>
+		<cfset variables.instance.created = ""/>
+	</cfif>
+  </cffunction>
+
+  <cffunction name="getCreated" returnType="string" output="false" access="public">
+    <cfreturn variables.instance.created />
   </cffunction>
 
   <cffunction name="getExtendedAttribute" returnType="string" output="false" access="public">

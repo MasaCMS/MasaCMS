@@ -178,7 +178,7 @@
 	   responseChart,responseSendTo,moduleAssign,notes,inheritObjects,isFeature,
 	   releaseDate,targetParams,isLocked,nextN,sortBy,sortDirection,featureStart,featureStop,fileID,forceSSL,
 	   remoteID,remoteURL,remotePubDate,remoteSource,RemoteSourceURL,Credits,
-	   audience, keyPoints, searchExclude, displayTitle, doCache)
+	   audience, keyPoints, searchExclude, displayTitle, doCache, created)
       VALUES (
 	  	 <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentBean.getContentHistID()#">, 
          <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentBean.getContentID()#">,
@@ -240,7 +240,8 @@
 		<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.contentBean.getKeyPoints() neq '',de('no'),de('yes'))#" value="#arguments.contentBean.getKeyPoints()#">,
 		#arguments.contentBean.getSearchExclude()#,
 		#arguments.contentBean.getDisplayTitle()#,
-		#arguments.contentBean.getDoCache()#
+		#arguments.contentBean.getDoCache()#,
+		<cfif isdate(arguments.contentBean.getCreated())> #createodbcdatetime(LSDateFormat(arguments.contentBean.getCreated(),'mm/dd/yyyy'))#<cfelse>null</cfif>
 			)
  </CFQUERY>
 

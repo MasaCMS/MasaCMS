@@ -407,6 +407,7 @@
 	
 	<cfif newBean.getIsNew()>
 		<cfset newBean.setActive(1) />
+		<cfset newBean.setCreated(now()) />
 	<cfelse>
 		<cfset newBean.setActive(0) />
 	</cfif>

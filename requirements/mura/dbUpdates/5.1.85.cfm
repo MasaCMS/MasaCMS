@@ -81,4 +81,41 @@ select * from tpluginscripts  where 0=1
 </cfquery>
 </cfif>
 
+<cfquery name="rsCheck" datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+select * from tcontent  where 0=1
+</cfquery>
+
+<cfif not listFindNoCase(rsCheck.columnlist,"created")>
+<cfswitch expression="#getDbType()#">
+<cfcase value="mssql">
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	ALTER TABLE tcontent ADD created [datetime] NULL
+	</cfquery>
+</cfcase>
+<cfcase value="mysql">
+	<cftry>
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	ALTER TABLE tcontent ADD COLUMN created datetime default NULL
+	</cfquery>
+	<cfcatch>
+			<!--- H2 --->
+			<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+			ALTER TABLE tcontent ADD  created datetime default NULL
+			</cfquery>
+		</cfcatch>
+	</cftry>
+</cfcase>
+<cfcase value="oracle">
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	ALTER TABLE "TCONTENT" ADD "CREATED" DATE default null
+	</cfquery>
+</cfcase>
+
+</cfswitch>
+
+<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	update tcontent set created=lastupdate
+</cfquery>
+</cfif>
+
 
