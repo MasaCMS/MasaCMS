@@ -18,38 +18,41 @@
 <cfset criterias=arrayNew(2) />
 <cfset rsParams=request.feedBean.getAdvancedParams()/>
 
+
 <cfset options[1][1]="tcontent.lastupdate^date">
 <cfset options[1][2]=application.rbFactory.getKeyValue(session.rb,'params.lastupdate')>
 <cfset options[2][1]="tcontent.releaseDate^date">
 <cfset options[2][2]=application.rbFactory.getKeyValue(session.rb,'params.releasedate')>
-<cfset options[3][1]="tcontent.menuTitle^varchar">
-<cfset options[3][2]=application.rbFactory.getKeyValue(session.rb,'params.menutitle')>
-<cfset options[4][1]="tcontent.title^varchar">
-<cfset options[4][2]=application.rbFactory.getKeyValue(session.rb,'params.title')>
-<cfset options[5][1]="tcontent.Credits^varchar">
-<cfset options[5][2]=application.rbFactory.getKeyValue(session.rb,'params.credits')>
-<cfset options[6][1]="tcontent.summary^varchar">
-<cfset options[6][2]=application.rbFactory.getKeyValue(session.rb,'params.summary')>
-<cfset options[7][1]="tcontent.metaDesc^varchar">
-<cfset options[7][2]=application.rbFactory.getKeyValue(session.rb,'params.metadesc')>
-<cfset options[8][1]="tcontent.metaKeywords^varchar">
-<cfset options[8][2]=application.rbFactory.getKeyValue(session.rb,'params.metakeywords')>
-<cfset options[9][1]="tcontent.type^varchar">
-<cfset options[9][2]=application.rbFactory.getKeyValue(session.rb,'params.type')>
-<cfset options[10][1]="tcontent.subType^varchar">
-<cfset options[10][2]=application.rbFactory.getKeyValue(session.rb,'params.subtype')>
-<cfset options[11][1]="tcontent.tags^varchar">
-<cfset options[11][2]=application.rbFactory.getKeyValue(session.rb,'params.tag')>
-<cfset options[12][1]="tcontent.displayStart^timestamp">
-<cfset options[12][2]=application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.startdatetime')>
-<cfset options[13][1]="tcontent.displayStop^timestamp">
-<cfset options[13][2]=application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.stopdatetime')>
-<cfset options[14][1]="tcontent.contentID^varchar">
-<cfset options[14][2]="Content ID"/>
-<cfset options[15][1]="tcontent.parentID^varchar">
-<cfset options[15][2]="Parent ID"/>
-<cfset options[16][1]="tcontent.path^varchar">
-<cfset options[16][2]="Path"/>
+<cfset options[3][1]="tcontent.created^date">
+<cfset options[3][2]=application.rbFactory.getKeyValue(session.rb,'params.created')>
+<cfset options[4][1]="tcontent.menuTitle^varchar">
+<cfset options[4][2]=application.rbFactory.getKeyValue(session.rb,'params.menutitle')>
+<cfset options[5][1]="tcontent.title^varchar">
+<cfset options[5][2]=application.rbFactory.getKeyValue(session.rb,'params.title')>
+<cfset options[6][1]="tcontent.Credits^varchar">
+<cfset options[6][2]=application.rbFactory.getKeyValue(session.rb,'params.credits')>
+<cfset options[7][1]="tcontent.summary^varchar">
+<cfset options[7][2]=application.rbFactory.getKeyValue(session.rb,'params.summary')>
+<cfset options[8][1]="tcontent.metaDesc^varchar">
+<cfset options[8][2]=application.rbFactory.getKeyValue(session.rb,'params.metadesc')>
+<cfset options[9][1]="tcontent.metaKeywords^varchar">
+<cfset options[9][2]=application.rbFactory.getKeyValue(session.rb,'params.metakeywords')>
+<cfset options[10][1]="tcontent.type^varchar">
+<cfset options[10][2]=application.rbFactory.getKeyValue(session.rb,'params.type')>
+<cfset options[11][1]="tcontent.subType^varchar">
+<cfset options[11][2]=application.rbFactory.getKeyValue(session.rb,'params.subtype')>
+<cfset options[12][1]="tcontent.tags^varchar">
+<cfset options[12][2]=application.rbFactory.getKeyValue(session.rb,'params.tag')>
+<cfset options[13][1]="tcontent.displayStart^timestamp">
+<cfset options[13][2]=application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.startdatetime')>
+<cfset options[14][1]="tcontent.displayStop^timestamp">
+<cfset options[14][2]=application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.stopdatetime')>
+<cfset options[15][1]="tcontent.contentID^varchar">
+<cfset options[15][2]="Content ID"/>
+<cfset options[16][1]="tcontent.parentID^varchar">
+<cfset options[16][2]="Parent ID"/>
+<cfset options[17][1]="tcontent.path^varchar">
+<cfset options[17][2]="Path"/>
 
 <cfset criterias[1][1]="Equals">
 <cfset criterias[1][2]=application.rbFactory.getKeyValue(session.rb,'params.equals')>
@@ -230,7 +233,7 @@ function previewFeed(){
 		<option value="title" <cfif request.feedBean.getsortBy() eq 'title'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'params.longtitle')#</option>
 		<option value="rating" <cfif request.feedBean.getsortBy() eq 'rating'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'params.rating')#</option>
 		<option value="comments" <cfif request.feedBean.getsortBy() eq 'comments'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'params.comments')#</option>
-		<option value="created" <cfif request.feedBean.getsortBy() eq 'created'>selected</cfif>#application.rbFactory.getKeyValue(session.rb,'params.created')#</option>
+		<option value="created" <cfif request.feedBean.getsortBy() eq 'created'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'params.created')#</option>
 	</select>
 	</dd>
 	<dt>#application.rbFactory.getKeyValue(session.rb,'collections.sortdirection')#</dt>
