@@ -37,13 +37,15 @@
 		<cfargument name="target" required="Yes" type="string">
 		<cfargument name="scaleBy" required="Yes" type="string">
 		<cfargument name="scale" required="Yes" type="string">
+		<cfargument name="serverDirectory" required="Yes" type="string">
+		
 		<cfset var img = "">
 		<cfset var fromX = "">
 		<cfset var fromY = "">
 		<cfset var tempFile = "">
 		
 		<cfif arguments.source eq arguments.target>
-			<cfset tempFile= "#getTempDirectory()##createUUID()#.#listLast(source,'.')#"/>
+			<cfset tempFile= "#serverDirectory##createUUID()#.#listLast(source,'.')#"/>
 			<cffile action="copy" source="#arguments.source#" destination="#tempFile#"/>
 			<cfimage action="READ" source="#tempFile#" name="img">
 		<cfelse>		
@@ -125,6 +127,11 @@
 	<cfset var fileObjMedium=""/>
 	<cfset var refused=false />>
 	<cfset var serverFilename=arguments.file.serverfilename />
+	<cfset var serverDirectory=arguments.file.serverDirectory />
+	
+	<cfif not listFind("/,\",right(serverDirectory,1))>
+		<cfset serverDirectory=serverDirectory & "/">
+	</cfif>
 	
 	<cfset fileStruct.fileObj = '' />
 	<cfset fileStruct.fileObjSmall = '' />
@@ -136,25 +143,25 @@
 			<cfif listLen(serverfilename," ") gt 1>
 				<cfset serverFilename=replace(serverFilename," ","-","ALL") />
 				
-				<cfif fileExists("#getTempDirectory()##serverFilename#.#arguments.file.serverFileExt#")>
-					<cffile action="delete" file="#getTempDirectory()##serverFilename#.#arguments.file.serverFileExt#">
+				<cfif fileExists("#serverDirectory##serverFilename#.#arguments.file.serverFileExt#")>
+					<cffile action="delete" file="#serverDirectory##serverFilename#.#arguments.file.serverFileExt#">
 				</cfif>
-				<cffile action="rename" source="#getTempDirectory()##arguments.file.serverfile#" destination="#getTempDirectory()##serverFilename#.#arguments.file.serverFileExt#" attributes="normal">
+				<cffile action="rename" source="#serverDirectory##arguments.file.serverfile#" destination="#serverDirectory##serverFilename#.#arguments.file.serverFileExt#" attributes="normal">
 			</cfif>
 	
-			<cfset theFile = "#getTempDirectory()##serverFilename#.#arguments.file.serverFileExt#" />
+			<cfset theFile = "#serverDirectory##serverFilename#.#arguments.file.serverFileExt#" />
 				
 			<!--- BEGIN IMAGE MANIPULATION --->
 			<cfif listFindNoCase('jpg,jpeg,png,gif',arguments.file.ServerFileExt) and  arguments.file.contentType eq "Image">
 				
-					<cfset resizeImage(theFile,theFile,variables.settingsManager.getSite(arguments.siteID).getGalleryMainScaleBy(),variables.settingsManager.getSite(arguments.siteID).getGalleryMainScale()) />			
-					<cfset theSmall = "#getTempDirectory()##serverFilename#_small.#arguments.file.serverFileExt#" />
+					<cfset resizeImage(theFile,theFile,variables.settingsManager.getSite(arguments.siteID).getGalleryMainScaleBy(),variables.settingsManager.getSite(arguments.siteID).getGalleryMainScale(),serverDirectory) />			
+					<cfset theSmall = "#serverDirectory##serverFilename#_small.#arguments.file.serverFileExt#" />
 			
-					<cfset resizeImage(theFile,theSmall,variables.settingsManager.getSite(arguments.siteID).getGallerySmallScaleBy(),variables.settingsManager.getSite(arguments.siteID).getGallerySmallScale()) />
+					<cfset resizeImage(theFile,theSmall,variables.settingsManager.getSite(arguments.siteID).getGallerySmallScaleBy(),variables.settingsManager.getSite(arguments.siteID).getGallerySmallScale(),serverDirectory) />
 					<cfset fileStruct.fileObjSmall=fromPath2Binary(theSmall,false) />
 					
-					<cfset theMedium = "#getTempDirectory()##serverFilename#_medium.#arguments.file.serverFileExt#" />
-					<cfset resizeImage(theFile,theMedium,variables.settingsManager.getSite(arguments.siteID).getGalleryMediumScaleBy(),variables.settingsManager.getSite(arguments.siteID).getGalleryMediumScale()) />
+					<cfset theMedium = "#serverDirectory##serverFilename#_medium.#arguments.file.serverFileExt#" />
+					<cfset resizeImage(theFile,theMedium,variables.settingsManager.getSite(arguments.siteID).getGalleryMediumScaleBy(),variables.settingsManager.getSite(arguments.siteID).getGalleryMediumScale(),serverDirectory) />
 					<cfset fileStruct.fileObjMedium=fromPath2Binary(theMedium,false) />
 	
 					<cftry><cffile action="delete" file="#theMedium#"><cfcatch></cfcatch></cftry>

@@ -83,6 +83,11 @@
 	<cfset var blurMe=structNew() />
 	<cfset var imageData="" />
 	<cfset var serverFilename=arguments.file.serverfilename />
+	<cfset var serverDirectory=arguments.file.arguments.file.serverDirectory />
+	
+	<cfif not listFind("/,\",right(serverDirectory,1))>
+		<cfset serverDirectory=serverDirectory & "/">
+	</cfif>
 	
 	<cfset fileStruct.fileObj = '' />
 	<cfset fileStruct.fileObjSmall = '' />
@@ -97,46 +102,46 @@
 				
 				<cfif find(serverfilename," ")>
 					<cfset serverFilename=replace(serverFilename," ","-","ALL") />
-					<cffile action="rename" source="#getTempDirectory()##arguments.file.serverfile#" destination="#getTempDirectory()##serverFilename#.#arguments.file.serverFileExt#">
+					<cffile action="rename" source="#serverDirectory##arguments.file.serverfile#" destination="#serverDirectory##serverFilename#.#arguments.file.serverFileExt#">
 				</cfif>
 	
 				
 				<cfset imageCFC=application.serviceFactory.getBean('image')/>
-				<cfset imageData = imageCFC.getImageInfo("", "#getTempDirectory()##serverFilename#.#arguments.file.serverFileExt#")>
+				<cfset imageData = imageCFC.getImageInfo("", "#serverDirectory##serverFilename#.#arguments.file.serverFileExt#")>
 				
 			
 				<!--- BEGIN MAIN --->
 				<cfif variables.settingsManager.getSite(arguments.siteID).getGalleryMainScaleBy() eq 'x'
 				and imageData.width gt variables.settingsManager.getSite(arguments.siteID).getGalleryMainScale()>
 					
-					<cfset theFile = imageCFC.scaleWidth("", "#getTempDirectory()##serverFilename#.#arguments.file.serverFileExt#", "#getTempDirectory()##serverFilename#.#arguments.file.serverFileExt#", variables.settingsManager.getSite(arguments.siteID).getGalleryMainScale())>
+					<cfset theFile = imageCFC.scaleWidth("", "#serverDirectory##serverFilename#.#arguments.file.serverFileExt#", "#getserverDirectoryectory()##serverFilename#.#arguments.file.serverFileExt#", variables.settingsManager.getSite(arguments.siteID).getGalleryMainScale())>
 				
 				<cfelseif imageData.height gt variables.settingsManager.getSite(arguments.siteID).getGalleryMainScale()>
 					
-					<cfset theFile = imageCFC.scaleHeight("", "#getTempDirectory()##serverFilename#.#arguments.file.serverFileExt#", "#getTempDirectory()##serverFilename#.#arguments.file.serverFileExt#", variables.settingsManager.getSite(arguments.siteID).getGalleryMainScale())>	
+					<cfset theFile = imageCFC.scaleHeight("", "#serverDirectory##serverFilename#.#arguments.file.serverFileExt#", "#getserverDirectoryectory()##serverFilename#.#arguments.file.serverFileExt#", variables.settingsManager.getSite(arguments.siteID).getGalleryMainScale())>	
 				
 			</cfif>
 				
 				<!--- BEGIN SMALL --->
 				<!--- <cfset blurMe=getBlur(imageData.width ,variables.settingsManager.getSite(arguments.siteID).getGallerySmallScale()) />
-				<cfset theSmall = imageCFC.filterFastBlur("", "#getTempDirectory()##serverFilename#.#arguments.file.serverFileExt#", "#getTempDirectory()##serverFilename#_Small.#arguments.file.serverFileExt#",blurMe.amount,blurMe.times,100)>
+				<cfset theSmall = imageCFC.filterFastBlur("", "#serverDirectory##serverFilename#.#arguments.file.serverFileExt#", "#serverDirectory##serverFilename#_Small.#arguments.file.serverFileExt#",blurMe.amount,blurMe.times,100)>
 				 --->
 				<cfif variables.settingsManager.getSite(arguments.siteID).getGallerySmallScaleBy() eq 'x' 
 				and imageData.width gt variables.settingsManager.getSite(arguments.siteID).getGallerySmallScale()> 
 					
 					<cfset blurMe=getBlur(imageData.width ,variables.settingsManager.getSite(arguments.siteID).getGallerySmallScale()) />
-					<cfset theSmall = imageCFC.filterFastBlur("", "#getTempDirectory()##serverFilename#.#arguments.file.serverFileExt#", "#getTempDirectory()##serverFilename#_Small.#arguments.file.serverFileExt#",blurMe.amount,blurMe.times,100)>
-					<cfset theSmall = imageCFC.scaleWidth("", "#getTempDirectory()##serverFilename#_Small.#arguments.file.serverFileExt#", "#getTempDirectory()##serverFilename#_Small.#arguments.file.serverFileExt#", variables.settingsManager.getSite(arguments.siteID).getGallerySmallScale(),100)>
-					<cffile action="readBinary" file="#getTempDirectory()##serverFilename#_Small.#arguments.file.serverFileExt#" variable="fileObjSmall">
+					<cfset theSmall = imageCFC.filterFastBlur("", "#serverDirectory##serverFilename#.#arguments.file.serverFileExt#", "#serverDirectory##serverFilename#_Small.#arguments.file.serverFileExt#",blurMe.amount,blurMe.times,100)>
+					<cfset theSmall = imageCFC.scaleWidth("", "#serverDirectory##serverFilename#_Small.#arguments.file.serverFileExt#", "#serverDirectory##serverFilename#_Small.#arguments.file.serverFileExt#", variables.settingsManager.getSite(arguments.siteID).getGallerySmallScale(),100)>
+					<cffile action="readBinary" file="#serverDirectory##serverFilename#_Small.#arguments.file.serverFileExt#" variable="fileObjSmall">
 					<cfset fileStruct.fileObjSmall=fileObjSmall />
 					
 				<cfelseif variables.settingsManager.getSite(arguments.siteID).getGallerySmallScaleBy() eq 'y'
 				and imageData.height gt variables.settingsManager.getSite(arguments.siteID).getGallerySmallScale()>
 					
 					<cfset blurMe=getBlur(imageData.height ,variables.settingsManager.getSite(arguments.siteID).getGallerySmallScale()) />
-					<cfset theSmall = imageCFC.filterFastBlur("", "#getTempDirectory()##serverFilename#.#arguments.file.serverFileExt#", "#getTempDirectory()##serverFilename#_Small.#arguments.file.serverFileExt#",blurMe.amount,blurMe.times,100)>
-					<cfset theSmall = imageCFC.scaleHeight("", "#getTempDirectory()##serverFilename#_Small.#arguments.file.serverFileExt#", "#getTempDirectory()##serverFilename#_Small.#arguments.file.serverFileExt#", variables.settingsManager.getSite(arguments.siteID).getGallerySmallScale(),100)>
-					<cffile action="readBinary" file="#getTempDirectory()##serverFilename#_Small.#arguments.file.serverFileExt#" variable="fileObjSmall">
+					<cfset theSmall = imageCFC.filterFastBlur("", "#serverDirectory##serverFilename#.#arguments.file.serverFileExt#", "#serverDirectory##serverFilename#_Small.#arguments.file.serverFileExt#",blurMe.amount,blurMe.times,100)>
+					<cfset theSmall = imageCFC.scaleHeight("", "#serverDirectory##serverFilename#_Small.#arguments.file.serverFileExt#", "#serverDirectory##serverFilename#_Small.#arguments.file.serverFileExt#", variables.settingsManager.getSite(arguments.siteID).getGallerySmallScale(),100)>
+					<cffile action="readBinary" file="#serverDirectory##serverFilename#_Small.#arguments.file.serverFileExt#" variable="fileObjSmall">
 					<cfset fileStruct.fileObjSmall=fileObjSmall />
 					
 				<cfelseif variables.settingsManager.getSite(arguments.siteID).getGallerySmallScaleBy() eq 's'
@@ -144,13 +149,13 @@
 				or imageData.width gt variables.settingsManager.getSite(arguments.siteID).getGallerySmallScale())>
 					
 					<!---<cfset blurMe=getBlur((imageData.height+imageData.width)/2 ,variables.settingsManager.getSite(arguments.siteID).getGallerySmallScale()) />
-					<cfset theSmall = imageCFC.filterFastBlur("", "#getTempDirectory()##serverFilename#.#arguments.file.serverFileExt#", "#getTempDirectory()##serverFilename#_Small.#arguments.file.serverFileExt#",blurMe.amount,blurMe.times,100)>--->
-					<cfset theSmall = imageCFC.resize("", "#getTempDirectory()##serverFilename#.#arguments.file.serverFileExt#", "#getTempDirectory()##serverFilename#_Small.#arguments.file.serverFileExt#", variables.settingsManager.getSite(arguments.siteID).getGallerySmallScale(), variables.settingsManager.getSite(arguments.siteID).getGallerySmallScale(),true,true,100)>
-					<cffile action="readBinary" file="#getTempDirectory()##serverFilename#_Small.#arguments.file.serverFileExt#" variable="fileObjSmall">
+					<cfset theSmall = imageCFC.filterFastBlur("", "#serverDirectory##serverFilename#.#arguments.file.serverFileExt#", "#serverDirectory##serverFilename#_Small.#arguments.file.serverFileExt#",blurMe.amount,blurMe.times,100)>--->
+					<cfset theSmall = imageCFC.resize("", "#serverDirectory##serverFilename#.#arguments.file.serverFileExt#", "#serverDirectory##serverFilename#_Small.#arguments.file.serverFileExt#", variables.settingsManager.getSite(arguments.siteID).getGallerySmallScale(), variables.settingsManager.getSite(arguments.siteID).getGallerySmallScale(),true,true,100)>
+					<cffile action="readBinary" file="#serverDirectory##serverFilename#_Small.#arguments.file.serverFileExt#" variable="fileObjSmall">
 					<cfset fileStruct.fileObjSmall=fileObjSmall />
 					
 				<cfelse>
-					<cffile action="readBinary" file="#getTempDirectory()##serverFilename#.#arguments.file.serverFileExt#" variable="fileObjSmall">
+					<cffile action="readBinary" file="#serverDirectory##serverFilename#.#arguments.file.serverFileExt#" variable="fileObjSmall">
 					<cfset fileStruct.fileObjSmall=fileObjSmall />
 				</cfif>
 
@@ -160,18 +165,18 @@
 				and imageData.width gt variables.settingsManager.getSite(arguments.siteID).getGalleryMediumScale()> 
 					
 					<cfset blurMe=getBlur((imageData.height+imageData.width)/2 ,variables.settingsManager.getSite(arguments.siteID).getGalleryMediumScale()) />
-					<cfset theMedium = imageCFC.filterFastBlur("", "#getTempDirectory()##serverFilename#.#arguments.file.serverFileExt#", "#getTempDirectory()##serverFilename#_Medium.#arguments.file.serverFileExt#",blurMe.amount,blurMe.times,100)>
-					<cfset theMedium = imageCFC.scaleWidth("", "#getTempDirectory()##serverFilename#.#arguments.file.serverFileExt#", "#getTempDirectory()##serverFilename#_Medium.#arguments.file.serverFileExt#", variables.settingsManager.getSite(arguments.siteID).getGalleryMediumScale())>
-					<cffile action="readBinary" file="#getTempDirectory()##serverFilename#_Medium.#arguments.file.serverFileExt#" variable="fileObjMedium">
+					<cfset theMedium = imageCFC.filterFastBlur("", "#serverDirectory##serverFilename#.#arguments.file.serverFileExt#", "#serverDirectory##serverFilename#_Medium.#arguments.file.serverFileExt#",blurMe.amount,blurMe.times,100)>
+					<cfset theMedium = imageCFC.scaleWidth("", "#serverDirectory##serverFilename#.#arguments.file.serverFileExt#", "#serverDirectory##serverFilename#_Medium.#arguments.file.serverFileExt#", variables.settingsManager.getSite(arguments.siteID).getGalleryMediumScale())>
+					<cffile action="readBinary" file="#serverDirectory##serverFilename#_Medium.#arguments.file.serverFileExt#" variable="fileObjMedium">
 					<cfset fileStruct.fileObjMedium=fileObjMedium />
 				
 				<cfelseif variables.settingsManager.getSite(arguments.siteID).getGalleryMediumScaleBy() eq 'y'
 				and imageData.height gt variables.settingsManager.getSite(arguments.siteID).getGalleryMediumScale()>
 					
 					<cfset blurMe=getBlur((imageData.height+imageData.width)/2 ,variables.settingsManager.getSite(arguments.siteID).getGalleryMediumScale()) />
-					<cfset theMedium = imageCFC.filterFastBlur("", "#getTempDirectory()##serverFilename#.#arguments.file.serverFileExt#", "#getTempDirectory()##serverFilename#_Medium.#arguments.file.serverFileExt#",blurMe.amount,blurMe.times,100)>
-					<cfset theMedium = imageCFC.scaleHeight("", "#getTempDirectory()##serverFilename#.#arguments.file.serverFileExt#", "#getTempDirectory()##serverFilename#_Medium.#arguments.file.serverFileExt#", variables.settingsManager.getSite(arguments.siteID).getGalleryMediumScale())>
-					<cffile action="readBinary" file="#getTempDirectory()##serverFilename#_Medium.#arguments.file.serverFileExt#" variable="fileObjMedium">
+					<cfset theMedium = imageCFC.filterFastBlur("", "#serverDirectory##serverFilename#.#arguments.file.serverFileExt#", "#serverDirectory##serverFilename#_Medium.#arguments.file.serverFileExt#",blurMe.amount,blurMe.times,100)>
+					<cfset theMedium = imageCFC.scaleHeight("", "#serverDirectory##serverFilename#.#arguments.file.serverFileExt#", "#serverDirectory##serverFilename#_Medium.#arguments.file.serverFileExt#", variables.settingsManager.getSite(arguments.siteID).getGalleryMediumScale())>
+					<cffile action="readBinary" file="#serverDirectory##serverFilename#_Medium.#arguments.file.serverFileExt#" variable="fileObjMedium">
 					<cfset fileStruct.fileObjMedium=fileObjMedium />
 					
 				<cfelseif variables.settingsManager.getSite(arguments.siteID).getGalleryMediumScaleBy() eq 's'
@@ -179,18 +184,18 @@
 				or imageData.width gt variables.settingsManager.getSite(arguments.siteID).getGalleryMediumScale())>
 					
 					<!---<cfset blurMe=getBlur((imageData.height+imageData.width)/2 ,variables.settingsManager.getSite(arguments.siteID).getGalleryMediumScale()) />
-					<cfset theMedium = imageCFC.filterFastBlur("", "#getTempDirectory()##serverFilename#.#arguments.file.serverFileExt#", "#getTempDirectory()##serverFilename#_Medium.#arguments.file.serverFileExt#",blurMe.amount,blurMe.times,100)>--->
-					<cfset theMedium = imageCFC.resize("", "#getTempDirectory()##serverFilename#.#arguments.file.serverFileExt#", "#getTempDirectory()##serverFilename#_Medium.#arguments.file.serverFileExt#", variables.settingsManager.getSite(arguments.siteID).getGalleryMediumScale(), variables.settingsManager.getSite(arguments.siteID).getGalleryMediumScale(),true,true,100)>
-					<cffile action="readBinary" file="#getTempDirectory()##serverFilename#_Medium.#arguments.file.serverFileExt#" variable="fileObjMedium">
+					<cfset theMedium = imageCFC.filterFastBlur("", "#serverDirectory##serverFilename#.#arguments.file.serverFileExt#", "#serverDirectory##serverFilename#_Medium.#arguments.file.serverFileExt#",blurMe.amount,blurMe.times,100)>--->
+					<cfset theMedium = imageCFC.resize("", "#serverDirectory##serverFilename#.#arguments.file.serverFileExt#", "#serverDirectory##serverFilename#_Medium.#arguments.file.serverFileExt#", variables.settingsManager.getSite(arguments.siteID).getGalleryMediumScale(), variables.settingsManager.getSite(arguments.siteID).getGalleryMediumScale(),true,true,100)>
+					<cffile action="readBinary" file="#serverDirectory##serverFilename#_Medium.#arguments.file.serverFileExt#" variable="fileObjMedium">
 					<cfset fileStruct.fileObjMedium=fileObjMedium />
 				
 				<cfelse>
-					<cffile action="readBinary" file="#getTempDirectory()##serverFilename#.#arguments.file.serverFileExt#" variable="fileObjMedium">
+					<cffile action="readBinary" file="#serverDirectory##serverFilename#.#arguments.file.serverFileExt#" variable="fileObjMedium">
 					<cfset fileStruct.fileObjMedium=fileObjMedium />
 				</cfif>
 			</cfif>
 			
-			<cffile action="readBinary" file="#getTempDirectory()##serverFilename#.#arguments.file.serverFileExt#" variable="fileObj">
+			<cffile action="readBinary" file="#serverDirectory##serverFilename#.#arguments.file.serverFileExt#" variable="fileObj">
 			<cfset fileStruct.fileObj=fileObj />
 			
 			<cfif file.ServerFileExt eq 'gif'>	
@@ -199,15 +204,15 @@
 			</cfif>
 			<!--- END BEGIN IMAGE MANIPULATION --->
 			
-			<cffile action="delete" file="#getTempDirectory()##serverFilename#.#arguments.file.serverFileExt#">
+			<cffile action="delete" file="#serverDirectory##serverFilename#.#arguments.file.serverFileExt#">
 			
 			<cfif listFindNoCase('jpg,jpeg,png',arguments.file.ServerFileExt)>
 						
 				<cftry>
-					<cffile action="delete" file="#getTempDirectory()##serverFilename#_Small.#arguments.file.serverFileExt#">
+					<cffile action="delete" file="#serverDirectory##serverFilename#_Small.#arguments.file.serverFileExt#">
 					<cfcatch></cfcatch></cftry>
 				<cftry>
-					<cffile action="delete" file="#getTempDirectory()##serverFilename#_Medium.#arguments.file.serverFileExt#">
+					<cffile action="delete" file="#serverDirectory##serverFilename#_Medium.#arguments.file.serverFileExt#">
 					<cfcatch></cfcatch></cftry>
 				
 			</cfif>
