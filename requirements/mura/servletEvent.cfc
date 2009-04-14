@@ -149,8 +149,12 @@
 	<cfreturn getValue('crumdata') />	
 </cffunction>
 
-<cffunction name="getConfig" returntype="any" access="public">
+<cffunction name="getConfigBean" returntype="any" access="public">
 	<cfreturn application.configBean />	
+</cffunction>
+
+<cffunction name="getSite" returntype="any" access="public">
+	<cfreturn application.settingsManager.getSite(getValue('siteid')) />	
 </cffunction>
 
 </cfcomponent>
