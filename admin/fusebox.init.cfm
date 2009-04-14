@@ -116,4 +116,6 @@
 	
 	<cflocation addtoken="false" url="https://#cgi.SERVER_NAME##page#">
 </cfif>
+
+<cfset application.rbFactory.setAdminLocale()>
 </cfsilent>
