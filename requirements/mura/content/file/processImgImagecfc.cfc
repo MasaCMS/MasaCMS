@@ -83,11 +83,7 @@
 	<cfset var blurMe=structNew() />
 	<cfset var imageData="" />
 	<cfset var serverFilename=arguments.file.serverfilename />
-	<cfset var serverDirectory=arguments.file.arguments.file.serverDirectory />
-	
-	<cfif not listFind("/,\",right(serverDirectory,1))>
-		<cfset serverDirectory=serverDirectory & "/">
-	</cfif>
+	<cfset var serverDirectory=arguments.file.arguments.file.serverDirectory & "/"/>
 	
 	<cfset fileStruct.fileObj = '' />
 	<cfset fileStruct.fileObjSmall = '' />
