@@ -204,8 +204,6 @@
 			<cfset setDisplayPoolID(getSiteID()) />
 			</cfif>
 		
-		<cfset loadLocale()>
-		
 		<cfset validate() />
 		
  </cffunction>
@@ -836,34 +834,31 @@
 	
 </cffunction>
 
-
-<cffunction name="loadLocale" returntype="any" access="public" output="false">
-	
+<cffunction name="getJavaLocale" returntype="String" access="public" output="false">
 	<cfif len(getSiteLocale())>
 		<cfset variables.instance.javaLocale=application.rbFactory.CF2Java(getSiteLocale())>
 	<cfelse>
 		<cfset variables.instance.javaLocale=application.rbFactory.CF2Java(variables.configBean.getDefaultLocale())>
 	</cfif>
-
-	<cfset variables.instance.rbFactory=createObject("component","mura.resourceBundle.resourceBundleFactory").init(application.rbFactory,"#application.configBean.getWebRoot()#/#getSiteID()#/includes/resourceBundles/",getJavaLocale()) />
-	<cfset variables.instance.jsDateKey=variables.instance.rbFactory.getUtils().getJSDateKey()>
-	
-</cffunction>
-
-<cffunction name="getJavaLocale" returntype="String" access="public" output="false">
 	<cfreturn variables.instance.javaLocale />
 </cffunction>
 
 <cffunction name="getRBFactory" returntype="any" access="public" output="false">
+	<cfif not isObject(variables.instance.rbFactory)>
+		<cfset variables.instance.rbFactory=createObject("component","mura.resourceBundle.resourceBundleFactory").init(application.rbFactory,"#application.configBean.getWebRoot()#/#getSiteID()#/includes/resourceBundles/",getJavaLocale()) />
+	</cfif>
 	<cfreturn variables.instance.rbFactory />
 </cffunction>
 
 <cffunction name="getJSDateKey" returntype="String" access="public" output="false">
+	<cfif not len(variables.instance.jsDateKey)>
+		<cfset variables.instance.jsDateKey=getLocaleUtils().getJSDateKey()>
+	</cfif>
 	<cfreturn variables.instance.jsDateKey />
 </cffunction>
 
-<cffunction name="getLocaleUtils" returntype="String" access="public" output="false">
-	<cfreturn variables.instance.rbFactory.getUtils() />
+<cffunction name="getLocaleUtils" returntype="any" access="public" output="false">
+	<cfreturn getRBFactory().getUtils() />
 </cffunction>
 
 
