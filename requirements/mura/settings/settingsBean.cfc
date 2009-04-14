@@ -76,12 +76,14 @@
 <cfset variables.instance.googleAPIKey=""/>
 <cfset variables.instance.siteLocale=""/>
 <cfset variables.instance.rbFactory=""/>    
-<cfset variables.instance.javaLocale=""/> 
+<cfset variables.instance.javaLocale=""/>
+<cfset variables.instance.jsDateKey=""/> 
 <cfset variables.instance.cacheFactory=""/> 
 
 <cffunction name="init" returntype="any" output="false" access="public">
 <cfargument name="configBean" type="any" required="yes"/>
 <cfargument name="clusterManager" type="any" required="yes"/>
+
 	<cfset variables.configBean=arguments.configBean />
 	<cfset variables.clusterManager=arguments.clusterManager />
 	<cfreturn this />
@@ -201,6 +203,8 @@
 			<cfif getDisplayPoolID() eq ''>
 			<cfset setDisplayPoolID(getSiteID()) />
 			</cfif>
+		
+		<cfset loadLocale()>
 		
 		<cfset validate() />
 		
@@ -810,20 +814,6 @@
 	</cfif>
 </cffunction>
 
-
-<cffunction name="getJavaLocale" returntype="String" access="public" output="false">
-	
-	<cfif not len(variables.instance.javaLocale)>
-		<cfif len(getSiteLocale())>
-			<cfset variables.instance.javaLocale=application.rbFactory.CF2Java(getSiteLocale())>
-		<cfelse>
-			<cfset variables.instance.javaLocale=application.rbFactory.CF2Java(variables.configBean.getDefaultLocale())>
-		</cfif>
-	</cfif>
-	
-	<cfreturn variables.instance.javaLocale />
-</cffunction>
-
 <cffunction name="getCacheFactory" returntype="any" access="public" output="false">
 	
 	<cfif isObject(variables.instance.cacheFactory)>
@@ -846,12 +836,35 @@
 	
 </cffunction>
 
-<cffunction name="getRBFactory" returntype="any" access="public" output="false">
+
+<cffunction name="loadLocale" returntype="any" access="public" output="false">
 	
-	<cfif not isObject(variables.instance.rbFactory)>
-		<cfset variables.instance.rbFactory=createObject("component","mura.resourceBundle.resourceBundleFactory").init(application.rbFactory,"#application.configBean.getWebRoot()#/#getSiteID()#/includes/resourceBundles/",getJavaLocale()) />
+	<cfif len(getSiteLocale())>
+		<cfset variables.instance.javaLocale=application.rbFactory.CF2Java(getSiteLocale())>
+	<cfelse>
+		<cfset variables.instance.javaLocale=application.rbFactory.CF2Java(variables.configBean.getDefaultLocale())>
 	</cfif>
+
+	<cfset variables.instance.rbFactory=createObject("component","mura.resourceBundle.resourceBundleFactory").init(application.rbFactory,"#application.configBean.getWebRoot()#/#getSiteID()#/includes/resourceBundles/",getJavaLocale()) />
+	<cfset variables.instance.jsDateKey=variables.instance.rbFactory.getUtils().getJSDateKey()>
 	
+</cffunction>
+
+<cffunction name="getJavaLocale" returntype="String" access="public" output="false">
+	<cfreturn variables.instance.javaLocale />
+</cffunction>
+
+<cffunction name="getRBFactory" returntype="any" access="public" output="false">
 	<cfreturn variables.instance.rbFactory />
 </cffunction>
+
+<cffunction name="getJSDateKey" returntype="String" access="public" output="false">
+	<cfreturn variables.instance.jsDateKey />
+</cffunction>
+
+<cffunction name="getLocaleUtils" returntype="String" access="public" output="false">
+	<cfreturn variables.instance.rbFactory.getUtils() />
+</cffunction>
+
+
 </cfcomponent>

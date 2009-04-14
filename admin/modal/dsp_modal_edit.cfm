@@ -11,7 +11,7 @@
 
     You should have received a copy of the GNU General Public License
     along with Mura CMS.  If not, see <http://www.gnu.org/licenses/>. --->
-
+<cfset application.rbFactory.setAdminLocale()>
 <CFIF not (FindNoCase('MSIE 6','#CGI.HTTP_USER_AGENT#') GREATER THAN 0 AND FindNoCase('Opera','#CGI.HTTP_USER_AGENT#') LESS THAN 1)>
 <cfparam name="Cookie.fetDisplay" default="">
 <cfoutput>

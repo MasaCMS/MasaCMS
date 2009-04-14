@@ -187,7 +187,6 @@
 		</cfscript>
 	</cffunction> 
 	
-	
 	<cffunction name="weekStarts" access="public" returnType="string" output="false"
 				hint="Determines the first DOW">
 		<cfscript>
@@ -322,6 +321,57 @@
 				
 		</cfswitch>
 	</cffunction>
-		
+	
+	<cffunction name="getJSDateKey" output="false" returntype="any">
+	<!--- make sure that a locale and language resouce bundle have been set in the users session --->
+	<cfset var datekeyFormat="">
+	<cfset var example="">
+	<cfset var f="">
+	<cfset var dtCh="">
+	<cfset var dtFormat="">
+	<cfset var jsDateKey="">
+<!--- now we create a date so we can parse it and figure out the date format and then create a date validation key --->
+
+	<cfset formatTest=dateLocaleFormat(createDate(2012,11,10),'short')/>
+	<cfif find(".",formatTest)>
+		<cfset dtCh=	"."/>
+	<cfelseif find("-",formatTest)>
+		<cfset dtCh=	"-"/>
+	<cfelse>
+		<cfset dtCh=	"/"/>
+	</cfif>
+	<cfset dtFormat=""/>
+	
+	<cfloop list="#formatTest#" index="f" delimiters="#dtCh#">
+		<cfif listFind("2012,12",f)>	
+			<cfset dateKeyFormat=listAppend(dateKeyFormat,"YYYY",dtCh)>
+		<cfelseif f eq 11>
+			<cfset dateKeyFormat=listAppend(dateKeyFormat,"MM",dtCh)>
+		<cfelse>
+			<cfset dateKeyFormat=listAppend(dateKeyFormat,"DD",dtCh)>
+		</cfif>
+	</cfloop>
+	
+	<cfset dtFormat=listAppend(dtFormat,listFind(formatTest,"11",dtCh) -1) />
+	<cfset dtFormat=listAppend(dtFormat,listFind(formatTest,"10",dtCh) -1) />
+	<cfif listFind(formatTest,"2012",dtCh)>
+		<cfset dtFormat=listAppend(dtFormat,listFind(formatTest,"2012",dtCh) -1) />
+	<cfelseif listFind(formatTest,"12",dtCh)>
+		<cfset dtFormat=listAppend(dtFormat,listFind(formatTest,"12",dtCh) -1) />
+	</cfif>
+	
+	<cfset exampleDate=lsDateFormat(createDate(2012,11,10),datekeyFormat)/>
+
+<cfsavecontent variable="jsDateKey">
+<cfoutput><script type="text/javascript">
+var dtExample="#exampleDate#";
+var dtCh="#dtCh#";
+var dtFormat =[#dtFormat#];
+</script></cfoutput>
+</cfsavecontent>
+
+<cfreturn jsDateKey />
+</cffunction>
+
 </cfcomponent>
 

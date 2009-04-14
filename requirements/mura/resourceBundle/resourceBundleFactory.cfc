@@ -733,6 +733,59 @@
 		</cfswitch>
 </cffunction>
 
+<cffunction name="setAdminLocale" returnType="void" output="false">
+<!--- make sure that a locale and language resouce bundle have been set in the users session --->
+<cfparam name="session.datekey" default=""/>
+<cfparam name="session.datekeyformat" default=""/>
+<cfparam name="session.rb" default=""/>
+<cfparam name="session.locale" default=""/>
+
+<!---  session.rb is used to tell mura what resource bundle to use for lan translations --->
+<cfif not Len(session.rb)>
+	<cfif application.configBean.getDefaultLocale() neq "Server">
+		<cfif application.configBean.getDefaultLocale() eq "Client">
+			<cfset session.rb=listFirst(cgi.HTTP_ACCEPT_LANGUAGE,';') />		
+		<cfelse>
+			<cfif listFind(server.coldfusion.supportedlocales,application.configBean.getDefaultLocale())>
+				<cfset session.rb=application.configBean.getDefaultLocale() />
+			<cfelse>
+				<cfset session.rb=application.rbFactory.CF2Java(application.configBean.getDefaultLocale()) />
+			</cfif>
+		</cfif>
+	<cfelse>
+
+		<cfset session.rb=application.rbFactory.CF2Java(getLocale()) />
+	</cfif>
+</cfif>
+
+
+<!--- session.locale  is the locale that mura uses for date formating --->
+<cfif not len(session.locale)>
+	<cfif application.configBean.getDefaultLocale() neq "Server">
+		<cfif application.configBean.getDefaultLocale() eq "Client">
+			<cfset session.locale=listFirst(cgi.HTTP_ACCEPT_LANGUAGE,';') />
+			<cfset session.dateKey=""/>
+			<cfset session.dateKeyFormat=""/>		
+		<cfelse>
+			<cfset session.locale=application.configBean.getDefaultLocale() />
+			<cfset session.dateKey=""/>
+		</cfif>
+	<cfelse>
+
+		<cfset session.locale=getLocale() />
+		<cfset session.dateKey=""/>
+		<cfset session.dateKeyFormat=""/>
+	</cfif>
+</cfif>
+
+<!--- set locale for current page request --->
+<cfset setLocale(session.locale) />
+
+<!--- now we create a date so we can parse it and figure out the date format and then create a date validation key --->
+<cfif not len(session.dateKey) or not len(session.dateKeyFormat)>
+	<cfset session.dateKey=getUtils(session.locale).getJSDateKey()>
+</cfif>
+</cffunction>
 
 </cfcomponent>
 

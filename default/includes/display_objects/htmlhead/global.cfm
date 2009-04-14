@@ -11,12 +11,11 @@
 
     You should have received a copy of the GNU General Public License
     along with Mura CMS.  If not, see <http://www.gnu.org/licenses/>. --->
-<cfparam name="session.dateKey" default=""/>
 <cfoutput>
-#session.dateKey#	
+#getSite().getJSDateKey()#	
 <script type="text/javascript" src="#application.configBean.getContext()#/#request.siteid#/js/global.js"></script>
 <script type="text/javascript">
-<cfif not request.exportHtmlSite>var loginURL="#application.settingsManager.getSite(request.siteid).getLoginURL()#"; </cfif>
+var loginURL="#application.settingsManager.getSite(request.siteid).getLoginURL()#";
 var siteid="#request.siteid#"; 
 var siteID="#request.siteid#"; 
 var context="#application.configBean.getContext()#"; 
