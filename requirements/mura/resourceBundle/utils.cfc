@@ -144,6 +144,7 @@
 		<cfset variables.sDateFormat=createObject("java","java.text.SimpleDateFormat")>
 		<cfset variables.aCalendar=createObject("java","java.util.GregorianCalendar").init(variables.thisLocale)>
 		<cfset variables.dateSymbols=createObject("java","java.text.DateFormatSymbols").init(variables.thisLocale)>
+		<cfset setJSDateKeys()>
 	</cffunction>
 
 	<cffunction name="timeLocaleFormat" access="public" returnType="string" output="false"
@@ -322,14 +323,15 @@
 		</cfswitch>
 	</cffunction>
 	
-	<cffunction name="getJSDateKey" output="false" returntype="any">
-	<!--- make sure that a locale and language resouce bundle have been set in the users session --->
-	<cfset var datekeyFormat="">
-	<cfset var example="">
+	<cffunction name="setJSDateKeys" output="false" returntype="any">
+	<!--- make sure that a locale and language resouce bundle have been set in the users session --->	
 	<cfset var f="">
 	<cfset var dtCh="">
 	<cfset var dtFormat="">
-	<cfset var jsDateKey="">
+	<cfset jsDateKey="">
+	<cfset datekeyFormat="">
+	<cfset datekeyExample="">
+	
 <!--- now we create a date so we can parse it and figure out the date format and then create a date validation key --->
 
 	<cfset formatTest=dateLocaleFormat(createDate(2012,11,10),'short')/>
@@ -360,18 +362,28 @@
 		<cfset dtFormat=listAppend(dtFormat,listFind(formatTest,"12",dtCh) -1) />
 	</cfif>
 	
-	<cfset exampleDate=lsDateFormat(createDate(2012,11,10),datekeyFormat)/>
+	<cfset datekeyExample=lsDateFormat(createDate(2012,11,10),datekeyFormat)/>
 
 <cfsavecontent variable="jsDateKey">
 <cfoutput><script type="text/javascript">
-var dtExample="#exampleDate#";
+var dtExample="#datekeyExample#";
 var dtCh="#dtCh#";
 var dtFormat =[#dtFormat#];
 </script></cfoutput>
 </cfsavecontent>
 
-<cfreturn jsDateKey />
 </cffunction>
 
+	<cffunction name="getJSDateKey" output="false" returntype="any">
+	<cfreturn JSDateKey>
+	</cffunction>
+	
+	<cffunction name="getJSDateKeyFormat" output="false" returntype="any">
+	<cfreturn datekeyFormat>
+	</cffunction>
+	
+	<cffunction name="getJSDateKeyExample" output="false" returntype="any">
+	<cfreturn datekeyExample>
+	</cffunction>
 </cfcomponent>
 
