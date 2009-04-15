@@ -66,7 +66,7 @@
 					<dt><a href="#theLink#">#rs.MenuTitle#</a></dt>
 				<cfif hasImage>
 					<dd class="image">
-						<!---<a href="#application.configBean.getContext()#/tasks/render/file/index.cfm?fileID=#rs.FileID#&ext=.#rs.fileExt#" title="#HTMLEditFormat(rs.title)#" rel="shadowbox[#cssID#]">---><img src="#application.configBean.getContext()#/tasks/render/small/index.cfm?fileid=#rs.fileid#" alt="#htmlEditFormat(rs.title)#"/><!---</a>--->
+						<a href="#theLink#" title="#HTMLEditFormat(rs.title)#"><img src="#application.configBean.getContext()#/tasks/render/small/index.cfm?fileid=#rs.fileid#" alt="#htmlEditFormat(rs.title)#"/></a>
 					</dd>
 				</cfif>
 				<cfif hasSummary and len(rs.summary)>

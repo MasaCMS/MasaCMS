@@ -87,7 +87,7 @@
 		<dt>#link#</dt>
 		<cfif hasImage>
 		<dd class="image">
-			<!---<a href="#application.configBean.getContext()#/tasks/render/file/index.cfm?fileID=#rsSection.FileID#&ext=.#rsSection.fileExt#" title="#HTMLEditFormat(rsSection.title)#" rel="shadowbox[svPortal]">---><img src="#application.configBean.getContext()#/tasks/render/small/index.cfm?fileid=#rsSection.fileid#"  alt="#htmlEditFormat(rsSection.title)#"/><!---</a>--->
+			<a href="#createHREF(rsSection.type,rsSection.filename,rsSection.siteid,rsSection.contentid,rsSection.target,rsSection.targetparams,"",application.configBean.getContext(),application.configBean.getStub(),application.configBean.getIndexFile())#" title="#HTMLEditFormat(rsSection.title)#"><img src="#application.configBean.getContext()#/tasks/render/small/index.cfm?fileid=#rsSection.fileid#"  alt="#htmlEditFormat(rsSection.title)#"/></a>
 		</dd>
 		</cfif>
 	 	<cfif rsSection.summary neq ''>
