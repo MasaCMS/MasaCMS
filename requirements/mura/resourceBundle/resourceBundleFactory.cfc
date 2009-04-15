@@ -41,7 +41,6 @@ the GNU General Public License version 2  without this exception.  You may, if y
 to your own modified versions of Mura CMS.
 --->
 <cfcomponent extends="mura.cfobject" output="false">
-
 <cfset variables.resourceBundles=structNew() />
 <cfset variables.parentFactory=""/>
 <cfset variables.resourceDirectory=""/>
@@ -82,7 +81,7 @@ to your own modified versions of Mura CMS.
 <cffunction name="getUtils" returntype="any" access="public" output="false">
 <cfargument name="locale"  type="string" required="true" default="#variables.locale#">
 
-	<cfreturn getResourceBundle(arguments.locale).getUtils() />
+	<cfreturn getResourceBundle(arguments.locale).getUtils().init() />
 	
 </cffunction>
 
@@ -763,6 +762,7 @@ to your own modified versions of Mura CMS.
 </cffunction>
 
 <cffunction name="setAdminLocale" returnType="void" output="false">
+<cfset var utils="">
 <!--- make sure that a locale and language resouce bundle have been set in the users session --->
 <cfparam name="session.datekey" default=""/>
 <cfparam name="session.datekeyformat" default=""/>
@@ -812,8 +812,11 @@ to your own modified versions of Mura CMS.
 
 <!--- now we create a date so we can parse it and figure out the date format and then create a date validation key --->
 <cfif not len(session.dateKey) or not len(session.dateKeyFormat)>
-	<cfset session.dateKey=getUtils(session.locale).getJSDateKey()>
+	<cfset utils=getUtils(session.locale)>
+	<cfset session.dateKey=utils.getJSDateKey()>
+	<cfset session.dateKeyFormat=utils.getJSDateKeyFormat()>
 </cfif>
+
 </cffunction>
 
 </cfcomponent>

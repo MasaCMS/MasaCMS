@@ -329,7 +329,7 @@
 	<cfset var dtCh="">
 	<cfset var dtFormat="">
 	<cfset jsDateKey="">
-	<cfset datekeyFormat="">
+	<cfset dateKeyFormat="">
 	<cfset datekeyExample="">
 	
 <!--- now we create a date so we can parse it and figure out the date format and then create a date validation key --->
