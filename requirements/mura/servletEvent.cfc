@@ -11,7 +11,7 @@
 
     You should have received a copy of the GNU General Public License
     along with Mura CMS.  If not, see <http://www.gnu.org/licenses/>. --->
-<cfcomponent output="false">
+<cfcomponent output="false" extends="mura.cfobject">
 
 <cffunction name="init" returntype="any" access="public" output="false">
 		
@@ -155,6 +155,10 @@
 
 <cffunction name="getSite" returntype="any" access="public">
 	<cfreturn application.settingsManager.getSite(getValue('siteid')) />	
+</cffunction>
+
+<cffunction name="getServiceFactory" returntype="any" access="public">
+	<cfreturn application.serviceFactory />	
 </cffunction>
 
 </cfcomponent>
