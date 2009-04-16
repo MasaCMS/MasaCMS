@@ -84,9 +84,14 @@ to your own modified versions of Mura CMS.
 	<cfparam name="request.deletecommentid" default="">
 	<cfparam name="request.approvedcommentid" default="">
 	<cfparam name="request.isApproved" default="1">
-
+	
 	<cfset errors=structNew()/>
 	
+	<cfif structKeyExists(request,"commentUnsubscribe")>
+		<cfset application.contentManager.commentUnsubscribe(request.contentBean.getContentID(),request.commentUnsubscribe,request.siteID)>
+		<cfset errors["unsubscribe"]=rbFactory.getKey('comments.youhaveunsubscribed')>
+	</cfif>
+
 	<cfif request.commentid neq '' and request.comments neq '' and request.name neq ''>
 	
 		<cfif request.hKey eq hash(lcase(request.ukey))>

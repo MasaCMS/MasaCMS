@@ -1386,7 +1386,7 @@ to your own modified versions of Mura CMS.
 	<cfset var item = "" />
 	
 	<cfloop collection="#url#" item="item">
-		<cfif not listFindNoCase('PATH,DELETECOMMENTID,APPROVEDCOMMENTID,LOADLIST,INIT,SITEID,DISPLAY,#ucase(application.appReloadKey)#',item) 
+		<cfif not listFindNoCase('NOCACHE,PATH,DELETECOMMENTID,APPROVEDCOMMENTID,LOADLIST,INIT,SITEID,DISPLAY,#ucase(application.appReloadKey)#',item) 
 			 and not (item eq 'doaction' and url[item] eq 'logout') >	
 			<cftry>
 			<cfif len(qrystr)>	

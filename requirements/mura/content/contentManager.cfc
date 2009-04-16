@@ -1110,7 +1110,7 @@ to your own modified versions of Mura CMS.
 	
 	<cffunction name="deleteComment" access="public" output="false" returntype="any">
 		<cfargument name="commentID" type="string">
-			<cfset var commentBean=application.contentManager.getCommentBean() />
+			<cfset var commentBean=getCommentBean() />
 			<cfset commentBean.setCommentID(arguments.commentid) />
 			<cfset commentBean.delete() />
 			<cfset setCommentStat(commentBean.getContentID(),commentBean.getSiteID()) />
@@ -1123,7 +1123,7 @@ to your own modified versions of Mura CMS.
 		<cfargument name="script" required="true" default="">
 		<cfargument name="subject" required="true" default="">
 		
-			<cfset var commentBean=application.contentManager.getCommentBean() />
+			<cfset var commentBean=getCommentBean() />
 			<cfset commentBean.setCommentID(arguments.commentid) />
 			<cfset commentBean.load() />
 			<cfset commentBean.setIsApproved(1) />
@@ -1135,7 +1135,7 @@ to your own modified versions of Mura CMS.
 	
 	<cffunction name="disapproveComment" access="public" output="false" returntype="any">
 		<cfargument name="commentID" type="string">
-			<cfset var commentBean=application.contentManager.getCommentBean() />
+			<cfset var commentBean=getCommentBean() />
 			<cfset commentBean.setCommentID(arguments.commentid) />
 			<cfset commentBean.load() />
 			<cfset commentBean.setIsApproved(0) />
@@ -1156,6 +1156,17 @@ to your own modified versions of Mura CMS.
 				<cfset stats.setComments(getCommentCount(arguments.contentID,arguments.siteID)) />
 				<cfset stats.save()/>
 			</cflock>
+	</cffunction>
+	
+	<cffunction name="commentUnsubscribe" access="public" output="false" returntype="any">
+		<cfargument name="contentID" type="string">
+		<cfargument name="email" type="string">
+		<cfargument name="siteID" type="string">
+			<cfset var commentBean=getCommentBean() />
+			<cfset commentBean.setContentID(arguments.contentid) />
+			<cfset commentBean.setEmail(arguments.email) />
+			<cfset commentBean.setSiteID(arguments.siteID) />
+			<cfset commentBean.saveSubscription() />
 	</cffunction>
 	
 	<cffunction name="multiFileUpload" access="public" output="false" returntype="void">

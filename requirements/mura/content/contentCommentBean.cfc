@@ -240,13 +240,18 @@
 	</cfif>
 	
 	<cfif getIsApproved()>
-		<cfquery datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-			update tcontentcomments set subscribe=<cfqueryparam cfsqltype="cf_sql_numeric" value="#getSubscribe()#">
-			where contentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getContentID()#">
-			and email=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getEmail()#">
-		</cfquery>
+		<cfset saveSubscription()>
 	</cfif>
 	
+</cffunction>
+
+<cffunction name="saveSubscription"  access="public" output="false" returntype="void">		
+	<cfquery datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+			update tcontentcomments set subscribe=<cfqueryparam cfsqltype="cf_sql_numeric" value="#getSubscribe()#">
+			where contentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getContentID()#">
+			and siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getSiteID()#">
+			and email=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getEmail()#">
+	</cfquery>
 </cffunction>
 
 <cffunction name="sendNotification"  access="public" output="false" returntype="void">
@@ -330,6 +335,9 @@ COMMENT:
 
 View 
 #arguments.contentRenderer.getCurrentURL()#
+
+To Unsubscribe Click Here
+#arguments.contentRenderer.getCurrentURL(true,"commentUnsubscribe=#URLEncodedFormat(getEmail())#")#
 </cfoutput></cfsavecontent>
 
 <cfelse>
