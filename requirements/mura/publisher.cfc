@@ -99,7 +99,9 @@ to your own modified versions of Mura CMS.
 		<cfset var rstcontentcomments=""/>
 		<cfset var rstcontentratings=""/>
 		<cfset var rstusersinterests=""/>
-		<cfset var rstclassextenddata=""/>		
+		<cfset var rstclassextenddata=""/>
+		<cfset var rstpluginscripts=""/>
+		<cfset var tplugindisplayobjects=""/>		
 			<!--- pushed tables --->
 			
 			<!--- tcontent --->
@@ -111,7 +113,7 @@ to your own modified versions of Mura CMS.
 			</cfquery>
 			<cfloop query="rsContent">
 				<cfquery datasource="#arguments.toDSN#">
-					insert into tcontent (Active,Approved,audience,Body,ContentHistID,ContentID,Credits,Display,DisplayStart,DisplayStop,featureStart,featureStop,FileID,Filename,forceSSL,inheritObjects,isFeature,IsLocked,IsNav,keyPoints,lastUpdate,lastUpdateBy,lastUpdateByID,MenuTitle,MetaDesc,MetaKeyWords,moduleAssign,ModuleID,nextN,Notes,OrderNo,ParentID,displayTitle,ReleaseDate,RemoteID,RemotePubDate,RemoteSource,RemoteSourceURL,RemoteURL,responseChart,responseDisplayFields,responseMessage,responseSendTo,Restricted,RestrictGroups,searchExclude,SiteID,sortBy,sortDirection,Summary,Target,TargetParams,Template,Title,Type,subType,Path,tags,doCache)
+					insert into tcontent (Active,Approved,audience,Body,ContentHistID,ContentID,Credits,Display,DisplayStart,DisplayStop,featureStart,featureStop,FileID,Filename,forceSSL,inheritObjects,isFeature,IsLocked,IsNav,keyPoints,lastUpdate,lastUpdateBy,lastUpdateByID,MenuTitle,MetaDesc,MetaKeyWords,moduleAssign,ModuleID,nextN,Notes,OrderNo,ParentID,displayTitle,ReleaseDate,RemoteID,RemotePubDate,RemoteSource,RemoteSourceURL,RemoteURL,responseChart,responseDisplayFields,responseMessage,responseSendTo,Restricted,RestrictGroups,searchExclude,SiteID,sortBy,sortDirection,Summary,Target,TargetParams,Template,Title,Type,subType,Path,tags,doCache,created)
 					values
 					(
 					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(Active),de(Active),de(0))#">,
@@ -172,7 +174,8 @@ to your own modified versions of Mura CMS.
 					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(subType neq '',de('no'),de('yes'))#" value="#subType#">,
 					<cfqueryparam cfsqltype="cf_sql_LONGVARCHAR" null="#iif(Path neq '',de('no'),de('yes'))#" value="#Path#">,
 					<cfqueryparam cfsqltype="cf_sql_LONGVARCHAR" null="#iif(Tags neq '',de('no'),de('yes'))#" value="#Tags#">,
-					<cfqueryparam cfsqltype="cf_sql_TINYINT" null="no" value="#iif(isNumeric(doCache),de(doCache),de(0))#">
+					<cfqueryparam cfsqltype="cf_sql_TINYINT" null="no" value="#iif(isNumeric(doCache),de(doCache),de(0))#">,
+					<cfqueryparam cfsqltype="cf_sql_TIMESTAMP" null="#iif(isDate(created),de('no'),de('yes'))#" value="#created#">,
 					)
 				</cfquery>
 			</cfloop>
@@ -715,6 +718,8 @@ to your own modified versions of Mura CMS.
 				<!--- tclassextenddata --->
 			<cfquery datasource="#arguments.toDSN#">
 				delete from tclassextenddata 
+				where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteid#"/>
+				and baseID  in (select contenthistid from tcontent where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteid#"/>)
 			</cfquery>
 			<cfquery datasource="#arguments.fromDSN#" name="rstclassextenddata">
 				select * from tclassextenddata where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteid#"/>
@@ -732,6 +737,55 @@ to your own modified versions of Mura CMS.
 					)
 				</cfquery>
 			</cfloop>
+			
+				<!--- tpluginscripts --->
+			<cfquery datasource="#arguments.toDSN#">
+				delete from tpluginscripts 
+				where moduleID in ( select moduleID from tcontent where siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteid#"/>)
+			</cfquery>
+			<cfquery datasource="#arguments.fromDSN#" name="rstpluginscripts">
+				select * from tpluginscripts 
+				where moduleID in ( select moduleID from tcontent where siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteid#"/>)
+			</cfquery>
+			<cfloop query="rstpluginscripts">
+				<cfquery datasource="#arguments.toDSN#">
+					insert into tpluginscripts (scriptID,moduleID,scriptfile,runat,docache)
+					values
+					(
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(scriptID neq '',de('no'),de('yes'))#" value="#scriptID#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(moduleID neq '',de('no'),de('yes'))#" value="#moduleID#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(scriptfile neq '',de('no'),de('yes'))#" value="#scriptfile#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(runat neq '',de('no'),de('yes'))#" value="#runat#">,
+					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(docache),de(docache),de(0))#">
+					
+					)
+				</cfquery>
+			</cfloop>
+			
+			<cfquery datasource="#arguments.toDSN#">
+				delete from tplugindisplayobjects 
+				where moduleID in ( select moduleID from tcontent where siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteid#"/>)
+			</cfquery>
+			<cfquery datasource="#arguments.fromDSN#" name="rstplugindisplayobjects">
+				select * from tplugindisplayobjects 
+				where moduleID in ( select moduleID from tcontent where siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteid#"/>)
+			</cfquery>
+			<cfloop query="rstplugindisplayobjects">
+				<cfquery datasource="#arguments.toDSN#">
+					insert into tplugindisplayobjects (objectID,moduleID,name,location,displayObjectFile,displayMethod,docache)
+					values
+					(
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(objectID neq '',de('no'),de('yes'))#" value="#objectID#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(moduleID neq '',de('no'),de('yes'))#" value="#moduleID#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(name neq '',de('no'),de('yes'))#" value="#name#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(location neq '',de('no'),de('yes'))#" value="#location#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(displayObjectFile neq '',de('no'),de('yes'))#" value="#displayObjectFile#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(displayMethod neq '',de('no'),de('yes'))#" value="#displayMethod#">,
+					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(docache),de(docache),de(0))#">
+					
+					)
+				</cfquery>
+			</cfloop>
 		
 	</cffunction>
 	
@@ -741,7 +795,9 @@ to your own modified versions of Mura CMS.
 		<cfset var i=""/>
 		<cfset var j=""/>
 		<cfset var k=""/>
+		<cfset var p=""/>
 		<cfset var fileDelim=application.configBean.getFileDelim() />
+		<cfset var rsPlugins=application.pluginManager.getSitePlugins(arguments.siteid)>
 
 		<cfloop list="#application.configBean.getProductionDatasource()#" index="i">
 			<cfset getToWork(arguments.siteid, '#application.configBean.getDatasource()#', '#i#')>
@@ -749,6 +805,12 @@ to your own modified versions of Mura CMS.
 		
 		<cfloop list="#application.configBean.getProductionWebroot()#" index="j">
 			<cfset application.utility.copyDir("#application.configBean.getWebRoot()##fileDelim##arguments.siteid##fileDelim#", "#j##fileDelim##arguments.siteid##fileDelim#") />
+		</cfloop>
+		
+		<cfloop list="#application.configBean.getProductionWebroot()#" index="p">
+			<cfloop query="rsPlugins">
+			<cfset application.utility.copyDir("#application.configBean.getWebRoot()##fileDelim##plugins##fileDelim##rsPlugins.pluginID##fileDelim#", "#p##fileDelim##plugins##fileDelim##rsPlugins.pluginID##fileDelim#") />
+			</cfloop>
 		</cfloop>
 		
 		<cfloop list="#application.configBean.getProductionFiledir()#" index="k">
