@@ -241,8 +241,8 @@ FCKConfig.CustomStyles =
 FCKConfig.CoreStyles = 
 {
 	// Basic Inline Styles.
-	'Bold'			: { Element : 'b', Overrides : 'strong' },
-	'Italic'		: { Element : 'i', Overrides : 'em' },
+	'Bold'			: { Element : 'strong' },
+	'Italic'		: { Element : 'em' },
 	'Underline'		: { Element : 'u' },
 	'StrikeThrough'	: { Element : 'strike' },
 	'Subscript'		: { Element : 'sub' },
