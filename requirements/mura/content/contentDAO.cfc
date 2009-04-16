@@ -789,4 +789,21 @@ to your own modified versions of Mura CMS.
 	<cfreturn rs.TotalComments />
 </cffunction>
 
+<cffunction name="getCommentSubscribers" access="public" output="false" returntype="query">
+	<cfargument name="contentID" type="String" required="true" default="">
+	<cfargument name="siteID" type="string" required="true" default="">
+	<cfset var rs= ''/>
+	
+	<cfquery name="rs" datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+	select distinct email from tcontentcomments 
+	where contentid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentid#"/> 
+	and siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
+	and email is not null
+	and isApproved=1
+	and subscribe=1
+	</cfquery>
+	
+	<cfreturn rs />
+</cffunction>
+
 </cfcomponent>

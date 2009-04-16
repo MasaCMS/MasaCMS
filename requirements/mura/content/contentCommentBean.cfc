@@ -16,10 +16,12 @@
 	<cfargument name="configBean">
 	<cfargument name="settingsManager">
 	<cfargument name="utility">
+	<cfargument name="contentDAO">
 	
 	<cfset variables.configBean=arguments.configBean />
 	<cfset variables.settingsManager=arguments.settingsManager />
 	<cfset variables.utility=arguments.utility />
+	<cfset variables.contentDAO=arguments.contentDAO />
 	<cfset variables.dsn=variables.configBean.getDatasource()/>
 
 	<cfreturn this />
@@ -39,7 +41,7 @@
 				<cfset setEmail(arguments.data.email) />
 				<cfset setName(arguments.data.name) />
 				<cfset setUrl(arguments.data.url) />
-				<!--- <cfset setSubscribe(arguments.data.subscribe) /> --->
+				<cfset setSubscribe(arguments.data.subscribe) />
 				<cfset setEntered(arguments.data.entered) />
 				<cfset setIsApproved(arguments.data.isApproved) />
 				<cfset setComments(arguments.data.comments) />
@@ -212,15 +214,15 @@
 			comments=<cfqueryparam cfsqltype="cf_sql_longvarchar" value="#getComments()#"/>,
 			entered=#createodbcdatetime(getEntered())#,
 			siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getSiteID()#"/>,
-			isApproved=#getIsApproved()#<!--- ,
-			subscribe=#getSubscribe()#	 --->
+			isApproved=#getIsApproved()#,
+			subscribe=<cfqueryparam cfsqltype="cf_sql_numeric" value="#getSubscribe()#">
 		where commentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getCommentID()#">
 		</cfquery>
 		
 	<cfelse>
 	
 		<cfquery datasource="#application.configBean.getDatasource()#" username="#application.configBean.getDBUsername()#" password="#application.configBean.getDBPassword()#" name="rslist">
-			insert into tcontentcomments (contentid,commentid,name,email,url,comments,entered,siteid,isApproved<!--- ,subscribe --->)
+			insert into tcontentcomments (contentid,commentid,name,email,url,comments,entered,siteid,isApproved,subscribe)
 			values (
 			<cfqueryparam cfsqltype="cf_sql_varchar" value="#getContentID()#"/>,
 			<cfqueryparam cfsqltype="cf_sql_varchar" value="#getCommentID()#"/>,
@@ -230,11 +232,19 @@
 			<cfqueryparam cfsqltype="cf_sql_longvarchar" value="#getComments()#"/>,
 			#createodbcdatetime(getEntered())#,
 			<cfqueryparam cfsqltype="cf_sql_varchar" value="#getSiteID()#"/>,
-			#getIsApproved()#<!--- ,
-			#getSubscribe()# --->
+			#getIsApproved()#,
+			<cfqueryparam cfsqltype="cf_sql_numeric" value="#getSubscribe()#">
 			)
 			</cfquery>
 		
+	</cfif>
+	
+	<cfif getIsApproved()>
+		<cfquery datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+			update tcontentcomments set subscribe=<cfqueryparam cfsqltype="cf_sql_numeric" value="#getSubscribe()#">
+			where contentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getContentID()#">
+			and email=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getEmail()#">
+		</cfquery>
 	</cfif>
 	
 </cffunction>
@@ -263,13 +273,13 @@ COMMENT:
 #getComments()#
 
 Approve
-http://#cgi.SERVER_NAME#/#getSiteID()#/index.cfm/#variables.utility.createRedirectID(arguments.contentRenderer.getCurrentURL(true,"approvedcommentID=#getCommentID()#"))#
+http://#cgi.SERVER_NAME##variables.configBean.getServerPort()##variables.configBean.getContext()#/#getSiteID()#/index.cfm/#variables.utility.createRedirectID(arguments.contentRenderer.getCurrentURL(true,"approvedcommentID=#getCommentID()#"))#
 
 Delete
-http://#cgi.SERVER_NAME#/#getSiteID()#/index.cfm/#variables.utility.createRedirectID(arguments.contentRenderer.getCurrentURL(true,"deletecommentID=#getCommentID()#"))#
+http://#cgi.SERVER_NAME##variables.configBean.getServerPort()##variables.configBean.getContext()#/#getSiteID()#/index.cfm/#variables.utility.createRedirectID(arguments.contentRenderer.getCurrentURL(true,"deletecommentID=#getCommentID()#"))#
 
 View 
-http://#cgi.SERVER_NAME#/#getSiteID()#/index.cfm/#variables.utility.createRedirectID(arguments.contentRenderer.getCurrentURL())#
+http://#cgi.SERVER_NAME##variables.configBean.getServerPort()##variables.configBean.getContext()#/#getSiteID()#/index.cfm/#variables.utility.createRedirectID(arguments.contentRenderer.getCurrentURL())#
 </cfoutput></cfsavecontent>
 
 <cfelse>
@@ -284,6 +294,67 @@ http://#cgi.SERVER_NAME#/#getSiteID()#/index.cfm/#variables.utility.createRedire
 						getName(),
 						'New Comment',
 						getSiteID()) />
+</cffunction>
+
+<cffunction name="notifySubscribers"  access="public" output="false" returntype="void">
+<cfargument name="contentRenderer" required="true" default="#application.contentRenderer#">
+<cfargument name="script" required="true" default="">
+<cfargument name="subject" required="true" default="">
+<cfargument name="notifyAdmin" required="true" default="true">
+<cfset var site=variables.settingsManager.getSite(getSiteID())>
+<cfset var rsContent="">
+<cfset var notifyText="">
+<cfset var notifysubject=arguments.subject>
+<cfset var email="">
+<cfset var rsSubscribers=variables.contentDAO.getCommentSubscribers(getContentID(),getSiteID())>
+
+
+<cfquery name="rsContent" datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+	select title from tcontent 
+	where contentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getContentID()#">
+	and siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getSiteID()#">
+	and active=1
+</cfquery>
+
+<cfif not len(notifySubject)>
+	<cfset notifySubject="New Comment on '#rscontent.title#'">
+</cfif>
+
+<cfif not len(arguments.script)>
+
+<cfsavecontent variable="notifyText"><cfoutput>
+A comment has been posted to "#rscontent.title#" by #getName()#.
+
+COMMENT:
+#getComments()#
+
+View 
+#arguments.contentRenderer.getCurrentURL()#
+</cfoutput></cfsavecontent>
+
+<cfelse>
+
+<cfset notifyText=arguments.script />
+
+</cfif>
+
+<cfset email=application.serviceFactory.getBean('mailer') />
+
+<cfloop query="rsSubscribers">
+	<cfset email.sendText(notifyText,
+							rsSubscribers.email,
+							site.getSite(),
+							notifySubject,
+							getSiteID()) />
+</cfloop>
+
+<cfif arguments.notifyAdmin and len(site.getContact())>
+	<cfset email.sendText(notifyText,
+							site.getContact(),
+							site.getSite(),
+							notifySubject,
+							getSiteID()) />
+</cfif>
 </cffunction>
 
 </cfcomponent>

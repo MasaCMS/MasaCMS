@@ -42,7 +42,36 @@ to your own modified versions of Mura CMS.
 --->
 
 <cfif not listFind("Portal,Gallery",request.contentBean.getType())>
+
 <cfsilent>
+	<cfparam name="request.subscribe" default="0">
+	<cfparam name="request.remember" default="0">
+	<cfparam name="cookie.name" default="">
+	<cfparam name="cookie.email" default="">
+	<cfparam name="cookie.url" default="">
+	<cfparam name="cookie.remember" default="0">
+	<cfparam name="cookie.subscribe" default="0">
+	
+	<cfif not structKeyExists(request,"name")>
+		<cfset request.name=cookie.name>
+	</cfif>
+	
+	<cfif not structKeyExists(request,"url")>
+		<cfset request.url=cookie.url>
+	</cfif>
+	
+	<cfif not structKeyExists(request,"email")>
+		<cfset request.email=cookie.email>
+	</cfif>
+	
+	<cfif not structKeyExists(request,"subscribe")>
+		<cfset request.subscribe=cookie.subscribe>
+	</cfif>
+	
+	<cfif not structKeyExists(request,"remember")>
+		<cfset request.remember=cookie.remember>
+	</cfif>
+	
 	<cfset rbFactory=getSite().getRBFactory() />
 	<cfset theContentID=request.contentBean.getcontentID()>
 	<cfset request.isEditor=(isUserInRole('S2IsPrivate;#application.settingsManager.getSite(request.siteid).getPrivateUserPoolID()#') 
@@ -50,14 +79,12 @@ to your own modified versions of Mura CMS.
 			or isUserInRole("S2")>
 	<cfparam name="request.commentid" default="">
 	<cfparam name="request.comments" default="">
-	<cfparam name="request.name" default="">
-	<cfparam name="request.email" default="">
-	<cfparam name="request.url" default="">
 	<cfparam name="request.securityCode" default="">
 	<cfparam name="session.securityCode" default="">
 	<cfparam name="request.deletecommentid" default="">
 	<cfparam name="request.approvedcommentid" default="">
 	<cfparam name="request.isApproved" default="1">
+
 	<cfset errors=structNew()/>
 	
 	<cfif request.commentid neq '' and request.comments neq '' and request.name neq ''>
@@ -67,16 +94,33 @@ to your own modified versions of Mura CMS.
 			<cfset submittedData=application.utility.filterArgs(request,application.badwords)/>
 			<cfset submittedData.contentID=theContentID />
 			<cfset submittedData.isApproved=application.settingsManager.getSite(request.siteid).getCommentApprovalDefault() />
-			<cfset commentBean=application.contentManager.saveComment(submittedData) />			
+			<cfset commentBean=application.contentManager.saveComment(submittedData,event.getContentRenderer()) />			
 			<cfset request.comments=""/>
-			<cfset request.name=""/>
-			<cfset request.email=""/>
-			<cfset request.url=""/>		
+			<cfif not (request.remember)>	
+				<cfset request.name=""/>
+				<cfset request.email=""/>
+				<cfset request.url=""/>
+				<cfset request.subscribe=0/>
+				<cfset request.remember=0/>
+			</cfif>		
 			<cfif not application.settingsManager.getSite(request.siteid).getCommentApprovalDefault() eq 1>
 				<cfset commentBean.sendNotification() />
 			</cfif>
+			<cfif isBoolean(request.remember) and request.remember>
+				<cfcookie name="remember" value="1">
+				<cfcookie name="subscribe" value="#request.subscribe#">
+				<cfcookie name="name" value="#request.name#">
+				<cfcookie name="url" value="#request.url#">
+				<cfcookie name="email" value="#request.email#">
+			<cfelse>
+				<cfcookie name="remember" value="0">
+				<cfcookie name="subscribe" value="0">
+				<cfcookie name="name" value="">
+				<cfcookie name="url" value="">
+				<cfcookie name="email" value="">
+			</cfif>
 		<cfelse>
-			<cfset errors["SecurityCode"]=rbFactory.getKey('comments.captcherror')>
+			<cfset errors["SecurityCode"]=rbFactory.getKey('comments.captchaerror')>
 		</cfif>
 
 	</cfif>
@@ -86,7 +130,7 @@ to your own modified versions of Mura CMS.
 	</cfif>
 
 	<cfif request.isEditor and request.approvedcommentid neq "" >
-		<cfset application.contentManager.approveComment(request.approvedcommentid) />
+		<cfset application.contentManager.approveComment(request.approvedcommentid,event.getContentRenderer()) />
 	</cfif>
 
 	<cfset rsComments=application.contentManager.readComments(thecontentID,request.siteid,request.isEditor) />
@@ -152,7 +196,15 @@ to your own modified versions of Mura CMS.
 				</li>
 				<li class="req">
 					<label for="txtComment">#rbFactory.getKey('comments.comment')#<ins> (#rbFactory.getKey('comments.required')#)</ins></label>
-					<textarea id="txtComment" name="comments" message="#htmlEditFormat(rbFactory.getKey('comments.commentrquired'))#" required="true">#HTMLEditFormat(request.comments)#</textarea>
+					<textarea id="txtComment" name="comments" message="#htmlEditFormat(rbFactory.getKey('comments.commentrequired'))#" required="true">#HTMLEditFormat(request.comments)#</textarea>
+				</li>
+				<li>
+					<label for="txtRemember">#rbFactory.getKey('comments.rememberinfo')#</label>
+					<input type="checkbox" id="txtRemember" name="remember" value="1"<cfif isBoolean(request.remember) and request.remember> checked </cfif>/>
+				</li>
+				<li>
+					<label for="txtSubscribe">#rbFactory.getKey('comments.subscribe')#</label>
+					<input type="checkbox" id="txtSubscribe" name="subscribe" value="1"<cfif isBoolean(request.subscribe) and request.subscribe> checked </cfif>/>
 				</li></cfoutput>
 				<cfinclude template="dsp_captcha.cfm" ><!--- <li>'s are in captcha --->
 			</ol>

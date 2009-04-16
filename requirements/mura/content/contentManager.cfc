@@ -1071,7 +1071,7 @@ to your own modified versions of Mura CMS.
 	</cffunction>
 	
 	<cffunction name="getCommentBean" access="public" returntype="any">
-	<cfreturn createObject("component","contentCommentBean").init(variables.configBean,variables.settingsManager,variables.utility)>
+	<cfreturn createObject("component","contentCommentBean").init(variables.configBean,variables.settingsManager,variables.utility,variables.contentDAO)>
 	</cffunction>
 	
 	<cffunction name="readComments" access="public" output="false" returntype="query">
@@ -1093,10 +1093,17 @@ to your own modified versions of Mura CMS.
 	</cffunction>
 	
 	<cffunction name="saveComment" access="public" output="false" returntype="any">
-		<cfargument name="data" type="struct">	
+		<cfargument name="data" type="struct">
+		<cfargument name="contentRenderer" required="true" default="#application.contentRenderer#">
+		<cfargument name="script" required="true" default="">
+		<cfargument name="subject" required="true" default="">
+		
 		<cfset var commentBean=getCommentBean() />
 		<cfset commentBean.set(arguments.data) />
 		<cfset commentBean.save() />
+		<cfif commentBean.getIsApproved()>
+			<cfset commentBean.notifySubscribers(arguments.contentRenderer,arguments.script,arguments.subject)>
+		</cfif>
 		<cfset setCommentStat(commentBean.getContentID(),commentBean.getSiteID()) />
 		<cfreturn commentBean />
 	</cffunction>
@@ -1112,11 +1119,16 @@ to your own modified versions of Mura CMS.
 	
 	<cffunction name="approveComment" access="public" output="false" returntype="any">
 		<cfargument name="commentID" type="string">
+		<cfargument name="contentRenderer" required="true" default="#application.contentRenderer#">
+		<cfargument name="script" required="true" default="">
+		<cfargument name="subject" required="true" default="">
+		
 			<cfset var commentBean=application.contentManager.getCommentBean() />
 			<cfset commentBean.setCommentID(arguments.commentid) />
 			<cfset commentBean.load() />
 			<cfset commentBean.setIsApproved(1) />
 			<cfset commentBean.save() />
+			<cfset commentBean.notifySubscribers(arguments.contentRenderer,arguments.script,arguments.subject,false)>
 			<cfset setCommentStat(commentBean.getContentID(),commentBean.getSiteID()) />
 			<cfreturn commentBean />
 	</cffunction>
