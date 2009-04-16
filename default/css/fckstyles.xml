@@ -9,9 +9,6 @@
 	<Style name="Intro" element="p">
 		<Attribute name="class" value="intro" />
 	</Style>
-	<Style name="Credits" element="p">
-		<Attribute name="class" value="credits" />
-	</Style>
 	<Style name="Centered Text" element="p">
 		<Attribute name="class" value="center" />
 	</Style>
@@ -20,20 +17,5 @@
 	</Style>
 	<Style name="Call to Action" element="li">
 		<Attribute name="class" value="callToAction" />
-	</Style>
-	<Style name="Read More Link" element="a">
-		<Attribute name="class" value="more" />
-	</Style>
-	<Style name="PDF Link" element="a">
-		<Attribute name="class" value="pdf" />
-	</Style>
-	<Style name="Navigation List" element="ul">
-		<Attribute name="class" value="navSecondary" />
-	</Style>
-	<Style name="Alphabetical" element="ol">
-		<Attribute name="class" value="alpha" />
-	</Style>
-	<Style name="Navigation List" element="ul">
-		<Attribute name="class" value="navSecondary" />
 	</Style>
 </Styles>
