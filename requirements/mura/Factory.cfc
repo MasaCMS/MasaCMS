@@ -91,7 +91,7 @@ to your own modified versions of Mura CMS.
 	</cffunction>
 
 	<cffunction name="purgeAll" access="public" returntype="void" output="false">
-		<cfset variables.collection = {} />
+		<cfset variables.collection = structNew() />
 	</cffunction>
 
 	<cffunction name="purge" access="public" returntype="void" output="false">
