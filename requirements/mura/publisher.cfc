@@ -101,7 +101,8 @@ to your own modified versions of Mura CMS.
 		<cfset var rstusersinterests=""/>
 		<cfset var rstclassextenddata=""/>
 		<cfset var rstpluginscripts=""/>
-		<cfset var tplugindisplayobjects=""/>		
+		<cfset var tplugindisplayobjects=""/>
+		<cfset var tpluginsettings=""/>		
 			<!--- pushed tables --->
 			
 			<!--- tcontent --->
@@ -741,11 +742,11 @@ to your own modified versions of Mura CMS.
 				<!--- tpluginscripts --->
 			<cfquery datasource="#arguments.toDSN#">
 				delete from tpluginscripts 
-				where moduleID in ( select moduleID from tcontent where siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteid#"/>)
+				where moduleID in ( select moduleID from tcontent where siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteid#"/> and type='Plugin')
 			</cfquery>
 			<cfquery datasource="#arguments.fromDSN#" name="rstpluginscripts">
 				select * from tpluginscripts 
-				where moduleID in ( select moduleID from tcontent where siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteid#"/>)
+				where moduleID in ( select moduleID from tcontent where siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteid#"/> and type='Plugin')
 			</cfquery>
 			<cfloop query="rstpluginscripts">
 				<cfquery datasource="#arguments.toDSN#">
@@ -764,11 +765,11 @@ to your own modified versions of Mura CMS.
 			
 			<cfquery datasource="#arguments.toDSN#">
 				delete from tplugindisplayobjects 
-				where moduleID in ( select moduleID from tcontent where siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteid#"/>)
+				where moduleID in ( select moduleID from tcontent where siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteid#"/> and type='Plugin')
 			</cfquery>
 			<cfquery datasource="#arguments.fromDSN#" name="rstplugindisplayobjects">
 				select * from tplugindisplayobjects 
-				where moduleID in ( select moduleID from tcontent where siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteid#"/>)
+				where moduleID in ( select moduleID from tcontent where siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteid#"/> and type='Plugin')
 			</cfquery>
 			<cfloop query="rstplugindisplayobjects">
 				<cfquery datasource="#arguments.toDSN#">
@@ -782,6 +783,27 @@ to your own modified versions of Mura CMS.
 					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(displayObjectFile neq '',de('no'),de('yes'))#" value="#displayObjectFile#">,
 					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(displayMethod neq '',de('no'),de('yes'))#" value="#displayMethod#">,
 					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(docache),de(docache),de(0))#">
+					
+					)
+				</cfquery>
+			</cfloop>
+			
+			<cfquery datasource="#arguments.toDSN#">
+				delete from tpluginsettings 
+				where moduleID in ( select moduleID from tcontent where siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteid#"/> and type='Plugin')
+			</cfquery>
+			<cfquery datasource="#arguments.fromDSN#" name="rstpluginsettings">
+				select * from tpluginsettings 
+				where moduleID in ( select moduleID from tcontent where siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteid#"/> and type='Plugin')
+			</cfquery>
+			<cfloop query="rstpluginsettings">
+				<cfquery datasource="#arguments.toDSN#">
+					insert into tpluginsettings (moduleID,name,settingValue)
+					values
+					(
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(moduleID neq '',de('no'),de('yes'))#" value="#moduleID#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(name neq '',de('no'),de('yes'))#" value="#name#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(settingValue neq '',de('no'),de('yes'))#" value="#settingValue#">
 					
 					)
 				</cfquery>
