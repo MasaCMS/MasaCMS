@@ -65,7 +65,7 @@ to your own modified versions of Mura CMS.
 <cfif isObject(arguments.event)>
 	<cfset variables.event=arguments.event>
 <cfelse>
-	<cfset variables.event=createObject("component","mura.servletEvent").init()>
+	<cfset variables.event=createObject("component","mura.servletEvent")>
 </cfif>
 
 <cfreturn this />
