@@ -170,6 +170,7 @@ select * from rsSubTypes where subType <> 'Default'
 		<input type="hidden" name="action" value="">
 		<input type="hidden" name="contact" value="0">
 		<input type="hidden" name="userid" value="#request.userBean.getuserid()#">
+		<input type="hidden" name="siteid" value="#request.userBean.getsiteid()#">
 		
 		<cfhtmlhead text='<link rel="stylesheet" href="css/tab-view.css" type="text/css" media="screen">'>
 <cfhtmlhead text='<script type="text/javascript" src="js/tab-view.js"></script>'>
