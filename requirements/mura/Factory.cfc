@@ -43,7 +43,7 @@ to your own modified versions of Mura CMS.
 <cfcomponent output="false">
 
 	<cfset variables.parent = "" />
-	<cfset variables.collection = {} />
+	<cfset variables.collection = structNew() />
 	<cfset variables.cacheTimeout = 60 /> <!--- minutes --->
 	<cfset variables.updateDatetimeOnRequest = false />
 
