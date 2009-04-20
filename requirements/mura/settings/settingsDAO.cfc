@@ -441,7 +441,7 @@ to your own modified versions of Mura CMS.
 	  'asc',
 	  0,
 	  0,
-	  <cfqueryparam cfsqltype="cf_sql_varchar" value="'00000000000000000000000000000000001'" />
+	  <cfqueryparam cfsqltype="cf_sql_varchar" value="00000000000000000000000000000000001" />
 	)
    </CFQUERY>
    
