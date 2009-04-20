@@ -964,6 +964,9 @@ to your own modified versions of Mura CMS.
 	<cfset var theDisplayPoolID = application.settingsManager.getSite(event.getValue('siteID')).getDisplayPoolID() />
 	<cfset var str = "" />
 	<cfset var fileDelim= application.configBean.getFileDelim() />
+	<cfset var eventOutput="" />
+	
+	<cfset event.setValue("BodyRenderArgs",arguments)>
 	
 	<cfsavecontent variable="str">
 		<cfif (event.getValue('isOnDisplay') and (not event.getValue('r').restrict or (event.getValue('r').restrict and event.getValue('r').allow)))
@@ -974,15 +977,30 @@ to your own modified versions of Mura CMS.
 					<cfcase value="editprofile">
 						<cfset event.setValue('noCache',1)>
 						<cfset event.setValue('forceSSL',getSite().getExtranetSSL())/>
+						<cfset eventOutput=application.pluginManager.renderScripts("onSiteEditProfileRender",event.getValue("siteid"),event)>
+						<cfif len(eventOutput)>
+						<cfoutput>#eventOutput#</cfoutput>
+						<cfelse>
 						<cfinclude template="/#application.configBean.getWebRootMap()#/#theDisplayPoolID#/includes/display_objects/dsp_edit_profile.cfm">
+						</cfif>
 					</cfcase>
 					<cfcase value="search">
 						<cfset event.setValue('noCache',1)>
+						<cfset eventOutput=application.pluginManager.renderScripts("onSiteSearchRender",event.getValue("siteid"),event)>
+						<cfif len(eventOutput)>
+						<cfoutput>#eventOutput#</cfoutput>
+						<cfelse>
 						<cfinclude template="/#application.configBean.getWebRootMap()#/#theDisplayPoolID#/includes/display_objects/dsp_search_results.cfm">
+						</cfif>
 					</cfcase> 
 					<cfcase value="login">
 						<cfset event.setValue('noCache',1)>
+						<cfset eventOutput=application.pluginManager.renderScripts("onSiteLoginPromptRender",event.getValue("siteid"),event)>
+						<cfif len(eventOutput)>
+						<cfoutput>#eventOutput#</cfoutput>
+						<cfelse>
 						<cfinclude  template="/#application.configBean.getWebRootMap()#/#theDisplayPoolID#/includes/display_objects/dsp_login.cfm">
+						</cfif>
 					</cfcase>
 				</cfswitch>
 			<cfelse>
@@ -994,7 +1012,15 @@ to your own modified versions of Mura CMS.
 						#dspCrumbListLinks("crumblist",arguments.crumbseparator)#
 					</cfif>			
 				</cfoutput>
-				<cfif fileExists(application.configBean.getWebRoot() & fileDelim & theDisplayPoolID & fileDelim & "includes" & fileDelim & "display_objects" & fileDelim & "custom" & fileDelim & "extensions" & fileDelim & "dsp_" & event.getValue('contentBean').getType() & "_" & event.getValue('contentBean').getSubType() & ".cfm")>
+				
+				<cfset eventOutput=application.pluginManager.renderScripts("on#event.getContentBean().getType()##event.getContentBean().getSubType()#BodyRender",event.getValue("siteid"),event)>
+				<cfif not len(eventOutput)>
+					<cfset eventOutput=application.pluginManager.renderScripts("on#event.getContentBean().getType()#BodyRender",event.getValue("siteid"),event)>
+				</cfif>
+				
+				<cfif len(eventOutput)>
+					<cfoutput>#eventOutput#</cfoutput>
+				<cfelseif fileExists(application.configBean.getWebRoot() & fileDelim & theDisplayPoolID & fileDelim & "includes" & fileDelim & "display_objects" & fileDelim & "custom" & fileDelim & "extensions" & fileDelim & "dsp_" & event.getValue('contentBean').getType() & "_" & event.getValue('contentBean').getSubType() & ".cfm")>
 					 <cfinclude template="/#application.configBean.getWebRootMap()#/#theDisplayPoolID#/includes/display_objects/custom/extensions/dsp_#event.getValue('contentBean').getType()#_#event.getValue('contentBean').getSubType()#.cfm">
 				<cfelse>
 					<cfoutput>
@@ -1053,11 +1079,27 @@ to your own modified versions of Mura CMS.
 				</cfif>		
 			</cfif> 
 		<cfelseif event.getValue('isOnDisplay') and event.getValue('r').restrict and event.getValue('r').loggedIn and not event.getValue('r').allow >
+			<cfset eventOutput=application.pluginManager.renderScripts("onContentDenialRender",event.getValue("siteid"),event)>
+			<cfif len(eventOutput)>
+			<cfoutput>#eventOutput#</cfoutput>
+			<cfelse>
 			<cfinclude template="/#application.configBean.getWebRootMap()#/#theDisplayPoolID#/includes/display_objects/dsp_deny.cfm">
+			</cfif>
 		<cfelseif event.getValue('isOnDisplay') and event.getValue('r').restrict and not event.getValue('r').loggedIn>
+			<cfset event.setValue('noCache',1)>
+			<cfset eventOutput=application.pluginManager.renderScripts("onSiteLoginPromptRender",event.getValue("siteid"),event)>
+			<cfif len(eventOutput)>
+			<cfoutput>#eventOutput#</cfoutput>
+			<cfelse>
 			<cfinclude template="/#application.configBean.getWebRootMap()#/#theDisplayPoolID#/includes/display_objects/dsp_login.cfm">
+			</cfif>
 		<cfelse>
+			<cfset eventOutput=application.pluginManager.renderScripts("onContentOfflineRender",event.getValue("siteid"),event)>
+			<cfif len(eventOutput)>
+			<cfoutput>#eventOutput#</cfoutput>
+			<cfelse>
 			<cfinclude template="/#application.configBean.getWebRootMap()#/#theDisplayPoolID#/includes/display_objects/dsp_offline.cfm">
+			</cfif>
 		</cfif>
 		
 	</cfsavecontent>

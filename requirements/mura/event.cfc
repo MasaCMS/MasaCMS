@@ -77,6 +77,16 @@ to your own modified versions of Mura CMS.
 
 </cffunction>
 
+<cffunction name="valueExists" returntype="any" access="public" output="false">
+	<cfargument name="property" type="string" required="true">
+		<cfreturn structKeyExists(variables.event,arguments.property) />
+</cffunction>
+
+<cffunction name="removeValue" returntype="void" access="public" output="false">
+	<cfargument name="property" type="string" required="true"/>
+		<cfset structDelete(variables.event,arguments.property) />
+</cffunction>
+
 <cffunction name="getValues" returntype="any" access="public" output="false">
 		<cfreturn variables.event />
 </cffunction>

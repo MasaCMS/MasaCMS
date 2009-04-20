@@ -125,7 +125,7 @@ to your own modified versions of Mura CMS.
 				<cfcookie name="email" value="">
 			</cfif>
 		<cfelse>
-			<cfset errors["SecurityCode"]=rbFactory.getKey('comments.captchaerror')>
+			<cfset errors["SecurityCode"]=rbFactory.getKey('captcha.error')>
 		</cfif>
 
 	</cfif>

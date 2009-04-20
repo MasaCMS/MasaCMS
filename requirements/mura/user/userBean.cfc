@@ -80,6 +80,8 @@ to your own modified versions of Mura CMS.
 	<cfset variables.instance.IMName="" />
 	<cfset variables.instance.IMService="" />
 	<cfset variables.instance.tags="" />
+	<cfset variables.instance.hKey="" />
+	<cfset variables.instance.uKey="" />
 	<cfset variables.instance.extendData="" />
 
     <cfset variables.instance.errors=structnew() />
@@ -498,16 +500,24 @@ to your own modified versions of Mura CMS.
 
 <cffunction name="validate" access="public" output="false" returntype="void">
 		<cfset variables.instance.errors=structnew() />
-		<cfif variables.instance.type eq 2 and (variables.instance.username eq "" or not checkUsername())>
-		<cfset variables.instance.errors.username=application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"user.userbeanusernamevalidate"),getusername()) />
-		</cfif>
 		
-		<cfif variables.instance.type eq 2 and variables.instance.email eq "" >
-		<cfset variables.instance.errors.username=application.rbFactory.getKeyValue(session.rb,"user.emailrequired") />
-		</cfif>
+		<cfif trim(variables.instance.siteid) neq "">
 		
-		<cfif trim(variables.instance.siteid) eq "">
-		<cfset variables.instance.errors.siteid="The 'SiteID' variable is missing." />
+			<cfif variables.instance.type eq 2 and (variables.instance.username eq "" or not checkUsername())>
+			<cfset variables.instance.errors.username=variables.settingsManager.getSite(getSiteID()).getRBFactory().getResourceBundle().messageFormat( variables.settingsManager.getSite(getSiteID()).getRBFactory().getKey("user.usernamevalidate") , getusername() ) />
+			</cfif>
+			
+			<cfif variables.instance.type eq 2 and variables.instance.email eq "" >
+			<cfset variables.instance.errors.username=variables.settingsManager.getSite(getSiteID()).getRBFactory().getKey("user.emailrequired") />
+			</cfif>
+			
+			<!--- If captcha data has been submitted validate it --->
+			<cfif not (not len(variables.instance.hKey) or variables.instance.hKey eq hash(variables.instance.uKey))>
+			<cfset variables.instance.errors.SecurityCode=variables.settingsManager.getSite(getSiteID()).getRBFactory().getKey("captcha.error")/>
+			</cfif>
+		
+		<cfelse>
+			<cfset variables.instance.errors.siteid="The 'SiteID' variable is missing." />
 		</cfif>
 		
 	</cffunction>
@@ -609,6 +619,16 @@ to your own modified versions of Mura CMS.
 
   <cffunction name="getTags" returnType="string" output="false" access="public">
     <cfreturn variables.instance.tags />
+  </cffunction>
+
+ <cffunction name="setHkey" returnType="void" output="false" access="public">
+    <cfargument name="hkey" type="string" required="true">
+    <cfset variables.instance.hkey = trim(arguments.hkey) />
+  </cffunction>
+
+ <cffunction name="setUkey" returnType="void" output="false" access="public">
+    <cfargument name="Ukey" type="string" required="true">
+    <cfset variables.instance.Ukey = trim(arguments.Ukey) />
   </cffunction>
 
 <cffunction name="setValue" returntype="any" access="public" output="false">

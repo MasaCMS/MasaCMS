@@ -660,11 +660,61 @@ select * from tplugins order by pluginID
 				<cfinvokeargument name="event" value="#arguments.event#">
 			</cfinvoke>	
 		<cfelse>
-			<cfset pluginConfig=application.pluginManager.getConfig(rs.pluginID)>
-			<cfset getExecutor().executeScript(event,"/plugins/#rs.pluginID#/#rs.scriptfile#",pluginConfig)>
+			<cfset getExecutor().executeScript(event,"/plugins/#rs.pluginID#/#rs.scriptfile#",getConfig(rs.pluginID))>
 		</cfif>
 	</cfloop>
 
+</cffunction>
+
+<cffunction name="renderScripts" output="false" returntype="any">
+<cfargument name="runat">
+<cfargument name="siteID" required="true" default="">
+<cfargument name="event" required="true" default="" type="any">
+	<cfset var rs=""/>
+	<cfset var str=""/>
+	<cfset var pluginConfig="">
+	<cfset var componentPath="">
+	<cfset var scriptPath="">
+	<cfset var eventHandler="">
+	<cfset var theDisplay="">
+	
+	<cfif not isObject(arguments.event)>
+		<cfif isStruct(arguments.event)>
+			<cfset variables.event=createObject("component","mura.event").init(arguments.event)/>
+		<cfelse>				
+			<cfif structKeyExists(request,"servletEvent")>
+				<cfset arguments.event=request.servletEvent />
+			<cfelse>
+				<cfset arguments.event=createObject("component","mura.event")/>
+			</cfif>
+		</cfif>
+	</cfif>
+	
+	<cfset rs=getScripts(arguments.runat,arguments.siteid) />
+
+	<cfif rs.recordcount>
+	<cfsavecontent variable="str">
+	<cfloop query="rs">
+	<cftry>
+		<cfif listLast(rs.scriptfile,".") neq "cfm">
+			<cfset componentPath="plugins.#rs.pluginID#.#rs.scriptfile#">
+			<cfset eventHandler=getComponent(componentPath, rs.pluginID, arguments.siteID, rs.docache)>
+			<cfinvoke component="#eventHandler#" method="#arguments.runat#" returnVariable="theDisplay">
+				<cfinvokeargument name="event" value="#arguments.event#">
+			</cfinvoke>	
+			<cfoutput>#theDisplay#</cfoutput>
+		<cfelse>
+			<cfoutput>#getExecutor().renderScript(event,"/plugins/#rs.pluginID#/#rs.scriptfile#",getConfig(rs.pluginID))#</cfoutput>
+		</cfif>
+	<cfcatch>
+		<cfdump var="#cfcatch#">
+	</cfcatch>
+	</cftry>
+	</cfloop>
+	</cfsavecontent>
+	</cfif>
+
+	<cfreturn trim(str)>
 </cffunction>
 
 <cffunction name="getScripts" output="false" returntype="query">

@@ -86,7 +86,7 @@ to your own modified versions of Mura CMS.
 <!---  
 This is to be used when the webroot is including /tasks/content/contentServerRoot.cfm 
 for urls like http://yourdomain.com/index.cfm/path/tp/content/ 
-
+--->
 <cffunction name="getURLStem" access="public" output="false" returntype="string">
 	<cfargument name="siteID">
 	<cfargument name="filename">
@@ -102,6 +102,6 @@ for urls like http://yourdomain.com/index.cfm/path/tp/content/
 	</cfif>
 
 </cffunction>
---->
+
 
 </cfcomponent>

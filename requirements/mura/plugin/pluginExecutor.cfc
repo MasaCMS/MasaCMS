@@ -64,4 +64,27 @@
 
 </cffunction>
 
+
+<cffunction name="renderScript" output="true" returntype="any">
+<cfargument name="event" required="true" default="" type="any">
+<cfargument name="scriptFile" required="true" default="" type="any">
+<cfargument name="pluginConfig" required="true" default="" type="any">
+	<cfset var rs=""/>
+	<cfset var str=""/>
+	
+	<cfset request.pluginConfig=arguments.pluginConfig/>
+	<cfset request.pluginConfig.setSetting("pluginMode","object")/>
+	<cfset request.scriptEvent=arguments.event />
+	<cfset pluginConfig.setSetting("pluginPath","#variables.configBean.getContext()#/plugins/#pluginConfig.getPluginID()#/")/>
+
+	<cfsavecontent variable="str">
+	<cfinclude template="/#variables.configBean.getWebRootMap()#/plugins/#pluginConfig.getPluginID()#/#arguments.scriptFile#">
+	</cfsavecontent>
+	
+	<cfset structDelete(request,"pluginConfig")>
+	<cfset structDelete(request,"scriptEvent")>
+	
+	<cfreturn trim(str) />
+</cffunction>
+
 </cfcomponent>

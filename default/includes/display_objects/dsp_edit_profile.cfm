@@ -103,7 +103,7 @@ to your own modified versions of Mura CMS.
 	<label for="password2txt">#rbFactory.getKey('user.passwordconfirm')#<span class="required">*</span></label>
 	<input  name="password2" id="password2txt" type="password" value="" required="true" class="text"  message="#HTMLEditFormat(rbFactory.getKey('user.passwordconfirmrequired'))#" maxlength="50">
 	</li>
-	
+	<cfinclude template="dsp_captcha.cfm" >
 	
 <cfelse>
  	 <li>
@@ -198,7 +198,7 @@ to your own modified versions of Mura CMS.
 </cfif>
 
 <cfif getAuthUser() neq ''>
-	<input name="submit" type="submit"  value="Update Profile" />
+	<input name="submit" type="submit"  value="#HTMLEditFormat(rbFactory.getKey('user.updateprofile'))#" />
 	<input type="hidden" name="userid" value="#listgetat(getAuthUser(),1,'^')#"/>
 	<input type="hidden" name="doaction" value="updateprofile">
 <cfelse>
@@ -212,7 +212,7 @@ to your own modified versions of Mura CMS.
 
 <input type="hidden" name="siteid" value="#request.siteid#" />
 <input type="hidden" name="returnURL" value="#request.returnURL#" />
-<input type="hidden" name="display" value="#HTMLEditFormat(rbFactory.getKey('user.updateprofile'))#">
+<input type="hidden" name="display" value="editprofile" />
 </form>
 </div>
  <script type="text/javascript">

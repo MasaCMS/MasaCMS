@@ -66,9 +66,9 @@ to your own modified versions of Mura CMS.
 	<cfif acceptError eq "Browser">
 		<p class="error">We're sorry the polling feature is not supported for IE 5 on the Mac</p>
 	<cfelseif acceptError eq "Duplicate">
-		<p class="error">You are only allowed to vote once per poll.</p>
+		<p class="error">#getSite().getRFactory().getKey("poll.onlyonevote")#</p>
 	<cfelseif acceptError eq "Captcha">
-		<p class="error">The security code entered was incorrect. <a href="javascript:history.back();">Please try again.</a></p>
+		<p class="error">#getSite().getRFactory().getKey("captcha.error")# <a href="javascript:history.back();">#getSite().getRFactory().getKey("captcha.tryagain")#</a></p>
 	</cfif>
 <cfelse><p class="success">#setDynamicContent(rsform.responseMessage)#</p>
 		<cfif isdefined("request.redirect_url")>
