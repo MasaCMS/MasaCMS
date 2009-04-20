@@ -17,7 +17,6 @@ select * from tplugindisplayobjects  where 0=1
 	</cfquery>
 </cfcase>
 <cfcase value="oracle">
-	<cfdump var="#rsCheck#"><cfabort>
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 	ALTER TABLE "TPLUGINDISPLAYOBJECTS" ADD "DISPLAYMETHOD" varchar2(100)
 	</cfquery>
