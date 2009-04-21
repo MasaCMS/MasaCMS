@@ -26,8 +26,8 @@
 	
 	<cfset event.setValue('track',0)>
 	<cfset event.setValue('nocache',1)>
-	<cfset event.setValue('contentBean',application.contentManager.getcontentVersion(event.getValue('previewID'),event.getValue('siteID'))) />
-	
+	<cfset event.setValue('contentBean',application.contentManager.getcontentVersion(event.getValue('previewID'),event.getValue('siteID'),true)) />
+
 </cffunction>
 
 </cfcomponent>

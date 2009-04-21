@@ -155,7 +155,9 @@ to your own modified versions of Mura CMS.
 	<cffunction name="getcontentVersion" access="public" returntype="any" output="false">
 		<cfargument name="contentHistID" type="string" required="yes" />
 		<cfargument name="siteID" type="string" required="yes" />
-		<cfreturn variables.contentDAO.readVersion(arguments.contentHistID,arguments.siteid) />
+		<cfargument name="use404" type="boolean" required="yes" default="false"/>
+		
+		<cfreturn variables.contentDAO.readVersion(arguments.contentHistID,arguments.siteid,arguments.use404) />
 	</cffunction>
 	
 	<cffunction name="getActiveContentByFilename" access="public" returntype="any" output="false">

@@ -58,6 +58,7 @@ to your own modified versions of Mura CMS.
 <cffunction name="readVersion" access="public" returntype="any" output="false">
 		<cfargument name="contentHistID" type="string" required="yes" />
 		<cfargument name="siteID" type="string" required="yes" />
+		<cfargument name="use404" type="boolean" required="yes" default="false"/>
 		<cfset var rsContent = 0 />
 		<cfset var contentBean=getbean() />
 			
@@ -69,6 +70,21 @@ to your own modified versions of Mura CMS.
 		
 		<cfif rsContent.recordCount>
 			<cfset contentBean.set(rsContent) />
+		<cfelseif arguments.use404>
+			<cfset contentBean.setIsNew(1) />
+			<cfset contentBean.setActive(1) />
+			<cfset contentBean.setBody('The requested version this content could not be found.')/>
+			<cfset contentBean.setTitle('404')/>
+			<cfset contentBean.setMenuTitle('404')/>
+			<cfset contentBean.setIsNew(1) />
+			<cfset contentBean.setActive(1) />
+			<cfset contentBean.setFilename('404') />
+			<cfset contentBean.setParentID('00000000000000000000000000000000END') />
+			<cfset contentBean.setcontentID('00000000000000000000000000000000001') />
+			<cfset contentBean.setPath('00000000000000000000000000000000001') />
+			<cfset contentBean.setSiteID(arguments.siteID) />
+			<cfset contentBean.setDisplay(1) />
+			<cfset contentBean.setApproved(1) />
 		<cfelse>
 			<cfset contentBean.setIsNew(1) />
 			<cfset contentBean.setActive(1) />
@@ -105,6 +121,7 @@ to your own modified versions of Mura CMS.
 			<cfset contentBean.setFilename('404') />
 			<cfset contentBean.setParentID('00000000000000000000000000000000END') />
 			<cfset contentBean.setcontentID('00000000000000000000000000000000001') />
+			<cfset contentBean.setPath('00000000000000000000000000000000001') />
 			<cfset contentBean.setSiteID(arguments.siteID) />
 			<cfset contentBean.setDisplay(1) />
 			<cfset contentBean.setApproved(1) />
@@ -175,6 +192,7 @@ to your own modified versions of Mura CMS.
 			<cfset contentBean.setFilename('404') />
 			<cfset contentBean.setParentID('00000000000000000000000000000000END') />
 			<cfset contentBean.setcontentID('00000000000000000000000000000000001') />
+			<cfset contentBean.setPath('00000000000000000000000000000000001') />
 			<cfset contentBean.setSiteID(arguments.siteID) />
 			<cfset contentBean.setDisplay(1) />
 			<cfset contentBean.setApproved(1) />
