@@ -73,7 +73,7 @@ to your own modified versions of Mura CMS.
 		<cfelseif arguments.use404>
 			<cfset contentBean.setIsNew(1) />
 			<cfset contentBean.setActive(1) />
-			<cfset contentBean.setBody('The requested version this content could not be found.')/>
+			<cfset contentBean.setBody('The requested version of this content could not be found.')/>
 			<cfset contentBean.setTitle('404')/>
 			<cfset contentBean.setMenuTitle('404')/>
 			<cfset contentBean.setIsNew(1) />

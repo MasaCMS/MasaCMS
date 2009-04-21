@@ -27,7 +27,7 @@
 	<cfset event.setValue('contentBean',application.contentManager.getActiveContentByFilename("404",event.getValue('siteid'),true)) />
 	
 	<cfif len(event.getValue('previewID'))>
-		<cfset event.getContentBean().setBody("The requested version this content could not be found.")>
+		<cfset event.getContentBean().setBody("The requested version of this content could not be found.")>
 	</cfif>
 	<cfheader statuscode="404" statustext="Content Not Found" /> 
 
