@@ -110,6 +110,7 @@ to your own modified versions of Mura CMS.
 			<cfset application.badwords = ReReplaceNoCase(variables.temp, "," , "|" , "ALL")/> 
 			<cfset application.dashboardManager=application.serviceFactory.getBean("dashboardManager") />
 			<cfset application.classExtensionManager=application.configBean.getClassExtensionManager() />
+			<cfset application.classExtensionManager.setContentRenderer(application.contentRenderer)>
 			<cfset application.rbFactory=application.serviceFactory.getBean("resourceBundleFactory") />
 			<cfset application.clusterManager=application.serviceFactory.getBean("clusterManager") />
 			<cfset application.contentServer=application.serviceFactory.getBean("contentServer") />

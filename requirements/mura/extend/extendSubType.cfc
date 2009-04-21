@@ -56,14 +56,16 @@ to your own modified versions of Mura CMS.
 
 <cffunction name="init" returntype="any" output="false" access="public">
 	<cfargument name="configBean">
+	<cfargument name="contentRenderer">
 	
 	<cfset variables.configBean=arguments.configBean />
+	<cfset variables.contentRenderer=arguments.contentRenderer />
 	<cfset variables.dsn=variables.configBean.getDatasource()/>
 	<cfreturn this />
 </cffunction>
 
 <cffunction name="getExtendSetBean" returnType="any">
-<cfset var extendSetBean=createObject("component","mura.extend.extendSet").init(variables.configBean) />
+<cfset var extendSetBean=createObject("component","mura.extend.extendSet").init(variables.configBean,variables.contentRenderer) />
 <cfset extendSetBean.setSubTypeID(getSubTypeID()) />
 <cfreturn extendSetBean />
 </cffunction>

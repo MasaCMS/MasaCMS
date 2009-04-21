@@ -175,7 +175,6 @@ to your own modified versions of Mura CMS.
 
 	<cfset variables.instance.reactorDBType=config.dbType>
 	<cfset applyDbUpdates() />
-	<cfset loadClassExtensionManager()/>
 	
 	<cfreturn this />
 </cffunction>
@@ -574,7 +573,8 @@ to your own modified versions of Mura CMS.
 --->
 
 <cffunction name="loadClassExtensionManager" returntype="void" access="public" output="false">
-	<cfset variables.instance.extensionManager=createObject("component","#getMapDir()#.extend.extendManager").init(this) />
+	<cfargument name="contentRenderer"  />
+	<cfset variables.instance.extensionManager=createObject("component","#getMapDir()#.extend.extendManager").init(this,arguments.contentRenderer) />
 </cffunction>
 
 <cffunction name="applyDbUpdates" returntype="void" access="public" output="false">
@@ -591,6 +591,11 @@ to your own modified versions of Mura CMS.
 </cffunction>
 
 <cffunction name="getClassExtensionManager" returntype="any" access="public" output="false">
+	<cfargument name="contentRenderer" required="true" default="" />
+	
+	<cfif not isObject(variables.instance.extensionManager)>
+		<cfset loadClassExtensionManager(arguments.contentRenderer)/>
+	</cfif>
 	<cfreturn variables.instance.extensionManager />
 </cffunction>
 

@@ -55,14 +55,16 @@ to your own modified versions of Mura CMS.
 
 <cffunction name="init" returntype="any" output="false" access="public">
 	<cfargument name="configBean">
+	<cfargument name="contentRenderer">
 	
 	<cfset variables.configBean=arguments.configBean />
+	<cfset variables.contentRenderer=arguments.contentRenderer />
 	<cfset variables.dsn=variables.configBean.getDatasource()/>
 	<cfreturn this />
 </cffunction>
 
 <cffunction name="getAttributeBean" returnType="any">
-<cfset var attribute = createObject("component","mura.extend.extendAttribute").init(variables.configBean) />
+<cfset var attribute = createObject("component","mura.extend.extendAttribute").init(variables.configBean,variables.contentRenderer) />
 <cfset attribute.setExtendSetID(getExtendSetID())/>
 <cfreturn attribute />
 </cffunction>
@@ -216,7 +218,7 @@ to your own modified versions of Mura CMS.
 		<cfset tempArray=createObject("component","mura.queryTool").init(rsAttributes).toArray() />
 		
 		<cfloop from="1" to="#rsAttributes.recordcount#" index="a">
-			<cfset attribute=createObject("component","mura.extend.extendAttribute").init(variables.configBean) />
+			<cfset attribute=createObject("component","mura.extend.extendAttribute").init(variables.configBean,variables.contentRenderer) />
 			<cfset attribute.set(tempArray[a]) />
 			<cfset arrayAppend(variables.instance.attributes,attribute)/>
 		</cfloop>
