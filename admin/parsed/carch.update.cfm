@@ -152,7 +152,7 @@
 <cfabort>
 </cfif>
 <cfif attributes.action eq 'delete' or attributes.action eq 'deletehistall' or (attributes.return eq 'hist' and attributes.preview eq 0)>
-<cflocation url="index.cfm?fuseaction=cArch.hist&topid=#attributes.topid#&contentid=#attributes.contentid#&startrow=#attributes.startrow#&siteid=#attributes.siteid#&moduleid=#attributes.moduleid#&parentid=#attributes.parentid#&type=#attributes.type#" addtoken="false">
+<cflocation url="index.cfm?fuseaction=cArch.hist&topid=#attributes.topid#&contentid=#attributes.contentid#&startrow=#attributes.startrow#&siteid=#attributes.siteid#&moduleid=#attributes.moduleid#&parentid=#attributes.parentid#&type=#attributes.type#&compactDisplay=#attributes.compactDisplay#" addtoken="false">
 <cfabort>
 </cfif>
 <cfif attributes.preview eq 0>

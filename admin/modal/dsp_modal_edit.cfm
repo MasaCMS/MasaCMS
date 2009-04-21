@@ -63,7 +63,11 @@ to your own modified versions of Mura CMS.
 	</cfif>
 	
 	<cfset editLink = adminBase & "#application.configBean.getContext()#/admin/index.cfm?fuseaction=cArch.edit">
-	<cfset editLink = editLink & "&amp;contenthistid=" & request.contentBean.getContentHistID()>
+	<cfif structKeyExists(request,"previewID") and len(request.previewID)>
+		<cfset editLink = editLink & "&amp;contenthistid=" & request.previewID>
+	<cfelse>
+		<cfset editLink = editLink & "&amp;contenthistid=" & request.contentBean.getContentHistID()>
+	</cfif>
 	<cfset editLink = editLink & "&amp;siteid=" & request.contentBean.getSiteID()>
 	<cfset editLink = editLink & "&amp;contentid=" & request.contentBean.getContentID()>
 	<cfset editLink = editLink & "&amp;topid=00000000000000000000000000000000001">
@@ -98,6 +102,7 @@ to your own modified versions of Mura CMS.
 	<cfset historyLink = historyLink & "&amp;parentid=" & request.contentBean.getParentID()>
 	<cfset historyLink = historyLink & "&amp;moduleid=" & request.contentBean.getModuleID()>
 	<cfset historyLink = historyLink & "&amp;startrow=1">
+	<cfset historyLink = historyLink & "&amp;compactDisplay=true">
 	
 	<cfset adminLink = adminBase & "#application.configBean.getContext()#/admin/index.cfm?fuseaction=cArch.list">
 	<cfset adminLink = adminLink & "&amp;siteid=" & request.contentBean.getSiteID()>
@@ -146,7 +151,7 @@ function toggleAdminToolbar(){
 						</ul>
 					</li>
 				</cfif>
-				<li id="adminVersionHistory"><a href="#historyLink#" target="admin">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.versionhistory')#</a></li>
+				<li id="adminVersionHistory"><a href="#historyLink#" rel="shadowbox;width=1050;">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.versionhistory')#</a></li>
 			</cfif>
 			<cfif (request.r.perm eq 'editor' or isUserInRole("S2")) and request.contentBean.getFilename() neq "" and not request.contentBean.getIslocked()>
 				<li id="adminDelete"><a href="#deleteLink#" onclick="return confirm('#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.deletecontentconfirm'))#');">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.delete')#</a></li>

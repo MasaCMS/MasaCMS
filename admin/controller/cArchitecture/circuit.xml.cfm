@@ -101,7 +101,14 @@
 <invoke object="application.contentManager" methodcall="getItemCount(attributes.contentid,attributes.siteid)" returnVariable="request.rsCount" />
 <do action="vArch.ajax" contentvariable="fusebox.ajax"/>
 <do action="vArch.hist" contentvariable="fusebox.layout"/>
-<do action="layout.display"/>
+<if condition="attributes.compactDisplay eq 'true'">
+		<true>
+			<do action="layout.compact"/>
+		</true>
+		<false>
+			<do action="layout.display"/>
+		</false>
+	</if>
 </fuseaction>
 
 <fuseaction name="draft">
@@ -188,7 +195,7 @@
 			
 			<if condition="attributes.action eq 'delete' or attributes.action eq 'deletehistall' or (attributes.return eq 'hist' and attributes.preview eq 0)">
 				<true>
-					<relocate url="index.cfm?fuseaction=cArch.hist&amp;topid=#attributes.topid#&amp;contentid=#attributes.contentid#&amp;startrow=#attributes.startrow#&amp;siteid=#attributes.siteid#&amp;moduleid=#attributes.moduleid#&amp;parentid=#attributes.parentid#&amp;type=#attributes.type#" addtoken="false"/>
+					<relocate url="index.cfm?fuseaction=cArch.hist&amp;topid=#attributes.topid#&amp;contentid=#attributes.contentid#&amp;startrow=#attributes.startrow#&amp;siteid=#attributes.siteid#&amp;moduleid=#attributes.moduleid#&amp;parentid=#attributes.parentid#&amp;type=#attributes.type#&amp;compactDisplay=#attributes.compactDisplay#" addtoken="false"/>
 				</true>
 			</if>
 			

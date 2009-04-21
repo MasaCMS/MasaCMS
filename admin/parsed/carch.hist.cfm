@@ -172,6 +172,21 @@
 <cfthrow type="fusebox.missingFuse" message="missing Fuse" detail="You tried to include a fuse dsp_hist.cfm in circuit vArch which does not exist (from fuseaction vArch.hist).">
 <cfelse><cfrethrow></cfif></cfcatch></cftry>
 </cfsavecontent>
+<cfset myFusebox.thisCircuit = "cArch">
+<cfif attributes.compactDisplay eq 'true'>
+<!--- do action="layout.compact" --->
+<cfset myFusebox.thisCircuit = "layout">
+<cfset myFusebox.thisFuseaction = "compact">
+<cfif not isDefined("fusebox.ajax")><cfset fusebox.ajax = "" /></cfif>
+<cfif not isDefined("fusebox.layout")><cfset fusebox.layout = "" /></cfif>
+<cftry>
+<cfoutput><cfinclude template="../view/layouts/compact.cfm"></cfoutput>
+<cfcatch type="missingInclude"><cfif len(cfcatch.MissingFileName) gte 11 and right(cfcatch.MissingFileName,11) is "compact.cfm">
+<cfthrow type="fusebox.missingFuse" message="missing Fuse" detail="You tried to include a fuse compact.cfm in circuit layout which does not exist (from fuseaction layout.compact).">
+<cfelse><cfrethrow></cfif></cfcatch></cftry>
+<cfset myFusebox.thisCircuit = "cArch">
+<cfset myFusebox.thisFuseaction = "hist">
+<cfelse>
 <!--- do action="layout.display" --->
 <cfset myFusebox.thisCircuit = "layout">
 <cfset myFusebox.thisFuseaction = "display">
@@ -182,6 +197,9 @@
 <cfcatch type="missingInclude"><cfif len(cfcatch.MissingFileName) gte 12 and right(cfcatch.MissingFileName,12) is "template.cfm">
 <cfthrow type="fusebox.missingFuse" message="missing Fuse" detail="You tried to include a fuse template.cfm in circuit layout which does not exist (from fuseaction layout.display).">
 <cfelse><cfrethrow></cfif></cfcatch></cftry>
+<cfset myFusebox.thisCircuit = "cArch">
+<cfset myFusebox.thisFuseaction = "hist">
+</cfif>
 <cfcatch><cfrethrow></cfcatch>
 </cftry>
 
