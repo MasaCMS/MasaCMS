@@ -181,7 +181,6 @@ to your own modified versions of Mura CMS.
 		</cfquery>
 		
 		<cfif rsContent.recordCount eq 1>
-
 			<cfset contentBean.set(rsContent) />
 		<cfelseif arguments.use404>
 			<cfset contentBean.setBody('The requested page could not be found.')/>

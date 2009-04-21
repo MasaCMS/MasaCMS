@@ -32,9 +32,9 @@
 		<cfset event.getHandler("standardSetAdTracking").handle(event)>
 		
 		<cfif len(event.getValue('linkServID'))>
-			<cfset event.setValue('contentBean',application.contentManager.getActiveContent(event.getValue('linkServID'),event.getValue('siteid'))) />
+			<cfset event.setValue('contentBean',application.contentManager.getActiveContent(event.getValue('linkServID'),event.getValue('siteid'),true)) />
 		<cfelse>
-			<cfset event.setValue('contentBean',application.contentManager.getActiveContentByFilename(event.getValue('currentFilename'),event.getValue('siteid'))) />
+			<cfset event.setValue('contentBean',application.contentManager.getActiveContentByFilename(event.getValue('currentFilename'),event.getValue('siteid'),true)) />
 		</cfif>
 	</cfif>
 	
