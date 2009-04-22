@@ -211,26 +211,29 @@ to your own modified versions of Mura CMS.
 		</cfloop>
 		
 		<cfif getDisplay() eq 2 
-			AND isDate(getDisplayStart())
-			and isdefined("arguments.content.starthour")
+			AND isDate(getDisplayStart())>
+			
+			<cfif isdefined("arguments.content.starthour")
 			and isdefined("arguments.content.startMinute")
 			and isdefined("arguments.content.startDayPart")>
 			
-			<cfif arguments.content.startdaypart eq "PM">
-				<cfset starthour = arguments.content.starthour + 12>
-				
-				<cfif starthour eq 24>
-					<cfset starthour = 12>
+				<cfif arguments.content.startdaypart eq "PM">
+					<cfset starthour = arguments.content.starthour + 12>
+					
+					<cfif starthour eq 24>
+						<cfset starthour = 12>
+					</cfif>
+				<cfelse>
+					<cfset starthour = arguments.content.starthour>
+					
+					<cfif starthour eq 12>
+						<cfset starthour = 0>
+					</cfif>
 				</cfif>
-			<cfelse>
-				<cfset starthour = arguments.content.starthour>
 				
-				<cfif starthour eq 12>
-					<cfset starthour = 0>
-				</cfif>
+				<cfset setDisplayStart(createDateTime(year(getDisplayStart()), month(getDisplayStart()), day(getDisplayStart()),starthour, arguments.content.startMinute, "0"))>
+		
 			</cfif>
-			
-			<cfset setDisplayStart(createDateTime(year(getDisplayStart()), month(getDisplayStart()), day(getDisplayStart()),starthour, arguments.content.startMinute, "0"))>
 		<cfelseif getDisplay() eq 2 >
 			<cfset setDisplay(1) >
 			<cfset setDisplayStart("") >
@@ -238,11 +241,11 @@ to your own modified versions of Mura CMS.
 		</cfif>
 		
 		<cfif getDisplay() eq 2 
-			AND isDate(getDisplayStop())
-			and isdefined("arguments.content.Stophour")
+			AND isDate(getDisplayStop())>
+			
+			<cfif isdefined("arguments.content.Stophour")
 			and isdefined("arguments.content.StopMinute")
 			and isdefined("arguments.content.StopDayPart")>
-			
 			<cfif arguments.content.stopdaypart eq "PM">
 				<cfset stophour = arguments.content.stophour + 12>
 				
@@ -258,6 +261,8 @@ to your own modified versions of Mura CMS.
 			</cfif>
 			
 			<cfset setDisplayStop(createDateTime(year(getDisplayStop()), month(getDisplayStop()), day(getDisplayStop()),stophour, arguments.content.StopMinute, "0"))>
+			
+			</cfif>
 		</cfif>
 		
 		<cfif getIsFeature() eq 2 

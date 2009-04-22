@@ -216,7 +216,7 @@ to your own modified versions of Mura CMS.
 </cffunction>
 
 <cffunction name="getKids" returntype="query" output="false">
-			<cfargument name="moduleid" type="string">
+			<cfargument name="moduleid" type="string" required="true" default="00000000000000000000000000000000000">
 			<cfargument name="siteid" type="string">
 			<cfargument name="parentid" type="string" >
 			<cfargument name="type" type="string"  default="default">
