@@ -448,7 +448,7 @@ to your own modified versions of Mura CMS.
 	<cfif dbType eq "mysql">limit <cfqueryparam cfsqltype="cf_sql_numeric" value="#arguments.feedBean.getMaxItems()#" /> </cfif>
 	<cfif dbType eq "oracle">) where ROWNUM <= <cfqueryparam cfsqltype="cf_sql_numeric" value="#arguments.feedBean.getMaxItems()#" /> </cfif>
 	</cfquery>
-	<cfdump var="#rs#"><cfabort>
+	
 	<cfreturn rs />
 </cffunction>
 
