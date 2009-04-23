@@ -70,7 +70,7 @@ to your own modified versions of Mura CMS.
 <cfset options[10][2]=application.rbFactory.getKeyValue(session.rb,'params.type')>
 <cfset options[11][1]="tcontent.subType^varchar">
 <cfset options[11][2]=application.rbFactory.getKeyValue(session.rb,'params.subtype')>
-<cfset options[12][1]="tcontent.tags^varchar">
+<cfset options[12][1]="tcontenttags.tag^varchar">
 <cfset options[12][2]=application.rbFactory.getKeyValue(session.rb,'params.tag')>
 <cfset options[13][1]="tcontent.displayStart^timestamp">
 <cfset options[13][2]=application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.startdatetime')>

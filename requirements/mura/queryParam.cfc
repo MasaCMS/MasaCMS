@@ -44,7 +44,7 @@ to your own modified versions of Mura CMS.
 
 <cfset variables.relationship="" />
 <cfset variables.field="" />
-<cfset variables.dataType="" />
+<cfset variables.dataType="varchar" />
 <cfset variables.condition="" />
 <cfset variables.criteria="" />
 <cfset variables.isValid=true />

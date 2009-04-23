@@ -103,6 +103,7 @@ to your own modified versions of Mura CMS.
 	<cfset var started =false />
 	<cfset var param ="" />
 	<cfset var doKids =false />
+	<cfset var doTags =false />
 	<cfset var dbType=variables.configBean.getDbType() />
 	
 	<cfif arguments.aggregation >
@@ -113,7 +114,17 @@ to your own modified versions of Mura CMS.
 			<cfset doKids=true />
 		</cfif>
 	</cfif>
-
+	
+	<cfif len(arguments.tag)>
+		<cfset doTags=true>
+	<cfelse>
+		<cfloop query="rsParams">
+			<cfif rsParams.field eq "tcontenttags.tag">
+				<cfset doTags=true>
+				<cfbreak>
+			</cfif>
+		</cfloop>
+	</cfif>
 	
 	<cfquery name="rs" datasource="#variables.configBean.getDatasource()#" blockfactor="#arguments.feedBean.getNextN()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	<cfif dbType eq "oracle">select * from (</cfif>
@@ -147,7 +158,7 @@ to your own modified versions of Mura CMS.
 						   on (tcontent.contentID=TKids.parentID
 						   		and tcontent.siteID=TKids.siteID)
 							
-						   	<cfif len(arguments.tag)>
+						   <cfif doTags>
 							Inner Join tcontenttags on (tcontent.contentHistID=tcontenttags.contentHistID)
 							</cfif>
 						   where tcontent.siteid='#arguments.feedBean.getsiteid()#'
@@ -189,7 +200,7 @@ to your own modified versions of Mura CMS.
 						</cfif>
 						<cfset started=false/>
 						<cfif len(arguments.tag)>
-							and tcontent.Tags= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.tag#"/> 
+							and tcontenttags.tag= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.tag#"/> 
 						</cfif>
 										
 						<cfif arguments.feedBean.getIsFeaturesOnly()>AND (
@@ -306,8 +317,8 @@ to your own modified versions of Mura CMS.
 <!--- end qKids --->
 
 					
-	<cfif len(arguments.tag)>
-		Inner Join tcontentTags on (tcontent.contentHistID=tcontentTags.contentHistID)
+	<cfif doTags>
+		Inner Join tcontenttags on (tcontent.contentHistID=tcontenttags.contentHistID)
 	</cfif>
 	where tcontent.active=1
 	AND tcontent.isNav = 1
@@ -347,7 +358,7 @@ to your own modified versions of Mura CMS.
 	</cfif>
 	
 	<cfif len(arguments.tag)>
-		and tcontentTags.tag= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.tag#"/> 
+		and tcontenttags.tag= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.tag#"/> 
 	</cfif>
 					
 	<cfif arguments.feedBean.getIsFeaturesOnly()>AND (
