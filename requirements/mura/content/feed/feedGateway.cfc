@@ -169,7 +169,7 @@ to your own modified versions of Mura CMS.
 							 
 							 	<cfif param.getIsValid()>	
 							 		<cfif not started ><cfset started = true />and (<cfelse>#param.getRelationship()#</cfif>
-							 		<cfif listLen(param.getField()) gt 1>			
+							 		<cfif  listLen(param.getField(),".") gt 1>			
 										#param.getField()# #param.getCondition()# <cfif param.getCondition() eq "IN">(</cfif><cfqueryparam cfsqltype="cf_sql_#param.getDataType()#" value="#param.getCriteria()#" list="#iif(param.getCriteria() eq 'IN',de('true'),de('false'))#"><cfif param.getCondition() eq "IN">)</cfif>  	
 									<cfelse> 
 										tcontent.contentHistID IN (
@@ -327,7 +327,7 @@ to your own modified versions of Mura CMS.
 		 	
 		 	<cfif param.getIsValid()>	
 				<cfif not started ><cfset started = true />and (<cfelse>#param.getRelationship()#</cfif>			
-				<cfif listLen(param.getField()) gt 1>			
+				<cfif listLen(param.getField(),".") gt 1>			
 					#param.getField()# #param.getCondition()# <cfif param.getCondition() eq "IN">(</cfif><cfqueryparam cfsqltype="cf_sql_#param.getDataType()#" value="#param.getCriteria()#" list="#iif(param.getCriteria() eq 'IN',de('true'),de('false'))#"><cfif param.getCondition() eq "IN">)</cfif>  	
 				<cfelse> 
 					tcontent.contentHistID IN (
@@ -448,7 +448,7 @@ to your own modified versions of Mura CMS.
 	<cfif dbType eq "mysql">limit <cfqueryparam cfsqltype="cf_sql_numeric" value="#arguments.feedBean.getMaxItems()#" /> </cfif>
 	<cfif dbType eq "oracle">) where ROWNUM <= <cfqueryparam cfsqltype="cf_sql_numeric" value="#arguments.feedBean.getMaxItems()#" /> </cfif>
 	</cfquery>
-	
+	<cfdump var="#rs#"><cfabort>
 	<cfreturn rs />
 </cffunction>
 
