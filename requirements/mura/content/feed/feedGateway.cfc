@@ -158,7 +158,7 @@ to your own modified versions of Mura CMS.
 							    AND TKids.isNav = 1 
 							    AND tcontent.moduleid = '00000000000000000000000000000000000'
 							 
-							    	<cfif rsParams.recordcount>
+							<cfif rsParams.recordcount>
 							<cfloop query="rsParams">
 							 	<cfset param=createObject("component","mura.queryParam").init(rsParams.relationship,
 							 					rsParams.field,
@@ -166,10 +166,23 @@ to your own modified versions of Mura CMS.
 							 					rsParams.condition,
 							 					rsParams.criteria
 							 					) />
-							 	
+							 
 							 	<cfif param.getIsValid()>	
-							 		<cfif not started ><cfset started = true />and (<cfelse>#param.getRelationship()#</cfif>			
-							 		#param.getField()# #param.getCondition()# <cfif param.getCondition() eq "IN">(</cfif><cfqueryparam cfsqltype="cf_sql_#param.getDataType()#" value="#param.getCriteria()#" list="#iif(param.getCriteria() eq 'IN',de('true'),de('false'))#"><cfif param.getCondition() eq "IN">)</cfif>  	
+							 		<cfif not started ><cfset started = true />and (<cfelse>#param.getRelationship()#</cfif>
+							 		<cfif listLen(param.getField()) gt 1>			
+										#param.getField()# #param.getCondition()# <cfif param.getCondition() eq "IN">(</cfif><cfqueryparam cfsqltype="cf_sql_#param.getDataType()#" value="#param.getCriteria()#" list="#iif(param.getCriteria() eq 'IN',de('true'),de('false'))#"><cfif param.getCondition() eq "IN">)</cfif>  	
+									<cfelse> 
+										tcontent.contentHistID IN (
+														 select tclassextenddata.baseID from tclassextenddata
+														 <cfif isNumeric(param.getField())>
+														 where tclassextenddata.attributeID=<cfqueryparam cfsqltype="varchar" value="#param.getField()#">
+														<cfelse>
+														 inner join tclassextendattributes on (tclassextenddata.attributeID = tclassextendattributes.attributeID)
+														 where tclassextendattributes.siteid=<cfqueryparam cfsqltype="varchar" value="#arguments.feedBean.getSiteID()#">
+														 and tclassextendattributes.name=<cfqueryparam cfsqltype="varchar" value="#param.getField()#">
+														 </cfif>
+														 and tclassextenddata.attributeValue #param.getCondition()# <cfif param.getCondition() eq "IN">(</cfif><cfqueryparam cfsqltype="cf_sql_#param.getDataType()#" value="#param.getCriteria()#" list="#iif(param.getCriteria() eq 'IN',de('true'),de('false'))#"><cfif param.getCondition() eq "IN">)</cfif>)
+									</cfif>
 								</cfif>
 							</cfloop>
 							<cfif started>)</cfif>
@@ -314,7 +327,20 @@ to your own modified versions of Mura CMS.
 		 	
 		 	<cfif param.getIsValid()>	
 				<cfif not started ><cfset started = true />and (<cfelse>#param.getRelationship()#</cfif>			
+				<cfif listLen(param.getField()) gt 1>			
 					#param.getField()# #param.getCondition()# <cfif param.getCondition() eq "IN">(</cfif><cfqueryparam cfsqltype="cf_sql_#param.getDataType()#" value="#param.getCriteria()#" list="#iif(param.getCriteria() eq 'IN',de('true'),de('false'))#"><cfif param.getCondition() eq "IN">)</cfif>  	
+				<cfelse> 
+					tcontent.contentHistID IN (
+									 select tclassextenddata.baseID from tclassextenddata
+									 <cfif isNumeric(param.getField())>
+									 where tclassextenddata.attributeID=<cfqueryparam cfsqltype="varchar" value="#param.getField()#">
+									<cfelse>
+									 inner join tclassextendattributes on (tclassextenddata.attributeID = tclassextendattributes.attributeID)
+									 where tclassextendattributes.siteid=<cfqueryparam cfsqltype="varchar" value="#arguments.feedBean.getSiteID()#">
+									 and tclassextendattributes.name=<cfqueryparam cfsqltype="varchar" value="#param.getField()#">
+									 </cfif>
+									 and tclassextenddata.attributeValue #param.getCondition()# <cfif param.getCondition() eq "IN">(</cfif><cfqueryparam cfsqltype="cf_sql_#param.getDataType()#" value="#param.getCriteria()#" list="#iif(param.getCriteria() eq 'IN',de('true'),de('false'))#"><cfif param.getCondition() eq "IN">)</cfif>)
+				</cfif>
 			</cfif>
 		</cfloop>
 		<cfif started>)</cfif>

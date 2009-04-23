@@ -104,9 +104,9 @@ to your own modified versions of Mura CMS.
 </cffunction>
 
 <cffunction name="read" access="public" returntype="any" output="false">
-	<cfargument name="categoryID" type="String" />		
+	<cfargument name="feedID" type="String" />		
 	
-	<cfreturn variables.feedDAO.read(arguments.categoryID) />
+	<cfreturn variables.feedDAO.read(arguments.feedID) />
 
 </cffunction>
 

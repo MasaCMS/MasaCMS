@@ -83,6 +83,12 @@ to your own modified versions of Mura CMS.
 <cfset options[17][1]="tcontent.path^varchar">
 <cfset options[17][2]="Path"/>
 
+<cfset rsExtend=application.configBean.getClassExtensionManager().getExtendedAttributeList(attributes.siteid)>
+<cfloop query="rsExtend">
+<cfset options[rsExtend.currentRow + 17][1]="#rsExtend.attributeID#^varchar">
+<cfset options[rsExtend.currentRow + 17][2]="#rsExtend.Type#/#rsExtend.subType# - #rsExtend.attribute#"/>
+</cfloop>
+
 <cfset criterias[1][1]="Equals">
 <cfset criterias[1][2]=application.rbFactory.getKeyValue(session.rb,'params.equals')>
 <cfset criterias[2][1]="GT">
@@ -99,6 +105,8 @@ to your own modified versions of Mura CMS.
 <cfset criterias[7][2]=application.rbFactory.getKeyValue(session.rb,'params.contains')>
 
 </cfsilent>
+
+
 <cfoutput><h2>#application.rbFactory.getKeyValue(session.rb,'collections.editlocalindex')#</h2>
 #application.utility.displayErrors(request.feedBean.getErrors())#
 <!--- <cfif attributes.feedID neq ''>

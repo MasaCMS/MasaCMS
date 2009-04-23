@@ -493,4 +493,23 @@ and type='File'
 		
 </cffunction>
 
+
+<cffunction name="getExtendedAttributeList" output="false" returntype="query">
+<cfargument name="siteID">
+<cfargument name="baseTable" required="true" default="tcontent">
+	<cfset var rs="">
+	
+	<cfquery name="rs" datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+		select tclassextend.type, tclassextend.subType, tclassextendattributes.attributeID, tclassextend.baseTable, tclassextend.baseKeyField, tclassextend.dataTable, tclassextendattributes.name attribute
+		from tclassextendattributes 
+		inner join tclassextendsets on (tclassextendsets.extendSetID=tclassextendattributes.extendSetID)
+		inner join tclassextend on (tclassextendsets.subTypeID=tclassextend.subTypeID)
+		where tclassextend.siteID = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteid#">
+		and tclassextend.baseTable= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.baseTable#">
+		order by tclassextend.type, tclassextend.subType, tclassextendattributes.name
+	</cfquery>
+	
+	<cfreturn rs>
+</cffunction>
+
 </cfcomponent>
