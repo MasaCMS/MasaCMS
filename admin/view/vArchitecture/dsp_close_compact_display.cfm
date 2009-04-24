@@ -50,11 +50,16 @@ to your own modified versions of Mura CMS.
 <body onload="">
 <cfoutput>
 <cfset href = "">
-<cfif attributes.action eq "add" and request.contentBean.getType() neq "File" and request.contentBean.getType() neq "Link">
-	<cfif attributes.preview neq "1">
-	<cfset request.contentBean = application.contentManager.getActiveContent(attributes.parentid, attributes.siteid)>
+<cfif attributes.action eq "add">
+	<cfif request.contentBean.getActive()>
+		<cfset currentBean = application.contentManager.getActiveContent(request.contentBean.getContentID(), request.contentBean.getSiteID())>
+	<cfelse>
+		<cfset currentBean=request.contentBean>
 	</cfif>
-		<cfset href = application.contentRenderer.createHREF(request.contentBean.getType(), request.contentBean.getFilename(), request.contentBean.getSiteId(), request.contentBean.getcontentId())>
+</cfif>
+	
+<cfif attributes.action eq "add" and request.contentBean.getType() neq "File" and request.contentBean.getType() neq "Link">
+	<cfset href = application.contentRenderer.createHREF(currentBean.getType(), currentBean.getFilename(), currentBean.getSiteId(), currentBean.getcontentId())>
 	<script>
 		var editForm = window.parent.document.getElementById('editForm');
 		<cfif attributes.preview eq 1>
@@ -64,11 +69,9 @@ to your own modified versions of Mura CMS.
 		</cfif>
 		editForm.hide();
 	</script>
-<cfelseif attributes.action eq "add" and (request.contentBean.getType() eq "File" or request.contentBean.getType() eq "Link")>
-	<cfif attributes.preview neq "1">
-	<cfset request.contentBean = application.contentManager.getActiveContent(attributes.parentid, attributes.siteid)>
-	</cfif>
-	<cfset href = application.contentRenderer.createHREF(request.contentBean.getType(), request.contentBean.getFilename(), request.contentBean.getSiteId(), request.contentBean.getcontentId())>
+<cfelseif attributes.action eq "add" and (request.contentBean.getType() eq "File" or request.contentBean.getType() eq "Link")>	
+	<cfset parentBean = application.contentManager.getActiveContent(currentBean.getParentID(), currentBean.getSiteID())>
+	<cfset href = application.contentRenderer.createHREF(parentBean.getType(), parentBean.getFilename(), parentBean.getSiteId(), parentBean.getcontentId())>
 	<script>
 		var editForm = window.parent.document.getElementById('editForm');
 		<cfif attributes.preview eq 1>
@@ -79,17 +82,13 @@ to your own modified versions of Mura CMS.
 		editForm.hide();
 	</script>
 <cfelseif attributes.action eq "multiFileUpload">
-	<cfif attributes.preview neq "1">
-	<cfset request.contentBean = application.contentManager.getActiveContent(attributes.parentid, attributes.siteid)>
-	</cfif>
-	<cfset href = application.contentRenderer.createHREF(request.contentBean.getType(), request.contentBean.getFilename(), request.contentBean.getSiteId(), request.contentBean.getcontentId())>
+	<cfset parentBean = application.contentManager.getActiveContent(currentBean.getParentID(), currentBean.getSiteID())>
+	<cfset href = application.contentRenderer.createHREF(parentBean.getType(), parentBean.getFilename(), parentBean.getSiteId(), parentBean.getcontentId())>
 	<script>
 		var editForm = window.parent.document.getElementById('editForm');
-		<cfif attributes.preview eq 1>
-		window.parent.location = '#href#?contentID=#request.contentBean.getContentID()#&previewID=#request.contentBean.getContentHistID()#';
-		<cfelse>
+	
 		window.parent.location = '#href#';
-		</cfif>
+	
 		editForm.hide();
 	</script>
 <cfelse>
