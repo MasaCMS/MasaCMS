@@ -51,10 +51,10 @@ to your own modified versions of Mura CMS.
 <form action="index.cfm?fuseaction=cFeed.update&siteid=#attributes.siteid#" method="post" name="form1" onsubmit="return validate(this);">
 <dl class="oneColumn">
 <dt class="first">#application.rbFactory.getKeyValue(session.rb,'collections.name')#</dt>
-<dd><input name="name" class="text" required="true" message="#application.rbFactory.getKeyValue(session.rb,'collections.namerequired')#" value="#HTMLEditFormat(request.feedBean.getName())#"></dd>
+<dd><input name="name" class="text" required="true" message="#application.rbFactory.getKeyValue(session.rb,'collections.namerequired')#" value="#HTMLEditFormat(request.feedBean.getName())#" maxlength="50"></dd>
 
 <dt>#application.rbFactory.getKeyValue(session.rb,'collections.url')#</dt>
-<dd><input name="channelLink" class="text" required="true" message="#application.rbFactory.getKeyValue(session.rb,'collections.urlrequired')#" value="#HTMLEditFormat(request.feedBean.getChannelLink())#"></dd>
+<dd><input name="channelLink" class="text" required="true" message="#application.rbFactory.getKeyValue(session.rb,'collections.urlrequired')#" value="#HTMLEditFormat(request.feedBean.getChannelLink())#" maxlength="250"></dd>
 </dl>
 <div id="page_tabView">
 

@@ -139,7 +139,7 @@ function previewFeed(){
 
 <dl class="oneColumn">
 <dt class="first">#application.rbFactory.getKeyValue(session.rb,'collections.name')#</dt>
-<dd><input name="name" class="text" required="true" message="#application.rbFactory.getKeyValue(session.rb,'collections.namerequired')#" value="#HTMLEditFormat(request.feedBean.getName())#"></dd>
+<dd><input name="name" class="text" required="true" message="#application.rbFactory.getKeyValue(session.rb,'collections.namerequired')#" value="#HTMLEditFormat(request.feedBean.getName())#" maxlength="50"></dd>
 </dl>
 <div id="page_tabView">
 <!-- Content Filters -->
@@ -244,7 +244,7 @@ function previewFeed(){
 <div class="page_aTab">
 <dl class="oneColumn">
 <dt class="first">#application.rbFactory.getKeyValue(session.rb,'collections.altname')#</dt>
-<dd><input name="altName" class="text" value="#HTMLEditFormat(request.feedBean.getAltName())#"></dd>
+<dd><input name="altName" class="text" value="#HTMLEditFormat(request.feedBean.getAltName())#" maxlength="50"></dd>
 <dt>#application.rbFactory.getKeyValue(session.rb,'collections.itemsperpage')#</dt>
 <dd><select name="nextN" class="dropdown">
 	<cfloop list="1,2,3,4,5,6,7,8,9,10,15,20,25,50,100" index="r">
