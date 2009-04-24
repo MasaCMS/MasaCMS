@@ -182,6 +182,10 @@ to your own modified versions of Mura CMS.
 							 		<cfif not started ><cfset started = true />and (<cfelse>#param.getRelationship()#</cfif>
 							 		<cfif  listLen(param.getField(),".") gt 1>			
 										#param.getField()# #param.getCondition()# <cfif param.getCondition() eq "IN">(</cfif><cfqueryparam cfsqltype="cf_sql_#param.getDataType()#" value="#param.getCriteria()#" list="#iif(param.getCriteria() eq 'IN',de('true'),de('false'))#"><cfif param.getCondition() eq "IN">)</cfif>  	
+									<cfelseif param.getRelationship() eq "openGouping">
+										(
+									<cfelseif param.getRelationship() eq "closeGouping">
+										)
 									<cfelse> 
 										tcontent.contentHistID IN (
 														 select tclassextenddata.baseID from tclassextenddata
@@ -340,6 +344,10 @@ to your own modified versions of Mura CMS.
 				<cfif not started ><cfset started = true />and (<cfelse>#param.getRelationship()#</cfif>			
 				<cfif listLen(param.getField(),".") gt 1>			
 					#param.getField()# #param.getCondition()# <cfif param.getCondition() eq "IN">(</cfif><cfqueryparam cfsqltype="cf_sql_#param.getDataType()#" value="#param.getCriteria()#" list="#iif(param.getCriteria() eq 'IN',de('true'),de('false'))#"><cfif param.getCondition() eq "IN">)</cfif>  	
+				<cfelseif param.getRelationship() eq "openGouping">
+					(
+				<cfelseif param.getRelationship() eq "closeGouping">
+					)
 				<cfelse> 
 					tcontent.contentHistID IN (
 									 select tclassextenddata.baseID from tclassextenddata

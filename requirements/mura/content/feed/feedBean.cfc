@@ -463,9 +463,9 @@ to your own modified versions of Mura CMS.
 
 
 <cffunction name="addAdvancedParam" returntype="void" access="public" output="false">
-	<cfargument name="field" type="string" required="true">
+	<cfargument name="field" type="string" required="true" default="">
 	<cfargument name="relationship" type="string" default="and" required="true">
-	<cfargument name="criteria" type="string" required="true">
+	<cfargument name="criteria" type="string" required="true" default="">
 	<cfargument name="condition" type="string" default="EQUALS" required="true">
 	<cfargument name="datatype" type="string"  default="varchar" required="true">
 		<cfset var rows=1/>
