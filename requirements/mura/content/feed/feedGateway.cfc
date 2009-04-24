@@ -104,6 +104,7 @@ to your own modified versions of Mura CMS.
 	<cfset var param ="" />
 	<cfset var doKids =false />
 	<cfset var doTags =false />
+	<cfset var openGrouping =false />
 	<cfset var dbType=variables.configBean.getDbType() />
 	
 	<cfif arguments.aggregation >
@@ -171,34 +172,44 @@ to your own modified versions of Mura CMS.
 							 
 							<cfif rsParams.recordcount>
 							<cfloop query="rsParams">
-							 	<cfset param=createObject("component","mura.queryParam").init(rsParams.relationship,
-							 					rsParams.field,
-							 					rsParams.dataType,
-							 					rsParams.condition,
-							 					rsParams.criteria
-							 					) />
-							 
-							 	<cfif param.getIsValid()>	
-							 		<cfif not started ><cfset started = true />and (<cfelse>#param.getRelationship()#</cfif>
-							 		<cfif  listLen(param.getField(),".") gt 1>			
-										#param.getField()# #param.getCondition()# <cfif param.getCondition() eq "IN">(</cfif><cfqueryparam cfsqltype="cf_sql_#param.getDataType()#" value="#param.getCriteria()#" list="#iif(param.getCriteria() eq 'IN',de('true'),de('false'))#"><cfif param.getCondition() eq "IN">)</cfif>  	
-									<cfelseif param.getRelationship() eq "openGouping">
-										(
-									<cfelseif param.getRelationship() eq "closeGouping">
-										)
-									<cfelse> 
-										tcontent.contentHistID IN (
-														 select tclassextenddata.baseID from tclassextenddata
-														 <cfif isNumeric(param.getField())>
-														 where tclassextenddata.attributeID=<cfqueryparam cfsqltype="varchar" value="#param.getField()#">
-														<cfelse>
-														 inner join tclassextendattributes on (tclassextenddata.attributeID = tclassextendattributes.attributeID)
-														 where tclassextendattributes.siteid=<cfqueryparam cfsqltype="varchar" value="#arguments.feedBean.getSiteID()#">
-														 and tclassextendattributes.name=<cfqueryparam cfsqltype="varchar" value="#param.getField()#">
-														 </cfif>
-														 and tclassextenddata.attributeValue #param.getCondition()# <cfif param.getCondition() eq "IN">(</cfif><cfqueryparam cfsqltype="cf_sql_#param.getDataType()#" value="#param.getCriteria()#" list="#iif(param.getCriteria() eq 'IN',de('true'),de('false'))#"><cfif param.getCondition() eq "IN">)</cfif>)
+								<cfset param=createObject("component","mura.queryParam").init(rsParams.relationship,
+										rsParams.field,
+										rsParams.dataType,
+										rsParams.condition,
+										rsParams.criteria
+									) />
+													 
+								<cfif param.getIsValid()>	
+									<cfif not started >
+										<cfset started = true />and (
 									</cfif>
-								</cfif>
+									<cfif param.getRelationship() eq "openGrouping">
+										(
+										<cfset openGrouping=true />
+									<cfelseif param.getRelationship() eq "closeGrouping">
+										)
+									<cfelse>
+										<cfif not openGrouping>
+										#param.getRelationship()#
+										<cfelse>
+										<cfset openGrouping=false />
+										</cfif>
+									</cfif>
+									<cfif  listLen(param.getField(),".") gt 1>			
+										#param.getField()# #param.getCondition()# <cfif param.getCondition() eq "IN">(</cfif><cfqueryparam cfsqltype="cf_sql_#param.getDataType()#" value="#param.getCriteria()#" list="#iif(param.getCriteria() eq 'IN',de('true'),de('false'))#"><cfif param.getCondition() eq "IN">)</cfif>  	
+									<cfelseif len(param.getField())>
+										tcontent.contentHistID IN (
+																select tclassextenddata.baseID from tclassextenddata
+																<cfif isNumeric(param.getField())>
+																where tclassextenddata.attributeID=<cfqueryparam cfsqltype="varchar" value="#param.getField()#">
+																<cfelse>
+																inner join tclassextendattributes on (tclassextenddata.attributeID = tclassextendattributes.attributeID)
+																where tclassextendattributes.siteid=<cfqueryparam cfsqltype="varchar" value="#arguments.feedBean.getSiteID()#">
+																and tclassextendattributes.name=<cfqueryparam cfsqltype="varchar" value="#param.getField()#">
+																</cfif>
+																and tclassextenddata.attributeValue #param.getCondition()# <cfif param.getCondition() eq "IN">(</cfif><cfqueryparam cfsqltype="cf_sql_#param.getDataType()#" value="#param.getCriteria()#" list="#iif(param.getCriteria() eq 'IN',de('true'),de('false'))#"><cfif param.getCondition() eq "IN">)</cfif>)
+									</cfif>
+								</cfif>						
 							</cfloop>
 							<cfif started>)</cfif>
 						</cfif>
@@ -333,34 +344,44 @@ to your own modified versions of Mura CMS.
 	
 		<cfif rsParams.recordcount>
 		<cfloop query="rsParams">
-		 	<cfset param=createObject("component","mura.queryParam").init(rsParams.relationship,
-		 					rsParams.field,
-		 					rsParams.dataType,
-		 					rsParams.condition,
-		 					rsParams.criteria
-		 					) />
-		 	
-		 	<cfif param.getIsValid()>	
-				<cfif not started ><cfset started = true />and (<cfelse>#param.getRelationship()#</cfif>			
-				<cfif listLen(param.getField(),".") gt 1>			
-					#param.getField()# #param.getCondition()# <cfif param.getCondition() eq "IN">(</cfif><cfqueryparam cfsqltype="cf_sql_#param.getDataType()#" value="#param.getCriteria()#" list="#iif(param.getCriteria() eq 'IN',de('true'),de('false'))#"><cfif param.getCondition() eq "IN">)</cfif>  	
-				<cfelseif param.getRelationship() eq "openGouping">
-					(
-				<cfelseif param.getRelationship() eq "closeGouping">
-					)
-				<cfelse> 
-					tcontent.contentHistID IN (
-									 select tclassextenddata.baseID from tclassextenddata
-									 <cfif isNumeric(param.getField())>
-									 where tclassextenddata.attributeID=<cfqueryparam cfsqltype="varchar" value="#param.getField()#">
-									<cfelse>
-									 inner join tclassextendattributes on (tclassextenddata.attributeID = tclassextendattributes.attributeID)
-									 where tclassextendattributes.siteid=<cfqueryparam cfsqltype="varchar" value="#arguments.feedBean.getSiteID()#">
-									 and tclassextendattributes.name=<cfqueryparam cfsqltype="varchar" value="#param.getField()#">
-									 </cfif>
-									 and tclassextenddata.attributeValue #param.getCondition()# <cfif param.getCondition() eq "IN">(</cfif><cfqueryparam cfsqltype="cf_sql_#param.getDataType()#" value="#param.getCriteria()#" list="#iif(param.getCriteria() eq 'IN',de('true'),de('false'))#"><cfif param.getCondition() eq "IN">)</cfif>)
+			<cfset param=createObject("component","mura.queryParam").init(rsParams.relationship,
+					rsParams.field,
+					rsParams.dataType,
+					rsParams.condition,
+					rsParams.criteria
+				) />
+								 
+			<cfif param.getIsValid()>	
+				<cfif not started >
+					<cfset started = true />and (
 				</cfif>
-			</cfif>
+				<cfif param.getRelationship() eq "openGrouping">
+					(
+					<cfset openGrouping=true />
+				<cfelseif param.getRelationship() eq "closeGrouping">
+					)
+				<cfelse>
+					<cfif not openGrouping>
+					#param.getRelationship()#
+					<cfelse>
+					<cfset openGrouping=false />
+					</cfif>
+				</cfif>
+				<cfif  listLen(param.getField(),".") gt 1>			
+					#param.getField()# #param.getCondition()# <cfif param.getCondition() eq "IN">(</cfif><cfqueryparam cfsqltype="cf_sql_#param.getDataType()#" value="#param.getCriteria()#" list="#iif(param.getCriteria() eq 'IN',de('true'),de('false'))#"><cfif param.getCondition() eq "IN">)</cfif>  	
+				<cfelseif len(param.getField())>
+					tcontent.contentHistID IN (
+											select tclassextenddata.baseID from tclassextenddata
+											<cfif isNumeric(param.getField())>
+											where tclassextenddata.attributeID=<cfqueryparam cfsqltype="varchar" value="#param.getField()#">
+											<cfelse>
+											inner join tclassextendattributes on (tclassextenddata.attributeID = tclassextendattributes.attributeID)
+											where tclassextendattributes.siteid=<cfqueryparam cfsqltype="varchar" value="#arguments.feedBean.getSiteID()#">
+											and tclassextendattributes.name=<cfqueryparam cfsqltype="varchar" value="#param.getField()#">
+											</cfif>
+											and tclassextenddata.attributeValue #param.getCondition()# <cfif param.getCondition() eq "IN">(</cfif><cfqueryparam cfsqltype="cf_sql_#param.getDataType()#" value="#param.getCriteria()#" list="#iif(param.getCriteria() eq 'IN',de('true'),de('false'))#"><cfif param.getCondition() eq "IN">)</cfif>)
+				</cfif>
+			</cfif>						
 		</cfloop>
 		<cfif started>)</cfif>
 	</cfif>

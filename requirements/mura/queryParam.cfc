@@ -63,6 +63,7 @@ to your own modified versions of Mura CMS.
 	<cfset setCondition(arguments.condition) />
 	<cfset setCriteria(arguments.criteria,arguments.condition) />
 	
+	<cfset validate()>
 	<cfreturn this>
 </cffunction>
 
@@ -218,6 +219,14 @@ to your own modified versions of Mura CMS.
 	<cfreturn variables.isValid />
 </cffunction>
 
-
+<cffunction name="validate">
+	<cfif not listFindNoCase("openGrouping,closeGrouping",getRelationship()) 
+		and variables.field eq '' or variables.field eq 'Select Field'>
+		<cfset variables.field=""/>
+		<cfset setIsValid(false) />
+	<cfelse>
+		<cfset setIsValid(true) />
+	</cfif>
+</cffunction>
 
 </cfcomponent>
