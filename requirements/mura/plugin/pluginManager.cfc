@@ -791,6 +791,7 @@ select * from tplugins order by pluginID
 			<cfreturn cacheFactory.get(key)>
 		</cfif>
 	<cfelse> --->
+		<cfif rs.recordcount>
 		<cftry>
 		<cfif listLast(rs.displayobjectfile,".") neq "cfm">
 			<cfset componentPath="plugins.#rs.pluginID#.#rs.displayobjectfile#">
@@ -807,8 +808,9 @@ select * from tplugins order by pluginID
 			 <cfreturn theDisplay>
 		</cfcatch>
 		</cftry>
+		</cfif>
 	<!--- </cfif> --->
-		
+		<cfreturn "">
 </cffunction>
 
 <cffunction name="getComponent" returntype="any" output="false">
