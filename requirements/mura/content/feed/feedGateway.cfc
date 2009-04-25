@@ -182,17 +182,18 @@ to your own modified versions of Mura CMS.
 								<cfif param.getIsValid()>	
 									<cfif not started >
 										<cfset started = true />and (
-									</cfif>
-									<cfif param.getRelationship() eq "openGrouping">
-										(
-										<cfset openGrouping=true />
-									<cfelseif param.getRelationship() eq "closeGrouping">
-										)
 									<cfelse>
-										<cfif not openGrouping>
-										#param.getRelationship()#
+										<cfif param.getRelationship() eq "openGrouping">
+											(
+											<cfset openGrouping=true />
+										<cfelseif param.getRelationship() eq "closeGrouping">
+											)
 										<cfelse>
-										<cfset openGrouping=false />
+											<cfif not openGrouping>
+											#param.getRelationship()#
+											<cfelse>
+											<cfset openGrouping=false />
+											</cfif>
 										</cfif>
 									</cfif>
 									<cfif  listLen(param.getField(),".") gt 1>			
@@ -354,17 +355,18 @@ to your own modified versions of Mura CMS.
 			<cfif param.getIsValid()>	
 				<cfif not started >
 					<cfset started = true />and (
-				</cfif>
-				<cfif param.getRelationship() eq "openGrouping">
-					(
-					<cfset openGrouping=true />
-				<cfelseif param.getRelationship() eq "closeGrouping">
-					)
 				<cfelse>
-					<cfif not openGrouping>
-					#param.getRelationship()#
+					<cfif param.getRelationship() eq "openGrouping">
+						(
+						<cfset openGrouping=true />
+					<cfelseif param.getRelationship() eq "closeGrouping">
+						)
 					<cfelse>
-					<cfset openGrouping=false />
+						<cfif not openGrouping>
+						#param.getRelationship()#
+						<cfelse>
+						<cfset openGrouping=false />
+						</cfif>
 					</cfif>
 				</cfif>
 				<cfif  listLen(param.getField(),".") gt 1>			
