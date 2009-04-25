@@ -46,7 +46,7 @@ to your own modified versions of Mura CMS.
 <dt class="first">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.contentid')#</dt>
 <dd><cfif len(attributes.contentID) and len(request.contentBean.getcontentID())>#request.contentBean.getcontentID()#<cfelse>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.notavailable')#</cfif></li>
 </dd>
-<cfif attributes.type neq 'Component' and attributes.type neq 'Form' and attributes.type neq 'File'>
+<cfif attributes.type neq 'Component' and attributes.type neq 'Form'>
 <dt><cfoutput><a href="##" class="tooltip">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.layouttemplate')#<span>#application.rbFactory.getKeyValue(session.rb,"tooltip.layoutTemplate")#</span></a></cfoutput></dt>
 <dd><select name="template" class="dropdown">
 <cfif attributes.contentid neq '00000000000000000000000000000000001'>
