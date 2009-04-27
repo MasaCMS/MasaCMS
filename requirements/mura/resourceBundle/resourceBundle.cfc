@@ -49,7 +49,6 @@
 
 
 	<cfset variables.javaLocale.init(lang,country,variant)>
-	<cfset variables.javaLocale.init(lang,country,variant)>
 
 	<cfset loadResourceBundle() />
 
