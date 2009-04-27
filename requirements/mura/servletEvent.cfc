@@ -178,16 +178,8 @@ to your own modified versions of Mura CMS.
 	<cfreturn getValue('crumdata') />	
 </cffunction>
 
-<cffunction name="getConfigBean" returntype="any" access="public">
-	<cfreturn application.configBean />	
-</cffunction>
-
 <cffunction name="getSite" returntype="any" access="public">
 	<cfreturn application.settingsManager.getSite(getValue('siteid')) />	
-</cffunction>
-
-<cffunction name="getServiceFactory" returntype="any" access="public">
-	<cfreturn application.serviceFactory />	
 </cffunction>
 
 </cfcomponent>

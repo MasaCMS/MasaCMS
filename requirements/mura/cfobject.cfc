@@ -76,4 +76,16 @@ to your own modified versions of Mura CMS.
 		<cfset structDelete(variables,arguments.property) />
 </cffunction>
 
+<cffunction name="getConfigBean" returntype="any" access="public">
+	<cfreturn application.configBean />	
+</cffunction>
+
+<cffunction name="getServiceFactory" returntype="any" access="public">
+	<cfreturn application.serviceFactory />	
+</cffunction>
+
+<cffunction name="getPluginManager" returntype="any" access="public">
+	<cfreturn application.pluginManager />	
+</cffunction>
+
 </cfcomponent>

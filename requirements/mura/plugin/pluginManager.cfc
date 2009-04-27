@@ -94,6 +94,10 @@ to your own modified versions of Mura CMS.
 select * from tplugins
 </cfquery>
 
+<cfquery name="variables.rsPluginSiteAsignments" datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+select moduleID, siteid from tcontent where type='Plugin'
+</cfquery>
+
 <cfquery name="variables.rsSettings" datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 select * from tpluginsettings
 </cfquery>
@@ -336,30 +340,60 @@ select * from tplugins order by pluginID
 	
 </cffunction>	
 
+<cffunction name="hasPlugin" returntype="any" output="false">
+<cfargument name="ID">
+<cfargument name="siteID" required="true" default="">
+<cfargument name="cache" required="true" default="true">
+
+	<cfreturn getPlugin(arguments.ID, arguments.siteID, arguments.cache).recordcount>
+</cffunction>
+
 <cffunction name="getPlugin" returntype="query" output="false">
 <cfargument name="ID">
+<cfargument name="siteID" required="true" default="">
 <cfargument name="cache" required="true" default="true">
 	<cfset var rs=""/>
-	
+	<cfset var rsModuleCheck=""/>
 	<cfif arguments.cache>
-	<cfquery name="rs" dbtype="query">
-	select * from variables.rsPlugins where  
-	<cfif isNumeric(arguments.ID)>
-	pluginID=#arguments.ID#
-	<cfelse>
-	moduleID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.ID#">
-	</cfif>
-	</cfquery>
-	<cfelse>
-	<cfquery name="rs" datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-	select * from tplugins where  
-	<cfif isNumeric(arguments.ID)>
-	pluginID=#arguments.ID#
-	<cfelse>
-	moduleID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.ID#">
-	</cfif>
-	</cfquery>
 	
+		<cfif len(arguments.siteID)>
+			<cfquery name="rsModuleCheck" dbtype="query">
+			select moduleID from variables.rsPluginSiteAsignments 
+			where siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#">
+			</cfquery>
+		</cfif>
+		
+		<cfquery name="rs" dbtype="query">
+		select * from variables.rsPlugins where  
+		<cfif isNumeric(arguments.ID)>
+			pluginID=#arguments.ID#
+		<cfelseif isValid("UUID",arguments.ID)>
+			moduleID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.ID#">
+		<cfelse>
+			name=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.ID#">
+		</cfif>
+		
+		<cfif len(arguments.siteID)>
+		and moduleID in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#valueList(rsModuleCheck.moduleID)#">)
+		</cfif>
+		</cfquery>
+	<cfelse>
+		<cfquery name="rs" datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+		select * from tplugins where  
+		<cfif isNumeric(arguments.ID)>
+			pluginID=#arguments.ID#
+		<cfelseif isValid("UUID",arguments.ID)>
+			moduleID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.ID#">
+		<cfelse>
+			name=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.ID#">
+		</cfif>
+		
+		<cfif len(arguments.siteID)>
+		and moduleID in (select moduleID from tcontent 
+						where type='Plugin'
+						and siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#">)
+		</cfif>
+		</cfquery>
 	</cfif>
 	
 	<cfreturn rs>
@@ -368,7 +402,7 @@ select * from tplugins order by pluginID
 <cffunction name="getPluginXML" returntype="string" output="false">
 <cfargument name="moduleID">
 	<cfset var theXML="">
-	<cfset var rsPlugin=getPlugin(arguments.moduleID,false)>
+	<cfset var rsPlugin=getPlugin(arguments.moduleID,'',false)>
 	<cfset var delim=variables.configBean.getFileDelim() />
 	<cfif fileExists("#getLocation(rsPlugin.pluginID)#plugin#delim#config.xml")>
 		<cffile action="read" file="#getLocation(rsPlugin.pluginID)#plugin#delim#config.xml" variable="theXML">
@@ -389,13 +423,15 @@ select * from tplugins order by pluginID
 
 <cffunction name="getConfig" returntype="any" output="false">
 <cfargument name="ID">
+<cfargument name="siteID" required="true" default="">
 <cfargument name="cache" required="true" default="true">
+
 
 	<cfset var pluginConfig=createObject("component","mura.plugin.pluginConfig")>
 	<cfset var rs="">
 	<cfset var settingStr=structNew()>
 	
-	<cfset rs=getPlugin(arguments.ID,arguments.cache)>
+	<cfset rs=getPlugin(arguments.ID,arguments.siteID,arguments.cache)>
 	
 	<cfset pluginConfig.setVersion(rs.version) />
 	<cfset pluginConfig.setName(rs.name) />
@@ -442,7 +478,7 @@ select * from tplugins order by pluginID
 	<cfset var pluginXML=getPluginXML(arguments.args.moduleID) />
 	<cfset var settingsLen=0/>
 	<cfset var i=1 />
-	<cfset var pluginConfig=getConfig(arguments.args.moduleID,false) />
+	<cfset var pluginConfig=getConfig(arguments.args.moduleID,'',false) />
 	<cfset var pluginCFC= createObject("component","#variables.configBean.getWebRootMap()#.plugins.#pluginConfig.getPluginID()#.plugin.plugin") />
 	<cfset var adminDir="">
 	<cfset var siteDir="">
