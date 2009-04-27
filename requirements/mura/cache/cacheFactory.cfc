@@ -47,7 +47,7 @@ Description :
 		<!--- if the key cannot be found and context is passed then push it in --->
 		<cfif NOT has( arguments.key ) AND isDefined("arguments.context")>
 			<!--- create object --->
-			<cfset set(hashKey,arguments.context) />
+			<cfset set(key,arguments.context) />
 		</cfif>
 		
 		<!--- if the key cannot be found then throw an error --->
@@ -56,7 +56,7 @@ Description :
 		</cfif>
 
 		<!--- return cached context --->		
-		<cfreturn getFromCache( hashKey) />
+		<cfreturn getFromCache( key) />
 
 	</cffunction>
 	
@@ -82,10 +82,11 @@ Description :
 		<cfargument name="objectKey" type="any" required="true">
 		<!--- ************************************************************* --->
 		<cfscript>
+			var hashLocal=getHashKey(arguments.objectKey);
 			var tmpObj = 0;
 			
 			/* Get Object */
-			tmpObj = variables.collection[arguments.objectKey];
+			tmpObj = variables.collection[hashLocal];
 			
 			/* Validate if SR or eternal */
 			if( isSoftReference(tmpObj) ){
@@ -103,18 +104,18 @@ Description :
 		<cfargument name="MyObject"				type="any" 	required="true">
 		<!--- ************************************************************* --->
 		<cfscript>
-			
+			var hashLocal=getHashKey(arguments.objectKey);
 			var targetObj = 0;
 			
 			if(variables.isSoft){
 				/* Check for eternal object */
-				targetObj = createSoftReference(arguments.objectKey,arguments.MyObject);
+				targetObj = createSoftReference(arguments.MyObject);
 				
 				/* Set new Object into cache pool */
-				variables.collection[arguments.objectKey] = targetObj;
+				variables.collection[hashLocal] = targetObj;
 			
 			} else {
-				variables.collection[arguments.objectKey] = arguments.myObject;
+				variables.collection[hashLocal] = arguments.myObject;
 			}
 		
 		</cfscript>
@@ -130,7 +131,6 @@ Description :
 	<!--- Create a soft referenec --->
 	<cffunction name="createSoftReference" access="private" returntype="any" hint="Create SR, register cached object and reference" output="false" >
 		<!--- ************************************************************* --->
-		<cfargument name="objectKey" type="any"  	required="true" hint="The value of the key pair">
 		<cfargument name="MyObject"	 type="any" 	required="true" hint="The object to wrap">
 		<!--- ************************************************************* --->
 		<cfscript>
