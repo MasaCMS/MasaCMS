@@ -70,7 +70,7 @@ Description :
 		
 		<!--- Check for Object in Cache. --->
 		<cfif structKeyExists(variables.collection, hashLocal)>
-			<cfset refLocal.tmpObj=getFromCache(hashLocal)>
+			<cfset refLocal.tmpObj=getFromCache(objectKey)>
 			<cfreturn structKeyExists(refLocal, "tmpObj") >
 		<cfelse>
 			<cfreturn false>
