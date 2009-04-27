@@ -712,8 +712,8 @@ select * from tplugins order by pluginID
 	<cfset var componentPath="">
 	<cfset var scriptPath="">
 	<cfset var eventHandler="">
-	<cfset var theDisplay="">
-	
+	<cfset var theDisplay1="">
+	<cfset var theDisplay2="">
 	<cfif not isObject(arguments.event)>
 		<cfif isStruct(arguments.event)>
 			<cfset variables.event=createObject("component","mura.event").init(arguments.event)/>
@@ -729,25 +729,36 @@ select * from tplugins order by pluginID
 	<cfset rs=getScripts(arguments.runat,arguments.siteid) />
 
 	<cfif rs.recordcount>
-	<cfsavecontent variable="str">
+	
 	<cfloop query="rs">
 	<cftry>
-		<cfif listLast(rs.scriptfile,".") neq "cfm">
+		<cfif listLast(rs.scriptfile,".") neq "cfm">		
 			<cfset componentPath="plugins.#rs.pluginID#.#rs.scriptfile#">
 			<cfset eventHandler=getComponent(componentPath, rs.pluginID, arguments.siteID, rs.docache)>
-			<cfinvoke component="#eventHandler#" method="#arguments.runat#" returnVariable="theDisplay">
+			<cfsavecontent variable="theDisplay1">
+			<cfinvoke component="#eventHandler#" method="#arguments.runat#" returnVariable="theDisplay2">
 				<cfinvokeargument name="event" value="#arguments.event#">
 			</cfinvoke>	
-			<cfoutput>#theDisplay#</cfoutput>
+			</cfsavecontent>
+			<cfif isDefined("theDisplay2")>
+				<cfset str=str & theDisplay2>
+			<cfelse>
+				<cfset str=str & theDisplay1>
+			</cfif>
 		<cfelse>
+			<cfsavecontent variable="theDisplay1">
 			<cfoutput>#getExecutor().renderScript(event,"/plugins/#rs.pluginID#/#rs.scriptfile#",getConfig(rs.pluginID))#</cfoutput>
+			</cfsavecontent>
+			<cfset str=str & theDisplay1>
 		</cfif>
 	<cfcatch>
+		<cfsavecontent variable="theDisplay1">
 		<cfdump var="#cfcatch#">
+		</cfsavecontent>
+		<cfset str=str & theDisplay1>
 	</cfcatch>
 	</cftry>
 	</cfloop>
-	</cfsavecontent>
 	</cfif>
 
 	<cfreturn trim(str)>
@@ -793,7 +804,8 @@ select * from tplugins order by pluginID
 	<cfset var componentPath=""/>
 	<cfset var pluginConfig=""/>
 	<cfset var eventHandler=""/>
-	<cfset var theDisplay=""/>
+	<cfset var theDisplay1=""/>
+	<cfset var theDisplay2=""/>
 	<!--- <cfset var site=variables.settingsManager.getSite(arguments.event.getValue('siteID'))/>
 	<cfset var cacheFactory=getCacheFactory(arguments.event.getValue('siteID'))/> --->
 	
@@ -832,16 +844,22 @@ select * from tplugins order by pluginID
 		<cfif listLast(rs.displayobjectfile,".") neq "cfm">
 			<cfset componentPath="plugins.#rs.pluginID#.#rs.displayobjectfile#">
 			<cfset eventHandler=getComponent(componentPath, rs.pluginID, event.getValue('siteID'),rs.docache)>
-			<cfinvoke component="#eventHandler#" method="#rs.displaymethod#" returnVariable="theDisplay">
+			<cfsavecontent variable="theDisplay1">
+			<cfinvoke component="#eventHandler#" method="#rs.displaymethod#" returnvariable="theDisplay2">
 				<cfinvokeargument name="event" value="#arguments.event#">
-			</cfinvoke>	
-			<cfreturn theDisplay>
+			</cfinvoke>
+			</cfsavecontent>
+			<cfif isdefined("theDisplay2")>
+				<cfreturn trim(theDisplay2)>
+			<cfelse>
+				<cfreturn trim(theDisplay1)>
+			</cfif>			
 		<cfelse>
 			<cfreturn getExecutor().displayObject(arguments.objectID,arguments.event,rs) />
 		</cfif>
 		<cfcatch>
-			 <cfsavecontent variable="theDisplay"><cfdump var="#cfcatch#"></cfsavecontent>
-			 <cfreturn theDisplay>
+			 <cfsavecontent variable="theDisplay1"><cfdump var="#cfcatch#"></cfsavecontent>
+			 <cfreturn theDisplay1>
 		</cfcatch>
 		</cftry>
 		</cfif>

@@ -78,7 +78,7 @@
 	<cfset pluginConfig.setSetting("pluginPath","#variables.configBean.getContext()#/plugins/#pluginConfig.getPluginID()#/")/>
 
 	<cfsavecontent variable="str">
-	<cfinclude template="/#variables.configBean.getWebRootMap()#/plugins/#pluginConfig.getPluginID()#/#arguments.scriptFile#">
+	<cfinclude template="#arguments.scriptFile#">
 	</cfsavecontent>
 	
 	<cfset structDelete(request,"pluginConfig")>
