@@ -44,6 +44,7 @@ to your own modified versions of Mura CMS.
 <div id="svCalendar">
 <cfoutput>
 <table>
+<tr>
 <th title="#dateLong#" id="previousMonth"><a href="index.cfm?month=#previousmonth#&year=#previousyear#&categoryID=#htmlEditFormat(request.categoryID)#&relatedID=#htmlEditFormat(request.relatedID)#">&laquo;</a></th>
 <th colspan="5">#dateLong#</th>
 <th id="nextMonth"><a href="index.cfm?month=#nextmonth#&year=#nextyear#&categoryID=#htmlEditFormat(request.categoryID)#&relatedID=#htmlEditFormat(request.relatedID)#">&raquo;</a></th>
