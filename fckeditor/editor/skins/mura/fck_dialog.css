@@ -57,11 +57,11 @@ body, .BackColor {
 }
 
 button, .Button {
-	border: #fff 1px solid;
+	/*border: #fff 1px solid;
 	color: #fff;
 	background-color: #78A8D4;
 	padding: 2px;
-	vertical-align: middle;
+	vertical-align: middle;*/
 }
 
 .DarkBackground { background-color: #B3B3B3; }
