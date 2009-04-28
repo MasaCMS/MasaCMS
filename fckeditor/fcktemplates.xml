@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <!--
  * FCKeditor - The text editor for Internet - http://www.fckeditor.net
- * Copyright (C) 2003-2009 Frederico Caldeira Knabben
+ * Copyright (C) 2003-2007 Frederico Caldeira Knabben
  *
  * == BEGIN LICENSE ==
  *
@@ -25,78 +25,66 @@
  * See FCKConfig.TemplatesXmlPath in the configuration file.
 -->
 <Templates imagesBasePath="fck_template/images/">
-	<Template title="Image and Title" image="template1.gif">
-		<Description>One main image with a title and text that surround the image.</Description>
+	<Template title="2 Columns" image="template-cols2.gif">
+		<Description>An area with 2 equally wide columns</Description>
 		<Html>
 			<![CDATA[
-				<img style="MARGIN-RIGHT: 10px" height="100" alt="" width="100" align="left"/>
-				<h3>Type the title here</h3>
-				Type the text here
+				<div class="columns2 clearfix">
+					<div class="col">
+						<h3>Edit or Delete Header</h3>
+						<p>content for the first column goes here</p>
+					</div>
+					<div class="col">
+						<h3>Edit or Delete Header</h3>
+						<p>content for the first column goes here</p>
+					</div>
+				</div>
 			]]>
 		</Html>
 	</Template>
-	<Template title="Strange Template" image="template2.gif">
-		<Description>A template that defines two colums, each one with a title, and some text.</Description>
+	<Template title="3 Columns" image="template-cols3.gif">
+		<Description>An area with 3 equally wide columns</Description>
 		<Html>
 			<![CDATA[
-				<table cellspacing="0" cellpadding="0" width="100%" border="0">
-					<tbody>
-						<tr>
-							<td width="50%">
-							<h3>Title 1</h3>
-							</td>
-							<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </td>
-							<td width="50%">
-							<h3>Title 2</h3>
-							</td>
-						</tr>
-						<tr>
-							<td>Text 1</td>
-							<td>&nbsp;</td>
-							<td>Text 2</td>
-						</tr>
-					</tbody>
-				</table>
-				More text goes here.
+				<div class="columns3 clearfix">
+					<div class="col">
+						<h3>Edit or Delete Header</h3>
+						<p>content for the first column goes here</p>
+					</div>
+					<div class="col">
+						<h3>Edit or Delete Header</h3>
+						<p>content for the first column goes here</p>
+					</div>
+					<div class="col">
+						<h3>Edit or Delete Header</h3>
+						<p>content for the first column goes here</p>
+					</div>
+				</div>
 			]]>
 		</Html>
 	</Template>
-	<Template title="Text and Table" image="template3.gif">
-		<Description>A title with some text and a table.</Description>
+	<Template title="4 Columns" image="template-cols4.gif">
+		<Description>An area with 4 equally wide columns</Description>
 		<Html>
 			<![CDATA[
-				<table align="left" width="80%" border="0" cellspacing="0" cellpadding="0"><tr><td>
-					<h3>Title goes here</h3>
-					<p>
-					<table style="FLOAT: right" cellspacing="0" cellpadding="0" width="150" border="1">
-						<tbody>
-							<tr>
-								<td align="center" colspan="3"><strong>Table title</strong></td>
-							</tr>
-							<tr>
-								<td>&nbsp;</td>
-								<td>&nbsp;</td>
-								<td>&nbsp;</td>
-							</tr>
-							<tr>
-								<td>&nbsp;</td>
-								<td>&nbsp;</td>
-								<td>&nbsp;</td>
-							</tr>
-							<tr>
-								<td>&nbsp;</td>
-								<td>&nbsp;</td>
-								<td>&nbsp;</td>
-							</tr>
-							<tr>
-								<td>&nbsp;</td>
-								<td>&nbsp;</td>
-								<td>&nbsp;</td>
-							</tr>
-						</tbody>
-					</table>
-					Type the text here</p>
-				</td></tr></table>
+				<div class="columns4 clearfix">
+					<div class="col">
+						<h3>Edit or Delete Header</h3>
+						<p>content for the first column goes here</p>
+					</div>
+					<div class="col">
+						<h3>Edit or Delete Header</h3>
+						<p>content for the first column goes here</p>
+					</div>
+					<div class="col">
+						<h3>Edit or Delete Header</h3>
+						<p>content for the first column goes here</p>
+					</div>
+					<div class="col">
+						<h3>Edit or Delete Header</h3>
+						<p>content for the first column goes here</p>
+					</div>
+				</div>
 			]]>
 		</Html>
 	</Template>
