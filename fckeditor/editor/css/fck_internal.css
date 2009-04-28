@@ -30,6 +30,7 @@
 
 /* Fix to allow putting the caret at the end of the content in Firefox if
    clicking below the content. */
+
 html
 {
 	min-height: 100%;
@@ -125,6 +126,7 @@ a[name]
 	background-position: center center;
 }
 
+/*
 .FCK__ShowBlocks p,
 .FCK__ShowBlocks div,
 .FCK__ShowBlocks pre,
@@ -197,3 +199,81 @@ a[name]
 {
 	background-image: url(images/block_h6.png);
 }
+*/
+
+@import url(../../../default/css/default.css);
+
+body {
+	background-image: none;
+	text-align: left;
+	 font-family: Helvetica,Arial,Verdana,sans-serif;
+	font-size: 62.5%; 
+	padding: 1em 1em 1em 26px;
+	line-height: 1.2;
+}
+
+p, ul, ol, dl, table, form, blockquote {
+	margin-bottom: 1em;
+	line-height: 1.2;
+}
+
+/* p.intro {
+	font-size: 14px;
+} */
+
+ul {
+	margin-left: 1.4em;
+	list-style: disc;
+}
+
+ul ul {
+	list-style: circle;
+}
+
+/* @group wysiwym */
+
+.FCK__ShowBlocks h2,
+.FCK__ShowBlocks h3,
+.FCK__ShowBlocks h4,
+.FCK__ShowBlocks h5,
+.FCK__ShowBlocks h6,
+.FCK__ShowBlocks div,
+.FCK__ShowBlocks p,
+.FCK__ShowBlocks ol,
+.FCK__ShowBlocks ul,
+.FCK__ShowBlocks li,
+.FCK__ShowBlocks dl,
+.FCK__ShowBlocks dt,
+.FCK__ShowBlocks dd {
+	padding-left: 20px;
+	line-height: 1.2;
+	min-height: 20px;
+	padding-top: 10px;
+	background-repeat: no-repeat;
+	background-position: 0 0;
+	overflow: visible;
+}
+
+.FCK__ShowBlocks p, .FCK__ShowBlocks  dl, .FCK__ShowBlocks  ol, .FCK__ShowBlocks ul, .FCK__ShowBlocks  li {
+	border: 1px dotted #ccc;
+	padding-right: .5em;
+	padding-bottom: .5em;
+}
+
+.FCK__ShowBlocks h2 { background-image: url(../../../admin/images/wysiwym/h2.png); }
+.FCK__ShowBlocks h3 { background-image: url(./../../admin/images/wysiwym/h3.png); }
+.FCK__ShowBlocks h4 { background-image: url(./../../admin/images/wysiwym/h4.png); }
+.FCK__ShowBlocks h5 { background-image: url(./../../admin/images/wysiwym/h5.png); }
+.FCK__ShowBlocks h6 { background-image: url(./../../admin/images/wysiwym/h6.png); }
+
+.FCK__ShowBlocks ul { background-image: url(./../../admin/images/wysiwym/ul.png); }
+.FCK__ShowBlocks ol { background-image: url(./../../admin/images/wysiwym/ol.png); }
+.FCK__ShowBlocks li { background-image: url(./../../admin/images/wysiwym/li.png); }
+
+.FCK__ShowBlocks dl { background-image: url(./../../admin/images/wysiwym/dl.png); }
+.FCK__ShowBlocks dt { background-image: url(./../../admin/images/wysiwym/dt.png); }
+.FCK__ShowBlocks dd { background-image: url(./../../admin/images/wysiwym/dd.png); }
+
+.FCK__ShowBlocks p { background-image: url(../../../admin/images/wysiwym/p.png); }
+.FCK__ShowBlocks div { background-image: url(./../../admin/images/wysiwym/div.png); }
+/* @end */
