@@ -153,7 +153,7 @@ FCKConfig.ToolbarSets["Form"] = [
 	['Link','Unlink','Anchor'],
 	['Image','Flash','googlemaps','-','Table','Rule','SpecialChar'],
 	['Form','Checkbox','Radio','TextField','Textarea','Select','Button','ImageButton','HiddenField'],
-	['Selectlink','SelectComponent','Style','FontFormat']
+	['Selectlink','SelectComponent','Style','FontFormat','-','FitWindow','ShowBlocks','-','About']
 ] ;
 
 FCKConfig.ToolbarSets["Basic"] = [
