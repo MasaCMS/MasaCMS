@@ -48,6 +48,7 @@ to your own modified versions of Mura CMS.
 <cfset rbFactory=getSite().getRBFactory() />
 <cfparam name="msg" default="#rbFactory.getKey('user.message')#">
 <cfparam name="request.categoryID" default="">
+<cfset addToHTMLHeadQueue("fckeditor.cfm")>
 </cfsilent>
 <cfoutput>
 
@@ -215,10 +216,9 @@ to your own modified versions of Mura CMS.
 <input type="hidden" name="display" value="editprofile" />
 </form>
 </div>
- <script type="text/javascript">
-<!--  
+<script type="text/javascript"> 
 document.getElementById("profile").elements[0].focus();
--->
+setHTMLEditors(200,500);
 </script>
 <cfelse>
 <!--- This is where the script for a newly created account does if inactive is default to 1 for new accounts--->

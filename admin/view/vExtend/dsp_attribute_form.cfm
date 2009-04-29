@@ -41,7 +41,7 @@ the GNU General Public License version 2  without this exception.  You may, if y
 to your own modified versions of Mura CMS.
 --->
 
-<cfset typeList="TextBox,TextArea,SelectBox,MultiSelectBox,RadioGroup,File"/>
+<cfset typeList="TextBox,TextArea,HTMLEditor,SelectBox,MultiSelectBox,RadioGroup,File"/>
 <cfoutput>
 <cfif attributes.action eq "add">
 <a href="javascript:;" id="#attributes.formName#open" onclick="new Effect.SlideDown($('#attributes.formName#container'));this.style.display='none';$('#attributes.formName#close').style.display='';return false;">[Add New Attribute]</a>

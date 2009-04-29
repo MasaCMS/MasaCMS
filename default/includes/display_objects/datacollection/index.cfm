@@ -75,7 +75,11 @@ where siteid='#request.siteid#' and
 <cfinclude template="act_add.cfm">
 <cfinclude template="dsp_response.cfm">
 <cfelse>
+<cfset addToHTMLHeadQueue("fckeditor.cfm")>
 #setDynamicContent(application.dataCollectionManager.renderForm(rsForm.contentid,request.siteid,rsForm.body,rsForm.responseChart))#
+<script type="text/javascript">
+setHTMLEditors(200,500);
+</script>
 </cfif>
 
 </cfoutput>

@@ -36,9 +36,12 @@
 	the GNU General Public License version 2  without this exception.  You may, if you choose, apply this exception 
 	to your own modified versions of Mura CMS. */
 
-function loadExtendedAttributes(baseID,type,subType,siteID)	{
+function loadExtendedAttributes(baseID,type,subType,_siteID,_context)	{
 		var url = 'index.cfm';
-		var pars = 'fuseaction=cPublicUsers.loadExtendedAttributes&baseID=' + baseID +'&type=' + type  +'&subType=' + subType + '&siteID=' + siteID + '&cacheid=' + Math.random();
+		var pars = 'fuseaction=cPublicUsers.loadExtendedAttributes&baseID=' + baseID +'&type=' + type  +'&subType=' + subType + '&siteID=' + _siteID + '&cacheid=' + Math.random();
+		
+		siteID=_siteID;
+		context=_context;
 		
 		//location.href=url + "?" + pars;
 		var d = $('extendSets');
@@ -54,6 +57,7 @@ function loadExtendedAttributes(baseID,type,subType,siteID)	{
 function setExtendedAttributes(transport){
 	$("extendSets").innerHTML=transport.responseText;
 	checkExtendSetTargeting();
+	setHTMLEditors(context,siteID);
 }
 
 function checkExtendSetTargeting(){
@@ -122,8 +126,8 @@ function checkExtendSetTargeting(){
 
 }
 
-function resetExtendedAttributes(contentHistID,type,subtype,siteID)	{
-	loadExtendedAttributes(contentHistID,type,subtype,siteID);
+function resetExtendedAttributes(contentHistID,type,subtype,siteID,context)	{
+	loadExtendedAttributes(contentHistID,type,subtype,siteID,context);
 	//alert(dataArray[1]);
 }
 

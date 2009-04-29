@@ -655,6 +655,26 @@ function fadeToggle(id){
 	}
 
 }
+
+function setHTMLEditors(height,width) {
+	var allPageTags = document.getElementsByTagName("textarea");
+	var editors = new Array();
+	for (i = 0; i < allPageTags.length; i++) {
+		if (allPageTags[i].className == "htmlEditor") {
+			var oFCKeditor = new FCKeditor(allPageTags[i].id);
+			oFCKeditor.ToolbarSet			= "Basic";
+			oFCKeditor.Config.EditorAreaCSS	= context + '/' + siteID + '/css/editor.css';
+			oFCKeditor.Config.StylesXmlPath = context + '/' + siteID + '/css/fckstyles.xml';
+			oFCKeditor.BasePath = context + '/fckeditor/';
+			oFCKeditor.Height = height;
+			oFCKeditor.Width = width;
+			oFCKeditor.ReplaceTextarea();
+			editors.push(oFCKeditor);
+		}
+	}
+}
+
 addLoadEvent(setKeyCheck);
+
 //Event.observe(window, 'load', setKeyCheck, false);
 

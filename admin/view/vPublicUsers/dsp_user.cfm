@@ -59,7 +59,7 @@ select * from rsSubTypes where subType <> 'Default'
 	<dl class="oneColumn">
 		<cfif rsNonDefault.recordcount>
 		<dt class="first">#application.rbFactory.getKeyValue(session.rb,'user.type')#</dt>
-		<dd><select name="subtype" class="dropdown" onchange="resetExtendedAttributes('#request.userBean.getUserID()#','2',this.value,'#application.settingsManager.getSite(attributes.siteID).getPublicUserPoolID()#');">
+		<dd><select name="subtype" class="dropdown" onchange="resetExtendedAttributes('#request.userBean.getUserID()#','2',this.value,'#application.settingsManager.getSite(attributes.siteID).getPublicUserPoolID()#','#application.configBean.getContext()#','#application.configBean.getContext()#');">
 			<option value="Default" <cfif  request.userBean.getSubType() eq "Default">selected</cfif>> #application.rbFactory.getKeyValue(session.rb,'user.default')#</option>
 				<cfloop query="rsNonDefault">
 					<option value="#rsNonDefault.subtype#" <cfif request.userBean.getSubType() eq rsNonDefault.subtype>selected</cfif>>#rsNonDefault.subtype#</option>
@@ -205,7 +205,7 @@ select * from rsSubTypes where subType <> 'Default'
 		<div class="page_aTab">
 			<span id="extendSets"></span>
 			<script type="text/javascript">
-			loadExtendedAttributes('#request.userbean.getUserID()#','#request.userbean.getType()#','#request.userBean.getSubType()#','#application.settingsManager.getSite(attributes.siteID).getPublicUserPoolID()#');
+			loadExtendedAttributes('#request.userbean.getUserID()#','#request.userbean.getType()#','#request.userBean.getSubType()#','#application.settingsManager.getSite(attributes.siteID).getPublicUserPoolID()#','#application.configBean.getContext()#');
 			</script>	
 	</div>
 	<cfhtmlhead text='<script type="text/javascript" src="js/user.js"></script>'>

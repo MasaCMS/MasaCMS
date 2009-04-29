@@ -134,6 +134,7 @@ to your own modified versions of Mura CMS.
 <script src="#application.configBean.getContext()#/admin/js/prototype.js" type="text/javascript" language="Javascript"></script>
 </cfif>
 </cfif>
+<script type="text/javascript" src="#application.configBean.getContext()#/fckeditor/fckeditor.js"></script>
 #fusebox.ajax#
 
 <cfif myfusebox.originalcircuit neq "cLogin">

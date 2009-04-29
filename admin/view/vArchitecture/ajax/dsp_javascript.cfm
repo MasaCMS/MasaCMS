@@ -53,7 +53,6 @@ to your own modified versions of Mura CMS.
 	<cfinclude template="/#application.configBean.getWebRootMap()#/plugins/#rsPluginScripts.pluginID#/#rsPluginScripts.scriptfile#">
 <cfelse>
 <cfoutput>
-<script type="text/javascript" src="#application.configBean.getContext()#/fckeditor/fckeditor.js"></script>
 <script type="text/javascript">
  
  summaryLoaded=false;
