@@ -668,10 +668,10 @@ function setHTMLEditors(height,width) {
 			oFCKeditor.BasePath = context + '/fckeditor/';
 			oFCKeditor.Height = height;
 			oFCKeditor.Width = width;
-			oFCKeditor.config.ImageBrowser=false;
-			oFCKeditor.config.ImageUpload=false;
-			oFCKeditor.config.ForcePasteAsPlainText = true;
-			oFCKeditor.config.StartupFocus = false;
+			oFCKeditor.Config.ImageBrowser=false;
+			oFCKeditor.Config.ImageUpload=false;
+			oFCKeditor.Config.ForcePasteAsPlainText = true;
+			oFCKeditor.Config.StartupFocus = false;
 			oFCKeditor.ReplaceTextarea();
 			editors.push(oFCKeditor);
 		}
