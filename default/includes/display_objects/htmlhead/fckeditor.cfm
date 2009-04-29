@@ -1,0 +1,1 @@
+<cfoutput><script type="text/javascript" src="#application.configBean.getContext()#/fckeditor/fckeditor.js"></script></cfoutput>
