@@ -160,6 +160,10 @@ FCKConfig.ToolbarSets["Basic"] = [
 	['Bold','Italic','-','OrderedList','UnorderedList','-','Link','Unlink','-','About']
 ] ;
 
+FCKConfig.ToolbarSets["htmlEditor"] = [
+	['Bold','Italic','-','OrderedList','UnorderedList','-','Link','Unlink','-','Image']
+] ;
+
 FCKConfig.EnterMode = 'p' ;			// p | div | br
 FCKConfig.ShiftEnterMode = 'br' ;	// p | div | br
 

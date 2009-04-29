@@ -662,12 +662,16 @@ function setHTMLEditors(height,width) {
 	for (i = 0; i < allPageTags.length; i++) {
 		if (allPageTags[i].className == "htmlEditor") {
 			var oFCKeditor = new FCKeditor(allPageTags[i].id);
-			oFCKeditor.ToolbarSet			= "Basic";
+			oFCKeditor.ToolbarSet			= "htmlEditor";
 			oFCKeditor.Config.EditorAreaCSS	= context + '/' + siteID + '/css/editor.css';
 			oFCKeditor.Config.StylesXmlPath = context + '/' + siteID + '/css/fckstyles.xml';
 			oFCKeditor.BasePath = context + '/fckeditor/';
 			oFCKeditor.Height = height;
 			oFCKeditor.Width = width;
+			oFCKeditor.config.ImageBrowser=false;
+			oFCKeditor.config.ImageUpload=false;
+			oFCKeditor.config.ForcePasteAsPlainText = true;
+			oFCKeditor.config.StartupFocus = false;
 			oFCKeditor.ReplaceTextarea();
 			editors.push(oFCKeditor);
 		}
