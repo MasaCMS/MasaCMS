@@ -99,7 +99,7 @@ to your own modified versions of Mura CMS.
 					</dd>
 				</cfif>
 				<cfif hasSummary and len(rs.summary)>
-					<dd>#rs.summary#
+					<dd class="summary">#rs.summary#
 						<span class="readMore">#addlink(rs.type,rs.filename,rbFactory.getKey('list.readmore'),rs.target,rs.targetParams,rs.contentid,request.siteid,'',application.configBean.getContext(),application.configBean.getStub(),application.configBean.getIndexFile())#</span>
 					</dd>
 				</cfif>
@@ -147,7 +147,7 @@ to your own modified versions of Mura CMS.
 					<cfset itemDate=parseDateTime(feedData.itemArray[i].pubDate.xmlText)>
 					<dt class="releaseDate"><cfif isDate(itemDate)>#LSDateFormat(itemDate,getLongDateFormat())#<cfelse>#feedData.itemArray[i]["dc:date"].xmlText#</cfif></dt>
 					</cfif>
-					<cfif hasSummary and structKeyExists(feedData.itemArray[i],"description")><dd>#feedData.itemArray[i].description.xmlText#</dd></cfif>
+					<cfif hasSummary and structKeyExists(feedData.itemArray[i],"description")><dd class="summary">#feedData.itemArray[i].description.xmlText#</dd></cfif>
 				</dl>
 				</cfloop>
 				<cfelse>
@@ -159,7 +159,7 @@ to your own modified versions of Mura CMS.
 					<cfset itemDate=parseDateTime(feedData.itemArray[i].updated.xmlText)>
 					<dt class="releaseDate"><cfif isDate(itemDate)>#LSDateFormat(itemDate,getLongDateFormat())#<cfelse>#feedData.itemArray[i].updated.xmlText#</cfif></dt>
 					</cfif>
-					<cfif hasSummary and structKeyExists(feedData.itemArray[i],"summary")><dd>#feedData.itemArray[i].summary.xmlText#</dd></cfif>
+					<cfif hasSummary and structKeyExists(feedData.itemArray[i],"summary")><dd class="summary">#feedData.itemArray[i].summary.xmlText#</dd></cfif>
 				</dl>
 				</cfloop>
 				</cfif>
