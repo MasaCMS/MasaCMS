@@ -3,6 +3,7 @@
 mode=production
 appname=Mura CMS
 appReloadKey=appreload
+installed=0
 
 [production]
 title=Mura CMS
@@ -12,10 +13,10 @@ fileStoreAccessInfo=
 assetpath=/tasks/sites
 mapdir=mura
 webrootmap=muraWRM
-datasource=muradb
+datasource=
 dbType=mysql
-dbUsername=root
-dbPassword=password
+dbUsername=
+dbPassword=
 context=
 stub=
 admindomain=
