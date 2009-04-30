@@ -92,8 +92,6 @@ to your own modified versions of Mura CMS.
 			<cfset variables.pluginManager.executeScripts('onGlobalLogin',arguments.siteID,pluginEvent)/>
 		</cfif>
 		
-		<cfset variables.pluginManager.executeScripts('onGlobalLogin',arguments.siteID,pluginEvent)/>
-		
 		<cfquery datasource="#application.configBean.getDatasource()#" name="rsUser" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 		SELECT UserID, Lname, Fname,username, Password, s2, LastLogin,company, ispublic, siteid,passwordCreated,subType FROM tusers WHERE
 		username=<cfqueryparam cfsqltype="cf_sql_varchar" value="#trim(arguments.username)#"> AND Password=<cfqueryparam cfsqltype="cf_sql_varchar" value="#hash(trim(arguments.password))#"> AND Type = 2 
