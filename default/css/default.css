@@ -268,8 +268,6 @@ p.fieldLabel {
 	color: #777;
 	}
 
-form li a { margin-left: 135px; } /* Margin to account for width of label, label margin. */
-
 form li span { font-weight: normal; }
 
 input.text { width: 60%; }
