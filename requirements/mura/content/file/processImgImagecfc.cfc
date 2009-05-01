@@ -112,7 +112,7 @@ to your own modified versions of Mura CMS.
 	<cfset var blurMe=structNew() />
 	<cfset var imageData="" />
 	<cfset var serverFilename=arguments.file.serverfilename />
-	<cfset var serverDirectory=arguments.file.arguments.file.serverDirectory & "/"/>
+	<cfset var serverDirectory=arguments.file.serverDirectory & "/"/>
 	
 	<cfset fileStruct.fileObj = '' />
 	<cfset fileStruct.fileObjSmall = '' />
