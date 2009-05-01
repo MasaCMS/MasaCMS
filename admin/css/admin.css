@@ -1,3 +1,5 @@
+/* @override http://localhost:8500/mura/admin/css/admin.css */
+
 /* This file is part of Mura CMS. 
 
 	Mura CMS is free software: you can redistribute it and/or modify 
@@ -108,12 +110,12 @@ input.text, input.textAlt, input.date {
 }
 
 input.text {
-		margin: -3px 2px 0 0;
+	margin: -3px 2px 0 0;
 	width: 300px;
-		vertical-align: middle;
-		background-color: #fff;
-		border: 1px solid #DBDBDB;
-		padding: 3px;
+	vertical-align: middle;
+	background-color: #fff;
+	border: 1px solid #DBDBDB;
+	padding: 3px;
 }
 input.textAlt, input.date, input.medium {
 	width: 100px;
@@ -659,7 +661,6 @@ form dt a, form dt label {
 	margin: 0 0 0 210px;
 	padding: 2px;
 	line-height: 22px;
-	border: 1px solid red;
 }
 
 /* @end */
@@ -3167,6 +3168,7 @@ a.tooltip {
 	padding-right: 8px;
 	background: url(../images/icons/icon_tool_tip.gif) no-repeat right top;
 	display: block;
+		line-height: 1.2;
 }
 
 dt a.tooltip, th.varWidth a.tooltip {
@@ -3598,5 +3600,32 @@ li span.req {
 ----------------------------------------- */
 
 /* @end */
+/*#cSetUp dl {
+	margin-bottom: 2em;
+	overflow: hidden;
+}*/
+
+#cSetUp #installationComplete {
+	background: url(../images/bg_dots.gif);
+	padding: .5em;
+	margin: 1.5em 0;
+}
+
+#cSetUp #installationComplete input {
+	border: 0;
+	padding: 0 0 0 7px;
+	background: transparent url(../images/arrow_big_orange.gif) no-repeat 0% 50%;
+	color: #369;
+	font-size: 12px;
+}
+
+.error, .notice, .success { padding: .8em; margin-bottom: 1em; border: 2px solid #ddd; }
+
+.error { background: #FBE3E4; color: #8a1f11; border-color: #FBC2C4; }
+.notice { background: #FFF6BF; color: #514721; border-color: #FFD324; }
+.success { background: #E6EFC2; color: #264409; border-color: #C6D880; }
+.error a { color: #8a1f11; }
+.notice a { color: #514721; }
+.success a { color: #264409; }
 
 
