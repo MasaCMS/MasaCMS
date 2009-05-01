@@ -139,11 +139,11 @@ to your own modified versions of Mura CMS.
 				<cfif variables.settingsManager.getSite(arguments.siteID).getGalleryMainScaleBy() eq 'x'
 				and imageData.width gt variables.settingsManager.getSite(arguments.siteID).getGalleryMainScale()>
 					
-					<cfset theFile = imageCFC.scaleWidth("", "#serverDirectory##serverFilename#.#arguments.file.serverFileExt#", "#getserverDirectoryectory()##serverFilename#.#arguments.file.serverFileExt#", variables.settingsManager.getSite(arguments.siteID).getGalleryMainScale())>
+					<cfset theFile = imageCFC.scaleWidth("", "#serverDirectory##serverFilename#.#arguments.file.serverFileExt#", "#serverDirectory##serverFilename#.#arguments.file.serverFileExt#", variables.settingsManager.getSite(arguments.siteID).getGalleryMainScale())>
 				
 				<cfelseif imageData.height gt variables.settingsManager.getSite(arguments.siteID).getGalleryMainScale()>
 					
-					<cfset theFile = imageCFC.scaleHeight("", "#serverDirectory##serverFilename#.#arguments.file.serverFileExt#", "#getserverDirectoryectory()##serverFilename#.#arguments.file.serverFileExt#", variables.settingsManager.getSite(arguments.siteID).getGalleryMainScale())>	
+					<cfset theFile = imageCFC.scaleHeight("", "#serverDirectory##serverFilename#.#arguments.file.serverFileExt#", "#serverDirectory##serverFilename#.#arguments.file.serverFileExt#", variables.settingsManager.getSite(arguments.siteID).getGalleryMainScale())>	
 				
 			</cfif>
 				
