@@ -56,6 +56,8 @@ to your own modified versions of Mura CMS.
 		<cfif trim( getProfileString( getDirectoryFromPath( getCurrentTemplatePath() ) & "settings.ini.cfm", "production", "datasource" ) ) IS NOT ""
 			AND (
 				NOT isDefined( "FORM.#session.setupSubmitButton#" )
+				AND
+				NOT isDefined( "FORM.#session.setupSubmitButtonComplete#" )
 				)
 			>						
 			<cfset application.setupComplete = true />
