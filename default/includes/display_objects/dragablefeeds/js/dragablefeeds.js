@@ -820,7 +820,7 @@
 		
 		var tokens = rssContent.split(/\n\n/g);
 		
-		var headerTokens = tokens[0].split('^');
+		var headerTokens = tokens[0].split(/\n/g);
 		if(headerTokens[0]=='0'){
 			headerTokens[1] = '';
 			headerTokens[0] = 'Invalid source';

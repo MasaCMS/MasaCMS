@@ -653,14 +653,18 @@ to your own modified versions of Mura CMS.
 	<cfargument name="stub" type="string" default="#application.configBean.getStub()#">
 	<cfargument name="indexFile" type="string" default="index.cfm">
 	<cfargument name="showMeta" type="string" default="0">
+	<cfargument name="fileExt" type="string" default="" required="true">
 	
 	<cfset var href=""/>
 	<cfset var tp=""/>
 	<cfset var begin="http://#application.settingsManager.getSite(arguments.siteID).getDomain()##application.configBean.getServerPort()#" />
 	
 		<cfswitch expression="#arguments.type#">
-				<cfcase value="Link,File">
+				<cfcase value="Link">
 					<cfset href="#begin##arguments.context##getURLStem(arguments.siteid,'')#?LinkServID=#arguments.contentid#&showMeta=#arguments.showMeta#"/>
+				</cfcase>
+				<cfcase value="File">
+					<cfset href="#begin##arguments.context##getURLStem(arguments.siteid,'')#?LinkServID=#arguments.contentid#&showMeta=#arguments.showMeta#&fileExt=.#arguments.fileExt#"/>
 				</cfcase>
 				<cfdefaultcase>
 					<cfset href="#begin##arguments.context##getURLStem(arguments.siteid,'#arguments.filename#')#" />

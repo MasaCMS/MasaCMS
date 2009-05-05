@@ -1,4 +1,4 @@
-<!--- This file is part of Mura CMS.
+<cfsetting enablecfoutputonly="yes"><!--- This file is part of Mura CMS.
 
 Mura CMS is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -40,8 +40,6 @@ for your modified version; it is your choice whether to do so, or to make such m
 the GNU General Public License version 2  without this exception.  You may, if you choose, apply this exception
 to your own modified versions of Mura CMS.
 --->
-
-<cfsetting enablecfoutputonly="yes">
 <cfset request.siteid = "#url.siteid#">
 <cf_CacheOMatic key="#url.rssURL##url.maxRssItems#" expiration="#createTimeSpan(0,0,20,0)#">
 <cftry>

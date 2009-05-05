@@ -78,7 +78,7 @@ to your own modified versions of Mura CMS.
 
 <cfset rsCats=application.contentManager.getCategoriesByHistID(rs.contentHistID)>
 
-<cfset theLink=XMLFormat(renderer.createHREFforRss(rs.type,rs.filename,rs.siteid,rs.contentid,rs.target,rs.targetparams,application.configBean.getContext(),application.configBean.getStub(),application.configBean.getIndexFile())) />
+<cfset theLink=XMLFormat(renderer.createHREFforRss(rs.type,rs.filename,rs.siteid,rs.contentid,rs.target,rs.targetparams,application.configBean.getContext(),application.configBean.getStub(),application.configBean.getIndexFile(),0,rs.fileExt)) />
 </cfsilent>
 		<item>
 			<title>#XMLFormat(rs.menutitle)#</title>	
@@ -90,7 +90,7 @@ to your own modified versions of Mura CMS.
 			<cfloop query="rsCats">
 			<category><![CDATA[#rsCats.name#]]></category>	
 			</cfloop>
-			<cfif rs.type eq "File"><cfset fileMeta=application.serviceFactory.getBean("fileManager").readMeta(rs.fileID)><enclosure url="#XMLFormat('http://#application.settingsManager.getSite(rs.siteID).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()#/tasks/render/file/?fileID=#rs.fileID#')#" length="#rs.filesize#" type="#fileMeta.ContentType#/#fileMeta.ContentSubType#" /></cfif>
+			<cfif rs.type eq "File"><cfset fileMeta=application.serviceFactory.getBean("fileManager").readMeta(rs.fileID)><enclosure url="#XMLFormat('http://#application.settingsManager.getSite(rs.siteID).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()#/tasks/render/file/?fileID=#rs.fileID#&fileEXT=.#rs.fileEXT#')#" length="#rs.filesize#" type="#fileMeta.ContentType#/#fileMeta.ContentSubType#" /></cfif>
 		</item></cfloop>
 	</channel>
 </rss></cfoutput>
