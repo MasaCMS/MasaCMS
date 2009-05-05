@@ -196,7 +196,7 @@ select * from tplugins order by pluginID
 	</cfquery>
 	</cfif>
 	
-	<cfset rsPlugin=getPlugin(modID,false) />
+	<cfset rsPlugin=getPlugin(modID,'',false) />
 	
 	<cfset location=getLocation(rsPlugin.pluginID) />
 	
@@ -229,7 +229,7 @@ select * from tplugins order by pluginID
 	<cfset var displayObject="" />
 	<cfset var script="" />
 	<cfset var eventHandler=""/>
-	<cfset var rsPlugin=getPlugin(modID,false) />
+	<cfset var rsPlugin=getPlugin(modID,'',false) />
 	<cfset var location=getLocation(rsPlugin.pluginID) />
 	<cfset var delim=variables.configBean.getFileDelim() />
 	<cfset var pluginXML=getPluginXML(modID)>
