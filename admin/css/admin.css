@@ -2942,6 +2942,7 @@ select.multiSelect {
 }
 
 #datePicker form {
+	width: auto;
 	margin: 0;
 }
 
