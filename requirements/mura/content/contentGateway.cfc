@@ -1414,6 +1414,7 @@ to your own modified versions of Mura CMS.
 		) 
 	<cfif isQuery(arguments.rsContent)  and arguments.rsContent.recordcount> and contentID in (#quotedValuelist(arguments.rsContent.contentID)#)</cfif>
 	group by tag
+	order by tag
 	</cfquery>
 	
 	<cfreturn rs />
