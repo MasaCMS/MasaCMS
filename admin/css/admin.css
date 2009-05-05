@@ -1,5 +1,3 @@
-/* @override http://74.127.41.220/admin/css/admin.css */
-
 /* This file is part of Mura CMS. 
 
 	Mura CMS is free software: you can redistribute it and/or modify 
@@ -3603,6 +3601,10 @@ li span.req {
 /* @end */
 #cSetUp #content, #cSetUp #content form {
 	width: 50em;
+}
+
+#cSetUp .success {
+	margin-bottom: 2.5em;
 }
 
 .deleteSetup {
