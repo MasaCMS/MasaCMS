@@ -95,7 +95,7 @@ to your own modified versions of Mura CMS.
 		<cfreturn variables.event />
 </cffunction>
 
-<cffunction name="getHandler" returntype="any" access="public">
+<cffunction name="getHandler" returntype="any" access="public" output="false">
 	<cfargument name="handler">
 	<cfif isObject(getValue('HandlerFactory'))>
 		<cfreturn getValue('HandlerFactory').get(arguments.handler) />
@@ -104,7 +104,7 @@ to your own modified versions of Mura CMS.
 	</cfif>
 </cffunction>
 
-<cffunction name="getValidator" returntype="any" access="public">
+<cffunction name="getValidator" returntype="any" access="public" output="false">
 	<cfargument name="validation">
 	
 	<cfif isObject(getValue('ValidatorFactory'))>
@@ -115,7 +115,7 @@ to your own modified versions of Mura CMS.
 	
 </cffunction>
 
-<cffunction name="getTranslator" returntype="any" access="public">
+<cffunction name="getTranslator" returntype="any" access="public" output="false">
 	<cfargument name="translator">
 	
 	<cfif isObject(getValue('TranslatorFactory'))>
@@ -126,11 +126,11 @@ to your own modified versions of Mura CMS.
 	
 </cffunction>
 
-<cffunction name="getContentRenderer" returntype="any" access="public">
+<cffunction name="getContentRenderer" returntype="any" access="public" output="false">
 	<cfreturn getValue('contentRenderer') />	
 </cffunction>
 
-<cffunction name="getSite" returntype="any" access="public">
+<cffunction name="getSite" returntype="any" access="public" output="false">
 	<cfif len(getValue('siteid'))>
 		<cfreturn application.settingsManager.getSite(getValue('siteid')) />
 	<cfelse>
@@ -138,15 +138,15 @@ to your own modified versions of Mura CMS.
 	</cfif>	
 </cffunction>
 
-<cffunction name="getServiceFactory" returntype="any" access="public">
+<cffunction name="getServiceFactory" returntype="any" access="public" output="false">
 	<cfreturn application.serviceFactory />	
 </cffunction>
 
-<cffunction name="throwSiteIDError" returntype="any" access="public">
+<cffunction name="throwSiteIDError" returntype="any" access="public" output="false">
 	<cfthrow type="custom" message="The 'SITEID' was not defined for this event">
 </cffunction>
 
-<cffunction name="loadSiteRelatedObjects" returntype="any" access="public">
+<cffunction name="loadSiteRelatedObjects" returntype="any" access="public" output="false">
 	<cfset setValue('ValidatorFactory',application.pluginManager.getEventManager(getValue('siteid')).getFactory("Validator"))>
 	<cfset setValue('HandlerFactory',application.pluginManager.getEventManager(getValue('siteid')).getFactory("Handler"))>
 	<cfset setValue('TranslatorFactory',application.pluginManager.getEventManager(getValue('siteid')).getFactory("Translator"))>

@@ -151,34 +151,34 @@ to your own modified versions of Mura CMS.
 		<cfset structDelete(theScope,arguments.property) />
 </cffunction>
 
-<cffunction name="getHandler" returntype="any" access="public">
+<cffunction name="getHandler" returntype="any" access="public" output="false">
 	<cfargument name="handler">
 	<cfreturn getValue('HandlerFactory').get(arguments.handler) />	
 </cffunction>
 
-<cffunction name="getValidator" returntype="any" access="public">
+<cffunction name="getValidator" returntype="any" access="public" output="false">
 	<cfargument name="validation">
 	<cfreturn getValue('ValidatorFactory').get(arguments.validation) />	
 </cffunction>
 
-<cffunction name="getTranslator" returntype="any" access="public">
+<cffunction name="getTranslator" returntype="any" access="public" output="false">
 	<cfargument name="translator">
 	<cfreturn getValue('TranslatorFactory').get(arguments.translator) />	
 </cffunction>
 
-<cffunction name="getContentRenderer" returntype="any" access="public">
+<cffunction name="getContentRenderer" returntype="any" access="public" output="false">
 	<cfreturn getValue('contentRenderer') />	
 </cffunction>
 
-<cffunction name="getContentBean" returntype="any" access="public">
+<cffunction name="getContentBean" returntype="any" access="public" output="false">
 	<cfreturn getValue('contentBean') />	
 </cffunction>
 
-<cffunction name="getCrumbData" returntype="any" access="public">
+<cffunction name="getCrumbData" returntype="any" access="public" output="false">
 	<cfreturn getValue('crumdata') />	
 </cffunction>
 
-<cffunction name="getSite" returntype="any" access="public">
+<cffunction name="getSite" returntype="any" access="public" output="false">
 	<cfreturn application.settingsManager.getSite(getValue('siteid')) />	
 </cffunction>
 
