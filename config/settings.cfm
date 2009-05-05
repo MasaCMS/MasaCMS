@@ -41,6 +41,38 @@ the GNU General Public License version 2  without this exception.  You may, if y
 to your own modified versions of Mura CMS.
 --->
 
+<cfparam name="application.appInitializedTime" default="" />
+<cfparam name="application.appInitialized" default="false" />
+<cfparam name="application.appReloadKey" default="appreload" />
+<cfparam name="application.broadcastInit" default="true" />
+
+<cfparam name="session.setupSubmitButton" default="A#hash( createUUID() )#" />
+<cfparam name="session.setupSubmitButtonComplete" default="A#hash( createUUID() )#" />
+<!--- do a settings setup check --->
+<cfif NOT structKeyExists( application, "setupComplete" ) OR (not application.appInitialized or structKeyExists(url,application.appReloadKey) )>
+	<cfif directoryExists( "#getDirectoryFromPath( getCurrentTemplatePath() )#setup" )>
+		<cfset structDelete( application, "setupComplete") />
+		<!--- check the settings --->
+		<cfif trim( getProfileString( getDirectoryFromPath( getCurrentTemplatePath() ) & "settings.ini.cfm", "production", "datasource" ) ) IS NOT ""
+			AND (
+				NOT isDefined( "FORM.#session.setupSubmitButton#" )
+				)
+			>						
+			<cfset application.setupComplete = true />
+		<cfelse>
+			<!--- check to see if the index.cfm page exists in the setup folder --->
+			<cfif NOT fileExists( "#getDirectoryFromPath( getCurrentTemplatePath() )#setup/index.cfm" )>
+				<cfthrow message="Your setup directory is incomplete. Please reset it up from the Mura source." />
+			</cfif>
+			
+			<cfset renderSetup = true />
+			<!--- go to the index.cfm page (setup) --->
+			<cfinclude template="setup/index.cfm"><cfabort>
+		</cfif>
+		
+	</cfif>
+</cfif>	
+
 <cfsilent>
 <cfprocessingdirective pageencoding="utf-8"/>
 <cfsetting requestTimeout = "1000">
@@ -57,11 +89,6 @@ to your own modified versions of Mura CMS.
 <cfif not StructKeyExists(cookie, 'userHash')>
    <cfcookie name="userHash" expires="never" value="">
 </cfif>
-
-<cfparam name="application.appInitializedTime" default="" />
-<cfparam name="application.appInitialized" default="false" />
-<cfparam name="application.appReloadKey" default="appreload" />
-<cfparam name="application.broadcastInit" default="true" />
 
 
 <cfif not IsDefined("Cookie.CFID") AND IsDefined("Session.CFID")>
