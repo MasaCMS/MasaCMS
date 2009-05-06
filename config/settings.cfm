@@ -155,7 +155,7 @@ to your own modified versions of Mura CMS.
 	</cflock>
 
 	<!--- Set up scheduled tasks --->
-	<cfif not len(application.configBean.getServerPort())>
+	<cfif not len(application.configBean.getServerPort())-1>
 		<cfset port=80/>
 	<cfelse>
 		<cfset port=right(application.configBean.getServerPort(),len(application.configBean.getServerPort())-1) />
