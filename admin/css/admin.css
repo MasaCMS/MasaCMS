@@ -2144,7 +2144,11 @@ table#fileList td.varWidth a,
 
 /* @group File Icons */
 
-.doc {
+/*.varWidth li {
+	background: url(../images/icons/files/icon_generic_small.gif) no-repeat;
+}*/
+
+.doc, .docx {
 	background: url(../images/icons/files/icon_doc_small.gif) no-repeat;
 }
 
@@ -2216,13 +2220,17 @@ table#fileList td.varWidth a,
 	background: url(../images/icons/files/icon_css_small.gif) no-repeat;
 }
 
+.flv {
+	background: url(../images/icons/files/icon_flv_small.png) no-repeat;
+}
+
 .html, .htm {
 	background: url(../images/icons/files/icon_generic_small.gif) no-repeat;
 }
 
 /* @group Locked */
 
-.docLocked {
+.docLocked, .docxLocked {
 	background: url(../images/icons/files/icon_doc_small_locked.gif) no-repeat;
 }
 
@@ -2292,6 +2300,10 @@ table#fileList td.varWidth a,
 
 .cssLocked {
 	background: url(../images/icons/files/icon_css_small_locked.gif) no-repeat;
+}
+
+.cssLocked {
+	background: url(../images/icons/files/icon_flv_small_locked.gif) no-repeat;
 }
 
 .htmlLocked, .htmLocked {
