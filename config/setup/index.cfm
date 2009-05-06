@@ -116,6 +116,11 @@
 			</cfif>
 		</cfcatch>
 	</cftry>
+	
+	<!--- check to make sure the dbtype is not blank --->
+	<cfif FORM.production_dbtype IS "">
+		<cfset errorType = "dbtype" />
+	</cfif>
 
 	<!--- ************************ --->
 	<!--- STEP 2 ---> 
@@ -196,6 +201,11 @@
 		<!--- broken pipe --->
 		<cfcase value="brokenpipe">
 			<cfset message = "<strong>Error:</strong> Looks like the database pipe broke, try again." />
+		</cfcase>
+		
+		<!--- no dbtype --->
+		<cfcase value="dbtype">
+			<cfset message = "<strong>Error:</strong> A Database type is required. Please select the database you are using." />
 		</cfcase>
 		
 	</cfswitch>	
