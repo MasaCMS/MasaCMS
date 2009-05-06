@@ -1067,6 +1067,23 @@ to your own modified versions of Mura CMS.
 	</cfif>
 </cffunction>
 
+<cffunction name="setCategories" returntype="any" access="public" output="false">
+	<cfargument name="categoryList"  required="true" default=""/>
+	<cfargument name="membership"  required="true" default="0"/>
+	<cfargument name="featureStart"  required="true" default=""/>	
+	<cfargument name="featureStop"  required="true" default=""/>
+	
+	<cfset var cat = "" />
+	<cfloop list="#arguments.categoryList#" index="cat">
+		<cfset setCategory(
+			cat,
+			arguments.membership,
+			arguments.featureStart,
+			arguments.featureStop	
+		) />
+	</cfloop>
+</cffunction>
+
 <cffunction name="setAllValues" returntype="any" access="public" output="false">
 	<cfargument name="instance">
 	<cfset variables.instance=arguments.instance/>
