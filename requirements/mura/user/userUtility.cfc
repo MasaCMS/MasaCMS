@@ -208,7 +208,7 @@ to your own modified versions of Mura CMS.
 					<cfset user="#rsUser.Fname# #rsUser.Lname#">
 				</cfif>
 				
-				<cflogin>
+				<cflogin applicationToken="#application.name#">
 				<cfloginuser name="#rsuser.userID#^#user#^#dateFormat(lastLogin,'m/d/yy')#^#group#^#rsUser.username#^#dateFormat(rsUser.passwordCreated,'m/d/yy')#^#rsUser.password#"
 				 roles="#rolelist#"
 				 password="#rsUser.password#">
