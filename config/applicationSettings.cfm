@@ -78,7 +78,7 @@ to your own modified versions of Mura CMS.
 	<!--- Should we set cookies on the browser? --->
 	<cfset this.setClientCookies = true>
 	<!--- should cookies be domain specific, ie, *.foo.com or www.foo.com --->
-	<cfset this.setDomainCookies = false>
+	<cfset this.setDomainCookies = true>
 	<!--- should we try to block 'bad' input from users --->
 	<cfset this.scriptProtect = false>
 	<!--- should we secure our JSON calls? --->
