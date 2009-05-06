@@ -26,8 +26,6 @@
 	<cfset var page = "" />
 	<cfset var renderer=event.getValue("contentRenderer") />
 	
-	<cfset application.pluginManager.executeScripts('onRenderStart',event.getValue('siteID'), event)/>
-	
 	<cfsavecontent variable="page">
 		<cfinclude template="/#application.configBean.getWebRootMap()#/#event.getValue('siteID')#/includes/templates/#renderer.getTemplate()#">
 	</cfsavecontent>
