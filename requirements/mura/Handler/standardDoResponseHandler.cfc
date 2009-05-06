@@ -24,10 +24,10 @@
 <cffunction name="handle" output="false" returnType="any">
 	<cfargument name="event" required="true">
 	
+	<cfset application.pluginManager.executeScripts('onRenderStart',event.getValue('siteID'), event)/>
+	
 	<cfswitch expression="#event.getValue('contentBean').getType()#">
 	<cfcase value="File,Link">
-	
-		<cfset application.pluginManager.executeScripts('onRenderStart',event.getValue('siteID'), event)/>
 			
 		<cfif event.getValue('isOnDisplay') and ((not event.getValue('r').restrict) or (event.getValue('r').restrict and event.getValue('r').allow))>			
 			<cfif event.getValue('showMeta') neq 1>
