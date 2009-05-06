@@ -16,7 +16,7 @@
 <cfset webRoot = mid( webRoot, 1, len( webRoot )-1 ) />
 
 <cfparam name="FORM.fieldnames" default="" />
-<cfparam name="FORM.dbType" default="#getProfileString( settingsPath, "production", "dbtype" )#" />
+<cfparam name="FORM.production_dbtype" default="#getProfileString( settingsPath, "production", "dbtype" )#" />
 <cfparam name="FORM.production_port" default="#cgi.server_port#" />
 <cfparam name="FORM.production_datasource" default="#getProfileString( settingsPath, "production", "datasource" )#" />
 <cfparam name="FORM.production_dbusername" default="#getProfileString( settingsPath, "production", "dbusername" )#" />
@@ -136,18 +136,18 @@
 			<cfset message = "<strong>Error:</strong> There was an issue connecting to the database. The database or database tables might not exist." />
 			
 			<!--- if it is asked to create the database then do so --->
-			<cfif NOT dbCreated AND FORM.dbType IS NOT "">
+			<cfif NOT dbCreated AND FORM.production_dbtype IS NOT "">
 				<!--- try to create the database --->
 				<cftry>
 					<!--- get selected DB type --->
-					<cffile action="read" file="#getDirectoryFromPath( getCurrentTemplatePath() )#/db/#FORM.dbType#.sql" variable="sql" />
+					<cffile action="read" file="#getDirectoryFromPath( getCurrentTemplatePath() )#/db/#FORM.production_dbtype#.sql" variable="sql" />
 					<!---
 					<cfsavecontent variable="sql">
-	                	<cfinclude template="db/#FORM.dbType#.sql">
+	                	<cfinclude template="db/#FORM.production_dbtype#.sql">
 	            	</cfsavecontent>
 					--->
 					<!--- we adjust the sql to work with a certain parser for later use to help build out an array --->
-					<cfswitch expression="#FORM.dbType#">
+					<cfswitch expression="#FORM.production_dbtype#">
 					
 						<cfcase value="mssql">
 							<!--- if we are working with a SQL db we go ahead and swap out the GO with ; so we can loop over each sql even --->
@@ -341,12 +341,12 @@
 	--->
 	
 	<dt><a href="" class="tooltip">Database<span>Please select a database from the list of supported databases</span></a></dt>
-	<dd><select name="dbType">
+	<dd><select name="production_dbtype">
 		<option value="">-- Select your Database Type --</option>
-		<option value="mysql" <cfif FORM.dbType IS "mysql">selected</cfif>>MySQL</option>
-		<option value="mssql" <cfif FORM.dbType IS "mssql">selected</cfif>>MSSQL</option>
-		<option value="oracle" <cfif FORM.dbType IS "oracle">selected</cfif>>Oracle</option>
-		<option value="h2" <cfif FORM.dbType IS "h2">selected</cfif>>H2</option>
+		<option value="mysql" <cfif FORM.production_dbtype IS "mysql">selected</cfif>>MySQL</option>
+		<option value="mssql" <cfif FORM.production_dbtype IS "mssql">selected</cfif>>MSSQL</option>
+		<option value="oracle" <cfif FORM.production_dbtype IS "oracle">selected</cfif>>Oracle</option>
+		<option value="h2" <cfif FORM.production_dbtype IS "h2">selected</cfif>>H2</option>
 	</select>
 	</dd>
 	</dl>
