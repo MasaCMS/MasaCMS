@@ -79,7 +79,7 @@ to your own modified versions of Mura CMS.
 	<cfset variables.instance.dataTable = trim(arguments.dataTable) />
 </cffunction>
 
-<cffunction name="getAttribute" access="public" returntype="any">
+<cffunction name="getAttribute" access="public" returntype="any" output="false">
 <cfargument name="key">
 <cfargument name="useMuraDefault" type="boolean" required="true" default="false"> 
 <cfset var rs="" />
@@ -102,7 +102,7 @@ to your own modified versions of Mura CMS.
 
 </cffunction>
 
-<cffunction name="loadData" access="public" returntype="void">
+<cffunction name="loadData" access="public" returntype="void" output="false">
 <cfset var rs=""/>
 <cfset var dataTable=getDataTable() />
 
