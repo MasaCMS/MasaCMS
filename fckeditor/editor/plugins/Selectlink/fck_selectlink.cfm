@@ -97,13 +97,13 @@ Ok =function() {
 				} 
 			
 		}
-		window.close();
+		window.parent.Cancel() ;
 		}
 	
 	}
 	else
 	{
-		//alert('Please select a link.');
+		window.parent.Cancel() ;
 	}
 }
 </script>

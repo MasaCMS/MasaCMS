@@ -33,7 +33,7 @@ Ok =function() {
 		html = html.replace(reReplace, "");
 		//FCK.SetXHTML(html);
 		} */
-		window.close();
+		window.parent.Cancel() ;
 	}else{
 		alert('Please select a component.');
 	}
