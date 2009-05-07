@@ -219,7 +219,6 @@ input.radio {
 }
 
 
-
 th, td, input, select {
 	font-size: 11px;
 }
@@ -3618,6 +3617,17 @@ li span.req {
 #cSetUp .success {
 	margin-bottom: 2.5em;
 }
+
+#cSetUp .success h3 {
+	color: #264409;
+	font-weight: bold;
+	font-size: 1.4em;	
+}
+
+#cSetUp .success p#congrats {
+	font-size: 1.4em;
+}
+
 
 .deleteSetup {
 	margin: 1em 0;

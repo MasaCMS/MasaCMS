@@ -347,15 +347,17 @@
 
 <cfif isDefined( "FORM.#session.setupSubmitButton#" ) AND errorType IS "">
 		<div id="installationComplete" class="success">
-			<p>Congratulations! Mura is now set up and ready to use.</p>
-			<p><strong>Note:</strong> When you are done with setup, it is recommended you remove the "/config/setup" directory to maintain security. Once deleted, all settings can be edited in "/config/settings.ini.cfm" directly.</p>
+			<p id="congrats">Congratulations! Mura is now set up and ready to use.</p>
+			<h3>Important</h3>
+			<p>When you are done with setup, it is recommended you remove the "/config/setup" directory to maintain security. Once deleted, all settings can be edited in "/config/settings.ini.cfm" directly.</p>
+			<p>The default <strong>Username and Password is the word "admin" for both fields</strong>. It is highly reccommended that you change this immediately by editing your profile after logging into the Mura Admin.</p>
 			<input type="submit" name="#session.setupSubmitButtonComplete#" value="Finish Set Up and Take Me to the Mura Admin" />
 		</div>
 </cfif>
 
 <h3>Required Settings</h3>
 	
-	<dl class="twoColumn">
+	<dl class="twoColumn notice">
 	<dt><a href="" class="tooltip">Datasource (DSN)<span>This the Data Source Name (DSN) created for Mura. This is usually done in the ColdFusion or Railo administrator, or in the control panel of your host if you are installing Mura in a shared environment. Please note that if you are installing Mura in a shared environment, this will likely need to be changed to something other than "muradb" to make sure it is unique to the server.</span></a></dt>
 	<dd><input type="text" name="production_datasource" value="#FORM.production_datasource#"></dd>
 	
@@ -407,7 +409,7 @@
 	<dt><a href="" class="tooltip">Mail Server<span><strong>The Mail Server used by Mura to send global system emails. Example: mail.domain.com, 278.23.45.697.</span></a></dt>
 	<dd><input type="text" name="production_mailserverip" value="#FORM.production_mailserverip#"></dd>
 	
-	<dt><a href="" class="tooltip">Mail Server Username<span>This is the username used to log into or send emails from the Admin Email account. This may or may not be the same as Admin Email Address.</span></a></dt>
+	<dt><a href="" class="tooltip">Mail Server Username<span>This is the username used to log into and send emails from the Admin Email account. This may or may not be the same as Admin Email Address.</span></a></dt>
 	<dd><input type="text" name="production_mailserverusername" value="#FORM.production_mailserverusername#"></dd>
 	
 	<dt><a href="" class="tooltip">Mail Server Password<span>The password used to log into the Admin Email account.</span></a></dt>
@@ -420,16 +422,18 @@
 	<dd><input type="text" name="production_mailserverpopport" value="#FORM.production_mailserverpopport#"></dd>
 	
 	<dt><a href="" class="tooltip">Use TLS<span>Transport Layer Security: Used by some mail providers (Google, for example) to securely send/receive email.</span></a></dt>
-	<dd><select name="production_mailservertls">				
-	<option value="false" <cfif not form.production_mailservertls>selected</cfif>>No</option>
-	<option value="true" <cfif form.production_mailservertls>selected</cfif>>Yes</option>
-	</select>
+	<dd>
+		<select name="production_mailservertls">				
+			<option value="false" <cfif not form.production_mailservertls>selected</cfif>>No</option>
+			<option value="true" <cfif form.production_mailservertls>selected</cfif>>Yes</option>
+		</select>
 	</dd>
 	
 	<dt><a href="" class="tooltip">Use SSL<span>Secure Socket Layer: Another method used to securely send/receive email.</span></a></dt>
-	<dd><select name="production_mailserverssl">				
-	<option value="false" <cfif not form.production_mailserverssl>selected</cfif>>No</option>
-	<option value="true" <cfif form.production_mailserverssl>selected</cfif>>Yes</option>
+	<dd>
+	<select name="production_mailserverssl">				
+		<option value="false" <cfif not form.production_mailserverssl>selected</cfif>>No</option>
+		<option value="true" <cfif form.production_mailserverssl>selected</cfif>>Yes</option>
 	</select>
 	</dd>
 	</dl>
