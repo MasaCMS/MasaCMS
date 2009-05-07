@@ -121,6 +121,11 @@
 	<cfif FORM.production_dbtype IS "">
 		<cfset errorType = "dbtype" />
 	</cfif>
+	
+	<!--- check to make sure the admin email is entered --->
+	<cfif FORM.production_adminemail IS "">
+		<cfset errorType = "adminEmail" />
+	</cfif>
 
 	<!--- ************************ --->
 	<!--- STEP 2 ---> 
@@ -208,6 +213,11 @@
 			<cfset message = "<strong>Error:</strong> A Database type is required. Please select the database you are using." />
 		</cfcase>
 		
+		<!--- admin email --->
+		<cfcase value="adminEmail">
+			<cfset message = "<strong>Error:</strong> An Admin Email is required." />
+		</cfcase>
+		
 	</cfswitch>	
 
 	<!--- ************************ --->
@@ -232,9 +242,31 @@
 	<!--- custom settings --->
 	<!--- usedefaultsmtpserver --->
 	<cfif FORM.production_mailserverip IS NOT "" AND FORM.production_mailserverusername IS NOT "">
-		<cfset setProfileString( settingsPath, "production", "usedefaultsmtpserver", 0 ) />
+		<cfset usedefaultsmtpserver = 0 />
 	<cfelse>
-		<cfset setProfileString( settingsPath, "production", "usedefaultsmtpserver", 1 ) />
+		<cfset usedefaultsmtpserver = 1 />
+	</cfif>
+	<!--- update setting --->
+	<cfset setProfileString( settingsPath, "production", "usedefaultsmtpserver", usedefaultsmtpserver ) />
+	
+	<!--- only update the database if there are no errors --->
+	<!--- this also assumes that the db exists --->
+	<cfif dbCreated AND NOT len( errorType )>
+		<!--- update the domain to be local to the domain the server is being installed on --->
+		<cfquery datasource="#FORM.production_datasource#" username="#FORM.production_dbusername#" password="#FORM.production_dbpassword#">
+			UPDATE 
+				tsettings
+			SET
+				MailServerIP = '#FORM.production_mailserverip#',
+				MailServerUsername = '#FORM.production_mailserverusername#',
+				MailServerPassword = '#FORM.production_mailserverpassword#',
+				MailServerSMTPPort = '#FORM.production_mailserversmtpport#',
+				MailServerPOPPort = '#FORM.production_mailserverpopport#',
+				useDefaultSMTPServer = #usedefaultsmtpserver#,
+				MailServerTLS = '#FORM.production_mailservertls#',
+				MailServerSSL = '#FORM.production_mailserverssl#',
+				Contact = '#FORM.production_adminemail#'
+		</cfquery>
 	</cfif>
 	
 	<!--- ************************ --->
@@ -359,14 +391,14 @@
 		<option value="h2" <cfif FORM.production_dbtype IS "h2">selected</cfif>>H2</option>
 	</select>
 	</dd>
+	
+	<dt><a href="" class="tooltip">Admin Email Address<span>The email address used by Mura to send global system emails. Example: user@domain.com.</span></a></dt>
+	<dd><input type="text" name="production_adminemail" value="#FORM.production_adminemail#"></dd>
 	</dl>
 	
 <h3>Optional Settings</h3>
 <p>By default, Mura is set to use the mail server specified in your application server. If you would like to override this setting to use a specific mail server and mail account, complete the settings below.</p>
 	<dl class="twoColumn">
-	<dt><a href="" class="tooltip">Admin Email Address<span>The email address used by Mura to send global system emails. Example: user@domain.com.</span></a></dt>
-	<dd><input type="text" name="production_adminemail" value="#FORM.production_adminemail#"></dd>
-	
 	<dt><a href="" class="tooltip">Mail Server<span><strong>The Mail Server used by Mura to send global system emails. Example: mail.domain.com, 278.23.45.697.</span></a></dt>
 	<dd><input type="text" name="production_mailserverip" value="#FORM.production_mailserverip#"></dd>
 	
@@ -383,13 +415,15 @@
 	<dd><input type="text" name="production_mailserverpopport" value="#FORM.production_mailserverpopport#"></dd>
 	
 	<dt><a href="" class="tooltip">Use TLS<span>Transport Layer Security: Used by some mail providers (Google, for example) to securely send/receive email.</span></a></dt>
-	<dd><select name="production_mailservertls" value="#FORM.production_mailservertls#">				<option value="false" <cfif not form.production_mailservertls>selected</cfif>>No</option>
+	<dd><select name="production_mailservertls">				
+	<option value="false" <cfif not form.production_mailservertls>selected</cfif>>No</option>
 	<option value="true" <cfif form.production_mailservertls>selected</cfif>>Yes</option>
 	</select>
 	</dd>
 	
 	<dt><a href="" class="tooltip">Use SSL<span>Secure Socket Layer: Another method used to securely send/receive email.</span></a></dt>
-	<dd><select name="production_mailserverssl" value="#FORM.production_mailserverssl#">				<option value="false" <cfif not form.production_mailserverssl>selected</cfif>>No</option>
+	<dd><select name="production_mailserverssl">				
+	<option value="false" <cfif not form.production_mailserverssl>selected</cfif>>No</option>
 	<option value="true" <cfif form.production_mailserverssl>selected</cfif>>Yes</option>
 	</select>
 	</dd>
