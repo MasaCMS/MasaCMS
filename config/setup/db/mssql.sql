@@ -573,8 +573,8 @@ CREATE TABLE [dbo].[tfiles] (
 	[imageSmall] [image] NULL ,
 	[imageMedium] [image] NULL ,
 	[fileSize] [int] NULL ,
-	[contentType] [nvarchar] (50) NULL ,
-	[contentSubType] [nvarchar] (150) NULL ,
+	[contentType] [nvarchar] (100) NULL ,
+	[contentSubType] [nvarchar] (200) NULL ,
 	[fileExt] [nvarchar] (50) NULL,
 	[created] [datetime] NULL 
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]

@@ -483,8 +483,8 @@ CREATE TABLE `tfiles` (
   `imageSmall` longblob,
   `imageMedium` longblob,
   `fileSize` int(10) default NULL,
-  `contentType` varchar(50) default NULL,
-  `contentSubType` varchar(150) default NULL,
+  `contentType` varchar(100) default NULL,
+  `contentSubType` varchar(200) default NULL,
   `fileExt` varchar(50) default NULL,
   `created` datetime default NULL,
   PRIMARY KEY  (`fileID`)
