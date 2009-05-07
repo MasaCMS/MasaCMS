@@ -2144,9 +2144,9 @@ table#fileList td.varWidth a,
 
 /* @group File Icons */
 
-/*.varWidth li {
+.title li  {
 	background: url(../images/icons/files/icon_generic_small.gif) no-repeat;
-}*/
+}
 
 .doc, .docx {
 	background: url(../images/icons/files/icon_doc_small.gif) no-repeat;

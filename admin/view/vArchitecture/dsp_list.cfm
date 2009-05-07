@@ -150,7 +150,7 @@ copySiteID = '#session.copySiteID#';
          
 		  <tr>
            <td class="add"> <cfif (request.rstop.type eq 'Page') or  (request.rstop.type eq 'Portal')  or  (request.rstop.type eq 'Calendar')  or  (request.rstop.type eq 'Gallery')><a href="javascript:;" onmouseover="showMenu('newContentMenu',#newcontent#,this,'#request.rstop.contentid#','#attributes.topid#','#request.rstop.parentid#','#attributes.siteid#','#request.rstop.type#');">&nbsp;</a><cfelse>&nbsp;</cfif></td>
-            <td class="varWidth"><ul <cfif request.rstop.hasKids gt 0>class="neston"<cfelse>class="nestoff"</cfif>>
+            <td class="title varWidth"><ul <cfif request.rstop.hasKids gt 0>class="neston"<cfelse>class="nestoff"</cfif>>
 			<li class="#icon#"><cfif perm neq 'none'><a title="Edit" href="index.cfm?fuseaction=cArch.edit&contenthistid=#request.rstop.ContentHistID#&siteid=#attributes.siteid#&contentid=#attributes.topid#&topid=#attributes.topid#&type=#request.rstop.type#&parentid=#request.rstop.parentid#&moduleid=#attributes.moduleid#"></cfif>#HTMLEditFormat(left(request.rsTop.menutitle,70))#<cfif len(request.rsTop.menutitle) gt 70>...</cfif><cfif perm neq 'none'></a></cfif></li>
 			</ul></td>			
 		 <cfif application.settingsManager.getSite(attributes.siteid).getlocking() neq 'all'>

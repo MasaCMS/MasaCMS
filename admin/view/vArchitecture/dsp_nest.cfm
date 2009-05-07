@@ -106,7 +106,7 @@ to your own modified versions of Mura CMS.
  <a href="javascript:;" onmouseover="showMenu('newContentMenu',#newcontent#,this,'#attributes.rsNest.contentid#','#attributes.topid#','#attributes.rsNest.parentid#','#attributes.siteid#','#attributes.rsNest.type#');">&nbsp;</a>
 <cfelse>&nbsp;</cfif></td>
 
-<td class="varWidth"><ul <cfif attributes.rsNest.hasKids>class="nest#attributes.nestlevel#on"<cfelse>class="nest#attributes.nestlevel#off"</cfif>>
+<td class="title varWidth"><ul <cfif attributes.rsNest.hasKids>class="nest#attributes.nestlevel#on"<cfelse>class="nest#attributes.nestlevel#off"</cfif>>
 			<li class="#icon#"><cfif verdict neq 'none'><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.edit")#" href="index.cfm?fuseaction=cArch.edit&contenthistid=#attributes.rsNest.ContentHistID#&contentid=#attributes.rsNest.ContentID#&type=#attributes.rsNest.type#&parentid=#attributes.rsNest.parentID#&topid=#attributes.topid#&siteid=#attributes.siteid#&moduleid=#attributes.moduleid#&startrow=#attributes.startrow#"></cfif>#HTMLEditFormat(left(attributes.rsNest.menutitle,70))#<cfif len(attributes.rsNest.menutitle) gt 70>...</cfif><cfif verdict neq 'none'></a></cfif><cfif isMore>&nbsp;(#application.rbFactory.getKeyValue(session.rb,"sitemanager.more")#...)</cfif></li>
 </ul></td>	
 
