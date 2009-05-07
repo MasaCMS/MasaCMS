@@ -1,0 +1,32 @@
+
+<!--DEFAULT CUSTOM -->
+<servlet> 
+<servlet-name>FUServlet</servlet-name> 
+<display-name>FriendlyURLServlet</display-name> 
+<description>Translates friendly URLs to objects</description> 
+<servlet-class>com.blueriver.sava.FriendlyURLServlet</servlet-class>  
+</servlet> 
+
+<servlet-mapping> 
+<servlet-name>FUServlet</servlet-name> 
+<url-pattern>/go/*</url-pattern> 
+</servlet-mapping> 
+<!-- END DEFAULT CUSTOM -->
+
+
+
+
+<!-- JETTY CUSTOM -->
+<servlet> 
+<servlet-name>FUServlet</servlet-name> 
+<display-name>FriendlyURLServletJetty</display-name> 
+<description>Translates friendly URLs to objects</description> 
+<servlet-class>com.blueriver.sava.FriendlyURLServletJetty</servlet-class>  
+<load-on-startup>3</load-on-startup>
+</servlet> 
+
+<servlet-mapping> 
+<servlet-name>FUServlet</servlet-name> 
+<url-pattern>/go/*</url-pattern> 
+</servlet-mapping> 
+<!-- END JETTY CUSTOM -->
