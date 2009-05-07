@@ -66,7 +66,7 @@
 	<cfset cleanIni( settingsPath ) />
 	--->
 	<!--- cflocate to the admin --->
-	<cflocation url="#webRoot#/admin/index.cfm?appreload" />
+	<cflocation url="#webRoot#/admin/index.cfm?appreload" addtoken="false" />
 </cfif>
 
 <!--- run save process --->
@@ -220,6 +220,11 @@
 		
 	</cfswitch>	
 
+	<!--- if mail server username is not supplied then use the admin mail value --->
+	<cfif NOT len( FORM.production_mailserverusername )>
+		<cfset FORM.production_mailserverusername = FORM.production_adminemail />
+	</cfif>
+	
 	<!--- ************************ --->
 	<!--- STEP 3 ---> 
 	<!--- ************************ --->
