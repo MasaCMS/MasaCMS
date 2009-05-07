@@ -59,7 +59,7 @@ to your own modified versions of Mura CMS.
 <cfargument name="property"  type="string" required="true">
 	
 	<cfif structKeyExists(variables,"#arguments.property#")>
-		<cfreturn variablest["#arguments.property#"] />
+		<cfreturn variables["#arguments.property#"] />
 	<cfelse>
 		<cfreturn "" />
 	</cfif>
