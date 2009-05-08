@@ -1544,12 +1544,12 @@ to your own modified versions of Mura CMS.
 
 <cffunction name="dspInclude" returntype="string" access="public">
 	<cfargument name="template" default="" required="true">
-	<cfargument name="baseDir" default="#event.getSite().getIncludePath()#/includes/" required="true">
+	<cfargument name="baseDir" default="#event.getSite().getIncludePath()#/includes" required="true">
 	<cfset var str='' />
 
 	<cfif arguments.template neq ''>
 		<cfsavecontent variable="str">
-			<cfinclude template="#arguments.baseDir#/includes/#arguments.template#">
+			<cfinclude template="#arguments.baseDir#/#arguments.template#">
 		</cfsavecontent>
 	</cfif>
 	
