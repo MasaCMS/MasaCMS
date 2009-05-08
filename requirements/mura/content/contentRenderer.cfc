@@ -1538,7 +1538,7 @@ to your own modified versions of Mura CMS.
 				<cfset body=replace(body,mid(body, finder.pos[1], finder.len[1]),errorStr)>
 			</cfcatch>
 		</cftry>
-		<cfset finder=refind(regex1,body,1,"true")>
+		<cfset finder=refind(regex2,body,1,"true")>
 	</cfloop>
 	
 	<cfreturn body />
