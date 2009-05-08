@@ -30,7 +30,7 @@ function saveFavorite(userID, siteID, favoriteName, favoriteLocation, favoriteTy
 		var url = assetpath + '/includes/display_objects/favorites/ajax/saveFavorite.cfm';
 		//var pars = 'empID=' + empID + '&year=' + y;
 		var pars = 'userID=' + userID + '&siteid=' + siteID + '&favoriteName=' + favoriteName + '&favoriteLocation=' + favoriteLocation + '&favoriteType=' + favoriteType + '&cacheid=' + Math.random();
-		location.href= url + "?" + pars;
+		//location.href= url + "?" + pars;
 		var myAjax = new Ajax.Request( url, { method: 'get', parameters: pars, onComplete: showSaveFavoriteResponse });
 	//}
 	return false;
