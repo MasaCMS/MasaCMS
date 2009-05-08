@@ -951,7 +951,7 @@ to your own modified versions of Mura CMS.
 	<cfdirectory action="list" directory="#expandPath('/#variables.configBean.getWebRootMap()#')#/#getDisplayPoolID()#/includes/themes" name="rs">
 	
 	<cfquery name="rs" dbtype="query">
-	select * from rs where type='Dir'
+	select * from rs where type='Dir' and name not like '%.svn'
 	</cfquery>
 	
 	<cfreturn rs />
