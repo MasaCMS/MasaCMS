@@ -375,7 +375,7 @@ to your own modified versions of Mura CMS.
 
 <cffunction name="setAdminSSL" access="public" output="false">
 	<cfargument name="AdminSSL" type="Numeric" />
-	<cfset variables.instance.ddminSSL = arguments.AdminSSL />
+	<cfset variables.instance.adminSSL = arguments.AdminSSL />
 </cffunction>
 
 <cffunction name="getLogEvents" returntype="Numeric" access="public" output="false">
