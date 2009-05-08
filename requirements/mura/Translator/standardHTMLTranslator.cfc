@@ -25,9 +25,12 @@
 	<cfargument name="event" required="true">
 	<cfset var page = "" />
 	<cfset var renderer=event.getValue("contentRenderer") />
+	<cfset var themePath=event.getSite().getThemeAssetPath()  />
+	
+	<cfset event.setValue('themePath',themePath)>
 	
 	<cfsavecontent variable="page">
-		<cfinclude template="/#application.configBean.getWebRootMap()#/#event.getValue('siteID')#/includes/templates/#renderer.getTemplate()#">
+		<cfinclude template="#event.getSite().getTemplateIncludePath()#/#renderer.getTemplate()#">
 	</cfsavecontent>
 		
 	<cfif (event.getValue('forceSSL') or (event.getValue('r').restrict and application.settingsManager.getSite(event.getValue('siteID')).getExtranetSSL() eq 1)) and listFindNoCase('Off,False',cgi.https)>

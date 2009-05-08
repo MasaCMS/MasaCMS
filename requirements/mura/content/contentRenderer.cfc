@@ -578,11 +578,11 @@ to your own modified versions of Mura CMS.
 <cfargument name="parentID" type="any"  required="true" default="" />
 <cfargument name="categoryID"  type="any" required="true" default="" />
 <cfargument name="rsContent"  type="any"  required="true"  default="" />
-<cfset var theDisplayPoolID = application.settingsManager.getSite(event.getValue('siteID')).getDisplayPoolID() />
+<cfset var theIncludePath = event.getSite().getIncludePath() />
 <cfset var str ="" />
 
 <cfsavecontent variable="str">
-<cfinclude  template="/#application.configBean.getWebRootMap()#/#theDisplayPoolID#/includes/display_objects/nav/dsp_tag_cloud.cfm">
+<cfinclude  template="#theIncludePath#/includes/display_objects/nav/dsp_tag_cloud.cfm">
 </cfsavecontent>
 
 <cfreturn str />
@@ -623,7 +623,7 @@ to your own modified versions of Mura CMS.
 	
 	<cfset var href=""/>
 	<cfset var tp=""/>
-	<cfset var begin=iif(arguments.complete,de('http://#application.settingsManager.getSite(arguments.siteID).getDomain()##application.configBean.getServerPort()#'),de('')) />
+	<cfset var begin=iif(arguments.complete,de('http://#event.getSite().getDomain()##application.configBean.getServerPort()#'),de('')) />
 	
 		<cfswitch expression="#arguments.type#">
 				<cfcase value="Link,File">
@@ -657,7 +657,7 @@ to your own modified versions of Mura CMS.
 	
 	<cfset var href=""/>
 	<cfset var tp=""/>
-	<cfset var begin="http://#application.settingsManager.getSite(arguments.siteID).getDomain()##application.configBean.getServerPort()#" />
+	<cfset var begin="http://#event.getSite().getDomain()##application.configBean.getServerPort()#" />
 	
 		<cfswitch expression="#arguments.type#">
 				<cfcase value="Link">
@@ -712,7 +712,7 @@ to your own modified versions of Mura CMS.
 <cfargument name="siteid" type="string" required="true" default="#event.getValue('siteID')#">
 
 	<cfset var theObject = "" />
-	<cfset var theDisplayPoolID = application.settingsManager.getSite(arguments.siteid).getDisplayPoolID() />
+	<cfset var theIncludePath = event.getSite().getIncludePath().getIncludePath() />
 	<cfset var hasSummary = true />	
 	<cfset var useRss = false />
 	
@@ -720,208 +720,208 @@ to your own modified versions of Mura CMS.
 			<cfswitch expression="#arguments.object#">
 				<cfcase value="sub_nav">
 					<cf_CacheOMatic key="#arguments.object##event.getValue('contentBean').getcontentID()#" nocache="#event.getValue('r').restrict#">
-					<cfinclude  template="/#application.configBean.getWebRootMap()#/#theDisplayPoolID#/includes/display_objects/nav/dsp_sub.cfm">
+					<cfinclude  template="#theIncludePath#/includes/display_objects/nav/dsp_sub.cfm">
 					</cf_cacheomatic>
 				</cfcase>
 				<cfcase value="peer_nav">
 					<cf_CacheOMatic key="#arguments.object##event.getValue('contentBean').getcontentID()#" nocache="#event.getValue('r').restrict#">
-					<cfinclude  template="/#application.configBean.getWebRootMap()#/#theDisplayPoolID#/includes/display_objects/nav/dsp_peer.cfm">
+					<cfinclude  template="#theIncludePath#/includes/display_objects/nav/dsp_peer.cfm">
 					</cf_cacheomatic>
 				</cfcase>
 				<cfcase value="standard_nav">
 					<cf_CacheOMatic key="#arguments.object##event.getValue('contentBean').getcontentID()#" nocache="#event.getValue('r').restrict#">
-					<cfinclude  template="/#application.configBean.getWebRootMap()#/#theDisplayPoolID#/includes/display_objects/nav/dsp_standard.cfm">
+					<cfinclude  template="#theIncludePath#/includes/display_objects/nav/dsp_standard.cfm">
 					</cf_cacheomatic>
 				</cfcase>
 				<cfcase value="portal_nav">
 					<cf_CacheOMatic key="#arguments.object##event.getValue('contentBean').getcontentID()#" nocache="#event.getValue('r').restrict#">
-					<cfinclude  template="/#application.configBean.getWebRootMap()#/#theDisplayPoolID#/includes/display_objects/nav/dsp_portal.cfm">
+					<cfinclude  template="#theIncludePath#/includes/display_objects/nav/dsp_portal.cfm">
 					</cf_cacheomatic>
 				</cfcase>
 				<cfcase value="seq_nav">
 					<cf_CacheOMatic key="#arguments.object##arguments.objectid##event.getValue('startRow')#" nocache="#event.getValue('r').restrict#">
-					<cfinclude  template="/#application.configBean.getWebRootMap()#/#theDisplayPoolID#/includes/display_objects/nav/dsp_sequential.cfm">
+					<cfinclude  template="#theIncludePath#/includes/display_objects/nav/dsp_sequential.cfm">
 					</cf_cacheomatic>
 				</cfcase>
 				<cfcase value="top_nav">
 					<cf_CacheOMatic key="#arguments.object##event.getValue('contentBean').getcontentID()#" nocache="#event.getValue('r').restrict#">
-					<cfinclude  template="/#application.configBean.getWebRootMap()#/#theDisplayPoolID#/includes/display_objects/nav/dsp_top.cfm">
+					<cfinclude  template="#theIncludePath#/includes/display_objects/nav/dsp_top.cfm">
 					</cf_cacheomatic>
 				</cfcase>
 				<cfcase value="contact">
-					<cfinclude  template="/#application.configBean.getWebRootMap()#/#theDisplayPoolID#/includes/display_objects/dsp_contact.cfm">
+					<cfinclude  template="#theIncludePath#/includes/display_objects/dsp_contact.cfm">
 				</cfcase>
 				<cfcase value="calendar_nav">
 					<cf_CacheOMatic key="#arguments.object##arguments.siteID##arguments.objectid##event.getValue('month')##event.getvalue('year')#" nocache="#event.getValue('r').restrict#">
-					<cfinclude  template="/#application.configBean.getWebRootMap()#/#theDisplayPoolID#/includes/display_objects/nav/calendarNav/index.cfm">
+					<cfinclude  template="#theIncludePath#/includes/display_objects/nav/calendarNav/index.cfm">
 					</cf_cacheomatic>
 				</cfcase>
 				<cfcase value="plugin">
 					<cfreturn application.pluginManager.displayObject(arguments.objectid,event)>
 				</cfcase>
 				<cfcase value="mailing_list">
-					<cfinclude  template="/#application.configBean.getWebRootMap()#/#theDisplayPoolID#/includes/display_objects/dsp_mailing_list.cfm">
+					<cfinclude  template="#theIncludePath#/includes/display_objects/dsp_mailing_list.cfm">
 				</cfcase>
 				<cfcase value="mailing_list_master">
-					<cfinclude  template="/#application.configBean.getWebRootMap()#/#theDisplayPoolID#/includes/display_objects/dsp_mailing_list_master.cfm">
+					<cfinclude  template="#theIncludePath#/includes/display_objects/dsp_mailing_list_master.cfm">
 				</cfcase>
 				<cfcase value="site_map">
 					<cf_CacheOMatic key="#arguments.object##arguments.objectid#" nocache="#event.getValue('r').restrict#">
-					<cfinclude  template="/#application.configBean.getWebRootMap()#/#theDisplayPoolID#/includes/display_objects/dsp_site_map.cfm">
+					<cfinclude  template="#theIncludePath#/includes/display_objects/dsp_site_map.cfm">
 					</cf_cacheomatic>
 				</cfcase>
 				<cfcase value="features">
 					<cf_CacheOMatic key="#arguments.object##arguments.objectid#" nocache="#event.getValue('r').restrict#">
 					<cfset hasSummary=true>
-					<cfinclude template="/#application.configBean.getWebRootMap()#/#theDisplayPoolID#/includes/display_objects/dsp_features.cfm">
+					<cfinclude template="#theIncludePath#/includes/display_objects/dsp_features.cfm">
 					</cf_cacheomatic>
 				</cfcase>
 				<cfcase value="features_no_summary">
 					<cf_CacheOMatic key="#arguments.object##arguments.objectid#" nocache="#event.getValue('r').restrict#">
 					<cfset hasSummary=false>
-					<cfinclude  template="/#application.configBean.getWebRootMap()#/#theDisplayPoolID#/includes/display_objects/dsp_features.cfm">
+					<cfinclude  template="#theIncludePath#/includes/display_objects/dsp_features.cfm">
 					</cf_cacheomatic>
 				</cfcase>
 				<cfcase value="category_features">
 					<cf_CacheOMatic key="#arguments.object##arguments.objectid#" nocache="#event.getValue('r').restrict#">
 					<cfset hasSummary=true>
-					<cfinclude  template="/#application.configBean.getWebRootMap()#/#theDisplayPoolID#/includes/display_objects/dsp_category_features.cfm">
+					<cfinclude  template="#theIncludePath#/includes/display_objects/dsp_category_features.cfm">
 					</cf_cacheomatic>
 				</cfcase>
 				<cfcase value="category_features_no_summary">
 					<cf_CacheOMatic key="#arguments.object##arguments.objectid#" nocache="#event.getValue('r').restrict#">
 					<cfset hasSummary=false>
-					<cfinclude  template="/#application.configBean.getWebRootMap()#/#theDisplayPoolID#/includes/display_objects/dsp_category_features.cfm">
+					<cfinclude  template="#theIncludePath#/includes/display_objects/dsp_category_features.cfm">
 					</cf_cacheomatic>
 				</cfcase>
 				<cfcase value="category_portal_features">
 					<cf_CacheOMatic key="#arguments.object##arguments.objectid#" nocache="#event.getValue('r').restrict#">
 					<cfset hasSummary=true>
-					<cfinclude  template="/#application.configBean.getWebRootMap()#/#theDisplayPoolID#/includes/display_objects/dsp_category_portal_features.cfm">
+					<cfinclude  template="#theIncludePath#/includes/display_objects/dsp_category_portal_features.cfm">
 					</cf_cacheomatic>
 				</cfcase>
 				<cfcase value="category_portal_features_no_summary">
 					<cf_CacheOMatic key="#arguments.object##arguments.objectid#" nocache="#event.getValue('r').restrict#">
 					<cfset hasSummary=false>
-					<cfinclude  template="/#application.configBean.getWebRootMap()#/#theDisplayPoolID#/includes/display_objects/dsp_category_portal_features.cfm">
+					<cfinclude  template="#theIncludePath#/includes/display_objects/dsp_category_portal_features.cfm">
 					</cf_cacheomatic>
 				</cfcase>
 				<cfcase value="category_summary">
 					<cf_CacheOMatic key="#arguments.object##arguments.objectid##event.getValue('categoryID')#" nocache="#event.getValue('r').restrict#">
 					<cfset useRSS=false>
-					<cfinclude  template="/#application.configBean.getWebRootMap()#/#theDisplayPoolID#/includes/display_objects/dsp_category_summary.cfm">
+					<cfinclude  template="#theIncludePath#/includes/display_objects/dsp_category_summary.cfm">
 					</cf_cacheomatic>
 				</cfcase>
 				<cfcase value="category_summary_rss">
 					<cf_CacheOMatic key="#arguments.object##arguments.objectid##event.getValue('categoryID')#" nocache="#event.getValue('r').restrict#">
 					<cfset useRSS=true>
-					<cfinclude  template="/#application.configBean.getWebRootMap()#/#theDisplayPoolID#/includes/display_objects/dsp_category_summary.cfm">
+					<cfinclude  template="#theIncludePath#/includes/display_objects/dsp_category_summary.cfm">
 					</cf_cacheomatic>
 				</cfcase>
 				<cfcase value="form">
 					<cf_CacheOMatic key="#arguments.object##arguments.objectid#" nocache="#event.getValue('noCache')#">
-					<cfinclude  template="/#application.configBean.getWebRootMap()#/#theDisplayPoolID#/includes/display_objects/datacollection/index.cfm">
+					<cfinclude  template="#theIncludePath#/includes/display_objects/datacollection/index.cfm">
 					</cf_cacheomatic>
 				</cfcase>
 				<cfcase value="form_responses">
-					<cfinclude  template="/#application.configBean.getWebRootMap()#/#theDisplayPoolID#/includes/display_objects/dataresponses/index.cfm">
+					<cfinclude  template="#theIncludePath#/includes/display_objects/dataresponses/index.cfm">
 				</cfcase>
 				<cfcase value="component">
 					<cf_CacheOMatic key="#arguments.object##arguments.objectid#" nocache="#event.getValue('r').restrict#">
-					<cfinclude  template="/#application.configBean.getWebRootMap()#/#theDisplayPoolID#/includes/display_objects/dsp_template.cfm">
+					<cfinclude  template="#theIncludePath#/includes/display_objects/dsp_template.cfm">
 					</cf_cacheomatic>
 				</cfcase>
 				<cfcase value="ad">
-					<cfinclude  template="/#application.configBean.getWebRootMap()#/#theDisplayPoolID#/includes/display_objects/dsp_ad.cfm">
+					<cfinclude  template="#theIncludePath#/includes/display_objects/dsp_ad.cfm">
 				</cfcase>
 				<cfcase value="comments">
-					<cfinclude  template="/#application.configBean.getWebRootMap()#/#theDisplayPoolID#/includes/display_objects/dsp_comments.cfm">
+					<cfinclude  template="#theIncludePath#/includes/display_objects/dsp_comments.cfm">
 				</cfcase>
 				<cfcase value="submit_event">
 					<cf_CacheOMatic key="#arguments.object##arguments.objectid#" nocache="#event.getValue('noCache')#">
-					<cfinclude  template="/#application.configBean.getWebRootMap()#/#theDisplayPoolID#/includes/display_objects/dsp_submit_event.cfm">
+					<cfinclude  template="#theIncludePath#/includes/display_objects/dsp_submit_event.cfm">
 					</cf_cacheomatic>
 				</cfcase>
 				<cfcase value="promo">
-					<cfinclude  template="/#application.configBean.getWebRootMap()#/#theDisplayPoolID#/includes/display_objects/custom/dsp_promo.cfm">
+					<cfinclude  template="#theIncludePath#/includes/display_objects/custom/dsp_promo.cfm">
 				</cfcase>
 				<cfcase value="public_content_form">
-					<cfinclude  template="/#application.configBean.getWebRootMap()#/#theDisplayPoolID#/includes/display_objects/dsp_public_content_form.cfm">
+					<cfinclude  template="#theIncludePath#/includes/display_objects/dsp_public_content_form.cfm">
 				</cfcase>
 				<cfcase value="event_reminder_form">
 					<cf_CacheOMatic key="#arguments.object##arguments.objectid#" nocache="#event.getValue('noCache')#">
-					<cfinclude  template="/#application.configBean.getWebRootMap()#/#theDisplayPoolID#/includes/display_objects/dsp_event_reminder_form.cfm">
+					<cfinclude  template="#theIncludePath#/includes/display_objects/dsp_event_reminder_form.cfm">
 					</cf_cacheomatic>
 				</cfcase>
 				<cfcase value="forward_email">
-					<cfinclude  template="/#application.configBean.getWebRootMap()#/#theDisplayPoolID#/includes/display_objects/dsp_forward_email.cfm">
+					<cfinclude  template="#theIncludePath#/includes/display_objects/dsp_forward_email.cfm">
 				</cfcase>
 				<cfcase value="adzone">
-					<cfinclude  template="/#application.configBean.getWebRootMap()#/#theDisplayPoolID#/includes/display_objects/dsp_adZone.cfm">
+					<cfinclude  template="#theIncludePath#/includes/display_objects/dsp_adZone.cfm">
 				</cfcase>
 				<cfcase value="feed">
 					<cf_CacheOMatic key="#arguments.object##arguments.objectid#" nocache="#event.getValue('r').restrict#">
 					<cfset hasSummary=true>
-					<cfinclude  template="/#application.configBean.getWebRootMap()#/#theDisplayPoolID#/includes/display_objects/dsp_feed.cfm">
+					<cfinclude  template="#theIncludePath#/includes/display_objects/dsp_feed.cfm">
 					</cf_cacheomatic>
 				</cfcase>
 				<cfcase value="feed_no_summary">
 					<cf_CacheOMatic key="#arguments.object##arguments.objectid#" nocache="#event.getValue('r').restrict#">
 					<cfset hasSummary=false>
-					<cfinclude  template="/#application.configBean.getWebRootMap()#/#theDisplayPoolID#/includes/display_objects/dsp_feed.cfm">
+					<cfinclude  template="#theIncludePath#/includes/display_objects/dsp_feed.cfm">
 					</cf_cacheomatic>
 				</cfcase>
 				<cfcase value="feed_table">
 					<cf_CacheOMatic key="#arguments.object#" nocache="#event.getValue('r').restrict#">
 					<cfset hasSummary=false>
-					<cfinclude  template="/#application.configBean.getWebRootMap()#/#theDisplayPoolID#/includes/display_objects/feedtable/index.cfm">
+					<cfinclude  template="#theIncludePath#/includes/display_objects/feedtable/index.cfm">
 					</cf_cacheomatic>
 				</cfcase>
 
 				<cfcase value="payPalCart">
-					<cfinclude  template="/#application.configBean.getWebRootMap()#/#theDisplayPoolID#/includes/display_objects/paypalcart/index.cfm">
+					<cfinclude  template="#theIncludePath#/includes/display_objects/paypalcart/index.cfm">
 				</cfcase>
 			<!--- 	<cfcase value="workspace">
 				<cfset event.getValue('noCache')=1>
-					<cfinclude  template="/#application.configBean.getWebRootMap()#/#theDisplayPoolID#/includes/display_objects/workspace/index.cfm">
+					<cfinclude  template="#theIncludePath#/includes/display_objects/workspace/index.cfm">
 				</cfcase> --->
 				<cfcase value="rater">
-					<cfinclude  template="/#application.configBean.getWebRootMap()#/#theDisplayPoolID#/includes/display_objects/rater/index.cfm">
+					<cfinclude  template="#theIncludePath#/includes/display_objects/rater/index.cfm">
 				</cfcase>
 				<cfcase value="favorites">
-					<cfinclude template="/#application.configBean.getWebRootMap()#/#theDisplayPoolID#/includes/display_objects/favorites/index.cfm">
+					<cfinclude template="#theIncludePath#/includes/display_objects/favorites/index.cfm">
 				</cfcase>
 				<cfcase value="dragable_feeds">
-					<cfinclude template="/#application.configBean.getWebRootMap()#/#theDisplayPoolID#/includes/display_objects/dragablefeeds/index.cfm">
+					<cfinclude template="#theIncludePath#/includes/display_objects/dragablefeeds/index.cfm">
 				</cfcase>
 				<cfcase value="related_content">
 					<cf_CacheOMatic key="#arguments.object##arguments.objectid#" nocache="#event.getValue('r').restrict#">
-					<cfinclude template="/#application.configBean.getWebRootMap()#/#theDisplayPoolID#/includes/display_objects/dsp_related_content.cfm">
+					<cfinclude template="#theIncludePath#/includes/display_objects/dsp_related_content.cfm">
 					</cf_cacheomatic>
 				</cfcase>
 				<cfcase value="related_section_content">
 					<cf_CacheOMatic key="#arguments.object##arguments.objectid#" nocache="#event.getValue('r').restrict#">
 					<cfset hasSummary=true>
-					<cfinclude template="/#application.configBean.getWebRootMap()#/#theDisplayPoolID#/includes/display_objects/dsp_related_section_content.cfm">
+					<cfinclude template="#theIncludePath#/includes/display_objects/dsp_related_section_content.cfm">
 					</cf_cacheomatic>
 				</cfcase>
 				<cfcase value="related_section_content_no_summary">
 					<cf_CacheOMatic key="#arguments.object##arguments.objectid#" nocache="#event.getValue('r').restrict#">
 					<cfset hasSummary=false>
-					<cfinclude template="/#application.configBean.getWebRootMap()#/#theDisplayPoolID#/includes/display_objects/dsp_related_section_content.cfm">
+					<cfinclude template="#theIncludePath#/includes/display_objects/dsp_related_section_content.cfm">
 					</cf_cacheomatic>
 				</cfcase>
 				<cfcase value="user_tools">
-					<cfinclude template="/#application.configBean.getWebRootMap()#/#theDisplayPoolID#/includes/display_objects/dsp_user_tools.cfm">
+					<cfinclude template="#theIncludePath#/includes/display_objects/dsp_user_tools.cfm">
 				</cfcase>
 				<cfcase value="tag_cloud">
 					<cfoutput>#dspTagCloud()#</cfoutput>
 				</cfcase>
 				<cfcase value="IASiteMap">
-					<cfinclude template="/#application.configBean.getWebRootMap()#/#theDisplayPoolID#/includes/display_objects/IASiteMap/index.cfm">
+					<cfinclude template="#theIncludePath#/includes/display_objects/IASiteMap/index.cfm">
 				</cfcase>
 				<cfcase value="goToFirstChild">
-					<cfinclude template="/#application.configBean.getWebRootMap()#/#theDisplayPoolID#/includes/display_objects/act_goToFirstChild.cfm">
+					<cfinclude template="#theIncludePath#/includes/display_objects/act_goToFirstChild.cfm">
 				</cfcase>
 			</cfswitch>
 		</cfsavecontent>
@@ -965,7 +965,7 @@ to your own modified versions of Mura CMS.
 	<cfargument name="crumbseparator" type="string" default="&raquo;&nbsp;">
 	<cfargument name="showMetaImage" type="numeric" default="1">
 	
-	<cfset var theDisplayPoolID = application.settingsManager.getSite(event.getValue('siteID')).getDisplayPoolID() />
+	<cfset var theIncludePath = event.getSite().getIncludePath() />
 	<cfset var str = "" />
 	<cfset var fileDelim= application.configBean.getFileDelim() />
 	<cfset var eventOutput="" />
@@ -985,7 +985,7 @@ to your own modified versions of Mura CMS.
 						<cfif len(eventOutput)>
 						<cfoutput>#eventOutput#</cfoutput>
 						<cfelse>
-						<cfinclude template="/#application.configBean.getWebRootMap()#/#theDisplayPoolID#/includes/display_objects/dsp_edit_profile.cfm">
+						<cfinclude template="#theIncludePath#/includes/display_objects/dsp_edit_profile.cfm">
 						</cfif>
 					</cfcase>
 					<cfcase value="search">
@@ -994,7 +994,7 @@ to your own modified versions of Mura CMS.
 						<cfif len(eventOutput)>
 						<cfoutput>#eventOutput#</cfoutput>
 						<cfelse>
-						<cfinclude template="/#application.configBean.getWebRootMap()#/#theDisplayPoolID#/includes/display_objects/dsp_search_results.cfm">
+						<cfinclude template="#theIncludePath#/includes/display_objects/dsp_search_results.cfm">
 						</cfif>
 					</cfcase> 
 					<cfcase value="login">
@@ -1003,7 +1003,7 @@ to your own modified versions of Mura CMS.
 						<cfif len(eventOutput)>
 						<cfoutput>#eventOutput#</cfoutput>
 						<cfelse>
-						<cfinclude  template="/#application.configBean.getWebRootMap()#/#theDisplayPoolID#/includes/display_objects/dsp_login.cfm">
+						<cfinclude  template="#theIncludePath#/includes/display_objects/dsp_login.cfm">
 						</cfif>
 					</cfcase>
 				</cfswitch>
@@ -1024,8 +1024,8 @@ to your own modified versions of Mura CMS.
 				
 				<cfif len(eventOutput)>
 					<cfoutput>#eventOutput#</cfoutput>
-				<cfelseif fileExists(application.configBean.getWebRoot() & fileDelim & theDisplayPoolID & fileDelim & "includes" & fileDelim & "display_objects" & fileDelim & "custom" & fileDelim & "extensions" & fileDelim & "dsp_" & event.getValue('contentBean').getType() & "_" & event.getValue('contentBean').getSubType() & ".cfm")>
-					 <cfinclude template="/#application.configBean.getWebRootMap()#/#theDisplayPoolID#/includes/display_objects/custom/extensions/dsp_#event.getValue('contentBean').getType()#_#event.getValue('contentBean').getSubType()#.cfm">
+				<cfelseif fileExists(theIncludePath & "includes" & fileDelim & "display_objects" & fileDelim & "custom" & fileDelim & "extensions" & fileDelim & "dsp_" & event.getValue('contentBean').getType() & "_" & event.getValue('contentBean').getSubType() & ".cfm")>
+					 <cfinclude template="#theIncludePath#/includes/display_objects/custom/extensions/dsp_#event.getValue('contentBean').getType()#_#event.getValue('contentBean').getSubType()#.cfm">
 				<cfelse>
 					<cfoutput>
 					<cfswitch expression="#event.getValue('contentBean').getType()#">
@@ -1065,18 +1065,18 @@ to your own modified versions of Mura CMS.
 					<cfswitch expression="#event.getValue('contentBean').gettype()#">
 					<cfcase value="Portal">
 						<cf_CacheOMatic key="portalBody#event.getValue('contentBean').getcontentID()##event.getValue('startRow')#" nocache="#event.getValue('r').restrict#">
-						 <cfinclude template="/#application.configBean.getWebRootMap()#/#theDisplayPoolID#/includes/display_objects/dsp_portal.cfm">
+						 <cfinclude template="#theIncludePath#/includes/display_objects/dsp_portal.cfm">
 						</cf_CacheOMatic>
 					</cfcase> 
 					<cfcase value="Calendar">
 						 <cf_CacheOMatic key="portalBody#event.getValue('contentBean').getcontentID()##event.getValue('year')##event.getValue('month')#" nocache="#event.getValue('r').restrict#">
-						 <cfinclude template="/#application.configBean.getWebRootMap()#/#theDisplayPoolID#/includes/display_objects/calendar/index.cfm">
+						 <cfinclude template="#theIncludePath#/includes/display_objects/calendar/index.cfm">
 						 </cf_CacheOMatic>
 					</cfcase> 
 					<cfcase value="Gallery">
 						<cfif not event.valueExists('galleryItemID')><cfset event.setValue('galleryItemID','')></cfif>
 						<cf_CacheOMatic key="portalBody#event.getValue('contentBean').getcontentID()##event.getValue('startRow')##event.getValue('galleryItemID')#" nocache="#event.getValue('r').restrict#">
-						<cfinclude template="/#application.configBean.getWebRootMap()#/#theDisplayPoolID#/includes/display_objects/gallery/index.cfm">
+						<cfinclude template="#theIncludePath#/includes/display_objects/gallery/index.cfm">
 						</cf_CacheOMatic>
 					</cfcase> 
 				</cfswitch>
@@ -1087,7 +1087,7 @@ to your own modified versions of Mura CMS.
 			<cfif len(eventOutput)>
 			<cfoutput>#eventOutput#</cfoutput>
 			<cfelse>
-			<cfinclude template="/#application.configBean.getWebRootMap()#/#theDisplayPoolID#/includes/display_objects/dsp_deny.cfm">
+			<cfinclude template="#theIncludePath#/includes/display_objects/dsp_deny.cfm">
 			</cfif>
 		<cfelseif event.getValue('isOnDisplay') and event.getValue('r').restrict and not event.getValue('r').loggedIn>
 			<cfset event.setValue('noCache',1)>
@@ -1095,14 +1095,14 @@ to your own modified versions of Mura CMS.
 			<cfif len(eventOutput)>
 			<cfoutput>#eventOutput#</cfoutput>
 			<cfelse>
-			<cfinclude template="/#application.configBean.getWebRootMap()#/#theDisplayPoolID#/includes/display_objects/dsp_login.cfm">
+			<cfinclude template="#theIncludePath#/includes/display_objects/dsp_login.cfm">
 			</cfif>
 		<cfelse>
 			<cfset eventOutput=application.pluginManager.renderScripts("onContentOfflineRender",event.getValue("siteid"),event)>
 			<cfif len(eventOutput)>
 			<cfoutput>#eventOutput#</cfoutput>
 			<cfelse>
-			<cfinclude template="/#application.configBean.getWebRootMap()#/#theDisplayPoolID#/includes/display_objects/dsp_offline.cfm">
+			<cfinclude template="#theIncludePath#/includes/display_objects/dsp_offline.cfm">
 			</cfif>
 		</cfif>
 		
@@ -1219,10 +1219,10 @@ to your own modified versions of Mura CMS.
 	<cfargument name="siteID" type="string">
 	<cfset var returnstring=arguments.str/>
 	
-	<cfset returnstring=replaceNoCase(returnstring,'src="/','src="http://#application.settingsManager.getSite(arguments.siteid).getDomain()##application.configBean.getServerPort()#/','ALL')>
-	<cfset returnstring=replaceNoCase(returnstring,"src='/",'src="http://#application.settingsManager.getSite(arguments.siteid).getDomain()##application.configBean.getServerPort()#/','ALL')>
-	<cfset returnstring=replaceNoCase(returnstring,'href="/','href="http://#application.settingsManager.getSite(arguments.siteid).getDomain()##application.configBean.getServerPort()#/','ALL')>
-	<cfset returnstring=replaceNoCase(returnstring,"href='/",'href="http://#application.settingsManager.getSite(arguments.siteid).getDomain()##application.configBean.getServerPort()#/','ALL')>
+	<cfset returnstring=replaceNoCase(returnstring,'src="/','src="http://#event.getSite().getDomain()##application.configBean.getServerPort()#/','ALL')>
+	<cfset returnstring=replaceNoCase(returnstring,"src='/",'src="http://#event.getSite().getDomain()##application.configBean.getServerPort()#/','ALL')>
+	<cfset returnstring=replaceNoCase(returnstring,'href="/','href="http://#event.getSite().getDomain()##application.configBean.getServerPort()#/','ALL')>
+	<cfset returnstring=replaceNoCase(returnstring,"href='/",'href="http://#event.getSite().getDomain()##application.configBean.getServerPort()#/','ALL')>
 	<cfreturn returnstring />
 </cffunction>
 
@@ -1486,10 +1486,10 @@ to your own modified versions of Mura CMS.
 <cffunction name="dspUserTools" access="public" output="false" returntype="string">
 
 	<cfset var theObject = "" />
-	<cfset var theDisplayPoolID = application.settingsManager.getSite(event.getValue('siteID')).getDisplayPoolID() />
+	<cfset var theIncludePath = event.getSite().getIncludePath() />
 
 	<cfsavecontent variable="theObject">
-		<cfinclude template="/#application.configBean.getWebRootMap()#/#theDisplayPoolID#/includes/display_objects/dsp_user_tools.cfm">
+		<cfinclude template="#theIncludePath#/includes/display_objects/dsp_user_tools.cfm">
 	</cfsavecontent>
 
 	<cfreturn theObject />
@@ -1512,8 +1512,8 @@ to your own modified versions of Mura CMS.
 
 	<cfset var body=arguments.str>
 	<cfset var errorStr="">
-	<cfset var regex1="\[sava\].+?\[/sava\]">
-	<cfset var regex2="\[mura\].+?\[/mura\]">
+	<cfset var regex1="(\[sava\]|\[mura\]).+?(\[/sava\]|\[/mura\])">
+	<cfset var regex2="">
 	<cfset var finder=refind(regex1,body,1,"true")>
 	
 	<!---  still looks for the Sava tag for backward compatibility --->
@@ -1528,28 +1528,15 @@ to your own modified versions of Mura CMS.
 		<cfset finder=refind(regex1,body,1,"true")>
 	</cfloop>
 	
-	<cfset finder=refind(regex2,body,1,"true")>
-	
-	<cfloop condition="#finder.len[1]#">
-		<cftry>
-			<cfset body=replace(body,mid(body, finder.pos[1], finder.len[1]),'#trim(evaluate("##" & mid(body, finder.pos[1]+6, finder.len[1]-13) & "##"))#')>
-			<cfcatch>
-				 <cfsavecontent variable="errorStr"><cfdump var="#cfcatch#"></cfsavecontent>
-				<cfset body=replace(body,mid(body, finder.pos[1], finder.len[1]),errorStr)>
-			</cfcatch>
-		</cftry>
-		<cfset finder=refind(regex2,body,1,"true")>
-	</cfloop>
-	
 	<cfreturn body />
 </cffunction>
 
 <cffunction name="dspCaptcha" returntype="string" output="false">
 	<cfset var theObject = "" />
-	<cfset var theDisplayPoolID = application.settingsManager.getSite(event.getValue('siteID')).getDisplayPoolID() />
+	<cfset var theIncludePath = event.getSite().getIncludePath() />
 	
 	<cfsavecontent variable="theObject">
-		<cfinclude template="/#application.configBean.getWebRootMap()#/#theDisplayPoolID#/includes/display_objects/dsp_captcha.cfm">
+		<cfinclude template="#theIncludePath#/includes/display_objects/dsp_captcha.cfm">
 	</cfsavecontent>
 	
 	<cfreturn trim(theObject)>
@@ -1558,10 +1545,10 @@ to your own modified versions of Mura CMS.
 <cffunction name="dspInclude" returntype="string" access="public">
 	<cfargument name="template" default="" required="true">
 	<cfset var str='' />
-
+	<cfset var theIncludePath = event.getSite().getIncludePath() />
 	<cfif arguments.template neq ''>
 		<cfsavecontent variable="str">
-			<cfinclude template="/#application.configBean.getWebRootMap()#/#event.getValue('siteID')#/includes/#arguments.template#">
+			<cfinclude template="#includePath#/includes/#arguments.template#">
 		</cfsavecontent>
 	</cfif>
 	
@@ -1569,7 +1556,7 @@ to your own modified versions of Mura CMS.
 </cffunction>
  
 <cffunction name="sendToFriendLink" output="false" returnType="String">
-<cfreturn "javascript:sendtofriend=window.open('http://#application.settingsManager.getSite(event.getValue('siteID')).getDomain()#/#event.getValue('siteID')#/utilities/sendtofriend.cfm?link=#urlEncodedFormat(getCurrentURL())#&siteID=#event.getValue('siteID')#', 'sendtofriend', 'scrollbars=yes,resizable=yes,screenX=0,screenY=0,width=570,height=390');sendtofriend.focus();void(0);"/>
+<cfreturn "javascript:sendtofriend=window.open('#event.getSite().getAssetPath()#/utilities/sendtofriend.cfm?link=#urlEncodedFormat(getCurrentURL())#&siteID=#event.getValue('siteID')#', 'sendtofriend', 'scrollbars=yes,resizable=yes,screenX=0,screenY=0,width=570,height=390');sendtofriend.focus();void(0);"/>
 </cffunction>
 
 <cffunction name="addToHTMLHeadQueue" output="false">

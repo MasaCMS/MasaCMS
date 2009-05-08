@@ -125,11 +125,8 @@ to your own modified versions of Mura CMS.
 
 <cffunction name="getTemplates" returntype="query" access="public" output="false">
 	<cfargument name="siteid" type="string" required="true">
-	<cfset var rs = "">
-	
-	<cfdirectory action="list" directory="#variables.configBean.getWebRoot()##variables.filedelim##arguments.siteid##variables.filedelim#includes#variables.filedelim#templates#variables.filedelim#" name="rs" filter="*.cfm">
-	
-	<cfreturn rs />
+
+	<cfreturn variables.settingsManager.getSite(arguments.siteID).getTemplates() />
 </cffunction>
 
 <cffunction name="getRestrictGroups" returntype="query" access="public" output="false">

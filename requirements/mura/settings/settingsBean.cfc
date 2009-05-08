@@ -108,6 +108,7 @@ to your own modified versions of Mura CMS.
 <cfset variables.instance.javaLocale=""/>
 <cfset variables.instance.jsDateKey=""/> 
 <cfset variables.instance.cacheFactory=""/> 
+<cfset variables.instance.theme=""/> 
 
 <cffunction name="init" returntype="any" output="false" access="public">
 <cfargument name="configBean" type="any" required="yes"/>
@@ -206,6 +207,7 @@ to your own modified versions of Mura CMS.
 			<cfset setMailServerPOPPort(arguments.data.mailserverPOPPort) />
 			<cfset setMailServerTLS(arguments.data.mailserverTLS) />
 			<cfset setMailServerSSL(arguments.data.mailserverSSL) />
+			<cfset setTheme(arguments.data.theme) />
 			
 		<cfelseif isStruct(arguments.data)>
 		
@@ -890,5 +892,80 @@ to your own modified versions of Mura CMS.
 	<cfreturn getRBFactory().getUtils() />
 </cffunction>
 
+<cffunction name="setTheme" access="public" output="false">
+	<cfargument name="Theme" type="any" />
+	<cfset variables.instance.Theme = trim(arguments.theme) />
+</cffunction>
+
+<cffunction name="getTheme" returntype="any" access="public" output="false">
+	<cfreturn variables.instance.theme />
+</cffunction>
+
+<cffunction name="getAssetPath" returntype="any" access="public" output="false">
+	<cfreturn "#variables.configBean.getContext()#/#getDisplayPoolID()#" />
+</cffunction>
+
+<cffunction name="getIncludePath" returntype="any" access="public" output="false">
+	<cfreturn "/#variables.configBean.getWebRootMap()#/#getDisplayPoolID()#" />
+</cffunction>
+
+<cffunction name="getAssetMap" returntype="any" access="public" output="false">
+	<cfreturn "#variables.configBean.getWebRootMap()#.#getDisplayPoolID()#" />
+</cffunction>
+
+<cffunction name="getThemeAssetPath" returntype="any" access="public" output="false">
+	<cfif len(getTheme())>
+	<cfreturn "#getAssetPath()#/includes/themes/#getTheme()#" />
+	<cfelse>
+	<cfreturn getAssetPath() />
+	</cfif>
+</cffunction>
+
+<cffunction name="getThemeIncludePath" returntype="any" access="public" output="false">
+	<cfif len(getTheme())>
+	<cfreturn "#getIncludePath()#/includes/themes/#getTheme()#" />
+	<cfelse>
+	<cfreturn getIncludePath() />
+	</cfif>
+</cffunction>
+
+<cffunction name="getThemeAssetMap" returntype="any" access="public" output="false">
+	<cfif getTheme()>
+	<cfreturn "#getAssetMap()#.includes.themes.#getTheme()#" />
+	<cfelse>
+	<cfreturn getAssetMap() />
+	</cfif>
+</cffunction>
+
+<cffunction name="getTemplateIncludePath" returntype="any" access="public" output="false">
+	<cfif len(getTheme())>
+	<cfreturn "#getIncludePath()#/includes/themes/#getTheme()#/templates" />
+	<cfelse>
+	<cfreturn "#getIncludePath()#/includes/templates" />
+	</cfif>
+</cffunction>
+
+<cffunction name="getThemes" returntype="query" access="public" output="false">
+	<cfset var rs = "">
+	
+	<cfdirectory action="list" directory="#expandPath('/#variables.configBean.getWebRootMap()#')#/#getDisplayPoolID()#/includes/themes" name="rs">
+	
+	<cfquery name="rs" dbtype="query">
+	select * from rs where type='Dir'
+	</cfquery>
+	
+	<cfreturn rs />
+</cffunction>
+
+<cffunction name="getTemplates" returntype="query" access="public" output="false">
+	<cfset var rs = "">
+	
+	<cfif len(getTheme())>
+	<cfdirectory action="list" directory="#expandPath('/#variables.configBean.getWebRootMap()#')#/#getDisplayPoolID()#/includes/themes/#getTheme()#templates" name="rs" filter="*.cfm">
+	<cfelse>
+	<cfdirectory action="list" directory="#expandPath('/#variables.configBean.getWebRootMap()#')#/#getDisplayPoolID()#/includes/templates" name="rs" filter="*.cfm">
+	</cfif>
+	<cfreturn rs />
+</cffunction>
 
 </cfcomponent>

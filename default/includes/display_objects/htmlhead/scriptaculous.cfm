@@ -40,4 +40,4 @@ for your modified version; it is your choice whether to do so, or to make such m
 the GNU General Public License version 2  without this exception.  You may, if you choose, apply this exception
 to your own modified versions of Mura CMS.
 --->
-<cfoutput><script type="text/javascript" src="#application.configBean.getContext()#/#request.siteid#/js/scriptaculous/src/scriptaculous.js?load=effects"></script></cfoutput>
+<cfoutput><script type="text/javascript" src="#event.getSite().getAssetPath()#/js/scriptaculous/src/scriptaculous.js?load=effects"></script></cfoutput>

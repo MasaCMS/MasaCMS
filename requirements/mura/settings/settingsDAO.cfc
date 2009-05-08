@@ -282,7 +282,8 @@ to your own modified versions of Mura CMS.
 	 	 mailserverSMTPPort=<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.bean.getMailserverSMTPPort() neq '',de('no'),de('yes'))#" value="#arguments.bean.getMailserverSMTPPort()#" />,
 	 	 mailserverPOPPort=<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.bean.getMailserverPOPPort() neq '',de('no'),de('yes'))#" value="#arguments.bean.getMailserverPOPPort()#" />,
 	 	 mailserverTLS=<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.bean.getMailserverTLS() neq '',de('no'),de('yes'))#" value="#arguments.bean.getMailserverTLS()#" />,
-	 	 mailserverSSL=<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.bean.getMailserverSSL() neq '',de('no'),de('yes'))#" value="#arguments.bean.getMailserverSSL()#" />
+	 	 mailserverSSL=<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.bean.getMailserverSSL() neq '',de('no'),de('yes'))#" value="#arguments.bean.getMailserverSSL()#" />,
+	 	 theme= <cfif arguments.bean.getTheme() neq ''><cfqueryparam cfsqltype="cf_sql_varchar" value="#trim(arguments.bean.getTheme())#" /><cfelse>null</cfif>
 		 
 		where siteid='#arguments.bean.getsiteid()#'
    </CFQUERY>
@@ -303,7 +304,7 @@ to your own modified versions of Mura CMS.
 	  galleryMainScaleBy, galleryMainScale, gallerySmallScaleBy, gallerySmallScale, galleryMediumScaleBy, galleryMediumScale,
 	  sendLoginScript, mailingListConfirmScript,publicSubmissionApprovalScript,reminderScript,ExtranetPublicRegNotify,
 	  loginURL,editProfileURL,CommentApprovalDefault,deploy,accountActivationScript,
-	  googleAPIKey,useDefaultSMTPServer,siteLocale, mailServerSMTPPort, mailServerPOPPort, mailserverTLS, mailserverSSL)
+	  googleAPIKey,useDefaultSMTPServer,siteLocale, mailServerSMTPPort, mailServerPOPPort, mailserverTLS, mailserverSSL, theme)
 	  values(
 	  	'#arguments.bean.getsiteid()#',
          #arguments.bean.getpagelimit()# ,
@@ -366,7 +367,8 @@ to your own modified versions of Mura CMS.
 		<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.bean.getMailserverSMTPPort() neq '',de('no'),de('yes'))#" value="#arguments.bean.getMailserverSMTPPort()#" />,
 		<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.bean.getMailserverPOPPort() neq '',de('no'),de('yes'))#" value="#arguments.bean.getMailserverPOPPort()#" />,
 	 	<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.bean.getMailserverTLS() neq '',de('no'),de('yes'))#" value="#arguments.bean.getMailserverTLS()#" />,
-	 	<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.bean.getMailserverSSL() neq '',de('no'),de('yes'))#" value="#arguments.bean.getMailserverSSL()#" />
+	 	<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.bean.getMailserverSSL() neq '',de('no'),de('yes'))#" value="#arguments.bean.getMailserverSSL()#" />,
+	 	 <cfif arguments.bean.getTheme() neq ''><cfqueryparam cfsqltype="cf_sql_varchar" value="#trim(arguments.bean.getTheme())#" /><cfelse>null</cfif>
 		   )
    </CFQUERY>
   

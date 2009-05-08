@@ -42,12 +42,12 @@ to your own modified versions of Mura CMS.
 --->
 <cfset rbFactory=getSite().getRBFactory()>
 <cfoutput>
-<script src="#application.configBean.getContext()#/#application.settingsmanager.getSite(request.siteid).getDisplayPoolID()#/includes/display_objects/dragablefeeds/js/dragablefeeds.js" type="text/javascript"></script>
+<script src="#event.getSite().getAssetPath()#/includes/display_objects/dragablefeeds/js/dragablefeeds.js" type="text/javascript"></script>
 <script>
 var feeditems='#JSStringFormat(rbFactory.getKey("dragablefeeds.items"))#';
 var feedsource='#JSStringFormat(rbFactory.getKey("dragablefeeds.source"))#';
 var feedsave='#JSStringFormat(rbFactory.getKey("dragablefeeds.save"))#';
 </script>
-<link rel="stylesheet" href="#application.configBean.getContext()#/#application.settingsmanager.getSite(request.siteid).getDisplayPoolID()#/includes/display_objects/dragablefeeds/css/dragablefeeds.css" type="text/css" media="all" />
-<!--[if lt IE 7]><link rel="stylesheet" href="#application.configBean.getContext()#/#application.settingsmanager.getSite(request.siteid).getDisplayPoolID()#/includes/display_objects/dragablefeeds/css/dragablefeeds-ie.css" type="text/css" media="all" /><![endif]-->
+<link rel="stylesheet" href="#event.getSite().getAssetPath()#/includes/display_objects/dragablefeeds/css/dragablefeeds.css" type="text/css" media="all" />
+<!--[if lt IE 7]><link rel="stylesheet" href="#event.getSite().getAssetPath()#/includes/display_objects/dragablefeeds/css/dragablefeeds-ie.css" type="text/css" media="all" /><![endif]-->
 </cfoutput>

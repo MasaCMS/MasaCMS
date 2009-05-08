@@ -96,7 +96,7 @@ request.raterID) />
 			<h3>#rbFactory.getKey('rater.avgrating')# (<span id="numvotes">#rsRating.theCount# <cfif rsRating.theCount neq 1>#rbFactory.getKey('rater.votes')#<cfelse>#rbFactory.getKey('rater.vote')#</cfif></span>)</h3>
 			<div class="ratestars rating#application.raterManager.getStarText(rsRating.theAvg)#<!--- #replace(rsRating.theAvg(),".","")# --->">
 			<cfif isNumeric(rsRating.theAvg)>#rsRating.theAvg#<cfelse>0</cfif>
-			<!--- <img id="ratestars" src="#application.configBean.getContext()#/#application.settingsmanager.getSite(request.siteid).getDisplayPoolID()#/images/rater/star_#application.raterManager.getStarText(rsRating.theAvg)#.gif" alt="<cfif isNumeric(rsRating.theAvg)>#rsRating.theAvg# star<cfif rsRating.theAvg gt 1>s</cfif></cfif>" border="0"> ---></div>
+			<!--- <img id="ratestars" src="#event.getSite().getAssetPath()#/images/rater/star_#application.raterManager.getStarText(rsRating.theAvg)#.gif" alt="<cfif isNumeric(rsRating.theAvg)>#rsRating.theAvg# star<cfif rsRating.theAvg gt 1>s</cfif></cfif>" border="0"> ---></div>
 		</cfif>
 		<script type="text/javascript">
 		  initRatings('rater1');

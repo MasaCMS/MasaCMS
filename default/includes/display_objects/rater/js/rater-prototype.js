@@ -15,7 +15,7 @@
 function saveRate(id){
 	var thisform = Form.serialize(document.getElementById(id));
 	var myAjax = new Ajax.Request(
-	 context + "/" + siteid + "/includes/display_objects/rater/ajax/saveRate.cfm", 
+	 assetpath + "/includes/display_objects/rater/ajax/saveRate.cfm", 
 	{
 		method: 'post', 
 		postBody: thisform, 

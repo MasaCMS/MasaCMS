@@ -42,12 +42,14 @@ to your own modified versions of Mura CMS.
 --->
 <cfoutput>
 #getSite().getJSDateKey()#	
-<script type="text/javascript" src="#application.configBean.getContext()#/#request.siteid#/js/global.js"></script>
+<script type="text/javascript" src="#event.getSite().getAssetPath()#/js/global.js"></script>
 <script type="text/javascript">
 var loginURL="#application.settingsManager.getSite(request.siteid).getLoginURL()#";
 var siteid="#request.siteid#"; 
 var siteID="#request.siteid#"; 
 var context="#application.configBean.getContext()#"; 
 var jslib="#getJsLib()#";
+var assetpath="#event.getSite().getAssetPath()#";
+var themepath="#event.getSite().getThemeAssetPath()#";
 </script>
 </cfoutput>

@@ -40,4 +40,4 @@ for your modified version; it is your choice whether to do so, or to make such m
 the GNU General Public License version 2  without this exception.  You may, if you choose, apply this exception
 to your own modified versions of Mura CMS.
 --->
-<cfoutput><script src="#application.configBean.getContext()#/#application.settingsmanager.getSite(request.siteid).getDisplayPoolID()#/includes/display_objects/favorites/js/favorites-prototype.js" type="text/javascript"></script></cfoutput>
+<cfoutput><script src="#event.getSite().getAssetPath()#/includes/display_objects/favorites/js/favorites-prototype.js" type="text/javascript"></script></cfoutput>

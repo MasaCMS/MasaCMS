@@ -27,7 +27,7 @@ function saveFavorite(userID, siteID, favoriteName, favoriteLocation, favoriteTy
 {
 	//if (!favoriteExists){
 		new Effect.Fade($("addFavorite"));
-		var url = context + '/' + siteid + '/includes/display_objects/favorites/ajax/saveFavorite.cfm';
+		var url = assetpath + '/includes/display_objects/favorites/ajax/saveFavorite.cfm';
 		//var pars = 'empID=' + empID + '&year=' + y;
 		var pars = 'userID=' + userID + '&siteid=' + siteID + '&favoriteName=' + favoriteName + '&favoriteLocation=' + favoriteLocation + '&favoriteType=' + favoriteType + '&cacheid=' + Math.random();
 		//location.href= url + "?" + pars;
@@ -63,7 +63,7 @@ function showDeleteFavoriteResponse(originalRequest)
 
 function deleteFavorite(favoriteID, id)
 {
-	var url = context + '/' + siteid + '/includes/display_objects/favorites/ajax/deleteFavorite.cfm';
+	var url = assetpath + '/includes/display_objects/favorites/ajax/deleteFavorite.cfm';
 	//var pars = 'empID=' + empID + '&year=' + y;
 	var pars = 'favoriteID=' + favoriteID + '&cacheid=' + Math.random();
 	var myAjax = new Ajax.Request( url, { method: 'get', parameters: pars, onComplete: showDeleteFavoriteResponse });

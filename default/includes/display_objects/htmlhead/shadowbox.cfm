@@ -41,12 +41,12 @@ the GNU General Public License version 2  without this exception.  You may, if y
 to your own modified versions of Mura CMS.
 --->
 <cfoutput>
-<script src="#application.configBean.getContext()#/#application.settingsmanager.getSite(request.siteid).getDisplayPoolID()#/js/shadowbox.js" type="text/javascript"></script>
+<script src="#event.getSite().getAssetPath()#/js/shadowbox.js" type="text/javascript"></script>
 <script type="text/javascript">
 addLoadEvent(function(){
     Shadowbox.init();
 });
 </script>
-<link href="#application.configBean.getContext()#/#application.settingsmanager.getSite(request.siteid).getDisplayPoolID()#/css/shadowbox.css" rel="stylesheet" type="text/css" />
+<link href="#event.getSite().getAssetPath()#/css/shadowbox.css" rel="stylesheet" type="text/css" />
 </cfoutput>
 

@@ -79,6 +79,18 @@ to your own modified versions of Mura CMS.
 		</cfloop>
 		</select>
       </dd>
+	
+	 <cfset rsThemes=request.siteBean.getThemes()>
+	
+	  <dt>Theme</dt>
+      <dd>
+		<select name="theme">
+		<option value="">Default</option>	
+		<cfloop query="rsThemes">
+        <option value="#rsThemes.name#"<cfif rsThemes.name eq request.siteBean.getTheme()> selected</cfif>>#rsThemes.name#</option>
+		</cfloop>
+		</select>
+      </dd>
       <dt>Page Limit</dt>
       <dd>
         <input name="pagelimit" type="text" class="text short" value="#HTMLEditFormat(request.siteBean.getpagelimit())#" size="5">

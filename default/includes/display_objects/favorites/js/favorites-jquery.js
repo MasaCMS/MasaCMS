@@ -31,7 +31,7 @@ function saveFavorite(userID, siteID, favoriteName, favoriteLocation, favoriteTy
 		
 		$.ajax({
 		   type: "GET",
-		   url: context + '/' + siteid + '/includes/display_objects/favorites/ajax/saveFavorite.cfm',
+		   url: assetpath + '/includes/display_objects/favorites/ajax/saveFavorite.cfm',
 		   data: 'userID=' + userID + '&siteid=' + siteID + '&favoriteName=' + favoriteName + '&favoriteLocation=' + favoriteLocation + '&favoriteType=' + favoriteType + '&cacheid=' + Math.random(),
 		   success: showSaveFavoriteResponse
 		   });
@@ -67,7 +67,7 @@ function deleteFavorite(favoriteID, id)
 {
 	$.ajax({
 		  type: "GET",
-		   url: context + '/' + siteid + '/includes/display_objects/favorites/ajax/deleteFavorite.cfm',
+		   url: assetpath + '/includes/display_objects/favorites/ajax/deleteFavorite.cfm',
 		   data: 'favoriteID=' + favoriteID  + '&cacheid=' + Math.random()
 		   });
 		
