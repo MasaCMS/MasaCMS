@@ -623,7 +623,7 @@ to your own modified versions of Mura CMS.
 	
 	<cfset var href=""/>
 	<cfset var tp=""/>
-	<cfset var begin=iif(arguments.complete,de('http://#event.getSite().getDomain()##application.configBean.getServerPort()#'),de('')) />
+	<cfset var begin=iif(arguments.complete,de('http://#application.settingsManager.getSite(arguments.siteID).getDomain()##application.configBean.getServerPort()#'),de('')) />
 	
 		<cfswitch expression="#arguments.type#">
 				<cfcase value="Link,File">
@@ -657,7 +657,7 @@ to your own modified versions of Mura CMS.
 	
 	<cfset var href=""/>
 	<cfset var tp=""/>
-	<cfset var begin="http://#event.getSite().getDomain()##application.configBean.getServerPort()#" />
+	<cfset var begin="http://#application.settingsManager.getSite(arguments.siteID).getDomain()##application.configBean.getServerPort()#" />
 	
 		<cfswitch expression="#arguments.type#">
 				<cfcase value="Link">
@@ -1219,10 +1219,10 @@ to your own modified versions of Mura CMS.
 	<cfargument name="siteID" type="string">
 	<cfset var returnstring=arguments.str/>
 	
-	<cfset returnstring=replaceNoCase(returnstring,'src="/','src="http://#event.getSite().getDomain()##application.configBean.getServerPort()#/','ALL')>
-	<cfset returnstring=replaceNoCase(returnstring,"src='/",'src="http://#event.getSite().getDomain()##application.configBean.getServerPort()#/','ALL')>
-	<cfset returnstring=replaceNoCase(returnstring,'href="/','href="http://#event.getSite().getDomain()##application.configBean.getServerPort()#/','ALL')>
-	<cfset returnstring=replaceNoCase(returnstring,"href='/",'href="http://#event.getSite().getDomain()##application.configBean.getServerPort()#/','ALL')>
+	<cfset returnstring=replaceNoCase(returnstring,'src="/','src="http://#application.settingsManager.getSite(arguments.siteID).getDomain()##application.configBean.getServerPort()#/','ALL')>
+	<cfset returnstring=replaceNoCase(returnstring,"src='/",'src="http://#application.settingsManager.getSite(arguments.siteID).getDomain()##application.configBean.getServerPort()#/','ALL')>
+	<cfset returnstring=replaceNoCase(returnstring,'href="/','href="http://#application.settingsManager.getSite(arguments.siteID).getDomain()##application.configBean.getServerPort()#/','ALL')>
+	<cfset returnstring=replaceNoCase(returnstring,"href='/",'href="http://#application.settingsManager.getSite(arguments.siteID).getDomain()##application.configBean.getServerPort()#/','ALL')>
 	<cfreturn returnstring />
 </cffunction>
 
