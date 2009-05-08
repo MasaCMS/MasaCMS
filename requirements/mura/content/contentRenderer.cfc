@@ -712,7 +712,7 @@ to your own modified versions of Mura CMS.
 <cfargument name="siteid" type="string" required="true" default="#event.getValue('siteID')#">
 
 	<cfset var theObject = "" />
-	<cfset var theIncludePath = event.getSite().getIncludePath().getIncludePath() />
+	<cfset var theIncludePath = event.getSite().getIncludePath() />
 	<cfset var hasSummary = true />	
 	<cfset var useRss = false />
 	
@@ -1544,11 +1544,12 @@ to your own modified versions of Mura CMS.
 
 <cffunction name="dspInclude" returntype="string" access="public">
 	<cfargument name="template" default="" required="true">
+	<cfargument name="baseDir" default="#event.getSite().getIncludePath()#/includes/" required="true">
 	<cfset var str='' />
-	<cfset var theIncludePath = event.getSite().getIncludePath() />
+
 	<cfif arguments.template neq ''>
 		<cfsavecontent variable="str">
-			<cfinclude template="#includePath#/includes/#arguments.template#">
+			<cfinclude template="#arguments.baseDir#/includes/#arguments.template#">
 		</cfsavecontent>
 	</cfif>
 	
