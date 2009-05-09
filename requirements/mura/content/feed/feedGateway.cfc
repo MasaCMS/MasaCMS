@@ -202,11 +202,11 @@ to your own modified versions of Mura CMS.
 										tcontent.contentHistID IN (
 																select tclassextenddata.baseID from tclassextenddata
 																<cfif isNumeric(param.getField())>
-																where tclassextenddata.attributeID=<cfqueryparam cfsqltype="varchar" value="#param.getField()#">
+																where tclassextenddata.attributeID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#param.getField()#">
 																<cfelse>
 																inner join tclassextendattributes on (tclassextenddata.attributeID = tclassextendattributes.attributeID)
-																where tclassextendattributes.siteid=<cfqueryparam cfsqltype="varchar" value="#arguments.feedBean.getSiteID()#">
-																and tclassextendattributes.name=<cfqueryparam cfsqltype="varchar" value="#param.getField()#">
+																where tclassextendattributes.siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.feedBean.getSiteID()#">
+																and tclassextendattributes.name=<cfqueryparam cfsqltype="cf_sql_varchar" value="#param.getField()#">
 																</cfif>
 																and tclassextenddata.attributeValue #param.getCondition()# <cfif param.getCondition() eq "IN">(</cfif><cfqueryparam cfsqltype="cf_sql_#param.getDataType()#" value="#param.getCriteria()#" list="#iif(param.getCriteria() eq 'IN',de('true'),de('false'))#"><cfif param.getCondition() eq "IN">)</cfif>)
 									</cfif>
@@ -375,11 +375,11 @@ to your own modified versions of Mura CMS.
 					tcontent.contentHistID IN (
 											select tclassextenddata.baseID from tclassextenddata
 											<cfif isNumeric(param.getField())>
-											where tclassextenddata.attributeID=<cfqueryparam cfsqltype="varchar" value="#param.getField()#">
+											where tclassextenddata.attributeID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#param.getField()#">
 											<cfelse>
 											inner join tclassextendattributes on (tclassextenddata.attributeID = tclassextendattributes.attributeID)
-											where tclassextendattributes.siteid=<cfqueryparam cfsqltype="varchar" value="#arguments.feedBean.getSiteID()#">
-											and tclassextendattributes.name=<cfqueryparam cfsqltype="varchar" value="#param.getField()#">
+											where tclassextendattributes.siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.feedBean.getSiteID()#">
+											and tclassextendattributes.name=<cfqueryparam cfsqltype="cf_sql_varchar" value="#param.getField()#">
 											</cfif>
 											and tclassextenddata.attributeValue #param.getCondition()# <cfif param.getCondition() eq "IN">(</cfif><cfqueryparam cfsqltype="cf_sql_#param.getDataType()#" value="#param.getCriteria()#" list="#iif(param.getCriteria() eq 'IN',de('true'),de('false'))#"><cfif param.getCondition() eq "IN">)</cfif>)
 				</cfif>
