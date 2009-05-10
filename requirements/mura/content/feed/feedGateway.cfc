@@ -162,7 +162,7 @@ to your own modified versions of Mura CMS.
 						   <cfif doTags>
 							Inner Join tcontenttags on (tcontent.contentHistID=tcontenttags.contentHistID)
 							</cfif>
-						   where tcontent.siteid='#arguments.feedBean.getsiteid()#'
+						   where tcontent.siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.feedBean.getsiteid()#"/>
 						   		AND tcontent.Approved = 1
 							    AND tcontent.active = 1  
 							    AND TKids.Approved = 1
