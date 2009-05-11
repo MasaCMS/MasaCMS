@@ -1,3 +1,5 @@
+/* @override http://69.89.3.81/admin/css/admin.css */
+
 /* This file is part of Mura CMS. 
 
 	Mura CMS is free software: you can redistribute it and/or modify 
@@ -2492,7 +2494,11 @@ ul.seven { /* 7 Icons */
 }
 
 table td.administration li {
-	list-style: none; float: left; height: 14px; width: 14px; margin-right: 5px;
+	list-style: none; 
+		float: left;
+		height: 14px;
+		width: 14px;
+		margin: 0 5px 0 0;
 }
 
 table td.administration li.add, table td.administration .select {
