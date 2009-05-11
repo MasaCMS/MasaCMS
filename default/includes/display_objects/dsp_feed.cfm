@@ -138,7 +138,6 @@ to your own modified versions of Mura CMS.
 		        <cfif feedData.type neq "atom">
 				<cfloop from="1" to="#feedData.maxItems#" index="i">
 				<dl>
-					<dt><a href="#feedData.itemArray[i].link.xmlText#">#feedData.itemArray[i].title.xmlText#</a></dt>
 					<!--- Date stuff--->
 					<cfif structKeyExists(feedData.itemArray[i],"pubDate")>
 					<cfset itemDate=parseDateTime(feedData.itemArray[i].pubDate.xmlText)>
@@ -147,6 +146,7 @@ to your own modified versions of Mura CMS.
 					<cfset itemDate=parseDateTime(feedData.itemArray[i].pubDate.xmlText)>
 					<dt class="releaseDate"><cfif isDate(itemDate)>#LSDateFormat(itemDate,getLongDateFormat())#<cfelse>#feedData.itemArray[i]["dc:date"].xmlText#</cfif></dt>
 					</cfif>
+					<dt><a href="#feedData.itemArray[i].link.xmlText#">#feedData.itemArray[i].title.xmlText#</a></dt>
 					<cfif hasSummary and structKeyExists(feedData.itemArray[i],"description")><dd class="summary">#feedData.itemArray[i].description.xmlText#</dd></cfif>
 				</dl>
 				</cfloop>
