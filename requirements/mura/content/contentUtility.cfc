@@ -723,12 +723,12 @@ and active=1
 	<cfquery datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	update tcontent set filename=replace(filename,<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.find#"/>,<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.replace#"/>) where siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
 	and filename like <cfqueryparam value="%#arguments.find#%" cfsqltype="cf_sql_varchar">
-	and active=1 and type in ('Page','Calendar','Portal','Gallery','Link')
+	and active=1 and type in ('Page','Calendar','Portal','Gallery','Link','Component','Form')
 	</cfquery>
 	
 	<cfquery datasource="#variables.dsn#" name="rs"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 		select contenthistid, body from tcontent where body like <cfqueryparam value="%#arguments.find#%" cfsqltype="cf_sql_varchar"> and siteID = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
-		and type in ('Page','Calendar','Portal','Gallery','Link')
+		and type in ('Page','Calendar','Portal','Gallery','Link','Component','Form')
 	</cfquery>
 	
 	<cfloop query="rs">
@@ -740,7 +740,7 @@ and active=1
 
 	<cfquery datasource="#variables.dsn#" name="rs"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 		select contenthistid, summary from tcontent where summary like <cfqueryparam value="%#arguments.find#%" cfsqltype="cf_sql_varchar"> and siteID = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
-		and type in ('Page','Calendar','Portal','Gallery','Link')
+		and type in ('Page','Calendar','Portal','Gallery','Link','Component','Form')
 	</cfquery>
 	
 	<cfloop query="rs">
