@@ -112,5 +112,5 @@ Upload New Plugin<br/>
 <cfhtmlhead text='<link rel="stylesheet" href="css/tab-view.css" type="text/css" media="screen">'>
 <cfhtmlhead text='<script type="text/javascript" src="js/tab-view.js"></script>'>
 <cfoutput><script type="text/javascript">
-initTabs(Array("Current Sites","Installed Plugins"),#attributes.activeTab#,0,0);
+initTabs(Array("Current Sites","Plug-Ins"),#attributes.activeTab#,0,0);
 </script></cfoutput>
