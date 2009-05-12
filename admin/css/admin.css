@@ -1153,6 +1153,8 @@ td #crumblist {
 	margin: 0;
 	padding: 0;
 	color: #636261;
+	background-image: url(../images/icons/files/icon_generic_small.gif);
+	background-repeat: no-repeat;
 }
 
 .navZoom li.last a, #crumblist li.last a {
@@ -2146,169 +2148,170 @@ table#fileList td.varWidth a,
 /* @group File Icons */
 
 .title li  {
-	background: url(../images/icons/files/icon_generic_small.gif) no-repeat;
+	background-image: url(../images/icons/files/icon_generic_small.gif);
+	background-repeat: no-repeat;
 }
 
 .doc, .docx {
-	background: url(../images/icons/files/icon_doc_small.gif) no-repeat;
+	background-image: url(../images/icons/files/icon_doc_small.gif) !important;
 }
 
 .jpg {
-	background: url(../images/icons/files/icon_jpg_small.gif) no-repeat;
+	background-image: url(../images/icons/files/icon_jpg_small.gif) !important;
 }
 
 .psd {
-	background: url(../images/icons/files/icon_gif_small.gif) no-repeat;
+	background-image: url(../images/icons/files/icon_gif_small.gif) !important;
 }
 
 .gif {
-	background: url(../images/icons/files/icon_gif_small.gif) no-repeat;
+	background-image: url(../images/icons/files/icon_gif_small.gif) !important;
 }
 
 .png {
-	background: url(../images/icons/files/icon_png_small.gif) no-repeat;
+	background-image: url(../images/icons/files/icon_png_small.gif) !important;
 }
 
 .pdf {
-	background: url(../images/icons/files/icon_pdf_small.gif) no-repeat;
+	background-image: url(../images/icons/files/icon_pdf_small.gif) !important;
 }
 
 .txt {
-	background: url(../images/icons/files/icon_txt_small.gif) no-repeat;
+	background-image: url(../images/icons/files/icon_txt_small.gif) !important;
 }
 
 .ppt {
-	background: url(../images/icons/files/icon_ppt_small.gif) no-repeat;
+	background-image: url(../images/icons/files/icon_ppt_small.gif) !important;
 }
 
 .xls {
-	background: url(../images/icons/files/icon_xls_small.gif) no-repeat;
+	background-image: url(../images/icons/files/icon_xls_small.gif) !important;
 }
 
 .mdb {
-	background: url(../images/icons/files/icon_mdb_small.gif) no-repeat;
+	background-image: url(../images/icons/files/icon_mdb_small.gif) !important;
 }
 
 .vsd {
-	background: url(../images/icons/files/icon_vsd_small.gif) no-repeat;
+	background-image: url(../images/icons/files/icon_vsd_small.gif) !important;
 }
 
 .mpp {
-	background: url(../images/icons/files/icon_mpp_small.gif) no-repeat;
+	background-image: url(../images/icons/files/icon_mpp_small.gif) !important;
 }
 
 .graffle {
-	background: url(../images/icons/files/icon_graffle_small.gif) no-repeat;
+	background-image: url(../images/icons/files/icon_graffle_small.gif) !important;
 }
 
 .oo3 {
-	background: url(../images/icons/files/icon_oo3_small.gif) no-repeat;
+	background-image: url(../images/icons/files/icon_oo3_small.gif) !important;
 }
 
 .mp3 {
-	background: url(../images/icons/files/icon_mp3_small.gif) no-repeat;
+	background-image: url(../images/icons/files/icon_mp3_small.gif) !important;
 }
 
 .ndd {
-	background: url(../images/icons/files/icon_ndd_small.gif) no-repeat;
+	background-image: url(../images/icons/files/icon_ndd_small.gif) !important;
 }
 
 .zip {
-	background: url(../images/icons/files/icon_zip_small.gif) no-repeat;
+	background-image: url(../images/icons/files/icon_zip_small.gif) no-repeat;
 }
 
 .css {
-	background: url(../images/icons/files/icon_css_small.gif) no-repeat;
+	background-image: url(../images/icons/files/icon_css_small.gif) no-repeat;
 }
 
 .flv {
-	background: url(../images/icons/files/icon_flv_small.png) no-repeat;
+	background-image: url(../images/icons/files/icon_flv_small.png) !important;
 }
 
 .html, .htm {
-	background: url(../images/icons/files/icon_generic_small.gif) no-repeat;
+	background-image: url(../images/icons/files/icon_generic_small.gif) no-repeat;
 }
 
 /* @group Locked */
 
 .docLocked, .docxLocked {
-	background: url(../images/icons/files/icon_doc_small_locked.gif) no-repeat;
+	background-image: url(../images/icons/files/icon_doc_small_locked.gif) no-repeat;
 }
 
 .jpgLocked {
-	background: url(../images/icons/files/icon_jpg_small_locked.gif) no-repeat;
+	background-image: url(../images/icons/files/icon_jpg_small_locked.gif) !important;
 }
 
 .psdLocked {
-	background: url(../images/icons/files/icon_gif_small_locked.gif) no-repeat;
+	background-image: url(../images/icons/files/icon_gif_small_locked.gif) !important;
 }
 
 .gifLocked {
-	background: url(../images/icons/files/icon_gif_small_locked.gif) no-repeat;
+	background-image: url(../images/icons/files/icon_gif_small_locked.gif) !important;
 }
 
 .pngLocked {
-	background: url(../images/icons/files/icon_png_small_locked.gif) no-repeat;
+	background-image: url(../images/icons/files/icon_png_small_locked.gif) !important;
 }
 
 .pdfLocked {
-	background: url(../images/icons/files/icon_pdf_small_locked.gif) no-repeat;
+	background-image: url(../images/icons/files/icon_pdf_small_locked.gif) !important;
 }
 
 .txtLocked {
-	background: url(../images/icons/files/icon_txt_small_locked.gif) no-repeat;
+	background: url(../images/icons/files/icon_txt_small_locked.gif) !important;
 }
 
 .pptLocked {
-	background: url(../images/icons/files/icon_ppt_small_locked.gif) no-repeat;
+	background: url(../images/icons/files/icon_ppt_small_locked.gif) !important;
 }
 
 .xlsLocked {
-	background: url(../images/icons/files/icon_xls_small_locked.gif) no-repeat;
+	background: url(../images/icons/files/icon_xls_small_locked.gif) !important;
 }
 
 .mdbLocked {
-	background: url(../images/icons/files/icon_mdb_small_locked.gif) no-repeat;
+	background-image: url(../images/icons/files/icon_mdb_small_locked.gif) !important;
 }
 
 .vsdLocked {
-	background: url(../images/icons/files/icon_vsd_small_locked.gif) no-repeat;
+	background-image: url(../images/icons/files/icon_vsd_small_locked.gif) !important;
 }
 
 .mppLocked {
-	background: url(../images/icons/files/icon_mpp_small_locked.gif) no-repeat;
+	background-image: url(../images/icons/files/icon_mpp_small_locked.gif) !important;
 }
 
 .graffleLocked {
-	background: url(../images/icons/files/icon_graffle_small_locked.gif) no-repeat;
+	background-image: url(../images/icons/files/icon_graffle_small_locked.gif) !important;
 }
 
 .oo3Locked {
-	background: url(../images/icons/files/icon_oo3_small_locked.gif) no-repeat;
+	background-image: url(../images/icons/files/icon_oo3_small_locked.gif) !important;
 }
 
 .mp3Locked {
-	background: url(../images/icons/files/icon_mp3_small_locked.gif) no-repeat;
+	background-image: url(../images/icons/files/icon_mp3_small_locked.gif) !important;
 }
 
 .nddLocked {
-	background: url(../images/icons/files/icon_ndd_small_locked.gif) no-repeat;
+	background-image: url(../images/icons/files/icon_ndd_small_locked.gif) !important;
 }
 
 .zipLocked {
-	background: url(../images/icons/files/icon_zip_small_locked.gif) no-repeat;
+	background-image: url(../images/icons/files/icon_zip_small_locked.gif) !important;
 }
 
 .cssLocked {
-	background: url(../images/icons/files/icon_css_small_locked.gif) no-repeat;
+	background-image: url(../images/icons/files/icon_css_small_locked.gif) !important;
 }
 
 .cssLocked {
-	background: url(../images/icons/files/icon_flv_small_locked.gif) no-repeat;
+	background-image: url(../images/icons/files/icon_flv_small_locked.gif) !important;
 }
 
 .htmlLocked, .htmLocked {
-	background: url(../images/icons/files/icon_generic_small_locked.gif) no-repeat;
+	background-image: url(../images/icons/files/icon_generic_small_locked.gif) !important;
 }
 
 /* @end */
