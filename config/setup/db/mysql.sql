@@ -1024,7 +1024,12 @@ CREATE TABLE `tsettings` (
   `lastDeployment` datetime default NULL,
   `accountActivationScript` longtext,
   `googleAPIKey` varchar(100) default NULL,
-  `useDefaultSMTPServer` tinyint(3) default NULL
+  `useDefaultSMTPServer` tinyint(3) default NULL,
+  `theme` varchar(50) default NULL,
+  `mailserverSMTPPort` varchar(5) default NULL,
+  `mailserverPOPPort` varchar(5) default NULL,
+  `mailserverTLS` varchar(5) default NULL, 
+  `mailserverSSL` varchar(5) default NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --

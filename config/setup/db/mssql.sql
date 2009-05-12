@@ -722,7 +722,12 @@ CREATE TABLE [dbo].[tsettings] (
 	[lastDeployment] [datetime] NULL ,
 	[accountActivationScript] [ntext] NULL,
 	[googleAPIKey] [varchar] (100) NULL ,
-	[useDefaultSMTPServer] [tinyint] NULL 
+	[useDefaultSMTPServer] [tinyint] NULL,
+    [theme] [varchar] (50) NULL,
+ 	[mailserverSMTPPort] [varchar] (5) NULL,
+ 	[mailserverPOPPort] [varchar] (5) NULL,
+ 	[mailserverTLS] [varchar] (5) NULL,
+ 	[mailserverSSL] [varchar] (5) NULL
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 GO
 
