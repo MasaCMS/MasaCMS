@@ -961,7 +961,7 @@ to your own modified versions of Mura CMS.
 	<cfset var rs = "">
 	
 	<cfif len(getTheme())>
-	<cfdirectory action="list" directory="#expandPath('/#variables.configBean.getWebRootMap()#')#/#getDisplayPoolID()#/includes/themes/#getTheme()#templates" name="rs" filter="*.cfm">
+	<cfdirectory action="list" directory="#expandPath('/#variables.configBean.getWebRootMap()#')#/#getDisplayPoolID()#/includes/themes/#getTheme()#/templates" name="rs" filter="*.cfm">
 	<cfelse>
 	<cfdirectory action="list" directory="#expandPath('/#variables.configBean.getWebRootMap()#')#/#getDisplayPoolID()#/includes/templates" name="rs" filter="*.cfm">
 	</cfif>
