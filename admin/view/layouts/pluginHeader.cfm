@@ -27,7 +27,7 @@ body { padding-top: 55px; }
 				<li id="adminPlugIns"><a href="#application.configBean.getContext()#/admin/index.cfm?fuseaction=cPlugins.list&siteid=#session.siteid#">#application.rbFactory.getKeyValue(session.rb,"layout.plugins")#</a></li>
 				<li id="adminSiteManager"><a href="#application.configBean.getContext()#/admin/index.cfm?fuseaction=cArch.list&siteid=#session.siteid#&moduleid=00000000000000000000000000000000000&topid=00000000000000000000000000000000001">#application.rbFactory.getKeyValue(session.rb,"layout.sitemanager")#</a></li>
 				<li id="adminDashboard"><a href="#application.configBean.getContext()#/admin/index.cfm?fuseaction=cDashboard.main&siteid=#session.siteid#&span=#session.dashboardSpan#">#application.rbFactory.getKeyValue(session.rb,"layout.dashboard")#</a></li>
-				<li id="adminLogOut"><a href="#application.configBean.getContext()#/admin/index.cfm?doaction=logout">Log Out</a></li>
+				<li id="adminLogOut"><a href="#application.configBean.getContext()#/admin/index.cfm?doaction=logout">#application.rbFactory.getKeyValue(session.rb,"layout.logout")#</a></li>
 				<li id="adminWelcome">#application.rbFactory.getKeyValue(session.rb,"layout.welcome")#, #HTMLEditFormat(listgetat(getauthuser(),2,"^"))#.</li>
 			</ul>
 		</div>
