@@ -145,9 +145,10 @@ inner join tcontent on (tplugins.moduleID=tcontent.moduleID)
 </cffunction>
 
 <cffunction name="getAllPlugins" returntype="query" access="public" output="false">
+<cfargument name="orderby" default="name" required="true">
 <cfset var rs="">
 <cfquery name="rs" datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-select * from tplugins order by pluginID
+select * from tplugins order by #arguments.orderby#
 </cfquery>
 <cfreturn rs/>
 </cffunction>
@@ -214,6 +215,7 @@ select * from tplugins order by pluginID
 
 <cfset savePluginXML(modID) />
 <cfset loadPlugins() />
+<cfset createLookupTXT()/>
 
 <cfreturn modID/>
 
@@ -337,6 +339,8 @@ select * from tplugins order by pluginID
 			
 		</cfif>
 	</cfif>
+	
+	<cfset createLookupTXT()/>
 	
 </cffunction>	
 
@@ -619,11 +623,13 @@ select * from tplugins order by pluginID
 
 <cffunction name="getSitePlugins" returntype="query" output="false">
 <cfargument name="siteID">
+<cfargument name="orderby" default="name" required="true">
 	<cfset var rs="">
 	<cfquery name="rs" datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	select tplugins.pluginID,tplugins.moduleID,tplugins.name,tplugins.version,
 	tplugins.provider, tplugins.providerURL,tplugins.category,tplugins.created from tplugins inner join tcontent
 	on (tplugins.moduleID=tcontent.moduleID and tcontent.siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#">)
+	order by tplugins.#arguments.orderby#
 	</cfquery>
 	<cfreturn rs>
 </cffunction>
@@ -658,6 +664,7 @@ select * from tplugins order by pluginID
 	</cfquery>
 	
 	<cfset loadPlugins() />
+	<cfset createLookupTXT()/>
 
 </cffunction>
 
@@ -967,4 +974,23 @@ select * from tplugins order by pluginID
 <cfreturn returnStr/>
 </cffunction>
 
+<cffunction name="createLookupTXT" returntype="void" output="false">
+<cfset var lookUpText="">
+<cfset var rs=getAllPlugins("pluginID")>
+<cfsavecontent variable="lookUpText"><cfoutput query="rs">#rs.pluginID# - #rs.name#
+</cfoutput></cfsavecontent>
+
+<cffile action="write" output="#lookUpText#" file="#expandPath('/plugins')#/lookupByPluginID.txt" mode="777">
+
+<cfquery name="rs" dbtype="query">
+select * from rs order by name
+</cfquery>
+
+<cfsavecontent variable="lookUpText"><cfoutput query="rs">#rs.name# -  #rs.pluginID#
+</cfoutput></cfsavecontent>
+
+<cffile action="write" output="#lookUpText#" file="#expandPath('/plugins')#/lookupByName.txt" mode="777">
+
+
+</cffunction>
 </cfcomponent>
