@@ -134,7 +134,7 @@ if(typeof Shadowbox == 'undefined'){
          *
          * @var     {Boolean}   listenOverlay
          */
-        listenOverlay:      true,
+        listenOverlay:      false,
 
         /**
          * Automatically play movies.
