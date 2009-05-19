@@ -122,9 +122,10 @@ to your own modified versions of Mura CMS.
 
 <title>#application.configBean.getTitle()#<cfif len(moduleTitle)> - #moduleTitle#</cfif></title>
 
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <cfheader name="cache-control" value="no-cache, no-store, must-revalidate"> 
 <cfheader name="expires" value="06 Nov 1994 08:37:34 GMT"> 
+<meta name="robots" content="noindex, nofollow, noarchive" />
 <meta http-equiv="cache control" content="no-cache, no-store, must-revalidate" />
 <script src="#application.configBean.getContext()#/admin/js/admin.js" type="text/javascript" language="Javascript"></script>
 <cfif not attributes.jsLibLoaded>

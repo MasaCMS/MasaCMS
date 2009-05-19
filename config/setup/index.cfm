@@ -362,6 +362,7 @@ to your own modified versions of Mura CMS.
 <head>
 <title>Mura CMS - Set Up</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="robots" content="noindex, nofollow, noarchive" />
 <meta http-equiv="cache control" content="no-cache, no-store, must-revalidate" />
 <script src="#webRoot#/admin/js/admin.js" type="text/javascript" language="Javascript"></script>
 <link href="#webRoot#/admin/css/admin.css" rel="stylesheet" type="text/css" />
