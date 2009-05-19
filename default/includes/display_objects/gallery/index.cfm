@@ -41,9 +41,7 @@ the GNU General Public License version 2  without this exception.  You may, if y
 to your own modified versions of Mura CMS.
 --->
 <cfsilent>
-	<cfset loadShadowBoxJS() />
-	<cfset addToHTMLHeadQueue("gallery/htmlhead/gallery.cfm")>
-		
+	<!--- the js is not loaded in contentRenderer.dspBody() to prevent caching --->
 	<cfset hasComments=application.contentGateway.getHasComments(request.siteid,request.contentBean.getContentHistID()) />
 	<cfset hasRatings=application.contentGateway.getHasRatings(request.siteid,request.contentBean.getContentHistID()) />
 	

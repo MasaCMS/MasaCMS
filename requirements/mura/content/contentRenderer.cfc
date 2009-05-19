@@ -1074,6 +1074,8 @@ to your own modified versions of Mura CMS.
 						 </cf_CacheOMatic>
 					</cfcase> 
 					<cfcase value="Gallery">
+						<cfset loadShadowBoxJS() />
+						<cfset addToHTMLHeadQueue("gallery/htmlhead/gallery.cfm")>
 						<cfif not event.valueExists('galleryItemID')><cfset event.setValue('galleryItemID','')></cfif>
 						<cf_CacheOMatic key="portalBody#event.getValue('contentBean').getcontentID()##event.getValue('startRow')##event.getValue('galleryItemID')#" nocache="#event.getValue('r').restrict#">
 						<cfinclude template="#theIncludePath#/includes/display_objects/gallery/index.cfm">
@@ -1238,7 +1240,8 @@ to your own modified versions of Mura CMS.
 		<cfargument name="today" type="date"  default="#now()#">
 		<cfargument name="id" type="string" default="">
 		<cfargument name="querystring" type="string" default="">
-		<cfargument name="sort" type="string" default="orderno">
+		<cfargument name="sortBy" type="string" default="orderno">
+		<cfargument name="sortDirection" type="string" default="asc">
 		<cfargument name="context" type="string" default="#application.configBean.getContext()#">
 		<cfargument name="stub" type="string" default="#application.configBean.getStub()#">
 		<cfargument name="displayHome" type="string" default="conditional">
@@ -1246,7 +1249,7 @@ to your own modified versions of Mura CMS.
 		<cfargument name="openPortals" type="string" default="">	
 		
 
-		<cfset var rsSection=application.contentGateway.getKids('00000000000000000000000000000000000',event.getValue('siteID'),arguments.contentid,arguments.type,arguments.today,0,'',0,'orderNo','asc','','','',true)>
+		<cfset var rsSection=application.contentGateway.getKids('00000000000000000000000000000000000',event.getValue('siteID'),arguments.contentid,arguments.type,arguments.today,0,'',0,arguments.sortBy,arguments.sortDirection,'','','',true)>
 		<cfset var adjust=0>
 		<cfset var current=0>
 		<cfset var link=''>
@@ -1307,7 +1310,7 @@ to your own modified versions of Mura CMS.
 			/>
 			
 			<cfif subnav>
-				<cfset nest=dspNestedNavPrimary(rssection.contentid,arguments.viewDepth,arguments.currDepth+1,iif(rssection.type eq 'calendar',de('fixed'),de('default')),now()) />
+				<cfset nest=dspNestedNavPrimary(contentID=rssection.contentid, viewDepth= arguments.viewDepth, currDepth=arguments.currDepth+1, type=iif(rssection.type eq 'calendar',de('fixed'),de('default')), today=now() , sortBy=rsSection.sortBy, sortDirection=rsSection.sortDirection) />
 			</cfif>
 			
 			<cfset class=iif(current eq 1,de('first'),de(iif(current eq adjust,de('last'),de('')))) />
