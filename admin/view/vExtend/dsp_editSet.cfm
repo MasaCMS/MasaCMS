@@ -65,7 +65,7 @@ to your own modified versions of Mura CMS.
 <dd class="categoryAssignment"><cf_dsp_categories_nest siteID="#attributes.siteID#" parentID="" nestLevel="0" extendSetBean="#extendSetBean#"></dd>
 </cfif></dl>
 <cfif not len(attributes.extendSetID)>
-<a class="submit" href="javascript:;" onclick="return submitForm(document.forms.form1,'add');"><span>Add</span></a><input type=hidden name="extendSetID" value="#createuuid()#"><cfelse> <a class="submit" href="javascript:;" onclick="return submitForm(document.forms.form1,'delete','This');"><span>Delete</span></a> <a class="submit" href="javascript:;" onclick="return submitForm(document.forms.form1,'update');"><span>Update</span></a>
+<a class="submit" href="javascript:;" onclick="return submitForm(document.forms.form1,'add');"><span>Add</span></a><input type=hidden name="extendSetID" value="#createuuid()#"><cfelse> <a class="submit" href="javascript:;" onclick="return submitForm(document.forms.form1,'delete','Delete Attribute Set?');"><span>Delete</span></a> <a class="submit" href="javascript:;" onclick="return submitForm(document.forms.form1,'update');"><span>Update</span></a>
 
 <input type=hidden name="extendSetID" value="#extendSetBean.getExtendSetID()#"></cfif><input type="hidden" name="action" value="">
 <input name="fuseaction" value="cExtend.updateSet" type="hidden">

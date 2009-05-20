@@ -101,7 +101,7 @@ to your own modified versions of Mura CMS.
 <a class="submit" href="javascript:;" onclick="new Effect.SlideUp($('#attributes.formName#container'));$('#attributes.formName#close').style.display='none';$('#attributes.formName#open').style.display='';return false;"><span>Cancel</span></a>
 <cfelse>
 <a class="submit" href="javascript:;" onclick="return submitForm(document.forms.#attributes.formName#,'update');"><span>Update</span></a>
-<a class="submit" href="javascript:;" onclick="return submitForm(document.forms.#attributes.formName#,'delete','This');"><span>Delete</span></a>
+<a class="submit" href="javascript:;" onclick="return submitForm(document.forms.#attributes.formName#,'delete','Delete Attribute?');"><span>Delete</span></a>
 <a class="submit" href="javascript:;" onclick="new Effect.SlideUp($('#attributes.formName#container'));$('#attributes.formName#close').style.display='none';$('#attributes.formName#open').style.display='';return false;"><span>Cancel</span></a>
 </cfif>
 
