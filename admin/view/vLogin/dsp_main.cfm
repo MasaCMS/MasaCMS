@@ -40,17 +40,18 @@ for your modified version; it is your choice whether to do so, or to make such m
 the GNU General Public License version 2  without this exception.  You may, if you choose, apply this exception
 to your own modified versions of Mura CMS.
 --->
+
 <cfset isBlocked=false />
 <div id="login"><cfoutput>
 <h2>#application.rbFactory.getKeyValue(session.rb,'login.pleaselogin')#</h2>
 <cfif attributes.status eq 'denied'>
-#application.rbFactory.getKeyValue(session.rb,'login.denied')#
+<p class="error">#application.rbFactory.getKeyValue(session.rb,'login.denied')#</p>
 <cfelseif attributes.status eq 'failed'>
 <cfif isDate(session.blockLoginUntil) and session.blockLoginUntil gt now()>
 <cfset isBlocked=true />
-#application.rbFactory.getKeyValue(session.rb,'login.blocked')#
+<p class="error">#application.rbFactory.getKeyValue(session.rb,'login.blocked')#</p>
 <cfelse>
-#application.rbFactory.getKeyValue(session.rb,'login.failed')#
+<p class="error">#application.rbFactory.getKeyValue(session.rb,'login.failed')#</p>
 </cfif>
 </cfif>
 

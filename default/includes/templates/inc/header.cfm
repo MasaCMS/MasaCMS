@@ -11,7 +11,7 @@
 				<input type="submit" value="Search" class="submit" />
 			</div>
 		</form>
-		<cf_CacheOMatic key="dspPrimaryNav#request.contentBean.getcontentID()#">#renderer.dspPrimaryNav(viewDepth="2",id="navPrimary",displayHome="Always",closePortals="true")#</cf_cacheomatic>
+		<cf_CacheOMatic key="dspPrimaryNav#request.contentBean.getcontentID()#">#renderer.dspPrimaryNav(viewDepth="1",id="navPrimary",displayHome="Always",closePortals="true")#</cf_cacheomatic>
 		<!--- Optional named arguments for Primary Nav are: displayHome="Always/Never/Conditional", openPortals/closePortals="contentid,contentid" (i.e. show specific sub-content in dropdown nav) --->
 		<cfif arraylen(request.crumbdata) gt 1><p id="sectionTitle">#request.crumbdata[evaluate(arrayLen(request.crumbdata)-1)].menutitle#</p></cfif>
 	</div>
