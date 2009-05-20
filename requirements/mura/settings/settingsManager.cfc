@@ -72,7 +72,7 @@ to your own modified versions of Mura CMS.
 <cfargument name="siteID" required="yes" default="">
 
 	<cfset application.serviceFactory.getBean("publisher").start(arguments.siteid) />
-	<cfset variables.utility.broadcastAppreload() />
+	<cfset variables.clusterManager.reload() />
 	
 </cffunction>
 
