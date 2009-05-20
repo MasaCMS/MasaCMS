@@ -150,7 +150,7 @@ to your own modified versions of Mura CMS.
 					<li class="permissionsOff"><a>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.permissions')#</a></li>
 				</cfif>
 				<cfif ((attributes.parentid neq '#attributes.topid#' and attributes.locking neq 'all') or (attributes.parentid eq '#attributes.topid#' and attributes.locking eq 'none')) and (verdict eq 'editor') and not request.rsTop.isLocked eq 1>
-					<li class="delete"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.delete')#" href="index.cfm?fuseaction=cArch.update&contentid=#request.rstop.ContentID#&type=#request.rstop.type#&action=deleteall&topid=#attributes.topid#&siteid=#attributes.siteid#&moduleid=#attributes.moduleid#&parentid=#attributes.parentid#" onClick="return confirm('#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.deleteconfirm'))#')">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.delete')#</a></li>
+					<li class="delete"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.delete')#" href="index.cfm?fuseaction=cArch.update&contentid=#request.rstop.ContentID#&type=#request.rstop.type#&action=deleteall&topid=#attributes.topid#&siteid=#attributes.siteid#&moduleid=#attributes.moduleid#&parentid=#attributes.parentid#" onClick="return confirm('#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.deletecontentconfirm'))#')">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.delete')#</a></li>
 				<cfelseif attributes.locking neq 'all'>
 					<li class="deleteOff">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.delete')#</li>
 				</cfif>
