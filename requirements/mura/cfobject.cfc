@@ -88,4 +88,12 @@ to your own modified versions of Mura CMS.
 	<cfreturn application.pluginManager />	
 </cffunction>
 
+<cffunction name="getPlugin" returntype="any" access="public" output="false">
+	<cfargument name="ID">
+	<cfargument name="siteID" required="true" default="">
+	<cfargument name="cache" required="true" default="true">
+	
+	<cfreturn application.pluginManager.getConfig(arguments.ID, arguments.siteID, arguments.cache) />	
+</cffunction>
+
 </cfcomponent>
