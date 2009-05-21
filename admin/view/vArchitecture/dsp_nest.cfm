@@ -88,7 +88,7 @@ to your own modified versions of Mura CMS.
 <cfif attributes.rsNest.type eq 'File'>
 	<cfset icon=lcase(attributes.rsNest.fileExt)>
 <cfelse>
-	<cfset icon=attributes.rsNest.type>
+	<cfset icon=attributes.rsNest.type & " " & attributes.rsNest.subtype>
 </cfif>
 
 <cfif (attributes.restricted or attributes.rsNest.restricted)>
