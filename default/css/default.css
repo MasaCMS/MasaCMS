@@ -483,19 +483,19 @@ p.center { text-align: center; }
 #navSession li {
 	display: inline;
 	margin: 0;
-	padding: 0;
+	padding: 0 .25em;
 	}
 
 #navSession a { text-decoration: none; }
 
-#navEditProfile a {
+#navSession li#navEditProfile {
 	border-right: 1px solid #ccc;
 	padding-right: .5em;
+	padding-left: 0;
 	}
 
-#navLogout {
+#navSession li#navLogout {
 	padding-right: 0;
-	padding-left: 2px;
 	}
 
 /* @end Nav - Session
@@ -1141,10 +1141,11 @@ ul#favoriteList {
 	}
 
 #favoriteList li {
-	margin: 0 0 .5em;
+	margin: 0 0 .5em !important;
 	padding: 0;
 	border: none;
 	font-size: 11px;
+	line-height: 1;
 	}
 
 #favoriteList li.defaultMsg {
@@ -1158,6 +1159,10 @@ ul#favoriteList {
 #favoriteList li a {
 	margin: 0 0 0 1em;
 	padding: 0;
+	}
+	
+#favoriteList li a.remove {
+	color: #666;
 	}
 
 /* @end User Tools - Favorites
