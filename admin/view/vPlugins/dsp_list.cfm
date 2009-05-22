@@ -46,6 +46,7 @@ to your own modified versions of Mura CMS.
 <table class="stripe">
 <tr>
 <th class="varWidth">#application.rbFactory.getKeyValue(session.rb,"plugin.name")#</th>
+<th>Package</th>
 <th>#application.rbFactory.getKeyValue(session.rb,"plugin.category")#</th>
 <th>#application.rbFactory.getKeyValue(session.rb,"plugin.version")#</th>
 <th>#application.rbFactory.getKeyValue(session.rb,"plugin.provider")#</th>
@@ -58,7 +59,8 @@ to your own modified versions of Mura CMS.
 <cfif application.permUtility.getModulePerm(request.rslist.moduleID,session.siteid)>
 <cfset started=true>
 <tr>
-<td class="varWidth"><a href="#application.configBean.getContext()#/plugins/#request.rslist.pluginID#/">#htmlEditFormat(request.rslist.name)#</a></td>
+<td class="varWidth"><a href="#application.configBean.getContext()#/plugins/#request.rslist.directory#/">#htmlEditFormat(request.rslist.name)#</a></td>
+<td>#htmlEditFormat(request.rslist.directory)#</td>
 <td>#htmlEditFormat(request.rslist.category)#</td>
 <td>#htmlEditFormat(request.rslist.version)#</td>
 <td>#htmlEditFormat(request.rslist.provider)#</td>
@@ -82,7 +84,7 @@ to your own modified versions of Mura CMS.
 </cfloop>
 <cfif not started>
 <tr>
-<td colspan="7" class="noResults">#application.rbFactory.getKeyValue(session.rb,"plugin.noresults")#</td>
+<td colspan="8" class="noResults">#application.rbFactory.getKeyValue(session.rb,"plugin.noresults")#</td>
 </tr>
 </cfif>
 </table>

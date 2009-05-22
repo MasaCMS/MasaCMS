@@ -20,6 +20,7 @@
 <cfargument name="objectID">
 <cfargument name="event">
 <cfargument name="rsDisplayObject">
+
 	<cfset var rs=""/>
 	<cfset var str=""/>
 	<cfset var pluginConfig=""/>
@@ -31,16 +32,16 @@
 	
 	<cfif arguments.rsDisplayObject.location eq "global">
 	
-	<cfset pluginConfig.setSetting("pluginPath","#variables.configBean.getContext()#/plugins/#arguments.rsDisplayObject.pluginID#/")/>
+	<cfset pluginConfig.setSetting("pluginPath","#variables.configBean.getContext()#/plugins/#pluginConfig.getDirectory()#/")/>
 
 	<cfsavecontent variable="str">
-	<cfinclude template="/#variables.configBean.getWebRootMap()#/plugins/#arguments.rsDisplayObject.pluginID#/#arguments.rsDisplayObject.displayObjectFile#">
+	<cfinclude template="/#variables.configBean.getWebRootMap()#/plugins/#pluginConfig.getDirectory()#/#arguments.rsDisplayObject.displayObjectFile#">
 	</cfsavecontent>
 	<cfelse>
 	
-	<cfset pluginConfig.setSetting("pluginPath","#variables.configBean.getContext()#/#variables.settingsManager.getSite(event.getValue('siteID')).getDisplayPoolID()#/includes/plugins/#arguments.rsDisplayObject.pluginID#/")/>
+	<cfset pluginConfig.setSetting("pluginPath","#variables.configBean.getContext()#/#variables.settingsManager.getSite(event.getValue('siteID')).getDisplayPoolID()#/includes/plugins/#pluginConfig.getDirectory()#/")/>
 	<cfsavecontent variable="str">
-	<cfinclude template="/#variables.configBean.getWebRootMap()#/#variables.settingsManager.getSite(event.getValue('siteID')).getDisplayPoolID()#/includes/plugins/#arguments.rsDisplayObject.pluginID#/#arguments.rsDisplayObject.displayObjectFile#">
+	<cfinclude template="/#variables.configBean.getWebRootMap()#/#variables.settingsManager.getSite(event.getValue('siteID')).getDisplayPoolID()#/includes/plugins/#pluginConfig.getDirectory()#/#arguments.rsDisplayObject.displayObjectFile#">
 	</cfsavecontent>
 	</cfif>
 	
@@ -75,7 +76,7 @@
 	<cfset request.pluginConfig=arguments.pluginConfig/>
 	<cfset request.pluginConfig.setSetting("pluginMode","object")/>
 	<cfset request.scriptEvent=arguments.event />
-	<cfset pluginConfig.setSetting("pluginPath","#variables.configBean.getContext()#/plugins/#pluginConfig.getPluginID()#/")/>
+	<cfset pluginConfig.setSetting("pluginPath","#variables.configBean.getContext()#/plugins/#pluginConfig.getDirectoryID()#/")/>
 
 	<cfsavecontent variable="str">
 	<cfinclude template="#arguments.scriptFile#">

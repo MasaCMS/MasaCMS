@@ -107,6 +107,8 @@ to your own modified versions of Mura CMS.
 </cfsilent>
 
 <dl class="oneColumn">
+	<dt>Plugin Name / Alias</dt>	
+	<dd><input name="pluginalias" type="text" value="#htmlEditFormat(rsPlugin.name)#" required="true" message="The 'Name' field is required."/></dd>
 <cfif settingsLen>
 <cfloop from="1" to="#settingsLen#" index="i">
 		<cfsilent>

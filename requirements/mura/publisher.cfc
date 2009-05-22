@@ -831,7 +831,7 @@ to your own modified versions of Mura CMS.
 		
 		<cfloop list="#application.configBean.getProductionWebroot()#" index="p">
 			<cfloop query="rsPlugins">
-			<cfset application.utility.copyDir("#application.configBean.getWebRoot()##fileDelim##plugins##fileDelim##rsPlugins.pluginID##fileDelim#", "#p##fileDelim##plugins##fileDelim##rsPlugins.pluginID##fileDelim#") />
+			<cfset application.utility.copyDir("#application.configBean.getWebRoot()##fileDelim##plugins##fileDelim##rsPlugins.directory##fileDelim#", "#p##fileDelim##plugins##fileDelim##rsPlugins.directory##fileDelim#") />
 			</cfloop>
 		</cfloop>
 		

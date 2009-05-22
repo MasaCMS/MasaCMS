@@ -48,7 +48,7 @@
 			<cfset rs=variables.pluginManager.getScripts(arguments.key & variables.class,variables.siteid)>
 			<cfset variables.collection[ hashCheckKey ] = rs.recordcount />
 			<cfif rs.recordcount>
-				<cfset variables.collection[ hashKey ] = variables.pluginManager.getComponent("plugins.#rs.pluginID#.#rs.scriptfile#", rs.pluginID, variables.siteID, rs.docache)>
+				<cfset variables.collection[ hashKey ] = variables.pluginManager.getComponent("plugins.#rs.package#.#rs.scriptfile#", rs.pluginID, variables.siteID, rs.docache)>
 			</cfif>
 		</cfif>
 		

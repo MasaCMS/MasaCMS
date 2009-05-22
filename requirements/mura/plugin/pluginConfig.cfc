@@ -52,6 +52,8 @@ to your own modified versions of Mura CMS.
 <cfset variables.created="" />
 <cfset variables.category="" />
 <cfset variables.version="" />
+<cfset variables.package="" />
+<cfset variables.directory="" />
 
 <cffunction name="initSettings" returntype="any" access="public" output="false">
 	<cfargument name="data"  type="any" default="#structNew()#">
@@ -146,6 +148,24 @@ to your own modified versions of Mura CMS.
 	<cfreturn variables.version />
 </cffunction>
 
+<cffunction name="setPackage" access="public" output="false">
+	<cfargument name="package" type="String" />
+	<cfset variables.package = trim(arguments.package) />
+</cffunction>
+
+<cffunction name="getPackage" returntype="String" access="public" output="false">
+	<cfreturn variables.package />
+</cffunction>
+
+<cffunction name="setDirectory" access="public" output="false">
+	<cfargument name="directory" type="String" />
+	<cfset variables.directory = trim(arguments.directory) />
+</cffunction>
+
+<cffunction name="getdirectory" returntype="String" access="public" output="false">
+	<cfreturn variables.directory />
+</cffunction>
+
 <cffunction name="setSetting" returntype="any" access="public" output="false">
 <cfargument name="property"  type="string" required="true">
 <cfargument name="propertyValue" default="" >
@@ -178,7 +198,7 @@ to your own modified versions of Mura CMS.
 	<cfset request.contentRenderer.addtoHTMLHeadQueue(getPluginID() & "/" & arguments.text) />
 <cfelse>
 <cfsavecontent variable="headerStr">
-<cfinclude template="/#application.configBean.getWebRootMap()#/plugins/#getPluginID()#/#arguments.text#">
+<cfinclude template="/#application.configBean.getWebRootMap()#/plugins/#getDirectory()#/#arguments.text#">
 </cfsavecontent>
 <cfhtmlhead text="#headerStr#">	
 </cfif>

@@ -1623,11 +1623,11 @@ to your own modified versions of Mura CMS.
 			<cfif not headerFound>
 				<cfset pluginBasePath="/#application.settingsmanager.getSite(event.getValue('siteID')).getDisplayPoolID()#/includes/plugins/">		
 				<cfif fileExists(expandPath("/#application.configBean.getWebRootMap()##pluginbasePath#") & i)>
-					<cfset pluginPath= application.configBean.getContext() & pluginBasePath & pluginID & "/" >
-					<cfset pluginID=listFirst(i,"/")>
+					<cfset pluginID=listFirst(listLast(i,"."),"/")>
 					<cfset event.setValue('pluginConfig',application.pluginManager.getConfig(pluginID))>
-					<cfset event.setValue('pluginPath',pluginPath)>
 					<cfset pluginConfig=event.getValue('pluginConfig')>
+					<cfset pluginPath= application.configBean.getContext() & pluginBasePath & pluginConfig.getDirectory() & "/" >		
+					<cfset event.setValue('pluginPath',pluginPath)>		
 					<cfinclude  template="/#application.configBean.getWebRootMap()##pluginBasePath##i#">
 					<cfset headerFound=true />
 					<cfset event.removeValue("pluginPath")>
@@ -1639,11 +1639,11 @@ to your own modified versions of Mura CMS.
 			<cfif not headerFound>
 				<cfset pluginBasePath="/plugins/">
 				<cfif fileExists(expandPath("/#application.configBean.getWebRootMap()##pluginbasePath#") & i)>
-					<cfset pluginID=listFirst(i,"/")>
-					<cfset pluginPath= application.configBean.getContext() & pluginBasePath & pluginID & "/" >		
+					<cfset pluginID=listFirst(listLast(i,"."),"/")>
 					<cfset event.setValue('pluginConfig',application.pluginManager.getConfig(pluginID))>
-					<cfset event.setValue('pluginPath',pluginPath)>
 					<cfset pluginConfig=event.getValue('pluginConfig')>
+					<cfset pluginPath= application.configBean.getContext() & pluginBasePath & pluginConfig.getDirectory() & "/" >		
+					<cfset event.setValue('pluginPath',pluginPath)>
 					<cfinclude  template="/#application.configBean.getWebRootMap()##pluginBasePath##i#">
 					<cfset headerFound=true />
 					<cfset event.removeValue("pluginPath")>

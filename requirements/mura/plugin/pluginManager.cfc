@@ -44,7 +44,6 @@ to your own modified versions of Mura CMS.
 
 <cfset variables.configBean="">
 <cfset variables.settingsManager="">
-<cfset variables.utility="">
 <cfset variables.genericManager="">
 <cfset variables.eventManagers=structNew()>
 <cfset variables.cacheFactories=structNew()>
@@ -103,7 +102,7 @@ select * from tpluginsettings
 </cfquery>
 
 <cfquery name="rsScripts1" datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-select tplugins.name,tpluginscripts.moduleID, tplugins.pluginID, tpluginscripts.runat, tpluginscripts.scriptfile, 
+select tplugins.name, tplugins.package, tplugins.directory, tpluginscripts.moduleID, tplugins.pluginID, tpluginscripts.runat, tpluginscripts.scriptfile, 
 tcontent.siteID, tpluginscripts.docache from tpluginscripts
 inner join tplugins on (tpluginscripts.moduleID=tplugins.moduleID)
 inner join tcontent on (tplugins.moduleID=tcontent.moduleID)
@@ -112,7 +111,7 @@ and tplugins.deployed=1
 </cfquery>
 
 <cfquery name="rsScripts2" datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-select tplugins.name,tpluginscripts.moduleID, tplugins.pluginID, tpluginscripts.runat, tpluginscripts.scriptfile, '' siteID, tpluginscripts.docache from tpluginscripts
+select tplugins.name, tplugins.package, tplugins.directory, tpluginscripts.moduleID, tplugins.pluginID, tpluginscripts.runat, tpluginscripts.scriptfile, '' siteID, tpluginscripts.docache from tpluginscripts
 inner join tplugins on (tpluginscripts.moduleID=tplugins.moduleID)
 where tpluginscripts.runat in ('onGlobalLogin','onGlobalRequestStart','onApplicationLoad')
 and tplugins.deployed=1
@@ -127,7 +126,7 @@ select * from rsScripts2
 
 <cfquery name="variables.rsDisplayObjects" datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 select tplugindisplayobjects.objectID, tplugindisplayobjects.moduleID, tplugindisplayobjects.name, 
-tplugindisplayobjects.displayObjectfile, tplugins.pluginID, tcontent.siteID, tcontent.title,
+tplugindisplayobjects.displayObjectfile, tplugins.pluginID, tplugins.package, tplugins.directory, tcontent.siteID, tcontent.title,
 tplugindisplayobjects.location, tplugindisplayobjects.displaymethod, tplugindisplayobjects.docache
 from tplugindisplayobjects inner join tplugins on (tplugindisplayobjects.moduleID=tplugins.moduleID)
 inner join tcontent on (tplugins.moduleID=tcontent.moduleID)
@@ -139,9 +138,10 @@ inner join tcontent on (tplugins.moduleID=tcontent.moduleID)
 </cffunction>
 
 <cffunction name="getLocation" returntype="string" access="public" output="false">
-<cfargument name="pluginID">
-<cfset var delim=variables.configBean.getFileDelim() />
-<cfreturn "#variables.configBean.getWebRoot()##delim#plugins#delim##arguments.pluginID##delim#">
+<cfargument name="directory">
+	<cfset var delim=variables.configBean.getFileDelim() />
+	
+	<cfreturn "#variables.configBean.getWebRoot()##delim#plugins#delim##arguments.directory##delim#">
 </cffunction>
 
 <cffunction name="getAllPlugins" returntype="query" access="public" output="false">
@@ -180,11 +180,11 @@ select * from tplugins order by #arguments.orderby#
 		<cfset deleteScripts(modID) />
 	</cfif>
 	
-	<cffile action="upload" filefield="NewPlugin" nameconflict="makeunique" destination="#getTempDirectory()#">	
+	<cffile action="upload" filefield="NewPlugin" nameconflict="makeunique" destination="#getTemppackage()#">	
 	
 	<cfif isNew>
 	<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-	insert into tplugins (moduleID,name,provider,providerURL,version,deployed,category,created) values (
+	insert into tplugins (moduleID,name,provider,providerURL,version,deployed,category,created,package) values (
 	<cfqueryparam cfsqltype="cf_sql_varchar" value="#modID#">,
 	<cfqueryparam cfsqltype="cf_sql_varchar" value="An error occurred.">,
 	null,
@@ -195,11 +195,22 @@ select * from tplugins order by #arguments.orderby#
 	#createODBCDateTime(now())#
 	)
 	</cfquery>
+
 	</cfif>
 	
 	<cfset rsPlugin=getPlugin(modID,'',false) />
 	
-	<cfset location=getLocation(rsPlugin.pluginID) />
+	<!--- Set the directory to the newly installed pluginID--->
+	<cfif isNew>
+	<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+	update tplugins set
+	directory=<cfqueryparam cfsqltype="cf_sql_varchar" value="#rsPlugin.pluginID#">
+	where moduleID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#rsPlugin.moduleID#">			
+	</cfquery>
+	<cfset rsPlugin=getPlugin(modID,'',false) />
+	</cfif>
+	
+	<cfset location=getLocation(rsPlugin.directory) />
 	
 	<cfif directoryExists(location)>
 		<cfdirectory action="delete" directory="#location#" recurse="true">
@@ -232,7 +243,7 @@ select * from tplugins order by #arguments.orderby#
 	<cfset var script="" />
 	<cfset var eventHandler=""/>
 	<cfset var rsPlugin=getPlugin(modID,'',false) />
-	<cfset var location=getLocation(rsPlugin.pluginID) />
+	<cfset var location=getLocation(rsPlugin.directory) />
 	<cfset var delim=variables.configBean.getFileDelim() />
 	<cfset var pluginXML=getPluginXML(modID)>
 
@@ -244,7 +255,12 @@ select * from tplugins order by #arguments.orderby#
 	providerURL=<cfqueryparam cfsqltype="cf_sql_varchar" value="#pluginXML.plugin.providerURL.xmlText#">,
 	version=<cfqueryparam cfsqltype="cf_sql_varchar" value="#pluginXML.plugin.version.xmlText#">,
 	category=<cfqueryparam cfsqltype="cf_sql_varchar" value="#pluginXML.plugin.category.xmlText#">,
-	created=#createODBCDateTime(now())#
+	created=#createODBCDateTime(now())#,
+	<cfif structKeyExists(pluginXML.plugin,"package") and len(pluginXML.plugin.package.xmlText)>
+	package=<cfqueryparam cfsqltype="cf_sql_varchar" value="#pluginXML.plugin.package.xmlText#">
+	<cfelse>
+	package=null
+	</cfif>
 	where moduleID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#modID#">
 	</cfquery>
 	
@@ -408,10 +424,10 @@ select * from tplugins order by #arguments.orderby#
 	<cfset var theXML="">
 	<cfset var rsPlugin=getPlugin(arguments.moduleID,'',false)>
 	<cfset var delim=variables.configBean.getFileDelim() />
-	<cfif fileExists("#getLocation(rsPlugin.pluginID)#plugin#delim#config.xml")>
-		<cffile action="read" file="#getLocation(rsPlugin.pluginID)#plugin#delim#config.xml" variable="theXML">
+	<cfif fileExists("#getLocation(rsPlugin.directory)#plugin#delim#config.xml")>
+		<cffile action="read" file="#getLocation(rsPlugin.directory)#plugin#delim#config.xml" variable="theXML">
 	<cfelse>
-		<cffile action="read" file="#getLocation(rsPlugin.pluginID)#plugin#delim#config.xml.cfm" variable="theXML">
+		<cffile action="read" file="#getLocation(rsPlugin.directory)#plugin#delim#config.xml.cfm" variable="theXML">
 	</cfif>
 	<cfreturn xmlParse(theXML)/>
 </cffunction>
@@ -446,6 +462,8 @@ select * from tplugins order by #arguments.orderby#
 	<cfset pluginConfig.setDeployed(rs.deployed) />
 	<cfset pluginConfig.setCategory(rs.category) />
 	<cfset pluginConfig.setCreated(rs.created) />
+	<cfset pluginConfig.setPackage(rs.package) />
+	<cfset pluginConfig.setDirectory(rs.directory) />
 	
 	<cfquery name="rs"  dbtype="query">
 	select * from variables.rsSettings where  moduleID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#rs.moduleID#">
@@ -482,14 +500,15 @@ select * from tplugins order by #arguments.orderby#
 	<cfset var pluginXML=getPluginXML(arguments.args.moduleID) />
 	<cfset var settingsLen=0/>
 	<cfset var i=1 />
-	<cfset var pluginConfig=getConfig(arguments.args.moduleID,'',false) />
-	<cfset var pluginCFC= createObject("component","#variables.configBean.getWebRootMap()#.plugins.#pluginConfig.getPluginID()#.plugin.plugin") />
+	<cfset var pluginConfig="" />
+	<cfset var pluginCFC= ""/>
 	<cfset var adminDir="">
 	<cfset var siteDir="">
 	<cfset var delim=variables.configBean.getFileDelim() >
 	<cfset var distroList="" />
 	<cfset var dopID=""/>
 	<cfset var rsObjects="">
+	<cfset var directory="">
 	
 	<cfset deleteSettings(arguments.args.moduleID) />
 	
@@ -512,6 +531,35 @@ select * from tplugins order by #arguments.orderby#
 	<cfset deleteScripts(arguments.args.moduleID) />
 	
 	<cfset savePluginXML(arguments.args.moduleID) />
+	<cfset pluginConfig=getConfig(arguments.args.moduleID,'',false) />
+	
+	
+	<!--- save the submitted name --->
+	<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+	update tplugins set name=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.args.pluginalias#">
+	where moduleID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.args.moduleID#">			
+	</cfquery>
+	
+	
+	<!--- check to see if the directory has changed --->
+	<cfif len(pluginConfig.getPackage())>
+		<cfset directory="#pluginConfig.getPackage()#_#pluginConfig.getPluginID()#">
+	<cfelse>
+		<cfset directory=pluginConfig.getPluginID()>
+	</cfif>
+	
+	<cfif directory neq pluginConfig.getDirectory()>
+		
+		<cfdirectory action = "rename" directory = "#expandPath('/plugins')#/#pluginConfig.getDirectory()#" newDirectory = "#expandPath('/plugins')#/#directory#" >
+	
+		<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+		update tplugins set directory=<cfqueryparam cfsqltype="cf_sql_varchar" value="#directory#">
+		where moduleID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.args.moduleID#">			
+		</cfquery>
+		
+		<cfset pluginConfig=getConfig(arguments.args.moduleID,'',false) />
+	</cfif>
+	
 	
 	<cfset deleteAssignedSites(arguments.args.moduleID) />
 	
@@ -577,7 +625,7 @@ select * from tplugins order by #arguments.orderby#
 		</cfif>
 	</cfif>
 	
-	
+	<cfset pluginCFC= createObject("component","#variables.configBean.getWebRootMap()#.plugins.#pluginConfig.getDirectory()#.plugin.plugin") />
 	<cfset pluginConfig=getConfig(arguments.args.moduleID) />
 	<cfset pluginCFC.init(pluginConfig)>
 	
@@ -626,7 +674,7 @@ select * from tplugins order by #arguments.orderby#
 <cfargument name="orderby" default="name" required="true">
 	<cfset var rs="">
 	<cfquery name="rs" datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-	select tplugins.pluginID,tplugins.moduleID,tplugins.name,tplugins.version,
+	select tplugins.pluginID,tplugins.moduleID, tplugins.package, tplugins.directory, tplugins.name,tplugins.version,
 	tplugins.provider, tplugins.providerURL,tplugins.category,tplugins.created from tplugins inner join tcontent
 	on (tplugins.moduleID=tcontent.moduleID and tcontent.siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#">)
 	order by tplugins.#arguments.orderby#
@@ -638,12 +686,12 @@ select * from tplugins order by #arguments.orderby#
 <cfargument name="moduleID">
 
 	<cfset var rsPlugin=getPlugin(arguments.moduleID) />
-	<cfset var location=getLocation(rsPlugin.pluginID) />
+	<cfset var location=getLocation(rsPlugin.directory) />
 	<cfset var pluginConfig=getConfig(arguments.moduleID) />
 	<cfset var pluginCFC="/">
 	
 	<cftry>
-	<cfset pluginCFC=createObject("component","#variables.configBean.getWebRootMap()#.plugins.#pluginConfig.getPluginID()#.plugin.plugin") />
+	<cfset pluginCFC=createObject("component","#variables.configBean.getWebRootMap()#.plugins.#pluginConfig.getDirectory()#.plugin.plugin") />
 	
 	<cfset pluginCFC.init(pluginConfig)>
 	<cfset pluginCFC.delete() />
@@ -697,13 +745,13 @@ select * from tplugins order by #arguments.orderby#
 		<cfset event.setValue("siteid",arguments.siteID)>
 		
 		<cfif listLast(rs.scriptfile,".") neq "cfm">
-			<cfset componentPath="plugins.#rs.pluginID#.#rs.scriptfile#">
+			<cfset componentPath="plugins.#rs.directory#.#rs.scriptfile#">
 			<cfset eventHandler=getComponent(componentPath, rs.pluginID, arguments.siteID, rs.docache)>
 			<cfinvoke component="#eventHandler#" method="#arguments.runat#">
 				<cfinvokeargument name="event" value="#arguments.event#">
 			</cfinvoke>	
 		<cfelse>
-			<cfset getExecutor().executeScript(event,"/plugins/#rs.pluginID#/#rs.scriptfile#",getConfig(rs.pluginID))>
+			<cfset getExecutor().executeScript(event,"/plugins/#rs.directory#/#rs.scriptfile#",getConfig(rs.pluginID))>
 		</cfif>
 	</cfloop>
 
@@ -740,7 +788,7 @@ select * from tplugins order by #arguments.orderby#
 	<cfloop query="rs">
 	<cftry>
 		<cfif listLast(rs.scriptfile,".") neq "cfm">		
-			<cfset componentPath="plugins.#rs.pluginID#.#rs.scriptfile#">
+			<cfset componentPath="plugins.#rs.directory#.#rs.scriptfile#">
 			<cfset eventHandler=getComponent(componentPath, rs.pluginID, arguments.siteID, rs.docache)>
 			<cfsavecontent variable="theDisplay1">
 			<cfinvoke component="#eventHandler#" method="#arguments.runat#" returnVariable="theDisplay2">
@@ -754,7 +802,7 @@ select * from tplugins order by #arguments.orderby#
 			</cfif>
 		<cfelse>
 			<cfsavecontent variable="theDisplay1">
-			<cfoutput>#getExecutor().renderScript(event,"/plugins/#rs.pluginID#/#rs.scriptfile#",getConfig(rs.pluginID))#</cfoutput>
+			<cfoutput>#getExecutor().renderScript(event,"/plugins/#rs.directory#/#rs.scriptfile#",getConfig(rs.pluginID))#</cfoutput>
 			</cfsavecontent>
 			<cfset str=str & theDisplay1>
 		</cfif>
@@ -777,7 +825,7 @@ select * from tplugins order by #arguments.orderby#
 <cfset var rs="">
 
 	<cfquery name="rs" dbtype="query">
-	select pluginID, scriptfile,name, docache from variables.rsScripts 
+	select pluginID, package, directory, scriptfile,name, docache from variables.rsScripts 
 	where runat=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.runat#">
 	<cfif len(arguments.siteID)>
 	and siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#">
@@ -817,9 +865,9 @@ select * from tplugins order by #arguments.orderby#
 	<cfset var cacheFactory=getCacheFactory(arguments.event.getValue('siteID'))/> --->
 	
 	<cfquery name="rs" dbtype="query">
-	select pluginID, displayObjectFile,location,displaymethod, docache, objectID from variables.rsDisplayObjects 
+	select pluginID, displayObjectFile,location,displaymethod, docache, objectID, directory from variables.rsDisplayObjects 
 	where objectID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.objectID#">
-	group by pluginID, displayObjectFile, location, displaymethod, docache, objectID
+	group by pluginID, displayObjectFile, location, displaymethod, docache, objectID, directory
 	</cfquery>
 	
 	<!--- <cfset key= rs.objectID & event.getValue('siteID')>
@@ -849,7 +897,8 @@ select * from tplugins order by #arguments.orderby#
 		<cfif rs.recordcount>
 		<cftry>
 		<cfif listLast(rs.displayobjectfile,".") neq "cfm">
-			<cfset componentPath="plugins.#rs.pluginID#.#rs.displayobjectfile#">
+			
+			<cfset componentPath="plugins.#rs.directory#.#rs.displayobjectfile#">
 			<cfset eventHandler=getComponent(componentPath, rs.pluginID, event.getValue('siteID'),rs.docache)>
 			<cfsavecontent variable="theDisplay1">
 			<cfinvoke component="#eventHandler#" method="#rs.displaymethod#" returnvariable="theDisplay2">
@@ -874,6 +923,15 @@ select * from tplugins order by #arguments.orderby#
 		<cfreturn "">
 </cffunction>
 
+<cffunction name="getDirectoryFromQuery" returntype="String" output="false">
+<cfargument name="rs">
+	<cfif len(rs.package)>
+		<cfreturn "#rs.package#.#rs.pluginID#">
+	<cfelse>
+		<cfreturn "#rs.pluginID#">
+	</cfif>
+</cffunction>
+	
 <cffunction name="getComponent" returntype="any" output="false">
 <cfargument name="componentPath">
 <cfargument name="pluginID">
@@ -883,13 +941,13 @@ select * from tplugins order by #arguments.orderby#
 	<cfset var pluginConfig="">
 	<cfif isBoolean(arguments.cache) and arguments.cache>
 		<cfif NOT getCacheFactory(arguments.siteid).has( componentPath ) or variables.configBean.getMode() eq "development">
-			<cfset pluginConfig=application.pluginManager.getConfig(arguments.pluginID)>	
+			<cfset pluginConfig=getConfig(arguments.pluginID)>	
 			<cfreturn getCacheFactory(arguments.siteid).get( componentPath, createObject("component",componentPath).init(pluginConfig,configBean) ) />	
 		<cfelse>
 			<cfreturn getCacheFactory(arguments.siteid).get( componentPath) />
 		</cfif>
 	<cfelse>
-		<cfset pluginConfig=application.pluginManager.getConfig(arguments.pluginID)>
+		<cfset pluginConfig=getConfig(arguments.pluginID)>
 		<cfreturn createObject("component",componentPath).init(pluginConfig,configBean) />
 	</cfif>
 
