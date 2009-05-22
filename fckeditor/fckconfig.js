@@ -93,6 +93,7 @@ FCKConfig.SourcePopup	= false ;
 FCKConfig.ToolbarStartExpanded	= true ;
 FCKConfig.ToolbarCanCollapse	= true ;
 FCKConfig.IgnoreEmptyParagraphValue = true ;
+FCKConfig.FillEmptyBlocks = false ;
 FCKConfig.PreserveSessionOnFileBrowser = false ;
 FCKConfig.FloatingPanelsZIndex = 10000 ;
 FCKConfig.HtmlEncodeOutput = false ;
@@ -120,7 +121,7 @@ FCKConfig.ToolbarLocation = 'In' ;
 ] ; */
 
 FCKConfig.ToolbarSets["Default"] = [
-	['Source','-','NewPage','Preview'],
+	['Source'],
 	['Cut','Copy','Paste','PasteText','PasteWord','-','Print','SpellCheck'],
 	['Undo','Redo','-','Find','Replace','-','RemoveFormat'],
 	['Bold','Italic','Underline','StrikeThrough','-','Subscript','Superscript'],
@@ -132,7 +133,7 @@ FCKConfig.ToolbarSets["Default"] = [
 ] ;
 
 FCKConfig.ToolbarSets["Summary"] = [
-	['Source','-','NewPage','Preview'],
+	['Source'],
 	['Cut','Copy','Paste','PasteText','PasteWord','-','Print','SpellCheck'],
 	['Undo','Redo','-','Find','Replace','-','RemoveFormat'],
 	['Bold','Italic','Underline','StrikeThrough','-','Subscript','Superscript'],
@@ -144,7 +145,7 @@ FCKConfig.ToolbarSets["Summary"] = [
 ] ;
 
 FCKConfig.ToolbarSets["Form"] = [
-	['Source','-','NewPage','Preview'],
+	['Source'],
 	['Cut','Copy','Paste','PasteText','PasteWord','-','Print','SpellCheck'],
 	['Undo','Redo','-','Find','Replace','-','RemoveFormat'],
 	['Bold','Italic','Underline','StrikeThrough','-','Subscript','Superscript'],
