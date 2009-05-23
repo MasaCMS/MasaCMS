@@ -104,11 +104,22 @@ to your own modified versions of Mura CMS.
 <cfelse>
 <cfset objectsLen=0>
 </cfif>
-</cfsilent>
 
+<cfif rsPlugin.deployed>
+	<cfset package=rsPlugin.package>
+<cfelse>
+	<cfif structKeyExists(request.pluginXML.plugin,"package") and len(request.pluginXML.plugin.package.xmlText)>
+		<cfset package=request.pluginXML.plugin.package.xmlText>
+	<cfelse>
+		<cfset package="">
+	</cfif>
+</cfif>
+</cfsilent>
 <dl class="oneColumn">
-	<dt>Plugin Name / Alias</dt>	
-	<dd><input name="pluginalias" type="text" value="#htmlEditFormat(rsPlugin.name)#" required="true" message="The 'Name' field is required."/></dd>
+	<dt>Plugin Name (Alias)</dt>	
+	<dd><input name="pluginalias" type="text" value="#htmlEditFormat(rsPlugin.name)#" required="true" message="The 'Name' field is required." maxlength="100"/></dd>
+	<dt>Package (Base of Install Directory)</dt>	
+	<dd><input name="package" type="text" value="#htmlEditFormat(package)#" maxlength="100"/></dd>
 <cfif settingsLen>
 <cfloop from="1" to="#settingsLen#" index="i">
 		<cfsilent>

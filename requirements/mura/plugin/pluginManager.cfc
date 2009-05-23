@@ -542,8 +542,14 @@ select * from tplugins order by #arguments.orderby#
 	
 	
 	<!--- check to see if the directory has changed --->
-	<cfif len(pluginConfig.getPackage())>
+	<!--- <cfif len(pluginConfig.getPackage())>
 		<cfset directory="#pluginConfig.getPackage()#_#pluginConfig.getPluginID()#">
+	<cfelse>
+		<cfset directory=pluginConfig.getPluginID()>
+	</cfif> --->
+	
+	<cfif len(arguments.args.package)>
+		<cfset directory="#rereplace(arguments.args.package,"[^a-zA-Z0-9\-]","","ALL")#_#pluginConfig.getPluginID()#">
 	<cfelse>
 		<cfset directory=pluginConfig.getPluginID()>
 	</cfif>
@@ -554,6 +560,7 @@ select * from tplugins order by #arguments.orderby#
 	
 		<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 		update tplugins set directory=<cfqueryparam cfsqltype="cf_sql_varchar" value="#directory#">
+		,package=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.args.package#">
 		where moduleID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.args.moduleID#">			
 		</cfquery>
 		

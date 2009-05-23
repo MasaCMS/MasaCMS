@@ -195,7 +195,7 @@ to your own modified versions of Mura CMS.
 <cfset var headerStr=""/>
 	
 <cfif getSetting("pluginMode") eq "object" and structKeyExists(request,"contentRenderer")>
-	<cfset request.contentRenderer.addtoHTMLHeadQueue(getPluginID() & "/" & arguments.text) />
+	<cfset request.contentRenderer.addtoHTMLHeadQueue(getDirectory() & "/" & arguments.text) />
 <cfelse>
 <cfsavecontent variable="headerStr">
 <cfinclude template="/#application.configBean.getWebRootMap()#/plugins/#getDirectory()#/#arguments.text#">
@@ -211,11 +211,11 @@ to your own modified versions of Mura CMS.
 			<cfset application.plugins=structNew()>
 		</cfif>
 		
-		<cfif not structKeyExists(application.plugins,"sp#getPluginID()#")>
-			<cfset application.plugins["sp#getPluginID()#"]=createObject("component","pluginApplication")>
+		<cfif not structKeyExists(application.plugins,"p#getPluginID()#")>
+			<cfset application.plugins["p#getPluginID()#"]=createObject("component","pluginApplication")>
 		</cfif>
 		
-		<cfreturn application.plugins["sp#getPluginID()#"] />
+		<cfreturn application.plugins["p#getPluginID()#"] />
 </cffunction>
 
 <cffunction name="getSession" returntype="any" access="public" output="false">
@@ -224,11 +224,11 @@ to your own modified versions of Mura CMS.
 			<cfset session.plugins=structNew()>
 		</cfif>
 		
-		<cfif not structKeyExists(session.plugins,"sp#getPluginID()#")>
-			<cfset session.plugins["sp#getPluginID()#"]=createObject("component","pluginSession")>
+		<cfif not structKeyExists(session.plugins,"p#getPluginID()#")>
+			<cfset session.plugins["p#getPluginID()#"]=createObject("component","pluginSession")>
 		</cfif>
 		
-		<cfreturn session.plugins["sp#getPluginID()#"] />
+		<cfreturn session.plugins["p#getPluginID()#"] />
 </cffunction>
 
 </cfcomponent>

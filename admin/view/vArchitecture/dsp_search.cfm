@@ -94,7 +94,7 @@ copySiteID = '#session.copySiteID#';
 	<cfelse>
 		&nbsp;
 	</cfif></td>
-          <td class="varWidth">#application.contentRenderer.dspZoom(crumbdata,request.rsList.fileExt)#</td>
+          <td class="title varWidth">#application.contentRenderer.dspZoom(crumbdata,request.rsList.fileExt)#</td>
 			   <td> 
 	    <cfif request.rslist.Display and (request.rslist.Display eq 1 and request.rslist.approved and request.rslist.approved)>Yes<cfelseif(request.rslist.Display eq 2 and request.rslist.approved and request.rslist.approved)>#LSDateFormat(request.rslist.displaystart,session.dateKeyFormat)# - #LSDateFormat(request.rslist.displaystop,session.dateKeyFormat)#<cfelse>No</cfif></td>
 		<td>#LSDateFormat(request.rslist.lastupdate,session.dateKeyFormat)#</td>
