@@ -1061,4 +1061,10 @@ select * from rs order by name
 
 
 </cffunction>
+
+<cffunction name="getIDFromPath" returntype="any" output="false">
+<cfargument name="path">
+	<cfreturn listLast(listGetat(getDirectoryFromPath(arguments.path),listLen(getDirectoryFromPath(arguments.path),variables.configBean.getFileDelim())-1,variables.configBean.getFileDelim()),"_")>
+</cffunction>
+
 </cfcomponent>
