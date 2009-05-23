@@ -55,7 +55,7 @@ to your own modified versions of Mura CMS.
 	<h3>#HTMLEditformat(rsPluginScripts.name)#</h3>
 	<cfoutput>
 	<cfset request.pluginConfig=application.pluginManager.getConfig(rsPluginScripts.pluginID)>
-	<cfinclude template="/#application.configBean.getWebRootMap()#/plugins/#rsPluginScripts.pluginID#/#rsPluginScripts.scriptfile#">
+	<cfinclude template="/#application.configBean.getWebRootMap()#/plugins/#rsPluginScripts.directory#/#rsPluginScripts.scriptfile#">
 	</cfoutput>
 </div>
 </cfoutput>
@@ -93,7 +93,7 @@ to your own modified versions of Mura CMS.
 	<h3>#HTMLEditformat(rsPluginScripts.name)#</h3>
 	<cfoutput>
 	<cfset request.pluginConfig=application.pluginManager.getConfig(rsPluginScripts.pluginID)>
-	<cfinclude template="/#application.configBean.getWebRootMap()#/plugins/#rsPluginScripts.pluginID#/#rsPluginScripts.scriptfile#">
+	<cfinclude template="/#application.configBean.getWebRootMap()#/plugins/#rsPluginScripts.directory#/#rsPluginScripts.scriptfile#">
 	</cfoutput>
 </div>
 </cfoutput>
@@ -120,7 +120,7 @@ to your own modified versions of Mura CMS.
 	<h3>#HTMLEditformat(rsPluginScripts.name)#</h3>
 	<cfoutput>
 	<cfset request.pluginConfig=application.pluginManager.getConfig(rsPluginScripts.pluginID)>
-	<cfinclude template="/#application.configBean.getWebRootMap()#/plugins/#rsPluginScripts.pluginID#/#rsPluginScripts.scriptfile#">
+	<cfinclude template="/#application.configBean.getWebRootMap()#/plugins/#rsPluginScripts.directory#/#rsPluginScripts.scriptfile#">
 	</cfoutput>
 </div>
 </cfoutput>
@@ -171,7 +171,7 @@ to your own modified versions of Mura CMS.
 	<h3>#HTMLEditformat(rsPluginScripts.name)#</h3>
 	<cfoutput>
 	<cfset request.pluginConfig=application.pluginManager.getConfig(rsPluginScripts.pluginID)>
-	<cfinclude template="/#application.configBean.getWebRootMap()#/plugins/#rsPluginScripts.pluginID#/#rsPluginScripts.scriptfile#">
+	<cfinclude template="/#application.configBean.getWebRootMap()#/plugins/#rsPluginScripts.directory#/#rsPluginScripts.scriptfile#">
 	</cfoutput>
 </div>
 </cfoutput>

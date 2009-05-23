@@ -316,7 +316,7 @@ select * from rsPluginScripts3 order by pluginID
 	<div class="page_aTab">
 		<cfoutput>
 		<cfset request.pluginConfig=application.pluginManager.getConfig(rsPluginScripts.pluginID)>
-		<cfinclude template="/#application.configBean.getWebRootMap()#/plugins/#rsPluginScripts.pluginID#/#rsPluginScripts.scriptfile#">
+		<cfinclude template="/#application.configBean.getWebRootMap()#/plugins/#rsPluginScripts.directory#/#rsPluginScripts.scriptfile#">
 		</cfoutput>
 	</div>
 	</cfoutput>
