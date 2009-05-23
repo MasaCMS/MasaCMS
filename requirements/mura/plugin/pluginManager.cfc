@@ -548,8 +548,11 @@ select * from tplugins order by #arguments.orderby#
 		<cfset directory=pluginConfig.getPluginID()>
 	</cfif> --->
 	
+	<!--- remove none alphnumeric characters--->
+	<cfset arguments.args.package=rereplace(arguments.args.package,"[^a-zA-Z0-9\-_]","","ALL")>
+	
 	<cfif len(arguments.args.package)>
-		<cfset directory="#rereplace(arguments.args.package,"[^a-zA-Z0-9\-]","","ALL")#_#pluginConfig.getPluginID()#">
+		<cfset directory="#arguments.args.package#_#pluginConfig.getPluginID()#">
 	<cfelse>
 		<cfset directory=pluginConfig.getPluginID()>
 	</cfif>
