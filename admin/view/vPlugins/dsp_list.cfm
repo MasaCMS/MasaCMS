@@ -46,7 +46,7 @@ to your own modified versions of Mura CMS.
 <table class="stripe">
 <tr>
 <th class="varWidth">#application.rbFactory.getKeyValue(session.rb,"plugin.name")#</th>
-<th>Package</th>
+<th>#application.rbFactory.getKeyValue(session.rb,"plugin.directory")#</th>
 <th>#application.rbFactory.getKeyValue(session.rb,"plugin.category")#</th>
 <th>#application.rbFactory.getKeyValue(session.rb,"plugin.version")#</th>
 <th>#application.rbFactory.getKeyValue(session.rb,"plugin.provider")#</th>

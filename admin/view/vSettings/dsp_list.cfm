@@ -82,7 +82,7 @@ Upload New Plugin<br/>
 <table class="stripe">
 <tr>
 <th class="varWidth">Name</th>
-<th>Package</th>
+<th>Directory</th>
 <th>Category</th>
 <th>Version</th>
 <th>Provider</th>
