@@ -180,11 +180,11 @@ select * from tplugins order by #arguments.orderby#
 		<cfset deleteScripts(modID) />
 	</cfif>
 	
-	<cffile action="upload" filefield="NewPlugin" nameconflict="makeunique" destination="#getTemppackage()#">	
+	<cffile action="upload" filefield="NewPlugin" nameconflict="makeunique" destination="#getTempDirectory()#">	
 	
 	<cfif isNew>
 	<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-	insert into tplugins (moduleID,name,provider,providerURL,version,deployed,category,created,package) values (
+	insert into tplugins (moduleID,name,provider,providerURL,version,deployed,category,created) values (
 	<cfqueryparam cfsqltype="cf_sql_varchar" value="#modID#">,
 	<cfqueryparam cfsqltype="cf_sql_varchar" value="An error occurred.">,
 	null,
