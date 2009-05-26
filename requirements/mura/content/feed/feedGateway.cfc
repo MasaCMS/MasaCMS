@@ -186,6 +186,12 @@ to your own modified versions of Mura CMS.
 										<cfif param.getRelationship() eq "openGrouping">
 											(
 											<cfset openGrouping=true />
+										<cfelseif param.getRelationship() eq "orOpenGrouping">
+											or (
+											<cfset openGrouping=true />
+										<cfelseif param.getRelationship() eq "andOpenGrouping">
+											and (
+											<cfset openGrouping=true />
 										<cfelseif param.getRelationship() eq "closeGrouping">
 											)
 										<cfelse>
@@ -358,6 +364,12 @@ to your own modified versions of Mura CMS.
 				<cfelse>
 					<cfif param.getRelationship() eq "openGrouping">
 						(
+						<cfset openGrouping=true />
+					<cfelseif param.getRelationship() eq "orOpenGrouping">
+						or (
+						<cfset openGrouping=true />
+					<cfelseif param.getRelationship() eq "andOpenGrouping">
+						and (
 						<cfset openGrouping=true />
 					<cfelseif param.getRelationship() eq "closeGrouping">
 						)
