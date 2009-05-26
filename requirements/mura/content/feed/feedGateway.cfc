@@ -183,16 +183,16 @@ to your own modified versions of Mura CMS.
 									<cfif not started >
 										<cfset started = true />and (
 									<cfelse>
-										<cfif param.getRelationship() eq "openGrouping">
+										<cfif listFindNoCase("openGrouping,(",param.getRelationship())>
 											(
 											<cfset openGrouping=true />
-										<cfelseif param.getRelationship() eq "orOpenGrouping">
+										<cfelseif listFindNoCase("orOpenGrouping,or (",param.getRelationship())>
 											or (
 											<cfset openGrouping=true />
-										<cfelseif param.getRelationship() eq "andOpenGrouping">
+										<cfelseif listFindNoCase("andOpenGrouping,and (",param.getRelationship())>
 											and (
 											<cfset openGrouping=true />
-										<cfelseif param.getRelationship() eq "closeGrouping">
+										<cfelseif listFindNoCase("closeGrouping,)",param.getRelationship())>
 											)
 										<cfelse>
 											<cfif not openGrouping>
@@ -362,16 +362,16 @@ to your own modified versions of Mura CMS.
 				<cfif not started >
 					<cfset started = true />and (
 				<cfelse>
-					<cfif param.getRelationship() eq "openGrouping">
+					<cfif listFindNoCase("openGrouping,(",param.getRelationship())>
 						(
 						<cfset openGrouping=true />
-					<cfelseif param.getRelationship() eq "orOpenGrouping">
+					<cfelseif listFindNoCase("orOpenGrouping,or (",param.getRelationship())>
 						or (
 						<cfset openGrouping=true />
-					<cfelseif param.getRelationship() eq "andOpenGrouping">
+					<cfelseif listFindNoCase("andOpenGrouping,and (",param.getRelationship())>
 						and (
 						<cfset openGrouping=true />
-					<cfelseif param.getRelationship() eq "closeGrouping">
+					<cfelseif listFindNoCase("closeGrouping,)",param.getRelationship())>
 						)
 					<cfelse>
 						<cfif not openGrouping>

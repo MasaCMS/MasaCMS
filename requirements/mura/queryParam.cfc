@@ -220,7 +220,7 @@ to your own modified versions of Mura CMS.
 </cffunction>
 
 <cffunction name="validate">
-	<cfif not listFindNoCase("openGrouping,orOpenGrouping,andOpenGrouping,closeGrouping",getRelationship()) 
+	<cfif not listFindNoCase("(,and (,or (,),openGrouping,orOpenGrouping,andOpenGrouping,closeGrouping",getRelationship()) 
 		and (variables.field eq '' or variables.field eq 'Select Field')>
 		<cfset variables.field=""/>
 		<cfset setIsValid(false) />
