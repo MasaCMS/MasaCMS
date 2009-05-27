@@ -148,7 +148,6 @@ to your own modified versions of Mura CMS.
 				<cfset errorType = "database" />
 			</cfif>
 			
-			<!---
 			<!--- check to see if it's a datasource error --->
 			<cfif REFindNoCase( "datasource (.*?) doesn't exist", msg )
 				OR REFindNoCase( "can't connect to datasource (.*?)", msg )
@@ -156,7 +155,6 @@ to your own modified versions of Mura CMS.
 				OR FindNoCase( "Access denied", msg )>
 				<cfset errorType = "datasource" />
 			</cfif>
-			--->
 			<!--- check to see if it's a broken pipe error --->
 			<cfif FindNoCase( "broken pipe", msg )>
 				<cfset errorType = "brokenpipe" />
