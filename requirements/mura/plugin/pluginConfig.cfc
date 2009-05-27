@@ -162,7 +162,7 @@ to your own modified versions of Mura CMS.
 	<cfset variables.directory = trim(arguments.directory) />
 </cffunction>
 
-<cffunction name="getdirectory" returntype="String" access="public" output="false">
+<cffunction name="getDirectory" returntype="String" access="public" output="false">
 	<cfreturn variables.directory />
 </cffunction>
 
