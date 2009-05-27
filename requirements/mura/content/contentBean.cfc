@@ -1029,10 +1029,10 @@ to your own modified versions of Mura CMS.
 </cffunction>
 
 <cffunction name="getValue" returntype="any" access="public" output="false">
-	<cfargument name="property"  type="string" required="true">
+	<cfargument name="property" type="string" required="true">
 	
 	<cfif structKeyExists(this,"get#property#")>
-		<cfreturn evaluate("get#property#(arguments.propertyValue") />
+		<cfreturn evaluate("get#property#()") />
 	<cfelseif structKeyExists(request,"#arguments.property#")>
 		<cfreturn request["#arguments.property#"] />
 	<cfelse>
