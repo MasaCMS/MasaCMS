@@ -311,7 +311,8 @@ CREATE TABLE `tcontent` (
    KEY `IX_TContent_1` (`ContentHistID`),
    KEY `IX_TContent_2` (`SiteID`),
    KEY `IX_TContent_3` (`ParentID`),
-   KEY `IX_TContent_4` (`RemoteID`)
+   KEY `IX_TContent_4` (`RemoteID`),
+   KEY `IX_TContent_5` (`ModuleID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --

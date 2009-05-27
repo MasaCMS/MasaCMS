@@ -1225,6 +1225,9 @@ GO
  CREATE  INDEX [IX_tcontent_4] ON [dbo].[tcontent]([RemoteID]) ON [PRIMARY]
 GO
 
+ CREATE  INDEX [IX_tcontent_5] ON [dbo].[tcontent]([ModuleID]) ON [PRIMARY]
+GO
+
  CREATE  INDEX [IX_tcontentcategories] ON [dbo].[tcontentcategories]([siteID]) ON [PRIMARY]
 GO
 
