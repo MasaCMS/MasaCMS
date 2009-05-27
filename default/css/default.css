@@ -1086,11 +1086,11 @@ ul#svSiteMap {
 #svTagCloud span { position: absolute; left: -9999px; width: 990px; }
 
 #svTagCloud .not-popular { font-size: .9em; }
-#svTagCloud .not-very-popular { font-size: 1em; }
-#svTagCloud .somewhat-popular { font-size: 1.3em; }
-#svTagCloud .popular { font-size: 1.6em; }
-#svTagCloud .very-popular { font-size: 1.9em; }
-#svTagCloud .ultra-popular { font-size: 2.2em; }
+#svTagCloud .not-very-popular { font-size: 1.2em; }
+#svTagCloud .somewhat-popular { font-size: 1.6em; }
+#svTagCloud .popular { font-size: 1.9em; }
+#svTagCloud .very-popular { font-size: 2.1em; }
+#svTagCloud .ultra-popular { font-size: 2.6em; }
 
 /* @end Tag Clouds
 -------------------------------- */
@@ -1141,11 +1141,11 @@ ul#favoriteList {
 	}
 
 #favoriteList li {
-	margin: 0 0 .5em !important;
+	margin: 0 0 .65em !important;
 	padding: 0;
 	border: none;
 	font-size: 11px;
-	line-height: 1;
+	line-height: 1.1;
 	}
 
 #favoriteList li.defaultMsg {
