@@ -246,7 +246,7 @@ select * from (select pluginID as CheckIfTableExists from tplugins) where ROWNUM
 	</cfquery>
 
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
-	create or replace TRIGGER tplugins_pluginID_TRG BEFORE INSERT OR UPDATE ON tplugins
+	create or replace TRIGGER "TPLUGINS_PLUGINID_TRG" BEFORE INSERT OR UPDATE ON tplugins
 	FOR EACH ROW
 	DECLARE 
 	v_newVal NUMBER(12) := 0;
@@ -266,7 +266,7 @@ select * from (select pluginID as CheckIfTableExists from tplugins) where ROWNUM
 	      END LOOP;
 	    END IF;
 	    -- save this to emulate @@identity
-	   mysql_utilities.identity := v_newVal; 
+	   sql_utilities.identity := v_newVal; 
 	   -- assign the value from the sequence to emulate the identity column
 	   :new.pluginID := v_newVal;
 	  END IF;
