@@ -127,8 +127,9 @@ to your own modified versions of Mura CMS.
 		<cfquery name="qry" datasource="#FORM.production_datasource#" username="#FORM.production_dbusername#" password="#FORM.production_dbpassword#">
 			SELECT COUNT( contentid )
 			FROM
-				tcontent
+			tcontent
 		</cfquery>
+		
 		<!--- state that the db is already created --->
 		<cfset dbCreated = true />
 		<!--- purposly pose an error since the user decided to try and build the database --->
@@ -139,12 +140,15 @@ to your own modified versions of Mura CMS.
 		--->
 		<cfcatch type="database">
 			<!--- combine the message and detail so we can check against the both as the CFML engines do not contain similar structures of information --->
+			
 			<cfset msg = cfcatch.message & cfcatch.detail />
 			
 			<!--- check to see if the db is there --->
-			<cfif FindNoCase( "tcontent", msg )>
+			<cfif FindNoCase( "tcontent", msg ) or FindNoCase( "00942", msg )>
 				<cfset errorType = "database" />
 			</cfif>
+			
+			<!---
 			<!--- check to see if it's a datasource error --->
 			<cfif REFindNoCase( "datasource (.*?) doesn't exist", msg )
 				OR REFindNoCase( "can't connect to datasource (.*?)", msg )
@@ -152,10 +156,22 @@ to your own modified versions of Mura CMS.
 				OR FindNoCase( "Access denied", msg )>
 				<cfset errorType = "datasource" />
 			</cfif>
+			--->
 			<!--- check to see if it's a broken pipe error --->
 			<cfif FindNoCase( "broken pipe", msg )>
 				<cfset errorType = "brokenpipe" />
 			</cfif>
+			
+			<!--- if an error is not caught then catch it anyways and log it to a file for review --->
+			<cfif not len(errorType)>
+				<cfset errorType = "unknown" />
+				<cfset errorFile = recordError( cfcatch ) />
+			</cfif>
+		</cfcatch>
+		<cfcatch type="any">
+			<!--- if an error is not caught then catch it anyways and log it to a file for review --->
+			<cfset errorType = "unknown" />
+			<cfset errorFile = recordError( cfcatch ) />
 		</cfcatch>
 	</cftry>
 	
@@ -190,7 +206,7 @@ to your own modified versions of Mura CMS.
 			<!--- if it is asked to create the database then do so --->
 			<cfif NOT dbCreated AND FORM.production_dbtype IS NOT "">
 				<!--- try to create the database --->
-				<cftry>
+				<!--- <cftry> --->
 					<!--- get selected DB type --->
 					<cffile action="read" file="#getDirectoryFromPath( getCurrentTemplatePath() )#/db/#FORM.production_dbtype#.sql" variable="sql" />
 					<!---
@@ -202,24 +218,54 @@ to your own modified versions of Mura CMS.
 					<cfswitch expression="#FORM.production_dbtype#">
 					
 						<cfcase value="mssql">
-							<!--- if we are working with a SQL db we go ahead and swap out the GO with ; so we can loop over each sql even --->
+							<!--- if we are working with a SQL db we go ahead and delimit with GO so we can loop over each sql even --->
 							<cfset sql = REReplaceNoCase( sql, "\nGO", ";", "ALL") />
+							<cfset aSql = ListToArray(sql, ';')>
+							<!--- loop over items --->
+				            <cfloop index="x" from="1" to="#arrayLen(aSql) - 1#">
+					            <!--- we placed a small check here to skip empty rows --->
+					            <cfif len( trim( aSql[x] ) )>
+					                <cfquery datasource="#FORM.production_datasource#" username="#FORM.production_dbusername#" password="#FORM.production_dbpassword#">
+					                    #keepSingleQuotes(aSql[x])#
+					                </cfquery>
+				                </cfif>
+				            </cfloop>
 						</cfcase>
-					
+						<cfcase value="oracle">
+							<!--- if we are working with a ORACLE db we delimit with  --/  so we can loop over each sql even --->
+							<cfset sql = replace( sql, "--", "", "ALL") />
+							<cfset aSql = ListToArray(sql, '|')>
+							<!--- loop over items --->
+				            <cfloop index="x" from="1" to="#arrayLen(aSql) - 1#">
+					            <!--- we placed a small check here to skip empty rows --->
+					            <cfif len( trim( aSql[x] ) )>
+					            	<cfset s=aSql[x]>
+					            	<!--- <cfset s=replace(s,"/","","ALL")> --->
+					            	 <cfif not findNocase("/",aSql[x])>
+					            	 	<cfset s=replace(s,";","","ALL")>
+					            	 <cfelse>
+					            	 <cfset s=replace(s,"/","","ALL")>
+					            	 <cfset s=replace(s,chr(13)," ","ALL")>
+					            	</cfif>
+					                <cfquery datasource="#FORM.production_datasource#" username="#FORM.production_dbusername#" password="#FORM.production_dbpassword#">
+					                    #keepSingleQuotes(s)#
+					                </cfquery>
+				                </cfif>
+		            		</cfloop>
+						</cfcase>
+						<cfcase value="mysql">
+							<cfset aSql = ListToArray(sql, ';')>
+							<!--- loop over items --->
+				            <cfloop index="x" from="1" to="#arrayLen(aSql) - 1#">
+					            <!--- we placed a small check here to skip empty rows --->
+					            <cfif len( trim( aSql[x] ) )>
+					                <cfquery datasource="#FORM.production_datasource#" username="#FORM.production_dbusername#" password="#FORM.production_dbpassword#">
+					                    #keepSingleQuotes(aSql[x])#
+					                </cfquery>
+				                </cfif>
+				            </cfloop>
+						</cfcase>
 					</cfswitch>
-					
-					<!--- append needed process stuff --->
-	            	<cfset aSql = ListToArray(sql, ';')>
-	            
-	    			<!--- loop over items --->
-		            <cfloop index="x" from="1" to="#arrayLen(aSql) - 1#">
-			            <!--- we placed a small check here to skip empty rows --->
-			            <cfif len( trim( aSql[x] ) )>
-			                <cfquery datasource="#FORM.production_datasource#" username="#FORM.production_dbusername#" password="#FORM.production_dbpassword#">
-			                    #keepSingleQuotes(aSql[x])#
-			                </cfquery>
-		                </cfif>
-		            </cfloop>
 		            
 		            <!--- update the domain to be local to the domain the server is being installed on --->
 		            <cfquery datasource="#FORM.production_datasource#" username="#FORM.production_dbusername#" password="#FORM.production_dbpassword#">
@@ -233,10 +279,10 @@ to your own modified versions of Mura CMS.
 		            <cfset errorType = "" />
 		            <!--- set a message --->
 					<cfset message = "" />
-					<cfcatch>
+					<!--- <cfcatch>
 						<cfset message = "<strong>Error:</strong> There was an issue with creating the database. Check to make sure you are using the right database. If this continues to occur you may just have to run the associated database script manually. You can find it within the /config/setup/db folder of Mura." />
 					</cfcatch>
-				</cftry>
+				</cftry> --->
 			</cfif>
 			
 			<!--- throw a message if the database already exists --->
@@ -260,7 +306,17 @@ to your own modified versions of Mura CMS.
 			<cfset message = "<strong>Error:</strong> An Admin Email is required." />
 		</cfcase>
 		
+		<!--- unknown --->
+		<cfcase value="unknown">
+			<cfset message = "<strong>Error:</strong> An unknown error has occured." />
+		</cfcase>
+		
 	</cfswitch>	
+	
+	<!--- if errorFile variable is present then let's append it to the message so the error file can be found --->
+	<cfif isDefined( "errorFile" )>
+		<cfset message = message & " <a href='#webRoot#/config/setup/errors/#listLast( errorFile, '/')#'>Review the error log</a>." />
+	</cfif>
 
 	<!--- if mail server username is not supplied then use the admin mail value --->
 	<cfif NOT len( FORM.production_mailserverusername )>
@@ -356,13 +412,27 @@ to your own modified versions of Mura CMS.
 	<cfreturn preserveSingleQuotes(arguments.str)>
 </cffunction>
 
+<cffunction name="recordError" returntype="string" output="false">
+	<cfargument name="data" type="any" required="true" />
+	<cfset var str = "" />
+	<cfset var errorFile = "#getDirectoryFromPath( getCurrentTemplatePath() )#errors/#createUUID()#_error.html" />
+	<!--- dump the error into a variable --->
+	<cfsavecontent variable="str">
+		<cfdump var="#arguments.data#">
+	</cfsavecontent>
+	<!--- write the file --->
+	<cffile action="write" file="#errorFile#" output="#str#" />
+	
+	<!--- send back the location --->
+	<cfreturn errorFile />
+</cffunction>
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <cfoutput>
 <head>
 <title>Mura CMS - Set Up</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<meta name="robots" content="noindex, nofollow, noarchive" />
 <meta http-equiv="cache control" content="no-cache, no-store, must-revalidate" />
 <script src="#webRoot#/admin/js/admin.js" type="text/javascript" language="Javascript"></script>
 <link href="#webRoot#/admin/css/admin.css" rel="stylesheet" type="text/css" />
@@ -393,7 +463,7 @@ to your own modified versions of Mura CMS.
 			<p id="congrats">Congratulations! Mura is now set up and ready to use.</p>
 			<h3>Important</h3>
 			<p>When you are done with setup, it is recommended you remove the "/config/setup" directory to maintain security. Once deleted, all settings can be edited in "/config/settings.ini.cfm" directly.</p>
-			<p>The default <strong>Username and Password is the word "admin" for both fields</strong>. It is highly recommended that you change this immediately by editing your profile after logging into the Mura Admin.</p>
+			<p>The default <strong>Username and Password is the word "admin" for both fields</strong>. It is highly reccommended that you change this immediately by editing your profile after logging into the Mura Admin.</p>
 			<input type="submit" name="#session.setupSubmitButtonComplete#" value="Finish Set Up and Take Me to the Mura Admin" />
 		</div>
 </cfif>
