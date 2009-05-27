@@ -66,6 +66,7 @@ to your own modified versions of Mura CMS.
 <dd><select name="rb">
 	<option value="en">English</option>
 	<option value="de"<cfif cookie.rb eq "de"> selected</cfif>>Deutsch</option>
+	<option value="fr"<cfif cookie.rb eq "fr"> selected</cfif>>Français</option>
 	<!---<option value="es">Spanish</option>
 	<option value="fr">French</option>--->
 	</select>
