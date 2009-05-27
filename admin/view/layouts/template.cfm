@@ -193,7 +193,7 @@ if (top.location != self.location) {
 	<option value="#session.rb#">#application.rbFactory.getKeyValue(session.rb,"layout.selectlanguage")#</option>
 		<option value="en">English</option>
 		<option value="de">Deutsch</option>
-		<option value="fr">Français</option>
+		<option value="fr">Fran&ccedil;ais</option>
 		<!---<option value="es">Spanish</option>
 		<option value="fr">French</option>--->
 	</select>	
