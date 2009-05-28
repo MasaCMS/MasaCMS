@@ -50,6 +50,10 @@
 		<include template="dsp_advancedSearch.cfm"/>
 	</fuseaction>
 	
+	<fuseaction name="advancedSearchToCSV">
+		<include template="dsp_advancedSearchToCSV.cfm"/>
+	</fuseaction>
+	
 	 <fuseaction name="edituser">
 	
 	<include template="dsp_user.cfm"/>

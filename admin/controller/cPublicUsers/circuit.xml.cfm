@@ -104,6 +104,12 @@
 <do action="vPublicUsers.ajax" contentvariable="fusebox.ajax"/>
 <do action="layout.display"/>
 </fuseaction>
+
+<fuseaction name="advancedSearchToCSV">
+<invoke object="application.userManager" methodcall="getPublicGroups('#attributes.siteid#',1)" returnVariable="request.rsGroups" />
+<do action="vPublicUsers.advancedSearchToCSV" contentvariable="fusebox.layout" />
+<do action="layout.empty"/>
+</fuseaction>
 	
 <fuseaction name="edituser">
 <if condition="not isdefined('request.userBean')">

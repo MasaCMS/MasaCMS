@@ -190,7 +190,8 @@ to your own modified versions of Mura CMS.
 	</dd>
 </dl>
 <input type="hidden" name="fuseaction" value="cPublicUsers.advancedSearch" /><input type="hidden" name="siteid" value="#attributes.siteid#"/>
-<a class="submit" href="javascript:;" onclick="return submitForm(document.forms.form2);"><span>#application.rbFactory.getKeyValue(session.rb,"user.search")#</span></a>
+<a class="submit" href="javascript:;" onclick="document.forms.form2.fuseaction.value='cPublicUsers.advancedSearch';return submitForm(document.forms.form2);"><span>#application.rbFactory.getKeyValue(session.rb,"user.search")#</span></a>
+<a class="submit" href="javascript:;" onclick="document.forms.form2.fuseaction.value='cPublicUsers.advancedSearchToCSV';return submitForm(document.forms.form2);"><span>#application.rbFactory.getKeyValue(session.rb,"user.download")#</span></a>
 </form>
 </cfoutput>
 
