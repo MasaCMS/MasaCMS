@@ -92,7 +92,7 @@ to your own modified versions of Mura CMS.
 </cffunction>
 
 <cffunction name="getAllValues" returntype="any" access="public" output="false">
-		<cfreturn structCopy(variables.event) />
+		<cfreturn variables.event />
 </cffunction>
 
 <cffunction name="getHandler" returntype="any" access="public" output="false">
@@ -147,10 +147,18 @@ to your own modified versions of Mura CMS.
 </cffunction>
 
 <cffunction name="loadSiteRelatedObjects" returntype="any" access="public" output="false">
-	<cfset setValue('ValidatorFactory',application.pluginManager.getEventManager(getValue('siteid')).getFactory("Validator"))>
-	<cfset setValue('HandlerFactory',application.pluginManager.getEventManager(getValue('siteid')).getFactory("Handler"))>
-	<cfset setValue('TranslatorFactory',application.pluginManager.getEventManager(getValue('siteid')).getFactory("Translator"))>
-	<cfset setValue("contentRenderer",createObject("component","#getConfigBean().getWebRootMap()#.#getValue('siteid')#.includes.contentRenderer").init(this))>
+	<cfif not valueExists("ValidatorFactory")>
+		<cfset setValue('ValidatorFactory',application.pluginManager.getEventManager(getValue('siteid')).getFactory("Validator"))>
+	</cfif>
+	<cfif not valueExists("HandlerFactory")>
+		<cfset setValue('HandlerFactory',application.pluginManager.getEventManager(getValue('siteid')).getFactory("Handler"))>
+	</cfif>
+	<cfif not valueExists("TranslatorFactory")>
+		<cfset setValue('TranslatorFactory',application.pluginManager.getEventManager(getValue('siteid')).getFactory("Translator"))>
+	</cfif>
+	<cfif not valueExists("contentRenderer")>
+		<cfset setValue("contentRenderer",createObject("component","#getConfigBean().getWebRootMap()#.#getValue('siteid')#.includes.contentRenderer").init(this))>
+	</cfif>
 </cffunction>
 
 </cfcomponent>

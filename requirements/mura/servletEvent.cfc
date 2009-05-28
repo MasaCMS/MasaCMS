@@ -102,7 +102,7 @@ to your own modified versions of Mura CMS.
 
 <cffunction name="getAllValues" returntype="any" access="public" output="false">
 <cfargument name="scope" default="request" required="true">
-		<cfreturn structCopy(getScope(arguments.scope))  />
+		<cfreturn getScope(arguments.scope)  />
 </cffunction>
 
 <cffunction name="getScope" returntype="struct" access="public" output="false">
