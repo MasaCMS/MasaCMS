@@ -44,20 +44,18 @@ to your own modified versions of Mura CMS.
 	<cfset str = "" />
 	<!--- get records --->
 	<cfset records = application.userManager.getAdvancedSearch(session,attributes.siteid,1) />
+	<!--- get orig list --->
+	<cfset origColumnList = records.columnlist />
 	<!--- get column lists --->
-	<cfset columns = ListQualify( records.columnlist, '"', ",", "CHAR" ) />
-	<!--- loop over the columns --->
-	<cfloop list="#columns#" index="column">
-		<cfset str = listAppend( str, column ) />
-	</cfloop>
+	<cfset qualifiedColumns = ListQualify( origColumnList, '"', ",", "CHAR" ) />
 	<!--- assign columns to string --->
-	<cfset str = str & chr(10) />
+	<cfset str = str & qualifiedColumns & chr(10) />
 	<!--- query over records and append --->
 	<cfloop query="records">
 		<cfset record = "" />
 		<!--- loop over columns --->
-		<cfloop list="#records.columnlist#" index="column">
-			<cfset record = listAppend( record, records[column][records.currentrow] ) />
+		<cfloop list="#origColumnList#" index="column">
+			<cfset record = listAppend( record, records[column][records.currentrow] & " " ) />
 		</cfloop>
 		<cfset str = str & listQualify( record, '"', ",", "CHAR" ) & chr(10) />
 	</cfloop>
