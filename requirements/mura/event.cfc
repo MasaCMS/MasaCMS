@@ -92,7 +92,7 @@ to your own modified versions of Mura CMS.
 </cffunction>
 
 <cffunction name="getAllValues" returntype="any" access="public" output="false">
-		<cfreturn variables.event />
+		<cfreturn structCopy(variables.event) />
 </cffunction>
 
 <cffunction name="getHandler" returntype="any" access="public" output="false">
