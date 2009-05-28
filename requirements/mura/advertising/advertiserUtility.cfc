@@ -208,7 +208,7 @@ to your own modified versions of Mura CMS.
 	<cfloop list="#ipList#" index="ip">
 		<cfif ip neq ''>
 			<cfquery datasource="#variables.instance.configBean.getDatasource()#"  username="#variables.instance.configBean.getDBUsername()#" password="#variables.instance.configBean.getDBPassword()#">
-			insert into tadipwhitelist (ip,siteid) values (<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.ip#" />,<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#" />)
+			insert into tadipwhitelist (ip,siteid) values (<cfqueryparam cfsqltype="cf_sql_varchar" value="#ip#" />,<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#" />)
 			</cfquery>
 		</cfif>
 	</cfloop>
