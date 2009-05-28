@@ -41,20 +41,26 @@ the GNU General Public License version 2  without this exception.  You may, if y
 to your own modified versions of Mura CMS.
 --->
 <cfsilent>
+	<cfset str = "" />
 	<!--- get records --->
 	<cfset records = application.userManager.getAdvancedSearch(session,attributes.siteid,1) />
 	<!--- get column lists --->
-	<cfset columns = records.columnlist />
+	<cfset columns = ListQualify( records.columnlist, '"', ",", "CHAR" ) />
+	<!--- loop over the columns --->
+	<cfloop list="#columns#" index="column">
+		<cfset str = listAppend( str, column ) />
+	</cfloop>
 	<!--- assign columns to string --->
-	<cfset str = columns & chr(10) />
+	<cfset str = str & chr(10) />
 	<!--- query over records and append --->
 	<cfloop query="records">
+		<cfset record = "" />
 		<!--- loop over columns --->
-		<cfloop list="#columns#" index="column">
-			<cfset str = str & records[column][records.currentrow] & "," />
+		<cfloop list="#records.columnlist#" index="column">
+			<cfset record = listAppend( record, records[column][records.currentrow] ) />
 		</cfloop>
-		<cfset str = str & chr(10) />
+		<cfset str = str & listQualify( record, '"', ",", "CHAR" ) & chr(10) />
 	</cfloop>
 </cfsilent>
-<cfheader name="Content-Disposition" value="inline;filename=members.csv">
-<cfcontent type="application/vnd.ms-excel"><cfoutput>#str#</cfoutput>
+<cfheader name="Content-Disposition" value="disposition;filename=members.csv">
+<cfcontent type="text/csv"><cfoutput>#str#</cfoutput>
