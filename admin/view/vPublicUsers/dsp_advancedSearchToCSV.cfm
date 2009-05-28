@@ -51,7 +51,7 @@ to your own modified versions of Mura CMS.
 	<cfloop query="records">
 		<!--- loop over columns --->
 		<cfloop list="#columns#" index="column">
-			<cfset str = str & records[column] & "," />
+			<cfset str = str & records[column][records.currentrow] & "," />
 		</cfloop>
 		<cfset str = str & chr(10) />
 	</cfloop>
