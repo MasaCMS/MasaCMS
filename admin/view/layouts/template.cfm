@@ -189,13 +189,12 @@ if (top.location != self.location) {
 <div id="container"><div id="navigation" class="sidebar">
 <cfset hidelist="cLogin">
 <cfif not listfind(hidelist,myfusebox.originalcircuit)>
-<select name="rb" onchange="location.href='#application.configBean.getContext()#/admin/index.cfm?rb=' + this.value;" id="lang">
+<select name="rb" onchange="location.href='#application.configBean.getContext()#/admin/index.cfm?fuseaction=cDashboard.main&siteid=#session.siteid#&rb=' + this.value;" id="lang">
 	<option value="#session.rb#">#application.rbFactory.getKeyValue(session.rb,"layout.selectlanguage")#</option>
 		<option value="en">English</option>
 		<option value="de">Deutsch</option>
 		<option value="fr">Fran&ccedil;ais</option>
-		<!---<option value="es">Spanish</option>
-		<option value="fr">French</option>--->
+		<!---<option value="es">Spanish</option>--->
 	</select>	
 <cfinclude template="dsp_secondary_menu_main.cfm">
 </cfif>
