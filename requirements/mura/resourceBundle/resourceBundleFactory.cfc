@@ -762,59 +762,60 @@ to your own modified versions of Mura CMS.
 </cffunction>
 
 <cffunction name="setAdminLocale" returnType="void" output="false">
+<cfargument name="mySession" required="true" default="#session#">
 <cfset var utils="">
 <!--- make sure that a locale and language resouce bundle have been set in the users session --->
-<cfparam name="session.datekey" default=""/>
-<cfparam name="session.datekeyformat" default=""/>
-<cfparam name="session.rb" default=""/>
-<cfparam name="session.locale" default=""/>
+<cfparam name="mySession.datekey" default=""/>
+<cfparam name="mySession.datekeyformat" default=""/>
+<cfparam name="mySession.rb" default=""/>
+<cfparam name="mySession.locale" default=""/>
 
 <!---  session.rb is used to tell mura what resource bundle to use for lan translations --->
-<cfif not Len(session.rb)>
+<cfif not Len(mySession.rb)>
 	<cfif application.configBean.getDefaultLocale() neq "Server">
 		<cfif application.configBean.getDefaultLocale() eq "Client">
-			<cfset session.rb=listFirst(cgi.HTTP_ACCEPT_LANGUAGE,';') />		
+			<cfset mySession.rb=listFirst(cgi.HTTP_ACCEPT_LANGUAGE,';') />		
 		<cfelse>
 			<cfif listFind(server.coldfusion.supportedlocales,application.configBean.getDefaultLocale())>
-				<cfset session.rb=application.configBean.getDefaultLocale() />
+				<cfset mySession.rb=application.configBean.getDefaultLocale() />
 			<cfelse>
-				<cfset session.rb=application.rbFactory.CF2Java(application.configBean.getDefaultLocale()) />
+				<cfset mySession.rb=application.rbFactory.CF2Java(application.configBean.getDefaultLocale()) />
 			</cfif>
 		</cfif>
 	<cfelse>
 
-		<cfset session.rb=application.rbFactory.CF2Java(getLocale()) />
+		<cfset mySession.rb=application.rbFactory.CF2Java(getLocale()) />
 	</cfif>
 </cfif>
 
 
 <!--- session.locale  is the locale that mura uses for date formating --->
-<cfif not len(session.locale)>
+<cfif not len(mySession.locale)>
 	<cfif application.configBean.getDefaultLocale() neq "Server">
 		<cfif application.configBean.getDefaultLocale() eq "Client">
-			<cfset session.locale=listFirst(cgi.HTTP_ACCEPT_LANGUAGE,';') />
-			<cfset session.dateKey=""/>
-			<cfset session.dateKeyFormat=""/>		
+			<cfset mySession.locale=listFirst(cgi.HTTP_ACCEPT_LANGUAGE,';') />
+			<cfset mySession.dateKey=""/>
+			<cfset mySession.dateKeyFormat=""/>		
 		<cfelse>
-			<cfset session.locale=application.configBean.getDefaultLocale() />
-			<cfset session.dateKey=""/>
+			<cfset mySession.locale=application.configBean.getDefaultLocale() />
+			<cfset mySession.dateKey=""/>
 		</cfif>
 	<cfelse>
 
-		<cfset session.locale=getLocale() />
-		<cfset session.dateKey=""/>
-		<cfset session.dateKeyFormat=""/>
+		<cfset mySession.locale=getLocale() />
+		<cfset mySession.dateKey=""/>
+		<cfset mySession.dateKeyFormat=""/>
 	</cfif>
 </cfif>
 
 <!--- set locale for current page request --->
-<cfset setLocale(session.locale) />
+<cfset setLocale(mySession.locale) />
 
 <!--- now we create a date so we can parse it and figure out the date format and then create a date validation key --->
-<cfif not len(session.dateKey) or not len(session.dateKeyFormat)> --->
-	<cfset utils=getUtils(session.locale)>
-	<cfset session.dateKey=utils.getJSDateKey()>
-	<cfset session.dateKeyFormat=utils.getJSDateKeyFormat()>
+<cfif not len(mySession.dateKey) or not len(mySession.dateKeyFormat)> --->
+	<cfset utils=getUtils(mySession.locale)>
+	<cfset mySession.dateKey=utils.getJSDateKey()>
+	<cfset mySession.dateKeyFormat=utils.getJSDateKeyFormat()>
 </cfif>
 
 </cffunction>

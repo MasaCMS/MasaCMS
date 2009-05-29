@@ -134,8 +134,6 @@ to your own modified versions of Mura CMS.
 		
 	</cfif>
 
-
-
 <cfif application.configBean.getAdminSSL() and  cgi.https eq 'Off'  and attributes.compactDisplay eq '' and attributes.closeCompactDisplay eq ''>
 	<cfif cgi.query_string eq ''>
 			<cfset page='#cgi.script_name#'>
@@ -146,5 +144,5 @@ to your own modified versions of Mura CMS.
 	<cflocation addtoken="false" url="https://#cgi.SERVER_NAME##page#">
 </cfif>
 
-<cfset application.rbFactory.setAdminLocale()>
+<cfset application.rbFactory.setAdminLocale(session)>
 </cfsilent>

@@ -40,7 +40,7 @@ for your modified version; it is your choice whether to do so, or to make such m
 the GNU General Public License version 2  without this exception.  You may, if you choose, apply this exception
 to your own modified versions of Mura CMS.
 --->
-<cfset application.rbFactory.setAdminLocale()>
+<cfset application.rbFactory.setAdminLocale(session)>
 <CFIF not (FindNoCase('MSIE 6','#CGI.HTTP_USER_AGENT#') GREATER THAN 0 AND FindNoCase('Opera','#CGI.HTTP_USER_AGENT#') LESS THAN 1)>
 <cfparam name="Cookie.fetDisplay" default="">
 <cfoutput>
