@@ -174,7 +174,7 @@ to your own modified versions of Mura CMS.
 <cfcatch>
 <cfif len(arguments.siteid)>
 <cfthrow type="Invalid Mail Settings" 
-            message="The current mail server settings for the site '#arguments.siteID#'are not valid.">
+            message="The current mail server settings for the site '#arguments.siteID#' are not valid.">
 			
 <cfelse>
 <cfthrow type="Invalid Mail Settings" 
@@ -252,7 +252,7 @@ to your own modified versions of Mura CMS.
 	<cfcatch>
 		<cfif len(arguments.siteid)>
 			<cfthrow type="Invalid Mail Settings" 
-	            message="The current mail server settings for the site '#arguments.siteID#'are not valid.">
+	            message="The current mail server settings for the site '#arguments.siteID#' are not valid.">
 				
 		<cfelse>
 			<cfthrow type="Invalid Mail Settings" 
@@ -331,7 +331,7 @@ to your own modified versions of Mura CMS.
 	<cfcatch>
 		<cfif len(arguments.siteid)>
 			<cfthrow type="Invalid Mail Settings" 
-	            message="The current mail server settings for the site '#arguments.siteID#'are not valid.">
+	            message="The current mail server settings for the site '#arguments.siteID#' are not valid.">
 				
 		<cfelse>
 			<cfthrow type="Invalid Mail Settings" 
@@ -416,7 +416,7 @@ to your own modified versions of Mura CMS.
 	<cfcatch>
 		<cfif len(arguments.siteid)>
 			<cfthrow type="Invalid Mail Settings" 
-	            message="The current mail server settings for the site '#arguments.siteID#'are not valid.">
+	            message="The current mail server settings for the site '#arguments.siteID#' are not valid.">
 				
 		<cfelse>
 			<cfthrow type="Invalid Mail Settings" 
