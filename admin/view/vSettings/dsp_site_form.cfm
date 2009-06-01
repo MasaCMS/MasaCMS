@@ -40,7 +40,10 @@ for your modified version; it is your choice whether to do so, or to make such m
 the GNU General Public License version 2  without this exception.  You may, if you choose, apply this exception
 to your own modified versions of Mura CMS.
 --->
-
+<cfsilent>
+ <cfset rsThemes=request.siteBean.getThemes() />
+ <cfset rsSites=application.settingsManager.getList() />
+</cfsilent>
 <h2>Site Settings</h2>
 <cfoutput>
 <cfif len(attributes.siteid)>
@@ -79,9 +82,7 @@ to your own modified versions of Mura CMS.
 		</cfloop>
 		</select>
       </dd>
-	
-	 <cfset rsThemes=request.siteBean.getThemes()>
-	
+
 	  <dt>Theme</dt>
       <dd>
 		<select name="theme">
@@ -180,9 +181,9 @@ to your own modified versions of Mura CMS.
       <dd>
         <select name="publicUserPoolID">
           <option value="">This site</option>
-          <cfloop collection="#application.settingsManager.getSites()#" item="site">
-            <cfif site neq request.siteBean.getSiteID()>
-              <option value="#site#" <cfif site eq request.siteBean.getPublicUserPoolID()>selected</cfif>>#application.settingsManager.getSite(site).getSite()#</option>
+          <cfloop query="rsSites">
+            <cfif rsSites.siteid neq request.siteBean.getSiteID()>
+              <option value="#rsSites.siteid#" <cfif rsSites.siteid eq request.siteBean.getPublicUserPoolID()>selected</cfif>>#HTMLEditFormat(rsSites.site)#</option>
             </cfif>
           </cfloop>
         </select>
@@ -191,9 +192,9 @@ to your own modified versions of Mura CMS.
       <dd>
         <select name="privateUserPoolID">
           <option value="">This site</option>
-          <cfloop collection="#application.settingsManager.getSites()#" item="site">
-            <cfif site neq request.siteBean.getSiteID()>
-              <option value="#site#" <cfif site eq request.siteBean.getPrivateUserPoolID()>selected</cfif>>#application.settingsManager.getSite(site).getSite()#</option>
+          <cfloop query="rsSites">
+            <cfif rsSites.siteid neq request.siteBean.getSiteID()>
+              <option value="#rsSites.siteid#" <cfif rsSites.siteid eq request.siteBean.getPrivateUserPoolID()>selected</cfif>>#HTMLEditFormat(rsSites.site)#</option>
             </cfif>
           </cfloop>
         </select>
@@ -202,9 +203,9 @@ to your own modified versions of Mura CMS.
       <dd>
         <select name="advertiserUserPoolID">
           <option value="">This site</option>
-          <cfloop collection="#application.settingsManager.getSites()#" item="site">
-            <cfif site neq request.siteBean.getSiteID()>
-              <option value="#site#" <cfif site eq request.siteBean.getAdvertiserUserPoolID()>selected</cfif>>#application.settingsManager.getSite(site).getSite()#</option>
+          <cfloop query="rsSites">
+            <cfif rsSites.siteid neq request.siteBean.getSiteID()>
+              <option value="#rsSites.siteid#" <cfif rsSites.siteid eq request.siteBean.getAdvertiserUserPoolID()>selected</cfif>>#HTMLEditFormat(rsSites.site)#</option>
             </cfif>
           </cfloop>
         </select>
@@ -213,9 +214,9 @@ to your own modified versions of Mura CMS.
       <dd>
         <select name="displayPoolID">
           <option value="">This site</option>
-          <cfloop collection="#application.settingsManager.getSites()#" item="site">
-            <cfif site neq request.siteBean.getSiteID()>
-              <option value="#site#" <cfif site eq request.siteBean.getDisplayPoolID()>selected</cfif>>#application.settingsManager.getSite(site).getSite()#</option>
+          <cfloop query="rsSites">
+            <cfif rsSites.siteid neq request.siteBean.getSiteID()>
+              <option value="#rsSites.siteid#" <cfif rsSites.siteid eq request.siteBean.getDisplayPoolID()>selected</cfif>>#HTMLEditFormat(rsSites.site)#</option>
             </cfif>
           </cfloop>
         </select>
