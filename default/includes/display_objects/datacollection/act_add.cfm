@@ -48,32 +48,55 @@ to your own modified versions of Mura CMS.
 <cfparam name="request.ukey" default="">
 <cfparam name="acceptError" default="">
 
-<cfif request.hkey eq '' or request.hKey eq hash(lcase(request.ukey))>
-<cfif rsform.responseChart>
-	<cfif refind("Mac",cgi.HTTP_USER_AGENT) and refind("MSIE 5",cgi.HTTP_USER_AGENT)>
-		<cfset acceptdata=0>
-		<cfset acceptError="Browser">  
-	<cfelse>
-	
-		<cfif not isdefined('cookie.poll')>
-			<cfset cookie.poll="#arguments.objectid#">
-		<cfelseif isdefined('client.poll') and listfind(cookie.poll,arguments.objectid)>
-			<cfset acceptdata=0> 
-			<cfset acceptError="Duplicate"> 
-		<cfelseif isdefined('cookie.poll') and not listfind(cookie.poll,arguments.objectid)>
-			<cfset templist=cookie.poll>
-			<cfif listlen(templist) eq 6>
-				<cfset templist=listdeleteat(templist,1)>
-			</cfif>
-			<cfset templist=listappend(templist,arguments.objectid)>
-			<cfset cookie.poll="#templist#">
-		</cfif>
-	
+<cfset passedProtect = true>
+<cfscript>
+	myRequest = structNew();
+	StructAppend(myRequest, url, "no");
+	StructAppend(myRequest, form, "no");
+</cfscript>
+
+<cfif structKeyExists(myRequest, "useProtect")>
+	<cfset cffp = CreateObject("component","cfformprotect.cffpVerify").init() />
+	<cfif len(rsForm.responseSendTo)>
+		<cfset cffp.updateConfig('emailFailedTests', 1)>
+		<cfset cffp.updateConfig('emailServer', application.settingsManager.getSite(request.siteID).getMailServerIP())>
+		<cfset cffp.updateConfig('emailUserName', application.settingsManager.getSite(request.siteID).getMailserverUsername(true))>
+		<cfset cffp.updateConfig('emailPassword', application.settingsManager.getSite(request.siteID).getMailserverPassword())>
+		<cfset cffp.updateConfig('emailFromAddress', application.settingsManager.getSite(request.siteID).getMailserverUsernameEmail())>
+		<cfset cffp.updateConfig('emailToAddress', rsForm.responseSendTo)>
+		<cfset cffp.updateConfig('emailSubject', 'Spam form submission')>
 	</cfif>
+	<cfset passedProtect = cffp.testSubmission(myRequest)>
 </cfif>
+
+<cfif (request.hkey eq '' or request.hKey eq hash(lcase(request.ukey))) and passedProtect>
+	<cfif rsform.responseChart>
+		<cfif refind("Mac",cgi.HTTP_USER_AGENT) and refind("MSIE 5",cgi.HTTP_USER_AGENT)>
+			<cfset acceptdata=0>
+			<cfset acceptError="Browser">  
+		<cfelse>
+			<cfif not isdefined('cookie.poll')>
+				<cfset cookie.poll="#arguments.objectid#">
+			<cfelseif isdefined('client.poll') and listfind(cookie.poll,arguments.objectid)>
+				<cfset acceptdata=0> 
+				<cfset acceptError="Duplicate"> 
+			<cfelseif isdefined('cookie.poll') and not listfind(cookie.poll,arguments.objectid)>
+				<cfset templist=cookie.poll>
+				<cfif listlen(templist) eq 6>
+					<cfset templist=listdeleteat(templist,1)>
+				</cfif>
+				<cfset templist=listappend(templist,arguments.objectid)>
+				<cfset cookie.poll="#templist#">
+			</cfif>
+		</cfif>
+	</cfif>
 <cfelse>
 	<cfset acceptdata=0>
-	<cfset acceptError="Captcha"> 
+	<cfif passedProtect>
+		<cfset acceptError="Captcha"> 
+	<cfelse>
+		<cfset acceptError="Spam">	
+	</cfif>
 </cfif>
 
 <cfif not structKeyExists(request,"fieldnames")>
@@ -84,23 +107,23 @@ to your own modified versions of Mura CMS.
 </cfif>
 
 <cfif acceptdata>
-<cfset info=application.dataCollectionManager.update(structCopy(request))/>
+	<cfset info=application.dataCollectionManager.update(structCopy(request))/>
 	
 	<cfif request.copyEmail eq 'true' and request.email neq ''>
 		<cfset request.sendto=listappend(request.sendto,request.email) />
 	</cfif>
 	
-	<cfif request.sendto neq  ''>
-			<cfset variables.sendto=listappend(rsform.responsesendto,request.sendto) />
-		<cfelse>
-			<cfset variables.sendto=rsform.responsesendto />
+	<cfif request.sendto neq ''>
+		<cfset variables.sendto=listappend(rsform.responsesendto,request.sendto) />
+	<cfelse>
+		<cfset variables.sendto=rsform.responsesendto />
 	</cfif>
 	
 	<cfparam name="request.subject" default="#rsForm.title#">
 			
 	<cfif not StructIsEmpty(info) and variables.sendto neq ''> 
-			<cfset email=application.serviceFactory.getBean('mailer')/>
-			<cfset email.send(info,'#variables.sendto#','#rsForm.title#','#request.subject#','#request.siteid#','#request.email#')>
+		<cfset email=application.serviceFactory.getBean('mailer')/>
+		<cfset email.send(info,'#variables.sendto#','#rsForm.title#','#request.subject#','#request.siteid#','#request.email#')>
 	</cfif>
 			
 </cfif>
