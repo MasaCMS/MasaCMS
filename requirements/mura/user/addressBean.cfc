@@ -63,6 +63,7 @@ to your own modified versions of Mura CMS.
 	<cfset variables.instance.longitude=0 />
 	<cfset variables.instance.latitude=0 />
     <cfset variables.instance.errors=structnew() />
+	<cfset variables.instance.extendData="" />
 	
 <cffunction name="init" returntype="any" output="false" access="public">
 	<cfargument name="configBean" type="any" required="yes"/>
@@ -370,4 +371,43 @@ to your own modified versions of Mura CMS.
   <cffunction name="getAddressEmail" returnType="string" output="false" access="public">
     <cfreturn variables.instance.addressEmail />
   </cffunction>
+
+<cffunction name="getExtendedAttribute" returnType="string" output="false" access="public">
+ 	<cfargument name="key" type="string" required="true"> 
+	<cfargument name="useMuraDefault" type="boolean" required="true" default="false"> 
+	<cfif not isObject(variables.instance.extendData)>
+	<cfset variables.instance.extendData=variables.configBean.getClassExtensionManager().getExtendedData(getAddressID(),'tclassextenddatauseractivity')/>
+	</cfif> 
+  	<cfreturn variables.instance.extendData.getAttribute(arguments.key,arguments.useMuraDefault) />
+  </cffunction>
+
+<cffunction name="setValue" returntype="any" access="public" output="false">
+	<cfargument name="property"  type="string" required="true">
+	<cfargument name="propertyValue" default="" >
+	
+	<cfif structKeyExists(this,"set#property#")>
+		<cfset evaluate("set#property#(arguments.propertyValue") />
+	<cfelse>
+		<cfset variables.instance["#arguments.property#"]=arguments.propertyValue />
+	</cfif>
+
+</cffunction>
+
+<cffunction name="getValue" returntype="any" access="public" output="false">
+	<cfargument name="property"  type="string" required="true">
+	
+	<cfif structKeyExists(this,"get#property#")>
+		<cfreturn evaluate("get#property#(arguments.propertyValue") />
+	<cfelseif structKeyExists(variables.instance,"#arguments.property#")>
+		<cfreturn variables.instance["#arguments.property#"] />
+	<cfelse>
+		<cfreturn getExtendedAttribute(arguments.property) />
+	</cfif>
+</cffunction>
+
+<cffunction name="setAllValues" returntype="any" access="public" output="false">
+	<cfargument name="instance">
+	<cfset variables.instance=arguments.instance/>
+</cffunction>
+
 </cfcomponent>

@@ -383,6 +383,7 @@ to your own modified versions of Mura CMS.
 	<cfargument name="data" type="any" default="#structnew()#"/>		
 	
 	<cfset var addressBean=application.serviceFactory.getBean("addressBean") />
+	<cfset var userBean="" />
 	
 	<cfif isObject(arguments.data)>
 		<cfset arguments.data=arguments.data.getAllValues() />
@@ -394,6 +395,9 @@ to your own modified versions of Mura CMS.
 	
 	<cfset addressBean.set(arguments.data) />
 	
+	<cfset userBean=read(addressBean.getUserID())>
+	<cfset addressBean.setSiteID(userBean.getSiteID())>
+	
 	<cfif not structKeyExists(arguments.data,"addressID") or (structKeyExists(arguments.data,"addressID") and not len(arguments.data.addressID))>
 		<cfset addressBean.setAddressID(createuuid()) />
 	<cfelse>
@@ -402,6 +406,10 @@ to your own modified versions of Mura CMS.
 	
 	<cfif structIsEmpty(addressBean.getErrors())>
 		<cfset variables.userDAO.createAddress(addressBean) />
+		<cfif structKeyExists(arguments.data,"extendSetID")>
+			<cfset arguments.data.siteID=addressBean.getSiteID() />
+			<cfset variables.ClassExtensionManager.saveExtendedData(addressBean.getAddressID(),arguments.data,'tclassextenddatauseractivity')/>
+		</cfif>
 	</cfif>
 	
 	<cfreturn addressBean />
@@ -412,6 +420,7 @@ to your own modified versions of Mura CMS.
 	
 	<cfset var error =""/>
 	<cfset var addressBean=variables.userDAO.readAddress(arguments.data.addressid) />
+	<cfset var userBean="" />
 	
 	<cfif isObject(arguments.data)>
 		<cfset arguments.data=arguments.data.getAllValues() />
@@ -427,8 +436,15 @@ to your own modified versions of Mura CMS.
 	
 	<cfset addressBean.set(arguments.data) />
 	
+	<cfset userBean=read(addressBean.getUserID())>
+	<cfset addressBean.setSiteID(userBean.getSiteID())>
+	
 	<cfif structIsEmpty(addressBean.getErrors())>
 		<cfset variables.userDAO.updateAddress(addressBean) />
+		<cfif structKeyExists(arguments.data,"extendSetID")>
+			<cfset arguments.data.siteID=addressBean.getSiteID() />
+			<cfset variables.ClassExtensionManager.saveExtendedData(addressBean.getAddressID(),arguments.data,'tclassextenddatauseractivity')/>
+		</cfif>
 	</cfif>
 	
 	<cfreturn addressBean />

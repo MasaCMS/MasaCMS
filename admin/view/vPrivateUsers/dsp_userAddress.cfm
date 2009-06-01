@@ -42,12 +42,20 @@ to your own modified versions of Mura CMS.
 --->
 
 <cfset rsAddress=request.userBean.getAddressById(attributes.addressID)>
+<cfset addressBean=request.userBean.getAddressBeanById(attributes.addressID)>
+<cfset extendSets=application.classExtensionManager.getSubTypeByName("Address",request.userBean.getsubtype(),request.userBean.getSiteID()).getExtendSets(true) />
 <cfoutput><form action="index.cfm?fuseaction=cPrivateUsers.updateAddress&userid=#attributes.userid#&routeid=#attributes.routeid#&siteid=#attributes.siteid#" method="post" enctype="multipart/form-data" name="form1" onsubmit="return validate(this);"  autocomplete="off" >
 	<h2>#application.rbFactory.getKeyValue(session.rb,'user.adminuseraddressform')#</h2>
 	
 	<!--- #application.utility.displayErrors(request.addressBean.getErrors())# --->
 	
 	<h3>#Request.userBean.getFname()# #Request.userBean.getlname()# <cfif find("activeTab",attributes.returnURL)><a href="index.cfm?#attributes.returnURL#"><cfelse><a href="index.cfm?#attributes.returnURL#&activeTab=1"></cfif>[#application.rbFactory.getKeyValue(session.rb,'user.back')#]</a></h3>
+	
+	<cfif arrayLen(extendSets)>
+	<br/>
+	<div id="page_tabView">
+	<div class="page_aTab">
+	</cfif>
 	
 		<dl class="oneColumn">
 		<dt class="first"></dt>
@@ -75,7 +83,48 @@ to your own modified versions of Mura CMS.
 		<dd><input id="addressEmail" name="addressEmail" validate="email" message="#application.rbFactory.getKeyValue(session.rb,'user.emailvalidate')#" type="text" value="#HTMLEditFormat(rsAddress.addressEmail)#" class="text"></dd> 
 		<dt>#application.rbFactory.getKeyValue(session.rb,'user.hours')#</dt>
 		<dd><textarea id="hours" name="hours" >#HTMLEditFormat(rsAddress.hours)#</textarea></dd>   
+
 </dl>
+
+<!--- extended attributes as defined in the class extension manager --->
+<cfif arrayLen(extendSets)>
+</div>
+<div class="page_aTab">
+<dl class="oneColumn" id="extendDL">
+<cfloop from="1" to="#arrayLen(extendSets)#" index="s">	
+<cfset extendSetBean=extendSets[s]/>
+<cfoutput><cfset style=extendSetBean.getStyle()/><cfif not len(style)><cfset started=true/></cfif>
+	<span class="extendset" extendsetid="#extendSetBean.getExtendSetID()#" categoryid="#extendSetBean.getCategoryID()#" #style#>
+	<input name="extendSetID" type="hidden" value="#extendSetBean.getExtendSetID()#"/>
+	<dt <cfif not started>class="first"<cfset started=true/><cfelse>class="separate"</cfif>>#extendSetBean.getName()#</dt>
+	<cfsilent>
+	<cfset attributesArray=extendSetBean.getAttributes() />
+	</cfsilent>
+	<dd><dl><cfloop from="1" to="#arrayLen(attributesArray)#" index="a">	
+		<cfset attributeBean=attributesArray[a]/>
+		<cfset attributeValue=addressBean.getExtendedAttribute(attributeBean.getAttributeID(),true) />
+		<dt>
+		<cfif len(attributeBean.getHint())>
+		<a href="##" class="tooltip">#attributeBean.getLabel()# <span>#attributeBean.gethint()#</span></a>
+		<cfelse>
+		#attributeBean.getLabel()#
+		</cfif>
+		<cfif attributeBean.getType() eq "File" and len(attributeValue) and attributeValue neq 'useMuraDefault'> <a href="#application.configBean.getContext()#/tasks/render/file/?fileID=#attributeValue#" target="_blank">[Download]</a> <input type="checkbox" value="true" name="extDelete#attributeBean.getAttributeID()#"/> Delete</cfif>
+		</dt>
+		<dd>#attributeBean.renderAttribute(attributeValue)#</dd>
+	</cfloop></dl></dd>
+</cfoutput>
+</cfloop>
+</dl>
+</div>
+</div>
+
+<cfhtmlhead text='<link rel="stylesheet" href="css/tab-view.css" type="text/css" media="screen">'>
+<cfhtmlhead text='<script type="text/javascript" src="js/tab-view.js"></script>'>
+<script type="text/javascript">
+initTabs(Array("#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'user.basic'))#","#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'user.extendedattributes'))#"),0,0,0);
+</script>	
+</cfif>
 
 	
 		<cfif attributes.addressid eq ''>

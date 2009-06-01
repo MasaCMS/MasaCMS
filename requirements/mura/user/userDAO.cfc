@@ -609,21 +609,31 @@ to your own modified versions of Mura CMS.
 		DELETE FROM tcontentratings where contentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.addressID#">
 	</cfquery>
 	
+	<cfset deleteExtendData(arguments.addressID) />
+	
 </cffunction>
 
 <cffunction name="deleteUserAddresses" access="public" output="false" returntype="void">
 		<cfargument name="userID" type="String" />
-		
+	
+	<cfset var rs=""/>
 	<!--- sometimes apps allow addresses to be rated --->
 	<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#" >
 		DELETE FROM tcontentratings where contentID 
 		in (select addressID from tuseraddresses where userID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.userID#">)
 	</cfquery>
 	
-	<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#" >
-		DELETE FROM tuseraddresses where userID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.userID#">
+	<cfquery name="rs" datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#" >
+		select addressID FROM tuseraddresses where userID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.userID#">
 	</cfquery>
 	
+	<cfloop query="rs">
+		<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#" >
+			DELETE FROM tuseraddresses where addressID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#rs.addressID#">
+		</cfquery>
+		
+		<cfset deleteExtendData(rs.addressID) />
+	</cfloop>
 </cffunction>
 
 <cffunction name="setPrimaryAddress" access="public" output="false" returntype="void">

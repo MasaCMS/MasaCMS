@@ -535,6 +535,21 @@ to your own modified versions of Mura CMS.
 	<cfreturn rs />
   </cffunction>
 
+  <cffunction name="getAddressBeanByID" returnType="any" output="false" access="public">
+	<cfargument name="addressID" type="string" required="true">
+	
+	<cfset var rs="" />
+	<cfset var addressBean=application.serviceFactory.getBean("addressBean") />
+	
+	<cfquery name="rs" dbtype="query">
+	select * from variables.instance.addresses where addressID=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.addressID#">  
+	</cfquery>
+	
+	<cfset addressBean.set(rs)>
+	<cfset addressBean.setUserID(getUserID())>
+	<cfset addressBean.setSiteID(getSiteID())>
+	<cfreturn addressBean />
+  </cffunction>
 
   <cffunction name="setDescription" returnType="void" output="false" access="public">
     <cfargument name="Description" type="string" required="true">
@@ -654,6 +669,11 @@ to your own modified versions of Mura CMS.
 		<cfreturn getExtendedAttribute(arguments.property) />
 	</cfif>
 
+</cffunction>
+
+<cffunction name="setAllValues" returntype="any" access="public" output="false">
+	<cfargument name="instance">
+	<cfset variables.instance=arguments.instance/>
 </cffunction>
 
 </cfcomponent>
