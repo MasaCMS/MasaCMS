@@ -47,17 +47,22 @@ to your own modified versions of Mura CMS.
 	<cfargument name="utility" type="any" required="yes"/>
 	<cfargument name="settingsManager" type="any" required="yes"/>
 	<cfargument name="userDAO" type="any" required="yes"/>
-	<cfargument name="mailer" type="any" required="yes"/>
 	<cfargument name="pluginManager" type="any" required="yes"/>
 		<cfset variables.configBean=arguments.configBean />
 		<cfset variables.globalUtility=arguments.utility />
 		<cfset variables.settingsManager=arguments.settingsManager />
 		<cfset variables.userDAO=arguments.userDAO />
-		<cfset variables.mailer=arguments.mailer />
 		<cfset variables.pluginManager=arguments.pluginManager />
 	<cfreturn this />
 </cffunction>
-	
+
+<cffunction name="setMailer" returntype="any" access="public" output="false">
+<cfargument name="mailer"  required="true">
+
+	<cfset variables.mailer=arguments.mailer />
+
+</cffunction>
+
 <cffunction name="getUserData" returntype="query" access="public">
 	<cfargument name="userid" type="string" default="#listfirst(getAuthUser(),"^")#">
 	<cfset var rsuser=""/>

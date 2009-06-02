@@ -99,19 +99,24 @@ to your own modified versions of Mura CMS.
 		The default here is dynamically pointing at the webroot
 	--->
 	<cfset baseDir= left(getDirectoryFromPath(getCurrentTemplatePath()),len(getDirectoryFromPath(getCurrentTemplatePath()))-8) />
+			
+	<cfif StructKeyExists(SERVER,"bluedragon") and not findNoCase("Windows",server.os.name)>
+		<cfset mapPrefix="$" />
+	<cfelse>
+		<cfset mapPrefix="" />
+	</cfif>
 
 	<!--- define a list of custom tag paths. --->
-	<cfset this.customtagpaths = baseDir  &  "/requirements/custom_tags/">
+	<cfset this.customtagpaths =mapPrefix & baseDir  &  "/requirements/custom_tags/">
 	
 	<!--- define custom coldfusion mappings. Keys are mapping names, values are full paths  --->
 	<cfset this.mappings = structNew()>
 	<cfdirectory action="list" directory="#baseDir#/requirements/" name="rsRequirements">
 	<cfloop query="rsRequirements">
 		<cfif rsRequirements.type eq "dir">
-			<cfset this.mappings["/#rsRequirements.name#"] = rsRequirements.directory & "/" & rsRequirements.name>
+			<cfset this.mappings["/#rsRequirements.name#"] = mapPrefix & rsRequirements.directory & "/" & rsRequirements.name>
 		</cfif>
 	</cfloop>
-	<cfset this.mappings["/plugins"] = baseDir & "/plugins">
-	<cfset this.mappings["/muraWRM"] = baseDir>
-	<cfset this.mappings["/savaWRM"] = baseDir>
-	
+	<cfset this.mappings["/plugins"] = mapPrefix & baseDir & "/plugins">
+	<cfset this.mappings["/muraWRM"] = mapPrefix & baseDir>
+	<cfset this.mappings["/savaWRM"] = mapPrefix & baseDir>

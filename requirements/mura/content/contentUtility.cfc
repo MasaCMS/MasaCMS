@@ -49,7 +49,6 @@ to your own modified versions of Mura CMS.
 		<cfargument name="settingsManager" type="any" required="yes"/>
 		<cfargument name="fileManager" type="any" required="yes"/>
 		<cfargument name="contentRenderer" type="any" required="yes"/>
-		<cfargument name="mailer" type="any" required="yes"/>
 		
 		<cfset variables.configBean=arguments.configBean />
 		<cfset variables.contentDAO=arguments.contentDAO />
@@ -59,8 +58,15 @@ to your own modified versions of Mura CMS.
 		<cfset variables.contentRenderer=arguments.contentRenderer />
 		<cfset variables.dsn=variables.configBean.getDatasource()/>
 		<cfset variables.filedelim=variables.configBean.getFileDelim() />
-		<cfset variables.mailer=arguments.mailer />
+		
 <cfreturn this />
+</cffunction>
+
+<cffunction name="setMailer" returntype="any" access="public" output="false">
+<cfargument name="mailer"  required="true">
+
+	<cfset variables.mailer=arguments.mailer />
+
 </cffunction>
 
 <cffunction name="getNotify" returntype="query" access="public" output="false">

@@ -46,14 +46,21 @@ to your own modified versions of Mura CMS.
 	<cfargument name="configBean" type="any" required="yes"/>
 	<cfargument name="settingsManager" type="any" required="yes"/>
 	<cfargument name="contentRenderer" type="any" required="yes"/>
-	<cfargument name="mailer" type="any" required="yes"/>
+	
 		<cfset variables.instance.configBean=arguments.configBean />
 		<cfset variables.instance.settingsManager=arguments.settingsManager />
 		<cfset variables.instance.contentRenderer=arguments.contentRenderer />
-		<cfset variables.instance.mailer=arguments.mailer />
+		
 	<cfreturn this />
 </cffunction>
 
+
+<cffunction name="setMailer" returntype="any" access="public" output="false">
+<cfargument name="mailer"  required="true">
+
+	<cfset variables.mailer=arguments.mailer />
+
+</cffunction>
 
 <cffunction name="sendReminders" returntype="void" access="public" output="false">
 <cfargument name="rsReminders" type="query">
@@ -144,4 +151,5 @@ and email=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.rsReminders
 	
 
 </cffunction> 
+
 </cfcomponent>

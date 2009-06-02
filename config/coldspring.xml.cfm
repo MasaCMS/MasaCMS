@@ -199,7 +199,9 @@ to your own modified versions of Mura CMS.
 			<constructor-arg name="permUtility"><ref bean="permUtility" /></constructor-arg>
 			<constructor-arg name="fileManager"><ref bean="fileManager" /></constructor-arg>
 			<constructor-arg name="contentRenderer"><ref bean="contentRenderer" /></constructor-arg>
-			<constructor-arg name="mailer"><ref bean="mailer" /></constructor-arg>
+			<property name="mailer">
+			    <ref bean="mailer"/>
+			</property>
 		</bean>
 		<bean id="contentBean" class="mura.content.contentBean" singleton="false" >
 			<constructor-arg name="configBean"><ref bean="configBean" /></constructor-arg>
@@ -231,7 +233,9 @@ to your own modified versions of Mura CMS.
 			<constructor-arg name="configBean"><ref bean="configBean" /></constructor-arg>
 			<constructor-arg name="settingsManager"><ref bean="settingsManager" /></constructor-arg>
 			<constructor-arg name="contentRenderer"><ref bean="contentRenderer" /></constructor-arg>
-			<constructor-arg name="mailer"><ref bean="mailer" /></constructor-arg>
+			<property name="mailer"> 			   
+				<ref bean="mailer"/>
+			</property>
 		</bean>
 		<bean id="reminderBean" class="mura.content.reminder.reminderBean" singleton="false" />
 		<bean id="permUtility" class="mura.permission" singleton="true">
@@ -305,7 +309,9 @@ to your own modified versions of Mura CMS.
 			<constructor-arg name="utility"><ref bean="utility" /></constructor-arg>
 			<constructor-arg name="settingsManager"><ref bean="settingsManager" /></constructor-arg>
 			<constructor-arg name="userDAO"><ref bean="userDAO" /></constructor-arg>
-			<constructor-arg name="mailer"><ref bean="mailer" /></constructor-arg>
+			<property name="mailer"> 			    
+				<ref bean="mailer"/> 		
+			</property>
 			<constructor-arg name="pluginManager"><ref bean="pluginManager" /></constructor-arg>
 		</bean>
 		<bean id="userGateway" class="mura.user.userGateway" singleton="true" >
@@ -355,7 +361,9 @@ to your own modified versions of Mura CMS.
 			<constructor-arg name="memberDAO"><ref bean="memberDAO" /></constructor-arg>
 			<constructor-arg name="settingsManager"><ref bean="settingsManager" /></constructor-arg>
 			<constructor-arg name="contentRenderer"><ref bean="contentRenderer" /></constructor-arg>
-			<constructor-arg name="mailer"><ref bean="mailer" /></constructor-arg>
+			<property name="mailer"> 			   
+				<ref bean="mailer"/> 		
+			</property>
 		</bean>
 		<bean id="memberDAO" class="mura.mailinglist.memberDAO" singleton="true">
 			<constructor-arg name="configBean"><ref bean="configBean" /></constructor-arg>
@@ -380,7 +388,9 @@ to your own modified versions of Mura CMS.
 			<constructor-arg name="mailinglistManager"><ref bean="mailinglistManager" /></constructor-arg>
 			<constructor-arg name="settingsManager"><ref bean="settingsManager" /></constructor-arg>
 			<constructor-arg name="contentRenderer"><ref bean="contentRenderer" /></constructor-arg>
-			<constructor-arg name="mailer"><ref bean="mailer" /></constructor-arg>
+			<property name="mailer"> 			    
+				<ref bean="mailer"/> 			
+			</property>
 		</bean>
 		<bean id="emailBean" class="mura.email.emailBean" singleton="false" />
 		<bean id="advertiserManager" class="mura.advertising.advertiserManager" singleton="true">

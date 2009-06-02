@@ -47,17 +47,23 @@ to your own modified versions of Mura CMS.
 <cfargument name="mailinglistManager" type="any" required="yes"/>
 <cfargument name="settingsManager" type="any" required="yes"/>
 <cfargument name="contentRenderer" type="any" required="yes"/>
-<cfargument name="mailer" type="any" required="yes"/>
+
 		<cfset variables.configBean=arguments.configBean />
 		<cfset variables.utility=arguments.utility />
 		<cfset variables.mailinglistManager=arguments.mailinglistManager />
 		<cfset variables.settingsManager=arguments.settingsManager />
 		<cfset variables.contentRenderer=arguments.contentRenderer />
 		<cfset variables.dsn=variables.configBean.getDatasource()/>
-		<cfset variables.mailer=arguments.mailer />
+		
 <cfreturn this />
 </cffunction>
 
+<cffunction name="setMailer" returntype="any" access="public" output="false">
+<cfargument name="mailer"  required="true">
+
+	<cfset variables.mailer=arguments.mailer />
+
+</cffunction>
 
 <cffunction name="send" access="public" output="false" returntype="void">
 <cfset var clickid=""/>
