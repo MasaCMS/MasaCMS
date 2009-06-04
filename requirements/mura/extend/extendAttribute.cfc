@@ -418,7 +418,7 @@ to your own modified versions of Mura CMS.
 <cfcase value="TextArea,HTMLEditor">
 <cfsavecontent variable="str"><cfoutput><textarea name="#key#" id="#key#" label="#XMLFormat(getlabel())#" required="#getRequired()#"<cfif len(getMessage())> message="#XMLFormat(getMessage())#"</cfif><cfif getType() eq "HTMLEditor"> class="htmlEditor"</cfif>>#HTMLEditFormat(renderValue)#</textarea></cfoutput></cfsavecontent>
 </cfcase>
-<cfcase value="SelectBox,multiSelectBox">
+<cfcase value="SelectBox,MultiSelectBox">
 <cfset optionlist=variables.contentRenderer.setDynamicContent(getOptionList())/>
 <cfset optionLabellist=variables.contentRenderer.setDynamicContent(getOptionLabelList())/>
 <cfsavecontent variable="str"><cfoutput><select name="#key#" id="#key#" label="#XMLFormat(getlabel())#" required="#getRequired()#"<cfif len(getMessage())> message="#XMLFormat(getMessage())#"</cfif><cfif getType() eq "MultiSelectBox"> multiple</cfif>><cfif listLen(optionlist,'^')><cfloop from="1" to="#listLen(optionlist,'^')#" index="o"><cfset optionValue=listGetAt(optionlist,o,'^') /><option value="#XMLFormat(optionValue)#" <cfif optionValue eq renderValue or listFind(renderValue,optionValue)>selected</cfif>><cfif len(optionlabellist)>#listGetAt(optionlabellist,o,'^')#<cfelse>#optionValue#</cfif></option></cfloop></cfif></select></cfoutput></cfsavecontent>
