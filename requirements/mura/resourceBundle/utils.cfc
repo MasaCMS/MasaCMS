@@ -329,10 +329,10 @@
 	<cfset var f="">
 	<cfset var dtCh="">
 	<cfset var dtFormat="">
-	<cfset var jsDateKey="">
-	<cfset var dateKeyFormat="">
-	<cfset var datekeyExample="">
-	<cfset var formatTest="">
+	<cfset jsDateKey="">
+	<cfset dateKeyFormat="">
+	<cfset datekeyExample="">
+	
 <!--- now we create a date so we can parse it and figure out the date format and then create a date validation key --->
 
 	<cfset formatTest=dateLocaleFormat(createDate(2012,11,10),'short')/>
