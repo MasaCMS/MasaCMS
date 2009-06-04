@@ -880,30 +880,6 @@ select * from tplugins order by #arguments.orderby#
 	group by pluginID, displayObjectFile, location, displaymethod, docache, objectID, directory
 	</cfquery>
 	
-	<!--- <cfset key= rs.objectID & event.getValue('siteID')>
-	
-	<cfif site.getCache() and isBoolean(rs.docache) and rs.docache>
-		<cfif NOT cacheFactory.has( key )>
-		 	<cftry>
-				<cfif listLast(rs.displayobjectfile,".") neq "cfm">
-					<cfset componentPath="plugins.#rs.pluginID#.#rs.displayobjectfile#">
-					<cfset eventHandler=getComponent(componentPath, rs.pluginID, event.getValue('siteID'),rs.docache)>
-					<cfinvoke component="#eventHandler#" method="#rs.displaymethod#" returnVariable="theDisplay">
-						<cfinvokeargument name="event" value="#arguments.event#">
-					</cfinvoke>	
-					<cfreturn cacheFactory.get( key, theDisplay ) />
-				<cfelse>
-					<cfreturn cacheFactory.get( key, getExecutor().displayObject(arguments.objectID,arguments.event,rs)  ) />
-				</cfif>
-			<cfcatch>
-				 <cfsavecontent variable="theDisplay"><cfdump var="#cfcatch#"></cfsavecontent>
-				 <cfreturn theDisplay>
-			</cfcatch>
-			</cftry>
-		<cfelse>
-			<cfreturn cacheFactory.get(key)>
-		</cfif>
-	<cfelse> --->
 		<cfif rs.recordcount>
 		<cftry>
 		<cfif listLast(rs.displayobjectfile,".") neq "cfm">
@@ -929,7 +905,7 @@ select * from tplugins order by #arguments.orderby#
 		</cfcatch>
 		</cftry>
 		</cfif>
-	<!--- </cfif> --->
+	
 		<cfreturn "">
 </cffunction>
 
@@ -1015,6 +991,7 @@ select * from tplugins order by #arguments.orderby#
 <cfset var myFusebox=structNew()>
 <cfset var returnStr="">
 <cfset var moduleTitle=arguments.pageTitle>
+<cfset var attributes=structNew()>
 
 <cfset fusebox.layout =arguments.body>
 <cfset fusebox.ajax ="">

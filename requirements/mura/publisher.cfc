@@ -101,8 +101,8 @@ to your own modified versions of Mura CMS.
 		<cfset var rstusersinterests=""/>
 		<cfset var rstclassextenddata=""/>
 		<cfset var rstpluginscripts=""/>
-		<cfset var tplugindisplayobjects=""/>
-		<cfset var tpluginsettings=""/>		
+		<cfset var rstplugindisplayobjects=""/>
+		<cfset var rstpluginsettings=""/>		
 			<!--- pushed tables --->
 			
 			<!--- tcontent --->
