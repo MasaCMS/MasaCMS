@@ -66,7 +66,7 @@ Description :
 		<!--- ************************************************************* --->
 		<cfset var refLocal = structnew()>
 		<cfset var hashLocal=getHashKey(arguments.objectKey) >
-		<cfset reLocal.tmpObj=0 >
+		<cfset refLocal.tmpObj=0 >
 		
 		<!--- Check for Object in Cache. --->
 		<cfif structKeyExists(variables.collection, hashLocal)>
