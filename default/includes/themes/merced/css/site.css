@@ -1,3 +1,5 @@
+/* @override http://10.0.1.197:8500/mura/demo/includes/themes/merced/css/site.css */
+
 /*
 	Theme:	Sava1
 */
@@ -360,8 +362,9 @@ h1 a {
 	}
 
 .threeCol #right h3 {
-	padding: 15px 0 0;
-	border-top: 1px solid #dfdfdf;
+	padding: 0 0 .35em 0;
+	margin-bottom: .5em;
+	border-bottom: 1px solid #dfdfdf;
 	}
 
 .threeCol #right ul {
@@ -513,14 +516,13 @@ h1 a {
 	margin: 0 0 4em;
 	padding: 0;
 	list-style: none;
-	font-size: .916em;
 	}
 
 .navSecondary li {
-	margin: 0;
-	padding: 0;
+	margin: 0 0 .5em;
+	padding: 0 0 .5em;
 	border-bottom: 1px solid #d6d6d6;
-	line-height: 30px;
+	line-height: 1.2;
 	}
 
 .navSecondary li ul {
@@ -768,24 +770,14 @@ h1 a {
 /* @group Portals
 ===================================== */
 
-#svPortal {
-	margin-bottom: 1em;
-	border-top: 1px solid #d6d6d6;
-	}
-
 #svPortal dl {
 	position: relative;
-	margin: 0 0 5px;
-	padding: 22px 0 15px 0;
-	border-top: 0;
-	background: url(../images/blog-posts-divider.gif) repeat-x left top;
+	margin: .5em 0 0;
+	padding: 1em 0 0 0;
 	}
 
 #svPortal dl.first {
-	margin-top: 6px;
-	padding-top: 22px;
 	border-top: 0;
-	background: none;
 	}
 
 #svPortal dl.hasImage { /* optimized for 109px square images */
@@ -811,22 +803,18 @@ h1 a {
 	}
 
 #svPortal .summary {
-	margin: 0 0 3px;
-	font-size: 1.1em;
-	}
-
-#svPortal dd.summary span.readMore {
-	font-size: .9em;
+	margin: 0 0 .25em;
 	}
 
 #svPortal dd.comments,
 #svPortal dd.tags,
 #svPortal dd.credits {
+	margin-bottom: 0;
 	line-height: 20px; /* acommodate height of stars */
 	}
 
 #svPortal dd.comments {
-	padding: 0 .5em 3px 13px;
+	padding: 0 .5em 0 13px;
 	background: url(../images/icon_comments.gif) no-repeat 0 50%;
 	}
 
