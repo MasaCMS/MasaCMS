@@ -1,7 +1,7 @@
 /* RSS Feed */
 
 #svRSSFeeds {
-	margin: 0;
+	margin: 0 0 2em;
 	padding: 0;
 }
 
@@ -144,7 +144,7 @@
 	position: relative;
 	min-height: 17px;
 	border-bottom: 1px solid #c8c8c8;
-	line-height:  1 !important;
+	line-height:  17px !important;
 	margin: 0 0 10px 0 !important;
 	background: #eee url(../images/bg_hdr.jpg) repeat-x;
 	padding: .25em 30px .25em .5em !important;

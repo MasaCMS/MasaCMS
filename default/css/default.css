@@ -1,3 +1,5 @@
+/* @override http://10.0.1.197:8500/mura/default/css/default.css */
+
 /* This file is part of Mura CMS. 
 
 	Mura CMS is free software: you can redistribute it and/or modify 
@@ -270,9 +272,9 @@ p.fieldLabel {
 
 form li span { font-weight: normal; }
 
-input.text { width: 60%; }
+fieldset input.text { width: 60%; }
 
-form textarea {
+fieldset textarea {
 	width: 60%;
 	height: 10em;
 	}
