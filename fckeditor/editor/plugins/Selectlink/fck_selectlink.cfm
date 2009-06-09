@@ -12,7 +12,6 @@ StructAppend(attributes, form, "no");
 <cfparam name="attributes.keywords" default="">
 <cfparam name="attributes.siteid" default="#session.siteid#">
 <cfset rsPluginScripts=application.pluginManager.getScripts("onLinkSelect",attributes.siteID)>
-
 <cfset request.rsList=application.contentManager.getPrivateSearch('#attributes.siteid#','#attributes.keywords#')/>
 <cfset request.nextn=application.utility.getNextN(request.rsList,30,attributes.startrow) />
 <cfset request.contentRenderer = createObject("component","#application.settingsManager.getSite(session.siteid).getAssetMap()#.includes.contentRenderer").init() />
@@ -109,7 +108,7 @@ Ok =function() {
 </script>
 	</head>
 
-	<body scroll="no" style="OVERFLOW: hidden">
+<body scroll="no" style="OVERFLOW: hidden">
 <cfoutput>
 <h3>Keyword Search</h3>
 <form id="siteSearch" name="siteSearch" method="post" onSubmit="return validateForm(this);"><input name="keywords" value="#attributes.keywords#" type="text" class="text" maxlength="50" required="true" message="The 'Keyword' field is required."/><!---<a class="submit" href="javascript:;" onclick="return submitForm(document.forms.siteSearch);"><span>Search</span></a>--->
@@ -155,6 +154,7 @@ document.forms.siteSearch.keywords.focus();
 <cfoutput>
 <cfset request.pluginConfig=application.pluginManager.getConfig(rsPluginScripts.pluginID)>
 <cfset request.pluginConfig.setSetting("pluginMode","admin")>
-<cfinclude template="/#application.configBean.getWebRootMap()#/plugins/#rsPluginScripts.pluginID#/#rsPluginScripts.scriptfile#">
+<cfinclude template="/#application.configBean.getWebRootMap()#/plugins/#request.pluginConfig.getDirectory()#/#rsPluginScripts.scriptfile#">
 </cfoutput>
 </cfif>
+
