@@ -207,12 +207,13 @@ to your own modified versions of Mura CMS.
 <cffunction name="getRemoteFeedData" returntype="any" output="false">
 	<cfargument name="feedURL" required="true" >
 	<cfargument name="maxItems" required="true" >
+	<cfargument name="timeout" required="true" default="5" >
 	<cfset var data = "" />
 	<cfset var temp = 0 />
 	<cfset var response=structNew() />
 	
 	<cftry>
-	<cfhttp result="temp" url="#arguments.feedURL#" method="GET" resolveurl="Yes" throwOnError="Yes" charset="UTF-8"/>
+	<cfhttp result="temp" url="#arguments.feedURL#" method="GET" resolveurl="Yes" throwOnError="Yes" charset="UTF-8" timeout="#arguments.timeout#" />
 	<cfcatch></cfcatch>
 	</cftry>
 	
