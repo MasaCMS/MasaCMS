@@ -772,7 +772,7 @@ select * from tplugins order by #arguments.orderby#
 		<cfcatch>
 			<cfset rsOnError=getScripts("onError",arguments.siteid,rs.moduleID) />
 			<cfif arguments.runat neq "onError" and rsOnError.recordcount>
-				<cfset arguments.event.setValue("errorType","render")>
+				<cfset arguments.event.setValue("errorType","script")>
 				<cfset arguments.event.setValue("error",cfcatch)>
 				<cfset executeScripts("onError",arguments.siteid,arguments.event,rsOnError)>
 			<cfelse>
