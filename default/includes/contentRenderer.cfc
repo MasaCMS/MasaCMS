@@ -43,6 +43,7 @@ to your own modified versions of Mura CMS.
 
 <cfcomponent extends="mura.content.contentRenderer">
 
+<cfset this.jslib="jquery"/>
 <!--- 
 <cfset this.navOffSet=0/>
 <cfset this.navDepthLimit=1000/>
@@ -50,7 +51,6 @@ to your own modified versions of Mura CMS.
 <cfset this.navGrandParentIdx=3/>
 <cfset this.navDepthAjust=0/>
 <cfset this.navSelfIdx=1/>
-<cfset this.jslib="prototype"/>
 <cfset this.jsLibLoaded=false>
 <cfset this.longDateFormat="long"/>
 <cfset this.shortDateFormat="short"/>
