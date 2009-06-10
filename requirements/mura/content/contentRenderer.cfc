@@ -875,11 +875,9 @@ to your own modified versions of Mura CMS.
 					<cfset hasSummary=false>
 					<cfinclude  template="#theIncludePath#/includes/display_objects/feedslideshow/index.cfm">
 				</cfcase>
-				<cfcase value="feed_table">
-					<cf_CacheOMatic key="#arguments.object#" nocache="#event.getValue('r').restrict#">
-					<cfset hasSummary=false>
-					<cfinclude  template="#theIncludePath#/includes/display_objects/feedtable/index.cfm">
-					</cf_cacheomatic>
+				<cfcase value="feed_slideshow">
+					<cfset hasSummary=true>
+					<cfinclude  template="#theIncludePath#/includes/display_objects/feedslideshow/index.cfm">
 				</cfcase>
 				<cfcase value="feed_table">
 					<cf_CacheOMatic key="#arguments.object#" nocache="#event.getValue('r').restrict#">
@@ -887,7 +885,6 @@ to your own modified versions of Mura CMS.
 					<cfinclude  template="#theIncludePath#/includes/display_objects/feedtable/index.cfm">
 					</cf_cacheomatic>
 				</cfcase>
-
 				<cfcase value="payPalCart">
 					<cfinclude  template="#theIncludePath#/includes/display_objects/paypalcart/index.cfm">
 				</cfcase>
