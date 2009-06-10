@@ -209,7 +209,7 @@ to your own modified versions of Mura CMS.
 <cfcatch></cfcatch>
 </cftry>
 
-<cfif application.configBean.getDebuggingEnabled() eq "false">
+<cfif application.configBean.getDebuggingEnabled()>
 	<cferror 
 		template="error.html"
 		mailto="#application.configBean.getMailserverusername()#"
