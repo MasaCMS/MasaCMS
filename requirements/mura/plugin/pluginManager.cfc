@@ -730,12 +730,13 @@ select * from tplugins order by #arguments.orderby#
 <cfargument name="runat">
 <cfargument name="siteID" required="true" default="">
 <cfargument name="event" required="true" default="" type="any">
+<cfargument name="scripts" required="true" default="" type="any">
 	<cfset var rs=""/>
-	
 	<cfset var pluginConfig="">
 	<cfset var componentPath="">
 	<cfset var scriptPath="">
 	<cfset var eventHandler="">
+	<cfset var rsOnError="">
 	
 	<cfif not isObject(arguments.event)>
 		<cfif isStruct(arguments.event)>
@@ -749,9 +750,14 @@ select * from tplugins order by #arguments.orderby#
 		</cfif>
 	</cfif>
 	
-	<cfset rs=getScripts(arguments.runat,arguments.siteid) />
+	<cfif isQuery(arguments.scripts)>
+		<cfset rs=arguments.scripts />
+	<cfelse>
+		<cfset rs=getScripts(arguments.runat,arguments.siteid) />
+	</cfif>
 	
 	<cfloop query="rs">
+		<cftry>
 		<cfset event.setValue("siteid",arguments.siteID)>
 		
 		<cfif listLast(rs.scriptfile,".") neq "cfm">
@@ -763,6 +769,17 @@ select * from tplugins order by #arguments.orderby#
 		<cfelse>
 			<cfset getExecutor().executeScript(event,"/plugins/#rs.directory#/#rs.scriptfile#",getConfig(rs.pluginID))>
 		</cfif>
+		<cfcatch>
+			<cfset rsOnError=getScripts("onError",arguments.siteid,rs.moduleID) />
+			<cfif arguments.runat neq "onError" and rsOnError.recordcount>
+				<cfset arguments.event.setValue("errorType","render")>
+				<cfset arguments.event.setValue("error",cfcatch)>
+				<cfset executeScripts("onError",arguments.siteid,arguments.event,rsOnError)>
+			<cfelse>
+				<cfrethrow>
+			</cfif>
+		</cfcatch>
+	</cftry>
 	</cfloop>
 
 </cffunction>
@@ -771,6 +788,7 @@ select * from tplugins order by #arguments.orderby#
 <cfargument name="runat">
 <cfargument name="siteID" required="true" default="">
 <cfargument name="event" required="true" default="" type="any">
+<cfargument name="scripts" required="true" default="" type="any">
 	<cfset var rs=""/>
 	<cfset var str=""/>
 	<cfset var pluginConfig="">
@@ -779,6 +797,8 @@ select * from tplugins order by #arguments.orderby#
 	<cfset var eventHandler="">
 	<cfset var theDisplay1="">
 	<cfset var theDisplay2="">
+	<cfset var rsOnError="">
+	
 	<cfif not isObject(arguments.event)>
 		<cfif isStruct(arguments.event)>
 			<cfset variables.event=createObject("component","mura.event").init(arguments.event)/>
@@ -791,8 +811,12 @@ select * from tplugins order by #arguments.orderby#
 		</cfif>
 	</cfif>
 	
-	<cfset rs=getScripts(arguments.runat,arguments.siteid) />
-
+	<cfif isQuery(arguments.scripts)>
+		<cfset rs=arguments.scripts />
+	<cfelse>
+		<cfset rs=getScripts(arguments.runat,arguments.siteid) />
+	</cfif>
+	
 	<cfif rs.recordcount>
 	
 	<cfloop query="rs">
@@ -816,12 +840,22 @@ select * from tplugins order by #arguments.orderby#
 			</cfsavecontent>
 			<cfset str=str & theDisplay1>
 		</cfif>
-	<cfcatch>
-		<cfsavecontent variable="theDisplay1">
-		<cfdump var="#cfcatch#">
-		</cfsavecontent>
-		<cfset str=str & theDisplay1>
-	</cfcatch>
+		
+		<cfcatch>
+			<cfset rsOnError=getScripts("onError",arguments.siteid,rs.moduleID) />
+			<cfif arguments.runat neq "onError" and rsOnError.recordcount>
+				<cfset arguments.event.setValue("errorType","render")>
+				<cfset arguments.event.setValue("error",cfcatch)>
+				<cfset str=str & renderScripts("onError",arguments.siteid,arguments.event,rsOnError)>
+			<cfelseif arguments.runat eq "onError">
+				<cfrethrow>
+			<cfelse>
+			<cfsavecontent variable="theDisplay1">
+			<cfdump var="#cfcatch#">
+			</cfsavecontent>
+			<cfset str=str & theDisplay1>
+			</cfif>
+		</cfcatch>
 	</cftry>
 	</cfloop>
 	</cfif>
@@ -832,13 +866,17 @@ select * from tplugins order by #arguments.orderby#
 <cffunction name="getScripts" output="false" returntype="query">
 <cfargument name="runat">
 <cfargument name="siteID" required="true" default="">
+<cfargument name="moduleID" required="true" default="">
 <cfset var rs="">
 
 	<cfquery name="rs" dbtype="query">
-	select pluginID, package, directory, scriptfile,name, docache from variables.rsScripts 
+	select pluginID, package, directory, scriptfile,name, docache, moduleID from variables.rsScripts 
 	where runat=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.runat#">
 	<cfif len(arguments.siteID)>
 	and siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#">
+	</cfif>
+	<cfif len(arguments.moduleID)>
+	and moduleID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.moduleID#">
 	</cfif>
 	order by pluginID
 	</cfquery>
@@ -871,13 +909,14 @@ select * from tplugins order by #arguments.orderby#
 	<cfset var eventHandler=""/>
 	<cfset var theDisplay1=""/>
 	<cfset var theDisplay2=""/>
+	<cfset var rsOnError="">
 	<!--- <cfset var site=variables.settingsManager.getSite(arguments.event.getValue('siteID'))/>
 	<cfset var cacheFactory=getCacheFactory(arguments.event.getValue('siteID'))/> --->
 	
 	<cfquery name="rs" dbtype="query">
-	select pluginID, displayObjectFile,location,displaymethod, docache, objectID, directory from variables.rsDisplayObjects 
+	select pluginID, displayObjectFile,location,displaymethod, docache, objectID, directory, moduleID from variables.rsDisplayObjects 
 	where objectID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.objectID#">
-	group by pluginID, displayObjectFile, location, displaymethod, docache, objectID, directory
+	group by pluginID, displayObjectFile, location, displaymethod, docache, objectID, directory, moduleID
 	</cfquery>
 	
 		<cfif rs.recordcount>
@@ -900,8 +939,15 @@ select * from tplugins order by #arguments.orderby#
 			<cfreturn getExecutor().displayObject(arguments.objectID,arguments.event,rs) />
 		</cfif>
 		<cfcatch>
+			<cfset rsOnError=getScripts("onError",event.getValue('siteID'),rs.moduleID) />
+			<cfif rsOnError.recordcount>
+				<cfset arguments.event.setValue("errorType","render")>
+				<cfset arguments.event.setValue("error",cfcatch)>
+				<cfreturn renderScripts("onError",event.getValue('siteID'),arguments.event,rsOnError)>
+			<cfelse>
 			 <cfsavecontent variable="theDisplay1"><cfdump var="#cfcatch#"></cfsavecontent>
 			 <cfreturn theDisplay1>
+			</cfif>		
 		</cfcatch>
 		</cftry>
 		</cfif>
