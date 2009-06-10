@@ -871,6 +871,16 @@ to your own modified versions of Mura CMS.
 					<cfinclude  template="#theIncludePath#/includes/display_objects/dsp_feed.cfm">
 					</cf_cacheomatic>
 				</cfcase>
+				<cfcase value="feed_slideshow_no_summary">	
+					<cfset hasSummary=false>
+					<cfinclude  template="#theIncludePath#/includes/display_objects/feedslideshow/index.cfm">
+				</cfcase>
+				<cfcase value="feed_table">
+					<cf_CacheOMatic key="#arguments.object#" nocache="#event.getValue('r').restrict#">
+					<cfset hasSummary=false>
+					<cfinclude  template="#theIncludePath#/includes/display_objects/feedtable/index.cfm">
+					</cf_cacheomatic>
+				</cfcase>
 				<cfcase value="feed_table">
 					<cf_CacheOMatic key="#arguments.object#" nocache="#event.getValue('r').restrict#">
 					<cfset hasSummary=false>
