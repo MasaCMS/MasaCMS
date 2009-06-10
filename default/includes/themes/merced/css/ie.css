@@ -1,16 +1,16 @@
-/*  This file is part of Sava CMS (www.gosava.com).
+/*  This file is part of Mura CMS (www.getmura.com).
 
-    Sava CMS is free software: you can redistribute it and/or modify
+    Mura CMS is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation, Version 2 of the License.
 
-    Sava CMS is distributed in the hope that it will be useful,
+    Mura CMS is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
 
     You should have received a copy of the GNU General Public License
-    along with Sava CMS.  If not, see <http://www.gnu.org/licenses/>.
+    along with Mura CMS.  If not, see <http://www.gnu.org/licenses/>.
 
 */
 
@@ -22,6 +22,8 @@
 * html legend { /* Fixes incorrect styling of legend in IE6. */
 	/*margin: -18px -8px 16px 0;
 	padding: 0;*/
+	margin-left: 0;
+	padding: 0;
 	}
 
 * html .content,
@@ -39,13 +41,21 @@
 	margin: 18px 13px 0 0;
 	}
 
-* htm #svPortal dl {
+* html #svPortal dl {
 	margin: 0 0 15px 0;
 	}
 
 * html #features { zoom: 1; } /* hasLayout fix */
 
-* html #features dl { display: inline; } /* double-margin fix */
+* html #navPrimary li, * html #features dl { display: inline; } /* double-margin fix */
+
+* html #slideshow {
+	margin-bottom: 0;
+}
+
+* html #sendLogin {
+	height: 130px;
+}
 
 /* @end IE6 Fixes
 -------------------------------- */
@@ -60,6 +70,45 @@ hr { margin: -8px auto 11px; } /* IE 6/7 has problems with setting proper <hr> m
 /* Fixes wrong line-height on sup/sub in IE 6/7. */
 sup { vertical-align: text-top; }
 sub { vertical-align: text-bottom; }
+
+h1 {
+	margin-bottom: 36px;
+}
+
+.svSyndLocal dl {
+	height: 1%;
+}
+
+.submit, .buttons input {
+	padding: 0 4px 0;
+	line-height: 10px;
+	height: 24px;
+	}
+
+#searchForm fieldset {
+	position: relative;
+	}
+
+	
+#searchForm .submit {
+	width: 34px;
+	position: absolute;
+	right: 0;
+	top: 0;
+	}
+
+#searchForm {
+	width: 232px;
+	}
+
+#svAddNewFeed form {
+	zoom: 1;
+	padding: .5em;
+}
+
+legend {
+	padding: 0;
+}
 
 
 /* @end IE6/7 Fixes

@@ -1,16 +1,21 @@
-/*  This file is part of Sava CMS (www.gosava.com).
+/* @override 
+	http://10.0.1.198:8500/mura/demo/includes/themes/merced/css/typography.css
+	http://192.168.1.105:8500/mura/demo/includes/themes/merced/css/typography.css
+*/
 
-    Sava CMS is free software: you can redistribute it and/or modify
+/*  This file is part of Mura CMS (www.getmura.com).
+
+    Mura CMS is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation, Version 2 of the License.
 
-    Sava CMS is distributed in the hope that it will be useful,
+    Mura CMS is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
 
     You should have received a copy of the GNU General Public License
-    along with Sava CMS.  If not, see <http://www.gnu.org/licenses/>.
+    along with Mura CMS.  If not, see <http://www.gnu.org/licenses/>.
 
 */
 
@@ -44,7 +49,7 @@ body {
 
 p, li, table, blockquote {
 	margin-bottom: 1em;
-	line-height: 1.5;
+	line-height: 1.25;
 	}
 
 p, li, dt, dd, table { font-size: 1.2em; }
@@ -108,7 +113,9 @@ h3 {
 	margin: 0 0 .25em;
 	font-size: 2.2em;
 	}
+	
 .sidebar h3 {
+	margin-bottom: .5em;
 	font-size: 1.4em;
 	color: #0c2846;
 	}
