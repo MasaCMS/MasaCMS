@@ -81,7 +81,7 @@ to your own modified versions of Mura CMS.
 </cfsilent>
 
 <cfif nextN.totalrecords>
-<div id="svPortal">
+<div id="svPortal" class="svIndex">
 		<cfoutput query="rsSection"  startrow="#request.startrow#" maxrows="#nextn.RecordsPerPage#">
 		<cfsilent>
 		<cfset class=iif(rssection.currentrow eq 1,de('first'),de(iif(rssection.currentrow eq rssection.recordcount,de('last'),de(''))))>

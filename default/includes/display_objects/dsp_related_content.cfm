@@ -52,7 +52,7 @@ to your own modified versions of Mura CMS.
 	<cfset rsRelatedContent = application.contentManager.getRelatedContent(request.siteID,request.contentBean.getcontentHistID(),true) />
 </cfsilent>
 <cfif rsRelatedContent.recordCount>
-	<div class="svRelContent">
+	<div class="svRelContent svIndex">
 	<h3>#rbFactory.getKey('list.relatedcontent')#</h3>
 	<cfloop query="rsRelatedContent">
 		<cfsilent>

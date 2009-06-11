@@ -67,7 +67,7 @@ to your own modified versions of Mura CMS.
 </cfsilent>
 <cfoutput>
 <cfif rsSection.recordcount and categoryBean.getIsActive() and rsFeatures.recordcount>
-<div class="svCatSecFeatures" id="#cssID#">
+<div class="svCatSecFeatures svIndex" id="#cssID#">
 <h3>#rsSection.MenuTitle#</h3>
 	<cfloop query="rsFeatures">
 		<cfsilent>

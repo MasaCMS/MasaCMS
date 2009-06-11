@@ -63,7 +63,7 @@ to your own modified versions of Mura CMS.
 </cfsilent>
 <cfoutput>
 <cfif rsSection.recordcount and rsFeatures.recordcount>
-<div id="#cssID#" class="svSyndLocal clearfix">
+<div id="#cssID#" class="svSyndLocal svIndex clearfix">
 <h3>#rsSection.menutitle#</h3>
 <cfloop query="rsFeatures">
 		<cfsilent>

@@ -64,7 +64,7 @@ to your own modified versions of Mura CMS.
 	<cfparam name="hasSummary" default="true"/>
 	<cfset cssID=createCSSID(rsSection.menuTitle)>
 </cfsilent>
-<div id="#cssID#" class="svRelSecContent">
+<div id="#cssID#" class="svRelSecContent svIndex">
 <h3>#rsSection.menutitle#</h3>
 <cfloop query="rsFeatures">
 		<cfsilent>

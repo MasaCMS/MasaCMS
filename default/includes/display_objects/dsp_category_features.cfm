@@ -58,7 +58,7 @@ to your own modified versions of Mura CMS.
 <cfif rsFeatures.recordcount and categoryBean.getIsActive()>
 <cfparam name="hasSummary" default="true"/>
 <cfset cssID=createCSSid(categoryBean.getName())>
-<div class="svCatFeatures" id="#cssID#">
+<div class="svCatFeatures svIndex" id="#cssID#">
 <h3>#categoryBean.getName()#</h3>
 <cfloop query="rsFeatures">
 		<cfsilent>
