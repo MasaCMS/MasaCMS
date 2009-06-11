@@ -899,8 +899,9 @@ select * from tplugins order by #arguments.orderby#
 </cffunction>
 
 <cffunction name="displayObject" output="true" returntype="any">
-<cfargument name="objectID">
+<cfargument name="object">
 <cfargument name="event" required="true" default="">
+<cfargument name="moduleID" required="true" default="">
 	
 	<cfset var rs=""/>
 	<cfset var key=""/>
@@ -910,12 +911,18 @@ select * from tplugins order by #arguments.orderby#
 	<cfset var theDisplay1=""/>
 	<cfset var theDisplay2=""/>
 	<cfset var rsOnError="">
-	<!--- <cfset var site=variables.settingsManager.getSite(arguments.event.getValue('siteID'))/>
-	<cfset var cacheFactory=getCacheFactory(arguments.event.getValue('siteID'))/> --->
 	
 	<cfquery name="rs" dbtype="query">
 	select pluginID, displayObjectFile,location,displaymethod, docache, objectID, directory, moduleID from variables.rsDisplayObjects 
-	where objectID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.objectID#">
+	where 
+	<cfif isvalid("UUID",arguments.object)>
+	objectID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.object#">
+	<cfelse>
+	name=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.object#">
+	</cfif>
+	<cfif len(arguments.moduleID)>
+	and moduleID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.moduleID#">
+	</cfif>
 	group by pluginID, displayObjectFile, location, displaymethod, docache, objectID, directory, moduleID
 	</cfquery>
 	
@@ -936,7 +943,7 @@ select * from tplugins order by #arguments.orderby#
 				<cfreturn trim(theDisplay1)>
 			</cfif>			
 		<cfelse>
-			<cfreturn getExecutor().displayObject(arguments.objectID,arguments.event,rs) />
+			<cfreturn getExecutor().displayObject(rs.objectID,arguments.event,rs) />
 		</cfif>
 		<cfcatch>
 			<cfset rsOnError=getScripts("onError",event.getValue('siteID'),rs.moduleID) />

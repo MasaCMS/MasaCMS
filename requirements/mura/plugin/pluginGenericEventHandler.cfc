@@ -30,4 +30,14 @@
 	<cfreturn this>
 </cffunction>
 
+<cffunction name="renderPluginDisplayObject" access="private" returntype="any" output="false" hint="gets the objectid associated with the passed in display object">
+	<cfargument name="object" type="string" required="true" />
+	<cfargument name="event" type="component" required="true" />
+	<cfset var rsObjID = "" />
+		
+	<cfreturn getPluginManager().displayObject(arguments.object , arguments.event, pluginConfig.getModuleID() )
+/> 
+</cffunction>
+
+
 </cfcomponent>
