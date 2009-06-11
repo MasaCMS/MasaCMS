@@ -901,8 +901,6 @@ table.svFlvPlayer td {
 
 .svIndex dl {
 	margin: 1.3em 0 1em;
-	padding-bottom: 1em;
-	border-bottom: 1px dotted #ccc;
 	}
 
 .sidebar .svIndex dl.first {
@@ -1000,7 +998,7 @@ dl.hasImage .image {
 	
 }
 
-.svSlides  dl {
+.svSlideshow .svSlides dl {
 	border: 0;
 }
 

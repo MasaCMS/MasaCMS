@@ -690,167 +690,6 @@ a.boxItemHeader { /* Link of items inside dragable boxes */
 
 /* @end */
 
-/* @group Slideshow
-===================================== */
-
-.home .svSlideshow {
-	position: relative;
-	width: 687px;
-	height: 234px;
-	overflow: hidden;
-	padding: 30px 0 0 0;
-	margin: 0 0 2.2em;
-	color: #b4dffa;
-	background: #102e50 url(../images/bg-hero.jpg) no-repeat;
-	border: 0;
-	}
-	
-.svSlides {
-	min-height:  206px; /*This is set relative to the height of the medium image*/
-}
-
-.home .svSlides {
-		position: relative;
-		border: 0;
-		z-index: 1;
-		padding: 0 ;
-		margin: 0 !important;
-		height: 200px;
-	}
-
-.home .svSlides dl {
-	width: 440px;
-	height: 180px;
-	padding: 0 0 20px 0;
-	margin: 0 30px 0;
-	border: 0;
-	font-size: 1em;
-	overflow: hidden;
-	background: transparent !important;  /*for IE 6/7*/ 
-	}
-	
-.home .svSlides dl.hasImage {  /* Optimized for 180px wide images. Edit image size in "site settings." Adjust  here as necessary*/ 
-	padding-left: 186px;
-	}
-
-.home .svSlideshow dt,
-.home .svSlideshow dd {
-	float: right;
-	width: 415px;
-	}
-
-.home .svSlides dt {
-	margin-bottom: .35em !important;
-	font-size: 2.6em !important;
-	font-weight: bold;
-	letter-spacing: -0.025em;
-	line-height: 1;
-	color: #fff;
-	}
-
-.home .svSlides dt.releaseDate {
-	color: #abdffa;
-	font-size: 11px !important;
-	font-weight: normal;
-	margin-bottom: .5em !important;
-	}
-
-.home .svSlides dt a {
-	color: #fff;
-	}
-
-.home .svSlidesdd {
-	margin-bottom: 1.1em;
-	letter-spacing: -0.025em;
-	font-size: 1.4em !important;
-	line-height: 1.215em;
-	padding: 0;
-	}
-
-.home .svSlides dd.image { /* Optimized for 180px wide "medium" images - edit image size in "site settings." Adjust here  as necessary */
-	position: absolute;
-	display: block;
-	width: 180px;
-	height: 180px;
-	float: none;
-	padding: 0;
-	border: 3px solid #1c5981;
-	}
-	
-.home .svSlides dd.image img {
-		display: block;
-		}
-
-.home .svSlides .readMore {
-		float: right;
-		}
-		
-.home .svSlides .readMore a {
-		font-size: 11px !important;
-		font-weight: bold;
-		color: #fff;
-		height: 2.1em;
-		line-height: 2.1em;
-		border: none;
-		padding: 0 1em;
-		display: block;
-		width: 60px;
-		text-align: left;
-		padding-right: 22px;
-		margin-right: 321px;
-		margin-top: .75em;
-		background: #2e7aa7 url(../images/arrows_white.gif) no-repeat 6.8em 50%;
-		-webkit-border-radius: 11px;
-		-moz-border-radius: 11px;
-		border-radius: 11px;
-		}
-		
-.svPager {
-	text-align: center;
-	line-height: 2;
-}
-
-.home ol.svPager {
-	position: absolute;
-	bottom: 20px;
-	left: 32px;
-	z-index: 2;
-	width: 190px;
-	text-align: center;
-	margin: 0;
-	padding: 0;
-	list-style: none;
-	}
-
-.home ol.svPager li {
-	/*float: left;*/
-	display: -moz-inline-block;
-	display: inline-block;
-	margin: 0 .25em;
-	}
-
-ol.svPager a {
-	/*display: block;*/
-	padding: 2px 5px;
-	text-align: center;
-	color: #fff;
-	background: #0c243a;
-	outline: none;
-	-webkit-border-radius: 4px;
-	-moz-border-radius: 3px;
-	border-radius: 3px;
-	}
-
-ol.svPager li.activeLI a,
-ol.svPager a:hover {
-	background: #ff3405;
-	}
-
-
-
-/* @end Slideshow
--------------------------------- */
-
 
 
 /* @group Features
@@ -989,9 +828,13 @@ ol.svPager a:hover {
 /* @end Home Promo Feeds
 -------------------------------- */
 
-
 /* @group Indexes
 ===================================== */
+
+.svIndex dl {
+	padding-bottom: 1em;
+	border-bottom: 1px dotted #ccc;
+}
 
 .sidebar .svIndex dl {
 	margin: .5em 0;
@@ -1059,6 +902,171 @@ ol.svPager a:hover {
 .rating4 { background-image: url(../images/rater/star_four.png); }
 .rating45 { background-image: url(../images/rater/star_fourhalf.png); }
 .rating5 { background-image: url(../images/rater/star_five.png); }
+
+/* @group Slideshow
+===================================== */
+
+.home .svSlideshow {
+	position: relative;
+	width: 687px;
+	height: 234px;
+	overflow: hidden;
+	padding: 30px 0 0 0;
+	margin: 0 0 2.2em;
+	color: #b4dffa;
+	background: #102e50 url(../images/bg-hero.jpg) no-repeat;
+	border: 0;
+	}
+	
+.svSlides {
+	min-height:  206px; /*This is set relative to the height of the medium image*/
+}
+
+.home .svSlides {
+		position: relative;
+		border: 0;
+		z-index: 1;
+		padding: 0 ;
+		margin: 0 !important;
+		height: 200px;
+	}
+
+.svSlides dl {
+	border: 0;
+	}
+
+.home .svSlides dl {
+	width: 440px;
+	height: 180px;
+	padding: 0 0 20px 0;
+	margin: 0 30px 0;
+	border: 0;
+	font-size: 1em;
+	overflow: hidden;
+	background: transparent !important;  /*for IE 6/7*/ 
+	}
+	
+.home .svSlides dl.hasImage {  /* Optimized for 180px wide images. Edit image size in "site settings." Adjust  here as necessary*/ 
+	padding-left: 186px;
+	}
+
+.home .svSlideshow dt,
+.home .svSlideshow dd {
+	float: right;
+	width: 415px;
+	}
+
+.home .svSlides dt {
+	margin-bottom: .35em !important;
+	font-size: 2.6em !important;
+	font-weight: bold;
+	letter-spacing: -0.025em;
+	line-height: 1;
+	color: #fff;
+	}
+
+.home .svSlides dt.releaseDate {
+	color: #abdffa;
+	font-size: 11px !important;
+	font-weight: normal;
+	margin-bottom: .5em !important;
+	}
+
+.home .svSlides dt a {
+	color: #fff;
+	}
+
+.home .svSlidesdd {
+	margin-bottom: 1.1em;
+	letter-spacing: -0.025em;
+	font-size: 1.4em !important;
+	line-height: 1.215em;
+	padding: 0;
+	}
+
+.home .svSlides dd.image { /* Optimized for 180px wide "medium" images - edit image size in "site settings." Adjust here  as necessary */
+	position: absolute;
+	display: block;
+	width: 180px;
+	height: 180px;
+	float: none;
+	padding: 0;
+	border: 3px solid #1c5981;
+	}
+	
+.home .svSlides dd.image img {
+		display: block;
+		}
+
+.home .svSlides .readMore {
+		float: right;
+		}
+		
+.home .svSlides .readMore a {
+		font-size: 11px !important;
+		font-weight: bold;
+		color: #fff;
+		height: 2.1em;
+		line-height: 2.1em;
+		border: none;
+		padding: 0 1em;
+		display: block;
+		width: 60px;
+		text-align: left;
+		padding-right: 22px;
+		margin-right: 321px;
+		margin-top: .75em;
+		background: #2e7aa7 url(../images/arrows_white.gif) no-repeat 6.8em 50%;
+		-webkit-border-radius: 11px;
+		-moz-border-radius: 11px;
+		border-radius: 11px;
+		}
+		
+.svPager {
+	text-align: center;
+	line-height: 2;
+}
+
+.home ol.svPager {
+	position: absolute;
+	bottom: 20px;
+	left: 32px;
+	z-index: 2;
+	width: 190px;
+	text-align: center;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	}
+
+.home ol.svPager li {
+	/*float: left;*/
+	display: -moz-inline-block;
+	display: inline-block;
+	margin: 0 .25em;
+	}
+
+ol.svPager a {
+	/*display: block;*/
+	padding: 2px 5px;
+	text-align: center;
+	color: #fff;
+	background: #0c243a;
+	outline: none;
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+	}
+
+ol.svPager li.activeLI a,
+ol.svPager a:hover {
+	background: #ff3405;
+	}
+
+
+
+/* @end Slideshow
+-------------------------------- */
 
 /* @end Indexes
 -------------------------------- */
