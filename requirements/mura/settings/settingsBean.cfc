@@ -876,7 +876,7 @@ to your own modified versions of Mura CMS.
 
 <cffunction name="getRBFactory" returntype="any" access="public" output="false">
 	<cfif not isObject(variables.instance.rbFactory)>
-		<cfset variables.instance.rbFactory=createObject("component","mura.resourceBundle.resourceBundleFactory").init(application.rbFactory,"#application.configBean.getWebRoot()#/#getSiteID()#/includes/resourceBundles/",getJavaLocale()) />
+		<cfset variables.instance.rbFactory=createObject("component","mura.resourceBundle.resourceBundleFactory").init(application.rbFactory,"#expandPath('/#variables.configBean.getWebRootMap()#')#/#getDisplayPoolID()#/includes/resourceBundles/",getJavaLocale()) />
 	</cfif>
 	<cfreturn variables.instance.rbFactory />
 </cffunction>
