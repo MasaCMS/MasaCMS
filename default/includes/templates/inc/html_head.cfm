@@ -12,7 +12,9 @@
 	<link rel="icon" href="#application.configBean.getContext()#/#request.siteid#/images/favicon.ico" type="image/x-icon" />
 	<link rel="shortcut icon" href="#application.configBean.getContext()#/#request.siteid#/images/favicon.ico" type="image/x-icon" />
 
-	<link rel="stylesheet" href="#application.configBean.getContext()#/#request.siteid#/css/style.css" type="text/css" media="all" />
+	<link rel="stylesheet" href="#application.configBean.getContext()#/#request.siteid#/css/default.css" type="text/css" media="all" />
+	<link rel="stylesheet" href="#application.configBean.getContext()#/#request.siteid#/css/typography.css" type="text/css" media="all" />
+	<link rel="stylesheet" href="#application.configBean.getContext()#/#request.siteid#/css/site.css" type="text/css" media="all" />
 	<link rel="stylesheet" href="#application.configBean.getContext()#/#request.siteid#/css/print.css" type="text/css" media="print" />
 	<cfinclude template="ie_conditional_includes.cfm" />
 
