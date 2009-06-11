@@ -43,6 +43,7 @@ to your own modified versions of Mura CMS.
 
 <cfswitch expression="#getJsLib()#">
 	<cfcase value="jquery">
+	<cfset loadJSLib() />
 	<cfset addToHTMLHeadQueue("feedslideshow/htmlhead/slideshow.jquery.cfm")>
 	<cf_CacheOMatic key="#arguments.object##arguments.objectid#" nocache="#event.getValue('r').restrict#">
 	<cfparam name="hasSummary" default="true"/>
@@ -64,7 +65,7 @@ to your own modified versions of Mura CMS.
 		  </cfsilent>
 	  	<cfif rs.recordcount>
 	  	<div class="svSlideshow">
-			<cfoutput><div class="svSyndLocal svFeed svIndex clearfix" id="#cssID#"></cfoutput>
+			<cfoutput><div class="svSlideshow svSyndLocal svFeed svIndex clearfix" id="#cssID#"></cfoutput>
 	        <cfif feedBean.getDisplayName()><h3><cfoutput>#feedBean.renderName()#</cfoutput></h3></cfif>
 
 	          <cfoutput query="rs"  startrow="#request.startrow#" maxrows="#nextn.RecordsPerPage#">
