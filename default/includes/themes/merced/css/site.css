@@ -805,7 +805,7 @@ ol.ssPager a:hover {
 /* @group Slideshow
 ===================================== */
 
-.svSlideshow {
+.home .svSlideshow {
 	position: relative;
 	width: 687px;
 	height: 234px;
@@ -817,16 +817,16 @@ ol.ssPager a:hover {
 	border: 0;
 	}
 
-.svSlideshow .svIndex {
-	position: relative; /*Being reset by jquery cycle to absolute*/
+.home .svSlideshow .svIndex {
+		position: relative; /*Being reset by jquery cycle to absolute*/
 		border: 0;
-	z-index: 1;
+		z-index: 1;
 		padding: 0 ;
 		margin: 0 !important;
 		height: 200px;
 	}
 
-.svSlideshow .svIndex dl {
+.home .svSlideshow .svIndex dl {
 	width: 536px;
 	height: 180px;
 	padding: 0 0 20px 0;
@@ -837,19 +837,17 @@ ol.ssPager a:hover {
 	background: transparent !important;  /*for IE 6/7*/ 
 	}
 	
-.svSlideshow dl.hasImage { /* Optimized for 180px wide "medium" images - edit image size in "site settings." Adjust  here as necessary */
+.home .svSlideshow dl.hasImage { /* Optimized for 180px wide "medium" images - edit image size in "site settings." Adjust  here as necessary */
 	padding-left: 220px;
 	}
 
-.svSlideshow dt,
-.svSlideshow dd {
+.home .svSlideshow dt,
+.home .svSlideshow dd {
 	float: right;
-	width: 350px;
-	padding-right: 67px;
-	}
+	width: 415px;	}
 
-.svSlideshow dt {
-	margin-bottom: 9px;
+.home .svSlideshow .svIndex dt {
+	margin-bottom: .35em !important;
 	font-size: 2.6em !important;
 	font-weight: bold;
 	letter-spacing: -0.025em;
@@ -857,36 +855,43 @@ ol.ssPager a:hover {
 	color: #fff;
 	}
 
-.svSlideshow dt a {
+.home .svSlideshow .svIndex dt.releaseDate {
+	color: #abdffa;
+	font-weight: normal;
+	margin-bottom: .5em !important;
+	}
+
+.home .svSlideshow dt a {
 	color: #fff;
 	}
 
-.svSlideshow dd {
+.home .svSlideshow dd {
 	margin-bottom: 1.1em;
 	letter-spacing: -0.025em;
 	font-size: 1.4em !important;
 	line-height: 1.215em;
+	padding: 0;
 	}
 
-.svSlideshow dd.image { /* Optimized for 180px wide "medium" images - edit image size in "site settings." Adjust here  as necessary */
+.home .svSlideshow dd.image { /* Optimized for 180px wide "medium" images - edit image size in "site settings." Adjust here  as necessary */
 	position: absolute;
 	display: block;
 	width: 180px;
-		height: 180px;
+	height: 180px;
 	float: none;
 	padding: 0;
 	border: 3px solid #1c5981;
 	}
 	
-.svSlideshow dd.image img {
+.home .svSlideshow dd.image img {
 		display: block;
 		}
 
-.svSlideshow .readMore {
+.home .svSlideshow .readMore {
 		float: right;
 		}
 		
-.svSlideshow .readMore a {
+.home .svSlideshow .readMore a {
 		font-size: 11px !important;
 		font-weight: bold;
 		color: #fff;
@@ -898,7 +903,7 @@ ol.ssPager a:hover {
 		width: 60px;
 		text-align: left;
 		padding-right: 22px;
-		margin-right: 258px;
+		margin-right: 321px;
 		margin-top: .75em;
 		background: #2e7aa7 url(../images/arrows_white.gif) no-repeat 6.8em 50%;
 		-webkit-border-radius: 11px;
@@ -906,7 +911,7 @@ ol.ssPager a:hover {
 		border-radius: 11px;
 		}
 
-ol.svPager {
+.home ol.svPager {
 	position: absolute;
 	bottom: 20px;
 	left: 32px;
@@ -918,26 +923,27 @@ ol.svPager {
 	list-style: none;
 	}
 
-ol.svPager li {
+.home ol.svPager li {
 	/*float: left;*/
-	display: inline;
+	display: -moz-inline-block;
+	display: inline-block;
 	margin: 0 .25em;
 	}
 
-ol.svPager a {
+.home ol.svPager a {
 	/*display: block;*/
 	padding: 2px 5px;
 	text-align: center;
 	color: #fff;
 	background: #0c243a;
 	outline: none;
-		-webkit-border-radius: 4px;
-		-moz-border-radius: 3px;
-		border-radius: 3px;
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
 	}
 
-ol.svPager li.activeLI a,
-ol.svPager a:hover {
+.home ol.svPager li.activeLI a,
+.home ol.svPager a:hover {
 	background: #ff3405;
 	}
 
