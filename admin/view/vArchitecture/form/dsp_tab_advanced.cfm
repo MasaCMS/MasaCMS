@@ -48,7 +48,7 @@ to your own modified versions of Mura CMS.
 </dd>
 <cfif listFind("Gallery,Link,Portal,Page,Calendar,File,Link",attributes.type)>
 <dt>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.permlink')#</dt>
-<dd><cfif len(attributes.contentID) and len(request.contentBean.getcontentID())>http://#application.settingsManager.getSite(attributes.siteid).getDomain()##application.configBean.getServerPort()#/#attributes.siteid#/?LinkServID=#request.contentBean.getcontentID()#<cfelse>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.notavailable')#</cfif></li>
+<dd><cfif len(attributes.contentID) and len(request.contentBean.getcontentID())>http://#application.settingsManager.getSite(attributes.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()#/#attributes.siteid#/?LinkServID=#request.contentBean.getcontentID()#<cfelse>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.notavailable')#</cfif></li>
 </dd>
 </cfif>
 <cfif attributes.type neq 'Component' and attributes.type neq 'Form'>
