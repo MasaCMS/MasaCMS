@@ -5,7 +5,8 @@
 	<cfinclude template="inc/header.cfm" />
 	<div id="content" class="clearfix">
 		<div id="primary" class="content">
-			<!--- #renderer.dspBody(body=request.contentBean.getbody(),pageTitle='',crumbList=0,showMetaImage=0)# ---> <!--- OPTIONAL --->
+			<!--- OPTIONAL --->
+			<!--- #renderer.dspBody(body=request.contentBean.getbody(),pageTitle='',crumbList=0,showMetaImage=0)# --->
 			#renderer.dspObjects(2)#
 		</div>
 		<div id="right" class="sidebar">
