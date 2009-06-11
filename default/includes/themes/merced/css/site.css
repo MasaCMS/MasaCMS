@@ -692,118 +692,6 @@ a.boxItemHeader { /* Link of items inside dragable boxes */
 
 /* @group Slideshow
 ===================================== */
-.ssWrapper {
-	position: relative;
-}
-
-#slideshow {
-	position: relative;
-	width: 687px;
-	height: 257px;
-	overflow: hidden;
-	margin: 0 0 2.2em;
-	color: #b4dffa;
-	background: #102e50 url(../images/bg-hero.jpg) no-repeat;
-	z-index: 1;
-	}
-
-#slideshow ul,
-#slideshow ol {
-	margin: 0;
-	padding: 0;
-	list-style: none;
-	}
-
-#slideshow ul {
-	position: relative;
-	width: 687px;
-	height: 257px;
-	overflow: hidden;
-	}
-
-#slideshow ul li {
-	width: 687px;
-	height: 207px;
-	padding: 30px 0 20px;
-	font-size: 1em;
-	background: transparent !important; /* for IE 6/7 */
-	}
-
-#slideshow h2,
-#slideshow p {
-	float: right;
-	width: 370px;
-	padding-right: 67px;
-	}
-
-#slideshow h2 {
-	margin-bottom: 9px;
-	font-size: 2.8em !important;
-	font-weight: bold;
-	line-height: 1;
-	letter-spacing: -0.025em;
-	color: #fff;
-	}
-
-#slideshow p {
-	margin-bottom: 1.1em;
-	letter-spacing: -0.025em;
-	font-size: 1.4em !important;
-	line-height: 1.215em;
-	}
-
-#slideshow img {
-	position: absolute;
-	top: 30px;
-	left: 29px;
-	display: block;
-	border: 3px solid #1c5981;
-	}
-
-ol.ssPager {
-	position: absolute;
-	bottom: 18px;
-	left: 32px;
-	width: 180px;
-	text-align: center;
-	margin: 0;
-	padding: 0;
-		z-index: 1;
-	}
-
-ol.ssPager li {
-	/*float: left;*/
-	display: inline;
-	margin: 0 .25em;
-	}
-
-ol.ssPager a {
-	/*display: block;*/
-	padding: 2px 5px;
-	text-align: center;
-	color: #fff;
-	background: #0c243a;
-	}
-
-ol.ssPager li.activeLI a,
-ol.ssPager a:hover {
-	background: #ff3405;
-	}
-
-#slideshow .readMore a {
-	display: block;
-	height: 20px;
-	width: 90px;
-	padding: 2px 0 0 10px;
-	font-weight: bold;
-	color: #fff;
-	}
-
-/* @end Slideshow
--------------------------------- */
-
-/* @group Slideshow
-===================================== */
 
 .home .svSlideshow {
 	position: relative;
@@ -827,7 +715,7 @@ ol.ssPager a:hover {
 	}
 
 .home .svSlideshow .svIndex dl {
-	width: 536px;
+	width: 440px;
 	height: 180px;
 	padding: 0 0 20px 0;
 	margin: 0 30px 0;
@@ -837,8 +725,8 @@ ol.ssPager a:hover {
 	background: transparent !important;  /*for IE 6/7*/ 
 	}
 	
-.home .svSlideshow dl.hasImage { /* Optimized for 180px wide "medium" images - edit image size in "site settings." Adjust  here as necessary */
-	padding-left: 220px;
+.home .svSlideshow .svIndex dl.hasImage {  /* Optimized for 180px wide images. Edit image size in "site settings." Adjust  here as necessary*/ 
+	padding-left: 186px;
 	}
 
 .home .svSlideshow dt,
@@ -857,6 +745,7 @@ ol.ssPager a:hover {
 
 .home .svSlideshow .svIndex dt.releaseDate {
 	color: #abdffa;
+	font-size: 11px !important;
 	font-weight: normal;
 	margin-bottom: .5em !important;
 	}
@@ -937,9 +826,9 @@ ol.ssPager a:hover {
 	color: #fff;
 	background: #0c243a;
 	outline: none;
-	-webkit-border-radius: 4px;
-	-moz-border-radius: 3px;
-	border-radius: 3px;
+		-webkit-border-radius: 4px;
+		-moz-border-radius: 3px;
+		border-radius: 3px;
 	}
 
 .home ol.svPager li.activeLI a,
