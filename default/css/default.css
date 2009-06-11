@@ -1,3 +1,7 @@
+/* @override 
+	http://192.168.1.105:8500/mura/demo/css/default.css
+*/
+
 /* This file is part of Mura CMS. 
 
 	Mura CMS is free software: you can redistribute it and/or modify 
@@ -992,15 +996,15 @@ dl.hasImage .image {
 
 /* @group Slideshow */
 
-.svSlideshow .svIndex h3 {
+.svSlides h3 {
 	
 }
 
-.svSlideshow .svIndex  dl {
-	
+.svSlides  dl {
+	border: 0;
 }
 
-.svSlideshow .svIndex  dt {
+.svSlides  dt {
 	
 }
 

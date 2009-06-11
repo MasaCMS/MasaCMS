@@ -64,10 +64,9 @@ to your own modified versions of Mura CMS.
 			<cfset doMeta=0 />
 		  </cfsilent>
 	  	<cfif rs.recordcount>
-	  	<div class="svSlideshow">
-			<cfoutput><div class="svSlideshow svSyndLocal svFeed svIndex clearfix" id="#cssID#"></cfoutput>
-	        <cfif feedBean.getDisplayName()><h3><cfoutput>#feedBean.renderName()#</cfoutput></h3></cfif>
-
+	  	<div class="svSlideshow svSyndLocal svFeed svIndex clearfix" id="#cssID#">
+	  		<cfif feedBean.getDisplayName()><h3><cfoutput>#feedBean.renderName()#</cfoutput></h3></cfif>
+			<cfoutput><div class="svSlides"></cfoutput>
 	          <cfoutput query="rs"  startrow="#request.startrow#" maxrows="#nextn.RecordsPerPage#">
 	            <cfset theLink=createHREF(rs.type,rs.filename,rs.siteid,rs.contentid,rs.target,rs.targetparams,"",application.configBean.getContext(),application.configBean.getStub(),application.configBean.getIndexFile()) />
 

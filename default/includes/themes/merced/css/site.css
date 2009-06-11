@@ -1,3 +1,5 @@
+/* @override http://192.168.1.105:8500/mura/demo/includes/themes/merced/css/site.css */
+
 /*	Theme:	Merced */
 
 /* @group GLOBALS
@@ -703,8 +705,8 @@ a.boxItemHeader { /* Link of items inside dragable boxes */
 	border: 0;
 	}
 
-.home .svSlideshow .svIndex {
-		position: relative; /*Being reset by jquery cycle to absolute*/
+.home .svSlides {
+		position: relative;
 		border: 0;
 		z-index: 1;
 		padding: 0 ;
@@ -712,7 +714,7 @@ a.boxItemHeader { /* Link of items inside dragable boxes */
 		height: 200px;
 	}
 
-.home .svSlideshow .svIndex dl {
+.home .svSlides dl {
 	width: 440px;
 	height: 180px;
 	padding: 0 0 20px 0;
@@ -723,7 +725,7 @@ a.boxItemHeader { /* Link of items inside dragable boxes */
 	background: transparent !important;  /*for IE 6/7*/ 
 	}
 	
-.home .svSlideshow .svIndex dl.hasImage {  /* Optimized for 180px wide images. Edit image size in "site settings." Adjust  here as necessary*/ 
+.home .svSlides dl.hasImage {  /* Optimized for 180px wide images. Edit image size in "site settings." Adjust  here as necessary*/ 
 	padding-left: 186px;
 	}
 
@@ -732,7 +734,7 @@ a.boxItemHeader { /* Link of items inside dragable boxes */
 	float: right;
 	width: 415px;	}
 
-.home .svSlideshow .svIndex dt {
+.home .svSlides dt {
 	margin-bottom: .35em !important;
 	font-size: 2.6em !important;
 	font-weight: bold;
@@ -741,18 +743,18 @@ a.boxItemHeader { /* Link of items inside dragable boxes */
 	color: #fff;
 	}
 
-.home .svSlideshow .svIndex dt.releaseDate {
+.home .svSlides dt.releaseDate {
 	color: #abdffa;
 	font-size: 11px !important;
 	font-weight: normal;
 	margin-bottom: .5em !important;
 	}
 
-.home .svSlideshow dt a {
+.home .svSlides dt a {
 	color: #fff;
 	}
 
-.home .svSlideshow dd {
+.home .svSlidesdd {
 	margin-bottom: 1.1em;
 	letter-spacing: -0.025em;
 	font-size: 1.4em !important;
@@ -760,7 +762,7 @@ a.boxItemHeader { /* Link of items inside dragable boxes */
 	padding: 0;
 	}
 
-.home .svSlideshow dd.image { /* Optimized for 180px wide "medium" images - edit image size in "site settings." Adjust here  as necessary */
+.home .svSlides dd.image { /* Optimized for 180px wide "medium" images - edit image size in "site settings." Adjust here  as necessary */
 	position: absolute;
 	display: block;
 	width: 180px;
@@ -770,15 +772,15 @@ a.boxItemHeader { /* Link of items inside dragable boxes */
 	border: 3px solid #1c5981;
 	}
 	
-.home .svSlideshow dd.image img {
+.home .svSlides dd.image img {
 		display: block;
 		}
 
-.home .svSlideshow .readMore {
+.home .svSlides .readMore {
 		float: right;
 		}
 		
-.home .svSlideshow .readMore a {
+.home .svSlides .readMore a {
 		font-size: 11px !important;
 		font-weight: bold;
 		color: #fff;

@@ -24,8 +24,5 @@
 	<link rel="alternate" type="application/rss+xml" title="#renderer.getSite().getSite()# - #rs.name#" href="#XMLFormat('http://#cgi.server_name##application.configBean.getContext()#/tasks/feed/?feedID=#rs.feedID#')#" />
 	</cfloop>
 
-	<script type="text/javascript" src="#application.configBean.getContext()#/#request.siteid#/js/jquery/jquery.js"></script>
-	<script type="text/javascript" src="#themePath#/js/jquery.cycle.js"></script>
-	<script type="text/javascript" src="#themePath#/js/jquery.scripts.js"></script>
 </head>
 </cfoutput>
