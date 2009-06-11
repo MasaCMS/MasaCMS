@@ -96,18 +96,12 @@ h2, h3, h4, h5, h6 {
 
 h2 {
 	margin: 0 0 .5em;
-	font-size: 2.8em;
-	font-weight: normal;
+	font-size: 3em;
 	}
-
-h2.pageTitle {
-	font-size: 2.4em;
-	font-weight: bold;
-}
 
 .threeColumn h2.pageTitle {
 	font-size: 3em;
-}
+		}
 
 h3 {
 	margin: 0 0 .25em;
@@ -124,6 +118,7 @@ h4 {
 	margin: 0 0 .35em;
 	font-size: 1.8em;
 	}
+
 .sidebar h4 {
 	font-size: 1.4em;
 	}
@@ -131,6 +126,7 @@ h4 {
 h5 {
 	font-size: 1.4em;
 	}
+
 .sidebar h5 {
 	font-size: 1.2em;
 	}
@@ -138,6 +134,7 @@ h5 {
 h6 {
 	font-size: 1.2em;
 	}
+
 .sidebar h6 {
 	font-size: 1.1em;
 	}

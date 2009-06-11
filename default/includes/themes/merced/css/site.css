@@ -225,15 +225,22 @@ td {
 
 #primary {
 	float: left;
-	width: 702px;
+		width: 100%;
 	color: #232323;
 	}
 .home #primary {
 	width: 687px;
 	}
-twoColSL #primary {
+.twoColSL #primary {
 	float: right;
+		width: 707px;
 	}
+	
+.twoColSR #primary {
+	float: left;
+	width: 707px;
+	}
+
 .threeCol #primary {
 	width: 504px;
 	}
@@ -374,7 +381,6 @@ h1 a {
 	margin: 0 .5em 0 -0.5em;
 	padding: 0 10px;
 	list-style: none;
-	font-family: Verdana, Arial, Helvetica, sans-serif;
 	font-size: 1em !important;
 	}
 
@@ -517,7 +523,7 @@ h1 a {
 	margin: 0 0 4em;
 	padding: 0;
 	list-style: none;
-		height: auto;
+	height: auto;
 	}
 
 .navSecondary li {
@@ -536,7 +542,7 @@ h1 a {
 	margin: .5em 0 0;
 	padding: 0;
 	list-style: none;
-		overflow: hidden;
+	overflow: hidden;
 	}
 
 .navSecondary li {
@@ -601,8 +607,6 @@ h1 a {
 	padding: 0 .5em;
 	list-style: none;
 	border-left: 1px solid #b6b6b6;
-	font-family: Verdana, Arial, Helvetica, sans-serif;
-	font-size: .916em !important;
 	}
 
 .moreResults li a {
@@ -620,7 +624,59 @@ h1 a {
 /* @group MODULES
 ===================================== */
 
+/* @group Calendar
+===================================== */
+
+#svCalendar table {
+	margin-top: 0;
+}
+
+#svCalendar th {
+	background: #0c2846;
+	vertical-align: middle;
+}
+
+#svCalendar th a, #svCalendar th a:hover {
+	background: #0c2846;
+}
+
+#svCalendar th a:hover {
+	color: #2e7aa7;
+}
+
+
+#svCalendar tr.dayofweek td {
+	background: #2e7aa7;
+	color: #fff;
+}
+
+#svCalendar th, #svCalendar td {
+	border: 1px solid #fff;
+}
+
+#svCalendar td {
+	background: #f2f2f2;
+}
+
+
+/* @end  Calendar
+-------------------------------- */
+
 /* @group Dragable Feeds */
+
+#svRSSFeeds form {
+	background: transparent;
+}
+
+li.boxItemHeader { /* Link of items inside dragable boxes */
+	color: #2e7aa7;
+	padding-left: 10px;
+	background: url(../images/pointer_red_sm.gif) no-repeat left .25em;
+}
+
+a.boxItemHeader { /* Link of items inside dragable boxes */
+	color: #2e7aa7;
+}
 
 #svAddNewFeed {
 	padding: 0 !important;
@@ -648,7 +704,7 @@ h1 a {
 	margin: 0 0 2.2em;
 	color: #b4dffa;
 	background: #102e50 url(../images/bg-hero.jpg) no-repeat;
-		z-index: 1;
+	z-index: 1;
 	}
 
 #slideshow ul,
@@ -746,10 +802,8 @@ ol.ssPager a:hover {
 /* @end Slideshow
 -------------------------------- */
 
-/* @group Slideshow - Local Index
+/* @group Slideshow
 ===================================== */
-
-/*These styles have been added in case you want to use a local index instead of static content for the hero area. Note the Local Index must be named "Slideshow" (unless you want to edit the styles below). */
 
 .svSlideshow {
 	position: relative;
