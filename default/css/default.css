@@ -885,7 +885,6 @@ table.svFlvPlayer td {
 /* @end Galleries
 -------------------------------- */
 
-
 /* @group All Indexes - Portals, Local Indexes, Remote Feeds, Related Content, Features
 ===================================== */
 .svIndex {
@@ -995,6 +994,45 @@ dl.hasImage .image {
 .sidebar dl.hasImage .image {
 	display: none;
 }
+
+/* @group Slideshow */
+
+.svSlideshow .svIndex h3 {
+	
+}
+
+.svSlideshow .svIndex  dl {
+	
+}
+
+.svSlideshow .svIndex  dt {
+	
+}
+
+ol.svPager {
+	z-index: 2;
+	margin: 0;
+	padding: 0;
+	}
+
+ol.svPager li {
+	/*float: left;*/
+	display: -moz-inline-block;
+	display: inline-block;
+	margin: 0 .25em;
+	}
+
+ol.svPager a {
+	
+	}
+
+ol.svPager li.activeLI a,
+ol.svPager a:hover {
+	
+	}
+
+
+/* @end */
 
 /* @end Portals, Feeds
 -------------------------------- */
