@@ -218,6 +218,19 @@ to your own modified versions of Mura CMS.
 </select>
 </cfoutput>
 </cfcase>
+
+<cfcase value="slideshow">
+<cfoutput>
+<select name="availableObjects" id="availableObjects" class="multiSelect" size="#evaluate((application.settingsManager.getSite(attributes.siteid).getcolumnCount() * 6)-4)#" style="width:310px;">
+<cfset request.rslist=application.feedManager.getFeeds(attributes.siteid,'Local') />
+<cfloop query="request.rslist">
+	<option value="feed_slideshow~#request.rslist.name# - #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.localindexslideshowsummaries')#~#request.rslist.feedID#">#request.rslist.name# - #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.localindexslideshowsummaries')#</option>
+	<option value="feed_slideshow_no_summary~#request.rslist.name# - #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.localindexslideshow')#~#request.rslist.feedID#">#request.rslist.name# - #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.localindexslideshow')#</option>
+</cfloop>
+</select>
+</cfoutput>
+</cfcase>
+
 <cfcase value="remoteFeed">
 <cfoutput>
 <select name="availableObjects" id="availableObjects" class="multiSelect" size="#evaluate((application.settingsManager.getSite(attributes.siteid).getcolumnCount() * 6)-4)#" style="width:310px;">

@@ -46,6 +46,11 @@ to your own modified versions of Mura CMS.
 <dt class="first">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.contentid')#</dt>
 <dd><cfif len(attributes.contentID) and len(request.contentBean.getcontentID())>#request.contentBean.getcontentID()#<cfelse>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.notavailable')#</cfif></li>
 </dd>
+<cfif listFind("Gallery,Link,Portal,Page,Calendar,File,Link",attributes.type)>
+<dt>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.permlink')#</dt>
+<dd><cfif len(attributes.contentID) and len(request.contentBean.getcontentID())>http://#application.settingsManager.getSite(attributes.siteid).getDomain()##application.configBean.getServerPort()#/#attributes.siteid#/?LinkServID=#request.contentBean.getcontentID()#<cfelse>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.notavailable')#</cfif></li>
+</dd>
+</cfif>
 <cfif attributes.type neq 'Component' and attributes.type neq 'Form'>
 <dt><cfoutput><a href="##" class="tooltip">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.layouttemplate')#<span>#application.rbFactory.getKeyValue(session.rb,"tooltip.layoutTemplate")#</span></a></cfoutput></dt>
 <dd><select name="template" class="dropdown">
