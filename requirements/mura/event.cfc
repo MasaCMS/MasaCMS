@@ -157,7 +157,7 @@ to your own modified versions of Mura CMS.
 		<cfset setValue('TranslatorFactory',application.pluginManager.getEventManager(getValue('siteid')).getFactory("Translator"))>
 	</cfif>
 	<cfif not valueExists("contentRenderer")>
-		<cfset setValue("contentRenderer",createObject("component","#getConfigBean().getWebRootMap()#.#getValue('siteid')#.includes.contentRenderer").init(this))>
+		<cfset setValue("contentRenderer",createObject("component","#application.settingsManager.getSite(getValue('siteid')).getAssetMap()#.includes.contentRenderer").init(this))>
 	</cfif>
 </cffunction>
 
