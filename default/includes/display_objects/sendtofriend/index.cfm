@@ -57,7 +57,7 @@ to your own modified versions of Mura CMS.
 
 <title>#application.settingsManager.getSite(request.siteID).getSite()# - #rbFactory.getKey('stf.sendtoafriend')#</title>
 
-<link rel="stylesheet" href="#application.settingsManager.getSite(request.siteid).getThemeAssetPath()#/css/style.css" type="text/css" media="all" />
+<link rel="stylesheet" href="#application.settingsManager.getSite(request.siteid).getAssetPath()#/css/style.css" type="text/css" media="all" />
 </head>
 
 <body id="svSendToFriend">
