@@ -732,7 +732,8 @@ a.boxItemHeader { /* Link of items inside dragable boxes */
 .home .svSlideshow dt,
 .home .svSlideshow dd {
 	float: right;
-	width: 415px;	}
+	width: 415px;
+	}
 
 .home .svSlides dt {
 	margin-bottom: .35em !important;
