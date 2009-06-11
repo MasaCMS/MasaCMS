@@ -1,4 +1,7 @@
-/* @override http://10.0.1.197:8500/mura/default/css/default.css */
+/* @override 
+	http://10.0.1.198:8500/mura/demo/css/default.css
+	http://192.168.1.105:8500/mura/demo/css/default.css
+*/
 
 /* This file is part of Mura CMS. 
 
@@ -117,20 +120,24 @@ ol ol ol { list-style: lower-roman; }
 /* @group Globals - Definition Lists (DL)
 ===================================== */
 
-dl { clear: both; }
+dl { 
+	clear: both;
+	overflow: hidden;
+	margin-bottom: 1em;
+	}
 
 dt {
-	margin: 0 0 .2em;
-	line-height: 1.2;
+	margin: 0 0 .5em;
+	line-height: 1;
 	font-weight: bold;
 	}
 
 dt a { text-decoration: none; }
 
 dd {
-	margin: 0 0 .75em;
+	margin: 0 0 .5em;
 	padding: 0;
-	line-height: 1.25;
+	line-height: 1.2;
 	}
 
 dd p {
@@ -272,10 +279,10 @@ p.fieldLabel {
 
 form li span { font-weight: normal; }
 
-fieldset input.text { width: 60%; }
+fieldset input.text { width: 70%; }
 
 fieldset textarea {
-	width: 60%;
+	width: 70%;
 	height: 10em;
 	}
 
@@ -527,8 +534,8 @@ p.center { text-align: center; }
 
 #svComments dt { margin-bottom: .25em; }
 #svComments dd { margin-bottom: .25em; }
-#svComments dd.comment p { margin-bottom: 0; }
-#svComments dd.comment p:last-child { margin-bottom: 1em; }
+#svComments dd.comment p { margin-top: .5em; }
+#svComments dd.comment p:first-child { margin-top: 0; }
 
 #svComments dd.dateTime {
 	font-size: 1em;
@@ -879,86 +886,115 @@ table.svFlvPlayer td {
 -------------------------------- */
 
 
-/* @group Portals, Feeds
+/* @group All Indexes - Portals, Local Indexes, Remote Feeds, Related Content, Features
 ===================================== */
-
-.svSyndLocal,
-.svSyndRemote {
-	margin-bottom: 2em;
+.svIndex {
+	margin: 2em 0;
 	}
 
-.svSyndLocal dd img,
-.svSyndRemote dd img {}
+.sidebar .svIndex {
+	margin: 0 0 2em 0;
+}
 
-
-#svPortal {
-	margin-bottom: 1em;
-	border-top: 1px solid #ccc;
-	}
-
-#svPortal dl {
-	margin: 1em 0;
+.content .svIndex {
 	padding-top: 1em;
-	border-top: 1px dotted #ccc;
+	border-top: 1px solid #ccc;
+}
+
+.svIndex dl {
+	margin: 1.3em 0 1em;
+	padding-bottom: 1em;
+	border-bottom: 1px dotted #ccc;
 	}
 
-#svPortal dl.first {
+.sidebar .svIndex dl.first {
+	margin-top: 0;
+	}
+
+.svIndex dl.last {
+	border: 0;
+	padding: 0;
+	}
+
+.sidebar .svIndex dl.first {
 	padding-top: 0;
-	border-top: 0;
 	}
 
-.content dt { margin-bottom: .75em; }
+.svIndex dt {
+	margin-bottom: .75em;
+}
 
-#svPortal dt.releaseDate {
+.sidebar .svIndex dt {
+	margin: 0 0 .25em 0;
+	}
+
+.svIndex dt.releaseDate {
 	margin-bottom: .5em;
-	font-size: 1em;
 	font-weight: normal;
 	color: #999;
 	}
 
-#svPortal dd { margin-bottom: .75em; }
+dd.summary span.readMore { font-size: .9em; }
 
-.content dd.summary span.readMore { font-size: .9em; }
-
-.content dd.credits {
+dd.credits,
+dd.comments,
+dd.tags,
+dd.ratings {
 	float: left;
-	margin-right: .75em;
-	margin-bottom: 1.2em;
-	font-size: 1em;
-	line-height: 1.2;
-	color: #666;
-	}
-
-.content dd.comments,
-.content dd.tags,
-.content dd.ratings {
-	float: left;
-	margin-bottom: 1em;
-	padding: 0 .5em 0 0;
+	margin-bottom: 0;
+	padding: 0 .75em 0 0;
 	font-size: 1em;
 	}
-	
-.content dd.comments,
-.content dd.tags,
-.content dd.credits {
+
+.sidebar dd.credits,
+.sidebar dd.comments,
+.sidebar dd.tags,
+.sidebar dd.ratings {
+	float: none;
+	margin-bottom: .35em;
+	padding: 0;
+	}
+
+#primary .svIndex dd.credits,
+#primary .svIndex  dd.comments,
+#primary .svIndex  dd.tags,
+#primary .svIndex  dd.ratings {
 	line-height: 20px; /* acommodate height of stars */
 	}
 	
-img.ratestars {
-	margin: 0 !important;
-	padding: 0 !important;
-	border: 0 !important;
+.svIndex dd.credits {
+	color: #666;
 	}
+	
+.rating00, .ratings { background-image: url(../images/rater/star_zero.png); }
+.rating1 { background-image: url(../images/rater/star_one.png); }
+.rating15 { background-image: url(../images/rater/star_onehalf.png); }
+.rating2 { background-image: url(../images/rater/star_two.png); }
+.rating25 { background-image: url(../images/rater/star_twohalf.png); }
+.rating3 { background-image: url(../images/rater/star_three.png); }
+.rating35 { background-image: url(../images/rater/star_threehalf.png); }
+.rating4 { background-image: url(../images/rater/star_four.png); }
+.rating45 { background-image: url(../images/rater/star_fourhalf.png); }
+.rating5 { background-image: url(../images/rater/star_five.png); }
 
-.content dd.comments {
-	padding: 0 .5em 0 13px;
+.svIndex dd.comments {
+	padding-left: 13px !important;
 	background: url(../images/icon_comments.gif) no-repeat 0 50%;
 	}
 
 dl.hasImage .image { 
 	float: left;
-	margin: 0 1em 1em 0;
+	margin: 0 1em 0 0;
 	}
+	
+.sidebar dl.hasImage {
+	min-height: 0;
+	padding-left: 0;
+}
+
+.sidebar dl.hasImage .image {
+	display: none;
+}
 
 /* @end Portals, Feeds
 -------------------------------- */
