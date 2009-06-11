@@ -366,7 +366,8 @@ to your own modified versions of Mura CMS.
 				useDefaultSMTPServer = #usedefaultsmtpserver#,
 				MailServerTLS = '#FORM.production_mailservertls#',
 				MailServerSSL = '#FORM.production_mailserverssl#',
-				Contact = '#FORM.production_adminemail#'
+				Contact = '#FORM.production_adminemail#',
+				theme = 'merced'
 		</cfquery>
 	</cfif>
 	
