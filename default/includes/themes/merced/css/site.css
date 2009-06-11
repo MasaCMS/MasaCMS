@@ -1,4 +1,4 @@
-/* @override http://192.168.1.105:8500/mura/demo/includes/themes/merced/css/site.css */
+/* @override http://192.168.1.105:8500/mura/default/includes/themes/merced/css/site.css */
 
 /*	Theme:	Merced */
 
@@ -704,6 +704,10 @@ a.boxItemHeader { /* Link of items inside dragable boxes */
 	background: #102e50 url(../images/bg-hero.jpg) no-repeat;
 	border: 0;
 	}
+	
+.svSlides {
+	min-height:  206px; /*This is set relative to the height of the medium image*/
+}
 
 .home .svSlides {
 		position: relative;
@@ -800,6 +804,11 @@ a.boxItemHeader { /* Link of items inside dragable boxes */
 		-moz-border-radius: 11px;
 		border-radius: 11px;
 		}
+		
+.svPager {
+	text-align: center;
+	line-height: 2;
+}
 
 .home ol.svPager {
 	position: absolute;
@@ -820,20 +829,20 @@ a.boxItemHeader { /* Link of items inside dragable boxes */
 	margin: 0 .25em;
 	}
 
-.home ol.svPager a {
+ol.svPager a {
 	/*display: block;*/
 	padding: 2px 5px;
 	text-align: center;
 	color: #fff;
 	background: #0c243a;
 	outline: none;
-		-webkit-border-radius: 4px;
-		-moz-border-radius: 3px;
-		border-radius: 3px;
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
 	}
 
-.home ol.svPager li.activeLI a,
-.home ol.svPager a:hover {
+ol.svPager li.activeLI a,
+ol.svPager a:hover {
 	background: #ff3405;
 	}
 
@@ -989,10 +998,10 @@ a.boxItemHeader { /* Link of items inside dragable boxes */
 	padding: .5em 0 .5em;
 }
 
-.svIndex dl.hasImage { /* Optimized for 80px square thumbnail images - edit image size in "site settings." Adjust  as necessary */
+.svIndex dl.hasImage { /* Optimized for 180px square medium images - edit image size in "site settings." Adjust  as necessary */
 	position: relative;
-	min-height: 90px;
-	padding-left: 90px;
+	min-height: 190px;
+	padding-left: 190px;
 	}
 	
 .sidebar .svIndex dl.hasImage {
