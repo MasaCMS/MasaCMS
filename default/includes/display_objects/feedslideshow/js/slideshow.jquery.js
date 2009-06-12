@@ -7,7 +7,7 @@ $(document).ready(function(){
 			};
 
 			$('.svSlideshow > div').each(function(){						// Loop through each slideshow individually
-				$(this).parent().attr({id: $(this).attr('id') + 'SS'});			// take ID of the index, append 'SS', and apply new ID to wrapping DIV.svSlideshow
+				//$(this).parent().attr({id: $(this).attr('id') + 'SS'});			// take ID of the index, append 'SS', and apply new ID to wrapping DIV.svSlideshow
 				$(this).after('<ol class="svPager"></ol>').cycle({				// create pager nav after index DIV. Then start Cycle 
 					slideExpr: 'dl',												// target only DL elements as slides (to avoid the H3)
 					pager: $('.svPager', this.parentNode),							// tell Cycle about the pager nav
