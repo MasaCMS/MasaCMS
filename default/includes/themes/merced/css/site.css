@@ -1,3 +1,5 @@
+/* @override http://10.0.1.197:8500/mura/default/includes/themes/merced/css/site.css */
+
 /*	Theme:	Merced */
 
 /* @group GLOBALS
@@ -840,10 +842,16 @@ a.boxItemHeader { /* Link of items inside dragable boxes */
 	padding: .5em 0 .5em;
 	}
 
-.svIndex dl.hasImage { /* Optimized for 180px square medium images - edit image size in "site settings." Adjust as necessary */
+.home .svSlideshow dl.hasImage { /* Optimized for 180px square medium images - edit image size in "site settings." Adjust as necessary */
 	position: relative;
 	min-height: 190px;
 	padding-left: 190px;
+	}
+
+.svIndex dl.hasImage { /* Optimized for 180px square medium images - edit image size in "site settings." Adjust as necessary */
+	position: relative;
+	min-height: 90px;
+	padding-left: 90px;
 	}
 
 .sidebar .svIndex dl.hasImage {
