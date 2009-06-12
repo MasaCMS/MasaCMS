@@ -90,8 +90,12 @@ to your own modified versions of Mura CMS.
 	</cfloop>
 </cfif>
 
-<cfif structKeyExists(session,"siteArray") and not arrayLen(session.siteArray) and not isUserInRole("S2IsPrivate")>
-	<cflocation url="#application.configBean.getContext()#/" addtoken="false">
+<cfif structKeyExists(session,"siteArray") and not arrayLen(session.siteArray)>
+	<cfif not isUserInRole("S2IsPrivate")>
+		<cflocation url="#application.configBean.getContext()#/" addtoken="false">
+	<cfelseif not len(attributes.fuseaction) or (len(attributes.fuseaction) and not listfindNoCase("clogin,cMessage,cEditprofile",listFirst(attributes.fuseaction,".")))>
+		<cflocation url="#application.configBean.getContext()#/admin/index.cfm?fuseaction=cMessage.noaccess" addtoken="false">
+	</cfif>
 </cfif>
 	
 <cfparam name="session.paramArray" default="#arrayNew(1)#" />
