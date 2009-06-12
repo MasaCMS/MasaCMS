@@ -131,35 +131,39 @@ to your own modified versions of Mura CMS.
 <cffunction name="setGeoCoding"  returnType="void" output="false" access="public">
 <cfset var result=structNew() />
 <cfset var address=""/>
-<cfset var googleAPIKey=variables.settingsManager.getSite(getSiteID()).getGoogleAPIKey() />
+<cfset var googleAPIKey="" />
 
-<cfif len(googleAPIKey)>
-
-	<cfif len(getAddress1())>
-		<cfset address=listAppend(address,trim("#getAddress1()# #getAddress2()#")) />
-	</cfif>
+<cfif len(getSiteID())>
+	<cfset googleAPIKey=variables.settingsManager.getSite(getSiteID()).getGoogleAPIKey() />
+	<cfif len(googleAPIKey)>
 	
-	<cfif len(getState())>
-		<cfset address=listAppend(address,getState()) />
-	</cfif>
-	
-	<cfif len(getCountry())>
-		<cfset address=listAppend(address,getCountry()) />
-	</cfif>	
-	
-	<cfif len(getCity())>
-		<cfset address=listAppend(address,getCity()) />
-	</cfif>
-	
-	<cfif len(getZip())>
-		<cfset address=listAppend(address,getZip()) />
-	</cfif>				
+		<cfif len(getAddress1())>
+			<cfset address=listAppend(address,trim("#getAddress1()# #getAddress2()#")) />
+		</cfif>
 		
-	<cfset result = variables.geoCoding.geocode(googleAPIKey,trim(address))>
+		<cfif len(getState())>
+			<cfset address=listAppend(address,getState()) />
+		</cfif>
+		
+		<cfif len(getCountry())>
+			<cfset address=listAppend(address,getCountry()) />
+		</cfif>	
+		
+		<cfif len(getCity())>
+			<cfset address=listAppend(address,getCity()) />
+		</cfif>
+		
+		<cfif len(getZip())>
+			<cfset address=listAppend(address,getZip()) />
+		</cfif>				
+			
+		<cfset result = variables.geoCoding.geocode(googleAPIKey,trim(address))>
+		
+		<cfif structKeyExists(result, "latitude") and structKeyExists(result, "longitude")>
+			<cfset setLongitude(result.longitude) />
+			<cfset setLatitude(result.latitude) />
+		</cfif>
 	
-	<cfif structKeyExists(result, "latitude") and structKeyExists(result, "longitude")>
-		<cfset setLongitude(result.longitude) />
-		<cfset setLatitude(result.latitude) />
 	</cfif>
 
 </cfif>
@@ -286,7 +290,7 @@ to your own modified versions of Mura CMS.
   </cffunction>
 
  <cffunction name="setIsPrimary" returnType="void" output="false" access="public">
-    <cfargument name="IsPrimary" type="numeric" required="true">
+    <cfargument name="IsPrimary" required="true">
 	
 	<cfif isNumeric(arguments.IsPrimary)>
     <cfset variables.instance.IsPrimary = arguments.IsPrimary />
