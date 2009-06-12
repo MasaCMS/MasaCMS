@@ -90,7 +90,7 @@ to your own modified versions of Mura CMS.
 	</cfquery>
 	
 	<cfquery name="rsprenotify" datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-	SELECT tusers.UserID, tusers.Fname, tusers.Lname, tusers.Email, tusersmemb.GroupID, 'Editor' AS Type
+	SELECT tusers.UserID, tusers.Fname, tusers.Lname, tusers.Email, 'Editor' AS Type
 	FROM tusers INNER JOIN tusersmemb ON tusers.UserID = tusersmemb.UserID
 	WHERE tusers.Email Is Not Null 
 	AND 
@@ -100,12 +100,22 @@ to your own modified versions of Mura CMS.
 	<cfif authorLen>
 	union
 	
-	SELECT tusers.UserID, tusers.Fname, tusers.Lname, tusers.Email, tusersmemb.GroupID, 'Author' AS Type
+	SELECT tusers.UserID, tusers.Fname, tusers.Lname, tusers.Email, 'Author' AS Type
 	FROM tusers INNER JOIN tusersmemb ON tusers.UserID = tusersmemb.UserID
 	WHERE tusers.Email Is Not Null 
 	and siteid='#variables.settingsManager.getSite(arguments.crumbdata[1].siteid).getPrivateUserPoolID()#'
 	AND 
 	tusersmemb.GroupID In (<cfloop list="#permStruct.authorList#" index="A"><cfqueryparam cfsqltype="cf_sql_varchar" value="#A#"/><cfif authorIdx lt authorLen>,<cfset authorIdx=authorIdx+1></cfif></cfloop>)
+	
+	and tusers.userID not in (
+								SELECT tusers.UserID
+								FROM tusers INNER JOIN tusersmemb ON tusers.UserID = tusersmemb.UserID
+								WHERE tusers.Email Is Not Null 
+								AND 
+								(tusersmemb.GroupID In (<cfqueryparam cfsqltype="cf_sql_varchar" value="#rsAdmin.userID#"/><cfloop list="#permStruct.editorList#" index="E">,<cfqueryparam cfsqltype="cf_sql_varchar" value="#E#"/></cfloop>)
+								<cfif isuserInRole('s2')>or tusers.s2=1</cfif>)
+							)
+	
 	</cfif>
 	
 	</cfquery>
