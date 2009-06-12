@@ -1,5 +1,3 @@
-/* @override http://192.168.1.105:8500/mura/default/includes/themes/merced/css/site.css */
-
 /*	Theme:	Merced */
 
 /* @group GLOBALS
@@ -11,21 +9,21 @@ body {
 	color: #434343;
 	background: url(../images/bg-body.gif) repeat-x;
 	}
-	
+
 a {
 	text-decoration: none;
 	color: #2e7aa7;
 	}
-	
+
 a:hover {
 	text-decoration: underline;
 	}
-	
+
 p.intro {
 	color: #666;
 	line-height: 1.4em;
 	margin-bottom: 1.25em;
-}
+	}
 
 
 /* @group Globals - Tables
@@ -74,7 +72,8 @@ td {
 	margin: 0;
 	padding: 0;
 	}
-#primary label {
+
+#primary label {
 	padding-top: .5em;
 	line-height: 1;
 	color: #0c2846;
@@ -108,7 +107,7 @@ td {
 	}
 
 #searchForm fieldset {
-	padding:  0;
+	padding: 0;
 	border: 0;
 	}
 
@@ -135,32 +134,32 @@ td {
 
 #login {
 	padding-bottom: 1em !important;
-}
+	}
 
 #login ol {
 	padding-top: 0;
-}
+	}
 
 #svLoginContainer input.text {
 	width: 99%;
-}
+	}
 
 #svLoginContainer p.required {
 	float: none;
 	clear: both;
-}
+	}
 
 #sendLogin fieldset {
 	margin-top: -.5em;
 	padding-top: .25em;
-}
+	}
 
 /* @end Globals - Forms - Login
 -------------------------------- */
 
 .sidebar #login {
 	padding: 0;
-}
+	}
 
 /* @end Globals - Forms - Login
 -------------------------------- */
@@ -173,11 +172,11 @@ td {
 	border-top: 2px solid #ccc;
 	margin-top: 3em;
 	padding-top: 2em;
-}
+	}
 
 #svComments dl {
 	border-bottom: 1px dotted #ccc;
-}
+	}
 
 
 
@@ -225,7 +224,7 @@ td {
 
 #primary {
 	float: left;
-		width: 100%;
+	width: 100%;
 	color: #232323;
 	}
 .home #primary {
@@ -233,9 +232,9 @@ td {
 	}
 .twoColSL #primary {
 	float: right;
-		width: 707px;
+	width: 707px;
 	}
-	
+
 .twoColSR #primary {
 	float: left;
 	width: 707px;
@@ -256,7 +255,7 @@ td {
 	margin-right: 26px;
 	padding: 30px 0;
 	}
-	
+
 .home #left {
 	width: 687px;
 	padding: 0;
@@ -268,13 +267,13 @@ td {
 	margin: 13px 0 0;
 	padding: 16px 13px;
 	}
-	
+
 .home #right {
 	width: 213px;
 	margin: -40px 0 0;
 	padding: 0;
 	}
-	
+
 .threeColSR {
 	width: 167px;
 	}
@@ -439,18 +438,18 @@ h1 a {
 	text-decoration: none;
 	}
 
-#navPrimary li a:hover, #navPrimary li.current a, #navPrimary li:hover, #navPrimary li.sfhover  {
+#navPrimary li a:hover, #navPrimary li.current a, #navPrimary li:hover, #navPrimary li.sfhover {
 	background: #2e7aa7;
 	}
-	
+
 #navPrimary li:hover a, #navPrimary li li:hover a:hover, #navPrimary li.sfhover a:hover {
-		color: #000;
-		}
+	color: #000;
+	}
 
 #navPrimary li li:hover a {
 	color: #fff;
-}
-	
+	}
+
 /* @group Nav - Primary - Dropdown
 ===================================== */
 /* http://www.htmldog.com/articles/suckerfish/dropdowns/ */
@@ -507,8 +506,8 @@ h1 a {
 /* @end Nav - Primary - Dropdown
 -------------------------------- */
 
-	
-	
+
+
 /* @end Nav - Primary
 -------------------------------- */
 
@@ -536,7 +535,7 @@ h1 a {
 .navSecondary .last {
 	border: 0;
 	padding-bottom: 0;
-}
+	}
 
 .navSecondary li ul {
 	margin: .5em 0 0;
@@ -599,7 +598,7 @@ h1 a {
 	overflow: hidden;
 	margin: 0;
 	padding: 0;
-}
+	}
 
 .moreResults li {
 	display: inline;
@@ -629,64 +628,64 @@ h1 a {
 
 #svCalendar table {
 	margin-top: 0;
-}
+	}
 
 #svCalendar th {
 	background: #0c2846;
 	vertical-align: middle;
-}
+	}
 
 #svCalendar th a, #svCalendar th a:hover {
 	background: #0c2846;
-}
+	}
 
 #svCalendar th a:hover {
 	color: #2e7aa7;
-}
+	}
 
 
 #svCalendar tr.dayofweek td {
 	background: #2e7aa7;
 	color: #fff;
-}
+	}
 
 #svCalendar th, #svCalendar td {
 	border: 1px solid #fff;
-}
+	}
 
 #svCalendar td {
 	background: #f2f2f2;
-}
+	}
 
 
-/* @end  Calendar
+/* @end Calendar
 -------------------------------- */
 
 /* @group Dragable Feeds */
 
 #svRSSFeeds form {
 	background: transparent;
-}
+	}
 
 li.boxItemHeader { /* Link of items inside dragable boxes */
 	color: #2e7aa7;
 	padding-left: 10px;
 	background: url(../images/pointer_red_sm.gif) no-repeat left .25em;
-}
+	}
 
 a.boxItemHeader { /* Link of items inside dragable boxes */
 	color: #2e7aa7;
-}
+	}
 
 #svAddNewFeed {
 	padding: 0 !important;
 	background: transparent !important;
-}
+	}
 
 #svAddNewFeed button { /* !important used to override dragable_feeds.css */
 	background: #2e7aa7 !important;
 	font-size: 11px !important;
-}
+	}
 
 /* @end */
 
@@ -768,7 +767,7 @@ a.boxItemHeader { /* Link of items inside dragable boxes */
 	padding: 0 0 .5em;
 	border-bottom: 1px solid #d6d6d6;
 	}
-	
+
 .home .sidebar .svSyndLocal dl.last {
 	border-bottom: 0;
 	padding-bottom: 0;
@@ -779,7 +778,7 @@ a.boxItemHeader { /* Link of items inside dragable boxes */
 	padding: 0;
 	font-size: 1.3em;
 	font-weight: normal;
-		line-height: 1.3;
+	line-height: 1.3;
 	}
 
 .home .sidebar .svSyndLocal dt.releaseDate {
@@ -799,18 +798,18 @@ a.boxItemHeader { /* Link of items inside dragable boxes */
 .home .sidebar .svSyndLocal dd.summary {
 	margin: 0 0 .5em;
 	}
-	
-/*.home .sidebar .credits,	
-.home .sidebar .tags,	
-.home .sidebar .ratings,	
-.home .sidebar .credits  {
-		color: #999 !important;
+
+/*.home .sidebar .credits,
+.home .sidebar .tags,
+.home .sidebar .ratings,
+.home .sidebar .credits {
+	color: #999 !important;
 	}*/
 
 .home .sidebar .svSyndLocal dl.hasImage .image {
 	margin: 0 .5em 0em 0;
 	}
-	
+
 .home .sidebar .svSyndLocal dl.hasImage .image img {
 	width: 50px;
 	}
@@ -834,31 +833,31 @@ a.boxItemHeader { /* Link of items inside dragable boxes */
 .svIndex dl {
 	padding-bottom: 1em;
 	border-bottom: 1px dotted #ccc;
-}
+	}
 
 .sidebar .svIndex dl {
 	margin: .5em 0;
 	padding: .5em 0 .5em;
-}
+	}
 
-.svIndex dl.hasImage { /* Optimized for 180px square medium images - edit image size in "site settings." Adjust  as necessary */
+.svIndex dl.hasImage { /* Optimized for 180px square medium images - edit image size in "site settings." Adjust as necessary */
 	position: relative;
 	min-height: 190px;
 	padding-left: 190px;
 	}
-	
+
 .sidebar .svIndex dl.hasImage {
 	min-height: 0;
 	padding-left: 0;
-}
+	}
 
 .sidebar .svIndex dl.hasImage .image {
 	display: none;
-}
+	}
 
 .content .svIndex {
 	margin-top: 2em;
-}
+	}
 
 .content .svIndex dt {
 	font-size: 1.6em;
@@ -871,10 +870,10 @@ a.boxItemHeader { /* Link of items inside dragable boxes */
 	margin-bottom: .5em;
 	font-size: 1em !important;
 	}
-	
+
 .svIndex dd {
 	line-height: 1.2;
-}
+	}
 
 .svIndex dd.image {
 	position: absolute;
@@ -885,13 +884,13 @@ a.boxItemHeader { /* Link of items inside dragable boxes */
 .ratings {
 	background-repeat: no-repeat;
 	background-position: 3.5em 50%;
-}
+	}
 
 .ratings span {
 	position: absolute;
 	left: -9999px;
-}
-	
+	}
+
 .rating00, .ratings { background-image: url(../images/rater/star_zero.png); }
 .rating1 { background-image: url(../images/rater/star_one.png); }
 .rating15 { background-image: url(../images/rater/star_onehalf.png); }
@@ -917,18 +916,18 @@ a.boxItemHeader { /* Link of items inside dragable boxes */
 	background: #102e50 url(../images/bg-hero.jpg) no-repeat;
 	border: 0;
 	}
-	
+
 .svSlides {
-	min-height:  206px; /*This is set relative to the height of the medium image*/
-}
+	min-height: 206px; /*This is set relative to the height of the medium image*/
+	}
 
 .home .svSlides {
-		position: relative;
-		border: 0;
-		z-index: 1;
-		padding: 0 ;
-		margin: 0 !important;
-		height: 200px;
+	position: relative;
+	border: 0;
+	z-index: 1;
+	padding: 0 ;
+	margin: 0 !important;
+	height: 200px;
 	}
 
 .svSlides dl {
@@ -943,10 +942,10 @@ a.boxItemHeader { /* Link of items inside dragable boxes */
 	border: 0;
 	font-size: 1em;
 	overflow: hidden;
-	background: transparent !important;  /*for IE 6/7*/ 
+	background: transparent !important; /*for IE 6/7*/
 	}
-	
-.home .svSlides dl.hasImage {  /* Optimized for 180px wide images. Edit image size in "site settings." Adjust  here as necessary*/ 
+
+.home .svSlides dl.hasImage { /* Optimized for 180px wide images. Edit image size in "site settings." Adjust here as necessary*/
 	padding-left: 186px;
 	}
 
@@ -984,7 +983,7 @@ a.boxItemHeader { /* Link of items inside dragable boxes */
 	padding: 0;
 	}
 
-.home .svSlides dd.image { /* Optimized for 180px wide "medium" images - edit image size in "site settings." Adjust here  as necessary */
+.home .svSlides dd.image { /* Optimized for 180px wide "medium" images - edit image size in "site settings." Adjust here as necessary */
 	position: absolute;
 	display: block;
 	width: 180px;
@@ -993,39 +992,39 @@ a.boxItemHeader { /* Link of items inside dragable boxes */
 	padding: 0;
 	border: 3px solid #1c5981;
 	}
-	
+
 .home .svSlides dd.image img {
-		display: block;
-		}
+	display: block;
+	}
 
 .home .svSlides .readMore {
-		float: right;
-		}
-		
+	float: right;
+	}
+
 .home .svSlides .readMore a {
-		font-size: 11px !important;
-		font-weight: bold;
-		color: #fff;
-		height: 2.1em;
-		line-height: 2.1em;
-		border: none;
-		padding: 0 1em;
-		display: block;
-		width: 60px;
-		text-align: left;
-		padding-right: 22px;
-		margin-right: 321px;
-		margin-top: .75em;
-		background: #2e7aa7 url(../images/arrows_white.gif) no-repeat 6.8em 50%;
-		-webkit-border-radius: 11px;
-		-moz-border-radius: 11px;
-		border-radius: 11px;
-		}
-		
+	font-size: 11px !important;
+	font-weight: bold;
+	color: #fff;
+	height: 2.1em;
+	line-height: 2.1em;
+	border: none;
+	padding: 0 1em;
+	display: block;
+	width: 60px;
+	text-align: left;
+	padding-right: 22px;
+	margin-right: 321px;
+	margin-top: .75em;
+	background: #2e7aa7 url(../images/arrows_white.gif) no-repeat 6.8em 50%;
+	-webkit-border-radius: 11px;
+	-moz-border-radius: 11px;
+	border-radius: 11px;
+	}
+
 .svPager {
 	text-align: center;
 	line-height: 2;
-}
+	}
 
 .home ol.svPager {
 	position: absolute;
@@ -1041,13 +1040,15 @@ a.boxItemHeader { /* Link of items inside dragable boxes */
 
 .home ol.svPager li {
 	/*float: left;*/
-	display: -moz-inline-block;
-	display: inline-block;
+	display: inline;
 	margin: 0 .25em;
 	}
 
 ol.svPager a {
 	/*display: block;*/
+	display: -moz-inline-block;
+	display: inline-block;
+
 	padding: 2px 5px;
 	text-align: center;
 	color: #fff;

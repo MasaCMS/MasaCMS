@@ -1,8 +1,3 @@
-/* @override 
-	http://10.0.1.198:8500/mura/demo/includes/themes/merced/css/typography.css
-	http://192.168.1.105:8500/mura/demo/includes/themes/merced/css/typography.css
-*/
-
 /*  This file is part of Mura CMS (www.getmura.com).
 
     Mura CMS is free software: you can redistribute it and/or modify
@@ -101,13 +96,13 @@ h2 {
 
 .threeColumn h2.pageTitle {
 	font-size: 3em;
-		}
+	}
 
 h3 {
 	margin: 0 0 .25em;
 	font-size: 2.2em;
 	}
-	
+
 .sidebar h3 {
 	margin-bottom: .5em;
 	font-size: 1.4em;
