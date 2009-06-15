@@ -1524,18 +1524,18 @@ to your own modified versions of Mura CMS.
 	<cfset var errorStr="">
 	<cfset var regex1="(\[sava\]|\[mura\]).+?(\[/sava\]|\[/mura\])">
 	<cfset var regex2="">
-	<cfset var finder=refind(regex1,body,1,"true")>
+	<cfset var finder=reFindNoCase(regex1,body,1,"true")>
 	
 	<!---  still looks for the Sava tag for backward compatibility --->
 	<cfloop condition="#finder.len[1]#">
 		<cftry>
-			<cfset body=replace(body,mid(body, finder.pos[1], finder.len[1]),'#trim(evaluate("##" & mid(body, finder.pos[1]+6, finder.len[1]-13) & "##"))#')>
+			<cfset body=replaceNoCase(body,mid(body, finder.pos[1], finder.len[1]),'#trim(evaluate("##" & mid(body, finder.pos[1]+6, finder.len[1]-13) & "##"))#')>
 			<cfcatch>
 				 <cfsavecontent variable="errorStr"><cfdump var="#cfcatch#"></cfsavecontent>
-				<cfset body=replace(body,mid(body, finder.pos[1], finder.len[1]),errorStr)>
+				<cfset body=replaceNoCase(body,mid(body, finder.pos[1], finder.len[1]),errorStr)>
 			</cfcatch>
 		</cftry>
-		<cfset finder=refind(regex1,body,1,"true")>
+		<cfset finder=reFindNoCase(regex1,body,1,"true")>
 	</cfloop>
 	
 	<cfreturn body />
