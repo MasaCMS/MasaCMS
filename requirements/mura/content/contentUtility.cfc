@@ -121,7 +121,9 @@ to your own modified versions of Mura CMS.
 	</cfquery>
 	
 	<cfquery name="rs" dbtype="query">
-	select * from rsprenotify order by lname, fname
+	select UserID, Fname, Lname, Email, Type from rsprenotify 
+	group by UserID, Fname, Lname, Email, Type
+	order by lname, fname
 	</cfquery>
 
 	<cfreturn rs />
