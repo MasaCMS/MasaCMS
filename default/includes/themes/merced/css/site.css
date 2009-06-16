@@ -11,6 +11,8 @@ body {
 	color: #434343;
 	background: url(../images/bg-body.gif) repeat-x;
 	}
+	
+* { -moz-outline: 0; }
 
 a {
 	text-decoration: none;
@@ -955,8 +957,8 @@ a.boxItemHeader { /* Link of items inside dragable boxes */
 	background: transparent !important; /*for IE 6/7*/
 	}
 
-.home .svSlides dl.hasImage { /* Optimized for 180px wide images. Edit image size in "site settings." Adjust here as necessary*/
-	padding-left: 186px;
+.svSlides dl.hasImage { /* Optimized for 180px wide images. Edit image size in "site settings." Adjust here as necessary*/
+	padding-left: 190px;
 	}
 
 .home .svSlideshow dt,
