@@ -71,17 +71,7 @@ table, caption, tbody, tfoot, thead, tr, th, td {
 
 body { line-height: 1; }
 
-* { -moz-outline: 0; }
-
 a img { border: none; }
-
-hr {
-	clear: both;
-	height: 0;
-	margin: 0 0 1em;
-	border: 1px solid #ccc;
-	border-width: 1px 0 0;
-	}
 
 /* @end Globals - Text Resets
 -------------------------------- */
@@ -185,21 +175,20 @@ caption {
 
 th {
 	padding: .5em;
-	border: 1px solid #ccc;
+	border: 1px solid #ccc; /*Move*/ 
 	font-weight: bold;
 	text-align: left;
 	vertical-align: top;
-	background: #ccc;
+	background: #ccc; /*Move*/ 
 	}
 
 td {
 	padding: .5em;
-	border: 1px solid #ccc;
 	line-height: 1.2;
 	vertical-align: top;
 	}
 
-tr.alt td { background: #eee; }
+tr.alt td { background: #eee; }  /*Move*/ 
 
 /* @end Globals - Tables
 -------------------------------- */
@@ -240,7 +229,6 @@ fieldset {
 	clear: both;
 	margin: 0 0 2em;
 	padding: 0 15px .5em;
-	border: 1px solid #ccc;
 	}
 
 legend {
@@ -538,7 +526,7 @@ p.center { text-align: center; }
 
 #svComments dd.dateTime {
 	font-size: 1em;
-	color: #666;
+	color: #666;  /*Move?*/ 
 	}
 
 /* @end Add Comment Component
@@ -638,7 +626,7 @@ It gets output between the h2 and the body content and launches the large image 
 
 #svCalendar th {
 	padding: 0;
-	border: 1px solid #666;
+	border: 1px solid #666; 
 	font-style: normal;
 	font-weight: normal;
 	text-align: center;
@@ -950,13 +938,17 @@ dd.rating {
 	margin-bottom: .35em;
 	padding: 0;
 	}
+	
+.rating {
+		width: 100px;
+		background-repeat: no-repeat;
+		background-position: 3.5em 50%;
+		}
 
-#primary .svIndex dd.credits,
-#primary .svIndex  dd.comments,
-#primary .svIndex  dd.tags,
-#primary .svIndex  dd.rating {
-	line-height: 20px; /* acommodate height of stars */
-	}
+.rating span {
+		position: absolute;
+		left: -9999px;
+		}
 	
 .svIndex dd.credits {
 	color: #666;
@@ -1256,7 +1248,7 @@ ul#favoriteList {
 ===================================== */
 
 #svLoginContainer {
-	width: 370px;
+	width: 370px;  /*Why is this set in px?*/
 	margin: 0 auto;
 	}
 
@@ -1284,7 +1276,7 @@ form#sendLogin { margin-bottom: 2em; }
 
 #loginContainer input.text,
 #sendLogin input.text {
-	width: 240px;
+	width: 240px; /*Why is this set in px?*/
 	}
 
 #sendLogin p { margin: 1em 0 0; }
