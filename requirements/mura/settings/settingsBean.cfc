@@ -85,11 +85,11 @@ to your own modified versions of Mura CMS.
 <cfset variables.instance.DisplayPoolID=""/>
 <cfset variables.instance.hasfeedManager=0/>
 <cfset variables.instance.galleryMainScaleBy="y"/>
-<cfset variables.instance.galleryMainScale=100/>
-<cfset variables.instance.gallerySmallScaleBy="y"/>
-<cfset variables.instance.gallerySmallScale=100/>
-<cfset variables.instance.galleryMediumScaleBy="y"/>
-<cfset variables.instance.galleryMediumScale=100/>
+<cfset variables.instance.galleryMainScale=600/>
+<cfset variables.instance.gallerySmallScaleBy="s"/>
+<cfset variables.instance.gallerySmallScale=80/>
+<cfset variables.instance.galleryMediumScaleBy="s"/>
+<cfset variables.instance.galleryMediumScale=180/>
 <cfset variables.instance.sendLoginScript=""/>
 <cfset variables.instance.mailingListConfirmScript=""/>
 <cfset variables.instance.publicSubmissionApprovalScript=""/>
