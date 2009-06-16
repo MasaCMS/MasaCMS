@@ -270,9 +270,18 @@ to your own modified versions of Mura CMS.
 						UPDATE 
 							tsettings
 						SET
-							domain = '#cgi.server_name#'
+							domain = '#cgi.server_name#',
+							theme = 'merced',
+							gallerySmallScaleBy='s',
+							gallerySmallScale=80,
+							galleryMediumScaleBy='s',
+							galleryMediumScale=180,
+							galleryMainScaleBy='y',
+							galleryMainScale=600
 					</cfquery>
-		            
+		           
+		           <cfset dbCreated=true />
+		            <cfset errorType = "" />
 		            <!--- reset the error --->
 		            <cfset errorType = "" />
 		            <!--- set a message --->
@@ -366,8 +375,7 @@ to your own modified versions of Mura CMS.
 				useDefaultSMTPServer = #usedefaultsmtpserver#,
 				MailServerTLS = '#FORM.production_mailservertls#',
 				MailServerSSL = '#FORM.production_mailserverssl#',
-				Contact = '#FORM.production_adminemail#',
-				theme = 'merced'
+				Contact = '#FORM.production_adminemail#'
 		</cfquery>
 	</cfif>
 	
