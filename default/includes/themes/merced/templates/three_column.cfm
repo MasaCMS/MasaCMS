@@ -9,7 +9,7 @@
 		</div>
 		<div id="primary" class="content">
 			#renderer.dspCrumbListLinks("crumbList","&nbsp;&raquo;&nbsp;")#
-			#renderer.dspBody(body=request.contentBean.getbody(),pageTitle=request.contentBean.getTitle(),crumbList=0,showMetaImage=0)#
+			#renderer.dspBody(body=request.contentBean.getbody(),pageTitle=request.contentBean.getTitle(),crumbList=0,showMetaImage=1)#
 			#renderer.dspObjects(2)#
 		</div>
 		<div id="right" class="sidebar">

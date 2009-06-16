@@ -98,27 +98,4 @@ html>body div.clr { height: .01em; }
 	width: 70px;
 	text-indent: -9999px;
 }
-.rating0, .rating { background-image: url(../images/star_zero.png); }
-.ratingone { background-image: url(../images/star_one.png); }
-.ratingonehalf { background-image: url(../images/star_onehalf.png); }
-.ratingtwo { background-image: url(../images/star_two.png); }
-.ratingtwohalf { background-image: url(../images/star_twohalf.png); }
-.ratingthree { background-image: url(../images/star_three.png); }
-.ratingthreehalf { background-image: url(../images/star_threehalf.png); }
-.ratingfour { background-image: url(../images/star_four.png); }
-.ratingfourhalf { background-image: url(../images/star_fourhalf.png); }
-.ratingfive  { background-image: url(../images/star_five.png); }
-
-/* IE6 PNG fixes */
-* html div.stars a { background: transparent url(../images/stars.gif) no-repeat; }
-* html .rating0, .rating { background-image: url(../images/star_zero.gif); }
-* html .ratingone { background-image: url(../images/star_one.gif); }
-* html .ratingonehalf { background-image: url(../images/star_onehalf.gif); }
-* html .ratingtwo { background-image: url(../images/star_two.gif); }
-* html .ratingtwohalf { background-image: url(../images/star_twohalf.gif); }
-* html .ratingthree { background-image: url(../images/star_three.gif); }
-* html .ratingthreehalf { background-image: url(../images/star_threehalf.gif); }
-* html .ratingfour { background-image: url(../images/star_four.gif); }
-* html .ratingfourhalf { background-image: url(../images/star_fourhalf.gif); }
-* html .ratingfive  { background-image: url(../images/star_five.gif); }
 

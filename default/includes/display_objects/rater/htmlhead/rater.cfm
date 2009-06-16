@@ -1,31 +1,30 @@
+<cfset themepath=event.getSite().getThemeAssetPath() >
 <cfoutput>
 <script src="#event.getSite().getAssetPath()#/includes/display_objects/rater/js/rater.js" type="text/javascript"></script>
 <link href="#event.getSite().getAssetPath()#/includes/display_objects/rater/css/rater.css" rel="stylesheet" type="text/css" />
-<!---
 <style>
-.rating0, .rating { background-image: url(#themepath#/images/star_zero.png); }
-.ratingone { background-image: url(#themepath#/images/star_one.png); }
-.ratingonehalf { background-image: url(#themepath#/images/star_onehalf.png); }
-.ratingtwo { background-image: url(#themepath#/images/star_two.png); }
-.ratingtwohalf { background-image: url(#themepath#/images/star_twohalf.png); }
-.ratingthree { background-image: url(#themepath#/images/star_three.png); }
-.ratingthreehalf { background-image: url(#themepath#/images/star_threehalf.png); }
-.ratingfour { background-image: url(#themepath#/images/star_four.png); }
-.ratingfourhalf { background-image: url(#themepath#/images/star_fourhalf.png); }
-.ratingfive  { background-image: url(#themepath#/images/star_five.png); }
+.zero { background-image: url(#themepath#/images/rater/star_zero.png); }
+.one { background-image: url(#themepath#/images/rater/star_one.png); }
+.onehalf { background-image: url(#themepath#/images/rater/star_onehalf.png); }
+.two { background-image: url(#themepath#/images/rater/star_two.png); }
+.twohalf { background-image: url(#themepath#/images/rater/star_twohalf.png); }
+.three { background-image: url(#themepath#/images/rater/star_three.png); }
+.threehalf { background-image: url(#themepath#/images/rater/star_threehalf.png); }
+.four { background-image: url(#themepath#/images/rater/star_four.png); }
+.fourhalf { background-image: url(#themepath#/images/rater/star_fourhalf.png); }
+.five  { background-image: url(#themepath#/images/rater/star_five.png); }
 
 /* IE6 PNG fixes */
-* html div.stars a { background: transparent url(#themepath#/images/stars.gif) no-repeat; }
-* html .rating0, .rating { background-image: url(#themepath#/images/star_zero.gif); }
-* html .ratingone { background-image: url(#themepath#/images/star_one.gif); }
-* html .ratingonehalf { background-image: url(#themepath#/images/star_onehalf.gif); }
-* html .ratingtwo { background-image: url(#themepath#/images/star_two.gif); }
-* html .ratingtwohalf { background-image: url(#themepath#/images/star_twohalf.gif); }
-* html .ratingthree { background-image: url(#themepath#/images/star_three.gif); }
-* html .ratingthreehalf { background-image: url(#themepath#/images/star_threehalf.gif); }
-* html .ratingfour { background-image: url(#themepath#/images/star_four.gif); }
-* html .ratingfourhalf { background-image: url(#themepath#/images/star_fourhalf.gif); }
-* html .ratingfive  { background-image: url(#themepath#/images/star_five.gif); }
+* html div.stars a { background: transparent url(#themepath#/images/rater/stars.gif) no-repeat; }
+* html .zero { background-image: url(#themepath#/images/rater/star_zero.gif); }
+* html .one { background-image: url(#themepath#/images/rater/star_one.gif); }
+* html .onehalf { background-image: url(#themepath#/images/rater/star_onehalf.gif); }
+* html .two { background-image: url(#themepath#/images/rater/star_two.gif); }
+* html .twohalf { background-image: url(#themepath#/images/rater/star_twohalf.gif); }
+* html .three { background-image: url(#themepath#/images/rater/star_three.gif); }
+* html .threehalf { background-image: url(#themepath#/images/rater/star_threehalf.gif); }
+* html .four { background-image: url(#themepath#/images/rater/star_four.gif); }
+* html .fourhalf { background-image: url(#themepath#/images/rater/star_fourhalf.gif); }
+* html .five  { background-image: url(#themepath#/images/rater/star_five.gif); }
 </style>
---->
 </cfoutput>

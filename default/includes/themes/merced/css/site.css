@@ -889,26 +889,28 @@ a.boxItemHeader { /* Link of items inside dragable boxes */
 	left: 0;
 	}
 
-.ratings {
-	background-repeat: no-repeat;
-	background-position: 3.5em 50%;
+/* @group Ratings */
+
+.content .svIndex dd.credits,
+.content .svIndex  dd.comments,
+.content .svIndex  dd.tags,
+.content .svIndex  dd.rating {
+	line-height: 20px; /* acommodate height of stars */
 	}
 
-.ratings span {
-	position: absolute;
-	left: -9999px;
-	}
 
-.rating00, .ratings { background-image: url(../images/rater/star_zero.png); }
-.rating1 { background-image: url(../images/rater/star_one.png); }
-.rating15 { background-image: url(../images/rater/star_onehalf.png); }
-.rating2 { background-image: url(../images/rater/star_two.png); }
-.rating25 { background-image: url(../images/rater/star_twohalf.png); }
-.rating3 { background-image: url(../images/rater/star_three.png); }
-.rating35 { background-image: url(../images/rater/star_threehalf.png); }
-.rating4 { background-image: url(../images/rater/star_four.png); }
-.rating45 { background-image: url(../images/rater/star_fourhalf.png); }
-.rating5 { background-image: url(../images/rater/star_five.png); }
+.zero { background-image: url(../images/rater/star_zero.png); }
+.one { background-image: url(../images/rater/star_one.png); }
+.onehalf { background-image: url(../images/rater/star_onehalf.png); }
+.two { background-image: url(../images/rater/star_two.png); }
+.twohalf { background-image: url(../images/rater/star_twohalf.png); }
+.three { background-image: url(../images/rater/star_three.png); }
+.threehalf { background-image: url(../images/rater/star_threehalf.png); }
+.four { background-image: url(../images/rater/star_four.png); }
+.fourhalf { background-image: url(../images/rater/star_fourhalf.png); }
+.five { background-image: url(../images/rater/star_five.png); }
+
+/* @end */
 
 /* @group Slideshow
 ===================================== */

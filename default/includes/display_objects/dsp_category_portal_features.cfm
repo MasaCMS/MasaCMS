@@ -116,7 +116,7 @@ to your own modified versions of Mura CMS.
 					<dd class="tags"><cfmodule template="nav/dsp_tag_line.cfm" tags="#rsFeatures.tags#"></dd>
 				</cfif>
 				<cfif doMeta and hasRatings>
-					<dd class="ratings">#rbFactory.getKey('list.rating')#: <img class="ratestars" src="#event.getSite().getAssetPath()#/includes/display_objects/rater/images/star_#application.raterManager.getStarText(rsFeatures.rating)#.png" alt="<cfif isNumeric(rsFeatures.rating)>#rsFeatures.rating# star<cfif rsFeatures.rating gt 1>s</cfif></cfif>" border="0"></dd>
+					<dd class="rating #application.raterManager.getStarText(rsFeatures.rating)#"><dd class="rating #application.raterManager.getStarText(rsFeatures.rating)#">#rbFactory.getKey('list.rating')#: <span><cfif isNumeric(rsFeatures.rating)>#rsFeatures.rating# star<cfif rsFeatures.rating gt 1>s</cfif><cfelse>Zero stars</span></cfif></dd>
 				</cfif>
 				</dl>
 	</cfloop>
