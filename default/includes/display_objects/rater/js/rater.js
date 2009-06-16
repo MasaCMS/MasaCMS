@@ -50,7 +50,7 @@ function starImg(val)
   else if (val <   5) num = "fourhalf";
   else if (val >=  5) num = "five";  
 
-  return context + "/" +  siteID + "/images/rater/star_" + num + ".gif";
+  return themepath + "/images/rater/star_" + num + ".gif";
 }
 
 String.prototype.pluralize = function(count, plural)
