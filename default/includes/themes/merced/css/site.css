@@ -14,6 +14,14 @@ body {
 	
 * { -moz-outline: 0; }
 
+hr {
+	clear: both;
+	height: 0;
+	margin: 0 0 1em;
+	border: 1px solid #ccc;
+	border-width: 1px 0 0;
+	}
+
 a {
 	text-decoration: none;
 	color: #2e7aa7;
@@ -48,7 +56,6 @@ th {
 td {
 	padding: 10px;
 	border: 1px solid #d6d6d6;
-	font-size: .916em;
 	}
 
 /* @end Globals - Tables
@@ -417,7 +424,6 @@ h1 a {
 	margin: 40px 0 0 0;
 	padding: 0;
 	list-style: none;
-	font-size: 1.083em;
 	font-weight: bold;
 	color: #fff;
 	background: #0c2846;
