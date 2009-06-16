@@ -61,11 +61,11 @@ to your own modified versions of Mura CMS.
 			<fieldset>
 				<legend>#rbFactory.getKey('mailinglist.mydetails')#</legend>
 				<ol>
-					<li>
+					<li class="req">
 						<label for="txtNameFirst">#rbFactory.getKey('mailinglist.fname')#<ins> (#rbFactory.getKey('mailinglist.required')#)</ins></label>
 						<input id="txtNameFirst" class="text" type="text" name="fname" required="true" message="#HTMLEditFormat(rbFactory.getKey('mailinglist.fnamerequired'))#" />
 					</li>
-					<li>
+					<li class="req">
 						<label for="txtNameLast">#rbFactory.getKey('mailinglist.lname')#<ins> (#rbFactory.getKey('mailinglist.required')#)</ins></label>
 						<input id="txtNameLast" class="text" type="text" name="lname" required="true" message="#HTMLEditFormat(rbFactory.getKey('mailinglist.lnamerequired'))#" />
 					</li>
@@ -73,7 +73,7 @@ to your own modified versions of Mura CMS.
 						<label for="txtCompany">#rbFactory.getKey('mailinglist.company')#</label>
 						<input id="txtCompany" class="text" type="text" name="company" />
 					</li>
-					<li>
+					<li class="req">
 						<label for="txtEmail">#rbFactory.getKey('mailinglist.email')#<ins> (#rbFactory.getKey('mailinglist.required')#)</ins></label>
 						<input id="txtEmail" class="text" type="text" name="email" required="true" validate="email" message="#HTMLEditFormat(rbFactory.getKey('mailinglist.emailvalidate'))#" />
 					</li>
@@ -81,7 +81,7 @@ to your own modified versions of Mura CMS.
 			</fieldset>
 			<fieldset>
 				<legend>Subscription Settings</legend>
-				<ol class="stack"><cfset loopcount = 1><cfloop query="rslist">
+				<ol id="subSettings" class="stack"><cfset loopcount = 1><cfloop query="rslist">
 					<li>
 						<input id="mlid#loopcount#" class="checkbox" type="checkbox" name="mlid" value="#rslist.mlid#" <cfif listfind(request.mlid,rslist.mlid)>checked="checked"</cfif> />
 						<label for="mlid#loopcount#">#rslist.name#</label>

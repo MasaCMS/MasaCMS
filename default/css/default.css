@@ -224,7 +224,12 @@ form li#svCaptcha img {
 	padding: 0 !important;
 	border: 0 !important;
 	}
-
+	
+form #subSettings label {
+		float: none;
+		font-weight: normal;
+		}
+		
 fieldset {
 	clear: both;
 	margin: 0 0 2em;

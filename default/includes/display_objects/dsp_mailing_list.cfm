@@ -51,11 +51,11 @@ to your own modified versions of Mura CMS.
 <div class="svMailingList" id="#createCSSID(rsList.name)#">
 	<h3>#rslist.name#</h3>
 	<cfif request.doaction eq 'unsubscribe'>
-	<em>#rbFactory.getKey('mailinglist.youhaveunsubscribed')#</em>
+	<p class="success">#rbFactory.getKey('mailinglist.youhaveunsubscribed')#</p>
 	<cfelseif request.doaction eq 'subscribe' and rslist.isPurge neq 1>
-	<em>#rbFactory.getKey('mailinglist.youhavesubscribed')#</em>
+	<p class="success">#rbFactory.getKey('mailinglist.youhavesubscribed')#</p>
 	<cfelseif request.doaction eq 'subscribe' and rslist.isPurge eq 1>
-	<em>#rbFactory.getKey('mailinglist.emailremoved')#</em>
+	<p class="success">#rbFactory.getKey('mailinglist.emailremoved')#</p>
 	<cfelse>
 	<cfif #rslist.description# neq ''><p class="description">#rslist.description#</p></cfif>
 	<form name="form1" action="#application.configBean.getIndexFile()#?nocache=1" method="post" onsubmit="return validate(this);" class="clearfix">
