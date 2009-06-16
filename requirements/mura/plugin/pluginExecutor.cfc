@@ -76,7 +76,7 @@
 	<cfset request.pluginConfig=arguments.pluginConfig/>
 	<cfset request.pluginConfig.setSetting("pluginMode","object")/>
 	<cfset request.scriptEvent=arguments.event />
-	<cfset pluginConfig.setSetting("pluginPath","#variables.configBean.getContext()#/plugins/#pluginConfig.getDirectoryID()#/")/>
+	<cfset pluginConfig.setSetting("pluginPath","#variables.configBean.getContext()#/plugins/#pluginConfig.getDirectory()#/")/>
 
 	<cfsavecontent variable="str">
 	<cfinclude template="#arguments.scriptFile#">
