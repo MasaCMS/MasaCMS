@@ -64,10 +64,7 @@ div.stars a {
 	margin: 0;
 	float: left;
 	display: block;
-	width: 14px;
-	height: 13px;
 	padding: 0;
-	background: transparent url(../images/stars.png) no-repeat;
 }
 
 div.stars a.over { background-position: 0px -30px; }
