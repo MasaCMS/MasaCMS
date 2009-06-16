@@ -10,10 +10,10 @@
 	<!--- <meta name="robots" content="noindex, nofollow" /> ---><!--- use this to discourage search engines from indexing your site. (can be useful if developing on a live server for example) Delete if not needed. --->
 	<title>#request.contentBean.getTitle()# - #renderer.getSite().getSite()#</title>
 
-	<link rel="icon" href="#application.configBean.getContext()#/#request.siteid#/images/favicon.ico" type="image/x-icon" />
-	<link rel="shortcut icon" href="#application.configBean.getContext()#/#request.siteid#/images/favicon.ico" type="image/x-icon" />
+	<link rel="icon" href="#event.getSite().getAssetPath()#/images/favicon.ico" type="image/x-icon" />
+	<link rel="shortcut icon" href="#event.getSite().getAssetPath()#/images/favicon.ico" type="image/x-icon" />
 
-	<link rel="stylesheet" href="#application.configBean.getContext()#/#request.siteid#/css/default.css" type="text/css" media="all" />
+	<link rel="stylesheet" href="#event.getSite().getAssetPath()#/css/default.css" type="text/css" media="all" />
 	<link rel="stylesheet" href="#themePath#/css/typography.css" type="text/css" media="all" />
 	<link rel="stylesheet" href="#themePath#/css/site.css" type="text/css" media="all" />
 	<link rel="stylesheet" href="#themePath#/css/print.css" type="text/css" media="print" />
