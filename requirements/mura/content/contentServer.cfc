@@ -232,7 +232,7 @@ to your own modified versions of Mura CMS.
 	
 	<cfset last=listLast(url.path,"/") />
 	<cfif last neq application.configBean.getIndexFile() and right(url.path,1) neq "/">
-		<cfset application.contentRenderer.redirect("#url.path#/")>
+		<cfset application.contentRenderer.redirect("#application.configBean.getStub()#/#url.path#/")>
 	</cfif>
 	
 	<cfif not url.pathIsComplete>
