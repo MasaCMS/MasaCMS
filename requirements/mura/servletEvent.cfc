@@ -175,7 +175,7 @@ to your own modified versions of Mura CMS.
 </cffunction>
 
 <cffunction name="getCrumbData" returntype="any" access="public" output="false">
-	<cfreturn getValue('crumdata') />	
+	<cfreturn getValue('crumbdata') />	
 </cffunction>
 
 <cffunction name="getSite" returntype="any" access="public" output="false">
