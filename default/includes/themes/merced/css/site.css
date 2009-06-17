@@ -1,3 +1,5 @@
+/* @override http://192.168.1.119:8500/mura/default/includes/themes/merced/css/site.css */
+
 /*	Theme:	Merced */
 
 /* @group GLOBALS
@@ -848,18 +850,6 @@ a.boxItemHeader { /* Link of items inside dragable boxes */
 	padding: .5em 0 .5em;
 	}
 
-.home .svSlideshow dl.hasImage { /* Optimized for 180px square medium images - edit image size in "site settings." Adjust as necessary */
-	position: relative;
-	min-height: 190px;
-	padding-left: 190px;
-	}
-
-.svIndex dl.hasImage { /* Optimized for 180px square medium images - edit image size in "site settings." Adjust as necessary */
-	position: relative;
-	min-height: 90px;
-	padding-left: 90px;
-	}
-
 .sidebar .svIndex dl.hasImage {
 	min-height: 0;
 	padding-left: 0;
@@ -925,55 +915,52 @@ div.stars a {
 
 /* @group Slideshow
 ===================================== */
-
+.svSlides dl {
+	border: 0;
+	margin: 0;
+	}
+	
+.svSlides dl.hasImage { /* Optimized for 180px wide images. Edit image size in "site settings." Adjust here as necessary*/	position: relative;
+	padding-left: 200px;
+	min-height: 180px;
+	}
+	
 .home .svSlideshow {
 	position: relative;
-	width: 687px;
-	height: 234px;
+	width: 627px;
+	/*height: 234px;*/
 	overflow: hidden;
-	padding: 30px 0 0 0;
+	padding: 30px 30px 10px;
 	margin: 0 0 2.2em;
 	color: #b4dffa;
 	background: #102e50 url(../images/bg-hero.jpg) no-repeat;
 	border: 0;
 	}
 
-.svSlides {
-	min-height: 206px; /*This is set relative to the height of the medium image*/
-	}
-
 .home .svSlides {
 	position: relative;
 	border: 0;
 	z-index: 1;
-	padding: 0 ;
+	padding: 0;
 	margin: 0 !important;
-	height: 200px;
-	}
-
-.svSlides dl {
-	border: 0;
+	min-height: 186px;
 	}
 
 .home .svSlides dl {
-	width: 440px;
-	height: 180px;
-	padding: 0 0 20px 0;
-	margin: 0 30px 0;
+	/*width: 440px;*/
+	height: 200px;
+	padding-bottom: 0;
+	margin-right: 0;
 	border: 0;
 	font-size: 1em;
 	overflow: hidden;
 	background: transparent !important; /*for IE 6/7*/
 	}
 
-.svSlides dl.hasImage { /* Optimized for 180px wide images. Edit image size in "site settings." Adjust here as necessary*/
-	padding-left: 190px;
-	}
-
 .home .svSlideshow dt,
 .home .svSlideshow dd {
 	float: right;
-	width: 415px;
+	width: 430px;
 	}
 
 .home .svSlides dt {
@@ -996,11 +983,11 @@ div.stars a {
 	color: #fff;
 	}
 
-.home .svSlidesdd {
+.home .svSlides dd {
 	margin-bottom: 1.1em;
 	letter-spacing: -0.025em;
 	font-size: 1.4em !important;
-	line-height: 1.215em;
+	line-height: 1.2em;
 	padding: 0;
 	}
 
@@ -1034,7 +1021,7 @@ div.stars a {
 	width: 60px;
 	text-align: left;
 	padding-right: 22px;
-	margin-right: 321px;
+	margin-right: 339px;
 	margin-top: .75em;
 	background: #2e7aa7 url(../images/arrows_white.gif) no-repeat 6.8em 50%;
 	-webkit-border-radius: 11px;
@@ -1048,30 +1035,20 @@ div.stars a {
 	}
 
 .home ol.svPager {
-	position: absolute;
-	bottom: 20px;
-	left: 32px;
+	position: relative;
 	z-index: 2;
 	width: 190px;
 	text-align: center;
-	margin: 0;
+	margin: 10px 0;
 	padding: 0;
 	list-style: none;
 	}
 
-.home ol.svPager li {
-	/*float: left;*/
-	display: inline;
-	margin: 0 .25em;
+ol.svPager li {
+
 	}
 
 ol.svPager a {
-	/*display: block;*/
-	display: -moz-inline-block;
-	display: inline-block;
-
-	padding: 2px 5px;
-	text-align: center;
 	color: #fff;
 	background: #0c243a;
 	outline: none;

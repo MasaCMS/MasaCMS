@@ -49,18 +49,28 @@
 
 * html #navPrimary li, * html #features dl { display: inline; } /* double-margin fix */
 
-* html #slideshow {
+* html .svSlideshow {
 	margin-bottom: 0;
 	}
 
 * html #sendLogin {
 	height: 130px;
 	}
+	
+* html .svSlideshow dl.hasImage { /* Optimized for 180px square medium images - edit image size in "site settings." Adjust as necessary */
+		height: 190px;
+		}
+		
+* html .home .svSlideshow {
+	height: 220px;
+	}
+
+* html .home .svSlides {
+	height: 186px;
+	}
 
 /* @end IE6 Fixes
 -------------------------------- */
-
-
 
 /* @group IE6/7 Fixes
 ===================================== */
@@ -109,7 +119,6 @@ h1 {
 legend {
 	padding: 0;
 	}
-
 
 /* @end IE6/7 Fixes
 -------------------------------- */
