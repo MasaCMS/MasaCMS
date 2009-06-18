@@ -515,12 +515,12 @@ FCKGoogleMap.BuildEndingScript = function()
 	aScript.push('	return marker;');
 	aScript.push('}');
 
-	aScript.push('onload = function() {');
+	aScript.push('addLoadEvent(function() {');
 	for (var i = 0; i<CreatedMapsNames.length; i++)
 	{
 		aScript.push('	CreateGMap' + CreatedMapsNames[i]  + '();');
 	}
-	aScript.push('}');
+	aScript.push('});');
 
 	aScript.push('onunload = GUnload ;');
 
