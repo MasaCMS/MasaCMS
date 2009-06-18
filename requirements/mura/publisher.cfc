@@ -820,7 +820,10 @@ to your own modified versions of Mura CMS.
 		<cfset var p=""/>
 		<cfset var fileDelim=application.configBean.getFileDelim() />
 		<cfset var rsPlugins=application.pluginManager.getSitePlugins(arguments.siteid)>
-
+		<cfset var pluginEvent = createObject("component","mura.event").init(arguments) />
+		
+		<cfset application.pluginManager.executeScripts("onSiteDeploy",arguments.siteID,pluginEvent)>
+		
 		<cfloop list="#application.configBean.getProductionDatasource()#" index="i">
 			<cfset getToWork(arguments.siteid, '#application.configBean.getDatasource()#', '#i#')>
 		</cfloop>
