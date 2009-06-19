@@ -8,7 +8,8 @@
 		<relocate url="index.cfm?fuseaction=cLogin.main&amp;returnURL=#urlEncodedFormat('index.cfm?#cgi.query_string#')#" addtoken="false"/>
 	</true>
 </if>
-<if condition="not (isUserInRole('Admin;#application.settingsManager.getSite(attributes.siteid).getPrivateUserPoolID()#;0') or  isUserInRole('S2'))">
+<if condition="not (isUserInRole('Admin;#application.settingsManager.getSite(attributes.siteid).getPrivateUserPoolID()#;0') or  isUserInRole('S2'))
+	and not (listFindNoCase('cPrivateUsers.editAddress,cPrivateUsers.updateAddress',attributes.fuseaction) and  attribute.userID eq listFirst(getAuthUser(),'^'))">
 	<true>
 		<relocate url="index.cfm" addtoken="false"/>
 	</true>
