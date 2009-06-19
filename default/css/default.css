@@ -1,3 +1,5 @@
+/* @override http://192.168.1.119:8500/mura/default/css/default.css */
+
 /* This file is part of Mura CMS. 
 
 	Mura CMS is free software: you can redistribute it and/or modify 
@@ -107,7 +109,6 @@ ol ol ol { list-style: lower-roman; }
 
 dl { 
 	clear: both;
-	overflow: hidden;
 	margin-bottom: 1em;
 	}
 
@@ -945,7 +946,7 @@ dd.rating {
 	}
 	
 .rating {
-		width: 100px;
+		width: 110px;
 		background-repeat: no-repeat;
 		background-position: 3.5em 50%;
 		}
@@ -993,20 +994,22 @@ dl.hasImage .image {
 }
 
 ol.svPager {
+		position: relative;
 	z-index: 2;
 	margin: 0;
 	padding: 0;
 	}
 
 ol.svPager li {
-	/*float: left;*/
-	display: -moz-inline-block;
-	display: inline-block;
 	margin: 0 .25em;
+		display: inline;
 	}
 
 ol.svPager a {
-	
+	display: -moz-inline-block;
+		display: inline-block;
+		padding: 2px 5px;
+		text-align: center;
 	}
 
 ol.svPager li.activeLI a,

@@ -32,6 +32,11 @@
 	display: inline; /* double-margin fix */
 	}
 
+* html #right {
+		position: relative;
+		z-index: 1;
+}
+
 * html .req label,
 * html p.required {
 	background-image: url(../images/icon_star.gif);
@@ -86,8 +91,18 @@ h1 {
 	}
 
 .svSyndLocal dl {
-	height: 1%;
+	zoom: 1;
 	}
+
+.home #right .svSyndLocal {
+	background: blue;
+	zoom: 1;
+}	
+	
+.home #right .svSyndLocal dl {
+	background: red;
+	
+}	
 
 .submit, .buttons input {
 	padding: 0 4px 0;
@@ -119,6 +134,10 @@ h1 {
 legend {
 	padding: 0;
 	}
+	
+.rating {
+		background-position: 33px 50%;
+		}
 
 /* @end IE6/7 Fixes
 -------------------------------- */
@@ -134,6 +153,9 @@ html>body h1 a {
 	margin: 0 0 20px 0;
 	}
 
+html>body # right .svIndex dl {
+	width:  100px;
+}
 
 /* @group IE7 - Dropdown Nav
 ===================================== */

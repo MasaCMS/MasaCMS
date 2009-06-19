@@ -957,12 +957,6 @@ div.stars a {
 	background: transparent !important; /*for IE 6/7*/
 	}
 
-.home .svSlideshow dt,
-.home .svSlideshow dd {
-	float: right;
-	width: 430px;
-	}
-
 .home .svSlides dt {
 	margin-bottom: .35em !important;
 	font-size: 2.6em !important;

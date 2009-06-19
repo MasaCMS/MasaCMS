@@ -13,7 +13,8 @@ $(document).ready(function(){
 					pager: $('.svPager', this.parentNode),							// tell Cycle about the pager nav
 					pagerAnchorBuilder: function(idx, slide) {						// populate pager nav
 						return '<li><a href="#">' + (idx+1) + '</a></li>';				// 'idx' is the zero-indexed array position, so we add 1 to it
-					}
+					},
+					timeout: 4000
 				});
 			})
 		

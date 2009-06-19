@@ -88,7 +88,13 @@ to your own modified versions of Mura CMS.
 			<li class="#class#">
 			<a href="#application.configBean.getContext()#/tasks/render/file/index.cfm?fileID=#rsSection.FileID#&ext=.#rsSection.fileExt#" title="#HTMLEditFormat(rsSection.title)#" rel="shadowbox[gallery]" class="gallery"><img src="#application.configBean.getContext()#/tasks/render/small/index.cfm?fileID=#rsSection.FileID#" alt="#HTMLEditFormat(rsSection.title)#"/></a>	 
 		 	<dl>
-		 	<dt><a href="#application.configBean.getIndexFile()#?linkServID=#rsSection.contentID#&categoryID=#request.categoryID#&relatedID=#request.relatedID#" title="#rsSection.title#">#rsSection.menutitle#</a></dt>		 	
+		 	<dt>
+		 	<cfif hasComments>
+		 	<a href="#application.configBean.getIndexFile()#?linkServID=#rsSection.contentID#&categoryID=#request.categoryID#&relatedID=#request.relatedID#" title="#rsSection.title#">#rsSection.menutitle#</a>
+		 	<cfelse>
+		 	#rsSection.menutitle#
+		 	</cfif>
+		 	</dt>		 	
 		 	<cfif rsSection.credits neq "">
 		 	<dd class="credits">#rbFactory.getKey('list.by')# #rsSection.credits#</dd>
 		 	</cfif>
