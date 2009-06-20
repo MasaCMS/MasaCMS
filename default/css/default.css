@@ -945,7 +945,8 @@ dd.rating {
 	padding: 0;
 	}
 	
-.rating {
+.rating {	
+		position: relative;
 		width: 110px;
 		background-repeat: no-repeat;
 		background-position: 3.5em 50%;

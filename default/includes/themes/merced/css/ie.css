@@ -92,17 +92,7 @@ h1 {
 
 .svSyndLocal dl {
 	zoom: 1;
-	}
-
-.home #right .svSyndLocal {
-	background: blue;
-	zoom: 1;
-}	
-	
-.home #right .svSyndLocal dl {
-	background: red;
-	
-}	
+	}	
 
 .submit, .buttons input {
 	padding: 0 4px 0;
@@ -136,8 +126,13 @@ legend {
 	}
 	
 .rating {
-		background-position: 33px 50%;
-		}
+	background-position: 35px 50%;
+	}
+	
+* html .sidebar .svIndex .rating {
+	background-position: 35px -1px;
+	}
+
 
 /* @end IE6/7 Fixes
 -------------------------------- */

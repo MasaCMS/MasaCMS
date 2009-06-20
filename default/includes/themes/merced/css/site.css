@@ -850,9 +850,18 @@ a.boxItemHeader { /* Link of items inside dragable boxes */
 	padding: .5em 0 .5em;
 	}
 
+.svIndex dl.hasImage {
+	padding-left: 90px;
+	position: relative;
+	}
+
 .sidebar .svIndex dl.hasImage {
 	min-height: 0;
 	padding-left: 0;
+	}
+
+.svIndex dl.hasImage .image {
+	float: none;
 	}
 
 .sidebar .svIndex dl.hasImage .image {

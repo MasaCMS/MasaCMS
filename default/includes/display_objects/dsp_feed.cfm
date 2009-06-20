@@ -113,7 +113,7 @@ to your own modified versions of Mura CMS.
 					<dd class="tags"><cfmodule template="nav/dsp_tag_line.cfm" tags="#rs.tags#"></dd>
 				</cfif>
 				<cfif doMeta and feedBean.getDisplayRatings()>
-					<dd class="rating #application.raterManager.getStarText(rs.rating)#">#rbFactory.getKey('list.rating')#: <span><cfif isNumeric(rs.rating)>#rs.rating# star<cfif rs.rating gt 1>s</cfif><cfelse>Zero stars</span></cfif></dd>
+					<dd class="rating #application.raterManager.getStarText(rs.rating)#">#rbFactory.getKey('list.rating')#: <span><cfif isNumeric(rs.rating)>#rs.rating# star<cfif rs.rating gt 1>s</cfif><cfelse>Zero stars</cfif></span></dd>
 				</cfif>
 				
 				</dl>

@@ -133,7 +133,7 @@ to your own modified versions of Mura CMS.
 	 	</cfif>
 	 	<cfif hasRatings and (rsSection.type eq 'Page' or showItemMeta(rsSection.type) or (len(rssection.fileID) and showItemMeta(rssection.fileExt)))>
 		<!--- rating#replace(rateBean.getRate(),".","")# --->
-	 	<dd class="rating #application.raterManager.getStarText(rsSection.rating)#">#rbFactory.getKey('list.rating')#: <span><cfif isNumeric(rsSection.rating)>#rsSection.rating# star<cfif rsSection.rating gt 1>s</cfif> <cfelse>Zero stars</span></cfif></dd>	 	
+	 	<dd class="rating #application.raterManager.getStarText(rsSection.rating)#">#rbFactory.getKey('list.rating')#: <span><cfif isNumeric(rsSection.rating)>#rsSection.rating# star<cfif rsSection.rating gt 1>s</cfif> <cfelse>Zero stars</cfif></span></dd>	 	
 	 	</cfif>
 	 	</dl>
 	 	</cfoutput>
