@@ -111,11 +111,11 @@ to your own modified versions of Mura CMS.
 		 	</dl>
 			</li>
 			</cfoutput>
-		</ul>
-		<cfif nextN.numberofpages gt 1>
+		</ul>		
+	</div>
+	<cfif nextN.numberofpages gt 1>
 			<cfinclude template="../dsp_nextN.cfm">
 		</cfif>	
-	</div>
 	<cfelse>
 	 <cfoutput>
 	 <cfif request.filterBy eq "releaseMonth">

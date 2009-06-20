@@ -12,7 +12,6 @@
 		<script>
 		  /* EXAMPLE */
 		  DD_belatedPNG.fix('dd.rating');
-		  
 		  /* string argument can be any CSS selector */
 		</script>
 	<![endif]-->

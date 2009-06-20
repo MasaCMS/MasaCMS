@@ -72,11 +72,11 @@ to your own modified versions of Mura CMS.
 	<dd>
 		<ul>
 		<cfif nextN.currentpagenumber gt 1>
-		<li><a href="#xmlFormat('#application.configBean.getIndexFile()#?startrow=#nextN.previous##qrystr#')#">&laquo;&nbsp;#rbFactory.getKey('list.previous')#</a></li>
+		<li class="navPrev"><a href="#xmlFormat('#application.configBean.getIndexFile()#?startrow=#nextN.previous##qrystr#')#">&laquo;&nbsp;#rbFactory.getKey('list.previous')#</a></li>
 		</cfif>
 		<cfloop from="#nextN.firstPage#"  to="#nextN.lastPage#" index="i"><cfif nextn.currentpagenumber eq i><li class="current">#i#</li><cfelse><li><a href="#xmlFormat('#application.configBean.getIndexFile()#?startrow=#evaluate('(#i#*#nextN.recordsperpage#)-#nextN.recordsperpage#+1')##qrystr#')#">#i#</a></li></cfif></cfloop>
 		<cfif nextN.currentpagenumber lt nextN.NumberOfPages>
-			<li><a href="#xmlFormat('#application.configBean.getIndexFile()#?startrow=#nextN.next##qrystr#')#">#rbFactory.getKey('list.next')#&nbsp;&raquo;</a></li>
+			<li class="navNext"><a href="#xmlFormat('#application.configBean.getIndexFile()#?startrow=#nextN.next##qrystr#')#">#rbFactory.getKey('list.next')#&nbsp;&raquo;</a></li>
 		</cfif>
 		</ul>
 	</dd>

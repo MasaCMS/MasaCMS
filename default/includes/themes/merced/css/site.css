@@ -601,11 +601,17 @@ h1 a {
 ===================================== */
 
 .moreResults {
-	text-align: right;
-	}
+	border-top: 1px dotted #e6e6e6;
+	padding-top: 1.25em;
+}
+
+/*.moreResults dt {
+	float: left;
+	margin-right: .5em;
+	}*/
 
 .moreResults ul {
-	float: right;
+	/*float: right;*/
 	overflow: hidden;
 	margin: 0;
 	padding: 0;
@@ -613,10 +619,13 @@ h1 a {
 
 .moreResults li {
 	display: inline;
-	margin: 0 .6em 0 -0.5em !important;
-	padding: 0 .5em;
+	padding: 0 .25em;
 	list-style: none;
-	border-left: 1px solid #b6b6b6;
+	border-right: 1px solid #b6b6b6;
+	}
+	
+.moreResults li.navNext {
+	border-right: 0;
 	}
 
 .moreResults li a {
@@ -636,6 +645,7 @@ h1 a {
 
 /* @group Galleries
 ===================================== */
+/*Optimized Grid for 80px Thumbnails*/
 
 .oneCol #svGallery li {
 	width: 9%;
