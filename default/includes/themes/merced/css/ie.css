@@ -104,16 +104,19 @@ h1 {
 	position: relative;
 	}
 
+#searchForm input.text {
+	width: 170px;
+	}
 
 #searchForm .submit {
 	width: 34px;
 	position: absolute;
 	right: 0;
-	top: 0;
+	top: -1px;
 	}
 
 #searchForm {
-	width: 232px;
+	width: 215px;
 	}
 
 #svAddNewFeed form {
