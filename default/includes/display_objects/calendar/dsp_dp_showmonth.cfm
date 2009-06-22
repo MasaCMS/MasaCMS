@@ -41,7 +41,7 @@ the GNU General Public License version 2  without this exception.  You may, if y
 to your own modified versions of Mura CMS.
 --->
 
-<div id="svCalendar">
+<div id="svCalendar" class="svCalendar">
 <cfoutput>
 <table>
 <tr>

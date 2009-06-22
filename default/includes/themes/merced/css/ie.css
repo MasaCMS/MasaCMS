@@ -54,6 +54,10 @@
 
 * html #navPrimary li, * html #features dl { display: inline; } /* double-margin fix */
 
+* html .svIndex dl.hasImage {
+		height: 90px;
+		}
+
 * html .svSlideshow {
 	margin-bottom: 0;
 	}
@@ -63,7 +67,11 @@
 	}
 	
 * html .svSlideshow dl.hasImage { /* Optimized for 180px square medium images - edit image size in "site settings." Adjust as necessary */
-		height: 190px;
+	height: 190px;
+	}
+
+* html .svSlides dl.hasImage { /* Optimized for 180px wide images. Edit image size in "site settings." Adjust here as necessary*/
+		height: 180px;
 		}
 		
 * html .home .svSlideshow {
@@ -74,6 +82,9 @@
 	height: 186px;
 	}
 
+* html .sidebar .svIndex .rating {
+	background-position: 35px -1px;
+	}
 /* @end IE6 Fixes
 -------------------------------- */
 
@@ -131,10 +142,6 @@ legend {
 	
 .rating {
 	background-position: 35px 50%;
-	}
-	
-* html .sidebar .svIndex .rating {
-	background-position: 35px -1px;
 	}
 
 .oneCol #svGallery li {

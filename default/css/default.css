@@ -626,11 +626,11 @@ It gets output between the h2 and the body content and launches the large image 
 /* @group Calendar
 ===================================== */
 
-#svCalendar { text-align: center; }
+.svCalendar { text-align: center; }
 
-#svCalendar table { width: 100%; }
+.svCalendar table { width: 100%; }
 
-#svCalendar th {
+.svCalendar th {
 	padding: 0;
 	border: 1px solid #666; 
 	font-style: normal;
@@ -638,52 +638,58 @@ It gets output between the h2 and the body content and launches the large image 
 	text-align: center;
 	color: #fff;
 	background: #666;
+		font-size: .9em;
 	}
 
-#svCalendar th a {
+.svCalendar th a {
 	display: block;
-	padding: .5em 2px;
+	padding: .25em;
 	text-align: center;
 	color: #fff;
 	}
 
-#svCalendar th a:hover {
+.svCalendar th a:hover {
 	text-decoration: none;
 	color: #fff;
 	background: #333;
 	}
-
-#svCalendar .dayofweek td {
+	
+.svCalendar td {
+		width: 14%;
+		min-height: 60px;
+		padding: .5em;
+		border: 1px solid #ccc;
+		font-size: 9px;
+		line-height: 1;
+		text-align: left;
+		vertical-align: top;
+		}
+		
+.svCalendar .dayofweek td {
 	height: auto;
-	padding: 6px .5em;
+	padding: .5em;
 	font-style: normal;
 	font-weight: bold;
 	text-align: center;
 	background: #ccc;
 	}
 
-#svCalendar .dayofweek td a {}
+.svCalendar .dayofweek td a {}
 
-#svCalendar td {
-	width: 14%;
-	height: 60px;
-	padding: .5em;
-	border: 1px solid #ccc;
-	font-size: 9px;
-	line-height: 1;
-	text-align: left;
-	vertical-align: top;
+#svCalendarNav td {
+	min-height: auto;
+	text-align: center;
 	}
 
-#svCalendar td .date { font-style: italic; }
+.svCalendar td .date { font-style: italic; }
 
-.content #svCalendar td ul {
+.content .svCalendar td ul {
 	margin: 0;
 	padding: 0;
 	list-style: none;
 	}
 
-#svCalendar td li a {
+.svCalendar td li a {
 	display: block;
 	margin: 2px 0;
 	padding: 0 0 2px;
@@ -692,8 +698,8 @@ It gets output between the h2 and the body content and launches the large image 
 	text-decoration: none;
 	}
 
-#svCalendar td li a:hover,
-#svCalendar td li a#today {
+.svCalendar td li a:hover,
+.svCalendar td li a#today {
 	text-decoration: underline;
 	}
 
@@ -1021,6 +1027,11 @@ ol.svPager a:hover {
 
 
 /* @end */
+
+a.rss {
+	padding: 4px 0 4px 14px;
+	background: url(../images/icon_rss.gif) no-repeat 0 50%;
+}
 
 /* @end Portals, Feeds
 -------------------------------- */

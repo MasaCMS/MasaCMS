@@ -1,4 +1,7 @@
-/* @override http://10.0.1.198:8500/mura/default/includes/themes/merced/css/site.css */
+/* @override 
+	http://10.0.1.198:8500/mura/default/includes/themes/merced/css/site.css
+	http://192.168.1.119:8500/mura/default/includes/themes/merced/css/site.css
+*/
 
 /*	Theme:	Merced */
 
@@ -671,35 +674,36 @@ h1 a {
 /* @group Calendar
 ===================================== */
 
-#svCalendar table {
+.svCalendar table {
 	margin-top: 0;
 	}
 
-#svCalendar th {
+.svCalendar th {
 	background: #0c2846;
 	vertical-align: middle;
 	}
 
-#svCalendar th a, #svCalendar th a:hover {
+.svCalendar th a, .svCalendar th a:hover {
 	background: #0c2846;
 	}
 
-#svCalendar th a:hover {
+.svCalendar th a:hover {
 	color: #2e7aa7;
 	}
 
 
-#svCalendar tr.dayofweek td {
+.svCalendar tr.dayofweek td {
 	background: #2e7aa7;
 	color: #fff;
 	}
 
-#svCalendar th, #svCalendar td {
+.svCalendar th,
+.svCalendar td {
 	border: 1px solid #fff;
 	}
 
-#svCalendar td {
-	background: #f2f2f2;
+.svCalendar td {
+		background: #e9f3f7;
 	}
 
 
@@ -886,9 +890,10 @@ a.boxItemHeader { /* Link of items inside dragable boxes */
 	}
 
 .svIndex dl.hasImage {
-	padding-left: 90px;
-	position: relative;
-	}
+		padding-left: 90px;
+		position: relative;
+		min-height: 90px;
+		}
 
 .sidebar .svIndex dl.hasImage {
 	min-height: 0;
@@ -896,8 +901,8 @@ a.boxItemHeader { /* Link of items inside dragable boxes */
 	}
 
 .svIndex dl.hasImage .image {
-	float: none;
-	}
+		float: none;
+		}
 
 .sidebar .svIndex dl.hasImage .image {
 	display: none;

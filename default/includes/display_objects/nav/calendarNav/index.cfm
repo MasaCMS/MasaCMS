@@ -19,7 +19,7 @@
 <cfset navYear=request.year >
 <cfset navDay=request.day >
 </cfsilent>
-<div id="svCalendarNav">
+<div id="svCalendarNav" class="svCalendar">
 <cfset navTools.setParams(navMonth,navDay,navYear,navID,navPath) />
 <cfoutput>#navTools.dspMonth()#</cfoutput>
 </div>

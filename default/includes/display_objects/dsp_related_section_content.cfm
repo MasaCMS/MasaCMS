@@ -94,7 +94,7 @@ to your own modified versions of Mura CMS.
 		</dl>
 		</cfloop>
 		<dl class="moreResults">
-		<dt>&raquo; <a href="#application.configBean.getServerPort()##application.configBean.getContext()##application.contentRenderer.getURLStem(request.siteid,rsSection.filename)#">View All</a></dt></dl>
+		<dt><a href="#application.configBean.getServerPort()##application.configBean.getContext()##application.contentRenderer.getURLStem(request.siteid,rsSection.filename)#">View All</a></dt></dl>
 </div>
 <cfelse>
 	<!-- Empty Related Section Content '#rsSection.menutitle#' -->

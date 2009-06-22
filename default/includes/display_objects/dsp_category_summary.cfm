@@ -54,12 +54,12 @@ to your own modified versions of Mura CMS.
 </cfsilent>
 <cfif rs.recordcount>
 <cfoutput>
-<div id="catSummary">
+<div class="svCatSummary svIndex">
 <h3>Categories</h3>
 <ul class="navSecondary"><cfloop query="rs">
 	<cfset class=iif(rs.currentrow eq 1,de('first'),de(''))>
-		<li class="#class# <cfif listFind(request.categoryID,rs.categoryID)>current</cfif>"><a href="#application.configBean.getContext()##getURLStem(request.siteid,rsSection.filename)#?categoryID=#rs.categoryID#&relatedID=#request.relatedID#">#rs.name# (#rs.count#)</a><cfif useRss><a  class="rssFeed" target="_blank" href="#application.configBean.getContext()#/tasks/feed/index.cfm?siteid=#request.siteid#&contentID=#rsSection.contentid#&categoryID=#rs.categoryID#" <cfif listFind(request.categoryID,rs.categoryID)>class=current</cfif>>RSS</a></cfif></li>
-	</cfloop><li class="last"><a href="#application.configBean.getContext()##getURLStem(request.siteid,rsSection.filename)#?relatedID=#request.relatedID#">View All</a><cfif useRss><a class="rssFeed" target="_blank" href="#application.configBean.getContext()#/tasks/feed/index.cfm?siteid=#request.siteid#&contentID=#rsSection.contentid#">RSS</a></cfif></li>
+		<li class="#class#<cfif listFind(request.categoryID,rs.categoryID)> current</cfif>"><a href="#application.configBean.getContext()##getURLStem(request.siteid,rsSection.filename)#?categoryID=#rs.categoryID#&relatedID=#request.relatedID#">#rs.name# (#rs.count#)</a><cfif useRss><a class="rss" href="#application.configBean.getContext()#/tasks/feed/index.cfm?siteid=#request.siteid#&contentID=#rsSection.contentid#&categoryID=#rs.categoryID#" <cfif listFind(request.categoryID,rs.categoryID)>class="current"</cfif>>RSS</a></cfif></li>
+	</cfloop><li class="last"><a href="#application.configBean.getContext()##getURLStem(request.siteid,rsSection.filename)#?relatedID=#request.relatedID#">View All</a><cfif useRss><a class="rss" href="#application.configBean.getContext()#/tasks/feed/index.cfm?siteid=#request.siteid#&contentID=#rsSection.contentid#">RSS</a></cfif></li>
 </ul>
 </div>
 </cfoutput>
