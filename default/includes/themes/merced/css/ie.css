@@ -137,6 +137,13 @@ legend {
 	background-position: 35px -1px;
 	}
 
+.oneCol #svGallery li {
+	width: 8%;
+	}
+
+.threeCol #svGallery li {
+	width: 17%;
+	}
 
 /* @end IE6/7 Fixes
 -------------------------------- */
