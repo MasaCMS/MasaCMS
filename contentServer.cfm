@@ -40,4 +40,4 @@ for your modified version; it is your choice whether to do so, or to make such m
 the GNU General Public License version 2  without this exception.  You may, if you choose, apply this exception
 to your own modified versions of Mura CMS.
 --->
-<cfinclude template="tasks/content/redirect.cfm">
+<cfinclude template="tasks/content/contentServer.cfm">
