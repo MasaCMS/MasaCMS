@@ -1,3 +1,5 @@
+/* @override http://192.168.1.119:8500/mura/default/css/default.css */
+
 /* This file is part of Mura CMS. 
 
 	Mura CMS is free software: you can redistribute it and/or modify 
@@ -955,9 +957,9 @@ dd.rating {
 		}
 
 .rating span {
-		position: absolute;
-		left: -9999px;
-		}
+	position: absolute;
+	left: -9999px;
+	}
 	
 .svIndex dd.credits {
 	color: #666;
@@ -997,7 +999,7 @@ dl.hasImage .image {
 }
 
 ol.svPager {
-		position: relative;
+	position: relative;
 	z-index: 2;
 	margin: 0;
 	padding: 0;
@@ -1005,14 +1007,15 @@ ol.svPager {
 
 ol.svPager li {
 	margin: 0 .25em;
-		display: inline;
+	display: inline;
 	}
 
 ol.svPager a {
 	display: -moz-inline-block;
-		display: inline-block;
-		padding: 2px 5px;
-		text-align: center;
+	display: inline-block;
+	padding: 2px 5px;
+	text-align: center;
+		line-height: 1.2;
 	}
 
 ol.svPager li.activeLI a,
