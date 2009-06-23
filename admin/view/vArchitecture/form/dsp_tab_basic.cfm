@@ -80,8 +80,8 @@ to your own modified versions of Mura CMS.
 		fckEditor.instanceName	= "body";
 		fckEditor.value			= '#request.contentBean.getBody()#';
 		fckEditor.basePath		= "#application.configBean.getContext()#/fckeditor/";
-		fckEditor.config.EditorAreaCSS	= '#application.configBean.getContext()#/#attributes.siteid#/css/editor.css';
-		fckEditor.config.StylesXmlPath = '#application.configBean.getContext()#/#attributes.siteid#/css/fckstyles.xml';
+		fckEditor.config.EditorAreaCSS	= '#application.settingsManager.getSite(attributes.siteid).getThemeAssetPath()#/css/editor.css';
+		fckEditor.config.StylesXmlPath = '#application.settingsManager.getSite(attributes.siteid).getThemeAssetPath()#/css/fckstyles.xml';
 		fckEditor.width			= "100%";
 		fckEditor.height		= 550;
 		fckEditor.config.DefaultLanguage=lcase(session.rb);

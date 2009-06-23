@@ -64,8 +64,8 @@ to your own modified versions of Mura CMS.
 	  	//oFCKeditor.instanceName	= "summary";
 		oFCKeditor.value			= document.contentForm.summary.value;
 		oFCKeditor.BasePath		= "#application.configBean.getContext()#/fckeditor/";
-		oFCKeditor.Config.EditorAreaCSS	= '#application.configBean.getContext()#/#attributes.siteid#/css/editor.css';
-		oFCKeditor.Config.StylesXmlPath = '#application.configBean.getContext()#/#attributes.siteid#/css/fckstyles.xml';
+		oFCKeditor.Config.EditorAreaCSS	= '#application.settingsManager.getSite(attributes.siteid).getThemeAssetPath()#/css/editor.css';
+		oFCKeditor.Config.StylesXmlPath = '#application.settingsManager.getSite(attributes.siteid).getThemeAssetPath()#/css/fckstyles.xml';
 		oFCKeditor.width			= "100%";
 		oFCKeditor.ToolbarSet			= "Summary";
 		oFCKeditor.Config.DefaultLanguage='#lcase(session.rb)#';
