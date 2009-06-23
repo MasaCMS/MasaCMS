@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Styles>
+	<Style name="Align Image Left" element="img">
+		<Attribute name="class" value="left" />
+	</Style>
+	<Style name="Align Image Right" element="img">
+		<Attribute name="class" value="right" />
+	</Style>
+	<Style name="Intro" element="p">
+		<Attribute name="class" value="intro" />
+	</Style>
+	<Style name="Centered Text" element="p">
+		<Attribute name="class" value="center" />
+	</Style>
+	<Style name="Call to Action" element="a">
+		<Attribute name="class" value="callToAction" />
+	</Style>
+	<Style name="Call to Action" element="li">
+		<Attribute name="class" value="callToAction" />
+	</Style>
+</Styles>
