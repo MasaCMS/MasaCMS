@@ -81,6 +81,7 @@ to your own modified versions of Mura CMS.
 <cffunction name="getInternalContentFavorites" access="public" output="false" returntype="query">
 	<cfargument name="userID" type="string" required="yes">
 	<cfargument name="siteID" type="String">
+	<cfargument name="type" type="String" required="false" default="">
 	
 	<cfset var rs ="" />
 
@@ -99,6 +100,11 @@ to your own modified versions of Mura CMS.
 	WHERE
 	tcontent.siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
 	and tusersfavorites.userid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.userID#"/>
+	
+	<cfif len(arguments.type)>
+	and tusersfavorites.type= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.type#"/>
+	</cfif>
+	
 	and tcontent.active=1
 	
 	  AND (
