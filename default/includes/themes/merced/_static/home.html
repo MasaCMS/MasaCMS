@@ -1,116 +1,57 @@
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-	<meta name="description" content="" />
-	<meta name="keywords" content="" />
-	
-	<meta name="generator" content="Mura CMS 5.1" />
-	
-	<title>Home - Demo</title>
-
-	<link rel="stylesheet" href="../../../../css/default.css" type="text/css" media="all" />
-	<link rel="stylesheet" href="../css/typography.css" type="text/css" media="all" />
-	<link rel="stylesheet" href="../css/site.css" type="text/css" media="all" />
-	<link rel="stylesheet" href="../css/print.css" type="text/css" media="print" />
-	
-	<!--[if lte IE 7]>
-		<link rel="stylesheet" href="../css/ie.css" type="text/css" media="all" />
-	<![endif]-->
-	<!--[if IE 7]>
-		<script src="../js/DD_roundies.js"></script>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="description" content="" />
+<meta name="keywords" content="" />
+<meta name="generator" content="Mura CMS 5.1" />
+<title>Merced Theme - Mura CMS</title>
+<link rel="icon" href="../images/favicon.ico" type="image/x-icon" />
+<link rel="shortcut icon" href="../images/favicon.ico" type="image/x-icon" />
+<link rel="stylesheet" href="../../../../css/default.css" type="text/css" media="all" />
+<link rel="stylesheet" href="../css/typography.css" type="text/css" media="all" />
+<link rel="stylesheet" href="../css/site.css" type="text/css" media="all" />
+<link rel="stylesheet" href="../css/print.css" type="text/css" media="print" />
+<!--[if lte IE 7]>
+		<link rel="stylesheet" href="../includes/themes/merced/css/ie.css" type="text/css" media="all" />
+		<script src="../includes/themes/merced/js/DD_roundies.js"></script>
 		<script>
 		  DD_roundies.addRule('.submit, .buttons input, dd.textField .submit', '10px');
-		  DD_roundies.addRule('dd.rating');
-		  
 		  /* string argument can be any CSS selector */
 		</script>
-		
 	<![endif]-->
-
-
-<script type="text/javascript">
-var dtExample="11/10/2012";
-var dtCh="/";
-var dtFormat =[0,1,2];
-</script> 	
-<script type="text/javascript" src="../../../../../default/js/global.js"></script>
-<script type="text/javascript">
-var loginURL="index.cfm?display=login";
-var siteid="demo"; 
-var siteID="demo"; 
-var context="/mura"; 
-var jslib="jquery";
-var assetpath="../../../../../default";
-var themepath="../../../../../default/includes/themes/merced";
-</script>
-<script src="../../../../../default/js/jquery/jquery.js" type="text/javascript"></script>
-<script src="../../../../../default/includes/display_objects/feedslideshow/js/jquery.cycle.js" type="text/javascript"></script>
-<script src="../../../../../default/includes/display_objects/feedslideshow/js/slideshow.jquery.js" type="text/javascript"></script></head>
-
-<body id="homepage" class="home">
-<div id="container" class="sysHome">
-	
-	<div id="header" class="clearfix">
-		<h1><a href="">Demo</a></h1>
-		<ul class="navUtility">
-			<li><a href="">About Us</a></li>
-			<li class="last"><a href="">Contact</a></li>
-		</ul>
-		<form action="index.cfm" id="searchForm">
-			<fieldset>
-				<input type="text" name="Keywords" id="txtKeywords" class="text" value="Search" onfocus="this.value=(this.value=='Search') ? '' : this.value;" onblur="this.value=(this.value=='') ? 'Search' : this.value;" />
-				<input type="hidden" name="display" value="search" />
-				<input type="hidden" name="newSearch" value="true" />
-				<input type="hidden" name="noCache" value="1" />
-				<input type="submit" class="submit" value="Go" />
-			</fieldset>
-		</form>
-		
-			<ul id="navPrimary"> 
-				<li class="first current" id="navHome"><a href="">Home</a></li>
-				
-				<li id="navAbout"><a href="" >About</a>
-			<ul> 
-				<li class="first" id="navOurTeam"><a href="" >Our Team</a>
-			<ul> 
-				<li class="first" id="navDjBonebrake"><a href="/mura/demo/index.cfm/about/our-team/dj-bonebrake/" >D.J. Bonebrake</a></li>
-				
-				<li id="navBillyZoom"><a href="/mura/demo/index.cfm/about/our-team/billy-zoom/" >Billy Zoom</a></li>
-				
-				<li id="navExeneCervenka"><a href="/mura/demo/index.cfm/about/our-team/exene-cervenka/" >Exene Cervenka</a></li>
-				
-				<li class="last" id="navJohnDoe"><a href="/mura/demo/index.cfm/about/our-team/john-doe/" >John Doe</a></li>
-				
-			</ul></li>
-				
-			</ul></li>
-				
-				<li id="navNews"><a href="/mura/demo/index.cfm/news/" >News</a></li>
-				
-				<li id="navEvents"><a href="/mura/demo/index.cfm/events/" >Events</a></li>
-				
-				<li id="navGallery"><a href="/mura/demo/index.cfm/gallery/" >Gallery</a></li>
-				
-				<li id="navContact"><a href="/mura/demo/index.cfm/contact/" >Contact</a></li>
-				
-				<li id="navFeeds"><a href="/mura/demo/index.cfm/feeds/" >Feeds</a></li>
-				
-				<li class="last" id="navSlideshowFeed"><a href="/mura/demo/index.cfm/slideshow-feed/" >Slideshow Feed</a>
-			<ul> 
-				<li class="first" id="navMura1000"><a href="/mura/demo/index.cfm/slideshow-feed/mura-1000/" >mura 1000</a>
-			<ul> 
-				<li class="first" id="navStep2"><a href="/mura/demo/index.cfm/slideshow-feed/mura-1000/step-2/" >Step 2</a></li>
-				
-				<li class="last" id="navStep1"><a href="/mura/demo/index.cfm/slideshow-feed/mura-1000/step-1/" >Step 1</a></li>
-				
-			</ul></li>
-				
-			</ul></li>
-				
-			</ul>
-		
+<!--[if lte IE 6]>
+		<script src="../js/DD_belatedPNG.js"></script>
+		<script>
+		  /* EXAMPLE */
+		  DD_belatedPNG.fix('dd.rating');
+		  /* string argument can be any CSS selector */
+		</script>
+	<![endif]-->
+<script src="../../../../js/jquery/jquery.js" type="text/javascript"></script>
+</head>
+<body id="about" class="threeCol">
+<div id="container" class="sysAbout">
+  <div id="header" class="clearfix">
+    <h1><a href="">Mura CMS</a></h1>
+    <ul class="navUtility">
+      <li><a href="">About Us</a></li>
+      <li class="last"><a href="">Contact</a></li>
+    </ul>
+    <form action="index.cfm" id="searchForm">
+      <fieldset>
+        <input type="text" name="Keywords" id="txtKeywords" class="text" value="Search" onfocus="this.value=(this.value=='Search') ? '' : this.value;" onblur="this.value=(this.value=='') ? 'Search' : this.value;" />
+        <input type="hidden" name="display" value="search" />
+        <input type="hidden" name="newSearch" value="true" />
+        <input type="hidden" name="noCache" value="1" />
+        <input type="submit" class="submit" value="Go" />
+      </fieldset>
+    </form>
+    <ul id="navPrimary">
+      <li class="first" id="navHome"><a href="home.html">Home</a></li>
+      <li class="current" id="navAbout"><a href="content.html" class="current">Content</a></li>
+      <li id="navContact"><a href="contact.html" >Contact</a></li>
+    </ul>
 	</div>
 
 	<div id="content" class="clearfix">
@@ -121,31 +62,16 @@ var themepath="../../../../../default/includes/themes/merced";
 	  		<div class="svSlides"> 
 				<dl class="first hasImage">
 				
+					<dt class="releaseDate">June 1, 2009</dt>
+				
 					<dt><a href="">How do I recreate this home page in Mura?</a></dt>
 				
 					<dd class="image">
-						<a href=""><img src="/mura/tasks/render/medium/index.cfm?fileid=CBFA26B8-E541-73F0-D11E27AB2759FEBD" alt="How do I recreate this home page in Mura?"/></a>
+						<a href="" title="How do I recreate this home page in Mura?"><img src="/mura/tasks/render/medium/index.cfm?fileid=CBFA26B8-E541-73F0-D11E27AB2759FEBD" alt="How do I recreate this home page in Mura?"/></a>
 					</dd>
 				
-					<dd class="summary"><p>Recreating this home page in Mura is easy. Just follow these steps, and you'll be up and running in no time.</p>
-						<span class="readMore"><a href="/mura/demo/index.cfm/slideshow/how-do-i-recreate-this-home-page-in-mura/" >Read More</a></span>
-					</dd>
-				
-				
-				</dl>
-			
-				<dl class="hasImage">
-				
-					<dt class="releaseDate">June 10, 2009</dt>
-				
-					<dt><a href="">Step 1: Edit the Template</a></dt>
-				
-					<dd class="image">
-						<a href=""><img src="/mura/tasks/render/medium/index.cfm?fileid=CC1AE231-DC4A-AF95-1F8D629913C4D14A" alt="Step 1: Edit the Template"/></a>
-					</dd>
-				
-					<dd class="summary"><p>The template used is aptly named home.cfm and has this content hard-coded into it. Since the whole point of using a CMS is to avoid going directly into HTML and to be able to quickly make updates, we need to delete or comment out this static content.</p>
-						<span class="readMore"><a href="/mura/demo/index.cfm/slideshow/step-1-edit-the-template/" >Read More</a></span>
+					<dd class="summary"><p>Recreating this home page in Mura is fairly easy. Follow these steps, and you'll be up and running in no time.</p>
+						<span class="readMore"><a href="" >Read More</a></span>
 					</dd>
 				
 				
@@ -153,14 +79,50 @@ var themepath="../../../../../default/includes/themes/merced";
 			
 				<dl class="hasImage">
 				
-					<dt><a href="">Step 3: Add Indexes to the Page</a></dt>
+					<dt class="releaseDate">June 2, 2009</dt>
+				
+					<dt><a href="">Step 1: Assign the Correct Template</a></dt>
 				
 					<dd class="image">
-						<a href=""><img src="/mura/tasks/render/medium/index.cfm?fileid=CC21828A-DADA-AB60-7B99EA1981DE0980" alt="Step 3: Add Indexes to the Page"/></a>
+						<a href="" title="Step 1: Assign the Correct Template"><img src="/mura/tasks/render/medium/index.cfm?fileid=CC1AE231-DC4A-AF95-1F8D629913C4D14A" alt="Step 1: Assign the Correct Template"/></a>
 					</dd>
 				
-					<dd class="summary"><p>There are two ways to make this slideshow content easily editable: Local Indexes or Components.</p>
-						<span class="readMore"><a href="/mura/demo/index.cfm/slideshow/step-3-add-indexes-to-the-page/" >Read More</a></span>
+					<dd class="summary"><p>The template used is aptly named home.cfm. To make sure you are using the correct template, edit the home page and select home.cfm from the &quot;Layout Template&quot; dropdown in the &quot;Advanced&quot; Tab.</p>
+						<span class="readMore"><a href="" >Read More</a></span>
+					</dd>
+				
+				
+				</dl>
+			
+				<dl class="hasImage">
+				
+					<dt class="releaseDate">June 3, 2009</dt>
+				
+					<dt><a href="">Step 2: Create Local Indexes</a></dt>
+				
+					<dd class="image">
+						<a href="" title="Step 2: Create Local Indexes"><img src="/mura/tasks/render/medium/index.cfm?fileid=CC59CB96-9488-FA47-0826D8672A66EE92" alt="Step 2: Create Local Indexes"/></a>
+					</dd>
+				
+					<dd class="summary"><p>The majority of content on the homepage is created via Local Indexes, a way to output custom navigation based on very specific criteria such as Release Date, Most Commented, Highest Rated, etc. The slideshow and sidebar content is made up of 3 Local Indexes. Create these in &quot;Content Collections.&quot;</p>
+						<span class="readMore"><a href="" >Read More</a></span>
+					</dd>
+				
+				
+				</dl>
+			
+				<dl class="hasImage">
+				
+					<dt class="releaseDate">June 3, 2009</dt>
+				
+					<dt><a href="">Step 3: Create a "Features" Component</a></dt>
+				
+					<dd class="image">
+						<a href="" title="Step 3: Create a &quot;Features&quot; Component"><img src="/mura/tasks/render/medium/index.cfm?fileid=CC59CB96-9488-FA47-0826D8672A66EE92" alt="Step 3: Create a &quot;Features&quot; Component"/></a>
+					</dd>
+				
+					<dd class="summary"><p>The &quot;Features&quot; content in the three columns below is static content that can be copied out of home_static.cfm. Once copied, create a new &quot;Component&quot; called &quot;Features&quot; and paste in the copied content as HTML source. Toggle source view using the top left button in the editor.</p>
+						<span class="readMore"><a href="" >Read More</a></span>
 					</dd>
 				
 				
@@ -168,14 +130,16 @@ var themepath="../../../../../default/includes/themes/merced";
 			
 				<dl class="last hasImage">
 				
-					<dt><a href="">Step 2: Create Local Indexes or Components</a></dt>
+					<dt class="releaseDate">June 4, 2009</dt>
+				
+					<dt><a href="">Step 4: Add Content Objects to the Page</a></dt>
 				
 					<dd class="image">
-						<a href=""/></a>
+						<a href="" title="Step 4: Add Content Objects to the Page"><img src="/mura/tasks/render/medium/index.cfm?fileid=CC21828A-DADA-AB60-7B99EA1981DE0980" alt="Step 4: Add Content Objects to the Page"/></a>
 					</dd>
 				
-					<dd class="summary"><p>There are two ways to make this slideshow content easily editable: Local Indexes or Components.</p>
-						<span class="readMore"><a href="/mura/demo/index.cfm/slideshow/step-2-create-local-indexes-or-components/" >Read More</a></span>
+					<dd class="summary"><p>Place your Local Indexes into Display Regions by editing the home page and selecting the &quot;Content Objects&quot; tab. Use the dropdown menu to select your Local Indexes, then use the arrow buttons to move them to the appropriate regions. Hit &quot;Publish&quot; and you're done!</p>
+						<span class="readMore"><a href="" >Read More</a></span>
 					</dd>
 				
 				
@@ -185,21 +149,21 @@ var themepath="../../../../../default/includes/themes/merced";
 		</div><div id="features">
 <dl class="hasImage first">
 	<dt> <a href="">Sans Pica Ultra</a></dt>
-	<dd class="image"><a href=""><img alt="" src="/mura/default/includes/themes/merced/images/sample/feature.jpg" /></a> </dd>
+	<dd class="image"><a href=""><img alt="" src="../includes/themes/merced/images/sample/feature.jpg" /></a> </dd>
 	<dd class="summary">
 	<p>Descender counter california job case clarendon hyphen kerning pair pica cap asterisk typophile, display clarendon thicks display bitmap.</p>
 	<span class="readMore"><a href="">Read More</a></span></dd>
 </dl>
 <dl class="hasImage">
 	<dt> <a href="">Humanist Stroke</a></dt>
-	<dd class="image"> <a href=""><img alt="" src="/mura/default/includes/themes/merced/images/sample/feature.jpg" /></a> </dd>
+	<dd class="image"> <a href=""><img alt="" src="../includes/themes/merced/images/sample/feature.jpg" /></a> </dd>
 	<dd class="summary">
 	<p>Descender counter california job case clarendon hyphen kerning pair pica cap asterisk typophile, display clarendon thicks display bitmap.</p>
 	<span class="readMore"><a href="">Read More</a></span></dd>
 </dl>
 <dl class="hasImage last">
 	<dt> <a href="">Ascender Dunc</a></dt>
-	<dd class="image"> <a href=""><img alt="" src="/mura/default/includes/themes/merced/images/sample/feature.jpg" /></a> </dd>
+	<dd class="image"> <a href=""><img alt="" src="../includes/themes/merced/images/sample/feature.jpg" /></a> </dd>
 	<dd class="summary">
 	<p>Descender counter california job case clarendon hyphen kerning pair pica cap asterisk typophile, display clarendon thicks display bitmap.</p>
 	<span class="readMore"><a href="">Read More</a></span></dd>
@@ -208,73 +172,101 @@ var themepath="../../../../../default/includes/themes/merced";
 		</div>
 		<div id="right" class="sidebar">
 		<div class="svSyndLocal svFeed svIndex clearfix" id="sysMostRecent"> <h3>Most Recent</h3> 
-				<dl class="first">
-				
-					<dt><a href="">Home</a></dt>
-				
-				
-				</dl>
-			
-				<dl>
-				
-					<dt><a href="">Contact</a></dt>
-				
-				
-				</dl>
-			
-				<dl class="last">
-				
-					<dt><a href="">mura 1000</a></dt>
-				
-				
-				</dl>
-			
-			</div><div class="svSyndLocal svFeed svIndex clearfix" id="sysHighestRated"> <h3>Highest Rated</h3> 
 				<dl class="first hasImage">
 				
-					<dt class="releaseDate">June 11, 2009</dt>
+					<dt class="releaseDate">June 4, 2009</dt>
 				
-					<dt><a href="">Duis autem vel eum iriure dolor in hendrerit</a></dt>
+					<dt><a href="">Step 4: Add Content Objects to the Page</a></dt>
 				
 					<dd class="image">
-						<a href=""/></a>
+						<a href="" title="Step 4: Add Content Objects to the Page"><img src="/mura/tasks/render/small/index.cfm?fileid=CC21828A-DADA-AB60-7B99EA1981DE0980" alt="Step 4: Add Content Objects to the Page"/></a>
 					</dd>
 				
-					<dd class="credits">By John Doe</dd>
-				
-					<dd class="tags"> Tags: <a href="">Ipsum</a></dd>
-				
-					<dd class="rating three">Rating: <span>3.0 stars</dd>
+					<dd class="summary"><p>Place your Local Indexes into Display Regions by editing the home page and selecting the &quot;Content Objects&quot; tab. Use the dropdown menu to select your Local Indexes, then use the arrow buttons to move them to the appropriate regions. Hit &quot;Publish&quot; and you're done!</p>
+						<span class="readMore"><a href="" >Read More</a></span>
+					</dd>
 				
 				
 				</dl>
 			
 				<dl class="hasImage">
 				
-					<dt><a href="">Quis nostrud exerci tation ullam</a></dt>
+					<dt class="releaseDate">June 3, 2009</dt>
+				
+					<dt><a href="">Step 3: Create a "Features" Component</a></dt>
 				
 					<dd class="image">
-						<a href=""/></a>
+						<a href="" title="Step 3: Create a &quot;Features&quot; Component"><img src="/mura/tasks/render/small/index.cfm?fileid=CC59CB96-9488-FA47-0826D8672A66EE92" alt="Step 3: Create a &quot;Features&quot; Component"/></a>
 					</dd>
 				
-					<dd class="summary"><p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore.</p>
-						<span class="readMore"><a href="/mura/demo/index.cfm/news/quis-nostrud-exerci-tation-ullam/" >Read More</a></span>
+					<dd class="summary"><p>The &quot;Features&quot; content in the three columns below is static content that can be copied out of home_static.cfm. Once copied, create a new &quot;Component&quot; called &quot;Features&quot; and paste in the copied content as HTML source. Toggle source view using the top left button in the editor.</p>
+						<span class="readMore"><a href="" >Read More</a></span>
 					</dd>
-				
-					<dd class="credits">By John Doe</dd>
-				
-					<dd class="tags"> Tags: <a href="">Dolor</a></dd>
-				
-					<dd class="rating two">Rating: <span>2.0 stars</dd>
 				
 				
 				</dl>
 			
-				<dl class="last">
+				<dl class="last hasImage">
 				
-					<dt class="releaseDate">June 1, 2009</dt>
+					<dt class="releaseDate">June 3, 2009</dt>
 				
-					<dt><a href="">Lorem Ipsum Dolor Sit Amet</a></dt>
+					<dt><a href="">Step 2: Create Local Indexes</a></dt>
+				
+					<dd class="image">
+						<a href="" title="Step 2: Create Local Indexes"><img src="/mura/tasks/render/small/index.cfm?fileid=CC59CB96-9488-FA47-0826D8672A66EE92" alt="Step 2: Create Local Indexes"/></a>
+					</dd>
+				
+					<dd class="summary"><p>The majority of content on the homepage is created via Local Indexes, a way to output custom navigation based on very specific criteria such as Release Date, Most Commented, Highest Rated, etc. The slideshow and sidebar content is made up of 3 Local Indexes. Create these in &quot;Content Collections.&quot;</p>
+						<span class="readMore"><a href="" >Read More</a></span>
+					</dd>
+				
+				
+				</dl>
+			
+			</div><div class="svSyndLocal svFeed svIndex clearfix" id="sysHighestRated"> <h3>Highest Rated</h3> 
+				<dl class="first">
+				
+					<dt><a href="">Nostrud exerci tation ullamco</a></dt>
+				
+					<dd class="summary"><p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit.</p>
+						<span class="readMore"><a href="" >Read More</a></span>
+					</dd>
+				
+					<dd class="credits">By John Doe</dd>
+				
+					<dd class="tags"> Tags: <a href="">Dolor</a>, <a href="">Sit Amet</a></dd>
+				
+					<dd class="rating four">Rating: <span>4.0 stars</span></dd>
+				
+				
+				</dl>
+			
+				<dl class="hasImage">
+				
+					<dt class="releaseDate">June 11, 2009</dt>
+				
+					<dt><a href="">Duis autem vel eum iriure dolor in hendrerit</a></dt>
+				
+					<dd class="image">
+						<a href="" title="Duis autem vel eum iriure dolor in hendrerit"><img src="/mura/tasks/render/small/index.cfm?fileid=B856491F-EB7A-7E39-955F8DD03C0373C6" alt="Duis autem vel eum iriure dolor in hendrerit"/></a>
+					</dd>
+				
+					<dd class="credits">By John Doe</dd>
+				
+					<dd class="tags"> Tags: <a href="">Ipsum</a>, <a href="">Dolor</a>, <a href="">Amet</a>, <a href="">Ipsum</a></dd>
+				
+					<dd class="rating three">Rating: <span>3.0 stars</span></dd>
+				
+				
+				</dl>
+			
+				<dl class="last hasImage">
+				
+					<dt><a href="">Quis nostrud exerci tation ullam</a></dt>
+				
+					<dd class="image">
+						<a href="" title="Quis nostrud exerci tation ullam"><img src="/mura/tasks/render/small/index.cfm?fileid=B84DD0FF-0406-F4FC-B01A43080FD00A96" alt="Quis nostrud exerci tation ullam"/></a>
+					</dd>
 				
 					<dd class="summary"><p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore.</p>
 						<span class="readMore"><a href="" >Read More</a></span>
@@ -282,9 +274,9 @@ var themepath="../../../../../default/includes/themes/merced";
 				
 					<dd class="credits">By John Doe</dd>
 				
-					<dd class="tags"> Tags: <a href="">Dolor</a></dd>
+					<dd class="tags"> Tags: <a href="">Lorem</a>, <a href="">Dolor</a></dd>
 				
-					<dd class="rating zero">Rating: <span>Zero stars</span></dd>
+					<dd class="rating two">Rating: <span>2.0 stars</span></dd>
 				
 				
 				</dl>
@@ -296,12 +288,11 @@ var themepath="../../../../../default/includes/themes/merced";
 	<div id="footer">
 		<div class="wrap clearfix">
 			<ul class="navUtility">
-				<li><a href="">About Us</a></li>
-				<li><a href="">Products</a></li>
-				<li><a href="">Services</a></li>
-				<li class="last"><a href="">Contact Us</a></li>
+				<li><a href="">Home</a></li>
+				<li><a href="">Content</a></li>
+				<li class="last"><a href="">Contact</a></li>
 			</ul>
-			<p>&copy;2009 Demo</p>
+			<p>&copy;2009 Blue River Interactive Group</p>
 		</div>
 	</div>
 

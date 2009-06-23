@@ -42,6 +42,10 @@
 	background-image: url(../images/icon_star.gif);
 	}
 
+* html #primary form {
+	width: 504px; /*width of #primary in three column layout*/
+	}
+
 * html #features dl {
 	margin: 18px 13px 0 0;
 	}

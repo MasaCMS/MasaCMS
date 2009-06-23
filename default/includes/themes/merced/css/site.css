@@ -69,6 +69,7 @@ tr.alt td { background: #eee; }  /*Move*/
 	padding: 2em;
 	background: #e9f3f7;
 	overflow: hidden;
+		max-width: 504px; /*width of #primary in three column layout*/
 	}
 
 #primary fieldset {
@@ -1100,6 +1101,7 @@ ol.svPager a {
 ol.svPager li.activeLI a,
 ol.svPager a:hover {
 	background: #ff3405;
+		text-decoration: none;
 	}
 
 
