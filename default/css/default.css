@@ -1,5 +1,3 @@
-/* @override http://192.168.1.119:8500/mura/default/css/default.css */
-
 /* This file is part of Mura CMS. 
 
 	Mura CMS is free software: you can redistribute it and/or modify 
@@ -176,11 +174,10 @@ caption {
 
 th {
 	padding: .5em;
-	border: 1px solid #ccc; /*Move*/ 
+	border: 1px solid;
 	font-weight: bold;
 	text-align: left;
 	vertical-align: top;
-	background: #ccc; /*Move*/ 
 	}
 
 td {
@@ -188,8 +185,6 @@ td {
 	line-height: 1.2;
 	vertical-align: top;
 	}
-
-tr.alt td { background: #eee; }  /*Move*/ 
 
 /* @end Globals - Tables
 -------------------------------- */
@@ -532,7 +527,7 @@ p.center { text-align: center; }
 
 #svComments dd.dateTime {
 	font-size: 1em;
-	color: #666;  /*Move?*/ 
+	color: #666;
 	}
 
 /* @end Add Comment Component
