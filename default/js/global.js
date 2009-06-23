@@ -663,8 +663,8 @@ function setHTMLEditors(height,width) {
 		if (allPageTags[i].className == "htmlEditor") {
 			var oFCKeditor = new FCKeditor(allPageTags[i].id);
 			oFCKeditor.ToolbarSet			= "htmlEditor";
-			oFCKeditor.Config.EditorAreaCSS	= context + '/' + siteID + '/css/editor.css';
-			oFCKeditor.Config.StylesXmlPath = context + '/' + siteID + '/css/fckstyles.xml';
+			oFCKeditor.Config.EditorAreaCSS	= themepath + '/css/editor.css';
+			oFCKeditor.Config.StylesXmlPath = themepath + '/css/fckstyles.xml';
 			oFCKeditor.BasePath = context + '/fckeditor/';
 			oFCKeditor.Height = height;
 			oFCKeditor.Width = width;
