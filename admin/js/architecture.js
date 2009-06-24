@@ -616,12 +616,13 @@ function reloadPage(){
 	}
 }
 
-function loadExtendedAttributes(contentHistID,type,subType,_siteID,_context)	{
+function loadExtendedAttributes(contentHistID,type,subType,_siteID,_context,_themeAssetPath)	{
 		var url = 'index.cfm';
 		var pars = 'fuseaction=cArch.loadExtendedAttributes&contentHistID=' + contentHistID +'&type=' + type  +'&subType=' + subType + '&siteID=' + _siteID + '&cacheid=' + Math.random();
 		
 		siteID=_siteID;
 		context=_context;
+		themeAssetPath=_themeAssetPath;
 		//location.href=url + "?" + pars;
 		var d = $('extendSets');
 		if(d != null){	
@@ -635,7 +636,7 @@ function loadExtendedAttributes(contentHistID,type,subType,_siteID,_context)	{
 function setExtendedAttributes(transport){
 	$("extendSets").innerHTML=transport.responseText;
 	checkExtendSetTargeting();
-	setHTMLEditors(context,siteID);
+	setHTMLEditors(context,themeAssetPath);
 }
 
 function checkExtendSetTargeting(){
@@ -704,9 +705,9 @@ function checkExtendSetTargeting(){
 
 }
 
-function resetExtendedAttributes(contentHistID,str,_siteID,_context)	{
+function resetExtendedAttributes(contentHistID,str,_siteID,_context,_themeAssetPath)	{
 	var dataArray=str.split("^");
-	loadExtendedAttributes(contentHistID,dataArray[0],dataArray[1],_siteID,_context);
+	loadExtendedAttributes(contentHistID,dataArray[0],dataArray[1],_siteID,_context,_themeAssetPath);
 	//alert(dataArray[1]);
 	document.contentForm.type.value=dataArray[0];
 	document.contentForm.subtype.value=dataArray[1];

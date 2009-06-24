@@ -522,15 +522,15 @@ function eraseCookie(name) {
 	createCookie(name,"",-1);
 }
 
-function setHTMLEditors(context, siteID) {
+function setHTMLEditors(context, themeAssetPath) {
 	var allPageTags = document.getElementsByTagName("textarea");
 	var editors = new Array();
 	for (i = 0; i < allPageTags.length; i++) {
 		if (allPageTags[i].className == "htmlEditor") {
 			var oFCKeditor = new FCKeditor(allPageTags[i].id);
 			oFCKeditor.ToolbarSet			= "Summary";
-			oFCKeditor.Config.EditorAreaCSS	= context + '/' + siteID + '/css/editor.css';
-			oFCKeditor.Config.StylesXmlPath = context + '/' + siteID + '/css/fckstyles.xml';
+			oFCKeditor.Config.EditorAreaCSS	= themeAssetPath + '/css/editor.css';
+			oFCKeditor.Config.StylesXmlPath = themeAssetPath + '/css/fckstyles.xml';
 			oFCKeditor.BasePath = context + '/fckeditor/';
 			oFCKeditor.Height = "200";
 			oFCKeditor.ReplaceTextarea();

@@ -36,12 +36,13 @@
 	the GNU General Public License version 2  without this exception.  You may, if you choose, apply this exception 
 	to your own modified versions of Mura CMS. */
 
-function loadExtendedAttributes(baseID,type,subType,_siteID,_context)	{
+function loadExtendedAttributes(baseID,type,subType,_siteID,_context,_themeAssetPath)	{
 		var url = 'index.cfm';
 		var pars = 'fuseaction=cPublicUsers.loadExtendedAttributes&baseID=' + baseID +'&type=' + type  +'&subType=' + subType + '&siteID=' + _siteID + '&cacheid=' + Math.random();
 		
 		siteID=_siteID;
 		context=_context;
+		themeAssetPath=_themeAssetPath
 		
 		//location.href=url + "?" + pars;
 		var d = $('extendSets');
@@ -57,7 +58,7 @@ function loadExtendedAttributes(baseID,type,subType,_siteID,_context)	{
 function setExtendedAttributes(transport){
 	$("extendSets").innerHTML=transport.responseText;
 	checkExtendSetTargeting();
-	setHTMLEditors(context,siteID);
+	setHTMLEditors(context,themeAssetPath);
 }
 
 function checkExtendSetTargeting(){
@@ -126,8 +127,8 @@ function checkExtendSetTargeting(){
 
 }
 
-function resetExtendedAttributes(contentHistID,type,subtype,siteID,context)	{
-	loadExtendedAttributes(contentHistID,type,subtype,siteID,context);
+function resetExtendedAttributes(contentHistID,type,subtype,siteID,context,themeAssetPath)	{
+	loadExtendedAttributes(contentHistID,type,subtype,siteID,context,themeAssetPath);
 	//alert(dataArray[1]);
 }
 
