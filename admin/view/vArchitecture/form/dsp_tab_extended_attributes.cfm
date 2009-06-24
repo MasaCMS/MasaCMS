@@ -44,6 +44,6 @@ to your own modified versions of Mura CMS.
 <cfoutput><div class="page_aTab">
 <span id="extendSets"></span>
 <script type="text/javascript">
-loadExtendedAttributes('#request.contentbean.getcontentHistID()#','#attributes.type#','#request.contentBean.getSubType()#','#attributes.siteID#','#application.configBean.getContext()#');
+loadExtendedAttributes('#request.contentbean.getcontentHistID()#','#attributes.type#','#request.contentBean.getSubType()#','#attributes.siteID#','#application.configBean.getContext()#','#application.settingsManager.getSite(attributes.siteID).getThemeAssetPath()#');
 </script>
 </div></cfoutput>
