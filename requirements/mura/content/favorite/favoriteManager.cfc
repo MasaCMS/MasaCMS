@@ -86,7 +86,7 @@ to your own modified versions of Mura CMS.
 	<cfset var rs ="" />
 
 	<cfquery name="rs" datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-	SELECT tusersfavorites.favoriteID, tusersfavorites.dateCreated, tcontent.title, tcontent.releasedate, tcontent.menuTitle, tcontent.lastupdate, tcontent.summary, 
+	SELECT tusersfavorites.favoriteID, tusersfavorites.favorite, tusersfavorites.dateCreated, tcontent.title, tcontent.releasedate, tcontent.menuTitle, tcontent.lastupdate, tcontent.summary, 
 	tcontent.filename, tcontent.type, tcontent.contentid,
 	tcontent.target,tcontent.targetParams, tcontent.restricted, tcontent.restrictgroups, tcontent.displaystart, tcontent.displaystop, tcontent.orderno,tcontent.sortBy,tcontent.sortDirection,
 	tcontent.fileid, tcontent.credits, tcontent.remoteSource, tcontent.remoteSourceURL, tcontent.remoteURL,
@@ -141,6 +141,7 @@ to your own modified versions of Mura CMS.
 	<cffunction name="checkForFavorite" access="public" returntype="boolean">
 		<cfargument name="userID" type="string" required="yes">
 		<cfargument name="contentID" type="string" required="yes">
+		<cfargument name="type" type="string" required="false">
 		
 		<cfset var returnVar = "" />
 		<cfset var rs = "" />
@@ -148,6 +149,9 @@ to your own modified versions of Mura CMS.
 		<cfquery name="rs" datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 		select favorite from tusersfavorites where favorite= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentID#"/>
 		and userID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.userID#"/>
+			<cfif isDefined( "arguments.type" )>
+				and type= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.type#"/>
+			</cfif>
 		</cfquery>
 	
 		<cfif rs.recordCount gt 0>
