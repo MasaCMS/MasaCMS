@@ -62,15 +62,13 @@ to your own modified versions of Mura CMS.
 <cfset variables.instance.Type = "" />
 <cfset variables.instance.subType = "Default" />
 
-<cftry>
+<cfif len(getAuthUser())>
 	<cfset variables.instance.LastUpdateBy = left(listGetAt(getAuthUser(),"2","^"),50) />
 	<cfset variables.instance.LastUpdateByID = listFirst(getAuthUser(),"^") />
-	<cfcatch>
-		<cfset variables.instance.LastUpdateBy = "" />
-		<cfset variables.instance.LastUpdateByID = "" />
-	</cfcatch>
-</cftry>
-
+<cfelse>
+	<cfset variables.instance.LastUpdateBy = "" />
+	<cfset variables.instance.LastUpdateByID = "" />
+</cfif>
 
 <cfset variables.instance.Summary = "" />
 <cfset variables.instance.SiteID = "" />
