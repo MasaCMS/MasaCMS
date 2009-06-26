@@ -156,7 +156,7 @@ to your own modified versions of Mura CMS.
 		</cfquery>
 		
 		<cfif rs.recordcount>
-			<cfthrow message="The SiteID you entered is allready being used.">
+			<cfthrow message="The SiteID you entered is already being used.">
 			<cfabort>
 		</cfif>
 		
