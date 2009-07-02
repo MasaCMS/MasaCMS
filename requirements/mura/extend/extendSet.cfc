@@ -66,6 +66,7 @@ to your own modified versions of Mura CMS.
 <cffunction name="getAttributeBean" returnType="any">
 <cfset var attribute = createObject("component","mura.extend.extendAttribute").init(variables.configBean,variables.contentRenderer) />
 <cfset attribute.setExtendSetID(getExtendSetID())/>
+<cfset attribute.setSiteID(getSiteID())/>
 <cfreturn attribute />
 </cffunction>
 
@@ -188,7 +189,6 @@ to your own modified versions of Mura CMS.
 	<cfreturn rs />
 </cffunction>
 
-
 <cffunction name="load" access="public" returntype="any">
 	<cfset var rs=""/>
 	
@@ -287,17 +287,41 @@ to your own modified versions of Mura CMS.
 
 </cffunction>
 
+<cffunction name="getAttributeByName" access="public" output="false" returntype="any">
+<cfargument name="name">
+<cfset var attributes=getAttributes()/>
+<cfset var i=0/>
+<cfset var attribute=""/>
+	<cfif arrayLen(attributes)>
+	<cfloop from="1" to="#arrayLen(attributes)#" index="i">
+		<cfif attributes[i].getName() eq arguments.name>
+			<cfreturn attributes[i]/>
+		</cfif>
+	</cfloop>
+	</cfif>
+	
+	<cfset attribute=getAttributeBean()>
+	<cfset attribute.setName(arguments.name)>
+	<cfreturn attribute/>
+</cffunction>
+
 <cffunction name="addAttribute" access="public" output="false" returntype="void">
 <cfargument name="rawdata">
 <cfset var attribute=""/>
 <cfset var data=arguments.rawdata />
 
-	<cfset data.ExtendSetID=getExtendSetID()/>
-	<cfset data.siteID=getSiteID()/>	
-	<cfset attribute=getAttributeBean() />
-	<cfset attribute.set(data)/>
+	<cfif not isObject(data)>
+		<cfset attribute=getAttributeBean() />
+		<cfset attribute.set(data)/>
+	<cfelse>
+		<cfset attribute=data />
+	</cfif>
+	
+	<cfset attribute.setExtendSetID(getExtendSetID())/>
+	<cfset attribute.setSiteID(getSiteID())/>
 	<cfset attribute.save()/>
-	<cfset arrayApprend(variables.instance.attributes,attribute)/>
+	<cfset arrayAppend(getAttributes(),attribute)/>
+	
 </cffunction>
 
 <cffunction name="deleteAttribute" access="public" output="false" returntype="void">
@@ -309,7 +333,6 @@ to your own modified versions of Mura CMS.
 	<cfset attribute.delete()/>
 	<cfset loadAttributes()/>
 </cffunction>
-
 
 <cffunction name="getStyle" ouput="false" returntype="string">
 <cfargument name="memberID" required="true" default=""/>

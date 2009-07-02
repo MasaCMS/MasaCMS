@@ -1,0 +1,1004 @@
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<head>
+
+<style>
+BODY, P, DIV, H1, H2, H3, H4, H5, H6, ADDRESS, OL, UL, TITLE, TD, OPTION, SELECT {
+ font-family: Verdana;
+}
+
+BODY, P, DIV, ADDRESS, OL, UL, LI, TITLE, TD, OPTION, SELECT {  
+  font-size: 10.0pt;
+  margin-top:0pt;  
+  margin-bottom:0pt;  
+} 
+
+BODY, P {
+  margin-left:0pt; 
+  margin-right:0pt;
+}
+
+BODY {
+  line-height: ;
+
+  margin: 6px;
+  padding: 0px;
+}
+
+h6 { font-size: 10pt }
+h5 { font-size: 11pt }
+h4 { font-size: 12pt }
+h3 { font-size: 13pt }
+h2 { font-size: 14pt }
+h1 { font-size: 16pt }
+
+blockquote {padding: 10px; border: 1px #DDDDDD dashed }
+
+a img {border: 0}
+</style>
+</head>
+
+<body>
+
+<div>
+  <p>
+    <strong>For full details of how CFFormProtect works, see the project page at
+    <a href=http://cfformprotect.riaforge.org/ target=_blank>http://cfformprotect.riaforge<wbr>.org/</a></strong>
+  </p><br />
+
+  <p>
+    <strong>Customization</strong>
+  </p>
+  <ul>
+    <li>
+      You can change the values in cffp.ini.cfm if you want to tweak how
+      CFFormProtect operates. Descriptions of the values are below.<br>
+    </li>
+    <li>
+      You'll probably want to change what happens when a spam message is found.
+      I have it set to display an error, send you an email (if you configured
+      this feature) and then cfabort. You can change this at the bottom of
+      cffpVerify.cfm. You can use two variables for information on why the
+      message was flagged as spam, testsThatFailed and totalPoints. This will
+      help you tweak the settings to your liking (to allow more or less messages
+      through)
+    </li>
+    <li>
+      If you use the Akismet feature, modify your site's "send email" code that
+      sends you good emails, so that it contains the Akismet link to notify
+      Akismet of spam that got through their filters. This step is optional but
+      very recommended, because Akismet is free, and all they ask is that you
+      feed data back into the system when necessary to help them improve it.
+      Here is the code I have in my sites for this:<br>
+      <pre>&lt;cfif Cffp.getConfig().akismet&gt;<br>	&lt;!--- The following few lines build the URL to allow the user to submit a missed spam notification to Akismet if this is not spam ---&gt;<br>	&lt;cfset missedSpamURL = replace("#Cffp.getConfig().akismetBlo<wbr>gURL##cffpPath#/akismetFailure<wbr>.cfm?type=spam","://","^^",<wbr>"all")&gt;<br>	&lt;cfset missedSpamURL = replace(missedSpamURL,"//","/"<wbr>,"all")&gt;<br>	&lt;cfset missedSpamURL = replace(missedSpamURL,"^^",":/<wbr>/","all")&gt;<br>	&lt;cfset missedSpamURL = missedSpamURL&amp;"&amp;user_ip=<wbr>#urlEncodedFormat(cgi.remote_addr,'utf-8')#"&gt;<br>	&lt;cfset missedSpamURL = missedSpamURL&amp;"&amp;referrer=<wbr>#urlEncodedFormat(cgi.http_referer,'utf-8')#"&gt;<br>	&lt;cfset missedSpamURL = missedSpamURL&amp;"&amp;comment_author<wbr>=#urlEncodedFormat(form[Cffp.getConfig().akismetFormNameField],'utf-8')#"&gt;<br>	&lt;cfif Cffp.getConfig().akismetFormEmailFiel<wbr>d neq ""&gt;<br>		&lt;cfset missedSpamURL = missedSpamURL&amp;"&amp;comment_author<wbr>_email=#urlEncodedFormat(form[Cffp.getConfig().akismetFormEmailFiel<wbr>d],'utf-8')#"&gt;<br>	&lt;/cfif&gt;<br>	&lt;cfif cffpConfig.akismetFormURLField neq ""&gt;<br>		&lt;cfset missedSpamURL = missedSpamURL&amp;"&amp;comment_author<wbr>_url=#urlEncodedFormat(form[cffpConfig.akismetFormURLField],'utf-8')#"&gt;<br>	&lt;/cfif&gt;<br>	&lt;cfset missedSpamURL = missedSpamURL&amp;"&amp;comment<wbr>_content=#urlEncodedFormat<wbr>(form[cffpConfig.akismetFormBodyField],'utf-8')#"&gt;<br>	&lt;p&gt;Akisment thinks this is not spam, if it is please mark this as<br>	missed spam by &lt;cfoutput&gt;&lt;a href="#missedSpamURL#"&gt;clicking here&lt;/a&gt;&lt;/cfoutput&gt;.&lt;/p&gt;<br>&lt;/cfif&gt;</pre><br />
+	  <strong>Tip:</strong> You can enter "viagra-test-123" as your Name when
+  testing your form, and Akismet will automatically mark the form submission as
+  spam.<br /><br />
+    </li>
+	<li>
+		If you want to use Project Honey Pot, sign up for an API key at <a href="http://www.projecthoneypot.org/">
+			http://www.projecthoneypot.org/</a>, and then configure the Project Honey Pot directives according to the directions below. 
+	</li>
+  </ul>
+  <br /><br />
+
+  <p>
+    <strong>INI File settings</strong> (cffp.ini.cfm)<br>
+    Most of the values can be left as default, if you want, but you'll need to
+    provide values for Akismet and Project Honey Pot if you want to use those tests.  Thanks to Yves Prignon for creating this table for the INI settings.
+  </p>
+<TABLE WIDTH=949 BORDER=1 BORDERCOLOR="#000000" CELLPADDING=5 CELLSPACING=1 STYLE="page-break-before: always">
+	<COL WIDTH=154>
+	<COL WIDTH=128>
+	<COL WIDTH=73>
+	<COL WIDTH=193>
+	<COL WIDTH=344>
+	<TR>
+		<TD WIDTH=154 BGCOLOR="#e6e6e6">
+			<P ALIGN=CENTER><FONT COLOR="#000000"><B>Config
+			</B></FONT><FONT COLOR="#000000"><B>Name</B></FONT></P>
+		</TD>
+		<TD WIDTH=128 BGCOLOR="#e6e6e6">
+			<P ALIGN=CENTER><B>Default</B></P>
+		</TD>
+		<TD WIDTH=73 BGCOLOR="#e6e6e6">
+			<P ALIGN=CENTER><B>Type</B></P>
+		</TD>
+		<TD WIDTH=193 BGCOLOR="#e6e6e6">
+			<P ALIGN=CENTER><B>Accepted Values</B></P>
+		</TD>
+		<TD WIDTH=344 BGCOLOR="#e6e6e6">
+			<P ALIGN=CENTER><B>Description</B></P>
+		</TD>
+	</TR>
+	<TR>
+		<TD WIDTH=154>
+			<P>mouseMovement</P>
+		</TD>
+		<TD WIDTH=128>
+			<P>1</P>
+		</TD>
+		<TD WIDTH=73>
+			<P>boolean</P>
+		</TD>
+		<TD WIDTH=193>
+			<UL>
+				<P>1, 0</P>
+			</UL>
+		</TD>
+		<TD WIDTH=344>
+			<P STYLE="margin-bottom: 0in">Enable/disable
+			the mouse test.</P>
+			<P>This test makes sure the user moved their
+			mouse.</P>
+		</TD>
+	</TR>
+	<TR>
+		<TD WIDTH=154>
+			<P>usedKeyboard</P>
+		</TD>
+		<TD WIDTH=128>
+			<P>1</P>
+		</TD>
+		<TD WIDTH=73>
+			<P>boolean</P>
+		</TD>
+		<TD WIDTH=193>
+			<UL>
+				<P>1, 0</P>
+			</UL>
+		</TD>
+		<TD WIDTH=344>
+			<P STYLE="margin-bottom: 0in">Enable/disable
+			the keyboard test.</P>
+			<P>This test makes sure the user
+			used their keyboard.</P>
+		</TD>
+	</TR>
+	<TR>
+		<TD WIDTH=154>
+			<P>timedFormSubmission</P>
+		</TD>
+		<TD WIDTH=128>
+			<P>1</P>
+		</TD>
+		<TD WIDTH=73>
+			<P>boolean</P>
+		</TD>
+		<TD WIDTH=193>
+			<UL>
+				<P>1, 0</P>
+			</UL>
+		</TD>
+		<TD WIDTH=344>
+			<P STYLE="margin-bottom: 0in">Enable/disable
+			the timed form test.</P>
+			<P>This test check how long the form
+			entry and submission took.</P>
+		</TD>
+	</TR>
+	<TR>
+		<TD WIDTH=154>
+			<P>hiddenFormField</P>
+		</TD>
+		<TD WIDTH=128>
+			<P>1</P>
+		</TD>
+		<TD WIDTH=73>
+			<P>boolean</P>
+		</TD>
+		<TD WIDTH=193>
+			<UL>
+				<P>1, 0</P>
+			</UL>
+		</TD>
+		<TD WIDTH=344>
+			<P STYLE="margin-bottom: 0in">Enable/disable
+			hidden form field test.</P>
+			<P>This test makes sure a CSS hidden
+			form field is empty.</P>
+		</TD>
+	</TR>
+	<TR>
+		<TD WIDTH=154>
+			<P>akismet</P>
+		</TD>
+		<TD WIDTH=128>
+			<P>0</P>
+		</TD>
+		<TD WIDTH=73>
+			<P>boolean</P>
+		</TD>
+		<TD WIDTH=193>
+			<UL>
+				<P>1, 0</P>
+			</UL>
+		</TD>
+		<TD WIDTH=344>
+			<P STYLE="margin-bottom: 0in">Enable/disable
+			the akismet test.</P>
+			<P>Uses the public Akismet service to test if
+			form contents are spam. This is off by default, because you have
+			to provide the details in the second section for Akistmet to
+			work. Akistmet is not a free service and require the application
+			to exchange data with the outside world.</P>
+		</TD>
+	</TR>
+	<TR>
+		<TD WIDTH=154>
+			<P>tooManyUrls</P>
+		</TD>
+		<TD WIDTH=128>
+			<P>1</P>
+		</TD>
+		<TD WIDTH=73>
+			<P>boolean</P>
+		</TD>
+		<TD WIDTH=193>
+			<UL>
+				<P>1, 0</P>
+			</UL>
+		</TD>
+		<TD WIDTH=344>
+			<P STYLE="margin-bottom: 0in">Enable/disable
+			the tooManyUrls test.</P>
+			<P>This test will add up the number of URLs that
+			are found in all of the submitted form fields, and mark the
+			submission as spam if the total exceeds the limit configured by
+			the tooManyUrlsMaxUrls variable in the ini file. 
+			</P>
+		</TD>
+	</TR>
+	<TR>
+		<TD WIDTH=154>
+			<P>teststrings</P>
+		</TD>
+		<TD WIDTH=128>
+			<P>1</P>
+		</TD>
+		<TD WIDTH=73>
+			<P>boolean</P>
+		</TD>
+		<TD WIDTH=193>
+			<UL>
+				<P>1, 0</P>
+			</UL>
+		</TD>
+		<TD WIDTH=344>
+			<P STYLE="margin-bottom: 0in">Enable/disable
+			the teststrings test</P>
+			<P>This test will compare the words in the form
+			submission to a list of configurable &quot;spammy&quot; words,
+			and mark the submission as spam if one of these words is found.
+			The list can be edited by editing the spamstrings variable in the
+			ini file. 
+			</P>
+		</TD>
+	</TR>
+	<TR>
+		<TD WIDTH=154>
+			<P>projectHoneyPot</P>
+		</TD>
+		<TD WIDTH=128>
+			<P>0</P>
+		</TD>
+		<TD WIDTH=73>
+			<P>boolean</P>
+		</TD>
+		<TD WIDTH=193>
+			<UL>
+				<P>1, 0</P>
+			</UL>
+		</TD>
+		<TD WIDTH=344>
+			<P STYLE="margin-bottom: 0in">Enable/disable
+			the Project Honey Pot test.</P>
+			<P>Project Honey Pot is a free web service that
+				will check the IP address of your site's visitor.
+				they maintain a huge database of known Spammer
+				IP addresses, and when a user submits your form, 
+				this test will check their IP address. This is off 
+				by default, because you have to provide the <a href="http://www.projecthoneypot.org/httpbl_configure.php">API key</a> 
+				in the second section.
+			</P>
+		</TD>
+	</TR>
+	<TR>
+		<TD WIDTH=154 BGCOLOR="#e6e6e6">
+			<P><B>Individual Test Config</B></P>
+		</TD>
+		<TD WIDTH=128 BGCOLOR="#e6e6e6">
+			<P><BR>
+			</P>
+		</TD>
+		<TD WIDTH=73 BGCOLOR="#e6e6e6">
+			<P><BR>
+			</P>
+		</TD>
+		<TD WIDTH=193 BGCOLOR="#e6e6e6">
+			<P STYLE="margin-left: 0.25in; text-indent: -0.2in">
+			<BR>
+			</P>
+		</TD>
+		<TD WIDTH=344 BGCOLOR="#e6e6e6">
+			<P><BR>
+			</P>
+		</TD>
+	</TR>
+	<TR>
+		<TD WIDTH=154>
+			<P>timedFormMinSeconds</P>
+		</TD>
+		<TD WIDTH=128>
+			<P>5</P>
+		</TD>
+		<TD WIDTH=73>
+			<P>numeric</P>
+		</TD>
+		<TD WIDTH=193>
+			<UL>
+				<P>whole number only</P>
+			</UL>
+		</TD>
+		<TD WIDTH=344>
+			<P>The minimum seconds allowed for a
+			user to fill out the form.</P>
+		</TD>
+	</TR>
+	<TR>
+		<TD WIDTH=154>
+			<P>timedFormMaxSeconds</P>
+		</TD>
+		<TD WIDTH=128>
+			<P>3600</P>
+		</TD>
+		<TD WIDTH=73>
+			<P>numeric</P>
+		</TD>
+		<TD WIDTH=193>
+			<UL>
+				<P>whole number only</P>
+			</UL>
+		</TD>
+		<TD WIDTH=344>
+			<P>The
+			maximum seconds allowed for a user to fill out the form.</P>
+		</TD>
+	</TR>
+	<TR>
+		<TD WIDTH=154>
+			<P>encryptionKey</P>
+		</TD>
+		<TD WIDTH=128>
+			<P>JacobMunsOn</P>
+		</TD>
+		<TD WIDTH=73>
+			<P>string</P>
+		</TD>
+		<TD WIDTH=193>
+			<UL>
+				<P>longest is better</P>
+			</UL>
+		</TD>
+		<TD WIDTH=344>
+			<P>Used in
+			the timedForm test, to encrypt the time so it can be stored in a
+			hidden form field (to help fool the spammers).</P>
+		</TD>
+	</TR>
+	<TR>
+		<TD WIDTH=154>
+			<P>akismetAPIKey</P>
+		</TD>
+		<TD WIDTH=128>
+			<P>[null]</P>
+		</TD>
+		<TD WIDTH=73>
+			<P>string</P>
+		</TD>
+		<TD WIDTH=193>
+			<UL>
+				<P>valid Akismet key</P>
+			</UL>
+		</TD>
+		<TD WIDTH=344>
+			<P>This is the api key that you
+			received from Akismet.</P>
+		</TD>
+	</TR>
+	<TR>
+		<TD WIDTH=154>
+			<P>akismetBlogURL</P>
+		</TD>
+		<TD WIDTH=128>
+			<P>[null]</P>
+		</TD>
+		<TD WIDTH=73>
+			<P>string</P>
+		</TD>
+		<TD WIDTH=193>
+			<UL>
+				<P>valid URL</P>
+			</UL>
+		</TD>
+		<TD WIDTH=344>
+			<P>The
+			URL for your site here, it's a required value for the Akismet
+			service.</P>
+		</TD>
+	</TR>
+	<TR>
+		<TD WIDTH=154>
+			<P>akismetFormNameField</P>
+		</TD>
+		<TD WIDTH=128>
+			<P>[null]</P>
+		</TD>
+		<TD WIDTH=73>
+			<P>string</P>
+		</TD>
+		<TD WIDTH=193>
+			<UL>
+				<P>valid field name</P>
+			</UL>
+		</TD>
+		<TD WIDTH=344>
+			<P>The
+			name of your &quot;Name&quot; form field.</P>
+		</TD>
+	</TR>
+	<TR>
+		<TD WIDTH=154>
+			<P>akismetFormEmailField</P>
+		</TD>
+		<TD WIDTH=128>
+			<P>[null]</P>
+		</TD>
+		<TD WIDTH=73>
+			<P>string</P>
+		</TD>
+		<TD WIDTH=193>
+			<UL>
+				<P>valid field name</P>
+			</UL>
+		</TD>
+		<TD WIDTH=344>
+			<P>The
+			name of your &quot;Email address&quot; form field (optional).</P>
+		</TD>
+	</TR>
+	<TR>
+		<TD WIDTH=154>
+			<P>akismetFormURLField</P>
+		</TD>
+		<TD WIDTH=128>
+			<P>[null]</P>
+		</TD>
+		<TD WIDTH=73>
+			<P>string</P>
+		</TD>
+		<TD WIDTH=193>
+			<UL>
+				<P>valid field name</P>
+			</UL>
+		</TD>
+		<TD WIDTH=344>
+			<P>The
+			name of your &quot;URL&quot; form field (optional).</P>
+		</TD>
+	</TR>
+	<TR>
+		<TD WIDTH=154>
+			<P>akismetFormBodyField</P>
+		</TD>
+		<TD WIDTH=128>
+			<P>[null]</P>
+		</TD>
+		<TD WIDTH=73>
+			<P>string</P>
+		</TD>
+		<TD WIDTH=193>
+			<UL>
+				<P>valid field name</P>
+			</UL>
+		</TD>
+		<TD WIDTH=344>
+			<P>The
+			name of your &quot;Comment&quot; form field.</P>
+		</TD>
+	</TR>
+	<TR>
+		<TD WIDTH=154>
+			<P>tooManyUrlsMaxUrls</P>
+		</TD>
+		<TD WIDTH=128>
+			<P>6</P>
+		</TD>
+		<TD WIDTH=73>
+			<P>numeric</P>
+		</TD>
+		<TD WIDTH=193>
+			<UL>
+				<P>whole number only</P>
+			</UL>
+		</TD>
+		<TD WIDTH=344>
+			<P>The
+			maximum amount of URLs that can be passed in the form contents.</P>
+		</TD>
+	</TR>
+	<TR>
+		<TD WIDTH=154>
+			<P>spamstrings</P>
+		</TD>
+		<TD WIDTH=128>
+			<P ALIGN=JUSTIFY><FONT FACE="Courier New, monospace"><FONT SIZE=1 STYLE="font-size: 8pt">free
+			music, download music, music downloads, viagra, phentermine,
+			viagra, tramadol, ultram, prescription soma, cheap soma, cialis,
+			levitra, weight loss, buy cheap</FONT></FONT></P>
+		</TD>
+		<TD WIDTH=73>
+			<P>string</P>
+		</TD>
+		<TD WIDTH=193>
+			<UL>
+				<P>coma separated list</P>
+			</UL>
+		</TD>
+		<TD WIDTH=344>
+			<P>A list
+			of strings that form contents will be compared to.</P>
+		</TD>
+	</TR>
+	<TR>
+		<TD WIDTH=154>
+			<P>projectHoneyPotAPIKey</P>
+		</TD>
+		<TD WIDTH=128>
+			<P>[null]</P>
+		</TD>
+		<TD WIDTH=73>
+			<P>string</P>
+		</TD>
+		<TD WIDTH=193>
+			<UL>
+				<P>valid Project Honey Pot key</P>
+			</UL>
+		</TD>
+		<TD WIDTH=344>
+			<P>This is the api key that you
+			received from Project Honey Pot at <a href="http://www.projecthoneypot.org/">
+			http://www.projecthoneypot.org/</a>.</P>
+		</TD>
+	</TR>
+	<TR>
+		<TD WIDTH=154 BGCOLOR="#e6e6e6">
+			<P><EM><B>Failure
+			Limit</B></EM></P>
+		</TD>
+		<TD WIDTH=128 BGCOLOR="#e6e6e6">
+			<P><BR>
+			</P>
+		</TD>
+		<TD WIDTH=73 BGCOLOR="#e6e6e6">
+			<P><BR>
+			</P>
+		</TD>
+		<TD WIDTH=193 BGCOLOR="#e6e6e6">
+			<P STYLE="margin-left: 0.05in"><BR>
+			</P>
+		</TD>
+		<TD WIDTH=344 BGCOLOR="#e6e6e6">
+			<P><BR>
+			</P>
+		</TD>
+	</TR>
+	<TR>
+		<TD WIDTH=154>
+			<P>mouseMovementPoints</P>
+		</TD>
+		<TD WIDTH=128>
+			<P>1</P>
+		</TD>
+		<TD WIDTH=73>
+			<P>numeric</P>
+		</TD>
+		<TD WIDTH=193>
+			<UL>
+				<P>whole number only</P>
+			</UL>
+		</TD>
+		<TD WIDTH=344>
+			<P>Point given for the mouse movement test.</P>
+		</TD>
+	</TR>
+	<TR>
+		<TD WIDTH=154>
+			<P>usedKeyboardPoints</P>
+		</TD>
+		<TD WIDTH=128>
+			<P>1</P>
+		</TD>
+		<TD WIDTH=73>
+			<P>numeric</P>
+		</TD>
+		<TD WIDTH=193>
+			<UL>
+				<P>whole number only</P>
+			</UL>
+		</TD>
+		<TD WIDTH=344>
+			<P>Point given for the used keyboard test.</P>
+		</TD>
+	</TR>
+	<TR>
+		<TD WIDTH=154>
+			<P>timedFormPoints</P>
+		</TD>
+		<TD WIDTH=128>
+			<P>2</P>
+		</TD>
+		<TD WIDTH=73>
+			<P>numeric</P>
+		</TD>
+		<TD WIDTH=193>
+			<UL>
+				<P>whole number only</P>
+			</UL>
+		</TD>
+		<TD WIDTH=344>
+			<P>Point given for the timed form test.</P>
+		</TD>
+	</TR>
+	<TR>
+		<TD WIDTH=154>
+			<P>hiddenFieldPoints</P>
+		</TD>
+		<TD WIDTH=128>
+			<P>3</P>
+		</TD>
+		<TD WIDTH=73>
+			<P>numeric</P>
+		</TD>
+		<TD WIDTH=193>
+			<UL>
+				<P>whole number only</P>
+			</UL>
+		</TD>
+		<TD WIDTH=344>
+			<P>Point given for the hidden field test.</P>
+		</TD>
+	</TR>
+	<TR>
+		<TD WIDTH=154>
+			<P>akismetPoints</P>
+		</TD>
+		<TD WIDTH=128>
+			<P>3</P>
+		</TD>
+		<TD WIDTH=73>
+			<P>numeric</P>
+		</TD>
+		<TD WIDTH=193>
+			<UL>
+				<P>whole number only</P>
+			</UL>
+		</TD>
+		<TD WIDTH=344>
+			<P>Point given for the Akismet test (if used).</P>
+		</TD>
+	</TR>
+	<TR>
+		<TD WIDTH=154>
+			<P>tooManyUrlsPoints</P>
+		</TD>
+		<TD WIDTH=128>
+			<P>3</P>
+		</TD>
+		<TD WIDTH=73>
+			<P>numeric</P>
+		</TD>
+		<TD WIDTH=193>
+			<UL>
+				<P>whole number only</P>
+			</UL>
+		</TD>
+		<TD WIDTH=344>
+			<P>Point given for the URL count test.</P>
+		</TD>
+	</TR>
+	<TR>
+		<TD WIDTH=154>
+			<P>spamStringPoints</P>
+		</TD>
+		<TD WIDTH=128>
+			<P>2</P>
+		</TD>
+		<TD WIDTH=73>
+			<P>numeric</P>
+		</TD>
+		<TD WIDTH=193>
+			<UL>
+				<P>whole number only</P>
+			</UL>
+		</TD>
+		<TD WIDTH=344>
+			<P>Point given for the spam string test.</P>
+		</TD>
+	</TR>
+	<TR>
+		<TD WIDTH=154>
+			<P>projectHoneyPotPoints</P>
+		</TD>
+		<TD WIDTH=128>
+			<P>3</P>
+		</TD>
+		<TD WIDTH=73>
+			<P>numeric</P>
+		</TD>
+		<TD WIDTH=193>
+			<UL>
+				<P>whole number only</P>
+			</UL>
+		</TD>
+		<TD WIDTH=344>
+			<P>Point given for the Project Honey Pot test (if used).</P>
+		</TD>
+	</TR>
+	<TR>
+		<TD WIDTH=154>
+			<P>failureLimit</P>
+		</TD>
+		<TD WIDTH=128>
+			<P>3</P>
+		</TD>
+		<TD WIDTH=73>
+			<P>numeric</P>
+		</TD>
+		<TD WIDTH=193>
+			<UL>
+				<P>whole number only</P>
+			</UL>
+		</TD>
+		<TD WIDTH=344>
+			<P>The
+			total amount of points you will allow before flagging a message
+			as spam. Each test that fails will assign &quot;failure points&quot;
+			to the form submission. If the total point exceeds the
+			failureLimit, the message will not be sent.</P>
+		</TD>
+	</TR>
+	<TR>
+		<TD WIDTH=154 BGCOLOR="#e6e6e6">
+			<P><B>Email Settings</B></P>
+		</TD>
+		<TD WIDTH=128 BGCOLOR="#e6e6e6">
+			<P><BR>
+			</P>
+		</TD>
+		<TD WIDTH=73 BGCOLOR="#e6e6e6">
+			<P><BR>
+			</P>
+		</TD>
+		<TD WIDTH=193 BGCOLOR="#e6e6e6">
+			<P STYLE="margin-left: 0.25in; text-indent: -0.2in">
+			<BR>
+			</P>
+		</TD>
+		<TD WIDTH=344 BGCOLOR="#e6e6e6">
+			<P><BR>
+			</P>
+		</TD>
+	</TR>
+	<TR>
+		<TD WIDTH=154>
+			<P>emailFailedTests</P>
+		</TD>
+		<TD WIDTH=128>
+			<P>0</P>
+		</TD>
+		<TD WIDTH=73>
+			<P>boolean</P>
+		</TD>
+		<TD WIDTH=193>
+			<UL>
+				<P>1, 0</P>
+			</UL>
+		</TD>
+		<TD WIDTH=344>
+			<P>Enable/disable
+			emailFailedTests to receive email
+			reports in case of spam detection.</P>
+		</TD>
+	</TR>
+	<TR>
+		<TD WIDTH=154>
+			<P>emailServer</P>
+		</TD>
+		<TD WIDTH=128>
+			<P>[null]</P>
+		</TD>
+		<TD WIDTH=73>
+			<P>string</P>
+		</TD>
+		<TD WIDTH=193>
+			<UL>
+				<P>valid address</P>
+			</UL>
+		</TD>
+		<TD WIDTH=344>
+			<P>Email sever address.</P>
+		</TD>
+	</TR>
+	<TR>
+		<TD WIDTH=154>
+			<P>emailUserName</P>
+		</TD>
+		<TD WIDTH=128>
+			<P>[null]</P>
+		</TD>
+		<TD WIDTH=73>
+			<P>string</P>
+		</TD>
+		<TD WIDTH=193>
+			<UL>
+				<P>valid username</P>
+			</UL>
+		</TD>
+		<TD WIDTH=344>
+			<P>Email account user name.</P>
+		</TD>
+	</TR>
+	<TR>
+		<TD WIDTH=154>
+			<P>emailPassword</P>
+		</TD>
+		<TD WIDTH=128>
+			<P>[null]</P>
+		</TD>
+		<TD WIDTH=73>
+			<P>string</P>
+		</TD>
+		<TD WIDTH=193>
+			<UL>
+				<P>valid password</P>
+			</UL>
+		</TD>
+		<TD WIDTH=344>
+			<P>Email account password.</P>
+		</TD>
+	</TR>
+	<TR>
+		<TD WIDTH=154>
+			<P>emailFromAddress</P>
+		</TD>
+		<TD WIDTH=128>
+			<P>[null]</P>
+		</TD>
+		<TD WIDTH=73>
+			<P>string</P>
+		</TD>
+		<TD WIDTH=193>
+			<UL>
+				<P>valid email address</P>
+			</UL>
+		</TD>
+		<TD WIDTH=344>
+			<P><FONT COLOR="#000000">Email
+			address used for the </FONT>&quot;<FONT COLOR="#000000">from</FONT>&quot;<FONT COLOR="#000000">
+			field.</FONT></P>
+		</TD>
+	</TR>
+	<TR>
+		<TD WIDTH=154>
+			<P>emailToAddress</P>
+		</TD>
+		<TD WIDTH=128>
+			<P>[null]</P>
+		</TD>
+		<TD WIDTH=73>
+			<P>string</P>
+		</TD>
+		<TD WIDTH=193>
+			<UL>
+				<P>valid email address</P>
+			</UL>
+		</TD>
+		<TD WIDTH=344>
+			<P><FONT COLOR="#000000">Email
+			address used for the </FONT>&quot;<FONT COLOR="#000000">to</FONT>&quot;<FONT COLOR="#000000">
+			field.</FONT></P>
+		</TD>
+	</TR>
+	<TR>
+		<TD WIDTH=154>
+			<P>emailSubject</P>
+		</TD>
+		<TD WIDTH=128>
+			<P>[null]</P>
+		</TD>
+		<TD WIDTH=73>
+			<P>string</P>
+		</TD>
+		<TD WIDTH=193>
+			<UL>
+				<P>valid email subject</P>
+			</UL>
+		</TD>
+		<TD WIDTH=344>
+			<P>Email subject.</P>
+		</TD>
+	</TR>
+	<TR>
+		<TD WIDTH=154 BGCOLOR="#e6e6e6">
+			<P><EM><B>Logging</B></EM></P>
+		</TD>
+		<TD WIDTH=128 BGCOLOR="#e6e6e6">
+			<P><BR>
+			</P>
+		</TD>
+		<TD WIDTH=73 BGCOLOR="#e6e6e6">
+			<P><BR>
+			</P>
+		</TD>
+		<TD WIDTH=193 BGCOLOR="#e6e6e6">
+			<P STYLE="margin-left: 0.25in; text-indent: -0.2in">
+			<BR>
+			</P>
+		</TD>
+		<TD WIDTH=344 BGCOLOR="#e6e6e6">
+			<P><BR>
+			</P>
+		</TD>
+	</TR>
+	<TR>
+		<TD WIDTH=154>
+			<P><EM>logFailedTests</EM></P>
+		</TD>
+		<TD WIDTH=128>
+			<P>1</P>
+		</TD>
+		<TD WIDTH=73>
+			<P>boolean</P>
+		</TD>
+		<TD WIDTH=193>
+			<UL>
+				<P>1, 0</P>
+			</UL>
+		</TD>
+		<TD WIDTH=344>
+			<P>Enable/disable
+			logging of spam submissions.</P>
+		</TD>
+	</TR>
+	<TR>
+		<TD WIDTH=154>
+			<P><EM>logFile</EM></P>
+		</TD>
+		<TD WIDTH=128>
+			<P>[null]</P>
+		</TD>
+		<TD WIDTH=73>
+			<P>string</P>
+		</TD>
+		<TD WIDTH=193>
+			<UL>
+				<P>Valid file name</P>
+			</UL>
+		</TD>
+		<TD WIDTH=344>
+			<P>To specify
+			a different log file name.</P>
+		</TD>
+	</TR>
+</TABLE>
+  <p>
+    &nbsp;
+  </p>
+  <p>
+    <strong>CFFormProtect is governed by the mozilla public license version 1.1.<br>
+    See the included License.txt or
+    <a href=http://www.mozilla.org/MPL/ target=_blank>http://www.mozilla.org/MPL/</a>
+    for details</strong>
+  </p>
+</div></body>
+</html>

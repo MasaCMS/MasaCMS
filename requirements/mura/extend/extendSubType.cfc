@@ -67,6 +67,7 @@ to your own modified versions of Mura CMS.
 <cffunction name="getExtendSetBean" returnType="any">
 <cfset var extendSetBean=createObject("component","mura.extend.extendSet").init(variables.configBean,variables.contentRenderer) />
 <cfset extendSetBean.setSubTypeID(getSubTypeID()) />
+<cfset extendSetBean.setSiteID(getSiteID()) />
 <cfreturn extendSetBean />
 </cffunction>
 
@@ -280,6 +281,23 @@ to your own modified versions of Mura CMS.
 	
 </cffunction>
 
+<cffunction name="getExtendSetByName" access="public" output="false" returntype="any">
+<cfargument name="name">
+<cfset var extendSets=getExtendSets()/>
+<cfset var i=0/>
+<cfset var extendSet=""/>
+	<cfif arrayLen(extendSets)>
+	<cfloop from="1" to="#arrayLen(extendSets)#" index="i">
+		<cfif extendSets[i].getName() eq arguments.name>
+			<cfreturn extendSets[i]/>
+		</cfif>
+	</cfloop>
+	</cfif>
+	
+	<cfset extendSet=getExtendSetBean()>
+	<cfset extendSet.setName(arguments.name)>
+	<cfreturn extendSet/>
+</cffunction>
 
 <cffunction name="delete" access="public" returntype="void">
 <cfset var rs=""/>
@@ -319,6 +337,26 @@ to your own modified versions of Mura CMS.
 	<cfset extendSetBean.load()/>
 	<cfreturn extendSetBean/>
 
+</cffunction>
+
+
+<cffunction name="addExtendSet" access="public" output="false" returntype="void">
+<cfargument name="rawdata">
+<cfset var extendSet=""/>
+<cfset var data=arguments.rawdata />
+
+	<cfif not isObject(data)>
+		<cfset extendSet=getExtendSetBean() />
+		<cfset extendSet.set(data)/>
+	<cfelse>
+		<cfset extendSet=data />
+	</cfif>
+	
+	<cfset extendSet.setSubTypeID(getSubTypeID())/>
+	<cfset extendSet.setSiteID(getSiteID())/>
+	<cfset extendSet.save()/>
+	<cfset arrayAppend(getExtendSets(),extendSet)/>
+	
 </cffunction>
 
 <cffunction name="deleteSet" access="public" returntype="void">

@@ -97,7 +97,7 @@ Upload New Plugin<br/>
 <td>#htmlEditFormat(request.rsPlugins.category)#</td>
 <td>#htmlEditFormat(request.rsPlugins.version)#</td>
 <td>#htmlEditFormat(request.rsPlugins.provider)#</td>
-<td><a href="#request.rsPlugins.providerurl#" target="_blank">#htmlEditFormat(request.rsPlugins.providerurl)#</a></td>
+<td><a href="#request.rsPlugins.providerurl#" target="_blank">View</a></td>
 <td>#request.rsPlugins.pluginID#</td>
 <td class="administration"><ul class="two"><li class="edit"><a title="Edit" href="index.cfm?fuseaction=cSettings.editPlugin&moduleID=#request.rsPlugins.moduleID#">Edit</a></li>
 <li class="delete"><a title="Delete" href="index.cfm?fuseaction=cSettings.deletePlugin&moduleID=#request.rsPlugins.moduleID#" onclick="return confirm('Delete Plugin?');">Delete</a></li>

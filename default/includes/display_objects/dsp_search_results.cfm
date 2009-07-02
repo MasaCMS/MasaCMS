@@ -103,16 +103,17 @@ to your own modified versions of Mura CMS.
 <cfoutput>
 	<div class="moreResults top">
 		<ul>
-		<ul>
-		<li>#rbFactory.getKey('search.displaying')#: #request.startrow# - #through# #rbFactory.getKey('search.of')# #session.rsSearch.recordcount#</li>
+		<li class="resultsFound">#rbFactory.getKey('search.displaying')#: #request.startrow# - #through# #rbFactory.getKey('search.of')# #session.rsSearch.recordcount#</li>
 		<cfif previous gte 1>
-		<li><a href="#application.configBean.getIndexFile()#?startrow=#previous#&display=search&keywords=#HTMLEditFormat(request.keywords)#&searchSectionID=#HTMLEditFormat(request.searchSectionID)#&tag=#HTMLEditFormat(request.tag)#">&laquo;#rbFactory.getKey('search.prev')#</a></li>
+		<li class="navPrev"><a href="#application.configBean.getIndexFile()#?startrow=#previous#&display=search&keywords=#HTMLEditFormat(request.keywords)#&searchSectionID=#HTMLEditFormat(request.searchSectionID)#&tag=#HTMLEditFormat(request.tag)#">&laquo;#rbFactory.getKey('search.prev')#</a></li>
 		</cfif>
 		<cfif session.rsSearch.recordcount gt 0 and  through lt session.rsSearch.recordcount>
-		<li><a href="#application.configBean.getIndexFile()#?startrow=#next#&display=search&keywords=#HTMLEditFormat(request.keywords)#&searchSectionID=#HTMLEditFormat(request.searchSectionID)#&tag=#HTMLEditFormat(request.tag)#">#rbFactory.getKey('search.next')#&raquo;</a></li>
-		</cfif></ul></div>
+		<li class="navNext"><a href="#application.configBean.getIndexFile()#?startrow=#next#&display=search&keywords=#HTMLEditFormat(request.keywords)#&searchSectionID=#HTMLEditFormat(request.searchSectionID)#&tag=#HTMLEditFormat(request.tag)#">#rbFactory.getKey('search.next')#&raquo;</a></li>
+		</cfif>
+		</ul>
+		</div>
 </cfoutput>
-		<dl id="svPortal">
+		<dl id="svPortal" class="svIndex">
 		<cfoutput query="session.rsSearch"  startrow="#request.startrow#" maxrows="#RecordsPerPage#">
 		<cfset class=iif(session.rsSearch.currentrow eq 1,de('first'),de(iif(session.rsSearch.currentrow eq session.rsSearch.recordcount,de('last'),de(''))))>
 		<cfset link=addlink('#session.rsSearch.type#','#session.rsSearch.filename#','#session.rsSearch.menutitle#','#session.rsSearch.target#','#session.rsSearch.targetParams#','#session.rsSearch.contentid#','#request.siteid#','?keywords=#request.keywords#&tag=#request.tag#&searchSectionID=#request.searchSectionID#',application.configBean.getContext(),application.configBean.getStub(),application.configBean.getIndexFile())>
@@ -122,12 +123,12 @@ to your own modified versions of Mura CMS.
 	<cfoutput>
 	<div class="moreResults bottom">
 		<ul>
-		<li>#rbFactory.getKey('search.displaying')#: #request.startrow# - #through# #rbFactory.getKey('search.of')# #session.rsSearch.recordcount#</li>
+		<li class="resultsFound">#rbFactory.getKey('search.displaying')#: #request.startrow# - #through# #rbFactory.getKey('search.of')# #session.rsSearch.recordcount#</li>
 		<cfif previous gte 1>
-		<li><a href="#application.configBean.getIndexFile()#?startrow=#previous#&display=search&keywords=#HTMLEditFormat(request.keywords)#&searchSectionID=#HTMLEditFormat(request.searchSectionID)#&tag=#HTMLEditFormat(request.tag)#">&laquo;#rbFactory.getKey('search.prev')#</a></li>
+		<li class="navPrev"><a href="#application.configBean.getIndexFile()#?startrow=#previous#&display=search&keywords=#HTMLEditFormat(request.keywords)#&searchSectionID=#HTMLEditFormat(request.searchSectionID)#&tag=#HTMLEditFormat(request.tag)#">&laquo;#rbFactory.getKey('search.prev')#</a></li>
 		</cfif>
 		<cfif session.rsSearch.recordcount gt 0 and  through lt session.rsSearch.recordcount>
-		<li><a href="#application.configBean.getIndexFile()#?startrow=#next#&display=search&keywords=#HTMLEditFormat(request.keywords)#&searchSectionID=#HTMLEditFormat(request.searchSectionID)#&tag=#HTMLEditFormat(request.tag)#">#rbFactory.getKey('search.next')#&raquo;</a></li>
+		<li class="navNext"><a href="#application.configBean.getIndexFile()#?startrow=#next#&display=search&keywords=#HTMLEditFormat(request.keywords)#&searchSectionID=#HTMLEditFormat(request.searchSectionID)#&tag=#HTMLEditFormat(request.tag)#">#rbFactory.getKey('search.next')#&raquo;</a></li>
 		</cfif></ul></div>
 	</cfoutput>
 	</cfif>	

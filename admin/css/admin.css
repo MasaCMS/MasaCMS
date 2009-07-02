@@ -234,6 +234,10 @@ p {
 	margin: 0 0 16px 0;
 }
 
+#content p {
+	font-size: 12px;
+}
+
 a {
 	color: #ff3a00;
 	text-decoration: none;
@@ -1133,6 +1137,17 @@ li:hover #navSecondary {
 	list-style: none;
 	padding: 0 0 10px 0;
 	background: url(../images/rule_dotted.gif) repeat-x left bottom;
+}
+
+#content .notice .navZoom {
+	background: none;
+	padding: 0;
+	margin: 0;
+	font-size: 12px;
+}
+
+.notice p {
+	margin-bottom: .5em;
 }
 
 h3 + .navZoom {

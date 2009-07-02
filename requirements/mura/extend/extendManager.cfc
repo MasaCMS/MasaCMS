@@ -493,7 +493,6 @@ and type='File'
 		
 </cffunction>
 
-
 <cffunction name="getExtendedAttributeList" output="false" returntype="query">
 <cfargument name="siteID">
 <cfargument name="baseTable" required="true" default="tcontent">

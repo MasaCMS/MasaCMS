@@ -1,4 +1,6 @@
-/*	Theme:	Merced */
+/* @override http://localhost:8500/mura/default/includes/themes/merced/css/site.css */
+
+/*	Theme: Merced */
 
 /* @group GLOBALS
 ===================================== */
@@ -69,8 +71,12 @@ tr.alt td { background: #eee; }  /*Move*/
 	padding: 2em;
 	background: #e9f3f7;
 	overflow: hidden;
-		max-width: 504px; /*width of #primary in three column layout*/
+	max-width: 504px; /*width of #primary in three column layout*/
 	}
+
+#primary #svSearchResults form {
+	max-width: 100%;
+}
 
 #primary fieldset {
 	border: none;
@@ -625,7 +631,15 @@ h1 a {
 	border-right: 1px solid #b6b6b6;
 	}
 	
+.moreResults li.resultsFound {
+	padding-right: .5em;
+}
+	
 .moreResults li.navNext {
+	border-right: 0;
+	}
+	
+.moreResults li.navPrev {
 	border-right: 0;
 	}
 

@@ -64,7 +64,7 @@ to your own modified versions of Mura CMS.
 <td>#htmlEditFormat(request.rslist.category)#</td>
 <td>#htmlEditFormat(request.rslist.version)#</td>
 <td>#htmlEditFormat(request.rslist.provider)#</td>
-<td><a href="#request.rslist.providerurl#" target="_blank">#htmlEditFormat(request.rslist.providerurl)#</a></td>
+<td><a href="#request.rslist.providerurl#" target="_blank">#application.rbFactory.getKeyValue(session.rb,"plugin.view")#</a></td>
 <td>#request.rslist.pluginID#</td>
 <td class="administration">
 <ul class="three"><li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,'plugin.view')#" href="#application.configBean.getContext()#/plugins/#request.rslist.pluginID#/">#application.rbFactory.getKeyValue(session.rb,'plugin.view')#</a></li>

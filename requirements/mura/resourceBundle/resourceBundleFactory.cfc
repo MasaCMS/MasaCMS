@@ -131,7 +131,9 @@ to your own modified versions of Mura CMS.
 <cffunction name="CF2Java" access="public" returnType="string" output="false" hint="Switches Java locale to CF locale (for CF6)">
 		<cfargument name="cflocale" type="string" required="false" default="#variables.lang#_#variables.country#">
 		
-		<cfswitch expression="#arguments.cflocale#">
+		<cfset var testLocale=trim(arguments.cflocale)>
+		
+		<cfswitch expression="#testLocale#">
 
 			<cfcase value="Dutch (Belgian)">
 				<cfreturn "nl_BE">
@@ -755,7 +757,12 @@ to your own modified versions of Mura CMS.
 			</cfcase>
 			
 			<cfdefaultcase>
-				<cfreturn "en_US">
+				<!--- it's probably already a java locale'--->
+				<cfif testLocale eq "Server" or not len(testLocale)>
+					<cfreturn getLocale()>
+				<cfelse>
+					<cfreturn testLocale>
+				</cfif>
 			</cfdefaultcase>
 				
 		</cfswitch>

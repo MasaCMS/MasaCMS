@@ -1,3 +1,5 @@
+/* @override http://72.29.5.128/intranet/includes/display_objects/dragablefeeds/css/dragablefeeds.css */
+
 /* RSS Feed */
 
 #svRSSFeeds {
@@ -72,13 +74,9 @@
 #svAddNewFeed button {
 	width: 30% !important;
 	line-height: 20px;
-	text-align: center;
 	padding: 0 !important;
 	margin: 0 0 0 .5em !important;
-	color: #fff;
-	background: #666;
 	float: left;
-	border: 0;
 }
 
 #dragableBoxesColumn1 {

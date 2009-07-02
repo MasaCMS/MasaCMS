@@ -199,7 +199,7 @@ if (top.location != self.location) {
 <cfinclude template="dsp_secondary_menu_main.cfm">
 </cfif>
 <p id="copyright"><!--- &copy; 2001-#year(now())#<br /> --->
-Version #application.configBean.getVersion()#</br></br>
+Version #application.configBean.getVersion()#<br /><br />
 <cfif application.configBean.getMode() eq 'Staging' and session.siteid neq '' and not listfind(hidelist,myfusebox.originalcircuit)>
 Last Deployment:<br/>
 <cftry>

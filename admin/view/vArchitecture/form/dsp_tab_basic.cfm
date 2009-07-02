@@ -98,15 +98,15 @@ to your own modified versions of Mura CMS.
 		fckEditor.create(); // create the editor.
 	</cfscript>
 
-	<cfif attributes.preview eq 1>
 	<script type="text/javascript" language="Javascript">
 	function FCKeditor_OnComplete( editorInstance ) { 	
+		<cfif attributes.preview eq 1>
 	   	preview('http://#application.settingsManager.getSite(attributes.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##application.contentRenderer.getURLStem(attributes.siteid,'')#?previewid=#request.contentBean.getcontenthistid()#&siteid=#request.contentBean.getsiteid()#','#request.contentBean.getTargetParams()#');
+		</cfif> 
+		editorInstance.ResetIsDirty();
 	}
 	</script>
-	</cfif> 
-
-
+	
 	<div class="message"><input type="button" name="Count" value="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.showcontentlength')#" onclick="alert(FCKeditorAPI.GetInstance('body').GetXHTML().length + ' #jsStringFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.characters'))#'); "> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.maxcharacters')#</div>
 </cfif>
 </dd>

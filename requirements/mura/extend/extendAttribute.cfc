@@ -277,7 +277,13 @@ to your own modified versions of Mura CMS.
 <cffunction name="load"  access="public" output="false" returntype="void">
 <cfset var rs=""/>
 	<cfquery name="rs" datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-	select * from tclassextendattributes where attributesID=<cfqueryparam cfsqltype="cf_sql_numeric" value="#getAttributeID()#">
+	select * from tclassextendattributes where 
+	<cfif getAttributeID()>
+	attributesID=<cfqueryparam cfsqltype="cf_sql_numeric" value="#getAttributeID()#">
+	<cfelse>
+	extendSetID=<cfqueryparam cfsqltype="cf_sql_numeric" value="#getExtendSetID()#">
+	and name=<cfqueryparam cfsqltype="cf_sql_numeric" value="#getName()#">
+	</cfif>
 	</cfquery>
 	
 	<cfif rs.recordcount>
