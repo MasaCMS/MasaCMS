@@ -4,7 +4,7 @@
 	config = structNew();
 
 	// SECURITY: You must explicitly enable this "connector". (Set enabled to "true")
-	config.enabled = true;
+	config.enabled = application.permUtility.getModulePerm("00000000000000000000000000000000000",session.siteid);
 
 	config.userFilesPath = "/UserFiles/";
 
@@ -15,7 +15,7 @@
 
 	// config.allowedExtensions["File"] = "doc,rtf,pdf,ppt,pps,xls,csv,vnd,zip";
 	config.allowedExtensions["File"] = "";
-	config.deniedExtensions["File"] = "php,php2,php3,php4,php5,phtml,pwml,inc,asp,aspx,ascx,jsp,cfm,cfc,pl,bat,exe,com,dll,vbs,js,reg,cgi";
+	config.deniedExtensions["File"] = "php,php2,php3,php4,php5,phtml,pwml,inc,asp,aspx,ascx,jsp,cfm,cfml,cfc,pl,bat,exe,com,dll,vbs,js,reg,cgi";
 
 	config.allowedExtensions["Image"] = "png,gif,jpg,jpeg,bmp";
 	config.deniedExtensions["Image"] = "";

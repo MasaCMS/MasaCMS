@@ -25,7 +25,7 @@
 	config = StructNew();
 
 	// SECURITY: You must explicitelly enable this "uploader".
-	config.enabled = true;
+	config.enabled = application.permUtility.getModulePerm("00000000000000000000000000000000000",session.siteid);
 
 	// Path to uploaded files relative to the document root.
 	config.userFilesPath = "/userfiles/";
@@ -37,7 +37,7 @@
 	config.deniedExtensions = StructNew();
 
 	config.allowedExtensions["File"] = "";
-	config.deniedExtensions["File"] = "html,htm,php,php2,php3,php4,php5,phtml,pwml,inc,asp,aspx,ascx,jsp,cfm,cfc,pl,bat,exe,com,dll,vbs,js,reg,cgi,htaccess,asis,sh,shtml,shtm,phtm";
+	config.deniedExtensions["File"] = "html,htm,php,php2,php3,php4,php5,phtml,pwml,inc,asp,aspx,ascx,jsp,cfm,cfml,cfc,pl,bat,exe,com,dll,vbs,js,reg,cgi,htaccess,asis,sh,shtml,shtm,phtm";
 
 	config.allowedExtensions["Image"] = "png,gif,jpg,jpeg,bmp";
 	config.deniedExtensions["Image"] = "";
