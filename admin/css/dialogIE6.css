@@ -1,0 +1,193 @@
+#frontEndToolsIE6 {
+	background: transparent url(../images/bg_fetools.gif) repeat-x scroll 0% !important;
+	height: 45px !important;
+	left: 0px !important;
+	position: absolute;
+	top: 0px !important;
+	width: 100% !important;
+	z-index: 500 !important;
+	text-align: left !important;
+	font-weight: normal !important;
+	font-family: "Lucida Grande", Arial, Helvetica, sans-serif !important;
+}
+
+#frontEndToolsHandleIE6 {
+	background: transparent !important;
+	left: 20px !important;
+	position: absolute;
+	top: 0px !important;
+	z-index: 600;
+	cursor: pointer !important;
+	border: 0 !important;
+}
+
+#frontEndToolsIE6 ul {
+	height: 45px !important;
+	list-style: none !important;
+	margin: 0 0 0 70px !important;
+	padding: 0 !important;
+}
+
+#frontEndToolsIE6 ul li {
+	color: #333 !important;
+	float: left !important;
+	font-size: 11px !important;
+	line-height: 34px !important;
+	margin:0 20px 0 0 !important;
+	list-style: none !important;
+	font-weight: normal !important;
+	font-family: "Lucida Grande", Arial, Helvetica, sans-serif !important;
+}
+
+#frontEndToolsIE6 ul li a {
+	color: #666 !important;
+	line-height: 34px !important;
+	padding: 2px 0 2px 18px !important;
+	text-decoration: none !important;font-weight: normal !important;
+	font-family: "Lucida Grande", Arial, Helvetica, sans-serif !important;
+}
+
+#frontEndToolsIE6 ul li a:hover {
+	color: #000 !important;
+}
+
+#frontEndToolsIE6 ul li#adminEditPage a {
+	background: url(../images/icons/ie6/edit_24.gif) no-repeat scroll left center !important;
+}
+
+#frontEndToolsIE6 ul li#adminAddContent a {
+	background: url(../images/icons/ie6/add_24.gif) no-repeat scroll left center !important;
+}
+
+#frontEndToolsIE6 ul li#adminDelete a {
+	background: url(../images/icons/ie6/remov_24.gif) no-repeat scroll left center !important;
+}
+
+#frontEndToolsIE6 ul li#adminVersionHistory a {
+	background: url(../images/icons/ie6/hist_24.gif) no-repeat scroll left center !important;
+}
+
+#frontEndToolsIE6 ul li#adminDashboard a {
+	background: url(../images/icons/ie6/dashboard_14.gif) no-repeat scroll left center !important;
+}
+
+#frontEndToolsIE6 ul li#adminPlugIns a {
+	background: url(../images/icons/ie6/apps_24.gif) no-repeat scroll left center !important;
+}
+
+
+#frontEndToolsIE6 ul li#adminSiteManager {
+	background: url(../images/bg_fetools_site_manager.gif) no-repeat scroll left center !important;
+	padding-left: 21px !important;
+}
+
+#frontEndToolsIE6 ul li#adminSiteManager a {
+	background: url(../images/icons/ie6/ntwrk_24.gif) no-repeat scroll left center !important;
+}
+
+#frontEndToolsIE6 ul li#adminSiteManager404 a {
+	background: url(../images/icons/ie6/ntwrk_24.gif) no-repeat scroll left center !important;
+}
+
+#frontEndToolsIE6 ul li#adminWelcome {
+	float: right !important;
+	margin-right: 10px !important;
+}
+
+#frontEndToolsIE6 ul li#adminLogOut {
+	background: transparent url(../images/bg_fetools_logout.gif) no-repeat scroll left center !important;
+	float: right !important;
+	font-size: 10px !important;
+	line-height: 28px !important;
+	margin-right: 14px !important;
+	padding: 0 !important;
+	text-align: center !important;
+	width: 98px !important;
+}
+
+#frontEndToolsIE6 ul li#adminLogOut a {
+	padding: 0 !important;
+		line-height: 1 !important;
+}
+
+/* @group Add Content Nav */
+
+#frontEndToolsIE6 li ul { /* all lists */
+	padding: .75em 1em .75em !important;
+	margin: 0 0 0 50px !important;
+	list-style: none !important;
+	line-height: 1 !important;
+	background-image: none !important;
+	position: absolute !important;
+	background: #ccc !important;
+	width: 12em !important;
+	left: -1000px;
+	height: auto !important;
+	
+}
+
+#frontEndToolsIE6 li li { /* all list items */
+	float: left !important;
+	width: 100% !important; /* width needed or else Opera goes nuts */
+	padding: 0 !important;
+	margin: 0 !important;
+	border-bottom: 1px dotted #999 !important;
+}
+
+#frontEndToolsIE6 li li a {
+	display: block !important;
+	width: 10em !important;
+	padding: 0 0 0 2em !important;
+	margin: 1px 0 !important;
+	line-height: 2.25 !important;
+	color: #000 !important;
+}
+
+#frontEndToolsIE6 li li a:hover {
+	background-color: #999 !important;
+	color: #fff !important;
+}
+
+#frontEndToolsIE6 li:hover ul, #frontEndToolsIE6 li.sfhover ul { /* lists nested under hovered list items */
+	left: auto !important;
+}
+
+#frontEndToolsIE6 li:hover a, #frontEndToolsIE6 li.sfhover a { /* lists nested under hovered list items */
+	color: #000 !important;
+}
+
+#frontEndToolsIE6 li li#adminNewPage a {
+	background: url(../images/icons/ie6/docs_24.gif) no-repeat 4px center !important;
+}
+
+#frontEndToolsIE6 li li#adminNewLink a {
+	background: url(../images/icons/ie6/web_24.gif) no-repeat 4px center !important;
+}
+
+#frontEndToolsIE6 li li#adminNewFile a {
+	background: url(../images/icons/ie6/cms_file.gif) no-repeat 3px center !important;
+}
+
+#frontEndToolsIE6 li li#adminNewPortal a {
+	background: url(../images/icons/ie6/foldr_24.gif) no-repeat 4px center !important;
+}
+
+#frontEndToolsIE6 li li#adminNewCalendar a {
+	background: url(../images/icons/ie6/cal_24.gif) no-repeat 4px center !important;
+}
+
+#frontEndToolsIE6 li li#adminNewGallery a {
+	background: url(../images/icons/ie6/smicn_24.gif) no-repeat 4px center !important;
+}
+
+#frontEndToolsIE6 li li#adminNewGalleryItem a {
+	background: url(../images/icons/ie6/image_24.gif) no-repeat 4px center !important;
+}
+
+#frontEndToolsIE6 li li#adminNewGalleryItemMulti a {
+	background: url(../images/icons/ie6/image_24.gif) no-repeat 4px center !important;
+}
+
+#frontEndToolsIE6 li li:last-child {
+	border: 0 !important;
+}

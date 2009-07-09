@@ -173,11 +173,8 @@ if (top.location != self.location) {
 
 </cfif>
 <link href="#application.configBean.getContext()#/admin/css/admin.css" rel="stylesheet" type="text/css" />
-<!--[if IE]>
+<!--[if LTE IE 7]>
 <link href="#application.configBean.getContext()#/admin/css/ie.css" rel="stylesheet" type="text/css" />
-<![endif]-->
-<!--[if IE 6]>
-<link href="#application.configBean.getContext()#/admin/css/ie6.css" rel="stylesheet" type="text/css" />
 <![endif]-->
 <cfif myfusebox.originalcircuit eq "cArch" and (myfusebox.originalfuseaction eq "list" or myfusebox.originalfuseaction eq "search") and (attributes.moduleid eq '00000000000000000000000000000000000' or attributes.moduleid eq '')>
 <cfinclude template="../../view/vArchitecture/dsp_content_nav.cfm">
@@ -212,18 +209,6 @@ Never
 </p></div>
 <div id="content">#fusebox.layout#
 </div></div>
-
-<cfif myfusebox.originalcircuit neq 'cLogin' and myfusebox.originalcircuit neq 'cFilemanager'>
-<script type="text/javascript" language="javascript">
-if(document.forms[2] != undefined && !document.forms[2].elements[0].disabled && document.forms[2].elements[0].focus){
-document.forms[2].elements[0].focus();
-}
-</script>
-<cfelseif  myfusebox.originalcircuit neq 'cFilemanager'>
-<script type="text/javascript" language="javascript">
-document.forms[0].elements[0].focus();
-</script>
-</cfif>
 <script type="text/javascript" language="javascript">
 stripe('stripe');
 </script>

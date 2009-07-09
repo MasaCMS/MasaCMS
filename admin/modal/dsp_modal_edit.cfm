@@ -40,17 +40,17 @@ for your modified version; it is your choice whether to do so, or to make such m
 the GNU General Public License version 2  without this exception.  You may, if you choose, apply this exception
 to your own modified versions of Mura CMS.
 --->
-<cfset application.rbFactory.setAdminLocale(session)>
-<CFIF not (FindNoCase('MSIE 6','#CGI.HTTP_USER_AGENT#') GREATER THAN 0 AND FindNoCase('Opera','#CGI.HTTP_USER_AGENT#') LESS THAN 1)>
+<cfset application.rbFactory.setAdminLocale()>
+
+<!---------------------------------------------->
+<!--- LET'S FIGURE OUT IF THE BROWSER IS IE6 --->
+<!---------------------------------------------->
+<cfset variables.isIeSix=FindNoCase('MSIE 6','#CGI.HTTP_USER_AGENT#') GREATER THAN 0>
+	
+<cfif FindNoCase('Opera','#CGI.HTTP_USER_AGENT#') LESS THAN 1>
 <cfparam name="Cookie.fetDisplay" default="">
 <cfoutput>
-	<!---
-	<script src="#application.configBean.getContext()#/admin/js/dialog.js" type="text/javascript"></script>
-	
-	<script src="#application.configBean.getContext()#/admin/js/siteEdit.js" type="text/javascript"></script>
-	--->
 <link href="#application.configBean.getContext()#/admin/css/dialog.css" rel="stylesheet" type="text/css" />
-
 <cfsilent>
 	<cfif len(application.configBean.getAdminDomain())>
 		<cfif application.configBean.getAdminSSL()>
@@ -123,20 +123,82 @@ to your own modified versions of Mura CMS.
 	<cfset deleteLink = deleteLink & "&amp;action=deleteall">
 	<cfset deleteLink = deleteLink & "&amp;startrow=1">
 </cfsilent>
+
+
+<cfif not variables.isIeSix>
 <script type="text/javascript">
-function toggleAdminToolbar(){
-<cfif getJsLib() eq "jquery">$("##frontEndTools").animate({opacity: "toggle"});<cfelse>Effect.toggle("frontEndTools", "appear");</cfif>
-}
+	function toggleAdminToolbar(){
+	<cfif getJsLib() eq "jquery">
+		$("##frontEndTools").animate({opacity: "toggle"});
+	<cfelse>
+		Effect.toggle("frontEndTools", "appear");
+	</cfif>
+	}
 </script>
-<img src="#application.configBean.getContext()#/admin/images/logo_small_fetools.png" id="frontEndToolsHandle" onclick="if (document.getElementById('frontEndTools').style.display == 'none') { createCookie('FETDISPLAY','',5); } else { createCookie('FETDISPLAY','none',5); } toggleAdminToolbar();" />
-		<div id="frontEndTools" style="display: #Cookie.fetDisplay#">
+<cfelse>	
+<!--------------------------------------------------------------------------------------------------------------->
+<!--- IE6 COMPATIBILITY FOR FRONT END TOOLS ----------->
+<!--------------------------------------------------------------------------------------------------------------->
+<link href="#application.configBean.getContext()#/admin/css/dialogIE6.css" rel="stylesheet" type="text/css" />
+<script>
+	function toggleAdminToolbarIE6(){
+	<cfif getJsLib() eq "jquery">
+		$("##frontEndToolsIE6").animate({opacity: "toggle"});
+	<cfelse>
+		Effect.toggle("frontEndToolsIE6", "appear");
+	</cfif>
+	};
+					
+	function showSubMenuIE6(callerId,elementId){
+		var callerElement = document.getElementById(callerId);					
+		var xCoord = callerElement.offsetLeft;
+		var yCoord = callerElement.offsetTop + callerElement.offsetHeight + 0;		
+		var minWidth = callerElement.offsetWidth;
+		var subMenu = document.getElementById(elementId);
+							
+		if(subMenu){			
+			subMenu.style.position = 'absolute';
+			subMenu.style.left = xCoord + 'px';
+			subMenu.style.top = yCoord + 'px';					
+		};			
+		showObjIE6(elementId);					
+	};
+		
+	function showObjIE6(elementId){			
+		if(document.getElementById(elementId)){
+			document.getElementById(elementId).style.display = '';
+		};
+	};
+			
+	function hideObjIE6(elementId){			
+		if(document.getElementById(elementId)){
+			document.getElementById(elementId).style.display = 'none';
+		};
+	};
+</script>		
+</cfif>
+
+<cfif variables.isIeSix>
+	<!--- NAMED DIFFERENTLY TO USE THE IE6 COMPATIBLE dialogIE6.css --->
+	<img src="#application.configBean.getContext()#/admin/images/icons/ie6/logo_small_fetools.gif" id="frontEndToolsHandleIE6" onclick="if (document.getElementById('frontEndToolsIE6').style.display == 'none') { createCookie('FETDISPLAY','',5); } else { createCookie('FETDISPLAY','none',5); } toggleAdminToolbarIE6();" />
+	<div id="frontEndToolsIE6" style="display: #Cookie.fetDisplay#">						
+<cfelse>
+	<!--- USES STANDARD dialog.css --->
+	<img src="#application.configBean.getContext()#/admin/images/logo_small_fetools.png" id="frontEndToolsHandle" onclick="if (document.getElementById('frontEndTools').style.display == 'none') { createCookie('FETDISPLAY','',5); } else { createCookie('FETDISPLAY','none',5); } toggleAdminToolbar();" />
+	<div id="frontEndTools" style="display: #Cookie.fetDisplay#">
+</cfif>
 		<ul>
 		<cfif not request.contentBean.getIsNew()>
 			<cfif ListFindNoCase('editor,author',request.r.perm) or isUserInRole("S2")>
 			<li id="adminEditPage"><a href="#editLink#" rel="shadowbox;width=1100;">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.edit')#</a></li>
 				<cfif listFind("Page,Portal,Calendar,Gallery",request.contentBean.getType())>
-					<li id="adminAddContent"><a href="##" onclick="return false;">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.add')#&hellip;</a>
-						<ul>
+						<cfif variables.isIeSix>
+						<!--- USES JAVASCRIPT TO SHOW AND HIDE THE ADD MENU AS IT PLAYS NICE WITH IE6 --->
+						<li id="adminAddContent" onmouseover="showSubMenuIE6(this.id,'addMenuDropDown')" onmouseout="hideObjIE6('addMenuDropDown')"><a href="##" onclick="return false;">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.add')#&hellip;</a>																						
+						<cfelse>							
+						<li id="adminAddContent"><a href="##" onclick="return false;">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.add')#&hellip;</a>						
+						</cfif>	
+						<ul id="addMenuDropDown">
 						<cfif request.contentBean.getType() neq 'Gallery'>
 						<li id="adminNewPage"><a href="#newLink#&amp;type=Page" rel="shadowbox;width=1050;">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.type.page')#</a></li>
 						<li id="adminNewLink"><a href="#newLink#&amp;type=Link" rel="shadowbox;width=1050;" >#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.type.link')#</a></li>
@@ -147,7 +209,10 @@ function toggleAdminToolbar(){
 						<cfelse>
 							<li id="adminNewGalleryItem"><a href="#newLink#&amp;type=File" rel="shadowbox;width=1050;">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.type.galleryitem')#</a></li>
 							<li id="adminNewGalleryItemMulti"><a href="#newMultiLink#&amp;type=File" rel="shadowbox;width=1050;">#application.rbFactory.getKeyValue(session.rb,'sitemanager.addmultiitems')#</a></li>
-						</cfif>
+						</cfif>			
+						#application.pluginManager.renderScripts("onFEToolbarAddRender",request.contentBean.getSiteID())#
+						#application.pluginManager.renderScripts("onFEToolbar#request.contentBean.getType()#AddRender",request.contentBean.getSiteID())#
+						#application.pluginManager.renderScripts("onFEToolbar#request.contentBean.getType()##request.contentBean.getSubType()#AddRender",request.contentBean.getSiteID())#
 						</ul>
 					</li>
 				</cfif>

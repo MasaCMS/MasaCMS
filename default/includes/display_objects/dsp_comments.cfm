@@ -52,6 +52,8 @@ to your own modified versions of Mura CMS.
 	<cfparam name="cookie.remember" default="0">
 	<cfparam name="cookie.subscribe" default="0">
 	
+	<cfset errorJSTxt = "">
+	
 	<cfif not structKeyExists(request,"name")>
 		<cfset request.name=cookie.name>
 	</cfif>
@@ -84,6 +86,8 @@ to your own modified versions of Mura CMS.
 	<cfparam name="request.deletecommentid" default="">
 	<cfparam name="request.approvedcommentid" default="">
 	<cfparam name="request.isApproved" default="1">
+	<cfparam name="request.hkey" default="">
+	<cfparam name="request.ukey" default="">
 	
 	<cfset errors=structNew()/>
 	
@@ -94,7 +98,29 @@ to your own modified versions of Mura CMS.
 
 	<cfif request.commentid neq '' and request.comments neq '' and request.name neq ''>
 	
-		<cfif request.hKey eq hash(lcase(request.ukey))>
+		<cfset passedProtect = true>
+		<cfscript>
+			myRequest = structNew();
+			StructAppend(myRequest, url, "no");
+			StructAppend(myRequest, form, "no");
+		</cfscript>
+		
+		<cfif structKeyExists(myRequest, "useProtect")>
+			<cfset cffp = CreateObject("component","cfformprotect.cffpVerify").init() />
+			
+			<cfif application.settingsManager.getSite(request.siteID).getContactEmail() neq "">
+				<cfset cffp.updateConfig('emailServer', application.settingsManager.getSite(request.siteID).getMailServerIP())>
+				<cfset cffp.updateConfig('emailUserName', application.settingsManager.getSite(request.siteID).getMailserverUsername(true))>
+				<cfset cffp.updateConfig('emailPassword', application.settingsManager.getSite(request.siteID).getMailserverPassword())>
+				<cfset cffp.updateConfig('emailFromAddress', application.settingsManager.getSite(request.siteID).getMailserverUsernameEmail())>
+				<cfset cffp.updateConfig('emailToAddress', application.settingsManager.getSite(request.siteID).getContactEmail())>
+				<cfset cffp.updateConfig('emailSubject', 'Spam form submission')>
+			</cfif>
+			
+			<cfset passedProtect = cffp.testSubmission(myRequest)>
+		</cfif>
+		
+		<cfif (request.hkey eq '' or request.hKey eq hash(lcase(request.ukey))) and passedProtect>
 	
 			<cfset submittedData=application.utility.filterArgs(request,application.badwords)/>
 			<cfset submittedData.contentID=theContentID />
@@ -125,9 +151,21 @@ to your own modified versions of Mura CMS.
 				<cfcookie name="email" value="">
 			</cfif>
 		<cfelse>
-			<cfset errors["SecurityCode"]=rbFactory.getKey('captcha.error')>
+			<cfsavecontent variable="errorJSTxt">	
+				<script type="text/javascript" language="javascript">
+					addLoadEvent(function(){
+						window.location.hash="errors";
+					});
+				</script>
+			</cfsavecontent>
+			
+			<cfif passedProtect>
+				<cfset errors["SecurityCode"]=rbFactory.getKey('captcha.error')>
+			<cfelse>
+				<cfset errors["Spam"] = rbFactory.getKey("captcha.spam")>
+			</cfif>
+			
 		</cfif>
-
 	</cfif>
 
 	<cfif request.isEditor and request.deletecommentid neq "" >
@@ -175,6 +213,8 @@ to your own modified versions of Mura CMS.
 
 <cfif not structIsEmpty(errors) >
 	<cfoutput>
+	#errorJSTxt#
+	<a name="errors"></a>
 	<div id="editProfileMsg" class="Required">
 		#application.utility.displayErrors(errors)#
 	</div>
@@ -211,7 +251,7 @@ to your own modified versions of Mura CMS.
 					<label for="txtSubscribe">#rbFactory.getKey('comments.subscribe')#</label>
 					<input type="checkbox" id="txtSubscribe" name="subscribe" value="1"<cfif isBoolean(request.subscribe) and request.subscribe> checked </cfif>/>
 				</li></cfoutput>
-				<cfinclude template="dsp_captcha.cfm" ><!--- <li>'s are in captcha --->
+				<cfinclude template="dsp_form_protect.cfm" >
 			</ol>
 		</fieldset>
 		<div class="buttons">

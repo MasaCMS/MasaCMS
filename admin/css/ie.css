@@ -36,6 +36,8 @@
 	the GNU General Public License version 2  without this exception.  You may, if you choose, apply this exception 
 	to your own modified versions of Mura CMS. */
 
+/* @group All Versions */
+
 a.submit, #datePicker a.submit {
 	background: url(../images/btn.gif) no-repeat top left;
 	padding: 0 0 0 8px;
@@ -131,3 +133,122 @@ dd.categoryAssignment input.textAlt {
 	padding: 10px 0 0 0;
 	background: url(../images/rule_dotted_big.gif) repeat-x;
 }
+
+/* @end */
+
+/* @group IE 6 */
+
+* html #container { height: 1%; }
+
+* html #header #welcome {
+	right: 150px;
+}
+
+* html a.tooltip {
+	background: none;
+	color: #F96509 !important;	
+}
+
+* html a.tooltip:hover {
+	font-size: 99%; /* Fixes IE 5.5 bug. */
+}
+
+* html a.addCriteria {
+	background: url(../images/icons/ie6/add_32.gif) no-repeat center left;
+	height: 14px;
+	width: 14px;
+	padding-left: 14px;
+	line-height: 14px;
+	color: #666;
+}
+
+* html a.removeCriteria {
+	background: url(../images/icons/ie6/del_32.gif) no-repeat center left;
+	height: 14px;
+	width: 14px;
+	padding-left: 16px;
+	padding-right: 6px;
+	line-height: 14px;
+	color: #666;
+}
+
+
+* html li.Gallery {
+	background: transparent url(../images/icons/ie6/smicn_32.gif) no-repeat 12px 1px;
+	color: #333232;
+	text-decoration: none;
+	margin: 0;
+	padding: 2px 0 2px 31px;
+}
+
+* html li.Image {
+	background: transparent url(../images/icons/ie6/image_32.gif) no-repeat 10px 1px;
+	color: #333232;
+	text-decoration: none;
+	margin: 0;
+	padding: 2px 0 2px 31px;
+}
+
+* html li.GalleryLocked {
+	background: transparent url(../images/icons/ie6/smicn_32_locked.gif) no-repeat 11px 1px;
+	color: #333232;
+	text-decoration: none;
+	margin: 0;
+	padding: 2px 0 2px 31px;
+}
+
+* html li.ImageLocked {
+	background: transparent url(../images/icons/ie6/image_32_locked.gif) no-repeat 10px 1px;
+	color: #333232;
+	text-decoration: none;
+	margin: 0;
+	padding: 2px 0 2px 31px;
+}
+
+* html #cCategory table td.add a, #cFeed table td.add a {
+	background: url(../images/icons/ie6/add_32.gif) no-repeat center center;
+}
+
+* html table td.add a { background: url(../images/icons/ie6/add_32.gif) no-repeat center center; }
+
+* html .addNew #newCopy a { background: url(../images/icons/ie6/copy_24.gif) no-repeat 1px 5px; }
+* html .addNew #newZoom a { background: url(../images/icons/ie6/zoomi_24.gif) no-repeat 1px 5px;  }
+* html .addNew #newPage a {  background: url(../images/icons/ie6/docs_24.gif) no-repeat 1px 5px; }
+* html .addNew #newLink a { background: url(../images/icons/ie6/web_24.gif) no-repeat 1px 5px; }
+* html .addNew #newFile a { background: url(../images/icons/ie6/cms_file.gif) no-repeat 1px 5px; }
+* html .addNew #newPortal a { background: url(../images/icons/ie6/foldr_24.gif) no-repeat 1px 5px; }
+* html .addNew #newCalendar a { background: url(../images/icons/ie6/cal_24.gif) no-repeat 1px 5px; }
+* html .addNew #newGallery a { background: url(../images/icons/ie6/smicn_24.gif) no-repeat 0px 5px; }
+* html .addNew #newGalleryItem a { background: url(../images/icons/ie6/image_24.gif) no-repeat 0px 5px; }
+
+* html table td.administration li.edit { background: url(../images/icons/ie6/edit_24.gif) no-repeat; }
+* html table td.administration li.versionHistory { background: url(../images/icons/ie6/hist_24.gif) no-repeat; }
+* html table td.administration li.permissions { background: url(../images/icons/ie6/group_24.gif) no-repeat; }
+* html table td.administration li.delete { background: url(../images/icons/ie6/remov_24.gif) no-repeat; }
+* html table td.administration li.viewReport { background: url(../images/icons/ie6/chart_24.gif) no-repeat; }
+* html table td.administration li.download { background: url(../images/icons/ie6/redo_24.gif) no-repeat; }
+* html table td.administration li.manageData { background: url(../images/icons/ie6/confg_24.gif) no-repeat; }
+
+* html table td.administration li.editOff { background: url(../images/icons/ie6/edit_24_off.gif) no-repeat; }
+* html table td.administration li.versionHistoryOff { background: url(../images/icons/ie6/hist_24_off.gif) no-repeat; }
+* html table td.administration li.permissionsOff { background: url(../images/icons/ie6/group_24_off.gif) no-repeat; }
+* html table td.administration li.deleteOff { background: url(../images/icons/ie6/remov_24_off.gif) no-repeat; }
+
+* html table td.administration li.moveCopy { background: url(../images/icons/ie6/move_24.gif) no-repeat; }
+* html table td.administration li.source { background: url(../images/icons/ie6/notep_24.gif) no-repeat; }
+* html table td.administration li.rename { background: url(../images/icons/ie6/wiz_24.gif) no-repeat; }
+* html table td.administration li.viewUnzip { background: url(../images/icons/ie6/open_24.gif) no-repeat; }
+* html table td.administration li.manipulate { background: url(../images/icons/ie6/confg_24.gif) no-repeat; }
+
+* html table td.administration li.moveCopyOff { background: url(../images/icons/ie6/move_24_off.gif) no-repeat; }
+* html table td.administration li.sourceOff { background: url(../images/icons/ie6/notep_24_off.gif) no-repeat; }
+* html table td.administration li.renameOff { background: url(../images/icons/ie6/wiz_24_off.gif) no-repeat; }
+* html table td.administration li.viewUnzipOff { background: url(../images/icons/ie6/open_24_off.gif) no-repeat; }
+* html table td.administration li.manipulateOff { background: url(../images/icons/ie6/confg_24_off.gif) no-repeat; }
+
+* html #navZoom li.first {
+    padding: 0 0 0 20px;
+	background: url(../images/icons/ie6/zoomi_24.gif) no-repeat;
+    }
+
+/* @end */

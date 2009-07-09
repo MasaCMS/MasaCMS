@@ -70,7 +70,7 @@ to your own modified versions of Mura CMS.
 	<cfelseif acceptError eq "Captcha">
 		<p class="error">#getSite().getRBFactory().getKey("captcha.error")# <a href="javascript:history.back();">#getSite().getRBFactory().getKey("captcha.tryagain")#</a></p>
 	<cfelseif acceptError eq "Spam">
-		<p class="error">This submission has been marked as spam. <a href="javascript:history.back();">#getSite().getRBFactory().getKey("captcha.tryagain")#</a></p>
+		<p class="error">#getSite().getRBFactory().getKey("captcha.spam")# <a href="javascript:history.back();">#getSite().getRBFactory().getKey("captcha.tryagain")#</a></p>
 	</cfif>
 <cfelse><p class="success">#setDynamicContent(rsform.responseMessage)#</p>
 		<cfif isdefined("request.redirect_url")>

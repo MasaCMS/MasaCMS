@@ -1,5 +1,10 @@
 function setGallery(){
-	var gArray=document.getElementById("svGallery").getElementsByTagName("LI");
+	
+	if(navigator.userAgent.toLowerCase().indexOf('msie 6') == -1){
+		var gArray=document.getElementById("svGallery").getElementsByTagName("LI");
+	} else {
+		var gArray=document.getElementsByTagName("LI");	
+	}
 	var h=0;
 	var temph=0;
 	for(var i=0;i<gArray.length;i++){

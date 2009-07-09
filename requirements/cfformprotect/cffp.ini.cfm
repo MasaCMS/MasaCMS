@@ -49,6 +49,6 @@ emailToAddress=
 emailSubject=
 
 #logging
-logFailedTests=1
+logFailedTests=0
 logFile=
 </cfsilent>

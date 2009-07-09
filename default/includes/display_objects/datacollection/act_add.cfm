@@ -58,7 +58,6 @@ to your own modified versions of Mura CMS.
 <cfif structKeyExists(myRequest, "useProtect")>
 	<cfset cffp = CreateObject("component","cfformprotect.cffpVerify").init() />
 	<cfif len(rsForm.responseSendTo)>
-		<cfset cffp.updateConfig('emailFailedTests', 1)>
 		<cfset cffp.updateConfig('emailServer', application.settingsManager.getSite(request.siteID).getMailServerIP())>
 		<cfset cffp.updateConfig('emailUserName', application.settingsManager.getSite(request.siteID).getMailserverUsername(true))>
 		<cfset cffp.updateConfig('emailPassword', application.settingsManager.getSite(request.siteID).getMailserverPassword())>

@@ -98,7 +98,11 @@ update tcontent set orderno= #rsSetOrder.currentrow# where contentid ='#rsSetOrd
 <cfinclude template="dsp_nextn.cfm">
 <cfif  ((attributes.topid eq '00000000000000000000000000000000001' and application.settingsManager.getSite(attributes.siteid).getlocking() eq 'none') or (attributes.topid neq '00000000000000000000000000000000001')) and perm neq 'none' and application.settingsManager.getSite(attributes.siteid).getlocking() neq 'all'><cfset newcontent=1><cfelse> <cfset newcontent=0></cfif>
 <cfif r><cfset icon="#request.rsTop.type#Locked"><cfelse><cfset icon="#request.rsTop.type#"></cfif>
-</cfsilent><cfoutput>
+
+<cfset variables.pluginEvent=createObject("component","mura.event").init(event.getAllValues())/>
+</cfsilent>
+
+<cfoutput>	
 <script>
 copyContentID = '#session.copyContentID#';
 copySiteID = '#session.copySiteID#';
@@ -131,10 +135,9 @@ copySiteID = '#session.copySiteID#';
 	
 	<input type="hidden" name="startrow" value="#attributes.startrow#">
 	<input type="hidden" name="orderperm" value="#perm#">
-</cfoutput>
 
 <table class="stripe"> 
-          <tr><cfoutput>
+          <tr>
            <th>&nbsp;</th>
             <th class="varWidth"><a href="##" class="tooltip">#application.rbFactory.getKeyValue(session.rb,"sitemanager.title")#<span>#application.rbFactory.getKeyValue(session.rb,"tooltip.managerTitle")#</span></a></th>
 			<cfif application.settingsManager.getSite(attributes.siteid).getlocking() neq 'all'>
@@ -150,7 +153,7 @@ copySiteID = '#session.copySiteID#';
          
 		  <tr>
            <td class="add"> <cfif (request.rstop.type eq 'Page') or  (request.rstop.type eq 'Portal')  or  (request.rstop.type eq 'Calendar')  or  (request.rstop.type eq 'Gallery')><a href="javascript:;" onmouseover="showMenu('newContentMenu',#newcontent#,this,'#request.rstop.contentid#','#attributes.topid#','#request.rstop.parentid#','#attributes.siteid#','#request.rstop.type#');">&nbsp;</a><cfelse>&nbsp;</cfif></td>
-            <td class="title varWidth"><ul <cfif request.rstop.hasKids gt 0>class="neston"<cfelse>class="nestoff"</cfif>>
+            <td class="varWidth"><ul <cfif request.rstop.hasKids gt 0>class="neston"<cfelse>class="nestoff"</cfif>>
 			<li class="#icon#"><cfif perm neq 'none'><a title="Edit" href="index.cfm?fuseaction=cArch.edit&contenthistid=#request.rstop.ContentHistID#&siteid=#attributes.siteid#&contentid=#attributes.topid#&topid=#attributes.topid#&type=#request.rstop.type#&parentid=#request.rstop.parentid#&moduleid=#attributes.moduleid#"></cfif>#HTMLEditFormat(left(request.rsTop.menutitle,70))#<cfif len(request.rsTop.menutitle) gt 70>...</cfif><cfif perm neq 'none'></a></cfif></li>
 			</ul></td>			
 		 <cfif application.settingsManager.getSite(attributes.siteid).getlocking() neq 'all'>
@@ -199,13 +202,18 @@ copySiteID = '#session.copySiteID#';
 		<li class="versionHistoryOff"><a>#application.rbFactory.getKeyValue(session.rb,"sitemanager.versionhistory")#</a></li>
 		<li class="permissionsOff"><a>#application.rbFactory.getKeyValue(session.rb,"sitemanager.permissions")#</a></li>
 		<li class="deleteOff"><a>#application.rbFactory.getKeyValue(session.rb,"sitemanager.delete")#</a></li>
-      </cfif></ul></td>
+      </cfif>
+		#application.pluginManager.renderScripts("onContentList",attributes.siteid,pluginEvent)#
+		#application.pluginManager.renderScripts("on#request.rstop.type#List",attributes.siteid,pluginEvent)#
+		#application.pluginManager.renderScripts("on#request.rstop.type##request.rstop.subtype#List",attributes.siteid,pluginEvent)#
+</ul></td>
 </tr>
 		  <cfif request.rstop.hasKids>
-             <cf_dsp_nest topid="#attributes.topid#" parentid="#attributes.topid#"  rsnest="#rsNext#" locking="#application.settingsManager.getSite(attributes.siteid).getlocking()#" nestlevel="1" perm="#perm#" siteid="#attributes.siteid#" moduleid="#attributes.moduleid#" restricted="#r#" viewdepth="#session.viewDepth#" nextn="#session.nextN#" startrow="#attributes.startrow#" sortBy="#attributes.sortBy#" sortDirection="#attributes.sortDirection#">
-           </cfif>
+             <cf_dsp_nest topid="#attributes.topid#" parentid="#attributes.topid#"  rsnest="#rsNext#" locking="#application.settingsManager.getSite(attributes.siteid).getlocking()#" nestlevel="1" perm="#perm#" siteid="#attributes.siteid#" moduleid="#attributes.moduleid#" restricted="#r#" viewdepth="#session.viewDepth#" nextn="#session.nextN#" startrow="#attributes.startrow#" sortBy="#attributes.sortBy#" sortDirection="#attributes.sortDirection#" pluginEvent="#pluginEvent#">
+          </cfif>
           <cfif isMore>
              #pageList#
            </cfif>
-	</table></cfoutput>
+	</table>
 </form>
+</cfoutput>

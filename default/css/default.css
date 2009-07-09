@@ -382,7 +382,7 @@ p.center { text-align: center; }
 	Based on How To Clear Floats Without Structural Markup by PiE
 	[http://www.positioniseverything.net/easyclearing.html] */
 
-.clearfix:after {
+.clearfix:after, .svIndex dl:after {
 	content: ".";
 	display: block;
 	height: 0;
@@ -390,11 +390,11 @@ p.center { text-align: center; }
 	visibility: hidden;
 	}
 
-.clearfix { display: inline-block; }
+.clearfix, .svIndex dl { display: inline-block; }
 
-* html .clearfix { height: 1%; }
+* html .clearfix, * html .svIndex dl { height: 1%; }
 
-.clearfix { display: block; }
+.clearfix, .svIndex dl { display: block; }
 
 /* @end Helper Classes - Clearfix
 -------------------------------- */
@@ -629,12 +629,18 @@ It gets output between the h2 and the body content and launches the large image 
 	padding: 0;
 	border: 1px solid #666; 
 	font-style: normal;
-	font-weight: normal;
+	font-weight: bold;
 	text-align: center;
 	color: #fff;
 	background: #666;
-		font-size: .9em;
+	font-size: 1em;
+	line-height: 2.2;
 	}
+
+#svCalendarNav th {
+	line-height: 1.2;
+	font-size: .9em;
+}
 
 .svCalendar th a {
 	display: block;
@@ -651,7 +657,7 @@ It gets output between the h2 and the body content and launches the large image 
 	
 .svCalendar td {
 		width: 14%;
-		min-height: 60px;
+		height: 60px;
 		padding: .5em;
 		border: 1px solid #ccc;
 		font-size: 9px;
@@ -663,16 +669,21 @@ It gets output between the h2 and the body content and launches the large image 
 .svCalendar .dayofweek td {
 	height: auto;
 	padding: .5em;
+	line-height: 1.6;
 	font-style: normal;
 	font-weight: bold;
 	text-align: center;
 	background: #ccc;
 	}
+	
+#svCalendarNav .dayofweek td {
+	line-height: 1.1;
+}
 
 .svCalendar .dayofweek td a {}
 
 #svCalendarNav td {
-	min-height: auto;
+	height: auto;
 	text-align: center;
 	}
 

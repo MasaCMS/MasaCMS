@@ -166,7 +166,13 @@ to your own modified versions of Mura CMS.
 		<li class="versionHistoryOff"><a>#application.rbFactory.getKeyValue(session.rb,"sitemanager.versionhistory")#</a></li>
 		<li class="permissionsOff"><a>#application.rbFactory.getKeyValue(session.rb,"sitemanager.permissions")#</a></li>
 		<li class="deleteOff"><a>#application.rbFactory.getKeyValue(session.rb,"sitemanager.delete")#</a></li>
-      </cfif></ul></td>
+      </cfif>
+		<cfif  ListFindNoCase("Page,Portal,Calendar,Link,File,Gallery",attributes.rsNest.type)>
+		#application.pluginManager.renderScripts("onContentList",attributes.siteid,attributes.pluginEvent)#
+		</cfif>
+		#application.pluginManager.renderScripts("on#attributes.rsNest.type#List",attributes.siteid,attributes.pluginEvent)#
+		#application.pluginManager.renderScripts("on#attributes.rsNest.type##attributes.rsNest.subtype#List",attributes.siteid,attributes.pluginEvent)#
+	</ul></td>
 </tr>
    <cfif attributes.rsNest.hasKids and attributes.nestlevel lt attributes.viewDepth>
    <cf_dsp_nest parentid="#attributes.rsNest.contentid#"  
@@ -181,6 +187,7 @@ to your own modified versions of Mura CMS.
    viewdepth="#attributes.viewDepth#"
    nextn="#attributes.nextN#"
    startrow="#attributes.startrow#"
-   sortBy="#attributes.sortBy#"></cfif>
+   sortBy="#attributes.sortBy#"
+   pluginEvent="#attributes.pluginEvent#"></cfif>
    <cfset currentPos=currentPos+1>
    </cfoutput>
