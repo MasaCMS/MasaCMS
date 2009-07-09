@@ -356,9 +356,9 @@ To Unsubscribe Click Here
 							getSiteID()) />
 </cfloop>
 
-<cfif arguments.notifyAdmin and len(site.getContact())>
+<cfif arguments.notifyAdmin and len(site.getContactEmail())>
 	<cfset email.sendText(notifyText,
-							site.getContact(),
+							site.getContactEmail(),
 							site.getSite(),
 							notifySubject,
 							getSiteID()) />

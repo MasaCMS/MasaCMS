@@ -1130,7 +1130,7 @@ to your own modified versions of Mura CMS.
 			<cfset commentBean.load() />
 			<cfset commentBean.setIsApproved(1) />
 			<cfset commentBean.save() />
-			<cfset commentBean.notifySubscribers(arguments.contentRenderer,arguments.script,arguments.subject,false)>
+			<cfset commentBean.notifySubscribers(arguments.contentRenderer,arguments.script,arguments.subject)>
 			<cfset setCommentStat(commentBean.getContentID(),commentBean.getSiteID()) />
 			<cfreturn commentBean />
 	</cffunction>
