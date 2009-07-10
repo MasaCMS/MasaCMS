@@ -248,6 +248,11 @@ p a {
 	border-bottom: 1px dotted #ff3a00;
 }
 
+table td a.alt {
+	color: #69c;
+	/*border-bottom: 1px dotted;*/
+}
+
 a:hover {
 	text-decoration: underline;
 }
@@ -2090,6 +2095,8 @@ table td a {
 	text-decoration: none;
 }
 
+
+
 table td a:hover {
 	color: #000;
 	text-decoration: underline;
@@ -2529,6 +2536,10 @@ table td.administration li.preview {
 
 table td.administration li.edit {
 	background: url(../images/icons/edit_24.png) no-repeat;
+}
+
+table td.administration li.config {
+	background: url(../images/icons/apps_24.png) no-repeat;
 }
 
 table td.administration li.versionHistory {
@@ -3634,6 +3645,9 @@ li span.req {
 ----------------------------------------- */
 
 /* @end */
+
+/* @group Installation/Set Up */
+
 #cSetUp #content, #cSetUp #content form {
 	width: 50em;
 }
@@ -3661,6 +3675,10 @@ li span.req {
 	margin-top: 1em;
 }
 
+/* @end */
+
+/* @group User Feedback */
+
 .error, .notice, .success { padding: .8em; margin-bottom: 1em; border: 2px solid #ddd; }
 
 .error { background: #FBE3E4; color: #8a1f11; border-color: #FBC2C4; }
@@ -3669,5 +3687,7 @@ li span.req {
 .error a { color: #8a1f11; }
 .notice a { color: #514721; }
 .success a { color: #264409; }
+
+/* @end */
 
 

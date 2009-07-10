@@ -50,7 +50,7 @@ to your own modified versions of Mura CMS.
 <th>#application.rbFactory.getKeyValue(session.rb,"plugin.category")#</th>
 <th>#application.rbFactory.getKeyValue(session.rb,"plugin.version")#</th>
 <th>#application.rbFactory.getKeyValue(session.rb,"plugin.provider")#</th>
-<th>#application.rbFactory.getKeyValue(session.rb,"plugin.providerurl")#</th>
+<!--- <th>#application.rbFactory.getKeyValue(session.rb,"plugin.providerurl")#</th> --->
 <th>Plugin ID</th>
 <th class="administration">&nbsp;</th>
 </tr>
@@ -59,15 +59,15 @@ to your own modified versions of Mura CMS.
 <cfif application.permUtility.getModulePerm(request.rslist.moduleID,session.siteid)>
 <cfset started=true>
 <tr>
-<td class="varWidth"><a href="#application.configBean.getContext()#/plugins/#request.rslist.directory#/">#htmlEditFormat(request.rslist.name)#</a></td>
+<td class="varWidth"><a class="alt" href="#application.configBean.getContext()#/plugins/#request.rslist.directory#/">#htmlEditFormat(request.rslist.name)#</a></td>
 <td>#htmlEditFormat(request.rslist.directory)#</td>
 <td>#htmlEditFormat(request.rslist.category)#</td>
 <td>#htmlEditFormat(request.rslist.version)#</td>
-<td>#htmlEditFormat(request.rslist.provider)#</td>
-<td><a href="#request.rslist.providerurl#" target="_blank">#application.rbFactory.getKeyValue(session.rb,"plugin.view")#</a></td>
+<td><a class="alt" href="#request.rslist.providerurl#" target="_blank">#htmlEditFormat(request.rslist.provider)#</a></td>
+<!--- <td><a href="#request.rslist.providerurl#" target="_blank">#application.rbFactory.getKeyValue(session.rb,"plugin.view")#</a></td> --->
 <td>#request.rslist.pluginID#</td>
 <td class="administration">
-<ul class="three"><li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,'plugin.view')#" href="#application.configBean.getContext()#/plugins/#request.rslist.pluginID#/">#application.rbFactory.getKeyValue(session.rb,'plugin.view')#</a></li>
+<ul class="two">
 <cfif isUserInRole('S2')>
 <li class="edit"><a title="#application.rbFactory.getKeyValue(session.rb,'plugin.edit')#" href="index.cfm?fuseaction=cSettings.editPlugin&moduleID=#request.rslist.moduleID#">#application.rbFactory.getKeyValue(session.rb,'plugin.edit')#</a></li>
 <cfelse>
@@ -84,7 +84,7 @@ to your own modified versions of Mura CMS.
 </cfloop>
 <cfif not started>
 <tr>
-<td colspan="8" class="noResults">#application.rbFactory.getKeyValue(session.rb,"plugin.noresults")#</td>
+<td colspan="7" class="noResults">#application.rbFactory.getKeyValue(session.rb,"plugin.noresults")#</td>
 </tr>
 </cfif>
 </table>
