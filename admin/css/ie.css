@@ -144,6 +144,14 @@ dd.categoryAssignment input.textAlt {
 	right: 150px;
 }
 
+* html #navUtility #navLogout {
+		width: 74px !important;
+}
+
+* html #navLogout a {
+	background: blue;
+}
+
 * html a.tooltip {
 	background: none;
 	color: #F96509 !important;	

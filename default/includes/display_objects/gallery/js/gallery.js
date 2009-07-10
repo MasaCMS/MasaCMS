@@ -1,29 +1,31 @@
 function setGallery(){
 	
-	if(navigator.userAgent.toLowerCase().indexOf('msie 6') == -1){
+try
+	{
 		var gArray=document.getElementById("svGallery").getElementsByTagName("LI");
-	} else {
-		var gArray=document.getElementsByTagName("LI");	
-	}
-	var h=0;
-	var temph=0;
-	for(var i=0;i<gArray.length;i++){
-		if(jslib =='jquery'){
-			temph=getHeightJQuery(gArray[i]);
-		} else {
-			temph=getHeightPrototype(gArray[i]);
+		
+		var h=0;
+		var temph=0;
+		for(var i=0;i<gArray.length;i++){
+			if(jslib =='jquery'){
+				temph=getHeightJQuery(gArray[i]);
+			} else {
+				temph=getHeightPrototype(gArray[i]);
+			}
+			if (temph > h)
+			{h=temph;}
 		}
-		if (temph > h)
-		{h=temph;}
-	}
-	
-	for(var i=0;i<gArray.length;i++){
-		if(jslib =='jquery'){
-			temph=setHeightJQuery(gArray[i],h);
-		} else {
-			temph=setHeightPrototype(gArray[i],h);
-		}	
-	}
+		
+		for(var i=0;i<gArray.length;i++){
+			if(jslib =='jquery'){
+				temph=setHeightJQuery(gArray[i],h);
+			} else {
+				temph=setHeightPrototype(gArray[i],h);
+			}	
+		}
+	} 
+
+catch(err) {}
 }
 
 function getHeightJQuery(theLI){

@@ -17,7 +17,9 @@
 	<link rel="stylesheet" href="#application.configBean.getContext()#/#request.siteid#/css/site.css" type="text/css" media="all" />
 	<link rel="stylesheet" href="#application.configBean.getContext()#/#request.siteid#/css/print.css" type="text/css" media="print" />
 	<cfinclude template="ie_conditional_includes.cfm" />
-
+	
+	<!-- JQuery, Mura global.js, and other necessary js gets included by Mura on page render to avoid loading unnecesary libraries -->
+	
 	<cfset rs=application.feedManager.getFeeds(request.siteID,'Local',true,true) />
 	<cfloop query="rs">
 	<link rel="alternate" type="application/rss+xml" title="#renderer.getSite().getSite()# - #rs.name#" href="#XMLFormat('http://#cgi.server_name##application.configBean.getContext()#/tasks/feed/?feedID=#rs.feedID#')#" />

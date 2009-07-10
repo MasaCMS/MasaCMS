@@ -1,4 +1,4 @@
-/* @override http://localhost:8500/mura/default/includes/themes/merced/css/site.css */
+/* @override http://mura:8500/mura/default/includes/themes/merced/css/site.css */
 
 /*	Theme: Merced */
 
@@ -464,8 +464,9 @@ h1 a {
 	color: #fff;
 	}
 
-#navPrimary li li:hover a {
+#navPrimary li li a:hover {
 	color: #fff;
+		text-decoration: underline;
 	}
 
 /* @group Nav - Primary - Dropdown
@@ -475,7 +476,7 @@ h1 a {
 #navPrimary li ul { /* second-level lists */
 	position: absolute;
 	left: -9999px;
-	z-index: 1000;
+	z-index: 10;
 	width: 12em;
 	margin: 0;
 	padding-left: 0;
@@ -510,6 +511,7 @@ h1 a {
 #navPrimary li.sfhover ul ul,
 #navPrimary li.sfhover ul ul ul {
 	left: -9999px;
+		z-index: 1001;
 	}
 
 #navPrimary li:hover ul,
@@ -994,7 +996,7 @@ div.stars a {
 	padding: 30px 30px 10px;
 	margin: 0 0 2.2em;
 	color: #b4dffa;
-	background: #102e50 url(../images/bg-hero.jpg) no-repeat;
+	background: #102e50 url(../images/bg-hero.jpg) no-repeat !important;
 	border: 0;
 	}
 
@@ -1014,7 +1016,6 @@ div.stars a {
 	margin-right: 0;
 	border: 0;
 	font-size: 1em;
-	overflow: hidden;
 	background: transparent !important; /*for IE 6/7*/
 	}
 

@@ -25,7 +25,7 @@ Lazarus contentServer Sitemap
 
 
 <!--- Variable Include --->
-<cfinclude template="myGlobals.cfm">
+<cfinclude template="myglobals.cfm">
 
 <!--- Some Default Vars --->
 

@@ -1,3 +1,5 @@
+/* @override http://mura:8500/mura/admin/css/dialog.css */
+
 /*This file is part of Mura CMS.
 
     Mura CMS is free software: you can redistribute it and/or modify
@@ -181,11 +183,12 @@ a#editFormCloseLink {
 	padding: 0 !important;
 	text-align: center !important;
 	width: 98px !important;
+		height: 28px;
 }
 
 #frontEndTools ul li#adminLogOut a {
 	padding: 0 !important;
-		line-height: 1 !important;
+	line-height: 28px !important;
 }
 
 /* @group Add Content Nav */
