@@ -110,9 +110,10 @@ Upload New Plugin<br/>
 </cfif>
 </table>
 </div>
+</div>
 <cfparam name="attributes.activeTab" default="0">
 <cfhtmlhead text='<link rel="stylesheet" href="css/tab-view.css" type="text/css" media="screen">'>
 <cfhtmlhead text='<script type="text/javascript" src="js/tab-view.js"></script>'>
 <cfoutput><script type="text/javascript">
-initTabs(Array("Current Sites","Plug-Ins"),#attributes.activeTab#,0,0);
+initTabs(Array("Current Sites","Plugins"),#attributes.activeTab#,0,0);
 </script></cfoutput>

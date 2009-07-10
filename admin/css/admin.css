@@ -245,7 +245,12 @@ a {
 
 p a {
 	padding: 0 0 2px;
-	border-bottom: 1px dotted #ff3a00;
+	/*border-bottom: 1px dotted #ff3a00;*/
+}
+
+table td a.alt {
+	color: #69c;
+	/*border-bottom: 1px dotted;*/
 }
 
 table td a.alt {
