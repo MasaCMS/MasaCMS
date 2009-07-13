@@ -26,6 +26,7 @@
 
 <cfparam name="url.type" default="File">
 
+
 <cffunction name="SendResults">
 	<cfargument name="errorNumber" type="numeric" required="yes">
 	<cfargument name="fileUrl" type="string" required="no" default="">
@@ -41,7 +42,9 @@
 	<cfabort><!--- Result sent, stop processing this page --->
 </cffunction>
 
-<cfif NOT config.enabled>
+<cfif not ListFind("File,Image,Media,Flash", url.type)>
+	<cfset SendResults(2, '', '', 'The URL.TYPE is not valid')>
+<cfelseif NOT config.enabled>
 	<cfset SendResults(1, '', '', 'This file uploader is disabled. Please check the "editor/filemanager/upload/cfm/config.cfm" file')>
 <cfelse>
 	<cfscript>
@@ -89,19 +92,27 @@
 		<cfset currentFolderPath = userFilesServerPath & url.type & fs>
 
 		<cfif not directoryExists(currentFolderPath)>
-			<cfdirectory action="create" directory="#currentFolderPath#"/>
+			<cfdirectory action="create" directory="#currentFolderPath#" mode="777"/>
 		</cfif>
 
 		<!--- TODO: upload to a temp directory and move file if extension is allowed --->
 
-		<!--- first upload the file with an unique filename --->
+		<!--- first upload the file with an unique filename 
 		<cffile action="upload"
 			fileField="NewFile"
 			destination="#currentFolderPath#"
 			nameConflict="makeunique"
 			mode="644"
 			attributes="normal">
-
+		--->
+		
+		<cffile action="upload"
+					fileField="NewFile"
+					destination="#getTempDirectory()#"
+					nameConflict="makeunique"
+					mode="644"
+					attributes="normal">
+					
 		<cfif (Len(lAllowedExtensions) AND NOT listFindNoCase(lAllowedExtensions, cffile.ServerFileExt))
 			OR (Len(lDeniedExtensions) AND listFindNoCase(lDeniedExtensions, cffile.ServerFileExt))>
 
@@ -125,7 +136,7 @@
 				}
 
 				// When the original filename already exists, add numbers (0), (1), (2), ... at the end of the filename.
-				if( compare( cffile.ServerFileName, fileName ) ) {
+				if( fileExists("#currentFolderPath##fileName#.#fileExt#") ) {
 					counter = 0;
 					tmpFileName = fileName;
 					while( fileExists("#currentFolderPath##fileName#.#fileExt#") ) {
@@ -137,24 +148,21 @@
 
 			<!--- Rename the uploaded file, if neccessary --->
 			<cfif compare(cffile.ServerFileName,fileName)>
-
 				<cfset errorNumber = "201">
-				<cffile
-					action="rename"
-					source="#currentFolderPath##cffile.ServerFileName#.#cffile.ServerFileExt#"
-					destination="#currentFolderPath##fileName#.#fileExt#"
-					mode="644"
-					attributes="normal">
-
 			</cfif>
-
+			<cffile
+				action="rename"
+				source="#getTempDirectory()##cffile.ServerFileName#.#cffile.ServerFileExt#"
+				destination="#currentFolderPath##fileName#.#fileExt#"
+				mode="644"
+				attributes="normal">
 		</cfif>
 
 		<cfcatch type="Any">
 
 			<cfset errorNumber = "1">
-			<cfset customMsg = "An error occured: " & cfcatch.message & " - " & cfcatch.detail>
-
+			<cfset customMsg = "An error occured: Please contact your site administrator.">
+			<cfset application.utility.logEvent("FCKEditor Error:#cfcatch.message# Detail:#cfcatch.detail#","mura-content","Error",true) />		
 		</cfcatch>
 
 	</cftry>

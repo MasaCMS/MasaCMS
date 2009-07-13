@@ -86,7 +86,11 @@ userFilesServerPath = config.serverPath & fs;
 	xmlContent = ""; // append to this string to build content
 </cfscript>
 
-<cfif not config.enabled>
+<cfif not ListFind("File,Image,Media,Flash", url.type)>
+	
+	<cfset xmlContent = "<Error number=""2"" text=""The URL.TYPE is not valid"" />">
+
+<cfelseif not config.enabled>
 
 	<cfset xmlContent = "<Error number=""1"" text=""This connector is disabled. Please check the 'editor/filemanager/browser/default/connectors/cfm/config.cfm' file"" />">
 	
@@ -113,7 +117,7 @@ userFilesServerPath = config.serverPath & fs;
 	</cfloop>--->
 	
 	<!--- create sub-directory for file type if it doesn't already exist --->
-		<cfif not directoryExists(userFilesServerPath & url.type)>	
+	<cfif not directoryExists(userFilesServerPath & url.type)>	
 		<cfdirectory action="create" directory="#userFilesServerPath##url.type#" mode="755">
 	</cfif>
 
@@ -147,13 +151,20 @@ userFilesServerPath = config.serverPath & fs;
 				<!--- TODO: upload to a temp directory and move file if extension is allowed --->
 			
 				<!--- first upload the file with an unique filename --->
+				<!---
 				<cffile action="upload"
 					fileField="NewFile"
 					destination="#currentFolderPath#"
 					nameConflict="makeunique"
 					mode="644"
 					attributes="normal">
-				
+				--->
+				<cffile action="upload"
+					fileField="NewFile"
+					destination="#getTempDirectory()#"
+					nameConflict="makeunique"
+					mode="644"
+					attributes="normal">
 				<cfif cffile.fileSize EQ 0>
 					<cfthrow>
 				</cfif>
@@ -180,7 +191,7 @@ userFilesServerPath = config.serverPath & fs;
 					}
 					
 					// When the original filename already exists, add numbers (0), (1), (2), ... at the end of the filename.
-					if( compare( cffile.ServerFileName, fileName ) ) {
+					if( fileExists("#currentFolderPath##fileName#.#fileExt#") ) {
 						counter = 0;
 						tmpFileName = fileName;
 						while( fileExists("#currentFolderPath##fileName#.#fileExt#") ) {
@@ -192,21 +203,18 @@ userFilesServerPath = config.serverPath & fs;
 					
 					<!--- Rename the uploaded file, if neccessary --->
 					<cfif compare(cffile.ServerFileName,fileName)>
-					
 						<cfset errorNumber = "201">
-						<cffile
-							action="rename"
-							source="#currentFolderPath##cffile.ServerFileName#.#cffile.ServerFileExt#"
-							destination="#currentFolderPath##fileName#.#fileExt#"
-							mode="644"
-							attributes="normal">
-					
-					</cfif>					
-				
+					</cfif>	
+					<cffile
+						action="rename"
+						source="#getTempDirectory()##cffile.ServerFileName#.#cffile.ServerFileExt#"
+						destination="#currentFolderPath##fileName#.#fileExt#"
+						mode="644"
+						attributes="normal">				
 				</cfif>
 		
 				<cfcatch type="Any">
-				
+					<cfset application.utility.logEvent("FCKEditor Error:#cfcatch.message# Detail:#cfcatch.detail#","mura-content","Error",true) />		
 					<cfset errorNumber = "202">
 					
 				</cfcatch>
@@ -324,7 +332,7 @@ userFilesServerPath = config.serverPath & fs;
 					<cfdirectory
 						action="create"
 						directory="#currentFolderPath##newFolderName#"
-						mode="755">
+						mode="644">
 					<cfcatch>
 						<!--- 
 						un-resolvable error numbers in ColdFusion:
@@ -342,9 +350,8 @@ userFilesServerPath = config.serverPath & fs;
 		
 		
 		<cfdefaultcase>
-		
-			<cfthrow type="fckeditor.connector" message="Illegal command: #url.command#">
-			
+			<cfset application.utility.logEvent("FCKEditor Error:#cfcatch.message# Detail:#cfcatch.detail#","mura-content","Error",true) />		
+			<cfthrow type="fckeditor.connector" message="Illegal command">		
 		</cfdefaultcase>
 		
 		
@@ -353,11 +360,11 @@ userFilesServerPath = config.serverPath & fs;
 </cfif>
 
 <cfscript>
-	xmlHeader = '<?xml version="1.0" encoding="utf-8" ?><Connector command="#url.command#" resourceType="#url.type#">';
-	xmlHeader = xmlHeader & '<CurrentFolder path="#url.currentFolder#" url="#userFilesPath##url.type##url.currentFolder#" />';
+	xmlHeader = '<?xml version="1.0" encoding="utf-8" ?><Connector command="#XMLFormat(url.command)#" resourceType="#XMLFormat(url.type)#">';
+	xmlHeader = xmlHeader & '<CurrentFolder path="#XMLFormat(url.currentFolder)#" url="#XMLFormat('#userFilesPath##url.type##url.currentFolder#')#" />';
 	xmlFooter = '</Connector>';
 </cfscript>
-<cfset session.test="#userFilesPath##url.type##url.currentFolder#">
+
 <cfheader name="Expires" value="#GetHttpTimeString(Now())#">
 <cfheader name="Pragma" value="no-cache">
 <cfheader name="Cache-Control" value="no-cache, no-store, must-revalidate">
