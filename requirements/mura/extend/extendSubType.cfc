@@ -380,6 +380,7 @@ to your own modified versions of Mura CMS.
 		<cfquery name="rs" datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 		select ExtendSetID,subTypeID,name,orderno,isActive,siteID,categoryID,orderno,0 as setlevel from tclassextendsets 
 		where subTypeID=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#getsubtypeID()#">
+		and siteID=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#getSiteID()#">
 		<cfif arguments.doFilter and fLen>
 		and (
 		<cfloop from="1" to="#fLen#" index="f">
@@ -399,6 +400,7 @@ to your own modified versions of Mura CMS.
 			where
 			tclassextend.type=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#getType()#">
 			and tclassextend.subType=<cfqueryparam cfsqltype="cf_sql_varchar"  value="Default">
+			and tclassextend.siteID=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#getSiteID()#">
 			<cfif arguments.doFilter and fLen>
 			and (
 			<cfloop from="1" to="#fLen#" index="f">

@@ -460,8 +460,9 @@ to your own modified versions of Mura CMS.
 <cffunction name="dspPeerNav" output="false" returntype="string">
 	<cfset var thenav="" />
 	<cfset var menutype = "" />
-	
-			<cfif arraylen(this.crumbdata) gt (this.navParentIdx+this.navOffSet)>
+		
+			<cfif event.getContentBean().getContentID() neq '00000000000000000000000000000000001'
+				 and arraylen(this.crumbdata) gt (this.navParentIdx+this.navOffSet)>
 				<cfif this.crumbdata[this.navParentIdx].type eq 'calendar'>
 					<cfset menutype='fixed'>
 				<cfelse>
