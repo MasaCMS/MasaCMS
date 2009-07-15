@@ -80,6 +80,15 @@ ul#setList li {
 	margin: 0 0 .5em;
 }
 
+ol {
+	margin: 1em 3em;
+}
+
+ol li {
+	margin-bottom: 1em;
+	font-size: 12px;
+}
+
 form textarea {
 	margin: 0;
 	width: 100%;
@@ -230,12 +239,17 @@ td.order select, td.deploy select {
 }
 
 p {
-	line-height: 16px;
-	margin: 0 0 16px 0;
+	line-height: 1.2;
+	margin: 0 0 1em 0;
 }
 
 #content p {
 	font-size: 12px;
+}
+
+#content p.intro {
+	font-size: 13px;
+	line-height: 1.3;
 }
 
 a {
@@ -1458,6 +1472,10 @@ h2 {
 	color: #ff3a00;
 }
 
+p+h2 {
+	margin: 1em 0;
+}
+
 #popUp h2 {
 	margin-bottom: .5em;
 }
@@ -1489,7 +1507,7 @@ h3 {
 	color: #333;
 }
 
-#popUp h3 {
+#popUp h3, .docs h3 {
 	color: #69c;
 }
 

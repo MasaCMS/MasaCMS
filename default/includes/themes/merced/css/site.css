@@ -814,7 +814,7 @@ a.boxItemHeader { /* Link of items inside dragable boxes */
 /* @group Home Feeds
 ===================================== */
 
-.home .sidebar .svSyndLocal h3 {
+.home .sidebar .svIndex h3 {
 	display: block;
 	padding: 0 1em;
 	margin-bottom: 1em;
@@ -825,18 +825,18 @@ a.boxItemHeader { /* Link of items inside dragable boxes */
 	background: #ff3405;
 	}
 
-.home .sidebar .svSyndLocal dl {
+.home .sidebar .svIndex dl {
 	margin: 0 1.5em 1em;
 	padding: 0 0 .5em;
 	border-bottom: 1px solid #d6d6d6;
 	}
 
-.home .sidebar .svSyndLocal dl.last {
+.home .sidebar .svIndex dl.last, .home .sidebar .svIndex dl:last-child {
 	border-bottom: 0;
 	padding-bottom: 0;
 	}
 
-.home .sidebar .svSyndLocal dt {
+.home .sidebar .svIndex dt {
 	margin: 0 0 .5em;
 	padding: 0;
 	font-size: 1.3em;
@@ -844,21 +844,21 @@ a.boxItemHeader { /* Link of items inside dragable boxes */
 	line-height: 1.3;
 	}
 
-.home .sidebar .svSyndLocal dt.releaseDate {
+.home .sidebar .svIndex dt.releaseDate {
 	margin: 0 0 3px;
 	font-size: 1em;
 	text-transform: uppercase;
 	color: #979797;
 	}
 
-.home .sidebar .svSyndLocal dd {
+.home .sidebar .svIndex dd {
 	margin: 0 0 .25em;
 	padding: 0;
 	font-size: 1.1em;
 	color: #434343;
 	}
 
-.home .sidebar .svSyndLocal dd.summary {
+.home .sidebar .svIndex dd.summary {
 	margin: 0 0 .5em;
 	}
 
@@ -869,21 +869,21 @@ a.boxItemHeader { /* Link of items inside dragable boxes */
 	color: #999 !important;
 	}*/
 
-.home .sidebar .svSyndLocal dl.hasImage .image {
+.home .sidebar .svIndex dl.hasImage .image {
 	margin: 0 .5em 0em 0;
 	}
 
-.home .sidebar .svSyndLocal dl.hasImage .image img {
+.home .sidebar .svIndex dl.hasImage .image img {
 	width: 50px;
 	}
 
-.home .sidebar .svSyndLocal dd p {
+.home .sidebar .svIndex dd p {
 	margin: 0;
 	padding: 0;
 	line-height: inherit;
 	}
 
-.home .sidebar .svSyndLocal span.readMore a {
+.home .sidebar .svIndex span.readMore a {
 	display: none;
 	}
 
