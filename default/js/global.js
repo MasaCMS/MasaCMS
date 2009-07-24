@@ -665,7 +665,7 @@ function setHTMLEditors(height,width) {
 			oFCKeditor.ToolbarSet			= "htmlEditor";
 			oFCKeditor.Config.EditorAreaCSS	= themepath + '/css/editor.css';
 			oFCKeditor.Config.StylesXmlPath = themepath + '/css/fckstyles.xml';
-			oFCKeditor.BasePath = context + '/fckeditor/';
+			oFCKeditor.BasePath = context + '/wysiwyg/';
 			oFCKeditor.Height = height;
 			oFCKeditor.Width = width;
 			oFCKeditor.Config.ImageBrowser=false;

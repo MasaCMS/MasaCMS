@@ -215,6 +215,20 @@ function toggleDisplay(id,expand,close){
 		}	  
 }
 
+function openDisplay(id,close){
+		
+	if(document.getElementById(id).style.display== 'none'){
+		
+		 new Effect.SlideDown($(id));
+		 if( document.getElementById(id + 'Link')){
+		  var theLink = document.getElementById(id + 'Link'); 
+		  theLink.innerHTML='[' + close + ']';
+		  }
+		 document.getElementById(id).style.display="";
+	} 
+
+}
+
 function toggleDisplay2(id,display){
           document.getElementById(id).style.display = (display== true)?'':'none';
 }
@@ -531,7 +545,7 @@ function setHTMLEditors(context, themeAssetPath) {
 			oFCKeditor.ToolbarSet			= "Summary";
 			oFCKeditor.Config.EditorAreaCSS	= themeAssetPath + '/css/editor.css';
 			oFCKeditor.Config.StylesXmlPath = themeAssetPath + '/css/fckstyles.xml';
-			oFCKeditor.BasePath = context + '/fckeditor/';
+			oFCKeditor.BasePath = context + '/wysiwyg/';
 			oFCKeditor.Height = "200";
 			oFCKeditor.ReplaceTextarea();
 			editors.push(oFCKeditor);

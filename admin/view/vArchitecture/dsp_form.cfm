@@ -286,8 +286,19 @@ select * from rsPluginScripts3 order by pluginID
 		<cfset tablist=tablist & ",'#jsStringFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.tabs.relatedcontent"))#'"/>
 		
 	</cfcase>
-	
-	<cfcase value="Component,Form">
+	<cfcase value="Component">
+		<!---
+		<cfif application.categoryManager.getCategoryCount(attributes.siteID)>
+		<cfinclude template="form/dsp_tab_categories.cfm">
+		<cfset tablist=tablist & ",'#jsStringFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.tabs.categorization"))#'"/>
+		</cfif>
+		--->
+		<cfif attributes.contentID neq ''>
+		<cfinclude template="form/dsp_tab_usage.cfm">
+		<cfset tablist=tablist & ",'#jsStringFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.tabs.usagereport"))#'"/>
+		</cfif>		
+	</cfcase>
+	<cfcase value="Form">
 		<cfif attributes.contentID neq ''>
 		<cfinclude template="form/dsp_tab_usage.cfm">
 		<cfset tablist=tablist & ",'#jsStringFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.tabs.usagereport"))#'"/>

@@ -47,9 +47,21 @@ to your own modified versions of Mura CMS.
 <cfswitch expression="#attributes.type#">
 <cfcase value="Page,Portal,Calendar,Gallery,File,Link">
 <dt class="first"><a href="##" class="tooltip">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.title")#<span>#application.rbFactory.getKeyValue(session.rb,"tooltip.pageTitle")#</span></a></dt>
-<dd><input type="text" id="title" name="title" value="#HTMLEditFormat(request.contentBean.gettitle())#"  maxlength="255" class="textLong" required="true" message="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.titlerequired')#" ></dd>
+<dd><input type="text" id="title" name="title" value="#HTMLEditFormat(request.contentBean.gettitle())#"  maxlength="255" class="textLong" required="true" message="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.titlerequired')#" <cfif not request.contentBean.getIsNew() and not listFind("File,Link",attributes.type)>onkeypress="openDisplay('editSEOTitles','#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.close')#');"</cfif>></dd>
+
 <dt><a href="##" class="tooltip">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.menutitle")#<span>#application.rbFactory.getKeyValue(session.rb,"tooltip.navigationTitle")#</span></a></dt>
-<dd><input type="text" id="menuTitle" name="menuTitle" value="#HTMLEditFormat(request.contentBean.getmenuTitle())#"  maxlength="255" class="textLong"></dd>
+<dd><input type="text" id="menuTitle" name="menuTitle" value="#HTMLEditFormat(request.contentBean.getmenuTitle())#"  maxlength="255" class="textLong" <cfif not request.contentBean.getIsNew() and not listFind("File,Link",attributes.type)>onkeypress="openDisplay('editSEOTitles','#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.close')#');"</cfif>></dd>
+
+<cfif not listFind("File,Link",attributes.type)>
+<dt><a href="##" class="tooltip">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.seotitles")#<span>#application.rbFactory.getKeyValue(session.rb,"tooltip.seotitles")#</span> <a href="##" id="editSEOTitlesLink" onclick="javascript: toggleDisplay('editSEOTitles','#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.expand')#','#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.close')#');return false">[#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.expand")#]</a></dt>
+<div id="editSEOTitles" style="display:none;">
+<p class="notice">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.seotitlesnote")#</p>
+<dt class="alt noBorder"><a href="##" class="tooltip">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.urltitle")#<span>#application.rbFactory.getKeyValue(session.rb,"tooltip.urlTitle")#</span></a></dt>
+<dd><input type="text" id="urlTitle" name="urlTitle" value="#HTMLEditFormat(request.contentBean.getURLTitle())#"  maxlength="255" class="textLong"></dd>
+<dt class="alt"><a href="##" class="tooltip">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.htmltitle")#<span>#application.rbFactory.getKeyValue(session.rb,"tooltip.htmlTitle")#</span></a></dt>
+<dd><input type="text" id="htmlTitle" name="htmlTitle" value="#HTMLEditFormat(request.contentBean.getHTMLTitle())#"  maxlength="255" class="textLong"></dd>
+</div>
+</cfif>
 </cfcase>
 <cfdefaultcase>
 <input type="hidden" id="menuTitle" name="menuTitle" value="">
@@ -79,7 +91,7 @@ to your own modified versions of Mura CMS.
 		fckEditor = createObject("component", "mura.fckeditor");
 		fckEditor.instanceName	= "body";
 		fckEditor.value			= '#request.contentBean.getBody()#';
-		fckEditor.basePath		= "#application.configBean.getContext()#/fckeditor/";
+		fckEditor.basePath		= "#application.configBean.getContext()#/wysiwyg/";
 		fckEditor.config.EditorAreaCSS	= '#application.settingsManager.getSite(attributes.siteid).getThemeAssetPath()#/css/editor.css';
 		fckEditor.config.StylesXmlPath = '#application.settingsManager.getSite(attributes.siteid).getThemeAssetPath()#/css/fckstyles.xml';
 		fckEditor.width			= "100%";

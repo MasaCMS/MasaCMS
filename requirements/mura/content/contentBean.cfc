@@ -54,6 +54,8 @@ to your own modified versions of Mura CMS.
 <cfset variables.instance.Body = "" />
 <cfset variables.instance.Title = "" />
 <cfset variables.instance.MenuTitle = "" />
+<cfset variables.instance.URLTitle="" />
+<cfset variables.instance.HTMLTitle="" />
 <cfset variables.instance.Filename = "" />
 <cfset variables.instance.OldFilename = "" />
 <cfset variables.instance.LastUpdate = now() />
@@ -147,6 +149,8 @@ to your own modified versions of Mura CMS.
 		<cfset setTitle(arguments.Content.Title) />
 		<cfset setMenuTitle(arguments.Content.MenuTitle) />
 		<cfset setFilename(arguments.Content.Filename) />
+		<cfset setURLTitle(arguments.Content.urltitle) />
+		<cfset setHTMLTitle(arguments.Content.htmltitle) />
 		<cfset setLastUpdate(arguments.Content.LastUpdate) />
 		<cfset setDisplay(arguments.Content.Display) />
 		<cfset setParentID(arguments.Content.ParentID) />
@@ -719,7 +723,7 @@ to your own modified versions of Mura CMS.
     <cfreturn variables.instance.releaseDate />
   </cffunction>
   
-         <cffunction name="setTargetParams" returnType="void" output="false" access="public">
+  <cffunction name="setTargetParams" returnType="void" output="false" access="public">
     <cfargument name="TargetParams" type="string" required="true">
     <cfset variables.instance.TargetParams = trim(arguments.TargetParams) />
   </cffunction>
@@ -1085,6 +1089,24 @@ to your own modified versions of Mura CMS.
 <cffunction name="setAllValues" returntype="any" access="public" output="false">
 	<cfargument name="instance">
 	<cfset variables.instance=arguments.instance/>
+</cffunction>
+
+<cffunction name="setURLTitle" returnType="void" output="false" access="public">
+    <cfargument name="URLTitle" required="true">
+	<cfset variables.instance.URLTitle = trim(arguments.URLTitle) />
+</cffunction>
+  
+<cffunction name="getURLTitle" returnType="string" output="false" access="public">
+	<cfreturn variables.instance.URLTitle />
+</cffunction>
+
+<cffunction name="setHTMLTitle" returnType="void" output="false" access="public">
+    <cfargument name="HTMLTitle" required="true">
+  	<cfset variables.instance.HTMLTitle = trim(arguments.HTMLTitle) />
+</cffunction>
+  
+<cffunction name="getHTMLTitle" returnType="string" output="false" access="public">
+	<cfreturn variables.instance.HTMLTitle />
 </cffunction>
 
 </cfcomponent>

@@ -7,7 +7,7 @@
 	<cfif request.contentBean.getCredits() neq ""><meta name="author" content="#request.contentbean.getCredits()#" /></cfif>
 	<meta name="generator" content="Mura CMS #application.configBean.getVersion()#" />
 	<!--- <meta name="robots" content="noindex, nofollow" /> ---><!--- use this to discourage search engines from indexing your site. (can be useful if developing on a live server for example) Delete if not needed. --->
-	<title>#request.contentBean.getTitle()# - #renderer.getSite().getSite()#</title>
+	<title>#request.contentBean.getHTMLTitle()# - #renderer.getSite().getSite()#</title>
 
 	<link rel="icon" href="#application.configBean.getContext()#/#request.siteid#/images/favicon.ico" type="image/x-icon" />
 	<link rel="shortcut icon" href="#application.configBean.getContext()#/#request.siteid#/images/favicon.ico" type="image/x-icon" />

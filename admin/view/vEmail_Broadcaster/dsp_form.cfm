@@ -121,7 +121,7 @@ to your own modified versions of Mura CMS.
 		fckEditor = createObject("component", "mura.fckeditor");
 		fckEditor.instanceName	= "bodyHTML";
 		fckEditor.value			= '#request.emailBean.getBodyHTML()#';
-		fckEditor.basePath		= "#application.configBean.getContext()#/fckeditor/";
+		fckEditor.basePath		= "#application.configBean.getContext()#/wysiwyg/";
 		fckEditor.config.EditorAreaCSS	= '#application.settingsManager.getSite(attributes.siteid).getThemeAssetPath()#/css/editor_email.css';
 		fckEditor.config.StylesXmlPath = '#application.settingsManager.getSite(attributes.siteid).getThemeAssetPath()#/css/fckstyles.xml';
 		fckEditor.config.DefaultLanguage=lcase(session.rb);

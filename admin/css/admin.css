@@ -440,8 +440,8 @@ form dt.alt {
 	font-weight: normal;
 }
 
-form dt * {
-	font-weight: normal;
+form dt strong a {
+	font-size: 120%;
 }
 
 form dd {
@@ -475,6 +475,17 @@ form li {
 	padding: 8px 0 0 0;
 	background: url(../images/rule_dotted.gif) repeat-x left top;
 }
+
+dt.noBorder {
+	background: none;
+	margin-top: 0;
+	padding-top: 0;
+}
+
+/*.oneColumn dt.subHead a {
+	font-weight: normal;
+	font-style: italic !important;
+}*/
 
 /*#page_tabView .oneColumn dt.first {
 	margin: 0 0 16px 0;
@@ -675,9 +686,9 @@ dd ul.interestGroups li, dd ul.categories li {
 	clear: left;
 }
 
-form dt a, form dt label {
+/*form dt a, form dt label {
 	font-weight: normal !important;
-}
+}*/
 
 .twoColumn dd {
 	margin: 0 0 0 210px;
@@ -1517,7 +1528,7 @@ h3.separate {
 
 h3.alt {
 	font-size: 12px;
-		font-weight: bold;
+	font-weight: bold;
 	clear: both;
 }
 

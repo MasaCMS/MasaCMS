@@ -73,6 +73,13 @@ to your own modified versions of Mura CMS.
 <cfargument name="event">
 	<cfset var response=""/>
 	<cfset var servlet = createObject("component","#application.configBean.getWebRootMap()#.#event.getValue('siteid')#.includes.servlet").init(event) />
+	<cfset var localHandler=""/>
+	
+	<cfif fileExists(expandPath("/#application.configBean.getWebRootMap()#") & "/#event.getValue('siteid')#/includes/eventHandler.cfc")>
+		<cfset localHandler=createObject("component","#application.configBean.getWebRootMap()#.#event.getValue('siteid')#.includes.eventHandler").init()>
+	</cfif>
+
+	<cfset event.setValue("localHandler",localHandler)/>
 	
 	<cfset application.pluginManager.executeScripts('onSiteRequestStart',event.getValue('siteid'),event)/>
 	<cfset servlet.onRequestStart() />

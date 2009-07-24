@@ -461,6 +461,14 @@ to your own modified versions of Mura CMS.
 		<cfset newBean.setmenutitle(newBean.getTitle())>
 	</cfif>
 	
+	<cfif newBean.getURLTitle() eq ''>
+		<cfset newBean.setURLTitle(variables.contentUtility.formatFilename(newBean.getmenutitle()))>
+	</cfif>
+	
+	<cfif newBean.getHTMLTitle() eq ''>
+		<cfset newBean.setHTMLTitle(newBean.getTitle())>
+	</cfif>
+	
 	<!--- END CONTENT TYPE: ALL CONTENT TYPES --->
 	
 	<!--- BEGIN CONTENT TYPE: ALL SITE TREE LEVEL CONTENT TYPES --->
@@ -515,6 +523,21 @@ to your own modified versions of Mura CMS.
 		</cfif>
 	</cfif>
 	
+	<cfif  newBean.getType() eq "Component" >
+		<cfif not newBean.getIsNew() and isdefined("arguments.data.mode") and arguments.data.mode eq 'import'>
+			<cfset variables.categoryManager.keepCategories(newBean.getcontentHistID(),
+			getCategoriesByHistID(currentBean.getcontentHistID())) />	
+		<cfelse>
+			<cfif newBean.getIsNew()>
+				<cfset variables.categoryManager.setCategories(arguments.data,newBean.getcontentID(),
+				newBean.getcontentHistID(),arguments.data.siteid,getCategoriesByHistID('')) />	
+			<cfelse>
+				<cfset variables.categoryManager.setCategories(arguments.data,newBean.getcontentID(),
+				newBean.getcontentHistID(),arguments.data.siteid,getCategoriesByHistID(currentBean.getcontentHistID())) />	
+			</cfif>	
+		</cfif>
+	</cfif>
+	
 	<!--- Public Content Submision  --->
 	<cfif  isdefined('arguments.data.email') and isdefined('arguments.data.email')>
 				
@@ -530,12 +553,12 @@ to your own modified versions of Mura CMS.
 	
 	<!--- BEGIN CONTENT TYPE: PAGE, PORTAL, CALENDAR, GALLERY --->
 	<cfif newBean.gettype() eq 'Page' or newBean.gettype() eq 'Portal' or newBean.gettype() eq 'Calendar' or newBean.gettype() eq 'Gallery'>
-	
+		
 		<cfif not newBean.getIsNew()>	
 			<cfset newBean.setfilename(currentBean.getfilename())>
 			<cfset newBean.setOldfilename(currentBean.getfilename())>
 		</cfif>
-			
+		
 		<cfif 
 			(
 				(newBean.getapproved() or newBean.getIsNew())
@@ -548,7 +571,7 @@ to your own modified versions of Mura CMS.
 				  not newBean.getIsNew() 
 				  and (
 					 	currentBean.getparentid() neq newBean.getparentid()
-					or currentBean.getmenutitle() neq newBean.getmenutitle()
+					or variables.contentUtility.formatFilename(currentBean.getURLtitle()) neq variables.contentUtility.formatFilename(newBean.getURLtitle())
 				   )
 			  	)
 			  )

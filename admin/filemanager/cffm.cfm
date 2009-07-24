@@ -154,7 +154,7 @@
 	<cflocation url="#arguments.newlocation#" addtoken="false">
 </cffunction>
 
-<cffunction name="dump" output="yes" returntype="void">
+<cffunction name="_dump" output="yes" returntype="void">
 	<cfargument name="vartodump" required="yes" type="any">
 	<cfargument name="abort" required="no" default="yes" type="boolean">
 	<cfoutput>Dumping data:<br></cfoutput>

@@ -52,7 +52,7 @@ to your own modified versions of Mura CMS.
 	<meta http-equiv="cache control" content="no-cache, no-store, must-revalidate" />
 	<script src="js/admin.js" type="text/javascript" language="Javascript"></script>
 	<script src="js/prototype.js" type="text/javascript" language="Javascript"></script>
-	<script type="text/javascript" src="#application.configBean.getContext()#/fckeditor/fckeditor.js"></script>
+	<script type="text/javascript" src="#application.configBean.getContext()#/wysiwyg/fckeditor.js"></script>
 	#fusebox.ajax#
 	<cfif myfusebox.originalcircuit neq "cLogin">
 		<script language="JavaScript">

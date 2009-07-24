@@ -104,12 +104,18 @@ to your own modified versions of Mura CMS.
 		<cfset attributeValue=addressBean.getExtendedAttribute(attributeBean.getAttributeID(),true) />
 		<dt>
 		<cfif len(attributeBean.getHint())>
-		<a href="##" class="tooltip">#attributeBean.getLabel()# <span>#attributeBean.gethint()#</span></a>
+		<a href="##" class="tooltip">#attributeBean.getLabel()# <cfif attributeBean.getType() IS "Hidden"><strong>[Hidden]</strong></cfif> <span>#attributeBean.gethint()#</span></a>
 		<cfelse>
-		#attributeBean.getLabel()#
+		#attributeBean.getLabel()# <cfif attributeBean.getType() IS "Hidden"><strong>[Hidden]</strong></cfif>
 		</cfif>
 		<cfif attributeBean.getType() eq "File" and len(attributeValue) and attributeValue neq 'useMuraDefault'> <a href="#application.configBean.getContext()#/tasks/render/file/?fileID=#attributeValue#" target="_blank">[Download]</a> <input type="checkbox" value="true" name="extDelete#attributeBean.getAttributeID()#"/> Delete</cfif>
 		</dt>
+		
+		<!--- if it's an hidden type attribute then flip it to be a textbox so it can be editable through the admin --->
+		<cfif attributeBean.getType() IS "Hidden">
+			<cfset attributeBean.setType( "TextBox" ) />
+		</cfif>	
+		
 		<dd>#attributeBean.renderAttribute(attributeValue)#</dd>
 	</cfloop></dl></dd>
 </cfoutput>

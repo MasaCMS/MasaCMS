@@ -45,11 +45,10 @@
 <cfset request.rsCount = application.contentManager.getItemCount(attributes.contentid,attributes.siteid) >
 <cfset request.rsPageCount = application.contentManager.getPageCount(attributes.siteid) >
 <cfset request.rsRestrictGroups = application.contentUtility.getRestrictGroups(attributes.siteid) >
-<cfif attributes.moduleid eq '00000000000000000000000000000000000'>
-<cfset request.rsTemplates = application.contentUtility.getTemplates(attributes.siteid) >
-<cfset application.contentManager.readRegionObjects(attributes.contenthistid,attributes.siteid) >
-<cfset request.rsCategories = application.categoryManager.getCategoriesBySiteID(attributes.siteid,'') >
+<cfset request.rsTemplates = application.contentUtility.getTemplates(attributes.siteid,attributes.type) >
 <cfset request.rsCategoryAssign = application.contentManager.getCategoriesByHistID(attributes.contenthistID) >
+<cfif attributes.moduleid eq '00000000000000000000000000000000000'>
+<cfset application.contentManager.readRegionObjects(attributes.contenthistid,attributes.siteid) >
 </cfif>
 <cfset request.rsRelatedContent = application.contentManager.getRelatedContent(attributes.siteid, attributes.contenthistID) >
 <!--- do action="vArch.ajax" --->

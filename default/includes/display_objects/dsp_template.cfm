@@ -40,9 +40,8 @@ for your modified version; it is your choice whether to do so, or to make such m
 the GNU General Public License version 2  without this exception.  You may, if you choose, apply this exception
 to your own modified versions of Mura CMS.
 --->
-
 <cfsilent><cfquery datasource="#application.configBean.getDatasource()#" username="#application.configBean.getDBUsername()#" password="#application.configBean.getDBPassword()#" name="rsTemplate">
-select contentid, menutitle, title, body, doCache
+select *
 from tcontent 
 where siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"> and 
 				    (
@@ -68,5 +67,10 @@ where siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"
 <cfset request.cacheItem=rsTemplate.doCache/>
 </cfsilent>
 <cfif rsTemplate.recordcount>
+<cfif len(rsTemplate.template) and fileExists("#getSite().getTemplateIncludeDir()#/components/#rsTemplate.template#")>
+	<cfset componentBody=rsTemplate.body>
+	<cfinclude template="#event.getSite().getThemeIncludePath()#/templates/components/#rsTemplate.template#">
+<cfelse>
 <cfoutput>#setDynamicContent(rsTemplate.body)#</cfoutput>
+</cfif>
 </cfif>

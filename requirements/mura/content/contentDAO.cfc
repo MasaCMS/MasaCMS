@@ -224,7 +224,9 @@ to your own modified versions of Mura CMS.
 	   responseChart,responseSendTo,moduleAssign,notes,inheritObjects,isFeature,
 	   releaseDate,targetParams,isLocked,nextN,sortBy,sortDirection,featureStart,featureStop,fileID,forceSSL,
 	   remoteID,remoteURL,remotePubDate,remoteSource,RemoteSourceURL,Credits,
-	   audience, keyPoints, searchExclude, displayTitle, doCache, created)
+	   audience, keyPoints, searchExclude, displayTitle, doCache, created,
+	   urltitle,
+	   htmltitle)
       VALUES (
 	  	 <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentBean.getContentHistID()#">, 
          <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentBean.getContentID()#">,
@@ -241,8 +243,7 @@ to your own modified versions of Mura CMS.
 		<cfqueryparam cfsqltype="cf_sql_longvarchar" null="#iif(arguments.contentBean.getPath() neq '',de('no'),de('yes'))#" value="#arguments.contentBean.getPath()#">,
 		<cfqueryparam cfsqltype="cf_sql_longvarchar" null="#iif(arguments.contentBean.getTags() neq '',de('no'),de('yes'))#" value="#arguments.contentBean.getTags()#">,
 		<cfqueryparam cfsqltype="cf_sql_longvarchar" null="#iif(arguments.contentBean.getResponseMessage() neq '',de('no'),de('yes'))#" value="#arguments.contentBean.getResponseMessage()#">,
-	    <cfqueryparam cfsqltype="cf_sql_longvarchar" null="#iif(arguments.contentBean.getResponseDisplayFields() neq '',de('no'),de('yes'))#" value="#arguments.contentBean.getResponseDisplayFields()#">,
-	    
+	    <cfqueryparam cfsqltype="cf_sql_longvarchar" null="#iif(arguments.contentBean.getResponseDisplayFields() neq '',de('no'),de('yes'))#" value="#arguments.contentBean.getResponseDisplayFields()#">,    
 	    <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.contentBean.getTitle() neq '',de('no'),de('yes'))#" value="#trim(arguments.contentBean.getTitle())#">,
 		  <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.contentBean.getMenutitle() neq '',de('no'),de('yes'))#" value="#arguments.contentBean.getMenutitle()#">,
 		 <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.contentBean.getFilename() neq '',de('no'),de('yes'))#" value="#arguments.contentBean.getFilename()#"> ,  
@@ -287,8 +288,10 @@ to your own modified versions of Mura CMS.
 		#arguments.contentBean.getSearchExclude()#,
 		#arguments.contentBean.getDisplayTitle()#,
 		#arguments.contentBean.getDoCache()#,
-		<cfif isdate(arguments.contentBean.getCreated())> #createodbcdatetime(LSDateFormat(arguments.contentBean.getCreated(),'mm/dd/yyyy'))#<cfelse>null</cfif>
-			)
+		<cfif isdate(arguments.contentBean.getCreated())> #createodbcdatetime(LSDateFormat(arguments.contentBean.getCreated(),'mm/dd/yyyy'))#<cfelse>null</cfif>,
+		<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.contentBean.getURLTitle() neq '',de('no'),de('yes'))#" value="#arguments.contentBean.getURLTitle()#">,
+		<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.contentBean.getHTMLTitle() neq '',de('no'),de('yes'))#" value="#arguments.contentBean.getHTMLTitle()#">
+		)
  </CFQUERY>
 
 </cffunction>

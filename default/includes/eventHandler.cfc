@@ -40,44 +40,11 @@ for your modified version; it is your choice whether to do so, or to make such m
 the GNU General Public License version 2  without this exception.  You may, if you choose, apply this exception
 to your own modified versions of Mura CMS.
 --->
-
-<script src="js/architecture.js" type="text/javascript" language="Javascript" ></script>
-<cfif myfusebox.originalfuseaction eq 'edit'>
-<script src="js/scriptaculous/src/scriptaculous.js" type="text/javascript" language="Javascript"></script>
-<script type="text/javascript">
-  summaryLoaded=false;
-</script>
-
-<cfset rsPluginScripts=application.pluginManager.getScripts("onHTMLEditHeader",attributes.siteID)>
-<cfif rsPluginScripts.recordcount>
-<cfset request.pluginConfig=application.pluginManager.getConfig(rsPluginScripts.pluginID)>
-	<cfinclude template="/#application.configBean.getWebRootMap()#/plugins/#rsPluginScripts.directory#/#rsPluginScripts.scriptfile#">
-<cfelse>
-<cfoutput>
-<script type="text/javascript">
- 
- summaryLoaded=false;
- 
- editSummary = function(){
- 		if(!summaryLoaded){
-   		FCKeditor_OnComplete=null;
-     	var oFCKeditor = new FCKeditor( 'summary' ) ;
-	  	//oFCKeditor.instanceName	= "summary";
-		oFCKeditor.value			= document.contentForm.summary.value;
-		oFCKeditor.BasePath		= "#application.configBean.getContext()#/wysiwyg/";
-		oFCKeditor.Config.EditorAreaCSS	= '#application.settingsManager.getSite(attributes.siteid).getThemeAssetPath()#/css/editor.css';
-		oFCKeditor.Config.StylesXmlPath = '#application.settingsManager.getSite(attributes.siteid).getThemeAssetPath()#/css/fckstyles.xml';
-		oFCKeditor.width			= "100%";
-		oFCKeditor.ToolbarSet			= "Summary";
-		oFCKeditor.Config.DefaultLanguage='#lcase(session.rb)#';
-		oFCKeditor.Config.AutoDetectLanguage=false;
-     	oFCKeditor.ReplaceTextarea() ;
-    	summaryLoaded=true;
-		}
-	}
-  </script>
- </cfoutput>
-</cfif>
-</cfif>
-
-
+<cfcomponent extends="mura.cfobject">
+<!--- 
+<cffunction name="onPageBodyRender" output="true" returntype="any">
+<cfargument name="event">
+<cfreturn "Hello World">
+</cffunction>
+--->
+</cfcomponent>

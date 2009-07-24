@@ -638,14 +638,27 @@ select * from tplugins order by #arguments.orderby#
 		</cfif>
 	</cfif>
 	
-	<cfset pluginCFC= createObject("component","#variables.configBean.getWebRootMap()#.plugins.#pluginConfig.getDirectory()#.plugin.plugin") />
+
 	<cfset pluginConfig=getConfig(arguments.args.moduleID) />
-	<cfset pluginCFC.init(pluginConfig)>
 	
-	<cfif pluginConfig.getDeployed() eq 1>
-	<cfset pluginCFC.update() />
-	<cfelse>
-	<cfset pluginCFC.install() />
+	<!--- check to see is the plugin.cfc exists --->
+	<cfif fileExists(ExpandPath("/plugins") & "/" & pluginConfig.getDirectory() & "/plugin/plugin.cfc")>	
+		<cfset pluginCFC= createObject("component","plugins.#pluginConfig.getDirectory()#.plugin.plugin") />
+		
+		<!--- only call the methods if they have been defined --->
+		<cfif structKeyExists(pluginCFC,"init")>
+			<cfset pluginCFC.init(pluginConfig)>
+		</cfif>
+
+		<cfif pluginConfig.getDeployed() eq 1>
+			<cfif structKeyExists(pluginCFC,"update")>
+				<cfset pluginCFC.update() />
+			</cfif>
+		<cfelse>
+			<cfif structKeyExists(pluginCFC,"install")>
+				<cfset pluginCFC.install() />
+			</cfif>
+		</cfif>
 	</cfif>
 	
 	<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
@@ -704,10 +717,19 @@ select * from tplugins order by #arguments.orderby#
 	<cfset var pluginCFC="/">
 	
 	<cftry>
-	<cfset pluginCFC=createObject("component","#variables.configBean.getWebRootMap()#.plugins.#pluginConfig.getDirectory()#.plugin.plugin") />
-	
-	<cfset pluginCFC.init(pluginConfig)>
-	<cfset pluginCFC.delete() />
+	<!--- check to see is the plugin.cfc exists --->
+	<cfif fileExists(ExpandPath("/plugins") & "/" & pluginConfig.getDirectory() & "/plugin/plugin.cfc")>	
+		<cfset pluginCFC=createObject("component","plugins.#pluginConfig.getDirectory()#.plugin.plugin") />
+		
+		<!--- only call the methods if they have been defined --->
+		<cfif structKeyExists(pluginCFC,"init")>
+			<cfset pluginCFC.init(pluginConfig)>
+		</cfif>
+		
+		<cfif structKeyExists(pluginCFC,"delete")>
+			<cfset pluginCFC.delete() />
+		</cfif>
+	</cfif>
 	<cfcatch></cfcatch>
 	</cftry>
 
@@ -740,6 +762,8 @@ select * from tplugins order by #arguments.orderby#
 	<cfset var scriptPath="">
 	<cfset var eventHandler="">
 	<cfset var rsOnError="">
+	<!--- this is for non plugin bound event that are set in the local eventHandler--->
+	<cfset var localHandler="">
 	
 	<cfif not isObject(arguments.event)>
 		<cfif isStruct(arguments.event)>
@@ -750,6 +774,13 @@ select * from tplugins order by #arguments.orderby#
 			<cfelse>
 				<cfset arguments.event=createObject("component","mura.event")/>
 			</cfif>
+		</cfif>
+	</cfif>
+	
+	<cfif isObject(event.getValue("localHandler"))>
+		<cfset localHandler=event.getValue("localHandler")>
+		<cfif structKeyExists(localHandler,runat)>
+			<cfset evaluate("localHandler.init(arguments.event)") />
 		</cfif>
 	</cfif>
 	
@@ -801,6 +832,8 @@ select * from tplugins order by #arguments.orderby#
 	<cfset var theDisplay1="">
 	<cfset var theDisplay2="">
 	<cfset var rsOnError="">
+	<!--- this is for non plugin bound event that are set in the local eventHandler--->
+	<cfset var localHandler="">
 	
 	<cfif not isObject(arguments.event)>
 		<cfif isStruct(arguments.event)>
@@ -810,6 +843,22 @@ select * from tplugins order by #arguments.orderby#
 				<cfset arguments.event=request.servletEvent />
 			<cfelse>
 				<cfset arguments.event=createObject("component","mura.event")/>
+			</cfif>
+		</cfif>
+	</cfif>
+	
+	<cfif isObject(event.getValue("localHandler"))>
+		<cfset localHandler=event.getValue("localHandler")>
+		<cfif structKeyExists(localHandler,runat)>
+			<cfsavecontent variable="theDisplay1">
+			<cfinvoke component="#localHandler#" method="#arguments.runat#" returnVariable="theDisplay2">
+				<cfinvokeargument name="event" value="#arguments.event#">
+			</cfinvoke>	
+			</cfsavecontent>
+			<cfif isDefined("theDisplay2")>
+				<cfset str=str & theDisplay2>
+			<cfelse>
+				<cfset str=str & theDisplay1>
 			</cfif>
 		</cfif>
 	</cfif>

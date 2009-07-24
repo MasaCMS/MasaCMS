@@ -143,8 +143,8 @@ to your own modified versions of Mura CMS.
 
 <cffunction name="getTemplates" returntype="query" access="public" output="false">
 	<cfargument name="siteid" type="string" required="true">
-
-	<cfreturn variables.settingsManager.getSite(arguments.siteID).getTemplates() />
+	<cfargument name="type" type="string" required="true" default="">
+	<cfreturn variables.settingsManager.getSite(arguments.siteID).getTemplates(arguments.type) />
 </cffunction>
 
 <cffunction name="getRestrictGroups" returntype="query" access="public" output="false">
@@ -440,37 +440,49 @@ http://#cgi.SERVER_NAME##variables.configBean.getServerPort()##variables.configB
 	
 </cffunction>
 
+<cffunction name="formatFilename" returntype="any" output="false" access="public">
+	<cfargument name="filename" type="any" />
+	
+	<!--- replace some latin based unicode chars with allowable chars --->
+	<cfset arguments.filename=removeUnicode(arguments.filename) />
+	
+	<!--- temporarily escape " " used for word separation --->
+	<cfset arguments.filename=rereplace(arguments.filename," ","svphsv","ALL") />
+	
+	<!--- temporarily escape "-" used for word separation --->
+	<cfset arguments.filename=rereplace(arguments.filename,"-","svphsv","ALL") />
+	
+	<!--- remove all punctuation --->
+	<cfset arguments.filename=rereplace(arguments.filename,"[[:punct:]]","","ALL") />
+	
+	<!--- escape any remaining unicode chars --->
+	<cfset arguments.filename=urlEncodedFormat(arguments.filename) />
+	
+	<!---  put word separators " "  and "-" back in --->
+	<cfset arguments.filename=rereplace(arguments.filename,"svphsv","-","ALL") />
+	
+	<!--- remove an non alphanumeric chars (most likely %) --->
+	<cfset arguments.filename=lcase(rereplace(arguments.filename,"[^a-zA-Z0-9\-]","","ALL")) />
+	<cfset arguments.filename=lcase(rereplace(arguments.filename,"\-+","-","ALL")) />
+
+	<cfreturn arguments.filename>
+
+</cffunction>	
+
 <cffunction name="setUniqueFilename" returntype="void" output="false" access="public">
 	<cfargument name="contentBean" type="any" />
 	<cfset var parentBean=variables.contentDAO.readActive(arguments.contentBean.getParentID(),arguments.contentBean.getSiteID()) />
 	<cfset var pass =0 />
 	<cfset var tempfile = "">
 	
-	<!--- start with the menu title --->
-	<cfset arguments.contentBean.setfilename(arguments.contentBean.getMenuTitle()) />
+	<cfset arguments.contentBean.setFilename(formatFilename(arguments.contentBean.getURLTitle()))>
 	
-	<!--- replace some latin based unicode chars with allowable chars --->
-	<cfset arguments.contentBean.setfilename(removeUnicode(arguments.contentBean.getFilename())) />
-	
-	<!--- temporarily escape "-" used for word separation --->
-	<cfset arguments.contentBean.setfilename(rereplace(arguments.contentBean.getfilename()," ","svphsv","ALL")) />
-	
-	<!--- remove all punctuation --->
-	<cfset arguments.contentBean.setfilename(rereplace(arguments.contentBean.getfilename(),"[[:punct:]]","","ALL")) />
-	
-	<!--- escape any remaining unicode chars --->
-	<cfset arguments.contentBean.setfilename(urlEncodedFormat(arguments.contentBean.getfilename())) />
-	
-	<!---  put word separator back in --->
-	<cfset arguments.contentBean.setfilename(rereplace(arguments.contentBean.getfilename(),"svphsv","-","ALL")) />
-	
-	<!--- remove an non alphanumeric chars (most likely %) --->
-	<cfset arguments.contentBean.setfilename(lcase(rereplace(arguments.contentBean.getfilename(),"[^a-zA-Z0-9\-]","","ALL"))) />
-	<cfset arguments.contentBean.setfilename(lcase(rereplace(arguments.contentBean.getfilename(),"\-+","-","ALL"))) />
-
 	<cfif not len(arguments.contentBean.getfilename()) and arguments.contentBean.getContentID() neq  '00000000000000000000000000000000001'>
 		<cfset arguments.contentBean.setfilename("-")/>
 	</cfif>
+	
+	<cfset arguments.contentBean.setURLTitle(arguments.contentBean.getFilename())>
+	
 	<cfif arguments.contentBean.getparentid() neq '00000000000000000000000000000000001'>
 		<cfset arguments.contentBean.setFilename(parentBean.getfilename() & "/" & arguments.contentBean.getfilename()) />
 	</cfif>

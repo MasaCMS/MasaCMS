@@ -945,6 +945,14 @@ to your own modified versions of Mura CMS.
 	</cfif>
 </cffunction>
 
+<cffunction name="getTemplateIncludeDir" returntype="any" access="public" output="false">
+	<cfif len(getTheme())>
+			<cfreturn "#expandPath('/#variables.configBean.getWebRootMap()#')#/#getDisplayPoolID()#/includes/themes/#getTheme()#/templates">
+		<cfelse>
+			<cfreturn "#expandPath('/#variables.configBean.getWebRootMap()#')#/#getDisplayPoolID()#/includes/templates">
+		</cfif>
+</cffunction>
+
 <cffunction name="getThemes" returntype="query" access="public" output="false">
 	<cfset var rs = "">
 	
@@ -958,13 +966,28 @@ to your own modified versions of Mura CMS.
 </cffunction>
 
 <cffunction name="getTemplates" returntype="query" access="public" output="false">
+	<cfargument name="type" required="true" default="">
 	<cfset var rs = "">
+	<cfset var dir="">
 	
-	<cfif len(getTheme())>
-	<cfdirectory action="list" directory="#expandPath('/#variables.configBean.getWebRootMap()#')#/#getDisplayPoolID()#/includes/themes/#getTheme()#/templates" name="rs" filter="*.cfm">
-	<cfelse>
-	<cfdirectory action="list" directory="#expandPath('/#variables.configBean.getWebRootMap()#')#/#getDisplayPoolID()#/includes/templates" name="rs" filter="*.cfm">
-	</cfif>
+	<cfswitch expression="#arguments.type#">
+	<cfcase value="Component">
+		
+		<cfset dir="#getTemplateIncludeDir()#/#lcase(arguments.type)#s">
+		
+		<cfif directoryExists(dir)>
+			<cfdirectory action="list" directory="#dir#" name="rs" filter="*.cfm">
+		<cfelse>
+			<cfset rs=queryNew("empty")>
+		</cfif>
+	</cfcase>
+	<cfdefaultcase>
+		
+		<cfdirectory action="list" directory="#getTemplateIncludeDir()#" name="rs" filter="*.cfm">
+		
+	</cfdefaultcase>
+	</cfswitch>
+	
 	<cfreturn rs />
 </cffunction>
 

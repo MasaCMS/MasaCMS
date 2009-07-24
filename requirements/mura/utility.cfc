@@ -177,36 +177,38 @@ to your own modified versions of Mura CMS.
 </cffunction>
 
 <cffunction name="copyDir">
-	<cfargument name="baseDir" default="" required="yes">
-	<cfargument name="destDir" default="" required="yes">
-	<cfset var rs = "">
-
-	<cfdirectory directory="#baseDir#" name="rs" action="list" recurse="yes">
-
+	<cfargument name="baseDir" default="" required="true" />
+	<cfargument name="destDir" default="" required="true" />
+	<cfset var rs = "" />
+	
+	<cfdirectory directory="#arguments.baseDir#" name="rs" action="list" recurse="true" />
+	<!--- filter out Subversion hidden folders --->
+	<cfquery name="rs" dbtype="query">
+	SELECT * FROM rs
+	WHERE directory NOT LIKE '%\.svn%'
+	AND name <> '.svn'
+	</cfquery>
+	
 	<cftry>
-	<cfdirectory action="create" directory="#destDir#">
-	<cfcatch></cfcatch>
+		<cfdirectory action="create" directory="#arguments.destDir#" />
+		<cfcatch></cfcatch>
 	</cftry>
-
+	
 	<cfloop query="rs">
 		<cfif rs.type eq "dir">
 			<cftry>
-			<cfdirectory action="create" directory="#replace('#rs.directory##variables.configBean.getFileDelim()#', baseDir, destDir)##rs.name##variables.configBean.getFileDelim()#">
-			<cfcatch></cfcatch>
+				<cfdirectory action="create" directory="#replace('#rs.directory##variables.configBean.getFileDelim()#',arguments.baseDir,arguments.destDir)##rs.name##variables.configBean.getFileDelim()#" />
+				<cfcatch></cfcatch>
 			</cftry>
 		<cfelse>
 			<cftry>
-			<cffile 
-			   action = "copy"
-			   mode="777"
-			   source = "#rs.directory##variables.configBean.getFileDelim()##rs.name#"
-			   destination = "#replace('#rs.directory##variables.configBean.getFileDelim()#', baseDir, destDir)#">
-			<cfcatch></cfcatch>
+				<cffile action="copy" mode="777" source="#rs.directory##variables.configBean.getFileDelim()##rs.name#" destination="#replace('#rs.directory##variables.configBean.getFileDelim()#',arguments.baseDir,arguments.destDir)#" />
+				<cfcatch></cfcatch>
 			</cftry>
 		</cfif>
 	</cfloop>
-	
 </cffunction>
+
 
 <cffunction name="deleteDir">
 	<cfargument name="baseDir" default="" required="yes">
@@ -232,7 +234,6 @@ to your own modified versions of Mura CMS.
 	
 	<cfreturn i>
 </cffunction>
-
 
 <cffunction name="createRedirectID" access="public" returntype="string" output="false">
 	<cfargument name="theLink" required="true">

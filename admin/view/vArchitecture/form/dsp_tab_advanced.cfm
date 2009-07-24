@@ -52,25 +52,22 @@ to your own modified versions of Mura CMS.
 </dd>
 </cfif>
 <cfif attributes.type neq 'Component' and attributes.type neq 'Form'>
-<dt><cfoutput><a href="##" class="tooltip">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.layouttemplate')#<span>#application.rbFactory.getKeyValue(session.rb,"tooltip.layoutTemplate")#</span></a></cfoutput></dt>
-<dd><select name="template" class="dropdown">
-<cfif attributes.contentid neq '00000000000000000000000000000000001'>
-<option value="">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.inheritfromparent')#</option></cfif>
-<cfloop query="request.rsTemplates">
-<cfif right(request.rsTemplates.name,4) eq ".cfm">
-<cfoutput>
-<option value="#request.rsTemplates.name#" <cfif request.contentBean.gettemplate() eq request.rsTemplates.name>selected</cfif>>#request.rsTemplates.name#</option>
-</cfoutput>
-</cfif></cfloop>
-</select>
-</dd>
-<dt><input name="forceSSL" id="forceSSL" type="CHECKBOX" value="1" <cfif request.contentBean.getForceSSL() eq "">checked <cfelseif request.contentBean.getForceSSL() eq 1>checked</cfif> class="checkbox"> <label for="forceSSL"><a href="##" class="tooltip">#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.forcessltext'),application.rbFactory.getKeyValue(session.rb,'sitemanager.content.type.#attributes.type#'))#<span>#application.rbFactory.getKeyValue(session.rb,"tooltip.makePageSecure")#</span></a></label></dt>
-<dt><input name="searchExclude" id="searchExclude" type="CHECKBOX" value="1" <cfif request.contentBean.getSearchExclude() eq "">checked <cfelseif request.contentBean.getSearchExclude() eq 1>checked</cfif> class="checkbox"> <label for="searchExclude">Exclude from Site Search</label></dt>
-</cfif>
-
-<cfif attributes.type neq 'Component' and attributes.type neq 'Form'>
+	<dt><cfoutput><a href="##" class="tooltip">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.layouttemplate')#<span>#application.rbFactory.getKeyValue(session.rb,"tooltip.layoutTemplate")#</span></a></cfoutput></dt>
+	<dd><select name="template" class="dropdown">
+	<cfif attributes.contentid neq '00000000000000000000000000000000001'>
+	<option value="">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.inheritfromparent')#</option></cfif>
+	<cfloop query="request.rsTemplates">
+	<cfif right(request.rsTemplates.name,4) eq ".cfm">
+	<cfoutput>
+	<option value="#request.rsTemplates.name#" <cfif request.contentBean.gettemplate() eq request.rsTemplates.name>selected</cfif>>#request.rsTemplates.name#</option>
+	</cfoutput>
+	</cfif></cfloop>
+	</select>
+	</dd>
+	<dt><input name="forceSSL" id="forceSSL" type="CHECKBOX" value="1" <cfif request.contentBean.getForceSSL() eq "">checked <cfelseif request.contentBean.getForceSSL() eq 1>checked</cfif> class="checkbox"> <label for="forceSSL"><a href="##" class="tooltip">#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.forcessltext'),application.rbFactory.getKeyValue(session.rb,'sitemanager.content.type.#attributes.type#'))#<span>#application.rbFactory.getKeyValue(session.rb,"tooltip.makePageSecure")#</span></a></label></dt>
+	<dt><input name="searchExclude" id="searchExclude" type="CHECKBOX" value="1" <cfif request.contentBean.getSearchExclude() eq "">checked <cfelseif request.contentBean.getSearchExclude() eq 1>checked</cfif> class="checkbox"> <label for="searchExclude">Exclude from Site Search</label></dt>
 	<cfif application.settingsManager.getSite(attributes.siteid).getextranet()>
-<dt><input name="restricted" id="Restricted" type="CHECKBOX" value="1"  onclick="javascript: this.checked?toggleDisplay2('rg',true):toggleDisplay2('rg',false);" <cfif request.contentBean.getrestricted() eq 1>checked </cfif> class="checkbox">
+	<dt><input name="restricted" id="Restricted" type="CHECKBOX" value="1"  onclick="javascript: this.checked?toggleDisplay2('rg',true):toggleDisplay2('rg',false);" <cfif request.contentBean.getrestricted() eq 1>checked </cfif> class="checkbox">
 	<label for="Restricted">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.restrictaccess')#</label></dt>
 	<!--- <dt>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.basicpermissions')#</dt> --->
 	<dd id="rg"<cfif request.contentBean.getrestricted() NEQ 1> style="display:none;"</cfif>>
@@ -96,15 +93,31 @@ to your own modified versions of Mura CMS.
 	</optgroup>
 	</cfif>
 	</select></dd>
-</cfif>
 	</cfif>
+</cfif>
+<cfif attributes.type eq 'Component' and request.rsTemplates.recordcount>
+	<dt><cfoutput><a href="##" class="tooltip">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.layouttemplate')#<span>#application.rbFactory.getKeyValue(session.rb,"tooltip.layoutTemplate")#</span></a></cfoutput></dt>
+	<dd><select name="template" class="dropdown">
+	<option value="">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.none')#</option>
+	<cfloop query="request.rsTemplates">
+	<cfif right(request.rsTemplates.name,4) eq ".cfm">
+	<cfoutput>
+	<option value="#request.rsTemplates.name#" <cfif request.contentBean.getTemplate() eq request.rsTemplates.name>selected</cfif>>#request.rsTemplates.name#</option>
+	</cfoutput>
+	</cfif></cfloop>
+	</select>
+	</dd>
+</cfif>
+
 <cfif attributes.type eq 'Form' >
 <dt><input name="forceSSL" id="forceSSL" type="CHECKBOX" value="1" <cfif request.contentBean.getForceSSL() eq "">checked <cfelseif request.contentBean.getForceSSL() eq 1>checked</cfif> class="checkbox"> <label for="forceSSL">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.forcessl')#</label></dt>
 <dt><input name="displayTitle" id="displayTitle" type="CHECKBOX" value="1" <cfif request.contentBean.getDisplayTitle() eq "">checked <cfelseif request.contentBean.getDisplayTitle() eq 1>checked</cfif> class="checkbox"> <label for="displayTitle">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displaytitle')#</label></dt>
 </cfif>
+
 <cfif application.settingsManager.getSite(attributes.siteid).getCache() and attributes.type eq 'Component' or attributes.type eq 'Form'>
 <dt><input name="doCache" id="doCache" type="CHECKBOX" value="0"<cfif request.contentBean.getDoCache() eq 0> checked</cfif> class="checkbox"> <label for="cacheItem">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.docache')#</label></dt>
 </cfif>
+
 <cfif  attributes.contentid neq '00000000000000000000000000000000001' and isuserinRole("s2")>
 <dt>
 	<input name="isLocked" id="islocked" type="CHECKBOX" value="1" <cfif request.contentBean.getIsLocked() eq "">checked <cfelseif request.contentBean.getIsLocked() eq 1>checked</cfif> class="checkbox"> <label for="islocked">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.locknode')#</label>

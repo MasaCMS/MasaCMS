@@ -41,14 +41,23 @@ the GNU General Public License version 2  without this exception.  You may, if y
 to your own modified versions of Mura CMS.
 --->
 
-	<cfif not isUserInRole('S2IsPrivate')>
-		<cflocation url="index.cfm?fuseaction=cLogin.main" addtoken="false">
-	</cfif>
+<cfif not isUserInRole('S2IsPrivate')>
+	<cflocation url="index.cfm?fuseaction=cLogin.main" addtoken="false">
+</cfif>
 
-	<cfset rsList=application.settingsManager.getUserSites(session.siteArray,isUserInRole('S2')) />
-	<cfif rsList.recordcount>
-	<cflocation addtoken="false" url="index.cfm?fuseaction=cDashboard.main&siteid=#rsList.siteid#">
-	</cfif>
-	
-	<cflocation addtoken="false" url="index.cfm?fuseaction=cMessage.noaccess">
-	
+<cfset rsList = application.settingsManager.getUserSites(session.siteArray,
+isUserInRole('S2')) />
+
+<cfquery name="rsDefault" dbtype="query">
+SELECT siteid FROM rsList
+WHERE siteid = <cfqueryparam cfsqltype="cf_sql_varchar"
+value="#application.contentServer.bindToDomain()#" />
+</cfquery>
+
+<cfif rsDefault.recordcount>
+	<cflocation url="index.cfm?fuseaction=cDashboard.main&siteid=#rsDefault.siteid#" addtoken="false" />
+<cfelseif rsList.recordcount>
+	<cflocation url="index.cfm?fuseaction=cDashboard.main&siteid=#rsList.siteid#" addtoken="false" />
+</cfif>
+
+<cflocation addtoken="false" url="index.cfm?fuseaction=cMessage.noaccess">

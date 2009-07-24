@@ -73,12 +73,12 @@
   <invoke object="application.contentManager" methodcall="getItemCount(attributes.contentid,attributes.siteid)" returnVariable="request.rsCount" />
   <invoke object="application.contentManager" methodcall="getPageCount(attributes.siteid)" returnVariable="request.rsPageCount" />
   <invoke object="application.contentUtility" methodcall="getRestrictGroups(attributes.siteid)" returnVariable="request.rsRestrictGroups" />
-  <if condition="attributes.moduleid eq '00000000000000000000000000000000000'">
+  <invoke object="application.contentUtility" methodcall="getTemplates(attributes.siteid,attributes.type)" returnVariable="request.rsTemplates" />
+  <invoke object="application.contentManager" methodcall="getCategoriesByHistID(attributes.contenthistID)" returnVariable="request.rsCategoryAssign" />
+	<if condition="attributes.moduleid eq '00000000000000000000000000000000000'">
 		<true>
-		  <invoke object="application.contentUtility" methodcall="getTemplates(attributes.siteid)" returnVariable="request.rsTemplates" />
 		  <invoke object="application.contentManager" methodcall="readRegionObjects(attributes.contenthistid,attributes.siteid)" />
-		  <invoke object="application.categoryManager" methodcall="getCategoriesBySiteID(attributes.siteid,'')" returnVariable="request.rsCategories" />
-		 <invoke object="application.contentManager" methodcall="getCategoriesByHistID(attributes.contenthistID)" returnVariable="request.rsCategoryAssign" />
+		  
 		</true>
 	</if>
 	<invoke object="application.contentManager" methodcall="getRelatedContent(attributes.siteid, attributes.contenthistID)" returnVariable="request.rsRelatedContent" />
