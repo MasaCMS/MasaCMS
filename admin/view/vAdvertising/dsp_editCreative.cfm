@@ -86,7 +86,7 @@ to your own modified versions of Mura CMS.
 <dt>#application.rbFactory.getKeyValue(session.rb,'advertising.uploadmedia')#</dt>
 <dd><input type="file" name="newFile"></dd>
 </span>
-<dt#application.rbFactory.getKeyValue(session.rb,'advertising.isactive')#</dt>
+<dt>#application.rbFactory.getKeyValue(session.rb,'advertising.isactive')#</dt>
 <dd>
 <input name="isActive" type="radio" value="1" <cfif request.creativeBean.getIsActive()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'advertising.yes')# 
 <input name="isActive" type="radio" value="0" <cfif not request.creativeBean.getIsActive()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'advertising.no')# 

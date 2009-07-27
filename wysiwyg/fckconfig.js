@@ -56,6 +56,7 @@ FCKConfig.Plugins.Add( 'SelectComponent', 'en' ) ;
 FCKConfig.AutoGrowMax = 1000 ;
 FCKConfig.Plugins.Add( 'flvPlayer','en') ;
 FCKConfig.Plugins.Add( 'googlemaps', 'de,it,en,es') ;
+FCKConfig.Plugins.Add('DynamicToolbar', null);
 
 // FCKConfig.ProtectedSource.Add( /<%[\s\S]*?%>/g ) ;	// ASP style server side code <%...%>
 // FCKConfig.ProtectedSource.Add( /<\?[\s\S]*?\?>/g ) ;	// PHP style server side code

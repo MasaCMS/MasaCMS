@@ -136,7 +136,7 @@ to your own modified versions of Mura CMS.
 	tcontent.contentID, tcontent.contentHistID,tcontent.target, tcontent.targetParams,
 	tcontent.releaseDate, tcontent.lastupdate,tcontent.summary, 
 	tfiles.fileSize,tfiles.fileExt,tcontent.fileid,
-	tcontent.tags,tcontent.credits,tcontent.audience,
+	tcontent.tags,tcontent.credits,tcontent.audience, tcontent.orderNo,
 	tcontentstats.rating,tcontentstats.totalVotes,tcontentstats.downVotes,tcontentstats.upVotes,
 	tcontentstats.comments, tparent.type parentType, <cfif doKids> qKids.kids<cfelse> 0 as kids</cfif>,tcontent.path, tcontent.created
 	
@@ -486,7 +486,7 @@ to your own modified versions of Mura CMS.
 	order by 
 	
 	<cfswitch expression="#arguments.feedBean.getSortBy()#">
-	<cfcase value="menutitle,title,lastupdate,releasedate,orderno,displayStart,created">
+	<cfcase value="menutitle,title,lastupdate,releasedate,orderno,displayStart,created,orderNo">
 	tcontent.#arguments.feedBean.getSortBy()# #arguments.feedBean.getSortDirection()#
 	</cfcase>
 	<cfcase value="rating">

@@ -42,4 +42,4 @@ to your own modified versions of Mura CMS.
 --->
 
 <!--- Works just like the standard nav, but omits items in a portal to avoid potentially unmanageably long sub nav for something like a news portal with 100 items --->
-<cf_CacheOMatic key="portalNav#request.contentBean.getcontentID()#" nocache="#request.nocache#"><cfoutput>#dspPortalNav()#</cfoutput>
+<cf_CacheOMatic key="portalNav#request.contentBean.getcontentID()#" nocache="#request.nocache#"><cfoutput><div id="navPortal">#dspPortalNav()#</div></cfoutput>

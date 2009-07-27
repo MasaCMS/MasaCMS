@@ -3,12 +3,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml"><!--- SUGGESTED LANGUAGE ATTRIBUTES - xml:lang="en" lang="en" --->
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-	<meta name="description" content="#request.contentBean.getmetadesc()#" />
-	<meta name="keywords" content="#request.contentBean.getmetakeywords()#" />
-	<cfif request.contentBean.getCredits() neq ""><meta name="author" content="#request.contentbean.getCredits()#" /></cfif>
+	<meta name="description" content="#HTMLEditFormat(request.contentBean.getmetadesc())#" />
+	<meta name="keywords" content="#HTMLEditFormat(request.contentBean.getmetakeywords())#" />
+	<cfif request.contentBean.getCredits() neq ""><meta name="author" content="#HTMLEditFormat(request.contentbean.getCredits())#" /></cfif>
 	<meta name="generator" content="Mura CMS #application.configBean.getVersion()#" />
 	<!--- <meta name="robots" content="noindex, nofollow" /> ---><!--- use this to discourage search engines from indexing your site. (can be useful if developing on a live server for example) Delete if not needed. --->
-	<title>#request.contentBean.getTitle()# - #renderer.getSite().getSite()#</title>
+	<title>#HTMLEditFormat(request.contentBean.getHTMLTitle())# - #HTMLEditFormat(renderer.getSite().getSite())#</title>
 
 	<link rel="icon" href="#event.getSite().getAssetPath()#/images/favicon.ico" type="image/x-icon" />
 	<link rel="shortcut icon" href="#event.getSite().getAssetPath()#/images/favicon.ico" type="image/x-icon" />
@@ -21,7 +21,7 @@
 
 	<cfset rs=application.feedManager.getFeeds(request.siteID,'Local',true,true) />
 	<cfloop query="rs">
-	<link rel="alternate" type="application/rss+xml" title="#renderer.getSite().getSite()# - #rs.name#" href="#XMLFormat('http://#cgi.server_name##application.configBean.getContext()#/tasks/feed/?feedID=#rs.feedID#')#" />
+	<link rel="alternate" type="application/rss+xml" title="#HTMLEditFormat(renderer.getSite().getSite())# - #rs.name#" href="#XMLFormat('http://#cgi.server_name##application.configBean.getContext()#/tasks/feed/?feedID=#rs.feedID#')#" />
 	</cfloop>
 
 </head>
