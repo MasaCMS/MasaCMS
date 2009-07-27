@@ -486,7 +486,7 @@ to your own modified versions of Mura CMS.
 	order by 
 	
 	<cfswitch expression="#arguments.feedBean.getSortBy()#">
-	<cfcase value="menutitle,title,lastupdate,releasedate,orderno,displayStart,created,orderNo">
+	<cfcase value="menutitle,title,lastupdate,releasedate,orderno,displayStart,created">
 	tcontent.#arguments.feedBean.getSortBy()# #arguments.feedBean.getSortDirection()#
 	</cfcase>
 	<cfcase value="rating">
