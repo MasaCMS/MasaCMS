@@ -224,6 +224,19 @@ to your own modified versions of Mura CMS.
 						<cfif len(arguments.tag)>
 							and tcontenttags.tag= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.tag#"/> 
 						</cfif>
+						
+						<cfif categoryLen>
+							AND tcontent.contentHistID in (
+							select distinct tcontentcategoryassign.contentHistID from tcontentcategoryassign
+							inner join tcontentcategories 
+							ON (tcontentcategoryassign.categoryID=tcontentcategories.categoryID) 
+							where (<cfloop from="1" to="#categoryLen#" index="c">
+									tcontentcategories.path like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#listgetat(arguments.feedBean.getCategoryID(),c)#%"/> 
+									<cfif c lt categoryLen> or </cfif>
+									</cfloop>) 
+							)
+						
+						</cfif>
 										
 						<cfif arguments.feedBean.getIsFeaturesOnly()>AND (
 						 (
@@ -261,18 +274,6 @@ to your own modified versions of Mura CMS.
 							
 							</cfif>
 							)
-						
-						<cfelseif categoryLen>
-							AND tcontent.contentHistID in (
-							select distinct tcontentcategoryassign.contentHistID from tcontentcategoryassign
-							inner join tcontentcategories 
-							ON (tcontentcategoryassign.categoryID=tcontentcategories.categoryID) 
-							where (<cfloop from="1" to="#categoryLen#" index="c">
-									tcontentcategories.path like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#listgetat(arguments.feedBean.getCategoryID(),c)#%"/> 
-									<cfif c lt categoryLen> or </cfif>
-									</cfloop>) 
-							)
-						
 						</cfif>
 						
 						<cfif contentLen>
@@ -403,6 +404,19 @@ to your own modified versions of Mura CMS.
 	<cfif len(arguments.tag)>
 		and tcontenttags.tag= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.tag#"/> 
 	</cfif>
+	
+	<cfif categoryLen>
+		AND tcontent.contenthistID in (
+			select distinct tcontentcategoryassign.contentHistID from tcontentcategoryassign
+			inner join tcontentcategories 
+			ON (tcontentcategoryassign.categoryID=tcontentcategories.categoryID) 
+			where (<cfloop from="1" to="#categoryLen#" index="c">
+					tcontentcategories.path like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#listgetat(arguments.feedBean.getCategoryID(),c)#%"/> 
+					<cfif c lt categoryLen> or </cfif>
+					</cfloop>) 
+		)
+	
+	</cfif>
 					
 	<cfif arguments.feedBean.getIsFeaturesOnly()>AND (
 	 (
@@ -440,18 +454,6 @@ to your own modified versions of Mura CMS.
 		
 		</cfif>
 	)
-	
-	<cfelseif categoryLen>
-		AND tcontent.contenthistID in (
-			select distinct tcontentcategoryassign.contentHistID from tcontentcategoryassign
-			inner join tcontentcategories 
-			ON (tcontentcategoryassign.categoryID=tcontentcategories.categoryID) 
-			where (<cfloop from="1" to="#categoryLen#" index="c">
-					tcontentcategories.path like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#listgetat(arguments.feedBean.getCategoryID(),c)#%"/> 
-					<cfif c lt categoryLen> or </cfif>
-					</cfloop>) 
-		)
-	
 	</cfif>
 	
 	<cfif contentLen>
