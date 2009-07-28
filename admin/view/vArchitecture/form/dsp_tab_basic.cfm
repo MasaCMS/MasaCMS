@@ -54,13 +54,15 @@ to your own modified versions of Mura CMS.
 
 <cfif not listFind("File,Link",attributes.type)>
 <dt><a href="##" class="tooltip">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.seotitles")#<span>#application.rbFactory.getKeyValue(session.rb,"tooltip.seotitles")#</span> <a href="##" id="editSEOTitlesLink" onclick="javascript: toggleDisplay('editSEOTitles','#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.expand')#','#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.close')#');return false">[#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.expand")#]</a></dt>
-<div id="editSEOTitles" style="display:none;">
+<dd id="editSEOTitles" style="display:none;">
 <p class="notice">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.seotitlesnote")#</p>
+<dl>
 <dt class="alt noBorder"><a href="##" class="tooltip">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.urltitle")#<span>#application.rbFactory.getKeyValue(session.rb,"tooltip.urlTitle")#</span></a></dt>
 <dd><input type="text" id="urlTitle" name="urlTitle" value="#HTMLEditFormat(request.contentBean.getURLTitle())#"  maxlength="255" class="textLong"></dd>
 <dt class="alt"><a href="##" class="tooltip">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.htmltitle")#<span>#application.rbFactory.getKeyValue(session.rb,"tooltip.htmlTitle")#</span></a></dt>
 <dd><input type="text" id="htmlTitle" name="htmlTitle" value="#HTMLEditFormat(request.contentBean.getHTMLTitle())#"  maxlength="255" class="textLong"></dd>
-</div>
+</dl>
+</dd>
 </cfif>
 </cfcase>
 <cfdefaultcase>
