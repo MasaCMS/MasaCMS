@@ -262,9 +262,9 @@ to your own modified versions of Mura CMS.
 </cffunction>
 
 <cffunction name="isHTTPS" output="false" returnType="boolean">
-	<cfif len(cgi.HTTPS) and cgi.HTTPS>
+	<cfif len(cgi.HTTPS) and listFindNoCase("Yes,On,True",cgi.HTTPS)>
 		<cfreturn true>
-	<cfelseif len(cgi.SERVER_PORT_SECURE) and cgi.SERVER_PORT_SECURE>
+	<cfelseif isBoolean(cgi.SERVER_PORT_SECURE) and cgi.SERVER_PORT_SECURE>
 		<cfreturn true>
 	<cfelseif len(cgi.SERVER_PORT) and cgi.SERVER_PORT eq "443">
 		<cfreturn true>
