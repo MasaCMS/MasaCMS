@@ -468,7 +468,9 @@ to your own modified versions of Mura CMS.
 	<cfset var rs =""/>
 	
 	<cfquery name="rs"  datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-	Select * from tusersmemb where userid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.userID#">
+	Select * from tusers, tusersmemb where tusers.userid=tusersmemb.groupid
+	and tusersmemb.userid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.userID#">
+	order by groupname
 	</cfquery>
 	<cfreturn rs />
 </cffunction>
