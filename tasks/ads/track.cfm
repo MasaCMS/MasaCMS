@@ -47,9 +47,15 @@ if (NOT IsDefined("request"))
 StructAppend(request, url, "no");
 StructAppend(request, form, "no");
 </cfscript>
+<cfparam name="request.adURL" default="">
+<cfparam name="request.track" default="0">
+<cfparam name="request.siteID" default="">
+<cfparam name="request.placementID" default="">
 
-<cfif request.track eq 1>
+<cfif request.track eq "1" and len(request.siteID) and len(request.placementID)>
 	<cfset rate=application.advertiserManager.readPlacement(request.placementID).getCostPerClick() />
 	<cfset application.advertiserManager.trackAd('#request.placementid#','Click',cgi.REMOTE_ADDR,request.siteid,rate) />
 </cfif>
-<cflocation addtoken="no" url="#request.adUrl#">
+<cfif len(request.adURL)>
+	<cflocation addtoken="no" url="#request.adUrl#">
+</cfif>
