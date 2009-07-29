@@ -85,17 +85,24 @@ to your own modified versions of Mura CMS.
 
 <cfset deletable=(((attributes.parentid neq '00000000000000000000000000000000001' and attributes.locking neq 'all') or (attributes.parentid eq '00000000000000000000000000000000001' and attributes.locking eq 'none')) and (verdict eq 'editor'))  and attributes.rsnest.IsLocked neq 1>
 
-<cfif attributes.rsNest.type eq 'File'>
-	<cfset icon=lcase(attributes.rsNest.fileExt)>
-<cfelse>
-	<cfset icon=attributes.rsNest.type & " " & attributes.rsNest.subtype>
-</cfif>
 
 <cfif (attributes.restricted or attributes.rsNest.restricted)>
 <cfset variables.restricted=1>
-<cfset icon="#icon#Locked">
 <cfelse>
 <cfset variables.restricted=0>
+</cfif>
+
+<cfif attributes.rsNest.type eq 'File'>
+	<cfset icon=lcase(attributes.rsNest.fileExt)>
+	<cfif variables.restricted>
+		<cfset icon=icon & "Locked">
+	</cfif>
+<cfelse>
+	<cfset icon=attributes.rsNest.type>
+	<cfif variables.restricted>
+		<cfset icon="#icon#Locked">
+	</cfif>
+	<cfset icon=icon & " " & attributes.rsNest.subtype>
 </cfif>
 
 <cfset request.rowNum=request.rowNum+1>

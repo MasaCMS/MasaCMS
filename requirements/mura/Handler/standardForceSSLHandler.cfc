@@ -24,8 +24,11 @@
 <cffunction name="handle" output="false" returnType="any">
 	<cfargument name="event" required="true">
 	
-	<cflocation addtoken="no" url="https://#application.settingsManager.getSite(event.getValue('siteID')).getDomain()##application.configBean.getServerPort()##renderer.getCurrentURL(false)#">
-
+	<cfif application.utility.isHTTPS()>
+		<cflocation addtoken="no" url="http://#application.settingsManager.getSite(event.getValue('siteID')).getDomain()##application.configBean.getServerPort()##event.getContentRenderer().getCurrentURL(false)#">
+	<cfelse>
+		<cflocation addtoken="no" url="https://#application.settingsManager.getSite(event.getValue('siteID')).getDomain()##application.configBean.getServerPort()##event.getContentRenderer().getCurrentURL(false)#">
+	</cfif>
 </cffunction>
 
 </cfcomponent>

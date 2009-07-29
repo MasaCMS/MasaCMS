@@ -97,7 +97,7 @@ update tcontent set orderno= #rsSetOrder.currentrow# where contentid ='#rsSetOrd
 	
 <cfinclude template="dsp_nextn.cfm">
 <cfif  ((attributes.topid eq '00000000000000000000000000000000001' and application.settingsManager.getSite(attributes.siteid).getlocking() eq 'none') or (attributes.topid neq '00000000000000000000000000000000001')) and perm neq 'none' and application.settingsManager.getSite(attributes.siteid).getlocking() neq 'all'><cfset newcontent=1><cfelse> <cfset newcontent=0></cfif>
-<cfif r><cfset icon="#request.rsTop.type#Locked"><cfelse><cfset icon="#request.rsTop.type#"></cfif>
+<cfif r><cfset icon="#request.rsTop.type#Locked #request.rsTop.subType#"><cfelse><cfset icon="#request.rsTop.type# #request.rsTop.subType#"></cfif>
 
 <cfset variables.pluginEvent=createObject("component","mura.event").init(event.getAllValues())/>
 </cfsilent>

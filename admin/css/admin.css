@@ -2361,7 +2361,11 @@ table#fileList td.varWidth a,
 	background-image: url(../images/icons/files/icon_flv_small_locked.gif) !important;
 }
 
-.htmlLocked, .htmLocked {
+.flvLocked {
+	background-image: url(../images/icons/files/icon_flv_small_locked.png) !important;
+}
+
+.htmlLocked, .htmLocked, .cfmLocked, .cfcLocked, .csvLocked, .phpLocked, .rbLocked, .pyLocked, .javaLocked, .jspLocked  {
 	background-image: url(../images/icons/files/icon_generic_small_locked.gif) !important;
 }
 

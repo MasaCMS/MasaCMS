@@ -209,7 +209,6 @@ to your own modified versions of Mura CMS.
 	</cfloop>
 </cffunction>
 
-
 <cffunction name="deleteDir">
 	<cfargument name="baseDir" default="" required="yes">
 	<cfset var rs=""/>
@@ -259,6 +258,18 @@ to your own modified versions of Mura CMS.
 	<cfreturn arrayToList(u,"-") />
 	<cfelse>
 		<cfreturn createUUID() />
+	</cfif>
+</cffunction>
+
+<cffunction name="isHTTPS" output="false" returnType="boolean">
+	<cfif len(cgi.HTTPS) and cgi.HTTPS>
+		<cfreturn true>
+	<cfelseif len(cgi.SERVER_PORT_SECURE) and cgi.SERVER_PORT_SECURE>
+		<cfreturn true>
+	<cfelseif len(cgi.SERVER_PORT) and cgi.SERVER_PORT eq "443">
+		<cfreturn true>
+	<cfelse>
+		<cfreturn false>
 	</cfif>
 </cffunction>
 
