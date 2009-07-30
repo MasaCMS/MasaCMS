@@ -1,17 +1,17 @@
-<cfset rsPluginScripts=application.pluginManager.getScripts("onLinkSelect",session.siteID)>
-<cfif not rsPluginScripts.recordcount>
 <cfsilent>
+<cfset rsPluginScripts=application.pluginManager.getScripts("onLinkSelect",session.siteID)>
 <cfscript>
 if (NOT IsDefined("attributes"))
     attributes=structNew();
 StructAppend(attributes, url, "no");
 StructAppend(attributes, form, "no");
 </cfscript>
-
+</cfsilent>
+<cfif not rsPluginScripts.recordcount>
+<cfsilent>
 <cfparam name="attributes.startrow" default="1">
 <cfparam name="attributes.keywords" default="">
 <cfparam name="attributes.siteid" default="#session.siteid#">
-<cfset rsPluginScripts=application.pluginManager.getScripts("onLinkSelect",attributes.siteID)>
 <cfset request.rsList=application.contentManager.getPrivateSearch('#attributes.siteid#','#attributes.keywords#')/>
 <cfset request.nextn=application.utility.getNextN(request.rsList,30,attributes.startrow) />
 <cfset request.contentRenderer = createObject("component","#application.settingsManager.getSite(session.siteid).getAssetMap()#.includes.contentRenderer").init() />
@@ -152,9 +152,7 @@ document.forms.siteSearch.keywords.focus();
 </html>
 <cfelse>
 <cfoutput>
-<cfset request.pluginConfig=application.pluginManager.getConfig(rsPluginScripts.pluginID)>
-<cfset request.pluginConfig.setSetting("pluginMode","admin")>
-<cfinclude template="/#application.configBean.getWebRootMap()#/plugins/#request.pluginConfig.getDirectory()#/#rsPluginScripts.scriptfile#">
+#application.pluginManager.renderScripts("onLinkSelect",session.siteid, createObject("component","mura.event").init(attributes) ,rsPluginScripts)#
 </cfoutput>
 </cfif>
 
