@@ -40,7 +40,7 @@ for your modified version; it is your choice whether to do so, or to make such m
 the GNU General Public License version 2  without this exception.  You may, if you choose, apply this exception
 to your own modified versions of Mura CMS.
 --->
-
+<cfset variables.pluginEvent=createObject("component","mura.event").init(event.getAllValues())/>
 <cfinclude template="act_defaults.cfm"/>
 <cfoutput>
 <h2>#application.rbFactory.getKeyValue(session.rb,"dashboard.dashboard")#</h2>
@@ -51,11 +51,11 @@ to your own modified versions of Mura CMS.
 </cfoutput>
 <cfset rsPluginScripts=application.pluginManager.getScripts("onDashboardPrimaryTop",attributes.siteID)>
 <cfoutput query="rsPluginScripts" group="pluginID">
+<cfset rsPluginScript=application.pluginManager.getScripts("onDashboardPrimaryTop",attributes.siteID,rsPluginScripts.moduleID)>
 <div<cfif rsPluginScripts.currentrow gt 1> class="separate"</cfif>>
 	<h3>#HTMLEditformat(rsPluginScripts.name)#</h3>
 	<cfoutput>
-	<cfset request.pluginConfig=application.pluginManager.getConfig(rsPluginScripts.pluginID)>
-	<cfinclude template="/#application.configBean.getWebRootMap()#/plugins/#rsPluginScripts.directory#/#rsPluginScripts.scriptfile#">
+	#application.pluginManager.renderScripts("onDashboardPrimaryTop",attributes.siteid,pluginEvent,rsPluginScript)#
 	</cfoutput>
 </div>
 </cfoutput>
@@ -89,11 +89,11 @@ to your own modified versions of Mura CMS.
 </cfoutput>
 <cfset rsPluginScripts=application.pluginManager.getScripts("onDashboardPrimaryBottom",attributes.siteID)>
 <cfoutput query="rsPluginScripts" group="pluginID">
+<cfset rsPluginScript=application.pluginManager.getScripts("onDashboardPrimaryBottom",attributes.siteID,rsPluginScripts.moduleID)>
 <div class="separate">
 	<h3>#HTMLEditformat(rsPluginScripts.name)#</h3>
 	<cfoutput>
-	<cfset request.pluginConfig=application.pluginManager.getConfig(rsPluginScripts.pluginID)>
-	<cfinclude template="/#application.configBean.getWebRootMap()#/plugins/#rsPluginScripts.directory#/#rsPluginScripts.scriptfile#">
+	#application.pluginManager.renderScripts("onDashboardPrimaryBottom",attributes.siteid,pluginEvent,rsPluginScript)#
 	</cfoutput>
 </div>
 </cfoutput>
@@ -116,11 +116,11 @@ to your own modified versions of Mura CMS.
 </cfoutput>
 <cfset rsPluginScripts=application.pluginManager.getScripts("onDashboardSidebarTop",attributes.siteID)>
 <cfoutput query="rsPluginScripts" group="pluginID">
+<cfset rsPluginScript=application.pluginManager.getScripts("onDashboardSidebarTop",attributes.siteID,rsPluginScripts.moduleID)>
 <div class="divide">
 	<h3>#HTMLEditformat(rsPluginScripts.name)#</h3>
 	<cfoutput>
-	<cfset request.pluginConfig=application.pluginManager.getConfig(rsPluginScripts.pluginID)>
-	<cfinclude template="/#application.configBean.getWebRootMap()#/plugins/#rsPluginScripts.directory#/#rsPluginScripts.scriptfile#">
+	#application.pluginManager.renderScripts("onDashboardSidebarTop",attributes.siteid,pluginEvent,rsPluginScript)#
 	</cfoutput>
 </div>
 </cfoutput>
@@ -167,11 +167,11 @@ to your own modified versions of Mura CMS.
 </cfoutput>
 <cfset rsPluginScripts=application.pluginManager.getScripts("onDashboardSidebarBottom",attributes.siteID)>
 <cfoutput query="rsPluginScripts" group="pluginID">
+<cfset rsPluginScript=application.pluginManager.getScripts("onDashboardSidebarBottom",attributes.siteID,rsPluginScripts.moduleID)>
 <div class="divide">
 	<h3>#HTMLEditformat(rsPluginScripts.name)#</h3>
 	<cfoutput>
-	<cfset request.pluginConfig=application.pluginManager.getConfig(rsPluginScripts.pluginID)>
-	<cfinclude template="/#application.configBean.getWebRootMap()#/plugins/#rsPluginScripts.directory#/#rsPluginScripts.scriptfile#">
+	#application.pluginManager.renderScripts("onDashboardSidebarBottom",attributes.siteid,pluginEvent,rsPluginScript)#
 	</cfoutput>
 </div>
 </cfoutput>

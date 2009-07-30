@@ -41,6 +41,7 @@ the GNU General Public License version 2  without this exception.  You may, if y
 to your own modified versions of Mura CMS.
 --->
 <cfhtmlhead text="#session.dateKey#">
+<cfset variables.pluginEvent=createObject("component","mura.event").init(event.getAllValues())/>
 <cfset pageLevelList="Page,Portal,Calendar,Gallery"/>
 <cfset nodeLevelList="Page,Portal,Calendar,Gallery,Link,File"/>
 <cfif attributes.compactDisplay neq "true"><script>
@@ -325,8 +326,13 @@ select * from rsPluginScripts3 order by pluginID
 	<cfset tablist=tablist & ",'#jsStringFormat(rsPluginScripts.name)#'"/>
 	<div class="page_aTab">
 		<cfoutput>
-		<cfset request.pluginConfig=application.pluginManager.getConfig(rsPluginScripts.pluginID)>
-		<cfinclude template="/#application.configBean.getWebRootMap()#/plugins/#rsPluginScripts.directory#/#rsPluginScripts.scriptfile#">
+		<cfset rsPluginScript=application.pluginManager.getScripts("onContentEdit",attributes.siteID,rsPluginScripts.moduleID)>
+		<cfif rsPluginScript.recordcount>
+		#application.pluginManager.renderScripts("onContentEdit",attributes.siteid,pluginEvent,rsPluginScript)#
+		<cfelse>
+		<cfset rsPluginScript=application.pluginManager.getScripts("on#attributes.type#Edit",attributes.siteID,rsPluginScripts.moduleID)>
+		#application.pluginManager.renderScripts("on#attributes.type#Edit",attributes.siteid,pluginEvent,rsPluginScript)#
+		</cfif>
 		</cfoutput>
 	</div>
 	</cfoutput>

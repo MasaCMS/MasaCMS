@@ -86,8 +86,7 @@ to your own modified versions of Mura CMS.
 
 <cfset rsPluginEditor=application.pluginManager.getScripts("onHTMLEdit",attributes.siteID)>
 <cfif rsPluginEditor.recordcount>
-<cfset request.pluginConfig=application.pluginManager.getConfig(rsPluginEditor.pluginID)>
-	<cfinclude template="/#application.configBean.getWebRootMap()#/plugins/#rsPluginEditor.directory#/#rsPluginEditor.scriptfile#">
+	#application.pluginManager.renderScripts("onHTMLEdit",attributes.siteid,pluginEvent,rsPluginEditor)#
 <cfelse>
 	<cfscript>
 		fckEditor = createObject("component", "mura.fckeditor");

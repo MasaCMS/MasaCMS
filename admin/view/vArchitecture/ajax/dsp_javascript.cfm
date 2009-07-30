@@ -50,8 +50,8 @@ to your own modified versions of Mura CMS.
 
 <cfset rsPluginScripts=application.pluginManager.getScripts("onHTMLEditHeader",attributes.siteID)>
 <cfif rsPluginScripts.recordcount>
-<cfset request.pluginConfig=application.pluginManager.getConfig(rsPluginScripts.pluginID)>
-	<cfinclude template="/#application.configBean.getWebRootMap()#/plugins/#rsPluginScripts.directory#/#rsPluginScripts.scriptfile#">
+	<cfset variables.pluginEvent=createObject("component","mura.event").init(event.getAllValues())/>
+	<cfoutput>#application.pluginManager.renderScripts("onHTMLEditHeader",attributes.siteid,pluginEvent,rsPluginScripts)#</cfoutput>
 <cfelse>
 <cfoutput>
 <script type="text/javascript">

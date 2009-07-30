@@ -41,6 +41,7 @@ the GNU General Public License version 2  without this exception.  You may, if y
 to your own modified versions of Mura CMS.
 --->
 <cfhtmlhead text="#session.dateKey#">
+<cfset variables.pluginEvent=createObject("component","mura.event").init(event.getAllValues())/>
 <cfoutput>
 <h2>#application.rbFactory.getKeyValue(session.rb,'email.createeditemail')#</h2>
 
@@ -114,8 +115,8 @@ to your own modified versions of Mura CMS.
 
 <cfset rsPluginScripts=application.pluginManager.getScripts("onHTMLEdit",attributes.siteID)>
 <cfif rsPluginScripts.recordcount>
-<cfset request.pluginConfig=application.pluginManager.getConfig(rsPluginScripts.pluginID)>
-	<cfinclude template="/#application.configBean.getWebRootMap()#/plugins/#rsPluginScripts.directory#/#rsPluginScripts.scriptfile#">
+	<cfset variables.pluginEvent=createObject("component","mura.event").init(event.getAllValues())/>
+	#application.pluginManager.renderScripts("onHTMLEdit",attributes.siteid,pluginEvent,rsPluginScripts)#
 <cfelse>
 	<cfscript>
 		fckEditor = createObject("component", "mura.fckeditor");
