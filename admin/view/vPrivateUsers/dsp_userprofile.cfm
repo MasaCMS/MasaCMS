@@ -57,9 +57,9 @@ select * from rsSubTypes where subType <> 'Default'
 <div id="page_tabView">
 <div class="page_aTab">
 <dl class="oneColumn">
-			<cfif rsNonDefault.recordcount>
+		<cfif rsNonDefault.recordcount>
 		<dt class="first">#application.rbFactory.getKeyValue(session.rb,'user.type')#</dt>
-		<dd><select name="subtype" class="dropdown" onchange="resetExtendedAttributes('#request.userBean.getUserID()#','2',this.value,'#application.settingsManager.getSite(request.userBean.getSiteID()).getPublicUserPoolID()#','#application.configBean.getContext()#','#application.settingsManager.getSite(attributes.siteID).getThemeAssetPath()#');">
+		<dd><select name="subtype" class="dropdown" onchange="resetExtendedAttributes('#request.userBean.getUserID()#','2',this.value,'#application.settingsManager.getSite(request.userBean.getSiteID()).getPublicUserPoolID()#','#application.configBean.getContext()#','#application.settingsManager.getSite(request.userBean.getSiteID()).getThemeAssetPath()#');">
 			<option value="Default" <cfif  request.userBean.getSubType() eq "Default">selected</cfif>> #application.rbFactory.getKeyValue(session.rb,'user.default')#</option>
 				<cfloop query="rsNonDefault">
 					<option value="#rsNonDefault.subtype#" <cfif request.userBean.getSubType() eq rsNonDefault.subtype>selected</cfif>>#rsNonDefault.subtype#</option>
@@ -150,7 +150,7 @@ select * from rsSubTypes where subType <> 'Default'
 		<div class="page_aTab">
 			<span id="extendSets"></span>
 			<script type="text/javascript">
-			loadExtendedAttributes('#request.userbean.getUserID()#','#request.userbean.getType()#','#request.userBean.getSubType()#','#application.settingsManager.getSite(request.userBean.getSiteID()).getPrivateUserPoolID()#','#application.configBean.getContext()#','#application.settingsManager.getSite(attributes.siteID).getThemeAssetPath()#');
+			loadExtendedAttributes('#request.userbean.getUserID()#','#request.userbean.getType()#','#request.userBean.getSubType()#','#application.settingsManager.getSite(request.userBean.getSiteID()).getPrivateUserPoolID()#','#application.configBean.getContext()#','#application.settingsManager.getSite(request.userbean.getSiteID()).getThemeAssetPath()#');
 			</script>	
 	</div>
 	<cfhtmlhead text='<script type="text/javascript" src="js/user.js"></script>'>

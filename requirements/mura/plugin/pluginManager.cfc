@@ -226,7 +226,7 @@ select * from tplugins order by #arguments.orderby#
 
 <cfset savePluginXML(modID) />
 <cfset loadPlugins() />
-<cfset createLookupTXT()/>
+<!---<cfset createLookupTXT()/>--->
 
 <cfreturn modID/>
 
@@ -359,7 +359,7 @@ select * from tplugins order by #arguments.orderby#
 		</cfif>
 	</cfif>
 	
-	<cfset createLookupTXT()/>
+	<!---<cfset createLookupTXT()/>--->
 	
 </cffunction>	
 
@@ -747,7 +747,7 @@ select * from tplugins order by #arguments.orderby#
 	</cfquery>
 	
 	<cfset loadPlugins() />
-	<cfset createLookupTXT()/>
+	<!---<cfset createLookupTXT()/>--->
 
 </cffunction>
 
