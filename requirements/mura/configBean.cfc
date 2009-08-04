@@ -89,6 +89,7 @@ to your own modified versions of Mura CMS.
 <cfset variables.instance.locale="Server" />
 <cfset variables.instance.imageInterpolation="highestQuality" />
 <cfset variables.instance.clusterIPList="" />
+<cfset variables.instance.enableMuraTag=true />
 <cfset variables.instance.appreloadKey=application.appreloadKey />
 <cffunction name="init" returntype="any" output="true" access="public">
 	<cfargument name="config" type="struct"> 	
@@ -158,6 +159,10 @@ to your own modified versions of Mura CMS.
 	
 	<cfif structKeyExists(config,"appreloadKey")>
 	<cfset setAppreloadKey(config.appreloadKey)/>
+	</cfif>
+	
+	<cfif structKeyExists(config,"enableMuraTag")>
+	<cfset setEnableMuraTag(config.enableMuraTag)/>
 	</cfif>
 	
 	<cfswitch expression="#server.coldfusion.productName#">
@@ -690,6 +695,18 @@ to your own modified versions of Mura CMS.
 	<cfset variables.instance.mailServerSSL = arguments.mailServerSSL />
 	</cfif>
 </cffunction>
+
+<cffunction name="getEnableMuraTag" returntype="String" access="public" output="false">
+	<cfreturn variables.instance.enableMuraTag />
+</cffunction>
+
+<cffunction name="setEnableMuraTag" access="public" output="false">
+	<cfargument name="enableMuraTag" type="String" />
+	<cfif isBoolean(arguments.enableMuraTag)>
+	<cfset variables.instance.enableMuraTag = arguments.enableMuraTag />
+	</cfif>
+</cffunction>
+
 
 <cffunction name="getClusterIPList" returntype="String" access="public" output="false">
 	<cfreturn variables.instance.clusterIPList />

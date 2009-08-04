@@ -116,6 +116,7 @@ to your own modified versions of Mura CMS.
 <cfset variables.instance.Path = "">
 <cfset variables.instance.tags = "">
 <cfset variables.instance.extendData="" />
+<cfset variables.instance.extendSetID="" />
 <cfset variables.instance.doCache = 1 />
 <cfset variables.instance.created = now() />
 
@@ -1008,26 +1009,44 @@ to your own modified versions of Mura CMS.
     <cfreturn variables.instance.created />
   </cffunction>
 
+ <cffunction name="getExtendedData" returntype="any" output="false" access="public">
+	<cfif not isObject(variables.instance.extendData)>
+	<cfset variables.instance.extendData=variables.configBean.getClassExtensionManager().getExtendedData(getcontentHistID())/>
+	</cfif> 
+	<cfreturn variables.instance.extendData />
+ </cffunction>
+
   <cffunction name="getExtendedAttribute" returnType="string" output="false" access="public">
  	<cfargument name="key" type="string" required="true">
 	<cfargument name="useMuraDefault" type="boolean" required="true" default="false"> 
 	
-	<cfif not isObject(variables.instance.extendData)>
-	<cfset variables.instance.extendData=variables.configBean.getClassExtensionManager().getExtendedData(getcontentHistID())/>
-	</cfif> 
-  	<cfreturn variables.instance.extendData.getAttribute(arguments.key,arguments.useMuraDefault) />
+  	<cfreturn getExtendedData().getAttribute(arguments.key,arguments.useMuraDefault) />
   </cffunction>
 
 <cffunction name="setValue" returntype="any" access="public" output="false">
 	<cfargument name="property"  type="string" required="true">
 	<cfargument name="propertyValue" default="" >
 	
+	<cfset var extData =structNew() />
+	<cfset var i = "">	
+	
 	<cfif structKeyExists(this,"set#property#")>
 		<cfset evaluate("set#property#(arguments.propertyValue") />
 	<cfelse>
+		<cfset extData=getExtendedData().getExtendSetDataByAttributeName(arguments.property)>
+		<cfif not structIsEmpty(extData)>
+			<cfset structAppend(variables.instance,extData.data,false)>	
+			<cfloop list="#extData.extendSetID#" index="i">
+				<cfif not listFind(variables.instance.extendSetID,i)>
+					<cfset variables.instance.extendSetID=listAppend(variables.instance.extendSetID,i)>
+				</cfif>
+			</cfloop>
+		</cfif>
+			
 		<cfset variables.instance["#arguments.property#"]=arguments.propertyValue />
+		
 	</cfif>
-
+	
 </cffunction>
 
 <cffunction name="getValue" returntype="any" access="public" output="false">
@@ -1035,8 +1054,8 @@ to your own modified versions of Mura CMS.
 	
 	<cfif structKeyExists(this,"get#property#")>
 		<cfreturn evaluate("get#property#()") />
-	<cfelseif structKeyExists(request,"#arguments.property#")>
-		<cfreturn request["#arguments.property#"] />
+	<cfelseif structKeyExists(variables.instance,"#arguments.property#")>
+		<cfreturn variables.instance["#arguments.property#"] />
 	<cfelse>
 		<cfreturn getExtendedAttribute(arguments.property) />
 	</cfif>

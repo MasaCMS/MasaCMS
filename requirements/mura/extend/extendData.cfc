@@ -107,9 +107,13 @@ to your own modified versions of Mura CMS.
 <cfset var dataTable=getDataTable() />
 
 		<cfquery name="rs" datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-		select tclassextendattributes.name,tclassextendattributes.attributeID,tclassextendattributes.defaultValue,#dataTable#.attributeValue from #dataTable# inner join
+		select tclassextendattributes.name,tclassextendattributes.attributeID,tclassextendattributes.defaultValue,tclassextendattributes.extendSetID,
+		#dataTable#.attributeValue from #dataTable# inner join
 		tclassextendattributes On (#dataTable#.attributeID=tclassextendattributes.attributeID)
 		where #dataTable#.baseID=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#getBaseID()#">
+		group by
+		tclassextendattributes.name,tclassextendattributes.attributeID,tclassextendattributes.defaultValue,tclassextendattributes.extendSetID,
+		#dataTable#.attributeValue
 		</cfquery>
 		
 		<!--- <cfdump var="#rs#"><cfdump var="#getBaseID()#">		<cfabort> --->
@@ -125,4 +129,31 @@ to your own modified versions of Mura CMS.
 <cffunction name="getAllValues" access="public" returntype="struct" output="false">
 		<cfreturn variables.instance />
 </cffunction>
+
+<cffunction name="getExtendSetDataByAttributeName" access="public" returntype="struct" output="false">
+	<cfargument name="key">
+	<cfset var rs="" />
+	<cfset var extData=structNew() />
+	
+	<cfquery name="rs" dbType="query">
+		 select extendSetID, name, attributeValue from variables.instance.data
+		 where name=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#key#">
+		 <cfif isNumeric(arguments.key)>
+			 or attributeID=<cfqueryparam cfsqltype="cf_sql_numeric"  value="#key#">
+		 </cfif>
+	</cfquery>
+	
+	<cfif rs.recordcount>
+		<cfset extData.extendSetID=valueList(rs.extendSetID)>
+		<cfset extData.data=structNew()>
+		
+		<cfloop query="rs">
+			<cfset extData.data['#rs.name#']=rs.attributeValue>
+		</cfloop>
+	</cfif>
+	
+	<cfreturn extData/>
+	
+</cffunction>
+
 </cfcomponent>

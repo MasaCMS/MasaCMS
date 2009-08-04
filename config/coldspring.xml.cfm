@@ -165,6 +165,9 @@ to your own modified versions of Mura CMS.
 				<entry key="clusterIPList">
 					<value>#XMLFormat(GetProfileString("#variables.iniPath#", mode, "clusterIPList"))#</value>
 				</entry>
+				<entry key="enableMuraTag">
+					<value>#XMLFormat(GetProfileString("#variables.iniPath#", mode, "enableMuraTag"))#</value>
+				</entry>
 				<entry key="appreloadKey">
 					<value>#XMLFormat(application.appreloadKey)#</value>
 				</entry>
@@ -286,6 +289,7 @@ to your own modified versions of Mura CMS.
 		<bean id="settingsDAO" class="mura.settings.settingsDAO" singleton="true">
 			<constructor-arg name="configBean"><ref bean="configBean" /></constructor-arg>
 			<constructor-arg name="clusterManager"><ref bean="clusterManager" /></constructor-arg>
+			<constructor-arg name="javaLoader"><ref bean="javaLoader" /></constructor-arg>
 		</bean>
 		<bean id="settingsBean" class="mura.settings.settingsBean" singleton="false">
 			<constructor-arg name="configBean"><ref bean="configBean" /></constructor-arg>
@@ -544,6 +548,13 @@ to your own modified versions of Mura CMS.
 		</bean>
 		<bean id="genericManager" class="mura.generic.genericManager" singleton="true" />
 		<bean id="contentServer" class="mura.content.contentServer" singleton="true" />
+		<bean id="javaLoader" class="mura.javaloader.javaLoader" singleton="true">
+			<constructor-arg name="loadPaths">
+				<list>
+					<value>#expandPath('/mura')#/cache/java/FactoryClasses.jar</value>
+				</list>
+			</constructor-arg>
+		</bean>
 		<cfinclude template="coldspring.custom.xml.cfm">
 	</beans></cfoutput>
 	</cfsavecontent>

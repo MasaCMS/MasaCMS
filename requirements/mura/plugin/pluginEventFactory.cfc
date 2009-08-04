@@ -30,6 +30,7 @@
 	<cfset variables.siteid=arguments.siteid>
 	<cfset variables.genericManager=arguments.genericManager>
 	<cfset variables.pluginManager=arguments.pluginManager>
+	<cfset super.init() />
 	<cfreturn this>
 </cffunction>
 
@@ -46,18 +47,17 @@
 		<cfif NOT has( checkKey )>
 			<!--- If it has not then get it--->
 			<cfset rs=variables.pluginManager.getScripts(arguments.key & variables.class,variables.siteid)>
-			<cfset variables.collection[ hashCheckKey ] = rs.recordcount />
+			<cfset super.set( checkKey, rs.recordcount ) />
 			<cfif rs.recordcount>
-				<cfset variables.collection[ hashKey ] = variables.pluginManager.getComponent("plugins.#rs.package#.#rs.scriptfile#", rs.pluginID, variables.siteID, rs.docache)>
+				<cfset super.set( key, variables.pluginManager.getComponent("plugins.#rs.package#.#rs.scriptfile#", rs.pluginID, variables.siteID, rs.docache) )>
 			</cfif>
 		</cfif>
 		
-		<cfif variables.collection[ hashCheckKey ]>
-			<cfreturn variables.collection[ hashKey ]>
+		<cfif super.get( checkKey )>
+			<cfreturn super.get( key )>
 		<cfelse>
 			<!--- return cached context --->		
 			<cfreturn variables.genericManager.getFactory(variables.class).get(arguments.key) />
-		
 		</cfif>
 
 </cffunction>

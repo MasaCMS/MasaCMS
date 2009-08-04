@@ -171,7 +171,7 @@ to your own modified versions of Mura CMS.
 	
 	<cfif structIsEmpty(userBean.getErrors())>
 	
-		<cfif structKeyExists(arguments.data,"extendSetID")>
+		<cfif structKeyExists(arguments.data,"extendSetID") and len(arguments.data.extendSetID)>
 			<cfset arguments.data.siteID=userBean.getSiteID() />
 			<cfset variables.ClassExtensionManager.saveExtendedData(userBean.getUserID(),arguments.data,'tclassextenddatauseractivity')/>
 		</cfif>
@@ -247,7 +247,7 @@ to your own modified versions of Mura CMS.
 	
 	<cfif structIsEmpty(userBean.getErrors())>
 		
-		<cfif structKeyExists(arguments.data,"extendSetID")>
+		<cfif structKeyExists(arguments.data,"extendSetID") and len(arguments.data.extendSetID)>
 			<cfset arguments.data.siteID=userBean.getSiteID() />
 			<cfset variables.ClassExtensionManager.saveExtendedData(userBean.getUserID(),arguments.data,'tclassextenddatauseractivity')/>
 		</cfif>
@@ -257,13 +257,13 @@ to your own modified versions of Mura CMS.
 		</cfif>
 		
 		<cfif structIsEmpty(userBean.getErrors())>
-		<cfset variables.globalUtility.logEvent("UserID:#userBean.getUserID()# Type:#userBean.getType()# User:#userBean.getFName()# #userBean.getFName()# Group:#userBean.getGroupName()# was created","mura-users","Information",true) />
-		<cfset setLastUpdateInfo(userBean) />
-		<cfset variables.userDAO.create(userBean) />
-		<cfset variables.userDAO.createAddress(addressBean) />
+			<cfset variables.globalUtility.logEvent("UserID:#userBean.getUserID()# Type:#userBean.getType()# User:#userBean.getFName()# #userBean.getFName()# Group:#userBean.getGroupName()# was created","mura-users","Information",true) />
+			<cfset setLastUpdateInfo(userBean) />
+			<cfset variables.userDAO.create(userBean) />
+			<cfset variables.userDAO.createAddress(addressBean) />
 		</cfif>
 	
-		<cfif  userBean.getType() eq 1>	
+		<cfif userBean.getType() eq 1>	
 			<cfset pluginEvent.setValue("groupBean",userBean)/>			
 			<cfset variables.pluginManager.executeScripts("onGroupCreate",userBean.getSiteID(),pluginEvent)>	
 		<cfelse>

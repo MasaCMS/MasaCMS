@@ -1,141 +1,167 @@
-<!--- This file is part of Mura CMS.
-
-Mura CMS is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, Version 2 of the License.
-
-Mura CMS is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with Mura CMS.  If not, see <http://www.gnu.org/licenses/>.
-
-Linking Mura CMS statically or dynamically with other modules constitutes
-the preparation of a derivative work based on Mura CMS. Thus, the terms and 	
-conditions of the GNU General Public License version 2 (“GPL”) cover the entire combined work.
-
-However, as a special exception, the copyright holders of Mura CMS grant you permission
-to combine Mura CMS with programs or libraries that are released under the GNU Lesser General Public License version 2.1.
-
-In addition, as a special exception,  the copyright holders of Mura CMS grant you permission
-to combine Mura CMS  with independent software modules that communicate with Mura CMS solely
-through modules packaged as Mura CMS plugins and deployed through the Mura CMS plugin installation API,
-provided that these modules (a) may only modify the  /trunk/www/plugins/ directory through the Mura CMS
-plugin installation API, (b) must not alter any default objects in the Mura CMS database
-and (c) must not alter any files in the following directories except in cases where the code contains
-a separately distributed license.
-
-/trunk/www/admin/
-/trunk/www/tasks/
-/trunk/www/config/
-/trunk/www/requirements/mura/
-
-You may copy and distribute such a combined work under the terms of GPL for Mura CMS, provided that you include
-the source code of that other code when and as the GNU GPL requires distribution of source code.
-
-For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception
-for your modified version; it is your choice whether to do so, or to make such modified version available under
-the GNU General Public License version 2  without this exception.  You may, if you choose, apply this exception
-to your own modified versions of Mura CMS.
---->
 <cfcomponent output="false">
 
 	<cfset variables.parent = "" />
-	<cfset variables.collection = structNew() />
-	<cfset variables.cacheTimeout = 60 /> <!--- minutes --->
-	<cfset variables.updateDatetimeOnRequest = false />
+	<cfset variables.javaLoader = "" />
+	<!--- main collection --->
+	<cfset variables.collections = createObject( "java", "java.util.Collections" ) />
+	<cfset variables.collection = "" />
+	<cfset variables.map = createObject( "java", "java.util.HashMap" ).init() />
+	<!--- default variables --->
 
-	<cffunction name="init" access="public" returntype="Factory" output="false">
+	<cffunction name="init" access="public" returntype="mura.Factory" output="false">
+		
+		<!--- set the map into the collections --->
+		<cfset setCollection( variables.collections.synchronizedMap( variables.map ) ) />
+		
 		<cfreturn this />
 	</cffunction>
 	
+	<!--- *************************--->
+	<!--- GLOBAL --->
+	<!--- *************************--->
+	<!---
+	<cffunction name="configure" access="public" returntype="void" output="false">
+	</cffunction>
+	--->
+	
+	<cffunction name="getHashKey" access="public" returntype="string" output="false">
+		<cfargument name="key" type="string" required="true" />
+		<cfreturn hash( arguments.key, "MD5" ) />
+	</cffunction>
+
+	<cffunction name="setParent" access="public" returntype="void" output="false">
+		<cfargument name="parent" type="mura.Factory" required="true" />
+		<cfset variables.parent = arguments.parent />
+	</cffunction>
+	
+	<cffunction name="getParent" access="public" returntype="mura.Factory" output="false">
+		<cfreturn variables.parent />
+	</cffunction>
+	<cffunction name="hasParent" access="public" returntype="boolean" output="false">
+		<cfreturn isObject( variables.parent ) />
+	</cffunction>
+	
+	<cffunction name="setCollection" access="private" returntype="void" output="false">
+		<cfargument name="collection" type="struct" required="true" />
+		<cfset variables.collection = arguments.collection />
+	</cffunction>
+	
+	<!--- *************************--->
+	<!--- COMMON --->
+	<!--- *************************--->
 	<cffunction name="get" access="public" returntype="any" output="false">
 		<cfargument name="key" type="string" required="true" />
 		
-		<cfset var hashKey = getHashKey( arguments.type) />
+		<cfset var hashedKey = getHashKey( arguments.key ) />
 		
-		<!---
-		<cfif NOT structKeyExists( variables.collection, hashKey )>
-			
-			<!--- create object --->
-			<cfset variables.collection[ hashKey ] = createObject( getFactoryClassType(), getClassPathPrefix() & arguments.type & getClassPathSuffix() ) />
-		
-			<!--- attempt to initialize --->
-			<cftry>
-				<cfset variables.collection[ hashKey ].init() />
-				<cfcatch>
-					<!--- do nothing --->
-				</cfcatch>
-			</cftry>
+		<!--- check to see if the item is in the parent --->
+		<!--- only if a parent is present --->
+		<cfif NOT has( arguments.key ) AND hasParent() AND getParent().has( arguments.key )>
+			<cfreturn getParent().get( arguments.key ) />
 		</cfif>
+
+		<!--- check to make sure the key exists within the factory collection --->
+		<cfif has( arguments.key )>
+			<!--- if it's a soft reference then do a get against the soft reference --->
+			<cfif isSoftReference( variables.collection.get( getHashKey( arguments.key ) ) )>
+				<!--- is it still a soft reference --->
+				<!--- if so then return it --->
+				<cfreturn variables.collection.get( getHashKey( arguments.key ) ).get() />
+			<cfelse>
+				<!--- return the object from the factory collection --->
+				<cfreturn variables.collection.get( getHashKey( arguments.key ) ) />
+			</cfif>
+		</cfif>
+
+		<cfthrow message="Key '#arguments.key#' was not found within the map collection" />
+
+	</cffunction>
+	<cffunction name="getAll" access="public" returntype="any" output="false">
+		<cfreturn variables.map />
+	</cffunction>
+	
+	<cffunction name="set" access="public" returntype="void" output="false">
+		<cfargument name="key" type="string" required="true" />
+		<cfargument name="obj" type="any" required="true" />
+		<cfargument name="isSoft" type="boolean" required="false" default="false" />
 		
-		<cfreturn variables.collection[ hashKey ] />
-		--->
-		
-		<cfthrow message="This is abstract. The GET method needs to be rebuilt" />
+		<cfset var softRef = "" />
+		<cfset var hashedKey = getHashKey( arguments.key ) />
+
+		<!--- check to see if this should be a soft reference --->
+		<cfif arguments.isSoft>
+			<!--- create the soft reference --->
+			<cfset softRef = createObject( "java", "java.lang.ref.SoftReference" ).init( arguments.obj ) />
+
+			<!--- assign object to main collection --->
+			<cfset variables.collection.put( hashedKey, softRef ) />
+		<cfelse>
+			<!--- assign object to main collection --->
+			<cfset variables.collection.put( hashedKey, arguments.obj ) />
+		</cfif>
 
 	</cffunction>
 	
-	<cffunction name="size" access="public" returntype="any" output="false">
-		<cfreturn structCount( variables.collection ) />
+	<cffunction name="size" access="public" returntype="numeric" output="false">
+		<cfreturn variables.map.size() />
 	</cffunction>
 	
 	<cffunction name="has" access="public" returntype="boolean" output="false">
 		<cfargument name="key" type="string" required="true" />
 
-		<!--- returns true or false based on if the key exists within the collection --->
-		<cfreturn structKeyExists( variables.collection, getHashKey( arguments.key ) ) />
+		<cfset var refLocal = structnew() />
+		<cfset var hashLocal=getHashKey( arguments.key ) />
+		<cfset refLocal.tmpObj=0 />
 
+		<!--- Check for Object in Cache. --->
+		<cfif structKeyExists( variables.collection , hashLocal ) >
+			<cfif isSoftReference( variables.collection.get( hashLocal ) ) >
+				<cfset refLocal.tmpObj = variables.collection.get( hashLocal ).get() />
+				<cfreturn structKeyExists(refLocal, "tmpObj") />
+			</cfif>
+			<cfreturn true />
+		<cfelse>
+			<cfreturn false />
+		</cfif>	
+		
 	</cffunction>
 
+	<!--- *************************--->
+	<!--- PURGE --->
+	<!--- *************************--->
 	<cffunction name="purgeAll" access="public" returntype="void" output="false">
-		<cfset variables.collection = structNew() />
+		<cfset variables.map.clear() />
 	</cffunction>
-
 	<cffunction name="purge" access="public" returntype="void" output="false">
 		<cfargument name="key" type="string" required="true" />
-
+		
 		<!--- check to see if the id exists --->
-		<cfif structKeyExists( variables.collection, getHashKey( arguments.key ) )>
-			<!--- delete from cache --->
-			<cfset structDelete( variables.collection, getHashKey( arguments.key ) )>
-		<cfelse>
-			<cfthrow message="Id:#arguments.key# cached item from factory could not be found, so could not be deleted" />
+		<cfif variables.map.containsKey( getHashKey( arguments.key ) )>
+			<!--- delete from map --->
+			<cfset variables.map.remove( getHashKey( arguments.key ) ) />
 		</cfif>
-
 	</cffunction>
 
-	<cffunction name="getHashKey" access="public" returntype="string" output="false">
-		<cfargument name="key" type="string" required="true" />
-		<cfreturn hash(arguments.key, "MD5") />
+	<!--- *************************--->
+	<!--- JAVALOADER --->
+	<!--- *************************--->
+	<cffunction name="setJavaLoader" access="public" returntype="void" output="false">
+		<cfargument name="javaLoader" type="any" required="true" />
+		<cfset variables.javaLoader = arguments.javaLoader />
 	</cffunction>
-	
-	<!---
-	<cffunction name="flushByTimeout" access="public" returntype="void" output="false">
-
-		<cfset var key = "" />
-
-		<!--- loop over the collection and scrub out any key that have been sitting over the variables.cacheTimeout --->
-		<cfloop collection="#variables.collection#" item="key">
-			<cfif dateDiff("n", variables.collection[key].datetime, now()) GT variables.cacheTimeout>
-				<!--- <cfdump var="Cache delete: #key#" output="console" format="text" /> --->
-				<cfset structDelete(variables.collection, key) />
-			</cfif>
-		</cfloop>
-
-	</cffunction>
-
-	<cffunction name="setCacheTimeout" access="public" returntype="void" output="false">
-		<cfargument name="minutes" type="numeric" required="true" />
-		<cfset variables.cacheTimeout = arguments.minutes />
+	<cffunction name="getJavaLoader" access="public" returntype="any" output="false">
+		<cfreturn variables.javaLoader />
 	</cffunction>
 	
-	<cffunction name="setUpdateDatetimeOnRequest" access="public" returntype="void" output="false">
-		<cfargument name="updateDatetimeOnRequest" type="boolean" required="true" />
-		<cfset variables.updateDatetimeOnRequest = arguments.updateDatetimeOnRequest />
+	<!--- *************************--->
+	<!--- SOFT REFERENCE --->
+	<!--- *************************--->
+	<cffunction name="isSoftReference" access="private" returntype="boolean" output="false" >
+		<cfargument name="obj" type="any" required="true" />
+		<cfif isObject( arguments.obj ) AND getMetaData( arguments.obj ).name EQ "java.lang.ref.SoftReference">
+			<cfreturn true />
+		</cfif>
+		<cfreturn false />
 	</cffunction>
-	--->
 
 </cfcomponent>

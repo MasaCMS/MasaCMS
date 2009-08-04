@@ -83,7 +83,7 @@ to your own modified versions of Mura CMS.
 	<cfset variables.instance.hKey="" />
 	<cfset variables.instance.uKey="" />
 	<cfset variables.instance.extendData="" />
-
+	<cfset variables.instance.extendSetID="" />
     <cfset variables.instance.errors=structnew() />
 	
 	<cffunction name="init" returntype="any" output="false" access="public">
@@ -618,15 +618,21 @@ to your own modified versions of Mura CMS.
     <cfreturn variables.instance.PasswordCreated />
   </cffunction>
 
-  <cffunction name="getExtendedAttribute" returnType="string" output="false" access="public">
- 	<cfargument name="key" type="string" required="true"> 
-	<cfargument name="useMuraDefault" type="boolean" required="true" default="false"> 
+
+ <cffunction name="getExtendedData" returntype="any" output="false" access="public">
 	<cfif not isObject(variables.instance.extendData)>
 	<cfset variables.instance.extendData=variables.configBean.getClassExtensionManager().getExtendedData(getUserID(),'tclassextenddatauseractivity')/>
 	</cfif> 
-  	<cfreturn variables.instance.extendData.getAttribute(arguments.key,arguments.useMuraDefault) />
-  </cffunction>
-  
+	<cfreturn variables.instance.extendData />
+ </cffunction>
+
+<cffunction name="getExtendedAttribute" returnType="string" output="false" access="public">
+ <cfargument name="key" type="string" required="true">
+ <cfargument name="useMuraDefault" type="boolean" required="true" default="false"> 
+	
+  	<cfreturn getExtendedData().getAttribute(arguments.key,arguments.useMuraDefault) />
+</cffunction>
+
  <cffunction name="setTags" returnType="void" output="false" access="public">
     <cfargument name="tags" type="string" required="true">
     <cfset variables.instance.tags = trim(arguments.tags) />
@@ -650,12 +656,28 @@ to your own modified versions of Mura CMS.
 	<cfargument name="property"  type="string" required="true">
 	<cfargument name="propertyValue" default="" >
 	
+	<cfset var extData =structNew() />
+	<cfset var i = "">	
+	
 	<cfif structKeyExists(this,"set#property#")>
 		<cfset evaluate("set#property#(arguments.propertyValue") />
-	<cfelse>
+	<cfelseif structKeyExists(variables.instance,arguments.property)>
 		<cfset variables.instance["#arguments.property#"]=arguments.propertyValue />
+	<cfelse>
+		<cfset extData=getExtendedData().getExtendSetDataByAttributeName(arguments.property)>
+		<cfif not structIsEmpty(extData)>
+			<cfset structAppend(variables.instance,extData.data,false)>	
+			<cfloop list="#extData.extendSetID#" index="i">
+				<cfif not listFind(variables.instance.extendSetID,i)>
+					<cfset variables.instance.extendSetID=listAppend(variables.instance.extendSetID,i)>
+				</cfif>
+			</cfloop>
+		</cfif>
+			
+		<cfset variables.instance["#arguments.property#"]=arguments.propertyValue />
+		
 	</cfif>
-
+	
 </cffunction>
 
 <cffunction name="getValue" returntype="any" access="public" output="false">

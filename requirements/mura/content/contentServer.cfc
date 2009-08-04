@@ -170,6 +170,9 @@ to your own modified versions of Mura CMS.
 		</cfif>
 		
 		<cfset request.servletEvent = createObject("component","mura.servletEvent").init() />
+		
+		<cfset application.pluginManager.executeScripts('onSiteRequestInit',request.servletEvent.getValue('siteid'),request.servletEvent)/>
+		
 		<cfreturn createObject("component","mura.Mura").init().doRequest(request.servletEvent)>
 		
 	<cfelse>

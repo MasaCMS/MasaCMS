@@ -57,6 +57,7 @@ to your own modified versions of Mura CMS.
 <cfset this.personalization="user">
 <cfset this.showAdminToolBar=true/>
 <cfset this.renderHTMLHead=true/>
+<cfset this.enableMuraTag=getConfigBean().getEnableMuraTag() />
 <cfset this.crumbdata=arrayNew(1)/>
 
 <cffunction name="init" returntype="any" access="public" output="false">
@@ -1526,6 +1527,11 @@ to your own modified versions of Mura CMS.
 	<cfset var regex1="(\[sava\]|\[mura\]).+?(\[/sava\]|\[/mura\])">
 	<cfset var regex2="">
 	<cfset var finder=reFindNoCase(regex1,body,1,"true")>
+	
+	<!--- It the Mura tag is not enabled just return the submitted string --->
+	<cfif not this.enableMuraTag>
+		<cfreturn str />
+	</cfif>
 	
 	<!---  still looks for the Sava tag for backward compatibility --->
 	<cfloop condition="#finder.len[1]#">

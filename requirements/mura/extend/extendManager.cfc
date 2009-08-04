@@ -122,7 +122,7 @@ to your own modified versions of Mura CMS.
 <cfset var theValue=""/>
 <cfset var s=0/>
 
-<cfif isDefined("arguments.data.extendSetID")>
+<cfif isDefined("arguments.data.extendSetID") and len(arguments.data.extendSetID)>
 <cfset setLen=listLen(arguments.data.extendSetID)/>
 
 <!--- process non-file attributes --->
@@ -255,14 +255,14 @@ ExtendSetID in(<cfloop from="1" to="#setLen#" index="s">
 <cfset var deleteKey2 = ""/>
 <cfset var key = ""/>
 <cfset var s=0/>
-
+<cfset var hasExtendSets=isDefined("arguments.data.extendSetID") and len(arguments.data.extendSetID)>
 <!--- preserve data from extendsets that were'nt submitted --->
 <cfquery name="rs" datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 select #arguments.dataTable#.* from #arguments.dataTable#
 inner join tclassextendattributes on ( #arguments.dataTable#.attributeID=tclassextendattributes.attributeID)
  where 
 baseID=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.preserveID#">
-<cfif isDefined("arguments.data.extendSetID")>
+<cfif hasExtendSets>
 <cfset setLen=listLen(arguments.data.extendSetID)/>
 and tclassextendattributes.extendSetID not in (<cfloop from="1" to="#setLen#" index="s">
 		'#listgetat(arguments.data.extendSetID,s)#'<cfif s lt setlen>,</cfif>
@@ -292,7 +292,7 @@ select #arguments.dataTable#.*, tclassextendattributes.name from #arguments.data
 inner join tclassextendattributes on ( #arguments.dataTable#.attributeID=tclassextendattributes.attributeID)
  where 
 baseID=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.preserveID#">
-<cfif isDefined("arguments.data.extendSetID")>
+<cfif hasExtendSets>
 <cfset setLen=listLen(arguments.data.extendSetID)/>
 and tclassextendattributes.extendSetID in (<cfloop from="1" to="#setLen#" index="s">
 		'#listgetat(arguments.data.extendSetID,s)#'<cfif s lt setlen>,</cfif>
@@ -329,7 +329,7 @@ select #arguments.dataTable#.*, tclassextendattributes.name from #arguments.data
 inner join tclassextendattributes on ( #arguments.dataTable#.attributeID=tclassextendattributes.attributeID)
  where 
 baseID=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.preserveID#">
-<cfif isDefined("arguments.data.extendSetID")>
+<cfif hasExtendSets>
 <cfset setLen=listLen(arguments.data.extendSetID)/>
 and tclassextendattributes.extendSetID in (<cfloop from="1" to="#setLen#" index="s">
 		'#listgetat(arguments.data.extendSetID,s)#'<cfif s lt setlen>,</cfif>

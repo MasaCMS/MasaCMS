@@ -356,6 +356,11 @@ to your own modified versions of Mura CMS.
 			
 </cffunction>
 
+<cffunction name="save" access="public" returntype="any" output="false">
+	<cfargument name="data" type="any"/>
+	<cfreturn add(arguments.data)/>
+</cffunction>
+
 <cffunction name="add" access="public" returntype="any" output="false">
 	<cfargument name="data" type="any"/>
 	<cfset var newBean=""/>
@@ -479,7 +484,7 @@ to your own modified versions of Mura CMS.
 		or newBean.getType() eq "File"
 		or newBean.getType() eq "Gallery">
 		
-		<cfif isDefined('arguments.data.extendSetID')>
+		<cfif isDefined('arguments.data.extendSetID') and len(arguments.data.extendSetID)>	
 			<cfset variables.ClassExtensionManager.saveExtendedData(newBean.getcontentHistID(),arguments.data)/>
 		</cfif>
 	

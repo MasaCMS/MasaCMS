@@ -24,6 +24,7 @@
 <cffunction name="init" output="false" returnType="any">
 <cfargument name="class">
 	<cfset variables.class=arguments.class>
+	<cfset super.init() />
 	<cfreturn this>
 </cffunction>
 
@@ -35,7 +36,7 @@
 		<!--- if the key cannot be found and context is passed then push it in --->
 		<cfif NOT has( arguments.key )>
 			<!--- create object --->
-			<cfset variables.collection[ hashKey ] = createObject("component",getComponentPath(arguments.key)).init() />
+			<cfset super.set( arguments.key, createObject("component",getComponentPath(arguments.key)).init() ) />
 		</cfif>
 		
 		<!--- if the key cannot be found then throw an error --->
@@ -44,7 +45,7 @@
 		</cfif>
 
 		<!--- return cached context --->		
-		<cfreturn variables.collection[ hashKey ] />
+		<cfreturn super.get( arguments.key ) />
 
 </cffunction>
 
