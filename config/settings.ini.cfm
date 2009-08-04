@@ -42,3 +42,4 @@ locale=Server
 ping=0
 imageinterpolation=highestQuality
 clusteriplist=
+enableMuraTag=true
