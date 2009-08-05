@@ -57,9 +57,7 @@ to your own modified versions of Mura CMS.
 	</cffunction>
 	
 	<cffunction name="onSessionStart" returnType="boolean" output="false">
-		<cfif structKeyExists(application,"pluginManager")>
-		<cfset application.pluginManager.executeScripts('onGlobalSessionStart')>
-		</cfif>
+		<cfset request.doMuraGlobalSessionStart=true>
 		<cfreturn true>
 	</cffunction>
 

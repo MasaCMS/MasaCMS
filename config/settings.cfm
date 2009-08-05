@@ -218,5 +218,9 @@ to your own modified versions of Mura CMS.
 
 
 <cfinclude template="settings.custom.vars.cfm">
+<cfif structKeyExists(request,"doMuraGlobalSessionStart")>
+	<cfset application.pluginManager.executeScripts('onGlobalSessionStart')>
+</cfif>
 <cfset application.pluginManager.executeScripts('onGlobalRequestStart')>
+
 </cfsilent>
