@@ -3,8 +3,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml"><!--- SUGGESTED LANGUAGE ATTRIBUTES - xml:lang="en" lang="en" --->
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-	<meta name="description" content="#HTMLEditFormat(request.contentBean.getmetadesc())#" />
-	<meta name="keywords" content="#HTMLEditFormat(request.contentBean.getmetakeywords())#" />
+	<meta name="description" content="#HTMLEditFormat(renderer.getmetadesc())#" />
+	<meta name="keywords" content="#HTMLEditFormat(renderer.getmetakeywords())#" />
 	<cfif request.contentBean.getCredits() neq ""><meta name="author" content="#HTMLEditFormat(request.contentbean.getCredits())#" /></cfif>
 	<meta name="generator" content="Mura CMS #application.configBean.getVersion()#" />
 	<!--- <meta name="robots" content="noindex, nofollow" /> ---><!--- use this to discourage search engines from indexing your site. (can be useful if developing on a live server for example) Delete if not needed. --->

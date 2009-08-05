@@ -56,10 +56,11 @@ to your own modified versions of Mura CMS.
 		<cfreturn true>
 	</cffunction>
 	
-	<!--- <cffunction name="onSessionEnd" returnType="void">
-	   <cfargument name="SessionScope" required=True/>
-	   <cfargument name="ApplicationScope" required=False/>
-	  		<cfabort>
-	</cffunction> --->
+	<cffunction name="onSessionStart" returnType="boolean" output="false">
+		<cfif structKeyExists(application,"pluginManager")>
+		<cfset application.pluginManager.executeScripts('onGlobalSessionStart')>
+		</cfif>
+		<cfreturn true>
+	</cffunction>
 
 </cfcomponent>

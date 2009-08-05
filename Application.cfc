@@ -48,5 +48,12 @@ to your own modified versions of Mura CMS.
 			<cfinclude template="config/settings.cfm">
 		<cfreturn true>
 	</cffunction>
-
+	
+	<cffunction name="onSessionStart" returnType="boolean" output="false">
+		<cfif structKeyExists(application,"pluginManager")>
+		<cfset application.pluginManager.executeScripts('onGlobalSessionStart')>
+		</cfif>
+		<cfreturn true>
+	</cffunction>
+	
 </cfcomponent>
