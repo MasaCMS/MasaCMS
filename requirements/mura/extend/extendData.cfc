@@ -111,9 +111,12 @@ to your own modified versions of Mura CMS.
 		#dataTable#.attributeValue from #dataTable# inner join
 		tclassextendattributes On (#dataTable#.attributeID=tclassextendattributes.attributeID)
 		where #dataTable#.baseID=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#getBaseID()#">
-		group by
-		tclassextendattributes.name,tclassextendattributes.attributeID,tclassextendattributes.defaultValue,tclassextendattributes.extendSetID,
-		#dataTable#.attributeValue
+		</cfquery>
+		
+		<!--- MSSQL needs to group by outside the original query --->
+		<cfquery name="rs" dbType="query">
+		select name,attributeID,defaultValue,extendSetID,attributeValue from rs
+		Group By name,attributeID,defaultValue,extendSetID,attributeValue
 		</cfquery>
 		
 		<!--- <cfdump var="#rs#"><cfdump var="#getBaseID()#">		<cfabort> --->
