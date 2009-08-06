@@ -130,7 +130,10 @@
 	<!--- PURGE --->
 	<!--- *************************--->
 	<cffunction name="purgeAll" access="public" returntype="void" output="false">
-		<cfset variables.map.clear() />
+		<cfset variables.collections = createObject( "java", "java.util.Collections" ) />
+		<cfset variables.collection = "" />
+		<cfset variables.map = createObject( "java", "java.util.HashMap" ).init() />
+		<cfset init()/>
 	</cffunction>
 	<cffunction name="purge" access="public" returntype="void" output="false">
 		<cfargument name="key" type="string" required="true" />
