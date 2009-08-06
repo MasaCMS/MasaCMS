@@ -289,12 +289,10 @@ to your own modified versions of Mura CMS.
 		<bean id="settingsDAO" class="mura.settings.settingsDAO" singleton="true">
 			<constructor-arg name="configBean"><ref bean="configBean" /></constructor-arg>
 			<constructor-arg name="clusterManager"><ref bean="clusterManager" /></constructor-arg>
-			<constructor-arg name="javaLoader"><ref bean="javaLoader" /></constructor-arg>
 		</bean>
 		<bean id="settingsBean" class="mura.settings.settingsBean" singleton="false">
 			<constructor-arg name="configBean"><ref bean="configBean" /></constructor-arg>
 			<constructor-arg name="clusterManager"><ref bean="clusterManager" /></constructor-arg>
-			<constructor-arg name="javaLoader"><ref bean="javaLoader" /></constructor-arg>
 		</bean>
 		<bean id="userManager" class="mura.user.userManager" singleton="true">
 			<constructor-arg name="configBean"><ref bean="configBean" /></constructor-arg>

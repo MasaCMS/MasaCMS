@@ -113,11 +113,9 @@ to your own modified versions of Mura CMS.
 <cffunction name="init" returntype="any" output="false" access="public">
 <cfargument name="configBean" type="any" required="yes"/>
 <cfargument name="clusterManager" type="any" required="yes"/>
-<cfargument name="javaLoader" type="any" required="yes" />
 
 	<cfset variables.configBean=arguments.configBean />
 	<cfset variables.clusterManager=arguments.clusterManager />
-	<cfset variables.javaLoader=arguments.javaLoader />
 	<cfreturn this />
 </cffunction>
 
