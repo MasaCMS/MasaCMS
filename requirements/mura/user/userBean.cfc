@@ -60,6 +60,7 @@ to your own modified versions of Mura CMS.
 	<cfset variables.instance.S2=0 />
 	<cfset variables.instance.contactform="" />
 	<cfset variables.instance.lastlogin="" />
+	<cfset variables.instance.LastUpdate = now() />
 	<cfset variables.instance.LastUpdateBy = "" />
 	<cfset variables.instance.LastUpdateByID = "" />
 	<cfset variables.instance.perm=0 />
@@ -118,6 +119,7 @@ to your own modified versions of Mura CMS.
 			<cfset setS2(arguments.user.S2) />
 			<cfset setContactForm(arguments.user.ContactForm) />
 			<cfset setLastLogin(arguments.user.LastLogin) />
+			<cfset setLastUpdate(arguments.user.LastUpdate) />
 			<cfset setLastUpdateBy(arguments.user.LastUpdateBy) />
 			<cfset setLastUpdateByID(arguments.user.LastUpdateByID) />
 			<cfset setPerm(arguments.user.Perm) />
@@ -334,7 +336,25 @@ to your own modified versions of Mura CMS.
   <cffunction name="getLastLogin" returnType="String" output="false" access="public">
     <cfreturn variables.instance.LastLogin />
   </cffunction>
-  
+
+  <cffunction name="setLastUpdate" returnType="void" output="false" access="public">  
+    <cfargument name="LastUpdate" type="string" required="true">
+	<cfif lsisDate(arguments.LastUpdate)>
+		<cftry>
+		<cfset variables.instance.LastUpdate = lsparseDateTime(arguments.LastUpdate) />
+		<cfcatch>
+			<cfset variables.instance.LastUpdate = arguments.LastUpdate />
+		</cfcatch>
+		</cftry>
+		<cfelse>
+		<cfset variables.instance.LastUpdate = ""/>
+	</cfif>
+  </cffunction>
+
+  <cffunction name="getLastUpdate" returnType="string" output="false" access="public">
+    <cfreturn variables.instance.LastUpdate />
+  </cffunction>
+
   <cffunction name="setLastUpdateBy" returnType="void" output="false" access="public">
     <cfargument name="LastUpdateBy" type="string" required="true">
     <cfset variables.instance.LastUpdateBy = left(trim(arguments.LastUpdateBy),50) />
