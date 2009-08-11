@@ -1450,7 +1450,9 @@ to your own modified versions of Mura CMS.
 	select object,objectid,orderno from tcontentobjects  
 	where contenthistid 
 	='#arguments.inheritedObjects#' and siteid='#arguments.siteid#'
-	and columnid=#arguments.columnID# order by orderno
+	and columnid=#arguments.columnID#
+	and object !='goToFirstChild'
+	order by orderno
 	</cfquery>
 	
 	<cfreturn rsObjects>

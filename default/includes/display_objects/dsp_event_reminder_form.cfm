@@ -49,10 +49,11 @@ to your own modified versions of Mura CMS.
 	<em>#rbFactory.getKey('event.setreminder')#</em><br/><br/>
 	</cfif>
 	<form name="reminderFrm" action="#application.configBean.getIndexFile()#?nocache=1" method="post" onsubmit="return validate(this);">
-	<label for="email">#rbFactory.getKey('event.email')#*</label><br/>
-	<input id="email" name="email" required="true" validate="email" message="#htmlEditFormat(rbFactory.getKey('event.emailvalidate'))#">
-	<br/>
-	<label for="interval">#rbFactory.getKey('event.sendmeareminder')#</label>
+	<fieldset>
+	<ol>
+	<li><label for="email">#rbFactory.getKey('event.email')#*</label>
+	<input id="email" name="email" required="true" validate="email" message="#htmlEditFormat(rbFactory.getKey('event.emailvalidate'))#"></li>
+	<li><label for="interval">#rbFactory.getKey('event.sendmeareminder')#</label>
 	<select id="interval" name="interval">
 	<option value="0">0 #rbFactory.getKey('event.minutes')#</option>
 	<option value="5">5 #rbFactory.getKey('event.minutes')#</option>
@@ -71,7 +72,9 @@ to your own modified versions of Mura CMS.
 	<option value="3320">3 #rbFactory.getKey('event.days')#</option>
 	<option value="10040">1 #rbFactory.getKey('event.week')#</option>
 	</select> 
-	#rbFactory.getKey('event.beforethisevent')# </label> <br/>
+	#rbFactory.getKey('event.beforethisevent')#</li>
+	</ol>
+	</fieldset>
 	<input name="doaction" value="setReminder" type="hidden"/>
 	<input type="submit" value="#htmlEditFormat(rbFactory.getKey('event.submit'))#"/>
 	</form>
