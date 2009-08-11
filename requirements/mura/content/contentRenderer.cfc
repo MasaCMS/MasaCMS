@@ -708,234 +708,120 @@ to your own modified versions of Mura CMS.
 		<cfreturn link>
 </cffunction>
 
+<cffunction name="dspObject_Render" access="public" output="false" returntype="string">
+	<cfargument name="siteid" type="string" />
+	<cfargument name="objectid" type="string" />
+	<cfargument name="fileName" type="string" />
+	<cfargument name="cacheKey" type="string" required="false"  />
+	<cfargument name="hasSummary" type="boolean" required="false" default="true" />
+	<cfargument name="useRss" type="boolean" required="false" default="false" />
+
+	<cfset var theContent=""/>
+	
+	<cfif StructKeyExists(arguments,"cacheKey")>
+		<cfsavecontent variable="theContent">
+		<cf_CacheOMatic key="#arguments.cacheKey#" nocache="#event.getValue('r').restrict#">
+			<cfoutput>#dspObject_Include(arguments.siteid,arguments.objectid,arguments.fileName,arguments.hasSummary,arguments.useRss)#</cfoutput>
+		</cf_cacheomatic>
+		</cfsavecontent>
+	<cfelse>
+		<cfset theContent = dspObject_Include(arguments.siteid,arguments.objectid,arguments.fileName,arguments.hasSummary,arguments.useRss) />
+	</cfif>
+	<cfreturn theContent />
+
+</cffunction>
+
+<cffunction name="dspObject_Include" access="public" output="false" returntype="string">
+	<cfargument name="siteid" type="string" />
+	<cfargument name="objectid" type="string" />
+	<cfargument name="theFile" type="string" />
+	<cfargument name="Summary" type="boolean" />
+	<cfargument name="RSS" type="boolean" />
+
+	<cfset var theIncludePath = event.getSite().getIncludePath() />
+	<cfset var fileDelim = application.configBean.getFileDelim() />
+	<cfset var filePath = theIncludePath  & fileDelim & "includes" & fileDelim & "display_objects" & fileDelim />
+	<cfset var hasSummary = arguments.Summary />
+	<cfset var useRss = arguments.RSS />
+	<cfset var theContent = "" />
+
+	<cfsavecontent variable="theContent">	
+	<cfif fileExists(expandPath(filePath) & fileDelim & "custom" & fileDelim & arguments.theFile)>
+		<cfinclude  template="#filePath#custom/#arguments.theFile#" />
+	<cfelse>
+		<cfinclude  template="#filePath##arguments.theFile#" />
+	</cfif>
+	</cfsavecontent>
+	<cfreturn theContent />
+
+</cffunction>
+
 <cffunction name="dspObject" access="public" output="false" returntype="string">
 <cfargument name="object" type="string">
 <cfargument name="objectid" type="string">
 <cfargument name="siteid" type="string" required="true" default="#event.getValue('siteID')#">
 
 	<cfset var theObject = "" />
-	<cfset var theIncludePath = event.getSite().getIncludePath() />
-	<cfset var hasSummary = true />	
-	<cfset var useRss = false />
+	<cfset var cacheKeyContentId = arguments.object & event.getValue('contentBean').getcontentID() />
+	<cfset var cacheKeyObjectId = arguments.object & arguments.objectid />
 	
-		<cfsavecontent variable="theObject">
+	<cfsavecontent variable="theObject">
+		<cfoutput>
 			<cfswitch expression="#arguments.object#">
-				<cfcase value="sub_nav">
-					<cf_CacheOMatic key="#arguments.object##event.getValue('contentBean').getcontentID()#" nocache="#event.getValue('r').restrict#">
-					<cfinclude  template="#theIncludePath#/includes/display_objects/nav/dsp_sub.cfm">
-					</cf_cacheomatic>
-				</cfcase>
-				<cfcase value="peer_nav">
-					<cf_CacheOMatic key="#arguments.object##event.getValue('contentBean').getcontentID()#" nocache="#event.getValue('r').restrict#">
-					<cfinclude  template="#theIncludePath#/includes/display_objects/nav/dsp_peer.cfm">
-					</cf_cacheomatic>
-				</cfcase>
-				<cfcase value="standard_nav">
-					<cf_CacheOMatic key="#arguments.object##event.getValue('contentBean').getcontentID()#" nocache="#event.getValue('r').restrict#">
-					<cfinclude  template="#theIncludePath#/includes/display_objects/nav/dsp_standard.cfm">
-					</cf_cacheomatic>
-				</cfcase>
-				<cfcase value="portal_nav">
-					<cf_CacheOMatic key="#arguments.object##event.getValue('contentBean').getcontentID()#" nocache="#event.getValue('r').restrict#">
-					<cfinclude  template="#theIncludePath#/includes/display_objects/nav/dsp_portal.cfm">
-					</cf_cacheomatic>
-				</cfcase>
-				<cfcase value="seq_nav">
-					<cf_CacheOMatic key="#arguments.object##arguments.objectid##event.getValue('startRow')#" nocache="#event.getValue('r').restrict#">
-					<cfinclude  template="#theIncludePath#/includes/display_objects/nav/dsp_sequential.cfm">
-					</cf_cacheomatic>
-				</cfcase>
-				<cfcase value="top_nav">
-					<cf_CacheOMatic key="#arguments.object##event.getValue('contentBean').getcontentID()#" nocache="#event.getValue('r').restrict#">
-					<cfinclude  template="#theIncludePath#/includes/display_objects/nav/dsp_top.cfm">
-					</cf_cacheomatic>
-				</cfcase>
-				<cfcase value="contact">
-					<cfinclude  template="#theIncludePath#/includes/display_objects/dsp_contact.cfm">
-				</cfcase>
-				<cfcase value="calendar_nav">
-					<cf_CacheOMatic key="#arguments.object##arguments.siteID##arguments.objectid##event.getValue('month')##event.getvalue('year')#" nocache="#event.getValue('r').restrict#">
-					<cfinclude  template="#theIncludePath#/includes/display_objects/nav/calendarNav/index.cfm">
-					</cf_cacheomatic>
-				</cfcase>
+				<cfcase value="sub_nav">#dspObject_Render(arguments.siteid,arguments.objectid,"nav/dsp_sub.cfm",cacheKeyContentId)#</cfcase>
+				<cfcase value="peer_nav">#dspObject_Render(arguments.siteid,arguments.objectid,"nav/dsp_peer.cfm",cacheKeyContentId)#</cfcase>
+				<cfcase value="standard_nav">#dspObject_Render(arguments.siteid,arguments.objectid,"nav/dsp_standard.cfm",cacheKeyContentId)#</cfcase>
+				<cfcase value="portal_nav">#dspObject_Render(arguments.siteid,arguments.objectid,"nav/dsp_portal.cfm",cacheKeyContentId)#</cfcase>
+				<cfcase value="seq_nav">#dspObject_Render(arguments.siteid,arguments.objectid,"nav/dsp_portal.cfm","#arguments.object##arguments.objectid##event.getValue('startRow')#")#</cfcase>
+				<cfcase value="top_nav">#dspObject_Render(arguments.siteid,arguments.objectid,"nav/dsp_top.cfm",cacheKeyContentId)#</cfcase>
+				<cfcase value="contact">#dspObject_Render(arguments.siteid,arguments.objectid,"dsp_contact.cfm")#</cfcase>
+				<cfcase value="calendar_nav">#dspObject_Render(arguments.siteid,arguments.objectid,"nav/calendarNav/index.cfm","#arguments.object##arguments.siteID##arguments.objectid##event.getValue('month')##event.getvalue('year')#")#</cfcase>
 				<cfcase value="plugin">
 					<cfreturn application.pluginManager.displayObject(arguments.objectid,event)>
 				</cfcase>
-				<cfcase value="mailing_list">
-					<cfinclude  template="#theIncludePath#/includes/display_objects/dsp_mailing_list.cfm">
-				</cfcase>
-				<cfcase value="mailing_list_master">
-					<cfinclude  template="#theIncludePath#/includes/display_objects/dsp_mailing_list_master.cfm">
-				</cfcase>
-				<cfcase value="site_map">
-					<cf_CacheOMatic key="#arguments.object##arguments.objectid#" nocache="#event.getValue('r').restrict#">
-					<cfinclude  template="#theIncludePath#/includes/display_objects/dsp_site_map.cfm">
-					</cf_cacheomatic>
-				</cfcase>
-				<cfcase value="features">
-					<cf_CacheOMatic key="#arguments.object##arguments.objectid#" nocache="#event.getValue('r').restrict#">
-					<cfset hasSummary=true>
-					<cfinclude template="#theIncludePath#/includes/display_objects/dsp_features.cfm">
-					</cf_cacheomatic>
-				</cfcase>
-				<cfcase value="features_no_summary">
-					<cf_CacheOMatic key="#arguments.object##arguments.objectid#" nocache="#event.getValue('r').restrict#">
-					<cfset hasSummary=false>
-					<cfinclude  template="#theIncludePath#/includes/display_objects/dsp_features.cfm">
-					</cf_cacheomatic>
-				</cfcase>
-				<cfcase value="category_features">
-					<cf_CacheOMatic key="#arguments.object##arguments.objectid#" nocache="#event.getValue('r').restrict#">
-					<cfset hasSummary=true>
-					<cfinclude  template="#theIncludePath#/includes/display_objects/dsp_category_features.cfm">
-					</cf_cacheomatic>
-				</cfcase>
-				<cfcase value="category_features_no_summary">
-					<cf_CacheOMatic key="#arguments.object##arguments.objectid#" nocache="#event.getValue('r').restrict#">
-					<cfset hasSummary=false>
-					<cfinclude  template="#theIncludePath#/includes/display_objects/dsp_category_features.cfm">
-					</cf_cacheomatic>
-				</cfcase>
-				<cfcase value="category_portal_features">
-					<cf_CacheOMatic key="#arguments.object##arguments.objectid#" nocache="#event.getValue('r').restrict#">
-					<cfset hasSummary=true>
-					<cfinclude  template="#theIncludePath#/includes/display_objects/dsp_category_portal_features.cfm">
-					</cf_cacheomatic>
-				</cfcase>
-				<cfcase value="category_portal_features_no_summary">
-					<cf_CacheOMatic key="#arguments.object##arguments.objectid#" nocache="#event.getValue('r').restrict#">
-					<cfset hasSummary=false>
-					<cfinclude  template="#theIncludePath#/includes/display_objects/dsp_category_portal_features.cfm">
-					</cf_cacheomatic>
-				</cfcase>
-				<cfcase value="category_summary">
-					<cf_CacheOMatic key="#arguments.object##arguments.objectid##event.getValue('categoryID')#" nocache="#event.getValue('r').restrict#">
-					<cfset useRSS=false>
-					<cfinclude  template="#theIncludePath#/includes/display_objects/dsp_category_summary.cfm">
-					</cf_cacheomatic>
-				</cfcase>
-				<cfcase value="category_summary_rss">
-					<cf_CacheOMatic key="#arguments.object##arguments.objectid##event.getValue('categoryID')#" nocache="#event.getValue('r').restrict#">
-					<cfset useRSS=true>
-					<cfinclude  template="#theIncludePath#/includes/display_objects/dsp_category_summary.cfm">
-					</cf_cacheomatic>
-				</cfcase>
-				<cfcase value="form">
-					<cf_CacheOMatic key="#arguments.object##arguments.objectid#" nocache="#event.getValue('noCache')#">
-					<cfinclude  template="#theIncludePath#/includes/display_objects/datacollection/index.cfm">
-					</cf_cacheomatic>
-				</cfcase>
-				<cfcase value="form_responses">
-					<cfinclude  template="#theIncludePath#/includes/display_objects/dataresponses/index.cfm">
-				</cfcase>
-				<cfcase value="component">
-					<cf_CacheOMatic key="#arguments.object##arguments.objectid#" nocache="#event.getValue('r').restrict#">
-					<cfinclude  template="#theIncludePath#/includes/display_objects/dsp_template.cfm">
-					</cf_cacheomatic>
-				</cfcase>
-				<cfcase value="ad">
-					<cfinclude  template="#theIncludePath#/includes/display_objects/dsp_ad.cfm">
-				</cfcase>
-				<cfcase value="comments">
-					<cfinclude  template="#theIncludePath#/includes/display_objects/dsp_comments.cfm">
-				</cfcase>
-				<cfcase value="submit_event">
-					<cf_CacheOMatic key="#arguments.object##arguments.objectid#" nocache="#event.getValue('noCache')#">
-					<cfinclude  template="#theIncludePath#/includes/display_objects/dsp_submit_event.cfm">
-					</cf_cacheomatic>
-				</cfcase>
-				<cfcase value="promo">
-					<cfinclude  template="#theIncludePath#/includes/display_objects/custom/dsp_promo.cfm">
-				</cfcase>
-				<cfcase value="public_content_form">
-					<cfinclude  template="#theIncludePath#/includes/display_objects/dsp_public_content_form.cfm">
-				</cfcase>
-				<cfcase value="event_reminder_form">
-					<cf_CacheOMatic key="#arguments.object##arguments.objectid#" nocache="#event.getValue('noCache')#">
-					<cfinclude  template="#theIncludePath#/includes/display_objects/dsp_event_reminder_form.cfm">
-					</cf_cacheomatic>
-				</cfcase>
-				<cfcase value="forward_email">
-					<cfinclude  template="#theIncludePath#/includes/display_objects/dsp_forward_email.cfm">
-				</cfcase>
-				<cfcase value="adzone">
-					<cfinclude  template="#theIncludePath#/includes/display_objects/dsp_adZone.cfm">
-				</cfcase>
-				<cfcase value="feed">
-					<cf_CacheOMatic key="#arguments.object##arguments.objectid#" nocache="#event.getValue('r').restrict#">
-					<cfset hasSummary=true>
-					<cfinclude  template="#theIncludePath#/includes/display_objects/dsp_feed.cfm">
-					</cf_cacheomatic>
-				</cfcase>
-				<cfcase value="feed_no_summary">
-					<cf_CacheOMatic key="#arguments.object##arguments.objectid#" nocache="#event.getValue('r').restrict#">
-					<cfset hasSummary=false>
-					<cfinclude  template="#theIncludePath#/includes/display_objects/dsp_feed.cfm">
-					</cf_cacheomatic>
-				</cfcase>
-				<cfcase value="feed_slideshow_no_summary">	
-					<cfset hasSummary=false>
-					<cfinclude  template="#theIncludePath#/includes/display_objects/feedslideshow/index.cfm">
-				</cfcase>
-				<cfcase value="feed_slideshow">
-					<cfset hasSummary=true>
-					<cfinclude  template="#theIncludePath#/includes/display_objects/feedslideshow/index.cfm">
-				</cfcase>
-				<cfcase value="feed_table">
-					<cf_CacheOMatic key="#arguments.object#" nocache="#event.getValue('r').restrict#">
-					<cfset hasSummary=false>
-					<cfinclude  template="#theIncludePath#/includes/display_objects/feedtable/index.cfm">
-					</cf_cacheomatic>
-				</cfcase>
-				<cfcase value="payPalCart">
-					<cfinclude  template="#theIncludePath#/includes/display_objects/paypalcart/index.cfm">
-				</cfcase>
-			<!--- 	<cfcase value="workspace">
-				<cfset event.getValue('noCache')=1>
-					<cfinclude  template="#theIncludePath#/includes/display_objects/workspace/index.cfm">
-				</cfcase> --->
-				<cfcase value="rater">
-					<cfinclude  template="#theIncludePath#/includes/display_objects/rater/index.cfm">
-				</cfcase>
-				<cfcase value="favorites">
-					<cfinclude template="#theIncludePath#/includes/display_objects/favorites/index.cfm">
-				</cfcase>
-				<cfcase value="dragable_feeds">
-					<cfinclude template="#theIncludePath#/includes/display_objects/dragablefeeds/index.cfm">
-				</cfcase>
-				<cfcase value="related_content">
-					<cf_CacheOMatic key="#arguments.object##arguments.objectid#" nocache="#event.getValue('r').restrict#">
-					<cfinclude template="#theIncludePath#/includes/display_objects/dsp_related_content.cfm">
-					</cf_cacheomatic>
-				</cfcase>
-				<cfcase value="related_section_content">
-					<cf_CacheOMatic key="#arguments.object##arguments.objectid#" nocache="#event.getValue('r').restrict#">
-					<cfset hasSummary=true>
-					<cfinclude template="#theIncludePath#/includes/display_objects/dsp_related_section_content.cfm">
-					</cf_cacheomatic>
-				</cfcase>
-				<cfcase value="related_section_content_no_summary">
-					<cf_CacheOMatic key="#arguments.object##arguments.objectid#" nocache="#event.getValue('r').restrict#">
-					<cfset hasSummary=false>
-					<cfinclude template="#theIncludePath#/includes/display_objects/dsp_related_section_content.cfm">
-					</cf_cacheomatic>
-				</cfcase>
-				<cfcase value="user_tools">
-					<cfinclude template="#theIncludePath#/includes/display_objects/dsp_user_tools.cfm">
-				</cfcase>
-				<cfcase value="tag_cloud">
-					<cfoutput>#dspTagCloud()#</cfoutput>
-				</cfcase>
-				<cfcase value="IASiteMap">
-					<cfinclude template="#theIncludePath#/includes/display_objects/IASiteMap/index.cfm">
-				</cfcase>
-				<cfcase value="goToFirstChild">
-					<cfinclude template="#theIncludePath#/includes/display_objects/act_goToFirstChild.cfm">
-				</cfcase>
+				<cfcase value="mailing_list">#dspObject_Render(siteid=arguments.siteid,objectid=arguments.objectid,fileName="dsp_mailing_list.cfm")#</cfcase>
+				<cfcase value="mailing_list_master">#dspObject_Render(siteid=arguments.siteid,objectid=arguments.objectid,fileName="dsp_mailing_list_master.cfm")#</cfcase>
+				<cfcase value="site_map">#dspObject_Render(arguments.siteid,arguments.objectid,"dsp_site_map.cfm",cacheKeyObjectId)#</cfcase>
+				<cfcase value="features">#dspObject_Render(arguments.siteid,arguments.objectid,"dsp_features.cfm",cacheKeyObjectId)#</cfcase>
+				<cfcase value="features_no_summary">#dspObject_Render(arguments.siteid,arguments.objectid,"dsp_features.cfm",cacheKeyObjectId,false)#</cfcase>
+				<cfcase value="category_features">#dspObject_Render(arguments.siteid,arguments.objectid,"dsp_category_features.cfm",cacheKeyObjectId)#</cfcase>
+				<cfcase value="category_features_no_summary">#dspObject_Render(arguments.siteid,arguments.objectid,"dsp_category_features.cfm",cacheKeyObjectId,false)#</cfcase>
+				<cfcase value="category_portal_features">#dspObject_Render(arguments.siteid,arguments.objectid,"dsp_category_portal_features.cfm",cacheKeyObjectId)#</cfcase>
+				<cfcase value="category_portal_features_no_summary">#dspObject_Render(arguments.siteid,arguments.objectid,"dsp_category_portal_features.cfm",cacheKeyObjectId,false)#</cfcase>
+				<cfcase value="category_summary">#dspObject_Render(arguments.siteid,arguments.objectid,"dsp_category_summary.cfm",cacheKeyObjectId & event.getValue('categoryID'))#</cfcase>
+				<cfcase value="category_summary_rss">#dspObject_Render(siteid=arguments.siteid,objectid=arguments.objectid,fileName="dsp_category_summary.cfm",cacheKey=cacheKeyObjectId & event.getValue('categoryID'),useRss=true)#</cfcase>
+				<cfcase value="form">#dspObject_Render(arguments.siteid,arguments.objectid,"datacollection/index.cfm",cacheKeyObjectId)#</cfcase>
+				<cfcase value="form_responses">#dspObject_Render(arguments.siteid,arguments.objectid,"dataresponses/index.cfm",cacheKeyObjectId)#</cfcase>
+				<cfcase value="component">#dspObject_Render(arguments.siteid,arguments.objectid,"dsp_template.cfm",cacheKeyObjectId)#</cfcase>
+				<cfcase value="ad">#dspObject_Render(arguments.siteid,arguments.objectid,"dsp_ad.cfm")#</cfcase>
+				<cfcase value="comments">#dspObject_Render(arguments.siteid,arguments.objectid,"dsp_comments.cfm")#</cfcase>
+				<cfcase value="submit_event">#dspObject_Render(arguments.siteid,arguments.objectid,"dsp_submit_event.cfm",cacheKeyObjectId)#</cfcase>
+				<cfcase value="promo">#dspObject_Render(arguments.siteid,arguments.objectid,"dsp_promo.cfm")#</cfcase>
+				<cfcase value="public_content_form">#dspObject_Render(arguments.siteid,arguments.objectid,"dsp_public_content_form.cfm")#</cfcase>
+				<cfcase value="event_reminder_form">#dspObject_Render(arguments.siteid,arguments.objectid,"dsp_event_reminder_form.cfm",cacheKeyObjectId)#</cfcase>
+				<cfcase value="forward_email">#dspObject_Render(arguments.siteid,arguments.objectid,"dsp_forward_email.cfm")#</cfcase>
+				<cfcase value="adzone">#dspObject_Render(arguments.siteid,arguments.objectid,"dsp_adZone.cfm")#</cfcase>
+				<cfcase value="feed">#dspObject_Render(arguments.siteid,arguments.objectid,"dsp_feed.cfm",cacheKeyObjectId)#</cfcase>
+				<cfcase value="feed_no_summary">#dspObject_Render(arguments.siteid,arguments.objectid,"dsp_feed.cfm",cacheKeyObjectId,false)#</cfcase>
+				<cfcase value="feed_slideshow_no_summary">#dspObject_Render(siteid=arguments.siteid,objectid=arguments.objectid,fileName="feedslideshow/index.cfm",hasSummary=false)#</cfcase>
+				<cfcase value="feed_slideshow">#dspObject_Render(arguments.siteid,arguments.objectid,"feedslideshow/index.cfm")#</cfcase>
+				<cfcase value="feed_table">#dspObject_Render(arguments.siteid,arguments.objectid,"feedtable/index.cfm",arguments.object,false)#</cfcase>
+				<cfcase value="payPalCart">#dspObject_Render(arguments.siteid,arguments.objectid,"paypalcart/index.cfm")#</cfcase>
+				<cfcase value="rater">#dspObject_Render(arguments.siteid,arguments.objectid,"rater/index.cfm")#</cfcase>
+				<cfcase value="favorites">#dspObject_Render(arguments.siteid,arguments.objectid,"favorites/index.cfm")#</cfcase>
+				<cfcase value="dragable_feeds">#dspObject_Render(arguments.siteid,arguments.objectid,"dragablefeeds/index.cfm")#</cfcase>
+				<cfcase value="related_content">#dspObject_Render(arguments.siteid,arguments.objectid,"dsp_related_content.cfm",cacheKeyObjectId)#</cfcase>
+				<cfcase value="related_section_content">#dspObject_Render(arguments.siteid,arguments.objectid,"dsp_related_section_content.cfm",cacheKeyObjectId)#</cfcase>
+				<cfcase value="related_section_content_no_summary">#dspObject_Render(arguments.siteid,arguments.objectid,"dsp_related_section_content.cfm",cacheKeyObjectId,false)#</cfcase>
+				<cfcase value="user_tools">#dspObject_Render(arguments.siteid,arguments.objectid,"dsp_user_tools.cfm")#</cfcase>
+				<cfcase value="tag_cloud"><cfoutput>#dspTagCloud()#</cfoutput></cfcase>
+				<cfcase value="IASiteMap">#dspObject_Render(arguments.siteid,arguments.objectid,"IASiteMap/index.cfm")#</cfcase>
+				<cfcase value="goToFirstChild">#dspObject_Render(arguments.siteid,arguments.objectid,"act_goToFirstChild.cfm")#</cfcase>
 			</cfswitch>
-		</cfsavecontent>
+		</cfoutput>
+	</cfsavecontent>
 		
-		<cfreturn trim(theObject) />
+	<cfreturn trim(theObject) />
 </cffunction>
 
 <cffunction name="dspObjects" access="public" output="false" returntype="string">
