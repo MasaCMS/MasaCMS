@@ -129,7 +129,7 @@ to your own modified versions of Mura CMS.
 	
 	<cfquery name="rs" datasource="#variables.configBean.getDatasource()#" blockfactor="#arguments.feedBean.getNextN()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	<cfif dbType eq "oracle">select * from (</cfif>
-	select <cfif dbtype eq "mssql">top #arguments.feedBean.getMaxItems()#</cfif> 
+	select <cfif dbtype eq "mssql">top <cfqueryparam cfsqltype="cf_sql_integer" value="#arguments.feedBean.getMaxItems()#" /></cfif> 
 	tcontent.siteid, tcontent.title, tcontent.menutitle, tcontent.restricted, tcontent.restrictgroups, 
 	tcontent.type, tcontent.subType, tcontent.filename, tcontent.displaystart, tcontent.displaystop,
 	tcontent.remotesource, tcontent.remoteURL,tcontent.remotesourceURL, tcontent.keypoints,
@@ -270,7 +270,7 @@ to your own modified versions of Mura CMS.
 									)
 													
 								) 
-							and tcontentcategoryassign.siteID='#arguments.feedBean.getSiteID()#')
+							and tcontentcategoryassign.siteID=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.feedBean.getsiteid()#">)
 							
 							</cfif>
 							)
@@ -279,7 +279,7 @@ to your own modified versions of Mura CMS.
 						<cfif contentLen>
 						and (
 						<cfloop from="1" to="#contentLen#" index="c">
-						tcontent.parentid='#listGetAt(arguments.feedBean.getcontentID(),c)#' <cfif c lt contentLen> or </cfif> 
+						tcontent.parentid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#listGetAt(arguments.feedBean.getcontentID(),c)#" /> <cfif c lt contentLen> or </cfif> 
 						</cfloop>)
 						</cfif>
 							    
@@ -501,8 +501,8 @@ to your own modified versions of Mura CMS.
 	tcontent.releaseDate desc,tcontent.lastUpdate desc,tcontent.menutitle
 	</cfdefaultcase>
 	</cfswitch>
-	<cfif dbType eq "mysql">limit <cfqueryparam cfsqltype="cf_sql_numeric" value="#arguments.feedBean.getMaxItems()#" /> </cfif>
-	<cfif dbType eq "oracle">) where ROWNUM <= <cfqueryparam cfsqltype="cf_sql_numeric" value="#arguments.feedBean.getMaxItems()#" /> </cfif>
+	<cfif dbType eq "mysql">limit <cfqueryparam cfsqltype="cf_sql_integer" value="#arguments.feedBean.getMaxItems()#" /> </cfif>
+	<cfif dbType eq "oracle">) where ROWNUM <= <cfqueryparam cfsqltype="cf_sql_integer" value="#arguments.feedBean.getMaxItems()#" /> </cfif>
 	</cfquery>
 	
 	<cfreturn rs />

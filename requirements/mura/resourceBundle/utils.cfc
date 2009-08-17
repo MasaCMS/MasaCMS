@@ -335,7 +335,7 @@
 	
 <!--- now we create a date so we can parse it and figure out the date format and then create a date validation key --->
 
-	<cfset formatTest=dateLocaleFormat(createDate(2012,11,10),'short')/>
+	<cfset formatTest=LSDateFormat(createDate(2012,11,10),'short')/>
 	
 	<cfif find(".",formatTest)>
 		<cfset dtCh=	"."/>
