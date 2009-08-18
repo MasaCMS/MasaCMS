@@ -128,6 +128,7 @@ to your own modified versions of Mura CMS.
 	altName = <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.feedBean.getAltName() neq '',de('no'),de('yes'))#" value="#arguments.feedBean.getAltName()#">,
 	isActive = #arguments.feedBean.getIsActive()#,
 	isDefault = #arguments.feedBean.getIsDefault()#,
+	isPublic = #arguments.feedBean.getIsPublic()#,
 	Description= <cfqueryparam cfsqltype="cf_sql_longvarchar" null="#iif(arguments.feedBean.getDescription() neq '',de('no'),de('yes'))#" value="#arguments.feedBean.getDescription()#">,
 	lang = <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.feedBean.getLang() neq '',de('no'),de('yes'))#" value="#arguments.feedBean.getLang()#">,
 	maxItems = #arguments.feedBean.getMaxItems()#,
