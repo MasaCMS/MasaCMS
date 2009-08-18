@@ -129,7 +129,7 @@ to your own modified versions of Mura CMS.
 	
 	<cfquery name="rs" datasource="#variables.configBean.getDatasource()#" blockfactor="#arguments.feedBean.getNextN()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	<cfif dbType eq "oracle">select * from (</cfif>
-	select <cfif dbtype eq "mssql">top <cfqueryparam cfsqltype="cf_sql_integer" value="#arguments.feedBean.getMaxItems()#" /></cfif> 
+	select <cfif dbtype eq "mssql">top #arguments.feedBean.getMaxItems()#</cfif> 
 	tcontent.siteid, tcontent.title, tcontent.menutitle, tcontent.restricted, tcontent.restrictgroups, 
 	tcontent.type, tcontent.subType, tcontent.filename, tcontent.displaystart, tcontent.displaystop,
 	tcontent.remotesource, tcontent.remoteURL,tcontent.remotesourceURL, tcontent.keypoints,
