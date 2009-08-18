@@ -54,8 +54,8 @@ to your own modified versions of Mura CMS.
 
 <cfset rbFactory=getSite().getRBFactory() />
 <cfset defaultFeeds = application.feedManager.getDefaultFeeds(request.siteid) />
-<cfset remoteFeeds = application.feedManager.getFeeds(request.siteid, "remote") />
-<cfset localFeeds = application.feedManager.getFeeds(request.siteid, "local") />
+<cfset remoteFeeds = application.feedManager.getFeeds(request.siteid, "remote",true) />
+<cfset localFeeds = application.feedManager.getFeeds(request.siteid, "local",true) />
 
 <cfquery dbtype="query" name="reorderedDefaultFeeds">
 	select * from defaultFeeds
