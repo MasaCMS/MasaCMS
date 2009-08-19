@@ -780,7 +780,7 @@ select * from tplugins order by #arguments.orderby#
 	<cfif isObject(event.getValue("localHandler"))>
 		<cfset localHandler=event.getValue("localHandler")>
 		<cfif structKeyExists(localHandler,runat)>
-			<cfset evaluate("localHandler.init(arguments.event)") />
+			<cfset evaluate("localHandler.#runat#(arguments.event)") />
 		</cfif>
 	</cfif>
 	

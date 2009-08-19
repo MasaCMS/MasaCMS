@@ -104,8 +104,8 @@ to your own modified versions of Mura CMS.
 	<label for="password2txt">#rbFactory.getKey('user.passwordconfirm')#<span class="required">*</span></label>
 	<input  name="password2" id="password2txt" type="password" value="" required="true" class="text"  message="#HTMLEditFormat(rbFactory.getKey('user.passwordconfirmrequired'))#" maxlength="50">
 	</li>
-	<cfinclude template="dsp_captcha.cfm" >
-	
+	<!--- <cfinclude template="dsp_captcha.cfm" > --->
+	<cfinclude template="dsp_form_protect.cfm" >
 <cfelse>
  	 <li>
 	<label for="emailtxt">#rbFactory.getKey('user.email')#<span class="required">*</span></label>
@@ -248,7 +248,7 @@ Date/Time: #now()#
 <p class="success">#rbFactory.getKey('user.thankyouinactive')#</p>
 </div>
 <cfelse>
-<div id="editProfileMsg" class="required">#rbFactory.getKey('user.thankyouactive')#</div>
+<div id="editProfileMsg" class="required"><p class="notice">#rbFactory.getKey('user.thankyouactive')#</p></div>
 </cfif>
 </cfif>
 </cfoutput>
