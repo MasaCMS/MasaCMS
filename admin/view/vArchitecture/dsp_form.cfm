@@ -324,6 +324,7 @@ select * from rsPluginScripts3 order by pluginID
 	
 	<cfoutput query="rsPluginScripts" group="pluginID">
 	<cfset tablist=tablist & ",'#jsStringFormat(rsPluginScripts.name)#'"/>
+	<cfset pluginEvent.setValue("tablist",tablist)>
 	<div class="page_aTab">
 		<cfoutput>
 		<cfset rsPluginScript=application.pluginManager.getScripts("onContentEdit",attributes.siteID,rsPluginScripts.moduleID)>
