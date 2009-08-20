@@ -159,6 +159,9 @@ to your own modified versions of Mura CMS.
 	</cfif>
 	<cfif not valueExists("contentRenderer")>
 		<cfset setValue("contentRenderer",createObject("component","#application.settingsManager.getSite(getValue('siteid')).getAssetMap()#.includes.contentRenderer").init(this))>
+	</cfif>	
+	<cfif not valueExists("localHandler") and fileExists(expandPath("/#application.configBean.getWebRootMap()#") & "/#getValue('siteid')#/includes/eventHandler.cfc")>
+		<cfset setValue("localHandler",createObject("component","#application.configBean.getWebRootMap()#.#getValue('siteid')#.includes.eventHandler").init())>
 	</cfif>
 </cffunction>
 
