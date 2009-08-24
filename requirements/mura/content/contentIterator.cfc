@@ -44,8 +44,8 @@ to your own modified versions of Mura CMS.
 	
 <cffunction name="packageRecord" access="public" output="false" returntype="any">
 	<cfset var content=createObject("component","contentNavBean").init(queryRowToStruct(variables.records,currentIndex()),variables.contentManager) />
-	<cfif isObject(variables.recordRenderer)>
-		<cfset content.setRenderer(variables.recordRenderer)>
+	<cfif isObject(variables.recordTranslator)>
+		<cfset content.setTranslator(variables.recordTranslator)>
 	</cfif>
 	<cfreturn content>
 </cffunction>

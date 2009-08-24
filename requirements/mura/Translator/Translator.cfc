@@ -20,10 +20,24 @@
 
 	 --->
 <cfcomponent extends="mura.cfobject" output="false">
+<cfset variables.bean="">
 
-<cffunction name="translate" output="false" returnType="any">
-	<cfargument name="event" required="true">
-	<cfthrow message="The 'translate' method has not been implemented">
+<cffunction name="setBean" output="false" access="public" returntype="void">
+<cfargument name="bean">
+	<cfset variables.bean=arguments.bean>
+</cffunction>
+
+<cffunction name="getValue" returntype="any" access="public" output="false">
+<cfargument name="property"  type="string" required="true">
+	<cfif isObject(variables.bean)>
+		<cfif structKeyExists(variables.bean,"get#arguments.property#")>
+			<cfreturn evaluate("variables.bean.get#arguments.property#()") />
+		<cfelse>
+			<cfreturn variables.bean.getValue(property) />
+		</cfif>
+	<cfelse>
+		<cfreturn super.getValue(property)>
+	</cfif>
 </cffunction>
 
 </cfcomponent>

@@ -45,8 +45,8 @@ to your own modified versions of Mura CMS.
 <cffunction name="packageRecord" access="public" output="false" returntype="any">
 	<cfset var user =createObject("component","userBean").init(variables.configBean, variables.settingsManager, variables.userManager) />
 	<cfset user.set(queryRowToStruct(variables.records,currentIndex()))>
-	<cfif isObject(variables.recordRenderer)>
-		<cfset user.setRenderer(variables.recordRenderer)>
+	<cfif isObject(variables.recordTranslator)>
+		<cfset user.setTranslator(variables.recordTranslator)>
 	</cfif>
 	<cfset variables.userManager.setUserBeanMetaData(user)/>
 	<cfreturn user>

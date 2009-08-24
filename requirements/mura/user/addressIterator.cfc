@@ -45,8 +45,8 @@ to your own modified versions of Mura CMS.
 <cffunction name="packageRecord" access="public" output="false" returntype="any">
 	<cfset var address=createObject("component","addressBean").init(variables.configBean, variables.settingsManager, variables.userManager) />
 	<cfset address.set(queryRowToStruct(variables.records,currentIndex()))>
-	<cfif isObject(variables.recordRenderer)>
-		<cfset address.setRenderer(variables.recordRenderer)>
+	<cfif isObject(variables.recordTranslator)>
+		<cfset address.setTranslator(variables.recordTranslator)>
 	</cfif>
 	<cfreturn address>
 </cffunction>

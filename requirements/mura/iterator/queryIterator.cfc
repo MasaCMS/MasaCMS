@@ -25,7 +25,7 @@
  --->
 <cfcomponent extends="mura.cfobject" displayname="Iterator" output="false" hint="I am a Iterator object.">
 	<cfset variables.maxRecordsPerPage=10>
-	<cfset variables.recordRenderer="">
+	<cfset variables.recordTranslator="">
 	<cffunction name="init" access="public" output="false" returntype="any">
 		<cfset variables.recordIndex = 0 />
 		<cfset variables.pageIndex = 1 />
@@ -168,8 +168,8 @@
 		</cfscript>
 	</cffunction>
 	
-	<cffunction name="setRecordRenderer" output="false" returntype="void" access="public">
-	<cfargument name="recordRenderer">
-		<cfset variables.recordRenderer=arguments.recordRenderer/>
+	<cffunction name="setRecordTranslator" output="false" returntype="void" access="public">
+	<cfargument name="recordTranslator">
+		<cfset variables.recordTranslator=arguments.recordTranslator/>
 </cffunction>
 </cfcomponent>
