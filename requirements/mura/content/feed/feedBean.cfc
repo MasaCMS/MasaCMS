@@ -74,6 +74,7 @@ to your own modified versions of Mura CMS.
 <cfset variables.instance.displayKids=0 />
 <cfset variables.instance.advancedParams=queryNew("feedID,param,relationship,field,condition,criteria,dataType","varchar,integer,varchar,varchar,varchar,varchar,varchar" )  />
 <cfset variables.instance.errors=structnew() />
+<cfset variables.feedManager = "" />
 
 <cffunction name="init" returntype="any" output="false" access="public">
 	<cfreturn this />
@@ -116,9 +117,9 @@ to your own modified versions of Mura CMS.
 		<cfelseif isStruct(arguments.feed)>
 		
 			<cfloop collection="#arguments.feed#" item="prop">
-				<cfif isdefined("variables.instance.#prop#")>
-					<cfset evaluate("set#prop#(arguments.feed[prop])") />
-				</cfif>
+				<cfif structKeyExists(this,"set#prop#")>
+				<cfset evaluate("set#prop#(arguments.feed[prop])") />
+			</cfif>
 			</cfloop>
 			
 			<cfset setAdvancedParams(arguments.feed) />
@@ -127,10 +128,6 @@ to your own modified versions of Mura CMS.
 		
 		<cfset validate() />
 		
-</cffunction>
-
-<cffunction name="getAllValues" access="public" returntype="struct" output="false">
-		<cfreturn variables.instance />
 </cffunction>
 
 <cffunction name="validate" access="public" output="false" returntype="void">
@@ -493,5 +490,57 @@ to your own modified versions of Mura CMS.
 	<cfelse>
 		<cfreturn variables.instance.name />
 	</cfif>
+</cffunction>
+
+<cffunction name="setFeedManager" access="public" output="false">
+	<cfargument name="feedManager" type="any" />
+	<cfset variables.feedManager = arguments.feedManager />
+</cffunction>
+
+<cffunction name="getQuery" returnType="query" output="false" access="public">
+	<cfreturn variables.feedManager.getFeed(this) />
+</cffunction>
+
+<cffunction name="getIterator" returnType="any" output="false" access="public">
+	<cfset var q=getQuery() />
+	<cfset var it=getServiceFactory().getBean("contentIterator")>
+	<cfset it.setQuery(q,getNextN())>
+	<cfreturn it>
+</cffunction>
+
+<cffunction name="save" returnType="any" output="false" access="public">
+	<cfreturn variables.feedManager.save(this) />
+</cffunction>
+
+<cffunction name="delete" returnType="void" output="false" access="public">
+	<cfset variables.feedManager.delete(getFeedID()) />
+</cffunction>
+
+<cffunction name="setAllValues" returntype="any" access="public" output="false">
+	<cfargument name="instance">
+	<cfset variables.instance=arguments.instance/>
+</cffunction>
+
+<cffunction name="getAllValues" returntype="any" access="public" output="false">
+	<cfreturn variables.instance/>
+</cffunction>
+
+<cffunction name="setValue" returntype="any" access="public" output="false">
+<cfargument name="property"  type="string" required="true">
+<cfargument name="propertyValue" default="" >
+
+	<cfset variables.intance["#arguments.property#"]=arguments.propertyValue />
+
+</cffunction>
+
+<cffunction name="getValue" returntype="any" access="public" output="false">
+<cfargument name="property"  type="string" required="true">
+	
+	<cfif structKeyExists(variables,"#arguments.property#")>
+		<cfreturn variables.instance["#arguments.property#"] />
+	<cfelse>
+		<cfreturn "" />
+	</cfif>
+
 </cffunction>
 </cfcomponent>

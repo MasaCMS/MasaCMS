@@ -92,7 +92,7 @@ to your own modified versions of Mura CMS.
 	<cffunction name="validate" access="public" output="false" returntype="void">
 		<cfset variables.instance.errors=structnew() /> 
 		
-		<cfif REFindNoCase("^[^@%*<>' ]+@[^@%*<>' ]{2,255}\.[^@%*<>' ]{2,5}",variables.instance.email) neq 0>
+		<cfif REFindNoCase("^[^@%*<>' ]+@[^@%*<>' ]{1,255}\.[^@%*<>' ]{2,5}",variables.instance.email) neq 0>
 		<cfset variables.instance.errors.email="The 'email' address that you provided mus be in a valid format."/>
 		</cfif>
 		

@@ -40,8 +40,8 @@ for your modified version; it is your choice whether to do so, or to make such m
 the GNU General Public License version 2  without this exception.  You may, if you choose, apply this exception
 to your own modified versions of Mura CMS.
 --->
-
 <cfcomponent output="false">
+<cfset variables.renderer=""/>
 
 <cffunction name="init" returntype="any" access="public" output="false">
 	<cfreturn this />
@@ -94,6 +94,29 @@ to your own modified versions of Mura CMS.
 	<cfargument name="cache" required="true" default="true">
 	
 	<cfreturn application.pluginManager.getConfig(arguments.ID, arguments.siteID, arguments.cache) />	
+</cffunction>
+
+<cffunction name="setRenderer" output="false" returntype="void" access="public">
+<cfargument name="renderer">
+	<cfset variables.renderer=arguments.renderer/>
+	<cfset variables.renderer.setBean(this)>
+</cffunction>
+
+<cffunction name="renderFormat" output="false" returntype="any" access="public">
+<cfargument name="format">
+<cfargument name="event">
+	<cfset var format1="">
+	<cfset var format2="">
+	<cfif isObject(variables.renderer) and structKeyExists(variables.renderer,"#arguments.format#")>
+		<cfsavecontent variable="format1"><cfinvoke component="#variables.renderer#" method="#arguments.format#" returnVariable="format2"><cfinvokeargument name="event" value="#arguments.event#"></cfinvoke></cfsavecontent>
+			<cfif isDefined("format2")>
+				<cfreturn trim(format2)>
+			<cfelse>
+				<cfreturn trim(format1)>
+			</cfif>
+	<cfelse>
+		<cfreturn getValue(arguments.key)/>
+	</cfif>
 </cffunction>
 
 </cfcomponent>

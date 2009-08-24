@@ -40,20 +40,28 @@ for your modified version; it is your choice whether to do so, or to make such m
 the GNU General Public License version 2  without this exception.  You may, if you choose, apply this exception
 to your own modified versions of Mura CMS.
 --->
+<cfsilent>
 <cfhtmlhead text="#session.dateKey#">
 <cfparam name="attributes.activeTab" default="0" />
 <cfset rsSubTypes=application.classExtensionManager.getSubTypesByType(2,attributes.siteID) />
 <cfquery name="rsNonDefault" dbtype="query">
 select * from rsSubTypes where subType <> 'Default'
 </cfquery>
-
+<cfset variables.pluginEvent=createObject("component","mura.event").init(event.getAllValues())/>
+<cfset rsPluginScripts=application.pluginManager.getScripts("onUserEdit",attributes.siteID)>
+<cfset tablist='"#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'user.basic'))#","#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'user.addressinformation'))#","#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'user.groupmemberships'))#","#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'user.interests'))#"'>
+<cfif rsSubTypes.recordcount>
+<cfset tablist=tablist & ',"#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'user.extendedattributes'))#"'>
+</cfif>
+<cfset tablist=tablist & ',"#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'user.advanced'))#"'>
+</cfsilent>
 <cfoutput><form action="index.cfm?fuseaction=cPublicUsers.update&userid=#attributes.userid#&routeid=#attributes.routeid#&siteid=#attributes.siteid#" method="post" enctype="multipart/form-data" name="form1" onsubmit="return validate(this);"  autocomplete="off" >
 	<h2>#application.rbFactory.getKeyValue(session.rb,'user.memberform')#</h2>
 	
 	#application.utility.displayErrors(request.userBean.getErrors())#
 	
 	<p>#application.rbFactory.getKeyValue(session.rb,'user.requiredtext')#</p>
-	
+
 	<div id="page_tabView">
 <div class="page_aTab">
 	<dl class="oneColumn">
@@ -237,8 +245,24 @@ select * from rsSubTypes where subType <> 'Default'
 		<dd><input id="remoteID" name="remoteID" type="text" value="#HTMLEditFormat(request.userBean.getRemoteID())#"  class="text"></dd>
 		</dl>
 	</div>
+		</cfoutput>
+		<cfoutput query="rsPluginScripts" group="pluginID">
+		<cfset tablist=tablist & ",'#jsStringFormat(rsPluginScripts.name)#'"/>
+		<cfset pluginEvent.setValue("tablist",tablist)>
+		<div class="page_aTab">
+			<cfoutput>
+			<cfset rsPluginScript=application.pluginManager.getScripts("onUserEdit",attributes.siteID,rsPluginScripts.moduleID)>
+			<cfif rsPluginScript.recordcount>
+			#application.pluginManager.renderScripts("onUserEdit",attributes.siteid,pluginEvent,rsPluginScript)#
+			<cfelse>
+			<cfset rsPluginScript=application.pluginManager.getScripts("on#attributes.type#Edit",attributes.siteID,rsPluginScripts.moduleID)>
+			#application.pluginManager.renderScripts("on#attributes.type#Edit",attributes.siteid,pluginEvent,rsPluginScript)#
+			</cfif>
+			</cfoutput>
+		</div>
+		</cfoutput>
 	</div>
-	
+	<cfoutput>
 		<cfif attributes.userid eq ''>
         
 				<a class="submit" href="javascript:;" onclick="return submitForm(document.forms.form1,'add');"><span>#application.rbFactory.getKeyValue(session.rb,'user.add')#</span></a>
@@ -259,7 +283,7 @@ select * from rsSubTypes where subType <> 'Default'
 <cfhtmlhead text='<script type="text/javascript" src="js/tab-view.js"></script>'>
 
 <script type="text/javascript">
-initTabs(Array("#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'user.basic'))#","#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'user.addressinformation'))#","#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'user.groupmemberships'))#","#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'user.interests'))#"<cfif rsSubTypes.recordcount>,"#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'user.extendedattributes'))#"</cfif>,"#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'user.advanced'))#"),#attributes.activeTab#,0,0);
+initTabs(Array(#tablist#),#attributes.activeTab#,0,0);
 </script>	
 
 	</cfoutput>

@@ -66,9 +66,11 @@ to your own modified versions of Mura CMS.
 		<cfset variables.pluginManager=arguments.pluginManager />
 		<cfset variables.ClassExtensionManager=variables.configBean.getClassExtensionManager() />
 		
+		<cfset variables.contentDAO.setContentManager(this)/>
+		
 		<cfreturn this />
 	</cffunction>
-
+	
 	<cffunction name="getList" access="public" returntype="query" output="false">
 		<cfargument name="args" type="struct"/>
 		<cfset var rs ="" />
@@ -1230,4 +1232,42 @@ to your own modified versions of Mura CMS.
 		<cfset f=f+1 />			
 	</cfloop>
 	</cffunction>
+
+	<cffunction name="getKidsQuery" returntype="query" output="false">
+			<cfargument name="moduleid" type="string" required="true" default="00000000000000000000000000000000000">
+			<cfargument name="siteid" type="string">
+			<cfargument name="parentid" type="string" >
+			<cfargument name="type" type="string"  default="default">
+			<cfargument name="today" type="date"  default="#now()#">
+			<cfargument name="size" type="numeric" default=100>
+			<cfargument name="keywords" type="string"  default="">
+			<cfargument name="hasFeatures" type="numeric"  default=0>
+			<cfargument name="sortBy" type="string" default="orderno" >
+			<cfargument name="sortDirection" type="string" default="asc" >
+			<cfargument name="categoryID" type="string" required="yes" default="" >
+			<cfargument name="relatedID" type="string" required="yes" default="" >
+			<cfargument name="tag" type="string" required="yes" default="" >
+			<cfargument name="aggregation" type="boolean" required="yes" default="false" >
+			
+			<cfreturn variables.contentGateway.getKids(arguments.moduleID, arguments.siteid, arguments.parentID, arguments.type, arguments.today, arguments.size, arguments.keywords, arguments.hasFeatures, arguments.sortBy, arguments.sortDirection, arguments.categoryID, arguments.relatedID, arguments.tag, arguments.aggregation)>
+	</cffunction>
+	
+	<cffunction name="getKidsIterator" returntype="any" output="false">
+			<cfargument name="moduleid" type="string" required="true" default="00000000000000000000000000000000000">
+			<cfargument name="siteid" type="string">
+			<cfargument name="parentid" type="string" >
+			<cfargument name="type" type="string"  default="default">
+			<cfargument name="today" type="date"  default="#now()#">
+			<cfargument name="size" type="numeric" default=100>
+			<cfargument name="keywords" type="string"  default="">
+			<cfargument name="hasFeatures" type="numeric"  default=0>
+			<cfargument name="sortBy" type="string" default="orderno" >
+			<cfargument name="sortDirection" type="string" default="asc" >
+			<cfargument name="categoryID" type="string" required="yes" default="" >
+			<cfargument name="relatedID" type="string" required="yes" default="" >
+			<cfargument name="tag" type="string" required="yes" default="" >
+			<cfargument name="aggregation" type="boolean" required="yes" default="false" >
+			
+			<cfreturn variables.contentGateway.getKidsIterator(arguments.moduleID, arguments.siteid, arguments.parentID, arguments.type, arguments.today, arguments.size, arguments.keywords, arguments.hasFeatures, arguments.sortBy, arguments.sortDirection, arguments.categoryID, arguments.relatedID, arguments.tag, arguments.aggregation)>
+	</cffunction>		
 </cfcomponent>

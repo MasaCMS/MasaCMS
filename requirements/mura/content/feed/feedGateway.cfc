@@ -106,6 +106,8 @@ to your own modified versions of Mura CMS.
 	<cfset var doTags =false />
 	<cfset var openGrouping =false />
 	<cfset var dbType=variables.configBean.getDbType() />
+	<cfset var sortOptions="menutitle,title,lastupdate,releasedate,orderno,displayStart,created,rating,comment,credits,type,subtype">
+	<cfset var isExtendedSort=(not listFindNoCase(sortOptions,feedBean.getSortBy()))>
 	
 	<cfif arguments.aggregation >
 		<cfset doKids =true />
@@ -139,7 +141,7 @@ to your own modified versions of Mura CMS.
 	tcontent.tags,tcontent.credits,tcontent.audience, tcontent.orderNo,
 	tcontentstats.rating,tcontentstats.totalVotes,tcontentstats.downVotes,tcontentstats.upVotes,
 	tcontentstats.comments, tparent.type parentType, <cfif doKids> qKids.kids<cfelse> 0 as kids</cfif>,tcontent.path, tcontent.created
-	
+
 	from tcontent
 	left Join tfiles on (tcontent.fileid=tfiles.fileid)
 	left Join tcontentstats on (tcontent.contentid=tcontentstats.contentid
@@ -148,6 +150,21 @@ to your own modified versions of Mura CMS.
 					    			and tcontent.siteid=tparent.siteid
 					    			and tparent.active=1) 
 	
+	<cfif isExtendedSort>
+	left Join (select 
+			<cfif variables.configBean.getDBType() eq "MSSQL">
+			(Cast(tclassextenddata.attributeValue as varchar(1000)) extendedSort
+			<cfelse>
+			tclassextenddata.attributeValue extendedSort
+			</cfif> 
+			 ,tclassextenddata.baseID 
+			from tclassextenddata inner join tclassextendattributes
+			on (tclassextenddata.attributeID=tclassextendattributes.attributeID)
+			where tclassextendattributes.siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.feedBean.getSiteID()#">
+			and tclassextendattributes.name=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.feedBean.getSortBy()#">
+	) qExtendedSort
+	on (tcontent.contenthistid=qExtendedSort.baseID)
+	</cfif>
 	
 	<!---  begin qKids --->
 				<cfif doKids>
@@ -488,7 +505,7 @@ to your own modified versions of Mura CMS.
 	order by 
 	
 	<cfswitch expression="#arguments.feedBean.getSortBy()#">
-	<cfcase value="menutitle,title,lastupdate,releasedate,orderno,displayStart,created">
+	<cfcase value="menutitle,title,lastupdate,releasedate,orderno,displayStart,created,credits,type,subtype">
 	tcontent.#arguments.feedBean.getSortBy()# #arguments.feedBean.getSortDirection()#
 	</cfcase>
 	<cfcase value="rating">
@@ -498,7 +515,11 @@ to your own modified versions of Mura CMS.
 	 tcontentstats.comments #arguments.feedBean.getSortDirection()#
 	</cfcase>
 	<cfdefaultcase>
-	tcontent.releaseDate desc,tcontent.lastUpdate desc,tcontent.menutitle
+		<cfif isExtendedSort>
+			qExtendedSort.extendedSort #arguments.feedBean.getSortDirection()#
+		<cfelse>
+			tcontent.releaseDate desc,tcontent.lastUpdate desc,tcontent.menutitle
+		</cfif>
 	</cfdefaultcase>
 	</cfswitch>
 	<cfif dbType eq "mysql">limit <cfqueryparam cfsqltype="cf_sql_integer" value="#arguments.feedBean.getMaxItems()#" /> </cfif>

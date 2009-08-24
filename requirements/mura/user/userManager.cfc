@@ -60,7 +60,9 @@ to your own modified versions of Mura CMS.
 	<cfset variables.fileManager=arguments.fileManager />
 	<cfset variables.pluginManager=arguments.pluginManager />
 	
-<cfreturn this />
+	<cfset variables.userDAO.setUserManager(this)>
+	
+	<cfreturn this />
 </cffunction>
 
 <cffunction name="getUserGroups" access="public" returntype="query" output="false">
@@ -521,6 +523,11 @@ to your own modified versions of Mura CMS.
 	<cfset error.photo="The file you uploaded is not a supported format. Only, JPEG, GIF and PNG files are accepted."/>
 	<cfset userBean.setErrors(error)/> 
 </cfif>
+</cffunction>
+
+<cffunction name="setUserBeanMetaData" output="false" returntype="any">
+	<cfargument name="userBean">
+	<cfreturn variables.userDAO.setUserBeanMetaData(userBean)>
 </cffunction>
 
 </cfcomponent>

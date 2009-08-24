@@ -58,7 +58,7 @@ to your own modified versions of Mura CMS.
 	<cfset var L=""/>
 	<cfset var currBean=read(arguments.memberBean.getEmail(),arguments.memberBean.getSiteID()) />
 	
-		<cfif REFindNoCase("^[^@%*<>' ]+@[^@%*<>' ]{2,255}\.[^@%*<>' ]{2,5}", trim(arguments.memberBean.getEmail())) neq 0>
+		<cfif REFindNoCase("^[^@%*<>' ]+@[^@%*<>' ]{1,255}\.[^@%*<>' ]{2,5}", trim(arguments.memberBean.getEmail())) neq 0>
 					
 				
 			<cfloop list="#arguments.memberBean.getMLID()#" index="L">
@@ -114,7 +114,7 @@ to your own modified versions of Mura CMS.
 <cffunction name="update" access="public" output="false" returntype="void" >
 	<cfargument name="memberBean" type="any" />
 
-	<cfif REFindNoCase("^[^@%*<> ]+@[^@%*<> ]{2,255}\.[^@%*<> ]{2,5}", trim(arguments.memberBean.getEmail())) neq 0>
+	<cfif REFindNoCase("^[^@%*<> ]+@[^@%*<> ]{1,255}\.[^@%*<> ]{2,5}", trim(arguments.memberBean.getEmail())) neq 0>
 		<cftry>
 		<cfquery datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#" >
 		update tmailinglistmembers 
@@ -135,7 +135,7 @@ to your own modified versions of Mura CMS.
 <cffunction name="deleteAll" access="public" output="false" returntype="void" >
 	<cfargument name="memberBean" type="any" />
 
-	<cfif REFindNoCase("^[^@%*<> ]+@[^@%*<> ]{2,255}\.[^@%*<> ]{2,5}", trim(arguments.memberBean.getEmail())) neq 0>
+	<cfif REFindNoCase("^[^@%*<> ]+@[^@%*<> ]{1,255}\.[^@%*<> ]{2,5}", trim(arguments.memberBean.getEmail())) neq 0>
 		<cftry>
 		<cfquery datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 		delete from tmailinglistmembers where email=<cfqueryparam cfsqltype="cf_sql_varchar" value="#trim(arguments.memberBean.getEmail())#" /> and siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#trim(arguments.memberBean.getsiteID())#" />
@@ -149,7 +149,7 @@ to your own modified versions of Mura CMS.
 <cffunction name="delete" access="public" output="false" returntype="void" >
 	<cfargument name="memberBean" type="any" />
 	
-	<cfif REFindNoCase("^[^@%*<> ]+@[^@%*<> ]{2,255}\.[^@%*<> ]{2,5}", trim(arguments.memberBean.getEmail())) neq 0>
+	<cfif REFindNoCase("^[^@%*<> ]+@[^@%*<> ]{1,255}\.[^@%*<> ]{2,5}", trim(arguments.memberBean.getEmail())) neq 0>
 		<cftry>
 		<cfquery datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#" >
 		delete from tmailinglistmembers where mlid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.memberBean.getMLID()#" /> and email=<cfqueryparam cfsqltype="cf_sql_varchar" value="#trim(arguments.memberBean.getEmail())#" /> and siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.memberBean.getSiteID()#" />

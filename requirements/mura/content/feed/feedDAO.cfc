@@ -50,7 +50,14 @@ to your own modified versions of Mura CMS.
 </cffunction>
 
 <cffunction name="getBean" access="public" returntype="any">
-	<cfreturn createObject("component","mura.content.feed.feedBean").init()>
+	<cfset var feedBean=createObject("component","mura.content.feed.feedBean").init()>
+	<cfset feedBean.setFeedManager(variables.feedManager)>
+	<cfreturn feedBean>
+</cffunction>
+
+<cffunction name="setFeedManager" access="public" output="false">
+	<cfargument name="feedManager" type="any" />
+	<cfset variables.feedManager = arguments.feedManager />
 </cffunction>
 
 <cffunction name="create" returntype="void" access="public" output="false">

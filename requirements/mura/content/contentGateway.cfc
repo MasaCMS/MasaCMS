@@ -215,6 +215,28 @@ to your own modified versions of Mura CMS.
 			
 </cffunction>
 
+<cffunction name="getKidsIterator" returntype="any" output="false">
+			<cfargument name="moduleid" type="string" required="true" default="00000000000000000000000000000000000">
+			<cfargument name="siteid" type="string">
+			<cfargument name="parentid" type="string" >
+			<cfargument name="type" type="string"  default="default">
+			<cfargument name="today" type="date"  default="#now()#">
+			<cfargument name="size" type="numeric" default=100>
+			<cfargument name="keywords" type="string"  default="">
+			<cfargument name="hasFeatures" type="numeric"  default=0>
+			<cfargument name="sortBy" type="string" default="orderno" >
+			<cfargument name="sortDirection" type="string" default="asc" >
+			<cfargument name="categoryID" type="string" required="yes" default="" >
+			<cfargument name="relatedID" type="string" required="yes" default="" >
+			<cfargument name="tag" type="string" required="yes" default="" >
+			<cfargument name="aggregation" type="boolean" required="yes" default="false" >
+			
+			<cfset var rs = getKids(arguments.moduleID, arguments.siteid, arguments.parentID, arguments.type, arguments.today, arguments.size, arguments.keywords, arguments.hasFeatures, arguments.sortBy, arguments.sortDirection, arguments.categoryID, arguments.relatedID, arguments.tag, arguments.aggregation)>
+			<cfset var it = getServiceFactory().getBean("contentIterator")>
+			<cfset it.setQuery(rs)>
+			<cfreturn it/>	
+</cffunction>
+
 <cffunction name="getKids" returntype="query" output="false">
 			<cfargument name="moduleid" type="string" required="true" default="00000000000000000000000000000000000">
 			<cfargument name="siteid" type="string">
@@ -238,7 +260,9 @@ to your own modified versions of Mura CMS.
 			<cfset var f = ""/>
 			<cfset var doKids =false />
 			<cfset var dbType=variables.configBean.getDbType() />
-	
+			<cfset var sortOptions="menutitle,title,lastupdate,releasedate,orderno,displayStart,created,rating,comment,credits,type,subtype">
+			<cfset var isExtendedSort=(not listFindNoCase(sortOptions,arguments.sortBy))>
+			
 			<cfif arguments.aggregation >
 				<cfset doKids =true />
 			</cfif>
@@ -258,6 +282,22 @@ to your own modified versions of Mura CMS.
 				FROM tcontent Left Join tfiles ON (tcontent.fileID=tfiles.fileID)
 				left Join tcontentstats on (tcontent.contentid=tcontentstats.contentid
 								    and tcontent.siteid=tcontentstats.siteid) 
+
+<cfif isExtendedSort>
+	left Join (select 
+			<cfif variables.configBean.getDBType() eq "MSSQL">
+			Cast(tclassextenddata.attributeValue as varchar(1000)) extendedSort
+			<cfelse>
+			tclassextenddata.attributeValue extendedSort
+			</cfif> 
+			 ,tclassextenddata.baseID 
+			from tclassextenddata inner join tclassextendattributes
+			on (tclassextenddata.attributeID=tclassextendattributes.attributeID)
+			where tclassextendattributes.siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#">
+			and tclassextendattributes.name=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.sortBy#">
+	) qExtendedSort
+	on (tcontent.contenthistid=qExtendedSort.baseID)
+</cfif>
 				
 <!--- begin qKids --->
 			<cfif doKids>
@@ -513,7 +553,7 @@ to your own modified versions of Mura CMS.
 					  </cfif>	
 
 				  order by 
-					<cfswitch expression="#arguments.sortBy#">
+					<!--- <cfswitch expression="#arguments.sortBy#">
 					<cfcase value="rating">
 					tcontentstats.rating #arguments.sortDirection#,tcontentstats.totalVotes #arguments.sortDirection#, tcontent.releaseDate #arguments.sortDirection#
 					</cfcase>
@@ -522,6 +562,24 @@ to your own modified versions of Mura CMS.
 					</cfcase>
 					<cfdefaultcase>
 					tcontent.#arguments.sortBy# #arguments.sortDirection#
+					</cfdefaultcase>
+					</cfswitch> --->
+					<cfswitch expression="#arguments.sortBy#">
+					<cfcase value="menutitle,title,lastupdate,releasedate,orderno,displayStart,created,credits,type,subtype">
+					tcontent.#arguments.sortBy# #arguments.sortDirection#
+					</cfcase>
+					<cfcase value="rating">
+					 tcontentstats.rating #arguments.sortBy#, tcontentstats.totalVotes #arguments.sortDirection#
+					</cfcase>
+					<cfcase value="comments">
+					 tcontentstats.comments #arguments.sortDirection#
+					</cfcase>
+					<cfdefaultcase>
+						<cfif isExtendedSort>
+							qExtendedSort.extendedSort #arguments.sortDirection#
+						<cfelse>
+							tcontent.releaseDate desc,tcontent.lastUpdate desc,tcontent.menutitle
+						</cfif>
 					</cfdefaultcase>
 					</cfswitch>
 					
@@ -841,6 +899,8 @@ to your own modified versions of Mura CMS.
 		<cfargument name="searchString" type="string" required="true" default="">
 		<cfset var rs = "">
 		<cfset var doAg=false/>
+		<cfset var sortOptions="menutitle,title,lastupdate,releasedate,orderno,displayStart,created,rating,comment,credits,type,subtype">
+		<cfset var isExtendedSort=(not listFindNoCase(sortOptions,arguments.sortBy))>
 		
 		<cfif arguments.sortBy eq 'rating' 
 			or arguments.sortBy eq 'comments'>
@@ -865,6 +925,22 @@ to your own modified versions of Mura CMS.
 		Left Join tcontentcomments on tcontent.contentID=tcontentcomments.contentID
 		Left Join tcontentratings on tcontent.contentID=tcontentratings.contentID
 		</cfif>
+
+<cfif isExtendedSort>
+	left Join (select 
+			<cfif variables.configBean.getDBType() eq "MSSQL">
+			Cast(tclassextenddata.attributeValue as varchar(1000)) extendedSort
+			<cfelse>
+			tclassextenddata.attributeValue extendedSort
+			</cfif> 
+			 ,tclassextenddata.baseID 
+			from tclassextenddata inner join tclassextendattributes
+			on (tclassextenddata.attributeID=tclassextendattributes.attributeID)
+			where tclassextendattributes.siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#">
+			and tclassextendattributes.name=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.sortBy#">
+	) qExtendedSort
+	on (tcontent.contenthistid=qExtendedSort.baseID)
+</cfif>
 		WHERE 
 		tcontent.siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
 		AND tcontent.ParentID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.parentID#"/>
@@ -890,7 +966,11 @@ to your own modified versions of Mura CMS.
 		<cfif arguments.sortBy neq "">
 			ORDER BY
 			<cfif not doAg>
-				 tcontent.#arguments.sortBy# #arguments.sortDirection# 
+				<cfif isExtendedSort>
+				qExtendedSort.extendedSort #arguments.sortDirection#	
+				<cfelse>
+				 tcontent.#arguments.sortBy# #arguments.sortDirection#
+				 </cfif> 
 			<cfelseif arguments.sortBy eq 'rating'>
 				Rating #arguments.sortDirection#, Votes #arguments.sortDirection# 
 			<cfelse>

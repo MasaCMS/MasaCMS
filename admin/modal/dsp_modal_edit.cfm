@@ -225,7 +225,7 @@ to your own modified versions of Mura CMS.
 		<cfelse>
 			<li id="adminSiteManager404"><a href="#adminLink#" target="admin">#application.rbFactory.getKeyValue(session.rb,'layout.sitemanager')#</li>	
 		</cfif>
-		<li id="adminLogOut"><a href="index.cfm?doaction=logout">#application.rbFactory.getKeyValue(session.rb,'layout.logout')#</a></li>
+		<li id="adminLogOut"><a href="?doaction=logout">#application.rbFactory.getKeyValue(session.rb,'layout.logout')#</a></li>
 		<li id="adminWelcome">#application.rbFactory.getKeyValue(session.rb,'layout.welcome')#, #listgetat(getauthuser(),2,"^")#.</li>
 		</ul>
 		

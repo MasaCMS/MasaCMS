@@ -258,7 +258,7 @@ to your own modified versions of Mura CMS.
 	<cfset var struser=structnew()>
 	<cfset var rsuser = ""/>
 	<cfset var userBean = ""/>
-		<cfif REFindNoCase("^[^@%*<>' ]+@[^@%*<>' ]{2,255}\.[^@%*<>' ]{2,5}", trim(arguments.email)) neq 0>
+		<cfif REFindNoCase("^[^@%*<>' ]+@[^@%*<>' ]{1,255}\.[^@%*<>' ]{2,5}", trim(arguments.email)) neq 0>
 					<cfset rsuser=getUserByEmail('#arguments.email#','#arguments.siteid#')>
 					<cfif rsuser.recordcount>
 						<cfloop query="rsuser">

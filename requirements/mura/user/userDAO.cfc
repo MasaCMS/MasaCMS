@@ -52,8 +52,13 @@ to your own modified versions of Mura CMS.
 <cfreturn this />
 </cffunction>
 
+<cffunction name="setUserManager" output="false" returntype="void" access="public">
+	<cfargument name="userManager">
+	<cfset variables.userManager=arguments.userManager>
+</cffunction>
+
 <cffunction name="getBean" access="public" returntype="any">
-	<cfreturn createObject("component","mura.user.userBean").init(variables.configBean,variables.settingsManager)>
+	<cfreturn createObject("component","mura.user.userBean").init(variables.configBean,variables.settingsManager,variables.userManager)>
 </cffunction>
 
 <cffunction name="read" access="public" returntype="any" output="false">
@@ -71,13 +76,7 @@ to your own modified versions of Mura CMS.
 		
 		<cfif rsUser.recordCount eq 1>
 			<cfset userBean.set(rsUser) />
-			<!--- <cfif userBean.getType() eq 2> --->
-				<cfset rsmembs=readMemberships(userBean.getUserId()) />
-				<cfset rsInterests=readInterestGroups(userBean.getUserId()) />
-				<cfset userBean.setGroupId(valuelist(rsmembs.groupid))/>
-				<cfset userBean.setCategoryId(valuelist(rsInterests.categoryid))/>
-			<!--- </cfif> --->
-			<cfset userBean.setAddresses(getAddresses(arguments.UserID))/>
+			<cfset setUserBeanMetaData(userBean)>
 		</cfif>
 		
 		<cfreturn userBean />
@@ -713,4 +712,14 @@ to your own modified versions of Mura CMS.
 	</cfquery>
 </cffunction>
 
+<cffunction name="setUserBeanMetaData" output="false" returntype="any">
+	<cfargument name="userBean">
+	<cfset var rsmembs=readMemberships(userBean.getUserId()) />
+	<cfset var rsInterests=readInterestGroups(userBean.getUserId()) />
+	<cfset userBean.setGroupId(valuelist(rsmembs.groupid))/>
+	<cfset userBean.setCategoryId(valuelist(rsInterests.categoryid))/>
+	<cfset userBean.setAddresses(getAddresses(userBean.getUserId()))/>
+	
+	<cfreturn userBean>
+	</cffunction>
 </cfcomponent>

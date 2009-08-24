@@ -89,6 +89,9 @@ to your own modified versions of Mura CMS.
 <cfset options[rsExtend.currentRow + 17][2]="#rsExtend.Type#/#rsExtend.subType# - #rsExtend.attribute#"/>
 </cfloop>
 
+
+
+
 <cfset criterias[1][1]="Equals">
 <cfset criterias[1][2]=application.rbFactory.getKeyValue(session.rb,'params.equals')>
 <cfset criterias[2][1]="GT">
@@ -271,6 +274,8 @@ function previewFeed(){
 		<option value="rating" <cfif request.feedBean.getsortBy() eq 'rating'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'params.rating')#</option>
 		<option value="comments" <cfif request.feedBean.getsortBy() eq 'comments'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'params.comments')#</option>
 		<option value="created" <cfif request.feedBean.getsortBy() eq 'created'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'params.created')#</option>
+		<cfloop query="rsExtend"><option value="#HTMLEditFormat(rsExtend.attribute)#" <cfif request.feedBean.getsortBy() eq rsExtend.attribute>selected</cfif>>#rsExtend.Type#/#rsExtend.subType# - #rsExtend.attribute#</option>
+		</cfloop>
 	</select>
 	</dd>
 	<dt>#application.rbFactory.getKeyValue(session.rb,'collections.sortdirection')#</dt>

@@ -57,6 +57,8 @@ to your own modified versions of Mura CMS.
 	<cfset variables.feedUtility=arguments.feedUtility />
 	<cfset variables.pluginManager=arguments.pluginManager />
 	
+	<cfset variables.feedDAO.setFeedManager(this) />
+	
 	<cfreturn this />
 </cffunction>
 
@@ -75,6 +77,17 @@ to your own modified versions of Mura CMS.
 	<cfargument name="aggregation"  required="true" default="false" />
 
 	<cfreturn variables.feedgateway.getFeed(arguments.feedBean,arguments.tag,arguments.aggregation) />
+</cffunction>
+
+<cffunction name="getFeedIterator" returntype="any" access="public" output="false">
+	<cfargument name="feedBean"  type="any" />
+	<cfargument name="tag"  required="true" default="" />
+	<cfargument name="aggregation"  required="true" default="false" />
+
+	<cfset var rs =  variables.feedgateway.getFeed(arguments.feedBean,arguments.tag,arguments.aggregation) />
+	<cfset var it = getServiceFactory().getBean("contentIterator")>
+	<cfset it.setQuery(rs)>
+	<cfreturn it/>	
 </cffunction>
 
 <cffunction name="getcontentItems" returntype="query" access="public" output="false">
@@ -133,6 +146,37 @@ to your own modified versions of Mura CMS.
 	</cfif>
 	
 	<cfreturn feedBean />
+</cffunction>
+
+<cffunction name="save" access="public" returntype="any" output="false">
+	<cfargument name="data" type="any" default="#structnew()#"/>	
+	
+	<cfset var feedID="">
+	<cfset var rs="">
+	
+	<cfif isObject(arguments.data)>
+		<cfif getMetaData(arguments.data).name eq "mura.content.feed.feedBean">
+		<cfset arguments.data=arguments.data.getAllValues()>
+		<cfelse>
+			<cfthrow type="custom" message="The attribute 'DATA' is not of type 'mura.content.feed.feedBean'">
+		</cfif>
+	</cfif>
+	<cfif structKeyExists(arguments.data,"feedID")>
+		<cfset feedID=arguments.data.feedID>
+	<cfelse>
+		<cfthrow type="custom" message="The attribute 'FEEDID' is required when saving a feed.">
+	</cfif>
+	
+	<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#" name="rs">
+	select feedID from tcontentfeeds where feedID=<cfqueryparam value="#feedID#">
+	</cfquery>
+	
+	<cfif rs.recordcount>
+		<cfreturn update(arguments.data)>	
+	<cfelse>
+		<cfreturn create(arguments.data)>
+	</cfif>
+
 </cffunction>
 
 <cffunction name="delete" access="public" returntype="void" output="false">

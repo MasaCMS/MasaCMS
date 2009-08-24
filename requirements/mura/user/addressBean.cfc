@@ -105,8 +105,8 @@ to your own modified versions of Mura CMS.
 		<cfelseif isStruct(arguments.args)>
 		
 			<cfloop collection="#arguments.args#" item="prop">
-				<cfif prop neq 'siteID' and structKeyExists(this,"set#prop#")>
-					<cfset evaluate("set#prop#(arguments.args[prop])") />
+				<cfif prop neq 'siteID'>
+					<cfset setValue(prop,arguments.args[prop]) />
 				</cfif>
 			</cfloop>
 			
@@ -399,7 +399,7 @@ to your own modified versions of Mura CMS.
 	<cfset var i = "">	
 	
 	<cfif structKeyExists(this,"set#property#")>
-		<cfset evaluate("set#property#(arguments.propertyValue") />
+		<cfset evaluate("set#property#(arguments.propertyValue)") />
 	<cfelseif structKeyExists(variables.instance,arguments.property)>
 		<cfset variables.instance["#arguments.property#"]=arguments.propertyValue />
 	<cfelse>
@@ -423,7 +423,7 @@ to your own modified versions of Mura CMS.
 	<cfargument name="property"  type="string" required="true">
 	
 	<cfif structKeyExists(this,"get#property#")>
-		<cfreturn evaluate("get#property#(arguments.propertyValue") />
+		<cfreturn evaluate("get#property#()") />
 	<cfelseif structKeyExists(variables.instance,"#arguments.property#")>
 		<cfreturn variables.instance["#arguments.property#"] />
 	<cfelse>
@@ -436,4 +436,11 @@ to your own modified versions of Mura CMS.
 	<cfset variables.instance=arguments.instance/>
 </cffunction>
 
+<cffunction name="save" output="false" access="public">
+	<cfset variables.userManager.updateAddress(this)>
+</cffunction>
+
+<cffunction name="delete" output="false" access="public">
+	<cfset variables.userManager.deleteAddress(getAddressID())>
+</cffunction>
 </cfcomponent>

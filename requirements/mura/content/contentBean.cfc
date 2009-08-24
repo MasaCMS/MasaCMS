@@ -122,7 +122,9 @@ to your own modified versions of Mura CMS.
 
 <cffunction name="init" access="public" returntype="any" output="false">
 	<cfargument name="configBean" required="true" default=""/>
+	<cfargument name="contentManager" required="true" default=""/>
 	<cfset variables.configBean=arguments.configBean />
+	<cfset variables.contentManager=arguments.contentManager />
 	<cfreturn this />
 </cffunction>
 
@@ -208,9 +210,7 @@ to your own modified versions of Mura CMS.
 	<cfelseif isStruct(arguments.content)>
 	
 		<cfloop collection="#arguments.content#" item="prop">
-			<cfif structKeyExists(this,"set#prop#")>
-				<cfset evaluate("set#prop#(arguments.content[prop])") />
-			</cfif>
+				<cfset setValue(prop,arguments.content[prop]) />
 		</cfloop>
 		
 		<cfif getDisplay() eq 2 
@@ -1031,7 +1031,7 @@ to your own modified versions of Mura CMS.
 	<cfset var i = "">	
 	
 	<cfif structKeyExists(this,"set#property#")>
-		<cfset evaluate("set#property#(arguments.propertyValue") />
+		<cfset evaluate("set#property#(arguments.propertyValue)") />
 	<cfelse>
 		<cfset extData=getExtendedData().getExtendSetDataByAttributeName(arguments.property)>
 		<cfif not structIsEmpty(extData)>
@@ -1126,6 +1126,38 @@ to your own modified versions of Mura CMS.
   
 <cffunction name="getHTMLTitle" returnType="string" output="false" access="public">
 	<cfreturn variables.instance.HTMLTitle />
+</cffunction>
+
+<cffunction name="getKidsQuery" returnType="query" output="false" access="public">
+	<cfreturn variables.contentManager.getKidsQuery(siteID:getSiteID(), parentID:getContentID(), sortBy:getSortBy(), sortDirection:getSortDirection()) />
+</cffunction>
+
+<cffunction name="getKidsIterator" returnType="any" output="false" access="public">
+	<cfset var q=getKidsQuery() />
+	<cfset var it=getServiceFactory().getBean("contentIterator")>
+	<cfset it.setQuery(q,getNextN())>
+	<cfreturn it>
+</cffunction>
+
+<cffunction name="save" returnType="any" output="false" access="public">
+	<cfreturn variables.contentManager.save(this) />
+</cffunction>
+
+<cffunction name="deleteVersion" returnType="any" output="false" access="public">
+	<cfif not getActive()>
+		<cfset variables.contentManager.delete(getAllValues()) />
+		<cfreturn true>
+	<cfelse>
+		<cfreturn false>
+	</cfif>
+</cffunction>
+
+<cffunction name="deleteVersionHistory" returnType="void" output="false" access="public">
+	<cfset variables.contentManager.deleteHistAll(getAllValues()) />
+</cffunction>
+
+<cffunction name="delete" returnType="void" output="false" access="public">
+	<cfset variables.contentManager.deleteAll(getAllValues()) />
 </cffunction>
 
 </cfcomponent>

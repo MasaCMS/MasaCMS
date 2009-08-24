@@ -51,8 +51,13 @@ to your own modified versions of Mura CMS.
 <cfreturn this />
 </cffunction>
 
+<cffunction name="setContentManager" output="false" returntyp="any">
+	<cfargument name="contentManager" type="any" required="yes"/>
+	<cfset variables.contentManager=arguments.contentManager>
+</cffunction>
+
 <cffunction name="getBean" access="public" returntype="any">
-	<cfreturn createObject("component","#variables.configBean.getMapDir()#.content.contentBean").init(variables.configBean)>
+	<cfreturn createObject("component","#variables.configBean.getMapDir()#.content.contentBean").init(variables.configBean,variables.contentManager)>
 </cffunction>
 
 <cffunction name="readVersion" access="public" returntype="any" output="false">

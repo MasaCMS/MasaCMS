@@ -116,6 +116,7 @@ copySiteID = '#session.copySiteID#';
 	
 </form>
 <cfif attributes.type neq 'Component' and attributes.type neq 'Creative'  and attributes.type neq 'Form'>#application.contentRenderer.dspZoom(crumbdata)#</cfif>
+<cfset rsExtend=application.configBean.getClassExtensionManager().getExtendedAttributeList(attributes.siteid)>
 <form id="viewUpdate" name="viewUpdate" method="post"><h3 class="alt">#application.rbFactory.getKeyValue(session.rb,"sitemanager.modifyview")#</h3><dl class="clearfix"><dt class="rows">#application.rbFactory.getKeyValue(session.rb,"sitemanager.rowsdisplayed")#</dt><dd class="rows"><input name="nextN" value="#session.nextN#" type="text" class="text" size="2" maxlength="4" /></dd><dt class="viewDepth">#application.rbFactory.getKeyValue(session.rb,"sitemanager.levelsdisplayed")#</dt><dd class="viewDepth"><input name="viewDepth" value="#session.viewDepth#" type="text" class="text" size="2" maxlength="4" /></dd><cfif attributes.topid neq '00000000000000000000000000000000001' and perm eq 'Editor'><dt class="sort">#application.rbFactory.getKeyValue(session.rb,"sitemanager.sortnavigation")#</dt><dd class="sort">
 							<input type="hidden" name="saveSort" value="true">
 							<select name="sortBy" class="dropdown">
@@ -127,6 +128,8 @@ copySiteID = '#session.copySiteID#';
 							<option value="title" <cfif attributes.sortBy eq 'title'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.sort.longtitle")#</option>
 							<option value="rating" <cfif attributes.sortBy eq 'rating'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.sort.rating")#</option>
 							<option value="comments" <cfif attributes.sortBy eq 'comments'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.sort.comments")#</option>
+							<cfloop query="rsExtend"><option value="#HTMLEditFormat(rsExtend.attribute)#" <cfif attributes.sortBy eq rsExtend.attribute>selected</cfif>>#rsExtend.Type#/#rsExtend.subType# - #rsExtend.attribute#</option>
+							</cfloop>
 							</select>
 							<select name="sortDirection" class="dropdown">
 		 					<option value="asc" <cfif attributes.sortDirection eq 'asc'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.sort.ascending")#</option>

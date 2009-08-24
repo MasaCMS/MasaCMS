@@ -90,8 +90,10 @@ to your own modified versions of Mura CMS.
 	<cffunction name="init" returntype="any" output="false" access="public">
 	<cfargument name="configBean" type="any" required="yes"/>
 	<cfargument name="settingsManager" type="any" required="yes"/>
+	<cfargument name="userManager" type="any" required="yes"/>
 		<cfset variables.configBean=arguments.configBean />
 		<cfset variables.settingsManager=arguments.settingsManager />
+		<cfset variables.userManager=arguments.userManager />
 	<cfreturn this />
 	</cffunction>
 
@@ -139,8 +141,8 @@ to your own modified versions of Mura CMS.
 		<cfelseif isStruct(arguments.user)>
 		
 			<cfloop collection="#arguments.user#" item="prop">
-				<cfif prop neq 'siteID' and structKeyExists(this,"set#prop#")>
-					<cfset evaluate("set#prop#(arguments.user[prop])") />
+				<cfif prop neq 'siteID'>
+					<cfset setValue(prop,arguments.user[prop]) />
 				</cfif>
 			</cfloop>
 			
@@ -471,6 +473,16 @@ to your own modified versions of Mura CMS.
   <cffunction name="getAddresses" returnType="query" output="false" access="public">
     <cfreturn variables.instance.Addresses />
   </cffunction>
+	
+  <cffunction name="getAddressesQuery" returnType="query" output="false" access="public">
+    <cfreturn variables.instance.Addresses />
+  </cffunction>
+
+  <cffunction name="getAddressesIterator" returnType="any" output="false" access="public">
+   	<cfset var it=getServiceFactory().getBean("addressIterator").init()>
+	<cfset it.setQuery(variables.instance.Addresses)>
+	<cfreturn it />
+  </cffunction>
 
  <cffunction name="getErrors" returnType="struct" output="false" access="public">
     <cfreturn variables.instance.errors />
@@ -680,7 +692,7 @@ to your own modified versions of Mura CMS.
 	<cfset var i = "">	
 	
 	<cfif structKeyExists(this,"set#property#")>
-		<cfset evaluate("set#property#(arguments.propertyValue") />
+		<cfset evaluate("set#property#(arguments.propertyValue)") />
 	<cfelseif structKeyExists(variables.instance,arguments.property)>
 		<cfset variables.instance["#arguments.property#"]=arguments.propertyValue />
 	<cfelse>
@@ -704,7 +716,7 @@ to your own modified versions of Mura CMS.
 	<cfargument name="property"  type="string" required="true">
 	
 	<cfif structKeyExists(this,"get#property#")>
-		<cfreturn evaluate("get#property#(arguments.propertyValue") />
+		<cfreturn evaluate("get#property#()") />
 	<cfelseif structKeyExists(variables.instance,"#arguments.property#")>
 		<cfreturn variables.instance["#arguments.property#"] />
 	<cfelse>
@@ -718,4 +730,31 @@ to your own modified versions of Mura CMS.
 	<cfset variables.instance=arguments.instance/>
 </cffunction>
 
+<cffunction name="save" output="false" access="public">
+	<cfset variables.userManager.save(this)>
+</cffunction>
+
+<cffunction name="delete" output="false" access="public">
+	<cfset variables.userManager.delete(getUserID(),getType())>
+</cffunction>
+
+<cffunction name="getMembersQuery" returnType="query" output="false" access="public">
+   <cfreturn variables.userManager.readGroupMemberships(getUserID()) />
+</cffunction>
+
+<cffunction name="getMembersIterator" returnType="any" output="false" access="public">
+   	<cfset var it=getServiceFactory().getBean("userIterator").init()>
+	<cfset it.setQuery(getMembersQuery())>
+	<cfreturn it />
+</cffunction>
+
+<cffunction name="getMembershipsQuery" returnType="query" output="false" access="public">
+   <cfreturn variables.userManager.readMemberships(getUserID()) />
+</cffunction>
+
+<cffunction name="getMembershipsIterator" returnType="any" output="false" access="public">
+   	<cfset var it=getServiceFactory().getBean("userIterator").init()>
+	<cfset it.setQuery(getMembershipsQuery())>
+	<cfreturn it />
+</cffunction>
 </cfcomponent>
