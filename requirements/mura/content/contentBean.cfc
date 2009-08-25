@@ -1139,6 +1139,38 @@ to your own modified versions of Mura CMS.
 	<cfreturn it>
 </cffunction>
 
+<cffunction name="getVersionHistoryQuery" returnType="query" output="false" access="public">
+	<cfreturn variables.contentManager.getHist(getContentID(), getSiteID()) />
+</cffunction>
+
+<cffunction name="getVersionHistoryIterator" returnType="any" output="false" access="public">
+	<cfset var q=getVersionHistoryQuery() />
+	<cfset var it=getServiceFactory().getBean("contentIterator")>
+	<cfset it.setQuery(q,getNextN())>
+	<cfreturn it>
+</cffunction>
+
+<cffunction name="getCategoriesQuery" returnType="query" output="false" access="public">
+	<cfreturn variables.contentManager.getCategoriesByHistID(getContentHistID()) />
+</cffunction>
+
+<cffunction name="getRelatedContentQuery" returnType="query" output="false" access="public">
+	<cfargument name="liveOnly" type="boolean" required="yes" default="false" />
+	<cfargument name="today" type="date" required="yes" default="#now()#" />
+	
+	<cfreturn variables.contentManager.getRelatedContent(getSiteID(), getContentHistID(), arguments.liveOnly, arguments.today) />
+</cffunction>
+
+<cffunction name="getRelatedContentIterator" returnType="any" output="false" access="public">
+	<cfargument name="liveOnly" type="boolean" required="yes" default="false" />
+	<cfargument name="today" type="date" required="yes" default="#now()#" />
+	
+	<cfset var q=getRelatedContentQuery(arguments.liveOnly, arguments.today) />
+	<cfset var it=getServiceFactory().getBean("contentIterator")>
+	<cfset it.setQuery(q,getNextN())>
+	<cfreturn it>
+</cffunction>
+
 <cffunction name="save" returnType="any" output="false" access="public">
 	<cfreturn variables.contentManager.save(this) />
 </cffunction>

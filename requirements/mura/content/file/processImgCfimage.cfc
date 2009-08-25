@@ -177,7 +177,7 @@ to your own modified versions of Mura CMS.
 			<cfset theFile = "#serverDirectory##serverFilename#.#arguments.file.serverFileExt#" />
 				
 			<!--- BEGIN IMAGE MANIPULATION --->
-			<cfif listFindNoCase('jpg,jpeg,png,gif',arguments.file.ServerFileExt) and  arguments.file.contentType eq "Image">
+			<cfif listFindNoCase('jpg,jpeg,png,gif',arguments.file.ServerFileExt)>
 				
 					<cfset resizeImage(theFile,theFile,variables.settingsManager.getSite(arguments.siteID).getGalleryMainScaleBy(),variables.settingsManager.getSite(arguments.siteID).getGalleryMainScale(),serverDirectory) />			
 					<cfset theSmall = "#serverDirectory##serverFilename#_small.#arguments.file.serverFileExt#" />

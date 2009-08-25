@@ -34,7 +34,7 @@
 		<cfif structKeyExists(variables.instance.struct,key)>
 			<cfreturn variables.instance.struct[key]>
 		<cfelse>
-			<cfset variables.instance.bean=variables.contentManager.getActiveContent(variables.instance.struct.contentID,variables.instance.struct.siteID)>
+			<cfset variables.instance.bean=variables.contentManager.getContentVersion(variables.instance.struct.contentHistID,variables.instance.struct.siteID)>
 			<cfreturn variables.instance.bean.getValue(key)>
 		</cfif>
 	</cfif>

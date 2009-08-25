@@ -954,6 +954,19 @@ to your own modified versions of Mura CMS.
 		<cfreturn rs/>
 		
 	</cffunction>
+
+	<cffunction name="getPrivateSearchIterator" access="public" returntype="any" output="false">
+		<cfargument name="siteid" type="string"/>
+		<cfargument name="keywords" type="string"/>
+		<cfargument name="tag" required="true" default=""/>
+		<cfargument name="sectionID" required="true" default=""/>
+
+		<cfset var rs=getPrivateSearch(arguments.siteid,arguments.keywords,arguments.tag,arguments.sectionID) />
+		<cfset var it = getServiceFactory().getBean("contentIterator")>
+		<cfset it.setQuery(rs)>
+		<cfreturn it/>	
+		
+	</cffunction>
 	
 	<cffunction name="getPublicSearch" access="public" returntype="query" output="false">
 		<cfargument name="siteid" type="string"/>
@@ -967,6 +980,18 @@ to your own modified versions of Mura CMS.
 		
 		<cfreturn rs/>
 		
+	</cffunction>
+	
+	<cffunction name="getPublicSearchIterator" access="public" returntype="any" output="false">
+		<cfargument name="siteid" type="string"/>
+		<cfargument name="keywords" type="string"/>
+		<cfargument name="tag" required="true" default=""/>
+		<cfargument name="sectionID" required="true" default=""/>
+		
+		<cfset var rs=getPublicSearch(arguments.siteid,arguments.keywords,arguments.tag,arguments.sectionID) />
+		<cfset var it = getServiceFactory().getBean("contentIterator")>
+		<cfset it.setQuery(rs)>
+		<cfreturn it/>	
 	</cffunction>
 	
 	<cffunction name="getCategoriesByHistID" returntype="query" access="public" output="false">
@@ -1052,6 +1077,18 @@ to your own modified versions of Mura CMS.
 		<cfargument name="today" type="date" required="yes" default="#now()#" />
 	
 		<cfreturn variables.contentGateway.getRelatedContent(arguments.siteID,arguments.contentHistID,arguments.liveOnly,arguments.today) />
+	</cffunction>
+	
+	<cffunction name="getRelatedContentIterator" returntype="any" access="public" output="false">
+		<cfargument name="siteID"  type="string" />
+		<cfargument name="contentHistID"  type="string" />
+		<cfargument name="liveOnly" type="boolean" required="yes" default="false" />
+		<cfargument name="today" type="date" required="yes" default="#now()#" />
+	
+		<cfset var rs=getRelatedContent(arguments.siteID,arguments.contentHistID,arguments.liveOnly,arguments.today) />
+		<cfset var it = getServiceFactory().getBean("contentIterator")>
+		<cfset it.setQuery(rs)>
+		<cfreturn it/>
 	</cffunction>
 	
 	<cffunction name="copy" returntype="void" access="public" output="false">

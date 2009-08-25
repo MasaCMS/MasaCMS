@@ -123,7 +123,7 @@ to your own modified versions of Mura CMS.
 	</cfif>
 				
 			<!--- BEGIN IMAGE MANIPULATION --->
-			<cfif listFindNoCase('jpg,jpeg,png',arguments.file.ServerFileExt) and  arguments.file.contentType eq "Image">
+			<cfif listFindNoCase('jpg,jpeg,png',arguments.file.ServerFileExt)>
 				
 				<cfif find(serverfilename," ")>
 					<cfset serverFilename=replace(serverFilename," ","-","ALL") />

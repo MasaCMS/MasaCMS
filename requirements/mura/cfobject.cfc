@@ -115,7 +115,7 @@ to your own modified versions of Mura CMS.
 				<cfreturn trim(format1)>
 			</cfif>
 	<cfelse>
-		<cfreturn getValue(arguments.key)/>
+		<cfreturn getValue(arguments.format)/>
 	</cfif>
 </cffunction>
 

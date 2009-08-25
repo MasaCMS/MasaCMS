@@ -1069,7 +1069,7 @@ to your own modified versions of Mura CMS.
 	<cfset var rs = "">
 	
 	<cfquery name="rs" datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-	select menutitle, contentid, contenthistid, fileID, type, lastupdateby, active, approved, lastupdate, 
+	select menutitle, siteid, contentid, contenthistid, fileID, type, lastupdateby, active, approved, lastupdate, 
 	display, displaystart, displaystop, moduleid, isnav, notes,isfeature,inheritObjects,filename,targetParams,releaseDate
 	from tcontent where contentid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentID#"/> and siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/> order by lastupdate desc
 	</cfquery>
