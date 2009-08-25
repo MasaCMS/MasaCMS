@@ -1307,7 +1307,7 @@ to your own modified versions of Mura CMS.
 	SELECT title, releasedate, menuTitle, lastupdate, summary, tcontent.filename, type, tcontent.contentid,
 	target,targetParams, restricted, restrictgroups, displaystart, displaystop, orderno,sortBy,sortDirection,
 	tcontent.fileid, credits, remoteSource, remoteSourceURL, remoteURL,
-	tfiles.fileSize,tfiles.fileExt,path
+	tfiles.fileSize,tfiles.fileExt,path, tcontent.siteid, tcontent.contenthistid
 	FROM  tcontent Left Join tfiles ON (tcontent.fileID=tfiles.fileID)
 	WHERE
 	tcontent.siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
