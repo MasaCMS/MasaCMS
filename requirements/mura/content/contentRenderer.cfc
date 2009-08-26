@@ -1161,16 +1161,23 @@ to your own modified versions of Mura CMS.
 		<cfset var homeLink = "" />
 		<cfset var isLimitingOn = false>
 		<cfset var isNotLimited = false>
-
-		<cfif isBoolean(arguments.closePortals)>	
-			<cfset isLimitingOn=arguments.closePortals />
+		<cfset var limitingBy = "">
+		
+		<cfif len(arguments.closePortals)>
+			<cfset limitingBy="closed">	
+			<cfif isBoolean(arguments.closePortals)>	
+				<cfset isLimitingOn=arguments.closePortals />
+			</cfif>
 		</cfif>
 		
-		<cfif isBoolean(arguments.openPortals)>	
-			<cfif arguments.openPortals>
-				<cfset isLimitingOn=false />
-			<cfelse>
-				<cfset isLimitingOn=true />
+		<cfif len(arguments.openPortals)>
+			<cfset limitingBy="open">			
+			<cfif isBoolean(arguments.openPortals)>	
+				<cfif arguments.openPortals>
+					<cfset isLimitingOn=false />
+				<cfelse>
+					<cfset isLimitingOn=true />
+				</cfif>
 			</cfif>
 		</cfif>
 			
@@ -1181,14 +1188,16 @@ to your own modified versions of Mura CMS.
 			
 			<cfset current=current+1>
 			<cfset nest=''>
-				
+			
 			<cfset isNotLimited= rsSection.type eq "Page" or 
 			not (
 				rsSection.type eq "Portal" and 
 					(isLimitingOn or (
-									listFind(arguments.closePortals,rsSection.contentid)
-									 and not listFind(arguments.openPortals,rsSection.contentid)
+										(limitingBy eq "closed" and listFind(arguments.closePortals,rsSection.contentid))
+									or  
+										(limitingBy eq "open" and not listFind(arguments.openPortals,rsSection.contentid))
 									)
+										
 					) 
 					or listFindNoCase("Calendar,Gallery,Link,File",rsSection.type)
 				)

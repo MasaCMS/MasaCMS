@@ -14,7 +14,7 @@
 				<input type="submit" class="submit" value="Go" />
 			</fieldset>
 		</form>
-		<cf_CacheOMatic key="dspPrimaryNav#request.contentBean.getcontentID()#">#renderer.dspPrimaryNav(viewDepth="2",id="navPrimary",displayHome="Always",closePortals="true")#</cf_cacheomatic>
+		<cf_CacheOMatic key="dspPrimaryNav#request.contentBean.getcontentID()#">#renderer.dspPrimaryNav(viewDepth="1",id="navPrimary",displayHome="Always",closePortals="true")#</cf_cacheomatic>
 		<!--- Optional named arguments for Primary Nav are: displayHome="Always/Never/Conditional", openPortals/closePortals="contentid,contentid" (i.e. show specific sub-content in dropdown nav) --->
 	</div>
 </cfoutput>
