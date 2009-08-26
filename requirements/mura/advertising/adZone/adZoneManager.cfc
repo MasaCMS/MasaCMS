@@ -69,7 +69,7 @@ to your own modified versions of Mura CMS.
 	<cfset adZoneBean.set(arguments.data) />
 	
 	<cfif structIsEmpty(adZoneBean.getErrors())>
-		<cfset adZoneBean.setLastUpdateBy("#listGetAt(getAuthUser(),2,'^')#") />
+		<cfset adZoneBean.setLastUpdateBy(left(session.mura.fname & " " & session.mura.lname,50)) />
 		<cfset adZoneBean.setAdZoneID("#createUUID()#") />
 		<cfset variables.instance.globalUtility.logEvent("AdZoneID:#adZoneBean.getAdZoneID()# Name:#adZoneBean.getName()# was created","mura-advertising","Information",true) />
 		<cfset variables.instance.DAO.create(adZoneBean) />
@@ -93,7 +93,7 @@ to your own modified versions of Mura CMS.
 	
 	<cfif structIsEmpty(adZoneBean.getErrors())>
 		<cfset variables.instance.globalUtility.logEvent("AdZoneID:#adZoneBean.getAdZoneID()# Name:#adZoneBean.getName()# was updated","mura-advertising","Information",true) />
-		<cfset adZoneBean.setLastUpdateBy("#listGetAt(getAuthUser(),2,'^')#") />
+		<cfset adZoneBean.setLastUpdateBy(left(session.mura.fname & " " & session.mura.lname,50)) />
 		<cfset variables.instance.DAO.update(adZoneBean) />
 	</cfif>
 	

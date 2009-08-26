@@ -12,7 +12,7 @@
 <fuseaction name="Edit">
 <if condition="not isdefined('request.userBean')">
 	<true>
-		<invoke object="application.userManager" methodcall="read(listfirst(getAuthUser(),'^'))" returnVariable="request.userBean" />
+		<invoke object="application.userManager" methodcall="read(session.mura.userID)" returnVariable="request.userBean" />
 	</true>
 </if>
 <do action="vPrivateUsers.editprofile" contentvariable="fusebox.layout"/>

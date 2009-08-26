@@ -69,7 +69,7 @@ to your own modified versions of Mura CMS.
 	</cfif>
 	
 	<cfif isloggedin>
-		<cfcookie name="userid" expires="never" value="#listFirst(getAuthUser(),'^')#" />
+		<cfcookie name="userid" expires="never" value="#session.mura.userID#" />
 		<cfreturn true />
 	<cfelse>
 		<cfcookie name="userid" expires="never" value="" />

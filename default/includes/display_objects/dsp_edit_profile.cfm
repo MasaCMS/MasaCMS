@@ -52,7 +52,7 @@ to your own modified versions of Mura CMS.
 </cfsilent>
 <cfoutput>
 
-<h2><cfif getAuthUser() eq ''>#rbFactory.getKey('user.createprofile')#<cfelse>
+<h2><cfif not session.mura.isLoggedIn>#rbFactory.getKey('user.createprofile')#<cfelse>
 #rbFactory.getKey('user.editprofile')#</cfif></h2>
 <div id="svEditProfile">
 <cfif not(structIsEmpty(request.userBean.getErrors()) and request.doaction eq 'createprofile')>
@@ -198,7 +198,7 @@ to your own modified versions of Mura CMS.
 </cfloop>
 </cfif>
 
-<cfif getAuthUser() neq ''>
+<cfif session.mura.isLoggedIn>
 	<input name="submit" type="submit"  value="#HTMLEditFormat(rbFactory.getKey('user.updateprofile'))#" />
 	<input type="hidden" name="userid" value="#listgetat(getAuthUser(),1,'^')#"/>
 	<input type="hidden" name="doaction" value="updateprofile">

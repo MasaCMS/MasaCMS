@@ -353,11 +353,11 @@ to your own modified versions of Mura CMS.
 
 <cffunction name="setLastUpdateInfo" access="public" returntype="void" output="false">
 	<cfargument name="userBean" type="any" default="" required="yes"/>		
-	<cfif getAuthUser() neq "" >
-			<cfset arguments.userBean.setLastUpdateBy(listGetAt(getAUthUser(),"2","^"))/>
-			<cfset arguments.userBean.setLastUpdateByID(listFirst(getAuthUser(),"^"))/>
+	<cfif session.mura.isLoggedIn>
+			<cfset arguments.userBean.setLastUpdateBy(left(session.mura.fname & " " & session.mura.lname,50))/>
+			<cfset arguments.userBean.setLastUpdateByID(session.mura.userID)/>
 		<cfelse>
-			<cfset arguments.userBean.setLastUpdateBy("#arguments.userBean.getFname()# #arguments.userBean.getlname()#")/>
+			<cfset arguments.userBean.setLastUpdateBy(left("#arguments.userBean.getFname()# #arguments.userBean.getlname()#",50))/>
 			<cfset arguments.userBean.setLastUpdateByID(arguments.userBean.getUserID())/>
 		</cfif>
 </cffunction>
@@ -461,14 +461,14 @@ to your own modified versions of Mura CMS.
 
 <cffunction name="getCurrentUserID" access="public" returntype="string" output="false">		
 	
-	<cfreturn listFirst(getAuthUser(),'^') />
+	<cfreturn session.mura.userID />
 	
 </cffunction>
 
 <cffunction name="getCurrentName" access="public" returntype="string" output="false">		
 	
 	<cftry>
-		<cfreturn listGetAt(getAuthUser(),2,'^') />
+		<cfreturn session.mura.fname & " " & session.mura.lname />
 		<cfcatch>
 			<cfreturn ''/>
 		</cfcatch>
@@ -479,7 +479,7 @@ to your own modified versions of Mura CMS.
 <cffunction name="getCurrentLastLogin" access="public" returntype="string" output="false">		
 	
 	<cftry>
-		<cfreturn listGetAt(getAuthUser(),3,'^') />
+		<cfreturn session.mura.lastlogin />
 		<cfcatch>
 			<cfreturn ''/>
 		</cfcatch>
@@ -490,7 +490,7 @@ to your own modified versions of Mura CMS.
 <cffunction name="getCurrentCompany" access="public" returntype="string" output="false">		
 	
 	<cftry>
-		<cfreturn listGetAt(getAuthUser(),4,'^') />
+		<cfreturn session.mura.company />
 		<cfcatch>
 			<cfreturn ''/>
 		</cfcatch>
@@ -528,6 +528,18 @@ to your own modified versions of Mura CMS.
 <cffunction name="setUserBeanMetaData" output="false" returntype="any">
 	<cfargument name="userBean">
 	<cfreturn variables.userDAO.setUserBeanMetaData(userBean)>
+</cffunction>
+
+<cffunction name="setUserStructDefaults" output="false" access="public" returntype="void">
+<cfset var user="">
+<cfif not structKeyExists(session,"mura")>
+	<cfif len(getAuthUser()) and isValid("UUID",listFirst(getAuthUser(),"^"))>
+		<cfset user=read(listFirst(getAuthUser(),"^"))>
+		<cfset variables.userUtility.setUserStruct(user.getAllValues())>
+	<cfelse>
+		<cfset variables.userUtility.setUserStruct()>
+	</cfif>
+</cfif>
 </cffunction>
 
 </cfcomponent>

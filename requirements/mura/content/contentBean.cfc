@@ -64,9 +64,9 @@ to your own modified versions of Mura CMS.
 <cfset variables.instance.Type = "" />
 <cfset variables.instance.subType = "Default" />
 
-<cfif len(getAuthUser())>
-	<cfset variables.instance.LastUpdateBy = left(listGetAt(getAuthUser(),"2","^"),50) />
-	<cfset variables.instance.LastUpdateByID = listFirst(getAuthUser(),"^") />
+<cfif session.mura.isLoggedIn>
+	<cfset variables.instance.LastUpdateBy = left(session.mura.fname & " " & session.mura.lname,50) />
+	<cfset variables.instance.LastUpdateByID = session.mura.userID />
 <cfelse>
 	<cfset variables.instance.LastUpdateBy = "" />
 	<cfset variables.instance.LastUpdateByID = "" />
@@ -314,12 +314,12 @@ to your own modified versions of Mura CMS.
 			<cfset setFeatureStop(createDateTime(year(getFeatureStop()), month(getFeatureStop()), day(getFeatureStop()),Featurestophour, arguments.content.featurestopMinute, "0"))>
 		</cfif>
 		
-		<cfif getAuthUser() eq "" >
+		<cfif not session.mura.isLoggedIn >
 			<cfset variables.instance.LastUpdateBy = "" />
 			<cfset variables.instance.LastUpdateByID = "" />
 		<cfelse>
-			<cfset variables.instance.LastUpdateBy = "#listGetAt(getAuthUser(),"2","^")#" />
-			<cfset variables.instance.LastUpdateByID = "#listFirst(getAuthUser(),"^")#" />
+			<cfset variables.instance.LastUpdateBy = left(session.mura.fname & " " & session.mura.lname,50) />
+			<cfset variables.instance.LastUpdateByID = session.mura.userID />
 		</cfif>
 		
 	</cfif>
@@ -1016,7 +1016,11 @@ to your own modified versions of Mura CMS.
 	<cfreturn variables.instance.extendData />
  </cffunction>
 
-  <cffunction name="getExtendedAttribute" returnType="string" output="false" access="public">
+ <cffunction name="purgeExtendedData" returntype="void" output="false" access="public">
+	<cfset variables.instance.extendData=""/>
+ </cffunction>
+ 
+ <cffunction name="getExtendedAttribute" returnType="string" output="false" access="public">
  	<cfargument name="key" type="string" required="true">
 	<cfargument name="useMuraDefault" type="boolean" required="true" default="false"> 
 	

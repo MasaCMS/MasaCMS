@@ -64,7 +64,7 @@ to your own modified versions of Mura CMS.
 </cffunction>
 
 <cffunction name="getUserData" returntype="query" access="public">
-	<cfargument name="userid" type="string" default="#listfirst(getAuthUser(),"^")#">
+	<cfargument name="userid" type="string" default="#session.mura.userID#">
 	<cfset var rsuser=""/>
 	<cfquery name="rsuser" datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	select * from tusers where userid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.userID#">
@@ -223,6 +223,8 @@ to your own modified versions of Mura CMS.
 				UPDATE tusers SET LastLogin = #createodbcdatetime(now())#
 				WHERE tusers.UserID='#rsUser.UserID#'
 				</cfquery>
+				
+				<cfset setUserStruct(rsuser)>
 				
 				<cfset variables.globalUtility.logEvent("UserID:#rsuser.userid# Name:#rsuser.fname# #rsuser.lname# logged in at #now()#","mura-users","Information",true) />
 
@@ -492,5 +494,33 @@ The #contactName# staff</cfoutput>
 	<cfreturn replace(ThisPass," ","","ALL") />
 </cffunction>
 
+<cffunction name="setUserStruct" output="false" access="public" returntype="void">
+<cfargument name="user">
 
+<cfif structKeyExists(arguments,"user")>
+	<cfset session.mura.isLoggedIn=true>			
+	<cfset session.mura.userID=arguments.user.userID>
+	<cfset session.mura.username=arguments.user.username>
+	<cfset session.mura.password=arguments.user.password>
+	<cfset session.mura.fname=arguments.user.fname>
+	<cfset session.mura.lname=arguments.user.lname>
+	<cfif arguments.user.company neq ''>
+		<cfset session.mura.company=arguments.user.company>
+	<cfelse>
+		<cfset session.mura.company="#arguments.user.lname# #arguments.user.lname#">
+	</cfif>
+	<cfset session.mura.lastlogin=arguments.user.lastlogin>
+	<cfset session.mura.passwordCreated=arguments.user.passwordCreated>
+<cfelse>
+	<cfset session.mura.isLoggedIn=false>			
+	<cfset session.mura.userID="">
+	<cfset session.mura.username="">
+	<cfset session.mura.password="">
+	<cfset session.mura.fname="">
+	<cfset session.mura.lname="">
+	<cfset session.mura.company="">
+	<cfset session.mura.lastlogin="">
+	<cfset session.mura.passwordCreated="">
+</cfif>
+</cffunction>
 </cfcomponent>

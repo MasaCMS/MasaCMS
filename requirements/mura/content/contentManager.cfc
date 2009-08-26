@@ -743,6 +743,7 @@ to your own modified versions of Mura CMS.
 	<cfset variables.contentDAO.create(newBean) />
 	<!--- END CONTENT TYPE: ALL CONTENT TYPES --->
 	
+	<cfset newBean.purgeExtendedData()>
 	
 	<cfset pluginEvent.setValue("contentBean",newBean)>
 	<cfif  ListFindNoCase("Page,Portal,Calendar,Link,File,Gallery",newBean.getType())>			

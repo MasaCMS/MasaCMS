@@ -388,9 +388,9 @@ to your own modified versions of Mura CMS.
 		)
 	</cfquery>
 		
-<cfif getAuthuser() neq ''>
+<cfif session.mura.isLoggedIn>
 	<cfquery name="rsemail" datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-	select email, fname, lname from tusers where userid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#listfirst(getAuthUser(),"^")#">
+	select email, fname, lname from tusers where userid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#session.mura.userID#">
 	</cfquery>
 	
 	<cfloop query="rslist">

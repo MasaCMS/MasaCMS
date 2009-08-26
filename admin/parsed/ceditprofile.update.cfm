@@ -21,7 +21,7 @@
 </cfif>
 <cfif not isDefined("attributes.categoryid")><cfset attributes.categoryid = "" /></cfif>
 <cfif not isdefined('request.userBean')>
-<cfset request.userBean = application.userManager.read(listfirst(getAuthUser(),'^')) >
+<cfset request.userBean = application.userManager.read(session.mura.userID) >
 </cfif>
 <!--- do action="vPrivateUsers.editprofile" --->
 <cfset myFusebox.thisCircuit = "vPrivateUsers">

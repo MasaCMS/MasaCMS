@@ -105,7 +105,7 @@ to your own modified versions of Mura CMS.
 	<cfset feedBean.set(arguments.data) />
 	
 	<cfif structIsEmpty(feedBean.getErrors())>
-		<cfset feedBean.setLastUpdateBy("#listGetAt(getAuthUser(),2,'^')#") />
+		<cfset feedBean.setLastUpdateBy(left(session.mura.fname & " " & session.mura.lname,50) ) />
 		<cfset feedBean.setFeedID("#createUUID()#") />
 		<cfset variables.globalUtility.logEvent("feedID:#feedBean.getfeedID()# Name:#feedBean.getName()# was created","mura-content","Information",true) />
 		<cfset variables.feedDAO.create(feedBean) />
@@ -139,7 +139,7 @@ to your own modified versions of Mura CMS.
 	
 	<cfif structIsEmpty(feedBean.getErrors())>
 		<cfset variables.globalUtility.logEvent("feedID:#feedBean.getfeedID()# Name:#feedBean.getName()# was updated","mura-content","Information",true) />
-		<cfset feedBean.setLastUpdateBy("#listGetAt(getAuthUser(),2,'^')#") />
+		<cfset feedBean.setLastUpdateBy(left(session.mura.fname & " " & session.mura.lname,50) ) />
 		<cfset variables.feedDAO.update(feedBean) />
 		<cfset pluginEvent.setValue("feedBean",feedBean)>
 		<cfset variables.pluginManager.executeScripts("onFeedSave",feedBean.getSiteID(),pluginEvent)>	

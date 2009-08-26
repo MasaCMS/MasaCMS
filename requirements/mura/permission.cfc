@@ -318,7 +318,7 @@ to your own modified versions of Mura CMS.
 			<cfset r.restrictGroups="" />
 			<cfset r.hasModuleAccess=0 />
 			
-			<cfif not len(getAuthUser()) >
+			<cfif not session.mura.isLoggedIn >
 				<cfif cgi.HTTP_USER_AGENT eq 'vspider' and cgi.SERVER_NAME eq 'LOCALHOST' >
 					<cfreturn r>
 				</cfif>
@@ -343,8 +343,8 @@ to your own modified versions of Mura CMS.
 				</cfif>
 			</cfloop> 
 			
-			<!--- Super users can do anyting --->
-			<cfif len(getAuthUser())>
+			<!--- Super users can do anything --->
+			<cfif session.mura.isLoggedIn>
 				<cfif isuserinrole('S2')>
 					<cfset r.allow=1>
 					<cfset r.perm="editor" />

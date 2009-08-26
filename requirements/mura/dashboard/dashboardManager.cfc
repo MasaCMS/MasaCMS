@@ -212,7 +212,7 @@ to your own modified versions of Mura CMS.
 
 <cffunction name="getDraftList" returntype="query" access="public" output="false">
 	<cfargument name="siteID"  type="string" />
-	<cfargument name="userID"  type="string"  required="true" default="#listFirst(getAuthUser(),'^')#"/>
+	<cfargument name="userID"  type="string"  required="true" default="#listFirst(session.mura.isLoggedIn,'^')#"/>
 	<cfargument name="limit" type="numeric" required="true" default="100000000">
 	<cfargument name="startDate" type="string" required="true" default="">
 	<cfargument name="stopDate" type="string" required="true" default="">

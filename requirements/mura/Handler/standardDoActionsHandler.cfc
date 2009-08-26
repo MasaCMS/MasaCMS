@@ -53,7 +53,7 @@
 			</cfcase>
 			
 			<cfcase value="updateprofile">
-				<cfif getAuthUser() neq ''>
+				<cfif session.mura.isLoggedIn>
 					<cfif isDefined('request.addressAction')>
 						<cfif event.getValue('addressAction') eq "create">
 							<cfset application.userManager.createAddress(event.getAllValues())>

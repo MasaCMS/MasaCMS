@@ -25,7 +25,7 @@
 <cfif not isDefined("attributes.compactDisplay")><cfset attributes.compactDisplay = "" /></cfif>
 <cfif not isDefined("attributes.doCache")><cfset attributes.doCache = "1" /></cfif>
 <cfif not isDefined("attributes.returnURL")><cfset attributes.returnURL = "" /></cfif>
-<cfif not len(getAuthUser())>
+<cfif not session.mura.isLoggedIn>
 <cflocation url="index.cfm?fuseaction=cLogin.main&returnURL=#urlEncodedFormat('index.cfm?#cgi.query_string#')#" addtoken="false">
 <cfabort>
 </cfif>

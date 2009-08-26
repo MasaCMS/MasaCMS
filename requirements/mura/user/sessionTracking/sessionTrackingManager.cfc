@@ -74,7 +74,7 @@ to your own modified versions of Mura CMS.
 																	cgi.USER_AGENT,
 																	arguments.keywords,
 																	session.trackingID,
-																	iif(getAuthUser() neq '',de('#listfirst(getAuthUser(),"^")#'),de('')),
+																	iif(session.mura.isLoggedIn,de('#session.mura.userID#'),de('')),
 																	arguments.siteid,
 																	arguments.contentid,
 																	getCFLocale( trim( replace( listFirst( listFirst(cgi.HTTP_ACCEPT_LANGUAGE,';') ),"-","_") ) ),

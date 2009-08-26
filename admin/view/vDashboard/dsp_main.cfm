@@ -152,7 +152,7 @@ to your own modified versions of Mura CMS.
 </ul>
 </div>
 
-<cfset rsList=application.dashboardManager.getDraftList(attributes.siteID,listFirst(getAuthUser(),'^'),5) />
+<cfset rsList=application.dashboardManager.getDraftList(attributes.siteID,session.mura.userID,5) />
 <div id="drafts" class="divide">
 <h3>#application.rbFactory.getKeyValue(session.rb,"dashboard.draftsforreview")#</h3>
 <ul><cfif rsList.recordcount>

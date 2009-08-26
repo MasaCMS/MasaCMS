@@ -152,8 +152,8 @@ to your own modified versions of Mura CMS.
 <cfset var msg=arguments.text />
 <cfset var user = "Anonymous" />
 
-<cfif getAuthUser() neq ''>
-<cfset user=listgetat(getauthuser(),2,'^') />
+<cfif session.mura.isLoggedIn>
+<cfset user=session.mura.fname & " " & session.mura.lname />
 </cfif>
 
 <cfset msg="#msg# By #user# from #cgi.REMOTE_ADDR#" />

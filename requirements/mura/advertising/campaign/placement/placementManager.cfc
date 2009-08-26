@@ -71,7 +71,7 @@ to your own modified versions of Mura CMS.
 	<cfset placementBean.set(arguments.data) />
 	
 	<cfif structIsEmpty(placementBean.getErrors())>
-		<cfset placementBean.setLastUpdateBy("#listGetAt(getAuthUser(),2,'^')#") />
+		<cfset placementBean.setLastUpdateBy(left(session.mura.fname & " " & session.mura.lname,50)) />
 		<cfset placementBean.setPlacementID("#createUUID()#") />
 		<cfset variables.instance.globalUtility.logEvent("PlacementID:#placementBean.getPlacementID()# CampaignID:#placementBean.getCampaignID()# was created","mura-advertising","Information",true) />
 		<cfset variables.instance.DAO.create(placementBean) />
@@ -95,7 +95,7 @@ to your own modified versions of Mura CMS.
 	
 	<cfif structIsEmpty(placementBean.getErrors())>
 		<cfset variables.instance.globalUtility.logEvent("PlacementID:#placementBean.getPlacementID()# Name:#placementBean.getCampaignID()# was updated","mura-advertising","Information",true) />
-		<cfset placementBean.setLastUpdateBy("#listGetAt(getAuthUser(),2,'^')#") />
+		<cfset placementBean.setLastUpdateBy(left(session.mura.fname & " " & session.mura.lname,50)) />
 		<cfset variables.instance.DAO.update(placementBean) />
 	</cfif>
 	

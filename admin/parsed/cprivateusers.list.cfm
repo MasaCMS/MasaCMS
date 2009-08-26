@@ -11,7 +11,7 @@
 <cflocation url="index.cfm?fuseaction=cLogin.main&returnURL=#urlEncodedFormat('index.cfm?#cgi.query_string#')#" addtoken="false">
 <cfabort>
 </cfif>
-<cfif not (isUserInRole('Admin;#application.settingsManager.getSite(attributes.siteid).getPrivateUserPoolID()#;0') or  isUserInRole('S2'))  and not (listFindNoCase('cPrivateUsers.editAddress,cPrivateUsers.updateAddress',attributes.fuseaction) and  attributes.userID eq listFirst(getAuthUser(),'^'))>
+<cfif not (isUserInRole('Admin;#application.settingsManager.getSite(attributes.siteid).getPrivateUserPoolID()#;0') or  isUserInRole('S2'))  and not (listFindNoCase('cPrivateUsers.editAddress,cPrivateUsers.updateAddress',attributes.fuseaction) and  attributes.userID eq session.mura.userID)>
 <cflocation url="index.cfm" addtoken="false">
 <cfabort>
 </cfif>

@@ -105,7 +105,7 @@ to your own modified versions of Mura CMS.
 
 <cffunction name="getPersonalizationID" returntype="string" output="false">
 	<cfif getPersonalization() eq "user">
-	<cfreturn listFirst(getAuthUser(),"^") />
+	<cfreturn session.mura.userID />
 	<cfelse>
 	<cfif not structKeyExists(cookie,"pid")>
 	<cfcookie name="pid" expires="never" value="#application.utility.getUUID()#">
@@ -335,7 +335,7 @@ to your own modified versions of Mura CMS.
 			
 			<cfset current=current+1>
 			<cfset nest=''>
-			<cfset subnav=(((rsSection.type eq 'Page' or  rsSection.type eq 'Calendar' or rsSection.type eq 'Portal') and arguments.class eq 'navSecondary' and (this.crumbData[this.navSelfIdx].contentID eq rsSection.contentid or this.crumbData[this.navSelfIdx].parentID eq rsSection.contentid) ) or ((rsSection.type eq 'Page' or  rsSection.type eq 'Calendar' ) and arguments.class neq 'navSecondary')) and arguments.currDepth lt arguments.viewDepth and rsSection.type neq 'Gallery' and not (rsSection.restricted and not len(getAuthUser())) >
+			<cfset subnav=(((rsSection.type eq 'Page' or  rsSection.type eq 'Calendar' or rsSection.type eq 'Portal') and arguments.class eq 'navSecondary' and (this.crumbData[this.navSelfIdx].contentID eq rsSection.contentid or this.crumbData[this.navSelfIdx].parentID eq rsSection.contentid) ) or ((rsSection.type eq 'Page' or  rsSection.type eq 'Calendar' ) and arguments.class neq 'navSecondary')) and arguments.currDepth lt arguments.viewDepth and rsSection.type neq 'Gallery' and not (rsSection.restricted and not session.mura.isLoggedIn) >
 			
 			<cfif subnav>
 				<cfset nest=dspNestedNav(rssection.contentid,arguments.viewDepth,arguments.currDepth+1,iif(rssection.type eq 'calendar',de('fixed'),de('default')),now(),'','',rsSection.sortBy,rsSection.sortDirection,arguments.context,arguments.stub,arguments.categoryID,arguments.relatedID) />
@@ -568,8 +568,8 @@ to your own modified versions of Mura CMS.
 	</cfif>
 		
 	<cfsavecontent variable="theNav">
-		<cfif getSite().getExtranet() eq 1 and getAuthUser() neq ''>
-			<cfoutput><ul id="#arguments.id#"><li><a href="#application.configBean.getIndexFile()#?doaction=logout&nocache=1">Log Out #listGetAt(getAuthUser(),2,"^")#</a></li><li><a href="#application.settingsManager.getSite(event.getValue('siteID')).getEditProfileURL()#&returnURL=#returnURL#&nocache=1">Edit Profile</a></li></ul></cfoutput>
+		<cfif getSite().getExtranet() eq 1 and session.mura.isLoggedIn>
+			<cfoutput><ul id="#arguments.id#"><li><a href="#application.configBean.getIndexFile()#?doaction=logout&nocache=1">Log Out #HTMLEditFormat("#session.mura.fname# #session.mura.lname#")#</a></li><li><a href="#application.settingsManager.getSite(event.getValue('siteID')).getEditProfileURL()#&returnURL=#returnURL#&nocache=1">Edit Profile</a></li></ul></cfoutput>
 		</cfif>
 	</cfsavecontent>
 			
@@ -803,8 +803,8 @@ to your own modified versions of Mura CMS.
 				<cfcase value="event_reminder_form">#dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"dsp_event_reminder_form.cfm",cacheKeyObjectId)#</cfcase>
 				<cfcase value="forward_email">#dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"dsp_forward_email.cfm")#</cfcase>
 				<cfcase value="adzone">#dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"dsp_adZone.cfm")#</cfcase>
-				<cfcase value="feed">#dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"dsp_feed.cfm",cacheKeyObjectId)#</cfcase>
-				<cfcase value="feed_no_summary">#dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"dsp_feed.cfm",cacheKeyObjectId,false)#</cfcase>
+				<cfcase value="feed">#dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"dsp_feed.cfm",cacheKeyObjectId & "startrow#request.startrow#")#</cfcase>
+				<cfcase value="feed_no_summary">#dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"dsp_feed.cfm",cacheKeyObjectId & "startrow#request.startrow#",false)#</cfcase>
 				<cfcase value="feed_slideshow_no_summary">#dspObject_Render(siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,fileName="feedslideshow/index.cfm",hasSummary=false)#</cfcase>
 				<cfcase value="feed_slideshow">#dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"feedslideshow/index.cfm")#</cfcase>
 				<cfcase value="feed_table">#dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"feedtable/index.cfm",arguments.object,false)#</cfcase>
@@ -871,8 +871,8 @@ to your own modified versions of Mura CMS.
 	
 	<cfsavecontent variable="str">
 		<cfif (event.getValue('isOnDisplay') and (not event.getValue('r').restrict or (event.getValue('r').restrict and event.getValue('r').allow)))
-			or (getSite().getextranetpublicreg() and event.getValue('display') eq 'editprofile' and getAuthUser() eq '') 
-			or (event.getValue('display') eq 'editprofile' and getAuthUser() neq '')>
+			or (getSite().getextranetpublicreg() and event.getValue('display') eq 'editprofile' and not session.mura.isLoggedIn) 
+			or (event.getValue('display') eq 'editprofile' and session.mura.isLoggedIn)>
 			<cfif event.getValue('display') neq ''>
 				<cfswitch expression="#event.getValue('display')#">
 					<cfcase value="editprofile">
@@ -1181,7 +1181,7 @@ to your own modified versions of Mura CMS.
 			</cfif>
 		</cfif>
 			
-		<cfif rsSection.recordcount and ((event.getValue('r').restrict and event.getValue('r').allow) or (not event.getValue('r').restrict) or (event.getValue('r').restrict and getAuthUser() eq ""))>
+		<cfif rsSection.recordcount and ((event.getValue('r').restrict and event.getValue('r').allow) or (not event.getValue('r').restrict) or (event.getValue('r').restrict and not session.mura.isLoggedIn))>
 			<cfset adjust=rsSection.recordcount>
 			<cfsavecontent variable="theNav"><cfoutput>
 			<ul#iif(arguments.id neq '',de(' id="#arguments.id#"'),de(''))#><cfloop query="rsSection"><cfif allowLink(rssection.restricted,rssection.restrictgroups,event.getValue('r').loggedIn)><cfsilent>
@@ -1212,7 +1212,7 @@ to your own modified versions of Mura CMS.
 					isNotLimited and arguments.id neq 'navSecondary'
 					)
 				) 
-				and not (rsSection.restricted and not len(getAuthUser())) 
+				and not (rsSection.restricted and not session.mura.isLoggedIn) 
 			/>
 			
 			<cfif subnav>

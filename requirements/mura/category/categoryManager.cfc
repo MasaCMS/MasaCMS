@@ -181,7 +181,7 @@ to your own modified versions of Mura CMS.
 
 	<cfif structIsEmpty(categoryBean.getErrors())>
 
-		<cfset categoryBean.setLastUpdateBy("#listGetAt(getAuthUser(),2,'^')#") />
+		<cfset categoryBean.setLastUpdateBy(left(session.mura.fname & " " & session.mura.lname,50)) />
 		<cfset categoryBean.setCategoryID("#createUUID()#") />
 		<cfset setMaterializedPath(categoryBean) />
 		<cfset variables.utility.logEvent("CategoryID:#categoryBean.getCategoryID()# Name:#categoryBean.getName()# was created","mura-content","Information",true) />
@@ -216,7 +216,7 @@ to your own modified versions of Mura CMS.
 			<cfset updateMaterializedPath(categoryBean.getPath(),currentPath,categoryBean.getSiteID())>
 		</cfif>
 	
-		<cfset categoryBean.setLastUpdateBy("#listGetAt(getAuthUser(),2,'^')#") />
+		<cfset categoryBean.setLastUpdateBy(left(session.mura.fname & " " & session.mura.lname,50)) />
 		<cfset variables.DAO.update(categoryBean) />
 		<cfif isdefined('arguments.data.OrderID')>
 			<cfset setListOrder(categoryBean.getCategoryID(),arguments.data.OrderID,arguments.data.Orderno,arguments.data.siteID) />

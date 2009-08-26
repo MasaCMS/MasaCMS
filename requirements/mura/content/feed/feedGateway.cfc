@@ -108,6 +108,7 @@ to your own modified versions of Mura CMS.
 	<cfset var dbType=variables.configBean.getDbType() />
 	<cfset var sortOptions="menutitle,title,lastupdate,releasedate,orderno,displayStart,created,rating,comment,credits,type,subtype">
 	<cfset var isExtendedSort=(not listFindNoCase(sortOptions,feedBean.getSortBy()))>
+	<cfset var nowAdjusted=createDateTime(year(now()),month(now()),day(now()),hour(now()),int((minute(now())/5)*5),0)>
 	
 	<cfif arguments.aggregation >
 		<cfset doKids =true />
@@ -262,8 +263,8 @@ to your own modified versions of Mura CMS.
 								OR
 								
 								(	tcontent.isFeature = 2 
-									AND tcontent.FeatureStart <= #createodbcdatetime(now())# 
-									AND (tcontent.FeatureStop >= #createodbcdatetime(now())# or tcontent.FeatureStop is null)			 
+									AND tcontent.FeatureStart <= #createodbcdatetime(nowAdjusted)# 
+									AND (tcontent.FeatureStop >= #createodbcdatetime(nowAdjusted)# or tcontent.FeatureStop is null)			 
 								)				
 							) 
 							<cfif categoryLen> OR tcontent.contentHistID in (
@@ -282,8 +283,8 @@ to your own modified versions of Mura CMS.
 								OR
 									
 									(	tcontentcategoryassign.isFeature = 2 
-										AND tcontentcategoryassign.FeatureStart <= #createodbcdatetime(now())# 
-										AND (tcontentcategoryassign.FeatureStop >= #createodbcdatetime(now())# or tcontentcategoryassign.FeatureStop is null)			 
+										AND tcontentcategoryassign.FeatureStart <= #createodbcdatetime(nowAdjusted)# 
+										AND (tcontentcategoryassign.FeatureStop >= #createodbcdatetime(nowAdjusted)# or tcontentcategoryassign.FeatureStop is null)			 
 									)
 													
 								) 
@@ -310,8 +311,8 @@ to your own modified versions of Mura CMS.
 								AND 
 									(
 										(
-										tcontent.DisplayStart <= #createodbcdatetime(now())# 
-										AND (tcontent.DisplayStop >= #createodbcdatetime(now())# or tcontent.DisplayStop is null)			 
+										tcontent.DisplayStart <= #createodbcdatetime(nowAdjusted)# 
+										AND (tcontent.DisplayStop >= #createodbcdatetime(nowAdjusted)# or tcontent.DisplayStop is null)			 
 										)
 										OR
 										tcontent.parentID in (select contentID from tcontent 
@@ -335,8 +336,8 @@ to your own modified versions of Mura CMS.
 								AND 
 									(
 										(
-										TKids.DisplayStart <= #createodbcdatetime(now())# 
-										AND (TKids.DisplayStop >= #createodbcdatetime(now())# or TKids.DisplayStop is null)			 
+										TKids.DisplayStart <= #createodbcdatetime(nowAdjusted)# 
+										AND (TKids.DisplayStop >= #createodbcdatetime(nowAdjusted)# or TKids.DisplayStop is null)			 
 										)
 										OR
 										TKids.parentID in (select contentID from tcontent 
@@ -442,8 +443,8 @@ to your own modified versions of Mura CMS.
 			OR
 			
 			(	tcontent.isFeature = 2 
-				AND tcontent.FeatureStart <= #createodbcdatetime(now())# 
-				AND (tcontent.FeatureStop >= #createodbcdatetime(now())# or tcontent.FeatureStop is null)			 
+				AND tcontent.FeatureStart <= #createodbcdatetime(nowAdjusted)# 
+				AND (tcontent.FeatureStop >= #createodbcdatetime(nowAdjusted)# or tcontent.FeatureStop is null)			 
 			)				
 		) 
 		<cfif categoryLen> OR tcontent.contenthistID in (
@@ -461,8 +462,8 @@ to your own modified versions of Mura CMS.
 			OR
 				
 				(	tcontentcategoryassign.isFeature = 2 
-					AND tcontentcategoryassign.FeatureStart <= #createodbcdatetime(now())# 
-					AND (tcontentcategoryassign.FeatureStop >= #createodbcdatetime(now())# or tcontentcategoryassign.FeatureStop is null)			 
+					AND tcontentcategoryassign.FeatureStart <= #createodbcdatetime(nowAdjusted)# 
+					AND (tcontentcategoryassign.FeatureStop >= #createodbcdatetime(nowAdjusted)# or tcontentcategoryassign.FeatureStop is null)			 
 				)
 								
 			) 
@@ -491,8 +492,8 @@ to your own modified versions of Mura CMS.
 			AND
 			 (
 				(
-					tcontent.DisplayStart <= #createodbcdatetime(now())# 
-					AND (tcontent.DisplayStop >= #createodbcdatetime(now())# or tcontent.DisplayStop is null)
+					tcontent.DisplayStart <= #createodbcdatetime(nowAdjusted)# 
+					AND (tcontent.DisplayStop >= #createodbcdatetime(nowAdjusted)# or tcontent.DisplayStop is null)
 				)
 				OR tparent.type='Calendar'
 			  )			 

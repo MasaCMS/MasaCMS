@@ -188,16 +188,16 @@ to your own modified versions of Mura CMS.
 </cfif>
 
 <cftry>
-<cfif cookie.userid eq '' and structKeyExists(session,"rememberMe") and session.rememberMe eq 1 and getAuthUser() neq ''>
-<cfcookie name="userid" value="#listFirst(getAuthUser(),'^')#" expires="never" />
-<cfcookie name="userHash" value="#application.userManager.readUserHash(listFirst(getAuthUser(),'^')).userHash#" expires="never" />
+<cfif cookie.userid eq '' and structKeyExists(session,"rememberMe") and session.rememberMe eq 1 and session.mura.isLoggedIn>
+<cfcookie name="userid" value="#session.mura.userID#" expires="never" />
+<cfcookie name="userHash" value="#application.userManager.readUserHash(session.mura.userID).userHash#" expires="never" />
 </cfif>
 
-<cfif cookie.userid neq '' and getAuthUser() eq ''>
+<cfif cookie.userid neq '' and not session.mura.isLoggedIn>
 <cfset application.loginManager.rememberMe(cookie.userid,cookie.userHash) />
 </cfif>
 
-<cfif cookie.userid neq '' and structKeyExists(session,"rememberMe") and session.rememberMe eq 0 and getAuthUser() neq ''>
+<cfif cookie.userid neq '' and structKeyExists(session,"rememberMe") and session.rememberMe eq 0 and session.mura.isLoggedIn>
 <cfcookie name="userid" value="" expires="never" />
 <cfcookie name="userHash" value="" expires="never" />
 </cfif>
@@ -216,6 +216,7 @@ to your own modified versions of Mura CMS.
 		type="Exception">
 </cfif>
 
+<cfset application.userManager.setUserStructDefaults()>
 
 <cfinclude template="settings.custom.vars.cfm">
 <cfif structKeyExists(request,"doMuraGlobalSessionStart")>

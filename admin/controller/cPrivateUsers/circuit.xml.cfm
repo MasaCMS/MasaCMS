@@ -9,7 +9,7 @@
 	</true>
 </if>
 <if condition="not (isUserInRole('Admin;#application.settingsManager.getSite(attributes.siteid).getPrivateUserPoolID()#;0') or  isUserInRole('S2'))
-	and not (listFindNoCase('cPrivateUsers.editAddress,cPrivateUsers.updateAddress',attributes.fuseaction) and  attributes.userID eq listFirst(getAuthUser(),'^'))">
+	and not (listFindNoCase('cPrivateUsers.editAddress,cPrivateUsers.updateAddress',attributes.fuseaction) and  attributes.userID eq session.mura.userID)">
 	<true>
 		<relocate url="index.cfm" addtoken="false"/>
 	</true>

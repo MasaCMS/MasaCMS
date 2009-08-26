@@ -80,7 +80,7 @@ to your own modified versions of Mura CMS.
 	<cfset creativeBean.set(arguments.data) />
 	
 	<cfif structIsEmpty(creativeBean.getErrors())>
-		<cfset creativeBean.setLastUpdateBy("#listGetAt(getAuthUser(),2,'^')#") />
+		<cfset creativeBean.setLastUpdateBy(left(session.mura.fname & " " & session.mura.lname,50)) />
 		<cfset creativeBean.setCreativeID("#createUUID()#") />
 		<cfset variables.instance.globalUtility.logEvent("CreativeID:#creativeBean.getCreativeID()# Name:#creativeBean.getName()# was created","mura-advertising","Information",true) />
 		<cfset uploadMedia(creativeBean,arguments.data.newFile,arguments.data.siteid) />
@@ -105,7 +105,7 @@ to your own modified versions of Mura CMS.
 	<cfif structIsEmpty(creativeBean.getErrors())>
 		<cfset variables.instance.globalUtility.logEvent("CreativeID:#creativeBean.getCreativeID()# Name:#creativeBean.getName()# was updated","mura-advertising","Information",true) />
 		<cfset uploadMedia(creativeBean,arguments.data.newFile,arguments.data.siteid) />
-		<cfset creativeBean.setLastUpdateBy("#listGetAt(getAuthUser(),2,'^')#") />
+		<cfset creativeBean.setLastUpdateBy(left(session.mura.fname & " " & session.mura.lname,50)) />
 		<cfset variables.instance.DAO.update(creativeBean) />
 	</cfif>
 	

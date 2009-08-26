@@ -49,9 +49,9 @@ to your own modified versions of Mura CMS.
 <cfset variables.instance.isPurge=0 />
 <cfset variables.instance.isPublic=0 />
 <cfset variables.instance.lastUpdate=Now() />
-<cfif getAuthUser() neq ''>
-<cfset variables.instance.LastUpdateBy = left(listGetAt(getAuthUser(),2,"^"),50) />
-<cfset variables.instance.LastUpdateByID = listGetAt(getAuthUser(),1,"^") />
+<cfif session.mura.isLoggedIn neq ''>
+<cfset variables.instance.LastUpdateBy = left(listGetAt(session.mura.isLoggedIn,2,"^"),50) />
+<cfset variables.instance.LastUpdateByID = listGetAt(session.mura.isLoggedIn,1,"^") />
 <cfelse>
 <cfset variables.instance.LastUpdateBy = "" />
 <cfset variables.instance.LastUpdateByID = "" />

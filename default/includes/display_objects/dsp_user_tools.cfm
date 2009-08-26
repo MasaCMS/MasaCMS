@@ -74,9 +74,9 @@ to your own modified versions of Mura CMS.
 </cfoutput>
 <cfelse>
 <cfoutput>
-<cfif len(getAuthUser())>	
+<cfif session.mura.isLoggedIn>	
 <div id="svSessionTools" class="clearfix">
-	<p id="welcome">#rbFactory.getKey('user.welcome')#, #listGetAt(getAuthUser(),2,"^")#</p>
+	<p id="welcome">#rbFactory.getKey('user.welcome')#, #HTMLEditFormat("#session.mura.fname# #session.mura.lname#")#</p>
  	<ul id="navSession">
 		<li id="navEditProfile"><a href="#application.settingsManager.getSite(request.siteid).getEditProfileURL()#&nocache=1&returnURL=#urlEncodedFormat(application.contentRenderer.getCurrentURL())#">#rbFactory.getKey('user.editprofile')#</a></li>
 		<li id="navLogout"><a href="?doaction=logout">#rbFactory.getKey('user.logout')#</a></li>

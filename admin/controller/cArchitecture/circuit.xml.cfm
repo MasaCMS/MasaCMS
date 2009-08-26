@@ -21,7 +21,7 @@
 <set name="attributes.doCache" value="1" overwrite="false" />
 <set name="attributes.returnURL" value="" overwrite="false" />
 
-<if condition="not len(getAuthUser())">
+<if condition="not session.mura.isLoggedIn">
 	<true>
 		<relocate url="index.cfm?fuseaction=cLogin.main&amp;returnURL=#urlEncodedFormat('index.cfm?#cgi.query_string#')#" addtoken="false"/>
 	</true>

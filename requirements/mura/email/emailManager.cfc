@@ -121,8 +121,8 @@ to your own modified versions of Mura CMS.
 		
 		<cfset emailBean=application.serviceFactory.getBean("emailBean") />
 		<cfset emailBean.set(data) />
-		<cfset emailBean.setLastUpdateBy("#listGetAt(getAuthUser(),2,"^")#") />
-		<cfset emailBean.setLastUpdateByID("#listGetAt(getAuthUser(),1,"^")#") />
+		<cfset emailBean.setLastUpdateBy(left(session.mura.fname & " " & session.mura.lname,50)) />
+		<cfset emailBean.setLastUpdateByID(session.mura.userID) />
 		<cfset variables.globalUtility.logEvent("EmailID: #emailBean.getEmailID()# Subject:#emailBean.getSubject()# was updated","mura-email","Information",true) />
 		<cfset variables.emailDAO.update(emailbean) />
 		<cfset variables.emailUtility.send() />
@@ -161,8 +161,8 @@ to your own modified versions of Mura CMS.
 		
 		<cfset emailBean=application.serviceFactory.getBean("emailBean") />
 		<cfset emailBean.set(data) />
-		<cfset emailBean.setLastUpdateBy("#listGetAt(getAuthUser(),2,"^")#") />
-		<cfset emailBean.setLastUpdateByID("#listGetAt(getAuthUser(),1,"^")#") />
+		<cfset emailBean.setLastUpdateBy(left(session.mura.fname & " " & session.mura.lname,50)) />
+		<cfset emailBean.setLastUpdateByID(session.mura.userID) />
 		<cfset emailBean.setEmailID(createuuid()) />
 		<cfset variables.globalUtility.logEvent("Email:#emailBean.getEmailID()# Subject:#emailBean.getSubject()# was created","mura-email","Information",true) />
 		<cfset variables.emailDAO.create(emailbean) />

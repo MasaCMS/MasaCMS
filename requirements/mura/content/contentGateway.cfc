@@ -262,6 +262,7 @@ to your own modified versions of Mura CMS.
 			<cfset var dbType=variables.configBean.getDbType() />
 			<cfset var sortOptions="menutitle,title,lastupdate,releasedate,orderno,displayStart,created,rating,comment,credits,type,subtype">
 			<cfset var isExtendedSort=(not listFindNoCase(sortOptions,arguments.sortBy))>
+			<cfset var nowAdjusted=createDateTime(year(arguments.today),month(arguments.today),day(arguments.today),hour(arguments.today),int((minute(arguments.today)/5)*5),0)>
 			
 			<cfif arguments.aggregation >
 				<cfset doKids =true />
@@ -325,7 +326,7 @@ to your own modified versions of Mura CMS.
 					  and  (tcontent.isFeature=1
 	 						 or
 	 						tcontent.isFeature = 2 
-							and tcontent.FeatureStart <= #createodbcdatetime(now())# AND  (tcontent.FeatureStop >= #createodbcdatetime(now())# or tcontent.FeatureStop is null)
+							and tcontent.FeatureStart <= #createodbcdatetime(nowAdjusted)# AND  (tcontent.FeatureStop >= #createodbcdatetime(nowAdjusted)# or tcontent.FeatureStop is null)
 							)
 					  </cfif>
 					  <cfif arguments.keywords neq ''>
@@ -335,15 +336,15 @@ to your own modified versions of Mura CMS.
  					
 					   AND (
 					   <cfif not listFindNoCase("calendar_features,Calendar,Fixed" ,arguments.type)>
-					  (tcontent.DisplayStart <= #createodbcdatetime(now())# 
-					  		AND (tcontent.DisplayStop >= #createodbcdatetime(now())# or tcontent.DisplayStop is null)
+					  (tcontent.DisplayStart <= #createodbcdatetime(nowAdjusted)# 
+					  		AND (tcontent.DisplayStop >= #createodbcdatetime(nowAdjusted)# or tcontent.DisplayStop is null)
 					  <cfelseif arguments.type eq 'Calendar'>
-					  (tcontent.DisplayStart < #createodbcdate(dateadd("D",1,arguments.today))#
-					  		AND (tcontent.DisplayStop >= #createodbcdate(arguments.today)# or tcontent.DisplayStop is null)  
+					  (tcontent.DisplayStart < #createodbcdate(dateadd("D",1,nowAdjusted))#
+					  		AND (tcontent.DisplayStop >= #createodbcdate(nowAdjusted)# or tcontent.DisplayStop is null)  
 					
 					  <cfelseif arguments.type eq 'calendar_features'>
-					  (tcontent.DisplayStart >= #createodbcdatetime(arguments.today)# 
-					  	OR (tcontent.DisplayStart < #createodbcdatetime(arguments.today)# AND tcontent.DisplayStop >= #createodbcdatetime(arguments.today)#)
+					  (tcontent.DisplayStart >= #createodbcdatetime(nowAdjusted)# 
+					  	OR (tcontent.DisplayStart < #createodbcdatetime(nowAdjusted)# AND tcontent.DisplayStop >= #createodbcdatetime(nowAdjusted)#)
 					  )
 					  </cfif>
 					
@@ -365,24 +366,24 @@ to your own modified versions of Mura CMS.
 					  <cfif arguments.type eq 'ReleaseDate'>
 					  AND
 					  (
-					  	(tcontent.releaseDate < #createodbcdate(dateadd("D",1,arguments.today))#
-					  		AND tcontent.releaseDate >= #createodbcdate(arguments.today)#) 
+					  	(tcontent.releaseDate < #createodbcdate(dateadd("D",1,nowAdjusted))#
+					  		AND tcontent.releaseDate >= #createodbcdate(nowAdjusted)#) 
 					  		
 					  	OR 
 					  	 (tcontent.releaseDate is Null
-					  		AND tcontent.lastUpdate < #createodbcdate(dateadd("D",1,arguments.today))#
-					  		AND tcontent.lastUpdate >= #createodbcdate(arguments.today)#) 	 
+					  		AND tcontent.lastUpdate < #createodbcdate(dateadd("D",1,nowAdjusted))#
+					  		AND tcontent.lastUpdate >= #createodbcdate(nowAdjusted)#) 	 
 					  	)
 					  <cfelseif arguments.type eq 'ReleaseMonth'>
 					  AND
 					  (
-					  	(tcontent.releaseDate < #createodbcdate(dateadd("D",1,createDate(year(arguments.today),month(arguments.today),daysInMonth(arguments.today))))#
-					  		AND tcontent.releaseDate >= #createodbcdate(createDate(year(arguments.today),month(arguments.today),1))#) 
+					  	(tcontent.releaseDate < #createodbcdate(dateadd("D",1,createDate(year(nowAdjusted),month(nowAdjusted),daysInMonth(nowAdjusted))))#
+					  		AND tcontent.releaseDate >= #createodbcdate(createDate(year(nowAdjusted),month(nowAdjusted),1))#) 
 					  		
 					  	OR 
 					  	 (tcontent.releaseDate is Null
-					  		AND tcontent.lastUpdate < #createodbcdate(dateadd("D",1,createDate(year(arguments.today),month(arguments.today),daysInMonth(arguments.today))))#
-					  		AND tcontent.lastUpdate >= #createodbcdate(createDate(year(arguments.today),month(arguments.today),1))#)  
+					  		AND tcontent.lastUpdate < #createodbcdate(dateadd("D",1,createDate(year(nowAdjusted),month(nowAdjusted),daysInMonth(nowAdjusted))))#
+					  		AND tcontent.lastUpdate >= #createodbcdate(createDate(year(nowAdjusted),month(nowAdjusted),1))#)  
 					  	)
 					   </cfif>
 					
@@ -420,8 +421,8 @@ to your own modified versions of Mura CMS.
 		 
 									tcontentcategoryassign.isFeature = 2 
 		
-								and tcontentcategoryassign.FeatureStart <= #createodbcdatetime(now())# AND  					
-								(tcontentcategoryassign.FeatureStop >= #createodbcdatetime(now())# or 
+								and tcontentcategoryassign.FeatureStart <= #createodbcdatetime(nowAdjusted)# AND  					
+								(tcontentcategoryassign.FeatureStop >= #createodbcdatetime(nowAdjusted)# or 
 								tcontentcategoryassign.FeatureStop is null)
 								)
 							</cfif>
@@ -449,7 +450,7 @@ to your own modified versions of Mura CMS.
 					  and  (tcontent.isFeature=1
 	 						 or
 	 						tcontent.isFeature = 2 
-							and tcontent.FeatureStart <= #createodbcdatetime(now())# AND  (tcontent.FeatureStop >= #createodbcdatetime(now())# or tcontent.FeatureStop is null)
+							and tcontent.FeatureStart <= #createodbcdatetime(nowAdjusted)# AND  (tcontent.FeatureStop >= #createodbcdatetime(nowAdjusted)# or tcontent.FeatureStop is null)
 							)
 					  </cfif>
 					  <cfif arguments.keywords neq ''>
@@ -459,15 +460,15 @@ to your own modified versions of Mura CMS.
  					
 					   AND (
 					  <cfif not listFindNoCase("calendar_features,Calendar,Fixed" ,arguments.type)>
-					  (tcontent.DisplayStart <= #createodbcdatetime(now())# 
-					  		AND (tcontent.DisplayStop >= #createodbcdatetime(now())# or tcontent.DisplayStop is null)
+					  (tcontent.DisplayStart <= #createodbcdatetime(nowAdjusted)# 
+					  		AND (tcontent.DisplayStop >= #createodbcdatetime(nowAdjusted)# or tcontent.DisplayStop is null)
 					  <cfelseif arguments.type eq 'Calendar'>
-						  (tcontent.DisplayStart < #createodbcdate(dateadd("D",1,arguments.today))#
-						  		AND (tcontent.DisplayStop >= #createodbcdate(arguments.today)# or tcontent.DisplayStop is null)  
+						  (tcontent.DisplayStart < #createodbcdate(dateadd("D",1,nowAdjusted))#
+						  		AND (tcontent.DisplayStop >= #createodbcdate(nowAdjusted)# or tcontent.DisplayStop is null)  
 						
 					  <cfelseif arguments.type eq 'calendar_features'>
-					  (tcontent.DisplayStart >= #createodbcdatetime(arguments.today)# 
-					  	OR (tcontent.DisplayStart < #createodbcdatetime(arguments.today)# AND tcontent.DisplayStop >= #createodbcdatetime(arguments.today)#)
+					  (tcontent.DisplayStart >= #createodbcdatetime(nowAdjusted)# 
+					  	OR (tcontent.DisplayStart < #createodbcdatetime(nowAdjusted)# AND tcontent.DisplayStop >= #createodbcdatetime(nowAdjusted)#)
 					  )
 					  </cfif>
 			
@@ -488,24 +489,24 @@ to your own modified versions of Mura CMS.
 					 <cfif arguments.type eq 'ReleaseDate'>
 					  AND
 					  (
-					  	(tcontent.releaseDate < #createodbcdate(dateadd("D",1,arguments.today))#
-					  		AND tcontent.releaseDate >= #createodbcdate(arguments.today)#) 
+					  	(tcontent.releaseDate < #createodbcdate(dateadd("D",1,nowAdjusted))#
+					  		AND tcontent.releaseDate >= #createodbcdate(nowAdjusted)#) 
 					  		
 					  	OR 
 					  	 (tcontent.releaseDate is Null
-					  		AND tcontent.lastUpdate < #createodbcdate(dateadd("D",1,arguments.today))#
-					  		AND tcontent.lastUpdate >= #createodbcdate(arguments.today)#) 	 
+					  		AND tcontent.lastUpdate < #createodbcdate(dateadd("D",1,nowAdjusted))#
+					  		AND tcontent.lastUpdate >= #createodbcdate(nowAdjusted)#) 	 
 					  	)
 					   <cfelseif arguments.type eq 'ReleaseMonth'>
 					  AND
 					  (
-					  	(tcontent.releaseDate < #createodbcdate(dateadd("D",1,createDate(year(arguments.today),month(arguments.today),daysInMonth(arguments.today))))#
-					  		AND  tcontent.releaseDate >= #createodbcdate(createDate(year(arguments.today),month(arguments.today),1))#) 
+					  	(tcontent.releaseDate < #createodbcdate(dateadd("D",1,createDate(year(nowAdjusted),month(nowAdjusted),daysInMonth(nowAdjusted))))#
+					  		AND  tcontent.releaseDate >= #createodbcdate(createDate(year(nowAdjusted),month(nowAdjusted),1))#) 
 					  		
 					  	OR 
 					  	 (tcontent.releaseDate is Null
-					  		AND tcontent.lastUpdate < #createodbcdate(dateadd("D",1,createDate(year(arguments.today),month(arguments.today),daysInMonth(arguments.today))))#
-					  		AND tcontent.lastUpdate >= #createodbcdate(createDate(year(arguments.today),month(arguments.today),1))#)  
+					  		AND tcontent.lastUpdate < #createodbcdate(dateadd("D",1,createDate(year(nowAdjusted),month(nowAdjusted),daysInMonth(nowAdjusted))))#
+					  		AND tcontent.lastUpdate >= #createodbcdate(createDate(year(nowAdjusted),month(nowAdjusted),1))#)  
 					  	)
 					   </cfif>
 					
@@ -544,8 +545,8 @@ to your own modified versions of Mura CMS.
 		 
 									tcontentcategoryassign.isFeature = 2 
 		
-								and tcontentcategoryassign.FeatureStart <= #createodbcdatetime(now())# AND  					
-								(tcontentcategoryassign.FeatureStop >= #createodbcdatetime(now())# or 
+								and tcontentcategoryassign.FeatureStart <= #createodbcdatetime(nowAdjusted)# AND  					
+								(tcontentcategoryassign.FeatureStop >= #createodbcdatetime(nowAdjusted)# or 
 								tcontentcategoryassign.FeatureStop is null)
 								)
 							</cfif>
@@ -601,7 +602,8 @@ to your own modified versions of Mura CMS.
 			<cfset var rs= "" />
 			<cfset var relatedListLen = listLen(arguments.relatedID) />
 			<cfset var f=""/>
-		
+			<cfset var nowAdjusted=createDateTime(year(arguments.today),month(arguments.today),day(arguments.today),hour(arguments.today),int((minute(arguments.today)/5)*5),0)>
+			
 				<cfquery name="rs" datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 				SELECT tcontentcategories.categoryID, Count(tcontent.contenthistID) as "Count", tcontentcategories.name from tcontent inner join tcontentcategoryassign
 				ON (tcontent.contenthistID=tcontentcategoryassign.contentHistID
@@ -622,18 +624,18 @@ to your own modified versions of Mura CMS.
 					  (
 					  	(tcontent.Display = 2 
 					  <cfif arguments.menuType neq 'Calendar'>
-					  AND (tcontent.DisplayStart <= #createodbcdatetime(arguments.today)#) 
-					  AND (tcontent.DisplayStop >= #createodbcdatetime(arguments.today)# or tcontent.DisplayStop is null)
+					  AND (tcontent.DisplayStart <= #createodbcdatetime(nowAdjusted)#) 
+					  AND (tcontent.DisplayStop >= #createodbcdatetime(nowAdjusted)# or tcontent.DisplayStop is null)
 					  	)
 					 <cfelse>
 					  AND (
 					  		(
-					  			tcontent.DisplayStart >= #createodbcdatetime(arguments.today)#
-					  			AND tcontent.DisplayStart < #createodbcdatetime(dateAdd('m',1,arguments.today))#
+					  			tcontent.DisplayStart >= #createodbcdatetime(nowAdjusted)#
+					  			AND tcontent.DisplayStart < #createodbcdatetime(dateAdd('m',1,nowAdjusted))#
 					  		)
 					  	OR (
-					  			tcontent.DisplayStop >= #createodbcdatetime(arguments.today)#
-					  			AND tcontent.DisplayStop < #createodbcdatetime(dateAdd('m',1,arguments.today))#
+					  			tcontent.DisplayStop >= #createodbcdatetime(nowAdjusted)#
+					  			AND tcontent.DisplayStop < #createodbcdatetime(dateAdd('m',1,nowAdjusted))#
 					  		)
 					  	   )
 					  	  )
@@ -794,7 +796,7 @@ to your own modified versions of Mura CMS.
 
 <cffunction name="getDraftList" returntype="query" access="public" output="false">
 	<cfargument name="siteID"  type="string" />
-	<cfargument name="userID"  type="string"  required="true" default="#listFirst(getAuthUser(),'^')#"/>
+	<cfargument name="userID"  type="string"  required="true" default="#session.mura.userID#"/>
 	<cfargument name="limit" type="numeric" required="true" default="100000000">
 	<cfargument name="startDate" type="string" required="true" default="">
 	<cfargument name="stopDate" type="string" required="true" default="">
