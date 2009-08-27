@@ -161,9 +161,12 @@ to your own modified versions of Mura CMS.
 		<cfargument name="siteid" type="string" required="true">
 		<cfset var rs="">
 		
-		<cfquery name="rs" datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-		Select GroupName, isPublic from tusers where userid in
-		(Select GroupID from tpermissions where ContentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentID#"/> and type=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.type#"/> and siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>) 
+		<cfquery name="rs" datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">	
+		Select tusers.GroupName, tusers.isPublic 
+		from tpermissions left join tusers on tusers.userid in (tpermissions.groupid)
+		where tpermissions.ContentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentID#"/>
+		and tpermissions.type=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.type#"/>
+		and tpermissions.siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>	
 		</cfquery>
 		
 		<cfreturn rs>

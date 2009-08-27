@@ -48,6 +48,17 @@ to your own modified versions of Mura CMS.
 
 <cfparam name="session.setupSubmitButton" default="A#hash( createUUID() )#" />
 <cfparam name="session.setupSubmitButtonComplete" default="A#hash( createUUID() )#" />
+
+<cfparam name="session.mura.isLoggedIn" default="false" />
+<cfparam name="session.mura.userID" default="" />
+<cfparam name="session.mura.username" default="" />
+<cfparam name="session.mura.password" default="" />
+<cfparam name="session.mura.fname" default="" />
+<cfparam name="session.mura.lname" default="" />
+<cfparam name="session.mura.company" default="" />
+<cfparam name="session.mura.lastlogin" default="" />
+<cfparam name="session.mura.passwordCreated" default="" />
+
 <!--- do a settings setup check --->
 <cfif NOT structKeyExists( application, "setupComplete" ) OR (not application.appInitialized or structKeyExists(url,application.appReloadKey) )>
 	<cfif directoryExists( "#getDirectoryFromPath( getCurrentTemplatePath() )#setup" )>
