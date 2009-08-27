@@ -1137,9 +1137,17 @@ to your own modified versions of Mura CMS.
 </cffunction>
 
 <cffunction name="getKidsIterator" returnType="any" output="false" access="public">
-	<cfset var q=getKidsQuery() />
+	<cfargument name="liveOnly" required="true" default="true">
+	<cfset var q="" />
 	<cfset var it=getServiceFactory().getBean("contentIterator")>
+	
+	<cfif arguments.liveOnly>
+		<cfset q=getKidsQuery() />
+	<cfelse>
+		<cfset q=variables.contentManager.getNest( parentID:getContentID(), siteID:getSiteID(), sortBy:getSortBy(), sortDirection:getSortDirection()) />
+	</cfif>
 	<cfset it.setQuery(q,getNextN())>
+	
 	<cfreturn it>
 </cffunction>
 
