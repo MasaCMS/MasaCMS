@@ -40,7 +40,7 @@ for your modified version; it is your choice whether to do so, or to make such m
 the GNU General Public License version 2  without this exception.  You may, if you choose, apply this exception
 to your own modified versions of Mura CMS.
 --->
-
+<cfset redirectSite="">
 <cfif not isUserInRole('S2IsPrivate')>
 	<cflocation url="index.cfm?fuseaction=cLogin.main" addtoken="false">
 </cfif>
@@ -55,9 +55,17 @@ value="#application.contentServer.bindToDomain()#" />
 </cfquery>
 
 <cfif rsDefault.recordcount>
-	<cflocation url="index.cfm?fuseaction=cDashboard.main&siteid=#rsDefault.siteid#" addtoken="false" />
+	<cfset redirectSite=rsDefault.siteid />
 <cfelseif rsList.recordcount>
-	<cflocation url="index.cfm?fuseaction=cDashboard.main&siteid=#rsList.siteid#" addtoken="false" />
+	<cfset redirectSite=rsList.siteid />
+</cfif>
+
+<cfif len(redirectSite)>
+	<cfif application.configBean.getDashboard()>
+		<cflocation url="index.cfm?fuseaction=cDashboard.main&siteid=#redirectSite#" addtoken="false" />
+	<cfelse>
+		<cflocation url="index.cfm?fuseaction=cArch.list&siteid=#redirectSite#&moduleid=00000000000000000000000000000000000&topid=00000000000000000000000000000000001" addtoken="false">
+	</cfif>
 </cfif>
 
 <cflocation addtoken="false" url="index.cfm?fuseaction=cMessage.noaccess">

@@ -40,11 +40,12 @@ for your modified version; it is your choice whether to do so, or to make such m
 the GNU General Public License version 2  without this exception.  You may, if you choose, apply this exception
 to your own modified versions of Mura CMS.
 --->
-
 <cfoutput><ul>
+<cfif application.configBean.getSessionHistory()>
 <li<cfif myfusebox.originalfuseaction eq "sessionSearch"> class="current"</cfif>><a href="index.cfm?fuseaction=cDashboard.sessionSearch&siteID=#session.siteid#&newSearch=true">#application.rbFactory.getKeyValue(session.rb,"dashboard.sessionsearch")#</a></li>
 <li<cfif myfusebox.originalfuseaction eq "topContent"> class="current"</cfif>><a href="index.cfm?fuseaction=cDashboard.topContent&siteID=#session.siteid#">#application.rbFactory.getKeyValue(session.rb,"dashboard.topcontent")#</a></li>
 <li<cfif myfusebox.originalfuseaction eq "topReferers"> class="current"</cfif>><a href="index.cfm?fuseaction=cDashboard.topReferers&siteID=#session.siteid#">#application.rbFactory.getKeyValue(session.rb,"dashboard.topreferrers")#</a></li>
 <li<cfif myfusebox.originalfuseaction eq "topSearches"> class="current"</cfif>><a href="index.cfm?fuseaction=cDashboard.topSearches&siteID=#session.siteid#">#application.rbFactory.getKeyValue(session.rb,"dashboard.topsearches")#</a></li>
+</cfif>
 <li<cfif myfusebox.originalfuseaction eq "topRated"> class="current"</cfif>><a href="index.cfm?fuseaction=cDashboard.topRated&siteID=#session.siteid#">#application.rbFactory.getKeyValue(session.rb,"dashboard.toprated")#</a></li>
 </ul></cfoutput>

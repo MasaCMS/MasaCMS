@@ -40,6 +40,7 @@ for your modified version; it is your choice whether to do so, or to make such m
 the GNU General Public License version 2  without this exception.  You may, if you choose, apply this exception
 to your own modified versions of Mura CMS.
 --->
+<cfset started=false>
 <cfset variables.pluginEvent=createObject("component","mura.event").init(event.getAllValues())/>
 <cfinclude template="act_defaults.cfm"/>
 <cfoutput>
@@ -52,52 +53,65 @@ to your own modified versions of Mura CMS.
 <cfset rsPluginScripts=application.pluginManager.getScripts("onDashboardPrimaryTop",attributes.siteID)>
 <cfoutput query="rsPluginScripts" group="pluginID">
 <cfset rsPluginScript=application.pluginManager.getScripts("onDashboardPrimaryTop",attributes.siteID,rsPluginScripts.moduleID)>
-<div<cfif rsPluginScripts.currentrow gt 1> class="separate"</cfif>>
+<div<cfif not started> class="separate"</cfif>>
 	<h3>#HTMLEditformat(rsPluginScripts.name)#</h3>
 	<cfoutput>
 	#application.pluginManager.renderScripts("onDashboardPrimaryTop",attributes.siteid,pluginEvent,rsPluginScript)#
 	</cfoutput>
 </div>
+<cfset started=true>
 </cfoutput>
-<cfoutput>	
-<div id="userActivity"<cfif rsPluginScripts.recordcount> class="separate"</cfif>>
+<cfoutput>
+<cfif application.configBean.getSessionHistory()>	
+<div id="userActivity"<cfif started> class="separate"</cfif>>
 <h3>#application.rbFactory.getKeyValue(session.rb,"dashboard.useractivity")# <span><a href="index.cfm?fuseaction=cDashboard.sessionSearch&siteID=#attributes.siteID#&newSearch=true">(#application.rbFactory.getKeyValue(session.rb,"dashboard.advancedsessionsearch")#)</a></span></h3>
 <span id="userActivityData"></span>
 </div>
 <script type="text/javascript">loadUserActivity('#attributes.siteid#');</script>
-<div id="popularContent" class="separate">
+
+<div id="popularContent"<cfif started> class="separate"</cfif>>
 <h3>#application.rbFactory.getKeyValue(session.rb,"dashboard.popularcontent")# <span>(#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"dashboard.span"),attributes.span)#)</span></h3>
 <span id="popularContentData"></span>
 </div>
 <script type="text/javascript">loadPopularContent('#attributes.siteid#');</script>
+<cfset started=true>
+</cfif>
+
 <cfif application.settingsManager.getSite(session.siteid).getdatacollection() and  application.permUtility.getModulePerm("00000000000000000000000000000000004","#session.siteid#")>
-<div id="recentFormActivity" class="separate">
+<div id="recentFormActivity"<cfif started> class="separate"</cfif>>
 <h3>#application.rbFactory.getKeyValue(session.rb,"dashboard.formactivity")#</h3>
 <span id="recentFormActivityData"></span>
 </div>
 <script type="text/javascript">loadFormActivity('#attributes.siteid#');</script>
+<cfset started=true>
 </cfif>
 
 <cfif application.settingsManager.getSite(session.siteid).getemailbroadcaster() and  application.permUtility.getModulePerm("00000000000000000000000000000000009","#session.siteid#")>
 <span id="emailBroadcastsData">
-<div id="emailBroadcasts" class="separate">
+<div id="emailBroadcasts"<cfif started> class="separate"</cfif>>
 
 </div>
 </span>
 <script type="text/javascript">loadEmailActivity('#attributes.siteid#');</script>
+<cfset started=true>
 </cfif>
 </cfoutput>
 <cfset rsPluginScripts=application.pluginManager.getScripts("onDashboardPrimaryBottom",attributes.siteID)>
 <cfoutput query="rsPluginScripts" group="pluginID">
 <cfset rsPluginScript=application.pluginManager.getScripts("onDashboardPrimaryBottom",attributes.siteID,rsPluginScripts.moduleID)>
-<div class="separate">
+<div<cfif started> class="separate"</cfif>>
 	<h3>#HTMLEditformat(rsPluginScripts.name)#</h3>
 	<cfoutput>
 	#application.pluginManager.renderScripts("onDashboardPrimaryBottom",attributes.siteid,pluginEvent,rsPluginScript)#
 	</cfoutput>
 </div>
+<cfset started=true>
 </cfoutput>
 </div>
+<!---- I there's nothing in the main body of the dashboard just move on the the site manager--->
+<cfif not started>
+<cflocation url="index.cfm?fuseaction=cArch.list&siteid=#session.siteID#&moduleid=00000000000000000000000000000000000&topid=00000000000000000000000000000000001" addtoken="false">
+</cfif>
 <cfoutput>
 <div id="contentSecondary" class="sidebar">
 

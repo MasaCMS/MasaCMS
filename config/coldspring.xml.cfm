@@ -171,6 +171,9 @@ to your own modified versions of Mura CMS.
 				<entry key="appreloadKey">
 					<value>#XMLFormat(application.appreloadKey)#</value>
 				</entry>
+				<entry key="dashboard">
+					<value>#XMLFormat(GetProfileString("#variables.iniPath#", mode, "dashboard"))#</value>
+				</entry>
 				</map>
 			</constructor-arg>
 		</bean>

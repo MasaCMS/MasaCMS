@@ -74,7 +74,13 @@ to your own modified versions of Mura CMS.
         <li id="navLogout"><a href="#application.configBean.getContext()#/admin/index.cfm?fuseaction=cLogin.logout">#application.rbFactory.getKeyValue(session.rb,"layout.logout")#</a></li>
       </ul>
       <form id="siteSelect" name="siteSelect" method="get" action="#application.configBean.getContext()#/admin/">
-        <input type="hidden" name="fuseaction" value="cDashboard.main">
+       	<cfif application.configBean.getDashboard()>
+		<input type="hidden" name="fuseaction" value="cDashboard.main">
+		<cfelse>
+		<input type="hidden" name="fuseaction" value="cArch.list">
+		<input type="hidden" name="moduleID" value="00000000000000000000000000000000000">
+		<input type="hidden" name="topID" value="00000000000000000000000000000000001">
+		</cfif>
         <select name="siteid" onchange="if(this.value != ''){document.forms.siteSelect.submit();}">
 			<option vaue="">#application.rbFactory.getKeyValue(session.rb,"layout.selectsite")#</option>
 		    <cfset theSiteList=application.settingsManager.getUserSites(session.siteArray,isUserInRole('S2')) />

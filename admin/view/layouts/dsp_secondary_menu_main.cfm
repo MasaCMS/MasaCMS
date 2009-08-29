@@ -44,9 +44,11 @@ to your own modified versions of Mura CMS.
 <cfif session.siteid neq ''>
   <cfoutput>
     <ul id="navSecondary">
+		<cfif application.configBean.getDashboard()>
 		<li <cfif  myfusebox.originalcircuit eq 'cDashboard'>id="current"</cfif>><a href="#application.configBean.getContext()#/admin/index.cfm?fuseaction=cDashboard.main&siteid=#session.siteid#&span=#session.dashboardSpan#">#application.rbFactory.getKeyValue(session.rb,"layout.dashboard")#</a>
         	<cfif  myfusebox.originalcircuit eq 'cDashboard'><cfinclude template="../../view/vDashboard/dsp_secondary_menu.cfm"></cfif>
 		</li>
+		</cfif>
       <li <cfif attributes.moduleid eq '00000000000000000000000000000000000' and myfusebox.originalcircuit eq 'cArch'>id="current"</cfif>><a href="#application.configBean.getContext()#/admin/index.cfm?fuseaction=cArch.list&siteid=#session.siteid#&moduleid=00000000000000000000000000000000000&topid=00000000000000000000000000000000001">#application.rbFactory.getKeyValue(session.rb,"layout.sitemanager")#</a>
 	   <cfif attributes.moduleid eq '00000000000000000000000000000000000' and myfusebox.originalcircuit neq 'cDashboard'>
 	    <cfinclude template="../../view/vArchitecture/dsp_secondary_menu.cfm"></cfif></li>

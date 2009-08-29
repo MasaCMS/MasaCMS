@@ -90,7 +90,9 @@ to your own modified versions of Mura CMS.
 <cfset variables.instance.imageInterpolation="highestQuality" />
 <cfset variables.instance.clusterIPList="" />
 <cfset variables.instance.enableMuraTag=true />
+<cfset variables.instance.dashboard=true />
 <cfset variables.instance.appreloadKey=application.appreloadKey />
+
 <cffunction name="init" returntype="any" output="true" access="public">
 	<cfargument name="config" type="struct"> 	
 	
@@ -165,6 +167,10 @@ to your own modified versions of Mura CMS.
 	<cfset setEnableMuraTag(config.enableMuraTag)/>
 	</cfif>
 	
+	<cfif structKeyExists(config,"dashboard")>
+	<cfset setDashboard(config.dashboard)/>
+	</cfif>
+	
 	<cfswitch expression="#server.coldfusion.productName#">
 	<cfcase value="Railo">
 		<cfset setCompiler("Railo")/>	
@@ -183,7 +189,6 @@ to your own modified versions of Mura CMS.
 	
 	<cfreturn this />
 </cffunction>
-
 
 <cffunction name="startReactor" output="false" returnType="void">
 	<cfset var reactorXML = "" />
@@ -707,6 +712,16 @@ to your own modified versions of Mura CMS.
 	</cfif>
 </cffunction>
 
+<cffunction name="getDashboard" returntype="String" access="public" output="false">
+	<cfreturn variables.instance.dashboard />
+</cffunction>
+
+<cffunction name="setDashboard" access="public" output="false">
+	<cfargument name="dashboard" type="String" />
+	<cfif isBoolean(arguments.dashboard)>
+	<cfset variables.instance.dashboard = arguments.dashboard />
+	</cfif>
+</cffunction>
 
 <cffunction name="getClusterIPList" returntype="String" access="public" output="false">
 	<cfreturn variables.instance.clusterIPList />
