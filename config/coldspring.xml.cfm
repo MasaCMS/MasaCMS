@@ -356,6 +356,7 @@ to your own modified versions of Mura CMS.
 			<constructor-arg name="configBean"><ref bean="configBean" /></constructor-arg>
 			<constructor-arg name="settingsManager"><ref bean="settingsManager" /></constructor-arg>
 			<constructor-arg name="geoCoding"><ref bean="geoCoding" /></constructor-arg>
+			<constructor-arg name="userManager"><ref bean="userManager" /></constructor-arg>
 		</bean>
 		<bean id="addressBean" class="mura.user.addressBean"  singleton="false">
 			<constructor-arg name="configBean"><ref bean="configBean" /></constructor-arg>
