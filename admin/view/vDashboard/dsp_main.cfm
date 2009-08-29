@@ -68,7 +68,7 @@ to your own modified versions of Mura CMS.
 <span id="userActivityData"></span>
 </div>
 <script type="text/javascript">loadUserActivity('#attributes.siteid#');</script>
-
+<cfset started=true>
 <div id="popularContent"<cfif started> class="separate"</cfif>>
 <h3>#application.rbFactory.getKeyValue(session.rb,"dashboard.popularcontent")# <span>(#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"dashboard.span"),attributes.span)#)</span></h3>
 <span id="popularContentData"></span>
