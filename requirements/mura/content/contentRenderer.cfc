@@ -1144,7 +1144,7 @@ to your own modified versions of Mura CMS.
 		<cfargument name="displayHome" type="string" default="conditional">
 		<cfargument name="closePortals" type="string" default="">
 		<cfargument name="openPortals" type="string" default="">	
-		
+		<cfargument name="menuClass" type="string" default="">
 
 		<cfset var rsSection=application.contentGateway.getKids('00000000000000000000000000000000000',event.getValue('siteID'),arguments.contentid,arguments.type,arguments.today,0,'',0,arguments.sortBy,arguments.sortDirection,'','','',true)>
 		<cfset var adjust=0>
@@ -1162,7 +1162,8 @@ to your own modified versions of Mura CMS.
 		<cfset var isLimitingOn = false>
 		<cfset var isNotLimited = false>
 		<cfset var limitingBy = "">
-		
+		<cfset var isNavSecondary=(arguments.id eq 'navSecondary' or arguments.menuClass eq 'navSecondary')>
+			
 		<cfif len(arguments.closePortals)>
 			<cfset limitingBy="closed">	
 			<cfif isBoolean(arguments.closePortals)>	
@@ -1184,7 +1185,7 @@ to your own modified versions of Mura CMS.
 		<cfif rsSection.recordcount and ((event.getValue('r').restrict and event.getValue('r').allow) or (not event.getValue('r').restrict) or (event.getValue('r').restrict and not session.mura.isLoggedIn))>
 			<cfset adjust=rsSection.recordcount>
 			<cfsavecontent variable="theNav"><cfoutput>
-			<ul#iif(arguments.id neq '',de(' id="#arguments.id#"'),de(''))#><cfloop query="rsSection"><cfif allowLink(rssection.restricted,rssection.restrictgroups,event.getValue('r').loggedIn)><cfsilent>
+			<ul<cfif currDepth eq 1>#iif(arguments.id neq '',de(' id="#arguments.id#"'),de(''))##iif(arguments.menuClass neq '',de(' class="#arguments.menuClass#"'),de(''))#</cfif>><cfloop query="rsSection"><cfif allowLink(rssection.restricted,rssection.restrictgroups,event.getValue('r').loggedIn)><cfsilent>
 			
 			<cfset current=current+1>
 			<cfset nest=''>
@@ -1206,17 +1207,21 @@ to your own modified versions of Mura CMS.
 			<cfset subnav= isNumeric(rsSection.kids) and rsSection.kids and arguments.currDepth lt arguments.viewDepth 
 			and (
 					(
-					isNotLimited and arguments.id eq 'navSecondary' and listFind(event.getValue('contentBean').getPath(),"#rsSection.contentID#") 
+					isNotLimited and isNavSecondary and (
+														listFind(event.getValue('contentBean').getPath(),"#rsSection.contentID#") 
+														and
+														listLen(rsSection.path) lte listLen(event.getValue('contentBean').getPath()) 	
+														)
 					) 
 				or (
-					isNotLimited and arguments.id neq 'navSecondary'
+					isNotLimited and not isNavSecondary
 					)
 				) 
 				and not (rsSection.restricted and not session.mura.isLoggedIn) 
 			/>
 			
 			<cfif subnav>
-				<cfset nest=dspNestedNavPrimary(contentID=rssection.contentid, viewDepth= arguments.viewDepth, currDepth=arguments.currDepth+1, type=iif(rssection.type eq 'calendar',de('fixed'),de('default')), today=now() , sortBy=rsSection.sortBy, sortDirection=rsSection.sortDirection) />
+				<cfset nest=dspNestedNavPrimary(contentID=rssection.contentid, viewDepth= arguments.viewDepth, currDepth=arguments.currDepth+1, type=iif(rssection.type eq 'calendar',de('fixed'),de('default')), today=now() , sortBy=rsSection.sortBy, sortDirection=rsSection.sortDirection, id=arguments.id, menuClass=arguments.menuClass) />
 			</cfif>
 			
 			<cfset class=iif(current eq 1,de('first'),de(iif(current eq adjust,de('last'),de('')))) />
@@ -1257,11 +1262,12 @@ to your own modified versions of Mura CMS.
 	<cfargument name="displayHome" type="string" required="true" default="conditional">
 	<cfargument name="closePortals" type="string" default="">
 	<cfargument name="openPortals" type="string" default="">
+	<cfargument name="class" type="string" default="">
 
 	<cfset var thenav="" />
 	<cfset var topIndex= arrayLen(this.crumbdata)-this.navOffSet />
 
-	<cfset theNav = dspNestedNavPrimary(this.crumbdata[topIndex].contentID,arguments.viewDepth+1,1,'default',now(),arguments.id,'','orderno','asc',application.configBean.getContext(),application.configBean.getStub(),arguments.displayHome,arguments.closePortals,arguments.openPortals) />
+	<cfset theNav = dspNestedNavPrimary(this.crumbdata[topIndex].contentID,arguments.viewDepth+1,1,'default',now(),arguments.id,'','orderno','asc',application.configBean.getContext(),application.configBean.getStub(),arguments.displayHome,arguments.closePortals,arguments.openPortals,arguments.class) />
 
 	<cfreturn thenav />
 </cffunction>
