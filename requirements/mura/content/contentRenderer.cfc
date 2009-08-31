@@ -1155,7 +1155,6 @@ to your own modified versions of Mura CMS.
 		<cfset var nest=''>
 		<cfset var subnav=false>
 		<cfset var theNav="">
-		<cfset var crumbContentID="">
 		<cfset var topIndex= arrayLen(this.crumbdata)-this.navOffSet />
 		<cfset var rsHome=0>
 		<cfset var homeLink = "" />
@@ -1225,12 +1224,8 @@ to your own modified versions of Mura CMS.
 			</cfif>
 			
 			<cfset class=iif(current eq 1,de('first'),de(iif(current eq adjust,de('last'),de('')))) />
-
-			<cfif topIndex gte 2>
-				<cfset crumbContentID = this.crumbdata[topIndex-1].contentid>
-			</cfif>
 			
-			<cfif (event.getValue('contentBean').getcontentid() eq rsSection.contentid) or (rsSection.contentid eq crumbContentid)>
+			<cfif listFind(event.getValue('contentBean').getPath(),"#rsSection.contentid#")>
 				<cfset class=listAppend(class,"current"," ")/>
 			</cfif>
 			
