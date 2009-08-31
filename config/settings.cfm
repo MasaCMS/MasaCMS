@@ -61,28 +61,31 @@ to your own modified versions of Mura CMS.
 
 <!--- do a settings setup check --->
 <cfif NOT structKeyExists( application, "setupComplete" ) OR (not application.appInitialized or structKeyExists(url,application.appReloadKey) )>
-	<cfif directoryExists( "#getDirectoryFromPath( getCurrentTemplatePath() )#setup" )>
-		<cfset structDelete( application, "setupComplete") />
-		<!--- check the settings --->
-		<cfif trim( getProfileString( getDirectoryFromPath( getCurrentTemplatePath() ) & "settings.ini.cfm", "production", "datasource" ) ) IS NOT ""
-			AND (
-				NOT isDefined( "FORM.#session.setupSubmitButton#" )
-				AND
-				NOT isDefined( "FORM.#session.setupSubmitButtonComplete#" )
-				)
-			>						
-			<cfset application.setupComplete = true />
-		<cfelse>
-			<!--- check to see if the index.cfm page exists in the setup folder --->
-			<cfif NOT fileExists( "#getDirectoryFromPath( getCurrentTemplatePath() )#setup/index.cfm" )>
-				<cfthrow message="Your setup directory is incomplete. Please reset it up from the Mura source." />
-			</cfif>
-			
-			<cfset renderSetup = true />
-			<!--- go to the index.cfm page (setup) --->
-			<cfinclude template="setup/index.cfm"><cfabort>
+	<cfif getProfileString( getDirectoryFromPath( getCurrentTemplatePath() ) & "settings.ini.cfm", "settings", "mode" ) eq "production">
+		<cfif directoryExists( "#getDirectoryFromPath( getCurrentTemplatePath() )#setup" )>
+			<cfset structDelete( application, "setupComplete") />
+			<!--- check the settings --->
+			<cfif trim( getProfileString( getDirectoryFromPath( getCurrentTemplatePath() ) & "settings.ini.cfm", "production", "datasource" ) ) IS NOT ""
+				AND (
+					NOT isDefined( "FORM.#session.setupSubmitButton#" )
+					AND
+					NOT isDefined( "FORM.#session.setupSubmitButtonComplete#" )
+					)
+				>						
+				<cfset application.setupComplete = true />
+			<cfelse>
+				<!--- check to see if the index.cfm page exists in the setup folder --->
+				<cfif NOT fileExists( "#getDirectoryFromPath( getCurrentTemplatePath() )#setup/index.cfm" )>
+					<cfthrow message="Your setup directory is incomplete. Please reset it up from the Mura source." />
+				</cfif>
+				
+				<cfset renderSetup = true />
+				<!--- go to the index.cfm page (setup) --->
+				<cfinclude template="setup/index.cfm"><cfabort>
+			</cfif>	
 		</cfif>
-		
+	<cfelse>
+		<cfset application.setupComplete=true>
 	</cfif>
 </cfif>	
 
