@@ -194,7 +194,7 @@ to your own modified versions of Mura CMS.
 	<cfset structclear(session) />
 	<cflogout>
 	<cfcookie name="userid" expires="never" value="" />
-	
+	<cfset variables.userUtility.setUserStruct()/>
 </cffunction>
 
 </cfcomponent>
