@@ -81,7 +81,7 @@ to your own modified versions of Mura CMS.
 				<!---<a href="#application.configBean.getContext()#/tasks/render/file/index.cfm?fileID=#rsFeatures.FileID#&ext=.#rsFeatures.fileExt#" title="#HTMLEditFormat(rsFeatures.title)#" rel="shadowbox[#cssID#]">---><img src="#application.configBean.getContext()#/tasks/render/small/index.cfm?fileid=#rsFeatures.fileid#"/><!---</a>--->
 			</dd>
 		</cfif>
-		<cfif hasSummary><dd>#rsFeatures.summary#</dd></cfif></dl></cfloop>
+		<cfif hasSummary><dd>#setDynamicContent(rsFeatures.summary)#</dd></cfif></dl></cfloop>
 </div>
 <cfelse>
 <!-- Empty Category Features '#categoryBean.getName()#' -->

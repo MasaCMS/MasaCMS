@@ -619,8 +619,8 @@ select * from tplugins order by #arguments.orderby#
 		<cfif rsObjects.recordcount>
 		<cfloop list="#arguments.args.siteAssignID#" index="i">
 			<cfset dopID=variables.settingsManager.getSite(i).getDisplayPoolID()/>
-			<cfset siteDir=variables.configBean.getWebRoot() & delim & dopID & delim & "includes" & delim & "plugins" & delim & rsObjects.pluginID & delim>
-			<cfset adminDir=variables.configBean.getWebRoot() & delim  & "plugins" & delim & rsObjects.pluginID & delim>
+			<cfset siteDir=variables.configBean.getWebRoot() & delim & dopID & delim & "includes" & delim & "plugins" & delim & pluginConfig.getDirectory() & delim>
+			<cfset adminDir=variables.configBean.getWebRoot() & delim  & "plugins" & delim & pluginConfig.getDirectory() & delim>
 			
 			<cfif not listFind(distroList,dopID)>
 				
@@ -981,8 +981,11 @@ select * from tplugins order by #arguments.orderby#
 		<cfif rs.recordcount>
 		<cftry>
 		<cfif listLast(rs.displayobjectfile,".") neq "cfm">
-			
-			<cfset componentPath="plugins.#rs.directory#.#rs.displayobjectfile#">
+			<cfif rs.location neq "local">
+				<cfset componentPath="plugins.#rs.directory#.#rs.displayobjectfile#">
+			<cfelse>
+				<cfset componentPath="#variables.configBean.getWebRootMap()#.#event.getSite().getDisplayPoolID()#.includes.plugins.#rs.directory#.#rs.displayobjectfile#">
+			</cfif>
 			<cfset eventHandler=getComponent(componentPath, rs.pluginID, event.getValue('siteID'),rs.docache)>
 			<cfsavecontent variable="theDisplay1">
 			<cfinvoke component="#eventHandler#" method="#rs.displaymethod#" returnvariable="theDisplay2">

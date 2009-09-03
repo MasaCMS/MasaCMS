@@ -90,7 +90,7 @@ to your own modified versions of Mura CMS.
 					<!---<a href="#application.configBean.getContext()#/tasks/render/file/index.cfm?fileID=#rsFeatures.FileID#&ext=.#rsFeatures.fileExt#" title="#HTMLEditFormat(rsFeatures.title)#" rel="shadowbox[#cssID#]">---><img src="#application.configBean.getContext()#/tasks/render/small/index.cfm?fileid=#rsFeatures.fileid#"/><!---</a>--->
 				</dd>
 		</cfif>
-		<cfif hasSummary or (rsFeatures.type eq 'Page' and  hasComments)><dd>#rsFeatures.summary#<cfif hasComments><ul class="navComment"><li>#commentsLink#</li></ul></cfif></dd></cfif>
+		<cfif hasSummary or (rsFeatures.type eq 'Page' and  hasComments)><dd>#setDynamicContent(rsFeatures.summary)#<cfif hasComments><ul class="navComment"><li>#commentsLink#</li></ul></cfif></dd></cfif>
 		</dl>
 		</cfloop>
 		<dl class="moreResults">

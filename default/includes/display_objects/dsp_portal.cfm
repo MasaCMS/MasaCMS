@@ -120,7 +120,7 @@ to your own modified versions of Mura CMS.
 		</dd>
 		</cfif>
 	 	<cfif rsSection.summary neq ''>
-	 	<dd class="summary">#rsSection.summary# <span class="readMore">#addlink(rsSection.type,rsSection.filename,rbFactory.getKey('list.readmore'),rsSection.target,rsSection.targetParams,rsSection.contentid,request.siteid,'',application.configBean.getContext(),application.configBean.getStub(),application.configBean.getIndexFile())#</span></dd>
+	 	<dd class="summary">#setDynamicContent(rsSection.summary)# <span class="readMore">#addlink(rsSection.type,rsSection.filename,rbFactory.getKey('list.readmore'),rsSection.target,rsSection.targetParams,rsSection.contentid,request.siteid,'',application.configBean.getContext(),application.configBean.getStub(),application.configBean.getIndexFile())#</span></dd>
 	 	</cfif>
 	 	<cfif rsSection.credits neq "">
 	 	<dd class="credits">#rbFactory.getKey('list.by')# #rsSection.credits#</dd>

@@ -58,9 +58,9 @@ to your own modified versions of Mura CMS.
 		<language>#feedBean.getLang()#</language>
 <cfloop query="rs"><cfsilent>
 <cfif feedBean.getallowhtml() eq 0>
-	<cfset itemdescription = renderer.stripHTML(rs.summary)>
+	<cfset itemdescription = renderer.stripHTML(renderer.setDynamicContent(rs.summary))>
 <cfelse>
-	<cfset itemdescription = renderer.addCompletePath(rs.summary,feedBean.getSiteID())>
+	<cfset itemdescription = renderer.addCompletePath(renderer.setDynamicContent(rs.summary),feedBean.getSiteID())>
 </cfif>
 <cfif isDate(rs.releaseDate)>
 	<cfset thePubDate=dateFormat(rs.releaseDate,"yyyy-mm-dd") & "T" & timeFormat(rs.releaseDate,"HH:mm:ss") & utc>

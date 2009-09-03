@@ -98,7 +98,7 @@ to your own modified versions of Mura CMS.
 					</dd>
 				</cfif>
 				<cfif hasSummary and len(rsFeatures.summary)>
-					<dd>#rsFeatures.summary#
+					<dd>#setDynamicContent(rsFeatures.summary)#
 						<span class="readMore">#addlink(rsFeatures.type,rsFeatures.filename,rbFactory.getKey('list.readmore'),rsFeatures.target,rsFeatures.targetParams,rsFeatures.contentid,request.siteid,'',application.configBean.getContext(),application.configBean.getStub(),application.configBean.getIndexFile())#</span>
 					</dd>
 				</cfif>

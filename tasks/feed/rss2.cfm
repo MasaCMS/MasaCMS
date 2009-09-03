@@ -61,9 +61,9 @@ to your own modified versions of Mura CMS.
 		<language>#XMLFormat(feedBean.getLang())#</language>
 <cfloop query="rs"><cfsilent>
 <cfif feedBean.getallowhtml() eq 0>
-	<cfset itemdescription = renderer.stripHTML(rs.summary)>
+	<cfset itemdescription = renderer.stripHTML(renderer.setDynamicContent(rs.summary))>
 <cfelse>
-	<cfset itemdescription = renderer.addCompletePath(rs.summary,feedBean.getSiteID())>
+	<cfset itemdescription = renderer.addCompletePath(renderer.setDynamicContent(rs.summary),feedBean.getSiteID())>
 	<!---
 	<cfif rs.type neq 'File' and rs.type neq 'Link'>
 		<cfset itemBody = renderer.addCompletePath(rs.body,feedBean.getSiteID())>
