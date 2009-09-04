@@ -101,7 +101,15 @@ to your own modified versions of Mura CMS.
 <cffunction name="getExtendedData" access="public" returntype="any">
 	<cfargument name="baseID">
 	<cfargument name="dataTable" required="true" default="tclassextenddata"/>
-	<cfreturn createObject("component","mura.extend.extendData").init(variables.configBean,arguments.baseID,arguments.dataTable) />
+	<cfargument name="type">
+	<cfargument name="subtype">
+	<cfargument name="siteid">
+	
+	<cfif structKeyExists(arguments,"type") and  structKeyExists(arguments,"subtype") and  structKeyExists(arguments,"siteID")>
+		<cfreturn createObject("component","mura.extend.extendData").init(variables.configBean,arguments.baseID,arguments.dataTable, arguments.type, arguments.subType, arguments.siteID) />	
+	<cfelse>
+		<cfreturn createObject("component","mura.extend.extendData").init(variables.configBean,arguments.baseID,arguments.dataTable) />
+	</cfif>
 </cffunction>
 
 <cffunction name="saveExtendedData" access="public" returntype="void">

@@ -166,9 +166,20 @@ to your own modified versions of Mura CMS.
 		
   </cffunction>
 
-  <cffunction name="getAllValues" access="public" returntype="struct" output="false">
+<cffunction name="getAllValues" access="public" returntype="struct" output="false">
+		<cfset var i="">
+		<cfset var extData=getExtendedData().getAllExtendSetData()>
+		<cfif not structIsEmpty(extData)>
+			<cfset structAppend(variables.instance,extData.data,false)>	
+			<cfloop list="#extData.extendSetID#" index="i">
+				<cfif not listFind(variables.instance.extendSetID,i)>
+					<cfset variables.instance.extendSetID=listAppend(variables.instance.extendSetID,i)>
+				</cfif>
+			</cfloop>
+		</cfif>
+		
 		<cfreturn variables.instance />
-  </cffunction>
+</cffunction>
 	
  <cffunction name="setUserID" returnType="void" output="false" access="public">
     <cfargument name="UserID" type="string" required="true">
@@ -653,7 +664,7 @@ to your own modified versions of Mura CMS.
 
  <cffunction name="getExtendedData" returntype="any" output="false" access="public">
 	<cfif not isObject(variables.instance.extendData)>
-	<cfset variables.instance.extendData=variables.configBean.getClassExtensionManager().getExtendedData(getUserID(),'tclassextenddatauseractivity')/>
+	<cfset variables.instance.extendData=variables.configBean.getClassExtensionManager().getExtendedData(baseID:getUserID(), dataTable:'tclassextenddatauseractivity', type:getType(), subType:getSubType(), siteID:getSiteID())/>
 	</cfif> 
 	<cfreturn variables.instance.extendData />
  </cffunction>

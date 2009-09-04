@@ -118,7 +118,7 @@ initTabs(Array("#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'us
 </cfswitch>
 
 
-      <cfif attributes.userid neq ''><cfoutput><h4>#application.rbFactory.getKeyValue(session.rb,'user.groupmembers')#</h4> 
+      <cfif attributes.userid neq ''><cfoutput><h4 class="separate">#application.rbFactory.getKeyValue(session.rb,'user.groupmembers')#</h4> 
         <table class="stripe">
             <tr> 
               <th class="varWidth">#application.rbFactory.getKeyValue(session.rb,'user.name')#</th>

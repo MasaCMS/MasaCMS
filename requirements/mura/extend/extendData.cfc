@@ -45,17 +45,34 @@ to your own modified versions of Mura CMS.
 <cfset variables.instance.data="">
 <cfset variables.instance.baseID="">
 <cfset variables.instance.dataTable="tclassextenddata">
+<cfset variables.instance.type="">
+<cfset variables.instance.subType="">
+<cfset variables.instance.siteID="">
 
 
 <cffunction name="init" returntype="any" output="false" access="public">
 	<cfargument name="configBean">
 	<cfargument name="baseID"/>
 	<cfargument name="dataTable" required="true" default="tclassextenddata"/>
-
+	<cfargument name="type"/>
+	<cfargument name="subType"/>
+	<cfargument name="siteID"/>
+	
 	<cfset variables.configBean=arguments.configBean />
 	<cfset variables.dsn=variables.configBean.getDatasource()/>
 	<cfset setBaseID(arguments.baseID)/>
 	<cfset setDataTable(arguments.dataTable)/>
+	
+	<cfif structKeyExists(arguments,"type")>
+		<cfset setType(arguments.type)/>
+	</cfif>
+	<cfif structKeyExists(arguments,"subType")>
+		<cfset setSubType(arguments.subType)/>
+	</cfif>
+	<cfif structKeyExists(arguments,"siteID")>
+		<cfset setSiteID(arguments.siteID)/>
+	</cfif>
+	
 	<cfset loadData()/>
 	
 	<cfreturn this />
@@ -77,6 +94,33 @@ to your own modified versions of Mura CMS.
 <cffunction name="setDataTable" returntype="void" access="public" output="false">
 	<cfargument name="dataTable" type="String" />
 	<cfset variables.instance.dataTable = trim(arguments.dataTable) />
+</cffunction>
+
+<cffunction name="getType" returntype="String" access="public" output="false">
+	<cfreturn variables.instance.type />
+</cffunction>
+
+<cffunction name="setType" returntype="void" access="public" output="false">
+	<cfargument name="type" type="String" />
+	<cfset variables.instance.type = trim(arguments.type) />
+</cffunction>
+
+<cffunction name="getSubType" returntype="String" access="public" output="false">
+	<cfreturn variables.instance.subType />
+</cffunction>
+
+<cffunction name="setSubType" returntype="void" access="public" output="false">
+	<cfargument name="subType" type="String" />
+	<cfset variables.instance.subType = trim(arguments.subType) />
+</cffunction>
+
+<cffunction name="getSiteID" returntype="String" access="public" output="false">
+	<cfreturn variables.instance.siteID />
+</cffunction>
+
+<cffunction name="setSiteID" returntype="void" access="public" output="false">
+	<cfargument name="siteID" type="String" />
+	<cfset variables.instance.siteID = trim(arguments.siteID) />
 </cffunction>
 
 <cffunction name="getAttribute" access="public" returntype="any" output="false">
@@ -107,16 +151,36 @@ to your own modified versions of Mura CMS.
 <cfset var dataTable=getDataTable() />
 
 		<cfquery name="rs" datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-		select tclassextendattributes.name,tclassextendattributes.attributeID,tclassextendattributes.defaultValue,tclassextendattributes.extendSetID,
+		select #dataTable#.baseid, tclassextendattributes.name,tclassextendattributes.attributeID,tclassextendattributes.defaultValue,tclassextendattributes.extendSetID,
 		#dataTable#.attributeValue from #dataTable# inner join
 		tclassextendattributes On (#dataTable#.attributeID=tclassextendattributes.attributeID)
 		where #dataTable#.baseID=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#getBaseID()#">
-		</cfquery>
 		
+		<cfif len(getType()) and len(getSubType()) and len(getSiteID())>
+		Union
+		
+		select '' baseID, tclassextendattributes.name,tclassextendattributes.attributeID,tclassextendattributes.defaultValue,tclassextendattributes.extendSetID,
+		'' attributeValue from tclassextend 
+		inner join tclassextendsets On (tclassextend.subtypeid=tclassextendsets.subtypeid)
+		inner join tclassextendattributes On (tclassextendsets.extendsetid=tclassextendattributes.extendsetid)
+		left join tclassextenddata on (
+											(
+												tclassextendattributes.attributeID=tclassextenddata.attributeID
+												and  #dataTable#.baseID=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#getBaseID()#">
+											)
+										)
+		where tclassextend.siteid=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#getSiteID()#">
+		and tclassextend.type=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#getType()#">
+		and tclassextend.subtype=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#getSubType()#">
+		and #dataTable#.baseID is null
+		</cfif>
+		
+		</cfquery>
+
 		<!--- MSSQL needs to group by outside the original query --->
 		<cfquery name="rs" dbType="query">
-		select name,attributeID,defaultValue,extendSetID,attributeValue from rs
-		Group By name,attributeID,defaultValue,extendSetID,attributeValue
+		select baseID, name,attributeID,defaultValue,extendSetID,attributeValue from rs
+		Group By baseID,name,attributeID,defaultValue,extendSetID,attributeValue
 		</cfquery>
 		
 		<!--- <cfdump var="#rs#"><cfdump var="#getBaseID()#">		<cfabort> --->
@@ -133,30 +197,49 @@ to your own modified versions of Mura CMS.
 		<cfreturn variables.instance />
 </cffunction>
 
+<cffunction name="getAllExtendSetData" access="public" returntype="struct" output="false">
+	<cfset var extData=structNew() />	
+	<cfreturn convertDataToStruct(variables.instance.data)/>
+	<cfreturn extData/>	
+</cffunction>
+
 <cffunction name="getExtendSetDataByAttributeName" access="public" returntype="struct" output="false">
 	<cfargument name="key">
+	
 	<cfset var rs="" />
 	<cfset var extData=structNew() />
 	
 	<cfquery name="rs" dbType="query">
-		 select extendSetID, name, attributeValue from variables.instance.data
+		 select baseID, extendSetID, name, defaultValue, attributeValue from variables.instance.data
 		 where name=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#key#">
 		 <cfif isNumeric(arguments.key)>
 			 or attributeID=<cfqueryparam cfsqltype="cf_sql_numeric"  value="#key#">
 		 </cfif>
 	</cfquery>
+		
+	<cfreturn convertDataToStruct(rs)/>
+	
+</cffunction>
+
+<cffunction name="convertDataToStruct" output="false" returntype="any">
+<cfargument name="rs">
+
+	<cfset var extData=structNew() />
 	
 	<cfif rs.recordcount>
 		<cfset extData.extendSetID=valueList(rs.extendSetID)>
 		<cfset extData.data=structNew()>
 		
 		<cfloop query="rs">
-			<cfset extData.data['#rs.name#']=rs.attributeValue>
+			<cfif len(rs.baseID)>
+				<cfset extData.data['#rs.name#']=rs.attributeValue>
+			<cfelse>
+				<cfset extData.data['#rs.name#']=application.contentRenderer.setDynamicContent(rs.defaultValue)>
+			</cfif>
 		</cfloop>
 	</cfif>
 	
-	<cfreturn extData/>
-	
+	<cfreturn extData>
 </cffunction>
 
 </cfcomponent>
