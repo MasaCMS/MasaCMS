@@ -961,12 +961,12 @@ to your own modified versions of Mura CMS.
 					</cfoutput>
 					<cfswitch expression="#event.getValue('contentBean').gettype()#">
 					<cfcase value="Portal">
-						<cf_CacheOMatic key="portalBody#event.getValue('contentBean').getcontentID()##event.getValue('startRow')#" nocache="#event.getValue('r').restrict#">
+						<cf_CacheOMatic key="portalBody#event.getValue('contentBean').getcontentID()##event.getValue('startRow')##event.getValue('categoryID')##event.getValue('relatedID')#" nocache="#event.getValue('r').restrict#">
 						 <cfinclude template="#theIncludePath#/includes/display_objects/dsp_portal.cfm">
 						</cf_CacheOMatic>
 					</cfcase> 
 					<cfcase value="Calendar">
-						 <cf_CacheOMatic key="portalBody#event.getValue('contentBean').getcontentID()##event.getValue('year')##event.getValue('month')#" nocache="#event.getValue('r').restrict#">
+						 <cf_CacheOMatic key="portalBody#event.getValue('contentBean').getcontentID()##event.getValue('year')##event.getValue('month')##event.getValue('categoryID')##event.getValue('relatedID')#" nocache="#event.getValue('r').restrict#">
 						 <cfinclude template="#theIncludePath#/includes/display_objects/calendar/index.cfm">
 						 </cf_CacheOMatic>
 					</cfcase> 
