@@ -123,7 +123,7 @@ to your own modified versions of Mura CMS.
 	<cfset variables.instance.siteID = trim(arguments.siteID) />
 </cffunction>
 
-<cffunction name="getAttribute" access="public" returntype="any" output="false">
+<cffunction name="getAttribute" access="public" returntype="any" output="false">Ä
 <cfargument name="key">
 <cfargument name="useMuraDefault" type="boolean" required="true" default="false"> 
 <cfset var rs="" />
@@ -151,7 +151,7 @@ to your own modified versions of Mura CMS.
 <cfset var dataTable=getDataTable() />
 
 		<cfquery name="rs" datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-		select #dataTable#.baseid, tclassextendattributes.name,tclassextendattributes.attributeID,tclassextendattributes.defaultValue,tclassextendattributes.extendSetID,
+		select #dataTable#.baseid, tclassextendattributes.name, tclassextendattributes.label, tclassextendattributes.attributeID,tclassextendattributes.defaultValue,tclassextendattributes.extendSetID,
 		#dataTable#.attributeValue from #dataTable# inner join
 		tclassextendattributes On (#dataTable#.attributeID=tclassextendattributes.attributeID)
 		where #dataTable#.baseID=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#getBaseID()#">
@@ -159,13 +159,13 @@ to your own modified versions of Mura CMS.
 		<cfif len(getType()) and len(getSubType()) and len(getSiteID())>
 		Union
 		
-		select '' baseID, tclassextendattributes.name,tclassextendattributes.attributeID,tclassextendattributes.defaultValue,tclassextendattributes.extendSetID,
+		select '' baseID, tclassextendattributes.name, tclassextendattributes.label,tclassextendattributes.attributeID,tclassextendattributes.defaultValue,tclassextendattributes.extendSetID,
 		'' attributeValue from tclassextend 
 		inner join tclassextendsets On (tclassextend.subtypeid=tclassextendsets.subtypeid)
 		inner join tclassextendattributes On (tclassextendsets.extendsetid=tclassextendattributes.extendsetid)
-		left join tclassextenddata on (
+		left join #dataTable# on (
 											(
-												tclassextendattributes.attributeID=tclassextenddata.attributeID
+												tclassextendattributes.attributeID=#dataTable#.attributeID
 												and  #dataTable#.baseID=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#getBaseID()#">
 											)
 										)
@@ -179,8 +179,8 @@ to your own modified versions of Mura CMS.
 
 		<!--- MSSQL needs to group by outside the original query --->
 		<cfquery name="rs" dbType="query">
-		select baseID, name,attributeID,defaultValue,extendSetID,attributeValue from rs
-		Group By baseID,name,attributeID,defaultValue,extendSetID,attributeValue
+		select baseID, name, label, attributeID, defaultValue, extendSetID, attributeValue from rs
+		Group By baseID,name, label, attributeID, defaultValue, extendSetID, attributeValue
 		</cfquery>
 		
 		<!--- <cfdump var="#rs#"><cfdump var="#getBaseID()#">		<cfabort> --->

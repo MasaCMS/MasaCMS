@@ -267,6 +267,11 @@ table td a.alt {
 	/*border-bottom: 1px dotted;*/
 }
 
+table td a.alt {
+	color: #69c;
+	/*border-bottom: 1px dotted;*/
+}
+
 a:hover {
 	text-decoration: underline;
 }
