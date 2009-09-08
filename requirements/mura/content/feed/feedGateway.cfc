@@ -109,6 +109,11 @@ to your own modified versions of Mura CMS.
 	<cfset var sortOptions="menutitle,title,lastupdate,releasedate,orderno,displayStart,created,rating,comment,credits,type,subtype">
 	<cfset var isExtendedSort=(not listFindNoCase(sortOptions,feedBean.getSortBy()))>
 	<cfset var nowAdjusted=createDateTime(year(now()),month(now()),day(now()),hour(now()),int((minute(now())/5)*5),0)>
+	<cfset var blockFactor=arguments.feedBean.getNextN()>
+	
+	<cfif blockFactor gt 100>
+		<cfset blockFactor=100>
+	</cfif>
 	
 	<cfif arguments.aggregation >
 		<cfset doKids =true />
@@ -130,7 +135,7 @@ to your own modified versions of Mura CMS.
 		</cfloop>
 	</cfif>
 	
-	<cfquery name="rs" datasource="#variables.configBean.getDatasource()#" blockfactor="#arguments.feedBean.getNextN()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+	<cfquery name="rs" datasource="#variables.configBean.getDatasource()#" blockfactor="#blockFactor#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	<cfif dbType eq "oracle">select * from (</cfif>
 	select <cfif dbtype eq "mssql">top #arguments.feedBean.getMaxItems()#</cfif> 
 	tcontent.siteid, tcontent.title, tcontent.menutitle, tcontent.restricted, tcontent.restrictgroups, 
