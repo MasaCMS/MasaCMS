@@ -169,6 +169,15 @@ to your own modified versions of Mura CMS.
 			on (tclassextenddata.attributeID=tclassextendattributes.attributeID)
 			where tclassextendattributes.siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.feedBean.getSiteID()#">
 			and tclassextendattributes.name=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.feedBean.getSortBy()#">
+			group by 
+			<cfif variables.configBean.getDBType() eq "MSSQL">
+			Cast(tclassextenddata.attributeValue as varchar(1000))
+			<cfelseif variables.configBean.getDBType() eq "ORACLE">
+			to_char(tclassextenddata.attributeValue)
+			<cfelse>
+			tclassextenddata.attributeValue
+			</cfif>
+			,baseID
 	) qExtendedSort
 	on (tcontent.contenthistid=qExtendedSort.baseID)
 	</cfif>

@@ -178,7 +178,12 @@ to your own modified versions of Mura CMS.
 			tclassextendattributes.label
 		</cfif>,
 		tclassextendattributes.attributeID,tclassextendattributes.defaultValue,tclassextendattributes.extendSetID,
-		#dataTable#.attributeValue from tclassextend 
+		<cfif variables.configBean.getDBType() eq "oracle">
+			to_char(#dataTable#.attributeValue) as attributeValue
+		<cfelse>
+			#dataTable#.attributeValue
+		</cfif> 
+		from tclassextend 
 		inner join tclassextendsets On (tclassextend.subtypeid=tclassextendsets.subtypeid)
 		inner join tclassextendattributes On (tclassextendsets.extendsetid=tclassextendattributes.extendsetid)
 		left join #dataTable# on (
