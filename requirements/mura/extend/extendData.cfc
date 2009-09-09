@@ -154,16 +154,12 @@ to your own modified versions of Mura CMS.
 		select #dataTable#.baseid, tclassextendattributes.name, 
 		<cfif variables.configBean.getDBType() eq "oracle">
 			to_char(tclassextendattributes.label) as label
-		<cfelseif variables.configBean.getDBType() eq "mssql">
-			Cast(tclassextendattributes.label as varchar(1000)) as label
 		<cfelse>
 			tclassextendattributes.label
 		</cfif>, 
 		tclassextendattributes.attributeID,tclassextendattributes.defaultValue,tclassextendattributes.extendSetID,
 		<cfif variables.configBean.getDBType() eq "oracle">
 			to_char(#dataTable#.attributeValue) as attributeValue
-		<cfelseif variables.configBean.getDBType() eq "mssql">
-			Cast(#dataTable#.attributeValue as varchar(1000)) as attributeValue
 		<cfelse>
 			#dataTable#.attributeValue
 		</cfif> 
@@ -172,13 +168,11 @@ to your own modified versions of Mura CMS.
 		where #dataTable#.baseID=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#getBaseID()#">
 		
 		<cfif len(getType()) and len(getSubType()) and len(getSiteID())>
-		Union
+		Union All
 		
 		select '' baseID, tclassextendattributes.name, 
 		<cfif variables.configBean.getDBType() eq "oracle">
 			to_char(tclassextendattributes.label) as label
-		<cfelseif variables.configBean.getDBType() eq "mssql">
-			Cast(tclassextendattributes.label as varchar(1000)) as label
 		<cfelse>
 			tclassextendattributes.label
 		</cfif>,
