@@ -44,14 +44,16 @@ to your own modified versions of Mura CMS.
 
 <cffunction name="forcePathDirectoryStructure" output="false" returntype="any" access="remote">
 <cfargument name="cgi_path">
+<cfargument name="dir">
 <cfset var qstring="">
-<cfif len(url.path) and right(cgi_path,1) neq "/"  and right(cgi_path,len(application.configBean.getIndexfile())) neq application.configBean.getIndexfile()>
+
+<cfif len(cgi_path) and right(cgi_path,1) neq "/"  and right(cgi_path,len(application.configBean.getIndexfile())) neq application.configBean.getIndexfile()>
 	<cfif len(cgi.query_string)>
 	<cfset qstring="?" & cgi.query_string>
 	<cfelse>
 	<cfset qstring="" />
 	</cfif>
-	<cfset application.contentRenderer.redirect("#application.configBean.getContext()#/#application.configBean.getIndexfile()#/#url.path#/#qstring#")>
+	<cfset application.contentRenderer.redirect("#application.configBean.getContext()##arguments.dir#/#application.configBean.getIndexfile()#/#url.path#/#qstring#")>
 </cfif>
 </cffunction>
 
@@ -191,7 +193,7 @@ to your own modified versions of Mura CMS.
 	
 	<cfset siteID = listGetAt(cgi.script_name,listLen(cgi.script_name,"/")-1,"/") />
 	
-	<cfset forcePathDirectoryStructure(cgi_path)>
+	<cfset forcePathDirectoryStructure(cgi_path,"/" & siteID)>
 	
 	<cfset url.path="#application.configBean.getStub()#/#siteID#/#url.path#" />
 	<cfset request.preformated=true/>
@@ -206,7 +208,7 @@ to your own modified versions of Mura CMS.
 	<cfparam name="url.path" default="" />
 	
 	<cfset cgi_path=setCGIPath()>
-	<cfset forcePathDirectoryStructure(cgi_path)>
+	<cfset forcePathDirectoryStructure(cgi_path,"")>
 	
 	<cfset url.path="#application.configBean.getStub()#/#siteID#/#url.path#" />
 	<cfset request.preformated=true/>

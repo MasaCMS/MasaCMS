@@ -77,7 +77,7 @@ to your own modified versions of Mura CMS.
 		This feed is restricted
 		<cfabort>
 	</cfif>
-	<cfset renderer = createObject("component","#application.configBean.getWebRootMap()#.#feedBean.getSiteID()#.includes.contentRenderer").init() />
+	<cfset renderer = createObject("component","#application.configBean.getWebRootMap()#.#application.settingsManager.getSite(feedBean.getSiteID()).getDisplayPoolID()#.includes.contentRenderer").init() />
 	<cfswitch expression="#feedBean.getVersion()#">
 		<cfcase value="RSS 0.920">
 			<cfinclude template="rss0920.cfm">
