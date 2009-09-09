@@ -287,10 +287,12 @@ to your own modified versions of Mura CMS.
 <cfif isExtendedSort>
 	left Join (select 
 			<cfif variables.configBean.getDBType() eq "MSSQL">
-			Cast(tclassextenddata.attributeValue as varchar(1000)) extendedSort
+				Cast(tclassextenddata.attributeValue as varchar(1000)) extendedSort
+			<cfelseif variables.configBean.getDBType() eq "ORACLE">
+				to_char(tclassextenddata.attributeValue) extendedSort
 			<cfelse>
-			tclassextenddata.attributeValue extendedSort
-			</cfif> 
+				tclassextenddata.attributeValue extendedSort
+			</cfif>  
 			 ,tclassextenddata.baseID 
 			from tclassextenddata inner join tclassextendattributes
 			on (tclassextenddata.attributeID=tclassextendattributes.attributeID)
@@ -932,6 +934,8 @@ to your own modified versions of Mura CMS.
 	left Join (select 
 			<cfif variables.configBean.getDBType() eq "MSSQL">
 			Cast(tclassextenddata.attributeValue as varchar(1000)) extendedSort
+			<cfelseif variables.configBean.getDBType() eq "ORACLE">
+			to_char(tclassextenddata.attributeValue) extendedSort
 			<cfelse>
 			tclassextenddata.attributeValue extendedSort
 			</cfif> 
@@ -965,6 +969,9 @@ to your own modified versions of Mura CMS.
 		tcontent.DisplayStop,  tcontent.isnav, tcontent.restricted,tcontent.isfeature,tcontent.inheritObjects,
 		tcontent.target,tcontent.targetParams,tcontent.islocked,tcontent.sortBy,tcontent.sortDirection,tcontent.releaseDate,
 		tfiles.fileSize,tfiles.FileExt,tfiles.ContentType,tfiles.ContentSubType, tcontent.created, tcontent.siteID
+		<cfif isExtendedSort>
+			,qExtendedSort.extendedSort	
+		</cfif>
 		<cfif arguments.sortBy neq "">
 			ORDER BY
 			<cfif not doAg>

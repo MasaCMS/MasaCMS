@@ -146,8 +146,7 @@ to your own modified versions of Mura CMS.
 	tfiles.fileSize,tfiles.fileExt,tcontent.fileid,
 	tcontent.tags,tcontent.credits,tcontent.audience, tcontent.orderNo,
 	tcontentstats.rating,tcontentstats.totalVotes,tcontentstats.downVotes,tcontentstats.upVotes,
-	tcontentstats.comments, tparent.type parentType, <cfif doKids> qKids.kids<cfelse> 0 as kids</cfif>,tcontent.path, tcontent.created
-
+	tcontentstats.comments, tparent.type parentType, <cfif doKids> qKids.kids<cfelse> 0 as kids</cfif>,tcontent.path, tcontent.created 
 	from tcontent
 	left Join tfiles on (tcontent.fileid=tfiles.fileid)
 	left Join tcontentstats on (tcontent.contentid=tcontentstats.contentid
@@ -159,10 +158,12 @@ to your own modified versions of Mura CMS.
 	<cfif isExtendedSort>
 	left Join (select 
 			<cfif variables.configBean.getDBType() eq "MSSQL">
-			(Cast(tclassextenddata.attributeValue as varchar(1000)) extendedSort
+				Cast(tclassextenddata.attributeValue as varchar(1000)) extendedSort
+			<cfelseif variables.configBean.getDBType() eq "ORACLE">
+				to_char(tclassextenddata.attributeValue) extendedSort
 			<cfelse>
-			tclassextenddata.attributeValue extendedSort
-			</cfif> 
+				tclassextenddata.attributeValue extendedSort
+			</cfif>  
 			 ,tclassextenddata.baseID 
 			from tclassextenddata inner join tclassextendattributes
 			on (tclassextenddata.attributeID=tclassextendattributes.attributeID)
@@ -508,7 +509,7 @@ to your own modified versions of Mura CMS.
 	) 
 	
 									
-	order by 
+	order by
 	
 	<cfswitch expression="#arguments.feedBean.getSortBy()#">
 	<cfcase value="menutitle,title,lastupdate,releasedate,orderno,displayStart,created,credits,type,subtype">
