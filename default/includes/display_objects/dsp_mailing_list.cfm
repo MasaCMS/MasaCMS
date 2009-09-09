@@ -49,7 +49,7 @@ to your own modified versions of Mura CMS.
 </cfsilent>
 <cfoutput>
 <div class="svMailingList" id="#createCSSID(rsList.name)#">
-	<h3>#rslist.name#</h3>
+	<#getHeaderTag('subHead1')#>#rslist.name#</#getHeaderTag('subHead1')#>
 	<cfif request.doaction eq 'unsubscribe'>
 	<p class="success">#rbFactory.getKey('mailinglist.youhaveunsubscribed')#</p>
 	<cfelseif request.doaction eq 'subscribe' and rslist.isPurge neq 1>

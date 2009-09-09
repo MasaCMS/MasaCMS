@@ -65,12 +65,12 @@ to your own modified versions of Mura CMS.
 </cfsilent>
 <cfoutput>
 <div id="svRSSFeeds">
-<h3>#rbFactory.getKey('dragablefeeds.title')#</h3>
+<#getHeaderTag('subHead1')#>#rbFactory.getKey('dragablefeeds.title')#</#getHeaderTag('subHead1')#>
 <cfif not len(getPersonalizationID()) and application.settingsManager.getSite(request.siteID).getExtranetPublicReg() eq 1><p class="rssBlurb"><a href="#application.settingsManager.getSite(request.siteid).getLoginURL()#&returnURL=#URLEncodedFormat(application.contentRenderer.getCurrentURL())#">#rbFactory.getKey('dragablefeeds.createaccount')#</a></p></cfif>
 </div>
 
 
-<h4 class="addFeeds">#rbFactory.getKey('dragablefeeds.wantmore')#</h4>
+<#getHeaderTag('subHead2')# class="addFeeds">#rbFactory.getKey('dragablefeeds.wantmore')#</#getHeaderTag('subHead2')#>
 <div id="svAddNewFeed" class="clearfix">
 	<form method="post" action="##">
 		<dl id="rssInternal">

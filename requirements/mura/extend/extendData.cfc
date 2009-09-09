@@ -151,15 +151,38 @@ to your own modified versions of Mura CMS.
 <cfset var dataTable=getDataTable() />
 
 		<cfquery name="rs" datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-		select #dataTable#.baseid, tclassextendattributes.name, tclassextendattributes.label, tclassextendattributes.attributeID,tclassextendattributes.defaultValue,tclassextendattributes.extendSetID,
-		#dataTable#.attributeValue from #dataTable# inner join
+		select #dataTable#.baseid, tclassextendattributes.name, 
+		<cfif variables.configBean.getDBType() eq "oracle">
+			to_char(tclassextendattributes.label) as label
+		<cfelseif variables.configBean.getDBType() eq "mssql">
+			Cast(tclassextendattributes.label as varchar(1000)) as label
+		<cfelse>
+			tclassextendattributes.label
+		</cfif>, 
+		tclassextendattributes.attributeID,tclassextendattributes.defaultValue,tclassextendattributes.extendSetID,
+		<cfif variables.configBean.getDBType() eq "oracle">
+			to_char(#dataTable#.attributeValue) as attributeValue
+		<cfelseif variables.configBean.getDBType() eq "mssql">
+			Cast(#dataTable#.attributeValue as varchar(1000)) as attributeValue
+		<cfelse>
+			#dataTable#.attributeValue
+		</cfif> 
+		from #dataTable# inner join
 		tclassextendattributes On (#dataTable#.attributeID=tclassextendattributes.attributeID)
 		where #dataTable#.baseID=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#getBaseID()#">
 		
 		<cfif len(getType()) and len(getSubType()) and len(getSiteID())>
 		Union
 		
-		select '' baseID, tclassextendattributes.name, tclassextendattributes.label,tclassextendattributes.attributeID,tclassextendattributes.defaultValue,tclassextendattributes.extendSetID,
+		select '' baseID, tclassextendattributes.name, 
+		<cfif variables.configBean.getDBType() eq "oracle">
+			to_char(tclassextendattributes.label) as label
+		<cfelseif variables.configBean.getDBType() eq "mssql">
+			Cast(tclassextendattributes.label as varchar(1000)) as label
+		<cfelse>
+			tclassextendattributes.label
+		</cfif>,
+		tclassextendattributes.attributeID,tclassextendattributes.defaultValue,tclassextendattributes.extendSetID,
 		'' attributeValue from tclassextend 
 		inner join tclassextendsets On (tclassextend.subtypeid=tclassextendsets.subtypeid)
 		inner join tclassextendattributes On (tclassextendsets.extendsetid=tclassextendattributes.extendsetid)

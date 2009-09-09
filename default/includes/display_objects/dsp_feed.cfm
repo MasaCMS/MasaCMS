@@ -63,7 +63,7 @@ to your own modified versions of Mura CMS.
 	  </cfsilent>
 	  	<cfif rs.recordcount>
 			<cfoutput><div class="svSyndLocal svFeed svIndex clearfix" id="#cssID#"></cfoutput>
-	        <cfif feedBean.getDisplayName()><h3><cfoutput>#feedBean.renderName()#</cfoutput></h3></cfif>
+	        <cfif feedBean.getDisplayName()><cfoutput><#getHeaderTag('subHead1')#>#feedBean.renderName()#</#getHeaderTag('subHead1')#></cfoutput></cfif>
 
 	          <cfoutput query="rs"  startrow="#request.startrow#" maxrows="#nextn.RecordsPerPage#">
 	            <cfset theLink=createHREF(rs.type,rs.filename,rs.siteid,rs.contentid,rs.target,rs.targetparams,"",application.configBean.getContext(),application.configBean.getStub(),application.configBean.getIndexFile()) />
@@ -134,7 +134,7 @@ to your own modified versions of Mura CMS.
 	  	<cfoutput>
 		 	<cfif feedData.maxItems>
 			<div class="svSyndRemote svIndex svFeed clearfix" id="#cssID#">
-		        <h3>#feedBean.getName()#</h3>
+		        <#getHeaderTag('subHead1')#>#feedBean.getName()#</#getHeaderTag('subHead1')#>
 		        <cfif feedData.type neq "atom">
 				<cfloop from="1" to="#feedData.maxItems#" index="i">
 				<dl>

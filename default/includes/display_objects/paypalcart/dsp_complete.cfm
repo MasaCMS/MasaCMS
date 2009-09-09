@@ -41,5 +41,5 @@ the GNU General Public License version 2  without this exception.  You may, if y
 to your own modified versions of Mura CMS.
 --->
 
-<h3>Thank You</h3>
+<cfoutput><#getHeaderTag('subHead1')#>Thank You</#getHeaderTag('subHead1')#></cfoutput>
 <p>You transaction has been completed</p>

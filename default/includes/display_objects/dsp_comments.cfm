@@ -186,9 +186,9 @@ to your own modified versions of Mura CMS.
 	<a name="comments"></a>
 	<div id="svComments">
 	<cfif rsComments.recordcount>
-		<cfoutput><h3>#rbFactory.getKey('comments.comments')#</h3></cfoutput>
+		<cfoutput><#getHeaderTag('subHead1')#>#rbFactory.getKey('comments.comments')#</#getHeaderTag('subHead1')#></cfoutput>
 			<!--- This was for the "Guestbook" style comments with pagination 
-			<cfif numberofpages gt 1><p class="moreResults"><h4>More Results:</h4> 
+			<cfif numberofpages gt 1><p class="moreResults"><#getHeaderTag('subHead2')#>More Results:</#getHeaderTag('subHead2')#> 
 				<cfloop from="1"  to="#numberofpages#" index="i">
 				<cfoutput><ul>
 				<cfif currentpagenumber eq i><li class="current">#i#</li><cfelse><li><a href="index.cfm?startrow=#evaluate('(#i#*#recordsperpage#)-#recordsperpage#+1')#">#i#</a></li></cfif>
@@ -203,7 +203,7 @@ to your own modified versions of Mura CMS.
 		</dl>
 		</cfoutput>
 		<!--- This was for the "Guestbook" style comments with pagination
-		<cfif numberofpages gt 1><div class="moreResults"><h4>More Results:</h4> 
+		<cfif numberofpages gt 1><div class="moreResults"><#getHeaderTag('subHead2')#>More Results:</#getHeaderTag('subHead2')#> 
 			<cfloop from="1"  to="#numberofpages#" index="i">
 			<cfoutput><ul>
 			<cfif currentpagenumber eq i><li class="current">#i#</li><cfelse><li><a href="index.cfm?startrow=#evaluate('(#i#*#recordsperpage#)-#recordsperpage#+1')#">#i#</a></li></cfif>

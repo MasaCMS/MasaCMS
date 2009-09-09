@@ -68,7 +68,7 @@ to your own modified versions of Mura CMS.
 <cfoutput>
 <cfif rsSection.recordcount and categoryBean.getIsActive() and rsFeatures.recordcount>
 <div class="svCatSecFeatures svIndex" id="#cssID#">
-<h3>#rsSection.MenuTitle#</h3>
+<#getHeaderTag('subHead1')#>#rsSection.MenuTitle#</#getHeaderTag('subHead1')#>
 	<cfloop query="rsFeatures">
 		<cfsilent>
 			<cfset theLink=createHREF(rsFeatures.type,rsFeatures.filename,rsFeatures.siteid,rsFeatures.contentid,rsFeatures.target,rsFeatures.targetparams,"",application.configBean.getContext(),application.configBean.getStub(),application.configBean.getIndexFile()) />

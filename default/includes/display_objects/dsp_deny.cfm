@@ -42,6 +42,6 @@ to your own modified versions of Mura CMS.
 --->
 <cfset rbFactory=getSite().getRBFactory() />
 <cfoutput>
-<h2>#rbFactory.getKey('sitemanager.restricted')#</h2>
+<#getHeaderTag('headline')#>#rbFactory.getKey('sitemanager.restricted')#</#getHeaderTag('headline')#>
 <p>#rbFactory.getKey('sitemanager.restrictedinstructions')#</p>
 </cfoutput>

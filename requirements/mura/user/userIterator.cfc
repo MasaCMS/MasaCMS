@@ -66,4 +66,23 @@ to your own modified versions of Mura CMS.
 	<cfargument name="settingsManager">
 	<cfset variables.settingsManager=arguments.settingsManager>
 </cffunction>
+
+<cffunction name="buildQueryFromList" output="false" returntype="void" access="public">
+	<cfargument name="idList">
+	<cfargument name="siteid">
+	<cfset var i="">
+	<cfset var idArray=listToArray(arguments.idList)>
+	<cfset variables.records=queryNew("userID,siteID","VARCHAR,VARCHAR")>
+	
+	<cfloop from="1" to="#arrayLen(arguments.idArray)#" index="i">
+		<cfset QueryAddRow(variables.records)>
+		<cfset QuerySetCell(variables.records,"userID", idArray[i])>
+		<cfset QuerySetCell(variables.records, 'siteID',arguments.siteid)>
+	</cfloop>
+	
+	<cfset variables.maxRecordsPerPage=variables.records.recordcount>
+	<cfset variables.recordIndex = 0 />
+	<cfset variables.pageIndex = 1 />
+</cffunction>
+
 </cfcomponent>

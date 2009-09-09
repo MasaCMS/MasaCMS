@@ -59,7 +59,7 @@ to your own modified versions of Mura CMS.
 </cfif>
 </cfsilent>
 <div id="dsp_list" class="dataResponses">
-<cfoutput><h3>#request.contentBean.getTitle()#</h3></cfoutput>
+<cfoutput><#getHeaderTag('subHead1')#>#request.contentBean.getTitle()#</#getHeaderTag('subHead1')#></cfoutput>
 <table class="stripe">
 <tr>
 <cfloop list="#data.fieldnames#" index="f">
@@ -79,8 +79,8 @@ to your own modified versions of Mura CMS.
 </cfoutput>
 </table>
 <cfif nextN.numberofpages gt 1>
-			<div class="moreResults"><h4>More Results:</h4> 
-			<cfoutput><ul>
+			<cfoutput><div class="moreResults"><#getHeaderTag('subHead2')#>More Results:</#getHeaderTag('subHead2')#> 
+			<ul>
 			<cfif nextN.currentpagenumber gt 1>
 				<li><a href="#application.configBean.getIndexFile()#?startrow=#nextN.previous#&categoryID=#request.categoryID#&relatedID=#request.relatedID#">&laquo;&nbsp;Prev</a></li>
 			</cfif>

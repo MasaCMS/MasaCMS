@@ -59,6 +59,11 @@ to your own modified versions of Mura CMS.
 <cfset this.renderHTMLHead=true/>
 <cfset this.enableMuraTag=getConfigBean().getEnableMuraTag() />
 <cfset this.crumbdata=arrayNew(1)/>
+<cfset this.headline="h2"/>
+<cfset this.subHead1="h3"/>
+<cfset this.subHead2="h4"/>
+<cfset this.subHead3="h5"/>
+<cfset this.subHead4="h6"/>
 
 <cffunction name="init" returntype="any" access="public" output="false">
 <cfargument name="event" required="true" default="">
@@ -70,6 +75,15 @@ to your own modified versions of Mura CMS.
 </cfif>
 
 <cfreturn this />
+</cffunction>
+
+<cffunction name="getHeaderTag" returntype="string" output="false">
+<cfargument name="header">
+	<cfif listFindNoCase("headline,subHead1,subHead2,subHead3,subHead4",arguments.header)>
+	<cfreturn this["#arguments.header#"]/>
+	<cfelse>
+	<cfreturn "Invalid Argument. Must be one of 'headline, subHead1, subHead2, subHead3, subHead4'">
+	</cfif>
 </cffunction>
 
 <cffunction name="setJsLib" returntype="void" output="false">
@@ -907,7 +921,7 @@ to your own modified versions of Mura CMS.
 			<cfelse>
 				 <cfoutput>
 					<cfif arguments.pageTitle neq ''>
-						<h2 class="pageTitle">#arguments.pagetitle#</h2>
+						<#getHeaderTag('headline')# class="pageTitle">#arguments.pagetitle#</#getHeaderTag('headline')#>
 					</cfif>
 					<cfif arguments.crumblist>
 						#dspCrumbListLinks("crumblist",arguments.crumbseparator)#

@@ -44,7 +44,7 @@ to your own modified versions of Mura CMS.
 <cfif arrayLen(request.crumbdata) gt 1 and request.crumbdata[2].type eq 'Calendar' and request.contentBean.getdisplay() eq 2 and request.contentBean.getdisplaystart() gt now()>
 <cfoutput>
 <div id="svEventReminder">
-	<h3>#rbFactory.getKey('event.setreminder')#</h3>
+	<#getHeaderTag('subHead1')#>#rbFactory.getKey('event.setreminder')#</#getHeaderTag('subHead1')#>
 	<cfif listfind(request.doaction,"setReminder")>
 	<em>#rbFactory.getKey('event.setreminder')#</em><br/><br/>
 	</cfif>

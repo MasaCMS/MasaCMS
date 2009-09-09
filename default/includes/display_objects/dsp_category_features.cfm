@@ -59,7 +59,7 @@ to your own modified versions of Mura CMS.
 <cfparam name="hasSummary" default="true"/>
 <cfset cssID=createCSSid(categoryBean.getName())>
 <div class="svCatFeatures svIndex" id="#cssID#">
-<h3>#categoryBean.getName()#</h3>
+<#getHeaderTag('subHead1')#>#categoryBean.getName()#</#getHeaderTag('subHead1')#>
 <cfloop query="rsFeatures">
 		<cfsilent>
 			<cfset class=iif(rsFeatures.currentrow eq 1,de('first'),de(iif(rsFeatures.currentrow eq rsFeatures.recordcount,de('last'),de(''))))>

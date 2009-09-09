@@ -126,8 +126,10 @@
 
 		<cfset variables.records = arguments.rs />
 		
-		<cfif structKeyExists(arguments,"maxRecordsPerPage")>
+		<cfif structKeyExists(arguments,"maxRecordsPerPage") and isNumeric(arguments.maxRecordsPerPage)>
 			<cfset variables.maxRecordsPerPage = arguments.maxRecordsPerPage />
+		<cfelse>
+			<cfset variables.maxRecordsPerPage = variables.records.recordcount />
 		</cfif>
 	</cffunction>
 	

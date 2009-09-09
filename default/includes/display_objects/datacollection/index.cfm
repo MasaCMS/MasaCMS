@@ -69,7 +69,7 @@ where siteid='#request.siteid#' and
 <cfset request.forceSSL = 1>
 </cfif>
 <cfoutput>
-<cfif rsForm.displayTitle neq 0><h3>#rsForm.title#</h3></cfif>
+<cfif rsForm.displayTitle neq 0><#getHeaderTag('subHead1')#>#rsForm.title#</#getHeaderTag('subHead1')#></cfif>
 <cfif isdefined('request.formid') and request.formid eq rsform.contentid>
 <cfset acceptdata=1> 
 <cfinclude template="act_add.cfm">

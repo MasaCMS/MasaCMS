@@ -123,6 +123,12 @@ to your own modified versions of Mura CMS.
 				<cfset session.blockLoginUntil=""/>
 				
 				<cfset loginByQuery(rsUser)/>
+				
+				<cfif len(arguments.siteID)>
+					<cfset variables.pluginManager.executeScripts('onSiteLoginSuccess',arguments.siteID,pluginEvent)/>
+				<cfelse>
+					<cfset variables.pluginManager.executeScripts('onGlobalLoginSuccess',arguments.siteID,pluginEvent)/>
+				</cfif>
 					
 				<cfreturn true />
 		
@@ -130,8 +136,15 @@ to your own modified versions of Mura CMS.
 			<cfif session.loginAttempts lt 4>
 				<cfset session.loginAttempts=session.loginAttempts+1 />
 			<cfelse>
+			
+				<cfif len(arguments.siteID)>
+					<cfset variables.pluginManager.executeScripts('onSiteLoginBlocked',arguments.siteID,pluginEvent)/>
+				<cfelse>
+					<cfset variables.pluginManager.executeScripts('onGlobalLoginBlocked',arguments.siteID,pluginEvent)/>
+				</cfif>
+				
 				<cfset session.blockLoginUntil=dateAdd("n",30,now())/>
-				<cfset session.loginAttempts=0 />
+				<cfset session.loginAttempts=0 />			
 			</cfif>	
 		</cfif>
 						

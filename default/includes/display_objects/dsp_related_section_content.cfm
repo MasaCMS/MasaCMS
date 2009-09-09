@@ -65,7 +65,7 @@ to your own modified versions of Mura CMS.
 	<cfset cssID=createCSSID(rsSection.menuTitle)>
 </cfsilent>
 <div id="#cssID#" class="svRelSecContent svIndex">
-<h3>#rsSection.menutitle#</h3>
+<#getHeaderTag('subHead1')#>#rsSection.menutitle#</#getHeaderTag('subHead1')#>
 <cfloop query="rsFeatures">
 		<cfsilent>
 			<cfset class=iif(rsFeatures.currentrow eq 1,de('first'),de(iif(rsFeatures.currentrow eq rsFeatures.recordcount,de('last'),de(''))))>

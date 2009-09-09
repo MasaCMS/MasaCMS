@@ -43,7 +43,7 @@ to your own modified versions of Mura CMS.
 <cfsilent>
 <cfset rbFactory=getSite().getRBFactory() />
 </cfsilent>
-<h2><cfoutput>#rbFactory.getKey('search.searchresults')#</cfoutput></h2>
+<cfoutput><#getHeaderTag('headline')#>#rbFactory.getKey('search.searchresults')#</#getHeaderTag('headline')#></cfoutput>
 <div id="svSearchResults">
 <cfsilent>
 <cfset rbFactory=getSite().getRBFactory() />

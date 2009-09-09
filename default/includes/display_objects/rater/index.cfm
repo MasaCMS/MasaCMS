@@ -73,7 +73,7 @@ request.raterID) />
 <cfoutput>
 <div id="svRatings" class="clearfix">	
 	<div id="rateIt">
-	<h3>#rbFactory.getKey('rater.ratethis')#</h3>				
+	<#getHeaderTag('subHead1')#>#rbFactory.getKey('rater.ratethis')#</#getHeaderTag('subHead1')#>				
 		<form name="rater1" id="rater1" method="post" action="">
 			<input type="hidden" id="rate" name="rate" value="##">
 			<input type="hidden" id="userID" name="userID" value="#request.raterID#">
@@ -94,7 +94,7 @@ request.raterID) />
 	
 	<div id="avgrating">
 		<cfif rsRating.theCount gt 0>
-			<h3>#rbFactory.getKey('rater.avgrating')# (<span id="numvotes">#rsRating.theCount# <cfif rsRating.theCount neq 1>#rbFactory.getKey('rater.votes')#<cfelse>#rbFactory.getKey('rater.vote')#</cfif></span>)</h3>
+			<#getHeaderTag('subHead1')#>#rbFactory.getKey('rater.avgrating')# (<span id="numvotes">#rsRating.theCount# <cfif rsRating.theCount neq 1>#rbFactory.getKey('rater.votes')#<cfelse>#rbFactory.getKey('rater.vote')#</cfif></span>)</#getHeaderTag('subHead1')#>
 			<div class="ratestars #application.raterManager.getStarText(rsRating.theAvg)#<!--- #replace(rsRating.theAvg(),".","")# --->">
 			<cfif isNumeric(rsRating.theAvg)>#rsRating.theAvg#<cfelse>0</cfif>
 			<!--- <img id="ratestars" src="#event.getSite().getAssetPath()#/images/rater/star_#application.raterManager.getStarText(rsRating.theAvg)#.gif" alt="<cfif isNumeric(rsRating.theAvg)>#rsRating.theAvg# star<cfif rsRating.theAvg gt 1>s</cfif></cfif>" border="0"> ---></div>

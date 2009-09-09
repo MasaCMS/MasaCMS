@@ -59,29 +59,12 @@ to your own modified versions of Mura CMS.
 <cfset this.personalization="user">
 <cfset this.showAdminToolBar=true/>
 <cfset this.renderHTMLHead=true/>
+<cfset this.headline="h2"/>
+<cfset this.subHead1="h3"/>
+<cfset this.subHead2="h4"/>
+<cfset this.subHead3="h5"/>
+<cfset this.subHead4="h6"/>
  --->
-
-<!---
-<cffunction name="dspObject" access="public" output="false" returntype="string">
-<cfargument name="object" type="string">
-<cfargument name="objectid" type="string">
-<cfargument name="siteid" type="string">
-
-	<cfset var theObject = "" />
-	<cfset var theDisplayPoolID = application.settingsManager.getSite(request.siteid).getDisplayPoolID() />
-	
-		<cfsavecontent variable="theObject">
-			<cfswitch expression="#arguments.object#">
-				<cfcase value="example_object">
-					<cfinclude template="/#application.configBean.getWebRootMap()#/#theDisplayPoolID#/includes/display_objects/custom/example.cfm.">
-				</cfcase>
-			</cfswitch>
-		</cfsavecontent>
-		
-		<cfset theObject = theObject & super.dspObject(arguments.object, arguments.objectid, arguments.siteid)>		
-		
-		<cfreturn trim(theObject) />
-</cffunction> --->
 
 <!---  
 This is to be used when the webroot is including /tasks/content/contentServerRoot.cfm 

@@ -22,13 +22,13 @@
 </cfsilent>
 <cfoutput>
 <div id="svFavoritesList">
-	<h3>#rbFactory.getKey('favorites.favorites')#</h3>
+	<#getHeaderTag('subHead1')#>#rbFactory.getKey('favorites.favorites')#</#getHeaderTag('subHead1')#>
 <cfif len(getPersonalizationID())>
 	<!--- list the favorites --->
 	<cfset rsFavorites = application.favoriteManager.getInternalContentFavorites(getPersonalizationID(), request.siteid) />
 	<ul id="favoriteList">
 	<cfif rsFavorites.recordCount>
-		<!---<h3>Favorites</h3>--->
+		<!---<#getHeaderTag('subHead1')#>Favorites</#getHeaderTag('subHead1')#>--->
 		<cfloop query="rsFavorites" startrow="1" endrow="5">
 			<cfif request.contentBean.getContentID() eq rsFavorites.contentid>
 				<cfset currentPageFavoriteID = favoriteID>
@@ -83,7 +83,7 @@
 </div>
 <cfif len(getPersonalizationID())>
 <div id="svPageTools">
-	<h3>#rbFactory.getKey('favorites.pagetools')#</h3>
+	<#getHeaderTag('subHead1')#>#rbFactory.getKey('favorites.pagetools')#</#getHeaderTag('subHead1')#>
 	<ul>
 		<cfif favoriteExists>
 			<cfset favoriteExistsStyle = "display:none;">

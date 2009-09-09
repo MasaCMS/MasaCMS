@@ -47,7 +47,7 @@ to your own modified versions of Mura CMS.
 	<cfif request.emailid eq ''>
 	<em>#rbFactory.getKey('email.emailiderror')#</em>
 	<cfelse>
-	<h3>#application.emailManager.read(request.emailid).getSubject()#</h3>
+	<#getHeaderTag('subHead1')#>#application.emailManager.read(request.emailid).getSubject()#</#getHeaderTag('subHead1')#>
 	<cfif listfind(request.doaction,"forwardEmail")>
 	<p>#rbFactory.getKey('email.fowarded')#</p>
 	</cfif>

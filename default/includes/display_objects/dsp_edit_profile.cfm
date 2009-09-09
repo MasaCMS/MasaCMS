@@ -52,8 +52,8 @@ to your own modified versions of Mura CMS.
 </cfsilent>
 <cfoutput>
 
-<h2><cfif not session.mura.isLoggedIn>#rbFactory.getKey('user.createprofile')#<cfelse>
-#rbFactory.getKey('user.editprofile')#</cfif></h2>
+<#getHeaderTag('headline')#><cfif not session.mura.isLoggedIn>#rbFactory.getKey('user.createprofile')#<cfelse>
+#rbFactory.getKey('user.editprofile')#</cfif></#getHeaderTag('headline')#>
 <div id="svEditProfile">
 <cfif not(structIsEmpty(request.userBean.getErrors()) and request.doaction eq 'createprofile')>
 

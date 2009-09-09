@@ -52,7 +52,7 @@ to your own modified versions of Mura CMS.
 
 <cfoutput>
 <div id="svTagCloud">
-<h3>#rbFactory.getKey('tagcloud.tagcloud')#</h3>
+<#getHeaderTag('subHead1')#>#rbFactory.getKey('tagcloud.tagcloud')#</#getHeaderTag('subHead1')#>
 <cfif tags.recordcount>
 <ol>
 <cfloop query="tags"><cfsilent>

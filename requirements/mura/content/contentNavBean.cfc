@@ -15,8 +15,7 @@
 	<cfreturn "The method '#arguments.MissingMethodName#' is not defined">
 </cfif>
 </cffunction>
-	
-	
+		
 <cffunction name="init" access="public" returntype="any">
 	<cfargument name="contentStruct">
 	<cfargument name="contentManager">
@@ -34,8 +33,7 @@
 		<cfif structKeyExists(variables.instance.struct,key)>
 			<cfreturn variables.instance.struct[key]>
 		<cfelse>
-			<cfset variables.instance.bean=variables.contentManager.getContentVersion(variables.instance.struct.contentHistID,variables.instance.struct.siteID)>
-			<cfreturn variables.instance.bean.getValue(key)>
+			<cfreturn  getBean().getValue(key)>
 		</cfif>
 	</cfif>
 </cffunction>
@@ -44,7 +42,13 @@
 	<cfif isObject(variables.instance.bean) >
 		<cfreturn variables.instance.bean>
 	<cfelse>
-		<cfset variables.instance.bean=variables.contentManager.getContentVersion(variables.instance.struct.contentHistID,variables.instance.struct.siteID)>
+		<cfif structKeyExists(variables.instance.struct,"contentHistID")>
+			<cfset variables.instance.bean=variables.contentManager.getContentVersion(variables.instance.struct.contentHistID,variables.instance.struct.siteID)>
+		<cfelseif structKeyExists(variables.instance.struct,"contentID")>
+			<cfset variables.instance.bean=variables.contentManager.getActiveContent(variables.instance.struct.contentID,variables.instance.struct.siteID)>
+		<cfelse>
+			<cfthrow message="The query you are iterating over does not contain either contentID or contentHistID">
+		</cfif>
 		<cfreturn variables.instance.bean>
 	</cfif>
 </cffunction>

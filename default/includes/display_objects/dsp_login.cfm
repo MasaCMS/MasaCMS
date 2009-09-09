@@ -45,7 +45,7 @@ to your own modified versions of Mura CMS.
 <cfparam name="request.isBlocked" default="false">
 <cfset rbFactory=getSite().getRBFactory() />
 <cfoutput>
-<h2>#request.contentBean.getTitle()#</h2>
+<#getHeaderTag('headline')#>#request.contentBean.getTitle()#</#getHeaderTag('headline')#>
 <div id="svLoginContainer">
 
 	#request.contentBean.getSummary()# <!--- The page summary can be used to show some content before the user has logged in. Outputs only if there is content in the summary field. --->
@@ -112,7 +112,7 @@ to your own modified versions of Mura CMS.
 
 	<cfif application.settingsManager.getSite(request.siteid).getExtranetPublicReg()>
 	<div id="notRegistered">
-		<h3>#rbFactory.getKey('user.notregistered')# <a class="callToAction" href="#application.settingsManager.getSite(request.siteid).getEditProfileURL()#&returnURL=#urlencodedformat(request.returnURL)#">#rbFactory.getKey('user.signup')#.</a></h3>
+		<#getHeaderTag('subHead1')#>#rbFactory.getKey('user.notregistered')# <a class="callToAction" href="#application.settingsManager.getSite(request.siteid).getEditProfileURL()#&returnURL=#urlencodedformat(request.returnURL)#">#rbFactory.getKey('user.signup')#.</a></#getHeaderTag('subHead1')#>
 	</div>
 	</cfif>
 	
