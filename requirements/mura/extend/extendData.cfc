@@ -129,7 +129,7 @@ to your own modified versions of Mura CMS.
 <cfset var rs="" />
 
 	<cfquery name="rs" dbType="query">
-		 select attributeValue from variables.instance.data
+		 select baseID,attributeValue,defaultValue from variables.instance.data
 		 where name=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#key#">
 		 <cfif isNumeric(arguments.key)>
 			 or attributeID=<cfqueryparam cfsqltype="cf_sql_numeric"  value="#key#">
@@ -137,7 +137,11 @@ to your own modified versions of Mura CMS.
 	</cfquery>
 
 	<cfif rs.recordcount>
-		<cfreturn rs.attributeValue />
+		<cfif len(rs.baseID)>
+			<cfreturn rs.attributeValue />
+		<cfelse>
+			<cfreturn application.contentRenderer.setDynamicContent(rs.defaultValue) />
+		</cfif>
 	<cfelseif arguments.useMuraDefault>
 		<cfreturn "useMuraDefault" />
 	<cfelse>
