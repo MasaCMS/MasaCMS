@@ -152,6 +152,7 @@ to your own modified versions of Mura CMS.
 <cfset var msg=arguments.text />
 <cfset var user = "Anonymous" />
 
+<cfif isBoolean(variables.configBean.getLogEvents()) and variables.configBean.getLogEvents()>
 <cfif session.mura.isLoggedIn>
 <cfset user=session.mura.fname & " " & session.mura.lname />
 </cfif>
@@ -163,7 +164,7 @@ to your own modified versions of Mura CMS.
 		file="#arguments.file#"
 		type="#arguments.type#"
 		application="#arguments.application#">
-			
+</cfif>
 </cffunction>
 
 <cffunction name="backUp" access="public" output="false" returntype="void">
