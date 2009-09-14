@@ -9,6 +9,7 @@ title=Mura CMS
 filedir=
 filestore=fileDir
 filestoreaccessinfo=
+assetdir=
 assetpath=
 mapdir=mura
 webrootmap=muraWRM
@@ -43,5 +44,6 @@ productiondatasource=
 productionassetpath=
 productionwebroot=
 productionfiledir=
+productionassetdir=
 clusteriplist=
 

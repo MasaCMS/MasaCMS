@@ -844,6 +844,12 @@ to your own modified versions of Mura CMS.
 			<cfset application.utility.copyDir("#application.configBean.getFiledir()##fileDelim##arguments.siteid##fileDelim#", "#k##fileDelim##arguments.siteid##fileDelim#") />
 		</cfloop>
 		
+		<cfloop list="#application.configBean.getProductionAssetdir()#" index="k">
+			<cfif not listFindNoCase(application.configBean.getProductionFiledir(),k)>
+				<cfset application.utility.copyDir("#application.configBean.getAssetdir()##fileDelim##arguments.siteid##fileDelim#", "#k##fileDelim##arguments.siteid##fileDelim#") />
+			</cfif>
+		</cfloop>
+		
 		<cfset update("#application.configBean.getAssetPath()#","#application.configBean.getProductionAssetPath()#") >
 		
 		<cfquery datasource="#application.configBean.getDatasource()#" username="#application.configBean.getDBUsername()#" password="#application.configBean.getDBPassword()#">

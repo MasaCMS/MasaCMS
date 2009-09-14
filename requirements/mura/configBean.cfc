@@ -74,11 +74,13 @@ to your own modified versions of Mura CMS.
 <cfset variables.instance.compiler="adobe"/>
 <cfset variables.instance.serverPort=""/>
 <cfset variables.instance.fileDir=""/>
+<cfset variables.instance.assetDir=""/>
 <cfset variables.instance.assetPath="/tasks/sites"/>
 <cfset variables.instance.productionDatasource=""/>
 <cfset variables.instance.productionAssetPath=""/>
 <cfset variables.instance.productionWebroot=""/>
 <cfset variables.instance.productionFiledir=""/>
+<cfset variables.instance.productionAssetdir=""/>
 <cfset variables.instance.fileStore=""/>
 <cfset variables.instance.fileStoreAccessInfo=""/>
 <cfset variables.instance.tooltips=structNew()/>
@@ -169,6 +171,16 @@ to your own modified versions of Mura CMS.
 	
 	<cfif structKeyExists(config,"dashboard")>
 	<cfset setDashboard(config.dashboard)/>
+	</cfif>
+	
+	<cfif structKeyExists(config,"assetDir")>
+		<cfset setAssetDir(config.assetDir)/>
+	<cfelse>
+		<cfset setAssetDir(config.fileDir)/>
+	</cfif>
+	
+	<cfif structKeyExists(config,"productionAssetDir")>
+	<cfset setProductionAssetDir(config.productionAssetDir)/>
 	</cfif>
 	
 	<cfswitch expression="#server.coldfusion.productName#">
@@ -502,6 +514,29 @@ to your own modified versions of Mura CMS.
 	</cfif>
 </cffunction>
 
+<cffunction name="getAssetDir" returntype="string" access="public" output="false">
+	<cfreturn variables.instance.assetDir />
+</cffunction>
+
+<cffunction name="setAssetDir" access="public" output="false">
+	<cfargument name="assetDir" type="string" default="" />
+	
+	<cfset var ap=variables.instance.assetPath/>
+		
+	<cfif len(arguments.assetDir)>
+		<cfset variables.instance.assetDir = arguments.assetDir />
+	<cfelse>
+		<cfif len(variables.instance.context) and len(ap)>
+			<cfset ap=replaceNoCase(ap,variables.instance.context,"") />
+		</cfif>
+		<cfif len(ap)>
+			<cfset variables.instance.assetDir = variables.instance.webroot & replace(ap,"/",variables.instance.filedelim,"all") />
+		<cfelse>
+			<cfset variables.instance.assetDir = variables.instance.webroot  />
+		</cfif>
+	</cfif>
+</cffunction>
+
 <cffunction name="getAssetPath" returntype="String" access="public" output="false">
 	<cfreturn variables.instance.assetPath />
 </cffunction>
@@ -545,6 +580,15 @@ to your own modified versions of Mura CMS.
 <cffunction name="setProductionFiledir" access="public" output="false">
 	<cfargument name="ProductionFiledir" type="String" />
 	<cfset variables.instance.productionFiledir = arguments.ProductionFiledir />
+</cffunction>
+
+<cffunction name="getProductionAssetdir" returntype="String" access="public" output="false">
+	<cfreturn variables.instance.productionAssetdir />
+</cffunction>
+
+<cffunction name="setProductionAssetdir" access="public" output="false">
+	<cfargument name="ProductionAssetdir" type="String" />
+	<cfset variables.instance.productionAssetdir = arguments.ProductionAssetdir />
 </cffunction>
 
 <cffunction name="getFileStore" returntype="String" access="public" output="false">

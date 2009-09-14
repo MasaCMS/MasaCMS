@@ -129,6 +129,9 @@ to your own modified versions of Mura CMS.
 				<entry key="fileDir">
 					<value>#XMLFormat(GetProfileString("#variables.iniPath#", mode, "filedir"))#</value>
 				</entry>
+				<entry key="assetDir">
+					<value>#XMLFormat(GetProfileString("#variables.iniPath#", mode, "assetdir"))#</value>
+				</entry>
 				<entry key="assetPath">
 					<value>#XMLFormat(GetProfileString("#variables.iniPath#", mode, "assetpath"))#</value>
 				</entry>
@@ -143,6 +146,9 @@ to your own modified versions of Mura CMS.
 				</entry>
 				<entry key="ProductionFiledir">
 					<value>#XMLFormat(GetProfileString("#variables.iniPath#", mode, "ProductionFiledir"))#</value>
+				</entry>
+				<entry key="ProductionAssetdir">
+					<value>#XMLFormat(GetProfileString("#variables.iniPath#", mode, "ProductionAssetdir"))#</value>
 				</entry>
 				<entry key="fileStore">
 					<value>#XMLFormat(GetProfileString("#variables.iniPath#", mode, "fileStore"))#</value>
