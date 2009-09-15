@@ -98,7 +98,7 @@ to your own modified versions of Mura CMS.
 		</cfif>
 		
 		<cfquery datasource="#application.configBean.getDatasource()#" name="rsUser" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-		SELECT UserID, Lname, Fname,username, Password, s2, LastLogin,company, ispublic, siteid,passwordCreated,subType FROM tusers WHERE
+		SELECT UserID, Lname, Fname,username, Password, s2, LastLogin,company, ispublic, siteid,passwordCreated,subType, email, remoteID FROM tusers WHERE
 		username=<cfqueryparam cfsqltype="cf_sql_varchar" value="#trim(arguments.username)#"> AND Password=<cfqueryparam cfsqltype="cf_sql_varchar" value="#hash(trim(arguments.password))#"> AND Type = 2 
 		and inactive=0
 		</cfquery>
@@ -163,7 +163,7 @@ to your own modified versions of Mura CMS.
 		
 		<cflogout>
 		<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#" name="rsUser">
-		SELECT UserID, Lname, Fname,username, Password, s2, LastLogin,company, ispublic, siteid,passwordCreated,remoteID FROM tusers WHERE userid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.userID#"> AND Type = 2
+		SELECT UserID, Lname, Fname,username, Password, s2, LastLogin,company, ispublic, siteid,passwordCreated,remoteID,email FROM tusers WHERE userid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.userID#"> AND Type = 2
 		and inactive=0
 		</cfquery>
 		
