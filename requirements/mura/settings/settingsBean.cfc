@@ -48,6 +48,7 @@ to your own modified versions of Mura CMS.
 <cfset variables.instance.pageLimit=1000/>
 <cfset variables.instance.Locking="None"/>
 <cfset variables.instance.Domain=""/>
+<cfset variables.instance.DomainAlias="">
 <cfset variables.instance.Contact=""/>
 <cfset variables.instance.MailServerIP=""/>
 <cfset variables.instance.MailServerSMTPPort="25"/>
@@ -152,6 +153,7 @@ to your own modified versions of Mura CMS.
 			<cfset setpageLimit(arguments.data.pageLimit) />
 			<cfset setLocking(arguments.data.Locking) />
 			<cfset setDomain(arguments.data.Domain) />
+			<cfset setDomainAlias(arguments.data.DomainAlias) />
 			<cfset setExportLocation(arguments.data.ExportLocation) /> 
 			<cfset setContact(arguments.data.Contact) />
 			<cfset setUseDefaultSMTPServer(arguments.data.useDefaultSMTPServer) />
@@ -287,7 +289,16 @@ to your own modified versions of Mura CMS.
 
 <cffunction name="setDomain" access="public" output="false">
 	<cfargument name="Domain" type="String" />
-	<cfset variables.instance.Domain = arguments.Domain />
+	<cfset variables.instance.Domain = trim(arguments.Domain) />
+</cffunction>
+
+<cffunction name="getDomainAlias" returntype="String" access="public" output="false">
+	<cfreturn variables.instance.domainAlias />
+</cffunction>
+
+<cffunction name="setDomainAlias" access="public" output="false">
+	<cfargument name="domainAlias" type="String" />
+	<cfset variables.instance.domainAlias = arguments.domainAlias />
 </cffunction>
 
 <cffunction name="getExportLocation" returntype="String" access="public" output="false">
@@ -955,8 +966,15 @@ to your own modified versions of Mura CMS.
 
 <cffunction name="getThemes" returntype="query" access="public" output="false">
 	<cfset var rs = "">
+	<cfset var themeDir="">
 	
-	<cfdirectory action="list" directory="#expandPath('/#variables.configBean.getWebRootMap()#')#/#getDisplayPoolID()#/includes/themes" name="rs">
+	<cfif len(getDisplayPoolID())>
+		<cfset themeDir="#expandPath('/#variables.configBean.getWebRootMap()#')#/#getDisplayPoolID()#/includes/themes">
+	<cfelse>
+		<cfset themeDir="#expandPath('/#variables.configBean.getWebRootMap()#')#/default/includes/themes">
+	</cfif>
+	
+	<cfdirectory action="list" directory="#themeDir#" name="rs">
 	
 	<cfquery name="rs" dbtype="query">
 	select * from rs where type='Dir' and name not like '%.svn'
@@ -989,6 +1007,39 @@ to your own modified versions of Mura CMS.
 	</cfswitch>
 	
 	<cfreturn rs />
+</cffunction>
+
+<cffunction name="isValidDomain" output="false" returntype="boolean">
+	<cfargument name="domain">
+	<cfargument name="mode" required="true" default="either">
+	<cfset var i="">
+	<cfset var lineBreak=chr(13)&chr(10)>
+	
+	<cfif arguments.mode neq "partial">
+		<cfif arguments.domain eq getDomain()>
+			<cfreturn true>
+		<cfelseif len(getDomainAlias())>
+			<cfloop list="#getDomainAlias()#" delimiters="#lineBreak#" index="i">
+				<cfif arguments.domain eq i>
+					<cfreturn true>
+				</cfif>
+			</cfloop>
+		</cfif>
+	</cfif>
+	
+	<cfif arguments.mode neq "complete">
+		<cfif find(arguments.domain,getDomain())>
+			<cfreturn true>
+		<cfelseif len(getDomainAlias())>
+			<cfloop list="#getDomainAlias()#" delimiters="#lineBreak#" index="i">
+				<cfif find(arguments.domain,i)>
+					<cfreturn true>
+				</cfif>
+			</cfloop>
+		</cfif>
+	</cfif>
+
+	<cfreturn false>
 </cffunction>
 
 </cfcomponent>

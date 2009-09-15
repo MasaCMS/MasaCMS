@@ -227,6 +227,7 @@ to your own modified versions of Mura CMS.
 	  	 site = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.bean.getsite()#" />,
          pagelimit = #arguments.bean.getpagelimit()#,
 		 domain=<cfif arguments.bean.getdomain() neq ''><cfqueryparam cfsqltype="cf_sql_varchar" value="#trim(arguments.bean.getdomain())#" /><cfelse>null</cfif>,
+		 domainAlias=<cfif arguments.bean.getdomainAlias() neq ''><cfqueryparam cfsqltype="cf_sql_varchar" value="#trim(arguments.bean.getdomainAlias())#" /><cfelse>null</cfif>,
 		 contact=<cfif arguments.bean.getcontact() neq ''><cfqueryparam cfsqltype="cf_sql_varchar" value="#trim(arguments.bean.getContact())#" /><cfelse>null</cfif>,
          locking = '#arguments.bean.getlocking()#',
 		 MailServerIP=<cfif arguments.bean.getMailServerIP() neq ''><cfqueryparam cfsqltype="cf_sql_varchar" value="#trim(arguments.bean.getMailServerIP())#" /><cfelse>null</cfif>,
@@ -297,7 +298,7 @@ to your own modified versions of Mura CMS.
 <cftransaction>
 
 <CFQUERY datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-      Insert into tsettings (siteid,pagelimit,domain,contact,locking,site,mailserverip,mailserverusername,
+      Insert into tsettings (siteid,pagelimit,domain, domainAlias, contact,locking,site,mailserverip,mailserverusername,
 	  mailserverpassword,emailbroadcaster,emailbroadcasterlimit,extranet,extranetPublicReg,extranetssl,cache,viewdepth,nextn,dataCollection,ExportLocation,
 	  columnCount,primaryColumn,publicSubmission,adManager,columnNames,contactName,contactAddress,contactCity,contactState,contactZip,contactEmail,contactPhone,
 	  publicUserPoolID,PrivateUserPoolID,AdvertiserUserPoolID,displayPoolID,orderno,feedManager,
@@ -309,6 +310,7 @@ to your own modified versions of Mura CMS.
 	  	'#arguments.bean.getsiteid()#',
          #arguments.bean.getpagelimit()# ,
 		 <cfif arguments.bean.getdomain() neq ''>'#trim(arguments.bean.getdomain())#'<cfelse>null</cfif>,
+		 <cfif arguments.bean.getdomainAlias() neq ''>'#trim(arguments.bean.getdomainAlias())#'<cfelse>null</cfif>,
 		<cfif arguments.bean.getcontact() neq ''>'#trim(arguments.bean.getcontact())#'<cfelse>null</cfif>,
          '#arguments.bean.getlocking()#',
 		   <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.bean.getsite()#" />,

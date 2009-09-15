@@ -74,40 +74,39 @@ to your own modified versions of Mura CMS.
 <cffunction name="bindToDomain" output="false" returntype="any" access="remote">
 	<cfset var siteID= "" />
 	<cfset var rsSites=application.settingsManager.getList() />
+	<cfset var site="">
+	<cfset var i="">
+	<cfset var lineBreak=chr(13)&chr(10)>
 	
 	<!--- check for exact host match to find siteID --->
 	<cfloop query="rsSites">
+	<cfset site=application.settingsManager.getSite(rsSites.siteID)>
 	<cftry>
-	<cfif cgi.SERVER_NAME eq application.settingsManager.getSite(rsSites.siteID).getDomain()>
-	<cfset siteID = rsSites.siteID />
-	<cfbreak/>
+	<cfif site.getIsValidDomain(domain:cgi.SERVER_NAME,mode:"complete")>
+		<cfreturn rsSites.siteid>
 	</cfif>
 	<cfcatch></cfcatch>
 	</cftry>
 	</cfloop>
 	
 	<!--- if not found look for a partial match and redirect--->
-	<cfif not len(siteID)>
 	<cfloop query="rssites">
+	<cfset site=application.settingsManager.getSite(rsSites.siteID)>
 	<cftry>
-	<cfif find(cgi.SERVER_NAME,application.settingsManager.getSite(rsSites.siteID).getDomain())>
+	<cfif site.getIsValidDomain(domain:cgi.SERVER_NAME,mode:"partial")>>
 		<cflocation addtoken="no" url="http://#application.settingsManager.getSite(rsSites.siteID).getDomain()#">
 	</cfif>
 	<cfcatch></cfcatch>
 	</cftry>
 	</cfloop>
-	</cfif>
 	
 	<!--- if still not found site the siteID to default --->
-	<cfif not len(siteID) >
-		<cfif cgi.SERVER_NAME eq application.configBean.getAdminDomain()>
-			<cfset application.contentRenderer.redirect("#application.configBean.getContext()#/admin/")>
-		<cfelse>
-			<cfset siteID=rsSites.siteID>
-		 </cfif>
-	</cfif>
-	
-	<cfreturn siteid>
+	<cfif cgi.SERVER_NAME eq application.configBean.getAdminDomain()>
+		<cfset application.contentRenderer.redirect("#application.configBean.getContext()#/admin/")>
+	<cfelse>
+		<cfreturn rsSites.siteID>
+	 </cfif>
+
 </cffunction>
 
 <cffunction name="parseURL" output="false" returntype="any" access="remote">
@@ -252,9 +251,11 @@ to your own modified versions of Mura CMS.
 <cffunction name="Redirect" output="false" returntype="any">
 
 	<cfset var rsSites=application.settingsManager.getList() />
+	<cfset var site="">
 	<cfloop query="rssites">
+	<cfset site=application.settingsManager.getSite(rsSites.siteID)>
 	<cftry>
-	<cfif find(cgi.SERVER_NAME,application.settingsManager.getSite(rsSites.siteID).getDomain())>
+	<cfif site.isValidDomain(domain:cgi.SERVER_NAME)>
 	<cfset application.contentRenderer.redirect("#application.configBean.getContext()##application.contentRenderer.getURLStem(rsSites.siteid,"")#")>
 	</cfif>
 	<cfcatch></cfcatch>

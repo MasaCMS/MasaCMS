@@ -53,11 +53,13 @@ to your own modified versions of Mura CMS.
 <cfparam name="session.mura.userID" default="" />
 <cfparam name="session.mura.username" default="" />
 <cfparam name="session.mura.password" default="" />
+<cfparam name="session.mura.email" default="" />
 <cfparam name="session.mura.fname" default="" />
 <cfparam name="session.mura.lname" default="" />
 <cfparam name="session.mura.company" default="" />
 <cfparam name="session.mura.lastlogin" default="" />
 <cfparam name="session.mura.passwordCreated" default="" />
+<cfparam name="session.mura.remoteID" default="" />
 
 <!--- do a settings setup check --->
 <cfif NOT structKeyExists( application, "setupComplete" ) OR (not application.appInitialized or structKeyExists(url,application.appReloadKey) )>

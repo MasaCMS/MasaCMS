@@ -531,6 +531,8 @@ The #contactName# staff</cfoutput>
 	<cfset session.mura.password=arguments.user.password>
 	<cfset session.mura.fname=arguments.user.fname>
 	<cfset session.mura.lname=arguments.user.lname>
+	<cfset session.mura.email=arguments.user.email>
+	<cfset session.mura.remoteID=arguments.user.remoteID>
 	<cfif arguments.user.company neq ''>
 		<cfset session.mura.company=arguments.user.company>
 	<cfelse>
@@ -548,6 +550,8 @@ The #contactName# staff</cfoutput>
 	<cfset session.mura.company="">
 	<cfset session.mura.lastlogin="">
 	<cfset session.mura.passwordCreated="">
+	<cfset session.mura.email="">
+	<cfset session.mura.remoteID="">
 </cfif>
 </cffunction>
 </cfcomponent>

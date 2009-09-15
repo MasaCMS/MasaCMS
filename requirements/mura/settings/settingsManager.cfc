@@ -139,8 +139,18 @@ to your own modified versions of Mura CMS.
 	<cfset variables.utility.logEvent("SiteID:#arguments.siteid# Site:#bean.getSite()# was deleted","mura-settings","Information",true) />
 	<cfset variables.DAO.delete(arguments.siteid) />
 	<cfset setSites() />
+	<cftry>
 	<cfset variables.utility.deleteDir("#variables.configBean.getWebRoot()##variables.configBean.getFileDelim()##arguments.siteid##variables.configBean.getFileDelim()#") />
+	<cfcatch></cfcatch>
+	</cftry>
+	<cftry>
 	<cfset variables.utility.deleteDir("#variables.configBean.getFileDir()##variables.configBean.getFileDelim()##arguments.siteid##variables.configBean.getFileDelim()#") />
+	<cfcatch></cfcatch>
+	</cftry>
+	<cftry>
+	<cfset variables.utility.deleteDir("#variables.configBean.getAssetDir()##variables.configBean.getFileDelim()##arguments.siteid##variables.configBean.getFileDelim()#") />
+	<cfcatch></cfcatch>
+	</cftry>
 </cffunction>
 
 <cffunction name="create" access="public" output="false" returntype="any">

@@ -8,7 +8,7 @@
 
 	config.userFilesPath = "/UserFiles/";
 
-	config.serverPath = "#application.configBean.getFileDir()##application.configBean.getFileDelim()##session.siteid##application.configBean.getFileDelim()#assets"; // use this to force the server path if FCKeditor is not running directly off the root of the application or the FCKeditor directory in the URL is a virtual directory or a symbolic link / junction
+	config.serverPath = "#application.configBean.getAssetDir()##application.configBean.getFileDelim()##session.siteid##application.configBean.getFileDelim()#assets"; // use this to force the server path if FCKeditor is not running directly off the root of the application or the FCKeditor directory in the URL is a virtual directory or a symbolic link / junction
 
 	config.allowedExtensions = structNew();
 	config.deniedExtensions = structNew();

@@ -25,7 +25,7 @@
 	<cfargument name="event" required="true">
 	
 	<cfif (application.configBean.getMode() eq 'production' 
-				and cgi.SERVER_NAME neq application.settingsManager.getSite(request.siteID).getDomain()) 
+				and not application.settingsManager.getSite(request.siteID).isValidDomain(domain:cgi.SERVER_NAME, mode: "either")) 
 				and not (cgi.SERVER_NAME eq 'LOCALHOST' and cgi.HTTP_USER_AGENT eq 'vspider')>
 			<cfset event.getHandler("standardWrongDomain").handle(event)>
 		</cfif>

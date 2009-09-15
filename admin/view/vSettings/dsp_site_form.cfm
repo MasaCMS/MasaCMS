@@ -73,6 +73,10 @@ to your own modified versions of Mura CMS.
       <dd>
         <input name="domain" type="text" class="text" value="#HTMLEditFormat(request.siteBean.getdomain('production'))#" size="50">
       </dd>
+	 <dt>Domain Alias List <span>(Line Delimited)</span></dt>
+      <dd>
+        <textarea name="domainAlias">#HTMLEditFormat(request.siteBean.getDomainAlias())#</textarea>
+      </dd>
 	 <dt>Locale</dt>
       <dd>
 		<select name="siteLocale">
@@ -86,9 +90,9 @@ to your own modified versions of Mura CMS.
 	  <dt>Theme</dt>
       <dd>
 		<select name="theme">
-		<option value="">Default</option>	
+		<option value="">None</option>	
 		<cfloop query="rsThemes">
-        <option value="#rsThemes.name#"<cfif rsThemes.name eq request.siteBean.getTheme()> selected</cfif>>#rsThemes.name#</option>
+        <option value="#rsThemes.name#"<cfif rsThemes.name eq request.siteBean.getTheme() or (not len(request.siteBean.getSiteID()) and rsThemes.currentRow eq 1)> selected</cfif>>#rsThemes.name#</option>
 		</cfloop>
 		</select>
       </dd>
