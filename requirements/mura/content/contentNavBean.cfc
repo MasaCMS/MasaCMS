@@ -16,7 +16,7 @@
 </cfif>
 </cffunction>
 		
-<cffunction name="init" access="public" returntype="any">
+<cffunction name="init" access="public" returntype="any" output="false">
 	<cfargument name="contentStruct">
 	<cfargument name="contentManager">
 	<cfset variables.instance.struct=arguments.contentStruct>
@@ -24,7 +24,7 @@
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="getValue" access="public" returntype="any">
+<cffunction name="getValue" access="public" returntype="any" output="false">
 	<cfargument name="key">
 	
 	<cfif isObject(variables.instance.bean) >
@@ -38,7 +38,7 @@
 	</cfif>
 </cffunction>
 
-<cffunction name="getBean" access="public" returntype="any">
+<cffunction name="getBean" access="public" returntype="any" output="false">
 	<cfif isObject(variables.instance.bean) >
 		<cfreturn variables.instance.bean>
 	<cfelse>
