@@ -124,6 +124,29 @@ to your own modified versions of Mura CMS.
 	<cfreturn feedBean />
 </cffunction>
 
+<cffunction name="readByName" access="public" output="false" returntype="any" >
+	<cfargument name="name" type="string" />
+	<cfargument name="siteid" type="string" />
+
+	<cfset var feedBean=getBean() />
+	<cfset var rs ="" />
+	
+	<cfquery name="rs" datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+	Select * from tcontentfeeds where 
+	name= <cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.name#">
+	and siteid=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.siteid#">
+	</cfquery>
+	
+	<cfif rs.recordcount>
+	<cfset feedBean.set(rs) />
+	<cfset feedBean.setcontentID(readItems(rs.feedID,"contentID")) />
+	<cfset feedBean.setCategoryID(readItems(rs.feedID,"categoryID")) />
+	<cfset feedBean.setAdvancedParams(readAdvancedParams(rs.feedID)) />
+	</cfif>
+	
+	<cfreturn feedBean />
+</cffunction>
+
 <cffunction name="update" access="public" output="false" returntype="void" >
 	<cfargument name="feedBean" type="any" />
 	

@@ -123,6 +123,14 @@ to your own modified versions of Mura CMS.
 
 </cffunction>
 
+<cffunction name="readByName" access="public" returntype="any" output="false">
+	<cfargument name="name" type="String" />
+	<cfargument name="siteid" type="String" />		
+	
+	<cfreturn variables.feedDAO.readByName(arguments.name,arguments.siteid) />
+
+</cffunction>
+
 <cffunction name="import" access="public" returntype="struct" output="false">
 	<cfargument name="data" type="struct" />		
 	
