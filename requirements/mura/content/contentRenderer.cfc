@@ -796,7 +796,7 @@ to your own modified versions of Mura CMS.
 					<cfreturn application.pluginManager.displayObject(arguments.objectid,event)>
 				</cfcase>
 				<cfcase value="mailing_list">#dspObject_Render(siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,fileName="dsp_mailing_list.cfm")#</cfcase>
-				<cfcase value="mailing_list_master">#dspObject_Render(siteid=arguments.siteid,objectid=arguments.objectid,fileName="dsp_mailing_list_master.cfm")#</cfcase>
+				<cfcase value="mailing_list_master">#dspObject_Render(siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,fileName="dsp_mailing_list_master.cfm")#</cfcase>
 				<cfcase value="site_map">#dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"dsp_site_map.cfm",cacheKeyObjectId)#</cfcase>
 				<cfcase value="features">#dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"dsp_features.cfm",cacheKeyObjectId)#</cfcase>
 				<cfcase value="features_no_summary">#dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"dsp_features.cfm",cacheKeyObjectId,false)#</cfcase>
