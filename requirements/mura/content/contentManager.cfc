@@ -1307,5 +1307,9 @@ to your own modified versions of Mura CMS.
 			<cfargument name="aggregation" type="boolean" required="yes" default="false" >
 			
 			<cfreturn variables.contentGateway.getKidsIterator(arguments.moduleID, arguments.siteid, arguments.parentID, arguments.type, arguments.today, arguments.size, arguments.keywords, arguments.hasFeatures, arguments.sortBy, arguments.sortDirection, arguments.categoryID, arguments.relatedID, arguments.tag, arguments.aggregation)>
-	</cffunction>		
+	</cffunction>
+	
+	<cffunction name="getIterator" returntype="any" output="false">
+		<cfreturn getServiceFactory().getBean("contentIterator").init()>
+	</cffunction>	
 </cfcomponent>

@@ -542,4 +542,7 @@ to your own modified versions of Mura CMS.
 </cfif>
 </cffunction>
 
+<cffunction name="getIterator" returntype="any" output="false">
+	<cfreturn getServiceFactory().getBean("userIterator").init()>
+</cffunction>
 </cfcomponent>
