@@ -539,7 +539,8 @@ select * from tplugins order by #arguments.orderby#
 	
 	<!--- save the submitted name --->
 	<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-	update tplugins set name=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.args.pluginalias#">
+	update tplugins set name=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.args.pluginalias#">,
+	package=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.args.package#">
 	where moduleID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.args.moduleID#">			
 	</cfquery>
 	
