@@ -103,7 +103,7 @@ copySiteID = '#session.copySiteID#';
        <li class="edit"><a title="Edit" href="index.cfm?fuseaction=cArch.edit&contenthistid=#request.rsList.ContentHistID#&contentid=#request.rsList.ContentID#&type=#request.rsList.type#&parentid=#request.rsList.parentID#&topid=#attributes.topid#&siteid=#attributes.siteid#&moduleid=#attributes.moduleid#&startrow=#attributes.startrow#">&nbsp;</a></li>
 	   <cfswitch expression="#request.rsList.type#">
 		<cfcase value="Page,Portal,Calendar,Gallery">
-		<li class="preview"><a title="Preview" href="javascript:preview('http://#application.settingsManager.getSite(attributes.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##application.contentRenderer.getURLStem(attributes.siteid,request.rsList.filename)#,'#request.rsList.targetParams#');">#left(request.rsList.menutitle,70)#</a></li>
+		<li class="preview"><a title="Preview" href="javascript:preview('http://#application.settingsManager.getSite(attributes.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##application.contentRenderer.getURLStem(attributes.siteid,request.rsList.filename)#','#request.rsList.targetParams#');">#left(request.rsList.menutitle,70)#</a></li>
 		</cfcase>
 		<cfcase value="Link">
 		<li class="preview"><a title="Preview" href="javascript:preview('#request.rsList.filename#','#request.rsList.targetParams#');">#left(request.rsList.menutitle,70)#</a></li>
