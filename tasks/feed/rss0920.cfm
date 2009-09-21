@@ -52,7 +52,7 @@ to your own modified versions of Mura CMS.
 	xmlns:dc="http://purl.org/dc/elements/1.1/">
 	<channel>
 		<title>#XMLFormat(feedBean.getName())#</title> 
-		<link>http://#CGI.SERVER_NAME#</link> 
+		<link>http://#listFirst(cgi.http_host,":")#</link> 
 		<description>#XMLFormat(feedBean.getDescription())#</description> 
 		<webMaster>#application.settingsManager.getSite(feedBean.getSiteID()).getContact()#</webMaster> 
 		<language>#feedBean.getLang()#</language>

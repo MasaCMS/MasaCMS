@@ -54,10 +54,10 @@ to your own modified versions of Mura CMS.
 		<cfoutput query="rs">
 		<tr>
 			<td>#rs.name#</td>
-			<td><a href="http://#cgi.server_name##port#/tasks/feed/?feedID=#rs.feedID#"><img alt="" src="#application.configBean.getContext()#/#request.siteid#/includes/display_objects/feedtable/images/feed-icon-12x12.gif" /></a></td>
-			<td><a href="http://add.my.yahoo.com/rss?url=#URLEncodedFormat('http://#cgi.server_name##port##application.configBean.getContext()#/tasks/feed/?feedID=#rs.feedID#')#"><img alt="" src="#application.configBean.getContext()#/#request.siteid#/includes/display_objects/feedtable/images/add_myyahoo.gif" /></a></td>
-			<td><a href="http://fusion.google.com/add?feedurl=#URLEncodedFormat('http://#cgi.server_name##port##application.configBean.getContext()#/tasks/feed/?feedID=#rs.feedID#')#"><img alt="" src="#application.configBean.getContext()#/#request.siteid#/includes/display_objects/feedtable/images/add_google.gif" /></a></td>
-			<td><a href="http://feeds.my.aol.com/add.jsp?url=#URLEncodedFormat('http://#cgi.server_name##port##application.configBean.getContext()#/tasks/feed/?feedID=#rs.feedID#')#"><img alt="" src="#application.configBean.getContext()#/#request.siteid#/includes/display_objects/feedtable/images/add_myaol.gif" /></a></td>
+			<td><a href="http://#listFirst(cgi.http_host,":")##port#/tasks/feed/?feedID=#rs.feedID#"><img alt="" src="#application.configBean.getContext()#/#request.siteid#/includes/display_objects/feedtable/images/feed-icon-12x12.gif" /></a></td>
+			<td><a href="http://add.my.yahoo.com/rss?url=#URLEncodedFormat('http://#listFirst(cgi.http_host,":")##port##application.configBean.getContext()#/tasks/feed/?feedID=#rs.feedID#')#"><img alt="" src="#application.configBean.getContext()#/#request.siteid#/includes/display_objects/feedtable/images/add_myyahoo.gif" /></a></td>
+			<td><a href="http://fusion.google.com/add?feedurl=#URLEncodedFormat('http://#listFirst(cgi.http_host,":")##port##application.configBean.getContext()#/tasks/feed/?feedID=#rs.feedID#')#"><img alt="" src="#application.configBean.getContext()#/#request.siteid#/includes/display_objects/feedtable/images/add_google.gif" /></a></td>
+			<td><a href="http://feeds.my.aol.com/add.jsp?url=#URLEncodedFormat('http://#listFirst(cgi.http_host,":")##port##application.configBean.getContext()#/tasks/feed/?feedID=#rs.feedID#')#"><img alt="" src="#application.configBean.getContext()#/#request.siteid#/includes/display_objects/feedtable/images/add_myaol.gif" /></a></td>
 		</tr>
 		</cfoutput>
 		<cfelse>

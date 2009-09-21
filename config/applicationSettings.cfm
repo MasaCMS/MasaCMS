@@ -78,7 +78,7 @@ to your own modified versions of Mura CMS.
 	<!--- Should we set cookies on the browser? --->
 	<cfset this.setClientCookies = true>
 	<!--- should cookies be domain specific, ie, *.foo.com or www.foo.com 
-	<cfset this.setDomainCookies = not refind('\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b',cgi.server_name)>
+	<cfset this.setDomainCookies = not refind('\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b',listFirst(cgi.http_host,":"))>
 	--->
 	<!--- should we try to block 'bad' input from users --->
 	<cfset this.scriptProtect = false>
@@ -121,3 +121,4 @@ to your own modified versions of Mura CMS.
 	<cfset this.mappings["/plugins"] = mapPrefix & baseDir & "/plugins">
 	<cfset this.mappings["/muraWRM"] = mapPrefix & baseDir>
 	<cfset this.mappings["/savaWRM"] = mapPrefix & baseDir>
+

@@ -425,9 +425,9 @@ Select EmailID from temails where deliverydate <=#createodbcdatetime(now())# and
 
 	<cfif arguments.type eq "returnClick">
 		<cfif isDefined('url.path')>
-			<cfset returnUrl = "http://#cgi.server_name##url.path#">
+			<cfset returnUrl = "http://#listFirst(cgi.http_host,":")##url.path#">
 		<cfelse>
-			<cfset returnUrl = "http://#cgi.server_name##cgi.script_name#">
+			<cfset returnUrl = "http://#listFirst(cgi.http_host,":")##cgi.script_name#">
 		</cfif>
 		<!--- track what link was clicked --->
 		<cfquery datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">

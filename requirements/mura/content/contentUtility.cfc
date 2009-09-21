@@ -376,9 +376,9 @@ to your own modified versions of Mura CMS.
 	
 	<cfif (structKeyExists(data,"CompactDisplay") and data.compactDisplay eq "true")
 		or (structKeyExists(data,"closeCompactDisplay") and data.closeCompactDisplay eq "true")>
-		<cfset reviewLink='http://#cgi.SERVER_NAME##variables.configBean.getServerPort()##variables.configBean.getContext()#/#arguments.data.siteid#/?contentID=#arguments.contentBean.getContentID()#&previewID=#arguments.contentBean.getContentHistID()#'>
+		<cfset reviewLink='http://#listFirst(cgi.http_host,":")##variables.configBean.getServerPort()##variables.configBean.getContext()#/#arguments.data.siteid#/?contentID=#arguments.contentBean.getContentID()#&previewID=#arguments.contentBean.getContentHistID()#'>
 	<cfelse>
-		<cfset reviewLink='http://#cgi.SERVER_NAME##variables.configBean.getServerPort()##variables.configBean.getContext()#/admin/index.cfm?fuseaction=cArch.edit&parentid=#arguments.data.parentid#&&topid=#arguments.data.topid#&siteid=#arguments.data.siteid#&contentid=#arguments.contentBean.getcontentid()#&contenthistid=#arguments.contentBean.getcontenthistid()#&moduleid=#arguments.data.moduleid#&type=#arguments.data.type#&ptype=#arguments.data.ptype#'>
+		<cfset reviewLink='http://#listFirst(cgi.http_host,":")##variables.configBean.getServerPort()##variables.configBean.getContext()#/admin/index.cfm?fuseaction=cArch.edit&parentid=#arguments.data.parentid#&&topid=#arguments.data.topid#&siteid=#arguments.data.siteid#&contentid=#arguments.contentBean.getcontentid()#&contenthistid=#arguments.contentBean.getcontenthistid()#&moduleid=#arguments.data.moduleid#&type=#arguments.data.type#&ptype=#arguments.data.ptype#'>
 	</cfif>
 	<cfquery datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 		insert into tredirects (redirectID,URL,created) values(
@@ -402,7 +402,7 @@ to your own modified versions of Mura CMS.
 #arguments.data.message#
 						
 Review Link:
-http://#cgi.SERVER_NAME##variables.configBean.getServerPort()##variables.configBean.getContext()##variables.contentRenderer.getURLStem(arguments.contentBean.getSiteID(),redirectID)#
+http://#listFirst(cgi.http_host,":")##variables.configBean.getServerPort()##variables.configBean.getContext()##variables.contentRenderer.getURLStem(arguments.contentBean.getSiteID(),redirectID)#
 </cfoutput></cfsavecontent>
 		
 		<cfset variables.mailer.sendText(mailText,
@@ -425,7 +425,7 @@ http://#cgi.SERVER_NAME##variables.configBean.getServerPort()##variables.configB
 #arguments.data.message#
 						
 Review Link:
-http://#cgi.SERVER_NAME##variables.configBean.getServerPort()##variables.configBean.getContext()##variables.contentRenderer.getURLStem(arguments.contentBean.getSiteID(),redirectID)#
+http://#listFirst(cgi.http_host,":")##variables.configBean.getServerPort()##variables.configBean.getContext()##variables.contentRenderer.getURLStem(arguments.contentBean.getSiteID(),redirectID)#
 </cfoutput></cfsavecontent>
 		<cfset variables.mailer.sendText(mailText,
 				rsList.email,

@@ -82,7 +82,7 @@ to your own modified versions of Mura CMS.
 	<cfloop query="rsSites">
 	<cfset site=application.settingsManager.getSite(rsSites.siteID)>
 	<cftry>
-	<cfif site.getIsValidDomain(domain:cgi.SERVER_NAME,mode:"complete")>
+	<cfif site.getIsValidDomain(domain:listFirst(cgi.http_host,":"),mode:"complete")>
 		<cfreturn rsSites.siteid>
 	</cfif>
 	<cfcatch></cfcatch>
@@ -93,7 +93,7 @@ to your own modified versions of Mura CMS.
 	<cfloop query="rssites">
 	<cfset site=application.settingsManager.getSite(rsSites.siteID)>
 	<cftry>
-	<cfif site.getIsValidDomain(domain:cgi.SERVER_NAME,mode:"partial")>>
+	<cfif site.getIsValidDomain(domain:listFirst(cgi.http_host,":"),mode:"partial")>>
 		<cflocation addtoken="no" url="http://#application.settingsManager.getSite(rsSites.siteID).getDomain()#">
 	</cfif>
 	<cfcatch></cfcatch>
@@ -101,7 +101,7 @@ to your own modified versions of Mura CMS.
 	</cfloop>
 	
 	<!--- if still not found site the siteID to default --->
-	<cfif cgi.SERVER_NAME eq application.configBean.getAdminDomain()>
+	<cfif listFirst(cgi.http_host,":") eq application.configBean.getAdminDomain()>
 		<cfset application.contentRenderer.redirect("#application.configBean.getContext()#/admin/")>
 	<cfelse>
 		<cfreturn rsSites.siteID>
@@ -255,7 +255,7 @@ to your own modified versions of Mura CMS.
 	<cfloop query="rssites">
 	<cfset site=application.settingsManager.getSite(rsSites.siteID)>
 	<cftry>
-	<cfif site.isValidDomain(domain:cgi.SERVER_NAME)>
+	<cfif site.isValidDomain(domain:listFirst(cgi.http_host,":"))>
 	<cfset application.contentRenderer.redirect("#application.configBean.getContext()##application.contentRenderer.getURLStem(rsSites.siteid,"")#")>
 	</cfif>
 	<cfcatch></cfcatch>
@@ -263,7 +263,7 @@ to your own modified versions of Mura CMS.
 	</cfloop>
 	
 	
-	<cfif cgi.SERVER_NAME eq application.configBean.getAdminDomain()>
+	<cfif listFirst(cgi.http_host,":") eq application.configBean.getAdminDomain()>
 		<cfset application.contentRenderer.redirect("#application.configBean.getContext()#/admin/")>
 	<cfelse>
 		<cfset application.contentRenderer.redirect("http://#rsSites.domain##application.configBean.getServerPort()##application.configBean.getContext()##application.contentRenderer.getURLStem(rsSites.siteid,"")#")>

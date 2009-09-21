@@ -90,8 +90,8 @@ to your own modified versions of Mura CMS.
 <input type="hidden" name="os1_#getCart.currentrow#" value="#getCart.os1#">
 </cfloop>
 <input type="hidden" name="page_style" value="PayPal">
-<input type="hidden" name="return" value="http://#cgi.server_name##request.path#?doaction=completeCart">
-<input type="hidden" name="cancel_return" value="http://#cgi.server_name##request.path#?doaction=cancelCart">
+<input type="hidden" name="return" value="http://#listFirst(cgi.http_host,":")##request.path#?doaction=completeCart">
+<input type="hidden" name="cancel_return" value="http://#listFirst(cgi.http_host,":")##request.path#?doaction=cancelCart">
 <input type="hidden" name="cn" value="Comments">
 <input type="hidden" name="currency_code" value="USD">
 </form>

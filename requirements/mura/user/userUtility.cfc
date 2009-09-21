@@ -282,7 +282,7 @@ to your own modified versions of Mura CMS.
 <cffunction name="sendLoginByEmail" output="false" returntype="string"  access="public">
 	<cfargument name="email" type="string">
 	<cfargument name="siteid" type="string" required="yes" default="">
-	<cfargument name="returnURL" type="string" required="yes" default="#cgi.SERVER_NAME##cgi.SCRIPT_NAME#">
+	<cfargument name="returnURL" type="string" required="yes" default="#listFirst(cgi.http_host,":")##cgi.SCRIPT_NAME#">
 	<cfset var msg="No account currently exists with the email address '#arguments.email#'.">
 	<cfset var struser=structnew()>
 	<cfset var rsuser = ""/>
@@ -320,7 +320,7 @@ to your own modified versions of Mura CMS.
 <cffunction name="sendLoginByUser" output="false" returntype="boolean"  access="public">
 	<cfargument name="userBean" type="any">
 	<cfargument name="siteid" type="string" required="yes" default="" >
-	<cfargument name="returnURL" type="string" required="yes" default="#cgi.SERVER_NAME##cgi.SCRIPT_NAME#">
+	<cfargument name="returnURL" type="string" required="yes" default="#listFirst(cgi.http_host,":")##cgi.SCRIPT_NAME#">
 	<cfargument name="isPublicReg" required="yes" type="boolean" default="false"/>
 	
 	<cfset var struser=structnew()>

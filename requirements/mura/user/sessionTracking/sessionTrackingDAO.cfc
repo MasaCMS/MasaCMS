@@ -74,7 +74,7 @@ to your own modified versions of Mura CMS.
 
 <cfif trim(arguments.referer) eq ''>
 	<cfset theReferer='Unknown' />
-<cfelseif not findNoCase(cgi.SERVER_NAME,arguments.referer)>
+<cfelseif not findNoCase(listFirst(cgi.http_host,":"),arguments.referer)>
 	<cfset theReferer=arguments.referer />
 </cfif>
 

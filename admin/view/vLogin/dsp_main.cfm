@@ -81,7 +81,7 @@ to your own modified versions of Mura CMS.
 	<dl>
 	<dt>#application.rbFactory.getKeyValue(session.rb,'login.forgetpassword')#</dt>
 	<dd><cfif attributes.status eq 'sendLogin'>
-	  <cfset msg=application.userManager.sendLoginByEmail('#attributes.email#','','#urlencodedformat("#cgi.SERVER_NAME##cgi.SCRIPT_NAME#")#')>
+	  <cfset msg=application.userManager.sendLoginByEmail('#attributes.email#','','#urlencodedformat("#listFirst(cgi.http_host,":")##cgi.SCRIPT_NAME#")#')>
 	<cfif left(msg,2) eq "No">
 	#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"login.noaccountexists"),attributes.email)#		
 	<cfelseif left(msg,4) eq "Your">

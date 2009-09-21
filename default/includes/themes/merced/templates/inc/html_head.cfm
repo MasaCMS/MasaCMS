@@ -21,7 +21,7 @@
 
 	<cfset rs=application.feedManager.getFeeds(request.siteID,'Local',true,true) />
 	<cfloop query="rs">
-	<link rel="alternate" type="application/rss+xml" title="#HTMLEditFormat(renderer.getSite().getSite())# - #rs.name#" href="#XMLFormat('http://#cgi.server_name##application.configBean.getContext()#/tasks/feed/?feedID=#rs.feedID#')#" />
+	<link rel="alternate" type="application/rss+xml" title="#HTMLEditFormat(renderer.getSite().getSite())# - #rs.name#" href="#XMLFormat('http://#listFirst(cgi.http_host,":")##application.configBean.getContext()#/tasks/feed/?feedID=#rs.feedID#')#" />
 	</cfloop>
 
 </head>

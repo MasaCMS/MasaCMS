@@ -77,7 +77,7 @@ to your own modified versions of Mura CMS.
 	<cfset Session.moduleid = attributes.moduleid>
 </cfif>
 
-<cfif application.configBean.getAdminDomain() neq '' and application.configBean.getAdminDomain() neq cgi.SERVER_NAME and attributes.compactDisplay eq '' and attributes.closeCompactDisplay eq ''>
+<cfif application.configBean.getAdminDomain() neq '' and application.configBean.getAdminDomain() neq listFirst(cgi.http_host,":") and attributes.compactDisplay eq '' and attributes.closeCompactDisplay eq ''>
 	<cflocation url="#application.configBean.getContext()#/" addtoken="false">
 </cfif>
 
@@ -149,7 +149,7 @@ to your own modified versions of Mura CMS.
 			<cfset page='#cgi.script_name#?#cgi.QUERY_STRING#'>
 	</cfif>
 	
-	<cflocation addtoken="false" url="https://#cgi.SERVER_NAME##page#">
+	<cflocation addtoken="false" url="https://#listFirst(cgi.http_host,":")##page#">
 </cfif>
 
 <cfset application.rbFactory.setAdminLocale(session)>

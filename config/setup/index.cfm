@@ -270,7 +270,7 @@ to your own modified versions of Mura CMS.
 						UPDATE 
 							tsettings
 						SET
-							domain = '#cgi.server_name#',
+							domain = '#listFirst(cgi.http_host,":")#',
 							theme = 'merced',
 							gallerySmallScaleBy='s',
 							gallerySmallScale=80,

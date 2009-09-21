@@ -278,13 +278,13 @@ COMMENT:
 #getComments()#
 
 Approve
-http://#cgi.SERVER_NAME##variables.configBean.getServerPort()##variables.configBean.getContext()#/#getSiteID()#/index.cfm/#variables.utility.createRedirectID(arguments.contentRenderer.getCurrentURL(true,"approvedcommentID=#getCommentID()#"))#
+http://#listFirst(cgi.http_host,":")##variables.configBean.getServerPort()##variables.configBean.getContext()#/#getSiteID()#/index.cfm/#variables.utility.createRedirectID(arguments.contentRenderer.getCurrentURL(true,"approvedcommentID=#getCommentID()#"))#
 
 Delete
-http://#cgi.SERVER_NAME##variables.configBean.getServerPort()##variables.configBean.getContext()#/#getSiteID()#/index.cfm/#variables.utility.createRedirectID(arguments.contentRenderer.getCurrentURL(true,"deletecommentID=#getCommentID()#"))#
+http://#listFirst(cgi.http_host,":")##variables.configBean.getServerPort()##variables.configBean.getContext()#/#getSiteID()#/index.cfm/#variables.utility.createRedirectID(arguments.contentRenderer.getCurrentURL(true,"deletecommentID=#getCommentID()#"))#
 
 View 
-http://#cgi.SERVER_NAME##variables.configBean.getServerPort()##variables.configBean.getContext()#/#getSiteID()#/index.cfm/#variables.utility.createRedirectID(arguments.contentRenderer.getCurrentURL())#
+http://#listFirst(cgi.http_host,":")##variables.configBean.getServerPort()##variables.configBean.getContext()#/#getSiteID()#/index.cfm/#variables.utility.createRedirectID(arguments.contentRenderer.getCurrentURL())#
 </cfoutput></cfsavecontent>
 
 <cfelse>

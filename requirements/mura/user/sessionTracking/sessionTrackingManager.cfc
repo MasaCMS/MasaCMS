@@ -69,7 +69,7 @@ to your own modified versions of Mura CMS.
 			<cfset variables.sessionTrackingDAO.trackRequest(session.REMOTE_ADDR,
 																	arguments.SCRIPT_NAME,
 																	cgi.QUERY_STRING,
-																	cgi.SERVER_NAME,
+																	listFirst(cgi.http_host,":"),
 																	cgi.HTTP_REFERER,
 																	cgi.USER_AGENT,
 																	arguments.keywords,

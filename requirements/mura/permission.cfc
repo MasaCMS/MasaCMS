@@ -322,7 +322,7 @@ to your own modified versions of Mura CMS.
 			<cfset r.hasModuleAccess=0 />
 			
 			<cfif not session.mura.isLoggedIn >
-				<cfif cgi.HTTP_USER_AGENT eq 'vspider' and cgi.SERVER_NAME eq 'LOCALHOST' >
+				<cfif cgi.HTTP_USER_AGENT eq 'vspider' and listFirst(cgi.http_host,":") eq 'LOCALHOST' >
 					<cfreturn r>
 				</cfif>
 				<cfset r.loggedIn=0>

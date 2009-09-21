@@ -1380,9 +1380,9 @@ to your own modified versions of Mura CMS.
 	
 	<cfif arguments.complete>
 		<cfif cgi.https eq 'On'>
-			<cfset host='https://#cgi.SERVER_NAME##application.configBean.getServerPort()#'>
+			<cfset host='https://#listFirst(cgi.http_host,":")##application.configBean.getServerPort()#'>
 		<cfelse>
-			<cfset host='http://#cgi.SERVER_NAME##application.configBean.getServerPort()#'>
+			<cfset host='http://#listFirst(cgi.http_host,":")##application.configBean.getServerPort()#'>
 		</cfif>
 	</cfif>
 	

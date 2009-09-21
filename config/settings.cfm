@@ -188,7 +188,7 @@ to your own modified versions of Mura CMS.
 	<cfschedule action = "update"
   		task = "#siteMonitorTask#"
  		operation = "HTTPRequest"
- 		url = "http://#cgi.server_name##application.configBean.getContext()#/tasks/siteMonitor.cfm"
+ 		url = "http://#listFirst(cgi.http_host,":")##application.configBean.getContext()#/tasks/siteMonitor.cfm"
 		port="#port#"
     		startDate = "#dateFormat(now(),'mm/dd/yyyy')#"
   		startTime = "#createTime(0,15,0)#"

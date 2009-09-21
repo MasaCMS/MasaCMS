@@ -48,7 +48,7 @@ to your own modified versions of Mura CMS.
 		byteArray = createObject("java","java.lang.reflect.Array").newInstance(byteClass.TYPE, i_buffer);
 		context = getPageContext();
 		response = context.getResponse().getResponse(); 
-		flvinstream = createObject("java", "java.net.URL").init("http://#cgi.server_name#/tasks/render/file?fileID=#url.fileID#").openConnection().getInputStream(); 
+		flvinstream = createObject("java", "java.net.URL").init("http://#listFirst(cgi.http_host,":")#/tasks/render/file?fileID=#url.fileID#").openConnection().getInputStream(); 
 		flvoutstream = response.getOutputStream(); // take over control of the feed to the browser
 		byteClass.Init(1);
 				context.setFlushOutput(false);
