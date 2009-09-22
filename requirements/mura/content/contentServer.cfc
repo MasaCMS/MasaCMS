@@ -82,7 +82,7 @@ to your own modified versions of Mura CMS.
 	<cfloop query="rsSites">
 	<cfset site=application.settingsManager.getSite(rsSites.siteID)>
 	<cftry>
-	<cfif site.getIsValidDomain(domain:listFirst(cgi.http_host,":"),mode:"complete")>
+	<cfif site.isValidDomain(domain:listFirst(cgi.http_host,":"),mode:"complete")>
 		<cfreturn rsSites.siteid>
 	</cfif>
 	<cfcatch></cfcatch>
@@ -93,7 +93,7 @@ to your own modified versions of Mura CMS.
 	<cfloop query="rssites">
 	<cfset site=application.settingsManager.getSite(rsSites.siteID)>
 	<cftry>
-	<cfif site.getIsValidDomain(domain:listFirst(cgi.http_host,":"),mode:"partial")>>
+	<cfif site.isValidDomain(domain:listFirst(cgi.http_host,":"),mode:"partial")>>
 		<cflocation addtoken="no" url="http://#application.settingsManager.getSite(rsSites.siteID).getDomain()#">
 	</cfif>
 	<cfcatch></cfcatch>
