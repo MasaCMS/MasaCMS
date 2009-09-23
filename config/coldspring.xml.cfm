@@ -180,6 +180,9 @@ to your own modified versions of Mura CMS.
 				<entry key="dashboard">
 					<value>#XMLFormat(GetProfileString("#variables.iniPath#", mode, "dashboard"))#</value>
 				</entry>
+				<entry key="sortPermission">
+					<value>#XMLFormat(GetProfileString("#variables.iniPath#", mode, "sortPermission"))#</value>
+				</entry>
 				</map>
 			</constructor-arg>
 		</bean>

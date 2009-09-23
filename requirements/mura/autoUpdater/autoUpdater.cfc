@@ -65,7 +65,7 @@ to your own modified versions of Mura CMS.
 <cfset var diff="">
 
 <cfif isUserInRole('S2')>
-	
+	<cflock type="exclusive" name="autoUpdate#arguments.siteid#" timeout="600">
 	<cfif len(arguments.siteID) >
 		<cfset baseDir=baseDir & "/#arguments.siteid#">
 		<cfset versionDir=versionDir & "/#arguments.siteid#">
@@ -130,6 +130,7 @@ to your own modified versions of Mura CMS.
 	<cfdirectory action="delete" directory="#currentDir##zipFileName#" recurse="true">
 	<cffile action="delete" file="#currentDir##zipFileName#.zip" >
 	<cffile action="write" file="#versionDir#/version.cfm" output="<cfabort>:#updateVersion#">
+	</cflock>
 <cfelse>
 	<cfthrow message="The current user does not have permission to update Mura">
 </cfif>

@@ -180,7 +180,11 @@ to your own modified versions of Mura CMS.
 	</cfif>
 	
 	<cfif structKeyExists(config,"productionAssetDir")>
-	<cfset setProductionAssetDir(config.productionAssetDir)/>
+		<cfset setProductionAssetDir(config.productionAssetDir)/>
+	</cfif>
+	
+	<cfif structKeyExists(config,"sortPermission")>
+		<cfset setSortPermission(config.sortPermission)/>
 	</cfif>
 	
 	<cfswitch expression="#server.coldfusion.productName#">
@@ -783,5 +787,14 @@ to your own modified versions of Mura CMS.
 <cffunction name="setAppreloadKey" access="public" output="false">
 	<cfargument name="AppreloadKey" type="String" />
 	<cfset variables.instance.appreloadKey = arguments.appreloadKey />
+</cffunction>
+
+<cffunction name="getSortPermission" returntype="String" access="public" output="false">
+	<cfreturn variables.instance.sortPermission />
+</cffunction>
+
+<cffunction name="setSortPermission" access="public" output="false">
+	<cfargument name="sortPermission" type="String" />
+	<cfset variables.instance.sortPermission = arguments.sortPermission />
 </cffunction>
 </cfcomponent>

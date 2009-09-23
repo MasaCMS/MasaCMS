@@ -58,7 +58,7 @@ to your own modified versions of Mura CMS.
 <cfparam name="session.copyContentID" default="">
 <cfparam name="session.copySiteID" default="">
 
-<cfif isdefined('attributes.orderperm') and attributes.orderperm eq 'editor'>
+<cfif isdefined('attributes.orderperm') and (attributes.orderperm eq 'editor' or (attributes.orderperm eq 'author' and application.configBean.getSortPermission() eq "author"))>
 <cflock type="exclusive" name="editingContent#attributes.siteid#" timeout="60">
 
 <cfif isdefined('attributes.orderid') >
