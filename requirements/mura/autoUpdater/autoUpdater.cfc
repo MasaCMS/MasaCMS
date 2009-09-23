@@ -130,6 +130,8 @@ to your own modified versions of Mura CMS.
 	<cfdirectory action="delete" directory="#currentDir##zipFileName#" recurse="true">
 	<cffile action="delete" file="#currentDir##zipFileName#.zip" >
 	<cffile action="write" file="#versionDir#/version.cfm" output="<cfabort>:#updateVersion#">
+<cfelse>
+	<cfthrow message="The current user does not have permission to update Mura">
 </cfif>
 
 </cffunction>
