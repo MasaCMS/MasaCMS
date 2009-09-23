@@ -40,9 +40,12 @@ for your modified version; it is your choice whether to do so, or to make such m
 the GNU General Public License version 2  without this exception.  You may, if you choose, apply this exception
 to your own modified versions of Mura CMS.
 --->
-
+<cfparam name="attributes.action" default="">
 <h2>Site Settings</h2>
-
+<ul id="navTask"
+<li><a href="index.cfm?fuseaction=cSettings.list&action=updateCore" onclick="return confirm('WARNING: Do not update your core files unless you have backed up your current Mura install.');">Update Core Files</a></li>
+</ul>
+<cfif attributes.action neq 'updateCore'>
 <div id="page_tabView">
 <div class="page_aTab">
 <br/>
@@ -117,3 +120,7 @@ Upload New Plugin<br/>
 <cfoutput><script type="text/javascript">
 initTabs(Array("Current Sites","Plugins"),#attributes.activeTab#,0,0);
 </script></cfoutput>
+<cfelse>
+<cfset application.autoUpdater.update()>
+<p>Your core files have been updated.</a>
+</cfif>

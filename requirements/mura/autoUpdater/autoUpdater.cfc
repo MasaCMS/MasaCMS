@@ -95,6 +95,9 @@ to your own modified versions of Mura CMS.
 						extractPath: "#currentDir##zipFileName#")>
 	
 	<cfif len(arguments.siteID)>
+		<cfquery name="rs" dbType="query">
+		select * from rs where entry not like 'trunk/www/default/includes/themes%'
+		</cfquery>
 		<cfloop query="rs">
 			<cfif not listFind("contentRenderer.cfc,eventHandler.cfc,servlet.cfc,loginHandler.cfc",listLast(rs.entry,"/"))>
 				<cfset destination="#baseDir##right(rs.entry,len(rs.entry)-trimLen)#">

@@ -43,14 +43,22 @@ to your own modified versions of Mura CMS.
 <cfsilent>
  <cfset rsThemes=request.siteBean.getThemes() />
  <cfset rsSites=application.settingsManager.getList() />
+ <cfparam name="attributes.action" default="">
 </cfsilent>
 <h2>Site Settings</h2>
 <cfoutput>
 <cfif len(attributes.siteid)>
 <ul id="navTask"
 <li><a href="index.cfm?fuseaction=cExtend.listSubTypes&siteid=#attributes.siteid#">Class Extension Manager</a></li>
+<cfif attributes.action eq "updateFiles">
+<li><a href="index.cfm?fuseaction=cSettings.editSite&siteid=#attributes.siteid#">Edit Site</a></li>
+<cfelse>
+<li><a href="index.cfm?fuseaction=cSettings.editSite&siteid=#attributes.siteid#&action=updateFiles" onclick="return confirm('WARNING: Do not update your site files unless you have backed up your current siteID directory.');">Update Site Files</a></li>
+</cfif>
 </ul></cfif>
-
+</cfoutput>
+<cfif attributes.action neq "updateFiles">
+<cfoutput>
   <form method ="post" action="index.cfm?fuseaction=cSettings.updateSite" name="form1"  onsubmit="return validate(this);">
   
 <cfhtmlhead text='<link rel="stylesheet" href="css/tab-view.css" type="text/css" media="screen">'>
@@ -489,3 +497,7 @@ to your own modified versions of Mura CMS.
 <script type="text/javascript">
 initTabs(Array('Basic','Contact Info','Shared Resources','Modules','Email','Images (Galleries)','Extranet','Display Regions'),0,0,0);
 </script>
+<cfelse>
+<cfset application.autoUpdater.update(attributes.siteID)>
+<p>Your site's files have been updated.</a>
+</cfif>
