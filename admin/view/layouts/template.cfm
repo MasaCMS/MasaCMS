@@ -195,6 +195,7 @@ if (top.location != self.location) {
 	</select>	
 <cfinclude template="dsp_secondary_menu_main.cfm">
 </cfif>
+<cfif session.mura.isLoggedIn>
 <p id="copyright"><!--- &copy; 2001-#year(now())#<br /> --->
 Core Version #application.autoUpdater.getCurrentCompleteVersion()#<br />
 Site Version #application.autoUpdater.getCurrentCompleteVersion(session.siteid)#<br /><br />
@@ -207,7 +208,7 @@ Never
 </cfcatch>
 </cftry>
 </cfif>
-</p></div>
+</p></cfif></div>
 <div id="content">#fusebox.layout#
 </div></div>
 <script type="text/javascript" language="javascript">
