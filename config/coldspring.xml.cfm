@@ -597,6 +597,9 @@ to your own modified versions of Mura CMS.
 				</list>
 			</constructor-arg>
 		</bean>
+		<bean id="autoUpdater" class="mura.autoUpdater.autoUpdater" singleton="true">
+			<constructor-arg name="configBean"><ref bean="configBean" /></constructor-arg>
+		</bean>
 		<cfinclude template="coldspring.custom.xml.cfm">
 	</beans></cfoutput>
 	</cfsavecontent>

@@ -361,7 +361,22 @@ to your own modified versions of Mura CMS.
 	<cfset var redirectID = createUUID()/>
 	<cfset var rsEmail = "" />
 	<cfset var mailText="" >
+	<cfset var crumbStr="" >
+	<cfset var crumbData="" >
+	<cfset var c = "" />
 	
+	<cfif listFind("Portal,Page,Calendar,Gallery,Link,File",arguments.contentBean.getType()) and arguments.contentBean.getContentID() neq '00000000000000000000000000000000001'>
+		<cfset crumbData=getServiceFactory().getBean('contentGateway').getCrumblist(arguments.contentBean.getParentID(),arguments.contentBean.getSiteID())>
+		<cfset crumbStr=crumbData[arrayLen(crumbData)].menutitle />
+		<cfif arrayLen(crumbData) gt 1>
+			<cfloop from="#evaluate(arrayLen(crumbData)-1)#" to="1" index="c" step="-1">
+				<cfset crumbStr=crumbStr & " > " & crumbData[c].menutitle>
+			</cfloop>
+		</cfif>
+		<cfset crumbStr= crumbStr & " > " & arguments.contentBean.getMenuTitle()>
+	<cfelseif arguments.contentBean.getContentID() eq '00000000000000000000000000000000001'>
+		<cfset crumbStr=arguments.contentBean.getMenuTitle()>
+	</cfif>
 	
 	<cfquery name="rsList" datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	select userID, email, fname, lname from tusers where userid
@@ -400,15 +415,19 @@ to your own modified versions of Mura CMS.
 		<cfif rsList.email neq ''>
 <cfsavecontent variable="mailText"><cfoutput>
 #arguments.data.message#
-						
-Review Link:
+
+TITLE: #arguments.contentBean.getTitle()#
+TYPE: #arguments.contentBean.getType()# / #arguments.contentBean.getSubType()#<cfif len(crumbStr)>
+LOCATION: #crumbStr#</cfif>
+AUTHOR: #arguments.contentBean.getLastUpdateBy()#						
+REVIEW LINK:
 http://#listFirst(cgi.http_host,":")##variables.configBean.getServerPort()##variables.configBean.getContext()##variables.contentRenderer.getURLStem(arguments.contentBean.getSiteID(),redirectID)#
 </cfoutput></cfsavecontent>
 		
 		<cfset variables.mailer.sendText(mailText,
 				rsList.email,
 				"#rsemail.fname# #rsemail.lname#",
-				"Site Content Review",
+				"Site Content Review for #UCase(variables.settingsManager.getSite(arguments.contentBean.getSiteID()).getDomain())#",
 				contentBean.getSiteID(),
 				rsemail.email) />
 		</cfif>
@@ -423,14 +442,18 @@ http://#listFirst(cgi.http_host,":")##variables.configBean.getServerPort()##vari
 		<cfif rsList.email neq ''>
 <cfsavecontent variable="mailText"><cfoutput>
 #arguments.data.message#
-						
-Review Link:
+
+TITLE: #arguments.contentBean.getTitle()#
+TYPE: #arguments.contentBean.getType()# / #arguments.contentBean.getSubType()#<cfif len(crumbStr)>
+LOCATION: #crumbStr#</cfif>
+AUTHOR: #arguments.contentBean.getLastUpdateBy()#							
+REVIEW LINK:
 http://#listFirst(cgi.http_host,":")##variables.configBean.getServerPort()##variables.configBean.getContext()##variables.contentRenderer.getURLStem(arguments.contentBean.getSiteID(),redirectID)#
 </cfoutput></cfsavecontent>
 		<cfset variables.mailer.sendText(mailText,
 				rsList.email,
 				variables.settingsManager.getSite(arguments.contentBean.getsiteid()).getMailServerUsernameEmail(),
-				"Site Content Review",
+				"Site Content Review for #Ucase(variables.settingsManager.getSite(arguments.contentBean.getSiteID()).getDomain())#",
 				request.siteid) />
 		</cfif>
 

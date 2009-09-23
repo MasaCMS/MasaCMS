@@ -49,7 +49,7 @@
 			<cfset rs=variables.pluginManager.getScripts(arguments.key & variables.class,variables.siteid)>
 			<cfset super.set( checkKey, rs.recordcount ) />
 			<cfif rs.recordcount>
-				<cfset super.set( key, variables.pluginManager.getComponent("plugins.#rs.package#.#rs.scriptfile#", rs.pluginID, variables.siteID, rs.docache) )>
+				<cfset super.set( key, variables.pluginManager.getComponent("plugins.#rs.directory#.#rs.scriptfile#", rs.pluginID, variables.siteID, rs.docache) )>
 			</cfif>
 		</cfif>
 		

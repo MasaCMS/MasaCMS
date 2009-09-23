@@ -819,7 +819,7 @@ to your own modified versions of Mura CMS.
 	<cfquery name="rspre" datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	SELECT DISTINCT tmodule.Title AS module, active.ModuleID, active.SiteID, active.ParentID, active.Type, active.subtype, active.MenuTitle, active.Filename, active.ContentID,
 	 tmodule.SiteID, draft.SiteID, active.SiteID, active.targetparams, active.lastUpdate,
-	 active.lastUpdateBy,tfiles.fileExt
+	 draft.lastUpdateBy,tfiles.fileExt
 	FROM tcontent active INNER JOIN tcontent draft ON active.ContentID = draft.ContentID
 	INNER JOIN tcontent tmodule ON draft.ModuleID = tmodule.ContentID
 	INNER JOIN tcontentassignments ON active.contentID=tcontentassignments.contentID
@@ -861,7 +861,7 @@ to your own modified versions of Mura CMS.
 	
 	SELECT DISTINCT tmodule.Title AS module, active.ModuleID, active.SiteID, active.ParentID, active.Type, active.subtype, active.MenuTitle, active.Filename, active.ContentID,
 	 tmodule.SiteID, draft.SiteID, active.SiteID, active.targetparams, active.lastUpdate,
-	 active.lastUpdateBy,tfiles.fileExt
+	 draft.lastUpdateBy,tfiles.fileExt
 	FROM tcontent active INNER JOIN tcontent draft ON active.ContentID = draft.ContentID
 	INNER JOIN tcontent tmodule ON draft.ModuleID = tmodule.ContentID
 	LEFT join tfiles on active.fileID=tfiles.fileID

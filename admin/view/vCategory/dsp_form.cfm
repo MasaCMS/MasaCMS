@@ -115,6 +115,9 @@ to your own modified versions of Mura CMS.
 	</optgroup>
 	</cfif>
 	</select></dd>
+<dt>CategoryID</dt>
+<dd><cfif len(attributes.categoryID) and len(request.categoryBean.getCategoryID())>#request.categoryBean.getCategoryID()#<cfelse>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.notavailable')#</cfif></li>
+</dd>
 <dt>#application.rbFactory.getKeyValue(session.rb,'categorymanager.notes')#</dt>
 <dd><textarea name="notes" class="alt">#HTMLEditFormat(request.categoryBean.getNotes())#</textarea></dd>
 </dl>

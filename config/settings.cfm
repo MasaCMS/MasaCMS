@@ -159,6 +159,7 @@ to your own modified versions of Mura CMS.
 			<cfset application.rbFactory=application.serviceFactory.getBean("resourceBundleFactory") />
 			<cfset application.clusterManager=application.serviceFactory.getBean("clusterManager") />
 			<cfset application.contentServer=application.serviceFactory.getBean("contentServer") />
+			<cfset application.autoUpdater=application.serviceFactory.getBean("autoUpdater") />
 			
 			<cfinclude template="settings.custom.managers.cfm">
 	 	
