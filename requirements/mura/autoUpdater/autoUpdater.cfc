@@ -79,7 +79,13 @@ to your own modified versions of Mura CMS.
 			<cfset versionDir=versionDir & "/config">
 		</cfif>
 		
-		<cfhttp url="http://trac.blueriver.com/mura/changeset?format=zip&old_path=#URLEncodedFormat(svnUpdateDir)#&old=#currentVersion#&new_path=#URLEncodedFormat(svnUpdateDir)#&new=#updateVersion#" result="diff" getasbinary="yes">
+		<cfhttp url="http://trac.blueriver.com/mura/changeset" result="diff" getasbinary="yes">
+		<cfhttpparam type="url" name="format" value="zip">
+		<cfhttpparam type="url" name="old_path" value="#svnUpdateDir#">
+		<cfhttpparam type="url" name="old" value="#currentVersion#">
+		<cfhttpparam type="url" name="new_path" value="#svnUpdateDir#">
+		<cfhttpparam type="url" name="new" value="#updateVersion#">
+		</cfhttp>
 	
 		<cfif not IsBinary(diff.filecontent)>
 			<cfthrow message="The current production version code is currently not available. Please try again later.">
