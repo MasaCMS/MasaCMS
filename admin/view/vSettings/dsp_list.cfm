@@ -42,9 +42,15 @@ to your own modified versions of Mura CMS.
 --->
 <cfparam name="attributes.action" default="">
 <h2>Site Settings</h2>
-<ul id="navTask"
+<ul id="navTask">
+<cfif attributes.action neq 'updateCore'>
 <li><a href="index.cfm?fuseaction=cSettings.list&action=updateCore" onclick="return confirm('WARNING: Do not update your core files unless you have backed up your current Mura install.');">Update Core Files to Latest Version</a></li>
+<cfelse>
+<li><a href="index.cfm?fuseaction=cSettings.list">View Site List</a></li>
+</cfif>
 </ul>
+
+
 <cfif attributes.action neq 'updateCore'>
 <div id="page_tabView">
 <div class="page_aTab">
