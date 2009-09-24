@@ -128,8 +128,19 @@ initTabs(Array("Current Sites","Plugins"),#attributes.activeTab#,0,0);
 </script></cfoutput>
 <cfelse>
 <cftry>
-<cfset application.autoUpdater.update()>
-<p>Your core files have been updated to version <cfoutput>#application.autoUpdater.getCurrentCompleteVersion()#</cfoutput>.</a>
+<cfset updated=application.autoUpdater.update()>
+<cfset files=updated.files>
+<p>Your core files have been updated to version <cfoutput>#application.autoUpdater.getCurrentCompleteVersion()#</cfoutput>.</p>
+<p>
+<strong>Updated Files <cfoutput>(#arrayLen(files)#)</cfoutput></strong><br/>
+<cfif arrayLen(files)>
+<cfoutput>
+<cfloop from="1" to="#arrayLen(files)#" index="i">
+#files[i]#<br/>
+</cfloop>
+</cfoutput>
+</cfif>
+</p>
 <cfcatch>
 <h3>An Error has occured.</h3>
 <cfdump var="#cfcatch.message#"><br/><br/>

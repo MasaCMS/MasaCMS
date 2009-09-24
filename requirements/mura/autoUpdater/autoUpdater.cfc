@@ -58,11 +58,13 @@ to your own modified versions of Mura CMS.
 <cfset var svnUpdateDir="/trunk/www">
 <cfset var zipFileName="global">
 <cfset var zipUtil=createObject("component","mura.Zip")>
-<cfset var rs="">
+<cfset var rs=queryNew("empty")>
 <cfset var trimLen=len(svnUpdateDir)-1>
 <cfset var fileItem="">
 <cfset var currentDir=GetDirectoryFromPath(getCurrentTemplatePath())>
 <cfset var diff="">
+<cfset var returnStruct=structNew()>
+<cfset var updatedArray=arrayNew(1)>
 
 <cfif isUserInRole('S2')>
 	<cfif updateVersion gt currentVersion>
@@ -111,6 +113,7 @@ to your own modified versions of Mura CMS.
 							<cfdirectory action="create" directory="#destination#">
 						</cfif>
 						<cffile action="move" source="#currentDir##zipFileName#/#rs.entry#" destination="#destination#">
+						<cfset arrayAppend(updatedArray,"#currentDir##zipFileName#/#rs.entry#")>
 					</cfif>
 				</cfloop>
 			<cfelse>
@@ -127,6 +130,7 @@ to your own modified versions of Mura CMS.
 							<cfdirectory action="create" directory="#destination#">
 						</cfif>
 						<cffile action="move" source="#currentDir##zipFileName#/#rs.entry#" destination="#destination#">
+						<cfset arrayAppend(updatedArray,"#currentDir##zipFileName#/#rs.entry#")>
 					</cfif>
 				</cfloop>
 				<cfset application.appInitialized=false />
@@ -139,7 +143,9 @@ to your own modified versions of Mura CMS.
 		</cflock>
 	</cfif>
 	
-	<cfreturn updateVersion>
+	<cfset returnStruct.currentVersion=updateVersion/>
+	<cfset returnStruct.files=updatedArray>
+	<cfreturn returnStruct>
 	
 <cfelse>
 	<cfthrow message="The current user does not have permission to update Mura">

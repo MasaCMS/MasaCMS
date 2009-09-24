@@ -499,8 +499,19 @@ initTabs(Array('Basic','Contact Info','Shared Resources','Modules','Email','Imag
 </script>
 <cfelse>
 <cftry>
-<cfset application.autoUpdater.update(attributes.siteID)>
+<cfset updated=application.autoUpdater.update(attributes.siteid)>
+<cfset files=updated.files>
 <p>Your site's files have been updated to version <cfoutput>#application.autoUpdater.getCurrentCompleteVersion(attributes.siteid)#</cfoutput>.</p>
+<p>
+<strong>Updated Files <cfoutput>(#arrayLen(files)#)</cfoutput></strong><br/>
+<cfif arrayLen(files)>
+<cfoutput>
+<cfloop from="1" to="#arrayLen(files)#" index="i">
+#files[i]#<br/>
+</cfloop>
+</cfoutput>
+</cfif>
+</p>
 <cfcatch>
 <h3>An Error has occured.</h3>
 <cfdump var="#cfcatch.message#"><br/><br/>
