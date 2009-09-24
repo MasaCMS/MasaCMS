@@ -53,7 +53,7 @@ to your own modified versions of Mura CMS.
 <cfif attributes.action eq "updateFiles">
 <li><a href="index.cfm?fuseaction=cSettings.editSite&siteid=#attributes.siteid#">Edit Site</a></li>
 <cfelse>
-<li><a href="index.cfm?fuseaction=cSettings.editSite&siteid=#attributes.siteid#&action=updateFiles" onclick="return confirm('WARNING: Do not update your site files unless you have backed up your current siteID directory.');">Update Site Files</a></li>
+<li><a href="index.cfm?fuseaction=cSettings.editSite&siteid=#attributes.siteid#&action=updateFiles" onclick="return confirm('WARNING: Do not update your site files unless you have backed up your current siteID directory.');">Update Site Files to Latest Version</a></li>
 </cfif>
 </ul></cfif>
 </cfoutput>
@@ -498,6 +498,13 @@ to your own modified versions of Mura CMS.
 initTabs(Array('Basic','Contact Info','Shared Resources','Modules','Email','Images (Galleries)','Extranet','Display Regions'),0,0,0);
 </script>
 <cfelse>
+<cftry>
 <cfset application.autoUpdater.update(attributes.siteID)>
-<p>Your site's files have been updated.</a>
+<p>Your site's files have been updated to version <cfoutput>#application.autoUpdater.getCurrentCompleteVersion(attributes.siteid)#</cfoutput>.</p>
+<cfcatch>
+<h3>An Error has occured.</h3>
+<cfdump var="#cfcatch.message#"><br/><br/>
+<cfdump var="#cfcatch.TagContext#">
+</cfcatch>
+</cftry>
 </cfif>

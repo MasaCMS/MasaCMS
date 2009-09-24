@@ -48,7 +48,7 @@ to your own modified versions of Mura CMS.
 	<cfreturn this />
 </cffunction>
 
-<cffunction name="update" output="false" returntype="void" access="public">
+<cffunction name="update" output="false" returntype="any" access="public">
 <cfargument name="siteID" required="true" default="">
 <cfset var baseDir=expandPath("/#variables.configBean.getWebRootMap()#")>
 <cfset var versionDir=expandPath("/#variables.configBean.getWebRootMap()#")>
@@ -65,72 +65,82 @@ to your own modified versions of Mura CMS.
 <cfset var diff="">
 
 <cfif isUserInRole('S2')>
-	<cflock type="exclusive" name="autoUpdate#arguments.siteid#" timeout="600">
-	<cfif len(arguments.siteID) >
-		<cfset baseDir=baseDir & "/#arguments.siteid#">
-		<cfset versionDir=versionDir & "/#arguments.siteid#">
-		<cfset zipFileName="#arguments.siteid#">
-		<cfset svnUpdateDir="/trunk/www/default">
-		<cfset trimLen=len(svnUpdateDir)-1>
-	<cfelse>
-		<cfset versionDir=versionDir & "/config">
-	</cfif>
-	
-	<cfhttp url="http://trac.blueriver.com/mura/changeset?format=zip&old_path=#URLEncodedFormat(svnUpdateDir)#&old=#currentVersion#&new_path=#URLEncodedFormat(svnUpdateDir)#&new=#updateVersion#" result="diff" getasbinary="yes">
-
-	<cfif not IsBinary(diff.filecontent)>
-		<cfthrow message="The current production version code is currently not available. Please try again later.">
-	</cfif>
-	
-	<cffile action="write" file="#currentDir##zipFileName#.zip" output="#diff.filecontent#">
-	<cfset rs=zipUtil.list("#currentDir##zipFileName#.zip")>
-	
-	<cfif directoryExists("#currentDir##zipFileName#")>
-		<cfdirectory action="delete" directory="#currentDir##zipFileName#" recurse="true">
-	</cfif>
-	
-	<cfdirectory action="create" directory="#currentDir##zipFileName#">
-	
-	<cfset zipUtil.extract(zipFilePath:"#currentDir##zipFileName#.zip",
-						extractPath: "#currentDir##zipFileName#")>
-	
-	<cfif len(arguments.siteID)>
-		<cfquery name="rs" dbType="query">
-		select * from rs where entry not like 'trunk/www/default/includes/themes%'
-		</cfquery>
-		<cfloop query="rs">
-			<cfif not listFind("contentRenderer.cfc,eventHandler.cfc,servlet.cfc,loginHandler.cfc",listLast(rs.entry,"/"))>
-				<cfset destination="#baseDir##right(rs.entry,len(rs.entry)-trimLen)#">
-				<cfset destination=left(destination,len(destination)-len(listLast(destination,"/")))>		
-				<cfif not directoryExists(destination)>
-					<cfdirectory action="create" directory="#destination#">
-				</cfif>
-				<cffile action="move" source="#currentDir##zipFileName#/#rs.entry#" destination="#destination#">
-			</cfif>
-		</cfloop>
-	<cfelse>
-		<cfquery name="rs" dbType="query">
-		select * from rs where entry not like 'trunk/www/default%'
-		</cfquery>
+	<cfif updateVersion gt currentVersion>
+		<cflock type="exclusive" name="autoUpdate#arguments.siteid#" timeout="600">
+		<cfif len(arguments.siteID) >
+			<cfset baseDir=baseDir & "/#arguments.siteid#">
+			<cfset versionDir=versionDir & "/#arguments.siteid#">
+			<cfset zipFileName="#arguments.siteid#">
+			<cfset svnUpdateDir="/trunk/www/default">
+			<cfset trimLen=len(svnUpdateDir)-1>
+		<cfelse>
+			<cfset versionDir=versionDir & "/config">
+		</cfif>
 		
-		<cfloop query="rs">
-			<cfif not listFind("settings.ini.cfm,settings.custom.vars.cfm,settings.custom.managers.cfm,coldspring.custom.xml.cfm",listLast(rs.entry,"/"))>
-				<cfset destination="#baseDir##right(rs.entry,len(rs.entry)-trimLen)#">
-				<cfset destination=left(destination,len(destination)-len(listLast(destination,"/")))>		
-				
-				<cfif not directoryExists(destination)>
-					<cfdirectory action="create" directory="#destination#">
-				</cfif>
-				<cffile action="move" source="#currentDir##zipFileName#/#rs.entry#" destination="#destination#">
+		<cfhttp url="http://trac.blueriver.com/mura/changeset?format=zip&old_path=#URLEncodedFormat(svnUpdateDir)#&old=#currentVersion#&new_path=#URLEncodedFormat(svnUpdateDir)#&new=#updateVersion#" result="diff" getasbinary="yes">
+	
+		<cfif not IsBinary(diff.filecontent)>
+			<cfthrow message="The current production version code is currently not available. Please try again later.">
+		</cfif>
+		
+		<cffile action="write" file="#currentDir##zipFileName#.zip" output="#diff.filecontent#">
+		<cffile action="readBinary" file="#currentDir##zipFileName#.zip" variable="diff">
+		
+		<!--- make sure that there are actually any updates--->
+		<cfif len(diff)>
+			<cfset rs=zipUtil.list("#currentDir##zipFileName#.zip")>
+			
+			<cfif directoryExists("#currentDir##zipFileName#")>
+				<cfdirectory action="delete" directory="#currentDir##zipFileName#" recurse="true">
 			</cfif>
-		</cfloop>
-		<cfset application.appInitialized=false />
+			
+			<cfdirectory action="create" directory="#currentDir##zipFileName#">
+			
+			<cfset zipUtil.extract(zipFilePath:"#currentDir##zipFileName#.zip",
+								extractPath: "#currentDir##zipFileName#")>
+		
+			<cfif len(arguments.siteID)>
+				<cfquery name="rs" dbType="query">
+				select * from rs where entry not like 'trunk/www/default/includes/themes%'
+				</cfquery>
+				<cfloop query="rs">
+					<cfif not listFind("contentRenderer.cfc,eventHandler.cfc,servlet.cfc,loginHandler.cfc",listLast(rs.entry,"/"))>
+						<cfset destination="#baseDir##right(rs.entry,len(rs.entry)-trimLen)#">
+						<cfset destination=left(destination,len(destination)-len(listLast(destination,"/")))>		
+						<cfif not directoryExists(destination)>
+							<cfdirectory action="create" directory="#destination#">
+						</cfif>
+						<cffile action="move" source="#currentDir##zipFileName#/#rs.entry#" destination="#destination#">
+					</cfif>
+				</cfloop>
+			<cfelse>
+				<cfquery name="rs" dbType="query">
+				select * from rs where entry not like 'trunk/www/default%'
+				</cfquery>
+				
+				<cfloop query="rs">
+					<cfif not listFind("settings.ini.cfm,settings.custom.vars.cfm,settings.custom.managers.cfm,coldspring.custom.xml.cfm",listLast(rs.entry,"/"))>
+						<cfset destination="#baseDir##right(rs.entry,len(rs.entry)-trimLen)#">
+						<cfset destination=left(destination,len(destination)-len(listLast(destination,"/")))>		
+						
+						<cfif not directoryExists(destination)>
+							<cfdirectory action="create" directory="#destination#">
+						</cfif>
+						<cffile action="move" source="#currentDir##zipFileName#/#rs.entry#" destination="#destination#">
+					</cfif>
+				</cfloop>
+				<cfset application.appInitialized=false />
+			</cfif>
+			<cfdirectory action="delete" directory="#currentDir##zipFileName#" recurse="true">
+		</cfif>
+		
+		<cffile action="delete" file="#currentDir##zipFileName#.zip" >
+		<cffile action="write" file="#versionDir#/version.cfm" output="<cfabort>:#updateVersion#">
+		</cflock>
 	</cfif>
 	
-	<cfdirectory action="delete" directory="#currentDir##zipFileName#" recurse="true">
-	<cffile action="delete" file="#currentDir##zipFileName#.zip" >
-	<cffile action="write" file="#versionDir#/version.cfm" output="<cfabort>:#updateVersion#">
-	</cflock>
+	<cfreturn updateVersion>
+	
 <cfelse>
 	<cfthrow message="The current user does not have permission to update Mura">
 </cfif>

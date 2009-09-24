@@ -43,7 +43,7 @@ to your own modified versions of Mura CMS.
 <cfparam name="attributes.action" default="">
 <h2>Site Settings</h2>
 <ul id="navTask"
-<li><a href="index.cfm?fuseaction=cSettings.list&action=updateCore" onclick="return confirm('WARNING: Do not update your core files unless you have backed up your current Mura install.');">Update Core Files</a></li>
+<li><a href="index.cfm?fuseaction=cSettings.list&action=updateCore" onclick="return confirm('WARNING: Do not update your core files unless you have backed up your current Mura install.');">Update Core Files to Latest Version</a></li>
 </ul>
 <cfif attributes.action neq 'updateCore'>
 <div id="page_tabView">
@@ -121,6 +121,13 @@ Upload New Plugin<br/>
 initTabs(Array("Current Sites","Plugins"),#attributes.activeTab#,0,0);
 </script></cfoutput>
 <cfelse>
+<cftry>
 <cfset application.autoUpdater.update()>
-<p>Your core files have been updated.</a>
+<p>Your core files have been updated to version <cfoutput>#application.autoUpdater.getCurrentCompleteVersion()#</cfoutput>.</a>
+<cfcatch>
+<h3>An Error has occured.</h3>
+<cfdump var="#cfcatch.message#"><br/><br/>
+<cfdump var="#cfcatch.TagContext#">
+</cfcatch>
+</cftry>
 </cfif>
