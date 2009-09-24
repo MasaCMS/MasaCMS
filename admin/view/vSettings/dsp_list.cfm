@@ -44,7 +44,7 @@ to your own modified versions of Mura CMS.
 <h2>Site Settings</h2>
 <ul id="navTask">
 <cfif attributes.action neq 'updateCore'>
-<li><a href="index.cfm?fuseaction=cSettings.list&action=updateCore" onclick="return confirm('WARNING: Do not update your core files unless you have backed up your current Mura install.');">Update Core Files to Latest Version</a></li>
+<li><a href="index.cfm?fuseaction=cSettings.list&action=updateCore" onclick="return confirm('WARNING: Do not update your core files unless you have backed up your current Mura install.\n\nIf your are using MSSQL you must uncheck Maintain Connections in your CF administrator datasource settings before proceeding. You may turn it back on after the update is complete.');">Update Core Files to Latest Version</a></li>
 <cfelse>
 <li><a href="index.cfm?fuseaction=cSettings.list">View Site List</a></li>
 </cfif>
