@@ -52,40 +52,5 @@ to your own modified versions of Mura CMS.
 	<cfreturn this />
 </cffunction>
 
-
-<cffunction name="setValue" returntype="any" access="public" output="false">
-<cfargument name="property"  type="string" required="true">
-<cfargument name="propertyValue" default="" >
-	
-	<cfset variables.properties["#arguments.property#"]=arguments.propertyValue />
-
-</cffunction>
-
-
-<cffunction name="getValue" returntype="any" access="public" output="false">
-<cfargument name="property"  type="string" required="true">
-	
-	<cfif structKeyExists(variables.properties,"#arguments.property#")>
-		<cfreturn variables.properties["#arguments.property#"] />
-	<cfelse>
-		<cfreturn "" />
-	</cfif>
-
-</cffunction>
-
-<cffunction name="getAllValues" returntype="any" access="public" output="false">
-		<cfreturn variables.properties />
-</cffunction>
-
-<cffunction name="valueExists" returntype="any" access="public" output="false">
-	<cfargument name="property" type="string" required="true">
-		<cfreturn structKeyExists(variables.properties,arguments.property) />
-</cffunction>
-
-<cffunction name="removeValue" returntype="void" access="public" output="false">
-	<cfargument name="property" type="string" required="true"/>
-		<cfset structDelete(variables.properties,arguments.property) />
-</cffunction>
-
 </cfcomponent>
 

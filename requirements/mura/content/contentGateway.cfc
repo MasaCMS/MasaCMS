@@ -818,7 +818,7 @@ to your own modified versions of Mura CMS.
 	
 	<cfquery name="rspre" datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	SELECT DISTINCT tmodule.Title AS module, active.ModuleID, active.SiteID, active.ParentID, active.Type, active.subtype, active.MenuTitle, active.Filename, active.ContentID,
-	 tmodule.SiteID, draft.SiteID, active.SiteID, active.targetparams, active.lastUpdate,
+	 tmodule.SiteID, draft.SiteID, active.SiteID, active.targetparams, draft.lastUpdate,
 	 draft.lastUpdateBy,tfiles.fileExt
 	FROM tcontent active INNER JOIN tcontent draft ON active.ContentID = draft.ContentID
 	INNER JOIN tcontent tmodule ON draft.ModuleID = tmodule.ContentID
@@ -830,8 +830,8 @@ to your own modified versions of Mura CMS.
 	<cfif isdate(arguments.startDate)>and active.lastUpdate >=  #createODBCDateTime(createDateTime(year(arguments.startDate),month(arguments.startDate),day(arguments.startDate),0,0,0))#</cfif>
 	GROUP BY tmodule.Title, active.ModuleID, active.SiteID, active.ParentID, active.Type, active.subType,
 	active.MenuTitle, active.Filename, active.ContentID, draft.IsNav, tmodule.SiteID, 
-	draft.SiteID, active.SiteID, active.targetparams, active.lastUpdate,
-	active.lastUpdateBy,tfiles.fileExt
+	draft.SiteID, active.SiteID, active.targetparams, draft.lastUpdate,
+	draft.lastUpdateBy,tfiles.fileExt
 	HAVING tmodule.SiteID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/> AND draft.SiteID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>  AND active.SiteID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
 	
 	union 
@@ -860,7 +860,7 @@ to your own modified versions of Mura CMS.
 	union
 	
 	SELECT DISTINCT tmodule.Title AS module, active.ModuleID, active.SiteID, active.ParentID, active.Type, active.subtype, active.MenuTitle, active.Filename, active.ContentID,
-	 tmodule.SiteID, draft.SiteID, active.SiteID, active.targetparams, active.lastUpdate,
+	 tmodule.SiteID, draft.SiteID, active.SiteID, active.targetparams, draft.lastUpdate,
 	 draft.lastUpdateBy,tfiles.fileExt
 	FROM tcontent active INNER JOIN tcontent draft ON active.ContentID = draft.ContentID
 	INNER JOIN tcontent tmodule ON draft.ModuleID = tmodule.ContentID
@@ -871,8 +871,8 @@ to your own modified versions of Mura CMS.
 	<cfif isdate(arguments.startDate)>and active.lastUpdate >=  #createODBCDateTime(createDateTime(year(arguments.startDate),month(arguments.startDate),day(arguments.startDate),0,0,0))#</cfif>
 	GROUP BY tmodule.Title, active.ModuleID, active.SiteID, active.ParentID, active.Type,active.subType, 
 	active.MenuTitle, active.Filename, active.ContentID, draft.IsNav, tmodule.SiteID, 
-	draft.SiteID, active.SiteID, active.targetparams, active.lastUpdate,
-	active.lastUpdateBy,tfiles.fileExt
+	draft.SiteID, active.SiteID, active.targetparams, draft.lastUpdate,
+	draft.lastUpdateBy,tfiles.fileExt
 	HAVING tmodule.SiteID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>  AND draft.SiteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/> AND active.SiteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
 	
 	union 
