@@ -45,6 +45,7 @@ to your own modified versions of Mura CMS.
 <cffunction name="init" access="public" returntype="any" output="false">
 	<cfargument name="configBean" required="true" default=""/>	
 	<cfset variables.configBean=arguments.configBean />
+	<cfset variables.fileDelim=arguments.configBean.getFileDelim() />
 	<cfreturn this />
 </cffunction>
 
@@ -70,7 +71,7 @@ to your own modified versions of Mura CMS.
 	<cfif updateVersion gt currentVersion>
 		<cflock type="exclusive" name="autoUpdate#arguments.siteid#" timeout="600">
 		<cfif len(arguments.siteID) >
-			<cfset baseDir=baseDir & "/#arguments.siteid#">
+			<cfset baseDir=baseDir & "#variables.fileDelim##arguments.siteid#">
 			<cfset versionDir=versionDir & "/#arguments.siteid#">
 			<cfset zipFileName="#arguments.siteid#">
 			<cfset svnUpdateDir="/trunk/www/default">
@@ -110,36 +111,36 @@ to your own modified versions of Mura CMS.
 			<cfif len(arguments.siteID)>
 				<cfquery name="rs" dbType="query">
 				select * from rs 
-				where entry not like 'trunk/www/default/includes/themes%'
-				and entry not like 'trunk/www/default/includes/email%'
-				and entry not like 'trunk/www/default/includes/templates%'
+				where entry not like 'trunk#variables.fileDelim#www#variables.fileDelim#default#variables.fileDelim#includes#variables.fileDelim#themes%'
+				and entry not like 'trunk#variables.fileDelim#www#variables.fileDelim#default#variables.fileDelim#includes#variables.fileDelim#email%'
+				and entry not like 'trunk#variables.fileDelim#www#variables.fileDelim#default#variables.fileDelim#includes#variables.fileDelim#templates%'
 				</cfquery>
 				<cfloop query="rs">
-					<cfif not listFind("contentRenderer.cfc,eventHandler.cfc,servlet.cfc,loginHandler.cfc",listLast(rs.entry,"/"))>
+					<cfif not listFind("contentRenderer.cfc,eventHandler.cfc,servlet.cfc,loginHandler.cfc",listLast(rs.entry,variables.fileDelim))>
 						<cfset destination="#baseDir##right(rs.entry,len(rs.entry)-trimLen)#">
-						<cfset destination=left(destination,len(destination)-len(listLast(destination,"/")))>		
+						<cfset destination=left(destination,len(destination)-len(listLast(destination,variables.fileDelim)))>		
 						<cfif not directoryExists(destination)>
 							<cfdirectory action="create" directory="#destination#">
 						</cfif>
-						<cffile action="move" source="#currentDir##zipFileName#/#rs.entry#" destination="#destination#">
-						<cfset arrayAppend(updatedArray,"#currentDir##zipFileName#/#rs.entry#")>
+						<cffile action="move" source="#currentDir##zipFileName##variables.fileDelim##rs.entry#" destination="#destination#">
+						<cfset arrayAppend(updatedArray,"#destination##listLast(rs.entry,variables.fileDelim)#")>
 					</cfif>
 				</cfloop>
 			<cfelse>
 				<cfquery name="rs" dbType="query">
-				select * from rs where entry not like 'trunk/www/default%'
+				select * from rs where entry not like 'trunk#variables.fileDelim#www#variables.fileDelim#default%'
 				</cfquery>
 				
 				<cfloop query="rs">
-					<cfif not listFind("settings.ini.cfm,settings.custom.vars.cfm,settings.custom.managers.cfm,coldspring.custom.xml.cfm",listLast(rs.entry,"/"))>
+					<cfif not listFind("settings.ini.cfm,settings.custom.vars.cfm,settings.custom.managers.cfm,coldspring.custom.xml.cfm",listLast(rs.entry,variables.fileDelim))>
 						<cfset destination="#baseDir##right(rs.entry,len(rs.entry)-trimLen)#">
-						<cfset destination=left(destination,len(destination)-len(listLast(destination,"/")))>		
+						<cfset destination=left(destination,len(destination)-len(listLast(destination,variables.fileDelim)))>		
 						
 						<cfif not directoryExists(destination)>
 							<cfdirectory action="create" directory="#destination#">
 						</cfif>
-						<cffile action="move" source="#currentDir##zipFileName#/#rs.entry#" destination="#destination#">
-						<cfset arrayAppend(updatedArray,"#currentDir##zipFileName#/#rs.entry#")>
+						<cffile action="move" source="#currentDir##zipFileName##variables.fileDelim##rs.entry#" destination="#destination#">
+						<cfset arrayAppend(updatedArray,"#destination##listLast(rs.entry,variables.fileDelim)#")>
 					</cfif>
 				</cfloop>
 				<cfset application.appInitialized=false />
@@ -148,7 +149,7 @@ to your own modified versions of Mura CMS.
 		</cfif>
 		
 		<cffile action="delete" file="#currentDir##zipFileName#.zip" >
-		<cffile action="write" file="#versionDir#/version.cfm" output="<cfabort>:#updateVersion#">
+		<cffile action="write" file="#versionDir##variables.fileDelim#version.cfm" output="<cfabort>:#updateVersion#">
 		</cflock>
 	</cfif>
 	
