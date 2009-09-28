@@ -72,10 +72,14 @@ to your own modified versions of Mura CMS.
 	</cffunction>
 	
 	<cffunction name="getToWork" returntype="void">
-		<cfargument name="siteID" type="string" default="" required="true">
+		<cfargument name="fromSiteID" type="string" default="" required="true">
+		<cfargument name="toSiteID" type="string" default="" required="true">
 		<cfargument name="fromDSN" type="string" default="" required="true">
 		<cfargument name="toDSN" type="string" default="" required="true">
+		<cfargument name="mode" type="string" default="publish" required="true">
+		<cfargument name="keyFactory" type="any" required="true">
 	
+		<cfset var keys=arguments.keyFactory/>
 		<cfset var rsContent=""/>
 		<cfset var rsContentObjects=""/>
 		<cfset var rsContentTags=""/>
@@ -99,7 +103,11 @@ to your own modified versions of Mura CMS.
 		<cfset var rstcontentcomments=""/>
 		<cfset var rstcontentratings=""/>
 		<cfset var rstusersinterests=""/>
+		<cfset var rstclassextend=""/>
+		<cfset var rstclassextendsets=""/>
+		<cfset var rstclassextendattributes=""/>
 		<cfset var rstclassextenddata=""/>
+		<cfset var getNewID=""/>
 		<cfset var rstpluginscripts=""/>
 		<cfset var rstplugindisplayobjects=""/>
 		<cfset var rstpluginsettings=""/>		
@@ -107,10 +115,10 @@ to your own modified versions of Mura CMS.
 			
 			<!--- tcontent --->
 			<cfquery datasource="#arguments.toDSN#">
-				delete from tcontent where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteid#"/>
+				delete from tcontent where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.tositeid#"/>
 			</cfquery>
 			<cfquery datasource="#arguments.fromDSN#" name="rsContent">
-				select * from tcontent where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteid#"/> and active = 1
+				select * from tcontent where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.fromsiteid#"/> and active = 1
 			</cfquery>
 			<cfloop query="rsContent">
 				<cfquery datasource="#arguments.toDSN#">
@@ -121,15 +129,15 @@ to your own modified versions of Mura CMS.
 					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(Approved),de(Approved),de(0))#">,
 					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(audience neq '',de('no'),de('yes'))#" value="#audience#">,
 					<cfqueryparam cfsqltype="cf_sql_LONGVARCHAR" null="#iif(Body neq '',de('no'),de('yes'))#" value="#Body#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(ContentHistID neq '',de('no'),de('yes'))#" value="#ContentHistID#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(ContentID neq '',de('no'),de('yes'))#" value="#ContentID#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(contentHistID)#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(contentID)#">,
 					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(Credits neq '',de('no'),de('yes'))#" value="#Credits#">,
 					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(Display),de(Display),de(0))#">,
 					<cfqueryparam cfsqltype="cf_sql_TIMESTAMP" null="#iif(isDate(DisplayStart),de('no'),de('yes'))#" value="#DisplayStart#">,
 					<cfqueryparam cfsqltype="cf_sql_TIMESTAMP" null="#iif(isDate(DisplayStop),de('no'),de('yes'))#" value="#DisplayStop#">,
 					<cfqueryparam cfsqltype="cf_sql_TIMESTAMP" null="#iif(isDate(featureStart),de('no'),de('yes'))#" value="#featureStart#">,
 					<cfqueryparam cfsqltype="cf_sql_TIMESTAMP" null="#iif(isDate(featureStop),de('no'),de('yes'))#" value="#featureStop#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(FileID neq '',de('no'),de('yes'))#" value="#FileID#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(FileID neq '',de('no'),de('yes'))#" value="#keys.get(fileID)#">,
 					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(Filename neq '',de('no'),de('yes'))#" value="#Filename#">,
 					<cfqueryparam cfsqltype="cf_sql_TINYINT" null="no" value="#iif(isNumeric(forceSSL),de(forceSSL),de(0))#">,
 					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(inheritObjects neq '',de('no'),de('yes'))#" value="#inheritObjects#">,
@@ -148,7 +156,7 @@ to your own modified versions of Mura CMS.
 					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(nextN),de(nextN),de(0))#">,
 					<cfqueryparam cfsqltype="cf_sql_LONGVARCHAR" null="#iif(Notes neq '',de('no'),de('yes'))#" value="#Notes#">,
 					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(OrderNo),de(OrderNo),de(0))#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(ParentID neq '',de('no'),de('yes'))#" value="#ParentID#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(parentID)#">,
 					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(displayTitle),de(displayTitle),de(0))#">,
 					<cfqueryparam cfsqltype="cf_sql_TIMESTAMP" null="#iif(isDate(ReleaseDate),de('no'),de('yes'))#" value="#ReleaseDate#">,
 					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(RemoteID neq '',de('no'),de('yes'))#" value="#RemoteID#">,
@@ -163,7 +171,7 @@ to your own modified versions of Mura CMS.
 					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(Restricted),de(Restricted),de(0))#">,
 					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(RestrictGroups neq '',de('no'),de('yes'))#" value="#RestrictGroups#">,
 					<cfqueryparam cfsqltype="cf_sql_TINYINT" null="no" value="#iif(isNumeric(searchExclude),de(searchExclude),de(0))#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(SiteID neq '',de('no'),de('yes'))#" value="#SiteID#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#arguments.toSiteID#">,
 					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(sortBy neq '',de('no'),de('yes'))#" value="#sortBy#">,
 					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(sortDirection neq '',de('no'),de('yes'))#" value="#sortDirection#">,
 					<cfqueryparam cfsqltype="cf_sql_LONGVARCHAR" null="#iif(Summary neq '',de('no'),de('yes'))#" value="#Summary#">,
@@ -184,10 +192,10 @@ to your own modified versions of Mura CMS.
 			</cfloop>
 			<!--- tcontentobjects --->
 			<cfquery datasource="#arguments.toDSN#">
-				delete from tcontentobjects where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteid#"/>
+				delete from tcontentobjects where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.tositeid#"/>
 			</cfquery>
 			<cfquery datasource="#arguments.fromDSN#" name="rsContentObjects">
-				select * from tcontentobjects where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteid#"/>
+				select * from tcontentobjects where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.fromsiteid#"/>
 			</cfquery>
 			<cfloop query="rsContentObjects">
 				<cfquery datasource="#arguments.toDSN#">
@@ -195,32 +203,32 @@ to your own modified versions of Mura CMS.
 					values
 					(
 					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(ColumnID),de(ColumnID),de(0))#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(ContentHistID neq '',de('no'),de('yes'))#" value="#ContentHistID#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(ContentID neq '',de('no'),de('yes'))#" value="#ContentID#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(contentHistID)#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(contentID)#">,
 					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(Name neq '',de('no'),de('yes'))#" value="#Name#">,
 					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(Object neq '',de('no'),de('yes'))#" value="#Object#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(ObjectID neq '',de('no'),de('yes'))#" value="#ObjectID#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(ObjectID neq '',de('no'),de('yes'))#" value="#keys.get(objectID)#">,
 					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(OrderNo),de(OrderNo),de(0))#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(SiteID neq '',de('no'),de('yes'))#" value="#SiteID#">
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#arguments.toSiteID#">
 					)
 				</cfquery>
 			</cfloop>
 			
 			<!--- tcontenttags --->
 			<cfquery datasource="#arguments.toDSN#">
-				delete from tcontenttags where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteid#"/>
+				delete from tcontenttags where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.tositeid#"/>
 			</cfquery>
 			<cfquery datasource="#arguments.fromDSN#" name="rsContentTags">
-				select * from tcontenttags where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteid#"/>
+				select * from tcontenttags where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.fromsiteid#"/>
 			</cfquery>
 			<cfloop query="rsContentTags">
 				<cfquery datasource="#arguments.toDSN#">
 					insert into tcontenttags (ContentHistID,ContentID,siteID,tag)
 					values
 					(
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(ContentHistID neq '',de('no'),de('yes'))#" value="#ContentHistID#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(ContentID neq '',de('no'),de('yes'))#" value="#ContentID#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(siteID neq '',de('no'),de('yes'))#" value="#siteID#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(contentHistID)#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(contentID)#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#arguments.tositeID#">,
 					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(tag neq '',de('no'),de('yes'))#" value="#tag#">
 					)
 				</cfquery>
@@ -228,10 +236,10 @@ to your own modified versions of Mura CMS.
 			
 			<!--- tsystemobjects--->
 			<cfquery datasource="#arguments.toDSN#">
-				delete from tsystemobjects where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteid#"/>
+				delete from tsystemobjects where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.tositeid#"/>
 			</cfquery>
 			<cfquery datasource="#arguments.fromDSN#" name="rsSystemObjects">
-				select * from tsystemobjects where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteid#"/>
+				select * from tsystemobjects where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.fromsiteid#"/>
 			</cfquery>
 			<cfloop query="rsSystemObjects">
 				<cfquery datasource="#arguments.toDSN#">
@@ -241,34 +249,34 @@ to your own modified versions of Mura CMS.
 					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(Name neq '',de('no'),de('yes'))#" value="#Name#">,
 					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(Object neq '',de('no'),de('yes'))#" value="#Object#">,
 					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(OrderNo),de(OrderNo),de(0))#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(SiteID neq '',de('no'),de('yes'))#" value="#SiteID#">
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR"  value="#arguments.toSiteID#">
 					)
 				</cfquery>
 			</cfloop>
 			
 			<!--- tpermissions--->
 			<cfquery datasource="#arguments.toDSN#">
-				delete from tpermissions where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteid#"/>
+				delete from tpermissions where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.tositeid#"/>
 			</cfquery>
 			<cfquery datasource="#arguments.fromDSN#" name="rsTPermissions">
-				select * from tpermissions where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteid#"/>
+				select * from tpermissions where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.fromsiteid#"/>
 			</cfquery>
 			<cfloop query="rsTPermissions">
 				<cfquery datasource="#arguments.toDSN#">
 					insert into tpermissions (contentID,groupID,Type,SiteID)
 					values
 					(
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(contentID neq '',de('no'),de('yes'))#" value="#contentID#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(groupID neq '',de('no'),de('yes'))#" value="#groupID#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(contentID)#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(groupID)#">,
 					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(type neq '',de('no'),de('yes'))#" value="#type#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(SiteID neq '',de('no'),de('yes'))#" value="#SiteID#">
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#arguments.toSiteID#">
 					)
 				</cfquery>
 			</cfloop>
 			
 			<!--- tadcampaigns --->
 			<cfquery datasource="#arguments.fromDSN#" name="rsSettings">
-				select advertiserUserPoolID from tsettings where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteid#"/>
+				select advertiserUserPoolID from tsettings where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.fromsiteid#"/>
 			</cfquery>
 			<cfquery datasource="#arguments.toDSN#">
 				delete from tadcampaigns
@@ -289,7 +297,7 @@ to your own modified versions of Mura CMS.
 					insert into tadcampaigns (campaignID,dateCreated,endDate,isActive,lastUpdate,lastUpdateBy,name,notes,startDate,userID)
 					values
 					(
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(campaignID neq '',de('no'),de('yes'))#" value="#campaignID#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(campaignID)#">,
 					<cfqueryparam cfsqltype="cf_sql_TIMESTAMP" null="#iif(isDate(dateCreated),de('no'),de('yes'))#" value="#dateCreated#">,
 					<cfqueryparam cfsqltype="cf_sql_TIMESTAMP" null="#iif(isDate(endDate),de('no'),de('yes'))#" value="#endDate#">,
 					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(isActive),de(isActive),de(0))#">,
@@ -323,10 +331,10 @@ to your own modified versions of Mura CMS.
 					values
 					(
 					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(altText neq '',de('no'),de('yes'))#" value="#altText#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(creativeID neq '',de('no'),de('yes'))#" value="#creativeID#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(creativeID)#">,
 					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(creativeType neq '',de('no'),de('yes'))#" value="#creativeType#">,
 					<cfqueryparam cfsqltype="cf_sql_TIMESTAMP" null="#iif(isDate(dateCreated),de('no'),de('yes'))#" value="#dateCreated#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(fileID neq '',de('no'),de('yes'))#" value="#fileID#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(fileID neq '',de('no'),de('yes'))#" value="#keys.get(fileID)#">,
 					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(height),de(height),de(0))#">,
 					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(isActive),de(isActive),de(0))#">,
 					<cfqueryparam cfsqltype="cf_sql_TIMESTAMP" null="#iif(isDate(lastUpdate),de('no'),de('yes'))#" value="#lastUpdate#">,
@@ -344,10 +352,10 @@ to your own modified versions of Mura CMS.
 			</cfloop>
 			<!--- tadipwhitelist --->
 			<cfquery datasource="#arguments.toDSN#">
-				delete from tadipwhitelist where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteid#"/>
+				delete from tadipwhitelist where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.tositeid#"/>
 			</cfquery>
 			<cfquery datasource="#arguments.fromDSN#" name="rstadipwhitelist">
-				select * from tadipwhitelist where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteid#"/>
+				select * from tadipwhitelist where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.fromsiteid#"/>
 			</cfquery>
 			<cfloop query="rstadipwhitelist">
 				<cfquery datasource="#arguments.toDSN#">
@@ -355,23 +363,23 @@ to your own modified versions of Mura CMS.
 					values
 					(
 					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(IP neq '',de('no'),de('yes'))#" value="#IP#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(siteID neq '',de('no'),de('yes'))#" value="#siteID#">
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#arguments.toSiteID#">
 					)
 				</cfquery>
 			</cfloop>
 			<!--- tadzones --->
 			<cfquery datasource="#arguments.toDSN#">
-				delete from tadzones where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteid#"/>
+				delete from tadzones where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.tositeid#"/>
 			</cfquery>
 			<cfquery datasource="#arguments.fromDSN#" name="rstadzones">
-				select * from tadzones where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteid#"/>
+				select * from tadzones where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.fromsiteid#"/>
 			</cfquery>
 			<cfloop query="rstadzones">
 				<cfquery datasource="#arguments.toDSN#">
 					insert into tadzones (adZoneID,creativeType,dateCreated,height,isActive,lastUpdate,lastUpdateBy,name,notes,siteID,width)
 					values
 					(
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(adZoneID neq '',de('no'),de('yes'))#" value="#adZoneID#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(adZoneID)#">,
 					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(creativeType neq '',de('no'),de('yes'))#" value="#creativeType#">,
 					<cfqueryparam cfsqltype="cf_sql_TIMESTAMP" null="#iif(isDate(dateCreated),de('no'),de('yes'))#" value="#dateCreated#">,
 					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(height),de(height),de(0))#">,
@@ -380,30 +388,30 @@ to your own modified versions of Mura CMS.
 					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(lastUpdateBy neq '',de('no'),de('yes'))#" value="#lastUpdateBy#">,
 					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(name neq '',de('no'),de('yes'))#" value="#name#">,
 					<cfqueryparam cfsqltype="cf_sql_LONGVARCHAR" null="#iif(notes neq '',de('no'),de('yes'))#" value="#notes#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(siteID neq '',de('no'),de('yes'))#" value="#siteID#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#arguments.tositeid#">,
 					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(width),de(width),de(0))#">
 					)
 				</cfquery>
 			</cfloop>
 			<!--- tadplacements --->
 			<cfquery datasource="#arguments.toDSN#">
-				delete from tadplacements where adzoneid in (select adzoneid from tadzones where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteid#"/>)
+				delete from tadplacements where adzoneid in (select adzoneid from tadzones where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.tositeid#"/>)
 			</cfquery>
 			<cfquery datasource="#arguments.fromDSN#" name="rstadplacements">
-				select * from tadplacements where adzoneid in (select adzoneid from tadzones where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteid#"/>)
+				select * from tadplacements where adzoneid in (select adzoneid from tadzones where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.fromsiteid#"/>)
 			</cfquery>
 			<cfloop query="rstadplacements">
 				<cfquery datasource="#arguments.toDSN#">
 					insert into tadplacements (adZoneID,billable,budget,campaignID,costPerClick,costPerImp,creativeID,dateCreated,endDate,isActive,isExclusive,lastUpdate,lastUpdateBy,notes,placementID,startDate)
 					values
 					(
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(adZoneID neq '',de('no'),de('yes'))#" value="#adZoneID#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(adZoneID neq '',de('no'),de('yes'))#" value="#keys.get(adZoneID)#">,
 					<cfqueryparam cfsqltype="cf_sql_DECIMAL" null="no" value="#iif(isNumeric(billable),de(billable),de(0))#">,
 					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(budget),de(budget),de(0))#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(campaignID neq '',de('no'),de('yes'))#" value="#campaignID#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(campaignID neq '',de('no'),de('yes'))#" value="#keys.get(campaignID)#">,
 					<cfqueryparam cfsqltype="cf_sql_DECIMAL" null="no" value="#iif(isNumeric(costPerClick),de(costPerClick),de(0))#">,
 					<cfqueryparam cfsqltype="cf_sql_DECIMAL" null="no" value="#iif(isNumeric(costPerImp),de(costPerImp),de(0))#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(creativeID neq '',de('no'),de('yes'))#" value="#creativeID#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(creativeID neq '',de('no'),de('yes'))#" value="#keys.get(creativeID)#">,
 					<cfqueryparam cfsqltype="cf_sql_TIMESTAMP" null="#iif(isDate(dateCreated),de('no'),de('yes'))#" value="#dateCreated#">,
 					<cfqueryparam cfsqltype="cf_sql_TIMESTAMP" null="#iif(isDate(endDate),de('no'),de('yes'))#" value="#endDate#">,
 					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(isActive),de(isActive),de(0))#">,
@@ -411,24 +419,24 @@ to your own modified versions of Mura CMS.
 					<cfqueryparam cfsqltype="cf_sql_TIMESTAMP" null="#iif(isDate(lastUpdate),de('no'),de('yes'))#" value="#lastUpdate#">,
 					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(lastUpdateBy neq '',de('no'),de('yes'))#" value="#lastUpdateBy#">,
 					<cfqueryparam cfsqltype="cf_sql_LONGVARCHAR" null="#iif(notes neq '',de('no'),de('yes'))#" value="#notes#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(placementID neq '',de('no'),de('yes'))#" value="#placementID#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(placementID)#">,
 					<cfqueryparam cfsqltype="cf_sql_TIMESTAMP" null="#iif(isDate(startDate),de('no'),de('yes'))#" value="#startDate#">
 					)
 				</cfquery>
 			</cfloop>
 			<!--- tadplacementdetails --->
 			<cfquery datasource="#arguments.toDSN#">
-				delete from tadplacementdetails where placementid in (select placementid from tadplacements where adzoneid in (select adzoneid from tadzones where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteid#"/>))
+				delete from tadplacementdetails where placementid in (select placementid from tadplacements where adzoneid in (select adzoneid from tadzones where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.tositeid#"/>))
 			</cfquery>
 			<cfquery datasource="#arguments.fromDSN#" name="rstadplacementdetails">
-				select * from tadplacementdetails where placementid in (select placementid from tadplacements where adzoneid in (select adzoneid from tadzones where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteid#"/>))
+				select * from tadplacementdetails where placementid in (select placementid from tadplacements where adzoneid in (select adzoneid from tadzones where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.fromsiteid#"/>))
 			</cfquery>
 			<cfloop query="rstadplacementdetails">
 				<cfquery datasource="#arguments.toDSN#">
 					insert into tadplacementdetails (placementID, placementType, placementValue)
 					values
 					(
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(placementID neq '',de('no'),de('yes'))#" value="#placementID#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(placementID)#">,
 					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(placementType neq '',de('no'),de('yes'))#" value="#placementType#">,
 					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(placementValue),de(placementValue),de(0))#">
 					)
@@ -436,33 +444,33 @@ to your own modified versions of Mura CMS.
 			</cfloop>
 			<!--- tcontentcategoryassign --->
 			<cfquery datasource="#arguments.toDSN#">
-				delete from tcontentcategoryassign where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteid#"/>
+				delete from tcontentcategoryassign where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.tositeid#"/>
 			</cfquery>
 			<cfquery datasource="#arguments.fromDSN#" name="rstcontentcategoryassign">
-				select * from tcontentcategoryassign where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteid#"/>
+				select * from tcontentcategoryassign where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.fromsiteid#"/>
 			</cfquery>
 			<cfloop query="rstcontentcategoryassign">
 				<cfquery datasource="#arguments.toDSN#">
 					insert into tcontentcategoryassign (categoryID,contentHistID,contentID,featureStart,featureStop,isFeature,orderno,siteID)
 					values
 					(
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(categoryID neq '',de('no'),de('yes'))#" value="#categoryID#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(contentHistID neq '',de('no'),de('yes'))#" value="#contentHistID#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(contentID neq '',de('no'),de('yes'))#" value="#contentID#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(categoryID)#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(contentHistID)#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(contentID)#">,
 					<cfqueryparam cfsqltype="cf_sql_TIMESTAMP" null="#iif(isDate(featureStart),de('no'),de('yes'))#" value="#featureStart#">,
 					<cfqueryparam cfsqltype="cf_sql_TIMESTAMP" null="#iif(isDate(featureStop),de('no'),de('yes'))#" value="#featureStop#">,
 					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(isFeature),de(isFeature),de(0))#">,
 					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(orderno),de(orderno),de(0))#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(siteID neq '',de('no'),de('yes'))#" value="#siteID#">
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#arguments.tositeID#">
 					)
 				</cfquery>
 			</cfloop>
 			<!--- tcontentfeeds --->
 			<cfquery datasource="#arguments.toDSN#">
-				delete from tcontentfeeds where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteid#"/>
+				delete from tcontentfeeds where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.tositeid#"/>
 			</cfquery>
 			<cfquery datasource="#arguments.fromDSN#" name="rstcontentfeeds">
-				select * from tcontentfeeds where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteid#"/>
+				select * from tcontentfeeds where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.fromsiteid#"/>
 			</cfquery>
 			<cfloop query="rstcontentfeeds">
 				<cfquery datasource="#arguments.toDSN#">
@@ -473,7 +481,7 @@ to your own modified versions of Mura CMS.
 					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(channelLink neq '',de('no'),de('yes'))#" value="#channelLink#">,
 					<cfqueryparam cfsqltype="cf_sql_TIMESTAMP" null="#iif(isDate(dateCreated),de('no'),de('yes'))#" value="#dateCreated#">,
 					<cfqueryparam cfsqltype="cf_sql_LONGVARCHAR" null="#iif(description neq '',de('no'),de('yes'))#" value="#description#">,
-					<cfqueryparam cfsqltype="cf_sql_IDSTAMP" null="#iif(feedID neq '',de('no'),de('yes'))#" value="#feedID#">,
+					<cfqueryparam cfsqltype="cf_sql_IDSTAMP" value="#keys.get(feedID)#">,
 					<cfqueryparam cfsqltype="cf_sql_TINYINT" null="no" value="#iif(isNumeric(isActive),de(isActive),de(0))#">,
 					<cfqueryparam cfsqltype="cf_sql_TINYINT" null="no" value="#iif(isNumeric(isDefault),de(isDefault),de(0))#">,
 					<cfqueryparam cfsqltype="cf_sql_TINYINT" null="no" value="#iif(isNumeric(isFeaturesOnly),de(isFeaturesOnly),de(0))#">,
@@ -483,10 +491,10 @@ to your own modified versions of Mura CMS.
 					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(lastUpdateBy neq '',de('no'),de('yes'))#" value="#lastUpdateBy#">,
 					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(maxItems),de(maxItems),de(0))#">,
 					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(name neq '',de('no'),de('yes'))#" value="#name#">,
-					<cfqueryparam cfsqltype="cf_sql_IDSTAMP" null="#iif(parentID neq '',de('no'),de('yes'))#" value="#parentID#">,
+					<cfqueryparam cfsqltype="cf_sql_IDSTAMP" null="#iif(parentID neq '',de('no'),de('yes'))#" value="#keys.get(parentID)#">,
 					<cfqueryparam cfsqltype="cf_sql_TINYINT" null="no" value="#iif(isNumeric(restricted),de(restricted),de(0))#">,
 					<cfqueryparam cfsqltype="cf_sql_LONGVARCHAR" null="#iif(restrictGroups neq '',de('no'),de('yes'))#" value="#restrictGroups#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(siteID neq '',de('no'),de('yes'))#" value="#siteID#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#arguments.toSiteid#">,
 					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(Type neq '',de('no'),de('yes'))#" value="#Type#">,
 					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(version neq '',de('no'),de('yes'))#" value="#version#">,
 					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(sortBy neq '',de('no'),de('yes'))#" value="#sortBy#">,
@@ -501,18 +509,18 @@ to your own modified versions of Mura CMS.
 			</cfloop>
 			<!--- tcontentfeeditems --->
 			<cfquery datasource="#arguments.toDSN#">
-				delete from tcontentfeeditems where feedID in (select feedID from tcontentfeeds where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteid#"/>)
+				delete from tcontentfeeditems where feedID in (select feedID from tcontentfeeds where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.tositeid#"/>)
 			</cfquery>
 			<cfquery datasource="#arguments.fromDSN#" name="rstcontentFeedItems">
-				select * from tcontentfeeditems where feedID in (select feedID from tcontentfeeds where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteid#"/>)
+				select * from tcontentfeeditems where feedID in (select feedID from tcontentfeeds where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.fromsiteid#"/>)
 			</cfquery>
 			<cfloop query="rstcontentFeedItems">
 				<cfquery datasource="#arguments.toDSN#">
 					insert into tcontentfeeditems (feedID,itemID,type)
 					values
 					(
-					<cfqueryparam cfsqltype="cf_sql_IDSTAMP" null="#iif(feedID neq '',de('no'),de('yes'))#" value="#feedID#">,
-					<cfqueryparam cfsqltype="cf_sql_IDSTAMP" null="#iif(itemID neq '',de('no'),de('yes'))#" value="#itemID#">,
+					<cfqueryparam cfsqltype="cf_sql_IDSTAMP" value="#keys.get(feedID)#">,
+					<cfqueryparam cfsqltype="cf_sql_IDSTAMP" value="#keys.get(itemID)#">,
 					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(type neq '',de('no'),de('yes'))#" value="#type#">
 					)
 				</cfquery>
@@ -520,18 +528,18 @@ to your own modified versions of Mura CMS.
 
 			<!--- tcontentfeedadvancedparams --->
 			<cfquery datasource="#arguments.toDSN#">
-				delete from tcontentfeedadvancedparams where feedID in (select feedID from tcontentfeeds where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteid#"/>)
+				delete from tcontentfeedadvancedparams where feedID in (select feedID from tcontentfeeds where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.tositeid#"/>)
 			</cfquery>
 			<cfquery datasource="#arguments.fromDSN#" name="rstcontentFeedAdvancedParams">
-				select * from tcontentfeedadvancedparams where feedID in (select feedID from tcontentfeeds where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteid#"/>)
+				select * from tcontentfeedadvancedparams where feedID in (select feedID from tcontentfeeds where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.fromsiteid#"/>)
 			</cfquery>
 			<cfloop query="rstcontentFeedAdvancedParams">
 				<cfquery datasource="#arguments.toDSN#">
 					insert into tcontentfeedadvancedparams (paramID,feedID,param,relationship,field,dataType,<cfif application.configBean.getDbType() eq "mysql">`condition`<cfelse>condition</cfif>,criteria)
 					values
 					(
-					<cfqueryparam cfsqltype="cf_sql_IDSTAMP" null="#iif(paramID neq '',de('no'),de('yes'))#" value="#paramID#">,
-					<cfqueryparam cfsqltype="cf_sql_IDSTAMP" null="#iif(feedID neq '',de('no'),de('yes'))#" value="#feedID#">,
+					<cfqueryparam cfsqltype="cf_sql_IDSTAMP" value="#keys.get(paramID)#">,
+					<cfqueryparam cfsqltype="cf_sql_IDSTAMP" value="#keys.get(feedID)#">,
 					<cfqueryparam cfsqltype="cf_sql_NUMERIC" null="#iif(isNumeric(param),de('no'),de('yes'))#" value="#param#">,
 					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(relationship neq '',de('no'),de('yes'))#" value="#relationship#">,
 					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(field neq '',de('no'),de('yes'))#" value="#field#">,
@@ -543,29 +551,29 @@ to your own modified versions of Mura CMS.
 			</cfloop>
 			<!--- tcontentrelated --->
 			<cfquery datasource="#arguments.toDSN#">
-				delete from tcontentrelated where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteid#"/>
+				delete from tcontentrelated where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.tositeid#"/>
 			</cfquery>
 			<cfquery datasource="#arguments.fromDSN#" name="rstcontentrelated">
-				select * from tcontentrelated where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteid#"/>
+				select * from tcontentrelated where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.fromsiteid#"/>
 			</cfquery>
 			<cfloop query="rstcontentrelated">
 				<cfquery datasource="#arguments.toDSN#">
 					insert into tcontentrelated (contentHistID,contentID,relatedID,siteID)
 					values
 					(
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(contentHistID neq '',de('no'),de('yes'))#" value="#contentHistID#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(contentID neq '',de('no'),de('yes'))#" value="#contentID#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(relatedID neq '',de('no'),de('yes'))#" value="#relatedID#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(siteID neq '',de('no'),de('yes'))#" value="#siteID#">
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(contentHistID)#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(contentID)#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(relatedID)#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#arguments.tositeID#">
 					)
 				</cfquery>
 			</cfloop>
 			<!--- tmailinglist --->
 			<cfquery datasource="#arguments.toDSN#" name="rsMailingList">
-				delete from tmailinglist where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteid#"/>
+				delete from tmailinglist where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.tositeid#"/>
 			</cfquery>
 			<cfquery datasource="#arguments.fromDSN#" name="rsMailingList">
-				select * from tmailinglist where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteid#"/>
+				select * from tmailinglist where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.fromsiteid#"/>
 			</cfquery>
 			<cfloop query="rsMailingList">
 				<cfquery datasource="#arguments.toDSN#">
@@ -576,53 +584,53 @@ to your own modified versions of Mura CMS.
 					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(isPublic),de(isPublic),de(0))#">,
 					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(isPurge),de(isPurge),de(0))#">,
 					<cfqueryparam cfsqltype="cf_sql_TIMESTAMP" null="#iif(isDate(LastUpdate),de('no'),de('yes'))#" value="#LastUpdate#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(MLID neq '',de('no'),de('yes'))#" value="#MLID#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(MLID)#">,
 					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(Name neq '',de('no'),de('yes'))#" value="#Name#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(SiteID neq '',de('no'),de('yes'))#" value="#SiteID#">
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#arguments.toSiteID#">
 					)
 				</cfquery>
 			</cfloop>
 			<!--- tfiles --->
 			<cfquery datasource="#arguments.toDSN#" name="rsFiles">
-				delete from tfiles where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteid#"/>
+				delete from tfiles where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.tositeid#"/>
 			</cfquery>
 			<cfquery datasource="#arguments.fromDSN#" name="rsFiles">
-				select * from tfiles where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteid#"/>
+				select * from tfiles where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.fromsiteid#"/>
 			</cfquery>
 			<cfloop query="rsFiles">
 				<cfquery datasource="#arguments.toDSN#">
 					insert into tfiles (contentID,contentSubType,contentType,fileExt,fileID,filename,fileSize,image,imageMedium,imageSmall,moduleID,siteID,created)
 					values
 					(
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(contentID neq '',de('no'),de('yes'))#" value="#contentID#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(contentID neq '',de('no'),de('yes'))#" value="#keys.get(contentID)#">,
 					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(contentSubType neq '',de('no'),de('yes'))#" value="#contentSubType#">,
 					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(contentType neq '',de('no'),de('yes'))#" value="#contentType#">,
 					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(fileExt neq '',de('no'),de('yes'))#" value="#fileExt#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(fileID neq '',de('no'),de('yes'))#" value="#fileID#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(fileID neq '',de('no'),de('yes'))#" value="#keys.get(fileID)#">,
 					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(filename neq '',de('no'),de('yes'))#" value="#filename#">,
 					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(fileSize),de(fileSize),de(0))#">,
 					<cfqueryparam cfsqltype="cf_sql_BLOB" null="#iif(toBase64(image) eq '',de('yes'),de('no'))#" value="#image#">,
 					<cfqueryparam cfsqltype="cf_sql_BLOB" null="#iif(toBase64(imageMedium) eq '',de('yes'),de('no'))#" value="#imageMedium#">,
 					<cfqueryparam cfsqltype="cf_sql_BLOB" null="#iif(toBase64(imageSmall) eq '',de('yes'),de('no'))#" value="#imageSmall#">,
 					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(moduleID neq '',de('no'),de('yes'))#" value="#moduleID#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(siteID neq '',de('no'),de('yes'))#" value="#siteID#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#arguments.tositeID#">,
 					<cfqueryparam cfsqltype="cf_sql_TIMESTAMP" null="#iif(isDate(created),de('no'),de('yes'))#" value="#created#">
 					)
 				</cfquery>
 			</cfloop>
 			<!--- tcontentcategories --->
 			<cfquery datasource="#arguments.toDSN#">
-				delete from tcontentcategories where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteid#"/>
+				delete from tcontentcategories where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.tositeid#"/>
 			</cfquery>
 			<cfquery datasource="#arguments.fromDSN#" name="rstcontentcategories">
-				select * from tcontentcategories where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteid#"/>
+				select * from tcontentcategories where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.fromsiteid#"/>
 			</cfquery>
 			<cfloop query="rstcontentcategories">
 				<cfquery datasource="#arguments.toDSN#">
 					insert into tcontentcategories (categoryID,dateCreated,isActive,isInterestGroup,isOpen,lastUpdate,lastUpdateBy,name,notes,parentID,restrictGroups,siteID,sortBy,sortDirection,Path)
 					values
 					(
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(categoryID neq '',de('no'),de('yes'))#" value="#categoryID#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(categoryID)#">,
 					<cfqueryparam cfsqltype="cf_sql_TIMESTAMP" null="#iif(isDate(dateCreated),de('no'),de('yes'))#" value="#dateCreated#">,
 					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(isActive),de(isActive),de(0))#">,
 					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(isInterestGroup),de(isInterestGroup),de(0))#">,
@@ -631,9 +639,9 @@ to your own modified versions of Mura CMS.
 					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(lastUpdateBy neq '',de('no'),de('yes'))#" value="#lastUpdateBy#">,
 					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(name neq '',de('no'),de('yes'))#" value="#name#">,
 					<cfqueryparam cfsqltype="cf_sql_LONGVARCHAR" null="#iif(notes neq '',de('no'),de('yes'))#" value="#notes#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(parentID neq '',de('no'),de('yes'))#" value="#parentID#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(parentID neq '',de('no'),de('yes'))#" value="#keys.get(parentID)#">,
 					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(restrictGroups neq '',de('no'),de('yes'))#" value="#restrictGroups#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(siteID neq '',de('no'),de('yes'))#" value="#siteID#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#arguments.tositeID#">,
 					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(sortBy neq '',de('no'),de('yes'))#" value="#sortBy#">,
 					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(sortDirection neq '',de('no'),de('yes'))#" value="#sortDirection#">,
 					<cfqueryparam cfsqltype="cf_sql_LONGVARCHAR" null="#iif(Path neq '',de('no'),de('yes'))#" value="#Path#">
@@ -642,16 +650,16 @@ to your own modified versions of Mura CMS.
 			</cfloop>
 			
 			<!--- synced tables--->
-			
+			<cfif arguments.mode eq "publish">
 			<!--- tcontentcomments --->
 			<cfquery datasource="#arguments.toDSN#">
-				delete from tcontentcomments where commentid not in (select commentid from tcontent where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteid#"/>)
+				delete from tcontentcomments where commentid not in (select commentid from tcontent where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.tositeid#"/>)
 			</cfquery>
 			<cfquery datasource="#arguments.toDSN#" name="rstcontentcomments">
 				select * from tcontentcomments where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteid#"/>
 			</cfquery>
 			<cfquery datasource="#arguments.fromDSN#">
-				delete from tcontentcomments where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteid#"/>
+				delete from tcontentcomments where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.fromsiteid#"/>
 			</cfquery>
 			<cfloop query="rstcontentcomments">
 				<cfquery datasource="#arguments.fromDSN#">
@@ -659,15 +667,15 @@ to your own modified versions of Mura CMS.
 					values
 					(
 					<cfqueryparam cfsqltype="cf_sql_LONGVARCHAR" null="#iif(comments neq '',de('no'),de('yes'))#" value="#comments#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(commentid neq '',de('no'),de('yes'))#" value="#commentid#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(contenthistid neq '',de('no'),de('yes'))#" value="#contenthistid#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(contentid neq '',de('no'),de('yes'))#" value="#contentid#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(commentid neq '',de('no'),de('yes'))#" value="#keys.get(commentID)#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(contenthistid neq '',de('no'),de('yes'))#" value="#keys.get(contentHistID)#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(contentid neq '',de('no'),de('yes'))#" value="#keys.get(contentID)#">,
 					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(email neq '',de('no'),de('yes'))#" value="#email#">,
 					<cfqueryparam cfsqltype="cf_sql_TIMESTAMP" null="#iif(isDate(entered),de('no'),de('yes'))#" value="#entered#">,
 					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(ip neq '',de('no'),de('yes'))#" value="#ip#">,
 					<cfqueryparam cfsqltype="cf_sql_TINYINT" null="no" value="#iif(isNumeric(isApproved),de(isApproved),de(0))#">,
 					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(name neq '',de('no'),de('yes'))#" value="#name#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(siteid neq '',de('no'),de('yes'))#" value="#siteid#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#arguments.fromsiteid#">,
 					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(url neq '',de('no'),de('yes'))#" value="#url#">,
 					<cfqueryparam cfsqltype="cf_sql_TINYINT" null="no" value="#iif(isNumeric(subscribe),de(subscribe),de(0))#">
 					)
@@ -675,23 +683,23 @@ to your own modified versions of Mura CMS.
 			</cfloop>
 			<!--- tcontentratings --->
 			<cfquery datasource="#arguments.toDSN#">
-				delete from tcontentratings where contentid not in (select contentid from tcontent where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteid#"/>)
+				delete from tcontentratings where contentid not in (select contentid from tcontent where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.tositeid#"/>)
 			</cfquery>
 			<cfquery datasource="#arguments.toDSN#" name="rstcontentRatings">
-				select * from tcontentratings where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteid#"/>
+				select * from tcontentratings where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.tositeid#"/>
 			</cfquery>
 			<cfquery datasource="#arguments.fromDSN#">
-				delete from tcontentratings where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteid#"/>
+				delete from tcontentratings where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.fromsiteid#"/>
 			</cfquery>
 			<cfloop query="rstcontentRatings">
 				<cfquery datasource="#arguments.fromDSN#">
 					insert into tcontentratings (contentID,rate,siteID,userID,entered)
 					values
 					(
-					<cfqueryparam cfsqltype="cf_sql_IDSTAMP" null="#iif(contentID neq '',de('no'),de('yes'))#" value="#contentID#">,
+					<cfqueryparam cfsqltype="cf_sql_IDSTAMP" value="#keys.get(contentID)#">,
 					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(rate),de(rate),de(0))#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(siteID neq '',de('no'),de('yes'))#" value="#siteID#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(userID neq '',de('no'),de('yes'))#" value="#userID#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#arguments.fromsiteID#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(userID neq '',de('no'),de('yes'))#" value="#keys.get(userID)#">,
 					<cfqueryparam cfsqltype="cf_sql_TIMESTAMP" null="#iif(isDate(entered),de('no'),de('yes'))#" value="#entered#">
 					)
 				</cfquery>
@@ -699,64 +707,182 @@ to your own modified versions of Mura CMS.
 
 			<!--- tusersinterests --->
 			<cfquery datasource="#arguments.toDSN#">
-				delete from tusersinterests where categoryid not in (select categoryid from tcontentcategories where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteid#"/>)
+				delete from tusersinterests where categoryid not in (select categoryid from tcontentcategories where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.tositeid#"/>)
 			</cfquery>
 			<cfquery datasource="#arguments.toDSN#" name="rstusersinterests">
-				select * from tusersinterests where categoryid in (select categoryid from tcontentcategories where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteid#"/>)
+				select * from tusersinterests where categoryid in (select categoryid from tcontentcategories where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.tositeid#"/>)
 			</cfquery>
 			<cfquery datasource="#arguments.fromDSN#">
-				delete from tusersinterests where categoryid in (select categoryid from tcontentcategories where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteid#"/>)
+				delete from tusersinterests where categoryid in (select categoryid from tcontentcategories where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.fromsiteid#"/>)
 			</cfquery>
 			<cfloop query="rstusersinterests">
 				<cfquery datasource="#arguments.fromDSN#">
 					insert into tusersinterests (categoryID,userID)
 					values
 					(
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(categoryID neq '',de('no'),de('yes'))#" value="#categoryID#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(userID neq '',de('no'),de('yes'))#" value="#userID#">
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(categoryID)#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(userID)#">
 					)
 				</cfquery>
 			</cfloop>
-			
-				<!--- tclassextenddata --->
+				
+			<!--- tclassextenddata --->
 			<cfquery datasource="#arguments.toDSN#">
 				delete from tclassextenddata 
-				where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteid#"/>
-				and baseID  in (select contenthistid from tcontent where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteid#"/>)
+				where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.tositeid#"/>
+				and baseID  in (select contenthistid from tcontent where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.tositeid#"/>)
 			</cfquery>
 			<cfquery datasource="#arguments.fromDSN#" name="rstclassextenddata">
-				select * from tclassextenddata where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteid#"/>
-				and baseID  in (select contenthistid from tcontent where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteid#"/>)
+				select * from tclassextenddata where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.fromsiteid#"/>
+				and baseID  in (select contenthistid from tcontent where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.fromsiteid#"/>)
 			</cfquery>
 			<cfloop query="rstclassextenddata">
 				<cfquery datasource="#arguments.toDSN#">
 					insert into tclassextenddata (baseID,attributeID,attributeValue,siteID)
 					values
 					(
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(baseID neq '',de('no'),de('yes'))#" value="#baseID#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(baseID)#">,
 					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(attributeID),de(attributeID),de(0))#">,
 					<cfqueryparam cfsqltype="cf_sql_LONGVARCHAR" null="#iif(attributeValue neq '',de('no'),de('yes'))#" value="#attributeValue#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(siteID neq '',de('no'),de('yes'))#" value="#siteID#">
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#arguments.tositeID#">
 					)
 				</cfquery>
 			</cfloop>
 			
+			<cfelseif arguments.mode eq "copy">
+			
+			<cfquery datasource="#arguments.toDSN#">
+				delete from tclassextend
+				where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.tositeid#"/>
+			</cfquery>
+			
+			<cfquery datasource="#arguments.fromDSN#" name="rstclassextend">
+				select * from tclassextend where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.fromsiteid#"/>
+			</cfquery>
+			
+			<cfloop query="rstclassextend">
+				<cfquery datasource="#arguments.toDSN#">
+					insert into tclassextend (subTypeID,siteID, baseTable, baseKeyField, dataTable, type, subType,
+					isActive, notes, lastUpdate, dateCreated, lastUpdateBy)
+					values
+					(
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(subTypeID)#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#arguments.toSiteID#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(baseTable neq '',de('no'),de('yes'))#" value="#baseTable#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(baseKeyField neq '',de('no'),de('yes'))#" value="#baseKeyField#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(baseTable neq '',de('no'),de('yes'))#" value="#baseTable#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(type neq '',de('no'),de('yes'))#" value="#type#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(subType neq '',de('no'),de('yes'))#" value="#subType#">,
+					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="#iif(isActive neq '',de('no'),de('yes'))#" value="#isActive#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(notes neq '',de('no'),de('yes'))#" value="#notes#">,
+					#createODBCDateTime(now())#,
+					#createODBCDateTime(now())#,
+					'System'
+					)
+				</cfquery>
+			</cfloop>
+			
+			<cfquery datasource="#arguments.toDSN#">
+				delete from tclassextendsets
+				where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.tositeid#"/>
+			</cfquery>
+			
+			<cfquery datasource="#arguments.fromDSN#" name="rstclassextendsets">
+				select * from tclassextendsets where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.fromsiteid#"/>
+			</cfquery>
+			
+			<cfloop query="rstclassextendsets">
+				<cfquery datasource="#arguments.toDSN#">
+					insert into tclassextendsets (extendsetID, subTypeID, categoryID, siteID, name, orderno,isActive)
+					values
+					(
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(extendSetID)#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(subTypeID)#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(categoryID neq '',de('no'),de('yes'))#" value="#categoryID#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#arguments.toSiteID#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(name neq '',de('no'),de('yes'))#" value="#name#">,
+					<cfqueryparam cfsqltype="cf_sql_NUMERIC" null="#iif(orderno neq '',de('no'),de('yes'))#" value="#orderno#">,
+					<cfqueryparam cfsqltype="cf_sql_NUMERIC" null="#iif(isActive neq '',de('no'),de('yes'))#" value="#isActive#">
+					)
+				</cfquery>
+			</cfloop>
+			
+			<cfquery datasource="#arguments.toDSN#">
+				delete from tclassextendattributes
+				where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.tositeid#"/>
+			</cfquery>
+			
+			<cfquery datasource="#arguments.fromDSN#" name="rstclassextendattributes">
+				select * from tclassextendattributes where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.fromsiteid#"/>
+			</cfquery>
+			
+			<cfloop query="rstclassextendattributes">
+				<cfquery datasource="#arguments.toDSN#">
+					insert into tclassextendattributes (extendSetID, siteID, name, label, hint, 
+						type, orderno, isActive, required, validation, regex, message, defaultValue, optionList, optionLabelList)
+					values
+					(
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(extendSetID)#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#arguments.toSiteID#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(name neq '',de('no'),de('yes'))#" value="#name#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(label neq '',de('no'),de('yes'))#" value="#label#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(hint neq '',de('no'),de('yes'))#" value="#hint#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(type neq '',de('no'),de('yes'))#" value="#type#">,
+					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="#iif(orderno neq '',de('no'),de('yes'))#" value="#orderno#">,
+					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="#iif(isActive neq '',de('no'),de('yes'))#" value="#isActive#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(required neq '',de('no'),de('yes'))#" value="#required#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(validation neq '',de('no'),de('yes'))#" value="#validation#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(regex neq '',de('no'),de('yes'))#" value="#regex#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(message neq '',de('no'),de('yes'))#" value="#message#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(defaultValue neq '',de('no'),de('yes'))#" value="#defaultValue#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(optionList neq '',de('no'),de('yes'))#" value="#optionList#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(optionLabelList neq '',de('no'),de('yes'))#" value="#optionLabelList#">
+					)
+				</cfquery>
+				
+				<cfquery name="getNewID" datasource="#arguments.toDSN#">
+				select max(attributeID) as newID from tclassextendattributes
+				</cfquery>
+				
+				<cfset keys.get(attributeID, getNewID.newID)>
+			</cfloop>
+			
+			<cfquery datasource="#arguments.fromDSN#" name="rstclassextenddata">
+				select * from tclassextenddata where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.fromsiteid#"/>
+				and baseID  in (select contenthistid from tcontent where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.fromsiteid#"/>)
+			</cfquery>
+			
+			<cfloop query="rstclassextenddata">
+				<cfquery datasource="#arguments.toDSN#">
+					insert into tclassextenddata (baseID,attributeID,attributeValue,siteID)
+					values
+					(
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(baseID)#">,
+					<cfqueryparam cfsqltype="cf_sql_INTEGER" value="#keys.get(attributeID)#">,
+					<cfqueryparam cfsqltype="cf_sql_LONGVARCHAR" null="#iif(attributeValue neq '',de('no'),de('yes'))#" value="#attributeValue#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#arguments.tositeID#">
+					)
+				</cfquery>
+			</cfloop>
+			
+			</cfif>
+			
 				<!--- tpluginscripts --->
 			<cfquery datasource="#arguments.toDSN#">
 				delete from tpluginscripts 
-				where moduleID in ( select moduleID from tcontent where siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteid#"/> and type='Plugin')
+				where moduleID in ( select moduleID from tcontent where siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.tositeid#"/> and type='Plugin')
 			</cfquery>
 			<cfquery datasource="#arguments.fromDSN#" name="rstpluginscripts">
 				select * from tpluginscripts 
-				where moduleID in ( select moduleID from tcontent where siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteid#"/> and type='Plugin')
+				where moduleID in ( select moduleID from tcontent where siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.fromsiteid#"/> and type='Plugin')
 			</cfquery>
 			<cfloop query="rstpluginscripts">
 				<cfquery datasource="#arguments.toDSN#">
 					insert into tpluginscripts (scriptID,moduleID,scriptfile,runat,docache)
 					values
 					(
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(scriptID neq '',de('no'),de('yes'))#" value="#scriptID#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(moduleID neq '',de('no'),de('yes'))#" value="#moduleID#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(scriptID)#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(moduleID)#">,
 					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(scriptfile neq '',de('no'),de('yes'))#" value="#scriptfile#">,
 					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(runat neq '',de('no'),de('yes'))#" value="#runat#">,
 					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(docache),de(docache),de(0))#">
@@ -767,19 +893,19 @@ to your own modified versions of Mura CMS.
 			
 			<cfquery datasource="#arguments.toDSN#">
 				delete from tplugindisplayobjects 
-				where moduleID in ( select moduleID from tcontent where siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteid#"/> and type='Plugin')
+				where moduleID in ( select moduleID from tcontent where siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.tositeid#"/> and type='Plugin')
 			</cfquery>
 			<cfquery datasource="#arguments.fromDSN#" name="rstplugindisplayobjects">
 				select * from tplugindisplayobjects 
-				where moduleID in ( select moduleID from tcontent where siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteid#"/> and type='Plugin')
+				where moduleID in ( select moduleID from tcontent where siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.fromsiteid#"/> and type='Plugin')
 			</cfquery>
 			<cfloop query="rstplugindisplayobjects">
 				<cfquery datasource="#arguments.toDSN#">
 					insert into tplugindisplayobjects (objectID,moduleID,name,location,displayObjectFile,displayMethod,docache)
 					values
 					(
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(objectID neq '',de('no'),de('yes'))#" value="#objectID#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(moduleID neq '',de('no'),de('yes'))#" value="#moduleID#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(objectID)#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(moduleID)#">,
 					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(name neq '',de('no'),de('yes'))#" value="#name#">,
 					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(location neq '',de('no'),de('yes'))#" value="#location#">,
 					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(displayObjectFile neq '',de('no'),de('yes'))#" value="#displayObjectFile#">,
@@ -792,18 +918,18 @@ to your own modified versions of Mura CMS.
 			
 			<cfquery datasource="#arguments.toDSN#">
 				delete from tpluginsettings 
-				where moduleID in ( select moduleID from tcontent where siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteid#"/> and type='Plugin')
+				where moduleID in ( select moduleID from tcontent where siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.tositeid#"/> and type='Plugin')
 			</cfquery>
 			<cfquery datasource="#arguments.fromDSN#" name="rstpluginsettings">
 				select * from tpluginsettings 
-				where moduleID in ( select moduleID from tcontent where siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteid#"/> and type='Plugin')
+				where moduleID in ( select moduleID from tcontent where siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.fromsiteid#"/> and type='Plugin')
 			</cfquery>
 			<cfloop query="rstpluginsettings">
 				<cfquery datasource="#arguments.toDSN#">
 					insert into tpluginsettings (moduleID,name,settingValue)
 					values
 					(
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(moduleID neq '',de('no'),de('yes'))#" value="#moduleID#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(moduleID)#">,
 					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(name neq '',de('no'),de('yes'))#" value="#name#">,
 					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(settingValue neq '',de('no'),de('yes'))#" value="#settingValue#">
 					
@@ -823,11 +949,12 @@ to your own modified versions of Mura CMS.
 		<cfset var fileDelim=application.configBean.getFileDelim() />
 		<cfset var rsPlugins=application.pluginManager.getSitePlugins(arguments.siteid)>
 		<cfset var pluginEvent = createObject("component","mura.event").init(arguments) />
+		<cfset var keys=createObject("component","mura.publisherKeys").init('publish',application.utility)>
 		
 		<cfset application.pluginManager.executeScripts("onSiteDeploy",arguments.siteID,pluginEvent)>
 		
 		<cfloop list="#application.configBean.getProductionDatasource()#" index="i">
-			<cfset getToWork(arguments.siteid, '#application.configBean.getDatasource()#', '#i#')>
+			<cfset getToWork(arguments.siteid, arguments.siteid, '#application.configBean.getDatasource()#', '#i#','publish',keys)>
 		</cfloop>
 		
 		<cfloop list="#application.configBean.getProductionWebroot()#" index="j">
@@ -867,6 +994,55 @@ to your own modified versions of Mura CMS.
 
 	</cffunction>
 	
+	<cffunction name="copy" returntype="void">
+		<cfargument name="fromsiteid" required="yes" default="">
+		<cfargument name="tositeid" required="yes" default="">
+		<cfargument name="fromDSN" required="yes" default="#application.configBean.getDatasource()#">
+		<cfargument name="toDSN" required="yes" default="#application.configBean.getDatasource()#">
+		<cfargument name="fromWebRoot" required="yes" default="#application.configBean.getWebRoot()#">
+		<cfargument name="toWebRoot" required="yes" default="#application.configBean.getWebRoot()#">
+		<cfargument name="fromFileDir" required="yes" default="#application.configBean.getFileDir()#">
+		<cfargument name="toFileDir" required="yes" default="#application.configBean.getFileDir()#">
+		<cfargument name="fromAssetDir" required="yes" default="#application.configBean.getAssetDir()#">
+		<cfargument name="toAssetDir" required="yes" default="#application.configBean.getAssetDir()#">
+		<cfargument name="fromAssetPath" required="yes" default="#application.configBean.getAssetPath()#">
+		<cfargument name="toAssetPath" required="yes" default="#application.configBean.getAssetPath()#">
+		
+		<cfset var i=""/>
+		<cfset var j=""/>
+		<cfset var k=""/>
+		<cfset var p=""/>
+		<cfset var fileDelim=application.configBean.getFileDelim() />
+		<cfset var rsPlugins=application.pluginManager.getSitePlugins(arguments.fromsiteid)>
+		<cfset var pluginEvent = createObject("component","mura.event").init(arguments) />
+		<cfset var keys=createObject("component","mura.publisherKeys").init('copy',application.utility)>
+		
+		<cfset application.pluginManager.executeScripts("onSiteCopy",arguments.fromsiteID,pluginEvent)>
+		
+		<cfset getToWork(arguments.fromsiteid, arguments.tositeid, arguments.fromDSN, arguments.toDSN, 'copy',keys)>
+		
+		<cfset application.utility.copyDir("#arguments.fromWebRoot##fileDelim##arguments.fromsiteid##fileDelim#", "#arguments.toWebRoot##fileDelim##arguments.tositeid##fileDelim#") />
+		
+		<cfif arguments.fromWebRoot neq arguments.toWebRoot>
+			<cfloop query="rsPlugins">
+				<cfset application.utility.copyDir("#arguments.fromWebRoot##fileDelim#plugins#fileDelim##rsPlugins.directory##fileDelim#", "#arguments.toWebRoot##fileDelim#plugins#fileDelim##rsPlugins.directory##fileDelim#") />
+			</cfloop>
+		</cfif>
+		
+		<cfset copySiteFiles("#arguments.fromFileDir##fileDelim##arguments.fromsiteid##fileDelim#cache#fileDelim#file#fileDelim#", "#arguments.toFileDir##fileDelim##arguments.tositeid##fileDelim#cache#fileDelim#file#fileDelim#",keys) />
+			
+		<cfset application.utility.copyDir("#arguments.fromAssetDir##fileDelim##arguments.fromsiteid##fileDelim#assets#fileDelim#", "#arguments.toAssetDir##fileDelim##arguments.tositeid##fileDelim#assets#fileDelim#") />
+	
+		<cfif arguments.fromAssetPath neq arguments.toAssetPath>
+			<cfset update("#arguments.fromAssetPath#","#arguments.toAssetPath#") >
+		</cfif>
+		
+		<cfif arguments.fromSiteID neq arguments.toSiteID>
+			<cfset update("/#arguments.fromsiteID#","/#arguments.toSiteID#") >
+		</cfif>
+		
+	</cffunction>
+	
 	<cffunction name="init" returntype="any">
 		<cfreturn this />
 	</cffunction>
@@ -892,4 +1068,39 @@ to your own modified versions of Mura CMS.
 		<cfreturn true />
 	</cffunction>
 
+	<cffunction name="copySiteFiles">
+		<cfargument name="baseDir" default="" required="true" />
+		<cfargument name="destDir" default="" required="true" />
+		<cfargument name="keyFactory" required="true" />
+		<cfset var rs = "" />
+		<cfset var keys=arguments.keyFactory>
+		
+		<cfdirectory directory="#arguments.baseDir#" name="rs" action="list" recurse="true" />
+		<!--- filter out Subversion hidden folders --->
+		<cfquery name="rs" dbtype="query">
+		SELECT * FROM rs
+		WHERE directory NOT LIKE '%\.svn%'
+		AND name <> '.svn'
+		</cfquery>
+		
+		<cftry>
+			<cfdirectory action="create" directory="#arguments.destDir#" />
+			<cfcatch></cfcatch>
+		</cftry>
+		
+		<cfloop query="rs">
+			<cfif rs.type eq "dir">
+				<cftry>
+					<cfdirectory action="create" directory="#replace('#rs.directory#/',arguments.baseDir,arguments.destDir)##rs.name#/" />
+					<cfcatch></cfcatch>
+				</cftry>
+			<cfelse>
+				<!--- <cftry> --->
+					<cffile action="copy" mode="777" source="#rs.directory#/#rs.name#" destination="#replace('#rs.directory#/',arguments.baseDir,arguments.destDir)#" />
+					<cffile action="rename" source="#replace('#rs.directory#/',arguments.baseDir,arguments.destDir)##rs.name#" destination="#replace('#rs.directory#/',arguments.baseDir,arguments.destDir)##keys.get(left(rs.name,35))#.#listLast(rs.name,'.')#"/>
+				<!--- 	<cfcatch></cfcatch>
+				</cftry> --->
+			</cfif>
+		</cfloop>
+	</cffunction>
 </cfcomponent>
