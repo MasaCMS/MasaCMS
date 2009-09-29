@@ -79,7 +79,9 @@ text/html; charset=UTF-8
 		<cfset signature = createSignature(cs)>
 		
 		<!--- get all buckets via REST --->
-		<cfhttp method="GET" url="http://s3.amazonaws.com">
+		<cfhttp method="GET" url="http://s3.amazonaws.com"
+		proxyUser="#application.configBean.getProxyUser()#" proxyPassword="#application.configBean.getProxyPassword()#"
+		proxyServer="#application.configBean.getProxyServer()#" proxyPort="#application.configBean.getProxyPort()#">
 			<cfhttpparam type="header" name="Date" value="#dateTimeString#">
 			<cfhttpparam type="header" name="Authorization" value="AWS #variables.accessKeyId#:#signature#">
 		</cfhttp>
@@ -127,7 +129,9 @@ text/html; charset=UTF-8
 		</cfif>
 
 		<!--- put the bucket via REST --->
-		<cfhttp method="PUT" url="http://s3.amazonaws.com/#arguments.bucketName#" charset="utf-8">
+		<cfhttp method="PUT" url="http://s3.amazonaws.com/#arguments.bucketName#" charset="utf-8"
+		proxyUser="#application.configBean.getProxyUser()#" proxyPassword="#application.configBean.getProxyPassword()#"
+		proxyServer="#application.configBean.getProxyServer()#" proxyPort="#application.configBean.getProxyPort()#">
 			<cfhttpparam type="header" name="Content-Type" value="text/html">
 			<cfhttpparam type="header" name="Date" value="#dateTimeString#">
 			<cfhttpparam type="header" name="x-amz-acl" value="#arguments.acl#">
@@ -162,7 +166,9 @@ text/html; charset=UTF-8
 		<cfset signature = createSignature(cs)>
 
 		<!--- get the bucket via REST --->
-		<cfhttp method="GET" url="http://s3.amazonaws.com/#arguments.bucketName#">
+		<cfhttp method="GET" url="http://s3.amazonaws.com/#arguments.bucketName#"
+		proxyUser="#application.configBean.getProxyUser()#" proxyPassword="#application.configBean.getProxyPassword()#"
+		proxyServer="#application.configBean.getProxyServer()#" proxyPort="#application.configBean.getProxyPort()#">
 			<cfhttpparam type="header" name="Date" value="#dateTimeString#">
 			<cfhttpparam type="header" name="Authorization" value="AWS #variables.accessKeyId#:#signature#">
 			<cfif compare(arguments.prefix,'')>
@@ -208,7 +214,9 @@ text/html; charset=UTF-8
 		<cfset signature = createSignature(cs)>
 		
 		<!--- delete the bucket via REST --->
-		<cfhttp method="DELETE" url="http://s3.amazonaws.com/#arguments.bucketName#" charset="utf-8">
+		<cfhttp method="DELETE" url="http://s3.amazonaws.com/#arguments.bucketName#" charset="utf-8"
+		proxyUser="#application.configBean.getProxyUser()#" proxyPassword="#application.configBean.getProxyPassword()#"
+		proxyServer="#application.configBean.getProxyServer()#" proxyPort="#application.configBean.getProxyPort()#">
 			<cfhttpparam type="header" name="Date" value="#dateTimeString#">
 			<cfhttpparam type="header" name="Authorization" value="AWS #variables.accessKeyId#:#signature#">
 		</cfhttp>
@@ -238,7 +246,9 @@ text/html; charset=UTF-8
 		<!---<cffile action="readBinary" file="#ExpandPath("./#arguments.fileKey#")#" variable="binaryFileData">--->
 		
 		<!--- Send the file to amazon. The "X-amz-acl" controls the access properties of the file --->
-		<cfhttp method="PUT" url="http://s3.amazonaws.com/#arguments.bucketName#/#arguments.fileKey#" timeout="#arguments.HTTPtimeout#">
+		<cfhttp method="PUT" url="http://s3.amazonaws.com/#arguments.bucketName#/#arguments.fileKey#" timeout="#arguments.HTTPtimeout#"
+		proxyUser="#application.configBean.getProxyUser()#" proxyPassword="#application.configBean.getProxyPassword()#"
+		proxyServer="#application.configBean.getProxyServer()#" proxyPort="#application.configBean.getProxyPort()#">
 			  <cfhttpparam type="header" name="Authorization" value="AWS #variables.accessKeyId#:#signature#">
 			  <cfhttpparam type="header" name="Content-Type" value="#arguments.contentType#">
 			  <cfhttpparam type="header" name="Date" value="#dateTimeString#">
@@ -288,7 +298,9 @@ text/html; charset=UTF-8
 		<cfset signature = createSignature(cs)>
 
 		<!--- delete the object via REST --->
-		<cfhttp method="DELETE" url="http://s3.amazonaws.com/#arguments.bucketName#/#arguments.fileKey#">
+		<cfhttp method="DELETE" url="http://s3.amazonaws.com/#arguments.bucketName#/#arguments.fileKey#"
+		proxyUser="#application.configBean.getProxyUser()#" proxyPassword="#application.configBean.getProxyPassword()#"
+		proxyServer="#application.configBean.getProxyServer()#" proxyPort="#application.configBean.getProxyPort()#">
 			<cfhttpparam type="header" name="Date" value="#dateTimeString#">
 			<cfhttpparam type="header" name="Authorization" value="AWS #variables.accessKeyId#:#signature#">
 		</cfhttp>

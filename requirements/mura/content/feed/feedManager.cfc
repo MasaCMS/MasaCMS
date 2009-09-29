@@ -265,10 +265,13 @@ to your own modified versions of Mura CMS.
 	<cfset var response=structNew() />
 	
 	<cftry>
-	<cfhttp result="temp" url="#arguments.feedURL#" method="GET" resolveurl="Yes" throwOnError="Yes" charset="UTF-8" timeout="#arguments.timeout#" />
+	<cfhttp result="temp" url="#arguments.feedURL#" method="GET" resolveurl="Yes" 
+	throwOnError="Yes" charset="UTF-8" timeout="#arguments.timeout#" 
+	proxyUser="#variables.configBean.getProxyUser()#" proxyPassword="#variables.configBean.getProxyPassword()#"
+	proxyServer="#variables.configBean.getProxyServer()#" proxyPort="#variables.configBean.getProxyPort()#"/>
 	<cfcatch></cfcatch>
 	</cftry>
-	
+
 	<cfset data=replace(temp.FileContent,chr(20),'','ALL') />
 
 	<cfif isXML(data)>

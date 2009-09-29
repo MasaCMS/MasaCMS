@@ -93,6 +93,11 @@ to your own modified versions of Mura CMS.
 <cfset variables.instance.clusterIPList="" />
 <cfset variables.instance.enableMuraTag=true />
 <cfset variables.instance.dashboard=true />
+<cfset variables.instance.sortPermission="" />
+<cfset variables.instance.proxyUser="" />
+<cfset variables.instance.proxyPassword="" />
+<cfset variables.instance.proxyServer="" />
+<cfset variables.instance.proxyPort="80" />
 <cfset variables.instance.appreloadKey=application.appreloadKey />
 
 <cffunction name="init" returntype="any" output="true" access="public">
@@ -185,6 +190,26 @@ to your own modified versions of Mura CMS.
 	
 	<cfif structKeyExists(config,"sortPermission")>
 		<cfset setSortPermission(config.sortPermission)/>
+	</cfif>
+	
+	<cfif structKeyExists(config,"sortPermission")>
+		<cfset setSortPermission(config.sortPermission)/>
+	</cfif>
+	
+	<cfif structKeyExists(config,"proxyUser")>
+		<cfset setProxyUser(config.proxyUser)/>
+	</cfif>
+	
+	<cfif structKeyExists(config,"proxyPassword")>
+		<cfset setProxyPassword(config.proxyPassword)/>
+	</cfif>
+	
+	<cfif structKeyExists(config,"proxyServer")>
+		<cfset setProxyServer(config.proxyServer)/>
+	</cfif>
+	
+	<cfif structKeyExists(config,"proxyPort")>
+		<cfset setProxyPort(config.proxyPort)/>
 	</cfif>
 	
 	<cfswitch expression="#server.coldfusion.productName#">
@@ -797,4 +822,43 @@ to your own modified versions of Mura CMS.
 	<cfargument name="sortPermission" type="String" />
 	<cfset variables.instance.sortPermission = arguments.sortPermission />
 </cffunction>
+
+<cffunction name="getProxyUser" returntype="String" access="public" output="false">
+	<cfreturn variables.instance.proxyUser />
+</cffunction>
+
+<cffunction name="setProxyUser" access="public" output="false">
+	<cfargument name="proxyUser" type="String" />
+	<cfset variables.instance.proxyUser = arguments.proxyUser />
+</cffunction>
+
+<cffunction name="getProxyPassword" returntype="String" access="public" output="false">
+	<cfreturn variables.instance.proxyPassword />
+</cffunction>
+
+<cffunction name="setProxyPassword" access="public" output="false">
+	<cfargument name="proxyPassword" type="String" />
+	<cfset variables.instance.proxyPassword = arguments.proxyPassword />
+</cffunction>
+
+<cffunction name="getProxyServer" returntype="String" access="public" output="false">
+	<cfreturn variables.instance.proxyServer />
+</cffunction>
+
+<cffunction name="setProxyServer" access="public" output="false">
+	<cfargument name="proxyServer" type="String" />
+	<cfset variables.instance.proxyServer = arguments.proxyServer />
+</cffunction>
+
+<cffunction name="getProxyPort" returntype="String" access="public" output="false">
+	<cfreturn variables.instance.proxyPort />
+</cffunction>
+
+<cffunction name="setProxyPort" access="public" output="false">
+	<cfargument name="proxyPort" type="String" />
+	<cfif isnumeric(arguments.proxyPort)>
+	<cfset variables.instance.proxyPort = arguments.proxyPort />
+	</cfif>
+</cffunction>
+
 </cfcomponent>

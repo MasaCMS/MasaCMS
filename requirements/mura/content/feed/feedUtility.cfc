@@ -78,7 +78,9 @@ to your own modified versions of Mura CMS.
 	<cfreturn import>
 	<cfelse>
 	
-	<CFHTTP url="#import.feedBean.getChannelLink()#" method="GET" resolveurl="Yes" throwOnError="Yes" />
+	<CFHTTP url="#import.feedBean.getChannelLink()#" method="GET" resolveurl="Yes" throwOnError="Yes" 
+	proxyUser="#variables.configBean.getProxyUser()#" proxyPassword="#variables.configBean.getProxyPassword()#"
+	proxyServer="#variables.configBean.getProxyServer()#" proxyPort="#variables.configBean.getProxyPort()#"/>
 	<cfset xmlFeed=xmlParse(CFHTTP.FileContent)/>
 	<cfswitch expression="#import.feedBean.getVersion()#">
 		<cfcase value="RSS 0.920,RSS 2.0">

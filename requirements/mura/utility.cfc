@@ -188,7 +188,7 @@ to your own modified versions of Mura CMS.
 	<!--- filter out Subversion hidden folders --->
 	<cfquery name="rs" dbtype="query">
 	SELECT * FROM rs
-	WHERE directory NOT LIKE '%\.svn%'
+	WHERE directory NOT LIKE '%#variables.configBean.getFileDelim()#.svn%'
 	AND name <> '.svn'
 	</cfquery>
 	

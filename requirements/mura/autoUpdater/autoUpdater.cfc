@@ -80,7 +80,9 @@ to your own modified versions of Mura CMS.
 			<cfset versionDir=versionDir & "/config">
 		</cfif>
 		
-		<cfhttp url="http://trac.blueriver.com/mura/changeset" result="diff" getasbinary="yes">
+		<cfhttp url="http://trac.blueriver.com/mura/changeset" result="diff" getasbinary="yes" 
+		proxyUser="#variables.configBean.getProxyUser()#" proxyPassword="#variables.configBean.getProxyPassword()#"
+		proxyServer="#variables.configBean.getProxyServer()#" proxyPort="#variables.configBean.getProxyPort()#">
 		<cfhttpparam type="url" name="format" value="zip">
 		<cfhttpparam type="url" name="old_path" value="#svnUpdateDir#">
 		<cfhttpparam type="url" name="old" value="#currentVersion#">
@@ -200,7 +202,9 @@ to your own modified versions of Mura CMS.
 <cffunction name="getProductionData" output="false">
 	<cfset var diff="">
 
-	<cfhttp url="http://getmura.com/productionVersion.cfm" result="diff" getasbinary="no">
+	<cfhttp url="http://getmura.com/productionVersion.cfm" result="diff" getasbinary="no" 
+	proxyUser="#variables.configBean.getProxyUser()#" proxyPassword="#variables.configBean.getProxyPassword()#"
+	proxyServer="#variables.configBean.getProxyServer()#" proxyPort="#variables.configBean.getProxyPort()#">
 	
 	<cftry>
 	<cfreturn deserializeJSON(diff.filecontent)>
