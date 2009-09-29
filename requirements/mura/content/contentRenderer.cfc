@@ -735,7 +735,7 @@ to your own modified versions of Mura CMS.
 	
 	<cfif StructKeyExists(arguments,"cacheKey")>
 		<cfsavecontent variable="theContent">
-		<cf_CacheOMatic key="#arguments.cacheKey#" nocache="#event.getValue('r').restrict#">
+		<cf_CacheOMatic key="#arguments.cacheKey#" nocache="#event.getValue('nocache')#">
 			<cfoutput>#dspObject_Include(arguments.siteid,arguments.object,arguments.objectid,arguments.fileName,arguments.hasSummary,arguments.useRss)#</cfoutput>
 		</cf_cacheomatic>
 		</cfsavecontent>

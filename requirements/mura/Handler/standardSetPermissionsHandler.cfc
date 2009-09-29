@@ -25,6 +25,9 @@
 	<cfargument name="event" required="true">
 	
 	<cfset event.setValue('r',application.permUtility.setRestriction(event.getValue('crumbdata')))>
+	<cfif event.getValue('r').restrict>
+		<cfset event.setValue('nocache',1)>
+	</cfif>
 	
 </cffunction>
 
