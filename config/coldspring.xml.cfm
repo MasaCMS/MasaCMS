@@ -183,6 +183,18 @@ to your own modified versions of Mura CMS.
 				<entry key="sortPermission">
 					<value>#XMLFormat(GetProfileString("#variables.iniPath#", mode, "sortPermission"))#</value>
 				</entry>
+				<entry key="proxyUser">
+					<value>#XMLFormat(GetProfileString("#variables.iniPath#", mode, "proxyUser"))#</value>
+				</entry>
+				<entry key="proxyPassword">
+					<value>#XMLFormat(GetProfileString("#variables.iniPath#", mode, "proxyPassword"))#</value>
+				</entry>
+				<entry key="proxyServer">
+					<value>#XMLFormat(GetProfileString("#variables.iniPath#", mode, "proxyServer"))#</value>
+				</entry>
+				<entry key="proxyPort">
+					<value>#XMLFormat(GetProfileString("#variables.iniPath#", mode, "proxyPort"))#</value>
+				</entry>
 				</map>
 			</constructor-arg>
 		</bean>
