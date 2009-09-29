@@ -656,7 +656,7 @@ to your own modified versions of Mura CMS.
 				delete from tcontentcomments where commentid not in (select commentid from tcontent where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.tositeid#"/>)
 			</cfquery>
 			<cfquery datasource="#arguments.toDSN#" name="rstcontentcomments">
-				select * from tcontentcomments where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteid#"/>
+				select * from tcontentcomments where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.tositeid#"/>
 			</cfquery>
 			<cfquery datasource="#arguments.fromDSN#">
 				delete from tcontentcomments where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.fromsiteid#"/>
@@ -977,7 +977,9 @@ to your own modified versions of Mura CMS.
 			</cfif>
 		</cfloop>
 		
-		<cfset update("#application.configBean.getAssetPath()#","#application.configBean.getProductionAssetPath()#") >
+		<cfif len(application.configBean.getAssetPath())>
+			<cfset update("#application.configBean.getAssetPath()#","#application.configBean.getProductionAssetPath()#") >
+		</cfif>
 		
 		<cfquery datasource="#application.configBean.getDatasource()#" username="#application.configBean.getDBUsername()#" password="#application.configBean.getDBPassword()#">
 			update tsettings set lastDeployment = #now()#
