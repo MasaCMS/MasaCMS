@@ -45,16 +45,18 @@ to your own modified versions of Mura CMS.
 <cfset variables.instance.objectID="" />
 <cfset variables.instance.moduleID=""/>
 <cfset variables.instance.name=""/>
-<cfset variables.instance.location=""/>
+<cfset variables.instance.location="global"/>
 <cfset variables.instance.displayMethod=""/>
 <cfset variables.instance.displayObjectFile=""/>
 <cfset variables.instance.docache="false"/>
 
 <cffunction name="init" returntype="any" output="false" access="public">
 	<cfargument name="configBean">
+	<cfargument name="pluginManager">
 	
 	<cfset variables.configBean=arguments.configBean />
 	<cfset variables.dsn=variables.configBean.getDatasource()/>
+	<cfset variables.pluginManager=arguments.pluginManager />
 	<cfreturn this />
 </cffunction>
 

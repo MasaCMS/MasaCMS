@@ -1054,7 +1054,7 @@ select * from tplugins order by #arguments.orderby#
 </cffunction>
 
 <cffunction name="getDisplayObjectBean" returntype="any" output="false">
-<cfreturn createObject("component","pluginDisplayObjectBean").init(variables.configBean) />
+<cfreturn createObject("component","pluginDisplayObjectBean").init(variables.configBean,this) />
 </cffunction>
 
 <cffunction name="getScriptBean" returntype="any" output="false">
