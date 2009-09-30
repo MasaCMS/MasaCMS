@@ -1076,6 +1076,8 @@ to your own modified versions of Mura CMS.
 		<cfargument name="keyFactory" required="true" />
 		<cfset var rs = "" />
 		<cfset var keys=arguments.keyFactory>
+		<cfset var newFile="">
+		<cfset var fileDelim=application.configBean.getFileDelim()>
 		
 		<cfdirectory directory="#arguments.baseDir#" name="rs" action="list" recurse="true" />
 		<!--- filter out Subversion hidden folders --->
@@ -1093,13 +1095,22 @@ to your own modified versions of Mura CMS.
 		<cfloop query="rs">
 			<cfif rs.type eq "dir">
 				<cftry>
-					<cfdirectory action="create" directory="#replace('#rs.directory#/',arguments.baseDir,arguments.destDir)##rs.name#/" />
+					<cfdirectory action="create" directory="#replace('#rs.directory##fileDelim#',arguments.baseDir,arguments.destDir)##rs.name##fileDelim#" />
 					<cfcatch></cfcatch>
 				</cftry>
 			<cfelse>
 				<!--- <cftry> --->
-					<cffile action="copy" mode="777" source="#rs.directory#/#rs.name#" destination="#replace('#rs.directory#/',arguments.baseDir,arguments.destDir)#" />
-					<cffile action="rename" source="#replace('#rs.directory#/',arguments.baseDir,arguments.destDir)##rs.name#" destination="#replace('#rs.directory#/',arguments.baseDir,arguments.destDir)##keys.get(left(rs.name,35))#.#listLast(rs.name,'.')#"/>
+					<cffile action="copy" mode="777" source="#rs.directory##fileDelim##rs.name#" destination="#replace('#rs.directory##fileDelim#',arguments.baseDir,arguments.destDir)#" />
+					
+					<cfset newFile=listFirst(rs.name,".")>
+					
+					<cfif listLen(newFile,"_") gt 1>
+						<cfset newFile=keys.get(listFirst(newFile,"_")) & "_" & listLast(newFile,"_") & "." & listLast(rs.name,".")>
+					<cfelse>
+						<cfset newFile=keys.get(newFile) & "." & listLast(rs.name,".")>	
+					</cfif>
+						
+					<cffile action="rename" source="#replace('#rs.directory##fileDelim#',arguments.baseDir,arguments.destDir)##rs.name#" destination="#replace('#rs.directory##fileDelim#',arguments.baseDir,arguments.destDir)##newFile#"/>
 				<!--- 	<cfcatch></cfcatch>
 				</cftry> --->
 			</cfif>
