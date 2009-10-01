@@ -42,9 +42,9 @@ to your own modified versions of Mura CMS.
 --->
 <cfoutput>
 <!---<h3>This is the template "#application[FUSEBOX_APPLICATION_KEY].errortemplatesPath##cfcatch.type#.cfm"</h3>--->
-<h2>An Error of type "#cfcatch.type#" has occurred</h2>
-<h3>#cfcatch.message#</h3>
+<h2>An Error of type "#HTMLEditFormat(cfcatch.type)#" has occurred</h2>
+<h3>#HTMLEditFormat(cfcatch.message)#</h3>
 <p>
-#cfcatch.detail#
+#HTMLEditFormat(cfcatch.detail)#
 </p>
 </cfoutput>
