@@ -77,6 +77,7 @@ to your own modified versions of Mura CMS.
 	<cfif REFindNoCase("^[^@%*<>' ]+@[^@%*<>' ]{1,255}\.[^@%*<>' ]{2,5}", trim(listFirst(i,chr(9)))) neq 0 > 
 
 		<cfif arguments.direction eq 'add' or arguments.direction eq 'replace'>
+		<cfset I = variables.utility.listFix(I,chr(9),"_null_")>
 		<cftry>	
 			<cfset data=structNew()>
 			<cfset data.mlid=arguments.listBean.getMLID() />
@@ -84,8 +85,17 @@ to your own modified versions of Mura CMS.
 			<cfset data.isVerified=1 />
 			<cfset data.email=listFirst(I,chr(9)) />
 			<cfset data.fname=listgetat(I,2,chr(9)) />
+			<cfif data.fname eq "_null_">
+				<cfset data.fname="" />	
+			</cfif>
 			<cfset data.lname=listgetat(I,3,chr(9)) />
+			<cfif data.lname eq "_null_">
+				<cfset data.lname="" />	
+			</cfif>
 			<cfset data.company=listgetat(I,4,chr(9)) />	
+			<cfif data.company eq "_null_">
+				<cfset data.company="" />	
+			</cfif>
 		<cfcatch></cfcatch>
 		</cftry>
 		
