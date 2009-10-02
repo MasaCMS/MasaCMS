@@ -412,6 +412,7 @@ to your own modified versions of Mura CMS.
 		</bean>
 		<bean id="mailinglistUtility" class="mura.mailinglist.mailinglistUtility" singleton="true">
 			<constructor-arg name="configBean"><ref bean="configBean" /></constructor-arg>
+			<constructor-arg name="utility"><ref bean="utility" /></constructor-arg>
 		</bean>
 			<bean id="memberManager" class="mura.mailinglist.memberManager" singleton="true">
 			<constructor-arg name="configBean"><ref bean="configBean" /></constructor-arg>

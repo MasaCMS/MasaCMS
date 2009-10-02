@@ -264,6 +264,13 @@ to your own modified versions of Mura CMS.
 	</cfif>
 </cffunction>
 
+<cffunction name="fixLineBreaks" output="false" returntype="string">
+<cfargument name="str">
+	<cfset arguments.str=replace(arguments.str,chr(13),"","all")>
+	<cfset arguments.str=replace(arguments.str,chr(10),chr(13) & chr(10),"all")>
+	<cfreturn arguments.str>
+</cffunction>
+
 <cffunction name="isHTTPS" output="false" returnType="boolean">
 	<cfif len(cgi.HTTPS) and listFindNoCase("Yes,On,True",cgi.HTTPS)>
 		<cfreturn true>
@@ -275,6 +282,5 @@ to your own modified versions of Mura CMS.
 		<cfreturn false>
 	</cfif>
 </cffunction>
-
 
 </cfcomponent>

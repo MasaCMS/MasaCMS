@@ -43,8 +43,10 @@ to your own modified versions of Mura CMS.
 <cfcomponent extends="mura.cfobject" output="false">
 <cffunction name="init" access="public" returntype="any" output="false">
 <cfargument name="configBean" type="any" required="yes"/>
+<cfargument name="utility" type="any" required="yes"/>
 		<cfset var fileDelim="/"/>
 		<cfset variables.configBean=arguments.configBean />
+		<cfset variables.utility=arguments.utility />
 		<cfset fileDelim=variables.configBean.getFileDelim() />
 		<cfreturn this />
 </cffunction>
@@ -64,6 +66,7 @@ to your own modified versions of Mura CMS.
 	file="#getTempDirectory()##file.serverfile#"
 	ACTION="read" variable="tempList">
 	
+	<cfset tempList=variables.utility.fixLineBreaks(tempList)>
 	<cfset tempList = "#REReplace(tempList, chr(13) & chr(10), "|", "ALL")#">
 	
 	<cfif arguments.direction eq 'replace'>
