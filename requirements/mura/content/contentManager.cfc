@@ -1182,6 +1182,7 @@ to your own modified versions of Mura CMS.
 		<cfargument name="commentID" type="string">
 			<cfset var commentBean=getCommentBean() />
 			<cfset commentBean.setCommentID(arguments.commentid) />
+			<cfset commentBean.load() />
 			<cfset commentBean.delete() />
 			<cfset setCommentStat(commentBean.getContentID(),commentBean.getSiteID()) />
 			<cfreturn commentBean />

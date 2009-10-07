@@ -319,8 +319,12 @@ to your own modified versions of Mura CMS.
 </cfif>
 </cfoutput>
 <cfelse>
-<h3>#application.rbFactory.getKeyValue(session.rb,"dashboard.session.searchtimedout")#</h3>
-<p>#application.rbFactory.getKeyValue(session.rb,"dashboard.session.searchtimedoutdesc")#</p>
+<cfoutput>
+<h3>#application.rbFactory.getKeyValue(session.rb,"dashboard.session.searchtimed
+out")#</h3>
+<p>#application.rbFactory.getKeyValue(session.rb,"dashboard.session.searchtimedo
+utdesc")#</p>
+</cfoutput>
 </cfif>
 </cfif>
 </div>

@@ -43,7 +43,7 @@ to your own modified versions of Mura CMS.
 
 <cfsilent>
 <cfif not isdefined('request.userBean')>
-<cfset request.userBean=application.userManager.read(listFirst(getAuthUser(),"^")) />
+<cfset request.userBean=application.userManager.read(session.mura.userID) />
 </cfif>
 <cfset rbFactory=getSite().getRBFactory() />
 <cfparam name="msg" default="#rbFactory.getKey('user.message')#">
@@ -200,7 +200,7 @@ to your own modified versions of Mura CMS.
 
 <cfif session.mura.isLoggedIn>
 	<input name="submit" type="submit"  value="#HTMLEditFormat(rbFactory.getKey('user.updateprofile'))#" />
-	<input type="hidden" name="userid" value="#listgetat(getAuthUser(),1,'^')#"/>
+	<input type="hidden" name="userid" value="#session.mura.userID#"/>
 	<input type="hidden" name="doaction" value="updateprofile">
 <cfelse>
 	<input type="hidden" name="userid" value=""/>
