@@ -120,6 +120,10 @@
 		<cfset variables.maxRecordsPerPage=arguments.nextN>
 	</cffunction>
 	
+	<cffunction name="getNextN" access="public" output="false" returntype="any">
+		<cfreturn variables.maxRecordsPerPage>
+	</cffunction>
+	
 	<cffunction name="setQuery" access="public" output="false" returntype="void">
 		<cfargument name="rs" type="query" required="true">
 		<cfargument name="maxRecordsPerPage" type="numeric" required="false">
