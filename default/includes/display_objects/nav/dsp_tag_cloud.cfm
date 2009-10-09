@@ -67,7 +67,9 @@ to your own modified versions of Mura CMS.
 	<cfelse>
 		<cfset class="not-very-popular">
 	</cfif>
-</cfsilent><li class="#class#"><span>#tags.tagcount#<cfif tags.tagcount gt 1> items are <cfelse>item is </cfif> tagged with </span><a href="?tag=#urlEncodedFormat(tags.tag)#&newSearch=true&display=search" class="tag">#tag#</a></li>
+	<cfset args = ArrayNew(1)>
+     <cfset args[1] = tags.tagcount>
+</cfsilent><li class="#class#"><span><cfif tags.tagcount gt 1> #rbFactory.getResourceBundle().messageFormat(rbFactory.getKey('tagcloud.itemsare'), args)#<cfelse>#rbFactory.getResourceBundle().messageFormat(rbFactory.getKey('tagcloud.itemis'), args)#</cfif> tagged with </span><a href="?tag=#urlEncodedFormat(tags.tag)#&newSearch=true&display=search" class="tag">#tag#</a></li>
 </cfloop>
 </ol>
 <cfelse>
