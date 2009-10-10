@@ -965,6 +965,8 @@ select * from tplugins order by #arguments.orderby#
 	<cfset var theDisplay2=""/>
 	<cfset var rsOnError="">
 	
+	<cfset event.setValue("objectID",arguments.object)>
+	
 	<cfquery name="rs" dbtype="query">
 	select pluginID, displayObjectFile,location,displaymethod, docache, objectID, directory, moduleID from variables.rsDisplayObjects 
 	where 
