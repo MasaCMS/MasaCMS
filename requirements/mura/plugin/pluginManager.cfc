@@ -752,11 +752,28 @@ select * from tplugins order by #arguments.orderby#
 
 </cffunction>
 
+<cffunction name="announceEvent" output="false" returntype="void">
+<cfargument name="eventToAnnounce" required="true" default="" type="any">
+<cfargument name="currentEventObject" required="true" default="" type="any">
+<cfargument name="rsHandlers" required="true" default="" type="any">
+<cfargument name="moduleID" required="true" default="" type="any">
+	<cfset executeScripts(arguments.eventToAnnounce,arguments.currentEventObject.getValue('siteID'),arguments.currentEventObject,arguments.rsHandlers,arguments.moduleID)>
+</cffunction>
+
+<cffunction name="renderEvent" output="false" returntype="any">
+<cfargument name="eventToRender" required="true" default="" type="any">
+<cfargument name="currentEventObject" required="true" default="" type="any">
+<cfargument name="rsHandlers" required="true" default="" type="any">
+<cfargument name="moduleID" required="true" default="" type="any">
+	<cfreturn renderScripts(arguments.eventToRender,arguments.currentEventObject.getValue('siteID'),arguments.currentEventObject,arguments.rsHandlers,arguments.moduleID)>
+</cffunction>
+
 <cffunction name="executeScripts" output="false" returntype="any">
 <cfargument name="runat">
 <cfargument name="siteID" required="true" default="">
 <cfargument name="event" required="true" default="" type="any">
 <cfargument name="scripts" required="true" default="" type="any">
+<cfargument name="moduleID" required="true" default="" type="any">
 	<cfset var rs=""/>
 	<cfset var pluginConfig="">
 	<cfset var componentPath="">
@@ -788,7 +805,7 @@ select * from tplugins order by #arguments.orderby#
 	<cfif isQuery(arguments.scripts)>
 		<cfset rs=arguments.scripts />
 	<cfelse>
-		<cfset rs=getScripts(arguments.runat,arguments.siteid) />
+		<cfset rs=getScripts(arguments.runat,arguments.siteid,arguments.moduleID) />
 	</cfif>
 	
 	<cfloop query="rs">
@@ -824,6 +841,7 @@ select * from tplugins order by #arguments.orderby#
 <cfargument name="siteID" required="true" default="">
 <cfargument name="event" required="true" default="" type="any">
 <cfargument name="scripts" required="true" default="" type="any">
+<cfargument name="moduleID" required="true" default="" type="any">
 	<cfset var rs=""/>
 	<cfset var str=""/>
 	<cfset var pluginConfig="">
@@ -867,7 +885,7 @@ select * from tplugins order by #arguments.orderby#
 	<cfif isQuery(arguments.scripts)>
 		<cfset rs=arguments.scripts />
 	<cfelse>
-		<cfset rs=getScripts(arguments.runat,arguments.siteid) />
+		<cfset rs=getScripts(arguments.runat,arguments.siteid,arguments.moduleID) />
 	</cfif>
 	
 	<cfif rs.recordcount>
@@ -914,6 +932,13 @@ select * from tplugins order by #arguments.orderby#
 	</cfif>
 
 	<cfreturn trim(str)>
+</cffunction>
+
+<cffunction name="getHandlersQuery" output="false" returntype="query">
+<cfargument name="eventToHandle">
+<cfargument name="siteID" required="true" default="">
+<cfargument name="moduleID" required="true" default="">
+	<cfreturn getScripts(arguments.eventToHandle,argument.siteID,arguments.moduleID)>
 </cffunction>
 
 <cffunction name="getScripts" output="false" returntype="query">

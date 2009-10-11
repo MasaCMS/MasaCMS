@@ -22,6 +22,10 @@
 <cfcomponent extends="mura.cfobject" output="false">
 <cfset variables.bean="">
 
+<cffunction name="translate" output="false" returnType="any">
+	<cfreturn "translation not implemented">
+</cffunction>
+
 <cffunction name="setBean" output="false" access="public" returntype="void">
 <cfargument name="bean">
 	<cfset variables.bean=arguments.bean>
@@ -33,10 +37,10 @@
 		<cfif structKeyExists(variables.bean,"get#arguments.property#")>
 			<cfreturn evaluate("variables.bean.get#arguments.property#()") />
 		<cfelse>
-			<cfreturn variables.bean.getValue(property) />
+			<cfreturn variables.bean.getValue(arguments.property) />
 		</cfif>
 	<cfelse>
-		<cfreturn super.getValue(property)>
+		<cfreturn super.getValue(arguments.property)>
 	</cfif>
 </cffunction>
 
