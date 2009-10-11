@@ -102,7 +102,7 @@ to your own modified versions of Mura CMS.
 <cffunction name="getHandler" returntype="any" access="public" output="false">
 	<cfargument name="handler">
 	<cfif isObject(getValue('HandlerFactory'))>
-		<cfreturn getValue('HandlerFactory').get(arguments.handler) />
+		<cfreturn getValue('HandlerFactory').get(arguments.handler,getValue("localHandler")) />
 	<cfelse>
 		<cfset throwSiteIDError()>
 	</cfif>
@@ -112,7 +112,7 @@ to your own modified versions of Mura CMS.
 	<cfargument name="validation">
 	
 	<cfif isObject(getValue('ValidatorFactory'))>
-		<cfreturn getValue('ValidatorFactory').get(arguments.validation) />	
+		<cfreturn getValue('ValidatorFactory').get(arguments.validation,getValue("localHandler")) />	
 	<cfelse>
 		<cfset throwSiteIDError()>
 	</cfif>
@@ -123,7 +123,7 @@ to your own modified versions of Mura CMS.
 	<cfargument name="translator">
 	
 	<cfif isObject(getValue('TranslatorFactory'))>
-		<cfreturn getValue('TranslatorFactory').get(arguments.translator) />	
+		<cfreturn getValue('TranslatorFactory').get(arguments.translator,getValue("localHandler")) />	
 	<cfelse>
 		<cfset throwSiteIDError()>
 	</cfif>
