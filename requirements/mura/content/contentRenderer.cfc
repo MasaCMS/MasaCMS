@@ -751,8 +751,8 @@ to your own modified versions of Mura CMS.
 	<cfargument name="object" type="string" />
 	<cfargument name="objectid" type="string" />
 	<cfargument name="theFile" type="string" />
-	<cfargument name="Summary" type="boolean" />
-	<cfargument name="RSS" type="boolean" />
+	<cfargument name="Summary" type="boolean" required="true" default="false"/>
+	<cfargument name="RSS" type="boolean" required="true" default="false" />
 
 	<cfset var theIncludePath = event.getSite().getIncludePath() />
 	<cfset var fileDelim = application.configBean.getFileDelim() />
@@ -892,29 +892,29 @@ to your own modified versions of Mura CMS.
 					<cfcase value="editprofile">
 						<cfset event.setValue('noCache',1)>
 						<cfset event.setValue('forceSSL',getSite().getExtranetSSL())/>
-						<cfset eventOutput=application.pluginManager.renderScripts("onSiteEditProfileRender",event.getValue("siteid"),event)>
+						<cfset eventOutput=application.pluginManager.renderEvent("onSiteEditProfileRender",event)>
 						<cfif len(eventOutput)>
 						<cfoutput>#eventOutput#</cfoutput>
 						<cfelse>
-						<cfinclude template="#theIncludePath#/includes/display_objects/dsp_edit_profile.cfm">
+						<cfoutput>#dspObject_Include(thefile='dsp_edit_profile.cfm')#</cfoutput>
 						</cfif>
 					</cfcase>
 					<cfcase value="search">
 						<cfset event.setValue('noCache',1)>
-						<cfset eventOutput=application.pluginManager.renderScripts("onSiteSearchRender",event.getValue("siteid"),event)>
+						<cfset eventOutput=application.pluginManager.renderEvent("onSiteSearchRender",event)>
 						<cfif len(eventOutput)>
 						<cfoutput>#eventOutput#</cfoutput>
 						<cfelse>
-						<cfinclude template="#theIncludePath#/includes/display_objects/dsp_search_results.cfm">
+						<cfoutput>#dspObject_Include(thefile='dsp_search_results.cfm')#</cfoutput>
 						</cfif>
 					</cfcase> 
 					<cfcase value="login">
 						<cfset event.setValue('noCache',1)>
-						<cfset eventOutput=application.pluginManager.renderScripts("onSiteLoginPromptRender",event.getValue("siteid"),event)>
+						<cfset eventOutput=application.pluginManager.renderEvent("onSiteLoginPromptRender",event)>
 						<cfif len(eventOutput)>
 						<cfoutput>#eventOutput#</cfoutput>
 						<cfelse>
-						<cfinclude  template="#theIncludePath#/includes/display_objects/dsp_login.cfm">
+						<cfoutput>#dspObject_Include(thefile='dsp_login.cfm')#</cfoutput>
 						</cfif>
 					</cfcase>
 				</cfswitch>
@@ -928,9 +928,9 @@ to your own modified versions of Mura CMS.
 					</cfif>			
 				</cfoutput>
 				
-				<cfset eventOutput=application.pluginManager.renderScripts("on#event.getContentBean().getType()##event.getContentBean().getSubType()#BodyRender",event.getValue("siteid"),event)>
+				<cfset eventOutput=application.pluginManager.renderEvent("on#event.getContentBean().getType()##event.getContentBean().getSubType()#BodyRender",event)>
 				<cfif not len(eventOutput)>
-					<cfset eventOutput=application.pluginManager.renderScripts("on#event.getContentBean().getType()#BodyRender",event.getValue("siteid"),event)>
+					<cfset eventOutput=application.pluginManager.renderEvent("on#event.getContentBean().getType()#BodyRender",event)>
 				</cfif>
 				
 				<cfif len(eventOutput)>
@@ -976,12 +976,12 @@ to your own modified versions of Mura CMS.
 					<cfswitch expression="#event.getValue('contentBean').gettype()#">
 					<cfcase value="Portal">
 						<cf_CacheOMatic key="portalBody#event.getValue('contentBean').getcontentID()##event.getValue('startRow')##event.getValue('categoryID')##event.getValue('relatedID')#" nocache="#event.getValue('r').restrict#">
-						 <cfinclude template="#theIncludePath#/includes/display_objects/dsp_portal.cfm">
+						 <cfoutput>#dspObject_Include(thefile='dsp_portal.cfm')#</cfoutput>
 						</cf_CacheOMatic>
 					</cfcase> 
 					<cfcase value="Calendar">
 						 <cf_CacheOMatic key="portalBody#event.getValue('contentBean').getcontentID()##event.getValue('year')##event.getValue('month')##event.getValue('categoryID')##event.getValue('relatedID')#" nocache="#event.getValue('r').restrict#">
-						 <cfinclude template="#theIncludePath#/includes/display_objects/calendar/index.cfm">
+						 <cfoutput>#dspObject_Include(thefile='calendar/index.cfm')#</cfoutput>
 						 </cf_CacheOMatic>
 					</cfcase> 
 					<cfcase value="Gallery">
@@ -989,33 +989,33 @@ to your own modified versions of Mura CMS.
 						<cfset addToHTMLHeadQueue("gallery/htmlhead/gallery.cfm")>
 						<cfif not event.valueExists('galleryItemID')><cfset event.setValue('galleryItemID','')></cfif>
 						<cf_CacheOMatic key="portalBody#event.getValue('contentBean').getcontentID()##event.getValue('startRow')##event.getValue('galleryItemID')#" nocache="#event.getValue('r').restrict#">
-						<cfinclude template="#theIncludePath#/includes/display_objects/gallery/index.cfm">
+						<cfoutput>#dspObject_Include(thefile='gallery/index.cfm')#</cfoutput>
 						</cf_CacheOMatic>
 					</cfcase> 
 				</cfswitch>
 				</cfif>		
 			</cfif> 
 		<cfelseif event.getValue('isOnDisplay') and event.getValue('r').restrict and event.getValue('r').loggedIn and not event.getValue('r').allow >
-			<cfset eventOutput=application.pluginManager.renderScripts("onContentDenialRender",event.getValue("siteid"),event)>
+			<cfset eventOutput=application.pluginManager.renderEvent("onContentDenialRender",event)>
 			<cfif len(eventOutput)>
 			<cfoutput>#eventOutput#</cfoutput>
 			<cfelse>
-			<cfinclude template="#theIncludePath#/includes/display_objects/dsp_deny.cfm">
+			<cfoutput>#dspObject_Include(thefile='dsp_deny.cfm')#</cfoutput>
 			</cfif>
 		<cfelseif event.getValue('isOnDisplay') and event.getValue('r').restrict and not event.getValue('r').loggedIn>
 			<cfset event.setValue('noCache',1)>
-			<cfset eventOutput=application.pluginManager.renderScripts("onSiteLoginPromptRender",event.getValue("siteid"),event)>
+			<cfset eventOutput=application.pluginManager.renderEvent("onSiteLoginPromptRender",event)>
 			<cfif len(eventOutput)>
 			<cfoutput>#eventOutput#</cfoutput>
 			<cfelse>
-			<cfinclude template="#theIncludePath#/includes/display_objects/dsp_login.cfm">
+			<cfoutput>#dspObject_Include(thefile='dsp_login.cfm')#</cfoutput>
 			</cfif>
 		<cfelse>
-			<cfset eventOutput=application.pluginManager.renderScripts("onContentOfflineRender",event.getValue("siteid"),event)>
+			<cfset eventOutput=application.pluginManager.renderEvent("onContentOfflineRender",event)>
 			<cfif len(eventOutput)>
 			<cfoutput>#eventOutput#</cfoutput>
 			<cfelse>
-			<cfinclude template="#theIncludePath#/includes/display_objects/dsp_offline.cfm">
+			<cfoutput>#dspObject_Include(thefile='dsp_offline.cfm')#</cfoutput>
 			</cfif>
 		</cfif>
 		
