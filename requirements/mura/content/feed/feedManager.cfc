@@ -111,6 +111,7 @@ to your own modified versions of Mura CMS.
 		<cfset variables.feedDAO.create(feedBean) />
 		<cfset pluginEvent.setValue("feedBean",feedBean)>
 		<cfset variables.pluginManager.executeScripts("onFeedSave",feedBean.getSiteID(),pluginEvent)>
+		<cfset variables.pluginManager.executeScripts("onFeedCreate",feedBean.getSiteID(),pluginEvent)>
 	</cfif>
 	
 	<cfreturn feedBean />
@@ -150,7 +151,8 @@ to your own modified versions of Mura CMS.
 		<cfset feedBean.setLastUpdateBy(left(session.mura.fname & " " & session.mura.lname,50) ) />
 		<cfset variables.feedDAO.update(feedBean) />
 		<cfset pluginEvent.setValue("feedBean",feedBean)>
-		<cfset variables.pluginManager.executeScripts("onFeedSave",feedBean.getSiteID(),pluginEvent)>	
+		<cfset variables.pluginManager.executeScripts("onFeedSave",feedBean.getSiteID(),pluginEvent)>
+		<cfset variables.pluginManager.executeScripts("onFeedUpdate",feedBean.getSiteID(),pluginEvent)>		
 	</cfif>
 	
 	<cfreturn feedBean />

@@ -192,6 +192,7 @@ to your own modified versions of Mura CMS.
 		<cfset variables.DAO.create(categoryBean) />
 		<cfset pluginEvent.setValue("categoryBean",categoryBean)>
 		<cfset variables.pluginManager.executeScripts("onCategorySave",categoryBean.getSiteID(),pluginEvent)>
+		<cfset variables.pluginManager.executeScripts("onCategoryCreate",categoryBean.getSiteID(),pluginEvent)>
 	</cfif>
 	
 	<cfreturn categoryBean />
@@ -231,6 +232,7 @@ to your own modified versions of Mura CMS.
 		
 		<cfset pluginEvent.setValue("categoryBean",categoryBean)>
 		<cfset variables.pluginManager.executeScripts("onCategorySave",categoryBean.getSiteID(),pluginEvent)>
+		<cfset variables.pluginManager.executeScripts("onCategoryUpdate",categoryBean.getSiteID(),pluginEvent)>
 	</cfif>
 	
 	<cfset variables.utility.logEvent("CategoryID:#categoryBean.getCategoryID()# Name:#categoryBean.getName()# was updated","mura-content","Information",true) />
