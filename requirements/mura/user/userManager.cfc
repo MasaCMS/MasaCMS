@@ -139,8 +139,12 @@ to your own modified versions of Mura CMS.
 	<cfset var error =""/>
 	<cfset var addressBean =""/>
 	<cfset var userBean="" />
-	<cfset var pluginEvent = createObject("component","mura.event") />
+	<cfset var pluginEvent = createObject("component","mura.event").init(arguments.data) />
 	
+	<cfset pluginEvent.setValue("updateGroups",arguments.updateGroups) />
+	<cfset pluginEvent.setValue("updateInterests",arguments.updateInterests) />
+	<cfset pluginEvent.setValue("OriginID",arguments.OriginID) />
+			
 	<cfif isObject(arguments.data)>
 		<cfset arguments.data=arguments.data.getAllValues() />
 	</cfif>
@@ -153,8 +157,6 @@ to your own modified versions of Mura CMS.
 	<cfif not structKeyExists(arguments.data,"siteID") or (structKeyExists(arguments.data,"siteID") and not len(arguments.data.siteID))>
 		<cfthrow type="custom" message="The attribute 'SITEID' is required when saving a user.">
 	</cfif>
-		
-	<cfset pluginEvent = createObject("component","mura.event").init(arguments.data) />
 	
 	<cfset userBean=variables.userDAO.read(arguments.data.userid)/>
 	
@@ -213,13 +215,11 @@ to your own modified versions of Mura CMS.
 	
 	<cfset var addressBean = "" />
 	<cfset var userBean=application.serviceFactory.getBean("userBean") />
-	<cfset var pluginEvent = createObject("component","mura.event") />
+	<cfset var pluginEvent = createObject("component","mura.event").init(arguments.data) />
 	
 	<cfif isObject(arguments.data)>
 		<cfset arguments.data=arguments.data.getAllValues() />
 	</cfif>
-	
-	<cfset pluginEvent = createObject("component","mura.event").init(arguments.data) />
 	
 	<cfset userBean.set(arguments.data) />
 	
@@ -282,7 +282,7 @@ to your own modified versions of Mura CMS.
 	<cfargument name="type" type="numeric" default="2"/>
 	
 	<cfset var userBean=read(arguments.userid) />
-	<cfset var pluginEvent = createObject("component","mura.event") />
+	<cfset var pluginEvent = createObject("component","mura.event").init(arguments) />
 	
 	<cfif  userBean.getType() eq 1>	
 		<cfset pluginEvent.setValue("groupBean",userBean)/>			

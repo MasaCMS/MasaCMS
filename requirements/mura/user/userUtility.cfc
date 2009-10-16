@@ -81,15 +81,11 @@ to your own modified versions of Mura CMS.
 		<cfset var user = "" />
 		<cfset var group = "" />
 		<cfset var lastLogin = now() />
-		<cfset var pluginEvent = createObject("component","mura.event") />
+		<cfset var pluginEvent = createObject("component","mura.event").init(arguments) />
 		
 		<cflogout>
 		<cfparam name="session.loginAttempts" type="numeric" default="0" />
 		<cfparam name="session.blockLoginUntil" type="string" default="" />
-		
-		<cfset pluginEvent.setValue("username",arguments.username)>
-		<cfset pluginEvent.setValue("password",arguments.password)>
-		<cfset pluginEvent.setValue("siteid",arguments.siteid)>
 		
 		<cfif len(arguments.siteID)>
 			<cfset variables.pluginManager.executeScripts('onSiteLogin',arguments.siteID,pluginEvent)/>
@@ -159,7 +155,7 @@ to your own modified versions of Mura CMS.
 		<cfset var user = "" />
 		<cfset var group = "" />
 		<cfset var lastLogin = now() />
-		<cfset var pluginEvent = createObject("component","mura.event") />
+		<cfset var pluginEvent = createObject("component","mura.event").init(arguments) />
 		
 		<cflogout>
 		<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#" name="rsUser">

@@ -101,7 +101,7 @@ to your own modified versions of Mura CMS.
 	<cfargument name="data" type="struct" default="#structnew()#"/>		
 	
 	<cfset var feedBean=application.serviceFactory.getBean("feedBean") />
-	<cfset var pluginEvent = createObject("component","mura.event") />
+	<cfset var pluginEvent = createObject("component","mura.event").init(arguments.data) />
 	<cfset feedBean.set(arguments.data) />
 	
 	<cfif structIsEmpty(feedBean.getErrors())>
@@ -142,7 +142,7 @@ to your own modified versions of Mura CMS.
 	<cfargument name="data" type="struct" default="#structnew()#"/>		
 	
 	<cfset var feedBean=variables.feedDAO.read(arguments.data.feedID) />
-	<cfset var pluginEvent = createObject("component","mura.event") />
+	<cfset var pluginEvent = createObject("component","mura.event").init(arguments.data) />
 	<cfset feedBean.set(arguments.data) />
 	
 	<cfif structIsEmpty(feedBean.getErrors())>
@@ -191,7 +191,7 @@ to your own modified versions of Mura CMS.
 	<cfargument name="feedID" type="String" />		
 	
 	<cfset var feedBean=read(arguments.feedID) />
-	<cfset var pluginEvent = createObject("component","mura.event") />
+	<cfset var pluginEvent = createObject("component","mura.event").init(arguments) />
 	<cfset variables.globalUtility.logEvent("feedID:#feedBean.getfeedID()# Name:#feedBean.getName()# was deleted","mura-content","Information",true) />
 	<cfset variables.feedDAO.delete(arguments.feedID) />
 	

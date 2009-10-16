@@ -262,7 +262,7 @@ to your own modified versions of Mura CMS.
 <cfargument name="fileID" type="string" required="yes"/>
 <cfset var delim=variables.configBean.getFileDelim() />
 <cfset var rsFile=readMeta(arguments.fileID) />
-<cfset var pluginEvent = createObject("component","mura.event") />
+<cfset var pluginEvent = createObject("component","mura.event").init(arguments) />
 		
 		<cfswitch expression="#variables.configBean.getFileStore()#">
 		<cfcase value="fileDir">

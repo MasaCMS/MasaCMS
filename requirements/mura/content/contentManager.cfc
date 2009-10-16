@@ -380,7 +380,7 @@ to your own modified versions of Mura CMS.
 	<cfset var rsFile="" />
 	<cfset var rsDrafts = "" />
 	<cfset var d = "" />
-	<cfset var pluginEvent = createObject("component","mura.event") />
+	<cfset var pluginEvent = createObject("component","mura.event").init(arguments.data) />
 	
 	<!---IF THE DATA WAS SUBMITTED AS AN OBJECT UNPACK THE VALUES --->
 	<cfif isObject(arguments.data)>
