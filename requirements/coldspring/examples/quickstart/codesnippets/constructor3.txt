@@ -1,5 +1,0 @@
-<cffunction name="init" access="public" returntype="any" hint="Constructor.">
-	<cfargument name="configBean" type="any" />
-	<cfset variables.instance['configBean'] = arguments.configBean />
-	<cfreturn this />
-</cffunction>

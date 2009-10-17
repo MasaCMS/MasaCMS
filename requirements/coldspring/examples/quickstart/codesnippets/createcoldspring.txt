@@ -1,3 +1,0 @@
-<cfset coldspringConfig = '/coldspring/examples/quickstart/config/coldspring.xml' />
-<cfset beanFactory = CreateObject('component', 'coldspring.beans.DefaultXmlBeanFactory').init() />
-<cfset beanFactory.loadBeans(coldspringConfig) />
