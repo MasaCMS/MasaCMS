@@ -218,9 +218,9 @@ select * from tplugins order by #arguments.orderby#
 	
 	<cfdirectory action="create" directory="#location#" mode="777">
 	
-	<cfset zipTool.extract("#getTempDirectory()##delim##file.serverfile#","#location#")>
+	<cfset zipTool.extract("#getTempDirectory()##delim##cffile.serverfile#","#location#")>
 	
-	<cffile action="delete" file="#getTempDirectory()##delim##file.serverfile#">
+	<cffile action="delete" file="#getTempDirectory()##delim##cffile.serverfile#">
 	
 </cflock>
 

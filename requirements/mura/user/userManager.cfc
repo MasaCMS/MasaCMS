@@ -506,20 +506,20 @@ to your own modified versions of Mura CMS.
 
 <cffile action="upload" filefield="NewFile" nameconflict="makeunique" destination="#getTempDirectory()#">
 
-<cfif (file.ServerFileExt eq "jpg" or file.ServerFileExt eq "gif" or file.ServerFileExt eq "png") and file.ContentType eq "Image">
+<cfif (cffile.ServerFileExt eq "jpg" or cffile.ServerFileExt eq "gif" or cffile.ServerFileExt eq "png") and cffile.ContentType eq "Image">
 	<cftry>
 		<cfif len(arguments.userBean.getPhotoFileID())>
 			<cfset variables.fileManager.deleteVersion(arguments.userBean.getPhotoFileID()) />
 		</cfif>
-		<cfset theFileStruct=variables.fileManager.process(file,arguments.userBean.getSiteID()) />
-		<cfset arguments.userBean.setPhotoFileID(variables.fileManager.create(theFileStruct.fileObj,arguments.userBean.getUserID(),arguments.userBean.getSiteID(),file.ClientFile,file.ContentType,file.ContentSubType,file.FileSize,'00000000000000000000000000000000008',file.ServerFileExt,theFileStruct.fileObjSmall,theFileStruct.fileObjMedium)) />
+		<cfset theFileStruct=variables.fileManager.process(cffile,arguments.userBean.getSiteID()) />
+		<cfset arguments.userBean.setPhotoFileID(variables.fileManager.create(theFileStruct.fileObj,arguments.userBean.getUserID(),arguments.userBean.getSiteID(),cffile.ClientFile,cffile.ContentType,cffile.ContentSubType,cffile.FileSize,'00000000000000000000000000000000008',cffile.ServerFileExt,theFileStruct.fileObjSmall,theFileStruct.fileObjMedium)) />
 		<cfcatch>
 			<cfset error.photo="The file you uploaded appears to be corrupt. Please select another file to upload."/>
 			<cfset userBean.setErrors(error)/> 
 		</cfcatch>
 	</cftry>
 <cfelse>
-	<cffile action="delete" file="#getTempDirectory()##file.serverfile#">
+	<cffile action="delete" file="#getTempDirectory()##cffile.serverfile#">
 	<cfset error.photo="The file you uploaded is not a supported format. Only, JPEG, GIF and PNG files are accepted."/>
 	<cfset userBean.setErrors(error)/> 
 </cfif>

@@ -63,7 +63,7 @@ to your own modified versions of Mura CMS.
 	<cffile  action="upload" destination="#getTempDirectory()#"  filefield="listfile" nameconflict="makeunique"  accept="text/*">
 	
 	<cffile 
-	file="#getTempDirectory()##file.serverfile#"
+	file="#getTempDirectory()##cffile.serverfile#"
 	ACTION="read" variable="tempList">
 	
 	<cfset tempList=variables.utility.fixLineBreaks(tempList)>
@@ -110,7 +110,7 @@ to your own modified versions of Mura CMS.
 	</cfloop> 
 	
 	<cffile 
-	file="#getTempDirectory()##file.serverfile#"
+	file="#getTempDirectory()##cffile.serverfile#"
 	ACTION="delete">
 
 </cffunction>
