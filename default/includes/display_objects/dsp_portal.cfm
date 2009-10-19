@@ -145,19 +145,23 @@ to your own modified versions of Mura CMS.
 </div>
 </cfif>
 
- <cfif not rsSection.recordcount>
-	 <cfoutput>
-	 <cfif request.filterBy eq "releaseMonth">
-		<div id="svPortal">
-		<br>
-		<p>#rbFactory.getKey('list.nocontentmonth')#</p>	
-		</div>
-	 <cfelseif request.filterBy eq "releaseDate">
-		<div id="svPortal">
-		<br>
-		<p>#rbFactory.getKey('list.nocontentday')#</p>	
-		</div>
-	 </cfif>
-	 </cfoutput>
+<cfif not rsSection.recordcount>
+       <cfoutput>
+       <cfif request.filterBy eq "releaseMonth">
+            <div id="svPortal">
+            <br>
+            <p>#rbFactory.getKey('list.nocontentmonth')#</p>    
+            </div>
+       <cfelseif request.filterBy eq "releaseDate">
+            <div id="svPortal">
+            <br>
+            <p>#rbFactory.getKey('list.nocontentday')#</p>
+            </div>
+       <cfelse>
+            <div id="svPortal">
+            <p>#rbFactory.getKey('list.nocontent')#</p>   
+            </div>
+       </cfif>
+       </cfoutput>
 </cfif>
 	
