@@ -91,6 +91,13 @@ to your own modified versions of Mura CMS.
 	<cfreturn variables.userDAO.readByUsername(arguments.username,arguments.siteid) />
 </cffunction>
 
+<cffunction name="readByGroupName" access="public" returntype="any" output="false">
+	<cfargument name="groupname" type="string" default=""/>
+	<cfargument name="siteid" type="string" default=""/>
+	<cfargument name="isPublic" type="string" required="yes" default="both"/>		
+	<cfreturn variables.userDAO.readByGroupName(arguments.groupname,arguments.siteid,arguments.isPublic) />
+</cffunction>
+
 <cffunction name="readByRemoteID" access="public" returntype="any" output="false">
 	<cfargument name="remoteID" type="string" default=""/>
 	<cfargument name="siteid" type="string" default=""/>		

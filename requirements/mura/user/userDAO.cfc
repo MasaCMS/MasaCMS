@@ -114,6 +114,54 @@ to your own modified versions of Mura CMS.
 		<cfreturn userBean />
 </cffunction>
 
+<cffunction name="readByGroupName" access="public" returntype="any" output="false">
+		<cfargument name="groupname" type="string" required="yes" />
+		<cfargument name="siteid" type="string" required="yes" />
+		<cfargument name="isPublic" type="string" required="yes" default="both"/>
+		<cfset var rsuser = 0 />
+		<cfset var rsmembs = "" />
+		<cfset var rsInterests = "" />
+		<cfset var userBean=application.serviceFactory.getBean("userBean") />
+			
+		<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#" name="rsUser">
+			select *
+			from tusers 
+			where 
+			type=1
+			and groupname=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.groupname#">
+			and 
+			<cfif not isBoolean(arguments.isPublic)>
+				(siteid='#application.settingsManager.getSite(arguments.siteID).getPublicUserPoolID()#'
+				or  
+				siteid='#application.settingsManager.getSite(arguments.siteID).getPrivateUserPoolID()#'
+				) 
+			<cfelseif arguments.isPublic>
+			(siteid='#application.settingsManager.getSite(arguments.siteID).getPublicUserPoolID()#'
+				and
+			isPublic=1
+			) 
+			<cfelse>
+			(siteid='#application.settingsManager.getSite(arguments.siteID).getPrivateUserPoolID()#'
+				and 
+			isPublic=0
+			) 
+			</cfif>
+		</cfquery>
+		
+		<cfif rsUser.recordCount eq 1>
+			<cfset userBean.set(rsUser) />
+			<!--- <cfif userBean.getType() eq 2> --->
+				<cfset rsmembs=readMemberships(userBean.getUserId()) />
+				<cfset rsInterests=readInterestGroups(userBean.getUserId()) />
+				<cfset userBean.setGroupId(valuelist(rsmembs.groupid))/>
+				<cfset userBean.setCategoryId(valuelist(rsInterests.categoryid))/>
+			<!--- </cfif> --->
+			<cfset userBean.setAddresses(getAddresses(userBean.getUserID()))/>
+		</cfif>	
+		
+		<cfreturn userBean />
+</cffunction>
+
 <cffunction name="readByRemoteID" access="public" returntype="any" output="false">
 		<cfargument name="remoteid" type="string" required="yes" />
 		<cfargument name="siteid" type="string" required="yes" />
