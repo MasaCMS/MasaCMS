@@ -86,7 +86,7 @@ to your own modified versions of Mura CMS.
 	</li>
 
        
-<cfif getAuthUser() eq ''>
+<cfif not session.mura.isloggedin>
 	<li>
 	<label for="emailtxt">#rbFactory.getKey('user.email')#<span class="required">*</span></label>
 	<input name="email" id="emailtxt" validate="email" type="text" value="#request.userBean.getEmail()#" class="text"  required="true" message="#HTMLEditFormat(rbFactory.getKey('user.emailvalidate'))#" maxlength="50">
