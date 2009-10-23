@@ -273,7 +273,10 @@ fieldset textarea {
 form .buttons { text-align: right; }
 
 button, .buttons input { cursor: pointer; }
-input[type=submit] { cursor: pointer; }
+input[type='submit'] { cursor: pointer; }
+
+/* prevent Fx <= 3.5 from showing hidden inputs when some properties are set. See: Bugzilla id# 436046 & 501959 */
+input[type='hidden'] { display: none !important; }
 
 .sidebar form {
 	float: left;

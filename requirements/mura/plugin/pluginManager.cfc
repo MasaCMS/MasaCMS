@@ -422,7 +422,7 @@ select * from tplugins order by #arguments.orderby#
 	<cfreturn rs>
 </cffunction>
 
-<cffunction name="getPluginXML" returntype="string" output="false">
+<cffunction name="getPluginXML" returntype="xml" output="false">
 <cfargument name="moduleID">
 	<cfset var theXML="">
 	<cfset var rsPlugin=getPlugin(arguments.moduleID,'',false)>

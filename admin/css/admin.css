@@ -1,4 +1,7 @@
-/* @override http://mura:8500/mura/admin/css/admin.css */
+/* @override 
+	http://mura:8500/mura/admin/css/admin.css
+	http://72.29.5.128/admin/css/admin.css
+*/
 
 /* This file is part of Mura CMS. 
 
@@ -3717,7 +3720,7 @@ li span.req {
 
 /* @group User Feedback */
 
-.error, .notice, .success { padding: .8em; margin-bottom: 1em; border: 2px solid #ddd; }
+.error, .notice, .success { padding: .8em !important; margin-bottom: 1em !important; border: 2px solid #ddd; }
 
 .error { background: #FBE3E4; color: #8a1f11; border-color: #FBC2C4; }
 .notice { background: #FFF6BF; color: #514721; border-color: #FFD324; }

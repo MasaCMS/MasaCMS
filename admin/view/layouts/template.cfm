@@ -191,6 +191,7 @@ if (top.location != self.location) {
 		<option value="en">English</option>
 		<option value="de">Deutsch</option>
 		<option value="fr">Fran&ccedil;ais</option>
+		<option value="hu">Hungarian</option>
 		<!---<option value="es">Spanish</option>--->
 	</select>	
 <cfinclude template="dsp_secondary_menu_main.cfm">

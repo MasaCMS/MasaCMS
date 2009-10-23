@@ -215,7 +215,7 @@ to your own modified versions of Mura CMS.
 	<cfoutput>
 	#errorJSTxt#
 	<a name="errors"></a>
-	<div id="editProfileMsg" class="Required">
+	<div id="editProfileMsg" class="required">
 		#application.utility.displayErrors(errors)#
 	</div>
 </cfoutput>
@@ -229,34 +229,34 @@ to your own modified versions of Mura CMS.
 			<ol>
 				<li class="req">
 					<label for="txtName">#rbFactory.getKey('comments.name')#<ins> (#rbFactory.getKey('comments.required')#)</ins></label>
-					<input id="txtName" name="name" type="text" size="38" class="text" required="true" message="#htmlEditFormat(rbFactory.getKey('comments.namerequired'))#" value="#HTMLEditFormat(request.name)#"/>
+					<input id="txtName" name="name" type="text" size="38" class="text" required="true" message="#htmlEditFormat(rbFactory.getKey('comments.namerequired'))#" value="#HTMLEditFormat(request.name)#" />
 				</li>
 				<li class="req">
 					<label for="txtEmail">#rbFactory.getKey('comments.email')#</label>
-					<input id="txtEmail" name="email" type="text" size="38" class="text" required="true" message="#htmlEditFormat(rbFactory.getKey('comments.emailvalidate'))#"value="#HTMLEditFormat(request.email)#"/>
+					<input id="txtEmail" name="email" type="text" size="38" class="text" required="true" message="#htmlEditFormat(rbFactory.getKey('comments.emailvalidate'))#" value="#HTMLEditFormat(request.email)#" />
 				</li>
 				<li>
 					<label for="txtUrl">#rbFactory.getKey('comments.url')#</label>
-					<input id="txtUrl" name="url" type="text" size="38" class="text" value="#HTMLEditFormat(request.url)#"/>
+					<input id="txtUrl" name="url" type="text" size="38" class="text" value="#HTMLEditFormat(request.url)#" />
 				</li>
 				<li class="req">
 					<label for="txtComment">#rbFactory.getKey('comments.comment')#<ins> (#rbFactory.getKey('comments.required')#)</ins></label>
-					<textarea id="txtComment" name="comments" message="#htmlEditFormat(rbFactory.getKey('comments.commentrequired'))#" required="true">#HTMLEditFormat(request.comments)#</textarea>
+					<textarea id="txtComment" name="comments" message="#htmlEditFormat(rbFactory.getKey('comments.commentrequired'))#" cols="30" rows="20" required="true">#HTMLEditFormat(request.comments)#</textarea>
 				</li>
 				<li>
 					<label for="txtRemember">#rbFactory.getKey('comments.rememberinfo')#</label>
-					<input type="checkbox" id="txtRemember" name="remember" value="1"<cfif isBoolean(request.remember) and request.remember> checked </cfif>/>
+					<input type="checkbox" id="txtRemember" name="remember" value="1"<cfif isBoolean(request.remember) and request.remember> checked="checked"</cfif> />
 				</li>
 				<li>
 					<label for="txtSubscribe">#rbFactory.getKey('comments.subscribe')#</label>
-					<input type="checkbox" id="txtSubscribe" name="subscribe" value="1"<cfif isBoolean(request.subscribe) and request.subscribe> checked </cfif>/>
+					<input type="checkbox" id="txtSubscribe" name="subscribe" value="1"<cfif isBoolean(request.subscribe) and request.subscribe> checked="checked"</cfif> />
 				</li></cfoutput>
 				<cfinclude template="dsp_form_protect.cfm" >
 			</ol>
 		</fieldset>
 		<div class="buttons">
 			<cfoutput><p class="required">#rbFactory.getKey('comments.requiredfield')#</p>
-			<input type="hidden" name="returnURL" value="http://#application.settingsManager.getSite(request.siteid).getDomain()##application.configBean.getServerPort()##application.contentRenderer.getCurrentURL()#">
+			<input type="hidden" name="returnURL" value="http://#application.settingsManager.getSite(request.siteid).getDomain()##application.configBean.getServerPort()##application.contentRenderer.getCurrentURL()#" />
 			<input type="hidden" name="commentid" value="#createuuid()#" />
 			<input type="submit" class="submit" name="submit" value="#htmlEditFormat(rbFactory.getKey('comments.submit'))#" /></cfoutput>
 		</div>
