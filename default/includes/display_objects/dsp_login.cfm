@@ -53,9 +53,9 @@ to your own modified versions of Mura CMS.
 	<cfif request.status eq 'failed'>
 		<cfif isDate(session.blockLoginUntil) and session.blockLoginUntil gt now()>
 		<cfset request.isBlocked=true />
-		<p id="loginMsg" class="error">Your access has been temporarily blocked. <br/>Please try again later or contact your site administrator for assistance.</p>
+		<p id="loginMsg" class="error">#rbFactory.getKey('user.loginblocked')#</p>
 		<cfelse>
-		<p id="loginMsg" class="error">We're sorry, there is no user that matches <br />that Username and Password. Please try again.</p>
+		<p id="loginMsg" class="error">#rbFactory.getKey('user.loginfailed')#</p>
 		</cfif>
 	</cfif>
 	<cfif not request.isBlocked>
@@ -106,7 +106,7 @@ to your own modified versions of Mura CMS.
 			<input type="hidden" name="returnURL" value="#request.returnURL#" />
 			<cfif isdefined('msg2')>
 			<span class="required"><cfif find('is not a valid',msg2)>#rbFactory.getResourceBundle().messageFormat(rbFactory.getKey('user.forgetnotvalid'),request.email)#<cfelse>#rbFactory.getKey('user.forgotsuccess')#</cfif></span></cfif>
-			<input type="submit" value="Get password" class="submit" />
+			<input type="submit" value="#HTMLEditFormat(rbFactory.getKey('user.getpassword'))#" class="submit" />
 		</div>
 	</form>
 
