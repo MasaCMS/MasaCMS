@@ -81,11 +81,11 @@ to your own modified versions of Mura CMS.
 
 	<cfset event.setValue("localHandler",localHandler)/>
 	
-	<cfset application.pluginManager.executeScripts('onSiteRequestStart',event.getValue('siteid'),event)/>
+	<cfset application.pluginManager.announceEvent('onSiteRequestStart',event)/>
 	<cfset servlet.onRequestStart() />
 	<cfset response=servlet.doRequest()>
 	<cfset servlet.onRequestEnd() />
-	<cfset application.pluginManager.executeScripts('onSiteRequestEnd',event.getValue('siteid'),event)/>
+	<cfset application.pluginManager.announceEvent('onSiteRequestEnd',event)/>
 	
 	<cfreturn response>
 </cffunction>

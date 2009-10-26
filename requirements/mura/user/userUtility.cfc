@@ -88,9 +88,9 @@ to your own modified versions of Mura CMS.
 		<cfparam name="session.blockLoginUntil" type="string" default="" />
 		
 		<cfif len(arguments.siteID)>
-			<cfset variables.pluginManager.executeScripts('onSiteLogin',arguments.siteID,pluginEvent)/>
+			<cfset variables.pluginManager.announceEvent('onSiteLogin',pluginEvent)/>
 		<cfelse>
-			<cfset variables.pluginManager.executeScripts('onGlobalLogin',arguments.siteID,pluginEvent)/>
+			<cfset variables.pluginManager.announceEvent('onGlobalLogin',pluginEvent)/>
 		</cfif>
 		
 		<cfquery datasource="#application.configBean.getDatasource()#" name="rsUser" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
@@ -121,9 +121,9 @@ to your own modified versions of Mura CMS.
 				<cfset loginByQuery(rsUser)/>
 				
 				<cfif len(arguments.siteID)>
-					<cfset variables.pluginManager.executeScripts('onSiteLoginSuccess',arguments.siteID,pluginEvent)/>
+					<cfset variables.pluginManager.announceEvent('onSiteLoginSuccess',pluginEvent)/>
 				<cfelse>
-					<cfset variables.pluginManager.executeScripts('onGlobalLoginSuccess',arguments.siteID,pluginEvent)/>
+					<cfset variables.pluginManager.announceEvent('onGlobalLoginSuccess',pluginEvent)/>
 				</cfif>
 					
 				<cfreturn true />
@@ -134,9 +134,9 @@ to your own modified versions of Mura CMS.
 			<cfelse>
 			
 				<cfif len(arguments.siteID)>
-					<cfset variables.pluginManager.executeScripts('onSiteLoginBlocked',arguments.siteID,pluginEvent)/>
+					<cfset variables.pluginManager.announceEvent('onSiteLoginBlocked',pluginEvent)/>
 				<cfelse>
-					<cfset variables.pluginManager.executeScripts('onGlobalLoginBlocked',arguments.siteID,pluginEvent)/>
+					<cfset variables.pluginManager.announceEvent('onGlobalLoginBlocked',pluginEvent)/>
 				</cfif>
 				
 				<cfset session.blockLoginUntil=dateAdd("n",30,now())/>
@@ -180,9 +180,9 @@ to your own modified versions of Mura CMS.
 				<cfset pluginEvent.setValue("userID",arguments.userID)>
 				
 				<cfif len(arguments.siteID)>
-					<cfset variables.pluginManager.executeScripts('onSiteLoginSuccess',arguments.siteID,pluginEvent)/>
+					<cfset variables.pluginManager.announceEvent('onSiteLoginSuccess',pluginEvent)/>
 				<cfelse>
-					<cfset variables.pluginManager.executeScripts('onGlobalLoginSuccess',arguments.siteID,pluginEvent)/>
+					<cfset variables.pluginManager.announceEvent('onGlobalLoginSuccess',pluginEvent)/>
 				</cfif>
 				
 				<cfreturn true />

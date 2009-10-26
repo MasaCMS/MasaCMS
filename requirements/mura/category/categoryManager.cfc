@@ -191,8 +191,9 @@ to your own modified versions of Mura CMS.
 		<cfset variables.utility.logEvent("CategoryID:#categoryBean.getCategoryID()# Name:#categoryBean.getName()# was created","mura-content","Information",true) />
 		<cfset variables.DAO.create(categoryBean) />
 		<cfset pluginEvent.setValue("categoryBean",categoryBean)>
-		<cfset variables.pluginManager.executeScripts("onCategorySave",categoryBean.getSiteID(),pluginEvent)>
-		<cfset variables.pluginManager.executeScripts("onCategoryCreate",categoryBean.getSiteID(),pluginEvent)>
+		<cfset pluginEvent.setValue("siteID", categoryBean.getSiteID())>
+		<cfset variables.pluginManager.announceEvent("onCategorySave",pluginEvent)>
+		<cfset variables.pluginManager.announceEvent("onCategoryCreate",pluginEvent)>
 	</cfif>
 	
 	<cfreturn categoryBean />
@@ -231,8 +232,9 @@ to your own modified versions of Mura CMS.
 		</cfif>
 		
 		<cfset pluginEvent.setValue("categoryBean",categoryBean)>
-		<cfset variables.pluginManager.executeScripts("onCategorySave",categoryBean.getSiteID(),pluginEvent)>
-		<cfset variables.pluginManager.executeScripts("onCategoryUpdate",categoryBean.getSiteID(),pluginEvent)>
+		<cfset pluginEvent.setValue("siteID", categoryBean.getSiteID())>
+		<cfset variables.pluginManager.announceEvent("onCategorySave",pluginEvent)>
+		<cfset variables.pluginManager.announceEvent("onCategoryUpdate",pluginEvent)>
 	</cfif>
 	
 	<cfset variables.utility.logEvent("CategoryID:#categoryBean.getCategoryID()# Name:#categoryBean.getName()# was updated","mura-content","Information",true) />
@@ -256,7 +258,8 @@ to your own modified versions of Mura CMS.
 	<cfset variables.DAO.delete(arguments.categoryID) />
 	
 	<cfset pluginEvent.setValue("categoryBean",categoryBean)>
-	<cfset variables.pluginManager.executeScripts("onCategoryDelete",categoryBean.getSiteID(),pluginEvent)>
+	<cfset pluginEvent.setValue("siteID", categoryBean.getSiteID())>
+	<cfset variables.pluginManager.announceEvent("onCategoryDelete",pluginEvent)>
 
 </cffunction>
 

@@ -951,7 +951,7 @@ to your own modified versions of Mura CMS.
 		<cfset var pluginEvent = createObject("component","mura.event").init(arguments) />
 		<cfset var keys=createObject("component","mura.publisherKeys").init('publish',application.utility)>
 		
-		<cfset application.pluginManager.executeScripts("onSiteDeploy",arguments.siteID,pluginEvent)>
+		<cfset application.pluginManager.announceEvent("onSiteDeploy",pluginEvent)>
 		
 		<cfloop list="#application.configBean.getProductionDatasource()#" index="i">
 			<cfset getToWork(arguments.siteid, arguments.siteid, '#application.configBean.getDatasource()#', '#i#','publish',keys)>
@@ -1019,7 +1019,8 @@ to your own modified versions of Mura CMS.
 		<cfset var pluginEvent = createObject("component","mura.event").init(arguments) />
 		<cfset var keys=createObject("component","mura.publisherKeys").init('copy',application.utility)>
 		
-		<cfset application.pluginManager.executeScripts("onSiteCopy",arguments.fromsiteID,pluginEvent)>
+		<cfset pluginEvent.setValue("siteID", arguments.fromSiteID)>
+		<cfset application.pluginManager.announceEvent("onSiteCopy",pluginEvent)>
 		
 		<cfset getToWork(arguments.fromsiteid, arguments.tositeid, arguments.fromDSN, arguments.toDSN, 'copy',keys)>
 		

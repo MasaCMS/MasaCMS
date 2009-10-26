@@ -204,12 +204,16 @@ to your own modified versions of Mura CMS.
 		<cfset setLastUpdateInfo(userBean) />
 		<cfset variables.userDAO.update(userBean,arguments.updateGroups,arguments.updateInterests,arguments.OriginID) />
 	
+		<cfset pluginEvent.setValue("siteID", userBean.getSiteID())>
+		
 		<cfif  userBean.getType() eq 1>	
 			<cfset pluginEvent.setValue("groupBean",userBean)/>			
-			<cfset variables.pluginManager.executeScripts("onGroupUpdate",userBean.getSiteID(),pluginEvent)>	
+			<cfset variables.pluginManager.announceEvent("onGroupUpdate",pluginEvent)>
+			<cfset variables.pluginManager.announceEvent("onGroupUpdate",pluginEvent)>	
 		<cfelse>
 			<cfset pluginEvent.setValue("userBean",userBean)/>	
-			<cfset variables.pluginManager.executeScripts("onUserUpdate",userBean.getSiteID(),pluginEvent)>	
+			<cfset variables.pluginManager.announceEvent("onUserUpdate",pluginEvent)>
+			<cfset variables.pluginManager.announceEvent("onUserSave",pluginEvent)>	
 		</cfif>
 		
 	</cfif>
@@ -272,12 +276,16 @@ to your own modified versions of Mura CMS.
 			<cfset variables.userDAO.createAddress(addressBean) />
 		</cfif>
 	
+		<cfset pluginEvent.setValue("siteID", userBean.getSiteID())>
+		
 		<cfif userBean.getType() eq 1>	
 			<cfset pluginEvent.setValue("groupBean",userBean)/>			
-			<cfset variables.pluginManager.executeScripts("onGroupCreate",userBean.getSiteID(),pluginEvent)>	
+			<cfset variables.pluginManager.announceEvent("onGroupCreate",pluginEvent)>
+			<cfset variables.pluginManager.announceEvent("onGroupSave",pluginEvent)>		
 		<cfelse>
 			<cfset pluginEvent.setValue("userBean",userBean)/>	
-			<cfset variables.pluginManager.executeScripts("onUserCreate",userBean.getSiteID(),pluginEvent)>	
+			<cfset variables.pluginManager.announceEvent("onUserCreate",pluginEvent)>
+			<cfset variables.pluginManager.announceEvent("onUserSave",pluginEvent)>		
 		</cfif>
 	</cfif>
 	
@@ -290,13 +298,14 @@ to your own modified versions of Mura CMS.
 	
 	<cfset var userBean=read(arguments.userid) />
 	<cfset var pluginEvent = createObject("component","mura.event").init(arguments) />
+	<cfset pluginEvent.setValue("siteID", userBean.getSiteID())>
 	
 	<cfif  userBean.getType() eq 1>	
 		<cfset pluginEvent.setValue("groupBean",userBean)/>			
-		<cfset variables.pluginManager.executeScripts("onGroupDelete",userBean.getSiteID(),pluginEvent)>	
+		<cfset variables.pluginManager.announceEvent("onGroupDelete",pluginEvent)>	
 	<cfelse>
 		<cfset pluginEvent.setValue("userBean",userBean)/>	
-		<cfset variables.pluginManager.executeScripts("onUserDelete",userBean.getSiteID(),pluginEvent)>	
+		<cfset variables.pluginManager.announceEvent("onUserDelete",pluginEvent)>	
 	</cfif>
 	
 	<cfset variables.globalUtility.logEvent("UserID:#arguments.userid# Type:#userBean.getType()# User:#userBean.getFName()# #userBean.getFName()# Group:#userBean.getGroupName()# was deleted","mura-users","Information",true) />

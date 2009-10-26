@@ -24,7 +24,7 @@
 <cffunction name="handle" output="false" returnType="any">
 	<cfargument name="event" required="true">
 	
-	<cfset application.pluginManager.executeScripts('onRenderStart',event.getValue('siteID'), event)/>
+	<cfset application.pluginManager.announceEvent('onRenderStart', event)/>
 	
 	<cfswitch expression="#event.getValue('contentBean').getType()#">
 	<cfcase value="File,Link">

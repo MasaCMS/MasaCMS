@@ -134,7 +134,7 @@ to your own modified versions of Mura CMS.
 		</cfquery>
 		
 		<cfset pluginEvent.setValue("fileid",fileID) />
-		<cfset variables.pluginManager.executeScripts("onFileCache",arguments.siteID,pluginEvent)>
+		<cfset variables.pluginManager.announceEvent("onFileCache", pluginEvent)>
 		
 		<cfreturn fileid />
 </cffunction>
@@ -296,7 +296,8 @@ to your own modified versions of Mura CMS.
 		</cfswitch>
 		
 		<cfset pluginEvent.setValue('rsFile',rsFile)>
-		<cfset variables.pluginManager.executeScripts("onFileCacheDelete",rsFile.siteID,pluginEvent)>
+		<cfset pluginEvent.setValue('siteID',rsFile.siteID)>
+		<cfset variables.pluginManager.announceEvent("onFileCacheDelete",pluginEvent)>
 </cffunction>
 
 </cfcomponent>
