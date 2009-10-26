@@ -207,7 +207,15 @@ to your own modified versions of Mura CMS.
 					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(contentID)#">,
 					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(Name neq '',de('no'),de('yes'))#" value="#Name#">,
 					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(Object neq '',de('no'),de('yes'))#" value="#Object#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(ObjectID neq '',de('no'),de('yes'))#" value="#keys.get(objectID)#">,
+					<cfif arguments.mode eq "copy" and arguments.fromDSN eq arguments.toDSN>
+						<cfif listFindNoCase("plugin,adzone", object)>
+							<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(ObjectID neq '',de('no'),de('yes'))#" value="#objectID#">,
+						<cfelse>
+							<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(ObjectID neq '',de('no'),de('yes'))#" value="#keys.get(objectID)#">,
+						</cfif>
+					<cfelse>
+						<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(ObjectID neq '',de('no'),de('yes'))#" value="#keys.get(objectID)#">,
+					</cfif>
 					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(OrderNo),de(OrderNo),de(0))#">,
 					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#arguments.toSiteID#">
 					)
@@ -274,174 +282,177 @@ to your own modified versions of Mura CMS.
 				</cfquery>
 			</cfloop>
 			
-			<!--- tadcampaigns --->
-			<cfquery datasource="#arguments.fromDSN#" name="rsSettings">
-				select advertiserUserPoolID from tsettings where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.fromsiteid#"/>
-			</cfquery>
-			<cfquery datasource="#arguments.toDSN#">
-				delete from tadcampaigns
-				where userID in 
-				(select userID from tusers where
-				siteid = '#application.settingsManager.getSite(rsSettings.advertiserUserPoolID).getPrivateUserPoolID()#' or
-				siteid = '#application.settingsManager.getSite(rsSettings.advertiserUserPoolID).getPublicUserPoolID()#')
-			</cfquery>
-			<cfquery datasource="#arguments.fromDSN#" name="rstadcampaigns">
-				select * from tadcampaigns
-				where userID in 
-				(select userID from tusers where
-				siteid = '#application.settingsManager.getSite(rsSettings.advertiserUserPoolID).getPrivateUserPoolID()#' or
-				siteid = '#application.settingsManager.getSite(rsSettings.advertiserUserPoolID).getPublicUserPoolID()#')
-			</cfquery>
-			<cfloop query="rstadcampaigns">
-				<cfquery datasource="#arguments.toDSN#">
-					insert into tadcampaigns (campaignID,dateCreated,endDate,isActive,lastUpdate,lastUpdateBy,name,notes,startDate,userID)
-					values
-					(
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(campaignID)#">,
-					<cfqueryparam cfsqltype="cf_sql_TIMESTAMP" null="#iif(isDate(dateCreated),de('no'),de('yes'))#" value="#dateCreated#">,
-					<cfqueryparam cfsqltype="cf_sql_TIMESTAMP" null="#iif(isDate(endDate),de('no'),de('yes'))#" value="#endDate#">,
-					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(isActive),de(isActive),de(0))#">,
-					<cfqueryparam cfsqltype="cf_sql_TIMESTAMP" null="#iif(isDate(lastUpdate),de('no'),de('yes'))#" value="#lastUpdate#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(lastUpdateBy neq '',de('no'),de('yes'))#" value="#lastUpdateBy#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(name neq '',de('no'),de('yes'))#" value="#name#">,
-					<cfqueryparam cfsqltype="cf_sql_LONGVARCHAR" null="#iif(notes neq '',de('no'),de('yes'))#" value="#notes#">,
-					<cfqueryparam cfsqltype="cf_sql_TIMESTAMP" null="#iif(isDate(startDate),de('no'),de('yes'))#" value="#startDate#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(userID neq '',de('no'),de('yes'))#" value="#userID#">
-					)
+			<cfif not (arguments.mode eq "copy" and arguments.toDSN eq arguments.fromDSN)>
+				<!--- tadcampaigns --->
+				<cfquery datasource="#arguments.fromDSN#" name="rsSettings">
+					select advertiserUserPoolID from tsettings where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.fromsiteid#"/>
 				</cfquery>
-			</cfloop>
-			<!--- tadcreatives --->
-			<cfquery datasource="#arguments.toDSN#">
-				delete from tadcreatives 
-				where userID in 
-				(select userID from tusers where
-				siteid = '#application.settingsManager.getSite(rsSettings.advertiserUserPoolID).getPrivateUserPoolID()#' or
-				siteid = '#application.settingsManager.getSite(rsSettings.advertiserUserPoolID).getPublicUserPoolID()#')
-			</cfquery>
-			<cfquery datasource="#arguments.fromDSN#" name="rstadcreatives">
-				select * from tadcreatives
-				where userID in 
-				(select userID from tusers where
-				siteid = '#application.settingsManager.getSite(rsSettings.advertiserUserPoolID).getPrivateUserPoolID()#' or
-				siteid = '#application.settingsManager.getSite(rsSettings.advertiserUserPoolID).getPublicUserPoolID()#')
-			</cfquery>
-			<cfloop query="rstadcreatives">
 				<cfquery datasource="#arguments.toDSN#">
-					insert into tadcreatives (altText,creativeID,creativeType,dateCreated,fileID,height,isActive,lastUpdate,lastUpdateBy,mediaType,name,notes,redirectURL,textBody,userID,width,target)
-					values
-					(
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(altText neq '',de('no'),de('yes'))#" value="#altText#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(creativeID)#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(creativeType neq '',de('no'),de('yes'))#" value="#creativeType#">,
-					<cfqueryparam cfsqltype="cf_sql_TIMESTAMP" null="#iif(isDate(dateCreated),de('no'),de('yes'))#" value="#dateCreated#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(fileID neq '',de('no'),de('yes'))#" value="#keys.get(fileID)#">,
-					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(height),de(height),de(0))#">,
-					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(isActive),de(isActive),de(0))#">,
-					<cfqueryparam cfsqltype="cf_sql_TIMESTAMP" null="#iif(isDate(lastUpdate),de('no'),de('yes'))#" value="#lastUpdate#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(lastUpdateBy neq '',de('no'),de('yes'))#" value="#lastUpdateBy#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(mediaType neq '',de('no'),de('yes'))#" value="#mediaType#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(name neq '',de('no'),de('yes'))#" value="#name#">,
-					<cfqueryparam cfsqltype="cf_sql_LONGVARCHAR" null="#iif(notes neq '',de('no'),de('yes'))#" value="#notes#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(redirectURL neq '',de('no'),de('yes'))#" value="#redirectURL#">,
-					<cfqueryparam cfsqltype="cf_sql_LONGVARCHAR" null="#iif(textBody neq '',de('no'),de('yes'))#" value="#textBody#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(userID neq '',de('no'),de('yes'))#" value="#userID#">,
-					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(width),de(width),de(0))#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(target neq '',de('no'),de('yes'))#" value="#target#">
-					)				
+					delete from tadcampaigns
+					where userID in 
+					(select userID from tusers where
+					siteid = '#application.settingsManager.getSite(rsSettings.advertiserUserPoolID).getPrivateUserPoolID()#' or
+					siteid = '#application.settingsManager.getSite(rsSettings.advertiserUserPoolID).getPublicUserPoolID()#')
 				</cfquery>
-			</cfloop>
-			<!--- tadipwhitelist --->
-			<cfquery datasource="#arguments.toDSN#">
-				delete from tadipwhitelist where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.tositeid#"/>
-			</cfquery>
-			<cfquery datasource="#arguments.fromDSN#" name="rstadipwhitelist">
-				select * from tadipwhitelist where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.fromsiteid#"/>
-			</cfquery>
-			<cfloop query="rstadipwhitelist">
+				<cfquery datasource="#arguments.fromDSN#" name="rstadcampaigns">
+					select * from tadcampaigns
+					where userID in 
+					(select userID from tusers where
+					siteid = '#application.settingsManager.getSite(rsSettings.advertiserUserPoolID).getPrivateUserPoolID()#' or
+					siteid = '#application.settingsManager.getSite(rsSettings.advertiserUserPoolID).getPublicUserPoolID()#')
+				</cfquery>
+				<cfloop query="rstadcampaigns">
+					<cfquery datasource="#arguments.toDSN#">
+						insert into tadcampaigns (campaignID,dateCreated,endDate,isActive,lastUpdate,lastUpdateBy,name,notes,startDate,userID)
+						values
+						(
+						<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(campaignID)#">,
+						<cfqueryparam cfsqltype="cf_sql_TIMESTAMP" null="#iif(isDate(dateCreated),de('no'),de('yes'))#" value="#dateCreated#">,
+						<cfqueryparam cfsqltype="cf_sql_TIMESTAMP" null="#iif(isDate(endDate),de('no'),de('yes'))#" value="#endDate#">,
+						<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(isActive),de(isActive),de(0))#">,
+						<cfqueryparam cfsqltype="cf_sql_TIMESTAMP" null="#iif(isDate(lastUpdate),de('no'),de('yes'))#" value="#lastUpdate#">,
+						<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(lastUpdateBy neq '',de('no'),de('yes'))#" value="#lastUpdateBy#">,
+						<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(name neq '',de('no'),de('yes'))#" value="#name#">,
+						<cfqueryparam cfsqltype="cf_sql_LONGVARCHAR" null="#iif(notes neq '',de('no'),de('yes'))#" value="#notes#">,
+						<cfqueryparam cfsqltype="cf_sql_TIMESTAMP" null="#iif(isDate(startDate),de('no'),de('yes'))#" value="#startDate#">,
+						<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(userID neq '',de('no'),de('yes'))#" value="#userID#">
+						)
+					</cfquery>
+				</cfloop>
+				<!--- tadcreatives --->
 				<cfquery datasource="#arguments.toDSN#">
-					insert into tadipwhitelist (IP,siteID)
-					values
-					(
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(IP neq '',de('no'),de('yes'))#" value="#IP#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#arguments.toSiteID#">
-					)
+					delete from tadcreatives 
+					where userID in 
+					(select userID from tusers where
+					siteid = '#application.settingsManager.getSite(rsSettings.advertiserUserPoolID).getPrivateUserPoolID()#' or
+					siteid = '#application.settingsManager.getSite(rsSettings.advertiserUserPoolID).getPublicUserPoolID()#')
 				</cfquery>
-			</cfloop>
-			<!--- tadzones --->
-			<cfquery datasource="#arguments.toDSN#">
-				delete from tadzones where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.tositeid#"/>
-			</cfquery>
-			<cfquery datasource="#arguments.fromDSN#" name="rstadzones">
-				select * from tadzones where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.fromsiteid#"/>
-			</cfquery>
-			<cfloop query="rstadzones">
+				<cfquery datasource="#arguments.fromDSN#" name="rstadcreatives">
+					select * from tadcreatives
+					where userID in 
+					(select userID from tusers where
+					siteid = '#application.settingsManager.getSite(rsSettings.advertiserUserPoolID).getPrivateUserPoolID()#' or
+					siteid = '#application.settingsManager.getSite(rsSettings.advertiserUserPoolID).getPublicUserPoolID()#')
+				</cfquery>
+				<cfloop query="rstadcreatives">
+					<cfquery datasource="#arguments.toDSN#">
+						insert into tadcreatives (altText,creativeID,creativeType,dateCreated,fileID,height,isActive,lastUpdate,lastUpdateBy,mediaType,name,notes,redirectURL,textBody,userID,width,target)
+						values
+						(
+						<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(altText neq '',de('no'),de('yes'))#" value="#altText#">,
+						<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(creativeID)#">,
+						<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(creativeType neq '',de('no'),de('yes'))#" value="#creativeType#">,
+						<cfqueryparam cfsqltype="cf_sql_TIMESTAMP" null="#iif(isDate(dateCreated),de('no'),de('yes'))#" value="#dateCreated#">,
+						<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(fileID neq '',de('no'),de('yes'))#" value="#keys.get(fileID)#">,
+						<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(height),de(height),de(0))#">,
+						<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(isActive),de(isActive),de(0))#">,
+						<cfqueryparam cfsqltype="cf_sql_TIMESTAMP" null="#iif(isDate(lastUpdate),de('no'),de('yes'))#" value="#lastUpdate#">,
+						<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(lastUpdateBy neq '',de('no'),de('yes'))#" value="#lastUpdateBy#">,
+						<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(mediaType neq '',de('no'),de('yes'))#" value="#mediaType#">,
+						<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(name neq '',de('no'),de('yes'))#" value="#name#">,
+						<cfqueryparam cfsqltype="cf_sql_LONGVARCHAR" null="#iif(notes neq '',de('no'),de('yes'))#" value="#notes#">,
+						<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(redirectURL neq '',de('no'),de('yes'))#" value="#redirectURL#">,
+						<cfqueryparam cfsqltype="cf_sql_LONGVARCHAR" null="#iif(textBody neq '',de('no'),de('yes'))#" value="#textBody#">,
+						<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(userID neq '',de('no'),de('yes'))#" value="#userID#">,
+						<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(width),de(width),de(0))#">,
+						<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(target neq '',de('no'),de('yes'))#" value="#target#">
+						)				
+					</cfquery>
+				</cfloop>
+				<!--- tadipwhitelist --->
 				<cfquery datasource="#arguments.toDSN#">
-					insert into tadzones (adZoneID,creativeType,dateCreated,height,isActive,lastUpdate,lastUpdateBy,name,notes,siteID,width)
-					values
-					(
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(adZoneID)#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(creativeType neq '',de('no'),de('yes'))#" value="#creativeType#">,
-					<cfqueryparam cfsqltype="cf_sql_TIMESTAMP" null="#iif(isDate(dateCreated),de('no'),de('yes'))#" value="#dateCreated#">,
-					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(height),de(height),de(0))#">,
-					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(isActive),de(isActive),de(0))#">,
-					<cfqueryparam cfsqltype="cf_sql_TIMESTAMP" null="#iif(isDate(lastUpdate),de('no'),de('yes'))#" value="#lastUpdate#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(lastUpdateBy neq '',de('no'),de('yes'))#" value="#lastUpdateBy#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(name neq '',de('no'),de('yes'))#" value="#name#">,
-					<cfqueryparam cfsqltype="cf_sql_LONGVARCHAR" null="#iif(notes neq '',de('no'),de('yes'))#" value="#notes#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#arguments.tositeid#">,
-					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(width),de(width),de(0))#">
-					)
+					delete from tadipwhitelist where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.tositeid#"/>
 				</cfquery>
-			</cfloop>
-			<!--- tadplacements --->
-			<cfquery datasource="#arguments.toDSN#">
-				delete from tadplacements where adzoneid in (select adzoneid from tadzones where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.tositeid#"/>)
-			</cfquery>
-			<cfquery datasource="#arguments.fromDSN#" name="rstadplacements">
-				select * from tadplacements where adzoneid in (select adzoneid from tadzones where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.fromsiteid#"/>)
-			</cfquery>
-			<cfloop query="rstadplacements">
+				<cfquery datasource="#arguments.fromDSN#" name="rstadipwhitelist">
+					select * from tadipwhitelist where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.fromsiteid#"/>
+				</cfquery>
+				<cfloop query="rstadipwhitelist">
+					<cfquery datasource="#arguments.toDSN#">
+						insert into tadipwhitelist (IP,siteID)
+						values
+						(
+						<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(IP neq '',de('no'),de('yes'))#" value="#IP#">,
+						<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#arguments.toSiteID#">
+						)
+					</cfquery>
+				</cfloop>
+				<!--- tadzones --->
 				<cfquery datasource="#arguments.toDSN#">
-					insert into tadplacements (adZoneID,billable,budget,campaignID,costPerClick,costPerImp,creativeID,dateCreated,endDate,isActive,isExclusive,lastUpdate,lastUpdateBy,notes,placementID,startDate)
-					values
-					(
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(adZoneID neq '',de('no'),de('yes'))#" value="#keys.get(adZoneID)#">,
-					<cfqueryparam cfsqltype="cf_sql_DECIMAL" null="no" value="#iif(isNumeric(billable),de(billable),de(0))#">,
-					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(budget),de(budget),de(0))#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(campaignID neq '',de('no'),de('yes'))#" value="#keys.get(campaignID)#">,
-					<cfqueryparam cfsqltype="cf_sql_DECIMAL" null="no" value="#iif(isNumeric(costPerClick),de(costPerClick),de(0))#">,
-					<cfqueryparam cfsqltype="cf_sql_DECIMAL" null="no" value="#iif(isNumeric(costPerImp),de(costPerImp),de(0))#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(creativeID neq '',de('no'),de('yes'))#" value="#keys.get(creativeID)#">,
-					<cfqueryparam cfsqltype="cf_sql_TIMESTAMP" null="#iif(isDate(dateCreated),de('no'),de('yes'))#" value="#dateCreated#">,
-					<cfqueryparam cfsqltype="cf_sql_TIMESTAMP" null="#iif(isDate(endDate),de('no'),de('yes'))#" value="#endDate#">,
-					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(isActive),de(isActive),de(0))#">,
-					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(isExclusive),de(isExclusive),de(0))#">,
-					<cfqueryparam cfsqltype="cf_sql_TIMESTAMP" null="#iif(isDate(lastUpdate),de('no'),de('yes'))#" value="#lastUpdate#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(lastUpdateBy neq '',de('no'),de('yes'))#" value="#lastUpdateBy#">,
-					<cfqueryparam cfsqltype="cf_sql_LONGVARCHAR" null="#iif(notes neq '',de('no'),de('yes'))#" value="#notes#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(placementID)#">,
-					<cfqueryparam cfsqltype="cf_sql_TIMESTAMP" null="#iif(isDate(startDate),de('no'),de('yes'))#" value="#startDate#">
-					)
+					delete from tadzones where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.tositeid#"/>
 				</cfquery>
-			</cfloop>
-			<!--- tadplacementdetails --->
-			<cfquery datasource="#arguments.toDSN#">
-				delete from tadplacementdetails where placementid in (select placementid from tadplacements where adzoneid in (select adzoneid from tadzones where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.tositeid#"/>))
-			</cfquery>
-			<cfquery datasource="#arguments.fromDSN#" name="rstadplacementdetails">
-				select * from tadplacementdetails where placementid in (select placementid from tadplacements where adzoneid in (select adzoneid from tadzones where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.fromsiteid#"/>))
-			</cfquery>
-			<cfloop query="rstadplacementdetails">
+				<cfquery datasource="#arguments.fromDSN#" name="rstadzones">
+					select * from tadzones where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.fromsiteid#"/>
+				</cfquery>
+				<cfloop query="rstadzones">
+					<cfquery datasource="#arguments.toDSN#">
+						insert into tadzones (adZoneID,creativeType,dateCreated,height,isActive,lastUpdate,lastUpdateBy,name,notes,siteID,width)
+						values
+						(
+						<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(adZoneID)#">,
+						<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(creativeType neq '',de('no'),de('yes'))#" value="#creativeType#">,
+						<cfqueryparam cfsqltype="cf_sql_TIMESTAMP" null="#iif(isDate(dateCreated),de('no'),de('yes'))#" value="#dateCreated#">,
+						<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(height),de(height),de(0))#">,
+						<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(isActive),de(isActive),de(0))#">,
+						<cfqueryparam cfsqltype="cf_sql_TIMESTAMP" null="#iif(isDate(lastUpdate),de('no'),de('yes'))#" value="#lastUpdate#">,
+						<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(lastUpdateBy neq '',de('no'),de('yes'))#" value="#lastUpdateBy#">,
+						<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(name neq '',de('no'),de('yes'))#" value="#name#">,
+						<cfqueryparam cfsqltype="cf_sql_LONGVARCHAR" null="#iif(notes neq '',de('no'),de('yes'))#" value="#notes#">,
+						<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#arguments.tositeid#">,
+						<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(width),de(width),de(0))#">
+						)
+					</cfquery>
+				</cfloop>
+				<!--- tadplacements --->
 				<cfquery datasource="#arguments.toDSN#">
-					insert into tadplacementdetails (placementID, placementType, placementValue)
-					values
-					(
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(placementID)#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(placementType neq '',de('no'),de('yes'))#" value="#placementType#">,
-					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(placementValue),de(placementValue),de(0))#">
-					)
+					delete from tadplacements where adzoneid in (select adzoneid from tadzones where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.tositeid#"/>)
 				</cfquery>
-			</cfloop>
+				<cfquery datasource="#arguments.fromDSN#" name="rstadplacements">
+					select * from tadplacements where adzoneid in (select adzoneid from tadzones where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.fromsiteid#"/>)
+				</cfquery>
+				<cfloop query="rstadplacements">
+					<cfquery datasource="#arguments.toDSN#">
+						insert into tadplacements (adZoneID,billable,budget,campaignID,costPerClick,costPerImp,creativeID,dateCreated,endDate,isActive,isExclusive,lastUpdate,lastUpdateBy,notes,placementID,startDate)
+						values
+						(
+						<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(adZoneID neq '',de('no'),de('yes'))#" value="#keys.get(adZoneID)#">,
+						<cfqueryparam cfsqltype="cf_sql_DECIMAL" null="no" value="#iif(isNumeric(billable),de(billable),de(0))#">,
+						<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(budget),de(budget),de(0))#">,
+						<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(campaignID neq '',de('no'),de('yes'))#" value="#keys.get(campaignID)#">,
+						<cfqueryparam cfsqltype="cf_sql_DECIMAL" null="no" value="#iif(isNumeric(costPerClick),de(costPerClick),de(0))#">,
+						<cfqueryparam cfsqltype="cf_sql_DECIMAL" null="no" value="#iif(isNumeric(costPerImp),de(costPerImp),de(0))#">,
+						<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(creativeID neq '',de('no'),de('yes'))#" value="#keys.get(creativeID)#">,
+						<cfqueryparam cfsqltype="cf_sql_TIMESTAMP" null="#iif(isDate(dateCreated),de('no'),de('yes'))#" value="#dateCreated#">,
+						<cfqueryparam cfsqltype="cf_sql_TIMESTAMP" null="#iif(isDate(endDate),de('no'),de('yes'))#" value="#endDate#">,
+						<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(isActive),de(isActive),de(0))#">,
+						<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(isExclusive),de(isExclusive),de(0))#">,
+						<cfqueryparam cfsqltype="cf_sql_TIMESTAMP" null="#iif(isDate(lastUpdate),de('no'),de('yes'))#" value="#lastUpdate#">,
+						<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(lastUpdateBy neq '',de('no'),de('yes'))#" value="#lastUpdateBy#">,
+						<cfqueryparam cfsqltype="cf_sql_LONGVARCHAR" null="#iif(notes neq '',de('no'),de('yes'))#" value="#notes#">,
+						<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(placementID)#">,
+						<cfqueryparam cfsqltype="cf_sql_TIMESTAMP" null="#iif(isDate(startDate),de('no'),de('yes'))#" value="#startDate#">
+						)
+					</cfquery>
+				</cfloop>
+				<!--- tadplacementdetails --->
+				<cfquery datasource="#arguments.toDSN#">
+					delete from tadplacementdetails where placementid in (select placementid from tadplacements where adzoneid in (select adzoneid from tadzones where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.tositeid#"/>))
+				</cfquery>
+				<cfquery datasource="#arguments.fromDSN#" name="rstadplacementdetails">
+					select * from tadplacementdetails where placementid in (select placementid from tadplacements where adzoneid in (select adzoneid from tadzones where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.fromsiteid#"/>))
+				</cfquery>
+				<cfloop query="rstadplacementdetails">
+					<cfquery datasource="#arguments.toDSN#">
+						insert into tadplacementdetails (placementID, placementType, placementValue)
+						values
+						(
+						<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(placementID)#">,
+						<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(placementType neq '',de('no'),de('yes'))#" value="#placementType#">,
+						<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(placementValue),de(placementValue),de(0))#">
+						)
+					</cfquery>
+				</cfloop>
+			</cfif>
+			
 			<!--- tcontentcategoryassign --->
 			<cfquery datasource="#arguments.toDSN#">
 				delete from tcontentcategoryassign where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.tositeid#"/>
@@ -651,291 +662,302 @@ to your own modified versions of Mura CMS.
 			
 			<!--- synced tables--->
 			<cfif arguments.mode eq "publish">
-			<!--- tcontentcomments --->
-			<cfquery datasource="#arguments.toDSN#">
-				delete from tcontentcomments where commentid not in (select commentid from tcontent where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.tositeid#"/>)
-			</cfquery>
-			<cfquery datasource="#arguments.toDSN#" name="rstcontentcomments">
-				select * from tcontentcomments where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.tositeid#"/>
-			</cfquery>
-			<cfquery datasource="#arguments.fromDSN#">
-				delete from tcontentcomments where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.fromsiteid#"/>
-			</cfquery>
-			<cfloop query="rstcontentcomments">
-				<cfquery datasource="#arguments.fromDSN#">
-					insert into tcontentcomments (comments,commentid,contenthistid,contentid,email,entered,ip,isApproved,name,siteid,url,subscribe)
-					values
-					(
-					<cfqueryparam cfsqltype="cf_sql_LONGVARCHAR" null="#iif(comments neq '',de('no'),de('yes'))#" value="#comments#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(commentid neq '',de('no'),de('yes'))#" value="#keys.get(commentID)#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(contenthistid neq '',de('no'),de('yes'))#" value="#keys.get(contentHistID)#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(contentid neq '',de('no'),de('yes'))#" value="#keys.get(contentID)#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(email neq '',de('no'),de('yes'))#" value="#email#">,
-					<cfqueryparam cfsqltype="cf_sql_TIMESTAMP" null="#iif(isDate(entered),de('no'),de('yes'))#" value="#entered#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(ip neq '',de('no'),de('yes'))#" value="#ip#">,
-					<cfqueryparam cfsqltype="cf_sql_TINYINT" null="no" value="#iif(isNumeric(isApproved),de(isApproved),de(0))#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(name neq '',de('no'),de('yes'))#" value="#name#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#arguments.fromsiteid#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(url neq '',de('no'),de('yes'))#" value="#url#">,
-					<cfqueryparam cfsqltype="cf_sql_TINYINT" null="no" value="#iif(isNumeric(subscribe),de(subscribe),de(0))#">
-					)
-				</cfquery>
-			</cfloop>
-			<!--- tcontentratings --->
-			<cfquery datasource="#arguments.toDSN#">
-				delete from tcontentratings where contentid not in (select contentid from tcontent where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.tositeid#"/>)
-			</cfquery>
-			<cfquery datasource="#arguments.toDSN#" name="rstcontentRatings">
-				select * from tcontentratings where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.tositeid#"/>
-			</cfquery>
-			<cfquery datasource="#arguments.fromDSN#">
-				delete from tcontentratings where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.fromsiteid#"/>
-			</cfquery>
-			<cfloop query="rstcontentRatings">
-				<cfquery datasource="#arguments.fromDSN#">
-					insert into tcontentratings (contentID,rate,siteID,userID,entered)
-					values
-					(
-					<cfqueryparam cfsqltype="cf_sql_IDSTAMP" value="#keys.get(contentID)#">,
-					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(rate),de(rate),de(0))#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#arguments.fromsiteID#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(userID neq '',de('no'),de('yes'))#" value="#keys.get(userID)#">,
-					<cfqueryparam cfsqltype="cf_sql_TIMESTAMP" null="#iif(isDate(entered),de('no'),de('yes'))#" value="#entered#">
-					)
-				</cfquery>
-			</cfloop>
-
-			<!--- tusersinterests --->
-			<cfquery datasource="#arguments.toDSN#">
-				delete from tusersinterests where categoryid not in (select categoryid from tcontentcategories where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.tositeid#"/>)
-			</cfquery>
-			<cfquery datasource="#arguments.toDSN#" name="rstusersinterests">
-				select * from tusersinterests where categoryid in (select categoryid from tcontentcategories where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.tositeid#"/>)
-			</cfquery>
-			<cfquery datasource="#arguments.fromDSN#">
-				delete from tusersinterests where categoryid in (select categoryid from tcontentcategories where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.fromsiteid#"/>)
-			</cfquery>
-			<cfloop query="rstusersinterests">
-				<cfquery datasource="#arguments.fromDSN#">
-					insert into tusersinterests (categoryID,userID)
-					values
-					(
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(categoryID)#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(userID)#">
-					)
-				</cfquery>
-			</cfloop>
-				
-			<!--- tclassextenddata --->
-			<cfquery datasource="#arguments.toDSN#">
-				delete from tclassextenddata 
-				where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.tositeid#"/>
-				and baseID  in (select contenthistid from tcontent where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.tositeid#"/>)
-			</cfquery>
-			<cfquery datasource="#arguments.fromDSN#" name="rstclassextenddata">
-				select * from tclassextenddata where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.fromsiteid#"/>
-				and baseID  in (select contenthistid from tcontent where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.fromsiteid#"/>)
-			</cfquery>
-			<cfloop query="rstclassextenddata">
+				<!--- tcontentcomments --->
 				<cfquery datasource="#arguments.toDSN#">
-					insert into tclassextenddata (baseID,attributeID,attributeValue,siteID)
-					values
-					(
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(baseID)#">,
-					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(attributeID),de(attributeID),de(0))#">,
-					<cfqueryparam cfsqltype="cf_sql_LONGVARCHAR" null="#iif(attributeValue neq '',de('no'),de('yes'))#" value="#attributeValue#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#arguments.tositeID#">
-					)
+					delete from tcontentcomments where commentid not in (select commentid from tcontent where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.tositeid#"/>)
 				</cfquery>
-			</cfloop>
+				<cfquery datasource="#arguments.toDSN#" name="rstcontentcomments">
+					select * from tcontentcomments where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.tositeid#"/>
+				</cfquery>
+				<cfquery datasource="#arguments.fromDSN#">
+					delete from tcontentcomments where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.fromsiteid#"/>
+				</cfquery>
+				<cfloop query="rstcontentcomments">
+					<cfquery datasource="#arguments.fromDSN#">
+						insert into tcontentcomments (comments,commentid,contenthistid,contentid,email,entered,ip,isApproved,name,siteid,url,subscribe)
+						values
+						(
+						<cfqueryparam cfsqltype="cf_sql_LONGVARCHAR" null="#iif(comments neq '',de('no'),de('yes'))#" value="#comments#">,
+						<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(commentid neq '',de('no'),de('yes'))#" value="#keys.get(commentID)#">,
+						<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(contenthistid neq '',de('no'),de('yes'))#" value="#keys.get(contentHistID)#">,
+						<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(contentid neq '',de('no'),de('yes'))#" value="#keys.get(contentID)#">,
+						<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(email neq '',de('no'),de('yes'))#" value="#email#">,
+						<cfqueryparam cfsqltype="cf_sql_TIMESTAMP" null="#iif(isDate(entered),de('no'),de('yes'))#" value="#entered#">,
+						<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(ip neq '',de('no'),de('yes'))#" value="#ip#">,
+						<cfqueryparam cfsqltype="cf_sql_TINYINT" null="no" value="#iif(isNumeric(isApproved),de(isApproved),de(0))#">,
+						<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(name neq '',de('no'),de('yes'))#" value="#name#">,
+						<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#arguments.fromsiteid#">,
+						<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(url neq '',de('no'),de('yes'))#" value="#url#">,
+						<cfqueryparam cfsqltype="cf_sql_TINYINT" null="no" value="#iif(isNumeric(subscribe),de(subscribe),de(0))#">
+						)
+					</cfquery>
+				</cfloop>
+				<!--- tcontentratings --->
+				<cfquery datasource="#arguments.toDSN#">
+					delete from tcontentratings where contentid not in (select contentid from tcontent where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.tositeid#"/>)
+				</cfquery>
+				<cfquery datasource="#arguments.toDSN#" name="rstcontentRatings">
+					select * from tcontentratings where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.tositeid#"/>
+				</cfquery>
+				<cfquery datasource="#arguments.fromDSN#">
+					delete from tcontentratings where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.fromsiteid#"/>
+				</cfquery>
+				<cfloop query="rstcontentRatings">
+					<cfquery datasource="#arguments.fromDSN#">
+						insert into tcontentratings (contentID,rate,siteID,userID,entered)
+						values
+						(
+						<cfqueryparam cfsqltype="cf_sql_IDSTAMP" value="#keys.get(contentID)#">,
+						<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(rate),de(rate),de(0))#">,
+						<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#arguments.fromsiteID#">,
+						<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(userID neq '',de('no'),de('yes'))#" value="#keys.get(userID)#">,
+						<cfqueryparam cfsqltype="cf_sql_TIMESTAMP" null="#iif(isDate(entered),de('no'),de('yes'))#" value="#entered#">
+						)
+					</cfquery>
+				</cfloop>
+	
+				<!--- tusersinterests --->
+				<cfquery datasource="#arguments.toDSN#">
+					delete from tusersinterests where categoryid not in (select categoryid from tcontentcategories where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.tositeid#"/>)
+				</cfquery>
+				<cfquery datasource="#arguments.toDSN#" name="rstusersinterests">
+					select * from tusersinterests where categoryid in (select categoryid from tcontentcategories where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.tositeid#"/>)
+				</cfquery>
+				<cfquery datasource="#arguments.fromDSN#">
+					delete from tusersinterests where categoryid in (select categoryid from tcontentcategories where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.fromsiteid#"/>)
+				</cfquery>
+				<cfloop query="rstusersinterests">
+					<cfquery datasource="#arguments.fromDSN#">
+						insert into tusersinterests (categoryID,userID)
+						values
+						(
+						<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(categoryID)#">,
+						<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(userID)#">
+						)
+					</cfquery>
+				</cfloop>
+					
+				<!--- tclassextenddata --->
+				<cfquery datasource="#arguments.toDSN#">
+					delete from tclassextenddata 
+					where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.tositeid#"/>
+					and baseID  in (select contenthistid from tcontent where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.tositeid#"/>)
+				</cfquery>
+				<cfquery datasource="#arguments.fromDSN#" name="rstclassextenddata">
+					select * from tclassextenddata where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.fromsiteid#"/>
+					and baseID  in (select contenthistid from tcontent where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.fromsiteid#"/>)
+				</cfquery>
+				<cfloop query="rstclassextenddata">
+					<cfquery datasource="#arguments.toDSN#">
+						insert into tclassextenddata (baseID,attributeID,attributeValue,siteID)
+						values
+						(
+						<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(baseID)#">,
+						<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(attributeID),de(attributeID),de(0))#">,
+						<cfqueryparam cfsqltype="cf_sql_LONGVARCHAR" null="#iif(attributeValue neq '',de('no'),de('yes'))#" value="#attributeValue#">,
+						<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#arguments.tositeID#">
+						)
+					</cfquery>
+				</cfloop>
 			
 			<cfelseif arguments.mode eq "copy">
 			
-			<cfquery datasource="#arguments.toDSN#">
-				delete from tclassextend
-				where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.tositeid#"/>
-			</cfquery>
-			
-			<cfquery datasource="#arguments.fromDSN#" name="rstclassextend">
-				select * from tclassextend where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.fromsiteid#"/>
-			</cfquery>
-			
-			<cfloop query="rstclassextend">
 				<cfquery datasource="#arguments.toDSN#">
-					insert into tclassextend (subTypeID,siteID, baseTable, baseKeyField, dataTable, type, subType,
-					isActive, notes, lastUpdate, dateCreated, lastUpdateBy)
-					values
-					(
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(subTypeID)#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#arguments.toSiteID#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(baseTable neq '',de('no'),de('yes'))#" value="#baseTable#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(baseKeyField neq '',de('no'),de('yes'))#" value="#baseKeyField#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(baseTable neq '',de('no'),de('yes'))#" value="#baseTable#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(type neq '',de('no'),de('yes'))#" value="#type#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(subType neq '',de('no'),de('yes'))#" value="#subType#">,
-					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="#iif(isActive neq '',de('no'),de('yes'))#" value="#isActive#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(notes neq '',de('no'),de('yes'))#" value="#notes#">,
-					#createODBCDateTime(now())#,
-					#createODBCDateTime(now())#,
-					'System'
-					)
-				</cfquery>
-			</cfloop>
-			
-			<cfquery datasource="#arguments.toDSN#">
-				delete from tclassextendsets
-				where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.tositeid#"/>
-			</cfquery>
-			
-			<cfquery datasource="#arguments.fromDSN#" name="rstclassextendsets">
-				select * from tclassextendsets where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.fromsiteid#"/>
-			</cfquery>
-			
-			<cfloop query="rstclassextendsets">
-				<cfquery datasource="#arguments.toDSN#">
-					insert into tclassextendsets (extendsetID, subTypeID, categoryID, siteID, name, orderno,isActive)
-					values
-					(
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(extendSetID)#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(subTypeID)#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(categoryID neq '',de('no'),de('yes'))#" value="#categoryID#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#arguments.toSiteID#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(name neq '',de('no'),de('yes'))#" value="#name#">,
-					<cfqueryparam cfsqltype="cf_sql_NUMERIC" null="#iif(orderno neq '',de('no'),de('yes'))#" value="#orderno#">,
-					<cfqueryparam cfsqltype="cf_sql_NUMERIC" null="#iif(isActive neq '',de('no'),de('yes'))#" value="#isActive#">
-					)
-				</cfquery>
-			</cfloop>
-			
-			<cfquery datasource="#arguments.toDSN#">
-				delete from tclassextendattributes
-				where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.tositeid#"/>
-			</cfquery>
-			
-			<cfquery datasource="#arguments.fromDSN#" name="rstclassextendattributes">
-				select * from tclassextendattributes where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.fromsiteid#"/>
-			</cfquery>
-			
-			<cfloop query="rstclassextendattributes">
-				<cfquery datasource="#arguments.toDSN#">
-					insert into tclassextendattributes (extendSetID, siteID, name, label, hint, 
-						type, orderno, isActive, required, validation, regex, message, defaultValue, optionList, optionLabelList)
-					values
-					(
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(extendSetID)#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#arguments.toSiteID#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(name neq '',de('no'),de('yes'))#" value="#name#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(label neq '',de('no'),de('yes'))#" value="#label#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(hint neq '',de('no'),de('yes'))#" value="#hint#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(type neq '',de('no'),de('yes'))#" value="#type#">,
-					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="#iif(orderno neq '',de('no'),de('yes'))#" value="#orderno#">,
-					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="#iif(isActive neq '',de('no'),de('yes'))#" value="#isActive#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(required neq '',de('no'),de('yes'))#" value="#required#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(validation neq '',de('no'),de('yes'))#" value="#validation#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(regex neq '',de('no'),de('yes'))#" value="#regex#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(message neq '',de('no'),de('yes'))#" value="#message#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(defaultValue neq '',de('no'),de('yes'))#" value="#defaultValue#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(optionList neq '',de('no'),de('yes'))#" value="#optionList#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(optionLabelList neq '',de('no'),de('yes'))#" value="#optionLabelList#">
-					)
+					delete from tclassextend
+					where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.tositeid#"/>
 				</cfquery>
 				
-				<cfquery name="getNewID" datasource="#arguments.toDSN#">
-				select max(attributeID) as newID from tclassextendattributes
+				<cfquery datasource="#arguments.fromDSN#" name="rstclassextend">
+					select * from tclassextend where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.fromsiteid#"/>
 				</cfquery>
 				
-				<cfset keys.get(attributeID, getNewID.newID)>
-			</cfloop>
-			
-			<cfquery datasource="#arguments.fromDSN#" name="rstclassextenddata">
-				select * from tclassextenddata where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.fromsiteid#"/>
-				and baseID  in (select contenthistid from tcontent where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.fromsiteid#"/>)
-			</cfquery>
-			
-			<cfloop query="rstclassextenddata">
+				<cfloop query="rstclassextend">
+					<cfquery datasource="#arguments.toDSN#">
+						insert into tclassextend (subTypeID,siteID, baseTable, baseKeyField, dataTable, type, subType,
+						isActive, notes, lastUpdate, dateCreated, lastUpdateBy)
+						values
+						(
+						<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(subTypeID)#">,
+						<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#arguments.toSiteID#">,
+						<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(baseTable neq '',de('no'),de('yes'))#" value="#baseTable#">,
+						<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(baseKeyField neq '',de('no'),de('yes'))#" value="#baseKeyField#">,
+						<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(baseTable neq '',de('no'),de('yes'))#" value="#baseTable#">,
+						<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(type neq '',de('no'),de('yes'))#" value="#type#">,
+						<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(subType neq '',de('no'),de('yes'))#" value="#subType#">,
+						<cfqueryparam cfsqltype="cf_sql_INTEGER" null="#iif(isActive neq '',de('no'),de('yes'))#" value="#isActive#">,
+						<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(notes neq '',de('no'),de('yes'))#" value="#notes#">,
+						#createODBCDateTime(now())#,
+						#createODBCDateTime(now())#,
+						'System'
+						)
+					</cfquery>
+				</cfloop>
+				
 				<cfquery datasource="#arguments.toDSN#">
-					insert into tclassextenddata (baseID,attributeID,attributeValue,siteID)
-					values
-					(
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(baseID)#">,
-					<cfqueryparam cfsqltype="cf_sql_INTEGER" value="#keys.get(attributeID)#">,
-					<cfqueryparam cfsqltype="cf_sql_LONGVARCHAR" null="#iif(attributeValue neq '',de('no'),de('yes'))#" value="#attributeValue#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#arguments.tositeID#">
-					)
+					delete from tclassextendsets
+					where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.tositeid#"/>
 				</cfquery>
-			</cfloop>
+				
+				<cfquery datasource="#arguments.fromDSN#" name="rstclassextendsets">
+					select * from tclassextendsets where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.fromsiteid#"/>
+				</cfquery>
+				
+				<cfloop query="rstclassextendsets">
+					<cfquery datasource="#arguments.toDSN#">
+						insert into tclassextendsets (extendsetID, subTypeID, categoryID, siteID, name, orderno,isActive)
+						values
+						(
+						<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(extendSetID)#">,
+						<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(subTypeID)#">,
+						<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(categoryID neq '',de('no'),de('yes'))#" value="#categoryID#">,
+						<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#arguments.toSiteID#">,
+						<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(name neq '',de('no'),de('yes'))#" value="#name#">,
+						<cfqueryparam cfsqltype="cf_sql_NUMERIC" null="#iif(orderno neq '',de('no'),de('yes'))#" value="#orderno#">,
+						<cfqueryparam cfsqltype="cf_sql_NUMERIC" null="#iif(isActive neq '',de('no'),de('yes'))#" value="#isActive#">
+						)
+					</cfquery>
+				</cfloop>
+				
+				<cfquery datasource="#arguments.toDSN#">
+					delete from tclassextendattributes
+					where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.tositeid#"/>
+				</cfquery>
+				
+				<cfquery datasource="#arguments.fromDSN#" name="rstclassextendattributes">
+					select * from tclassextendattributes where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.fromsiteid#"/>
+				</cfquery>
+				
+				<cfloop query="rstclassextendattributes">
+					<cfquery datasource="#arguments.toDSN#">
+						insert into tclassextendattributes (extendSetID, siteID, name, label, hint, 
+							type, orderno, isActive, required, validation, regex, message, defaultValue, optionList, optionLabelList)
+						values
+						(
+						<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(extendSetID)#">,
+						<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#arguments.toSiteID#">,
+						<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(name neq '',de('no'),de('yes'))#" value="#name#">,
+						<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(label neq '',de('no'),de('yes'))#" value="#label#">,
+						<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(hint neq '',de('no'),de('yes'))#" value="#hint#">,
+						<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(type neq '',de('no'),de('yes'))#" value="#type#">,
+						<cfqueryparam cfsqltype="cf_sql_INTEGER" null="#iif(orderno neq '',de('no'),de('yes'))#" value="#orderno#">,
+						<cfqueryparam cfsqltype="cf_sql_INTEGER" null="#iif(isActive neq '',de('no'),de('yes'))#" value="#isActive#">,
+						<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(required neq '',de('no'),de('yes'))#" value="#required#">,
+						<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(validation neq '',de('no'),de('yes'))#" value="#validation#">,
+						<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(regex neq '',de('no'),de('yes'))#" value="#regex#">,
+						<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(message neq '',de('no'),de('yes'))#" value="#message#">,
+						<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(defaultValue neq '',de('no'),de('yes'))#" value="#defaultValue#">,
+						<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(optionList neq '',de('no'),de('yes'))#" value="#optionList#">,
+						<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(optionLabelList neq '',de('no'),de('yes'))#" value="#optionLabelList#">
+						)
+					</cfquery>
+					
+					<cfquery name="getNewID" datasource="#arguments.toDSN#">
+					select max(attributeID) as newID from tclassextendattributes
+					</cfquery>
+					
+					<cfset keys.get(attributeID, getNewID.newID)>
+				</cfloop>
+				
+				<cfquery datasource="#arguments.fromDSN#" name="rstclassextenddata">
+					select * from tclassextenddata where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.fromsiteid#"/>
+					and baseID in (select contenthistid from tcontent where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.fromsiteid#"/>)
+				</cfquery>
+				
+				<cfloop query="rstclassextenddata">
+					<cftry>
+						<cfquery datasource="#arguments.toDSN#">
+							insert into tclassextenddata (baseID,attributeID,attributeValue,siteID)
+							values
+							(
+							<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(baseID)#">,
+							<cfqueryparam cfsqltype="cf_sql_INTEGER" value="#keys.get(attributeID)#">,
+							<cfqueryparam cfsqltype="cf_sql_LONGVARCHAR" null="#iif(attributeValue neq '',de('no'),de('yes'))#" value="#attributeValue#">,
+							<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#arguments.tositeID#">
+							)
+						</cfquery>
+						<cfcatch>
+							<cfdump var="#baseID#">
+							<cfdump var="#attributeID#">
+							<cfdump var="#attributeValue#">
+							<cfdump var="#cfcatch#">
+							<cfabort>
+						</cfcatch>
+					</cftry>
+				</cfloop>
 			
 			</cfif>
 			
+			<cfif not (arguments.mode eq "copy" and arguments.toDSN eq arguments.fromDSN)>
 				<!--- tpluginscripts --->
-			<cfquery datasource="#arguments.toDSN#">
-				delete from tpluginscripts 
-				where moduleID in ( select moduleID from tcontent where siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.tositeid#"/> and type='Plugin')
-			</cfquery>
-			<cfquery datasource="#arguments.fromDSN#" name="rstpluginscripts">
-				select * from tpluginscripts 
-				where moduleID in ( select moduleID from tcontent where siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.fromsiteid#"/> and type='Plugin')
-			</cfquery>
-			<cfloop query="rstpluginscripts">
 				<cfquery datasource="#arguments.toDSN#">
-					insert into tpluginscripts (scriptID,moduleID,scriptfile,runat,docache)
-					values
-					(
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(scriptID)#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(moduleID)#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(scriptfile neq '',de('no'),de('yes'))#" value="#scriptfile#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(runat neq '',de('no'),de('yes'))#" value="#runat#">,
-					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(docache),de(docache),de(0))#">
-					
-					)
+					delete from tpluginscripts 
+					where moduleID in ( select moduleID from tcontent where siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.tositeid#"/> and type='Plugin')
 				</cfquery>
-			</cfloop>
-			
-			<cfquery datasource="#arguments.toDSN#">
-				delete from tplugindisplayobjects 
-				where moduleID in ( select moduleID from tcontent where siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.tositeid#"/> and type='Plugin')
-			</cfquery>
-			<cfquery datasource="#arguments.fromDSN#" name="rstplugindisplayobjects">
-				select * from tplugindisplayobjects 
-				where moduleID in ( select moduleID from tcontent where siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.fromsiteid#"/> and type='Plugin')
-			</cfquery>
-			<cfloop query="rstplugindisplayobjects">
+				<cfquery datasource="#arguments.fromDSN#" name="rstpluginscripts">
+					select * from tpluginscripts 
+					where moduleID in ( select moduleID from tcontent where siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.fromsiteid#"/> and type='Plugin')
+				</cfquery>
+				<cfloop query="rstpluginscripts">
+					<cfquery datasource="#arguments.toDSN#">
+						insert into tpluginscripts (scriptID,moduleID,scriptfile,runat,docache)
+						values
+						(
+						<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(scriptID)#">,
+						<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(moduleID)#">,
+						<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(scriptfile neq '',de('no'),de('yes'))#" value="#scriptfile#">,
+						<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(runat neq '',de('no'),de('yes'))#" value="#runat#">,
+						<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(docache),de(docache),de(0))#">
+						
+						)
+					</cfquery>
+				</cfloop>
+				
 				<cfquery datasource="#arguments.toDSN#">
-					insert into tplugindisplayobjects (objectID,moduleID,name,location,displayObjectFile,displayMethod,docache)
-					values
-					(
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(objectID)#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(moduleID)#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(name neq '',de('no'),de('yes'))#" value="#name#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(location neq '',de('no'),de('yes'))#" value="#location#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(displayObjectFile neq '',de('no'),de('yes'))#" value="#displayObjectFile#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(displayMethod neq '',de('no'),de('yes'))#" value="#displayMethod#">,
-					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(docache),de(docache),de(0))#">
-					
-					)
+					delete from tplugindisplayobjects 
+					where moduleID in ( select moduleID from tcontent where siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.tositeid#"/> and type='Plugin')
 				</cfquery>
-			</cfloop>
-			
-			<cfquery datasource="#arguments.toDSN#">
-				delete from tpluginsettings 
-				where moduleID in ( select moduleID from tcontent where siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.tositeid#"/> and type='Plugin')
-			</cfquery>
-			<cfquery datasource="#arguments.fromDSN#" name="rstpluginsettings">
-				select * from tpluginsettings 
-				where moduleID in ( select moduleID from tcontent where siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.fromsiteid#"/> and type='Plugin')
-			</cfquery>
-			<cfloop query="rstpluginsettings">
+				<cfquery datasource="#arguments.fromDSN#" name="rstplugindisplayobjects">
+					select * from tplugindisplayobjects 
+					where moduleID in ( select moduleID from tcontent where siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.fromsiteid#"/> and type='Plugin')
+				</cfquery>
+				<cfloop query="rstplugindisplayobjects">
+					<cfquery datasource="#arguments.toDSN#">
+						insert into tplugindisplayobjects (objectID,moduleID,name,location,displayObjectFile,displayMethod,docache)
+						values
+						(
+						<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(objectID)#">,
+						<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(moduleID)#">,
+						<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(name neq '',de('no'),de('yes'))#" value="#name#">,
+						<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(location neq '',de('no'),de('yes'))#" value="#location#">,
+						<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(displayObjectFile neq '',de('no'),de('yes'))#" value="#displayObjectFile#">,
+						<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(displayMethod neq '',de('no'),de('yes'))#" value="#displayMethod#">,
+						<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(docache),de(docache),de(0))#">
+						
+						)
+					</cfquery>
+				</cfloop>
+				
 				<cfquery datasource="#arguments.toDSN#">
-					insert into tpluginsettings (moduleID,name,settingValue)
-					values
-					(
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(moduleID)#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(name neq '',de('no'),de('yes'))#" value="#name#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(settingValue neq '',de('no'),de('yes'))#" value="#settingValue#">
-					
-					)
+					delete from tpluginsettings 
+					where moduleID in ( select moduleID from tcontent where siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.tositeid#"/> and type='Plugin')
 				</cfquery>
-			</cfloop>
+				<cfquery datasource="#arguments.fromDSN#" name="rstpluginsettings">
+					select * from tpluginsettings 
+					where moduleID in ( select moduleID from tcontent where siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.fromsiteid#"/> and type='Plugin')
+				</cfquery>
+				<cfloop query="rstpluginsettings">
+					<cfquery datasource="#arguments.toDSN#">
+						insert into tpluginsettings (moduleID,name,settingValue)
+						values
+						(
+						<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(moduleID)#">,
+						<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(name neq '',de('no'),de('yes'))#" value="#name#">,
+						<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(settingValue neq '',de('no'),de('yes'))#" value="#settingValue#">
+						
+						)
+					</cfquery>
+				</cfloop>
+			</cfif>
 		
 	</cffunction>
 	
@@ -1016,11 +1038,13 @@ to your own modified versions of Mura CMS.
 		<cfset var p=""/>
 		<cfset var fileDelim=application.configBean.getFileDelim() />
 		<cfset var rsPlugins=application.pluginManager.getSitePlugins(arguments.fromsiteid)>
-		<cfset var pluginEvent = createObject("component","mura.event").init(arguments) />
+		<cfset var pluginEvent = createObject("component","mura.event") />
 		<cfset var keys=createObject("component","mura.publisherKeys").init('copy',application.utility)>
+		<cfset var data=arguments />
 		
-		<cfset pluginEvent.setValue("siteID", arguments.fromSiteID)>
-		<cfset application.pluginManager.announceEvent("onSiteCopy",pluginEvent)>
+		<cfset data.siteid=data.fromSiteID>
+		<cfset pluginEvent.init(data)/>
+		<cfset application.pluginManager.executeScripts("onSiteCopy",pluginEvent)>
 		
 		<cfset getToWork(arguments.fromsiteid, arguments.tositeid, arguments.fromDSN, arguments.toDSN, 'copy',keys)>
 		
