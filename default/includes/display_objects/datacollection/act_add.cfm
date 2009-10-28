@@ -76,7 +76,7 @@ to your own modified versions of Mura CMS.
 		<cfelse>
 			<cfif not isdefined('cookie.poll')>
 				<cfset cookie.poll="#arguments.objectid#">
-			<cfelseif isdefined('client.poll') and listfind(cookie.poll,arguments.objectid)>
+			<cfelseif isdefined('cookie.poll') and listfind(cookie.poll,arguments.objectid)>
 				<cfset acceptdata=0> 
 				<cfset acceptError="Duplicate"> 
 			<cfelseif isdefined('cookie.poll') and not listfind(cookie.poll,arguments.objectid)>
