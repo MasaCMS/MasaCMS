@@ -229,27 +229,15 @@ to your own modified versions of Mura CMS.
 			<ol>
 				<li class="req">
 					<label for="txtName">#rbFactory.getKey('comments.name')#<ins> (#rbFactory.getKey('comments.required')#)</ins></label>
-<<<<<<< .mine
 					<input id="txtName" name="name" type="text" size="38" class="text" maxlength="50" required="true" message="#htmlEditFormat(rbFactory.getKey('comments.namerequired'))#" value="#HTMLEditFormat(request.name)#"/>
-=======
-					<input id="txtName" name="name" type="text" size="38" class="text" required="true" message="#htmlEditFormat(rbFactory.getKey('comments.namerequired'))#" value="#HTMLEditFormat(request.name)#" />
->>>>>>> .r962
 				</li>
 				<li class="req">
 					<label for="txtEmail">#rbFactory.getKey('comments.email')#</label>
-<<<<<<< .mine
 					<input id="txtEmail" name="email" type="text" size="38" class="text" maxlength="50" required="true" message="#htmlEditFormat(rbFactory.getKey('comments.emailvalidate'))#"value="#HTMLEditFormat(request.email)#"/>
-=======
-					<input id="txtEmail" name="email" type="text" size="38" class="text" required="true" message="#htmlEditFormat(rbFactory.getKey('comments.emailvalidate'))#" value="#HTMLEditFormat(request.email)#" />
->>>>>>> .r962
 				</li>
 				<li>
 					<label for="txtUrl">#rbFactory.getKey('comments.url')#</label>
-<<<<<<< .mine
 					<input id="txtUrl" name="url" type="text" size="38" class="text" maxlength="50" value="#HTMLEditFormat(request.url)#"/>
-=======
-					<input id="txtUrl" name="url" type="text" size="38" class="text" value="#HTMLEditFormat(request.url)#" />
->>>>>>> .r962
 				</li>
 				<li class="req">
 					<label for="txtComment">#rbFactory.getKey('comments.comment')#<ins> (#rbFactory.getKey('comments.required')#)</ins></label>
