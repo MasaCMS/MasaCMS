@@ -62,11 +62,11 @@ to your own modified versions of Mura CMS.
 	<li><input name="to5" message="#htmlEditFormat(rbFactory.getKey('email.emailvalidate'))#" validate="email" required="no"></li>
 	</ul>
 	<input name="doaction" value="forwardEmail" type="hidden"/>
-	<input name="emailid" value="#request.emailid#" type="hidden"/>
-	<input name="from" value="#request.from#" type="hidden"/>
-	<input name="origin" value="#request.origin#" type="hidden"/>
+	<input name="emailid" value="#HTMLEditFormat(request.emailid)#" type="hidden"/>
+	<input name="from" value="#HTMLEditFormat(request.from)#" type="hidden"/>
+	<input name="origin" value="#HTMLEditFormat(request.origin)#" type="hidden"/>
 	<fieldset>
-	<input class="submit" type="submit" value="#htmlEditFormat(rbFactory.getKey('email.submit'))#"/>
+	<input class="submit" type="submit" value="#HTMLEditFormat(rbFactory.getKey('email.submit'))#"/>
 	</form>
 	</cfif>
 </div>

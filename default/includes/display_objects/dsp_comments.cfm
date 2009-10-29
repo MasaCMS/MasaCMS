@@ -197,7 +197,7 @@ to your own modified versions of Mura CMS.
 		<cfoutput query="rsComments"  startrow="#request.startrow#">
 		<cfset class=iif(rsComments.currentrow eq 1,de('first'),de(iif(rsComments.currentrow eq rsComments.recordcount,de('last'),de(''))))>
 		<dl class="#class#">
-			<dt><cfif rsComments.url neq ''><a href="#rsComments.url#" target="_blank">#htmleditformat(rsComments.name)#</a><cfelse>#htmleditformat(rsComments.name)# </cfif> <cfif request.isEditor and rsComments.email neq ''><a href="javascript:noSpam('#listFirst(rsComments.email,'@')#','#listlast(rsComments.email,'@')#')" onfocus="this.blur();">#rbFactory.getKey('comments.email')#</a></cfif></dt>
+			<dt><cfif rsComments.url neq ''><a href="#rsComments.url#" target="_blank">#htmleditformat(rsComments.name)#</a><cfelse>#htmleditformat(rsComments.name)# </cfif> <cfif request.isEditor and rsComments.email neq ''><a href="javascript:noSpam('#listFirst(htmlEditFormat(rsComments.email),'@')#','#listlast(HTMLEditFormat(rsComments.email),'@')#')" onfocus="this.blur();">#rbFactory.getKey('comments.email')#</a></cfif></dt>
 			<dd class="comment">#setParagraphs(htmleditformat(rsComments.comments))#</dd>
 			<dd class="dateTime">#LSDateFormat(rsComments.entered,"long")#, #LSTimeFormat(rsComments.entered,"short")# <cfif request.isEditor> | <a href="index.cfm?deletecommentid=#rscomments.commentid#&nocache=1" onClick="return confirm('Delete Comment?');">#rbFactory.getKey('comments.delete')#</a> <cfif rsComments.isApproved neq 1> | <a href="index.cfm?approvedcommentid=#rscomments.commentid#&nocache=1" onClick="return confirm('Approve Comment?');">#rbFactory.getKey('comments.approve')#</a></cfif></cfif></dd>
 		</dl>
@@ -229,15 +229,27 @@ to your own modified versions of Mura CMS.
 			<ol>
 				<li class="req">
 					<label for="txtName">#rbFactory.getKey('comments.name')#<ins> (#rbFactory.getKey('comments.required')#)</ins></label>
+<<<<<<< .mine
+					<input id="txtName" name="name" type="text" size="38" class="text" maxlength="50" required="true" message="#htmlEditFormat(rbFactory.getKey('comments.namerequired'))#" value="#HTMLEditFormat(request.name)#"/>
+=======
 					<input id="txtName" name="name" type="text" size="38" class="text" required="true" message="#htmlEditFormat(rbFactory.getKey('comments.namerequired'))#" value="#HTMLEditFormat(request.name)#" />
+>>>>>>> .r962
 				</li>
 				<li class="req">
 					<label for="txtEmail">#rbFactory.getKey('comments.email')#</label>
+<<<<<<< .mine
+					<input id="txtEmail" name="email" type="text" size="38" class="text" maxlength="50" required="true" message="#htmlEditFormat(rbFactory.getKey('comments.emailvalidate'))#"value="#HTMLEditFormat(request.email)#"/>
+=======
 					<input id="txtEmail" name="email" type="text" size="38" class="text" required="true" message="#htmlEditFormat(rbFactory.getKey('comments.emailvalidate'))#" value="#HTMLEditFormat(request.email)#" />
+>>>>>>> .r962
 				</li>
 				<li>
 					<label for="txtUrl">#rbFactory.getKey('comments.url')#</label>
+<<<<<<< .mine
+					<input id="txtUrl" name="url" type="text" size="38" class="text" maxlength="50" value="#HTMLEditFormat(request.url)#"/>
+=======
 					<input id="txtUrl" name="url" type="text" size="38" class="text" value="#HTMLEditFormat(request.url)#" />
+>>>>>>> .r962
 				</li>
 				<li class="req">
 					<label for="txtComment">#rbFactory.getKey('comments.comment')#<ins> (#rbFactory.getKey('comments.required')#)</ins></label>

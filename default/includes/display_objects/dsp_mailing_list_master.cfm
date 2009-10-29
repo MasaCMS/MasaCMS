@@ -63,19 +63,19 @@ to your own modified versions of Mura CMS.
 				<ol>
 					<li class="req">
 						<label for="txtNameFirst">#rbFactory.getKey('mailinglist.fname')#<ins> (#rbFactory.getKey('mailinglist.required')#)</ins></label>
-						<input id="txtNameFirst" class="text" type="text" name="fname" required="true" message="#HTMLEditFormat(rbFactory.getKey('mailinglist.fnamerequired'))#" />
+						<input id="txtNameFirst" class="text" type="text" name="fname" maxlength="50" required="true" message="#HTMLEditFormat(rbFactory.getKey('mailinglist.fnamerequired'))#" />
 					</li>
 					<li class="req">
 						<label for="txtNameLast">#rbFactory.getKey('mailinglist.lname')#<ins> (#rbFactory.getKey('mailinglist.required')#)</ins></label>
-						<input id="txtNameLast" class="text" type="text" name="lname" required="true" message="#HTMLEditFormat(rbFactory.getKey('mailinglist.lnamerequired'))#" />
+						<input id="txtNameLast" class="text" type="text" name="lname" maxlength="50" required="true" message="#HTMLEditFormat(rbFactory.getKey('mailinglist.lnamerequired'))#" />
 					</li>
 					<li>
 						<label for="txtCompany">#rbFactory.getKey('mailinglist.company')#</label>
-						<input id="txtCompany" class="text" type="text" name="company" />
+						<input id="txtCompany" class="text" type="text" maxlength="50" name="company" />
 					</li>
 					<li class="req">
 						<label for="txtEmail">#rbFactory.getKey('mailinglist.email')#<ins> (#rbFactory.getKey('mailinglist.required')#)</ins></label>
-						<input id="txtEmail" class="text" type="text" name="email" required="true" validate="email" message="#HTMLEditFormat(rbFactory.getKey('mailinglist.emailvalidate'))#" />
+						<input id="txtEmail" class="text" type="text" name="email" maxlength="50" required="true" validate="email" message="#HTMLEditFormat(rbFactory.getKey('mailinglist.emailvalidate'))#" />
 					</li>
 				</ol>
 			</fieldset>
