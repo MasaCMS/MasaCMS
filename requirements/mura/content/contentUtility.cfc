@@ -741,11 +741,20 @@ Sincerely,
 <cfargument name="siteID">
 <cfargument name="parentID" required="true" default="00000000000000000000000000000000END">
 <cfargument name="path" required="true" default=""/>
+<cfargument name="datasource" required="true" default="#variables.dsn#"/>
 
 <cfset var rs="" />
 <cfset var newPath = "" />
+<cfset var updateDSN=arguments.datasource>
+<cfset var updatePWD="">
+<cfset var updateUSER="">
 
-<cfquery name="rs" datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+<cfif updateDSN eq variables.dsn>
+	<cfset updatePWD=variables.configBean.getDBPassword()>
+	<cfset updateUSER=variables.configBean.getDBUsername()>
+</cfif>
+
+<cfquery name="rs" datasource="#updateDSN#" username="#updateUSER#" password="#updatePWD#">
 select contentID from tcontent 
 where siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#" />
 and parentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.parentID#" />
@@ -754,13 +763,13 @@ and active=1
 
 	<cfloop query="rs">
 		<cfset newPath=listappend(arguments.path,rs.contentID) />
-		<cfquery datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+		<cfquery datasource="#updateDSN#" username="#updateUSER#" password="#updatePWD#">
 		update tcontent
 		set path=<cfqueryparam cfsqltype="cf_sql_longvarchar" value="#newPath#" />
 		where siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#" />
 		and contentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#rs.contentID#" />
 		</cfquery>
-		<cfset updateGlobalMaterializedPath(arguments.siteID,rs.contentID,newPath) />
+		<cfset updateGlobalMaterializedPath(arguments.siteID,rs.contentID,newPath,updateDSN) />
 	</cfloop>
 
 </cffunction>

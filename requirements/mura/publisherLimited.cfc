@@ -40,59 +40,13 @@ for your modified version; it is your choice whether to do so, or to make such m
 the GNU General Public License version 2  without this exception.  You may, if you choose, apply this exception
 to your own modified versions of Mura CMS.
 --->
+<cfcomponent extends="mura.publisher" output="false">
 
-<cfcomponent extends="mura.cfobject" output="false">
-
-<cffunction name="init" returntype="any" output="false" access="public">
-	<cfargument name="configBean" type="any" required="yes"/>
-	<cfargument name="settingsManager" type="any" required="yes"/>
-	<cfargument name="categoryGateway" type="any" required="yes"/>
+	<cffunction name="copy" returntype="void" output="no">
+		
+		<cfthrow message="This function requires CFTHREAD.">
+		
+	</cffunction>
 	
-		<cfset variables.configBean=arguments.configBean />
-		<cfset variables.settingsManager=arguments.settingsManager />
-		<cfset variables.categoryGateway=arguments.categoryGateway />
-		<cfset variables.dsn=variables.configBean.getDatasource()/>
-	<cfreturn this />
-</cffunction>
-
-<cffunction name="updateGlobalMaterializedPath" returntype="any" output="false">
-<cfargument name="siteID">
-<cfargument name="parentID" required="true" default="">
-<cfargument name="path" required="true" default=""/>
-<cfargument name="datasource" required="true" default="#variables.dsn#"/>
-
-<cfset var rs="" />
-<cfset var newPath = "" />
-<cfset var updateDSN=arguments.datasource>
-<cfset var updatePWD="">
-<cfset var updateUSER="">
-
-<cfif updateDSN eq variables.dsn>
-	<cfset updatePWD=variables.configBean.getDBPassword()>
-	<cfset updateUSER=variables.configBean.getDBUsername()>
-</cfif>
-
-<cfquery name="rs" datasource="#updateDSN#" username="#updateUSER#" password="#updatePWD#">
-select categoryID from tcontentcategories 
-where siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#" />
-<cfif arguments.parentID neq ''>
-and parentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.parentID#" />
-<cfelse>
-and parentID is null
-</cfif>
-</cfquery>
-
-	<cfloop query="rs">
-		<cfset newPath=listappend(arguments.path,rs.categoryID) />
-		<cfquery datasource="#updateDSN#" username="#updateUSER#" password="#updatePWD#">
-		update tcontentcategories
-		set path=<cfqueryparam cfsqltype="cf_sql_longvarchar" value="#newPath#" />
-		where siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#" />
-		and categoryID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#rs.categoryID#" />
-		</cfquery>
-		<cfset updateGlobalMaterializedPath(arguments.siteID,rs.categoryID,newPath,updateDSN) />
-	</cfloop>
-
-</cffunction>
 
 </cfcomponent>

@@ -41,6 +41,7 @@ the GNU General Public License version 2  without this exception.  You may, if y
 to your own modified versions of Mura CMS.
 --->
 <cfcomponent extends="mura.cfobject" output="false">
+	
 	<cffunction name="update" returntype="void">
 		<cfargument name="find" type="string" default="" required="true">
 		<cfargument name="replace" type="string"  default="" required="true">
@@ -48,27 +49,29 @@ to your own modified versions of Mura CMS.
 		<cfset var newBody=""/>
 		<cfset var newSummary=""/>
 	
-		<cfquery datasource="#application.configBean.getDatasource()#" username="#application.configBean.getDBUsername()#" password="#application.configBean.getDBPassword()#" name="rs">
-			select contenthistid, body from tcontent where body like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.find#%"/>
-		</cfquery>
-	
-		<cfloop query="rs">
-			<cfset newbody=replace(BODY,"#arguments.find#","#arguments.replace#","ALL")>
+		<cfif len(arguments.find)>
 			<cfquery datasource="#application.configBean.getDatasource()#" username="#application.configBean.getDBUsername()#" password="#application.configBean.getDBPassword()#" name="rs">
-				update tcontent set body=<cfqueryparam value="#newBody#" cfsqltype="cf_sql_longvarchar" > where contenthistid='#contenthistid#'
+				select contenthistid, body from tcontent where body like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.find#%"/>
 			</cfquery>
-		</cfloop>
 		
-		<cfquery datasource="#application.configBean.getDatasource()#" username="#application.configBean.getDBUsername()#" password="#application.configBean.getDBPassword()#" name="rs">
-			select contenthistid, summary from tcontent where summary like '%#arguments.find#%'
-		</cfquery>
-		
-		<cfloop query="rs">
-			<cfset newSummary=replace(summary,"#arguments.find#","#arguments.replace#","ALL")>
+			<cfloop query="rs">
+				<cfset newbody=replace(BODY,"#arguments.find#","#arguments.replace#","ALL")>
+				<cfquery datasource="#application.configBean.getDatasource()#" username="#application.configBean.getDBUsername()#" password="#application.configBean.getDBPassword()#" name="rs">
+					update tcontent set body=<cfqueryparam value="#newBody#" cfsqltype="cf_sql_longvarchar" > where contenthistid='#contenthistid#'
+				</cfquery>
+			</cfloop>
+			
 			<cfquery datasource="#application.configBean.getDatasource()#" username="#application.configBean.getDBUsername()#" password="#application.configBean.getDBPassword()#" name="rs">
-				update tcontent set summary=<cfqueryparam value="#newSummary#" cfsqltype="cf_sql_longvarchar" > where contenthistid='#contenthistid#'
+				select contenthistid, summary from tcontent where summary like '%#arguments.find#%'
 			</cfquery>
-		</cfloop> 
+			
+			<cfloop query="rs">
+				<cfset newSummary=replace(summary,"#arguments.find#","#arguments.replace#","ALL")>
+				<cfquery datasource="#application.configBean.getDatasource()#" username="#application.configBean.getDBUsername()#" password="#application.configBean.getDBPassword()#" name="rs">
+					update tcontent set summary=<cfqueryparam value="#newSummary#" cfsqltype="cf_sql_longvarchar" > where contenthistid='#contenthistid#'
+				</cfquery>
+			</cfloop> 	
+		</cfif>
 	</cffunction>
 	
 	<cffunction name="getToWork" returntype="void">
@@ -1018,7 +1021,7 @@ to your own modified versions of Mura CMS.
 
 	</cffunction>
 	
-	<cffunction name="copy" returntype="void">
+	<cffunction name="copy" returntype="void" output="no">
 		<cfargument name="fromsiteid" required="yes" default="">
 		<cfargument name="tositeid" required="yes" default="">
 		<cfargument name="fromDSN" required="yes" default="#application.configBean.getDatasource()#">
@@ -1036,37 +1039,65 @@ to your own modified versions of Mura CMS.
 		<cfset var j=""/>
 		<cfset var k=""/>
 		<cfset var p=""/>
-		<cfset var fileDelim=application.configBean.getFileDelim() />
-		<cfset var rsPlugins=application.pluginManager.getSitePlugins(arguments.fromsiteid)>
 		<cfset var pluginEvent = createObject("component","mura.event") />
-		<cfset var keys=createObject("component","mura.publisherKeys").init('copy',application.utility)>
-		<cfset var data=arguments />
 		
-		<cfset data.siteid=data.fromSiteID>
-		<cfset pluginEvent.init(data)/>
-		<cfset application.pluginManager.executeScripts("onSiteCopy",pluginEvent)>
+		<cfloop collection="#arguments#" item="i">
+			<cfset variables[i] = arguments[i]>
+		</cfloop>
 		
-		<cfset getToWork(arguments.fromsiteid, arguments.tositeid, arguments.fromDSN, arguments.toDSN, 'copy',keys)>
+		<cfset variables.siteID=arguments.fromSiteID>
+		<cfset pluginEvent.init(variables)>
+		<cfset application.pluginManager.announceEvent("onSiteCopy",pluginEvent)>
 		
-		<cfset application.utility.copyDir("#arguments.fromWebRoot##fileDelim##arguments.fromsiteid##fileDelim#", "#arguments.toWebRoot##fileDelim##arguments.tositeid##fileDelim#") />
+		<cfset fileDelim=application.configBean.getFileDelim() />
+		<cfset rsPlugins=application.pluginManager.getSitePlugins(arguments.fromsiteid)>
+		<cfset keys=createObject("component","mura.publisherKeys").init('copy',application.utility)>
+		
+			
+		<cfthread action="run" name="thread0">
+			<cfset getToWork(fromsiteid, tositeid, fromDSN, toDSN, 'copy', keys)>
+		</cfthread>
+				
+		<cfthread action="run" name="thread1">
+			<cfset application.utility.copyDir("#fromWebRoot##fileDelim##fromsiteid##fileDelim#", "#toWebRoot##fileDelim##tositeid##fileDelim#") />
+		</cfthread>
 		
 		<cfif arguments.fromWebRoot neq arguments.toWebRoot>
 			<cfloop query="rsPlugins">
-				<cfset application.utility.copyDir("#arguments.fromWebRoot##fileDelim#plugins#fileDelim##rsPlugins.directory##fileDelim#", "#arguments.toWebRoot##fileDelim#plugins#fileDelim##rsPlugins.directory##fileDelim#") />
+				<cfthread action="run" name="thread2#rsPlugins.currentRow#">
+					<cfset application.utility.copyDir("#fromWebRoot##fileDelim#plugins#fileDelim##rsPlugins.directory##fileDelim#", "#toWebRoot##fileDelim#plugins#fileDelim##rsPlugins.directory##fileDelim#") />
+				</cfthread>
 			</cfloop>
 		</cfif>
 		
-		<cfset copySiteFiles("#arguments.fromFileDir##fileDelim##arguments.fromsiteid##fileDelim#cache#fileDelim#file#fileDelim#", "#arguments.toFileDir##fileDelim##arguments.tositeid##fileDelim#cache#fileDelim#file#fileDelim#",keys) />
-			
-		<cfset application.utility.copyDir("#arguments.fromAssetDir##fileDelim##arguments.fromsiteid##fileDelim#assets#fileDelim#", "#arguments.toAssetDir##fileDelim##arguments.tositeid##fileDelim#assets#fileDelim#") />
-	
-		<cfif arguments.fromAssetPath neq arguments.toAssetPath>
-			<cfset update("#arguments.fromAssetPath#","#arguments.toAssetPath#") >
+		<cfif fromWebRoot neq fromFileDir>
+			<cfthread action="run" name="thread3">
+				<cfset copySiteFiles("#fromFileDir##fileDelim##fromsiteid##fileDelim#cache#fileDelim#file#fileDelim#", "#toFileDir##fileDelim##tositeid##fileDelim#cache#fileDelim#file#fileDelim#",keys) />
+			</cfthread>
+		</cfif>
+		<cfif fromAssetDir neq fromAssetDir>
+			<cfthread action="run" name="thread4">
+				<cfset application.utility.copyDir("#fromAssetDir##fileDelim##fromsiteid##fileDelim#assets#fileDelim#", "#toAssetDir##fileDelim##tositeid##fileDelim#assets#fileDelim#") />
+			</cfthread>
 		</cfif>
 		
-		<cfif arguments.fromSiteID neq arguments.toSiteID>
-			<cfset update("/#arguments.fromsiteID#","/#arguments.toSiteID#") >
-		</cfif>
+		<cfthread action="join" name="thread0">
+		</cfthread>
+				
+		<cfthread action="run" name="thread5">
+			<cfif fromAssetPath neq toAssetPath>
+				<cfset update("#fromAssetPath#","#toAssetPath#") >
+			</cfif>
+		</cfthread>
+		
+		<cfthread action="run" name="thread6">
+			<cfif fromSiteID neq toSiteID>
+				<cfset update("/#fromsiteID#","/#toSiteID#") >
+			</cfif>
+		</cfthread>
+		
+		<cfset application.serviceFactory.getBean("contentUtility").updateGlobalMaterializedPath(siteid=arguments.toSiteID,datasource=arguments.toDSN) />
+		<cfset application.serviceFactory.getBean("categoryUtility").updateGlobalMaterializedPath(siteid=arguments.toSiteID,datasource=arguments.toDSN) />
 		
 	</cffunction>
 	
