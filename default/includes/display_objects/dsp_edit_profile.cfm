@@ -211,8 +211,8 @@ to your own modified versions of Mura CMS.
 	<!--- <input type="hidden" name="groupID" value="[userid from Group Detail page url]"> Add users to a specific group --->
 </cfif> 
 
-<input type="hidden" name="siteid" value="#request.siteid#" />
-<input type="hidden" name="returnURL" value="#request.returnURL#" />
+<input type="hidden" name="siteid" value="#HTMLEditFormat(request.siteid)#" />
+<input type="hidden" name="returnURL" value="#HTMLEditFormat(request.returnURL)#" />
 <input type="hidden" name="display" value="editprofile" />
 </form>
 </div>

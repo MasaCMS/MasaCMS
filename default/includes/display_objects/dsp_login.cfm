@@ -77,8 +77,8 @@ to your own modified versions of Mura CMS.
 			</ol>
 			<div class="buttons">
 				<input type="hidden" name="doaction" value="login" />
-				<input type="hidden" name="linkServID" value="#request.linkServID#" />
-				<input type="hidden" name="returnURL" value="#request.returnURL#" />
+				<input type="hidden" name="linkServID" value="#HTMLEditFormat(request.linkServID)#" />
+				<input type="hidden" name="returnURL" value="#HTMLEditFormat(request.returnURL)#" />
 				<input type="submit" value="#htmlEditFormat(rbFactory.getKey('user.login'))#" />
 			</div>
 		</fieldset>
@@ -101,9 +101,9 @@ to your own modified versions of Mura CMS.
 		</fieldset>
 		<div class="buttons">
 			<input type="hidden" name="doaction" value="sendlogin" />
-			<input type="hidden" name="linkServID" value="#request.linkServID#" />
+			<input type="hidden" name="linkServID" value="#HTMLEditFormat(request.linkServID)#" />
 			<input type="hidden" name="display" value="login" />
-			<input type="hidden" name="returnURL" value="#request.returnURL#" />
+			<input type="hidden" name="returnURL" value="#HTMLEditFormat(request.returnURL)#" />
 			<cfif isdefined('msg2')>
 			<span class="required"><cfif find('is not a valid',msg2)>#rbFactory.getResourceBundle().messageFormat(rbFactory.getKey('user.forgetnotvalid'),request.email)#<cfelse>#rbFactory.getKey('user.forgotsuccess')#</cfif></span></cfif>
 			<input type="submit" value="#HTMLEditFormat(rbFactory.getKey('user.getpassword'))#" class="submit" />

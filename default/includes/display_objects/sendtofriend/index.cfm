@@ -65,7 +65,7 @@ to your own modified versions of Mura CMS.
 <cfform name="sendtofriend" method="post" action="sendlink.cfm">
 <fieldset>
 <legend>#rbFactory.getKey('stf.sendtoafriend')#</legend>
-<input type="hidden" name="link" value="#url.link#">
+<input type="hidden" name="link" value="#HTMLEditFormat(url.link)#">
 <ol>
 <li class="req"><label>#rbFactory.getKey('stf.fname')#<ins> (#rbFactory.getKey('stf.required')#)</ins></label><cfinput type="text"  name="fname" required="yes" message="#rbFactory.getKey('stf.fnamerequired')#" size="20" maxlength="16" value="" class="text"></li>
 <li class="req"><label>#rbFactory.getKey('stf.lname')#<ins> (#rbFactory.getKey('stf.required')#)</ins></label><cfinput type="text" name="lname" message="#rbFactory.getKey('stf.lnamerequired')#" required="yes" size="20" maxlength="16" value="" class="text" /></li>
@@ -80,7 +80,7 @@ to your own modified versions of Mura CMS.
 </li>
 <li><label>#rbFactory.getKey('stf.message')#</label><textarea rows="3" name="comments" cols="35"></textarea></li>
 </ol>
-<input type="hidden" name="siteID" value="#request.siteID#"/>
+<input type="hidden" name="siteID" value="#HTMLEditFormat(request.siteID)#"/>
 </fieldset>
 <div class="buttons"><input type="submit" name="btn_submit" value="#htmlEditFormat(rbFactory.getKey('stf.send'))#" alt="send" class="submit"></div>
 </cfform>
