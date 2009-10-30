@@ -69,7 +69,9 @@ to your own modified versions of Mura CMS.
 	<cfset feedBean.set(url)/>
 </cfif>
 
-<cfset rs=application.feedManager.getFeed(feedBean,url.tag) />
+<cfif isDefined("feedBean")>
+	<cfset rs=application.feedManager.getFeed(feedBean,url.tag) />
+</cfif>
 </cfsilent>	
 
 <cfif isDefined("feedBean")>

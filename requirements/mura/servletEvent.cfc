@@ -56,6 +56,7 @@ to your own modified versions of Mura CMS.
 	<cfparam name="request.year" default="#year(now())#"/>
 	<cfparam name="request.display" default=""/>
 	<cfparam name="request.startrow" default="1"/>
+	<cfparam name="request.pageNum" default="1"/>
 	<cfparam name="request.keywords" default=""/>
 	<cfparam name="request.tag" default=""/>
 	<cfparam name="request.mlid" default=""/>

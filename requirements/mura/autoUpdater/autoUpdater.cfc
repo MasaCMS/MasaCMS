@@ -207,7 +207,7 @@ to your own modified versions of Mura CMS.
 	proxyServer="#variables.configBean.getProxyServer()#" proxyPort="#variables.configBean.getProxyPort()#">
 	
 	<cftry>
-	<cfreturn deserializeJSON(diff.filecontent)>
+	<cfreturn createObject("component","mura.json").decode(diff.filecontent)>
 	<cfcatch>
 		<cfthrow message="The current production version data is currently not available. Please try again later.">
 	</cfcatch>

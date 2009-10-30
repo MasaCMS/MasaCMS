@@ -880,7 +880,8 @@ to your own modified versions of Mura CMS.
 	<cfset var str = "" />
 	<cfset var fileDelim= application.configBean.getFileDelim() />
 	<cfset var eventOutput="" />
-	
+	<cfset var rsPages="">
+
 	<cfset event.setValue("BodyRenderArgs",arguments)>
 	
 	<cfsavecontent variable="str">
@@ -938,28 +939,33 @@ to your own modified versions of Mura CMS.
 				<cfelseif fileExists(expandPath(theIncludePath)  & fileDelim & "includes" & fileDelim & "display_objects" & fileDelim & "custom" & fileDelim & "extensions" & fileDelim & "dsp_" & event.getValue('contentBean').getType() & "_" & event.getValue('contentBean').getSubType() & ".cfm")>
 					 <cfinclude template="#theIncludePath#/includes/display_objects/custom/extensions/dsp_#event.getValue('contentBean').getType()#_#event.getValue('contentBean').getSubType()#.cfm">
 				<cfelse>
-					<cfoutput>
 					<cfswitch expression="#event.getValue('contentBean').getType()#">
 					<cfcase value="File">
 						<cfif event.getValue('contentBean').getContentType() eq "Image" 
 							and listFind("jpg,jpeg,gif,png",lcase(event.getValue('contentBean').getFileExt()))>
 								<cfset loadShadowBoxJS() />
+								<cfoutput>
 								<div id="svAssetDetail" class="image">
 								<a href="#application.configBean.getContext()#/tasks/render/file/?fileID=#event.getValue('contentBean').getFileID()#&ext=.#event.getValue('contentBean').getFileExt()#" title="#HTMLEditFormat(event.getValue('contentBean').getMenuTitle())#" rel="shadowbox[body]" id="svAsset"><img src="#application.configBean.getContext()#/tasks/render/medium/?fileID=#event.getValue('contentBean').getFileID()#" class="imgMed" alt="#HTMLEditFormat(event.getValue('contentBean').getMenuTitle())#" /></a>
 								#setDynamicContent(event.getValue('contentBean').getSummary(),event.getValue('keywords'))#
 								</div>
+								</cfoutput>
 						<cfelse>
+								<cfoutput>
 								<div id="svAssetDetail" class="file">
 								#setDynamicContent(event.getValue('contentBean').getSummary(),event.getValue('keywords'))#
 								<a href="#application.configBean.getContext()#/#event.getValue('siteID')#/?linkServID=#event.getValue('contentBean').getContentID()#&showMeta=2" title="#HTMLEditFormat(event.getValue('contentBean').getMenuTitle())#" id="svAsset" class="#lcase(event.getValue('contentBean').getFileExt())#">Download File</a>							
 								</div>
+								</cfoutput>
 						</cfif>				
 					</cfcase>
 					<cfcase value="Link">
+						<cfoutput>
 						<div id="svAssetDetail" class="link">
 							#setDynamicContent(event.getValue('contentBean').getSummary(),event.getValue('keywords'))#
 							<a href="#application.configBean.getContext()#/#event.getValue('siteID')#/?linkServID=#event.getValue('contentBean').getContentID()#&showMeta=2" title="#HTMLEditFormat(event.getValue('contentBean').getMenuTitle())#" id="svAsset" class="url">View Link</a>							
 						</div>
+						</cfoutput>
 					</cfcase>
 					<cfdefaultcase>
 						<cfif arguments.showMetaImage
@@ -967,12 +973,13 @@ to your own modified versions of Mura CMS.
 							and event.getValue('contentBean').getContentType() eq "Image" 
 							and listFind("jpg,jpeg,gif,png",lcase(event.getValue('contentBean').getFileExt()))>
 								<cfset loadShadowBoxJS() />
-								<a href="#application.configBean.getContext()#/tasks/render/file/?fileID=#event.getValue('contentBean').getFileID()#&ext=.#event.getValue('contentBean').getFileExt()#" title="#HTMLEditFormat(event.getValue('contentBean').getMenuTitle())#" rel="shadowbox[body]" id="svAsset"><img src="#application.configBean.getContext()#/tasks/render/medium/?fileID=#event.getValue('contentBean').getFileID()#" class="imgMed" alt="#HTMLEditFormat(event.getValue('contentBean').getMenuTitle())#" /></a>	
+								<cfoutput>
+								<a href="#application.configBean.getContext()#/tasks/render/file/?fileID=#event.getValue('contentBean').getFileID()#&ext=.#event.getValue('contentBean').getFileExt()#" title="#HTMLEditFormat(event.getValue('contentBean').getMenuTitle())#" rel="shadowbox[body]" id="svAsset"><img src="#application.configBean.getContext()#/tasks/render/medium/?fileID=#event.getValue('contentBean').getFileID()#" class="imgMed" alt="#HTMLEditFormat(event.getValue('contentBean').getMenuTitle())#" /></a>
+								</cfoutput>	
 						</cfif>		
-								#setDynamicContent(arguments.body,event.getValue('keywords'))#	
+						<cfoutput>#dspMultiPageContent(arguments.body)#</cfoutput>
 					</cfdefaultcase>
 					</cfswitch>
-					</cfoutput>
 					<cfswitch expression="#event.getValue('contentBean').gettype()#">
 					<cfcase value="Portal">
 						<cf_CacheOMatic key="portalBody#event.getValue('contentBean').getcontentID()##event.getValue('startRow')##event.getValue('categoryID')##event.getValue('relatedID')#" nocache="#event.getValue('r').restrict#">
@@ -1606,4 +1613,32 @@ to your own modified versions of Mura CMS.
 	
 </cffunction>
 
+<cffunction name="getPagesQuery" returntype="query" output="false">
+	<cfargument name="str">
+
+	<cfset var pageArray=listToArray(replaceNocase(arguments.str,"[mura:pagebreak]","^^^","ALL"),"^^^")>
+	<cfset var rs=queryNew("page")>
+	<cfset var i=1>
+	<cfloop from="1" to="#arrayLen(pageArray)#"index="i">	
+    	<cfset queryAddRow(rs,1)/>
+		<cfset querysetcell(rs,"page",pageArray[i],rs.recordcount)/>
+	</cfloop>
+	<cfreturn rs>
+</cffunction>
+
+<cffunction name="dspMultiPageContent" returntype="any" output="false">
+<cfargument name="body">
+<cfset var str="">
+<cfset var rsPages=getPagesQuery(arguments.body)>
+<cfset nextN=application.utility.getNextN(rsPages,1,request.pageNum,5,false)>
+<cfsavecontent variable="str">
+<cfoutput query="rsPages"  startrow="#request.startrow#" maxrows="#nextn.RecordsPerPage#">
+	#setDynamicContent(rsPages.page)#
+</cfoutput>
+<cfif nextn.numberofpages gt 1>
+	<cfoutput>#dspObject_Include(thefile='dsp_nextN.cfm')#</cfoutput>
+</cfif>
+</cfsavecontent>
+<cfreturn str>
+</cffunction>
 </cfcomponent>
