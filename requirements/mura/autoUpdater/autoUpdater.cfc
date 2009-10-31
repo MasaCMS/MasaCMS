@@ -80,16 +80,25 @@ to your own modified versions of Mura CMS.
 			<cfset versionDir=versionDir & "/config">
 		</cfif>
 		
-		<cfhttp url="http://trac.blueriver.com/mura/changeset" result="diff" getasbinary="yes" 
-		proxyUser="#variables.configBean.getProxyUser()#" proxyPassword="#variables.configBean.getProxyPassword()#"
-		proxyServer="#variables.configBean.getProxyServer()#" proxyPort="#variables.configBean.getProxyPort()#">
-		<cfhttpparam type="url" name="format" value="zip">
-		<cfhttpparam type="url" name="old_path" value="#svnUpdateDir#">
-		<cfhttpparam type="url" name="old" value="#currentVersion#">
-		<cfhttpparam type="url" name="new_path" value="#svnUpdateDir#">
-		<cfhttpparam type="url" name="new" value="#updateVersion#">
+		<cfif len(variables.configBean.getProxyServer())>
+			<cfhttp url="http://trac.blueriver.com/mura/changeset" result="diff" getasbinary="yes" 
+			proxyUser="#variables.configBean.getProxyUser()#" proxyPassword="#variables.configBean.getProxyPassword()#"
+			proxyServer="#variables.configBean.getProxyServer()#" proxyPort="#variables.configBean.getProxyPort()#">
+			<cfhttpparam type="url" name="format" value="zip">
+			<cfhttpparam type="url" name="old_path" value="#svnUpdateDir#">
+			<cfhttpparam type="url" name="old" value="#currentVersion#">
+			<cfhttpparam type="url" name="new_path" value="#svnUpdateDir#">
+			<cfhttpparam type="url" name="new" value="#updateVersion#">
+			</cfhttp>
+		<cfelse>
+			<cfhttp url="http://trac.blueriver.com/mura/changeset" result="diff" getasbinary="yes">
+			<cfhttpparam type="url" name="format" value="zip">
+			<cfhttpparam type="url" name="old_path" value="#svnUpdateDir#">
+			<cfhttpparam type="url" name="old" value="#currentVersion#">
+			<cfhttpparam type="url" name="new_path" value="#svnUpdateDir#">
+			<cfhttpparam type="url" name="new" value="#updateVersion#">
 		</cfhttp>
-	
+		</cfif>
 		<cfif not IsBinary(diff.filecontent)>
 			<cfthrow message="The current production version code is currently not available. Please try again later.">
 		</cfif>
