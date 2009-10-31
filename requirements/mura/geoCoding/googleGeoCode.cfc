@@ -20,9 +20,13 @@
 	<cfset baseURL = baseURL & "&output=xml">
 
 	<cftry>
-		<cfhttp url="#baseURL#" result="httpResult"
-		proxyUser="#application.configBean.getProxyUser()#" proxyPassword="#application.configBean.getProxyPassword()#"
-		proxyServer="#application.configBean.getProxyServer()#" proxyPort="#application.configBean.getProxyPort()#"/>
+		<cfif len(application.configBean.getProxyServer())>
+			<cfhttp url="#baseURL#" result="httpResult"
+			proxyUser="#application.configBean.getProxyUser()#" proxyPassword="#application.configBean.getProxyPassword()#"
+			proxyServer="#application.configBean.getProxyServer()#" proxyPort="#application.configBean.getProxyPort()#"/>
+		<cfelse>
+			<cfhttp url="#baseURL#" result="httpResult"/>
+		</cfif>
 		<cfset xmlResult = xmlParse(httpResult.fileContent)>
 		<cfcatch type="any">
 		    <cfreturn result />

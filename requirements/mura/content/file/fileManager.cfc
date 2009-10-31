@@ -175,9 +175,13 @@ to your own modified versions of Mura CMS.
 			</cfcase>
 			<cfcase value="S3">
 				<cfset rsFile=readMeta(arguments.fileid) />
-				<cfhttp getasbinary="yes" result="theFile" method="get" url="http://s3.amazonaws.com/#variables.bucket#/#rsFile.siteid#/#arguments.fileID#.#rsFile.fileExt#"
-				proxyUser="#variables.configBean.getProxyUser()#" proxyPassword="#variables.configBean.getProxyPassword()#"
-				proxyServer="#variables.configBean.getProxyServer()#" proxyPort="#variables.configBean.getProxyPort()#"></cfhttp>
+				<cfif len(variables.configBean.getProxyServer())>
+					<cfhttp getasbinary="yes" result="theFile" method="get" url="http://s3.amazonaws.com/#variables.bucket#/#rsFile.siteid#/#arguments.fileID#.#rsFile.fileExt#"
+					proxyUser="#variables.configBean.getProxyUser()#" proxyPassword="#variables.configBean.getProxyPassword()#"
+					proxyServer="#variables.configBean.getProxyServer()#" proxyPort="#variables.configBean.getProxyPort()#"></cfhttp>
+				<cfelse>
+					<cfhttp getasbinary="yes" result="theFile" method="get" url="http://s3.amazonaws.com/#variables.bucket#/#rsFile.siteid#/#arguments.fileID#.#rsFile.fileExt#"></cfhttp>
+				</cfif>
 				<cfheader name="Content-Length" value="#arrayLen(theFile.fileContent)#">
 				<cfheader name="Content-Disposition" value='#arguments.method#;filename="#rsfile.filename#"'> 
 				<cfif variables.configBean.getCompiler() neq 'Railo'>

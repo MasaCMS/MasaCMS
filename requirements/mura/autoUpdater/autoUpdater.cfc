@@ -202,10 +202,13 @@ to your own modified versions of Mura CMS.
 <cffunction name="getProductionData" output="false">
 	<cfset var diff="">
 
-	<cfhttp url="http://getmura.com/productionVersion.cfm" result="diff" getasbinary="no" 
-	proxyUser="#variables.configBean.getProxyUser()#" proxyPassword="#variables.configBean.getProxyPassword()#"
-	proxyServer="#variables.configBean.getProxyServer()#" proxyPort="#variables.configBean.getProxyPort()#">
-	
+	<cfif len(variables.configBean.getProxyServer())>
+		<cfhttp url="http://getmura.com/productionVersion.cfm" result="diff" getasbinary="no" 
+		proxyUser="#variables.configBean.getProxyUser()#" proxyPassword="#variables.configBean.getProxyPassword()#"
+		proxyServer="#variables.configBean.getProxyServer()#" proxyPort="#variables.configBean.getProxyPort()#">
+	<cfelse>
+		<cfhttp url="http://getmura.com/productionVersion.cfm" result="diff" getasbinary="no">
+	</cfif>
 	<cftry>
 	<cfreturn createObject("component","mura.json").decode(diff.filecontent)>
 	<cfcatch>

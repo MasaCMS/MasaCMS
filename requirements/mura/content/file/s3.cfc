@@ -79,13 +79,19 @@ text/html; charset=UTF-8
 		<cfset signature = createSignature(cs)>
 		
 		<!--- get all buckets via REST --->
-		<cfhttp method="GET" url="http://s3.amazonaws.com"
-		proxyUser="#application.configBean.getProxyUser()#" proxyPassword="#application.configBean.getProxyPassword()#"
-		proxyServer="#application.configBean.getProxyServer()#" proxyPort="#application.configBean.getProxyPort()#">
-			<cfhttpparam type="header" name="Date" value="#dateTimeString#">
-			<cfhttpparam type="header" name="Authorization" value="AWS #variables.accessKeyId#:#signature#">
-		</cfhttp>
-		
+		<cfif len(application.configBean.getProxyServer())>
+			<cfhttp method="GET" url="http://s3.amazonaws.com"
+			proxyUser="#application.configBean.getProxyUser()#" proxyPassword="#application.configBean.getProxyPassword()#"
+			proxyServer="#application.configBean.getProxyServer()#" proxyPort="#application.configBean.getProxyPort()#">
+				<cfhttpparam type="header" name="Date" value="#dateTimeString#">
+				<cfhttpparam type="header" name="Authorization" value="AWS #variables.accessKeyId#:#signature#">
+			</cfhttp>
+		<cfelse>
+			<cfhttp method="GET" url="http://s3.amazonaws.com">
+				<cfhttpparam type="header" name="Date" value="#dateTimeString#">
+				<cfhttpparam type="header" name="Authorization" value="AWS #variables.accessKeyId#:#signature#">
+			</cfhttp>
+		</cfif>
 		<cfset data = xmlParse(cfhttp.FileContent)>
 		<cfset buckets = xmlSearch(data, "//:Bucket")>
 
@@ -129,16 +135,25 @@ text/html; charset=UTF-8
 		</cfif>
 
 		<!--- put the bucket via REST --->
-		<cfhttp method="PUT" url="http://s3.amazonaws.com/#arguments.bucketName#" charset="utf-8"
-		proxyUser="#application.configBean.getProxyUser()#" proxyPassword="#application.configBean.getProxyPassword()#"
-		proxyServer="#application.configBean.getProxyServer()#" proxyPort="#application.configBean.getProxyPort()#">
-			<cfhttpparam type="header" name="Content-Type" value="text/html">
-			<cfhttpparam type="header" name="Date" value="#dateTimeString#">
-			<cfhttpparam type="header" name="x-amz-acl" value="#arguments.acl#">
-			<cfhttpparam type="header" name="Authorization" value="AWS #variables.accessKeyId#:#signature#">
-			<cfhttpparam type="body" value="#trim(variables.strXML)#">
-		</cfhttp>
-		
+		<cfif len(application.configBean.getProxyServer())>
+			<cfhttp method="PUT" url="http://s3.amazonaws.com/#arguments.bucketName#" charset="utf-8"
+			proxyUser="#application.configBean.getProxyUser()#" proxyPassword="#application.configBean.getProxyPassword()#"
+			proxyServer="#application.configBean.getProxyServer()#" proxyPort="#application.configBean.getProxyPort()#">
+				<cfhttpparam type="header" name="Content-Type" value="text/html">
+				<cfhttpparam type="header" name="Date" value="#dateTimeString#">
+				<cfhttpparam type="header" name="x-amz-acl" value="#arguments.acl#">
+				<cfhttpparam type="header" name="Authorization" value="AWS #variables.accessKeyId#:#signature#">
+				<cfhttpparam type="body" value="#trim(variables.strXML)#">
+			</cfhttp>
+		<cfelse>
+			<cfhttp method="PUT" url="http://s3.amazonaws.com/#arguments.bucketName#" charset="utf-8">
+				<cfhttpparam type="header" name="Content-Type" value="text/html">
+				<cfhttpparam type="header" name="Date" value="#dateTimeString#">
+				<cfhttpparam type="header" name="x-amz-acl" value="#arguments.acl#">
+				<cfhttpparam type="header" name="Authorization" value="AWS #variables.accessKeyId#:#signature#">
+				<cfhttpparam type="body" value="#trim(variables.strXML)#">
+			</cfhttp>
+		</cfif>
 		<cfreturn true>
 	</cffunction>
 	
@@ -166,22 +181,37 @@ text/html; charset=UTF-8
 		<cfset signature = createSignature(cs)>
 
 		<!--- get the bucket via REST --->
-		<cfhttp method="GET" url="http://s3.amazonaws.com/#arguments.bucketName#"
-		proxyUser="#application.configBean.getProxyUser()#" proxyPassword="#application.configBean.getProxyPassword()#"
-		proxyServer="#application.configBean.getProxyServer()#" proxyPort="#application.configBean.getProxyPort()#">
-			<cfhttpparam type="header" name="Date" value="#dateTimeString#">
-			<cfhttpparam type="header" name="Authorization" value="AWS #variables.accessKeyId#:#signature#">
-			<cfif compare(arguments.prefix,'')>
-				<cfhttpparam type="URL" name="prefix" value="#arguments.prefix#"> 
-			</cfif>
-			<cfif compare(arguments.marker,'')>
-				<cfhttpparam type="URL" name="marker" value="#arguments.marker#"> 
-			</cfif>
-			<cfif isNumeric(arguments.maxKeys)>
-				<cfhttpparam type="URL" name="max-keys" value="#arguments.maxKeys#"> 
-			</cfif>
-		</cfhttp>
-		
+		<cfif len(application.configBean.getProxyServer())>
+			<cfhttp method="GET" url="http://s3.amazonaws.com/#arguments.bucketName#"
+			proxyUser="#application.configBean.getProxyUser()#" proxyPassword="#application.configBean.getProxyPassword()#"
+			proxyServer="#application.configBean.getProxyServer()#" proxyPort="#application.configBean.getProxyPort()#">
+				<cfhttpparam type="header" name="Date" value="#dateTimeString#">
+				<cfhttpparam type="header" name="Authorization" value="AWS #variables.accessKeyId#:#signature#">
+				<cfif compare(arguments.prefix,'')>
+					<cfhttpparam type="URL" name="prefix" value="#arguments.prefix#"> 
+				</cfif>
+				<cfif compare(arguments.marker,'')>
+					<cfhttpparam type="URL" name="marker" value="#arguments.marker#"> 
+				</cfif>
+				<cfif isNumeric(arguments.maxKeys)>
+					<cfhttpparam type="URL" name="max-keys" value="#arguments.maxKeys#"> 
+				</cfif>
+			</cfhttp>
+		<cfelse>
+			<cfhttp method="GET" url="http://s3.amazonaws.com/#arguments.bucketName#">
+				<cfhttpparam type="header" name="Date" value="#dateTimeString#">
+				<cfhttpparam type="header" name="Authorization" value="AWS #variables.accessKeyId#:#signature#">
+				<cfif compare(arguments.prefix,'')>
+					<cfhttpparam type="URL" name="prefix" value="#arguments.prefix#"> 
+				</cfif>
+				<cfif compare(arguments.marker,'')>
+					<cfhttpparam type="URL" name="marker" value="#arguments.marker#"> 
+				</cfif>
+				<cfif isNumeric(arguments.maxKeys)>
+					<cfhttpparam type="URL" name="max-keys" value="#arguments.maxKeys#"> 
+				</cfif>
+			</cfhttp>
+		</cfif>
 		<cfset data = xmlParse(cfhttp.FileContent)>
 		<cfset contents = xmlSearch(data, "//:Contents")>
 
@@ -214,13 +244,19 @@ text/html; charset=UTF-8
 		<cfset signature = createSignature(cs)>
 		
 		<!--- delete the bucket via REST --->
-		<cfhttp method="DELETE" url="http://s3.amazonaws.com/#arguments.bucketName#" charset="utf-8"
-		proxyUser="#application.configBean.getProxyUser()#" proxyPassword="#application.configBean.getProxyPassword()#"
-		proxyServer="#application.configBean.getProxyServer()#" proxyPort="#application.configBean.getProxyPort()#">
-			<cfhttpparam type="header" name="Date" value="#dateTimeString#">
-			<cfhttpparam type="header" name="Authorization" value="AWS #variables.accessKeyId#:#signature#">
-		</cfhttp>
-
+		<cfif len(application.configBean.getProxyServer())>
+			<cfhttp method="DELETE" url="http://s3.amazonaws.com/#arguments.bucketName#" charset="utf-8"
+			proxyUser="#application.configBean.getProxyUser()#" proxyPassword="#application.configBean.getProxyPassword()#"
+			proxyServer="#application.configBean.getProxyServer()#" proxyPort="#application.configBean.getProxyPort()#">
+				<cfhttpparam type="header" name="Date" value="#dateTimeString#">
+				<cfhttpparam type="header" name="Authorization" value="AWS #variables.accessKeyId#:#signature#">
+			</cfhttp>
+		<cfelse>
+			<cfhttp method="DELETE" url="http://s3.amazonaws.com/#arguments.bucketName#" charset="utf-8">
+				<cfhttpparam type="header" name="Date" value="#dateTimeString#">
+				<cfhttpparam type="header" name="Authorization" value="AWS #variables.accessKeyId#:#signature#">
+			</cfhttp>
+		</cfif>
 		<cfreturn true>
 	</cffunction>
 	
@@ -246,16 +282,25 @@ text/html; charset=UTF-8
 		<!---<cffile action="readBinary" file="#ExpandPath("./#arguments.fileKey#")#" variable="binaryFileData">--->
 		
 		<!--- Send the file to amazon. The "X-amz-acl" controls the access properties of the file --->
-		<cfhttp method="PUT" url="http://s3.amazonaws.com/#arguments.bucketName#/#arguments.fileKey#" timeout="#arguments.HTTPtimeout#"
-		proxyUser="#application.configBean.getProxyUser()#" proxyPassword="#application.configBean.getProxyPassword()#"
-		proxyServer="#application.configBean.getProxyServer()#" proxyPort="#application.configBean.getProxyPort()#">
-			  <cfhttpparam type="header" name="Authorization" value="AWS #variables.accessKeyId#:#signature#">
-			  <cfhttpparam type="header" name="Content-Type" value="#arguments.contentType#">
-			  <cfhttpparam type="header" name="Date" value="#dateTimeString#">
-			  <cfhttpparam type="header" name="x-amz-acl" value="public-read">
-			   <cfhttpparam type="body" value="#arguments.binaryFileData#">
-		</cfhttp> 		
-		
+		<cfif len(application.configBean.getProxyServer())>
+			<cfhttp method="PUT" url="http://s3.amazonaws.com/#arguments.bucketName#/#arguments.fileKey#" timeout="#arguments.HTTPtimeout#"
+			proxyUser="#application.configBean.getProxyUser()#" proxyPassword="#application.configBean.getProxyPassword()#"
+			proxyServer="#application.configBean.getProxyServer()#" proxyPort="#application.configBean.getProxyPort()#">
+				  <cfhttpparam type="header" name="Authorization" value="AWS #variables.accessKeyId#:#signature#">
+				  <cfhttpparam type="header" name="Content-Type" value="#arguments.contentType#">
+				  <cfhttpparam type="header" name="Date" value="#dateTimeString#">
+				  <cfhttpparam type="header" name="x-amz-acl" value="public-read">
+				   <cfhttpparam type="body" value="#arguments.binaryFileData#">
+			</cfhttp> 		
+		<cfelse>
+			<cfhttp method="PUT" url="http://s3.amazonaws.com/#arguments.bucketName#/#arguments.fileKey#" timeout="#arguments.HTTPtimeout#">
+				  <cfhttpparam type="header" name="Authorization" value="AWS #variables.accessKeyId#:#signature#">
+				  <cfhttpparam type="header" name="Content-Type" value="#arguments.contentType#">
+				  <cfhttpparam type="header" name="Date" value="#dateTimeString#">
+				  <cfhttpparam type="header" name="x-amz-acl" value="public-read">
+				   <cfhttpparam type="body" value="#arguments.binaryFileData#">
+			</cfhttp> 	
+		</cfif>
 		<cfreturn true>
 	</cffunction>
 	
@@ -298,13 +343,19 @@ text/html; charset=UTF-8
 		<cfset signature = createSignature(cs)>
 
 		<!--- delete the object via REST --->
-		<cfhttp method="DELETE" url="http://s3.amazonaws.com/#arguments.bucketName#/#arguments.fileKey#"
-		proxyUser="#application.configBean.getProxyUser()#" proxyPassword="#application.configBean.getProxyPassword()#"
-		proxyServer="#application.configBean.getProxyServer()#" proxyPort="#application.configBean.getProxyPort()#">
-			<cfhttpparam type="header" name="Date" value="#dateTimeString#">
-			<cfhttpparam type="header" name="Authorization" value="AWS #variables.accessKeyId#:#signature#">
-		</cfhttp>
-
+		<cfif len(application.configBean.getProxyServer())>
+			<cfhttp method="DELETE" url="http://s3.amazonaws.com/#arguments.bucketName#/#arguments.fileKey#"
+			proxyUser="#application.configBean.getProxyUser()#" proxyPassword="#application.configBean.getProxyPassword()#"
+			proxyServer="#application.configBean.getProxyServer()#" proxyPort="#application.configBean.getProxyPort()#">
+				<cfhttpparam type="header" name="Date" value="#dateTimeString#">
+				<cfhttpparam type="header" name="Authorization" value="AWS #variables.accessKeyId#:#signature#">
+			</cfhttp>
+		<cfelse>
+			<cfhttp method="DELETE" url="http://s3.amazonaws.com/#arguments.bucketName#/#arguments.fileKey#">
+				<cfhttpparam type="header" name="Date" value="#dateTimeString#">
+				<cfhttpparam type="header" name="Authorization" value="AWS #variables.accessKeyId#:#signature#">
+			</cfhttp>
+		</cfif>
 		<cfreturn true>
 	</cffunction>
 	
