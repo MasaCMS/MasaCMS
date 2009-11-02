@@ -789,52 +789,55 @@ select * from tplugins order by #arguments.orderby#
 	<cfset var eventHandler="">
 	<cfset var listenerArray="">
 	<cfset var isGlobalEvent=left(arguments.runat,8) eq "onGlobal">
+	<cfset var isValidEvent=not REFind("[^A-Za-z0-9]",arguments.runat,1)>
 	
-	<cfif not isObject(arguments.event)>
-		<cfif isStruct(arguments.event)>
-			<cfset variables.event=createObject("component","mura.event").init(arguments.event)/>
-		<cfelse>				
-			<cfif structKeyExists(request,"servletEvent")>
-				<cfset arguments.event=request.servletEvent />
-			<cfelse>
-				<cfset arguments.event=createObject("component","mura.event")/>
+	<cfif isValidEvent and not isQuery(arguments.scripts) and not len(arguments.moduleID)>
+		<cfif not isObject(arguments.event)>
+			<cfif isStruct(arguments.event)>
+				<cfset variables.event=createObject("component","mura.event").init(arguments.event)/>
+			<cfelse>				
+				<cfif structKeyExists(request,"servletEvent")>
+					<cfset arguments.event=request.servletEvent />
+				<cfelse>
+					<cfset arguments.event=createObject("component","mura.event")/>
+				</cfif>
 			</cfif>
 		</cfif>
-	</cfif>
-	
-	<cfif isObject(event.getValue("localHandler"))>
-		<cfset localHandler=event.getValue("localHandler")>
-		<cfif structKeyExists(localHandler,runat)>
-			<cfset evaluate("localHandler.#runat#(arguments.event)") />
-		</cfif>
-	</cfif>
-	
-	<cfif not isGlobalEvent and len(arguments.siteID)>
-		<cfif isDefined("variables.siteListeners.#arguments.siteID#.#arguments.runat#")>
-			<cfset listenerArray=evaluate("variables.siteListeners.#arguments.siteID#.#arguments.runat#")>
-			<cfif arrayLen(listenerArray)>
-				<cfloop from="1" to="#arrayLen(listenerArray)#" index="i">
-					<cfset eventHandlerIndex=listenerArray[i].index>
-					<cfset eventHandler=variables.eventHandlers[eventHandlerIndex]>
-					<cfif not isObject(eventHandler)>
-						<cfset eventHandler=getEventHandlerFromPath(eventHandler)>
-					</cfif>
-					<cfset evaluate("eventHandler.#runat#(arguments.event)") />
-				</cfloop>
+		
+		<cfif isObject(event.getValue("localHandler"))>
+			<cfset localHandler=event.getValue("localHandler")>
+			<cfif structKeyExists(localHandler,runat)>
+				<cfset evaluate("localHandler.#runat#(arguments.event)") />
 			</cfif>
 		</cfif>
-	<cfelseif isGlobalEvent>
-		<cfif isDefined("variables.globalListeners.#arguments.runat#")>
-			<cfset listenerArray=evaluate("variables.globalListeners.#arguments.runat#")>
-			<cfif arrayLen(listenerArray)>
-				<cfloop from="1" to="#arrayLen(listenerArray)#" index="i">
-					<cfset eventHandlerIndex=listenerArray[i].index>
-					<cfset eventHandler=variables.eventHandlers[eventHandlerIndex]>
-					<cfif not isObject(eventHandler)>
-						<cfset eventHandler=getEventHandlerFromPath(eventHandler)>
-					</cfif>
-					<cfset evaluate("eventHandler.#runat#(arguments.event)") />
-				</cfloop>
+		
+		<cfif not isGlobalEvent and len(arguments.siteID)>
+			<cfif isDefined("variables.siteListeners.#arguments.siteID#.#arguments.runat#")>
+				<cfset listenerArray=evaluate("variables.siteListeners.#arguments.siteID#.#arguments.runat#")>
+				<cfif arrayLen(listenerArray)>
+					<cfloop from="1" to="#arrayLen(listenerArray)#" index="i">
+						<cfset eventHandlerIndex=listenerArray[i].index>
+						<cfset eventHandler=variables.eventHandlers[eventHandlerIndex]>
+						<cfif not isObject(eventHandler)>
+							<cfset eventHandler=getEventHandlerFromPath(eventHandler)>
+						</cfif>
+						<cfset evaluate("eventHandler.#runat#(arguments.event)") />
+					</cfloop>
+				</cfif>
+			</cfif>
+		<cfelseif isGlobalEvent>
+			<cfif isDefined("variables.globalListeners.#arguments.runat#")>
+				<cfset listenerArray=evaluate("variables.globalListeners.#arguments.runat#")>
+				<cfif arrayLen(listenerArray)>
+					<cfloop from="1" to="#arrayLen(listenerArray)#" index="i">
+						<cfset eventHandlerIndex=listenerArray[i].index>
+						<cfset eventHandler=variables.eventHandlers[eventHandlerIndex]>
+						<cfif not isObject(eventHandler)>
+							<cfset eventHandler=getEventHandlerFromPath(eventHandler)>
+						</cfif>
+						<cfset evaluate("eventHandler.#runat#(arguments.event)") />
+					</cfloop>
+				</cfif>
 			</cfif>
 		</cfif>
 	</cfif>
@@ -893,6 +896,7 @@ select * from tplugins order by #arguments.orderby#
 	<cfset var eventHandler="">
 	<cfset var listenerArray="">
 	<cfset var isGlobalEvent=left(arguments.runat,8) eq "onGlobal">
+	<cfset var isValidEvent=not REFind("[^A-Za-z0-9]",arguments.runat,1)>
 	
 	<cfif not isObject(arguments.event)>
 		<cfif isStruct(arguments.event)>
@@ -906,68 +910,69 @@ select * from tplugins order by #arguments.orderby#
 		</cfif>
 	</cfif>
 	
-	<cfif isObject(event.getValue("localHandler"))>
-		<cfset localHandler=event.getValue("localHandler")>
-		<cfif structKeyExists(localHandler,runat)>
-			<cfsavecontent variable="theDisplay1">
-			<cfinvoke component="#localHandler#" method="#arguments.runat#" returnVariable="theDisplay2">
-				<cfinvokeargument name="event" value="#arguments.event#">
-			</cfinvoke>	
-			</cfsavecontent>
-			<cfif isDefined("theDisplay2")>
-				<cfset str=str & theDisplay2>
-			<cfelse>
-				<cfset str=str & theDisplay1>
+	<cfif isValidEvent and not isQuery(arguments.scripts) and not len(arguments.moduleID)>
+		<cfif isObject(event.getValue("localHandler"))>
+			<cfset localHandler=event.getValue("localHandler")>
+			<cfif structKeyExists(localHandler,runat)>
+				<cfsavecontent variable="theDisplay1">
+				<cfinvoke component="#localHandler#" method="#arguments.runat#" returnVariable="theDisplay2">
+					<cfinvokeargument name="event" value="#arguments.event#">
+				</cfinvoke>	
+				</cfsavecontent>
+				<cfif isDefined("theDisplay2")>
+					<cfset str=str & theDisplay2>
+				<cfelse>
+					<cfset str=str & theDisplay1>
+				</cfif>
+			</cfif>
+		</cfif>
+		
+		<cfif not isGlobalEvent and len(arguments.siteID)>
+			<cfif isDefined("variables.siteListeners.#arguments.siteID#.#arguments.runat#")>
+				<cfset listenerArray=evaluate("variables.siteListeners.#arguments.siteID#.#arguments.runat#")>
+				<cfif arrayLen(listenerArray)>
+					<cfloop from="1" to="#arrayLen(listenerArray)#" index="i">
+						<cfset eventHandler=variables.eventHandlers[listenerArray[i].index]>
+						<cfif not isObject(eventHandler)>
+							<cfset eventHandler=getEventHandlerFromPath(eventHandler)>
+						</cfif>
+						<cfsavecontent variable="theDisplay1">
+						<cfinvoke component="#eventHandler#"method="#arguments.runat#" returnVariable="theDisplay2">
+							<cfinvokeargument name="event" value="#arguments.event#">
+						</cfinvoke>	
+						</cfsavecontent>
+						<cfif isDefined("theDisplay2")>
+							<cfset str=str & theDisplay2>
+						<cfelse>
+							<cfset str=str & theDisplay1>
+						</cfif>
+					</cfloop>
+				</cfif>
+			</cfif>
+		<cfelseif isGlobalEvent>
+			<cfif isDefined("variables.globalListeners.#arguments.runat#")>
+				<cfset listenerArray=evaluate("variables.globalListeners.#arguments.runat#")>
+				<cfif arrayLen(listenerArray)>
+					<cfloop from="1" to="#arrayLen(listenerArray)#" index="i">
+						<cfset eventHandler=variables.eventHandlers[listenerArray[i].index]>
+						<cfif not isObject(eventHandler)>
+							<cfset eventHandler=getEventHandlerFromPath(eventHandler)>
+						</cfif>
+						<cfsavecontent variable="theDisplay1">
+						<cfinvoke component="#eventHandler#"method="#arguments.runat#" returnVariable="theDisplay2">
+							<cfinvokeargument name="event" value="#arguments.event#">
+						</cfinvoke>	
+						</cfsavecontent>
+						<cfif isDefined("theDisplay2")>
+							<cfset str=str & theDisplay2>
+						<cfelse>
+							<cfset str=str & theDisplay1>
+						</cfif>
+					</cfloop>
+				</cfif>
 			</cfif>
 		</cfif>
 	</cfif>
-	
-	<cfif not isGlobalEvent and len(arguments.siteID)>
-		<cfif isDefined("variables.siteListeners.#arguments.siteID#.#arguments.runat#")>
-			<cfset listenerArray=evaluate("variables.siteListeners.#arguments.siteID#.#arguments.runat#")>
-			<cfif arrayLen(listenerArray)>
-				<cfloop from="1" to="#arrayLen(listenerArray)#" index="i">
-					<cfset eventHandler=variables.eventHandlers[listenerArray[i].index]>
-					<cfif not isObject(eventHandler)>
-						<cfset eventHandler=getEventHandlerFromPath(eventHandler)>
-					</cfif>
-					<cfsavecontent variable="theDisplay1">
-					<cfinvoke component="#eventHandler#"method="#arguments.runat#" returnVariable="theDisplay2">
-						<cfinvokeargument name="event" value="#arguments.event#">
-					</cfinvoke>	
-					</cfsavecontent>
-					<cfif isDefined("theDisplay2")>
-						<cfset str=str & theDisplay2>
-					<cfelse>
-						<cfset str=str & theDisplay1>
-					</cfif>
-				</cfloop>
-			</cfif>
-		</cfif>
-	<cfelseif isGlobalEvent>
-		<cfif isDefined("variables.globalListeners.#arguments.runat#")>
-			<cfset listenerArray=evaluate("variables.globalListeners.#arguments.runat#")>
-			<cfif arrayLen(listenerArray)>
-				<cfloop from="1" to="#arrayLen(listenerArray)#" index="i">
-					<cfset eventHandler=variables.eventHandlers[listenerArray[i].index]>
-					<cfif not isObject(eventHandler)>
-						<cfset eventHandler=getEventHandlerFromPath(eventHandler)>
-					</cfif>
-					<cfsavecontent variable="theDisplay1">
-					<cfinvoke component="#eventHandler#"method="#arguments.runat#" returnVariable="theDisplay2">
-						<cfinvokeargument name="event" value="#arguments.event#">
-					</cfinvoke>	
-					</cfsavecontent>
-					<cfif isDefined("theDisplay2")>
-						<cfset str=str & theDisplay2>
-					<cfelse>
-						<cfset str=str & theDisplay1>
-					</cfif>
-				</cfloop>
-			</cfif>
-		</cfif>
-	</cfif>
-	
 	<cfif isQuery(arguments.scripts)>
 		<cfset rs=arguments.scripts />
 	<cfelse>

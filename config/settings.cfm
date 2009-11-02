@@ -61,6 +61,10 @@ to your own modified versions of Mura CMS.
 <cfparam name="session.mura.passwordCreated" default="" />
 <cfparam name="session.mura.remoteID" default="" />
 
+<cfif not session.mura.isLoggedIn and isValid("UUID",listFirst(getAuthUser(),"^"))>
+	<cflogout>
+</cfif>
+
 <!--- do a settings setup check --->
 <cfif NOT structKeyExists( application, "setupComplete" ) OR (not application.appInitialized or structKeyExists(url,application.appReloadKey) )>
 	<cfif getProfileString( getDirectoryFromPath( getCurrentTemplatePath() ) & "settings.ini.cfm", "settings", "mode" ) eq "production">
