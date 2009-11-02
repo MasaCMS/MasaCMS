@@ -206,7 +206,21 @@ to your own modified versions of Mura CMS.
 	</cfif>
 		
 	<cfset application.pluginManager.executeScripts('onApplicationLoad')>
-
+	
+	<!--- Fire local onApplicationLoad events--->
+	<cfset rsSites=application.settingsManager.getList() />
+	<cfloop query="rsSites">	
+		<cfif fileExists(expandPath("/#application.configBean.getWebRootMap()#") & "/#rsSites.siteID#/includes/eventHandler.cfc")>
+			<cfset localHandler=createObject("component","#application.configBean.getWebRootMap()#.#rsSites.siteID#.includes.eventHandler").init()>
+			<cfif structKeyExists(localHandler,"onApplicationLoad")>
+				<cfset pluginEvent=createObject("component","mura.event")>
+				<cfset pluginEvent.setValue("siteID",rsSites.siteID)>
+				<cfset pluginEvent.loadSiteRelatedObjects()>
+				<cfset localHandler.onApplicationLoad(pluginEvent)>
+			</cfif>
+		</cfif>
+	</cfloop>
+	
 </cfif>
 
 <cftry>

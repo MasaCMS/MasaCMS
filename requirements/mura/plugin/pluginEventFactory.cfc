@@ -40,10 +40,49 @@
 		
 		<cfset var hashKey = getHashKey( arguments.key ) />
 		<cfset var checkKey= "__check__" & arguments.key>
+		<cfset var localKey=arguments.key & variables.class>
 		<cfset var hashCheckKey = getHashKey( checkKey ) />
 		<cfset var rs="" />
 		<cfset var event="" />
 		<cfset var classInstance="" />
+		
+		<!---If the local handler has a locally defined method then use it instead --->
+		<cfif NOT has( localKey )>
+			<cfif isObject(arguments.localHandler) and structKeyExists(arguments.localHandler,arguments.key & variables.class)>
+				<cfset classInstance=localHandler>
+				<cfswitch expression="#variables.class#">
+					<cfcase value="Validator">
+						<cfset classInstance.validate=classInstance[arguments.key & variables.class]>
+					</cfcase>
+					<cfcase value="Handler">
+						<cfset classInstance.handle=classInstance[arguments.key & variables.class]>
+					</cfcase>
+					<cfcase value="Transaltor">
+						<cfset classInstance.translate=classInstance[arguments.key & variables.class]>
+					</cfcase>
+				</cfswitch>
+				<cfset super.set( localKey, classInstance )>
+			</cfif>
+		</cfif>
+		
+		<!---If there is a non plugin listener then use it instead --->
+		<cfif NOT has( localKey )>
+			<cfset classInstance=variables.pluginManager.getSiteListener(variables.siteID, arguments.key & variables.class)>
+			<cfif isObject(classInstance)>
+				<cfswitch expression="#variables.class#">
+					<cfcase value="Validator">
+						<cfset classInstance.validate=classInstance[arguments.key & variables.class]>
+					</cfcase>
+					<cfcase value="Handler">
+						<cfset classInstance.handle=classInstance[arguments.key & variables.class]>
+					</cfcase>
+					<cfcase value="Transaltor">
+						<cfset classInstance.translate=classInstance[arguments.key & variables.class]>
+					</cfcase>
+				</cfswitch>
+				<cfset super.set( localKey, classInstance )>	
+			</cfif>
+		</cfif>
 		
 		<!--- Check if the prelook for plugins has been made --->
 		<cfif NOT has( checkKey )>	
@@ -51,31 +90,16 @@
 			<cfset rs=variables.pluginManager.getScripts(arguments.key & variables.class,variables.siteid)>
 			<cfset super.set( checkKey, rs.recordcount ) />
 			<cfif rs.recordcount>
-				<cfset super.set( key, variables.pluginManager.getComponent("plugins.#rs.directory#.#rs.scriptfile#", rs.pluginID, variables.siteID, rs.docache) )>
+				<cfset super.set( localKey, variables.pluginManager.getComponent("plugins.#rs.directory#.#rs.scriptfile#", rs.pluginID, variables.siteID, rs.docache) )>
 			</cfif>
 		</cfif>
 		
-		<cfif super.get( checkKey )>
+		<cfif super.has( localKey )>
 			<!--- It's already in cache --->
-			<cfset classInstance=super.get( key )>
+			<cfset classInstance=super.get( localKey )>
 		<cfelse>
 			<!--- return cached context --->		
 			<cfset classInstance=variables.genericManager.getFactory(variables.class).get(arguments.key) />
-		</cfif>
-		
-		<!---If the local handler has a locally defined method then use it instead --->
-		<cfif isObject(arguments.localHandler) and structKeyExists(arguments.localHandler,arguments.key & variables.class)>
-			<cfswitch expression="#variables.class#">
-				<cfcase value="Validator">
-					<cfset classInstance.validate=arguments.localHandler[arguments.key & variables.class]>
-				</cfcase>
-				<cfcase value="Handler">
-					<cfset classInstance.handle=arguments.localHandler[arguments.key & variables.class]>
-				</cfcase>
-				<cfcase value="Transaltor">
-					<cfset classInstance.translate=arguments.localHandler[arguments.key & variables.class]>
-				</cfcase>
-			</cfswitch>
 		</cfif>
 		
 		<cfreturn classInstance />

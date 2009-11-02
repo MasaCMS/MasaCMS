@@ -74,7 +74,7 @@ to your own modified versions of Mura CMS.
 </dl>
 <p class="rememberMe"><input type="checkbox" id="rememberMe" name="rememberMe" value="1" /> <label for="rememberMe">#application.rbFactory.getKeyValue(session.rb,'login.rememberme')#</label></p>
 <a class="submit" href="javascript:document.frmLogin.submit();"><span>#application.rbFactory.getKeyValue(session.rb,'login.login')#</span></a>
-	<input name="returnUrl" type="hidden" value="#attributes.returnURL#">
+	<input name="returnUrl" type="hidden" value="#HTMLEditFormat(attributes.returnURL)#">
 <input type="hidden" name="fuseaction" value="cLogin.login">
  </form>
 
@@ -95,7 +95,7 @@ to your own modified versions of Mura CMS.
         <dd><input id="email" name="email" type="text" class="text" align="absmiddle" onKeyPress="checkKeyPressed(event, 'sendLogin')"/>
  		<a class="submit" href="javascript:document.sendLogin.submit();"><span>#application.rbFactory.getKeyValue(session.rb,'login.submit')#</span></a>
 		<input type="hidden" name="status" value="sendlogin" />
-		<input name="returnURL" type="hidden" value="#attributes.returnURL#"></dd>
+		<input name="returnURL" type="hidden" value="#HTMLEditFormat(attributes.returnURL)#"></dd>
 		</dl>
     </form>
 </cfif></cfoutput>

@@ -47,6 +47,9 @@ to your own modified versions of Mura CMS.
 <cfset variables.genericManager="">
 <cfset variables.eventManagers=structNew()>
 <cfset variables.cacheFactories=structNew()>
+<cfset variables.siteListeners=structNew()>
+<cfset variables.globalListeners=structNew()>
+<cfset variables.eventHandlers=arrayNew(1)>
 
 <cffunction name="init" returntype="any" access="public" output="false">
 	<cfargument name="configBean">
@@ -778,10 +781,14 @@ select * from tplugins order by #arguments.orderby#
 	<cfset var pluginConfig="">
 	<cfset var componentPath="">
 	<cfset var scriptPath="">
-	<cfset var eventHandler="">
 	<cfset var rsOnError="">
 	<!--- this is for non plugin bound event that are set in the local eventHandler--->
 	<cfset var localHandler="">
+	<cfset var i="">
+	<cfset var eventHandlerIndex="">
+	<cfset var eventHandler="">
+	<cfset var listenerArray="">
+	<cfset var isGlobalEvent=left(arguments.runat,8) eq "onGlobal">
 	
 	<cfif not isObject(arguments.event)>
 		<cfif isStruct(arguments.event)>
@@ -799,6 +806,36 @@ select * from tplugins order by #arguments.orderby#
 		<cfset localHandler=event.getValue("localHandler")>
 		<cfif structKeyExists(localHandler,runat)>
 			<cfset evaluate("localHandler.#runat#(arguments.event)") />
+		</cfif>
+	</cfif>
+	
+	<cfif not isGlobalEvent and len(arguments.siteID)>
+		<cfif isDefined("variables.siteListeners.#arguments.siteID#.#arguments.runat#")>
+			<cfset listenerArray=evaluate("variables.siteListeners.#arguments.siteID#.#arguments.runat#")>
+			<cfif arrayLen(listenerArray)>
+				<cfloop from="1" to="#arrayLen(listenerArray)#" index="i">
+					<cfset eventHandlerIndex=listenerArray[i].index>
+					<cfset eventHandler=variables.eventHandlers[eventHandlerIndex]>
+					<cfif not isObject(eventHandler)>
+						<cfset eventHandler=getEventHandlerFromPath(eventHandler)>
+					</cfif>
+					<cfset evaluate("eventHandler.#runat#(arguments.event)") />
+				</cfloop>
+			</cfif>
+		</cfif>
+	<cfelseif isGlobalEvent>
+		<cfif isDefined("variables.globalListeners.#arguments.runat#")>
+			<cfset listenerArray=evaluate("variables.globalListeners.#arguments.runat#")>
+			<cfif arrayLen(listenerArray)>
+				<cfloop from="1" to="#arrayLen(listenerArray)#" index="i">
+					<cfset eventHandlerIndex=listenerArray[i].index>
+					<cfset eventHandler=variables.eventHandlers[eventHandlerIndex]>
+					<cfif not isObject(eventHandler)>
+						<cfset eventHandler=getEventHandlerFromPath(eventHandler)>
+					</cfif>
+					<cfset evaluate("eventHandler.#runat#(arguments.event)") />
+				</cfloop>
+			</cfif>
 		</cfif>
 	</cfif>
 	
@@ -847,12 +884,15 @@ select * from tplugins order by #arguments.orderby#
 	<cfset var pluginConfig="">
 	<cfset var componentPath="">
 	<cfset var scriptPath="">
-	<cfset var eventHandler="">
 	<cfset var theDisplay1="">
 	<cfset var theDisplay2="">
 	<cfset var rsOnError="">
 	<!--- this is for non plugin bound event that are set in the local eventHandler--->
 	<cfset var localHandler="">
+	<cfset var i="">
+	<cfset var eventHandler="">
+	<cfset var listenerArray="">
+	<cfset var isGlobalEvent=left(arguments.runat,8) eq "onGlobal">
 	
 	<cfif not isObject(arguments.event)>
 		<cfif isStruct(arguments.event)>
@@ -878,6 +918,52 @@ select * from tplugins order by #arguments.orderby#
 				<cfset str=str & theDisplay2>
 			<cfelse>
 				<cfset str=str & theDisplay1>
+			</cfif>
+		</cfif>
+	</cfif>
+	
+	<cfif not isGlobalEvent and len(arguments.siteID)>
+		<cfif isDefined("variables.siteListeners.#arguments.siteID#.#arguments.runat#")>
+			<cfset listenerArray=evaluate("variables.siteListeners.#arguments.siteID#.#arguments.runat#")>
+			<cfif arrayLen(listenerArray)>
+				<cfloop from="1" to="#arrayLen(listenerArray)#" index="i">
+					<cfset eventHandler=variables.eventHandlers[listenerArray[i].index]>
+					<cfif not isObject(eventHandler)>
+						<cfset eventHandler=getEventHandlerFromPath(eventHandler)>
+					</cfif>
+					<cfsavecontent variable="theDisplay1">
+					<cfinvoke component="#eventHandler#"method="#arguments.runat#" returnVariable="theDisplay2">
+						<cfinvokeargument name="event" value="#arguments.event#">
+					</cfinvoke>	
+					</cfsavecontent>
+					<cfif isDefined("theDisplay2")>
+						<cfset str=str & theDisplay2>
+					<cfelse>
+						<cfset str=str & theDisplay1>
+					</cfif>
+				</cfloop>
+			</cfif>
+		</cfif>
+	<cfelseif isGlobalEvent>
+		<cfif isDefined("variables.globalListeners.#arguments.runat#")>
+			<cfset listenerArray=evaluate("variables.globalListeners.#arguments.runat#")>
+			<cfif arrayLen(listenerArray)>
+				<cfloop from="1" to="#arrayLen(listenerArray)#" index="i">
+					<cfset eventHandler=variables.eventHandlers[listenerArray[i].index]>
+					<cfif not isObject(eventHandler)>
+						<cfset eventHandler=getEventHandlerFromPath(eventHandler)>
+					</cfif>
+					<cfsavecontent variable="theDisplay1">
+					<cfinvoke component="#eventHandler#"method="#arguments.runat#" returnVariable="theDisplay2">
+						<cfinvokeargument name="event" value="#arguments.event#">
+					</cfinvoke>	
+					</cfsavecontent>
+					<cfif isDefined("theDisplay2")>
+						<cfset str=str & theDisplay2>
+					<cfelse>
+						<cfset str=str & theDisplay1>
+					</cfif>
+				</cfloop>
 			</cfif>
 		</cfif>
 	</cfif>
@@ -1063,8 +1149,12 @@ select * from tplugins order by #arguments.orderby#
 	<cfset var pluginConfig="">
 	<cfif isBoolean(arguments.cache) and arguments.cache>
 		<cfif NOT getCacheFactory(arguments.siteid).has( componentPath ) or variables.configBean.getMode() eq "development">
-			<cfset pluginConfig=getConfig(arguments.pluginID)>	
-			<cfreturn getCacheFactory(arguments.siteid).get( componentPath, createObject("component",componentPath).init(pluginConfig,configBean) ) />	
+			<cfif arguments.pluginID>
+				<cfset pluginConfig=getConfig(arguments.pluginID)>	
+				<cfreturn getCacheFactory(arguments.siteid).get( componentPath, createObject("component",componentPath).init(pluginConfig,configBean) ) />
+			<cfelse>
+				<cfreturn getCacheFactory(arguments.siteid).get( componentPath, createObject("component",componentPath).init(configBean) ) />
+			</cfif>	
 		<cfelse>
 			<cfreturn getCacheFactory(arguments.siteid).get( componentPath) />
 		</cfif>
@@ -1178,6 +1268,75 @@ select * from rs order by name
 <cffunction name="getIDFromPath" returntype="any" output="false">
 <cfargument name="path">
 	<cfreturn listLast(listGetat(getDirectoryFromPath(arguments.path),listLen(getDirectoryFromPath(arguments.path),variables.configBean.getFileDelim())-1,variables.configBean.getFileDelim()),"_")>
+</cffunction>
+
+<cffunction name="addEventHandler" output="false" returntype="void">
+<cfargument name="component">
+<cfargument name="siteID" required="true">
+<cfargument name="persist" required="true" default="true">
+<cfset var i = "">
+<cfset var handlerData=structNew()>
+<cfset var eventhandler=arguments.component>
+
+	<cfif not StructKeyExists(variables.siteListeners,arguments.siteid)>
+		<cfset variables.siteListeners[arguments.siteID]=structNew()>
+	</cfif>
+	
+	<cfif isObject(eventHandler)>
+		<cfset arrayAppend(variables.eventHandlers,eventhandler)>
+		<cfset _persist=true>
+	<cfelse>
+		<cfset eventhandler=getEventHandlerFromPath(eventHandler)>
+		<cfif arguments.persist>
+			<cfset arrayAppend(variables.eventHandlers,eventhandler)>
+		<cfelse>
+			<cfset arrayAppend(variables.eventHandlers,arguments.component)>
+		</cfif>
+	</cfif>
+		
+	<cfloop collection="#eventhandler#" item="i">
+		<cfif left(i,2) eq "on" or left(i,8) eq "standard">
+			<cfset handlerData=structNew()>
+			<cfset handlerData.index=arrayLen(variables.eventHandlers)>
+			<cfif left(i,8) neq "onGlobal">
+				<cfif not structKeyExists(variables.siteListeners[arguments.siteID],i)>
+					<cfset variables.siteListeners[arguments.siteID][i]=arrayNew(1)>
+				</cfif>
+				<cfset arrayAppend( variables.siteListeners[arguments.siteID][i] , handlerData)>
+			<cfelse>
+				<cfset arrayAppend( variables.globalListeners[arguments.siteID][i] , handlerData)>
+			</cfif>
+		</cfif>
+	</cfloop>
+
+</cffunction>
+
+<cffunction name="getEventHandlerFromPath" output="false" returntype="any">
+<cfargument name="component">
+	<cfset var eventhandler=createObject("component",arguments.component)>
+	<cfif structKeyExists(eventHandler,"init")>
+		<cfset eventHandler.init()>
+	</cfif>
+	<cfreturn eventHandler>
+</cffunction>
+
+<cffunction name="getSiteListener" ouput="false" returntype="any">
+<cfargument name="siteID">
+<cfargument name="runat">
+
+	<cfif isDefined("variables.siteListeners.#arguments.siteID#.#arguments.runat#")>
+		<cfset variables.listeners[arguments.siteID]=structNew()>
+		<cfset listenerArray=evaluate("variables.siteListeners.#arguments.siteID#.#arguments.runat#")>
+		<cfreturn variables.eventHandlers[listenerArray[1].index]>
+	<cfelse>
+		<cfreturn "">
+	</cfif>
+		
+</cffunction>
+
+<cffunction name="dumpAnon">
+<cfdump var="#variables.eventHandlers#">
+<cfdump var="#variables.siteListeners#">
 </cffunction>
 
 </cfcomponent>
