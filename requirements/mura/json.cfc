@@ -17,7 +17,7 @@ Version: 1.9 February 20, 2008
 			hint="Converts data frm JSON to CF format">
 		<cfargument name="data" type="any" required="Yes" />
 		
-		<cfreturn encode(arguments.data)>
+		<cfreturn lcase(encode(arguments.data))>
 	</cffunction>	
 	
 	<cffunction name="jsondecode" access="remote" returntype="any" output="no"
