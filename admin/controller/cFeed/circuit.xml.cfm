@@ -16,6 +16,9 @@
 <set name="attributes.categoryID" value="" overwrite="false" />
 <set name="attributes.contentID" value="" overwrite="false" />
 <set name="attributes.restricted" value="0" overwrite="false" />
+<set name="attributes.closeCompactDisplay" value="" overwrite="false" />
+<set name="attributes.compactDisplay" value="" overwrite="false" />
+<set name="attributes.homeID" value="" overwrite="false" />
 </prefuseaction>
 
 <fuseaction name="list">
@@ -31,7 +34,16 @@
 <invoke object="application.feedManager" methodcall="getcontentItems(attributes.feedID,request.feedBean.getcontentID())" returnVariable="request.rslist" />
 <do action="vFeed.ajax" contentvariable="fusebox.ajax"/>
 <do action="vFeed.edit" contentvariable="fusebox.layout"/>
-<do action="layout.display"/>
+
+<if condition="attributes.compactDisplay eq 'true'">
+	<true>
+		<do action="layout.compact"/>
+	</true>
+	<false>
+		<do action="layout.display"/>
+	</false>
+</if>
+
 </fuseaction>
 
 
@@ -61,14 +73,22 @@
 	  </true>
 	   </if>
 	 
-	  <if condition="attributes.action neq  'delete' and not structIsEmpty(request.feedBean.getErrors())">
-	  <true>
-	  	<do action="cFeed.edit"/>
-	  </true>
-	  <false>
-	  	<relocate url="index.cfm?fuseaction=cFeed.list&amp;siteid=#attributes.siteid#" addtoken="false"/>
-	  </false>
-	  </if>
+	  <if condition="attributes.closeCompactDisplay eq 'true'">
+		<true>
+			<do action="vFeed.closeCompactDisplay" contentvariable="fusebox.layout" />
+			<do action="layout.empty" />
+		</true>
+		<false>
+		  <if condition="attributes.action neq  'delete' and not structIsEmpty(request.feedBean.getErrors())">
+		  <true>
+			<do action="cFeed.edit"/>
+		  </true>
+		  <false>
+			<relocate url="index.cfm?fuseaction=cFeed.list&amp;siteid=#attributes.siteid#" addtoken="false"/>
+		  </false>
+		  </if>
+		 </false>
+		</if>
 </fuseaction>
 
 <!-- AJAX -->

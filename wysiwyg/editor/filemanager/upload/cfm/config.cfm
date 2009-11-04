@@ -42,7 +42,7 @@
 	config.allowedExtensions["Image"] = "png,gif,jpg,jpeg,bmp";
 	config.deniedExtensions["Image"] = "";
 
-	config.allowedExtensions["Flash"] = "swf,fla";
+	config.allowedExtensions["Flash"] = "swf,fla,flv";
 	config.deniedExtensions["Flash"] = "";
 </cfscript>
 

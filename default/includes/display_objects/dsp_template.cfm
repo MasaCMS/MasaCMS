@@ -40,37 +40,92 @@ for your modified version; it is your choice whether to do so, or to make such m
 the GNU General Public License version 2  without this exception.  You may, if you choose, apply this exception
 to your own modified versions of Mura CMS.
 --->
-<cfsilent><cfquery datasource="#application.configBean.getDatasource()#" username="#application.configBean.getDBUsername()#" password="#application.configBean.getDBPassword()#" name="rsTemplate">
-select *
-from tcontent 
-where siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"> and 
-				    (
-					(tcontent.Active = 1
-					  
-					  AND tcontent.DisplayStart <= #createodbcdatetime(now())#
-					  AND (tcontent.DisplayStop >= #createodbcdatetime(now())# or tcontent.DisplayStop is null)
-					  AND tcontent.Display = 2
-					  AND tcontent.Approved = 1
-					  AND tcontent.contentid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.objectID#">
-					  AND tcontent.moduleAssign like '%00000000000000000000000000000000000%')
-					  or
-					  
-                      (tcontent.Active = 1
-					  
-					  AND tcontent.Display = 1
-					  AND tcontent.Approved = 1
-					  AND tcontent.contentid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.objectID#">
-					  AND tcontent.moduleAssign like '%00000000000000000000000000000000000%')
-					  
-					 ) 
-</cfquery>
-<cfset request.cacheItem=rsTemplate.doCache/>
+<cfsilent>
+	<cfquery datasource="#application.configBean.getDatasource()#" username="#application.configBean.getDBUsername()#" password="#application.configBean.getDBPassword()#" name="rsTemplate">
+		select *
+		from tcontent 
+		where siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"> and 
+						(
+						(tcontent.Active = 1
+						  
+						  AND tcontent.DisplayStart <= #createodbcdatetime(now())#
+						  AND (tcontent.DisplayStop >= #createodbcdatetime(now())# or tcontent.DisplayStop is null)
+						  AND tcontent.Display = 2
+						  AND tcontent.Approved = 1
+						  AND tcontent.contentid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.objectID#">
+						  AND tcontent.moduleAssign like '%00000000000000000000000000000000000%')
+						  or
+						  
+						  (tcontent.Active = 1
+						  
+						  AND tcontent.Display = 1
+						  AND tcontent.Approved = 1
+						  AND tcontent.contentid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.objectID#">
+						  AND tcontent.moduleAssign like '%00000000000000000000000000000000000%')
+						  
+						 ) 
+	</cfquery>
+	<cfset request.cacheItem=rsTemplate.doCache/>
+	
+	<cfset editLink = "">
+	<!---
+	<cfset perm = application.permUtility.getPerm('00000000000000000000000000000000003',arguments.siteid)>
+	<cfif perm neq 'editor'>
+		<cfset verdict = application.permUtility.getPerm(arguments.objectID, arguments.siteID)>
+		<cfif verdict neq 'deny'>
+			<cfif verdict eq 'none'>
+				<cfset verdict = perm>
+			</cfif>
+		<cfelse>
+			<cfset verdict = 'none'>
+		</cfif>
+	<cfelse>
+		<cfset verdict = 'editor'>
+	</cfif>
+	
+	<cfif verdict eq 'editor'>
+		<cfset request.contentRenderer.loadShadowBoxJS()>
+		<cfset bean = application.contentManager.getActiveContent(arguments.objectID, arguments.siteID)>
+		
+		<cfif len(application.configBean.getAdminDomain())>
+			<cfif application.configBean.getAdminSSL()>
+				<cfset adminBase="https://#application.configBean.getAdminDomain()#"/>
+			<cfelse>
+				<cfset adminBase="http://#application.configBean.getAdminDomain()#"/>
+			</cfif>
+		<cfelse>
+			<cfset adminBase=""/>
+		</cfif>
+		
+		<cfset editLink = adminBase & "#application.configBean.getContext()#/admin/index.cfm?fuseaction=cArch.edit">
+		<cfif structKeyExists(request,"previewID") and len(request.previewID)>
+			<cfset editLink = editLink & "&amp;contenthistid=" & request.previewID>
+		<cfelse>
+			<cfset editLink = editLink & "&amp;contenthistid=" & bean.getContentHistID()>
+		</cfif>
+		<cfset editLink = editLink & "&amp;siteid=" & bean.getSiteID()>
+		<cfset editLink = editLink & "&amp;contentid=" & bean.getContentID()>
+		<cfset editLink = editLink & "&amp;topid=00000000000000000000000000000000001">
+		<cfset editLink = editLink & "&amp;type=" & bean.getType()>
+		<cfset editLink = editLink & "&amp;parentid=" & bean.getParentID()>
+		<cfset editLink = editLink & "&amp;moduleid=" & bean.getModuleID()>
+		<cfset editLink = editLink & "&amp;compactDisplay=true">
+		<cfset editLink = '<p class="edit" style="float:right;"><a href="#editLink#" title="#htmlEditFormat('Edit')#" rel="shadowbox;width=1100;">Edit</a></p>'>
+	</cfif>
+	--->
 </cfsilent>
 <cfif rsTemplate.recordcount>
-<cfif len(rsTemplate.template) and fileExists("#getSite().getTemplateIncludeDir()#/components/#rsTemplate.template#")>
-	<cfset componentBody=rsTemplate.body>
-	<cfinclude template="#event.getSite().getThemeIncludePath()#/templates/components/#rsTemplate.template#">
-<cfelse>
-<cfoutput>#setDynamicContent(rsTemplate.body)#</cfoutput>
-</cfif>
+	<cfif len(rsTemplate.template) and fileExists("#getSite().getTemplateIncludeDir()#/components/#rsTemplate.template#")>
+		<cfset componentBody=rsTemplate.body>
+		<cfinclude template="#event.getSite().getThemeIncludePath()#/templates/components/#rsTemplate.template#">
+	<cfelse>
+		<cfoutput>
+			<cfif editLink neq "">
+				#setDynamicContent('<div class="editableComponent">' & rsTemplate.body & '#editLink#</div>')#
+			<cfelse>
+				#setDynamicContent(rsTemplate.body)#
+			</cfif>
+			
+		</cfoutput>
+	</cfif>
 </cfif>

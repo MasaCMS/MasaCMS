@@ -62,6 +62,54 @@ where siteid='#request.siteid#' and
 					  
 					 ) 
 					</cfquery>
+
+
+	<cfset editLink = "">
+	<!---
+	<cfset perm = application.permUtility.getPerm('00000000000000000000000000000000004',arguments.siteid)>
+	<cfif perm neq 'editor'>
+		<cfset verdict = application.permUtility.getPerm(arguments.objectID, arguments.siteID)>
+		<cfif verdict neq 'deny'>
+			<cfif verdict eq 'none'>
+				<cfset verdict = perm>
+			</cfif>
+		<cfelse>
+			<cfset verdict = 'none'>
+		</cfif>
+	<cfelse>
+		<cfset verdict = 'editor'>
+	</cfif>
+	
+	<cfif verdict eq 'editor'>
+		<cfset request.contentRenderer.loadShadowBoxJS()>
+		<cfset bean = application.contentManager.getActiveContent(arguments.objectID, arguments.siteID)>
+		
+		<cfif len(application.configBean.getAdminDomain())>
+			<cfif application.configBean.getAdminSSL()>
+				<cfset adminBase="https://#application.configBean.getAdminDomain()#"/>
+			<cfelse>
+				<cfset adminBase="http://#application.configBean.getAdminDomain()#"/>
+			</cfif>
+		<cfelse>
+			<cfset adminBase=""/>
+		</cfif>
+		
+		<cfset editLink = adminBase & "#application.configBean.getContext()#/admin/index.cfm?fuseaction=cArch.edit">
+		<cfif structKeyExists(request,"previewID") and len(request.previewID)>
+			<cfset editLink = editLink & "&amp;contenthistid=" & request.previewID>
+		<cfelse>
+			<cfset editLink = editLink & "&amp;contenthistid=" & bean.getContentHistID()>
+		</cfif>
+		<cfset editLink = editLink & "&amp;siteid=" & bean.getSiteID()>
+		<cfset editLink = editLink & "&amp;contentid=" & bean.getContentID()>
+		<cfset editLink = editLink & "&amp;topid=00000000000000000000000000000000001">
+		<cfset editLink = editLink & "&amp;type=" & bean.getType()>
+		<cfset editLink = editLink & "&amp;parentid=" & bean.getParentID()>
+		<cfset editLink = editLink & "&amp;moduleid=" & bean.getModuleID()>
+		<cfset editLink = editLink & "&amp;compactDisplay=true">
+		<cfset editLink = '<p class="edit" style="float:right;"><a href="#editLink#" title="#htmlEditFormat('Edit')#" rel="shadowbox;width=1100;">Edit</a></p>'>
+	</cfif>
+	--->
 </cfsilent>
 <cfif rsForm.recordcount>
 <cfset request.cacheItem=rsForm.doCache>
@@ -76,7 +124,11 @@ where siteid='#request.siteid#' and
 <cfinclude template="dsp_response.cfm">
 <cfelse>
 <cfset addToHTMLHeadQueue("fckeditor.cfm")>
-#setDynamicContent(application.dataCollectionManager.renderForm(rsForm.contentid,request.siteid,rsForm.body,rsForm.responseChart))#
+<cfif editLink neq "">
+	#setDynamicContent('<div class="editableForm">' & application.dataCollectionManager.renderForm(rsForm.contentid,request.siteid,rsForm.body,rsForm.responseChart) & '#editLink#</div>')#
+<cfelse>
+	#setDynamicContent(application.dataCollectionManager.renderForm(rsForm.contentid,request.siteid,rsForm.body,rsForm.responseChart))#
+</cfif>
 <script type="text/javascript">
 setHTMLEditors(200,500);
 </script>

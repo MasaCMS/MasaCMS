@@ -146,10 +146,11 @@
 				}
 			</cfscript>
 
-			<!--- Rename the uploaded file, if neccessary --->
+			<!--- Rename the uploaded file, if neccessary
 			<cfif compare(cffile.ServerFileName,fileName)>
 				<cfset errorNumber = "201">
 			</cfif>
+			 --->
 			<cffile
 				action="rename"
 				source="#getTempDirectory()##cffile.ServerFileName#.#cffile.ServerFileExt#"

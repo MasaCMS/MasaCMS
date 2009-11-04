@@ -227,20 +227,22 @@ select * from rsPluginScripts3 order by pluginID
 	<cfif (isUserInRole('Admin;#application.settingsManager.getSite(attributes.siteid).getPrivateUserPoolID()#;0') or isUserInRole('S2'))><li><a href="index.cfm?fuseaction=cPerm.main&contentid=#attributes.ContentID#&type=#request.contentBean.gettype()#&parentid=#request.contentBean.getparentID()#&topid=#attributes.topid#&siteid=#attributes.siteid#&moduleid=#attributes.moduleid#&startrow=#attributes.startrow#">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.permissions")#</a></li></cfif>
 	</ul></cfif>
 <cfelse>
-	<cfquery name="rsst" dbtype="query">select * from rsSubTypes where type=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#attributes.type#"> and subtype not in ('Default','default')</cfquery>
-	<cfif rsst.recordcount>
-			<cfset t=attributes.type/>
-			<cfsilent></cfsilent>
-			<ul class="metadata frontend">
-			<li><strong>Type:</strong>
-			<select name="typeSelector" class="dropdown" onchange="resetExtendedAttributes('#request.contentBean.getcontentHistID()#',this.value,'#attributes.siteID#','#application.configBean.getContext()#','#application.settingsManager.getSite(attributes.siteID).getThemeAssetPath()#');">
-			<option value="#t#^Default" <cfif attributes.type eq t and request.contentBean.getSubType() eq "Default">selected</cfif>>#t#</option>
-			<cfloop query="rsst">
-				<option value="#t#^#rsst.subtype#" <cfif attributes.type eq t and request.contentBean.getSubType() eq rsst.subtype>selected</cfif>>#t#  / #rsst.subtype#</option>
-			</cfloop>
-			</select>	
-			</li>
-			</ul>								
+	<cfif not listFindNoCase("Component,Form", attributes.type)>
+		<cfquery name="rsst" dbtype="query">select * from rsSubTypes where type=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#attributes.type#"> and subtype not in ('Default','default')</cfquery>
+		<cfif rsst.recordcount>
+				<cfset t=attributes.type/>
+				<cfsilent></cfsilent>
+				<ul class="metadata frontend">
+				<li><strong>Type:</strong>
+				<select name="typeSelector" class="dropdown" onchange="resetExtendedAttributes('#request.contentBean.getcontentHistID()#',this.value,'#attributes.siteID#','#application.configBean.getContext()#','#application.settingsManager.getSite(attributes.siteID).getThemeAssetPath()#');">
+				<option value="#t#^Default" <cfif attributes.type eq t and request.contentBean.getSubType() eq "Default">selected</cfif>>#t#</option>
+				<cfloop query="rsst">
+					<option value="#t#^#rsst.subtype#" <cfif attributes.type eq t and request.contentBean.getSubType() eq rsst.subtype>selected</cfif>>#t#  / #rsst.subtype#</option>
+				</cfloop>
+				</select>	
+				</li>
+				</ul>								
+		</cfif>
 	</cfif>
 		
 	<input type="hidden" name="closeCompactDisplay" value="true" />

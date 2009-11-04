@@ -1,7 +1,6 @@
 <circuit access="internal">
 
 <prefuseaction>
-
 </prefuseaction>
 
 <fuseaction name="list">
@@ -37,6 +36,10 @@
 
 <fuseaction name="import2">
  <include template="dsp_import2.cfm"/>
+</fuseaction>
+
+<fuseaction name="closeCompactDisplay">
+	<include template="dsp_close_compact_display.cfm"/>
 </fuseaction>
 
 </circuit>
