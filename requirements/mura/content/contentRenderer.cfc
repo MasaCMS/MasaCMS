@@ -1183,6 +1183,7 @@ to your own modified versions of Mura CMS.
 		<cfset var isNotLimited = false>
 		<cfset var limitingBy = "">
 		<cfset var isNavSecondary=(arguments.id eq 'navSecondary' or arguments.menuClass eq 'navSecondary')>
+		<cfset var homeDisplayed = false>
 			
 		<cfif len(arguments.closePortals)>
 			<cfset limitingBy="closed">	
@@ -1255,12 +1256,13 @@ to your own modified versions of Mura CMS.
 			<cfset link=addlink(rsSection.type,rsSection.filename,rsSection.menutitle,rsSection.target,rsSection.targetParams,rsSection.contentid,event.getValue('siteID'),'',arguments.context,application.configBean.getStub(),application.configBean.getIndexFile())>
 			
 			</cfsilent>
-				<cfif rsSection.currentrow eq 1 and currDepth eq 1 and (arguments.displayHome eq "Always" or (arguments.displayHome eq "Conditional" and event.getValue('contentBean').getcontentid() neq "00000000000000000000000000000000001" and listFind(class,"first"," ")))>
+				<cfif not homeDisplayed and currDepth eq 1 and (arguments.displayHome eq "Always" or (arguments.displayHome eq "Conditional" and event.getValue('contentBean').getcontentid() neq "00000000000000000000000000000000001" and listFind(class,"first"," ")))>
 				<cfsilent>
 					<cfquery name="rsHome" datasource="#application.configBean.getDatasource()#" username="#application.configBean.getDBUsername()#" password="#application.configBean.getDBPassword()#">
 					select menutitle,filename from tcontent where contentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentID#"> and siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#event.getValue('siteID')#"> and active=1
 					</cfquery>
 					<cfset homeLink="#application.configBean.getContext()##getURLStem(event.getValue('siteID'),rsHome.filename)#">
+					<cfset homeDisplayed = true>
 				</cfsilent>
 				<li class="first<cfif event.getValue('contentBean').getcontentid() eq "00000000000000000000000000000000001"> current</cfif>" id="navHome"><a href="#homeLink#">#HTMLEditFormat(rsHome.menuTitle)#</a></li>
 				<cfset class=listRest(class," ")/>

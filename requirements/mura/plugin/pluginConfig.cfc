@@ -193,10 +193,23 @@ to your own modified versions of Mura CMS.
 <cfargument name="text">
 	
 <cfset var headerStr=""/>
-	
-<cfif getSetting("pluginMode") eq "object" and structKeyExists(request,"contentRenderer")>
+<cfset var pluginPath=""/>
+<cfset var pluginConfig=this>
+<cfset var event="">
+<cfset var eventData=structNew()>	
+
+<cfif structKeyExists(request,"servletEvent")> and structKeyExists(request,"contentRenderer")>
 	<cfset request.contentRenderer.addtoHTMLHeadQueue(getDirectory() & "/" & arguments.text) />
 <cfelse>
+<cfif structKeyExists(request,"servletEvent")>
+	<cfset event=request.servletEvent>
+<cfelse>
+	<cfif structKeyExists(session,"siteid")>
+		<cfset eventData.siteID=session.siteid>
+	</cfif>
+	<cfset event=createObject("component","mura.event").init(eventData)>
+</cfif>
+<cfset pluginPath= application.configBean.getContext() & "/plugins/" & getDirectory() & "/" >		
 <cfsavecontent variable="headerStr">
 <cfinclude template="/#application.configBean.getWebRootMap()#/plugins/#getDirectory()#/#arguments.text#">
 </cfsavecontent>
