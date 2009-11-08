@@ -183,7 +183,7 @@ select * from tplugins order by #arguments.orderby#
 		<cfset deleteScripts(modID) />
 	</cfif>
 	
-	<cffile action="upload" filefield="NewPlugin" nameconflict="makeunique" destination="#getTempDirectory()#">	
+	<cffile action="upload" filefield="NewPlugin" nameconflict="makeunique" destination="#variables.configBean.getTempDir()#">	
 	
 	<cfif isNew>
 	<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
@@ -221,9 +221,9 @@ select * from tplugins order by #arguments.orderby#
 	
 	<cfdirectory action="create" directory="#location#" mode="777">
 	
-	<cfset zipTool.extract("#getTempDirectory()##delim##cffile.serverfile#","#location#")>
+	<cfset zipTool.extract("#variables.configBean.getTempDir()##delim##cffile.serverfile#","#location#")>
 	
-	<cffile action="delete" file="#getTempDirectory()##delim##cffile.serverfile#">
+	<cffile action="delete" file="#variables.configBean.getTempDir()##delim##cffile.serverfile#">
 	
 </cflock>
 

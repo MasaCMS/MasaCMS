@@ -520,7 +520,7 @@ to your own modified versions of Mura CMS.
 <cfset var theFileStruct=structNew() />
 <cfset var error=structNew() />
 
-<cffile action="upload" filefield="NewFile" nameconflict="makeunique" destination="#getTempDirectory()#">
+<cffile action="upload" filefield="NewFile" nameconflict="makeunique" destination="#variables.configBean.getTempDir()#">
 
 <cfif (cffile.ServerFileExt eq "jpg" or cffile.ServerFileExt eq "gif" or cffile.ServerFileExt eq "png") and cffile.ContentType eq "Image">
 	<cftry>
@@ -535,7 +535,7 @@ to your own modified versions of Mura CMS.
 		</cfcatch>
 	</cftry>
 <cfelse>
-	<cffile action="delete" file="#getTempDirectory()##cffile.serverfile#">
+	<cffile action="delete" file="#variables.configBean.getTempDir()##cffile.serverfile#">
 	<cfset error.photo="The file you uploaded is not a supported format. Only, JPEG, GIF and PNG files are accepted."/>
 	<cfset userBean.setErrors(error)/> 
 </cfif>

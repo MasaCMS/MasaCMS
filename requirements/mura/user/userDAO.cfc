@@ -77,6 +77,8 @@ to your own modified versions of Mura CMS.
 		<cfif rsUser.recordCount eq 1>
 			<cfset userBean.set(rsUser) />
 			<cfset setUserBeanMetaData(userBean)>
+		<cfelse>
+			<cfset userBean.setIsNew(1)>
 		</cfif>
 		
 		<cfreturn userBean />
@@ -109,7 +111,9 @@ to your own modified versions of Mura CMS.
 				<cfset userBean.setCategoryId(valuelist(rsInterests.categoryid))/>
 			<!--- </cfif> --->
 			<cfset userBean.setAddresses(getAddresses(userBean.getUserID()))/>
-		</cfif>	
+		<cfelse>
+			<cfset userBean.setIsNew(1)>
+		</cfif>
 		
 		<cfreturn userBean />
 </cffunction>
@@ -157,7 +161,9 @@ to your own modified versions of Mura CMS.
 				<cfset userBean.setCategoryId(valuelist(rsInterests.categoryid))/>
 			<!--- </cfif> --->
 			<cfset userBean.setAddresses(getAddresses(userBean.getUserID()))/>
-		</cfif>	
+		<cfelse>
+			<cfset userBean.setIsNew(1)>
+		</cfif>
 		
 		<cfreturn userBean />
 </cffunction>
@@ -189,7 +195,9 @@ to your own modified versions of Mura CMS.
 				<cfset userBean.setCategoryId(valuelist(rsInterests.categoryid))/>
 			<!--- </cfif> --->
 			<cfset userBean.setAddresses(getAddresses(userBean.getUserID()))/>
-		</cfif>	
+		<cfelse>
+			<cfset userBean.setIsNew(1)>
+		</cfif>
 		
 		<cfreturn userBean />
 </cffunction>

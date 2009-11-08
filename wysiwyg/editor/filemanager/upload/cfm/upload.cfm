@@ -108,7 +108,7 @@
 		
 		<cffile action="upload"
 					fileField="NewFile"
-					destination="#getTempDirectory()#"
+					destination="#application.configBean.getTempDir()#"
 					nameConflict="makeunique"
 					mode="644"
 					attributes="normal">
@@ -153,7 +153,7 @@
 			 --->
 			<cffile
 				action="rename"
-				source="#getTempDirectory()##cffile.ServerFileName#.#cffile.ServerFileExt#"
+				source="#application.configBean.getTempDir()##cffile.ServerFileName#.#cffile.ServerFileExt#"
 				destination="#currentFolderPath##fileName#.#fileExt#"
 				mode="644"
 				attributes="normal">

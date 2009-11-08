@@ -17,7 +17,7 @@ Version: 1.9 February 20, 2008
 			hint="Converts data frm JSON to CF format">
 		<cfargument name="data" type="any" required="Yes" />
 		
-		<cfreturn lcase(encode(arguments.data))>
+		<cfreturn encode(arguments.data)>
 	</cffunction>	
 	
 	<cffunction name="jsondecode" access="remote" returntype="any" output="no"
@@ -231,167 +231,91 @@ Version: 1.9 February 20, 2008
 	
 	
 	<!--- CONVERTS DATA FROM CF TO JSON FORMAT --->
-	<cffunction name="encode" access="remote" returntype="string" output="No"
-			hint="Converts data from CF to JSON format">
-		<cfargument name="data" type="any" required="Yes" />
-		<cfargument name="queryFormat" type="string" required="No" default="query" /> <!-- query or array -->
-		<cfargument name="queryKeyCase" type="string" required="No" default="lower" /> <!-- lower or upper -->
-		<cfargument name="stringNumbers" type="boolean" required="No" default=false >
-		<cfargument name="formatDates" type="boolean" required="No" default=false >
-		<cfargument name="columnListFormat" type="string" required="No" default="string" > <!-- string or array -->
-		
-		<!--- VARIABLE DECLARATION --->
-		<cfset var jsonString = "" />
-		<cfset var tempVal = "" />
-		<cfset var arKeys = "" />
-		<cfset var colPos = 1 />
-		<cfset var i = 1 />
-		<cfset var column = ""/>
-		<cfset var datakey = ""/>
-		<cfset var recordcountkey = ""/>
-		<cfset var columnlist = ""/>
-		<cfset var columnlistkey = ""/>
-		<cfset var dJSONString = "" />
-		<cfset var escapeToVals = "\\,\"",\/,\b,\t,\n,\f,\r" />
-		<cfset var escapeVals = "\,"",/,#Chr(8)#,#Chr(9)#,#Chr(10)#,#Chr(12)#,#Chr(13)#" />
-		
-		<cfset var _data = arguments.data />
+	<cffunction name="encode" access="public" output="false" returntype="string">
+	<cfargument name="arg" default="" required="yes" type="any"/>
+	<cfscript>
+	    var i=0;
+		var o="";
+		var u="";
+		var v="";
+		var z="";
+		var r="";
+		if (isarray(arg))
+		{
+			o="";
+			for (i=1;i lte arraylen(arg);i=i+1){
+				try{
+					v = jsonencode(arg[i]);
+					if (o neq ""){
+						o = o & ',';
+					}
+					o = o & v;
+				}
+				catch(Any ex){
+					o=o;
+				}
+			}
+			return '['& o &']';
+		}
+		if (isstruct(arg))
+		{
+			o = '';
+			if (structisempty(arg)){
+				return "{}";
+			}
+			z = StructKeyArray(arg);
+			for (i=1;i lte arrayLen(z);i=i+1){
+				try{
+				v = jsonencode(structfind(arg,z[i]));
+				}catch(Any err){WriteOutput("caught an error when trying to evaluate z[i] where i="& i &" it evals to "  & z[i] );}
+				if (o neq ""){
+					o = o & ",";
+				}
+				o = o & '"'& lcase(z[i]) & '":' & v;
+			} 
+			return '{' & o & '}';
+		}
+		if (isobject(arg)){
+	        return "unknown-obj";
+		}
+		if (issimplevalue(arg) and isnumeric(arg)){
+			return ToString(arg);
+		}
+		if (issimplevalue(arg)){
+			return '"' & JSStringFormat(ToString(arg)) & '"';
+		}
+		if (IsQuery(arg)){
+			o = o & '"recordcount":' & arg.recordcount;
+			o = o & ',"columnlist":'&jsonencode(arg.columnlist);
+			// do the data [].column
+			o = o & ',"data":{';
+			// loop through the columns
+			for (i=1;i lte listlen(arg.columnlist);i=i+1){
+				v = '';
+				// loop throw the records
+				for (z=1;z lte arg.recordcount;z=z+1){
+					if (v neq ""){
+						v =v  & ",";
+					}
+					// encode this cell
+					v = v & jsonencode(evaluate("arg." & listgetat(arg.columnlist,i) & "["& z & "]"));
+				}
+				// put this column in the output
+				if (i neq 1){
+					o = o & ",";
+				}
+				o = o & '"' & listgetat(arg.columnlist,i) & '":[' & v & ']';
+			}
+			// close our data section
+			o = o & '}';
+			// put the query struct in the output
+			return '{' & o & '}';
+		}
+		return "unknown";
 
-		<!--- BOOLEAN --->
-		<cfif IsBoolean(_data) AND NOT IsNumeric(_data) AND NOT ListFindNoCase("Yes,No", _data)>
-			<cfreturn LCase(ToString(_data)) />
-			
-		<!--- NUMBER --->
-		<cfelseif NOT stringNumbers AND IsNumeric(_data) AND NOT REFind("^0+[^\.]",_data)>
-			<cfreturn ToString(_data) />
-		
-		<!--- DATE --->
-		<cfelseif IsDate(_data) AND arguments.formatDates>
-			<cfreturn '"#DateFormat(_data, "medium")# #TimeFormat(_data, "medium")#"' />
-		
-		<!--- STRING --->
-		<cfelseif IsSimpleValue(_data)>
-			<cfreturn '"' & ReplaceList(_data, escapeVals, escapeToVals) & '"' />
-		
-		<!--- ARRAY --->
-		<cfelseif IsArray(_data)>
-			<cfset dJSONString = createObject('java','java.lang.StringBuffer').init("") />
-			<cfloop from="1" to="#ArrayLen(_data)#" index="i">
-				<cfset tempVal = encode( _data[i], arguments.queryFormat, arguments.queryKeyCase, arguments.stringNumbers, arguments.formatDates, arguments.columnListFormat ) />
-				<cfif dJSONString.toString() EQ "">
-					<cfset dJSONString.append(tempVal) />
-				<cfelse>
-					<cfset dJSONString.append("," & tempVal) />
-				</cfif>
-			</cfloop>
-			
-			<cfreturn "[" & dJSONString.toString() & "]" />
-		
-		<!--- STRUCT --->
-		<cfelseif IsStruct(_data)>
-			<cfset dJSONString = createObject('java','java.lang.StringBuffer').init("") />
-			<cfset arKeys = StructKeyArray(_data) />
-			<cfloop from="1" to="#ArrayLen(arKeys)#" index="i">
-				<cfset tempVal = encode( _data[ arKeys[i] ], arguments.queryFormat, arguments.queryKeyCase, arguments.stringNumbers, arguments.formatDates, arguments.columnListFormat ) />
-				<cfif dJSONString.toString() EQ "">
-					<cfset dJSONString.append('"' & arKeys[i] & '":' & tempVal) />
-				<cfelse>
-					<cfset dJSONString.append("," & '"' & arKeys[i] & '":' & tempVal) />
-				</cfif>
-			</cfloop>
-			
-			<cfreturn "{" & dJSONString.toString() & "}" />
-		
-		<!--- QUERY --->
-		<cfelseif IsQuery(_data)>
-			<cfset dJSONString = createObject('java','java.lang.StringBuffer').init("") />
-			
-			<!--- Add query meta data --->
-			<cfif arguments.queryKeyCase EQ "lower">
-				<cfset recordcountKey = "recordcount" />
-				<cfset columnlistKey = "columnlist" />
-				<cfset columnlist = LCase(_data.columnlist) />
-				<cfset dataKey = "data" />
-			<cfelse>
-				<cfset recordcountKey = "RECORDCOUNT" />
-				<cfset columnlistKey = "COLUMNLIST" />
-				<cfset columnlist = _data.columnlist />
-				<cfset dataKey = "data" />
-			</cfif>
-			
-			<cfset dJSONString.append('"#recordcountKey#":' & _data.recordcount) />
-			<cfif arguments.columnListFormat EQ "array">
-				<cfset columnlist = "[" & ListQualify(columnlist, '"') & "]" />
-				<cfset dJSONString.append(',"#columnlistKey#":' & columnlist) />
-			<cfelse>
-				<cfset dJSONString.append(',"#columnlistKey#":"' & columnlist & '"') />
-			</cfif>
-			<cfset dJSONString.append(',"#dataKey#":') />
-			
-			<!--- Make query a structure of arrays --->
-			<cfif arguments.queryFormat EQ "query">
-				<cfset dJSONString.append("{") />
-				<cfset colPos = 1 />
-				
-				<cfloop list="#_data.columnlist#" delimiters="," index="column">
-					<cfif colPos GT 1>
-						<cfset dJSONString.append(",") />
-					</cfif>
-					<cfif arguments.queryKeyCase EQ "lower">
-						<cfset column = LCase(column) />
-					</cfif>
-					<cfset dJSONString.append('"' & column & '":[') />
-					
-					<cfloop from="1" to="#_data.recordcount#" index="i">
-						<!--- Get cell value; recurse to get proper format depending on string/number/boolean data type --->
-						<cfset tempVal = encode( _data[column][i], arguments.queryFormat, arguments.queryKeyCase, arguments.stringNumbers, arguments.formatDates, arguments.columnListFormat ) />
-						
-						<cfif i GT 1>
-							<cfset dJSONString.append(",") />
-						</cfif>
-						<cfset dJSONString.append(tempVal) />
-					</cfloop>
-					
-					<cfset dJSONString.append("]") />
-					
-					<cfset colPos = colPos + 1 />
-				</cfloop>
-				<cfset dJSONString.append("}") />
-			<!--- Make query an array of structures --->
-			<cfelse>
-				<cfset dJSONString.append("[") />
-				<cfloop query="_data">
-					<cfif CurrentRow GT 1>
-						<cfset dJSONString.append(",") />
-					</cfif>
-					<cfset dJSONString.append("{") />
-					<cfset colPos = 1 />
-					<cfloop list="#columnlist#" delimiters="," index="column">
-						<cfset tempVal = encode( _data[column][CurrentRow], arguments.queryFormat, arguments.queryKeyCase, arguments.stringNumbers, arguments.formatDates, arguments.columnListFormat ) />
-						
-						<cfif colPos GT 1>
-							<cfset dJSONString.append(",") />
-						</cfif>
-						
-						<cfif arguments.queryKeyCase EQ "lower">
-							<cfset column = LCase(column) />
-						</cfif>
-						<cfset dJSONString.append('"' & column & '":' & tempVal) />
-						
-						<cfset colPos = colPos + 1 />
-					</cfloop>
-					<cfset dJSONString.append("}") />
-				</cfloop>
-				<cfset dJSONString.append("]") />
-			</cfif>
-			
-			<!--- Wrap all query data into an object --->
-			<cfreturn "{" & dJSONString.toString() & "}" />
-		
-		<!--- UNKNOWN OBJECT TYPE --->
-		<cfelse>
-			<cfreturn '"' & "unknown-obj" & '"' />
-		</cfif>
+
+	</cfscript>
+
 	</cffunction>
 	
 	<cffunction name="validate" access="remote" output="yes" returntype="boolean"

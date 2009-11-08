@@ -228,7 +228,7 @@ ExtendSetID in(<cfloop from="1" to="#setLen#" index="s">
 			<cfset formField=rs.name />
 		</cfif>
 		
-		<cffile action="upload" filefield="#formField#" nameconflict="makeunique" destination="#getTempDirectory()#">
+		<cffile action="upload" filefield="#formField#" nameconflict="makeunique" destination="#variables.configBean.getTempDir()#">
 		<cfset theFileStruct=fileManager.process(cffile,arguments.data.siteID) />
 		<cfset fileID=fileManager.create(theFileStruct.fileObj,arguments.baseID,arguments.data.siteID,cffile.ClientFile,cffile.ContentType,cffile.ContentSubType,cffile.FileSize,'00000000000000000000000000000000004',cffile.ServerFileExt,theFileStruct.fileObjSmall,theFileStruct.fileObjMedium) />
 			

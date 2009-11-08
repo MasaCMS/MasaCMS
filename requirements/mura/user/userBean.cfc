@@ -86,6 +86,7 @@ to your own modified versions of Mura CMS.
 	<cfset variables.instance.extendData="" />
 	<cfset variables.instance.extendSetID="" />
     <cfset variables.instance.errors=structnew() />
+	<cfset variables.instance.isNew=0 />
 	
 	<cffunction name="init" returntype="any" output="false" access="public">
 	<cfargument name="configBean" type="any" required="yes"/>
@@ -440,13 +441,21 @@ to your own modified versions of Mura CMS.
     <cfreturn variables.instance.Notes />
   </cffunction>
   
-  <cffunction name="setGroupid" returnType="void" output="false" access="public">
-    <cfargument name="Groupid" type="string" required="true">
-    <cfset variables.instance.Groupid = trim(arguments.Groupid) />
+  <cffunction name="setGroupID" access="public" output="false">
+	<cfargument name="groupID" type="String" />
+	<cfargument name="append" type="boolean" default="false" required="true" />
+	
+    <cfif not arguments.append>
+		<cfset variables.instance.groupID = trim(arguments.groupID) />
+	<cfelse>
+		<cfif not listFindNoCase(variables.instance.groupID,trim(arguments.groupID))>
+	    	<cfset variables.instance.groupID = listAppend(variables.instance.groupID,trim(arguments.groupID)) />
+	    </cfif> 
+	</cfif>
   </cffunction>
   
-  <cffunction name="getGroupid" returnType="string" output="false" access="public">
-    <cfreturn variables.instance.Groupid />
+  <cffunction name="getGroupID" returnType="string" output="false" access="public">
+    <cfreturn variables.instance.groupID />
   </cffunction>
 
   <cffunction name="setPrimaryAddressID" returnType="void" output="false" access="public">
@@ -467,11 +476,19 @@ to your own modified versions of Mura CMS.
     <cfreturn variables.instance.AddressID />
   </cffunction>
   
-   <cffunction name="setCategoryID" returnType="void" output="false" access="public">
-    <cfargument name="CategoryID" type="string" required="true">
-    <cfset variables.instance.CategoryID = trim(arguments.CategoryID) />
+  <cffunction name="setCategoryID" access="public" output="false">
+	<cfargument name="categoryID" type="String" />
+	<cfargument name="append" type="boolean" default="false" required="true" />
+	
+    <cfif not arguments.append>
+		<cfset variables.instance.categoryID = trim(arguments.categoryID) />
+	<cfelse>
+		<cfif not listFindNoCase(variables.instance.categoryID,trim(arguments.categoryID))>
+	    	<cfset variables.instance.categoryID = listAppend(variables.instance.categoryID,trim(arguments.categoryID)) />
+	    </cfif> 
+	</cfif>
   </cffunction>
-  
+
   <cffunction name="getCategoryID" returnType="string" output="false" access="public">
     <cfreturn variables.instance.CategoryID />
   </cffunction>
@@ -768,4 +785,14 @@ to your own modified versions of Mura CMS.
 	<cfset it.setQuery(getMembershipsQuery())>
 	<cfreturn it />
 </cffunction>
+
+<cffunction name="setIsNew" returnType="void" output="false" access="public">
+    <cfargument name="IsNew" type="numeric" required="true">
+    <cfset variables.instance.IsNew = arguments.IsNew />
+</cffunction>
+
+<cffunction name="getIsNew" returnType="numeric" output="false" access="public">
+   <cfreturn variables.instance.IsNew />
+</cffunction>
+  
 </cfcomponent>

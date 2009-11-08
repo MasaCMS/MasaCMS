@@ -626,7 +626,7 @@ to your own modified versions of Mura CMS.
 			
 		<cfif isDefined('arguments.data.newfile') and arguments.data.newfile neq ''>
 			
-			<cffile action="upload" filefield="NewFile" nameconflict="makeunique" destination="#getTempDirectory()#">
+			<cffile action="upload" filefield="NewFile" nameconflict="makeunique" destination="#variables.configBean.getTempDir()#">
 			<cfset theFileStruct=variables.fileManager.process(cffile,newBean.getSiteID()) />
 			<cfset newBean.setfileID(variables.fileManager.create(theFileStruct.fileObj,newBean.getcontentID(),newBean.getSiteID(),cffile.ClientFile,cffile.ContentType,cffile.ContentSubType,cffile.FileSize,newBean.getModuleID(),cffile.ServerFileExt,theFileStruct.fileObjSmall,theFileStruct.fileObjMedium)) />
 			
@@ -1258,7 +1258,7 @@ to your own modified versions of Mura CMS.
 	
 	<cfloop condition="structKeyExists(arguments.data,'newFile#f#')">
 		<cfif len(form["NewFile#f#"])>
-		<cffile action="upload" filefield="NewFile#f#" nameconflict="makeunique" destination="#getTempDirectory()#">
+		<cffile action="upload" filefield="NewFile#f#" nameconflict="makeunique" destination="#variables.configBean.getTempDir()#">
 		<cfset theFileStruct=variables.fileManager.process(file,arguments.data.siteid) />		
 		<cfset fileItem.title=file.serverfile/>
 		<cfset fileItem.fileid=variables.fileManager.create(theFileStruct.fileObj,'',arguments.data.siteid,file.ClientFile,file.ContentType,file.ContentSubType,file.FileSize,"0000000000000000000000000000000000",file.ServerFileExt,theFileStruct.fileObjSmall,theFileStruct.fileObjMedium) />

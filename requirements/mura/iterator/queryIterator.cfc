@@ -96,7 +96,11 @@
 		<cfreturn pageCount />
 	</cffunction>
 	
-	<cffunction name="recordCount" access="public" output="false" returntype="numeric">
+	<cffunction name="recordCount" access="public" output="false" returntype="numeric" hint="For Railo compatibility use getRecordCount()">
+		<cfreturn getRecordCount()>
+	</cffunction>
+	
+	<cffunction name="getRecordCount" access="public" output="false" returntype="numeric">
 		<cfset var recordCount = 0 />
 		<cfif structKeyExists(variables,"records")>
 			<cfset recordCount =records.recordCount />

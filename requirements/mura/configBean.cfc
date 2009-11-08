@@ -99,6 +99,7 @@ to your own modified versions of Mura CMS.
 <cfset variables.instance.proxyServer="" />
 <cfset variables.instance.proxyPort="80" />
 <cfset variables.instance.appreloadKey=application.appreloadKey />
+<cfset variables.instance.tempDir=getTempDirectory() />
 
 <cffunction name="init" returntype="any" output="true" access="public">
 	<cfargument name="config" type="struct"> 	
@@ -861,4 +862,7 @@ to your own modified versions of Mura CMS.
 	</cfif>
 </cffunction>
 
+<cffunction name="getTempDir" returntype="String" access="public" output="false">
+	<cfreturn variables.instance.tempDir />
+</cffunction>
 </cfcomponent>

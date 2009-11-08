@@ -60,10 +60,10 @@ to your own modified versions of Mura CMS.
 	<cfset var data="">
 	<cfset var I=0/>
 	
-	<cffile  action="upload" destination="#getTempDirectory()#"  filefield="listfile" nameconflict="makeunique"  accept="text/*">
+	<cffile  action="upload" destination="#variables.configBean.getTempDir()#"  filefield="listfile" nameconflict="makeunique"  accept="text/*">
 	
 	<cffile 
-	file="#getTempDirectory()##cffile.serverfile#"
+	file="#variables.configBean.getTempDir()##cffile.serverfile#"
 	ACTION="read" variable="tempList">
 	
 	<cfset tempList=variables.utility.fixLineBreaks(tempList)>
@@ -110,7 +110,7 @@ to your own modified versions of Mura CMS.
 	</cfloop> 
 	
 	<cffile 
-	file="#getTempDirectory()##cffile.serverfile#"
+	file="#variables.configBean.getTempDir()##cffile.serverfile#"
 	ACTION="delete">
 
 </cffunction>

@@ -131,10 +131,10 @@ to your own modified versions of Mura CMS.
 
 	<cfif arguments.newFile neq ''>
 		<cfset deleteMedia(arguments.creativeBean)>
-		<cffile action="upload" filefield="NewFile" nameconflict="makeunique" destination="#getTempDirectory()#">
-		<cffile action="readBinary" file="#getTempDirectory()##cffile.serverfile#" variable="fileObj">	
+		<cffile action="upload" filefield="NewFile" nameconflict="makeunique" destination="#variables.instance.configBean.getTempDir()#">
+		<cffile action="readBinary" file="#variables.instance.configBean.getTempDir()##cffile.serverfile#" variable="fileObj">	
 		<cfset arguments.creativeBean.setFileID(variables.instance.fileManager.create(fileObj, arguments.creativeBean.getCreativeID() ,arguments.siteid,cffile.ClientFile,cffile.ContentType,cffile.ContentSubType,cffile.FileSize,'00000000000000000000000000000000006',cffile.serverFileExt,'','')) />
-		<cffile action="delete" file="#getTempDirectory()##cffile.serverfile#">
+		<cffile action="delete" file="#variables.instance.configBean.getTempDir()##cffile.serverfile#">
 	</cfif>	
 	
 </cffunction>

@@ -53,9 +53,10 @@ to your own modified versions of Mura CMS.
 <cfset rs=application.contentGateway.getKidsCategorySummary(request.siteid,arguments.objectid,request.relatedID,today,rsSection.type)>
 </cfsilent>
 <cfif rs.recordcount>
+<cfset rbFactory=getSite().getRBFactory() />
 <cfoutput>
 <div class="svCatSummary svIndex">
-<#getHeaderTag('subHead1')#>Categories</#getHeaderTag('subHead1')#>
+<#getHeaderTag('subHead1')#>#rbFactory.getKey('list.categories')#</#getHeaderTag('subHead1')#>
 <ul class="navSecondary"><cfloop query="rs">
 	<cfset class=iif(rs.currentrow eq 1,de('first'),de(''))>
 		<li class="#class#<cfif listFind(request.categoryID,rs.categoryID)> current</cfif>"><a href="#application.configBean.getContext()##getURLStem(request.siteid,rsSection.filename)#?categoryID=#rs.categoryID#&relatedID=#request.relatedID#">#rs.name# (#rs.count#)</a><cfif useRss><a class="rss" href="#application.configBean.getContext()#/tasks/feed/index.cfm?siteid=#request.siteid#&contentID=#rsSection.contentid#&categoryID=#rs.categoryID#" <cfif listFind(request.categoryID,rs.categoryID)>class="current"</cfif>>RSS</a></cfif></li>

@@ -90,11 +90,11 @@ to your own modified versions of Mura CMS.
 	</cfif>
 </cfif>
 <!--- clear out old temp files --->
-<cfdirectory name="tmpFiles" action="list" directory="#GetTempDirectory()#" >
+<cfdirectory name="tmpFiles" action="list" directory="#application.configBean.getTempDir()#" >
 
  <cfloop query="tmpFiles">
   <cfif tmpFiles.type eq "File" and DateDiff('n',tmpFiles.datelastmodified,now()) gt 30>
-  <cffile action="delete" file="#GetTempDirectory()##tmpFiles.name#">
+  <cffile action="delete" file="#application.configBean.getTempDir()##tmpFiles.name#">
   </cfif>
 </cfloop> 
 

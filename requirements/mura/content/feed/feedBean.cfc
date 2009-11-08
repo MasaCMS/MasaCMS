@@ -258,9 +258,17 @@ to your own modified versions of Mura CMS.
 	<cfreturn variables.instance.contentID />
 </cffunction>
 
-<cffunction name="setcontentID" access="public" output="false">
+<cffunction name="setContentID" access="public" output="false">
 	<cfargument name="contentID" type="String" />
-	<cfset variables.instance.contentID = trim(arguments.contentID) />
+	<cfargument name="append" type="boolean" default="false" required="true" />
+	
+	<cfif not arguments.append>
+		<cfset variables.instance.contentID = trim(arguments.contentID) />
+	<cfelse>
+		<cfif not listFindNoCase(variables.instance.contentID,trim(arguments.contentID))>
+	    	<cfset variables.instance.contentID = listAppend(variables.instance.contentID,trim(arguments.contentID)) />
+	    </cfif> 
+	</cfif>
 </cffunction>
 
 <cffunction name="getCategoryID" returntype="String" access="public" output="false">
@@ -269,7 +277,15 @@ to your own modified versions of Mura CMS.
 
 <cffunction name="setCategoryID" access="public" output="false">
 	<cfargument name="categoryID" type="String" />
-	<cfset variables.instance.categoryID = trim(arguments.categoryID) />
+	<cfargument name="append" type="boolean" default="false" required="true" />
+	
+	<cfif not arguments.append>
+		<cfset variables.instance.categoryID = trim(arguments.categoryID) />
+	<cfelse>
+		<cfif not listFindNoCase(variables.instance.categoryID,trim(arguments.categoryID))>
+	    	<cfset variables.instance.categoryID = listAppend(variables.instance.categoryID,trim(arguments.categoryID)) />
+	    </cfif> 
+	</cfif>
 </cffunction>
 
 <cffunction name="getMaxItems" returntype="numeric" access="public" output="false">
