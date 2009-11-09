@@ -274,7 +274,7 @@ Description: 	bhcaptcha is my own solution to bots who scour the web for comment
 				</cfloop>
 				
 				<cfset caller.bhcaptcha.imgStr = str>
-				<cfset caller.bhcaptcha.fFields = "<input type=""hidden"" name=""#oKey#"" value=""#hash(lcase(bhcapkey))#""><input type=""text"" class=""text"" message=""The 'Security Code' field is required."" required=""true"" name=""#uKey#"" size=""20"">">
+				<cfset caller.bhcaptcha.fFields = "<input type=""hidden"" name=""#oKey#"" value=""#hash(lcase(bhcapkey))#""><input type=""text"" class=""text"" message=""#application.settingsManager.getSite(request.siteID).getRBFactory().getKey('captcha.required')#"" required=""true"" name=""#uKey#"" size=""20"">">
 				
 				<!--- 
 				On the action template for your form, compare the hash of the user's entry with the value in the hidden field 
