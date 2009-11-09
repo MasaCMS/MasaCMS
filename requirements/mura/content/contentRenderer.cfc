@@ -1634,7 +1634,7 @@ to your own modified versions of Mura CMS.
 <cfset var rsPages=getPagesQuery(arguments.body)>
 <cfset nextN=application.utility.getNextN(rsPages,1,request.pageNum,5,false)>
 <cfsavecontent variable="str">
-<cfoutput query="rsPages"  startrow="#request.startrow#" maxrows="#nextn.RecordsPerPage#">
+<cfoutput query="rsPages"  startrow="#request.pageNum#" maxrows="#nextn.RecordsPerPage#">
 	#setDynamicContent(rsPages.page)#
 </cfoutput>
 <cfif nextn.numberofpages gt 1>
