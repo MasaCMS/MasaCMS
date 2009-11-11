@@ -77,11 +77,11 @@ to your own modified versions of Mura CMS.
 	--->
 	<cfset request.cacheItem=rsTemplate.doCache/>
 	
-	<cfset editableControl.editLink = "">
+	<!--- <cfset editableControl.editLink = "">
 	<cfset editableControl.historyLink = "">
 	<cfset editableControl.innerHTML = "">
 	
-	<!--- <cfif this.showEditableObjects>
+	<cfif this.showEditableObjects>
 	<cfset perm = application.permUtility.getPerm('00000000000000000000000000000000003',arguments.siteid)>
 	<cfif perm neq 'editor'>
 		<cfset verdict = application.permUtility.getPerm(arguments.objectID, arguments.siteID)>
@@ -140,9 +140,9 @@ to your own modified versions of Mura CMS.
 </cfsilent>
 
 <cfif rsTemplate.isOnDisplay>
-	<cfif editableControl.innerHTML neq "">
+	<!--- <cfif editableControl.innerHTML neq "">
 		<div class="editableObject editableComponent">
-	</cfif>
+	</cfif> --->
 	<cfif len(rsTemplate.template) and fileExists("#getSite().getTemplateIncludeDir()#/components/#rsTemplate.template#")>
 		<cfset componentBody=rsTemplate.body>
 		<cfinclude template="#event.getSite().getThemeIncludePath()#/templates/components/#rsTemplate.template#">
@@ -151,7 +151,7 @@ to your own modified versions of Mura CMS.
 			#setDynamicContent(rsTemplate.body)#
 		</cfoutput>
 	</cfif>
-	<cfif editableControl.innerHTML neq "">
+	<!--- <cfif editableControl.innerHTML neq "">
 		<cfoutput>#editableControl.innerHTML#</cfoutput></div>
-	</cfif>
+	</cfif> --->
 </cfif>
