@@ -48,7 +48,7 @@ to your own modified versions of Mura CMS.
   <cfif feedBean.getIsActive()>
 	<cfset cssID=createCSSid(feedBean.renderName())>
     
-	<!--- <cfset editableControl.editableControl.editLink = "">
+	<cfset editableControl.editableControl.editLink = "">
 	<cfset editableControl.historyLink = "">
 	<cfset editableControl.innerHTML = "">
 	
@@ -94,7 +94,7 @@ to your own modified versions of Mura CMS.
 	<cfif editableControl.innerHTML neq "">
 		<div class="editableObject editableFeed">
 	</cfif>
-	 --->
+	
 	<cfif feedBean.getType() eq 'local'>
       <cfsilent>
 		<!---<cfset loadShadowBoxJS() />--->
@@ -137,12 +137,12 @@ to your own modified versions of Mura CMS.
 				</cfif>
 				</cfsilent>
 				<dl<cfif class neq ''> class="#class#"</cfif>>
-				<dt><a href="#theLink#">#rs.MenuTitle#</a></dt>
 				<cfif rs.parentType eq 'Calendar' and isDate(rs.displaystart)>
 					<dt class="releaseDate"><cfif LSDateFormat(rs.displaystart,"short") lt LSDateFormat(rs.displaystop,"short")>#LSDateFormat(rs.displaystart,getShortDateFormat())# - #LSDateFormat(rs.displaystop,getShortDateFormat())#<cfelse>#LSDateFormat(rs.displaystart,getLongDateFormat())#</cfif></dt>
 				<cfelseif LSisDate(rs.releasedate)>
 					<dt class="releaseDate">#LSDateFormat(rs.releasedate,getLongDateFormat())#</dt>
 				</cfif>
+				<dt><a href="#theLink#">#rs.MenuTitle#</a></dt>
 				<cfif hasImage>
 					<dd class="image">
 						<a href="#theLink#" title="#HTMLEditFormat(rs.title)#"><img src="#application.configBean.getContext()#/tasks/render/small/index.cfm?fileid=#rs.fileid#" alt="#htmlEditFormat(rs.title)#"/></a>
@@ -188,7 +188,6 @@ to your own modified versions of Mura CMS.
 		        <cfif feedData.type neq "atom">
 				<cfloop from="1" to="#feedData.maxItems#" index="i">
 					<dl>
-						<dt><a href="#feedData.itemArray[i].link.xmlText#">#feedData.itemArray[i].title.xmlText#</a></dt>
 						<!--- Date stuff--->
 						<cfif structKeyExists(feedData.itemArray[i],"pubDate")>
 							<cfset itemDate=parseDateTime(feedData.itemArray[i].pubDate.xmlText)>
@@ -197,19 +196,19 @@ to your own modified versions of Mura CMS.
 							<cfset itemDate=parseDateTime(feedData.itemArray[i].pubDate.xmlText)>
 							<dt class="releaseDate"><cfif isDate(itemDate)>#LSDateFormat(itemDate,getLongDateFormat())#<cfelse>#feedData.itemArray[i]["dc:date"].xmlText#</cfif></dt>
 						</cfif>
-						
+						<dt><a href="#feedData.itemArray[i].link.xmlText#">#feedData.itemArray[i].title.xmlText#</a></dt>						
 						<cfif hasSummary and structKeyExists(feedData.itemArray[i],"description")><dd class="summary">#feedData.itemArray[i].description.xmlText#</dd></cfif>
 					</dl>
 				</cfloop>
 				<cfelse>
 				<cfloop from="1" to="#feedData.maxItems#" index="i">
 				<dl>
-					<dt><a href="#feedData.itemArray[i].link.XmlAttributes.href#">#feedData.itemArray[i].title.xmlText#</a></dt>
 					<!--- Date stuff--->
 					<cfif structKeyExists(feedData.itemArray[i],"updated")>
 					<cfset itemDate=parseDateTime(feedData.itemArray[i].updated.xmlText)>
 					<dt class="releaseDate"><cfif isDate(itemDate)>#LSDateFormat(itemDate,getLongDateFormat())#<cfelse>#feedData.itemArray[i].updated.xmlText#</cfif></dt>
 					</cfif>
+					<dt><a href="#feedData.itemArray[i].link.XmlAttributes.href#">#feedData.itemArray[i].title.xmlText#</a></dt>
 					<cfif hasSummary and structKeyExists(feedData.itemArray[i],"summary")><dd class="summary">#feedData.itemArray[i].summary.xmlText#</dd></cfif>
 				</dl>
 				</cfloop>
@@ -225,10 +224,10 @@ to your own modified versions of Mura CMS.
   <cfelse>
 		<!-- Inactive Feed '<cfoutput>#feedBean.getName()#</cfoutput>' -->
   </cfif>
- <!---  <cfoutput>#editableControl.innerHTML#</cfoutput>
+ 	<cfoutput>#editableControl.innerHTML#</cfoutput>
   <cfif editableControl.innerHTML neq "">
   	</div>
-  </cfif> --->
+  </cfif>
 <!---   <cfcatch>
   </cfcatch>
 </cftry> --->

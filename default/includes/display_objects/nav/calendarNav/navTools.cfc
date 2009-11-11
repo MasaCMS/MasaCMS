@@ -29,19 +29,23 @@ monthLong=rbFactory.getKey('calendar.monthlong');
 	<cfquery name="rs" dbtype="query">
 	select contentID from rsMonth where
 					<cfif navType eq "releaseMonth">
-					  (
-					  	(releaseDate is not null
-					  		AND day(releaseDate) = #day(arguments.today)#) 
-					  		
-					  	OR 
-					  	 ((releaseDate is Null or releaseDate ='')
-					  		AND day(lastupdate) = #day(arguments.today)#)  
-					  	)
+					  		(
+						  		releaseDate < <cfqueryparam value="#dateadd('D',1,arguments.today)#" cfsqltype="CF_SQL_DATE">
+						  		AND releaseDate >= <cfqueryparam value="#arguments.today#" cfsqltype="CF_SQL_DATE">
+						 	) 
+						  		
+						  	OR 
+						  	 (
+						  	 	releaseDate is Null
+						  		AND lastUpdate < <cfqueryparam value="#dateadd('D',1,arguments.today)#" cfsqltype="CF_SQL_DATE">	
+						  		AND lastUpdate >= <cfqueryparam value="#arguments.today#" cfsqltype="CF_SQL_DATE">
+						  	)
 					  <cfelse>
-					 	day(displayStart) <= #id#	
+					 	DisplayStart < <cfqueryparam value="#dateadd('D',1,arguments.today)#" cfsqltype="CF_SQL_DATE">
+						
 						  	AND 
 						  		(
-						  			day(displayStop) >= #id# or displayStop is null
+						  			DisplayStop >= <cfqueryparam value="#arguments.today#" cfsqltype="CF_SQL_DATE"> or DisplayStop =''
 						  		)	
 					  </cfif>
 	</cfquery>

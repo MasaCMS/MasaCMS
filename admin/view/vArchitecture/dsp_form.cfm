@@ -200,7 +200,7 @@ select * from rsPluginScripts3 order by pluginID
 		</ul>
 </cfif>	
 
-<cfif attributes.compactDisplay neq "true">	
+<cfif attributes.compactDisplay neq "true" or not listFindNoCase(nodeLevelList,attributes.type)>	
 	<cfif attributes.contentid neq "">
 	<ul id="navTask">
 	<cfif attributes.compactDisplay neq "true" and (request.contentBean.getfilename() neq '' or attributes.contentid eq '00000000000000000000000000000000001')>

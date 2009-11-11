@@ -72,7 +72,7 @@ where siteid='#request.siteid#' and
 					</cfquery>
 
 --->
-	<!--->
+	
 	<cfset editableControl.editLink = "">
 	<cfset editableControl.historyLink = "">
 	<cfset editableControl.innerHTML = "">
@@ -133,7 +133,7 @@ where siteid='#request.siteid#' and
 		
 		<cfset editableControl.innerHTML = generateEditableObjectControl(editableControl.editLink, editableControl.historyLink)>
 	</cfif>
-	</cfif> --->
+	</cfif>
 </cfsilent>
 <cfif rsForm.isOnDisplay>
 <cfset request.cacheItem=rsForm.doCache>
@@ -148,11 +148,11 @@ where siteid='#request.siteid#' and
 <cfinclude template="dsp_response.cfm">
 <cfelse>
 <cfset addToHTMLHeadQueue("fckeditor.cfm")>
-<!--- <cfif editableControl.innerHTML neq "">
+<cfif editableControl.innerHTML neq "">
 	#setDynamicContent('<div class="editableObject editableForm">' & application.dataCollectionManager.renderForm(rsForm.contentid,request.siteid,rsForm.body,rsForm.responseChart) & '#editableControl.innerHTML#</div>')#
-<cfelse> --->
+<cfelse>
 	#setDynamicContent(application.dataCollectionManager.renderForm(rsForm.contentid,request.siteid,rsForm.body,rsForm.responseChart))#
-<!--- </cfif> --->
+</cfif>
 <script type="text/javascript">
 setHTMLEditors(200,500);
 </script>

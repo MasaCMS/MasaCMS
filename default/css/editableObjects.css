@@ -1,0 +1,197 @@
+div.editableObject {
+	display: block !important;
+	visibility: !important;
+	float: none !important;
+	position: relative !important;
+	top: auto !important;
+	right: auto !important;
+	bottom: auto !important;
+	left: auto !important;
+	width: auto !important;
+	height: auto !important;
+	margin: 0 !important;
+	padding: 0 !important;
+	border: 0 !important;
+	outline-width: 0px !important;
+	outline-style: dotted !important;
+	outline-color: #f1bf00 !important; /* Mura red: #ff3a00 */
+	background: transparent !important;
+	}
+
+div.editableObject:hover {
+	outline-width: 2px !important;
+	}
+
+div.editableObject ul.editableObjectControl {
+	display: block !important;
+	visibility: !important;
+	float: none !important;
+	position: absolute !important;
+	top: auto !important;
+	right: 2px !important;
+	bottom: 2px !important;
+	left: auto !important;
+	z-index: 998 !important; /* shadowbox is at 999 */
+	width: auto !important;
+	height: auto !important;
+	margin: 0 !important;
+	padding: 0 !important;
+	border: 1px solid #ccc !important;
+	list-style: none !important;
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+	border-radius: 3px;
+	}
+div.editableObject:hover ul.editableObjectControl {
+	border-color: #aaa !important;
+	}
+
+div.editableObject ul.editableObjectControl li {
+	padding: 0 !important;
+	margin: 0 !important;
+	height: auto !important;
+	}
+
+div.editableObject ul.editableObjectControl a {
+	display: block !important;
+	visibility: !important;
+	float: none !important;
+	position: relative !important;
+	top: auto !important;
+	right: auto !important;
+	bottom: auto !important;
+	left: auto !important;
+	width: 14px !important;
+	height: 14px !important;
+	overflow: hidden;
+	margin: 0 !important;
+	padding: 4px !important;
+	border: 1px solid #e5e5e5 !important;
+	font-size: 11px !important;
+	line-height: 20px !important;
+	font-weight: normal !important;
+	text-align: center !important;
+	text-indent: -9999px !important;
+	text-transform: none !important;
+	text-decoration: none !important;
+	letter-spacing: 0 !important;
+	color: #666 !important;
+	background: #ffd300 url(/admin/images/icons/edit_24.png) no-repeat 50% 50% !important;
+	-moz-border-radius: 3px !important;
+	-webkit-border-radius: 3px !important;
+	border-radius: 3px !important;
+	-moz-box-shadow: 0 0 2px #c89f02 inset !important;
+	-webkit-box-shadow: 0 0 2px #c89f02 inset !important;
+	box-shadow: 0 0 2px #c89f02 inset !important;
+	}
+
+
+div.editableObjectHide:hover {
+	outline-width: 0 !important;
+	}
+div.editableObjectHide ul.editableObjectControl {
+	display: none !important;
+	}
+
+
+/* @group Add Content Nav */
+
+div.editableObject ul.editableObjectControl li ul { /* all lists */
+	padding: .5em .5em .5em !important;
+	margin: 0 0 0 -4px !important;
+	list-style: none !important;
+	line-height: 1 !important;
+	background-image: none !important;
+	position: absolute !important;
+	right: 0;
+	background: #ccc !important;
+	-webkit-border-radius: 5px !important;
+	-moz-border-radius: 5px !important;
+	border-radius: 5px !important;
+	-webkit-box-shadow: 0 1px 3px #666 !important;
+	-moz-box-shadow: 0 1px 3px #666 !important;
+	box-shadow: 0 1px 3px #666 !important;
+	width: 9em !important;
+	display: none !important;
+	height: auto !important;
+	}
+
+div.editableObject ul.editableObjectControl li li { /* all list items */
+	float: left !important;
+	width: 100% !important; /* width needed or else Opera goes nuts */
+	padding: 0 !important;
+	margin: 0 !important;
+	height: auto !important;
+	border-bottom: 1px dotted #989a9b !important;
+	}
+
+div.editableObject ul.editableObjectControl li.last { 
+	border: 0 !important;
+	}
+
+div.editableObject ul.editableObjectControl li li a {
+	display: block !important;
+	visibility: !important;
+	float: none !important;
+	position: relative !important;
+	top: auto !important;
+	right: auto !important;
+	bottom: auto !important;
+	left: auto !important;
+	width: auto !important;
+	height: auto !important;
+	overflow: hidden;
+	margin: 1px 0 !important;
+	padding: .5em .25em .5em 24px !important;
+	border: 0 !important;
+	font-family: 'Myriad Pro', Myriad, 'Lucida Grande', 'Lucida Sans Unicode', Arial, Verdana, sans-serif !important;
+	font-size: 12px !important;
+	line-height: 1 !important;
+	font-weight: normal !important;
+	text-align: left !important;
+	text-indent: 0 !important;
+	text-transform: none !important;
+	text-decoration: none !important;
+	letter-spacing: 0 !important;
+	color: #333 !important;
+	background-image: none !important;
+	background-position: 4px center !important;
+	background-repeat: no-repeat !important;
+	background-color: transparent !important;
+	-moz-border-radius: 0 !important;
+	-webkit-border-radius: 0 !important;
+	border-radius: 0 !important;
+	-moz-box-shadow: none !important;
+	-webkit-box-shadow: none !important;
+	box-shadow: none !important;
+	}
+
+div.editableObject ul.editableObjectControl li li a:hover {
+	text-decoration: underline !important;
+	}
+
+div.editableObject ul.editableObjectControl li:hover ul,
+div.editableObject ul.editableObjectControl li.sfhover ul { /* lists nested under hovered list items */
+	display: block !important;
+	}
+
+div.editableObject ul.editableObjectControl li:hover a,
+div.editableObject ul.editableObjectControl li.sfhover a { /* lists nested under hovered list items */
+	color: #000 !important;
+	}
+
+div.editableObject .edit a { background-image: url(../images/edit_16.png); }	
+/*#cbTools .add a { background-image: url(../images/add_16.png); }
+#cbTools .delete a { background-image: url(../images/remov_16.png); }*/
+
+
+div.editableObject ul.editableObjectControl li li.objEdit a {
+	background-image: url(/admin/images/icons/edit_24.png) !important;
+	}
+div.editableObject ul.editableObjectControl li li.objHistory a {
+	background-image: url(/admin/images/icons/hist_24.png) !important;
+	}
+
+div.editableObject li li:last-child {
+	border: 0 !important;
+	}

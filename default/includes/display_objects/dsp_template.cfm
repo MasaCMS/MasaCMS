@@ -77,7 +77,7 @@ to your own modified versions of Mura CMS.
 	--->
 	<cfset request.cacheItem=rsTemplate.doCache/>
 	
-	<!--- <cfset editableControl.editLink = "">
+	<cfset editableControl.editLink = "">
 	<cfset editableControl.historyLink = "">
 	<cfset editableControl.innerHTML = "">
 	
@@ -136,13 +136,13 @@ to your own modified versions of Mura CMS.
 		
 		<cfset editableControl.innerHTML = generateEditableObjectControl(editableControl.editLink, editableControl.historyLink)>
 	</cfif>
-	</cfif> --->
+	</cfif>
 </cfsilent>
 
 <cfif rsTemplate.isOnDisplay>
-	<!--- <cfif editableControl.innerHTML neq "">
+	<cfif editableControl.innerHTML neq "">
 		<div class="editableObject editableComponent">
-	</cfif> --->
+	</cfif>
 	<cfif len(rsTemplate.template) and fileExists("#getSite().getTemplateIncludeDir()#/components/#rsTemplate.template#")>
 		<cfset componentBody=rsTemplate.body>
 		<cfinclude template="#event.getSite().getThemeIncludePath()#/templates/components/#rsTemplate.template#">
@@ -151,7 +151,7 @@ to your own modified versions of Mura CMS.
 			#setDynamicContent(rsTemplate.body)#
 		</cfoutput>
 	</cfif>
-	<!--- <cfif editableControl.innerHTML neq "">
+	<cfif editableControl.innerHTML neq "">
 		<cfoutput>#editableControl.innerHTML#</cfoutput></div>
-	</cfif> --->
+	</cfif>
 </cfif>

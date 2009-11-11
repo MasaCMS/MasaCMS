@@ -1538,6 +1538,11 @@ to your own modified versions of Mura CMS.
 			<cfset loadShadowboxJS() />
 		</cfif>
 		
+		<cfif this.showEditableObjects>
+			<cfset loadJSLib()>
+			<cfset addToHTMLHeadQueue('editableObjects.cfm')>
+		</cfif>
+		
 		<!--- Loop through the HTML Head Que--->
 		<cfset HTMLHeadQueue=event.getValue('HTMLHeadQueue') />
 		<cfloop list="#HTMLHeadQueue#" index="i">
@@ -1658,35 +1663,23 @@ to your own modified versions of Mura CMS.
 		<cfargument name="contentTYpe" required="yes" default="">
 		<cfset var innerHTML = "">
 		
-		<cfset var editLabel=getSite().getRBFactory().getKey('sitemanager.content.fields.edit')>
-		<cfset var editTitle = editLabel>
-		
-		<!---
-		<cfif listFindNoCase("Form,Component",arguments.contentType)>
-			<cfset editTitle=getSite().getRBFactory().getKey('sitemanager.content.edit#lcase(arguments.contentType)#')>
-		</cfif>
+		<cfif this.showEditableObjects>		
 		<cfsavecontent variable="innerHTML">
 			<cfoutput>
 			<ul class="editableObjectControl">
-				<li class="edit"><a href="#arguments.editLink#" title="#htmlEditFormat('Edit')#" rel="shadowbox;width=1100;">Edit</a>
-					<ul>
+				<li class="edit"><a href="#arguments.editLink#" title="#htmlEditFormat('Edit')#" rel="shadowbox;width=1100;">#htmlEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.edit'))#</a>
+					<!---<ul>
 						<li class="objEdit"><a href="#arguments.editLink#" title="#htmlEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.edit'))#" rel="shadowbox;width=1100;">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.edit')#</a></li>
 						<cfif arguments.historyLink neq "">
 							<li class="objHistory last"><a href="#arguments.historyLink#" title="#htmlEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.versionhistory'))#" rel="shadowbox;width=1100;">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.versionhistory')#</a></li>
 						</cfif>
 					</ul>
-				</li>
+				</li>--->
 			</ul>
 			</cfoutput>
 		</cfsavecontent>
-		--->
-		<cfif this.showEditableObjects>		
-		<cfsavecontent variable="innerHTML">
-			<cfoutput>
-			<a href="#arguments.editLink#" title="#htmlEditFormat(editTitle)#" rel="shadowbox;width=1100;">#editLabel#</a>
-			</cfoutput>
-		</cfsavecontent>
 		</cfif>
+		
 		<cfreturn innerHTML>
 </cffunction>
 

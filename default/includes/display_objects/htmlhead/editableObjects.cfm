@@ -40,52 +40,6 @@ for your modified version; it is your choice whether to do so, or to make such m
 the GNU General Public License version 2  without this exception.  You may, if you choose, apply this exception
 to your own modified versions of Mura CMS.
 --->
-
-<div id="svCalendar" class="svCalendar">
 <cfoutput>
-<table>
-<tr>
-<th title="#dateLong#" id="previousMonth"><a href="index.cfm?month=#previousmonth#&year=#previousyear#&categoryID=#htmlEditFormat(request.categoryID)#&relatedID=#htmlEditFormat(request.relatedID)#">&laquo;</a></th>
-<th colspan="5">#dateLong#</th>
-<th id="nextMonth"><a href="index.cfm?month=#nextmonth#&year=#nextyear#&categoryID=#htmlEditFormat(request.categoryID)#&relatedID=#htmlEditFormat(request.relatedID)#">&raquo;</a></th>
-</tr>
-	<tr class="dayofweek">
-	<cfloop index="id" from="1" to="#listLen(weekdayShort)#">
-	<cfset dayValue = listGetAt(weekdayShort,id,",")>
-	<cfset dayValueLong = listGetAt(weekdayLong,id,",")>
-	<td title="#dayValueLong#">#dayValue#</td>
-	
-	</cfloop>
-	</tr>
-	<cfset posn = 1>
-	<tr>
-	<cfloop index="id" from="1" to="#firstDayOfWeek#">
-	<td>&nbsp;</td>
-	<cfset posn=posn+1>
-	</cfloop>
-	<cfloop index="id" from="1" to="#daysInMonth#">
-	<cfif posn eq 8></tr><cfif id lte daysInMonth><tr></cfif>
-	<cfset posn=1></cfif>
-	<cfsilent>
-	<cfset calendarDay=createdate('#request.year#','#request.month#','#id#')>
-	<cfquery dbType="query" name="rsDay">
-	select * from rsSection where 
-		DisplayStart < <cfqueryparam value="#dateadd('D',1,calendarDay)#" cfsqltype="CF_SQL_DATE"> 
-			AND 
-				(
-		 			DisplayStop >= <cfqueryparam value="#calendarDay#" cfsqltype="CF_SQL_DATE"> or DisplayStop =''
-		  		)	
-	
-	</cfquery>
-	</cfsilent>
-	<td><span class="date">#id#</span>#dspNestedNav('#request.contentBean.getcontentid()#',1,1,'calendar',calendarDay,'','?month=#request.month#&year=#request.year#&categoryID=#request.categoryID#&relatedID=#request.relatedID#','displaystart, orderno','','#application.configBean.getContext()#','#application.configBean.getStub()#','#request.categoryID#','#request.relatedID#',rsDay)#</td>
-	<cfset posn=posn+1>
-	</cfloop>
-	<cfif posn lt 8>
-	<cfloop index="id" from="#posn#" to="7">
-	<td>&nbsp;</td>
-	</cfloop>
-	</cfif></tr>
-	</table>
+<link href="#event.getSite().getAssetPath()#/css/editableObjects.css" rel="stylesheet" type="text/css" />
 </cfoutput>
-</div>
