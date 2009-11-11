@@ -675,6 +675,7 @@ Sincerely,
 	<cfset var contentBean = "">
 	<cfset var contentBeanParent = "">
 	<cfset var contentHistID = "">
+	<cfset var pluginEvent = createObject("component","mura.event").init(arguments) />
 	
 	<cfset contentBean = variables.contentDAO.readActive(arguments.contentID, arguments.siteID)>
 	<!--- <cfset contentBeanParent = variables.contentDAO.readActive(arguments.parentID, arguments.siteID)>--->
@@ -733,8 +734,9 @@ Sincerely,
 		select '#newContentHistID#',attributeID,siteID,attributeValue from tclassextenddata
 		where baseid='#contentHistID#' 
 	</cfquery>
-
 	
+	<cfset pluginEvent.setValue("contentBean",contentBean)>
+	<cfset getPluginManager().announceEvent("onContentCopy",pluginEvent)>
 </cffunction>
 
 <cffunction name="updateGlobalMaterializedPath" returntype="any" output="false">
