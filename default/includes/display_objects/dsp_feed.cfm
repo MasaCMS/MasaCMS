@@ -48,7 +48,7 @@ to your own modified versions of Mura CMS.
   <cfif feedBean.getIsActive()>
 	<cfset cssID=createCSSid(feedBean.renderName())>
     
-	<cfset editableControl.editableControl.editLink = "">
+	<cfset editableControl.editLink = "">
 	<cfset editableControl.historyLink = "">
 	<cfset editableControl.innerHTML = "">
 	

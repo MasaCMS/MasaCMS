@@ -58,7 +58,8 @@ to your own modified versions of Mura CMS.
 <!---<cfset this.imageInList="jpg,jpeg,png,gif">--->
 <!---<cfset this.personalization="user">--->
 <!---<cfset this.showAdminToolBar=true/>--->
-<!---<cfset this.showEditableObjects=true/>--->
+<cfset this.showMemberToolBar=false/>
+<cfset this.showEditableObjects=false/>
 <!---<cfset this.renderHTMLHead=true/>--->
 <!---<cfset this.headline="h2"/>--->
 <!---<cfset this.subHead1="h3"/>--->

@@ -56,6 +56,7 @@ to your own modified versions of Mura CMS.
 <cfset this.imageInList="jpg,jpeg,png,gif">
 <cfset this.personalization="user">
 <cfset this.showAdminToolBar=true/>
+<cfset this.showMemberToolBar=true/>
 <cfset this.showEditableObjects=false/>
 <cfset this.renderHTMLHead=true/>
 <cfset this.enableMuraTag=getConfigBean().getEnableMuraTag() />
@@ -1519,7 +1520,7 @@ to your own modified versions of Mura CMS.
 	<cfset var HTMLHeadQueue="" />
 	<cfset var i = "" />
 	<cfset var iLen = 0 />
-	<cfset var showModal= (isUserInRole('S2IsPrivate;#application.settingsManager.getSite(event.getValue('siteID')).getPrivateUserPoolID()#') or isUserInRole("S2")) and getShowAdminToolBar() />
+	<cfset var showModal= ((isUserInRole('S2IsPrivate;#application.settingsManager.getSite(event.getValue('siteID')).getPrivateUserPoolID()#') or isUserInRole("S2")) or (listFindNoCase("editor,author",event.getValue('r').perm) and this.showMemberToolBar)) and getShowAdminToolBar() />
 	<cfset var headerFound=false />	
 	<cfset var pluginBasePath="" />
 	<cfset var pluginPath="" />

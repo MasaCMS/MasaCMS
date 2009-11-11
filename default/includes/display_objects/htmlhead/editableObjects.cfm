@@ -41,5 +41,5 @@ the GNU General Public License version 2  without this exception.  You may, if y
 to your own modified versions of Mura CMS.
 --->
 <cfoutput>
-<link href="#event.getSite().getAssetPath()#/css/editableObjects.css" rel="stylesheet" type="text/css" />
+<link href="#application.configBean.getContext()#/admin/css/editableObjects.css" rel="stylesheet" type="text/css" />
 </cfoutput>
