@@ -43,11 +43,16 @@ to your own modified versions of Mura CMS.
 
 <cfset tablist="'#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'collections.basic'))#','#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'collections.categorization'))#'">
 <cfoutput><h2>#application.rbFactory.getKeyValue(session.rb,'collections.editremotefeed')#</h2>
+
 #application.utility.displayErrors(request.feedBean.getErrors())#
 <cfif attributes.feedID neq ''>
 <ul id="navTask">
 <li><a title="#application.rbFactory.getKeyValue(session.rb,'collections.view')#" href="#request.feedBean.getChannelLink()#" target="_blank">#application.rbFactory.getKeyValue(session.rb,'collections.viewfeed')#</a></li>
 </ul></cfif>
+
+<cfif attributes.compactDisplay eq "true">
+<p class="notice">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.globallyappliednotice")#</p>
+</cfif>
 <form action="index.cfm?fuseaction=cFeed.update&siteid=#attributes.siteid#" method="post" name="form1" onsubmit="return validate(this);">
 <dl class="oneColumn">
 <dt class="first">#application.rbFactory.getKeyValue(session.rb,'collections.name')#</dt>

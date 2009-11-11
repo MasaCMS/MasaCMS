@@ -75,7 +75,9 @@ to your own modified versions of Mura CMS.
 </cfif>--->
 <cfswitch expression="#attributes.type#">
 <cfcase value="Form">
+<cfif isUserInRole('s2IsPrivate')>
 <li><a  href="index.cfm?fuseaction=cArch.datamanager&contentid=#attributes.contentid#&siteid=#attributes.siteid#&topid=#attributes.topid#&moduleid=#attributes.moduleid#&type=Form&parentid=#attributes.moduleid#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.managedata')#</a></li>
+</cfif>
 </cfcase>
 </cfswitch>
 	<cfif request.perm neq 'none'><li><a href="index.cfm?fuseaction=cArch.update&action=deletehistall&contentid=#attributes.contentid#&type=#attributes.type#&parentid=#attributes.parentid#&topid=#attributes.topid#&siteid=#attributes.siteid#&startrow=#attributes.startrow#&moduleid=#attributes.moduleid#&compactDisplay=#attributes.compactDisplay#" onclick="return confirm('#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.clearversionhistoryconfirm'))#')">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.clearversionhistory')#</a></li></cfif>

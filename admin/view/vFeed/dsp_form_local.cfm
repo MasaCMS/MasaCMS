@@ -137,7 +137,9 @@ function previewFeed(){
 	
 }
 </script>  --->
-
+<cfif attributes.compactDisplay eq "true">
+<p class="notice">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.globallyappliednotice")#</p>
+</cfif>
 <form action="index.cfm?fuseaction=cFeed.update&siteid=#attributes.siteid#" method="post" name="form1" id="feedFrm" onsubmit="return validate(this);">
 
 <dl class="oneColumn">

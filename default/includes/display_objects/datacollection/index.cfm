@@ -42,6 +42,14 @@ to your own modified versions of Mura CMS.
 --->
 
 <cfsilent>
+	<cfset bean = application.contentManager.getActiveContent(arguments.objectID, arguments.siteID)>
+	<cfset rsForm=bean.getAllValues()>
+	<cfset rsForm.isOnDisplay=rsForm.display eq 1 or 
+			(
+				rsForm.display eq 1 and rsForm.DisplayStart lte now()
+				AND (rsForm.DisplayStop gte now() or rsForm.DisplayStop eq null)
+			)>
+<!---	
 <cfquery datasource="#application.configBean.getDatasource()#" username="#application.configBean.getDBUsername()#" password="#application.configBean.getDBPassword()#" name="rsForm">
 select contentid,title,body,responseChart,responseMessage,responseSendTo,forceSSL,displayTitle, doCache
  from tcontent 
@@ -63,9 +71,12 @@ where siteid='#request.siteid#' and
 					 ) 
 					</cfquery>
 
-
-	<cfset editLink = "">
-	<!---
+--->
+	<cfset editableControl.editLink = "">
+	<cfset editableControl.historyLink = "">
+	<cfset editableControl.innerHTML = "">
+	
+	<!--- <cfif this.showEditableObjects>
 	<cfset perm = application.permUtility.getPerm('00000000000000000000000000000000004',arguments.siteid)>
 	<cfif perm neq 'editor'>
 		<cfset verdict = application.permUtility.getPerm(arguments.objectID, arguments.siteID)>
@@ -94,24 +105,36 @@ where siteid='#request.siteid#' and
 			<cfset adminBase=""/>
 		</cfif>
 		
-		<cfset editLink = adminBase & "#application.configBean.getContext()#/admin/index.cfm?fuseaction=cArch.edit">
+		<cfset editableControl.editLink = adminBase & "#application.configBean.getContext()#/admin/index.cfm?fuseaction=cArch.edit">
 		<cfif structKeyExists(request,"previewID") and len(request.previewID)>
-			<cfset editLink = editLink & "&amp;contenthistid=" & request.previewID>
+			<cfset editableControl.editLink = editableControl.editLink & "&amp;contenthistid=" & request.previewID>
 		<cfelse>
-			<cfset editLink = editLink & "&amp;contenthistid=" & bean.getContentHistID()>
+			<cfset editableControl.editLink = editableControl.editLink & "&amp;contenthistid=" & bean.getContentHistID()>
 		</cfif>
-		<cfset editLink = editLink & "&amp;siteid=" & bean.getSiteID()>
-		<cfset editLink = editLink & "&amp;contentid=" & bean.getContentID()>
-		<cfset editLink = editLink & "&amp;topid=00000000000000000000000000000000001">
-		<cfset editLink = editLink & "&amp;type=" & bean.getType()>
-		<cfset editLink = editLink & "&amp;parentid=" & bean.getParentID()>
-		<cfset editLink = editLink & "&amp;moduleid=" & bean.getModuleID()>
-		<cfset editLink = editLink & "&amp;compactDisplay=true">
-		<cfset editLink = '<p class="edit" style="float:right;"><a href="#editLink#" title="#htmlEditFormat('Edit')#" rel="shadowbox;width=1100;">Edit</a></p>'>
+		
+		<cfset editableControl.editLink = editableControl.editLink & "&amp;siteid=" & bean.getSiteID()>
+		<cfset editableControl.editLink = editableControl.editLink & "&amp;contentid=" & bean.getContentID()>
+		<cfset editableControl.editLink = editableControl.editLink & "&amp;topid=00000000000000000000000000000000001">
+		<cfset editableControl.editLink = editableControl.editLink & "&amp;type=" & bean.getType()>
+		<cfset editableControl.editLink = editableControl.editLink & "&amp;parentid=" & bean.getParentID()>
+		<cfset editableControl.editLink = editableControl.editLink & "&amp;moduleid=" & bean.getModuleID()>
+		<cfset editableControl.editLink = editableControl.editLink & "&amp;compactDisplay=true">
+		
+		<cfset editableControl.historyLink = adminBase & "#application.configBean.getContext()#/admin/index.cfm?fuseaction=cArch.hist">
+		<cfset editableControl.historyLink = editableControl.historyLink & "&amp;siteid=" & bean.getSiteID()>
+		<cfset editableControl.historyLink = editableControl.historyLink & "&amp;contentid=" & bean.getContentID()>
+		<cfset editableControl.historyLink = editableControl.historyLink & "&amp;topid=00000000000000000000000000000000001">
+		<cfset editableControl.historyLink = editableControl.historyLink & "&amp;type=" & bean.getType()>
+		<cfset editableControl.historyLink = editableControl.historyLink & "&amp;parentid=" & bean.getParentID()>
+		<cfset editableControl.historyLink = editableControl.historyLink & "&amp;moduleid=" & bean.getModuleID()>
+		<cfset editableControl.historyLink = editableControl.historyLink & "&amp;startrow=1">
+		<cfset editableControl.historyLink = editableControl.historyLink & "&amp;compactDisplay=true">
+		
+		<cfset editableControl.innerHTML = generateEditableObjectControl(editableControl.editLink, editableControl.historyLink)>
 	</cfif>
-	--->
+	</cfif> --->
 </cfsilent>
-<cfif rsForm.recordcount>
+<cfif rsForm.isOnDisplay>
 <cfset request.cacheItem=rsForm.doCache>
 <cfif rsForm.forceSSL eq 1>
 <cfset request.forceSSL = 1>
@@ -124,8 +147,8 @@ where siteid='#request.siteid#' and
 <cfinclude template="dsp_response.cfm">
 <cfelse>
 <cfset addToHTMLHeadQueue("fckeditor.cfm")>
-<cfif editLink neq "">
-	#setDynamicContent('<div class="editableForm">' & application.dataCollectionManager.renderForm(rsForm.contentid,request.siteid,rsForm.body,rsForm.responseChart) & '#editLink#</div>')#
+<cfif editableControl.innerHTML neq "">
+	#setDynamicContent('<div class="editableObject editableForm">' & application.dataCollectionManager.renderForm(rsForm.contentid,request.siteid,rsForm.body,rsForm.responseChart) & '#editableControl.innerHTML#</div>')#
 <cfelse>
 	#setDynamicContent(application.dataCollectionManager.renderForm(rsForm.contentid,request.siteid,rsForm.body,rsForm.responseChart))#
 </cfif>

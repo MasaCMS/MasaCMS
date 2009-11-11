@@ -1081,8 +1081,11 @@ to your own modified versions of Mura CMS.
 			</cfthread>
 		</cfif>
 		
-		<cfthread action="join" name="thread0">
-		</cfthread>
+		<cftry>
+			<cfthread action="join" name="thread0">
+			</cfthread>
+			<cfcatch></cfcatch>
+		</cftry>
 				
 		<cfthread action="run" name="thread5">
 			<cfif fromAssetPath neq toAssetPath>

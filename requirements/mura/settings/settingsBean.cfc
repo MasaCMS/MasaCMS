@@ -281,7 +281,11 @@ to your own modified versions of Mura CMS.
 	<cfargument name="mode" type="String" required="true" default="#application.configBean.getMode()#" />
 	
 	<cfif arguments.mode eq 'Staging'>
-		<cfreturn application.configBean.getAdminDomain() />
+		<cfif len(application.configBean.getAdminDomain())>
+			<cfreturn application.configBean.getAdminDomain() />
+		<cfelse>
+			<cfreturn cgi.server_name />
+		</cfif>
 	<cfelse>
 		<cfreturn variables.instance.Domain />
 	</cfif>

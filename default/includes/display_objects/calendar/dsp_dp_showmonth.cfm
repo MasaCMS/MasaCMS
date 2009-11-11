@@ -66,7 +66,19 @@ to your own modified versions of Mura CMS.
 	<cfloop index="id" from="1" to="#daysInMonth#">
 	<cfif posn eq 8></tr><cfif id lte daysInMonth><tr></cfif>
 	<cfset posn=1></cfif>
-	<td><span class="date">#id#</span>#dspNestedNav('#request.contentBean.getcontentid()#',1,1,'calendar',createdate('#request.year#','#request.month#','#id#'),'','?month=#request.month#&year=#request.year#&categoryID=#request.categoryID#&relatedID=#request.relatedID#','displaystart, orderno','','#application.configBean.getContext()#','#application.configBean.getStub()#','#request.categoryID#','#request.relatedID#')#</td>
+	<cfsilent>
+	<cfset calendarDay=createdate('#request.year#','#request.month#','#id#')>
+	<cfquery dbType="query" name="rsDay">
+	select * from rsSection where 
+		day(displayStart) <= #id#	
+						  	AND 
+						  		(
+						  			day(displayStop) >= #id# or displayStop is null
+						  		)
+	
+	</cfquery>
+	</cfsilent>
+	<td><span class="date">#id#</span>#dspNestedNav('#request.contentBean.getcontentid()#',1,1,'calendar',calendarDay,'','?month=#request.month#&year=#request.year#&categoryID=#request.categoryID#&relatedID=#request.relatedID#','displaystart, orderno','','#application.configBean.getContext()#','#application.configBean.getStub()#','#request.categoryID#','#request.relatedID#',rsDay)#</td>
 	<cfset posn=posn+1>
 	</cfloop>
 	<cfif posn lt 8>

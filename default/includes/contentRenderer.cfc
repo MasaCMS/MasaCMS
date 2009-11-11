@@ -44,27 +44,28 @@ to your own modified versions of Mura CMS.
 <cfcomponent extends="mura.content.contentRenderer">
 
 <cfset this.jslib="jquery"/>
-<!--- 
-<cfset this.navOffSet=0/>
-<cfset this.navDepthLimit=1000/>
-<cfset this.navParentIdx=2/>
-<cfset this.navGrandParentIdx=3/>
-<cfset this.navDepthAjust=0/>
-<cfset this.navSelfIdx=1/>
-<cfset this.jsLibLoaded=false>
-<cfset this.longDateFormat="long"/>
-<cfset this.shortDateFormat="short"/>
-<cfset this.showMetaList="jpg,jpeg,png,gif">
-<cfset this.imageInList="jpg,jpeg,png,gif">
-<cfset this.personalization="user">
-<cfset this.showAdminToolBar=true/>
-<cfset this.renderHTMLHead=true/>
-<cfset this.headline="h2"/>
-<cfset this.subHead1="h3"/>
-<cfset this.subHead2="h4"/>
-<cfset this.subHead3="h5"/>
-<cfset this.subHead4="h6"/>
- --->
+
+<!---<cfset this.navOffSet=0/>--->
+<!---<cfset this.navDepthLimit=1000/>--->
+<!---<cfset this.navParentIdx=2/>--->
+<!---<cfset this.navGrandParentIdx=3/>--->
+<!--- <cfset this.navDepthAjust=0/>--->
+<!---<cfset this.navSelfIdx=1/>--->
+<!---<cfset this.jsLibLoaded=false>--->
+<!---<cfset this.longDateFormat="long"/>--->
+<!---<cfset this.shortDateFormat="short"/>--->
+<!---<cfset this.showMetaList="jpg,jpeg,png,gif">--->
+<!---<cfset this.imageInList="jpg,jpeg,png,gif">--->
+<!---<cfset this.personalization="user">--->
+<!---<cfset this.showAdminToolBar=true/>--->
+<!---<cfset this.showEditableObjects=true/>--->
+<!---<cfset this.renderHTMLHead=true/>--->
+<!---<cfset this.headline="h2"/>--->
+<!---<cfset this.subHead1="h3"/>--->
+<!---<cfset this.subHead2="h4"/>--->
+<!---<cfset this.subHead3="h5"/>--->
+<!---<cfset this.subHead4="h6"/>--->
+
 
 <!---  
 This is to be used when the webroot is including /tasks/content/contentServerRoot.cfm 

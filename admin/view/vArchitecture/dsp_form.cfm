@@ -51,7 +51,6 @@ onunload = function()
 {	 
 
 	if (!formSubmitted)
-		if (form_is_modified(document.getElementById('contentForm')))
 			if (confirm('<cfoutput>#jsStringFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.saveasdraft"))#</cfoutput>'))
 			{	window.unload=false;
 				if(ckContent()){
@@ -79,6 +78,7 @@ function setRequestedURL(){
 </cfif> 
 <cfsilent>
 <cfset request.perm=application.permUtility.getnodePerm(request.crumbdata)>
+<cfset request.deletable=attributes.compactDisplay neq "true" and ((attributes.parentid neq '00000000000000000000000000000000001' and application.settingsManager.getSite(attributes.siteid).getlocking() neq 'all') or (attributes.parentid eq '00000000000000000000000000000000001' and application.settingsManager.getSite(attributes.siteid).getLocking() eq 'none')) and (request.perm eq 'editor' and attributes.contentid neq '00000000000000000000000000000000001') and request.contentBean.getIsLocked() neq 1>
 
 <cfif request.contentBean.getType() eq 'File'>
 <cfset rsFile=application.serviceFactory.getBean('fileManager').readMeta(request.contentBean.getFileID())>
@@ -127,12 +127,19 @@ select * from rsPluginScripts3 order by pluginID
 <!--- check to see if the site has reached it's maximum amount of pages --->
 <cfif (request.rsPageCount.counter lt application.settingsManager.getSite(attributes.siteid).getpagelimit() and  attributes.contentid eq '') or attributes.contentid neq ''>
 <cfoutput>
+<cfif attributes.type eq "Component">
+<h2>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.editcomponent")#</h2>
+<cfelseif attributes.type eq "Form">
+<h2>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.editform")#</h2>
+<cfelse>
 <h2>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.editcontent")#</h2>
-
+</cfif>
+<cfif attributes.compactDisplay eq "true" and not ListFindNoCase(nodeLevelList,attributes.type)>
+<p class="notice">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.globallyappliednotice")#</p>
+</cfif>
 <form action="index.cfm?fuseaction=cArch.update&contentid=#attributes.contentid#" method="post" enctype="multipart/form-data" name="contentForm" onsubmit="return ckContent();" id="contentForm">
 <cfif attributes.compactDisplay neq "true">
 	<cfif attributes.moduleid eq '00000000000000000000000000000000000'>#application.contentRenderer.dspZoom(request.crumbdata,fileExt)#</cfif>
-		<cfset request.deletable=((attributes.parentid neq '00000000000000000000000000000000001' and application.settingsManager.getSite(attributes.siteid).getlocking() neq 'all') or (attributes.parentid eq '00000000000000000000000000000000001' and application.settingsManager.getSite(attributes.siteid).getLocking() eq 'none')) and (request.perm eq 'editor' and attributes.contentid neq '00000000000000000000000000000000001') and request.contentBean.getIsLocked() neq 1>
 		<ul class="metadata">
 			<cfif listFindNoCase(pageLevelList,attributes.type)>
 			<li><strong>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.type")#:</strong>
@@ -191,10 +198,12 @@ select * from rsPluginScripts3 order by pluginID
 			</cfif>
 	</cfif>
 		</ul>
-		
+</cfif>	
+
+<cfif attributes.compactDisplay neq "true">	
 	<cfif attributes.contentid neq "">
 	<ul id="navTask">
-	<cfif request.contentBean.getfilename() neq '' or attributes.contentid eq '00000000000000000000000000000000001'>
+	<cfif attributes.compactDisplay neq "true" and (request.contentBean.getfilename() neq '' or attributes.contentid eq '00000000000000000000000000000000001')>
 	<cfswitch expression="#attributes.type#">
 	<cfcase value="Page,Portal,Calendar,Gallery">
 	<cfif attributes.contentID neq ''>
@@ -210,7 +219,7 @@ select * from rsPluginScripts3 order by pluginID
 	</cfif>
 	<li><a href="javascript:preview('#request.contentBean.getfilename()#','#request.contentBean.getTargetParams()#');">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.viewactive")#</a></li>
 	</cfcase>
-	<cfcase value="File">
+	<cfcase value="File">	
 	<li><a  href="javascript:preview('http://#application.settingsManager.getSite(attributes.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##application.contentRenderer.getURLStem(attributes.siteid,"")#?LinkServID=#attributes.contentid#');">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.viewactive")#</a></li>
 	<li><a  href="javascript:preview('http://#application.settingsManager.getSite(attributes.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()#/tasks/render/file/?fileID=#request.contentBean.getFileID()#');">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.viewversion")#</a></li>
 	</cfcase>
@@ -218,15 +227,19 @@ select * from rsPluginScripts3 order by pluginID
 	</cfif>
 	<cfswitch expression="#attributes.type#">
 	<cfcase value="Form">
+	<cfif isUserInRole('s2IsPrivate')>
 	<li><a  href="index.cfm?fuseaction=cArch.datamanager&contentid=#attributes.contentid#&siteid=#attributes.siteid#&topid=#attributes.topid#&moduleid=#attributes.moduleid#&type=Form&parentid=#attributes.moduleid#">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.managedata")#</a></li>
+	</cfif>
 	</cfcase>
 	</cfswitch>
-	<li><a href="index.cfm?fuseaction=cArch.hist&contentid=#attributes.contentid#&type=#attributes.type#&parentid=#attributes.parentid#&topid=#attributes.topid#&siteid=#attributes.siteid#&startrow=#attributes.startrow#&moduleid=#attributes.moduleid#">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.versionhistory")#</a> </li>
-	<cfif request.contentBean.getactive()lt 1 and (request.perm neq 'none')><li><a href="index.cfm?fuseaction=cArch.update&contenthistid=#attributes.ContentHistID#&action=delete&contentid=#attributes.contentid#&type=#attributes.type#&parentid=#attributes.parentid#&topid=#attributes.topid#&siteid=#attributes.siteid#&startrow=#attributes.startrow#&moduleid=#attributes.moduleid#&return=#attributes.return#" onclick="return confirm('#jsStringFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.deleteversionconfirm"))#')">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.deleteversion")#</a></li></cfif>
+	<li><a href="index.cfm?fuseaction=cArch.hist&contentid=#attributes.contentid#&type=#attributes.type#&parentid=#attributes.parentid#&topid=#attributes.topid#&siteid=#attributes.siteid#&startrow=#attributes.startrow#&moduleid=#attributes.moduleid#&compactDisplay=#attributes.compactDisplay#">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.versionhistory")#</a> </li>
+	<cfif attributes.compactDisplay neq 'true' and request.contentBean.getactive()lt 1 and (request.perm neq 'none')><li><a href="index.cfm?fuseaction=cArch.update&contenthistid=#attributes.ContentHistID#&action=delete&contentid=#attributes.contentid#&type=#attributes.type#&parentid=#attributes.parentid#&topid=#attributes.topid#&siteid=#attributes.siteid#&startrow=#attributes.startrow#&moduleid=#attributes.moduleid#&return=#attributes.return#" onclick="return confirm('#jsStringFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.deleteversionconfirm"))#')">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.deleteversion")#</a></li></cfif>
 		<cfif request.deletable><li><a href="index.cfm?fuseaction=cArch.update&action=deleteall&contentid=#attributes.contentid#&type=#attributes.type#&parentid=#attributes.parentid#&topid=#attributes.topid#&siteid=#attributes.siteid#&startrow=#attributes.startrow#&moduleid=#attributes.moduleid#" onclick="return confirm('#jsStringFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.deletecontentconfirm"))#')">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.deletecontent")#</a></li></cfif>
 	<cfif (isUserInRole('Admin;#application.settingsManager.getSite(attributes.siteid).getPrivateUserPoolID()#;0') or isUserInRole('S2'))><li><a href="index.cfm?fuseaction=cPerm.main&contentid=#attributes.ContentID#&type=#request.contentBean.gettype()#&parentid=#request.contentBean.getparentID()#&topid=#attributes.topid#&siteid=#attributes.siteid#&moduleid=#attributes.moduleid#&startrow=#attributes.startrow#">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.permissions")#</a></li></cfif>
 	</ul></cfif>
-<cfelse>
+</cfif>
+
+<cfif attributes.compactDisplay eq "true">
 	<cfif not listFindNoCase("Component,Form", attributes.type)>
 		<cfquery name="rsst" dbtype="query">select * from rsSubTypes where type=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#attributes.type#"> and subtype not in ('Default','default')</cfquery>
 		<cfif rsst.recordcount>
@@ -243,7 +256,7 @@ select * from rsPluginScripts3 order by pluginID
 				</li>
 				</ul>								
 		</cfif>
-	</cfif>
+</cfif>
 		
 	<input type="hidden" name="closeCompactDisplay" value="true" />
 </cfif>

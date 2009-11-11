@@ -346,57 +346,8 @@ to your own modified versions of Mura CMS.
 					  </cfif>
  					
 					   AND (
-					   <cfif not listFindNoCase("calendar_features,Calendar,Fixed" ,arguments.type)>
-					  (tcontent.DisplayStart <= #createodbcdatetime(nowAdjusted)# 
-					  		AND (tcontent.DisplayStop >= #createodbcdatetime(nowAdjusted)# or tcontent.DisplayStop is null)
-					  <cfelseif arguments.type eq 'Calendar'>
-					  (tcontent.DisplayStart < #createodbcdate(dateadd("D",1,nowAdjusted))#
-					  		AND (tcontent.DisplayStop >= #createodbcdate(nowAdjusted)# or tcontent.DisplayStop is null)  
-					
-					  <cfelseif arguments.type eq 'calendar_features'>
-					  (tcontent.DisplayStart >= #createodbcdatetime(nowAdjusted)# 
-					  	OR (tcontent.DisplayStart < #createodbcdatetime(nowAdjusted)# AND tcontent.DisplayStop >= #createodbcdatetime(nowAdjusted)#)
-					  )
-					  </cfif>
-					
-					  <cfif arguments.type neq 'fixed'>AND tcontent.Display = 2)</cfif>
-					  
-					 
-					  <cfif listFindNoCase("Default,ReleaseDate,ReleaseMonth" ,arguments.type) > 
-					  	OR 
-					  <cfelseif not listFindNoCase("calendar_features,Calendar,Fixed" ,arguments.type)>
-						AND 
-					   </cfif>
-					   <cfif listFindNoCase("Default,Fixed,ReleaseDate,ReleaseMonth" ,arguments.type)>  
-					  	tcontent.Display = 1 
-					  </cfif>
-					 <cfif arguments.type neq 'calendar_features'> 
-					 	) 
-					 </cfif>
-					 
-					  <cfif arguments.type eq 'ReleaseDate'>
-					  AND
-					  (
-					  	(tcontent.releaseDate < #createodbcdate(dateadd("D",1,nowAdjusted))#
-					  		AND tcontent.releaseDate >= #createodbcdate(nowAdjusted)#) 
-					  		
-					  	OR 
-					  	 (tcontent.releaseDate is Null
-					  		AND tcontent.lastUpdate < #createodbcdate(dateadd("D",1,nowAdjusted))#
-					  		AND tcontent.lastUpdate >= #createodbcdate(nowAdjusted)#) 	 
-					  	)
-					  <cfelseif arguments.type eq 'ReleaseMonth'>
-					  AND
-					  (
-					  	(tcontent.releaseDate < #createodbcdate(dateadd("D",1,createDate(year(nowAdjusted),month(nowAdjusted),daysInMonth(nowAdjusted))))#
-					  		AND tcontent.releaseDate >= #createodbcdate(createDate(year(nowAdjusted),month(nowAdjusted),1))#) 
-					  		
-					  	OR 
-					  	 (tcontent.releaseDate is Null
-					  		AND tcontent.lastUpdate < #createodbcdate(dateadd("D",1,createDate(year(nowAdjusted),month(nowAdjusted),daysInMonth(nowAdjusted))))#
-					  		AND tcontent.lastUpdate >= #createodbcdate(createDate(year(nowAdjusted),month(nowAdjusted),1))#)  
-					  	)
-					   </cfif>
+					 		#renderMenuTypeClause(arguments.type,nowAdjusted)#
+					 		)
 					
 					<cfif len(arguments.tag)>
 					and tcontenttags.tag= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.tag#"/> 
@@ -457,73 +408,26 @@ to your own modified versions of Mura CMS.
 					  AND tcontent.moduleid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.moduleID#"/>
 					  AND tcontent.siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
 					
-					 	  <cfif arguments.hasFeatures and not categoryListLen>
+					 <cfif arguments.hasFeatures and not categoryListLen>
 					  and  (tcontent.isFeature=1
 	 						 or
 	 						tcontent.isFeature = 2 
 							and tcontent.FeatureStart <= #createodbcdatetime(nowAdjusted)# AND  (tcontent.FeatureStop >= #createodbcdatetime(nowAdjusted)# or tcontent.FeatureStop is null)
 							)
 					  </cfif>
+					  
 					  <cfif arguments.keywords neq ''>
-					  AND (tcontent.body like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.keywords#%"/>
+					  AND 
+					  (tcontent.body like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.keywords#%"/>
 					  		OR tcontent.title like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.keywords#%"/>)
 					  </cfif>
  					
 					   AND (
-					  <cfif not listFindNoCase("calendar_features,Calendar,Fixed" ,arguments.type)>
-					  (tcontent.DisplayStart <= #createodbcdatetime(nowAdjusted)# 
-					  		AND (tcontent.DisplayStop >= #createodbcdatetime(nowAdjusted)# or tcontent.DisplayStop is null)
-					  <cfelseif arguments.type eq 'Calendar'>
-						  (tcontent.DisplayStart < #createodbcdate(dateadd("D",1,nowAdjusted))#
-						  		AND (tcontent.DisplayStop >= #createodbcdate(nowAdjusted)# or tcontent.DisplayStop is null)  
-						
-					  <cfelseif arguments.type eq 'calendar_features'>
-					  (tcontent.DisplayStart >= #createodbcdatetime(nowAdjusted)# 
-					  	OR (tcontent.DisplayStart < #createodbcdatetime(nowAdjusted)# AND tcontent.DisplayStop >= #createodbcdatetime(nowAdjusted)#)
-					  )
-					  </cfif>
-			
-					  <cfif arguments.type neq 'fixed'>
-						  AND tcontent.Display = 2)
-					  </cfif>
-
-					  <cfif listFindNoCase("Default,ReleaseDate,ReleaseMonth" ,arguments.type) >
-					  OR 
-					  <cfelseif not listFindNoCase("calendar_features,Calendar,Fixed" ,arguments.type)> 
-					  AND 
-					  </cfif>
-					  <cfif listFindNoCase("default,Fixed,ReleaseDate,ReleaseMonth" ,arguments.type)>
-					  tcontent.Display = 1 
-					  </cfif>
-					 <cfif arguments.type neq 'calendar_features'> ) </cfif>
-					 
-					 <cfif arguments.type eq 'ReleaseDate'>
-					  AND
-					  (
-					  	(tcontent.releaseDate < #createodbcdate(dateadd("D",1,nowAdjusted))#
-					  		AND tcontent.releaseDate >= #createodbcdate(nowAdjusted)#) 
-					  		
-					  	OR 
-					  	 (tcontent.releaseDate is Null
-					  		AND tcontent.lastUpdate < #createodbcdate(dateadd("D",1,nowAdjusted))#
-					  		AND tcontent.lastUpdate >= #createodbcdate(nowAdjusted)#) 	 
-					  	)
-					   <cfelseif arguments.type eq 'ReleaseMonth'>
-					  AND
-					  (
-					  	(tcontent.releaseDate < #createodbcdate(dateadd("D",1,createDate(year(nowAdjusted),month(nowAdjusted),daysInMonth(nowAdjusted))))#
-					  		AND  tcontent.releaseDate >= #createodbcdate(createDate(year(nowAdjusted),month(nowAdjusted),1))#) 
-					  		
-					  	OR 
-					  	 (tcontent.releaseDate is Null
-					  		AND tcontent.lastUpdate < #createodbcdate(dateadd("D",1,createDate(year(nowAdjusted),month(nowAdjusted),daysInMonth(nowAdjusted))))#
-					  		AND tcontent.lastUpdate >= #createodbcdate(createDate(year(nowAdjusted),month(nowAdjusted),1))#)  
-					  	)
-					   </cfif>
-					
+					   		#renderMenuTypeClause(arguments.type,nowAdjusted)#
+		  					)
 					
 					<cfif len(arguments.tag)>
-					and tcontenttags.tag= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.tag#"/> 
+						and tcontenttags.tag= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.tag#"/> 
 					</cfif>
 					
 					<cfif relatedListLen >
@@ -1564,5 +1468,137 @@ to your own modified versions of Mura CMS.
 	
 	<cfreturn rsObjects>
 		
+</cffunction>
+
+<cffunction name="renderMenuTypeClause" output="true">
+<cfargument name="menuType">
+<cfargument name="menuDateTime">
+<cfoutput>
+			<cfswitch expression="#arguments.menuType#">
+					<cfcase value="Calendar,CalendarDate">
+						tcontent.Display = 2 	 
+					 	AND 
+						  (
+						  	tcontent.DisplayStart < #createodbcdate(dateadd("D",1,arguments.menuDateTime))#
+						  	AND 
+						  		(
+						  			tcontent.DisplayStop >= #createodbcdate(arguments.menuDateTime)# or tcontent.DisplayStop is null
+						  		)
+						  	)  
+					</cfcase>
+					<cfcase value="calendar_features">
+					  	tcontent.Display = 2 	 
+					 	AND
+					  		(
+					  			tcontent.DisplayStart >= #createodbcdatetime(arguments.menuDateTime)# 
+					  			OR (tcontent.DisplayStart < #createodbcdatetime(arguments.menuDateTime)# AND tcontent.DisplayStop >= #createodbcdatetime(arguments.menuDateTime)#)
+					  		)
+					 </cfcase>
+					 <cfcase value="ReleaseDate">
+					 	(
+						 	tcontent.Display = 1 
+						 	
+						 OR
+						 	( 
+						   	tcontent.Display = 2 	 
+						 	 	AND 
+						 	 	(
+						 	 		tcontent.DisplayStart < #createodbcdate(dateadd("D",1,arguments.menuDateTime))#
+							  		AND (
+							  				tcontent.DisplayStop >= #createodbcdate(arguments.menuDateTime)# or tcontent.DisplayStop is null
+							  			)  
+								)
+							)
+						)
+						  
+						AND
+						
+						(
+						  	(
+						  		tcontent.releaseDate < #createodbcdate(dateadd("D",1,arguments.menuDateTime))#
+						  		AND tcontent.releaseDate >= #createodbcdate(arguments.menuDateTime)#) 
+						  		
+						  	OR 
+						  	 (
+						  	 	tcontent.releaseDate is Null
+						  		AND tcontent.lastUpdate < #createodbcdate(dateadd("D",1,arguments.menuDateTime))#
+						  		AND tcontent.lastUpdate >= #createodbcdate(arguments.menuDateTime)#
+						  	)
+					  	)	
+					  	
+					  </cfcase>
+					  <cfcase value="ReleaseMonth">
+					   (
+						 	tcontent.Display = 1 
+						 	
+						 OR
+						 	( 
+						   	tcontent.Display = 2 	 
+						 	 	AND 
+						 	 	(
+						 	 		tcontent.DisplayStart < #createodbcdate(dateadd("D",1,arguments.menuDateTime))#
+							  		AND (
+							  				tcontent.DisplayStop >= #createodbcdate(arguments.menuDateTime)# or tcontent.DisplayStop is null
+							  			)  
+								)
+							)
+						)
+						  
+						AND
+						(
+						  	(
+						  		tcontent.releaseDate < #createodbcdate(dateadd("D",1,createDate(year(arguments.menuDateTime),month(arguments.menuDateTime),daysInMonth(arguments.menuDateTime))))#
+						  		AND  tcontent.releaseDate >= #createodbcdate(createDate(year(arguments.menuDateTime),month(arguments.menuDateTime),1))#) 
+						  		
+						  	OR 
+					  		(
+					  			tcontent.releaseDate is Null
+					  			AND tcontent.lastUpdate < #createodbcdate(dateadd("D",1,createDate(year(arguments.menuDateTime),month(arguments.menuDateTime),daysInMonth(arguments.menuDateTime))))#
+					  			AND tcontent.lastUpdate >= #createodbcdate(createDate(year(arguments.menuDateTime),month(arguments.menuDateTime),1))#
+					  		)  
+					  	)
+					   </cfcase>
+					  <cfcase value="CalendarMonth">
+						tcontent.display=2
+						
+						AND
+						(
+						  	(
+						  		tcontent.displayStart < #createodbcdate(dateadd("D",1,createDate(year(arguments.menuDateTime),month(arguments.menuDateTime),daysInMonth(arguments.menuDateTime))))#
+						  		AND  tcontent.displayStart >= #createodbcdate(createDate(year(arguments.menuDateTime),month(arguments.menuDateTime),1))# 
+						  	)
+						  	
+						  	or 
+						  	
+						  	(
+						  		tcontent.displayStop < #createodbcdate(dateadd("D",1,createDate(year(arguments.menuDateTime),month(arguments.menuDateTime),daysInMonth(arguments.menuDateTime))))#
+						  		AND  tcontent.displayStop >= #createodbcdate(createDate(year(arguments.menuDateTime),month(arguments.menuDateTime),1))# 
+						  	)
+						 )
+					  </cfcase>
+					  <cfcase value="fixed">
+					  	
+					  	tcontent.Display = 1 
+					  	
+					   </cfcase>
+					  <cfdefaultcase>
+					  
+					 	tcontent.Display = 1 
+					  	OR
+					  	(
+					  		tcontent.Display = 2 	 
+					 		AND 
+					 	 		(
+					 	 			tcontent.DisplayStart < #createodbcdate(dateadd("D",1,arguments.menuDateTime))#
+						  			AND 
+						  				(
+						  					tcontent.DisplayStop >= #createodbcdate(arguments.menuDateTime)# or tcontent.DisplayStop is null
+						  				)  
+						  		)
+						)
+					  
+					  </cfdefaultcase>
+			</cfswitch>
+</cfoutput>
 </cffunction>
 </cfcomponent>

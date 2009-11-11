@@ -46,11 +46,13 @@ to your own modified versions of Mura CMS.
   <cfparam name="hasSummary" default="true"/>
   <cfset feedBean=application.feedManager.read(arguments.objectID) />
   <cfif feedBean.getIsActive()>
-	<cfsilent>
 	<cfset cssID=createCSSid(feedBean.renderName())>
     
-	<cfset editLink = "">
-	<!---
+	<cfset editableControl.editableControl.editLink = "">
+	<cfset editableControl.historyLink = "">
+	<cfset editableControl.innerHTML = "">
+	<!--- 
+	<cfif this.showEditableObjects>
 	<cfset perm = application.permUtility.getPerm('00000000000000000000000000000000011',arguments.siteid)>
 	<cfif perm neq 'editor'>
 		<cfset verdict = application.permUtility.getPerm(arguments.objectID, arguments.siteID)>
@@ -79,16 +81,20 @@ to your own modified versions of Mura CMS.
 			<cfset adminBase=""/>
 		</cfif>
 		
-		<cfset editLink = adminBase & "#application.configBean.getContext()#/admin/index.cfm?fuseaction=cFeed.edit">
-		<cfset editLink = editLink & "&amp;siteid=" & bean.getSiteID()>
-		<cfset editLink = editLink & "&amp;feedid=" & bean.getFeedID()>
-		<cfset editLink = editLink & "&amp;type=" & bean.getType()>
-		<cfset editLink = editLink & "&amp;homeID=" & request.contentBean.getContentID()>
-		<cfset editLink = editLink & "&amp;compactDisplay=true">
-		<cfset editLink = '<p class="edit" style="float:right;"><a href="#editLink#" title="#htmlEditFormat('Edit')#" rel="shadowbox;width=1100;">Edit</a></p>'>
+		<cfset editableControl.editLink = adminBase & "#application.configBean.getContext()#/admin/index.cfm?fuseaction=cFeed.edit">
+		<cfset editableControl.editLink = editableControl.editLink & "&amp;siteid=" & bean.getSiteID()>
+		<cfset editableControl.editLink = editableControl.editLink & "&amp;feedid=" & bean.getFeedID()>
+		<cfset editableControl.editLink = editableControl.editLink & "&amp;type=" & bean.getType()>
+		<cfset editableControl.editLink = editableControl.editLink & "&amp;homeID=" & request.contentBean.getContentID()>
+		<cfset editableControl.editLink = editableControl.editLink & "&amp;compactDisplay=true">
+		
+		<cfset editableControl.innerHTML = generateEditableObjectControl(editableControl.editLink, editableControl.historyLink)>
 	</cfif>
-	--->
-	</cfsilent>
+	</cfif> --->
+	<cfif editableControl.innerHTML neq "">
+		<div class="editableObject editableFeed">
+	</cfif>
+	
 	<cfif feedBean.getType() eq 'local'>
       <cfsilent>
 		<!---<cfset loadShadowBoxJS() />--->
@@ -104,7 +110,8 @@ to your own modified versions of Mura CMS.
 		<cfset doMeta=0 />
 		
 	  </cfsilent>
-	  	<cfif rs.recordcount>
+	  	
+		<cfif rs.recordcount>
 			<cfoutput><div class="svSyndLocal svFeed svIndex clearfix" id="#cssID#"></cfoutput>
 	        <cfif feedBean.getDisplayName()><cfoutput><#getHeaderTag('subHead1')#>#feedBean.renderName()#</#getHeaderTag('subHead1')#></cfoutput></cfif>
 
@@ -218,7 +225,10 @@ to your own modified versions of Mura CMS.
   <cfelse>
 		<!-- Inactive Feed '<cfoutput>#feedBean.getName()#</cfoutput>' -->
   </cfif>
-  <cfoutput>#editLink#</cfoutput>
+  <cfoutput>#editableControl.innerHTML#</cfoutput>
+  <cfif editableControl.innerHTML neq "">
+  	</div>
+  </cfif>
 <!---   <cfcatch>
   </cfcatch>
 </cftry> --->

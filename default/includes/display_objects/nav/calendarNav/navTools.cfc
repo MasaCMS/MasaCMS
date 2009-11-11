@@ -28,15 +28,22 @@ monthLong=rbFactory.getKey('calendar.monthlong');
 
 	<cfquery name="rs" dbtype="query">
 	select contentID from rsMonth where
+					<cfif navType eq "releaseMonth">
 					  (
-					  	(releaseDate < #createodbcdate(dateadd("D",1,arguments.today))#
-					  		AND releaseDate >= #createodbcdate(arguments.today)#) 
+					  	(releaseDate is not null
+					  		AND day(releaseDate) = #day(arguments.today)#) 
 					  		
 					  	OR 
 					  	 ((releaseDate is Null or releaseDate ='')
-					  		AND lastUpdate < #createodbcdate(dateadd("D",1,arguments.today))#
-					  		AND lastUpdate >= #createodbcdate(arguments.today)#) 	 
+					  		AND day(lastupdate) = #day(arguments.today)#)  
 					  	)
+					  <cfelse>
+					 	day(displayStart) <= #id#	
+						  	AND 
+						  		(
+						  			day(displayStop) >= #id# or displayStop is null
+						  		)	
+					  </cfif>
 	</cfquery>
 	
 	<cfif rs.recordcount>
@@ -67,14 +74,16 @@ monthLong=rbFactory.getKey('calendar.monthlong');
 <cfargument name="_navYear">
 <cfargument name="_navID">
 <cfargument name="_navPath">
+<cfargument name="_navType">
 <cfscript>
 navMonth=arguments._navMonth;
 navYear=arguments._navYear;
 navDay=arguments._navDay;
 navID=arguments._navID;
 navPath=arguments._navPath;
+navType=arguments._navType;
 selectedMonth = createDate(navYear,navMonth,1);
-rsMonth=application.contentGateway.getKids('00000000000000000000000000000000000',request.siteid,navID,"ReleaseMonth",selectedMonth,0,'',0,"orderno","desc",request.categoryID,request.relatedID);
+rsMonth=application.contentGateway.getKids('00000000000000000000000000000000000',request.siteid,navID,navType,selectedMonth,0,'',0,"orderno","desc",request.categoryID,request.relatedID);
 daysInMonth=daysInMonth(selectedMonth);
 firstDayOfWeek=dayOfWeek(selectedMonth)-1;
 previousMonth = navMonth-1;

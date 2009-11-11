@@ -56,6 +56,7 @@ to your own modified versions of Mura CMS.
 <cfset this.imageInList="jpg,jpeg,png,gif">
 <cfset this.personalization="user">
 <cfset this.showAdminToolBar=true/>
+<cfset this.showEditableObjects=false/>
 <cfset this.renderHTMLHead=true/>
 <cfset this.enableMuraTag=getConfigBean().getEnableMuraTag() />
 <cfset this.crumbdata=arrayNew(1)/>
@@ -63,7 +64,6 @@ to your own modified versions of Mura CMS.
 <cfset this.subHead1="h3"/>
 <cfset this.subHead2="h4"/>
 <cfset this.subHead3="h5"/>
-<cfset this.subHead4="h6"/>
 
 <cffunction name="init" returntype="any" access="public" output="false">
 <cfargument name="event" required="true" default="">
@@ -331,8 +331,9 @@ to your own modified versions of Mura CMS.
 		<cfargument name="stub" type="string" default="#application.configBean.getStub()#">
 		<cfargument name="categoryID" type="string" default="">
 		<cfargument name="relatedID" type="string" default="">
+		<cfargument name="rs" required="true" default="">
 		
-		<cfset var rsSection=application.contentGateway.getKids('00000000000000000000000000000000000',event.getValue('siteID'),arguments.contentid,arguments.type,arguments.today,50,'',0,arguments.sortBy,arguments.sortDirection,arguments.categoryID,arguments.relatedID)>
+		<cfset var rsSection=arguments.rs>
 		<cfset var adjust=0>
 		<cfset var current=0>
 		<cfset var link=''>
@@ -341,6 +342,11 @@ to your own modified versions of Mura CMS.
 		<cfset var nest=''>
 		<cfset var subnav=false>
 		<cfset var theNav="">
+		
+		<cfif not isQuery(rsSection)>
+			<cfset rsSection=application.contentGateway.getKids('00000000000000000000000000000000000',event.getValue('siteID'),arguments.contentid,arguments.type,arguments.today,50,'',0,arguments.sortBy,arguments.sortDirection,arguments.categoryID,arguments.relatedID)>
+		</cfif>
+		
 		<cfif rsSection.recordcount and ((event.getValue('r').restrict and event.getValue('r').allow) or (not event.getValue('r').restrict))>
 			<cfset adjust=rsSection.recordcount>
 			<cfsavecontent variable="theNav">
@@ -759,7 +765,9 @@ to your own modified versions of Mura CMS.
 	<cfset var filePath = theIncludePath  & fileDelim & "includes" & fileDelim & "display_objects" & fileDelim />
 	<cfset var hasSummary = arguments.Summary />
 	<cfset var useRss = arguments.RSS />
+	<cfset var bean = "" />
 	<cfset var theContent = "" />
+	<cfset var editableControl = structNew()>
 
 	<cfsavecontent variable="theContent">	
 	<cfif fileExists(expandPath(filePath) & fileDelim & "custom" & fileDelim & arguments.theFile)>
@@ -1643,4 +1651,43 @@ to your own modified versions of Mura CMS.
 </cfsavecontent>
 <cfreturn str>
 </cffunction>
+
+<cffunction name="generateEditableObjectControl" access="public" output="no" returntype="string">
+		<cfargument name="editLink" required="yes" default="">
+		<cfargument name="historyLink" required="yes" default="">
+		<cfargument name="contentTYpe" required="yes" default="">
+		<cfset var innerHTML = "">
+		
+		<cfset var editLabel=getSite().getRBFactory().getKey('sitemanager.content.fields.edit')>
+		<cfset var editTitle = editLabel>
+		
+		<!---
+		<cfif listFindNoCase("Form,Component",arguments.contentType)>
+			<cfset editTitle=getSite().getRBFactory().getKey('sitemanager.content.edit#lcase(arguments.contentType)#')>
+		</cfif>
+		<cfsavecontent variable="innerHTML">
+			<cfoutput>
+			<ul class="editableObjectControl">
+				<li class="edit"><a href="#arguments.editLink#" title="#htmlEditFormat('Edit')#" rel="shadowbox;width=1100;">Edit</a>
+					<ul>
+						<li class="objEdit"><a href="#arguments.editLink#" title="#htmlEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.edit'))#" rel="shadowbox;width=1100;">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.edit')#</a></li>
+						<cfif arguments.historyLink neq "">
+							<li class="objHistory last"><a href="#arguments.historyLink#" title="#htmlEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.versionhistory'))#" rel="shadowbox;width=1100;">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.versionhistory')#</a></li>
+						</cfif>
+					</ul>
+				</li>
+			</ul>
+			</cfoutput>
+		</cfsavecontent>
+		--->
+		<cfif this.showEditableObjects>		
+		<cfsavecontent variable="innerHTML">
+			<cfoutput>
+			<a href="#arguments.editLink#" title="#htmlEditFormat(editTitle)#" rel="shadowbox;width=1100;">#editLabel#</a>
+			</cfoutput>
+		</cfsavecontent>
+		</cfif>
+		<cfreturn innerHTML>
+</cffunction>
+
 </cfcomponent>

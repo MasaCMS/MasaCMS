@@ -170,6 +170,7 @@ to your own modified versions of Mura CMS.
 	<option value="category_summary_rss~#HTMLEditFormat(request.rsSections.menutitle)# - #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.categorysummaryrss')#~#request.rsSections.contentid#">#HTMLEditFormat(request.rsSections.menutitle)# - #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.categorysummaryrss')#</option>
 	<option value="related_section_content~#HTMLEditFormat(request.rsSections.menutitle)# - #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.relatedcontentsummaries')#~#request.rsSections.contentid#">#HTMLEditFormat(request.rsSections.menutitle)# - #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.relatedcontentsummaries')#</option>
 	<option value="related_section_content_no_summary~#HTMLEditFormat(request.rsSections.menutitle)# #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.relatedcontent')#~#request.rsSections.contentid#">#HTMLEditFormat(request.rsSections.menutitle)# - #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.relatedcontent')#</option>
+	<option value="calendar_nav~#HTMLEditFormat(request.rsSections.menutitle)# - #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.calendarnavigation')#~#request.rsSections.contentid#">#HTMLEditFormat(request.rsSections.menutitle)# - #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.calendarnavigation')#</option>
 	</cfif>
 </cfloop>
 </select>

@@ -54,9 +54,9 @@ to your own modified versions of Mura CMS.
 <cfsilent>
 	<cfif len(application.configBean.getAdminDomain())>
 		<cfif application.configBean.getAdminSSL()>
-			<cfset adminBase="https://#application.configBean.getAdminDomain()#"/>
+			<cfset adminBase="https://#application.configBean.getAdminDomain()##application.configBean.getServerPort()#"/>
 		<cfelse>
-			<cfset adminBase="http://#application.configBean.getAdminDomain()#"/>
+			<cfset adminBase="http://#application.configBean.getAdminDomain()##application.configBean.getServerPort()#"/>
 		</cfif>
 	<cfelse>
 		<cfset adminBase=""/>
