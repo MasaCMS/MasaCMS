@@ -790,6 +790,7 @@ select * from tplugins order by #arguments.orderby#
 	<cfset var listenerArray="">
 	<cfset var isGlobalEvent=left(arguments.runat,8) eq "onGlobal">
 	<cfset var isValidEvent=not REFind("[^A-Za-z0-9]",arguments.runat,1)>
+	<cfset var siteIDadjusted=rereplace(arguments.siteID,"[^a-zA-Z0-9\-]","","ALL")>
 	
 	<cfif isValidEvent and not isQuery(arguments.scripts) and not len(arguments.moduleID)>
 		<cfif not isObject(arguments.event)>
@@ -812,8 +813,8 @@ select * from tplugins order by #arguments.orderby#
 		</cfif>
 		
 		<cfif not isGlobalEvent and len(arguments.siteID)>
-			<cfif isDefined("variables.siteListeners.#arguments.siteID#.#arguments.runat#")>
-				<cfset listenerArray=evaluate("variables.siteListeners.#arguments.siteID#.#arguments.runat#")>
+			<cfif isDefined("variables.siteListeners.#siteIDadjusted#.#arguments.runat#")>
+				<cfset listenerArray=evaluate("variables.siteListeners.#siteIDadjusted#.#arguments.runat#")>
 				<cfif arrayLen(listenerArray)>
 					<cfloop from="1" to="#arrayLen(listenerArray)#" index="i">
 						<cfset eventHandlerIndex=listenerArray[i].index>
@@ -897,6 +898,7 @@ select * from tplugins order by #arguments.orderby#
 	<cfset var listenerArray="">
 	<cfset var isGlobalEvent=left(arguments.runat,8) eq "onGlobal">
 	<cfset var isValidEvent=not REFind("[^A-Za-z0-9]",arguments.runat,1)>
+	<cfset var siteIDadjusted=rereplace(arguments.siteID,"[^a-zA-Z0-9\-]","","ALL")>
 	
 	<cfif not isObject(arguments.event)>
 		<cfif isStruct(arguments.event)>
@@ -928,8 +930,8 @@ select * from tplugins order by #arguments.orderby#
 		</cfif>
 		
 		<cfif not isGlobalEvent and len(arguments.siteID)>
-			<cfif isDefined("variables.siteListeners.#arguments.siteID#.#arguments.runat#")>
-				<cfset listenerArray=evaluate("variables.siteListeners.#arguments.siteID#.#arguments.runat#")>
+			<cfif isDefined("variables.siteListeners.#siteIDadjusted#.#arguments.runat#")>
+				<cfset listenerArray=evaluate("variables.siteListeners.#siteIDadjusted#.#arguments.runat#")>
 				<cfif arrayLen(listenerArray)>
 					<cfloop from="1" to="#arrayLen(listenerArray)#" index="i">
 						<cfset eventHandler=variables.eventHandlers[listenerArray[i].index]>
@@ -1282,9 +1284,10 @@ select * from rs order by name
 <cfset var i = "">
 <cfset var handlerData=structNew()>
 <cfset var eventhandler=arguments.component>
+<cfset var siteIDadjusted=rereplace(arguments.siteID,"[^a-zA-Z0-9\-]","","ALL")>
 
-	<cfif not StructKeyExists(variables.siteListeners,arguments.siteid)>
-		<cfset variables.siteListeners[arguments.siteID]=structNew()>
+	<cfif not StructKeyExists(variables.siteListeners,siteIDadjusted)>
+		<cfset variables.siteListeners[siteIDadjusted]=structNew()>
 	</cfif>
 	
 	<cfif isObject(eventHandler)>
@@ -1304,12 +1307,12 @@ select * from rs order by name
 			<cfset handlerData=structNew()>
 			<cfset handlerData.index=arrayLen(variables.eventHandlers)>
 			<cfif left(i,8) neq "onGlobal">
-				<cfif not structKeyExists(variables.siteListeners[arguments.siteID],i)>
-					<cfset variables.siteListeners[arguments.siteID][i]=arrayNew(1)>
+				<cfif not structKeyExists(variables.siteListeners[siteIDadjusted],i)>
+					<cfset variables.siteListeners[siteIDadjusted][i]=arrayNew(1)>
 				</cfif>
-				<cfset arrayAppend( variables.siteListeners[arguments.siteID][i] , handlerData)>
+				<cfset arrayAppend( variables.siteListeners[siteIDadjusted][i] , handlerData)>
 			<cfelse>
-				<cfset arrayAppend( variables.globalListeners[arguments.siteID][i] , handlerData)>
+				<cfset arrayAppend( variables.globalListeners[i] , handlerData)>
 			</cfif>
 		</cfif>
 	</cfloop>
@@ -1328,10 +1331,12 @@ select * from rs order by name
 <cffunction name="getSiteListener" ouput="false" returntype="any">
 <cfargument name="siteID">
 <cfargument name="runat">
-
-	<cfif isDefined("variables.siteListeners.#arguments.siteID#.#arguments.runat#")>
-		<cfset variables.listeners[arguments.siteID]=structNew()>
-		<cfset listenerArray=evaluate("variables.siteListeners.#arguments.siteID#.#arguments.runat#")>
+	
+	<cfset var siteIDadjusted=rereplace(arguments.siteID,"[^a-zA-Z0-9\-]","","ALL")>
+	
+	<cfif isDefined("variables.siteListeners.#siteIDadjusted#.#arguments.runat#")>
+		<cfset variables.listeners[siteIDadjusted]=structNew()>
+		<cfset listenerArray=evaluate("variables.siteListeners.#siteIDadjusted#.#arguments.runat#")>
 		<cfreturn variables.eventHandlers[listenerArray[1].index]>
 	<cfelse>
 		<cfreturn "">

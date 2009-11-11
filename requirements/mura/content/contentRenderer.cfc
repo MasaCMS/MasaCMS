@@ -1632,9 +1632,11 @@ to your own modified versions of Mura CMS.
 <cffunction name="getPagesQuery" returntype="query" output="false">
 	<cfargument name="str">
 
-	<cfset var pageArray=listToArray(replaceNocase(arguments.str,"[mura:pagebreak]","^^^","ALL"),"^^^")>
+	<cfset var pageList=replaceNocase(arguments.str,"[mura:pagebreak]","murapagebreak","ALL")>
 	<cfset var rs=queryNew("page")>
 	<cfset var i=1>
+	<cfset var pageArray=pageList.split("murapagebreak",-1)>
+	
 	<cfloop from="1" to="#arrayLen(pageArray)#"index="i">	
     	<cfset queryAddRow(rs,1)/>
 		<cfset querysetcell(rs,"page",pageArray[i],rs.recordcount)/>
