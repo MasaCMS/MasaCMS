@@ -790,7 +790,7 @@ select * from tplugins order by #arguments.orderby#
 	<cfset var listenerArray="">
 	<cfset var isGlobalEvent=left(arguments.runat,8) eq "onGlobal">
 	<cfset var isValidEvent=not REFind("[^A-Za-z0-9]",arguments.runat,1)>
-	<cfset var siteIDadjusted=rereplace(arguments.siteID,"[^a-zA-Z0-9\-]","","ALL")>
+	<cfset var siteIDadjusted=rereplace(arguments.siteID,"[^a-zA-Z0-9]","","ALL")>
 	
 	<cfif isValidEvent and not isQuery(arguments.scripts) and not len(arguments.moduleID)>
 		<cfif not isObject(arguments.event)>
@@ -898,7 +898,7 @@ select * from tplugins order by #arguments.orderby#
 	<cfset var listenerArray="">
 	<cfset var isGlobalEvent=left(arguments.runat,8) eq "onGlobal">
 	<cfset var isValidEvent=not REFind("[^A-Za-z0-9]",arguments.runat,1)>
-	<cfset var siteIDadjusted=rereplace(arguments.siteID,"[^a-zA-Z0-9\-]","","ALL")>
+	<cfset var siteIDadjusted=rereplace(arguments.siteID,"[^a-zA-Z0-9]","","ALL")>
 	
 	<cfif not isObject(arguments.event)>
 		<cfif isStruct(arguments.event)>
@@ -1284,7 +1284,7 @@ select * from rs order by name
 <cfset var i = "">
 <cfset var handlerData=structNew()>
 <cfset var eventhandler=arguments.component>
-<cfset var siteIDadjusted=rereplace(arguments.siteID,"[^a-zA-Z0-9\-]","","ALL")>
+<cfset var siteIDadjusted=rereplace(arguments.siteID,"[^a-zA-Z0-9]","","ALL")>
 
 	<cfif not StructKeyExists(variables.siteListeners,siteIDadjusted)>
 		<cfset variables.siteListeners[siteIDadjusted]=structNew()>
@@ -1332,7 +1332,7 @@ select * from rs order by name
 <cfargument name="siteID">
 <cfargument name="runat">
 	
-	<cfset var siteIDadjusted=rereplace(arguments.siteID,"[^a-zA-Z0-9\-]","","ALL")>
+	<cfset var siteIDadjusted=rereplace(arguments.siteID,"[^a-zA-Z0-9]","","ALL")>
 	
 	<cfif isDefined("variables.siteListeners.#siteIDadjusted#.#arguments.runat#")>
 		<cfset variables.listeners[siteIDadjusted]=structNew()>
