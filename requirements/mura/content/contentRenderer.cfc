@@ -1640,7 +1640,7 @@ to your own modified versions of Mura CMS.
 	<cftry>
 		<cfset pageArray=pageList.split("murapagebreak",-1)>
 		<cfcatch>
-		<cfset pageArray=arguments.str>
+		<cfset pageArray[1]=arguments.str>
 		</cfcatch>
 	</cftry>
 	
