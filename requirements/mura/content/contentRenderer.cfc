@@ -1635,7 +1635,14 @@ to your own modified versions of Mura CMS.
 	<cfset var pageList=replaceNocase(arguments.str,"[mura:pagebreak]","murapagebreak","ALL")>
 	<cfset var rs=queryNew("page")>
 	<cfset var i=1>
-	<cfset var pageArray=pageList.split("murapagebreak",-1)>
+	<cfset var pageArray=ArrayNew(1)>
+	
+	<cftry>
+		<cfset pageArray=pageList.split("murapagebreak",-1)>
+		<cfcatch>
+		<cfset pageArray=arguments.str>
+		</cfcatch>
+	</cftry>
 	
 	<cfloop from="1" to="#arrayLen(pageArray)#"index="i">	
     	<cfset queryAddRow(rs,1)/>
