@@ -52,13 +52,15 @@ function renderAdZone#r#(){
 $.getJSON("#application.configBean.getContext()#/tasks/ads/renderAdZone.cfm", 
 		{AdZoneID: "#arguments.objectid#", siteID: "#request.siteid#",track:"#request.track#",cacheid:Math.random()},
 		function(r){
-		if(r.mediatype.indexOf('lash') > -1){
-				var so = new SWFObject(r.mediaurl, "svAd#r#swf", r.width, r.height, r.version);
-			    so.addVariable("adUrl", "#application.configBean.getContext()#/tasks/ads/track.cfm?adUrl=" + escape(r.redirecturl) + "&placementid=" + r.placementid + "track=#request.track#&siteID=#request.siteid#");
-			    so.addParam("wmode", "transparent");
-			    so.write("svAd#r#");
-			} else {
-				$("##svAd#r#").html(r.creative);
+			if(typeof(r).mediatype  != 'undefined'){
+				if(r.mediatype.indexOf('lash') > -1){
+					var so = new SWFObject(r.mediaurl, "svAd#r#swf", r.width, r.height, r.version);
+				    so.addVariable("adUrl", "#application.configBean.getContext()#/tasks/ads/track.cfm?adUrl=" + escape(r.redirecturl) + "&placementid=" + r.placementid + "track=#request.track#&siteID=#request.siteid#");
+				    so.addParam("wmode", "transparent");
+				    so.write("svAd#r#");
+				} else {
+					$("##svAd#r#").html(r.creative);
+				}
 			}
 		}			
 	);
@@ -78,13 +80,15 @@ new Ajax.Request( '#application.configBean.getContext()#/tasks/ads/renderAdZone.
 	parameters: 'AdZoneID=#arguments.objectid#&siteid=#request.siteid#&track=#request.track#&cacheid=' + Math.random(),
 	onSuccess: function(transport){
 			var r=eval("(" + transport.responseText + ")");
-			if(r.mediatype.indexOf('lash') > -1){
-				var so = new SWFObject(r.mediaurl, "svAd#r#swf", r.width, r.height, r.version);
-			    so.addVariable("adUrl", "#application.configBean.getContext()#/tasks/ads/track.cfm?adUrl=" + escape(r.redirecturl) + "&placementid=" + r.placementid + "track=#request.track#&siteID=#request.siteid#");
-			    so.addParam("wmode", "transparent");
-			    so.write("svAd#r#");
-			} else {
-				$("svAd#r#").innerHTML=r.creative;
+			if(typeof(r).mediatype  != 'undefined'){
+				if(r.mediatype.indexOf('lash') > -1){
+					var so = new SWFObject(r.mediaurl, "svAd#r#swf", r.width, r.height, r.version);
+				    so.addVariable("adUrl", "#application.configBean.getContext()#/tasks/ads/track.cfm?adUrl=" + escape(r.redirecturl) + "&placementid=" + r.placementid + "track=#request.track#&siteID=#request.siteid#");
+				    so.addParam("wmode", "transparent");
+				    so.write("svAd#r#");
+				} else {
+					$("svAd#r#").innerHTML=r.creative;
+				}
 			}
 		}
 	}); 
