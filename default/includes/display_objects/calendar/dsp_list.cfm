@@ -92,7 +92,7 @@ to your own modified versions of Mura CMS.
 		<dt>#link#</dt>
 		<cfif hasImage>
 		<dd class="image">
-			<a href="#createHREF(rsSection.type,rsSection.filename,rsSection.siteid,rsSection.contentid,rsSection.target,rsSection.targetparams,"",application.configBean.getContext(),application.configBean.getStub(),application.configBean.getIndexFile())#" title="#HTMLEditFormat(rsSection.title)#"><img src="#application.configBean.getContext()#/tasks/render/small/index.cfm?fileid=#rsSection.fileid#"  alt="#htmlEditFormat(rsSection.title)#"/></a>
+			<a href="#createHREF(rsSection.type,rsSection.filename,rsSection.siteid,rsSection.contentid,rsSection.target,rsSection.targetparams,"",application.configBean.getContext(),application.configBean.getStub(),application.configBean.getIndexFile())#" title="#HTMLEditFormat(rsSection.title)#"><img src="#createHREFForImage(rsSection.siteID,rsSection.fileID,rsSection.fileExt,'small')#"  alt="#htmlEditFormat(rsSection.title)#"/></a>
 		</dd>
 		</cfif>
 	 	<cfif rsSection.summary neq ''>

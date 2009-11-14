@@ -56,6 +56,7 @@ to your own modified versions of Mura CMS.
 <!---<cfset this.shortDateFormat="short"/>--->
 <!---<cfset this.showMetaList="jpg,jpeg,png,gif">--->
 <!---<cfset this.imageInList="jpg,jpeg,png,gif">--->
+<!---<cfset this.directImages=true/>--->
 <!---<cfset this.personalization="user">--->
 <!---<cfset this.showAdminToolBar=true/>--->
 <cfset this.showMemberToolBar=false/>

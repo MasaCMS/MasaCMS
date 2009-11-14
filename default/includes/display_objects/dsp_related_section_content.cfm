@@ -87,7 +87,7 @@ to your own modified versions of Mura CMS.
 		<dt>#link#</dt>
 		<cfif hasImage>
 				<dd class="image">
-					<!---<a href="#application.configBean.getContext()#/tasks/render/file/index.cfm?fileID=#rsFeatures.FileID#&ext=.#rsFeatures.fileExt#" title="#HTMLEditFormat(rsFeatures.title)#" rel="shadowbox[#cssID#]">---><img src="#application.configBean.getContext()#/tasks/render/small/index.cfm?fileid=#rsFeatures.fileid#"/><!---</a>--->
+					<!---<a href="#application.configBean.getContext()#/tasks/render/file/index.cfm?fileID=#rsFeatures.FileID#&ext=.#rsFeatures.fileExt#" title="#HTMLEditFormat(rsFeatures.title)#" rel="shadowbox[#cssID#]">---><img src="#createHREFForImage(rsFeatures.siteID,rsFeatures.fileID,rsFeatures.fileExt,'small')#"/><!---</a>--->
 				</dd>
 		</cfif>
 		<cfif hasSummary or (rsFeatures.type eq 'Page' and  hasComments)><dd>#setDynamicContent(rsFeatures.summary)#<cfif hasComments><ul class="navComment"><li>#commentsLink#</li></ul></cfif></dd></cfif>

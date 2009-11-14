@@ -145,7 +145,7 @@ to your own modified versions of Mura CMS.
 				<dt><a href="#theLink#">#rs.MenuTitle#</a></dt>
 				<cfif hasImage>
 					<dd class="image">
-						<a href="#theLink#" title="#HTMLEditFormat(rs.title)#"><img src="#application.configBean.getContext()#/tasks/render/small/index.cfm?fileid=#rs.fileid#" alt="#htmlEditFormat(rs.title)#"/></a>
+						<a href="#theLink#" title="#HTMLEditFormat(rs.title)#"><img src="#createHREFForImage(rs.siteID,rs.fileID,rs.fileExt,'small')#" alt="#htmlEditFormat(rs.title)#"/></a>
 					</dd>
 				</cfif>
 				<cfif hasSummary and len(rs.summary)>

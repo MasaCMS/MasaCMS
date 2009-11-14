@@ -86,7 +86,7 @@ to your own modified versions of Mura CMS.
 			<cfset class=iif(rssection.currentrow eq 1,de('first'),de(iif(rssection.currentrow eq rssection.recordcount,de('last'),de(''))))>
 			</cfsilent>
 			<li class="#class#">
-			<a href="#application.configBean.getContext()#/tasks/render/file/index.cfm?fileID=#rsSection.FileID#&ext=.#rsSection.fileExt#" title="#HTMLEditFormat(rsSection.title)#" rel="shadowbox[gallery]" class="gallery"><img src="#application.configBean.getContext()#/tasks/render/small/index.cfm?fileID=#rsSection.FileID#" alt="#HTMLEditFormat(rsSection.title)#"/></a>	 
+			<a href="#application.configBean.getContext()#/tasks/render/file/index.cfm?fileID=#rsSection.FileID#&ext=.#rsSection.fileExt#" title="#HTMLEditFormat(rsSection.title)#" rel="shadowbox[gallery]" class="gallery"><img src="#createHREFForImage(rsSection.siteID,rsSection.fileID,rsSection.fileExt,'small')#" alt="#HTMLEditFormat(rsSection.title)#"/></a>	 
 		 	<dl>
 		 	<dt>
 		 	<cfif hasComments>

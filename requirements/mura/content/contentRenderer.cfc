@@ -54,10 +54,12 @@ to your own modified versions of Mura CMS.
 <cfset this.shortDateFormat="short"/>
 <cfset this.showMetaList="jpg,jpeg,png,gif">
 <cfset this.imageInList="jpg,jpeg,png,gif">
+<cfset this.directImages=true/>
 <cfset this.personalization="user">
 <cfset this.showAdminToolBar=true/>
 <cfset this.showMemberToolBar=true/>
 <cfset this.showEditableObjects=false/>
+<cfset this.renderHTMLHead=true/>
 <cfset this.renderHTMLHead=true/>
 <cfset this.enableMuraTag=getConfigBean().getEnableMuraTag() />
 <cfset this.crumbdata=arrayNew(1)/>
@@ -698,6 +700,31 @@ to your own modified versions of Mura CMS.
 <cfreturn href />
 </cffunction>
 
+<cffunction name="createHREFForImage" output="false" returntype="any">
+<cfargument name="siteID">
+<cfargument name="fileID">
+<cfargument name="fileExt">
+<cfargument name="size" required="true" default="large">
+<cfargument name="direct" required="true" default="#this.directImages#">
+	<cfset var imgSuffix=arguments.size>
+	<cfset var returnURL="">
+	
+	<cfif arguments.direct and application.configBean.getFileStore() eq "fileDir">
+		<cfif imgSuffix eq "large">
+			<cfset imgSuffix="">
+		<cfelse>
+			<cfset imgSuffix="_" & imgSuffix>
+		</cfif>
+		<cfset returnURL=application.configBean.getAssetPath() & "/" & arguments.siteID & "/cache/file/" & arguments.fileID & imgSuffix & "." & arguments.fileEXT>
+	<cfelse>
+		<cfif imgSuffix eq "large">
+			<cfset imgSuffix="file">
+		</cfif>
+		<cfset returnURL=application.configBean.getContext() & "/tasks/render/" & imgSuffix & "/?fileID=" & arguments.fileID>
+	</cfif>
+	<cfreturn returnURL>
+</cffunction>
+
 <cffunction name="addlink" output="false" returntype="string">
 			<cfargument name="type" required="true">
 			<cfargument name="filename" required="true">
@@ -955,7 +982,7 @@ to your own modified versions of Mura CMS.
 								<cfset loadShadowBoxJS() />
 								<cfoutput>
 								<div id="svAssetDetail" class="image">
-								<a href="#application.configBean.getContext()#/tasks/render/file/?fileID=#event.getValue('contentBean').getFileID()#&ext=.#event.getValue('contentBean').getFileExt()#" title="#HTMLEditFormat(event.getValue('contentBean').getMenuTitle())#" rel="shadowbox[body]" id="svAsset"><img src="#application.configBean.getContext()#/tasks/render/medium/?fileID=#event.getValue('contentBean').getFileID()#" class="imgMed" alt="#HTMLEditFormat(event.getValue('contentBean').getMenuTitle())#" /></a>
+								<a href="#application.configBean.getContext()#/tasks/render/file/?fileID=#event.getValue('contentBean').getFileID()#&ext=.#event.getValue('contentBean').getFileExt()#" title="#HTMLEditFormat(event.getValue('contentBean').getMenuTitle())#" rel="shadowbox[body]" id="svAsset"><img src="#createHREFForImage(event.getValue('siteID'),event.getValue('contentBean').getFileID(),event.getValue('contentBean').getFileEXT(),'medium')#" class="imgMed" alt="#HTMLEditFormat(event.getValue('contentBean').getMenuTitle())#" /></a>
 								#setDynamicContent(event.getValue('contentBean').getSummary(),event.getValue('keywords'))#
 								</div>
 								</cfoutput>
@@ -983,7 +1010,7 @@ to your own modified versions of Mura CMS.
 							and listFind("jpg,jpeg,gif,png",lcase(event.getValue('contentBean').getFileExt()))>
 								<cfset loadShadowBoxJS() />
 								<cfoutput>
-								<a href="#application.configBean.getContext()#/tasks/render/file/?fileID=#event.getValue('contentBean').getFileID()#&ext=.#event.getValue('contentBean').getFileExt()#" title="#HTMLEditFormat(event.getValue('contentBean').getMenuTitle())#" rel="shadowbox[body]" id="svAsset"><img src="#application.configBean.getContext()#/tasks/render/medium/?fileID=#event.getValue('contentBean').getFileID()#" class="imgMed" alt="#HTMLEditFormat(event.getValue('contentBean').getMenuTitle())#" /></a>
+								<a href="#application.configBean.getContext()#/tasks/render/file/?fileID=#event.getValue('contentBean').getFileID()#&ext=.#event.getValue('contentBean').getFileExt()#" title="#HTMLEditFormat(event.getValue('contentBean').getMenuTitle())#" rel="shadowbox[body]" id="svAsset"><img src="#createHREFForImage(event.getValue('siteID'),event.getValue('contentBean').getFileID(),event.getValue('contentBean').getFileEXT(),'medium')#" class="imgMed" alt="#HTMLEditFormat(event.getValue('contentBean').getMenuTitle())#" /></a>
 								</cfoutput>	
 						</cfif>		
 						<cfoutput>#dspMultiPageContent(arguments.body)#</cfoutput>
