@@ -51,7 +51,7 @@ to your own modified versions of Mura CMS.
 <cfset variables.instance.altName=""/>
 <cfset variables.instance.Lang="en-us"/>
 <cfset variables.instance.isActive=1 />
-<cfset variables.instance.isPublic=1 />
+<cfset variables.instance.isPublic=0 />
 <cfset variables.instance.isDefault=0 />
 <cfset variables.instance.description=""/>
 <cfset variables.instance.contentID=""/>
