@@ -93,7 +93,7 @@ to your own modified versions of Mura CMS.
 	</li>
 	<li>
 	<label for="email2xt">#rbFactory.getKey('user.emailconfirm')#<span class="required">*</span></label>
-	<input name="email2" id="email2txt" type="text" value="" class="text" validate="match" matchfield="email" required="true" message="T#HTMLEditFormat(rbFactory.getKey('user.emailconfirmvalidate'))#" maxlength="50">
+	<input name="email2" id="email2txt" type="text" value="" class="text" validate="match" matchfield="email" required="true" message="#HTMLEditFormat(rbFactory.getKey('user.emailconfirmvalidate'))#" maxlength="50">
 	
 	<!--- Comment out the following two password fields to automatically create a random password for the user instead of letting them pick one themselves --->
 	<li>

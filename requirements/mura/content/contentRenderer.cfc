@@ -706,8 +706,10 @@ to your own modified versions of Mura CMS.
 <cfargument name="fileExt">
 <cfargument name="size" required="true" default="large">
 <cfargument name="direct" required="true" default="#this.directImages#">
+<cfargument name="complete" type="boolean" required="true" default="false">
 	<cfset var imgSuffix=arguments.size>
 	<cfset var returnURL="">
+	<cfset var begin=iif(arguments.complete,de('http://#application.settingsManager.getSite(arguments.siteID).getDomain()##application.configBean.getServerPort()#'),de('')) />
 	
 	<cfif arguments.direct and application.configBean.getFileStore() eq "fileDir">
 		<cfif imgSuffix eq "large">
@@ -722,7 +724,9 @@ to your own modified versions of Mura CMS.
 		</cfif>
 		<cfset returnURL=application.configBean.getContext() & "/tasks/render/" & imgSuffix & "/?fileID=" & arguments.fileID>
 	</cfif>
-	<cfreturn returnURL>
+	
+	<cfreturn begin & returnURL>
+	
 </cffunction>
 
 <cffunction name="addlink" output="false" returntype="string">
@@ -740,6 +744,7 @@ to your own modified versions of Mura CMS.
 			<cfargument name="showMeta" type="string" required="true" default="0">
 			<cfargument name="showCurrent" type="string" required="true" default="1">
 			<cfargument name="class" type="string" required="true" default="">
+			<cfargument name="complete" type="boolean" required="true" default="false">
 
 						
 			<cfset var link ="">
@@ -750,7 +755,7 @@ to your own modified versions of Mura CMS.
 				<cfset theClass=listAppend(theClass,"current"," ") />
 			</cfif>
 			
-			<cfset href=createHREF(arguments.type,arguments.filename,arguments.siteid,arguments.contentid,arguments.target,iif(arguments.filename eq event.getValue('contentBean').getfilename(),de(''),de(arguments.targetParams)),arguments.queryString,arguments.context,arguments.stub,arguments.indexFile,false,arguments.showMeta)>
+			<cfset href=createHREF(arguments.type,arguments.filename,arguments.siteid,arguments.contentid,arguments.target,iif(arguments.filename eq event.getValue('contentBean').getfilename(),de(''),de(arguments.targetParams)),arguments.queryString,arguments.context,arguments.stub,arguments.indexFile,arguments.complete,arguments.showMeta)>
 			<cfset link='<a href="#href#" #iif(len(theClass),de('class="#theClass#"'),de(""))#>#HTMLEditFormat(arguments.title)#</a>' />
 
 		<cfreturn link>
