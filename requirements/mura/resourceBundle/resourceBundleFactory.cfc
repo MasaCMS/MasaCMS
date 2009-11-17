@@ -827,5 +827,13 @@ to your own modified versions of Mura CMS.
 
 </cffunction>
 
+<cffunction name="resetSessionLocale" output="false">
+<cfargument name="mySession" required="true" default="#session#">
+	<cfset mySession.locale=application.settingsManager.getSite(mySession.siteID).getJavaLocale() />
+	<cfset mySession.dateKey=""/>
+	<cfset mySession.dateKeyFormat=""/>
+	<cfset setAdminLocale(mySession)>
+</cffunction>
+
 </cfcomponent>
 

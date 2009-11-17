@@ -40,8 +40,6 @@ for your modified version; it is your choice whether to do so, or to make such m
 the GNU General Public License version 2  without this exception.  You may, if you choose, apply this exception
 to your own modified versions of Mura CMS.
 --->
-<cfset application.rbFactory.setAdminLocale()>
-
 <!---------------------------------------------->
 <!--- LET'S FIGURE OUT IF THE BROWSER IS IE6 --->
 <!---------------------------------------------->
@@ -125,14 +123,48 @@ to your own modified versions of Mura CMS.
 </cfsilent>
 
 
+<script type="text/javascript">
+	addLoadEvent(checkToolbarDisplay);
+	
+	function checkToolbarDisplay () {
+		<cfif Cookie.fetDisplay eq "none">
+			<cfif getJsLib() eq "jquery">
+				$(".editableObject").each(
+					function(intIndex){
+						$(this).addClass('editableObjectHide');
+					}
+				);
+			<cfelse>
+				$$(".editableObject").each(
+					function(o){
+						o.addClassName('editableObjectHide');
+					}
+				);
+			</cfif>
+		</cfif>
+	}
+</script>
+
 <cfif not variables.isIeSix>
 <script type="text/javascript">
 	function toggleAdminToolbar(){
-	<cfif getJsLib() eq "jquery">
-		$("##frontEndTools").animate({opacity: "toggle"});
-	<cfelse>
-		Effect.toggle("frontEndTools", "appear");
-	</cfif>
+		<cfif getJsLib() eq "jquery">
+			$("##frontEndTools").animate({opacity: "toggle"});
+			
+			$(".editableObject").each(
+				function(intIndex){
+					$(this).toggleClass('editableObjectHide');
+				}
+			);
+		<cfelse>
+			Effect.toggle("frontEndTools", "appear");
+			
+			$$(".editableObject").each(
+				function(o){
+					o.addToggleName('editableObjectHide');
+				}
+			);
+		</cfif>
 	}
 </script>
 <cfelse>	
@@ -144,8 +176,21 @@ to your own modified versions of Mura CMS.
 	function toggleAdminToolbarIE6(){
 	<cfif getJsLib() eq "jquery">
 		$("##frontEndToolsIE6").animate({opacity: "toggle"});
+		
+		$(".editableObject").each(
+			function(intIndex){
+				$(this).toggleClass('editableObjectHide');
+			}
+		);
+		
 	<cfelse>
 		Effect.toggle("frontEndToolsIE6", "appear");
+		
+		$$(".editableObject").each(
+			function(o){
+				o.addToggleName('editableObjectHide');
+			}
+		);
 	</cfif>
 	};
 					
@@ -197,8 +242,8 @@ to your own modified versions of Mura CMS.
 						<li id="adminAddContent" onmouseover="showSubMenuIE6(this.id,'addMenuDropDown')" onmouseout="hideObjIE6('addMenuDropDown')"><a href="##" onclick="return false;">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.add')#&hellip;</a>																						
 						<cfelse>							
 						<li id="adminAddContent"><a href="##" onclick="return false;">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.add')#&hellip;</a>						
-						</cfif>	
-						<ul id="addMenuDropDown">
+							
+						</cfif><ul id="addMenuDropDown">
 						<cfif request.contentBean.getType() neq 'Gallery'>
 						<li id="adminNewPage"><a href="#newLink#&amp;type=Page" rel="shadowbox;width=1050;">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.type.page')#</a></li>
 						<li id="adminNewLink"><a href="#newLink#&amp;type=Link" rel="shadowbox;width=1050;" >#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.type.link')#</a></li>

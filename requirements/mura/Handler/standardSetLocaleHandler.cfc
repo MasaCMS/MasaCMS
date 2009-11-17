@@ -23,9 +23,13 @@
 	
 <cffunction name="handle" output="false" returnType="any">
 	<cfargument name="event" required="true">
-	
+	<cfparam name="session.siteID" default="">
 	<cfset setLocale(application.settingsManager.getSite(event.getValue('siteid')).getJavaLocale()) />
-
+	<cfif session.siteid neq event.getValue('siteid')>
+		<!---These are use for admin purposes--->
+		<cfset session.siteID=event.getValue('siteid')>
+		<cfset application.rbFactory.resetSessionLocale()>
+	</cfif>
 </cffunction>
 
 </cfcomponent>

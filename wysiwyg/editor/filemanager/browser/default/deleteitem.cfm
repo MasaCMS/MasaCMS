@@ -3,4 +3,4 @@
 
 <cffile action="DELETE" file="#location##url.src#">
 </cfif>
-<cflocation url="#application.configBean.getContext()#/fckeditor/editor/filemanager/browser/default/frmresourceslist.cfm?reload">
+<cflocation url="#application.configBean.getContext()#/wysiwyg/editor/filemanager/browser/default/frmresourceslist.cfm?reload">

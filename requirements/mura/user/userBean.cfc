@@ -693,6 +693,10 @@ to your own modified versions of Mura CMS.
   	<cfreturn getExtendedData().getAttribute(arguments.key,arguments.useMuraDefault) />
 </cffunction>
 
+ <cffunction name="purgeExtendedData" returntype="void" output="false" access="public">
+	<cfset variables.instance.extendData=""/>
+ </cffunction>
+
  <cffunction name="setTags" returnType="void" output="false" access="public">
     <cfargument name="tags" type="string" required="true">
     <cfset variables.instance.tags = trim(arguments.tags) />

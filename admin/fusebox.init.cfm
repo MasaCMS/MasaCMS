@@ -66,15 +66,16 @@ to your own modified versions of Mura CMS.
 	<cfset session.dashboardSpan=30>
 <cfelse>
 	<cfset session.dashboardSpan=application.configBean.getSessionHistory()>
-	
 </cfif>
-<cfif attributes.siteid neq ''>
-	<cfset Session.siteid = attributes.siteid>
-	<cfset Session.userFilesPath = "#application.configBean.getAssetPath()#/#attributes.siteid#/assets/">
+
+<cfif attributes.siteid neq '' and (session.siteid neq attributes.siteID)>
+	<cfset session.siteid = attributes.siteid>
+	<cfset session.userFilesPath = "#application.configBean.getAssetPath()#/#attributes.siteid#/assets/">
+	<cfset application.rbFactory.resetSessionLocale()>
 </cfif>
 
 <cfif attributes.moduleid neq ''>
-	<cfset Session.moduleid = attributes.moduleid>
+	<cfset session.moduleid = attributes.moduleid>
 </cfif>
 
 <cfif application.configBean.getAdminDomain() neq '' and application.configBean.getAdminDomain() neq listFirst(cgi.http_host,":") and attributes.compactDisplay eq '' and attributes.closeCompactDisplay eq ''>
@@ -152,5 +153,5 @@ to your own modified versions of Mura CMS.
 	<cflocation addtoken="false" url="https://#listFirst(cgi.http_host,":")##page#">
 </cfif>
 
-<cfset application.rbFactory.setAdminLocale(session)>
+<cfset application.rbFactory.setAdminLocale()>
 </cfsilent>

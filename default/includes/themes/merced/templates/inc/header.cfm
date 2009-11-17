@@ -1,6 +1,6 @@
 <cfoutput>
 	<div id="header" class="clearfix">
-		<h1><a href="#application.configBean.getContext()#/">#HTMLEditFormat(renderer.getSite().getSite())#</a></h1>
+		<h1><a href="#application.configBean.getContext()#/#request.siteid#/">#HTMLEditFormat(renderer.getSite().getSite())#</a></h1>
 		<ul class="navUtility">
 			<li><a href="">About Us</a></li>
 			<li class="last"><a href="">Contact</a></li>

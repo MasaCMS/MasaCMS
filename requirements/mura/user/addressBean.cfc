@@ -395,6 +395,10 @@ to your own modified versions of Mura CMS.
 	<cfreturn variables.instance.extendData />
  </cffunction>
 
+ <cffunction name="purgeExtendedData" returntype="void" output="false" access="public">
+	<cfset variables.instance.extendData=""/>
+ </cffunction>
+
 <cffunction name="getExtendedAttribute" returnType="string" output="false" access="public">
  <cfargument name="key" type="string" required="true">
  <cfargument name="useMuraDefault" type="boolean" required="true" default="false"> 

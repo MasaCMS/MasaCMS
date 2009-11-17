@@ -18,6 +18,9 @@
 <cfif not isDefined("attributes.categoryID")><cfset attributes.categoryID = "" /></cfif>
 <cfif not isDefined("attributes.contentID")><cfset attributes.contentID = "" /></cfif>
 <cfif not isDefined("attributes.restricted")><cfset attributes.restricted = "0" /></cfif>
+<cfif not isDefined("attributes.closeCompactDisplay")><cfset attributes.closeCompactDisplay = "" /></cfif>
+<cfif not isDefined("attributes.compactDisplay")><cfset attributes.compactDisplay = "" /></cfif>
+<cfif not isDefined("attributes.homeID")><cfset attributes.homeID = "" /></cfif>
 <cfset request.rsRestrictGroups = application.contentUtility.getRestrictGroups(attributes.siteid) >
 <cfset request.feedBean = application.feedManager.read(attributes.feedID) >
 <cfset request.rslist = application.feedManager.getcontentItems(attributes.feedID,request.feedBean.getcontentID()) >
@@ -48,6 +51,21 @@
 <cfelse><cfrethrow></cfif></cfcatch></cftry>
 </cfif>
 </cfsavecontent>
+<cfset myFusebox.thisCircuit = "cFeed">
+<cfif attributes.compactDisplay eq 'true'>
+<!--- do action="layout.compact" --->
+<cfset myFusebox.thisCircuit = "layout">
+<cfset myFusebox.thisFuseaction = "compact">
+<cfif not isDefined("fusebox.ajax")><cfset fusebox.ajax = "" /></cfif>
+<cfif not isDefined("fusebox.layout")><cfset fusebox.layout = "" /></cfif>
+<cftry>
+<cfoutput><cfinclude template="../view/layouts/compact.cfm"></cfoutput>
+<cfcatch type="missingInclude"><cfif len(cfcatch.MissingFileName) gte 11 and right(cfcatch.MissingFileName,11) is "compact.cfm">
+<cfthrow type="fusebox.missingFuse" message="missing Fuse" detail="You tried to include a fuse compact.cfm in circuit layout which does not exist (from fuseaction layout.compact).">
+<cfelse><cfrethrow></cfif></cfcatch></cftry>
+<cfset myFusebox.thisCircuit = "cFeed">
+<cfset myFusebox.thisFuseaction = "edit">
+<cfelse>
 <!--- do action="layout.display" --->
 <cfset myFusebox.thisCircuit = "layout">
 <cfset myFusebox.thisFuseaction = "display">
@@ -58,6 +76,9 @@
 <cfcatch type="missingInclude"><cfif len(cfcatch.MissingFileName) gte 12 and right(cfcatch.MissingFileName,12) is "template.cfm">
 <cfthrow type="fusebox.missingFuse" message="missing Fuse" detail="You tried to include a fuse template.cfm in circuit layout which does not exist (from fuseaction layout.display).">
 <cfelse><cfrethrow></cfif></cfcatch></cftry>
+<cfset myFusebox.thisCircuit = "cFeed">
+<cfset myFusebox.thisFuseaction = "edit">
+</cfif>
 <cfcatch><cfrethrow></cfcatch>
 </cftry>
 
