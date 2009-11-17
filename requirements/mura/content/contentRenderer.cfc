@@ -60,7 +60,6 @@ to your own modified versions of Mura CMS.
 <cfset this.showMemberToolBar=true/>
 <cfset this.showEditableObjects=false/>
 <cfset this.renderHTMLHead=true/>
-<cfset this.renderHTMLHead=true/>
 <cfset this.enableMuraTag=getConfigBean().getEnableMuraTag() />
 <cfset this.crumbdata=arrayNew(1)/>
 <cfset this.headline="h2"/>
@@ -771,15 +770,20 @@ to your own modified versions of Mura CMS.
 	<cfargument name="useRss" type="boolean" required="false" default="false" />
 
 	<cfset var theContent=""/>
-	
-	<cfif StructKeyExists(arguments,"cacheKey")>
+	<cfset var objectPerm="none">
+
+	<cfif session.mura.isLoggedIn and this.showEditableObjects>
+		<cfset objectPerm=application.permUtility.getDisplayObjectPerm(arguments.siteID,arguments.object,arguments.objectID)>
+	</cfif>	
+
+	<cfif StructKeyExists(arguments,"cacheKey") and objectPerm neq "editor">
 		<cfsavecontent variable="theContent">
 		<cf_CacheOMatic key="#arguments.cacheKey#" nocache="#event.getValue('nocache')#">
 			<cfoutput>#dspObject_Include(arguments.siteid,arguments.object,arguments.objectid,arguments.fileName,arguments.hasSummary,arguments.useRss)#</cfoutput>
 		</cf_cacheomatic>
 		</cfsavecontent>
 	<cfelse>
-		<cfset theContent = dspObject_Include(arguments.siteid,arguments.object,arguments.objectid,arguments.fileName,arguments.hasSummary,arguments.useRss) />
+		<cfset theContent = dspObject_Include(arguments.siteid,arguments.object,arguments.objectid,arguments.fileName,arguments.hasSummary,arguments.useRss,objectPerm) />
 	</cfif>
 	<cfreturn theContent />
 
@@ -792,6 +796,7 @@ to your own modified versions of Mura CMS.
 	<cfargument name="theFile" type="string" />
 	<cfargument name="Summary" type="boolean" required="true" default="false"/>
 	<cfargument name="RSS" type="boolean" required="true" default="false" />
+	<cfargument name="objectPerm" type="string" required="true" default="none" />
 
 	<cfset var theIncludePath = event.getSite().getIncludePath() />
 	<cfset var fileDelim = application.configBean.getFileDelim() />
@@ -1701,8 +1706,6 @@ to your own modified versions of Mura CMS.
 
 <cffunction name="generateEditableObjectControl" access="public" output="no" returntype="string">
 		<cfargument name="editLink" required="yes" default="">
-		<cfargument name="historyLink" required="yes" default="">
-		<cfargument name="contentTYpe" required="yes" default="">
 		<cfset var innerHTML = "">
 		
 		<cfif this.showEditableObjects>		
@@ -1710,13 +1713,6 @@ to your own modified versions of Mura CMS.
 			<cfoutput>
 			<ul class="editableObjectControl">
 				<li class="edit"><a href="#arguments.editLink#" title="#htmlEditFormat('Edit')#" rel="shadowbox;width=1100;">#htmlEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.edit'))#</a>
-					<!---<ul>
-						<li class="objEdit"><a href="#arguments.editLink#" title="#htmlEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.edit'))#" rel="shadowbox;width=1100;">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.edit')#</a></li>
-						<cfif arguments.historyLink neq "">
-							<li class="objHistory last"><a href="#arguments.historyLink#" title="#htmlEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.versionhistory'))#" rel="shadowbox;width=1100;">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.versionhistory')#</a></li>
-						</cfif>
-					</ul>
-				</li>--->
 			</ul>
 			</cfoutput>
 		</cfsavecontent>

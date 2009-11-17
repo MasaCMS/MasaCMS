@@ -78,25 +78,12 @@ to your own modified versions of Mura CMS.
 	<cfset request.cacheItem=rsTemplate.doCache/>
 	
 	<cfset editableControl.editLink = "">
+	<!---
 	<cfset editableControl.historyLink = "">
+	--->
 	<cfset editableControl.innerHTML = "">
-	
-	<cfif this.showEditableObjects>
-	<cfset perm = application.permUtility.getPerm('00000000000000000000000000000000003',arguments.siteid)>
-	<cfif perm neq 'editor'>
-		<cfset verdict = application.permUtility.getPerm(arguments.objectID, arguments.siteID)>
-		<cfif verdict neq 'deny'>
-			<cfif verdict eq 'none'>
-				<cfset verdict = perm>
-			</cfif>
-		<cfelse>
-			<cfset verdict = 'none'>
-		</cfif>
-	<cfelse>
-		<cfset verdict = 'editor'>
-	</cfif>
-	
-	<cfif verdict eq 'editor'>
+
+	<cfif this.showEditableObjects  and objectPerm eq 'editor'>
 		<cfset request.contentRenderer.loadShadowBoxJS()>
 		
 		<cfif len(application.configBean.getAdminDomain())>
@@ -123,7 +110,7 @@ to your own modified versions of Mura CMS.
 		<cfset editableControl.editLink = editableControl.editLink & "&amp;parentid=" & bean.getParentID()>
 		<cfset editableControl.editLink = editableControl.editLink & "&amp;moduleid=" & bean.getModuleID()>
 		<cfset editableControl.editLink = editableControl.editLink & "&amp;compactDisplay=true">
-		
+		<!---
 		<cfset editableControl.historyLink = adminBase & "#application.configBean.getContext()#/admin/index.cfm?fuseaction=cArch.hist">
 		<cfset editableControl.historyLink = editableControl.historyLink & "&amp;siteid=" & bean.getSiteID()>
 		<cfset editableControl.historyLink = editableControl.historyLink & "&amp;contentid=" & bean.getContentID()>
@@ -133,9 +120,8 @@ to your own modified versions of Mura CMS.
 		<cfset editableControl.historyLink = editableControl.historyLink & "&amp;moduleid=" & bean.getModuleID()>
 		<cfset editableControl.historyLink = editableControl.historyLink & "&amp;startrow=1">
 		<cfset editableControl.historyLink = editableControl.historyLink & "&amp;compactDisplay=true">
-		
-		<cfset editableControl.innerHTML = generateEditableObjectControl(editableControl.editLink, editableControl.historyLink)>
-	</cfif>
+		--->
+		<cfset editableControl.innerHTML = generateEditableObjectControl(editableControl.editLink)>
 	</cfif>
 </cfsilent>
 

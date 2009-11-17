@@ -49,25 +49,12 @@ to your own modified versions of Mura CMS.
 	<cfset cssID=createCSSid(feedBean.renderName())>
     
 	<cfset editableControl.editLink = "">
+	<!---
 	<cfset editableControl.historyLink = "">
+	--->
 	<cfset editableControl.innerHTML = "">
 	
-	<cfif this.showEditableObjects>
-	<cfset perm = application.permUtility.getPerm('00000000000000000000000000000000011',arguments.siteid)>
-	<cfif perm neq 'editor'>
-		<cfset verdict = application.permUtility.getPerm(arguments.objectID, arguments.siteID)>
-		<cfif verdict neq 'deny'>
-			<cfif verdict eq 'none'>
-				<cfset verdict = perm>
-			</cfif>
-		<cfelse>
-			<cfset verdict = 'none'>
-		</cfif>
-	<cfelse>
-		<cfset verdict = 'editor'>
-	</cfif>
-	
-	<cfif verdict eq 'editor'>
+	<cfif this.showEditableObjects and objectPerm eq 'editor'>
 		<cfset bean = feedBean>
 		<cfset request.contentRenderer.loadShadowBoxJS()>
 		
@@ -88,8 +75,7 @@ to your own modified versions of Mura CMS.
 		<cfset editableControl.editLink = editableControl.editLink & "&amp;homeID=" & request.contentBean.getContentID()>
 		<cfset editableControl.editLink = editableControl.editLink & "&amp;compactDisplay=true">
 		
-		<cfset editableControl.innerHTML = generateEditableObjectControl(editableControl.editLink, editableControl.historyLink)>
-	</cfif>
+		<cfset editableControl.innerHTML = generateEditableObjectControl(editableControl.editLink)>
 	</cfif>
 	<cfif editableControl.innerHTML neq "">
 		<div class="editableObject editableFeed">

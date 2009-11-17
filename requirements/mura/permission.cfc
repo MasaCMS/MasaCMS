@@ -714,4 +714,59 @@ username="#variables.configBean.getDBUsername()#" password="#variables.configBea
 		</cfswitch>
 	<cfreturn rs/>
 </cffunction>
+
+<cffunction name="getDisplayObjectPerm" output="false" returntype="string">
+<cfargument name="siteID">
+<cfargument name="object">
+<cfargument name="objectID" required="true" default="">
+
+	<cfset var objectPerm="none">
+	<cfset var objectVerdict="none">
+
+	<cfif listFirst(arguments.object,"_") eq "feed">
+			<cfset objectPerm = getPerm('00000000000000000000000000000000011',arguments.siteid)>
+			<cfif objectPerm neq 'editor'>
+				<cfset objectVerdict = getPerm(arguments.objectID, arguments.siteID)>
+				<cfif objectVerdict neq 'deny'>
+					<cfif objectVerdict eq 'none'>
+						<cfset objectVerdict = objectPerm>
+					</cfif>
+				<cfelse>
+					<cfset objectVerdict = 'none'>
+				</cfif>
+			<cfelse>
+				<cfset objectVerdict = 'editor'>
+			</cfif>
+			
+		<cfelseif arguments.object eq "component">	
+				<cfset objectPerm = getPerm('00000000000000000000000000000000003',arguments.siteid)>
+				<cfif objectPerm neq 'editor'>
+					<cfset objectVerdict = getPerm(arguments.objectID, arguments.siteID)>
+					<cfif objectVerdict neq 'deny'>
+						<cfif objectVerdict eq 'none'>
+							<cfset objectVerdict = objectPerm>
+						</cfif>
+					<cfelse>
+						<cfset objectVerdict = 'none'>
+					</cfif>
+				<cfelse>
+					<cfset objectVerdict = 'editor'>
+				</cfif>
+		<cfelseif arguments.object eq "form">
+			<cfset objectPerm = getPerm('00000000000000000000000000000000004',arguments.siteid)>
+			<cfif objectPerm neq 'editor'>
+				<cfset objectVerdict = getPerm(arguments.objectID, arguments.siteID)>
+				<cfif objectVerdict neq 'deny'>
+					<cfif objectVerdict eq 'none'>
+						<cfset objectVerdict = objectPerm>
+					</cfif>
+				<cfelse>
+					<cfset objectVerdict = 'none'>
+				</cfif>
+			<cfelse>
+				<cfset objectVerdict = 'editor'>
+			</cfif>
+		</cfif>	
+	<cfreturn objectVerdict>
+</cffunction>
 </cfcomponent>
