@@ -131,7 +131,7 @@ to your own modified versions of Mura CMS.
 	</cfif>
 	<cfif len(rsTemplate.template) and fileExists("#getSite().getTemplateIncludeDir()#/components/#rsTemplate.template#")>
 		<cfset componentBody=rsTemplate.body>
-		<cfinclude template="#event.getSite().getThemeIncludePath()#/templates/components/#rsTemplate.template#">
+		<cfinclude template="#getSite().getTemplateIncludePath()#/components/#rsTemplate.template#">
 	<cfelse>
 		<cfoutput>
 			#setDynamicContent(rsTemplate.body)#

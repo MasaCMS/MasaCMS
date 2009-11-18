@@ -69,9 +69,12 @@ to your own modified versions of Mura CMS.
 </cfif>
 
 <cfif attributes.siteid neq '' and (session.siteid neq attributes.siteID)>
-	<cfset session.siteid = attributes.siteid>
-	<cfset session.userFilesPath = "#application.configBean.getAssetPath()#/#attributes.siteid#/assets/">
-	<cfset application.rbFactory.resetSessionLocale()>
+	<cfset siteCheck=application.settingsManager.getSites()>
+	<cfif structKeyExists(siteCheck,attributes.siteID)>
+		<cfset session.siteid = attributes.siteid>
+		<cfset session.userFilesPath = "#application.configBean.getAssetPath()#/#attributes.siteid#/assets/">
+		<cfset application.rbFactory.resetSessionLocale()>
+	</cfif>
 </cfif>
 
 <cfif attributes.moduleid neq ''>
