@@ -52,6 +52,12 @@ to your own modified versions of Mura CMS.
 	<cfelse>
 		<cfset attributes.date2=request.rsDataInfo.lastentered>
 	</cfif>
+	
+	<cfif len(request.contentBean.getResponseDisplayFields()) gt 0 and request.contentBean.getResponseDisplayFields() neq "~">
+		<cfset attributes.fieldnames=replace(listLast(request.contentBean.getResponseDisplayFields(),"~"), "^", ",", "ALL")>
+	<cfelse>
+		<cfset attributes.fieldnames=application.dataCollectionManager.getCurrentFieldList(attributes.contentid)/>
+	</cfif>
 </cfsilent>
 
 <div id="manageData">

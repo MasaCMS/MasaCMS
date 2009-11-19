@@ -2,7 +2,12 @@
 
 <cfparam name="attributes.columns" default="">
 
-<cfset attributes.fieldnames=application.dataCollectionManager.getCurrentFieldList(attributes.contentid)/>
+<cfif len(request.currentBean.getResponseDisplayFields()) gt 0 and request.currentBean.getResponseDisplayFields() neq "~">
+	<cfset attributes.fieldnames=replace(listLast(request.currentBean.getResponseDisplayFields(),"~"), "^", ",", "ALL")>
+<cfelse>
+	<cfset attributes.fieldnames=application.dataCollectionManager.getCurrentFieldList(attributes.contentid)/>
+</cfif>
+
 <cfset rsdata=application.dataCollectionManager.getData(attributes)/>
 <cfset DelimChar=",">
 <cfset NewLine=chr(13)&chr(10)>
