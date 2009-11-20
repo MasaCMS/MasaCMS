@@ -63,7 +63,6 @@ Lazarus contentServer Sitemap
 <!---<a href="index.cfm?month=#htmlEditFormat(request.month)#&year=#htmlEditFormat(request.year)#&categoryID=#htmlEditFormat(request.categoryID)#&relatedID=#htmlEditFormat(request.relatedID)#&filterBy=releaseMonth">View in List Format</a>--->
 <cfinclude template="dsp_dp_showmonth.cfm">
 <cfelse>
-<cfset nextN=application.utility.getNextN(rsSection,request.contentBean.getNextN(),request.StartRow)>
 <!---<a href="index.cfm?month=#htmlEditFormat(request.month)#&year=#htmlEditFormat(request.year)#&categoryID=#htmlEditFormat(request.categoryID)#&relatedID=#htmlEditFormat(request.relatedID)#">View in Calendar Format</a>--->
 <cfinclude template="dsp_list.cfm">
 </cfif>

@@ -108,6 +108,12 @@ to your own modified versions of Mura CMS.
 		fckEditor.config.GoogleMaps_Key ='none';
 		}
 		fckEditor.toolbarset 	= '#iif(attributes.type eq "Form",de("Form"),de("Default"))#';
+		
+		if(fileExists("#expandPath(application.settingsManager.getSite(attributes.siteid).getThemeIncludePath())#/js/fckconfig.js.cfm"))
+		{
+		fckEditor.config["CustomConfigurationsPath"]='#application.settingsManager.getSite(attributes.siteid).getThemeAssetPath()#/js/fckconfig.js.cfm?EditorType=#attributes.type#,';
+		}
+		
 		fckEditor.create(); // create the editor.
 	</cfscript>
 

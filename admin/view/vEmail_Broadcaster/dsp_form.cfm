@@ -129,6 +129,12 @@ to your own modified versions of Mura CMS.
 		fckEditor.config.AutoDetectLanguage=false;
 		fckEditor.width			= "100%";
 		fckEditor.height		= 400;
+		
+		if(fileExists("#expandPath(application.settingsManager.getSite(attributes.siteid).getThemeIncludePath())#/js/fckconfig.js.cfm"))
+		{
+		fckEditor.config["CustomConfigurationsPath"]='#application.settingsManager.getSite(attributes.siteid).getThemeAssetPath()#/js/fckconfig.js.cfm?EditorType=email,';
+		}
+		
 		fckEditor.create(); // create the editor.
 	</cfscript>
 	<div class="message"><input type="button" name="Count" value="Show Content Length" onclick="alert(FCKeditorAPI.GetInstance('bodyHTML').GetXHTML().length + ' Characters'); "> (#application.rbFactory.getKeyValue(session.rb,'email.maxcharacters')#)</div>

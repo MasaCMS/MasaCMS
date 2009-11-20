@@ -90,70 +90,74 @@ to your own modified versions of Mura CMS.
 		<cfelse>
 			<cfset rs=rsPreFeed />
 		</cfif>
+		
+		<cfset iterator=application.serviceFactory.getBean("contentIterator")>
+		<cfset iterator.setQuery(rs,feedBean.getNextN())>
+		
 		<cfset rbFactory=getSite().getRBFactory() />
 		<cfset nextN=application.utility.getNextN(rs,feedBean.getNextN(),request.StartRow)>
 		<cfset checkMeta=feedBean.getDisplayRatings() or feedBean.getDisplayComments()>
 		<cfset doMeta=0 />
-		
+		<cfset iterator.setStartRow(request.startrow)>	
 	  </cfsilent>
 	  	
-		<cfif rs.recordcount>
+		<cfif iterator.getRecordCount()>
 			<cfoutput><div class="svSyndLocal svFeed svIndex clearfix" id="#cssID#"></cfoutput>
 	        <cfif feedBean.getDisplayName()><cfoutput><#getHeaderTag('subHead1')#>#feedBean.renderName()#</#getHeaderTag('subHead1')#></cfoutput></cfif>
-
-	          <cfoutput query="rs"  startrow="#request.startrow#" maxrows="#nextn.RecordsPerPage#">
-	            <cfset theLink=createHREF(rs.type,rs.filename,rs.siteid,rs.contentid,rs.target,rs.targetparams,"",application.configBean.getContext(),application.configBean.getStub(),application.configBean.getIndexFile()) />
-
+			<cfloop condition="iterator.hasNext()">
 				<cfsilent>
+				<cfset item=iterator.next()>
+				 <cfset theLink=createHREF(item.getValue('type'),item.getValue('filename'),item.getValue('siteID'),item.getValue('contentID'),item.getValue('target'),item.getValue('targetparams'),"",application.configBean.getContext(),application.configBean.getStub(),application.configBean.getIndexFile()) />
 				<cfset class=""/>
-				<cfif rs.currentRow eq 1> 
+				<cfif not iterator.hasPrevious()> 
 					<cfset class=listAppend(class,"first"," ")/> 
 				</cfif>
-				<cfif rs.currentRow eq rs.recordcount> 
+				<cfif not iterator.hasNext()> 
 					<cfset class=listAppend(class,"last"," ")/> 
 				</cfif>
 				
-				<cfset hasImage=len(rs.fileID) and showImageInList(rs.fileExt) />
+				<cfset hasImage=len(item.getValue('fileID')) and showImageInList(item.getValue('fileExt')) />
 
 				<cfif hasImage>
 					<cfset class=listAppend(class,"hasImage"," ")>
 				</cfif>
 				<cfif checkMeta> 
-				<cfset doMeta=rs.type eq 'Page' or showItemMeta(rs.type) or (len(rs.fileID) and showItemMeta(rs.fileExt))>
+				<cfset doMeta=item.getValue('type') eq 'Page' or showItemMeta(item.getValue('type')) or (len(item.getValue('fileID')) and showItemMeta(item.getValue('fileEXT')))>
 				</cfif>
 				</cfsilent>
+				<cfoutput>
 				<dl<cfif class neq ''> class="#class#"</cfif>>
-				<cfif rs.parentType eq 'Calendar' and isDate(rs.displaystart)>
-					<dt class="releaseDate"><cfif LSDateFormat(rs.displaystart,"short") lt LSDateFormat(rs.displaystop,"short")>#LSDateFormat(rs.displaystart,getShortDateFormat())# - #LSDateFormat(rs.displaystop,getShortDateFormat())#<cfelse>#LSDateFormat(rs.displaystart,getLongDateFormat())#</cfif></dt>
-				<cfelseif LSisDate(rs.releasedate)>
-					<dt class="releaseDate">#LSDateFormat(rs.releasedate,getLongDateFormat())#</dt>
+				<cfif item.getValue('parentType') eq 'Calendar' and isDate(item.getValue('displayStart'))>
+					<dt class="releaseDate"><cfif LSDateFormat(item.getValue('displayStart'),"short") lt LSDateFormat(item.getValue('displayStop'),"short")>#LSDateFormat(item.getValue('displayStop'),getShortDateFormat())# - #LSDateFormat(item.getValue('displayStop'),getShortDateFormat())#<cfelse>#LSDateFormat(item.getValue('displayStart'),getLongDateFormat())#</cfif></dt>
+				<cfelseif LSisDate(item.getValue('releaseDate'))>
+					<dt class="releaseDate">#LSDateFormat(item.getValue('releaseDate'),getLongDateFormat())#</dt>
 				</cfif>
-				<dt><a href="#theLink#">#rs.MenuTitle#</a></dt>
+				<dt><a href="#theLink#">#HTMLEditFormat(item.getValue('menuTitle'))#</a></dt>
 				<cfif hasImage>
 					<dd class="image">
-						<a href="#theLink#" title="#HTMLEditFormat(rs.title)#"><img src="#createHREFForImage(rs.siteID,rs.fileID,rs.fileExt,'small')#" alt="#htmlEditFormat(rs.title)#"/></a>
+						<a href="#theLink#" title="#HTMLEditFormat(item.getValue('title'))#"><img src="#createHREFForImage(item.getValue('siteID'),item.getValue('fileID'),item.getValue('fileEXT'),'small')#" alt="#htmlEditFormat(item.getValue('title'))#"/></a>
 					</dd>
 				</cfif>
-				<cfif hasSummary and len(rs.summary)>
-					<dd class="summary">#setDynamicContent(rs.summary)#
-						<span class="readMore">#addlink(rs.type,rs.filename,rbFactory.getKey('list.readmore'),rs.target,rs.targetParams,rs.contentid,request.siteid,'',application.configBean.getContext(),application.configBean.getStub(),application.configBean.getIndexFile())#</span>
+				<cfif hasSummary and len(item.getValue('summary'))>
+					<dd class="summary">#setDynamicContent(item.getValue('summary'))#
+						<span class="readMore">#addlink(item.getValue('type'),item.getValue('filename'),rbFactory.getKey('list.readmore'),item.getValue('target'),item.getValue('targetparams'),item.getValue('contentID'),item.getValue('siteID'),'',application.configBean.getContext(),application.configBean.getStub(),application.configBean.getIndexFile())#</span>
 					</dd>
 				</cfif>
-				<cfif len(rs.credits)>
-					<dd class="credits">#rbFactory.getKey('list.by')# #rs.credits#</dd>
+				<cfif len(item.getValue('credits'))>
+					<dd class="credits">#rbFactory.getKey('list.by')# #HTMLEditFormat(item.getValue('credits'))#</dd>
 				</cfif>
 				<cfif doMeta and feedBean.getDisplayComments()>
-					<dd class="comments"><cfif isNumeric(rs.comments)>#rs.comments#<cfelse>0</cfif> <cfif rs.comments neq 1>#rbFactory.getKey('list.comments')#<cfelse>#rbFactory.getKey('list.comment')#</cfif></dd>
+					<dd class="comments"><cfif isNumeric(item.getValue('comments'))>#item.getValue('comments')#<cfelse>0</cfif> <cfif item.getValue('comments') neq 1>#rbFactory.getKey('list.comments')#<cfelse>#rbFactory.getKey('list.comment')#</cfif></dd>
 				</cfif>
-				<cfif len(rs.tags)>
-					<dd class="tags"><cfmodule template="nav/dsp_tag_line.cfm" tags="#rs.tags#"></dd>
+				<cfif len(item.getValue('tags'))>
+					<dd class="tags"><cfmodule template="nav/dsp_tag_line.cfm" tags="#item.getValue('tags')#"></dd>
 				</cfif>
 				<cfif doMeta and feedBean.getDisplayRatings()>
-					<dd class="rating #application.raterManager.getStarText(rs.rating)#">#rbFactory.getKey('list.rating')#: <span><cfif isNumeric(rs.rating)>#rs.rating# star<cfif rs.rating gt 1>s</cfif><cfelse>Zero stars</cfif></span></dd>
-				</cfif>
-				
+					<dd class="rating #application.raterManager.getStarText(item.getValue('rating'))#">#rbFactory.getKey('list.rating')#: <span><cfif isNumeric(item.getValue('rating'))>#item.getValue('rating')# star<cfif item.getValue('rating') gt 1>s</cfif><cfelse>Zero stars</cfif></span></dd>
+				</cfif>	
 				</dl>
 			</cfoutput>
+			</cfloop>
 
 			<cfif nextN.numberofpages gt 1>
 			<cfinclude template="dsp_nextN.cfm">

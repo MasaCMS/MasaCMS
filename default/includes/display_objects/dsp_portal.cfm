@@ -70,6 +70,7 @@ to your own modified versions of Mura CMS.
 </cfif>
 
 <cfset rsPreSection=application.contentGateway.getKids('00000000000000000000000000000000000',request.siteid,request.contentBean.getcontentid(),menuType,menuDate,100,request.keywords,0,request.contentBean.getsortBy(),request.contentBean.getsortDirection(),request.categoryID,request.relatedID,request.tag)>
+
 <cfif getSite().getExtranet() eq 1 and request.r.restrict eq 1>
 	<cfset rssection=queryPermFilter(rsPreSection)/>
 <cfelse>
@@ -77,67 +78,69 @@ to your own modified versions of Mura CMS.
 </cfif>
 <cfset rbFactory=getSite().getRBFactory() />	
 <cfset nextN=application.utility.getNextN(rsSection,request.contentBean.getNextN(),request.StartRow)>
-				
+<cfset iterator=application.serviceFactory.getBean("contentIterator")>
+<cfset iterator.setQuery(rsSection,request.contentBean.getNextN())>
+<cfset iterator.setStartRow(request.startRow)>		
 </cfsilent>
 
-<cfif nextN.totalrecords>
+<cfif iterator.getRecordcount()>
 <div id="svPortal" class="svIndex">
-		<cfoutput query="rsSection"  startrow="#request.startrow#" maxrows="#nextn.RecordsPerPage#">
+		<cfloop condition="iterator.hasNext()">
 		<cfsilent>
-		<cfset class=iif(rssection.currentrow eq 1,de('first'),de(iif(rssection.currentrow eq rssection.recordcount,de('last'),de(''))))>
-		<cfset link=addlink(rsSection.type,rsSection.filename,rsSection.menutitle,rsSection.target,rsSection.targetParams,rsSection.contentid,request.siteid,'',application.configBean.getContext(),application.configBean.getStub(),application.configBean.getIndexFile())>
+		<cfset item=iterator.next()>
 		<cfset class=""/>
-		
-		<cfif rsSection.currentRow eq 1> 
+		<cfif not iterator.hasPrevious()> 
 			<cfset class=listAppend(class,"first"," ")/> 
 		</cfif>
-		
-		<cfif rsSection.currentRow eq rsSection.recordcount> 
+		<cfif not iterator.hasNext()> 
 			<cfset class=listAppend(class,"last"," ")/> 
 		</cfif>
 		
-		<cfif hasComments and (rsSection.type eq 'Page' or showItemMeta(rsSection.type) or (len(rssection.fileID) and showItemMeta(rssection.fileExt))) >
-		<cfset commentsLink=addlink(rsSection.type,rsSection.filename,'#rbFactory.getKey("list.comments")#(#application.contentGateway.getCommentCount(request.siteid,rsSection.contentid)#)',rsSection.target,rsSection.targetParams,rsSection.contentid,request.siteid,'##comments',application.configBean.getContext(),application.configBean.getStub(),application.configBean.getIndexFile())>
+		<cfset link=addlink(item.getValue('type'),item.getValue('filename'),item.getValue('menutitle'),item.getValue('target'),item.getValue('targetparams'),item.getValue('contentID'),item.getValue('siteID'),'',application.configBean.getContext(),application.configBean.getStub(),application.configBean.getIndexFile())>
+		
+		<cfif hasComments and (item.getValue('type') eq 'Page' or showItemMeta(item.getValue('type')) or (len(item.getValue('fileID')) and showItemMeta(item.getValue('fileEXT')))) >
+		<cfset commentsLink=addlink(item.getValue('type'),item.getValue('filename'),'#rbFactory.getKey("list.comments")#(#application.contentGateway.getCommentCount(request.siteid,item.getValue('contentID'))#)',item.getValue('target'),item.getValue('targetparams'),item.getValue('contentID'),request.siteid,'##comments',application.configBean.getContext(),application.configBean.getStub(),application.configBean.getIndexFile())>
 		<cfelse>
 		<cfset commentsLink="">
 		</cfif>
 		
-		<cfset hasImage=len(rssection.fileID) and showImageInList(rssection.fileExt) />
+		<cfset hasImage=len(item.getValue('fileID')) and showImageInList(item.getValue('fileEXT')) />
 		
 		<cfif hasImage>
 			<cfset class=listAppend(class,"hasImage"," ")>
 		</cfif>
 		
 		</cfsilent>
+		<cfoutput>
 		<dl class="clearfix<cfif class neq ''> #class#</cfif>">
-		<cfif isDate(rsSection.releasedate)>
-		<dt class="releaseDate">#LSDateFormat(rsSection.releasedate,getLongDateFormat())#</dt>
+		<cfif isDate(item.getValue('releaseDate'))>
+		<dt class="releaseDate">#LSDateFormat(item.getValue('releaseDate'),getLongDateFormat())#</dt>
 		</cfif>
 		<dt>#link#</dt>
 		<cfif hasImage>
 		<dd class="image">
-			<a href="#createHREF(rsSection.type,rsSection.filename,rsSection.siteid,rsSection.contentid,rsSection.target,rsSection.targetparams,"",application.configBean.getContext(),application.configBean.getStub(),application.configBean.getIndexFile())#" title="#HTMLEditFormat(rsSection.title)#"><img src="#createHREFForImage(rsSection.siteID,rsSection.fileID,rsSection.fileExt,'small')#"  alt="#htmlEditFormat(rsSection.title)#"/></a>
+			<a href="#createHREF(item.getValue('type'),item.getValue('filename'),item.getValue('siteID'),item.getValue('contentID'),item.getValue('target'),item.getValue('targetparams'),"",application.configBean.getContext(),application.configBean.getStub(),application.configBean.getIndexFile())#" title="#HTMLEditFormat(item.getValue('title'))#"><img src="#createHREFForImage(item.getValue('siteID'),item.getValue('fileID'),item.getValue('fileEXT'),'small')#"  alt="#htmlEditFormat(item.getValue('title'))#"/></a>
 		</dd>
 		</cfif>
-	 	<cfif rsSection.summary neq ''>
-	 	<dd class="summary">#setDynamicContent(rsSection.summary)# <span class="readMore">#addlink(rsSection.type,rsSection.filename,rbFactory.getKey('list.readmore'),rsSection.target,rsSection.targetParams,rsSection.contentid,request.siteid,'',application.configBean.getContext(),application.configBean.getStub(),application.configBean.getIndexFile())#</span></dd>
+	 	<cfif len(item.getValue('summary'))>
+	 	<dd class="summary">#setDynamicContent(item.getValue('summary'))# <span class="readMore">#addlink(item.getValue('type'),item.getValue('filename'),rbFactory.getKey('list.readmore'),item.getValue('target'),item.getValue('targetparams'),item.getValue('contentID'),item.getValue('siteID'),'',application.configBean.getContext(),application.configBean.getStub(),application.configBean.getIndexFile())#</span></dd>
 	 	</cfif>
-	 	<cfif rsSection.credits neq "">
-	 	<dd class="credits">#rbFactory.getKey('list.by')# #rsSection.credits#</dd>
+	 	<cfif len(item.getValue('credits'))>
+	 	<dd class="credits">#rbFactory.getKey('list.by')# #HTMLEditFormat(item.getValue('credits'))#</dd>
 	 	</cfif>
 	 	<cfif len(commentsLink)>
 	 	<dd class="comments">#commentsLink#</dd>
 	 	</cfif>
-	 	<cfif rsSection.tags neq "">
-	 	<dd class="tags"><cfmodule template="nav/dsp_tag_line.cfm" tags="#rsSection.tags#"></dd>
+	 	<cfif len(item.getValue('tags'))>
+	 	<dd class="tags"><cfmodule template="nav/dsp_tag_line.cfm" tags="#item.getValue('tags')#"></dd>
 	 	</cfif>
-	 	<cfif hasRatings and (rsSection.type eq 'Page' or showItemMeta(rsSection.type) or (len(rssection.fileID) and showItemMeta(rssection.fileExt)))>
+	 	<cfif hasRatings and (item.getValue('type') eq 'Page' or showItemMeta(item.getValue('type')) or (len(item.getValue('fileID')) and showItemMeta(item.getValue('fileEXT'))))>
 		<!--- rating#replace(rateBean.getRate(),".","")# --->
-	 	<dd class="rating #application.raterManager.getStarText(rsSection.rating)#">#rbFactory.getKey('list.rating')#: <span><cfif isNumeric(rsSection.rating)>#rsSection.rating# star<cfif rsSection.rating gt 1>s</cfif> <cfelse>Zero stars</cfif></span></dd>	 	
+	 	<dd class="rating #application.raterManager.getStarText(item.getValue('rating'))#">#rbFactory.getKey('list.rating')#: <span><cfif isNumeric(item.getValue('rating'))>#item.getValue('rating')# star<cfif item.getValue('rating') gt 1>s</cfif> <cfelse>Zero stars</cfif></span></dd>	 	
 	 	</cfif>
 	 	</dl>
 	 	</cfoutput>
-	 
+	 	</cfloop>
 	
 	<cfif nextn.numberofpages gt 1>
 		<cfinclude template="dsp_nextN.cfm">
@@ -145,7 +148,7 @@ to your own modified versions of Mura CMS.
 </div>
 </cfif>
 
-<cfif not rsSection.recordcount>
+<cfif not iterator.getRecordCount()>
        <cfoutput>
        <cfif request.filterBy eq "releaseMonth">
             <div id="svPortal">
