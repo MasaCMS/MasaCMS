@@ -40,11 +40,19 @@ for your modified version; it is your choice whether to do so, or to make such m
 the GNU General Public License version 2  without this exception.  You may, if you choose, apply this exception
 to your own modified versions of Mura CMS.
 --->
+<cfsilent>
+<cfset loginURL=application.settingsManager.getSite(request.siteid).getLoginURL()>
+<cfif find("?",loginURL)>
+<cfset loginURL=LoginURL & "&LinkServID=" & event.getContentBean().getContentID()>
+<cfelse>
+<cfset loginURL=LoginURL & "?LinkServID=" & event.getContentBean().getContentID()>
+</cfif>
+</cfsilent>
 <cfoutput>
 #getSite().getJSDateKey()#	
 <script type="text/javascript" src="#event.getSite().getAssetPath()#/js/global.js"></script>
 <script type="text/javascript">
-var loginURL="#application.settingsManager.getSite(request.siteid).getLoginURL()#";
+var loginURL="#loginURL#";
 var siteid="#request.siteid#"; 
 var siteID="#request.siteid#"; 
 var context="#application.configBean.getContext()#"; 

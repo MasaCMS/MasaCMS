@@ -108,7 +108,7 @@ to your own modified versions of Mura CMS.
 	 	<dd class="comments">#commentsLink#</dd>
 	 	</cfif>
 	 	<cfif len(item.getValue('tags'))>
-	 	<dd class="tags"><cfmodule template="nav/dsp_tag_line.cfm" tags="#item.getValue('tags')#"></dd>
+	 	<dd class="tags"><cfmodule template="../nav/dsp_tag_line.cfm" tags="#item.getValue('tags')#"></dd>
 	 	</cfif>
 	 	<cfif hasRatings and (item.getValue('type') eq 'Page' or showItemMeta(item.getValue('type')) or (len(item.getValue('fileID')) and showItemMeta(item.getValue('fileEXT'))))>
 		<!--- rating#replace(rateBean.getRate(),".","")# --->
