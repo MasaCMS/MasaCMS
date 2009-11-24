@@ -111,7 +111,7 @@ to your own modified versions of Mura CMS.
 		
 		if(fileExists("#expandPath(application.settingsManager.getSite(attributes.siteid).getThemeIncludePath())#/js/fckconfig.js.cfm"))
 		{
-		fckEditor.config["CustomConfigurationsPath"]='#application.settingsManager.getSite(attributes.siteid).getThemeAssetPath()#/js/fckconfig.js.cfm?EditorType=#attributes.type#,';
+		fckEditor.config["CustomConfigurationsPath"]=urlencodedformat('#application.settingsManager.getSite(attributes.siteid).getThemeAssetPath()#/js/fckconfig.js.cfm?EditorType=#attributes.type#');
 		}
 		
 		fckEditor.create(); // create the editor.
