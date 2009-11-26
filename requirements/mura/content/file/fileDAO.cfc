@@ -88,6 +88,7 @@ to your own modified versions of Mura CMS.
 		<cfset var fileID=createUUID() />
 		<cfset var ct=arguments.contentType & "/" & arguments.contentSubType />
 		<cfset var pluginEvent = createObject("component","mura.event").init(arguments) />
+		<cfset variables.pluginManager.announceEvent("onBeforeFileCache",pluginEvent)>
 		
 		<cfswitch expression="#variables.configBean.getFileStore()#">
 			<cfcase value="fileDir">
@@ -135,7 +136,7 @@ to your own modified versions of Mura CMS.
 		
 		<cfset pluginEvent.setValue("fileid",fileID) />
 		<cfset variables.pluginManager.announceEvent("onFileCache", pluginEvent)>
-		
+		<cfset variables.pluginManager.announceEvent("onAfterFileCache",pluginEvent)>
 		<cfreturn fileid />
 </cffunction>
 
@@ -269,6 +270,9 @@ to your own modified versions of Mura CMS.
 		<cfset data.rsFile=rsFile />
 		<cfset pluginEvent.init(data)>
 		
+		<cfset variables.pluginManager.announceEvent("onFileCacheDelete",pluginEvent)>
+		<cfset variables.pluginManager.announceEvent("onBeforeFileCacheDelete",pluginEvent)>
+		
 		<cfswitch expression="#variables.configBean.getFileStore()#">
 		<cfcase value="fileDir">
 		<cftry>
@@ -300,7 +304,7 @@ to your own modified versions of Mura CMS.
 		
 		</cfswitch>
 		
-		<cfset variables.pluginManager.announceEvent("onFileCacheDelete",pluginEvent)>
+		<cfset variables.pluginManager.announceEvent("onAfterFileCacheDelete",pluginEvent)>
 </cffunction>
 
 </cfcomponent>

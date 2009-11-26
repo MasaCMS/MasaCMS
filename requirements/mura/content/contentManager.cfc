@@ -41,7 +41,8 @@ the GNU General Public License version 2  without this exception.  You may, if y
 to your own modified versions of Mura CMS.
 --->
 <cfcomponent extends="mura.cfobject" output="false">
-
+	<cfset this.TreeLevelList="Page,Portal,Calendar,Link,File,Gallery">
+	
 	<cffunction name="init" access="public" returntype="any" output="false">
 		<cfargument name="contentGateway" type="any" required="yes"/>
 		<cfargument name="contentDAO" type="any" required="yes"/>
@@ -380,7 +381,7 @@ to your own modified versions of Mura CMS.
 	<cfset var rsFile="" />
 	<cfset var rsDrafts = "" />
 	<cfset var d = "" />
-	<cfset var pluginEvent = createObject("component","mura.event").init(arguments.data) />
+	<cfset var pluginEvent = createObject("component","mura.event") />
 	
 	<!---IF THE DATA WAS SUBMITTED AS AN OBJECT UNPACK THE VALUES --->
 	<cfif isObject(arguments.data)>
@@ -390,6 +391,8 @@ to your own modified versions of Mura CMS.
 			<cfthrow type="custom" message="The attribute 'DATA' is not of type 'mura.content.contentBean'.">
 		</cfif>
 	</cfif>
+	
+	<cfset pluginEvent.init(arguments.data)>
 	
 	<!--- MAKE SURE ALL REQUIRED DATA IS THERE--->
 	<cfif not structKeyExists(arguments.data,"siteID") or (structKeyExists(arguments.data,"siteID") and not len(arguments.data.siteID))>
@@ -422,7 +425,6 @@ to your own modified versions of Mura CMS.
 	</cfif>
 	<!--- END REQUIRED DATA CHECK--->
 	
-	<cfset pluginEvent.init(arguments.data)/>
 	
 	<cflock type="exclusive" name="editingContent#arguments.data.siteid#" timeout="600">
 	<cftransaction>
@@ -442,7 +444,7 @@ to your own modified versions of Mura CMS.
 
 <cfif not refused>
 	<cfset newBean.set(arguments.data) />
-	
+	<cfset pluginEvent.setValue("newBean",newBean)>	
 	<cfif newBean.getIsNew()>
 		<cfset newBean.setActive(1) />
 		<cfset newBean.setCreated(now()) />
@@ -452,6 +454,7 @@ to your own modified versions of Mura CMS.
 		
 	<cfif not newBean.getIsNew()>
 		<cfset currentBean=variables.contentDAO.readActive(newBean.getcontentID(),arguments.data.siteid) />
+		<cfset pluginEvent.setValue("currentBean",currentBean)>	
 	</cfif>
 
 	<cfif newBean.getcontentID() eq ''>
@@ -477,14 +480,12 @@ to your own modified versions of Mura CMS.
 	</cfif>
 	
 	<!--- END CONTENT TYPE: ALL CONTENT TYPES --->
+	<cfset variables.pluginManager.announceEvent("onBeforeContentSave",pluginEvent)>	
+	<cfset variables.pluginManager.announceEvent("onBefore#newBean.getType()#Save",pluginEvent)>
+	<cfset variables.pluginManager.announceEvent("onBefore#newBean.getType()##newBean.getSubType()#Save",pluginEvent)>	
 	
 	<!--- BEGIN CONTENT TYPE: ALL SITE TREE LEVEL CONTENT TYPES --->
-	<cfif  newBean.getType() eq "Page" 
-		or newBean.getType() eq "Portal" 
-		or newBean.getType() eq "Calendar"
-		or newBean.getType() eq "Link"
-		or newBean.getType() eq "File"
-		or newBean.getType() eq "Gallery">
+	<cfif  listFindNoCase(this.TreeLevelList,newBean.getType())>
 		
 		<cfif isDefined('arguments.data.extendSetID') and len(arguments.data.extendSetID)>	
 			<cfset variables.ClassExtensionManager.saveExtendedData(newBean.getcontentHistID(),arguments.data)/>
@@ -727,9 +728,7 @@ to your own modified versions of Mura CMS.
 			and active=0 and siteid='#newBean.getsiteid()#'
 			</cfquery>
 		</cfif>
-		
-				
-					 
+						 
 	</cfif>	 
 	
 	<!--- Send out notification(s) if needed--->
@@ -746,13 +745,16 @@ to your own modified versions of Mura CMS.
 	<cfset newBean.purgeExtendedData()>
 	
 	<cfset pluginEvent.setValue("contentBean",newBean)>
-	<cfif  ListFindNoCase("Page,Portal,Calendar,Link,File,Gallery",newBean.getType())>			
-		<cfset variables.pluginManager.announceEvent("onContentSave",pluginEvent)>	
+	<cfif  ListFindNoCase(this.TreeLevelList,newBean.getType())>			
+		<cfset variables.pluginManager.announceEvent("onContentSave",pluginEvent)>
+		<cfset variables.pluginManager.announceEvent("onAfterContentSave",pluginEvent)>		
 	</cfif>
 		
 	<cfset variables.pluginManager.announceEvent("on#newBean.getType()#Save",pluginEvent)>
+	<cfset variables.pluginManager.announceEvent("onAfter#newBean.getType()#Save",pluginEvent)>
+	<cfset variables.pluginManager.announceEvent("on#newBean.getType()##newBean.getSubType()#Save",pluginEvent)>
+	<cfset variables.pluginManager.announceEvent("onAfter#newBean.getType()##newBean.getSubType()#Save",pluginEvent)>		
 		
-
 </cfif>	
 <!--- end non refused content --->
 
@@ -782,19 +784,23 @@ to your own modified versions of Mura CMS.
 				
 			<cfif currentBean.getIsLocked() neq 1>
 			
-				<cfif  ListFindNoCase("Page,Portal,Calendar,Link,File,Gallery",currentBean.getType())>	
-				
+				<cfif  ListFindNoCase(this.TreeLevelList,currentBean.getType())>
 					<cfset variables.pluginManager.announceEvent("onContentDelete",pluginEvent)>
-					
+					<cfset variables.pluginManager.announceEvent("onBeforeContentDelete",pluginEvent)>
+				</cfif>
+				<cfset variables.pluginManager.announceEvent("on#currentBean.getType()#Delete",pluginEvent)>
+				<cfset variables.pluginManager.announceEvent("onBefore#currentBean.getType()#Delete",pluginEvent)>
+				<cfset variables.pluginManager.announceEvent("on#currentBean.getType()##currentBean.getSubType()#Delete",pluginEvent)>
+				<cfset variables.pluginManager.announceEvent("onBefore#currentBean.getType()##currentBean.getSubType()#Delete",pluginEvent)>
+				
+				<cfif  ListFindNoCase(this.TreeLevelList,currentBean.getType())>						
 					<cfif currentBean.getPath() neq "">
 						<cfset newPath=listDeleteAt(currentBean.getPath(),listLen(currentBean.getPath())) />
 						<cfset currentPath=currentBean.getPath() />
 						<cfset updateMaterializedPath(newPath,currentPath,currentBean.getSiteID()) />
 					</cfif>
 				</cfif>
-				
-				<cfset variables.pluginManager.announceEvent("on#currentBean.getType()#Delete",pluginEvent)>
-				
+
 				<cfif len(currentBean.getFileID()) or currentBean.getType() eq 'Form'>
 					<cfset variables.fileManager.deleteAll(currentBean.getcontentID()) />
 				</cfif>
@@ -812,7 +818,11 @@ to your own modified versions of Mura CMS.
 				
 				<cfset variables.utility.logEvent("ContentID:#currentBean.getcontentID()# MenuTitle:#currentBean.getMenuTitle()# Type:#currentBean.getType()# was completely deleted","mura-content","Information",true) />		
 				<cfset variables.contentDAO.delete(currentBean) />
-				
+				<cfif  ListFindNoCase(this.TreeLevelList,currentBean.getType())>
+					<cfset variables.pluginManager.announceEvent("onAfterContentDelete",pluginEvent)>
+				</cfif>
+				<cfset variables.pluginManager.announceEvent("onAfter#currentBean.getType()#Delete",pluginEvent)>
+				<cfset variables.pluginManager.announceEvent("onAfter#currentBean.getType()##currentBean.getSubType()#Delete",pluginEvent)>
 			</cfif>
 			
 		<cfelse>
@@ -843,16 +853,22 @@ to your own modified versions of Mura CMS.
 		<cfset var fileList=""/>
 		<cfset var currentBean=getActiveContent(arguments.data.contentid,arguments.data.siteid)/>
 		<cfset var pluginEvent = createObject("component","mura.event").init(arguments.data) />
+		<cfset var historyIterator=application.serviceFactory.getBean("contentIterator")>
 		
 		<cfset pluginEvent.setValue("contentBean",currentBean)/>
-		
-		<cfif  ListFindNoCase("Page,Portal,Calendar,Link,File,Gallery",currentBean.getType())>				
-			<cfset variables.pluginManager.announceEvent("onContentDeleteVersionHistory",pluginEvent)>	
-		</cfif>
-		
-		<cfset variables.pluginManager.announceEvent("on#currentBean.getType()#DeleteVersionHistory",pluginEvent)>
-		
 		<cfset rsHist=getHist(arguments.data.contentid,arguments.data.siteid)/>
+		<cfset historyIterator.setQuery(rsHist)>
+		<cfset pluginEvent.setValue("historyIterator",historyIterator)/>
+		
+		<cfif  ListFindNoCase(this.TreeLevelList,currentBean.getType())>
+			<cfset variables.pluginManager.announceEvent("onContentDeleteVersionHistory",pluginEvent)>	
+			<cfset variables.pluginManager.announceEvent("onBeforeContentDeleteVersionHistory",pluginEvent)>
+		</cfif>	
+		<cfset variables.pluginManager.announceEvent("on#currentBean.getType()#DeleteVersionHistory",pluginEvent)>
+		<cfset variables.pluginManager.announceEvent("onBefore#currentBean.getType()#DeleteVersionHistory",pluginEvent)>
+		<cfset variables.pluginManager.announceEvent("on#currentBean.getType()##currentBean.getSubType()#DeleteVersionHistory",pluginEvent)>
+		<cfset variables.pluginManager.announceEvent("onBefore#currentBean.getType()##currentBean.getSubType()#DeleteVersionHistory",pluginEvent)>
+		
 		<cfset fileList=currentBean.getFileID()/>
 		<cfloop query="rsHist">
 			<cfif rshist.active neq 1 and len(rshist.FileID)>
@@ -865,6 +881,12 @@ to your own modified versions of Mura CMS.
 		
 		<cfset variables.utility.logEvent("ContentID:#currentBean.getcontentID()# MenuTitle:#currentBean.getMenuTitle()# Type:#currentBean.getType()# version history was deleted","mura-content","Information",true) />
 		<cfset variables.contentDAO.deletehistall(data.contentid,data.siteid) />
+		
+		<cfif  ListFindNoCase(this.TreeLevelList,currentBean.getType())>
+			<cfset variables.pluginManager.announceEvent("onAfterContentDeleteVersionHistory",pluginEvent)>	
+		</cfif>
+		<cfset variables.pluginManager.announceEvent("onAfter#currentBean.getType()#DeleteVersionHistory",pluginEvent)>
+		<cfset variables.pluginManager.announceEvent("onAfter#currentBean.getType()##currentBean.getSubType()#DeleteVersionHistory",pluginEvent)>
 		
 	</cffunction>
 
@@ -879,11 +901,12 @@ to your own modified versions of Mura CMS.
 		
 		<cfset pluginEvent.setValue("contentBean",versionBean)/>
 		
-		<cfif  ListFindNoCase("Page,Portal,Calendar,Link,File,Gallery",versionBean.getType())>				
-			<cfset variables.pluginManager.announceEvent("onContentDeleteVersion",pluginEvent)>	
-		</cfif>
-		
-		<cfset variables.pluginManager.announceEvent("on#versionBean.getType()#DeleteVersion",pluginEvent)>
+		<cfif  ListFindNoCase(this.TreeLevelList,versionBean.getType())>
+			<cfset variables.pluginManager.announceEvent("onContentDeleteVersion",pluginEvent)>
+			<cfset variables.pluginManager.announceEvent("onBeforeContentDeleteVersion",pluginEvent)>
+		</cfif>		
+		<cfset variables.pluginManager.announceEvent("onBefore#versionBean.getType()#DeleteVersion",pluginEvent)>
+		<cfset variables.pluginManager.announceEvent("onBefore#versionBean.getType()##versionBean.getSubType()#DeleteVersion",pluginEvent)>
 		
 		<cfif len(versionBean.getFileID())>
 			<cfset rsHist=getHist(versionBean.getcontentid(),arguments.data.siteid)/>
@@ -903,6 +926,12 @@ to your own modified versions of Mura CMS.
 		<cfset variables.contentDAO.deleteObjectsHist(arguments.data.contenthistid,arguments.data.siteid) />
 		<cfset variables.contentDAO.deleteCategoryHist(arguments.data.contenthistid,arguments.data.siteid) />
 		<cfset variables.contentDAO.deleteExtendDataHist(arguments.data.contenthistid,arguments.data.siteid) />
+		
+		<cfif  ListFindNoCase(this.TreeLevelList,versionBean.getType())>
+			<cfset variables.pluginManager.announceEvent("onAfterContentDeleteVersion",pluginEvent)>
+		</cfif>		
+		<cfset variables.pluginManager.announceEvent("onAfter#versionBean.getType()#DeleteVersion",pluginEvent)>
+		<cfset variables.pluginManager.announceEvent("onAfter#versionBean.getType()##versionBean.getSubType()#DeleteVersion",pluginEvent)>
 		
 	</cffunction>
 

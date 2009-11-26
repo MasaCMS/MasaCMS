@@ -168,20 +168,36 @@ to your own modified versions of Mura CMS.
 	<cfset userBean=variables.userDAO.read(arguments.data.userid)/>
 	
 	<cfset userBean.set(arguments.data) />
-	
 
 	<!--- <cfif userBean.getType() eq 2 and  userBean.getAddressID() neq ''> --->
 	<cfif userBean.getAddressID() neq ''>
 	<cfset addressBean=variables.userDAO.readAddress(userBean.getAddressID()) />
 	<cfset addressBean.set(arguments.data) />
+	<cfset pluginEvent.setValue("addressBean",addressBean)/>	
 	</cfif>
-
-	<cfif isDefined('arguments.data.activationNotify') and userBean.getInActive() eq 0>	
-		<cfset variables.userUtility.sendActivationNotification(userBean) />
+	
+	<cfset pluginEvent.setValue("siteID", userBean.getSiteID())>
+	
+	<cfif userBean.getType() eq 1>	
+		<cfset pluginEvent.setValue("groupBean",userBean)/>			
+		<cfset variables.pluginManager.announceEvent("onBeforeGroupUpdate",pluginEvent)>
+		<cfset variables.pluginManager.announceEvent("onBeforeGroupSave",pluginEvent)>
+		<cfset variables.pluginManager.announceEvent("onBeforeGroup#userBean.getSubType()#Update",pluginEvent)>
+		<cfset variables.pluginManager.announceEvent("onBeforeGroup#userBean.getSubType()#Save",pluginEvent)>		
+	<cfelse>
+		<cfset pluginEvent.setValue("userBean",userBean)/>	
+		<cfset variables.pluginManager.announceEvent("onBeforeUserUpdate",pluginEvent)>
+		<cfset variables.pluginManager.announceEvent("onBeforeUserSave",pluginEvent)>
+		<cfset variables.pluginManager.announceEvent("onBeforeUser#userBean.getSubType()#Update",pluginEvent)>
+		<cfset variables.pluginManager.announceEvent("onBeforeUser#userBean.getSubType()#Save",pluginEvent)>	
 	</cfif>
 	
 	<cfif structIsEmpty(userBean.getErrors())>
 	
+		<cfif isDefined('arguments.data.activationNotify') and userBean.getInActive() eq 0>	
+			<cfset variables.userUtility.sendActivationNotification(userBean) />
+		</cfif>
+		
 		<cfif structKeyExists(arguments.data,"extendSetID") and len(arguments.data.extendSetID)>
 			<cfset arguments.data.siteID=userBean.getSiteID() />
 			<cfset variables.ClassExtensionManager.saveExtendedData(userBean.getUserID(),arguments.data,'tclassextenddatauseractivity')/>
@@ -204,16 +220,26 @@ to your own modified versions of Mura CMS.
 		<cfset setLastUpdateInfo(userBean) />
 		<cfset variables.userDAO.update(userBean,arguments.updateGroups,arguments.updateInterests,arguments.OriginID) />
 	
-		<cfset pluginEvent.setValue("siteID", userBean.getSiteID())>
-		
 		<cfif  userBean.getType() eq 1>	
 			<cfset pluginEvent.setValue("groupBean",userBean)/>			
 			<cfset variables.pluginManager.announceEvent("onGroupUpdate",pluginEvent)>
-			<cfset variables.pluginManager.announceEvent("onGroupUpdate",pluginEvent)>	
+			<cfset variables.pluginManager.announceEvent("onGroupSave",pluginEvent)>
+			<cfset variables.pluginManager.announceEvent("onGroup#userBean.getSubType()#Update",pluginEvent)>
+			<cfset variables.pluginManager.announceEvent("onGroup#userBean.getSubType()#Save",pluginEvent)>
+			<cfset variables.pluginManager.announceEvent("onAfterGroupUpdate",pluginEvent)>
+			<cfset variables.pluginManager.announceEvent("onAfterGroupSave",pluginEvent)>
+			<cfset variables.pluginManager.announceEvent("onAfterGroup#userBean.getSubType()#Update",pluginEvent)>
+			<cfset variables.pluginManager.announceEvent("onAfterGroup#userBean.getSubType()#Save",pluginEvent)>		
 		<cfelse>
 			<cfset pluginEvent.setValue("userBean",userBean)/>	
 			<cfset variables.pluginManager.announceEvent("onUserUpdate",pluginEvent)>
-			<cfset variables.pluginManager.announceEvent("onUserSave",pluginEvent)>	
+			<cfset variables.pluginManager.announceEvent("onUserSave",pluginEvent)>
+			<cfset variables.pluginManager.announceEvent("onUser#userBean.getSubType()#Update",pluginEvent)>
+			<cfset variables.pluginManager.announceEvent("onUser#userBean.getSubType()#Save",pluginEvent)>	
+			<cfset variables.pluginManager.announceEvent("onAfterUserUpdate",pluginEvent)>
+			<cfset variables.pluginManager.announceEvent("onAfterUserSave",pluginEvent)>
+			<cfset variables.pluginManager.announceEvent("onAfterUser#userBean.getSubType()#Update",pluginEvent)>
+			<cfset variables.pluginManager.announceEvent("onAfterUser#userBean.getSubType()#Save",pluginEvent)>			
 		</cfif>
 		
 	</cfif>
@@ -258,6 +284,22 @@ to your own modified versions of Mura CMS.
 	<cfset userBean.setPassword(variables.userUtility.getRandomPassword(6,"Alpha","no"))/>
 	</cfif>
 	
+	<cfset pluginEvent.setValue("siteID", userBean.getSiteID())>
+	
+	<cfif userBean.getType() eq 1>	
+		<cfset pluginEvent.setValue("groupBean",userBean)/>			
+		<cfset variables.pluginManager.announceEvent("onBeforeGroupUpdate",pluginEvent)>
+		<cfset variables.pluginManager.announceEvent("onBeforeGroupSave",pluginEvent)>
+		<cfset variables.pluginManager.announceEvent("onBeforeGroup#userBean.getSubType()#Create",pluginEvent)>
+		<cfset variables.pluginManager.announceEvent("onBeforeGroup#userBean.getSubType()#Save",pluginEvent)>				
+	<cfelse>
+		<cfset pluginEvent.setValue("userBean",userBean)/>	
+		<cfset variables.pluginManager.announceEvent("onBeforeUserUpdate",pluginEvent)>
+		<cfset variables.pluginManager.announceEvent("onBeforeUserSave",pluginEvent)>
+		<cfset variables.pluginManager.announceEvent("onBeforeUser#userBean.getSubType()#Create",pluginEvent)>
+		<cfset variables.pluginManager.announceEvent("onBeforeUser#userBean.getSubType()#Save",pluginEvent)>		
+	</cfif>
+	
 	<cfif structIsEmpty(userBean.getErrors())>
 		
 		<cfif structKeyExists(arguments.data,"extendSetID") and len(arguments.data.extendSetID)>
@@ -275,17 +317,27 @@ to your own modified versions of Mura CMS.
 			<cfset variables.userDAO.create(userBean) />
 			<cfset variables.userDAO.createAddress(addressBean) />
 		</cfif>
-	
-		<cfset pluginEvent.setValue("siteID", userBean.getSiteID())>
 		
-		<cfif userBean.getType() eq 1>	
+		<cfif  userBean.getType() eq 1>	
 			<cfset pluginEvent.setValue("groupBean",userBean)/>			
 			<cfset variables.pluginManager.announceEvent("onGroupCreate",pluginEvent)>
-			<cfset variables.pluginManager.announceEvent("onGroupSave",pluginEvent)>		
+			<cfset variables.pluginManager.announceEvent("onGroupSave",pluginEvent)>
+			<cfset variables.pluginManager.announceEvent("onGroup#userBean.getSubType()#Create",pluginEvent)>
+			<cfset variables.pluginManager.announceEvent("onGroup#userBean.getSubType()#Save",pluginEvent)>
+			<cfset variables.pluginManager.announceEvent("onAfterGroupCreate",pluginEvent)>
+			<cfset variables.pluginManager.announceEvent("onAfterGroupSave",pluginEvent)>
+			<cfset variables.pluginManager.announceEvent("onAfterGroup#userBean.getSubType()#Create",pluginEvent)>
+			<cfset variables.pluginManager.announceEvent("onAfterGroup#userBean.getSubType()#Save",pluginEvent)>		
 		<cfelse>
 			<cfset pluginEvent.setValue("userBean",userBean)/>	
 			<cfset variables.pluginManager.announceEvent("onUserCreate",pluginEvent)>
-			<cfset variables.pluginManager.announceEvent("onUserSave",pluginEvent)>		
+			<cfset variables.pluginManager.announceEvent("onUserSave",pluginEvent)>
+			<cfset variables.pluginManager.announceEvent("onUser#userBean.getSubType()#Create",pluginEvent)>
+			<cfset variables.pluginManager.announceEvent("onUser#userBean.getSubType()#Save",pluginEvent)>		
+			<cfset variables.pluginManager.announceEvent("onAfterUserCreate",pluginEvent)>
+			<cfset variables.pluginManager.announceEvent("onAfterUserSave",pluginEvent)>
+			<cfset variables.pluginManager.announceEvent("onAfterUser#userBean.getSubType()#Create",pluginEvent)>
+			<cfset variables.pluginManager.announceEvent("onAfterUser#userBean.getSubType()#Save",pluginEvent)>	
 		</cfif>
 	</cfif>
 	

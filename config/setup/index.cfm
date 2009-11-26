@@ -482,10 +482,10 @@ to your own modified versions of Mura CMS.
 	<dt><a href="" class="tooltip">Datasource (DSN)<span>This the Data Source Name (DSN) created for Mura. This is usually done in the ColdFusion or Railo administrator, or in the control panel of your host if you are installing Mura in a shared environment. Please note that if you are installing Mura in a shared environment, this will likely need to be changed to something other than "muradb" to make sure it is unique to the server.</span></a></dt>
 	<dd><input type="text" name="production_datasource" value="#FORM.production_datasource#"></dd>
 	
-	<dt><a href="" class="tooltip">Database Username<span>This is the same Username supplied to your DSN to allow Mura to connect to your database.</span></a></dt>
+	<dt><a href="" class="tooltip">Database Username<span>Only required on shared hosting. This is the same Username supplied to your DSN to allow Mura to connect to your database.</span></a></dt>
 	<dd><input type="text" name="production_dbusername" value="#FORM.production_dbusername#"></dd>
 	
-	<dt><a href="" class="tooltip">Database Password<span>This is the same Password supplied to your DSN to allow Mura to connect to your database.</span></a></dt>
+	<dt><a href="" class="tooltip">Database Password<span>Only required on shared hosting. This is the same Password supplied to your DSN to allow Mura to connect to your database.</span></a></dt>
 	<dd><input type="text" name="production_dbpassword" value="#FORM.production_dbpassword#"></dd>
 	
 	<input type="hidden" name="production_assetpath" value="#FORM.production_assetpath#">

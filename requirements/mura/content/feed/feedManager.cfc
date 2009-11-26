@@ -104,15 +104,20 @@ to your own modified versions of Mura CMS.
 	<cfset var pluginEvent = createObject("component","mura.event").init(arguments.data) />
 	<cfset feedBean.set(arguments.data) />
 	
+	<cfset pluginEvent.setValue("feedBean",feedBean)>
+	<cfset pluginEvent.setValue("siteID",feedBean.getSiteID())>
+	<cfset variables.pluginManager.announceEvent("onBeforeFeedSave",pluginEvent)>
+	<cfset variables.pluginManager.announceEvent("onBeforeFeedCreate",pluginEvent)>	
+	
 	<cfif structIsEmpty(feedBean.getErrors())>
 		<cfset feedBean.setLastUpdateBy(left(session.mura.fname & " " & session.mura.lname,50) ) />
 		<cfset feedBean.setFeedID("#createUUID()#") />
 		<cfset variables.globalUtility.logEvent("feedID:#feedBean.getfeedID()# Name:#feedBean.getName()# was created","mura-content","Information",true) />
 		<cfset variables.feedDAO.create(feedBean) />
-		<cfset pluginEvent.setValue("feedBean",feedBean)>
-		<cfset pluginEvent.setValue("siteID",feedBean.getSiteID())>
 		<cfset variables.pluginManager.announceEvent("onFeedSave",pluginEvent)>
 		<cfset variables.pluginManager.announceEvent("onFeedCreate",pluginEvent)>
+		<cfset variables.pluginManager.announceEvent("onAfterFeedSave",pluginEvent)>
+		<cfset variables.pluginManager.announceEvent("onAfterFeedCreate",pluginEvent)>
 	</cfif>
 	
 	<cfreturn feedBean />
@@ -147,14 +152,19 @@ to your own modified versions of Mura CMS.
 	<cfset var pluginEvent = createObject("component","mura.event").init(arguments.data) />
 	<cfset feedBean.set(arguments.data) />
 	
+	<cfset pluginEvent.setValue("feedBean",feedBean)>
+	<cfset pluginEvent.setValue("siteID",feedBean.getSiteID())>
+	<cfset variables.pluginManager.announceEvent("onBeforeFeedSave",pluginEvent)>
+	<cfset variables.pluginManager.announceEvent("onBeforeFeedUpdate",pluginEvent)>	
+	
 	<cfif structIsEmpty(feedBean.getErrors())>
 		<cfset variables.globalUtility.logEvent("feedID:#feedBean.getfeedID()# Name:#feedBean.getName()# was updated","mura-content","Information",true) />
 		<cfset feedBean.setLastUpdateBy(left(session.mura.fname & " " & session.mura.lname,50) ) />
 		<cfset variables.feedDAO.update(feedBean) />
-		<cfset pluginEvent.setValue("feedBean",feedBean)>
-		<cfset pluginEvent.setValue("siteID",feedBean.getSiteID())>
 		<cfset variables.pluginManager.announceEvent("onFeedSave",pluginEvent)>
-		<cfset variables.pluginManager.announceEvent("onFeedUpdate",pluginEvent)>		
+		<cfset variables.pluginManager.announceEvent("onFeedUpdate",pluginEvent)>
+		<cfset variables.pluginManager.announceEvent("onAfterFeedSave",pluginEvent)>
+		<cfset variables.pluginManager.announceEvent("onAfterFeedUpdate",pluginEvent)>			
 	</cfif>
 	
 	<cfreturn feedBean />
@@ -196,12 +206,15 @@ to your own modified versions of Mura CMS.
 	
 	<cfset var feedBean=read(arguments.feedID) />
 	<cfset var pluginEvent = createObject("component","mura.event").init(arguments) />
+	<cfset pluginEvent.setValue("feedBean",feedBean)>
+	<cfset pluginEvent.setValue("siteID",feedBean.getSiteID())>
+	
+	<cfset variables.pluginManager.announceEvent("onBeforeFeedDelete",pluginEvent)>
 	<cfset variables.globalUtility.logEvent("feedID:#feedBean.getfeedID()# Name:#feedBean.getName()# was deleted","mura-content","Information",true) />
 	<cfset variables.feedDAO.delete(arguments.feedID) />
 	
-	<cfset pluginEvent.setValue("feedBean",feedBean)>
-	<cfset pluginEvent.setValue("siteID",feedBean.getSiteID())>
-	<cfset variables.pluginManager.announceEvent("onFeedDelete",pluginEvent)>	
+	<cfset variables.pluginManager.announceEvent("onFeedDelete",pluginEvent)>
+	<cfset variables.pluginManager.announceEvent("onAfterFeedDelete",pluginEvent)>	
 
 </cffunction>
 

@@ -182,7 +182,12 @@ to your own modified versions of Mura CMS.
 	<cfset var pluginEvent = createObject("component","mura.event").init(arguments.data) />
 	
 	<cfset categoryBean.set(arguments.data) />
-
+	
+	<cfset pluginEvent.setValue("categoryBean",categoryBean)>
+	<cfset pluginEvent.setValue("siteID", categoryBean.getSiteID())>
+	<cfset variables.pluginManager.announceEvent("onBeforeCategorySave",pluginEvent)>
+	<cfset variables.pluginManager.announceEvent("onBeforeCategoryCreate",pluginEvent)>
+	
 	<cfif structIsEmpty(categoryBean.getErrors())>
 
 		<cfset categoryBean.setLastUpdateBy(left(session.mura.fname & " " & session.mura.lname,50)) />
@@ -190,10 +195,10 @@ to your own modified versions of Mura CMS.
 		<cfset setMaterializedPath(categoryBean) />
 		<cfset variables.utility.logEvent("CategoryID:#categoryBean.getCategoryID()# Name:#categoryBean.getName()# was created","mura-content","Information",true) />
 		<cfset variables.DAO.create(categoryBean) />
-		<cfset pluginEvent.setValue("categoryBean",categoryBean)>
-		<cfset pluginEvent.setValue("siteID", categoryBean.getSiteID())>
 		<cfset variables.pluginManager.announceEvent("onCategorySave",pluginEvent)>
 		<cfset variables.pluginManager.announceEvent("onCategoryCreate",pluginEvent)>
+		<cfset variables.pluginManager.announceEvent("onAfterCategorySave",pluginEvent)>
+		<cfset variables.pluginManager.announceEvent("onAfterCategoryCreate",pluginEvent)>
 	</cfif>
 	
 	<cfreturn categoryBean />
@@ -218,6 +223,11 @@ to your own modified versions of Mura CMS.
 	<cfset categoryBean.set(arguments.data) />
 	<cfset currentPath=categoryBean.getPath() />
 	
+	<cfset pluginEvent.setValue("categoryBean",categoryBean)>
+	<cfset pluginEvent.setValue("siteID", categoryBean.getSiteID())>
+	<cfset variables.pluginManager.announceEvent("onBeforeCategorySave",pluginEvent)>
+	<cfset variables.pluginManager.announceEvent("onBeforeCategoryUpdate",pluginEvent)>
+		
 	<cfif structIsEmpty(categoryBean.getErrors())>
 	
 		<cfif currentParentID neq categoryBean.getParentID()>
@@ -231,10 +241,10 @@ to your own modified versions of Mura CMS.
 			<cfset setListOrder(categoryBean.getCategoryID(),arguments.data.OrderID,arguments.data.Orderno,arguments.data.siteID) />
 		</cfif>
 		
-		<cfset pluginEvent.setValue("categoryBean",categoryBean)>
-		<cfset pluginEvent.setValue("siteID", categoryBean.getSiteID())>
 		<cfset variables.pluginManager.announceEvent("onCategorySave",pluginEvent)>
 		<cfset variables.pluginManager.announceEvent("onCategoryUpdate",pluginEvent)>
+		<cfset variables.pluginManager.announceEvent("onAfterCategorySave",pluginEvent)>
+		<cfset variables.pluginManager.announceEvent("onAfterCategoryUpdate",pluginEvent)>
 	</cfif>
 	
 	<cfset variables.utility.logEvent("CategoryID:#categoryBean.getCategoryID()# Name:#categoryBean.getName()# was updated","mura-content","Information",true) />
@@ -250,6 +260,10 @@ to your own modified versions of Mura CMS.
 	<cfset var newPath=""/>
 	<cfset var pluginEvent = createObject("component","mura.event").init(arguments) />
 	
+	<cfset pluginEvent.setValue("categoryBean",categoryBean)>
+	<cfset pluginEvent.setValue("siteID", categoryBean.getSiteID())>
+	<cfset variables.pluginManager.announceEvent("onBeforeCategoryDelete",pluginEvent)>
+	
 	<cfif currentPath neq "">
 		<cfset newPath=listDeleteAt(categoryBean.getPath(),listLen(categoryBean.getPath())) /> 
 		<cfset updateMaterializedPath(newPath,currentPath,categoryBean.getSiteID())>
@@ -257,9 +271,9 @@ to your own modified versions of Mura CMS.
 	<cfset variables.utility.logEvent("CategoryID:#categoryBean.getCategoryID()# Name:#categoryBean.getName()# was deleted","mura-content","Information",true) />
 	<cfset variables.DAO.delete(arguments.categoryID) />
 	
-	<cfset pluginEvent.setValue("categoryBean",categoryBean)>
-	<cfset pluginEvent.setValue("siteID", categoryBean.getSiteID())>
+	
 	<cfset variables.pluginManager.announceEvent("onCategoryDelete",pluginEvent)>
+	<cfset variables.pluginManager.announceEvent("onAfterCategoryDelete",pluginEvent)>
 
 </cffunction>
 
