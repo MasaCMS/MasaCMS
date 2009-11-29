@@ -51,6 +51,7 @@ to your own modified versions of Mura CMS.
 
 <cfparam name="session.mura.isLoggedIn" default="false" />
 <cfparam name="session.mura.userID" default="" />
+<cfparam name="session.mura.subtype" default="Default" />
 <cfparam name="session.mura.username" default="" />
 <cfparam name="session.mura.password" default="" />
 <cfparam name="session.mura.email" default="" />

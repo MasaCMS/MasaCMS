@@ -92,6 +92,10 @@ to your own modified versions of Mura CMS.
 	<cfreturn application.pluginManager />	
 </cffunction>
 
+<cffunction name="getCurrentUser" returntype="any" access="public" output="false">
+	<cfreturn application.userManager.read(session.mura.userid) />	
+</cffunction>
+
 <cffunction name="getPlugin" returntype="any" access="public" output="false">
 	<cfargument name="ID">
 	<cfargument name="siteID" required="true" default="">

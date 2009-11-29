@@ -524,6 +524,7 @@ The #contactName# staff</cfoutput>
 	<cfset session.mura.isLoggedIn=true>			
 	<cfset session.mura.userID=arguments.user.userID>
 	<cfset session.mura.username=arguments.user.username>
+	<cfset session.mura.subtype=arguments.user.subtype>
 	<cfset session.mura.password=arguments.user.password>
 	<cfset session.mura.fname=arguments.user.fname>
 	<cfset session.mura.lname=arguments.user.lname>
@@ -539,6 +540,7 @@ The #contactName# staff</cfoutput>
 <cfelse>
 	<cfset session.mura.isLoggedIn=false>			
 	<cfset session.mura.userID="">
+	<cfset session.mura.subtype="Default">
 	<cfset session.mura.username="">
 	<cfset session.mura.password="">
 	<cfset session.mura.fname="">
