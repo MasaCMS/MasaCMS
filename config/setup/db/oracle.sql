@@ -1646,6 +1646,9 @@ Insert into TSYSTEMOBJECTS (OBJECT,SITEID,NAME,ORDERNO) values ('tag_cloud','def
 Insert into TSYSTEMOBJECTS (OBJECT,SITEID,NAME,ORDERNO) values ('IASiteMap','default','IA Site Map',22);
 --|
 
+Insert into TSYSTEMOBJECTS (OBJECT,SITEID,NAME,ORDERNO) values ('goToFirstChild','default','Go To First Child',23);
+--|
+
 Insert into TCAPTCHA (LETTERID,LETTER,IMAGEFILE) values (1,'a','a.gif');
 --|
 

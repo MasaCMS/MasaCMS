@@ -1312,6 +1312,9 @@ select * from rs order by name
 				</cfif>
 				<cfset arrayAppend( variables.siteListeners[siteIDadjusted][i] , handlerData)>
 			<cfelse>
+				<cfif not structKeyExists(variables.globalListeners,i)>
+					<cfset variables.globalListeners[i]=arrayNew(1)>
+				</cfif>
 				<cfset arrayAppend( variables.globalListeners[i] , handlerData)>
 			</cfif>
 		</cfif>
