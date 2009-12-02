@@ -75,7 +75,7 @@ to your own modified versions of Mura CMS.
 <cffunction name="delete" access="public" output="false" returntype="void">
 <cfargument name="siteid" type="string" />
 
-	<cftransaction>
+	<cftransaction isolation="#variables.configBean.getDBTransactionLevel()#">
 	<CFQUERY datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	delete from tsettings where siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#" />
 	</CFQUERY>
@@ -295,7 +295,7 @@ to your own modified versions of Mura CMS.
 <cffunction name="create" access="public" output="false" returntype="void">
 <cfargument name="bean" type="any" />
 
-<cftransaction>
+<cftransaction isolation="#variables.configBean.getDBTransactionLevel()#">
 
 <CFQUERY datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
       Insert into tsettings (siteid,pagelimit,domain, domainAlias, contact,locking,site,mailserverip,mailserverusername,

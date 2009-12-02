@@ -261,7 +261,7 @@ to your own modified versions of Mura CMS.
 <cffunction name="delete" access="public" output="false" returntype="void">
 		<cfargument name="UserID" type="String" />
 		<cfargument name="Type" type="String" />
-		<cftransaction>
+		<cftransaction isolation="#variables.configBean.getDBTransactionLevel()#">
 		
 		<!--- <cfswitch expression="#arguments.type#">
 		
@@ -326,7 +326,7 @@ to your own modified versions of Mura CMS.
 	<cfargument name="updateGroups" type="boolean" default="true" required="yes" />
 	<cfargument name="updateInterests" type="boolean" default="true" required="yes" />
 	<cfargument name="OriginID" type="string" default="" required="yes" />
-	<cftransaction>
+	<cftransaction isolation="#variables.configBean.getDBTransactionLevel()#">
 
 
  <cfquery  datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
@@ -448,7 +448,7 @@ to your own modified versions of Mura CMS.
 	<cfargument name="userid" type="string" />
 	<cfargument name="groupid" type="string" />
 	<cfset var checkmemb=""/>
-	<cftransaction>
+	<cftransaction isolation="#variables.configBean.getDBTransactionLevel()#">
 	<cfquery name="checkmemb" datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	select * from tusersmemb where groupid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.groupID#"> and userid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.userID#">
 	

@@ -1,6 +1,6 @@
 <cfif getDbType() eq "mysql">
 <cfset doUpdate=false/>
-<cftransaction>
+<cftransaction isolation="#getDBTransactionLevel()#">
 <cftry>
 <cfquery name="rsCheck" datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 	SELECT DATA_TYPE

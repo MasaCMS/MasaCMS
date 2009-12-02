@@ -17,6 +17,7 @@ datasource=
 dbtype=
 dbusername=
 dbpassword=
+dbTransactionLevel=read_committed
 context=
 stub=
 admindomain=

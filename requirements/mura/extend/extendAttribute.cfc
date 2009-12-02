@@ -361,7 +361,7 @@ to your own modified versions of Mura CMS.
 <cfset var fileManager=application.serviceFactory.getBean("fileManager") />	
 <cfset var rs =""/>
 	
-	<cftransaction>
+	<cftransaction isolation="#variables.configBean.getDBTransactionLevel()#">
 	<cfquery name="rs" datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	select attributeValue,baseID from tclassextenddata
 	inner join tclassextendattributes on (tclassextenddata.attributeID=tclassextendattributes.attributeID)

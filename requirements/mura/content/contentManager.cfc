@@ -431,7 +431,7 @@ to your own modified versions of Mura CMS.
 	
 	
 	<cflock type="exclusive" name="editingContent#arguments.data.siteid#" timeout="600">
-	<cftransaction>
+	<cftransaction isolation="#variables.configBean.getDBTransactionLevel()#">
 	
 	<!--- BEGIN CONTENT TYPE: ALL CONTENT TYPES --->
 	<cfif isDefined('arguments.data.remoteID') and arguments.data.remoteID neq ''>
