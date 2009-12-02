@@ -336,7 +336,7 @@ to your own modified versions of Mura CMS.
 		<cfset path =  listAppend(path,"#crumbdata[I].contentID#")>
 	</cfloop>
 		
-	<cfset path = listAppend(path,"#arguments.contentBean.getcontentID()#")>
+	<cfset path = listAppend(path, arguments.contentBean.getcontentID() )>
 	
 	<cfset arguments.contentBean.setPath(path)>
 
@@ -349,13 +349,17 @@ to your own modified versions of Mura CMS.
 
 <cfset var fixerPath = ""/>
 <cfset var rslist= "" />
-
-	<cfquery datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-		update tcontent 
-		set path=replace(ltrim(rtrim(cast(path AS char(1000)))),<cfqueryparam cfsqltype="cf_sql_longvarchar" value="#arguments.currentPath#">,<cfqueryparam cfsqltype="cf_sql_longvarchar" value="#arguments.newPath#">) 
-		where path like	<cfqueryparam cfsqltype="cf_sql_longvarchar" value="#arguments.currentPath#%">
-		and siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#">
-	</cfquery>
+	
+	<cfif len(arguments.newPath)>
+		<cfquery datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+			update tcontent 
+			set path=replace(ltrim(rtrim(cast(path AS char(1000)))),<cfqueryparam cfsqltype="cf_sql_longvarchar" value="#arguments.currentPath#">,<cfqueryparam cfsqltype="cf_sql_longvarchar" value="#arguments.newPath#">) 
+			where path like	<cfqueryparam cfsqltype="cf_sql_longvarchar" value="#arguments.currentPath#%">
+			and siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#">
+		</cfquery>
+	<cfelse>
+		<cfthrow type="custom" message="The attribute 'PATH' is required when saving content.">
+	</cfif>
 			
 </cffunction>
 

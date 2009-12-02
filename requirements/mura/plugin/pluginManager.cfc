@@ -792,6 +792,10 @@ select * from tplugins order by #arguments.orderby#
 	<cfset var isValidEvent=not REFind("[^A-Za-z0-9]",arguments.runat,1)>
 	<cfset var siteIDadjusted=rereplace(arguments.siteID,"[^a-zA-Z0-9]","","ALL")>
 	
+	<cfif not left(arguments.runat,2) eq "on" or left(arguments.runat,7) eq "standard">
+		<cfset arguments.runat="on" & arguments.runat>
+	</cfif>
+	
 	<cfif isValidEvent and not isQuery(arguments.scripts) and not len(arguments.moduleID)>
 		<cfif not isObject(arguments.event)>
 			<cfif isStruct(arguments.event)>
@@ -899,6 +903,10 @@ select * from tplugins order by #arguments.orderby#
 	<cfset var isGlobalEvent=left(arguments.runat,8) eq "onGlobal">
 	<cfset var isValidEvent=not REFind("[^A-Za-z0-9]",arguments.runat,1)>
 	<cfset var siteIDadjusted=rereplace(arguments.siteID,"[^a-zA-Z0-9]","","ALL")>
+	
+	<cfif not left(arguments.runat,2) eq "on" or left(arguments.runat,7) eq "standard">
+		<cfset arguments.runat="on" & arguments.runat>
+	</cfif>
 	
 	<cfif not isObject(arguments.event)>
 		<cfif isStruct(arguments.event)>

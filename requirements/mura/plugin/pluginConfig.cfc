@@ -244,5 +244,13 @@ to your own modified versions of Mura CMS.
 		<cfreturn session.plugins["p#getPluginID()#"] />
 </cffunction>
 
+<cffunction name="addEventHandler" output="false" returntype="void">
+	<cfargument name="component" required="true">
+    <cfset var rsSites=application.pluginManager.getAssignedSites(getModuleID())>
+    <cfloop query="rsSites">
+    <cfset getPluginManager().addEventHandler(arguments.component,rsSites.siteID)>
+    </cfloop>
+</cffunction>
+
 </cfcomponent>
 
