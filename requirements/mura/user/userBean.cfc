@@ -315,7 +315,11 @@ to your own modified versions of Mura CMS.
  
   <cffunction name="setSubType" returnType="void" output="false" access="public">
     <cfargument name="SubType" type="string" required="true">
-    <cfset variables.instance.SubType = trim(arguments.SubType) />
+	<cfset arguments.subType=trim(arguments.subType)>
+	<cfif len(arguments.subType) and variables.instance.SubType neq arguments.SubType>
+    	<cfset variables.instance.SubType = arguments.SubType />
+		<cfset purgeExtendedData()>
+	</cfif>
   </cffunction>
 
   <cffunction name="getSubType" returnType="string" output="false" access="public">

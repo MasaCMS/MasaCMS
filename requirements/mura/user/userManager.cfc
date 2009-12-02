@@ -219,7 +219,9 @@ to your own modified versions of Mura CMS.
 		<cfset variables.globalUtility.logEvent("UserID:#userBean.getUserID()# Type:#userBean.getType()# User:#userBean.getFName()# #userBean.getFName()# Group:#userBean.getGroupName()# was updated","mura-users","Information",true) />
 		<cfset setLastUpdateInfo(userBean) />
 		<cfset variables.userDAO.update(userBean,arguments.updateGroups,arguments.updateInterests,arguments.OriginID) />
-	
+		
+		<cfset userBean.purgeExtendedData()>
+		
 		<cfif  userBean.getType() eq 1>	
 			<cfset pluginEvent.setValue("groupBean",userBean)/>			
 			<cfset variables.pluginManager.announceEvent("onGroupUpdate",pluginEvent)>
@@ -317,6 +319,8 @@ to your own modified versions of Mura CMS.
 			<cfset variables.userDAO.create(userBean) />
 			<cfset variables.userDAO.createAddress(addressBean) />
 		</cfif>
+		
+		<cfset userBean.purgeExtendedData()>
 		
 		<cfif  userBean.getType() eq 1>	
 			<cfset pluginEvent.setValue("groupBean",userBean)/>			
