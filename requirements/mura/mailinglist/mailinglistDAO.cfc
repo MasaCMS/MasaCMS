@@ -105,7 +105,7 @@ values (<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.listBean.getM
 	<cfargument name="mlid" type="string" />
 	<cfargument name="siteid" type="string" />
 	
-	<cftransaction isolation="#variables.configBean.getDBTransactionLevel()#">
+	<cftransaction>
 	<cfquery datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	delete from tmailinglist where mlid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.mlid#"> and siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteid#">
 	</cfquery>

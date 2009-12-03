@@ -1,6 +1,6 @@
 <cfswitch expression="#getDbType()#">
 <cfcase value="mssql">
-<cftransaction isolation="#getDBTransactionLevel()#">
+<cftransaction>
 <cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 IF NOT EXISTS (SELECT * FROM sysobjects WHERE id = object_id(N'[dbo].[tplugins]')
 AND OBJECTPROPERTY(id, N'IsUserTable') = 1)
@@ -113,7 +113,7 @@ ALTER TABLE [dbo].[tpluginsettings] WITH NOCHECK ADD
 	
 	<cfif runDBUpdate>
 	<cftry>
-	<cftransaction isolation="#getDBTransactionLevel()#">
+	<cftransaction>
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 	CREATE TABLE IF NOT EXISTS  `tplugins` (
 	  `pluginID` int(11) NOT NULL auto_increment,
@@ -160,7 +160,7 @@ ALTER TABLE [dbo].[tpluginsettings] WITH NOCHECK ADD
 	</cfquery>
 	</cftransaction>
 	<cfcatch>
-		<cftransaction isolation="#getDBTransactionLevel()#">
+		<cftransaction>
 		<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 		CREATE TABLE IF NOT EXISTS  `tplugins` (
 		  `pluginID` INTEGER NOT NULL AUTO_INCREMENT,
@@ -222,7 +222,7 @@ select * from (select pluginID as CheckIfTableExists from tplugins) where ROWNUM
 </cftry>
 
 <cfif runDBUpdate>
-	<cftransaction isolation="#getDBTransactionLevel()#">
+	<cftransaction>
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 	CREATE TABLE "TPLUGINS" (
 	  "PLUGINID" NUMBER(10,0),

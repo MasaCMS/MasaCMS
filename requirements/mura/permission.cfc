@@ -491,7 +491,7 @@ to your own modified versions of Mura CMS.
 <cffunction name="updateGroup" returntype="void" access="public" output="true">
 <cfargument name="data" type="struct" />
 <cfset var rsContentlist=""/>
-<cftransaction isolation="#variables.configBean.getDBTransactionLevel()#">
+<cftransaction>
 	<cfquery name="rsContentlist" datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	select contentID from tcontent where siteid='#arguments.data.siteid#' group by contentid
 	</cfquery> 
@@ -586,7 +586,7 @@ WHERE tcontent.ContentID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#argum
 <cfargument name="data" type="struct" />
 <cfset var I = "" />
 <cfparam name="arguments.data.groupid" type="string" default="" />
-<cftransaction isolation="#variables.configBean.getDBTransactionLevel()#">
+<cftransaction>
 
 <cfquery datasource="#variables.configBean.getDatasource()#"
 username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">

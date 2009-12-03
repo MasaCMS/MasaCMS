@@ -63,6 +63,7 @@ to your own modified versions of Mura CMS.
 <cffunction name="create" returntype="void" access="public" output="false">
 	<cfargument name="feedBean" type="any" />
 	 
+	<cftransaction>
 	<cfquery datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	insert into tcontentfeeds (feedID,siteid,dateCreated,lastupdate,lastupdateBy,name, altName, description,
 	isActive,isPublic,isDefault,lang,maxItems,allowHTML,isFeaturesOnly,restricted,restrictGroups,version,
@@ -101,6 +102,8 @@ to your own modified versions of Mura CMS.
 	<cfset createItems(arguments.feedBean.getfeedID(),arguments.feedBean.getcontentID(),'contentID') />
 	<cfset createItems(arguments.feedBean.getfeedID(),arguments.feedBean.getCategoryID(),'categoryID') />
 	<cfset createAdvancedParams(arguments.feedBean.getfeedID(),arguments.feedBean.getAdvancedParams()) />
+	</cftransaction>
+	
 </cffunction> 
 
 <cffunction name="read" access="public" output="false" returntype="any" >
@@ -150,6 +153,7 @@ to your own modified versions of Mura CMS.
 <cffunction name="update" access="public" output="false" returntype="void" >
 	<cfargument name="feedBean" type="any" />
 	
+	<cftransaction>
 	<cfquery datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	update tcontentfeeds set
 	lastUpdate = <cfif isDate(arguments.feedBean.getLastUpdate()) >#createODBCDateTime(arguments.feedBean.getLastUpdate())#<cfelse>null</cfif>,
@@ -183,12 +187,14 @@ to your own modified versions of Mura CMS.
 	<cfset createItems(arguments.feedBean.getfeedID(),arguments.feedBean.getcontentID(),'contentID') />
 	<cfset createItems(arguments.feedBean.getfeedID(),arguments.feedBean.getCategoryID(),'categoryID') />
 	<cfset createAdvancedParams(arguments.feedBean.getfeedID(),arguments.feedBean.getAdvancedParams()) />
-
+	</cftransaction>
+	
 </cffunction>
 
 <cffunction name="delete" access="public" output="false" returntype="void" >
 	<cfargument name="feedID" type="String" />
-
+	
+	<cftransaction>
 	<cfquery datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	delete from tcontentfeeds
 	where feedID = <cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.feedID#">
@@ -196,7 +202,7 @@ to your own modified versions of Mura CMS.
 	
 	<cfset deleteItems(arguments.feedID) />
 	<cfset deleteAdvancedParams(arguments.feedID) />
-
+	</cftransaction>
 </cffunction>
 
 <cffunction name="createItems" returntype="void" access="public" output="false">

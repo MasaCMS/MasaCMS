@@ -240,8 +240,8 @@ to your own modified versions of Mura CMS.
 				<cfloginuser name="#rsuser.userID#^#user#^#dateFormat(lastLogin,'m/d/yy')#^#group#^#rsUser.username#^#dateFormat(rsUser.passwordCreated,'m/d/yy')#^#rsUser.password#"
 				 roles="#rolelist#"
 				 password="#rsUser.password#">
-				</cflogin>
-				
+				</cflogin>	
+			
 				<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 				UPDATE tusers SET LastLogin = #createodbcdatetime(now())#
 				WHERE tusers.UserID='#rsUser.UserID#'

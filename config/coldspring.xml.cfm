@@ -120,9 +120,6 @@ to your own modified versions of Mura CMS.
 				<entry key="dbUsername">
 					<value>#XMLFormat(GetProfileString("#variables.iniPath#", mode, "dbUsername"))#</value>
 				</entry>
-				<entry key="dbTransactionLevel">
-					<value>#XMLFormat(GetProfileString("#variables.iniPath#", mode, "dbTransactionLevel"))#</value>
-				</entry>
 				<entry key="debuggingEnabled">
 					<value>#XMLFormat(GetProfileString("#variables.iniPath#", mode, "debuggingEnabled"))#</value>
 				</entry>

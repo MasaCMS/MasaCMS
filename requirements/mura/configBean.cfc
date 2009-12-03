@@ -70,7 +70,7 @@ to your own modified versions of Mura CMS.
 <cfset variables.instance.dbType="mssql"/>
 <cfset variables.instance.dbUsername=""/>
 <cfset variables.instance.dbPassword=""/>
-<cfset variables.instance.dbTransactionLevel="read_committed"/>
+<!--- <cfset variables.instance.dbTransactionLevel="read_committed"/> --->
 <cfset variables.instance.debuggingEnabled="false"/>
 <cfset variables.instance.compiler="adobe"/>
 <cfset variables.instance.serverPort=""/>
@@ -127,7 +127,7 @@ to your own modified versions of Mura CMS.
 	<cfset setDbType(config.dbType)/>
 	<cfset setDbUsername(config.dbUsername)/>
 	<cfset setDbPassword(config.dbPassword)/>
-	<cfset setDbTransactionLevel(config.dbTransactionLevel)/>
+	<!--- <cfset setDbTransactionLevel(config.dbTransactionLevel)/> --->
 	<cfset setDebuggingEnabled(config.debuggingEnabled)/>
 	<cfset setServerPort(config.port)/>
 	<cfset setAssetPath(config.assetPath)/>
@@ -483,7 +483,7 @@ to your own modified versions of Mura CMS.
 	<cfset variables.instance.dbUsername = arguments.dbUsername />
 </cffunction>
 
-<cffunction name="getDbTransactionLevel" returntype="string" access="public" output="false">
+<!--- <cffunction name="getDbTransactionLevel" returntype="string" access="public" output="false">
 	<cfreturn variables.instance.dbTransactionLevel />
 </cffunction>
 
@@ -492,7 +492,7 @@ to your own modified versions of Mura CMS.
 	<cfif len(arguments.dbTransactionLevel)>
 		<cfset variables.instance.dbTransactionLevel = arguments.dbTransactionLevel />
 	</cfif>
-</cffunction>
+</cffunction> --->
 
 <cffunction name="getReactor" access="public" output="false" returntype="any">
 	
