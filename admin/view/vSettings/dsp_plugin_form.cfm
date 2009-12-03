@@ -40,8 +40,15 @@ for your modified version; it is your choice whether to do so, or to make such m
 the GNU General Public License version 2  without this exception.  You may, if you choose, apply this exception
 to your own modified versions of Mura CMS.
 --->
+<cfsilent>
 <cfhtmlhead text="#session.dateKey#">
 <cfset rsPlugin=application.pluginManager.getPlugin(attributes.moduleID)>
+<cfif structKeyExists(request.pluginXML.plugin,"package") and len(request.pluginXML.plugin.package.xmlText)>
+	<cfset package=request.pluginXML.plugin.package.xmlText>
+<cfelse>
+	<cfset package="">
+</cfif>
+</cfsilent>
 <h2>Plugin Settings</h2>
 <cfoutput>
 <ul class="metadata">
@@ -51,6 +58,7 @@ to your own modified versions of Mura CMS.
 <li><strong>Provider:</strong> #htmlEditFormat(request.pluginXML.plugin.provider.xmlText)#</li>
 <li><strong>Provider URL:</strong> <a href="#request.pluginXML.plugin.providerURL.xmlText#" target="_blank">#htmlEditFormat(request.pluginXML.plugin.providerURL.xmlText)#</a></li>
 <li><strong>Plugin ID:</strong> #rsplugin.pluginID#</li>
+<li><strong>Package:</strong> <cfif len(package)>#htmlEditFormat(package)#<cfelse>N/A</cfif></li>
 </ul>
 
 
@@ -105,21 +113,10 @@ to your own modified versions of Mura CMS.
 <cfset objectsLen=0>
 </cfif>
 
-<cfif rsPlugin.deployed>
-	<cfset package=rsPlugin.package>
-<cfelse>
-	<cfif structKeyExists(request.pluginXML.plugin,"package") and len(request.pluginXML.plugin.package.xmlText)>
-		<cfset package=request.pluginXML.plugin.package.xmlText>
-	<cfelse>
-		<cfset package="">
-	</cfif>
-</cfif>
 </cfsilent>
 <dl class="oneColumn">
 	<dt>Plugin Name (Alias)</dt>	
 	<dd><input name="pluginalias" type="text" value="#htmlEditFormat(rsPlugin.name)#" required="true" message="The 'Name' field is required." maxlength="100"/></dd>
-	<dt>Package (Base of Install Directory)</dt>	
-	<dd><input name="package" type="text" value="#htmlEditFormat(package)#" maxlength="100"/></dd>
 <cfif settingsLen>
 <cfloop from="1" to="#settingsLen#" index="i">
 		<cfsilent>
@@ -196,7 +193,7 @@ to your own modified versions of Mura CMS.
 </cfloop>
 </ul></dd>
 </dl>
-
+<input name="package" type="hidden" value="#htmlEditFormat(package)#"/>
 <input type="hidden" name="moduleID" value="#attributes.moduleID#">
 </cfoutput>
 <input type="submit" value="Update">

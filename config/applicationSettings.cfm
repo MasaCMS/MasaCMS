@@ -118,7 +118,15 @@ to your own modified versions of Mura CMS.
 			<cfset this.mappings["/#rsRequirements.name#"] = mapPrefix & rsRequirements.directory & "/" & rsRequirements.name>
 		</cfif>
 	</cfloop>
+	<cfdirectory action="list" directory="#baseDir#/plugins/" name="rsRequirements">
+	<cfloop query="rsRequirements">
+		<cfif rsRequirements.type eq "dir">
+			<cfset m=listFirst(rsRequirements.name,"_")>
+			<cfif not isNumeric(m) and not structKeyExists(this.mappings,m)>
+				<cfset this.mappings["/#m#"] = mapPrefix & rsRequirements.directory & "/" & rsRequirements.name>
+			</cfif>
+		</cfif>
+	</cfloop>
 	<cfset this.mappings["/plugins"] = mapPrefix & baseDir & "/plugins">
 	<cfset this.mappings["/muraWRM"] = mapPrefix & baseDir>
 	<cfset this.mappings["/savaWRM"] = mapPrefix & baseDir>
-

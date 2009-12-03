@@ -50,6 +50,7 @@ to your own modified versions of Mura CMS.
 <li><strong>Provider:</strong> #htmlEditFormat(request.pluginConfig.getProvider())#</li>
 <li><strong>Provider URL:</strong> <a href="#request.pluginConfig.getProviderURL()#" target="_blank">#htmlEditFormat(request.pluginConfig.getProviderURL())#</a></li>
 <li><strong>Plugin ID:</strong> #request.pluginConfig.getPluginID()#</li>
+<li><strong>Package:</strong> <cfif len(request.pluginConfig.getPackage())>#request.pluginConfig.getPackage()#<cfelse>N/A</cfif></li>
 </ul>
 
 Upload New Plugin Version
