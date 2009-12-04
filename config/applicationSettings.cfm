@@ -171,7 +171,7 @@ to your own modified versions of Mura CMS.
 				<cfset m=listFirst(rsRequirements.name,"_")>
 				<cfif not isNumeric(m) and not structKeyExists(this.mappings,m)>
 					<cfif canWriteMappings>
-						<cffile action="append" file="#mapPrefix##baseDir#/plugins/mappings.cfm" output='<cfset this.mappings["/#m#"] = "#mapPrefix##rsRequirements.directory##rsRequirements.name#">' mode="777">	
+						<cffile action="append" file="#mapPrefix##baseDir#/plugins/mappings.cfm" output='<cfset this.mappings["/#m#"] = "#mapPrefix##rsRequirements.directory#/#rsRequirements.name#">' mode="777">	
 					</cfif>
 					<cfset this.mappings["/#m#"] = mapPrefix & rsRequirements.directory & "/" & rsRequirements.name>
 				</cfif>

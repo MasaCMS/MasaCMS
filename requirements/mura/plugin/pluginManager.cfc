@@ -384,7 +384,7 @@ select * from tplugins order by #arguments.orderby#
 			<cfset m=listFirst(rsRequirements.name,"_")>
 			<cfset mHash=hash(m)>
 			<cfif not isNumeric(m) and not structKeyExists(done,mHash)>
-				<cffile action="append" file="#mapPrefix##baseDir#/mappings.cfm" output='<cfset this.mappings["/#m#"] = "#mapPrefix##rsRequirements.directory##rsRequirements.name#">' mode="777">	
+				<cffile action="append" file="#mapPrefix##baseDir#/mappings.cfm" output='<cfset this.mappings["/#m#"] = "#mapPrefix##rsRequirements.directory#/#rsRequirements.name#">' mode="777">	
 				<cfset done[mHash]=true>
 			</cfif>
 		</cfif>
