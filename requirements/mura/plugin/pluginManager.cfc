@@ -377,14 +377,14 @@ select * from tplugins order by #arguments.orderby#
 		<cfset mapPrefix="$" />
 	</cfif>
 	<cffile action="delete" file="#baseDir#/mappings.cfm">
-	<cffile action="write" file="#baseDir#/mappings.cfm" output="" mode="777" addnewline="false">
+	<cffile action="write" file="#baseDir#/mappings.cfm" output="" addnewline="false">
 	<cfdirectory action="list" directory="#baseDir#" name="rsRequirements">
 	<cfloop query="rsRequirements">
 		<cfif rsRequirements.type eq "dir" and rsRequirements.name neq '.svn'>
 			<cfset m=listFirst(rsRequirements.name,"_")>
 			<cfset mHash=hash(m)>
 			<cfif not isNumeric(m) and not structKeyExists(done,mHash)>
-				<cffile action="append" file="#mapPrefix##baseDir#/mappings.cfm" output='<cfset this.mappings["/#m#"] = "#mapPrefix##rsRequirements.directory#/#rsRequirements.name#">' mode="777">	
+				<cffile action="append" file="#mapPrefix##baseDir#/mappings.cfm" output='<cfset this.mappings["/#m#"] = "#mapPrefix##rsRequirements.directory#/#rsRequirements.name#">'>	
 				<cfset done[mHash]=true>
 			</cfif>
 		</cfif>
