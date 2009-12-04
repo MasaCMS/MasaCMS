@@ -18,6 +18,9 @@
 <cfif not isDefined("attributes.categoryID")><cfset attributes.categoryID = "" /></cfif>
 <cfif not isDefined("attributes.contentID")><cfset attributes.contentID = "" /></cfif>
 <cfif not isDefined("attributes.restricted")><cfset attributes.restricted = "0" /></cfif>
+<cfif not isDefined("attributes.closeCompactDisplay")><cfset attributes.closeCompactDisplay = "" /></cfif>
+<cfif not isDefined("attributes.compactDisplay")><cfset attributes.compactDisplay = "" /></cfif>
+<cfif not isDefined("attributes.homeID")><cfset attributes.homeID = "" /></cfif>
 <!--- do action="vFeed.siteParents" --->
 <cfset myFusebox.thisCircuit = "vFeed">
 <cfsavecontent variable="fusebox.layout">
