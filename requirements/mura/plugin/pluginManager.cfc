@@ -229,7 +229,6 @@ select * from tplugins order by #arguments.orderby#
 
 <cfset savePluginXML(modID) />
 <cfset loadPlugins() />
-<!---<cfset createLookupTXT()/>--->
 
 <cfreturn modID/>
 
@@ -362,8 +361,34 @@ select * from tplugins order by #arguments.orderby#
 		</cfif>
 	</cfif>
 	
-	<!---<cfset createLookupTXT()/>--->
+	<cfset createMappings()/>
 	
+</cffunction>
+
+<cffunction name="createMappings" output="false">
+	<cfset var mapPrefix="" />
+	<cfset var rsRequitements="">
+	<cfset var done=structNew()>
+	<cfset var mHash="">
+	<cfset var m="">
+	<cfset var baseDir=expandPath('/plugins')>
+	
+	<cfif StructKeyExists(SERVER,"bluedragon") and not findNoCase("Windows",server.os.name)>
+		<cfset mapPrefix="$" />
+	</cfif>
+	<cffile action="delete" file="#baseDir#/mappings.cfm">
+	<cffile action="write" file="#baseDir#/mappings.cfm" output="" mode="777" addnewline="false">
+	<cfdirectory action="list" directory="#baseDir#" name="rsRequirements">
+	<cfloop query="rsRequirements">
+		<cfif rsRequirements.type eq "dir" and rsRequirements.name neq '.svn'>
+			<cfset m=listFirst(rsRequirements.name,"_")>
+			<cfset mHash=hash(m)>
+			<cfif not isNumeric(m) and not structKeyExists(done,mHash)>
+				<cffile action="append" file="#mapPrefix##baseDir#/mappings.cfm" output='<cfset this.mappings["/#m#"] = "#mapPrefix##rsRequirements.directory##rsRequirements.name#">' mode="777">	
+				<cfset done[mHash]=true>
+			</cfif>
+		</cfif>
+	</cfloop>
 </cffunction>	
 
 <cffunction name="hasPlugin" returntype="any" output="false">

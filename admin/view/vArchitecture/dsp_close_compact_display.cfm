@@ -59,7 +59,17 @@ to your own modified versions of Mura CMS.
 	</cfif>
 </cfif>
 	
-<cfif attributes.action eq "add" and request.contentBean.getType() neq "File" and request.contentBean.getType() neq "Link">
+<cfif len(attributes.homeID) gt 0>
+	<cfset homeBean = application.contentManager.getActiveContent(event.getValue('homeID'), event.getValue('siteID'))>
+	<cfset href = contentRenderer.createHREF(homeBean.getType(), homeBean.getFilename(), homeBean.getSiteId(), homeBean.getcontentId())>
+	<cfoutput>
+		<script>
+			var editForm = window.parent.document.getElementById('editForm');
+			window.parent.location = '#href#';
+			editForm.hide();
+		</script>
+	</cfoutput>
+<cfelseif attributes.action eq "add" and request.contentBean.getType() neq "File" and request.contentBean.getType() neq "Link">
 	<cfset href = contentRenderer.createHREF(currentBean.getType(), currentBean.getFilename(), currentBean.getSiteId(), currentBean.getcontentId())>
 	<script>
 		var editForm = window.parent.document.getElementById('editForm');

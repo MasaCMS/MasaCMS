@@ -20,6 +20,7 @@
 <set name="attributes.compactDisplay" value="" overwrite="false" />
 <set name="attributes.doCache" value="1" overwrite="false" />
 <set name="attributes.returnURL" value="" overwrite="false" />
+<set name="attributes.homeID" value="" overwrite="false" />
 
 <if condition="not session.mura.isLoggedIn">
 	<true>
