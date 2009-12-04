@@ -40,14 +40,47 @@ for your modified version; it is your choice whether to do so, or to make such m
 the GNU General Public License version 2  without this exception.  You may, if you choose, apply this exception
 to your own modified versions of Mura CMS.
 --->
+<cfsilent>
+<cfparam name="hasSummary" default="true"/>
+<cfset feedBean=application.feedManager.read(arguments.objectID) />
 
+<cfset editableControl.editLink = "">
+	<!---
+	<cfset editableControl.historyLink = "">
+	--->
+	<cfset editableControl.innerHTML = "">
+	
+	<cfif this.showEditableObjects and objectPerm eq 'editor'>
+		<cfset bean = feedBean>
+		<cfset request.contentRenderer.loadShadowBoxJS()>
+		
+		<cfif len(application.configBean.getAdminDomain())>
+			<cfif application.configBean.getAdminSSL()>
+				<cfset adminBase="https://#application.configBean.getAdminDomain()#"/>
+			<cfelse>
+				<cfset adminBase="http://#application.configBean.getAdminDomain()#"/>
+			</cfif>
+		<cfelse>
+			<cfset adminBase=""/>
+		</cfif>
+		
+		<cfset editableControl.editLink = adminBase & "#application.configBean.getContext()#/admin/index.cfm?fuseaction=cFeed.edit">
+		<cfset editableControl.editLink = editableControl.editLink & "&amp;siteid=" & bean.getSiteID()>
+		<cfset editableControl.editLink = editableControl.editLink & "&amp;feedid=" & bean.getFeedID()>
+		<cfset editableControl.editLink = editableControl.editLink & "&amp;type=" & bean.getType()>
+		<cfset editableControl.editLink = editableControl.editLink & "&amp;homeID=" & request.contentBean.getContentID()>
+		<cfset editableControl.editLink = editableControl.editLink & "&amp;compactDisplay=true">
+		
+		<cfset editableControl.innerHTML = generateEditableObjectControl(editableControl.editLink)>
+	</cfif>
+</cfsilent>
+	<cfif editableControl.innerHTML neq "">
+		<div class="editableObject editableFeed editableSlideShow">
+	</cfif>
 <cfswitch expression="#getJsLib()#">
 	<cfcase value="jquery">
 	<cfset loadJSLib() />
 	<cfset addToHTMLHeadQueue("feedslideshow/htmlhead/slideshow.jquery.cfm")>
-	<cf_CacheOMatic key="#arguments.object##arguments.objectid#" nocache="#event.getValue('r').restrict#">
-	<cfparam name="hasSummary" default="true"/>
-	  <cfset feedBean=application.feedManager.read(arguments.objectID) />
 	  <cfif feedBean.getIsActive()>
 		<cfset cssID=createCSSid(feedBean.renderName())>
 	      <cfsilent>
@@ -130,11 +163,12 @@ to your own modified versions of Mura CMS.
 	<cfelse>
 		<!-- Inactive Feed '<cfoutput>#feedBean.getName()#</cfoutput>' -->
 	 </cfif>
-	 </cf_CacheOMatic>
 	 </cfcase>
 <cfdefaultcase>
 		 <!-- The Prototype js library is not currently support for the slide show functionality  -->
 </cfdefaultcase>
 </cfswitch>
-
- 
+ <cfoutput>#editableControl.innerHTML#</cfoutput>
+  <cfif editableControl.innerHTML neq "">
+  	</div>
+ </cfif>

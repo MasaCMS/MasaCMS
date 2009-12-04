@@ -865,8 +865,8 @@ to your own modified versions of Mura CMS.
 				<cfcase value="adzone">#dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"dsp_adZone.cfm")#</cfcase>
 				<cfcase value="feed">#dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"dsp_feed.cfm",cacheKeyObjectId & "startrow#request.startrow#")#</cfcase>
 				<cfcase value="feed_no_summary">#dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"dsp_feed.cfm",cacheKeyObjectId & "startrow#request.startrow#",false)#</cfcase>
-				<cfcase value="feed_slideshow_no_summary">#dspObject_Render(siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,fileName="feedslideshow/index.cfm",hasSummary=false)#</cfcase>
-				<cfcase value="feed_slideshow">#dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"feedslideshow/index.cfm")#</cfcase>
+				<cfcase value="feed_slideshow_no_summary">#dspObject_Render(siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,fileName="feedslideshow/index.cfm",hasSummary=false,cacheKey=cacheKeyObjectId)#</cfcase>
+				<cfcase value="feed_slideshow">#dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"feedslideshow/index.cfm",cacheKeyObjectId)#</cfcase>
 				<cfcase value="feed_table">#dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"feedtable/index.cfm",arguments.object,false)#</cfcase>
 				<cfcase value="payPalCart">#dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"paypalcart/index.cfm")#</cfcase>
 				<cfcase value="rater">#dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"rater/index.cfm")#</cfcase>
