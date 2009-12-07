@@ -191,6 +191,17 @@ to your own modified versions of Mura CMS.
 </cffunction>
 
 <cffunction name="logout" returntype="void" access="public" output="false">
+	<cfset var pluginEvent="">
+	<cfif structKeyExists(request,"servletEvent")>
+		<cfset pluginEvent=request.servletEvent>
+	<cfelse>
+		<cfset pluginEvent = createObject("component","mura.event").init(session) />
+	</cfif>
+	<cfif len(pluginEvent.getValue("siteID"))>
+		<cfset getPluginManager().announceEvent('onSiteLogout',pluginEvent)/>
+	<cfelse>
+		<cfset getPluginManager().announceEvent('onGlobalLogout',pluginEvent)/>
+	</cfif>
 	<cfset structclear(session) />
 	<cflogout>
 	<cfcookie name="userid" expires="never" value="" />

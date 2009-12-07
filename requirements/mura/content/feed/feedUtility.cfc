@@ -105,7 +105,9 @@ to your own modified versions of Mura CMS.
 				<cfset feedItem.title=left(items[i].title.xmlText,255) />
 				<cfset feedItem.summary=items[i].description.xmlText />
 				<cfset feedItem.remotePubDate=items[i].pubDate.xmlText />
-				
+				<cfif isDate(items[i].pubDate.xmlText)>
+					<cfset feedItem.releaseDate=parseDateTime(items[i].pubDate.xmlText) />
+				</cfif>
 				<cftry>
 					<cfset feedItem.remoteID=left(items[i].guid.xmlText,255) />
 					<cfcatch>
