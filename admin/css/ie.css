@@ -37,6 +37,9 @@
 	to your own modified versions of Mura CMS. */
 
 /* @group All Versions */
+#xEditingArea p, #xEditingArea li, #xEditingArea dt, #xEditingArea dd, #xEditingArea table {
+	font-size: 12px !important; /* Fixes IE8 micro type in Editor? */
+}
 
 a.submit, #datePicker a.submit {
 	background: url(../images/btn.gif) no-repeat top left;
