@@ -118,7 +118,7 @@ userFilesServerPath = config.serverPath & fs;
 	
 	<!--- create sub-directory for file type if it doesn't already exist --->
 	<cfif not directoryExists(userFilesServerPath & url.type)>	
-		<cfdirectory action="create" directory="#userFilesServerPath##url.type#" mode="755">
+		<cfdirectory action="create" directory="#userFilesServerPath##url.type#" mode="775">
 	</cfif>
 
 <cfcatch>
@@ -210,7 +210,7 @@ userFilesServerPath = config.serverPath & fs;
 						action="rename"
 						source="#application.configBean.getTempDir()##cffile.ServerFileName#.#cffile.ServerFileExt#"
 						destination="#currentFolderPath##fileName#.#fileExt#"
-						mode="644"
+						mode="774"
 						attributes="normal">				
 				</cfif>
 		

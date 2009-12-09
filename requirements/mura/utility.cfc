@@ -193,19 +193,19 @@ to your own modified versions of Mura CMS.
 	</cfquery>
 	
 	<cftry>
-		<cfdirectory action="create" directory="#arguments.destDir#" />
+		<cfdirectory action="create" mode="775" directory="#arguments.destDir#" />
 		<cfcatch></cfcatch>
 	</cftry>
 	
 	<cfloop query="rs">
 		<cfif rs.type eq "dir">
 			<cftry>
-				<cfdirectory action="create" directory="#replace('#rs.directory##variables.configBean.getFileDelim()#',arguments.baseDir,arguments.destDir)##rs.name##variables.configBean.getFileDelim()#" />
+				<cfdirectory action="create" mode="775" directory="#replace('#rs.directory##variables.configBean.getFileDelim()#',arguments.baseDir,arguments.destDir)##rs.name##variables.configBean.getFileDelim()#" />
 				<cfcatch></cfcatch>
 			</cftry>
 		<cfelse>
 			<cftry>
-				<cffile action="copy" mode="777" source="#rs.directory##variables.configBean.getFileDelim()##rs.name#" destination="#replace('#rs.directory##variables.configBean.getFileDelim()#',arguments.baseDir,arguments.destDir)#" />
+				<cffile action="copy" mode="775" source="#rs.directory##variables.configBean.getFileDelim()##rs.name#" destination="#replace('#rs.directory##variables.configBean.getFileDelim()#',arguments.baseDir,arguments.destDir)#" />
 				<cfcatch></cfcatch>
 			</cftry>
 		</cfif>

@@ -1143,19 +1143,19 @@ to your own modified versions of Mura CMS.
 		</cfquery>
 		
 		<cftry>
-			<cfdirectory action="create" directory="#arguments.destDir#" />
+			<cfdirectory action="create" mode="775" directory="#arguments.destDir#" />
 			<cfcatch></cfcatch>
 		</cftry>
 		
 		<cfloop query="rs">
 			<cfif rs.type eq "dir">
 				<cftry>
-					<cfdirectory action="create" directory="#replace('#rs.directory##fileDelim#',arguments.baseDir,arguments.destDir)##rs.name##fileDelim#" />
+					<cfdirectory action="create" mode="775" directory="#replace('#rs.directory##fileDelim#',arguments.baseDir,arguments.destDir)##rs.name##fileDelim#" />
 					<cfcatch></cfcatch>
 				</cftry>
 			<cfelse>
 				<!--- <cftry> --->
-					<cffile action="copy" mode="777" source="#rs.directory##fileDelim##rs.name#" destination="#replace('#rs.directory##fileDelim#',arguments.baseDir,arguments.destDir)#" />
+					<cffile action="copy" mode="775" source="#rs.directory##fileDelim##rs.name#" destination="#replace('#rs.directory##fileDelim#',arguments.baseDir,arguments.destDir)#" />
 					
 					<cfset newFile=listFirst(rs.name,".")>
 					
@@ -1165,7 +1165,7 @@ to your own modified versions of Mura CMS.
 						<cfset newFile=keys.get(newFile) & "." & listLast(rs.name,".")>	
 					</cfif>
 						
-					<cffile action="rename" source="#replace('#rs.directory##fileDelim#',arguments.baseDir,arguments.destDir)##rs.name#" destination="#replace('#rs.directory##fileDelim#',arguments.baseDir,arguments.destDir)##newFile#"/>
+					<cffile action="rename" mode="775" source="#replace('#rs.directory##fileDelim#',arguments.baseDir,arguments.destDir)##rs.name#" destination="#replace('#rs.directory##fileDelim#',arguments.baseDir,arguments.destDir)##newFile#"/>
 				<!--- 	<cfcatch></cfcatch>
 				</cftry> --->
 			</cfif>

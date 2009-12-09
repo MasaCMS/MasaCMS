@@ -92,7 +92,7 @@
 		<cfset currentFolderPath = userFilesServerPath & url.type & fs>
 
 		<cfif not directoryExists(currentFolderPath)>
-			<cfdirectory action="create" directory="#currentFolderPath#" mode="777"/>
+			<cfdirectory action="create" directory="#currentFolderPath#" mode="775"/>
 		</cfif>
 
 		<!--- TODO: upload to a temp directory and move file if extension is allowed --->
@@ -155,7 +155,7 @@
 				action="rename"
 				source="#application.configBean.getTempDir()##cffile.ServerFileName#.#cffile.ServerFileExt#"
 				destination="#currentFolderPath##fileName#.#fileExt#"
-				mode="644"
+				mode="774"
 				attributes="normal">
 		</cfif>
 
