@@ -127,20 +127,20 @@ to your own modified versions of Mura CMS.
 	<cfif not directoryExists("#variables.configBean.getFileDir()##variables.configBean.getFileDelim()##arguments.siteid##variables.configBean.getFileDelim()#cache#variables.configBean.getFileDelim()#component")> 
 	
 		<cfif not directoryExists("#variables.configBean.getFileDir()##variables.configBean.getFileDelim()##arguments.siteid#")> 
-			<cfdirectory action="create" mode="755" directory="#variables.configBean.getFileDir()##variables.configBean.getFileDelim()##arguments.siteid#"> 
+			<cfdirectory action="create" mode="775" directory="#variables.configBean.getFileDir()##variables.configBean.getFileDelim()##arguments.siteid#"> 
 		</cfif>
 	
 		<cfif not directoryExists("#variables.configBean.getFileDir()##variables.configBean.getFileDelim()##arguments.siteid##variables.configBean.getFileDelim()#cache")> 
-			<cfdirectory action="create" mode="755" directory="#variables.configBean.getFileDir()##variables.configBean.getFileDelim()##arguments.siteid##variables.configBean.getFileDelim()#cache"> 
+			<cfdirectory action="create" mode="775" directory="#variables.configBean.getFileDir()##variables.configBean.getFileDelim()##arguments.siteid##variables.configBean.getFileDelim()#cache"> 
 		</cfif>
 	
-		<cfdirectory action="create" mode="755" directory="#variables.configBean.getFileDir()##variables.configBean.getFileDelim()##arguments.siteid##variables.configBean.getFileDelim()#cache#variables.configBean.getFileDelim()#component">
-		<cfdirectory action="create" mode="755" directory="#variables.configBean.getFileDir()##variables.configBean.getFileDelim()##arguments.siteid##variables.configBean.getFileDelim()#cache#variables.configBean.getFileDelim()#file"> 
+		<cfdirectory action="create" mode="775" directory="#variables.configBean.getFileDir()##variables.configBean.getFileDelim()##arguments.siteid##variables.configBean.getFileDelim()#cache#variables.configBean.getFileDelim()#component">
+		<cfdirectory action="create" mode="775" directory="#variables.configBean.getFileDir()##variables.configBean.getFileDelim()##arguments.siteid##variables.configBean.getFileDelim()#cache#variables.configBean.getFileDelim()#file"> 
 	</cfif>
 	
 	<!--- make sure that the asset directory exists, for fckeditor assets --->
 	<cfif not directoryExists("#variables.configBean.getAssetDir()##variables.configBean.getFileDelim()##arguments.siteid##variables.configBean.getFileDelim()#assets")> 
-			<cfdirectory action="create" mode="755" directory="#variables.configBean.getAssetDir()##variables.configBean.getFileDelim()##arguments.siteid##variables.configBean.getFileDelim()#assets"> 
+			<cfdirectory action="create" mode="775" directory="#variables.configBean.getAssetDir()##variables.configBean.getFileDelim()##arguments.siteid##variables.configBean.getFileDelim()#assets"> 
 	</cfif>
 	
 </cffunction>
