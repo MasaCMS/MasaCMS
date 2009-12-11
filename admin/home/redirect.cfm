@@ -48,11 +48,17 @@ to your own modified versions of Mura CMS.
 <cfset rsList = application.settingsManager.getUserSites(session.siteArray,
 isUserInRole('S2')) />
 
-<cfquery name="rsDefault" dbtype="query">
-SELECT siteid FROM rsList
-WHERE siteid = <cfqueryparam cfsqltype="cf_sql_varchar"
-value="#application.contentServer.bindToDomain(isAdmin=true)#" />
-</cfquery>
+<cfset siteID=application.contentServer.bindToDomain(isAdmin=true)>
+
+<cfif siteID neq "--none--">
+	<cfquery name="rsDefault" dbtype="query">
+			SELECT siteid FROM rsList
+			WHERE siteid = <cfqueryparam cfsqltype="cf_sql_varchar"
+			value="#application.contentServer.bindToDomain(isAdmin=true)#" />
+	</cfquery>
+<cfelse>
+	<cfset rsDefault.recordcount=0>
+</cfif>
 
 <cfif rsDefault.recordcount>
 	<cfset redirectSite=rsDefault.siteid />

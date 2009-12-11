@@ -95,15 +95,19 @@ to your own modified versions of Mura CMS.
 	<cfset site=application.settingsManager.getSite(rsSites.siteID)>
 	<cftry>
 	<cfif site.isValidDomain(domain:listFirst(cgi.http_host,":"),mode:"partial")>>
-		<cflocation addtoken="no" url="http://#application.settingsManager.getSite(rsSites.siteID).getDomain()#">
+		<cflocation addtoken="no" url="http://#application.settingsManager.getSite(rsSites.siteID).getDomain()##application.configBean.getContext()#">
 	</cfif>
 	<cfcatch></cfcatch>
 	</cftry>
 	</cfloop>
 	
 	<!--- if still not found site the siteID to default --->
-	<cfif not arguments.isAdmin and listFirst(cgi.http_host,":") eq application.configBean.getAdminDomain()>
-		<cfset application.contentRenderer.redirect("#application.configBean.getContext()#/admin/")>
+	<cfif listFirst(cgi.http_host,":") eq application.configBean.getAdminDomain()>
+		<cfif arguments.isAdmin>
+			<cfreturn "--none--">	
+		<cfelse>
+			<cfset application.contentRenderer.redirect("#application.configBean.getContext()#/admin/")>
+		</cfif>
 	<cfelse>
 		<cfreturn rsSites.siteID>
 	 </cfif>
