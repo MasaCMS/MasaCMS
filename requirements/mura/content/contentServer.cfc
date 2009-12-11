@@ -102,7 +102,7 @@ to your own modified versions of Mura CMS.
 	</cfloop>
 	
 	<!--- if still not found site the siteID to default --->
-	<cfif not arguments.isAdmin eq listFirst(cgi.http_host,":") eq application.configBean.getAdminDomain()>
+	<cfif not arguments.isAdmin and  eq listFirst(cgi.http_host,":") eq application.configBean.getAdminDomain()>
 		<cfset application.contentRenderer.redirect("#application.configBean.getContext()#/admin/")>
 	<cfelse>
 		<cfreturn rsSites.siteID>
