@@ -72,7 +72,7 @@ to your own modified versions of Mura CMS.
 </cffunction>
 
 <cffunction name="bindToDomain" output="false" returntype="any" access="remote">
-	<cfargument name="isAdmin" required="true" defaul="false">
+	<cfargument name="isAdmin" required="true" default="false">
 	<cfset var siteID= "" />
 	<cfset var rsSites=application.settingsManager.getList() />
 	<cfset var site="">
