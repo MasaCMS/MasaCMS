@@ -51,7 +51,7 @@ p, li, dt, dd, table { font-size: 1.2em; }
 
 p.intro { font-size: 1.5em; }
 
-li *, dt *, dd *, td *, th * { font-size: 1em !important; }
+li *, dt *, dd *, td *, th * { font-size: 1em; }
 
 blockquote, q { padding: 0 4em; quotes: none; }
 blockquote:before, blockquote:after, q:before, q:after { content: ''; content: none; }
@@ -61,7 +61,7 @@ blockquote div cite { font-style: italic; }
 strong, b { font-weight: bold; }
 em, i { font-style: italic; }
 
-ins { text-decoration: #ddd; }
+ins { text-decoration: none; }
 del { text-decoration: line-through; }
 
 abbr, acronym { border-bottom: 1px dotted; cursor: help; }
@@ -136,6 +136,5 @@ h6 {
 
 /* @end Headings (H1-H6)
 -------------------------------- */
-
 
 /* EOF */
