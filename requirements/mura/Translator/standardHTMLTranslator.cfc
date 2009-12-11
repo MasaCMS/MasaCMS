@@ -33,14 +33,6 @@
 		<cfinclude template="#event.getSite().getTemplateIncludePath()#/#renderer.getTemplate()#">
 	</cfsavecontent>
 		
-	<cfif (event.getValue('forceSSL') or (event.getValue('r').restrict and application.settingsManager.getSite(event.getValue('siteID')).getExtranetSSL() eq 1)) and listFindNoCase('Off,False',cgi.https)>
-		<cflocation addtoken="no" url="https://#application.settingsManager.getSite(event.getValue('siteID')).getDomain()##application.configBean.getServerPort()##renderer.getCurrentURL(false)#">
-	</cfif>
-	
-	<cfif not (event.getValue('r').restrict or event.getValue('forceSSL')) and listFindNoCase('On,True',cgi.https)>
-		<cflocation addtoken="no" url="http://#application.settingsManager.getSite(event.getValue('siteID')).getDomain()##application.configBean.getServerPort()##renderer.getCurrentURL(false)#">
-	</cfif>
-			
 	<cfset renderer.renderHTMLHeadQueue() />
 	<cfset event.setValue('__MuraResponse__',page)>
 </cffunction>

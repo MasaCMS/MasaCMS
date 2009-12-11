@@ -51,7 +51,7 @@ isUserInRole('S2')) />
 <cfquery name="rsDefault" dbtype="query">
 SELECT siteid FROM rsList
 WHERE siteid = <cfqueryparam cfsqltype="cf_sql_varchar"
-value="#application.contentServer.bindToDomain()#" />
+value="#application.contentServer.bindToDomain(isAdmin=true)#" />
 </cfquery>
 
 <cfif rsDefault.recordcount>

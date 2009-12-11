@@ -72,6 +72,7 @@ to your own modified versions of Mura CMS.
 </cffunction>
 
 <cffunction name="bindToDomain" output="false" returntype="any" access="remote">
+	<cfargument name="isAdmin" required="true" defaul="false">
 	<cfset var siteID= "" />
 	<cfset var rsSites=application.settingsManager.getList() />
 	<cfset var site="">
@@ -101,7 +102,7 @@ to your own modified versions of Mura CMS.
 	</cfloop>
 	
 	<!--- if still not found site the siteID to default --->
-	<cfif listFirst(cgi.http_host,":") eq application.configBean.getAdminDomain()>
+	<cfif not arguments.isAdmin eq listFirst(cgi.http_host,":") eq application.configBean.getAdminDomain()>
 		<cfset application.contentRenderer.redirect("#application.configBean.getContext()#/admin/")>
 	<cfelse>
 		<cfreturn rsSites.siteID>
