@@ -90,7 +90,7 @@ to your own modified versions of Mura CMS.
 		 	<dl>
 		 	<dt>
 		 	<cfif hasComments>
-		 	<a href="#application.configBean.getIndexFile()#?linkServID=#rsSection.contentID#&categoryID=#request.categoryID#&relatedID=#request.relatedID#" title="#rsSection.title#">#rsSection.menutitle#</a>
+		 	<a href="#application.configBean.getIndexFile()#?linkServID=#rsSection.contentID#&categoryID=#HTMLEditFormat(request.categoryID)#&relatedID=#HTMLEditFormat(request.relatedID)#" title="#rsSection.title#">#rsSection.menutitle#</a>
 		 	<cfelse>
 		 	#rsSection.menutitle#
 		 	</cfif>
@@ -99,7 +99,7 @@ to your own modified versions of Mura CMS.
 		 	<dd class="credits">#rbFactory.getKey('list.by')# #rsSection.credits#</dd>
 		 	</cfif>
 		 	<cfif hasComments>
-		 	<dd class="comments"><a href="#application.configBean.getIndexFile()#?linkServID=#rsSection.contentID#&categoryID=#request.categoryID#&relatedID=#request.relatedID#" title="#rsSection.title#">#rbFactory.getKey('list.comments')# (#application.contentGateway.getCommentCount(request.siteid,rsSection.contentid)#)</a></dd>
+		 	<dd class="comments"><a href="#application.configBean.getIndexFile()#?linkServID=#rsSection.contentID#&categoryID=#HTMLEditFormat(request.categoryID)#&relatedID=#HTMLEditFormat(request.relatedID)#" title="#rsSection.title#">#rbFactory.getKey('list.comments')# (#application.contentGateway.getCommentCount(request.siteid,rsSection.contentid)#)</a></dd>
 		 	</cfif>
 		 	<cfif rsSection.tags neq "">
 		 	<dd class="tags"><cfmodule template="../nav/dsp_tag_line.cfm" tags="#rsSection.tags#"></dd>

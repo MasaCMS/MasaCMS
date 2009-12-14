@@ -129,7 +129,7 @@ to your own modified versions of Mura CMS.
 
 	<cfif not hasMappings>	
 		<cftry>
-			<cffile action="write" mode="775" file="#mapPrefix##baseDir#/config/mappings.cfm" output="<!--- Add Custom Mappings Here --->" addnewline="true">
+			<cffile action="write" file="#mapPrefix##baseDir#/config/mappings.cfm" output="<!--- Add Custom Mappings Here --->" addnewline="true">
 			<cfcatch>
 				<cfset canWriteMappings=false>
 			</cfcatch>
@@ -158,7 +158,7 @@ to your own modified versions of Mura CMS.
 	
 	<cfif not hasMappings>
 		<cftry>
-			<cffile action="write" mode="775" file="#mapPrefix##baseDir#/plugins/mappings.cfm" output="<!--- Do Not Edit --->" addnewline="true">
+			<cffile action="write" file="#mapPrefix##baseDir#/plugins/mappings.cfm" output="<!--- Do Not Edit --->" addnewline="true">
 			<cfcatch>
 				<cfset canWriteMappings=false>
 			</cfcatch>
