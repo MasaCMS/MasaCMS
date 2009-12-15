@@ -1,4 +1,4 @@
-/* @override http://mura:8500/mura/admin/css/dialog.css */
+/* @override http://mura:8500/admin/css/dialog.css */
 
 /*This file is part of Mura CMS.
 
@@ -80,7 +80,7 @@ a#editFormCloseLink {
 
 #frontEndTools {
 	background: transparent url(../images/bg_fetools.png) repeat-x scroll 0% !important;
-	height: 45px !important;
+	height: 36px !important;
 	left: 0px !important;
 	position: fixed !important;
 	top: 0px !important;
@@ -93,7 +93,7 @@ a#editFormCloseLink {
 
 #frontEndToolsHandle {
 	background: transparent !important;
-	left: 20px !important;
+	left: 12px !important;
 	position: fixed !important;
 	top: 0px !important;
 	z-index: 1000 !important;
@@ -102,9 +102,9 @@ a#editFormCloseLink {
 }
 
 #frontEndTools ul {
-	height: 45px !important;
+	height: 36px !important;
 	list-style: none !important;
-	margin: 0 0 0 70px !important;
+	margin: 0 0 0 50px !important;
 	padding: 0 !important;
 }
 
@@ -112,8 +112,8 @@ a#editFormCloseLink {
 	color: #333 !important;
 	float: left !important;
 	font-size: 11px !important;
-	line-height: 34px !important;
-	margin:0 20px 0 0 !important;
+	line-height: 26px !important;
+	margin:0 18px 0 0 !important;
 	list-style: none !important;
 	font-weight: normal !important;
 	font-family: "Lucida Grande", Arial, Helvetica, sans-serif !important;
@@ -121,7 +121,7 @@ a#editFormCloseLink {
 
 #frontEndTools ul li a {
 	color: #666 !important;
-	line-height: 34px !important;
+	line-height: 30px !important;
 	padding: 2px 0 2px 18px !important;
 	text-decoration: none !important;font-weight: normal !important;
 	font-family: "Lucida Grande", Arial, Helvetica, sans-serif !important;
@@ -157,8 +157,8 @@ a#editFormCloseLink {
 
 
 #frontEndTools ul li#adminSiteManager {
-	background: url(../images/bg_fetools_site_manager.gif) no-repeat scroll left center !important;
-	padding-left: 21px !important;
+	background: url(../images/bg_fetools_site_manager.png) no-repeat scroll left center !important;
+	padding-left: 17px !important;
 }
 
 #frontEndTools ul li#adminSiteManager a {
@@ -172,23 +172,24 @@ a#editFormCloseLink {
 #frontEndTools ul li#adminWelcome {
 	float: right !important;
 	margin-right: 10px !important;
+	padding: 2px 0;
 }
 
 #frontEndTools ul li#adminLogOut {
-	background: transparent url(../images/bg_fetools_logout.gif) no-repeat scroll left center !important;
+	background: transparent url(../images/bg_fetools_logout.png) no-repeat scroll left center !important;
 	float: right !important;
 	font-size: 10px !important;
-	line-height: 28px !important;
+	line-height: 24px !important;
 	margin-right: 14px !important;
 	padding: 0 !important;
 	text-align: center !important;
 	width: 98px !important;
-		height: 28px;
+	height: 24px;
 }
 
 #frontEndTools ul li#adminLogOut a {
 	padding: 0 !important;
-	line-height: 28px !important;
+	line-height: 24px !important;
 }
 
 /* @group Add Content Nav */
@@ -200,10 +201,17 @@ a#editFormCloseLink {
 	line-height: 1 !important;
 	background-image: none !important;
 	position: absolute !important;
-	background: #ccc !important;
+	background: #999 !important;
 	width: 12em !important;
 	left: -999em !important; /* using left instead of display to hide menus because display: none isn't read by screen readers */
 	height: auto !important;
+	opacity: .98;
+	-moz-opacity: .98;
+	filter: alpha(opacity=98); /* Move to ie.css? */
+	-moz-border-radius-bottomleft: 5px;
+	-webkit-border-bottom-left-radius: 5px;
+	-moz-border-radius-bottomright: 5px;
+	-webkit-border-bottom-right-radius: 5px;
 }
 
 #frontEndTools li li { /* all list items */
@@ -211,7 +219,7 @@ a#editFormCloseLink {
 	width: 100% !important; /* width needed or else Opera goes nuts */
 	padding: 0 !important;
 	margin: 0 !important;
-	border-bottom: 1px dotted #999 !important;
+	border-bottom: 1px dotted #666 !important;
 }
 
 #frontEndTools li li a {
@@ -220,7 +228,7 @@ a#editFormCloseLink {
 	padding: 0 0 0 2em !important;
 	margin: 1px 0 !important;
 	line-height: 2.25 !important;
-	color: #000 !important;
+	color: #fff !important;
 }
 
 #frontEndTools li li a:hover {

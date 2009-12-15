@@ -1,9 +1,9 @@
 #frontEndToolsIE6 {
-	background: transparent url(../images/bg_fetools.gif) repeat-x scroll 0% !important;
-	height: 45px !important;
+	background: transparent url(../images/ie6/bg_fetools.jpg) repeat-x scroll 0% !important;
+	height: 36px !important;
 	left: 0px !important;
 	position: absolute;
-	top: 0px !important;
+	top: -3px !important;
 	width: 100% !important;
 	z-index: 500 !important;
 	text-align: left !important;
@@ -13,7 +13,7 @@
 
 #frontEndToolsHandleIE6 {
 	background: transparent !important;
-	left: 20px !important;
+	left: 12px !important;
 	position: absolute;
 	top: 0px !important;
 	z-index: 600;
@@ -22,9 +22,9 @@
 }
 
 #frontEndToolsIE6 ul {
-	height: 45px !important;
+	height: 36px !important;
 	list-style: none !important;
-	margin: 0 0 0 70px !important;
+	margin: 0 0 0 50px !important;
 	padding: 0 !important;
 }
 
@@ -32,8 +32,8 @@
 	color: #333 !important;
 	float: left !important;
 	font-size: 11px !important;
-	line-height: 34px !important;
-	margin:0 20px 0 0 !important;
+	line-height: 26px !important;
+	margin:0 18px 0 0 !important;
 	list-style: none !important;
 	font-weight: normal !important;
 	font-family: "Lucida Grande", Arial, Helvetica, sans-serif !important;
@@ -43,7 +43,8 @@
 	color: #666 !important;
 	line-height: 34px !important;
 	padding: 2px 0 2px 18px !important;
-	text-decoration: none !important;font-weight: normal !important;
+	text-decoration: none !important;
+	font-weight: normal !important;
 	font-family: "Lucida Grande", Arial, Helvetica, sans-serif !important;
 }
 
@@ -77,7 +78,7 @@
 
 
 #frontEndToolsIE6 ul li#adminSiteManager {
-	background: url(../images/bg_fetools_site_manager.gif) no-repeat scroll left center !important;
+	background: url(../images/bg_fetools_site_manager.png) no-repeat scroll left center !important;
 	padding-left: 21px !important;
 }
 
@@ -92,13 +93,14 @@
 #frontEndToolsIE6 ul li#adminWelcome {
 	float: right !important;
 	margin-right: 10px !important;
+	line-height: 34px !important;
 }
 
 #frontEndToolsIE6 ul li#adminLogOut {
-	background: transparent url(../images/bg_fetools_logout.gif) no-repeat scroll left center !important;
+	background: transparent url(../images/ie6/bg_fetools_logout.gif) no-repeat scroll left center !important;
 	float: right !important;
 	font-size: 10px !important;
-	line-height: 28px !important;
+	line-height: 26px !important;
 	margin-right: 14px !important;
 	padding: 0 !important;
 	text-align: center !important;

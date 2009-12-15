@@ -1,3 +1,5 @@
+/* @override http://mura:8500/admin/css/editableObjects.css */
+
 div.editableObject {
 	display: block !important;
 	visibility: !important;
@@ -14,7 +16,7 @@ div.editableObject {
 	border: 0 !important;
 	outline-width: 0px !important;
 	outline-style: dotted !important;
-	outline-color: #f1bf00 !important; /* Mura red: #ff3a00 */
+	outline-color: #ff3a00 !important; /* Mura yellow: #f1bf00 */
 	background: transparent !important;
 	}
 
@@ -36,20 +38,21 @@ div.editableObject ul.editableObjectControl {
 	height: auto !important;
 	margin: 0 !important;
 	padding: 0 !important;
-	border: 1px solid #ccc !important;
+	/*border: 1px solid #ccc !important;*/
 	list-style: none !important;
-	-moz-border-radius: 3px;
+	/*-moz-border-radius: 3px;
 	-webkit-border-radius: 3px;
-	border-radius: 3px;
+	border-radius: 3px;*/
 	}
 div.editableObject:hover ul.editableObjectControl {
 	border-color: #aaa !important;
 	}
 
 div.editableObject ul.editableObjectControl li {
-	padding: 0 !important;
+	padding: 2px 3px 3px 2px !important;
 	margin: 0 !important;
 	height: auto !important;
+	background: url(../images/feTools_bg_button.png) no-repeat 50% 50% !important;
 	}
 
 div.editableObject ul.editableObjectControl a {
@@ -66,7 +69,7 @@ div.editableObject ul.editableObjectControl a {
 	overflow: hidden;
 	margin: 0 !important;
 	padding: 4px !important;
-	border: 1px solid #e5e5e5 !important;
+	/*border: 1px solid #e5e5e5 !important;*/
 	font-size: 11px !important;
 	line-height: 20px !important;
 	font-weight: normal !important;
@@ -76,13 +79,13 @@ div.editableObject ul.editableObjectControl a {
 	text-decoration: none !important;
 	letter-spacing: 0 !important;
 	color: #666 !important;
-	background: #ffd300 url(/admin/images/icons/edit_24.png) no-repeat 50% 50% !important;
-	-moz-border-radius: 3px !important;
+	background: url(../images/icons/edit_24.png) no-repeat 50% 50% !important;
+	/*-moz-border-radius: 3px !important;
 	-webkit-border-radius: 3px !important;
 	border-radius: 3px !important;
 	-moz-box-shadow: 0 0 2px #c89f02 inset !important;
 	-webkit-box-shadow: 0 0 2px #c89f02 inset !important;
-	box-shadow: 0 0 2px #c89f02 inset !important;
+	box-shadow: 0 0 2px #c89f02 inset !important;*/
 	}
 
 

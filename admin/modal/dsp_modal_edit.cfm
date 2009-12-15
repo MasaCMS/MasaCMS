@@ -225,7 +225,7 @@ to your own modified versions of Mura CMS.
 
 <cfif variables.isIeSix>
 	<!--- NAMED DIFFERENTLY TO USE THE IE6 COMPATIBLE dialogIE6.css --->
-	<img src="#application.configBean.getContext()#/admin/images/icons/ie6/logo_small_fetools.gif" id="frontEndToolsHandleIE6" onclick="if (document.getElementById('frontEndToolsIE6').style.display == 'none') { createCookie('FETDISPLAY','',5); } else { createCookie('FETDISPLAY','none',5); } toggleAdminToolbarIE6();" />
+	<img src="#application.configBean.getContext()#/admin/images/ie6/logo_small_fetools.gif" id="frontEndToolsHandleIE6" onclick="if (document.getElementById('frontEndToolsIE6').style.display == 'none') { createCookie('FETDISPLAY','',5); } else { createCookie('FETDISPLAY','none',5); } toggleAdminToolbarIE6();" />
 	<div id="frontEndToolsIE6" style="display: #Cookie.fetDisplay#">						
 <cfelse>
 	<!--- USES STANDARD dialog.css --->
