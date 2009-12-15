@@ -26,7 +26,7 @@ div.editableObject:hover {
 
 div.editableObject ul.editableObjectControl {
 	display: block !important;
-	visibility: !important;
+	visibility: visible !important;
 	float: none !important;
 	position: absolute !important;
 	top: auto !important;
@@ -38,12 +38,17 @@ div.editableObject ul.editableObjectControl {
 	height: auto !important;
 	margin: 0 !important;
 	padding: 0 !important;
-	/*border: 1px solid #ccc !important;*/
 	list-style: none !important;
-	/*-moz-border-radius: 3px;
-	-webkit-border-radius: 3px;
-	border-radius: 3px;*/
 	}
+	
+* html div.editableObject ul.editableObjectControl {
+	position: absolute !important;
+	top: 2px !important;
+	right: 2px !important;
+	bottom: auto !important;
+	left: auto !important;
+	}
+	
 div.editableObject:hover ul.editableObjectControl {
 	border-color: #aaa !important;
 	}
@@ -53,6 +58,10 @@ div.editableObject ul.editableObjectControl li {
 	margin: 0 !important;
 	height: auto !important;
 	background: url(../images/feTools_bg_button.png) no-repeat 50% 50% !important;
+	}
+
+* html div.editableObject ul.editableObjectControl li {
+	background: url(../images/ie6/feTools_bg_button.gif) no-repeat 50% 50% !important;
 	}
 
 div.editableObject ul.editableObjectControl a {
@@ -87,6 +96,11 @@ div.editableObject ul.editableObjectControl a {
 	-webkit-box-shadow: 0 0 2px #c89f02 inset !important;
 	box-shadow: 0 0 2px #c89f02 inset !important;*/
 	}
+	
+* html div.editableObject ul.editableObjectControl a {
+	background: url(../images/icons/ie6/edit_24.gif) no-repeat 50% 50% !important;
+	line-height: 16px !important;	
+}
 
 
 div.editableObjectHide:hover {
