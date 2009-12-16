@@ -155,12 +155,30 @@ to your own modified versions of Mura CMS.
 		<cfreturn rs />
 	</cffunction>
 	
-	<cffunction name="getcontentVersion" access="public" returntype="any" output="false">
+	<cffunction name="getContentVersion" access="public" returntype="any" output="false">
 		<cfargument name="contentHistID" type="string" required="yes" />
 		<cfargument name="siteID" type="string" required="yes" />
 		<cfargument name="use404" type="boolean" required="yes" default="false"/>
+		<cfset var key= arguments.contentHistID />
+		<cfset var site=variables.settingsManager.getSite(arguments.siteid)/>
+		<cfset var cacheFactory=site.getCacheFactory()>
+		<cfset var contentBean="">
 		
-		<cfreturn variables.contentDAO.readVersion(arguments.contentHistID,arguments.siteid,arguments.use404) />
+		<cfif site.getCache()>
+			<!--- check to see if it is cached. if not then pass in the context --->
+			<!--- otherwise grab it from the cache --->
+			<cfif NOT cacheFactory.has( key )>
+				<cfset contentBean=variables.contentDAO.readVersion(arguments.contentHistID,arguments.siteid,arguments.use404) />
+				<cfset cacheFactory.get( key, contentBean.getAllValues() ) />
+				<cfreturn contentBean/>
+			<cfelse>
+				<cfset contentBean=variables.contentDAO.getBean()/>
+				<cfset contentBean.setAllValues(cacheFactory.get( key ))>
+				<cfreturn contentBean />
+			</cfif>
+		<cfelse>
+			<cfreturn variables.contentDAO.readVersion(arguments.contentHistID,arguments.siteid,arguments.use404) />
+		</cfif>
 	</cffunction>
 	
 	<cffunction name="getActiveContentByFilename" access="public" returntype="any" output="false">
