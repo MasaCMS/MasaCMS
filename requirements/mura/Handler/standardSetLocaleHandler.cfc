@@ -28,6 +28,7 @@
 	<cfif session.siteid neq event.getValue('siteid')>
 		<!---These are use for admin purposes--->
 		<cfset session.siteID=event.getValue('siteid')>
+		<cfset session.userFilesPath = "#application.configBean.getAssetPath()#/#event.getValue('siteid')#/assets/">
 		<cfset application.rbFactory.resetSessionLocale()>
 	</cfif>
 </cffunction>
