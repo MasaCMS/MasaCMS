@@ -75,7 +75,7 @@ to your own modified versions of Mura CMS.
 				(
 		 			DisplayStop >= <cfqueryparam value="#calendarDay#" cfsqltype="CF_SQL_DATE"> or DisplayStop =''
 		  		)	
-	
+		order by DisplayStart
 	</cfquery>
 	</cfsilent>
 	<td><span class="date">#id#</span>#dspNestedNav('#request.contentBean.getcontentid()#',1,1,'calendar',calendarDay,'','?month=#request.month#&year=#request.year#&categoryID=#request.categoryID#&relatedID=#request.relatedID#','displaystart, orderno','','#application.configBean.getContext()#','#application.configBean.getStub()#','#request.categoryID#','#request.relatedID#',rsDay)#</td>
