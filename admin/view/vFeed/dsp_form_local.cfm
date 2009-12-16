@@ -89,9 +89,6 @@ to your own modified versions of Mura CMS.
 <cfset options[rsExtend.currentRow + 17][2]="#rsExtend.Type#/#rsExtend.subType# - #rsExtend.attribute#"/>
 </cfloop>
 
-
-
-
 <cfset criterias[1][1]="Equals">
 <cfset criterias[1][2]=application.rbFactory.getKeyValue(session.rb,'params.equals')>
 <cfset criterias[2][1]="GT">
@@ -102,10 +99,12 @@ to your own modified versions of Mura CMS.
 <cfset criterias[4][2]=application.rbFactory.getKeyValue(session.rb,'params.lt')>
 <cfset criterias[5][1]="LTE">
 <cfset criterias[5][2]=application.rbFactory.getKeyValue(session.rb,'params.lte')>
-<cfset criterias[6][1]="Begins">
-<cfset criterias[6][2]=application.rbFactory.getKeyValue(session.rb,'params.beginswith')>
-<cfset criterias[7][1]="Contains">
-<cfset criterias[7][2]=application.rbFactory.getKeyValue(session.rb,'params.contains')>
+<cfset criterias[6][1]="NEQ">
+<cfset criterias[6][2]=application.rbFactory.getKeyValue(session.rb,'params.neq')>
+<cfset criterias[7][1]="Begins">
+<cfset criterias[7][2]=application.rbFactory.getKeyValue(session.rb,'params.beginswith')>
+<cfset criterias[8][1]="Contains">
+<cfset criterias[8][2]=application.rbFactory.getKeyValue(session.rb,'params.contains')>
 
 </cfsilent>
 
