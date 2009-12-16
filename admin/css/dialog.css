@@ -176,7 +176,7 @@ a#editFormCloseLink {
 }
 
 #frontEndTools ul li#adminLogOut {
-	background: transparent url(../images/bg_fetools_logout.png) no-repeat scroll left center !important;
+	background: transparent url(../images/bg_feTools_logout.png) no-repeat scroll left center !important;
 	float: right !important;
 	font-size: 10px !important;
 	line-height: 24px !important;
