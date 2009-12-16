@@ -58,7 +58,7 @@ to your own modified versions of Mura CMS.
 <cfset this.personalization="user">
 <cfset this.showAdminToolBar=true/>
 <cfset this.showMemberToolBar=true/>
-<cfset this.showEditableObjects=false/>
+<cfset this.showEditableObjects=true/>
 <cfset this.renderHTMLHead=true/>
 <cfset this.enableMuraTag=getConfigBean().getEnableMuraTag() />
 <cfset this.crumbdata=arrayNew(1)/>
