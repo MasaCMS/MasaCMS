@@ -54,11 +54,10 @@ to your own modified versions of Mura CMS.
 	<cfreturn this />
 </cffunction>
 
-
 <cffunction name="setMailer" returntype="any" access="public" output="false">
 <cfargument name="mailer"  required="true">
 
-	<cfset variables.mailer=arguments.mailer />
+	<cfset variables.instance.mailer=arguments.mailer />
 
 </cffunction>
 
@@ -137,7 +136,7 @@ Phone #eventContactPhone#</cfoutput>
 				arguments.rsReminders.email,
 				arguments.rsReminders.site,
 				"Event Reminder from #arguments.rsReminders.site#",
-				request.siteid) />
+				arguments.rsReminders.siteid) />
 			
 <cfquery datasource="#variables.instance.configBean.getDatasource()#">
 update tcontenteventreminders set isSent=1 where 
