@@ -50,6 +50,7 @@ to your own modified versions of Mura CMS.
 <cfset variables.siteListeners=structNew()>
 <cfset variables.globalListeners=structNew()>
 <cfset variables.eventHandlers=arrayNew(1)>
+<cfset variables.pluginSystemPath="">
 
 <cffunction name="init" returntype="any" access="public" output="false">
 	<cfargument name="configBean">
@@ -61,6 +62,7 @@ to your own modified versions of Mura CMS.
 	<cfset setSettingsManager(arguments.settingsManager)>
 	<cfset setUtility(arguments.utility)>
 	<cfset setGenericManager(arguments.genericManager)>
+	<cfset variables.pluginSystemPath="#variables.configBean.getWebRoot()##variables.configBean.getFileDelim()#plugins">
 	
 <cfreturn this />
 </cffunction>
@@ -144,7 +146,7 @@ inner join tcontent on (tplugins.moduleID=tcontent.moduleID)
 <cfargument name="directory">
 	<cfset var delim=variables.configBean.getFileDelim() />
 	
-	<cfreturn "#variables.configBean.getWebRoot()##delim#plugins#delim##arguments.directory##delim#">
+	<cfreturn "#variables.pluginSystemPath##delim##arguments.directory##delim#">
 </cffunction>
 
 <cffunction name="getAllPlugins" returntype="query" access="public" output="false">
@@ -219,7 +221,7 @@ select * from tplugins order by #arguments.orderby#
 		<cfdirectory action="delete" directory="#location#" recurse="true">
 	</cfif>
 	
-	<cfdirectory action="create" directory="#location#" mode="777">
+	<cfdirectory action="create" directory="#location#" mode="775">
 	
 	<cfset zipTool.extract("#variables.configBean.getTempDir()##delim##cffile.serverfile#","#location#")>
 	
@@ -371,20 +373,20 @@ select * from tplugins order by #arguments.orderby#
 	<cfset var done=structNew()>
 	<cfset var mHash="">
 	<cfset var m="">
-	<cfset var baseDir=expandPath('/plugins')>
+	<cfset var baseDir=variables.pluginSystemPath>
 	
 	<cfif StructKeyExists(SERVER,"bluedragon") and not findNoCase("Windows",server.os.name)>
 		<cfset mapPrefix="$" />
 	</cfif>
 	<cffile action="delete" file="#baseDir#/mappings.cfm">
-	<cffile action="write" file="#baseDir#/mappings.cfm" output="<!--- Do Not Edit --->" addnewline="true">
+	<cffile action="write" file="#baseDir#/mappings.cfm" output="<!--- Do Not Edit --->" addnewline="true" mode="775">
 	<cfdirectory action="list" directory="#baseDir#" name="rsRequirements">
 	<cfloop query="rsRequirements">
 		<cfif rsRequirements.type eq "dir" and rsRequirements.name neq '.svn'>
 			<cfset m=listFirst(rsRequirements.name,"_")>
 			<cfset mHash=hash(m)>
 			<cfif not isNumeric(m) and not structKeyExists(done,mHash)>
-				<cffile action="append" file="#mapPrefix##baseDir#/mappings.cfm" output='<cfset this.mappings["/#m#"] = mapPrefix & BaseDir & "/plugins/#rsRequirements.name#">'>	
+				<cffile action="append" file="#mapPrefix##baseDir#/mappings.cfm" output='<cfset this.mappings["/#m#"] = mapPrefix & BaseDir & "/plugins/#rsRequirements.name#">' mode="775">	
 				<cfset done[mHash]=true>
 			</cfif>
 		</cfif>
@@ -591,7 +593,7 @@ select * from tplugins order by #arguments.orderby#
 	
 	<cfif directory neq pluginConfig.getDirectory()>
 		
-		<cfdirectory action = "rename" directory = "#expandPath('/plugins')#/#pluginConfig.getDirectory()#" newDirectory = "#expandPath('/plugins')#/#directory#" >
+		<cfdirectory action = "rename" directory = "#variables.pluginSystemPath#/#pluginConfig.getDirectory()#" newDirectory = "#variables.pluginSystemPath#/#directory#" >
 	
 		<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 		update tplugins set directory=<cfqueryparam cfsqltype="cf_sql_varchar" value="#directory#">

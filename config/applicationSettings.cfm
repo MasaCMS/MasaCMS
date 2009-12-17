@@ -129,7 +129,7 @@ to your own modified versions of Mura CMS.
 
 	<cfif not hasMappings>	
 		<cftry>
-			<cffile action="write" file="#mapPrefix##baseDir#/config/mappings.cfm" output="<!--- Add Custom Mappings Here --->" addnewline="true">
+			<cffile action="write" file="#mapPrefix##baseDir#/config/mappings.cfm" output="<!--- Add Custom Mappings Here --->" addnewline="true" mode="775">
 			<cfcatch>
 				<cfset canWriteMappings=false>
 			</cfcatch>
@@ -140,7 +140,7 @@ to your own modified versions of Mura CMS.
 		<cfloop query="rsRequirements">
 			<cfif rsRequirements.type eq "dir" and rsRequirements.name neq '.svn'>
 				<cfif canWriteMappings>
-					<cffile action="append" file="#mapPrefix##baseDir#/config/mappings.cfm" output='<cfset this.mappings["/#rsRequirements.name#"] = mapPrefix & BaseDir & "/requirements/#rsRequirements.name#">'>	
+					<cffile action="append" file="#mapPrefix##baseDir#/config/mappings.cfm" output='<cfset this.mappings["/#rsRequirements.name#"] = mapPrefix & BaseDir & "/requirements/#rsRequirements.name#">' mode="775">	
 				</cfif>
 				<cfset this.mappings["/#rsRequirements.name#"] = mapPrefix & rsRequirements.directory & "/" & rsRequirements.name>
 			</cfif>
@@ -158,7 +158,7 @@ to your own modified versions of Mura CMS.
 	
 	<cfif not hasMappings>
 		<cftry>
-			<cffile action="write" file="#mapPrefix##baseDir#/plugins/mappings.cfm" output="<!--- Do Not Edit --->" addnewline="true">
+			<cffile action="write" file="#mapPrefix##baseDir#/plugins/mappings.cfm" output="<!--- Do Not Edit --->" addnewline="true" mode="775">
 			<cfcatch>
 				<cfset canWriteMappings=false>
 			</cfcatch>
@@ -171,7 +171,7 @@ to your own modified versions of Mura CMS.
 				<cfset m=listFirst(rsRequirements.name,"_")>
 				<cfif not isNumeric(m) and not structKeyExists(this.mappings,m)>
 					<cfif canWriteMappings>
-						<cffile action="append" file="#mapPrefix##baseDir#/plugins/mappings.cfm" output='<cfset this.mappings["/#m#"] = mapPrefix & BaseDir & "/plugins/#rsRequirements.name#">'>	
+						<cffile action="append" file="#mapPrefix##baseDir#/plugins/mappings.cfm" output='<cfset this.mappings["/#m#"] = mapPrefix & BaseDir & "/plugins/#rsRequirements.name#">' mode="775">	
 					</cfif>
 					<cfset this.mappings["/#m#"] = mapPrefix & rsRequirements.directory & "/" & rsRequirements.name>
 				</cfif>
