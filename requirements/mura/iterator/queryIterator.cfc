@@ -59,7 +59,7 @@
     </cffunction>
 		
 	<cffunction name="hasNext" access="public" output="false" returntype="boolean">
-		<cfreturn currentIndex() lt recordCount() and currentIndex() lt (getPageIndex() *  variables.maxRecordsPerPage ) />
+		<cfreturn currentIndex() lt getRecordCount() and currentIndex() lt (getPageIndex() *  variables.maxRecordsPerPage ) />
 	</cffunction>
 	
 	<cffunction name="next" access="public" output="false" returntype="any">
@@ -91,7 +91,7 @@
 	<cffunction name="pageCount" access="public" output="false" returntype="numeric">
 		<cfset var pageCount = 1 />
 		<cfif structKeyExists(variables,"maxRecordsPerPage")>
-			<cfset pageCount = Ceiling(recordCount()/variables.maxRecordsPerPage) />
+			<cfset pageCount = Ceiling(getRecordCount()/variables.maxRecordsPerPage) />
 		</cfif>
 		<cfreturn pageCount />
 	</cffunction>
