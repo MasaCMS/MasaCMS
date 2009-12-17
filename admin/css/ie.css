@@ -258,5 +258,15 @@ dd.categoryAssignment input.textAlt {
     padding: 0 0 0 20px;
 	background: url(../images/icons/ie6/zoomi_24.gif) no-repeat;
     }
+/* Uncomment this after adding "Copy All" feature
+* html .addNew #newCopy a {
+	background: url(../images/icons/ie6/copy_24.gif) no-repeat 1px 5px;
+float: left;	 
+}
 
+* html .addNew #newCopy {
+position: relative;
+height: 1%;
+}
+*/
 /* @end */

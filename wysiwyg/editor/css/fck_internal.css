@@ -217,10 +217,6 @@ p, ul, ol, dl, table, form, blockquote {
 	line-height: 1.2;
 }
 
-/* p.intro {
-	font-size: 14px;
-} */
-
 ul {
 	margin-left: 1.4em;
 	list-style: disc;
@@ -232,6 +228,7 @@ ul ul {
 
 /* @group wysiwym */
 
+/* These are being set in fckeditor.html
 .FCK__ShowBlocks h2,
 .FCK__ShowBlocks h3,
 .FCK__ShowBlocks h4,
@@ -252,28 +249,26 @@ ul ul {
 	background-repeat: no-repeat;
 	background-position: 0 0;
 	overflow: visible;
-}
-
-.FCK__ShowBlocks p, .FCK__ShowBlocks  dl, .FCK__ShowBlocks  ol, .FCK__ShowBlocks ul, .FCK__ShowBlocks  li {
 	border: 1px dotted #ccc;
 	padding-right: .5em;
 	padding-bottom: .5em;
 }
 
 .FCK__ShowBlocks h2 { background-image: url(../../../admin/images/wysiwym/h2.png); }
-.FCK__ShowBlocks h3 { background-image: url(./../../admin/images/wysiwym/h3.png); }
-.FCK__ShowBlocks h4 { background-image: url(./../../admin/images/wysiwym/h4.png); }
-.FCK__ShowBlocks h5 { background-image: url(./../../admin/images/wysiwym/h5.png); }
-.FCK__ShowBlocks h6 { background-image: url(./../../admin/images/wysiwym/h6.png); }
+.FCK__ShowBlocks h3 { background-image: url(../../../admin/images/wysiwym/h3.png); }
+.FCK__ShowBlocks h4 { background-image: url(../../../admin/images/wysiwym/h4.png); }
+.FCK__ShowBlocks h5 { background-image: url(../../../admin/images/wysiwym/h5.png); }
+.FCK__ShowBlocks h6 { background-image: url(../../../admin/images/wysiwym/h6.png); }
 
-.FCK__ShowBlocks ul { background-image: url(./../../admin/images/wysiwym/ul.png); }
-.FCK__ShowBlocks ol { background-image: url(./../../admin/images/wysiwym/ol.png); }
-.FCK__ShowBlocks li { background-image: url(./../../admin/images/wysiwym/li.png); }
+.FCK__ShowBlocks ul { background-image: url(../../../admin/images/wysiwym/ul.png); }
+.FCK__ShowBlocks ol { background-image: url(../../../admin/images/wysiwym/ol.png); }
+.FCK__ShowBlocks li { background-image: url(../../../admin/images/wysiwym/li.png); }
 
-.FCK__ShowBlocks dl { background-image: url(./../../admin/images/wysiwym/dl.png); }
-.FCK__ShowBlocks dt { background-image: url(./../../admin/images/wysiwym/dt.png); }
-.FCK__ShowBlocks dd { background-image: url(./../../admin/images/wysiwym/dd.png); }
+.FCK__ShowBlocks dl { background-image: url(../../../admin/images/wysiwym/dl.png); }
+.FCK__ShowBlocks dt { background-image: url(../../../admin/images/wysiwym/dt.png); }
+.FCK__ShowBlocks dd { background-image: url(../../../admin/images/wysiwym/dd.png); }
 
 .FCK__ShowBlocks p { background-image: url(../../../admin/images/wysiwym/p.png); }
-.FCK__ShowBlocks div { background-image: url(./../../admin/images/wysiwym/div.png); }
+.FCK__ShowBlocks div { background-image: url(../../../admin/images/wysiwym/div.png); }
+*/
 /* @end */

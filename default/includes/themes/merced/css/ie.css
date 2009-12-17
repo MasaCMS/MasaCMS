@@ -87,16 +87,14 @@
 
 /* @group IE6/7 Fixes
 ===================================== */
-#right {
-	/*z-index: 100000;*/
-	/*background: red;*/
-}
-
 hr { margin: -8px auto 11px; } /* IE 6/7 has problems with setting proper <hr> margins. */
 
-#navPrimary {
-	width: 687px;
-}
+.home #right { margin: 0; }
+/*
+For design consistency. Uncomment this if you want Local Index or Remote Feed Headers to start the same place it does on *good* browsers on the homepage
+.home #navPrimary { width: 687px; }
+.home #right { margin: -40px 0 0; }  
+*/
 
 /* Fixes wrong line-height on sup/sub in IE 6/7. */
 sup { vertical-align: text-top; }

@@ -59,8 +59,8 @@
 ===================================== */
 
 body {
-	font-family: "Lucida Grande", "Lucida Sans", Verdana, Helvetica, Arial, sans-serif;
-	color: #444;
+	font-family: "Lucida Grande", "Lucida Sans", Helvetica, Arial, sans-serif;
+	font-size: 12px;	
 	}
 
 p, ul, ol, table, blockquote {

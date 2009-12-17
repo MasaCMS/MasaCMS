@@ -38,3 +38,7 @@
 
 @import url(../../../../css/default.css);
 @import url(typography.css);
+
+body {
+	padding: 20px;
+}

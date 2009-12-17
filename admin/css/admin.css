@@ -1,5 +1,5 @@
 /* @override 
-	http://mura:8500/mura/admin/css/admin.css
+	http://mura:8500/admin/css/admin.css
 */
 
 /* This file is part of Mura CMS. 
@@ -1306,17 +1306,22 @@ div.menu {
 }
 
 .addNew {
-	width: 143px;
+	width: 130px;
 	position: absolute;
 	visibility: hidden;
 	z-index: 20;
-	padding: 4px 0 0 0;
-	background: transparent url(../images/bg_utility_nav_dhtml.gif) no-repeat left top;
+	padding: 4px 8px;
+	background: #999;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+	-webkit-box-shadow: 2px 2px 5px #666;
+	-moz-box-shadow: 2px 2px 5px #666;
+	box-shadow: 2px 2px 5px #666;
 }
 
 .addNew ul {
-	background: transparent url(../images/bg_utility_nav_dhtml.gif) no-repeat left bottom;
-	padding: 0 8px 4px 8px;
+
 }
 
 .addNew li {
@@ -1324,30 +1329,47 @@ div.menu {
 	margin: 0;
 	padding: 0;
 	position: relative;
-	width: 107px;
+	overflow: hidden;
+	border-bottom: 1px dotted #D4D4D4;
+}
+
+.addNew li.last, .addNew li:last-child {
+	border-bottom: 0;
 }
 
 .addNew a {
-	width: 107px;
 	display: block;
 	text-decoration: none;
 	margin: 0;
-	padding: 6px 0 6px 20px;
+	padding: 6px 0 6px 18px;
 	color: #000;
-	border-bottom: 1px dotted #D4D4D4;
 }
 
 #cCategory .addNew a {
 	border-bottom: 0px;
 }
 
+.addNew #newZoom {
+	border-bottom: 1px solid #D4D4D4;
+}
+
 .addNew #newZoom a {
 	background: url(../images/icons/zoomi_24.png) no-repeat 1px 5px;
-	border-bottom: 1px solid #D4D4D4;
 }
 
 .addNew #newCopy a {
 	background: url(../images/icons/copy_24.png) no-repeat 1px 5px;
+	/*float: left; Uncomment this after adding "Copy All" feature */
+}
+
+.addNew #newCopy span {
+	float: left;
+	padding: 5px 4px 0;
+	color: #444;
+}
+
+.addNew #newCopyLink {
+	width: 2.7em;
 }
 
 .addNew #newPaste a {

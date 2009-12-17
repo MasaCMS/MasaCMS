@@ -40,6 +40,8 @@ body {
 	font-family: Arial, sans-serif;
 	color: #444;
 	background: #fff;
+	font-size: 62.5%;
+	line-height: 1.2;
 	}
 
 p, li, table, blockquote {
