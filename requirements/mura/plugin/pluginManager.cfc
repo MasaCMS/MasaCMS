@@ -50,7 +50,6 @@ to your own modified versions of Mura CMS.
 <cfset variables.siteListeners=structNew()>
 <cfset variables.globalListeners=structNew()>
 <cfset variables.eventHandlers=arrayNew(1)>
-<cfset variables.pluginSystemPath="">
 
 <cffunction name="init" returntype="any" access="public" output="false">
 	<cfargument name="configBean">
@@ -62,7 +61,6 @@ to your own modified versions of Mura CMS.
 	<cfset setSettingsManager(arguments.settingsManager)>
 	<cfset setUtility(arguments.utility)>
 	<cfset setGenericManager(arguments.genericManager)>
-	<cfset variables.pluginSystemPath="#variables.configBean.getWebRoot()##variables.configBean.getFileDelim()#plugins">
 	
 <cfreturn this />
 </cffunction>
@@ -146,7 +144,7 @@ inner join tcontent on (tplugins.moduleID=tcontent.moduleID)
 <cfargument name="directory">
 	<cfset var delim=variables.configBean.getFileDelim() />
 	
-	<cfreturn "#variables.pluginSystemPath##delim##arguments.directory##delim#">
+	<cfreturn "#variables.configBean.getPluginDir()##delim##arguments.directory##delim#">
 </cffunction>
 
 <cffunction name="getAllPlugins" returntype="query" access="public" output="false">
@@ -373,7 +371,7 @@ select * from tplugins order by #arguments.orderby#
 	<cfset var done=structNew()>
 	<cfset var mHash="">
 	<cfset var m="">
-	<cfset var baseDir=variables.pluginSystemPath>
+	<cfset var baseDir=variables.configBean.getPluginDir()>
 	
 	<cfif StructKeyExists(SERVER,"bluedragon") and not findNoCase("Windows",server.os.name)>
 		<cfset mapPrefix="$" />
@@ -593,7 +591,7 @@ select * from tplugins order by #arguments.orderby#
 	
 	<cfif directory neq pluginConfig.getDirectory()>
 		
-		<cfdirectory action = "rename" directory = "#variables.pluginSystemPath#/#pluginConfig.getDirectory()#" newDirectory = "#variables.pluginSystemPath#/#directory#" >
+		<cfdirectory action = "rename" directory = "#variables.configBean.getPluginDir()#/#pluginConfig.getDirectory()#" newDirectory = "#variables.configBean.getPluginDir()#/#directory#" >
 	
 		<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 		update tplugins set directory=<cfqueryparam cfsqltype="cf_sql_varchar" value="#directory#">

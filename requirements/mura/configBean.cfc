@@ -77,6 +77,7 @@ to your own modified versions of Mura CMS.
 <cfset variables.instance.fileDir=""/>
 <cfset variables.instance.assetDir=""/>
 <cfset variables.instance.assetPath="/tasks/sites"/>
+<cfset variables.instance.pluginDir=""/>
 <cfset variables.instance.productionDatasource=""/>
 <cfset variables.instance.productionAssetPath=""/>
 <cfset variables.instance.productionWebroot=""/>
@@ -185,6 +186,12 @@ to your own modified versions of Mura CMS.
 		<cfset setAssetDir(config.assetDir)/>
 	<cfelse>
 		<cfset setAssetDir(config.fileDir)/>
+	</cfif>
+	
+	<cfif structKeyExists(config,"pluginDir") and len(trim(config.pluginDir))>
+		<cfset setPluginDir(config.pluginDir)/>
+	<cfelse>
+		<cfset setPluginDir("#getWebRoot()##getFileDelim()#plugins")/>
 	</cfif>
 	
 	<cfif structKeyExists(config,"productionAssetDir")>
@@ -878,4 +885,17 @@ to your own modified versions of Mura CMS.
 <cffunction name="getTempDir" returntype="String" access="public" output="false">
 	<cfreturn variables.instance.tempDir />
 </cffunction>
+
+<cffunction name="setPluginDir" access="public" output="false">
+	<cfargument name="pluginDir" type="String" />
+	
+	<cfif len(arguments.pluginDir)>
+		<cfset variables.instance.pluginDir = arguments.pluginDir />
+	</cfif>
+</cffunction>
+
+<cffunction name="getPluginDir" returntype="String" access="public" output="false">
+	<cfreturn variables.instance.pluginDir />
+</cffunction>
+
 </cfcomponent>

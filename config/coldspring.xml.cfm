@@ -132,6 +132,9 @@ to your own modified versions of Mura CMS.
 				<entry key="assetDir">
 					<value>#XMLFormat(GetProfileString("#variables.iniPath#", mode, "assetdir"))#</value>
 				</entry>
+				<entry key="pluginDir">
+					<value>#XMLFormat(GetProfileString("#variables.iniPath#", mode, "plugindir"))#</value>
+				</entry>
 				<entry key="assetPath">
 					<value>#XMLFormat(GetProfileString("#variables.iniPath#", mode, "assetpath"))#</value>
 				</entry>

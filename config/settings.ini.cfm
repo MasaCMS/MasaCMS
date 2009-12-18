@@ -11,6 +11,7 @@ filestore=fileDir
 filestoreaccessinfo=
 assetdir=
 assetpath=
+plugindir=
 mapdir=mura
 webrootmap=muraWRM
 datasource=
