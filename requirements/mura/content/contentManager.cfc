@@ -173,7 +173,7 @@ to your own modified versions of Mura CMS.
 				<cfreturn contentBean/>
 			<cfelse>
 				<cfset contentBean=variables.contentDAO.getBean()/>
-				<cfset contentBean.setAllValues(cacheFactory.get( key ))>
+				<cfset contentBean.setAllValues(structCopy(cacheFactory.get( key )))>
 				<cfreturn contentBean />
 			</cfif>
 		<cfelse>
@@ -200,7 +200,7 @@ to your own modified versions of Mura CMS.
 				<cfreturn contentBean/>
 			<cfelse>
 				<cfset contentBean=variables.contentDAO.getBean()/>
-				<cfset contentBean.setAllValues(cacheFactory.get( key ))>
+				<cfset contentBean.setAllValues(structCopy(cacheFactory.get( key )))>
 				<cfreturn contentBean />
 			</cfif>
 		<cfelse>
@@ -227,7 +227,7 @@ to your own modified versions of Mura CMS.
 				<cfreturn contentBean/>
 			<cfelse>
 				<cfset contentBean=variables.contentDAO.getBean()/>
-				<cfset contentBean.setAllValues(cacheFactory.get( key ))>
+				<cfset contentBean.setAllValues(structCopy(cacheFactory.get( key )))>
 				<cfreturn contentBean />
 			</cfif>
 		<cfelse>
@@ -255,7 +255,7 @@ to your own modified versions of Mura CMS.
 				<cfreturn contentBean/>
 			<cfelse>
 				<cfset contentBean=variables.contentDAO.getBean()/>
-				<cfset contentBean.setAllValues(cacheFactory.get( key ))>
+				<cfset contentBean.setAllValues(structCopy(cacheFactory.get( key )))>
 				<cfreturn contentBean />
 			</cfif>
 		<cfelse>
