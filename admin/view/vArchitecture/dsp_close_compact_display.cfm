@@ -93,7 +93,7 @@ to your own modified versions of Mura CMS.
 		editForm.hide();
 	</script>
 <cfelseif attributes.action eq "multiFileUpload">
-	<cfset parentBean = application.contentManager.getActiveContent(currentBean.getParentID(), currentBean.getSiteID())>
+	<cfset parentBean = application.contentManager.getActiveContent(attributes.parentID, attributes.siteID)>
 	<cfset href = contentRenderer.createHREF(parentBean.getType(), parentBean.getFilename(), parentBean.getSiteId(), parentBean.getcontentId())>
 	<script>
 		var editForm = window.parent.document.getElementById('editForm');
