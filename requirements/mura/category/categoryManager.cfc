@@ -55,6 +55,7 @@ to your own modified versions of Mura CMS.
 	<cfset variables.configBean=arguments.configBean />
 	<cfset variables.gateway=arguments.categoryGateway />
 	<cfset variables.DAO=arguments.categoryDAO />
+	<cfset variables.DAO.setCategoryManager(this)>
 	<cfset variables.utility=arguments.utility />
 	<cfset variables.settingsManager=arguments.settingsManager />
 	<cfset variables.categoryUtility=arguments.categoryUtility />
@@ -172,6 +173,37 @@ to your own modified versions of Mura CMS.
 		and siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#">
 	</cfquery>
 		
+
+</cffunction>
+
+<cffunction name="save" access="public" returntype="any" output="false">
+	<cfargument name="data" type="any" default="#structnew()#"/>	
+	
+	<cfset var categoryID="">
+	<cfset var rs="">
+	
+	<cfif isObject(arguments.data)>
+		<cfif getMetaData(arguments.data).name eq "mura.category.categoryBean">
+		<cfset arguments.data=arguments.data.getAllValues()>
+		<cfelse>
+			<cfthrow type="custom" message="The attribute 'DATA' is not of type 'mura.category.categoryBean'">
+		</cfif>
+	</cfif>
+	<cfif structKeyExists(arguments.data,"categoryID")>
+		<cfset categoryID=arguments.data.categoryID>
+	<cfelse>
+		<cfthrow type="custom" message="The attribute 'CATEGORYID' is required when saving a category.">
+	</cfif>
+	
+	<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#" name="rs">
+	select categoryID from tcontentcategories where categoryID=<cfqueryparam value="#categoryID#">
+	</cfquery>
+	
+	<cfif rs.recordcount>
+		<cfreturn update(arguments.data)>	
+	<cfelse>
+		<cfreturn create(arguments.data)>
+	</cfif>
 
 </cffunction>
 
@@ -363,6 +395,9 @@ to your own modified versions of Mura CMS.
 		<cfset variables.DAO.keepCategories(arguments.contentHistID,arguments.rsKeepers) />
 
 </cffunction>
- 
+
+<cffunction name="getBean" returntype="any" output="false">
+	<cfreturn variables.DAO.getBean()>
+</cffunction>
 
 </cfcomponent>

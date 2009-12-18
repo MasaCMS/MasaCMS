@@ -326,4 +326,7 @@ to your own modified versions of Mura CMS.
 	<cfreturn response />
 </cffunction>
 
+<cffunction name="getBean" returntype="any" output="false">
+	<cfreturn variables.feedDAO.getBean()>
+</cffunction>
 </cfcomponent>

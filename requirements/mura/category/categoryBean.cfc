@@ -58,10 +58,12 @@ to your own modified versions of Mura CMS.
 <cfset variables.instance.sortDirection = "asc" />
 <cfset variables.instance.RestrictGroups = "" />
 <cfset variables.instance.Path = "" />
-
+<cfset variables.categoryManager = "" />
 <cfset variables.instance.errors=structnew() />
 
 <cffunction name="init" returntype="any" output="false" access="public">
+	<cfargument name="categoryManager" type="any" required="yes"/>
+	<cfset variables.categoryManager=arguments.categoryManager>
 	<cfreturn this />
 </cffunction>
 
@@ -103,6 +105,11 @@ to your own modified versions of Mura CMS.
 		
 </cffunction>
  
+<cffunction name="setAllValues" returntype="any" access="public" output="false">
+	<cfargument name="instance">
+	<cfset variables.instance=arguments.instance/>
+</cffunction>
+
 <cffunction name="getAllValues" access="public" output="false" returntype="struct">
 	<cfreturn variables.instance  />
 </cffunction>
@@ -257,6 +264,24 @@ to your own modified versions of Mura CMS.
   <cffunction name="getPath" returnType="string" output="false" access="public">
     <cfreturn variables.instance.Path />
   </cffunction>
+
+	<cffunction name="save" returnType="any" output="false" access="public">
+		<cfreturn variables.categoryManager.save(this) />
+	</cffunction>
+	
+	<cffunction name="delete" returnType="void" output="false" access="public">
+		<cfset variables.categoryManager.delete(getCategoryID()) />
+	</cffunction>
+	
+	<cffunction name="getKidsQuery" returntype="any" output="false">
+		<cfreturn variables.categoryManager.getCategories(getSiteID(),getCategoryID()) />
+	</cffunction>
+	
+	<cffunction name="getKidsIterator" returntype="any" output="false">
+		<cfset var it=getServiceFactory().getBean("categoryIterator").init()>
+		<cfset it.setQuery(getKidsQuery())>
+		<cfreturn it />
+	</cffunction>
 
 </cfcomponent>
 

@@ -617,4 +617,8 @@ to your own modified versions of Mura CMS.
 <cffunction name="getIterator" returntype="any" output="false">
 	<cfreturn getServiceFactory().getBean("userIterator").init()>
 </cffunction>
+
+<cffunction name="getBean" returntype="any" output="false">
+	<cfreturn variables.userDAO.getBean()>
+</cffunction>
 </cfcomponent>

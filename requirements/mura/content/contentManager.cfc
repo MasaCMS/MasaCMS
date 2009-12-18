@@ -155,6 +155,34 @@ to your own modified versions of Mura CMS.
 		<cfreturn rs />
 	</cffunction>
 	
+	<cffunction name="read" output="false" returntype="Any" hint="Takes (contentid | contenthistid | filename | remoteid), siteid, use404">
+	
+	<cfset var content="">
+	
+	<cfif not structKeyExists(arguments,"use404")>
+		<cfset arguments.use404=false>
+	</cfif>
+	
+	<cfif not structKeyExists(arguments,"siteID")>
+		<cfthrow message="A 'SITEID' is required in order to read content. ">
+	</cfif>
+	
+	<cfif structKeyExists(arguments,"contenthistid")>
+		<cfset content=getcontentVersion(arguments.contenthistid, arguments.siteid, arguments.use404)>
+	<cfelseif structKeyExists(arguments,"filename")>
+		<cfset content=application.contentManager.getActiveContentByFilename(arguments.filename, arguments.siteid, arguments.use404)>
+	<cfelseif structKeyExists(arguments,"remoteid")>
+		<cfset content=getActiveByRemoteID(arguments.remoteid, arguments.siteid)>
+	<cfelseif structKeyExists(arguments,"contentid")>	
+		<cfset content=getActiveContent(arguments.contentid, arguments.siteid, arguments.use404)>
+	<cfelse>
+		<cfthrow message="One of the following values is required 'CONTENTID, CONTENTHISTID, FILENAME, REMOTEID' in order to read content.">
+	</cfif>
+	
+	<cfreturn content>
+	
+	</cffunction>
+	
 	<cffunction name="getContentVersion" access="public" returntype="any" output="false">
 		<cfargument name="contentHistID" type="string" required="yes" />
 		<cfargument name="siteID" type="string" required="yes" />
@@ -502,7 +530,9 @@ to your own modified versions of Mura CMS.
 	</cfif>
 	
 	<!--- END CONTENT TYPE: ALL CONTENT TYPES --->
-	<cfset variables.pluginManager.announceEvent("onBeforeContentSave",pluginEvent)>	
+	<cfif  ListFindNoCase(this.TreeLevelList,newBean.getType())>
+		<cfset variables.pluginManager.announceEvent("onBeforeContentSave",pluginEvent)>	
+	</cfif>
 	<cfset variables.pluginManager.announceEvent("onBefore#newBean.getType()#Save",pluginEvent)>
 	<cfset variables.pluginManager.announceEvent("onBefore#newBean.getType()##newBean.getSubType()#Save",pluginEvent)>	
 	
@@ -1363,5 +1393,9 @@ to your own modified versions of Mura CMS.
 	
 	<cffunction name="getIterator" returntype="any" output="false">
 		<cfreturn getServiceFactory().getBean("contentIterator").init()>
-	</cffunction>	
+	</cffunction>
+	
+	<cffunction name="getBean" returntype="any" output="false">
+		<cfreturn variables.contentDAO.getBean()>
+	</cffunction>		
 </cfcomponent>

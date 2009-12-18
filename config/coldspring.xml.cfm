@@ -300,6 +300,11 @@ to your own modified versions of Mura CMS.
 		<bean id="categoryDAO" class="mura.category.categoryDAO" singleton="true" >
 			<constructor-arg name="configBean"><ref bean="configBean" /></constructor-arg>
 		</bean>
+		<bean id="categoryIterator" class="mura.content.categoryIterator" singleton="false">
+			<property name="categoryManager">
+			    <ref bean="categoryManager"/>
+			</property>
+		</bean>
 		<bean id="categoryGateway" class="mura.category.categoryGateway" singleton="true">
 			<constructor-arg name="configBean"><ref bean="configBean" /></constructor-arg>
 			<constructor-arg name="settingsManager"><ref bean="settingsManager" /></constructor-arg>
@@ -309,7 +314,9 @@ to your own modified versions of Mura CMS.
 			<constructor-arg name="settingsManager"><ref bean="settingsManager" /></constructor-arg>
 			<constructor-arg name="configBean"><ref bean="configBean" /></constructor-arg>
 		</bean>
-		<bean id="categoryBean" class="mura.category.categoryBean"  singleton="false" />
+		<bean id="categoryBean" class="mura.category.categoryBean"  singleton="false">
+			<constructor-arg name="categoryManager"><ref bean="categoryManager" /></constructor-arg>
+		</bean>
 		<bean id="settingsManager" class="mura.settings.settingsManager" singleton="true">
 			<constructor-arg name="settingsGateway"><ref bean="settingsGateway" /></constructor-arg>
 			<constructor-arg name="settingsDAO"><ref bean="settingsDAO" /></constructor-arg>

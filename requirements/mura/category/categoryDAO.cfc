@@ -51,7 +51,12 @@ to your own modified versions of Mura CMS.
 </cffunction>
 
 <cffunction name="getBean" access="public" returntype="any">
-	<cfreturn createObject("component","mura.category.categoryBean").init()>
+	<cfreturn createObject("component","mura.category.categoryBean").init(variables.categoryManager)>
+</cffunction>
+
+<cffunction name="setCategoryManager" returntype="any" access="public" output="false">
+	<cfargument name="categoryManager">
+	<cfset variables.categoryManager=arguments.categoryManager/>
 </cffunction>
 
 <cffunction name="create" returntype="void" access="public" output="false">
