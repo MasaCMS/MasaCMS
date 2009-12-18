@@ -67,7 +67,7 @@ select * from rsSubTypes where subType <> 'Default'
 	<dl class="oneColumn">
 		<cfif rsNonDefault.recordcount>
 		<dt class="first">#application.rbFactory.getKeyValue(session.rb,'user.type')#</dt>
-		<dd><select name="subtype" class="dropdown" onchange="resetExtendedAttributes('#request.userBean.getUserID()#','2',this.value,'#application.settingsManager.getSite(attributes.siteID).getPublicUserPoolID()#','#application.configBean.getContext()#','#application.configBean.getContext()#','#application.settingsManager.getSite(application.settingsManager.getSite(attributes.siteID).getPublicUserPoolID()).getThemeAssetPath()#');">
+		<dd><select name="subtype" class="dropdown" onchange="resetExtendedAttributes('#request.userBean.getUserID()#','2',this.value,'#application.settingsManager.getSite(attributes.siteID).getPublicUserPoolID()#','#application.configBean.getContext()#','#application.settingsManager.getSite(application.settingsManager.getSite(attributes.siteID).getPublicUserPoolID()).getThemeAssetPath()#');">
 			<option value="Default" <cfif  request.userBean.getSubType() eq "Default">selected</cfif>> #application.rbFactory.getKeyValue(session.rb,'user.default')#</option>
 				<cfloop query="rsNonDefault">
 					<option value="#rsNonDefault.subtype#" <cfif request.userBean.getSubType() eq rsNonDefault.subtype>selected</cfif>>#rsNonDefault.subtype#</option>
