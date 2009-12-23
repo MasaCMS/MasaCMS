@@ -256,6 +256,8 @@ ExtendSetID in(<cfloop from="1" to="#setLen#" index="s">
 <cfargument name="preserveID" required="true" default="">
 <cfargument name="data">
 <cfargument name="dataTable" required="true" default="tclassextenddata"/>
+<cfargument name="type" required="true" default=""/>
+<cfargument name="subtype" required="true" default=""/>
 <cfset var setLen=0/>
 <cfset var rs=""/>
 <cfset var rsItem=""/>
@@ -268,8 +270,12 @@ ExtendSetID in(<cfloop from="1" to="#setLen#" index="s">
 <cfquery name="rs" datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 select #arguments.dataTable#.* from #arguments.dataTable#
 inner join tclassextendattributes on ( #arguments.dataTable#.attributeID=tclassextendattributes.attributeID)
+inner join tclassextendsets on (tclassextendattributes.extendsetID=tclassextendsets.extendsetID)
+inner join tclassextend on (tclassextendsets.subtypeID=tclassextend.subtypeID)
  where 
-baseID=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.preserveID#">
+tclassextend.type=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.type#">
+and tclassextend.subtype=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.subtype#">
+and baseID=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.preserveID#">
 <cfif hasExtendSets>
 <cfset setLen=listLen(arguments.data.extendSetID)/>
 and tclassextendattributes.extendSetID not in (<cfloop from="1" to="#setLen#" index="s">
@@ -296,17 +302,21 @@ and tclassextendattributes.extendSetID not in (<cfloop from="1" to="#setLen#" in
 
 <!--- preserve get non file attributes that were'nt submitted along with extendedset  --->
 <cfquery name="rs" datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-select #arguments.dataTable#.*, tclassextendattributes.name from #arguments.dataTable#
+select #arguments.dataTable#.* from #arguments.dataTable#
 inner join tclassextendattributes on ( #arguments.dataTable#.attributeID=tclassextendattributes.attributeID)
+inner join tclassextendsets on (tclassextendattributes.extendsetID=tclassextendsets.extendsetID)
+inner join tclassextend on (tclassextendsets.subtypeID=tclassextend.subtypeID)
  where 
-baseID=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.preserveID#">
+tclassextend.type=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.type#">
+and tclassextend.subtype=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.subtype#">
+and baseID=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.preserveID#">
 <cfif hasExtendSets>
 <cfset setLen=listLen(arguments.data.extendSetID)/>
 and tclassextendattributes.extendSetID in (<cfloop from="1" to="#setLen#" index="s">
 		'#listgetat(arguments.data.extendSetID,s)#'<cfif s lt setlen>,</cfif>
 		</cfloop>)
 </cfif>		
-and type!='File'
+and tclassextendattributes.type!='File'
 </cfquery>
 
 <cfloop query="rs">
@@ -333,17 +343,21 @@ and type!='File'
 
 <!--- preserve  Files from submitted extendset and make sure that is they were'nt newly submitted that the fileID is carried forward--->
 <cfquery name="rs" datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-select #arguments.dataTable#.*, tclassextendattributes.name from #arguments.dataTable#
+select #arguments.dataTable#.* from #arguments.dataTable#
 inner join tclassextendattributes on ( #arguments.dataTable#.attributeID=tclassextendattributes.attributeID)
+inner join tclassextendsets on (tclassextendattributes.extendsetID=tclassextendsets.extendsetID)
+inner join tclassextend on (tclassextendsets.subtypeID=tclassextend.subtypeID)
  where 
-baseID=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.preserveID#">
+tclassextend.type=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.type#">
+and tclassextend.subtype=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.subtype#">
+and baseID=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.preserveID#">
 <cfif hasExtendSets>
 <cfset setLen=listLen(arguments.data.extendSetID)/>
 and tclassextendattributes.extendSetID in (<cfloop from="1" to="#setLen#" index="s">
 		'#listgetat(arguments.data.extendSetID,s)#'<cfif s lt setlen>,</cfif>
 		</cfloop>)
 </cfif>		
-and type='File'
+and tclassextendattributes.type='File'
 </cfquery>
 
 <cfloop query="rs">

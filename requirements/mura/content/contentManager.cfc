@@ -543,8 +543,8 @@ to your own modified versions of Mura CMS.
 			<cfset variables.ClassExtensionManager.saveExtendedData(newBean.getcontentHistID(),arguments.data)/>
 		</cfif>
 	
-		<cfif not newBean.getIsNew()>
-			<cfset variables.ClassExtensionManager.preserveExtendedData(newBean.getcontentHistID(),currentBean.getcontentHistID(),arguments.data)/>
+		<cfif isDefined('arguments.data.extendSetID') and len(arguments.data.extendSetID)>	
+			<cfset variables.ClassExtensionManager.saveExtendedData(newBean.getcontentHistID(),arguments.data)/>
 		</cfif>
 	
 		<cfif newBean.getapproved() and not newBean.getIsNew() and currentBean.getDisplay() eq 2 and newBean.getDisplay() eq 2>

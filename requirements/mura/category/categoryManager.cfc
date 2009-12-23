@@ -102,6 +102,18 @@ to your own modified versions of Mura CMS.
 	<cfreturn variables.gateway.getCategories(arguments.siteid,arguments.parentID,arguments.keywords,arguments.activeOnly,arguments.InterestsOnly) />
 </cffunction>
 
+<cffunction name="getIterator" returntype="any" access="public" output="false">
+	<cfargument name="siteID"  type="string" />
+	<cfargument name="parentID"  type="string" />
+	<cfargument name="keywords"  type="string" required="true" default=""/>
+	<cfargument name="activeOnly" type="boolean" required="true" default="true">
+	<cfargument name="InterestsOnly" type="boolean" required="true" default="false">
+	
+	<cfset var it=getServiceFactory().getBean("categoryIterator").init()>
+	<cfset it.setQuery(getCategories(arguments.siteid,arguments.parentID,arguments.keywords,arguments.activeOnly,arguments.InterestsOnly))>
+	<cfreturn it />
+</cffunction>
+
 <cffunction name="getCategoriesBySiteID" returntype="query" access="public" output="false">
 	<cfargument name="siteID"  type="string" />
 	<cfargument name="keywords"  type="string" required="true" default=""/>
@@ -240,6 +252,14 @@ to your own modified versions of Mura CMS.
 	<cfargument name="categoryID" type="String" />		
 	
 	<cfreturn variables.DAO.read(arguments.categoryID) />
+
+</cffunction>
+
+<cffunction name="readByName" access="public" returntype="any" output="false">
+	<cfargument name="name" type="String" />		
+	<cfargument name="siteid" type="string" />
+	
+	<cfreturn variables.DAO.readByName(arguments.name,arguments.siteid) />
 
 </cffunction>
 

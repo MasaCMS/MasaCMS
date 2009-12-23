@@ -274,12 +274,17 @@ to your own modified versions of Mura CMS.
 	</cffunction>
 	
 	<cffunction name="getKidsQuery" returntype="any" output="false">
-		<cfreturn variables.categoryManager.getCategories(getSiteID(),getCategoryID()) />
+		<cfargument name="activeOnly" type="boolean" required="true" default="true">
+		<cfargument name="InterestsOnly" type="boolean" required="true" default="false">
+		
+		<cfreturn variables.categoryManager.getCategories(getSiteID(),getCategoryID(),"", arguments.activeOnly, arguments.InterestsOnly) />
 	</cffunction>
 	
 	<cffunction name="getKidsIterator" returntype="any" output="false">
+		<cfargument name="activeOnly" type="boolean" required="true" default="true">
+		<cfargument name="InterestsOnly" type="boolean" required="true" default="false">
 		<cfset var it=getServiceFactory().getBean("categoryIterator").init()>
-		<cfset it.setQuery(getKidsQuery())>
+		<cfset it.setQuery(getKidsQuery(arguments.activeOnly, arguments.InterestsOnly))>
 		<cfreturn it />
 	</cffunction>
 

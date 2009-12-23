@@ -103,6 +103,26 @@ to your own modified versions of Mura CMS.
 	<cfreturn categoryBean />
 </cffunction>
 
+<cffunction name="readByName" access="public" output="false" returntype="any" >
+	<cfargument name="name" type="string" />
+	<cfargument name="siteid" type="string" />
+
+	<cfset var categoryBean=getBean() />
+	<cfset var rs ="" />
+	
+	<cfquery name="rs" datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+	Select * from tcontentcategories where 
+	name=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.name#" />
+	and siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteid#" />
+	</cfquery>
+	
+	<cfif rs.recordcount>
+	<cfset categoryBean.set(rs) />
+	</cfif>
+	
+	<cfreturn categoryBean />
+</cffunction>
+
 <cffunction name="keepCategories" returntype="void" access="public" output="false">
 	<cfargument name="contentHistID" type="string" default=""/>
 	<cfargument name="rsKeepers" type="query"/>
