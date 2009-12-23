@@ -1574,11 +1574,9 @@ to your own modified versions of Mura CMS.
 		<!--- Add modal edit --->
 		<cfif showModal>
 			<cfset loadShadowboxJS() />
-		</cfif>
-		
-		<cfif this.showEditableObjects>
-			<cfset loadJSLib()>
-			<cfset addToHTMLHeadQueue('editableObjects.cfm')>
+			<cfif this.showEditableObjects>
+				<cfset addToHTMLHeadQueue('editableObjects.cfm')>
+			</cfif>
 		</cfif>
 		
 		<!--- Loop through the HTML Head Que--->
