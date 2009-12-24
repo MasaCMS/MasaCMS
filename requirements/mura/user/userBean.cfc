@@ -83,6 +83,7 @@ to your own modified versions of Mura CMS.
 	<cfset variables.instance.tags="" />
 	<cfset variables.instance.hKey="" />
 	<cfset variables.instance.uKey="" />
+	<cfset variables.instance.passedProtect=true />
 	<cfset variables.instance.extendData="" />
 	<cfset variables.instance.extendSetID="" />
     <cfset variables.instance.errors=structnew() />
@@ -572,12 +573,17 @@ to your own modified versions of Mura CMS.
 			</cfif>
 			
 			<cfif variables.instance.type eq 2 and variables.instance.email eq "" >
-			<cfset variables.instance.errors.username=variables.settingsManager.getSite(getSiteID()).getRBFactory().getKey("user.emailrequired") />
+			<cfset variables.instance.errors.email=variables.settingsManager.getSite(getSiteID()).getRBFactory().getKey("user.emailrequired") />
 			</cfif>
 			
 			<!--- If captcha data has been submitted validate it --->
 			<cfif not (not len(variables.instance.hKey) or variables.instance.hKey eq hash(variables.instance.uKey))>
 			<cfset variables.instance.errors.SecurityCode=variables.settingsManager.getSite(getSiteID()).getRBFactory().getKey("captcha.error")/>
+			</cfif>
+			
+			<!--- If cfformprotect has been submitted validate it --->
+			<cfif not variables.instance.passedProtect>
+			<cfset variables.instance.errors.Spam=variables.settingsManager.getSite(getSiteID()).getRBFactory().getKey("captcha.spam")/>
 			</cfif>
 		
 		<cfelse>
@@ -718,6 +724,13 @@ to your own modified versions of Mura CMS.
  <cffunction name="setUkey" returnType="void" output="false" access="public">
     <cfargument name="Ukey" type="string" required="true">
     <cfset variables.instance.Ukey = trim(arguments.Ukey) />
+  </cffunction>
+
+ <cffunction name="setPassedProtect" returnType="void" output="false" access="public">
+    <cfargument name="passedProtect" required="true">
+	<cfif isBoolean(arguments.passedProtect)>
+    	<cfset variables.instance.passedProtect = arguments.passedProtect />
+	</cfif>
   </cffunction>
 
 <cffunction name="setValue" returntype="any" access="public" output="false">
