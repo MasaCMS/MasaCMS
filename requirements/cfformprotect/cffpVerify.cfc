@@ -47,6 +47,13 @@ NOTES       : Dave Shuck - created
 		</cfscript>
 	</cffunction>
 
+	<cffunction name="updateConfig" access="public" output="false" returntype="void">
+		<cfargument name="name" required="true">
+		<cfargument name="value" required="true">
+		
+		<cfset variables.Config[name] = value>
+	</cffunction>
+	
 	<cffunction name="getConfig" access="public" output="false" returntype="struct">
 		<cfreturn variables.Config />
 	</cffunction>
