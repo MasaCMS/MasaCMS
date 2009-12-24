@@ -3,12 +3,12 @@
 DEVELOPER NOTES:
 
 *******************************************************************************************************
-This component is a CFC implementation of Jacob Munson's cffpVerify.cfm (part of CFFormProtect) written 
+This component is a CFC implementation of Jacob Munson's cffpVerify.cfm (part of CFFormProtect) written
 by Dave Shuck dshuck@gmail.com.  All calculations/algorithms are a direct port of Jacob's original code,
 with exceptions noted in the NOTES section below.
 *******************************************************************************************************
 
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 TEMPLATE    : cffpVerify.cfc
 
 CREATED     : 23 Mar 2007
@@ -17,7 +17,7 @@ USAGE       : Perform various tests on a form submission to ensure that a human 
 
 DEPENDANCY  : NONE
 
-NOTES       : Dave Shuck - created 
+NOTES       : Dave Shuck - created
 			  Dave Shuck - 23 Mar 2007 - Added testTooManyUrls() method and call to the method in testSubmission()
 			  Dave Shuck - 23 Mar 2007 - Removed the '0' padding in FormTime in testTimedSubmission() which was causing
 			  								consistent failure on that test
@@ -25,51 +25,48 @@ NOTES       : Dave Shuck - created
 			  								code is still backwards compatable with older ini files that do not make use of
 			  								the properties 'logFailedTests' and 'logFile'
 			  Dave Shuck - 26 Mar 2007 - Altered the FormTime in testTimedSubmission() to use NumberFormat as the previous
-			  								change caused exceptions before 10:00am.  (see comments in method)	
+			  								change caused exceptions before 10:00am.  (see comments in method)
 			  Mary Jo Sminkey - 18 July 2007 - Added new function 'testSpamStrings' which allows the user to configure a list
 			  									of text strings to test the form against. Similar to using Akismet but with no
-			  									cost involved for commercial use and can be configured as needed for the spam 
-			  									received. Update Akismet function to log to same file and not log as passed if 
-			  									the key validation failed.	
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+			  									cost involved for commercial use and can be configured as needed for the spam
+			  									received. Update Akismet function to log to same file and not log as passed if
+			  									the key validation failed.
+        Ben Elliott - 16 Jan 2009 - Added ability to specify ini config filename during init() and setConfig() with new cfargument 'ConfigFilename'. This new argument defaults to 'cffp.ini.cfm' for backwards compatability.
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 </pre>
 ">
 
 	<cffunction name="init" access="public" output="false" returntype="cffpVerify">
 		<cfargument name="ConfigPath" required="false" default="#ExpandPath("/cfformprotect")#" type="string" />
+    <cfargument name="ConfigFilename" required="false" default="cffp.ini.cfm" type="string" />
 		<cfscript>
-		setConfig(arguments.ConfigPath);
+		setConfig(arguments.ConfigPath, arguments.ConfigFilename);
+		this.ConfigPath = arguments.ConfigPath;
+		this.configFilename = arguments.ConfigFilename;
 		return this;
 		</cfscript>
 	</cffunction>
-	
-	<!--- custom --->
-	<cffunction name="updateConfig" access="public" output="false" returntype="void">
-		<cfargument name="name" required="true">
-		<cfargument name="value" required="true">
-		
-		<cfset variables.Config[name] = value>
-	</cffunction>
-	
+
 	<cffunction name="getConfig" access="public" output="false" returntype="struct">
 		<cfreturn variables.Config />
 	</cffunction>
-	
-	<cffunction name="setConfig" access="private" output="false" returntype="void">
+
+	<cffunction name="setConfig" access="public" output="false" returntype="void">
 		<cfargument name="ConfigPath" required="true" />
+    <cfargument name="ConfigFilename" required="true" />
 		<cfscript>
-		var IniEntries = GetProfileSections(arguments.ConfigPath & "/cffp.ini.cfm").CFFormProtect;
+		var IniEntries = GetProfileSections(arguments.ConfigPath & "/" & arguments.ConfigFilename).CFFormProtect;
 		var i = "";
 		variables.Config = StructNew();
-		
+
 		for (i=1;i LTE ListLen(IniEntries);i=i+1)	{
-			variables.Config[ListGetAt(IniEntries,i)] = GetProfileString(arguments.ConfigPath & "/cffp.ini.cfm","CFFormProtect",ListGetAt(IniEntries,i));
+			variables.Config[ListGetAt(IniEntries,i)] = GetProfileString(arguments.ConfigPath & "/" & arguments.ConfigFilename,"CFFormProtect",ListGetAt(IniEntries,i));
 		}
 		//set logfile
-		if (NOT Len(variables.Config.logFile))	{ variables.Config.logFile = "CFFormProtect"; } 
+		if (NOT Len(variables.Config.logFile))	{ variables.Config.logFile = "CFFormProtect"; }
 		</cfscript>
 	</cffunction>
-	
+
 	<cffunction name="testSubmission" access="public" output="false" returntype="any">
 		<cfargument name="FormStruct" required="true" type="struct" />
 		<cfscript>
@@ -77,9 +74,9 @@ NOTES       : Dave Shuck - created
 		// each time a test fails, totalPoints is incremented by the user specified amount
 		var TotalPoints = 0;
 		// setup a variable to store a list of tests that failed, for informational purposes
-		var TestsResults = StructNew();
-		
-		// Begin tests		
+		var TestResults = StructNew();
+
+		// Begin tests
 		// Test for mouse movement
 		try	{
 			if (getConfig().mouseMovement)	{
@@ -90,33 +87,33 @@ NOTES       : Dave Shuck - created
 				}
 			}
 		}
-		catch(any excpt)	{ /* an error occurred on this test, but we will move one */ }	
+		catch(any excpt)	{ /* an error occurred on this test, but we will move one */ }
 
-		
+
 		// Test for used keyboard
 		try	{
 			if (getConfig().usedKeyboard)	{
 				TestResults.usedKeyboard = testUsedKeyboard(arguments.FormStruct);
 				if (NOT TestResults.usedKeyboard.Pass)	{
 					// No keyboard activity was detected
-					TotalPoints = TotalPoints + getConfig().usedKeyboardPoints;			
+					TotalPoints = TotalPoints + getConfig().usedKeyboardPoints;
 				}
-			}					
+			}
 		}
-		catch(any excpt)	{ /* an error occurred on this test, but we will move one */ }	
+		catch(any excpt)	{ /* an error occurred on this test, but we will move one */ }
 
-		
+
 		// Test for time taken on the form
 		try	{
 			if (getConfig().timedFormSubmission)	{
 				TestResults.timedFormSubmission = testTimedFormSubmission(arguments.FormStruct);
 				if (NOT TestResults.timedFormSubmission.Pass)	{
 					// Time was either too short, too long, or the form field was altered
-					TotalPoints = TotalPoints + getConfig().timedFormPoints;			
+					TotalPoints = TotalPoints + getConfig().timedFormPoints;
 				}
-			}						
+			}
 		}
-		catch(any excpt)	{ /* an error occurred on this test, but we will move one */ }	
+		catch(any excpt)	{ /* an error occurred on this test, but we will move one */ }
 
 
 		// Test for empty hidden form field
@@ -125,13 +122,13 @@ NOTES       : Dave Shuck - created
 				TestResults.hiddenFormField = testHiddenFormField(arguments.FormStruct);
 				if (NOT TestResults.hiddenFormField.Pass)	{
 					// The submitter filled in a form field hidden via CSS
-					TotalPoints = TotalPoints + getConfig().hiddenFieldPoints;			
+					TotalPoints = TotalPoints + getConfig().hiddenFieldPoints;
 				}
-			}			
+			}
 		}
-		catch(any excpt)	{ /* an error occurred on this test, but we will move one */ }	
+		catch(any excpt)	{ /* an error occurred on this test, but we will move one */ }
 
-		
+
 		// Test Akismet
 		//try	{
 			if (getConfig().akismet)	{
@@ -140,11 +137,11 @@ NOTES       : Dave Shuck - created
 					// Akismet says this form submission is spam
 					TotalPoints = TotalPoints + getConfig().akismetPoints;
 				}
-			}		
+			}
 		//}
-		//catch(any excpt)	{ /* an error occurred on this test, but we will move one */ }	
+		//catch(any excpt)	{ /* an error occurred on this test, but we will move one */ }
 
-		
+
 		// Test tooManyUrls
 		try	{
 			if (getConfig().tooManyUrls)	{
@@ -153,9 +150,9 @@ NOTES       : Dave Shuck - created
 					// Submitter has included too many urls in at least one form field
 					TotalPoints = TotalPoints + getConfig().tooManyUrlsPoints;
 				}
-			}			
+			}
 		}
-		catch(any excpt)	{ /* an error occurred on this test, but we will move one */ }	
+		catch(any excpt)	{ /* an error occurred on this test, but we will move one */ }
 
 		// Test spamStrings
 		try	{
@@ -165,10 +162,10 @@ NOTES       : Dave Shuck - created
 					// Submitter has included a spam string in at least one form field
 					TotalPoints = TotalPoints + getConfig().spamStringPoints;
 				}
-			}			
+			}
 		}
-		catch(any excpt)	{ /* an error occurred on this test, but we will move one */ }	
-		
+		catch(any excpt)	{ /* an error occurred on this test, but we will move one */ }
+
 		// Test Project Honey Pot
 		try	{
 			if (getConfig().projectHoneyPot)	{
@@ -177,31 +174,31 @@ NOTES       : Dave Shuck - created
 					// Submitter has included a spam string in at least one form field
 					TotalPoints = TotalPoints + getConfig().projectHoneyPotPoints;
 				}
-			}			
+			}
 		}
-		catch(any excpt)	{ /* an error occurred on this test, but we will move one */ }	
+		catch(any excpt)	{ /* an error occurred on this test, but we will move one */ }
 
 		// Compare the total points from the spam tests to the user specified failure limit
 		if (TotalPoints GTE getConfig().failureLimit)	{
-			Pass = false;	
+			Pass = false;
 			try	{
 				if (getConfig().emailFailedTests)	{
-					emailReport(TestResults=TestResults,FormStruct=FormStruct,TotalPoints=TotalPoints);	
-				}				
+					emailReport(TestResults=TestResults,FormStruct=FormStruct,TotalPoints=TotalPoints);
+				}
 			}
 			catch(any excpt)	{ /* an error has occurred emailing the report, but we will move on */ }
 			try	{
 				if (getConfig().logFailedTests)	{
-					logFailure(TestResults=TestResults,FormStruct=FormStruct,TotalPoints=TotalPoints,LogFile=getConfig().logFile);	
-				}				
+					logFailure(TestResults=TestResults,FormStruct=FormStruct,TotalPoints=TotalPoints,LogFile=getConfig().logFile);
+				}
 			}
 			catch(any excpt)	{ /* an error has occurred logging the spam, but we will move on */ }
 		}
 		return pass;
 		</cfscript>
 	</cffunction>
-	
-	<cffunction name="testMouseMovement" access="private" output="false" returntype="struct"
+
+	<cffunction name="testMouseMovement" access="public" output="false" returntype="struct"
 				hint="I make sure this form field exists, and it has a numeric value in it (the distance the mouse traveled)">
 		<cfargument name="FormStruct" required="true" type="struct" />
 		<cfscript>
@@ -209,12 +206,12 @@ NOTES       : Dave Shuck - created
 		Result.Pass = false;
 		if (StructKeyExists(arguments.FormStruct,"formfield1234567891") AND IsNumeric(arguments.FormStruct.formfield1234567891))	{
 			Result.Pass = true;
-		}	
+		}
 		return Result;
 		</cfscript>
-	</cffunction>	
-	
-	<cffunction name="testUsedKeyboard" access="private" output="false" returntype="struct"
+	</cffunction>
+
+	<cffunction name="testUsedKeyboard" access="public" output="false" returntype="struct"
 				hint="I make sure this form field exists, and it has a numeric value in it (the amount of keys pressed by the user)">
 		<cfargument name="FormStruct" required="true" type="struct" />
 		<cfscript>
@@ -222,12 +219,12 @@ NOTES       : Dave Shuck - created
 		Result.Pass = false;
 		if (StructKeyExists(arguments.FormStruct,"formfield1234567892") AND IsNumeric(arguments.FormStruct.formfield1234567892))	{
 			Result.Pass = true;
-		}	
+		}
 		return Result;
-		</cfscript>		
+		</cfscript>
 	</cffunction>
-	
-	<cffunction name="testTimedFormSubmission" access="private" output="false" returntype="struct" 
+
+	<cffunction name="testTimedFormSubmission" access="public" output="false" returntype="struct"
 					hint="I check the time elapsed from the begining of the form load to the form submission">
 		<cfargument name="FormStruct" required="true" type="struct" />
 		<cfscript>
@@ -236,38 +233,38 @@ NOTES       : Dave Shuck - created
 		var FormTime = "";
 		var FormDateTime = "";
 		//var FormTimeElapsed = "";
-		
+
 		Result.Pass = true;
-								
+
 		// Decrypt the initial form load time
 		if (StructKeyExists(arguments.FormStruct,"formfield1234567893") AND ListLen(form.formfield1234567893) eq 2)	{
 			FormDate = ListFirst(form.formfield1234567893)-19740206;
 			if (Len(FormDate) EQ 7) {
-				FormDate = "0" & FormDate;	
+				FormDate = "0" & FormDate;
 			}
 			FormTime = ListLast(form.formfield1234567893)-19740206;
 			if (Len(FormTime))	{
 				// in original form, FormTime was always padded with a "0" below.  In my testing, this caused the timed test to fail
-				// consistantly after 9:59am due to the fact it was shifting the time digits one place to the right with 2 digit hours.  
+				// consistantly after 9:59am due to the fact it was shifting the time digits one place to the right with 2 digit hours.
 				// To make this work I added NumberFormat()
 				FormTime = NumberFormat(FormTime,000000);
 			}
-			
+
 			FormDateTime = CreateDateTime(Left(FormDate,4),Mid(FormDate,5,2),Right(FormDate,2),Left(FormTime,2),Mid(FormTime,3,2),Right(FormTime,2));
 			// Calculate how many seconds elapsed
 			Result.FormTimeElapsed = DateDiff("s",FormDateTime,Now());
 			if (Result.FormTimeElapsed LT getConfig().timedFormMinSeconds OR Result.FormTimeElapsed GT getConfig().timedFormMaxSeconds)	{
 				Result.Pass = false;
 			}
-		}	
+		}
 		else	{
 			Result.Pass = false;
 		}
 		return Result;
 		</cfscript>
 	</cffunction>
-	
-	<cffunction name="testHiddenFormField" access="private" output="false" returntype="struct"
+
+	<cffunction name="testHiddenFormField" access="public" output="false" returntype="struct"
 				hint="I make sure the CSS hidden form field doesn't have a value">
 		<cfargument name="FormStruct" required="true" type="struct" />
 		<cfscript>
@@ -275,12 +272,12 @@ NOTES       : Dave Shuck - created
 		Result.Pass = false;
 		if (StructKeyExists(arguments.FormStruct,"formfield1234567894") AND NOT Len(arguments.FormStruct.formfield1234567894))	{
 			Result.Pass = true;
-		}	
-		return Result;		
+		}
+		return Result;
 		</cfscript>
 	</cffunction>
 
-	<cffunction name="testAkismet" access="private" output="false" returntype="struct"
+	<cffunction name="testAkismet" access="public" output="false" returntype="struct"
 				hint="I send form contents to the public Akismet service to validate that it's not 'spammy'">
 		<cfargument name="FormStruct" required="true" type="struct" />
 		<cfscript>
@@ -291,7 +288,7 @@ NOTES       : Dave Shuck - created
 		Result.Pass = true;
 		Result.ValidKey = false;
 		</cfscript>
-	
+
 		<cftry>
 			<!--- validate the Akismet API key --->
 			<cfhttp url="http://rest.akismet.com/1.1/verify-key" timeout="10" method="post">
@@ -338,34 +335,27 @@ NOTES       : Dave Shuck - created
 		</cfif>
 		<cfreturn Result />
 	</cffunction>
-	
-	<cffunction name="testTooManyUrls" access="private" output="false" returntype="struct"
-				hint="I test whether too many URLs have been submitted in fields">
+
+	<cffunction name="testTooManyUrls" access="public" output="false" returntype="struct" hint="I test whether too many URLs have been submitted in fields">
 		<cfargument name="FormStruct" required="true" type="struct" />
 		<cfscript>
-		var Result = StructNew();
-		var i = "";
-		// Make a duplicate since this is passed by reference and we don't want to modify the original data
-		var FormStructCopy = Duplicate(arguments.FormStruct);
-		var UrlCount = "";
-		
-		Result.Pass = true;
-		for (i=1;i LTE ListLen(arguments.FormStruct.FieldNames);i=i+1)	{
-			UrlCount = -1;
-			while (FindNoCase("http://",FormStructCopy[ListGetAt(arguments.FormStruct.FieldNames,i)]))	{
-				FormStructCopy[ListGetAt(arguments.FormStruct.FieldNames,i)] = ReplaceNoCase(FormStructCopy[ListGetAt(arguments.FormStruct.FieldNames,i)],"http://","","one");
-				UrlCount = UrlCount + 1;
-			}	
-			if (UrlCount GTE getConfig().tooManyUrlsMaxUrls)	{
-				Result.Pass = false;
-				break;	
+			var Result = StructNew();
+			var checkfield = "";
+			var UrlCount = "";
+
+			Result.Pass = true;
+			for (checkfield in arguments.FormStruct)   {
+				UrlCount = arrayLen (lCase (arguments.FormStruct[checkfield]).split ('https?://')) - 1;
+				if (UrlCount GTE getConfig().tooManyUrlsMaxUrls)   {
+					Result.Pass = false;
+					break;
+				}
 			}
-		}
-		return Result;
+			return Result;
 		</cfscript>
 	</cffunction>
-	
-	<cffunction name="listFindOneOf" output="false" returntype="boolean">
+
+	<cffunction name="listFindOneOf" access="public" output="false" returntype="boolean">
 		<cfargument name="texttosearch" type="string" required="yes"/>
 		<cfargument name="values" type="string" required="yes"/>
 		<cfargument name="delimiters" type="string" required="no" default=","/>
@@ -378,7 +368,7 @@ NOTES       : Dave Shuck - created
 		<cfreturn true />
 	</cffunction>
 
-	<cffunction name="testSpamStrings" access="private" output="false" returntype="struct"
+	<cffunction name="testSpamStrings" access="public" output="false" returntype="struct"
 				hint="I test whether any of the configured spam strings are found in the form submission">
 		<cfargument name="FormStruct" required="true" type="struct" />
 		<cfscript>
@@ -387,8 +377,8 @@ NOTES       : Dave Shuck - created
 		var teststrings = getConfig().spamstrings;
 		var checkfield = '';
 		Result.Pass = true;
-		
-		// Loop through the list of spam strings to see if they are found in the form submission		
+
+		// Loop through the list of spam strings to see if they are found in the form submission
 		for (checkfield in arguments.FormStruct)	{
 			if (Result.Pass IS true)	{
 				Result.Pass = listFindOneOf(arguments.FormStruct[checkfield],teststrings);
@@ -398,7 +388,7 @@ NOTES       : Dave Shuck - created
 		</cfscript>
 	</cffunction>
 
-	<cffunction name="testProjHoneyPot" access="private" output="false" returntype="struct"
+	<cffunction name="testProjHoneyPot" access="public" output="false" returntype="struct"
 				hint="I send the user's IP address to the Project Honey Pot service to check if it's from a known spammer.">
 		<cfargument name="FormStruct" required="true" type="struct" />
 		<cfset var Result = StructNew()>
@@ -414,7 +404,7 @@ NOTES       : Dave Shuck - created
 		<cfset var threatScore = "">
 		<cfset var classification = "">
 		<cfset Result.Pass = true>
-		
+
 		<!--- Setup the DNS query string --->
 		<cfset reversedIP = listToArray(visitorIP,".")>
 		<cfset reversedIP = reversedIP[4]&"."&reversedIP[3]&"."&reversedIP[2]&"."&reversedIP[1]>
@@ -430,7 +420,7 @@ NOTES       : Dave Shuck - created
 				<cfset addressFound = 0>
 			</cfcatch>
 		</cftry>
-		
+
 		<cfif addressFound>
 			<cfset resultArray = listToArray(projHoneypotResult,".")>
 			<!--- resultArray[3] is the threat score for the address, rated from 0 to 255.
@@ -442,15 +432,15 @@ NOTES       : Dave Shuck - created
 				<cfset isSpammer = isSpammer+1>
 			</cfif>
 		</cfif>
-		
+
 		<cfif isSpammer>
 			<cfset Result.Pass = false>
 		</cfif>
-		
+
 		<cfreturn Result>
 	</cffunction>
 
-	<cffunction name="emailReport" access="private" output="false" returntype="void">
+	<cffunction name="emailReport" access="public" output="false" returntype="void">
 		<cfargument name="TestResults" required="true" type="struct" />
 		<cfargument name="FormStruct" required="true" type="struct">
 		<cfargument name="TotalPoints" required="true" type="numeric" />
@@ -463,7 +453,7 @@ NOTES       : Dave Shuck - created
 				my code here, or email yourself the failed test, or plug into your system
 				in the best way for your needs --->
 			<!---  --->
-					
+
 	 	<cfmail
 			from="#getConfig().emailFromAddress#"
 			to="#getConfig().emailToAddress#"
@@ -477,14 +467,14 @@ NOTES       : Dave Shuck - created
 					<cfif StructKeyExists(arguments.TestResults,"mouseMovement") AND NOT arguments.TestResults.mouseMovement.Pass>
 					<li>No mouse movement was detected.</li>
 					</cfif>
-					
+
 					<cfif StructKeyExists(arguments.TestResults,"usedKeyboard") AND NOT arguments.TestResults.usedKeyboard.Pass>
 					<li>No keyboard activity was detected.</li>
 					</cfif>
-					
+
 					<cfif StructKeyExists(arguments.TestResults,"timedFormSubmission") AND NOT arguments.TestResults.timedFormSubmission.Pass>
 						<cfif StructKeyExists(arguments.FormStruct,"formfield1234567893")>
-						<li>The time it took to fill out the form was 
+						<li>The time it took to fill out the form was
 							<cfif arguments.FormStruct.formfield1234567893 lt getConfig().timedFormMinSeconds>
 								too short.
 							<cfelseif arguments.FormStruct.formfield1234567893 gt getConfig().timedFormMaxSeconds>
@@ -502,15 +492,15 @@ NOTES       : Dave Shuck - created
 							</li>
 						</cfif>
 					</cfif>
-					
+
 					<cfif StructKeyExists(arguments.TestResults,"hiddenFormField") AND NOT arguments.TestResults.hiddenFormField.Pass>
 					<li>The hidden form field that is supposed to be blank contained data.</li>
 					</cfif>
-					
+
 					<cfif StructKeyExists(arguments.TestResults,"SpamStrings") AND NOT arguments.TestResults.SpamStrings.Pass>
 					<li>One of the configured spam strings was found in the form submission.</li>
 					</cfif>
-					
+
 					<cfif StructKeyExists(arguments.TestResults,"akismet") AND NOT arguments.TestResults.akismet.Pass>
 						<!--- The next few lines build the URL to submit a false
 									positive notification to Akismet if this is not spam --->
@@ -548,15 +538,15 @@ NOTES       : Dave Shuck - created
 						Akismet did not think this message was spam.  If it was, please <a href="#missedSpamURL#">notify Akismet</a> that it
 						missed one.
 					</cfif>
-					
+
 					<cfif StructKeyExists(arguments.TestResults,"TooManyUrls") AND NOT arguments.TestResults.tooManyUrls.Pass>
 					       <li>There were too many URLs in the form contents</li>
 					</cfif>
-					
+
 					<cfif StructKeyExists(arguments.TestResults,"ProjHoneyPot") AND NOT arguments.TestResults.ProjHoneyPot.Pass>
 					<li>The user's IP address has been flagged by Project Honey Pot.</li>
 					</cfif>
-					
+
 				</ol>
 				Failure score: #totalPoints#<br />
 				Your failure threshold: #getConfig().failureLimit#
@@ -566,7 +556,7 @@ NOTES       : Dave Shuck - created
 			Previous page: #cgi.http_referer#<br />
 			Form variables:
 			<cfdump var="#form#">
-		</cfmail> 
+		</cfmail>
 	</cffunction>
 
 	<cffunction name="logFailure" acces="private" output="false" returntype="void">
@@ -579,32 +569,32 @@ NOTES       : Dave Shuck - created
 		var missedSpamURL = "";
 		var LogText = "Message marked as spam!   ";
 		</cfscript>
-	
+
 		<cfif StructKeyExists(arguments.TestResults,"mouseMovement") AND NOT arguments.TestResults.mouseMovement.Pass>
 			<cfset LogText = LogText & "--- No mouse movement was detected." />
 		</cfif>
-					
+
 		<cfif StructKeyExists(arguments.TestResults,"usedKeyboard") AND NOT arguments.TestResults.usedKeyboard.Pass>
 			<cfset LogText = LogText & "--- No keyboard activity was detected." />
 		</cfif>
-					
+
 		<cfif StructKeyExists(arguments.TestResults,"timedFormSubmission") AND NOT arguments.TestResults.timedFormSubmission.Pass>
 			<cfif StructKeyExists(arguments.FormStruct,("formfield1234567893"))>
 				<cfset LogText = LogText & "--- The time it took to fill out the form did not fall within your configured threshold of #getConfig().timedFormMinSeconds#-#getConfig().timedFormMaxSeconds# seconds." />
-				
+
 			<cfelse>
 				<cfset LogText = LogText & "The time it took to fill out the form did not fall within your configured threshold of #getConfig().timedFormMinSeconds#-#getConfig().timedFormMaxSeconds# seconds.  Also, I think the form data for this field was tampered with by the spammer." />
 			</cfif>
 		</cfif>
-					
+
 		<cfif StructKeyExists(arguments.TestResults,"hiddenFormField") AND NOT arguments.TestResults.hiddenFormField.Pass>
 			<cfset LogText = LogText & "--- The hidden form field that is supposed to be blank contained data." />
 		</cfif>
-		
+
 		<cfif StructKeyExists(arguments.TestResults,"SpamStrings") AND NOT arguments.TestResults.SpamStrings.Pass>
 			<cfset LogText = LogText & "--- One of the configured spam strings was found in the form submission." />
 		</cfif>
-					
+
 		<cfif StructKeyExists(arguments.TestResults,"akismet") AND NOT arguments.TestResults.akismet.Pass>
 			<!--- The next few lines build the URL to submit a false
 						positive notification to Akismet if this is not spam --->
@@ -624,7 +614,7 @@ NOTES       : Dave Shuck - created
 			<cfset LogText = LogText & "--- Akisment thinks this is spam, if it's not please mark this as a
 							false positive by visiting: #falsePositiveURL#" />
 		<cfelseif StructKeyExists(arguments.TestResults,"akismet") AND arguments.TestResults.akismet.ValidKey AND arguments.TestResults.akismet.Pass>
-			<!--- The next few lines build the URL to submit a missed 
+			<!--- The next few lines build the URL to submit a missed
 						spam notification to Akismet --->
 			<cfset missedSpamURL = replace("#getConfig().akismetBlogURL#cfformprotect/akismetFailure.cfm?type=spam","://","^^","all")>
 			<cfset missedSpamURL = replace(missedSpamURL,"//","/","all")>
@@ -641,20 +631,18 @@ NOTES       : Dave Shuck - created
 			<cfset missedSpamURL = missedSpamURL&"&comment_content=#urlEncodedFormat(form[getConfig().akismetFormBodyField],'utf-8')#">
 			<cfset LogText = LogText & "--- Akismet did not think this message was spam.  If it was, please visit: #missedSpamURL#" />
 		</cfif>
-					
+
 		<cfif StructKeyExists(TestResults,"TooManyUrls") AND NOT arguments.TestResults.tooManyUrls.Pass>
 		      <cfset LogText = LogText & "--- There were too many URLs in the form contents." />
 		</cfif>
-					
+
 		<cfif StructKeyExists(TestResults,"ProjHoneyPot") AND NOT arguments.TestResults.ProjHoneyPot.Pass>
 		      <cfset LogText = LogText & "--- The user's IP address has been flagged by Project Honey Pot." />
 		</cfif>
-					
+
 		<cfset LogText = LogText & "--- Failure score: #totalPoints#.  Your failure threshold: #getConfig().failureLimit#.  IP address: #cgi.remote_addr#	User agent: #cgi.http_user_agent#	Previous page: #cgi.http_referer#" />
-	
+
 		<cflog file="#arguments.LogFile#" text="#LogText#" />
 	</cffunction>
 
-
 </cfcomponent>
-
