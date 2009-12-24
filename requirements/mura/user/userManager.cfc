@@ -290,13 +290,13 @@ to your own modified versions of Mura CMS.
 	
 	<cfif userBean.getType() eq 1>	
 		<cfset pluginEvent.setValue("groupBean",userBean)/>			
-		<cfset variables.pluginManager.announceEvent("onBeforeGroupUpdate",pluginEvent)>
+		<cfset variables.pluginManager.announceEvent("onBeforeGroupCreate",pluginEvent)>
 		<cfset variables.pluginManager.announceEvent("onBeforeGroupSave",pluginEvent)>
 		<cfset variables.pluginManager.announceEvent("onBeforeGroup#userBean.getSubType()#Create",pluginEvent)>
 		<cfset variables.pluginManager.announceEvent("onBeforeGroup#userBean.getSubType()#Save",pluginEvent)>				
 	<cfelse>
 		<cfset pluginEvent.setValue("userBean",userBean)/>	
-		<cfset variables.pluginManager.announceEvent("onBeforeUserUpdate",pluginEvent)>
+		<cfset variables.pluginManager.announceEvent("onBeforeUserCreate",pluginEvent)>
 		<cfset variables.pluginManager.announceEvent("onBeforeUserSave",pluginEvent)>
 		<cfset variables.pluginManager.announceEvent("onBeforeUser#userBean.getSubType()#Create",pluginEvent)>
 		<cfset variables.pluginManager.announceEvent("onBeforeUser#userBean.getSubType()#Save",pluginEvent)>		
