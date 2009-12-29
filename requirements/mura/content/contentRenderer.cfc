@@ -837,7 +837,7 @@ to your own modified versions of Mura CMS.
 				<cfcase value="seq_nav">#dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"nav/dsp_portal.cfm","#arguments.object##arguments.objectid##event.getValue('startRow')#")#</cfcase>
 				<cfcase value="top_nav">#dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"nav/dsp_top.cfm",cacheKeyContentId)#</cfcase>
 				<cfcase value="contact">#dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"dsp_contact.cfm")#</cfcase>
-				<cfcase value="calendar_nav">#dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"nav/calendarNav/index.cfm","#arguments.object##arguments.siteID##arguments.objectid##event.getValue('month')##event.getvalue('year')#")#</cfcase>
+				<cfcase value="calendar_nav">#dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"nav/calendarNav/index.cfm")#</cfcase>
 				<cfcase value="plugin">
 					<cfreturn application.pluginManager.displayObject(arguments.objectid,event)>
 				</cfcase>

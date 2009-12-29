@@ -3,10 +3,13 @@
 <cfparam name="request.sortBy" default=""/>
 <cfparam name="request.sortDirection" default=""/>
 <cfparam name="request.day" default="#day(now())#"/>
-<cfset navTools=createObject("component","navTools")>
-<cfset addToHTMLHeadQueue('nav/calendarNav/htmlhead/htmlhead.cfm')>
-<cfset navID=arguments.objectID>
 
+<cfset addToHTMLHeadQueue('nav/calendarNav/htmlhead/htmlhead.cfm')>
+</cfsilent>
+<cf_CacheOMatic key="#arguments.object##event.getValue('siteid')##arguments.objectid##event.getValue('month')##event.getvalue('year')#" nocache="#event.getValue('nocache')#">
+<cfsilent>
+<cfset navTools=createObject("component","navTools")>
+<cfset navID=arguments.objectID>	
 <cfquery datasource="#application.configBean.getDatasource()#" 
 		username="#application.configBean.getDBUsername()#" 
 		password="#application.configBean.getDBPassword()#" 
@@ -28,7 +31,7 @@
 <cfset navTools.setParams(navMonth,navDay,navYear,navID,navPath,navType) />
 <cfoutput>#navTools.dspMonth()#</cfoutput>
 </div>
-
+</cf_CacheOMatic>
 
 
 
