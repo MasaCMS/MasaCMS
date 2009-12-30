@@ -41,10 +41,10 @@ the GNU General Public License version 2  without this exception.  You may, if y
 to your own modified versions of Mura CMS.
 --->
 <cfset addToHTMLHeadQueue("swfobject.cfm") />
+<cfset loadJSLib() />
 <cfset r="#replace('#rand()#','.','')#"/>
 <cfswitch expression="#getJSLib()#">
 <cfcase value="jquery">
-<cfset addToHTMLHeadQueue("jquery.cfm") />
 <cfoutput>
 <div id="svAd#r#" class="svAd"></div>
 <script type="text/javascript">
@@ -70,7 +70,6 @@ new renderAdZone#r#();
 </cfoutput>
 </cfcase>
 <cfdefaultcase>
-<cfset addToHTMLHeadQueue("prototype.cfm") />
 <cfoutput>
 <div id="svAd#r#" class="svAd"></div>
 <script type="text/javascript">
