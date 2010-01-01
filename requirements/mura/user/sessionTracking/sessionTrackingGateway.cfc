@@ -729,6 +729,7 @@ to your own modified versions of Mura CMS.
 	</cfcase>
 	</cfswitch>
 	
+	<cfset started = false />
 	<cfif arrayLen(paramArray)>
 		<cfloop from="1" to="#arrayLen(paramArray)#" index="i">
 				<cfset param=paramArray[i] />
