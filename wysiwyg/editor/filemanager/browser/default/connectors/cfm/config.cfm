@@ -6,7 +6,7 @@
 	// SECURITY: You must explicitly enable this "connector". (Set enabled to "true")
 	config.enabled = application.permUtility.getModulePerm("00000000000000000000000000000000000",session.siteid);
 
-	config.userFilesPath = "/UserFiles/";
+	config.userFilesPath = "#application.configBean.getAssetPath()#/#session.siteid#/assets/";
 
 	config.serverPath = "#application.configBean.getAssetDir()##application.configBean.getFileDelim()##session.siteid##application.configBean.getFileDelim()#assets"; // use this to force the server path if FCKeditor is not running directly off the root of the application or the FCKeditor directory in the URL is a virtual directory or a symbolic link / junction
 

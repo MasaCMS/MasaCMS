@@ -28,7 +28,7 @@
 	config.enabled = application.permUtility.getModulePerm("00000000000000000000000000000000000",session.siteid);
 
 	// Path to uploaded files relative to the document root.
-	config.userFilesPath = "/userfiles/";
+	config.userFilesPath = "#application.configBean.getAssetPath()#/#session.siteid#/assets/";
 
 	config.serverPath = "#application.configBean.getAssetDir()##application.configBean.getFileDelim()##session.siteid##application.configBean.getFileDelim()#assets#application.configBean.getFileDelim()#"; // use this to force the server path if FCKeditor is not running directly off the root of the application or the FCKeditor directory in the URL is a virtual directory or a symbolic link / junction
 // use this to force the server path if FCKeditor is not running directly off the root of the application or the FCKeditor directory in the URL is a virtual directory or a symbolic link / junction
