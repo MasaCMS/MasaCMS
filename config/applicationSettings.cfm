@@ -121,7 +121,7 @@ to your own modified versions of Mura CMS.
 	<cfset canWriteMappings=true>
 	<cfset hasMappings=true>
 	<cftry>
-		<cfinclude template="/config/mappings.cfm">
+		<cfinclude template="mappings.cfm">
 		<cfcatch>
 			<cfset hasMappings=false>
 		</cfcatch>
@@ -150,7 +150,7 @@ to your own modified versions of Mura CMS.
 	<cfset hasMappings=true>
 	<cfset canWriteMappings=true>
 	<cftry>
-		<cfinclude template="/plugins/mappings.cfm">
+		<cfinclude template="../plugins/mappings.cfm">
 		<cfcatch>
 			<cfset hasMappings=false>
 		</cfcatch>

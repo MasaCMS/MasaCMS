@@ -179,10 +179,12 @@ to your own modified versions of Mura CMS.
 
 </cffunction>
 
-<cffunction name="copyDir">
+<cffunction name="copyDir" returnType="any" output="false">
 	<cfargument name="baseDir" default="" required="true" />
 	<cfargument name="destDir" default="" required="true" />
 	<cfset var rs = "" />
+	<cfset var errors=arrayNew(1)>
+	<cfset var copyItem="">
 	
 	<cfdirectory directory="#arguments.baseDir#" name="rs" action="list" recurse="true" />
 	<!--- filter out Subversion hidden folders --->
@@ -192,24 +194,28 @@ to your own modified versions of Mura CMS.
 	AND name <> '.svn'
 	</cfquery>
 	
+	<cfset copyItem=arguments.destDir>
 	<cftry>
-		<cfdirectory action="create" mode="775" directory="#arguments.destDir#" />
-		<cfcatch></cfcatch>
+		<cfdirectory action="create" mode="775" directory="#copyItem#" />
+		<cfcatch><cfset arrayAppend(errors, copyItem)></cfcatch>
 	</cftry>
 	
 	<cfloop query="rs">
 		<cfif rs.type eq "dir">
+			<cfset copyItem="#replace('#rs.directory##variables.configBean.getFileDelim()#',arguments.baseDir,arguments.destDir)##rs.name##variables.configBean.getFileDelim()#">
 			<cftry>
-				<cfdirectory action="create" mode="775" directory="#replace('#rs.directory##variables.configBean.getFileDelim()#',arguments.baseDir,arguments.destDir)##rs.name##variables.configBean.getFileDelim()#" />
-				<cfcatch></cfcatch>
+				<cfdirectory action="create" mode="775" directory="#copyItem#" />
+				<cfcatch><cfset arrayAppend(errors, copyItem)></cfcatch>
 			</cftry>
 		<cfelse>
+		<cfset copyItem="#replace('#rs.directory##variables.configBean.getFileDelim()#',arguments.baseDir,arguments.destDir)#">
 			<cftry>
-				<cffile action="copy" mode="775" source="#rs.directory##variables.configBean.getFileDelim()##rs.name#" destination="#replace('#rs.directory##variables.configBean.getFileDelim()#',arguments.baseDir,arguments.destDir)#" />
-				<cfcatch></cfcatch>
+				<cffile action="copy" mode="775" source="#rs.directory##variables.configBean.getFileDelim()##rs.name#" destination="#copyItem#" />
+				<cfcatch><cfset arrayAppend(errors, copyItem)></cfcatch>
 			</cftry>
 		</cfif>
 	</cfloop>
+	<cfreturn errors>
 </cffunction>
 
 <cffunction name="deleteDir">
@@ -235,6 +241,18 @@ to your own modified versions of Mura CMS.
 		</cfloop>
 	
 	<cfreturn i>
+</cffunction>
+
+<cffunction name="joinArrays" returntype="any" output="false">
+	<cfargument name="array1">
+	<cfargument name="array2">
+	<cfset var i="">
+	<cfif arrayLen(array2)>
+		<cfloop from="1" to="#arrayLen(array2)#" index="i">
+			<cfset arrayAppend(array1,array2[i])>
+		</cfloop>
+	</cfif>
+	<cfreturn array1 />
 </cffunction>
 
 <cffunction name="createRedirectID" access="public" returntype="string" output="false">
@@ -282,8 +300,6 @@ to your own modified versions of Mura CMS.
 		<cfreturn false>
 	</cfif>
 </cffunction>
-
-
 
 <cffunction name="listFix" output="false" returntype="any">
 <cfargument name="list">

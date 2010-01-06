@@ -261,6 +261,13 @@
 <cfset var rsContent="">
 <cfset var notifyText="">
 <cfset var email="">
+<cfset var contactEmail="">
+
+<cfif len(variables.settingsManager.getSite(getSiteID()).getContactEmail())>
+	<cfset contactEmail=variables.settingsManager.getSite(getSiteID()).getContactEmail()>
+<cfelse>
+	<cfset contactEmail=variables.settingsManager.getSite(getSiteID()).getContact()>
+</cfif>
 
 <cfif not len(arguments.script)>
 
@@ -295,7 +302,7 @@ http://#listFirst(cgi.http_host,":")##variables.configBean.getServerPort()##vari
 
 <cfset email=application.serviceFactory.getBean('mailer') />
 <cfset email.sendText(notifyText,
-						variables.settingsManager.getSite(getSiteID()).getContact(),
+						contactEmail,
 						getName(),
 						'New Comment',
 						getSiteID()) />

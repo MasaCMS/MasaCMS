@@ -975,30 +975,36 @@ to your own modified versions of Mura CMS.
 		<cfset var rsPlugins=application.pluginManager.getSitePlugins(arguments.siteid)>
 		<cfset var pluginEvent = createObject("component","mura.event").init(arguments) />
 		<cfset var keys=createObject("component","mura.publisherKeys").init('publish',application.utility)>
+		<cfset var errors=arrayNew(1)>
+		<cfset var itemErrors=arrayNew(1)>
 		
 		<cfset application.pluginManager.announceEvent("onSiteDeploy",pluginEvent)>
-		
+		<cfset application.pluginManager.announceEvent("onBeforeSiteDeploy",pluginEvent)>
 		<cfloop list="#application.configBean.getProductionDatasource()#" index="i">
 			<cfset getToWork(arguments.siteid, arguments.siteid, '#application.configBean.getDatasource()#', '#i#','publish',keys)>
 		</cfloop>
 		
 		<cfloop list="#application.configBean.getProductionWebroot()#" index="j">
-			<cfset application.utility.copyDir("#application.configBean.getWebRoot()##fileDelim##arguments.siteid##fileDelim#", "#j##fileDelim##arguments.siteid##fileDelim#") />
+			<cfset itemErrors=application.utility.copyDir("#application.configBean.getWebRoot()##fileDelim##arguments.siteid##fileDelim#", "#j##fileDelim##arguments.siteid##fileDelim#") />
+			<cfset errors=application.utility.joinArrays(errors,itemErrors)>
 		</cfloop>
 		
 		<cfloop list="#application.configBean.getProductionWebroot()#" index="p">
 			<cfloop query="rsPlugins">
-			<cfset application.utility.copyDir("#application.configBean.getWebRoot()##fileDelim#plugins#fileDelim##rsPlugins.directory##fileDelim#", "#p##fileDelim#plugins#fileDelim##rsPlugins.directory##fileDelim#") />
+				<cfset itemErrors=application.utility.copyDir("#application.configBean.getWebRoot()##fileDelim#plugins#fileDelim##rsPlugins.directory##fileDelim#", "#p##fileDelim#plugins#fileDelim##rsPlugins.directory##fileDelim#") />
+				<cfset errors=application.utility.joinArrays(errors,itemErrors)>
 			</cfloop>
 		</cfloop>
 		
 		<cfloop list="#application.configBean.getProductionFiledir()#" index="k">
-			<cfset application.utility.copyDir("#application.configBean.getFiledir()##fileDelim##arguments.siteid##fileDelim#", "#k##fileDelim##arguments.siteid##fileDelim#") />
+			<cfset itemErrors=application.utility.copyDir("#application.configBean.getFiledir()##fileDelim##arguments.siteid##fileDelim#", "#k##fileDelim##arguments.siteid##fileDelim#") />
+			<cfset errors=application.utility.joinArrays(errors,itemErrors)>
 		</cfloop>
 		
 		<cfloop list="#application.configBean.getProductionAssetdir()#" index="k">
 			<cfif not listFindNoCase(application.configBean.getProductionFiledir(),k)>
-				<cfset application.utility.copyDir("#application.configBean.getAssetdir()##fileDelim##arguments.siteid##fileDelim#", "#k##fileDelim##arguments.siteid##fileDelim#") />
+				<cfset itemErrors=application.utility.copyDir("#application.configBean.getAssetdir()##fileDelim##arguments.siteid##fileDelim#", "#k##fileDelim##arguments.siteid##fileDelim#") />
+				<cfset errors=application.utility.joinArrays(errors,itemErrors)>
 			</cfif>
 		</cfloop>
 		
@@ -1008,17 +1014,21 @@ to your own modified versions of Mura CMS.
 		
 		<cfquery datasource="#application.configBean.getDatasource()#" username="#application.configBean.getDBUsername()#" password="#application.configBean.getDBPassword()#">
 			update tsettings set lastDeployment = #now()#
+			where siteID=<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#arguments.siteID#">
 		</cfquery>
 		
 		<cfloop list="#application.configBean.getProductionDatasource()#" index="i">
 			<cfquery datasource="#i#">
 				update tsettings set lastDeployment = #now()#
+				where siteID=<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#arguments.siteID#">
 			</cfquery>
 			<cfquery datasource="#i#">
 				update tglobals set appreload = #now()#
 			</cfquery>
 		</cfloop>
-
+		
+		<cfset pluginEvent.setValue("errors",errors)>
+		<cfset application.pluginManager.announceEvent("onAfterSiteDeploy",pluginEvent)>
 	</cffunction>
 	
 	<cffunction name="copy" returntype="void" output="no">
