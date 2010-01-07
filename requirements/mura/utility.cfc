@@ -197,7 +197,7 @@ to your own modified versions of Mura CMS.
 	<cfset copyItem=arguments.destDir>
 	<cftry>
 		<cfdirectory action="create" mode="775" directory="#copyItem#" />
-		<cfcatch><cfset arrayAppend(errors, copyItem)></cfcatch>
+		<cfcatch><!---<cfset arrayAppend(errors, copyItem)>---></cfcatch>
 	</cftry>
 	
 	<cfloop query="rs">
@@ -205,7 +205,7 @@ to your own modified versions of Mura CMS.
 			<cfset copyItem="#replace('#rs.directory##variables.configBean.getFileDelim()#',arguments.baseDir,arguments.destDir)##rs.name##variables.configBean.getFileDelim()#">
 			<cftry>
 				<cfdirectory action="create" mode="775" directory="#copyItem#" />
-				<cfcatch><cfset arrayAppend(errors, copyItem)></cfcatch>
+				<cfcatch><!---<cfset arrayAppend(errors, copyItem)>---></cfcatch>
 			</cftry>
 		<cfelse>
 		<cfset copyItem="#replace('#rs.directory##variables.configBean.getFileDelim()#',arguments.baseDir,arguments.destDir)#">
