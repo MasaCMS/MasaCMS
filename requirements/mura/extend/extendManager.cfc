@@ -268,7 +268,7 @@ ExtendSetID in(<cfloop from="1" to="#setLen#" index="s">
 <cfset var hasExtendSets=isDefined("arguments.data.extendSetID") and len(arguments.data.extendSetID)>
 <!--- preserve data from extendsets that were'nt submitted --->
 <cfquery name="rs" datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-select #arguments.dataTable#.* from #arguments.dataTable#
+select #arguments.dataTable#.*, tclassextendattributes.name from #arguments.dataTable#
 inner join tclassextendattributes on ( #arguments.dataTable#.attributeID=tclassextendattributes.attributeID)
 inner join tclassextendsets on (tclassextendattributes.extendsetID=tclassextendsets.extendsetID)
 inner join tclassextend on (tclassextendsets.subtypeID=tclassextend.subtypeID)
@@ -302,7 +302,7 @@ and tclassextendattributes.extendSetID not in (<cfloop from="1" to="#setLen#" in
 
 <!--- preserve get non file attributes that were'nt submitted along with extendedset  --->
 <cfquery name="rs" datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-select #arguments.dataTable#.* from #arguments.dataTable#
+select #arguments.dataTable#.*, tclassextendattributes.name from #arguments.dataTable#
 inner join tclassextendattributes on ( #arguments.dataTable#.attributeID=tclassextendattributes.attributeID)
 inner join tclassextendsets on (tclassextendattributes.extendsetID=tclassextendsets.extendsetID)
 inner join tclassextend on (tclassextendsets.subtypeID=tclassextend.subtypeID)
@@ -343,7 +343,7 @@ and tclassextendattributes.type!='File'
 
 <!--- preserve  Files from submitted extendset and make sure that is they were'nt newly submitted that the fileID is carried forward--->
 <cfquery name="rs" datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-select #arguments.dataTable#.* from #arguments.dataTable#
+select #arguments.dataTable#.*, tclassextendattributes.name from #arguments.dataTable#
 inner join tclassextendattributes on ( #arguments.dataTable#.attributeID=tclassextendattributes.attributeID)
 inner join tclassextendsets on (tclassextendattributes.extendsetID=tclassextendsets.extendsetID)
 inner join tclassextend on (tclassextendsets.subtypeID=tclassextend.subtypeID)
