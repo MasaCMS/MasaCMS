@@ -82,9 +82,11 @@ to your own modified versions of Mura CMS.
 
 <cfloop query="arguments.rsReminders">
 
+<cfset setLocale(variables.instance.settingsManager.getSite(rsReminders.siteID).getJavaLocale())>
+
 <cfset returnURL=variables.instance.contentRenderer.createHREF('Page',arguments.rsReminders.filename,arguments.rsReminders.siteid,'','','','',variables.instance.configBean.getContext(),variables.instance.configBean.getStub(),variables.instance.configBean.getIndexFile(),true) />
 <cfset eventTitle="#arguments.rsReminders.title#"/>
-<cfset startDate="#lsdateformat(arguments.rsReminders.displayStart,session.dateKeyFormat)#"/>
+<cfset startDate="#lsdateformat(arguments.rsReminders.displayStart,'long')#"/>
 <cfset startTime="#lstimeformat(arguments.rsReminders.displayStart,'short')#"/>
 <cfset siteName="#arguments.rsReminders.site#"/>
 <cfset eventContactName="#arguments.rsReminders.contactName#"/>

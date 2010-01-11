@@ -215,13 +215,17 @@ select * from tplugins order by #arguments.orderby#
 	
 	<cfset location=getLocation(rsPlugin.directory) />
 	
+	<!---
 	<cfif directoryExists(location)>
 		<cfdirectory action="delete" directory="#location#" recurse="true">
 	</cfif>
+	--->
 	
+	<cfif not directoryExists(location)>
 	<cfdirectory action="create" directory="#location#" mode="775">
+	</cfif>
 	
-	<cfset zipTool.extract("#variables.configBean.getTempDir()##delim##cffile.serverfile#","#location#")>
+	<cfset zipTool.extract(zipFilePath="#variables.configBean.getTempDir()##delim##cffile.serverfile#",extractPath="#location#", overwriteFiles=true)>
 	
 	<cffile action="delete" file="#variables.configBean.getTempDir()##delim##cffile.serverfile#">
 	

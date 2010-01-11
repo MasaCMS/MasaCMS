@@ -300,7 +300,7 @@ to your own modified versions of Mura CMS.
 		<bean id="categoryDAO" class="mura.category.categoryDAO" singleton="true" >
 			<constructor-arg name="configBean"><ref bean="configBean" /></constructor-arg>
 		</bean>
-		<bean id="categoryIterator" class="mura.content.categoryIterator" singleton="false">
+		<bean id="categoryIterator" class="mura.category.categoryIterator" singleton="false">
 			<property name="categoryManager">
 			    <ref bean="categoryManager"/>
 			</property>

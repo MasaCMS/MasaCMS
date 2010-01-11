@@ -47,7 +47,7 @@ to your own modified versions of Mura CMS.
 <cfset hasRatings=application.contentGateway.getHasRatings(request.siteid,request.contentBean.getcontentid()) />
 <cfset nextN=application.utility.getNextN(rsSection,request.contentBean.getNextN(),request.StartRow)>
 <cfset iterator=application.serviceFactory.getBean("contentIterator")>
-<cfset iterator.setQuery(rs,request.contentBean.getNextN())>
+<cfset iterator.setQuery(rsSection,request.contentBean.getNextN())>
 </cfsilent>
 <!---
 <div id="svCalendar" class="svCalendar">

@@ -80,7 +80,8 @@ where siteid='#request.siteid#' and
 	<cfset editableControl.innerHTML = "">
 	
 	<cfif this.showEditableObjects and objectPerm eq 'editor'>
-		<cfset request.contentRenderer.loadShadowBoxJS()>
+		<cfset loadShadowBoxJS()>
+		<cfset addToHTMLHeadQueue('editableObjects.cfm')>
 		<cfset bean = application.contentManager.getActiveContent(arguments.objectID, arguments.siteID)>
 		
 		<cfif len(application.configBean.getAdminDomain())>

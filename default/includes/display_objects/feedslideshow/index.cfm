@@ -59,6 +59,7 @@ to your own modified versions of Mura CMS.
 		<cfif this.showEditableObjects and objectPerm eq 'editor'>
 			<cfset bean = feedBean>
 			<cfset loadShadowBoxJS()>
+			<cfset addToHTMLHeadQueue('editableObjects.cfm')>
 			<cfset request.cacheItem=false>
 			
 			<cfif len(application.configBean.getAdminDomain())>
