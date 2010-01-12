@@ -56,7 +56,7 @@ to your own modified versions of Mura CMS.
 		
 			<cfloop query="rs">
 				<cfset newbody=replace(BODY,"#arguments.find#","#arguments.replace#","ALL")>
-				<cfquery datasource="#application.configBean.getDatasource()#" username="#application.configBean.getDBUsername()#" password="#application.configBean.getDBPassword()#" name="rs">
+				<cfquery datasource="#application.configBean.getDatasource()#" username="#application.configBean.getDBUsername()#" password="#application.configBean.getDBPassword()#">
 					update tcontent set body=<cfqueryparam value="#newBody#" cfsqltype="cf_sql_longvarchar" > where contenthistid='#contenthistid#'
 				</cfquery>
 			</cfloop>
@@ -67,7 +67,7 @@ to your own modified versions of Mura CMS.
 			
 			<cfloop query="rs">
 				<cfset newSummary=replace(summary,"#arguments.find#","#arguments.replace#","ALL")>
-				<cfquery datasource="#application.configBean.getDatasource()#" username="#application.configBean.getDBUsername()#" password="#application.configBean.getDBPassword()#" name="rs">
+				<cfquery datasource="#application.configBean.getDatasource()#" username="#application.configBean.getDBUsername()#" password="#application.configBean.getDBPassword()#">
 					update tcontent set summary=<cfqueryparam value="#newSummary#" cfsqltype="cf_sql_longvarchar" > where contenthistid='#contenthistid#'
 				</cfquery>
 			</cfloop> 	

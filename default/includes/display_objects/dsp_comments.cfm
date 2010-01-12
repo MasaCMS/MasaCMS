@@ -256,7 +256,7 @@ to your own modified versions of Mura CMS.
 		</fieldset>
 		<div class="buttons">
 			<cfoutput><p class="required">#rbFactory.getKey('comments.requiredfield')#</p>
-			<input type="hidden" name="returnURL" value="http://#application.settingsManager.getSite(request.siteid).getDomain()##application.configBean.getServerPort()##application.contentRenderer.getCurrentURL()#" />
+			<input type="hidden" name="returnURL" value="#application.contentRenderer.getCurrentURL()#" />
 			<input type="hidden" name="commentid" value="#createuuid()#" />
 			<input type="submit" class="submit" name="submit" value="#htmlEditFormat(rbFactory.getKey('comments.submit'))#" /></cfoutput>
 		</div>

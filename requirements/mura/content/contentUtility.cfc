@@ -797,7 +797,7 @@ and active=1
 	
 	<cfloop query="rs">
 		<cfset newbody = replaceNoCase(BODY,"#arguments.find#","#arguments.replace#","ALL")>
-		<cfquery datasource="#variables.dsn#" name="rs"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+		<cfquery datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 		update tcontent set body = <cfqueryparam value="#newBody#" cfsqltype="cf_sql_longvarchar"> where contenthistid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#rs.contenthistID#"/>
 		</cfquery>
 	</cfloop>
@@ -809,7 +809,7 @@ and active=1
 	
 	<cfloop query="rs">
 		<cfset newSummary = replaceNoCase(summary,"#arguments.find#","#arguments.replace#","ALL")>
-		<cfquery datasource="#variables.dsn#" name="rs"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+		<cfquery datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 		update tcontent set summary = <cfqueryparam value="#newSummary#" cfsqltype="cf_sql_longvarchar"> where contenthistid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#rs.contenthistID#"/>
 		</cfquery>
 	</cfloop> 
