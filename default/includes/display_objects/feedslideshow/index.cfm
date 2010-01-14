@@ -139,7 +139,7 @@ to your own modified versions of Mura CMS.
 				<dt><a href="#theLink#">#HTMLEditFormat(item.getValue('menuTitle'))#</a></dt>
 				<cfif hasImage>
 					<dd class="image">
-						<a href="#theLink#" title="#HTMLEditFormat(item.getValue('title'))#"><img src="#createHREFForImage(item.getValue('siteID'),item.getValue('fileID'),item.getValue('fileEXT'),'small')#" alt="#htmlEditFormat(item.getValue('title'))#"/></a>
+						<a href="#theLink#" title="#HTMLEditFormat(item.getValue('title'))#"><img src="#createHREFForImage(item.getValue('siteID'),item.getValue('fileID'),item.getValue('fileEXT'),'medium')#" alt="#htmlEditFormat(item.getValue('title'))#"/></a>
 					</dd>
 				</cfif>
 				<cfif hasSummary and len(item.getValue('summary'))>

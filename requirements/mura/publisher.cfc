@@ -45,29 +45,30 @@ to your own modified versions of Mura CMS.
 	<cffunction name="update" returntype="void">
 		<cfargument name="find" type="string" default="" required="true">
 		<cfargument name="replace" type="string"  default="" required="true">
+		<cfargument name="datasource" type="string"  default="#application.configBean.getDatasource()#" required="true">
 		
 		<cfset var newBody=""/>
 		<cfset var newSummary=""/>
 	
 		<cfif len(arguments.find)>
-			<cfquery datasource="#application.configBean.getDatasource()#" username="#application.configBean.getDBUsername()#" password="#application.configBean.getDBPassword()#" name="rs">
+			<cfquery datasource="#arguments.datasource#" name="rs">
 				select contenthistid, body from tcontent where body like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.find#%"/>
 			</cfquery>
 		
 			<cfloop query="rs">
 				<cfset newbody=replace(BODY,"#arguments.find#","#arguments.replace#","ALL")>
-				<cfquery datasource="#application.configBean.getDatasource()#" username="#application.configBean.getDBUsername()#" password="#application.configBean.getDBPassword()#">
+				<cfquery datasource="#arguments.datasource#">
 					update tcontent set body=<cfqueryparam value="#newBody#" cfsqltype="cf_sql_longvarchar" > where contenthistid='#contenthistid#'
 				</cfquery>
 			</cfloop>
 			
-			<cfquery datasource="#application.configBean.getDatasource()#" username="#application.configBean.getDBUsername()#" password="#application.configBean.getDBPassword()#" name="rs">
+			<cfquery datasource="#arguments.datasource#" name="rs">
 				select contenthistid, summary from tcontent where summary like '%#arguments.find#%'
 			</cfquery>
 			
 			<cfloop query="rs">
 				<cfset newSummary=replace(summary,"#arguments.find#","#arguments.replace#","ALL")>
-				<cfquery datasource="#application.configBean.getDatasource()#" username="#application.configBean.getDBUsername()#" password="#application.configBean.getDBPassword()#">
+				<cfquery datasource="#arguments.datasource#">
 					update tcontent set summary=<cfqueryparam value="#newSummary#" cfsqltype="cf_sql_longvarchar" > where contenthistid='#contenthistid#'
 				</cfquery>
 			</cfloop> 	
@@ -980,8 +981,12 @@ to your own modified versions of Mura CMS.
 		
 		<cfset application.pluginManager.announceEvent("onSiteDeploy",pluginEvent)>
 		<cfset application.pluginManager.announceEvent("onBeforeSiteDeploy",pluginEvent)>
+		
 		<cfloop list="#application.configBean.getProductionDatasource()#" index="i">
 			<cfset getToWork(arguments.siteid, arguments.siteid, '#application.configBean.getDatasource()#', '#i#','publish',keys)>
+			<cfif len(application.configBean.getAssetPath())>
+				<cfset update("#application.configBean.getAssetPath()#","#application.configBean.getProductionAssetPath()#",i)>
+			</cfif>
 		</cfloop>
 		
 		<cfloop list="#application.configBean.getProductionWebroot()#" index="j">
@@ -1008,9 +1013,11 @@ to your own modified versions of Mura CMS.
 			</cfif>
 		</cfloop>
 		
+		<!---
 		<cfif len(application.configBean.getAssetPath())>
 			<cfset update("#application.configBean.getAssetPath()#","#application.configBean.getProductionAssetPath()#")>
 		</cfif>
+		--->
 		
 		<cfquery datasource="#application.configBean.getDatasource()#" username="#application.configBean.getDBUsername()#" password="#application.configBean.getDBPassword()#">
 			update tsettings set lastDeployment = #now()#
