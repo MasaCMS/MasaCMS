@@ -289,7 +289,7 @@ to your own modified versions of Mura CMS.
 						<cfloop query="rsuser">
 						<cfset userBean=variables.userDAO.read(rsuser.userid)>
 						<cfset userBean.setPassword(getRandomPassword()) />
-						<cfset variables.userDAO.savePassword(userBean.getUserID(),userBean.getPassword()) /> 
+						<cfset userBean.save() /> 
 							<cfif userBean.getUsername() neq '' and userBean.getPassword() neq ''>
 								<cfset struser.username=userBean.getUsername()>
 								<cfset struser.fname=userBean.getFname()>
@@ -323,7 +323,7 @@ to your own modified versions of Mura CMS.
 	<cfset var bcc="">
 	
 		<cfset arguments.userBean.setPassword(getRandomPassword()) />
-		<cfset variables.userDAO.savePassword(arguments.userBean.getUserID(),arguments.userBean.getPassword()) />
+		<cfset arguments.userBean.save() />
 	
 		<cfset struser.username=arguments.userBean.getUserName()>
 		<cfset struser.password=arguments.userBean.getPassword()>
