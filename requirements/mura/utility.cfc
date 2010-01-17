@@ -112,7 +112,7 @@ to your own modified versions of Mura CMS.
 	<CFLOOP collection="#str#" item="a" >
 	<cftry>
 		<cfif str[a] neq "">
-			<CFSET "str.#a#"  = REREplaceNoCase(evaluate("str.#a#"), arguments.badwords,  "****" ,  "ALL")/>
+			<CFSET "str.#a#"  = replaceNoCase(evaluate("str.#a#"), arguments.badwords,  "****" ,  "ALL")/>
 		</cfif>
 	<cfcatch></cfcatch></cftry>
 	</CFLOOP>

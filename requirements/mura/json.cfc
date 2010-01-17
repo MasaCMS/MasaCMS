@@ -304,7 +304,7 @@ Version: 1.9 February 20, 2008
 				if (i neq 1){
 					o = o & ",";
 				}
-				o = o & '"' & listgetat(arg.columnlist,i) & '":[' & v & ']';
+				o = o & '"' & ucase(listgetat(arg.columnlist,i)) & '":[' & v & ']';
 			}
 			// close our data section
 			o = o & '}';

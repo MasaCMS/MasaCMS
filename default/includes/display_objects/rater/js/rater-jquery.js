@@ -21,13 +21,3 @@ function saveRate(id){
 		   function(data){showRatingResponse(data);}
 		   );
 }
-
-function showRatingResponse(resp)
-{
-	var r= eval( '(' + resp + ')' );
-	$("#numvotes").html(r.data.THECOUNT + String(" vote").pluralize(r.data.THECOUNT));
-	$("#ratestars").src=starImg(r.data.THEAVG);
-	$("#ratestars").alt=r.data.THEAVG + " stars";
-
-	return false;
-}

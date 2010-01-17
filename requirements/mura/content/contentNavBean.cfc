@@ -25,16 +25,13 @@
 </cffunction>
 
 <cffunction name="getValue" access="public" returntype="any" output="false">
-	<cfargument name="key">
-	
-	<cfif isObject(variables.instance.bean) >
-		<cfreturn variables.instance.bean.getValue(key)>
+	<cfargument name="key">	
+	<cfif structKeyExists(variables.instance.struct,arguments.key)>
+		<cfreturn variables.instance.struct[arguments.key]>
+	<cfelseif isObject(variables.instance.bean) >
+		<cfreturn variables.instance.bean.getValue(arguments.key)>
 	<cfelse>
-		<cfif structKeyExists(variables.instance.struct,key)>
-			<cfreturn variables.instance.struct[key]>
-		<cfelse>
-			<cfreturn  getBean().getValue(key)>
-		</cfif>
+		<cfreturn  getBean().getValue(arguments.key)>
 	</cfif>
 </cffunction>
 

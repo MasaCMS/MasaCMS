@@ -37,6 +37,11 @@ if (!document.getElementById && document.all)
 
 function starImg(val)
 {
+  return themepath + "/images/rater/star_" + starString(val) + ".gif";
+}
+
+function starString(val)
+{
 
        if (val <=  0) num = "zero";
   else if (val <   1) num = "half";
@@ -50,7 +55,7 @@ function starImg(val)
   else if (val <   5) num = "fourhalf";
   else if (val >=  5) num = "five";  
 
-  return themepath + "/images/rater/star_" + num + ".gif";
+  return num;
 }
 
 String.prototype.pluralize = function(count, plural)
@@ -325,3 +330,11 @@ function raterClick()
 	return false;
 }
 
+function showRatingResponse(resp)
+{
+	var r= eval( '(' + resp + ')' );
+	document.getElementById("numvotes").innerHTML=r.data.THECOUNT + String(" vote").pluralize(r.data.THECOUNT);
+	document.getElementById("avgratingstars").setAttribute("class","ratestars " + starString(r.data.THEAVG));
+
+	return false;
+}

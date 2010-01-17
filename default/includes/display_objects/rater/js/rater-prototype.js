@@ -23,12 +23,3 @@ function saveRate(id){
 	});
 	
 }
-
-function showRatingResponse(resp){
-	var r= eval( '(' + resp.responseText + ')' );
-	$("numvotes").innerHTML=r.data.THECOUNT + String(" vote").pluralize(r.data.THECOUNT);;
-	$("ratestars").src=starImg(r.data.THEAVG);
-	$("ratestars").alt=r.data.THEAVG + " stars";
-	
-	return false;
-}
