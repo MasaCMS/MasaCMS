@@ -46,8 +46,8 @@ to your own modified versions of Mura CMS.
 <cfset  max = ArrayMax(tagValueArray)>
 <cfset min = ArrayMin(tagValueArray)>
 <cfset diff = max - min>
-<cfset distribution = diff / >
-<cfset rbFactory=getSite().getRBFactory()/>
+<cfset distribution = diff>
+<cfset rbFactory=getSite().getRBFactory()>
 </cfsilent>
 
 <cfoutput>

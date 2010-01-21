@@ -202,7 +202,7 @@ The #contactName# staff
 		update tmailinglistmembers
 		set isVerified = 1 
 		where email = '#data.email#' and
-		mlid = '#data.mlid#' and
+		mlid in (<cfqueryparam list="true" cfsqltype="cf_sql_varchar" value="#data.mlid#">) and
 		siteid = '#data.siteid#'
 	</cfquery>
 	

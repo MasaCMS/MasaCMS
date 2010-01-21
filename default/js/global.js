@@ -423,27 +423,6 @@ function submitForm(frm,action,theClass){
 	return false;
 }
 
-
-function submitForm(frm,doaction,theClass){
-	
-	if(validate(frm)){
-		
-		if(typeof(doaction) != 'undefined' && (action=='delete' && confirm('Delete ' + theClass +'?') || action!='delete')){
-			var frmInputs = frm.getElementsByTagName("input");	
-			for (f=0; f < frmInputs.length; f++){
-				if(frmInputs[f].getAttribute('name')=='doaction'){
-				frmInputs[f].setAttribute('value',doaction);
-				}
-			}
-	
-		}
-
-		frm.submit();
-	}	
-	return false;
-}
-
-
 function isMacIE5(){
 			var agt=navigator.userAgent.toLowerCase(); 
 			var ie   = (agt.indexOf("msie") != -1);

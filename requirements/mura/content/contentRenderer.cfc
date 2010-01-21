@@ -927,7 +927,7 @@ to your own modified versions of Mura CMS.
 	<cfset var fileDelim= application.configBean.getFileDelim() />
 	<cfset var eventOutput="" />
 	<cfset var rsPages="">
-
+	<cfset var cacheStub="#event.getValue('contentBean').getcontentID()##event.getValue('year')##event.getValue('month')##event.getValue('day')##event.getValue('filterby')##event.getValue('categoryID')##event.getValue('relatedID')#">
 	<cfset event.setValue("BodyRenderArgs",arguments)>
 	
 	<cfsavecontent variable="str">
@@ -1028,12 +1028,12 @@ to your own modified versions of Mura CMS.
 					</cfswitch>
 					<cfswitch expression="#event.getValue('contentBean').gettype()#">
 					<cfcase value="Portal">
-						<cf_CacheOMatic key="portalBody#event.getValue('contentBean').getcontentID()##event.getValue('startRow')##event.getValue('categoryID')##event.getValue('relatedID')#" nocache="#event.getValue('r').restrict#">
+						<cf_CacheOMatic key="portalBody#cacheStub#" nocache="#event.getValue('r').restrict#">
 						 <cfoutput>#dspObject_Include(thefile='dsp_portal.cfm')#</cfoutput>
 						</cf_CacheOMatic>
 					</cfcase> 
 					<cfcase value="Calendar">
-						 <cf_CacheOMatic key="portalBody#event.getValue('contentBean').getcontentID()##event.getValue('year')##event.getValue('month')##event.getValue('categoryID')##event.getValue('relatedID')#" nocache="#event.getValue('r').restrict#">
+						 <cf_CacheOMatic key="calendarBody#cacheStub#" nocache="#event.getValue('r').restrict#">
 						 <cfoutput>#dspObject_Include(thefile='calendar/index.cfm')#</cfoutput>
 						 </cf_CacheOMatic>
 					</cfcase> 
@@ -1041,7 +1041,7 @@ to your own modified versions of Mura CMS.
 						<cfset loadShadowBoxJS() />
 						<cfset addToHTMLHeadQueue("gallery/htmlhead/gallery.cfm")>
 						<cfif not event.valueExists('galleryItemID')><cfset event.setValue('galleryItemID','')></cfif>
-						<cf_CacheOMatic key="portalBody#event.getValue('contentBean').getcontentID()##event.getValue('startRow')##event.getValue('galleryItemID')#" nocache="#event.getValue('r').restrict#">
+						<cf_CacheOMatic key="galleryBody#cacheStub##event.getValue('galleryItemID')#" nocache="#event.getValue('r').restrict#">
 						<cfoutput>#dspObject_Include(thefile='gallery/index.cfm')#</cfoutput>
 						</cf_CacheOMatic>
 					</cfcase> 

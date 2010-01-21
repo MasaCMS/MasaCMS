@@ -35,7 +35,7 @@ function FCKeditor_IsCompatibleBrowser()
 		if( arrayLen( stResult.pos ) eq 2 )
 		{
 			// get IE Version
-			sBrowserVersion = mid( sAgent, stResult.pos[2], stResult.len[2] );
+			stResult = reFind( "gecko/(20[0-9][0-9][0-1][0-9][0-3][0-9])", sAgent, 1, true );
 			if( sBrowserVersion GTE 5.5 )
 				isCompatibleBrowser = true;
 		}

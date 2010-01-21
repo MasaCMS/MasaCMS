@@ -462,7 +462,9 @@ select * from tplugins order by #arguments.orderby#
 	<cfif fileExists("#getLocation(rsPlugin.directory)#plugin#delim#config.xml")>
 		<cffile action="read" file="#getLocation(rsPlugin.directory)#plugin#delim#config.xml" variable="theXML">
 	<cfelse>
-		<cffile action="read" file="#getLocation(rsPlugin.directory)#plugin#delim#config.xml.cfm" variable="theXML">
+		<cfsavecontent variable="theXML">
+		<cfinclude template="/plugins/#rsPlugin.directory#/plugin/config.xml.cfm">
+		</cfsavecontent>
 	</cfif>
 	<cfreturn xmlParse(theXML)/>
 </cffunction>
