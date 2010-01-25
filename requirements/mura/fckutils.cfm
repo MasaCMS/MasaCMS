@@ -35,7 +35,7 @@ function FCKeditor_IsCompatibleBrowser()
 		if( arrayLen( stResult.pos ) eq 2 )
 		{
 			// get IE Version
-			stResult = reFind( "gecko/(20[0-9][0-9][0-1][0-9][0-3][0-9])", sAgent, 1, true );
+			sBrowserVersion = mid( sAgent, stResult.pos[2], stResult.len[2] );
 			if( sBrowserVersion GTE 5.5 )
 				isCompatibleBrowser = true;
 		}
@@ -44,7 +44,7 @@ function FCKeditor_IsCompatibleBrowser()
 	else if( find( "gecko/", sAgent ) )
 	{
 		// try to extract Gecko version date
-		stResult = reFind( "gecko/(200[3-9][0-1][0-9][0-3][0-9])", sAgent, 1, true );
+		stResult = reFind( "gecko/(20[0-9][0-9][0-1][0-9][0-3][0-9])", sAgent, 1, true );
 		if( arrayLen( stResult.pos ) eq 2 )
 		{
 			// get Gecko build (i18n date)
