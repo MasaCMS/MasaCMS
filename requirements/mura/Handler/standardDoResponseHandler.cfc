@@ -67,7 +67,7 @@
 	</cfdefaultcase>
 	
 	</cfswitch>
-	
+	<cfset application.pluginManager.announceEvent('onRenderEnd', event)/>
 	<cfset event.getValidator('standardForceSSL').validate(event)>
 
 </cffunction>
