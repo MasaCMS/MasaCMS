@@ -927,7 +927,7 @@ to your own modified versions of Mura CMS.
 	<cfset var fileDelim= application.configBean.getFileDelim() />
 	<cfset var eventOutput="" />
 	<cfset var rsPages="">
-	<cfset var cacheStub="#event.getValue('contentBean').getcontentID()##event.getValue('year')##event.getValue('month')##event.getValue('day')##event.getValue('filterby')##event.getValue('categoryID')##event.getValue('relatedID')#">
+	<cfset var cacheStub="#event.getValue('contentBean').getcontentID()##event.getValue('startrow')##event.getValue('year')##event.getValue('month')##event.getValue('day')##event.getValue('filterby')##event.getValue('categoryID')##event.getValue('relatedID')#">
 	<cfset event.setValue("BodyRenderArgs",arguments)>
 	
 	<cfsavecontent variable="str">
