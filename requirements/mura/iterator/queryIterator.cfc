@@ -47,7 +47,11 @@
 	<cffunction name="setStartRow" access="public" output="false" returntype="void">
 		<cfargument name="startRow">
 		<cfif variables.records.recordcount>
-			<cfset setPage(Ceiling(arguments.startRow/variables.maxRecordsPerPage))>
+			<cfif variables.maxRecordsPerPage neq 1>
+				<cfset setPage(Ceiling(arguments.startRow/variables.maxRecordsPerPage))>
+			<cfelse>
+				<cfset setPage(arguments.startRow)>
+			</cfif>
 		<cfelse>
 			<cfset variables.recordIndex=0 />
 			<cfset setPage(1)>
