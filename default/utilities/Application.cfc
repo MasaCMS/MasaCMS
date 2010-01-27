@@ -44,6 +44,43 @@ to your own modified versions of Mura CMS.
 <cfcomponent output="false">
 	<cfinclude template="../../config/applicationSettings.cfm">
 	
+	<cfif not hasMainMappings>
+		<!--- Try and include global mappings --->
+		<cfset canWriteMode=true>
+		<cfset canWriteMappings=true>
+		<cfset hasMappings=true>
+		
+		<cftry>
+			<cfinclude template="../../config/mappings.cfm">
+			<cfcatch>
+				<cfset hasMappings=false>
+			</cfcatch>
+		</cftry>
+		
+		<cfif not hasMappings>
+			<cfinclude template="../../config/buildMainMappings.cfm">
+		</cfif>
+		
+	</cfif>
+	
+	<cfif not hasPluginMappings>
+		<!--- Try and include plugin mappings --->
+		<cfset canWriteMode=true>
+		<cfset hasMappings=true>
+		<cfset canWriteMappings=true>
+		<cftry>
+			<cfinclude template="../../plugins/mappings.cfm">
+			<cfcatch>
+				<cfset hasMappings=false>
+			</cfcatch>
+		</cftry>
+		
+		<cfif not hasMappings>
+			<cfinclude template="../../config/buildPluginMappings.cfm">
+		</cfif>
+		
+	</cfif>
+	
 	<cffunction name="onRequestStart" returnType="boolean" output="false">
 		<cfargument name="thePage" type="string" required="true">
 			<cfinclude template="../../config/settings.cfm">
