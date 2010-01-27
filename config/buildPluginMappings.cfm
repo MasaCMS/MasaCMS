@@ -26,4 +26,3 @@
 		</cfif>
 	</cfif>
 </cfloop>
-</cfif>
