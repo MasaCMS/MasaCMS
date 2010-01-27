@@ -475,10 +475,6 @@ to your own modified versions of Mura CMS.
 	</cfif>
 	<!--- END REQUIRED DATA CHECK--->
 	
-	
-	<cflock type="exclusive" name="editingContent#arguments.data.siteid#" timeout="600">
-	<cftransaction>
-	
 	<!--- BEGIN CONTENT TYPE: ALL CONTENT TYPES --->
 	<cfif isDefined('arguments.data.remoteID') and arguments.data.remoteID neq ''>
 		
@@ -492,7 +488,7 @@ to your own modified versions of Mura CMS.
 	</cfif>
 
 
-<cfif not refused>
+<cfif not refused>		
 	<cfset newBean.set(arguments.data) />
 	<cfset pluginEvent.setValue("newBean",newBean)>	
 	<cfif newBean.getIsNew()>
@@ -536,6 +532,8 @@ to your own modified versions of Mura CMS.
 	<cfset variables.pluginManager.announceEvent("onBefore#newBean.getType()#Save",pluginEvent)>
 	<cfset variables.pluginManager.announceEvent("onBefore#newBean.getType()##newBean.getSubType()#Save",pluginEvent)>	
 	
+	<cflock type="exclusive" name="editingContent#arguments.data.siteid#" timeout="600">
+	<cftransaction>
 	<!--- BEGIN CONTENT TYPE: ALL SITE TREE LEVEL CONTENT TYPES --->
 	<cfif  listFindNoCase(this.TreeLevelList,newBean.getType())>
 		
@@ -793,6 +791,8 @@ to your own modified versions of Mura CMS.
 	<cfset variables.utility.logEvent("ContentID:#newBean.getcontentID()# ContentHistID:#newBean.getcontentHistID()# MenuTitle:#newBean.getMenuTitle()# Type:#newBean.getType()# was created","mura-content","Information",true) />
 	<cfset variables.contentDAO.create(newBean) />
 	<!--- END CONTENT TYPE: ALL CONTENT TYPES --->
+	</cftransaction>
+	</cflock>
 	
 	<cfset newBean.purgeExtendedData()>
 	
@@ -809,11 +809,6 @@ to your own modified versions of Mura CMS.
 		
 </cfif>	
 <!--- end non refused content --->
-
-	</cftransaction>
-	</cflock>	
-	
-	
 
 	<cfreturn newBean />
 	
