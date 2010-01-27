@@ -77,10 +77,15 @@ to your own modified versions of Mura CMS.
 	<cfset rssection=rsPreSection/>
 </cfif>
 <cfset rbFactory=getSite().getRBFactory() />	
-<cfset nextN=application.utility.getNextN(rsSection,request.contentBean.getNextN(),request.StartRow)>
 <cfset iterator=application.serviceFactory.getBean("contentIterator")>
 <cfset iterator.setQuery(rsSection,request.contentBean.getNextN())>
-<cfset iterator.setStartRow(request.startRow)>		
+<cfif isNumeric(event.getValue("pageNum"))>
+	<cfset iterator.setPage(event.getValue("pageNum"))>
+	<cfset nextN=application.utility.getNextN(rsSection,request.contentBean.getNextN(),event.getValue("pageNum"))>
+<cfelse>
+	<cfset iterator.setStartRow(event.getValue("startRow"))>
+	<cfset nextN=application.utility.getNextN(rsSection,request.contentBean.getNextN(),event.getValue("startRow"))>
+</cfif>		
 </cfsilent>
 
 <cfif iterator.getRecordcount()>
