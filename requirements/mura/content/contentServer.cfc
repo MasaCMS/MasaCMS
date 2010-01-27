@@ -42,6 +42,11 @@ to your own modified versions of Mura CMS.
 --->
 <cfcomponent extends="mura.cfobject">
 
+<cffunction name="init" output="false" returntype="any">
+<cfset variables.Mura=createObject("component","mura.Mura").init()>
+<cfreturn this>
+</cffunction>
+
 <cffunction name="forcePathDirectoryStructure" output="false" returntype="any" access="remote">
 <cfargument name="cgi_path">
 <cfargument name="dir">
@@ -179,7 +184,7 @@ to your own modified versions of Mura CMS.
 		
 		<cfset application.pluginManager.announceEvent('onSiteRequestInit',request.servletEvent)/>
 		
-		<cfreturn createObject("component","mura.Mura").init().doRequest(request.servletEvent)>
+		<cfreturn variables.Mura.doRequest(request.servletEvent)>
 		
 	<cfelse>
 		<cfset redirect()>
@@ -199,7 +204,16 @@ to your own modified versions of Mura CMS.
 	
 	<cfset forcePathDirectoryStructure(cgi_path,"/" & siteID)>
 	
-	<cfset url.path="#application.configBean.getStub()#/#siteID#/#url.path#" />
+	<cfif not len(cgi.PATH_INFO)>
+		<cfset url.path="#application.configBean.getStub()#/#siteID#/" />
+	<cfelse>
+		<cfif not listFirst(url.path,"/") eq siteid>
+			<cfset url.path="#application.configBean.getStub()#/#siteID#/#url.path#" />
+		<cfelse>
+			<cfset url.path="#application.configBean.getStub()#/#siteID#/" />
+		</cfif>
+	</cfif>
+	
 	<cfset request.preformated=true/>
 	
 	<cfreturn parseURL()>
