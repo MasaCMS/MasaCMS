@@ -39,11 +39,11 @@ function toggleAdminToolbar(){
 
 <cfif variables.isIeSix>
 	<!--- NAMED DIFFERENTLY TO USE THE IE6 COMPATIBLE dialogIE6.css --->
-	<img src="#application.configBean.getContext()#/admin/images/icons/ie6/logo_small_fetools.gif" id="frontEndToolsHandleIE6" onclick="if (document.getElementById('frontEndToolsIE6').style.display == 'none') { createCookie('FETDISPLAY','',5); } else { createCookie('FETDISPLAY','none',5); } toggleAdminToolbarIE6();" />
+	<img src="#application.configBean.getContext()#/admin/images/icons/ie6/logo_small_feTools.gif" id="frontEndToolsHandleIE6" onclick="if (document.getElementById('frontEndToolsIE6').style.display == 'none') { createCookie('FETDISPLAY','',5); } else { createCookie('FETDISPLAY','none',5); } toggleAdminToolbarIE6();" />
 	<div id="frontEndToolsIE6" style="display: #Cookie.fetDisplay#">						
 <cfelse>
 	<!--- USES STANDARD dialog.css --->
-	<img src="#application.configBean.getContext()#/admin/images/logo_small_fetools.png" id="frontEndToolsHandle" onclick="if (document.getElementById('frontEndTools').style.display == 'none') { createCookie('FETDISPLAY','',5); } else { createCookie('FETDISPLAY','none',5); } toggleAdminToolbar();" />
+	<img src="#application.configBean.getContext()#/admin/images/logo_small_feTools.png" id="frontEndToolsHandle" onclick="if (document.getElementById('frontEndTools').style.display == 'none') { createCookie('FETDISPLAY','',5); } else { createCookie('FETDISPLAY','none',5); } toggleAdminToolbar();" />
 	<div id="frontEndTools" style="display: #Cookie.fetDisplay#">
 </cfif>
 			<ul>
