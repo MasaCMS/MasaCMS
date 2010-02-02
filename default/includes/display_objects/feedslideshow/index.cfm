@@ -83,7 +83,7 @@ to your own modified versions of Mura CMS.
 		</cfif>
 	</cfsilent>
 	<cfif editableControl.innerHTML neq "">
-		<div class="editableObject editableFeed editableSlideShow">
+		<cfoutput>#renderEditableObjectHeader("editableFeed editableSlideShow")#</cfoutput>
 	</cfif>
 	  <cfif feedBean.getIsActive()>
 		<cfset cssID=createCSSid(feedBean.renderName())>
@@ -172,9 +172,8 @@ to your own modified versions of Mura CMS.
 	<cfelse>
 		<!-- Inactive Feed '<cfoutput>#feedBean.getName()#</cfoutput>' -->
 	 </cfif>
-	  <cfoutput>#editableControl.innerHTML#</cfoutput>
 	  <cfif editableControl.innerHTML neq "">
-	  	</div>
+	  	<cfoutput>#renderEditableObjectFooter(editableControl.innerHTML)#</cfoutput>
 	 </cfif>
 	</cf_CacheOMatic>
 	 </cfcase>

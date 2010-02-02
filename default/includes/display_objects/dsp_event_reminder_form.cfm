@@ -48,7 +48,7 @@ to your own modified versions of Mura CMS.
 	<cfif listfind(request.doaction,"setReminder")>
 	<em>#rbFactory.getKey('event.setreminder')#</em><br/><br/>
 	</cfif>
-	<form name="reminderFrm" action="#application.configBean.getIndexFile()#?nocache=1" method="post" onsubmit="return validate(this);">
+	<form name="reminderFrm" action="?nocache=1" method="post" onsubmit="return validate(this);">
 	<fieldset>
 	<ol>
 	<li><label for="email">#rbFactory.getKey('event.email')#*</label>

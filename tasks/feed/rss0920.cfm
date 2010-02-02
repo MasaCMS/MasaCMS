@@ -51,7 +51,7 @@ to your own modified versions of Mura CMS.
 <rss version="0.92"
 	xmlns:dc="http://purl.org/dc/elements/1.1/">
 	<channel>
-		<title>#XMLFormat(feedBean.getName())#</title> 
+		<title>#XMLFormat(feedBean.renderName())#</title> 
 		<link>http://#listFirst(cgi.http_host,":")#</link> 
 		<description>#XMLFormat(feedBean.getDescription())#</description> 
 		<webMaster>#application.settingsManager.getSite(feedBean.getSiteID()).getContact()#</webMaster> 

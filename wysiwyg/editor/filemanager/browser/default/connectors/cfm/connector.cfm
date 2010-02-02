@@ -35,6 +35,7 @@
 <cfparam name="url.command">
 <cfparam name="url.type"> 
 <cfparam name="url.currentFolder">
+<cfset fileWriter=application.serviceFactory.getBean("fileWriter")>
 <!--- note: no serverPath url parameter - see config.cfm if you need to set the serverPath manually --->
 
 <cfinclude template="config.cfm">
@@ -117,8 +118,8 @@ userFilesServerPath = config.serverPath & fs;
 	</cfloop>--->
 	
 	<!--- create sub-directory for file type if it doesn't already exist --->
-	<cfif not directoryExists(userFilesServerPath & url.type)>	
-		<cfdirectory action="create" directory="#userFilesServerPath##url.type#" mode="775">
+	<cfif not directoryExists(userFilesServerPath & url.type)>
+		<cfset fileWriter.createDir(directory="#userFilesServerPath##url.type#", mode="775")>	
 	</cfif>
 
 <cfcatch>
@@ -163,8 +164,8 @@ userFilesServerPath = config.serverPath & fs;
 					fileField="NewFile"
 					destination="#application.configBean.getTempDir()#"
 					nameConflict="makeunique"
-					mode="644"
 					attributes="normal">
+				
 				<cfif cffile.fileSize EQ 0>
 					<cfthrow>
 				</cfif>
@@ -206,12 +207,12 @@ userFilesServerPath = config.serverPath & fs;
 						<cfset errorNumber = "201">
 					</cfif>	
 					--->
-					<cffile
-						action="rename"
-						source="#application.configBean.getTempDir()##cffile.ServerFileName#.#cffile.ServerFileExt#"
-						destination="#currentFolderPath##fileName#.#fileExt#"
-						mode="774"
-						attributes="normal">				
+					<cfset fileWriter.renameFile(
+						source="#application.configBean.getTempDir()##cffile.ServerFileName#.#cffile.ServerFileExt#",
+						destination="#currentFolderPath##fileName#.#fileExt#",
+						mode="774",
+						attributes="normal")>
+					
 				</cfif>
 		
 				<cfcatch type="Any">
@@ -330,10 +331,8 @@ userFilesServerPath = config.serverPath & fs;
 				<cfset errorNumber = 0>
 		
 				<cftry>
-					<cfdirectory
-						action="create"
-						directory="#currentFolderPath##newFolderName#"
-						mode="644">
+					<cfset fileWriter.createDir(directory="#currentFolderPath##newFolderName#", mode="644")>
+					
 					<cfcatch>
 						<!--- 
 						un-resolvable error numbers in ColdFusion:

@@ -63,7 +63,7 @@ to your own modified versions of Mura CMS.
 <cfset variables.instance.restrictGroups="" />
 <cfset variables.instance.Version="RSS 2.0" />
 <cfset variables.instance.ChannelLink="" />
-<cfset variables.instance.type="" />
+<cfset variables.instance.type="local" />
 <cfset variables.instance.sortBy="lastUpdate" />
 <cfset variables.instance.sortDirection="desc" />
 <cfset variables.instance.parentID="" />
@@ -72,6 +72,7 @@ to your own modified versions of Mura CMS.
 <cfset variables.instance.displayRatings=0 />
 <cfset variables.instance.displayComments=0 />
 <cfset variables.instance.displayKids=0 />
+<cfset variables.instance.isNew=1 />
 <cfset variables.instance.advancedParams=queryNew("feedID,param,relationship,field,condition,criteria,dataType","varchar,integer,varchar,varchar,varchar,varchar,varchar" )  />
 <cfset variables.instance.errors=structnew() />
 <cfset variables.feedManager = "" />
@@ -261,13 +262,16 @@ to your own modified versions of Mura CMS.
 <cffunction name="setContentID" access="public" output="false">
 	<cfargument name="contentID" type="String" />
 	<cfargument name="append" type="boolean" default="false" required="true" />
+	<cfset var i="">
 	
 	<cfif not arguments.append>
 		<cfset variables.instance.contentID = trim(arguments.contentID) />
 	<cfelse>
-		<cfif not listFindNoCase(variables.instance.contentID,trim(arguments.contentID))>
-	    	<cfset variables.instance.contentID = listAppend(variables.instance.contentID,trim(arguments.contentID)) />
+		<cfloop list="#arguments.contentID#" index="i">
+		<cfif not listFindNoCase(variables.instance.contentID,trim(i))>
+	    	<cfset variables.instance.contentID = listAppend(variables.instance.contentID,trim(i)) />
 	    </cfif> 
+	    </cfloop>
 	</cfif>
 </cffunction>
 
@@ -278,13 +282,16 @@ to your own modified versions of Mura CMS.
 <cffunction name="setCategoryID" access="public" output="false">
 	<cfargument name="categoryID" type="String" />
 	<cfargument name="append" type="boolean" default="false" required="true" />
+	<cfset var i="">
 	
 	<cfif not arguments.append>
 		<cfset variables.instance.categoryID = trim(arguments.categoryID) />
 	<cfelse>
-		<cfif not listFindNoCase(variables.instance.categoryID,trim(arguments.categoryID))>
-	    	<cfset variables.instance.categoryID = listAppend(variables.instance.categoryID,trim(arguments.categoryID)) />
+		<cfloop list="#arguments.categoryID#" index="i">
+		<cfif not listFindNoCase(variables.instance.categoryID,trim(i))>
+	    	<cfset variables.instance.categoryID = listAppend(variables.instance.categoryID,trim(i)) />
 	    </cfif> 
+	    </cfloop>
 	</cfif>
 </cffunction>
 
@@ -495,6 +502,15 @@ to your own modified versions of Mura CMS.
 
 </cffunction>
 
+<cffunction name="addParam" returntype="void" access="public" output="false" hint="This is the same as addAdvancedParam.">
+	<cfargument name="field" type="string" required="true" default="">
+	<cfargument name="relationship" type="string" default="and" required="true">
+	<cfargument name="criteria" type="string" required="true" default="">
+	<cfargument name="condition" type="string" default="EQUALS" required="true">
+	<cfargument name="datatype" type="string"  default="varchar" required="true">
+		<cfset addAdvancedParam(argumentcollection=arguments)>
+</cffunction>
+
 
 <cffunction name="clearAdvancedParams">
 	<cfset variables.instance.advancedParams=queryNew("feedID,param,relationship,field,condition,criteria,dataType","varchar,integer,varchar,varchar,varchar,varchar,varchar" )  />
@@ -525,7 +541,8 @@ to your own modified versions of Mura CMS.
 </cffunction>
 
 <cffunction name="save" returnType="any" output="false" access="public">
-	<cfreturn variables.feedManager.save(this) />
+	<cfset setAllValues(variables.feedManager.save(this).getAllValues())>
+	<cfreturn this />
 </cffunction>
 
 <cffunction name="delete" returnType="void" output="false" access="public">
@@ -559,4 +576,22 @@ to your own modified versions of Mura CMS.
 	</cfif>
 
 </cffunction>
+
+<cffunction name="loadBy" returnType="any" output="false" access="public">
+	<cfif not structKeyExists(arguments,"siteID")>
+		<cfset arguments.siteID=getSiteID()>
+	</cfif>
+	<cfset setAllValues(variables.feedManager.read(argumentCollection=arguments).getAllValues())>
+	<cfreturn this />
+</cffunction>
+
+<cffunction name="setIsNew" returnType="void" output="false" access="public">
+    <cfargument name="IsNew" type="numeric" required="true">
+    <cfset variables.instance.IsNew = arguments.IsNew />
+</cffunction>
+
+<cffunction name="getIsNew" returnType="numeric" output="false" access="public">
+    <cfreturn variables.instance.IsNew />
+</cffunction>
+
 </cfcomponent>

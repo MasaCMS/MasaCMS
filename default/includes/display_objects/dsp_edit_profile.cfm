@@ -63,7 +63,7 @@ to your own modified versions of Mura CMS.
   <div id="editProfileMsg" class="required">#msg#</div>
 </cfif>
 	<!--- <a id="editSubscriptions" href="##">Edit Email Subscriptions</a> --->
-	<form name="profile" id="profile" action="#application.configBean.getIndexFile()#?nocache=1" method="post" onsubmit="return validate(this);"  enctype="multipart/form-data">
+	<form name="profile" id="profile" action="?nocache=1" method="post" onsubmit="return validate(this);"  enctype="multipart/form-data">
 	<fieldset>
 	<legend>#rbFactory.getKey('user.contactinformation')#</legend>
 	<ul>

@@ -44,7 +44,9 @@ to your own modified versions of Mura CMS.
 
 <cffunction name="init" access="public" returntype="any" output="false">
 	<cfargument name="configBean" required="true" default=""/>	
+	<cfargument name="fileWriter" required="true" default=""/>
 	<cfset variables.configBean=arguments.configBean />
+	<cfset variables.fileWriter=arguments.fileWriter>
 	<cfset variables.fileDelim=arguments.configBean.getFileDelim() />
 	<cfreturn this />
 </cffunction>
@@ -67,7 +69,7 @@ to your own modified versions of Mura CMS.
 <cfset var returnStruct=structNew()>
 <cfset var updatedArray=arrayNew(1)>
 
-<cfif isUserInRole('S2')>
+<cfif listFind(session.mura.memberships,'S2')>
 	<cfif updateVersion gt currentVersion>
 		<cflock type="exclusive" name="autoUpdate#arguments.siteid#" timeout="600">
 		<cfif len(arguments.siteID) >
@@ -103,7 +105,7 @@ to your own modified versions of Mura CMS.
 			<cfthrow message="The current production version code is currently not available. Please try again later.">
 		</cfif>
 		
-		<cffile action="write" file="#currentDir##zipFileName#.zip" output="#diff.filecontent#" mode="775">
+		<cfset variables.fileWriter.writeFile(file="#currentDir##zipFileName#.zip",output="#diff.filecontent#")>
 		<cffile action="readBinary" file="#currentDir##zipFileName#.zip" variable="diff">
 		
 		<!--- make sure that there are actually any updates--->
@@ -114,7 +116,7 @@ to your own modified versions of Mura CMS.
 				<cfdirectory action="delete" directory="#currentDir##zipFileName#" recurse="true">
 			</cfif>
 			
-			<cfdirectory action="create" directory="#currentDir##zipFileName#" mode="775">
+			<cfset variables.fileWriter.createDir(directory="#currentDir##zipFileName#")>
 			
 			<cfset zipUtil.extract(zipFilePath:"#currentDir##zipFileName#.zip",
 								extractPath: "#currentDir##zipFileName#")>
@@ -131,9 +133,9 @@ to your own modified versions of Mura CMS.
 						<cfset destination="#baseDir##right(rs.entry,len(rs.entry)-trimLen)#">
 						<cfset destination=left(destination,len(destination)-len(listLast(destination,variables.fileDelim)))>		
 						<cfif not directoryExists(destination)>
-							<cfdirectory action="create" directory="#destination#" mode="775">
+							<cfset variables.fileWriter.createDir(directory="#destination#")>
 						</cfif>
-						<cffile action="move" source="#currentDir##zipFileName##variables.fileDelim##rs.entry#" destination="#destination#" mode="775">
+						<cfset variables.fileWriter.moveFile(source="#currentDir##zipFileName##variables.fileDelim##rs.entry#",destination="#destination#")>
 						<cfset arrayAppend(updatedArray,"#destination##listLast(rs.entry,variables.fileDelim)#")>
 					</cfif>
 				</cfloop>
@@ -149,9 +151,9 @@ to your own modified versions of Mura CMS.
 						<cfset destination=left(destination,len(destination)-len(listLast(destination,variables.fileDelim)))>		
 						
 						<cfif not directoryExists(destination)>
-							<cfdirectory action="create" directory="#destination#" mode="775">
+							<cfset variables.fileWriter.createDir(directory="#destination#")>
 						</cfif>
-						<cffile action="move" source="#currentDir##zipFileName##variables.fileDelim##rs.entry#" destination="#destination#" mode="775">
+						<cfset variables.fileWriter.moveFile(source="#currentDir##zipFileName##variables.fileDelim##rs.entry#",destination="#destination#")>
 						<cfset arrayAppend(updatedArray,"#destination##listLast(rs.entry,variables.fileDelim)#")>
 					</cfif>
 				</cfloop>
@@ -161,7 +163,7 @@ to your own modified versions of Mura CMS.
 		</cfif>
 		
 		<cffile action="delete" file="#currentDir##zipFileName#.zip" >
-		<cffile action="write" file="#versionDir##variables.fileDelim#version.cfm" output="<cfabort>:#updateVersion#" mode="775">
+		<cfset variables.fileWriter.writeFile(file="#versionDir##variables.fileDelim#version.cfm",output="<cfabort>:#updateVersion#")>
 		</cflock>
 	</cfif>
 	
@@ -189,7 +191,7 @@ to your own modified versions of Mura CMS.
 	</cfif>
 	
 	<cfif not FileExists(versionDir & "/" & "version.cfm")>
-		<cffile action="write" file="#versionDir#/version.cfm" output="<cfabort>:1" mode="775">
+		<cfset variables.fileWriter.writeFile(file="#versionDir#/version.cfm",output="<cfabort>:1")>
 	</cfif>
 	
 	<cffile action="read" file="#versionDir#/version.cfm" variable="versionFileContents">
@@ -197,7 +199,7 @@ to your own modified versions of Mura CMS.
 	<cfset currentVersion=listLast(versionFileContents,":")>
 	
 	<cfif not isNumeric(currentVersion)>
-		<cffile action="write" file="#versionDir#/version.cfm" output="<cfabort>:1" mode="775">
+		<cfset variables.fileWriter.writeFile(file="#versionDir#/version.cfm",output="<cfabort>:1")>
 		<cfreturn 1>
 	<cfelse>
 		<cfreturn currentVersion>

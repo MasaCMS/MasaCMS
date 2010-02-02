@@ -24,7 +24,7 @@
 				Acknowlegement to Peter Bell for the "Iterating Business Object" concept that Iterator seeks to provide as a composite.				
  --->
 <cfcomponent extends="mura.cfobject" displayname="Iterator" output="false" hint="I am a Iterator object.">
-	<cfset variables.maxRecordsPerPage=10>
+	<cfset variables.maxRecordsPerPage=1000>
 	<cfset variables.recordTranslator="">
 	<cffunction name="init" access="public" output="false" returntype="any">
 		<cfset variables.recordIndex = 0 />

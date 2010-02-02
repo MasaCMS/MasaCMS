@@ -59,6 +59,7 @@ to your own modified versions of Mura CMS.
 <cfargument name="subject" type="string" default="">
 <cfargument name="siteid" type="string" default="">
 <cfargument name="replyto" type="string" default="">
+<cfargument name="bcc" type="string" required="true" default="">
 
 <cfset var mailserverUsername=""/>
 <cfset var mailserverIP=""/>
@@ -148,7 +149,8 @@ to your own modified versions of Mura CMS.
 <cfmail to="#arguments.sendto#" 
 		from='"#arguments.from#" <#MailServerUsernameEmail#>' 
 		subject="#arguments.subject#" 
-		replyto="#arguments.replyto#">#tmt_mail_head#
+		replyto="#arguments.replyto#"
+		bcc="#arguments.bcc#">#tmt_mail_head#
 #trim(tmt_mail_body)#
 </cfmail>
 <cfelse>
@@ -159,7 +161,8 @@ to your own modified versions of Mura CMS.
 		username="#MailServerUsername#" 
 		password="#MailServerPassword#"
 		port="#mailserverPort#"
-		replyto="#arguments.replyto#">#tmt_mail_head#
+		replyto="#arguments.replyto#"
+		bcc="#arguments.bcc#">#tmt_mail_head#
 #trim(tmt_mail_body)#
 </cfmail>
 </cfif>
@@ -187,6 +190,8 @@ to your own modified versions of Mura CMS.
 <cfargument name="replyTo" type="string" default="">
 <cfargument name="failto" type="string" default="">
 <cfargument name="mailerID" type="string" default="">
+<cfargument name="bcc" type="string" required="true" default="">
+
 <cfset var mailserverUsername=""/>
 <cfset var mailserverIP=""/>
 <cfset var mailserverPassword=""/>
@@ -219,7 +224,8 @@ to your own modified versions of Mura CMS.
 				replyto="#arguments.replyto#"
 				failto="#mailServerUsernameEmail#"
 				type="text"
-				mailerid="#arguments.mailerID#">#trim(arguments.text)#</cfmail>
+				mailerid="#arguments.mailerID#"
+				bcc="#arguments.bcc#">#trim(arguments.text)#</cfmail>
 	<cfelse>
 		<cfmail to="#arguments.sendto#" 
 				from='"#arguments.from#" <#MailServerUsernameEmail#>' 
@@ -231,7 +237,8 @@ to your own modified versions of Mura CMS.
 				replyto="#arguments.replyto#"
 				failto="#mailServerUsernameEmail#"
 				type="text"
-				mailerid="#arguments.mailerID#">#trim(arguments.text)#</cfmail>
+				mailerid="#arguments.mailerID#"
+				bcc="#arguments.bcc#">#trim(arguments.text)#</cfmail>
 	</cfif>
 	<cfcatch>
 		<cfif len(arguments.siteid)>
@@ -257,6 +264,7 @@ to your own modified versions of Mura CMS.
 <cfargument name="replyTo" type="string" default="">
 <cfargument name="failto" type="string" default="">
 <cfargument name="mailerID" type="string" default="">
+<cfargument name="bcc" type="string" required="true" default="">
 
 <cfset var mailserverUsername=""/>
 <cfset var mailserverIP=""/>
@@ -290,7 +298,8 @@ to your own modified versions of Mura CMS.
 				replyto="#arguments.replyto#"
 				failto="#mailServerUsernameEmail#"
 				type="html"
-				mailerid="#arguments.mailerID#">#trim(arguments.html)#</cfmail>
+				mailerid="#arguments.mailerID#"
+				bcc="#arguments.bcc#">#trim(arguments.html)#</cfmail>
 	<cfelse>
 		<cfmail to="#arguments.sendto#" 
 				from='"#arguments.from#" <#MailServerUsernameEmail#>' 
@@ -302,7 +311,8 @@ to your own modified versions of Mura CMS.
 				replyto="#arguments.replyto#"
 				failto="#mailServerUsernameEmail#"
 				type="html"
-				mailerid="#arguments.mailerID#">#trim(arguments.html)#</cfmail>
+				mailerid="#arguments.mailerID#"
+				bcc="#arguments.bcc#">#trim(arguments.html)#</cfmail>
 	</cfif>
 	<cfcatch>
 		<cfif len(arguments.siteid)>
@@ -328,6 +338,7 @@ to your own modified versions of Mura CMS.
 <cfargument name="siteid" type="string" default="">
 <cfargument name="replyTo" type="string" default="">
 <cfargument name="mailerID" type="string" default="">
+<cfargument name="bcc" type="string" required="true" default="">
 
 <cfset var mailserverUsername=""/>
 <cfset var mailserverIP=""/>
@@ -361,7 +372,8 @@ to your own modified versions of Mura CMS.
 				replyto="#arguments.replyto#"
 				failto="#mailServerUsernameEmail#"
 				type="html"
-				mailerid="#arguments.mailerID#">
+				mailerid="#arguments.mailerID#"
+				bcc="#arguments.bcc#">
 					<cfmailpart type="html">#trim(arguments.html)#</cfmailpart>
 					<cfmailpart type="text">#trim(arguments.text)#</cfmailpart>
 				</cfmail>
@@ -376,7 +388,8 @@ to your own modified versions of Mura CMS.
 				replyto="#arguments.replyto#"
 				failto="#mailServerUsernameEmail#"
 				type="html"
-				mailerid="#arguments.mailerID#">
+				mailerid="#arguments.mailerID#"
+				bcc="#arguments.bcc#">
 					<cfmailpart type="html">#trim(arguments.html)#</cfmailpart>
 					<cfmailpart type="text">#trim(arguments.text)#</cfmailpart>
 				</cfmail>

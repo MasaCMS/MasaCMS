@@ -239,6 +239,8 @@ to your own modified versions of Mura CMS.
 		 extranetPublicReg=#arguments.bean.getextranetPublicReg()#,
 		 extranetssl=#arguments.bean.getextranetssl()#,
 		 cache=#arguments.bean.getcache()#,
+		 cacheCapacity=#arguments.bean.getCacheCapacity()#,
+		 cacheFreeMemoryThreshold=#arguments.bean.getCacheFreeMemoryThreshold()#,
 		 viewdepth=#arguments.bean.getviewdepth()#,
 		 nextn=#arguments.bean.getnextn()#,
 		 dataCollection=#arguments.bean.getdataCollection()#,
@@ -299,7 +301,8 @@ to your own modified versions of Mura CMS.
 
 <CFQUERY datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
       Insert into tsettings (siteid,pagelimit,domain, domainAlias, contact,locking,site,mailserverip,mailserverusername,
-	  mailserverpassword,emailbroadcaster,emailbroadcasterlimit,extranet,extranetPublicReg,extranetssl,cache,viewdepth,nextn,dataCollection,ExportLocation,
+	  mailserverpassword,emailbroadcaster,emailbroadcasterlimit,extranet,extranetPublicReg,extranetssl,
+	  cache, cacheCapacity, cacheFreeMemoryThreshold, viewdepth,nextn,dataCollection,ExportLocation,
 	  columnCount,primaryColumn,publicSubmission,adManager,columnNames,contactName,contactAddress,contactCity,contactState,contactZip,contactEmail,contactPhone,
 	  publicUserPoolID,PrivateUserPoolID,AdvertiserUserPoolID,displayPoolID,orderno,feedManager,
 	  galleryMainScaleBy, galleryMainScale, gallerySmallScaleBy, gallerySmallScale, galleryMediumScaleBy, galleryMediumScale,
@@ -323,6 +326,8 @@ to your own modified versions of Mura CMS.
 		   #arguments.bean.getextranetPublicReg()#,
 		   #arguments.bean.getextranetssl()#,
 		   #arguments.bean.getcache()#,
+		   #arguments.bean.getCacheCapacity()#,
+		   #arguments.bean.getCacheFreeMemoryThreshold()#,
 		   #arguments.bean.getviewdepth()#,
 		   #arguments.bean.getnextn()#,
 		   #arguments.bean.getdataCollection()#,

@@ -46,12 +46,11 @@ to your own modified versions of Mura CMS.
 	
 	<cffunction name="init" access="public" output="false" returntype="any" hint="Constructor">
 		<cfargument name="isSoft" type="boolean" required="true" default="true"/>
+		<cfargument name="freeMemoryThreshold" type="numeric" required="true" default="0"/>
 		<cfscript>
 			super.init( argumentCollection:arguments );
-			
-			// set isSoft variable
 			variables.isSoft = arguments.isSoft;
-			
+			variables.freeMemoryThreshold=arguments.freeMemoryThreshold;
 			return this;
 		</cfscript>
 	</cffunction>
@@ -63,9 +62,13 @@ to your own modified versions of Mura CMS.
 		<cfset var hashKey = getHashKey( arguments.key ) />
 		
 		<!--- if the key cannot be found and context is passed then push it in --->
-		<cfif NOT has( arguments.key ) AND isDefined("arguments.context")>
-			<!--- create object --->
-			<cfset set( key, arguments.context, arguments.isSoft ) />
+		<cfif NOT has( arguments.key ) AND isDefined("arguments.context")>		
+			<cfif hasFreeMemoryAvailable()>
+				<!--- create object --->
+				<cfset set( key, arguments.context, arguments.isSoft ) />
+			<cfelse>
+				<cfreturn arguments.context>
+			</cfif>
 		</cfif>
 		
 		<!--- if the key cannot be found then throw an error --->
@@ -78,4 +81,36 @@ to your own modified versions of Mura CMS.
 
 	</cffunction>
 	
+	<cffunction name="hasFreeMemoryAvailable" returntype="boolean" output="false">
+		
+		<cfif variables.freeMemoryThreshold>
+			<cfif getPercentFreeMemory() gt variables.freeMemoryThreshold>
+				<cfreturn true>
+			<cfelse>
+				<cfreturn false>
+			</cfif>
+		<cfelse>
+			<cfreturn true>
+		</cfif>
+		
+	</cffunction>
+	
+	<cffunction name="getPercentFreeMemory" returntype="numeric" output="false">
+		<cfset var runtime = "">
+		
+		<cfif not structKeyExists(request,"percentFreeMemory")>
+			<cfset runtime = getJavaRuntime()>
+			<cfset request.percentFreeMemory=100 - (Round((runtime.freeMemory() / runtime.maxMemory() ) * 100))>
+		</cfif>
+			
+		<cfreturn request.percentFreeMemory>
+	</cffunction>
+	
+	<cffunction name="getJavaRuntime" returntype="any" output="false">
+		<cfif not structKeyExists(application,"javaRuntime")>
+			<cfset application.javaRuntime=createObject("java","java.lang.Runtime").getRuntime() >
+		</cfif>
+		
+		<cfreturn application.javaRuntime>
+	</cffunction>
 </cfcomponent>

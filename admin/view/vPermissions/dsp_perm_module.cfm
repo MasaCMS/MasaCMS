@@ -79,7 +79,7 @@ to your own modified versions of Mura CMS.
 		  <cfif request.rslist.recordcount>
           <cfloop query="request.rslist"> 
             <tr> 
-              <td><input type="checkbox" name="groupid" value="#request.rslist.userid#"<cfif application.permUtility.getGroupPermVerdict(attributes.contentid,request.rslist.userid,'Module',attributes.siteid)>checked</cfif>></td>
+              <td><input type="checkbox" name="groupid" value="#request.rslist.userid#"<cfif application.permUtility.getGroupPermVerdict(attributes.contentid,request.rslist.userid,'module',attributes.siteid)>checked</cfif>></td>
 	      <td class="varWidth" nowrap>#request.rslist.GroupName#</td>
 			</tr>
 		 </cfloop>

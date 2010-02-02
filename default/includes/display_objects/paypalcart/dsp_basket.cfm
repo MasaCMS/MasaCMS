@@ -44,7 +44,7 @@ to your own modified versions of Mura CMS.
 <div id="svPayPalCart">
 <cfif getCart.recordcount> 
 <cfoutput>
-<form action="#application.configBean.getIndexFile()#" onSubmit="return validate(this)" method="post">
+<form action="" onSubmit="return validate(this)" method="post">
 <table>
 <tr>
   <th colspan="2">Your Shopping Cart</th>

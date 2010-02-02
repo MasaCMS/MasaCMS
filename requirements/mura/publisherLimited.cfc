@@ -42,11 +42,12 @@ to your own modified versions of Mura CMS.
 --->
 <cfcomponent extends="mura.publisher" output="false">
 
+<!---
 	<cffunction name="copy" returntype="void" output="no">
 		
 		<cfthrow message="This function requires CFTHREAD.">
 		
 	</cffunction>
-	
+--->
 
 </cfcomponent>

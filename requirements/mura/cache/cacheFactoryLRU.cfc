@@ -40,27 +40,33 @@ for your modified version; it is your choice whether to do so, or to make such m
 the GNU General Public License version 2  without this exception.  You may, if you choose, apply this exception
 to your own modified versions of Mura CMS.
 --->
-<cfcomponent output="false" extends="mura.Factory">
+<cfcomponent output="false" extends="mura.cache.cacheFactory">
 
-	<cfset variables.MAX_ENTRIES = 10 />
-
-	<cffunction name="init" access="public" returntype="LRUCacheFactory" output="false">
-		<cfargument name="maxEntries" type="numeric" required="true" /> 
-		<cfargument name="javaLoader" type="any" required="true" />
+	<cffunction name="init" access="public" returntype="any" output="false">
+		<cfargument name="capacity" type="numeric" required="true" /> 
+		<cfargument name="isSoft" type="boolean" required="true" default="true"/>
+		<cfargument name="freeMemoryThreshold" type="numeric" required="true" default="0"/>
 		
 		<!--- set the java loader --->
-		<cfset setJavaLoader( arguments.javaLoader ) />
-		
-		<!--- set MAX_ENTRIES --->
-		<cfset variables.MAX_ENTRIES = arguments.maxEntries />
-		
+		<cfset setJavaLoader( getServiceFactory().getBean("javaloader") ) />
+		<!--- set CAPACITY --->
+		<cfset variables.CAPACITY = arguments.capacity />
 		<!--- override the map and create the LRU version --->
-		<cfset variables.map = getJavaLoader().create( "SimpleLRUCache" ).init( variables.MAX_ENTRIES ) />
+		<cfset variables.map = getJavaLoader().create( "com.blueriver.cache.SimpleCache" ).init( javaCast('int',variables.CAPACITY) ,javaCast('boolean',true)) />
 		
-		<!--- run super init --->
-		<cfset super.init() />
+		<cfset setCollection( variables.collections.synchronizedMap( variables.map ) ) />
+		<cfset variables.isSoft = arguments.isSoft>
+		<cfset variables.freeMemoryThreshold=arguments.freeMemoryThreshold>
 		
 		<cfreturn this />
 	</cffunction>
+	
+	<cffunction name="getCapacity" returntype="any" output="false">
+		<cfreturn variables.CAPACITY>
+	</cffunction>
 
+	<cffunction name="purgeAll" access="public" returntype="void" output="false">
+		<cfset init(variables.CAPACITY, variables.isSoft, variables.freeMemoryThreshold)/>
+	</cffunction>
+	
 </cfcomponent>

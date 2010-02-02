@@ -50,7 +50,7 @@ to your own modified versions of Mura CMS.
 
 <h3>#application.rbFactory.getKeyValue(session.rb,'advertising.campaigninformation')#</h3>
 #application.utility.displayErrors(request.campaignBean.getErrors())#
-<form action="index.cfm?fuseaction=cAdvertising.updateCampaign&siteid=#attributes.siteid#&userid=#attributes.userid#" name="form1"  method="post" onsubmit="return validate(this);">
+<form action="index.cfm?fuseaction=cAdvertising.updateCampaign&siteid=#attributes.siteid#" name="form1"  method="post" onsubmit="return validate(this);">
 <dl class="oneColumn">
 <dt class="first">#application.rbFactory.getKeyValue(session.rb,'advertising.name')#</dt>
 <dd><input name="name" class="text" required="true" message="The 'Name' field is required." value="#HTMLEditFormat(request.campaignBean.getName())#" maxlength="50"></dd>
@@ -72,6 +72,7 @@ to your own modified versions of Mura CMS.
 <cfif attributes.campaignid eq ''>
 <a class="submit" href="javascript:;" onclick="return submitForm(document.forms.form1,'add');"><span>#application.rbFactory.getKeyValue(session.rb,'advertising.add')#</span></a><input type=hidden name="campaignID" value=""><cfelse><a class="submit" href="javascript:;" onclick="return submitForm(document.forms.form1,'delete','#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'advertising.deletecampaignconfirm'))#');"><span>#application.rbFactory.getKeyValue(session.rb,'advertising.delete')#</span></a><a class="submit" href="javascript:;" onclick="return submitForm(document.forms.form1,'update');"><span>#application.rbFactory.getKeyValue(session.rb,'advertising.update')#</span></a><input type=hidden name="campaignID" value="#request.campaignBean.getCampaignID()#"></cfif>
 <input type="hidden" name="action" value="">
+<input type="hidden" name="userID" value="#attributes.userid#">
 </form>
 </cfoutput>
 <cfif attributes.campaignid neq ''>

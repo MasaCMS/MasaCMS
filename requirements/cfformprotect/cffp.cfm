@@ -3,7 +3,7 @@
 <cfset cffpPath = "#application.configBean.getContext()#/requirements/cfformprotect">
 
 <!--- load the file that grabs all values from the ini file --->
-<cfinclude template="#cffpPath#/cffpConfig.cfm">
+<cfinclude template="cffpConfig.cfm">
 
 <!--- Bas van der Graaf (bvdgraaf@e-dynamics.nl): Make sure JS is only included once when securing multiple forms with cfformprotect. --->
 <cfif not structkeyExists(request,"cffpJS")>

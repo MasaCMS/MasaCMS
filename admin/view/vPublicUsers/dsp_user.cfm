@@ -58,6 +58,19 @@ select * from rsSubTypes where subType <> 'Default'
 <cfoutput><form action="index.cfm?fuseaction=cPublicUsers.update&userid=#attributes.userid#&routeid=#attributes.routeid#&siteid=#attributes.siteid#" method="post" enctype="multipart/form-data" name="form1" onsubmit="return validate(this);"  autocomplete="off" >
 	<h2>#application.rbFactory.getKeyValue(session.rb,'user.memberform')#</h2>
 	
+	<cfif len(request.userBean.getUsername())>
+		<cfset strikes=createObject("component","mura.user.userstrikes").init(request.userBean.getUsername(),application.configBean)>
+		<cfif structKeyExists(attributes,"removeBlock")>
+			<cfset strikes.clear()>
+		</cfif>
+		<cfif strikes.isBlocked()>
+			<p class="error">
+			#application.rbFactory.getKeyValue(session.rb,'user.blocked')#: #LSTimeFormat(strikes.blockedUntil(),"short")#
+			<a href="?fuseaction=cPublicUsers.edituser&userid=#attributes.userID#&type=2&siteid=#attributes.siteID#&removeBlock">[#application.rbFactory.getKeyValue(session.rb,'user.remove')#]</a>
+			</p>
+		</cfif>
+	</cfif>
+	
 	#application.utility.displayErrors(request.userBean.getErrors())#
 	
 	<p>#application.rbFactory.getKeyValue(session.rb,'user.requiredtext')#</p>
@@ -236,7 +249,7 @@ select * from rsSubTypes where subType <> 'Default'
 		</ul></dd>
 		<dt>#application.rbFactory.getKeyValue(session.rb,'user.tags')#</dt>
 		<dd><input id="tags" name="tags" type="text" value="#HTMLEditFormat(request.userBean.getTags())#" class="text"></dd> 
-		<cfif isUserInRole("S2") or isUserInRole("Admin;#application.settingsManager.getSite(attributes.siteid).getPrivateUserPoolID()#;0")>
+		<cfif listFind(session.mura.memberships,'S2') or listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(attributes.siteid).getPrivateUserPoolID()#;0')>
 		<dt>#application.rbFactory.getKeyValue(session.rb,'user.usertype')#</dt>
 		<dd><ul class="radioGroup"><li><input name="switchToPrivate" type="radio" class="radio" value="1"> #application.rbFactory.getKeyValue(session.rb,'user.administrative')#</li><li><input name="switchToPrivate" type="radio" class="radio" value="0" Checked> #application.rbFactory.getKeyValue(session.rb,'user.sitemember')#</li></ul></dd>
 		</cfif>

@@ -54,9 +54,9 @@ to your own modified versions of Mura CMS.
 <cfoutput>
 <table>
 <tr>
-<th title="#dateLong#" id="previousMonth"><a href="index.cfm?month=#previousmonth#&year=#previousyear#&categoryID=#htmlEditFormat(request.categoryID)#&relatedID=#htmlEditFormat(request.relatedID)#&filterBy=releaseMonth">&laquo;</a></th>
+<th title="#dateLong#" id="previousMonth"><a href="?month=#previousmonth#&year=#previousyear#&categoryID=#htmlEditFormat(request.categoryID)#&relatedID=#htmlEditFormat(request.relatedID)#&filterBy=releaseMonth">&laquo;</a></th>
 <th colspan="5">#dateLong#</th>
-<th id="nextMonth"><a href="index.cfm?month=#nextmonth#&year=#nextyear#&categoryID=#htmlEditFormat(request.categoryID)#&relatedID=#htmlEditFormat(request.relatedID)#&filterBy=releaseMonth">&raquo;</a></th>
+<th id="nextMonth"><a href="?month=#nextmonth#&year=#nextyear#&categoryID=#htmlEditFormat(request.categoryID)#&relatedID=#htmlEditFormat(request.relatedID)#&filterBy=releaseMonth">&raquo;</a></th>
 </tr>
 </table>
 </div>

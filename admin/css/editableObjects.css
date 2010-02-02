@@ -1,4 +1,3 @@
-/* @override http://mura:8500/admin/css/editableObjects.css */
 
 div.editableObject {
 	display: block !important;
@@ -11,7 +10,10 @@ div.editableObject {
 	left: auto !important;
 	width: auto !important;
 	height: auto !important;
-	margin: 0 !important;
+	margin-top: 0 !important;
+	margin-right: 0 !important;
+	margin-bottom: 0;
+	margin-left: 0 !important;
 	padding: 0 !important;
 	border: 0 !important;
 	outline-width: 0px !important;
@@ -20,9 +22,43 @@ div.editableObject {
 	background: transparent !important;
 	}
 
+div.editableObject:after {
+	visibility: hidden !important;
+	display: block !important;
+	font-size: 0 !important;
+	content: " " !important;
+	clear: both !important;
+	height: 0 !important;
+	}
+* html div.editableObject  { zoom: 1; } /* IE6 */
+*:first-child+html div.editableObject { zoom: 1; } /* IE7 */
+
 div.editableObject:hover {
 	outline-width: 2px !important;
+	/*overflow: hidden !important;*/
 	}
+
+
+div.editableObject div.editableObjectContents {
+	display: block !important;
+	visibility: !important;
+	float: none !important;
+	position: relative !important;
+	top: auto !important;
+	right: auto !important;
+	bottom: auto !important;
+	left: auto !important;
+	width: auto !important;
+	height: auto !important;
+	overflow: hidden !important;
+	margin: 0 !important;
+	padding: 0 !important;
+	border: 0 !important;
+	outline-width: 0px !important;
+	background: transparent !important;
+	}
+
+
 
 div.editableObject ul.editableObjectControl {
 	display: block !important;
@@ -54,9 +90,20 @@ div.editableObject:hover ul.editableObjectControl {
 	}
 
 div.editableObject ul.editableObjectControl li {
-	padding: 2px 3px 3px 2px !important;
-	margin: 0 !important;
+	display: block !important;
+	visibility: visible !important;
+	float: none !important;
+	position: relative !important;
+	top: auto !important;
+	right: auto !important;
+	bottom: auto !important;
+	left: auto !important;
+	width: auto !important;
 	height: auto !important;
+	overflow: visible !important;
+	margin: 0 !important;
+	padding: 2px 3px 3px 2px !important;
+	border: none !important;
 	background: url(../images/feTools_bg_button.png) no-repeat 50% 50% !important;
 	}
 
@@ -66,7 +113,7 @@ div.editableObject ul.editableObjectControl li {
 
 div.editableObject ul.editableObjectControl a {
 	display: block !important;
-	visibility: !important;
+	visibility: visible !important;
 	float: none !important;
 	position: relative !important;
 	top: auto !important;
@@ -75,20 +122,19 @@ div.editableObject ul.editableObjectControl a {
 	left: auto !important;
 	width: 14px !important;
 	height: 14px !important;
-	overflow: hidden;
+	overflow: hidden !important;
 	margin: 0 !important;
 	padding: 4px !important;
-	/*border: 1px solid #e5e5e5 !important;*/
-	font-size: 11px !important;
-	line-height: 20px !important;
-	font-weight: normal !important;
+	border: 0 !important;
+	outline: 0 !important;
+	font: normal normal normal 11px/20px "Lucida Grande", Arial, Helvetica, sans-serif !important;
 	text-align: center !important;
 	text-indent: -9999px !important;
 	text-transform: none !important;
 	text-decoration: none !important;
 	letter-spacing: 0 !important;
 	color: #666 !important;
-	background: url(../images/icons/edit_24.png) no-repeat 50% 50% !important;
+	background: url(../images/icons/edit_24.png) no-repeat 50% 50% !important;	
 	/*-moz-border-radius: 3px !important;
 	-webkit-border-radius: 3px !important;
 	border-radius: 3px !important;
@@ -198,8 +244,6 @@ div.editableObject ul.editableObjectControl li.sfhover a { /* lists nested under
 	}
 
 div.editableObject .edit a { background-image: url(../images/edit_16.png); }	
-/*#cbTools .add a { background-image: url(../images/add_16.png); }
-#cbTools .delete a { background-image: url(../images/remov_16.png); }*/
 
 
 div.editableObject ul.editableObjectControl li li.objEdit a {

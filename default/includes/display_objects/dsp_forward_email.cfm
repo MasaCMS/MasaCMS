@@ -67,6 +67,7 @@ to your own modified versions of Mura CMS.
 	<input name="origin" value="#HTMLEditFormat(request.origin)#" type="hidden"/>
 	<fieldset>
 	<input class="submit" type="submit" value="#HTMLEditFormat(rbFactory.getKey('email.submit'))#"/>
+	<cfinclude template="dsp_form_protect.cfm" />
 	</form>
 	</cfif>
 </div>

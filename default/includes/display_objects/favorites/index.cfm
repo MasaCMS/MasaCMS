@@ -35,12 +35,12 @@
 			</cfif>
 			<cfset contentLink = "" />
 			<cfset lid = replace(rsFavorites.favoriteID, "-", "", "ALL") />
-			<cfset contentLink = createHref(rsFavorites.Type, rsFavorites.filename, request.siteid, rsFavorites.contentID, rsFavorites.target,rsFavorites.targetParams, '', '#application.configBean.getContext()#', '#application.configBean.getStub()#', '#application.configBean.getIndexFile()#', 'false') />
+			<cfset contentLink = createHref(rsFavorites.Type, rsFavorites.filename, request.siteid, rsFavorites.contentID, rsFavorites.target,rsFavorites.targetParams, '', '#application.configBean.getContext()#', '#application.configBean.getStub()#', '', 'false') />
 			<cfset contentLink = "<a href='#contentLink#'>#HTMLEditFormat(rsFavorites.menutitle)#</a>" />
-			<li id="favorite#lid#"><a href="#application.configBean.getIndexFile()#" onClick="return deleteFavorite('#favoriteID#', 'favorite#lid#');" title="#xmlformat(rbFactory.getKey('favorites.removefromfavorites'))#" class="remove">[-]</a> #contentLink#</li>
+			<li id="favorite#lid#"><a href="" onclick="return deleteFavorite('#favoriteID#', 'favorite#lid#');" title="#xmlformat(rbFactory.getKey('favorites.removefromfavorites'))#" class="remove">[-]</a> #contentLink#</li>
 		</cfloop>
 		<cfif rsFavorites.recordCount gt 5>
-			<li><a href="#application.configbean.getIndexFile()#" onClick="return effectFunction();"><span>#rbFactory.getKey('favorites.morefavorites')#</span></a>
+			<li><a href="" onclick="return effectFunction();"><span>#rbFactory.getKey('favorites.morefavorites')#</span></a>
 				<ul id="favoriteListMore" style="display:none">
 				<cfloop query="rsFavorites" startrow="6">
 					<cfif request.contentBean.getContentID() eq rsFavorites.contentid>
@@ -49,9 +49,9 @@
 					<cfset contentLink = "" />
 					<cfset lid = replace(rsFavorites.favoriteID, "-", "", "ALL") />
 				
-					<cfset contentLink = createHref(rsFavorites.Type, rsFavorites.filename, request.siteid, rsFavorites.contentID, rsFavorites.target,rsFavorites.targetParams, '', '#application.configBean.getContext()#', '#application.configBean.getStub()#', '#application.configBean.getIndexFile()#', 'false') />
+					<cfset contentLink = createHref(rsFavorites.Type, rsFavorites.filename, request.siteid, rsFavorites.contentID, rsFavorites.target,rsFavorites.targetParams, '', '#application.configBean.getContext()#', '#application.configBean.getStub()#', '', 'false') />
 					<cfset contentLink = "<a href='#contentLink#'>#HTMLEditFormat(rsFavorites.menuTitle)#</a>" />
-					<li id="favorite#lid#"><a href="#application.configBean.getIndexFile()#" onClick="return deleteFavorite('#rsFavorites.favoriteID#', 'favorite#lid#');" title="#xmlformat(rbFactory.getKey('favorites.removefromfavorites'))#" class="remove">[-]</a> #contentLink#</li>
+					<li id="favorite#lid#"><a href="" onclick="return deleteFavorite('#rsFavorites.favoriteID#', 'favorite#lid#');" title="#xmlformat(rbFactory.getKey('favorites.removefromfavorites'))#" class="remove">[-]</a> #contentLink#</li>
 				</cfloop>
 				</ul>
 			</li>
@@ -69,12 +69,12 @@
 	<cfset favoriteExists = application.favoriteManager.checkForFavorite(userID, contentID) />
 <!---	
 	<cfif favoriteExists>
-		<span id="favoriteStatus" style="display:none"><a href="#application.configbean.getIndexFile()#" onClick="return saveFavorite('#userID#', '#siteID#', '#menuTitle#', '#contentID#', '#favoriteType#')">Add to favorites</a></span>
+		<span id="favoriteStatus" style="display:none"><a href="" onclick="return saveFavorite('#userID#', '#siteID#', '#menuTitle#', '#contentID#', '#favoriteType#')">Add to favorites</a></span>
 	<cfelse>
-		<span id="favoriteStatus"><a href="#application.configbean.getIndexFile()#" onClick="return saveFavorite('#userID#', '#siteID#', '#menuTitle#', '#contentID#', '#favoriteType#')">Add to favorites</a></span>
+		<span id="favoriteStatus"><a href="" onclick="return saveFavorite('#userID#', '#siteID#', '#menuTitle#', '#contentID#', '#favoriteType#')">Add to favorites</a></span>
 	</cfif>
 --->	
-	<script>
+	<script type="text/javascript">
 		currentPageFavoriteID = '#currentPageFavoriteID#';
 	</script>
 <cfelse>
@@ -84,19 +84,19 @@
 <cfif len(getPersonalizationID())>
 <div id="svPageTools">
 	<#getHeaderTag('subHead1')#>#rbFactory.getKey('favorites.pagetools')#</#getHeaderTag('subHead1')#>
+	<cfif favoriteExists>
+		<cfset favoriteExistsStyle = "display:none;">
+		<cfset addFavoriteStyle = "display:none;">
+		<script type="text/javascript">
+			favoriteExists = true;
+		</script>
+	<cfelse>
+		<cfset favoriteExistsStyle = "display:none;">
+		<cfset addFavoriteStyle = "">
+	</cfif>
 	<ul>
-		<cfif favoriteExists>
-			<cfset favoriteExistsStyle = "display:none;">
-			<cfset addFavoriteStyle = "display:none;">
-			<script>
-				favoriteExists = true;
-			</script>
-		<cfelse>
-			<cfset favoriteExistsStyle = "display:none;">
-			<cfset addFavoriteStyle = "">
-		</cfif>
-		<li id="favoriteExists" style="#favoriteExistsStyle#"><a href="#application.configbean.getIndexFile()#" onClick="return false;">Stored in favorites</a></li>
-		<li id="addFavorite" style="#addFavoriteStyle#"><a href="#application.configbean.getIndexFile()#" onClick="return saveFavorite('#userID#', '#siteID#', '#menuTitle#', '#contentID#', '#favoriteType#')">Add to favorites</a></li>
+		<li id="favoriteExists" style="#favoriteExistsStyle#"><a href="" onclick="return false;">Stored in favorites</a></li>
+		<li id="addFavorite" style="#addFavoriteStyle#"><a href="" onclick="return saveFavorite('#userID#', '#siteID#', '#JSStringFormat(menuTitle)#', '#contentID#', '#favoriteType#')">Add to favorites</a></li>
 		<li id="sendToFriend"><a rel="shadowbox;width=600;height=500" href="http://#application.settingsManager.getSite(request.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()#/#getSite().getDisplayPoolID()#/includes/display_objects/sendtofriend/index.cfm?link=#URLEncodedFormat(getCurrentURL())#&siteid=#request.siteid#">#rbFactory.getResourceBundle().messageFormat(rbFactory.getKey('favorites.emailthis'),rbFactory.getKey('sitemanager.content.type.#request.contentbean.getType()#'))#</a> </li>
 		<li id="print"><a href="javascript:window.print();void(0);">#rbFactory.getResourceBundle().messageFormat(rbFactory.getKey('favorites.printthis'),rbFactory.getKey('sitemanager.content.type.#request.contentbean.getType()#'))#</a></li>
 		<!---<li id="discuss"><a href="/forum">Discuss #contentTypeString#</a></li>--->

@@ -78,7 +78,7 @@ to your own modified versions of Mura CMS.
 		<cfset editableControl.innerHTML = generateEditableObjectControl(editableControl.editLink)>
 	</cfif>
 	<cfif editableControl.innerHTML neq "">
-		<div class="editableObject editableFeed">
+		<cfoutput>#renderEditableObjectHeader("editableFeed")#</cfoutput>
 	</cfif>
 	
 	<cfif feedBean.getType() eq 'local'>
@@ -96,13 +96,22 @@ to your own modified versions of Mura CMS.
 		<cfset rbFactory=getSite().getRBFactory() />
 		<cfset checkMeta=feedBean.getDisplayRatings() or feedBean.getDisplayComments()>
 		<cfset doMeta=0 />
-		<cfif feedBean.getNextN() gt 1>
-			<cfset iterator.setStartRow(event.getValue("startRow"))>
-			<cfset nextN=application.utility.getNextN(rs,feedBean.getNextN(),event.getValue("startRow"))>	
-		<cfelse>
-			<cfset iterator.setPage(event.getValue("pageNum"))>
-			<cfset nextN=application.utility.getNextN(rs,feedBean.getNextN(),event.getValue("pageNum"))>
-		</cfif>		
+		<cfset event.setValue("currentNextNID",feedBean.getFeedID())>
+
+		<cfif not len(event.getValue("nextNID")) or event.getValue("nextNID") eq event.getValue("currentNextNID")>
+			<cfif event.getContentBean().getNextN() gt 1>
+				<cfset currentNextNIndex=event.getValue("startRow")>
+				<cfset iterator.setStartRow(currentNextNIndex)>
+			<cfelse>
+				<cfset currentNextNIndex=event.getValue("pageNum")>
+				<cfset iterator.setPage(currentNextNIndex)>
+			</cfif>
+		<cfelse>	
+			<cfset currentNextNIndex=1>
+			<cfset iterator.setPage(1)>
+		</cfif>
+		
+		<cfset nextN=application.utility.getNextN(rs,feedBean.getNextN(),currentNextNIndex)>
 	  </cfsilent>
 	  	
 		<cfif iterator.getRecordCount()>
@@ -218,9 +227,8 @@ to your own modified versions of Mura CMS.
   <cfelse>
 		<!-- Inactive Feed '<cfoutput>#feedBean.getName()#</cfoutput>' -->
   </cfif>
- 	<cfoutput>#editableControl.innerHTML#</cfoutput>
   <cfif editableControl.innerHTML neq "">
-  	</div>
+  	<cfoutput>#renderEditableObjectFooter(editableControl.innerHTML)#</cfoutput>
   </cfif>
 <!---   <cfcatch>
   </cfcatch>

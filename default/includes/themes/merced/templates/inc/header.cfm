@@ -5,7 +5,7 @@
 			<li><a href="">About Us</a></li>
 			<li class="last"><a href="">Contact</a></li>
 		</ul>
-		<form action="#application.configBean.getIndexFile()#" id="searchForm">
+		<form action="" id="searchForm">
 			<fieldset>
 				<input type="text" name="Keywords" id="txtKeywords" class="text" value="Search" onfocus="this.value=(this.value=='Search') ? '' : this.value;" onblur="this.value=(this.value=='') ? 'Search' : this.value;" />
 				<input type="hidden" name="display" value="search" />

@@ -136,6 +136,7 @@ to your own modified versions of Mura CMS.
 </cfif>
 </cfif>
 <script type="text/javascript" src="#application.configBean.getContext()#/wysiwyg/fckeditor.js"></script>
+#session.dateKey#
 #fusebox.ajax#
 
 <cfif myfusebox.originalcircuit neq "cLogin">

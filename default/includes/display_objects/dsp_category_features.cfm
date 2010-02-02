@@ -63,7 +63,7 @@ to your own modified versions of Mura CMS.
 <cfloop query="rsFeatures">
 		<cfsilent>
 			<cfset class=iif(rsFeatures.currentrow eq 1,de('first'),de(iif(rsFeatures.currentrow eq rsFeatures.recordcount,de('last'),de(''))))>
-			<cfset link=addlink('#rsFeatures.type#','#rsFeatures.filename#','#rsFeatures.menutitle#','#rsFeatures.target#','#rsFeatures.targetParams#','#rsFeatures.contentid#','#request.siteid#','','#application.configBean.getContext()#','#application.configBean.getStub()#','#application.configBean.getIndexFile()#')>
+			<cfset link=addlink('#rsFeatures.type#','#rsFeatures.filename#','#rsFeatures.menutitle#','#rsFeatures.target#','#rsFeatures.targetParams#','#rsFeatures.contentid#','#request.siteid#','','#application.configBean.getContext()#','#application.configBean.getStub()#','')>
 				
 			<cfset hasImage=len(rsFeatures.fileID) and showImageInList(rsFeatures.fileExt) />
 

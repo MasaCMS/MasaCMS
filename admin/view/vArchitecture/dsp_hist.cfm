@@ -44,7 +44,7 @@ to your own modified versions of Mura CMS.
 <cfsilent>
 <cfset crumbdata=application.contentManager.getCrumbList(attributes.contentid,attributes.siteid)>
 <cfset request.perm=application.permUtility.getnodeperm(crumbdata)> 
-
+<cfset nodeLevelList="Page,Portal,Calendar,Gallery,Link,File"/>
 <cfif request.contentBean.getType() eq 'File'>
 <cfset rsFile=application.serviceFactory.getBean('fileManager').readMeta(request.contentBean.getFileID())>
 <cfset fileExt=rsFile.fileExt>
@@ -75,14 +75,15 @@ to your own modified versions of Mura CMS.
 </cfif>--->
 <cfswitch expression="#attributes.type#">
 <cfcase value="Form">
-<cfif isUserInRole('s2IsPrivate')>
+<cfif listFind(session.mura.memberships,'S2IsPrivate')>
 <li><a  href="index.cfm?fuseaction=cArch.datamanager&contentid=#attributes.contentid#&siteid=#attributes.siteid#&topid=#attributes.topid#&moduleid=#attributes.moduleid#&type=Form&parentid=#attributes.moduleid#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.managedata')#</a></li>
 </cfif>
 </cfcase>
 </cfswitch>
 	<cfif request.perm neq 'none'><li><a href="index.cfm?fuseaction=cArch.update&action=deletehistall&contentid=#attributes.contentid#&type=#attributes.type#&parentid=#attributes.parentid#&topid=#attributes.topid#&siteid=#attributes.siteid#&startrow=#attributes.startrow#&moduleid=#attributes.moduleid#&compactDisplay=#attributes.compactDisplay#" onclick="return confirm('#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.clearversionhistoryconfirm'))#')">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.clearversionhistory')#</a></li></cfif>
-	<cfif request.deletable and attributes.compactDisplay neq 'true'><li><a href="index.cfm?fuseaction=cArch.update&action=deleteall&contentid=#attributes.contentid#&type=#attributes.type#&parentid=#attributes.parentid#&topid=#attributes.topid#&siteid=#attributes.siteid#&startrow=#attributes.startrow#&moduleid=#attributes.moduleid#&compactDisplay=#attributes.compactDisplay#" onclick="return confirm('#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.deletecontentconfirm'))#')">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.deletecontent')#</a></li></cfif>
-	<cfif isUserInRole('Admin') or isUserInRole('S2')><li><a href="index.cfm?fuseaction=cPerm.main&contentid=#attributes.ContentID#&type=#attributes.type#&parentid=#attributes.parentID#&topid=#attributes.topid#&siteid=#attributes.siteid#&moduleid=#attributes.moduleid#&startrow=#attributes.startrow#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.permissions')#</a></li>
+	<cfif request.deletable and attributes.compactDisplay neq 'true'><li><a href="index.cfm?fuseaction=cArch.update&action=deleteall&contentid=#attributes.contentid#&type=#attributes.type#&parentid=#attributes.parentid#&topid=#attributes.topid#&siteid=#attributes.siteid#&startrow=#attributes.startrow#&moduleid=#attributes.moduleid#&compactDisplay=#attributes.compactDisplay#" 
+		<cfif listFindNoCase(nodeLevelList,request.contentBean.getType())>onclick="return confirm('#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.deletecontentrecursiveconfirm'))#')"<cfelse>onclick="return confirm('#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.deletecontentconfirm'))#')"</cfif> >#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.deletecontent')#</a></li></cfif>
+	<cfif listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(attributes.siteid).getPrivateUserPoolID()#;0') or listFind(session.mura.memberships,'S2')><li><a href="index.cfm?fuseaction=cPerm.main&contentid=#attributes.ContentID#&type=#attributes.type#&parentid=#attributes.parentID#&topid=#attributes.topid#&siteid=#attributes.siteid#&moduleid=#attributes.moduleid#&startrow=#attributes.startrow#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.permissions')#</a></li>
 	</cfif>
 </ul>
 </cfoutput>

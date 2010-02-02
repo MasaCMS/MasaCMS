@@ -69,7 +69,6 @@ to your own modified versions of Mura CMS.
 <cfelse>
 	<cfset cgi_path=cgi.path_info />
 </cfif>
-
 <cfif left(cgi_path,1) eq "/" and cgi_path neq "/">
 	<cfset url.path=right(cgi_path,len(cgi_path)-1) />
 </cfif>
@@ -196,7 +195,6 @@ to your own modified versions of Mura CMS.
 	<cfset var siteID="">
 	<cfset var cgi_path="">
 	<cfparam name="url.path" default="" />
-	
 	
 	<cfset cgi_path=setCGIPath()>
 	

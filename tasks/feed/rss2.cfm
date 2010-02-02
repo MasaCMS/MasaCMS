@@ -52,7 +52,7 @@ to your own modified versions of Mura CMS.
 <cfheader name="content-type" value="text/xml;charset=UTF-8"><cfcontent reset="yes"><cfoutput><?xml version="1.0" ?>
 <rss version="2.0">
 	<channel>
-		<title>#XMLFormat(feedBean.getName())#</title> 
+		<title>#XMLFormat(feedBean.renderName())#</title> 
 		<link>http://#application.settingsManager.getSite(feedBean.getSiteID()).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()#</link> 
 		<description>#XMLFormat(feedBean.getDescription())#</description> 
 		<webMaster>#application.settingsManager.getSite(feedBean.getSiteID()).getContact()#</webMaster>

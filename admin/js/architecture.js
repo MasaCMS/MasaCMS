@@ -171,8 +171,7 @@ document.getElementById('newZoom').style.display='none';
 document.getElementById('newZoomLink').style.display='none';
 document.getElementById('newCopy').style.display='none';
 document.getElementById('newCopyLink').style.display='none';
-//document.getElementById('newCopyAll').style.display='none';
-//document.getElementById('newCopyAllLink').style.display='none';
+document.getElementById('newCopyAllLink').style.display='none';
 document.getElementById('newPaste').style.display='none';
 document.getElementById('newPasteLink').style.display='none';
 document.getElementById('newPageLink').style.display='none';
@@ -223,9 +222,11 @@ document.getElementById('newGalleryItemMultiLink').href=
 //'index.cfm?fuseaction=cArch.multiFileUpload&contentid=&parentid=' + contentid + '&type=File&topid=' + topid + '&siteid=' + siteid + '&moduleid=00000000000000000000000000000000000&ptype=' + type;
 
 
-document.getElementById('newCopyLink').href='javascript:copyThis(\'' + siteid + '\', \'' + contentid + '\')';
+document.getElementById('newCopyLink').href='javascript:copyThis(\'' + siteid + '\', \'' + contentid + '\',\'false\')';
+document.getElementById('newCopyAllLink').href='javascript:copyThis(\'' + siteid + '\', \'' + contentid + '\',\'true\')';
 document.getElementById('newCopy').style.display='';
 document.getElementById('newCopyLink').style.display='';
+document.getElementById('newCopyAllLink').style.display='';
 
 if (copySiteID != "" && copyContentID != ""){
 	document.getElementById('newPasteLink').href='javascript:pasteThis(\'' + contentid + '\')';
@@ -589,24 +590,25 @@ function form_is_modified(oForm)
 	return false;
 }
 
-function copyThis(siteID, contentID){
+function copyThis(siteID, contentID, _copyAll){
 	var url = 'index.cfm';
-	var pars = 'fuseaction=cArch.saveCopyInfo&siteid=' + siteID +'&contentid=' + contentID + '&cacheid=' + Math.random();
+	var pars = 'fuseaction=cArch.saveCopyInfo&siteid=' + siteID +'&contentid=' + contentID + '&copyAll='+ _copyAll + '&cacheid=' + Math.random();
 	new Ajax.Request(url, {parameters:pars});
 	
 	copyContentID = contentID;
 	copySiteID = siteID;
+	copyAll = _copyAll;
 	
 	hideMenu('newContentMenu');
 }
 
 function pasteThis(parentID){
 	var url = 'index.cfm';
-	var pars = 'fuseaction=cArch.copy&compactDisplay=true&siteid=' + copySiteID +'&contentid=' + copyContentID + '&parentid=' + parentID + '&cacheid=' + Math.random();
+	var pars = 'fuseaction=cArch.copy&compactDisplay=true&siteid=' + copySiteID +'&copyAll=' + copyAll +'&contentid=' + copyContentID + '&parentid=' + parentID + '&cacheid=' + Math.random();
 	var d = $('newPasteLink');
 	d.style.background='url(/admin/images/ajax-loader.gif) no-repeat 1px 5px;';
 	reloadURL = document.getElementById('newZoomLink').href;
-	
+
 	new Ajax.Request(url, {parameters:pars, onSuccess:reloadPage});	
 }
 

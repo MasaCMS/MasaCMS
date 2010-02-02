@@ -28,6 +28,12 @@ CREATE PUBLIC SYNONYM tuseraddresses FOR muradb.tuseraddresses;
 DROP TABLE tusers PURGE; 
 CREATE PUBLIC SYNONYM tusers FOR muradb.tusers;
 
+DROP TABLE tuserremotesessions PURGE; 
+CREATE PUBLIC SYNONYM tuserremotesessions FOR muradb.tuserremotesessions;
+
+DROP TABLE tuserstrikes PURGE; 
+CREATE PUBLIC SYNONYM tuserstrikes FOR muradb.tuserstrikes;
+
 DROP TABLE tuserstags PURGE;
 CREATE PUBLIC SYNONYM tuserstags FOR muradb.tuserstags;
 

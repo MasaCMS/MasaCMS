@@ -49,7 +49,7 @@ to your own modified versions of Mura CMS.
 <cfoutput>
 	<div id="login" class="clearfix">
 		<#getHeaderTag('subHead1')#>#rbFactory.getKey('user.signin')#</#getHeaderTag('subHead1')#>
-		<form action="<cfoutput>#application.configBean.getIndexFile()#?nocache=1</cfoutput>" name="loginForm" method="post">
+		<form action="<cfoutput>?nocache=1</cfoutput>" name="loginForm" method="post">
 			<ol>
 				<li>
 					<label for="txtUserName">#rbFactory.getKey('user.username')#</label>

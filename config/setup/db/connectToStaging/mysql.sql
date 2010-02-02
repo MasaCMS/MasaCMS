@@ -28,6 +28,12 @@ CREATE VIEW tuseraddresses AS SELECT * FROM muradb.tuseraddresses;
 DROP TABLE tusers; 
 CREATE VIEW tusers AS SELECT * FROM muradb.tusers;
 
+DROP TABLE tuserremotesessions; 
+CREATE VIEW tuserremotesessions AS SELECT * FROM muradb.tuserremotesessions;
+
+DROP TABLE tuserstrikes; 
+CREATE VIEW tuserstrikes AS SELECT * FROM muradb.tuserstrikes;
+
 DROP TABLE tuserstags;
 CREATE VIEW tuserstags AS SELECT * FROM muradb.tuserstags;
 

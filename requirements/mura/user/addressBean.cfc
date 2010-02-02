@@ -65,6 +65,7 @@ to your own modified versions of Mura CMS.
     <cfset variables.instance.errors=structnew() />
 	<cfset variables.instance.extendData="" />
 	<cfset variables.instance.extendSetID="" />
+	<cfset variables.instance.isNew=0 />
 	
 <cffunction name="init" returntype="any" output="false" access="public">
 	<cfargument name="configBean" type="any" required="yes"/>
@@ -451,8 +452,9 @@ to your own modified versions of Mura CMS.
 	<cfset variables.instance=arguments.instance/>
 </cffunction>
 
-<cffunction name="save" output="false" access="public">
+<cffunction name="save" output="false" access="public" returntype="any">
 	<cfset variables.userManager.updateAddress(this)>
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="delete" output="false" access="public">

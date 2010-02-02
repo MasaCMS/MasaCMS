@@ -40,6 +40,7 @@ for your modified version; it is your choice whether to do so, or to make such m
 the GNU General Public License version 2  without this exception.  You may, if you choose, apply this exception
 to your own modified versions of Mura CMS.
 --->
+<!---
 <cfset FUSEBOX_APPLICATION_KEY = "primaryAdmin" />
 <cfset FUSEBOX_PARAMETERS.allowImplicitFusebox = true />
 <cfset FUSEBOX_PARAMETERS.allowImplicitCircuits = true />
@@ -47,3 +48,4 @@ to your own modified versions of Mura CMS.
 <cfset FUSEBOX_PARAMETERS.password = application.appreloadkey />
 <cfset FUSEBOX_PARAMETERS.mode = "production" />
 <cfinclude template="/fusebox5/fusebox5.cfm" />
+--->

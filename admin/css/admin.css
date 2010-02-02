@@ -418,7 +418,7 @@ body.compact form {
 	width: 100%;
 }
 
-#cDashboard form {
+#cdashboard form {
 	width: auto;
 }
 
@@ -1324,7 +1324,7 @@ div.menu {
 	color: #000;
 }
 
-#cCategory .addNew a {
+#ccategory .addNew a {
 	border-bottom: 0px;
 }
 
@@ -1740,38 +1740,38 @@ h5 {
 
 /* @group Dashboard */
 
-#cDashboard .wrap {
+#cdashboard .wrap {
 	position: relative;
 	width: 830px;
 }
 
-#cDashboard #contentPrimary form {
+#cdashboard #contentPrimary form {
 	padding: 10px;
 	border-top: 1px solid #f9f9f9;
 	border-bottom: 1px solid #f9f9f9;
 	background: url(../images/bg_dots.gif);
 }
 
-#cDashboard #emailBroadcasts dl {
+#cdashboard #emailBroadcasts dl {
 	margin: .35em 0 .75em 0;
 	padding: 0;
 	line-height: 1em;
 	color: #666;
 }
 
-#cDashboard #emailBroadcasts dt {
+#cdashboard #emailBroadcasts dt {
 	display: inline;
 	font-weight: normal;
 	line-height: 1em;
 }
 
-#cDashboard #emailBroadcasts dd {
+#cdashboard #emailBroadcasts dd {
 	display: inline;
 	line-height: 1em;
 	font-weight: bold;
 }
 
-/*#cDashboard dl {
+/*#cdashboard dl {
 	margin-bottom: 1em;
 	padding: 3px 8px;
 	border-top: 1px solid #EAF4FE;
@@ -1781,39 +1781,39 @@ h5 {
 
 
 
-#cDashboard dt {
+#cdashboard dt {
 	font-weight: bold;
 	padding-right: .5em;
 	display: inline;
 }
 
-#cDashboard #contentSecondary dt {
+#cdashboard #contentSecondary dt {
 	font-weight: normal;
 }
 
-#cDashboard #contentSecondary dt {
+#cdashboard #contentSecondary dt {
 	font-weight: normal;
 }
 
-#cDashboard dd {
+#cdashboard dd {
 	display: inline;
 	padding-right: 2em;
 }
 
-#cDashboard #siteSearch {
+#cdashboard #siteSearch {
 	margin: 0;
 	padding: 0;
 	background-image: none;
 }
 
-#cDashboard #advancedSearch dd {
+#cdashboard #advancedSearch dd {
 	padding-right: .5em;
 }
 
-#cDashboard #advancedSearch dd input.calendar {
+#cdashboard #advancedSearch dd input.calendar {
 }
 
-#cDashboard #emailBroadcasts h3 {
+#cdashboard #emailBroadcasts h3 {
 	
 }
 
@@ -1821,7 +1821,7 @@ h5 {
 
 /* @group Session History */
 
-#cDashboard form.sessionHistory dl, #advancedSearch, .overview, #advancedMemberSearch dl {
+#cdashboard form.sessionHistory dl, #advancedSearch, .overview, #advancedMemberSearch dl {
 	margin-bottom: 1em;
 	padding: 8px 8px 0;
 	border-top: 1px solid #EAF4FE;
@@ -1840,7 +1840,7 @@ h5 {
 	margin-bottom: 2em;
 }
 
-#cDashboard form#advancedSearch.sessionHistory {
+#cdashboard form#advancedSearch.sessionHistory {
 	padding: 0 0 32px;
 	margin: 0;
 	border: 0;
@@ -2012,7 +2012,7 @@ table + .divide {
 	margin-top: 8px;
 }
 
-#cDashboard table + .divide {
+#cdashboard table + .divide {
 	margin-top: 0;
 }
 
@@ -2026,7 +2026,7 @@ th {
 	text-align: center;
 }
 
-/*#cDashboard th, #cDashboard td {
+/*#cdashboard th, #cdashboard td {
 	text-align: left;
 	line-height: 20px;
 }*/
@@ -2040,7 +2040,7 @@ th.alt {
 	border: 0;
 }
 
-#cDashboard table th, #cDashboard table td {
+#cdashboard table th, #cdashboard table td {
 	text-align: left;
 }
 
@@ -2048,7 +2048,7 @@ th span {
 	font-weight: normal;
 }
 
-#cDashboard th span, #cDashboard td span {
+#cdashboard th span, #cdashboard td span {
 	color: #666;
 }
 
@@ -2056,15 +2056,15 @@ table th a {
 	color: #000;
 }
 
-#cDashboard table th a {
+#cdashboard table th a {
 	color: #ff3a00;
 }
 
-#cDashboard #recentActivity th a, #cDashboard #memberActivity th a {
+#cdashboard #recentActivity th a, #cdashboard #memberActivity th a {
 	color: #78a8d4;
 }
 
-#cDashboard #recentcontent li {
+#cdashboard #recentcontent li {
 	margin: 0 0 .5em;
 	line-height: 1.25em;
 }
@@ -2146,11 +2146,11 @@ table td.add a {
 	padding: 0;
 }
 
-#cCategory table td.add a, #cFeed table td.add a {
+#ccategory table td.add a, #cFeed table td.add a {
 	background: url(../images/icons/add_32.png) no-repeat center center;
 }
 
-/*#cCategory td.add a {
+/*#ccategory td.add a {
 	display: block;
 	background: url(../images/icons/new_32.png) no-repeat center center;
 	width: 12px;
@@ -2864,7 +2864,7 @@ ul.nest10off {
 
 /* @group Nested Heiarchical Lists - Categories */
 
-#cCategory ul.neston {
+#ccategory ul.neston {
 	list-style: none;
 	margin: 0 5px 0 0;
 	padding: 0;
@@ -2872,138 +2872,138 @@ ul.nest10off {
 	font-weight: bold;
 }
 
-#cCategory ul.nestoff {
+#ccategory ul.nestoff {
 	list-style: none;
 	margin: 0 5px 0 0;
 	padding: 0;
 	font-weight: bold;
 }
 
-#cCategory ul.nest1on {
+#ccategory ul.nest1on {
 	list-style: none;
 	background-image: none;
 	margin: 0 5px 0 16px;
 	padding: 0;
 }
 
-#cCategory ul.nest1off {
+#ccategory ul.nest1off {
 	list-style: none;
 	margin: 0 5px 0 16px;
 	padding: 0;
 }
 
-#cCategory ul.nest2on {
+#ccategory ul.nest2on {
 	list-style: none;
 	background-image: none;
 	margin: 0 5px 0 32px;
 	padding: 0;
 }
 
-#cCategory ul.nest2off {
+#ccategory ul.nest2off {
 	list-style: none;
 	margin: 0 5px 0 32px;
 	padding: 0;
 }
 
-#cCategory ul.nest3on {
+#ccategory ul.nest3on {
 	list-style: none;
 	background-image: none;
 	margin: 0 5px 0 48px;
 	padding: 0;
 }
 
-#cCategory ul.nest3off {
+#ccategory ul.nest3off {
 	list-style: none;
 	margin: 0 5px 0 48px;
 	padding: 0;
 }
 
-#cCategory ul.nest4on {
+#ccategory ul.nest4on {
 	list-style: none;
 	background-image: none;
 	margin: 0 5px 0 64px;
 	padding: 0;
 }
 
-#cCategory ul.nest4off {
+#ccategory ul.nest4off {
 	list-style: none;
 	margin: 0 5px 0 64px;
 	padding: 0;
 }
 
-#cCategory ul.nest5on {
+#ccategory ul.nest5on {
 	list-style: none;
 	background-image: none;
 	margin: 0 5px 0 80px;
 	padding: 0;
 }
 
-#cCategory ul.nest5off {
+#ccategory ul.nest5off {
 	list-style: none;
 	margin: 0 5px 0 80px;
 	padding: 0;
 }
 
-#cCategory ul.nest6on {
+#ccategory ul.nest6on {
 	list-style: none;
 	background-image: none;
 	margin: 0 5px 0 96px;
 	padding: 0;
 }
 
-#cCategory ul.nest6off {
+#ccategory ul.nest6off {
 	list-style: none;
 	margin: 0 5px 0 96px;
 	padding: 0;
 }
 
-#cCategory ul.nest7on {
+#ccategory ul.nest7on {
 	list-style: none;
 	background-image: none;
 	margin: 0 5px 0 112px;
 	padding: 0;
 }
 
-#cCategory ul.nest7off {
+#ccategory ul.nest7off {
 	list-style: none;
 	margin: 0 5px 0 112px;
 	padding: 0;
 }
 
-#cCategory ul.nest8on {
+#ccategory ul.nest8on {
 	list-style: none;
 	background-image: none;
 	margin: 0 5px 0 128px;
 	padding: 0;
 }
 
-#cCategory ul.nest8off {
+#ccategory ul.nest8off {
 	list-style: none;
 	margin: 0 5px 0 128px;
 	padding: 0;
 }
 
-#cCategory ul.nest9on {
+#ccategory ul.nest9on {
 	list-style: none;
 	background-image: none;
 	margin: 0 5px 0 128px;
 	padding: 0;
 }
 
-#cCategory ul.nest9off {
+#ccategory ul.nest9off {
 	list-style: none;
 	margin: 0 5px 0 128px;
 	padding: 0;
 }
 
-#cCategory ul.nest10on {
+#ccategory ul.nest10on {
 	list-style: none;
 	background-image: none;
 	margin: 0 5px 0 144px;
 	padding: 0;
 }
 
-#cCategory ul.nest10off {
+#ccategory ul.nest10off {
 	list-style: none;
 	margin: 0 5px 0 144px;
 	padding: 0;

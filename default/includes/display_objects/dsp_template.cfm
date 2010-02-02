@@ -43,6 +43,15 @@ to your own modified versions of Mura CMS.
 <cfsilent>
 	<cfset bean = application.contentManager.getActiveContent(arguments.objectID, arguments.siteID)>
 	<cfset rsTemplate=bean.getAllValues()>
+	
+	<cfset _component=event.getValue("component")>
+	
+	<cfif isStruct(_component)>
+		<cfset structAppend(_component,rsTemplate,false)>
+	<cfelse>
+		<cfset event.setValue("component",rsTemplate)>
+	</cfif>
+	
 	<cfset rsTemplate.isOnDisplay=rsTemplate.display eq 1 or 
 			(
 				rsTemplate.display eq 1 and rsTemplate.DisplayStart lte now()
@@ -110,6 +119,7 @@ to your own modified versions of Mura CMS.
 		<cfset editableControl.editLink = editableControl.editLink & "&amp;parentid=" & bean.getParentID()>
 		<cfset editableControl.editLink = editableControl.editLink & "&amp;moduleid=" & bean.getModuleID()>
 		<cfset editableControl.editLink = editableControl.editLink & "&amp;compactDisplay=true">
+		<cfset editableControl.editLink = editableControl.editLink & "&amp;homeid=" & event.getContentBean().getContentID()>
 		<!---
 		<cfset editableControl.historyLink = adminBase & "#application.configBean.getContext()#/admin/index.cfm?fuseaction=cArch.hist">
 		<cfset editableControl.historyLink = editableControl.historyLink & "&amp;siteid=" & bean.getSiteID()>
@@ -127,7 +137,7 @@ to your own modified versions of Mura CMS.
 
 <cfif rsTemplate.isOnDisplay>
 	<cfif editableControl.innerHTML neq "">
-		<div class="editableObject editableComponent">
+		<cfoutput>#renderEditableObjectHeader("editableComponent")#</cfoutput>
 	</cfif>
 	<cfif len(rsTemplate.template) and fileExists("#getSite().getTemplateIncludeDir()#/components/#rsTemplate.template#")>
 		<cfset componentBody=rsTemplate.body>
@@ -138,6 +148,6 @@ to your own modified versions of Mura CMS.
 		</cfoutput>
 	</cfif>
 	<cfif editableControl.innerHTML neq "">
-		<cfoutput>#editableControl.innerHTML#</cfoutput></div>
+		<cfoutput>#renderEditableObjectFooter(editableControl.innerHTML)#</cfoutput>
 	</cfif>
 </cfif>

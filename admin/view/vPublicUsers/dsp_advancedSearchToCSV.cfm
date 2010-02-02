@@ -13,7 +13,7 @@ You should have received a copy of the GNU General Public License
 along with Mura CMS.  If not, see <http://www.gnu.org/licenses/>.
 
 Linking Mura CMS statically or dynamically with other modules constitutes
-the preparation of a derivative work based on Mura CMS. Thus, the terms and 	
+the preparation of a derivative work based on Mura CMS. Thus, the terms and      
 conditions of the GNU General Public License version 2 (“GPL”) cover the entire combined work.
 
 However, as a special exception, the copyright holders of Mura CMS grant you permission
@@ -41,24 +41,24 @@ the GNU General Public License version 2  without this exception.  You may, if y
 to your own modified versions of Mura CMS.
 --->
 <cfsilent>
-	<cfset str = "" />
-	<!--- get records --->
-	<cfset records = application.userManager.getAdvancedSearch(session,attributes.siteid,1) />
-	<!--- get orig list --->
-	<cfset origColumnList = records.columnlist />
-	<!--- get column lists --->
-	<cfset qualifiedColumns = ListQualify( origColumnList, '"', ",", "CHAR" ) />
-	<!--- assign columns to string --->
-	<cfset str = str & qualifiedColumns & chr(10) />
-	<!--- query over records and append --->
-	<cfloop query="records">
-		<cfset record = "" />
-		<!--- loop over columns --->
-		<cfloop list="#origColumnList#" index="column">
-			<cfset record = listAppend( record, records[column][records.currentrow] & " " ) />
-		</cfloop>
-		<cfset str = str & listQualify( record, '"', ",", "CHAR" ) & chr(10) />
-	</cfloop>
+       <cfset str = "" />
+       <!--- get records --->
+       <cfset records = application.userManager.getAdvancedSearch(session,attributes.siteid,1) />
+       <!--- get orig list --->
+       <cfset origColumnList = records.columnlist />
+       <!--- get column lists --->
+       <cfset qualifiedColumns = ListQualify( origColumnList, '"', ",", "CHAR" ) />
+       <!--- assign columns to string --->
+       <cfset str = str & qualifiedColumns & chr(10) />
+       <!--- query over records and append --->
+       <cfloop query="records">
+               <cfset record = "" />
+               <!--- loop over columns --->
+               <cfloop list="#origColumnList#" index="column">
+                       <cfset record = listAppend( record, replace( records[column][records.currentrow], ",", "**comma**", "ALL" ) & " " ) />
+               </cfloop>
+               <cfset str = str & listQualify( record, '"', ",", "CHAR" ) & chr(10) />
+       </cfloop>
 </cfsilent>
 <cfheader name="Content-Disposition" value="disposition;filename=members.csv">
-<cfcontent type="text/csv"><cfoutput>#str#</cfoutput>
+<cfcontent type="text/csv"><cfoutput>#replace( str, "**comma**", ",", "ALL" )#</cfoutput>

@@ -50,15 +50,28 @@ to your own modified versions of Mura CMS.
 <cfoutput>
 <div class="svMailingList" id="#createCSSID(rsList.name)#">
 	<#getHeaderTag('subHead1')#>#rslist.name#</#getHeaderTag('subHead1')#>
+	
 	<cfif request.doaction eq 'unsubscribe'>
-	<p class="success">#rbFactory.getKey('mailinglist.youhaveunsubscribed')#</p>
+		<cfif event.getValue("passedProtect")>
+			<p class="success">#rbFactory.getKey('mailinglist.youhaveunsubscribed')#</p>
+		<cfelse>
+			<p class="error">#rbFactory.getKey('captcha.spam')#</p>
+		</cfif>
 	<cfelseif request.doaction eq 'subscribe' and rslist.isPurge neq 1>
-	<p class="success">#rbFactory.getKey('mailinglist.youhavesubscribed')#</p>
+		<cfif event.getValue("passedProtect")>
+			<p class="success">#rbFactory.getKey('mailinglist.youhavesubscribed')#</p>
+		<cfelse>
+			<p class="error">#rbFactory.getKey('captcha.spam')#</p>
+		</cfif>
 	<cfelseif request.doaction eq 'subscribe' and rslist.isPurge eq 1>
-	<p class="success">#rbFactory.getKey('mailinglist.emailremoved')#</p>
+		<cfif event.getValue("passedProtect")>
+			<p class="success">#rbFactory.getKey('mailinglist.emailremoved')#</p>
+		<cfelse>
+			<p class="error">#rbFactory.getKey('captcha.spam')#</p>
+		</cfif>	
 	<cfelse>
 	<cfif #rslist.description# neq ''><p class="description">#rslist.description#</p></cfif>
-	<form name="form1" action="#application.configBean.getIndexFile()#?nocache=1" method="post" onsubmit="return validate(this);" class="clearfix">
+	<form name="form1" action="?nocache=1" method="post" onsubmit="return validate(this);" class="clearfix">
 		<fieldset>
 			<legend>#rbFactory.getKey('mailinglist.yourinfo')#</legend>
 			<ol>
@@ -93,6 +106,7 @@ to your own modified versions of Mura CMS.
 			<input type="hidden" name="isVerified" value="1"  />
 			<input type="submit" class="submit" value="#HTMLEditFormat(rbFactory.getKey('mailinglist.unsubscribe'))#" />
 			</cfif>
+			<cfinclude template="dsp_form_protect.cfm" />
 		</div>
 	</form>
 	</cfif>

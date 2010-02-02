@@ -41,9 +41,19 @@ the GNU General Public License version 2  without this exception.  You may, if y
 to your own modified versions of Mura CMS.
 --->
 <cfcomponent extends="mura.iterator.queryIterator" output="false">
+
+<cfset variables.packageBy="active">
+
+<cffunction name="init" access="public" output="false" returntype="any">
+	<cfargument name="packageBy" required="true" default="active">
+		<cfset super.init(argumentCollection=arguments)>
+		<cfset variables.packageBy=arguments.packageBy>
+		
+		<cfreturn this />
+	</cffunction>
 	
 <cffunction name="packageRecord" access="public" output="false" returntype="any">
-	<cfset var content=createObject("component","contentNavBean").init(queryRowToStruct(variables.records,currentIndex()),variables.contentManager) />
+	<cfset var content=createObject("component","contentNavBean").init(queryRowToStruct(variables.records,currentIndex()),variables.contentManager,variables.packageBy) />
 	<cfif isObject(variables.recordTranslator)>
 		<cfset content.setTranslator(variables.recordTranslator)>
 	</cfif>

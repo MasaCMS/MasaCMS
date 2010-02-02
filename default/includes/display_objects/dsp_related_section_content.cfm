@@ -75,9 +75,9 @@ to your own modified versions of Mura CMS.
 				<cfset class=listAppend(class,"hasImage"," ")>
 			</cfif>
 			
-			<cfset link=addlink('#rsFeatures.type#','#rsFeatures.filename#','#rsFeatures.menutitle#','#rsFeatures.target#','#rsFeatures.targetParams#','#rsFeatures.contentid#','#request.siteid#','','#application.configBean.getContext()#','#application.configBean.getStub()#','#application.configBean.getIndexFile()#')>
+			<cfset link=addlink('#rsFeatures.type#','#rsFeatures.filename#','#rsFeatures.menutitle#','#rsFeatures.target#','#rsFeatures.targetParams#','#rsFeatures.contentid#','#request.siteid#','','#application.configBean.getContext()#','#application.configBean.getStub()#','')>
 			<cfif rsFeatures.type eq 'Page' and hasComments>
-				<cfset commentsLink=addlink('#rsFeatures.type#','#rsFeatures.filename#','Comments(#application.contentGateway.getCommentCount(request.siteid,rsFeatures.contentid)#)','#rsFeatures.target#','#rsFeatures.targetParams#','#rsFeatures.contentid#','#request.siteid#','##comments','#application.configBean.getContext()#','#application.configBean.getStub()#','#application.configBean.getIndexFile()#')>
+				<cfset commentsLink=addlink('#rsFeatures.type#','#rsFeatures.filename#','Comments(#application.contentGateway.getCommentCount(request.siteid,rsFeatures.contentid)#)','#rsFeatures.target#','#rsFeatures.targetParams#','#rsFeatures.contentid#','#request.siteid#','##comments','#application.configBean.getContext()#','#application.configBean.getStub()#','')>
 			</cfif>
 		</cfsilent>
 		<dl<cfif class neq ''> class="#class#"</cfif>>

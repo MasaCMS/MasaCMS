@@ -58,6 +58,19 @@ select * from rsSubTypes where subType <> 'Default'
 <cfoutput><form action="index.cfm?fuseaction=cPrivateUsers.update&userid=#attributes.userid#&routeid=#attributes.routeid#&siteid=#attributes.siteid#" method="post" enctype="multipart/form-data" name="form1" onsubmit="return validate(this);"  autocomplete="off" >
 	<h2>#application.rbFactory.getKeyValue(session.rb,'user.adminuserform')#</h2>
 	
+	<cfif len(request.userBean.getUsername())>
+		<cfset strikes=createObject("component","mura.user.userstrikes").init(request.userBean.getUsername(),application.configBean)>
+		<cfif structKeyExists(attributes,"removeBlock")>
+			<cfset strikes.clear()>
+		</cfif>
+		<cfif strikes.isBlocked()>
+			<p class="error">
+			#application.rbFactory.getKeyValue(session.rb,'user.blocked')#: #LSTimeFormat(strikes.blockedUntil(),"short")#
+			<a href="?fuseaction=cPrivateUsers.edituser&userid=#attributes.userID#&type=2&siteid=#attributes.siteID#&removeBlock">[#application.rbFactory.getKeyValue(session.rb,'user.remove')#]</a>
+			</p>
+		</cfif>
+	</cfif>
+	
 	#application.utility.displayErrors(request.userBean.getErrors())#
 	
 	<p>#application.rbFactory.getKeyValue(session.rb,'user.requiredtext')#</p>
@@ -225,12 +238,12 @@ select * from rsSubTypes where subType <> 'Default'
 	</cfif>
 	<div class="page_aTab">
 		<dl class="oneColumn">
-				<cfif isUserInRole('S2')>
+				<cfif listFind(session.mura.memberships,'S2')>
 			<dt class="first">#application.rbFactory.getKeyValue(session.rb,'user.superadminaccount')#</dt>
 			<dd><ul class="radioGroup"><li><input name="s2" type="radio" class="radio" value="1" <cfif request.userBean.gets2() eq 1>Checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'user.yes')#</li><li><input name="s2" type="radio" class="radio" value="0" <cfif request.userBean.gets2() eq 0>Checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'user.no')#</li></ul></dd>
 		</cfif>
 		
-		<dt <cfif not isUserInRole('S2')>class="first"</cfif>>#application.rbFactory.getKeyValue(session.rb,'user.emailbroadcaster')#</dt>
+		<dt <cfif not listFind(session.mura.memberships,'S2')>class="first"</cfif>>#application.rbFactory.getKeyValue(session.rb,'user.emailbroadcaster')#</dt>
 		<dd><ul class="radioGroup"><li><input name="subscribe" type="radio" class="radio" value="1"<cfif request.userBean.getsubscribe() eq 1>Checked</cfif>>Yes</li><li><input name="subscribe" type="radio" class="radio" value="0"<cfif request.userBean.getsubscribe() eq 0>Checked</cfif>>No</li></ul></dd>
 		<dt>#application.rbFactory.getKeyValue(session.rb,'user.inactive')#</dt>
 		<dd><ul class="radioGroup"><li><input name="InActive" type="radio" class="radio" value="0"<cfif request.userBean.getInActive() eq 0 >Checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'user.yes')#</li><li><input name="InActive" type="radio" class="radio" value="1"<cfif request.userBean.getInActive() eq 1 >Checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'user.no')#</li></ul></dd>

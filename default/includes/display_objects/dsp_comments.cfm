@@ -76,9 +76,9 @@ to your own modified versions of Mura CMS.
 	
 	<cfset rbFactory=getSite().getRBFactory() />
 	<cfset theContentID=request.contentBean.getcontentID()>
-	<cfset request.isEditor=(isUserInRole('S2IsPrivate;#application.settingsManager.getSite(request.siteid).getPrivateUserPoolID()#') 
+	<cfset request.isEditor=(listFind(session.mura.memberships,'S2IsPrivate;#application.settingsManager.getSite(request.siteid).getPrivateUserPoolID()#') 
 			and application.permUtility.getnodePerm(request.crumbdata) neq 'none') 
-			or isUserInRole("S2")>
+			or listFind(session.mura.memberships,'S2')>
 	<cfparam name="request.commentid" default="">
 	<cfparam name="request.comments" default="">
 	<cfparam name="request.securityCode" default="">
@@ -199,7 +199,7 @@ to your own modified versions of Mura CMS.
 		<dl class="#class#">
 			<dt><cfif rsComments.url neq ''><a href="#rsComments.url#" target="_blank">#htmleditformat(rsComments.name)#</a><cfelse>#htmleditformat(rsComments.name)# </cfif> <cfif request.isEditor and rsComments.email neq ''><a href="javascript:noSpam('#listFirst(htmlEditFormat(rsComments.email),'@')#','#listlast(HTMLEditFormat(rsComments.email),'@')#')" onfocus="this.blur();">#rbFactory.getKey('comments.email')#</a></cfif></dt>
 			<dd class="comment">#setParagraphs(htmleditformat(rsComments.comments))#</dd>
-			<dd class="dateTime">#LSDateFormat(rsComments.entered,"long")#, #LSTimeFormat(rsComments.entered,"short")# <cfif request.isEditor> | <a href="?deletecommentid=#rscomments.commentid#&nocache=1" onClick="return confirm('Delete Comment?');">#rbFactory.getKey('comments.delete')#</a> <cfif rsComments.isApproved neq 1> | <a href="?approvedcommentid=#rscomments.commentid#&nocache=1" onClick="return confirm('Approve Comment?');">#rbFactory.getKey('comments.approve')#</a></cfif></cfif></dd>
+			<dd class="dateTime">#LSDateFormat(rsComments.entered,"long")#, #LSTimeFormat(rsComments.entered,"short")# <cfif request.isEditor> | <a href="index.cfm?deletecommentid=#rscomments.commentid#&nocache=1" onClick="return confirm('Delete Comment?');">#rbFactory.getKey('comments.delete')#</a> <cfif rsComments.isApproved neq 1> | <a href="index.cfm?approvedcommentid=#rscomments.commentid#&nocache=1" onClick="return confirm('Approve Comment?');">#rbFactory.getKey('comments.approve')#</a></cfif></cfif></dd>
 		</dl>
 		</cfoutput>
 		<!--- This was for the "Guestbook" style comments with pagination
@@ -229,15 +229,15 @@ to your own modified versions of Mura CMS.
 			<ol>
 				<li class="req">
 					<label for="txtName">#rbFactory.getKey('comments.name')#<ins> (#rbFactory.getKey('comments.required')#)</ins></label>
-					<input id="txtName" name="name" type="text" size="38" class="text" maxlength="50" required="true" message="#htmlEditFormat(rbFactory.getKey('comments.namerequired'))#" value="#HTMLEditFormat(request.name)#"/>
+					<input id="txtName" name="name" type="text" size="38" class="text" maxlength="50" required="true" message="#htmlEditFormat(rbFactory.getKey('comments.namerequired'))#" value="#HTMLEditFormat(request.name)#" />
 				</li>
 				<li class="req">
 					<label for="txtEmail">#rbFactory.getKey('comments.email')#</label>
-					<input id="txtEmail" name="email" type="text" size="38" class="text" maxlength="50" required="true" message="#htmlEditFormat(rbFactory.getKey('comments.emailvalidate'))#"value="#HTMLEditFormat(request.email)#"/>
+					<input id="txtEmail" name="email" type="text" size="38" class="text" maxlength="50" required="true" message="#htmlEditFormat(rbFactory.getKey('comments.emailvalidate'))#" value="#HTMLEditFormat(request.email)#" />
 				</li>
 				<li>
 					<label for="txtUrl">#rbFactory.getKey('comments.url')#</label>
-					<input id="txtUrl" name="url" type="text" size="38" class="text" maxlength="50" value="#HTMLEditFormat(request.url)#"/>
+					<input id="txtUrl" name="url" type="text" size="38" class="text" maxlength="50" value="#HTMLEditFormat(request.url)#" />
 				</li>
 				<li class="req">
 					<label for="txtComment">#rbFactory.getKey('comments.comment')#<ins> (#rbFactory.getKey('comments.required')#)</ins></label>
@@ -251,14 +251,18 @@ to your own modified versions of Mura CMS.
 					<label for="txtSubscribe">#rbFactory.getKey('comments.subscribe')#</label>
 					<input type="checkbox" id="txtSubscribe" name="subscribe" value="1"<cfif isBoolean(request.subscribe) and request.subscribe> checked="checked"</cfif> />
 				</li></cfoutput>
-				<cfinclude template="dsp_form_protect.cfm" >
+				<li>
+					<cfinclude template="dsp_form_protect.cfm" />
+				</li>
 			</ol>
 		</fieldset>
 		<div class="buttons">
-			<cfoutput><p class="required">#rbFactory.getKey('comments.requiredfield')#</p>
-			<input type="hidden" name="returnURL" value="#application.contentRenderer.getCurrentURL()#" />
-			<input type="hidden" name="commentid" value="#createuuid()#" />
-			<input type="submit" class="submit" name="submit" value="#htmlEditFormat(rbFactory.getKey('comments.submit'))#" /></cfoutput>
+			<cfoutput>
+				<p class="required">#rbFactory.getKey('comments.requiredfield')#</p>
+				<input type="hidden" name="returnURL" value="#getCurrentURL()#" />
+				<input type="hidden" name="commentid" value="#createuuid()#" />
+				<input type="submit" class="submit" name="submit" value="#htmlEditFormat(rbFactory.getKey('comments.submit'))#" />
+			</cfoutput>
 		</div>
 	</form>
 </div>

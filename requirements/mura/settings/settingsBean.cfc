@@ -64,6 +64,8 @@ to your own modified versions of Mura CMS.
 <cfset variables.instance.Extranet=0/>
 <cfset variables.instance.ExtranetSSL=0/>
 <cfset variables.instance.cache=0/>
+<cfset variables.instance.cacheCapacity=0/>
+<cfset variables.instance.cacheFreeMemoryThreshold=0/>
 <cfset variables.instance.ViewDepth=1/>
 <cfset variables.instance.nextN=20/>
 <cfset variables.instance.DataCollection=0/>
@@ -166,6 +168,8 @@ to your own modified versions of Mura CMS.
 			<cfset setExtranetPublicReg(arguments.data.ExtranetPublicReg) />
 			<cfset setExtranetSSL(arguments.data.ExtranetSSL) />
 			<cfset setcache(arguments.data.cache) />
+			<cfset setCacheCapacity(arguments.data.cacheCapacity) />
+			<cfset setCacheFreeMemoryThreshold(arguments.data.cacheFreeMemoryThreshold) />
 			<cfset setViewDepth(arguments.data.ViewDepth) />
 			<cfset setnextN(arguments.data.nextN) />
 			<cfset setDataCollection(arguments.data.DataCollection) />
@@ -426,6 +430,28 @@ to your own modified versions of Mura CMS.
 <cffunction name="setCache" access="public" output="false">
 	<cfargument name="Cache" type="Numeric" />
 	<cfset variables.instance.Cache = arguments.Cache />
+</cffunction>
+
+<cffunction name="getCacheCapacity" returntype="Numeric" access="public" output="false">
+	<cfreturn variables.instance.cacheCapacity />
+</cffunction>
+
+<cffunction name="setCacheCapacity" access="public" output="false">
+	<cfargument name="cacheCapacity" />
+	<cfif isNumeric(arguments.cacheCapacity)>
+	<cfset variables.instance.cacheCapacity = arguments.cacheCapacity />
+	</cfif>
+</cffunction>
+
+<cffunction name="getCacheFreeMemoryThreshold" returntype="Numeric" access="public" output="false">
+	<cfreturn variables.instance.cacheFreeMemoryThreshold />
+</cffunction>
+
+<cffunction name="setCacheFreeMemoryThreshold" access="public" output="false">
+	<cfargument name="cacheFreeMemoryThreshold" />
+	<cfif isNumeric(arguments.cacheFreeMemoryThreshold)>
+	<cfset variables.instance.cacheFreeMemoryThreshold = arguments.cacheFreeMemoryThreshold />
+	</cfif>
 </cffunction>
 
 <cffunction name="getViewDepth" returntype="Numeric" access="public" output="false">
@@ -863,12 +889,15 @@ to your own modified versions of Mura CMS.
 	<cfif isObject(variables.instance.cacheFactory)>
 		<cfreturn variables.instance.cacheFactory />
 	<cfelse>
-		<cfset variables.instance.cacheFactory=createObject("component","mura.cache.cacheFactory").init()>
+		<cfif not getCacheCapacity()>
+			<cfset variables.instance.cacheFactory=createObject("component","mura.cache.cacheFactory").init(freeMemoryThreshold=getCacheFreeMemoryThreshold())>
+		<cfelse>
+			<cfset variables.instance.cacheFactory=createObject("component","mura.cache.cacheFactoryLRU").init(capacity=getCacheCapacity(),freeMemoryThreshold=getCacheFreeMemoryThreshold())>
+		</cfif>
 		<cfreturn variables.instance.cacheFactory />
 	</cfif>
 	
 </cffunction>
-
 
 <cffunction name="purgeCache" returntype="void" access="public" output="false">
 	

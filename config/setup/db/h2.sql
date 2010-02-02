@@ -692,7 +692,6 @@ INSERT INTO `tsystemobjects` (`Object`,`SiteID`,`Name`,`OrderNo`) VALUES
  ('related_content','default','Related Content',19),
  ('user_tools','default','User Tools',20),
  ('tag_cloud','default','Tag Cloud',21),
- ('IASiteMap','default','IA Site Map',22),
  ('goToFirstChild','default','Go To First Child',23);
 
 DROP TABLE IF EXISTS `tuseraddresses`;

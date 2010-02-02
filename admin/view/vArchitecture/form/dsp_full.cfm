@@ -40,6 +40,7 @@ for your modified version; it is your choice whether to do so, or to make such m
 the GNU General Public License version 2  without this exception.  You may, if you choose, apply this exception
 to your own modified versions of Mura CMS.
 --->
-
+<cfoutput>
 <h2>Edit Content</h2>
-This site has reached it's maximum number of pages allowed. If you have any questions, or are interested in learning about more options for your website please email <a href="mailto:admin@studiosquared.com">admin@studiosquared.com</a>.
+This site has reached it's maximum number of pages allowed. If you have any questions, or are interested in learning about more options for your website please email <a href="mailto:#application.configBean.getAdminEmail()#">#application.configBean.getAdminEmail()#</a>.
+</cfoutput>

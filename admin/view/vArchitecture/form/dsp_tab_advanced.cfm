@@ -73,8 +73,8 @@ to your own modified versions of Mura CMS.
 	<dd id="rg"<cfif request.contentBean.getrestricted() NEQ 1> style="display:none;"</cfif>>
 	<select name="restrictgroups" size="8" multiple="multiple" class="multiSelect" id="restrictGroups">
 	<optgroup label="#htmlEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.globalsettings'))#">
-	<option value="RestrictAll" <cfif request.contentBean.getrestrictgroups() eq 'RestrictAll'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.restrictall')#</option>
 	<option value="" <cfif request.contentBean.getrestrictgroups() eq ''>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.allowall')#</option>
+	<option value="RestrictAll" <cfif request.contentBean.getrestrictgroups() eq 'RestrictAll'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.restrictall')#</option>
 	</optgroup>
 	<cfquery dbtype="query" name="rsGroups">select * from request.rsrestrictgroups where isPublic=1</cfquery>	
 	<cfif rsGroups.recordcount>
@@ -118,7 +118,7 @@ to your own modified versions of Mura CMS.
 <dt><input name="doCache" id="doCache" type="CHECKBOX" value="0"<cfif request.contentBean.getDoCache() eq 0> checked</cfif> class="checkbox"> <label for="cacheItem">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.docache')#</label></dt>
 </cfif>
 
-<cfif  attributes.contentid neq '00000000000000000000000000000000001' and isuserinRole("s2")>
+<cfif  attributes.contentid neq '00000000000000000000000000000000001' and listFind(session.mura.memberships,'S2')>
 <dt>
 	<input name="isLocked" id="islocked" type="CHECKBOX" value="1" <cfif request.contentBean.getIsLocked() eq "">checked <cfelseif request.contentBean.getIsLocked() eq 1>checked</cfif> class="checkbox"> <label for="islocked">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.locknode')#</label>
 </dt>

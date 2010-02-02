@@ -22,7 +22,7 @@
 <cfset attributes.includeDirWeb="#application.configBean.getAssetPath()#/#session.siteid#/assets" />
 </cfcase>
 <cfcase value="root">
-<cfif isUserInRole('S2')>
+<cfif listFindNoCase(session.mura.memberships,'S2')>
 <cfset attributes.fmTitle="Application Root" />
 <cfset attributes.includeDir="#application.configBean.getWebRoot()##application.configBean.getFileDelim()#" />
 <cfset attributes.includeDirWeb="#application.configBean.getContext()#" />
@@ -527,7 +527,7 @@
 <li><a href="index.cfm?fuseaction=cFilemanager.default&siteid=#session.siteid#&subdir=&location=files">System Files</a></li>
 
 <li><a href="index.cfm?fuseaction=cFilemanager.default&siteid=#session.siteid#&subdir=&location=assets">Site Assets</a></li>
-<cfif isUserInRole('S2')>
+<cfif listFind(session.mura.memberships,'S2')>
 <li><a href="index.cfm?fuseaction=cFilemanager.default&siteid=#session.siteid#&subdir=&location=root">Application Root</a></li>
 </cfif>
 </ul>--->

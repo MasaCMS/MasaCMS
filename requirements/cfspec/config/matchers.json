@@ -1,0 +1,37 @@
+[
+  ["Equal(Numeric|Date|Boolean|String|Object|Struct|Array|Query)?(NoCase)?",
+   "cfspec.lib.matchers.Equal"],
+
+  ["BeCloseTo",
+   "cfspec.lib.matchers.BeCloseTo"],
+
+  ["Be",
+   "cfspec.lib.matchers.BeSame"],
+
+  ["Be(GreaterThanOrEqualTo|GreaterThan|LessThanOrEqualTo|LessThan|Before|After)",
+   "cfspec.lib.matchers.BeComparison"],
+
+  ["Have(AtLeast|AtMost|Exactly)?",
+   "cfspec.lib.matchers.Have"],
+
+  ["HaveTag",
+   "cfspec.lib.matchers.HaveTag"],
+
+  ["Match(NoCase)?",
+   "cfspec.lib.matchers.Match"],
+
+  ["Contain(NoCase)?",
+   "cfspec.lib.matchers.Contain"],
+
+  ["Be(.+)",
+   "cfspec.lib.matchers.Be"],
+
+  ["RespondTo",
+   "cfspec.lib.matchers.RespondTo"],
+
+  ["Change(NoCase)?",
+   "cfspec.lib.matchers.Change"],
+
+  ["Throw",
+   "cfspec.lib.matchers.Throw"]
+]

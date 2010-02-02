@@ -43,7 +43,8 @@ to your own modified versions of Mura CMS.
 <cfcomponent output="false" extends="mura.cfobject">
 
 <cffunction name="init" returntype="any" access="public" output="false">
-		
+	
+	
 	<cfscript>
 	if (NOT IsDefined("request"))
 	    request=structNew();
@@ -72,7 +73,8 @@ to your own modified versions of Mura CMS.
 	<cfset setValue('ValidatorFactory',application.pluginManager.getEventManager(getValue('siteid')).getFactory("Validator"))>
 	<cfset setValue('HandlerFactory',application.pluginManager.getEventManager(getValue('siteid')).getFactory("Handler"))>
 	<cfset setValue('TranslatorFactory',application.pluginManager.getEventManager(getValue('siteid')).getFactory("Translator"))>
-
+	<cfset setValue("MuraScope",createObject("component","mura.MuraScope"))>
+	<cfset getValue('MuraScope').setEvent(this)>
 	<cfreturn this />
 </cffunction>
 

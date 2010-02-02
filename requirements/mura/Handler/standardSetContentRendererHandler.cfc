@@ -25,7 +25,7 @@
 	<cfargument name="event" required="true">
 	
 	<cfset event.setValue('contentRenderer',createObject("component","#event.getSite().getAssetMap()#.includes.contentRenderer").init(event))/>
-
+	<cfset event.getValue('MuraScope').setContentRenderer(event.getValue('contentRenderer'))>
 </cffunction>
 
 </cfcomponent>

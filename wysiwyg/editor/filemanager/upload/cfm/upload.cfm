@@ -21,6 +21,7 @@
  * This is the "File Uploader" for ColdFusion.
  * Based on connector.cfm by Mark Woods (mark@thickpaddy.com)
 --->
+<cfset fileWriter=application.serviceFactory.getBean("fileWriter")>
 
 <cfinclude template="config.cfm">
 
@@ -92,7 +93,7 @@
 		<cfset currentFolderPath = userFilesServerPath & url.type & fs>
 
 		<cfif not directoryExists(currentFolderPath)>
-			<cfdirectory action="create" directory="#currentFolderPath#" mode="775"/>
+			<cfset fileWriter.createDir(directory="#currentFolderPath#", mode="775")>
 		</cfif>
 
 		<!--- TODO: upload to a temp directory and move file if extension is allowed --->
@@ -107,11 +108,10 @@
 		--->
 		
 		<cffile action="upload"
-					fileField="NewFile"
-					destination="#application.configBean.getTempDir()#"
-					nameConflict="makeunique"
-					mode="644"
-					attributes="normal">
+				fileField="NewFile"
+				destination="#application.configBean.getTempDir()#"
+				nameConflict="makeunique"
+				attributes="normal">
 					
 		<cfif (Len(lAllowedExtensions) AND NOT listFindNoCase(lAllowedExtensions, cffile.ServerFileExt))
 			OR (Len(lDeniedExtensions) AND listFindNoCase(lDeniedExtensions, cffile.ServerFileExt))>
@@ -151,12 +151,11 @@
 				<cfset errorNumber = "201">
 			</cfif>
 			 --->
-			<cffile
-				action="rename"
-				source="#application.configBean.getTempDir()##cffile.ServerFileName#.#cffile.ServerFileExt#"
-				destination="#currentFolderPath##fileName#.#fileExt#"
-				mode="774"
-				attributes="normal">
+			 <cfset fileWriter.renameFile(
+			 		source="#application.configBean.getTempDir()##cffile.ServerFileName#.#cffile.ServerFileExt#",
+					destination="#currentFolderPath##fileName#.#fileExt#",
+					mode="774",
+					attributes="normal")>
 		</cfif>
 
 		<cfcatch type="Any">

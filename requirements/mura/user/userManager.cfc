@@ -76,8 +76,23 @@ to your own modified versions of Mura CMS.
 	</cffunction>
 	
 <cffunction name="read" access="public" returntype="any" output="false">
-	<cfargument name="userid" type="string" default=""/>		
-	<cfreturn variables.userDAO.read(arguments.userid) />
+	<cfargument name="userid" type="string" default=""/>
+	<cfargument name="username" type="string" default=""/>
+	<cfargument name="remoteID" type="string" default=""/>
+	<cfargument name="siteID" type="string" default=""/>
+	<cfargument name="isPublic" type="string" default="1"/>
+	
+	<cfif len(arguments.siteID)>
+		<cfif len(arguments.username)>
+			<cfreturn readByUsername(arguments.username,arguments.siteid) />
+		<cfelseif len(arguments.groupname)>
+			<cfreturn readByGroupName(arguments.groupname,arguments.siteid,arguments.isPublic) />
+		<cfelseif len(arguments.remoteID)>
+			<cfreturn readByRemoteID(arguments.remoteID,arguments.siteid) />
+		</cfif>
+	<cfelse>			
+		<cfreturn variables.userDAO.read(arguments.userid) />
+	</cfif>
 </cffunction>
 
 <cffunction name="readUserHash" access="public" returntype="query" output="false">
@@ -249,7 +264,7 @@ to your own modified versions of Mura CMS.
 	<cfreturn userBean />
 </cffunction>
 
-<cffunction name="create" access="public" returntype="struct" output="false">
+<cffunction name="create" access="public" returntype="any" output="false">
 	<cfargument name="data" type="any" default="#structnew()#"/>		
 	
 	<cfset var addressBean = "" />
@@ -321,6 +336,7 @@ to your own modified versions of Mura CMS.
 		</cfif>
 		
 		<cfset userBean.purgeExtendedData()>
+		<cfset userBean.setIsNew(0)>
 		
 		<cfif  userBean.getType() eq 1>	
 			<cfset pluginEvent.setValue("groupBean",userBean)/>			
@@ -392,9 +408,25 @@ to your own modified versions of Mura CMS.
 	<cfreturn variables.userGateway.getPublicGroups(arguments.siteid) />
 </cffunction>
 
+<cffunction name="getPublicGroupsIterator" access="public" returntype="any" output="false">
+	<cfargument name="siteid" type="string" default="" required="yes"/>		
+	<cfset var rs=variables.userGateway.getPublicGroups(arguments.siteid) />
+	<cfset var it=getServiceFactory().getBean("userIterator")>
+	<cfset it.setQuery(rs)>
+	<cfreturn it>
+</cffunction>
+
 <cffunction name="getPrivateGroups" access="public" returntype="any" output="false">
 	<cfargument name="siteid" type="string" default="" required="yes"/>	
 	<cfreturn variables.userGateway.getPrivateGroups(arguments.siteid) />
+</cffunction>
+
+<cffunction name="getPrivateGroupsIterator" access="public" returntype="any" output="false">
+	<cfargument name="siteid" type="string" default="" required="yes"/>	
+	<cfset var rs=variables.userGateway.getPrivateGroups(arguments.siteid) />
+	<cfset var it=getServiceFactory().getBean("userIterator")>
+	<cfset it.setQuery(rs)>
+	<cfreturn it>
 </cffunction>
 
 <cffunction name="createUserInGroup" access="public" returntype="void" output="false">
@@ -417,10 +449,24 @@ to your own modified versions of Mura CMS.
 </cffunction>
 
 <cffunction name="getAdvancedSearch" access="public" returntype="query" output="false">
-	<cfargument name="data" type="any" default="" required="yes"/>		
-	<cfargument name="siteid" type="string" default="" required="yes"/>
-	<cfargument name="isPublic" type="numeric" default="1" required="yes"/>
+	<cfargument name="data" type="any" default="" hint="This can be a struct or an instance of userFeedBean."/>	
+	<cfargument name="siteid" type="any" hint="deprecated, use userFeedBean.setSiteID()" default=""/>
+	<cfargument name="isPublic" type="any" hint="deprecated, use userFeedBean.setIsPublic()" default=""/>
 	<cfreturn variables.userGateway.getAdvancedSearch(arguments.data,arguments.siteid,arguments.isPublic) />
+</cffunction>
+
+<cffunction name="getAdvancedSearchQuery" access="public" returntype="query" output="false">
+	<cfargument name="userFeedBean" type="any" default="" required="yes"/>		
+	
+	<cfreturn getAdvancedSearch(arguments.userFeedBean) />
+</cffunction>
+
+<cffunction name="getAdvancedSearchIterator" access="public" returntype="query" output="false">
+	<cfargument name="userFeedBean" type="any" required="yes"/>		
+	<cfset var rs= getAdvancedSearch(arguments.userFeedBean) />
+	<cfset var it = getServiceFactory().getBean("userIterator")>
+	<cfset it.setQuery(rs)>
+	<cfreturn it>
 </cffunction>
 
 <cffunction name="setLastUpdateInfo" access="public" returntype="void" output="false">
@@ -621,4 +667,11 @@ to your own modified versions of Mura CMS.
 <cffunction name="getBean" returntype="any" output="false">
 	<cfreturn variables.userDAO.getBean()>
 </cffunction>
+
+<cffunction name="getUserFeedBean" returntype="any" output="false">
+	<cfset var userFeedBean=createObject("component","mura.user.userFeedBean").init()>
+	<cfset userFeedBean.setUserManager(this)>
+	<cfreturn userFeedBean>
+</cffunction>
+
 </cfcomponent>

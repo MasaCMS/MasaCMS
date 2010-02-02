@@ -204,7 +204,7 @@
 				<cfreturn "Dutch (Belgian)">
 			</cfcase>
 
-			<cfcase value="nl_NK">
+			<cfcase value="nl_NL">
 				<cfreturn "Dutch (Standard)">
 			</cfcase>
 

@@ -47,7 +47,7 @@ to your own modified versions of Mura CMS.
 <cfif attributes.status eq 'denied'>
 <p class="error">#application.rbFactory.getKeyValue(session.rb,'login.denied')#</p>
 <cfelseif attributes.status eq 'failed'>
-<cfif isDate(session.blockLoginUntil) and session.blockLoginUntil gt now()>
+<cfif structKeyExists(session, "blockLoginUntil") and isDate(session.blockLoginUntil) and session.blockLoginUntil gt now()>
 <cfset isBlocked=true />
 <p class="error">#application.rbFactory.getKeyValue(session.rb,'login.blocked')#</p>
 <cfelse>

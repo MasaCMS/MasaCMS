@@ -44,7 +44,7 @@ to your own modified versions of Mura CMS.
 <cfcomponent extends="mura.cfobject" output="false">
 <cfset variables.instance=structNew()/>
 <cfset variables.instance.mode=""/>
-<cfset variables.instance.version="5.1"/>
+<cfset variables.instance.version="5.2"/>
 <cfset variables.instance.title=""/>
 <cfset variables.instance.webroot=""/>
 <cfset variables.instance.webrootmap=""/>
@@ -100,6 +100,8 @@ to your own modified versions of Mura CMS.
 <cfset variables.instance.proxyPassword="" />
 <cfset variables.instance.proxyServer="" />
 <cfset variables.instance.proxyPort="80" />
+<cfset variables.instance.sharableRemoteSessions=true />
+<cfset variables.instance.siteIDInURLS=false />
 <cfset variables.instance.appreloadKey=application.appreloadKey />
 <cfset variables.instance.tempDir=getTempDirectory() />
 
@@ -220,6 +222,14 @@ to your own modified versions of Mura CMS.
 	
 	<cfif structKeyExists(config,"proxyPort")>
 		<cfset setProxyPort(config.proxyPort)/>
+	</cfif>
+	
+	<cfif structKeyExists(config,"sharableRemoteSessions")>
+		<cfset setSharableRemoteSessions(config.sharableRemoteSessions)/>
+	</cfif>
+	
+	<cfif structKeyExists(config,"siteIDInURLS")>
+		<cfset setSiteIDInURLS(config.siteIDInURLS)/>
 	</cfif>
 	
 	<cfswitch expression="#server.coldfusion.productName#">
@@ -898,4 +908,25 @@ to your own modified versions of Mura CMS.
 	<cfreturn variables.instance.pluginDir />
 </cffunction>
 
+<cffunction name="setSharableRemoteSessions" access="public" output="false">
+	<cfargument name="sharableRemoteSessions" />
+	<cfif isBoolean(arguments.sharableRemoteSessions)>
+		<cfset variables.instance.sharableRemoteSessions = arguments.sharableRemoteSessions />
+	</cfif>
+</cffunction>
+
+<cffunction name="getSharableRemoteSessions" returntype="boolean" access="public" output="false">
+	<cfreturn variables.instance.sharableRemoteSessions />
+</cffunction>
+
+<cffunction name="setSiteIDInURLS" access="public" output="false">
+	<cfargument name="siteIDInURLS" />
+	<cfif isBoolean(arguments.siteIDInURLS)>
+		<cfset variables.instance.siteIDInURLS = arguments.siteIDInURLS />
+	</cfif>
+</cffunction>
+
+<cffunction name="getSiteIDInURLS" returntype="boolean" access="public" output="false">
+	<cfreturn variables.instance.siteIDInURLS />
+</cffunction>
 </cfcomponent>

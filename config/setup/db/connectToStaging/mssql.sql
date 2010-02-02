@@ -75,6 +75,20 @@ GO
 CREATE VIEW [dbo].[tuserstags] AS SELECT * FROM [muradb].[dbo].[tuserstags]
 GO
 
+if exists (select * from dbo.sysobjects where id = object_id(N'[dbo].[tuserremotesessions]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+drop table [dbo].[tuserremotesessions]
+GO 
+
+CREATE VIEW [dbo].[tuserremotesessions] AS SELECT * FROM [muradb].[dbo].[tuserremotesessions]
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'[dbo].[tuserstrikes]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+drop table [dbo].[tuserstrikes]
+GO 
+
+CREATE VIEW [dbo].[tuserstrikes] AS SELECT * FROM [muradb].[dbo].[tuserstrikes]
+GO
+
 if exists (select * from dbo.sysobjects where id = object_id(N'[dbo].[tclassextend]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
 drop table [dbo].[tclassextend]
 GO 

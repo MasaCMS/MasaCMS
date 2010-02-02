@@ -46,10 +46,12 @@ to your own modified versions of Mura CMS.
 		<cfargument name="configBean" type="any" required="yes"/>
 		<cfargument name="settingsManager" type="any" required="yes"/>
 		<cfargument name="pluginManager" type="any" required="yes"/>
+		<cfargument name="fileWriter" required="true" default=""/>
 		
 		<cfset variables.configBean=arguments.configBean />
 		<cfset variables.settingsManager=arguments.settingsManager />
 		<cfset variables.pluginManager=arguments.pluginManager />
+		<cfset variables.fileWriter=arguments.fileWriter>
 		<cfif variables.configBean.getFileStoreAccessInfo() neq ''>
 			<cfset variables.s3=createObject("component","s3").init(
 							listFirst(variables.configBean.getFileStoreAccessInfo(),'^'),
@@ -92,13 +94,21 @@ to your own modified versions of Mura CMS.
 		
 		<cfswitch expression="#variables.configBean.getFileStore()#">
 			<cfcase value="fileDir">
-				<cffile action="write" mode="774" file="#application.configBean.getFileDir()##application.configBean.getFileDelim()##arguments.siteid##application.configBean.getFileDelim()#cache#application.configBean.getFileDelim()#file#application.configBean.getFileDelim()##fileID#.#arguments.fileExt#" output="#arguments.fileObj#">
+				<cfset variables.fileWriter.writeFile(mode="774", file="#application.configBean.getFileDir()##application.configBean.getFileDelim()##arguments.siteid##application.configBean.getFileDelim()#cache#application.configBean.getFileDelim()#file#application.configBean.getFileDelim()##fileID#.#arguments.fileExt#", output="#arguments.fileObj#")>
 				<cfif listFindNoCase("png,gif,jpg,jpeg",arguments.fileExt)>
-					<cfif isBinary(fileObjSmall)><cffile action="write" mode="774" file="#application.configBean.getFileDir()##application.configBean.getFileDelim()##arguments.siteid##application.configBean.getFileDelim()#cache#application.configBean.getFileDelim()#file#application.configBean.getFileDelim()##fileID#_small.#arguments.fileExt#" output="#arguments.fileObjSmall#"></cfif>
-					<cfif isBinary(fileObjMedium)><cffile action="write" mode="774" file="#application.configBean.getFileDir()##application.configBean.getFileDelim()##arguments.siteid##application.configBean.getFileDelim()#cache#application.configBean.getFileDelim()#file#application.configBean.getFileDelim()##fileID#_medium.#arguments.fileExt#" output="#arguments.fileObjMedium#"></cfif>
+					<cfif isBinary(fileObjSmall)>
+						<cfset variables.fileWriter.writeFile(mode="774", file="#application.configBean.getFileDir()##application.configBean.getFileDelim()##arguments.siteid##application.configBean.getFileDelim()#cache#application.configBean.getFileDelim()#file#application.configBean.getFileDelim()##fileID#_small.#arguments.fileExt#", output="#arguments.fileObjSmall#")>
+					</cfif>
+					<cfif isBinary(fileObjMedium)>
+						<cfset variables.fileWriter.writeFile(mode="774", file="#application.configBean.getFileDir()##application.configBean.getFileDelim()##arguments.siteid##application.configBean.getFileDelim()#cache#application.configBean.getFileDelim()#file#application.configBean.getFileDelim()##fileID#_medium.#arguments.fileExt#", output="#arguments.fileObjMedium#")/>
+					</cfif>
 				<cfelseif arguments.fileExt eq 'flv'>
-					<cfif isBinary(fileObjSmall)><cffile action="write" mode="774" file="#application.configBean.getFileDir()##application.configBean.getFileDelim()##arguments.siteid##application.configBean.getFileDelim()#cache#application.configBean.getFileDelim()#file#application.configBean.getFileDelim()##fileID#_small.jpg" output="#arguments.fileObjSmall#"></cfif>
-					<cfif isBinary(fileObjMedium)><cffile action="write" mode="774"  file="#application.configBean.getFileDir()##application.configBean.getFileDelim()##arguments.siteid##application.configBean.getFileDelim()#cache#application.configBean.getFileDelim()#file#application.configBean.getFileDelim()##fileID#_medium.jpg" output="#arguments.fileObjMedium#"></cfif>
+					<cfif isBinary(fileObjSmall)>
+						<cfset variables.fileWriter.writeFile(mode="774", file="#application.configBean.getFileDir()##application.configBean.getFileDelim()##arguments.siteid##application.configBean.getFileDelim()#cache#application.configBean.getFileDelim()#file#application.configBean.getFileDelim()##fileID#_small.jpg", output="#arguments.fileObjSmall#")>
+					</cfif>
+					<cfif isBinary(fileObjMedium)>
+						<cfset variables.fileWriter.writeFile( mode="774",  file="#application.configBean.getFileDir()##application.configBean.getFileDelim()##arguments.siteid##application.configBean.getFileDelim()#cache#application.configBean.getFileDelim()#file#application.configBean.getFileDelim()##fileID#_medium.jpg", output="#arguments.fileObjMedium#")>
+					</cfif>
 				</cfif>
 			</cfcase>
 			<cfcase value="s3">

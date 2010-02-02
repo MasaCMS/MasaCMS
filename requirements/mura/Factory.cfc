@@ -1,4 +1,4 @@
-<cfcomponent output="false">
+<cfcomponent output="false" extends="mura.cfobject">
 
 	<cfset variables.parent = "" />
 	<cfset variables.javaLoader = "" />
@@ -77,7 +77,7 @@
 
 	</cffunction>
 	<cffunction name="getAll" access="public" returntype="any" output="false">
-		<cfreturn variables.map />
+		<cfreturn variables.collection />
 	</cffunction>
 	
 	<cffunction name="set" access="public" returntype="void" output="false">

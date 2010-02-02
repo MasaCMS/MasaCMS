@@ -88,12 +88,38 @@ to your own modified versions of Mura CMS.
 	<cfreturn application.serviceFactory />	
 </cffunction>
 
+<cffunction name="getBean" returntype="any" access="public" output="false">
+	<cfargument name="beanName">
+	<cfargument name="siteID" required="false">
+	<cfset var bean="">
+	
+	<cfif application.serviceFactory.containsBean(arguments.beanName)>
+		<cfset bean=application.serviceFactory.getBean(arguments.beanName) />
+	
+		<cfif structKeyExists(bean,"setSiteID")>		
+			<cfif structKeyExists(arguments,"siteID") and len(arguments.siteID)>
+				<cfset bean.setSiteID(arguments.siteID)>			
+			<cfelseif isDefined("getSiteID")>
+				<cfset bean.setSiteID(getSiteID())>
+			<cfelseif len(getValue("siteID"))>
+				<cfset bean.setSiteID(getValue("siteID"))>		
+			</cfif>		
+		</cfif>
+		<cfreturn bean>
+	<cfelse>
+		<cfthrow message="The requested bean '#arguments.beanName#' is not defined.">
+	</cfif>	
+</cffunction>
+
 <cffunction name="getPluginManager" returntype="any" access="public" output="false">
 	<cfreturn application.pluginManager />	
 </cffunction>
 
 <cffunction name="getCurrentUser" returntype="any" access="public" output="false">
-	<cfreturn application.userManager.read(session.mura.userid) />	
+	<cfif not structKeyExists(request,"currentUser")>
+		<cfset request.currentUser=createObject("component","mura.user.sessionUserFacade").init() />
+	</cfif>
+	<cfreturn request.currentUser>	
 </cffunction>
 
 <cffunction name="getPlugin" returntype="any" access="public" output="false">
@@ -136,6 +162,19 @@ to your own modified versions of Mura CMS.
 	<cfelse>
 		<cfreturn getValue(arguments.translation)/>
 	</cfif>
+</cffunction>
+
+<cffunction name="injectMethod" returntype="void" access="public" output="false">
+<cfargument name="toObjectMethod" type="string" required="true" />
+<cfargument name="fromObjectMethod" type="any" required="true" />
+<cfset this[ arguments.toObjectMethod ] =  arguments.fromObjectMethod  />
+<cfset variables[ arguments.toObjectMethod ] =  arguments.fromObjectMethod />
+</cffunction>
+
+<cffunction name="deleteMethod" returntype="void" access="public" output="false">
+<cfargument name="methodName" type="any" required="true" />
+<cfset structKeyDelete(this,arguments.methodName)>
+<cfset structKeyDelete(variables,arguments.methodName)>
 </cffunction>
 
 </cfcomponent>

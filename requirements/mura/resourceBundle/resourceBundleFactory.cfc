@@ -140,7 +140,7 @@ to your own modified versions of Mura CMS.
 			</cfcase>
 
 			<cfcase value="Dutch (Standard)">
-				<cfreturn "nl_NK">
+				<cfreturn "nl_NL">
 			</cfcase>
 
 			<cfcase value="English (Australian)">

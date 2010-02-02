@@ -1,7 +1,0 @@
-<modelglue>
-	<controllers>
-		<controller name="actionpack.email.EmailController" type="ModelGlue.actionpacks.email.controller.EmailController">
-			<message-listener message="OnRequestStart" function="loadEmailService" />
-		</controller>
-	</controllers>
-</modelglue>

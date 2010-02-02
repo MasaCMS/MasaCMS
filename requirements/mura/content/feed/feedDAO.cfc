@@ -122,6 +122,7 @@ to your own modified versions of Mura CMS.
 	<cfset feedBean.setcontentID(readItems(rs.feedID,"contentID")) />
 	<cfset feedBean.setCategoryID(readItems(rs.feedID,"categoryID")) />
 	<cfset feedBean.setAdvancedParams(readAdvancedParams(rs.feedID)) />
+	<cfset feedBean.setIsNew(0)>
 	</cfif>
 	
 	<cfreturn feedBean />
@@ -140,11 +141,14 @@ to your own modified versions of Mura CMS.
 	and siteid=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.siteid#">
 	</cfquery>
 	
-	<cfif rs.recordcount>
-	<cfset feedBean.set(rs) />
-	<cfset feedBean.setcontentID(readItems(rs.feedID,"contentID")) />
-	<cfset feedBean.setCategoryID(readItems(rs.feedID,"categoryID")) />
-	<cfset feedBean.setAdvancedParams(readAdvancedParams(rs.feedID)) />
+	<cfif rs.recordcount gt 1>
+			<cfthrow message="The feed name '#arguments.name#' that you are reading by is not unique.">
+	<cfelseif rs.recordcount>
+		<cfset feedBean.set(rs) />
+		<cfset feedBean.setcontentID(readItems(rs.feedID,"contentID")) />
+		<cfset feedBean.setCategoryID(readItems(rs.feedID,"categoryID")) />
+		<cfset feedBean.setAdvancedParams(readAdvancedParams(rs.feedID)) />
+		<cfset feedBean.setIsNew(0)>
 	</cfif>
 	
 	<cfreturn feedBean />

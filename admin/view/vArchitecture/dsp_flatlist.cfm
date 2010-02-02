@@ -136,7 +136,7 @@ to your own modified versions of Mura CMS.
 					<cfif attributes.moduleid eq '00000000000000000000000000000000004'>
 						<li class="manageData"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.managedata')#" href="index.cfm?fuseaction=cArch.datamanager&contentid=#request.rstop.ContentID#&siteid=#attributes.siteid#&moduleid=#attributes.moduleid#&contenthistid=#request.rstop.ContentHistID#&topid=#attributes.topid#&parentid=#attributes.parentid#&type=Form">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.managedata')#</a></li>
 					</cfif>
-					<cfif isUserInRole('Admin;#application.settingsManager.getSite(attributes.siteid).getPrivateUserPoolID()#;0') or isUserInRole('S2')>
+					<cfif listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(attributes.siteid).getPrivateUserPoolID()#;0') or listFind(session.mura.memberships,'S2')>
 						<li class="permissions"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.permissions')#" href="index.cfm?fuseaction=cPerm.main&contentid=#request.rstop.ContentID#&type=#request.rstop.type#&parentid=#request.rstop.parentID#&topid=#attributes.topid#&siteid=#attributes.siteid#&moduleid=#attributes.moduleid#&startrow=#attributes.startrow#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.permissions')#</a>
 					<cfelse>
 						<li class="permissionsOff"><a>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.permissions')#</a></li>
@@ -149,7 +149,7 @@ to your own modified versions of Mura CMS.
 					</cfif>
 					<li class="permissionsOff"><a>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.permissions')#</a></li>
 				</cfif>
-				<cfif ((attributes.parentid neq '#attributes.topid#' and attributes.locking neq 'all') or (attributes.parentid eq '#attributes.topid#' and attributes.locking eq 'none')) and (verdict eq 'editor') and not request.rsTop.isLocked eq 1>
+				<cfif ((attributes.locking neq 'all') or (attributes.parentid eq '#attributes.topid#' and attributes.locking eq 'none')) and (verdict eq 'editor') and not request.rsTop.isLocked eq 1>
 					<li class="delete"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.delete')#" href="index.cfm?fuseaction=cArch.update&contentid=#request.rstop.ContentID#&type=#request.rstop.type#&action=deleteall&topid=#attributes.topid#&siteid=#attributes.siteid#&moduleid=#attributes.moduleid#&parentid=#attributes.parentid#" onClick="return confirm('#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.deletecontentconfirm'))#')">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.delete')#</a></li>
 				<cfelseif attributes.locking neq 'all'>
 					<li class="deleteOff">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.delete')#</li>

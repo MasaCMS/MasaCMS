@@ -40,9 +40,9 @@ for your modified version; it is your choice whether to do so, or to make such m
 the GNU General Public License version 2  without this exception.  You may, if you choose, apply this exception
 to your own modified versions of Mura CMS.
 --->
-<cfhtmlhead text="#session.dateKey#">
 <cfset variables.pluginEvent=createObject("component","mura.event").init(event.getAllValues())/>
 <cfset pageLevelList="Page,Portal,Calendar,Gallery"/>
+<cfset extendedList="Page,Portal,Calendar,Gallery,Component"/>
 <cfset nodeLevelList="Page,Portal,Calendar,Gallery,Link,File"/>
 <cfif attributes.compactDisplay neq "true"><script>
  var requestedURL="";
@@ -86,12 +86,12 @@ function setRequestedURL(){
 <cfelse>
 <cfset fileExt=''/>
 </cfif>
-<cfif listFindNoCase(nodeLevelList,attributes.type)>
+<cfif listFindNoCase(extendedList,attributes.type)>
 <cfset rsSubTypes=application.classExtensionManager.getSubTypes(attributes.siteID) />
-	<cfif attributes.compactDisplay neq "true" and listFindNoCase("Page,Portal,Calendar,Gallery",attributes.type)>
+	<cfif attributes.compactDisplay neq "true" and listFindNoCase("Page,Portal,Calendar,Gallery,Component",attributes.type)>
 		<cfquery name="rsSubTypes" dbtype="query">
 		select * from rsSubTypes
-		where type in ('Page','Portal','Calendar','Gallery')
+		where type in ('Page','Portal','Calendar','Gallery','Component')
 		</cfquery>
 	<cfelse>
 		<cfquery name="rsSubTypes" dbtype="query">
@@ -99,7 +99,12 @@ function setRequestedURL(){
 		where type = <cfqueryparam cfsqltype="cf_sql_varchar" value="#attributes.type#"/>
 		</cfquery>
 	</cfif>
-
+	<cfif listFindNoCase("Component",attributes.type)>
+		<cfset baseTypeList=attributes.type>
+	<cfelse>
+		<cfset baseTypeList=pageLevelList>
+	</cfif>
+	
 	<cfif rsSubTypes.recordCount>
 		<cfset isExtended=true/>
 	<cfelse>
@@ -141,10 +146,10 @@ select * from rsPluginScripts3 order by pluginID
 <cfif attributes.compactDisplay neq "true">
 	<cfif attributes.moduleid eq '00000000000000000000000000000000000'>#application.contentRenderer.dspZoom(request.crumbdata,fileExt)#</cfif>
 		<ul class="metadata">
-			<cfif listFindNoCase(pageLevelList,attributes.type)>
+			<cfif listFindNoCase(extendedList,attributes.type)>
 			<li><strong>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.type")#:</strong>
 			<select name="typeSelector" class="dropdown" onchange="resetExtendedAttributes('#request.contentBean.getcontentHistID()#',this.value,'#attributes.siteID#','#application.configBean.getContext()#','#application.settingsManager.getSite(attributes.siteID).getThemeAssetPath()#');">
-			<cfloop list="#pageLevelList#" index="t">
+			<cfloop list="#baseTypeList#" index="t">
 			<cfsilent><cfquery name="rsst" dbtype="query">select * from rsSubTypes where type=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#t#"> and subtype not in ('Default','default')</cfquery></cfsilent>
 			<option value="#t#^Default" <cfif attributes.type eq t and request.contentBean.getSubType() eq "Default">selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.type.#lcase(t)#")#</option>
 			<cfif rsst.recordcount>
@@ -227,20 +232,21 @@ select * from rsPluginScripts3 order by pluginID
 	</cfif>
 	<cfswitch expression="#attributes.type#">
 	<cfcase value="Form">
-	<cfif isUserInRole('s2IsPrivate')>
+	<cfif listFind(session.mura.memberships,'S2IsPrivate')>
 	<li><a  href="index.cfm?fuseaction=cArch.datamanager&contentid=#attributes.contentid#&siteid=#attributes.siteid#&topid=#attributes.topid#&moduleid=#attributes.moduleid#&type=Form&parentid=#attributes.moduleid#">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.managedata")#</a></li>
 	</cfif>
 	</cfcase>
 	</cfswitch>
 	<li><a href="index.cfm?fuseaction=cArch.hist&contentid=#attributes.contentid#&type=#attributes.type#&parentid=#attributes.parentid#&topid=#attributes.topid#&siteid=#attributes.siteid#&startrow=#attributes.startrow#&moduleid=#attributes.moduleid#&compactDisplay=#attributes.compactDisplay#">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.versionhistory")#</a> </li>
 	<cfif attributes.compactDisplay neq 'true' and request.contentBean.getactive()lt 1 and (request.perm neq 'none')><li><a href="index.cfm?fuseaction=cArch.update&contenthistid=#attributes.ContentHistID#&action=delete&contentid=#attributes.contentid#&type=#attributes.type#&parentid=#attributes.parentid#&topid=#attributes.topid#&siteid=#attributes.siteid#&startrow=#attributes.startrow#&moduleid=#attributes.moduleid#&return=#attributes.return#" onclick="return confirm('#jsStringFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.deleteversionconfirm"))#')">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.deleteversion")#</a></li></cfif>
-		<cfif request.deletable><li><a href="index.cfm?fuseaction=cArch.update&action=deleteall&contentid=#attributes.contentid#&type=#attributes.type#&parentid=#attributes.parentid#&topid=#attributes.topid#&siteid=#attributes.siteid#&startrow=#attributes.startrow#&moduleid=#attributes.moduleid#" onclick="return confirm('#jsStringFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.deletecontentconfirm"))#')">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.deletecontent")#</a></li></cfif>
-	<cfif (isUserInRole('Admin;#application.settingsManager.getSite(attributes.siteid).getPrivateUserPoolID()#;0') or isUserInRole('S2'))><li><a href="index.cfm?fuseaction=cPerm.main&contentid=#attributes.ContentID#&type=#request.contentBean.gettype()#&parentid=#request.contentBean.getparentID()#&topid=#attributes.topid#&siteid=#attributes.siteid#&moduleid=#attributes.moduleid#&startrow=#attributes.startrow#">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.permissions")#</a></li></cfif>
+		<cfif request.deletable><li><a href="index.cfm?fuseaction=cArch.update&action=deleteall&contentid=#attributes.contentid#&type=#attributes.type#&parentid=#attributes.parentid#&topid=#attributes.topid#&siteid=#attributes.siteid#&startrow=#attributes.startrow#&moduleid=#attributes.moduleid#" 
+		<cfif listFindNoCase(nodeLevelList,request.contentBean.getType())>onclick="return confirm('#jsStringFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.deletecontentrecursiveconfirm"))#')"<cfelse>onclick="return confirm('#jsStringFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.deletecontentconfirm"))#')"</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.deletecontent")#</a></li></cfif>
+	<cfif (listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(attributes.siteid).getPrivateUserPoolID()#;0') or listFind(session.mura.memberships,'S2'))><li><a href="index.cfm?fuseaction=cPerm.main&contentid=#attributes.ContentID#&type=#request.contentBean.gettype()#&parentid=#request.contentBean.getparentID()#&topid=#attributes.topid#&siteid=#attributes.siteid#&moduleid=#attributes.moduleid#&startrow=#attributes.startrow#">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.permissions")#</a></li></cfif>
 	</ul></cfif>
 </cfif>
 
 <cfif attributes.compactDisplay eq "true">
-	<cfif not listFindNoCase("Component,Form", attributes.type)>
+	<cfif not listFindNoCase("Component", attributes.type)>
 		<cfquery name="rsst" dbtype="query">select * from rsSubTypes where type=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#attributes.type#"> and subtype not in ('Default','default')</cfquery>
 		<cfif rsst.recordcount>
 				<cfset t=attributes.type/>
@@ -279,7 +285,7 @@ select * from rsPluginScripts3 order by pluginID
 		
 	<cfswitch expression="#attributes.type#">
 	<cfcase value="Page,Portal,Calendar,Gallery">
-		<cfif isUserInRole("S2IsPrivate")>
+		<cfif listFind(session.mura.memberships,'S2IsPrivate')>
 		<cfinclude template="form/dsp_tab_objects.cfm">
 		<cfset tablist=tablist & ",'#jsStringFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.tabs.contentobjects"))#'"/>
 		</cfif>
@@ -304,7 +310,7 @@ select * from rsPluginScripts3 order by pluginID
 	</cfcase>
 	<cfcase value="Component">
 		<!---
-		<cfif application.categoryManager.getCategoryCount(attributes.siteID)>
+		<cfif application.categoryManager.getCategoryCount(attributes.siteid)>
 		<cfinclude template="form/dsp_tab_categories.cfm">
 		<cfset tablist=tablist & ",'#jsStringFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.tabs.categorization"))#'"/>
 		</cfif>
@@ -315,6 +321,7 @@ select * from rsPluginScripts3 order by pluginID
 		</cfif>		
 	</cfcase>
 	<cfcase value="Form">
+		
 		<cfif attributes.contentID neq ''>
 		<cfinclude template="form/dsp_tab_usage.cfm">
 		<cfset tablist=tablist & ",'#jsStringFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.tabs.usagereport"))#'"/>
@@ -323,7 +330,7 @@ select * from rsPluginScripts3 order by pluginID
 </cfswitch>
 
 <cfswitch expression="#attributes.type#">
-	<cfcase value="Page,Portal,Calendar,Gallery,Link,File">
+	<cfcase value="Page,Portal,Calendar,Gallery,Link,File,Component">
 	<cfif isExtended>
 		<cfset extendSets=application.classExtensionManager.getSubTypeByName(attributes.type,request.contentBean.getSubType(),attributes.siteid).getExtendSets() />
 		<cfinclude template="form/dsp_tab_extended_attributes.cfm">
@@ -332,7 +339,7 @@ select * from rsPluginScripts3 order by pluginID
 	</cfcase>
 </cfswitch>
 
-	<cfif isUserInRole("S2IsPrivate") and ((isUserInRole('S2') and attributes.type eq 'Component') or attributes.type neq 'Component')>
+	<cfif listFind(session.mura.memberships,'S2IsPrivate') and ((listFind(session.mura.memberships,'S2') and attributes.type eq 'Component') or attributes.type neq 'Component')>
 	<cfinclude template="form/dsp_tab_advanced.cfm">
 	<cfset tablist=tablist & ",'#jsStringFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.tabs.advanced"))#'"/>
 	</cfif> 
@@ -382,6 +389,7 @@ initTabs(Array(#tablist#),0,0,0);
 				<input type="hidden" name="siteid" value="#attributes.siteid#">
 				<input type="hidden" name="moduleid" value="#attributes.moduleid#">
 				<input type="hidden" name="fileid" value="#request.contentBean.getFileID()#">
+				<input type="hidden" name="preserveID" value="#request.contentBean.getPreserveID()#">
 				<input type="hidden" name="return" value="#attributes.return#">
 				<input type="hidden" name="topid" value="#attributes.topid#">
 				<input type="hidden" name="ptype" value="#attributes.ptype#">
@@ -390,7 +398,7 @@ initTabs(Array(#tablist#),0,0,0);
 				<input type="hidden" name="startrow" value="#attributes.startrow#">
 				<input type="hidden" name="returnURL" id="txtReturnURL" value="#attributes.returnURL#">
 				<input type="hidden" name="homeID" value="#attributes.homeID#" />
-				<cfif not  isuserinRole("s2")><input type="hidden" name="isLocked" value="#request.contentBean.getIsLocked()#"></cfif>
+				<cfif not  listFind(session.mura.memberships,'S2')><input type="hidden" name="isLocked" value="#request.contentBean.getIsLocked()#"></cfif>
 				<input name="OrderNo" type="hidden" value="<cfif request.contentBean.getorderno() eq ''>0<cfelse>#request.contentBean.getOrderNo()#</cfif>">
 			
 </cfoutput>

@@ -245,20 +245,96 @@ to your own modified versions of Mura CMS.
 </cfcase>
 
 <cfcase value="plugins">
+<cfif listLen(attributes.subclassid) gt 1>
+	<cfset attributes.objectid=listLast(attributes.subclassid)>
+	<cfset attributes.subclassid=listFirst(attributes.subclassid)>
+</cfif>
+<cfset request.rsPlugins=application.pluginManager.getDisplayObjectBySiteID(siteID=attributes.siteid,modulesOnly=true) />
+<cfoutput>
+<select name="subClassSelector" onchange="loadObjectClass('#attributes.siteid#','plugins',this.value);" class="dropdown">
+<option value="">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.selectplugin')#</option>
+<cfloop query="request.rsPlugins">
+<cfif application.permUtility.getModulePerm(request.rsPlugins.moduleID,attributes.siteid)>
+<option value="#request.rsPlugins.moduleID#" <cfif request.rsPlugins.moduleID eq attributes.subclassid>selected</cfif>>#HTMLEditFormat(request.rsPlugins.title)#</option>
+</cfif>
+</cfloop>
+</select><br/>
+</cfoutput>
+
+<cfif len(attributes.subclassid)>
+
+<cfset prelist=application.pluginManager.getDisplayObjectBySiteID(siteID=attributes.siteid,moduleID=attributes.subclassid) />
+<cfset customOutputList="">
+<cfset customOutput="">
+<cfset customOutput1="">
+<cfset customOutput2="">
+<cfloop query="prelist">
+<cfif listLast(prelist.displayObjectFile,".") neq "cfm">
+	<cfset displayObject=application.pluginManager.getComponent("/plugins/#prelist.directory#/#prelist.displayobjectfile#", prelist.pluginID, attributes.siteID, prelist.docache)>
+	<cfif structKeyExists(displayObject,"#prelist.displayMethod#OptionsRender")>
+		<cfset customOutputList=listAppend(customOutputList,prelist.objectID)>
+		<cfif attributes.objectID eq prelist.objectID>
+			<cfset event=createObject("component","mura.event").init(attributes)>
+			<cfset muraScope=event.getValue("muraScope")>
+			<cfsavecontent variable="customOutput1">
+			<cfinvoke component="#displayObject#" method="#prelist.displaymethod#OptionsRender" returnvariable="customOutput2">
+				<cfinvokeargument name="event" value="#event#">
+				<cfinvokeargument name="$" value="#muraScope#">
+				<cfinvokeargument name="mura" value="#muraScope#">
+			</cfinvoke>
+			</cfsavecontent>
+			<cfif isdefined("customOutput2")>
+				<cfset customOutput=trim(customOutput2)>
+			<cfelse>
+				<cfset customOutput=trim(customOutput1)>
+			</cfif>		
+			<cfset customOutput=evaluate("displayObject.#prelist.displayMethod#OptionsRender(event)")>
+		</cfif>
+	</cfif>
+</cfif>
+</cfloop>
+
+<cfif len(customOutputList)>
+<cfquery name="rs" dbType="query">
+select * from prelist where
+objectID in (''
+	<cfloop list="#customOutputList#" index="i">
+	,'#i#'
+	</cfloop>
+	)
+</cfquery>
+<cfoutput>
+<select name="customObjectSelector" onchange="loadObjectClass('#attributes.siteid#','plugins',this.value);" class="dropdown">
+<option value="">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.selectplugindisplayobjectclass')#</option>
+<cfloop query="rs">
+<cfif application.permUtility.getModulePerm(request.rsPlugins.moduleID,attributes.siteid)>
+<option value="#rs.moduleID#,#rs.objectID#" <cfif rs.objectID eq attributes.objectID>selected</cfif>>#HTMLEditFormat(rs.name)#</option>
+</cfif>
+</cfloop>
+</select><br/>
+</cfoutput>
+</cfif>
+<cfif not len(customOutput)>
+<cfquery name="rs" dbType="query">
+select * from prelist where
+objectID not in (''
+	<cfloop list="#customOutputList#" index="i">
+	,'#i#'
+	</cfloop>
+	)
+</cfquery>
+
 <cfoutput>
 <select name="availableObjects" id="availableObjects" class="multiSelect" size="#evaluate((application.settingsManager.getSite(attributes.siteid).getcolumnCount() * 6)-4)#" style="width:310px;">
 </cfoutput>
-<cfset request.rslist=application.pluginManager.getDisplayObjectBySiteID(attributes.siteid) />
-<cfoutput query="request.rslist" group="moduleID">
-	<cfif application.permUtility.getModulePerm(request.rslist.moduleID,attributes.siteid)>
-	<optgroup label="#htmlEditFormat(request.rslist.title)#">
-	<cfoutput>	
-	<option value="plugin~#request.rslist.title# - #request.rslist.name#~#request.rslist.objectID#">#request.rslist.name#</option>
-	</cfoutput>
-	</optgroup>
-	</cfif>
+<cfoutput query="rs">
+	<option value="plugin~#rs.title# - #rs.name#~#rs.objectID#">#rs.name#</option>
 </cfoutput>
 <cfoutput></select></cfoutput>
+<cfelse>
+<cfoutput>#customOutput#</cfoutput>
+</cfif>
+</cfif>
 </cfcase>
 
 </cfswitch>

@@ -10,6 +10,8 @@
 <cfset variables.instance.entered=now()/>
 <cfset variables.instance.subscribe=0/>
 <cfset variables.instance.isApproved=0/>
+<cfset variables.contentRenderer=application.contentRenderer/>
+<cfset variables.instance.userID=""/>
 <cfset variables.instance.errors=structnew() />
 
 <cffunction name="init" returntype="any" output="false" access="public">
@@ -17,12 +19,14 @@
 	<cfargument name="settingsManager">
 	<cfargument name="utility">
 	<cfargument name="contentDAO">
+	<cfargument name="contentManager">
 	
 	<cfset variables.configBean=arguments.configBean />
 	<cfset variables.settingsManager=arguments.settingsManager />
 	<cfset variables.utility=arguments.utility />
 	<cfset variables.contentDAO=arguments.contentDAO />
 	<cfset variables.dsn=variables.configBean.getDatasource()/>
+	<cfset variables.contentManager=arguments.contentManager/>
 
 	<cfreturn this />
 </cffunction>
@@ -45,6 +49,7 @@
 				<cfset setEntered(arguments.data.entered) />
 				<cfset setIsApproved(arguments.data.isApproved) />
 				<cfset setComments(arguments.data.comments) />
+				<cfset setUserID(arguments.data.userID) />
 			</cfif>
 			
 		<cfelseif isStruct(arguments.data)>
@@ -175,6 +180,20 @@
 	</cfif>
 </cffunction>
 
+<cffunction name="getUserID" returntype="String" access="public" output="false">
+	<cfreturn variables.instance.userID />
+</cffunction>
+
+<cffunction name="setContentRenderer" access="public" output="false">
+	<cfargument name="contentRenderer" />
+	<cfset variables.contentRenderer = arguments.contentRenderer />
+</cffunction>
+
+<cffunction name="setUserID" access="public" output="false">
+	<cfargument name="userID" type="String" />
+	<cfset variables.instance.userID = trim(arguments.userID) />
+</cffunction>
+
 <cffunction name="load"  access="public" output="false" returntype="void">
 	<cfset var rs=getQuery()>
 	<cfif rs.recordcount>
@@ -197,11 +216,16 @@
 	delete from tcontentcomments
 	where commentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getCommentID()#">
 	</cfquery>
+	
+	<cfset variables.contentManager.setCommentStat(getContentID(),getSiteID()) />
 </cffunction>
 
 <cffunction name="save"  access="public" output="false" returntype="void">
-<cfset var rs=""/>
-	
+	<cfargument name="contentRenderer" default="#variables.contentRenderer#" required="true" hint="I'm the contentRenderer used to render links sent to subscribers.">
+	<cfargument name="script" required="true" default="" hint="I'm the script that is sent to the subscribers.">
+	<cfargument name="subject" required="true" default="" hint="I'm the subject that is sent to the subscribers.">
+	<cfargument name="notify" required="true" default="false" hint="I tell whether to notify subscribers.">
+	<cfset var rs=""/>
 	
 	<cfif getQuery().recordcount>
 		
@@ -215,14 +239,15 @@
 			entered=#createodbcdatetime(getEntered())#,
 			siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getSiteID()#"/>,
 			isApproved=#getIsApproved()#,
-			subscribe=<cfqueryparam cfsqltype="cf_sql_numeric" value="#getSubscribe()#">
+			subscribe=<cfqueryparam cfsqltype="cf_sql_numeric" value="#getSubscribe()#">,
+			userID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getUserID()#"/>
 		where commentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getCommentID()#">
 		</cfquery>
 		
 	<cfelse>
 	
 		<cfquery datasource="#application.configBean.getDatasource()#" username="#application.configBean.getDBUsername()#" password="#application.configBean.getDBPassword()#" name="rslist">
-			insert into tcontentcomments (contentid,commentid,name,email,url,comments,entered,siteid,isApproved,subscribe)
+			insert into tcontentcomments (contentid,commentid,name,email,url,comments,entered,siteid,isApproved,subscribe,userID)
 			values (
 			<cfqueryparam cfsqltype="cf_sql_varchar" value="#getContentID()#"/>,
 			<cfqueryparam cfsqltype="cf_sql_varchar" value="#getCommentID()#"/>,
@@ -233,7 +258,8 @@
 			#createodbcdatetime(getEntered())#,
 			<cfqueryparam cfsqltype="cf_sql_varchar" value="#getSiteID()#"/>,
 			#getIsApproved()#,
-			<cfqueryparam cfsqltype="cf_sql_numeric" value="#getSubscribe()#">
+			<cfqueryparam cfsqltype="cf_sql_numeric" value="#getSubscribe()#">,
+			<cfqueryparam cfsqltype="cf_sql_varchar" value="#getUserID()#"/>
 			)
 			</cfquery>
 		
@@ -241,7 +267,12 @@
 	
 	<cfif getIsApproved()>
 		<cfset saveSubscription()>
+		<cfif arguments.notify>
+			<cfset notifySubscribers(arguments.contentRenderer,arguments.script,arguments.subject)>
+		</cfif>
 	</cfif>
+	
+	<cfset variables.contentManager.setCommentStat(getContentID(),getSiteID()) />
 	
 </cffunction>
 
@@ -256,7 +287,7 @@
 
 <cffunction name="sendNotification"  access="public" output="false" returntype="void">
 <cfargument name="script" required="true" default="">
-<cfargument name="contentRenderer" required="true" default="#application.contentRenderer#">
+<cfargument name="contentRenderer" required="true" default="#variables.contentRenderer#">
 
 <cfset var rsContent="">
 <cfset var notifyText="">

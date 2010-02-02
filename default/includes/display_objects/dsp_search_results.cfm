@@ -73,6 +73,10 @@ to your own modified versions of Mura CMS.
 <cfset previous=evaluate((request.startrow-recordsperpage))	>
 <cfset through=iif(totalRecords lt next,totalrecords,next-1)> 
 
+<cfset iterator=application.serviceFactory.getBean("contentIterator")>
+<cfset iterator.setQuery(session.rsSearch,RecordsPerPage)>
+<cfset iterator.setStartRow(event.getValue("startrow"))>
+
 <cfif len(request.searchSectionID)>
 <cfset sectionBean=application.contentManager.getActiveContent(request.searchSectionID,request.siteid) />
 </cfif>	
@@ -105,30 +109,44 @@ to your own modified versions of Mura CMS.
 		<ul>
 		<li class="resultsFound">#rbFactory.getKey('search.displaying')#: #request.startrow# - #through# #rbFactory.getKey('search.of')# #session.rsSearch.recordcount#</li>
 		<cfif previous gte 1>
-		<li class="navPrev"><a href="#application.configBean.getIndexFile()#?startrow=#previous#&display=search&keywords=#HTMLEditFormat(request.keywords)#&searchSectionID=#HTMLEditFormat(request.searchSectionID)#&tag=#HTMLEditFormat(request.tag)#">&laquo;#rbFactory.getKey('search.prev')#</a></li>
+		<li class="navPrev"><a href="?startrow=#previous#&display=search&keywords=#HTMLEditFormat(request.keywords)#&searchSectionID=#HTMLEditFormat(request.searchSectionID)#&tag=#HTMLEditFormat(request.tag)#">&laquo;#rbFactory.getKey('search.prev')#</a></li>
 		</cfif>
 		<cfif session.rsSearch.recordcount gt 0 and  through lt session.rsSearch.recordcount>
-		<li class="navNext"><a href="#application.configBean.getIndexFile()#?startrow=#next#&display=search&keywords=#HTMLEditFormat(request.keywords)#&searchSectionID=#HTMLEditFormat(request.searchSectionID)#&tag=#HTMLEditFormat(request.tag)#">#rbFactory.getKey('search.next')#&raquo;</a></li>
+		<li class="navNext"><a href="?startrow=#next#&display=search&keywords=#HTMLEditFormat(request.keywords)#&searchSectionID=#HTMLEditFormat(request.searchSectionID)#&tag=#HTMLEditFormat(request.tag)#">#rbFactory.getKey('search.next')#&raquo;</a></li>
 		</cfif>
 		</ul>
 		</div>
 </cfoutput>
 		<dl id="svPortal" class="svIndex">
-		<cfoutput query="session.rsSearch"  startrow="#request.startrow#" maxrows="#RecordsPerPage#">
+		<cfloop condition="iterator.hasNext()">
+		<cfsilent>
 		<cfset class=iif(session.rsSearch.currentrow eq 1,de('first'),de(iif(session.rsSearch.currentrow eq session.rsSearch.recordcount,de('last'),de(''))))>
-		<cfset link=addlink('#session.rsSearch.type#','#session.rsSearch.filename#','#session.rsSearch.menutitle#','#session.rsSearch.target#','#session.rsSearch.targetParams#','#session.rsSearch.contentid#','#request.siteid#','?keywords=#request.keywords#&tag=#request.tag#&searchSectionID=#request.searchSectionID#',application.configBean.getContext(),application.configBean.getStub(),application.configBean.getIndexFile())>
-		<dt class="#class#">#session.rsSearch.currentrow#. #link#</dt>
-	 	<cfif len(session.rsSearch.summary)><dd class="#class#">#setDynamicContent(session.rsSearch.summary,request.keywords)#</dd></cfif>
-		<cfif len(session.rsSearch.tags)><dd class="#class#"><cfmodule template="nav/dsp_tag_line.cfm"  tags="#session.rsSearch.tags#"></dd></cfif></cfoutput></dl>
+		<cfset item=iterator.next()>
+		<cfset link=addlink(item.getValue('type'),item.getValue('filename'),item.getValue('menutitle'),item.getValue('target'),item.getValue('targetparams'),item.getValue('contentid'),item.getValue('siteid'),'?keywords=#request.keywords#&tag=#request.tag#&searchSectionID=#request.searchSectionID#',application.configBean.getContext(),application.configBean.getStub(),application.configBean.getIndexFile())>
+		<cfset class=""/>
+				<cfif not iterator.hasPrevious()> 
+					<cfset class=listAppend(class,"first"," ")/> 
+				</cfif>
+				<cfif not iterator.hasNext()> 
+					<cfset class=listAppend(class,"last"," ")/> 
+				</cfif>
+		</cfsilent>
+		<cfoutput>
+		<dt class="#class#">#iterator.getRecordIndex()#. #link#</dt>
+	 	<cfif len(item.getValue('summary'))><dd class="#class#">#setDynamicContent(item.getValue('summary'),request.keywords)#</dd></cfif>
+		<cfif len(item.getValue('tags'))><dd class="#class#"><cfmodule template="nav/dsp_tag_line.cfm"  tags="#item.getValue('tags')#"></dd></cfif>
+		</cfoutput>
+		</cfloop>
+		</dl>
 	<cfoutput>
 	<div class="moreResults bottom">
 		<ul>
 		<li class="resultsFound">#rbFactory.getKey('search.displaying')#: #request.startrow# - #through# #rbFactory.getKey('search.of')# #session.rsSearch.recordcount#</li>
 		<cfif previous gte 1>
-		<li class="navPrev"><a href="#application.configBean.getIndexFile()#?startrow=#previous#&display=search&keywords=#HTMLEditFormat(request.keywords)#&searchSectionID=#HTMLEditFormat(request.searchSectionID)#&tag=#HTMLEditFormat(request.tag)#">&laquo;#rbFactory.getKey('search.prev')#</a></li>
+		<li class="navPrev"><a href="?startrow=#previous#&display=search&keywords=#HTMLEditFormat(request.keywords)#&searchSectionID=#HTMLEditFormat(request.searchSectionID)#&tag=#HTMLEditFormat(request.tag)#">&laquo;#rbFactory.getKey('search.prev')#</a></li>
 		</cfif>
 		<cfif session.rsSearch.recordcount gt 0 and  through lt session.rsSearch.recordcount>
-		<li class="navNext"><a href="#application.configBean.getIndexFile()#?startrow=#next#&display=search&keywords=#HTMLEditFormat(request.keywords)#&searchSectionID=#HTMLEditFormat(request.searchSectionID)#&tag=#HTMLEditFormat(request.tag)#">#rbFactory.getKey('search.next')#&raquo;</a></li>
+		<li class="navNext"><a href="?startrow=#next#&display=search&keywords=#HTMLEditFormat(request.keywords)#&searchSectionID=#HTMLEditFormat(request.searchSectionID)#&tag=#HTMLEditFormat(request.tag)#">#rbFactory.getKey('search.next')#&raquo;</a></li>
 		</cfif></ul></div>
 	</cfoutput>
 	</cfif>	

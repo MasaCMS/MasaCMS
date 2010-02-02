@@ -234,7 +234,7 @@ to your own modified versions of Mura CMS.
 </cfif>
 		<ul>
 		<cfif not request.contentBean.getIsNew()>
-			<cfif ListFindNoCase('editor,author',request.r.perm) or isUserInRole("S2")>
+			<cfif ListFindNoCase('editor,author',request.r.perm) or listFind(session.mura.memberships,'S2')>
 			<li id="adminEditPage"><a href="#editLink#" rel="shadowbox;width=1100;">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.edit')#</a></li>
 				<cfif listFind("Page,Portal,Calendar,Gallery",request.contentBean.getType())>
 						<cfif variables.isIeSix>
@@ -263,12 +263,12 @@ to your own modified versions of Mura CMS.
 				</cfif>
 				<li id="adminVersionHistory"><a href="#historyLink#" rel="shadowbox;width=1050;">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.versionhistory')#</a></li>
 			</cfif>
-			<cfif (request.r.perm eq 'editor' or isUserInRole("S2")) and request.contentBean.getFilename() neq "" and not request.contentBean.getIslocked()>
+			<cfif (request.r.perm eq 'editor' or listFind(session.mura.memberships,'S2')) and request.contentBean.getFilename() neq "" and not request.contentBean.getIslocked()>
 				<li id="adminDelete"><a href="#deleteLink#" onclick="return confirm('#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.deletecontentconfirm'))#');">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.delete')#</a></li>
 			</cfif>
-			<cfif isUserInRole('s2IsPrivate')><li id="adminSiteManager"><a href="#adminLink#" target="admin">#application.rbFactory.getKeyValue(session.rb,'layout.sitemanager')#</a></li></cfif>
+			<cfif listFind(session.mura.memberships,'S2IsPrivate')><li id="adminSiteManager"><a href="#adminLink#" target="admin">#application.rbFactory.getKeyValue(session.rb,'layout.sitemanager')#</a></li></cfif>
 		<cfelse>
-			<cfif isUserInRole('s2IsPrivate')><li id="adminSiteManager404"><a href="#adminLink#" target="admin">#application.rbFactory.getKeyValue(session.rb,'layout.sitemanager')#</li></cfif>	
+			<cfif listFind(session.mura.memberships,'S2IsPrivate')><li id="adminSiteManager404"><a href="#adminLink#" target="admin">#application.rbFactory.getKeyValue(session.rb,'layout.sitemanager')#</li></cfif>	
 		</cfif>
 		<li id="adminLogOut"><a href="?doaction=logout">#application.rbFactory.getKeyValue(session.rb,'layout.logout')#</a></li>
 		<li id="adminWelcome">#application.rbFactory.getKeyValue(session.rb,'layout.welcome')#, #HTMLEditFormat("#session.mura.fname# #session.mura.lname#")#.</li>

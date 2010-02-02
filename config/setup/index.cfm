@@ -217,6 +217,12 @@ to your own modified versions of Mura CMS.
 					
 						<cfcase value="mssql">
 							<!--- if we are working with a SQL db we go ahead and delimit with GO so we can loop over each sql even --->
+							<cfquery name="MSSQLversion" datasource="#application.configBean.getDatasource()#" username="#application.configBean.getDBUsername()#" password="#application.configBean.getDbPassword()#">
+							EXEC sp_MSgetversion
+							</cfquery>
+
+							<cfset MSSQLversion=left(MSSQLversion.CHARACTER_VALUE,1)>
+							
 							<cfset sql = REReplaceNoCase( sql, "\nGO", ";", "ALL") />
 							<cfset aSql = ListToArray(sql, ';')>
 							<!--- loop over items --->
@@ -224,7 +230,7 @@ to your own modified versions of Mura CMS.
 					            <!--- we placed a small check here to skip empty rows --->
 					            <cfif len( trim( aSql[x] ) )>
 					                <cfquery datasource="#FORM.production_datasource#" username="#FORM.production_dbusername#" password="#FORM.production_dbpassword#">
-					                    #keepSingleQuotes(aSql[x])#
+					                    #mssqlFormat(aSql[x],MSSQLversion)#
 					                </cfquery>
 				                </cfif>
 				            </cfloop>
@@ -419,6 +425,19 @@ to your own modified versions of Mura CMS.
 	<cfreturn preserveSingleQuotes(arguments.str)>
 </cffunction>
 
+<cffunction name="mssqlFormat" returntype="string" output="false">
+	<cfargument name="str">
+	<cfargument name="version">
+	
+	<cfif arguments.version eq 8>
+		<!--- mssql 2000 does not support nvarchar(max) or varbinary(max)--->
+		<cfset arguments.str=replaceNoCase(arguments.str,"[nvarchar] (max)","[ntext]","ALL")>
+		<cfset arguments.str=replaceNoCase(arguments.str,"[varbinary] (max) null","[image] null","ALL")>
+	</cfif>
+	
+	<cfreturn preserveSingleQuotes(arguments.str)>
+</cffunction>
+
 <cffunction name="recordError" returntype="string" output="false">
 	<cfargument name="data" type="any" required="true" />
 	<cfset var str = "" />
@@ -456,7 +475,7 @@ to your own modified versions of Mura CMS.
 <div id="header"><h1>Mura CMS</h1></div>
 <div id="container">
 <div id="navigation" class="sidebar">
-<p id="copyright">Version 5.1</p>
+<p id="copyright">Version 5.2</p>
 </div>
 <div id="content">
 <h2>Mura Set Up</h2>

@@ -63,9 +63,6 @@ to your own modified versions of Mura CMS.
 
 </cfif>
 <cfif not acceptdata>
-	<cfif editableControl.innerHTML neq "">
-	<div class="editableObject editableForm">
-	</cfif>
 	<cfif acceptError eq "Browser">
 		<p class="error">We're sorry the polling feature is not supported for IE 5 on the Mac</p>
 	<cfelseif acceptError eq "Duplicate">
@@ -75,15 +72,10 @@ to your own modified versions of Mura CMS.
 	<cfelseif acceptError eq "Spam">
 		<p class="error">#getSite().getRBFactory().getKey("captcha.spam")# <a href="javascript:history.back();">#getSite().getRBFactory().getKey("captcha.tryagain")#</a></p>
 	</cfif>
-	<cfif editableControl.innerHTML neq "">
-	#editableControl.innerHTML#</div>
-	</cfif>
 <cfelse>
-		<cfif editableControl.innerHTML neq "">
-			#setDynamicContent('<div class="editableObject editableForm"><p class="success">' & rsform.responseMessage & '#editableControl.innerHTML#</p></div>')#
-		<cfelse>
-			#setDynamicContent('<p class="success">' & rsform.responseMessage & '</p>')#
-		</cfif>
+	
+		#setDynamicContent('<p class="success">' & rsform.responseMessage & '</p>')#
+		
 		<cfif isdefined("request.redirect_url")>
 			<cfif  isdefined("request.redirect_label")>
 			<p class="success"><a href="#request.redirect_url#">#request.redirect_label#</a></p>

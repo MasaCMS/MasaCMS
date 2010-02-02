@@ -53,6 +53,7 @@ to your own modified versions of Mura CMS.
 	<script src="js/admin.js" type="text/javascript" language="Javascript"></script>
 	<script src="js/prototype.js" type="text/javascript" language="Javascript"></script>
 	<script type="text/javascript" src="#application.configBean.getContext()#/wysiwyg/fckeditor.js"></script>
+	#session.dateKey#
 	#fusebox.ajax#
 	<cfif myfusebox.originalcircuit neq "cLogin">
 		<script language="JavaScript">

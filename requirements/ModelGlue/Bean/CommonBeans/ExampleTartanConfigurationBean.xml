@@ -1,8 +1,0 @@
-<bean class="ModelGlue.Bean.CommonBeans.TartanConfiguration" singleton="true">
-  <property name="config">
-      <value>/path/to/service.xml</value>
-  </property>
-  <property name="type">
-      <value>mapping</value>
-  </property>
-</bean>

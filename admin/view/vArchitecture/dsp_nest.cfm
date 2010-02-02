@@ -147,13 +147,13 @@ to your own modified versions of Mura CMS.
 		</cfcase>
 		</cfswitch>
 	   <li class="versionHistory"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.versionhistory")#" href="index.cfm?fuseaction=cArch.hist&contentid=#attributes.rsNest.ContentID#&type=#attributes.rsNest.type#&parentid=#attributes.rsNest.parentID#&topid=#attributes.topid#&siteid=#attributes.siteid#&moduleid=#attributes.moduleid#&startrow=#attributes.startrow#">&nbsp;</a></li>
-        <cfif isUserInRole('Admin;#application.settingsManager.getSite(attributes.siteid).getPrivateUserPoolID()#;0') or isUserInRole('S2')>
+        <cfif listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(attributes.siteid).getPrivateUserPoolID()#;0') or listFind(session.mura.memberships,'S2')>
           <li class="permissions"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.permissions")#" href="index.cfm?fuseaction=cPerm.main&contentid=#attributes.rsNest.ContentID#&type=#attributes.rsNest.type#&parentid=#attributes.rsNest.parentID#&topid=#attributes.topid#&siteid=#attributes.siteid#&moduleid=#attributes.moduleid#&startrow=#attributes.startrow#">&nbsp;</a></li>
         <cfelse>
 		  <li class="permissionsOff"><a>#application.rbFactory.getKeyValue(session.rb,"sitemanager.permissions")#</a></li>
 		</cfif>
         <cfif deletable>
-          <li class="delete"><a  title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.delete")#" href="index.cfm?fuseaction=cArch.update&contentid=#attributes.rsNest.ContentID#&type=#attributes.rsNest.type#&action=deleteall&topid=#attributes.topid#&siteid=#attributes.siteid#&moduleid=#attributes.moduleid#&parentid=#attributes.parentid#&startrow=#attributes.startrow#" onclick="return confirm('#jsStringFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.deletecontentconfirm"))#')">&nbsp;</a></li>
+          <li class="delete"><a  title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.delete")#" href="index.cfm?fuseaction=cArch.update&contentid=#attributes.rsNest.ContentID#&type=#attributes.rsNest.type#&action=deleteall&topid=#attributes.topid#&siteid=#attributes.siteid#&moduleid=#attributes.moduleid#&parentid=#attributes.parentid#&startrow=#attributes.startrow#" onclick="return confirm('#jsStringFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.deletecontentrecursiveconfirm"))#')">&nbsp;</a></li>
           <cfelseif attributes.locking neq 'all'>
           <li class="deleteOff"><a>#application.rbFactory.getKeyValue(session.rb,"sitemanager.delete")#</a></li>
         </cfif>

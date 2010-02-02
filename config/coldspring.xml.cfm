@@ -44,6 +44,7 @@ to your own modified versions of Mura CMS.
 <cfsavecontent variable="servicesXML"><cfoutput><beans>
 		<bean id="utility" class="#mapdir#.utility" singleton="true" >
 			<constructor-arg name="configBean"><ref bean="configBean" /></constructor-arg>
+			<constructor-arg name="fileWriter"><ref bean="fileWriter" /></constructor-arg>
 		</bean>
 		<bean id="configBean" class="#mapdir#.configBean" singleton="true" >
 			<constructor-arg name="config">
@@ -198,6 +199,12 @@ to your own modified versions of Mura CMS.
 				<entry key="proxyPort">
 					<value>#XMLFormat(GetProfileString("#variables.iniPath#", mode, "proxyPort"))#</value>
 				</entry>
+				<entry key="sharableRemoteSessions">
+					<value>#XMLFormat(GetProfileString("#variables.iniPath#", mode, "sharableRemoteSessions"))#</value>
+				</entry>
+				<entry key="siteIDInURLS">
+					<value>#XMLFormat(GetProfileString("#variables.iniPath#", mode, "siteIDInURLS"))#</value>
+				</entry>
 				</map>
 			</constructor-arg>
 		</bean>
@@ -242,6 +249,11 @@ to your own modified versions of Mura CMS.
 			    <ref bean="contentManager"/>
 			</property>
 		</bean>
+		<bean id="contentCommentIterator" class="mura.content.contentCommentIterator" singleton="false">
+			<property name="contentManager">
+			    <ref bean="contentManager"/>
+			</property>
+		</bean>
 		<bean id="fileManager" class="mura.content.file.fileManager" singleton="true" >
 			<constructor-arg name="fileDAO"><ref bean="fileDAO" /></constructor-arg>
 			<constructor-arg name="configBean"><ref bean="configBean" /></constructor-arg>
@@ -251,6 +263,7 @@ to your own modified versions of Mura CMS.
 			<constructor-arg name="configBean"><ref bean="configBean" /></constructor-arg>
 			<constructor-arg name="settingsManager"><ref bean="settingsManager" /></constructor-arg>
 			<constructor-arg name="pluginManager"><ref bean="pluginManager" /></constructor-arg>
+			<constructor-arg name="fileWriter"><ref bean="fileWriter" /></constructor-arg>
 		</bean>
 		<bean id="image" class="mura.content.file.imagecfc.image" singleton="false" />
 		<bean id="reminderManager" class="mura.content.reminder.reminderManager" singleton="true">
@@ -357,6 +370,11 @@ to your own modified versions of Mura CMS.
 			</property>
 			<property name="settingsManager">
 			    <ref bean="settingsManager"/>
+			</property>
+		</bean>
+		<bean id="userFeedBean" class="mura.user.userFeedBean" singleton="false">
+			<property name="userManager">
+			    <ref bean="userManager"/>
 			</property>
 		</bean>
 		<bean id="addressIterator" class="mura.user.addressIterator" singleton="false">
@@ -611,6 +629,7 @@ to your own modified versions of Mura CMS.
 			<constructor-arg name="settingsManager"><ref bean="settingsManager" /></constructor-arg>
 			<constructor-arg name="utility"><ref bean="utility" /></constructor-arg>
 			<constructor-arg name="genericManager"><ref bean="genericManager" /></constructor-arg>
+			<constructor-arg name="fileWriter"><ref bean="fileWriter" /></constructor-arg>
 		</bean>
 		<bean id="clusterManager" class="mura.cluster.clusterManager" singleton="true">
 			<constructor-arg name="configBean"><ref bean="configBean" /></constructor-arg>
@@ -620,13 +639,25 @@ to your own modified versions of Mura CMS.
 		<bean id="javaLoader" class="mura.javaloader.javaLoader" singleton="true">
 			<constructor-arg name="loadPaths">
 				<list>
-					<value>#expandPath('/mura')#/cache/java/FactoryClasses.jar</value>
+					<value>#expandPath('/mura')#/lib/mura.jar</value>
 				</list>
 			</constructor-arg>
 		</bean>
 		<bean id="autoUpdater" class="mura.autoUpdater.autoUpdater" singleton="true">
 			<constructor-arg name="configBean"><ref bean="configBean" /></constructor-arg>
+			<constructor-arg name="fileWriter"><ref bean="fileWriter" /></constructor-arg>
 		</bean>
-		<cfinclude template="coldspring.custom.xml.cfm">
+		<bean id="fileWriter" class="mura.fileWriter" singleton="true">
+			<constructor-arg name="useMode">  
+       			<value>#XMLFormat(GetProfileString("#variables.iniPath#", mode, "useFileMode"))#</value>  
+ 			</constructor-arg>  
+		</bean>
+		<bean id="MuraScope" class="mura.MuraScope" singleton="false"/>
+		<alias name="contentBean" alias="content"/>
+		<alias name="feedBean" alias="feed"/>
+		<alias name="userBean" alias="user"/>
+		<alias name="categoryBean" alias="category"/>
+		<!---coldspring.custom.xml.cfm reference is for backwards compatability --->
+		<cfif fileExists("coldspring.custom.xml.cfm")><cfinclude template="coldspring.custom.xml.cfm"></cfif>
 	</beans></cfoutput>
 	</cfsavecontent>

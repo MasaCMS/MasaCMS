@@ -115,6 +115,7 @@ to your own modified versions of Mura CMS.
 		<cfset var rstpluginscripts=""/>
 		<cfset var rstplugindisplayobjects=""/>
 		<cfset var rstpluginsettings=""/>		
+			
 			<!--- pushed tables --->
 			
 			<!--- tcontent --->
@@ -863,8 +864,10 @@ to your own modified versions of Mura CMS.
 				</cfloop>
 				
 				<cfquery datasource="#arguments.fromDSN#" name="rstclassextenddata">
-					select * from tclassextenddata where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.fromsiteid#"/>
-					and baseID in (select contenthistid from tcontent where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.fromsiteid#"/>)
+					select tclassextenddata.* from tclassextenddata 
+					inner join tcontent on (tclassextenddata.baseid=tcontent.contenthistid)
+					where tclassextenddata.siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.fromsiteid#"/>
+					and tcontent.active = 1
 				</cfquery>
 				
 				<cfloop query="rstclassextenddata">
@@ -976,12 +979,12 @@ to your own modified versions of Mura CMS.
 		<cfset var rsPlugins=application.pluginManager.getSitePlugins(arguments.siteid)>
 		<cfset var pluginEvent = createObject("component","mura.event").init(arguments) />
 		<cfset var keys=createObject("component","mura.publisherKeys").init('publish',application.utility)>
+		<cfset var fileWriter=application.serviceFactory.getBean("fileWriter")>
 		<cfset var errors=arrayNew(1)>
 		<cfset var itemErrors=arrayNew(1)>
 		
 		<cfset application.pluginManager.announceEvent("onSiteDeploy",pluginEvent)>
 		<cfset application.pluginManager.announceEvent("onBeforeSiteDeploy",pluginEvent)>
-		
 		<cfloop list="#application.configBean.getProductionDatasource()#" index="i">
 			<cfset getToWork(arguments.siteid, arguments.siteid, '#application.configBean.getDatasource()#', '#i#','publish',keys)>
 			<cfif len(application.configBean.getAssetPath())>
@@ -999,6 +1002,10 @@ to your own modified versions of Mura CMS.
 				<cfset itemErrors=application.utility.copyDir("#application.configBean.getWebRoot()##fileDelim#plugins#fileDelim##rsPlugins.directory##fileDelim#", "#p##fileDelim#plugins#fileDelim##rsPlugins.directory##fileDelim#") />
 				<cfset errors=application.utility.joinArrays(errors,itemErrors)>
 			</cfloop>
+			<!--- delete mappings file so that it will be recreated but prod instance --->
+			<cfif fileExists("#p##fileDelim#plugins#fileDelim#mappings.cfm")>
+				<cffile action="delete" file="#p##fileDelim#plugins#fileDelim#mappings.cfm">
+			</cfif>
 		</cfloop>
 		
 		<cfloop list="#application.configBean.getProductionFiledir()#" index="k">
@@ -1062,6 +1069,7 @@ to your own modified versions of Mura CMS.
 			<cfset variables[i] = arguments[i]>
 		</cfloop>
 		
+		
 		<cfset variables.siteID=arguments.fromSiteID>
 		<cfset pluginEvent.init(variables)>
 		<cfset application.pluginManager.announceEvent("onSiteCopy",pluginEvent)>
@@ -1071,46 +1079,47 @@ to your own modified versions of Mura CMS.
 		<cfset keys=createObject("component","mura.publisherKeys").init('copy',application.utility)>
 		
 			
-		<cfthread action="run" name="thread0">
+		<!---<cfthread action="run" name="thread0">--->
 			<cfset getToWork(fromsiteid, tositeid, fromDSN, toDSN, 'copy', keys)>
-		</cfthread>
+		<!---</cfthread>--->
 				
-		<cfthread action="run" name="thread1">
-			<cfset application.utility.copyDir("#fromWebRoot##fileDelim##fromsiteid##fileDelim#", "#toWebRoot##fileDelim##tositeid##fileDelim#") />
-		</cfthread>
+		<!---<cfthread action="run" name="thread1">--->
+			<cfset application.utility.copyDir("#fromWebRoot##fileDelim##fromsiteid##fileDelim#", "#toWebRoot##fileDelim##tositeid##fileDelim#","cache#fileDelim#file") />
+		<!---</cfthread>--->
 		
 		<cfif arguments.fromWebRoot neq arguments.toWebRoot>
 			<cfloop query="rsPlugins">
-				<cfthread action="run" name="thread2#rsPlugins.currentRow#">
+				<!---<cfthread action="run" name="thread2#rsPlugins.currentRow#">--->
 					<cfset application.utility.copyDir("#fromWebRoot##fileDelim#plugins#fileDelim##rsPlugins.directory##fileDelim#", "#toWebRoot##fileDelim#plugins#fileDelim##rsPlugins.directory##fileDelim#") />
-				</cfthread>
+				<!---</cfthread>--->
 			</cfloop>
 		</cfif>
 		
-		<cfif fromWebRoot neq fromFileDir>
-			<cfthread action="run" name="thread3">
+		<!---<cfif fromWebRoot neq fromFileDir>--->
+			<!---<cfthread action="run" name="thread3">--->
 				<cfset copySiteFiles("#fromFileDir##fileDelim##fromsiteid##fileDelim#cache#fileDelim#file#fileDelim#", "#toFileDir##fileDelim##tositeid##fileDelim#cache#fileDelim#file#fileDelim#",keys) />
-			</cfthread>
-		</cfif>
-		<cfif fromAssetDir neq fromAssetDir>
-			<cfthread action="run" name="thread4">
-				<cfset application.utility.copyDir("#fromAssetDir##fileDelim##fromsiteid##fileDelim#assets#fileDelim#", "#toAssetDir##fileDelim##tositeid##fileDelim#assets#fileDelim#") />
-			</cfthread>
-		</cfif>
+			<!---</cfthread>--->
+		<!---</cfif>--->
 		
+		<cfif fromAssetDir neq fromAssetDir>
+			<!---<cfthread action="run" name="thread4">--->
+				<cfset application.utility.copyDir("#fromAssetDir##fileDelim##fromsiteid##fileDelim#assets#fileDelim#", "#toAssetDir##fileDelim##tositeid##fileDelim#assets#fileDelim#") />
+			<!---</cfthread>--->
+		</cfif>
+		<!---
 		<cfthread action="join" name="thread0" />
-				
-		<cfthread action="run" name="thread5">
+		--->		
+		<!---<cfthread action="run" name="thread5">--->
 			<cfif fromAssetPath neq toAssetPath>
 				<cfset application.contentUtility.findAndReplace("#fromAssetPath#", "#toAssetPath#", "#toSiteID#")>
 			</cfif>
-		</cfthread>
+		<!---</cfthread>--->
 		
-		<cfthread action="run" name="thread6">
+		<!---<cfthread action="run" name="thread6">--->
 			<cfif fromSiteID neq toSiteID>
 				<cfset application.contentUtility.findAndReplace("/#fromsiteID#", "/#toSiteID#", "#toSiteID#")>
 			</cfif>
-		</cfthread>
+		<!---</cfthread>--->
 		
 		<cfset application.serviceFactory.getBean("contentUtility").updateGlobalMaterializedPath(siteid=arguments.toSiteID,datasource=arguments.toDSN) />
 		<cfset application.serviceFactory.getBean("categoryUtility").updateGlobalMaterializedPath(siteid=arguments.toSiteID,datasource=arguments.toDSN) />
@@ -1150,7 +1159,7 @@ to your own modified versions of Mura CMS.
 		<cfset var keys=arguments.keyFactory>
 		<cfset var newFile="">
 		<cfset var fileDelim=application.configBean.getFileDelim()>
-		
+		<cfset var fileWriter=application.serviceFactory.getBean("fileWriter")>
 		<cfdirectory directory="#arguments.baseDir#" name="rs" action="list" recurse="true" />
 		<!--- filter out Subversion hidden folders --->
 		<cfquery name="rs" dbtype="query">
@@ -1159,21 +1168,20 @@ to your own modified versions of Mura CMS.
 		AND name <> '.svn'
 		</cfquery>
 		
-		<cftry>
-			<cfdirectory action="create" mode="775" directory="#arguments.destDir#" />
-			<cfcatch></cfcatch>
-		</cftry>
+		<cfset fileWriter.deleteDir(directory="#arguments.destDir#")>
+		<cfset fileWriter.createDir(directory="#arguments.destDir#")>
 		
 		<cfloop query="rs">
 			<cfif rs.type eq "dir">
 				<cftry>
-					<cfdirectory action="create" mode="775" directory="#replace('#rs.directory##fileDelim#',arguments.baseDir,arguments.destDir)##rs.name##fileDelim#" />
+					<cfset fileWriter.createDir(directory="#replace('#rs.directory##fileDelim#',arguments.baseDir,arguments.destDir)##rs.name##fileDelim#")>
 					<cfcatch></cfcatch>
 				</cftry>
 			<cfelse>
 				<!--- <cftry> --->
-					<cffile action="copy" mode="775" source="#rs.directory##fileDelim##rs.name#" destination="#replace('#rs.directory##fileDelim#',arguments.baseDir,arguments.destDir)#" />
-					
+
+					<cfset fileWriter.copyFile(source="#rs.directory##fileDelim##rs.name#", destination=replace('#rs.directory##fileDelim#',arguments.baseDir,arguments.destDir))>
+
 					<cfset newFile=listFirst(rs.name,".")>
 					
 					<cfif listLen(newFile,"_") gt 1>
@@ -1181,8 +1189,8 @@ to your own modified versions of Mura CMS.
 					<cfelse>
 						<cfset newFile=keys.get(newFile) & "." & listLast(rs.name,".")>	
 					</cfif>
-						
-					<cffile action="rename" mode="775" source="#replace('#rs.directory##fileDelim#',arguments.baseDir,arguments.destDir)##rs.name#" destination="#replace('#rs.directory##fileDelim#',arguments.baseDir,arguments.destDir)##newFile#"/>
+					
+					<cfset fileWriter.renameFile(source="#replace('#rs.directory##fileDelim#',arguments.baseDir,arguments.destDir)##rs.name#", destination="#replace('#rs.directory##fileDelim#',arguments.baseDir,arguments.destDir)##newFile#")>
 				<!--- 	<cfcatch></cfcatch>
 				</cftry> --->
 			</cfif>

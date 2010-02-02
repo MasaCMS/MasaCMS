@@ -52,7 +52,11 @@ to your own modified versions of Mura CMS.
 <cfoutput>
 <div id="svMasterEmail">
 	<cfif request.doaction eq 'masterSubscribe'>
-		<p class="response success">#rbFactory.getKey('mailinglist.selectionssaved')#</p>
+		<cfif event.getValue("passedProtect")>
+			<p class="response success">#rbFactory.getKey('mailinglist.selectionssaved')#</p>
+		<cfelse>
+			<p class="error">#rbFactory.getKey('captcha.spam')#</p>
+		</cfif>
 	<cfelseif request.doaction eq 'validateMember'>
 		<cfset application.mailinglistManager.validateMember(request)/>
 		<p class="response success">#rbFactory.getKey('mailinglist.hasbeenvalidated')#</p>
@@ -94,6 +98,7 @@ to your own modified versions of Mura CMS.
 				<input type="hidden" name="doaction" value="masterSubscribe" />
 				<input type="submit" class="submit" value="#HTMLEditFormat(rbFactory.getKey('mailinglist.submit'))#" />
 			</div>
+			<cfinclude template="dsp_form_protect.cfm" />
 		</form>
 	</cfif>
 </div>

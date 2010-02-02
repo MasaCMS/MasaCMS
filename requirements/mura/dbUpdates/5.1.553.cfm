@@ -14,11 +14,23 @@ select urltitle from tcontent  where 0=1
 <cfif doUpdate>
 <cfswitch expression="#getDbType()#">
 <cfcase value="mssql">
+	<cfquery name="MSSQLversion" datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+		EXEC sp_MSgetversion
+	</cfquery>
+	
+	<cfset MSSQLversion=left(MSSQLversion.CHARACTER_VALUE,1)>
+
+	<cfif MSSQLversion gt 8>
+		<cfset MSSQLlob="[nvarchar](max)">
+	<cfelse>
+		<cfset MSSQLlob="[ntext]">
+	</cfif>
+	
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
-	ALTER TABLE tcontent ADD urltitle [ntext] NULL
+	ALTER TABLE tcontent ADD urltitle #MSSQLlob# NULL
 	</cfquery>
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
-	ALTER TABLE tcontent ADD htmltitle [ntext] NULL
+	ALTER TABLE tcontent ADD htmltitle #MSSQLlob# NULL
 	</cfquery>
 </cfcase>
 <cfcase value="mysql">

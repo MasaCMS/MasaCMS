@@ -48,6 +48,7 @@ to your own modified versions of Mura CMS.
 <cfparam name="request.pageNum" default="1"/>
 <cfparam name="request.startRow" default="1"/>
 <cfparam name="request.filterBy" default=""/>
+<cfparam name="request.currentNextNID" default=""/>
 <cfif nextN.recordsPerPage gt 1>
 <cfset paginationKey="startRow">
 <cfelse>
@@ -64,6 +65,9 @@ to your own modified versions of Mura CMS.
 <cfif len(request.relatedID)>
 	<cfset qrystr=qrystr & "&relatedID=#request.relatedID#"/>
 </cfif>
+<cfif len(request.currentNextNID)>
+	<cfset qrystr=qrystr & "&nextNID=#request.currentNextNID#"/>
+</cfif>
 <cfif isNumeric(request.day) and request.day>
 	<cfset qrystr=qrystr & "&month=#request.month#&year=#request.year#&day=#request.day#">
 </cfif>
@@ -79,11 +83,11 @@ to your own modified versions of Mura CMS.
 	<dd>
 		<ul>
 		<cfif nextN.currentpagenumber gt 1>
-		<li class="navPrev"><a href="#xmlFormat('#application.configBean.getIndexFile()#?#paginationKey#=#nextN.previous##qrystr#')#">&laquo;&nbsp;#rbFactory.getKey('list.previous')#</a></li>
+		<li class="navPrev"><a href="#xmlFormat('?#paginationKey#=#nextN.previous##qrystr#')#">&laquo;&nbsp;#rbFactory.getKey('list.previous')#</a></li>
 		</cfif>
-		<cfloop from="#nextN.firstPage#"  to="#nextN.lastPage#" index="i"><cfif nextn.currentpagenumber eq i><li class="current">#i#</li><cfelse><li><a href="#xmlFormat('#application.configBean.getIndexFile()#?#paginationKey#=#evaluate('(#i#*#nextN.recordsperpage#)-#nextN.recordsperpage#+1')##qrystr#')#">#i#</a></li></cfif></cfloop>
+		<cfloop from="#nextN.firstPage#"  to="#nextN.lastPage#" index="i"><cfif nextn.currentpagenumber eq i><li class="current">#i#</li><cfelse><li><a href="#xmlFormat('?#paginationKey#=#evaluate('(#i#*#nextN.recordsperpage#)-#nextN.recordsperpage#+1')##qrystr#')#">#i#</a></li></cfif></cfloop>
 		<cfif nextN.currentpagenumber lt nextN.NumberOfPages>
-			<li class="navNext"><a href="#xmlFormat('#application.configBean.getIndexFile()#?#paginationKey#=#nextN.next##qrystr#')#">#rbFactory.getKey('list.next')#&nbsp;&raquo;</a></li>
+			<li class="navNext"><a href="#xmlFormat('?#paginationKey#=#nextN.next##qrystr#')#">#rbFactory.getKey('list.next')#&nbsp;&raquo;</a></li>
 		</cfif>
 		</ul>
 	</dd>

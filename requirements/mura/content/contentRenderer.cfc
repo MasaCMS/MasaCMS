@@ -70,11 +70,13 @@ to your own modified versions of Mura CMS.
 <cffunction name="init" returntype="any" access="public" output="false">
 <cfargument name="event" required="true" default="">
 
-<cfif isObject(arguments.event)>
-	<cfset variables.event=arguments.event>
-<cfelse>
-	<cfset variables.event=createObject("component","mura.servletEvent")>
-</cfif>
+	<cfif isObject(arguments.event)>
+		<cfset variables.event=arguments.event>
+	<cfelse>
+		<cfset variables.event=createObject("component","mura.servletEvent")>
+	</cfif>
+	<cfset $=variables.event.getValue("muraScope")>
+	<cfset mura=$>
 
 <cfreturn this />
 </cffunction>
@@ -219,12 +221,12 @@ to your own modified versions of Mura CMS.
 			<cfset var allowLink=true>
 			<cfset var G = 0 />
 			<cfif  arguments.loggedIn and (arguments.restrict)>
-						<cfif arguments.restrictgroups eq '' or isUserInRole('s2IsPrivate;#application.settingsManager.getSite(event.getValue('siteID')).getPrivateUserPoolID()#') or isUserInRole('S2')>
+						<cfif arguments.restrictgroups eq '' or listFind(session.mura.memberships,'S2IsPrivate;#application.settingsManager.getSite(event.getValue('siteID')).getPrivateUserPoolID()#') or listFind(session.mura.memberships,'S2')>
 									<cfset allowLink=True>
 							<cfelseif arguments.restrictgroups neq ''>
 									<cfset allowLink=False>
 									<cfloop list="#arguments.restrictgroups#" index="G">
-										<cfif isUserInRole("#G#;#application.settingsManager.getSite(event.getValue('siteID')).getPublicUserPoolID()#;1")>
+										<cfif listFind(session.mura.memberships,'#G#;#application.settingsManager.getSite(event.getValue('siteID')).getPublicUserPoolID()#;1')>
 										<cfset allowLink=true>
 										</cfif>
 									</cfloop>
@@ -616,17 +618,29 @@ to your own modified versions of Mura CMS.
 	<cfargument name="siteID">
 	<cfargument name="filename">
 	
-	<cfif arguments.filename neq ''>
-		<cfif application.configBean.getStub() eq ''>
-			<cfreturn "/" & arguments.siteID & "/index.cfm" & "/" & arguments.filename & "/"/>
+	<cfif not application.configBean.getSiteIDInURLS()>
+		<cfif arguments.filename neq ''>
+			<cfif application.configBean.getStub() eq ''>
+				<cfreturn "/index.cfm" & "/" & arguments.filename & "/"/>
+			<cfelse>
+				<cfreturn application.configBean.getStub() & "/"  & arguments.filename & "/" />
+			</cfif>
 		<cfelse>
-			<cfreturn application.configBean.getStub() & "/" & arguments.siteID & "/" & arguments.filename & "/" />
+			<cfreturn "/" />
 		</cfif>
-		<cfelse>
-		<cfif application.configBean.getStub() eq ''>
-			<cfreturn "/" & arguments.siteID & "/index.cfm" />
-		<cfelse>
-			<cfreturn application.configBean.getStub() & "/" & arguments.siteID & "/"  />
+	<cfelse>
+		<cfif arguments.filename neq ''>
+			<cfif application.configBean.getStub() eq ''>
+				<cfreturn "/" & arguments.siteID & "/index.cfm" & "/" & arguments.filename & "/"/>
+			<cfelse>
+				<cfreturn application.configBean.getStub() & "/" & arguments.siteID & "/" & arguments.filename & "/" />
+			</cfif>
+			<cfelse>
+			<cfif application.configBean.getStub() eq ''>
+				<cfreturn "/" & arguments.siteID & "/index.cfm" />
+			<cfelse>
+				<cfreturn application.configBean.getStub() & "/" & arguments.siteID & "/"  />
+			</cfif>
 		</cfif>
 	</cfif>
 </cffunction>
@@ -641,7 +655,7 @@ to your own modified versions of Mura CMS.
 	<cfargument name="querystring" required="true" default="">
 	<cfargument name="context" type="string" required="true" default="#application.configBean.getContext()#">
 	<cfargument name="stub" type="string" required="true" default="#application.configBean.getStub()#">
-	<cfargument name="indexFile" type="string" required="true" default="index.cfm">
+	<cfargument name="indexFile" type="string" required="true" default="">
 	<cfargument name="complete" type="boolean" required="true" default="false">
 	<cfargument name="showMeta" type="string" required="true" default="0">
 	
@@ -675,7 +689,7 @@ to your own modified versions of Mura CMS.
 	<cfargument name="targetParams" required="true" default="">
 	<cfargument name="context" type="string" default="#application.configBean.getContext()#">
 	<cfargument name="stub" type="string" default="#application.configBean.getStub()#">
-	<cfargument name="indexFile" type="string" default="index.cfm">
+	<cfargument name="indexFile" type="string" default="">
 	<cfargument name="showMeta" type="string" default="0">
 	<cfargument name="fileExt" type="string" default="" required="true">
 	
@@ -739,7 +753,7 @@ to your own modified versions of Mura CMS.
 			<cfargument name="querystring" type="string" required="true" default="">
 			<cfargument name="context" type="string" required="true" default="#application.configBean.getContext()#">
 			<cfargument name="stub" type="string" required="true" default="#application.configBean.getStub()#">
-			<cfargument name="indexFile" type="string" required="true" default="index.cfm">
+			<cfargument name="indexFile" type="string" required="true" default="">
 			<cfargument name="showMeta" type="string" required="true" default="0">
 			<cfargument name="showCurrent" type="string" required="true" default="1">
 			<cfargument name="class" type="string" required="true" default="">
@@ -806,7 +820,7 @@ to your own modified versions of Mura CMS.
 	<cfset var bean = "" />
 	<cfset var theContent = "" />
 	<cfset var editableControl = structNew()>
-
+	
 	<cfsavecontent variable="theContent">	
 	<cfif fileExists(expandPath(filePath) & fileDelim & "custom" & fileDelim & arguments.theFile)>
 		<cfinclude  template="#filePath#custom/#arguments.theFile#" />
@@ -820,7 +834,7 @@ to your own modified versions of Mura CMS.
 
 <cffunction name="dspObject" access="public" output="false" returntype="string">
 <cfargument name="object" type="string">
-<cfargument name="objectid" type="string">
+<cfargument name="objectid" type="string" required="true" default="">
 <cfargument name="siteid" type="string" required="true" default="#event.getValue('siteID')#">
 
 	<cfset var theObject = "" />
@@ -877,7 +891,6 @@ to your own modified versions of Mura CMS.
 				<cfcase value="related_section_content_no_summary">#dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"dsp_related_section_content.cfm",cacheKeyContentId,false)#</cfcase>
 				<cfcase value="user_tools">#dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"dsp_user_tools.cfm")#</cfcase>
 				<cfcase value="tag_cloud"><cfoutput>#dspTagCloud()#</cfoutput></cfcase>
-				<cfcase value="IASiteMap">#dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"IASiteMap/index.cfm")#</cfcase>
 				<cfcase value="goToFirstChild">#dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"act_goToFirstChild.cfm")#</cfcase>
 			</cfswitch>
 		</cfoutput>
@@ -1530,7 +1543,7 @@ to your own modified versions of Mura CMS.
 	<cfargument name="template" default="" required="true">
 	<cfargument name="baseDir" default="#event.getSite().getIncludePath()#/includes" required="true">
 	<cfset var str='' />
-
+	
 	<cfif arguments.template neq ''>
 		<cfsavecontent variable="str">
 			<cfinclude template="#arguments.baseDir#/#arguments.template#">
@@ -1557,7 +1570,7 @@ to your own modified versions of Mura CMS.
 	<cfset var HTMLHeadQueue="" />
 	<cfset var i = "" />
 	<cfset var iLen = 0 />
-	<cfset var showModal= ((isUserInRole('S2IsPrivate;#application.settingsManager.getSite(event.getValue('siteID')).getPrivateUserPoolID()#') or isUserInRole("S2")) or (listFindNoCase("editor,author",event.getValue('r').perm) and this.showMemberToolBar)) and getShowAdminToolBar() />
+	<cfset var showModal= ((listFind(session.mura.memberships,'S2IsPrivate;#application.settingsManager.getSite(event.getValue('siteID')).getPrivateUserPoolID()#') or listFind(session.mura.memberships,'S2')) or (listFindNoCase("editor,author",event.getValue('r').perm) and this.showMemberToolBar)) and getShowAdminToolBar() />
 	<cfset var headerFound=false />	
 	<cfset var pluginBasePath="" />
 	<cfset var pluginPath="" />
@@ -1596,6 +1609,16 @@ to your own modified versions of Mura CMS.
 			<!--- If not found, look in display_objects directory --->
 			<cfif not headerFound>
 				<cfset pluginBasePath="/#application.settingsmanager.getSite(event.getValue('siteID')).getDisplayPoolID()#/includes/display_objects/">
+				<cfif fileExists(expandPath("/#application.configBean.getWebRootMap()##pluginbasePath#") & i)>
+					<cfset pluginPath= application.configBean.getContext() & pluginBasePath >	
+					<cfinclude  template="/#application.configBean.getWebRootMap()##pluginBasePath##i#">
+					<cfset headerFound=true />
+				</cfif>
+			</cfif>
+			
+			<!--- If not found, look in includes directory --->
+			<cfif not headerFound>
+				<cfset pluginBasePath="/#application.settingsmanager.getSite(event.getValue('siteID')).getDisplayPoolID()#/includes/">
 				<cfif fileExists(expandPath("/#application.configBean.getWebRootMap()##pluginbasePath#") & i)>
 					<cfset pluginPath= application.configBean.getContext() & pluginBasePath >	
 					<cfinclude  template="/#application.configBean.getWebRootMap()##pluginBasePath##i#">
@@ -1704,19 +1727,48 @@ to your own modified versions of Mura CMS.
 
 <cffunction name="generateEditableObjectControl" access="public" output="no" returntype="string">
 		<cfargument name="editLink" required="yes" default="">
-		<cfset var innerHTML = "">
+		<cfset var str = "">
 		
 		<cfif this.showEditableObjects>		
-		<cfsavecontent variable="innerHTML">
+		<cfsavecontent variable="str">
 			<cfoutput>
 			<ul class="editableObjectControl">
-				<li class="edit"><a href="#arguments.editLink#" title="#htmlEditFormat('Edit')#" rel="shadowbox;width=1100;">#htmlEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.edit'))#</a>
+				<li class="edit"><a href="#arguments.editLink#" title="#htmlEditFormat('Edit')#" rel="shadowbox;width=1100;">#htmlEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.edit'))#</a></li>
 			</ul>
 			</cfoutput>
 		</cfsavecontent>
 		</cfif>
 		
-		<cfreturn innerHTML>
+		<cfreturn str>
 </cffunction>
 
+<cffunction name="renderEditableObjectHeader" access="public" output="no" returntype="string">
+		<cfargument name="class" required="yes" default="">
+		<cfset var str = "">
+		
+		<cfif this.showEditableObjects>		
+		<cfsavecontent variable="str">
+			<cfoutput>
+			<div class="editableObject #arguments.class#"><div class="editableObjectContents">
+			</cfoutput>
+		</cfsavecontent>
+		</cfif>
+		
+		<cfreturn str>
+</cffunction>
+
+<cffunction name="renderEditableObjectfooter" access="public" output="no" returntype="string">
+		<cfargument name="control" required="yes" default="">
+		<cfset var str = "">
+		
+		<cfif this.showEditableObjects>		
+		<cfsavecontent variable="str">
+			<cfoutput>
+			<cfoutput></div>#arguments.control#</cfoutput></div>
+			</cfoutput>
+		</cfsavecontent>
+		</cfif>
+		
+		<cfreturn str>
+</cffunction>
 </cfcomponent>

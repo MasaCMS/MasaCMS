@@ -336,6 +336,28 @@ function validateForm(theForm) {
 						 errors += theField.getAttribute('message') + '\n';
 					 }			
 				}	
+				else if(theField.getAttribute('validate') != undefined && theField.value != ''){
+					if(theField.getAttribute('validate').toUpperCase()=='REGEX' && theField.getAttribute('regex') != undefined)
+					{	
+						var re = new RegExp(theField.getAttribute('regex'));
+						if(!theField.value.match(re))
+						{
+							if (!started) {
+							started=true;
+							startAt=f;
+							firstErrorNode="input";
+							}
+						
+							if(theField.getAttribute('message')==undefined){
+						 	 	errors += getFieldName(theField).toUpperCase() + ' is not valid\n';
+								 }
+							 else
+							 	{
+								 errors += theField.getAttribute('message') + '\n';
+							 }
+						}					
+					}
+				}
 		}
 		
 		var frmSelects = theForm.getElementsByTagName("select");	
@@ -422,6 +444,7 @@ function submitForm(frm,action,theClass){
 	}	
 	return false;
 }
+
 
 function isMacIE5(){
 			var agt=navigator.userAgent.toLowerCase(); 

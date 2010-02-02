@@ -46,6 +46,7 @@ to your own modified versions of Mura CMS.
 <cfset variables.name="" />
 <cfset variables.deployed=0 />
 <cfset variables.pluginID=0 />
+<cfset variables.loadPriority=5 />
 <cfset variables.moduleID="" />
 <cfset variables.provider="" />
 <cfset variables.providerURL="" />
@@ -108,6 +109,17 @@ to your own modified versions of Mura CMS.
 
 <cffunction name="getProviderURL" returntype="String" access="public" output="false">
 	<cfreturn variables.providerURL />
+</cffunction>
+
+<cffunction name="setLoadPriority" access="public" output="false">
+	<cfargument name="loadPriority" />
+	<cfif isNumeric(arguments.loadPriority)>
+		<cfset variables.loadPriority = arguments.loadPriority >
+	</cfif>
+</cffunction>
+
+<cffunction name="getLoadPriority" access="public" output="false">
+	<cfreturn variables.loadPriority />
 </cffunction>
 
 <cffunction name="setCategory" access="public" output="false">
@@ -246,10 +258,14 @@ to your own modified versions of Mura CMS.
 
 <cffunction name="addEventHandler" output="false" returntype="void">
 	<cfargument name="component" required="true">
-    <cfset var rsSites=application.pluginManager.getAssignedSites(getModuleID())>
+    <cfset var rsSites=getPluginManager().getAssignedSites(getModuleID())>
     <cfloop query="rsSites">
     <cfset getPluginManager().addEventHandler(arguments.component,rsSites.siteID)>
     </cfloop>
+</cffunction>
+
+<cffunction name="getAssignedSites" output="false" returntype="any">
+    <cfreturn getPluginManager().getAssignedSites(getModuleID())>
 </cffunction>
 
 </cfcomponent>

@@ -110,30 +110,37 @@ to your own modified versions of Mura CMS.
 	<cfset var isExtendedSort=(not listFindNoCase(sortOptions,feedBean.getSortBy()))>
 	<cfset var nowAdjusted=createDateTime(year(now()),month(now()),day(now()),hour(now()),int((minute(now())/5)*5),0)>
 	<cfset var blockFactor=arguments.feedBean.getNextN()>
+	<cfset var jointables="" />
+	<cfset var jointable="">
+	<cfset var histtables="tcontenttags,tcontentcategorysassign,tcontentobjects,tcontentrelated">
 	
 	<cfif blockFactor gt 100>
 		<cfset blockFactor=100>
 	</cfif>
 	
-	<cfif arguments.aggregation >
-		<cfset doKids =true />
-	<cfelse>
-		<cfif arguments.feedBean.getDisplayKids() 
-		or arguments.feedBean.getSortBy() eq 'kids'>
-			<cfset doKids=true />
+	<cfif arguments.feedBean.getType() eq "Local">
+		<cfif arguments.aggregation>
+			<cfset doKids =true />
+		<cfelse>
+			<cfif arguments.feedBean.getDisplayKids() 
+			or arguments.feedBean.getSortBy() eq 'kids'>
+				<cfset doKids=true />
+			</cfif>
 		</cfif>
 	</cfif>
 	
 	<cfif len(arguments.tag)>
-		<cfset doTags=true>
-	<cfelse>
-		<cfloop query="rsParams">
-			<cfif rsParams.field eq "tcontenttags.tag">
-				<cfset doTags=true>
-				<cfbreak>
-			</cfif>
-		</cfloop>
+		<cfset jointables="tcontenttags">
 	</cfif>
+	
+	<cfloop query="rsParams">
+		<cfif listLen(rsParams.field,".") eq 2>
+			<cfset jointable=listFirst(rsParams.field,".") >
+			<cfif jointable neq "tcontent" and not listFind(jointables,jointable)>
+				<cfset jointables=listAppend(jointables,jointable)>
+			</cfif>
+		</cfif>
+	</cfloop>
 	
 	<cfquery name="rs" datasource="#variables.configBean.getDatasource()#" blockfactor="#blockFactor#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	<cfif dbType eq "oracle">select * from (</cfif>
@@ -199,9 +206,9 @@ to your own modified versions of Mura CMS.
 						   		AND tcontent.Approved = 1
 							    AND tcontent.active = 1  
 							    AND TKids.Approved = 1
-							    AND TKids.active = 1 
+							    AND TKids.active = 1
 							    AND TKids.isNav = 1 
-							    AND tcontent.moduleid = '00000000000000000000000000000000000'
+							 	AND tcontent.moduleid = '00000000000000000000000000000000000'
 							 
 							<cfif rsParams.recordcount>
 							<cfloop query="rsParams">
@@ -254,9 +261,14 @@ to your own modified versions of Mura CMS.
 							<cfif started>)</cfif>
 						</cfif>
 						<cfset started=false/>
-						<cfif len(arguments.tag)>
-							and tcontenttags.tag= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.tag#"/> 
-						</cfif>
+						
+						<cfloop list="#jointables#" index="jointable">
+							<cfif listFindNoCase(histtables,jointable)>
+							inner join #jointable# on (tcontent.contenthistid=#jointable#.contenthistid)
+							<cfelse>
+							inner join #jointable# on (tcontent.contentid=#jointable#.contentid)
+							</cfif>
+						</cfloop>
 						
 						<cfif categoryLen>
 							AND tcontent.contentHistID in (
@@ -373,13 +385,26 @@ to your own modified versions of Mura CMS.
 <!--- end qKids --->
 
 					
-	<cfif doTags>
-		Inner Join tcontenttags on (tcontent.contentHistID=tcontenttags.contentHistID)
-	</cfif>
+	<cfloop list="#jointables#" index="jointable">
+		<cfif listFindNoCase(histtables,jointable)>
+		inner join #jointable# on (tcontent.contenthistid=#jointable#.contenthistid)
+		<cfelse>
+		inner join #jointable# on (tcontent.contentid=#jointable#.contentid)
+		</cfif>
+	</cfloop>
+	
 	where tcontent.active=1
+	<cfif arguments.feedBean.getType() eq "Local">
 	AND tcontent.isNav = 1
+	</cfif>
 	AND tcontent.Approved = 1
-	AND tcontent.moduleid = '00000000000000000000000000000000000'
+	<cfif arguments.feedBean.getType() eq "Remote">
+		<cfthrow message="This function is not available for remote feeds.">
+	<cfelseif arguments.feedBean.getType() eq "Component">
+		AND tcontent.moduleid = '00000000000000000000000000000000003'
+	<cfelse>
+		AND tcontent.moduleid = '00000000000000000000000000000000000'
+	</cfif>
 	and tcontent.type !='Module'
 	AND tcontent.siteid = <cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.feedBean.getsiteid()#">
 	
@@ -529,6 +554,15 @@ to your own modified versions of Mura CMS.
 	</cfcase>
 	<cfcase value="comments">
 	 tcontentstats.comments #arguments.feedBean.getSortDirection()#
+	</cfcase>
+	<cfcase value="random">
+		<cfif dbType eq "mysql">
+	          rand()
+	    <cfelseif dbType eq "mssql">
+	          newID()
+	    <cfelseif dbType eq "oracle">
+	          dbms_random.value
+	    </cfif>
 	</cfcase>
 	<cfdefaultcase>
 		<cfif isExtendedSort>

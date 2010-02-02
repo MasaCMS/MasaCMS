@@ -97,59 +97,118 @@ to your own modified versions of Mura CMS.
 	 		or email like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.search#%">
 	 		or jobtitle like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.search#%">)
 	 
-	<cfif not isUserInRole('S2')> and s2=0 </cfif> order by lname
+	<cfif not listFind(session.mura.memberships,'S2')> and s2=0 </cfif> order by lname
 	</cfquery>
 	
 	<cfreturn rs />
 </cffunction>
 
 <cffunction name="getAdvancedSearch" returntype="query" access="public" output="false">
-	<cfargument name="data" type="any" default="" />
-	<cfargument name="siteid" type="string" default="" />
-	<cfargument name="isPublic" type="numeric" default="0" />
+	<cfargument name="data" type="any" default="" hint="This can be a struct or an instance of userFeedBean."/>
+	<cfargument name="siteid" type="any" hint="deprecated, use userFeedBean.setSiteID()" default=""/>
+	<cfargument name="isPublic" type="any" hint="deprecated, use userFeedBean.setIsPublic()" default=""/>
 	
 	<cfset var i = 1 />
-	<cfset var paramLen=arrayLen(arguments.data.paramArray)  />
-	<cfset var param= "" />
-	<cfset var paramNum= 0 />
+	<cfset var params=""  />
+	<cfset var param="" />
+	<cfset var paramNum=0 />
 	<cfset var started=false />
-	<cfset var searchAddresses=false />
-	<cfset var paramArray =arrayNew(1) />
+	<cfset var jointables="" />
+	<cfset var jointable="">
+
 	<cfset var rs=""/>
 
-	<cfif paramLen>
-		<cfloop from="1" to="#paramLen#" index="i">
-		 		<cfset param=createObject("component","mura.queryParam").init(
-		 					arguments.data.paramArray[i].Relationship,
-		 					listFirst(arguments.data.paramArray[i].Field,'^'),
-		 					listLast(arguments.data.paramArray[i].Field,'^'),
-		 					arguments.data.paramArray[i].Condition,
-		 					arguments.data.paramArray[i].Criteria
-		 					) />
-		 	
-		 	<cfif param.getIsValid()>
-		 		<cfset arrayAppend(paramArray,param)/>	
-				<cfif listFirst(param.getField(),'.') eq 'tuseraddresses'>
-					<cfset searchAddresses = true />
-				</cfif> 
-			</cfif>
-		</cfloop>
+	<cfif not isObject(arguments.data)>
+		<cfset params=getServiceFactory().getBean("userFeedBean")>
+		<cfset params.setParams(data)>
+	<cfelse>
+		<cfset params=arguments.data>
 	</cfif>
+	
+	<cfif len(arguments.siteID)>
+		<cfset params.setSiteID(arguments.siteID)>
+	</cfif>
+	
+	<cfif isNumeric(arguments.isPublic)>
+		<cfset params.setIsPublic(arguments.isPublic)>
+	</cfif>
+	
+	<cfset rsParams=params.getParams() />
+	
+	<cfloop query="rsParams">
+		<cfif listLen(rsParams.field,".") eq 2>
+			<cfset jointable=listFirst(rsParams.field,".") >
+			<cfif jointable neq "tusers" and not listFind(jointables,jointable)>
+				<cfset jointables=listAppend(jointables,jointable)>
+			</cfif>
+		</cfif>
+	</cfloop>
 
-	
 	<cfquery name="rs" datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#" result="request.test">
-	Select * from tusers 
-	<cfif searchAddresses> 
-	inner join tuseraddresses on (tusers.userID=tuseraddresses.userID)
-	</cfif> 
+	Select tusers.* from tusers 
 	
-	where type=2 and isPublic =#arguments.isPublic# and 
-	tusers.siteid = <cfif arguments.isPublic eq 0 >
-		'#variables.settingsManager.getSite(arguments.siteid).getPrivateUserPoolID()#'
+	<cfloop list="#jointables#" index="jointable">
+	inner join #jointable# on (tusers.userid=#jointable#.userid)
+	</cfloop>
+	
+	where type=2 and isPublic =#params.getIsPublic()# and 
+	tusers.siteid = <cfif params.getIsPublic() eq 0 >
+		'#variables.settingsManager.getSite(params.getSiteID()).getPrivateUserPoolID()#'
 		<cfelse>
-		'#variables.settingsManager.getSite(arguments.siteid).getPublicUserPoolID()#'
-		</cfif> 
-	
+		'#variables.settingsManager.getSite(params.getSiteID()).getPublicUserPoolID()#'
+		</cfif>
+		
+		<cfif rsParams.recordcount>
+		<cfloop query="rsParams">
+			<cfset param=createObject("component","mura.queryParam").init(rsParams.relationship,
+					rsParams.field,
+					rsParams.dataType,
+					rsParams.condition,
+					rsParams.criteria
+				) />
+								 
+			<cfif param.getIsValid()>	
+				<cfif not started >
+					<cfset started = true />and (
+				<cfelse>
+					<cfif listFindNoCase("openGrouping,(",param.getRelationship())>
+						(
+						<cfset openGrouping=true />
+					<cfelseif listFindNoCase("orOpenGrouping,or (",param.getRelationship())>
+						or (
+						<cfset openGrouping=true />
+					<cfelseif listFindNoCase("andOpenGrouping,and (",param.getRelationship())>
+						and (
+						<cfset openGrouping=true />
+					<cfelseif listFindNoCase("closeGrouping,)",param.getRelationship())>
+						)
+					<cfelse>
+						<cfif not openGrouping>
+						#param.getRelationship()#
+						<cfelse>
+						<cfset openGrouping=false />
+						</cfif>
+					</cfif>
+				</cfif>
+				<cfif  listLen(param.getField(),".") gt 1>			
+					#param.getField()# #param.getCondition()# <cfif param.getCondition() eq "IN">(</cfif><cfqueryparam cfsqltype="cf_sql_#param.getDataType()#" value="#param.getCriteria()#" list="#iif(param.getCondition() eq 'IN',de('true'),de('false'))#"><cfif param.getCondition() eq "IN">)</cfif>  	
+				<cfelseif len(param.getField())>
+					tusers.userID IN (
+											select baseID from tclassextenddatauseractivity
+											<cfif isNumeric(param.getField())>
+											where tclassextenddatauseractivity.attributeID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#param.getField()#">
+											<cfelse>
+											inner join tclassextendattributes on (tclassextenddata.attributeID = tclassextendattributes.attributeID)
+											where tclassextendattributes.siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.feedBean.getSiteID()#">
+											and tclassextendattributes.name=<cfqueryparam cfsqltype="cf_sql_varchar" value="#param.getField()#">
+											</cfif>
+											and tclassextenddatauseractivity.attributeValue #param.getCondition()# <cfif param.getCondition() eq "IN">(</cfif><cfqueryparam cfsqltype="cf_sql_#param.getDataType()#" value="#param.getCriteria()#" list="#iif(param.getCondition() eq 'IN',de('true'),de('false'))#"><cfif param.getCondition() eq "IN">)</cfif>)
+				</cfif>
+			</cfif>						
+		</cfloop>
+		<cfif started>)</cfif>
+	</cfif> 
+	<!---
 	<cfif arrayLen(paramArray)>
 		<cfloop from="1" to="#arrayLen(paramArray)#" index="i">
 				<cfset param=paramArray[i] />
@@ -158,40 +217,42 @@ to your own modified versions of Mura CMS.
 		</cfloop>
 		<cfif started>)</cfif>
 	</cfif>
-	<!---
-  	<cfif arguments.data.categoryID neq ''>
-	<cfset paramNum=listLen(arguments.data.categoryID)>
+	--->
+	
+  	<cfif len(params.getCategoryID())>
+	<cfset paramNum=listLen(params.getCategoryID())>
 	and tusers.userID in (select userID from tusersinterests
 							where categoryID in 
-							(<cfqueryparam cfsqltype="cf_sql_varchar" value="#listFirst(arguments.data.categoryID)#">
+							(<cfqueryparam cfsqltype="cf_sql_varchar" value="#listFirst(params.getCategoryID())#">
 							<cfif paramNum gt 1>
 							<cfloop from="2" to="#paramNum#" index="i">
-							,<cfqueryparam cfsqltype="cf_sql_varchar" value="#listGetAt(arguments.data.categoryID,i)#">
+							,<cfqueryparam cfsqltype="cf_sql_varchar" value="#listGetAt(params.getCategoryID(),i)#">
 							</cfloop>
 							</cfif>
 							)
 							)
 	</cfif>
 	
-	<cfif arguments.data.groupID neq ''>
-	<cfset paramNum=listLen(arguments.data.groupID)>
+	<cfif len(params.getGroupID())>
+	<cfset paramNum=listLen(params.getGroupID())>
 	and tusers.userID in (select userID from tusersmemb
 							where groupID in 
-							(<cfqueryparam cfsqltype="cf_sql_varchar" value="#listFirst(arguments.data.groupID)#">
+							(<cfqueryparam cfsqltype="cf_sql_varchar" value="#listFirst(params.getGroupID())#">
 							<cfif paramNum gt 1>
 							<cfloop from="2" to="#paramNum#" index="i">
-							,<cfqueryparam cfsqltype="cf_sql_varchar" value="#listGetAt(arguments.data.groupID,i)#">
+							,<cfqueryparam cfsqltype="cf_sql_varchar" value="#listGetAt(params.getGroupID(),i)#">
 							</cfloop>
 							</cfif>
 							)
 							)
 	</cfif>
-	--->
-	<cfif isnumeric(arguments.data.inActive)>
-		and inactive=#arguments.data.inActive#
-	</cfif>
 	
-	<cfif not isUserInRole('S2')> and s2=0 </cfif> order by lname
+	
+	
+	and inactive=#params.getInActive()#
+	
+	
+	<cfif not listFind(session.mura.memberships,'S2')> and s2=0 </cfif> order by lname
  
 	</cfquery>
 	

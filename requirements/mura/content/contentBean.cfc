@@ -44,6 +44,7 @@ to your own modified versions of Mura CMS.
 <cfset variables.instance = structNew() />
 <cfset variables.instance.ContentHistID = "" />
 <cfset variables.instance.Contentid = "" />
+<cfset variables.instance.preserveID = "" />
 <cfset variables.instance.Active = 0 />
 <cfset variables.instance.OrderNo = 1 />
 <cfset variables.instance.MetaDesc = "" />
@@ -78,7 +79,7 @@ to your own modified versions of Mura CMS.
 <cfset variables.instance.IsNav = 1 />
 <cfset variables.instance.Restricted = 0 />
 <cfset variables.instance.Target = "_self" />
-<cfset variables.instance.RestrictGroups = "RestrictAll" />
+<cfset variables.instance.RestrictGroups = "" />
 <cfset variables.instance.Template = "" />
 <cfset variables.instance.ResponseMessage = "" />
 <cfset variables.instance.ResponseChart = 0 />
@@ -88,7 +89,7 @@ to your own modified versions of Mura CMS.
 <cfset variables.instance.notes = "" />
 <cfset variables.instance.inheritObjects = "Inherit" />
 <cfset variables.instance.isFeature = 0 />
-<cfset variables.instance.isNew = 0 />
+<cfset variables.instance.isNew = 1 />
 <cfset variables.instance.releaseDate = "" />
 <cfset variables.instance.targetParams = "" />
 <cfset variables.instance.IsLocked = 0 />
@@ -119,6 +120,9 @@ to your own modified versions of Mura CMS.
 <cfset variables.instance.extendSetID="" />
 <cfset variables.instance.doCache = 1 />
 <cfset variables.instance.created = now() />
+
+<cfset variables.kids = arrayNew(1) />
+<cfset variables.displayRegions = structNew()>
 
 <cffunction name="init" access="public" returntype="any" output="false">
 	<cfargument name="configBean" required="true" default=""/>
@@ -337,6 +341,15 @@ to your own modified versions of Mura CMS.
 			</cfloop>
 		</cfif>
 		
+		<cfif not structIsEmpty(variables.displayRegions)>
+			<cfloop collection="#variables.displayRegions#" item="i">
+				<cfset variables.instance[i]=variables.contentManager.formatRegionObjectsString(variables.displayRegions[i])>
+			</cfloop>
+		</cfif>
+		
+		<cfset purgeExtendedData()>
+		<cfset variables.displayRegions=structNew()>
+		
 		<cfreturn variables.instance />
   </cffunction>
 
@@ -345,11 +358,20 @@ to your own modified versions of Mura CMS.
     <cfset variables.instance.ContentHistID = arguments.ContentHistID />
   </cffunction>
 
-  <cffunction name="getcontentHistID" returnType="string" output="false" access="public">
+ <cffunction name="getcontentHistID" returnType="string" output="false" access="public">
     <cfif not len(variables.instance.ContentHistID)>
 		<cfset variables.instance.ContentHistID = createUUID() />
 	</cfif>
 	<cfreturn variables.instance.ContentHistID />
+  </cffunction>
+
+ <cffunction name="setPreserveID" returnType="void" output="false" access="public">
+    <cfargument name="preserveID" type="string" required="true">
+    <cfset variables.instance.preserveID = arguments.preserveID />
+  </cffunction>
+
+  <cffunction name="getPreserveID" returnType="string" output="false" access="public">
+	<cfreturn variables.instance.preserveID />
   </cffunction>
 
  <cffunction name="setcontentid" returnType="void" output="false" access="public">
@@ -1126,6 +1148,7 @@ to your own modified versions of Mura CMS.
 <cffunction name="setAllValues" returntype="any" access="public" output="false">
 	<cfargument name="instance">
 	<cfset variables.instance=arguments.instance/>
+	<cfset variables.displayRegions=structNew()>
 </cffunction>
 
 <cffunction name="setURLTitle" returnType="void" output="false" access="public">
@@ -1153,7 +1176,7 @@ to your own modified versions of Mura CMS.
 <cffunction name="getKidsIterator" returnType="any" output="false" access="public">
 	<cfargument name="liveOnly" required="true" default="true">
 	<cfset var q="" />
-	<cfset var it=getServiceFactory().getBean("contentIterator")>
+	<cfset var it=getServiceFactory().getBean("contentIterator").init(packageBy="active")>
 	
 	<cfif arguments.liveOnly>
 		<cfset q=getKidsQuery() />
@@ -1171,13 +1194,20 @@ to your own modified versions of Mura CMS.
 
 <cffunction name="getVersionHistoryIterator" returnType="any" output="false" access="public">
 	<cfset var q=getVersionHistoryQuery() />
-	<cfset var it=getServiceFactory().getBean("contentIterator")>
-	<cfset it.setQuery(q,getNextN())>
+	<cfset var it=getServiceFactory().getBean("contentIterator").init(packageBy="version")>
+	<cfset it.setQuery(q)>
 	<cfreturn it>
 </cffunction>
 
 <cffunction name="getCategoriesQuery" returnType="query" output="false" access="public">
 	<cfreturn variables.contentManager.getCategoriesByHistID(getContentHistID()) />
+</cffunction>
+
+<cffunction name="getCategoriesIterator" returnType="any" output="false" access="public">
+	<cfset var q=getCategoriesQuery() />
+	<cfset var it=getServiceFactory().getBean("categoryIterator").init()>
+	<cfset it.setQuery(q)>
+	<cfreturn it>
 </cffunction>
 
 <cffunction name="getRelatedContentQuery" returnType="query" output="false" access="public">
@@ -1192,13 +1222,94 @@ to your own modified versions of Mura CMS.
 	<cfargument name="today" type="date" required="yes" default="#now()#" />
 	
 	<cfset var q=getRelatedContentQuery(arguments.liveOnly, arguments.today) />
-	<cfset var it=getServiceFactory().getBean("contentIterator")>
-	<cfset it.setQuery(q,getNextN())>
+	<cfset var it=getServiceFactory().getBean("contentIterator").init(packageBy="active")>
+	<cfset it.setQuery(q)>
 	<cfreturn it>
 </cffunction>
 
 <cffunction name="save" returnType="any" output="false" access="public">
-	<cfreturn variables.contentManager.save(this) />
+	<cfset var kid="">
+	<cfset var i="">
+	<cfset setAllValues(variables.contentManager.save(this).getAllValues())>
+	
+	<cfif arrayLen(variables.kids)>
+		<cfloop from="1" to="#arrayLen(variables.kids)#" index="i">
+			<cfset kid=variables.kids[i]>
+			<cfset kid.save()>
+		</cfloop>
+	</cfif>
+	
+	<cfset variables.kids=arrayNew(1)>
+	
+	<cfreturn this />
+</cffunction>
+
+<cffunction name="addChild" output="false" returntype="void">
+	<cfargument name="child" hint="Instance of a contentBean">
+	<cfset arguments.child.setSiteID(getSiteID())>
+	<cfset arguments.child.setParentID(getContentID())>
+	<cfset arguments.child.setModuleID(getModuleID())>
+	<cfset arrayAppend(variables.kids,arguments.child)>	
+</cffunction>
+
+<cffunction name="addDisplayObject" output="false" returntype="void">
+	<cfargument name="regionID">
+	<cfargument name="object">
+	<cfargument name="objectID">
+	<cfargument name="name">
+	<cfset var rs=getDisplayRegion(arguments.regionID)>
+	<cfset var rows=0>
+	
+	<cfif not hasDisplayObject(argumentCollection=arguments)>
+		<cfset queryAddRow(rs,1)/>
+		<cfset rows =rs.recordcount />
+		<cfset querysetcell(rs,"objectid",arguments.objectID,rows)/>
+		<cfset querysetcell(rs,"object",arguments.object,rows)/>
+		<cfset querysetcell(rs,"name",arguments.name,rows)/>	
+	</cfif>
+	
+</cffunction>
+
+<cffunction name="removeDisplayObject" output="false" returntype="void">
+	<cfargument name="regionID">
+	<cfargument name="object">
+	<cfargument name="objectID">
+	<cfset var rs=getDisplayRegion(arguments.regionID)>
+	<cfset var rows=0>
+	
+	<cfif hasDisplayObject(argumentCollection=arguments)>
+		<cfquery name="variables.displayRegions.objectlist#arguments.regionID#" dbtype="query">
+		select * from rs where
+		not (objectID='#arguments.objectID#'
+		and object='#arguments.object#')
+		</cfquery>
+	</cfif>
+	
+</cffunction>
+
+<cffunction name="hasDisplayObject" output="false" returntype="boolean">
+	<cfargument name="regionID">
+	<cfargument name="object">
+	<cfargument name="objectID">
+	<cfset var rs=getDisplayRegion(arguments.regionID)>
+	
+	<cfquery name="rs" dbtype="query">
+		select * from rs where
+		objectID='#arguments.objectID#'
+		and object='#arguments.object#'
+	</cfquery>
+	
+	<cfreturn rs.recordcount>
+</cffunction>
+	
+<cffunction name="getDisplayRegion" output="false" access="private" returntype="any">
+	<cfargument name="regionID">
+	<cfset rs="">
+	<cfif not structKeyExists(variables.displayRegions,"objectlist#arguments.regionID#")>
+		<cfset variables.displayRegions["objectlist#arguments.regionID#"]=variables.contentManager.getRegionObjects(getContentHistID(), getSiteID(), arguments.regionID)>
+	</cfif>
+	
+	<cfreturn variables.displayRegions["objectlist#arguments.regionID#"]>	
 </cffunction>
 
 <cffunction name="deleteVersion" returnType="any" output="false" access="public">
@@ -1218,4 +1329,42 @@ to your own modified versions of Mura CMS.
 	<cfset variables.contentManager.deleteAll(getAllValues()) />
 </cffunction>
 
+<cffunction name="loadBy" returnType="any" output="false" access="public">
+	<cfif not structKeyExists(arguments,"siteID")>
+		<cfset arguments.siteID=getSiteID()>
+	</cfif>	
+	<cfset setAllValues(variables.contentManager.read(argumentCollection=arguments).getAllValues())>
+	<cfreturn this>
+</cffunction>
+
+<cffunction name="getStats" returnType="any" output="false" access="public">
+	<cfset var statsBean=variables.contentManager.getStatsBean() />
+	<cfset statsBean.setSiteID(getSiteID())>
+	<cfset statsBean.setContentID(getContentID())>
+	<cfset statsBean.load()>
+	<cfreturn statsBean>
+</cffunction>
+
+<cffunction name="getCommentsQuery" returnType="query" output="false" access="public">
+	<cfargument name="isEditor" type="boolean" required="true" default="false">
+	<cfargument name="sortOrder" type="string" required="true" default="asc">
+	<cfreturn variables.contentManager.readComments(getContentID(), getSiteID(), arguments.isEditor, arguments.sortOrder) />
+</cffunction>
+
+<cffunction name="getCommentsIterator" returnType="any" output="false" access="public">
+	<cfargument name="isEditor" type="boolean" required="true" default="false">
+	<cfargument name="sortOrder" type="string" required="true" default="asc">
+	<cfset var q=getCommentsQuery(arguments.isEditor, arguments.sortOrder) />
+	<cfset var it=getServiceFactory().getBean("contentCommentIterator").init()>
+	<cfset it.setQuery(q)>
+	<cfreturn it />
+</cffunction>
+
+<cffunction name="getParent" output="false" returntype="any">
+	<cfif getContentID() neq '00000000000000000000000000000000001'>
+		<cfreturn variables.contentManager.read(contentID=getParentID(),siteID=getSiteID())>
+	<cfelse>
+		<cfthrow message="Parent content does not exist.">
+	</cfif>
+</cffunction>
 </cfcomponent>

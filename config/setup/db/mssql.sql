@@ -205,7 +205,7 @@ CREATE TABLE [dbo].[tadcampaigns] (
 	[startDate] [smalldatetime] NULL ,
 	[endDate] [smalldatetime] NULL ,
 	[isActive] [int] NULL ,
-	[notes] [ntext] NULL 
+	[notes] [nvarchar] (max) NULL 
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 GO
 
@@ -221,11 +221,11 @@ CREATE TABLE [dbo].[tadcreatives] (
 	[mediaType] [nvarchar] (50) NULL ,
 	[redirectURL] [nvarchar] (200) NULL ,
 	[altText] [nvarchar] (200) NULL ,
-	[notes] [ntext] NULL ,
+	[notes] [nvarchar] (max) NULL ,
 	[isActive] [int] NULL ,
 	[height] [int] NULL ,
 	[width] [int] NULL ,
-	[textBody] [ntext] NULL 
+	[textBody] [nvarchar] (max) NULL 
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 GO
 
@@ -259,7 +259,7 @@ CREATE TABLE [dbo].[tadplacements] (
 	[billable] [decimal](18, 2) NULL ,
 	[budget] [int] NULL ,
 	[isActive] [int] NULL ,
-	[notes] [ntext] NULL 
+	[notes] [nvarchar] (max) NULL 
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 GO
 
@@ -281,7 +281,7 @@ CREATE TABLE [dbo].[tadzones] (
 	[lastUpdateBy] [nvarchar] (50) NULL ,
 	[name] [nvarchar] (50) NULL ,
 	[creativeType] [nvarchar] (50) NULL ,
-	[notes] [ntext] NULL ,
+	[notes] [nvarchar] (max) NULL ,
 	[isActive] [int] NULL ,
 	[height] [int] NULL ,
 	[width] [int] NULL 
@@ -298,17 +298,17 @@ GO
 CREATE TABLE [dbo].[tcontent] (
 	[tcontent_ID] [int] IDENTITY (1, 1) NOT NULL ,
 	[SiteID] [nvarchar] (25) NULL ,
-	[ModuleID] [nvarchar] (35) NULL ,
-	[ParentID] [nvarchar] (35) NULL ,
-	[ContentID] [nvarchar] (35) NULL ,
-	[ContentHistID] [nvarchar] (35) NULL ,
+	[ModuleID] [char] (35) NULL ,
+	[ParentID] [char] (35) NULL ,
+	[ContentID] [char] (35) NULL ,
+	[ContentHistID] [char] (35) NULL ,
 	[RemoteID] [nvarchar] (255) NULL ,
 	[RemoteURL] [nvarchar] (255) NULL ,
 	[RemotePubDate] [nvarchar] (50) NULL ,
 	[RemoteSourceURL] [nvarchar] (255) NULL ,
 	[RemoteSource] [nvarchar] (255) NULL ,
 	[Credits] [nvarchar] (255) NULL ,
-	[FileID] [nvarchar] (35) NULL ,
+	[FileID] [char] (35) NULL ,
 	[Template] [nvarchar] (50) NULL ,
 	[Type] [nvarchar] (25) NULL ,
 	[subType] [nvarchar] (25) NULL ,
@@ -316,11 +316,11 @@ CREATE TABLE [dbo].[tcontent] (
 	[OrderNo] [int] NULL ,
 	[Title] [nvarchar] (255) NULL ,
 	[MenuTitle] [nvarchar] (255) NULL ,
-	[Summary] [ntext] NULL ,
+	[Summary] [nvarchar] (max) NULL ,
 	[Filename] [nvarchar] (255) NULL ,
-	[MetaDesc] [ntext] NULL ,
-	[MetaKeyWords] [ntext] NULL ,
-	[Body] [ntext] NULL ,
+	[MetaDesc] [nvarchar] (max) NULL ,
+	[MetaKeyWords] [nvarchar] (max) NULL ,
+	[Body] [nvarchar] (max) NULL ,
 	[lastUpdate] [smalldatetime] NULL ,
 	[lastUpdateBy] [nvarchar] (50) NULL ,
 	[lastUpdateByID] [nvarchar] (50) NULL ,
@@ -334,12 +334,12 @@ CREATE TABLE [dbo].[tcontent] (
 	[Target] [nvarchar] (50) NULL ,
 	[TargetParams] [nvarchar] (255) NULL ,
 	[responseChart] [tinyint] NULL ,
-	[responseMessage] [ntext] NULL ,
-	[responseSendTo] [ntext] NULL ,
-	[responseDisplayFields] [ntext] NULL ,
+	[responseMessage] [nvarchar] (max) NULL ,
+	[responseSendTo] [nvarchar] (max) NULL ,
+	[responseDisplayFields] [nvarchar] (max) NULL ,
 	[moduleAssign] [nvarchar] (255) NULL ,
 	[displayTitle] [tinyint] NULL ,
-	[Notes] [ntext] NULL ,
+	[Notes] [nvarchar] (max) NULL ,
 	[inheritObjects] [nvarchar] (25) NULL ,
 	[isFeature] [tinyint] NULL ,
 	[ReleaseDate] [smalldatetime] NULL ,
@@ -351,10 +351,10 @@ CREATE TABLE [dbo].[tcontent] (
 	[featureStop] [smalldatetime] NULL ,
 	[forceSSL] [tinyint] NOT NULL ,
 	[audience] [nvarchar] (255) NULL ,
-	[keyPoints] [ntext] NULL ,
+	[keyPoints] [nvarchar] (max) NULL ,
 	[searchExclude] [tinyint] NULL ,
-	[path] [ntext] NULL ,
-	[tags] [ntext] NULL 
+	[path] [nvarchar] (max) NULL ,
+	[tags] [nvarchar] (max) NULL 
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 GO
 
@@ -388,14 +388,14 @@ CREATE TABLE [dbo].[tcontentcategories] (
 	[lastUpdate] [smalldatetime] NULL ,
 	[lastUpdateBy] [nvarchar] (50) NULL ,
 	[name] [nvarchar] (50) NULL ,
-	[notes] [ntext] NULL ,
+	[notes] [nvarchar] (max) NULL ,
 	[isInterestGroup] [int] NULL ,
 	[isActive] [int] NULL ,
 	[isOpen] [int] NULL ,
 	[sortBy] [varchar] (50) NULL ,
 	[sortDirection] [varchar] (50) NULL ,
 	[restrictGroups] [nvarchar] (255) NULL ,
-	[path] [ntext] NULL ,
+	[path] [nvarchar] (max) NULL ,
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 GO
 
@@ -417,7 +417,7 @@ CREATE TABLE [dbo].[tcontentcomments] (
 	[contenthistid] [char] (35) NULL ,
 	[url] [nvarchar] (50) NULL ,
 	[name] [nvarchar] (50) NULL ,
-	[comments] [ntext] NULL ,
+	[comments] [nvarchar] (max) NULL ,
 	[entered] [smalldatetime] NULL ,
 	[email] [nvarchar] (50) NULL ,
 	[siteid] [nvarchar] (25) NULL ,
@@ -466,7 +466,7 @@ CREATE TABLE [dbo].[tcontentfeeds] (
 	[isPublic] [tinyint] NULL ,
 	[isDefault] [tinyint] NULL ,
 	[isFeaturesOnly] [tinyint] NULL ,
-	[description] [ntext] NULL ,
+	[description] [nvarchar] (max) NULL ,
 	[maxItems] [int] NULL ,
 	[allowHTML] [tinyint] NULL ,
 	[lang] [varchar] (50) NULL ,
@@ -474,7 +474,7 @@ CREATE TABLE [dbo].[tcontentfeeds] (
 	[lastUpdate] [datetime] NULL ,
 	[dateCreated] [datetime] NULL ,
 	[restricted] [tinyint] NULL ,
-	[restrictGroups] [ntext] NULL ,
+	[restrictGroups] [nvarchar] (max) NULL ,
 	[version] [varchar] (50) NULL ,
 	[channelLink] [varchar] (250) NULL ,
 	[Type] [varchar] (50) NULL ,
@@ -547,12 +547,12 @@ CREATE TABLE [dbo].[temails] (
 	[EmailID] [char] (35) NOT NULL ,
 	[siteid] [nvarchar] (25) NULL ,
 	[Subject] [nvarchar] (255) NULL ,
-	[BodyText] [ntext] NULL ,
-	[BodyHtml] [ntext] NULL ,
+	[BodyText] [nvarchar] (max) NULL ,
+	[BodyHtml] [nvarchar] (max) NULL ,
 	[CreatedDate] [datetime] NULL ,
 	[DeliveryDate] [datetime] NULL ,
 	[status] [tinyint] NULL ,
-	[GroupList] [ntext] NULL ,
+	[GroupList] [nvarchar] (max) NULL ,
 	[LastUpdateBy] [nvarchar] (50) NULL ,
 	[LastUpdateByID] [nvarchar] (35) NULL ,
 	[NumberSent] [int] NOT NULL ,
@@ -569,9 +569,9 @@ CREATE TABLE [dbo].[tfiles] (
 	[siteID] [nvarchar] (25) NULL ,
 	[moduleID] [char] (35) NULL ,
 	[filename] [nvarchar] (200) NULL ,
-	[image] [image] NULL ,
-	[imageSmall] [image] NULL ,
-	[imageMedium] [image] NULL ,
+	[image] [varbinary] (max) NULL ,
+	[imageSmall] [varbinary] (max) NULL ,
+	[imageMedium] [varbinary] (max) NULL ,
 	[fileSize] [int] NULL ,
 	[contentType] [nvarchar] (100) NULL ,
 	[contentSubType] [nvarchar] (200) NULL ,
@@ -584,8 +584,8 @@ CREATE TABLE [dbo].[tformresponsepackets] (
 	[ResponseID] [char] (35) NOT NULL ,
 	[FormID] [char] (35) NULL ,
 	[SiteID] [nvarchar] (25) NULL ,
-	[FieldList] [ntext] NULL ,
-	[Data] [ntext] NULL ,
+	[FieldList] [nvarchar] (max) NULL ,
+	[Data] [nvarchar] (max) NULL ,
 	[Entered] [smalldatetime] NULL 
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 GO
@@ -594,7 +594,7 @@ CREATE TABLE [dbo].[tformresponsequestions] (
 	[responseID] [char] (35) NULL ,
 	[formID] [char] (35) NULL ,
 	[formField] [nvarchar] (50) NULL ,
-	[formValue] [ntext] NULL ,
+	[formValue] [nvarchar] (max) NULL ,
 	[pollValue] [nvarchar] (255) NULL 
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 GO
@@ -609,7 +609,7 @@ CREATE TABLE [dbo].[tmailinglist] (
 	[MLID] [char] (35) NULL ,
 	[SiteID] [nvarchar] (25) NULL ,
 	[Name] [nvarchar] (50) NULL ,
-	[Description] [ntext] NULL ,
+	[Description] [nvarchar] (max) NULL ,
 	[LastUpdate] [smalldatetime] NULL ,
 	[isPurge] [int] NULL ,
 	[isPublic] [int] NULL 
@@ -711,16 +711,16 @@ CREATE TABLE [dbo].[tsettings] (
 	[gallerySmallScale] [int] NULL ,
 	[galleryMediumScaleBy] [nvarchar] (50) NULL ,
 	[galleryMediumScale] [int] NULL ,
-	[sendLoginScript] [ntext] NULL ,
-	[mailingListConfirmScript] [ntext] NULL ,
-	[publicSubmissionApprovalScript] [ntext] NULL ,
-	[reminderScript] [ntext] NULL ,
+	[sendLoginScript] [nvarchar] (max) NULL ,
+	[mailingListConfirmScript] [nvarchar] (max) NULL ,
+	[publicSubmissionApprovalScript] [nvarchar] (max) NULL ,
+	[reminderScript] [nvarchar] (max) NULL ,
 	[loginURL] [varchar] (255) NULL ,
 	[editProfileURL] [varchar] (255) NULL ,
 	[CommentApprovalDefault] [tinyint] NULL ,
 	[deploy] [tinyint] NULL ,
 	[lastDeployment] [datetime] NULL ,
-	[accountActivationScript] [ntext] NULL,
+	[accountActivationScript] [nvarchar] (max) NULL,
 	[googleAPIKey] [varchar] (100) NULL ,
 	[useDefaultSMTPServer] [tinyint] NULL,
     [theme] [varchar] (50) NULL,
@@ -753,12 +753,12 @@ CREATE TABLE [dbo].[tuseraddresses] (
 	[phone] [nvarchar] (50) NULL ,
 	[fax] [nvarchar] (50) NULL ,
 	[isPrimary] [tinyint] NULL ,
-	[addressNotes] [ntext] NULL,
+	[addressNotes] [nvarchar] (max) NULL,
 	[addressURL] [nvarchar] (200) NULL,
 	[longitude] [float] NULL,
   	[latitude] [float] NULL,
 	[addressEmail] [nvarchar] (100) NULL,
-	[hours] [ntext] NULL
+	[hours] [nvarchar] (max) NULL
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 GO
 
@@ -778,7 +778,7 @@ CREATE TABLE [dbo].[tusers] (
 	[Type] [int] NULL ,
 	[subType] [nvarchar] (50) NULL ,
 	[Ext] [int] NULL ,
-	[ContactForm] [ntext] NULL ,
+	[ContactForm] [nvarchar] (max) NULL ,
 	[Admin] [int] NULL ,
 	[S2] [int] NULL ,
 	[LastLogin] [smalldatetime] NULL ,
@@ -790,16 +790,16 @@ CREATE TABLE [dbo].[tusers] (
 	[isPublic] [int] NULL ,
 	[SiteID] [nvarchar] (50) NULL ,
 	[Subscribe] [int] NULL ,
-	[notes] [ntext] NULL ,
-	[description] [ntext] NULL ,
-	[interests] [ntext] NULL ,
+	[notes] [nvarchar] (max) NULL ,
+	[description] [nvarchar] (max) NULL ,
+	[interests] [nvarchar] (max) NULL ,
 	[keepPrivate] [tinyint] NULL ,
 	[photoFileID] [char] (35) NULL ,
 	[IMName] [nvarchar] (100) NULL ,
 	[IMService] [nvarchar] (50) NULL ,
 	[created] [datetime] NULL,
 	[remoteID] [char] (35) NULL,
-	[tags] [ntext] NULL 
+	[tags] [nvarchar] (max) NULL 
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 GO
 
@@ -851,7 +851,7 @@ CREATE TABLE [dbo].[tclassextenddatauseractivity] (
 	[baseID] [char] (35) NOT NULL ,
 	[attributeID] [int] NOT NULL ,
 	[siteID] [nvarchar] (25) NULL ,
-	[attributeValue] [ntext] NULL 
+	[attributeValue] [nvarchar] (max) NULL 
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 GO
 
@@ -860,7 +860,7 @@ CREATE TABLE [dbo].[tclassextenddata] (
 	[baseID] [char] (35) NOT NULL ,
 	[attributeID] [int] NOT NULL ,
 	[siteID] [nvarchar] (25) NULL ,
-	[attributeValue] [ntext] NULL 
+	[attributeValue] [nvarchar] (max) NULL 
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 GO
 
@@ -873,7 +873,7 @@ CREATE TABLE [dbo].[tclassextend] (
 	[type] [nvarchar] (50) NULL ,
 	[subType] [nvarchar] (50) NULL ,
 	[isActive] [tinyint] NULL ,
-	[notes] [ntext] NULL ,
+	[notes] [nvarchar] (max) NULL ,
 	[lastUpdate] [datetime] NULL ,
 	[dateCreated] [datetime] NULL ,
 	[lastUpdateBy] [nvarchar] (100) NULL 
@@ -885,8 +885,8 @@ CREATE TABLE [dbo].[tclassextendattributes] (
 	[extendSetID] [char] (35) NULL ,
 	[siteID] [nvarchar] (25) NULL ,
 	[name] [nvarchar] (100) NULL ,
-	[label] [ntext] NULL ,
-	[hint] [ntext]  NULL ,
+	[label] [nvarchar] (max) NULL ,
+	[hint] [nvarchar] (max)  NULL ,
 	[type] [nvarchar] (100) NULL ,
 	[orderno] [int] NULL ,
 	[isActive] [tinyint] NULL ,
@@ -895,15 +895,15 @@ CREATE TABLE [dbo].[tclassextendattributes] (
 	[regex] [nvarchar] (300) NULL ,
 	[message] [nvarchar] (300) NULL ,
 	[defaultValue] [nvarchar] (100) NULL ,
-	[optionList] [ntext] NULL ,
-	[optionLabelList] [ntext] NULL 
+	[optionList] [nvarchar] (max) NULL ,
+	[optionLabelList] [nvarchar] (max) NULL 
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 GO
 
 CREATE TABLE [dbo].[tclassextendsets] (
 	[extendSetID] [char] (35) NOT NULL ,
 	[subTypeID] [char] (35) NULL ,
-	[categoryID] [ntext] NULL ,
+	[categoryID] [nvarchar] (max) NULL ,
 	[siteID] [nvarchar] (25) NULL ,
 	[name] [nvarchar] (50) NULL ,
 	[orderno] [int] NULL ,
@@ -1343,7 +1343,6 @@ INSERT INTO [dbo].[tsystemobjects] ([Object],[SiteID],[Name],[OrderNo]) VALUES (
 INSERT INTO [dbo].[tsystemobjects] ([Object],[SiteID],[Name],[OrderNo]) VALUES ('related_content','default','Related Content',19);
 INSERT INTO [dbo].[tsystemobjects] ([Object],[SiteID],[Name],[OrderNo]) VALUES ('user_tools','default','User Tools',20);
 INSERT INTO [dbo].[tsystemobjects] ([Object],[SiteID],[Name],[OrderNo]) VALUES ('tag_cloud','default','Tag Cloud',21);
-INSERT INTO [dbo].[tsystemobjects] ([Object],[SiteID],[Name],[OrderNo]) VALUES ('IASiteMap','default','IA Site Map',22);
 INSERT INTO [dbo].[tsystemobjects] ([Object],[SiteID],[Name],[OrderNo]) VALUES ('goToFirstChild','default','Go To First Child',23);
 GO
 

@@ -107,7 +107,7 @@ dateShort = "#listGetAt(monthShort,navMonth,",")# #navYear#";
 <tr>
 <th title="#dateLong#" id="previousMonth"><a href="#navPath#?month=#previousmonth#&year=#previousyear#&categoryID=#htmlEditFormat(request.categoryID)#&relatedID=#htmlEditFormat(request.relatedID)#&filterBy=releaseMonth">&laquo;</a></th>
 <th colspan="5"><a href="#navPath#?month=#navMonth#&year=#navYear#&categoryID=#htmlEditFormat(request.categoryID)#&relatedID=#htmlEditFormat(request.relatedID)#&filterBy=releaseMonth">#dateLong#</a></th>
-<th id="nextMonth"><a href="index.cfm?month=#nextmonth#&year=#nextyear#&categoryID=#htmlEditFormat(request.categoryID)#&relatedID=#htmlEditFormat(request.relatedID)#&filterBy=releaseMonth">&raquo;</a></th>
+<th id="nextMonth"><a href="?month=#nextmonth#&year=#nextyear#&categoryID=#htmlEditFormat(request.categoryID)#&relatedID=#htmlEditFormat(request.relatedID)#&filterBy=releaseMonth">&raquo;</a></th>
 </tr>
 </tr>
 	<tr class="dayofweek">

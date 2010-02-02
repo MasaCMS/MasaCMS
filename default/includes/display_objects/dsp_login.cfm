@@ -59,7 +59,7 @@ to your own modified versions of Mura CMS.
 		</cfif>
 	</cfif>
 	<cfif not request.isBlocked>
-	<form id="login" name="form1" method="post" action="#application.configBean.getIndexFile()#?nocache=1" onsubmit="return validate(this);">
+	<form id="login" name="form1" method="post" action="?nocache=1" onsubmit="return validate(this);">
 		<fieldset>
 			<ol>
 				<li class="req">
@@ -84,7 +84,7 @@ to your own modified versions of Mura CMS.
 		</fieldset>
 	</form>
 	<p class="required">#rbFactory.getKey('user.requiredfields')#</p>
-	<form name="form2" method="post" action="#application.configBean.getIndexFile()#?nocache=1" id="sendLogin" onsubmit="return validate(this);">
+	<form name="form2" method="post" action="?nocache=1" id="sendLogin" onsubmit="return validate(this);">
 		<fieldset>
 			<legend>#rbFactory.getKey('user.forgetusernameorpassword')#</legend>
 			<cfif request.doaction eq 'sendlogin'>

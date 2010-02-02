@@ -98,6 +98,7 @@ to your own modified versions of Mura CMS.
 	
 	<cfif rs.recordcount>
 	<cfset categoryBean.set(rs) />
+	<cfset categoryBean.setIsNew(0)>
 	</cfif>
 	
 	<cfreturn categoryBean />
@@ -105,7 +106,7 @@ to your own modified versions of Mura CMS.
 
 <cffunction name="readByName" access="public" output="false" returntype="any" >
 	<cfargument name="name" type="string" />
-	<cfargument name="siteid" type="string" />
+	<cfargument name="siteID" type="string" />
 
 	<cfset var categoryBean=getBean() />
 	<cfset var rs ="" />
@@ -113,11 +114,14 @@ to your own modified versions of Mura CMS.
 	<cfquery name="rs" datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	Select * from tcontentcategories where 
 	name=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.name#" />
-	and siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteid#" />
+	and siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#" />
 	</cfquery>
 	
-	<cfif rs.recordcount>
-	<cfset categoryBean.set(rs) />
+	<cfif rs.recordcount gt 1>
+		<cfthrow message="The category name '#arguments.name#' that you are reading by is not unique.">
+	<cfelseif rs.recordcount>
+		<cfset categoryBean.set(rs) />
+		<cfset categoryBean.setIsNew(0)>
 	</cfif>
 	
 	<cfreturn categoryBean />

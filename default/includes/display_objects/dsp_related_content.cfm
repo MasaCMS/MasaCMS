@@ -56,7 +56,7 @@ to your own modified versions of Mura CMS.
 	<#getHeaderTag('subHead1')#>#rbFactory.getKey('list.relatedcontent')#</#getHeaderTag('subHead1')#>
 	<cfloop query="rsRelatedContent">
 		<cfsilent>
-			<cfset contentLink = createHref(rsRelatedContent.Type, rsRelatedContent.filename, request.siteid, contentID, rsRelatedContent.target,rsRelatedContent.targetParams, '', '#application.configBean.getContext()#', '#application.configBean.getStub()#', '#application.configBean.getIndexFile()#', 'false') />
+			<cfset contentLink = createHref(rsRelatedContent.Type, rsRelatedContent.filename, request.siteid, contentID, rsRelatedContent.target,rsRelatedContent.targetParams, '', '#application.configBean.getContext()#', '#application.configBean.getStub()#', '', 'false') />
 			<cfset contentLink = "<a href='#contentLink#'>#menuTitle#</a>" />
 			<cfset class=""/>
 			<cfif rsRelatedContent.currentRow eq 1> 

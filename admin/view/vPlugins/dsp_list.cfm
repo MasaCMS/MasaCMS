@@ -68,12 +68,12 @@ to your own modified versions of Mura CMS.
 <td>#request.rslist.pluginID#</td>
 <td class="administration">
 <ul class="two">
-<cfif isUserInRole('S2')>
+<cfif listFind(session.mura.memberships,'S2')>
 <li class="edit"><a title="#application.rbFactory.getKeyValue(session.rb,'plugin.edit')#" href="index.cfm?fuseaction=cSettings.editPlugin&moduleID=#request.rslist.moduleID#">#application.rbFactory.getKeyValue(session.rb,'plugin.edit')#</a></li>
 <cfelse>
 <li class="editOff"><a>#application.rbFactory.getKeyValue(session.rb,'plugin.edit')#</a></li>
 </cfif>
-<cfif isUserInRole('Admin;#application.settingsManager.getSite(attributes.siteid).getPrivateUserPoolID()#;0') or isUserInRole('S2')>
+<cfif listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(attributes.siteid).getPrivateUserPoolID()#;0') or listFind(session.mura.memberships,'S2')>
 <li class="permissions"><a title="#application.rbFactory.getKeyValue(session.rb,'plugin.permissions')#" href="index.cfm?fuseaction=cPerm.module&contentid=#request.rslist.moduleID#&siteid=#attributes.siteID#&moduleid=#request.rslist.moduleID#">#application.rbFactory.getKeyValue(session.rb,'plugin.permissions')#</a></li>
 <cfelse>
 <li class="permissionsOff"><a>#application.rbFactory.getKeyValue(session.rb,'plugin.permissions')#</a></li>

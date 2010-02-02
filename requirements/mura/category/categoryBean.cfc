@@ -59,7 +59,10 @@ to your own modified versions of Mura CMS.
 <cfset variables.instance.RestrictGroups = "" />
 <cfset variables.instance.Path = "" />
 <cfset variables.categoryManager = "" />
+<cfset variables.instance.isNew=1 />
 <cfset variables.instance.errors=structnew() />
+
+<cfset variables.kids = arrayNew(1) />
 
 <cffunction name="init" returntype="any" output="false" access="public">
 	<cfargument name="categoryManager" type="any" required="yes"/>
@@ -94,7 +97,7 @@ to your own modified versions of Mura CMS.
 		<cfelseif isStruct(arguments.category)>
 		
 			<cfloop collection="#arguments.category#" item="prop">
-				<cfif isdefined("variables.instance.#prop#")>
+				<cfif structKeyExists(this,"set#prop#")>
 					<cfset evaluate("set#prop#(arguments.category[prop])") />
 				</cfif>
 			</cfloop>
@@ -266,7 +269,27 @@ to your own modified versions of Mura CMS.
   </cffunction>
 
 	<cffunction name="save" returnType="any" output="false" access="public">
-		<cfreturn variables.categoryManager.save(this) />
+	<cfset var kid="">
+	<cfset var i="">
+	<cfset setAllValues(variables.contentManager.save(this).getAllValues())>
+		
+	<cfif arrayLen(variables.kids)>
+		<cfloop from="1" to="#arrayLen(variables.kids)#" index="i">
+			<cfset kid=variables.kids[i]>
+			<cfset kid.save()>
+		</cfloop>
+	</cfif>
+	
+	<cfset variables.kids=arrayNew(1)>
+	
+	<cfreturn this />
+	</cffunction>
+	
+	<cffunction name="addChild" output="false" returntype="void">
+		<cfargument name="child" hint="Instance of a categoryBean">
+		<cfset arguments.child.setSiteID(getSiteID())>
+		<cfset arguments.child.setParentID(getContentID())>
+		<cfset arrayAppend(variables.kids,arguments.child)>
 	</cffunction>
 	
 	<cffunction name="delete" returnType="void" output="false" access="public">
@@ -288,6 +311,22 @@ to your own modified versions of Mura CMS.
 		<cfreturn it />
 	</cffunction>
 
+	<cffunction name="loadBy" returnType="any" output="false" access="public">
+		<cfif not structKeyExists(arguments,"siteID")>
+			<cfset arguments.siteID=getSiteID()>
+		</cfif>
+		<cfset setAllValues(variables.categoryManager.read(argumentCollection=arguments).getAllValues())>
+		<cfreturn this />
+	</cffunction>
+	
+   <cffunction name="setIsNew" returnType="void" output="false" access="public">
+    <cfargument name="IsNew" type="numeric" required="true">
+    <cfset variables.instance.IsNew = arguments.IsNew />
+  </cffunction>
+
+  <cffunction name="getIsNew" returnType="numeric" output="false" access="public">
+    <cfreturn variables.instance.IsNew />
+  </cffunction>
 </cfcomponent>
 
 

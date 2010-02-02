@@ -1,0 +1,1 @@
+<cfoutput>#doFBInclude("/muraWRM/admin/view/layouts/template.cfm")#</cfoutput>

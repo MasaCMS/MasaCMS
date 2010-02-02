@@ -51,6 +51,7 @@ to your own modified versions of Mura CMS.
 
 <cfparam name="session.mura.isLoggedIn" default="false" />
 <cfparam name="session.mura.userID" default="" />
+<cfparam name="session.mura.siteID" default="" />
 <cfparam name="session.mura.subtype" default="Default" />
 <cfparam name="session.mura.username" default="" />
 <cfparam name="session.mura.password" default="" />
@@ -61,7 +62,7 @@ to your own modified versions of Mura CMS.
 <cfparam name="session.mura.lastlogin" default="" />
 <cfparam name="session.mura.passwordCreated" default="" />
 <cfparam name="session.mura.remoteID" default="" />
-
+<cfparam name="session.mura.memberships" default="" />
 
 <!--- do a settings setup check --->
 <cfif NOT structKeyExists( application, "setupComplete" ) OR (not application.appInitialized or structKeyExists(url,application.appReloadKey) )>
@@ -163,14 +164,35 @@ to your own modified versions of Mura CMS.
 			<cfset application.contentServer=application.serviceFactory.getBean("contentServer") />
 			<cfset application.autoUpdater=application.serviceFactory.getBean("autoUpdater") />
 			
-			<cfinclude template="settings.custom.managers.cfm">
-	 	
+			<!---settings.custom.managers.cfm reference is for backwards compatability --->
+			<cfif fileExists("settings.custom.managers.cfm")>
+				<cfinclude template="settings.custom.managers.cfm">
+			</cfif>
+			
+			<cfset baseDir= left(getDirectoryFromPath(getCurrentTemplatePath()),len(getDirectoryFromPath(getCurrentTemplatePath()))-8) />
+			
+			<cfif StructKeyExists(SERVER,"bluedragon") and not findNoCase("Windows",server.os.name)>
+				<cfset mapPrefix="$" />
+			<cfelse>
+				<cfset mapPrefix="" />
+			</cfif>
+			
+			<cfdirectory action="list" directory="#mapPrefix##baseDir#/requirements/" name="rsRequirements">
+		
+			<cfloop query="rsRequirements">
+				<cfif rsRequirements.type eq "dir" and rsRequirements.name neq '.svn' and not structKeyExists(this.mappings,"/#rsRequirements.name#")>
+					<cfset application.serviceFactory.getBean("fileWriter").appendFIle(file="#mapPrefix##baseDir#/config/mappings.cfm", output='<cfset this.mappings["/#rsRequirements.name#"] = mapPrefix & BaseDir & "/requirements/#rsRequirements.name#">')>	
+				</cfif>
+			</cfloop>	
+			
 			<cfset application.appInitialized=true/>
 			
 			<cfif application.broadcastInit>
 				<cfset application.clusterManager.reload()>
 			</cfif>
 			<cfset application.broadcastInit=true/>
+			<cfset structDelete(application,"muraAdmin")>
+			<cfset structDelete(application,"proxyServices")>
 	</cflock>
 
 	<!--- Set up scheduled tasks --->
@@ -265,7 +287,11 @@ to your own modified versions of Mura CMS.
 
 <cfset application.userManager.setUserStructDefaults()>
 
-<cfinclude template="settings.custom.vars.cfm">
+<!---settings.custom.vars.cfm reference is for backwards compatability --->
+<cfif fileExists("settings.custom.vars.cfm")>
+	<cfinclude template="settings.custom.vars.cfm">
+</cfif>
+
 <cfif structKeyExists(request,"doMuraGlobalSessionStart")>
 	<cfset application.pluginManager.executeScripts('onGlobalSessionStart')>
 </cfif>

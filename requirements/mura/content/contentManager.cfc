@@ -42,6 +42,7 @@ to your own modified versions of Mura CMS.
 --->
 <cfcomponent extends="mura.cfobject" output="false">
 	<cfset this.TreeLevelList="Page,Portal,Calendar,Link,File,Gallery">
+	<cfset this.ExtendableList="Page,Portal,Calendar,Link,File,Gallery,Component">
 	
 	<cffunction name="init" access="public" returntype="any" output="false">
 		<cfargument name="contentGateway" type="any" required="yes"/>
@@ -156,30 +157,26 @@ to your own modified versions of Mura CMS.
 	</cffunction>
 	
 	<cffunction name="read" output="false" returntype="Any" hint="Takes (contentid | contenthistid | filename | remoteid), siteid, use404">
-	
-	<cfset var content="">
-	
-	<cfif not structKeyExists(arguments,"use404")>
-		<cfset arguments.use404=false>
-	</cfif>
-	
-	<cfif not structKeyExists(arguments,"siteID")>
+	<cfargument name="contentID" required="true" default="">
+	<cfargument name="contentHistID" required="true" default="">
+	<cfargument name="filename" required="true" default="">
+	<cfargument name="remoteID" required="true" default="">
+	<cfargument name="siteID" required="true" default=""> 
+	<cfargument name="use404" required="true" default="false">
+
+	<cfif not len(arguments.siteID)>
 		<cfthrow message="A 'SITEID' is required in order to read content. ">
 	</cfif>
 	
-	<cfif structKeyExists(arguments,"contenthistid")>
-		<cfset content=getcontentVersion(arguments.contenthistid, arguments.siteid, arguments.use404)>
-	<cfelseif structKeyExists(arguments,"filename")>
-		<cfset content=application.contentManager.getActiveContentByFilename(arguments.filename, arguments.siteid, arguments.use404)>
-	<cfelseif structKeyExists(arguments,"remoteid")>
-		<cfset content=getActiveByRemoteID(arguments.remoteid, arguments.siteid)>
-	<cfelseif structKeyExists(arguments,"contentid")>	
-		<cfset content=getActiveContent(arguments.contentid, arguments.siteid, arguments.use404)>
-	<cfelse>
-		<cfthrow message="One of the following values is required 'CONTENTID, CONTENTHISTID, FILENAME, REMOTEID' in order to read content.">
+	<cfif len(arguments.contenthistid)>
+		<cfreturn getcontentVersion(arguments.contenthistid, arguments.siteid, arguments.use404)>
+	<cfelseif len(arguments.filename)>
+		<cfreturn getActiveContentByFilename(arguments.filename, arguments.siteid, arguments.use404)>
+	<cfelseif len(arguments.remoteid)>
+		<cfreturn getActiveByRemoteID(arguments.remoteid, arguments.siteid)>
+	<cfelse>	
+		<cfreturn getActiveContent(arguments.contentid, arguments.siteid, arguments.use404)>
 	</cfif>
-	
-	<cfreturn content>
 	
 	</cffunction>
 	
@@ -359,7 +356,7 @@ to your own modified versions of Mura CMS.
 		<cfreturn rs />
 	</cffunction>
 	
-	<cffunction name="readRegionObjects" access="public" returntype="void" output="false">
+	<cffunction name="setRequestRegionObjects" access="public" returntype="void" output="false">
 		<cfargument name="contenthistid" type="string"/>
 		<cfargument name="siteid" type="string"/>
 		<cfset var rs = "" />
@@ -370,450 +367,480 @@ to your own modified versions of Mura CMS.
 		</cfloop>
 
 	</cffunction>
-
-
-<cffunction name="setMaterializedPath" returntype="void" output="false">
-<cfargument name="contentBean" type="any">
-	<cfset var crumbdata=variables.contentGateway.getCrumbList(arguments.contentBean.getParentID(),arguments.contentBean.getSiteID(),false)>
-	<cfset var path = "" />
-	<cfset var I = 0 />
 	
-	<cfloop from="#arrayLen(crumbdata)#" to="1" index="I" step="-1">
-		<cfset path =  listAppend(path,"#crumbdata[I].contentID#")>
-	</cfloop>
+	<cffunction name="getRegionObjects" access="public" returntype="any" output="false">
+		<cfargument name="contenthistid" type="string"/>
+		<cfargument name="siteid" type="string"/>
+		<cfargument name="regionID" type="string"/>
 		
-	<cfset path = listAppend(path, arguments.contentBean.getcontentID() )>
+		<cfreturn variables.contentDAO.readRegionObjects(arguments.contenthistid,arguments.siteid,arguments.regionID) />
+		
+	</cffunction>
 	
-	<cfset arguments.contentBean.setPath(path)>
+	<cffunction name="formatRegionObjectsString" access="public" returntype="any" output="false">
+		<cfargument name="rs"/>
+		<cfset var str="">
+		<cfloop query="rs">
+			<cfset str=listAppend(str,"#rs.object#~#rs.name#~#rs.objectID#")>
+		</cfloop>
+		
+		<cfreturn str>
+	</cffunction>
 
-</cffunction>
-
-<cffunction name="updateMaterializedPath" returntype="void" output="false">
-<cfargument name="newPath" type="any">
-<cfargument name="currentPath" type="any">
-<cfargument name="siteID" type="any">
-
-<cfset var fixerPath = ""/>
-<cfset var rslist= "" />
-	
-	<cfif len(arguments.newPath)>
-		<cfquery datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-			update tcontent 
-			set path=replace(ltrim(rtrim(cast(path AS char(1000)))),<cfqueryparam cfsqltype="cf_sql_longvarchar" value="#arguments.currentPath#">,<cfqueryparam cfsqltype="cf_sql_longvarchar" value="#arguments.newPath#">) 
-			where path like	<cfqueryparam cfsqltype="cf_sql_longvarchar" value="#arguments.currentPath#%">
-			and siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#">
-		</cfquery>
-	<cfelse>
-		<cfthrow type="custom" message="The attribute 'PATH' is required when saving content.">
-	</cfif>
+	<cffunction name="setMaterializedPath" returntype="void" output="false">
+	<cfargument name="contentBean" type="any">
+		<cfset var crumbdata=variables.contentGateway.getCrumbList(arguments.contentBean.getParentID(),arguments.contentBean.getSiteID(),false)>
+		<cfset var path = "" />
+		<cfset var I = 0 />
+		
+		<cfloop from="#arrayLen(crumbdata)#" to="1" index="I" step="-1">
+			<cfset path =  listAppend(path,"#crumbdata[I].contentID#")>
+		</cfloop>
 			
-</cffunction>
+		<cfset path = listAppend(path, arguments.contentBean.getcontentID() )>
+		
+		<cfset arguments.contentBean.setPath(path)>
+	
+	</cffunction>
 
-<cffunction name="save" access="public" returntype="any" output="false">
-	<cfargument name="data" type="any"/>
-	<cfreturn add(arguments.data)/>
-</cffunction>
-
-<cffunction name="add" access="public" returntype="any" output="false">
-	<cfargument name="data" type="any"/>
-	<cfset var newBean=""/>
-	<cfset var currentBean=""/>
-	<cfset var deletedList=""/>
-	<cfset var rsHist=""/>
-	<cfset var histList=""/>
-	<cfset var draftList=""/>
-	<cfset var ext=""/>
-	<cfset var rsOrder=""/>
-	<cfset var fileID=""/>
-	<cfset var theFileStruct=""/>
-	<cfset var refused=false />
-	<cfset var imageData="" />
-	<cfset var rsFile="" />
-	<cfset var rsDrafts = "" />
-	<cfset var d = "" />
-	<cfset var pluginEvent = createObject("component","mura.event") />
+	<cffunction name="updateMaterializedPath" returntype="void" output="false">
+	<cfargument name="newPath" type="any">
+	<cfargument name="currentPath" type="any">
+	<cfargument name="siteID" type="any">
 	
-	<!---IF THE DATA WAS SUBMITTED AS AN OBJECT UNPACK THE VALUES --->
-	<cfif isObject(arguments.data)>
-		<cfif getMetaData(arguments.data).name eq "mura.content.contentBean">
-			<cfset arguments.data=arguments.data.getAllValues() />
-		<cfelse>
-			<cfthrow type="custom" message="The attribute 'DATA' is not of type 'mura.content.contentBean'.">
-		</cfif>
-	</cfif>
-	
-	<cfset pluginEvent.init(arguments.data)>
-	
-	<!--- MAKE SURE ALL REQUIRED DATA IS THERE--->
-	<cfif not structKeyExists(arguments.data,"siteID") or (structKeyExists(arguments.data,"siteID") and not len(arguments.data.siteID))>
-		<cfthrow type="custom" message="The attribute 'SITEID' is required when saving content.">
-	</cfif>
-	
-	<cfif not structKeyExists(arguments.data,"parentID") or (structKeyExists(arguments.data,"parentID") and not len(arguments.data.parentID))>
-		<cfthrow type="custom" message="The attribute 'PARENTID' is required when saving content.">
-	</cfif>
-	
-	<cfif not structKeyExists(arguments.data,"type") or (structKeyExists(arguments.data,"type") and not listFindNoCase("Form,Component,Page,Portal,Gallery,Calendar,File,Link",arguments.data.type))>
-		<cfthrow type="custom" message="A valid 'TYPE' is required when saving content.">
-	</cfif>
-	
-	<cfif (not structKeyExists(arguments.data,"title") or (structKeyExists(arguments.data,"title") and not len(arguments.data.title))) and
-		(not structKeyExists(arguments.data,"menutitle") or (structKeyExists(arguments.data,"menutitle") and not len(arguments.data.menutitle)))>
-		<cfthrow type="custom" message="The attribute 'TITLE' is required when saving content.">
-	</cfif>
-	
-	<cfif not structKeyExists(arguments.data,"display") or (structKeyExists(arguments.data,"display") and not isNumeric(arguments.data.display))>
-		<cfset arguments.data.display=1 />
-	</cfif>
-	
-	<cfif not structKeyExists(arguments.data,"isNav") or (structKeyExists(arguments.data,"isNav") and not isNumeric(arguments.data.isNav))>
-		<cfset arguments.data.isNav=1 />
-	</cfif>
-	
-	<cfif not structKeyExists(arguments.data,"approved") or (structKeyExists(arguments.data,"approved") and not isNumeric(arguments.data.approved))>
-		<cfset arguments.data.approved=0 />
-	</cfif>
-	<!--- END REQUIRED DATA CHECK--->
-	
-	<!--- BEGIN CONTENT TYPE: ALL CONTENT TYPES --->
-	<cfif isDefined('arguments.data.remoteID') and arguments.data.remoteID neq ''>
+	<cfset var fixerPath = ""/>
+	<cfset var rslist= "" />
 		
-		<cfset newBean=variables.contentDAO.readActiveByRemoteID('#arguments.data.remoteID#','#arguments.data.siteid#') />
-		
-		<cfif  newBean.getIsNew() and isdefined("arguments.data.mode") and arguments.data.mode eq 'import' and (isDefined('arguments.data.remotePubDate') and arguments.data.remotePubDate eq newBean.getRemotePubDate()) >
-			<cfset refused = true />
-		</cfif>
-	<cfelse>
-		<cfset newBean=variables.contentDAO.readActive(arguments.data.contentID,arguments.data.siteid) />	
-	</cfif>
-
-
-<cfif not refused>		
-	<cfset newBean.set(arguments.data) />
-	<cfset pluginEvent.setValue("newBean",newBean)>	
-	<cfif newBean.getIsNew()>
-		<cfset newBean.setActive(1) />
-		<cfset newBean.setCreated(now()) />
-	<cfelse>
-		<cfset newBean.setActive(0) />
-	</cfif>
-		
-	<cfif not newBean.getIsNew()>
-		<cfset currentBean=variables.contentDAO.readActive(newBean.getcontentID(),arguments.data.siteid) />
-		<cfset pluginEvent.setValue("currentBean",currentBean)>	
-	</cfif>
-
-	<cfif newBean.getcontentID() eq ''>
-		<cfset newBean.setcontentID(createUUID()) />
-	</cfif>
-
-	<cfset newBean.setcontentHistID(createUUID()) />
-	
-	<cfif newBean.getTitle() eq ''>
-		<cfset newBean.setTitle(newBean.getmenutitle())>
-	</cfif>
-
-	<cfif newBean.getmenuTitle() eq ''>
-		<cfset newBean.setmenutitle(newBean.getTitle())>
-	</cfif>
-	
-	<cfif newBean.getURLTitle() eq ''>
-		<cfset newBean.setURLTitle(variables.contentUtility.formatFilename(newBean.getmenutitle()))>
-	</cfif>
-	
-	<cfif newBean.getHTMLTitle() eq ''>
-		<cfset newBean.setHTMLTitle(newBean.getTitle())>
-	</cfif>
-	
-	<!--- END CONTENT TYPE: ALL CONTENT TYPES --->
-	<cfif  ListFindNoCase(this.TreeLevelList,newBean.getType())>
-		<cfset variables.pluginManager.announceEvent("onBeforeContentSave",pluginEvent)>	
-	</cfif>
-	<cfset variables.pluginManager.announceEvent("onBefore#newBean.getType()#Save",pluginEvent)>
-	<cfset variables.pluginManager.announceEvent("onBefore#newBean.getType()##newBean.getSubType()#Save",pluginEvent)>	
-	
-	<cflock type="exclusive" name="editingContent#arguments.data.siteid#" timeout="600">
-	<cftransaction>
-	<!--- BEGIN CONTENT TYPE: ALL SITE TREE LEVEL CONTENT TYPES --->
-	<cfif  listFindNoCase(this.TreeLevelList,newBean.getType())>
-		
-		<cfif isDefined('arguments.data.extendSetID') and len(arguments.data.extendSetID)>	
-			<cfset variables.ClassExtensionManager.saveExtendedData(newBean.getcontentHistID(),arguments.data)/>
-		</cfif>
-	
-		<cfif not newBean.getIsNew()>
-			<cfset variables.ClassExtensionManager.preserveExtendedData(newBean.getcontentHistID(),currentBean.getcontentHistID(),arguments.data,"tclassextenddata", newBean.getType(), newBean.getSubType())/>
-		</cfif>
-	
-		<cfif newBean.getapproved() and not newBean.getIsNew() and currentBean.getDisplay() eq 2 and newBean.getDisplay() eq 2>
-			<cfset variables.reminderManager.updateReminders(newBean.getcontentID(),newBean.getSiteid(),newBean.getDisplayStart()) />
-		<cfelseif newBean.getapproved() and not newBean.getIsNew() and currentBean.getDisplay() eq 2 and newBean.getDisplay() neq 2>
-			<cfset variables.reminderManager.deleteReminders(newBean.getcontentID(),newBean.getSiteID()) />
-		</cfif>
-	
-		<cfset setMaterializedPath(newBean) />
-		
-		<cfif not newBean.getIsNew() and newBean.getParentID() neq currentBean.getParentID()>
-			<cfset updateMaterializedPath(newBean.getPath(),currentBean.getPath(),newBean.getSiteID()) />
-		</cfif>
-		
-		<cfif not newBean.getIsNew()>
-			<cfset variables.contentDAO.createRelatedItems(newBean.getcontentID(),
-			newBean.getcontentHistID(),arguments.data,newBean.getSiteID(),currentBean.getcontentHistID()) />
-		
-		<cfelse>
-			<cfset variables.contentDAO.createRelatedItems(newBean.getcontentID(),
-			newBean.getcontentHistID(),arguments.data,newBean.getSiteID(),'') />
-		</cfif>
-			
-		<cfif not newBean.getIsNew() and isdefined("arguments.data.mode") and arguments.data.mode eq 'import'>
-			
-			<cfset variables.categoryManager.keepCategories(newBean.getcontentHistID(),
-			getCategoriesByHistID(currentBean.getcontentHistID())) />	
-		<cfelse>
-			<cfif newBean.getIsNew()>
-				<cfset variables.categoryManager.setCategories(arguments.data,newBean.getcontentID(),
-				newBean.getcontentHistID(),arguments.data.siteid,getCategoriesByHistID('')) />	
-			<cfelse>
-				<cfset variables.categoryManager.setCategories(arguments.data,newBean.getcontentID(),
-				newBean.getcontentHistID(),arguments.data.siteid,getCategoriesByHistID(currentBean.getcontentHistID())) />	
-			</cfif>	
-		</cfif>
-	</cfif>
-	
-	<cfif  newBean.getType() eq "Component" >
-		<cfif not newBean.getIsNew() and isdefined("arguments.data.mode") and arguments.data.mode eq 'import'>
-			<cfset variables.categoryManager.keepCategories(newBean.getcontentHistID(),
-			getCategoriesByHistID(currentBean.getcontentHistID())) />	
-		<cfelse>
-			<cfif newBean.getIsNew()>
-				<cfset variables.categoryManager.setCategories(arguments.data,newBean.getcontentID(),
-				newBean.getcontentHistID(),arguments.data.siteid,getCategoriesByHistID('')) />	
-			<cfelse>
-				<cfset variables.categoryManager.setCategories(arguments.data,newBean.getcontentID(),
-				newBean.getcontentHistID(),arguments.data.siteid,getCategoriesByHistID(currentBean.getcontentHistID())) />	
-			</cfif>	
-		</cfif>
-	</cfif>
-	
-	<!--- Public Content Submision  --->
-	<cfif  isdefined('arguments.data.email') and isdefined('arguments.data.email')>
-				
-				<cfset variables.contentUtility.setApprovalQue(newBean,arguments.data.email) />
-	</cfif>
-	
-			<cfif newBean.getIsNew() eq 0 and newBean.getDisplay() neq 0 and currentBean.getDisplay() eq 0>
-				 <cfset variables.contentUtility.checkApprovalQue(newBean,getActiveContent(newBean.getParentID(),newBean.getSiteID())) />
-			</cfif>
-	<!--- End Public Content Submision  --->	
-	
-	<!--- END CONTENT TYPE: ALL SITE TREE LEVEL CONTENT TYPES --->
-	
-	<!--- BEGIN CONTENT TYPE: PAGE, PORTAL, CALENDAR, GALLERY --->
-	<cfif newBean.gettype() eq 'Page' or newBean.gettype() eq 'Portal' or newBean.gettype() eq 'Calendar' or newBean.gettype() eq 'Gallery'>
-		
-		<cfif not newBean.getIsNew()>	
-			<cfset newBean.setfilename(currentBean.getfilename())>
-			<cfset newBean.setOldfilename(currentBean.getfilename())>
-		</cfif>
-		
-		<cfif 
-			(
-				(newBean.getapproved() or newBean.getIsNew())
-				 and newBean.getcontentid() neq '00000000000000000000000000000000001'
-				) 
-				  and 
-				(newBean.getIsNew()
-				 or
-				(
-				  not newBean.getIsNew() 
-				  and (
-					 	currentBean.getparentid() neq newBean.getparentid()
-					or variables.contentUtility.formatFilename(currentBean.getURLtitle()) neq variables.contentUtility.formatFilename(newBean.getURLtitle())
-				   )
-			  	)
-			  )
-					   
-		 	  and 
-				(
-				not 
-					(
-					newBean.getparentid() eq '00000000000000000000000000000000001'
-				   	and  variables.settingsManager.getSite(newBean.getsiteid()).getlocking() eq 'top'
-					) 
-			and not variables.settingsManager.getSite(newBean.getSiteID()).getlocking() eq 'all'
-			)
-			
-			and not (not newBean.getIsNew() and newBean.getIsLocked())>
-						
-			<cfset variables.contentUtility.setUniqueFilename(newBean) />
-			<!---<cfset variables.contentUtility.createFile(newBean) />--->
-			
-					
-			<cfif not newBean.getIsNew() and newBean.getoldfilename() neq newBean.getfilename()>
-				<cfset variables.contentUtility.movelink(newBean.getSiteID(),newBean.getFilename(),currentBean.getFilename()) />	
-				<cfset variables.contentUtility.move(newBean.getsiteid(),newBean.getFilename(),newBean.getOldFilename())>
-			</cfif>
-				
-		</cfif>		
-		
-		<cfif newBean.getIsNew()>
-		<cfset variables.contentDAO.createObjects(arguments.data,newBean,'') />
-		<cfelse>
-		<cfset variables.contentDAO.createObjects(arguments.data,newBean,currentBean.getcontentHistID()) />
-		</cfif>
-		
-		<cfif isDefined('arguments.data.deleteFile') and len(newBean.getFileID())>
-		<cfset variables.fileManager.deleteIfNotUsed(newBean.getFileID(),newBean.getContentHistID())>
-		<cfset newBean.setFileID('')>
-		</cfif>
-				
-	</cfif>
-	<!--- END CONTENT TYPE: PAGE, PORTAL, CALENDAR, GALLERY --->
-	
-
-	<!--- BEGIN CONTENT TYPE: FILE --->	
-	<!---<cfif newBean.gettype() eq 'File'>--->
-			
-		<cfif isDefined('arguments.data.newfile') and arguments.data.newfile neq ''>
-			
-			<cffile action="upload" filefield="NewFile" nameconflict="makeunique" destination="#variables.configBean.getTempDir()#">
-			<cfset theFileStruct=variables.fileManager.process(cffile,newBean.getSiteID()) />
-			<cfset newBean.setfileID(variables.fileManager.create(theFileStruct.fileObj,newBean.getcontentID(),newBean.getSiteID(),cffile.ClientFile,cffile.ContentType,cffile.ContentSubType,cffile.FileSize,newBean.getModuleID(),cffile.ServerFileExt,theFileStruct.fileObjSmall,theFileStruct.fileObjMedium)) />
-			
-			<cfif newBean.getType() eq "File">
-				<cfset newBean.setfilename(cffile.serverfile) />
-			</cfif>
-			
-			<!--- Delete Files in temp directory --->
-			
-		</cfif>
-		<!--- Delete Files that are not attached to any version in versin history--->	
-		<cfif newBean.getApproved() and not newBean.getIsNew()>
-	
-				<cfset rsHist=getArchiveHist(newbean.getcontentID(),arguments.data.siteid)/>
-				<cfset rsDrafts=getDraftHist(newbean.getcontentID(),arguments.data.siteid)/>
-					
-				<cfloop query="rsHist">
-					<cfset histList=listAppend(histList,rsHist.filename,"^")/>
-				</cfloop>
-				
-				<cfloop query="rsDrafts">
-					<cfset draftList=listAppend(draftList,rsDrafts.filename,"^")/>
-				</cfloop>
-					
-				<cfloop list="#draftList#" index="d">
-					<cfif newBean.getFilename() neq d and not listFind(histList,d,"^") and not listFind(deletedList,d,"^")>
-						<cftry>
-						<cflock name="#d#" type="exclusive" timeout="500">
-						<cfset variables.fileManager.deleteVersion(d) />
-						</cflock>
-						<cfcatch></cfcatch>
-						</cftry>
-						<cfset deletedList=listAppend(deletedList,d,"^")/>
-					</cfif>
-
-					
-				</cfloop>
-		</cfif>
-	
-	<!---</cfif>--->
-	<!--- END CONTENT TYPE: FILE --->
-		
-
-	<!--- BEGIN CONTENT TYPE: ALL CONTENT TYPES --->
-	<!---If approved, delete all drafts and set the last active to inactive--->
-		
-	<cfif newBean.getapproved() and not newBean.getIsNew()>
-		
-		<cfset newBean.setActive(1) />
-		<cfset variables.contentDAO.archiveActive(newbean.getcontentID(),arguments.data.siteid)/>
-		<cfset variables.contentDAO.deleteDraftHistAll(newbean.getcontentID(),arguments.data.siteid)/>
-		<cfset variables.contentDAO.deleteContentAssignments(newbean.getcontentID(),arguments.data.siteid)/>
-	</cfif>
-		
-	<cfif newBean.getapproved()>
-		<cfset variables.settingsManager.getSite(arguments.data.siteid).purgeCache() />
-	</cfif>
-		
-		
-	<!--- set the orderno if it is new content or has been moved--->	 
-	<cfif newBean.getIsNew() 
-	or (newBean.getapproved() and not newBean.getIsNew() and newBean.getParentID() neq currentBean.getParentID() )>		 
-		
-		<cfif not isdefined('arguments.data.topOrBottom') or isdefined('arguments.data.topOrBottom') and arguments.data.topOrBottom eq 'Top' >
+		<cfif len(arguments.newPath)>
 			<cfquery datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-			 update tcontent set orderno=OrderNo+1 where parentid='#newBean.getparentid()#' 
-			 and siteid='#newBean.getsiteid()#' 
-			 and type in ('Page','Portal','Link','File','Component','Calendar','Form') and active=1
-			 </cfquery>
-				 
-			 <cfset newBean.setOrderNo(1)>
-			 
-		<cfelseif (isdefined('arguments.data.topOrBottom') and arguments.data.topOrBottom eq 'bottom')>
+				update tcontent 
+				set path=replace(ltrim(rtrim(cast(path AS char(1000)))),<cfqueryparam cfsqltype="cf_sql_longvarchar" value="#arguments.currentPath#">,<cfqueryparam cfsqltype="cf_sql_longvarchar" value="#arguments.newPath#">) 
+				where path like	<cfqueryparam cfsqltype="cf_sql_longvarchar" value="#arguments.currentPath#%">
+				and siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#">
+			</cfquery>
+		<cfelse>
+			<cfthrow type="custom" message="The attribute 'PATH' is required when saving content.">
+		</cfif>
+				
+	</cffunction>
+
+	<cffunction name="save" access="public" returntype="any" output="false">
+		<cfargument name="data" type="any"/>
+		<cfreturn add(arguments.data)/>
+	</cffunction>
+
+	<cffunction name="add" access="public" returntype="any" output="false">
+		<cfargument name="data" type="any"/>
+		<cfset var newBean=""/>
+		<cfset var currentBean=""/>
+		<cfset var deletedList=""/>
+		<cfset var rsHist=""/>
+		<cfset var histList=""/>
+		<cfset var draftList=""/>
+		<cfset var ext=""/>
+		<cfset var rsOrder=""/>
+		<cfset var fileID=""/>
+		<cfset var theFileStruct=""/>
+		<cfset var refused=false />
+		<cfset var imageData="" />
+		<cfset var rsFile="" />
+		<cfset var rsDrafts = "" />
+		<cfset var d = "" />
+		<cfset var pluginEvent = createObject("component","mura.event") />
+		<cfset var tempFile="" />
 		
-			<cfif not newBean.getIsNew() and newBean.getParentID() eq currentBean.getParentID()>
+		<!---IF THE DATA WAS SUBMITTED AS AN OBJECT UNPACK THE VALUES --->
+		<cfif isObject(arguments.data)>
+			<cfif getMetaData(arguments.data).name eq "mura.content.contentBean">
+				<cfset arguments.data=arguments.data.getAllValues() />
+			<cfelse>
+				<cfthrow type="custom" message="The attribute 'DATA' is not of type 'mura.content.contentBean'.">
+			</cfif>
+		</cfif>
+		
+		<cfset pluginEvent.init(arguments.data)>
+		
+		<!--- MAKE SURE ALL REQUIRED DATA IS THERE--->
+		<cfif not structKeyExists(arguments.data,"siteID") or (structKeyExists(arguments.data,"siteID") and not len(arguments.data.siteID))>
+			<cfthrow type="custom" message="The attribute 'SITEID' is required when saving content.">
+		</cfif>
+		
+		<cfif not structKeyExists(arguments.data,"parentID") or (structKeyExists(arguments.data,"parentID") and not len(arguments.data.parentID))>
+			<cfthrow type="custom" message="The attribute 'PARENTID' is required when saving content.">
+		</cfif>
+		
+		<cfif not structKeyExists(arguments.data,"type") or (structKeyExists(arguments.data,"type") and not listFindNoCase("Form,Component,Page,Portal,Gallery,Calendar,File,Link",arguments.data.type))>
+			<cfthrow type="custom" message="A valid 'TYPE' is required when saving content.">
+		</cfif>
+		
+		<cfif (not structKeyExists(arguments.data,"title") or (structKeyExists(arguments.data,"title") and not len(arguments.data.title))) and
+			(not structKeyExists(arguments.data,"menutitle") or (structKeyExists(arguments.data,"menutitle") and not len(arguments.data.menutitle)))>
+			<cfthrow type="custom" message="The attribute 'TITLE' is required when saving content.">
+		</cfif>
+		
+		<cfif not structKeyExists(arguments.data,"display") or (structKeyExists(arguments.data,"display") and not isNumeric(arguments.data.display))>
+			<cfset arguments.data.display=1 />
+		</cfif>
+		
+		<cfif not structKeyExists(arguments.data,"isNav") or (structKeyExists(arguments.data,"isNav") and not isNumeric(arguments.data.isNav))>
+			<cfset arguments.data.isNav=1 />
+		</cfif>
+		
+		<cfif not structKeyExists(arguments.data,"approved") or (structKeyExists(arguments.data,"approved") and not isNumeric(arguments.data.approved))>
+			<cfset arguments.data.approved=0 />
+		</cfif>
+		<!--- END REQUIRED DATA CHECK--->
+		
+		<!--- BEGIN CONTENT TYPE: ALL CONTENT TYPES --->
+		<cfif isDefined('arguments.data.remoteID') and arguments.data.remoteID neq ''>
+			
+			<cfset newBean=read(remoteID=arguments.data.remoteID,siteID=arguments.data.siteid) />
+			
+			<cfif  newBean.getIsNew() and isdefined("arguments.data.mode") and arguments.data.mode eq 'import' and (isDefined('arguments.data.remotePubDate') and arguments.data.remotePubDate eq newBean.getRemotePubDate()) >
+				<cfset refused = true />
+			</cfif>
+		<cfelse>
+			<cfif isDefined('arguments.data.preserveID') and isValid('UUID',arguments.data.preserveID)>
+				<cfset newBean=read(contentHistID=arguments.data.preserveID,siteID=arguments.data.siteid) />
+			<cfelse>
+				<cfset newBean=read(contentID=arguments.data.contentID,siteID=arguments.data.siteid) />
+			</cfif>
+		</cfif>
+	
+	
+	<cfif not refused>
+		<cfset newBean.set(arguments.data) />
+		<cfset pluginEvent.setValue("newBean",newBean)>	
+		<cfif newBean.getIsNew()>
+			<cfset newBean.setActive(1) />
+			<cfset newBean.setCreated(now()) />
+		<cfelse>
+			<cfset newBean.setActive(0) />
+		</cfif>
+			
+		<cfif not newBean.getIsNew()>
+			<cfset currentBean=read(contentID=newBean.getcontentID(),siteID=arguments.data.siteid) />
+			<cfset pluginEvent.setValue("currentBean",currentBean)>	
+		</cfif>
+	
+		<cfif newBean.getcontentID() eq ''>
+			<cfset newBean.setcontentID(createUUID()) />
+		</cfif>
+	
+		<cfset newBean.setcontentHistID(createUUID()) />
+		
+		<cfif newBean.getTitle() eq ''>
+			<cfset newBean.setTitle(newBean.getmenutitle())>
+		</cfif>
+	
+		<cfif newBean.getmenuTitle() eq ''>
+			<cfset newBean.setmenutitle(newBean.getTitle())>
+		</cfif>
+		
+		<cfif newBean.getURLTitle() eq ''>
+			<cfset newBean.setURLTitle(variables.contentUtility.formatFilename(newBean.getmenutitle()))>
+		</cfif>
+		
+		<cfif newBean.getHTMLTitle() eq ''>
+			<cfset newBean.setHTMLTitle(newBean.getTitle())>
+		</cfif>
+		
+		<!--- END CONTENT TYPE: ALL CONTENT TYPES --->
+		
+		<cfif  ListFindNoCase(this.TreeLevelList,newBean.getType())>
+			<cfset variables.pluginManager.announceEvent("onBeforeContentSave",pluginEvent)>	
+		</cfif>
+		<cfset variables.pluginManager.announceEvent("onBefore#newBean.getType()#Save",pluginEvent)>
+		<cfset variables.pluginManager.announceEvent("onBefore#newBean.getType()##newBean.getSubType()#Save",pluginEvent)>	
+		
+		<cflock type="exclusive" name="editingContent#arguments.data.siteid#" timeout="600">
+		<cftransaction>
+		
+		<!--- BEGIN CONTENT TYPE: ALL EXTENDABLE CONTENT TYPES --->
+		<cfif  listFindNoCase(this.ExtendableList,newBean.getType())>
+			<cfif isDefined('arguments.data.extendSetID') and len(arguments.data.extendSetID)>	
+				<cfset variables.ClassExtensionManager.saveExtendedData(newBean.getcontentHistID(),arguments.data)/>
+			</cfif>
+			
+			<cfif not newBean.getIsNew()>
+				<cfset variables.ClassExtensionManager.preserveExtendedData(newBean.getcontentHistID(),newBean.getPreserveID(),arguments.data,"tclassextenddata", newBean.getType(), newBean.getSubType())/>
+			</cfif>
+		</cfif>
+		<!--- END CONTENT TYPE: ALL EXTENDABLE CONTENT TYPES --->
+		
+		<!--- BEGIN CONTENT TYPE: ALL SITE TREE LEVEL CONTENT TYPES --->
+		<cfif  listFindNoCase(this.TreeLevelList,newBean.getType())>
+			
+			
+	
+			<cfif newBean.getapproved() and not newBean.getIsNew() and currentBean.getDisplay() eq 2 and newBean.getDisplay() eq 2>
+				<cfset variables.reminderManager.updateReminders(newBean.getcontentID(),newBean.getSiteid(),newBean.getDisplayStart()) />
+			<cfelseif newBean.getapproved() and not newBean.getIsNew() and currentBean.getDisplay() eq 2 and newBean.getDisplay() neq 2>
+				<cfset variables.reminderManager.deleteReminders(newBean.getcontentID(),newBean.getSiteID()) />
+			</cfif>
+		
+			<cfset setMaterializedPath(newBean) />
+			
+			<cfif not newBean.getIsNew() and newBean.getParentID() neq currentBean.getParentID()>
+				<cfset updateMaterializedPath(newBean.getPath(),currentBean.getPath(),newBean.getSiteID()) />
+			</cfif>
+			
+			<cfif not newBean.getIsNew()>
+				<cfset variables.contentDAO.createRelatedItems(newBean.getcontentID(),
+				newBean.getcontentHistID(),arguments.data,newBean.getSiteID(),currentBean.getcontentHistID()) />
+			
+			<cfelse>
+				<cfset variables.contentDAO.createRelatedItems(newBean.getcontentID(),
+				newBean.getcontentHistID(),arguments.data,newBean.getSiteID(),'') />
+			</cfif>
+				
+			<cfif not newBean.getIsNew() and isdefined("arguments.data.mode") and arguments.data.mode eq 'import'>
+				
+				<cfset variables.categoryManager.keepCategories(newBean.getcontentHistID(),
+				getCategoriesByHistID(currentBean.getcontentHistID())) />	
+			<cfelse>
+				<cfif newBean.getIsNew()>
+					<cfset variables.categoryManager.setCategories(arguments.data,newBean.getcontentID(),
+					newBean.getcontentHistID(),arguments.data.siteid,getCategoriesByHistID('')) />	
+				<cfelse>
+					<cfset variables.categoryManager.setCategories(arguments.data,newBean.getcontentID(),
+					newBean.getcontentHistID(),arguments.data.siteid,getCategoriesByHistID(currentBean.getcontentHistID())) />	
+				</cfif>	
+			</cfif>
+		</cfif>
+		
+		<cfif  newBean.getType() eq "Component" >
+			<cfif not newBean.getIsNew() and isdefined("arguments.data.mode") and arguments.data.mode eq 'import'>
+				<cfset variables.categoryManager.keepCategories(newBean.getcontentHistID(),
+				getCategoriesByHistID(currentBean.getcontentHistID())) />	
+			<cfelse>
+				<cfif newBean.getIsNew()>
+					<cfset variables.categoryManager.setCategories(arguments.data,newBean.getcontentID(),
+					newBean.getcontentHistID(),arguments.data.siteid,getCategoriesByHistID('')) />	
+				<cfelse>
+					<cfset variables.categoryManager.setCategories(arguments.data,newBean.getcontentID(),
+					newBean.getcontentHistID(),arguments.data.siteid,getCategoriesByHistID(currentBean.getcontentHistID())) />	
+				</cfif>	
+			</cfif>
+		</cfif>
+		
+		<!--- Public Content Submision  --->
+		<cfif  isdefined('arguments.data.email') and isdefined('arguments.data.email')>
+					
+					<cfset variables.contentUtility.setApprovalQue(newBean,arguments.data.email) />
+		</cfif>
+		
+				<cfif newBean.getIsNew() eq 0 and newBean.getDisplay() neq 0 and currentBean.getDisplay() eq 0>
+					 <cfset variables.contentUtility.checkApprovalQue(newBean,getActiveContent(newBean.getParentID(),newBean.getSiteID())) />
+				</cfif>
+		<!--- End Public Content Submision  --->	
+		
+		<!--- END CONTENT TYPE: ALL SITE TREE LEVEL CONTENT TYPES --->
+		
+		<!--- BEGIN CONTENT TYPE: PAGE, PORTAL, CALENDAR, GALLERY --->
+		<cfif newBean.gettype() eq 'Page' or newBean.gettype() eq 'Portal' or newBean.gettype() eq 'Calendar' or newBean.gettype() eq 'Gallery'>
+			
+			<cfif not newBean.getIsNew()>	
+				<cfset newBean.setfilename(currentBean.getfilename())>
+				<cfset newBean.setOldfilename(currentBean.getfilename())>
+			</cfif>
+			
+			<cfif 
+				(
+					(newBean.getapproved() or newBean.getIsNew())
+					 and newBean.getcontentid() neq '00000000000000000000000000000000001'
+					) 
+					  and 
+					(newBean.getIsNew()
+					 or
+					(
+					  not newBean.getIsNew() 
+					  and (
+						 	currentBean.getparentid() neq newBean.getparentid()
+						or variables.contentUtility.formatFilename(currentBean.getURLtitle()) neq variables.contentUtility.formatFilename(newBean.getURLtitle())
+					   )
+				  	)
+				  )
+						   
+			 	  and 
+					(
+					not 
+						(
+						newBean.getparentid() eq '00000000000000000000000000000000001'
+					   	and  variables.settingsManager.getSite(newBean.getsiteid()).getlocking() eq 'top'
+						) 
+				and not variables.settingsManager.getSite(newBean.getSiteID()).getlocking() eq 'all'
+				)
+				
+				and not (not newBean.getIsNew() and newBean.getIsLocked())>
+							
+				<cfset variables.contentUtility.setUniqueFilename(newBean) />
+				<!---<cfset variables.contentUtility.createFile(newBean) />--->
+				
+						
+				<cfif not newBean.getIsNew() and newBean.getoldfilename() neq newBean.getfilename()>
+					<cfset variables.contentUtility.movelink(newBean.getSiteID(),newBean.getFilename(),currentBean.getFilename()) />	
+					<cfset variables.contentUtility.move(newBean.getsiteid(),newBean.getFilename(),newBean.getOldFilename())>
+				</cfif>
+					
+			</cfif>		
+			
+			<cfif newBean.getIsNew()>
+			<cfset variables.contentDAO.createObjects(arguments.data,newBean,'') />
+			<cfelse>
+			<cfset variables.contentDAO.createObjects(arguments.data,newBean,currentBean.getcontentHistID()) />
+			</cfif>
+			
+			<cfif isDefined('arguments.data.deleteFile') and len(newBean.getFileID())>
+			<cfset variables.fileManager.deleteIfNotUsed(newBean.getFileID(),newBean.getContentHistID())>
+			<cfset newBean.setFileID('')>
+			</cfif>
+					
+		</cfif>
+		<!--- END CONTENT TYPE: PAGE, PORTAL, CALENDAR, GALLERY --->
+		
+	
+		<!--- BEGIN CONTENT TYPE: FILE --->	
+		<!---<cfif newBean.gettype() eq 'File'>--->
+				
+			<cfif isDefined('arguments.data.newfile') and arguments.data.newfile neq ''>
+				
+				<cffile action="upload" result="tempFile" filefield="NewFile" nameconflict="makeunique" destination="#variables.configBean.getTempDir()#">
+				<cfset theFileStruct=variables.fileManager.process(tempFile,newBean.getSiteID()) />
+				<cfset newBean.setfileID(variables.fileManager.create(theFileStruct.fileObj,newBean.getcontentID(),newBean.getSiteID(),tempFile.ClientFile,tempFile.ContentType,tempFile.ContentSubType,tempFile.FileSize,newBean.getModuleID(),tempFile.ServerFileExt,theFileStruct.fileObjSmall,theFileStruct.fileObjMedium)) />
+				
+				<cfif newBean.getType() eq "File">
+					<cfset newBean.setfilename(tempFile.serverfile) />
+				</cfif>
+				
+				<!--- Delete Files in temp directory --->
+				
+			</cfif>
+			<!--- Delete Files that are not attached to any version in versin history--->	
+			<cfif newBean.getApproved() and not newBean.getIsNew()>
+		
+					<cfset rsHist=getArchiveHist(newbean.getcontentID(),arguments.data.siteid)/>
+					<cfset rsDrafts=getDraftHist(newbean.getcontentID(),arguments.data.siteid)/>
+						
+					<cfloop query="rsHist">
+						<cfset histList=listAppend(histList,rsHist.filename,"^")/>
+					</cfloop>
+					
+					<cfloop query="rsDrafts">
+						<cfset draftList=listAppend(draftList,rsDrafts.filename,"^")/>
+					</cfloop>
+						
+					<cfloop list="#draftList#" index="d">
+						<cfif newBean.getFilename() neq d and not listFind(histList,d,"^") and not listFind(deletedList,d,"^")>
+							<cftry>
+							<cflock name="#d#" type="exclusive" timeout="500">
+							<cfset variables.fileManager.deleteVersion(d) />
+							</cflock>
+							<cfcatch></cfcatch>
+							</cftry>
+							<cfset deletedList=listAppend(deletedList,d,"^")/>
+						</cfif>
+	
+						
+					</cfloop>
+			</cfif>
+		
+		<!---</cfif>--->
+		<!--- END CONTENT TYPE: FILE --->
+			
+	
+		<!--- BEGIN CONTENT TYPE: ALL CONTENT TYPES --->
+		<!---If approved, delete all drafts and set the last active to inactive--->
+			
+		<cfif newBean.getapproved() and not newBean.getIsNew()>
+			
+			<cfset newBean.setActive(1) />
+			<cfset variables.contentDAO.archiveActive(newbean.getcontentID(),arguments.data.siteid)/>
+			<cfset variables.contentDAO.deleteDraftHistAll(newbean.getcontentID(),arguments.data.siteid)/>
+			<cfset variables.contentDAO.deleteContentAssignments(newbean.getcontentID(),arguments.data.siteid)/>
+		</cfif>
+			
+		<cfif newBean.getapproved()>
+			<cfset variables.settingsManager.getSite(arguments.data.siteid).purgeCache() />
+		</cfif>
+			
+			
+		<!--- set the orderno if it is new content or has been moved--->	 
+		<cfif newBean.getIsNew() 
+		or (newBean.getapproved() and not newBean.getIsNew() and newBean.getParentID() neq currentBean.getParentID() )>		 
+			
+			<cfif not isdefined('arguments.data.topOrBottom') or isdefined('arguments.data.topOrBottom') and arguments.data.topOrBottom eq 'Top' >
 				<cfquery datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-				 update tcontent set orderno=OrderNo-1 where parentid='#newBean.getparentid()#' 
+				 update tcontent set orderno=OrderNo+1 where parentid='#newBean.getparentid()#' 
 				 and siteid='#newBean.getsiteid()#' 
 				 and type in ('Page','Portal','Link','File','Component','Calendar','Form') and active=1
-				 and orderno > #currentBean.getOrderNo()#
-			 	</cfquery>
+				 </cfquery>
+					 
+				 <cfset newBean.setOrderNo(1)>
+				 
+			<cfelseif (isdefined('arguments.data.topOrBottom') and arguments.data.topOrBottom eq 'bottom')>
+			
+				<cfif not newBean.getIsNew() and newBean.getParentID() eq currentBean.getParentID()>
+					<cfquery datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+					 update tcontent set orderno=OrderNo-1 where parentid='#newBean.getparentid()#' 
+					 and siteid='#newBean.getsiteid()#' 
+					 and type in ('Page','Portal','Link','File','Component','Calendar','Form') and active=1
+					 and orderno > #currentBean.getOrderNo()#
+				 	</cfquery>
+				</cfif>
+	
+				<cfquery name="rsOrder" datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+				 select max(orderno) as theBottom from tcontent where parentid='#newBean.getparentid()#' 
+				 and siteid='#newBean.getsiteid()#' 
+				 and type in ('Page','Portal','Link','File','Component','Calendar','Form') and active=1
+				 </cfquery>
+				 
+				<cfif rsOrder.theBottom neq newBean.getOrderNo()>
+					<cfset newBean.setOrderNo(rsOrder.theBottom + 1) />/>
+				</cfif>
 			</cfif>
-
-			<cfquery name="rsOrder" datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-			 select max(orderno) as theBottom from tcontent where parentid='#newBean.getparentid()#' 
-			 and siteid='#newBean.getsiteid()#' 
-			 and type in ('Page','Portal','Link','File','Component','Calendar','Form') and active=1
-			 </cfquery>
-			 
-			<cfif rsOrder.theBottom neq newBean.getOrderNo()>
-				<cfset newBean.setOrderNo(rsOrder.theBottom + 1) />/>
+				 
+			<cfif not newBean.getIsNew() and newBean.getParentID() neq currentBean.getParentID() >
+				<cfquery datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+				update tcontent set parentid='#newBean.getparentid()#' where contentid='#newBean.getcontentid()#' 
+				and active=0 and siteid='#newBean.getsiteid()#'
+				</cfquery>
 			</cfif>
-		</cfif>
-			 
-		<cfif not newBean.getIsNew() and newBean.getParentID() neq currentBean.getParentID() >
-			<cfquery datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-			update tcontent set parentid='#newBean.getparentid()#' where contentid='#newBean.getcontentid()#' 
-			and active=0 and siteid='#newBean.getsiteid()#'
-			</cfquery>
-		</cfif>
-						 
-	</cfif>	 
-	
-	<!--- Send out notification(s) if needed--->
-	<cfif isdefined('arguments.data.notify') and arguments.data.notify neq ''>
-		<cfset variables.contentUtility.sendNotices(arguments.data,newBean) />
-	</cfif>
-	
-	<cfset variables.contentDAO.createTags(newBean) />
-	
-	<cfset variables.utility.logEvent("ContentID:#newBean.getcontentID()# ContentHistID:#newBean.getcontentHistID()# MenuTitle:#newBean.getMenuTitle()# Type:#newBean.getType()# was created","mura-content","Information",true) />
-	<cfset variables.contentDAO.create(newBean) />
-	<!--- END CONTENT TYPE: ALL CONTENT TYPES --->
-	</cftransaction>
-	</cflock>
-	
-	<cfset newBean.purgeExtendedData()>
-	
-	<cfset pluginEvent.setValue("contentBean",newBean)>
-	<cfif  ListFindNoCase(this.TreeLevelList,newBean.getType())>			
-		<cfset variables.pluginManager.announceEvent("onContentSave",pluginEvent)>
-		<cfset variables.pluginManager.announceEvent("onAfterContentSave",pluginEvent)>		
-	</cfif>
+							 
+		</cfif>	 
 		
-	<cfset variables.pluginManager.announceEvent("on#newBean.getType()#Save",pluginEvent)>
-	<cfset variables.pluginManager.announceEvent("onAfter#newBean.getType()#Save",pluginEvent)>
-	<cfset variables.pluginManager.announceEvent("on#newBean.getType()##newBean.getSubType()#Save",pluginEvent)>
-	<cfset variables.pluginManager.announceEvent("onAfter#newBean.getType()##newBean.getSubType()#Save",pluginEvent)>		
+		<!--- Send out notification(s) if needed--->
+		<cfif isdefined('arguments.data.notify') and arguments.data.notify neq ''>
+			<cfset variables.contentUtility.sendNotices(arguments.data,newBean) />
+		</cfif>
 		
-</cfif>	
-<!--- end non refused content --->
+		<cfset variables.contentDAO.createTags(newBean) />
+		
+		<cfset variables.utility.logEvent("ContentID:#newBean.getcontentID()# ContentHistID:#newBean.getcontentHistID()# MenuTitle:#newBean.getMenuTitle()# Type:#newBean.getType()# was created","mura-content","Information",true) />
+		<cfset variables.contentDAO.create(newBean) />
+		<!--- END CONTENT TYPE: ALL CONTENT TYPES --->
+		</cftransaction>
+		</cflock>	
+		
+		<cfset newBean.purgeExtendedData()>
+		<cfset newBean.setIsNew(0)>
+		<cfset pluginEvent.setValue("contentBean",newBean)>
+		<cfif  ListFindNoCase(this.TreeLevelList,newBean.getType())>			
+			<cfset variables.pluginManager.announceEvent("onContentSave",pluginEvent)>
+			<cfset variables.pluginManager.announceEvent("onAfterContentSave",pluginEvent)>		
+		</cfif>
+			
+		<cfset variables.pluginManager.announceEvent("on#newBean.getType()#Save",pluginEvent)>
+		<cfset variables.pluginManager.announceEvent("onAfter#newBean.getType()#Save",pluginEvent)>
+		<cfset variables.pluginManager.announceEvent("on#newBean.getType()##newBean.getSubType()#Save",pluginEvent)>
+		<cfset variables.pluginManager.announceEvent("onAfter#newBean.getType()##newBean.getSubType()#Save",pluginEvent)>		
+			
+	</cfif>	
+	<!--- end non refused content --->
 
 	<cfreturn newBean />
-	
-</cffunction>
-
+		
+	</cffunction>
 
 	<cffunction name="deleteall" access="public" returntype="string" output="false" hint="Deletes everything">
 	<cfargument name="data" type="struct"/>
@@ -823,8 +850,27 @@ to your own modified versions of Mura CMS.
 	<cfset var newPath=""/>
 	<cfset var currentPath=""/>
 	<cfset var pluginEvent = createObject("component","mura.event").init(arguments.data) />
+	<cfset var rs ="">
+	<cfset var subContent = structNew() />
 	
 	<cflock type="exclusive" name="editingContent#arguments.data.siteid#" timeout="60">
+		<cfif arguments.data.contentID eq '00000000000000000000000000000000001'>
+			<cfabort>
+		</cfif>
+		
+		<cfquery name="rs" datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+		select contentID from tcontent where parentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.data.contentID#">
+		and active = 1
+		</cfquery>
+		
+		<cfif rs.recordcount>
+			<cfloop query="rs">
+				<cfset subContent.contentID = rs.contentiD/>
+				<cfset subContent.siteID = arguments.data.siteID/>
+				<cfset deleteAll(subContent)/>
+			</cfloop>
+		</cfif>
+	
 		<cfset currentBean=variables.contentDAO.readActive(arguments.data.contentid,arguments.data.siteid) />
 		<cfset pluginEvent.setValue("contentBean",currentBean) />	
 		<cfif currentBean.getContentID() neq '00000000000000000000000000000000001'>
@@ -840,6 +886,7 @@ to your own modified versions of Mura CMS.
 				<cfset variables.pluginManager.announceEvent("on#currentBean.getType()##currentBean.getSubType()#Delete",pluginEvent)>
 				<cfset variables.pluginManager.announceEvent("onBefore#currentBean.getType()##currentBean.getSubType()#Delete",pluginEvent)>
 				
+				<!--- Now that it delete all children along with the node this is not needed 
 				<cfif  ListFindNoCase(this.TreeLevelList,currentBean.getType())>						
 					<cfif currentBean.getPath() neq "">
 						<cfset newPath=listDeleteAt(currentBean.getPath(),listLen(currentBean.getPath())) />
@@ -847,6 +894,7 @@ to your own modified versions of Mura CMS.
 						<cfset updateMaterializedPath(newPath,currentPath,currentBean.getSiteID()) />
 					</cfif>
 				</cfif>
+				--->
 
 				<cfif len(currentBean.getFileID()) or currentBean.getType() eq 'Form'>
 					<cfset variables.fileManager.deleteAll(currentBean.getcontentID()) />
@@ -1172,16 +1220,21 @@ to your own modified versions of Mura CMS.
 		<cfargument name="siteID" type="string" />
 		<cfargument name="contentID" type="string" />
 		<cfargument name="parentID" type="string" />
-
-		<cfset variables.contentUtility.copy(arguments.siteID, arguments.contentID, arguments.parentID)>
+		<cfargument name="recurse" type="boolean" required="true" default="false"/>
+		<cfargument name="appendTitle" type="boolean" required="true" default="true"/>
+		
+		<cfset variables.contentUtility.copy(arguments.siteID, arguments.contentID, arguments.parentID, arguments.recurse, arguments.appendTitle)>
+	
 	</cffunction>
 	
 	<cffunction name="saveCopyInfo" returntype="void" access="public" output="false">
 		<cfargument name="siteID" type="string" />
 		<cfargument name="contentID" type="string" />
+		<cfargument name="copyAll" type="string" />
 		
 		<cfset session.copySiteID = arguments.siteID>
 		<cfset session.copyContentID = arguments.contentID>
+		<cfset session.copyAll = arguments.copyAll>
 	</cffunction>
 	
 	<cffunction name="deleteAllWithNestedContent">
@@ -1217,7 +1270,7 @@ to your own modified versions of Mura CMS.
 	</cffunction>
 	
 	<cffunction name="getCommentBean" access="public" returntype="any">
-	<cfreturn createObject("component","contentCommentBean").init(variables.configBean,variables.settingsManager,variables.utility,variables.contentDAO)>
+	<cfreturn createObject("component","contentCommentBean").init(variables.configBean,variables.settingsManager,variables.utility,variables.contentDAO, this)>
 	</cffunction>
 	
 	<cffunction name="readComments" access="public" output="false" returntype="query">
@@ -1243,14 +1296,11 @@ to your own modified versions of Mura CMS.
 		<cfargument name="contentRenderer" required="true" default="#application.contentRenderer#">
 		<cfargument name="script" required="true" default="">
 		<cfargument name="subject" required="true" default="">
+		<cfargument name="notify" required="true" default="true">
 		
 		<cfset var commentBean=getCommentBean() />
 		<cfset commentBean.set(arguments.data) />
-		<cfset commentBean.save() />
-		<cfif commentBean.getIsApproved()>
-			<cfset commentBean.notifySubscribers(arguments.contentRenderer,arguments.script,arguments.subject)>
-		</cfif>
-		<cfset setCommentStat(commentBean.getContentID(),commentBean.getSiteID()) />
+		<cfset commentBean.save(arguments.contentRenderer,arguments.script,arguments.subject,arguments.notify) />
 		<cfreturn commentBean />
 	</cffunction>
 	
@@ -1260,7 +1310,6 @@ to your own modified versions of Mura CMS.
 			<cfset commentBean.setCommentID(arguments.commentid) />
 			<cfset commentBean.load() />
 			<cfset commentBean.delete() />
-			<cfset setCommentStat(commentBean.getContentID(),commentBean.getSiteID()) />
 			<cfreturn commentBean />
 	</cffunction>
 	
@@ -1274,9 +1323,7 @@ to your own modified versions of Mura CMS.
 			<cfset commentBean.setCommentID(arguments.commentid) />
 			<cfset commentBean.load() />
 			<cfset commentBean.setIsApproved(1) />
-			<cfset commentBean.save() />
-			<cfset commentBean.notifySubscribers(arguments.contentRenderer,arguments.script,arguments.subject)>
-			<cfset setCommentStat(commentBean.getContentID(),commentBean.getSiteID()) />
+			<cfset commentBean.save(arguments.contentRenderer,arguments.script,arguments.subject) />
 			<cfreturn commentBean />
 	</cffunction>
 	
@@ -1287,7 +1334,6 @@ to your own modified versions of Mura CMS.
 			<cfset commentBean.load() />
 			<cfset commentBean.setIsApproved(0) />
 			<cfset commentBean.save() />
-			<cfset setCommentStat(commentBean.getContentID(),commentBean.getSiteID()) />
 			<cfreturn commentBean />
 	</cffunction>
 	

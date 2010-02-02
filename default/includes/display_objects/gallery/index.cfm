@@ -77,40 +77,52 @@ to your own modified versions of Mura CMS.
 	
 	<cfset rbFactory=getSite().getRBFactory() />
 	<cfset nextN=application.utility.getNextN(rsSection,request.contentBean.getNextN(),request.StartRow)>
+	<cfset iterator=application.serviceFactory.getBean("contentIterator")>
+	<cfset iterator.setQuery(rsSection,event.getContentBean().getNextN())>
+	<cfset iterator.setStartRow(event.getValue("startrow"))>	
 </cfsilent>
-	<cfif nextN.totalrecords>
+	<cfif iterator.getRecordCount()>
 	<div id="svGallery"> 
 			<ul class="clearfix">
-			<cfoutput query="rsSection"  startrow="#request.startrow#" maxrows="#nextn.RecordsPerPage#">
+			<cfloop condition="iterator.hasNext()">
 			<cfsilent>
-			<cfset class=iif(rssection.currentrow eq 1,de('first'),de(iif(rssection.currentrow eq rssection.recordcount,de('last'),de(''))))>
+			<cfset item=iterator.next()>
+			<cfset class=""/>
+			<cfif not iterator.hasPrevious()> 
+				<cfset class=listAppend(class,"first"," ")/> 
+			</cfif>
+			<cfif not iterator.hasNext()> 
+				<cfset class=listAppend(class,"last"," ")/> 
+			</cfif>
 			</cfsilent>
+			<cfoutput>
 			<li class="#class#">
-			<a href="#application.configBean.getContext()#/tasks/render/file/index.cfm?fileID=#rsSection.FileID#&ext=.#rsSection.fileExt#" title="#HTMLEditFormat(rsSection.title)#" rel="shadowbox[gallery]" class="gallery"><img src="#createHREFForImage(rsSection.siteID,rsSection.fileID,rsSection.fileExt,'small')#" alt="#HTMLEditFormat(rsSection.title)#"/></a>	 
+			<a href="#application.configBean.getContext()#/tasks/render/file/index.cfm?fileID=#item.getValue('fileid')#&ext=.#item.getValue('fileext')#" title="#HTMLEditFormat(item.getValue('title'))#" rel="shadowbox[gallery]" class="gallery"><img src="#createHREFForImage(item.getValue('siteid'),item.getValue('fileid'),item.getValue('fileext'),'small')#" alt="#HTMLEditFormat(item.getValue('title'))#"/></a>	 
 		 	<dl>
 		 	<dt>
 		 	<cfif hasComments>
-		 	<a href="#application.configBean.getIndexFile()#?linkServID=#rsSection.contentID#&categoryID=#HTMLEditFormat(request.categoryID)#&relatedID=#HTMLEditFormat(request.relatedID)#" title="#rsSection.title#">#rsSection.menutitle#</a>
+		 	<a href="?linkServID=#item.getValue('contentid')#&categoryID=#HTMLEditFormat(request.categoryID)#&relatedID=#HTMLEditFormat(request.relatedID)#" title="#HTMLEditFormat(item.getValue('title'))#">#HTMLEditFormat(item.getValue('menutitle'))#</a>
 		 	<cfelse>
-		 	#rsSection.menutitle#
+		 	#HTMLEditFormat(item.getValue('menutitle'))#
 		 	</cfif>
 		 	</dt>		 	
-		 	<cfif rsSection.credits neq "">
-		 	<dd class="credits">#rbFactory.getKey('list.by')# #rsSection.credits#</dd>
+		 	<cfif item.getValue('credits') neq "">
+		 	<dd class="credits">#rbFactory.getKey('list.by')# #HTMLEditFormat(item.getValue('credits'))#</dd>
 		 	</cfif>
 		 	<cfif hasComments>
-		 	<dd class="comments"><a href="#application.configBean.getIndexFile()#?linkServID=#rsSection.contentID#&categoryID=#HTMLEditFormat(request.categoryID)#&relatedID=#HTMLEditFormat(request.relatedID)#" title="#rsSection.title#">#rbFactory.getKey('list.comments')# (#application.contentGateway.getCommentCount(request.siteid,rsSection.contentid)#)</a></dd>
+		 	<dd class="comments"><a href="?linkServID=#item.getValue('contentid')#&categoryID=#HTMLEditFormat(request.categoryID)#&relatedID=#HTMLEditFormat(request.relatedID)#" title="#HTMLEditFormat(item.getValue('title'))#">#rbFactory.getKey('list.comments')# (#application.contentGateway.getCommentCount(request.siteid,item.getValue('contentid'))#)</a></dd>
 		 	</cfif>
-		 	<cfif rsSection.tags neq "">
-		 	<dd class="tags"><cfmodule template="../nav/dsp_tag_line.cfm" tags="#rsSection.tags#"></dd>
+		 	<cfif item.getValue('tags') neq "">
+		 	<dd class="tags"><cfmodule template="../nav/dsp_tag_line.cfm" tags="#item.getValue('tags')#"></dd>
 		 	</cfif>
 		 	<cfif hasRatings>
 			<!--- rating#replace(rateBean.getRate(),".","")# --->
-		 	<dd class="ratings stars">#rbFactory.getKey('list.rating')#: <img class="ratestars" src="#event.getSite().getAssetPath()#/includes/display_objects/rater/images/star_#application.raterManager.getStarText(rsSection.rating)#.png" alt="<cfif isNumeric(rsSection.rating)>#rsSection.rating# star<cfif rsSection.rating gt 1>s</cfif></cfif>" border="0"></dd>
+		 	<dd class="ratings stars">#rbFactory.getKey('list.rating')#: <img class="ratestars" src="#event.getSite().getAssetPath()#/includes/display_objects/rater/images/star_#application.raterManager.getStarText(item.getValue('rating'))#.png" alt="<cfif isNumeric(item.getValue('rating'))>#item.getValue('rating')# star<cfif item.getValue('rating') gt 1>s</cfif></cfif>" border="0"></dd>
 		 	</cfif>
 		 	</dl>
 			</li>
 			</cfoutput>
+			</cfloop>
 		</ul>		
 	</div>
 	<cfif nextN.numberofpages gt 1>

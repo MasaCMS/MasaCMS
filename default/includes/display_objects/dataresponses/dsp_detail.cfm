@@ -53,7 +53,7 @@ to your own modified versions of Mura CMS.
 <cfoutput>
 <div id="dsp_detail" class="dataResponses">
 <#getHeaderTag('subHead1')#>#request.contentBean.getTitle()#</#getHeaderTag('subHead1')#>
-<a class="actionItem" href="#application.configBean.getIndexFile()#">Return to List</a>
+<a class="actionItem" href="">Return to List</a>
 <dl>
 <cfloop list="#fieldnames#" index="f">
 	<cftry><cfset fValue=info['#f#']><cfcatch><cfset fValue=""></cfcatch></cftry>

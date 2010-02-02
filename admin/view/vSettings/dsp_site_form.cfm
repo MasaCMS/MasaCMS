@@ -122,6 +122,14 @@ to your own modified versions of Mura CMS.
         Off&nbsp;&nbsp;
         <input type="radio" name="cache" value="1" <cfif request.siteBean.getcache()  eq 1> CHECKED</CFIF>>
         On</dd>
+	  <dt>Cache Capacity <span>(0=Unlimited)</span></dt>
+      <dd>
+        <input name="cacheCapacity" type="text" class="text short" value="#HTMLEditFormat(request.siteBean.getCacheCapacity())#" size="15">
+      </dd>
+	  <dt>Cache Free Memory Threshold <span>(0=Unlimited)</span></dt>
+      <dd>
+        <input name="cacheFreeMemoryThreshold" type="text" class="text short" value="#HTMLEditFormat(request.siteBean.getCacheFreeMemoryThreshold())#" size="3">%
+      </dd>
       <dt>Lock Site Architecture <span>(Restricts Addition or Deletion of Site Content)</span></dt>
       <dd>
         <input type="radio" name="locking" value="none" <cfif request.siteBean.getlocking() eq 'none' or request.siteBean.getlocking() eq ''> CHECKED</CFIF>>
@@ -283,7 +291,7 @@ to your own modified versions of Mura CMS.
       <dd>
         <input name="contact" type="text" class="text" value="#HTMLEditFormat(request.siteBean.getcontact())#" size="50">
       </dd>
-      <dt>Mail Server IP</dt>
+      <dt>Mail Server IP/Host Name</dt>
       <dd>
         <input name="MailServerIP" type="text" class="text" value="#HTMLEditFormat(request.siteBean.getMailServerIP())#" size="50">
       </dd>

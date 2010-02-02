@@ -239,6 +239,7 @@ to your own modified versions of Mura CMS.
 		<cfset setMaterializedPath(categoryBean) />
 		<cfset variables.utility.logEvent("CategoryID:#categoryBean.getCategoryID()# Name:#categoryBean.getName()# was created","mura-content","Information",true) />
 		<cfset variables.DAO.create(categoryBean) />
+		<cfset categoryBean.setIsNew(0)>
 		<cfset variables.pluginManager.announceEvent("onCategorySave",pluginEvent)>
 		<cfset variables.pluginManager.announceEvent("onCategoryCreate",pluginEvent)>
 		<cfset variables.pluginManager.announceEvent("onAfterCategorySave",pluginEvent)>
@@ -249,9 +250,22 @@ to your own modified versions of Mura CMS.
 </cffunction>
 
 <cffunction name="read" access="public" returntype="any" output="false">
-	<cfargument name="categoryID" type="String" />		
+	<cfargument name="categoryID" required="true" default=""/>
+	<cfargument name="name" required="true" default=""/>
+	<cfargument name="siteID" required="true" default=""/>		
 	
-	<cfreturn variables.DAO.read(arguments.categoryID) />
+	<cfif not len(arguments.categoryID) and (len(arguments.siteID) and len(arguments.name))>
+		<cfreturn variables.DAO.readByName(arguments.name, arguments.siteID) />
+	<cfelse>
+		<cfreturn variables.DAO.read(arguments.categoryID) />
+	</cfif>
+</cffunction>
+
+<cffunction name="readByName" access="public" returntype="any" output="false">
+	<cfargument name="name" type="String" />
+	<cfargument name="siteID" type="String" />		
+	
+	<cfreturn variables.DAO.readByName(arguments.name, arguments.siteID) />
 
 </cffunction>
 

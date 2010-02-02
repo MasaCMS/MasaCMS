@@ -1,0 +1,86 @@
+body {
+  margin: 8px;
+  font-family: "Trebuchet MS", "Lucida Grande", san-serif;
+}
+div {
+  padding-left: 16px;
+}
+h1 {
+  font-weight: bold;
+  font-size: 20px;
+}
+h2 {
+  margin: 4px 0;
+  padding: 4px;
+  font-weight: bold;
+  font-size: 16px;
+  background: #CC0000;
+  color: white;
+}
+.header {
+  margin: -8px -8px 0px;
+  padding: 8px 12px;
+  height: 40px;
+  font-weight: bold;
+  font-size: 26px;
+}
+.pass {
+  background: #00CC00;
+  color: white;
+}
+.pend {
+  background: #FFFF00;
+  color: black;
+}
+.fail {
+  background: #CC0000;
+  color: white;
+}
+.summary {
+  font-weight: bold;
+  font-size: 16px;
+  float: right;
+  clear: both;
+}
+.timer {
+  font-weight: normal;
+  font-size: 12px;
+  float: right;
+  clear: both;
+}
+.it {
+  margin: 4px 0;
+  padding: 4px 20px;
+  border-left: 6px solid;
+  border-bottom: 1px solid;
+  font-weight: bold;
+  font-size: 16px;
+}
+.it.pass {
+  background: #CCFF99;
+  color: #00CC00;
+  border-color: #00CC00;
+}
+.it.pend {
+  background: #FFFF99;
+  color: black;
+  border-color: #FFFF00;
+}
+.it.fail {
+  background: #FFCCCC;
+  color: #CC0000;
+  border-color: #CC0000;
+}
+pre {
+  font: 9pt/4pt monospace;
+}
+
+a#togglePassingExamples {
+  display: block;
+  margin: -8px -8px 0px;
+  padding: 5px 15px 15px;
+  background: black;
+  color: white;
+  font-size: 12px;
+  font-weight: bold;
+}

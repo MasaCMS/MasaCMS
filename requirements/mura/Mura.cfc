@@ -56,7 +56,7 @@ to your own modified versions of Mura CMS.
 
 <cffunction name="isInCluster" access="public" output="false">
 	<cfif len(application.configBean.getClusterIPList())>
-	<cfreturn listFind(application.configBean.getClusterIPList(),cgi.public_addr)>
+	<cfreturn listFind(application.configBean.getClusterIPList(),cgi.remote_addr)  or listFind(application.configBean.getClusterIPList(),cgi.remote_host)>
 	<cfelse>
 	<cfreturn false/>
 	</cfif>

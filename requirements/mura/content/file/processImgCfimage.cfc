@@ -154,7 +154,7 @@ to your own modified versions of Mura CMS.
 	<cfset var fileObj=""/>
 	<cfset var fileObjSmall=""/>
 	<cfset var fileObjMedium=""/>
-	<cfset var refused=false />>
+	<cfset var refused=false />
 	<cfset var serverFilename=arguments.file.serverfilename />
 	<cfset var serverDirectory=arguments.file.serverDirectory & "/"/>
 	

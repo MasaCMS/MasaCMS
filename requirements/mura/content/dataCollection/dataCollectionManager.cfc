@@ -294,7 +294,7 @@ order by tformresponsepackets.entered asc
 <script type="text/javascript">
 		frm=document.getElementById('#frmID#');
 		frm.method='post';
-		frm.setAttribute('action','#variables.configBean.getIndexFile()#?nocache=1');
+		frm.setAttribute('action','?nocache=1');
 		if( frm.getAttribute('onsubmit') == null || frm.getAttribute('onsubmit')=='')
 		{
 		frm.onsubmit=function(){return validateForm(this);}

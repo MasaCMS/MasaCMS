@@ -20,6 +20,8 @@
 <cfargument name="objectID">
 <cfargument name="event">
 <cfargument name="rsDisplayObject">
+<cfargument name="$">
+<cfargument name="mura">
 
 	<cfset var rs=""/>
 	<cfset var str=""/>
@@ -55,6 +57,8 @@
 <cfargument name="event" required="true" default="" type="any">
 <cfargument name="scriptFile" required="true" default="" type="any">
 <cfargument name="pluginConfig" required="true" default="" type="any">
+<cfargument name="$">
+<cfargument name="mura">
 	<cfset var scriptEvent=arguments.event>
 	<cfset request.pluginConfig=arguments.pluginConfig/>
 	<cfset request.scriptEvent=arguments.event/>
@@ -65,11 +69,12 @@
 
 </cffunction>
 
-
 <cffunction name="renderScript" output="true" returntype="any">
 <cfargument name="event" required="true" default="" type="any">
 <cfargument name="scriptFile" required="true" default="" type="any">
 <cfargument name="pluginConfig" required="true" default="" type="any">
+<cfargument name="$">
+<cfargument name="mura">
 	<cfset var rs=""/>
 	<cfset var str=""/>
 	

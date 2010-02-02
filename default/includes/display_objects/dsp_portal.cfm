@@ -79,13 +79,24 @@ to your own modified versions of Mura CMS.
 <cfset rbFactory=getSite().getRBFactory() />	
 <cfset iterator=application.serviceFactory.getBean("contentIterator")>
 <cfset iterator.setQuery(rsSection,request.contentBean.getNextN())>
-<cfif event.getContentBean().getNextN() gt 1>
-	<cfset iterator.setStartRow(event.getValue("startRow"))>
-	<cfset nextN=application.utility.getNextN(rsSection,request.contentBean.getNextN(),event.getValue("startRow"))>
-<cfelse>
-	<cfset iterator.setPage(event.getValue("pageNum"))>
-	<cfset nextN=application.utility.getNextN(rsSection,request.contentBean.getNextN(),event.getValue("pageNum"))>
-</cfif>		
+
+<cfset event.setValue("currentNextNID",event.getContentBean().getContentID())>
+
+<cfif not len(event.getValue("nextNID")) or event.getValue("nextNID") eq event.getValue("currentNextNID")>
+	<cfif event.getContentBean().getNextN() gt 1>
+		<cfset currentNextNIndex=event.getValue("startRow")>
+		<cfset iterator.setStartRow(currentNextNIndex)>
+	<cfelse>
+		<cfset currentNextNIndex=event.getValue("pageNum")>
+		<cfset iterator.setPage(currentNextNIndex)>
+	</cfif>
+<cfelse>	
+	<cfset currentNextNIndex=1>
+	<cfset iterator.setPage(1)>
+</cfif>
+
+<cfset nextN=application.utility.getNextN(rsSection,request.contentBean.getNextN(),currentNextNIndex)>
+
 </cfsilent>
 
 <cfif iterator.getRecordcount()>

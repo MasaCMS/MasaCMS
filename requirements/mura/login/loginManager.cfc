@@ -95,7 +95,7 @@ to your own modified versions of Mura CMS.
 
 <cfif not isdefined('arguments.data.username')>
 
-	<cflocation url="index.cfm?fuseaction=clogin.main&linkServID=#arguments.data.linkServID#" addtoken="no">
+	<cflocation url="index.cfm?fuseaction=clogin.main&linkServID=#arguments.data.linkServID#" addtoken="false">
 
 <cfelse>
 	
@@ -107,7 +107,7 @@ to your own modified versions of Mura CMS.
 	
 	<cfif isloggedin>
 		
-		<cfif isUserInRole('S2IsPrivate')>
+		<cfif listFind(session.mura.memberships,'S2IsPrivate')>
 		
 			<cfset session.siteArray=arrayNew(1) />
 				<cfloop collection="#variables.settingsManager.getSites()#" item="site">
@@ -118,7 +118,7 @@ to your own modified versions of Mura CMS.
 		
 			<cfif arguments.data.returnUrl eq ''>
 						
-				<cflocation url="#application.configBean.getindexFile()#?LinkServID=#arguments.data.LinkServID#" addtoken="no">
+				<cflocation url="#application.configBean.getindexFile()#?LinkServID=#arguments.data.LinkServID#" addtoken="false">
 			<cfelseif arguments.data.returnUrl neq ''>
 	
 				<cfset returnUrl = replace(arguments.data.returnUrl, 'doaction=logout', '', 'ALL')>
@@ -131,7 +131,48 @@ to your own modified versions of Mura CMS.
 		<cflocation url="#application.configBean.getindexFile()#?LinkServID=#arguments.data.linkServID#" addtoken="false">
 		</cfif>
 	<cfelse>
-		<cflocation url="?fuseaction=cLogin.main&display=login&status=failed&rememberMe=#arguments.data.rememberMe#&contentid=#arguments.data.contentid#&LinkServID=#arguments.data.linkServID#&returnURL=#urlEncodedFormat(arguments.data.returnUrl)#" addtoken="no">
+		<cflocation url="?fuseaction=cLogin.main&display=login&status=failed&rememberMe=#arguments.data.rememberMe#&contentid=#arguments.data.contentid#&LinkServID=#arguments.data.linkServID#&returnURL=#urlEncodedFormat(arguments.data.returnUrl)#" addtoken="false">
+	</cfif>
+</cfif>
+
+</cffunction>
+
+<cffunction name="remoteLogin" access="public" output="false" returntype="any">
+<cfargument name="data" type="struct" />
+<cfargument name="loginObject" type="any"  required="true" default=""/>
+
+<cfset var isloggedin =false />
+<cfset var returnUrl ="" />
+<cfset var site=""/>
+
+<cfif not isdefined('arguments.data.username')
+	or not isdefined('arguments.data.password')
+	or not isdefined('arguments.data.siteid')>
+
+	<cfreturn false>
+
+<cfelse>
+	
+	<cfif not isObject(arguments.loginObject)>
+		<cfset isloggedin=variables.userUtility.login(arguments.data.username,arguments.data.password,arguments.data.siteid)>
+	<cfelse>
+		<cfset isloggedin=arguments.loginObject.login(arguments.data.username,arguments.data.password,arguments.data.siteid)>
+	</cfif>
+	
+	<cfif isloggedin>
+		
+		<cfif listFind(session.mura.memberships,'S2IsPrivate')>
+			<cfset session.siteArray=arrayNew(1) />
+				<cfloop collection="#variables.settingsManager.getSites()#" item="site">
+				<cfif variables.permUtility.getModulePerm("00000000000000000000000000000000000","#site#")>
+						<cfset arrayAppend(session.siteArray,site) />
+				</cfif>
+			</cfloop>
+		</cfif>
+		
+		<cfreturn true>
+	<cfelse>
+		<cfreturn false>
 	</cfif>
 </cfif>
 
@@ -152,7 +193,7 @@ to your own modified versions of Mura CMS.
 
 <cfif not isdefined('arguments.data.userid')>
 
-	<cflocation url="index.cfm?fuseaction=clogin.main&linkServID=#arguments.data.linkServID#" addtoken="no">
+	<cflocation url="index.cfm?fuseaction=clogin.main&linkServID=#arguments.data.linkServID#" addtoken="false">
 
 <cfelse>
 	
@@ -160,7 +201,7 @@ to your own modified versions of Mura CMS.
 	
 	<cfif isloggedin>
 		
-		<cfif isUserInRole('S2IsPrivate')>
+		<cfif listFind(session.mura.memberships,'S2IsPrivate')>
 		
 			<cfset session.siteArray=arrayNew(1) />
 				<cfloop collection="#variables.settingsManager.getSites()#" item="site">
@@ -168,15 +209,14 @@ to your own modified versions of Mura CMS.
 						<cfset arrayAppend(session.siteArray,site) />
 				</cfif>
 			</cfloop>
-		
 
 			<cfif arguments.data.redirect eq '' and arguments.data.returnUrl eq ''>
-				<cflocation url="#application.configBean.getindexFile()#?LinkServID=#arguments.data.LinkServID#" addtoken="no">
+				<cflocation url="#application.configBean.getindexFile()#?LinkServID=#arguments.data.LinkServID#" addtoken="false">
 			<cfelseif arguments.data.returnUrl neq ''>
 				<cfset returnUrl = replace(arguments.data.returnUrl, 'doaction=logout', '', 'ALL')>
 				<cflocation url="#returnUrl#" addtoken="false">
 			<cfelse>
-				<cflocation url="index.cfm?fuseaction=#arguments.data.redirect#&parentid=#arguments.data.parentid#&topid=#arguments.data.topid#&siteid=#arguments.data.siteid#&contentid=#arguments.data.contentid#&contenthistid=#arguments.data.contenthistid#&type=#arguments.data.type#&moduleid=#arguments.data.moduleid#" addtoken="no">
+				<cflocation url="index.cfm?fuseaction=#arguments.data.redirect#&parentid=#arguments.data.parentid#&topid=#arguments.data.topid#&siteid=#arguments.data.siteid#&contentid=#arguments.data.contentid#&contenthistid=#arguments.data.contenthistid#&type=#arguments.data.type#&moduleid=#arguments.data.moduleid#" addtoken="false">
 			</cfif>
 		<cfelseif arguments.data.returnUrl neq ''>
 			<cflocation url="#arguments.data.returnUrl#" addtoken="false">
@@ -184,7 +224,7 @@ to your own modified versions of Mura CMS.
 		<cflocation url="#application.configBean.getindexFile()#?LinkServID=#arguments.data.linkServID#" addtoken="false">
 		</cfif>
 	<cfelse>
-		<cflocation url="?fuseaction=cLogin.main&display=login&status=failed&rememberMe=#arguments.data.rememberMe#&contentid=#arguments.data.contentid#&LinkServID=#arguments.data.linkServID#" addtoken="no">
+		<cflocation url="?fuseaction=cLogin.main&display=login&status=failed&rememberMe=#arguments.data.rememberMe#&contentid=#arguments.data.contentid#&LinkServID=#arguments.data.linkServID#" addtoken="false">
 	</cfif>
 </cfif>
 
@@ -202,8 +242,8 @@ to your own modified versions of Mura CMS.
 	<cfelse>
 		<cfset getPluginManager().announceEvent('onGlobalLogout',pluginEvent)/>
 	</cfif>
-	<cfset structclear(session) />
 	<cflogout>
+	<cfset structclear(session) />
 	<cfcookie name="userid" expires="never" value="" />
 	<cfset variables.userUtility.setUserStruct()/>
 </cffunction>

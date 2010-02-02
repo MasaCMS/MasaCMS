@@ -41,7 +41,7 @@ the GNU General Public License version 2  without this exception.  You may, if y
 to your own modified versions of Mura CMS.
 --->
 
-<cfif isUserInRole('Admin;#application.settingsManager.getSite(attributes.siteid).getPrivateUserPoolID()#;0') or isUserInRole('S2')><cfoutput>
+<cfif listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(attributes.siteid).getPrivateUserPoolID()#;0') or listFind(session.mura.memberships,'S2')><cfoutput>
 <ul>
 <li<cfif myfusebox.originalfuseaction eq "module"> class="current"</cfif>><a href="index.cfm?fuseaction=cPerm.module&contentid=00000000000000000000000000000000010&siteid=#attributes.siteid#&moduleid=00000000000000000000000000000000010">#application.rbFactory.getKeyValue(session.rb,'categorymanager.permissions')#</a></li>
 </ul></cfoutput></cfif>

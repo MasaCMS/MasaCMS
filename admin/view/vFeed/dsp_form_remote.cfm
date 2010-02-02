@@ -110,7 +110,7 @@ to your own modified versions of Mura CMS.
 <dd>
 </dl>
 </div>
-<cfif isUserInRole('S2')>
+<cfif listFind(session.mura.memberships,'S2')>
 <div class="page_aTab">
 <dl class="oneColumn">
 <dt>#application.rbFactory.getKeyValue(session.rb,'collections.importlocation')#:<span id="move" class="text"> <cfif request.feedbean.getparentid() neq ''>"#application.contentManager.getActiveContent(request.feedBean.getParentID(),request.feedBean.getSiteID()).getMenuTitle()#"<cfelse>"#application.rbFactory.getKeyValue(session.rb,'collections.noneselected')#"</cfif>

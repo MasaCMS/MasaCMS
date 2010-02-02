@@ -1643,9 +1643,6 @@ Insert into TSYSTEMOBJECTS (OBJECT,SITEID,NAME,ORDERNO) values ('user_tools','de
 Insert into TSYSTEMOBJECTS (OBJECT,SITEID,NAME,ORDERNO) values ('tag_cloud','default','Tag Cloud',21);
 --|
 
-Insert into TSYSTEMOBJECTS (OBJECT,SITEID,NAME,ORDERNO) values ('IASiteMap','default','IA Site Map',22);
---|
-
 Insert into TSYSTEMOBJECTS (OBJECT,SITEID,NAME,ORDERNO) values ('goToFirstChild','default','Go To First Child',23);
 --|
 

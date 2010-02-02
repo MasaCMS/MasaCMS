@@ -26,6 +26,7 @@
 	<cfset var page = "" />
 	<cfset var renderer=event.getValue("contentRenderer") />
 	<cfset var themePath=event.getSite().getThemeAssetPath()  />
+	<cfset var $=event.getValue("MuraScope")>
 	
 	<cfset event.setValue('themePath',themePath)>
 	

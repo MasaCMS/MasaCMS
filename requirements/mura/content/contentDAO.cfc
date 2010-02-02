@@ -75,6 +75,8 @@ to your own modified versions of Mura CMS.
 		
 		<cfif rsContent.recordCount>
 			<cfset contentBean.set(rsContent) />
+			<cfset contentBean.setIsNew(0) />
+			<cfset contentBean.setPreserveID(rsContent.contentHistID) />
 		<cfelseif arguments.use404>
 			<cfset contentBean.setIsNew(1) />
 			<cfset contentBean.setActive(1) />
@@ -115,6 +117,8 @@ to your own modified versions of Mura CMS.
 		
 		<cfif rsContent.recordCount>
 			<cfset contentBean.set(rsContent) />
+			<cfset contentBean.setIsNew(0) />
+			<cfset contentBean.setPreserveID(rsContent.contentHistID) />
 		<cfelseif arguments.use404>
 			<cfset contentBean.setIsNew(1) />
 			<cfset contentBean.setActive(1) />
@@ -153,8 +157,12 @@ to your own modified versions of Mura CMS.
 			and type in ('Page','Portal','File','Calendar','Link','Gallery','Component','Form')
 		</cfquery>
 		
-		<cfif rsContent.recordCount>
+		<cfif rsContent.recordcount gt 1>
+			<cfthrow message="The remoteID '#arguments.remoteID#' that you are reading by is not unique.">
+		<cfelseif rsContent.recordCount>
 			<cfset contentBean.set(rsContent) />
+			<cfset contentBean.setIsNew(0) />
+			<cfset contentBean.setPreserveID(rsContent.contentHistID) />
 		<cfelse>
 			<cfset contentBean.setIsNew(1) />
 			<cfset contentBean.setActive(1) />
@@ -185,8 +193,12 @@ to your own modified versions of Mura CMS.
 			and  tcontent.siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#" />
 		</cfquery>
 		
-		<cfif rsContent.recordCount eq 1>
+		<cfif rsContent.recordcount gt 1>
+			<cfthrow message="The filename '#arguments.filename#' that you are reading by is not unique.">
+		<cfelseif rsContent.recordCount eq 1>
 			<cfset contentBean.set(rsContent) />
+			<cfset contentBean.setIsNew(0) />
+			<cfset contentBean.setPreserveID(rsContent.contentHistID) />
 		<cfelseif arguments.use404>
 			<cfset contentBean.setBody('The requested page could not be found.')/>
 			<cfset contentBean.setTitle('404')/>

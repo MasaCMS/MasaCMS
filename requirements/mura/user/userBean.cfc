@@ -65,7 +65,7 @@ to your own modified versions of Mura CMS.
 	<cfset variables.instance.LastUpdateByID = "" />
 	<cfset variables.instance.perm=0 />
 	<cfset variables.instance.inactive=0 />
-	<cfset variables.instance.ispublic=0 />
+	<cfset variables.instance.ispublic=1 />
 	<cfset variables.instance.siteid="" />
 	<cfset variables.instance.subscribe=1 />
 	<cfset variables.instance.notes="" />
@@ -87,7 +87,8 @@ to your own modified versions of Mura CMS.
 	<cfset variables.instance.extendData="" />
 	<cfset variables.instance.extendSetID="" />
     <cfset variables.instance.errors=structnew() />
-	<cfset variables.instance.isNew=0 />
+	<cfset variables.instance.isNew=1 />
+	<cfset variables.newAddresses = arrayNew(1) />
 	
 	<cffunction name="init" returntype="any" output="false" access="public">
 	<cfargument name="configBean" type="any" required="yes"/>
@@ -449,13 +450,16 @@ to your own modified versions of Mura CMS.
   <cffunction name="setGroupID" access="public" output="false">
 	<cfargument name="groupID" type="String" />
 	<cfargument name="append" type="boolean" default="false" required="true" />
+	<cfset var i="">
 	
     <cfif not arguments.append>
 		<cfset variables.instance.groupID = trim(arguments.groupID) />
 	<cfelse>
-		<cfif not listFindNoCase(variables.instance.groupID,trim(arguments.groupID))>
-	    	<cfset variables.instance.groupID = listAppend(variables.instance.groupID,trim(arguments.groupID)) />
-	    </cfif> 
+		<cfloop list="#arguments.groupID#" index="i">
+		<cfif not listFindNoCase(variables.instance.groupID,trim(i))>
+	    	<cfset variables.instance.groupID = listAppend(variables.instance.groupID,trim(i)) />
+	    </cfif>
+	    </cfloop> 
 	</cfif>
   </cffunction>
   
@@ -484,13 +488,16 @@ to your own modified versions of Mura CMS.
   <cffunction name="setCategoryID" access="public" output="false">
 	<cfargument name="categoryID" type="String" />
 	<cfargument name="append" type="boolean" default="false" required="true" />
+	<cfset var i="">
 	
     <cfif not arguments.append>
 		<cfset variables.instance.categoryID = trim(arguments.categoryID) />
 	<cfelse>
-		<cfif not listFindNoCase(variables.instance.categoryID,trim(arguments.categoryID))>
-	    	<cfset variables.instance.categoryID = listAppend(variables.instance.categoryID,trim(arguments.categoryID)) />
+		<cfloop list="#arguments.categoryID#" index="i">
+		<cfif not listFindNoCase(variables.instance.categoryID,trim(i))>
+	    	<cfset variables.instance.categoryID = listAppend(variables.instance.categoryID,trim(i)) />
 	    </cfif> 
+	    </cfloop>
 	</cfif>
   </cffunction>
 
@@ -780,7 +787,19 @@ to your own modified versions of Mura CMS.
 </cffunction>
 
 <cffunction name="save" output="false" access="public">
-	<cfset variables.userManager.save(this)>
+	<cfset var i="">
+	<cfset var address="">
+	<cfset setAllValues(variables.userManager.save(this).getAllValues())>
+	
+	<cfif arrayLen(variables.newAddresses)>
+		<cfloop from="1" to="#arrayLen(variables.newAddresses)#" index="i">
+			<cfset address=variables.newAddresses[i]>
+			<cfset address.save()>
+		</cfloop>
+	</cfif>
+	
+	<cfset variables.newAddresses=arrayNew(1)>
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="delete" output="false" access="public">
@@ -807,6 +826,16 @@ to your own modified versions of Mura CMS.
 	<cfreturn it />
 </cffunction>
 
+<cffunction name="getInterestGroupsQuery" returnType="query" output="false" access="public">
+   <cfreturn variables.userManager.readInterestGroups(getUserID()) />
+</cffunction>
+
+<cffunction name="getInterestGroupsIterator" returnType="any" output="false" access="public">
+   	<cfset var it=getServiceFactory().getBean("categoryIterator").init()>
+	<cfset it.setQuery(getInterestGroupsQuery())>
+	<cfreturn it />
+</cffunction>
+
 <cffunction name="setIsNew" returnType="void" output="false" access="public">
     <cfargument name="IsNew" type="numeric" required="true">
     <cfset variables.instance.IsNew = arguments.IsNew />
@@ -815,5 +844,22 @@ to your own modified versions of Mura CMS.
 <cffunction name="getIsNew" returnType="numeric" output="false" access="public">
    <cfreturn variables.instance.IsNew />
 </cffunction>
-  
+
+<cffunction name="loadBy" returnType="any" output="false" access="public">
+	<cfif not structKeyExists(arguments,"siteID")>
+		<cfset arguments.siteID=getSiteID()>
+	</cfif>
+	<cfif not structKeyExists(arguments,"isPublic")>
+		<cfset arguments.isPublic=getIsPublic()>
+	</cfif>
+	<cfset setAllValues(variables.userManager.read(argumentCollection=arguments).getAllValues())>
+	<cfreturn this />
+</cffunction>
+
+<cffunction name="addAddress" output="false" returntype="void">
+	<cfargument name="address" hint="Instance of a addressBean">
+	<cfset arguments.address.setSiteID(getSiteID())>
+	<cfset arguments.address.setUserID(getUserID())>
+	<cfset arrayAppend(variables.newAddresses,arguments.address)>	
+</cffunction>
 </cfcomponent>

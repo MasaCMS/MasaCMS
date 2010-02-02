@@ -146,9 +146,9 @@ to your own modified versions of Mura CMS.
 		
 		<cfloop query="rsPermited">
 		<cfif rsPermited.isPublic>
-		<cfif isUserInRole("#rsPermited.groupname#;#application.settingsManager.getSite(arguments.siteid).getPublicUserPoolID()#;1")><cfset perm=1><cfbreak></cfif>
+		<cfif listFind(session.mura.memberships,"#rsPermited.groupname#;#application.settingsManager.getSite(arguments.siteid).getPublicUserPoolID()#;1")><cfset perm=1><cfbreak></cfif>
 		<cfelse>
-		<cfif isUserInRole("#rsPermited.groupname#;#application.settingsManager.getSite(arguments.siteid).getPrivateUserPoolID()#;0")><cfset perm=1><cfbreak></cfif>
+		<cfif listFind(session.mura.memberships,"#rsPermited.groupname#;#application.settingsManager.getSite(arguments.siteid).getPrivateUserPoolID()#;0")><cfset perm=1><cfbreak></cfif>
 		</cfif>
 		</cfloop>
 		
@@ -163,7 +163,7 @@ to your own modified versions of Mura CMS.
 		
 		<cfquery name="rs" datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">	
 		Select tusers.GroupName, tusers.isPublic 
-		from tpermissions left join tusers on tusers.userid in (tpermissions.groupid)
+		from tpermissions inner join tusers on tusers.userid in (tpermissions.groupid)
 		where tpermissions.ContentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentID#"/>
 		and tpermissions.type=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.type#"/>
 		and tpermissions.siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>	
@@ -177,7 +177,7 @@ to your own modified versions of Mura CMS.
 		<cfargument name="siteid" type="string" required="true">
 		<cfset var verdict="none">
 
-		<cfif isUserInRole('Admin;#variables.settingsManager.getSite(arguments.siteid).getPrivateUserPoolID()#;0') or  isUserInRole('S2') >
+		<cfif listFind(session.mura.memberships,'Admin;#variables.settingsManager.getSite(arguments.siteid).getPrivateUserPoolID()#;0') or  listFind(session.mura.memberships,'S2') >
 			<cfset Verdict="editor">
 		<cfelse>
 			<cfif getpermverdict(arguments.contentid,'editor',arguments.siteid)>
@@ -197,7 +197,7 @@ to your own modified versions of Mura CMS.
 		<cfargument name="siteid" type="string" required="true">
 		<cfset var verdict="none">
 
-		<cfif isUserInRole('Admin;#variables.settingsManager.getSite(arguments.siteid).getPrivateUserPoolID()#;0') or  isUserInRole('S2') >
+		<cfif listFind(session.mura.memberships,'Admin;#variables.settingsManager.getSite(arguments.siteid).getPrivateUserPoolID()#;0') or  listFind(session.mura.memberships,'S2') >
 			<cfset verdict="editor">
 		<cfelse>
 			<cfif getpermverdict(arguments.contentid,'editor',arguments.siteid)>
@@ -259,7 +259,7 @@ to your own modified versions of Mura CMS.
 		<cfset var site=variables.settingsManager.getSite(arguments.siteid)/>
 		<cfset var cacheFactory=site.getCacheFactory()>
 
-			<cfif isUserInRole('Admin;#variables.settingsManager.getSite(arguments.siteid).getPrivateUserPoolID()#;0') or  isUserInRole('S2') >
+			<cfif listFind(session.mura.memberships,'Admin;#variables.settingsManager.getSite(arguments.siteid).getPrivateUserPoolID()#;0') or  listFind(session.mura.memberships,'S2') >
 				<cfset Verdict=1>
 			<cfelse>
 				<cfif site.getCache()>
@@ -283,9 +283,9 @@ to your own modified versions of Mura CMS.
 			
 				<cfloop query="rsgroups">
 				<cfif rsGroups.isPublic>
-				<cfif isUserInRole("#rsgroups.groupname#;#variables.settingsManager.getSite(arguments.siteid).getPublicUserPoolID()#;1")><cfset verdict=1></cfif>
+				<cfif listFind(session.mura.memberships,"#rsgroups.groupname#;#variables.settingsManager.getSite(arguments.siteid).getPublicUserPoolID()#;1")><cfset verdict=1></cfif>
 				<cfelse>
-				<cfif isUserInRole("#rsgroups.groupname#;#variables.settingsManager.getSite(arguments.siteid).getPrivateUserPoolID()#;0")><cfset verdict=1></cfif>
+				<cfif listFind(session.mura.memberships,"#rsgroups.groupname#;#variables.settingsManager.getSite(arguments.siteid).getPrivateUserPoolID()#;0")><cfset verdict=1></cfif>
 				</cfif>
 				</cfloop>
 			</cfif>
@@ -348,7 +348,7 @@ to your own modified versions of Mura CMS.
 			
 			<!--- Super users can do anything --->
 			<cfif session.mura.isLoggedIn>
-				<cfif isuserinrole('S2')>
+				<cfif listFind(session.mura.memberships,'S2')>
 					<cfset r.allow=1>
 					<cfset r.perm="editor" />
 					<cfreturn r>
@@ -373,8 +373,8 @@ to your own modified versions of Mura CMS.
 						<cfset r.perm="read">
 					<cfelseif r.restrictGroups neq ''>
 						<cfloop list="#r.restrictGroups#" index="G">
-							<cfif isUserInRole("#G#;#variables.settingsManager.getSite(r.siteid).getPublicUserPoolID()#;1")
-									or isUserInRole("#G#;#variables.settingsManager.getSite(r.siteid).getPrivateUserPoolID()#;0")>
+							<cfif listFind(session.mura.memberships,"#G#;#variables.settingsManager.getSite(r.siteid).getPublicUserPoolID()#;1")
+									or listFind(session.mura.memberships,"#G#;#variables.settingsManager.getSite(r.siteid).getPrivateUserPoolID()#;0")>
 								<cfset r.allow=1>
 								<cfset r.perm="read">
 							</cfif>
@@ -395,15 +395,15 @@ to your own modified versions of Mura CMS.
 			
 			<cfif arguments.groupList neq ''>
 			
-				<cfif isUserInRole('Admin;#variables.settingsManager.getSite(arguments.siteid).getPrivateUserPoolID()#;0')
-					or isUserInRole('S2')>
+				<cfif listFind(session.mura.memberships,'Admin;#variables.settingsManager.getSite(arguments.siteid).getPrivateUserPoolID()#;0')
+					or listFind(session.mura.memberships,'S2')>
 					<cfreturn true />
 				</cfif>
 				
 				<cfset groupArray = listtoarray(arguments.grouplist) />
 				<cfloop from="1" to="#arrayLen(groupArray)#" index="I" step="1">
-					<cfif isUserInRole('#groupArray[I]#;#variables.settingsManager.getSite(arguments.siteid).getPrivateUserPoolID()#;0')
-							or isUserInRole('#groupArray[I]#;#variables.settingsManager.getSite(arguments.siteid).getPublicUserPoolID()#;1')>
+					<cfif listFind(session.mura.memberships,'#groupArray[I]#;#variables.settingsManager.getSite(arguments.siteid).getPrivateUserPoolID()#;0')
+							or listFind(session.mura.memberships,'#groupArray[I]#;#variables.settingsManager.getSite(arguments.siteid).getPublicUserPoolID()#;1')>
 						<cfreturn true />
 					</cfif>				
 				</cfloop>
@@ -597,7 +597,7 @@ username="#variables.configBean.getDBUsername()#" password="#variables.configBea
 	<cfloop list="#arguments.data.groupid#" index="I">
 
 	<cfquery datasource="#variables.configBean.getDatasource()#"
-	username="#variables.configBean.getDBUsername()#" 				password="#variables.configBean.getDBPassword()#">
+	username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	Insert Into tpermissions  (ContentID,GroupID,Type,siteid)
 	values(
 	<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.data.contentID#"/>,
@@ -618,9 +618,9 @@ username="#variables.configBean.getDBUsername()#" password="#variables.configBea
 <cfargument name="siteID" required="true" default="" />		
 	
 	<cfif arguments.siteID neq ''>
-		<cfreturn isUserInRole('S2IsPrivate;#arguments.siteid#') />
+		<cfreturn listFindNoCase(session.mura.memberships,'S2IsPrivate;#arguments.siteid#') />
 	<cfelse>
-		<cfreturn isUserInRole('S2IsPrivate') />
+		<cfreturn listFindNoCase(session.mura.memberships,'S2IsPrivate') />
 	</cfif>
 	
 </cffunction>
@@ -630,13 +630,13 @@ username="#variables.configBean.getDBUsername()#" password="#variables.configBea
 <cfargument name="siteID" required="true" default="" />
 <cfargument name="isPublic" required="true" default="1" />
 	
-	<cfreturn isUserInRole('#arguments.group#;#arguments.siteid#;#arguments.isPublic#') />
+	<cfreturn listFindNoCase(session.mura.memberships,'#arguments.group#;#arguments.siteid#;#arguments.isPublic#') />
 		
 </cffunction>
 
 <cffunction name="isS2" access="public" returntype="boolean" output="false">
 	
-	<cfreturn isUserInRole('S2') />
+	<cfreturn listFindNoCase(session.mura.memberships,'S2') />
 	
 </cffunction>
 

@@ -43,7 +43,7 @@
 	<cfset event.setValue('crumbdata',application.contentGateway.getCrumbList(event.getValue('contentBean').getcontentid(),event.getContentBean().getSiteID(),true,event.getValue('contentBean').getPath())) />
 	
 	<cfset renderer.crumbdata=event.getValue("crumbdata")>
-	
+	<cfset event.getValue('MuraScope').setContentBean(event.getValue('contentBean'))>
 </cffunction>
 
 </cfcomponent>

@@ -95,7 +95,7 @@ to your own modified versions of Mura CMS.
 	WHERE tusers.Email Is Not Null 
 	AND 
 	(tusersmemb.GroupID In (<cfqueryparam cfsqltype="cf_sql_varchar" value="#rsAdmin.userID#"/><cfloop list="#permStruct.editorList#" index="E">,<cfqueryparam cfsqltype="cf_sql_varchar" value="#E#"/></cfloop>)
-	<cfif isuserInRole('s2')>or tusers.s2=1</cfif>)
+	<cfif listFind(session.mura.memberships,'S2')>or tusers.s2=1</cfif>)
 	
 	<cfif authorLen>
 	union
@@ -113,7 +113,7 @@ to your own modified versions of Mura CMS.
 								WHERE tusers.Email Is Not Null 
 								AND 
 								(tusersmemb.GroupID In (<cfqueryparam cfsqltype="cf_sql_varchar" value="#rsAdmin.userID#"/><cfloop list="#permStruct.editorList#" index="E">,<cfqueryparam cfsqltype="cf_sql_varchar" value="#E#"/></cfloop>)
-								<cfif isuserInRole('s2')>or tusers.s2=1</cfif>)
+								<cfif listFind(session.mura.memberships,'S2')>or tusers.s2=1</cfif>)
 							)
 	
 	</cfif>
@@ -660,10 +660,12 @@ Sincerely,
 			
 </cffunction>
 
-<cffunction name="copy" returntype="void" output="true" access="public">
+<cffunction name="copy" returntype="any" output="true" access="public">
 	<cfargument name="siteid" type="string" />
 	<cfargument name="contentID" type="string" />
 	<cfargument name="parentID" type="string" />
+	<cfargument name="recurse" type="boolean" required="true" default="false"/>
+	<cfargument name="appendTitle" type="boolean" required="true" default="true"/>
 	
 	<cfset var rs1 = "">
 	<cfset var strSQL = "">
@@ -676,7 +678,7 @@ Sincerely,
 	<cfset var contentBeanParent = "">
 	<cfset var contentHistID = "">
 	<cfset var pluginEvent = createObject("component","mura.event").init(arguments) />
-	
+	<cfset var rsKids="">
 	<cfset contentBean = variables.contentDAO.readActive(arguments.contentID, arguments.siteID)>
 	<!--- <cfset contentBeanParent = variables.contentDAO.readActive(arguments.parentID, arguments.siteID)>--->
 	<cfset contentHistID = contentBean.getcontentHistID()>
@@ -689,7 +691,12 @@ Sincerely,
 	<cfset contentBean.setcontentID(newContentID)>
 	<cfset contentBean.setcontentHistID(newContentHistID)>
 	<cfset contentBean.setParentID(arguments.parentID)>
-	<cfset contentBean.setMenuTitle(contentBean.getMenuTitle() & " - Copy")>
+	<cfif arguments.appendTitle>
+		<cfset contentBean.setMenuTitle(contentBean.getMenuTitle() & " - Copy")>
+	<cfelse>
+		<cfset contentBean.setMenuTitle(contentBean.getMenuTitle())>
+	</cfif>
+	
 	<cfset setUniqueFilename(contentBean)>
 	<cfset variables.contentDAO.create(contentBean)>
 	
@@ -737,6 +744,14 @@ Sincerely,
 	
 	<cfset pluginEvent.setValue("contentBean",contentBean)>
 	<cfset getPluginManager().announceEvent("onContentCopy",pluginEvent)>
+	
+	<cfif arguments.recurse>
+		<cfset rsKids=getServiceFactory().getBean("contentGateway").getNest(arguments.contentID, arguments.siteID)>
+		
+		<cfloop query="rsKids">
+			<cfset copy(arguments.siteID, rsKids.contentID, newContentID, rsKids.hasKids, false)>
+		</cfloop>
+	</cfif>
 </cffunction>
 
 <cffunction name="updateGlobalMaterializedPath" returntype="any" output="false">

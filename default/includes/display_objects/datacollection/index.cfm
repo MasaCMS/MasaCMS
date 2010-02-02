@@ -44,6 +44,7 @@ to your own modified versions of Mura CMS.
 <cfsilent>
 	<cfset bean = application.contentManager.getActiveContent(arguments.objectID, arguments.siteID)>
 	<cfset rsForm=bean.getAllValues()>
+
 	<cfset rsForm.isOnDisplay=rsForm.display eq 1 or 
 			(
 				rsForm.display eq 1 and rsForm.DisplayStart lte now()
@@ -108,6 +109,7 @@ where siteid='#request.siteid#' and
 		<cfset editableControl.editLink = editableControl.editLink & "&amp;parentid=" & bean.getParentID()>
 		<cfset editableControl.editLink = editableControl.editLink & "&amp;moduleid=" & bean.getModuleID()>
 		<cfset editableControl.editLink = editableControl.editLink & "&amp;compactDisplay=true">
+		<cfset editableControl.editLink = editableControl.editLink & "&amp;homeid=" & event.getContentBean().getContentID()>
 		<!---
 		<cfset editableControl.historyLink = adminBase & "#application.configBean.getContext()#/admin/index.cfm?fuseaction=cArch.hist">
 		<cfset editableControl.historyLink = editableControl.historyLink & "&amp;siteid=" & bean.getSiteID()>
@@ -128,6 +130,9 @@ where siteid='#request.siteid#' and
 <cfset request.forceSSL = 1>
 </cfif>
 <cfoutput>
+<cfif editableControl.innerHTML neq "">
+	#renderEditableObjectHeader("editableForm")#
+</cfif>	
 <cfif rsForm.displayTitle neq 0><#getHeaderTag('subHead1')#>#rsForm.title#</#getHeaderTag('subHead1')#></cfif>
 <cfif isdefined('request.formid') and request.formid eq rsform.contentid>
 <cfset acceptdata=1> 
@@ -135,15 +140,13 @@ where siteid='#request.siteid#' and
 <cfinclude template="dsp_response.cfm">
 <cfelse>
 <cfset addToHTMLHeadQueue("fckeditor.cfm")>
-<cfif editableControl.innerHTML neq "">
-	#setDynamicContent('<div class="editableObject editableForm">' & application.dataCollectionManager.renderForm(rsForm.contentid,request.siteid,rsForm.body,rsForm.responseChart) & '#editableControl.innerHTML#</div>')#
-<cfelse>
-	#setDynamicContent(application.dataCollectionManager.renderForm(rsForm.contentid,request.siteid,rsForm.body,rsForm.responseChart))#
-</cfif>
+#setDynamicContent(application.dataCollectionManager.renderForm(rsForm.contentid,request.siteid,rsForm.body,rsForm.responseChart))#
 <script type="text/javascript">
 setHTMLEditors(200,500);
 </script>
 </cfif>
-
+<cfif editableControl.innerHTML neq "">
+#renderEditableObjectFooter(editableControl.innerHTML)#
+</cfif>
 </cfoutput>
 </cfif>

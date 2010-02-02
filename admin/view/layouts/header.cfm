@@ -42,11 +42,11 @@ to your own modified versions of Mura CMS.
 --->
 
 <cfoutput>
-  <cfif isUserInRole('S2IsPrivate')>
+  <cfif listFind(session.mura.memberships,'S2IsPrivate')>
     <div id="header">
       <h1>#application.configBean.getTitle()#</h1>
       <ul id="navUtility">
-        <cfif session.siteid neq '' and isUserInRole('Admin;#application.settingsManager.getSite(session.siteid).getPrivateUserPoolID()#;0') or isUserInRole('S2')>
+        <cfif session.siteid neq '' and listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(session.siteid).getPrivateUserPoolID()#;0') or listFind(session.mura.memberships,'S2')>
           <li id="navAdminUsers"><a href="#application.configBean.getContext()#/admin/index.cfm?fuseaction=cPrivateUsers.list&siteid=#session.siteid#">#application.rbFactory.getKeyValue(session.rb,"layout.administrativeusers")#</a>
             <ul>
               <li><a href="#application.configBean.getContext()#/admin/index.cfm?fuseaction=cPrivateUsers.edituser&siteid=#session.siteid#&userid=">#application.rbFactory.getKeyValue(session.rb,"layout.adduser")#</a></li>
@@ -54,11 +54,12 @@ to your own modified versions of Mura CMS.
             </ul>
           </li>
         </cfif>
-        <cfif isUserInRole('S2')>
+        <cfif listFind(session.mura.memberships,'S2')>
           <li id="navSiteSettings"><a href="#application.configBean.getContext()#/admin/index.cfm?fuseaction=cSettings.list">#application.rbFactory.getKeyValue(session.rb,"layout.sitesettings")#</a>
             <ul>
 			<li><a href="#application.configBean.getContext()#/admin/index.cfm?fuseaction=cSettings.editSite&siteid=#session.siteid#">#application.rbFactory.getKeyValue(session.rb,"layout.editcurrentsite")#</a></li>
-              <li class="last"><a href="#application.configBean.getContext()#/admin/index.cfm?fuseaction=cSettings.editSite&siteid=">#application.rbFactory.getKeyValue(session.rb,"layout.addsite")#</a></li>
+              <li><a href="#application.configBean.getContext()#/admin/index.cfm?fuseaction=cSettings.editSite&siteid=">#application.rbFactory.getKeyValue(session.rb,"layout.addsite")#</a></li>
+			  <li class="last"><a href="#application.configBean.getContext()#/admin/index.cfm?fuseaction=cSettings.sitecopyselect">#application.rbFactory.getKeyValue(session.rb,"layout.sitecopytool")#</a></li>
             </ul>
           </li>
         </cfif>
@@ -83,7 +84,7 @@ to your own modified versions of Mura CMS.
 		</cfif>
         <select name="siteid" onchange="if(this.value != ''){document.forms.siteSelect.submit();}">
 			<option vaue="">#application.rbFactory.getKeyValue(session.rb,"layout.selectsite")#</option>
-		    <cfset theSiteList=application.settingsManager.getUserSites(session.siteArray,isUserInRole('S2')) />
+		    <cfset theSiteList=application.settingsManager.getUserSites(session.siteArray,listFind(session.mura.memberships,'S2')) />
 		  	<cfloop query="theSiteList">
 			<option value="#theSiteList.siteid#">#theSiteList.site#</option>
 			</cfloop>

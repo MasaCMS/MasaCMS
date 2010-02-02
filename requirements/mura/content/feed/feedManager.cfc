@@ -114,6 +114,7 @@ to your own modified versions of Mura CMS.
 		<cfset feedBean.setFeedID("#createUUID()#") />
 		<cfset variables.globalUtility.logEvent("feedID:#feedBean.getfeedID()# Name:#feedBean.getName()# was created","mura-content","Information",true) />
 		<cfset variables.feedDAO.create(feedBean) />
+		<cfset feedBean.setIsNew(0)>
 		<cfset variables.pluginManager.announceEvent("onFeedSave",pluginEvent)>
 		<cfset variables.pluginManager.announceEvent("onFeedCreate",pluginEvent)>
 		<cfset variables.pluginManager.announceEvent("onAfterFeedSave",pluginEvent)>
@@ -124,10 +125,15 @@ to your own modified versions of Mura CMS.
 </cffunction>
 
 <cffunction name="read" access="public" returntype="any" output="false">
-	<cfargument name="feedID" type="String" />		
+	<cfargument name="feedID" required="true" default=""/>		
+	<cfargument name="name" required="true" default=""/>
+	<cfargument name="siteID" required="true" default=""/>
 	
-	<cfreturn variables.feedDAO.read(arguments.feedID) />
-
+	<cfif not len(arguments.feedID) and (len(arguments.siteid) and len(arguments.name))>
+		<cfreturn variables.feedDAO.readByName(arguments.name,arguments.siteid) />
+	<cfelse>
+		<cfreturn variables.feedDAO.read(arguments.feedID) />
+	</cfif>
 </cffunction>
 
 <cffunction name="readByName" access="public" returntype="any" output="false">
@@ -222,13 +228,14 @@ to your own modified versions of Mura CMS.
 			<cfargument name="feedBean" type="any"  />
 			<cfargument name="username"  type="string" default="" />
 			<cfargument name="password"  type="string" default="" />
+			<cfargument name="userID"  type="string" default="" />
 
 			<cfset var rs="" />
 			<cfset var allowFeed=true />
 			<cfset var rLen=listLen(arguments.feedBean.getRestrictGroups()) />
 			<cfset var G = 0 />
 			
-			<cfif isUserInRole('S2IsPrivate;#arguments.feedBean.getSiteID()#')>
+			<cfif listFind(session.mura.memberships,'S2IsPrivate;#arguments.feedBean.getSiteID()#')>
 				<cfreturn true />
 			</cfif>
 			
@@ -238,10 +245,14 @@ to your own modified versions of Mura CMS.
 						<cfif rLen> inner join tusersmemb 
 						on(tusers.userid=tusersmemb.userid)</cfif>
 						where tusers.type=2 
+						<cfif len(arguments.userID)>
+							tusers.userID=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.userID#">
+						<cfelse>
 						and tusers.username=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.username#"> 
 						and (tusers.password=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.password#">
 							or 
 						     tusers.password=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#trim(hash(arguments.password))#">)
+						</cfif>
 						and tusers.siteid='#application.settingsManager.getSite(arguments.feedBean.getSiteID()).getPublicUserPoolID()#'
 						
 						<cfif rLen>

@@ -113,13 +113,14 @@ copySiteID = '#session.copySiteID#';
 		</cfcase>
 		</cfswitch>
 	   <li class="versionHistory"><a title="Version History" href="index.cfm?fuseaction=cArch.hist&contentid=#request.rsList.ContentID#&type=#request.rsList.type#&parentid=#request.rsList.parentID#&topid=#request.rsList.contentID#&siteid=#attributes.siteid#&moduleid=#attributes.moduleid#&startrow=#attributes.startrow#">&nbsp;</a></li>
-        <cfif isUserInRole('Admin;#application.settingsManager.getSite(attributes.siteid).getPrivateUserPoolID()#;0') or isUserInRole('S2')>
+        <cfif listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(attributes.siteid).getPrivateUserPoolID()#;0') or listFind(session.mura.memberships,'S2')>
           <li class="permissions"><a title="Permissions" href="index.cfm?fuseaction=cPerm.main&contentid=#request.rsList.ContentID#&type=#request.rsList.type#&parentid=#request.rsList.parentID#&topid=#request.rsList.contentID#&siteid=#attributes.siteid#&moduleid=#attributes.moduleid#&startrow=#attributes.startrow#">&nbsp;</a></li>
         <cfelse>
 		  <li class="permissionsOff"><a>Permissions</a></li>
 		</cfif>
         <cfif deletable>
-          <li class="delete"><a  title="Delete" href="index.cfm?fuseaction=cArch.update&contentid=#request.rsList.ContentID#&type=#request.rsList.type#&action=deleteall&topid=#request.rsList.contentID#&siteid=#attributes.siteid#&moduleid=#attributes.moduleid#&parentid=#attributes.parentid#&startrow=#attributes.startrow#" onclick="return confirm('Delete the #request.rsList.type# #jsStringFormat("'#request.rsList.menuTitle#'")#?')">&nbsp;</a></li>
+          <li class="delete"><a  title="Delete" href="index.cfm?fuseaction=cArch.update&contentid=#request.rsList.ContentID#&type=#request.rsList.type#&action=deleteall&topid=#request.rsList.contentID#&siteid=#attributes.siteid#&moduleid=#attributes.moduleid#&parentid=#attributes.parentid#&startrow=#attributes.startrow#"
+			<cfif listFindNoCase("Page,Portal,Calendar,Gallery,Link,File",request.rsList.type)>onclick="return confirm('#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.deletecontentrecursiveconfirm'))#')"<cfelse>onclick="return confirm('#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.deletecontentconfirm'))#')"</cfif>>&nbsp;</a></li>
           <cfelseif attributes.locking neq 'all'>
           <li class="deleteOff">Delete</li>
         </cfif>

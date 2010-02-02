@@ -48,7 +48,7 @@ select * from rsSubTypes where subType <> 'Default'
 <cfoutput>
 <h2>#application.rbFactory.getKeyValue(session.rb,'user.admingroupform')#</h2>
 <cfif myfusebox.originalfuseaction eq "editgroup" and attributes.userid neq ''>
-<ul id="navTask"><li><a href="javascript:intuserselect('#attributes.userid#',1,<cfif isUserInRole('S2')>1<cfelse>0</cfif>,'#attributes.siteid#')">#application.rbFactory.getKeyValue(session.rb,'user.addadminusertogroup')#</a></li></ul></cfif>
+<ul id="navTask"><li><a href="javascript:intuserselect('#attributes.userid#',1,<cfif listFind(session.mura.memberships,'S2')>1<cfelse>0</cfif>,'#attributes.siteid#')">#application.rbFactory.getKeyValue(session.rb,'user.addadminusertogroup')#</a></li></ul></cfif>
 </cfoutput>
     <cfswitch expression="#request.userBean.getperm()#">
 	  	<cfcase value="1">

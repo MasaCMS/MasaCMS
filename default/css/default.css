@@ -382,22 +382,19 @@ p.center { text-align: center; }
 ===================================== */
 
 /* Clearing floats without extra markup
-	Based on How To Clear Floats Without Structural Markup by PiE
-	[http://www.positioniseverything.net/easyclearing.html] */
+	http://perishablepress.com/press/2009/12/06/new-clearfix-hack/ */
+
 
 .clearfix:after, .svIndex dl:after {
-	content: ".";
-	display: block;
-	height: 0;
-	clear: both;
 	visibility: hidden;
+	display: block;
+	font-size: 0;
+	content: " ";
+	clear: both;
+	height: 0;
 	}
-
-.clearfix, .svIndex dl { display: inline-block; }
-
-* html .clearfix, * html .svIndex dl { height: 1%; }
-
-.clearfix, .svIndex dl { display: block; }
+* html .clearfix, * html .svIndex dl { zoom: 1; } /* IE6 */
+*:first-child+html .clearfix, *:first-child+html .svIndex dl { zoom: 1; } /* IE7 */
 
 /* @end Helper Classes - Clearfix
 -------------------------------- */

@@ -40,8 +40,6 @@ for your modified version; it is your choice whether to do so, or to make such m
 the GNU General Public License version 2  without this exception.  You may, if you choose, apply this exception
 to your own modified versions of Mura CMS.
 --->
-
-
 <cfsilent>
 <cfset crumbdata=application.contentManager.getCrumbList(attributes.topid,attributes.siteid)>
 <cfif isdefined('attributes.viewDepth') and attributes.viewDepth gt 0>
@@ -57,6 +55,7 @@ to your own modified versions of Mura CMS.
 <cfparam name="attributes.sortDirection" default="#request.rstop.sortDirection#" />
 <cfparam name="session.copyContentID" default="">
 <cfparam name="session.copySiteID" default="">
+<cfparam name="session.copyAll" default="false">
 
 <cfif isdefined('attributes.orderperm') and (attributes.orderperm eq 'editor' or (attributes.orderperm eq 'author' and application.configBean.getSortPermission() eq "author"))>
 <cflock type="exclusive" name="editingContent#attributes.siteid#" timeout="60">
@@ -103,10 +102,19 @@ update tcontent set orderno= #rsSetOrder.currentrow# where contentid ='#rsSetOrd
 </cfsilent>
 
 <cfoutput>	
+<cfif session.copySiteID eq attributes.siteID>
 <script>
 copyContentID = '#session.copyContentID#';
 copySiteID = '#session.copySiteID#';
+copyAll = '#session.copyAll#';
 </script>
+<cfelse>
+<script>
+copyContentID = '';
+copySiteID = '';
+copyAll = 'false';
+</script>
+</cfif>
 <h2>#application.rbFactory.getKeyValue(session.rb,"sitemanager.sitemanager")#</h2>
 <form id="siteSearch" name="siteSearch" method="get"><h3>#application.rbFactory.getKeyValue(session.rb,"sitemanager.contentsearch")#</h3><input name="keywords" value="#HTMLEditFormat(session.keywords)#" type="text" class="text" align="absmiddle" />  
 	<a class="submit" href="javascript:;" onclick="return submitForm(document.forms.siteSearch);"><span>#application.rbFactory.getKeyValue(session.rb,"sitemanager.search")#</span></a>
@@ -181,7 +189,7 @@ copySiteID = '#session.copySiteID#';
 		</cfcase>
 		</cfswitch>
 		<li class="versionHistory"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.versionhistory")#" href="index.cfm?fuseaction=cArch.hist&contentid=#request.rstop.ContentID#&type=#request.rstop.type#&parentid=#request.rstop.parentID#&topid=#attributes.topid#&siteid=#attributes.siteid#&moduleid=#attributes.moduleid#">#application.rbFactory.getKeyValue(session.rb,"sitemanager.versionhistory")#</a></li>
-        <cfif isUserInRole('Admin;#application.settingsManager.getSite(attributes.siteid).getPrivateUserPoolID()#;0') or isUserInRole('S2')>
+        <cfif listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(attributes.siteid).getPrivateUserPoolID()#;0') or listFind(session.mura.memberships,'S2')>
 			<li class="permissions"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.permissions")#" href="index.cfm?fuseaction=cPerm.main&contentid=#attributes.topid#&parentid=&topid=#attributes.topid#&siteid=#attributes.siteid#&moduleid=#attributes.moduleid#&type=#request.rstop.type#">#application.rbFactory.getKeyValue(session.rb,"sitemanager.permissions")#</a></li>
        	<cfelse>
 			<li class="permissionsOff"><a>#application.rbFactory.getKeyValue(session.rb,"sitemanager.permissions")#</a></li>

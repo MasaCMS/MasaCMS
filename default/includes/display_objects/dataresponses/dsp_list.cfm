@@ -72,7 +72,7 @@ to your own modified versions of Mura CMS.
 <cfsilent><cfwddx action="wddx2cfml" input="#rsdata.data#" output="info"></cfsilent>
 <cfloop list="#data.fieldnames#" index="f">
 	<cftry><cfset fValue=info['#f#']><cfcatch><cfset fValue=""></cfcatch></cftry>
-<td><a href="#application.configBean.getIndexFile()#?fuseaction=detail&responseid=#rsdata.responseid#">#fvalue#</a></td>
+<td><a href="?fuseaction=detail&responseid=#rsdata.responseid#">#fvalue#</a></td>
 </cfloop>
 
 </tr>
@@ -82,13 +82,13 @@ to your own modified versions of Mura CMS.
 			<cfoutput><div class="moreResults"><#getHeaderTag('subHead2')#>More Results:</#getHeaderTag('subHead2')#> 
 			<ul>
 			<cfif nextN.currentpagenumber gt 1>
-				<li><a href="#application.configBean.getIndexFile()#?startrow=#nextN.previous#&categoryID=#request.categoryID#&relatedID=#request.relatedID#">&laquo;&nbsp;Prev</a></li>
+				<li><a href="?startrow=#nextN.previous#&categoryID=#request.categoryID#&relatedID=#request.relatedID#">&laquo;&nbsp;Prev</a></li>
 			</cfif>
 			<cfloop from="#nextn.firstPage#"  to="#nextn.lastPage#" index="i">
-			<cfif nextn.currentpagenumber eq i><li class="current">#i#</li><cfelse><li><a href="#application.configBean.getIndexFile()#?startrow=#evaluate('(#i#*#nextn.recordsperpage#)-#nextn.recordsperpage#+1')#&categoryID=#request.categoryID#&relatedID=#request.relatedID#">#i#</a></li></cfif>
+			<cfif nextn.currentpagenumber eq i><li class="current">#i#</li><cfelse><li><a href="?startrow=#evaluate('(#i#*#nextn.recordsperpage#)-#nextn.recordsperpage#+1')#&categoryID=#request.categoryID#&relatedID=#request.relatedID#">#i#</a></li></cfif>
 			</cfloop>
 			<cfif nextN.currentpagenumber lt nextN.NumberOfPages>
-				<li><a href="#application.configBean.getIndexFile()#?startrow=#nextN.next#&categoryID=#request.categoryID#&relatedID=#request.relatedID#">Next&nbsp;&raquo;</a></li>
+				<li><a href="?startrow=#nextN.next#&categoryID=#request.categoryID#&relatedID=#request.relatedID#">Next&nbsp;&raquo;</a></li>
 			</cfif>
 			</ul></cfoutput>
 			</div>

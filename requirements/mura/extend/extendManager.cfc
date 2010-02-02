@@ -274,7 +274,14 @@ inner join tclassextendsets on (tclassextendattributes.extendsetID=tclassextends
 inner join tclassextend on (tclassextendsets.subtypeID=tclassextend.subtypeID)
  where 
 tclassextend.type=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.type#">
-and tclassextend.subtype=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.subtype#">
+and 
+	(
+		tclassextend.subtype=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.subtype#">
+		<cfif arguments.subType neq "Default">
+		or tclassextend.subtype=<cfqueryparam cfsqltype="cf_sql_varchar"  value="Default">
+		</cfif>
+	)
+
 and baseID=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.preserveID#">
 <cfif hasExtendSets>
 <cfset setLen=listLen(arguments.data.extendSetID)/>
@@ -302,7 +309,7 @@ and tclassextendattributes.extendSetID not in (<cfloop from="1" to="#setLen#" in
 
 <!--- preserve get non file attributes that were'nt submitted along with extendedset  --->
 <cfquery name="rs" datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-select #arguments.dataTable#.*, tclassextendattributes.name from #arguments.dataTable#
+select #arguments.dataTable#.*, tclassextendattributes.name  from #arguments.dataTable#
 inner join tclassextendattributes on ( #arguments.dataTable#.attributeID=tclassextendattributes.attributeID)
 inner join tclassextendsets on (tclassextendattributes.extendsetID=tclassextendsets.extendsetID)
 inner join tclassextend on (tclassextendsets.subtypeID=tclassextend.subtypeID)
@@ -356,14 +363,7 @@ inner join tclassextendsets on (tclassextendattributes.extendsetID=tclassextends
 inner join tclassextend on (tclassextendsets.subtypeID=tclassextend.subtypeID)
  where 
 tclassextend.type=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.type#">
-and 
-	(
-		tclassextend.subtype=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.subtype#">
-		<cfif arguments.subType neq "Default">
-		or tclassextend.subtype=<cfqueryparam cfsqltype="cf_sql_varchar"  value="Default">
-		</cfif>
-	)
-
+and tclassextend.subtype=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.subtype#">
 and baseID=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.preserveID#">
 <cfif hasExtendSets>
 <cfset setLen=listLen(arguments.data.extendSetID)/>
@@ -384,6 +384,8 @@ and tclassextendattributes.type='File'
 			or structKeyExists(arguments.data,deletekey1) 
 			or structKeyExists(arguments.data,deletekey2))
 			and len(rs.attributeValue)>
+		
+		
 						<cfquery datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 						insert into #arguments.dataTable# (baseID,attributeID,siteID,attributeValue)
 						values (

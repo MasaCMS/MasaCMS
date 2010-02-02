@@ -37,7 +37,6 @@
 <cffunction name="doAction" output="false">
 <cfargument name="theaction" type="string" default="">
 <cfargument name="event" required="true">
-<cfset var cffp="">
 
 		<cfswitch expression="#arguments.theaction#">
 			<cfcase value="login">
@@ -79,18 +78,9 @@
 				<cfif application.settingsManager.getSite(event.getValue('siteid')).getextranetpublicreg() eq 1>
 				
 					<cfif event.valueExists("useProtect")>
-						<cfset cffp = CreateObject("component","cfformprotect.cffpVerify").init() />
-						<cfif len(event.getSite().getExtranetPublicRegNotify())>
-							<cfset cffp.updateConfig('emailServer', event.getSite().getMailServerIP())>
-							<cfset cffp.updateConfig('emailUserName', event.getSite().getMailserverUsername(true))>
-							<cfset cffp.updateConfig('emailPassword', event.getSite().getMailserverPassword())>
-							<cfset cffp.updateConfig('emailFromAddress', event.getSite().getMailserverUsernameEmail())>
-							<cfset cffp.updateConfig('emailToAddress', event.getSite().getExtranetPublicRegNotify())>
-							<cfset cffp.updateConfig('emailSubject', 'Spam form submission')>
-						</cfif>
-						<cfset event.setValue("passedProtect",cffp.testSubmission(event.getAllValues()))>
+						<cfset event.setValue("passedProtect",application.utility.cfformprotect(event))>
 					</cfif>
-	
+					
 					<cfset event.setValue('userBean',application.userManager.create(event.getAllValues())) />		
 					<cfif structIsEmpty(event.getValue('userBean').getErrors()) and not event.valueExists('passwordNoCache')>
 						<cfset application.userManager.sendLoginByUser(event.getValue('userBean'),event.getValue('siteid'),event.getValue('contentRenderer').getCurrentURL(),true) />
@@ -107,7 +97,15 @@
 			</cfcase>
 			
 			<cfcase value="subscribe">
-				<cfset application.mailinglistManager.createMember(event.getAllValues())>
+				<cfif event.valueExists("useProtect")>
+					<cfset event.setValue("passedProtect",application.utility.cfformprotect(event))>
+				<cfelse>
+					<cfset event.setValue("passedProtect",true)>
+				</cfif>
+				
+				<cfif event.getValue("passedProtect")>
+					<cfset application.mailinglistManager.createMember(event.getAllValues())>
+				</cfif>
 			</cfcase>
 			
 			<cfcase value="unsubscribe">
@@ -115,20 +113,44 @@
 			</cfcase>
 			
 			<cfcase value="masterSubscribe">
-				<cfset application.mailinglistManager.masterSubscribe(event.getAllValues())/>
+				<cfif event.valueExists("useProtect")>
+					<cfset event.setValue("passedProtect",application.utility.cfformprotect(event))>
+				<cfelse>
+					<cfset event.setValue("passedProtect",true)>
+				</cfif>
+				
+				<cfif event.getValue("passedProtect")>
+					<cfset application.mailinglistManager.masterSubscribe(event.getAllValues())/>
+				</cfif>
 			</cfcase>
 			
 			<cfcase value="setReminder">
-				<cfset application.contentManager.setReminder(event.getValue('contentBean').getcontentid(),event.getValue('siteID'),event.getValue('email'),event.getValue('contentBean').getdisplaystart(),event.getValue('interval')) />
+				<cfif event.valueExists("useProtect")>
+					<cfset event.setValue("passedProtect",application.utility.cfformprotect(event))>
+				<cfelse>
+					<cfset event.setValue("passedProtect",true)>
+				</cfif>
+				
+				<cfif event.getValue("passedProtect")>
+					<cfset application.contentManager.setReminder(event.getValue('contentBean').getcontentid(),event.getValue('siteID'),event.getValue('email'),event.getValue('contentBean').getdisplaystart(),event.getValue('interval')) />
+				</cfif>
 			</cfcase>
 			
 			<cfcase value="forwardEmail">
-				<cfset event.setValue('to',event.getValue('to1'))/>
-				<cfset event.setValue('to',listAppend(event.getValue('to'),event.getValue('to2'))) />
-				<cfset event.setValue('to',listAppend(event.getValue('to'),event.getValue('to3'))) />
-				<cfset event.setValue('to',listAppend(event.getValue('to'),event.getValue('to4'))) />
-				<cfset event.setValue('to',listAppend(event.getValue('to'),event.getValue('to5'))) />
-				<cfset application.emailManager.forward(event.getAllValues()) />
+				<cfif event.valueExists("useProtect")>
+					<cfset event.setValue("passedProtect",application.utility.cfformprotect(event))>
+				<cfelse>
+					<cfset event.setValue("passedProtect",true)>
+				</cfif>
+				
+				<cfif event.getValue("passedProtect")>
+					<cfset event.setValue('to',event.getValue('to1'))/>
+					<cfset event.setValue('to',listAppend(event.getValue('to'),event.getValue('to2'))) />
+					<cfset event.setValue('to',listAppend(event.getValue('to'),event.getValue('to3'))) />
+					<cfset event.setValue('to',listAppend(event.getValue('to'),event.getValue('to4'))) />
+					<cfset event.setValue('to',listAppend(event.getValue('to'),event.getValue('to5'))) />
+					<cfset application.emailManager.forward(event.getAllValues()) />
+				</cfif>
 			</cfcase>
 			
 		</cfswitch>

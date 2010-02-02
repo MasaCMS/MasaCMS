@@ -47,8 +47,8 @@ to your own modified versions of Mura CMS.
     <li id="newZoom"><a href="" id="newZoomLink">#application.rbFactory.getKeyValue(session.rb,"sitemanager.zoom")#</a></li>
     <li id="newCopy">
     	<a href="" id="newCopyLink">#application.rbFactory.getKeyValue(session.rb,"sitemanager.copy")#&nbsp;</a>
-    	<!---<span>/</span>
-    	<a href="" id="newCopyAllLink">Copy All #application.rbFactory.getKeyValue(session.rb,"sitemanager.copyall")#</a> --->
+    	<span>/</span>
+    	<a href="" id="newCopyAllLink">#application.rbFactory.getKeyValue(session.rb,"sitemanager.copyall")#</a>
     </li>
 	<li id="newPaste"><a href="" id="newPasteLink">#application.rbFactory.getKeyValue(session.rb,"sitemanager.paste")#</a></li>
 	<li id="newPage"><a href="" id="newPageLink">#application.rbFactory.getKeyValue(session.rb,"sitemanager.addpage")#</a></li>

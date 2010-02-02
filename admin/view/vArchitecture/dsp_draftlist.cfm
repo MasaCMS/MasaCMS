@@ -54,7 +54,7 @@ to your own modified versions of Mura CMS.
       <cfoutput query="request.rslist">
 	  <cfset itemcrumbdata=application.contentManager.getCrumbList(request.rslist.contentid,attributes.siteid)>
 	  <cfset itemperm=application.permUtility.getnodePerm(itemcrumbdata)>
-<cfif isUserInRole('Admin;#application.settingsManager.getSite(attributes.siteid).getPrivateUserPoolID()#;0') or isUserInRole('S2') or itemperm eq 'editor' or itemperm eq 'author'>
+<cfif listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(attributes.siteid).getPrivateUserPoolID()#;0') or listFind(session.mura.memberships,'S2') or itemperm eq 'editor' or itemperm eq 'author'>
       
 		<tr> 
         <td class="varWidth">

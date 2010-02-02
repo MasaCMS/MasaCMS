@@ -45,7 +45,9 @@ to your own modified versions of Mura CMS.
 
 <cffunction name="init" returntype="any" access="public" output="false">
 <cfargument name="configBean" type="any" required="yes"/>
+<cfargument name="fileWriter" type="any" required="yes"/>
 <cfset variables.configBean=arguments.configBean />
+<cfset variables.fileWriter=arguments.fileWriter />
 <cfset variables.javaVersion=listGetAt(createObject("java", "java.lang.System").getProperty("java.version"),2,".") />
 <cfreturn this />
 </cffunction>
@@ -127,20 +129,20 @@ to your own modified versions of Mura CMS.
 	<cfif not directoryExists("#variables.configBean.getFileDir()##variables.configBean.getFileDelim()##arguments.siteid##variables.configBean.getFileDelim()#cache#variables.configBean.getFileDelim()#component")> 
 	
 		<cfif not directoryExists("#variables.configBean.getFileDir()##variables.configBean.getFileDelim()##arguments.siteid#")> 
-			<cfdirectory action="create" mode="775" directory="#variables.configBean.getFileDir()##variables.configBean.getFileDelim()##arguments.siteid#"> 
+			<cfset variables.fileWriter.createDir(directory="#variables.configBean.getFileDir()##variables.configBean.getFileDelim()##arguments.siteid#")>
 		</cfif>
 	
 		<cfif not directoryExists("#variables.configBean.getFileDir()##variables.configBean.getFileDelim()##arguments.siteid##variables.configBean.getFileDelim()#cache")> 
-			<cfdirectory action="create" mode="775" directory="#variables.configBean.getFileDir()##variables.configBean.getFileDelim()##arguments.siteid##variables.configBean.getFileDelim()#cache"> 
+			<cfset variables.fileWriter.createDir(directory="#variables.configBean.getFileDir()##variables.configBean.getFileDelim()##arguments.siteid##variables.configBean.getFileDelim()#cache")>
 		</cfif>
-	
-		<cfdirectory action="create" mode="775" directory="#variables.configBean.getFileDir()##variables.configBean.getFileDelim()##arguments.siteid##variables.configBean.getFileDelim()#cache#variables.configBean.getFileDelim()#component">
-		<cfdirectory action="create" mode="775" directory="#variables.configBean.getFileDir()##variables.configBean.getFileDelim()##arguments.siteid##variables.configBean.getFileDelim()#cache#variables.configBean.getFileDelim()#file"> 
+		
+		<cfset variables.fileWriter.createDir(directory="#variables.configBean.getFileDir()##variables.configBean.getFileDelim()##arguments.siteid##variables.configBean.getFileDelim()#cache#variables.configBean.getFileDelim()#component")>
+		<cfset variables.fileWriter.createDir(directory="#variables.configBean.getFileDir()##variables.configBean.getFileDelim()##arguments.siteid##variables.configBean.getFileDelim()#cache#variables.configBean.getFileDelim()#file")>
 	</cfif>
 	
 	<!--- make sure that the asset directory exists, for fckeditor assets --->
 	<cfif not directoryExists("#variables.configBean.getAssetDir()##variables.configBean.getFileDelim()##arguments.siteid##variables.configBean.getFileDelim()#assets")> 
-			<cfdirectory action="create" mode="775" directory="#variables.configBean.getAssetDir()##variables.configBean.getFileDelim()##arguments.siteid##variables.configBean.getFileDelim()#assets"> 
+		<cfset variables.fileWriter.createDir(directory="#variables.configBean.getAssetDir()##variables.configBean.getFileDelim()##arguments.siteid##variables.configBean.getFileDelim()#assets")>
 	</cfif>
 	
 </cffunction>
@@ -182,39 +184,49 @@ to your own modified versions of Mura CMS.
 <cffunction name="copyDir" returnType="any" output="false">
 	<cfargument name="baseDir" default="" required="true" />
 	<cfargument name="destDir" default="" required="true" />
-	<cfset var rs = "" />
+	<cfargument name="excludeList" default="" required="true" />
+	<cfset var rs = "">
+	<cfset var i="">
 	<cfset var errors=arrayNew(1)>
 	<cfset var copyItem="">
 	
-	<cfdirectory directory="#arguments.baseDir#" name="rs" action="list" recurse="true" />
-	<!--- filter out Subversion hidden folders --->
-	<cfquery name="rs" dbtype="query">
-	SELECT * FROM rs
-	WHERE directory NOT LIKE '%#variables.configBean.getFileDelim()#.svn%'
-	AND name <> '.svn'
-	</cfquery>
-	
-	<cfset copyItem=arguments.destDir>
-	<cftry>
-		<cfdirectory action="create" mode="775" directory="#copyItem#" />
-		<cfcatch><!---<cfset arrayAppend(errors, copyItem)>---></cfcatch>
-	</cftry>
-	
-	<cfloop query="rs">
-		<cfif rs.type eq "dir">
-			<cfset copyItem="#replace('#rs.directory##variables.configBean.getFileDelim()#',arguments.baseDir,arguments.destDir)##rs.name##variables.configBean.getFileDelim()#">
-			<cftry>
-				<cfdirectory action="create" mode="775" directory="#copyItem#" />
-				<cfcatch><!---<cfset arrayAppend(errors, copyItem)>---></cfcatch>
-			</cftry>
-		<cfelse>
-		<cfset copyItem="#replace('#rs.directory##variables.configBean.getFileDelim()#',arguments.baseDir,arguments.destDir)#">
-			<cftry>
-				<cffile action="copy" mode="775" source="#rs.directory##variables.configBean.getFileDelim()##rs.name#" destination="#copyItem#" />
-				<cfcatch><cfset arrayAppend(errors, copyItem)></cfcatch>
-			</cftry>
+	<cfif arguments.baseDir neq arguments.destDir>	
+		<cfdirectory directory="#arguments.baseDir#" name="rs" action="list" recurse="true" />
+		<!--- filter out Subversion hidden folders --->
+		<cfquery name="rs" dbtype="query">
+		SELECT * FROM rs
+		WHERE directory NOT LIKE '%#variables.configBean.getFileDelim()#.svn%'
+		<cfif len(arguments.excludeList)>
+		<cfloop list="#arguments.excludeList#" index="i">
+		and directory NOT LIKE '%#i#%'
+		</cfloop>
 		</cfif>
-	</cfloop>
+		AND name <> '.svn'
+		</cfquery>
+
+		<cfset copyItem=arguments.destDir>
+		<cftry>
+			<cfset variables.fileWriter.createDir(directory=copyItem)>
+			<cfcatch><!---<cfset arrayAppend(errors,copyItem)>---></cfcatch>
+		</cftry>
+		
+		<cfloop query="rs">
+			<cfif rs.type eq "dir">
+				<cfset copyItem="#replace('#rs.directory##variables.configBean.getFileDelim()#',arguments.baseDir,arguments.destDir)##rs.name##variables.configBean.getFileDelim()#">
+				<cftry>
+					<cfset variables.fileWriter.createDir(directory=copyItem)>
+					<cfcatch><!---<cfset arrayAppend(errors,copyItem)>---></cfcatch>
+				</cftry>
+			<cfelse>
+			<cfset copyItem="#replace('#rs.directory##variables.configBean.getFileDelim()#',arguments.baseDir,arguments.destDir)#">
+				<cftry>
+					<cfset variables.fileWriter.copyFile(source="#rs.directory##variables.configBean.getFileDelim()##rs.name#", destination=copyItem)>
+					<cfcatch><<cfset arrayAppend(errors,copyItem)></cfcatch>
+				</cftry>
+			</cfif>
+		</cfloop>
+	</cfif>
+	
 	<cfreturn errors>
 </cffunction>
 
@@ -346,4 +358,19 @@ return list;
 </cfscript>
 </cffunction>
 
+<cffunction name="cfformprotect" output="false" returntype="any">
+	<cfargument name="event">
+	<cfset var cffp=CreateObject("component","cfformprotect.cffpVerify").init()>
+	<cfset var result=false>
+	<cfif len(event.getSite().getExtranetPublicRegNotify())>
+		<cfset cffp.updateConfig('emailServer', event.getSite().getMailServerIP())>
+		<cfset cffp.updateConfig('emailUserName', event.getSite().getMailserverUsername(true))>
+		<cfset cffp.updateConfig('emailPassword', event.getSite().getMailserverPassword())>
+		<cfset cffp.updateConfig('emailFromAddress', event.getSite().getMailserverUsernameEmail())>
+		<cfset cffp.updateConfig('emailToAddress', event.getSite().getExtranetPublicRegNotify())>
+		<cfset cffp.updateConfig('emailSubject', 'Spam form submission')>
+	</cfif>
+	<cfreturn cffp.testSubmission(event.getAllValues())>
+</cffunction>
+			
 </cfcomponent>

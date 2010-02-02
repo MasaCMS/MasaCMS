@@ -17,6 +17,7 @@ others files in certain cases.
 <cfset tempfile_out = GetTempFile(GetTempDirectory(), "spell_")>
 <cfset spellercss   = "../spellerStyle.css">
 <cfset word_win_src = "../wordWindow.js">
+<cfset fileWriter=application.serviceFactory.getBean("fileWriter")>
 
 <cfset form.checktext = form["textinputs[]"]>
 
@@ -45,7 +46,7 @@ others files in certain cases.
 </cfloop>
 
 <!--- create temp file from the submitted text, this will be passed to aspell to be check for misspelled words --->
-<cffile action="write" file="#tempfile_in#" output="#text#" charset="utf-8">
+<cfset fileWriter.writeFile( file="#tempfile_in#" output="#text#" charset="utf-8") >
 
 <!--- execute aspell in an UTF-8 console and redirect output to a file. UTF-8 encoding is lost if done differently --->
 <cfexecute name="cmd.exe" arguments='/c type "#tempfile_in#" | "#aspell_dir#\aspell.exe" #aspell_opts# > "#tempfile_out#"' timeout="100"/>

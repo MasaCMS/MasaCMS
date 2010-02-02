@@ -108,7 +108,6 @@ to your own modified versions of Mura CMS.
 	
 </cffunction>
 
-
 <cffunction name="read" access="public" output="false" returntype="any">
 <cfargument name="siteid" type="string" />
 
@@ -204,6 +203,13 @@ to your own modified versions of Mura CMS.
 	</cftry>
 </cffunction>
 
+<cffunction name="siteExists" access="public" output="false" returntype="any">
+	<cfargument name="siteid" type="string" />
+	
+	<cfreturn structKeyExists(variables.sites,arguments.siteid) />
+
+</cffunction>
+
 <cffunction name="getSites" access="public" output="false" returntype="any">
 	<cfreturn variables.sites />
 </cffunction>
@@ -242,7 +248,5 @@ to your own modified versions of Mura CMS.
 
 	<cfreturn rs />
 </cffunction>
-
-
 
 </cfcomponent>

@@ -48,7 +48,7 @@ to your own modified versions of Mura CMS.
 	<li<cfif myfusebox.originalfuseaction eq "listCampaigns"> class="current"</cfif>><a href="index.cfm?fuseaction=cAdvertising.listCampaigns&siteid=#attributes.siteid#">#application.rbFactory.getKeyValue(session.rb,'advertising.campaigns')#</a></li>
 	<li<cfif myfusebox.originalfuseaction eq "listCreatives"> class="current"</cfif>><a href="index.cfm?fuseaction=cAdvertising.listCreatives&siteid=#attributes.siteid#">#application.rbFactory.getKeyValue(session.rb,'advertising.creatives')#</a></li>
 	<li<cfif myfusebox.originalfuseaction eq "editIPWhitelist"> class="current"</cfif>><a href="index.cfm?fuseaction=cAdvertising.editIPWhitelist&siteid=#attributes.siteid#">#application.rbFactory.getKeyValue(session.rb,'advertising.ipwhitelist')#</a></li>
-	<cfif isUserInRole('Admin;#application.settingsManager.getSite(attributes.siteid).getPrivateUserPoolID()#;0') or isUserInRole('S2')>
+	<cfif listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(attributes.siteid).getPrivateUserPoolID()#;0') or listFind(session.mura.memberships,'S2')>
 	<li<cfif myfusebox.originalfuseaction eq "module"> class="current"</cfif>><a href="index.cfm?fuseaction=cPerm.module&contentid=00000000000000000000000000000000006&moduleid=00000000000000000000000000000000006&siteid=#attributes.siteid#">#application.rbFactory.getKeyValue(session.rb,'advertising.permissions')#</a></li>
 	</cfif>
 </ul></cfoutput>

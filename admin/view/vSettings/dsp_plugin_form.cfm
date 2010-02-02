@@ -63,7 +63,7 @@ to your own modified versions of Mura CMS.
 
 
 <cfif rsPlugin.recordcount and rsPlugin.deployed>
-<ul id="navTask"
+<ul id="navTask">
 <li><a href="index.cfm?fuseaction=cSettings.updatePluginVersion&moduleid=#attributes.moduleid#">Update Plugin Version</a></li>
 </ul></cfif>
 
@@ -117,6 +117,15 @@ to your own modified versions of Mura CMS.
 <dl class="oneColumn">
 	<dt>Plugin Name (Alias)</dt>	
 	<dd><input name="pluginalias" type="text" value="#htmlEditFormat(rsPlugin.name)#" required="true" message="The 'Name' field is required." maxlength="100"/></dd>
+
+<dt>Load Priority</dt>
+<dd><select name="loadPriority">
+	<cfloop from="1" to="10" index="i">
+	<option value="#i#" <cfif rsPlugin.loadPriority eq i>selected</cfif>>#i#</option>
+	</cfloop>
+	</select>
+</dd>
+
 <cfif settingsLen>
 <cfloop from="1" to="#settingsLen#" index="i">
 		<cfsilent>

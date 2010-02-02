@@ -82,10 +82,10 @@ to your own modified versions of Mura CMS.
 		<cfset var group = "" />
 		<cfset var lastLogin = now() />
 		<cfset var pluginEvent = createObject("component","mura.event").init(arguments) />
+		<cfset var strikes = createObject("component","mura.user.userstrikes").init(arguments.username,variables.configBean) />
 		
 		<cflogout>
-		<cfparam name="session.loginAttempts" type="numeric" default="0" />
-		<cfparam name="session.blockLoginUntil" type="string" default="" />
+		<cfparam name="session.blockLoginUntil" type="string" default="#strikes.blockedUntil()#" />
 		
 		<cfif len(arguments.siteID)>
 			<cfset variables.pluginManager.announceEvent('onSiteLogin',pluginEvent)/>
@@ -99,27 +99,24 @@ to your own modified versions of Mura CMS.
 		and inactive=0
 		</cfquery>
 		
-		<cfif len(cgi.HTTP_COOKIE) and rsUser.RecordCount GREATER THAN 0
-			and (not isDate(session.blockLoginUntil) 
-			or (isDate(session.blockLoginUntil) and session.blockLoginUntil lt now()))>
+		<!---
+		(not isDate(session.blockLoginUntil) 
+			or (isDate(session.blockLoginUntil) and session.blockLoginUntil lt now()))
+		--->
+		<cfif rsUser.RecordCount GREATER THAN 0
+			and not strikes.isBlocked()>
 			
 				<cfif rsUser.isPublic and (arguments.siteid eq '' or variables.settingsManager.getSite(arguments.siteid).getPublicUserPoolID() neq rsUser.siteid)>
 					
-					<cfif session.loginAttempts lt 4>
-						<cfset session.loginAttempts=session.loginAttempts+1 />
-					<cfelse>
-						<cfset session.blockLoginUntil=dateAdd("n",30,now())/>
-						<cfset session.loginAttempts=0 />
-					</cfif>
+					<cfset strikes.addStrike()>
 										
 					<cfreturn false  >
 				</cfif>				
 					
-				<cfset session.loginAttempts=0 />
 				<cfset session.blockLoginUntil=""/>
 				
 				<cfset loginByQuery(rsUser)/>
-				
+				<cfset strikes.clear()>
 				<cfif len(arguments.siteID)>
 					<cfset variables.pluginManager.announceEvent('onSiteLoginSuccess',pluginEvent)/>
 				<cfelse>
@@ -129,8 +126,8 @@ to your own modified versions of Mura CMS.
 				<cfreturn true />
 		
 		<cfelse>
-			<cfif session.loginAttempts lt 4>
-				<cfset session.loginAttempts=session.loginAttempts+1 />
+			<cfif not strikes.isBlocked()>
+				<cfset strikes.addStrike()>
 			<cfelse>
 			
 				<cfif len(arguments.siteID)>
@@ -139,8 +136,8 @@ to your own modified versions of Mura CMS.
 					<cfset variables.pluginManager.announceEvent('onGlobalLoginBlocked',pluginEvent)/>
 				</cfif>
 				
-				<cfset session.blockLoginUntil=dateAdd("n",30,now())/>
-				<cfset session.loginAttempts=0 />			
+				<cfset session.blockLoginUntil=strikes.blockedUntil()/>
+		
 			</cfif>	
 		</cfif>
 						
@@ -247,7 +244,7 @@ to your own modified versions of Mura CMS.
 				WHERE tusers.UserID='#rsUser.UserID#'
 				</cfquery>
 				
-				<cfset setUserStruct(rsuser)>
+				<cfset setUserStruct(rsuser,rolelist)>
 				
 				<cfset variables.globalUtility.logEvent("UserID:#rsuser.userid# Name:#rsuser.fname# #rsuser.lname# logged in at #now()#","mura-users","Information",true) />
 
@@ -289,7 +286,7 @@ to your own modified versions of Mura CMS.
 						<cfloop query="rsuser">
 						<cfset userBean=variables.userDAO.read(rsuser.userid)>
 						<cfset userBean.setPassword(getRandomPassword()) />
-						<cfset userBean.save() /> 
+						<cfset userBean.save() />
 							<cfif userBean.getUsername() neq '' and userBean.getPassword() neq ''>
 								<cfset struser.username=userBean.getUsername()>
 								<cfset struser.fname=userBean.getFname()>
@@ -519,11 +516,12 @@ The #contactName# staff</cfoutput>
 
 <cffunction name="setUserStruct" output="false" access="public" returntype="void">
 <cfargument name="user">
-
+<cfargument name="memberships" required="true" default="">
 <cfif structKeyExists(arguments,"user")>
 	<cfset session.mura.isLoggedIn=true>			
 	<cfset session.mura.userID=arguments.user.userID>
 	<cfset session.mura.username=arguments.user.username>
+	<cfset session.mura.siteID=arguments.user.siteid>
 	<cfset session.mura.subtype=arguments.user.subtype>
 	<cfset session.mura.password=arguments.user.password>
 	<cfset session.mura.fname=arguments.user.fname>
@@ -537,9 +535,11 @@ The #contactName# staff</cfoutput>
 	</cfif>
 	<cfset session.mura.lastlogin=arguments.user.lastlogin>
 	<cfset session.mura.passwordCreated=arguments.user.passwordCreated>
+	<cfset session.mura.memberships=arguments.memberships>
 <cfelse>
 	<cfset session.mura.isLoggedIn=false>			
 	<cfset session.mura.userID="">
+	<cfset session.mura.siteID="">
 	<cfset session.mura.subtype="Default">
 	<cfset session.mura.username="">
 	<cfset session.mura.password="">
@@ -550,6 +550,7 @@ The #contactName# staff</cfoutput>
 	<cfset session.mura.passwordCreated="">
 	<cfset session.mura.email="">
 	<cfset session.mura.remoteID="">
+	<cfset session.mura.memberships="">
 </cfif>
 </cffunction>
 </cfcomponent>

@@ -198,12 +198,13 @@ The #contactName# staff
 <cffunction name="validateMember" access="public" output="false" returntype="void" >
 	<cfargument name="data" type="struct" />
 	
+	
 	<cfquery datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 		update tmailinglistmembers
 		set isVerified = 1 
-		where email = '#data.email#' and
-		mlid in (<cfqueryparam list="true" cfsqltype="cf_sql_varchar" value="#data.mlid#">) and
-		siteid = '#data.siteid#'
+		where email = <cfqueryparam cfsqltype="cf_sql_varchar" value="#data.email#"> and
+		mlid in (<cfqueryparam list="true" cfsqltype="cf_sql_varchar" value="#data.mlid#">)  and
+		siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#data.siteid#">
 	</cfquery>
 	
 </cffunction>
