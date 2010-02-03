@@ -44,7 +44,7 @@ to your own modified versions of Mura CMS.
 <cfparam name="attributes.jsLib" default="prototype">
 <cfparam name="attributes.jsLibLoaded" default="false">
 <cfif not structKeyExists(session,"mura") or not structKeyExists(session.mura,"memberships")>
-	<cfif isUserInRole('S2')>
+	<cfif structKeyExists(session,"mura") and isUserInRole('S2')>
 		<cfset session.mura.memberships="S2,S2IsPrivate">
 	<cfelse>
 		<cflocation url="#application.configBean.getContext()#/admin/?fuseaction=cLogin.logout" addtoken="false">
