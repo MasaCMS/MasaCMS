@@ -40,8 +40,13 @@ for your modified version; it is your choice whether to do so, or to make such m
 the GNU General Public License version 2  without this exception.  You may, if you choose, apply this exception
 to your own modified versions of Mura CMS.
 --->
+<cfsilent>
 <cfparam name="attributes.jsLib" default="prototype">
 <cfparam name="attributes.jsLibLoaded" default="false">
+<cfif not structKeyExists(session,"mura") or not structKeyExists(session.mura,"memberships")>
+	<cflocation url="#application.configBean.getContext()#/admin/index.cfm?#urlEncodedFormat(application.appreloadkey)#&reload=#urlEncodedFormat(application.appreloadkey)#" addtoken="false">
+</cfif>
+</cfsilent>
 <cfoutput><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
