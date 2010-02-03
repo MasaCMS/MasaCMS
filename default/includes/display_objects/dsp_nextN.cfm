@@ -68,12 +68,13 @@ to your own modified versions of Mura CMS.
 <cfif len(request.currentNextNID)>
 	<cfset qrystr=qrystr & "&nextNID=#request.currentNextNID#"/>
 </cfif>
-<cfif isNumeric(request.day) and request.day>
-	<cfset qrystr=qrystr & "&month=#request.month#&year=#request.year#&day=#request.day#">
-</cfif>
 <cfif len(request.filterBy)>
 <cfif isNumeric(request.day) and request.day>
 	<cfset qrystr=qrystr & "&month=#request.month#&year=#request.year#&day=#request.day#&filterBy=#request.filterBy#">
+</cfif>
+<cfelse>
+<cfif isNumeric(request.day) and request.day>
+	<cfset qrystr=qrystr & "&month=#request.month#&year=#request.year#&day=#request.day#">
 </cfif>
 </cfif>
 </cfsilent>

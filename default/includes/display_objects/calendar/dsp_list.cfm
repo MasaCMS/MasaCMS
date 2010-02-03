@@ -43,11 +43,28 @@ to your own modified versions of Mura CMS.
 
 <cfsilent>
 <!---<cfset loadShadowBoxJS() />--->
-<cfset hasComments=application.contentGateway.getHasComments(request.siteid,request.contentBean.getcontentid()) />
-<cfset hasRatings=application.contentGateway.getHasRatings(request.siteid,request.contentBean.getcontentid()) />
-<cfset nextN=application.utility.getNextN(rsSection,request.contentBean.getNextN(),request.StartRow)>
+<cfset hasComments=application.contentGateway.getHasComments(event.getValue('siteid'),event.getContentBean().getContentID()) />
+<cfset hasRatings=application.contentGateway.getHasRatings(event.getValue('siteid'),event.getContentBean().getContentID()) />
 <cfset iterator=application.serviceFactory.getBean("contentIterator")>
 <cfset iterator.setQuery(rsSection,request.contentBean.getNextN())>
+
+<cfset event.setValue("currentNextNID",event.getContentBean().getContentID())>
+
+<cfif not len(event.getValue("nextNID")) or event.getValue("nextNID") eq event.getValue("currentNextNID")>
+	<cfif event.getContentBean().getNextN() gt 1>
+		<cfset currentNextNIndex=event.getValue("startRow")>
+		<cfset iterator.setStartRow(currentNextNIndex)>
+	<cfelse>
+		<cfset currentNextNIndex=event.getValue("pageNum")>
+		<cfset iterator.setPage(currentNextNIndex)>
+	</cfif>
+<cfelse>	
+	<cfset currentNextNIndex=1>
+	<cfset iterator.setPage(1)>
+</cfif>
+
+<cfset nextN=application.utility.getNextN(rsSection,event.getContentBean().getNextN(),currentNextNIndex)>
+
 </cfsilent>
 <!---
 <div id="svCalendar" class="svCalendar">
