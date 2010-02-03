@@ -55,9 +55,11 @@ to your own modified versions of Mura CMS.
 		<cfset setValue("contentRenderer",application.contentRenderer)>
 	</cfif>
 	
-	<cfset setValue("MuraScope",createObject("component","mura.MuraScope"))>
-	<cfset getValue('MuraScope').setEvent(this)>
-	<cfset getValue('MuraScope').setContentRenderer(getValue("contentRenderer"))>
+	<cfif structKeyExists(variables.event,"muraScope")>
+		<cfset setValue("MuraScope",createObject("component","mura.MuraScope"))>
+		<cfset getValue('MuraScope').setEvent(this)>
+		<cfset getValue('MuraScope').setContentRenderer(getValue("contentRenderer"))>
+	</cfif>
 	
 	<cfreturn this />
 </cffunction>

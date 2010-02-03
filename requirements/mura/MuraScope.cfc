@@ -5,13 +5,19 @@
 <cfset variables.hasEvent=false>
 
 <cffunction name="init" output="false">
-	<cfargument name="event">
-	<cfif isDefined(arguments.event)>
-		<cfset variables.instance.renderer=event.getValue("contentRenderer")>
-		<cfset variables.instance.content=event.getValue("contentBean")>
-		<cfset variables.hasRenderer=isObject(variables.instance.renderer)>
-		<cfset variables.hasContent=isObject(variables.instance.content)>
+	<cfargument name="data">
+	<cfif isObject(arguments.data)>
+		<cfset setEvent(arguments.data)>
+	<cfelse>
+		<cfset arguments.data.muraScope=this>
+		<cfset setEvent(createObject("component","mura.MuraScope").init(arguments.data))>
 	</cfif>
+		
+	<cfset variables.instance.renderer=event("contentRenderer")>
+	<cfset variables.instance.content=event("contentBean")>
+	<cfset variables.hasRenderer=isObject(variables.instance.renderer)>
+	<cfset variables.hasContent=isObject(variables.instance.content)>
+	
 	<cfreturn this>
 </cffunction>
 
