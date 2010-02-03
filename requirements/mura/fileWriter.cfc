@@ -2,7 +2,11 @@
 <cfset variables.useMode=true>
 <cffunction name="init" output="false" returntype="any">
 <cfargument name="useMode">
+<cfif isBoolean(arguments.useMode)>
 <cfset variables.useMode=arguments.useMode>
+<cfelse>
+<cfset variables.useMode=true>
+</cfif>
 <cfset variables.tempDir=getTempDirectory()>
 <cfreturn this>
 </cffunction>
