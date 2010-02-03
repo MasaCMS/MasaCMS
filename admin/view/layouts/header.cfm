@@ -40,7 +40,11 @@ for your modified version; it is your choice whether to do so, or to make such m
 the GNU General Public License version 2  without this exception.  You may, if you choose, apply this exception
 to your own modified versions of Mura CMS.
 --->
-
+<cfsilent>
+<cfif not isDefined("session.mura.memberships")>
+<cflocation url="#application.configBean.getContext()#/admin/?fuseaction=cLogin.logout" addtoken="false">
+</cfif>
+</cfsilent>
 <cfoutput>
   <cfif listFind(session.mura.memberships,'S2IsPrivate')>
     <div id="header">
