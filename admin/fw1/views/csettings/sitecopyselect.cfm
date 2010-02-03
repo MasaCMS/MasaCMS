@@ -1,7 +1,8 @@
 <cfsavecontent variable="rc.layout">
 <cfoutput>
 <h2>Site Copy Tool</h2>
-<p class="notice">IMPORTANT: All content in the site that is being copied to will be replaced.</p>
+<!--- ><p class="notice">IMPORTANT: All content in the site that is being copied to will be replaced.</p> --->
+<p class="notice">IMPORTANT: All content in the destination site ("To") will be deleted and replaced with the source site's ("From") content.</p>
 <form action="index.cfm" onsubmit="return validateForm(this);">
 <dl class="oneColumn">
 	<dt>From</dt>	
