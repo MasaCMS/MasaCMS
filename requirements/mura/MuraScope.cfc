@@ -6,11 +6,12 @@
 
 <cffunction name="init" output="false">
 	<cfargument name="event">
-	<cfset variables.instance.renderer=event.getValue("contentRenderer")>
-	<cfset variables.instance.content=event.getValue("contentBean")>
-	<cfset variables.hasRenderer=isObject(variables.instance.renderer)>
-	<cfset variables.hasContent=isObject(variables.instance.content)>
-	
+	<cfif isDefined(arguments.event)>
+		<cfset variables.instance.renderer=event.getValue("contentRenderer")>
+		<cfset variables.instance.content=event.getValue("contentBean")>
+		<cfset variables.hasRenderer=isObject(variables.instance.renderer)>
+		<cfset variables.hasContent=isObject(variables.instance.content)>
+	</cfif>
 	<cfreturn this>
 </cffunction>
 
@@ -130,15 +131,26 @@
 	
 </cffunction>
 
-<cffunction name="site" output="false" returntype="any">
+<cffunction name="siteConfig" output="false" returntype="any">
 	<cfargument name="property">
+	<cfargument name="propertyValue">
 	<cfset var site="">
 	<cfset var theValue="">
 	<cfset siteID=event('siteid')>
 	
 	<cfif len(siteid)>
-		<cfset site=getBean("settingsManager").getSite(siteid)>
+		<cfset site=application.settingsManager.getSite(siteid)>
+	
 		<cfif structKeyExists(arguments,"property")>
+			<cfif structKeyExists(arguments,"propertyValue")>
+				<cfif structKeyExists(site,"set#arguments.property#")>
+					<cfinvoke component="#site#" method="set#arguments.property#">
+						<cfinvokeargument name="#arguments.property#" value="#arguments.propertyValue#">
+					</cfinvoke>
+				<cfelse>
+					<cfthrow message="'#arguments.property#' is not a valid site property.">
+				</cfif>
+			</cfif>
 			<cfif structKeyExists(site,"get#arguments.property#")>
 				<cfinvoke component="#site#" method="get#arguments.property#" returnvariable="theValue">
 			</cfif>
@@ -152,6 +164,30 @@
 	
 </cffunction>
 
+<cffunction name="globalConfig" output="false" returntype="any">
+	<cfargument name="property">
+	<cfset var site="">
+	<cfset var theValue="">
+	
+	<cfif structKeyExists(arguments,"property")>
+		<cfif structKeyExists(arguments,"propertyValue")>
+				<cfif structKeyExists(application.configBean,"set#arguments.property#")>
+					<cfinvoke component="#application.configBean#" method="set#arguments.property#">
+						<cfinvokeargument name="#arguments.property#" value="#arguments.propertyValue#">
+					</cfinvoke>
+				<cfelse>
+					<cfthrow message="'#arguments.property#' is not a valid global property.">
+				</cfif>
+			</cfif>
+		<cfif structKeyExists(application.configBean,"get#arguments.property#")>
+			<cfinvoke component="#application.configBean#" method="get#arguments.property#" returnvariable="theValue">
+		</cfif>
+		<cfreturn theValue>
+	<cfelse>
+		<cfreturn application.configBean>
+	</cfif>
+	
+</cffunction>
 <cffunction name="component" output="false" returntype="any">
 	<cfargument name="property">
 	<cfargument name="propertyValue">
