@@ -96,6 +96,7 @@ to your own modified versions of Mura CMS.
 			<div class="buttons">
 				<input type="hidden" name="siteid" value="#request.siteid#" />
 				<input type="hidden" name="doaction" value="masterSubscribe" />
+				<input type="hidden" name="linkServID" value="#event.getContentBean().getContentID()#" />
 				<input type="submit" class="submit" value="#HTMLEditFormat(rbFactory.getKey('mailinglist.submit'))#" />
 			</div>
 			<cfinclude template="dsp_form_protect.cfm" />

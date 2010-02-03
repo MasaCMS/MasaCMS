@@ -96,6 +96,7 @@ to your own modified versions of Mura CMS.
 			</ol>
 		</fieldset>
 		<div class="buttons">
+			<input type="hidden" name="linkServID" value="#event.getContentBean().getContentID()#" />
 			<input type="hidden" name="mlid" value="#rslist.mlid#"><input type="hidden" name="siteid" value="#request.siteid#" />
 			<cfif rslist.isPurge eq 0>
 			<input type="hidden" name="doaction" value="subscribe" checked="checked" />

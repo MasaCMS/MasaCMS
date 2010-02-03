@@ -261,6 +261,7 @@ to your own modified versions of Mura CMS.
 				<p class="required">#rbFactory.getKey('comments.requiredfield')#</p>
 				<input type="hidden" name="returnURL" value="#getCurrentURL()#" />
 				<input type="hidden" name="commentid" value="#createuuid()#" />
+				<input type="hidden" name="linkServID" value="#event.getContentBean().getContentID()#" />
 				<input type="submit" class="submit" name="submit" value="#htmlEditFormat(rbFactory.getKey('comments.submit'))#" />
 			</cfoutput>
 		</div>
