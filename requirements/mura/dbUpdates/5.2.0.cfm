@@ -1,8 +1,3 @@
-<!--- make sure new key exists, this should only run for super admins that are auto updating--->
-<cfif isUserInRole('S2')>
-<cfparam name="session.mura.memberships" default="S2,S2IsPrivate" />
-</cfif>
-
 <!--- If using MSSQL 2005 or greater switch from ntext to nvarchar(max) --->
 <cfif getDbType() eq "MSSQL">
 	
