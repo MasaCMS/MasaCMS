@@ -101,7 +101,7 @@ to your own modified versions of Mura CMS.
 <cfset variables.instance.proxyServer="" />
 <cfset variables.instance.proxyPort="80" />
 <cfset variables.instance.sharableRemoteSessions=true />
-<cfset variables.instance.siteIDInURLS=false />
+<cfset variables.instance.siteIDInURLS=true />
 <cfset variables.instance.appreloadKey=application.appreloadKey />
 <cfset variables.instance.tempDir=getTempDirectory() />
 
