@@ -137,6 +137,16 @@ to your own modified versions of Mura CMS.
 		<cfreturn rs />
 	</cffunction>
 	
+	<cffunction name="getHasDrafts" access="public" returntype="any" output="false">
+		<cfargument name="contentid" type="string"/>
+		<cfargument name="siteid" type="string"/>
+		<cfset var rs ="" />
+		
+		<cfset rs=getDraftHist(arguments.contentid,arguments.siteid) />
+		
+		<cfreturn rs.recordcount />
+	</cffunction>
+	
 	<cffunction name="getItemCount" access="public" returntype="query" output="false">
 		<cfargument name="contentid" type="string"/>
 		<cfargument name="siteid" type="string"/>

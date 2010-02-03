@@ -182,7 +182,7 @@
 	  </cfif>
 	 
 	<cfif rc.closeCompactDisplay neq 'true'>
-			<cfif len(rc.returnURL) and (rc.action eq 'delete' or rc.action eq 'deletehistall' or rc.preview eq 0)>
+			<cfif len(rc.returnURL) and (rc.action eq 'delete' or rc.action eq 'deletehistall') and rc.preview eq 0>
 					<cflocation url="#rc.returnURL#" addtoken="false"/>
 			</cfif>
 			
@@ -193,9 +193,10 @@
 			<cfif rc.preview eq 0>
 				<cfset variables.fw.redirect(action="cArch.list",append="topid,siteid,startrow,moduleid",path="")>
 			<cfelse>
-				<cfset rc.parentid=rs.contentBean.getParentID()>
+				<cfset rc.parentid=rc.contentBean.getParentID()>
 				<cfset rc.type=rc.contentBean.getType()>
 				<cfset rc.contentid=rc.contentBean.getContentID()>
+				<cfset rc.contenthistid=rc.contentBean.getContentHistID()>
 				<cfset rc.preview=1>
 				<cfset variables.fw.redirect(action="cArch.edit",append="contenthistid,contentid,type,parentid,topid,siteid,moduleid,preview,startrow,return",path="")>
 			</cfif>

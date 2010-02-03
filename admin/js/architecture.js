@@ -43,7 +43,7 @@ var copyContentID = "";
 var copySiteID = "";
 var reloadURL = "";
 
-function ckContent(){
+function ckContent(draftremovalnotice){
 		
 	if (document.contentForm.display.value=='2') {
 	var tempStart=document.contentForm.displayStart.value;
@@ -80,7 +80,11 @@ function ckContent(){
 		alert("The form field 'Url' is required"); 
 		return false;
 	 }
-	 
+	
+	 if(document.contentForm.approved.value==1 && draftremovalnotice != "" && !confirm(draftremovalnotice)){
+		 return false;
+	 }	
+	
 	/*
 	if(typeof(FCKeditorAPI) != 'undefined' && (document.contentForm.type.value=='Page' ||
 	   document.contentForm.type.value=='Portal' ||

@@ -1367,4 +1367,9 @@ to your own modified versions of Mura CMS.
 		<cfthrow message="Parent content does not exist.">
 	</cfif>
 </cffunction>
+
+<cffunction name="hasDrafts" returntype="any" access="public" output="false">
+	<cfreturn variables.contentManager.getHasDrafts(getContentID(),getSiteID()) />
+</cffunction>
+
 </cfcomponent>

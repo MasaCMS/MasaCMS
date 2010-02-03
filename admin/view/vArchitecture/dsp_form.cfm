@@ -44,6 +44,9 @@ to your own modified versions of Mura CMS.
 <cfset pageLevelList="Page,Portal,Calendar,Gallery"/>
 <cfset extendedList="Page,Portal,Calendar,Gallery,Component"/>
 <cfset nodeLevelList="Page,Portal,Calendar,Gallery,Link,File"/>
+<script>
+var draftremovalnotice=<cfif request.contentBean.hasDrafts()><cfoutput>'#jsStringFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.draftremovalnotice"))#'</cfoutput><cfelse>""</cfif>;
+</script>
 <cfif attributes.compactDisplay neq "true"><script>
  var requestedURL="";
   
@@ -142,7 +145,7 @@ select * from rsPluginScripts3 order by pluginID
 <cfif attributes.compactDisplay eq "true" and not ListFindNoCase(nodeLevelList,attributes.type)>
 <p class="notice">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.globallyappliednotice")#</p>
 </cfif>
-<form action="index.cfm?fuseaction=cArch.update&contentid=#attributes.contentid#" method="post" enctype="multipart/form-data" name="contentForm" onsubmit="return ckContent();" id="contentForm">
+<form action="index.cfm?fuseaction=cArch.update&contentid=#attributes.contentid#" method="post" enctype="multipart/form-data" name="contentForm" onsubmit="return ckContent(draftremovalnotice);" id="contentForm">
 <cfif attributes.compactDisplay neq "true">
 	<cfif attributes.moduleid eq '00000000000000000000000000000000000'>#application.contentRenderer.dspZoom(request.crumbdata,fileExt)#</cfif>
 		<ul class="metadata">
@@ -365,12 +368,12 @@ select * from rsPluginScripts3 order by pluginID
 
 <br/><cfoutput>
 <div class="clearfix">
-	 <a class="submit" href="javascript:;" onclick="javascript:if(ckContent()){submitForm(document.contentForm,'add');}return false;"><span>#jsStringFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.savedraft"))#</span></a>
+	 <a class="submit" href="javascript:;" onclick="javascript:if(ckContent(draftremovalnotice)){submitForm(document.contentForm,'add');}return false;"><span>#jsStringFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.savedraft"))#</span></a>
 	<cfif attributes.type eq 'Page' or attributes.type eq 'Portal' or attributes.type eq 'Calendar'  or attributes.type eq 'Gallery'>
-	<a class="submit"  href="javascript:;" onclick="javascript:document.contentForm.preview.value=1;if(ckContent()){submitForm(document.contentForm,'add');}return false;"><span>#jsStringFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.preview"))#</span></a>
+	<a class="submit"  href="javascript:;" onclick="javascript:document.contentForm.preview.value=1;if(ckContent(draftremovalnotice)){submitForm(document.contentForm,'add');}return false;"><span>#jsStringFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.preview"))#</span></a>
 	</cfif>
 	<cfif request.perm eq 'editor'>
-	<a class="submit" href="javascript:;" onclick="document.contentForm.approved.value=1;if(ckContent()){submitForm(document.contentForm,'add');}return false;"><span>#jsStringFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.publish"))#</span></a>
+	<a class="submit" href="javascript:;" onclick="document.contentForm.approved.value=1;if(ckContent(draftremovalnotice)){submitForm(document.contentForm,'add');}return false;"><span>#jsStringFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.publish"))#</span></a>
 	</cfif> 
 </div>
 
