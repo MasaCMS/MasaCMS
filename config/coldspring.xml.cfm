@@ -658,6 +658,6 @@ to your own modified versions of Mura CMS.
 		<alias name="userBean" alias="user"/>
 		<alias name="categoryBean" alias="category"/>
 		<!---coldspring.custom.xml.cfm reference is for backwards compatability --->
-		<cfif fileExists("coldspring.custom.xml.cfm")><cfinclude template="coldspring.custom.xml.cfm"></cfif>
+		<cfif fileExists(expandPath("/muraWRM/config/coldspring.custom.xml.cfm"))><cfinclude template="/muraWRM/config/coldspring.custom.xml.cfm"></cfif>
 	</beans></cfoutput>
 	</cfsavecontent>

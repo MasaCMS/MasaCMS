@@ -165,8 +165,8 @@ to your own modified versions of Mura CMS.
 			<cfset application.autoUpdater=application.serviceFactory.getBean("autoUpdater") />
 			
 			<!---settings.custom.managers.cfm reference is for backwards compatability --->
-			<cfif fileExists("settings.custom.managers.cfm")>
-				<cfinclude template="settings.custom.managers.cfm">
+			<cfif fileExists(ExpandPath("/muraWRM/config/settings.custom.managers.cfm"))>
+				<cfinclude template="/muraWRM/config/settings.custom.managers.cfm">
 			</cfif>
 			
 			<cfset baseDir= left(getDirectoryFromPath(getCurrentTemplatePath()),len(getDirectoryFromPath(getCurrentTemplatePath()))-8) />
@@ -288,8 +288,8 @@ to your own modified versions of Mura CMS.
 <cfset application.userManager.setUserStructDefaults()>
 
 <!---settings.custom.vars.cfm reference is for backwards compatability --->
-<cfif fileExists("settings.custom.vars.cfm")>
-	<cfinclude template="settings.custom.vars.cfm">
+<cfif fileExists(expandPath("/muraWRM/config/settings.custom.vars.cfm"))>
+	<cfinclude template="/muraWRM/config/settings.custom.vars.cfm">
 </cfif>
 
 <cfif structKeyExists(request,"doMuraGlobalSessionStart")>
