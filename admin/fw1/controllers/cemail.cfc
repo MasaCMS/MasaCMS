@@ -56,7 +56,7 @@
 	<cfset variables.fw.redirect(action="cEmail.list",append="siteid",path="")>
 </cffunction>
 
-<cffunction name="showBounces" output="false">
+<cffunction name="showALLBounces" output="false">
 <cfargument name="rc">
 	<cfset rc.rsBounces=variables.emailManager.getBounces(rc.emailid) />
 </cffunction>
