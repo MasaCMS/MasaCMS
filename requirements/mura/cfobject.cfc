@@ -83,7 +83,7 @@ to your own modified versions of Mura CMS.
 <cffunction name="getConfigBean" returntype="any" access="public" output="false">
 	<cfreturn application.configBean />	
 </cffunction>
-
+ 
 <cffunction name="getServiceFactory" returntype="any" access="public" output="false">
 	<cfreturn application.serviceFactory />	
 </cffunction>

@@ -42,7 +42,7 @@ to your own modified versions of Mura CMS.
 --->
 <cfset variables.pluginEvent=createObject("component","mura.event").init(event.getAllValues())/>
 <cfset pageLevelList="Page,Portal,Calendar,Gallery"/>
-<cfset extendedList="Page,Portal,Calendar,Gallery,Component"/>
+<cfset extendedList="Page,Portal,Calendar,Gallery,Link,File,Component"/>
 <cfset nodeLevelList="Page,Portal,Calendar,Gallery,Link,File"/>
 <script>
 var draftremovalnotice=<cfif request.contentBean.hasDrafts()><cfoutput>'#jsStringFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.draftremovalnotice"))#'</cfoutput><cfelse>""</cfif>;
@@ -90,11 +90,11 @@ function setRequestedURL(){
 <cfset fileExt=''/>
 </cfif>
 <cfif listFindNoCase(extendedList,attributes.type)>
-<cfset rsSubTypes=application.classExtensionManager.getSubTypes(attributes.siteID) />
-	<cfif attributes.compactDisplay neq "true" and listFindNoCase("Page,Portal,Calendar,Gallery,Component",attributes.type)>
+	<cfset rsSubTypes=application.classExtensionManager.getSubTypes(attributes.siteID) />
+	<cfif attributes.compactDisplay neq "true" and listFindNoCase("#pageLevelList#",attributes.type)>
 		<cfquery name="rsSubTypes" dbtype="query">
 		select * from rsSubTypes
-		where type in ('Page','Portal','Calendar','Gallery','Component')
+		where type in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#pageLevelList#"/>)
 		</cfquery>
 	<cfelse>
 		<cfquery name="rsSubTypes" dbtype="query">
@@ -102,7 +102,7 @@ function setRequestedURL(){
 		where type = <cfqueryparam cfsqltype="cf_sql_varchar" value="#attributes.type#"/>
 		</cfquery>
 	</cfif>
-	<cfif listFindNoCase("Component",attributes.type)>
+	<cfif listFindNoCase("Component,File,Link",attributes.type)>
 		<cfset baseTypeList=attributes.type>
 	<cfelse>
 		<cfset baseTypeList=pageLevelList>
@@ -249,7 +249,7 @@ select * from rsPluginScripts3 order by pluginID
 </cfif>
 
 <cfif attributes.compactDisplay eq "true">
-	<cfif not listFindNoCase("Component", attributes.type)>
+	<cfif not listFindNoCase("Component,Form", attributes.type)>
 		<cfquery name="rsst" dbtype="query">select * from rsSubTypes where type=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#attributes.type#"> and subtype not in ('Default','default')</cfquery>
 		<cfif rsst.recordcount>
 				<cfset t=attributes.type/>
