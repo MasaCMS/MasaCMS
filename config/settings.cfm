@@ -181,7 +181,7 @@ to your own modified versions of Mura CMS.
 		
 			<cfloop query="rsRequirements">
 				<cfif rsRequirements.type eq "dir" and rsRequirements.name neq '.svn' and not structKeyExists(this.mappings,"/#rsRequirements.name#")>
-					<cfset application.serviceFactory.getBean("fileWriter").appendFIle(file="#mapPrefix##baseDir#/config/mappings.cfm", output='<cfset this.mappings["/#rsRequirements.name#"] = mapPrefix & BaseDir & "/requirements/#rsRequirements.name#">')>	
+					<cfset application.serviceFactory.getBean("fileWriter").appendFile(file="#mapPrefix##baseDir#/config/mappings.cfm", output='<cfset this.mappings["/#rsRequirements.name#"] = mapPrefix & BaseDir & "/requirements/#rsRequirements.name#">')>	
 				</cfif>
 			</cfloop>	
 			

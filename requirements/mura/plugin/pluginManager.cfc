@@ -1097,7 +1097,7 @@ select * from tplugins order by #arguments.orderby#
 			</cfif>
 		<cfelse>
 			<cfsavecontent variable="theDisplay1">
-			<cfoutput>#getExecutor().renderScript(event=event,scriptefile="/plugins/#rs.directory#/#rs.scriptfile#",pluginConfig=getConfig(rs.pluginID), $=muraScope, mura=muraScope)#</cfoutput>
+			<cfoutput>#getExecutor().renderScript(event=event,scriptfile="/plugins/#rs.directory#/#rs.scriptfile#",pluginConfig=getConfig(rs.pluginID), $=muraScope, mura=muraScope)#</cfoutput>
 			</cfsavecontent>
 			<cfset str=str & theDisplay1>
 		</cfif>

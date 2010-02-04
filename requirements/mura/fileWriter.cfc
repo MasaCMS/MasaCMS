@@ -2,7 +2,7 @@
 <cfset variables.useMode=true>
 <cffunction name="init" output="false" returntype="any">
 <cfargument name="useMode">
-<cfif isBoolean(arguments.useMode)>
+<cfif structkeyExists(arguments,"useMode") and isBoolean(arguments.useMode)>
 <cfset variables.useMode=arguments.useMode>
 <cfelse>
 <cfset variables.useMode=true>
