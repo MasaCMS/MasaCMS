@@ -39,15 +39,12 @@
 		
 	</cfif>
 	
-	<cfscript>
-	variables.framework = {
-		home = "home.redirect",
-		action="fuseaction",
-		base="/muraWRM/admin/fw1",
-		applicationKey="muraAdmin"
-	};	
-	</cfscript>
-	
+	<cfset variables.framework=structNew()>
+	<cfset variables.framework.home = "home.redirect">
+	<cfset variables.framework.action="fuseaction">
+	<cfset variables.framework.base="/muraWRM/admin/fw1">
+	<cfset variables.framework.applicationKey="muraAdmin">
+
 	<cffunction name="setupApplication" output="false">
 		<cfset var framework=structNew()>
 		
