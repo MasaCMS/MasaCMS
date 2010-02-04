@@ -216,7 +216,7 @@ select * from rsPluginScripts3 order by pluginID
 			<cfif listFindNoCase('Page,Portal,Calendar,Gallery,Link,File',attributes.type)>
 			<cfset rsRating=application.raterManager.getAvgRating(request.contentBean.getcontentID(),request.contentBean.getSiteID()) />
 			<li><strong>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.averagerating")#:</strong> <img id="ratestars" src="images/rater/star_#application.raterManager.getStarText(rsRating.theAvg)#.gif" alt="#rsRating.theAvg# stars" border="0"></li>
-			<li><strong>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.votes")#:</strong> #rsRating.theCount#</li>
+			<li><strong>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.votes")#:</strong> <cfif rsRating.recordcount>#rsRating.theCount#<cfelse>0</cfif></li>
 			</cfif>
 	</cfif>
 		</ul>
