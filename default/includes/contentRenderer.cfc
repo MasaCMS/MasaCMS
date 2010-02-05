@@ -68,26 +68,4 @@ to your own modified versions of Mura CMS.
 <!---<cfset this.subHead3="h5"/>--->
 <!---<cfset this.subHead4="h6"/>--->
 
-
-<!---  
-This is to be used when the webroot is including /tasks/content/contentServerRoot.cfm 
-for urls like http://yourdomain.com/index.cfm/path/tp/content/ 
-
-<cffunction name="getURLStem" access="public" output="false" returntype="string">
-	<cfargument name="siteID">
-	<cfargument name="filename">
-	
-	<cfif arguments.filename neq ''>
-		<cfif application.configBean.getStub() eq ''>
-			<cfreturn "/index.cfm" & "/" & arguments.filename & "/"/>
-		<cfelse>
-			<cfreturn application.configBean.getStub() & "/"  & arguments.filename & "/" />
-		</cfif>
-	<cfelse>
-		<cfreturn "/" />
-	</cfif>
-
-</cffunction>
---->
-
 </cfcomponent>

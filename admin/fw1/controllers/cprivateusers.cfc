@@ -92,7 +92,7 @@
 	
 	<cfset rc.userid=rc.routeid>
 	
-	<cfif routeBean.getIsPublic() neq 0>
+	<cfif rc.routeBean.getIsPublic() neq 0>
 		<cfset rc.siteID=rc.routeBean.getSiteid()>
 	</cfif>
 	
