@@ -109,9 +109,9 @@
 				</cfif>
 			</cfloop>
 		</cfif>
-	<cfelse>
-		<cfreturn getContentBean().getParent()>
 	</cfif>
+	
+	<cfreturn getContentBean().getParent()>
 	
 </cffunction>
 
