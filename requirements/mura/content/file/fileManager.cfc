@@ -182,7 +182,9 @@ to your own modified versions of Mura CMS.
 				<cfelse>
 					<cfhttp getasbinary="yes" result="theFile" method="get" url="http://s3.amazonaws.com/#variables.bucket#/#rsFile.siteid#/#arguments.fileID#.#rsFile.fileExt#"></cfhttp>
 				</cfif>
-				<cfheader name="Content-Length" value="#arrayLen(theFile.fileContent)#">
+				<cfif isArray(theFile.fileContent)>
+				    <cfheader name="Content-Length" value="#arrayLen(theFile.fileContent)#">
+				</cfif>
 				<cfheader name="Content-Disposition" value='#arguments.method#;filename="#rsfile.filename#"'> 
 				<cfif variables.configBean.getCompiler() neq 'Railo'>
 					<cfset createObject("component","mura.content.file.renderAdobe").init("#rsfile.contentType#/#rsfile.contentSubType#",theFile.fileContent)>
@@ -231,7 +233,9 @@ to your own modified versions of Mura CMS.
 				<cfset rsFile=readMeta(arguments.fileid) />
 				<cfhttp getasbinary="yes" result="theFile" method="get" url="http://s3.amazonaws.com/#variables.bucket#/#rsFile.siteid#/#arguments.fileID#_small.#rsFile.fileExt#"></cfhttp>
 				<cfheader name="Content-Disposition" value='#arguments.method#;filename="#rsfile.filename#"'> 
-				<cfheader name="Content-Length" value="#arrayLen(theFile.fileContent)#">
+				<cfif isArray(theFile.fileContent)>
+				    <cfheader name="Content-Length" value="#arrayLen(theFile.fileContent)#">
+				</cfif>
 				<cfif variables.configBean.getCompiler() neq 'Railo'>
 					<cfset createObject("component","mura.content.file.renderAdobe").init("#rsfile.contentType#/#rsfile.contentSubType#",theFile.fileContent)>
 				<cfelse>
@@ -279,7 +283,9 @@ to your own modified versions of Mura CMS.
 				<cfset rsFile=readMeta(arguments.fileid) />
 				<cfhttp getasbinary="yes" result="theFile" method="get" url="http://s3.amazonaws.com/#variables.bucket#/#rsFile.siteid#/#arguments.fileID#_medium.#rsFile.fileExt#"></cfhttp>
 				<cfheader name="Content-Disposition" value='#arguments.method#;filename="#rsfile.filename#"'> 
-				<cfheader name="Content-Length" value="#arrayLen(theFile.fileContent)#">
+				<cfif isArray(theFile.fileContent)>
+				    <cfheader name="Content-Length" value="#arrayLen(theFile.fileContent)#">
+				</cfif>
 				<cfif variables.configBean.getCompiler() neq 'Railo'>
 					<cfset createObject("component","mura.content.file.renderAdobe").init("#rsfile.contentType#/#rsfile.contentSubType#",theFile.fileContent)>
 				<cfelse>
