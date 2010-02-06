@@ -249,4 +249,15 @@
 	<cfset variables.contentManager.saveCopyInfo(rc.siteid,rc.contentID,rc.copyAll)  />
 </cffunction>
 
+<cffunction name="multiFileUpload" ouput="false">
+	<cfargument name="rc">
+
+	<cfset rc.crumbdata=variables.contentManager.getCrumbList(rc.parentid,rc.siteid)>
+  	<cfset rc.rsCount=variables.contentManager.getItemCount(rc.contentid,rc.siteid)>
+  	<cfset rc.rsPageCount=variables.contentManager.getPageCount(rc.siteid)>
+  	<cfset rc.rsRestrictGroups=variables.contentUtility.getRestrictGroups(rc.siteid)>
+	
+	
+</cffunction>
+
 </cfcomponent>

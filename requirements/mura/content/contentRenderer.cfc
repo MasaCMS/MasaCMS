@@ -1713,7 +1713,15 @@ to your own modified versions of Mura CMS.
 <cfargument name="body">
 <cfset var str="">
 <cfset var rsPages=getPagesQuery(arguments.body)>
-<cfset nextN=application.utility.getNextN(rsPages,1,request.pageNum,5,false)>
+<cfset var currentNextNIndex=1>
+<cfset event.setValue("currentNextNID",event.getContentBean().getContentID())>
+
+<cfif not len(event.getValue("nextNID")) or event.getValue("nextNID") eq event.getValue("currentNextNID")>
+	<cfset currentNextNIndex=event.getValue("pageNum")>
+</cfif>
+
+<cfset nextN=application.utility.getNextN(rsPages,1,currentNextNIndex,5,false)>
+
 <cfsavecontent variable="str">
 <cfoutput query="rsPages"  startrow="#request.pageNum#" maxrows="#nextn.RecordsPerPage#">
 	#setDynamicContent(rsPages.page)#
@@ -1722,6 +1730,7 @@ to your own modified versions of Mura CMS.
 	<cfoutput>#dspObject_Include(thefile='dsp_nextN.cfm')#</cfoutput>
 </cfif>
 </cfsavecontent>
+
 <cfreturn str>
 </cffunction>
 
