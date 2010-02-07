@@ -217,7 +217,7 @@ to your own modified versions of Mura CMS.
 					
 						<cfcase value="mssql">
 							<!--- if we are working with a SQL db we go ahead and delimit with GO so we can loop over each sql even --->
-							<cfquery name="MSSQLversion" datasource="#FORM.production_dbusername#" username="#FORM.production_dbusername#" password="#FORM.production_dbpassword#">
+							<cfquery name="MSSQLversion" datasource="#FORM.production_datasource#" username="#FORM.production_dbusername#" password="#FORM.production_dbpassword#">
 							EXEC sp_MSgetversion
 							</cfquery>
 
