@@ -236,24 +236,29 @@ to your own modified versions of Mura CMS.
 	<cfset var urlStem="">
 	<cfset var last="">
 	<cfset var siteid=bindToDomain()>
-	
+	<cfset var rtrim=0>
 	<cfparam name="url.path" default="" />
 	<cfset urlStem=application.configBean.getContext() & application.configBean.getStub() & "/" & siteid />
-	
+
 	<cfif listFind("/go,/go/",url.path)>
 		<cfset application.contentRenderer.redirect("/")>
 	</cfif>
-	
-	<cfif left(url.path,len(urlStem)) neq urlStem>
+
+	<cfset rtrim=len(url.path)-len(application.configBean.getContext() & application.configBean.getStub()) - 1>
+	<cfif rtrim lte 0>
+		<cfset url.pathIsComplete=false />
+	<cfelseif left(url.path,len(urlStem)) neq urlStem>
 	<cfset url.path=right(url.path,len(url.path)-len(application.configBean.getContext() & application.configBean.getStub()) - 1)>
 	<cfset url.pathIsComplete=false />
 	<cfelse>
 	<cfset url.pathIsComplete=true />
 	</cfif>
 	
+	<cfif len(url.path)>
 	<cfset last=listLast(url.path,"/") />
 	<cfif last neq application.configBean.getIndexFile() and right(url.path,1) neq "/">
 		<cfset application.contentRenderer.redirect("#application.configBean.getStub()#/#url.path#/")>
+	</cfif>
 	</cfif>
 	
 	<cfif not url.pathIsComplete>
