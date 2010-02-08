@@ -46,7 +46,7 @@ to your own modified versions of Mura CMS.
 	<!--- How long application vars persist --->
 	<cfset this.applicationTimeout = createTimeSpan(3,0,0,0)>
 	<!--- Where should cflogin stuff persist --->
-	<cfset this.loginStorage = "session">
+	<cfset this.loginStorage = "cookie">
 	
 	<cfset request.userAgent = LCase( CGI.http_user_agent ) />
 	<!--- Should we even use sessions? --->
