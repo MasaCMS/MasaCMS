@@ -43,5 +43,5 @@ to your own modified versions of Mura CMS.
 <cfif application.configBean.getSiteIDInURLS()>
 <cfinclude template="tasks/content/contentServer.cfm">
 <cfelse>
-<cfinclude template="tasks/content/contentServerRoot.cfm">
+<cfinclude template="tasks/content/contentServerRootStub.cfm">
 </cfif>
