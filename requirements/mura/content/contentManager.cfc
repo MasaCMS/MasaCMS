@@ -1378,6 +1378,7 @@ to your own modified versions of Mura CMS.
 	<cfset var fileItem=structNew() />		
 	<cfset var f=1 />	
 	<cfset var fileBean="" />
+	<cfset var tempFile="">
 	
 	<cfset fileItem.siteID=arguments.data.siteID/>
 	<cfset fileItem.parentID=arguments.data.parentID/>
@@ -1390,10 +1391,10 @@ to your own modified versions of Mura CMS.
 	
 	<cfloop condition="structKeyExists(arguments.data,'newFile#f#')">
 		<cfif len(form["NewFile#f#"])>
-		<cffile action="upload" filefield="NewFile#f#" nameconflict="makeunique" destination="#variables.configBean.getTempDir()#">
-		<cfset theFileStruct=variables.fileManager.process(file,arguments.data.siteid) />		
-		<cfset fileItem.title=file.serverfile/>
-		<cfset fileItem.fileid=variables.fileManager.create(theFileStruct.fileObj,'',arguments.data.siteid,file.ClientFile,file.ContentType,file.ContentSubType,file.FileSize,"0000000000000000000000000000000000",file.ServerFileExt,theFileStruct.fileObjSmall,theFileStruct.fileObjMedium) />
+		<cffile action="upload" result="tempFile" filefield="NewFile#f#" nameconflict="makeunique" destination="#variables.configBean.getTempDir()#">
+		<cfset theFileStruct=variables.fileManager.process(tempFile,arguments.data.siteid) />		
+		<cfset fileItem.title=tempFile.serverfile/>
+		<cfset fileItem.fileid=variables.fileManager.create(theFileStruct.fileObj, '', arguments.data.siteid, tempFile.ClientFile, tempFile.ContentType, tempFile.ContentSubType, tempFile.FileSize, "0000000000000000000000000000000000", tempFile.ServerFileExt, theFileStruct.fileObjSmall, theFileStruct.fileObjMedium) />
 		<cfset fileBean=add(structCopy(fileItem)) />
 		<cfquery datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 			 update tfiles set contentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#fileBean.getContentID()#"> 
