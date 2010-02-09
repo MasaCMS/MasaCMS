@@ -84,7 +84,7 @@ to your own modified versions of Mura CMS.
 	<cfif feedBean.getType() eq 'local'>
       <cfsilent>
 		<!---<cfset loadShadowBoxJS() />--->
-		<cfset rsPreFeed=application.feedManager.getFeed(feedBean,request.tag) />
+		<cfset rsPreFeed=application.feedManager.getFeed(feedBean) />
 		<cfif getSite().getExtranet() eq 1 and request.r.restrict eq 1>
 			<cfset rs=queryPermFilter(rsPreFeed)/>
 		<cfelse>
