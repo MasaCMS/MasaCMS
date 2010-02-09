@@ -119,7 +119,7 @@ to your own modified versions of Mura CMS.
 </cfoutput>
 		<dl id="svPortal" class="svIndex">
 		<cfloop condition="iterator.hasNext()">
-		<cfsilent>
+		<cfsilent> 
 		<cfset class=iif(session.rsSearch.currentrow eq 1,de('first'),de(iif(session.rsSearch.currentrow eq session.rsSearch.recordcount,de('last'),de(''))))>
 		<cfset item=iterator.next()>
 		<cfset link=addlink(item.getValue('type'),item.getValue('filename'),item.getValue('menutitle'),item.getValue('target'),item.getValue('targetparams'),item.getValue('contentid'),item.getValue('siteid'),'?keywords=#request.keywords#&tag=#request.tag#&searchSectionID=#request.searchSectionID#',application.configBean.getContext(),application.configBean.getStub(),application.configBean.getIndexFile())>
