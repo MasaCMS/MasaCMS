@@ -309,43 +309,45 @@ to your own modified versions of Mura CMS.
 	<cfset var rslist=""/>
 	<cfset var newbody=""/>
 	<cfset var newSummary=""/>
-	
-	<cfif arguments.filename neq ''>
-	<cfset newfile="#variables.configBean.getContext()##variables.contentRenderer.getURLStem(arguments.siteID,arguments.filename)#">
-	<cfelse>
-	<cfset newfile="#variables.configBean.getContext()##variables.contentRenderer.getURLStem(arguments.siteID,"")#">
-	</cfif>
-	
-	
-	<cfquery name="rslist" datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-	select contenthistid, body from tcontent where type in ('Page','Calendar','Portal','Component','Form','Gallery')
-	 and body like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#variables.configBean.getContext()##variables.contentRenderer.getURLStem(arguments.siteID,arguments.oldfilename)#%"/>
-	 and siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
-	</cfquery>
+	<cfset var renderer=createObject("component","muraWRM.#arguments.siteID#.includes.contentRenderer")>
 
-	<cfif rslist.recordcount>
-			<cfloop query="rslist">
-			<cfset newbody=rereplace(rslist.body,"#variables.configBean.getContext()##variables.contentRenderer.getURLStem(arguments.siteID,arguments.oldfilename)#","#newfile#",'All')>
-			<cfquery datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-			update tcontent set body=<cfqueryparam cfsqltype="cf_sql_longvarchar" value="#newBody#"> where contenthistid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#rslist.contenthistID#"/>
-			</cfquery>
-			</cfloop>
-		</cfif>
-		
-	<cfquery name="rslist" datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-	select contenthistid, summary from tcontent where type in ('Page','Calendar','Portal','Component','Form','Gallery')
-	 and summary like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#variables.configBean.getContext()##variables.contentRenderer.getURLStem(arguments.siteID,arguments.oldfilename)#%"/>
-	 and siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
-	</cfquery>
+	<cfif arguments.filename neq ''>
+	<cfset newfile="#variables.configBean.getContext()##renderer.getURLStem(arguments.siteID,arguments.filename)#">
+	<cfelse>
+	<cfset newfile="#variables.configBean.getContext()##renderer.getURLStem(arguments.siteID,"")#">
+	</cfif>
+
+	<cfif arguments.oldfilename neq "/">
+		<cfquery name="rslist" datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+		select contenthistid, body from tcontent where type in ('Page','Calendar','Portal','Component','Form','Gallery')
+		 and body like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#variables.configBean.getContext()##variables.contentRenderer.getURLStem(arguments.siteID,arguments.oldfilename)#%"/>
+		 and siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
+		</cfquery>
 	
-	<cfif rslist.recordcount>
+		<cfif rslist.recordcount>
 			<cfloop query="rslist">
-			<cfset newSummary=rereplace(rslist.summary,"#variables.configBean.getContext()##variables.contentRenderer.getURLStem(arguments.siteID,arguments.oldfilename)#","#newfile#",'All')>
-			<cfquery datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-			update tcontent set summary= <cfqueryparam cfsqltype="cf_sql_longvarchar" value="#newSummary#"> where contenthistid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#rslist.contenthistid#">
-			</cfquery>
+				<cfset newbody=rereplace(rslist.body,"#variables.configBean.getContext()##variables.contentRenderer.getURLStem(arguments.siteID,arguments.oldfilename)#","#newfile#",'All')>
+				<cfquery datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+				update tcontent set body=<cfqueryparam cfsqltype="cf_sql_longvarchar" value="#newBody#"> where contenthistid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#rslist.contenthistID#"/>
+				</cfquery>
 			</cfloop>
 		</cfif>
+			
+		<cfquery name="rslist" datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+		 select contenthistid, summary from tcontent where type in ('Page','Calendar','Portal','Component','Form','Gallery')
+		 and summary like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#variables.configBean.getContext()##variables.contentRenderer.getURLStem(arguments.siteID,arguments.oldfilename)#%"/>
+		 and siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
+		</cfquery>
+		
+		<cfif rslist.recordcount>
+				<cfloop query="rslist">
+				<cfset newSummary=rereplace(rslist.summary,"#variables.configBean.getContext()##variables.contentRenderer.getURLStem(arguments.siteID,arguments.oldfilename)#","#newfile#",'All')>
+				<cfquery datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+				update tcontent set summary= <cfqueryparam cfsqltype="cf_sql_longvarchar" value="#newSummary#"> where contenthistid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#rslist.contenthistid#">
+				</cfquery>
+				</cfloop>
+		</cfif>
+	</cfif>
 
 </cffunction>
 
@@ -799,36 +801,37 @@ and active=1
 	<cfset var newSummary ="" />
 	<cfset var newBody ="" />
 	
-	<cfquery datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-	update tcontent set filename=replace(filename,<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.find#"/>,<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.replace#"/>) where siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
-	and filename like <cfqueryparam value="%#arguments.find#%" cfsqltype="cf_sql_varchar">
-	and active=1 and type in ('Page','Calendar','Portal','Gallery','Link','Component','Form')
-	</cfquery>
-	
-	<cfquery datasource="#variables.dsn#" name="rs"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-		select contenthistid, body from tcontent where body like <cfqueryparam value="%#arguments.find#%" cfsqltype="cf_sql_varchar"> and siteID = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
-		and type in ('Page','Calendar','Portal','Gallery','Link','Component','Form')
-	</cfquery>
-	
-	<cfloop query="rs">
-		<cfset newbody = replaceNoCase(BODY,"#arguments.find#","#arguments.replace#","ALL")>
-		<cfquery datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-		update tcontent set body = <cfqueryparam value="#newBody#" cfsqltype="cf_sql_longvarchar"> where contenthistid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#rs.contenthistID#"/>
+	<cfif arguments.find neq "/">
+		<cfquery datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+		update tcontent set filename=replace(filename,<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.find#"/>,<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.replace#"/>) where siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
+		and filename like <cfqueryparam value="%#arguments.find#%" cfsqltype="cf_sql_varchar">
+		and active=1 and type in ('Page','Calendar','Portal','Gallery','Link','Component','Form')
 		</cfquery>
-	</cfloop>
-
-	<cfquery datasource="#variables.dsn#" name="rs"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-		select contenthistid, summary from tcontent where summary like <cfqueryparam value="%#arguments.find#%" cfsqltype="cf_sql_varchar"> and siteID = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
-		and type in ('Page','Calendar','Portal','Gallery','Link','Component','Form')
-	</cfquery>
-	
-	<cfloop query="rs">
-		<cfset newSummary = replaceNoCase(summary,"#arguments.find#","#arguments.replace#","ALL")>
-		<cfquery datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-		update tcontent set summary = <cfqueryparam value="#newSummary#" cfsqltype="cf_sql_longvarchar"> where contenthistid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#rs.contenthistID#"/>
+		
+		<cfquery datasource="#variables.dsn#" name="rs"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+			select contenthistid, body from tcontent where body like <cfqueryparam value="%#arguments.find#%" cfsqltype="cf_sql_varchar"> and siteID = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
+			and type in ('Page','Calendar','Portal','Gallery','Link','Component','Form')
 		</cfquery>
-	</cfloop> 
-
+		
+		<cfloop query="rs">
+			<cfset newbody = replaceNoCase(BODY,"#arguments.find#","#arguments.replace#","ALL")>
+			<cfquery datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+			update tcontent set body = <cfqueryparam value="#newBody#" cfsqltype="cf_sql_longvarchar"> where contenthistid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#rs.contenthistID#"/>
+			</cfquery>
+		</cfloop>
+	
+		<cfquery datasource="#variables.dsn#" name="rs"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+			select contenthistid, summary from tcontent where summary like <cfqueryparam value="%#arguments.find#%" cfsqltype="cf_sql_varchar"> and siteID = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
+			and type in ('Page','Calendar','Portal','Gallery','Link','Component','Form')
+		</cfquery>
+		
+		<cfloop query="rs">
+			<cfset newSummary = replaceNoCase(summary,"#arguments.find#","#arguments.replace#","ALL")>
+			<cfquery datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+			update tcontent set summary = <cfqueryparam value="#newSummary#" cfsqltype="cf_sql_longvarchar"> where contenthistid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#rs.contenthistID#"/>
+			</cfquery>
+		</cfloop> 
+	</cfif>
 </cffunction>
 
 <cffunction name="removeUnicode" returntype="string" output="false">
