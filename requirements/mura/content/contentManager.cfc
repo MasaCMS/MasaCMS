@@ -909,17 +909,18 @@ to your own modified versions of Mura CMS.
 				<cfif len(currentBean.getFileID()) or currentBean.getType() eq 'Form'>
 					<cfset variables.fileManager.deleteAll(currentBean.getcontentID()) />
 				</cfif>
-					<cfset variables.contentUtility.deleteFile(currentBean) />
+				
+				<!---<cfset variables.contentUtility.deleteFile(currentBean) />--->
 					
-					<cfif currentBean.getType() neq 'File'>
-						<cfset variables.contentDAO.deleteObjects(currentBean.getcontentID(),currentBean.getSiteID()) />
-						<cfquery datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-							 update tcontent set orderno=OrderNo-1 where parentid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#currentBean.getParentID()#"> 
-							 and siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#currentBean.getSiteID()#">
-							 and type in ('Page','Portal','Link','File','Component','Calendar','Form') and active=1
-							 and orderno > <cfqueryparam cfsqltype="cf_sql_numeric" value="#currentBean.getOrderNo()#">
-							</cfquery>
-					</cfif>
+				<cfif currentBean.getType() neq 'File'>
+					<cfset variables.contentDAO.deleteObjects(currentBean.getcontentID(),currentBean.getSiteID()) />
+					<cfquery datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+						 update tcontent set orderno=OrderNo-1 where parentid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#currentBean.getParentID()#"> 
+						 and siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#currentBean.getSiteID()#">
+						 and type in ('Page','Portal','Link','File','Component','Calendar','Form') and active=1
+						 and orderno > <cfqueryparam cfsqltype="cf_sql_numeric" value="#currentBean.getOrderNo()#">
+					</cfquery>
+				</cfif>
 				
 				<cfset variables.utility.logEvent("ContentID:#currentBean.getcontentID()# MenuTitle:#currentBean.getMenuTitle()# Type:#currentBean.getType()# was completely deleted","mura-content","Information",true) />		
 				<cfset variables.contentDAO.delete(currentBean) />
