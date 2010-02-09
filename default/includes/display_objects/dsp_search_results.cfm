@@ -122,7 +122,7 @@ to your own modified versions of Mura CMS.
 		<cfsilent> 
 		<cfset class=iif(session.rsSearch.currentrow eq 1,de('first'),de(iif(session.rsSearch.currentrow eq session.rsSearch.recordcount,de('last'),de(''))))>
 		<cfset item=iterator.next()>
-		<cfset link=addlink(item.getValue('type'),item.getValue('filename'),item.getValue('menutitle'),item.getValue('target'),item.getValue('targetparams'),item.getValue('contentid'),item.getValue('siteid'),'?keywords=#request.keywords#&tag=#request.tag#&searchSectionID=#request.searchSectionID#',application.configBean.getContext(),application.configBean.getStub(),application.configBean.getIndexFile())>
+		<cfset link=addlink(item.getValue('type'),item.getValue('filename'),item.getValue('menutitle'),item.getValue('target'),item.getValue('targetparams'),item.getValue('contentid'),item.getValue('siteid'),'?keywords=#request.keywords#',application.configBean.getContext(),application.configBean.getStub(),application.configBean.getIndexFile())>
 		<cfset class=""/>
 				<cfif not iterator.hasPrevious()> 
 					<cfset class=listAppend(class,"first"," ")/> 
