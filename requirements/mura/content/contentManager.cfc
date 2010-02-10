@@ -79,7 +79,7 @@ to your own modified versions of Mura CMS.
 		<cfset var data=arguments.args />
 		
 		<cfparam name="data.topid" default="00000000000000000000000000000000001" />
-		<cfparam name="data.sortBy" default="orderno">
+		<cfparam name="data.sortBy" default="menutitle">
 		<cfparam name="data.sortDirection" default="asc">
 		<cfparam name="data.searchString" default="">
 		

@@ -55,9 +55,9 @@
 	  	<cfset rc.extendSetBean.delete() />
 	  </cfif>
   
-	  <if rc.action eq 'Add'>
+	  <cfif rc.action eq 'Add'>
 	  	<cfset rc.extendSetBean.save() />
-	  </if> 
+	  </cfif> 
 	
 	  <cfif rc.action neq 'delete'>
 		<cfset variables.fw.redirect(action="cExtend.editAttributes",append="subTypeId,extendSetID,siteid",path="")>
