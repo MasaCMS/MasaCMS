@@ -208,6 +208,11 @@ to your own modified versions of Mura CMS.
 				</map>
 			</constructor-arg>
 		</bean>
+		<bean id="fileWriter" class="mura.fileWriter" singleton="true">
+			<constructor-arg name="useMode">  
+       			<value>#XMLFormat(GetProfileString("#variables.iniPath#", mode, "useFileMode"))#</value>  
+ 			</constructor-arg>  
+		</bean>
 		<bean id="contentRenderer" class="mura.content.contentRenderer"  singleton="false" />
 		<bean id="contentManager" class="mura.content.contentManager" singleton="true">
 			<constructor-arg name="configBean"><ref bean="configBean" /></constructor-arg>
@@ -646,11 +651,6 @@ to your own modified versions of Mura CMS.
 		<bean id="autoUpdater" class="mura.autoUpdater.autoUpdater" singleton="true">
 			<constructor-arg name="configBean"><ref bean="configBean" /></constructor-arg>
 			<constructor-arg name="fileWriter"><ref bean="fileWriter" /></constructor-arg>
-		</bean>
-		<bean id="fileWriter" class="mura.fileWriter" singleton="true">
-			<constructor-arg name="useMode">  
-       			<value>#XMLFormat(GetProfileString("#variables.iniPath#", mode, "useFileMode"))#</value>  
- 			</constructor-arg>  
 		</bean>
 		<bean id="MuraScope" class="mura.MuraScope" singleton="false"/>
 		<alias name="contentBean" alias="content"/>
