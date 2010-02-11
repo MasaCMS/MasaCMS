@@ -40,18 +40,5 @@ for your modified version; it is your choice whether to do so, or to make such m
 the GNU General Public License version 2  without this exception.  You may, if you choose, apply this exception
 to your own modified versions of Mura CMS.
 --->
-<cfswitch expression="#getJsLib()#">
-<cfcase value="jquery">
-	<cfset addToHTMLHeadQueue("jquery.cfm")>
-	<cfset addToHTMLHeadQueue("shadowbox-jquery.cfm")>
-</cfcase>
-<cfdefaultcase>
-	<cfset addToHTMLHeadQueue("prototype.cfm")>
-	<cfset addToHTMLHeadQueue("scriptaculous.cfm")>
-	<cfset addToHTMLHeadQueue("shadowbox-prototype.cfm")>
-</cfdefaultcase>
-</cfswitch>
-
-<cfset addToHTMLHeadQueue("shadowbox.cfm")>
-
+<cfset loadShadowboxJS()>
 <cfif request.contentBean.getType() eq 'Page'><cfoutput><a rel="shadowbox;width=600;height=500" href="http://#application.settingsManager.getSite(request.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()#/#request.siteid#/utilities/sendtofriend.cfm?link=#URLEncodedFormat(getCurrentURL())#&siteid=#request.siteid#">Share</a></cfoutput></cfif>

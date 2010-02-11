@@ -132,6 +132,7 @@ to your own modified versions of Mura CMS.
 <cfif attributes.feedID eq ''>
 	<a class="submit" href="javascript:;" onclick="return submitForm(document.forms.form1,'add');"><span>#application.rbFactory.getKeyValue(session.rb,'collections.add')#</span></a>
 	<input type=hidden name="feedID" value="">
+	<input type="hidden" name="action" value="add">
 <cfelse>
 	<cfif attributes.compactDisplay neq "true">
 		<a class="submit" href="javascript:;" onclick="return submitForm(document.forms.form1,'delete','#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'collections.deleteremoteconfirm'))#');"><span>#application.rbFactory.getKeyValue(session.rb,'collections.delete')#</span></a> 
@@ -142,8 +143,9 @@ to your own modified versions of Mura CMS.
 		<input type="hidden" name="homeID" value="#attributes.homeID#" />
 	</cfif>
 	<input type=hidden name="feedID" value="#request.feedBean.getfeedID()#">
+	<input type="hidden" name="action" value="update">
 </cfif>
-<input type="hidden" name="action" value=""><input type="hidden" name="type" value="Remote">
+<input type="hidden" name="type" value="Remote">
 </form>
 
 <cfhtmlhead text='<link rel="stylesheet" href="css/tab-view.css" type="text/css" media="screen">'>
