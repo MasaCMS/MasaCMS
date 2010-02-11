@@ -125,7 +125,7 @@ to your own modified versions of Mura CMS.
 	 	<dd class="comments">#commentsLink#</dd>
 	 	</cfif>
 	 	<cfif len(item.getValue('tags'))>
-	 	<dd class="tags"><cfmodule template="../nav/dsp_tag_line.cfm" tags="#item.getValue('tags')#"></dd>
+	 	<dd class="tags"><cfmodule template="#getSite(event.getValue('siteid')).getIncludePath()#/includes/display_objects/nav/dsp_tag_line.cfm" tags="#item.getValue('tags')#"></dd>
 	 	</cfif>
 	 	<cfif hasRatings and (item.getValue('type') eq 'Page' or showItemMeta(item.getValue('type')) or (len(item.getValue('fileID')) and showItemMeta(item.getValue('fileEXT'))))>
 		<!--- rating#replace(rateBean.getRate(),".","")# --->
@@ -136,7 +136,7 @@ to your own modified versions of Mura CMS.
 	 	</cfloop>
 	
 	<cfif nextn.numberofpages gt 1>
-		<cfinclude template="../dsp_nextN.cfm">
+		<cfoutput>#dspObject_Include(thefile='dsp_nextN.cfm')#</cfoutput>
 	</cfif>	
 </div>
 </cfif>

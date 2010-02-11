@@ -163,7 +163,7 @@ to your own modified versions of Mura CMS.
 					<dd class="comments"><cfif isNumeric(item.getValue('comments'))>#item.getValue('comments')#<cfelse>0</cfif> <cfif item.getValue('comments') neq 1>#rbFactory.getKey('list.comments')#<cfelse>#rbFactory.getKey('list.comment')#</cfif></dd>
 				</cfif>
 				<cfif len(item.getValue('tags'))>
-					<dd class="tags"><cfmodule template="nav/dsp_tag_line.cfm" tags="#item.getValue('tags')#"></dd>
+					<dd class="tags"><cfmodule template="#getSite(event.getValue('siteid')).getIncludePath()#/includes/display_objects/nav/dsp_tag_line.cfm" tags="#item.getValue('tags')#"></dd>
 				</cfif>
 				<cfif doMeta and feedBean.getDisplayRatings()>
 					<dd class="rating #application.raterManager.getStarText(item.getValue('rating'))#">#rbFactory.getKey('list.rating')#: <span><cfif isNumeric(item.getValue('rating'))>#item.getValue('rating')# star<cfif item.getValue('rating') gt 1>s</cfif><cfelse>Zero stars</cfif></span></dd>
@@ -173,7 +173,7 @@ to your own modified versions of Mura CMS.
 			</cfloop>
 
 			<cfif nextN.numberofpages gt 1>
-			<cfinclude template="dsp_nextN.cfm">
+			<cfoutput>#dspObject_Include(thefile='dsp_nextN.cfm')#</cfoutput>
 			</cfif>
 			</div>
 		<cfelse>

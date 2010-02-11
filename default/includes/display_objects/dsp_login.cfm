@@ -84,14 +84,16 @@ to your own modified versions of Mura CMS.
 		</fieldset>
 	</form>
 	<p class="required">#rbFactory.getKey('user.requiredfields')#</p>
+	
+	
+	<cfif request.doaction eq 'sendlogin'>
+			<cfset msg2=application.userManager.sendLoginByEmail('#request.email#', '#request.siteid#','#urlencodedformat("#request.returnURL#")#')>
+	</cfif>
+	
 	<form name="form2" method="post" action="?nocache=1" id="sendLogin" onsubmit="return validate(this);">
 		<fieldset>
 			<legend>#rbFactory.getKey('user.forgetusernameorpassword')#</legend>
-			<cfif request.doaction eq 'sendlogin'>
-			<cfset msg2=application.userManager.sendLoginByEmail('#request.email#', '#request.siteid#','#urlencodedformat("#request.returnURL#")#')>
-			<cfelse>
 			<p>#rbFactory.getKey('user.forgotloginmessage')#</p>
-			</cfif>
 			<ol>
 				<li>
 					<label for="txtEmail">#rbFactory.getKey('user.email')#</label>
@@ -99,13 +101,14 @@ to your own modified versions of Mura CMS.
 				</li>
 			</ol>
 		</fieldset>
+		<cfif isdefined('msg2')>
+		<cfif FindNoCase('is not a valid',msg2)><div class="error">#rbFactory.getResourceBundle().messageFormat(rbFactory.getKey('user.forgotnotvalid'),request.email)#<cfelseif FindNoCase('no account',msg2)><div class="error">#rbFactory.getResourceBundle().messageFormat(rbFactory.getKey('user.forgotnotfound'),request.email)#<cfelse><div class="notice">#rbFactory.getKey('user.forgotsuccess')#</cfif></div>
+		</cfif>
 		<div class="buttons">
 			<input type="hidden" name="doaction" value="sendlogin" />
 			<input type="hidden" name="linkServID" value="#HTMLEditFormat(request.linkServID)#" />
 			<input type="hidden" name="display" value="login" />
 			<input type="hidden" name="returnURL" value="#HTMLEditFormat(request.returnURL)#" />
-			<cfif isdefined('msg2')>
-			<span class="required"><cfif find('is not a valid',msg2)>#rbFactory.getResourceBundle().messageFormat(rbFactory.getKey('user.forgetnotvalid'),request.email)#<cfelse>#rbFactory.getKey('user.forgotsuccess')#</cfif></span></cfif>
 			<input type="submit" value="#HTMLEditFormat(rbFactory.getKey('user.getpassword'))#" class="submit" />
 		</div>
 	</form>

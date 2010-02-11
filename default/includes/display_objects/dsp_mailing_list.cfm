@@ -107,7 +107,7 @@ to your own modified versions of Mura CMS.
 			<input type="hidden" name="isVerified" value="1"  />
 			<input type="submit" class="submit" value="#HTMLEditFormat(rbFactory.getKey('mailinglist.unsubscribe'))#" />
 			</cfif>
-			<cfinclude template="dsp_form_protect.cfm" />
+				#dspObject_Include(thefile='dsp_form_protect.cfm')#
 		</div>
 	</form>
 	</cfif>

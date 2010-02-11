@@ -99,7 +99,7 @@ to your own modified versions of Mura CMS.
 				<input type="hidden" name="linkServID" value="#event.getContentBean().getContentID()#" />
 				<input type="submit" class="submit" value="#HTMLEditFormat(rbFactory.getKey('mailinglist.submit'))#" />
 			</div>
-			<cfinclude template="dsp_form_protect.cfm" />
+				<cfoutput>#dspObject_Include(thefile='dsp_form_protect.cfm')#</cfoutput>
 		</form>
 	</cfif>
 </div>

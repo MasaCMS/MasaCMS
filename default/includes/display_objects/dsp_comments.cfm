@@ -276,7 +276,7 @@ to your own modified versions of Mura CMS.
 						<input type="checkbox" id="txtSubscribe" name="subscribe" value="1"<cfif isBoolean(request.subscribe) and request.subscribe> checked="checked"</cfif> />
 					</li></cfoutput>
 					<li>
-						<cfinclude template="dsp_form_protect.cfm" />
+						<cfoutput>#dspObject_Include(thefile='dsp_form_protect.cfm')#</cfoutput>
 					</li>
 				</ol>
 			</fieldset>
