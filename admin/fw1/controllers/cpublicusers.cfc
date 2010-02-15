@@ -42,6 +42,7 @@
 	<cfparam name="rc.s2" default="0" />
 	<cfparam name="rc.InActive" default="0" />
 	<cfparam name="rc.startrow" default="1" />
+	<cfparam name="rc.search" default="" />
 	<cfparam name="rc.newsearch" default="false" />
 	<cfparam name="rc.error" default="#structnew()#" />
 	
