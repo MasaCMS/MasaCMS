@@ -173,24 +173,8 @@ to your own modified versions of Mura CMS.
 					<cfset createObject("component","mura.content.file.renderRailo").init("#rsfile.contentType#/#rsfile.contentSubType#",theFile)>
 				</cfif>
 			</cfcase>
-			<cfcase value="S3">
-				<cfset rsFile=readMeta(arguments.fileid) />
-				<cfif len(variables.configBean.getProxyServer())>
-					<cfhttp getasbinary="yes" result="theFile" method="get" url="http://s3.amazonaws.com/#variables.bucket#/#rsFile.siteid#/#arguments.fileID#.#rsFile.fileExt#"
-					proxyUser="#variables.configBean.getProxyUser()#" proxyPassword="#variables.configBean.getProxyPassword()#"
-					proxyServer="#variables.configBean.getProxyServer()#" proxyPort="#variables.configBean.getProxyPort()#"></cfhttp>
-				<cfelse>
-					<cfhttp getasbinary="yes" result="theFile" method="get" url="http://s3.amazonaws.com/#variables.bucket#/#rsFile.siteid#/#arguments.fileID#.#rsFile.fileExt#"></cfhttp>
-				</cfif>
-				<cfif isArray(theFile.fileContent)>
-				    <cfheader name="Content-Length" value="#arrayLen(theFile.fileContent)#">
-				</cfif>
-				<cfheader name="Content-Disposition" value='#arguments.method#;filename="#rsfile.filename#"'> 
-				<cfif variables.configBean.getCompiler() neq 'Railo'>
-					<cfset createObject("component","mura.content.file.renderAdobe").init("#rsfile.contentType#/#rsfile.contentSubType#",theFile.fileContent)>
-				<cfelse>
-					<cfset createObject("component","mura.content.file.renderRailo").init("#rsfile.contentType#/#rsfile.contentSubType#",theFile.fileContent)>
-				</cfif>
+			<cfcase value="S3">		
+				<cfset renderS3(fileid=arguments.fileid,method=arguments.method,size="normal") />
 			</cfcase>
 		</cfswitch>		
 
@@ -230,17 +214,7 @@ to your own modified versions of Mura CMS.
 				</cfif>
 			</cfcase>
 			<cfcase value="S3">
-				<cfset rsFile=readMeta(arguments.fileid) />
-				<cfhttp getasbinary="yes" result="theFile" method="get" url="http://s3.amazonaws.com/#variables.bucket#/#rsFile.siteid#/#arguments.fileID#_small.#rsFile.fileExt#"></cfhttp>
-				<cfheader name="Content-Disposition" value='#arguments.method#;filename="#rsfile.filename#"'> 
-				<cfif isArray(theFile.fileContent)>
-				    <cfheader name="Content-Length" value="#arrayLen(theFile.fileContent)#">
-				</cfif>
-				<cfif variables.configBean.getCompiler() neq 'Railo'>
-					<cfset createObject("component","mura.content.file.renderAdobe").init("#rsfile.contentType#/#rsfile.contentSubType#",theFile.fileContent)>
-				<cfelse>
-					<cfset createObject("component","mura.content.file.renderRailo").init("#rsfile.contentType#/#rsfile.contentSubType#",theFile.fileContent)>
-				</cfif>
+				<cfset renderS3(fileid=arguments.fileid,method=arguments.method,size="_small") />
 			</cfcase>
 		</cfswitch>	
 		
@@ -280,17 +254,7 @@ to your own modified versions of Mura CMS.
 				</cfif>
 			</cfcase>
 			<cfcase value="S3">
-				<cfset rsFile=readMeta(arguments.fileid) />
-				<cfhttp getasbinary="yes" result="theFile" method="get" url="http://s3.amazonaws.com/#variables.bucket#/#rsFile.siteid#/#arguments.fileID#_medium.#rsFile.fileExt#"></cfhttp>
-				<cfheader name="Content-Disposition" value='#arguments.method#;filename="#rsfile.filename#"'> 
-				<cfif isArray(theFile.fileContent)>
-				    <cfheader name="Content-Length" value="#arrayLen(theFile.fileContent)#">
-				</cfif>
-				<cfif variables.configBean.getCompiler() neq 'Railo'>
-					<cfset createObject("component","mura.content.file.renderAdobe").init("#rsfile.contentType#/#rsfile.contentSubType#",theFile.fileContent)>
-				<cfelse>
-					<cfset createObject("component","mura.content.file.renderRailo").init("#rsfile.contentType#/#rsfile.contentSubType#",theFile.fileContent)>
-				</cfif>
+				<cfset renderS3(fileid=arguments.fileid,method=arguments.method,size="_medium") />
 			</cfcase>
 		</cfswitch>	
 		
@@ -310,7 +274,6 @@ to your own modified versions of Mura CMS.
 </cfswitch>
 </cffunction>
 
-	
 <cffunction name="Process" returnType="struct">
 <cfargument name="file">
 <cfargument name="siteID">
@@ -318,5 +281,61 @@ to your own modified versions of Mura CMS.
 	<cfreturn variables.imageProcessor.process(arguments.file,arguments.siteID) />
 		
 </cffunction>		
+
+<cffunction name="renderS3" output="true" access="public" returntype="any">
+	<cfargument name="fileid" type="string" required="true" />
+	<cfargument name="method" type="string" required="false" default="inline" />
+	<cfargument name="size" type="string" required="false" default="" />
+	<cfargument name="bucket" type="string" required="false" default="#variables.bucket#" />
+	<cfargument name="debug" type="boolean" required="false" default="false" />
+
+	<cfscript>
+		var local 		= structNew();
+		local.rsFile	= readMeta(arguments.fileid);
+		local.theFile 	= structNew();
+		local.sizeList 	= "_small^_medium";
+		local.methodList = "inline^attachment";
+
+		if ( not listFindNoCase(local.sizeList, arguments.size, "^") ) {
+			local.size = "";
+		} else {
+			local.size = arguments.size;
+		};
+		
+		if ( not listFindNoCase(local.methodList, arguments.method, "^") ) {
+			local.method = "inline";
+		} else {
+			local.method = arguments.method;
+		};
+	</cfscript>
+	<cftry>
+		<cfif len(variables.configBean.getProxyServer())>
+			<cfhttp getasbinary="yes" result="local.theFile" method="get" url="http://s3.amazonaws.com/#arguments.bucket#/#local.rsFile.siteid#/#arguments.fileid##local.size#.#local.rsFile.fileExt#"
+			proxyUser="#variables.configBean.getProxyUser()#" proxyPassword="#variables.configBean.getProxyPassword()#"
+			proxyServer="#variables.configBean.getProxyServer()#" proxyPort="#variables.configBean.getProxyPort()#"></cfhttp>
+		<cfelse>
+			<cfhttp getasbinary="yes" result="local.theFile" method="get" url="http://s3.amazonaws.com/#arguments.bucket#/#local.rsFile.siteid#/#arguments.fileid##local.size#.#local.rsFile.fileExt#"></cfhttp>
+		</cfif>
+		<cfcatch>
+		</cfcatch>
+	</cftry>
+	<cfif arguments.debug>
+		<cfdump var="#local#" label="fileManager.renderS3().local" />
+		<cfabort />
+	</cfif>
+	<cfif structKeyExists(local.theFile, "filename")>
+		<cfheader name="Content-Disposition" value="#local.method#;filename=""#local.rsFile.filename#""" />
+	</cfif>
+	<cfif structKeyExists(local.theFile, "fileContent") and isArray(local.theFile.fileContent)>
+		<cfheader name="Content-Length" value="#arrayLen(local.theFile.fileContent)#" />
+		<cfif structKeyExists(local.rsFile, "contentType") and structKeyExists(local.rsFile, "contentSubType")>
+			<cfif variables.configBean.getCompiler() neq "Railo">
+				<cfset createObject("component","mura.content.file.renderAdobe").init("#local.rsFile.contentType#/#local.rsFile.contentSubType#",local.theFile.fileContent) />
+			<cfelse>
+				<cfset createObject("component","mura.content.file.renderRailo").init("#local.rsFile.contentType#/#local.rsFile.contentSubType#",local.theFile.fileContent) />
+			</cfif>
+		</cfif>
+	</cfif>	
+</cffunction>
 
 </cfcomponent>
