@@ -65,7 +65,7 @@ to your own modified versions of Mura CMS.
 <cffunction name="setCGIPath" output="false" returntype="any" access="remote">
 	<cfset var cgi_path="">
 	<cfset var parsed_path_info = cgi.path_info>
-	<cfif getContextRoot() NEQ "/">
+	<cfif len(getContextRoot()) and getContextRoot() NEQ "/">
 		<cfset parsed_path_info = replace(parsed_path_info,getContextRoot(),"")/>
 	</cfif>
 	<cfif parsed_path_info eq cgi.script_name>
