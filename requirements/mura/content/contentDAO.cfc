@@ -66,12 +66,16 @@ to your own modified versions of Mura CMS.
 		<cfargument name="use404" type="boolean" required="yes" default="false"/>
 		<cfset var rsContent = 0 />
 		<cfset var contentBean=getbean() />
-			
-		<cfquery datasource="#variables.dsn#" name="rsContent"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-			select tcontent.*, tfiles.fileSize, tfiles.contentType, tfiles.contentSubType, tfiles.fileExt from tcontent 
-			left join tfiles on (tcontent.fileid=tfiles.fileid)
-			where tcontent.contenthistid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentHistID#" /> and tcontent.siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#" />
-		</cfquery>
+		
+		<cfif len(arguments.contentHistID)>	
+			<cfquery datasource="#variables.dsn#" name="rsContent"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+				select tcontent.*, tfiles.fileSize, tfiles.contentType, tfiles.contentSubType, tfiles.fileExt from tcontent 
+				left join tfiles on (tcontent.fileid=tfiles.fileid)
+				where tcontent.contenthistid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentHistID#" /> and tcontent.siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#" />
+			</cfquery>
+		<cfelse>
+			<cfset rsContent.recordCount=0>
+		</cfif>
 		
 		<cfif rsContent.recordCount>
 			<cfset contentBean.set(rsContent) />
@@ -107,13 +111,17 @@ to your own modified versions of Mura CMS.
 		<cfargument name="use404" type="boolean" required="yes" default="false"/>
 		<cfset var rsContent = 0 />
 		<cfset var contentBean=getbean()  />
-			
-		<cfquery datasource="#variables.dsn#" name="rsContent"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-			select tcontent.*, tfiles.fileSize, tfiles.contentType, tfiles.contentSubType, tfiles.fileExt from tcontent 
-			left join tfiles on (tcontent.fileid=tfiles.fileid)
-			where tcontent.contentid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentID#" /> and tcontent.active=1 and tcontent.siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#" />
-			and type in ('Page','Portal','File','Calendar','Link','Gallery','Component','Form')
-		</cfquery>
+		
+		<cfif len(arguments.contentID)>
+			<cfquery datasource="#variables.dsn#" name="rsContent"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+				select tcontent.*, tfiles.fileSize, tfiles.contentType, tfiles.contentSubType, tfiles.fileExt from tcontent 
+				left join tfiles on (tcontent.fileid=tfiles.fileid)
+				where tcontent.contentid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentID#" /> and tcontent.active=1 and tcontent.siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#" />
+				and type in ('Page','Portal','File','Calendar','Link','Gallery','Component','Form')
+			</cfquery>
+		<cfelse>
+			<cfset rsContent.recordCount=0>
+		</cfif>
 		
 		<cfif rsContent.recordCount>
 			<cfset contentBean.set(rsContent) />
@@ -149,13 +157,17 @@ to your own modified versions of Mura CMS.
 		<cfargument name="use404" type="boolean" required="yes" default="false"/>
 		<cfset var rsContent = 0 />
 		<cfset var contentBean=getbean()  />
-			
-		<cfquery datasource="#variables.dsn#" name="rsContent"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-			select tcontent.*, tfiles.fileSize, tfiles.contentType, tfiles.contentSubType, tfiles.fileExt from tcontent 
-			left join tfiles on (tcontent.fileid=tfiles.fileid)
-			where tcontent.remoteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.remoteID#" /> and tcontent.active=1 and tcontent.siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteid#" />
-			and type in ('Page','Portal','File','Calendar','Link','Gallery','Component','Form')
-		</cfquery>
+		
+		<cfif len(arguments.remoteID)>		
+			<cfquery datasource="#variables.dsn#" name="rsContent"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+				select tcontent.*, tfiles.fileSize, tfiles.contentType, tfiles.contentSubType, tfiles.fileExt from tcontent 
+				left join tfiles on (tcontent.fileid=tfiles.fileid)
+				where tcontent.remoteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.remoteID#" /> and tcontent.active=1 and tcontent.siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteid#" />
+				and type in ('Page','Portal','File','Calendar','Link','Gallery','Component','Form')
+			</cfquery>
+		<cfelse>
+			<cfset rsContent.recordCount=0>
+		</cfif>
 		
 		<cfif rsContent.recordcount gt 1>
 			<cfthrow message="The remoteID '#arguments.remoteID#' that you are reading by is not unique.">
