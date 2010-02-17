@@ -267,7 +267,7 @@ function WaitForActive( editorInstance, newStatus )
 
 // Gecko browsers doesn't calculate well the IFRAME size so we must
 // recalculate it every time the window size changes.
-if ( FCKBrowserInfo.IsGecko && !FCKBrowserInfo.IsOpera )
+if ( FCKBrowserInfo.IsGecko || ( FCKBrowserInfo.IsSafari && !FCKBrowserInfo.IsSafari3 ) ) 
 {
 	window.onresize = function( e )
 	{

@@ -58,4 +58,8 @@ var FCKBrowserInfo =
 			browserInfo.IsGecko19 = ( geckoVersion > 1.8 ) ;
 		}
 	}
+	
+	if ( browserInfo.IsSafari ) 
+	      browserInfo.IsSafari3 = ( parseFloat( s.match( / applewebkit\/(\d+)/ )[1] ) < 526 ) ; 
+	 	
 })(FCKBrowserInfo) ;
