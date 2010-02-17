@@ -6,23 +6,23 @@ the Free Software Foundation, Version 2 of the License.
 
 Mura CMS is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. ï¿½See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-along with Mura CMS.  If not, see <http://www.gnu.org/licenses/>.
+along with Mura CMS. ï¿½If not, see <http://www.gnu.org/licenses/>.
 
 Linking Mura CMS statically or dynamically with other modules constitutes
 the preparation of a derivative work based on Mura CMS. Thus, the terms and 	
-conditions of the GNU General Public License version 2 (“GPL”) cover the entire combined work.
+conditions of the GNU General Public License version 2 (ï¿½GPLï¿½) cover the entire combined work.
 
 However, as a special exception, the copyright holders of Mura CMS grant you permission
 to combine Mura CMS with programs or libraries that are released under the GNU Lesser General Public License version 2.1.
 
-In addition, as a special exception,  the copyright holders of Mura CMS grant you permission
-to combine Mura CMS  with independent software modules that communicate with Mura CMS solely
+In addition, as a special exception, ï¿½the copyright holders of Mura CMS grant you permission
+to combine Mura CMS ï¿½with independent software modules that communicate with Mura CMS solely
 through modules packaged as Mura CMS plugins and deployed through the Mura CMS plugin installation API,
-provided that these modules (a) may only modify the  /trunk/www/plugins/ directory through the Mura CMS
+provided that these modules (a) may only modify the ï¿½/trunk/www/plugins/ directory through the Mura CMS
 plugin installation API, (b) must not alter any default objects in the Mura CMS database
 and (c) must not alter any files in the following directories except in cases where the code contains
 a separately distributed license.
@@ -37,7 +37,7 @@ the source code of that other code when and as the GNU GPL requires distribution
 
 For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception
 for your modified version; it is your choice whether to do so, or to make such modified version available under
-the GNU General Public License version 2  without this exception.  You may, if you choose, apply this exception
+the GNU General Public License version 2 ï¿½without this exception. ï¿½You may, if you choose, apply this exception
 to your own modified versions of Mura CMS.
 --->
 
@@ -56,161 +56,161 @@ to your own modified versions of Mura CMS.
 					<value>#XMLFormat(variables.mapdir)#</value>
 				</entry>
 				<entry key="version">
-					<value>#XMLFormat(GetProfileString("#variables.iniPath#", mode, "version"))#</value>
+					<value>#XMLFormat(variables.ini.get(mode, "version"))#</value>
 				</entry>
 				<entry key="title">
-					<value>#XMLFormat(GetProfileString("#variables.iniPath#", mode, "title"))#</value>
+					<value>#XMLFormat(variables.ini.get(mode, "title"))#</value>
 				</entry>
 				<entry key="webroot">
 					<value>#XMLFormat(variables.webroot)#</value>
 				</entry>
 				<entry key="webrootmap">
-					<value>#XMLFormat(GetProfileString("#variables.iniPath#", mode, "webrootmap"))#</value>
+					<value>#XMLFormat(variables.ini.get(mode, "webrootmap"))#</value>
 				</entry>
 				<entry key="datasource">
-					<value>#XMLFormat(GetProfileString("#variables.iniPath#", mode, "datasource"))#</value>
+					<value>#XMLFormat(variables.ini.get(mode, "datasource"))#</value>
 				</entry>
 				<entry key="context">
-					<value>#XMLFormat(GetProfileString("#variables.iniPath#", mode, "context"))#</value>
+					<value>#XMLFormat(variables.ini.get(mode, "context"))#</value>
 				</entry>
 				<entry key="stub">
-					<value>#XMLFormat(GetProfileString("#variables.iniPath#", mode, "stub"))#</value>
+					<value>#XMLFormat(variables.ini.get(mode, "stub"))#</value>
 				</entry>
 				<entry key="admindomain">
-					<value>#XMLFormat(GetProfileString("#variables.iniPath#", mode, "admindomain"))#</value>
+					<value>#XMLFormat(variables.ini.get(mode, "admindomain"))#</value>
 				</entry>
 				<entry key="indexfile">
-					<value>#XMLFormat(GetProfileString("#variables.iniPath#", mode, "indexfile"))#</value>
+					<value>#XMLFormat(variables.ini.get(mode, "indexfile"))#</value>
 				</entry>
 				<entry key="adminemail">
-					<value>#XMLFormat(GetProfileString("#variables.iniPath#", mode, "adminemail"))#</value>
+					<value>#XMLFormat(variables.ini.get(mode, "adminemail"))#</value>
 				</entry>
 				<entry key="mailServerIP">
-					<value>#XMLFormat(GetProfileString("#variables.iniPath#", mode, "mailServerIP"))#</value>
+					<value>#XMLFormat(variables.ini.get(mode, "mailServerIP"))#</value>
 				</entry>
 				<entry key="mailserverusername">
-					<value>#XMLFormat(GetProfileString("#variables.iniPath#", mode, "mailserverusername"))#</value>
+					<value>#XMLFormat(variables.ini.get(mode, "mailserverusername"))#</value>
 				</entry>
 				<entry key="mailserverpassword">
-					<value>#XMLFormat(GetProfileString("#variables.iniPath#", mode, "mailserverpassword"))#</value>
+					<value>#XMLFormat(variables.ini.get(mode, "mailserverpassword"))#</value>
 				</entry>
 				<entry key="mailserversmtpport">
-					<value>#XMLFormat(GetProfileString("#variables.iniPath#", mode, "mailserversmtpport"))#</value>
+					<value>#XMLFormat(variables.ini.get(mode, "mailserversmtpport"))#</value>
 				</entry>
 				<entry key="mailserverpoppport">
-					<value>#XMLFormat(GetProfileString("#variables.iniPath#", mode, "mailserverpopport"))#</value>
+					<value>#XMLFormat(variables.ini.get(mode, "mailserverpopport"))#</value>
 				</entry>
 				<entry key="mailservertls">
-					<value>#XMLFormat(GetProfileString("#variables.iniPath#", mode, "mailservertls"))#</value>
+					<value>#XMLFormat(variables.ini.get(mode, "mailservertls"))#</value>
 				</entry>
 				<entry key="mailserverssl">
-					<value>#XMLFormat(GetProfileString("#variables.iniPath#", mode, "mailserverssl"))#</value>
+					<value>#XMLFormat(variables.ini.get(mode, "mailserverssl"))#</value>
 				</entry>
 				<entry key="adminssl">
-					<value>#XMLFormat(GetProfileString("#variables.iniPath#", mode, "adminssl"))#</value>
+					<value>#XMLFormat(variables.ini.get(mode, "adminssl"))#</value>
 				</entry>
 				<entry key="logEvents">
-					<value>#XMLFormat(GetProfileString("#variables.iniPath#", mode, "logEvents"))#</value>
+					<value>#XMLFormat(variables.ini.get(mode, "logEvents"))#</value>
 				</entry>
 				<entry key="dbType">
-					<value>#XMLFormat(GetProfileString("#variables.iniPath#", mode, "dbType"))#</value>
+					<value>#XMLFormat(variables.ini.get(mode, "dbType"))#</value>
 				</entry>
 				<entry key="dbPassword">
-					<value>#XMLFormat(GetProfileString("#variables.iniPath#", mode, "dbPassword"))#</value>
+					<value>#XMLFormat(variables.ini.get(mode, "dbPassword"))#</value>
 				</entry>
 				<entry key="dbUsername">
-					<value>#XMLFormat(GetProfileString("#variables.iniPath#", mode, "dbUsername"))#</value>
+					<value>#XMLFormat(variables.ini.get(mode, "dbUsername"))#</value>
 				</entry>
 				<entry key="debuggingEnabled">
-					<value>#XMLFormat(GetProfileString("#variables.iniPath#", mode, "debuggingEnabled"))#</value>
+					<value>#XMLFormat(variables.ini.get(mode, "debuggingEnabled"))#</value>
 				</entry>
 				<entry key="port">
-					<value>#XMLFormat(GetProfileString("#variables.iniPath#", mode, "port"))#</value>
+					<value>#XMLFormat(variables.ini.get(mode, "port"))#</value>
 				</entry>
 				<entry key="fileDir">
-					<value>#XMLFormat(GetProfileString("#variables.iniPath#", mode, "filedir"))#</value>
+					<value>#XMLFormat(variables.ini.get(mode, "filedir"))#</value>
 				</entry>
 				<entry key="assetDir">
-					<value>#XMLFormat(GetProfileString("#variables.iniPath#", mode, "assetdir"))#</value>
+					<value>#XMLFormat(variables.ini.get(mode, "assetdir"))#</value>
 				</entry>
 				<entry key="pluginDir">
-					<value>#XMLFormat(GetProfileString("#variables.iniPath#", mode, "plugindir"))#</value>
+					<value>#XMLFormat(variables.ini.get(mode, "plugindir"))#</value>
 				</entry>
 				<entry key="assetPath">
-					<value>#XMLFormat(GetProfileString("#variables.iniPath#", mode, "assetpath"))#</value>
+					<value>#XMLFormat(variables.ini.get(mode, "assetpath"))#</value>
 				</entry>
 				<entry key="productionAssetPath">
-					<value>#XMLFormat(GetProfileString("#variables.iniPath#", mode, "productionassetpath"))#</value>
+					<value>#XMLFormat(variables.ini.get(mode, "productionassetpath"))#</value>
 				</entry>
 				<entry key="ProductionWebroot">
-					<value>#XMLFormat(GetProfileString("#variables.iniPath#", mode, "ProductionWebroot"))#</value>
+					<value>#XMLFormat(variables.ini.get(mode, "ProductionWebroot"))#</value>
 				</entry>
 				<entry key="ProductionDatasource">
-					<value>#XMLFormat(GetProfileString("#variables.iniPath#", mode, "ProductionDatasource"))#</value>
+					<value>#XMLFormat(variables.ini.get(mode, "ProductionDatasource"))#</value>
 				</entry>
 				<entry key="ProductionFiledir">
-					<value>#XMLFormat(GetProfileString("#variables.iniPath#", mode, "ProductionFiledir"))#</value>
+					<value>#XMLFormat(variables.ini.get(mode, "ProductionFiledir"))#</value>
 				</entry>
 				<entry key="ProductionAssetdir">
-					<value>#XMLFormat(GetProfileString("#variables.iniPath#", mode, "ProductionAssetdir"))#</value>
+					<value>#XMLFormat(variables.ini.get(mode, "ProductionAssetdir"))#</value>
 				</entry>
 				<entry key="fileStore">
-					<value>#XMLFormat(GetProfileString("#variables.iniPath#", mode, "fileStore"))#</value>
+					<value>#XMLFormat(variables.ini.get(mode, "fileStore"))#</value>
 				</entry>
 				<entry key="fileStoreAccessInfo">
-					<value>#XMLFormat(GetProfileString("#variables.iniPath#", mode, "fileStoreAccessInfo"))#</value>
+					<value>#XMLFormat(variables.ini.get(mode, "fileStoreAccessInfo"))#</value>
 				</entry>
 				<entry key="sessionHistory">
-					<value>#XMLFormat(GetProfileString("#variables.iniPath#", mode, "sessionHistory"))#</value>
+					<value>#XMLFormat(variables.ini.get(mode, "sessionHistory"))#</value>
 				</entry>
 				<entry key="locale">
-					<value>#XMLFormat(GetProfileString("#variables.iniPath#", mode, "locale"))#</value>
+					<value>#XMLFormat(variables.ini.get(mode, "locale"))#</value>
 				</entry>
 				<entry key="useDefaultSMTPServer">
-					<value>#XMLFormat(GetProfileString("#variables.iniPath#", mode, "useDefaultSMTPServer"))#</value>
+					<value>#XMLFormat(variables.ini.get(mode, "useDefaultSMTPServer"))#</value>
 				</entry>
 				<entry key="imageInterpolation">
-					<value>#XMLFormat(GetProfileString("#variables.iniPath#", mode, "imageInterpolation"))#</value>
+					<value>#XMLFormat(variables.ini.get(mode, "imageInterpolation"))#</value>
 				</entry>
 				<entry key="clusterIPList">
-					<value>#XMLFormat(GetProfileString("#variables.iniPath#", mode, "clusterIPList"))#</value>
+					<value>#XMLFormat(variables.ini.get(mode, "clusterIPList"))#</value>
 				</entry>
 				<entry key="enableMuraTag">
-					<value>#XMLFormat(GetProfileString("#variables.iniPath#", mode, "enableMuraTag"))#</value>
+					<value>#XMLFormat(variables.ini.get(mode, "enableMuraTag"))#</value>
 				</entry>
 				<entry key="appreloadKey">
 					<value>#XMLFormat(application.appreloadKey)#</value>
 				</entry>
 				<entry key="dashboard">
-					<value>#XMLFormat(GetProfileString("#variables.iniPath#", mode, "dashboard"))#</value>
+					<value>#XMLFormat(variables.ini.get(mode, "dashboard"))#</value>
 				</entry>
 				<entry key="sortPermission">
-					<value>#XMLFormat(GetProfileString("#variables.iniPath#", mode, "sortPermission"))#</value>
+					<value>#XMLFormat(variables.ini.get(mode, "sortPermission"))#</value>
 				</entry>
 				<entry key="proxyUser">
-					<value>#XMLFormat(GetProfileString("#variables.iniPath#", mode, "proxyUser"))#</value>
+					<value>#XMLFormat(variables.ini.get(mode, "proxyUser"))#</value>
 				</entry>
 				<entry key="proxyPassword">
-					<value>#XMLFormat(GetProfileString("#variables.iniPath#", mode, "proxyPassword"))#</value>
+					<value>#XMLFormat(variables.ini.get(mode, "proxyPassword"))#</value>
 				</entry>
 				<entry key="proxyServer">
-					<value>#XMLFormat(GetProfileString("#variables.iniPath#", mode, "proxyServer"))#</value>
+					<value>#XMLFormat(variables.ini.get(mode, "proxyServer"))#</value>
 				</entry>
 				<entry key="proxyPort">
-					<value>#XMLFormat(GetProfileString("#variables.iniPath#", mode, "proxyPort"))#</value>
+					<value>#XMLFormat(variables.ini.get(mode, "proxyPort"))#</value>
 				</entry>
 				<entry key="sharableRemoteSessions">
-					<value>#XMLFormat(GetProfileString("#variables.iniPath#", mode, "sharableRemoteSessions"))#</value>
+					<value>#XMLFormat(variables.ini.get(mode, "sharableRemoteSessions"))#</value>
 				</entry>
 				<entry key="siteIDInURLS">
-					<value>#XMLFormat(GetProfileString("#variables.iniPath#", mode, "siteIDInURLS"))#</value>
+					<value>#XMLFormat(variables.ini.get(mode, "siteIDInURLS"))#</value>
 				</entry>
 				</map>
 			</constructor-arg>
 		</bean>
 		<bean id="fileWriter" class="mura.fileWriter" singleton="true">
 			<constructor-arg name="useMode">  
-       			<value>#XMLFormat(GetProfileString("#variables.iniPath#", mode, "useFileMode"))#</value>  
+       			<value>#XMLFormat(variables.ini.get(mode, "useFileMode"))#</value>
  			</constructor-arg>  
 		</bean>
 		<bean id="contentRenderer" class="mura.content.contentRenderer"  singleton="false" />

@@ -351,6 +351,9 @@ to your own modified versions of Mura CMS.
 
 <cffunction name="setContext" access="public" output="false">
 	<cfargument name="Context" type="String" />
+	<cfif getContextRoot() NEQ "/">
+		<cfset arguments.Context = getContextRoot() & arguments.Context />
+	</cfif>
 	<cfset variables.instance.Context = arguments.Context />
 </cffunction>
 

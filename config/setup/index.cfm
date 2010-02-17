@@ -6,23 +6,23 @@ the Free Software Foundation, Version 2 of the License.
 
 Mura CMS is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. ï¿½See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-along with Mura CMS.  If not, see <http://www.gnu.org/licenses/>.
+along with Mura CMS. ï¿½If not, see <http://www.gnu.org/licenses/>.
 
 Linking Mura CMS statically or dynamically with other modules constitutes
 the preparation of a derivative work based on Mura CMS. Thus, the terms and 	
-conditions of the GNU General Public License version 2 (“GPL”) cover the entire combined work.
+conditions of the GNU General Public License version 2 (ï¿½GPLï¿½) cover the entire combined work.
 
 However, as a special exception, the copyright holders of Mura CMS grant you permission
 to combine Mura CMS with programs or libraries that are released under the GNU Lesser General Public License version 2.1.
 
-In addition, as a special exception,  the copyright holders of Mura CMS grant you permission
-to combine Mura CMS  with independent software modules that communicate with Mura CMS solely
+In addition, as a special exception, ï¿½the copyright holders of Mura CMS grant you permission
+to combine Mura CMS ï¿½with independent software modules that communicate with Mura CMS solely
 through modules packaged as Mura CMS plugins and deployed through the Mura CMS plugin installation API,
-provided that these modules (a) may only modify the  /trunk/www/plugins/ directory through the Mura CMS
+provided that these modules (a) may only modify the ï¿½/trunk/www/plugins/ directory through the Mura CMS
 plugin installation API, (b) must not alter any default objects in the Mura CMS database
 and (c) must not alter any files in the following directories except in cases where the code contains
 a separately distributed license.
@@ -37,7 +37,7 @@ the source code of that other code when and as the GNU GPL requires distribution
 
 For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception
 for your modified version; it is your choice whether to do so, or to make such modified version available under
-the GNU General Public License version 2  without this exception.  You may, if you choose, apply this exception
+the GNU General Public License version 2 ï¿½without this exception. ï¿½You may, if you choose, apply this exception
 to your own modified versions of Mura CMS.
 --->
 <!--- if renderSetup is not found or is false then do not render --->
@@ -49,6 +49,8 @@ to your own modified versions of Mura CMS.
 <cfset message = "" />
 <!--- get settings path --->
 <cfset settingsPath = "#getDirectoryFromPath( getCurrentTemplatePath() )#../settings.ini.cfm" />
+<!--- load settings into iniFile instance --->
+<cfset settingsIni = createObject( "component", "#getProfileString( settingsPath, "production", 'mapdir' )#.IniFile" ).init( "/muraWRM/config/settings.ini.cfm" ) />
 <!--- get current file --->
 <cfset currentFile = getFileFromPath( getCurrentTemplatePath() ) />
 <cfset webRoot = replaceNoCase( CGI.script_name, currentFile, "" ) />
@@ -58,22 +60,22 @@ to your own modified versions of Mura CMS.
 <cfset webRoot = mid( webRoot, 1, len( webRoot )-1 ) />
 
 <cfparam name="FORM.fieldnames" default="" />
-<cfparam name="FORM.production_dbtype" default="#getProfileString( settingsPath, "production", "dbtype" )#" />
+<cfparam name="FORM.production_dbtype" default="#settingsIni.get( "production", "dbtype" )#" />
 <cfparam name="FORM.production_port" default="#cgi.server_port#" />
-<cfparam name="FORM.production_datasource" default="#getProfileString( settingsPath, "production", "datasource" )#" />
-<cfparam name="FORM.production_dbusername" default="#getProfileString( settingsPath, "production", "dbusername" )#" />
-<cfparam name="FORM.production_dbpassword" default="#getProfileString( settingsPath, "production", "dbpassword" )#" />
-<cfparam name="FORM.production_adminemail" default="#getProfileString( settingsPath, "production", "adminemail" )#" />
-<cfparam name="FORM.production_mailserverip" default="#getProfileString( settingsPath, "production", "mailserverip" )#" />
-<cfparam name="FORM.production_mailserverpopport" default="#getProfileString( settingsPath, "production", "mailserverpopport" )#" />
-<cfparam name="FORM.production_mailserverusername" default="#getProfileString( settingsPath, "production", "mailserverusername" )#" />
-<cfparam name="FORM.production_mailserverpassword" default="#getProfileString( settingsPath, "production", "mailserverpassword" )#" />
-<cfparam name="FORM.production_mailserversmtpport" default="#getProfileString( settingsPath, "production", "mailserversmtpport" )#" />
-<cfparam name="FORM.production_mailservertls" default="#getProfileString( settingsPath, "production", "mailservertls" )#" />
-<cfparam name="FORM.production_mailserverssl" default="#getProfileString( settingsPath, "production", "mailserverssl" )#" />
+<cfparam name="FORM.production_datasource" default="#settingsIni.get( "production", "datasource" )#" />
+<cfparam name="FORM.production_dbusername" default="#settingsIni.get( "production", "dbusername" )#" />
+<cfparam name="FORM.production_dbpassword" default="#settingsIni.get( "production", "dbpassword" )#" />
+<cfparam name="FORM.production_adminemail" default="#settingsIni.get( "production", "adminemail" )#" />
+<cfparam name="FORM.production_mailserverip" default="#settingsIni.get( "production", "mailserverip" )#" />
+<cfparam name="FORM.production_mailserverpopport" default="#settingsIni.get( "production", "mailserverpopport" )#" />
+<cfparam name="FORM.production_mailserverusername" default="#settingsIni.get( "production", "mailserverusername" )#" />
+<cfparam name="FORM.production_mailserverpassword" default="#settingsIni.get( "production", "mailserverpassword" )#" />
+<cfparam name="FORM.production_mailserversmtpport" default="#settingsIni.get( "production", "mailserversmtpport" )#" />
+<cfparam name="FORM.production_mailservertls" default="#settingsIni.get( "production", "mailservertls" )#" />
+<cfparam name="FORM.production_mailserverssl" default="#settingsIni.get( "production", "mailserverssl" )#" />
 <!--- this is a checkbox so we need to review what has been passed in and work accordingly --->
-<cfif isDefined( "FORM.production_usedefaultsmtpserver" ) AND FORM.production_usedefaultsmtpserver AND getProfileString( settingsPath, "production", "usedefaultsmtpserver" )>
-	<cfparam name="FORM.production_usedefaultsmtpserver" default="#getProfileString( settingsPath, "production", "usedefaultsmtpserver" )#" />
+<cfif isDefined( "FORM.production_usedefaultsmtpserver" ) AND FORM.production_usedefaultsmtpserver AND settingsIni.get( "production", "usedefaultsmtpserver" )>
+	<cfparam name="FORM.production_usedefaultsmtpserver" default="#settingsIni.get( "production", "usedefaultsmtpserver" )#" />
 <cfelse>
 	<cfparam name="FORM.production_usedefaultsmtpserver" default="0" />
 </cfif>
@@ -86,13 +88,13 @@ to your own modified versions of Mura CMS.
 	</cfif>
 </cfloop>
 
-<cfset assetpath = getProfileString( settingsPath, "production", "assetpath" ) />
+<cfset assetpath = settingsIni.get( "production", "assetpath" ) />
 <cfif len( webRoot ) AND left( trim( assetpath ), len( webRoot ) ) IS NOT webRoot>
 	<cfset assetpath = "#webRoot##assetpath#" />
 </cfif>
 <cfparam name="FORM.production_assetpath" default="#assetpath#" />
 
-<cfset context = getProfileString( settingsPath, "production", "context" ) />
+<cfset context = settingsIni.get( "production", "context" ) />
 <cfif len( webRoot ) AND left( trim( context ), len( webRoot ) ) IS NOT webRoot>
 	<cfset context = "#webRoot##context#" />
 </cfif>
@@ -102,7 +104,7 @@ to your own modified versions of Mura CMS.
 <cfif isDefined( "FORM.#session.setupSubmitButtonComplete#" )>
 	<!--- state we are done --->
 	<!---
-	<cfset setProfileString( settingsPath, "settings", "installed", 1 ) />
+	<cfset settingsIni.set( "settings", "installed", 1 ) />
 	
 	<!--- clean ini since it removes cf tags --->
 	<cfset cleanIni( settingsPath ) />
@@ -347,7 +349,7 @@ to your own modified versions of Mura CMS.
 			<cfset entry = mid( ele, len( section )+2 , len( ele )-len( section ) ) />
 			
 			<!--- set the profile string --->
-			<cfset setProfileString( settingsPath, section, entry, FORM[ele] ) />
+			<cfset settingsIni.set( section, entry, FORM[ele] ) />
 			
 		</cfif>
 	</cfloop>
@@ -363,7 +365,7 @@ to your own modified versions of Mura CMS.
 		<cfset usedefaultsmtpserver = 1 />
 	</cfif>
 	<!--- update setting --->
-	<cfset setProfileString( settingsPath, "production", "usedefaultsmtpserver", usedefaultsmtpserver ) />
+	<cfset settingsIni.set( "production", "usedefaultsmtpserver", usedefaultsmtpserver ) />
 	
 	<!--- only update the database if there are no errors --->
 	<!--- this also assumes that the db exists --->

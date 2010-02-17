@@ -63,16 +63,20 @@ to your own modified versions of Mura CMS.
 </cffunction>
 
 <cffunction name="setCGIPath" output="false" returntype="any" access="remote">
-<cfset var cgi_path="">
-<cfif cgi.path_info eq cgi.script_name>
-	<cfset cgi_path=""/>
-<cfelse>
-	<cfset cgi_path=cgi.path_info />
-</cfif>
-<cfif left(cgi_path,1) eq "/" and cgi_path neq "/">
-	<cfset url.path=right(cgi_path,len(cgi_path)-1) />
-</cfif>
-<cfreturn cgi_path>
+	<cfset var cgi_path="">
+	<cfset var parsed_path_info = cgi.path_info>
+	<cfif getContextRoot() NEQ "/">
+		<cfset parsed_path_info = replace(parsed_path_info,getContextRoot(),"")/>
+	</cfif>
+	<cfif parsed_path_info eq cgi.script_name>
+		<cfset cgi_path=""/>
+	<cfelse>
+		<cfset cgi_path=parsed_path_info />
+	</cfif>
+	<cfif left(cgi_path,1) eq "/" and cgi_path neq "/">
+		<cfset url.path=right(cgi_path,len(cgi_path)-1) />
+	</cfif>
+	<cfreturn cgi_path>
 </cffunction>
 
 <cffunction name="bindToDomain" output="false" returntype="any" access="remote">

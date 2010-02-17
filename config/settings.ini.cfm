@@ -1,4 +1,3 @@
-<cfabort/>
 [settings]
 mode=production
 appname=Mura CMS
