@@ -128,7 +128,7 @@ to your own modified versions of Mura CMS.
 <cfif attributes.type eq 'Portal' or attributes.type eq 'Calendar' or attributes.type eq 'Gallery'>
 <dt>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.recordsperpage')#</dt>
 <dd><select name="nextN" class="dropdown">
-	<cfloop list="1,2,3,4,5,6,7,8,9,10,15,20,25,50,100" index="r">
+	<cfloop list="1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,25,50,100" index="r">
 	<option value="#r#" <cfif r eq request.contentBean.getNextN()>selected</cfif>>#r#</option>
 	</cfloop>
 	</select>

@@ -251,7 +251,7 @@ function previewFeed(){
 <dd><input name="altName" class="text" value="#HTMLEditFormat(request.feedBean.getAltName())#" maxlength="50"></dd>
 <dt>#application.rbFactory.getKeyValue(session.rb,'collections.itemsperpage')#</dt>
 <dd><select name="nextN" class="dropdown">
-	<cfloop list="1,2,3,4,5,6,7,8,9,10,15,20,25,50,100" index="r">
+	<cfloop list="1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,25,50,100" index="r">
 	<option value="#r#" <cfif r eq request.feedBean.getNextN()>selected</cfif>>#r#</option>
 	</cfloop>
 	<option value="100000" <cfif request.feedBean.getNextN() eq 100000>selected</cfif>>ALL</option>
@@ -259,7 +259,7 @@ function previewFeed(){
 </dd>
 <dt>#application.rbFactory.getKeyValue(session.rb,'collections.maxitems')#</dt>
 <dd><select name="maxItems" class="dropdown">
-<cfloop list="1,2,3,4,5,6,7,8,9,10,15,20,25,50,100" index="m">
+<cfloop list="1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,25,50,100" index="m">
 <option value="#m#" <cfif request.feedBean.getMaxItems() eq m>selected</cfif>>#m#</option>
 </cfloop>
 <option value="100000" <cfif request.feedBean.getMaxItems() eq 100000>selected</cfif>>ALL</option>

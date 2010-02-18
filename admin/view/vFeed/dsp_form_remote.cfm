@@ -69,7 +69,7 @@ to your own modified versions of Mura CMS.
 <dd><textarea name="Description" class="alt">#request.feedBean.getDescription()#</textarea></dd> --->
 <dt>#application.rbFactory.getKeyValue(session.rb,'collections.maxitems')#</dt>
 <dd><select name="maxItems" class="dropdown">
-<cfloop list="1,2,3,4,5,6,7,8,9,10,15,20,25,50,100" index="m">
+<cfloop list="1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,25,50,100" index="m">
 <option value="#m#" <cfif request.feedBean.getMaxItems() eq m>selected</cfif>>#m#</option>
 </cfloop>
 <option value="100000" <cfif request.feedBean.getMaxItems() eq 100000>selected</cfif>>ALL</option>
