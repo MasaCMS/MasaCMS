@@ -64,7 +64,7 @@ to your own modified versions of Mura CMS.
 		<cfargument name="contentHistID" type="string" required="yes" />
 		<cfargument name="siteID" type="string" required="yes" />
 		<cfargument name="use404" type="boolean" required="yes" default="false"/>
-		<cfset var rsContent = 0 />
+		<cfset var rsContent = queryNew('empty') />
 		<cfset var contentBean=getbean() />
 		
 		<cfif len(arguments.contentHistID)>	
@@ -73,8 +73,6 @@ to your own modified versions of Mura CMS.
 				left join tfiles on (tcontent.fileid=tfiles.fileid)
 				where tcontent.contenthistid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentHistID#" /> and tcontent.siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#" />
 			</cfquery>
-		<cfelse>
-			<cfset rsContent.recordCount=0>
 		</cfif>
 		
 		<cfif rsContent.recordCount>
@@ -109,7 +107,7 @@ to your own modified versions of Mura CMS.
 		<cfargument name="contentID" type="string" required="yes" />
 		<cfargument name="siteID" type="string" required="yes" />
 		<cfargument name="use404" type="boolean" required="yes" default="false"/>
-		<cfset var rsContent = 0 />
+		<cfset var rsContent = queryNew('empty') />
 		<cfset var contentBean=getbean()  />
 		
 		<cfif len(arguments.contentID)>
@@ -119,8 +117,6 @@ to your own modified versions of Mura CMS.
 				where tcontent.contentid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentID#" /> and tcontent.active=1 and tcontent.siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#" />
 				and type in ('Page','Portal','File','Calendar','Link','Gallery','Component','Form')
 			</cfquery>
-		<cfelse>
-			<cfset rsContent.recordCount=0>
 		</cfif>
 		
 		<cfif rsContent.recordCount>
@@ -155,7 +151,7 @@ to your own modified versions of Mura CMS.
 		<cfargument name="remoteID" type="string" required="yes" />
 		<cfargument name="siteID" type="string" required="yes" />
 		<cfargument name="use404" type="boolean" required="yes" default="false"/>
-		<cfset var rsContent = 0 />
+		<cfset var rsContent = queryNew('empty') />
 		<cfset var contentBean=getbean()  />
 		
 		<cfif len(arguments.remoteID)>		
@@ -165,8 +161,6 @@ to your own modified versions of Mura CMS.
 				where tcontent.remoteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.remoteID#" /> and tcontent.active=1 and tcontent.siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteid#" />
 				and type in ('Page','Portal','File','Calendar','Link','Gallery','Component','Form')
 			</cfquery>
-		<cfelse>
-			<cfset rsContent.recordCount=0>
 		</cfif>
 		
 		<cfif rsContent.recordcount gt 1>
@@ -188,7 +182,7 @@ to your own modified versions of Mura CMS.
 		<cfargument name="filename" type="string" required="yes" default="" />
 		<cfargument name="siteID" type="string" required="yes" default="" />
 		<cfargument name="use404" type="boolean" required="yes" default="false"/>
-		<cfset var rsContent = 0 />
+		<cfset var rsContent = queryNew('empty') />
 		<cfset var contentBean=getbean()  />
 			
 		<cfquery datasource="#variables.dsn#" name="rsContent"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
