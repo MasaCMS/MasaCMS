@@ -53,7 +53,7 @@
 
 		<cfinclude template="../config/settings.cfm">
 	
-		<cfif not structKeyExists(application,"muraAdmin")>
+		<cfif not structKeyExists(application,"muraAdmin") or not hasBeanFactory()>
 			<cfscript>
 				variables.framework.cache = structNew();
 				variables.framework.cache.lastReload = now();
@@ -63,8 +63,6 @@
 				variables.framework.password=application.appreloadkey;
 				setBeanFactory( application.serviceFactory );
 			</cfscript>
-		<cfelseif not hasBeanFactory()>
-			<cfset setBeanFactory( application.serviceFactory )>
 		</cfif>
 		
 		<cfscript>
