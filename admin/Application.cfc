@@ -44,25 +44,6 @@
 	<cfset variables.framework.action="fuseaction">
 	<cfset variables.framework.base="/muraWRM/admin/fw1">
 	<cfset variables.framework.applicationKey="muraAdmin">
-
-	<cffunction name="setupApplication" output="false">
-		<cfset var framework=structNew()>
-		
-		<cfif not structKeyExists(application,"serviceFactory")>
-			<cfinclude template="../config/settings.cfm">
-			<cfscript>
-				framework.cache = structNew();
-				framework.cache.lastReload = now();
-				framework.cache.controllers = structNew();
-				framework.cache.services = structNew();
-				application[variables.framework.applicationKey] = framework;
-			</cfscript>
-			<cfset structDelete(url,application.appreloadKey)>
-		</cfif>
-		
-		<cfset variables.framework.password=application.appreloadkey>
-		<cfset setBeanFactory( application.serviceFactory )>
-	</cffunction>
 	
 	<cffunction name="setupRequest" output="false">
 	
@@ -72,6 +53,18 @@
 
 		<cfinclude template="../config/settings.cfm">
 	
+		<cfif not structKeyExists(application,"muraAdmin")>
+			<cfscript>
+				variables.framework.cache = structNew();
+				variables.framework.cache.lastReload = now();
+				variables.framework.cache.controllers = structNew();
+				variables.framework.cache.services = structNew();
+				application[variables.framework.applicationKey] = variables.framework;
+				variables.framework.password=application.appreloadkey;
+				setBeanFactory( application.serviceFactory );
+			</cfscript>
+		</cfif>
+		
 		<cfscript>
 			StructAppend(request.context, url, "no");
 			StructAppend(request.context, form, "no");
@@ -263,88 +256,6 @@
 
 		<cfreturn response />
 
-	</cffunction>
-
-	<cffunction name="verifyMappings" output="false">
-		<!--- Try and include global mappings --->
-		<cfset canWriteMode=true>
-		<cfset canWriteMappings=true>
-		<cfset hasMappings=true>
-		<cftry>
-			<cfinclude template="mappings.cfm">
-			<cfcatch>
-				<cfset hasMappings=false>
-			</cfcatch>
-		</cftry>
-	
-		<cfif not hasMappings>	
-			<cftry>
-				<cffile action="write" file="#baseDir#/config/mappings.cfm" output="<!--- Add Custom Mappings Here --->" addnewline="true" mode="775">
-				<cfcatch>
-					<cfset canWriteMode="false">
-					<cftry>
-						<cffile action="write" file="#baseDir#/config/mappings.cfm" output="<!--- Add Custom Mappings Here --->" addnewline="true">
-						<cfcatch>
-							<cfset canWriteMappings=false>
-						</cfcatch>
-					</cftry>
-				</cfcatch>
-			</cftry>
-	
-			<cfdirectory action="list" directory="#baseDir#/requirements/" name="rsRequirements">
-			
-			<cfloop query="rsRequirements">
-				<cfif rsRequirements.type eq "dir" and rsRequirements.name neq '.svn'>
-					<cfif canWriteMappings>
-						<cffile action="append" file="#baseDir#/config/mappings.cfm" output='<cfset this.mappings["/#rsRequirements.name#"] = mapPrefix & BaseDir & "/requirements/#rsRequirements.name#">' mode="775">	
-					<cfelseif canWriteMappings>
-						<cffile action="append" file="#baseDir#/config/mappings.cfm" output='<cfset this.mappings["/#rsRequirements.name#"] = mapPrefix & BaseDir & "/requirements/#rsRequirements.name#">'>	
-					</cfif>
-					<cfset this.mappings["/#rsRequirements.name#"] = mapPrefix & rsRequirements.directory & "/" & rsRequirements.name>
-				</cfif>
-			</cfloop>	
-		</cfif>
-		
-		<cfset canWriteMode=true>
-		<cfset hasMappings=true>
-		<cfset canWriteMappings=true>
-		<cftry>
-			<cfinclude template="../plugins/mappings.cfm">
-			<cfcatch>
-				<cfset hasMappings=false>
-			</cfcatch>
-		</cftry>
-		
-		<cfif not hasMappings>
-			<cftry>
-				<cffile action="write" file="#baseDir#/plugins/mappings.cfm" output="<!--- Do Not Edit --->" addnewline="true" mode="775">
-				<cfcatch>
-					<cfset canWriteMode=false>
-					<cftry>
-						<cffile action="write" file="#baseDir#/plugins/mappings.cfm" output="<!--- Do Not Edit --->" addnewline="true">
-						<cfcatch>
-							<cfset canWriteMappings=false>
-						</cfcatch>
-					</cftry>
-				</cfcatch>
-			</cftry>
-			
-			<cfdirectory action="list" directory="#baseDir#/plugins/" name="rsRequirements">
-			
-			<cfloop query="rsRequirements">
-				<cfif rsRequirements.type eq "dir" and rsRequirements.name neq '.svn'>
-					<cfset m=listFirst(rsRequirements.name,"_")>
-					<cfif not isNumeric(m) and not structKeyExists(this.mappings,m)>
-						<cfif canWriteMode>
-							<cffile action="append" file="#baseDir#/plugins/mappings.cfm" output='<cfset this.mappings["/#m#"] = mapPrefix & BaseDir & "/plugins/#rsRequirements.name#">' mode="775">
-						<cfelseif canWriteMappings>
-							<cffile action="append" file="#baseDir#/plugins/mappings.cfm" output='<cfset this.mappings["/#m#"] = mapPrefix & BaseDir & "/plugins/#rsRequirements.name#">'>		
-						</cfif>
-						<cfset this.mappings["/#m#"] = mapPrefix & rsRequirements.directory & "/" & rsRequirements.name>
-					</cfif>
-				</cfif>
-			</cfloop>
-		</cfif>
 	</cffunction>
 	
 	<cffunction name="onError"  returnType="void"  output="true">
