@@ -63,9 +63,7 @@
 				variables.framework.password=application.appreloadkey;
 				setBeanFactory( application.serviceFactory );
 			</cfscript>
-		</cfif>
-		
-		<cfif not hasBeanFactory()>
+		<cfelseif not hasBeanFactory()>
 			<cfset setBeanFactory( application.serviceFactory )>
 		</cfif>
 		
