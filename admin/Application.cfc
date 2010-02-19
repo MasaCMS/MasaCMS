@@ -65,6 +65,10 @@
 			</cfscript>
 		</cfif>
 		
+		<cfif not hasBeanFactory()>
+			<cfset setBeanFactory( application.serviceFactory )>
+		</cfif>
+		
 		<cfscript>
 			StructAppend(request.context, url, "no");
 			StructAppend(request.context, form, "no");
