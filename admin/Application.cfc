@@ -45,12 +45,9 @@
 	<cfset variables.framework.base="/muraWRM/admin/fw1">
 	<cfset variables.framework.applicationKey="muraAdmin">
 	
-	<cffunction name="setupRequest" output="false">
 	
-		<cfif right(cgi.script_name, Len("index.cfm")) NEQ "index.cfm" and right(cgi.script_name, Len("error.cfm")) NEQ "error.cfm" AND right(cgi.script_name, 3) NEQ "cfc">
-			<cflocation url="index.cfm" addtoken="false">
-		</cfif>
-
+	
+	<cffunction name="setupRequestWrapper" output="false">
 		<cfinclude template="../config/settings.cfm">
 	
 		<cfif not structKeyExists(application,"muraAdmin") or not hasBeanFactory()>
@@ -63,6 +60,14 @@
 				variables.framework.password=application.appreloadkey;
 				setBeanFactory( application.serviceFactory );
 			</cfscript>
+		</cfif>
+		<cfset super.setupRequestWrapper()>
+	</cffunction>
+	
+	<cffunction name="setupRequest" output="false">
+	
+		<cfif right(cgi.script_name, Len("index.cfm")) NEQ "index.cfm" and right(cgi.script_name, Len("error.cfm")) NEQ "error.cfm" AND right(cgi.script_name, 3) NEQ "cfc">
+			<cflocation url="index.cfm" addtoken="false">
 		</cfif>
 		
 		<cfscript>
