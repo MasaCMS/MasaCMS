@@ -55,7 +55,7 @@
 		<cfelseif isStruct(arguments.data)>
 		
 			<cfloop collection="#arguments.data#" item="prop">
-				<cfif isdefined("variables.instance.#prop#")>
+				<cfif structKeyExists(this,"set#prop#")>
 					<cfset evaluate("set#prop#(arguments.data[prop])") />
 				</cfif>
 			</cfloop>
