@@ -724,18 +724,11 @@ username="#variables.configBean.getDBUsername()#" password="#variables.configBea
 	<cfset var objectVerdict="none">
 
 	<cfif listFirst(arguments.object,"_") eq "feed">
-			<cfset objectPerm = getPerm('00000000000000000000000000000000011',arguments.siteid)>
-			<cfif objectPerm neq 'editor'>
-				<cfset objectVerdict = getPerm(arguments.objectID, arguments.siteID)>
-				<cfif objectVerdict neq 'deny'>
-					<cfif objectVerdict eq 'none'>
-						<cfset objectVerdict = objectPerm>
-					</cfif>
-				<cfelse>
-					<cfset objectVerdict = 'none'>
-				</cfif>
-			<cfelse>
+			<cfset objectPerm = getModulePerm('00000000000000000000000000000000011',arguments.siteid)>
+			<cfif objectPerm>
 				<cfset objectVerdict = 'editor'>
+			<cfelse>
+				<cfset objectVerdict = 'none'>
 			</cfif>
 			
 		<cfelseif arguments.object eq "component">	
