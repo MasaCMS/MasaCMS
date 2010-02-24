@@ -510,11 +510,12 @@ to your own modified versions of Mura CMS.
 		<!--- END REQUIRED DATA CHECK--->
 		
 		<!--- BEGIN CONTENT TYPE: ALL CONTENT TYPES --->
-		<cfif (not isDefined('arguments.data.contentID') or arguments.data.contentID eq '') and isDefined('arguments.data.remoteID') and arguments.data.remoteID neq ''>
-			
+		<cfif isdefined("arguments.data.mode") and arguments.data.mode eq 'import' and  
+				and isDefined('arguments.data.remoteID') and arguments.data.remoteID neq ''>
+					
 			<cfset newBean=read(remoteID=arguments.data.remoteID,siteID=arguments.data.siteid) />
 			
-			<cfif  newBean.getIsNew() and isdefined("arguments.data.mode") and arguments.data.mode eq 'import' and (isDefined('arguments.data.remotePubDate') and arguments.data.remotePubDate eq newBean.getRemotePubDate()) >
+			<cfif  newBean.getIsNew() and (isDefined('arguments.data.remotePubDate') and arguments.data.remotePubDate eq newBean.getRemotePubDate()) >
 				<cfset refused = true />
 			</cfif>
 		<cfelse>
