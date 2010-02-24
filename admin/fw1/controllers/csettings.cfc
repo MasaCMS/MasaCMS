@@ -88,6 +88,8 @@
 			<cfset variables.settingsManager.create(rc)  />
 			<cfset variables.settingsManager.setSites()  />
 			<cfset variables.clusterManager.reload() />
+			<cfset session.userFilesPath = "#application.configBean.getAssetPath()#/#rc.siteid#/assets/">
+			<cfset session.siteid=rc.siteid />
 	</cfif>
 	<cfif rc.action eq 'Delete'>
 			<cfset variables.settingsManager.delete(rc.siteid)  />

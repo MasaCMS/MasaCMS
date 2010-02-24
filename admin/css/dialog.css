@@ -121,6 +121,7 @@ a#editFormCloseLink {
 
 #frontEndTools ul li a {
 	color: #666 !important;
+	background: transparent !important;
 	line-height: 30px !important;
 	padding: 2px 0 2px 18px !important;
 	text-decoration: none !important;font-weight: normal !important;

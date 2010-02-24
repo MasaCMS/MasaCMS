@@ -205,6 +205,9 @@ to your own modified versions of Mura CMS.
 				<entry key="siteIDInURLS">
 					<value>#XMLFormat(variables.ini.get(mode, "siteIDInURLS"))#</value>
 				</entry>
+				<entry key="indexFileInURLS">
+					<value>#XMLFormat(variables.ini.get(mode, "indexFileInURLS"))#</value>
+				</entry>
 				</map>
 			</constructor-arg>
 		</bean>

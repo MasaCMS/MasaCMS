@@ -70,7 +70,7 @@ function deleteFavorite(favoriteID, id)
 
 	var menuItems = $(id).parentNode.getElementsByTagName('LI');	// Get an array of all favorite items
 	menuLength = (menuItems.length - 1);
-	if (menuLength == 1){
+	if (menuLength == 0){
 		new Effect.Appear($("favoriteTip"));
 	}
 	new Effect.Fade($(id));

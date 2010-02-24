@@ -102,6 +102,7 @@ to your own modified versions of Mura CMS.
 <cfset variables.instance.proxyPort="80" />
 <cfset variables.instance.sharableRemoteSessions=true />
 <cfset variables.instance.siteIDInURLS=true />
+<cfset variables.instance.indexFileInURLS=true />
 <cfset variables.instance.appreloadKey=application.appreloadKey />
 <cfset variables.instance.tempDir=getTempDirectory() />
 
@@ -230,6 +231,10 @@ to your own modified versions of Mura CMS.
 	
 	<cfif structKeyExists(config,"siteIDInURLS")>
 		<cfset setSiteIDInURLS(config.siteIDInURLS)/>
+	</cfif>
+	
+	<cfif structKeyExists(config,"indexFileInURLS")>
+		<cfset setIndexFileInURLS(config.indexFileInURLS)/>
 	</cfif>
 	
 	<cfswitch expression="#server.coldfusion.productName#">
@@ -931,5 +936,20 @@ to your own modified versions of Mura CMS.
 
 <cffunction name="getSiteIDInURLS" returntype="boolean" access="public" output="false">
 	<cfreturn variables.instance.siteIDInURLS />
+</cffunction>
+
+<cffunction name="setIndexFileInURLS" access="public" output="false">
+	<cfargument name="indexFileInURLS" />
+	<cfif isBoolean(arguments.indexFileInURLS)>
+		<cfset variables.instance.indexFileInURLS = arguments.indexFileInURLS />
+	</cfif>
+</cffunction>
+
+<cffunction name="getIndexFileInURLS" returntype="boolean" access="public" output="false">
+	<cfreturn variables.instance.indexFileInURLS />
+</cffunction>
+
+<cffunction name="getAllValues" returntype="any" access="public" output="false">
+	<cfreturn variables.instance />
 </cffunction>
 </cfcomponent>

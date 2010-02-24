@@ -323,7 +323,7 @@ to your own modified versions of Mura CMS.
 		<cfdump var="#local#" label="fileManager.renderS3().local" />
 		<cfabort />
 	</cfif>
-	<cfif structKeyExists(local.theFile, "filename")>
+	<cfif structKeyExists(local.rsFile, "filename")>
 		<cfheader name="Content-Disposition" value="#local.method#;filename=""#local.rsFile.filename#""" />
 	</cfif>
 	<cfif structKeyExists(local.theFile, "fileContent") and isArray(local.theFile.fileContent)>

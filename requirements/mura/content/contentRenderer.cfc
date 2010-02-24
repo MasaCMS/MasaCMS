@@ -621,7 +621,11 @@ to your own modified versions of Mura CMS.
 	<cfif not application.configBean.getSiteIDInURLS()>
 		<cfif arguments.filename neq ''>
 			<cfif application.configBean.getStub() eq ''>
-				<cfreturn "/index.cfm" & "/" & arguments.filename & "/"/>
+				<cfif application.configBean.getIndexFileInURLS()>
+					<cfreturn "/index.cfm" & "/" & arguments.filename & "/"/>
+				<cfelse>
+					<cfreturn  "/" & arguments.filename & "/"/>
+				</cfif>
 			<cfelse>
 				<cfreturn application.configBean.getStub() & "/"  & arguments.filename & "/" />
 			</cfif>
