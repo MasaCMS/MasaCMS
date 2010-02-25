@@ -48,6 +48,12 @@
 	<cfelse>
 		<cfset setLastAttempt(dateAdd("n",-1,now()))>
 		<cfset setStrikes(0)>
+		<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+		update tuserstrikes set 
+		strikes=0,
+		lastAttempt=#createODBCDateTime(getLastAttempt())#
+		where username=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getUsername()#">
+	</cfquery>
 	</cfif>
 
 	<cfset variables.loaded=true>

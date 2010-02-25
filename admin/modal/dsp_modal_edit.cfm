@@ -161,7 +161,7 @@ to your own modified versions of Mura CMS.
 			
 			$$(".editableObject").each(
 				function(o){
-					o.addToggleName('editableObjectHide');
+					o.toggleClassName('editableObjectHide');
 				}
 			);
 		</cfif>
@@ -188,7 +188,7 @@ to your own modified versions of Mura CMS.
 		
 		$$(".editableObject").each(
 			function(o){
-				o.addToggleName('editableObjectHide');
+				o.toggleClassName('editableObjectHide');
 			}
 		);
 	</cfif>
