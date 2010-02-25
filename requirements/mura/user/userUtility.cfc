@@ -517,6 +517,11 @@ The #contactName# staff</cfoutput>
 <cffunction name="setUserStruct" output="false" access="public" returntype="void">
 <cfargument name="user">
 <cfargument name="memberships" required="true" default="">
+
+<cfparam name="session.rememberMe" type="numeric" default="0" />
+<cfparam name="session.loginAttempts" type="numeric" default="0" />
+<cfparam name="session.blockLoginUntil" type="string" default="" />
+
 <cfif structKeyExists(arguments,"user")>
 	<cfset session.mura.isLoggedIn=true>			
 	<cfset session.mura.userID=arguments.user.userID>
