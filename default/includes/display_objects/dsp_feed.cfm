@@ -196,7 +196,7 @@ to your own modified versions of Mura CMS.
 							<cfset itemDate=parseDateTime(feedData.itemArray[i].pubDate.xmlText)>
 							<dt class="releaseDate"><cfif isDate(itemDate)>#LSDateFormat(itemDate,getLongDateFormat())#<cfelse>#feedData.itemArray[i].pubDate.xmlText#</cfif></dt>
 						<cfelseif structKeyExists(feedData.itemArray[i],"dc:date")>
-							<cfset itemDate=parseDateTime(feedData.itemArray[i].pubDate.xmlText)>
+							<cfset itemDate=parseDateTime(feedData.itemArray[i]["dc:date"].xmlText)>
 							<dt class="releaseDate"><cfif isDate(itemDate)>#LSDateFormat(itemDate,getLongDateFormat())#<cfelse>#feedData.itemArray[i]["dc:date"].xmlText#</cfif></dt>
 						</cfif>
 						<dt><a href="#feedData.itemArray[i].link.xmlText#">#feedData.itemArray[i].title.xmlText#</a></dt>						
