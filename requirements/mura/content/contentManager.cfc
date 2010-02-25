@@ -510,7 +510,7 @@ to your own modified versions of Mura CMS.
 		<!--- END REQUIRED DATA CHECK--->
 		
 		<!--- BEGIN CONTENT TYPE: ALL CONTENT TYPES --->
-		<cfif isdefined("arguments.data.mode") and arguments.data.mode eq 'import' and  
+		<cfif isdefined("arguments.data.mode") and arguments.data.mode eq 'import'  
 				and isDefined('arguments.data.remoteID') and arguments.data.remoteID neq ''>
 					
 			<cfset newBean=read(remoteID=arguments.data.remoteID,siteID=arguments.data.siteid) />
