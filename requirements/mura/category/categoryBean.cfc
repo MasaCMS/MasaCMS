@@ -58,6 +58,8 @@ to your own modified versions of Mura CMS.
 <cfset variables.instance.sortDirection = "asc" />
 <cfset variables.instance.RestrictGroups = "" />
 <cfset variables.instance.Path = "" />
+<cfset variables.instance.remoteID = "" />
+<cfset variables.instance.remoteSourceURL = "" />
 <cfset variables.categoryManager = "" />
 <cfset variables.instance.isNew=1 />
 <cfset variables.instance.errors=structnew() />
@@ -70,7 +72,7 @@ to your own modified versions of Mura CMS.
 	<cfreturn this />
 </cffunction>
 
-<cffunction name="set" returnType="void" output="false" access="public">
+<cffunction name="set" returnType="any" output="false" access="public">
 		<cfargument name="category" type="any" required="true">
 
 		<cfset var prop="" />
@@ -92,6 +94,8 @@ to your own modified versions of Mura CMS.
 			<cfset setSortDirection(arguments.category.sortDirection) />
 			<cfset setRestrictGroups(arguments.category.RestrictGroups) />
 			<cfset setPath(arguments.category.Path) />
+			<cfset setRemoteID(arguments.category.remoteID) />
+			<cfset setremoteSourceURL(arguments.category.remoteSourceURL) />
 	
 			
 		<cfelseif isStruct(arguments.category)>
@@ -104,8 +108,8 @@ to your own modified versions of Mura CMS.
 			
 		</cfif>
 		
-		<cfset validate() />
-		
+		<cfset validate() />	
+		<cfreturn this />
 </cffunction>
  
 <cffunction name="setAllValues" returntype="any" access="public" output="false">
@@ -271,7 +275,7 @@ to your own modified versions of Mura CMS.
 	<cffunction name="save" returnType="any" output="false" access="public">
 	<cfset var kid="">
 	<cfset var i="">
-	<cfset setAllValues(variables.contentManager.save(this).getAllValues())>
+	<cfset setAllValues(variables.categoryManager.save(this).getAllValues())>
 		
 	<cfif arrayLen(variables.kids)>
 		<cfloop from="1" to="#arrayLen(variables.kids)#" index="i">
@@ -327,6 +331,25 @@ to your own modified versions of Mura CMS.
   <cffunction name="getIsNew" returnType="numeric" output="false" access="public">
     <cfreturn variables.instance.IsNew />
   </cffunction>
+
+	<cffunction name="setRemoteID" returnType="void" output="false" access="public">
+	    <cfargument name="RemoteID" type="string" required="true">
+	    <cfset variables.instance.RemoteID = trim(arguments.RemoteID) />
+	</cffunction>
+	
+	<cffunction name="getRemoteID" returnType="string" output="false" access="public">
+	    <cfreturn variables.instance.RemoteID />
+	</cffunction>
+	  
+	<cffunction name="setRemoteSourceURL" returnType="void" output="false" access="public">
+	    <cfargument name="remoteSourceURL" type="string" required="true">
+	    <cfset variables.instance.remoteSourceURL = trim(arguments.remoteSourceURL) />
+	</cffunction>
+	
+	<cffunction name="getRemoteSourceURL" returnType="string" output="false" access="public">
+	    <cfreturn variables.instance.remoteSourceURL />
+	 </cffunction>
+	 
 </cfcomponent>
 
 

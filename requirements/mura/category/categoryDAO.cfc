@@ -43,6 +43,8 @@ to your own modified versions of Mura CMS.
 
 <cfcomponent extends="mura.cfobject" output="false">
 
+<cfset variables.fieldlist="categoryID,siteID,dateCreated,lastUpdate,lastUpdateBy,name,isInterestGroup,parentID,isActive,isOpen,notes,sortBy,sortDirection,restrictGroups,path,remoteID,remoteSourceURL">
+
 <cffunction name="init" returntype="any" output="false" access="public">
 <cfargument name="configBean" type="any" required="yes"/>
 		<cfset variables.configBean=arguments.configBean />
@@ -64,7 +66,7 @@ to your own modified versions of Mura CMS.
 	 
 	<cfquery datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	insert into tcontentcategories (categoryID,siteid,parentID,dateCreated,lastupdate,lastupdateBy,
-	name,notes,isInterestGroup,isActive,isOpen,sortBy,sortDirection,restrictgroups,path)
+	name,notes,isInterestGroup,isActive,isOpen,sortBy,sortDirection,restrictgroups,path,remoteID,remoteSourceURL)
 	values (
 	'#arguments.categoryBean.getCategoryID()#',
 	<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.categoryBean.getSiteID() neq '',de('no'),de('yes'))#" value="#arguments.categoryBean.getsiteID()#">,
@@ -80,7 +82,9 @@ to your own modified versions of Mura CMS.
 	<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.categoryBean.getSortBy() neq '',de('no'),de('yes'))#" value="#arguments.categoryBean.getSortBy()#">,
 	<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.categoryBean.getSortDirection() neq '',de('no'),de('yes'))#" value="#arguments.categoryBean.getSortDirection()#">,
 	<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.categoryBean.getRestrictGroups() neq '',de('no'),de('yes'))#" value="#arguments.categoryBean.getRestrictGroups()#">,
-	<cfqueryparam cfsqltype="cf_sql_longvarchar" null="#iif(arguments.categoryBean.getPath() neq '',de('no'),de('yes'))#" value="#arguments.categoryBean.getPath()#">)
+	<cfqueryparam cfsqltype="cf_sql_longvarchar" null="#iif(arguments.categoryBean.getPath() neq '',de('no'),de('yes'))#" value="#arguments.categoryBean.getPath()#">,
+	<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.categoryBean.getRemoteID() neq '',de('no'),de('yes'))#" value="#arguments.categoryBean.getRemoteID()#">,
+	<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.categoryBean.getRemoteSourceURL() neq '',de('no'),de('yes'))#" value="#arguments.categoryBean.getRemoteSourceURL()#">)
 	</cfquery>
 
 </cffunction> 
@@ -92,7 +96,9 @@ to your own modified versions of Mura CMS.
 	<cfset var rs ="" />
 	
 	<cfquery name="rs" datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-	Select * from tcontentcategories where 
+	Select 
+	#variables.fieldlist#
+	from tcontentcategories where 
 	categoryID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.categoryID#" />
 	</cfquery>
 	
@@ -112,13 +118,40 @@ to your own modified versions of Mura CMS.
 	<cfset var rs ="" />
 	
 	<cfquery name="rs" datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-	Select * from tcontentcategories where 
+	Select
+	#variables.fieldlist#
+	from tcontentcategories where 
 	name=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.name#" />
 	and siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#" />
 	</cfquery>
 	
 	<cfif rs.recordcount gt 1>
 		<cfthrow message="The category name '#arguments.name#' that you are reading by is not unique.">
+	<cfelseif rs.recordcount>
+		<cfset categoryBean.set(rs) />
+		<cfset categoryBean.setIsNew(0)>
+	</cfif>
+	
+	<cfreturn categoryBean />
+</cffunction>
+
+<cffunction name="readByRemoteID" access="public" output="false" returntype="any" >
+	<cfargument name="remoteID" type="string" />
+	<cfargument name="siteID" type="string" />
+
+	<cfset var categoryBean=getBean() />
+	<cfset var rs ="" />
+	
+	<cfquery name="rs" datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+	Select
+	#variables.fieldlist#
+	from tcontentcategories where 
+	remoteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.remoteID#" />
+	and siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#" />
+	</cfquery>
+	
+	<cfif rs.recordcount gt 1>
+		<cfthrow message="The category remoteID '#arguments.remoteID#' that you are reading by is not unique.">
 	<cfelseif rs.recordcount>
 		<cfset categoryBean.set(rs) />
 		<cfset categoryBean.setIsNew(0)>
@@ -181,7 +214,9 @@ to your own modified versions of Mura CMS.
 	sortBy = <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.categoryBean.getSortBy() neq '',de('no'),de('yes'))#" value="#arguments.categoryBean.getSortBy()#">,
 	sortDirection = <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.categoryBean.getSortDirection() neq '',de('no'),de('yes'))#" value="#arguments.categoryBean.getSortDirection()#">,
 	restrictGroups = <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.categoryBean.getRestrictGroups() neq '',de('no'),de('yes'))#" value="#arguments.categoryBean.getRestrictGroups()#">,
-	path= <cfqueryparam cfsqltype="cf_sql_longvarchar" null="#iif(arguments.categoryBean.getPath() neq '',de('no'),de('yes'))#" value="#arguments.categoryBean.getPath()#">
+	path= <cfqueryparam cfsqltype="cf_sql_longvarchar" null="#iif(arguments.categoryBean.getPath() neq '',de('no'),de('yes'))#" value="#arguments.categoryBean.getPath()#">,
+	remoteID= <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.categoryBean.getRemoteID() neq '',de('no'),de('yes'))#" value="#arguments.categoryBean.getRemoteID()#">,
+	remoteSourceURL= <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.categoryBean.getRemoteSourceURL() neq '',de('no'),de('yes'))#" value="#arguments.categoryBean.getRemoteSourceURL()#">
 	where categoryID =<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.categoryBean.getCategoryID()#" />
 	</cfquery>
 

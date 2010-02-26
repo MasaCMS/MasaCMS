@@ -42,6 +42,8 @@ to your own modified versions of Mura CMS.
 --->
 <cfcomponent extends="mura.cfobject" output="false">
 
+<cfset variables.fieldList="feedID,siteID,dateCreated,lastUpdate,lastUpdateBy,name,altName,lang,maxitems,isActive,isPublic,isDefault,description,allowHTML,isFeaturesOnly,restricted,restrictGroups,version,channelLink,type,sortBy,sortDirection,nextn,displayName,displayRatings,displayComments,parentID,remoteID,remoteSourceURL">
+
 <cffunction name="init" returntype="any" output="false" access="public">
 <cfargument name="configBean" type="any" required="yes"/>
 		<cfset variables.configBean=arguments.configBean />
@@ -67,7 +69,7 @@ to your own modified versions of Mura CMS.
 	<cfquery datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	insert into tcontentfeeds (feedID,siteid,dateCreated,lastupdate,lastupdateBy,name, altName, description,
 	isActive,isPublic,isDefault,lang,maxItems,allowHTML,isFeaturesOnly,restricted,restrictGroups,version,
-	ChannelLink,type,ParentID,sortBy,sortDirection,nextN,displayName,displayRatings,displayComments)
+	ChannelLink,type,ParentID,sortBy,sortDirection,nextN,displayName,displayRatings,displayComments,remoteID,remoteSourceURL)
 	values (
 	<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.feedBean.getfeedID()#">,
 	<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.feedBean.getSiteID() neq '',de('no'),de('yes'))#" value="#arguments.feedBean.getsiteID()#">,
@@ -95,7 +97,9 @@ to your own modified versions of Mura CMS.
 	#arguments.feedBean.getNextN()#,
 	#arguments.feedBean.getDisplayName()#,
 	#arguments.feedBean.getDisplayRatings()#,
-	#arguments.feedBean.getDisplayComments()#
+	#arguments.feedBean.getDisplayComments()#,
+	<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.feedBean.getRemoteID() neq '',de('no'),de('yes'))#" value="#arguments.feedBean.getRemoteID()#">,
+	<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.feedBean.getremoteSourceURL() neq '',de('no'),de('yes'))#" value="#arguments.feedBean.getremoteSourceURL()#">
 	)
 	</cfquery>
 	
@@ -113,7 +117,9 @@ to your own modified versions of Mura CMS.
 	<cfset var rs ="" />
 	
 	<cfquery name="rs" datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-	Select * from tcontentfeeds where 
+	Select
+	#variables.fieldList#
+	from tcontentfeeds where 
 	feedID= <cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.feedID#">
 	</cfquery>
 	
@@ -136,13 +142,43 @@ to your own modified versions of Mura CMS.
 	<cfset var rs ="" />
 	
 	<cfquery name="rs" datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-	Select * from tcontentfeeds where 
+	Select 
+	#variables.fieldList#
+	from tcontentfeeds where 
 	name= <cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.name#">
 	and siteid=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.siteid#">
 	</cfquery>
 	
 	<cfif rs.recordcount gt 1>
 			<cfthrow message="The feed name '#arguments.name#' that you are reading by is not unique.">
+	<cfelseif rs.recordcount>
+		<cfset feedBean.set(rs) />
+		<cfset feedBean.setcontentID(readItems(rs.feedID,"contentID")) />
+		<cfset feedBean.setCategoryID(readItems(rs.feedID,"categoryID")) />
+		<cfset feedBean.setAdvancedParams(readAdvancedParams(rs.feedID)) />
+		<cfset feedBean.setIsNew(0)>
+	</cfif>
+	
+	<cfreturn feedBean />
+</cffunction>
+
+<cffunction name="readByRemoteID" access="public" output="false" returntype="any" >
+	<cfargument name="remoteID" type="string" />
+	<cfargument name="siteid" type="string" />
+
+	<cfset var feedBean=getBean() />
+	<cfset var rs ="" />
+	
+	<cfquery name="rs" datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+	Select 
+	#variables.fieldList#
+	from tcontentfeeds where 
+	remoteID= <cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.remoteID#">
+	and siteid=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.siteid#">
+	</cfquery>
+	
+	<cfif rs.recordcount gt 1>
+			<cfthrow message="The feed remoteID '#arguments.remoteID#' that you are reading by is not unique.">
 	<cfelseif rs.recordcount>
 		<cfset feedBean.set(rs) />
 		<cfset feedBean.setcontentID(readItems(rs.feedID,"contentID")) />
@@ -183,7 +219,9 @@ to your own modified versions of Mura CMS.
 	nextN=#arguments.feedBean.getNextN()#,
 	displayName = #arguments.feedBean.getDisplayName()#,
 	displayRatings = #arguments.feedBean.getDisplayRatings()#,
-	displayComments = #arguments.feedBean.getDisplayComments()#
+	displayComments = #arguments.feedBean.getDisplayComments()#,
+	remoteID= <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.feedBean.getRemoteID() neq '',de('no'),de('yes'))#" value="#arguments.feedBean.getRemoteID()#">,
+	remoteSourceURL= <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.feedBean.getRemoteSourceURL() neq '',de('no'),de('yes'))#" value="#arguments.feedBean.getRemoteSourceURL()#">
 	where feedID =<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.feedBean.getfeedID()#">
 	</cfquery>
 	

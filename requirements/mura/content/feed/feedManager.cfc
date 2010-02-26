@@ -127,13 +127,19 @@ to your own modified versions of Mura CMS.
 <cffunction name="read" access="public" returntype="any" output="false">
 	<cfargument name="feedID" required="true" default=""/>		
 	<cfargument name="name" required="true" default=""/>
+	<cfargument name="remoteID" required="true" default=""/>
 	<cfargument name="siteID" required="true" default=""/>
 	
-	<cfif not len(arguments.feedID) and (len(arguments.siteid) and len(arguments.name))>
-		<cfreturn variables.feedDAO.readByName(arguments.name,arguments.siteid) />
-	<cfelse>
-		<cfreturn variables.feedDAO.read(arguments.feedID) />
+	<cfif not len(arguments.feedID) and len(arguments.siteid)>
+		<cfif len(arguments.name)>
+			<cfreturn variables.feedDAO.readByName(arguments.name,arguments.siteid) />
+		<cfelseif len(arguments.remoteID)>
+			<cfreturn variables.feedDAO.readByRemoteID(arguments.remoteID,arguments.siteid) />
+		</cfif>
 	</cfif>
+	
+	<cfreturn variables.feedDAO.read(arguments.feedID) />
+	
 </cffunction>
 
 <cffunction name="readByName" access="public" returntype="any" output="false">
@@ -141,6 +147,14 @@ to your own modified versions of Mura CMS.
 	<cfargument name="siteid" type="String" />		
 	
 	<cfreturn variables.feedDAO.readByName(arguments.name,arguments.siteid) />
+
+</cffunction>
+
+<cffunction name="readByRemoteID" access="public" returntype="any" output="false">
+	<cfargument name="remoteID" type="String" />
+	<cfargument name="siteid" type="String" />		
+	
+	<cfreturn variables.feedDAO.readByRemoteID(arguments.remoteID,arguments.siteid) />
 
 </cffunction>
 

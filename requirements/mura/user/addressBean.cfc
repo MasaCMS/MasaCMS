@@ -77,7 +77,7 @@ to your own modified versions of Mura CMS.
 	<cfreturn this />
 	</cffunction>
 
- <cffunction name="set" returnType="void" output="false" access="public">
+ <cffunction name="set" returnType="any" output="false" access="public">
 		<cfargument name="args" type="any" required="true">
 
 		<cfset var prop=""/>
@@ -123,7 +123,7 @@ to your own modified versions of Mura CMS.
 		</cfif>
 
 		<cfset validate() />
-		
+		<cfreturn this />
   </cffunction>
 
 <cffunction name="getAllValues" access="public" returntype="struct" output="false">

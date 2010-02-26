@@ -132,7 +132,7 @@ to your own modified versions of Mura CMS.
 	<cfreturn this />
 </cffunction>
 
- <cffunction name="set" returnType="void" output="false" access="public">
+ <cffunction name="set" returnType="any" output="false" access="public">
     <cfargument name="content" type="any" required="true">
 	
 	<cfset var starthour = 0 />
@@ -327,6 +327,8 @@ to your own modified versions of Mura CMS.
 		</cfif>
 		
 	</cfif>
+	
+	<cfreturn this />
   </cffunction>
 
   <cffunction name="getAllValues" access="public" returntype="struct" output="false">
