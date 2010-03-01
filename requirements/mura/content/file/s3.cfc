@@ -15,7 +15,7 @@ limitations under the License.
 --->
 <cfcomponent output="false">
 
-	<cffunction name="init" access="public" output="false" returntype="amazons3">
+	<cffunction name="init" access="public" output="false" returntype="any">
 		<cfargument name="awsKey" type="string" required="true" />
 		<cfargument name="awsSecret" type="string" required="true" />
 		<cfargument name="localCacheDir" type="string" required="false"
