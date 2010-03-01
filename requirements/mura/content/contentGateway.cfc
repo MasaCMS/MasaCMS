@@ -48,7 +48,7 @@ to your own modified versions of Mura CMS.
 		<cfset variables.configBean=arguments.configBean />
 		<cfset variables.settingsManager=arguments.settingsManager />
 		<cfset variables.dsn=variables.configBean.getDatasource() />
-
+		<cfset variables.classExtensionManager=variables.configBean.getClassExtensionManager()>
 <cfreturn this />
 </cffunction>
 
@@ -286,27 +286,12 @@ to your own modified versions of Mura CMS.
 
 <cfif isExtendedSort>
 	left Join (select 
-			<cfif variables.configBean.getDBType() eq "MSSQL">
-				Cast(tclassextenddata.attributeValue as varchar(1000)) extendedSort
-			<cfelseif variables.configBean.getDBType() eq "ORACLE">
-				to_char(tclassextenddata.attributeValue) extendedSort
-			<cfelse>
-				tclassextenddata.attributeValue extendedSort
-			</cfif>  
+			#variables.classExtensionManager.getCastString(arguments.sortBy,arguments.siteID)# extendedSort
 			 ,tclassextenddata.baseID 
 			from tclassextenddata inner join tclassextendattributes
 			on (tclassextenddata.attributeID=tclassextendattributes.attributeID)
 			where tclassextendattributes.siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#">
 			and tclassextendattributes.name=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.sortBy#">
-			group by
-			<cfif variables.configBean.getDBType() eq "MSSQL">
-			Cast(tclassextenddata.attributeValue as varchar(1000))
-			<cfelseif variables.configBean.getDBType() eq "ORACLE">
-			to_char(tclassextenddata.attributeValue)
-			<cfelse>
-			tclassextenddata.attributeValue
-			</cfif>
-			,baseID
 	) qExtendedSort
 	on (tcontent.contenthistid=qExtendedSort.baseID)
 </cfif>
@@ -845,27 +830,12 @@ to your own modified versions of Mura CMS.
 
 <cfif isExtendedSort>
 	left Join (select 
-			<cfif variables.configBean.getDBType() eq "MSSQL">
-			Cast(tclassextenddata.attributeValue as varchar(1000)) extendedSort
-			<cfelseif variables.configBean.getDBType() eq "ORACLE">
-			to_char(tclassextenddata.attributeValue) extendedSort
-			<cfelse>
-			tclassextenddata.attributeValue extendedSort
-			</cfif> 
+			#variables.classExtensionManager.getCastString(arguments.sortBy,arguments.siteID)# extendedSort
 			 ,tclassextenddata.baseID 
 			from tclassextenddata inner join tclassextendattributes
 			on (tclassextenddata.attributeID=tclassextendattributes.attributeID)
 			where tclassextendattributes.siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#">
 			and tclassextendattributes.name=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.sortBy#">
-			group by
-			<cfif variables.configBean.getDBType() eq "MSSQL">
-			Cast(tclassextenddata.attributeValue as varchar(1000))
-			<cfelseif variables.configBean.getDBType() eq "ORACLE">
-			to_char(tclassextenddata.attributeValue)
-			<cfelse>
-			tclassextenddata.attributeValue
-			</cfif>
-			,baseID
 	) qExtendedSort
 	on (tcontent.contenthistid=qExtendedSort.baseID)
 </cfif>

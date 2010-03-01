@@ -47,6 +47,7 @@ to your own modified versions of Mura CMS.
 
 	<cfset variables.configBean=arguments.configBean />
 	<cfset variables.dsn=variables.configBean.getDatasource() />
+	<cfset variables.classExtensionManager=variables.configBean.getClassExtensionManager()>
 	<cfreturn this />
 </cffunction>
 
@@ -113,6 +114,7 @@ to your own modified versions of Mura CMS.
 	<cfset var jointables="" />
 	<cfset var jointable="">
 	<cfset var histtables="tcontenttags,tcontentcategorysassign,tcontentobjects,tcontentrelated">
+	<cfset var rsAttribute="">
 	
 	<cfif blockFactor gt 100>
 		<cfset blockFactor=100>
@@ -164,28 +166,15 @@ to your own modified versions of Mura CMS.
 	
 	<cfif isExtendedSort>
 	left Join (select 
-			<cfif variables.configBean.getDBType() eq "MSSQL">
-				Cast(tclassextenddata.attributeValue as varchar(1000)) extendedSort
-			<cfelseif variables.configBean.getDBType() eq "ORACLE">
-				to_char(tclassextenddata.attributeValue) extendedSort
-			<cfelse>
-				tclassextenddata.attributeValue extendedSort
-			</cfif>  
+			
+			#variables.classExtensionManager.getCastString(arguments.feedBean.getSortBy(),arguments.feedBean.getSiteID())# extendedSort
 			 ,tclassextenddata.baseID 
 			from tclassextenddata inner join tclassextendattributes
 			on (tclassextenddata.attributeID=tclassextendattributes.attributeID)
 			where tclassextendattributes.siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.feedBean.getSiteID()#">
 			and tclassextendattributes.name=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.feedBean.getSortBy()#">
-			group by 
-			<cfif variables.configBean.getDBType() eq "MSSQL">
-			Cast(tclassextenddata.attributeValue as varchar(1000))
-			<cfelseif variables.configBean.getDBType() eq "ORACLE">
-			to_char(tclassextenddata.attributeValue)
-			<cfelse>
-			tclassextenddata.attributeValue
-			</cfif>
-			,baseID
 	) qExtendedSort
+	
 	on (tcontent.contenthistid=qExtendedSort.baseID)
 	</cfif>
 	
@@ -247,6 +236,7 @@ to your own modified versions of Mura CMS.
 									<cfelseif len(param.getField())>
 										tcontent.contentHistID IN (
 																select tclassextenddata.baseID from tclassextenddata
+																inner join tcontent on (tcontent.contentHistID=tclassextenddata.baseID and tcontent.active=1)
 																<cfif isNumeric(param.getField())>
 																where tclassextenddata.attributeID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#param.getField()#">
 																<cfelse>
@@ -254,7 +244,7 @@ to your own modified versions of Mura CMS.
 																where tclassextendattributes.siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.feedBean.getSiteID()#">
 																and tclassextendattributes.name=<cfqueryparam cfsqltype="cf_sql_varchar" value="#param.getField()#">
 																</cfif>
-																and tclassextenddata.attributeValue #param.getCondition()# <cfif param.getCondition() eq "IN">(</cfif><cfqueryparam cfsqltype="cf_sql_#param.getDataType()#" value="#param.getCriteria()#" list="#iif(param.getCondition() eq 'IN',de('true'),de('false'))#"><cfif param.getCondition() eq "IN">)</cfif>)
+																and #variables.classExtensionManager.getCastString(param.getField(),arguments.feedBean.getSiteID())# #param.getCondition()# <cfif param.getCondition() eq "IN">(</cfif><cfqueryparam cfsqltype="cf_sql_#param.getDataType()#" value="#param.getCriteria()#" list="#iif(param.getCondition() eq 'IN',de('true'),de('false'))#"><cfif param.getCondition() eq "IN">)</cfif>)
 									</cfif>
 								</cfif>						
 							</cfloop>
@@ -445,6 +435,7 @@ to your own modified versions of Mura CMS.
 				<cfelseif len(param.getField())>
 					tcontent.contentHistID IN (
 											select tclassextenddata.baseID from tclassextenddata
+											inner join tcontent on (tcontent.contentHistID=tclassextenddata.baseID and tcontent.active=1)
 											<cfif isNumeric(param.getField())>
 											where tclassextenddata.attributeID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#param.getField()#">
 											<cfelse>
@@ -452,13 +443,13 @@ to your own modified versions of Mura CMS.
 											where tclassextendattributes.siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.feedBean.getSiteID()#">
 											and tclassextendattributes.name=<cfqueryparam cfsqltype="cf_sql_varchar" value="#param.getField()#">
 											</cfif>
-											and tclassextenddata.attributeValue #param.getCondition()# <cfif param.getCondition() eq "IN">(</cfif><cfqueryparam cfsqltype="cf_sql_#param.getDataType()#" value="#param.getCriteria()#" list="#iif(param.getCondition() eq 'IN',de('true'),de('false'))#"><cfif param.getCondition() eq "IN">)</cfif>)
+											and #variables.classExtensionManager.getCastString(param.getField(),arguments.feedBean.getSiteID())# #param.getCondition()# <cfif param.getCondition() eq "IN">(</cfif><cfqueryparam cfsqltype="cf_sql_#param.getDataType()#" value="#param.getCriteria()#" list="#iif(param.getCondition() eq 'IN',de('true'),de('false'))#"><cfif param.getCondition() eq "IN">)</cfif>)
 				</cfif>
 			</cfif>						
 		</cfloop>
 		<cfif started>)</cfif>
 	</cfif>
-	
+
 	<cfif len(arguments.tag)>
 		and tcontenttags.tag= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.tag#"/> 
 	</cfif>

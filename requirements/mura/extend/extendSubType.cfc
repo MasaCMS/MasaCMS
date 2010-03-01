@@ -211,6 +211,7 @@ to your own modified versions of Mura CMS.
 <cfargument name="Inherit" required="true" default="false"/>
 <cfargument name="doFilter" required="true" default="false"/>
 <cfargument name="filter" required="true" default=""/>
+<cfargument name="container" required="true" default=""/>
 <cfset var rs=""/>
 <cfset var tempArray=""/>
 <cfset var extendSet=""/>
@@ -219,7 +220,7 @@ to your own modified versions of Mura CMS.
 <cfset var extendSetBean=""/>
 <cfset var s=0/>
 
-	<cfset rsSets=getSetsQuery(arguments.inherit,arguments.doFilter,arguments.filter)/>
+	<cfset rsSets=getSetsQuery(arguments.inherit,arguments.doFilter,arguments.filter,arguments.container)/>
 	
 	<cfif rsSets.recordcount>
 		<cfset tempArray=createObject("component","mura.queryTool").init(rsSets).toArray() />
@@ -371,6 +372,7 @@ to your own modified versions of Mura CMS.
 <cfargument name="Inherit" required="true" default="false"/>
 <cfargument name="doFilter" required="true" default="false"/>
 <cfargument name="filter" required="true" default=""/>
+<cfargument name="container" required="true" default=""/>
 <cfset var rs=""/>
 <cfset var rsFinal=""/>
 <cfset var f=""/>
@@ -390,7 +392,11 @@ to your own modified versions of Mura CMS.
 		<cfelseif arguments.doFilter>
 		and categoryID is null
 		</cfif>
-
+		
+		<cfif len(arguments.container)>
+		and tclassextendsets.container=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.container#">
+		</cfif>
+		
 		<cfif arguments.inherit and getSubType() neq "Default">
 			Union All
 
@@ -409,6 +415,9 @@ to your own modified versions of Mura CMS.
 			)
 			<cfelseif arguments.doFilter>
 			and tclassextendsets.categoryID is null
+			</cfif>
+			<cfif len(arguments.container)>
+			and tclassextendsets.container=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.container#">
 			</cfif>
 		</cfif>
 		</cfquery>

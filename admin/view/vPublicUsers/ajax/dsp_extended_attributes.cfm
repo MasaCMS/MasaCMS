@@ -42,8 +42,9 @@ to your own modified versions of Mura CMS.
 --->
 
 <cfsilent>
+<cfset returnsets=structNew()>
 <cfset userBean=application.userManager.read(attributes.baseID)/>
-<cfset extendSets=application.classExtensionManager.getSubTypeByName(attributes.type,attributes.subtype,attributes.siteid).getExtendSets(true) />
+<cfset extendSets=application.classExtensionManager.getSubTypeByName(attributes.type,attributes.subtype,attributes.siteid).getExtendSets(inherit=true,container="Default") />
 <cfif userBean.getType() eq 2>
 	<cfset started=false />
 <cfelse>
@@ -51,11 +52,13 @@ to your own modified versions of Mura CMS.
 </cfif>
 <cfset style="" />
 </cfsilent>
+<cfsavecontent variable="returnsets.default">
+<cfoutput>
 <cfif arrayLen(extendSets)>
 <dl class="oneColumn"   id="extendDL">
 <cfloop from="1" to="#arrayLen(extendSets)#" index="s">	
 <cfset extendSetBean=extendSets[s]/>
-<cfoutput><cfif  userBean.getType() eq 2><cfset style=extendSetBean.getStyle()/><cfif not len(style)><cfset started=true/></cfif></cfif>
+<cfif  userBean.getType() eq 2><cfset style=extendSetBean.getStyle()/><cfif not len(style)><cfset started=true/></cfif></cfif>
 	<span class="extendset" extendsetid="#extendSetBean.getExtendSetID()#" categoryid="#extendSetBean.getCategoryID()#" #style#>
 	<input name="extendSetID" type="hidden" value="#extendSetBean.getExtendSetID()#"/>
 	<dt <cfif not started>class="first"<cfset started=true/><cfelse>class="separate"</cfif>>#extendSetBean.getName()#</dt>
@@ -81,10 +84,54 @@ to your own modified versions of Mura CMS.
 		
 		<dd>#attributeBean.renderAttribute(attributeValue)#</dd>
 	</cfloop></dl></dd>
-</cfoutput>
 </cfloop>
 </dl>
 </cfif>
-<cfoutput>
 <dl class="oneColumn"  id="extendMessage" <cfif started>style="display:none"</cfif>>
 <dd><br/><em>There are currently no extended attributes available.</em></dd></dl></cfoutput>
+</cfsavecontent>
+<cfsilent>
+<cfset extendSets=application.classExtensionManager.getSubTypeByName(attributes.type,attributes.subtype,attributes.siteid).getExtendSets(inherit=true,container="Basic") />
+<cfif userBean.getType() eq 2>
+	<cfset started=false />
+<cfelse>
+	<cfset started=true />
+</cfif>
+<cfset style="" />
+</cfsilent>
+<cfsavecontent variable="returnsets.basic">
+<cfoutput>
+<cfif arrayLen(extendSets)>
+<cfloop from="1" to="#arrayLen(extendSets)#" index="s">	
+<cfset extendSetBean=extendSets[s]/>
+<cfif  userBean.getType() eq 2><cfset style=extendSetBean.getStyle()/><cfif not len(style)><cfset started=true/></cfif></cfif>
+	<span class="extendset" extendsetid="#extendSetBean.getExtendSetID()#" categoryid="#extendSetBean.getCategoryID()#" #style#>
+	<input name="extendSetID" type="hidden" value="#extendSetBean.getExtendSetID()#"/>
+	<dt <cfif not started>class="first"<cfset started=true/><cfelse>class="separate"</cfif>>#extendSetBean.getName()#</dt>
+	<cfsilent>
+	<cfset attributesArray=extendSetBean.getAttributes() />
+	</cfsilent>
+	<dd><dl><cfloop from="1" to="#arrayLen(attributesArray)#" index="a">	
+		<cfset attributeBean=attributesArray[a]/>
+		<cfset attributeValue=userBean.getExtendedAttribute(attributeBean.getAttributeID(),true) />
+		<dt>
+		<cfif len(attributeBean.getHint())>
+		<a href="##" class="tooltip">#attributeBean.getLabel()# <cfif attributeBean.getType() IS "Hidden"><strong>[Hidden]</strong></cfif> <span>#attributeBean.gethint()#</span></a>
+		<cfelse>
+		#attributeBean.getLabel()# <cfif attributeBean.getType() IS "Hidden"><strong>[Hidden]</strong></cfif>
+		</cfif>
+		<cfif attributeBean.getType() eq "File" and len(attributeValue) and attributeValue neq 'useMuraDefault'> <a href="#application.configBean.getContext()#/tasks/render/file/?fileID=#attributeValue#" target="_blank">[Download]</a> <input type="checkbox" value="true" name="extDelete#attributeBean.getAttributeID()#"/> Delete</cfif>
+		</dt>
+		
+		<!--- if it's an hidden type attribute then flip it to be a textbox so it can be editable through the admin --->
+		<cfif attributeBean.getType() IS "Hidden">
+			<cfset attributeBean.setType( "TextBox" ) />
+		</cfif>	
+		
+		<dd>#attributeBean.renderAttribute(attributeValue)#</dd>
+	</cfloop></dl></dd>
+</cfloop>
+</cfif>
+</cfoutput>
+</cfsavecontent>
+<cfoutput>#createObject("component","mura.json").encode(returnsets)#</cfoutput>

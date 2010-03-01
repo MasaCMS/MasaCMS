@@ -112,6 +112,79 @@ to your own modified versions of Mura CMS.
 	</cfif>
 </cffunction>
 
+<cffunction name="validateExtendedData" returntype="any" output="false">
+<cfargument name="data">
+
+<cfset var setLen=0/>
+<cfset var key=""/>
+<cfset var rs = ""/>
+<cfset var theValue=""/>
+<cfset var s=0/>
+<cfset var tempDate=""/>
+<cfset var errors=structNew()>
+<cfset var site=getBean("settingsManager").getSite(arguments.data.siteID) />
+<cfset var rbFactory=site.getRBFactory()>
+
+<cfif isDefined("arguments.data.extendSetID") and len(arguments.data.extendSetID)>
+<cfset setLen=listLen(arguments.data.extendSetID)/>
+
+<!--- process non-file attributes --->
+<cfquery name="rs" datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+select attributeID,name,validation,message from tclassextendattributes where 
+ExtendSetID in(<cfloop from="1" to="#setLen#" index="s">
+		'#listgetat(arguments.data.extendSetID,s)#'<cfif s lt setlen>,</cfif>
+		</cfloop>)
+		and type != 'File'
+</cfquery>
+
+<cfloop query="rs">
+	<cfset key="ext#rs.attributeID#"/>
+	
+	<cfif structKeyExists(arguments.data,key)
+		or structKeyExists(arguments.data,rs.name)>
+		
+		<cfif structKeyExists(arguments.data,key) and len(arguments.data[key])>
+			<cfset theValue=arguments.data[key]>
+		<cfelseif structKeyExists(arguments.data,rs.name) and len(arguments.data[rs.name])>
+			<cfset theValue=arguments.data[rs.name]>
+		<cfelse>
+			<cfset theValue="">
+		</cfif>
+
+		<cfif len(theValue)>
+			<cfif rs.validation eq "Date">
+				<cfif not lsisDate(theValue)>
+					<cfif len(rs.message)>
+						<cfset errors[rs.name]=rs.message>
+					<cfelse>
+						<cfset errors[rs.name]=rbFactory.getResourceBundle().messageFormat(rbFactory.getKey("params.errordate"),ucase(rs.name))>
+					</cfif>
+				</cfif>
+			<cfelseif rs.validation eq "Numeric">
+				<cfif not isNumeric(theValue)>
+					<cfif len(rs.message)>
+						<cfset errors[rs.name]=rs.message>
+					<cfelse>
+						<cfset errors[rs.name]=rbFactory.getResourceBundle().messageFormat(rbFactory.getKey("params.errornumeric"),ucase(rs.name))>
+					</cfif>
+				</cfif>
+			<cfelseif rs.validation eq "Email">
+				<cfif REFindNoCase("^[^@%*<>' ]+@[^@%*<>' ]{1,255}\.[^@%*<>' ]{2,5}", trim(theValue)) eq 0>
+					<cfif len(rs.message)>
+						<cfset errors[rs.name]=rs.message>
+					<cfelse>
+						<cfset errors[rs.name]=rbFactory.getResourceBundle().messageFormat(rbFactory.getKey("params.erroremail"),ucase(rs.name))>
+					</cfif>
+				</cfif>
+			</cfif>
+		</cfif>
+			
+	</cfif>
+</cfloop>
+</cfif>
+<cfreturn errors>
+</cffunction>
+
 <cffunction name="saveExtendedData" access="public" returntype="void">
 <cfargument name="baseID">
 <cfargument name="data">
@@ -129,13 +202,14 @@ to your own modified versions of Mura CMS.
 <cfset var theFileStruct=""/>
 <cfset var theValue=""/>
 <cfset var s=0/>
+<cfset var tempDate=""/>
 
 <cfif isDefined("arguments.data.extendSetID") and len(arguments.data.extendSetID)>
 <cfset setLen=listLen(arguments.data.extendSetID)/>
 
 <!--- process non-file attributes --->
 <cfquery name="rs" datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-select attributeID,name from tclassextendattributes where 
+select attributeID,name,validation,message from tclassextendattributes where 
 ExtendSetID in(<cfloop from="1" to="#setLen#" index="s">
 		'#listgetat(arguments.data.extendSetID,s)#'<cfif s lt setlen>,</cfif>
 		</cfloop>)
@@ -169,7 +243,27 @@ ExtendSetID in(<cfloop from="1" to="#setLen#" index="s">
 			<cfqueryparam cfsqltype="cf_sql_varchar"  value="#rs.attributeID#">,
 			<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.data.siteID#">,
 			<cfif len(theValue)>
-				<cfqueryparam cfsqltype="cf_sql_longvarchar"  value="#theValue#">
+				<cfif rs.validation eq "Date">
+					<cfif lsisDate(theValue)>
+						<cftry>
+						<cfset theValue = lsparseDateTime(theValue) />
+						<cfqueryparam cfsqltype="cf_sql_longvarchar"  value="#lsparseDateTime(theValue)#">
+						<cfcatch>
+							<cfqueryparam cfsqltype="cf_sql_longvarchar"  value="#theValue#">
+						</cfcatch>
+						</cftry>
+					<cfelse>
+						null
+					</cfif>
+				<cfelseif rs.validation eq "Numeric">
+					<cfif isNumeric(theValue)>
+						<cfqueryparam cfsqltype="cf_sql_longvarchar"  value="#theValue#">
+					<cfelse>
+						null
+					</cfif>
+				<cfelse>
+					<cfqueryparam cfsqltype="cf_sql_longvarchar"  value="#theValue#">
+				</cfif>	
 			<cfelse>
 				null
 			</cfif>
@@ -483,9 +577,9 @@ and tclassextendattributes.type='File'
 <cfargument name="key" required="true" default=""/>
 <cfargument name="dataTable" required="true" default="tclassextenddata"/>
 <cfset var rs =""/>
-
+<cfset var tempDate="">
 	<cfquery name="rs" datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-	select #arguments.dataTable#.attributeValue,tclassextendattributes.defaultValue,#arguments.dataTable#.attributeID from tclassextendattributes
+	select #arguments.dataTable#.attributeValue,tclassextendattributes.defaultValue,#arguments.dataTable#.attributeID,tclassextendattributes.validation from tclassextendattributes
 	left join #arguments.dataTable# ON (tclassextendattributes.attributeID=#arguments.dataTable#.attributeID)
 	where 
 	#arguments.dataTable#.baseID=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.baseID#">
@@ -497,9 +591,17 @@ and tclassextendattributes.type='File'
 	</cfquery>
 	
 	<cfif len(rs.attributeID)>
-		<cfreturn rs.attributeValue />
+		<cfif rs.validation eq "Date">
+			<cfset tempDate=rs.attributeValue>
+			<cftry>
+				<cfreturn lsDateFormat(parseDateTime(tempDate),session.dateKeyFormat) />
+				<cfcatch><cfreturn rs.attributeValue /></cfcatch>
+			</cftry>
+		<cfelse>
+			<cfreturn rs.attributeValue />
+		</cfif>
 	<cfelse>
-		<cfreturn rs.defaultValue />
+		<cfreturn application.contentRenderer.setDynamicContent(rs.defaultValue) />
 	</cfif>
 </cffunction>
 
@@ -545,6 +647,66 @@ and tclassextendattributes.type='File'
 	</cfquery>
 	
 	<cfreturn rs>
+</cffunction>
+
+<cffunction name="getCastString" output="false">
+<cfargument name="attribute">
+<cfargument name="siteID">
+<cfargument name="datatype">
+<cfset var rs="">
+<cfif variables.configBean.getStrictExtendedData()>
+	<cfif not structKeyExists(arguments,"datatype")>
+		<cfquery name="rs" datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+				select validation from tclassextendattributes 
+				where 
+				<cfif isNumeric(arguments.attribute)>
+				attributeID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.attribute#">
+				<cfelse>
+				siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#">
+				and name=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.attribute#">
+				</cfif>
+		</cfquery>
+		<cfset arguments.datatype=rs.validation>
+	</cfif>
+	
+	<cfswitch expression="#arguments.datatype#">
+	<cfcase value="Numeric">
+	<cfif variables.configBean.getDBType() eq "MSSQL">
+		<cfreturn "cast(tclassextenddata.attributeValue as Int)">
+	<cfelseif variables.configBean.getDBType() eq "ORACLE">
+		<cfreturn "to_number(to_char(tclassextenddata.attributeValue))">"
+	<cfelse>
+		<cfreturn "cast(tclassextenddata.attributeValue as SIGNED)">
+	</cfif> 
+	</cfcase>
+	<cfcase value="Date">
+	<cfif variables.configBean.getDBType() eq "MSSQL">
+		<cfreturn "cast(tclassextenddata.attributeValue as datetime)">
+	<cfelseif variables.configBean.getDBType() eq "ORACLE">
+		<cfreturn "to_date(to_char(tclassextenddata.attributeValue))">"
+	<cfelse>
+		<cfreturn "cast(tclassextenddata.attributeValue as DATETIME)">
+	</cfif> 
+	</cfcase>
+	<cfdefaultcase>
+	<cfif variables.configBean.getDBType() eq "MSSQL">
+		<cfreturn "Cast(tclassextenddata.attributeValue as varchar(1000))">
+	<cfelseif variables.configBean.getDBType() eq "ORACLE">
+		<cfreturn "to_char(tclassextenddata.attributeValue)">"
+	<cfelse>
+		<cfreturn "tclassextenddata.attributeValue">
+	</cfif> 
+	</cfdefaultcase>
+	</cfswitch>
+<cfelse>
+	<cfif variables.configBean.getDBType() eq "MSSQL">
+		<cfreturn "Cast(tclassextenddata.attributeValue as varchar(1000))">
+	<cfelseif variables.configBean.getDBType() eq "ORACLE">
+		<cfreturn "to_char(tclassextenddata.attributeValue)">"
+	<cfelse>
+		<cfreturn "tclassextenddata.attributeValue">
+	</cfif> 
+</cfif>
 </cffunction>
 
 </cfcomponent>

@@ -103,6 +103,7 @@ to your own modified versions of Mura CMS.
 <cfset variables.instance.sharableRemoteSessions=true />
 <cfset variables.instance.siteIDInURLS=true />
 <cfset variables.instance.indexFileInURLS=true />
+<cfset variables.instance.strictExtendedData=false />
 <cfset variables.instance.appreloadKey=application.appreloadKey />
 <cfset variables.instance.tempDir=getTempDirectory() />
 
@@ -235,6 +236,10 @@ to your own modified versions of Mura CMS.
 	
 	<cfif structKeyExists(config,"indexFileInURLS")>
 		<cfset setIndexFileInURLS(config.indexFileInURLS)/>
+	</cfif>
+	
+	<cfif structKeyExists(config,"strictExtendedData")>
+		<cfset setStrictExtendedData(config.strictExtendedData)/>
 	</cfif>
 	
 	<cfswitch expression="#server.coldfusion.productName#">
@@ -947,6 +952,17 @@ to your own modified versions of Mura CMS.
 
 <cffunction name="getIndexFileInURLS" returntype="boolean" access="public" output="false">
 	<cfreturn variables.instance.indexFileInURLS />
+</cffunction>
+
+<cffunction name="setStrictExtendedData" access="public" output="false">
+	<cfargument name="strictExtendedData" />
+	<cfif isBoolean(arguments.strictExtendedData)>
+		<cfset variables.instance.indexFileInURLS = arguments.strictExtendedData />
+	</cfif>
+</cffunction>
+
+<cffunction name="getStrictExtendedData" returntype="boolean" access="public" output="false">
+	<cfreturn variables.instance.strictExtendedData />
 </cffunction>
 
 <cffunction name="getAllValues" returntype="any" access="public" output="false">

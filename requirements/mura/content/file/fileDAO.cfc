@@ -55,7 +55,8 @@ to your own modified versions of Mura CMS.
 		<cfif variables.configBean.getFileStoreAccessInfo() neq ''>
 			<cfset variables.s3=createObject("component","s3").init(
 							listFirst(variables.configBean.getFileStoreAccessInfo(),'^'),
-							listGetAt(variables.configBean.getFileStoreAccessInfo(),2,'^'))>
+							listGetAt(variables.configBean.getFileStoreAccessInfo(),2,'^'),
+							"#application.configBean.getFileDir()##application.configBean.getFileDelim()#s3cache#application.configBean.getFileDelim()#")>
 			<cfif listLen(variables.configBean.getFileStoreAccessInfo(),"^") eq 3>
 			<cfset variables.bucket=listLast(variables.configBean.getFileStoreAccessInfo(),"^") />
 			<cfelse>
@@ -112,13 +113,13 @@ to your own modified versions of Mura CMS.
 				</cfif>
 			</cfcase>
 			<cfcase value="s3">
-				<cfset variables.s3.putObject(variables.bucket,'#arguments.siteid#/#fileid#.#arguments.fileExt#',arguments.fileObj,ct) />
+				<cfset variables.s3.putFileOnS3(arguments.fileObj,ct,variables.bucket,'#arguments.siteid#/#fileid#.#arguments.fileExt#') />
 				<cfif arguments.fileExt eq 'jpg' or arguments.fileExt eq 'jpeg' or arguments.fileExt eq 'png' or arguments.fileExt eq 'gif'>
-					<cfif isBinary(fileObjSmall)><cfset variables.s3.putObject(variables.bucket,'#arguments.siteid#/#fileid#_small.#arguments.fileExt#',arguments.fileObjSmall,ct) /></cfif>
-					<cfif isBinary(fileObjMedium)><cfset variables.s3.putObject(variables.bucket,'#arguments.siteid#/#fileid#_medium.#arguments.fileExt#',arguments.fileObjMedium,ct) /></cfif>
+					<cfif isBinary(fileObjSmall)><cfset variables.s3.putFileOnS3(arguments.fileObjSmall,ct,variables.bucket,'#arguments.siteid#/#fileid#_small.#arguments.fileExt#') /></cfif>
+					<cfif isBinary(fileObjMedium)><cfset variables.s3.putFileOnS3(arguments.fileObjMedium,ct,variables.bucket,'#arguments.siteid#/#fileid#_medium.#arguments.fileExt#') /></cfif>
 				<cfelseif arguments.fileExt eq 'flv'>
-					<cfif isBinary(fileObjSmall)><cfset variables.s3.putObject(variables.bucket,'#arguments.siteid#/#fileid#_small.jpg',arguments.fileObjSmall,'image/jpeg') /></cfif>
-					<cfif isBinary(fileObjMedium)><cfset variables.s3.putObject(variables.bucket,'#arguments.siteid#/#fileid#_medium.jpg',arguments.fileObjMedium,'image/jpeg') /></cfif>
+					<cfif isBinary(fileObjSmall)><cfset variables.s3.putFileOnS3(arguments.fileObjSmall,'image/jpeg',variables.bucket,'#arguments.siteid#/#fileid#_small.jpg') /></cfif>
+					<cfif isBinary(fileObjMedium)><cfset variables.s3.putFileOnS3(arguments.fileObjMedium,'image/jpeg',variables.bucket,'#arguments.siteid#/#fileid#_medium.jpg') /></cfif>
 				</cfif>
 			</cfcase>
 		</cfswitch>
@@ -302,13 +303,13 @@ to your own modified versions of Mura CMS.
 		</cfcase>
 		
 		<cfcase value="s3">
-		<cfset variables.s3.deleteObject(variables.bucket,'#rsFile.siteID#/#arguments.fileid#.#rsFile.fileExt#') />
+		<cfset variables.s3.deleteS3File(variables.bucket,'#rsFile.siteID#/#arguments.fileid#.#rsFile.fileExt#') />
 				<cfif listFindNoCase("png,gif,jpg,jpeg",rsFile.fileExt)>
-					<cfset variables.s3.deleteObject(variables.bucket,'#rsFile.siteID#/#arguments.fileid#_small.#rsFile.fileExt#') />
-					<cfset variables.s3.deleteObject(variables.bucket,'#rsFile.siteID#/#arguments.fileid#_medium.#rsFile.fileExt#') />
+					<cfset variables.s3.deleteS3File(variables.bucket,'#rsFile.siteID#/#arguments.fileid#_small.#rsFile.fileExt#') />
+					<cfset variables.s3.deleteS3File(variables.bucket,'#rsFile.siteID#/#arguments.fileid#_medium.#rsFile.fileExt#') />
 				<cfelseif rsFile.fileEXT eq "flv">
-					<cfset variables.s3.deleteObject(variables.bucket,'#rsFile.siteID#/#arguments.fileid#_small.jpg') />
-					<cfset variables.s3.deleteObject(variables.bucket,'#rsFile.siteID#/#arguments.fileid#_medium.jpg') />
+					<cfset variables.s3.deleteS3File(variables.bucket,'#rsFile.siteID#/#arguments.fileid#_small.jpg') />
+					<cfset variables.s3.deleteS3File(variables.bucket,'#rsFile.siteID#/#arguments.fileid#_medium.jpg') />
 				</cfif>
 		</cfcase>
 		

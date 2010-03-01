@@ -632,9 +632,10 @@ function loadExtendedAttributes(contentHistID,type,subType,_siteID,_context,_the
 		context=_context;
 		themeAssetPath=_themeAssetPath;
 		//location.href=url + "?" + pars;
-		var d = $('extendSets');
+		var d = $('extendSetsDefault');
 		if(d != null){	
 			d.innerHTML='<br/><img src="images/progress_bar.gif">';
+			$('extendSetsBasic').innerHTML='<br/><img src="images/progress_bar.gif">';
 			var myAjax = new Ajax.Request(url, {method: 'get', parameters: pars, onSuccess:setExtendedAttributes});
 		}
 		
@@ -642,8 +643,10 @@ function loadExtendedAttributes(contentHistID,type,subType,_siteID,_context,_the
 	}
 
 function setExtendedAttributes(transport){
-	$("extendSets").innerHTML=transport.responseText;
-	checkExtendSetTargeting();
+	var r=eval("(" + transport.responseText + ")");
+	$("extendSetsDefault").innerHTML=r.default;
+	$("extendSetsBasic").innerHTML=r.basic;
+	//checkExtendSetTargeting();
 	setHTMLEditors(context,themeAssetPath);
 }
 

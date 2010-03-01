@@ -127,9 +127,9 @@ to your own modified versions of Mura CMS.
 <cfargument name="key">
 <cfargument name="useMuraDefault" type="boolean" required="true" default="false"> 
 <cfset var rs="" />
-
+<cfset var tempDate="">
 	<cfquery name="rs" dbType="query">
-		 select baseID,attributeValue,defaultValue from variables.instance.data
+		 select baseID,attributeValue,defaultValue,validation from variables.instance.data
 		 where name=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#key#">
 		 <cfif isNumeric(arguments.key)>
 			 or attributeID=<cfqueryparam cfsqltype="cf_sql_numeric"  value="#key#">
@@ -138,7 +138,15 @@ to your own modified versions of Mura CMS.
 
 	<cfif rs.recordcount>
 		<cfif len(rs.baseID)>
-			<cfreturn rs.attributeValue />
+			<cfif rs.validation eq "Date">
+				<cfset tempDate=rs.attributeValue>
+				<cftry>
+					<cfreturn lsDateFormat(parseDateTime(tempDate),session.dateKeyFormat) />
+					<cfcatch><cfreturn rs.attributeValue /></cfcatch>
+				</cftry>	
+			<cfelse>
+				<cfreturn rs.attributeValue />
+			</cfif>
 		<cfelse>
 			<cfreturn application.contentRenderer.setDynamicContent(rs.defaultValue) />
 		</cfif>
@@ -155,7 +163,7 @@ to your own modified versions of Mura CMS.
 <cfset var dataTable=getDataTable() />
 
 		<cfquery name="rs" datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-		select #dataTable#.baseid, tclassextendattributes.name, 
+		select #dataTable#.baseid, tclassextendattributes.name, tclassextendattributes.validation, 
 		<cfif variables.configBean.getDBType() eq "oracle">
 			to_char(tclassextendattributes.label) as label
 		<cfelse>
@@ -175,7 +183,7 @@ to your own modified versions of Mura CMS.
 		Union All
 		
 		select 
-		#dataTable#.baseID, tclassextendattributes.name, 
+		#dataTable#.baseID, tclassextendattributes.name, tclassextendattributes.validation,
 		<cfif variables.configBean.getDBType() eq "oracle">
 			to_char(tclassextendattributes.label) as label
 		<cfelse>
@@ -206,8 +214,8 @@ to your own modified versions of Mura CMS.
 
 		<!--- MSSQL needs to group by outside the original query --->
 		<cfquery name="rs" dbType="query">
-		select baseID, name, label, attributeID, defaultValue, extendSetID, attributeValue from rs
-		Group By baseID,name, label, attributeID, defaultValue, extendSetID, attributeValue
+		select baseID, name, label, attributeID, defaultValue, extendSetID, attributeValue, validation from rs
+		Group By baseID,name, label, attributeID, defaultValue, extendSetID, attributeValue, validation
 		</cfquery>
 		
 		<!--- <cfdump var="#rs#"><cfdump var="#getBaseID()#">		<cfabort> --->
@@ -237,7 +245,7 @@ to your own modified versions of Mura CMS.
 	<cfset var extData=structNew() />
 	
 	<cfquery name="rs" dbType="query">
-		 select baseID, extendSetID, name, defaultValue, attributeValue from variables.instance.data
+		 select baseID, extendSetID, name, defaultValue, attributeValue, validation from variables.instance.data
 		 where name=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#key#">
 		 <cfif isNumeric(arguments.key)>
 			 or attributeID=<cfqueryparam cfsqltype="cf_sql_numeric"  value="#key#">
@@ -252,14 +260,22 @@ to your own modified versions of Mura CMS.
 <cfargument name="rs">
 
 	<cfset var extData=structNew() />
-	
+	<cfset var tempDate="" />
 	<cfif rs.recordcount>
 		<cfset extData.extendSetID=valueList(rs.extendSetID)>
 		<cfset extData.data=structNew()>
 		
 		<cfloop query="rs">
 			<cfif len(rs.baseID)>
-				<cfset extData.data['#rs.name#']=rs.attributeValue>
+				<cfif rs.validation eq "Date">
+					<cfset tempDate=rs.attributeValue>
+					<cftry>
+						<cfset extData.data['#rs.name#']=lsDateFormat(parseDateTime(tempDate),session.dateKeyFormat)>
+						<cfcatch><cfset extData.data['#rs.name#']=tempDate></cfcatch>
+					</cftry>
+				<cfelse>
+					<cfset extData.data['#rs.name#']=rs.attributeValue>
+				</cfif>
 			<cfelse>
 				<cfset extData.data['#rs.name#']=application.contentRenderer.setDynamicContent(rs.defaultValue)>
 			</cfif>

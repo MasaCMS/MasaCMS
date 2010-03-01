@@ -83,13 +83,14 @@ select * from rsSubTypes where subType <> 'Default'
 <dd><input type="text" class="text" name="email" value="#HTMLEditFormat(request.userBean.getemail())#" validate="email" message="#application.rbFactory.getKeyValue(session.rb,'user.emailvalidate')#"></dd>
 <dt class="alt"><input type="checkbox" name="contactform" value="#attributes.siteid#" <cfif request.userBean.getcontactform() eq attributes.siteid>checked</cfif>> #application.rbFactory.getKeyValue(session.rb,'user.contactform')#
   </dt>
+<span id="extendSetsBasic"></span>
 </dl>
 
  <cfif rsSubTypes.recordcount>
 	</div>
 <div id="page_tabView">
 <div class="page_aTab">
-<span id="extendSets"></span>	
+<span id="extendSetsDefault"></span>	
 </div>
 </div>
 

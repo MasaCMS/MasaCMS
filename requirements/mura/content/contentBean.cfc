@@ -120,7 +120,7 @@ to your own modified versions of Mura CMS.
 <cfset variables.instance.extendSetID="" />
 <cfset variables.instance.doCache = 1 />
 <cfset variables.instance.created = now() />
-
+<cfset variables.instance.errors=structnew() />
 <cfset variables.kids = arrayNew(1) />
 <cfset variables.displayRegions = structNew()>
 
@@ -328,12 +328,26 @@ to your own modified versions of Mura CMS.
 		
 	</cfif>
 	
+	<cfset validate()/>
 	<cfreturn this />
   </cffunction>
 
+  <cffunction name="validate" access="public" output="false" returntype="void">
+		<cfset var extErrors=variables.configBean.getClassExtensionManager().validateExtendedData(getAllValues()) />
+		<cfset variables.instance.errors=structnew() />
+		<cfif not structIsEmpty(extErrors)>
+			<cfset structAppend(variables.instance.errors,extErrors)>
+		</cfif>	
+  </cffunction>
+
+  <cffunction name="getErrors" returntype="any" output="false">
+	<cfreturn variables.instance.errors>
+  </cffunction>
+ 
   <cffunction name="getAllValues" access="public" returntype="struct" output="false">
 		<cfset var i="">
 		<cfset var extData=getExtendedData().getAllExtendSetData()>
+		
 		<cfif not structIsEmpty(extData)>
 			<cfset structAppend(variables.instance,extData.data,false)>	
 			<cfloop list="#extData.extendSetID#" index="i">

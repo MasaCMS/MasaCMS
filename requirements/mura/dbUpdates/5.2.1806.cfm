@@ -96,3 +96,36 @@ select remoteID from tcontentcategories  where 0=1
 </cfcase>
 </cfswitch>
 </cfif>
+
+<cfset doUpdate=false>
+<cftry>
+<cfquery name="rsCheck" datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+select container from tclassextendsets  where 0=1
+</cfquery>
+<cfcatch>
+<cfset doUpdate=true>
+</cfcatch>
+</cftry>
+
+<cfif doUpdate>
+<cfswitch expression="#getDbType()#">
+<cfcase value="mssql">
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	ALTER TABLE tclassextendsets ADD container [nvarchar](50) default NULL
+	</cfquery>
+</cfcase>
+<cfcase value="mysql">
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	ALTER TABLE tclassextendsets ADD container varchar(50) default NULL
+	</cfquery>
+</cfcase>
+<cfcase value="oracle">
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	ALTER TABLE "TCLASSEXTENDSETS" ADD "CONTAINER" varchar2(50)
+	</cfquery>
+</cfcase>
+</cfswitch>
+<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	update tclassextendsets set container='Default'
+</cfquery>
+</cfif>

@@ -146,6 +146,8 @@ to your own modified versions of Mura CMS.
 <cfif application.settingsManager.getSite(attributes.siteid).getemailbroadcaster()><input name="moduleAssign" type="CHECKBOX" id="m4"  value="00000000000000000000000000000000005" <cfif listFind(request.contentBean.getmoduleAssign(),'00000000000000000000000000000000005')>checked </cfif> class="checkbox"> <label for="m4">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.emailbroadcaster')#</label>&nbsp;</cfif>
 </dd></cfif>
 
+<span id="extendSetsBasic"></span>
+
 <cfif attributes.type eq 'Form'>
 <dt><input name="responseChart" id="rc" type="CHECKBOX" value="1" <cfif request.contentBean.getresponseChart() eq 1>checked </cfif> class="checkbox"> <label for="rc">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.ispoll')#</label></dt> 
 <dt>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.confirmationmessage')#</dt>

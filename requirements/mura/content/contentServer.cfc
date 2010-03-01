@@ -52,8 +52,8 @@ to your own modified versions of Mura CMS.
 <cfargument name="siteID">
 <cfset var qstring="">
 <cfset var contentRenderer=createObject("component","#application.settingsManager.getSite(arguments.siteID).getAssetMap()#.includes.contentRenderer")>
-
-<cfif len(cgi_path) and right(cgi_path,1) neq "/"  and right(cgi_path,len(application.configBean.getIndexfile())) neq application.configBean.getIndexfile()>
+<cfset var indexFileLen=len(application.configBean.getIndexfile())>
+<cfif len(cgi_path) and right(cgi_path,1) neq "/"  and (not indexFileLen or indexFileLen and (right(cgi_path,indexFileLen) neq application.configBean.getIndexfile()))>
 	<cfif len(cgi.query_string)>
 	<cfset qstring="?" & cgi.query_string>
 	<cfelse>

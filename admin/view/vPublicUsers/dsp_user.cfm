@@ -109,7 +109,7 @@ select * from rsSubTypes where subType <> 'Default'
 <dd><input name="passwordNoCache" autocomplete="off" validate="match" matchfield="password2" type="password" value="" class="text"  message="#application.rbFactory.getKeyValue(session.rb,'user.passwordmatchvalidate')#"></dd> 
 <dt>#application.rbFactory.getKeyValue(session.rb,'user.newpasswordconfirm')#**</dt>
 <dd><input  name="password2" autocomplete="off" type="password" value="" class="text"  message="#application.rbFactory.getKeyValue(session.rb,'user.passwordconfirmvalidate')#"></dd>    
-		
+<span id="extendSetsBasic"></span>	
 </dl>		
 </div>
 	<div class="page_aTab">
@@ -224,7 +224,7 @@ select * from rsSubTypes where subType <> 'Default'
 	</div>
 	 <cfif rsSubTypes.recordcount>
 		<div class="page_aTab">
-			<span id="extendSets"></span>
+			<span id="extendSetsDefault"></span>
 			<script type="text/javascript">
 			loadExtendedAttributes('#request.userbean.getUserID()#','#request.userbean.getType()#','#request.userBean.getSubType()#','#application.settingsManager.getSite(attributes.siteID).getPublicUserPoolID()#','#application.configBean.getContext()#','#application.settingsManager.getSite(application.settingsManager.getSite(attributes.siteID).getPublicUserPoolID()).getThemeAssetPath()#');
 			</script>	

@@ -60,6 +60,13 @@ to your own modified versions of Mura CMS.
 <dl class="oneColumn">
 <dt class="first">Attribute Set Name</dt>
 <dd><input name="name" value="#HTMLEditFormat(extendSetBean.getName())#" required="true"/></dd>
+<dt>Container</dt>
+<dd><select name="container">
+<option value="Default">Extended Attributes Tab</option>
+<option value="Basic"<cfif extendSetBean.getContainer() eq "Basic"> selected</cfif>>Basic Tab</option>
+<option value="Custom"<cfif extendSetBean.getContainer() eq "Custom"> selected</cfif>>Used with Custom UI</option>
+</select>
+</dd>
 <cfif subType.getType() neq  "1" and application.categoryManager.getCategoryCount(attributes.siteID)>
 <dt>Available Category Dependencies</dt>
 <dd class="categoryAssignment"><cf_dsp_categories_nest siteID="#attributes.siteID#" parentID="" nestLevel="0" extendSetBean="#extendSetBean#"></dd>

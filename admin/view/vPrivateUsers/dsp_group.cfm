@@ -88,13 +88,14 @@ select * from rsSubTypes where subType <> 'Default'
  <cfif application.settingsManager.getSite(site).getPrivateUserPoolID() eq application.settingsManager.getSite(attributes.siteid).getPrivateUserPoolID()>
  <li><input type="checkbox" name="ContactForm" value="#site#" <cfif listfind(request.userBean.getcontactform(),site)>Checked</cfif>> #application.settingsManager.getSite(site).getSite()#</li>
  </cfif></cfloop></ul></dd>
+<span id="extendSetsBasic"></span>
 </dl>
 
  <cfif rsSubTypes.recordcount>
 	</div>
 <div id="page_tabView">
 <div class="page_aTab">
-<span id="extendSets"></span>	
+<span id="extendSetsDefault"></span>	
 </div>
 </div>
 

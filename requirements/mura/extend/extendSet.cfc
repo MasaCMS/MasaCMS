@@ -45,6 +45,7 @@ to your own modified versions of Mura CMS.
 <cfset variables.instance.ExtendSetID="" />
 <cfset variables.instance.subTypeID=""/>
 <cfset variables.instance.siteID=""/>
+<cfset variables.instance.container="Default"/>
 <cfset variables.instance.name=""/>
 <cfset variables.instance.orderno=1/>
 <cfset variables.instance.isActive=1/>
@@ -83,11 +84,12 @@ to your own modified versions of Mura CMS.
 			<cfset setCategoryID(arguments.data.CategoryID) />
 			<cfset setOrderNo(arguments.data.orderno) />
 			<cfset setIsActive(arguments.data.isActive) />
+			<cfset setContainer(arguments.data.container) />
 			
 		<cfelseif isStruct(arguments.data)>
 		
 			<cfloop collection="#arguments.data#" item="prop">
-				<cfif isdefined("variables.instance.#prop#")>
+				<cfif structKeyExists(this,"set#prop#")>
 					<cfset evaluate("set#prop#(arguments.data[prop])") />
 				</cfif>
 			</cfloop>
@@ -169,6 +171,17 @@ to your own modified versions of Mura CMS.
 	<cfreturn variables.instance.IsActive />
 </cffunction>
 
+<cffunction name="getContainer" returntype="string" access="public" output="false">
+	<cfreturn variables.instance.Container />
+</cffunction>
+
+<cffunction name="setContainer" access="public" output="false">
+	<cfargument name="container" />
+	<cfif len(arguments.container)>
+		<cfset variables.instance.container = arguments.container />
+	</cfif>
+</cffunction> 
+
 <cffunction name="setIsActive" access="public" output="false">
 	<cfargument name="IsActive"/>
 	<cfif isNumeric(arguments.isActive)>
@@ -193,7 +206,7 @@ to your own modified versions of Mura CMS.
 	<cfset var rs=""/>
 	
 	<cfquery name="rs" datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-	select extendSetID,subTypeID,categoryID,siteID,name,orderno,isActive from tclassextendsets
+	select extendSetID,subTypeID,categoryID,siteID,name,orderno,isActive,container from tclassextendsets
 	where ExtendSetID=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#getExtendSetID()#">
 	</cfquery>
 	
@@ -250,14 +263,15 @@ to your own modified versions of Mura CMS.
 		subtypeID=<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(getSubTypeID() neq '',de('no'),de('yes'))#" value="#getSubTypeID()#">,
 		categoryID=<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(getCategoryID() neq '',de('no'),de('yes'))#" value="#getCategoryID()#">,
 		isActive=#getIsActive()#,
-		orderno=#getOrderno()#
+		orderno=#getOrderno()#,
+		container=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#getContainer()#">
 		where ExtendSetID=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#getExtendSetID()#">
 		</cfquery>
 		
 	<cfelse>
 	
 		<cfquery datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-		Insert into tclassextendsets (ExtendSetID,siteID,name,subtypeid,isActive,orderno,categoryID) 
+		Insert into tclassextendsets (ExtendSetID,siteID,name,subtypeid,isActive,orderno,categoryID,container) 
 		values(
 		<cfqueryparam cfsqltype="cf_sql_varchar"  value="#getExtendSetID()#">,
 		<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(getSiteID() neq '',de('no'),de('yes'))#" value="#getSiteID()#">,
@@ -265,7 +279,8 @@ to your own modified versions of Mura CMS.
 		<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(getSubTypeID() neq '',de('no'),de('yes'))#" value="#getSubTypeID()#">,
 		#getIsActive()#,
 		#getOrderno()#,
-		<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(getCategoryID() neq '',de('no'),de('yes'))#" value="#getCategoryID()#">)
+		<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(getCategoryID() neq '',de('no'),de('yes'))#" value="#getCategoryID()#">,
+		<cfqueryparam cfsqltype="cf_sql_varchar"  value="#getContainer()#">)
 		</cfquery>
 	</cfif>
 	
@@ -352,4 +367,5 @@ to your own modified versions of Mura CMS.
 </cfif>
 
 </cffunction>
+
 </cfcomponent>
