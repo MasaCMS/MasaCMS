@@ -52,7 +52,7 @@ to your own modified versions of Mura CMS.
 </cfif>
 <cfset style="" />
 </cfsilent>
-<cfsavecontent variable="returnsets.default">
+<cfsavecontent variable="returnsets.extended">
 <cfoutput>
 <cfif arrayLen(extendSets)>
 <dl class="oneColumn"   id="extendDL">

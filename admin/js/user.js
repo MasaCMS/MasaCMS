@@ -58,7 +58,7 @@ function loadExtendedAttributes(baseID,type,subType,_siteID,_context,_themeAsset
 
 function setExtendedAttributes(transport){
 	var r=eval("(" + transport.responseText + ")");
-	$("extendSetsDefault").innerHTML=r.default;
+	$("extendSetsDefault").innerHTML=r.extended;
 	$("extendSetsBasic").innerHTML=r.basic;
 	//checkExtendSetTargeting();
 	setHTMLEditors(context,themeAssetPath);

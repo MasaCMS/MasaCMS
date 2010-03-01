@@ -627,7 +627,7 @@ function reloadPage(){
 function loadExtendedAttributes(contentHistID,type,subType,_siteID,_context,_themeAssetPath)	{
 		var url = 'index.cfm';
 		var pars = 'fuseaction=cArch.loadExtendedAttributes&contentHistID=' + contentHistID +'&type=' + type  +'&subType=' + subType + '&siteID=' + _siteID + '&cacheid=' + Math.random();
-		
+
 		siteID=_siteID;
 		context=_context;
 		themeAssetPath=_themeAssetPath;
@@ -644,7 +644,7 @@ function loadExtendedAttributes(contentHistID,type,subType,_siteID,_context,_the
 
 function setExtendedAttributes(transport){
 	var r=eval("(" + transport.responseText + ")");
-	$("extendSetsDefault").innerHTML=r.default;
+	$("extendSetsDefault").innerHTML=r.extended;
 	$("extendSetsBasic").innerHTML=r.basic;
 	//checkExtendSetTargeting();
 	setHTMLEditors(context,themeAssetPath);

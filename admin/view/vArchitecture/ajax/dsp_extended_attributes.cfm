@@ -42,7 +42,7 @@ to your own modified versions of Mura CMS.
 --->
 <cfset returnsets=structNew()>
 <cfset contentBean=application.contentManager.getcontentVersion(attributes.contentHistID,attributes.siteID)/>
-<cfsavecontent variable="returnsets.default">
+<cfsavecontent variable="returnsets.extended">
 <cfset extendSets=application.classExtensionManager.getSubTypeByName(attributes.type,attributes.subtype,attributes.siteid).getExtendSets(inherit=true,container="Default") />
 <cfset started=false />
 <cfoutput>
