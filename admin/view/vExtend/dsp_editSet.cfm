@@ -64,7 +64,7 @@ to your own modified versions of Mura CMS.
 <dd><select name="container">
 <option value="Default">Extended Attributes Tab</option>
 <option value="Basic"<cfif extendSetBean.getContainer() eq "Basic"> selected</cfif>>Basic Tab</option>
-<option value="Custom"<cfif extendSetBean.getContainer() eq "Custom"> selected</cfif>>Used with Custom UI</option>
+<option value="Custom"<cfif extendSetBean.getContainer() eq "Custom"> selected</cfif>>Custom UI</option>
 </select>
 </dd>
 <cfif subType.getType() neq  "1" and application.categoryManager.getCategoryCount(attributes.siteID)>
