@@ -139,7 +139,7 @@ to your own modified versions of Mura CMS.
 		<cfset application.proxyServices=structNew()>
 	</cfif>
 	
-	<cfif not structKeyExists(application.proxyServices, arguments.serviceName) or true>
+	<cfif not structKeyExists(application.proxyServices, arguments.serviceName)>
 		<cfset application.proxyServices[arguments.serviceName]=createObject("component","mura.proxy.#arguments.serviceName#").init()>
 	</cfif>
 	
