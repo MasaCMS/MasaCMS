@@ -119,87 +119,86 @@ to your own modified versions of Mura CMS.
 
 <cfif (not application.appInitialized or structKeyExists(url,application.appReloadKey))>
 
-	<cfset variables.iniPath = "#getDirectoryFromPath(getCurrentTemplatePath())#settings.ini.cfm" />
-
-	<!--- Use getProfileString() to get settings/mode and [mode]/mapdir (need mapdir to instantiate [mapdir].IniFile, for all other ini properties) --->
-	<cfset variables.mode = getProfileString(variables.iniPath, "settings", "mode") />
-	<cfset variables.mapdir = getProfileString(variables.iniPath, mode, "mapdir") />
-
-	<!--- Use IniFile object to get all other ini properties. --->
-	<cfset variables.ini = createObject( "component", "#variables.mapdir#.IniFile" ).init( "/muraWRM/config/settings.ini.cfm" ) />
-
-	<cfset application.appReloadKey = variables.ini.get("settings", "appReloadKey") />
-
-	<cfset variables.webroot = getDirectoryFromPath(getCurrentTemplatePath()) />
-	<cfset variables.webroot = left(variables.webroot,len(variables.webroot)-8) />
-
-	<cfinclude template="coldspring.xml.cfm" />
-
-	<cfset application.serviceFactory=createObject("component","coldspring.beans.DefaultXmlBeanFactory").init() />
-	<cfset application.serviceFactory.loadBeansFromXMLRaw(servicesXML,true) />
-
-	<cflock name="appInitBlock" type="exclusive" timeout="200">
-
-			<cfobjectcache action="clear" />
-			<cfset application.configBean=application.serviceFactory.getBean("configBean") />
-			<cfset application.settingsManager=application.serviceFactory.getBean("settingsManager") />
-			<cfset application.pluginManager=application.serviceFactory.getBean("pluginManager") />
-			<cfset application.contentManager=application.serviceFactory.getBean("contentManager") />
-			<cfset application.utility=application.serviceFactory.getBean("utility") />
-			<cfset application.permUtility=application.serviceFactory.getBean("permUtility") />
-			<cfset application.contentUtility=application.serviceFactory.getBean("contentUtility") />
-			<cfset application.contentRenderer=application.serviceFactory.getBean("contentRenderer") />
-			<cfset application.contentGateway=application.serviceFactory.getBean("contentGateway") />
-			<cfset application.emailManager=application.serviceFactory.getBean("emailManager") />
-			<cfset application.loginManager=application.serviceFactory.getBean("loginManager") />
-			<cfset application.mailinglistManager=application.serviceFactory.getBean("mailinglistManager") />
-			<cfset application.userManager=application.serviceFactory.getBean("userManager") />
-			<cfset application.dataCollectionManager=application.serviceFactory.getBean("dataCollectionManager") />
-			<cfset application.advertiserManager=application.serviceFactory.getBean("advertiserManager") />
-			<cfset application.categoryManager=application.serviceFactory.getBean("categoryManager") />
-			<cfset application.feedManager=application.serviceFactory.getBean("feedManager") />
-			<cfset application.sessionTrackingManager=application.serviceFactory.getBean("sessionTrackingManager") />
-			<cfset application.favoriteManager=application.serviceFactory.getBean("favoriteManager") />
-			<cfset application.raterManager=application.serviceFactory.getBean("raterManager") />
-			<cfsavecontent variable="variables.temp"><cfoutput><cfinclude template="/mura/bad_words.txt"></cfoutput></cfsavecontent>
-			<cfset application.badwords = ReReplaceNoCase(variables.temp, "," , "|" , "ALL")/> 
-			<cfset application.dashboardManager=application.serviceFactory.getBean("dashboardManager") />
-			<cfset application.classExtensionManager=application.configBean.getClassExtensionManager() />
-			<cfset application.classExtensionManager.setContentRenderer(application.contentRenderer)>
-			<cfset application.rbFactory=application.serviceFactory.getBean("resourceBundleFactory") />
-			<cfset application.clusterManager=application.serviceFactory.getBean("clusterManager") />
-			<cfset application.contentServer=application.serviceFactory.getBean("contentServer") />
-			<cfset application.autoUpdater=application.serviceFactory.getBean("autoUpdater") />
+	<cflock name="appInitBlock" type="exclusive" timeout="200">	
+		<cfset variables.iniPath = "#getDirectoryFromPath(getCurrentTemplatePath())#settings.ini.cfm" />
+	
+		<!--- Use getProfileString() to get settings/mode and [mode]/mapdir (need mapdir to instantiate [mapdir].IniFile, for all other ini properties) --->
+		<cfset variables.mode = getProfileString(variables.iniPath, "settings", "mode") />
+		<cfset variables.mapdir = getProfileString(variables.iniPath, mode, "mapdir") />
+	
+		<!--- Use IniFile object to get all other ini properties. --->
+		<cfset variables.ini = createObject( "component", "#variables.mapdir#.IniFile" ).init( "/muraWRM/config/settings.ini.cfm" ) />
+	
+		<cfset application.appReloadKey = variables.ini.get("settings", "appReloadKey") />
+	
+		<cfset variables.webroot = getDirectoryFromPath(getCurrentTemplatePath()) />
+		<cfset variables.webroot = left(variables.webroot,len(variables.webroot)-8) />
+	
+		<cfinclude template="coldspring.xml.cfm" />
+	
+		<cfset application.serviceFactory=createObject("component","coldspring.beans.DefaultXmlBeanFactory").init() />
+		<cfset application.serviceFactory.loadBeansFromXMLRaw(servicesXML,true) />
+	
+		<cfobjectcache action="clear" />
+		<cfset application.configBean=application.serviceFactory.getBean("configBean") />
+		<cfset application.settingsManager=application.serviceFactory.getBean("settingsManager") />
+		<cfset application.pluginManager=application.serviceFactory.getBean("pluginManager") />
+		<cfset application.contentManager=application.serviceFactory.getBean("contentManager") />
+		<cfset application.utility=application.serviceFactory.getBean("utility") />
+		<cfset application.permUtility=application.serviceFactory.getBean("permUtility") />
+		<cfset application.contentUtility=application.serviceFactory.getBean("contentUtility") />
+		<cfset application.contentRenderer=application.serviceFactory.getBean("contentRenderer") />
+		<cfset application.contentGateway=application.serviceFactory.getBean("contentGateway") />
+		<cfset application.emailManager=application.serviceFactory.getBean("emailManager") />
+		<cfset application.loginManager=application.serviceFactory.getBean("loginManager") />
+		<cfset application.mailinglistManager=application.serviceFactory.getBean("mailinglistManager") />
+		<cfset application.userManager=application.serviceFactory.getBean("userManager") />
+		<cfset application.dataCollectionManager=application.serviceFactory.getBean("dataCollectionManager") />
+		<cfset application.advertiserManager=application.serviceFactory.getBean("advertiserManager") />
+		<cfset application.categoryManager=application.serviceFactory.getBean("categoryManager") />
+		<cfset application.feedManager=application.serviceFactory.getBean("feedManager") />
+		<cfset application.sessionTrackingManager=application.serviceFactory.getBean("sessionTrackingManager") />
+		<cfset application.favoriteManager=application.serviceFactory.getBean("favoriteManager") />
+		<cfset application.raterManager=application.serviceFactory.getBean("raterManager") />
+		<cfsavecontent variable="variables.temp"><cfoutput><cfinclude template="/mura/bad_words.txt"></cfoutput></cfsavecontent>
+		<cfset application.badwords = ReReplaceNoCase(variables.temp, "," , "|" , "ALL")/> 
+		<cfset application.dashboardManager=application.serviceFactory.getBean("dashboardManager") />
+		<cfset application.classExtensionManager=application.configBean.getClassExtensionManager() />
+		<cfset application.classExtensionManager.setContentRenderer(application.contentRenderer)>
+		<cfset application.rbFactory=application.serviceFactory.getBean("resourceBundleFactory") />
+		<cfset application.clusterManager=application.serviceFactory.getBean("clusterManager") />
+		<cfset application.contentServer=application.serviceFactory.getBean("contentServer") />
+		<cfset application.autoUpdater=application.serviceFactory.getBean("autoUpdater") />
+				
+				<!---settings.custom.managers.cfm reference is for backwards compatibility --->
+		<cfif fileExists(ExpandPath("/muraWRM/config/settings.custom.managers.cfm"))>
+			<cfinclude template="/muraWRM/config/settings.custom.managers.cfm">
+		</cfif>
+				
+		<cfset baseDir= left(getDirectoryFromPath(getCurrentTemplatePath()),len(getDirectoryFromPath(getCurrentTemplatePath()))-8) />
+				
+		<cfif StructKeyExists(SERVER,"bluedragon") and not findNoCase("Windows",server.os.name)>
+			<cfset mapPrefix="$" />
+		<cfelse>
+			<cfset mapPrefix="" />
+		</cfif>
+				
+		<cfdirectory action="list" directory="#mapPrefix##baseDir#/requirements/" name="rsRequirements">
 			
-			<!---settings.custom.managers.cfm reference is for backwards compatibility --->
-			<cfif fileExists(ExpandPath("/muraWRM/config/settings.custom.managers.cfm"))>
-				<cfinclude template="/muraWRM/config/settings.custom.managers.cfm">
+		<cfloop query="rsRequirements">
+			<cfif rsRequirements.type eq "dir" and rsRequirements.name neq '.svn' and not structKeyExists(this.mappings,"/#rsRequirements.name#")>
+				<cfset application.serviceFactory.getBean("fileWriter").appendFile(file="#mapPrefix##baseDir#/config/mappings.cfm", output='<cfset this.mappings["/#rsRequirements.name#"] = mapPrefix & BaseDir & "/requirements/#rsRequirements.name#">')>	
 			</cfif>
-			
-			<cfset baseDir= left(getDirectoryFromPath(getCurrentTemplatePath()),len(getDirectoryFromPath(getCurrentTemplatePath()))-8) />
-			
-			<cfif StructKeyExists(SERVER,"bluedragon") and not findNoCase("Windows",server.os.name)>
-				<cfset mapPrefix="$" />
-			<cfelse>
-				<cfset mapPrefix="" />
-			</cfif>
-			
-			<cfdirectory action="list" directory="#mapPrefix##baseDir#/requirements/" name="rsRequirements">
-		
-			<cfloop query="rsRequirements">
-				<cfif rsRequirements.type eq "dir" and rsRequirements.name neq '.svn' and not structKeyExists(this.mappings,"/#rsRequirements.name#")>
-					<cfset application.serviceFactory.getBean("fileWriter").appendFile(file="#mapPrefix##baseDir#/config/mappings.cfm", output='<cfset this.mappings["/#rsRequirements.name#"] = mapPrefix & BaseDir & "/requirements/#rsRequirements.name#">')>	
-				</cfif>
-			</cfloop>	
-			
-			<cfset application.appInitialized=true/>
-			
-			<cfif application.broadcastInit>
-				<cfset application.clusterManager.reload()>
-			</cfif>
-			<cfset application.broadcastInit=true/>
-			<cfset structDelete(application,"muraAdmin")>
-			<cfset structDelete(application,"proxyServices")>
+		</cfloop>	
+				
+		<cfset application.appInitialized=true/>
+				
+		<cfif application.broadcastInit>
+			<cfset application.clusterManager.reload()>
+		</cfif>
+		<cfset application.broadcastInit=true/>
+		<cfset structDelete(application,"muraAdmin")>
+		<cfset structDelete(application,"proxyServices")>
 	</cflock>
 
 	<!--- Set up scheduled tasks --->
