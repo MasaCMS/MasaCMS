@@ -198,7 +198,7 @@ to your own modified versions of Mura CMS.
 											<cfif isNumeric(param.getField())>
 											where tclassextenddatauseractivity.attributeID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#param.getField()#">
 											<cfelse>
-											inner join tclassextendattributes on (tclassextenddata.attributeID = tclassextendattributes.attributeID)
+											inner join tclassextendattributes on (inner join tclassextendattributes on (tclassextenddatauseractivity.attributeID = tclassextendattributes.attributeID))
 											where tclassextendattributes.siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.feedBean.getSiteID()#">
 											and tclassextendattributes.name=<cfqueryparam cfsqltype="cf_sql_varchar" value="#param.getField()#">
 											</cfif>
