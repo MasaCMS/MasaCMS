@@ -56,7 +56,7 @@ to your own modified versions of Mura CMS.
 <cfset var last=listLast(cgi_path,"/") >
 <cfset var indexFile="" >	
 
-<cfif listFindNoCase("cfm,htm,html",listLast(last,"."))>
+<cfif find(".",last)>
 	<cfset indexFile=last>
 </cfif>
 
@@ -148,12 +148,12 @@ to your own modified versions of Mura CMS.
 		<cfset last=listLast(url.path,"/") />
 		
 		<cfif not structKeyExists(request,"preformated")>
-		<cfif listFindNoCase("cfm,htm,html",listLast(last,"."))>
-			<cfset indexFile=last>
-		</cfif>
-		<cfif last neq indexFile and right(url.path,1) neq "/">
-			<cfset application.contentRenderer.redirect("#url.path#/")>
-		</cfif>
+			<cfif find(".",last)>
+				<cfset indexFile=last>
+			</cfif>
+			<cfif last neq indexFile and right(url.path,1) neq "/">
+				<cfset application.contentRenderer.redirect("#url.path#/")>
+			</cfif>
 		</cfif>
 		
 		<cfif isValid("UUID",last)>
@@ -255,6 +255,8 @@ to your own modified versions of Mura CMS.
 	<cfset var last="">
 	<cfset var siteid=bindToDomain()>
 	<cfset var rtrim=0>
+	<cfset var indexFile="" >
+	
 	<cfparam name="url.path" default="" />
 	<cfset urlStem=application.configBean.getContext() & application.configBean.getStub() & "/" & siteid />
 
@@ -273,10 +275,15 @@ to your own modified versions of Mura CMS.
 	</cfif>
 	
 	<cfif len(url.path)>
-	<cfset last=listLast(url.path,"/") />
-	<cfif last neq application.configBean.getIndexFile() and right(url.path,1) neq "/">
-		<cfset application.contentRenderer.redirect("#application.configBean.getStub()#/#url.path#/")>
-	</cfif>
+		<cfset last=listLast(url.path,"/") />
+		
+		<cfif find(".",last)>
+			<cfset indexFile=last>
+		</cfif>
+		
+		<cfif last neq indexFile and right(url.path,1) neq "/">
+			<cfset application.contentRenderer.redirect("#application.configBean.getStub()#/#url.path#/")>
+		</cfif>
 	</cfif>
 	
 	<cfif not url.pathIsComplete>
