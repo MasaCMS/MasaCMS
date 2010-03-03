@@ -49,7 +49,7 @@ to your own modified versions of Mura CMS.
 <div id="svLoginContainer">
 
 	#request.contentBean.getSummary()# <!--- The page summary can be used to show some content before the user has logged in. Outputs only if there is content in the summary field. --->
-	<h3>#rbFactory.getKey('user.pleaselogin')#</h3>
+	<#getHeaderTag('subhead1')#>#rbFactory.getKey('user.pleaselogin')#</#getHeaderTag('subhead1')#>
 	<cfif request.status eq 'failed'>
 		<cfif isDate(session.blockLoginUntil) and session.blockLoginUntil gt now()>
 		<cfset request.isBlocked=true />
