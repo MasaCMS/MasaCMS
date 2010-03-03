@@ -52,8 +52,17 @@ to your own modified versions of Mura CMS.
 <cfargument name="siteID">
 <cfset var qstring="">
 <cfset var contentRenderer=createObject("component","#application.settingsManager.getSite(arguments.siteID).getAssetMap()#.includes.contentRenderer")>
-<cfset var indexFileLen=len(application.configBean.getIndexfile())>
-<cfif len(cgi_path) and right(cgi_path,1) neq "/"  and (not indexFileLen or indexFileLen and (right(cgi_path,indexFileLen) neq application.configBean.getIndexfile()))>
+<cfset var indexFileLen=0>
+<cfset var last=listLast(cgi_path,"/") >
+<cfset var indexFile="" >	
+
+<cfif listFindNoCase("cfm,htm,html",listLast(last,"."))>
+	<cfset indexFile=last>
+</cfif>
+
+<cfset indexFileLen=len(indexFile)>
+
+<cfif len(cgi_path) and right(cgi_path,1) neq "/"  and (not indexFileLen or indexFileLen and (right(cgi_path,indexFileLen) neq indexFile))>
 	<cfif len(cgi.query_string)>
 	<cfset qstring="?" & cgi.query_string>
 	<cfelse>
@@ -128,6 +137,7 @@ to your own modified versions of Mura CMS.
 	<cfset var theStart=0>
 	<cfset var trimLen=0>
 	<cfset var tempfilename="">
+	<cfset var indexFile="">
 	<cfset var thelen=0>
 	<cfset var item="">
 	<cfset var n="">
@@ -138,7 +148,10 @@ to your own modified versions of Mura CMS.
 		<cfset last=listLast(url.path,"/") />
 		
 		<cfif not structKeyExists(request,"preformated")>
-		<cfif last neq application.configBean.getIndexFile() and right(url.path,1) neq "/">
+		<cfif listFindNoCase("cfm,htm,html",listLast(last,"."))>
+			<cfset indexFile=last>
+		</cfif>
+		<cfif last neq indexFile and right(url.path,1) neq "/">
 			<cfset application.contentRenderer.redirect("#url.path#/")>
 		</cfif>
 		</cfif>
