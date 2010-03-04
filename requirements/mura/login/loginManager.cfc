@@ -95,7 +95,7 @@ to your own modified versions of Mura CMS.
 
 <cfif not isdefined('arguments.data.username')>
 
-	<cflocation url="index.cfm?fuseaction=clogin.main&linkServID=#arguments.data.linkServID#" addtoken="false">
+	<cflocation url="?fuseaction=clogin.main&linkServID=#arguments.data.linkServID#" addtoken="false">
 
 <cfelse>
 	
@@ -118,7 +118,7 @@ to your own modified versions of Mura CMS.
 		
 			<cfif arguments.data.returnUrl eq ''>
 						
-				<cflocation url="#application.configBean.getindexFile()#?LinkServID=#arguments.data.LinkServID#" addtoken="false">
+				<cflocation url="?LinkServID=#arguments.data.LinkServID#" addtoken="false">
 			<cfelseif arguments.data.returnUrl neq ''>
 	
 				<cfset returnUrl = replace(arguments.data.returnUrl, 'doaction=logout', '', 'ALL')>
@@ -128,7 +128,11 @@ to your own modified versions of Mura CMS.
 		
 			<cflocation url="#arguments.data.returnUrl#" addtoken="false">
 		<cfelse>
-		<cflocation url="#application.configBean.getindexFile()#?LinkServID=#arguments.data.linkServID#" addtoken="false">
+			<cfif len(arguments.data.linkServID)>
+				<cflocation url="?LinkServID=#arguments.data.linkServID#" addtoken="false">
+			<cfelse>
+				<cflocation url="./" addtoken="false">
+			</cfif>
 		</cfif>
 	<cfelse>
 		<cflocation url="?fuseaction=cLogin.main&display=login&status=failed&rememberMe=#arguments.data.rememberMe#&contentid=#arguments.data.contentid#&LinkServID=#arguments.data.linkServID#&returnURL=#urlEncodedFormat(arguments.data.returnUrl)#" addtoken="false">
@@ -193,7 +197,7 @@ to your own modified versions of Mura CMS.
 
 <cfif not isdefined('arguments.data.userid')>
 
-	<cflocation url="index.cfm?fuseaction=clogin.main&linkServID=#arguments.data.linkServID#" addtoken="false">
+	<cflocation url="?fuseaction=clogin.main&linkServID=#arguments.data.linkServID#" addtoken="false">
 
 <cfelse>
 	
@@ -211,17 +215,21 @@ to your own modified versions of Mura CMS.
 			</cfloop>
 
 			<cfif arguments.data.redirect eq '' and arguments.data.returnUrl eq ''>
-				<cflocation url="#application.configBean.getindexFile()#?LinkServID=#arguments.data.LinkServID#" addtoken="false">
+				<cflocation url="?LinkServID=#arguments.data.LinkServID#" addtoken="false">
 			<cfelseif arguments.data.returnUrl neq ''>
 				<cfset returnUrl = replace(arguments.data.returnUrl, 'doaction=logout', '', 'ALL')>
 				<cflocation url="#returnUrl#" addtoken="false">
 			<cfelse>
-				<cflocation url="index.cfm?fuseaction=#arguments.data.redirect#&parentid=#arguments.data.parentid#&topid=#arguments.data.topid#&siteid=#arguments.data.siteid#&contentid=#arguments.data.contentid#&contenthistid=#arguments.data.contenthistid#&type=#arguments.data.type#&moduleid=#arguments.data.moduleid#" addtoken="false">
+				<cflocation url="?fuseaction=#arguments.data.redirect#&parentid=#arguments.data.parentid#&topid=#arguments.data.topid#&siteid=#arguments.data.siteid#&contentid=#arguments.data.contentid#&contenthistid=#arguments.data.contenthistid#&type=#arguments.data.type#&moduleid=#arguments.data.moduleid#" addtoken="false">
 			</cfif>
 		<cfelseif arguments.data.returnUrl neq ''>
 			<cflocation url="#arguments.data.returnUrl#" addtoken="false">
 		<cfelse>
-		<cflocation url="#application.configBean.getindexFile()#?LinkServID=#arguments.data.linkServID#" addtoken="false">
+			<cfif len(arguments.data.linkServID)>
+				<cflocation url="?LinkServID=#arguments.data.linkServID#" addtoken="false">
+			<cfelse>
+				<cflocation url="./" addtoken="false">
+			</cfif>
 		</cfif>
 	<cfelse>
 		<cflocation url="?fuseaction=cLogin.main&display=login&status=failed&rememberMe=#arguments.data.rememberMe#&contentid=#arguments.data.contentid#&LinkServID=#arguments.data.linkServID#" addtoken="false">
