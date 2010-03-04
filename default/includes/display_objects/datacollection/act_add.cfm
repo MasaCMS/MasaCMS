@@ -98,11 +98,22 @@ to your own modified versions of Mura CMS.
 	</cfif>
 </cfif>
 
-<cfif not structKeyExists(request,"fieldnames")>
-<cfset request.fieldnames=""/>
-<cfloop collection="#form#" item="fn">
-	<cfset request.fieldnames=listAppend(request.fieldnames,fn) />
-</cfloop>
+<cfif structKeyExists(request,"fieldnameOrder")>
+	<cfset request.fieldnames=""/>
+	
+	<cfloop list="#request.fieldnameOrder#" index="i">
+		<cfif structKeyExists(form, i)>
+			<cfset request.fieldnames = listAppend(request.fieldnames, i)>
+		</cfif>
+	</cfloop>
+	
+	<cfset form = structDelete(form, "fieldnameOrder")>
+<cfelseif not structKeyExists(request,"fieldnames")>
+	<cfset request.fieldnames=""/>
+	
+	<cfloop collection="#form#" item="fn">
+		<cfset request.fieldnames=listAppend(request.fieldnames,fn) />
+	</cfloop>
 </cfif>
 
 <cfif acceptdata>

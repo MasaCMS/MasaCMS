@@ -53,6 +53,11 @@ to your own modified versions of Mura CMS.
 <cfif attributes.compactDisplay eq "true">
 <p class="notice">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.globallyappliednotice")#</p>
 </cfif>
+
+<span id="msg">
+#application.pluginManager.renderEvent("onFeedEditMessageRender", event)#
+</span>
+
 <form action="index.cfm?fuseaction=cFeed.update&siteid=#attributes.siteid#" method="post" name="form1" onsubmit="return validate(this);">
 <dl class="oneColumn">
 <dt class="first">#application.rbFactory.getKeyValue(session.rb,'collections.name')#</dt>

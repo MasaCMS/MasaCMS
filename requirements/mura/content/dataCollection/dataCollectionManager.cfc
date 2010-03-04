@@ -92,9 +92,10 @@ to your own modified versions of Mura CMS.
 	
 		<cfif action eq 'create' and right(f,8) eq '_default'>
 			<cfset rf=left(f,len(f)-8)>
-			<cfif not listfind(arguments.data.fieldnames,rf)>
+			<cfif not listFindNoCase(arguments.data.fieldnames,rf)>
 				<cfset arguments.data['#rf#']=arguments.data['#f#']>
 				<cfset thefield=rf>
+				<cfset info.fieldnames=listappend(info.fieldnames,thefield)>
 			<cfelse>
 				<cfset thefield=''>
 			</cfif>

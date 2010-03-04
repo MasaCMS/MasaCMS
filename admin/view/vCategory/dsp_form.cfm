@@ -44,6 +44,10 @@ to your own modified versions of Mura CMS.
 <h2><cfif attributes.categoryID neq ''>#application.rbFactory.getKeyValue(session.rb,'categorymanager.editcontentcategory')#<cfelse>#application.rbFactory.getKeyValue(session.rb,'categorymanager.addcontentcategory')#</cfif></h2>
 #application.utility.displayErrors(request.categoryBean.getErrors())#
 
+<span id="msg">
+#application.pluginManager.renderEvent("onCategoryEditMessageRender", event)#
+</span>
+
 <form action="index.cfm?fuseaction=cCategory.update&siteid=#attributes.siteid#" method="post" name="form1" onsubmit="return validate(this);">
 <dl class="oneColumn">
 <dt class="first">#application.rbFactory.getKeyValue(session.rb,'categorymanager.name')#</dt>

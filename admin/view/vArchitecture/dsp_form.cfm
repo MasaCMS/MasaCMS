@@ -145,6 +145,7 @@ select * from rsPluginScripts3 order by pluginID
 <cfif attributes.compactDisplay eq "true" and not ListFindNoCase(nodeLevelList,attributes.type)>
 <p class="notice">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.globallyappliednotice")#</p>
 </cfif>
+
 <form action="index.cfm?fuseaction=cArch.update&contentid=#attributes.contentid#" method="post" enctype="multipart/form-data" name="contentForm" onsubmit="return ckContent(draftremovalnotice);" id="contentForm">
 <cfif attributes.compactDisplay neq "true">
 	<cfif attributes.moduleid eq '00000000000000000000000000000000000'>#application.contentRenderer.dspZoom(request.crumbdata,fileExt)#</cfif>
@@ -220,7 +221,13 @@ select * from rsPluginScripts3 order by pluginID
 			</cfif>
 	</cfif>
 		</ul>
-</cfif>	
+</cfif>
+
+<!-- This is plugin message targeting --->	
+<span id="msg">
+#application.pluginManager.renderEvent("on#request.contentBean.getType()#EditMessageRender", pluginEvent)#
+#application.pluginManager.renderEvent("on#request.contentBean.getType()##request.contentBean.getSubType()#EditMessageRender", pluginEvent)#
+</span>
 
 <cfif attributes.compactDisplay neq "true" or not listFindNoCase(nodeLevelList,attributes.type)>	
 	<cfif attributes.contentid neq "">
