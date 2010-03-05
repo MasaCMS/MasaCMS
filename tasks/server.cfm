@@ -43,4 +43,4 @@ to your own modified versions of Mura CMS.
 
 
 
-<cfdump var="#server#">
+<!---<cfdump var="#server#">--->
