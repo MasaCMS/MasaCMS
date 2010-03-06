@@ -42,11 +42,11 @@
 		
 		<cfif len(rc.siteid)>
 			<cfif variables.configBean.getDashboard()>
-				<cfset variables.fw.redirect(action="cDashboard.main",append="siteid",path="")>
+				<cfset variables.fw.redirect(action="cDashboard.main",append="siteid",path="index.cfm")>
 			<cfelse>
 				<cfset rc.moduleid="00000000000000000000000000000000000">
 				<cfset rc.topid="00000000000000000000000000000000001">
-				<cfset variables.fw.redirect(action="cArch.list",append="siteid,moduleid,topid",path="")>
+				<cfset variables.fw.redirect(action="cArch.list",append="siteid,moduleid,topid",path="index.cfm")>
 			</cfif>
 		</cfif>
 		

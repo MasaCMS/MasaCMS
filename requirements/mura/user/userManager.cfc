@@ -539,11 +539,15 @@ to your own modified versions of Mura CMS.
 	<cfargument name="data" type="any" default="#structnew()#"/>	
 	
 	<cfset var error =""/>
-	<cfset var addressBean=variables.userDAO.readAddress(arguments.data.addressid) />
+	<cfset var addressBean=""/>
 	<cfset var userBean="" />
 	
 	<cfif isObject(arguments.data)>
 		<cfset arguments.data=arguments.data.getAllValues() />
+	<cfelseif structKeyExists(arguments.data,"addressID")>
+		<cfset addressBean=variables.userDAO.readAddress(arguments.data.addressid)>
+	<cfelse>
+		<cfset addressBean=getBean("addressBean")>
 	</cfif>
 	
 	<cfif not structKeyExists(arguments.data,"userID") or (structKeyExists(arguments.data,"userID") and not len(arguments.data.userID))>

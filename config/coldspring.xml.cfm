@@ -662,6 +662,7 @@ to your own modified versions of Mura CMS.
 		<alias name="contentBean" alias="content"/>
 		<alias name="feedBean" alias="feed"/>
 		<alias name="userBean" alias="user"/>
+		<alias name="addressBean" alias="address"/>
 		<alias name="categoryBean" alias="category"/>
 		<alias name="userFeedBean" alias="userFeed"/>
 		<!---coldspring.custom.xml.cfm reference is for backwards compatability --->

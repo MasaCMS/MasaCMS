@@ -108,6 +108,13 @@ to your own modified versions of Mura CMS.
 	</cfloop>
 	
 	<cfset form = structDelete(form, "fieldnameOrder")>
+<cfelseif application.configBean.getCompiler() eq "Railo">
+	<cfif not isBinary(GetHttpRequestData().content)>
+		<cfset request.fieldnames=""/>
+		<cfloop list="#GetHttpRequestData().content#" delimiters="&" index="j">
+			<cfset request.fieldnames = listAppend(request.fieldnames, listFirst(urlDecode(j), "="))>
+		</cfloop>
+	</cfif>
 <cfelseif not structKeyExists(request,"fieldnames")>
 	<cfset request.fieldnames=""/>
 	

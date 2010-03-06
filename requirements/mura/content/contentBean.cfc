@@ -333,8 +333,14 @@ to your own modified versions of Mura CMS.
   </cffunction>
 
   <cffunction name="validate" access="public" output="false" returntype="void">
-		<cfset var extErrors=variables.configBean.getClassExtensionManager().validateExtendedData(getAllValues()) />
+		<cfset var extErrors=structNew() />
+	
+		<cfif len(getSiteID())>
+			<cfset extErrors=variables.configBean.getClassExtensionManager().validateExtendedData(getAllValues())>
+		</cfif>
+		
 		<cfset variables.instance.errors=structnew() />
+		
 		<cfif not structIsEmpty(extErrors)>
 			<cfset structAppend(variables.instance.errors,extErrors)>
 		</cfif>	
