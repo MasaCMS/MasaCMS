@@ -543,6 +543,7 @@ to your own modified versions of Mura CMS.
 	<cfset var userBean="" />
 	
 	<cfif isObject(arguments.data)>
+		<cfset addressBean=arguments.data>
 		<cfset arguments.data=arguments.data.getAllValues() />
 	<cfelseif structKeyExists(arguments.data,"addressID")>
 		<cfset addressBean=variables.userDAO.readAddress(arguments.data.addressid)>
