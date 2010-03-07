@@ -12,9 +12,13 @@
 		<cfset var value = "" />
 
 		
-		<cfset variables.iniPath = expandPath(arguments.iniPath) />
+		<cfset variables.iniPath = arguments.iniPath />
 		<cfset variables.ini = structNew() />
 
+
+		<cffile variable="file" action="read" file="#variables.iniPath#"  />
+		
+		<!---
 		<cfif NOT fileExists( variables.iniPath )>
 			<cffile variable="file" action="write" file="#variables.iniPath#" output="" addnewline="false" />
 			<cfreturn this />
@@ -24,7 +28,7 @@
 		<cfset cleanIni()>
 		
 		<cfsavecontent variable="file"><cfoutput><cfinclude template="#arguments.iniPath#"></cfoutput></cfsavecontent>
-
+		--->
 		<cfloop list="#file#" index="line" delimiters="#chr(10)##chr(13)#">
 			<cfset line = trim( line ) />
 			<cfif NOT ( startsWith( line, ";" ) OR startsWith( line, "##" ) OR startsWith( line, "<" ) )>

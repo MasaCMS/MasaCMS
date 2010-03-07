@@ -127,7 +127,7 @@ to your own modified versions of Mura CMS.
 		<cfset variables.mapdir = getProfileString(variables.iniPath, mode, "mapdir") />
 	
 		<!--- Use IniFile object to get all other ini properties. --->
-		<cfset variables.ini = createObject( "component", "#variables.mapdir#.IniFile" ).init( "/muraWRM/config/settings.ini.cfm" ) />
+		<cfset variables.ini = createObject( "component", "#variables.mapdir#.IniFile" ).init(variables.iniPath) />
 	
 		<cfset application.appReloadKey = variables.ini.get("settings", "appReloadKey") />
 	
