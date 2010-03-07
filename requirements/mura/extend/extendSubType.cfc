@@ -87,10 +87,10 @@ to your own modified versions of Mura CMS.
 	<cfif rs.recordcount>
 		<cfset set(rs) />
 	</cfif>
-	
+	<cfreturn this>
 </cffunction>
 
-<cffunction name="set" returnType="void" output="false" access="public">
+<cffunction name="set" output="false" access="public">
 		<cfargument name="data" type="any" required="true">
 
 		<cfset var prop=""/>
@@ -117,11 +117,12 @@ to your own modified versions of Mura CMS.
 		</cfif>
 		
 		<cfset validate() />
-		
+		<cfreturn this>
 </cffunction>
   
-<cffunction name="validate" access="public" output="false" returntype="void">
+<cffunction name="validate" access="public" output="false">
 	<cfset variables.instance.errors=structnew() />
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="getErrors" returnType="struct" output="false" access="public">
@@ -135,6 +136,7 @@ to your own modified versions of Mura CMS.
 <cffunction name="setSiteID" access="public" output="false">
 	<cfargument name="siteID" type="String" />
 	<cfset variables.instance.siteID = trim(arguments.siteID) />
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="getSubTypeID" returntype="String" access="public" output="false">
@@ -147,6 +149,7 @@ to your own modified versions of Mura CMS.
 <cffunction name="setSubTypeID" access="public" output="false">
 	<cfargument name="SubTypeID" type="String" />
 	<cfset variables.instance.SubTypeID = trim(arguments.SubTypeID) />
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="getType" returntype="String" access="public" output="false">
@@ -156,6 +159,7 @@ to your own modified versions of Mura CMS.
 <cffunction name="setType" access="public" output="false">
 	<cfargument name="Type" type="String" />
 	<cfset variables.instance.Type = trim(arguments.Type) />
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="getSubType" returntype="String" access="public" output="false">
@@ -165,6 +169,7 @@ to your own modified versions of Mura CMS.
 <cffunction name="setSubType" access="public" output="false">
 	<cfargument name="SubType" type="String" />
 	<cfset variables.instance.SubType = trim(arguments.SubType) />
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="getDataTable" returntype="String" access="public" output="false">
@@ -176,6 +181,7 @@ to your own modified versions of Mura CMS.
 	<cfif len(trim(arguments.dataTable))>
 		<cfset variables.instance.DataTable = trim(arguments.DataTable) />
 	</cfif>
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="getBaseTable" returntype="String" access="public" output="false">
@@ -185,6 +191,7 @@ to your own modified versions of Mura CMS.
 <cffunction name="setBaseTable" access="public" output="false">
 	<cfargument name="BaseTable" type="String" />
 	<cfset variables.instance.BaseTable = trim(arguments.BaseTable) />
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="getbaseKeyField" returntype="String" access="public" output="false">
@@ -194,6 +201,7 @@ to your own modified versions of Mura CMS.
 <cffunction name="setbaseKeyField" access="public" output="false">
 	<cfargument name="baseKeyField" type="String" />
 	<cfset variables.instance.baseKeyField = trim(arguments.baseKeyField) />
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="getIsActive" returntype="numeric" access="public" output="false">
@@ -205,6 +213,7 @@ to your own modified versions of Mura CMS.
 	<cfif isNumeric(arguments.isActive)>
 		<cfset variables.instance.IsActive = arguments.IsActive />
 	</cfif>
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="getExtendSets" access="public" returntype="array">
@@ -237,7 +246,7 @@ to your own modified versions of Mura CMS.
 	<cfreturn extendArray />
 </cffunction>
 
-<cffunction name="save"  access="public" output="false" returntype="void">
+<cffunction name="save"  access="public" output="false">
 <cfset var rs=""/>
 <cfset var extendSetBean=""/>
 
@@ -279,7 +288,7 @@ to your own modified versions of Mura CMS.
 		<cfset extendSetBean.setSiteID(getSiteID()) />
 		<cfset extendSetBean.save() />
 	</cfif>
-	
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="getExtendSetByName" access="public" output="false" returntype="any">
@@ -300,7 +309,7 @@ to your own modified versions of Mura CMS.
 	<cfreturn extendSet/>
 </cffunction>
 
-<cffunction name="delete" access="public" returntype="void">
+<cffunction name="delete" access="public">
 <cfset var rs=""/>
 <cfset var rsSets=""/>
 
@@ -341,7 +350,7 @@ to your own modified versions of Mura CMS.
 </cffunction>
 
 
-<cffunction name="addExtendSet" access="public" output="false" returntype="void">
+<cffunction name="addExtendSet" access="public" output="false">
 <cfargument name="rawdata">
 <cfset var extendSet=""/>
 <cfset var data=arguments.rawdata />
@@ -357,10 +366,10 @@ to your own modified versions of Mura CMS.
 	<cfset extendSet.setSiteID(getSiteID())/>
 	<cfset extendSet.save()/>
 	<cfset arrayAppend(getExtendSets(),extendSet)/>
-	
+	<cfreturn this>
 </cffunction>
 
-<cffunction name="deleteSet" access="public" returntype="void">
+<cffunction name="deleteSet" access="public">
 <cfargument name="ExtendSetID">
 <cfset var extendSetBean=getExtendSetBean() />
 			

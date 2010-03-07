@@ -71,7 +71,7 @@ to your own modified versions of Mura CMS.
 <cfreturn attribute />
 </cffunction>
 
-<cffunction name="set" returnType="void" output="false" access="public">
+<cffunction name="set" output="false" access="public">
 		<cfargument name="data" type="any" required="true">
 
 		<cfset var prop=""/>
@@ -97,11 +97,12 @@ to your own modified versions of Mura CMS.
 		</cfif>
 		
 		<cfset validate() />
-		
+		<cfreturn this>
 </cffunction>
   
-<cffunction name="validate" access="public" output="false" returntype="void">
+<cffunction name="validate" access="public" output="false">
 	<cfset variables.instance.errors=structnew() />
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="getErrors" returnType="struct" output="false" access="public">
@@ -115,6 +116,7 @@ to your own modified versions of Mura CMS.
 <cffunction name="setSiteID" access="public" output="false">
 	<cfargument name="siteID" type="String" />
 	<cfset variables.instance.siteID = trim(arguments.siteID) />
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="getExtendSetID" returntype="String" access="public" output="false">
@@ -127,6 +129,7 @@ to your own modified versions of Mura CMS.
 <cffunction name="setExtendSetID" access="public" output="false">
 	<cfargument name="ExtendSetID" type="String" />
 	<cfset variables.instance.ExtendSetID = trim(arguments.ExtendSetID) />
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="getName" returntype="String" access="public" output="false">
@@ -136,6 +139,7 @@ to your own modified versions of Mura CMS.
 <cffunction name="setName" access="public" output="false">
 	<cfargument name="name" type="String" />
 	<cfset variables.instance.name = trim(arguments.name) />
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="getSubTypeID" returntype="String" access="public" output="false">
@@ -145,6 +149,7 @@ to your own modified versions of Mura CMS.
 <cffunction name="setSubTypeID" access="public" output="false">
 	<cfargument name="SubTypeID" type="String" />
 	<cfset variables.instance.SubTypeID = trim(arguments.SubTypeID) />
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="getOrderNo" returntype="numeric" access="public" output="false">
@@ -156,6 +161,7 @@ to your own modified versions of Mura CMS.
 	<cfif isNumeric(arguments.OrderNo)>
 	<cfset variables.instance.OrderNo = arguments.OrderNo />
 	</cfif>
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="getCategoryID" returntype="String" access="public" output="false">
@@ -165,10 +171,19 @@ to your own modified versions of Mura CMS.
 <cffunction name="setCategoryID" access="public" output="false">
 	<cfargument name="CategoryID" type="String" />
 	<cfset variables.instance.CategoryID = trim(arguments.CategoryID) />
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="getIsActive" returntype="numeric" access="public" output="false">
 	<cfreturn variables.instance.IsActive />
+</cffunction>
+
+<cffunction name="setIsActive" access="public" output="false">
+	<cfargument name="IsActive"/>
+	<cfif isNumeric(arguments.isActive)>
+		<cfset variables.instance.IsActive = arguments.IsActive />
+	</cfif>
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="getContainer" returntype="string" access="public" output="false">
@@ -180,14 +195,8 @@ to your own modified versions of Mura CMS.
 	<cfif len(arguments.container)>
 		<cfset variables.instance.container = arguments.container />
 	</cfif>
+	<cfreturn this>
 </cffunction> 
-
-<cffunction name="setIsActive" access="public" output="false">
-	<cfargument name="IsActive"/>
-	<cfif isNumeric(arguments.isActive)>
-		<cfset variables.instance.IsActive = arguments.IsActive />
-	</cfif>
-</cffunction>
 
 <cffunction name="getAttributesQuery" access="public" returntype="query">
 <cfset var rs=""/>
@@ -213,10 +222,10 @@ to your own modified versions of Mura CMS.
 	<cfif rs.recordcount>
 		<cfset set(rs) />
 	</cfif>
-
+	<cfreturn this>
 </cffunction>
 
-<cffunction name="loadAttributes" access="public" returntype="void">
+<cffunction name="loadAttributes" access="public">
 	<cfset var rsAttributes=""/>
 	<cfset var tempArray=""/>
 	<cfset var attribute=""/>
@@ -237,7 +246,7 @@ to your own modified versions of Mura CMS.
 		</cfloop>
 			
 	</cfif>
-	
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="getAttributes" access="public" returntype="any">
@@ -247,7 +256,7 @@ to your own modified versions of Mura CMS.
 	<cfreturn variables.instance.attributes />
 </cffunction>
 
-<cffunction name="save"  access="public" output="false" returntype="void">
+<cffunction name="save"  access="public" output="false">
 <cfset var rs=""/>
 
 	<cfquery name="rs" datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
@@ -283,10 +292,10 @@ to your own modified versions of Mura CMS.
 		<cfqueryparam cfsqltype="cf_sql_varchar"  value="#getContainer()#">)
 		</cfquery>
 	</cfif>
-	
+	<cfreturn this>
 </cffunction>
 
-<cffunction name="delete"  access="public" output="false" returntype="void">
+<cffunction name="delete"  access="public" output="false">
 	<cfset var rs=getAttributesQuery() />
 	<cfset var attribute=""/>
 	
@@ -320,7 +329,7 @@ to your own modified versions of Mura CMS.
 	<cfreturn attribute/>
 </cffunction>
 
-<cffunction name="addAttribute" access="public" output="false" returntype="void">
+<cffunction name="addAttribute" access="public" output="false">
 <cfargument name="rawdata">
 <cfset var attribute=""/>
 <cfset var data=arguments.rawdata />
@@ -336,10 +345,10 @@ to your own modified versions of Mura CMS.
 	<cfset attribute.setSiteID(getSiteID())/>
 	<cfset attribute.save()/>
 	<cfset arrayAppend(getAttributes(),attribute)/>
-	
+	<cfreturn this>
 </cffunction>
 
-<cffunction name="deleteAttribute" access="public" output="false" returntype="void">
+<cffunction name="deleteAttribute" access="public" output="false">
 <cfargument name="attributeID">
 <cfset var attribute=""/>
 
@@ -347,6 +356,7 @@ to your own modified versions of Mura CMS.
 	<cfset attribute.setAttributeID(arguments.attributeID)/>
 	<cfset attribute.delete()/>
 	<cfset loadAttributes()/>
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="getStyle" ouput="false" returntype="string">

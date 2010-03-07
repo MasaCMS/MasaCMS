@@ -51,10 +51,10 @@ to your own modified versions of Mura CMS.
 	<cfreturn category>
 </cffunction>
 
-<cffunction name="setCategoryManager" output="false" returntype="void" access="public">
+<cffunction name="setCategoryManager" output="false" access="public">
 	<cfargument name="categoryManager">
 	<cfset variables.categoryManager=arguments.categoryManager>
+	<cfreturn this>
 </cffunction>
-
 
 </cfcomponent>

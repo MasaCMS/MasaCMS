@@ -31,7 +31,7 @@
 	<cfreturn this />
 </cffunction>
 
-<cffunction name="set" returnType="void" output="false" access="public">
+<cffunction name="set" output="false" access="public">
 		<cfargument name="data" type="any" required="true">
 
 		<cfset var prop=""/>
@@ -63,11 +63,12 @@
 		</cfif>
 		
 		<cfset validate() />
-		
+		<cfreturn this>
 </cffunction>
   
-<cffunction name="validate" access="public" output="false" returntype="void">
+<cffunction name="validate" access="public" output="false">
 	<cfset variables.instance.errors=structnew() />
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="getErrors" returnType="struct" output="false" access="public">
@@ -81,6 +82,7 @@
 <cffunction name="setContentID" access="public" output="false">
 	<cfargument name="ContentID" type="String" />
 	<cfset variables.instance.ContentID = trim(arguments.ContentID) />
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="getCommentID" returntype="String" access="public" output="false">
@@ -93,6 +95,7 @@
 <cffunction name="setCommentID" access="public" output="false">
 	<cfargument name="commentID" type="String" />
 	<cfset variables.instance.commentID = trim(arguments.commentID) />
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="getSiteID" returntype="String" access="public" output="false">
@@ -102,6 +105,7 @@
 <cffunction name="setSiteID" access="public" output="false">
 	<cfargument name="SiteID" type="String" />
 	<cfset variables.instance.SiteID = trim(arguments.SiteID) />
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="getName" returntype="String" access="public" output="false">
@@ -111,6 +115,7 @@
 <cffunction name="setName" access="public" output="false">
 	<cfargument name="name" type="String" />
 	<cfset variables.instance.name = trim(arguments.name) />
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="getURL" returntype="String" access="public" output="false">
@@ -126,7 +131,7 @@
 			not listFindNoCase("http:,https:",listFirst(variables.instance.url,"//"))>
 		<cfset variables.instance.url = "http://" & variables.instance.url />
 	</cfif>
-			
+	<cfreturn this>		
 </cffunction>
 
 <cffunction name="getEmail" returntype="String" access="public" output="false">
@@ -136,6 +141,7 @@
 <cffunction name="setEmail" access="public" output="false">
 	<cfargument name="email" type="String" />
 	<cfset variables.instance.email = trim(arguments.email) />
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="getComments" returntype="String" access="public" output="false">
@@ -145,6 +151,7 @@
 <cffunction name="setComments" access="public" output="false">
 	<cfargument name="comments" type="String" />
 	<cfset variables.instance.comments = trim(arguments.comments) />
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="getSubscribe" returntype="numeric" access="public" output="false">
@@ -156,6 +163,7 @@
 	<cfif isNumeric(arguments.subscribe)>
 	<cfset variables.instance.subscribe = arguments.subscribe />
 	</cfif>
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="getIsApproved" returntype="numeric" access="public" output="false">
@@ -167,6 +175,7 @@
 	<cfif isNumeric(arguments.isApproved)>
 	<cfset variables.instance.isApproved = arguments.isApproved />
 	</cfif>
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="getEntered" returntype="string" access="public" output="false">
@@ -178,6 +187,7 @@
 	<cfif isDate(arguments.entered)>
 	<cfset variables.instance.entered = arguments.entered />
 	</cfif>
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="getUserID" returntype="String" access="public" output="false">
@@ -187,18 +197,21 @@
 <cffunction name="setContentRenderer" access="public" output="false">
 	<cfargument name="contentRenderer" />
 	<cfset variables.contentRenderer = arguments.contentRenderer />
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="setUserID" access="public" output="false">
 	<cfargument name="userID" type="String" />
 	<cfset variables.instance.userID = trim(arguments.userID) />
+	<cfreturn this>
 </cffunction>
 
-<cffunction name="load"  access="public" output="false" returntype="void">
+<cffunction name="load" access="public" output="false">
 	<cfset var rs=getQuery()>
 	<cfif rs.recordcount>
 		<cfset set(rs) />
 	</cfif>
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="getQuery"  access="public" output="false" returntype="query">
@@ -211,7 +224,7 @@
 	<cfreturn rs/>
 </cffunction>
 
-<cffunction name="delete" access="public" returntype="void">
+<cffunction name="delete" access="public">
 	<cfquery datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	delete from tcontentcomments
 	where commentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getCommentID()#">
@@ -220,7 +233,7 @@
 	<cfset variables.contentManager.setCommentStat(getContentID(),getSiteID()) />
 </cffunction>
 
-<cffunction name="save"  access="public" output="false" returntype="void">
+<cffunction name="save" access="public" output="false">
 	<cfargument name="contentRenderer" default="#variables.contentRenderer#" required="true" hint="I'm the contentRenderer used to render links sent to subscribers.">
 	<cfargument name="script" required="true" default="" hint="I'm the script that is sent to the subscribers.">
 	<cfargument name="subject" required="true" default="" hint="I'm the subject that is sent to the subscribers.">
@@ -273,19 +286,20 @@
 	</cfif>
 	
 	<cfset variables.contentManager.setCommentStat(getContentID(),getSiteID()) />
-	
+	<cfreturn this>
 </cffunction>
 
-<cffunction name="saveSubscription"  access="public" output="false" returntype="void">		
+<cffunction name="saveSubscription" access="public" output="false">		
 	<cfquery datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 			update tcontentcomments set subscribe=<cfqueryparam cfsqltype="cf_sql_numeric" value="#getSubscribe()#">
 			where contentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getContentID()#">
 			and siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getSiteID()#">
 			and email=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getEmail()#">
 	</cfquery>
+	<cfreturn this>
 </cffunction>
 
-<cffunction name="sendNotification"  access="public" output="false" returntype="void">
+<cffunction name="sendNotification"  access="public" output="false">
 <cfargument name="script" required="true" default="">
 <cfargument name="contentRenderer" required="true" default="#variables.contentRenderer#">
 
@@ -337,9 +351,11 @@ http://#listFirst(cgi.http_host,":")##variables.configBean.getServerPort()##vari
 						getName(),
 						'New Comment',
 						getSiteID()) />
+						
+<cfreturn this>
 </cffunction>
 
-<cffunction name="notifySubscribers"  access="public" output="false" returntype="void">
+<cffunction name="notifySubscribers" access="public" output="false">
 <cfargument name="contentRenderer" required="true" default="#application.contentRenderer#">
 <cfargument name="script" required="true" default="">
 <cfargument name="subject" required="true" default="">
@@ -401,6 +417,8 @@ To Unsubscribe Click Here
 							notifySubject,
 							getSiteID()) />
 </cfif>
+
+<cfreturn this>
 </cffunction>
 
 </cfcomponent>

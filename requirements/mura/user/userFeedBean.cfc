@@ -11,13 +11,14 @@
 <cffunction name="setUserManager" returntype="any" output="false">
 <cfargument name="userManager">
 <cfset variables.userManager=arguments.userManager>
+<cfreturn this>
 </cffunction>
 
 <cffunction name="getParams" returntype="query" access="public" output="false">
 	<cfreturn variables.instance.params />
 </cffunction>
 
-<cffunction name="setParams" returntype="void" access="public" output="false">
+<cffunction name="setParams" access="public" output="false">
 	<cfargument name="params" type="any" required="true">
 		
 		<cfset var rows=0/>
@@ -65,10 +66,11 @@
 				<cfset setGroupID(arguments.params.groupID)>
 			</cfif>
 		</cfif>
+		<cfreturn this>
 </cffunction>
 
 
-<cffunction name="addParam" returntype="void" access="public" output="false">
+<cffunction name="addParam" access="public" output="false">
 	<cfargument name="field" type="string" required="true" default="">
 	<cfargument name="relationship" type="string" default="and" required="true">
 	<cfargument name="criteria" type="string" required="true" default="">
@@ -84,11 +86,12 @@
 		<cfset querysetcell(variables.instance.params,"criteria",arguments.criteria,rows)/>
 		<cfset querysetcell(variables.instance.params,"condition",arguments.condition,rows)/>
 		<cfset querysetcell(variables.instance.params,"dataType",arguments.datatype,rows)/>
-
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="clearParams">
 	<cfset variables.instance.params=queryNew("param,relationship,field,condition,criteria,dataType","integer,varchar,varchar,varchar,varchar,varchar" )  />
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="getQuery" returntype="query" output="false">
@@ -114,6 +117,7 @@
 	<cfif isNumeric(arguments.inactive)>
 		<cfset variables.inactive=arguments.inactive>
 	</cfif>
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="getIsPublic" returntype="any" output="false">
@@ -125,6 +129,7 @@
 	<cfif isNumeric(arguments.isPublic)>
 		<cfset variables.isPublic=arguments.isPublic>
 	</cfif>
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="getSiteID" returntype="any" output="false">
@@ -134,6 +139,7 @@
 <cffunction name="setSiteID" output="false">
 	<cfargument name="siteID">
 	<cfset variables.siteID=arguments.siteID>
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="setGroupID" access="public" output="false">
@@ -150,6 +156,7 @@
 	    </cfif>
 	    </cfloop> 
 	</cfif>
+	<cfreturn this>
 </cffunction>
   
 <cffunction name="getGroupID" returnType="string" output="false" access="public">
@@ -170,6 +177,7 @@
 	    </cfif>
 	    </cfloop> 
 	</cfif>
+	<cfreturn this>
 </cffunction>
   
 <cffunction name="getCategoryID" returnType="string" output="false" access="public">

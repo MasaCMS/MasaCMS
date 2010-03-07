@@ -52,7 +52,7 @@ to your own modified versions of Mura CMS.
 <cfargument name="propertyValue" default="" >
 
 	<cfset variables["#arguments.property#"]=arguments.propertyValue />
-
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="getValue" returntype="any" access="public" output="false">
@@ -75,9 +75,10 @@ to your own modified versions of Mura CMS.
 		<cfreturn structKeyExists(variables,arguments.property) />
 </cffunction>
 
-<cffunction name="removeValue" returntype="void" access="public" output="false">
+<cffunction name="removeValue" access="public" output="false">
 	<cfargument name="property" type="string" required="true"/>
 		<cfset structDelete(variables,arguments.property) />
+		<cfreturn this>
 </cffunction>
 
 <cffunction name="getConfigBean" returntype="any" access="public" output="false">
@@ -130,10 +131,11 @@ to your own modified versions of Mura CMS.
 	<cfreturn application.pluginManager.getConfig(arguments.ID, arguments.siteID, arguments.cache) />	
 </cffunction>
 
-<cffunction name="setTranslator" output="false" returntype="void" access="public">
+<cffunction name="setTranslator" output="false" access="public">
 <cfargument name="translator">
 	<cfset variables.translator=arguments.translator/>
 	<cfset variables.translator.setBean(this)>
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="translate" output="false" returntype="any" access="public">
@@ -164,14 +166,15 @@ to your own modified versions of Mura CMS.
 	</cfif>
 </cffunction>
 
-<cffunction name="injectMethod" returntype="void" access="public" output="false">
+<cffunction name="injectMethod" access="public" output="false">
 <cfargument name="toObjectMethod" type="string" required="true" />
 <cfargument name="fromObjectMethod" type="any" required="true" />
 <cfset this[ arguments.toObjectMethod ] =  arguments.fromObjectMethod  />
 <cfset variables[ arguments.toObjectMethod ] =  arguments.fromObjectMethod />
+<cfreturn this>
 </cffunction>
 
-<cffunction name="deleteMethod" returntype="void" access="public" output="false">
+<cffunction name="deleteMethod" access="public" output="false">
 <cfargument name="methodName" type="any" required="true" />
 <cfset structKeyDelete(this,arguments.methodName)>
 <cfset structKeyDelete(variables,arguments.methodName)>

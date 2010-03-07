@@ -141,7 +141,7 @@ to your own modified versions of Mura CMS.
 		<cfreturn variables.instance />
 </cffunction>
 
-<cffunction name="setGeoCoding"  returnType="void" output="false" access="public">
+<cffunction name="setGeoCoding"   output="false" access="public">
 <cfset var result=structNew() />
 <cfset var address=""/>
 <cfset var googleAPIKey="" />
@@ -180,11 +180,13 @@ to your own modified versions of Mura CMS.
 	</cfif>
 
 </cfif>
+<cfreturn this>
 </cffunction>
 
-<cffunction name="setAddressID" returnType="void" output="false" access="public">
+<cffunction name="setAddressID" output="false" access="public">
     <cfargument name="addressID" type="string" required="true">
     <cfset variables.instance.addressID = trim(arguments.addressID) />
+	<cfreturn this>
   </cffunction>
   
   <cffunction name="getAddressID" returnType="string" output="false" access="public">
@@ -194,120 +196,133 @@ to your own modified versions of Mura CMS.
 	<cfreturn variables.instance.addressID />
   </cffunction>
 
- <cffunction name="setUserID" returnType="void" output="false" access="public">
+ <cffunction name="setUserID" output="false" access="public">
     <cfargument name="UserID" type="string" required="true">
     <cfset variables.instance.UserID = trim(arguments.UserID) />
+	<cfreturn this>
   </cffunction>
 
   <cffunction name="getUserID" returnType="string" output="false" access="public">
     <cfreturn variables.instance.UserID />
   </cffunction>
   
- <cffunction name="setSiteID" returnType="void" output="false" access="public">
+ <cffunction name="setSiteID" output="false" access="public">
     <cfargument name="SiteID" type="string" required="true">
     <cfset variables.instance.SiteID = trim(arguments.SiteID) />
+	<cfreturn this>
   </cffunction>
 
   <cffunction name="getSiteID" returnType="string" output="false" access="public">
     <cfreturn variables.instance.SiteID />
   </cffunction>
 
- <cffunction name="setAddress1" returnType="void" output="false" access="public">
+ <cffunction name="setAddress1" output="false" access="public">
     <cfargument name="Address1" type="string" required="true">
     <cfset variables.instance.Address1 = trim(arguments.Address1) />
+	<cfreturn this>
   </cffunction>
 
   <cffunction name="getAddress1" returnType="string" output="false" access="public">
     <cfreturn variables.instance.Address1 />
   </cffunction>
   
-  <cffunction name="setAddress2" returnType="void" output="false" access="public">
+  <cffunction name="setAddress2" output="false" access="public">
     <cfargument name="Address2" type="string" required="true">
     <cfset variables.instance.Address2 = trim(arguments.Address2) />
+	<cfreturn this>
   </cffunction>
 
   <cffunction name="getAddress2" returnType="string" output="false" access="public">
     <cfreturn variables.instance.Address2 />
   </cffunction>
   
-  <cffunction name="setCity" returnType="void" output="false" access="public">
+  <cffunction name="setCity" output="false" access="public">
     <cfargument name="City" type="string" required="true">
     <cfset variables.instance.City = trim(arguments.City) />
+	<cfreturn this>
   </cffunction>
 
   <cffunction name="getCity" returnType="string" output="false" access="public">
     <cfreturn variables.instance.City />
   </cffunction>
   
- <cffunction name="setState" returnType="void" output="false" access="public">
+ <cffunction name="setState" output="false" access="public">
     <cfargument name="State" type="string" required="true">
     <cfset variables.instance.State = trim(arguments.State) />
+	<cfreturn this>
   </cffunction>
 
   <cffunction name="getState" returnType="string" output="false" access="public">
     <cfreturn variables.instance.State />
   </cffunction>
   
- <cffunction name="setZip" returnType="void" output="false" access="public">
+ <cffunction name="setZip" output="false" access="public">
     <cfargument name="Zip" type="string" required="true">
     <cfset variables.instance.Zip = trim(arguments.Zip) />
+	<cfreturn this>
   </cffunction>
 
   <cffunction name="getZip" returnType="string" output="false" access="public">
     <cfreturn variables.instance.Zip />
   </cffunction>
   
- <cffunction name="setPhone" returnType="void" output="false" access="public">
+ <cffunction name="setPhone" output="false" access="public">
     <cfargument name="Phone" type="string" required="true">
     <cfset variables.instance.Phone= trim(arguments.Phone) />
+	<cfreturn this>
   </cffunction>
 
   <cffunction name="getPhone" returnType="string" output="false" access="public">
     <cfreturn variables.instance.Phone />
   </cffunction>
   
- <cffunction name="setFax" returnType="void" output="false" access="public">
+ <cffunction name="setFax" output="false" access="public">
     <cfargument name="Fax" type="string" required="true">
     <cfset variables.instance.Fax = trim(arguments.Fax) />
+	<cfreturn this>
   </cffunction>
   
   <cffunction name="getFax" returnType="string" output="false" access="public">
     <cfreturn variables.instance.Fax />
   </cffunction>
 
-<cffunction name="setCountry" returnType="void" output="false" access="public">
+<cffunction name="setCountry" output="false" access="public">
     <cfargument name="country" type="string" required="true">
     <cfset variables.instance.country = trim(arguments.country) />
+	<cfreturn this>
   </cffunction>
   
   <cffunction name="getCountry" returnType="string" output="false" access="public">
     <cfreturn variables.instance.country />
   </cffunction>
 
-<cffunction name="setAddressName" returnType="void" output="false" access="public">
+<cffunction name="setAddressName" output="false" access="public">
     <cfargument name="addressName" type="string" required="true">
     <cfset variables.instance.addressName = trim(arguments.addressName) />
+	<cfreturn this>
   </cffunction>
   
   <cffunction name="getAddressName" returnType="string" output="false" access="public">
     <cfreturn variables.instance.addressName />
   </cffunction>
  
-<cffunction name="setAddressNote" returnType="void" output="false" access="public">
+<cffunction name="setAddressNote" output="false" access="public">
     <cfargument name="addressNote" type="string" required="true">
     <cfset variables.instance.addressNote = trim(arguments.addressNote) />
+	<cfreturn this>
   </cffunction>
   
   <cffunction name="getAddressNote" returnType="string" output="false" access="public">
     <cfreturn variables.instance.addressNote />
   </cffunction>
 
- <cffunction name="setIsPrimary" returnType="void" output="false" access="public">
+ <cffunction name="setIsPrimary" output="false" access="public">
     <cfargument name="IsPrimary" required="true">
 	
 	<cfif isNumeric(arguments.IsPrimary)>
     <cfset variables.instance.IsPrimary = arguments.IsPrimary />
 	</cfif>
+	<cfreturn this>
   </cffunction>
   
   <cffunction name="getIsPrimary" returnType="numeric" output="false" access="public">
@@ -318,23 +333,25 @@ to your own modified versions of Mura CMS.
     <cfreturn variables.instance.errors />
  </cffunction>
 
- <cffunction name="setErrors" returnType="void" output="false" access="public">
+ <cffunction name="setErrors" output="false" access="public">
   <cfargument name="errors"> 
 	<cfif isStruct(arguments.errors)>
 	 <cfset variables.instance.errors = arguments.errors />
-	</cfif> 
+	</cfif>
+	<cfreturn this> 
  </cffunction>
 
-<cffunction name="setAddressNotes" returnType="void" output="false" access="public">
+<cffunction name="setAddressNotes" output="false" access="public">
     <cfargument name="AddressNotes" type="string" required="true">
     <cfset variables.instance.AddressNotes = trim(arguments.AddressNotes) />
+	<cfreturn this>
   </cffunction>
   
   <cffunction name="getAddressNotes" returnType="string" output="false" access="public">
     <cfreturn variables.instance.AddressNotes />
  </cffunction>
 
-<cffunction name="validate" access="public" output="false" returntype="void">
+<cffunction name="validate" access="public" output="false" >
 	<cfset var extErrors=structNew() />
 	
 	<cfif len(getSiteID())>
@@ -348,53 +365,59 @@ to your own modified versions of Mura CMS.
 	</cfif>	
 	
 	<cfset setGeoCoding()/>	
+	<cfreturn this>
 </cffunction>
   
- <cffunction name="setAddressURL" returnType="void" output="false" access="public">
+ <cffunction name="setAddressURL" output="false" access="public">
     <cfargument name="addressURL" type="string" required="true">
     <cfset variables.instance.addressURL = trim(arguments.addressURL) />
+	<cfreturn this>
   </cffunction>
 
   <cffunction name="getAddressURL" returnType="string" output="false" access="public">
     <cfreturn variables.instance.addressURL />
   </cffunction>
 
- <cffunction name="setHours" returnType="void" output="false" access="public">
+ <cffunction name="setHours" output="false" access="public">
     <cfargument name="Hours" type="string" required="true">
     <cfset variables.instance.Hours = trim(arguments.Hours) />
+	<cfreturn this>
   </cffunction>
 
   <cffunction name="getHours" returnType="string" output="false" access="public">
     <cfreturn variables.instance.Hours />
   </cffunction>
 
- <cffunction name="setLongitude" returnType="void" output="false" access="public">
+ <cffunction name="setLongitude" output="false" access="public">
     <cfargument name="Longitude" required="true">
     
 	<cfif isNumeric(arguments.Longitude)>
 		<cfset variables.instance.Longitude = arguments.Longitude />
 	</cfif>
+	<cfreturn this>
   </cffunction>
   
   <cffunction name="getLongitude" returnType="numeric" output="false" access="public">
     <cfreturn variables.instance.Longitude />
   </cffunction>
 
- <cffunction name="setLatitude" returnType="void" output="false" access="public">
+ <cffunction name="setLatitude" output="false" access="public">
     <cfargument name="Latitude" required="true">
     
 	<cfif isNumeric(arguments.Latitude)>
 		<cfset variables.instance.Latitude = arguments.Latitude />
 	</cfif>
+	<cfreturn this>
   </cffunction>
   
   <cffunction name="getLatitude" returnType="numeric" output="false" access="public">
     <cfreturn variables.instance.Latitude />
   </cffunction>
 
- <cffunction name="setAddressEmail" returnType="void" output="false" access="public">
+ <cffunction name="setAddressEmail" output="false" access="public">
     <cfargument name="AddressEmail" type="string" required="true">
     <cfset variables.instance.addressEmail = trim(arguments.AddressEmail) />
+	<cfreturn this>
   </cffunction>
 
   <cffunction name="getAddressEmail" returnType="string" output="false" access="public">
@@ -408,8 +431,9 @@ to your own modified versions of Mura CMS.
 	<cfreturn variables.instance.extendData />
  </cffunction>
 
- <cffunction name="purgeExtendedData" returntype="void" output="false" access="public">
+ <cffunction name="purgeExtendedData" output="false" access="public">
 	<cfset variables.instance.extendData=""/>
+	<cfreturn this>
  </cffunction>
 
 <cffunction name="getExtendedAttribute" returnType="string" output="false" access="public">
@@ -444,7 +468,7 @@ to your own modified versions of Mura CMS.
 		<cfset variables.instance["#arguments.property#"]=arguments.propertyValue />
 		
 	</cfif>
-	
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="getValue" returntype="any" access="public" output="false">
@@ -462,6 +486,7 @@ to your own modified versions of Mura CMS.
 <cffunction name="setAllValues" returntype="any" access="public" output="false">
 	<cfargument name="instance">
 	<cfset variables.instance=arguments.instance/>
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="save" output="false" access="public" returntype="any">

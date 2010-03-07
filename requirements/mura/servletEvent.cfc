@@ -86,7 +86,7 @@ to your own modified versions of Mura CMS.
 	<cfset var theScope=getScope(arguments.scope) />
 
 	<cfset theScope["#arguments.property#"]=arguments.propertyValue />
-
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="getValue" returntype="any" access="public" output="false">
@@ -151,11 +151,12 @@ to your own modified versions of Mura CMS.
 		<cfreturn structKeyExists(theScope,arguments.property) />
 </cffunction>
 
-<cffunction name="removeValue" returntype="void" access="public" output="false">
+<cffunction name="removeValue" access="public" output="false">
 	<cfargument name="property" type="string" required="true"/>
 	<cfargument name="scope" default="request" required="true">
 		<cfset var theScope=getScope(arguments.scope) />
 		<cfset structDelete(theScope,arguments.property) />
+	 returntype="void"
 </cffunction>
 
 <cffunction name="getHandler" returntype="any" access="public" output="false">

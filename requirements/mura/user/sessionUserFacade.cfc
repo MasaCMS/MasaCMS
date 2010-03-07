@@ -71,6 +71,7 @@
 	
 		<cfset session.mura[arguments.property]=arguments.propertyValue>
 		<cfset getUserBean().setValue(arguments.property, arguments.propertyValue)>
+		<cfreturn this>
 </cffunction>
 
 <cffunction name="getUserBean" access="public" returntype="any" output="false">
@@ -138,6 +139,6 @@
 <cffunction name="logout" access="public" returntype="any" output="false">
 	
 	<cfset getBean('loginManager').logout()>
-	
+	<cfreturn this>
 </cffunction>
 </cfcomponent>

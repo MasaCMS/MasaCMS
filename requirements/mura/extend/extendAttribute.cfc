@@ -70,7 +70,7 @@ to your own modified versions of Mura CMS.
 	<cfreturn this />
 </cffunction>
 
-<cffunction name="set" returnType="void" output="false" access="public">
+<cffunction name="set" output="false" access="public">
 		<cfargument name="data" type="any" required="true">
 
 		<cfset var prop=""/>
@@ -109,11 +109,12 @@ to your own modified versions of Mura CMS.
 		</cfif>
 		
 		<cfset validate() />
-		
+		<cfreturn this>
 </cffunction>
   
-<cffunction name="validate" access="public" output="false" returntype="void">
+<cffunction name="validate" access="public" output="false">
 	<cfset variables.instance.errors=structnew() />
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="getErrors" returnType="struct" output="false" access="public">
@@ -124,9 +125,10 @@ to your own modified versions of Mura CMS.
 	<cfreturn variables.instance.attributeID />
 </cffunction>
 
-<cffunction name="setAttributeID" returntype="void" access="public" output="false">
+<cffunction name="setAttributeID" access="public" output="false">
 	<cfargument name="AttributeID" type="numeric" />
 	<cfset variables.instance.AttributeID =arguments.AttributeID />
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="getSiteID" returntype="String" access="public" output="false">
@@ -136,6 +138,7 @@ to your own modified versions of Mura CMS.
 <cffunction name="setSiteID" access="public" output="false">
 	<cfargument name="siteID" type="String" />
 	<cfset variables.instance.siteID = trim(arguments.siteID) />
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="getExtendSetID" returntype="String" access="public" output="false">
@@ -145,6 +148,7 @@ to your own modified versions of Mura CMS.
 <cffunction name="setExtendSetID" access="public" output="false">
 	<cfargument name="ExtendSetID" type="String" />
 	<cfset variables.instance.ExtendSetID = trim(arguments.ExtendSetID) />
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="getName" returntype="String" access="public" output="false">
@@ -154,6 +158,7 @@ to your own modified versions of Mura CMS.
 <cffunction name="setName" access="public" output="false">
 	<cfargument name="name" type="String" />
 	<cfset variables.instance.name = trim(arguments.name) />
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="getHint" returntype="String" access="public" output="false">
@@ -163,6 +168,7 @@ to your own modified versions of Mura CMS.
 <cffunction name="setHint" access="public" output="false">
 	<cfargument name="Hint" type="String" />
 	<cfset variables.instance.Hint = trim(arguments.Hint) />
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="getType" returntype="String" access="public" output="false">
@@ -172,6 +178,7 @@ to your own modified versions of Mura CMS.
 <cffunction name="setType" access="public" output="false">
 	<cfargument name="Type" type="String" />
 	<cfset variables.instance.Type = trim(arguments.Type) />
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="getOrderNo" returntype="numeric" access="public" output="false">
@@ -183,6 +190,7 @@ to your own modified versions of Mura CMS.
 	<cfif isNumeric(arguments.OrderNo)>
 	<cfset variables.instance.OrderNo = arguments.OrderNo />
 	</cfif>
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="getIsActive" returntype="numeric" access="public" output="false">
@@ -194,6 +202,7 @@ to your own modified versions of Mura CMS.
 	<cfif isNumeric(arguments.isActive)>
 		<cfset variables.instance.IsActive = arguments.IsActive />
 	</cfif>
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="getRequired" returntype="String" access="public" output="false">
@@ -203,6 +212,7 @@ to your own modified versions of Mura CMS.
 <cffunction name="setRequired" access="public" output="false">
 	<cfargument name="Required" type="String" />
 	<cfset variables.instance.Required = trim(arguments.Required) />
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="getValidation" returntype="String" access="public" output="false">
@@ -212,6 +222,7 @@ to your own modified versions of Mura CMS.
 <cffunction name="setValidation" access="public" output="false">
 	<cfargument name="validation" type="String" />
 	<cfset variables.instance.validation = trim(arguments.validation) />
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="getRegex" returntype="String" access="public" output="false">
@@ -221,6 +232,7 @@ to your own modified versions of Mura CMS.
 <cffunction name="setRegex" access="public" output="false">
 	<cfargument name="Regex" type="String" />
 	<cfset variables.instance.Regex = trim(arguments.Regex) />
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="getMessage" returntype="String" access="public" output="false">
@@ -232,6 +244,7 @@ to your own modified versions of Mura CMS.
 <cffunction name="setMessage" access="public" output="false">
 	<cfargument name="Message" type="String" />
 	<cfset variables.instance.Message = trim(arguments.Message) />
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="getLabel" returntype="String" access="public" output="false">
@@ -245,6 +258,7 @@ to your own modified versions of Mura CMS.
 <cffunction name="setLabel" access="public" output="false">
 	<cfargument name="Label" type="String" />
 	<cfset variables.instance.Label = trim(arguments.Label) />
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="getDefaultValue" returntype="String" access="public" output="false">
@@ -263,6 +277,7 @@ to your own modified versions of Mura CMS.
 <cffunction name="setOptionList" access="public" output="false">
 	<cfargument name="OptionList" type="String" />
 	<cfset variables.instance.OptionList = trim(arguments.OptionList) />
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="getOptionLabelList" returntype="String" access="public" output="false">
@@ -272,9 +287,10 @@ to your own modified versions of Mura CMS.
 <cffunction name="setOptionLabelList" access="public" output="false">
 	<cfargument name="OptionLabelList" type="String" />
 	<cfset variables.instance.OptionLabelList = trim(arguments.OptionLabelList) />
+	<cfreturn this>
 </cffunction>
 
-<cffunction name="load"  access="public" output="false" returntype="void">
+<cffunction name="load"  access="public" output="false">
 <cfset var rs=""/>
 	<cfquery name="rs" datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	select * from tclassextendattributes where 
@@ -289,9 +305,10 @@ to your own modified versions of Mura CMS.
 	<cfif rs.recordcount>
 		<cfset set(rs) />
 	</cfif>
+	<cfreturn this>
 </cffunction>
 
-<cffunction name="save"  access="public" output="false" returntype="void">
+<cffunction name="save"  access="public" output="false">
 <cfset var rs=""/>
 	
 	
@@ -353,11 +370,11 @@ to your own modified versions of Mura CMS.
 	
 	
 	
-	
+	<cfreturn this>
 	<!--- <cfset saveOptions() /> --->
 </cffunction>
 
-<cffunction name="delete" access="public" returntype="void">
+<cffunction name="delete" access="public">
 <cfset var fileManager=application.serviceFactory.getBean("fileManager") />	
 <cfset var rs =""/>
 	
@@ -401,6 +418,7 @@ to your own modified versions of Mura CMS.
 	where attributeID=<cfqueryparam cfsqltype="cf_sql_numeric"  value="#getAttributeID()#">
 	</cfquery>
 	</cftransaction>
+	
 </cffunction>
 
 <cffunction name="renderAttribute" output="false" returntype="string">
@@ -463,7 +481,7 @@ to your own modified versions of Mura CMS.
 
 </cffunction>
 
-<cffunction name="setOptions" access="public" returntype="void">
+<cffunction name="setOptions" access="public">
 <cfargument name="options">
 <cfset var o=1/>
 
@@ -491,14 +509,14 @@ to your own modified versions of Mura CMS.
 
 </cffunction>
 
-<cffunction name="deleteOptions" returntype="void">
+<cffunction name="deleteOptions">
 	<cfquery datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 		delete from TExtendAttributeOptions
 		where attributeID=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#getAttributeID()#">
 	</cfquery>
 </cffunction>
 
-<cffunction name="saveOptions" access="public" returntype="void">
+<cffunction name="saveOptions" access="public">
 	<cfif isQuery(variables.instance.options)>
 		<cfset deleteOptions() />
 		

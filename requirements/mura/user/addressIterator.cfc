@@ -51,18 +51,21 @@ to your own modified versions of Mura CMS.
 	<cfreturn address>
 </cffunction>
 
-<cffunction name="setConfigBean" output="false" returntype="void" access="public">
+<cffunction name="setConfigBean" output="false" access="public">
 	<cfargument name="configBean">
 	<cfset variables.configBean=arguments.configBean>
+	<cfreturn this>
 </cffunction>
 
-<cffunction name="setUserManager" output="false" returntype="void" access="public">
+<cffunction name="setUserManager" output="false" access="public">
 	<cfargument name="userManager">
 	<cfset variables.userManager=arguments.userManager>
+	<cfreturn this>
 </cffunction>
 
-<cffunction name="setSettingsManager" output="false" returntype="void" access="public">
+<cffunction name="setSettingsManager" output="false" access="public">
 	<cfargument name="settingsManager">
 	<cfset variables.settingsManager=arguments.settingsManager>
+	<cfreturn this>
 </cffunction>
 </cfcomponent>

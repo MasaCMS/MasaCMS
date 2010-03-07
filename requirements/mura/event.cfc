@@ -69,7 +69,7 @@ to your own modified versions of Mura CMS.
 <cfargument name="propertyValue" default="" >
 	
 	<cfset variables.event["#arguments.property#"]=arguments.propertyValue />
-
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="getValue" returntype="any" access="public" output="false">
@@ -92,9 +92,10 @@ to your own modified versions of Mura CMS.
 		<cfreturn structKeyExists(variables.event,arguments.property) />
 </cffunction>
 
-<cffunction name="removeValue" returntype="void" access="public" output="false">
+<cffunction name="removeValue" access="public" output="false">
 	<cfargument name="property" type="string" required="true"/>
 		<cfset structDelete(variables.event,arguments.property) />
+		<cfreturn this>
 </cffunction>
 
 <cffunction name="getValues" returntype="any" access="public" output="false">
@@ -172,6 +173,7 @@ to your own modified versions of Mura CMS.
 	<cfif not valueExists("localHandler") and fileExists(expandPath("/#application.configBean.getWebRootMap()#") & "/#getValue('siteid')#/includes/eventHandler.cfc")>
 		<cfset setValue("localHandler",createObject("component","#application.configBean.getWebRootMap()#.#getValue('siteid')#.includes.eventHandler").init())>
 	</cfif>
+	<cfreturn this>
 </cffunction>
 
 </cfcomponent>

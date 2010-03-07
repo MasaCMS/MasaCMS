@@ -44,7 +44,7 @@
 		<cfreturn variables.pageIndex />
 	</cffunction>
 	
-	<cffunction name="setStartRow" access="public" output="false" returntype="void">
+	<cffunction name="setStartRow" access="public" output="false">
 		<cfargument name="startRow">
 		<cfif variables.records.recordcount>
 			<cfif variables.maxRecordsPerPage neq 1>
@@ -56,6 +56,7 @@
 			<cfset variables.recordIndex=0 />
 			<cfset setPage(1)>
 		</cfif>
+		<cfreturn this>
 	</cffunction>
 	
 	<cffunction name="currentRow" access="public" output="false" returntype="numeric">
@@ -84,12 +85,14 @@
 		<cfreturn queryRowToStruct(variables.records,currentIndex()) />
 	</cffunction>
 	
-	<cffunction name="reset" access="public" output="false" returntype="void">
+	<cffunction name="reset" access="public" output="false">
 		<cfset variables.recordIndex = 0 />
+		<cfreturn this>
 	</cffunction>
 	
-	<cffunction name="end" access="public" output="false" returntype="void">
+	<cffunction name="end" access="public" output="false">
 		<cfset variables.recordIndex = records.recordCount + 1 />
+		<cfreturn this>
 	</cffunction>
 				
 	<cffunction name="pageCount" access="public" output="false" returntype="numeric">
@@ -112,7 +115,7 @@
 		<cfreturn recordCount />
 	</cffunction>
 	
-	<cffunction name="setPage" access="public" output="false" returntype="void">
+	<cffunction name="setPage" access="public" output="false">
 		<cfargument name="pageIndex" type="numeric" required="true">
 		<cfset variables.pageIndex = arguments.pageIndex />
 		<cfset variables.recordIndex = ((variables.pageIndex-1) * variables.maxRecordsPerPage)>
@@ -121,18 +124,20 @@
 			<cfset variables.recordIndex=0>
 			<cfset variables.pageIndex=1>
 		</cfif>
+		<cfreturn this>
 	</cffunction>
 	
-	<cffunction name="setNextN" access="public" output="false" returntype="void">
+	<cffunction name="setNextN" access="public" output="false">
 		<cfargument name="nextN">
 		<cfset variables.maxRecordsPerPage=arguments.nextN>
+		<cfreturn this>
 	</cffunction>
 	
 	<cffunction name="getNextN" access="public" output="false" returntype="any">
 		<cfreturn variables.maxRecordsPerPage>
 	</cffunction>
 	
-	<cffunction name="setQuery" access="public" output="false" returntype="void">
+	<cffunction name="setQuery" access="public" output="false">
 		<cfargument name="rs" type="query" required="true">
 		<cfargument name="maxRecordsPerPage" type="numeric" required="false">
 
@@ -143,6 +148,7 @@
 		<cfelse>
 			<cfset variables.maxRecordsPerPage = variables.records.recordcount />
 		</cfif>
+		<cfreturn this>
 	</cffunction>
 	
 	<cffunction name="getQuery" output="false" returntype="any">
@@ -182,8 +188,9 @@
 		</cfscript>
 	</cffunction>
 	
-	<cffunction name="setRecordTranslator" output="false" returntype="void" access="public">
+	<cffunction name="setRecordTranslator" output="false" access="public">
 	<cfargument name="recordTranslator">
 		<cfset variables.recordTranslator=arguments.recordTranslator/>
-</cffunction>
+		<cfreturn this>
+	</cffunction>
 </cfcomponent>

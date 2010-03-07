@@ -60,12 +60,13 @@ to your own modified versions of Mura CMS.
 	<cfreturn content>
 </cffunction>
 
-<cffunction name="setContentManager" output="false" returntype="void" access="public">
+<cffunction name="setContentManager" output="false" access="public">
 	<cfargument name="contentManager">
 	<cfset variables.contentManager=arguments.contentManager>
+	<cfreturn this>
 </cffunction>
 
-<cffunction name="buildQueryFromList" output="false" returntype="void" access="public">
+<cffunction name="buildQueryFromList" output="false" access="public">
 	<cfargument name="idList">
 	<cfargument name="siteid">
 	<cfargument name="idType" required="true" default="contentID">
@@ -82,6 +83,7 @@ to your own modified versions of Mura CMS.
 	<cfset variables.maxRecordsPerPage=variables.records.recordcount>
 	<cfset variables.recordIndex = 0 />
 	<cfset variables.pageIndex = 1 />
+	<cfreturn this>
 </cffunction>
 
 </cfcomponent>

@@ -52,22 +52,25 @@ to your own modified versions of Mura CMS.
 	<cfreturn user>
 </cffunction>
 
-<cffunction name="setConfigBean" output="false" returntype="void" access="public">
+<cffunction name="setConfigBean" output="false" access="public">
 	<cfargument name="configBean">
 	<cfset variables.configBean=arguments.configBean>
+	<cfreturn this>
 </cffunction>
 
-<cffunction name="setUserManager" output="false" returntype="void" access="public">
+<cffunction name="setUserManager" output="false" access="public">
 	<cfargument name="userManager">
 	<cfset variables.userManager=arguments.userManager>
+	<cfreturn this>
 </cffunction>
 
-<cffunction name="setSettingsManager" output="false" returntype="void" access="public">
+<cffunction name="setSettingsManager" output="false" access="public">
 	<cfargument name="settingsManager">
 	<cfset variables.settingsManager=arguments.settingsManager>
+	<cfreturn this>
 </cffunction>
 
-<cffunction name="buildQueryFromList" output="false" returntype="void" access="public">
+<cffunction name="buildQueryFromList" output="false" access="public">
 	<cfargument name="idList">
 	<cfargument name="siteid">
 	<cfset var i="">
@@ -83,6 +86,7 @@ to your own modified versions of Mura CMS.
 	<cfset variables.maxRecordsPerPage=variables.records.recordcount>
 	<cfset variables.recordIndex = 0 />
 	<cfset variables.pageIndex = 1 />
+	<cfreturn this>
 </cffunction>
 
 </cfcomponent>

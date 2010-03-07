@@ -130,7 +130,7 @@ to your own modified versions of Mura CMS.
 	<cfreturn variables.instance />
 </cffunction>
 
-<cffunction name="validate" access="public" output="false" returntype="void">
+<cffunction name="validate" access="public" output="false">
 	<cfset variables.instance.errors=structnew() />
 	
 	<cfif getSiteID() eq "">
@@ -140,10 +140,10 @@ to your own modified versions of Mura CMS.
 	<cfif getSiteID() eq "admin" or getSiteID() eq "tasks">
 		<cfset variables.instance.errors.siteid="The 'SiteID' variable is invalid." />
 	</cfif>
-	
+	<cfreturn this>
 </cffunction>
 
-<cffunction name="set" returnType="void" output="false" access="public">
+<cffunction name="set" output="false" access="public">
 		<cfargument name="data" type="any" required="true">
 
 		<cfset var prop="" />
@@ -242,7 +242,7 @@ to your own modified versions of Mura CMS.
 			</cfif>
 		
 		<cfset validate() />
-		
+		<cfreturn this>
  </cffunction>
 
 <cffunction name="getSiteID" returntype="String" access="public" output="false">
@@ -252,6 +252,7 @@ to your own modified versions of Mura CMS.
 <cffunction name="setSiteID" access="public" output="false">
 	<cfargument name="SiteID" type="String" />
 	<cfset variables.instance.SiteID = arguments.SiteID />
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="getSite" returntype="String" access="public" output="false">
@@ -261,6 +262,7 @@ to your own modified versions of Mura CMS.
 <cffunction name="setSite" access="public" output="false">
 	<cfargument name="Site" type="String" />
 	<cfset variables.instance.Site = arguments.Site />
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="getPageLimit" returntype="Numeric" access="public" output="false">
@@ -270,6 +272,7 @@ to your own modified versions of Mura CMS.
 <cffunction name="setPageLimit" access="public" output="false">
 	<cfargument name="PageLimit" type="Numeric" />
 	<cfset variables.instance.PageLimit = arguments.PageLimit />
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="getLocking" returntype="String" access="public" output="false">
@@ -279,6 +282,7 @@ to your own modified versions of Mura CMS.
 <cffunction name="setLocking" access="public" output="false">
 	<cfargument name="Locking" type="String" />
 	<cfset variables.instance.Locking = arguments.Locking />
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="getDomain" returntype="String" access="public" output="false">
@@ -298,6 +302,7 @@ to your own modified versions of Mura CMS.
 <cffunction name="setDomain" access="public" output="false">
 	<cfargument name="Domain" type="String" />
 	<cfset variables.instance.Domain = trim(arguments.Domain) />
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="getDomainAlias" returntype="String" access="public" output="false">
@@ -307,6 +312,7 @@ to your own modified versions of Mura CMS.
 <cffunction name="setDomainAlias" access="public" output="false">
 	<cfargument name="domainAlias" type="String" />
 	<cfset variables.instance.domainAlias = arguments.domainAlias />
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="getExportLocation" returntype="String" access="public" output="false">
@@ -316,6 +322,7 @@ to your own modified versions of Mura CMS.
 <cffunction name="setExportLocation" access="public" output="false">
 	<cfargument name="ExportLocation" type="String" />
 	<cfset variables.instance.ExportLocation = arguments.ExportLocation />
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="getContact" returntype="String" access="public" output="false">
@@ -325,6 +332,7 @@ to your own modified versions of Mura CMS.
 <cffunction name="setContact" access="public" output="false">
 	<cfargument name="Contact" type="String" />
 	<cfset variables.instance.Contact = arguments.Contact />
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="getMailServerIP" returntype="String" access="public" output="false">
@@ -334,9 +342,10 @@ to your own modified versions of Mura CMS.
 <cffunction name="setMailServerIP" access="public" output="false">
 	<cfargument name="MailServerIP" type="String" />
 	<cfset variables.instance.MailServerIP = arguments.MailServerIP />
+	<cfreturn this>
 </cffunction>
 
-<cffunction name="setMailServerUsernameEmail" returntype="String" access="public" output="false">
+<cffunction name="setMailServerUsernameEmail" access="public" output="false">
 	<cfargument name="MailServerUsernameEmail" type="String" />
 
 	<cfif find("@",arguments.MailServerUsernameEmail)>	
@@ -348,6 +357,7 @@ to your own modified versions of Mura CMS.
 	<cfelse>
 		<cfset variables.instance.MailServerUsernameEmail=variables.instance.contact />
 	</cfif>
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="getMailServerUsernameEmail" returntype="String" access="public" output="false">
@@ -367,6 +377,7 @@ to your own modified versions of Mura CMS.
 	<cfargument name="MailServerUsername" type="String" />
 	<cfset setMailServerUsernameEmail(arguments.MailServerUsername) />
 	<cfset variables.instance.mailServerUsername = arguments.MailServerUsername />
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="getMailServerPassword" returntype="String" access="public" output="false">
@@ -376,6 +387,7 @@ to your own modified versions of Mura CMS.
 <cffunction name="setMailServerPassword" access="public" output="false">
 	<cfargument name="MailServerPassword" type="String" />
 	<cfset variables.instance.MailServerPassword = arguments.MailServerPassword />
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="getEmailBroadcaster" returntype="Numeric" access="public" output="false">
@@ -385,6 +397,7 @@ to your own modified versions of Mura CMS.
 <cffunction name="setEmailBroadcaster" access="public" output="false">
 	<cfargument name="EmailBroadcaster" type="Numeric" />
 	<cfset variables.instance.EmailBroadcaster = arguments.EmailBroadcaster />
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="getEmailBroadcasterLimit" returntype="Numeric" access="public" output="false">
@@ -394,6 +407,7 @@ to your own modified versions of Mura CMS.
 <cffunction name="setEmailBroadcasterLimit" access="public" output="false">
 	<cfargument name="EmailBroadcasterLimit" type="Numeric" />
 	<cfset variables.instance.EmailBroadcasterLimit = arguments.EmailBroadcasterLimit />
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="getExtranet" returntype="Numeric" access="public" output="false">
@@ -403,6 +417,7 @@ to your own modified versions of Mura CMS.
 <cffunction name="setExtranet" access="public" output="false">
 	<cfargument name="Extranet" type="Numeric" />
 	<cfset variables.instance.Extranet = arguments.Extranet />
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="getExtranetPublicReg" returntype="Numeric" access="public" output="false">
@@ -412,6 +427,7 @@ to your own modified versions of Mura CMS.
 <cffunction name="setExtranetPublicReg" access="public" output="false">
 	<cfargument name="ExtranetPublicReg" type="Numeric" />
 	<cfset variables.instance.ExtranetPublicReg = arguments.ExtranetPublicReg />
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="getExtranetSSL" returntype="Numeric" access="public" output="false">
@@ -421,6 +437,7 @@ to your own modified versions of Mura CMS.
 <cffunction name="setExtranetSSL" access="public" output="false">
 	<cfargument name="ExtranetSSL" type="Numeric" />
 	<cfset variables.instance.ExtranetSSL = arguments.ExtranetSSL />
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="getCache" returntype="Numeric" access="public" output="false">
@@ -430,6 +447,7 @@ to your own modified versions of Mura CMS.
 <cffunction name="setCache" access="public" output="false">
 	<cfargument name="Cache" type="Numeric" />
 	<cfset variables.instance.Cache = arguments.Cache />
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="getCacheCapacity" returntype="Numeric" access="public" output="false">
@@ -441,6 +459,7 @@ to your own modified versions of Mura CMS.
 	<cfif isNumeric(arguments.cacheCapacity)>
 	<cfset variables.instance.cacheCapacity = arguments.cacheCapacity />
 	</cfif>
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="getCacheFreeMemoryThreshold" returntype="Numeric" access="public" output="false">
@@ -452,6 +471,7 @@ to your own modified versions of Mura CMS.
 	<cfif isNumeric(arguments.cacheFreeMemoryThreshold)>
 	<cfset variables.instance.cacheFreeMemoryThreshold = arguments.cacheFreeMemoryThreshold />
 	</cfif>
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="getViewDepth" returntype="Numeric" access="public" output="false">
@@ -461,6 +481,7 @@ to your own modified versions of Mura CMS.
 <cffunction name="setViewDepth" access="public" output="false">
 	<cfargument name="ViewDepth" type="Numeric" />
 	<cfset variables.instance.ViewDepth = arguments.ViewDepth />
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="getNextN" returntype="Numeric" access="public" output="false">
@@ -470,6 +491,7 @@ to your own modified versions of Mura CMS.
 <cffunction name="setNextN" access="public" output="false">
 	<cfargument name="NextN" type="Numeric" />
 	<cfset variables.instance.NextN = arguments.NextN />
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="getDataCollection" returntype="Numeric" access="public" output="false">
@@ -479,6 +501,7 @@ to your own modified versions of Mura CMS.
 <cffunction name="setDataCollection" access="public" output="false">
 	<cfargument name="DataCollection" type="Numeric" />
 	<cfset variables.instance.DataCollection = arguments.DataCollection />
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="getColumnCount" returntype="Numeric" access="public" output="false">
@@ -488,6 +511,7 @@ to your own modified versions of Mura CMS.
 <cffunction name="setColumnCount" access="public" output="false">
 	<cfargument name="ColumnCount" type="Numeric" />
 	<cfset variables.instance.ColumnCount = arguments.ColumnCount />
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="getColumnNames" returntype="String" access="public" output="false">
@@ -497,6 +521,7 @@ to your own modified versions of Mura CMS.
 <cffunction name="setColumnNames" access="public" output="false">
 	<cfargument name="ColumnNames" type="String" />
 	<cfset variables.instance.ColumnNames = arguments.ColumnNames />
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="getPrimaryColumn" returntype="Numeric" access="public" output="false">
@@ -506,6 +531,7 @@ to your own modified versions of Mura CMS.
 <cffunction name="setPrimaryColumn" access="public" output="false">
 	<cfargument name="PrimaryColumn" type="Numeric" />
 	<cfset variables.instance.PrimaryColumn = arguments.PrimaryColumn />
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="getPublicSubmission" returntype="Numeric" access="public" output="false">
@@ -515,6 +541,7 @@ to your own modified versions of Mura CMS.
 <cffunction name="setPublicSubmission" access="public" output="false">
 	<cfargument name="PublicSubmission" type="Numeric" />
 	<cfset variables.instance.PublicSubmission = arguments.PublicSubmission />
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="getAdManager" returntype="Numeric" access="public" output="false">
@@ -524,6 +551,7 @@ to your own modified versions of Mura CMS.
 <cffunction name="setAdManager" access="public" output="false">
 	<cfargument name="AdManager" type="Numeric" />
 	<cfset variables.instance.AdManager = arguments.AdManager />
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="getContactName" returntype="String" access="public" output="false">
@@ -533,6 +561,7 @@ to your own modified versions of Mura CMS.
 <cffunction name="setContactName" access="public" output="false">
 	<cfargument name="ContactName" type="String" />
 	<cfset variables.instance.ContactName = arguments.ContactName />
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="getContactAddress" returntype="String" access="public" output="false">
@@ -542,6 +571,7 @@ to your own modified versions of Mura CMS.
 <cffunction name="setContactAddress" access="public" output="false">
 	<cfargument name="ContactAddress" type="String" />
 	<cfset variables.instance.ContactAddress = arguments.ContactAddress />
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="getContactCity" returntype="String" access="public" output="false">
@@ -551,6 +581,7 @@ to your own modified versions of Mura CMS.
 <cffunction name="setContactCity" access="public" output="false">
 	<cfargument name="ContactCity" type="String" />
 	<cfset variables.instance.ContactCity = arguments.ContactCity />
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="getContactState" returntype="String" access="public" output="false">
@@ -560,6 +591,7 @@ to your own modified versions of Mura CMS.
 <cffunction name="setContactState" access="public" output="false">
 	<cfargument name="ContactState" type="String" />
 	<cfset variables.instance.ContactState = arguments.ContactState />
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="getContactZip" returntype="String" access="public" output="false">
@@ -569,6 +601,7 @@ to your own modified versions of Mura CMS.
 <cffunction name="setContactZip" access="public" output="false">
 	<cfargument name="ContactZip" type="String" />
 	<cfset variables.instance.ContactZip = arguments.ContactZip />
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="getContactEmail" returntype="String" access="public" output="false">
@@ -578,6 +611,7 @@ to your own modified versions of Mura CMS.
 <cffunction name="setContactEmail" access="public" output="false">
 	<cfargument name="ContactEmail" type="String" />
 	<cfset variables.instance.ContactEmail = arguments.ContactEmail />
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="getContactPhone" returntype="String" access="public" output="false">
@@ -587,6 +621,7 @@ to your own modified versions of Mura CMS.
 <cffunction name="setContactPhone" access="public" output="false">
 	<cfargument name="ContactPhone" type="String" />
 	<cfset variables.instance.ContactPhone = arguments.ContactPhone />
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="getPublicUserPoolID" returntype="String" access="public" output="false">
@@ -596,6 +631,7 @@ to your own modified versions of Mura CMS.
 <cffunction name="setPublicUserPoolID" access="public" output="false">
 	<cfargument name="PublicUserPoolID" type="String" />
 	<cfset variables.instance.PublicUserPoolID = arguments.PublicUserPoolID />
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="getPrivateUserPoolID" returntype="String" access="public" output="false">
@@ -605,6 +641,7 @@ to your own modified versions of Mura CMS.
 <cffunction name="setPrivateUserPoolID" access="public" output="false">
 	<cfargument name="PrivateUserPoolID" type="String" />
 	<cfset variables.instance.PrivateUserPoolID = arguments.PrivateUserPoolID />
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="getAdvertiserUserPoolID" returntype="String" access="public" output="false">
@@ -614,6 +651,7 @@ to your own modified versions of Mura CMS.
 <cffunction name="setAdvertiserUserPoolID" access="public" output="false">
 	<cfargument name="AdvertiserUserPoolID" type="String" />
 	<cfset variables.instance.AdvertiserUserPoolID = arguments.AdvertiserUserPoolID />
+	<cfreturn this>
 </cffunction>
 
 
@@ -624,6 +662,7 @@ to your own modified versions of Mura CMS.
 <cffunction name="setHasfeedManager" access="public" output="true">
 	<cfargument name="hasfeedManager" type="any" required="yes" default="0" />
 	<cfset variables.instance.hasfeedManager = arguments.hasfeedManager />
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="getDisplayPoolID" returntype="String" access="public" output="false">
@@ -633,6 +672,7 @@ to your own modified versions of Mura CMS.
 <cffunction name="setDisplayPoolID" access="public" output="false">
 	<cfargument name="DisplayPoolID" type="String" />
 	<cfset variables.instance.DisplayPoolID = arguments.DisplayPoolID />
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="getGalleryMainScaleBy" returntype="String" access="public" output="false">
@@ -642,6 +682,7 @@ to your own modified versions of Mura CMS.
 <cffunction name="setGalleryMainScaleBy" access="public" output="false">
 	<cfargument name="GalleryMainScaleBy" type="String" />
 	<cfset variables.instance.GalleryMainScaleBy = arguments.GalleryMainScaleBy />
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="getGalleryMainScale" returntype="numeric" access="public" output="false">
@@ -653,6 +694,7 @@ to your own modified versions of Mura CMS.
 	<cfif isNumeric(arguments.GalleryMainScale)>
 		<cfset variables.instance.GalleryMainScale = arguments.GalleryMainScale />
 	</cfif>
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="getGallerySmallScaleBy" returntype="String" access="public" output="false">
@@ -662,6 +704,7 @@ to your own modified versions of Mura CMS.
 <cffunction name="setGallerySmallScaleBy" access="public" output="false">
 	<cfargument name="GallerySmallScaleBy" type="String" />
 	<cfset variables.instance.GallerySmallScaleBy = arguments.GallerySmallScaleBy />
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="getGallerySmallScale" returntype="numeric" access="public" output="false">
@@ -673,6 +716,7 @@ to your own modified versions of Mura CMS.
 	<cfif isNumeric(arguments.GallerySmallScale)>
 		<cfset variables.instance.GallerySmallScale = arguments.GallerySmallScale />
 	</cfif>
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="getGalleryMediumScaleBy" returntype="String" access="public" output="false">
@@ -682,6 +726,7 @@ to your own modified versions of Mura CMS.
 <cffunction name="setGalleryMediumScaleBy" access="public" output="false">
 	<cfargument name="GalleryMediumScaleBy" type="String" />
 	<cfset variables.instance.GalleryMediumScaleBy = arguments.GalleryMediumScaleBy />
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="getGalleryMediumScale" returntype="numeric" access="public" output="false">
@@ -693,6 +738,7 @@ to your own modified versions of Mura CMS.
 	<cfif isNumeric(arguments.GalleryMediumScale)>
 		<cfset variables.instance.GalleryMediumScale = arguments.GalleryMediumScale />
 	</cfif>
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="getSendLoginScript" returntype="String" access="public" output="false">
@@ -702,6 +748,7 @@ to your own modified versions of Mura CMS.
 <cffunction name="setSendLoginScript" access="public" output="false">
 	<cfargument name="SendLoginScript" type="String" />
 	<cfset variables.instance.SendLoginScript = trim(arguments.SendLoginScript) />
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="getMailingListConfirmScript" returntype="String" access="public" output="false">
@@ -711,6 +758,7 @@ to your own modified versions of Mura CMS.
 <cffunction name="setMailingListConfirmScript" access="public" output="false">
 	<cfargument name="MailingListConfirmScript" type="String" />
 	<cfset variables.instance.MailingListConfirmScript = trim(arguments.MailingListConfirmScript) />
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="getPublicSubmissionApprovalScript" returntype="String" access="public" output="false">
@@ -720,6 +768,7 @@ to your own modified versions of Mura CMS.
 <cffunction name="setPublicSubmissionApprovalScript" access="public" output="false">
 	<cfargument name="PublicSubmissionApprovalScript" type="String" />
 	<cfset variables.instance.PublicSubmissionApprovalScript = trim(arguments.PublicSubmissionApprovalScript) />
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="getReminderScript" returntype="String" access="public" output="false">
@@ -729,6 +778,7 @@ to your own modified versions of Mura CMS.
 <cffunction name="setReminderScript" access="public" output="false">
 	<cfargument name="ReminderScript" type="String" />
 	<cfset variables.instance.ReminderScript = trim(arguments.ReminderScript) />
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="getExtranetPublicRegNotify" returntype="String" access="public" output="false">
@@ -738,6 +788,7 @@ to your own modified versions of Mura CMS.
 <cffunction name="setExtranetPublicRegNotify" access="public" output="false">
 	<cfargument name="ExtranetPublicRegNotify" type="String" />
 	<cfset variables.instance.ExtranetPublicRegNotify = trim(arguments.ExtranetPublicRegNotify) />
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="getLoginURL" returntype="String" access="public" output="false">
@@ -751,6 +802,7 @@ to your own modified versions of Mura CMS.
 <cffunction name="setLoginURL" access="public" output="false">
 	<cfargument name="LoginURL" type="String" />
 	<cfset variables.instance.LoginURL = trim(arguments.LoginURL) />
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="getEditProfileURL" returntype="String" access="public" output="false">
@@ -764,6 +816,7 @@ to your own modified versions of Mura CMS.
 <cffunction name="setEditProfileURL" access="public" output="false">
 	<cfargument name="EditProfileURL" type="String" />
 	<cfset variables.instance.EditProfileURL = trim(arguments.EditProfileURL) />
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="getCommentApprovalDefault" returntype="Numeric" access="public" output="false">
@@ -773,6 +826,7 @@ to your own modified versions of Mura CMS.
 <cffunction name="setCommentApprovalDefault" access="public" output="false">
 	<cfargument name="CommentApprovalDefault" type="Numeric" />
 	<cfset variables.instance.CommentApprovalDefault = arguments.CommentApprovalDefault />
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="getDeploy" returntype="Numeric" access="public" output="false">
@@ -782,6 +836,7 @@ to your own modified versions of Mura CMS.
 <cffunction name="setDeploy" access="public" output="false">
 	<cfargument name="deploy" type="Numeric" />
 	<cfset variables.instance.deploy = arguments.deploy />
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="getLastDeployment" returntype="String" access="public" output="false">
@@ -797,6 +852,7 @@ to your own modified versions of Mura CMS.
 	<cfelse>
 	<cfset variables.instance.LastDeployment = ""/>
 	</cfif>
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="getAccountActivationScript" returntype="String" access="public" output="false">
@@ -808,6 +864,7 @@ to your own modified versions of Mura CMS.
 <cffunction name="setAccountActivationScript" access="public" output="false">
 	<cfargument name="accountActivationScript" type="String" />
 	<cfset variables.instance.accountActivationScript = trim(arguments.accountActivationScript) />
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="getGoogleAPIKey" returntype="String" access="public" output="false">
@@ -817,6 +874,7 @@ to your own modified versions of Mura CMS.
 <cffunction name="setGoogleAPIKey" access="public" output="false">
 	<cfargument name="GoogleAPIKey" type="String" />
 	<cfset variables.instance.GoogleAPIKey = arguments.GoogleAPIKey />
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="setUseDefaultSMTPServer" access="public" output="false">
@@ -825,6 +883,7 @@ to your own modified versions of Mura CMS.
 	<cfif isNumeric(arguments.UseDefaultSMTPServer)>
 		<cfset variables.instance.UseDefaultSMTPServer = arguments.UseDefaultSMTPServer />
 	</cfif>
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="getUseDefaultSMTPServer" returntype="numeric" access="public" output="false">
@@ -838,6 +897,7 @@ to your own modified versions of Mura CMS.
 <cffunction name="setSiteLocale" access="public" output="false">
 	<cfargument name="siteLocale" type="String" />
 	<cfset variables.instance.siteLocale = arguments.siteLocale />
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="getMailServerSMTPPort" returntype="String" access="public" output="false">
@@ -849,6 +909,7 @@ to your own modified versions of Mura CMS.
 	<cfif isNumeric(arguments.mailServerPort)>
 	<cfset variables.instance.mailServerSMTPPort = arguments.mailServerPort />
 	</cfif>
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="getMailServerPOPPort" returntype="String" access="public" output="false">
@@ -860,6 +921,7 @@ to your own modified versions of Mura CMS.
 	<cfif isNumeric(arguments.mailServerPort)>
 	<cfset variables.instance.mailServerPOPPort = arguments.mailServerPort />
 	</cfif>
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="getMailServerTLS" returntype="String" access="public" output="false">
@@ -871,6 +933,7 @@ to your own modified versions of Mura CMS.
 	<cfif isBoolean(arguments.mailServerTLS)>
 	<cfset variables.instance.mailServerTLS = arguments.mailServerTLS />
 	</cfif>
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="getMailServerSSL" returntype="String" access="public" output="false">
@@ -882,6 +945,7 @@ to your own modified versions of Mura CMS.
 	<cfif isBoolean(arguments.mailServerSSL)>
 	<cfset variables.instance.mailServerSSL = arguments.mailServerSSL />
 	</cfif>
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="getCacheFactory" returntype="any" access="public" output="false">
@@ -899,14 +963,14 @@ to your own modified versions of Mura CMS.
 	
 </cffunction>
 
-<cffunction name="purgeCache" returntype="void" access="public" output="false">
+<cffunction name="purgeCache" access="public" output="false">
 	
 	<cfif isObject(variables.instance.cacheFactory)>
 		<cfset variables.instance.cacheFactory.purgeAll() />
 	</cfif>
 	
 	<cfset variables.clusterManager.purgeCache(getSiteID())>
-	
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="getJavaLocale" returntype="String" access="public" output="false">
@@ -939,6 +1003,7 @@ to your own modified versions of Mura CMS.
 <cffunction name="setTheme" access="public" output="false">
 	<cfargument name="Theme" type="any" />
 	<cfset variables.instance.Theme = trim(arguments.theme) />
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="getTheme" returntype="any" access="public" output="false">

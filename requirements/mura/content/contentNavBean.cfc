@@ -79,6 +79,7 @@
 	
 		<cfset variables.instance.struct[arguments.property]=arguments.propertyValue>
 		<cfset getContentBean().setValue(arguments.property, arguments.propertyValue)>
+		<cfreturn this>
 </cffunction>
 
 <cffunction name="getContentBean" access="public" returntype="any" output="false">

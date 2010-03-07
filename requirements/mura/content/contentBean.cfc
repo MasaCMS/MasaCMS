@@ -332,7 +332,7 @@ to your own modified versions of Mura CMS.
 	<cfreturn this />
   </cffunction>
 
-  <cffunction name="validate" access="public" output="false" returntype="void">
+  <cffunction name="validate" access="public" output="false">
 		<cfset var extErrors=structNew() />
 	
 		<cfif len(getSiteID())>
@@ -343,7 +343,8 @@ to your own modified versions of Mura CMS.
 		
 		<cfif not structIsEmpty(extErrors)>
 			<cfset structAppend(variables.instance.errors,extErrors)>
-		</cfif>	
+		</cfif>
+		<cfreturn this>	
   </cffunction>
 
   <cffunction name="getErrors" returntype="any" output="false">
@@ -375,9 +376,10 @@ to your own modified versions of Mura CMS.
 		<cfreturn variables.instance />
   </cffunction>
 
- <cffunction name="setcontentHistID" returnType="void" output="false" access="public">
+ <cffunction name="setcontentHistID" output="false" access="public">
     <cfargument name="ContentHistID" type="string" required="true">
     <cfset variables.instance.ContentHistID = arguments.ContentHistID />
+	<cfreturn this>
   </cffunction>
 
  <cffunction name="getcontentHistID" returnType="string" output="false" access="public">
@@ -387,18 +389,20 @@ to your own modified versions of Mura CMS.
 	<cfreturn variables.instance.ContentHistID />
   </cffunction>
 
- <cffunction name="setPreserveID" returnType="void" output="false" access="public">
+ <cffunction name="setPreserveID" output="false" access="public">
     <cfargument name="preserveID" type="string" required="true">
     <cfset variables.instance.preserveID = arguments.preserveID />
+	<cfreturn this>
   </cffunction>
 
   <cffunction name="getPreserveID" returnType="string" output="false" access="public">
 	<cfreturn variables.instance.preserveID />
   </cffunction>
 
- <cffunction name="setcontentid" returnType="void" output="false" access="public">
+ <cffunction name="setcontentid" output="false" access="public">
     <cfargument name="contentid" type="string" required="true">
     <cfset variables.instance.contentid = trim(arguments.contentid) />
+	<cfreturn this>
   </cffunction>
 
   <cffunction name="getcontentid" returnType="string" output="false" access="public">
@@ -408,25 +412,27 @@ to your own modified versions of Mura CMS.
 	<cfreturn variables.instance.contentid />
   </cffunction>
   
-   <cffunction name="setActive" returnType="void" output="false" access="public">
+   <cffunction name="setActive" output="false" access="public">
     <cfargument name="Active" type="numeric" required="true">
     <cfset variables.instance.Active = arguments.Active />
+	<cfreturn this>
   </cffunction>
 
   <cffunction name="getActive" returnType="numeric" output="false" access="public">
     <cfreturn variables.instance.Active />
   </cffunction>
   
-     <cffunction name="setOrderNo" returnType="void" output="false" access="public">
+     <cffunction name="setOrderNo" output="false" access="public">
     <cfargument name="OrderNo" type="numeric" required="true">
     <cfset variables.instance.OrderNo = arguments.OrderNo />
+	<cfreturn this>
   </cffunction>
 
   <cffunction name="getOrderNo" returnType="numeric" output="false" access="public">
     <cfreturn variables.instance.OrderNo />
   </cffunction>
   
-   <cffunction name="setMetaDesc" returnType="void" output="false" access="public">
+   <cffunction name="setMetaDesc" output="false" access="public">
     <cfargument name="MetaDesc" type="string" required="true">
     <cfset variables.instance.MetaDesc = trim(arguments.MetaDesc) />
   </cffunction>
@@ -435,25 +441,27 @@ to your own modified versions of Mura CMS.
     <cfreturn variables.instance.MetaDesc />
   </cffunction>
   
-  <cffunction name="setMetaKeyWords" returnType="void" output="false" access="public">
+  <cffunction name="setMetaKeyWords" output="false" access="public">
     <cfargument name="MetaKeyWords" type="string" required="true">
     <cfset variables.instance.MetaKeyWords = trim(arguments.MetaKeyWords) />
+	<cfreturn this>
   </cffunction>
 
   <cffunction name="getMetaKeyWords" returnType="string" output="false" access="public">
     <cfreturn variables.instance.MetaKeyWords />
   </cffunction>
   
-   <cffunction name="setApproved" returnType="void" output="false" access="public">
+   <cffunction name="setApproved" output="false" access="public">
     <cfargument name="Approved" type="numeric" required="true">
     <cfset variables.instance.Approved = arguments.Approved />
+	<cfreturn this>
   </cffunction>
 
   <cffunction name="getApproved" returnType="numeric" output="false" access="public">
     <cfreturn variables.instance.Approved />
   </cffunction>
   
-  <cffunction name="setDisplayStart" returnType="void" output="false" access="public">
+  <cffunction name="setDisplayStart" output="false" access="public">
     <cfargument name="DisplayStart" type="string" required="true">
 	<cfif lsisDate(arguments.displayStart)>
 		<cftry>
@@ -465,13 +473,14 @@ to your own modified versions of Mura CMS.
 		<cfelse>
 		<cfset variables.instance.displayStart = ""/>
 	</cfif>
+	<cfreturn this>
   </cffunction>
 
   <cffunction name="getDisplayStart" returnType="string" output="false" access="public">
     <cfreturn variables.instance.DisplayStart />
   </cffunction>
   
-  <cffunction name="setDisplaystop" returnType="void" output="false" access="public">
+  <cffunction name="setDisplaystop" output="false" access="public">
     <cfargument name="Displaystop" type="string" required="true">
 	<cfif lsisDate(arguments.displayStop)>
 		<cftry>
@@ -483,58 +492,64 @@ to your own modified versions of Mura CMS.
 		<cfelse>
 		<cfset variables.instance.displayStop = ""/>
 	</cfif>
+	<cfreturn this>
   </cffunction>
 
   <cffunction name="getDisplaystop" returnType="string" output="false" access="public">
     <cfreturn variables.instance.Displaystop />
   </cffunction>
   
-  <cffunction name="setBody" returnType="void" output="false" access="public">
+  <cffunction name="setBody" output="false" access="public">
     <cfargument name="Body" type="string" required="true">
     <cfset variables.instance.Body = trim(arguments.Body) />
+	<cfreturn this>
   </cffunction>
 
   <cffunction name="getBody" returnType="string" output="false" access="public">
     <cfreturn variables.instance.Body />
   </cffunction>
   
-  <cffunction name="setTitle" returnType="void" output="false" access="public">
+  <cffunction name="setTitle" output="false" access="public">
     <cfargument name="Title" type="string" required="true">
     <cfset variables.instance.Title = trim(arguments.Title) />
+	<cfreturn this>
   </cffunction>
 
   <cffunction name="getTitle" returnType="string" output="false" access="public">
     <cfreturn variables.instance.Title />
   </cffunction>
 
-  <cffunction name="setMenuTitle" returnType="void" output="false" access="public">
+  <cffunction name="setMenuTitle" output="false" access="public">
     <cfargument name="MenuTitle" type="string" required="true">
     <cfset variables.instance.MenuTitle = trim(arguments.MenuTitle) />
+	<cfreturn this>
   </cffunction>
 
   <cffunction name="getMenuTitle" returnType="string" output="false" access="public">
     <cfreturn variables.instance.MenuTitle />
   </cffunction>
 
-  <cffunction name="setFilename" returnType="void" output="false" access="public">
+  <cffunction name="setFilename" output="false" access="public">
     <cfargument name="Filename" type="string" required="true">
     <cfset variables.instance.Filename = trim(arguments.Filename) />
+	<cfreturn this>
   </cffunction>
 
   <cffunction name="getFilename" returnType="string" output="false" access="public">
     <cfreturn variables.instance.Filename />
   </cffunction>
   
-  <cffunction name="setOldFilename" returnType="void" output="false" access="public">
+  <cffunction name="setOldFilename" output="false" access="public">
     <cfargument name="OldFilename" type="string" required="true">
     <cfset variables.instance.OldFilename = trim(arguments.OldFilename) />
+	<cfreturn this>
   </cffunction>
 
   <cffunction name="getOldFilename" returnType="string" output="false" access="public">
     <cfreturn variables.instance.OldFilename />
   </cffunction>
   
-  <cffunction name="setLastUpdate" returnType="void" output="false" access="public">
+  <cffunction name="setLastUpdate" output="false" access="public">
     <cfargument name="LastUpdate" type="string" required="true">
 	<cfif lsisDate(arguments.LastUpdate)>
 		<cftry>
@@ -546,33 +561,37 @@ to your own modified versions of Mura CMS.
 		<cfelse>
 		<cfset variables.instance.LastUpdate = ""/>
 	</cfif>
+	<cfreturn this>
   </cffunction>
 
   <cffunction name="getLastUpdate" returnType="string" output="false" access="public">
     <cfreturn variables.instance.LastUpdate />
   </cffunction>
 
-   <cffunction name="setDisplay" returnType="void" output="false" access="public">
+   <cffunction name="setDisplay" output="false" access="public">
     <cfargument name="Display" type="numeric" required="true">
     <cfset variables.instance.Display = arguments.Display />
+	<cfreturn this>
   </cffunction>
 
   <cffunction name="getDisplay" returnType="numeric" output="false" access="public">
     <cfreturn variables.instance.Display />
   </cffunction>
   
-  <cffunction name="setParentID" returnType="void" output="false" access="public">
+  <cffunction name="setParentID" output="false" access="public">
     <cfargument name="ParentID" type="string" required="true">
     <cfset variables.instance.ParentID = trim(arguments.ParentID) />
+	<cfreturn this>
   </cffunction>
 
   <cffunction name="getParentID" returnType="string" output="false" access="public">
     <cfreturn variables.instance.ParentID />
   </cffunction>
   
-  <cffunction name="setType" returnType="void" output="false" access="public">
+  <cffunction name="setType" output="false" access="public">
     <cfargument name="Type" type="string" required="true">
     <cfset variables.instance.Type = trim(arguments.Type) />
+	<cfreturn this>
   </cffunction>
 
   <cffunction name="getType" returnType="string" output="false" access="public">
@@ -580,191 +599,211 @@ to your own modified versions of Mura CMS.
   </cffunction>
 
 
-  <cffunction name="setSubType" returnType="void" output="false" access="public">
+  <cffunction name="setSubType" output="false" access="public">
     <cfargument name="SubType" type="string" required="true">
 	<cfset arguments.subType=trim(arguments.subType)>
 	<cfif len(arguments.subType) and variables.instance.SubType neq arguments.SubType>
     	<cfset variables.instance.SubType = arguments.SubType />
 		<cfset purgeExtendedData()>
 	</cfif>
+	<cfreturn this>
   </cffunction>
 
   <cffunction name="getSubType" returnType="string" output="false" access="public">
 		<cfreturn variables.instance.subType />
   </cffunction>
 
-  <cffunction name="setLastUpdateBy" returnType="void" output="false" access="public">
+  <cffunction name="setLastUpdateBy" output="false" access="public">
     <cfargument name="LastUpdateBy" type="string" required="true">
     <cfset variables.instance.LastUpdateBy = left(trim(arguments.LastUpdateBy),50) />
+	<cfreturn this>
   </cffunction>
 
   <cffunction name="getLastUpdateBy" returnType="string" output="false" access="public">
     <cfreturn variables.instance.LastUpdateBy />
   </cffunction>
   
-  <cffunction name="setLastUpdateByID" returnType="void" output="false" access="public">
+  <cffunction name="setLastUpdateByID" output="false" access="public">
     <cfargument name="LastUpdateByID" type="string" required="true">
     <cfset variables.instance.LastUpdateByID = trim(arguments.LastUpdateByID) />
+	<cfreturn this>
   </cffunction>
 
   <cffunction name="getLastUpdateByID" returnType="string" output="false" access="public">
     <cfreturn variables.instance.LastUpdateByID />
   </cffunction>
 
-  <cffunction name="setSummary" returnType="void" output="false" access="public">
+  <cffunction name="setSummary" output="false" access="public">
     <cfargument name="Summary" type="string" required="true">
     <cfset variables.instance.Summary = trim(arguments.Summary) />
+	<cfreturn this>
   </cffunction>
 
   <cffunction name="getSummary" returnType="string" output="false" access="public">
     <cfreturn variables.instance.Summary />
   </cffunction>
 
-  <cffunction name="setSiteID" returnType="void" output="false" access="public">
+  <cffunction name="setSiteID" output="false" access="public">
     <cfargument name="SiteID" type="string" required="true">
     <cfset variables.instance.SiteID = trim(arguments.SiteID) />
+	<cfreturn this>
   </cffunction>
 
   <cffunction name="getSiteID" returnType="string" output="false" access="public">
     <cfreturn variables.instance.SiteID />
   </cffunction>
   
-  <cffunction name="setModuleID" returnType="void" output="false" access="public">
+  <cffunction name="setModuleID" output="false" access="public">
     <cfargument name="ModuleID" type="string" required="true">
     <cfset variables.instance.ModuleID = arguments.ModuleID />
+	<cfreturn this>
   </cffunction>
 
   <cffunction name="getModuleID" returnType="string" output="false" access="public">
     <cfreturn variables.instance.ModuleID />
   </cffunction>
   
-   <cffunction name="setIsNav" returnType="void" output="false" access="public">
+   <cffunction name="setIsNav" output="false" access="public">
     <cfargument name="IsNav" type="numeric" required="true">
     <cfset variables.instance.IsNav = arguments.IsNav />
+	<cfreturn this>
   </cffunction>
 
   <cffunction name="getIsNav" returnType="numeric" output="false" access="public">
     <cfreturn variables.instance.IsNav />
   </cffunction>
   
-  <cffunction name="setRestricted" returnType="void" output="false" access="public">
+  <cffunction name="setRestricted" output="false" access="public">
     <cfargument name="Restricted" type="numeric" required="true">
     <cfset variables.instance.Restricted = arguments.Restricted />
+	<cfreturn this>
   </cffunction>
 
   <cffunction name="getRestricted" returnType="numeric" output="false" access="public">
     <cfreturn variables.instance.Restricted />
   </cffunction>
   
-  <cffunction name="setTarget" returnType="void" output="false" access="public">
+  <cffunction name="setTarget" output="false" access="public">
     <cfargument name="Target" type="string" required="true">
     <cfset variables.instance.Target = trim(arguments.Target) />
+	<cfreturn this>
   </cffunction>
 
   <cffunction name="getTarget" returnType="string" output="false" access="public">
     <cfreturn variables.instance.Target />
   </cffunction>
   
-  <cffunction name="setRestrictGroups" returnType="void" output="false" access="public">
+  <cffunction name="setRestrictGroups" output="false" access="public">
     <cfargument name="RestrictGroups" type="string" required="true">
     <cfset variables.instance.RestrictGroups = trim(arguments.RestrictGroups) />
+	<cfreturn this>
   </cffunction>
 
   <cffunction name="getRestrictGroups" returnType="string" output="false" access="public">
     <cfreturn variables.instance.RestrictGroups />
   </cffunction>
   
-  <cffunction name="setTemplate" returnType="void" output="false" access="public">
+  <cffunction name="setTemplate" output="false" access="public">
     <cfargument name="Template" type="string" required="true">
     <cfset variables.instance.Template = trim(arguments.Template) />
+	<cfreturn this>
   </cffunction>
 
   <cffunction name="getTemplate" returnType="string" output="false" access="public">
     <cfreturn variables.instance.Template />
   </cffunction>
   
-  <cffunction name="setResponseMessage" returnType="void" output="false" access="public">
+  <cffunction name="setResponseMessage" output="false" access="public">
     <cfargument name="ResponseMessage" type="string" required="true">
     <cfset variables.instance.ResponseMessage = trim(arguments.ResponseMessage) />
+	<cfreturn this>
   </cffunction>
 
   <cffunction name="getResponseMessage" returnType="string" output="false" access="public">
     <cfreturn variables.instance.ResponseMessage />
   </cffunction>
   
-  <cffunction name="setResponseChart" returnType="void" output="false" access="public">
+  <cffunction name="setResponseChart" output="false" access="public">
     <cfargument name="ResponseChart" type="numeric" required="true">
     <cfset variables.instance.ResponseChart = arguments.ResponseChart />
+	<cfreturn this>
   </cffunction>
 
   <cffunction name="getResponseChart" returnType="numeric" output="false" access="public">
     <cfreturn variables.instance.ResponseChart />
   </cffunction>
   
-  <cffunction name="setResponseSendTo" returnType="void" output="false" access="public">
+  <cffunction name="setResponseSendTo" output="false" access="public">
     <cfargument name="ResponseSendTo" type="string" required="true">
     <cfset variables.instance.ResponseSendTo = trim(arguments.ResponseSendTo) />
+	<cfreturn this>
   </cffunction>
 
   <cffunction name="getResponseSendTo" returnType="string" output="false" access="public">
     <cfreturn variables.instance.ResponseSendTo />
   </cffunction>
   
-  <cffunction name="setResponseDisplayFields" returnType="void" output="false" access="public">
+  <cffunction name="setResponseDisplayFields" output="false" access="public">
     <cfargument name="ResponseDisplayFields" type="string" required="true">
     <cfset variables.instance.ResponseDisplayFields = trim(arguments.ResponseDisplayFields) />
+	<cfreturn this>
   </cffunction>
 
   <cffunction name="getResponseDisplayFields" returnType="string" output="false" access="public">
     <cfreturn variables.instance.ResponseDisplayFields />
   </cffunction>
   
-  <cffunction name="setModuleAssign" returnType="void" output="false" access="public">
+  <cffunction name="setModuleAssign" output="false" access="public">
     <cfargument name="ModuleAssign" type="string" required="true">
     <cfset variables.instance.ModuleAssign = trim(arguments.ModuleAssign) />
+	<cfreturn this>
   </cffunction>
 
   <cffunction name="getModuleAssign" returnType="string" output="false" access="public">
     <cfreturn variables.instance.ModuleAssign />
   </cffunction>
   
-  <cffunction name="setNotes" returnType="void" output="false" access="public">
+  <cffunction name="setNotes" output="false" access="public">
     <cfargument name="Notes" type="string" required="true">
     <cfset variables.instance.Notes = trim(arguments.Notes) />
+	<cfreturn this>
   </cffunction>
 
   <cffunction name="getNotes" returnType="string" output="false" access="public">
     <cfreturn variables.instance.Notes />
   </cffunction>
 
-  <cffunction name="setInheritObjects" returnType="void" output="false" access="public">
+  <cffunction name="setInheritObjects" output="false" access="public">
     <cfargument name="InheritObjects" type="string" required="true">
     <cfset variables.instance.InheritObjects = trim(arguments.InheritObjects) />
+	<cfreturn this>
   </cffunction>
 
   <cffunction name="getInheritObjects" returnType="string" output="false" access="public">
     <cfreturn variables.instance.InheritObjects />
   </cffunction>
   
-   <cffunction name="setIsFeature" returnType="void" output="false" access="public">
+   <cffunction name="setIsFeature" output="false" access="public">
     <cfargument name="IsFeature" type="numeric" required="true">
     <cfset variables.instance.IsFeature = arguments.IsFeature />
+	<cfreturn this>
   </cffunction>
 
   <cffunction name="getIsFeature" returnType="numeric" output="false" access="public">
     <cfreturn variables.instance.IsFeature />
   </cffunction>
   
-     <cffunction name="setIsNew" returnType="void" output="false" access="public">
+     <cffunction name="setIsNew" output="false" access="public">
     <cfargument name="IsNew" type="numeric" required="true">
     <cfset variables.instance.IsNew = arguments.IsNew />
+	<cfreturn this>
   </cffunction>
 
   <cffunction name="getIsNew" returnType="numeric" output="false" access="public">
     <cfreturn variables.instance.IsNew />
   </cffunction>
   
-  <cffunction name="setReleaseDate" returnType="void" output="false" access="public">
+  <cffunction name="setReleaseDate" output="false" access="public">
     <cfargument name="releaseDate" type="string" required="true">
 	<cfif lsisDate(arguments.releaseDate)>
 		<cftry>
@@ -776,60 +815,66 @@ to your own modified versions of Mura CMS.
 		<cfelse>
 		<cfset variables.instance.releaseDate = ""/>
 	</cfif>
+	<cfreturn this>
   </cffunction>
 
   <cffunction name="getReleaseDate" returnType="string" output="false" access="public">
     <cfreturn variables.instance.releaseDate />
   </cffunction>
   
-  <cffunction name="setTargetParams" returnType="void" output="false" access="public">
+  <cffunction name="setTargetParams" output="false" access="public">
     <cfargument name="TargetParams" type="string" required="true">
     <cfset variables.instance.TargetParams = trim(arguments.TargetParams) />
+	<cfreturn this>
   </cffunction>
 
   <cffunction name="getTargetParams" returnType="string" output="false" access="public">
     <cfreturn variables.instance.TargetParams />
   </cffunction>
   
-  <cffunction name="setIsLocked" returnType="void" output="false" access="public">
+  <cffunction name="setIsLocked" output="false" access="public">
     <cfargument name="IsLocked" type="numeric" required="true">
     <cfset variables.instance.IsLocked = arguments.IsLocked />
+	<cfreturn this>
   </cffunction>
 
   <cffunction name="getIsLocked" returnType="numeric" output="false" access="public">
     <cfreturn variables.instance.IsLocked />
   </cffunction>
   
-  <cffunction name="setNextN" returnType="void" output="false" access="public">
+  <cffunction name="setNextN" output="false" access="public">
     <cfargument name="NextN" type="any" required="true">
 	<cfif isNumeric(arguments.NextN)>
    		<cfset variables.instance.NextN = arguments.NextN />
 	</cfif>
+	<cfreturn this>
   </cffunction>
 
   <cffunction name="getNextN" returnType="numeric" output="false" access="public">
     <cfreturn variables.instance.NextN />
   </cffunction>
   
- <cffunction name="setSortBy" returnType="void" output="false" access="public">
+ <cffunction name="setSortBy" output="false" access="public">
     <cfargument name="SortBy" type="string" required="true">
     <cfset variables.instance.SortBy = trim(arguments.SortBy) />
+	<cfreturn this>
   </cffunction>
 
   <cffunction name="getSortBy" returnType="string" output="false" access="public">
     <cfreturn variables.instance.SortBy />
   </cffunction>
   
-   <cffunction name="setSortDirection" returnType="void" output="false" access="public">
+   <cffunction name="setSortDirection" output="false" access="public">
     <cfargument name="SortDirection" type="string" required="true">
     <cfset variables.instance.SortDirection = trim(arguments.SortDirection) />
+	<cfreturn this>
   </cffunction>
 
   <cffunction name="getSortDirection" returnType="string" output="false" access="public">
     <cfreturn variables.instance.SortDirection />
   </cffunction>
   
-    <cffunction name="setFeatureStop" returnType="void" output="false" access="public">
+    <cffunction name="setFeatureStop" output="false" access="public">
     <cfargument name="FeatureStop" type="string" required="true">
     	<cfif lsisDate(arguments.FeatureStop)>
 		<cftry>
@@ -841,13 +886,14 @@ to your own modified versions of Mura CMS.
 		<cfelse>
 		<cfset variables.instance.FeatureStop = ""/>
 	</cfif>
+	<cfreturn this>
   </cffunction>
 
   <cffunction name="getFeatureStop" returnType="string" output="false" access="public">
     <cfreturn variables.instance.FeatureStop />
   </cffunction>
   
-  <cffunction name="setFeatureStart" returnType="void" output="false" access="public">
+  <cffunction name="setFeatureStart" output="false" access="public">
     <cfargument name="FeatureStart" type="string" required="true">
 	<cfif lsisDate(arguments.FeatureStart)>
 		<cftry>
@@ -859,85 +905,94 @@ to your own modified versions of Mura CMS.
 		<cfelse>
 		<cfset variables.instance.FeatureStart = ""/>
 	</cfif>
+	<cfreturn this>
   </cffunction>
 
   <cffunction name="getFeatureStart" returnType="string" output="false" access="public">
     <cfreturn variables.instance.FeatureStart />
   </cffunction>
   
-  <cffunction name="setFileID" returnType="void" output="false" access="public">
+  <cffunction name="setFileID" output="false" access="public">
     <cfargument name="FileID" type="string" required="true">
     <cfset variables.instance.FileID = trim(arguments.FileID) />
+	<cfreturn this>
   </cffunction>
 
   <cffunction name="getFileID" returnType="string" output="false" access="public">
     <cfreturn variables.instance.FileID />
   </cffunction>
   
-    <cffunction name="setFileSize" returnType="void" output="false" access="public">
+    <cffunction name="setFileSize" output="false" access="public">
     <cfargument name="FileSize" type="string" required="true">
     <cfset variables.instance.FileSize = trim(arguments.FileSize) />
+	<cfreturn this>
   </cffunction>
 
   <cffunction name="getFileSize" returnType="string" output="false" access="public">
     <cfreturn variables.instance.FileSize />
   </cffunction>
   
-   <cffunction name="setFileExt" returnType="void" output="false" access="public">
+   <cffunction name="setFileExt" output="false" access="public">
     <cfargument name="FileExt" type="string" required="true">
     <cfset variables.instance.FileExt = trim(arguments.FileExt) />
+	<cfreturn this>
   </cffunction>
 
   <cffunction name="getFileExt" returnType="string" output="false" access="public">
     <cfreturn variables.instance.FileExt />
   </cffunction>
   
-   <cffunction name="setcontentType" returnType="void" output="false" access="public">
+   <cffunction name="setcontentType" output="false" access="public">
     <cfargument name="ContentType" type="string" required="true">
     <cfset variables.instance.ContentType = trim(arguments.ContentType) />
+	<cfreturn this>
   </cffunction>
 
   <cffunction name="getcontentType" returnType="string" output="false" access="public">
     <cfreturn variables.instance.ContentType />
   </cffunction>
   
-  <cffunction name="setcontentSubType" returnType="void" output="false" access="public">
+  <cffunction name="setcontentSubType" output="false" access="public">
     <cfargument name="ContentSubType" type="string" required="true">
     <cfset variables.instance.ContentSubType = trim(arguments.ContentSubType) />
+	<cfreturn this>
   </cffunction>
 
   <cffunction name="getcontentSubType" returnType="string" output="false" access="public">
     <cfreturn variables.instance.ContentSubType />
   </cffunction>
   
-  <cffunction name="setForceSSL" returnType="void" output="false" access="public">
+  <cffunction name="setForceSSL" output="false" access="public">
     <cfargument name="ForceSSL" type="numeric" required="true">
     <cfset variables.instance.ForceSSL = arguments.ForceSSL />
+	<cfreturn this>
   </cffunction>
 
   <cffunction name="getForceSSL" returnType="numeric" output="false" access="public">
     <cfreturn variables.instance.ForceSSL />
   </cffunction>
   
-   <cffunction name="setRemoteID" returnType="void" output="false" access="public">
+   <cffunction name="setRemoteID" output="false" access="public">
     <cfargument name="RemoteID" type="string" required="true">
     <cfset variables.instance.RemoteID = trim(arguments.RemoteID) />
+	<cfreturn this>
   </cffunction>
 
   <cffunction name="getRemoteID" returnType="string" output="false" access="public">
     <cfreturn variables.instance.RemoteID />
   </cffunction>
   
-   <cffunction name="setRemoteURL" returnType="void" output="false" access="public">
+   <cffunction name="setRemoteURL" output="false" access="public">
     <cfargument name="RemoteURL" type="string" required="true">
     <cfset variables.instance.RemoteURL = trim(arguments.RemoteURL) />
+	<cfreturn this>
   </cffunction>
 
   <cffunction name="getRemoteURL" returnType="string" output="false" access="public">
     <cfreturn variables.instance.RemoteURL />
   </cffunction>
   
-  <cffunction name="setRemotePubDate" returnType="void" output="false" access="public">
+  <cffunction name="setRemotePubDate" output="false" access="public">
     <cfargument name="RemotePubDate" type="string" required="true">
 	<cfif lsisDate(arguments.RemotePubDate)>
 		<cftry>
@@ -949,107 +1004,118 @@ to your own modified versions of Mura CMS.
 		<cfelse>
 		<cfset variables.instance.RemotePubDate = ""/>
 	</cfif>
+	<cfreturn this>
   </cffunction>
 
   <cffunction name="getRemotePubDate" returnType="string" output="false" access="public">
     <cfreturn variables.instance.RemotePubDate />
   </cffunction>
 
-  <cffunction name="setRemoteSource" returnType="void" output="false" access="public">
+  <cffunction name="setRemoteSource" output="false" access="public">
     <cfargument name="RemoteSource" type="string" required="true">
     <cfset variables.instance.RemoteSource = trim(arguments.RemoteSource) />
+	<cfreturn this>
   </cffunction>
   
   <cffunction name="getRemoteSource" returnType="string" output="false" access="public">
     <cfreturn variables.instance.RemoteSource />
   </cffunction>
 
-  <cffunction name="setRemoteSourceURL" returnType="void" output="false" access="public">
+  <cffunction name="setRemoteSourceURL" output="false" access="public">
     <cfargument name="RemoteSourceURL" type="string" required="true">
     <cfset variables.instance.RemoteSourceURL = trim(arguments.RemoteSourceURL) />
+	<cfreturn this>
   </cffunction>
   
   <cffunction name="getRemoteSourceURL" returnType="string" output="false" access="public">
     <cfreturn variables.instance.RemoteSourceURL />
   </cffunction>
 
-  <cffunction name="setCredits" returnType="void" output="false" access="public">
+  <cffunction name="setCredits" output="false" access="public">
     <cfargument name="Credits" type="string" required="true">
     <cfset variables.instance.Credits = trim(arguments.Credits) />
+	<cfreturn this>
   </cffunction>
   
   <cffunction name="getCredits" returnType="string" output="false" access="public">
     <cfreturn variables.instance.Credits />
   </cffunction>
 
-  <cffunction name="setAudience" returnType="void" output="false" access="public">
+  <cffunction name="setAudience" output="false" access="public">
     <cfargument name="audience" type="string" required="true">
     <cfset variables.instance.audience = trim(arguments.audience) />
+	<cfreturn this>
   </cffunction>
   
   <cffunction name="getAudience" returnType="string" output="false" access="public">
     <cfreturn variables.instance.audience />
   </cffunction>
 
-  <cffunction name="setKeyPoints" returnType="void" output="false" access="public">
+  <cffunction name="setKeyPoints" output="false" access="public">
     <cfargument name="keyPoints" type="string" required="true">
     <cfset variables.instance.keyPoints = trim(arguments.keyPoints) />
+	<cfreturn this>
   </cffunction>
   
   <cffunction name="getKeyPoints" returnType="string" output="false" access="public">
     <cfreturn variables.instance.keyPoints />
   </cffunction>
 
-  <cffunction name="setSearchExclude" returnType="void" output="false" access="public">
+  <cffunction name="setSearchExclude" output="false" access="public">
     <cfargument name="searchExclude" type="numeric" required="true">
     <cfset variables.instance.searchExclude = arguments.searchExclude />
+	<cfreturn this>
   </cffunction>
   
   <cffunction name="getSearchExclude" returnType="numeric" output="false" access="public">
     <cfreturn variables.instance.searchExclude />
   </cffunction>
 
-  <cffunction name="setDisplayTitle" returnType="void" output="false" access="public">
+  <cffunction name="setDisplayTitle" output="false" access="public">
     <cfargument name="DisplayTitle" required="true">
 	<cfif isNumeric(arguments.DisplayTitle)>
   	  <cfset variables.instance.DisplayTitle = arguments.DisplayTitle />
 	</cfif>
+	<cfreturn this>
   </cffunction>
   
   <cffunction name="getDisplayTitle" returnType="numeric" output="false" access="public">
     <cfreturn variables.instance.DisplayTitle />
   </cffunction>
   
-  <cffunction name="setPath" returnType="void" output="false" access="public">
+  <cffunction name="setPath" output="false" access="public">
     <cfargument name="Path" type="string" required="true">
     <cfset variables.instance.Path = trim(arguments.Path) />
+	<cfreturn this>
   </cffunction>
   
   <cffunction name="getPath" returnType="string" output="false" access="public">
     <cfreturn variables.instance.Path />
   </cffunction>
 
-  <cffunction name="setTags" returnType="void" output="false" access="public">
+  <cffunction name="setTags" output="false" access="public">
     <cfargument name="tags" type="string" required="true">
     <cfset variables.instance.tags = trim(arguments.tags) />
+	<cfreturn this>
   </cffunction>
   
   <cffunction name="getTags" returnType="string" output="false" access="public">
     <cfreturn variables.instance.tags />
   </cffunction>
 
-  <cffunction name="setDoCache" returnType="void" output="false" access="public">
+  <cffunction name="setDoCache" output="false" access="public">
     <cfargument name="doCache" required="true">
 	<cfif isNumeric(arguments.doCache)>
     <cfset variables.instance.doCache = arguments.doCache />
 	</cfif>
+	<cfreturn this>
   </cffunction>
 
   <cffunction name="getDoCache" returnType="numeric" output="false" access="public">
     <cfreturn variables.instance.doCache />
   </cffunction>
 
-  <cffunction name="setCreated" returnType="void" output="false" access="public">
+  <cffunction name="setCreated" output="false" access="public">
     <cfargument name="Created" type="string" required="true">
 	<cfif lsisDate(arguments.created)>
 		<cftry>
@@ -1061,6 +1127,7 @@ to your own modified versions of Mura CMS.
 		<cfelse>
 		<cfset variables.instance.created = ""/>
 	</cfif>
+	<cfreturn this>
   </cffunction>
 
   <cffunction name="getCreated" returnType="string" output="false" access="public">
@@ -1074,8 +1141,9 @@ to your own modified versions of Mura CMS.
 	<cfreturn variables.instance.extendData />
  </cffunction>
 
- <cffunction name="purgeExtendedData" returntype="void" output="false" access="public">
+ <cffunction name="purgeExtendedData" output="false" access="public">
 	<cfset variables.instance.extendData=""/>
+	<cfreturn this>
  </cffunction>
  
  <cffunction name="getExtendedAttribute" returnType="string" output="false" access="public">
@@ -1108,7 +1176,7 @@ to your own modified versions of Mura CMS.
 		<cfset variables.instance["#arguments.property#"]=arguments.propertyValue />
 		
 	</cfif>
-	
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="getValue" returntype="any" access="public" output="false">
@@ -1148,6 +1216,7 @@ to your own modified versions of Mura CMS.
 		<cfset variables.instance['stopDayPart#catTrim#']=dateFormat(arguments.featureStop,"tt") />
 		</cfif>
 	</cfif>
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="setCategories" returntype="any" access="public" output="false">
@@ -1165,26 +1234,30 @@ to your own modified versions of Mura CMS.
 			arguments.featureStop	
 		) />
 	</cfloop>
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="setAllValues" returntype="any" access="public" output="false">
 	<cfargument name="instance">
 	<cfset variables.instance=arguments.instance/>
 	<cfset variables.displayRegions=structNew()>
+	<cfreturn this>
 </cffunction>
 
-<cffunction name="setURLTitle" returnType="void" output="false" access="public">
+<cffunction name="setURLTitle" output="false" access="public">
     <cfargument name="URLTitle" required="true">
 	<cfset variables.instance.URLTitle = trim(arguments.URLTitle) />
+	<cfreturn this>
 </cffunction>
   
 <cffunction name="getURLTitle" returnType="string" output="false" access="public">
 	<cfreturn variables.instance.URLTitle />
 </cffunction>
 
-<cffunction name="setHTMLTitle" returnType="void" output="false" access="public">
+<cffunction name="setHTMLTitle" output="false" access="public">
     <cfargument name="HTMLTitle" required="true">
   	<cfset variables.instance.HTMLTitle = trim(arguments.HTMLTitle) />
+	<cfreturn this>
 </cffunction>
   
 <cffunction name="getHTMLTitle" returnType="string" output="false" access="public">
@@ -1266,15 +1339,16 @@ to your own modified versions of Mura CMS.
 	<cfreturn this />
 </cffunction>
 
-<cffunction name="addChild" output="false" returntype="void">
+<cffunction name="addChild" output="false">
 	<cfargument name="child" hint="Instance of a contentBean">
 	<cfset arguments.child.setSiteID(getSiteID())>
 	<cfset arguments.child.setParentID(getContentID())>
 	<cfset arguments.child.setModuleID(getModuleID())>
 	<cfset arrayAppend(variables.kids,arguments.child)>	
+	<cfreturn this>
 </cffunction>
 
-<cffunction name="addDisplayObject" output="false" returntype="void">
+<cffunction name="addDisplayObject" output="false">
 	<cfargument name="regionID">
 	<cfargument name="object">
 	<cfargument name="objectID">
@@ -1289,10 +1363,10 @@ to your own modified versions of Mura CMS.
 		<cfset querysetcell(rs,"object",arguments.object,rows)/>
 		<cfset querysetcell(rs,"name",arguments.name,rows)/>	
 	</cfif>
-	
+	<cfreturn this>
 </cffunction>
 
-<cffunction name="removeDisplayObject" output="false" returntype="void">
+<cffunction name="removeDisplayObject" output="false">
 	<cfargument name="regionID">
 	<cfargument name="object">
 	<cfargument name="objectID">
@@ -1306,7 +1380,7 @@ to your own modified versions of Mura CMS.
 		and object='#arguments.object#')
 		</cfquery>
 	</cfif>
-	
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="hasDisplayObject" output="false" returntype="boolean">
@@ -1343,11 +1417,11 @@ to your own modified versions of Mura CMS.
 	</cfif>
 </cffunction>
 
-<cffunction name="deleteVersionHistory" returnType="void" output="false" access="public">
+<cffunction name="deleteVersionHistory" output="false" access="public">
 	<cfset variables.contentManager.deleteHistAll(getAllValues()) />
 </cffunction>
 
-<cffunction name="delete" returnType="void" output="false" access="public">
+<cffunction name="delete" output="false" access="public">
 	<cfset variables.contentManager.deleteAll(getAllValues()) />
 </cffunction>
 

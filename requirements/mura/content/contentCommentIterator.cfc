@@ -51,10 +51,10 @@ to your own modified versions of Mura CMS.
 	<cfreturn comment>
 </cffunction>
 
-<cffunction name="setContentManager" output="false" returntype="void" access="public">
+<cffunction name="setContentManager" output="false" access="public">
 	<cfargument name="contentManager">
 	<cfset variables.contentManager=arguments.contentManager>
+	<cfreturn this>
 </cffunction>
-
 
 </cfcomponent>

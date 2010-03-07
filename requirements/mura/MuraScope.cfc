@@ -29,6 +29,7 @@
 	<cfargument name="renderer">
 	<cfset variables.hasRenderer=isObject(arguments.renderer)>
 	<cfset variables.instance.renderer=arguments.renderer>
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="getContentBean" output="false" returntype="any">
@@ -39,6 +40,7 @@
 	<cfargument name="content">
 	<cfset variables.hasContent=isObject(arguments.content)>
 	<cfset variables.instance.content=arguments.content>
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="getEvent" output="false" returntype="any">
@@ -49,6 +51,7 @@
 	<cfargument name="event">
 	<cfset variables.hasEvent=isObject(arguments.event)>
 	<cfset variables.instance.event=arguments.event>
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="OnMissingMethod" access="public" returntype="any" output="false" hint="Handles missing method exceptions.">
@@ -194,6 +197,7 @@
 	</cfif>
 	
 </cffunction>
+
 <cffunction name="component" output="false" returntype="any">
 	<cfargument name="property">
 	<cfargument name="propertyValue">
