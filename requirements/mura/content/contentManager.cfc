@@ -169,7 +169,7 @@ to your own modified versions of Mura CMS.
 	<cffunction name="read" output="false" returntype="Any" hint="Takes (contentid | contenthistid | filename | remoteid), siteid, use404">
 	<cfargument name="contentID" required="true" default="">
 	<cfargument name="contentHistID" required="true" default="">
-	<cfargument name="filename" required="true" default="">
+	<cfargument name="filename">
 	<cfargument name="remoteID" required="true" default="">
 	<cfargument name="siteID" required="true" default=""> 
 	<cfargument name="use404" required="true" default="false">
@@ -180,7 +180,7 @@ to your own modified versions of Mura CMS.
 	
 	<cfif len(arguments.contenthistid)>
 		<cfreturn getcontentVersion(arguments.contenthistid, arguments.siteid, arguments.use404)>
-	<cfelseif len(arguments.filename)>
+	<cfelseif structKeyExists(arguments,"filename")>
 		<cfreturn getActiveContentByFilename(arguments.filename, arguments.siteid, arguments.use404)>
 	<cfelseif len(arguments.remoteid)>
 		<cfreturn getActiveByRemoteID(arguments.remoteid, arguments.siteid)>
