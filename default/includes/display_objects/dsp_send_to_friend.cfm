@@ -41,4 +41,4 @@ the GNU General Public License version 2  without this exception.  You may, if y
 to your own modified versions of Mura CMS.
 --->
 <cfset loadShadowboxJS()>
-<cfif request.contentBean.getType() eq 'Page'><cfoutput><a rel="shadowbox;width=600;height=500" href="http://#application.settingsManager.getSite(request.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()#/#request.siteid#/utilities/sendtofriend.cfm?link=#URLEncodedFormat(getCurrentURL())#&siteid=#request.siteid#">Share</a></cfoutput></cfif>
+<cfif request.contentBean.getType() eq 'Page'><cfoutput><a rel="shadowbox;width=600;height=500" href="http://#application.settingsManager.getSite(request.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()#/#getSite().getDisplayPoolID()#/includes/display_objects/sendtofriend/index.cfm?link=#URLEncodedFormat(getCurrentURL())#&siteid=#request.siteid#">#rbFactory.getResourceBundle().messageFormat(rbFactory.getKey('favorites.emailthis'),rbFactory.getKey('sitemanager.content.type.#request.contentbean.getType()#'))#</a></cfoutput></cfif>
