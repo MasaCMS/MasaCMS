@@ -52,6 +52,9 @@ to your own modified versions of Mura CMS.
 
 
 <cfif attributes.action neq 'updateCore'>
+<cfif attributes.action eq "deploy">
+<cfoutput>#application.pluginManager.announceEvent("onAfterSiteDeployRender",event)#</cfoutput>
+</cfif>
 <div id="page_tabView">
 <div class="page_aTab">
 <br/>
