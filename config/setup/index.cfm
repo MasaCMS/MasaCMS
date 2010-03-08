@@ -50,7 +50,7 @@ to your own modified versions of Mura CMS.
 <!--- get settings path --->
 <cfset settingsPath = "#getDirectoryFromPath( getCurrentTemplatePath() )#../settings.ini.cfm" />
 <!--- load settings into iniFile instance --->
-<cfset settingsIni = createObject( "component", "#getProfileString( settingsPath, "production", 'mapdir' )#.IniFile" ).init( "/muraWRM/config/settings.ini.cfm" ) />
+<cfset settingsIni = createObject( "component", "#getProfileString( settingsPath, "production", 'mapdir' )#.IniFile" ).init( settingsPath ) />
 <!--- get current file --->
 <cfset currentFile = getFileFromPath( getCurrentTemplatePath() ) />
 <cfset webRoot = replaceNoCase( CGI.script_name, currentFile, "" ) />
