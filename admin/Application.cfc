@@ -253,6 +253,11 @@
 
 	</cffunction>
 	
-	<cfinclude template="../config/appcfc/onError_method.cfm">
+	<cffunction name="onError"  returnType="void"  output="true">
+	    <cfargument name="exception" required="true">
+	   	<cfargument name="eventname" type="string" required="true">
+	  
+		<cfinclude template="../config/appcfc/onError_include.cfm">
+	</cffunction>
 	
 </cfcomponent>
