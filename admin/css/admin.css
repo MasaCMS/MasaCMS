@@ -2313,15 +2313,15 @@ table#fileList td.varWidth a,
 }
 
 .txtLocked {
-	background: url(../images/icons/files/icon_txt_small_locked.gif) !important;
+	background-image: url(../images/icons/files/icon_txt_small_locked.gif) !important;
 }
 
 .pptLocked {
-	background: url(../images/icons/files/icon_ppt_small_locked.gif) !important;
+	background-image: url(../images/icons/files/icon_ppt_small_locked.gif) !important;
 }
 
 .xlsLocked {
-	background: url(../images/icons/files/icon_xls_small_locked.gif) !important;
+	background-image: url(../images/icons/files/icon_xls_small_locked.gif) !important;
 }
 
 .mdbLocked {
