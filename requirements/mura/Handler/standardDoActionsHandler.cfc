@@ -66,7 +66,7 @@
 						<cfset event.setValue('addressID','')>
 						<cfset event.setValue('addressAction','')>
 					<cfelse>
-						<cfset event.setValue('userBean',application.userManager.update(request,iif(event.valueExists('groupID'),de('true'),de('false')),true,event.getValue('siteID'))) />
+						<cfset event.setValue('userBean',application.userManager.update( getBean("user").loadBy(userID=event.getValue("userID")).set(event.getAllValues()).getAllValues() , iif(event.valueExists('groupID'),de('true'),de('false')),true,event.getValue('siteID'))) />
 						<cfif structIsEmpty(event.getValue('userBean').getErrors())>
 							<cfset application.loginManager.loginByUserID(event.getAllValues())>
 						</cfif>
@@ -81,7 +81,8 @@
 						<cfset event.setValue("passedProtect",application.utility.cfformprotect(event))>
 					</cfif>
 					
-					<cfset event.setValue('userBean',application.userManager.create(event.getAllValues())) />		
+					<cfset application.serviceFactory.getBean("user")>
+					<cfset event.setValue('userBean', application.userManager.create( getBean("user").loadBy(userID=event.getValue("userID")).set(event.getAllValues()).getAllValues() )) />		
 					<cfif structIsEmpty(event.getValue('userBean').getErrors()) and not event.valueExists('passwordNoCache')>
 						<cfset application.userManager.sendLoginByUser(event.getValue('userBean'),event.getValue('siteid'),event.getValue('contentRenderer').getCurrentURL(),true) />
 					<cfelseif structIsEmpty(event.getValue('userBean').getErrors()) and event.valueExists('passwordNoCache') and event.getValue('userBean').getInactive() eq 0>	

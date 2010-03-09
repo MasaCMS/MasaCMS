@@ -80,6 +80,7 @@ to your own modified versions of Mura CMS.
 	<cfargument name="username" type="string" default=""/>
 	<cfargument name="remoteID" type="string" default=""/>
 	<cfargument name="siteID" type="string" default=""/>
+	<cfargument name="groupname" type="string" default=""/>
 	<cfargument name="isPublic" type="string" default="1"/>
 	
 	<cfif len(arguments.siteID)>
@@ -90,9 +91,10 @@ to your own modified versions of Mura CMS.
 		<cfelseif len(arguments.remoteID)>
 			<cfreturn readByRemoteID(arguments.remoteID,arguments.siteid) />
 		</cfif>
-	<cfelse>			
-		<cfreturn variables.userDAO.read(arguments.userid) />
 	</cfif>
+					
+	<cfreturn variables.userDAO.read(arguments.userid) />
+	
 </cffunction>
 
 <cffunction name="readUserHash" access="public" returntype="query" output="false">
