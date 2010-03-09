@@ -76,7 +76,7 @@ to your own modified versions of Mura CMS.
 		</cftry>
 		
 		<cfif not hasMappings>
-			<cfinclude template="../../config/appcfc/buildPluginMappings.cfm">
+			<cfinclude template="../../config/buildPluginMappings.cfm">
 		</cfif>
 		
 	</cfif>
