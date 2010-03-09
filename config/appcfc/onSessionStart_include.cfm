@@ -40,28 +40,23 @@ for your modified version; it is your choice whether to do so, or to make such m
 the GNU General Public License version 2 �without this exception. �You may, if you choose, apply this exception
 to your own modified versions of Mura CMS.
 --->
-<cftry>
-	<cffile action="write" file="#baseDir#/config/mappings.cfm" output="<!--- Add Custom Mappings Here --->" addnewline="true" mode="775">
-	<cfcatch>
-		<cfset canWriteMode="false">
-		<cftry>
-			<cffile action="write" file="#baseDir#/config/mappings.cfm" output="<!--- Add Custom Mappings Here --->" addnewline="true">
-			<cfcatch>
-				<cfset canWriteMappings=false>
-			</cfcatch>
-		</cftry>
-	</cfcatch>
-</cftry>
-			
-<cfdirectory action="list" directory="#baseDir#/requirements/" name="rsRequirements">
-				
-<cfloop query="rsRequirements">
-	<cfif rsRequirements.type eq "dir" and rsRequirements.name neq '.svn'>
-		<cfif canWriteMappings>
-			<cffile action="append" file="#baseDir#/config/mappings.cfm" output='<cfset this.mappings["/#rsRequirements.name#"] = mapPrefix & BaseDir & "/requirements/#rsRequirements.name#">' mode="775">	
-		<cfelseif canWriteMappings>
-			<cffile action="append" file="#baseDir#/config/mappings.cfm" output='<cfset this.mappings["/#rsRequirements.name#"] = mapPrefix & BaseDir & "/requirements/#rsRequirements.name#">'>	
-		</cfif>
-		<cfset this.mappings["/#rsRequirements.name#"] = mapPrefix & rsRequirements.directory & "/" & rsRequirements.name>
-	</cfif>
-</cfloop>	
+<cfparam name="session.mura.isLoggedIn" default="false" />
+<cfparam name="session.mura.userID" default="" />
+<cfparam name="session.mura.siteID" default="" />
+<cfparam name="session.mura.subtype" default="Default" />
+<cfparam name="session.mura.username" default="" />
+<cfparam name="session.mura.password" default="" />
+<cfparam name="session.mura.email" default="" />
+<cfparam name="session.mura.fname" default="" />
+<cfparam name="session.mura.lname" default="" />
+<cfparam name="session.mura.company" default="" />
+<cfparam name="session.mura.lastlogin" default="" />
+<cfparam name="session.mura.passwordCreated" default="" />
+<cfparam name="session.mura.remoteID" default="" />
+<cfparam name="session.mura.memberships" default="" />
+<cfparam name="session.rememberMe" type="numeric" default="0" />
+<cfparam name="session.loginAttempts" type="numeric" default="0" />
+<cfparam name="session.blockLoginUntil" type="string" default="" />
+	
+	
+	

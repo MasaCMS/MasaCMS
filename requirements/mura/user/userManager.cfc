@@ -130,22 +130,22 @@ to your own modified versions of Mura CMS.
 	
 	<cfif isObject(arguments.data)>
 		<cfif getMetaData(arguments.data).name eq "mura.user.userBean">
-		<cfset userID=arguments.data.getUserID()>
+		<cfset arguments.data=arguments.data.getAllValues()>
 		<cfelse>
 			<cfthrow type="custom" message="The attribute 'DATA' is not of type 'mura.user.userBean'">
 		</cfif>
-	<cfelseif structKeyExists(arguments.data,"userID")>
-		<cfset userID=arguments.data.userID>
-	<cfelse>
+	</cfif>	
+	
+	<cfif not structKeyExists(arguments.data,"userID")>
 		<cfthrow type="custom" message="The attribute 'USERID' is required when saving a user.">
 	</cfif>
 	
 	<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#" name="rs">
-	select userID from tusers where userID=<cfqueryparam value="#userID#">
+	select userID from tusers where userID=<cfqueryparam value="#arguments.data.userID#">
 	</cfquery>
 	
 	<cfif rs.recordcount>
-		<cfreturn update(arguments.data,arguments.updateGroups,arguments.updateInterests,originID)>	
+		<cfreturn update(arguments.data,arguments.updateGroups,arguments.updateInterests, arguments.originID)>	
 	<cfelse>
 		<cfreturn create(arguments.data)>
 	</cfif>
@@ -161,16 +161,16 @@ to your own modified versions of Mura CMS.
 	<cfset var error =""/>
 	<cfset var addressBean =""/>
 	<cfset var userBean="" />
-	<cfset var pluginEvent = createObject("component","mura.event").init(arguments.data) />
-	
-	<cfset pluginEvent.setValue("updateGroups",arguments.updateGroups) />
-	<cfset pluginEvent.setValue("updateInterests",arguments.updateInterests) />
-	<cfset pluginEvent.setValue("OriginID",arguments.OriginID) />
+	<cfset var pluginEvent = createObject("component","mura.event") />
 			
 	<cfif isObject(arguments.data)>
 		<cfset arguments.data=arguments.data.getAllValues() />
 	</cfif>
 	
+	<cfset pluginEvent.init(arguments.data)>
+	<cfset pluginEvent.setValue("updateGroups",arguments.updateGroups) />
+	<cfset pluginEvent.setValue("updateInterests",arguments.updateInterests) />
+	<cfset pluginEvent.setValue("OriginID",arguments.OriginID) />
 	
 	<cfif not structKeyExists(arguments.data,"userID") or (structKeyExists(arguments.data,"userID") and not len(arguments.data.userID))>
 		<cfreturn create(arguments.data) />
@@ -269,11 +269,13 @@ to your own modified versions of Mura CMS.
 	
 	<cfset var addressBean = "" />
 	<cfset var userBean=application.serviceFactory.getBean("userBean") />
-	<cfset var pluginEvent = createObject("component","mura.event").init(arguments.data) />
+	<cfset var pluginEvent = createObject("component","mura.event") />
 	
 	<cfif isObject(arguments.data)>
 		<cfset arguments.data=arguments.data.getAllValues() />
 	</cfif>
+	
+	<cfset pluginEvent.init(arguments.data)>
 	
 	<cfset userBean.set(arguments.data) />
 	

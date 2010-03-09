@@ -48,7 +48,8 @@ to your own modified versions of Mura CMS.
 <!--- settings --->
 <cfset message = "" />
 <!--- get settings path --->
-<cfset settingsPath = "#getDirectoryFromPath( getCurrentTemplatePath() )#../settings.ini.cfm" />
+<cfset settingsPath = baseDir & "/config/settings.ini.cfm" />
+
 <!--- load settings into iniFile instance --->
 <cfset settingsIni = createObject( "component", "#getProfileString( settingsPath, "production", 'mapdir' )#.IniFile" ).init( settingsPath ) />
 <!--- get current file --->
@@ -101,7 +102,7 @@ to your own modified versions of Mura CMS.
 <cfparam name="FORM.production_context" default="#context#" />
 
 <!--- state we are done --->
-<cfif isDefined( "FORM.#session.setupSubmitButtonComplete#" )>
+<cfif isDefined( "FORM.#cookie.setupSubmitButtonComplete#" )>
 	<!--- state we are done --->
 	<!---
 	<cfset settingsIni.set( "settings", "installed", 1 ) />
@@ -114,7 +115,7 @@ to your own modified versions of Mura CMS.
 </cfif>
 
 <!--- run save process --->
-<cfif isDefined( "FORM.#session.setupSubmitButton#" )>
+<cfif isDefined( "FORM.#cookie.setupSubmitButton#" )>
 	<!--- save settings --->
 	<cfset validSections = "production,settings" />
 	
@@ -487,13 +488,13 @@ to your own modified versions of Mura CMS.
 
 <form id="frm" action="index.cfm" method="post" onclick="return validateForm();">
 
-<cfif isDefined( "FORM.#session.setupSubmitButton#" ) AND errorType IS "">
+<cfif isDefined( "FORM.#cookie.setupSubmitButton#" ) AND errorType IS "">
 		<div id="installationComplete" class="success">
 			<p id="congrats">Congratulations! Mura is now set up and ready to use.</p>
 			<h3>Important</h3>
 			<p>When you are done with setup, it is recommended you remove the "/config/setup" directory to maintain security. Once deleted, all settings can be edited in "/config/settings.ini.cfm" directly.</p>
 			<p>The default <strong>Username and Password is the word "admin" for both fields</strong>. It is highly reccommended that you change this immediately by editing your profile after logging into the Mura Admin.</p>
-			<input type="submit" name="#session.setupSubmitButtonComplete#" value="Finish Set Up and Take Me to the Mura Admin" />
+			<input type="submit" name="#cookie.setupSubmitButtonComplete#" value="Finish Set Up and Take Me to the Mura Admin" />
 		</div>
 </cfif>
 
@@ -580,7 +581,7 @@ to your own modified versions of Mura CMS.
 	</dd>
 	</dl>
 
-	<input type="submit" name="#session.setupSubmitButton#" value="Save Settings" />
+	<input type="submit" name="#cookie.setupSubmitButton#" value="Save Settings" />
 </form>
 </cfoutput>
 

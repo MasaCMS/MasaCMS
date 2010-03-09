@@ -201,14 +201,13 @@ to your own modified versions of Mura CMS.
 			<cfthrow type="custom" message="The attribute 'DATA' is not of type 'mura.category.categoryBean'">
 		</cfif>
 	</cfif>
-	<cfif structKeyExists(arguments.data,"categoryID")>
-		<cfset categoryID=arguments.data.categoryID>
-	<cfelse>
+	
+	<cfif not structKeyExists(arguments.data,"categoryID")>
 		<cfthrow type="custom" message="The attribute 'CATEGORYID' is required when saving a category.">
 	</cfif>
 	
 	<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#" name="rs">
-	select categoryID from tcontentcategories where categoryID=<cfqueryparam value="#categoryID#">
+	select categoryID from tcontentcategories where categoryID=<cfqueryparam value="#arguments.data.categoryID#">
 	</cfquery>
 	
 	<cfif rs.recordcount>

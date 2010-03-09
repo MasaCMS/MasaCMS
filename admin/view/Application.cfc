@@ -81,69 +81,10 @@ to your own modified versions of Mura CMS.
 		
 	</cfif>
 	
-	<cffunction name="onRequestStart" returnType="boolean" output="false">
-		<cfargument name="thePage" type="string" required="true">
-			
-		<cfif right(cgi.script_name, Len("index.cfm")) NEQ "index.cfm" and right(cgi.script_name, Len("error.cfm")) NEQ "error.cfm" AND right(cgi.script_name, 3) NEQ "cfc">
-			<cflocation url="index.cfm" addtoken="false">
-		</cfif>
-
-		<cfinclude template="../../config/settings.cfm">
-
-		<cfreturn true>
-	</cffunction>
-	
-	<cffunction name="onSessionStart" returnType="boolean" output="false">
-		<cfset request.doMuraGlobalSessionStart=true>
-		<cfreturn true>
-	</cffunction>
-
-	<cffunction name="onSessionEnd" returnType="void">
-	   	<cfargument name="SessionScope" required=True/>
-	    <cfargument name="ApplicationScope" required=False/>
-		<cfset var pluginEvent=createoObject("component","mura.event")>
-		<cfset pluginEvent.setValue("ApplicationScope",arguments.ApplicationScope)>	 
-		<cfset pluginEvent.setValue("SessionScope",arguments.SessionScope)>
-		
-		<cfif structKeyExists(arguments.SessionScope,"mura") and len(arguments.SessionScope.mura.siteid)>
-			<cfset pluginEvent.setValue("siteid",arguments.SessionScope.siteid)>
-			<cfset arguments.ApplicationScope.pluginManager.announceEvent("onSiteSessionEnd",pluginEvent)>
-		</cfif>	
-		<cfset arguments.ApplicationScope.pluginManager.announceEvent("onGlobalSessionEnd",pluginEvent)>
-	</cffunction>
-
-	<cffunction name="onError"  returnType="void"  output="true">
-      	<cfargument name="exception" required="true">
-      	<cfargument name="eventname" type="string" required="true">
-		<cfset var pluginEvent="">
-		
-		<cfif structKeyExists(application,"pluginManager")>
-			<cfif structKeyExists(request,"servletEvent")>
-				<cfset pluginEvent=request.servletEvent>
-			<cfelseif structKeyExists(request,"event")>
-				<cfset pluginEvent=request.event>
-			<cfelse>
-				<cfset pluginEvent=createObject("component","mura.event")>
-			</cfif>
-			<cfset pluginEvent.setValue("exception",arguments.exception)>
-			<cfset pluginEvent.setValue("eventname",arguments.eventname)>
-			<cfif len(pluginEvent.getValue("siteID"))>
-				<cfset application.pluginManager.announceEvent("onSiteError",pluginEvent)>
-			</cfif>	
-			<cfset application.pluginManager.announceEvent("onGlobalError",pluginEvent)>
-		</cfif>
-		
-		<cfif structKeyExists(application,"configBean")>
-			<cfif not application.configBean.getDebuggingEnabled()>
-				<cferror 
-					template="error.html"
-					mailto="#application.configBean.getMailserverusername()#"
-					type="Exception">
-			</cfif>
-		</cfif>
-		
-		<cfdump var="#arguments.exception#">
-		<cfabort>	
-	</cffunction>
+	<cfinclude template="../../config/appcfc/onApplicationStart_method.cfm">
+	<cfinclude template="../../config/appcfc/onRequestStart_method.cfm">
+	<cfinclude template="../../config/appcfc/onSessionStart_method.cfm">
+	<cfinclude template="../../config/appcfc/onSessionEnd_method.cfm">
+	<cfinclude template="../../config/appcfc/onError_method.cfm">
 	
 </cfcomponent>
