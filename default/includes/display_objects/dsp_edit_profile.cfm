@@ -157,44 +157,53 @@ to your own modified versions of Mura CMS.
 <cfif arrayLen(extendSets)>
 <cfloop from="1" to="#arrayLen(extendSets)#" index="s">	
 	<cfset extendSetBean=extendSets[s]/>
-	<fieldset>
-	<legend>#extendSetBean.getName()#</legend>
-		<input name="extendSetID" type="hidden" value="#extendSetBean.getExtendSetID()#"/>
 		<cfsilent>
+		<cfset started=false />
 		<cfset attributesArray=extendSetBean.getAttributes() />
 		</cfsilent>
-		<ul>
+		
 		<cfloop from="1" to="#arrayLen(attributesArray)#" index="a">	
 		<cfset attributeBean=attributesArray[a]/>
 		<cfset attributeValue=request.userBean.getExtendedAttribute(attributeBean.getAttributeID(),true)/>
-			<li>
+			<cfif attributeBean.getType() neq "hidden">
+			<cfif not started>
+			<fieldset>
+			<legend>#extendSetBean.getName()#</legend>
+				<input name="extendSetID" type="hidden" value="#extendSetBean.getExtendSetID()#"/>
+				<ul>
+				<li>
 				<cfif not listFind("TextArea,MultiSelectBox",attributeBean.getType())>
 					<label for="ext#attributeBean.getAttributeID()#"><cfif attributeBean.getRequired()><b>*</b></cfif>#attributeBean.getLabel()#<!--- <cfif len(attributeBean.gethint())><br />#attributeBean.gethint()#</cfif> ---></label>
 				<cfelse>
 					<label for="ext#attributeBean.getAttributeID()#"><cfif attributeBean.getRequired()><b>*</b></cfif>#attributeBean.getLabel()#<cfif len(attributeBean.gethint())><br/>#attributeBean.gethint()#</cfif></label>
 				</cfif>
-		
-			<cfif attributeBean.getType() neq 'TextArea'>		
-				#attributeBean.renderAttribute(attributeValue,true)#
-				<cfif attributeBean.getType() neq "MultiSelectBox" and len(attributeBean.gethint())>
-					<div class="inputBox rightCol" >
-						<p class="fieldDescription">#attributeBean.gethint()#</p>
-					</div>	
-				</cfif>
-				<cfif attributeBean.getType() eq "File" and len(attributeValue) and attributeValue neq 'useMuraDefault'>
-					<div class="inputBox rightCol">
-						<a href="#application.configBean.getContext()#/tasks/render/file/?fileID=#attributeValue#" target="_blank">[Download]</a> 
-						<br/><input type="checkbox" name="extDelete#attributeBean.getAttributeID()#" value="true"/> 
-						Delete
-					</div>
-				</cfif>
-			<cfelse>
-			#attributeBean.renderAttribute(attributeValue)#
-			</cfif>	
+			</cfif>
+				<cfif attributeBean.getType() neq 'TextArea'>		
+					#attributeBean.renderAttribute(attributeValue,true)#
+					<cfif attributeBean.getType() neq "MultiSelectBox" and len(attributeBean.gethint())>
+						<div class="inputBox rightCol" >
+							<p class="fieldDescription">#attributeBean.gethint()#</p>
+						</div>	
+					</cfif>
+					<cfif attributeBean.getType() eq "File" and len(attributeValue) and attributeValue neq 'useMuraDefault'>
+						<div class="inputBox rightCol">
+							<a href="#application.configBean.getContext()#/tasks/render/file/?fileID=#attributeValue#" target="_blank">[Download]</a> 
+							<br/><input type="checkbox" name="extDelete#attributeBean.getAttributeID()#" value="true"/> 
+							Delete
+						</div>
+					</cfif>
+				<cfelse>
+				#attributeBean.renderAttribute(attributeValue)#
+				</cfif>	
+			</cfif>
 			</li>
+			<cfif not started>
+			</ul>
+			</fieldset>
+			<cfset started=true>
+			</cfif>
 		</cfloop>
-		</ul>
-	</fieldset>
+		
 </cfloop>
 </cfif>
 
