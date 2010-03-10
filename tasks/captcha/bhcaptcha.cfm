@@ -11,6 +11,8 @@ Description: 	bhcaptcha is my own solution to bots who scour the web for comment
 				http://acoderslife.com for more details.
 --->
 
+<cftry>
+
 <cfif thistag.executionMode NEQ "start">
   <cfexit method="exittag" />
 </cfif>
@@ -286,3 +288,6 @@ Description: 	bhcaptcha is my own solution to bots who scour the web for comment
 				</cfif>
 				--->
 </cfif>
+
+<cfcatch></cfcatch>
+</cftry>
