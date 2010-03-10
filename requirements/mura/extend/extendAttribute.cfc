@@ -426,7 +426,8 @@ to your own modified versions of Mura CMS.
 <cfset var renderValue= arguments.theValue />
 <cfset var optionValue= "" />
 <cfset var str=""/>
-<cfset var key="ext#replace(getAttributeID(),'-','','ALL')#"/>
+<!---<cfset var key="ext#replace(getAttributeID(),'-','','ALL')#"/>--->
+<cfset var key=getName() />
 <cfset var o=0/>
 <cfset var optionlist=""/>
 <cfset var optionLabellist=""/>

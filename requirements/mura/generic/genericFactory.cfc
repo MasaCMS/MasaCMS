@@ -36,7 +36,8 @@
 		<!--- if the key cannot be found and context is passed then push it in --->
 		<cfif NOT has( arguments.key )>
 			<!--- create object --->
-			<cfset super.set( arguments.key, createObject("component",getComponentPath(arguments.key)).init() ) />
+			<cfset handlerWrapper=createObject("component","mura.generic.genericEventWrapper")>
+			<cfset super.set( arguments.key, wrapHandler(createObject("component",getComponentPath(arguments.key)).init()) ) />
 		</cfif>
 		
 		<!--- if the key cannot be found then throw an error --->
@@ -52,5 +53,10 @@
 <cffunction name="getComponentPath" output="false" returnType="string">
 	<cfargument name="key">
 	<cfreturn "mura.#variables.class#.#arguments.key##variables.class#"/>
+</cffunction>
+
+<cffunction name="wrapHandler" access="public"  output="false">
+<cfargument name="handler">
+<cfreturn createObject("component","mura.generic.genericEventWrapper").init(arguments.handler)>
 </cffunction>
 </cfcomponent>

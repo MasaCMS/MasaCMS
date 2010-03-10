@@ -838,7 +838,9 @@ to your own modified versions of Mura CMS.
 		</cftransaction>
 		</cflock>	
 		
-		<cfset newBean.purgeExtendedData()>
+		<!--- re-read the node to make sure that all extended attributes are cleaned --->
+		<cfset newBean=read(contentHistID=newBean.getContentHistID() , siteID=newBean.getSiteID())>
+		
 		<cfset newBean.setIsNew(0)>
 		<cfset pluginEvent.setValue("contentBean",newBean)>
 		<cfif  ListFindNoCase(this.TreeLevelList,newBean.getType())>			

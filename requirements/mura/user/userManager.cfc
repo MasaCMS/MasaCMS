@@ -236,8 +236,8 @@ to your own modified versions of Mura CMS.
 		<cfset variables.globalUtility.logEvent("UserID:#userBean.getUserID()# Type:#userBean.getType()# User:#userBean.getFName()# #userBean.getFName()# Group:#userBean.getGroupName()# was updated","mura-users","Information",true) />
 		<cfset setLastUpdateInfo(userBean) />
 		<cfset variables.userDAO.update(userBean,arguments.updateGroups,arguments.updateInterests,arguments.OriginID) />
-		
-		<cfset userBean.purgeExtendedData()>
+		<!--- re-read the user to make sure that all extended attributes are cleaned --->
+		<cfset userBean=read(userID=userBean.getUserID())>
 		
 		<cfif  userBean.getType() eq 1>	
 			<cfset pluginEvent.setValue("groupBean",userBean)/>			

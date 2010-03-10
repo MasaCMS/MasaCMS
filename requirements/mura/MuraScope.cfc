@@ -10,7 +10,7 @@
 		<cfset setEvent(arguments.data)>
 	<cfelse>
 		<cfset arguments.data.muraScope=this>
-		<cfset setEvent(createObject("component","mura.MuraScope").init(arguments.data))>
+		<cfset setEvent(createObject("component","mura.event").init(arguments.data))>
 	</cfif>
 		
 	<cfset variables.instance.renderer=event("contentRenderer")>

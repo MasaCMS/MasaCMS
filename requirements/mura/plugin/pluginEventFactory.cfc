@@ -61,7 +61,7 @@
 						<cfset classInstance.translate=classInstance[arguments.key & variables.class]>
 					</cfcase>
 				</cfswitch>
-				<cfset super.set( localKey, classInstance )>
+				<cfset super.set( localKey, variables.genericManager.wrapHandler(classInstance) )>
 			</cfif>
 		</cfif>
 		
@@ -80,7 +80,7 @@
 						<cfset classInstance.translate=classInstance[arguments.key & variables.class]>
 					</cfcase>
 				</cfswitch>
-				<cfset super.set( localKey, classInstance )>	
+				<cfset super.set( localKey, variables.genericManager.wrapHandler(classInstance) )>	
 			</cfif>
 		</cfif>
 		
@@ -90,7 +90,7 @@
 			<cfset rs=variables.pluginManager.getScripts(arguments.key & variables.class,variables.siteid)>
 			<cfset super.set( checkKey, rs.recordcount ) />
 			<cfif rs.recordcount>
-				<cfset super.set( localKey, variables.pluginManager.getComponent("plugins.#rs.directory#.#rs.scriptfile#", rs.pluginID, variables.siteID, rs.docache) )>
+				<cfset super.set( localKey, variables.genericManager.wrapHandler(variables.pluginManager.getComponent("plugins.#rs.directory#.#rs.scriptfile#", rs.pluginID, variables.siteID, rs.docache)) )>
 			</cfif>
 		</cfif>
 		
@@ -105,5 +105,6 @@
 		<cfreturn classInstance />
 
 </cffunction>
+
 
 </cfcomponent>
