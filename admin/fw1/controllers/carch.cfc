@@ -170,7 +170,11 @@
 	 </cfif>
   
 	 <cfif rc.allowAction and rc.action eq 'add'>
-		 <cfset rc.contentBean=getBean('content').loadBy(contentID=rc.contentID, siteid=rc.siteid).set(rc).save() />
+		<cfif structKeyExists(rc,"preserveID") and isValid('UUID',rc.preserveID)>
+			 <cfset rc.contentBean=getBean('content').loadBy(contentHistID=rc.preserveID, siteid=rc.siteid).set(rc).save() />
+		<cfelse>
+			 <cfset rc.contentBean=getBean('content').loadBy(contentID=rc.contentID, siteid=rc.siteid).set(rc).save() />
+		</cfif>
 	 </cfif>
 	 
 	 <cfif rc.allowAction and rc.action eq 'multiFileUpload'>
