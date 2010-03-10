@@ -170,7 +170,7 @@
 	 </cfif>
   
 	 <cfif rc.allowAction and rc.action eq 'add'>
-		 <cfset rc.contentBean=variables.contentManager.add(rc) />
+		 <cfset rc.contentBean=getBean('content').loadBy(contentID=rc.contentID, siteid=rc.siteid).set(rc).save() />
 	 </cfif>
 	 
 	 <cfif rc.allowAction and rc.action eq 'multiFileUpload'>
