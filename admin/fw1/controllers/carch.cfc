@@ -191,8 +191,6 @@
 					<cflocation url="#rc.returnURL#" addtoken="false"/>
 			</cfif>
 			
-			<cfdump var="test2">
-			<cfabort>
 			<cfif rc.action eq 'delete' or rc.action eq 'deletehistall' or (rc.return eq 'hist' and rc.preview eq 0)>
 				<cfset variables.fw.redirect(action="cArch.hist",append="contentid,siteid,startrow,moduleid,parentid,type,compactDisplay",path="")>
 			</cfif>
