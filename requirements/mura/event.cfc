@@ -42,16 +42,12 @@ to your own modified versions of Mura CMS.
 --->
 <cfcomponent output="false" extends="mura.cfobject">
 
-<cfif not structKeyExists(request,"context")>
-	<cfset request.context=structNew()>
-</cfif>
-
-<cfset variables.event=request.context>
+<cfset variables.event=structNew()>
 
 <cffunction name="init" returntype="any" access="public" output="false">
 	<cfargument name="data"  type="any" default="#structNew()#">
 	
-	<cfset structAppend(variables.event,arguments.data,true) />
+	<cfset variables.event=arguments.data />
 	
 	<cfif len(getValue('siteid')) and application.settingsManager.siteExists(getValue('siteid'))>
 		<cfset loadSiteRelatedObjects()/>
