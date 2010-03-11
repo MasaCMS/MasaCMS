@@ -198,7 +198,7 @@ to your own modified versions of Mura CMS.
 </cfif>
 
 <cfset pluginEvent=createObject("component","mura.event")>			
-<cfset application.pluginManager.announceEvent('onApplicationLoad', pluginEvent)>
+<cfset application.pluginManager.executeScripts(runat='onApplicationLoad',event= pluginEvent)>
 		
 <!--- Fire local onApplicationLoad events--->
 <cfset rsSites=application.settingsManager.getList() />
