@@ -43,6 +43,9 @@ to your own modified versions of Mura CMS.
 <cfif ( NOT structKeyExists( application, "setupComplete" ) or not application.appInitialized or structKeyExists(url,application.appReloadKey)) and isDefined("onApplicationStart")>
 	<cfset onApplicationStart()>
 </cfif>
+
+<cfprocessingdirective pageencoding="utf-8"/>
+<cfsetting requestTimeout = "1000">
 	
 <cfif not application.configBean.getDebuggingEnabled()>
 	<cferror 
