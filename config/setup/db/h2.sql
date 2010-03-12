@@ -1,7 +1,6 @@
 
 SET IGNORECASE TRUE;
 
-DROP TABLE IF EXISTS `tadcampaigns`;
 CREATE TABLE `tadcampaigns` (
   `campaignID` char(35) NOT NULL,
   `userID` char(35) default NULL,
@@ -17,7 +16,6 @@ CREATE TABLE `tadcampaigns` (
 );
 
 
-DROP TABLE IF EXISTS `tadcreatives`;
 CREATE TABLE `tadcreatives` (
   `creativeID` char(35) NOT NULL,
   `userID` char(35) default NULL,
@@ -39,14 +37,12 @@ CREATE TABLE `tadcreatives` (
 );
 
 
-DROP TABLE IF EXISTS `tadipwhitelist`;
 CREATE TABLE `tadipwhitelist` (
   `IP` varchar(50) NOT NULL,
   `siteID` varchar(25) NOT NULL
 );
 
 
-DROP TABLE IF EXISTS `tadplacementdetails`;
 CREATE TABLE `tadplacementdetails` (
   `detailID` INTEGER NOT NULL AUTO_INCREMENT,
   `placementID` char(35) NOT NULL,
@@ -56,8 +52,6 @@ CREATE TABLE `tadplacementdetails` (
 );
 
 
-
-DROP TABLE IF EXISTS `tadplacements`;
 CREATE TABLE `tadplacements` (
   `placementID` char(35) NOT NULL,
   `campaignID` char(35) default NULL,
@@ -79,7 +73,6 @@ CREATE TABLE `tadplacements` (
 );
 
 
-DROP TABLE IF EXISTS `tadstats`;
 CREATE TABLE `tadstats` (
   `statID` INTEGER NOT NULL AUTO_INCREMENT,
   `PlacementID` char(35) default NULL,
@@ -91,7 +84,6 @@ CREATE TABLE `tadstats` (
 );
 
 
-DROP TABLE IF EXISTS `tadzones`;
 CREATE TABLE `tadzones` (
   `adZoneID` char(35) NOT NULL,
   `siteID` varchar(25) default NULL,
@@ -108,8 +100,6 @@ CREATE TABLE `tadzones` (
 );
 
 
-
-DROP TABLE IF EXISTS `tcaptcha`;
 CREATE TABLE `tcaptcha` (
   `LetterID` int(10) NOT NULL default '0',
   `Letter` char(1) default NULL,
@@ -145,7 +135,7 @@ INSERT INTO `tcaptcha` (`LetterID`,`Letter`,`ImageFile`) VALUES
 (25,'y','y.gif'),
 (26,'z','z.gif');
 
-DROP TABLE IF EXISTS `tcontent`;
+
 CREATE TABLE `tcontent` (
   `TContent_ID` INTEGER NOT NULL AUTO_INCREMENT,
   `SiteID` varchar(25) default NULL,
@@ -231,7 +221,6 @@ INSERT INTO `tcontent` (`SiteID`,`ModuleID`,`ParentID`,`ContentID`,`ContentHistI
 ('default','00000000000000000000000000000000012','00000000000000000000000000000000END','00000000000000000000000000000000012','6300EDE6-1320-5CC3-F94E2FCEF5DE046D',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'Module','Default',1,NULL,'Filemanager Manager',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,1,1,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,NULL,NULL,0,NULL,NULL);
 
 
-DROP TABLE IF EXISTS `tcontentstats`;
 CREATE TABLE `tcontentstats` (
   `contentID` char(35) NOT NULL default '',
   `siteID` varchar(25) NOT NULL default '',
@@ -245,8 +234,7 @@ CREATE TABLE `tcontentstats` (
 );
 
 
-  
-DROP TABLE IF EXISTS `tcontentassignments`;
+
 CREATE TABLE `tcontentassignments` (
   `contentID` char(35) NOT NULL,
   `contentHistID` char(35) NOT NULL,
@@ -257,7 +245,6 @@ CREATE TABLE `tcontentassignments` (
 
 
 
-DROP TABLE IF EXISTS `tcontentcategories`;
 CREATE TABLE `tcontentcategories` (
   `categoryID` char(35) NOT NULL,
   `siteID` varchar(25) default NULL,
@@ -280,7 +267,6 @@ CREATE TABLE `tcontentcategories` (
 CREATE INDEX IX_TContentCategories ON tcontentcategories(siteID);
 
 
-DROP TABLE IF EXISTS `tcontentcategoryassign`;
 CREATE TABLE `tcontentcategoryassign` (
   `contentHistID` char(35) NOT NULL,
   `categoryID` char(35) NOT NULL,
@@ -294,7 +280,6 @@ CREATE TABLE `tcontentcategoryassign` (
 );
 
 
-DROP TABLE IF EXISTS `tcontentcomments`;
 CREATE TABLE `tcontentcomments` (
   `commentid` char(35) NOT NULL,
   `contentid` char(35) default NULL,
@@ -312,7 +297,6 @@ CREATE TABLE `tcontentcomments` (
 
 CREATE INDEX IX_TContentComments ON tcontentcomments(contentid);
 
-DROP TABLE IF EXISTS `tcontentdisplaytitleapprovals`;
 CREATE TABLE `tcontentdisplaytitleapprovals` (
   `contentid` char(35) NOT NULL,
   `isApproved` tinyint(3) default NULL,
@@ -322,7 +306,6 @@ CREATE TABLE `tcontentdisplaytitleapprovals` (
 
 
 
-DROP TABLE IF EXISTS `tcontenteventreminders`;
 CREATE TABLE `tcontenteventreminders` (
   `contentId` char(35) NOT NULL,
   `siteId` varchar(25) NOT NULL,
@@ -336,7 +319,6 @@ CREATE TABLE `tcontenteventreminders` (
 
 
 
-DROP TABLE IF EXISTS `tcontentfeedadvancedparams`;
 CREATE TABLE `tcontentfeedadvancedparams` (
   `paramID` char(35) NOT NULL,
   `feedID` char(35) NOT NULL,
@@ -350,8 +332,6 @@ CREATE TABLE `tcontentfeedadvancedparams` (
 );
 
 
-
-DROP TABLE IF EXISTS `tcontentfeeditems`;
 CREATE TABLE `tcontentfeeditems` (
   `feedID` char(35) NOT NULL,
   `itemID` char(35) NOT NULL,
@@ -359,7 +339,7 @@ CREATE TABLE `tcontentfeeditems` (
 );
 
 
-DROP TABLE IF EXISTS `tcontentfeeds`;
+
 CREATE TABLE `tcontentfeeds` (
   `feedID` char(35) NOT NULL,
   `siteID` varchar(25) default NULL,
@@ -392,7 +372,7 @@ CREATE TABLE `tcontentfeeds` (
 
 CREATE INDEX IX_TContentFeeds ON tcontentfeeds(siteID);
 
-DROP TABLE IF EXISTS `tcontentobjects`;
+
 CREATE TABLE `tcontentobjects` (
   `ContentHistID` char(35) NOT NULL,
   `ObjectID` varchar(100) NOT NULL,
@@ -407,7 +387,7 @@ CREATE TABLE `tcontentobjects` (
 
 CREATE INDEX IX_TContentObjects ON tcontentobjects(siteID);
 
-DROP TABLE IF EXISTS `tcontentratings`;
+
 CREATE TABLE `tcontentratings` (
   `contentID` char(35) NOT NULL,
   `userID` char(35) NOT NULL,
@@ -419,7 +399,7 @@ CREATE TABLE `tcontentratings` (
 
 CREATE INDEX IDX_ENTERED ON tcontentratings(entered);
 
-DROP TABLE IF EXISTS `tcontentrelated`;
+
 CREATE TABLE `tcontentrelated` (
   `contentHistID` char(35) NOT NULL,
   `relatedID` char(35) NOT NULL,
@@ -429,7 +409,7 @@ CREATE TABLE `tcontentrelated` (
 );
 
 
-DROP TABLE IF EXISTS `temailreturnstats`;
+
 CREATE TABLE `temailreturnstats` (
   `emailID` char(35) default NULL,
   `email` varchar(50) default NULL,
@@ -438,7 +418,6 @@ CREATE TABLE `temailreturnstats` (
 );
 
 
-DROP TABLE IF EXISTS `temails`;
 CREATE TABLE `temails` (
   `EmailID` char(35) NOT NULL,
   `siteid` varchar(25) default NULL,
@@ -461,7 +440,7 @@ CREATE TABLE `temails` (
 
 CREATE INDEX IX_TEmails ON temails(siteid);
 
-DROP TABLE IF EXISTS `temailstats`;
+
 CREATE TABLE `temailstats` (
   `EmailID` char(35) default NULL,
   `Email` varchar(50) default NULL,
@@ -472,7 +451,7 @@ CREATE TABLE `temailstats` (
   `Created` datetime default NULL
 );
 
-DROP TABLE IF EXISTS `tfiles`;
+
 CREATE TABLE `tfiles` (
   `fileID` char(35) NOT NULL,
   `contentID` char(35) default NULL,
@@ -491,7 +470,7 @@ CREATE TABLE `tfiles` (
 );
 
 
-DROP TABLE IF EXISTS `tformresponsepackets`;
+
 CREATE TABLE `tformresponsepackets` (
   `ResponseID` char(35) NOT NULL,
   `FormID` char(50) default NULL,
@@ -504,7 +483,7 @@ CREATE TABLE `tformresponsepackets` (
 
 CREATE INDEX IX_TFormResponsePackets ON tformresponsepackets(FormID,SiteID);
 
-DROP TABLE IF EXISTS `tformresponsequestions`;
+
 CREATE TABLE `tformresponsequestions` (
   `responseID` char(35) default NULL,
   `formID` char(35) default NULL,
@@ -515,14 +494,14 @@ CREATE TABLE `tformresponsequestions` (
 
 
 
-DROP TABLE IF EXISTS `tglobals`;
+
 CREATE TABLE `tglobals` (
   `appreload` datetime default NULL,
   `loadlist` mediumtext
 );
 
 
-DROP TABLE IF EXISTS `tmailinglist`;
+
 CREATE TABLE `tmailinglist` (
   `MLID` char(35) default NULL,
   `SiteID` varchar(25) default NULL,
@@ -537,7 +516,7 @@ CREATE TABLE `tmailinglist` (
 INSERT INTO `tmailinglist` (`MLID`,`SiteID`,`Name`,`Description`,`LastUpdate`,`isPurge`,`isPublic`) VALUES 
  ('22FC551F-FABE-EA01-C6EDD0885DDC1680','default','Please Remove Me from All Lists','','2007-09-24 16:49:00',1,1);
 
-DROP TABLE IF EXISTS `tmailinglistmembers`;
+
 CREATE TABLE `tmailinglistmembers` (
   `MLID` char(35) default NULL,
   `Email` varchar(100) default NULL,
@@ -549,7 +528,7 @@ CREATE TABLE `tmailinglistmembers` (
 );
 
 
-DROP TABLE IF EXISTS `tpermissions`;
+
 CREATE TABLE `tpermissions` (
   `ContentID` char(35) default NULL,
   `GroupID` char(35) default NULL,
@@ -558,7 +537,6 @@ CREATE TABLE `tpermissions` (
 );
 
 
-DROP TABLE IF EXISTS `tredirects`;
 CREATE TABLE `tredirects` (
   `redirectID` char(35) NOT NULL,
   `URL` mediumtext,
@@ -567,7 +545,7 @@ CREATE TABLE `tredirects` (
 );
 
 
-DROP TABLE IF EXISTS `tsessiontracking`;
+
 CREATE TABLE `tsessiontracking` (
   `trackingID` INTEGER NOT NULL AUTO_INCREMENT,
   `contentID` char(35) default NULL,
@@ -595,7 +573,7 @@ CREATE INDEX IX_TSessionTracking_2 ON tsessiontracking(urlToken);
 CREATE INDEX IX_TSessionTracking_3 ON tsessiontracking(entered);
 CREATE INDEX IX_TSessionTracking_4 ON tsessiontracking(userID);
 
-DROP TABLE IF EXISTS `tsettings`;
+
 CREATE TABLE `tsettings` (
   `SiteID` varchar(25) default NULL,
   `Site` varchar(50) default NULL,
@@ -667,7 +645,7 @@ CREATE TABLE `tsettings` (
 INSERT INTO `tsettings` (`SiteID`,`Site`,`MaxNestLevel`,`PageLimit`,`Locking`,`Domain`,`exportLocation`,`FileDir`,`Contact`,`MailserverIP`,`MailServerUsername`,`MailServerPassword`,`EmailBroadcaster`,`Extranet`,`ExtranetPublicReg`,`ExtranetPublicRegNotify`,`ExtranetSSL`,`Cache`,`ViewDepth`,`NextN`,`DataCollection`,`columnCount`,`columnNames`,`primaryColumn`,`publicSubmission`,`AdManager`,`archiveDate`,`contactName`,`contactAddress`,`contactCity`,`contactState`,`contactZip`,`contactEmail`,`contactPhone`,`privateUserPoolID`,`publicUserPoolID`,`advertiserUserPoolID`,`orderNo`,`emailBroadcasterLimit`,`feedManager`,`displayPoolID`,`galleryMainScaleBy`,`galleryMainScale`,`gallerySmallScaleBy`,`gallerySmallScale`,`galleryMediumScaleBy`,`galleryMediumScale`,`sendLoginScript`,`mailingListConfirmScript`,`publicSubmissionApprovalScript`,`reminderScript`,`loginURL`,`editProfileURL`,`CommentApprovalDefault`,`deploy`,`lastDeployment`,`accountActivationScript`,`useDefaultSMTPServer`) VALUES 
  ('default','Default',NULL,1000,'none','localhost','export1',NULL,'info@getmura.com','mail.server.com','username@server.com','password',1,1,1,NULL,0,0,1,20,1,3,'Left Column^Main Content^Right Column',2,0,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'default','default','default',1,0,1,'default','y',500,'s',100,'y',250,NULL,NULL,NULL,NULL,'?display=login','?display=editProfile',1,0,NULL,NULL,0);
 
-DROP TABLE IF EXISTS `tsystemobjects`;
+
 CREATE TABLE `tsystemobjects` (
   `Object` varchar(50) default NULL,
   `SiteID` varchar(25) default NULL,
@@ -694,7 +672,7 @@ INSERT INTO `tsystemobjects` (`Object`,`SiteID`,`Name`,`OrderNo`) VALUES
  ('tag_cloud','default','Tag Cloud',21),
  ('goToFirstChild','default','Go To First Child',23);
 
-DROP TABLE IF EXISTS `tuseraddresses`;
+
 CREATE TABLE `tuseraddresses` (
   `addressID` char(35) NOT NULL,
   `userID` char(35) default NULL,
@@ -722,7 +700,7 @@ CREATE INDEX IX_tuseraddresses_2 ON tuseraddresses(longitude);
 CREATE INDEX IX_tuseraddresses_3 ON tuseraddresses(latitude);
 CREATE INDEX IX_tuseraddresses_4 ON tuseraddresses(userID);
 
-DROP TABLE IF EXISTS `tusers`;
+
 CREATE TABLE `tusers` (
   `UserID` char(35) NOT NULL,
   `GroupName` varchar(50) default NULL,
@@ -769,7 +747,7 @@ INSERT INTO `tusers` (`UserID`,`GroupName`,`Fname`,`Lname`,`UserName`,`Password`
  ('22FC551F-FABE-EA01-C6EDD0885DDC1682',NULL,'Admin','User','admin','21232F297A57A5A743894A0E4A801FC3','2007-09-24 16:49:00','admin@localhost.com',NULL,NULL,NULL,NULL,2,'Default',NULL,NULL,NULL,1,'2007-09-24 16:49:00','2007-09-24 16:49:00','System','22FC551F-FABE-EA01-C6EDD0885DDC1682',0,0,0,'default',0,NULL,NULL,NULL,0,NULL,NULL,NULL,'2007-09-24 16:49:02',NULL,NULL),
  ('6300EE15-1320-5CC2-F9F48B9DBBA54D9F','Admin',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,1,'Default',NULL,NULL,NULL,0,NULL,'2007-09-24 16:49:00','System',NULL,1,0,0,'default',0,NULL,NULL,NULL,0,NULL,NULL,NULL,'2007-09-24 16:49:02',NULL,NULL);
 
-DROP TABLE IF EXISTS `tusersfavorites`;
+
 CREATE TABLE `tusersfavorites` (
   `favoriteID` char(35) NOT NULL,
   `userID` char(35) NOT NULL,
@@ -785,7 +763,7 @@ CREATE TABLE `tusersfavorites` (
 );
 
 
-DROP TABLE IF EXISTS `tusersinterests`;
+
 CREATE TABLE `tusersinterests` (
   `userID` char(35) default NOT NULL,
   `categoryID` char(35) default NOT NULL,
@@ -793,7 +771,7 @@ CREATE TABLE `tusersinterests` (
 );
 
 
-DROP TABLE IF EXISTS `tusersmemb`;
+
 CREATE TABLE `tusersmemb` (
   `UserID` char(35) NOT NULL,
   `GroupID` char(35) NOT NULL,
@@ -802,7 +780,6 @@ CREATE TABLE `tusersmemb` (
 
 
 
-DROP TABLE IF EXISTS `tcontentpublicsubmissionapprovals`;
 CREATE TABLE  `tcontentpublicsubmissionapprovals` (
   `contentID` char(35) NOT NULL,
   `isApproved` int(10) NOT NULL,
@@ -811,7 +788,7 @@ CREATE TABLE  `tcontentpublicsubmissionapprovals` (
   PRIMARY KEY  (`contentID`,`siteID`)
 );
 
-DROP TABLE IF EXISTS `tcontenttags`;
+
 CREATE TABLE `tcontenttags` (
   `tagID` INTEGER NOT NULL AUTO_INCREMENT,
   `contentID` CHAR(35) NOT NULL,
@@ -826,7 +803,7 @@ CREATE INDEX IX_tcontenttags_3 ON tcontenttags(siteID);
 CREATE INDEX IX_tcontenttags_4 ON tcontenttags(contentID);
 CREATE INDEX IX_tcontenttags_5 ON tcontenttags(tag);
 
-DROP TABLE IF EXISTS `tuserstags`;
+
 CREATE TABLE `tuserstags` (
   `tagID` INTEGER NOT NULL AUTO_INCREMENT,
   `userID` CHAR(35) NOT NULL,
@@ -839,7 +816,7 @@ CREATE INDEX IX_tuserstags_2 ON tuserstags(userID);
 CREATE INDEX IX_tuserstags_3 ON tuserstags(siteID);
 CREATE INDEX IX_tuserstags_4 ON tuserstags(tag);
 
-DROP TABLE IF EXISTS `tclassextenddatauseractivity`;
+
 CREATE TABLE `tclassextenddatauseractivity`  (
 	`dataID` INTEGER NOT NULL AUTO_INCREMENT,
 	`baseID` char (35)  NOT NULL ,
@@ -852,7 +829,7 @@ CREATE TABLE `tclassextenddatauseractivity`  (
 CREATE INDEX IX_tclassextenddatauseractivity_2 ON tclassextenddatauseractivity(baseID);
 CREATE INDEX IX_tclassextenddatauseractivity_3 ON tclassextenddatauseractivity(attributeID);
 
-DROP TABLE IF EXISTS `tclassextenddata`;
+
 CREATE TABLE `tclassextenddata`  (
 	`dataID` INTEGER NOT NULL AUTO_INCREMENT,
 	`baseID` char (35)  NOT NULL ,
@@ -865,7 +842,7 @@ CREATE TABLE `tclassextenddata`  (
 CREATE INDEX IX_tclassextenddata_2 ON tclassextenddata(baseID);
 CREATE INDEX IX_tclassextenddata_3 ON tclassextenddata(attributeID);
 
-DROP TABLE IF EXISTS `tclassextend`;
+
 CREATE TABLE `tclassextend` (
 	`subTypeID` char (35)  NOT NULL ,
 	`siteID` varchar (25)  NULL ,
@@ -882,7 +859,7 @@ CREATE TABLE `tclassextend` (
 	PRIMARY KEY (`subTypeID`)
 );
 
-DROP TABLE IF EXISTS `tclassextendattributes`;
+
 CREATE TABLE `tclassextendattributes` (
 	`attributeID`  INTEGER NOT NULL AUTO_INCREMENT,
 	`extendSetID` char (35)  NULL ,
@@ -905,7 +882,7 @@ CREATE TABLE `tclassextendattributes` (
 
 CREATE INDEX IX_tclassextendattributes_2 ON tclassextendattributes(extendSetID);
 
-DROP TABLE IF EXISTS `tclassextendsets`;
+
 CREATE TABLE `tclassextendsets` (
 	`extendSetID` char(35) NOT NULL ,
 	`subTypeID` char(35) NULL ,

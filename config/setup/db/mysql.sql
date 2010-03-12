@@ -17,7 +17,6 @@
 -- Definition of table `tadcampaigns`
 --
 
-DROP TABLE IF EXISTS `tadcampaigns`;
 CREATE TABLE `tadcampaigns` (
   `campaignID` char(35) character set utf8 NOT NULL default '',
   `userID` char(35) character set utf8 default NULL,
@@ -44,7 +43,6 @@ CREATE TABLE `tadcampaigns` (
 -- Definition of table `tadcreatives`
 --
 
-DROP TABLE IF EXISTS `tadcreatives`;
 CREATE TABLE `tadcreatives` (
   `creativeID` char(35) character set utf8 NOT NULL default '',
   `userID` char(35) character set utf8 default NULL,
@@ -77,7 +75,6 @@ CREATE TABLE `tadcreatives` (
 -- Definition of table `tadipwhitelist`
 --
 
-DROP TABLE IF EXISTS `tadipwhitelist`;
 CREATE TABLE `tadipwhitelist` (
   `IP` varchar(50) character set utf8 NOT NULL default '',
   `siteID` varchar(50) character set utf8 NOT NULL default ''
@@ -95,7 +92,6 @@ CREATE TABLE `tadipwhitelist` (
 -- Definition of table `tadplacementdetails`
 --
 
-DROP TABLE IF EXISTS `tadplacementdetails`;
 CREATE TABLE `tadplacementdetails` (
   `detailID` INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
   `placementID` char(35) character set utf8 NOT NULL default '',
@@ -116,7 +112,6 @@ CREATE TABLE `tadplacementdetails` (
 -- Definition of table `tadplacements`
 --
 
-DROP TABLE IF EXISTS `tadplacements`;
 CREATE TABLE `tadplacements` (
   `placementID` char(35) character set utf8 NOT NULL default '',
   `campaignID` char(35) character set utf8 default NULL,
@@ -149,7 +144,6 @@ CREATE TABLE `tadplacements` (
 -- Definition of table `tadstats`
 --
 
-DROP TABLE IF EXISTS `tadstats`;
 CREATE TABLE `tadstats` (
   `statID` INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
   `PlacementID` char(35) character set utf8 default NULL,
@@ -172,7 +166,6 @@ CREATE TABLE `tadstats` (
 -- Definition of table `tadzones`
 --
 
-DROP TABLE IF EXISTS `tadzones`;
 CREATE TABLE `tadzones` (
   `adZoneID` char(35) character set utf8 NOT NULL default '',
   `siteID` varchar(25) character set utf8 default NULL,
@@ -200,7 +193,6 @@ CREATE TABLE `tadzones` (
 -- Definition of table `tcaptcha`
 --
 
-DROP TABLE IF EXISTS `tcaptcha`;
 CREATE TABLE `tcaptcha` (
   `LetterID` int(10) NOT NULL default '0',
   `Letter` char(1) default NULL,
@@ -245,7 +237,6 @@ INSERT INTO `tcaptcha` (`LetterID`,`Letter`,`ImageFile`) VALUES
 -- Definition of table `tcontent`
 --
 
-DROP TABLE IF EXISTS `tcontent`;
 CREATE TABLE `tcontent` (
   `TContent_ID` INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
   `SiteID` varchar(25) character set utf8 default NULL,
@@ -339,7 +330,6 @@ INSERT INTO `tcontent` (`SiteID`,`ModuleID`,`ParentID`,`ContentID`,`ContentHistI
 -- Definition of table `tcontentstats`
 --
 
-DROP TABLE IF EXISTS `tcontentstats`;
 CREATE TABLE `tcontentstats` (
   `contentID` char(35) NOT NULL default '',
   `siteID` varchar(25) NOT NULL default '',
@@ -358,7 +348,6 @@ CREATE TABLE `tcontentstats` (
 -- Definition of table `tcontentassignments`
 --
 
-DROP TABLE IF EXISTS `tcontentassignments`;
 CREATE TABLE `tcontentassignments` (
   `contentID` char(35) NOT NULL default '',
   `contentHistID` char(35) NOT NULL default '',
@@ -379,7 +368,6 @@ CREATE TABLE `tcontentassignments` (
 -- Definition of table `tcontentcategories`
 --
 
-DROP TABLE IF EXISTS `tcontentcategories`;
 CREATE TABLE `tcontentcategories` (
   `categoryID` char(35) character set utf8 NOT NULL default '',
   `siteID` varchar(25) character set utf8 default NULL,
@@ -412,7 +400,6 @@ CREATE TABLE `tcontentcategories` (
 -- Definition of table `tcontentcategoryassign`
 --
 
-DROP TABLE IF EXISTS `tcontentcategoryassign`;
 CREATE TABLE `tcontentcategoryassign` (
   `contentHistID` char(35) character set utf8 NOT NULL default '',
   `categoryID` char(35) character set utf8 NOT NULL default '',
@@ -437,7 +424,6 @@ CREATE TABLE `tcontentcategoryassign` (
 -- Definition of table `tcontentcomments`
 --
 
-DROP TABLE IF EXISTS `tcontentcomments`;
 CREATE TABLE `tcontentcomments` (
   `commentid` char(35) character set utf8 NOT NULL default '',
   `contentid` char(35) character set utf8 default NULL,
@@ -466,7 +452,6 @@ CREATE TABLE `tcontentcomments` (
 -- Definition of table `tcontentdisplaytitleapprovals`
 --
 
-DROP TABLE IF EXISTS `tcontentdisplaytitleapprovals`;
 CREATE TABLE `tcontentdisplaytitleapprovals` (
   `contentid` char(35) character set utf8 NOT NULL default '',
   `isApproved` tinyint(3) default NULL,
@@ -486,7 +471,6 @@ CREATE TABLE `tcontentdisplaytitleapprovals` (
 -- Definition of table `tcontenteventreminders`
 --
 
-DROP TABLE IF EXISTS `tcontenteventreminders`;
 CREATE TABLE `tcontenteventreminders` (
   `contentId` char(35) character set utf8 NOT NULL default '',
   `siteId` varchar(35) character set utf8 NOT NULL default '',
@@ -510,7 +494,6 @@ CREATE TABLE `tcontenteventreminders` (
 -- Definition of table `tcontentfeedadvancedparams`
 --
 
-DROP TABLE IF EXISTS `tcontentfeedadvancedparams`;
 CREATE TABLE `tcontentfeedadvancedparams` (
   `paramID` char(35) NOT NULL default '',
   `feedID` char(35) NOT NULL default '',
@@ -535,7 +518,6 @@ CREATE TABLE `tcontentfeedadvancedparams` (
 -- Definition of table `tcontentfeeditems`
 --
 
-DROP TABLE IF EXISTS `tcontentfeeditems`;
 CREATE TABLE `tcontentfeeditems` (
   `feedID` char(35) NOT NULL default '',
   `itemID` char(35) NOT NULL default '',
@@ -554,7 +536,6 @@ CREATE TABLE `tcontentfeeditems` (
 -- Definition of table `tcontentfeeds`
 --
 
-DROP TABLE IF EXISTS `tcontentfeeds`;
 CREATE TABLE `tcontentfeeds` (
   `feedID` char(35) NOT NULL default '',
   `siteID` varchar(35) default NULL,
@@ -598,7 +579,6 @@ CREATE TABLE `tcontentfeeds` (
 -- Definition of table `tcontentobjects`
 --
 
-DROP TABLE IF EXISTS `tcontentobjects`;
 CREATE TABLE `tcontentobjects` (
   `ContentHistID` char(35) NOT NULL default '',
   `ObjectID` varchar(100) NOT NULL default '',
@@ -624,7 +604,6 @@ CREATE TABLE `tcontentobjects` (
 -- Definition of table `tcontentratings`
 --
 
-DROP TABLE IF EXISTS `tcontentratings`;
 CREATE TABLE `tcontentratings` (
   `contentID` char(35) NOT NULL default '',
   `userID` char(35) character set utf8 NOT NULL default '',
@@ -647,7 +626,6 @@ CREATE TABLE `tcontentratings` (
 -- Definition of table `tcontentrelated`
 --
 
-DROP TABLE IF EXISTS `tcontentrelated`;
 CREATE TABLE `tcontentrelated` (
   `contentHistID` char(35) NOT NULL default '',
   `relatedID` char(35) NOT NULL default '',
@@ -668,7 +646,6 @@ CREATE TABLE `tcontentrelated` (
 -- Definition of table `temailreturnstats`
 --
 
-DROP TABLE IF EXISTS `temailreturnstats`;
 CREATE TABLE `temailreturnstats` (
   `emailID` char(35) character set utf8 default NULL,
   `email` varchar(50) character set utf8 default NULL,
@@ -688,7 +665,6 @@ CREATE TABLE `temailreturnstats` (
 -- Definition of table `temails`
 --
 
-DROP TABLE IF EXISTS `temails`;
 CREATE TABLE `temails` (
   `EmailID` char(35) character set utf8 NOT NULL default '',
   `siteid` varchar(25) character set utf8 default NULL,
@@ -722,7 +698,6 @@ CREATE TABLE `temails` (
 -- Definition of table `temailstats`
 --
 
-DROP TABLE IF EXISTS `temailstats`;
 CREATE TABLE `temailstats` (
   `EmailID` char(35) character set utf8 default NULL,
   `Email` char(35) character set utf8 default NULL,
@@ -745,7 +720,6 @@ CREATE TABLE `temailstats` (
 -- Definition of table `tfiles`
 --
 
-DROP TABLE IF EXISTS `tfiles`;
 CREATE TABLE `tfiles` (
   `fileID` char(35) character set utf8 NOT NULL default '',
   `contentID` char(35) character set utf8 default NULL,
@@ -775,7 +749,6 @@ CREATE TABLE `tfiles` (
 -- Definition of table `tformresponsepackets`
 --
 
-DROP TABLE IF EXISTS `tformresponsepackets`;
 CREATE TABLE `tformresponsepackets` (
   `ResponseID` char(35) character set utf8 NOT NULL default '',
   `FormID` char(35) character set utf8 default NULL,
@@ -799,7 +772,6 @@ CREATE TABLE `tformresponsepackets` (
 -- Definition of table `tformresponsequestions`
 --
 
-DROP TABLE IF EXISTS `tformresponsequestions`;
 CREATE TABLE `tformresponsequestions` (
   `responseID` char(35) character set utf8 default NULL,
   `formID` char(35) character set utf8 default NULL,
@@ -820,7 +792,6 @@ CREATE TABLE `tformresponsequestions` (
 -- Definition of table `tglobals`
 --
 
-DROP TABLE IF EXISTS `tglobals`;
 CREATE TABLE `tglobals` (
   `appreload` datetime default NULL,
   `loadlist` mediumtext
@@ -838,7 +809,6 @@ CREATE TABLE `tglobals` (
 -- Definition of table `tmailinglist`
 --
 
-DROP TABLE IF EXISTS `tmailinglist`;
 CREATE TABLE `tmailinglist` (
   `MLID` char(35) character set utf8 default NULL,
   `SiteID` varchar(25) character set utf8 default NULL,
@@ -863,7 +833,6 @@ INSERT INTO `tmailinglist` (`MLID`,`SiteID`,`Name`,`Description`,`LastUpdate`,`i
 -- Definition of table `tmailinglistmembers`
 --
 
-DROP TABLE IF EXISTS `tmailinglistmembers`;
 CREATE TABLE `tmailinglistmembers` (
   `MLID` char(35) character set utf8 default NULL,
   `Email` varchar(100) character set utf8 default NULL,
@@ -886,7 +855,6 @@ CREATE TABLE `tmailinglistmembers` (
 -- Definition of table `tpermissions`
 --
 
-DROP TABLE IF EXISTS `tpermissions`;
 CREATE TABLE `tpermissions` (
   `ContentID` char(35) character set utf8 default NULL,
   `GroupID` char(35) character set utf8 default NULL,
@@ -906,7 +874,6 @@ CREATE TABLE `tpermissions` (
 -- Definition of table `tredirects`
 --
 
-DROP TABLE IF EXISTS `tredirects`;
 CREATE TABLE `tredirects` (
   `redirectID` char(35) NOT NULL default '',
   `URL` mediumtext,
@@ -926,7 +893,6 @@ CREATE TABLE `tredirects` (
 -- Definition of table `tsessiontracking`
 --
 
-DROP TABLE IF EXISTS `tsessiontracking`;
 CREATE TABLE `tsessiontracking` (
   `trackingID` INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
   `contentID` char(35) character set utf8 default NULL,
@@ -965,7 +931,6 @@ CREATE TABLE `tsessiontracking` (
 -- Definition of table `tsettings`
 --
 
-DROP TABLE IF EXISTS `tsettings`;
 CREATE TABLE `tsettings` (
   `SiteID` varchar(25) character set utf8 default NULL,
   `Site` varchar(50) character set utf8 default NULL,
@@ -1047,7 +1012,6 @@ INSERT INTO `tsettings` (`SiteID`,`Site`,`MaxNestLevel`,`PageLimit`,`Locking`,`D
 -- Definition of table `tsystemobjects`
 --
 
-DROP TABLE IF EXISTS `tsystemobjects`;
 CREATE TABLE `tsystemobjects` (
   `Object` varchar(50) character set utf8 default NULL,
   `SiteID` varchar(25) character set utf8 default NULL,
@@ -1085,7 +1049,6 @@ INSERT INTO `tsystemobjects` (`Object`,`SiteID`,`Name`,`OrderNo`) VALUES
 -- Definition of table `tuseraddresses`
 --
 
-DROP TABLE IF EXISTS `tuseraddresses`;
 CREATE TABLE `tuseraddresses` (
   `addressID` char(35) NOT NULL default '',
   `userID` char(35) default NULL,
@@ -1124,7 +1087,6 @@ CREATE TABLE `tuseraddresses` (
 -- Definition of table `tusers`
 --
 
-DROP TABLE IF EXISTS `tusers`;
 CREATE TABLE `tusers` (
   `UserID` char(35) character set utf8 NOT NULL default '',
   `GroupName` varchar(50) character set utf8 default NULL,
@@ -1181,7 +1143,6 @@ INSERT INTO `tusers` (`UserID`,`GroupName`,`Fname`,`Lname`,`UserName`,`Password`
 -- Definition of table `tusersfavorites`
 --
 
-DROP TABLE IF EXISTS `tusersfavorites`;
 CREATE TABLE `tusersfavorites` (
   `favoriteID` char(35) NOT NULL default '',
   `userID` char(35) NOT NULL default '',
@@ -1208,7 +1169,6 @@ CREATE TABLE `tusersfavorites` (
 -- Definition of table `tusersinterests`
 --
 
-DROP TABLE IF EXISTS `tusersinterests`;
 CREATE TABLE `tusersinterests` (
   `userID` char(35) character set utf8  NOT NULL default '',
   `categoryID` char(35) character set utf8 NOT NULL default '',
@@ -1227,7 +1187,6 @@ CREATE TABLE `tusersinterests` (
 -- Definition of table `tusersmemb`
 --
 
-DROP TABLE IF EXISTS `tusersmemb`;
 CREATE TABLE `tusersmemb` (
   `UserID` char(35) character set utf8 NOT NULL default '',
   `GroupID` char(35) character set utf8 NOT NULL default '',
@@ -1242,7 +1201,6 @@ CREATE TABLE `tusersmemb` (
 /*!40000 ALTER TABLE `tusersmemb` ENABLE KEYS */;
 
 
-DROP TABLE IF EXISTS `tcontentpublicsubmissionapprovals`;
 CREATE TABLE  `tcontentpublicsubmissionapprovals` (
   `contentID` char(35) NOT NULL default '',
   `isApproved` int(10) unsigned NOT NULL,
@@ -1251,7 +1209,7 @@ CREATE TABLE  `tcontentpublicsubmissionapprovals` (
   PRIMARY KEY  USING BTREE (`contentID`,`siteID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-DROP TABLE IF EXISTS `tcontenttags`;
+
 CREATE TABLE `tcontenttags` (
   `tagID` INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
   `contentID` CHAR(35) NOT NULL,
@@ -1266,7 +1224,7 @@ CREATE TABLE `tcontenttags` (
 )
 ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-DROP TABLE IF EXISTS `tuserstags`;
+
 CREATE TABLE `tuserstags` (
   `tagID` INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
   `userID` CHAR(35) NOT NULL,
@@ -1279,7 +1237,7 @@ CREATE TABLE `tuserstags` (
 )
 ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-DROP TABLE IF EXISTS `tclassextenddatauseractivity`;
+
 CREATE TABLE `tclassextenddatauseractivity`  (
 	`dataID` INTEGER NOT NULL AUTO_INCREMENT,	
 	`baseID` char (35)  NOT NULL ,
@@ -1291,7 +1249,7 @@ CREATE TABLE `tclassextenddatauseractivity`  (
 	PRIMARY KEY (`dataID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-DROP TABLE IF EXISTS `tclassextenddata`;
+
 CREATE TABLE `tclassextenddata`  (
 	`dataID` INTEGER NOT NULL AUTO_INCREMENT,
 	`baseID` char (35)  NOT NULL ,
@@ -1303,7 +1261,7 @@ CREATE TABLE `tclassextenddata`  (
 	PRIMARY KEY (`dataID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-DROP TABLE IF EXISTS `tclassextend`;
+
 CREATE TABLE `tclassextend` (
 	`subTypeID` char (35)  NOT NULL ,
 	`siteID` varchar (25)  NULL ,
@@ -1320,7 +1278,7 @@ CREATE TABLE `tclassextend` (
 	PRIMARY KEY (`subTypeID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-DROP TABLE IF EXISTS `tclassextendattributes`;
+
 CREATE TABLE `tclassextendattributes` (
 	`attributeID` INTEGER NOT NULL AUTO_INCREMENT,	
 	`extendSetID` char (35)  NULL ,
@@ -1342,7 +1300,7 @@ CREATE TABLE `tclassextendattributes` (
 	PRIMARY KEY (`attributeID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-DROP TABLE IF EXISTS `tclassextendsets`;
+
 CREATE TABLE `tclassextendsets` (
 	`extendSetID` char(35) NOT NULL ,
 	`subTypeID` char(35) NULL ,
