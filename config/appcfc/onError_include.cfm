@@ -41,7 +41,7 @@ the GNU General Public License version 2 �without this exception. �You may, 
 to your own modified versions of Mura CMS.
 --->
 <cfset pluginEvent="">					
-<cfif structKeyExists(application,"pluginManager")>
+<cfif structKeyExists(application,"pluginManager") and structKeyExists(application.pluginManager,"announceEvent")>
 	<cfif structKeyExists(request,"servletEvent")>
 		<cfset pluginEvent=request.servletEvent>
 	<cfelseif structKeyExists(request,"event")>
