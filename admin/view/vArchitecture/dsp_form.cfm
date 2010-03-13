@@ -302,53 +302,58 @@ select * from rsPluginScripts3 order by pluginID
 	
 	<cfswitch expression="#attributes.type#">
 		<cfcase value="Page,Portal,Calendar,Gallery,File,Link">
-			<cfinclude template="form/dsp_tab_meta.cfm">
+		<cfif not len(event.getValue('tablist')) or listFindNocase(event.getValue('tablist'),'metadata')>
+		<cfinclude template="form/dsp_tab_meta.cfm">
 		<cfset tablist=tablist & ",'#jsStringFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.tabs.metadata"))#'"/>
+		</cfif>
 		</cfcase>
 	</cfswitch>
 		
 	<cfswitch expression="#attributes.type#">
 	<cfcase value="Page,Portal,Calendar,Gallery">
+		<cfif not len(event.getValue('tablist')) or listFindNocase(event.getValue('tablist'),'objects')>
 		<cfif listFind(session.mura.memberships,'S2IsPrivate')>
 		<cfinclude template="form/dsp_tab_objects.cfm">
 		<cfset tablist=tablist & ",'#jsStringFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.tabs.contentobjects"))#'"/>
 		</cfif>
-		
+		</cfif>
+		<cfif not len(event.getValue('tablist')) or listFindNocase(event.getValue('tablist'),'categories')>
 		<cfif application.categoryManager.getCategoryCount(attributes.siteID)>
 		<cfinclude template="form/dsp_tab_categories.cfm">
 		<cfset tablist=tablist & ",'#jsStringFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.tabs.categorization"))#'"/>
 		</cfif>
-		
+		</cfif>
+		<cfif not len(event.getValue('tablist')) or listFindNocase(event.getValue('tablist'),'related')>
 		<cfinclude template="form/dsp_tab_related_content.cfm">
 		<cfset tablist=tablist & ",'#jsStringFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.tabs.relatedcontent"))#'"/>
+		</cfif>
 	</cfcase>
 	<cfcase value="Link,File">
+		<cfif not len(event.getValue('tablist')) or listFindNocase(event.getValue('tablist'),'categories')>
 		<cfif application.categoryManager.getCategoryCount(attributes.siteid)>
 		<cfinclude template="form/dsp_tab_categories.cfm">
 		<cfset tablist=tablist & ",'#jsStringFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.tabs.categorization"))#'"/>
 		</cfif>
-		
+		</cfif>
+		<cfif not len(event.getValue('tablist')) or listFindNocase(event.getValue('tablist'),'related')>
 		<cfinclude template="form/dsp_tab_related_content.cfm">
 		<cfset tablist=tablist & ",'#jsStringFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.tabs.relatedcontent"))#'"/>
-		
+		</cfif>
 	</cfcase>
 	<cfcase value="Component">
-		<!---
-		<cfif application.categoryManager.getCategoryCount(attributes.siteid)>
-		<cfinclude template="form/dsp_tab_categories.cfm">
-		<cfset tablist=tablist & ",'#jsStringFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.tabs.categorization"))#'"/>
-		</cfif>
-		--->
+		<cfif not len(event.getValue('tablist')) or listFindNocase(event.getValue('tablist'),'usage')>
 		<cfif attributes.contentID neq ''>
 		<cfinclude template="form/dsp_tab_usage.cfm">
 		<cfset tablist=tablist & ",'#jsStringFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.tabs.usagereport"))#'"/>
+		</cfif>
 		</cfif>		
 	</cfcase>
 	<cfcase value="Form">
-		
+		<cfif not len(event.getValue('tablist')) or listFindNocase(event.getValue('tablist'),'usage')>
 		<cfif attributes.contentID neq ''>
 		<cfinclude template="form/dsp_tab_usage.cfm">
 		<cfset tablist=tablist & ",'#jsStringFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.tabs.usagereport"))#'"/>
+		</cfif>
 		</cfif>
 	</cfcase>
 </cfswitch>
@@ -362,12 +367,12 @@ select * from rsPluginScripts3 order by pluginID
 	</cfif>
 	</cfcase>
 </cfswitch>
-
+	<cfif not len(event.getValue('tablist')) or listFindNocase(event.getValue('tablist'),'advanced')>
 	<cfif listFind(session.mura.memberships,'S2IsPrivate') and ((listFind(session.mura.memberships,'S2') and attributes.type eq 'Component') or attributes.type neq 'Component')>
 	<cfinclude template="form/dsp_tab_advanced.cfm">
 	<cfset tablist=tablist & ",'#jsStringFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.tabs.advanced"))#'"/>
 	</cfif> 
-	
+	</cfif>
 	<cfoutput query="rsPluginScripts" group="pluginID">
 	<cfset tablist=tablist & ",'#jsStringFormat(rsPluginScripts.name)#'"/>
 	<cfset pluginEvent.setValue("tablist",tablist)>
@@ -384,8 +389,6 @@ select * from rsPluginScripts3 order by pluginID
 	</div>
 	</cfoutput>
 </div>
-
-	
 
 <br/><cfoutput>
 <div class="clearfix">
