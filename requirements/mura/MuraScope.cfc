@@ -90,7 +90,7 @@
 			<cfset object=variables.instance.event>
 		<cfelseif isObject(getContentRenderer()) and structKeyExists(variables.instance.contentRenderer,MissingMethodName)>
 			<cfset object=variables.instance.contentRenderer>
-		<cfelseif isObject(getContentBean()) and structKeyExists(variables.instance.content,MissingMethodName)>
+		<cfelseif isObject(getContentBean()) and structKeyExists(variables.instance.contentBean,MissingMethodName)>
 			<cfset object=variables.instance.contentBean>
 		<cfelse>
 			<cfthrow message="The method '#arguments.MissingMethodName#' is not defined">
