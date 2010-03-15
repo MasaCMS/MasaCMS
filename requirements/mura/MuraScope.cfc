@@ -145,7 +145,7 @@
 			<cfthrow message="The content is not set ine the Mura Scope.">
 		</cfif>
 	<cfelse>
-		<cfreturn variables.instance.content>
+		<cfreturn variables.instance.contentBean>
 	</cfif>
 </cffunction>
 
