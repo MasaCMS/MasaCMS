@@ -1305,7 +1305,7 @@ to your own modified versions of Mura CMS.
 			/>
 			
 			<cfif subnav>
-				<cfset nest=dspNestedNavPrimary(contentID=rssection.contentid, viewDepth= arguments.viewDepth, currDepth=arguments.currDepth+1, type=iif(rssection.type eq 'calendar',de('fixed'),de('default')), today=now() , sortBy=rsSection.sortBy, sortDirection=rsSection.sortDirection, id=arguments.id, menuClass=arguments.menuClass) />
+				<cfset nest=dspNestedNavPrimary(contentID=rssection.contentid, openPortals=arguments.openPortals, closePortals=arguments.closePortals, viewDepth= arguments.viewDepth, currDepth=arguments.currDepth+1, type=iif(rssection.type eq 'calendar',de('fixed'),de('default')), today=now() , sortBy=rsSection.sortBy, sortDirection=rsSection.sortDirection, id=arguments.id, menuClass=arguments.menuClass) />
 			</cfif>
 			
 			<cfset class=iif(current eq 1,de('first'),de(iif(current eq adjust,de('last'),de('')))) />
