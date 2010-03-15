@@ -1,8 +1,8 @@
 <cfcomponent extends="mura.cfobject" output="false">
 
-<cfset variables.hasRenderer=false>
-<cfset variables.hasContent=false>
-<cfset variables.hasEvent=false>
+<cfset variables.instance.contentRenderer="">
+<cfset variables.instance.contentBean="">
+<cfset variables.instance.event="">
 
 <cffunction name="init" output="false">
 	<cfargument name="data">
@@ -13,44 +13,68 @@
 		<cfset setEvent(createObject("component","mura.event").init(arguments.data))>
 	</cfif>
 		
-	<cfset variables.instance.renderer=event("contentRenderer")>
-	<cfset variables.instance.content=event("contentBean")>
-	<cfset variables.hasRenderer=isObject(variables.instance.renderer)>
-	<cfset variables.hasContent=isObject(variables.instance.content)>
+	<cfif isObject(event("contentBean"))>
+		<cfset setContentBean(event("contentBean"))>
+	</cfif>
+	<cfif isObject(event("contentRenderer"))>
+		<cfset setContentRenderer(event("contentRenderer"))>
+	</cfif>
 	
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="getContentRender" output="false" returntype="any">
-	<cfreturn variables.instance.renderer>
+<cffunction name="getContentRenderer" output="false" returntype="any">
+	<cfif not isObject(variables.instance.contentRenderer)>
+		<cfif structKeyExists(request,"contentRenderer")>
+			<cfset setContentRenderer(request.contentRenderer)>
+		<cfelseif len(event('siteid'))>
+			<cfset setContentRenderer(createObject("component","#siteConfig().getAssetMap()#.contentRenderer").init(event))>
+		<cfelseif structKeyExists(application,"contentRenderer")>
+			<cfset setContentRenderer(application.contentRenderer)>
+		</cfif>
+	</cfif>
+	<cfreturn variables.instance.contentRenderer>
 </cffunction>
 
 <cffunction name="setContentRenderer" output="false" returntype="any">
-	<cfargument name="renderer">
-	<cfset variables.hasRenderer=isObject(arguments.renderer)>
-	<cfset variables.instance.renderer=arguments.renderer>
+	<cfargument name="contentRenderer">
+	<cfif isObject(arguments.contentRenderer)>
+		<cfset variables.instance.contentRenderer=arguments.contentRenderer>
+	</cfif>
 	<cfreturn this>
 </cffunction>
 
 <cffunction name="getContentBean" output="false" returntype="any">
-	<cfreturn variables.instance.content>
+	<cfif not isObject(variables.instance.contentBean) and structKeyExists(request,"contentbean")>
+		<cfset setContentBean(request.contentBean)>
+	</cfif>
+	<cfreturn variables.instance.contentBean>
 </cffunction>
 
 <cffunction name="setContentBean" output="false" returntype="any">
-	<cfargument name="content">
-	<cfset variables.hasContent=isObject(arguments.content)>
-	<cfset variables.instance.content=arguments.content>
+	<cfargument name="contentBean">
+	<cfif isObject(arguments.contentBean)>
+		<cfset variables.instance.contentBean=arguments.contentBean>
+	</cfif>
 	<cfreturn this>
 </cffunction>
 
 <cffunction name="getEvent" output="false" returntype="any">
-	<cfset variables.instance.event>
+	<cfif not isObject(variables.instance.event)>
+		<cfif structKeyExists(request,"servletEvent")>
+			<cfset variables.instance.event=request.serlvetEvent>
+		<cfelseif structKeyExists(request,"event")>
+			<cfset variables.instance.event=request.event>
+		</cfif>
+	</cfif>
+	<cfreturn variables.instance.event>
 </cffunction>
 
 <cffunction name="setEvent" output="false" returntype="any">
 	<cfargument name="event">
-	<cfset variables.hasEvent=isObject(arguments.event)>
-	<cfset variables.instance.event=arguments.event>
+	<cfif isObject(arguments.event)>
+		<cfset variables.instance.event=arguments.event>
+	</cfif>
 	<cfreturn this>
 </cffunction>
 
@@ -62,12 +86,12 @@
 	
 	<cfif len(MissingMethodName)>
 		
-		<cfif variables.hasEvent and structKeyExists(variables.instance.event,MissingMethodName)>
+		<cfif isObject(getEvent()) and structKeyExists(variables.instance.event,MissingMethodName)>
 			<cfset object=variables.instance.event>
-		<cfelseif variables.hasRenderer and structKeyExists(variables.instance.renderer,MissingMethodName)>
-			<cfset object=variables.instance.renderer>
-		<cfelseif variables.hasContent and structKeyExists(variables.instance.content,MissingMethodName)>
-			<cfset object=variables.instance.content>
+		<cfelseif isObject(getContentRenderer()) and structKeyExists(variables.instance.contentRenderer,MissingMethodName)>
+			<cfset object=variables.instance.contentRenderer>
+		<cfelseif isObject(getContentBean()) and structKeyExists(variables.instance.content,MissingMethodName)>
+			<cfset object=variables.instance.contentBean>
 		<cfelse>
 			<cfthrow message="The method '#arguments.MissingMethodName#' is not defined">
 		</cfif>
@@ -93,7 +117,7 @@
 	<cfargument name="propertyValue">
 	
 	<cfif structKeyExists(arguments,"property")>
-		<cfif variables.hasEvent>
+		<cfif isObject(getEvent())>
 			<cfif structKeyExists(arguments,"propertyValue")>
 				<cfset variables.instance.event.setValue(arguments.property,arguments.propertyValue)>
 			</cfif>
@@ -112,11 +136,11 @@
 	<cfargument name="propertyValue">
 	
 	<cfif structKeyExists(arguments,"property")>
-		<cfif variables.hasContent>
+		<cfif isObject(getContentBean())>
 		<cfif structKeyExists(arguments,"propertyValue")>
-			<cfset variables.instance.content.setValue(arguments.property,arguments.propertyValue)>
+			<cfset variables.instance.contentBean.setValue(arguments.property,arguments.propertyValue)>
 		</cfif>
-		<cfreturn variables.instance.content.getValue(arguments.property)>
+		<cfreturn  variables.instance.contentBean.getValue(arguments.property)>
 		<cfelse>
 			<cfthrow message="The content is not set ine the Mura Scope.">
 		</cfif>
@@ -226,7 +250,7 @@
 </cffunction>
 
 <cffunction name="currentURL" output="false" returntype="any">
-	<cfreturn variables.instance.renderer.getCurrentURL()>
+	<cfreturn getContentRenderer().getCurrentURL()>
 </cffunction>
 
 <cffunction name="getParent" output="false" returntype="any">
@@ -234,8 +258,8 @@
 	
 	<cfif structKeyExists(request,"crumbdata") and arrayLen(request.crumbdata) gt 1>
 		<cfreturn createObject("component","mura.content.contentNavBean").init(request.crumbdata[2], getBean("contentManager"),"active") />
-	<cfelseif variables.hasContent>
-		<cfreturn variables.instance.content.getParent()>
+	<cfelseif isObject(getContentBean())>
+		<cfreturn getContentBean().getParent()>
 	<cfelse>
 		<cfthrow message="No primary content has been set.">
 	</cfif>
