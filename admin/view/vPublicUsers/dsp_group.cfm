@@ -81,8 +81,19 @@ select * from rsSubTypes where subType <> 'Default'
 <dd><input type="text" class="text" name="groupname" value="#HTMLEditFormat(request.userBean.getgroupname())#"  required="true" message="#application.rbFactory.getKeyValue(session.rb,'user.groupname required')#"></dd>
 <dt>#application.rbFactory.getKeyValue(session.rb,'user.email')#</dt>
 <dd><input type="text" class="text" name="email" value="#HTMLEditFormat(request.userBean.getemail())#" validate="email" message="#application.rbFactory.getKeyValue(session.rb,'user.emailvalidate')#"></dd>
-<dt class="alt"><input type="checkbox" name="contactform" value="#attributes.siteid#" <cfif request.userBean.getcontactform() eq attributes.siteid>checked</cfif>> #application.rbFactory.getKeyValue(session.rb,'user.contactform')#
-  </dt>
+
+<dt>#application.rbFactory.getKeyValue(session.rb,'user.tablist')#</dt>
+<dd>
+<select name="tablist" multiple="true">
+<option value=""<cfif not len(request.userBean.getTablist())> selected</cfif>>All</option>
+<cfloop list="Basic,Meta Data,Content Objects,Categorization,Related Content,Advanced,Usage Report" index="t">
+<option value="#t#"<cfif listFindNoCase(request.userBean.getTablist(),t)> selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.tabs.#replace(t,' ','','all')#")#</option>
+</cfloop>
+</select>
+</dd>
+
+<dt class="alt"><input type="checkbox" name="contactform" value="#attributes.siteid#" <cfif request.userBean.getcontactform() eq attributes.siteid>checked</cfif>> #application.rbFactory.getKeyValue(session.rb,'user.contactform')#</dt>
+
 <span id="extendSetsBasic"></span>
 </dl>
 

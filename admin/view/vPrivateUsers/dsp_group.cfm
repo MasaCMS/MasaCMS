@@ -83,6 +83,17 @@ select * from rsSubTypes where subType <> 'Default'
 <dt>#application.rbFactory.getKeyValue(session.rb,'user.email')#</dt>
 <dd><input type="text" class="text" name="email" value="#HTMLEditFormat(request.userBean.getemail())#"></dd>
 
+
+<dt>#application.rbFactory.getKeyValue(session.rb,'user.tablist')#</dt>
+<dd>
+<select name="tablist" multiple="true">
+<option value=""<cfif not len(request.userBean.getTablist())> selected</cfif>>All</option>
+<cfloop list="Basic,Meta Data,Content Objects,Categorization,Related Content,Advanced,Usage Report" index="t">
+<option value="#t#"<cfif listFindNoCase(request.userBean.getTablist(),t)> selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.tabs.#replace(t,' ','','all')#")#</option>
+</cfloop>
+</select>
+</dd>
+
 <dt>#application.rbFactory.getKeyValue(session.rb,'user.contactform')#</dt>
  <dd><ul><cfloop collection="#application.settingsManager.getSites()#" item="site">
  <cfif application.settingsManager.getSite(site).getPrivateUserPoolID() eq application.settingsManager.getSite(attributes.siteid).getPrivateUserPoolID()>

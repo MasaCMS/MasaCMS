@@ -288,7 +288,7 @@ CREATE TABLE `tcontentcomments` (
   `name` varchar(50) default NULL,
   `comments` longtext,
   `entered` datetime default NULL,
-  `email` varchar(50) default NULL,
+  `email` varchar(100) default NULL,
   `siteid` varchar(50) default NULL,
   `ip` varchar(50) default NULL,
   `isApproved` tinyint(3) default '0',
@@ -412,7 +412,7 @@ CREATE TABLE `tcontentrelated` (
 
 CREATE TABLE `temailreturnstats` (
   `emailID` char(35) default NULL,
-  `email` varchar(50) default NULL,
+  `email` varchar(100) default NULL,
   `url` mediumtext,
   `created` datetime default NULL
 );
@@ -443,7 +443,7 @@ CREATE INDEX IX_TEmails ON temails(siteid);
 
 CREATE TABLE `temailstats` (
   `EmailID` char(35) default NULL,
-  `Email` varchar(50) default NULL,
+  `Email` varchar(100) default NULL,
   `emailOpen` int(10) NOT NULL default '0',
   `returnClick` int(10) NOT NULL default '0',
   `bounce` int(10) NOT NULL default '0',
@@ -607,7 +607,7 @@ CREATE TABLE `tsettings` (
   `contactCity` varchar(50) default NULL,
   `contactState` varchar(50) default NULL,
   `contactZip` varchar(50) default NULL,
-  `contactEmail` varchar(50) default NULL,
+  `contactEmail` varchar(100) default NULL,
   `contactPhone` varchar(50) default NULL,
   `privateUserPoolID` varchar(50) default NULL,
   `publicUserPoolID` varchar(50) default NULL,
@@ -709,7 +709,7 @@ CREATE TABLE `tusers` (
   `UserName` varchar(50) default NULL,
   `Password` varchar(50) default NULL,
   `PasswordCreated` datetime default NULL,
-  `Email` varchar(50) default NULL,
+  `Email` varchar(100) default NULL,
   `Company` varchar(50) default NULL,
   `JobTitle` varchar(50) default NULL,
   `mobilePhone` varchar(50) default NULL,

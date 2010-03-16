@@ -44,6 +44,8 @@ to your own modified versions of Mura CMS.
 <cfset pageLevelList="Page,Portal,Calendar,Gallery"/>
 <cfset extendedList="Page,Portal,Calendar,Gallery,Link,File,Component"/>
 <cfset nodeLevelList="Page,Portal,Calendar,Gallery,Link,File"/>
+<cfset $=event.getValue("MuraScope")>
+<cfset tabAssignments=$.currentUser().getContentTabAssignments()>
 <script>
 var draftremovalnotice=<cfif event.getValue("suppressDraftNotice") neq "true" and request.contentBean.hasDrafts()><cfoutput>'#jsStringFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.draftremovalnotice"))#'</cfoutput><cfelse>""</cfif>;
 </script>
@@ -106,6 +108,17 @@ function setRequestedURL(){
 		<cfset baseTypeList=attributes.type>
 	<cfelse>
 		<cfset baseTypeList=pageLevelList>
+	</cfif>
+	
+	<!--- If the node is new check to see if the parent type has a matching sub type. --->
+	<cfif request.contentBean.getIsNew()>
+		<cfquery name="rsParentSubType" dbtype="query">
+		select * from rsSubTypes
+		where subtype = <cfqueryparam cfsqltype="cf_sql_varchar" value="#$.getBean('content').loadBy(contentID=attributes.parentID, siteID=attributes.siteID).getSubType()#"/>
+		</cfquery>
+		<cfif rsParentSubType.recordcount>
+			<cfset request.contentBean.setSubType(rsParentSubType.subType)>
+		</cfif>
 	</cfif>
 	
 	<cfif rsSubTypes.recordCount>
@@ -302,7 +315,7 @@ select * from rsPluginScripts3 order by pluginID
 	
 	<cfswitch expression="#attributes.type#">
 		<cfcase value="Page,Portal,Calendar,Gallery,File,Link">
-		<cfif not len(event.getValue('tablist')) or listFindNocase(event.getValue('tablist'),'metadata')>
+		<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Meta Data')>
 		<cfinclude template="form/dsp_tab_meta.cfm">
 		<cfset tablist=tablist & ",'#jsStringFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.tabs.metadata"))#'"/>
 		</cfif>
@@ -311,37 +324,37 @@ select * from rsPluginScripts3 order by pluginID
 		
 	<cfswitch expression="#attributes.type#">
 	<cfcase value="Page,Portal,Calendar,Gallery">
-		<cfif not len(event.getValue('tablist')) or listFindNocase(event.getValue('tablist'),'objects')>
+		<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Content Objects')>
 		<cfif listFind(session.mura.memberships,'S2IsPrivate')>
 		<cfinclude template="form/dsp_tab_objects.cfm">
 		<cfset tablist=tablist & ",'#jsStringFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.tabs.contentobjects"))#'"/>
 		</cfif>
 		</cfif>
-		<cfif not len(event.getValue('tablist')) or listFindNocase(event.getValue('tablist'),'categories')>
+		<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Categorization')>
 		<cfif application.categoryManager.getCategoryCount(attributes.siteID)>
 		<cfinclude template="form/dsp_tab_categories.cfm">
 		<cfset tablist=tablist & ",'#jsStringFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.tabs.categorization"))#'"/>
 		</cfif>
 		</cfif>
-		<cfif not len(event.getValue('tablist')) or listFindNocase(event.getValue('tablist'),'related')>
+		<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Related Content')>
 		<cfinclude template="form/dsp_tab_related_content.cfm">
 		<cfset tablist=tablist & ",'#jsStringFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.tabs.relatedcontent"))#'"/>
 		</cfif>
 	</cfcase>
 	<cfcase value="Link,File">
-		<cfif not len(event.getValue('tablist')) or listFindNocase(event.getValue('tablist'),'categories')>
+		<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Categorization')>
 		<cfif application.categoryManager.getCategoryCount(attributes.siteid)>
 		<cfinclude template="form/dsp_tab_categories.cfm">
 		<cfset tablist=tablist & ",'#jsStringFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.tabs.categorization"))#'"/>
 		</cfif>
 		</cfif>
-		<cfif not len(event.getValue('tablist')) or listFindNocase(event.getValue('tablist'),'related')>
+		<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Related Content')>
 		<cfinclude template="form/dsp_tab_related_content.cfm">
 		<cfset tablist=tablist & ",'#jsStringFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.tabs.relatedcontent"))#'"/>
 		</cfif>
 	</cfcase>
 	<cfcase value="Component">
-		<cfif not len(event.getValue('tablist')) or listFindNocase(event.getValue('tablist'),'usage')>
+		<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Usage Report')>
 		<cfif attributes.contentID neq ''>
 		<cfinclude template="form/dsp_tab_usage.cfm">
 		<cfset tablist=tablist & ",'#jsStringFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.tabs.usagereport"))#'"/>
@@ -349,7 +362,7 @@ select * from rsPluginScripts3 order by pluginID
 		</cfif>		
 	</cfcase>
 	<cfcase value="Form">
-		<cfif not len(event.getValue('tablist')) or listFindNocase(event.getValue('tablist'),'usage')>
+		<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Usage Report')>
 		<cfif attributes.contentID neq ''>
 		<cfinclude template="form/dsp_tab_usage.cfm">
 		<cfset tablist=tablist & ",'#jsStringFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.tabs.usagereport"))#'"/>
@@ -367,7 +380,7 @@ select * from rsPluginScripts3 order by pluginID
 	</cfif>
 	</cfcase>
 </cfswitch>
-	<cfif not len(event.getValue('tablist')) or listFindNocase(event.getValue('tablist'),'advanced')>
+	<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Advanced')>
 	<cfif listFind(session.mura.memberships,'S2IsPrivate') and ((listFind(session.mura.memberships,'S2') and attributes.type eq 'Component') or attributes.type neq 'Component')>
 	<cfinclude template="form/dsp_tab_advanced.cfm">
 	<cfset tablist=tablist & ",'#jsStringFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.tabs.advanced"))#'"/>

@@ -42,6 +42,8 @@ to your own modified versions of Mura CMS.
 --->
 <cfcomponent extends="mura.cfobject" output="false">
 
+<cfset variables.fieldList="userID, GroupName, Fname, Lname, UserName, Password, PasswordCreated, Email, Company, JobTitle, MobilePhone, Website, Type, subType, Ext, ContactForm, Admin, S2, LastLogin, LastUpdate, LastUpdateBy, LastUpdateByID, Perm, InActive, IsPublic, SiteID, Subscribe, Notes, description, Interests, keepPrivate, PhotoFileID, IMName, IMService, Created, RemoteID, Tags, tablist">
+
 <cffunction name="init" returntype="any" output="false" access="public">
 <cfargument name="configBean" type="any" required="yes"/>
 <cfargument name="settingsManager" type="any" required="yes"/>
@@ -69,7 +71,7 @@ to your own modified versions of Mura CMS.
 		<cfset var userBean=getBean() />
 			
 		<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#" name="rsUser">
-			select *
+			select #variables.fieldList#
 			from tusers 
 			where userid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.userID#">
 		</cfquery>
@@ -94,7 +96,7 @@ to your own modified versions of Mura CMS.
 		<cfset var userBean=application.serviceFactory.getBean("userBean") />
 			
 		<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#" name="rsUser">
-			select *
+			select #variables.fieldList#
 			from tusers 
 			where username=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.username#">
 			and (siteid='#application.settingsManager.getSite(arguments.siteID).getPublicUserPoolID()#'
@@ -132,7 +134,7 @@ to your own modified versions of Mura CMS.
 		<cfset var userBean=application.serviceFactory.getBean("userBean") />
 			
 		<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#" name="rsUser">
-			select *
+			select #variables.fieldList#
 			from tusers 
 			where 
 			type=1
@@ -184,7 +186,7 @@ to your own modified versions of Mura CMS.
 		<cfset var userBean=application.serviceFactory.getBean("userBean") />
 			
 		<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#" name="rsUser">
-			select *
+			select #variables.fieldList#
 			from tusers 
 			where remoteid=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.remoteid#">
 			and (siteid='#application.settingsManager.getSite(arguments.siteID).getPublicUserPoolID()#'
@@ -219,7 +221,7 @@ to your own modified versions of Mura CMS.
         INSERT INTO tusers  (UserID, RemoteID, s2, Fname, Lname, Password, PasswordCreated,
 		Email, GroupName, Type, subType, ContactForm, LastUpdate, lastupdateby, lastupdatebyid,InActive, username,  perm, isPublic,
 		company,jobtitle,subscribe,siteid,website,notes,mobilePhone,
-		description,interests,photoFileID,keepPrivate,IMName,IMService,created,tags)
+		description,interests,photoFileID,keepPrivate,IMName,IMService,created,tags, tablist)
      VALUES(
          '#arguments.userBean.getuserid()#',
 		 <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.userBean.getRemoteID() neq '',de('no'),de('yes'))#" value="#arguments.userBean.getRemoteID()#">,
@@ -254,7 +256,8 @@ to your own modified versions of Mura CMS.
 		 <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.userBean.getIMName() neq '',de('no'),de('yes'))#" value="#arguments.userBean.getIMName()#">,
 		 <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.userBean.getIMService() neq '',de('no'),de('yes'))#" value="#arguments.userBean.getIMService()#">,
 		 #createODBCDAteTime(now())#,
-		 <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.userBean.getTags() neq '',de('no'),de('yes'))#" value="#arguments.userBean.getTags()#">
+		 <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.userBean.getTags() neq '',de('no'),de('yes'))#" value="#arguments.userBean.getTags()#">,
+		 <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.userBean.getTablist() neq '',de('no'),de('yes'))#" value="#arguments.userBean.getTablist()#">
 		 )
 		 
    </CFQUERY>
@@ -381,7 +384,8 @@ to your own modified versions of Mura CMS.
 		 keepPrivate = #arguments.userBean.getKeepPrivate()#,
 		 IMName = <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.userBean.getIMName() neq '',de('no'),de('yes'))#" value="#arguments.userBean.getIMName()#">,
 		 IMService = <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.userBean.getIMService() neq '',de('no'),de('yes'))#" value="#arguments.userBean.getIMService()#">,
-		 Tags = <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.userBean.getTags() neq '',de('no'),de('yes'))#" value="#arguments.userBean.getTags()#">
+		 Tags = <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.userBean.getTags() neq '',de('no'),de('yes'))#" value="#arguments.userBean.getTags()#">,
+		 TabList= <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.userBean.getTablist() neq '',de('no'),de('yes'))#" value="#arguments.userBean.getTablist()#">
 		 
        WHERE UserID = '#arguments.userBean.getUserID()#'  
    </CFQUERY>

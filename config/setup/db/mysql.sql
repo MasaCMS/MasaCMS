@@ -432,7 +432,7 @@ CREATE TABLE `tcontentcomments` (
   `name` varchar(50) character set utf8 default NULL,
   `comments` longtext,
   `entered` datetime default NULL,
-  `email` varchar(50) character set utf8 default NULL,
+  `email` varchar(100) character set utf8 default NULL,
   `siteid` varchar(25) character set utf8 default NULL,
   `ip` varchar(50) character set utf8 default NULL,
   `isApproved` tinyint(3) default '0',
@@ -648,7 +648,7 @@ CREATE TABLE `tcontentrelated` (
 
 CREATE TABLE `temailreturnstats` (
   `emailID` char(35) character set utf8 default NULL,
-  `email` varchar(50) character set utf8 default NULL,
+  `email` varchar(100) character set utf8 default NULL,
   `url` mediumtext,
   `created` datetime default NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -700,7 +700,7 @@ CREATE TABLE `temails` (
 
 CREATE TABLE `temailstats` (
   `EmailID` char(35) character set utf8 default NULL,
-  `Email` char(35) character set utf8 default NULL,
+  `Email` char(100) character set utf8 default NULL,
   `emailOpen` int(10) NOT NULL default '0',
   `returnClick` int(10) NOT NULL default '0',
   `bounce` int(10) NOT NULL default '0',
@@ -964,7 +964,7 @@ CREATE TABLE `tsettings` (
   `contactCity` varchar(50) character set utf8 default NULL,
   `contactState` varchar(50) character set utf8 default NULL,
   `contactZip` varchar(50) character set utf8 default NULL,
-  `contactEmail` varchar(50) character set utf8 default NULL,
+  `contactEmail` varchar(100) character set utf8 default NULL,
   `contactPhone` varchar(50) character set utf8 default NULL,
   `privateUserPoolID` varchar(50) character set utf8 default NULL,
   `publicUserPoolID` varchar(50) character set utf8 default NULL,

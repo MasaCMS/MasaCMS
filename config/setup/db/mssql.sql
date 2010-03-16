@@ -222,7 +222,7 @@ CREATE TABLE [dbo].[tcontentcomments] (
 	[name] [nvarchar] (50) NULL ,
 	[comments] [nvarchar] (max) NULL ,
 	[entered] [smalldatetime] NULL ,
-	[email] [nvarchar] (50) NULL ,
+	[email] [nvarchar] (100) NULL ,
 	[siteid] [nvarchar] (25) NULL ,
 	[ip] [nvarchar] (50) NULL ,
 	[isApproved] [tinyint] NULL 
@@ -329,7 +329,7 @@ GO
 
 CREATE TABLE [dbo].[temailreturnstats] (
 	[emailID] [char] (35) NULL ,
-	[email] [nvarchar] (50) NULL ,
+	[email] [nvarchar] (100) NULL ,
 	[url] [nvarchar] (1500) NULL ,
 	[created] [smalldatetime] NULL 
 ) ON [PRIMARY]
@@ -337,7 +337,7 @@ GO
 
 CREATE TABLE [dbo].[temailstats] (
 	[EmailID] [char] (35) NULL ,
-	[Email] [varchar] (50) NULL ,
+	[Email] [varchar] (100) NULL ,
 	[emailOpen] [int] NOT NULL ,
 	[returnClick] [int] NOT NULL ,
 	[bounce] [int] NOT NULL ,
@@ -499,7 +499,7 @@ CREATE TABLE [dbo].[tsettings] (
 	[contactCity] [nvarchar] (50) NULL ,
 	[contactState] [nvarchar] (50) NULL ,
 	[contactZip] [nvarchar] (50) NULL ,
-	[contactEmail] [nvarchar] (50) NULL ,
+	[contactEmail] [nvarchar] (100) NULL ,
 	[contactPhone] [nvarchar] (50) NULL ,
 	[privateUserPoolID] [nvarchar] (50) NULL ,
 	[publicUserPoolID] [nvarchar] (50) NULL ,
@@ -573,7 +573,7 @@ CREATE TABLE [dbo].[tusers] (
 	[UserName] [nvarchar] (50) NULL ,
 	[Password] [nvarchar] (50) NULL ,
 	[PasswordCreated] [smalldatetime] NULL ,
-	[Email] [nvarchar] (50) NULL ,
+	[Email] [nvarchar] (100) NULL ,
 	[Company] [nvarchar] (50) NULL ,
 	[JobTitle] [nvarchar] (50) NULL ,
 	[mobilePhone] [nvarchar] (50) NULL ,

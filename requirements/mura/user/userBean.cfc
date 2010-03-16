@@ -88,6 +88,7 @@ to your own modified versions of Mura CMS.
 	<cfset variables.instance.extendSetID="" />
     <cfset variables.instance.errors=structnew() />
 	<cfset variables.instance.isNew=1 />
+	<cfset variables.instance.tablist="" />
 	<cfset variables.newAddresses = arrayNew(1) />
 	
 	<cffunction name="init" returntype="any" output="false" access="public">
@@ -138,6 +139,7 @@ to your own modified versions of Mura CMS.
 			<cfset setIMName(arguments.user.IMName) />
 			<cfset setIMService(arguments.user.IMService) />
 			<cfset setTags(arguments.user.tags) />
+			<cfset setTabList(arguments.user.tablist) />
 			
 			<cfset setNotes(arguments.user.Notes) />
 			
@@ -776,6 +778,16 @@ to your own modified versions of Mura CMS.
     <cfreturn variables.instance.tags />
   </cffunction>
 
+ <cffunction name="setTabList" output="false" access="public">
+    <cfargument name="tablist" type="string" required="true">
+    <cfset variables.instance.tablist = trim(arguments.tablist) />
+	<cfreturn this>
+  </cffunction>
+
+  <cffunction name="getTabList" returnType="string" output="false" access="public">
+    <cfreturn variables.instance.tablist />
+  </cffunction> 
+
  <cffunction name="setHkey" output="false" access="public">
     <cfargument name="hkey" type="string" required="true">
     <cfset variables.instance.hkey = trim(arguments.hkey) />
@@ -920,5 +932,31 @@ to your own modified versions of Mura CMS.
 	<cfset arguments.address.setUserID(getUserID())>
 	<cfset arrayAppend(variables.newAddresses,arguments.address)>
 	<cfreturn this>	
+</cffunction>
+
+<cffunction name="getContentTabAssignments" output="false" >
+	<cfset var it=getMemberShipsIterator()>
+	<cfset var item="">
+	<cfset var userlist="">
+	<cfset var itemlist="">
+	<cfset var i="">
+	
+	<cfif it.getRecordcount()>
+		<cfloop condition="it.hasNext()">
+			<cfset item=it.next()>
+			<cfset itemlist=item.getTablist()>
+			<cfif len(itemlist)>
+				<cfloop list="#itemlist#" index="i">
+					<cfif not listFindNoCase(userlist,i)>
+						<cfset userlist=listAppend(userlist,i)>
+					</cfif>
+				</cfloop>
+			<cfelse>
+				<cfreturn "Basic,Meta Data,Content Objects,Categorization,Related Content,Advanced,Usage Report"> 
+			</cfif>
+		</cfloop>
+	</cfif>
+	
+	<cfreturn userlist>
 </cffunction>
 </cfcomponent>

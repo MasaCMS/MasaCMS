@@ -45,6 +45,9 @@ to your own modified versions of Mura CMS.
 <cfparam name="application.appReloadKey" default="appreload" />
 <cfparam name="application.broadcastInit" default="true" />
 	
+<cfprocessingdirective pageencoding="utf-8"/>
+<cfsetting requestTimeout = "1000"> 
+	
 <!--- do a settings setup check --->
 <cfif NOT structKeyExists( application, "setupComplete" ) OR (not application.appInitialized or structKeyExists(url,application.appReloadKey) )>
 	<cfif getProfileString( baseDir & "/config/settings.ini.cfm", "settings", "mode" ) eq "production">
