@@ -957,7 +957,7 @@ to your own modified versions of Mura CMS.
 <cffunction name="setStrictExtendedData" access="public" output="false">
 	<cfargument name="strictExtendedData" />
 	<cfif isBoolean(arguments.strictExtendedData)>
-		<cfset variables.instance.indexFileInURLS = arguments.strictExtendedData />
+		<cfset variables.instance.strictExtendedData = arguments.strictExtendedData />
 	</cfif>
 </cffunction>
 
