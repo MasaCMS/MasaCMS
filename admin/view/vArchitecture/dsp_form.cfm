@@ -45,7 +45,7 @@ to your own modified versions of Mura CMS.
 <cfset extendedList="Page,Portal,Calendar,Gallery,Link,File,Component"/>
 <cfset nodeLevelList="Page,Portal,Calendar,Gallery,Link,File"/>
 <cfset $=event.getValue("MuraScope")>
-<cfset tabAssignments=$.currentUser().getContentTabAssignments()>
+<cfset tabAssignments=$.getBean("user").loadBy(userID=session.mura.userID, siteID=session.mura.siteID).getContentTabAssignments()>
 <script>
 var draftremovalnotice=<cfif event.getValue("suppressDraftNotice") neq "true" and request.contentBean.hasDrafts()><cfoutput>'#jsStringFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.draftremovalnotice"))#'</cfoutput><cfelse>""</cfif>;
 </script>
