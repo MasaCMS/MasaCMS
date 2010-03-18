@@ -55,7 +55,7 @@ to your own modified versions of Mura CMS.
 	<cfset rsTemplate.isOnDisplay=rsTemplate.display eq 1 or 
 			(
 				rsTemplate.display eq 2 and rsTemplate.DisplayStart lte now()
-				AND (rsTemplate.DisplayStop gte now() or rsTemplate.DisplayStop eq null)
+				AND (rsTemplate.DisplayStop gte now() or rsTemplate.DisplayStop eq "")
 			)
 			and listFind(rsTemplate.moduleAssign,'00000000000000000000000000000000000')>
 	<!---
@@ -135,10 +135,11 @@ to your own modified versions of Mura CMS.
 	</cfif>
 </cfsilent>
 
+
+<cfif editableControl.innerHTML neq "">
+	<cfoutput>#renderEditableObjectHeader("editableComponent")#</cfoutput>
+</cfif>
 <cfif rsTemplate.isOnDisplay>
-	<cfif editableControl.innerHTML neq "">
-		<cfoutput>#renderEditableObjectHeader("editableComponent")#</cfoutput>
-	</cfif>
 	<cfif len(rsTemplate.template) and fileExists("#getSite().getTemplateIncludeDir()#/components/#rsTemplate.template#")>
 		<cfset componentBody=rsTemplate.body>
 		<cfinclude template="#getSite().getTemplateIncludePath()#/components/#rsTemplate.template#">
@@ -147,7 +148,7 @@ to your own modified versions of Mura CMS.
 			#setDynamicContent(rsTemplate.body)#
 		</cfoutput>
 	</cfif>
-	<cfif editableControl.innerHTML neq "">
-		<cfoutput>#renderEditableObjectFooter(editableControl.innerHTML)#</cfoutput>
-	</cfif>
+</cfif>
+<cfif editableControl.innerHTML neq "">
+	<cfoutput>#renderEditableObjectFooter(editableControl.innerHTML)#</cfoutput>
 </cfif>
