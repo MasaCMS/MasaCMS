@@ -233,33 +233,28 @@ to your own modified versions of Mura CMS.
 <cffunction name="getApplication" returntype="any" access="public" output="false">
 <cfargument name="purge" default="false">
 		
-
 		<cfif not structKeyExists(application,"plugins")>
 			<cfset application.plugins=structNew()>
 		</cfif>
 		
-		<cfif not structKeyExists(application.plugins,"p#getPluginID()#")>
+		<cfif not structKeyExists(application.plugins,"p#getPluginID()#") or arguments.purge>
 			<cfset application.plugins["p#getPluginID()#"]=createObject("component","pluginApplication")>
 			<cfset application.plugins["p#getPluginID()#"].setPluginConfig(this)>
-		<cfelse>
-			<cfif arguments.purge>
-			<cfset structDelete(application.plugins, "p#getPluginID()#")>
-			<cfset application.plugins["p#getPluginID()#"]=createObject("component","pluginApplication")>
-			<cfset application.plugins["p#getPluginID()#"].setPluginConfig(this)>
-			</cfif>
 		</cfif>
 		
 		<cfreturn application.plugins["p#getPluginID()#"] />
 </cffunction>
 
 <cffunction name="getSession" returntype="any" access="public" output="false">
+<cfargument name="purge" default="false">
 	
 		<cfif not structKeyExists(session,"plugins")>
 			<cfset session.plugins=structNew()>
 		</cfif>
 		
-		<cfif not structKeyExists(session.plugins,"p#getPluginID()#")>
+		<cfif not structKeyExists(session.plugins,"p#getPluginID()#") or arguments.purge>
 			<cfset session.plugins["p#getPluginID()#"]=createObject("component","pluginSession")>
+			<cfset session.plugins["p#getPluginID()#"].setPluginConfig(this)>
 		</cfif>
 		
 		<cfreturn session.plugins["p#getPluginID()#"] />
