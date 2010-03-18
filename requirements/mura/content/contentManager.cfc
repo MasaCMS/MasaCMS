@@ -837,8 +837,10 @@ to your own modified versions of Mura CMS.
 		</cftransaction>
 		</cflock>	
 		
-		<!--- re-read the node to make sure that all extended attributes are cleaned --->
+		<!--- re-read the node to make sure that all extended attributes are cleaned 
+		Not need due to extended attributes now not using ext[pluginID] based form field names.
 		<cfset newBean=read(contentHistID=newBean.getContentHistID() , siteID=newBean.getSiteID())>
+		--->
 		
 		<cfset newBean.setIsNew(0)>
 		<cfset pluginEvent.setValue("contentBean",newBean)>

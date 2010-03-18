@@ -645,7 +645,10 @@ to your own modified versions of Mura CMS.
 
   <cffunction name="setSiteID" output="false" access="public">
     <cfargument name="SiteID" type="string" required="true">
+	<cfif len(arguments.siteID) and trim(arguments.siteID) neq variables.instance.siteID>
     <cfset variables.instance.SiteID = trim(arguments.SiteID) />
+	<cfset purgeExtendedData()>
+	</cfif>
 	<cfreturn this>
   </cffunction>
 

@@ -206,12 +206,20 @@ to your own modified versions of Mura CMS.
 										)
 		where tclassextend.siteid=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#getSiteID()#">
 		and tclassextend.type=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#getType()#">
-		and tclassextend.subtype=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#getSubType()#">
+		and (
+			<cfif getSubType() neq "Default">
+			tclassextend.subtype=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#getSubType()#">
+			or
+			</cfif>
+			tclassextend.subtype='Default'
+			)
+			
 		and #dataTable#.baseID is null
+		
 		</cfif>
 		
 		</cfquery>
-
+		
 		<!--- MSSQL needs to group by outside the original query --->
 		<cfquery name="rs" dbType="query">
 		select baseID, name, label, attributeID, defaultValue, extendSetID, attributeValue, validation from rs

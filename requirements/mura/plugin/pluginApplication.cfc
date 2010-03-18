@@ -43,6 +43,7 @@ to your own modified versions of Mura CMS.
 <cfcomponent extends="mura.cfobject" output="false">
 
 <cfset variables.properties=structNew() />
+<cfset variables.wired=structNew() />
 
 <cffunction name="init" returntype="any" access="public" output="false">
 	<cfargument name="data"  type="any" default="#structNew()#">
@@ -56,25 +57,60 @@ to your own modified versions of Mura CMS.
 <cffunction name="setValue" returntype="any" access="public" output="false">
 <cfargument name="property"  type="string" required="true">
 <cfargument name="propertyValue" default="" >
+<cfargument name="autowire" default="false" >
 	
-	<cfset variables.properties["#arguments.property#"]=arguments.propertyValue />
+	
+	<cfset variables.properties[arguments.property]=arguments.propertyValue />
+	<cfset structDelete(variables.wired,arguments.property)>
+	
+	<cfif arguments.autowire and isObject(arguments.propertyValue)>
+		<cfset doAutowire(variables.properties[arguments.property])>
+		<cfset variables.wired[arguments.property]=true>
+	</cfif>
 
 </cffunction>
 
+<cffunction name="doAutowire" output="false">
+<cfargument name="cfc">
+	<cfset var i="">
+	<cfset var item="">
+	<cfset var args=structNew()>
+	
+	<cfloop collection="#arguments.cfc#" item="i">
+		<cfif len(i) gt 3 and left(i,3) eq "set">
+			<cfset item=right(i,len(i)-3)>		
+			<cfif structKeyExists(variables.properties,item)>
+				<cfset args=structNew()>
+				<cfset args[item] = variables.properties[item] />
+				<cfinvoke component="#arguments.cfc#" method="#i#" argumentCollection="#args#" />
+			<cfelseif getServiceFactory().containsBean(item)>
+				<cfset args=structNew()>
+				<cfset args[item] = getBean(item) />
+				<cfinvoke component="#arguments.cfc#" method="#i#" argumentCollection="#args#" />
+			</cfif>
+		</cfif>
+	</cfloop>
+	<cfreturn arguments.cfc>
+</cffunction>
 
 <cffunction name="getValue" returntype="any" access="public" output="false">
 <cfargument name="property"  type="string" required="true">
-<cfargument name="defaultValue">
+<cfargument name="defaultValue" defaultValue="">
+<cfargument name="autowire" default="false" >
+	<cfset var returnValue="">
 	
-	<cfif structKeyExists(variables.properties,"#arguments.property#")>
-		<cfreturn variables.properties["#arguments.property#"] />
-	<cfelseif structKeyExists(arguments,"defaultValue")>
-		<cfset variables.properties["#arguments.property#"]=arguments.defaultValue />
-		<cfreturn variables.properties["#arguments.property#"] />
+	<cfif structKeyExists(variables.properties,arguments.property)>
+		<cfset returnValue=variables.properties[arguments.property] />
 	<cfelse>
-		<cfreturn "" />
+		<cfset variables.properties[arguments.property]=arguments.defaultValue />
+		<cfset returnValue=variables.properties[arguments.property] />
 	</cfif>
-
+	
+	<cfif arguments.autowire and isObject(returnValue) and not structKeyExists(variables.wired,arguments.property)>
+		<cfset doAutowire(returnValue)>
+		<cfset variables.wired[arguments.property]=true>
+	</cfif>
+	<cfreturn returnValue>
 </cffunction>
 
 <cffunction name="getAllValues" returntype="any" access="public" output="false">
@@ -89,6 +125,7 @@ to your own modified versions of Mura CMS.
 <cffunction name="removeValue" returntype="void" access="public" output="false">
 	<cfargument name="property" type="string" required="true"/>
 		<cfset structDelete(variables.properties,arguments.property) />
+		<cfset structDelete(variables.wired,arguments.property) />
 </cffunction>
 
 </cfcomponent>
