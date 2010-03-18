@@ -231,13 +231,22 @@ to your own modified versions of Mura CMS.
 </cffunction>
 
 <cffunction name="getApplication" returntype="any" access="public" output="false">
-	
+<cfargument name="purge" default="false">
+		
+
 		<cfif not structKeyExists(application,"plugins")>
 			<cfset application.plugins=structNew()>
 		</cfif>
 		
 		<cfif not structKeyExists(application.plugins,"p#getPluginID()#")>
 			<cfset application.plugins["p#getPluginID()#"]=createObject("component","pluginApplication")>
+			<cfset application.plugins["p#getPluginID()#"].setPluginConfig(this)>
+		<cfelse>
+			<cfif arguments.purge>
+			<cfset structDelete(application.plugins, "p#getPluginID()#")>
+			<cfset application.plugins["p#getPluginID()#"]=createObject("component","pluginApplication")>
+			<cfset application.plugins["p#getPluginID()#"].setPluginConfig(this)>
+			</cfif>
 		</cfif>
 		
 		<cfreturn application.plugins["p#getPluginID()#"] />

@@ -44,6 +44,7 @@ to your own modified versions of Mura CMS.
 
 <cfset variables.properties=structNew() />
 <cfset variables.wired=structNew() />
+<cfset variables.pluginConfig="" />
 
 <cffunction name="init" returntype="any" access="public" output="false">
 	<cfargument name="data"  type="any" default="#structNew()#">
@@ -53,6 +54,12 @@ to your own modified versions of Mura CMS.
 	<cfreturn this />
 </cffunction>
 
+<cffunction name="setPluginConfig" returntype="any" access="public" output="false">
+<cfargument name="pluginConfig" >
+
+	<cfset variables.pluginConfig=arguments.pluginConfig />
+
+</cffunction>
 
 <cffunction name="setValue" returntype="any" access="public" output="false">
 <cfargument name="property"  type="string" required="true">
@@ -78,8 +85,12 @@ to your own modified versions of Mura CMS.
 	
 	<cfloop collection="#arguments.cfc#" item="i">
 		<cfif len(i) gt 3 and left(i,3) eq "set">
-			<cfset item=right(i,len(i)-3)>		
-			<cfif structKeyExists(variables.properties,item)>
+			<cfset item=right(i,len(i)-3)>
+			<cfif item eq "pluginConfig">
+				<cfset args=structNew()>
+				<cfset args[item] = variables.pluginConfig />
+				<cfinvoke component="#arguments.cfc#" method="#i#" argumentCollection="#args#" />
+			<cfelseif structKeyExists(variables.properties,item)>
 				<cfset args=structNew()>
 				<cfset args[item] = variables.properties[item] />
 				<cfinvoke component="#arguments.cfc#" method="#i#" argumentCollection="#args#" />
