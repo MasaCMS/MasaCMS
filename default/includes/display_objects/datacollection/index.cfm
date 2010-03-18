@@ -47,7 +47,7 @@ to your own modified versions of Mura CMS.
 
 	<cfset rsForm.isOnDisplay=rsForm.display eq 1 or 
 			(
-				rsForm.display eq 1 and rsForm.DisplayStart lte now()
+				rsForm.display eq 2 and rsForm.DisplayStart lte now()
 				AND (rsForm.DisplayStop gte now() or rsForm.DisplayStop eq null)
 			)>
 <!---	

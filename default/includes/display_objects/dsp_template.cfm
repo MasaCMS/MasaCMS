@@ -54,7 +54,7 @@ to your own modified versions of Mura CMS.
 	
 	<cfset rsTemplate.isOnDisplay=rsTemplate.display eq 1 or 
 			(
-				rsTemplate.display eq 1 and rsTemplate.DisplayStart lte now()
+				rsTemplate.display eq 2 and rsTemplate.DisplayStart lte now()
 				AND (rsTemplate.DisplayStop gte now() or rsTemplate.DisplayStop eq null)
 			)
 			and listFind(rsTemplate.moduleAssign,'00000000000000000000000000000000000')>
