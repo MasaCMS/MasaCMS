@@ -699,7 +699,10 @@ Sincerely,
 		<cfset contentBean.setMenuTitle(contentBean.getMenuTitle())>
 	</cfif>
 	
-	<cfset setUniqueFilename(contentBean)>
+	<cfif listFindNoCase("Page,Portal,Gallery,Calendar",contentBean.getType())>
+		<cfset setUniqueFilename(contentBean)>
+	</cfif>
+	
 	<cfset variables.contentDAO.create(contentBean)>
 	
 	<!--- tcontentcategoryassign --->

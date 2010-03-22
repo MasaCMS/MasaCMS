@@ -243,7 +243,8 @@ document.getElementById('newGalleryItemLink').style.display='';
 document.getElementById('newGalleryItem').style.display='';
 document.getElementById('newGalleryItemMulti').style.display='';
 document.getElementById('newGalleryItemMultiLink').style.display='';
-} else {
+document.getElementById('newCopy').style.border='';
+} else if (type!='File' && type!='Link'){
 document.getElementById('newPageLink').style.display='';
 document.getElementById('newLinkLink').style.display='';
 document.getElementById('newCalendarLink').style.display='';
@@ -253,7 +254,6 @@ document.getElementById('newFileLink').style.display='';
 document.getElementById('newGalleryLink').style.display='';
 document.getElementById('newGalleryItemLink').style.display='none';
 document.getElementById('newGalleryItemMultiLink').style.display='none';
-
 document.getElementById('newPage').style.display='';
 document.getElementById('newLink').style.display='';
 document.getElementById('newCalendar').style.display='';
@@ -263,7 +263,12 @@ document.getElementById('newFile').style.display='';
 document.getElementById('newGallery').style.display='';
 document.getElementById('newGalleryItem').style.display='none';
 document.getElementById('newGalleryItemMulti').style.display='none';
-}
+document.getElementById('newCopy').style.border='';
+} else {
+document.getElementById('newCopy').style.border='0';
+document.getElementById('newPaste').style.display='none';
+document.getElementById('newZoom').style.display='none';
+}	
 }
 
 document.getElementById(id).style.top=yPos + "px" ;

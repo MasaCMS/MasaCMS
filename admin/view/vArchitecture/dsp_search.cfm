@@ -89,11 +89,11 @@ copySiteID = '#session.copySiteID#';
 	</cfsilent>
         <tr>  
 			     <td class="add">
-     <cfif (request.rslist.type eq 'Page') or  (request.rslist.type eq 'Portal')  or  (request.rslist.type eq 'Calendar') or (request.rslist.type eq 'Gallery')>
+     <!---<cfif (request.rslist.type eq 'Page') or  (request.rslist.type eq 'Portal')  or  (request.rslist.type eq 'Calendar') or (request.rslist.type eq 'Gallery')>--->
 		<a href="javascript:;" onmouseover="showMenu('newContentMenu',#newcontent#,this,'#request.rslist.contentid#','#request.rslist.contentid#','#request.rslist.parentid#','#attributes.siteid#','#request.rslist.type#');">&nbsp;</a>
-	<cfelse>
+	<!---<cfelse>
 		&nbsp;
-	</cfif></td>
+	</cfif>---></td>
           <td class="title varWidth">#application.contentRenderer.dspZoom(crumbdata,request.rsList.fileExt)#</td>
 			   <td> 
 	    <cfif request.rslist.Display and (request.rslist.Display eq 1 and request.rslist.approved and request.rslist.approved)>Yes<cfelseif(request.rslist.Display eq 2 and request.rslist.approved and request.rslist.approved)>#LSDateFormat(request.rslist.displaystart,session.dateKeyFormat)# - #LSDateFormat(request.rslist.displaystop,session.dateKeyFormat)#<cfelse>No</cfif></td>
