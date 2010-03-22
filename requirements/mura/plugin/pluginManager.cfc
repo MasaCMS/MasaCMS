@@ -1248,9 +1248,11 @@ select * from tplugins order by #arguments.orderby#
 				<cfset arguments.event.setValue("errorType","render")>
 				<cfset arguments.event.setValue("error",cfcatch)>
 				<cfreturn renderScripts("onError",event.getValue('siteID'),arguments.event,rsOnError)>
-			<cfelse>
-			 <cfsavecontent variable="theDisplay1"><cfdump var="#cfcatch#"></cfsavecontent>
-			 <cfreturn theDisplay1>
+			<cfelseif variables.configBean.getDebuggingEnabled()>
+				<cfsavecontent variable="theDisplay1"><cfdump var="#cfcatch#"></cfsavecontent>
+				<cfreturn theDisplay1>
+			 <cfelse>
+			 	<cfrethrow>
 			</cfif>		
 		</cfcatch>
 		</cftry>

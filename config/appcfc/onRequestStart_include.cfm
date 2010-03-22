@@ -49,7 +49,7 @@ to your own modified versions of Mura CMS.
 	
 <cfif not application.configBean.getDebuggingEnabled()>
 	<cferror 
-	template="error.html"
+	template="/muraWRM/config/error.html"
 	mailto="#application.configBean.getMailserverusername()#"
 	type="Exception">
 </cfif>

@@ -59,7 +59,7 @@ to your own modified versions of Mura CMS.
 </cfoutput>
 <cfif attributes.action neq "updateFiles">
 <cfoutput>
-  <form method ="post" action="index.cfm?fuseaction=cSettings.updateSite" name="form1"  onsubmit="return validate(this);">
+<form method ="post" action="index.cfm?fuseaction=cSettings.updateSite" name="form1"  onsubmit="return validate(this);">
   
 <cfhtmlhead text='<link rel="stylesheet" href="css/tab-view.css" type="text/css" media="screen">'>
 <cfhtmlhead text='<script type="text/javascript" src="js/ajax.js"></script>'>
@@ -71,15 +71,15 @@ to your own modified versions of Mura CMS.
     <dl class="oneColumn">
       <dt class="first">Site ID <span>(Warning: no punctuation, dots or file delimiters)</span></dt>
       <dd>
-        <cfif attributes.siteid eq ''><input name="siteid" type="text" class="text forceLC" value="#request.siteBean.getsiteid()#" size="25" required="true"><cfelse>#request.siteBean.getsiteid()#<input name="siteid" type="hidden" value="#request.siteBean.getsiteid()#"></cfif>
+        <cfif attributes.siteid eq ''><input name="siteid" type="text" class="text forceLC" value="#request.siteBean.getsiteid()#" size="25" maxlength="25" required="true"><cfelse>#request.siteBean.getsiteid()#<input name="siteid" type="hidden" value="#request.siteBean.getsiteid()#"></cfif>
       <dd>
       <dt>Site</dt>
       <dd>
-        <input name="site" type="text" class="text" value="#HTMLEditFormat(request.siteBean.getsite())#" size="50">
+        <input name="site" type="text" class="text" value="#HTMLEditFormat(request.siteBean.getsite())#" size="50" maxlength="50">
       </dd>
       <dt>Domain <span>(Example: www.google.com)</span></dt>
       <dd>
-        <input name="domain" type="text" class="text" value="#HTMLEditFormat(request.siteBean.getdomain('production'))#" size="50">
+        <input name="domain" type="text" class="text" value="#HTMLEditFormat(request.siteBean.getdomain('production'))#" size="50" maxlength="50">
       </dd>
 	 <dt>Domain Alias List <span>(Line Delimited)</span></dt>
       <dd>
@@ -106,15 +106,15 @@ to your own modified versions of Mura CMS.
       </dd>
       <dt>Page Limit</dt>
       <dd>
-        <input name="pagelimit" type="text" class="text short" value="#HTMLEditFormat(request.siteBean.getpagelimit())#" size="5">
+        <input name="pagelimit" type="text" class="text short" value="#HTMLEditFormat(request.siteBean.getpagelimit())#" size="5" maxlength="6">
       </dd>
       <dt>Default View Depth <span>(in Site Manager)</span></dt>
       <dd>
-        <input name="viewDepth" type="text" class="text short" value="#HTMLEditFormat(request.siteBean.getviewDepth())#" size="5">
+        <input name="viewDepth" type="text" class="text short" value="#HTMLEditFormat(request.siteBean.getviewDepth())#" size="5" maxlength="5">
       </dd>
       <dt>Default  Rows <span>(in Site Manager)</span></dt>
       <dd>
-        <input name="nextN" type="text" class="text short" value="#HTMLEditFormat(request.siteBean.getnextN())#" size="5">
+        <input name="nextN" type="text" class="text short" value="#HTMLEditFormat(request.siteBean.getnextN())#" size="5" maxlength="5">
       </dd>
       <dt>Site Caching</dt>
       <dd>
@@ -124,11 +124,11 @@ to your own modified versions of Mura CMS.
         On</dd>
 	  <dt>Cache Capacity <span>(0=Unlimited)</span></dt>
       <dd>
-        <input name="cacheCapacity" type="text" class="text short" value="#HTMLEditFormat(request.siteBean.getCacheCapacity())#" size="15">
+        <input name="cacheCapacity" type="text" class="text short" value="#HTMLEditFormat(request.siteBean.getCacheCapacity())#" size="15" maxlength="15">
       </dd>
 	  <dt>Cache Free Memory Threshold <span>(0=Unlimited)</span></dt>
       <dd>
-        <input name="cacheFreeMemoryThreshold" type="text" class="text short" value="#HTMLEditFormat(request.siteBean.getCacheFreeMemoryThreshold())#" size="3">%
+        <input name="cacheFreeMemoryThreshold" type="text" class="text short" value="#HTMLEditFormat(request.siteBean.getCacheFreeMemoryThreshold())#" size="3" maxlength="3">%
       </dd>
       <dt>Lock Site Architecture <span>(Restricts Addition or Deletion of Site Content)</span></dt>
       <dd>
@@ -147,7 +147,7 @@ to your own modified versions of Mura CMS.
 </dd>
       <!--- <dt>Export Location</dt>
       <dd>
-        <input name="exportLocation" type="text" class="text" value="#request.siteBean.getExportLocation()#" size="50">
+        <input name="exportLocation" type="text" class="text" value="#request.siteBean.getExportLocation()#" maxlength="50">
       </dd> --->
        <dt>Google API Key <a href="http://www.google.com/apis/maps/signup.html" target="_blank">(Required for Google Maps Support)</a></dt>
       <dd>
@@ -165,31 +165,31 @@ to your own modified versions of Mura CMS.
       <dl class="oneColumn">
       <dt class="first">Contact Name</dt>
       <dd>
-        <input name="contactName" type="text" class="text" value="#HTMLEditFormat(request.siteBean.getcontactName())#" size="50" maxlength="100">
+        <input name="contactName" type="text" class="text" value="#HTMLEditFormat(request.siteBean.getcontactName())#" size="50" maxlength="50" maxlength="100">
       </dd>
       <dt>Contact Address</dt>
       <dd>
-        <input name="contactAddress" type="text" class="text" value="#HTMLEditFormat(request.siteBean.getcontactAddress())#" size="50" maxlength="100">
+        <input name="contactAddress" type="text" class="text" value="#HTMLEditFormat(request.siteBean.getcontactAddress())#" size="50" maxlength="50" maxlength="100">
       </dd>
       <dt>Contact City</dt>
       <dd>
-        <input name="contactCity" type="text" class="text" value="#HTMLEditFormat(request.siteBean.getcontactCity())#" size="50" maxlength="100">
+        <input name="contactCity" type="text" class="text" value="#HTMLEditFormat(request.siteBean.getcontactCity())#" size="50" maxlength="50" maxlength="100">
       </dd>
       <dt>Contact State</dt>
       <dd>
-        <input name="contactState" type="text" class="text" value="#HTMLEditFormat(request.siteBean.getcontactState())#" size="50" maxlength="100">
+        <input name="contactState" type="text" class="text" value="#HTMLEditFormat(request.siteBean.getcontactState())#" size="50" maxlength="50" maxlength="100">
       </dd>
       <dt>Contact Zip</dt>
       <dd>
-        <input name="contactZip" type="text" class="text" value="#HTMLEditFormat(request.siteBean.getcontactZip())#" size="50" maxlength="100">
+        <input name="contactZip" type="text" class="text" value="#HTMLEditFormat(request.siteBean.getcontactZip())#" size="50" maxlength="50" maxlength="100">
       </dd>
       <dt>Contact Phone</dt>
       <dd>
-        <input name="contactPhone" type="text" class="text" value="#HTMLEditFormat(request.siteBean.getcontactPhone())#" size="50" maxlength="100">
+        <input name="contactPhone" type="text" class="text" value="#HTMLEditFormat(request.siteBean.getcontactPhone())#" size="50" maxlength="50" maxlength="100">
       </dd>
       <dt>Contact Email</dt>
       <dd>
-        <input name="contactEmail" type="text" class="text" value="#HTMLEditFormat(request.siteBean.getcontactEmail())#" size="50" maxlength="100">
+        <input name="contactEmail" type="text" class="text" value="#HTMLEditFormat(request.siteBean.getcontactEmail())#" size="50" maxlength="50" maxlength="100">
       </dd>
     </dl>
     </div>
@@ -261,7 +261,7 @@ to your own modified versions of Mura CMS.
         On</dd>
       <dt>Email Broadcaster Limit</dt>
       <dd>
-        <input name="EmailBroadcasterLimit" type="text" class="text medium" value="#HTMLEditFormat(request.siteBean.getEmailBroadcasterLimit())#" size="50">
+        <input name="EmailBroadcasterLimit" type="text" class="text medium" value="#HTMLEditFormat(request.siteBean.getEmailBroadcasterLimit())#" size="50" maxlength="50">
       </dd>
       <dt>Content Collections Manager</dt>
       <dd>
@@ -289,27 +289,27 @@ to your own modified versions of Mura CMS.
       <dl class="oneColumn">
       <dt class="first">Default "From" Email Address</dt>
       <dd>
-        <input name="contact" type="text" class="text" value="#HTMLEditFormat(request.siteBean.getcontact())#" size="50">
+        <input name="contact" type="text" class="text" value="#HTMLEditFormat(request.siteBean.getcontact())#" size="50" maxlength="50">
       </dd>
       <dt>Mail Server IP/Host Name</dt>
       <dd>
-        <input name="MailServerIP" type="text" class="text" value="#HTMLEditFormat(request.siteBean.getMailServerIP())#" size="50">
+        <input name="MailServerIP" type="text" class="text" value="#HTMLEditFormat(request.siteBean.getMailServerIP())#" size="50" maxlength="50">
       </dd>
 	  <dt>Mail Server SMTP Port</dt>
       <dd>
-        <input name="MailServerSMTPPort" type="text" class="text" value="#HTMLEditFormat(request.siteBean.getMailServerSMTPPort())#" size="5">
+        <input name="MailServerSMTPPort" type="text" class="text" value="#HTMLEditFormat(request.siteBean.getMailServerSMTPPort())#" size="5" maxlength="5">
       </dd>
 	  <dt>Mail Server POP Port</dt>
       <dd>
-        <input name="MailServerPOPPort" type="text" class="text" value="#HTMLEditFormat(request.siteBean.getMailServerPOPPort())#" size="5">
+        <input name="MailServerPOPPort" type="text" class="text" value="#HTMLEditFormat(request.siteBean.getMailServerPOPPort())#" size="5" maxlength="5">
       </dd>
       <dt>Mail Server Username (Warning: DO NOT USE PERSONAL ACCOUNT)</dt>
       <dd>
-        <input name="MailServerUserName" type="text" class="text" value="#HTMLEditFormat(request.siteBean.getMailServerUserName())#" size="50">
+        <input name="MailServerUserName" type="text" class="text" value="#HTMLEditFormat(request.siteBean.getMailServerUserName())#" size="50" maxlength="50">
       </dd>
       <dt>Mail Server Password</dt>
       <dd>
-        <input name="MailServerPassword" type="text" class="text" value="#HTMLEditFormat(request.siteBean.getMailServerPassword())#" size="50">
+        <input name="MailServerPassword" type="text" class="text" value="#HTMLEditFormat(request.siteBean.getMailServerPassword())#" size="50" maxlength="50">
       </dd>
 	<dt>Use TLS</dt>
 		<dd>
@@ -362,7 +362,7 @@ to your own modified versions of Mura CMS.
       <dl class="oneColumn">
 	  <dt class="first">Small (Thumbnail) Image Size</dt>
       <dd>
-        <input name="gallerySmallScale" type="text" class="text short" value="#request.siteBean.getGallerySmallScale()#" size="5">px
+        <input name="gallerySmallScale" type="text" class="text short" value="#request.siteBean.getGallerySmallScale()#" size="5" maxlength="5">px
       </dd>
 	    <dt>Constrain Small Images by</dt>
       <dd>
@@ -374,7 +374,7 @@ to your own modified versions of Mura CMS.
         Square</dd>
 <dt>Medium Image Size</dt>
       <dd>
-        <input name="galleryMediumScale" type="text" class="text short" value="#request.siteBean.getGalleryMediumScale()#" size="5">px
+        <input name="galleryMediumScale" type="text" class="text short" value="#request.siteBean.getGalleryMediumScale()#" size="5" maxlength="5">px
       </dd>
 	   <dt>Constrain Medium Images by</dt>
       <dd>
@@ -386,7 +386,7 @@ to your own modified versions of Mura CMS.
         Square</dd>
          <dt>Large (Full) Image Size</dt>
       <dd>
-        <input name="galleryMainScale" type="text" class="text short" value="#request.siteBean.getgalleryMainScale()#" size="5">px
+        <input name="galleryMainScale" type="text" class="text short" value="#request.siteBean.getgalleryMainScale()#" size="5" maxlength="5">px
       </dd>
 	    <dt>Constrain Large Images by</dt>
       <dd>
@@ -408,11 +408,11 @@ to your own modified versions of Mura CMS.
         Yes</dd>
 	   <dt>Custom Login URL</dt>
       <dd>
-        <input name="loginURL" type="text" class="text" value="#HTMLEditFormat(request.siteBean.getLoginURL())#" size="255">
+        <input name="loginURL" type="text" class="text" value="#HTMLEditFormat(request.siteBean.getLoginURL())#" maxlength="255">
       </dd>
 	   <dt>Custom Profile URL</dt>
       <dd>
-        <input name="editProfileURL" type="text" class="text" value="#HTMLEditFormat(request.siteBean.getEditProfileURL())#" size="255">
+        <input name="editProfileURL" type="text" class="text" value="#HTMLEditFormat(request.siteBean.getEditProfileURL())#" maxlength="255">
       </dd>
      <!---  <dt>Allow Public Submission In To Portals</dt>
       <dd>
@@ -429,7 +429,7 @@ to your own modified versions of Mura CMS.
         Yes</dd>
 		<dt>Email Site Registration Notifications to:</dt>
       <dd>
-        <input name="ExtranetPublicRegNotify" type="text" class="text" value="#request.siteBean.getExtranetPublicRegNotify()#" size="50">
+        <input name="ExtranetPublicRegNotify" type="text" class="text" value="#request.siteBean.getExtranetPublicRegNotify()#" size="50" maxlength="50">
       </dd>
       </dl>
       </div>
@@ -484,7 +484,7 @@ to your own modified versions of Mura CMS.
         8</dd>
       <dt>Display Region Names <span>("^" Delimiter)</span></dt>
       <dd>
-        <input name="columnNames" type="text" class="text" value="#HTMLEditFormat(request.siteBean.getcolumnNames())#" size="50" maxlength="255">
+        <input name="columnNames" type="text" class="text" value="#HTMLEditFormat(request.siteBean.getcolumnNames())#" maxlength="255">
       </dd>
       </dl>
       </div>

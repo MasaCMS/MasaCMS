@@ -1522,8 +1522,12 @@ to your own modified versions of Mura CMS.
 		<cftry>
 			<cfset body=replaceNoCase(body,mid(body, finder.pos[1], finder.len[1]),'#trim(evaluate("##" & mid(body, finder.pos[1]+6, finder.len[1]-13) & "##"))#')>
 			<cfcatch>
-				 <cfsavecontent variable="errorStr"><cfdump var="#cfcatch#"></cfsavecontent>
-				<cfset body=replaceNoCase(body,mid(body, finder.pos[1], finder.len[1]),errorStr)>
+				<cfif application.configBean.getDebuggingEnabled()>
+					<cfsavecontent variable="errorStr"><cfdump var="#cfcatch#"></cfsavecontent>
+					<cfset body=replaceNoCase(body,mid(body, finder.pos[1], finder.len[1]),errorStr)>
+				<cfelse>
+					<cfrethrow>
+				</cfif>
 			</cfcatch>
 		</cftry>
 		<cfset finder=reFindNoCase(regex1,body,1,"true")>

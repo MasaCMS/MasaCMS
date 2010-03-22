@@ -260,4 +260,10 @@
 		<cfinclude template="../config/appcfc/onError_include.cfm">
 	</cffunction>
 	
+	<cffunction name="onMissingTemplate"  returnType="void"  output="true">
+	    <cfargument name="targetPage" required="true">
+
+		<cfinclude template="../config/appcfc/onMissingTemplate_include.cfm">
+	</cffunction>
+	
 </cfcomponent>

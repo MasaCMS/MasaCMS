@@ -86,5 +86,6 @@ to your own modified versions of Mura CMS.
 	<cfinclude template="../../config/appcfc/onSessionStart_method.cfm">
 	<cfinclude template="../../config/appcfc/onSessionEnd_method.cfm">
 	<cfinclude template="../../config/appcfc/onError_method.cfm">
+	<cfinclude template="../../config/appcfc/onMissingTemplate_method.cfm">
 	
 </cfcomponent>
