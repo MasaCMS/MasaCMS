@@ -264,6 +264,7 @@
 	    <cfargument name="targetPage" required="true">
 
 		<cfinclude template="../config/appcfc/onMissingTemplate_include.cfm">
+		<cfreturn false>
 	</cffunction>
 	
 </cfcomponent>

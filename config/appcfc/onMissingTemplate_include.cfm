@@ -56,4 +56,3 @@ to your own modified versions of Mura CMS.
 	<cfset application.pluginManager.announceEvent("onGlobalMissingTemplate",pluginEvent)>
 </cfif>
 	
-<cfreturn false>
