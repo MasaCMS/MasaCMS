@@ -41,6 +41,7 @@ the GNU General Public License version 2  without this exception.  You may, if y
 to your own modified versions of Mura CMS.
 --->
 <cfset rbFactory=getSite().getRBFactory() />
+<cfset request.cacheItem=false>
 <li id="svCaptcha"><cfinclude template="/#application.configBean.getWebRootMap()#/tasks/captcha/index.cfm" >
 <cfoutput>#bhcaptcha.imgStr#</li>
 <li><label for="uKey">#rbFactory.getKey('captcha.securitycode')# <span>(#rbFactory.getKey('captcha.instructions')#)</span></label>#bhcaptcha.fFields#</cfoutput></li>
