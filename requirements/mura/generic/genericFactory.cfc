@@ -36,7 +36,6 @@
 		<!--- if the key cannot be found and context is passed then push it in --->
 		<cfif NOT has( arguments.key )>
 			<!--- create object --->
-			<cfset handlerWrapper=createObject("component","mura.generic.genericEventWrapper")>
 			<cfset super.set( arguments.key, wrapHandler(createObject("component",getComponentPath(arguments.key)).init()) ) />
 		</cfif>
 		
