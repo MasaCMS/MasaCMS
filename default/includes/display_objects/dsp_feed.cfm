@@ -179,9 +179,10 @@ to your own modified versions of Mura CMS.
 		<cfelse>
 			<!-- Empty Collection '<cfoutput>#feedBean.getName()#</cfoutput>'  -->
 		</cfif>
-      <cfelse>
+    <cfelse>
     <cftry>
 	<cfsilent>
+		<cfset request.cacheItem=false>
       	<cfset feedData=application.feedManager.getRemoteFeedData(feedBean.getChannelLink(),feedBean.getMaxItems())/>
 	  </cfsilent>
 	  	<cfoutput>
