@@ -55,12 +55,14 @@ to your own modified versions of Mura CMS.
 </cfif>
 	
 <!--- Making sure that session is valid --->
-<cfif 
-	(not session.mura.isLoggedIn and isValid("UUID",listFirst(getAuthUser(),"^")))
-		or
-	(session.mura.isLoggedIn and not isValid("UUID",listFirst(getAuthUser(),"^")))	>
-	
-	<cfset application.loginManager.logout()>	
+<cfif structKeyExists(session,"mura")>
+	<cfif 
+		(not session.mura.isLoggedIn and isValid("UUID",listFirst(getAuthUser(),"^")))
+			or
+		(session.mura.isLoggedIn and not isValid("UUID",listFirst(getAuthUser(),"^")))	>
+		
+		<cfset application.loginManager.logout()>	
+	</cfif>
 </cfif>
 	
 <cfset application.userManager.setUserStructDefaults()>
