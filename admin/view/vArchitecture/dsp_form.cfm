@@ -50,21 +50,7 @@ to your own modified versions of Mura CMS.
 var draftremovalnotice=<cfif event.getValue("suppressDraftNotice") neq "true" and request.contentBean.hasDrafts()><cfoutput>'#jsStringFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.draftremovalnotice"))#'</cfoutput><cfelse>""</cfif>;
 </script>
 <cfif attributes.compactDisplay neq "true"><script>
- var requestedURL="";
-  
-onunload = function()
-{	 
-
-	if (!formSubmitted)
-			if (confirm('<cfoutput>#jsStringFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.saveasdraft"))#</cfoutput>'))
-			{	window.unload=false;
-				if(ckContent()){
-					document.getElementById('contentForm').returnURL.value=requestedURL;
-					submitForm(document.contentForm,'add');
-					}
-			}
-}
-
+var requestedURL="";
 onload=function(){
 	var anchors=document.getElementsByTagName("A");
 	
@@ -76,8 +62,32 @@ onload=function(){
 	
 }
 
+onunload=function(){
+	if(!formSubmitted && requestedURL != '')
+	{
+		conditionalExit();
+	}
+}
+
+function conditionalExit(){
+
+	if (confirm('<cfoutput>#jsStringFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.saveasdraft"))#</cfoutput>'))
+	{	
+	if(ckContent()){
+		document.getElementById('contentForm').returnURL.value=requestedURL;
+		submitForm(document.contentForm,'add');
+		}
+		return false;
+	} else {	
+		requestedURL='';
+		return true;
+	}
+			
+}
+
 function setRequestedURL(){
-	requestedURL=this.href;
+	requestedURL=this.href
+	return conditionalExit();
 }
 </script>
 </cfif> 
