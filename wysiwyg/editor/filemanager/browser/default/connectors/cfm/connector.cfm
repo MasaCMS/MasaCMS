@@ -331,7 +331,7 @@ userFilesServerPath = config.serverPath & fs;
 				<cfset errorNumber = 0>
 		
 				<cftry>
-					<cfset fileWriter.createDir(directory="#currentFolderPath##newFolderName#", mode="644")>
+					<cfset fileWriter.createDir(directory="#currentFolderPath##newFolderName#", mode="775")>
 					
 					<cfcatch>
 						<!--- 
