@@ -955,7 +955,7 @@ to your own modified versions of Mura CMS.
 					</cfif>
 				</cfloop>
 			<cfelse>
-				<cfreturn "Basic,Meta Data,Content Objects,Categorization,Related Content,Advanced,Usage Report"> 
+				<cfreturn "Basic,Meta Data,Content Objects,Categorization,Related Content,Extended Attributes,Advanced,Usage Report"> 
 			</cfif>
 		</cfloop>
 	</cfif>

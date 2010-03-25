@@ -638,9 +638,15 @@ function loadExtendedAttributes(contentHistID,type,subType,_siteID,_context,_the
 		themeAssetPath=_themeAssetPath;
 		//location.href=url + "?" + pars;
 		var d = $('extendSetsDefault');
-		if(d != null){	
-			d.innerHTML='<br/><img src="images/progress_bar.gif">';
-			$('extendSetsBasic').innerHTML='<br/><img src="images/progress_bar.gif">';
+		var b = $('extendSetsBasic');
+		if(d != null || b != null){	
+			
+			if(d != null)
+			{d.innerHTML='<br/><img src="images/progress_bar.gif">';}
+
+			if(b != null)
+			{b.innerHTML='<br/><img src="images/progress_bar.gif">';}
+			
 			var myAjax = new Ajax.Request(url, {method: 'get', parameters: pars, onSuccess:setExtendedAttributes});
 		}
 		
@@ -649,8 +655,15 @@ function loadExtendedAttributes(contentHistID,type,subType,_siteID,_context,_the
 
 function setExtendedAttributes(transport){
 	var r=eval("(" + transport.responseText + ")");
-	$("extendSetsDefault").innerHTML=r.extended;
-	$("extendSetsBasic").innerHTML=r.basic;
+	var extended=document.getElementById("extendSetsDefault");
+	var basic=document.getElementById("extendSetsBasic");
+	
+	if(extended != null)
+	{extended.innerHTML=r.extended;}
+	
+	if(basic != null)
+	{basic.innerHTML=r.basic;}
+
 	//checkExtendSetTargeting();
 	setHTMLEditors(context,themeAssetPath);
 }

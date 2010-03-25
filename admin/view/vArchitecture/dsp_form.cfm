@@ -384,9 +384,16 @@ select * from rsPluginScripts3 order by pluginID
 <cfswitch expression="#attributes.type#">
 	<cfcase value="Page,Portal,Calendar,Gallery,Link,File,Component">
 	<cfif isExtended>
+		<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Extended Attributes')>
 		<cfset extendSets=application.classExtensionManager.getSubTypeByName(attributes.type,request.contentBean.getSubType(),attributes.siteid).getExtendSets() />
 		<cfinclude template="form/dsp_tab_extended_attributes.cfm">
 		<cfset tablist=tablist & ",'#jsStringFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.tabs.extendedattributes"))#'"/>
+		</cfif>
+		<cfoutput>
+		<script type="text/javascript">
+		loadExtendedAttributes('#request.contentbean.getcontentHistID()#','#attributes.type#','#request.contentBean.getSubType()#','#attributes.siteID#','#application.configBean.getContext()#','#application.settingsManager.getSite(attributes.siteID).getThemeAssetPath()#');
+		</script>
+		</cfoutput>
 	</cfif>
 	</cfcase>
 </cfswitch>
