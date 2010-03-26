@@ -590,7 +590,20 @@ to your own modified versions of Mura CMS.
   
   <cffunction name="setType" output="false" access="public">
     <cfargument name="Type" type="string" required="true">
-    <cfset variables.instance.Type = trim(arguments.Type) />
+    <cfset arguments.Type=trim(arguments.Type)>
+	
+	<cfif len(arguments.Type) and variables.instance.Type neq arguments.Type>
+		<cfset variables.instance.Type = arguments.Type />
+		<cfset purgeExtendedData()>
+		<cfif variables.instance.Type eq "Form">
+			<cfset setModuleID("00000000000000000000000000000000004")>
+			<cfset setParentID("00000000000000000000000000000000004")>
+		<cfelseif variables.instance.Type eq "Component">
+			<cfset setModuleID("00000000000000000000000000000000003")>
+			<cfset setParentID("00000000000000000000000000000000003")>
+		</cfif>
+	</cfif>
+	
 	<cfreturn this>
   </cffunction>
 
