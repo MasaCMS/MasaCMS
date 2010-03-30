@@ -49,7 +49,7 @@ to your own modified versions of Mura CMS.
 </head>
 <body onload="">
 <cfoutput>
-<cfset contentRenderer=createObject("component","#application.settingsManager.getSite(event.getValue('siteid')).getAssetMap()#.includes.contentRenderer")>
+<cfset contentRenderer=application.settingsManager.getSite(event.getValue("siteID")).getContentRenderer()>
 <cfset href = "">
 <cfif attributes.action eq "add">
 	<cfif request.contentBean.getActive()>

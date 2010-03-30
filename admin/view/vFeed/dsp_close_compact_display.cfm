@@ -48,7 +48,7 @@ to your own modified versions of Mura CMS.
 <title>Close</title>
 </head>
 <body onload="">
-<cfset contentRenderer=createObject("component","#application.settingsManager.getSite(event.getValue('siteid')).getAssetMap()#.includes.contentRenderer")>
+<cfset contentRenderer=application.settingsManager.getSite(event.getValue("siteID")).getContentRenderer()>
 <cfset homeBean = application.contentManager.getActiveContent(event.getValue('homeID'), event.getValue('siteID'))>
 <cfset href = contentRenderer.createHREF(homeBean.getType(), homeBean.getFilename(), homeBean.getSiteId(), homeBean.getcontentId())>
 <cfoutput>

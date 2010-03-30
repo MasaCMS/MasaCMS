@@ -42,6 +42,15 @@ to your own modified versions of Mura CMS.
 --->
 <cfcomponent extends="mura.cfobject" output="false">
 
+<cfsavecontent variable="variables.fieldlist"><cfoutput>siteid,pagelimit,domain, domainAlias, contact,locking,site,mailserverip,mailserverusername,mailserverpassword,emailbroadcaster,emailbroadcasterlimit,extranet,extranetPublicReg,extranetssl,
+cache, cacheCapacity, cacheFreeMemoryThreshold, viewdepth,nextn,dataCollection,ExportLocation,
+columnCount,primaryColumn,publicSubmission,adManager,columnNames,contactName,contactAddress,contactCity,contactState,contactZip,contactEmail,contactPhone,
+publicUserPoolID,PrivateUserPoolID,AdvertiserUserPoolID,displayPoolID,orderno,feedManager,
+galleryMainScaleBy, galleryMainScale, gallerySmallScaleBy, gallerySmallScale, galleryMediumScaleBy, galleryMediumScale,
+sendLoginScript, mailingListConfirmScript,publicSubmissionApprovalScript,reminderScript,ExtranetPublicRegNotify,
+loginURL,editProfileURL,CommentApprovalDefault,deploy,accountActivationScript,
+googleAPIKey,useDefaultSMTPServer,siteLocale, mailServerSMTPPort, mailServerPOPPort, mailserverTLS, mailserverSSL, theme, tagline</cfoutput></cfsavecontent>
+
 <cffunction name="init" access="public" returntype="any" output="false">
 <cfargument name="configBean" type="any" required="yes"/>
 <cfargument name="clusterManager" type="any" required="yes"/>
@@ -61,7 +70,7 @@ to your own modified versions of Mura CMS.
 	<cfset var rs ="" />
 
 	<cfquery name="rs" datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-	select * from tsettings where siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#" />
+	select #variables.fieldlist#, lastdeployment from tsettings where siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#" />
 	</cfquery>
 	
 	<cfif rs.recordcount>
@@ -286,7 +295,8 @@ to your own modified versions of Mura CMS.
 	 	 mailserverPOPPort=<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.bean.getMailserverPOPPort() neq '',de('no'),de('yes'))#" value="#arguments.bean.getMailserverPOPPort()#" />,
 	 	 mailserverTLS=<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.bean.getMailserverTLS() neq '',de('no'),de('yes'))#" value="#arguments.bean.getMailserverTLS()#" />,
 	 	 mailserverSSL=<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.bean.getMailserverSSL() neq '',de('no'),de('yes'))#" value="#arguments.bean.getMailserverSSL()#" />,
-	 	 theme= <cfif arguments.bean.getTheme() neq ''><cfqueryparam cfsqltype="cf_sql_varchar" value="#trim(arguments.bean.getTheme())#" /><cfelse>null</cfif>
+	 	 theme= <cfif arguments.bean.getTheme() neq ''><cfqueryparam cfsqltype="cf_sql_varchar" value="#trim(arguments.bean.getTheme())#" /><cfelse>null</cfif>,
+	 	 tagline=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.bean.getTagline()#" />
 		 
 		where siteid='#arguments.bean.getsiteid()#'
    </CFQUERY>
@@ -300,15 +310,7 @@ to your own modified versions of Mura CMS.
 <cftransaction>
 
 <CFQUERY datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-      Insert into tsettings (siteid,pagelimit,domain, domainAlias, contact,locking,site,mailserverip,mailserverusername,
-	  mailserverpassword,emailbroadcaster,emailbroadcasterlimit,extranet,extranetPublicReg,extranetssl,
-	  cache, cacheCapacity, cacheFreeMemoryThreshold, viewdepth,nextn,dataCollection,ExportLocation,
-	  columnCount,primaryColumn,publicSubmission,adManager,columnNames,contactName,contactAddress,contactCity,contactState,contactZip,contactEmail,contactPhone,
-	  publicUserPoolID,PrivateUserPoolID,AdvertiserUserPoolID,displayPoolID,orderno,feedManager,
-	  galleryMainScaleBy, galleryMainScale, gallerySmallScaleBy, gallerySmallScale, galleryMediumScaleBy, galleryMediumScale,
-	  sendLoginScript, mailingListConfirmScript,publicSubmissionApprovalScript,reminderScript,ExtranetPublicRegNotify,
-	  loginURL,editProfileURL,CommentApprovalDefault,deploy,accountActivationScript,
-	  googleAPIKey,useDefaultSMTPServer,siteLocale, mailServerSMTPPort, mailServerPOPPort, mailserverTLS, mailserverSSL, theme)
+      Insert into tsettings (#variables.fieldlist#)
 	  values(
 	  	'#arguments.bean.getsiteid()#',
          #arguments.bean.getpagelimit()# ,
@@ -375,7 +377,8 @@ to your own modified versions of Mura CMS.
 		<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.bean.getMailserverPOPPort() neq '',de('no'),de('yes'))#" value="#arguments.bean.getMailserverPOPPort()#" />,
 	 	<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.bean.getMailserverTLS() neq '',de('no'),de('yes'))#" value="#arguments.bean.getMailserverTLS()#" />,
 	 	<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.bean.getMailserverSSL() neq '',de('no'),de('yes'))#" value="#arguments.bean.getMailserverSSL()#" />,
-	 	 <cfif arguments.bean.getTheme() neq ''><cfqueryparam cfsqltype="cf_sql_varchar" value="#trim(arguments.bean.getTheme())#" /><cfelse>null</cfif>
+	 	 <cfif arguments.bean.getTheme() neq ''><cfqueryparam cfsqltype="cf_sql_varchar" value="#trim(arguments.bean.getTheme())#" /><cfelse>null</cfif>,
+	 	 <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.bean.getTagline()#" />
 		   )
    </CFQUERY>
   

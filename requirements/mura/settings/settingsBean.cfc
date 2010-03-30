@@ -45,6 +45,7 @@ to your own modified versions of Mura CMS.
 <cfset variables.instance=structNew() />
 <cfset variables.instance.SiteID=""/>
 <cfset variables.instance.Site=""/>
+<cfset variables.instance.TagLine=""/>
 <cfset variables.instance.pageLimit=1000/>
 <cfset variables.instance.Locking="None"/>
 <cfset variables.instance.Domain=""/>
@@ -112,6 +113,7 @@ to your own modified versions of Mura CMS.
 <cfset variables.instance.jsDateKey=""/> 
 <cfset variables.instance.cacheFactory=""/> 
 <cfset variables.instance.theme=""/> 
+<cfset variables.instance.contentRenderer=""/>
 
 <cffunction name="init" returntype="any" output="false" access="public">
 <cfargument name="configBean" type="any" required="yes"/>
@@ -214,6 +216,7 @@ to your own modified versions of Mura CMS.
 			<cfset setMailServerTLS(arguments.data.mailserverTLS) />
 			<cfset setMailServerSSL(arguments.data.mailserverSSL) />
 			<cfset setTheme(arguments.data.theme) />
+			<cfset setTagline(arguments.data.tagline) />
 			
 		<cfelseif isStruct(arguments.data)>
 		
@@ -262,6 +265,16 @@ to your own modified versions of Mura CMS.
 <cffunction name="setSite" access="public" output="false">
 	<cfargument name="Site" type="String" />
 	<cfset variables.instance.Site = arguments.Site />
+	<cfreturn this>
+</cffunction>
+
+<cffunction name="getTagline" returntype="String" access="public" output="false">
+	<cfreturn variables.instance.Tagline />
+</cffunction>
+
+<cffunction name="setTagline" access="public" output="false">
+	<cfargument name="Tagline" type="String" />
+	<cfset variables.instance.Tagline = arguments.Tagline />
 	<cfreturn this>
 </cffunction>
 
@@ -1138,6 +1151,13 @@ to your own modified versions of Mura CMS.
 	</cfif>
 
 	<cfreturn false>
+</cffunction>
+
+<cffunction name="getContentRenderer" output="false">
+<cfif not isObject(variables.instance.contentRenderer)>
+	<cfset variables.instance.contentRenderer=createObject("component","#getAssetMap()#.includes.contentRenderer")>
+</cfif>
+<cfreturn variables.instance.contentRenderer>
 </cffunction>
 
 </cfcomponent>

@@ -762,6 +762,7 @@ to your own modified versions of Mura CMS.
 			<cfargument name="showCurrent" type="string" required="true" default="1">
 			<cfargument name="class" type="string" required="true" default="">
 			<cfargument name="complete" type="boolean" required="true" default="false">
+			<cfargument name="id" type="string" required="true" default="">
 
 						
 			<cfset var link ="">
@@ -773,7 +774,7 @@ to your own modified versions of Mura CMS.
 			</cfif>
 			
 			<cfset href=createHREF(arguments.type,arguments.filename,arguments.siteid,arguments.contentid,arguments.target,iif(arguments.filename eq event.getValue('contentBean').getfilename(),de(''),de(arguments.targetParams)),arguments.queryString,arguments.context,arguments.stub,arguments.indexFile,arguments.complete,arguments.showMeta)>
-			<cfset link='<a href="#href#" #iif(len(theClass),de('class="#theClass#"'),de(""))#>#HTMLEditFormat(arguments.title)#</a>' />
+			<cfset link='<a href="#href#"#iif(len(theClass),de(' class="#theClass#"'),de(""))##iif(len(arguments.id),de(' id="#arguments.id#"'),de(""))#>#HTMLEditFormat(arguments.title)#</a>' />
 
 		<cfreturn link>
 </cffunction>
@@ -840,7 +841,7 @@ to your own modified versions of Mura CMS.
 <cfargument name="object" type="string">
 <cfargument name="objectid" type="string" required="true" default="">
 <cfargument name="siteid" type="string" required="true" default="#event.getValue('siteID')#">
-
+<cfargument name="params" type="string" required="true" default="">
 	<cfset var theObject = "" />
 	<cfset var cacheKeyContentId = arguments.object & event.getValue('contentBean').getcontentID() />
 	<cfset var cacheKeyObjectId = arguments.object & arguments.objectid />
@@ -857,7 +858,7 @@ to your own modified versions of Mura CMS.
 				<cfcase value="contact">#dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"dsp_contact.cfm")#</cfcase>
 				<cfcase value="calendar_nav">#dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"nav/calendarNav/index.cfm")#</cfcase>
 				<cfcase value="plugin">
-					<cfreturn application.pluginManager.displayObject(arguments.objectid,event)>
+					<cfreturn application.pluginManager.displayObject(arguments.objectid,event,arguments.params)>
 				</cfcase>
 				<cfcase value="mailing_list">#dspObject_Render(siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,fileName="dsp_mailing_list.cfm")#</cfcase>
 				<cfcase value="mailing_list_master">#dspObject_Render(siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,fileName="dsp_mailing_list_master.cfm")#</cfcase>
@@ -919,13 +920,13 @@ to your own modified versions of Mura CMS.
 		and event.getValue('contentBean').getcontenthistid() eq arguments.contentHistID>
 			<cfset rsObjects=application.contentGateway.getObjectInheritance(arguments.columnID,event.getValue('inheritedObjects'),event.getValue('siteID'))>	
 			<cfloop query="rsObjects">
-				<cfset theRegion = theRegion & dspObject(rsObjects.object,rsObjects.objectid,event.getValue('siteID')) />
+				<cfset theRegion = theRegion & dspObject(rsObjects.object,rsObjects.objectid,event.getValue('siteID'), rsObjects.params) />
 			</cfloop>	
 	</cfif>
 
 	<cfset rsObjects=application.contentGateway.getObjects(arguments.columnID,arguments.contentHistID,event.getValue('siteID'))>	
 	<cfloop query="rsObjects">
-		<cfset theRegion = theRegion & dspObject(rsObjects.object,rsObjects.objectid,event.getValue('siteID')) />
+		<cfset theRegion = theRegion & dspObject(rsObjects.object,rsObjects.objectid,event.getValue('siteID'), rsObjects.params) />
 	</cfloop>
 </cfif>
 

@@ -66,9 +66,9 @@ to your own modified versions of Mura CMS.
 	file="#variables.configBean.getTempDir()##cffile.serverfile#"
 	ACTION="read" variable="tempList">
 	
-	<cfset tempList=variables.utility.fixLineBreaks(tempList)>
-	<cfset tempList = "#REReplace(tempList, chr(13) & chr(10), "|", "ALL")#">
-	
+	<!---<cfset tempList=variables.utility.fixLineBreaks(tempList)>
+	<cfset tempList = "#REReplace(tempList, chr(13) & chr(10), "|", "ALL")#">--->
+	<cfset tempList = "#reReplace(tempList,"#chr(10)#|#chr(13)#|(#chr(13)##chr(10)#)|\n|(\r\n)","|","all")#">
 	<cfif arguments.direction eq 'replace'>
 		<cfset application.mailingListManager.deleteMembers(arguments.listBean.getMLID(),arguments.listBean.getSiteID()) />
 	</cfif>

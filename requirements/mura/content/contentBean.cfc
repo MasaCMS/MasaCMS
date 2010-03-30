@@ -1369,6 +1369,7 @@ to your own modified versions of Mura CMS.
 	<cfargument name="object">
 	<cfargument name="objectID">
 	<cfargument name="name">
+	<cfargument name="params">
 	<cfset var rs=getDisplayRegion(arguments.regionID)>
 	<cfset var rows=0>
 	
@@ -1377,8 +1378,10 @@ to your own modified versions of Mura CMS.
 		<cfset rows =rs.recordcount />
 		<cfset querysetcell(rs,"objectid",arguments.objectID,rows)/>
 		<cfset querysetcell(rs,"object",arguments.object,rows)/>
-		<cfset querysetcell(rs,"name",arguments.name,rows)/>	
+		<cfset querysetcell(rs,"name",arguments.name,rows)/>
+		<cfset querysetcell(rs,"params",arguments.params,rows)/>	
 	</cfif>
+	
 	<cfreturn this>
 </cffunction>
 
@@ -1414,7 +1417,7 @@ to your own modified versions of Mura CMS.
 	<cfreturn rs.recordcount>
 </cffunction>
 	
-<cffunction name="getDisplayRegion" output="false" access="private" returntype="any">
+<cffunction name="getDisplayRegion" output="false" access="public" returntype="any">
 	<cfargument name="regionID">
 	<cfset rs="">
 	<cfif not structKeyExists(variables.displayRegions,"objectlist#arguments.regionID#")>
@@ -1460,21 +1463,23 @@ to your own modified versions of Mura CMS.
 <cffunction name="getCommentsQuery" returnType="query" output="false" access="public">
 	<cfargument name="isEditor" type="boolean" required="true" default="false">
 	<cfargument name="sortOrder" type="string" required="true" default="asc">
-	<cfreturn variables.contentManager.readComments(getContentID(), getSiteID(), arguments.isEditor, arguments.sortOrder) />
+	<cfargument name="parentID" type="string" required="true" default="">
+	<cfreturn variables.contentManager.readComments(getContentID(), getSiteID(), arguments.isEditor, arguments.sortOrder, arguments.parentID) />
 </cffunction>
 
 <cffunction name="getCommentsIterator" returnType="any" output="false" access="public">
 	<cfargument name="isEditor" type="boolean" required="true" default="false">
 	<cfargument name="sortOrder" type="string" required="true" default="asc">
-	<cfset var q=getCommentsQuery(arguments.isEditor, arguments.sortOrder) />
-	<cfset var it=getServiceFactory().getBean("contentCommentIterator").init()>
+	<cfargument name="parentID" type="string" required="true" default="">
+	<cfset var q=getCommentsQuery(arguments.isEditor, arguments.sortOrder, arguments.parentID) />
+	<cfset var it=getBean("contentCommentIterator").init()>
 	<cfset it.setQuery(q)>
 	<cfreturn it />
 </cffunction>
 
 <cffunction name="getParent" output="false" returntype="any">
 	<cfif getContentID() neq '00000000000000000000000000000000001'>
-		<cfreturn variables.contentManager.read(contentID=getParentID(),siteID=getSiteID())>
+		<cfreturn variables.contentManager.getCommentBean()>
 	<cfelse>
 		<cfthrow message="Parent content does not exist.">
 	</cfif>
@@ -1484,4 +1489,11 @@ to your own modified versions of Mura CMS.
 	<cfreturn variables.contentManager.getHasDrafts(getContentID(),getSiteID()) />
 </cffunction>
 
+<cffunction name="getHREF" output="false">
+	<cfargument name="querystring" required="true" default="">
+	<cfargument name="complete" type="boolean" required="true" default="false">
+	<cfargument name="showMeta" type="string" required="true" default="0">
+	 <cfreturn variables.contentManager.getHREF(this, arguments.queryString,arguments.complete, arguments.showMeta)>
+</cffunction>		
+	
 </cfcomponent>

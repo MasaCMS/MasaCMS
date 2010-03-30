@@ -399,7 +399,7 @@ to your own modified versions of Mura CMS.
 		<cfargument name="rs"/>
 		<cfset var str="">
 		<cfloop query="rs">
-			<cfset str=listAppend(str,"#rs.object#~#rs.name#~#rs.objectID#")>
+			<cfset str=listAppend(str,"#rs.object#~#rs.name#~#rs.objectID#~#rs.params#","^")>
 		</cfloop>
 		
 		<cfreturn str>
@@ -1298,8 +1298,9 @@ to your own modified versions of Mura CMS.
 	<cfargument name="siteID" type="string" required="true" default="">
 	<cfargument name="isEditor" type="boolean" required="true" default="false">
 	<cfargument name="sortOrder" type="string" required="true" default="asc">
+	<cfargument name="parentID" type="String" required="true" default="">
 	
-	<cfreturn variables.contentDAO.readComments(arguments.contentID,arguments.siteid,arguments.isEditor,arguments.sortOrder) />
+	<cfreturn variables.contentDAO.readComments(arguments.contentID,arguments.siteid,arguments.isEditor,arguments.sortOrder,arguments.parentID) />
 	
 	</cffunction>
 	
@@ -1459,5 +1460,14 @@ to your own modified versions of Mura CMS.
 	
 	<cffunction name="getBean" returntype="any" output="false">
 		<cfreturn variables.contentDAO.getBean()>
-	</cffunction>		
+	</cffunction>
+	
+	<cffunction name="getHREF" output="false">
+		<cfargument name="bean" required="true">
+		<cfargument name="querystring" required="true" default="">
+		<cfargument name="complete" type="boolean" required="true" default="false">
+		<cfargument name="showMeta" type="string" required="true" default="0">
+		<cfreturn variables.settingsManager.getSite(arguments.bean.getValue("siteID")).getContentRenderer().createHREF(arguments.bean.getValue("type"), arguments.bean.getValue("filename"), arguments.bean.getValue("siteID"), arguments.bean.getValue("contentID"), arguments.bean.getValue("target"), arguments.bean.getValue("targetParams"), arguments.queryString, application.configBean.getContext(), application.configBean.getStub(), application.configBean.getIndexFile(), arguments.complete, arguments.showMeta)>
+	</cffunction>
+	
 </cfcomponent>

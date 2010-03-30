@@ -41,13 +41,15 @@
 					</cfcase>
 					<cfcase value="File">		
 						<cfif not event.getValue('contentRenderer').showItemMeta(event.getValue('contentBean').getFileExt()) or event.getValue('showMeta') eq 2>
-							<cftry>
+							<!---<cftry>--->
 							<cfset event.getHandler('standardFileTranslation').handle(event) />
+							<!---
 							<cfcatch>
 								<cfset event.setValue('contentBean',application.contentManager.getActiveContentByFilename("404",event.getValue('siteID'))) />
 								<cfset event.getHandler('standardTranslation').handle(event) />
 							</cfcatch>
-						</cftry>
+							</cftry>
+							--->
 						<cfelse>
 							<cfset event.getHandler('standardTranslation').handle(event) />
 						</cfif>

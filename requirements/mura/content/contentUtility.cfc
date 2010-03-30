@@ -309,7 +309,7 @@ to your own modified versions of Mura CMS.
 	<cfset var rslist=""/>
 	<cfset var newbody=""/>
 	<cfset var newSummary=""/>
-	<cfset var renderer=createObject("component","muraWRM.#arguments.siteID#.includes.contentRenderer")>
+	<cfset var renderer=variables.settingsManager.getSite(arguments.siteID).getContentRenderer()>
 
 	<cfif arguments.filename neq ''>
 	<cfset newfile="#variables.configBean.getContext()##renderer.getURLStem(arguments.siteID,arguments.filename)#">

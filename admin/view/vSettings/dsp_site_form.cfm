@@ -77,6 +77,10 @@ to your own modified versions of Mura CMS.
       <dd>
         <input name="site" type="text" class="text" value="#HTMLEditFormat(request.siteBean.getsite())#" size="50" maxlength="50">
       </dd>
+	 <dt>Tag Line</dt>
+      <dd>
+        <input name="tagline" type="text" class="text" value="#HTMLEditFormat(request.siteBean.getTagline())#" size="50" maxlength="255">
+      </dd>
       <dt>Domain <span>(Example: www.google.com)</span></dt>
       <dd>
         <input name="domain" type="text" class="text" value="#HTMLEditFormat(request.siteBean.getdomain('production'))#" size="50" maxlength="50">

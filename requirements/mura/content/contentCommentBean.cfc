@@ -2,6 +2,7 @@
 
 <cfset variables.instance.commentID="" />
 <cfset variables.instance.contentID="" />
+<cfset variables.instance.parentID=""/>
 <cfset variables.instance.siteID=""/>
 <cfset variables.instance.comments=""/>
 <cfset variables.instance.url=""/>
@@ -12,6 +13,7 @@
 <cfset variables.instance.isApproved=0/>
 <cfset variables.contentRenderer=application.contentRenderer/>
 <cfset variables.instance.userID=""/>
+<cfset variables.instance.path=""/>
 <cfset variables.instance.errors=structnew() />
 
 <cffunction name="init" returntype="any" output="false" access="public">
@@ -50,6 +52,8 @@
 				<cfset setIsApproved(arguments.data.isApproved) />
 				<cfset setComments(arguments.data.comments) />
 				<cfset setUserID(arguments.data.userID) />
+				<cfset setParentID(arguments.data.parentID) />
+				<cfset setPath(arguments.data.path) />
 			</cfif>
 			
 		<cfelseif isStruct(arguments.data)>
@@ -108,6 +112,16 @@
 	<cfreturn this>
 </cffunction>
 
+<cffunction name="getParentID" returntype="String" access="public" output="false">
+	<cfreturn variables.instance.parentID />
+</cffunction>
+
+<cffunction name="setParentID" access="public" output="false">
+	<cfargument name="parentID" type="String" />
+	<cfset variables.instance.parentID = trim(arguments.parentID) />
+	<cfreturn this>
+</cffunction>
+
 <cffunction name="getName" returntype="String" access="public" output="false">
 	<cfreturn variables.instance.name />
 </cffunction>
@@ -151,6 +165,16 @@
 <cffunction name="setComments" access="public" output="false">
 	<cfargument name="comments" type="String" />
 	<cfset variables.instance.comments = trim(arguments.comments) />
+	<cfreturn this>
+</cffunction>
+
+<cffunction name="getPath" returntype="String" access="public" output="false">
+	<cfreturn variables.instance.path />
+</cffunction>
+
+<cffunction name="setPath" access="public" output="false">
+	<cfargument name="path" type="String" />
+	<cfset variables.instance.path = trim(arguments.path) />
 	<cfreturn this>
 </cffunction>
 
@@ -217,7 +241,7 @@
 <cffunction name="getQuery"  access="public" output="false" returntype="query">
 	<cfset var rs=""/>
 	<cfquery name="rs" datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-	select * from tcontentcomments 
+	select contentid,commentid,parentid,name,email,url,comments,entered,siteid,isApproved,subscribe,userID,path from tcontentcomments 
 	where commentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getCommentID()#">
 	</cfquery>
 	
@@ -227,7 +251,7 @@
 <cffunction name="delete" access="public">
 	<cfquery datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	delete from tcontentcomments
-	where commentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getCommentID()#">
+	where path like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#getCommentID()#%">
 	</cfquery>
 	
 	<cfset variables.contentManager.setCommentStat(getContentID(),getSiteID()) />
@@ -239,6 +263,13 @@
 	<cfargument name="subject" required="true" default="" hint="I'm the subject that is sent to the subscribers.">
 	<cfargument name="notify" required="true" default="false" hint="I tell whether to notify subscribers.">
 	<cfset var rs=""/>
+	<cfset var path=""/>
+	
+	<cfif len(getParentID())>
+		<cfset path=variables.contentManager.getCommentBean().setCommentID(getParentID()).load().getPath()>
+	</cfif>
+	
+	<cfset path=listAppend(path, getCommentID())>
 	
 	<cfif getQuery().recordcount>
 		
@@ -253,17 +284,20 @@
 			siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getSiteID()#"/>,
 			isApproved=#getIsApproved()#,
 			subscribe=<cfqueryparam cfsqltype="cf_sql_numeric" value="#getSubscribe()#">,
-			userID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getUserID()#"/>
+			userID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getUserID()#"/>,
+			parentID=<cfif len(getParentID())><cfqueryparam cfsqltype="cf_sql_varchar" value="#getParentID()#"/><cfelse>null</cfif>,
+			path=<cfqueryparam cfsqltype="cf_sql_varchar" value="#path#"/>
 		where commentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getCommentID()#">
 		</cfquery>
 		
 	<cfelse>
 	
 		<cfquery datasource="#application.configBean.getDatasource()#" username="#application.configBean.getDBUsername()#" password="#application.configBean.getDBPassword()#" name="rslist">
-			insert into tcontentcomments (contentid,commentid,name,email,url,comments,entered,siteid,isApproved,subscribe,userID)
+			insert into tcontentcomments (contentid,commentid,parentid,name,email,url,comments,entered,siteid,isApproved,subscribe,userID,path)
 			values (
 			<cfqueryparam cfsqltype="cf_sql_varchar" value="#getContentID()#"/>,
 			<cfqueryparam cfsqltype="cf_sql_varchar" value="#getCommentID()#"/>,
+			<cfif len(getParentID())><cfqueryparam cfsqltype="cf_sql_varchar" value="#getParentID()#"/><cfelse>null</cfif>,
 			<cfqueryparam cfsqltype="cf_sql_varchar" value="#getName()#"/>,
 			<cfif len(getEmail())><cfqueryparam cfsqltype="cf_sql_varchar" value="#getEmail()#"/><cfelse>null</cfif>,
 			<cfif len(getURL())><cfqueryparam cfsqltype="cf_sql_varchar" value="#getURL()#"/><cfelse>null</cfif>,
@@ -272,7 +306,8 @@
 			<cfqueryparam cfsqltype="cf_sql_varchar" value="#getSiteID()#"/>,
 			#getIsApproved()#,
 			<cfqueryparam cfsqltype="cf_sql_numeric" value="#getSubscribe()#">,
-			<cfqueryparam cfsqltype="cf_sql_varchar" value="#getUserID()#"/>
+			<cfqueryparam cfsqltype="cf_sql_varchar" value="#getUserID()#"/>,
+			<cfqueryparam cfsqltype="cf_sql_varchar" value="#path#"/>
 			)
 			</cfquery>
 		
@@ -419,6 +454,21 @@ To Unsubscribe Click Here
 </cfif>
 
 <cfreturn this>
+</cffunction>
+
+<cffunction name="getKidsQuery" returnType="query" output="false" access="public">
+	<cfargument name="isEditor" type="boolean" required="true" default="false">
+	<cfargument name="sortOrder" type="string" required="true" default="asc">
+	<cfreturn variables.contentManager.readComments(getContentID(), getSiteID(), arguments.isEditor, arguments.sortOrder, getCommentID() ) />
+</cffunction>
+
+<cffunction name="getKidsIterator" returnType="any" output="false" access="public">
+	<cfargument name="isEditor" type="boolean" required="true" default="false">
+	<cfargument name="sortOrder" type="string" required="true" default="asc">
+	<cfset var q=getKidsQuery(arguments.isEditor, arguments.sortOrder) />
+	<cfset var it=getBean("contentCommentIterator").init()>
+	<cfset it.setQuery(q)>
+	<cfreturn it />
 </cffunction>
 
 </cfcomponent>

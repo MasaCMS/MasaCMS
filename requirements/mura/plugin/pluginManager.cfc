@@ -1183,6 +1183,7 @@ select * from tplugins order by #arguments.orderby#
 <cfargument name="object">
 <cfargument name="event" required="true" default="">
 <cfargument name="moduleID" required="true" default="">
+<cfargument name="params" required="true" default="">
 	
 	<cfset var rs="">
 	<cfset var key="">
@@ -1201,8 +1202,8 @@ select * from tplugins order by #arguments.orderby#
 		<cfset muraScope=arguments.event.getValue("muraScope")>
 	</cfif>
 	
-	<cfset event.setValue("objectID",listFirst(arguments.object,"^"))>
-	<cfset event.setValue("objectParams",listRest(arguments.object,"^"))>
+	<cfset event.setValue("objectID",arguments.object)>
+	<cfset event.setValue("params",arguments.params)>
 	
 	<cfquery name="rs" dbtype="query">
 	select pluginID, displayObjectFile,location,displaymethod, docache, objectID, directory, moduleID from variables.rsDisplayObjects 

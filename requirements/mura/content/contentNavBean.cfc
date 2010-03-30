@@ -58,6 +58,7 @@
 	<cfargument name="contentStruct">
 	<cfargument name="contentManager">
 	<cfargument name="packageBy" required="true" default="active">
+	
 	<cfset variables.instance.struct=arguments.contentStruct>
 	<cfset variables.contentManager=arguments.contentManager>
 	<cfset variables.packageBy=arguments.packageBy>
@@ -116,4 +117,11 @@
 	
 </cffunction>
 
+<cffunction name="getHREF" output="false">
+<cfargument name="querystring" required="true" default="">
+<cfargument name="complete" type="boolean" required="true" default="false">
+<cfargument name="showMeta" type="string" required="true" default="0">
+<cfreturn variables.contentManager.getHREF(this, arguments.queryString, arguments.complete, arguments.showMeta)>
+</cffunction>			
+	
 </cfcomponent>

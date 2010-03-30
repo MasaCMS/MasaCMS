@@ -144,37 +144,55 @@ to your own modified versions of Mura CMS.
 <cfargument name="fileID" type="string">
 <cfargument name="method" type="string" required="true" default="inline">
 
-	<cfset var rsFile="" />
+	<cfset var rsFileData="" />
 	<cfset var delim="" />
 	<cfset var theFile="" />
 	<cfset var theFileLocation="" />
-		
+	<cfset var pluginManager=getBean("pluginManager")>	
+	<cfset var pluginEvent = createObject("component","mura.event") />
+
 		<cfswitch expression="#variables.configBean.getFileStore()#">	
 			<cfcase value="database">
-				<cfset rsFile=read(arguments.fileid) />
-				<cfheader name="Content-Disposition" value='#arguments.method#;filename="#rsfile.filename#"'>
-				<cfheader name="Content-Length" value="#arrayLen(rsFile.image)#">
+				<cfset rsFileData=read(arguments.fileid) />
+				<cfset arguments.siteID=rsFileData.siteid>
+				<cfset arguments.rsFile=rsFileData>
+				<cfset pluginEvent.init(arguments)>
+				<cfset pluginManager.announceEvent("onBeforeFileRender",pluginEvent)>
+				<cfheader name="Content-Disposition" value='#arguments.method#;filename="#rsfileData.filename#"'>
+				<cfheader name="Content-Length" value="#arrayLen(rsFileData.image)#">
 				<cfif variables.configBean.getCompiler() neq 'Railo'>
-					<cfset createObject("component","mura.content.file.renderAdobe").init("#rsfile.contentType#/#rsfile.contentSubType#",rsFile.image)>
+					<cfset createObject("component","mura.content.file.renderAdobe").init("#rsfileData.contentType#/#rsfileData.contentSubType#",rsFileData.image)>
 				<cfelse>
-					<cfset createObject("component","mura.content.file.renderRailo").init("#rsfile.contentType#/#rsfile.contentSubType#",rsFile.image)>
+					<cfset createObject("component","mura.content.file.renderRailo").init("#rsfileData.contentType#/#rsfileData.contentSubType#",rsFileData.image)>
 				</cfif>
+				<cfset pluginManager.announceEvent("onAfterFileRender",pluginEvent)>
 			</cfcase>
 			<cfcase value="filedir">
-				<cfset rsFile=readMeta(arguments.fileid) />
+				<cfset rsFileData=readMeta(arguments.fileid) />
+				<cfset arguments.siteID=rsFileData.siteid>
+				<cfset arguments.rsFile=rsFileData>
+				<cfset pluginEvent.init(arguments)>
+				<cfset pluginManager.announceEvent("onBeforeFileRender",pluginEvent)>
 				<cfset delim=variables.configBean.getFileDelim() />
-				<cfset theFileLocation="#variables.configBean.getFileDir()##delim##rsFile.siteid##delim#cache#delim#file#delim##arguments.fileID#.#rsFile.fileExt#" />
+				<cfset theFileLocation="#variables.configBean.getFileDir()##delim##rsFileData.siteid##delim#cache#delim#file#delim##arguments.fileID#.#rsFileData.fileExt#" />
 				<cffile action="readBinary" file="#theFileLocation#" variable="theFile">
-				<cfheader name="Content-Disposition" value='#arguments.method#;filename="#rsfile.filename#"'> 
+				<cfheader name="Content-Disposition" value='#arguments.method#;filename="#rsfileData.filename#"'> 
 				<cfheader name="Content-Length" value="#arrayLen(theFile)#">
 				<cfif variables.configBean.getCompiler() neq 'Railo'>
-					<cfset createObject("component","mura.content.file.renderAdobe").init("#rsfile.contentType#/#rsfile.contentSubType#",theFile)>
+					<cfset createObject("component","mura.content.file.renderAdobe").init("#rsfileData.contentType#/#rsfileData.contentSubType#",theFile)>
 				<cfelse>
-					<cfset createObject("component","mura.content.file.renderRailo").init("#rsfile.contentType#/#rsfile.contentSubType#",theFile)>
+					<cfset createObject("component","mura.content.file.renderRailo").init("#rsfileData.contentType#/#rsfileData.contentSubType#",theFile)>
 				</cfif>
+				<cfset pluginManager.announceEvent("onAfterFileRender",pluginEvent)>
 			</cfcase>
-			<cfcase value="S3">		
+			<cfcase value="S3">	
+				<cfset rsFileData=readMeta(arguments.fileid) />
+				<cfset arguments.siteID=rsFileData.siteid>
+				<cfset arguments.rsFile=rsFileData>
+				<cfset pluginEvent.init(arguments)>
+				<cfset pluginManager.announceEvent("onBeforeFileRender",pluginEvent)>	
 				<cfset renderS3(fileid=arguments.fileid,method=arguments.method,size="normal") />
+				<cfset pluginManager.announceEvent("onAfterFileRender",pluginEvent)>	
 			</cfcase>
 		</cfswitch>		
 

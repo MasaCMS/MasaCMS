@@ -1450,7 +1450,7 @@ to your own modified versions of Mura CMS.
 	<cfset var rsObjects=""/>
 	
 	<cfquery datasource="#variables.configBean.getDatasource()#" name="rsObjects"  username="#application.configBean.getDBUsername()#" password="#application.configBean.getDBPassword()#">
-	select object,objectid, tcontentobjects.orderno from tcontentobjects 
+	select object,objectid, tcontentobjects.orderno, params from tcontentobjects 
 	inner join tcontent On(
 	tcontentobjects.contenthistid=tcontent.contenthistid
 	and tcontentobjects.siteid=tcontent.siteid) 
@@ -1469,7 +1469,7 @@ to your own modified versions of Mura CMS.
 	
 	<cfset var rsObjects=""/>
 	<cfquery datasource="#application.configBean.getDatasource()#" name="rsObjects"  username="#application.configBean.getDBUsername()#" password="#application.configBean.getDBPassword()#">
-	select object,objectid,orderno from tcontentobjects  
+	select object,objectid,orderno,params from tcontentobjects  
 	where contenthistid 
 	='#arguments.inheritedObjects#' and siteid='#arguments.siteid#'
 	and columnid=#arguments.columnID#

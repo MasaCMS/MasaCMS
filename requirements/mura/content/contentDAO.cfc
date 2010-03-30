@@ -450,7 +450,7 @@ to your own modified versions of Mura CMS.
 			<cfloop list="#objectlist#" index="i" delimiters="^">
 				<cfset objectOrder=objectOrder+1>
 				<cfquery datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-				insert into tcontentobjects (contentid,contenthistid,object,name,objectid,orderno,siteid,columnid)
+				insert into tcontentobjects (contentid,contenthistid,object,name,objectid,orderno,siteid,columnid,params)
 				values(
 					<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentBean.getcontentid()#" />,
 					<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentBean.getcontenthistid()#" />,
@@ -459,7 +459,8 @@ to your own modified versions of Mura CMS.
 					<cfqueryparam cfsqltype="cf_sql_varchar" value="#listgetat(i,3,"~")#" />,
 					<cfqueryparam cfsqltype="cf_sql_numeric" value="#objectOrder#" />,
 					<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentBean.getsiteid()#" />,
-					<cfqueryparam cfsqltype="cf_sql_numeric" value="#r#" />
+					<cfqueryparam cfsqltype="cf_sql_numeric" value="#r#" />,
+					<cfif listLen(i,"~") gt 3 ><cfqueryparam cfsqltype="cf_sql_numeric" value="#listgetat(i,4,"~")#" /><cfelse>null</cfif>
 					)
 				</cfquery>
 			</cfloop>
@@ -470,7 +471,7 @@ to your own modified versions of Mura CMS.
 			<cfloop query="rsOld">
 				<cfset objectOrder=objectOrder+1>
 				<cfquery datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-				insert into tcontentobjects (contentid,contenthistid,object,name,objectid,orderno,siteid,columnid)
+				insert into tcontentobjects (contentid,contenthistid,object,name,objectid,orderno,siteid,columnid,params)
 				values(
 					<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentBean.getcontentid()#" />,
 					<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentBean.getcontenthistid()#" />,
@@ -479,7 +480,8 @@ to your own modified versions of Mura CMS.
 					<cfqueryparam cfsqltype="cf_sql_varchar" value="#rsOld.objectID#" />,
 					<cfqueryparam cfsqltype="cf_sql_numeric" value="#rsOld.currentRow#" />,
 					<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentBean.getsiteid()#" />,
-					<cfqueryparam cfsqltype="cf_sql_numeric" value="#rsOld.columnid#" />
+					<cfqueryparam cfsqltype="cf_sql_numeric" value="#rsOld.columnid#" />,
+					<cfif listLen(i,"~") gt 3 ><cfqueryparam cfsqltype="cf_sql_numeric" value="#listgetat(i,4,"~")#" /><cfelse>null</cfif>
 					)
 				</cfquery>
 			</cfloop>
@@ -517,8 +519,11 @@ to your own modified versions of Mura CMS.
 	<cfset var rs = "">
 	
 	<cfquery datasource="#variables.dsn#" name="rs"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-	select * from tcontentobjects where contenthistid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentHistID#"/> and 
-	columnid= <cfqueryparam cfsqltype="cf_sql_numeric" value="#arguments.regionID#"/> order by orderno
+	select contenthistid, contentid, objectid, siteid, object, name, columnid, orderno, params
+	from tcontentobjects 
+	where contenthistid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentHistID#"/>
+	and columnid= <cfqueryparam cfsqltype="cf_sql_numeric" value="#arguments.regionID#"/> 
+	order by orderno
 	</cfquery>
 	
 	<cfreturn rs />
@@ -802,11 +807,15 @@ to your own modified versions of Mura CMS.
 	<cfargument name="siteID" type="string" required="true" default="">
 	<cfargument name="isEditor" type="boolean" required="true" default="false">
 	<cfargument name="sortOrder" type="string" required="true" default="asc">
-	
+	<cfargument name="parentID" type="string" required="true" default="">
 	<cfset var rs= ''/>
 	
 	<cfquery name="rs" datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-	select * from tcontentcomments where contentid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentid#"/> and siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
+	select contentid,commentid,parentid,name,email,url,comments,entered,siteid,isApproved,subscribe,userID,path
+	from tcontentcomments 
+	where contentid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentid#"/> 
+	and siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
+	and parentID <cfif len(arguments.parentID)>=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.parentID#"/><cfelse>is null</cfif>
 	<cfif not arguments.isEditor >
 	and isApproved=1
 	</cfif>

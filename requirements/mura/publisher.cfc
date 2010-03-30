@@ -204,7 +204,7 @@ to your own modified versions of Mura CMS.
 			</cfquery>
 			<cfloop query="rsContentObjects">
 				<cfquery datasource="#arguments.toDSN#">
-					insert into tcontentobjects (ColumnID,ContentHistID,ContentID,Name,Object,ObjectID,OrderNo,SiteID)
+					insert into tcontentobjects (ColumnID,ContentHistID,ContentID,Name,Object,ObjectID,OrderNo,SiteID,params)
 					values
 					(
 					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(ColumnID),de(ColumnID),de(0))#">,
@@ -222,7 +222,8 @@ to your own modified versions of Mura CMS.
 						<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(ObjectID neq '',de('no'),de('yes'))#" value="#keys.get(objectID)#">,
 					</cfif>
 					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(OrderNo),de(OrderNo),de(0))#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#arguments.toSiteID#">
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#arguments.toSiteID#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(params neq '',de('no'),de('yes'))#" value="#params#">
 					)
 				</cfquery>
 			</cfloop>
@@ -679,7 +680,7 @@ to your own modified versions of Mura CMS.
 				</cfquery>
 				<cfloop query="rstcontentcomments">
 					<cfquery datasource="#arguments.fromDSN#">
-						insert into tcontentcomments (comments,commentid,contenthistid,contentid,email,entered,ip,isApproved,name,siteid,url,subscribe)
+						insert into tcontentcomments (comments,commentid,contenthistid,contentid,email,entered,ip,isApproved,name,siteid,url,subscribe,parentID,path)
 						values
 						(
 						<cfqueryparam cfsqltype="cf_sql_LONGVARCHAR" null="#iif(comments neq '',de('no'),de('yes'))#" value="#comments#">,
@@ -693,7 +694,9 @@ to your own modified versions of Mura CMS.
 						<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(name neq '',de('no'),de('yes'))#" value="#name#">,
 						<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#arguments.fromsiteid#">,
 						<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(url neq '',de('no'),de('yes'))#" value="#url#">,
-						<cfqueryparam cfsqltype="cf_sql_TINYINT" null="no" value="#iif(isNumeric(subscribe),de(subscribe),de(0))#">
+						<cfqueryparam cfsqltype="cf_sql_TINYINT" null="no" value="#iif(isNumeric(subscribe),de(subscribe),de(0))#">,
+						<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(parentID neq '',de('no'),de('yes'))#" value="#parentID#">,
+						<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(path neq '',de('no'),de('yes'))#" value="#path#">
 						)
 					</cfquery>
 				</cfloop>

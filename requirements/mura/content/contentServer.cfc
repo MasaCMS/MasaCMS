@@ -51,7 +51,7 @@ to your own modified versions of Mura CMS.
 <cfargument name="cgi_path">
 <cfargument name="siteID">
 <cfset var qstring="">
-<cfset var contentRenderer=createObject("component","#application.settingsManager.getSite(arguments.siteID).getAssetMap()#.includes.contentRenderer")>
+<cfset var contentRenderer=application.settingsManager.getSite(arguments.siteID).getContentRenderer()>
 <cfset var indexFileLen=0>
 <cfset var last=listLast(cgi_path,"/") >
 <cfset var indexFile="" >	
