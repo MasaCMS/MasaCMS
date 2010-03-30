@@ -1489,11 +1489,11 @@ to your own modified versions of Mura CMS.
 	<cfreturn variables.contentManager.getHasDrafts(getContentID(),getSiteID()) />
 </cffunction>
 
-<cffunction name="getHREF" output="false">
+<cffunction name="getURL" output="false">
 	<cfargument name="querystring" required="true" default="">
 	<cfargument name="complete" type="boolean" required="true" default="false">
 	<cfargument name="showMeta" type="string" required="true" default="0">
-	 <cfreturn variables.contentManager.getHREF(this, arguments.queryString,arguments.complete, arguments.showMeta)>
+	 <cfreturn variables.contentManager.getURL(this, arguments.queryString,arguments.complete, arguments.showMeta)>
 </cffunction>		
 	
 </cfcomponent>

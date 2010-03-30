@@ -1462,7 +1462,7 @@ to your own modified versions of Mura CMS.
 		<cfreturn variables.contentDAO.getBean()>
 	</cffunction>
 	
-	<cffunction name="getHREF" output="false">
+	<cffunction name="getURL" output="false">
 		<cfargument name="bean" required="true">
 		<cfargument name="querystring" required="true" default="">
 		<cfargument name="complete" type="boolean" required="true" default="false">
