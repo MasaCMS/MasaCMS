@@ -60,6 +60,7 @@ to your own modified versions of Mura CMS.
 <cfset variables.instance.Path = "" />
 <cfset variables.instance.remoteID = "" />
 <cfset variables.instance.remoteSourceURL = "" />
+<cfset variables.instance.remotePubDate = "">
 <cfset variables.categoryManager = "" />
 <cfset variables.instance.isNew=1 />
 <cfset variables.instance.errors=structnew() />
@@ -95,7 +96,8 @@ to your own modified versions of Mura CMS.
 			<cfset setRestrictGroups(arguments.category.RestrictGroups) />
 			<cfset setPath(arguments.category.Path) />
 			<cfset setRemoteID(arguments.category.remoteID) />
-			<cfset setremoteSourceURL(arguments.category.remoteSourceURL) />
+			<cfset setRemoteSourceURL(arguments.category.remoteSourceURL) />
+			<cfset setRemotePubDate(arguments.category.remotePubDate) />
 	
 			
 		<cfelseif isStruct(arguments.category)>
@@ -370,6 +372,25 @@ to your own modified versions of Mura CMS.
 	    <cfreturn variables.instance.remoteSourceURL />
 	 </cffunction>
 	 
+	<cffunction name="setRemotePubDate" output="false" access="public">
+    <cfargument name="RemotePubDate" type="string" required="true">
+	<cfif lsisDate(arguments.RemotePubDate)>
+		<cftry>
+		<cfset variables.instance.RemotePubDate = lsparseDateTime(arguments.RemotePubDate) />
+		<cfcatch>
+			<cfset variables.instance.RemotePubDate = arguments.RemotePubDate />
+		</cfcatch>
+		</cftry>
+		<cfelse>
+		<cfset variables.instance.RemotePubDate = ""/>
+	</cfif>
+	<cfreturn this>
+  </cffunction>
+
+  <cffunction name="getRemotePubDate" returnType="string" output="false" access="public">
+    <cfreturn variables.instance.RemotePubDate />
+  </cffunction>
+
 </cfcomponent>
 
 

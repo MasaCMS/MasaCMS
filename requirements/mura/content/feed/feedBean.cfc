@@ -77,6 +77,7 @@ to your own modified versions of Mura CMS.
 <cfset variables.instance.errors=structnew() />
 <cfset variables.instance.remoteID = "" />
 <cfset variables.instance.remoteSourceURL = "" />
+<cfset variables.instance.remotePubDate = "">
 <cfset variables.feedManager = "" />
 
 <cffunction name="init" returntype="any" output="false" access="public">
@@ -117,7 +118,8 @@ to your own modified versions of Mura CMS.
 			<cfset setDisplayComments(arguments.feed.displayComments) />
 			<cfset setParentID(arguments.feed.parentID) />
 			<cfset setRemoteID(arguments.feed.remoteID) />
-			<cfset setremoteSourceURL(arguments.feed.remoteSourceURL) />
+			<cfset setRemoteSourceURL(arguments.feed.remoteSourceURL) />
+			<cfset setRemotePubDate(arguments.feed.remotePubDate) />
 		
 		<cfelseif isStruct(arguments.feed)>
 		
@@ -653,6 +655,24 @@ to your own modified versions of Mura CMS.
 
 <cffunction name="getRemoteSourceURL" returnType="string" output="false" access="public">
     <cfreturn variables.instance.remoteSourceURL />
- </cffunction>
+</cffunction>
 
+<cffunction name="setRemotePubDate" output="false" access="public">
+    <cfargument name="RemotePubDate" type="string" required="true">
+	<cfif lsisDate(arguments.RemotePubDate)>
+		<cftry>
+		<cfset variables.instance.RemotePubDate = lsparseDateTime(arguments.RemotePubDate) />
+		<cfcatch>
+			<cfset variables.instance.RemotePubDate = arguments.RemotePubDate />
+		</cfcatch>
+		</cftry>
+		<cfelse>
+		<cfset variables.instance.RemotePubDate = ""/>
+	</cfif>
+	<cfreturn this>
+  </cffunction>
+
+<cffunction name="getRemotePubDate" returnType="string" output="false" access="public">
+    <cfreturn variables.instance.RemotePubDate />
+</cffunction>
 </cfcomponent>

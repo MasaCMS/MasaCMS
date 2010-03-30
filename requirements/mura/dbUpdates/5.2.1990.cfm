@@ -165,3 +165,64 @@ select params from tcontentobjects  where 0=1
 </cfcase>
 </cfswitch>
 </cfif>
+
+
+<cftry>
+<cfquery name="rsCheck" datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+select remotePubDate from tcontentcategories  where 0=1
+</cfquery>
+<cfcatch>
+<cfset doUpdate=true>
+</cfcatch>
+</cftry>
+
+<cfif doUpdate>
+<cfswitch expression="#getDbType()#">
+<cfcase value="mssql">
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	ALTER TABLE tcontentcategories ADD remotePubDate [datetime] default NULL
+	</cfquery>
+</cfcase>
+<cfcase value="mysql">
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	ALTER TABLE tcontentcategories ADD remotePubDate datetime default NULL
+	</cfquery>
+</cfcase>
+<cfcase value="oracle">
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	ALTER TABLE "TCONTENTCATEGORIES" add "REMOTEPUBDATE" DATE
+	</cfquery>	
+</cfcase>
+</cfswitch>
+</cfif>
+
+<cfset doUpdate=false>
+
+<cftry>
+<cfquery name="rsCheck" datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+select remotePubDate from tcontentfeeds  where 0=1
+</cfquery>
+<cfcatch>
+<cfset doUpdate=true>
+</cfcatch>
+</cftry>
+
+<cfif doUpdate>
+<cfswitch expression="#getDbType()#">
+<cfcase value="mssql">
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	ALTER TABLE tcontentfeeds ADD remotePubDate [datetime] default NULL
+	</cfquery>
+</cfcase>
+<cfcase value="mysql">
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	ALTER TABLE tcontentfeeds ADD remotePubDate datetime default NULL
+	</cfquery>
+</cfcase>
+<cfcase value="oracle">
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	ALTER TABLE "TCONTENTFEEDS" add "REMOTEPUBDATE" DATE
+	</cfquery>	
+</cfcase>
+</cfswitch>
+</cfif>
