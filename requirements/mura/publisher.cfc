@@ -491,7 +491,7 @@ to your own modified versions of Mura CMS.
 			</cfquery>
 			<cfloop query="rstcontentfeeds">
 				<cfquery datasource="#arguments.toDSN#">
-					insert into tcontentfeeds (allowHTML,channelLink,dateCreated,description,feedID,isActive,isDefault,isFeaturesOnly,isPublic,lang,lastUpdate,lastUpdateBy,maxItems,name,parentID,restricted,restrictGroups,siteID,Type,version,sortBy,sortDirection,nextN,displayName,displayRatings,displayComments,altname)
+					insert into tcontentfeeds (allowHTML,channelLink,dateCreated,description,feedID,isActive,isDefault,isFeaturesOnly,isPublic,lang,lastUpdate,lastUpdateBy,maxItems,name,parentID,restricted,restrictGroups,siteID,Type,version,sortBy,sortDirection,nextN,displayName,displayRatings,displayComments,altname,remoteID,remoteSourceURL,remotePubDate)
 					values
 					(
 					<cfqueryparam cfsqltype="cf_sql_TINYINT" null="no" value="#iif(isNumeric(allowHTML),de(allowHTML),de(0))#">,
@@ -520,7 +520,10 @@ to your own modified versions of Mura CMS.
 					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(displayName),de(displayName),de(1))#">,
 					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(displayRatings),de(displayRatings),de(0))#">,
 					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(displayComments),de(displayComments),de(0))#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(altname neq '',de('no'),de('yes'))#" value="#altname#">
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(altname neq '',de('no'),de('yes'))#" value="#altname#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(remoteid neq '',de('no'),de('yes'))#" value="#remoteid#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(remoteSourceURL neq '',de('no'),de('yes'))#" value="#remoteSourceURL#">,
+					<cfqueryparam cfsqltype="cf_sql_TIMESTAMP" null="#iif(remotePubDate neq '',de('no'),de('yes'))#" value="#remotePubDate#">
 					)
 				</cfquery>
 			</cfloop>
@@ -644,7 +647,7 @@ to your own modified versions of Mura CMS.
 			</cfquery>
 			<cfloop query="rstcontentcategories">
 				<cfquery datasource="#arguments.toDSN#">
-					insert into tcontentcategories (categoryID,dateCreated,isActive,isInterestGroup,isOpen,lastUpdate,lastUpdateBy,name,notes,parentID,restrictGroups,siteID,sortBy,sortDirection,Path)
+					insert into tcontentcategories (categoryID,dateCreated,isActive,isInterestGroup,isOpen,lastUpdate,lastUpdateBy,name,notes,parentID,restrictGroups,siteID,sortBy,sortDirection,Path,remoteID,remoteSourceURL,remotePubDate)
 					values
 					(
 					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(categoryID)#">,
@@ -661,7 +664,10 @@ to your own modified versions of Mura CMS.
 					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#arguments.tositeID#">,
 					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(sortBy neq '',de('no'),de('yes'))#" value="#sortBy#">,
 					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(sortDirection neq '',de('no'),de('yes'))#" value="#sortDirection#">,
-					<cfqueryparam cfsqltype="cf_sql_LONGVARCHAR" null="#iif(Path neq '',de('no'),de('yes'))#" value="#Path#">
+					<cfqueryparam cfsqltype="cf_sql_LONGVARCHAR" null="#iif(Path neq '',de('no'),de('yes'))#" value="#Path#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(remoteid neq '',de('no'),de('yes'))#" value="#remoteID#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(remoteSourceURL neq '',de('no'),de('yes'))#" value="#remoteSourceURL#">,
+					<cfqueryparam cfsqltype="cf_sql_TIMESTAMP" null="#iif(remotePubDate neq '',de('no'),de('yes'))#" value="#remotePubDate#">
 					)
 				</cfquery>
 			</cfloop>
