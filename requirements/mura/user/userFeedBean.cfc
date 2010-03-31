@@ -43,6 +43,21 @@
 	
 			</cfloop>
 			
+		<cfelseif isdefined('arguments.params.paramarray') and isArray(arguments.params.paramarray)>
+		
+			<cfset clearparams() />
+			<cfloop from="1" to="#arrayLen(arguments.params.paramarray)#" index="i">
+				
+				<cfset addParam(
+						listFirst(arguments.params.paramarray[i].field,'^'),
+						arguments.params.paramarray[i].relationship,
+						arguments.params.paramarray[i].criteria,
+						arguments.params.paramarray[i].condition,
+						listLast(arguments.params.paramarray[i].field,'^')
+						) />
+	
+			</cfloop>
+					
 		</cfif>
 		
 		<cfif isStruct(arguments.params)>
@@ -68,7 +83,6 @@
 		</cfif>
 		<cfreturn this>
 </cffunction>
-
 
 <cffunction name="addParam" access="public" output="false">
 	<cfargument name="field" type="string" required="true" default="">
