@@ -58,33 +58,7 @@ to your own modified versions of Mura CMS.
 				AND (rsTemplate.DisplayStop gte now() or rsTemplate.DisplayStop eq "")
 			)
 			and listFind(rsTemplate.moduleAssign,'00000000000000000000000000000000000')>
-	<!---
-	<cfquery datasource="#application.configBean.getDatasource()#" username="#application.configBean.getDBUsername()#" password="#application.configBean.getDBPassword()#" name="rsTemplate">
-		select *
-		from tcontent 
-		where siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"> and 
-						(
-						(tcontent.Active = 1
-						  
-						  AND tcontent.DisplayStart <= #createodbcdatetime(now())#
-						  AND (tcontent.DisplayStop >= #createodbcdatetime(now())# or tcontent.DisplayStop is null)
-						  AND tcontent.Display = 2
-						  AND tcontent.Approved = 1
-						  AND tcontent.contentid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.objectID#">
-						  AND tcontent.moduleAssign like '%00000000000000000000000000000000000%')
-						  or
-						  
-						  (tcontent.Active = 1
-						  
-						  AND tcontent.Display = 1
-						  AND tcontent.Approved = 1
-						  AND tcontent.contentid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.objectID#">
-						  AND tcontent.moduleAssign like '%00000000000000000000000000000000000%')
-						  
-						 ) 
-	</cfquery>
-	--->
-	<cfset request.cacheItem=rsTemplate.doCache/>
+
 	
 	<cfset editableControl.editLink = "">
 	<!---
@@ -152,3 +126,5 @@ to your own modified versions of Mura CMS.
 <cfif editableControl.innerHTML neq "">
 	<cfoutput>#renderEditableObjectFooter(editableControl.innerHTML)#</cfoutput>
 </cfif>
+
+<cfset request.cacheItem=rsTemplate.doCache/>

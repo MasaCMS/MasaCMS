@@ -44,36 +44,14 @@ to your own modified versions of Mura CMS.
 <cfsilent>
 	<cfset bean = application.contentManager.getActiveContent(arguments.objectID, arguments.siteID)>
 	<cfset rsForm=bean.getAllValues()>
-
+	<cfset event.setValue("formBean",bean)>
+	
 	<cfset rsForm.isOnDisplay=rsForm.display eq 1 or 
 			(
 				rsForm.display eq 2 and rsForm.DisplayStart lte now()
 				AND (rsForm.DisplayStop gte now() or rsForm.DisplayStop eq "")
 			)>
-<!---	
-<cfquery datasource="#application.configBean.getDatasource()#" username="#application.configBean.getDBUsername()#" password="#application.configBean.getDBPassword()#" name="rsForm">
-select contentid,title,body,responseChart,responseMessage,responseSendTo,forceSSL,displayTitle, doCache
- from tcontent 
-where siteid='#request.siteid#' and 
-				    (
-					(tcontent.Active = 1
-					  AND tcontent.DisplayStart <= #createodbcdate(now())#
-					  AND (tcontent.DisplayStop >= #createodbcdate(now())# or tcontent.DisplayStop is null)
-					  AND tcontent.Display = 2
-					  AND tcontent.Approved = 1
-					  AND tcontent.contentid = '#arguments.objectid#')
-					  or
-					  
-                      (tcontent.Active = 1
-					  AND tcontent.Display = 1
-					  AND tcontent.Approved = 1
-					  AND tcontent.contentid = '#arguments.objectid#')
-					  
-					 ) 
-					</cfquery>
 
---->
-	
 	<cfset editableControl.editLink = "">
 	<!---
 	<cfset editableControl.historyLink = "">
@@ -125,7 +103,6 @@ where siteid='#request.siteid#' and
 	</cfif>
 </cfsilent>
 
-<cfset request.cacheItem=rsForm.doCache>
 <cfif rsForm.isOnDisplay and rsForm.forceSSL eq 1>
 <cfset request.forceSSL = 1>
 </cfif>
@@ -151,3 +128,4 @@ where siteid='#request.siteid#' and
 #renderEditableObjectFooter(editableControl.innerHTML)#
 </cfif>
 </cfoutput>
+<cfset request.cacheItem=rsForm.doCache>
