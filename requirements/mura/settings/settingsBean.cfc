@@ -221,7 +221,7 @@ to your own modified versions of Mura CMS.
 		<cfelseif isStruct(arguments.data)>
 		
 			<cfloop collection="#arguments.data#" item="prop">
-			<cfif isdefined("variables.instance.#prop#")>
+			<cfif isdefined("this.set#prop#")>
 				<cfset evaluate("set#prop#(arguments.data[prop])") />
 			</cfif>
 			</cfloop>
