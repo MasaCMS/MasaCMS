@@ -85,11 +85,10 @@ to your own modified versions of Mura CMS.
 		</cfif>
 	
 		<cfif isdefined("request.redirect_url")>
-			
+			<cfset application.pluginManager.announceEvent("onBeforeFormSubmitRedirect",event)>
 			<cfif  isdefined("request.redirect_label")>
 			<p class="success"><a href="#request.redirect_url#">#request.redirect_label#</a></p>
 			<cfelse>
-			<cfset application.pluginManager.announceEvent("onBeforeFormSubmitRedirect",event)>
 			<cflocation addtoken="false" url="#request.redirect_url#">
 			</cfif>
 		</cfif>
