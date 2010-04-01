@@ -391,6 +391,31 @@ to your own modified versions of Mura CMS.
     <cfreturn variables.instance.RemotePubDate />
   </cffunction>
 
+	<cffunction name="setValue" returntype="any" access="public" output="false">
+	<cfargument name="property"  type="string" required="true">
+	<cfargument name="propertyValue" default="" >
+		
+		<cfif isDefined("this.set#arguments.property#")>
+			<cfset evaluate("set#property#(arguments.propertyValue)") />
+		<cfelse>
+			<cfset variables.intance["#arguments.property#"]=arguments.propertyValue />
+		</cfif>
+		<cfreturn this>
+	</cffunction>
+	
+	<cffunction name="getValue" returntype="any" access="public" output="false">
+	<cfargument name="property"  type="string" required="true">
+		
+		<cfif structKeyExists(this,"get#property#")>
+			<cfreturn evaluate("get#property#()") />
+		<cfelseif structKeyExists(variables.instance,"#arguments.property#")>
+			<cfreturn variables.instance["#arguments.property#"] />
+		<cfelse>
+			<cfreturn "" />
+		</cfif>
+	
+	</cffunction>
+	
 </cfcomponent>
 
 

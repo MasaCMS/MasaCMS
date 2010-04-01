@@ -603,15 +603,21 @@ to your own modified versions of Mura CMS.
 <cffunction name="setValue" returntype="any" access="public" output="false">
 <cfargument name="property"  type="string" required="true">
 <cfargument name="propertyValue" default="" >
-
-	<cfset variables.intance["#arguments.property#"]=arguments.propertyValue />
+	
+	<cfif isDefined("this.set#arguments.property#")>
+		<cfset evaluate("set#property#(arguments.propertyValue)") />
+	<cfelse>
+		<cfset variables.intance["#arguments.property#"]=arguments.propertyValue />
+	</cfif>
 	<cfreturn this>
 </cffunction>
 
 <cffunction name="getValue" returntype="any" access="public" output="false">
 <cfargument name="property"  type="string" required="true">
 	
-	<cfif structKeyExists(variables,"#arguments.property#")>
+	<cfif structKeyExists(this,"get#property#")>
+		<cfreturn evaluate("get#property#()") />
+	<cfelseif structKeyExists(variables.instance,"#arguments.property#")>
 		<cfreturn variables.instance["#arguments.property#"] />
 	<cfelse>
 		<cfreturn "" />
