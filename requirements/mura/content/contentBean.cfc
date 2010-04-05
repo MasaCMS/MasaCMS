@@ -1479,7 +1479,7 @@ to your own modified versions of Mura CMS.
 
 <cffunction name="getParent" output="false" returntype="any">
 	<cfif getContentID() neq '00000000000000000000000000000000001'>
-		<cfreturn variables.contentManager.getCommentBean()>
+		<cfreturn variables.contentManager.read(contentID=getParentID(),siteID=getSiteID())>
 	<cfelse>
 		<cfthrow message="Parent content does not exist.">
 	</cfif>

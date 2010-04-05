@@ -96,7 +96,7 @@
 	</cfif>
 	<ul>
 		<li id="favoriteExists" style="#favoriteExistsStyle#"><a href="" onclick="return false;">Stored in favorites</a></li>
-		<li id="addFavorite" style="#addFavoriteStyle#"><a href="" onclick="return saveFavorite('#userID#', '#siteID#', '#JSStringFormat(menuTitle)#', '#contentID#', '#favoriteType#')">Add to favorites</a></li>
+		<li id="addFavorite" style="#addFavoriteStyle#"><a href="" onclick="return saveFavorite('#userID#', '#siteID#', '#JSStringFormat(menuTitle)#', '#contentID#', '#favoriteType#')">#rbFactory.getKey('favorites.addtofavorites')#</a></li>
 		<li id="sendToFriend"><a rel="shadowbox;width=600;height=500" href="http://#application.settingsManager.getSite(request.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()#/#getSite().getDisplayPoolID()#/includes/display_objects/sendtofriend/index.cfm?link=#URLEncodedFormat(getCurrentURL())#&siteid=#request.siteid#">#rbFactory.getResourceBundle().messageFormat(rbFactory.getKey('favorites.emailthis'),rbFactory.getKey('sitemanager.content.type.#request.contentbean.getType()#'))#</a> </li>
 		<li id="print"><a href="javascript:window.print();void(0);">#rbFactory.getResourceBundle().messageFormat(rbFactory.getKey('favorites.printthis'),rbFactory.getKey('sitemanager.content.type.#request.contentbean.getType()#'))#</a></li>
 		<!---<li id="discuss"><a href="/forum">Discuss #contentTypeString#</a></li>--->
