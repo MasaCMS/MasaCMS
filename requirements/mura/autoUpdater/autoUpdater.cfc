@@ -49,7 +49,7 @@ to your own modified versions of Mura CMS.
 	<cfset variables.fileWriter=arguments.fileWriter>
 	<cfset variables.fileDelim=arguments.configBean.getFileDelim() />
 	<cfreturn this />
-</cffunction>
+</cffunction>  
 
 <cffunction name="update" output="false" returntype="any" access="public">
 <cfargument name="siteID" required="true" default="">

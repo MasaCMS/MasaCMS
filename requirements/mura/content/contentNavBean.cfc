@@ -117,6 +117,40 @@
 	
 </cffunction>
 
+<cffunction name="getKidsQuery" returnType="query" output="false" access="public">
+	<cfreturn variables.contentManager.getKidsQuery(siteID:getValue("siteID"), parentID:getValue("contentID"), sortBy:getValue("sortBy"), sortDirection:getValue("sortDirection")) />
+</cffunction>
+
+<cffunction name="getKidsIterator" returnType="any" output="false" access="public">
+	<cfargument name="liveOnly" required="true" default="true">
+	<cfset var q="" />
+	<cfset var it=getServiceFactory().getBean("contentIterator").init(packageBy="active")>
+	
+	<cfif arguments.liveOnly>
+		<cfset q=getKidsQuery() />
+	<cfelse>
+		<cfset q=variables.contentManager.getNest( parentID:getValue("parentID"), siteID:getValue("siteID"), sortBy:getValue("sortBy"), sortDirection:getValue("sortDirection")) />
+	</cfif>
+	<cfset it.setQuery(q)>
+	
+	<cfreturn it>
+</cffunction>
+
+<cffunction name="getCrumbArray" output="false" returntype="any">
+	<cfargument name="sort" required="true" default="asc">
+	<cfargument name="setInheritance" required="true" type="boolean" default="false">
+	<cfreturn variables.contentManager.getCrumbList(contentID=getValue("contentID"), siteID=getValue("siteID"), setInheritance=arguments.setInheritance, path=getValue("path"), sort=arguments.sort)>
+</cffunction>
+
+<cffunction name="getCrumbIterator" output="false" returntype="any">
+	<cfargument name="sort" required="true" default="asc">
+	<cfargument name="setInheritance" required="true" type="boolean" default="false">
+	<cfset var a=getCrumbArray(setInheritance=arguments.setInheritance,sort=arguments.sort)>
+	<cfset var it=getBean("contentIterator").init()>
+	<cfset it.setArray(a)>
+	<cfreturn it>
+</cffunction>
+
 <cffunction name="getURL" output="false">
 <cfargument name="querystring" required="true" default="">
 <cfargument name="complete" type="boolean" required="true" default="false">

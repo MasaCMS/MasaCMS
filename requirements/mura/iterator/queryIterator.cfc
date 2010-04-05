@@ -46,7 +46,7 @@
 	
 	<cffunction name="setStartRow" access="public" output="false">
 		<cfargument name="startRow">
-		<cfif variables.records.recordcount>
+		<cfif getRecordCount()>
 			<cfif variables.maxRecordsPerPage neq 1>
 				<cfset setPage(Ceiling(arguments.startRow/variables.maxRecordsPerPage))>
 			<cfelse>
@@ -91,7 +91,7 @@
 	</cffunction>
 	
 	<cffunction name="end" access="public" output="false">
-		<cfset variables.recordIndex = records.recordCount + 1 />
+		<cfset variables.recordIndex = getRecordCount() + 1 />
 		<cfreturn this>
 	</cffunction>
 				
@@ -120,7 +120,7 @@
 		<cfset variables.pageIndex = arguments.pageIndex />
 		<cfset variables.recordIndex = ((variables.pageIndex-1) * variables.maxRecordsPerPage)>
 		
-		<cfif variables.recordIndex gt variables.records.recordcount>
+		<cfif variables.recordIndex gt getRecordCount()>
 			<cfset variables.recordIndex=0>
 			<cfset variables.pageIndex=1>
 		</cfif>

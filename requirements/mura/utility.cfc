@@ -372,5 +372,36 @@ return list;
 	</cfif>
 	<cfreturn cffp.testSubmission(event.getAllValues())>
 </cffunction>
+
+<cffunction name="arrayToQuery" access="public" returntype="query" output="false">
+<cfargument name="array" type="array" required="yes"/>
+<cfscript>
+var r = 0;
+var c = 0;
+var myArray = ArrayNew(1);
+var myStruct = StructNew();
+var myQuery = QueryNew( "" );
+var colName = ArrayNew(1);
+var colCount = 0;
+var recCount = 0;
+var columnList = "";
+
+myArray = arguments.array;
+myStruct = myArray[1];
+colName = StructKeyArray( myStruct );
+colCount = ArrayLen( colName );
+columnList = ArrayToList( colName );
+recCount = ArrayLen( myArray );
+myQuery = QueryNew( columnList );
+
+QueryAddRow( myQuery , recCount );
+for( r = 1 ; r LTE recCount ; r = r + 1 ) {
+for( c = 1 ; c LTE colCount ; c = c + 1 ) {
+QuerySetCell( myQuery , colName[ c ] , myArray[ r ][colName[ c ] ] , r );
+}
+}
+</cfscript>
+<cfreturn myQuery />
+</cffunction>
 			
 </cfcomponent>

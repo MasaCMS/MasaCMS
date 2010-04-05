@@ -1485,6 +1485,21 @@ to your own modified versions of Mura CMS.
 	</cfif>
 </cffunction>
 
+<cffunction name="getCrumbArray" output="false" returntype="any">
+	<cfargument name="sort" required="true" default="asc">
+	<cfargument name="setInheritance" required="true" type="boolean" default="false">
+	<cfreturn variables.contentManager.getCrumbList(contentID=getContentID(), siteID=getSiteID(), setInheritance=arguments.setInheritance, path=getPath(), sort=arguments.sort)>
+</cffunction>
+
+<cffunction name="getCrumbIterator" output="false" returntype="any">
+	<cfargument name="sort" required="true" default="asc">
+	<cfargument name="setInheritance" required="true" type="boolean" default="false">
+	<cfset var a=getCrumbArray(setInheritance=arguments.setInheritance,sort=arguments.sort)>
+	<cfset var it=getBean("contentIterator").init()>
+	<cfset it.setArray(a)>
+	<cfreturn it>
+</cffunction>
+
 <cffunction name="hasDrafts" returntype="any" access="public" output="false">
 	<cfreturn variables.contentManager.getHasDrafts(getContentID(),getSiteID()) />
 </cffunction>

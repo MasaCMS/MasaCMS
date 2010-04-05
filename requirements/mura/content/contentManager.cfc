@@ -329,20 +329,18 @@ to your own modified versions of Mura CMS.
 	<cffunction name="getCrumbList" access="public" returntype="array" output="false">
 		<cfargument name="contentid" type="string"/>
 		<cfargument name="siteid" type="string"/>
+		<cfargument name="setInheritance" required="true" type="boolean" default="false">
+		<cfargument name="path" required="true" default="">
+		<cfargument name="sort" required="true" default="asc">
 		<cfset var array ="" />
 		
-		<cfset array=variables.contentGateway.getCrumbList(arguments.contentid,arguments.siteid) />
+		<cfset array=variables.contentGateway.getCrumbList(arguments.contentid,arguments.siteid, arguments.setInheritance, arguments.path) />
+		
+		<cfif arguments.sort eq "desc">
+			<cfset createObject("java", "java.util.Collections").reverse(array)>
+		</cfif>
 		
 		<cfreturn array />
-	</cffunction>
-	
-	<cffunction name="dspCrumblistTop" access="public" returntype="string" output="false">
-		<cfargument name="crumbdata" type="array"/>
-		<cfset var str ="" />
-		
-		<cfset str=variables.contentNavigation.dspCrumblistTop(arguments.crumbdata) />
-		
-		<cfreturn str />
 	</cffunction>
 
 	<cffunction name="getSections" access="public" returntype="query" output="false">
