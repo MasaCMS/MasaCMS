@@ -439,4 +439,12 @@ to your own modified versions of Mura CMS.
 	<cfreturn variables.DAO.getBean()>
 </cffunction>
 
+<cffunction name="getCrumbQuery" output="false" returntype="any">
+	<cfargument name="path" required="true">
+	<cfargument name="siteID" required="true">
+	<cfargument name="sort" required="true" default="asc">
+
+	<cfreturn variables.gateway.getCrumbQuery(arguments.path, arguments.siteid, arguments.sort)>
+</cffunction>
+	
 </cfcomponent>

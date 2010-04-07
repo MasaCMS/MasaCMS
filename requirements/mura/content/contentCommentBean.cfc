@@ -402,7 +402,6 @@ http://#listFirst(cgi.http_host,":")##variables.configBean.getServerPort()##vari
 <cfset var email="">
 <cfset var rsSubscribers=variables.contentDAO.getCommentSubscribers(getContentID(),getSiteID())>
 
-
 <cfquery name="rsContent" datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	select title from tcontent 
 	where contentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getContentID()#">
@@ -425,8 +424,7 @@ COMMENT:
 View 
 #arguments.contentRenderer.getCurrentURL()#
 
-To Unsubscribe Click Here
-#arguments.contentRenderer.getCurrentURL(true,"commentUnsubscribe=#URLEncodedFormat(getEmail())#")#
+To Unsubscribe Click Here:
 </cfoutput></cfsavecontent>
 
 <cfelse>
@@ -438,7 +436,7 @@ To Unsubscribe Click Here
 <cfset email=application.serviceFactory.getBean('mailer') />
 
 <cfloop query="rsSubscribers">
-	<cfset email.sendText(notifyText,
+	<cfset email.sendText(notifyText & arguments.contentRenderer.getCurrentURL(true,"commentUnsubscribe=#URLEncodedFormat(rsSubscribers.email)#"),
 							rsSubscribers.email,
 							site.getSite(),
 							notifySubject,
@@ -446,7 +444,7 @@ To Unsubscribe Click Here
 </cfloop>
 
 <cfif arguments.notifyAdmin and len(site.getContactEmail())>
-	<cfset email.sendText(notifyText,
+	<cfset email.sendText(notifyText & arguments.contentRenderer.getCurrentURL(true,"commentUnsubscribe=#URLEncodedFormat(site.getContactEmail())#"),
 							site.getContactEmail(),
 							site.getSite(),
 							notifySubject,
@@ -469,6 +467,45 @@ To Unsubscribe Click Here
 	<cfset var it=getBean("contentCommentIterator").init()>
 	<cfset it.setQuery(q)>
 	<cfreturn it />
+</cffunction>
+
+<cffunction name="getParent" output="false" returntype="any">
+	<cfset var commentBean=getCommentBean() />
+	<cfif len(getParentID())>
+		<cfset commentBean.setCommentID(getParentID()) />
+		<cfset commentBean.load() />
+		<cfreturn commentBean>
+	<cfelse>
+		<cfthrow message="Parent comment does not exist.">
+	</cfif>
+</cffunction>
+
+<cffunction name="getCrumbQuery" output="false" returntype="any">
+	<cfargument name="sort" required="true" default="asc">
+	<cfset var rs="">
+	
+	<cfquery name="rs" datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+		select contentid,commentid,parentid,name,email,url,comments,entered,siteid,isApproved,subscribe,userID,path, 
+		<cfif variables.configBean.getDBType() eq "MSSQL">
+		len(Cast(path as varchar(1000))) depth
+		<cfelse>
+		length(path) depth
+		</cfif> 
+		from tcontentcomments where 
+		commentID in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#getPath()#">)
+		and siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#getSiteID()#"/>
+		order by depth <cfif arguments.sort eq "desc">desc<cfelse>asc</cfif>
+	</cfquery>	
+
+	<cfreturn rs>
+</cffunction>
+
+<cffunction name="getCrumbIterator" output="false" returntype="any">
+	<cfargument name="sort" required="true" default="asc">
+	<cfset var rs=getCrumbQuery(arguments.sort)>
+	<cfset var it=getBean("contentCommentIterator").init()>
+	<cfset it.setQuery(rs)>
+	<cfreturn it>
 </cffunction>
 
 </cfcomponent>

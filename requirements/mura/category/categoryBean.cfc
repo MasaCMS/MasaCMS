@@ -416,6 +416,27 @@ to your own modified versions of Mura CMS.
 	
 	</cffunction>
 	
+	<cffunction name="getParent" output="false" returntype="any">
+		<cfif len(getParentID())>
+			<cfreturn getBean('category').loadBy(categoryID=getParentID(), siteid=getSiteID() )>
+		<cfelse>
+			<cfthrow message="Parent category does not exist.">
+		</cfif>
+	</cffunction>
+	
+	<cffunction name="getCrumbQuery" output="false" returntype="any">
+		<cfargument name="sort" required="true" default="asc">
+		<cfreturn variables.categoryManager.getCrumbQuery( getPath(), getSiteID(), arguments.sort) >
+	</cffunction>
+	
+	<cffunction name="getCrumbIterator" output="false" returntype="any">
+		<cfargument name="sort" required="true" default="asc">
+		<cfset var rs=getCrumbQuery(arguments.sort)>
+		<cfset var it=getBean("categoryIterator").init()>
+		<cfset it.setQuery(rs)>
+		<cfreturn it>
+	</cffunction>
+	
 </cfcomponent>
 
 

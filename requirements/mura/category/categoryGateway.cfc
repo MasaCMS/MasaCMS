@@ -269,4 +269,25 @@ to your own modified versions of Mura CMS.
 	<cfreturn rs />
 </cffunction>
 
+<cffunction name="getCrumbQuery" output="false" returntype="any">
+	<cfargument name="path" required="true">
+	<cfargument name="siteID" required="true">
+	<cfargument name="sort" required="true" default="asc">
+	<cfset var rs="">
+		
+	<cfquery name="rs" datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+		select categoryID,siteID,dateCreated,lastUpdate,lastUpdateBy,name,isInterestGroup,parentID,isActive,isOpen,notes,sortBy,sortDirection,restrictGroups,path,remoteID,remoteSourceURL,remotePubDate, 
+		<cfif variables.configBean.getDBType() eq "MSSQL">
+		len(Cast(path as varchar(1000))) depth
+		<cfelse>
+		length(path) depth
+		</cfif> 
+		from tcontentcategories where 
+		categoryID in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#arguments.path#">)
+		and siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteIDs#"/>
+		order by depth <cfif arguments.sort eq "desc">desc<cfelse>asc</cfif>
+	</cfquery>	
+	
+	<cfreturn rs>
+</cffunction>
 </cfcomponent>
