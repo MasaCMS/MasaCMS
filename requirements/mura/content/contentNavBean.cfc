@@ -131,7 +131,7 @@
 	<cfelse>
 		<cfset q=variables.contentManager.getNest( parentID:getValue("parentID"), siteID:getValue("siteID"), sortBy:getValue("sortBy"), sortDirection:getValue("sortDirection")) />
 	</cfif>
-	<cfset it.setQuery(q)>
+	<cfset it.setQuery(q,getValue("nextn"))>
 	
 	<cfreturn it>
 </cffunction>

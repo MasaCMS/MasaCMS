@@ -129,7 +129,11 @@
 	
 	<cffunction name="setNextN" access="public" output="false">
 		<cfargument name="nextN">
-		<cfset variables.maxRecordsPerPage=arguments.nextN>
+		<cfif arguments.nextN>
+			<cfset variables.maxRecordsPerPage=arguments.nextN>
+		<cfelse>
+			<cfset variables.maxRecordsPerPage=getRecordCount()>
+		</cfif>
 		<cfreturn this>
 	</cffunction>
 	
