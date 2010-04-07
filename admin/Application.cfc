@@ -191,7 +191,7 @@
 				
 			</cfif>
 		
-		<cfif application.configBean.getAdminSSL() and  cgi.https eq 'Off'  and request.context.compactDisplay eq '' and request.context.closeCompactDisplay eq ''>
+		<cfif application.configBean.getAdminSSL() and  not application.utility.isHTTPS()  and request.context.compactDisplay eq '' and request.context.closeCompactDisplay eq ''>
 			<cfif cgi.query_string eq ''>
 					<cfset page='#cgi.script_name#'>
 			<cfelse>
