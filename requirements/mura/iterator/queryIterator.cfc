@@ -129,7 +129,7 @@
 	
 	<cffunction name="setNextN" access="public" output="false">
 		<cfargument name="nextN">
-		<cfif arguments.nextN>
+		<cfif isNumeric(arguments.nextN) and arguments.nextN>
 			<cfset variables.maxRecordsPerPage=arguments.nextN>
 		<cfelse>
 			<cfset variables.maxRecordsPerPage=getRecordCount()>
