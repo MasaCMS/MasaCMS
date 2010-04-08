@@ -141,6 +141,8 @@ to your own modified versions of Mura CMS.
 
 	<cfset var feedBean=getBean() />
 	<cfset var rs ="" />
+	<cfset var beanArray=arrayNew(1)>
+	<cfset var utility="">
 	
 	<cfquery name="rs" datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	Select 
@@ -151,7 +153,16 @@ to your own modified versions of Mura CMS.
 	</cfquery>
 	
 	<cfif rs.recordcount gt 1>
-			<cfthrow message="The feed name '#arguments.name#' that you are reading by is not unique.">
+		<cfset utility=getServiceFactory().getBean("utility")>
+		<cfloop query="rs">
+			<cfset feedBean=getbean().set(utility.queryRowToStruct(rs,rs.currentrow))>
+			<cfset feedBean.setcontentID(readItems(rs.feedID,"contentID")) />
+			<cfset feedBean.setCategoryID(readItems(rs.feedID,"categoryID")) />
+			<cfset feedBean.setAdvancedParams(readAdvancedParams(rs.feedID)) />
+			<cfset feedBean.setIsNew(0)>
+			<cfset arrayAppend(beanArray,feedBean)>	
+		</cfloop>
+		<cfreturn beanArray>
 	<cfelseif rs.recordcount>
 		<cfset feedBean.set(rs) />
 		<cfset feedBean.setcontentID(readItems(rs.feedID,"contentID")) />
@@ -169,7 +180,9 @@ to your own modified versions of Mura CMS.
 
 	<cfset var feedBean=getBean() />
 	<cfset var rs ="" />
-	
+	<cfset var beanArray=arrayNew(1)>
+	<cfset var utility="">
+		
 	<cfquery name="rs" datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	Select 
 	#variables.fieldList#
@@ -179,7 +192,16 @@ to your own modified versions of Mura CMS.
 	</cfquery>
 	
 	<cfif rs.recordcount gt 1>
-			<cfthrow message="The feed remoteID '#arguments.remoteID#' that you are reading by is not unique.">
+		<cfset utility=getServiceFactory().getBean("utility")>
+		<cfloop query="rs">
+			<cfset feedBean=getbean().set(utility.queryRowToStruct(rs,rs.currentrow))>
+			<cfset feedBean.setcontentID(readItems(rs.feedID,"contentID")) />
+			<cfset feedBean.setCategoryID(readItems(rs.feedID,"categoryID")) />
+			<cfset feedBean.setAdvancedParams(readAdvancedParams(rs.feedID)) />
+			<cfset feedBean.setIsNew(0)>
+			<cfset arrayAppend(beanArray,feedBean)>		
+		</cfloop>
+		<cfreturn beanArray>
 	<cfelseif rs.recordcount>
 		<cfset feedBean.set(rs) />
 		<cfset feedBean.setcontentID(readItems(rs.feedID,"contentID")) />

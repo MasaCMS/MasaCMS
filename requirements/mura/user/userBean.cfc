@@ -919,14 +919,24 @@ to your own modified versions of Mura CMS.
 </cffunction>
 
 <cffunction name="loadBy" returnType="any" output="false" access="public">
+	<cfset var response="">
+	
 	<cfif not structKeyExists(arguments,"siteID")>
 		<cfset arguments.siteID=getSiteID()>
 	</cfif>
 	<cfif not structKeyExists(arguments,"isPublic")>
 		<cfset arguments.isPublic=getIsPublic()>
 	</cfif>
-	<cfset setAllValues(variables.userManager.read(argumentCollection=arguments).getAllValues())>
-	<cfreturn this />
+	
+	<cfset response=variables.userManager.read(argumentCollection=arguments)>
+
+	<cfif isArray(response)>
+		<cfset setAllValues(response[1].getAllValues())>
+		<cfreturn response>
+	<cfelse>
+		<cfset setAllValues(response.getAllValues())>
+		<cfreturn this>
+	</cfif>
 </cffunction>
 
 <cffunction name="addAddress" output="false" >

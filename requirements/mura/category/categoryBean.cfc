@@ -336,11 +336,21 @@ to your own modified versions of Mura CMS.
 	</cffunction>
 
 	<cffunction name="loadBy" returnType="any" output="false" access="public">
+		<cfset var response="">
+		
 		<cfif not structKeyExists(arguments,"siteID")>
 			<cfset arguments.siteID=getSiteID()>
 		</cfif>
-		<cfset setAllValues(variables.categoryManager.read(argumentCollection=arguments).getAllValues())>
-		<cfreturn this />
+		
+		<cfset response=variables.categoryManager.read(argumentCollection=arguments)>
+
+		<cfif isArray(response)>
+			<cfset setAllValues(response[1].getAllValues())>
+			<cfreturn response>
+		<cfelse>
+			<cfset setAllValues(response.getAllValues())>
+			<cfreturn this>
+		</cfif>
 	</cffunction>
 	
    <cffunction name="setIsNew" output="false" access="public">

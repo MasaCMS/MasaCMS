@@ -233,7 +233,7 @@ to your own modified versions of Mura CMS.
 			<!--- otherwise grab it from the cache --->
 			<cfif NOT cacheFactory.has( key )>
 				<cfset contentBean=variables.contentDAO.readActiveByFilename(arguments.filename,arguments.siteid,arguments.use404) />
-				<cfif not contentBean.getIsNew()>
+				<cfif not isArray(contentBean) and not contentBean.getIsNew()>
 					<cfset cacheFactory.get( key, contentBean.getAllValues() ) />
 				</cfif>
 				<cfreturn contentBean/>
@@ -262,7 +262,7 @@ to your own modified versions of Mura CMS.
 			<!--- otherwise grab it from the cache --->
 			<cfif NOT cacheFactory.has( key )>
 				<cfset contentBean=variables.contentDAO.readActiveByRemoteID(arguments.remoteID,arguments.siteid)  />
-				<cfif not contentBean.getIsNew()>
+				<cfif not isArray(contentBean) and not contentBean.getIsNew()>
 					<cfset cacheFactory.get( key, contentBean.getAllValues() ) />
 				</cfif>
 				<cfreturn contentBean/>

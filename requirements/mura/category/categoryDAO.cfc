@@ -117,6 +117,8 @@ to your own modified versions of Mura CMS.
 
 	<cfset var categoryBean=getBean() />
 	<cfset var rs ="" />
+	<cfset var beanArray=arrayNew(1)>
+	<cfset var utility="">
 	
 	<cfquery name="rs" datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	Select
@@ -127,7 +129,13 @@ to your own modified versions of Mura CMS.
 	</cfquery>
 	
 	<cfif rs.recordcount gt 1>
-		<cfthrow message="The category name '#arguments.name#' that you are reading by is not unique.">
+		<cfset utility=getServiceFactory().getBean("utility")>
+		<cfloop query="rs">
+			<cfset categoryBean=getbean().set(utility.queryRowToStruct(rs,rs.currentrow))>
+			<cfset categoryBean.setIsNew(0)>
+			<cfset arrayAppend(beanArray,categoryBean)>		
+		</cfloop>
+		<cfreturn beanArray>
 	<cfelseif rs.recordcount>
 		<cfset categoryBean.set(rs) />
 		<cfset categoryBean.setIsNew(0)>
@@ -142,6 +150,8 @@ to your own modified versions of Mura CMS.
 
 	<cfset var categoryBean=getBean() />
 	<cfset var rs ="" />
+	<cfset var beanArray=arrayNew(1)>
+	<cfset var utility="">
 	
 	<cfquery name="rs" datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	Select
@@ -152,7 +162,13 @@ to your own modified versions of Mura CMS.
 	</cfquery>
 	
 	<cfif rs.recordcount gt 1>
-		<cfthrow message="The category remoteID '#arguments.remoteID#' that you are reading by is not unique.">
+		<cfset utility=getServiceFactory().getBean("utility")>
+		<cfloop query="rs">
+			<cfset categoryBean=getbean().set(utility.queryRowToStruct(rs,rs.currentrow))>
+			<cfset categoryBean.setIsNew(0)>
+			<cfset arrayAppend(beanArray,categoryBean)>		
+		</cfloop>
+		<cfreturn beanArray>
 	<cfelseif rs.recordcount>
 		<cfset categoryBean.set(rs) />
 		<cfset categoryBean.setIsNew(0)>

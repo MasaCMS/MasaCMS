@@ -94,6 +94,8 @@ to your own modified versions of Mura CMS.
 		<cfset var rsmembs = "" />
 		<cfset var rsInterests = "" />
 		<cfset var userBean=application.serviceFactory.getBean("userBean") />
+		<cfset var beanArray=arrayNew(1)>
+		<cfset var utility="">	
 			
 		<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#" name="rsUser">
 			select #variables.fieldList#
@@ -106,15 +108,24 @@ to your own modified versions of Mura CMS.
 		</cfquery>
 		
 		<cfif rsUser.recordcount gt 1>
-			<cfthrow message="The user username '#arguments.username#' that you are reading by is not unique.">
-		<cfelseif rsUser.recordCount eq 1>
-			<cfset userBean.set(rsUser) />
-			<!--- <cfif userBean.getType() eq 2> --->
+			<cfset utility=getServiceFactory().getBean("utility")>
+			<cfloop query="rsUser">
+				<cfset userBean=getbean().set(utility.queryRowToStruct(rsUser,rsUser.currentrow))>
+				<cfset userBean.setIsNew(0)>
 				<cfset rsmembs=readMemberships(userBean.getUserId()) />
 				<cfset rsInterests=readInterestGroups(userBean.getUserId()) />
 				<cfset userBean.setGroupId(valuelist(rsmembs.groupid))/>
 				<cfset userBean.setCategoryId(valuelist(rsInterests.categoryid))/>
-			<!--- </cfif> --->
+				<cfset userBean.setAddresses(getAddresses(userBean.getUserID()))/>	
+				<cfset arrayAppend(beanArray,userBean)>	
+			</cfloop>
+			<cfreturn beanArray>
+		<cfelseif rsUser.recordCount eq 1>
+			<cfset userBean.set(rsUser) />
+			<cfset rsmembs=readMemberships(userBean.getUserId()) />
+			<cfset rsInterests=readInterestGroups(userBean.getUserId()) />
+			<cfset userBean.setGroupId(valuelist(rsmembs.groupid))/>
+			<cfset userBean.setCategoryId(valuelist(rsInterests.categoryid))/>
 			<cfset userBean.setAddresses(getAddresses(userBean.getUserID()))/>
 			<cfset userBean.setIsNew(0)>
 		<cfelse>
@@ -132,7 +143,9 @@ to your own modified versions of Mura CMS.
 		<cfset var rsmembs = "" />
 		<cfset var rsInterests = "" />
 		<cfset var userBean=application.serviceFactory.getBean("userBean") />
-			
+		<cfset var beanArray=arrayNew(1)>
+		<cfset var utility="">	
+		
 		<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#" name="rsUser">
 			select #variables.fieldList#
 			from tusers 
@@ -159,15 +172,24 @@ to your own modified versions of Mura CMS.
 		</cfquery>
 		
 		<cfif rsUser.recordcount gt 1>
-			<cfthrow message="The user groupname '#arguments.groupname#' that you are reading by is not unique.">
-		<cfelseif rsUser.recordCount eq 1>
-			<cfset userBean.set(rsUser) />
-			<!--- <cfif userBean.getType() eq 2> --->
+			<cfset utility=getServiceFactory().getBean("utility")>
+			<cfloop query="rsUser">
+				<cfset userBean=getbean().set(utility.queryRowToStruct(rsUser,rsUser.currentrow))>
+				<cfset userBean.setIsNew(0)>
 				<cfset rsmembs=readMemberships(userBean.getUserId()) />
 				<cfset rsInterests=readInterestGroups(userBean.getUserId()) />
 				<cfset userBean.setGroupId(valuelist(rsmembs.groupid))/>
 				<cfset userBean.setCategoryId(valuelist(rsInterests.categoryid))/>
-			<!--- </cfif> --->
+				<cfset userBean.setAddresses(getAddresses(userBean.getUserID()))/>
+				<cfset arrayAppend(beanArray,userBean)>		
+			</cfloop>
+			<cfreturn beanArray>
+		<cfelseif rsUser.recordCount eq 1>
+			<cfset userBean.set(rsUser) />
+			<cfset rsmembs=readMemberships(userBean.getUserId()) />
+			<cfset rsInterests=readInterestGroups(userBean.getUserId()) />
+			<cfset userBean.setGroupId(valuelist(rsmembs.groupid))/>
+			<cfset userBean.setCategoryId(valuelist(rsInterests.categoryid))/>
 			<cfset userBean.setAddresses(getAddresses(userBean.getUserID()))/>
 			<cfset userBean.setIsNew(0)>
 		<cfelse>
@@ -184,7 +206,9 @@ to your own modified versions of Mura CMS.
 		<cfset var rsmembs = "" />
 		<cfset var rsInterests = "" />
 		<cfset var userBean=application.serviceFactory.getBean("userBean") />
-			
+		<cfset var beanArray=arrayNew(1)>
+		<cfset var utility="">	
+		
 		<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#" name="rsUser">
 			select #variables.fieldList#
 			from tusers 
@@ -196,15 +220,24 @@ to your own modified versions of Mura CMS.
 		</cfquery>
 		
 		<cfif rsUser.recordcount gt 1>
-			<cfthrow message="The user remoteID '#arguments.remoteID#' that you are reading by is not unique.">
-		<cfelseif rsUser.recordCount eq 1>
-			<cfset userBean.set(rsUser) />
-			<!--- <cfif userBean.getType() eq 2> --->
+			<cfset utility=getServiceFactory().getBean("utility")>
+			<cfloop query="rsUser">
+				<cfset userBean=getbean().set(utility.queryRowToStruct(rsUser,rsUser.currentrow))>
+				<cfset userBean.setIsNew(0)>
 				<cfset rsmembs=readMemberships(userBean.getUserId()) />
 				<cfset rsInterests=readInterestGroups(userBean.getUserId()) />
 				<cfset userBean.setGroupId(valuelist(rsmembs.groupid))/>
 				<cfset userBean.setCategoryId(valuelist(rsInterests.categoryid))/>
-			<!--- </cfif> --->
+				<cfset userBean.setAddresses(getAddresses(userBean.getUserID()))/>		
+				<cfset arrayAppend(beanArray,userBean)>
+			</cfloop>
+			<cfreturn beanArray>
+		<cfelseif rsUser.recordCount eq 1>
+			<cfset userBean.set(rsUser) />
+			<cfset rsmembs=readMemberships(userBean.getUserId()) />
+			<cfset rsInterests=readInterestGroups(userBean.getUserId()) />
+			<cfset userBean.setGroupId(valuelist(rsmembs.groupid))/>
+			<cfset userBean.setCategoryId(valuelist(rsInterests.categoryid))/>
 			<cfset userBean.setAddresses(getAddresses(userBean.getUserID()))/>
 			<cfset userBean.setIsNew(0)>
 		<cfelse>

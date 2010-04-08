@@ -153,6 +153,8 @@ to your own modified versions of Mura CMS.
 		<cfargument name="use404" type="boolean" required="yes" default="false"/>
 		<cfset var rsContent = queryNew('empty') />
 		<cfset var contentBean=getbean()  />
+		<cfset var beanArray=arrayNew(1)>
+		<cfset var utility="">
 		
 		<cfif len(arguments.remoteID)>		
 			<cfquery datasource="#variables.dsn#" name="rsContent"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
@@ -164,7 +166,14 @@ to your own modified versions of Mura CMS.
 		</cfif>
 		
 		<cfif rsContent.recordcount gt 1>
-			<cfthrow message="The remoteID '#arguments.remoteID#' that you are reading by is not unique.">
+				<cfset utility=getServiceFactory().getBean("utility")>
+				<cfloop query="rscontent">
+				<cfset contentBean=getbean().set(utility.queryRowToStruct(rsContent,rsContent.currentrow))>
+				<cfset contentBean.setIsNew(0)>
+				<cfset contentBean.setPreserveID(rsContent.contentHistID)>
+				<cfset arrayAppend(beanArray,contentBean)>				
+				</cfloop>
+				<cfreturn beanArray>
 		<cfelseif rsContent.recordCount>
 			<cfset contentBean.set(rsContent) />
 			<cfset contentBean.setIsNew(0) />
@@ -184,6 +193,8 @@ to your own modified versions of Mura CMS.
 		<cfargument name="use404" type="boolean" required="yes" default="false"/>
 		<cfset var rsContent = queryNew('empty') />
 		<cfset var contentBean=getbean()  />
+		<cfset var beanArray=arrayNew(1)>
+		<cfset var utility="">
 			
 		<cfquery datasource="#variables.dsn#" name="rsContent"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 			select tcontent.*, tfiles.fileSize, tfiles.contentType, tfiles.contentSubType, tfiles.fileExt from tcontent 
@@ -200,7 +211,13 @@ to your own modified versions of Mura CMS.
 		</cfquery>
 		
 		<cfif rsContent.recordcount gt 1>
-			<cfthrow message="The filename '#arguments.filename#' that you are reading by is not unique.">
+			<cfset utility=getServiceFactory().getBean("utility")>
+				<cfloop query="rscontent">
+				<cfset contentBean=getbean().set(utility.queryRowToStruct(rsContent,rsContent.currentrow))>
+				<cfset contentBean.setIsNew(0)>
+				<cfset contentBean.setPreserveID(rsContent.contentHistID)>
+				<cfset arrayAppend(beanArray,contentBean)>				
+				</cfloop>
 		<cfelseif rsContent.recordCount eq 1>
 			<cfset contentBean.set(rsContent) />
 			<cfset contentBean.setIsNew(0) />
