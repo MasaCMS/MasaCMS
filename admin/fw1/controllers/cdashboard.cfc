@@ -36,7 +36,7 @@
 	<cfparam name="rc.layout" default=""/>
 	<cfparam name="rc.ajax" default=""/>
 	
-	<cfif (not listFind(session.mura.memberships,'Admin;#variables.settingsManager.getSite(rc.siteid).getPrivateUserPoolID()#;0') and not listFind(session.mura.memberships,'S2')) and not variables.permUtility.getModulePerm('00000000000000000000000000000000000',rc.siteid)>
+	<cfif (not listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(rc.siteid).getPrivateUserPoolID()#;0') and not listFind(session.mura.memberships,'S2')) and not application.permUtility.getModulePerm('00000000000000000000000000000000000',rc.siteid)>
 		<cfset secure(rc)>
 	</cfif>
 	
