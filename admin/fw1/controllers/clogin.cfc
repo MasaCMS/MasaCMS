@@ -30,7 +30,7 @@
 
 <cffunction name="login" output="false">
 	<cfargument name="rc">
-	<cfset variables.loginManager.login(rc)>	
+	<cfset application.loginManager.login(rc)>	
 </cffunction>
 
 <cffunction name="logout" output="false">

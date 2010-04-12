@@ -55,3 +55,4 @@ clusteriplist=
 siteidinurls=1
 indexfileinurls=1
 strictExtendedData=1
+loginStrikes=4

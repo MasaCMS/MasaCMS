@@ -20,9 +20,9 @@
 			<cfset variables.fw.redirect(action="clogin.main",path="")>
 		</cfif>
 		
-		<cfset rsList = variables.settingsManager.getUserSites(session.siteArray,listFind(session.mura.memberships,'S2')) />
+		<cfset rsList=application.settingsManager.getUserSites(session.siteArray,listFind(session.mura.memberships,'S2')) />
 		
-		<cfset siteID=variables.contentServer.bindToDomain(isAdmin=true)>
+		<cfset siteID=application.contentServer.bindToDomain(isAdmin=true)>
 		
 		<cfif siteID neq "--none--">
 			<cfquery name="rsDefault" dbtype="query">
@@ -41,7 +41,7 @@
 		</cfif>
 		
 		<cfif len(rc.siteid)>
-			<cfif variables.configBean.getDashboard()>
+			<cfif application.configBean.getDashboard()>
 				<cfset variables.fw.redirect(action="cDashboard.main",append="siteid",path="index.cfm")>
 			<cfelse>
 				<cfset rc.moduleid="00000000000000000000000000000000000">

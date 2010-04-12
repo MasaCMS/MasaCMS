@@ -105,6 +105,7 @@ to your own modified versions of Mura CMS.
 <cfset variables.instance.indexFileInURLS=true />
 <cfset variables.instance.strictExtendedData=false />
 <cfset variables.instance.appreloadKey=application.appreloadKey />
+<cfset variables.instance.loginStrikes=4 />
 <cfset variables.instance.tempDir=getTempDirectory() />
 
 <cffunction name="init" returntype="any" output="true" access="public">
@@ -240,6 +241,10 @@ to your own modified versions of Mura CMS.
 	
 	<cfif structKeyExists(config,"strictExtendedData")>
 		<cfset setStrictExtendedData(config.strictExtendedData)/>
+	</cfif>
+	
+	<cfif structKeyExists(config,"loginStrikes")>
+		<cfset setLoginStrikes(config.loginStrikes)/>
 	</cfif>
 	
 	<cfswitch expression="#server.coldfusion.productName#">
@@ -963,6 +968,17 @@ to your own modified versions of Mura CMS.
 
 <cffunction name="getStrictExtendedData" returntype="boolean" access="public" output="false">
 	<cfreturn variables.instance.strictExtendedData />
+</cffunction>
+
+<cffunction name="setLoginStrikes" access="public" output="false">
+	<cfargument name="loginStrikes" />
+	<cfif isNumeric(arguments.loginStrikes)>
+		<cfset variables.instance.loginStrikes = arguments.loginStrikes />
+	</cfif>
+</cffunction>
+
+<cffunction name="getLoginStrikes" returntype="any" access="public" output="false">
+	<cfreturn variables.instance.loginStrikes />
 </cffunction>
 
 <cffunction name="getAllValues" returntype="any" access="public" output="false">

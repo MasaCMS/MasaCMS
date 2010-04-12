@@ -211,6 +211,9 @@ to your own modified versions of Mura CMS.
 				<entry key="strictExtendedData">
 					<value>#XMLFormat(variables.ini.get(mode, "strictExtendedData"))#</value>
 				</entry>
+				<entry key="loginStrikes">
+					<value>#XMLFormat(variables.ini.get(mode, "loginStrikes"))#</value>
+				</entry>
 				</map>
 			</constructor-arg>
 		</bean>

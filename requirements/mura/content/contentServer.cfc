@@ -96,12 +96,16 @@ to your own modified versions of Mura CMS.
 	<cfset var site="">
 	<cfset var i="">
 	<cfset var lineBreak=chr(13)&chr(10)>
+	<cfset var checkDomain=listFirst(cgi.http_host,":")>
 	
+	<cfif not len(checkDomain)>
+		<cfset checkDomain=cgi.server_name>
+	</cfif>
 	<!--- check for exact host match to find siteID --->
 	<cfloop query="rsSites">
 	<cfset site=application.settingsManager.getSite(rsSites.siteID)>
 	<cftry>
-	<cfif site.isValidDomain(domain:listFirst(cgi.http_host,":"),mode:"complete")>
+	<cfif site.isValidDomain(domain:checkDomain, mode:"complete")>
 		<cfreturn rsSites.siteid>
 	</cfif>
 	<cfcatch></cfcatch>
@@ -112,7 +116,7 @@ to your own modified versions of Mura CMS.
 	<cfloop query="rssites">
 	<cfset site=application.settingsManager.getSite(rsSites.siteID)>
 	<cftry>
-	<cfif site.isValidDomain(domain:listFirst(cgi.http_host,":"),mode:"partial")>>
+	<cfif site.isValidDomain(domain:checkDomain, mode:"partial")>>
 		<cflocation addtoken="no" url="http://#application.settingsManager.getSite(rsSites.siteID).getDomain()##application.configBean.getContext()#">
 	</cfif>
 	<cfcatch></cfcatch>
@@ -120,7 +124,7 @@ to your own modified versions of Mura CMS.
 	</cfloop>
 	
 	<!--- if still not found site the siteID to default --->
-	<cfif listFirst(cgi.http_host,":") eq application.configBean.getAdminDomain()>
+	<cfif checkDomain eq application.configBean.getAdminDomain()>
 		<cfif arguments.isAdmin>
 			<cfreturn "--none--">	
 		<cfelse>

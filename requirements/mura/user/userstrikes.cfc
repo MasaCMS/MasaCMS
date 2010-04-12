@@ -12,6 +12,7 @@
 	<cfargument name="configBean">
 	<cfset setUsername(arguments.username)>
 	<cfset variables.configBean=arguments.configBean>
+	<cfset variables.allowedStrikes=variables.configBean.getLoginStrikes()>
 	<cfset load()>
 	<cfreturn this>
 </cffunction>
