@@ -214,6 +214,9 @@ to your own modified versions of Mura CMS.
 				<entry key="loginStrikes">
 					<value>#XMLFormat(variables.ini.get(mode, "loginStrikes"))#</value>
 				</entry>
+				<entry key="tempDir">
+					<value>#XMLFormat(variables.ini.get(mode, "tempDir"))#</value>
+				</entry>
 				</map>
 			</constructor-arg>
 		</bean>

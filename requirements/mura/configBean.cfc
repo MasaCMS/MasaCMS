@@ -247,6 +247,10 @@ to your own modified versions of Mura CMS.
 		<cfset setLoginStrikes(config.loginStrikes)/>
 	</cfif>
 	
+	<cfif structKeyExists(config,"tempDir")>
+		<cfset setTempDir(config.tempDir)/>
+	</cfif>
+	
 	<cfswitch expression="#server.coldfusion.productName#">
 	<cfcase value="Railo">
 		<cfset setCompiler("Railo")/>	
@@ -907,6 +911,13 @@ to your own modified versions of Mura CMS.
 	<cfargument name="proxyPort" type="String" />
 	<cfif isnumeric(arguments.proxyPort)>
 	<cfset variables.instance.proxyPort = arguments.proxyPort />
+	</cfif>
+</cffunction>
+
+<cffunction name="setTempDir" returntype="String" access="public" output="false">
+	<cfargument name="tempDir" />
+	<cfif directoryExists(arguments.tempDir)>
+		<cfset variables.instance.tempDir = arguments.tempDir />
 	</cfif>
 </cffunction>
 
