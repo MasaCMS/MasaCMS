@@ -41,6 +41,23 @@ window.parent.SetOkButton( true ) ;
 		
 }*/
 
+function editorHasSelection()
+{
+var FCK = window.parent.InnerDialogLoaded().FCK ;
+var bHasSelection = false;
+try {
+var oSel = null;
+if(document.all) {
+oSel = FCK.EditorDocument.selection ; // ie
+bHasSelection = !(oSel.type == "None");
+} else {
+oSel = FCK.EditorWindow.getSelection() ; // gecko
+bHasSelection = (oSel && oSel.rangeCount == 1 && oSel.getRangeAt(0).cloneContents().childNodes.length > 0);
+}
+} catch (e) {}
+return bHasSelection;
+}
+
 Ok =function() {
 	if(typeof(document.forms.frmLinks.theLinks) != 'undefined'){
 	
@@ -84,10 +101,11 @@ Ok =function() {
 		}
    		else  
    		{  
+   			
 				//mySelection = FCK.EditorDocument.getSelection();
-				mySelection = FCK.EditorWindow.getSelection();
-			
-				if(mySelection.length > 0 ){
+				//mySelection = FCK.EditorWindow.getSelection();
+				
+				if(editorHasSelection()){
 					oEditor.FCK.CreateLink(theLink[0]) ;
 				}
 				else
