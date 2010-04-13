@@ -115,8 +115,28 @@ to your own modified versions of Mura CMS.
 
 </cfsilent>
 <dl class="oneColumn">
-	<dt>Plugin Name (Alias)</dt>	
-	<dd><input name="pluginalias" type="text" value="#htmlEditFormat(rsPlugin.name)#" required="true" message="The 'Name' field is required." maxlength="100"/></dd>
+
+<cfset licenseFile="#application.configBean.getPluginDir()##application.configBean.getFileDelim()##rsPlugin.directory##application.configBean.getFileDelim()#plugin#application.configBean.getFileDelim()#license.txt">
+<cfset hasLicense= isNumeric(rsPlugin.deployed) and not rsPlugin.deployed
+and fileExists(licenseFile)>
+<cfif hasLicense>
+<cffile file="#licenseFile#" action="read" variable="license">
+<dt>End User License Agreement</dt>
+<dd>
+<textarea>
+#license#
+</textarea>
+</dd>
+<select name="licenseStatus" required="true" message="You Must Accept the End User License Agreement in Order to Proceed." onchange="if(this.value=='accept'){document.getElementById('settingsContainter').style.display='block';}else{document.getElementById('settingsContainter').style.display='none';}">
+<option value="">I Do Not Accept</option>
+<option value="accept">I Accept</option>
+</select>
+</dd>
+<span id="settingsContainter" style="display:none">
+</cfif>
+
+<dt>Plugin Name (Alias)</dt>	
+<dd><input name="pluginalias" type="text" value="#htmlEditFormat(rsPlugin.name)#" required="true" message="The 'Name' field is required." maxlength="100"/></dd>
 
 <dt>Load Priority</dt>
 <dd><select name="loadPriority">
@@ -201,6 +221,9 @@ to your own modified versions of Mura CMS.
 <li><input type="checkbox" value="#request.rsSites.siteID#" name="siteAssignID"<cfif listFind(valuelist(rsAssigned.siteID),request.rsSites.siteID)> checked</cfif>> #request.rsSites.site#</li>
 </cfloop>
 </ul></dd>
+<cfif hasLicense>
+</span>
+</cfif>
 </dl>
 <input name="package" type="hidden" value="#htmlEditFormat(package)#"/>
 <input type="hidden" name="moduleID" value="#attributes.moduleID#">
