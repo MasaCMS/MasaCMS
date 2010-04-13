@@ -280,7 +280,7 @@ to your own modified versions of Mura CMS.
 					insert into tpermissions (contentID,groupID,Type,SiteID)
 					values
 					(
-					<cfif type eq "module" or not find(contentID,"-")>
+					<cfif type eq "module" or not find("-",contentID)>
 					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#contentID#">
 					<cfelse>
 					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(contentID)#">
