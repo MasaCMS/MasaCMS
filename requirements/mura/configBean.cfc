@@ -916,7 +916,7 @@ to your own modified versions of Mura CMS.
 
 <cffunction name="setTempDir" returntype="String" access="public" output="false">
 	<cfargument name="tempDir" />
-	<cfif directoryExists(arguments.tempDir)>
+	<cfif len(arguments.tempDir) and directoryExists(arguments.tempDir)>
 		<cfset variables.instance.tempDir = arguments.tempDir />
 	</cfif>
 </cffunction>
