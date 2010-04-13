@@ -818,7 +818,7 @@ to your own modified versions of Mura CMS.
 				
 				<cfloop query="rstclassextendsets">
 					<cfquery datasource="#arguments.toDSN#">
-						insert into tclassextendsets (extendsetID, subTypeID, categoryID, siteID, name, orderno,isActive)
+						insert into tclassextendsets (extendsetID, subTypeID, categoryID, siteID, name, orderno, isActive, container)
 						values
 						(
 						<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(extendSetID)#">,
@@ -827,7 +827,8 @@ to your own modified versions of Mura CMS.
 						<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#arguments.toSiteID#">,
 						<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(name neq '',de('no'),de('yes'))#" value="#name#">,
 						<cfqueryparam cfsqltype="cf_sql_NUMERIC" null="#iif(orderno neq '',de('no'),de('yes'))#" value="#orderno#">,
-						<cfqueryparam cfsqltype="cf_sql_NUMERIC" null="#iif(isActive neq '',de('no'),de('yes'))#" value="#isActive#">
+						<cfqueryparam cfsqltype="cf_sql_NUMERIC" null="#iif(isActive neq '',de('no'),de('yes'))#" value="#isActive#">,
+						<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(container neq '',de('no'),de('yes'))#" value="#container#">
 						)
 					</cfquery>
 				</cfloop>
