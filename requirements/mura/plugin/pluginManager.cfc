@@ -192,20 +192,23 @@ select * from tplugins order by #arguments.orderby#
 	<cffile action="upload" filefield="NewPlugin" nameconflict="makeunique" destination="#variables.configBean.getTempDir()#">	
 	
 	<cfif isNew>
-	<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-	insert into tplugins (moduleID,name,provider,providerURL,version,deployed,category,created,loadPriority) values (
-	<cfqueryparam cfsqltype="cf_sql_varchar" value="#modID#">,
-	<cfqueryparam cfsqltype="cf_sql_varchar" value="An error occurred.">,
-	null,
-	null,
-	null,
-	0,
-	null,
-	#createODBCDateTime(now())#,
-	5
-	)
-	</cfquery>
-
+		<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+		insert into tplugins (moduleID,name,provider,providerURL,version,deployed,category,created,loadPriority) values (
+		<cfqueryparam cfsqltype="cf_sql_varchar" value="#modID#">,
+		<cfqueryparam cfsqltype="cf_sql_varchar" value="An error occurred.">,
+		null,
+		null,
+		null,
+		0,
+		null,
+		#createODBCDateTime(now())#,
+		5
+		)
+		</cfquery>
+	<cfelse>
+		<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+		update tplugins set deployed=0 where moduleID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#modID#">
+		</cfquery>
 	</cfif>
 	
 	<cfset rsPlugin=getPlugin(modID,'',false) />
