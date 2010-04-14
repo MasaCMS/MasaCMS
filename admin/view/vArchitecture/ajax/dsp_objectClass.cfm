@@ -323,7 +323,7 @@ objectID not in (''
 	</cfloop>
 	)
 </cfquery>
-
+<cfif rs.recordcount>
 <cfoutput>
 <select name="availableObjects" id="availableObjects" class="multiSelect" size="#evaluate((application.settingsManager.getSite(attributes.siteid).getcolumnCount() * 6)-4)#" style="width:310px;">
 </cfoutput>
@@ -331,6 +331,7 @@ objectID not in (''
 	<option value="plugin~#rs.title# - #rs.name#~#rs.objectID#">#rs.name#</option>
 </cfoutput>
 <cfoutput></select></cfoutput>
+</cfif>
 <cfelse>
 <cfoutput>#customOutput#</cfoutput>
 </cfif>
