@@ -918,6 +918,9 @@ to your own modified versions of Mura CMS.
 	<cfargument name="tempDir" />
 	<cfif len(arguments.tempDir) and directoryExists(arguments.tempDir)>
 		<cfset variables.instance.tempDir = arguments.tempDir />
+		<cfif not listFind("/,\",right(variables.instance.tempDir,1))>
+			<cfset variables.instance.tempDir = variables.instance.tempDir & getFileDelim() />
+		</cfif>
 	</cfif>
 </cffunction>
 
