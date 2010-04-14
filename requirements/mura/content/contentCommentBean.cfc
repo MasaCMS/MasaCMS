@@ -278,7 +278,10 @@
 	<cfset var rs=""/>
 	<cfquery name="rs" datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	select c.contentid,c.commentid,c.parentid,c.name,c.email,c.url,c.comments,c.entered,c.siteid,c.isApproved,c.subscribe, c.userID, c.path, k.kids, f.fileid, f.fileExt 
-	from tcontentcomments c left join (select count(*) kids, parentID from tcontentcomments where commentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getCommentID()#">) k
+	from tcontentcomments c left join (select count(*) kids, parentID 
+										from tcontentcomments where commentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getCommentID()#"> 
+										group by parentID
+										) k
 										on c.commentID = k.parentID
 	left join tusers u on c.userid=u.userid
 	left join tfiles f on u.photofileid=f.fileid 
@@ -551,10 +554,8 @@ To Unsubscribe Click Here:
 		left join tusers u on (c.userid=u.userid)
 		left join tfiles f on (u.photofileid=f.fileid)
 		left join (select count(*) kids, parentID from tcontentcomments
-				where parentID in (select commentID from tcontentcomments
-									where parentID in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#getPath()#">)			  	
-								  )
-				
+					where parentID in (select commentID from tcontentcomments where parentID in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#getPath()#">))
+					group by parentID
 				)  k on c.commentID=k.parentID
 		where 
 		commentID in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#getPath()#">)

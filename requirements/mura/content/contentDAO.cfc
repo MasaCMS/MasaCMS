@@ -842,6 +842,7 @@ to your own modified versions of Mura CMS.
 									and isApproved=1
 									</cfif>
 								  )
+				group by parentID
 				
 				)  k on c.commentID=k.parentID
 	where c.contentid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentid#"/> 
