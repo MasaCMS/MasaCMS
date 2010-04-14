@@ -86,7 +86,7 @@
 <cfset variables.defaultJpegCompression = "90">
 <cfset variables.interpolation = "bicubic">
 <cfset variables.textAntiAliasing = "Yes">
-<cfset variables.tempDirectory = "#getTempDirectory()#">
+<cfset variables.tempDirectory = "#application.configBean.getTempDir()#">
 
 <cfset variables.javanulls = "no">
 <cftry>

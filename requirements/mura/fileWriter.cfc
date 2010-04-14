@@ -1,13 +1,14 @@
 <cfcomponent extends="mura.cfobject" output="false">
 <cfset variables.useMode=true>
 <cffunction name="init" output="false" returntype="any">
-<cfargument name="useMode">
-<cfif structkeyExists(arguments,"useMode") and isBoolean(arguments.useMode)>
+<cfargument name="useMode" required="true" default="true">
+<cfargument name="tempDir" required="true" default="#application.configBean.getTempDir()#">
+<cfif isBoolean(arguments.useMode)>
 <cfset variables.useMode=arguments.useMode>
 <cfelse>
 <cfset variables.useMode=true>
 </cfif>
-<cfset variables.tempDir=getTempDirectory()>
+<cfset variables.tempDir=arguments.tempDir >
 <cfreturn this>
 </cffunction>
 

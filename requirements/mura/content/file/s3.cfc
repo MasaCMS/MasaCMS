@@ -224,7 +224,7 @@ limitations under the License.
 		<cfif structKeyExists(arguments, "localFilePath")>
 			<cfset filepath = localFilePath />
 		<cfelse>
-			<cfset filepath = getTempFile(getTempDirectory(), "s3") />
+			<cfset filepath = getTempFile(application.configBean.getTempDir(), "s3") />
 		</cfif>
 		<cfif useLocalCache>
 			<cfset cachePath = cacheFilenameFromBucketAndKey(bucket, objectKey) />

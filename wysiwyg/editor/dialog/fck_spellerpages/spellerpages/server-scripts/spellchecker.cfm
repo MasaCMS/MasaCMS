@@ -13,8 +13,8 @@ others files in certain cases.
 <cfset aspell_dir	  = "C:\Program Files\Aspell\bin">
 <cfset lang         = "en_US">
 <cfset aspell_opts  = "-a --lang=#lang# --encoding=utf-8 -H --rem-sgml-check=alt">
-<cfset tempfile_in  = GetTempFile(GetTempDirectory(), "spell_")>
-<cfset tempfile_out = GetTempFile(GetTempDirectory(), "spell_")>
+<cfset tempfile_in  = GetTempFile(application.configBean.getTempDir(), "spell_")>
+<cfset tempfile_out = GetTempFile(application.configBean.getTempDir(), "spell_")>
 <cfset spellercss   = "../spellerStyle.css">
 <cfset word_win_src = "../wordWindow.js">
 <cfset fileWriter=application.serviceFactory.getBean("fileWriter")>
