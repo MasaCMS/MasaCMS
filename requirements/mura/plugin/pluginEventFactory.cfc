@@ -57,7 +57,7 @@
 					<cfcase value="Handler">
 						<cfset classInstance.handle=classInstance[arguments.key & variables.class]>
 					</cfcase>
-					<cfcase value="Transaltor">
+					<cfcase value="Translator">
 						<cfset classInstance.translate=classInstance[arguments.key & variables.class]>
 					</cfcase>
 				</cfswitch>
@@ -76,7 +76,7 @@
 					<cfcase value="Handler">
 						<cfset classInstance.handle=classInstance[arguments.key & variables.class]>
 					</cfcase>
-					<cfcase value="Transaltor">
+					<cfcase value="Translator">
 						<cfset classInstance.translate=classInstance[arguments.key & variables.class]>
 					</cfcase>
 				</cfswitch>
