@@ -828,15 +828,29 @@ to your own modified versions of Mura CMS.
 	<cfset var rs= ''/>
 	
 	<cfquery name="rs" datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-	select contentid,commentid,parentid,name,email,url,comments,entered,siteid,isApproved,subscribe,userID,path
-	from tcontentcomments 
-	where contentid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentid#"/> 
-	and siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
-	and parentID <cfif len(arguments.parentID)>=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.parentID#"/><cfelse>is null</cfif>
-	<cfif not arguments.isEditor >
-	and isApproved=1
+	select c.contentid, c.commentid, c.parentid, c.name, c.email, c.url, c.comments, c.entered, c.siteid, c.isApproved, c.subscribe, c.userID, c.path,
+	f.fileid, f.fileExt, k.kids
+	from tcontentcomments c 
+	left join tusers u on c.userid=u.userid
+	left join tfiles f on u.photofileid=f.fileid
+	left join (select count(*) kids, parentID from tcontentcomments
+				where parentID in (select commentID from tcontentcomments
+									where contentid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentid#"/> 
+									and siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
+									and parentID <cfif len(arguments.parentID)>=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.parentID#"/><cfelse>is null</cfif>
+								  	<cfif not arguments.isEditor>
+									and isApproved=1
+									</cfif>
+								  )
+				
+				)  k on c.commentID=k.parentID
+	where c.contentid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentid#"/> 
+	and c.siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
+	and c.parentID <cfif len(arguments.parentID)>=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.parentID#"/><cfelse>is null</cfif>
+	<cfif not arguments.isEditor>
+	and c.isApproved=1
 	</cfif>
-	order by entered #arguments.sortOrder#
+	order by c.entered #arguments.sortOrder#
 	</cfquery>
 	
 	<cfreturn rs />

@@ -155,7 +155,7 @@ to your own modified versions of Mura CMS.
 	tfiles.fileSize,tfiles.fileExt,tcontent.fileid,
 	tcontent.tags,tcontent.credits,tcontent.audience, tcontent.orderNo,
 	tcontentstats.rating,tcontentstats.totalVotes,tcontentstats.downVotes,tcontentstats.upVotes,
-	tcontentstats.comments, tparent.type parentType, <cfif doKids> qKids.kids<cfelse> 0 as kids</cfif>,tcontent.path, tcontent.created, tcontent.nextn
+	tcontentstats.comments, tparent.type parentType, <cfif doKids> qKids.kids<cfelse> null as kids</cfif>,tcontent.path, tcontent.created, tcontent.nextn
 	from tcontent
 	left Join tfiles on (tcontent.fileid=tfiles.fileid)
 	left Join tcontentstats on (tcontent.contentid=tcontentstats.contentid

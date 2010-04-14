@@ -42,6 +42,8 @@ to your own modified versions of Mura CMS.
 --->
 <cfcomponent extends="mura.cfobject" output="false">
 
+<cfset variables.fieldList="tusers.userID, tusers.GroupName, tusers.Fname, tusers.Lname, tusers.UserName, tusers.Password, tusers.PasswordCreated, tusers.Email, tusers.Company, tusers.JobTitle, tusers.MobilePhone, tusers.Website, tusers.Type, tusers.subType, tusers.Ext, tusers.ContactForm, tusers.Admin, tusers.S2, tusers.LastLogin, tusers.LastUpdate, tusers.LastUpdateBy, tusers.LastUpdateByID, tusers.Perm, tusers.InActive, tusers.IsPublic, tusers.SiteID, tusers.Subscribe, tusers.Notes, tusers.description, tusers.Interests, tusers.keepPrivate, tusers.PhotoFileID, tusers.IMName, tusers.IMService, tusers.Created, tusers.RemoteID, tusers.Tags, tusers.tablist, tfiles.fileEXT photoFileExt">
+
 <cffunction name="init" returntype="any" access="public" output="false">
 <cfargument name="configBean" type="any" required="yes"/>
 <cfargument name="settingsManager" type="any" required="yes"/>
@@ -78,7 +80,9 @@ to your own modified versions of Mura CMS.
 	<cfset var rs = "" />
 
 	<cfquery name="rs" datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-	Select * from tusers where type=2 and isPublic = <cfqueryparam cfsqltype="cf_sql_numeric" value="#arguments.isPublic#"> and 
+	Select #variables.fieldList# from tusers 
+	left join tfiles on tusers.photofileID=tfiles.fileID
+	where tusers.type=2 and tusers.isPublic = <cfqueryparam cfsqltype="cf_sql_numeric" value="#arguments.isPublic#"> and 
 	tusers.siteid = <cfif arguments.isPublic eq 0 >
 		'#variables.settingsManager.getSite(arguments.siteid).getPrivateUserPoolID()#'
 		<cfelse>
@@ -90,14 +94,14 @@ to your own modified versions of Mura CMS.
 	</cfif>
 	
 	 and (
-	 		lname like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.search#%">
-	 		or fname like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.search#%">
-	 		or company like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.search#%">
-	 		or username like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.search#%">
-	 		or email like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.search#%">
-	 		or jobtitle like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.search#%">)
+	 		tusers.lname like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.search#%">
+	 		or tusers.fname like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.search#%">
+	 		or tusers.company like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.search#%">
+	 		or tusers.username like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.search#%">
+	 		or tusers.email like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.search#%">
+	 		or tusers.jobtitle like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.search#%">)
 	 
-	<cfif not listFind(session.mura.memberships,'S2')> and s2=0 </cfif> order by lname
+	<cfif not listFind(session.mura.memberships,'S2')> and tusers.s2=0 </cfif> order by tusers.lname
 	</cfquery>
 	
 	<cfreturn rs />
@@ -145,13 +149,13 @@ to your own modified versions of Mura CMS.
 	</cfloop>
 
 	<cfquery name="rs" datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#" result="request.test">
-	Select tusers.* from tusers 
-	
+	Select #variables.fieldList# from tusers 
+	left join tfiles on tusers.photofileID=tfiles.fileID
 	<cfloop list="#jointables#" index="jointable">
 	inner join #jointable# on (tusers.userid=#jointable#.userid)
 	</cfloop>
 	
-	where type=2 and isPublic =#params.getIsPublic()# and 
+	where tusers.type=2 and tusers.isPublic =#params.getIsPublic()# and 
 	tusers.siteid = <cfif params.getIsPublic() eq 0 >
 		'#variables.settingsManager.getSite(params.getSiteID()).getPrivateUserPoolID()#'
 		<cfelse>
@@ -249,10 +253,10 @@ to your own modified versions of Mura CMS.
 	
 	
 	
-	and inactive=#params.getInActive()#
+	and tusers.inactive=#params.getInActive()#
 	
 	
-	<cfif not listFind(session.mura.memberships,'S2')> and s2=0 </cfif> order by lname
+	<cfif not listFind(session.mura.memberships,'S2')> and tusers.s2=0 </cfif> order by tusers.lname
  
 	</cfquery>
 	
@@ -263,8 +267,9 @@ to your own modified versions of Mura CMS.
 	<cfargument name="siteid" type="string" default="" />
 	<cfset var rs = "" />
 	<cfquery name="rs" datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-	SELECT tsettings.Site, tusers.UserID, tusers.GroupName
+	SELECT tsettings.Site, #variables.fieldList#
 	FROM tsettings INNER JOIN tusers ON tsettings.SiteID = tusers.SiteID
+	LEFT JOIN tfiles on tusers.photofileID=tfiles.fileID
 	WHERE tusers.Type=1 AND tusers.isPublic=0
 	and tusers.siteID = '#variables.settingsManager.getSite(arguments.siteid).getPrivateUserPoolID()#'
 	ORDER BY tsettings.Site, tusers.Perm DESC, tusers.GroupName
@@ -276,8 +281,9 @@ to your own modified versions of Mura CMS.
 	<cfargument name="siteid" type="string" default="" />
 	<cfset var rs = "" />
 	<cfquery name="rs" datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-	SELECT tsettings.Site, tusers.UserID, tusers.GroupName
+	SELECT tsettings.Site, #variables.fieldList# 
 	FROM tsettings INNER JOIN tusers ON tsettings.SiteID = tusers.SiteID
+	LEFT JOIN tfiles on tusers.photofileID=tfiles.fileID
 	WHERE tusers.Type=1 AND tusers.isPublic=1
 	and tsettings.PublicUserPoolID = '#variables.settingsManager.getSite(arguments.siteid).getPublicUserPoolID()#'
 	ORDER BY tsettings.Site, tusers.Perm DESC, tusers.GroupName

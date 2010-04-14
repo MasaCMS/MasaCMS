@@ -14,6 +14,7 @@
 <cfset variables.contentRenderer=application.contentRenderer/>
 <cfset variables.instance.userID=""/>
 <cfset variables.instance.path=""/>
+<cfset variables.instance.kids=0/>
 <cfset variables.instance.errors=structnew() />
 
 <cffunction name="init" returntype="any" output="false" access="public">
@@ -54,6 +55,9 @@
 				<cfset setUserID(arguments.data.userID) />
 				<cfset setParentID(arguments.data.parentID) />
 				<cfset setPath(arguments.data.path) />
+				<cfset setFileID(arguments.data.fileID) />
+				<cfset setFileExt(arguments.data.fileExt) />
+				<cfset setKids(arguments.data.kids) />
 			</cfif>
 			
 		<cfelseif isStruct(arguments.data)>
@@ -218,15 +222,47 @@
 	<cfreturn variables.instance.userID />
 </cffunction>
 
-<cffunction name="setContentRenderer" access="public" output="false">
-	<cfargument name="contentRenderer" />
-	<cfset variables.contentRenderer = arguments.contentRenderer />
-	<cfreturn this>
-</cffunction>
-
 <cffunction name="setUserID" access="public" output="false">
 	<cfargument name="userID" type="String" />
 	<cfset variables.instance.userID = trim(arguments.userID) />
+	<cfreturn this>
+</cffunction>
+
+<cffunction name="getFileID" returntype="String" access="public" output="false">
+	<cfreturn variables.instance.fileID />
+</cffunction>
+
+<cffunction name="setFileID" access="public" output="false">
+	<cfargument name="fileID" type="String" />
+	<cfset variables.instance.fileID = trim(arguments.fileID) />
+	<cfreturn this>
+</cffunction>
+
+<cffunction name="getFileExt" returntype="String" access="public" output="false">
+	<cfreturn variables.instance.fileExt />
+</cffunction>
+
+<cffunction name="setFileExt" access="public" output="false">
+	<cfargument name="fileExt" type="String" />
+	<cfset variables.instance.fileExt = trim(arguments.fileExt) />
+	<cfreturn this>
+</cffunction>
+
+<cffunction name="getKids" access="public" output="false">
+	<cfreturn variables.instance.kids />
+</cffunction>
+
+<cffunction name="setKids" access="public" output="false">
+	<cfargument name="kids"/>
+	<cfif isNumeric(arguments.kids)>
+	<cfset variables.instance.kids = arguments.kids />
+	</cfif>
+	<cfreturn this>
+</cffunction>
+
+<cffunction name="setContentRenderer" access="public" output="false">
+	<cfargument name="contentRenderer" />
+	<cfset variables.contentRenderer = arguments.contentRenderer />
 	<cfreturn this>
 </cffunction>
 
@@ -241,8 +277,12 @@
 <cffunction name="getQuery"  access="public" output="false" returntype="query">
 	<cfset var rs=""/>
 	<cfquery name="rs" datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-	select contentid,commentid,parentid,name,email,url,comments,entered,siteid,isApproved,subscribe,userID,path from tcontentcomments 
-	where commentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getCommentID()#">
+	select c.contentid,c.commentid,c.parentid,c.name,c.email,c.url,c.comments,c.entered,c.siteid,c.isApproved,c.subscribe, c.userID, c.path, k.kids, f.fileid, f.fileExt 
+	from tcontentcomments c left join (select count(*) kids, parentID from tcontentcomments where commentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getCommentID()#">) k
+										on c.commentID = k.parentID
+	left join tusers u on c.userid=u.userid
+	left join tfiles f on u.photofileid=f.fileid 
+	where c.commentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getCommentID()#">
 	</cfquery>
 	
 	<cfreturn rs/>
@@ -457,13 +497,17 @@ To Unsubscribe Click Here:
 <cffunction name="getKidsQuery" returnType="query" output="false" access="public">
 	<cfargument name="isEditor" type="boolean" required="true" default="false">
 	<cfargument name="sortOrder" type="string" required="true" default="asc">
-	<cfreturn variables.contentManager.readComments(getContentID(), getSiteID(), arguments.isEditor, arguments.sortOrder, getCommentID() ) />
+	<cfif getKids()>
+		<cfreturn variables.contentManager.readComments(getContentID(), getSiteID(), arguments.isEditor, arguments.sortOrder, getCommentID() ) />
+	<cfelse>
+		<cfreturn queryNew("contentid,commentid,parentid,name,email,url,comments,entered,siteid,isApproved,subscribe,userID,path,kids,fileid,fileExt")>
+	</cfif>
 </cffunction>
 
 <cffunction name="getKidsIterator" returnType="any" output="false" access="public">
 	<cfargument name="isEditor" type="boolean" required="true" default="false">
 	<cfargument name="sortOrder" type="string" required="true" default="asc">
-	<cfset var q=getKidsQuery(arguments.isEditor, arguments.sortOrder) />
+	<cfset var q=getKidsQuery(arguments.isEditor, arguments.sortOrder)>
 	<cfset var it=getBean("contentCommentIterator").init()>
 	<cfset it.setQuery(q)>
 	<cfreturn it />
@@ -480,20 +524,40 @@ To Unsubscribe Click Here:
 	</cfif>
 </cffunction>
 
+<cffunction name="getUser" output="false" returntype="any">
+	<cfset var user=getBean("user").loadBy(userID=getUserID())>
+	
+	<cfif user.getIsNew()>
+		<cfset user.setSiteID(getSiteID())>
+	</cfif>
+	
+	<cfreturn user>
+</cffunction>
+
 <cffunction name="getCrumbQuery" output="false" returntype="any">
 	<cfargument name="sort" required="true" default="asc">
 	<cfset var rs="">
 	
 	<cfquery name="rs" datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-		select contentid,commentid,parentid,name,email,url,comments,entered,siteid,isApproved,subscribe,userID,path, 
+		select c.contentid,c.commentid,c.parentid,c.name,c.email,c.url,c.comments,c.entered,c.siteid,
+		c.isApproved,c.subscribe,c.userID,c.path, 
 		<cfif variables.configBean.getDBType() eq "MSSQL">
-		len(Cast(path as varchar(1000))) depth
+		len(Cast(c.path as varchar(1000))) depth
 		<cfelse>
-		length(path) depth
-		</cfif> 
-		from tcontentcomments where 
+		length(c.path) depth
+		</cfif>,
+		f.fileID, f.fileExt, k.kids
+		from tcontentcomments c 
+		left join tusers u on (c.userid=u.userid)
+		left join tfiles f on (u.photofileid=f.fileid)
+		left join (select count(*) kids, parentID from tcontentcomments
+				where parentID in (select commentID from tcontentcomments
+									where parentID in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#getPath()#">)			  	
+								  )
+				
+				)  k on c.commentID=k.parentID
+		where 
 		commentID in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#getPath()#">)
-		and siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#getSiteID()#"/>
 		order by depth <cfif arguments.sort eq "desc">desc<cfelse>asc</cfif>
 	</cfquery>	
 
@@ -508,4 +572,10 @@ To Unsubscribe Click Here:
 	<cfreturn it>
 </cffunction>
 
+<cffunction name="loadBy" returnType="any" output="false" access="public">
+	<cfargument name="commentID">
+	<cfset set(arguments)>
+	<cfset load()>
+	<cfreturn this>
+</cffunction>
 </cfcomponent>

@@ -571,11 +571,13 @@ to your own modified versions of Mura CMS.
 </cffunction>
 
 <cffunction name="getQuery" returnType="query" output="false" access="public">
-	<cfreturn variables.feedManager.getFeed(this) />
+	<cfargument name="aggregation" required="true" default="true">
+	<cfreturn variables.feedManager.getFeed(this,"",arguments.aggregation) />
 </cffunction>
 
 <cffunction name="getIterator" returnType="any" output="false" access="public">
-	<cfset var q=getQuery() />
+	<cfargument name="aggregation" required="true" default="true">
+	<cfset var q=getQuery(aggregation=arguments.aggregation) />
 	<cfset var it=getServiceFactory().getBean("contentIterator")>
 	<cfset it.setQuery(q,getNextN())>
 	<cfreturn it>
@@ -691,4 +693,5 @@ to your own modified versions of Mura CMS.
 <cffunction name="getRemotePubDate" returnType="string" output="false" access="public">
     <cfreturn variables.instance.RemotePubDate />
 </cffunction>
+
 </cfcomponent>

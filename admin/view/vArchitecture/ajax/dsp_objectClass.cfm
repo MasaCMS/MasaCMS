@@ -270,7 +270,7 @@ to your own modified versions of Mura CMS.
 <cfset customOutput2="">
 <cfloop query="prelist">
 <cfif listLast(prelist.displayObjectFile,".") neq "cfm">
-	<cfset displayObject=application.pluginManager.getComponent("/plugins/#prelist.directory#/#prelist.displayobjectfile#", prelist.pluginID, attributes.siteID, prelist.docache)>
+	<cfset displayObject=application.pluginManager.getComponent("plugins.#prelist.directory#.#prelist.displayobjectfile#", prelist.pluginID, attributes.siteID, prelist.docache)>
 	<cfif structKeyExists(displayObject,"#prelist.displayMethod#OptionsRender")>
 		<cfset customOutputList=listAppend(customOutputList,prelist.objectID)>
 		<cfif attributes.objectID eq prelist.objectID>
@@ -288,7 +288,7 @@ to your own modified versions of Mura CMS.
 			<cfelse>
 				<cfset customOutput=trim(customOutput1)>
 			</cfif>		
-			<cfset customOutput=evaluate("displayObject.#prelist.displayMethod#OptionsRender(event)")>
+			<!---<cfset customOutput=evaluate("displayObject.#prelist.displayMethod#OptionsRender(event)")>--->
 		</cfif>
 	</cfif>
 </cfif>

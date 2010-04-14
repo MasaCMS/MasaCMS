@@ -118,16 +118,24 @@
 </cffunction>
 
 <cffunction name="getKidsQuery" returnType="query" output="false" access="public">
-	<cfreturn variables.contentManager.getKidsQuery(siteID:getValue("siteID"), parentID:getValue("contentID"), sortBy:getValue("sortBy"), sortDirection:getValue("sortDirection")) />
+	<cfargument name="aggregation" required="true" default="false">
+	
+	<cfif structKeyExists(variables.instance.struct,"kids") and isNumeric(variables.instance.struct.kids) and not variables.instance.struct.kids>
+		<!--- There are no kids so no need to query --->
+		<cfreturn queryNew("contentid,contenthistid,siteid,type,filename,title,menutitle,summary,kids")>
+	<cfelse>
+		<cfreturn variables.contentManager.getKidsQuery(siteID:getValue("siteID"), parentID:getValue("contentID"), sortBy:getValue("sortBy"), sortDirection:getValue("sortDirection"), aggregation=arguments.aggregation) />
+	</cfif>
 </cffunction>
 
 <cffunction name="getKidsIterator" returnType="any" output="false" access="public">
 	<cfargument name="liveOnly" required="true" default="true">
-	<cfset var q="" />
+	<cfargument name="aggregation" required="true" default="false">
+	<cfset var q=getKidsQuery(arguments.aggregation) />
 	<cfset var it=getServiceFactory().getBean("contentIterator").init(packageBy="active")>
 	
 	<cfif arguments.liveOnly>
-		<cfset q=getKidsQuery() />
+		<cfset q=getKidsQuery(arguments.aggregation) />
 	<cfelse>
 		<cfset q=variables.contentManager.getNest( parentID:getValue("parentID"), siteID:getValue("siteID"), sortBy:getValue("sortBy"), sortDirection:getValue("sortDirection")) />
 	</cfif>

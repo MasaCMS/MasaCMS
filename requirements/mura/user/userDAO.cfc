@@ -42,7 +42,7 @@ to your own modified versions of Mura CMS.
 --->
 <cfcomponent extends="mura.cfobject" output="false">
 
-<cfset variables.fieldList="userID, GroupName, Fname, Lname, UserName, Password, PasswordCreated, Email, Company, JobTitle, MobilePhone, Website, Type, subType, Ext, ContactForm, Admin, S2, LastLogin, LastUpdate, LastUpdateBy, LastUpdateByID, Perm, InActive, IsPublic, SiteID, Subscribe, Notes, description, Interests, keepPrivate, PhotoFileID, IMName, IMService, Created, RemoteID, Tags, tablist">
+<cfset variables.fieldList="tusers.userID, tusers.GroupName, tusers.Fname, tusers.Lname, tusers.UserName, tusers.Password, tusers.PasswordCreated, tusers.Email, tusers.Company, tusers.JobTitle, tusers.MobilePhone, tusers.Website, tusers.Type, tusers.subType, tusers.Ext, tusers.ContactForm, tusers.Admin, tusers.S2, tusers.LastLogin, tusers.LastUpdate, tusers.LastUpdateBy, tusers.LastUpdateByID, tusers.Perm, tusers.InActive, tusers.IsPublic, tusers.SiteID, tusers.Subscribe, tusers.Notes, tusers.description, tusers.Interests, tusers.keepPrivate, tusers.PhotoFileID, tusers.IMName, tusers.IMService, tusers.Created, tusers.RemoteID, tusers.Tags, tusers.tablist, tfiles.fileEXT photoFileExt">
 
 <cffunction name="init" returntype="any" output="false" access="public">
 <cfargument name="configBean" type="any" required="yes"/>
@@ -73,9 +73,10 @@ to your own modified versions of Mura CMS.
 		<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#" name="rsUser">
 			select #variables.fieldList#
 			from tusers 
-			where userid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.userID#">
+			left join tfiles on tusers.photoFileId=tfiles.fileid
+			where tusers.userid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.userID#">
 		</cfquery>
-		
+	
 		<cfif rsUser.recordCount eq 1>
 			<cfset userBean.set(rsUser) />
 			<cfset setUserBeanMetaData(userBean)>
@@ -100,10 +101,11 @@ to your own modified versions of Mura CMS.
 		<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#" name="rsUser">
 			select #variables.fieldList#
 			from tusers 
-			where username=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.username#">
-			and (siteid='#application.settingsManager.getSite(arguments.siteID).getPublicUserPoolID()#'
+			left join tfiles on tusers.photoFileId=tfiles.fileid
+			where tusers.username=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.username#">
+			and (tusers.siteid='#application.settingsManager.getSite(arguments.siteID).getPublicUserPoolID()#'
 				or  
-				siteid='#application.settingsManager.getSite(arguments.siteID).getPrivateUserPoolID()#'
+				tusers.siteid='#application.settingsManager.getSite(arguments.siteID).getPrivateUserPoolID()#'
 				) 
 		</cfquery>
 		
@@ -112,8 +114,8 @@ to your own modified versions of Mura CMS.
 			<cfloop query="rsUser">
 				<cfset userBean=getbean().set(utility.queryRowToStruct(rsUser,rsUser.currentrow))>
 				<cfset userBean.setIsNew(0)>
-				<cfset rsmembs=readMemberships(userBean.getUserId()) />
-				<cfset rsInterests=readInterestGroups(userBean.getUserId()) />
+				<cfset rsmembs=readMembershipIDs(userBean.getUserId()) />
+				<cfset rsInterests=readInterestGroupIDs(userBean.getUserId()) />
 				<cfset userBean.setGroupId(valuelist(rsmembs.groupid))/>
 				<cfset userBean.setCategoryId(valuelist(rsInterests.categoryid))/>
 				<cfset userBean.setAddresses(getAddresses(userBean.getUserID()))/>	
@@ -122,8 +124,8 @@ to your own modified versions of Mura CMS.
 			<cfreturn beanArray>
 		<cfelseif rsUser.recordCount eq 1>
 			<cfset userBean.set(rsUser) />
-			<cfset rsmembs=readMemberships(userBean.getUserId()) />
-			<cfset rsInterests=readInterestGroups(userBean.getUserId()) />
+			<cfset rsmembs=readMembershipIDs(userBean.getUserId()) />
+			<cfset rsInterests=readInterestGroupIDs(userBean.getUserId()) />
 			<cfset userBean.setGroupId(valuelist(rsmembs.groupid))/>
 			<cfset userBean.setCategoryId(valuelist(rsInterests.categoryid))/>
 			<cfset userBean.setAddresses(getAddresses(userBean.getUserID()))/>
@@ -149,24 +151,25 @@ to your own modified versions of Mura CMS.
 		<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#" name="rsUser">
 			select #variables.fieldList#
 			from tusers 
+			left join tfiles on tusers.photoFileId=tfiles.fileid
 			where 
-			type=1
-			and groupname=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.groupname#">
+			tusers.type=1
+			and tusers.groupname=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.groupname#">
 			and 
 			<cfif not isBoolean(arguments.isPublic)>
-				(siteid='#application.settingsManager.getSite(arguments.siteID).getPublicUserPoolID()#'
+				(tusers.siteid='#application.settingsManager.getSite(arguments.siteID).getPublicUserPoolID()#'
 				or  
-				siteid='#application.settingsManager.getSite(arguments.siteID).getPrivateUserPoolID()#'
+				tusers.siteid='#application.settingsManager.getSite(arguments.siteID).getPrivateUserPoolID()#'
 				) 
 			<cfelseif arguments.isPublic>
-			(siteid='#application.settingsManager.getSite(arguments.siteID).getPublicUserPoolID()#'
+			(tusers.siteid='#application.settingsManager.getSite(arguments.siteID).getPublicUserPoolID()#'
 				and
-			isPublic=1
+			tusers.isPublic=1
 			) 
 			<cfelse>
-			(siteid='#application.settingsManager.getSite(arguments.siteID).getPrivateUserPoolID()#'
+			(tusers.siteid='#application.settingsManager.getSite(arguments.siteID).getPrivateUserPoolID()#'
 				and 
-			isPublic=0
+			tusers.isPublic=0
 			) 
 			</cfif>
 		</cfquery>
@@ -176,8 +179,8 @@ to your own modified versions of Mura CMS.
 			<cfloop query="rsUser">
 				<cfset userBean=getbean().set(utility.queryRowToStruct(rsUser,rsUser.currentrow))>
 				<cfset userBean.setIsNew(0)>
-				<cfset rsmembs=readMemberships(userBean.getUserId()) />
-				<cfset rsInterests=readInterestGroups(userBean.getUserId()) />
+				<cfset rsmembs=readMembershipIDs(userBean.getUserId()) />
+				<cfset rsInterests=readInterestGroupIDs(userBean.getUserId()) />
 				<cfset userBean.setGroupId(valuelist(rsmembs.groupid))/>
 				<cfset userBean.setCategoryId(valuelist(rsInterests.categoryid))/>
 				<cfset userBean.setAddresses(getAddresses(userBean.getUserID()))/>
@@ -186,8 +189,8 @@ to your own modified versions of Mura CMS.
 			<cfreturn beanArray>
 		<cfelseif rsUser.recordCount eq 1>
 			<cfset userBean.set(rsUser) />
-			<cfset rsmembs=readMemberships(userBean.getUserId()) />
-			<cfset rsInterests=readInterestGroups(userBean.getUserId()) />
+			<cfset rsmembs=readMembershipIDs(userBean.getUserId()) />
+			<cfset rsInterests=readInterestGroupIDs(userBean.getUserId()) />
 			<cfset userBean.setGroupId(valuelist(rsmembs.groupid))/>
 			<cfset userBean.setCategoryId(valuelist(rsInterests.categoryid))/>
 			<cfset userBean.setAddresses(getAddresses(userBean.getUserID()))/>
@@ -212,10 +215,11 @@ to your own modified versions of Mura CMS.
 		<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#" name="rsUser">
 			select #variables.fieldList#
 			from tusers 
-			where remoteid=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.remoteid#">
-			and (siteid='#application.settingsManager.getSite(arguments.siteID).getPublicUserPoolID()#'
+			left join tfiles on tusers.photoFileId=tfiles.fileid
+			where tusers.remoteid=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.remoteid#">
+			and (tusers.siteid='#application.settingsManager.getSite(arguments.siteID).getPublicUserPoolID()#'
 				or  
-				siteid='#application.settingsManager.getSite(arguments.siteID).getPrivateUserPoolID()#'
+				tusers.siteid='#application.settingsManager.getSite(arguments.siteID).getPrivateUserPoolID()#'
 				) 
 		</cfquery>
 		
@@ -224,8 +228,8 @@ to your own modified versions of Mura CMS.
 			<cfloop query="rsUser">
 				<cfset userBean=getbean().set(utility.queryRowToStruct(rsUser,rsUser.currentrow))>
 				<cfset userBean.setIsNew(0)>
-				<cfset rsmembs=readMemberships(userBean.getUserId()) />
-				<cfset rsInterests=readInterestGroups(userBean.getUserId()) />
+				<cfset rsmembs=readMembershipIDs(userBean.getUserId()) />
+				<cfset rsInterests=readInterestGroupIDs(userBean.getUserId()) />
 				<cfset userBean.setGroupId(valuelist(rsmembs.groupid))/>
 				<cfset userBean.setCategoryId(valuelist(rsInterests.categoryid))/>
 				<cfset userBean.setAddresses(getAddresses(userBean.getUserID()))/>		
@@ -234,8 +238,8 @@ to your own modified versions of Mura CMS.
 			<cfreturn beanArray>
 		<cfelseif rsUser.recordCount eq 1>
 			<cfset userBean.set(rsUser) />
-			<cfset rsmembs=readMemberships(userBean.getUserId()) />
-			<cfset rsInterests=readInterestGroups(userBean.getUserId()) />
+			<cfset rsmembs=readMembershipIDs(userBean.getUserId()) />
+			<cfset rsInterests=readInterestGroupIDs(userBean.getUserId()) />
 			<cfset userBean.setGroupId(valuelist(rsmembs.groupid))/>
 			<cfset userBean.setCategoryId(valuelist(rsInterests.categoryid))/>
 			<cfset userBean.setAddresses(getAddresses(userBean.getUserID()))/>
@@ -570,9 +574,25 @@ to your own modified versions of Mura CMS.
 	<cfset var rs =""/>
 	
 	<cfquery name="rs"  datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-	Select * from tusers, tusersmemb where tusers.userid=tusersmemb.groupid
-	and tusersmemb.userid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.userID#">
-	order by groupname
+	Select tusers.userID groupID, #variables.fieldList# from tusers 
+	inner join tusersmemb on tusers.userid=tusersmemb.groupid
+	left join tfiles on tusers.photoFileId=tfiles.fileid
+	where tusersmemb.userid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.userID#">
+	order by tusers.groupname
+	</cfquery>
+	<cfreturn rs />
+</cffunction>
+
+<cffunction name="readMembershipIDs" returntype="query" output="false" access="public">
+	<cfargument name="userid" type="string" />
+	<cfset var rs =""/>
+	
+	<cfquery name="rs"  datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+	Select tusers.userID groupID from tusers 
+	inner join tusersmemb on tusers.userid=tusersmemb.groupid
+	left join tfiles on tusers.photoFileId=tfiles.fileid
+	where tusersmemb.userid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.userID#">
+	order by tusers.groupname
 	</cfquery>
 	<cfreturn rs />
 </cffunction>
@@ -582,15 +602,29 @@ to your own modified versions of Mura CMS.
 	<cfset var rs =""/>
 	
 	<cfquery name="rs" datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-	Select * from tusers, tusersmemb where tusers.userid=tusersmemb.userid and
-    tusersmemb.groupid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.userID#">
+	Select tusers.userID groupID, #variables.fieldList# from tusers
+	inner join  tusersmemb on tusers.userid=tusersmemb.userid 
+	left join tfiles on tusers.photoFileId=tfiles.fileid
+	where tusersmemb.groupid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.userID#">
 	<cfif not listFind(session.mura.memberships,'S2')>and tusers.s2 =0</cfif> 
 	order by lname</cfquery>
 	
 	<cfreturn rs />
 	</cffunction>
-		
+
 <cffunction name="readInterestGroups" returntype="query" access="public" output="false">
+	<cfargument name="userid" type="string" default="" />
+
+	<cfset var rs = "" />
+	<cfquery name="rs" datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+	SELECT tcontentcategories.* from tcontentcategories
+	Inner Join tusersinterests on tcontentcategories.categoryID=tusersinterests.categoryID
+	where userid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.userID#">
+	</cfquery>
+	<cfreturn rs />
+</cffunction>
+		
+<cffunction name="readInterestGroupIDs" returntype="query" access="public" output="false">
 	<cfargument name="userid" type="string" default="" />
 
 	<cfset var rs = "" />
@@ -817,8 +851,8 @@ to your own modified versions of Mura CMS.
 
 <cffunction name="setUserBeanMetaData" output="false" returntype="any">
 	<cfargument name="userBean">
-	<cfset var rsmembs=readMemberships(userBean.getUserId()) />
-	<cfset var rsInterests=readInterestGroups(userBean.getUserId()) />
+	<cfset var rsmembs=readMembershipIDs(userBean.getUserId()) />
+	<cfset var rsInterests=readInterestGroupIDs(userBean.getUserId()) />
 	<cfset userBean.setGroupId(valuelist(rsmembs.groupid))/>
 	<cfset userBean.setCategoryId(valuelist(rsInterests.categoryid))/>
 	<cfset userBean.setAddresses(getAddresses(userBean.getUserId()))/>

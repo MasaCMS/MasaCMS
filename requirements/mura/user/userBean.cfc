@@ -77,6 +77,7 @@ to your own modified versions of Mura CMS.
 	<cfset variables.instance.description="" />
 	<cfset variables.instance.interests="" />
 	<cfset variables.instance.photoFileID="" />
+	<cfset variables.instance.photoFileExt="" />
 	<cfset variables.instance.keepPrivate=0 />
 	<cfset variables.instance.IMName="" />
 	<cfset variables.instance.IMService="" />
@@ -135,6 +136,7 @@ to your own modified versions of Mura CMS.
 			<cfset setDescription(arguments.user.description) />
 			<cfset setInterests(arguments.user.Interests) />
 			<cfset setPhotoFileID(arguments.user.photoFileID) />
+			<cfset setPhotoFileExt(arguments.user.photoFileExt) />
 			<cfset setKeepPrivate(arguments.user.keepPrivate) />
 			<cfset setIMName(arguments.user.IMName) />
 			<cfset setIMService(arguments.user.IMService) />
@@ -705,6 +707,36 @@ to your own modified versions of Mura CMS.
   
   <cffunction name="getPhotoFileID" returnType="string" output="false" access="public">
     <cfreturn variables.instance.PhotoFileID />
+  </cffunction>
+
+  <cffunction name="setPhotoFileExt" output="false" access="public">
+    <cfargument name="PhotoFileExt" type="string" required="true">
+    <cfset variables.instance.PhotoFileExt = trim(arguments.PhotoFileExt) />
+	<cfreturn this>
+  </cffunction>
+  
+  <cffunction name="getPhotoFileExt" returnType="string" output="false" access="public">
+    <cfreturn variables.instance.PhotoFileExt />
+  </cffunction>
+
+  <cffunction name="setFileID" output="false" access="public">
+    <cfargument name="PhotoFileID" type="string" required="true">
+    <cfset variables.instance.PhotoFileID = trim(arguments.PhotoFileID) />
+	<cfreturn this>
+  </cffunction>
+  
+  <cffunction name="getFileID" returnType="string" output="false" access="public">
+    <cfreturn variables.instance.PhotoFileID />
+  </cffunction>
+
+  <cffunction name="setFileExt" output="false" access="public">
+    <cfargument name="PhotoFileExt" type="string" required="true">
+    <cfset variables.instance.PhotoFileExt = trim(arguments.PhotoFileExt) />
+	<cfreturn this>
+  </cffunction>
+  
+  <cffunction name="getFileExt" returnType="string" output="false" access="public">
+    <cfreturn variables.instance.PhotoFileExt />
   </cffunction>
 
  <cffunction name="setKeepPrivate" output="false" access="public">
