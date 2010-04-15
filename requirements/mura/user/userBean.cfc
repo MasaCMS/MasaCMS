@@ -957,7 +957,7 @@ to your own modified versions of Mura CMS.
 		<cfset arguments.siteID=getSiteID()>
 	</cfif>
 	<cfif not structKeyExists(arguments,"isPublic")>
-		<cfset arguments.isPublic=getIsPublic()>
+		<cfset arguments.isPublic="both">
 	</cfif>
 	
 	<cfset response=variables.userManager.read(argumentCollection=arguments)>
