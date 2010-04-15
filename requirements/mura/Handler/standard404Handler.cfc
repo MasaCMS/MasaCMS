@@ -24,13 +24,16 @@
 <cffunction name="handle" output="false" returnType="any">
 	<cfargument name="event" required="true">
 	
-	<cfset event.setValue('contentBean',application.contentManager.getActiveContentByFilename("404",event.getValue('siteid'),true)) />
+	<cfset getPluginManager().announceEvent("onSite404",event)>
 	
-	<cfif len(event.getValue('previewID'))>
-		<cfset event.getContentBean().setBody("The requested version of this content could not be found.")>
+	<cfif event.getValue("contentBean").getIsNew()>
+		<cfset event.setValue('contentBean',application.contentManager.getActiveContentByFilename("404",event.getValue('siteid'),true)) />
+		
+		<cfif len(event.getValue('previewID'))>
+			<cfset event.getContentBean().setBody("The requested version of this content could not be found.")>
+		</cfif>
+		<cfheader statuscode="404" statustext="Content Not Found" /> 
 	</cfif>
-	<cfheader statuscode="404" statustext="Content Not Found" /> 
-
 </cffunction>
 
 </cfcomponent>
