@@ -123,7 +123,7 @@ and fileExists(licenseFile)>
 <cffile file="#licenseFile#" action="read" variable="license">
 <dt>End User License Agreement</dt>
 <dd>
-<textarea>
+<textarea readonly="true">
 #license#
 </textarea>
 </dd>

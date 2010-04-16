@@ -184,40 +184,40 @@ to your own modified versions of Mura CMS.
 	<cfsilent>
 		<cfset request.cacheItem=false>
       	<cfset feedData=application.feedManager.getRemoteFeedData(feedBean.getChannelLink(),feedBean.getMaxItems())/>
-	  </cfsilent>
+	</cfsilent>
 	  	<cfoutput>
 		 	<cfif feedData.maxItems>
-			<div class="svSyndRemote svIndex svFeed clearfix" id="#cssID#">
-		        <#getHeaderTag('subHead1')#>#feedBean.getName()#</#getHeaderTag('subHead1')#>
-		        <cfif feedData.type neq "atom">
-				<cfloop from="1" to="#feedData.maxItems#" index="i">
-					<dl>
-						<!--- Date stuff--->
-						<cfif structKeyExists(feedData.itemArray[i],"pubDate")>
-							<cfset itemDate=parseDateTime(feedData.itemArray[i].pubDate.xmlText)>
-							<dt class="releaseDate"><cfif isDate(itemDate)>#LSDateFormat(itemDate,getLongDateFormat())#<cfelse>#feedData.itemArray[i].pubDate.xmlText#</cfif></dt>
-						<cfelseif structKeyExists(feedData.itemArray[i],"dc:date")>
-							<cfset itemDate=parseDateTime(feedData.itemArray[i]["dc:date"].xmlText)>
-							<dt class="releaseDate"><cfif isDate(itemDate)>#LSDateFormat(itemDate,getLongDateFormat())#<cfelse>#feedData.itemArray[i]["dc:date"].xmlText#</cfif></dt>
-						</cfif>
-						<dt><a href="#feedData.itemArray[i].link.xmlText#">#feedData.itemArray[i].title.xmlText#</a></dt>						
-						<cfif hasSummary and structKeyExists(feedData.itemArray[i],"description")><dd class="summary">#feedData.itemArray[i].description.xmlText#</dd></cfif>
-					</dl>
-				</cfloop>
-				<cfelse>
-				<cfloop from="1" to="#feedData.maxItems#" index="i">
-				<dl>
-					<!--- Date stuff--->
-					<cfif structKeyExists(feedData.itemArray[i],"updated")>
-					<cfset itemDate=parseDateTime(feedData.itemArray[i].updated.xmlText)>
-					<dt class="releaseDate"><cfif isDate(itemDate)>#LSDateFormat(itemDate,getLongDateFormat())#<cfelse>#feedData.itemArray[i].updated.xmlText#</cfif></dt>
+				<div class="svSyndRemote svIndex svFeed clearfix" id="#cssID#">
+			        <#getHeaderTag('subHead1')#>#feedBean.getName()#</#getHeaderTag('subHead1')#>
+			        <cfif feedData.type neq "atom">
+						<cfloop from="1" to="#feedData.maxItems#" index="i">
+							<dl<cfif (i EQ 1)> class="first"<cfelseif (i EQ feedData.maxItems)> class="last"</cfif>>
+								<!--- Date stuff--->
+								<cfif structKeyExists(feedData.itemArray[i],"pubDate")>
+									<cfset itemDate=parseDateTime(feedData.itemArray[i].pubDate.xmlText)>
+									<dt class="releaseDate"><cfif isDate(itemDate)>#LSDateFormat(itemDate,getLongDateFormat())#<cfelse>#feedData.itemArray[i].pubDate.xmlText#</cfif></dt>
+								<cfelseif structKeyExists(feedData.itemArray[i],"dc:date")>
+									<cfset itemDate=parseDateTime(feedData.itemArray[i]["dc:date"].xmlText)>
+									<dt class="releaseDate"><cfif isDate(itemDate)>#LSDateFormat(itemDate,getLongDateFormat())#<cfelse>#feedData.itemArray[i]["dc:date"].xmlText#</cfif></dt>
+								</cfif>
+								<dt><a href="#feedData.itemArray[i].link.xmlText#">#feedData.itemArray[i].title.xmlText#</a></dt>						
+								<cfif hasSummary and structKeyExists(feedData.itemArray[i],"description")><dd class="summary">#feedData.itemArray[i].description.xmlText#</dd></cfif>
+							</dl>
+						</cfloop>
+					<cfelse>
+						<cfloop from="1" to="#feedData.maxItems#" index="i">
+							<dl<cfif (i EQ 1)> class="first"<cfelseif (i EQ feedData.maxItems)> class="last"</cfif>>
+								<!--- Date stuff--->
+								<cfif structKeyExists(feedData.itemArray[i],"updated")>
+									<cfset itemDate=parseDateTime(feedData.itemArray[i].updated.xmlText)>
+									<dt class="releaseDate"><cfif isDate(itemDate)>#LSDateFormat(itemDate,getLongDateFormat())#<cfelse>#feedData.itemArray[i].updated.xmlText#</cfif></dt>
+								</cfif>
+								<dt><a href="#feedData.itemArray[i].link.XmlAttributes.href#">#feedData.itemArray[i].title.xmlText#</a></dt>
+								<cfif hasSummary and structKeyExists(feedData.itemArray[i],"summary")><dd class="summary">#feedData.itemArray[i].summary.xmlText#</dd></cfif>
+							</dl>
+						</cfloop>
 					</cfif>
-					<dt><a href="#feedData.itemArray[i].link.XmlAttributes.href#">#feedData.itemArray[i].title.xmlText#</a></dt>
-					<cfif hasSummary and structKeyExists(feedData.itemArray[i],"summary")><dd class="summary">#feedData.itemArray[i].summary.xmlText#</dd></cfif>
-				</dl>
-				</cfloop>
-				</cfif>
-			</div>
+				</div>
 			<cfelse>
 				<!-- Empty Feed <cfoutput>'#feedBean.getName()#'</cfoutput> -->
 			</cfif>
