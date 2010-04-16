@@ -11,13 +11,6 @@
 		<cfset setEvent(createObject("component","mura.event").init(arguments.data))>
 	</cfif>
 		
-	<cfif isObject(event("contentBean"))>
-		<cfset setContentBean(event("contentBean"))>
-	</cfif>
-	<cfif isObject(event("contentRenderer"))>
-		<cfset setContentRenderer(event("contentRenderer"))>
-	</cfif>
-	
 	<cfreturn this>
 </cffunction>
 
