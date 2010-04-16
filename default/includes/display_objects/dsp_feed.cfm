@@ -180,7 +180,7 @@ to your own modified versions of Mura CMS.
 			<!-- Empty Collection '<cfoutput>#feedBean.getName()#</cfoutput>'  -->
 		</cfif>
     <cfelse>
-    <cftry>
+    <!---<cftry> --->
 	<cfsilent>
 		<cfset request.cacheItem=false>
       	<cfset feedData=application.feedManager.getRemoteFeedData(feedBean.getChannelLink(),feedBean.getMaxItems())/>
@@ -194,11 +194,17 @@ to your own modified versions of Mura CMS.
 							<dl<cfif (i EQ 1)> class="first"<cfelseif (i EQ feedData.maxItems)> class="last"</cfif>>
 								<!--- Date stuff--->
 								<cfif structKeyExists(feedData.itemArray[i],"pubDate")>
+									<cftry>
 									<cfset itemDate=parseDateTime(feedData.itemArray[i].pubDate.xmlText)>
 									<dt class="releaseDate"><cfif isDate(itemDate)>#LSDateFormat(itemDate,getLongDateFormat())#<cfelse>#feedData.itemArray[i].pubDate.xmlText#</cfif></dt>
+									<cfcatch></cfcatch>
+									</cftry>
 								<cfelseif structKeyExists(feedData.itemArray[i],"dc:date")>
+									<cftry>
 									<cfset itemDate=parseDateTime(feedData.itemArray[i]["dc:date"].xmlText)>
 									<dt class="releaseDate"><cfif isDate(itemDate)>#LSDateFormat(itemDate,getLongDateFormat())#<cfelse>#feedData.itemArray[i]["dc:date"].xmlText#</cfif></dt>
+									<cfcatch></cfcatch>
+									</cftry>
 								</cfif>
 								<dt><a href="#feedData.itemArray[i].link.xmlText#">#feedData.itemArray[i].title.xmlText#</a></dt>						
 								<cfif hasSummary and structKeyExists(feedData.itemArray[i],"description")><dd class="summary">#feedData.itemArray[i].description.xmlText#</dd></cfif>
@@ -209,8 +215,11 @@ to your own modified versions of Mura CMS.
 							<dl<cfif (i EQ 1)> class="first"<cfelseif (i EQ feedData.maxItems)> class="last"</cfif>>
 								<!--- Date stuff--->
 								<cfif structKeyExists(feedData.itemArray[i],"updated")>
+									<cftry>
 									<cfset itemDate=parseDateTime(feedData.itemArray[i].updated.xmlText)>
 									<dt class="releaseDate"><cfif isDate(itemDate)>#LSDateFormat(itemDate,getLongDateFormat())#<cfelse>#feedData.itemArray[i].updated.xmlText#</cfif></dt>
+									<cfcatch></cfcatch>
+									</cftry>
 								</cfif>
 								<dt><a href="#feedData.itemArray[i].link.XmlAttributes.href#">#feedData.itemArray[i].title.xmlText#</a></dt>
 								<cfif hasSummary and structKeyExists(feedData.itemArray[i],"summary")><dd class="summary">#feedData.itemArray[i].summary.xmlText#</dd></cfif>
@@ -222,8 +231,9 @@ to your own modified versions of Mura CMS.
 				<!-- Empty Feed <cfoutput>'#feedBean.getName()#'</cfoutput> -->
 			</cfif>
 		</cfoutput>
+	<!---
 	<cfcatch><!-- Error getting Feed <cfoutput>'#feedBean.getName()#'</cfoutput> --></cfcatch>
-	</cftry>
+	</cftry>---->
     </cfif>
   <cfelse>
 		<!-- Inactive Feed '<cfoutput>#feedBean.getName()#</cfoutput>' -->
