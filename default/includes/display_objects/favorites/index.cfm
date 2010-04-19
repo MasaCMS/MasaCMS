@@ -78,7 +78,7 @@
 		currentPageFavoriteID = '#currentPageFavoriteID#';
 	</script>
 <cfelse>
-	#rbFactory.getResourceBundle().messageFormat(rbFactory.getKey('favorites.pleaselogin'),'#application.settingsManager.getSite(request.siteid).getLoginURL()#&returnURL=#getCurrentURL()#')#
+	<p class="loginMessage">#rbFactory.getResourceBundle().messageFormat(rbFactory.getKey('favorites.pleaselogin'),'#application.settingsManager.getSite(request.siteid).getLoginURL()#&returnURL=#getCurrentURL()#')#</p>
 </cfif>
 </div>
 <cfif len(getPersonalizationID())>

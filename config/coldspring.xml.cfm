@@ -271,6 +271,13 @@ to your own modified versions of Mura CMS.
 			    <ref bean="contentManager"/>
 			</property>
 		</bean>
+		<bean id="contentComment" class="mura.content.file.fileManager" singleton="true" >
+			<constructor-arg name="configBean"><ref bean="configBean" /></constructor-arg>
+			<constructor-arg name="settingsManager"><ref bean="settingsManager" /></constructor-arg>
+			<constructor-arg name="utility"><ref bean="utility" /></constructor-arg>
+			<constructor-arg name="contentDAO"><ref bean="contentDAO" /></constructor-arg>
+			<constructor-arg name="contentManager"><ref bean="contentManager" /></constructor-arg>
+		</bean>
 		<bean id="fileManager" class="mura.content.file.fileManager" singleton="true" >
 			<constructor-arg name="fileDAO"><ref bean="fileDAO" /></constructor-arg>
 			<constructor-arg name="configBean"><ref bean="configBean" /></constructor-arg>
@@ -671,6 +678,7 @@ to your own modified versions of Mura CMS.
 		<alias name="addressBean" alias="address"/>
 		<alias name="categoryBean" alias="category"/>
 		<alias name="userFeedBean" alias="userFeed"/>
+		<alias name="commentBean" alias="comment"/>
 		<!---coldspring.custom.xml.cfm reference is for backwards compatability --->
 		<cfif fileExists(expandPath("/muraWRM/config/coldspring.custom.xml.cfm"))><cfinclude template="/muraWRM/config/coldspring.custom.xml.cfm"></cfif>
 	</beans></cfoutput>

@@ -292,10 +292,22 @@
 </cffunction>
 
 <cffunction name="delete" access="public">
+	<cfset var pluginManager=getPluginManager()>
+	<cfset var pluginEvent=createObject("component","mura.event")>
+	<cfset var eventArgs=structNew()>
+	
+	<cfset eventArgs.siteID=getSiteID()>
+	<cfset eventArgs.commentBean=this>
+	<cfset pluginEvent.init(eventArgs)>
+	
+	<cfset pluginManager.announceEvent("onBeforeCommentDelete",pluginEvent)>
+	
 	<cfquery datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	delete from tcontentcomments
 	where path like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#getCommentID()#%">
 	</cfquery>
+	
+	<cfset pluginManager.announceEvent("onAfterCommentDelete",pluginEvent)>
 	
 	<cfset variables.contentManager.setCommentStat(getContentID(),getSiteID()) />
 </cffunction>
@@ -307,6 +319,15 @@
 	<cfargument name="notify" required="true" default="false" hint="I tell whether to notify subscribers.">
 	<cfset var rs=""/>
 	<cfset var path=""/>
+	<cfset var pluginManager=getPluginManager()>
+	<cfset var pluginEvent=createObject("component","mura.event")>
+	<cfset var eventArgs=structNew()>
+	
+	<cfset eventArgs.siteID=getSiteID()>
+	<cfset eventArgs.commentBean=this>
+	<cfset structAppend(eventArgs, arguments)>
+	
+	<cfset pluginEvent.init(eventArgs)>
 	
 	<cfif len(getParentID())>
 		<cfset path=variables.contentManager.getCommentBean().setCommentID(getParentID()).load().getPath()>
@@ -314,7 +335,11 @@
 	
 	<cfset path=listAppend(path, getCommentID())>
 	
+	<cfset pluginManager.announceEvent("onBeforeCommentSave",pluginEvent)>
+	
 	<cfif getQuery().recordcount>
+		
+		<cfset pluginManager.announceEvent("onBeforeCommentUpdate",pluginEvent)>
 		
 		<cfquery datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 		update tcontentcomments set
@@ -333,8 +358,11 @@
 		where commentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getCommentID()#">
 		</cfquery>
 		
+		<cfset pluginManager.announceEvent("onAfterCommentUpdate",pluginEvent)>
 	<cfelse>
 	
+		<cfset pluginManager.announceEvent("onBeforeCommentCreate",pluginEvent)>
+		
 		<cfquery datasource="#application.configBean.getDatasource()#" username="#application.configBean.getDBUsername()#" password="#application.configBean.getDBPassword()#" name="rslist">
 			insert into tcontentcomments (contentid,commentid,parentid,name,email,url,comments,entered,siteid,isApproved,subscribe,userID,path)
 			values (
@@ -353,12 +381,16 @@
 			<cfqueryparam cfsqltype="cf_sql_varchar" value="#path#"/>
 			)
 			</cfquery>
+			
+		<cfset pluginManager.announceEvent("onAfterCommentCreate",pluginEvent)>
 		
 	</cfif>
 	
+	<cfset pluginManager.announceEvent("onAfterCommentSave",pluginEvent)>
+	
 	<cfif getIsApproved()>
 		<cfset saveSubscription()>
-		<cfif arguments.notify>
+		<cfif isBoolean(pluginEvent.getValue("notify")) and pluginEvent.getValue("notify")>
 			<cfset notifySubscribers(arguments.contentRenderer,arguments.script,arguments.subject)>
 		</cfif>
 	</cfif>

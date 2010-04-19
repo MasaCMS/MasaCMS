@@ -207,22 +207,24 @@ to your own modified versions of Mura CMS.
 </cfloop>
 </cfif>
 
-<cfif session.mura.isLoggedIn>
-	<input name="submit" type="submit"  value="#HTMLEditFormat(rbFactory.getKey('user.updateprofile'))#" />
-	<input type="hidden" name="userid" value="#session.mura.userID#"/>
-	<input type="hidden" name="doaction" value="updateprofile">
-<cfelse>
-	<input type="hidden" name="userid" value=""/>
-	<input type="hidden" name="isPublic" value="1"/>
-	<input type="hidden" name="inactive" value="0"/> <!--- Set the value to "1" to require admin approval of new accounts --->
-	<input name="submit" type="submit"  value="#HTMLEditFormat(rbFactory.getKey('user.createprofile'))#"/>
-	<input type="hidden" name="doaction" value="createprofile">
-	<!--- <input type="hidden" name="groupID" value="[userid from Group Detail page url]"> Add users to a specific group --->
-</cfif> 
+<div class="buttons">
+	<cfif session.mura.isLoggedIn>
+		<input name="submit" type="submit"  value="#HTMLEditFormat(rbFactory.getKey('user.updateprofile'))#" />
+		<input type="hidden" name="userid" value="#session.mura.userID#"/>
+		<input type="hidden" name="doaction" value="updateprofile">
+	<cfelse>
+		<input type="hidden" name="userid" value=""/>
+		<input type="hidden" name="isPublic" value="1"/>
+		<input type="hidden" name="inactive" value="0"/> <!--- Set the value to "1" to require admin approval of new accounts --->
+		<input name="submit" type="submit"  value="#HTMLEditFormat(rbFactory.getKey('user.createprofile'))#"/>
+		<input type="hidden" name="doaction" value="createprofile">
+		<!--- <input type="hidden" name="groupID" value="[userid from Group Detail page url]"> Add users to a specific group --->
+	</cfif> 
 
-<input type="hidden" name="siteid" value="#HTMLEditFormat(request.siteid)#" />
-<input type="hidden" name="returnURL" value="#HTMLEditFormat(request.returnURL)#" />
-<input type="hidden" name="display" value="editprofile" />
+	<input type="hidden" name="siteid" value="#HTMLEditFormat(request.siteid)#" />
+	<input type="hidden" name="returnURL" value="#HTMLEditFormat(request.returnURL)#" />
+	<input type="hidden" name="display" value="editprofile" />
+</div>
 </form>
 </div>
 <script type="text/javascript"> 
