@@ -105,6 +105,14 @@ to your own modified versions of Mura CMS.
 		
 		<cfobjectcache action="clear" />
 		<cfset application.configBean=application.serviceFactory.getBean("configBean") />
+		
+		<!---You can create an onGlobalConfig.cfm file that runs after the initial configBean loads, but before anything else is loaded --->
+		<cfif fileExists(ExpandPath("/muraWRM/config/onGlobalConfig.cfm"))>
+			<cfinclude template="/muraWRM/config/onGlobalConfig.cfm">
+		</cfif>
+		
+		<cfset application.configBean.applyDbUpdates() />
+		
 		<cfset application.settingsManager=application.serviceFactory.getBean("settingsManager") />
 		<cfset application.pluginManager=application.serviceFactory.getBean("pluginManager") />
 		<cfset application.contentManager=application.serviceFactory.getBean("contentManager") />

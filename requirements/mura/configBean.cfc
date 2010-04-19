@@ -265,7 +265,6 @@ to your own modified versions of Mura CMS.
 
 
 	<cfset variables.instance.reactorDBType=config.dbType>
-	<cfset applyDbUpdates() />
 	
 	<cfreturn this />
 </cffunction>
