@@ -736,7 +736,7 @@ to your own modified versions of Mura CMS.
 				
 			</cfif>
 			<!--- Delete Files that are not attached to any version in versin history--->	
-			<cfif newBean.getApproved() and not newBean.getIsNew()>
+			<cfif variables.configBean.getPurgeDrafts() and newBean.getApproved() and not newBean.getIsNew()>
 		
 					<cfset rsHist=getArchiveHist(newbean.getcontentID(),arguments.data.siteid)/>
 					<cfset rsDrafts=getDraftHist(newbean.getcontentID(),arguments.data.siteid)/>
@@ -775,7 +775,9 @@ to your own modified versions of Mura CMS.
 			
 			<cfset newBean.setActive(1) />
 			<cfset variables.contentDAO.archiveActive(newbean.getcontentID(),arguments.data.siteid)/>
-			<cfset variables.contentDAO.deleteDraftHistAll(newbean.getcontentID(),arguments.data.siteid)/>
+			<cfif variables.configBean.getPurgeDrafts()>
+				<cfset variables.contentDAO.deleteDraftHistAll(newbean.getcontentID(),arguments.data.siteid)/>
+			</cfif>
 			<cfset variables.contentDAO.deleteContentAssignments(newbean.getcontentID(),arguments.data.siteid)/>
 		</cfif>
 			

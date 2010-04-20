@@ -217,6 +217,9 @@ to your own modified versions of Mura CMS.
 				<entry key="tempDir">
 					<value>#XMLFormat(variables.ini.get(mode, "tempDir"))#</value>
 				</entry>
+				<entry key="purgeDrafts">
+					<value>#XMLFormat(variables.ini.get(mode, "purgeDrafts"))#</value>
+				</entry>
 				</map>
 			</constructor-arg>
 		</bean>

@@ -104,6 +104,7 @@ to your own modified versions of Mura CMS.
 <cfset variables.instance.siteIDInURLS=true />
 <cfset variables.instance.indexFileInURLS=true />
 <cfset variables.instance.strictExtendedData=false />
+<cfset variables.instance.purgeDrafts=true />
 <cfset variables.instance.appreloadKey=application.appreloadKey />
 <cfset variables.instance.loginStrikes=4 />
 <cfset variables.instance.tempDir=getTempDirectory() />
@@ -249,6 +250,10 @@ to your own modified versions of Mura CMS.
 	
 	<cfif structKeyExists(config,"tempDir")>
 		<cfset setTempDir(config.tempDir)/>
+	</cfif>
+	
+	<cfif structKeyExists(config,"purgeDrafts")>
+		<cfset setPurgeDrafts(config.purgeDrafts)/>
 	</cfif>
 	
 	<cfswitch expression="#server.coldfusion.productName#">
@@ -992,6 +997,17 @@ to your own modified versions of Mura CMS.
 
 <cffunction name="getLoginStrikes" returntype="any" access="public" output="false">
 	<cfreturn variables.instance.loginStrikes />
+</cffunction>
+
+<cffunction name="setPurgeDrafts" access="public" output="false">
+	<cfargument name="purgeDrafts" />
+	<cfif isBoolean(arguments.purgeDrafts)>
+		<cfset variables.instance.purgeDrafts = arguments.purgeDrafts />
+	</cfif>
+</cffunction>
+
+<cffunction name="getPurgeDrafts" returntype="boolean" access="public" output="false">
+	<cfreturn variables.instance.purgeDrafts />
 </cffunction>
 
 <cffunction name="getAllValues" returntype="any" access="public" output="false">

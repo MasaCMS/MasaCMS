@@ -51,7 +51,7 @@ to your own modified versions of Mura CMS.
 <cfelse>
 <cfset fileExt=''/>
 </cfif>
-
+<cfset isActiveRenderered=false>
 <cfset request.deletable=((attributes.parentid neq '00000000000000000000000000000000001' and application.settingsManager.getSite(attributes.siteid).getlocking() neq 'all') or (attributes.parentid eq '00000000000000000000000000000000001' and application.settingsManager.getSite(attributes.siteid).getlocking() eq 'none')) and (request.perm eq 'editor' and attributes.contentid neq '00000000000000000000000000000000001') and request.contentBean.getIsLocked() neq 1>
 </cfsilent>
 <cfoutput>
@@ -104,7 +104,7 @@ to your own modified versions of Mura CMS.
 <tr><td class="varWidth">
 <a title="Edit" href="index.cfm?fuseaction=cArch.edit&contenthistid=#request.rshist.ContenthistID#&contentid=#request.rshist.ContentID#&type=#attributes.type#&parentid=#attributes.parentid#&topid=#attributes.topid#&siteid=#attributes.siteid#&startrow=#attributes.startrow#&moduleid=#attributes.moduleid#&return=hist&compactDisplay=#attributes.compactDisplay#">#HTMLEditFormat(left(request.rshist.menutitle,90))#</a>
 </td> <td class="title"><cfif request.rsHist.notes neq ''><a class="expand">View&nbsp;Note<span>#application.contentRenderer.setParagraphs(htmleditformat(request.rshist.notes))#</span></a></cfif></td>
-<td nowrap class="status"><cfif request.rshist.active and request.rshist.approved>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.published')#<cfelseif not request.rshist.approved>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.draft')#<cfelse>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.archived')# </cfif></td> <td> <cfif request.rshist.Display and (request.rshist.Display eq 1 and request.rshist.approved and request.rshist.approved)> #application.rbFactory.getKeyValue(session.rb,'sitemanager.yes')# <cfelseif(request.rshist.Display eq 2 and request.rshist.approved and request.rshist.approved)> #LSDateFormat(request.rshist.displaystart,session.dateKeyFormat)#&nbsp;-&nbsp;#LSDateFormat(request.rshist.displaystop,session.dateKeyFormat)# <cfelse> #application.rbFactory.getKeyValue(session.rb,'sitemanager.no')# </cfif></td>
+<td nowrap class="status"><cfif request.rshist.active and request.rshist.approved><cfset isActiveRenderered=true>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.published')#<cfelseif not request.rshist.approved and not isActiveRenderered>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.draft')#<cfelse>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.archived')# </cfif></td> <td> <cfif request.rshist.Display and (request.rshist.Display eq 1 and request.rshist.approved and request.rshist.approved)> #application.rbFactory.getKeyValue(session.rb,'sitemanager.yes')# <cfelseif(request.rshist.Display eq 2 and request.rshist.approved and request.rshist.approved)> #LSDateFormat(request.rshist.displaystart,session.dateKeyFormat)#&nbsp;-&nbsp;#LSDateFormat(request.rshist.displaystop,session.dateKeyFormat)# <cfelse> #application.rbFactory.getKeyValue(session.rb,'sitemanager.no')# </cfif></td>
 <td> #application.rbFactory.getKeyValue(session.rb,'sitemanager.#lcase(request.rshist.inheritobjects)#')#</td>
 <td> #application.rbFactory.getKeyValue(session.rb,'sitemanager.#yesnoformat(request.rshist.isFeature)#')#</td>
  <td> #application.rbFactory.getKeyValue(session.rb,'sitemanager.#yesnoformat(request.rshist.isnav)#')#</td>
