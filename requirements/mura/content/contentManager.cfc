@@ -641,11 +641,17 @@ to your own modified versions of Mura CMS.
 		
 		<!--- Public Content Submision  --->
 		<cfif newBean.getIsNew() and isdefined('arguments.data.email') and isdefined('arguments.data.approvalqueue') and arguments.data.approvalqueue>
+			<cftry>
 			<cfset variables.contentUtility.setApprovalQue(newBean,arguments.data.email) />
+			<cfcatch></cfcatch>
+			</cftry>
 		</cfif>
 		
-		<cfif newBean.getIsNew() eq 0 and newBean.getDisplay() neq 0 and currentBean.getDisplay() eq 0>
-			 <cfset variables.contentUtility.checkApprovalQue(newBean,getActiveContent(newBean.getParentID(),newBean.getSiteID())) />
+		<cfif newBean.getIsNew() eq 0 and newBean.getDisplay() neq 0 and currentBean.getDisplay() eq 0> 
+			<cftry>
+			<cfset variables.contentUtility.checkApprovalQue(newBean,getActiveContent(newBean.getParentID(),newBean.getSiteID())) />
+			<cfcatch></cfcatch>
+			</cftry>
 		</cfif>
 		<!--- End Public Content Submision  --->	
 		
