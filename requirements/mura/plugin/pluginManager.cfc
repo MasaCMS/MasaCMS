@@ -813,7 +813,13 @@ select * from tplugins order by #arguments.orderby#
 <cfargument name="currentEventObject" required="true" default="" type="any">
 <cfargument name="rsHandlers" required="true" default="" type="any">
 <cfargument name="moduleID" required="true" default="" type="any">
-	<cfset executeScripts(arguments.eventToAnnounce,arguments.currentEventObject.getValue('siteID'),arguments.currentEventObject,arguments.rsHandlers,arguments.moduleID)>
+	<cfset var siteID="">
+	<cfif getMetaData(arguments.currentEventObject).name eq "mura.MuraScope">
+		<cfset siteID=arguments.currentEventObject.event('siteID')>
+	<cfelse>
+		<cfset siteID=arguments.currentEventObject.getValue('siteID')>
+	</cfif>
+	<cfset executeScripts(arguments.eventToAnnounce,siteid,arguments.currentEventObject,arguments.rsHandlers,arguments.moduleID)>
 </cffunction>
 
 <cffunction name="renderEvent" output="false" returntype="any">
@@ -821,7 +827,13 @@ select * from tplugins order by #arguments.orderby#
 <cfargument name="currentEventObject" required="true" default="" type="any">
 <cfargument name="rsHandlers" required="true" default="" type="any">
 <cfargument name="moduleID" required="true" default="" type="any">
-	<cfreturn renderScripts(arguments.eventToRender,arguments.currentEventObject.getValue('siteID'),arguments.currentEventObject,arguments.rsHandlers,arguments.moduleID)>
+	<cfset var siteID="">
+	<cfif getMetaData(arguments.currentEventObject).name eq "mura.MuraScope">
+		<cfset siteID=arguments.currentEventObject.event('siteID')>
+	<cfelse>
+		<cfset siteID=arguments.currentEventObject.getValue('siteID')>
+	</cfif>
+	<cfreturn renderScripts(arguments.eventToRender,siteid,arguments.currentEventObject,arguments.rsHandlers,arguments.moduleID)>
 </cffunction>
 
 <cffunction name="executeScripts" output="false" returntype="any">

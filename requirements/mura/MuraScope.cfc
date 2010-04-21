@@ -107,16 +107,16 @@
 	<cfif structKeyExists(arguments,"property")>
 		<cfif isObject(getEvent())>
 			<cfif structKeyExists(arguments,"propertyValue")>
-				<cfset variables.instance.event.setValue(arguments.property,arguments.propertyValue)>
+				<cfset getEvent().setValue(arguments.property,arguments.propertyValue)>
 			</cfif>
 			
-			<cfreturn variables.instance.event.getValue(arguments.property)>
+			<cfreturn getEvent().getValue(arguments.property)>
 			
 		<cfelse>
 			<cfthrow message="The event is not set in the Mura Scope.">
 		</cfif>
 	<cfelse>
-		<cfreturn variables.instance.event>
+		<cfreturn getEvent()>
 	</cfif>
 	
 </cffunction>
