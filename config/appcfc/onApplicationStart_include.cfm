@@ -172,56 +172,55 @@ to your own modified versions of Mura CMS.
 		<cfset application.broadcastInit=true/>
 		<cfset structDelete(application,"muraAdmin")>
 		<cfset structDelete(application,"proxyServices")>
-	</cflock>
-</cfif>	
-<!--- Set up scheduled tasks --->
-<cfif (len(application.configBean.getServerPort())-1) lt 1>
-	<cfset port=80/>
-<cfelse>
-	<cfset port=right(application.configBean.getServerPort(),len(application.configBean.getServerPort())-1) />
-</cfif>
-	
-<cfif application.configBean.getCompiler() eq "Railo">
-	<cfset siteMonitorTask="siteMonitor"/>
-<cfelse>
-	<cfset siteMonitorTask="#application.configBean.getWebRoot()#/tasks/siteMonitor.cfm"/>
-</cfif>
-	
-<cftry>
-	<cfif variables.ini.get(mode, "ping") eq 1>
-		<cfschedule action = "update"
-			task = "#siteMonitorTask#"
-			operation = "HTTPRequest"
-			url = "http://#listFirst(cgi.http_host,":")##application.configBean.getContext()#/tasks/siteMonitor.cfm"
-			port="#port#"
-			startDate = "#dateFormat(now(),'mm/dd/yyyy')#"
-			startTime = "#createTime(0,15,0)#"
-			publish = "No"
-			interval = "900"
-			requestTimeOut = "600"
-		/>
-	</cfif>
-<cfcatch></cfcatch>
-</cftry>
-	
 		
-<cfif not directoryExists("#application.configBean.getWebRoot()##application.configBean.getFileDelim()#plugins")> 
-	<cfdirectory action="create" mode="777" directory="#application.configBean.getWebRoot()##application.configBean.getFileDelim()#plugins"> 
-</cfif>
-
-<cfset pluginEvent=createObject("component","mura.event").init()>			
-<cfset application.pluginManager.executeScripts(runat='onApplicationLoad',event= pluginEvent)>
-		
-<!--- Fire local onApplicationLoad events--->
-<cfset rsSites=application.settingsManager.getList() />
-<cfloop query="rsSites">	
-	<cfif fileExists(expandPath("/#application.configBean.getWebRootMap()#") & "/#rsSites.siteID#/includes/eventHandler.cfc")>
-		<cfset localHandler=createObject("component","#application.configBean.getWebRootMap()#.#rsSites.siteID#.includes.eventHandler").init()>
-			<cfif structKeyExists(localHandler,"onApplicationLoad")>		
-				<cfset pluginEvent.setValue("siteID",rsSites.siteID)>
-				<cfset pluginEvent.loadSiteRelatedObjects()>
-				<cfset localHandler.onApplicationLoad(event=pluginEvent,$=pluginEvent.getValue("muraScope"),mura=pluginEvent.getValue("muraScope"))>
+		<!--- Set up scheduled tasks --->
+		<cfif (len(application.configBean.getServerPort())-1) lt 1>
+			<cfset port=80/>
+		<cfelse>
+			<cfset port=right(application.configBean.getServerPort(),len(application.configBean.getServerPort())-1) />
 		</cfif>
-	</cfif>
-</cfloop>
+			
+		<cfif application.configBean.getCompiler() eq "Railo">
+			<cfset siteMonitorTask="siteMonitor"/>
+		<cfelse>
+			<cfset siteMonitorTask="#application.configBean.getWebRoot()#/tasks/siteMonitor.cfm"/>
+		</cfif>
+			
+		<cftry>
+			<cfif variables.ini.get(mode, "ping") eq 1>
+				<cfschedule action = "update"
+					task = "#siteMonitorTask#"
+					operation = "HTTPRequest"
+					url = "http://#listFirst(cgi.http_host,":")##application.configBean.getContext()#/tasks/siteMonitor.cfm"
+					port="#port#"
+					startDate = "#dateFormat(now(),'mm/dd/yyyy')#"
+					startTime = "#createTime(0,15,0)#"
+					publish = "No"
+					interval = "900"
+					requestTimeOut = "600"
+				/>
+			</cfif>
+		<cfcatch></cfcatch>
+		</cftry>
+						
+		<cfif not directoryExists("#application.configBean.getWebRoot()##application.configBean.getFileDelim()#plugins")> 
+			<cfdirectory action="create" mode="777" directory="#application.configBean.getWebRoot()##application.configBean.getFileDelim()#plugins"> 
+		</cfif>
 		
+		<cfset pluginEvent=createObject("component","mura.event").init()>			
+		<cfset application.pluginManager.executeScripts(runat='onApplicationLoad',event= pluginEvent)>
+				
+		<!--- Fire local onApplicationLoad events--->
+		<cfset rsSites=application.settingsManager.getList() />
+		<cfloop query="rsSites">	
+			<cfif fileExists(expandPath("/#application.configBean.getWebRootMap()#") & "/#rsSites.siteID#/includes/eventHandler.cfc")>
+				<cfset localHandler=createObject("component","#application.configBean.getWebRootMap()#.#rsSites.siteID#.includes.eventHandler").init()>
+					<cfif structKeyExists(localHandler,"onApplicationLoad")>		
+						<cfset pluginEvent.setValue("siteID",rsSites.siteID)>
+						<cfset pluginEvent.loadSiteRelatedObjects()>
+						<cfset localHandler.onApplicationLoad(event=pluginEvent,$=pluginEvent.getValue("muraScope"),mura=pluginEvent.getValue("muraScope"))>
+				</cfif>
+			</cfif>
+		</cfloop>
+	</cflock>
+</cfif>		
