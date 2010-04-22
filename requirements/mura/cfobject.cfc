@@ -116,6 +116,10 @@ to your own modified versions of Mura CMS.
 	<cfreturn application.pluginManager />	
 </cffunction>
 
+<cffunction name="getEventManager" returntype="any" access="public" output="false" hint="The eventManager is the same as the pluginManager.">
+	<cfreturn application.applicationManager />	
+</cffunction>
+
 <cffunction name="getCurrentUser" returntype="any" access="public" output="false">
 	<cfif not structKeyExists(request,"currentUser")>
 		<cfset request.currentUser=createObject("component","mura.user.sessionUserFacade").init() />

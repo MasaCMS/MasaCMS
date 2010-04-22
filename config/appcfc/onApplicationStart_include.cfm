@@ -115,6 +115,7 @@ to your own modified versions of Mura CMS.
 		
 		<cfset application.settingsManager=application.serviceFactory.getBean("settingsManager") />
 		<cfset application.pluginManager=application.serviceFactory.getBean("pluginManager") />
+		<cfset application.eventManager=application.pluginManager />
 		<cfset application.contentManager=application.serviceFactory.getBean("contentManager") />
 		<cfset application.utility=application.serviceFactory.getBean("utility") />
 		<cfset application.permUtility=application.serviceFactory.getBean("permUtility") />
