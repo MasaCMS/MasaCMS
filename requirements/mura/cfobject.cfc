@@ -117,7 +117,7 @@ to your own modified versions of Mura CMS.
 </cffunction>
 
 <cffunction name="getEventManager" returntype="any" access="public" output="false" hint="The eventManager is the same as the pluginManager.">
-	<cfreturn application.applicationManager />	
+	<cfreturn application.eventManager />	
 </cffunction>
 
 <cffunction name="getCurrentUser" returntype="any" access="public" output="false">
