@@ -103,6 +103,16 @@
 	<cfreturn this>
 </cffunction>
 
+<cffunction name="addAdvancedParam" access="public" output="false">
+	<cfargument name="field" type="string" required="true" default="">
+	<cfargument name="relationship" type="string" default="and" required="true">
+	<cfargument name="criteria" type="string" required="true" default="">
+	<cfargument name="condition" type="string" default="EQUALS" required="true">
+	<cfargument name="datatype" type="string"  default="varchar" required="true">
+		
+	<cfreturn addParam(argumentCollection=arguments)>
+</cffunction>
+
 <cffunction name="clearParams">
 	<cfset variables.instance.params=queryNew("param,relationship,field,condition,criteria,dataType","integer,varchar,varchar,varchar,varchar,varchar" )  />
 	<cfreturn this>
