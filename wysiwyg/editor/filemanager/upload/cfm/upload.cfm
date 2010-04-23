@@ -151,7 +151,7 @@
 				<cfset errorNumber = "201">
 			</cfif>
 			 --->
-			 <cfset fileWriter.renameFile(
+			 <cfset fileWriter.moveFile(
 			 		source="#application.configBean.getTempDir()##cffile.ServerFileName#.#cffile.ServerFileExt#",
 					destination="#currentFolderPath##fileName#.#fileExt#",
 					mode="774",
