@@ -92,14 +92,8 @@ to your own modified versions of Mura CMS.
 <cffunction name="getValue" returntype="any" access="public" output="false">
 <cfargument name="property"  type="string" required="true">
 <cfargument name="defaultValue">
-<cfargument name="scope">
-	<cfset var theScope="">
-	
-	<cfif structKeyExists(arguments,"scope")>
-		<cfset theScope=getScope(arguments.scope) />
-	<cfelse>
-		<cfset theScope=getScope("request") />
-	</cfif>
+<cfargument name="scope" default="request" required="true">
+	<cfset var theScope=getScope(arguments.scope)>
 	
 	<cfif structKeyExists(theScope,"#arguments.property#")>
 		<cfreturn theScope["#arguments.property#"] />
