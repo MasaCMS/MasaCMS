@@ -114,6 +114,10 @@ to your own modified versions of Mura CMS.
 		<cfset variables.mapdir = variables.iniProperties.mapdir />
 		<cfset variables.webroot = variables.iniProperties.webroot />
 		
+		<cfif not structKeyExists(variables.iniProperties,"useFileMode")>
+			<cfset variables.iniProperties.useFileMode=true>
+		</cfif>
+		
 		<cfset application.appReloadKey = variables.iniProperties.appreloadkey />
 		
 		<cfset variables.iniProperties.webroot = expandPath("/muraWRM") />
