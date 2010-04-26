@@ -120,18 +120,17 @@ to your own modified versions of Mura CMS.
 		
 		<cfset servicesLoaded=false>	
 		<!--- If coldspring.custom.xml.cfm exists read it in an check it it is valid xml--->
-		<cfif fileExists(expandPath("/muraWRM/config/coldspring.custom.xml.cfm"))>
-			<cftry>
+		<cfif fileExists(expandPath("/muraWRM/config/coldspring.custom.xml.cfm"))>	
 			<cffile action="read" variable="customServicesXML" file="#expandPath('/muraWRM/config/coldspring.custom.xml.cfm')#">
-			<cfif not findNoCase("<beans>",customServicesXML)>
-				<cfset customServicesXML= "<beans>" & customServicesXML & "</beans>">
+			<cfif not findNoCase("<!---",customServicesXML)>
+				<cfif not findNoCase("<beans>",customServicesXML)>
+					<cfset customServicesXML= "<beans>" & customServicesXML & "</beans>">
+				</cfif>
+				<cfset customServicesXML=replaceNoCase(customServicesXML, "##mapdir##","mura","ALL")>
+				<cfset application.serviceFactory=createObject("component","coldspring.beans.DefaultXmlBeanFactory").init() />
+				<cfset application.serviceFactory.loadBeansFromXMLRaw(customServicesXML,true) />
+				<cfset servicesLoaded=true>	
 			</cfif>
-			<cfset customServicesXML=replaceNoCase(customServicesXML, "##mapdir##","mura","ALL")>
-			<cfset application.serviceFactory=createObject("component","coldspring.beans.DefaultXmlBeanFactory").init() />
-			<cfset application.serviceFactory.loadBeansFromXMLRaw(customServicesXML,true) />
-			<cfcatch></cfcatch>
-			</cftry>
-			<cfset servicesLoaded=true>	
 		</cfif>
 		
 		<cfinclude template="/muraWRM/config/coldspring.xml.cfm" />

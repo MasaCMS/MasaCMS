@@ -506,5 +506,7 @@ to your own modified versions of Mura CMS.
 		<alias name="userFeedBean" alias="userFeed"/>
 		<alias name="commentBean" alias="comment"/>
 		<alias name="pluginManager" alias="eventManager"/>
+		<!---coldspring.custom.xml.cfm reference is for backwards compatability --->
+		<cfif not servicesLoaded and fileExists(expandPath("/muraWRM/config/coldspring.custom.xml.cfm"))><cfinclude template="/muraWRM/config/coldspring.custom.xml.cfm"></cfif>
 	</beans></cfoutput>
 	</cfsavecontent>
