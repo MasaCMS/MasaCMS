@@ -266,4 +266,14 @@
 	</cfif>
 </cffunction>
 
+<cffunction name="announceEvent" returntype="any" access="public" output="false">
+	<cfargument name="eventName">
+	<cfset getEventManager().announceEvent(arguments.eventName,this)>
+</cffunction>
+
+<cffunction name="renderEvent" returntype="any" access="public" output="false">
+	<cfargument name="eventName">
+	<cfreturn getEventManager().renderEvent(arguments.eventName,this)>
+</cffunction>
+
 </cfcomponent>
