@@ -117,9 +117,11 @@ to your own modified versions of Mura CMS.
 		<cfset application.appReloadKey = variables.iniProperties.appreloadkey />
 		
 		<cfset variables.iniProperties.webroot = expandPath("/muraWRM") />
-			
+		
+		<cfset servicesLoaded=false>	
 		<!--- If coldspring.custom.xml.cfm exists read it in an check it it is valid xml--->
 		<cfif fileExists(expandPath("/muraWRM/config/coldspring.custom.xml.cfm"))>
+			<cftry>
 			<cffile action="read" variable="customServicesXML" file="#expandPath('/muraWRM/config/coldspring.custom.xml.cfm')#">
 			<cfif not findNoCase("<beans>",customServicesXML)>
 				<cfset customServicesXML= "<beans>" & customServicesXML & "</beans>">
@@ -127,15 +129,20 @@ to your own modified versions of Mura CMS.
 			<cfset customServicesXML=replaceNoCase(customServicesXML, "##mapdir##","mura","ALL")>
 			<cfset application.serviceFactory=createObject("component","coldspring.beans.DefaultXmlBeanFactory").init() />
 			<cfset application.serviceFactory.loadBeansFromXMLRaw(customServicesXML,true) />
-			
-			<cfinclude template="/muraWRM/config/coldspring.xml.cfm" />
+			<cfcatch></cfcatch>
+			</cftry>
+			<cfset servicesLoaded=true>	
+		</cfif>
+		
+		<cfinclude template="/muraWRM/config/coldspring.xml.cfm" />
+		
+		<cfif not servicesLoaded>
+			<cfset application.serviceFactory=createObject("component","coldspring.beans.DefaultXmlBeanFactory").init() />
+			<cfset application.serviceFactory.loadBeansFromXMLRaw(servicesXML,true) />
+		<cfelse>
 			<cfset parentServiceFactory=createObject("component","coldspring.beans.DefaultXmlBeanFactory").init() />
 			<cfset parentServiceFactory.loadBeansFromXMLRaw(servicesXML,true) />
 			<cfset application.serviceFactory.setParent(parentServiceFactory)>
-		<cfelse>
-			<cfinclude template="/muraWRM/config/coldspring.xml.cfm" />
-			<cfset application.serviceFactory=createObject("component","coldspring.beans.DefaultXmlBeanFactory").init() />
-			<cfset application.serviceFactory.loadBeansFromXMLRaw(servicesXML,true) />
 		</cfif>
 		
 		<cfobjectcache action="clear" />

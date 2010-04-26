@@ -47,13 +47,6 @@ to your own modified versions of Mura CMS.
 <cfprocessingdirective pageencoding="utf-8"/>
 <cfsetting requestTimeout = "1000">
 	
-<cfif not application.configBean.getDebuggingEnabled()>
-	<cferror 
-	template="/muraWRM/config/error.html"
-	mailto="#application.configBean.getMailserverusername()#"
-	type="Exception">
-</cfif>
-	
 <!--- Making sure that session is valid --->
 <cfif structKeyExists(session,"mura")>
 	<cfif 
