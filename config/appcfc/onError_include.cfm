@@ -59,10 +59,14 @@ to your own modified versions of Mura CMS.
 	
 <cfif structKeyExists(application,"configBean")>
 	<cfif not application.configBean.getDebuggingEnabled()>
-		<cferror 
-			template="../error.html"
-			mailto="#application.configBean.getMailserverusername()#"
-			type="Exception">
+		<cfset mailto=application.configBean.getMailserverusername()>
+		<cfcontent reset="true">
+		<cfif len(application.configBean.getValue("errorTemplate"))>
+			<cfinclude template="#application.configBean.getValue('errorTemplate')#">
+		<cfelse>
+			<cfinclude template="/muraWRM/config/error.html">
+		</cfif>
+		<cfabort>
 	</cfif>
 </cfif>
 		
