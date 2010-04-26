@@ -130,4 +130,4 @@ to your own modified versions of Mura CMS.
 		<cfcatch>
 			<cfset hasPluginMappings=false>
 		</cfcatch>
-	</cftry>	
+	</cftry>

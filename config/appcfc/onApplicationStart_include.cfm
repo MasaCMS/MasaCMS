@@ -87,24 +87,61 @@ to your own modified versions of Mura CMS.
 		
 		<cfset variables.iniPath = "#baseDir#/config/settings.ini.cfm" />
 		
-		<!--- Use getProfileString() to get settings/mode and [mode]/mapdir (need mapdir to instantiate [mapdir].IniFile, for all other ini properties) --->
-		<cfset variables.mode = getProfileString(variables.iniPath, "settings", "mode") />
-		<cfset variables.mapdir = getProfileString(variables.iniPath, mode, "mapdir") />
-	
-		<!--- Use IniFile object to get all other ini properties. --->
-		<cfset variables.ini = createObject( "component", "#variables.mapdir#.IniFile" ).init(variables.iniPath) />
+		<cfset variables.iniSections=getProfileSections(variables.iniPath)>
 		
-		<cfset application.appReloadKey = variables.ini.get("settings", "appReloadKey") />
+		<cfset variables.iniProperties=structNew()>
+		<cfloop list="#variables.iniSections.settings#" index="p">
+			<cfset variables.iniProperties[p]=getProfileString("#baseDir#/config/settings.ini.cfm","settings",p)>			
+			<cfif left(variables.iniProperties[p],2) eq "${"
+				and right(variables.iniProperties[p],1) eq "}">
+				<cfset variables.iniProperties[p]=mid(variables.iniProperties[p],3,len(variables.iniProperties[p])-3)>
+				<cfset variables.iniProperties[p] = evaluate(variables.iniProperties[p])>
+			</cfif>		
+		</cfloop>		
 		
-		<cfset variables.webroot = expandPath("/muraWRM") />
+		<cfloop list="#variables.iniSections[ variables.iniProperties.mode]#" index="p">
+			<cfset variables.iniProperties[p]=getProfileString("#baseDir#/config/settings.ini.cfm", variables.iniProperties.mode,p)>
+			<cfif left(variables.iniProperties[p],2) eq "${"
+				and right(variables.iniProperties[p],1) eq "}">
+				<cfset variables.iniProperties[p]=mid(variables.iniProperties[p],3,len(variables.iniProperties[p])-3)>
+				<cfset variables.iniProperties[p] = evaluate(variables.iniProperties[p])>
+			</cfif>	
+		</cfloop>
 		
-		<cfinclude template="/muraWRM/config/coldspring.xml.cfm" />
+		<cfset variables.iniProperties.webroot = expandPath("/muraWRM") />
 		
-		<cfset application.serviceFactory=createObject("component","coldspring.beans.DefaultXmlBeanFactory").init() />
-		<cfset application.serviceFactory.loadBeansFromXMLRaw(servicesXML,true) />
+		<cfset variables.mode = variables.iniProperties.mode />
+		<cfset variables.mapdir = variables.iniProperties.mapdir />
+		<cfset variables.webroot = variables.iniProperties.webroot />
+		
+		<cfset application.appReloadKey = variables.iniProperties.appreloadkey />
+		
+		<cfset variables.iniProperties.webroot = expandPath("/muraWRM") />
+			
+		<!--- If coldspring.custom.xml.cfm exists read it in an check it it is valid xml--->
+		<cfif fileExists(expandPath("/muraWRM/config/coldspring.custom.xml.cfm"))>
+			<cffile action="read" variable="customServicesXML" file="#expandPath('/muraWRM/config/coldspring.custom.xml.cfm')#">
+			<cfif not findNoCase("<beans>",customServicesXML)>
+				<cfset customServicesXML= "<beans>" & customServicesXML & "</beans>">
+			</cfif>
+			<cfset customServicesXML=replaceNoCase(customServicesXML, "##mapdir##","mura","ALL")>
+			<cfset application.serviceFactory=createObject("component","coldspring.beans.DefaultXmlBeanFactory").init() />
+			<cfset application.serviceFactory.loadBeansFromXMLRaw(customServicesXML,true) />
+			
+			<cfinclude template="/muraWRM/config/coldspring.xml.cfm" />
+			<cfset parentServiceFactory=createObject("component","coldspring.beans.DefaultXmlBeanFactory").init() />
+			<cfset parentServiceFactory.loadBeansFromXMLRaw(servicesXML,true) />
+			<cfset application.serviceFactory.setParent(parentServiceFactory)>
+		<cfelse>
+			<cfinclude template="/muraWRM/config/coldspring.xml.cfm" />
+			<cfset application.serviceFactory=createObject("component","coldspring.beans.DefaultXmlBeanFactory").init() />
+			<cfset application.serviceFactory.loadBeansFromXMLRaw(servicesXML,true) />
+		</cfif>
 		
 		<cfobjectcache action="clear" />
+		
 		<cfset application.configBean=application.serviceFactory.getBean("configBean") />
+		<cfset application.configBean.set(variables.iniProperties)>
 		
 		<!---You can create an onGlobalConfig.cfm file that runs after the initial configBean loads, but before anything else is loaded --->
 		<cfif fileExists(ExpandPath("/muraWRM/config/onGlobalConfig.cfm"))>

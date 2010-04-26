@@ -139,6 +139,16 @@ to your own modified versions of Mura CMS.
 		<cfset structDelete(variables.wired,arguments.property) />
 </cffunction>
 
+<cffunction name="containsBean" returntype="any" access="public" output="false" hint="This is for fw1 autowiring">
+	<cfargument name="property" type="string" required="true">
+	<cfreturn structKeyExists(variables.properties,arguments.property) and isObject(variables.properties[arguments.property])>		
+</cffunction>
+
+<cffunction name="getBean" returntype="any" access="public" output="false" hint="This is for fw1 autowiring">
+	<cfargument name="property" type="string" required="true">
+	<cfreturn getValue(arguments.property)>
+</cffunction>
+
 </cfcomponent>
 
 

@@ -40,192 +40,15 @@ for your modified version; it is your choice whether to do so, or to make such m
 the GNU General Public License version 2 �without this exception. �You may, if you choose, apply this exception
 to your own modified versions of Mura CMS.
 --->
-
 <cfsavecontent variable="servicesXML"><cfoutput><beans>
-		<bean id="utility" class="#mapdir#.utility" singleton="true" >
+		<bean id="utility" class="mura.utility" singleton="true" >
 			<constructor-arg name="configBean"><ref bean="configBean" /></constructor-arg>
 			<constructor-arg name="fileWriter"><ref bean="fileWriter" /></constructor-arg>
 		</bean>
-		<bean id="configBean" class="#mapdir#.configBean" singleton="true" >
-			<constructor-arg name="config">
-				<map>
-				<entry key="mode">
-					<value>#XMLFormat(variables.mode)#</value>
-				</entry>
-				<entry key="mapdir">
-					<value>#XMLFormat(variables.mapdir)#</value>
-				</entry>
-				<entry key="version">
-					<value>#XMLFormat(variables.ini.get(mode, "version"))#</value>
-				</entry>
-				<entry key="title">
-					<value>#XMLFormat(variables.ini.get(mode, "title"))#</value>
-				</entry>
-				<entry key="webroot">
-					<value>#XMLFormat(variables.webroot)#</value>
-				</entry>
-				<entry key="webrootmap">
-					<value>#XMLFormat(variables.ini.get(mode, "webrootmap"))#</value>
-				</entry>
-				<entry key="datasource">
-					<value>#XMLFormat(variables.ini.get(mode, "datasource"))#</value>
-				</entry>
-				<entry key="context">
-					<value>#XMLFormat(variables.ini.get(mode, "context"))#</value>
-				</entry>
-				<entry key="stub">
-					<value>#XMLFormat(variables.ini.get(mode, "stub"))#</value>
-				</entry>
-				<entry key="admindomain">
-					<value>#XMLFormat(variables.ini.get(mode, "admindomain"))#</value>
-				</entry>
-				<entry key="indexfile">
-					<value>#XMLFormat(variables.ini.get(mode, "indexfile"))#</value>
-				</entry>
-				<entry key="adminemail">
-					<value>#XMLFormat(variables.ini.get(mode, "adminemail"))#</value>
-				</entry>
-				<entry key="mailServerIP">
-					<value>#XMLFormat(variables.ini.get(mode, "mailServerIP"))#</value>
-				</entry>
-				<entry key="mailserverusername">
-					<value>#XMLFormat(variables.ini.get(mode, "mailserverusername"))#</value>
-				</entry>
-				<entry key="mailserverpassword">
-					<value>#XMLFormat(variables.ini.get(mode, "mailserverpassword"))#</value>
-				</entry>
-				<entry key="mailserversmtpport">
-					<value>#XMLFormat(variables.ini.get(mode, "mailserversmtpport"))#</value>
-				</entry>
-				<entry key="mailserverpoppport">
-					<value>#XMLFormat(variables.ini.get(mode, "mailserverpopport"))#</value>
-				</entry>
-				<entry key="mailservertls">
-					<value>#XMLFormat(variables.ini.get(mode, "mailservertls"))#</value>
-				</entry>
-				<entry key="mailserverssl">
-					<value>#XMLFormat(variables.ini.get(mode, "mailserverssl"))#</value>
-				</entry>
-				<entry key="adminssl">
-					<value>#XMLFormat(variables.ini.get(mode, "adminssl"))#</value>
-				</entry>
-				<entry key="logEvents">
-					<value>#XMLFormat(variables.ini.get(mode, "logEvents"))#</value>
-				</entry>
-				<entry key="dbType">
-					<value>#XMLFormat(variables.ini.get(mode, "dbType"))#</value>
-				</entry>
-				<entry key="dbPassword">
-					<value>#XMLFormat(variables.ini.get(mode, "dbPassword"))#</value>
-				</entry>
-				<entry key="dbUsername">
-					<value>#XMLFormat(variables.ini.get(mode, "dbUsername"))#</value>
-				</entry>
-				<entry key="debuggingEnabled">
-					<value>#XMLFormat(variables.ini.get(mode, "debuggingEnabled"))#</value>
-				</entry>
-				<entry key="port">
-					<value>#XMLFormat(variables.ini.get(mode, "port"))#</value>
-				</entry>
-				<entry key="fileDir">
-					<value>#XMLFormat(variables.ini.get(mode, "filedir"))#</value>
-				</entry>
-				<entry key="assetDir">
-					<value>#XMLFormat(variables.ini.get(mode, "assetdir"))#</value>
-				</entry>
-				<entry key="pluginDir">
-					<value>#XMLFormat(variables.ini.get(mode, "plugindir"))#</value>
-				</entry>
-				<entry key="assetPath">
-					<value>#XMLFormat(variables.ini.get(mode, "assetpath"))#</value>
-				</entry>
-				<entry key="productionAssetPath">
-					<value>#XMLFormat(variables.ini.get(mode, "productionassetpath"))#</value>
-				</entry>
-				<entry key="ProductionWebroot">
-					<value>#XMLFormat(variables.ini.get(mode, "ProductionWebroot"))#</value>
-				</entry>
-				<entry key="ProductionDatasource">
-					<value>#XMLFormat(variables.ini.get(mode, "ProductionDatasource"))#</value>
-				</entry>
-				<entry key="ProductionFiledir">
-					<value>#XMLFormat(variables.ini.get(mode, "ProductionFiledir"))#</value>
-				</entry>
-				<entry key="ProductionAssetdir">
-					<value>#XMLFormat(variables.ini.get(mode, "ProductionAssetdir"))#</value>
-				</entry>
-				<entry key="fileStore">
-					<value>#XMLFormat(variables.ini.get(mode, "fileStore"))#</value>
-				</entry>
-				<entry key="fileStoreAccessInfo">
-					<value>#XMLFormat(variables.ini.get(mode, "fileStoreAccessInfo"))#</value>
-				</entry>
-				<entry key="sessionHistory">
-					<value>#XMLFormat(variables.ini.get(mode, "sessionHistory"))#</value>
-				</entry>
-				<entry key="locale">
-					<value>#XMLFormat(variables.ini.get(mode, "locale"))#</value>
-				</entry>
-				<entry key="useDefaultSMTPServer">
-					<value>#XMLFormat(variables.ini.get(mode, "useDefaultSMTPServer"))#</value>
-				</entry>
-				<entry key="imageInterpolation">
-					<value>#XMLFormat(variables.ini.get(mode, "imageInterpolation"))#</value>
-				</entry>
-				<entry key="clusterIPList">
-					<value>#XMLFormat(variables.ini.get(mode, "clusterIPList"))#</value>
-				</entry>
-				<entry key="enableMuraTag">
-					<value>#XMLFormat(variables.ini.get(mode, "enableMuraTag"))#</value>
-				</entry>
-				<entry key="appreloadKey">
-					<value>#XMLFormat(application.appreloadKey)#</value>
-				</entry>
-				<entry key="dashboard">
-					<value>#XMLFormat(variables.ini.get(mode, "dashboard"))#</value>
-				</entry>
-				<entry key="sortPermission">
-					<value>#XMLFormat(variables.ini.get(mode, "sortPermission"))#</value>
-				</entry>
-				<entry key="proxyUser">
-					<value>#XMLFormat(variables.ini.get(mode, "proxyUser"))#</value>
-				</entry>
-				<entry key="proxyPassword">
-					<value>#XMLFormat(variables.ini.get(mode, "proxyPassword"))#</value>
-				</entry>
-				<entry key="proxyServer">
-					<value>#XMLFormat(variables.ini.get(mode, "proxyServer"))#</value>
-				</entry>
-				<entry key="proxyPort">
-					<value>#XMLFormat(variables.ini.get(mode, "proxyPort"))#</value>
-				</entry>
-				<entry key="sharableRemoteSessions">
-					<value>#XMLFormat(variables.ini.get(mode, "sharableRemoteSessions"))#</value>
-				</entry>
-				<entry key="siteIDInURLS">
-					<value>#XMLFormat(variables.ini.get(mode, "siteIDInURLS"))#</value>
-				</entry>
-				<entry key="indexFileInURLS">
-					<value>#XMLFormat(variables.ini.get(mode, "indexFileInURLS"))#</value>
-				</entry>
-				<entry key="strictExtendedData">
-					<value>#XMLFormat(variables.ini.get(mode, "strictExtendedData"))#</value>
-				</entry>
-				<entry key="loginStrikes">
-					<value>#XMLFormat(variables.ini.get(mode, "loginStrikes"))#</value>
-				</entry>
-				<entry key="tempDir">
-					<value>#XMLFormat(variables.ini.get(mode, "tempDir"))#</value>
-				</entry>
-				<entry key="purgeDrafts">
-					<value>#XMLFormat(variables.ini.get(mode, "purgeDrafts"))#</value>
-				</entry>
-				</map>
-			</constructor-arg>
-		</bean>
+		<bean id="configBean" class="mura.configBean" singleton="true" />
 		<bean id="fileWriter" class="mura.fileWriter" singleton="true">
 			<constructor-arg name="useMode">  
-       			<value>#XMLFormat(variables.ini.get(mode, "useFileMode"))#</value>
+       			<value>#XMLFormat(variables.iniProperties.useFileMode)#</value>
  			</constructor-arg>  
 		</bean>
 		<bean id="contentRenderer" class="mura.content.contentRenderer"  singleton="false" />
@@ -683,7 +506,5 @@ to your own modified versions of Mura CMS.
 		<alias name="userFeedBean" alias="userFeed"/>
 		<alias name="commentBean" alias="comment"/>
 		<alias name="pluginManager" alias="eventManager"/>
-		<!---coldspring.custom.xml.cfm reference is for backwards compatability --->
-		<cfif fileExists(expandPath("/muraWRM/config/coldspring.custom.xml.cfm"))><cfinclude template="/muraWRM/config/coldspring.custom.xml.cfm"></cfif>
 	</beans></cfoutput>
 	</cfsavecontent>
