@@ -99,12 +99,6 @@ to your own modified versions of Mura CMS.
 <cfcatch></cfcatch>
 </cftry>
 
-<!--- Preventing XSS attacks --->
-<cfset structDelete(url,"request.siteid")>
-<cfset structDelete(form,"request.siteid")>
-<cfset structDelete(url,"session.siteid")>
-<cfset structDelete(form,"session.siteid")>	
-
 <cfif structKeyExists(request,"doMuraGlobalSessionStart")>
 	<cfset application.pluginManager.executeScripts('onGlobalSessionStart')>
 </cfif>

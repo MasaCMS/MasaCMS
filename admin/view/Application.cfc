@@ -82,17 +82,7 @@ to your own modified versions of Mura CMS.
 	</cfif>
 	
 	<cfinclude template="../../config/appcfc/onApplicationStart_method.cfm">
-	
-	<cffunction name="onRequestStart" returnType="boolean" output="false">
-		<!--- Preventing XSS attacks --->
-		<cfset structDelete(url,"session.dateKey")>
-		<cfset structDelete(form,"session.dateKey")>
-		<cfset structDelete(url,"fusebox.ajax")>
-		<cfset structDelete(form,"fusebox.ajax")>
-		<cfinclude template="../../config/appcfc/onRequestStart_include.cfm">
-		<cfreturn true>
-	</cffunction>
-
+	<cfinclude template="../../config/appcfc/onRequestStart_scriptProtect_Method.cfm">
 	<cfinclude template="../../config/appcfc/onSessionStart_method.cfm">
 	<cfinclude template="../../config/appcfc/onSessionEnd_method.cfm">
 	<cfinclude template="../../config/appcfc/onError_method.cfm">

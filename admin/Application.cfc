@@ -68,13 +68,7 @@
 		
 		<cfif right(cgi.script_name, Len("index.cfm")) NEQ "index.cfm" and right(cgi.script_name, Len("error.cfm")) NEQ "error.cfm" AND right(cgi.script_name, 3) NEQ "cfc">
 			<cflocation url="index.cfm" addtoken="false">
-		</cfif>
-		
-		<!--- Preventing XSS attacks --->
-		<cfset structDelete(url,"session.dateKey")>
-		<cfset structDelete(form,"session.dateKey")>
-		<cfset structDelete(url,"fusebox.ajax")>
-		<cfset structDelete(form,"fusebox.ajax")>		
+		</cfif>	
 		
 		<cfscript>
 			StructAppend(request.context, url, "no");
