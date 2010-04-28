@@ -293,7 +293,7 @@ order by tformresponsepackets.entered asc
 <cfsavecontent variable="frm"><cfoutput>
 #body#
 <script type="text/javascript">
-		frm=document.getElementById('#frmID#');
+		var frm=document.getElementById('#frmID#');
 		frm.method='post';
 		frm.setAttribute('action','?nocache=1');
 		if( frm.getAttribute('onsubmit') == null || frm.getAttribute('onsubmit')=='')

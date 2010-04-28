@@ -91,12 +91,13 @@ to your own modified versions of Mura CMS.
 
 <cffunction name="bindToDomain" output="false" returntype="any" access="remote">
 	<cfargument name="isAdmin" required="true" default="false">
+	<cfargument name="domain" required="true" default="#cgi.http_host#">
 	<cfset var siteID= "" />
 	<cfset var rsSites=application.settingsManager.getList() />
 	<cfset var site="">
 	<cfset var i="">
 	<cfset var lineBreak=chr(13)&chr(10)>
-	<cfset var checkDomain=listFirst(cgi.http_host,":")>
+	<cfset var checkDomain=listFirst(arguments.domain,":")>
 	
 	<cfif not len(checkDomain)>
 		<cfset checkDomain=cgi.server_name>
