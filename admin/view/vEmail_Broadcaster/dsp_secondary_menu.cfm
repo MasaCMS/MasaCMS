@@ -42,8 +42,8 @@ to your own modified versions of Mura CMS.
 --->
 
 <cfoutput>
-<!---<li<cfif myfusebox.originalfuseaction eq "edit"> class="current"</cfif>><a href="index.cfm?fuseaction=cEmail.edit&emailid=&siteid=#attributes.siteid#">Add Email</a></li> --->
+<!---<li<cfif myfusebox.originalfuseaction eq "edit"> class="current"</cfif>><a href="index.cfm?fuseaction=cEmail.edit&emailid=&siteid=#URLEncodedFormat(attributes.siteid)#">Add Email</a></li> --->
 <ul>
 <li<cfif myfusebox.originalfuseaction eq "showAllBounces"> class="current"</cfif>><a href="index.cfm?fuseaction=cEmail.showAllBounces&siteid=<cfoutput>#attributes.siteid#</cfoutput>">#application.rbFactory.getKeyValue(session.rb,"email.bouncedemails")#</a>
 </li>
-<cfif listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(attributes.siteid).getPrivateUserPoolID()#;0') or listFind(session.mura.memberships,'S2')><li<cfif myfusebox.originalfuseaction eq "module"> class="current"</cfif>><a href="index.cfm?fuseaction=cPerm.module&contentid=00000000000000000000000000000000005&siteid=#attributes.siteid#&moduleid=00000000000000000000000000000000005">#application.rbFactory.getKeyValue(session.rb,"email.permissions")#</a></li></cfif></ul></cfoutput>
+<cfif listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(attributes.siteid).getPrivateUserPoolID()#;0') or listFind(session.mura.memberships,'S2')><li<cfif myfusebox.originalfuseaction eq "module"> class="current"</cfif>><a href="index.cfm?fuseaction=cPerm.module&contentid=00000000000000000000000000000000005&siteid=#URLEncodedFormat(attributes.siteid)#&moduleid=00000000000000000000000000000000005">#application.rbFactory.getKeyValue(session.rb,"email.permissions")#</a></li></cfif></ul></cfoutput>

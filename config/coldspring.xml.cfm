@@ -497,6 +497,7 @@ to your own modified versions of Mura CMS.
 			<constructor-arg name="configBean"><ref bean="configBean" /></constructor-arg>
 			<constructor-arg name="fileWriter"><ref bean="fileWriter" /></constructor-arg>
 		</bean>
+		<bean id="scriptProtectionFilter" class="mura.Portcullis" singleton="true" />
 		<bean id="MuraScope" class="mura.MuraScope" singleton="false"/>
 		<alias name="contentBean" alias="content"/>
 		<alias name="feedBean" alias="feed"/>

@@ -68,7 +68,7 @@ to your own modified versions of Mura CMS.
 </dd>
 <dd><a class="submit" href="javascript:;" onclick="return submitForm(document.forms.searchFrm);"><span>#application.rbFactory.getKeyValue(session.rb,"params.search")#</span></a></dd>
 </dl>
-<input type="hidden" value="#attributes.siteID#" name="siteID"/>
+<input type="hidden" value="#HTMLEditFormat(attributes.siteid)#" name="siteID"/>
 <input type="hidden" value="cDashboard.topContent" name="fuseaction"/>
 </form>
 

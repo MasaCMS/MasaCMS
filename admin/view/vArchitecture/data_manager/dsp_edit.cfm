@@ -60,9 +60,9 @@ to your own modified versions of Mura CMS.
 </cfloop>
 </dl>
 <a class="submit" href="javascript:;" onclick="return submitForm(document.forms.form1,'update');"><span>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.update')#</span></a><a class="submit" href="javascript:;" onclick="return submitForm(document.forms.form1,'delete','This');"><span>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.deleteresponse')#</span></a>
-<input type="hidden" name="formid" value="#attributes.contentid#">
-<input type="hidden" name="contentid" value="#attributes.contentid#">
-<input type="hidden" name="siteid" value="#attributes.siteid#">
+<input type="hidden" name="formid" value="#HTMLEditFormat(attributes.contentid)#">
+<input type="hidden" name="contentid" value="#HTMLEditFormat(attributes.contentid)#">
+<input type="hidden" name="siteid" value="#HTMLEditFormat(attributes.siteid)#">
 <input type="hidden" name="fuseaction" value="cArch.datamanager">
 <input type="hidden" name="responseID" value="#rsdata.responseID#">
 <input type="hidden" name="hour1" value="#attributes.hour1#">
@@ -75,7 +75,7 @@ to your own modified versions of Mura CMS.
 <input type="hidden" name="sortBy" value="#attributes.sortBy#">
 <input type="hidden" name="sortDirection" value="#attributes.sortDirection#">
 <input type="hidden" name="filterBy" value="#attributes.filterBy#">
-<input type="hidden" name="keywords" value="#attributes.keywords#">
+<input type="hidden" name="keywords" value="#HTMLEditFormat(attributes.keywords)#">
 <input type="hidden" name="entered" value="#rsData.entered#">
 <input type="hidden" name="moduleid" value="#attributes.moduleid#">
 <input type="hidden" name="action" value="update">

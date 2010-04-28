@@ -48,7 +48,7 @@ to your own modified versions of Mura CMS.
 
 
 <ul id="navTask">
-<li><a href="index.cfm?fuseaction=cExtend.editSubType&subTypeID=&siteid=#attributes.siteid#">Add Class Extension</a></li>
+<li><a href="index.cfm?fuseaction=cExtend.editSubType&subTypeID=&siteid=#URLEncodedFormat(attributes.siteid)#">Add Class Extension</a></li>
 </ul>
 
 </cfoutput>
@@ -60,9 +60,9 @@ to your own modified versions of Mura CMS.
 <cfif rslist.recordcount>
 <cfoutput query="rslist">
 	<tr>
-		<td class="varWidth"><a title="Edit" href="index.cfm?fuseaction=cExtend.listSets&subTypeID=#rslist.subTypeID#&siteid=#attributes.siteid#">#application.classExtensionManager.getTypeAsString(rslist.type)# / #rslist.subtype#</a></td>
+		<td class="varWidth"><a title="Edit" href="index.cfm?fuseaction=cExtend.listSets&subTypeID=#rslist.subTypeID#&siteid=#URLEncodedFormat(attributes.siteid)#">#application.classExtensionManager.getTypeAsString(rslist.type)# / #rslist.subtype#</a></td>
 		<td class="administration"><ul class="two">
-		<li class="edit"><a title="Edit" href="index.cfm?fuseaction=cExtend.listSets&subTypeID=#rslist.subTypeID#&siteid=#attributes.siteid#">View Sets</a></li>
+		<li class="edit"><a title="Edit" href="index.cfm?fuseaction=cExtend.listSets&subTypeID=#rslist.subTypeID#&siteid=#URLEncodedFormat(attributes.siteid)#">View Sets</a></li>
 		</ul>
 		</td></tr>
 </cfoutput>

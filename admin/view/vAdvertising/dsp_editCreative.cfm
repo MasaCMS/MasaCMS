@@ -44,12 +44,12 @@ to your own modified versions of Mura CMS.
 <cfoutput>
 <h2>#application.rbFactory.getKeyValue(session.rb,'advertising.creativeassetdetails')#</h2>
 <ul id="navTask">
-<li><a href="index.cfm?fuseaction=cAdvertising.viewAdvertiser&&siteid=#attributes.siteid#&userid=#attributes.userid#">#application.rbFactory.getKeyValue(session.rb,'advertising.backtoadvertiser')#</a></li>
+<li><a href="index.cfm?fuseaction=cAdvertising.viewAdvertiser&&siteid=#URLEncodedFormat(attributes.siteid)#&userid=#URLEncodedFormat(attributes.userid)#">#application.rbFactory.getKeyValue(session.rb,'advertising.backtoadvertiser')#</a></li>
 </ul>
 
 <h3>#application.rbFactory.getKeyValue(session.rb,'advertising.creativeassetinformation')#</h3>
 #application.utility.displayErrors(request.creativeBean.getErrors())#
-<form action="index.cfm?fuseaction=cAdvertising.updateCreative&siteid=#attributes.siteid#&userid=#attributes.userid#" enctype="multipart/form-data" method="post" name="form1" onsubmit="return validate(this);">
+<form action="index.cfm?fuseaction=cAdvertising.updateCreative&siteid=#URLEncodedFormat(attributes.siteid)#&userid=#URLEncodedFormat(attributes.userid)#" enctype="multipart/form-data" method="post" name="form1" onsubmit="return validate(this);">
 <dl class="oneColumn">
 <dt class="first">#application.rbFactory.getKeyValue(session.rb,'advertising.name')#</dt>
 <dd><input name="name" class="text" required="true" message="#application.rbFactory.getKeyValue(session.rb,'advertising.namerequired')#" value="#HTMLEditFormat(request.creativeBean.getName())#" maxlength="50"></dd>

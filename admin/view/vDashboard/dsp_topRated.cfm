@@ -75,7 +75,7 @@ to your own modified versions of Mura CMS.
 </dd>
 <dd><a class="submit" href="javascript:;" onclick="return submitForm(document.forms.searchFrm);"><span>Search</span></a></dd>
 </dl>
-<input type="hidden" value="#attributes.siteID#" name="siteID"/>
+<input type="hidden" value="#HTMLEditFormat(attributes.siteid)#" name="siteID"/>
 <input type="hidden" value="cDashboard.topRated" name="fuseaction"/>
 </form>
 <table class="stripe">

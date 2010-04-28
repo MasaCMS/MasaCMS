@@ -84,10 +84,10 @@ to your own modified versions of Mura CMS.
 	<dd><cfif attributes.status eq 'sendLogin'>
 	  <cfset msg=application.userManager.sendLoginByEmail('#attributes.email#','','#urlencodedformat("#listFirst(cgi.http_host,":")##cgi.SCRIPT_NAME#")#')>
 	<cfif left(msg,2) eq "No">
-	#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"login.noaccountexists"),attributes.email)#		
+	#HTMLEditFormat(application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"login.noaccountexists"),attributes.email))#		
 	<cfelseif left(msg,4) eq "Your">
-	#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"login.messagesent"),attributes.email)#
-	<cfelse>	#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"login.invalidemail"),attributes.email)#
+	#HTMLEditFormat(application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"login.messagesent"),attributes.email))#
+	<cfelse>	#HTMLEditFormat(application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"login.invalidemail"),attributes.email))#
 	</cfif>
 	<cfelse>
 	#application.rbFactory.getKeyValue(session.rb,'login.enteremail')#

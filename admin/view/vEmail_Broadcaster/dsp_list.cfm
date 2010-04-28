@@ -68,7 +68,7 @@ to your own modified versions of Mura CMS.
 	  <a href="index.cfm?fuseaction=cEmail.showAllBounces&siteid=<cfoutput>#attributes.siteid#</cfoutput>">View All Bounces</a>
 	  </div>--->
 	  <cfoutput>
-<ul id="navTask"><li><a href="index.cfm?fuseaction=cEmail.edit&emailid=&siteid=#attributes.siteid#">#application.rbFactory.getKeyValue(session.rb,"email.addemail")#</a></li></ul>
+<ul id="navTask"><li><a href="index.cfm?fuseaction=cEmail.edit&emailid=&siteid=#URLEncodedFormat(attributes.siteid)#">#application.rbFactory.getKeyValue(session.rb,"email.addemail")#</a></li></ul>
 
 	  <div id="filterView" >
 	  <h3>#application.rbFactory.getKeyValue(session.rb,"email.emails")#</h3></cfoutput>
@@ -149,14 +149,14 @@ to your own modified versions of Mura CMS.
 			</cfcase>
 		  </cfswitch>
 		  <cfoutput>
-		  <th class="varWidth"><a href="index.cfm?fuseaction=cEmail.list&siteid=#attributes.siteid#&orderBy=subject&direction=#subjectDirection#">#application.rbFactory.getKeyValue(session.rb,'email.subject')#</a></th>
+		  <th class="varWidth"><a href="index.cfm?fuseaction=cEmail.list&siteid=#URLEncodedFormat(attributes.siteid)#&orderBy=subject&direction=#subjectDirection#">#application.rbFactory.getKeyValue(session.rb,'email.subject')#</a></th>
 		  <th>#application.rbFactory.getKeyValue(session.rb,'email.clicks')#</th>
 		  <th>#application.rbFactory.getKeyValue(session.rb,'email.opens')#</th>
 		  <th>#application.rbFactory.getKeyValue(session.rb,'email.bounces')#</th>
 		  <th>#application.rbFactory.getKeyValue(session.rb,'email.all')#</th>
-		  <th><a href="index.cfm?fuseaction=cEmail.list&siteid=#attributes.siteid#&orderBy=createdDate&direction=#createdDateDirection#">#application.rbFactory.getKeyValue(session.rb,'email.datecreated')#</a></th>
-          <th><a href="index.cfm?fuseaction=cEmail.list&siteid=#attributes.siteid#&orderBy=deliveryDate&direction=#deliveryDateDirection#">#application.rbFactory.getKeyValue(session.rb,'email.deliverydate')#</a></th>
-          <th><a href="index.cfm?fuseaction=cEmail.list&siteid=#attributes.siteid#&orderBy=status&direction=#statusDirection#">#application.rbFactory.getKeyValue(session.rb,'email.status')#</a></th>
+		  <th><a href="index.cfm?fuseaction=cEmail.list&siteid=#URLEncodedFormat(attributes.siteid)#&orderBy=createdDate&direction=#createdDateDirection#">#application.rbFactory.getKeyValue(session.rb,'email.datecreated')#</a></th>
+          <th><a href="index.cfm?fuseaction=cEmail.list&siteid=#URLEncodedFormat(attributes.siteid)#&orderBy=deliveryDate&direction=#deliveryDateDirection#">#application.rbFactory.getKeyValue(session.rb,'email.deliverydate')#</a></th>
+          <th><a href="index.cfm?fuseaction=cEmail.list&siteid=#URLEncodedFormat(attributes.siteid)#&orderBy=status&direction=#statusDirection#">#application.rbFactory.getKeyValue(session.rb,'email.status')#</a></th>
           <th>&nbsp;</th>
 		  </cfoutput>
         </tr>
@@ -175,7 +175,7 @@ to your own modified versions of Mura CMS.
 				  <cfset sent=application.emailManager.getStat(request.rslist.emailid,'sent')/>
 				  <cfset bounces=application.emailManager.getStat(request.rslist.emailid,'bounce')/>
 					<tr> 
-					  <td class="varWidth"><a title="Edit" href="index.cfm?fuseaction=cEmail.edit&emailid=#request.rslist.emailid#&siteid=#attributes.siteid#">#request.rslist.subject#</a></td>
+					  <td class="varWidth"><a title="Edit" href="index.cfm?fuseaction=cEmail.edit&emailid=#request.rslist.emailid#&siteid=#URLEncodedFormat(attributes.siteid)#">#request.rslist.subject#</a></td>
 					  <td>#clicks#</td>
 					  <td>#opens#</td>
 					  <td>#bounces#</td>
@@ -183,7 +183,7 @@ to your own modified versions of Mura CMS.
 					  <td>#LSDateFormat(request.rslist.createddate,session.dateKeyFormat)#</td>
 					  <td><cfif LSisDate(request.rslist.deliverydate)>#LSDateFormat(request.rslist.deliverydate,session.dateKeyFormat)# #LSTimeFormat(request.rslist.deliverydate,"short")#<cfelse>#application.rbFactory.getKeyValue(session.rb,'email.notscheduled')#</cfif></td>
 					  <td><cfif LSisDate(request.rslist.deliverydate)><cfif request.rslist.status eq 99>In Progress<cfelseif request.rslist.status eq 1>#application.rbFactory.getKeyValue(session.rb,'email.sent')#<cfelse>#application.rbFactory.getKeyValue(session.rb,'email.queued')#</cfif><cfelse>#application.rbFactory.getKeyValue(session.rb,'email.notscheduled')#</cfif></td>
-					  <td class="administration"><ul class="three"><li class="edit"><a title="#application.rbFactory.getKeyValue(session.rb,'email.edit')#" href="index.cfm?fuseaction=cEmail.edit&emailid=#request.rslist.emailid#&siteid=#attributes.siteid#">#application.rbFactory.getKeyValue(session.rb,'email.edit')#</a></li><li class="download"><a title="#application.rbFactory.getKeyValue(session.rb,'email.download')#" href="index.cfm?fuseaction=cEmail.download&emailID=#request.rsList.emailID#&siteid=#attributes.siteid#">#application.rbFactory.getKeyValue(session.rb,'email.download')#</a></li><li class="delete"><a title="#application.rbFactory.getKeyValue(session.rb,'email.delete')#" href="index.cfm?fuseaction=cEmail.update&action=delete&emailid=#request.rslist.emailid#&siteid=#attributes.siteid#" onclick="return confirm('#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'email.deleteconfirm'))#')">#application.rbFactory.getKeyValue(session.rb,'email.delete')#</a></li></ul></td>
+					  <td class="administration"><ul class="three"><li class="edit"><a title="#application.rbFactory.getKeyValue(session.rb,'email.edit')#" href="index.cfm?fuseaction=cEmail.edit&emailid=#request.rslist.emailid#&siteid=#URLEncodedFormat(attributes.siteid)#">#application.rbFactory.getKeyValue(session.rb,'email.edit')#</a></li><li class="download"><a title="#application.rbFactory.getKeyValue(session.rb,'email.download')#" href="index.cfm?fuseaction=cEmail.download&emailID=#request.rsList.emailID#&siteid=#URLEncodedFormat(attributes.siteid)#">#application.rbFactory.getKeyValue(session.rb,'email.download')#</a></li><li class="delete"><a title="#application.rbFactory.getKeyValue(session.rb,'email.delete')#" href="index.cfm?fuseaction=cEmail.update&action=delete&emailid=#request.rslist.emailid#&siteid=#URLEncodedFormat(attributes.siteid)#" onclick="return confirm('#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'email.deleteconfirm'))#')">#application.rbFactory.getKeyValue(session.rb,'email.delete')#</a></li></ul></td>
 					</tr>
 			  </cfloop>
 		  
@@ -201,7 +201,7 @@ to your own modified versions of Mura CMS.
 			<cfif i eq attributes.page>
 				#i#
 			<cfelse>
-				<a href="index.cfm?fuseaction=cEmail.list&siteid=#attributes.siteid#&page=#i#&direction=#attributes.direction#&orderBy=#attributes.orderBy#">#i#</a>
+				<a href="index.cfm?fuseaction=cEmail.list&siteid=#URLEncodedFormat(attributes.siteid)#&page=#i#&direction=#attributes.direction#&orderBy=#attributes.orderBy#">#i#</a>
 			</cfif>
 		</cfloop> 
 	  </cfif>

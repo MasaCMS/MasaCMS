@@ -55,9 +55,9 @@ to your own modified versions of Mura CMS.
 </ul>
 
 <ul id="navTask">
-<li><a href="index.cfm?fuseaction=cExtend.listSubTypes&siteid=#attributes.siteid#">List All Class Extensions</a></li>
-<li><a href="index.cfm?fuseaction=cExtend.editSubType&subTypeID=#attributes.subTypeID#&siteid=#attributes.siteid#">Edit Class Extension</a></li>
-<li><a href="index.cfm?fuseaction=cExtend.editSet&subTypeID=#attributes.subTypeID#&siteid=#attributes.siteid#&extendSetID=">Add Attribute Set</a></li>
+<li><a href="index.cfm?fuseaction=cExtend.listSubTypes&siteid=#URLEncodedFormat(attributes.siteid)#">List All Class Extensions</a></li>
+<li><a href="index.cfm?fuseaction=cExtend.editSubType&subTypeID=#attributes.subTypeID#&siteid=#URLEncodedFormat(attributes.siteid)#">Edit Class Extension</a></li>
+<li><a href="index.cfm?fuseaction=cExtend.editSet&subTypeID=#attributes.subTypeID#&siteid=#URLEncodedFormat(attributes.siteid)#&extendSetID=">Add Attribute Set</a></li>
 </ul>
 
 </cfoutput>
@@ -76,8 +76,8 @@ to your own modified versions of Mura CMS.
 	<li extendSetID="#extendSetBean.getExtendSetID()#">
 	<span id="handle#s#" class="handle" style="display:none;">[Drag]</span>
 	#extendSetBean.getName()#
-		<a title="Edit" href="index.cfm?fuseaction=cExtend.editAttributes&subTypeID=#attributes.subTypeID#&extendSetID=#extendSetBean.getExtendSetID()#&siteid=#attributes.siteid#">[Edit]</a>
-		<a title="Delete" href="index.cfm?fuseaction=cExtend.updateSet&action=delete&subTypeID=#attributes.subTypeID#&extendSetID=#extendSetBean.getExtendSetID()#&siteid=#attributes.siteid#" onclick="return confirm('Delete  #jsStringFormat("'#extendSetBean.getname()#'")#?')">[Delete]</a>
+		<a title="Edit" href="index.cfm?fuseaction=cExtend.editAttributes&subTypeID=#attributes.subTypeID#&extendSetID=#extendSetBean.getExtendSetID()#&siteid=#URLEncodedFormat(attributes.siteid)#">[Edit]</a>
+		<a title="Delete" href="index.cfm?fuseaction=cExtend.updateSet&action=delete&subTypeID=#attributes.subTypeID#&extendSetID=#extendSetBean.getExtendSetID()#&siteid=#URLEncodedFormat(attributes.siteid)#" onclick="return confirm('Delete  #jsStringFormat("'#extendSetBean.getname()#'")#?')">[Delete]</a>
 		</li>
 </cfoutput>
 </cfloop>

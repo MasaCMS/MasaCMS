@@ -44,13 +44,13 @@ to your own modified versions of Mura CMS.
 <cfoutput>
 <h2>#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"advertising.editcampaign"),request.userBean.getCompany())#</h2>
 <ul id="navTask">
-<li><a href="index.cfm?fuseaction=cAdvertising.viewAdvertiser&&siteid=#attributes.siteid#&userid=#attributes.userid#">#application.rbFactory.getKeyValue(session.rb,'advertising.backtoadvertiser')#</a></li>
-<cfif attributes.campaignid neq ""><li><a href="index.cfm?fuseaction=cAdvertising.viewReportByCampaign&campaignid=#attributes.campaignid#&siteid=#attributes.siteid#&userid=#attributes.userid#">#application.rbFactory.getKeyValue(session.rb,'advertising.viewcampaignreport')#</a></li></cfif>
+<li><a href="index.cfm?fuseaction=cAdvertising.viewAdvertiser&&siteid=#URLEncodedFormat(attributes.siteid)#&userid=#URLEncodedFormat(attributes.userid)#">#application.rbFactory.getKeyValue(session.rb,'advertising.backtoadvertiser')#</a></li>
+<cfif attributes.campaignid neq ""><li><a href="index.cfm?fuseaction=cAdvertising.viewReportByCampaign&campaignid=#URLEncodedFormat(attributes.campaignid)#&siteid=#URLEncodedFormat(attributes.siteid)#&userid=#URLEncodedFormat(attributes.userid)#">#application.rbFactory.getKeyValue(session.rb,'advertising.viewcampaignreport')#</a></li></cfif>
 </ul>
 
 <h3>#application.rbFactory.getKeyValue(session.rb,'advertising.campaigninformation')#</h3>
 #application.utility.displayErrors(request.campaignBean.getErrors())#
-<form action="index.cfm?fuseaction=cAdvertising.updateCampaign&siteid=#attributes.siteid#" name="form1"  method="post" onsubmit="return validate(this);">
+<form action="index.cfm?fuseaction=cAdvertising.updateCampaign&siteid=#URLEncodedFormat(attributes.siteid)#" name="form1"  method="post" onsubmit="return validate(this);">
 <dl class="oneColumn">
 <dt class="first">#application.rbFactory.getKeyValue(session.rb,'advertising.name')#</dt>
 <dd><input name="name" class="text" required="true" message="The 'Name' field is required." value="#HTMLEditFormat(request.campaignBean.getName())#" maxlength="50"></dd>
@@ -72,7 +72,7 @@ to your own modified versions of Mura CMS.
 <cfif attributes.campaignid eq ''>
 <a class="submit" href="javascript:;" onclick="return submitForm(document.forms.form1,'add');"><span>#application.rbFactory.getKeyValue(session.rb,'advertising.add')#</span></a><input type=hidden name="campaignID" value=""><cfelse><a class="submit" href="javascript:;" onclick="return submitForm(document.forms.form1,'delete','#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'advertising.deletecampaignconfirm'))#');"><span>#application.rbFactory.getKeyValue(session.rb,'advertising.delete')#</span></a><a class="submit" href="javascript:;" onclick="return submitForm(document.forms.form1,'update');"><span>#application.rbFactory.getKeyValue(session.rb,'advertising.update')#</span></a><input type=hidden name="campaignID" value="#request.campaignBean.getCampaignID()#"></cfif>
 <input type="hidden" name="action" value="">
-<input type="hidden" name="userID" value="#attributes.userid#">
+<input type="hidden" name="userID" value="#HTMLEditFormat(attributes.userid)#">
 </form>
 </cfoutput>
 <cfif attributes.campaignid neq ''>
@@ -80,7 +80,7 @@ to your own modified versions of Mura CMS.
 	<cfoutput>
 	<h3 class="divide">#application.rbFactory.getKeyValue(session.rb,'advertising.campaignplacements')#</h3>
 	<ul id="navTask">
-	<li><a href="index.cfm?fuseaction=cAdvertising.editPlacement&campaignid=#attributes.campaignid#&placementid=&siteid=#attributes.siteid#&userid=#attributes.userid#">#application.rbFactory.getKeyValue(session.rb,'advertising.addplacement')#</a></li>
+	<li><a href="index.cfm?fuseaction=cAdvertising.editPlacement&campaignid=#URLEncodedFormat(attributes.campaignid)#&placementid=&siteid=#URLEncodedFormat(attributes.siteid)#&userid=#URLEncodedFormat(attributes.userid)#">#application.rbFactory.getKeyValue(session.rb,'advertising.addplacement')#</a></li>
 	</ul>
 	
 	<table class="stripe">
@@ -131,8 +131,8 @@ to your own modified versions of Mura CMS.
 	 		<cfset cTotalBudget=cTotalBudget+request.rsPlacements.budget />
 	 	</cfsilent>
 			<tr>
-				<td class="varWidth"><a href="index.cfm?fuseaction=cAdvertising.editAdZone&siteid=#attributes.siteid#&adzoneid=#request.rsplacements.adzoneid#">#request.rsPlacements.Adzone#</a></td>
-				<td><a href="index.cfm?fuseaction=cAdvertising.editCreative&userid=#attributes.userid#&creativeid=#request.rsplacements.creativeid#&siteid=#attributes.siteid#">#request.rsPlacements.creative#</a></td>
+				<td class="varWidth"><a href="index.cfm?fuseaction=cAdvertising.editAdZone&siteid=#URLEncodedFormat(attributes.siteid)#&adzoneid=#request.rsplacements.adzoneid#">#request.rsPlacements.Adzone#</a></td>
+				<td><a href="index.cfm?fuseaction=cAdvertising.editCreative&userid=#URLEncodedFormat(attributes.userid)#&creativeid=#request.rsplacements.creativeid#&siteid=#URLEncodedFormat(attributes.siteid)#">#request.rsPlacements.creative#</a></td>
 				<td>#LSDateFormat(request.rsPlacements.startdate,session.dateKeyFormat)#</td>
 				<td>#LSDateFormat(request.rsPlacements.enddate,session.dateKeyFormat)#</td>
 				<td>#application.rbFactory.getKeyValue(session.rb,'advertising.#yesnoFormat(request.rsPlacements.isExclusive)#')#</td>
@@ -146,9 +146,9 @@ to your own modified versions of Mura CMS.
 				<td>#LSCurrencyFormat(request.rsPlacements.costPerClick*Clicks)#</td>
 				<td>#LSCurrencyFormat((request.rsPlacements.costPerClick*Clicks)+(request.rsPlacements.costPerImp*Imps))#</td>
 				<td class="administration"><ul class="three">
-				<li class="edit"><a title="#application.rbFactory.getKeyValue(session.rb,'user.edit')#" href="index.cfm?fuseaction=cAdvertising.editPlacement&userid=#attributes.userid#&siteid=#attributes.siteid#&campaignid=#attributes.campaignID#&placementid=#request.rsplacements.placementid#">#application.rbFactory.getKeyValue(session.rb,'user.edit')#</a></li>
-				<li class="viewReport"><a title="#application.rbFactory.getKeyValue(session.rb,'user.viewplacmentreport')#" href="index.cfm?fuseaction=cAdvertising.viewReportByPlacement&placementid=#request.rsPlacements.placementid#&campaignid=#attributes.campaignid#&userid=#attributes.userid#&siteid=#attributes.siteid#">#application.rbFactory.getKeyValue(session.rb,'user.viewplacementrepor')#</a></li>
-				<li class="delete"><a title="#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'user.delete'))#" href="index.cfm?fuseaction=cAdvertising.updatePlacement&action=delete&campaignid=#attributes.campaignid#&siteid=#attributes.siteid#&userid=#attributes.userid#&placementid=#request.rsplacements.placementid#" onclick="return confirm('#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'advertising.deleteplacementconfirm'))#')">#application.rbFactory.getKeyValue(session.rb,'user.delete')#</a></li></ul>
+				<li class="edit"><a title="#application.rbFactory.getKeyValue(session.rb,'user.edit')#" href="index.cfm?fuseaction=cAdvertising.editPlacement&userid=#URLEncodedFormat(attributes.userid)#&siteid=#URLEncodedFormat(attributes.siteid)#&campaignid=#attributes.campaignID#&placementid=#request.rsplacements.placementid#">#application.rbFactory.getKeyValue(session.rb,'user.edit')#</a></li>
+				<li class="viewReport"><a title="#application.rbFactory.getKeyValue(session.rb,'user.viewplacmentreport')#" href="index.cfm?fuseaction=cAdvertising.viewReportByPlacement&placementid=#request.rsPlacements.placementid#&campaignid=#attributes.campaignid#&userid=#URLEncodedFormat(attributes.userid)#&siteid=#URLEncodedFormat(attributes.siteid)#">#application.rbFactory.getKeyValue(session.rb,'user.viewplacementrepor')#</a></li>
+				<li class="delete"><a title="#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'user.delete'))#" href="index.cfm?fuseaction=cAdvertising.updatePlacement&action=delete&campaignid=#attributes.campaignid#&siteid=#URLEncodedFormat(attributes.siteid)#&userid=#URLEncodedFormat(attributes.userid)#&placementid=#request.rsplacements.placementid#" onclick="return confirm('#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'advertising.deleteplacementconfirm'))#')">#application.rbFactory.getKeyValue(session.rb,'user.delete')#</a></li></ul>
 				</td></tr>
 		</cfoutput>
 		<cfoutput>

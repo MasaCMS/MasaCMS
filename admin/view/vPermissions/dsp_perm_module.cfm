@@ -45,7 +45,7 @@ to your own modified versions of Mura CMS.
 <h2>#application.rbFactory.getKeyValue(session.rb,'permissions')#</h2>
 
 <p>#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"permissions.moduletext"),request.rscontent.title)#</p>
-  <form  method="post" name="form1" action="?fuseaction=cPerm.updatemodule&contentid=#attributes.contentid#">
+  <form  method="post" name="form1" action="?fuseaction=cPerm.updatemodule&contentid=#URLEncodedFormat(attributes.contentid)#">
         <h3>#application.rbFactory.getKeyValue(session.rb,'user.adminusergroups')#</h3>
 		<table class="stripe">
           <tr> 
@@ -92,4 +92,4 @@ to your own modified versions of Mura CMS.
 	</cfif>
 		</table>
 	
-<a class="submit" href="javascript:;" onclick="return submitForm(document.forms.form1,'update');"><span>#application.rbFactory.getKeyValue(session.rb,'permissions.update')#</span></a><input type="hidden" name="router" value="#cgi.HTTP_REFERER#"><input type="hidden" name="siteid" value="#attributes.siteid#"><input type="hidden" name="topid" value="#attributes.topid#"><input type="hidden" name="moduleid" value="#attributes.moduleid#"></form></cfoutput>
+<a class="submit" href="javascript:;" onclick="return submitForm(document.forms.form1,'update');"><span>#application.rbFactory.getKeyValue(session.rb,'permissions.update')#</span></a><input type="hidden" name="router" value="#cgi.HTTP_REFERER#"><input type="hidden" name="siteid" value="#HTMLEditFormat(attributes.siteid)#"><input type="hidden" name="topid" value="#attributes.topid#"><input type="hidden" name="moduleid" value="#attributes.moduleid#"></form></cfoutput>

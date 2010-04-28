@@ -105,6 +105,7 @@ to your own modified versions of Mura CMS.
 <cfset variables.instance.indexFileInURLS=true />
 <cfset variables.instance.strictExtendedData=false />
 <cfset variables.instance.purgeDrafts=true />
+<cfset variables.instance.scriptProtect=true />
 <cfset variables.instance.appreloadKey=application.appreloadKey />
 <cfset variables.instance.loginStrikes=4 />
 <cfset variables.instance.tempDir=getTempDirectory() />
@@ -978,6 +979,18 @@ to your own modified versions of Mura CMS.
 
 <cffunction name="getPurgeDrafts" returntype="boolean" access="public" output="false">
 	<cfreturn variables.instance.purgeDrafts />
+</cffunction>
+
+<cffunction name="setScriptProtect" access="public" output="false">
+	<cfargument name="scriptProtect" />
+	<cfif isBoolean(arguments.scriptProtect)>
+		<cfset variables.instance.scriptProtect = arguments.scriptProtect />
+	</cfif>
+	<cfreturn this>
+</cffunction>
+
+<cffunction name="getScriptProtect" returntype="boolean" access="public" output="false">
+	<cfreturn variables.instance.scriptProtect />
 </cffunction>
 
 <cffunction name="getAllValues" returntype="any" access="public" output="false">

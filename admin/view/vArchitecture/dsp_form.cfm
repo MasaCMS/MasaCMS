@@ -169,7 +169,7 @@ select * from rsPluginScripts3 order by pluginID
 <p class="notice">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.globallyappliednotice")#</p>
 </cfif>
 
-<form action="index.cfm?fuseaction=cArch.update&contentid=#attributes.contentid#" method="post" enctype="multipart/form-data" name="contentForm" onsubmit="return ckContent(draftremovalnotice);" id="contentForm">
+<form action="index.cfm?fuseaction=cArch.update&contentid=#URLEncodedFormat(attributes.contentid)#" method="post" enctype="multipart/form-data" name="contentForm" onsubmit="return ckContent(draftremovalnotice);" id="contentForm">
 <cfif attributes.compactDisplay neq "true">
 	<cfif attributes.moduleid eq '00000000000000000000000000000000000'>#application.contentRenderer.dspZoom(request.crumbdata,fileExt)#</cfif>
 		<ul class="metadata">
@@ -280,15 +280,15 @@ select * from rsPluginScripts3 order by pluginID
 	<cfswitch expression="#attributes.type#">
 	<cfcase value="Form">
 	<cfif listFind(session.mura.memberships,'S2IsPrivate')>
-	<li><a  href="index.cfm?fuseaction=cArch.datamanager&contentid=#attributes.contentid#&siteid=#attributes.siteid#&topid=#attributes.topid#&moduleid=#attributes.moduleid#&type=Form&parentid=#attributes.moduleid#">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.managedata")#</a></li>
+	<li><a  href="index.cfm?fuseaction=cArch.datamanager&contentid=#URLEncodedFormat(attributes.contentid)#&siteid=#URLEncodedFormat(attributes.siteid)#&topid=#URLEncodedFormat(attributes.topid)#&moduleid=#attributes.moduleid#&type=Form&parentid=#attributes.moduleid#">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.managedata")#</a></li>
 	</cfif>
 	</cfcase>
 	</cfswitch>
-	<li><a href="index.cfm?fuseaction=cArch.hist&contentid=#attributes.contentid#&type=#attributes.type#&parentid=#attributes.parentid#&topid=#attributes.topid#&siteid=#attributes.siteid#&startrow=#attributes.startrow#&moduleid=#attributes.moduleid#&compactDisplay=#attributes.compactDisplay#">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.versionhistory")#</a> </li>
-	<cfif attributes.compactDisplay neq 'true' and request.contentBean.getactive()lt 1 and (request.perm neq 'none')><li><a href="index.cfm?fuseaction=cArch.update&contenthistid=#attributes.ContentHistID#&action=delete&contentid=#attributes.contentid#&type=#attributes.type#&parentid=#attributes.parentid#&topid=#attributes.topid#&siteid=#attributes.siteid#&startrow=#attributes.startrow#&moduleid=#attributes.moduleid#&return=#attributes.return#" onclick="return confirm('#jsStringFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.deleteversionconfirm"))#')">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.deleteversion")#</a></li></cfif>
-		<cfif request.deletable><li><a href="index.cfm?fuseaction=cArch.update&action=deleteall&contentid=#attributes.contentid#&type=#attributes.type#&parentid=#attributes.parentid#&topid=#attributes.topid#&siteid=#attributes.siteid#&startrow=#attributes.startrow#&moduleid=#attributes.moduleid#" 
+	<li><a href="index.cfm?fuseaction=cArch.hist&contentid=#URLEncodedFormat(attributes.contentid)#&type=#attributes.type#&parentid=#URLEncodedFormat(attributes.parentid)#&topid=#URLEncodedFormat(attributes.topid)#&siteid=#URLEncodedFormat(attributes.siteid)#&startrow=#attributes.startrow#&moduleid=#attributes.moduleid#&compactDisplay=#attributes.compactDisplay#">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.versionhistory")#</a> </li>
+	<cfif attributes.compactDisplay neq 'true' and request.contentBean.getactive()lt 1 and (request.perm neq 'none')><li><a href="index.cfm?fuseaction=cArch.update&contenthistid=#URLEncodedFormat(attributes.contenthistid)#&action=delete&contentid=#URLEncodedFormat(attributes.contentid)#&type=#attributes.type#&parentid=#URLEncodedFormat(attributes.parentid)#&topid=#URLEncodedFormat(attributes.topid)#&siteid=#URLEncodedFormat(attributes.siteid)#&startrow=#attributes.startrow#&moduleid=#attributes.moduleid#&return=#attributes.return#" onclick="return confirm('#jsStringFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.deleteversionconfirm"))#')">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.deleteversion")#</a></li></cfif>
+		<cfif request.deletable><li><a href="index.cfm?fuseaction=cArch.update&action=deleteall&contentid=#URLEncodedFormat(attributes.contentid)#&type=#attributes.type#&parentid=#URLEncodedFormat(attributes.parentid)#&topid=#URLEncodedFormat(attributes.topid)#&siteid=#URLEncodedFormat(attributes.siteid)#&startrow=#attributes.startrow#&moduleid=#attributes.moduleid#" 
 		<cfif listFindNoCase(nodeLevelList,request.contentBean.getType())>onclick="return confirm('#jsStringFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.deletecontentrecursiveconfirm"))#')"<cfelse>onclick="return confirm('#jsStringFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.deletecontentconfirm"))#')"</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.deletecontent")#</a></li></cfif>
-	<cfif (listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(attributes.siteid).getPrivateUserPoolID()#;0') or listFind(session.mura.memberships,'S2'))><li><a href="index.cfm?fuseaction=cPerm.main&contentid=#attributes.ContentID#&type=#request.contentBean.gettype()#&parentid=#request.contentBean.getparentID()#&topid=#attributes.topid#&siteid=#attributes.siteid#&moduleid=#attributes.moduleid#&startrow=#attributes.startrow#">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.permissions")#</a></li></cfif>
+	<cfif (listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(attributes.siteid).getPrivateUserPoolID()#;0') or listFind(session.mura.memberships,'S2'))><li><a href="index.cfm?fuseaction=cPerm.main&contentid=#URLEncodedFormat(attributes.contentid)#&type=#request.contentBean.gettype()#&parentid=#request.contentBean.getparentID()#&topid=#URLEncodedFormat(attributes.topid)#&siteid=#URLEncodedFormat(attributes.siteid)#&moduleid=#attributes.moduleid#&startrow=#attributes.startrow#">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.permissions")#</a></li></cfif>
 	</ul></cfif>
 </cfif>
 
@@ -443,7 +443,7 @@ initTabs(Array(#tablist#),0,0,0);
 				<cfif attributes.contentid eq '00000000000000000000000000000000001'><input name="isNav" type="hidden" value="1"></cfif>
 				<cfif attributes.type eq 'Form'> <input name="responseDisplayFields" type="hidden" value="#request.contentBean.getResponseDisplayFields()#"></cfif>
 				<input name="action" type="hidden" value="add">
-				<input type="hidden" name="siteid" value="#attributes.siteid#">
+				<input type="hidden" name="siteid" value="#HTMLEditFormat(attributes.siteid)#">
 				<input type="hidden" name="moduleid" value="#attributes.moduleid#">
 				<input type="hidden" name="fileid" value="#request.contentBean.getFileID()#">
 				<input type="hidden" name="preserveID" value="#request.contentBean.getPreserveID()#">

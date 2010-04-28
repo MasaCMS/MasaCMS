@@ -55,7 +55,7 @@ select * from rsSubTypes where subType <> 'Default'
 </cfif>
 <cfset tablist=tablist & ',"#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'user.advanced'))#"'>
 </cfsilent>
-<cfoutput><form action="index.cfm?fuseaction=cPublicUsers.update&userid=#attributes.userid#&routeid=#attributes.routeid#&siteid=#attributes.siteid#" method="post" enctype="multipart/form-data" name="form1" onsubmit="return validate(this);"  autocomplete="off" >
+<cfoutput><form action="index.cfm?fuseaction=cPublicUsers.update&userid=#URLEncodedFormat(attributes.userid)#&routeid=#attributes.routeid#&siteid=#URLEncodedFormat(attributes.siteid)#" method="post" enctype="multipart/form-data" name="form1" onsubmit="return validate(this);"  autocomplete="off" >
 	<h2>#application.rbFactory.getKeyValue(session.rb,'user.memberform')#</h2>
 	
 	<cfif len(request.userBean.getUsername())>
@@ -66,7 +66,7 @@ select * from rsSubTypes where subType <> 'Default'
 		<cfif strikes.isBlocked()>
 			<p class="error">
 			#application.rbFactory.getKeyValue(session.rb,'user.blocked')#: #LSTimeFormat(strikes.blockedUntil(),"short")#
-			<a href="?fuseaction=cPublicUsers.edituser&userid=#attributes.userID#&type=2&siteid=#attributes.siteID#&removeBlock">[#application.rbFactory.getKeyValue(session.rb,'user.remove')#]</a>
+			<a href="?fuseaction=cPublicUsers.edituser&userid=#URLEncodedFormat(attributes.userid)#&type=2&siteid=#URLEncodedFormat(attributes.siteid)#&removeBlock">[#application.rbFactory.getKeyValue(session.rb,'user.remove')#]</a>
 			</p>
 		</cfif>
 	</cfif>
@@ -153,7 +153,7 @@ select * from rsSubTypes where subType <> 'Default'
 		<dd><textarea id="hours" name="hours" >#HTMLEditFormat(attributes.hours)#</textarea></dd>   
 		<input type="hidden" name="isPrimary" value="1" />
 		<cfelse>
-		<dt class="first"><ul id="navTask"><li><a href="index.cfm?fuseaction=cPublicUsers.editAddress&userID=#attributes.userid#&siteid=#attributes.siteid#&routeID=#attributes.routeid#&addressID=">#application.rbFactory.getKeyValue(session.rb,'user.addnewaddress')#</a></li></ul></dt>
+		<dt class="first"><ul id="navTask"><li><a href="index.cfm?fuseaction=cPublicUsers.editAddress&userid=#URLEncodedFormat(attributes.userid)#&siteid=#URLEncodedFormat(attributes.siteid)#&routeID=#attributes.routeid#&addressID=">#application.rbFactory.getKeyValue(session.rb,'user.addnewaddress')#</a></li></ul></dt>
 		<cfset rsAddresses=request.userBean.getAddresses()>
 		<dd>
 		<cfif rsAddresses.recordcount>
@@ -165,7 +165,7 @@ select * from rsSubTypes where subType <> 'Default'
 			<input type="radio" name="primaryAddressID" value="#rsAddresses.addressID#" <cfif rsAddresses.isPrimary eq 1 or rsAddresses.recordcount eq 1>checked</cfif>>
 			</td>
 			<td>
-			<cfif rsAddresses.addressName neq ''><a title="#application.rbFactory.getKeyValue(session.rb,'user.edit')#" href="index.cfm?fuseaction=cPublicUsers.editAddress&userID=#attributes.userid#&siteid=#attributes.siteid#&routeID=#attributes.routeid#&addressID=#rsAddresses.addressID#"><strong>#rsAddresses.addressName#</strong></a><br/></cfif>
+			<cfif rsAddresses.addressName neq ''><a title="#application.rbFactory.getKeyValue(session.rb,'user.edit')#" href="index.cfm?fuseaction=cPublicUsers.editAddress&userid=#URLEncodedFormat(attributes.userid)#&siteid=#URLEncodedFormat(attributes.siteid)#&routeID=#attributes.routeid#&addressID=#rsAddresses.addressID#"><strong>#rsAddresses.addressName#</strong></a><br/></cfif>
 			<cfif rsAddresses.address1 neq ''>#rsAddresses.address1#<br/></cfif>
 			<cfif rsAddresses.address2 neq ''>#rsAddresses.address2#<br/></cfif>
 			<cfif rsAddresses.city neq ''>#rsAddresses.city# </cfif><cfif rsAddresses.state neq ''><cfif rsaddresses.city neq ''>,</cfif> #rsAddresses.state# </cfif><cfif rsaddresses.zip neq ''> #rsAddresses.zip#</cfif><cfif rsAddresses.city neq '' or rsAddresses.state neq '' or rsAddresses.zip neq ''><br/></cfif>
@@ -174,8 +174,8 @@ select * from rsSubTypes where subType <> 'Default'
 			<cfif rsAddresses.addressURL neq ''>#application.rbFactory.getKeyValue(session.rb,'user.website')#: <a href="#rsAddresses.addressURL#" target="_blank">#rsAddresses.addressURL#</a><br/></cfif>
 			<cfif rsAddresses.addressEmail neq ''>#application.rbFactory.getKeyValue(session.rb,'user.email')#: <a href="mailto:#rsAddresses.addressEmail#">#rsAddresses.addressEmail#</a></cfif>
 			</td>
-			<td nowrap class="administration"><ul class="users"><li class="edit"><a title="#application.rbFactory.getKeyValue(session.rb,'user.edit')#" href="index.cfm?fuseaction=cPublicUsers.editAddress&userID=#attributes.userid#&siteid=#attributes.siteid#&routeID=#attributes.routeid#&addressID=#rsAddresses.addressID#">[#application.rbFactory.getKeyValue(session.rb,'user.moreresults')#]</a></li>
-			<cfif rsAddresses.isPrimary neq 1><li class="delete"><a title="Delete" href="index.cfm?fuseaction=cPublicUsers.updateAddress&userID=#attributes.userid#&action=delete&siteid=#attributes.siteid#&routeID=#attributes.routeid#&addressID=#rsAddresses.addressID#" onclick="return confirm('#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'user.deleteaddressconfirm'))#');">[#application.rbFactory.getKeyValue(session.rb,'user.delete')#]</a></li><cfelse><li class="deleteOff">#application.rbFactory.getKeyValue(session.rb,'user.delete')#</li></cfif></ul></td>
+			<td nowrap class="administration"><ul class="users"><li class="edit"><a title="#application.rbFactory.getKeyValue(session.rb,'user.edit')#" href="index.cfm?fuseaction=cPublicUsers.editAddress&userid=#URLEncodedFormat(attributes.userid)#&siteid=#URLEncodedFormat(attributes.siteid)#&routeID=#attributes.routeid#&addressID=#rsAddresses.addressID#">[#application.rbFactory.getKeyValue(session.rb,'user.moreresults')#]</a></li>
+			<cfif rsAddresses.isPrimary neq 1><li class="delete"><a title="Delete" href="index.cfm?fuseaction=cPublicUsers.updateAddress&userid=#URLEncodedFormat(attributes.userid)#&action=delete&siteid=#URLEncodedFormat(attributes.siteid)#&routeID=#attributes.routeid#&addressID=#rsAddresses.addressID#" onclick="return confirm('#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'user.deleteaddressconfirm'))#');">[#application.rbFactory.getKeyValue(session.rb,'user.delete')#]</a></li><cfelse><li class="deleteOff">#application.rbFactory.getKeyValue(session.rb,'user.delete')#</li></cfif></ul></td>
 		</tr>
 		</cfloop>
 		</table>
@@ -253,7 +253,7 @@ select * from rsSubTypes where subType <> 'Default'
 		<dt>#application.rbFactory.getKeyValue(session.rb,'user.usertype')#</dt>
 		<dd><ul class="radioGroup"><li><input name="switchToPrivate" type="radio" class="radio" value="1"> #application.rbFactory.getKeyValue(session.rb,'user.administrative')#</li><li><input name="switchToPrivate" type="radio" class="radio" value="0" Checked> #application.rbFactory.getKeyValue(session.rb,'user.sitemember')#</li></ul></dd>
 		</cfif>
-		<dt><input type="checkbox" id="contactFormBox" name="ContactForm" value="#attributes.siteid#" <cfif listfind(request.userBean.getcontactform(),attributes.siteid)>Checked</cfif>> <label for="contactFormBox">#application.rbFactory.getKeyValue(session.rb,'user.contactform')#</label></dt>
+		<dt><input type="checkbox" id="contactFormBox" name="ContactForm" value="#HTMLEditFormat(attributes.siteid)#" <cfif listfind(request.userBean.getcontactform(),attributes.siteid)>Checked</cfif>> <label for="contactFormBox">#application.rbFactory.getKeyValue(session.rb,'user.contactform')#</label></dt>
 		<dt>#application.rbFactory.getKeyValue(session.rb,'user.remoteid')#</dt>
 		<dd><input id="remoteID" name="remoteID" type="text" value="#HTMLEditFormat(request.userBean.getRemoteID())#"  class="text"></dd>
 		</dl>

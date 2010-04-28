@@ -55,7 +55,7 @@ to your own modified versions of Mura CMS.
 	<h2>Error</h2>
 	<h3>We're sorry, but we've encountered an error.</h3>
 	<p><a href="javascript: history.go(-1);" class="highlight">Cick here to return to the previous page.</a></p><p></p>
-	<p><cfoutput>#error.diagnostics#</cfoutput></p>
+	<p><cfoutput>#HTMLEDitFormat(error.diagnostics)#</cfoutput></p>
 
 </body>
 </html>

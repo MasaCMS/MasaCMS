@@ -49,7 +49,7 @@ to your own modified versions of Mura CMS.
 
 <h3>Keyword Search</h3><form id="siteSearch" name="siteSearch" method="get"><input name="keywords" value="#session.keywords#" type="text" class="text" maxlength="50" /><a class="submit" href="javascript:;" onclick="return submitForm(document.forms.siteSearch);"><span>Search</span></a>
 	<input type="hidden" name="fuseaction" value="cArch.search">
-	<input type="hidden" name="siteid" value="#attributes.siteid#">
+	<input type="hidden" name="siteid" value="#HTMLEditFormat(attributes.siteid)#">
 	<input type="hidden" name="moduleid" value="#attributes.moduleid#">
 </form>
 <script>
@@ -100,7 +100,7 @@ copySiteID = '#session.copySiteID#';
 		<td>#LSDateFormat(request.rslist.lastupdate,session.dateKeyFormat)#</td>
         
  <td class="administration"><ul class="siteSummary"><cfif verdict neq 'none'>
-       <li class="edit"><a title="Edit" href="index.cfm?fuseaction=cArch.edit&contenthistid=#request.rsList.ContentHistID#&contentid=#request.rsList.ContentID#&type=#request.rsList.type#&parentid=#request.rsList.parentID#&topid=#attributes.topid#&siteid=#attributes.siteid#&moduleid=#attributes.moduleid#&startrow=#attributes.startrow#">&nbsp;</a></li>
+       <li class="edit"><a title="Edit" href="index.cfm?fuseaction=cArch.edit&contenthistid=#request.rsList.ContentHistID#&contentid=#request.rsList.ContentID#&type=#request.rsList.type#&parentid=#request.rsList.parentID#&topid=#URLEncodedFormat(attributes.topid)#&siteid=#URLEncodedFormat(attributes.siteid)#&moduleid=#attributes.moduleid#&startrow=#attributes.startrow#">&nbsp;</a></li>
 	   <cfswitch expression="#request.rsList.type#">
 		<cfcase value="Page,Portal,Calendar,Gallery">
 		<li class="preview"><a title="Preview" href="javascript:preview('http://#application.settingsManager.getSite(attributes.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##application.contentRenderer.getURLStem(attributes.siteid,request.rsList.filename)#','#request.rsList.targetParams#');">#left(request.rsList.menutitle,70)#</a></li>
@@ -112,14 +112,14 @@ copySiteID = '#session.copySiteID#';
 		<li class="preview"><a title="Preview" href="javascript:preview('http://#application.settingsManager.getSite(attributes.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##application.contentRenderer.getURLStem(attributes.siteid,"")#?LinkServID=#request.rsList.contentid#','#request.rsList.targetParams#');">#left(request.rsList.menutitle,70)#</a></li>
 		</cfcase>
 		</cfswitch>
-	   <li class="versionHistory"><a title="Version History" href="index.cfm?fuseaction=cArch.hist&contentid=#request.rsList.ContentID#&type=#request.rsList.type#&parentid=#request.rsList.parentID#&topid=#request.rsList.contentID#&siteid=#attributes.siteid#&moduleid=#attributes.moduleid#&startrow=#attributes.startrow#">&nbsp;</a></li>
+	   <li class="versionHistory"><a title="Version History" href="index.cfm?fuseaction=cArch.hist&contentid=#request.rsList.ContentID#&type=#request.rsList.type#&parentid=#request.rsList.parentID#&topid=#request.rsList.contentID#&siteid=#URLEncodedFormat(attributes.siteid)#&moduleid=#attributes.moduleid#&startrow=#attributes.startrow#">&nbsp;</a></li>
         <cfif listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(attributes.siteid).getPrivateUserPoolID()#;0') or listFind(session.mura.memberships,'S2')>
-          <li class="permissions"><a title="Permissions" href="index.cfm?fuseaction=cPerm.main&contentid=#request.rsList.ContentID#&type=#request.rsList.type#&parentid=#request.rsList.parentID#&topid=#request.rsList.contentID#&siteid=#attributes.siteid#&moduleid=#attributes.moduleid#&startrow=#attributes.startrow#">&nbsp;</a></li>
+          <li class="permissions"><a title="Permissions" href="index.cfm?fuseaction=cPerm.main&contentid=#request.rsList.ContentID#&type=#request.rsList.type#&parentid=#request.rsList.parentID#&topid=#request.rsList.contentID#&siteid=#URLEncodedFormat(attributes.siteid)#&moduleid=#attributes.moduleid#&startrow=#attributes.startrow#">&nbsp;</a></li>
         <cfelse>
 		  <li class="permissionsOff"><a>Permissions</a></li>
 		</cfif>
         <cfif deletable>
-          <li class="delete"><a  title="Delete" href="index.cfm?fuseaction=cArch.update&contentid=#request.rsList.ContentID#&type=#request.rsList.type#&action=deleteall&topid=#request.rsList.contentID#&siteid=#attributes.siteid#&moduleid=#attributes.moduleid#&parentid=#attributes.parentid#&startrow=#attributes.startrow#"
+          <li class="delete"><a  title="Delete" href="index.cfm?fuseaction=cArch.update&contentid=#request.rsList.ContentID#&type=#request.rsList.type#&action=deleteall&topid=#request.rsList.contentID#&siteid=#URLEncodedFormat(attributes.siteid)#&moduleid=#attributes.moduleid#&parentid=#URLEncodedFormat(attributes.parentid)#&startrow=#attributes.startrow#"
 			<cfif listFindNoCase("Page,Portal,Calendar,Gallery,Link,File",request.rsList.type)>onclick="return confirm('#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.deletecontentrecursiveconfirm'))#')"<cfelse>onclick="return confirm('#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.deletecontentconfirm'))#')"</cfif>>&nbsp;</a></li>
           <cfelseif attributes.locking neq 'all'>
           <li class="deleteOff">Delete</li>
@@ -151,9 +151,9 @@ copySiteID = '#session.copySiteID#';
 	
     <cfif request.nextn.numberofpages gt 1><tr> 
       <td colspan="8" class="results">More Results: <cfoutput>
-	<cfif request.nextN.currentpagenumber gt 1> <a href="index.cfm?fuseaction=cArch.search&siteid=#attributes.siteid#&keywords=#session.keywords#&startrow=#request.nextn.previous#&moduleid=#attributes.moduleid#">&laquo;&nbsp;Prev</a></cfif>	
-	<cfloop from="#request.nextN.firstPage#"  to="#request.nextn.lastPage#" index="i"><cfif request.nextn.currentpagenumber eq i> #i# <cfelse> <a href="index.cfm?fuseaction=cArch.search&siteid=#attributes.siteid#&keywords=#session.keywords#&startrow=#evaluate('(#i#*#request.nextn.recordsperpage#)-#request.nextn.recordsperpage#+1')#&moduleid=#attributes.moduleid#">#i#</a> </cfif></cfloop>
-	<cfif request.nextN.currentpagenumber lt request.nextN.NumberOfPages><a href="index.cfm?fuseaction=cArch.search&siteid=#attributes.siteid#&keywords=#session.keywords#&startrow=#request.nextn.next#&moduleid=#attributes.moduleid#">Next&nbsp;&raquo;</a></cfif> 
+	<cfif request.nextN.currentpagenumber gt 1> <a href="index.cfm?fuseaction=cArch.search&siteid=#URLEncodedFormat(attributes.siteid)#&keywords=#session.keywords#&startrow=#request.nextn.previous#&moduleid=#attributes.moduleid#">&laquo;&nbsp;Prev</a></cfif>	
+	<cfloop from="#request.nextN.firstPage#"  to="#request.nextn.lastPage#" index="i"><cfif request.nextn.currentpagenumber eq i> #i# <cfelse> <a href="index.cfm?fuseaction=cArch.search&siteid=#URLEncodedFormat(attributes.siteid)#&keywords=#session.keywords#&startrow=#evaluate('(#i#*#request.nextn.recordsperpage#)-#request.nextn.recordsperpage#+1')#&moduleid=#attributes.moduleid#">#i#</a> </cfif></cfloop>
+	<cfif request.nextN.currentpagenumber lt request.nextN.NumberOfPages><a href="index.cfm?fuseaction=cArch.search&siteid=#URLEncodedFormat(attributes.siteid)#&keywords=#session.keywords#&startrow=#request.nextn.next#&moduleid=#attributes.moduleid#">Next&nbsp;&raquo;</a></cfif> 
 	</td></tr>
 	</cfoutput>
 	</cfif> 

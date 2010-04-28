@@ -43,9 +43,9 @@ to your own modified versions of Mura CMS.
 <cfoutput>
 <h2>#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager')#</h2>
 <ul id="navTask">
-<li><a href="index.cfm?fuseaction=cMailingList.list&siteid=#attributes.siteid#">#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager')#</a></li>
-<li><a href="index.cfm?fuseaction=cMailingList.Edit&mlid=#attributes.mlid#&siteid=#attributes.siteid#">#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.editmailinglist')#</a></li>
-<li><a href="index.cfm?fuseaction=cMailingList.download&mlid=#attributes.mlid#&siteid=#attributes.siteid#">#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.downloadmembers')#</a></li>
+<li><a href="index.cfm?fuseaction=cMailingList.list&siteid=#URLEncodedFormat(attributes.siteid)#">#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager')#</a></li>
+<li><a href="index.cfm?fuseaction=cMailingList.Edit&mlid=#attributes.mlid#&siteid=#URLEncodedFormat(attributes.siteid)#">#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.editmailinglist')#</a></li>
+<li><a href="index.cfm?fuseaction=cMailingList.download&mlid=#attributes.mlid#&siteid=#URLEncodedFormat(attributes.siteid)#">#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.downloadmembers')#</a></li>
 </ul>
 
 <form action="index.cfm?fuseaction=cMailingList.updatemember" name="form1" method="post" onsubmit="return validate(this);">
@@ -62,7 +62,7 @@ to your own modified versions of Mura CMS.
 </dl>
 <a class="submit" href="javascript:;" onclick="return submitForm(document.forms.form1);"><span>#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.submit')#</span></a>
 <input type=hidden name="mlid" value="#attributes.mlid#">
-<input type=hidden name="siteid" value="#attributes.siteid#">
+<input type=hidden name="siteid" value="#HTMLEditFormat(attributes.siteid)#">
 <input type=hidden name="isVerified" value="1">
 </form>
 <h3>#request.listBean.getname()#</h3>
@@ -82,7 +82,7 @@ to your own modified versions of Mura CMS.
 		<td>#HTMLEditFormat(fname)#&nbsp;#HTMLEditFormat(lname)#</td>
 		<td>#HTMLEditFormat(company)#</td>
 		<td><cfif isVerified eq 1>#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.yes')#<cfelse>#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.no')#</cfif></td>
-		<td class="administration"><ul class="mailingListMembers"><li class="delete"><a title="#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.delete')#" href="index.cfm?fuseaction=cMailingList.updatemember&action=delete&mlid=#request.rslist.mlid#&email=#urlencodedformat(request.rslist.email)#&siteid=#attributes.siteid#" onclick="return confirm('#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.deletememberconfirm'))#');">#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.delete')#</a></li></ul></td></tr>
+		<td class="administration"><ul class="mailingListMembers"><li class="delete"><a title="#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.delete')#" href="index.cfm?fuseaction=cMailingList.updatemember&action=delete&mlid=#request.rslist.mlid#&email=#urlencodedformat(request.rslist.email)#&siteid=#URLEncodedFormat(attributes.siteid)#" onclick="return confirm('#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.deletememberconfirm'))#');">#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.delete')#</a></li></ul></td></tr>
 </cfoutput>
 <cfelse>
 <tr>

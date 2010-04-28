@@ -46,7 +46,7 @@ to your own modified versions of Mura CMS.
 <cfset count=rsList.recordcount>
 <table id="topPages">
 <tr>
-<th>#application.rbFactory.getKeyValue(session.rb,"dashboard.pages")# <a href="index.cfm?fuseaction=cDashboard.topContent&siteID=#attributes.siteID#&startDate=#URLEncodedFormat(attributes.startDate)#&stopDate=#URLEncodedFormat(attributes.stopDate)#">(#application.rbFactory.getKeyValue(session.rb,"dashboard.viewreport")#)</a></th>
+<th>#application.rbFactory.getKeyValue(session.rb,"dashboard.pages")# <a href="index.cfm?fuseaction=cDashboard.topContent&siteid=#URLEncodedFormat(attributes.siteid)#&startDate=#URLEncodedFormat(attributes.startDate)#&stopDate=#URLEncodedFormat(attributes.stopDate)#">(#application.rbFactory.getKeyValue(session.rb,"dashboard.viewreport")#)</a></th>
 </tr>
 <cfloop query="rslist">
 <tr<cfif rslist.currentrow mod 2> class="alt"</cfif>>
@@ -72,7 +72,7 @@ to your own modified versions of Mura CMS.
 <cfset count=rsList.recordcount>
 <table id="topReferrers">
 <tr>
-	<th>#application.rbFactory.getKeyValue(session.rb,"dashboard.topreferrers")# <a href="index.cfm?fuseaction=cDashboard.topReferers&siteID=#attributes.siteID#&startDate=#URLEncodedFormat(attributes.startDate)#&stopDate=#URLEncodedFormat(attributes.stopDate)#">(#application.rbFactory.getKeyValue(session.rb,"dashboard.viewreport")#)</a></th>
+	<th>#application.rbFactory.getKeyValue(session.rb,"dashboard.topreferrers")# <a href="index.cfm?fuseaction=cDashboard.topReferers&siteid=#URLEncodedFormat(attributes.siteid)#&startDate=#URLEncodedFormat(attributes.startDate)#&stopDate=#URLEncodedFormat(attributes.stopDate)#">(#application.rbFactory.getKeyValue(session.rb,"dashboard.viewreport")#)</a></th>
 </tr>
 <cfloop query="rslist">
 <tr<cfif rslist.currentrow mod 2> class="alt"</cfif>>
@@ -88,7 +88,7 @@ to your own modified versions of Mura CMS.
 <cfset count=rsList.recordcount>
 <table id="topSearches">
 <tr>
-	<th>#application.rbFactory.getKeyValue(session.rb,"dashboard.topsearches")# <a href="index.cfm?fuseaction=cDashboard.topSearches&siteID=#attributes.siteID#&startDate=#URLEncodedFormat(attributes.startDate)#&stopDate=#URLEncodedFormat(attributes.stopDate)#">(View Report)</a></th>
+	<th>#application.rbFactory.getKeyValue(session.rb,"dashboard.topsearches")# <a href="index.cfm?fuseaction=cDashboard.topSearches&siteid=#URLEncodedFormat(attributes.siteid)#&startDate=#URLEncodedFormat(attributes.startDate)#&stopDate=#URLEncodedFormat(attributes.stopDate)#">(View Report)</a></th>
 </tr>
 <cfloop query="rslist">
 <tr<cfif rslist.currentrow mod 2> class="alt"</cfif>>
@@ -104,7 +104,7 @@ to your own modified versions of Mura CMS.
 <cfset count=rsList.recordcount>
 <table id="topRated">
 <tr>
-	<th>#application.rbFactory.getKeyValue(session.rb,"dashboard.toprated")# <a href="index.cfm?fuseaction=cDashboard.topRated&siteID=#attributes.siteID#&startDate=#URLEncodedFormat(attributes.startDate)#&stopDate=#URLEncodedFormat(attributes.stopDate)#">(View Report)</a></th>
+	<th>#application.rbFactory.getKeyValue(session.rb,"dashboard.toprated")# <a href="index.cfm?fuseaction=cDashboard.topRated&siteid=#URLEncodedFormat(attributes.siteid)#&startDate=#URLEncodedFormat(attributes.startDate)#&stopDate=#URLEncodedFormat(attributes.stopDate)#">(View Report)</a></th>
 </tr>
 <cfloop query="rslist">
 <tr<cfif rslist.currentrow mod 2> class="alt"</cfif>>

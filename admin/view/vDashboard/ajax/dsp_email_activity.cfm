@@ -75,7 +75,7 @@ to your own modified versions of Mura CMS.
 <cfset bounces=application.emailManager.getStat(rslist.emailid,'bounce')/>
 </cfsilent>				  
 <tr<cfif rslist.currentrow mod 2> class="alt"</cfif>>
-<td class="title"><a href="index.cfm?fuseaction=cEmail.edit&siteID=#attributes.siteID#&emailID=#rslist.emailID#">#rsList.subject#</td><td>#sent#</td><td>#opens#</td><td>#clicks#</td><td>#bounces#</td>
+<td class="title"><a href="index.cfm?fuseaction=cEmail.edit&siteid=#URLEncodedFormat(attributes.siteid)#&emailID=#rslist.emailID#">#rsList.subject#</td><td>#sent#</td><td>#opens#</td><td>#clicks#</td><td>#bounces#</td>
 </tr>
 </cfloop>
 <cfelse>

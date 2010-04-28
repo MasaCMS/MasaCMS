@@ -42,7 +42,7 @@ to your own modified versions of Mura CMS.
 --->
 <cfoutput>
 <h2>#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager')#</h2>
-<cfoutput><ul id="navTask"><li><a title="Add Mailing List" href="index.cfm?fuseaction=cMailingList.edit&siteid=#attributes.siteID#&mlid=">#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.addmailinglist')#</a></li></ul></cfoutput>
+<cfoutput><ul id="navTask"><li><a title="Add Mailing List" href="index.cfm?fuseaction=cMailingList.edit&siteid=#URLEncodedFormat(attributes.siteid)#&mlid=">#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.addmailinglist')#</a></li></ul></cfoutput>
 <table class="stripe">
 <tr>
 	<th class="varWidth">#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.currentmailinglists')#</th>
@@ -52,9 +52,9 @@ to your own modified versions of Mura CMS.
 <cfif request.rslist.recordcount>
 <cfoutput query="request.rslist">
 	<tr>
-		<td class="varWidth"><a title="Edit" href="index.cfm?fuseaction=cMailingList.edit&mlid=#request.rslist.mlid#&siteid=#attributes.siteid#">#HTMLEditFormat(name)# (#members#)</a></td>
+		<td class="varWidth"><a title="Edit" href="index.cfm?fuseaction=cMailingList.edit&mlid=#request.rslist.mlid#&siteid=#URLEncodedFormat(attributes.siteid)#">#HTMLEditFormat(name)# (#members#)</a></td>
 		<td><cfif request.rslist.ispublic>#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.public')#<cfelse>#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.private')#</cfif></td>
-		<td class="administration"><ul class="mailingLists"><li class="edit"><a title="#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.edit')#" href="index.cfm?fuseaction=cMailingList.edit&mlid=#request.rslist.mlid#&siteid=#attributes.siteid#">#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.edit')#</a></li><li class="permissions"><a title="#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.viewmembership')#" href="index.cfm?fuseaction=cMailingList.listmembers&mlid=#request.rslist.mlid#&siteid=#attributes.siteid#">#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.viewmembership')#</a></li><cfif not request.rslist.ispurge><li class="delete"><a title="#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.delete')#" href="index.cfm?fuseaction=cMailingList.update&action=delete&mlid=#request.rslist.mlid#&siteid=#attributes.siteid#" onClick="return confirm('#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.deleteconfirm')#');">#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.delete')#</a></li><cfelse><li class="deleteOff">#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.delete')#</li></cfif></ul></td></tr>
+		<td class="administration"><ul class="mailingLists"><li class="edit"><a title="#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.edit')#" href="index.cfm?fuseaction=cMailingList.edit&mlid=#request.rslist.mlid#&siteid=#URLEncodedFormat(attributes.siteid)#">#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.edit')#</a></li><li class="permissions"><a title="#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.viewmembership')#" href="index.cfm?fuseaction=cMailingList.listmembers&mlid=#request.rslist.mlid#&siteid=#URLEncodedFormat(attributes.siteid)#">#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.viewmembership')#</a></li><cfif not request.rslist.ispurge><li class="delete"><a title="#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.delete')#" href="index.cfm?fuseaction=cMailingList.update&action=delete&mlid=#request.rslist.mlid#&siteid=#URLEncodedFormat(attributes.siteid)#" onClick="return confirm('#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.deleteconfirm')#');">#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.delete')#</a></li><cfelse><li class="deleteOff">#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.delete')#</li></cfif></ul></td></tr>
 </cfoutput>
 <cfelse>
 <tr>

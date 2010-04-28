@@ -189,7 +189,8 @@ to your own modified versions of Mura CMS.
 		<cfset application.clusterManager=application.serviceFactory.getBean("clusterManager") />
 		<cfset application.contentServer=application.serviceFactory.getBean("contentServer") />
 		<cfset application.autoUpdater=application.serviceFactory.getBean("autoUpdater") />
-					
+		<cfset application.scriptProtectionFilter=application.serviceFactory.getBean("scriptProtectionFilter") >
+			
 		<!---settings.custom.managers.cfm reference is for backwards compatibility --->
 		<cfif fileExists(ExpandPath("/muraWRM/config/settings.custom.managers.cfm"))>
 			<cfinclude template="/muraWRM/config/settings.custom.managers.cfm">

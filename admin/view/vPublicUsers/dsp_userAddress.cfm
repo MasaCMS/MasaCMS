@@ -44,12 +44,12 @@ to your own modified versions of Mura CMS.
 <cfset rsAddress=request.userBean.getAddressById(attributes.addressID)>
 <cfset addressBean=request.userBean.getAddressBeanById(attributes.addressID)>
 <cfset extendSets=application.classExtensionManager.getSubTypeByName("Address",request.userBean.getsubtype(),request.userBean.getSiteID()).getExtendSets(true) />
-<cfoutput><form action="index.cfm?fuseaction=cPublicUsers.updateAddress&userid=#attributes.userid#&routeid=#attributes.routeid#&siteid=#attributes.siteid#" method="post" enctype="multipart/form-data" name="form1" onsubmit="return validate(this);"  autocomplete="off" >
+<cfoutput><form action="index.cfm?fuseaction=cPublicUsers.updateAddress&userid=#URLEncodedFormat(attributes.userid)#&routeid=#attributes.routeid#&siteid=#URLEncodedFormat(attributes.siteid)#" method="post" enctype="multipart/form-data" name="form1" onsubmit="return validate(this);"  autocomplete="off" >
 	<h2>#application.rbFactory.getKeyValue(session.rb,'user.memberaddressform')#</h2>
 	
 	<!--- #application.utility.displayErrors(request.addressBean.getErrors())# --->
 	
-	<h3>#Request.userBean.getFname()# #Request.userBean.getlname()# <a href="index.cfm?fuseaction=cPublicUsers.editUser&userid=#attributes.userid#&siteid=#attributes.siteid#&routeid=#attributes.routeid#">[#application.rbFactory.getKeyValue(session.rb,'user.back')#]</a></h3>
+	<h3>#Request.userBean.getFname()# #Request.userBean.getlname()# <a href="index.cfm?fuseaction=cPublicUsers.editUser&userid=#URLEncodedFormat(attributes.userid)#&siteid=#URLEncodedFormat(attributes.siteid)#&routeid=#attributes.routeid#">[#application.rbFactory.getKeyValue(session.rb,'user.back')#]</a></h3>
 	
 	<cfif arrayLen(extendSets)>
 	<br/>

@@ -75,7 +75,7 @@ to your own modified versions of Mura CMS.
 	</cfif>
 	
 		<input name="action" type="hidden" value="multiFileUpload">
-		<input type="hidden" name="siteid" value="#attributes.siteid#">
+		<input type="hidden" name="siteid" value="#HTMLEditFormat(attributes.siteid)#">
 		<input type="hidden" name="moduleid" value="#attributes.moduleid#">
 		<input type="hidden" name="return" value="#attributes.return#">
 		<input type="hidden" name="topid" value="#attributes.topid#">

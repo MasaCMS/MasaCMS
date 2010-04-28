@@ -43,14 +43,14 @@ to your own modified versions of Mura CMS.
 <cfoutput>
 <h2>#application.rbFactory.getKeyValue(session.rb,'advertising.viewadzones')#</h2>
 
-<h3 class="alt">#application.rbFactory.getKeyValue(session.rb,'advertising.adzonesearch')#</h3><form id="siteSearch" name="siteSearch" method="get"><input name="keywords" value="#attributes.keywords#" type="text" class="text" maxlength="50" />  
+<h3 class="alt">#application.rbFactory.getKeyValue(session.rb,'advertising.adzonesearch')#</h3><form id="siteSearch" name="siteSearch" method="get"><input name="keywords" value="#HTMLEditFormat(attributes.keywords)#" type="text" class="text" maxlength="50" />  
 	<a class="submit" href="javascript:;" onclick="return submitForm(document.forms.siteSearch);"><span>#application.rbFactory.getKeyValue(session.rb,'advertising.search')#</span></a>
 	<input type="hidden" name="fuseaction" value="cAdvertising.listadzones">
-	<input type="hidden" name="siteid" value="#attributes.siteid#">
+	<input type="hidden" name="siteid" value="#HTMLEditFormat(attributes.siteid)#">
 </form>
 
 <ul id="navTask">
-<li><a href="index.cfm?fuseaction=cAdvertising.editAdZone&adzoneid=&siteid=#attributes.siteid#">#application.rbFactory.getKeyValue(session.rb,'advertising.addnewadzone')#</a></li>
+<li><a href="index.cfm?fuseaction=cAdvertising.editAdZone&adzoneid=&siteid=#URLEncodedFormat(attributes.siteid)#">#application.rbFactory.getKeyValue(session.rb,'advertising.addnewadzone')#</a></li>
 </ul>
 
 
@@ -66,14 +66,14 @@ to your own modified versions of Mura CMS.
 <cfif request.rslist.recordcount>
 <cfoutput query="request.rslist">
 	<tr>
-		<td class="varWidth"><a title="#application.rbFactory.getKeyValue(session.rb,'advertising.edit')#" href="index.cfm?fuseaction=cAdvertising.editAdZone&adZoneid=#request.rslist.adzoneid#&siteid=#attributes.siteid#">#name#</a></td>
+		<td class="varWidth"><a title="#application.rbFactory.getKeyValue(session.rb,'advertising.edit')#" href="index.cfm?fuseaction=cAdvertising.editAdZone&adZoneid=#request.rslist.adzoneid#&siteid=#URLEncodedFormat(attributes.siteid)#">#name#</a></td>
 		<td>#creativeType#</td>
 		<td>#height#</td>
 		<td>#width#</td>
 	<td>#application.rbFactory.getKeyValue(session.rb,'advertising.#yesnoformat(isActive)#')#</td>
 		<td class="administration"><ul class="two">
-		<li class="edit"><a title="#application.rbFactory.getKeyValue(session.rb,'advertising.edit')#" href="index.cfm?fuseaction=cAdvertising.editAdZone&adZoneid=#request.rslist.adzoneid#&siteid=#attributes.siteid#">#application.rbFactory.getKeyValue(session.rb,'advertising.edit')#</a></li>
-		<li class="delete"><a title="#application.rbFactory.getKeyValue(session.rb,'advertising.delte')#" href="index.cfm?fuseaction=cAdvertising.updateAdZone&action=delete&adzoneid=#request.rslist.adZoneid#&siteid=#attributes.siteid#" onclick="return confirm('#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'advertising.deleteadzoneconfirm'))#')">#application.rbFactory.getKeyValue(session.rb,'advertising.edit')#</a></li></ul>
+		<li class="edit"><a title="#application.rbFactory.getKeyValue(session.rb,'advertising.edit')#" href="index.cfm?fuseaction=cAdvertising.editAdZone&adZoneid=#request.rslist.adzoneid#&siteid=#URLEncodedFormat(attributes.siteid)#">#application.rbFactory.getKeyValue(session.rb,'advertising.edit')#</a></li>
+		<li class="delete"><a title="#application.rbFactory.getKeyValue(session.rb,'advertising.delte')#" href="index.cfm?fuseaction=cAdvertising.updateAdZone&action=delete&adzoneid=#request.rslist.adZoneid#&siteid=#URLEncodedFormat(attributes.siteid)#" onclick="return confirm('#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'advertising.deleteadzoneconfirm'))#')">#application.rbFactory.getKeyValue(session.rb,'advertising.edit')#</a></li></ul>
 		</td></tr>
 </cfoutput>
 <cfelse>

@@ -58,7 +58,7 @@ select * from rsSubTypes where subType <> 'Default'
 
 #application.utility.displayErrors(request.userBean.getErrors())#
 
-			 <form action="index.cfm?fuseaction=cPublicUsers.update&userid=#attributes.userid#" enctype="multipart/form-data" method="post" name="form1" class="formclass" onsubmit="return validate(this);">
+			 <form action="index.cfm?fuseaction=cPublicUsers.update&userid=#URLEncodedFormat(attributes.userid)#" enctype="multipart/form-data" method="post" name="form1" class="formclass" onsubmit="return validate(this);">
 <cfif rsSubTypes.recordcount>
 <div id="page_tabView">
 <div class="page_aTab">
@@ -92,7 +92,7 @@ select * from rsSubTypes where subType <> 'Default'
 </select>
 </dd>
 
-<dt class="alt"><input type="checkbox" name="contactform" value="#attributes.siteid#" <cfif request.userBean.getcontactform() eq attributes.siteid>checked</cfif>> #application.rbFactory.getKeyValue(session.rb,'user.contactform')#</dt>
+<dt class="alt"><input type="checkbox" name="contactform" value="#HTMLEditFormat(attributes.siteid)#" <cfif request.userBean.getcontactform() eq attributes.siteid>checked</cfif>> #application.rbFactory.getKeyValue(session.rb,'user.contactform')#</dt>
 
 <span id="extendSetsBasic"></span>
 </dl>
@@ -119,7 +119,7 @@ initTabs(Array("#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'us
 					<a class="submit" href="javascript:;" onclick="return submitForm(document.forms.form1,'delete','This');"><span>#application.rbFactory.getKeyValue(session.rb,'user.delete')#</span></a> <a class="submit" href="javascript:;" onclick="return submitForm(document.forms.form1,'update');"><span>#application.rbFactory.getKeyValue(session.rb,'user.update')#</span></a>
 					</cfif><input type="hidden" name="action" value=""><input type="hidden" name="type" value="1"><input type="hidden" name="contact" value="0">
 					<input type="hidden" name="isPublic" value="1">
-					<input type="hidden" name="siteid" value="#attributes.siteid#">
+					<input type="hidden" name="siteid" value="#HTMLEditFormat(attributes.siteid)#">
 		</cfdefaultcase>
 			 </cfswitch>
 </cfoutput>
@@ -137,12 +137,12 @@ initTabs(Array("#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'us
           <cfif request.rsgrouplist.recordcount>
             <cfoutput query="request.rsgrouplist" maxrows="#request.nextN.recordsperPage#" startrow="#attributes.startrow#"> 
 			  <tr> 
-                <td class="varWidth"><a href="index.cfm?fuseaction=#iif(request.rsgrouplist.isPublic,de('cPublicUsers'),de('cPrivateUsers'))#.edituser&userid=#request.rsgrouplist.UserID#&routeid=#attributes.userid#&siteid=#attributes.siteid#">#HTMLEditFormat(lname)#, #HTMLEditFormat(fname)# <cfif company neq ''> (#HTMLEditFormat(company)#)</cfif></a></td>
+                <td class="varWidth"><a href="index.cfm?fuseaction=#iif(request.rsgrouplist.isPublic,de('cPublicUsers'),de('cPrivateUsers'))#.edituser&userid=#request.rsgrouplist.UserID#&routeid=#attributes.userid#&siteid=#URLEncodedFormat(attributes.siteid)#">#HTMLEditFormat(lname)#, #HTMLEditFormat(fname)# <cfif company neq ''> (#HTMLEditFormat(company)#)</cfif></a></td>
                 <td><cfif request.rsgrouplist.email gt ""><a href="mailto:#request.rsgrouplist.email#">#email#</a><cfelse>&nbsp;</cfif></td>
                 <td>#LSDateFormat(lastupdate,session.dateKeyFormat)#</td>
 				<td>#LSTimeFormat(lastupdate,"short")#</td>
               <td>#LastUpdateBy#</td>
-                <td class="administration"><ul class="group"><li class="edit"><a href="index.cfm?fuseaction=#iif(request.rsgrouplist.isPublic,de('cPublicUsers'),de('cPrivateUsers'))#.edituser&userid=#request.rsgrouplist.UserID#&routeid=#attributes.userid#&siteid=#attributes.siteid#">#application.rbFactory.getKeyValue(session.rb,'user.edit')#</a></li><li class="delete"><a href="index.cfm?fuseaction=cPublicUsers.removefromgroup&userid=#request.rsgrouplist.UserID#&routeid=#attributes.userid#&groupid=#attributes.userid#&siteid=#attributes.siteid#" onclick="return confirm('#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'user.removeconfirm'))#')">#application.rbFactory.getKeyValue(session.rb,'user.remove')#</a></li></ul></td>
+                <td class="administration"><ul class="group"><li class="edit"><a href="index.cfm?fuseaction=#iif(request.rsgrouplist.isPublic,de('cPublicUsers'),de('cPrivateUsers'))#.edituser&userid=#request.rsgrouplist.UserID#&routeid=#attributes.userid#&siteid=#URLEncodedFormat(attributes.siteid)#">#application.rbFactory.getKeyValue(session.rb,'user.edit')#</a></li><li class="delete"><a href="index.cfm?fuseaction=cPublicUsers.removefromgroup&userid=#request.rsgrouplist.UserID#&routeid=#attributes.userid#&groupid=#attributes.userid#&siteid=#URLEncodedFormat(attributes.siteid)#" onclick="return confirm('#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'user.removeconfirm'))#')">#application.rbFactory.getKeyValue(session.rb,'user.remove')#</a></li></ul></td>
               </tr>
             </cfoutput> 
 	
@@ -157,11 +157,11 @@ initTabs(Array("#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'us
 	 <cfif request.nextN.numberofpages gt 1>
 	  <p class="moreResults"><cfoutput>#application.rbFactory.getKeyValue(session.rb,'user.moreresults')#: 
 			<cfif request.nextN.currentpagenumber gt 1>
-			<a href="index.cfm?fuseaction=cPublicUsers.editgroup&startrow=#request.nextn.previous#&userid=#attributes.userid#&siteid=#attributes.siteid#">&laquo;&nbsp;#application.rbFactory.getKeyValue(session.rb,'user.prev')#</a> 
+			<a href="index.cfm?fuseaction=cPublicUsers.editgroup&startrow=#request.nextn.previous#&userid=#URLEncodedFormat(attributes.userid)#&siteid=#URLEncodedFormat(attributes.siteid)#">&laquo;&nbsp;#application.rbFactory.getKeyValue(session.rb,'user.prev')#</a> 
 			</cfif>
-		  <cfloop from="#request.nextn.firstPage#"  to="#request.nextN.lastPage#" index="i"><cfif request.nextN.currentpagenumber eq i> <strong>#i#</strong><cfelse> <a href="index.cfm?fuseaction=cPublicUsers.editgroup&startrow=#evaluate('(#i#*#request.nextN.recordsperpage#)-#request.nextN.recordsperpage#+1')#&userid=#attributes.userid#&siteid=#attributes.siteid#">#i#</a> </cfif></cfloop>
+		  <cfloop from="#request.nextn.firstPage#"  to="#request.nextN.lastPage#" index="i"><cfif request.nextN.currentpagenumber eq i> <strong>#i#</strong><cfelse> <a href="index.cfm?fuseaction=cPublicUsers.editgroup&startrow=#evaluate('(#i#*#request.nextN.recordsperpage#)-#request.nextN.recordsperpage#+1')#&userid=#URLEncodedFormat(attributes.userid)#&siteid=#URLEncodedFormat(attributes.siteid)#">#i#</a> </cfif></cfloop>
            <cfif request.nextN.currentpagenumber lt request.nextN.NumberOfPages>
-			<a href="index.cfm?fuseaction=cPublicUsers.editgroup&startrow=#request.nextn.next#&userid=#attributes.userid#&siteid=#attributes.siteid#">#application.rbFactory.getKeyValue(session.rb,'user.next')#&nbsp;&raquo;</a> 
+			<a href="index.cfm?fuseaction=cPublicUsers.editgroup&startrow=#request.nextn.next#&userid=#URLEncodedFormat(attributes.userid)#&siteid=#URLEncodedFormat(attributes.siteid)#">#application.rbFactory.getKeyValue(session.rb,'user.next')#&nbsp;&raquo;</a> 
 			</cfif> 
 		</cfoutput>
 	 </p></cfif>

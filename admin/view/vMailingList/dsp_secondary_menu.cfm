@@ -42,6 +42,6 @@ to your own modified versions of Mura CMS.
 --->
 
 <cfoutput>
-<!---<li<cfif myfusebox.originalfuseaction eq "edit"> class="current"</cfif>><a href="index.cfm?fuseaction=cMailingList.edit&siteid=#attributes.siteid#&mlid=">Add Mailing List</a></li>--->
-<cfif listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(attributes.siteid).getPrivateUserPoolID()#;0') or listFind(session.mura.memberships,'S2')><ul><li<cfif myfusebox.originalfuseaction eq "module"> class="current"</cfif>><a href="index.cfm?fuseaction=cPerm.module&contentid=00000000000000000000000000000000009&siteid=#attributes.siteid#&moduleid=00000000000000000000000000000000009">#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.permissions')#</a></li></ul></cfif>
+<!---<li<cfif myfusebox.originalfuseaction eq "edit"> class="current"</cfif>><a href="index.cfm?fuseaction=cMailingList.edit&siteid=#URLEncodedFormat(attributes.siteid)#&mlid=">Add Mailing List</a></li>--->
+<cfif listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(attributes.siteid).getPrivateUserPoolID()#;0') or listFind(session.mura.memberships,'S2')><ul><li<cfif myfusebox.originalfuseaction eq "module"> class="current"</cfif>><a href="index.cfm?fuseaction=cPerm.module&contentid=00000000000000000000000000000000009&siteid=#URLEncodedFormat(attributes.siteid)#&moduleid=00000000000000000000000000000000009">#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.permissions')#</a></li></ul></cfif>
 </cfoutput>

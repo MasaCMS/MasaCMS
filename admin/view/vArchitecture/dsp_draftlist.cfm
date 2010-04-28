@@ -60,13 +60,13 @@ to your own modified versions of Mura CMS.
         <td class="varWidth">
 <cfswitch expression="#request.rslist.type#">
 <cfcase value="Form,Component">
-<a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.versionhistory')#" href="index.cfm?fuseaction=cArch.hist&contentid=#request.rslist.ContentID#&type=#request.rslist.type#&parentid=#request.rslist.parentID#&topid=#attributes.topid#&siteid=#attributes.siteid#&moduleid=#request.rslist.moduleid#">#request.rslist.menutitle#</a>
+<a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.versionhistory')#" href="index.cfm?fuseaction=cArch.hist&contentid=#request.rslist.ContentID#&type=#request.rslist.type#&parentid=#request.rslist.parentID#&topid=#URLEncodedFormat(attributes.topid)#&siteid=#URLEncodedFormat(attributes.siteid)#&moduleid=#request.rslist.moduleid#">#request.rslist.menutitle#</a>
 </cfcase>
 <cfdefaultcase>
 #application.contentRenderer.dspZoom(itemcrumbdata,request.rslist.fileExt)#</cfdefaultcase>
 </cfswitch></td>
 			<td>#request.rslist.module#</td> 
-          <td class="administration"><ul class="drafts"><li class="versionHistory"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.versionhistory')#" href="index.cfm?fuseaction=cArch.hist&contentid=#request.rslist.ContentID#&type=#request.rslist.type#&parentid=#request.rslist.parentID#&topid=#attributes.topid#&siteid=#attributes.siteid#&moduleid=#request.rslist.moduleid#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.versionhistory')#</a></li></ul></td>
+          <td class="administration"><ul class="drafts"><li class="versionHistory"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.versionhistory')#" href="index.cfm?fuseaction=cArch.hist&contentid=#request.rslist.ContentID#&type=#request.rslist.type#&parentid=#request.rslist.parentID#&topid=#URLEncodedFormat(attributes.topid)#&siteid=#URLEncodedFormat(attributes.siteid)#&moduleid=#request.rslist.moduleid#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.versionhistory')#</a></li></ul></td>
         </tr>
 		<cfset listed=1>
 	  </cfif>

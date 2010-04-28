@@ -51,8 +51,8 @@ to your own modified versions of Mura CMS.
 </ul>
 
 <ul id="navTask">
-<li><a href="index.cfm?fuseaction=cExtend.listSubTypes&siteid=#attributes.siteid#">Class Extension Manager</a></li>
-<li><a href="index.cfm?fuseaction=cExtend.listSets&subTypeID=#attributes.subTypeID#&siteid=#attributes.siteid#">Back to Attribute Sets</a></li>
+<li><a href="index.cfm?fuseaction=cExtend.listSubTypes&siteid=#URLEncodedFormat(attributes.siteid)#">Class Extension Manager</a></li>
+<li><a href="index.cfm?fuseaction=cExtend.listSets&subTypeID=#attributes.subTypeID#&siteid=#URLEncodedFormat(attributes.siteid)#">Back to Attribute Sets</a></li>
 </ul>
 
 
@@ -76,7 +76,7 @@ to your own modified versions of Mura CMS.
 
 <input type=hidden name="extendSetID" value="#extendSetBean.getExtendSetID()#"></cfif><input type="hidden" name="action" value="">
 <input name="fuseaction" value="cExtend.updateSet" type="hidden">
-<input name="siteID" value="#attributes.siteID#" type="hidden">
+<input name="siteID" value="#HTMLEditFormat(attributes.siteid)#" type="hidden">
 <input name="subTypeID" value="#subType.getSubTypeID()#" type="hidden">
 </form>
 </cfoutput>

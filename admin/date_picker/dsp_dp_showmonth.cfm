@@ -67,11 +67,11 @@ to your own modified versions of Mura CMS.
 <cfoutput><form action="index.cfm" method="get" name="calendarForm"><select name="MONTH" class="dropdown"><cfset i=0><cfloop condition="i lt 12"><cfset i=i+1>
 <option value="#i#"  <cfif month(now()) eq i>selected</cfif>>#i#</option></cfloop></select> <select name="YEAR" class="dropdown">		  <cfloop from="#year(now())#" to="#evaluate("#year(now())#+5")#" index="i"><option value="#i#"  <cfif  year(now()) eq i>selected</cfif> >#i#</option></cfloop></select> 
 <a class="submit" href="javascript:document.calendarForm.submit();"><span>View</span></a>
-<input type="hidden" name="form" value="#url.form#"><input type="hidden" name="field" value="#url.field#"><input type="hidden" name="format" value="#url.format#"></form><table border="0" cellpadding="0" cellspacing="1" id="calendar" align="center">
+<input type="hidden" name="form" value="#htmlEditFormat(url.form)#"><input type="hidden" name="field" value="#htmlEditFormat(url.field)#"><input type="hidden" name="format" value="#htmlEditFormat(url.format)#"></form><table border="0" cellpadding="0" cellspacing="1" id="calendar" align="center">
 <tr>
-<th title="#dateLong#"><a href="index.cfm?format=#URL.format#&form=#URL.form#&field=#URL.field#&month=#previousmonth#&year=#previousyear#">&laquo;</a></th>
-<th colspan="5">#dateShort#</th>
-<th><a href="index.cfm?format=#URL.format#&form=#URL.form#&field=#URL.field#&month=#nextmonth#&year=#nextyear#">&raquo;</a></th>
+<th title="#HTMLEditFormat(dateLong)#"><a href="index.cfm?format=#URLEncodedFormat(URL.format)#&form=#URLEncodedFormat(URL.form)#&field=#URLEncodedFormat(URL.field)#&month=#URLEncodedFormat(previousmonth)#&year=#URLEncodedFormat(previousyear)#">&laquo;</a></th>
+<th colspan="5">#HTMLEditFormat(dateShort)#</th>
+<th><a href="index.cfm?format=#URLEncodedFormat(URL.format)#&form=#URLEncodedFormat(URL.form)#&field=#URLEncodedFormat(URL.field)#&month=#URLEncodedFormat(nextmonth)#&year=#URLEncodedFormat(nextyear)#">&raquo;</a></th>
 </tr>
 	<tr class="dayofweek">
 	<cfloop index="id" from="1" to="#listLen(weekdayShort)#">
@@ -91,7 +91,7 @@ to your own modified versions of Mura CMS.
 		<cfif posn eq 8></tr><cfif id lte daysInMonth><tr></cfif>
 		<cfset posn=1></cfif>
 		<td>
-		<a href="index.cfm?action=select&format=#URL.format#&form=#URL.form#&field=#URL.field#&date=#URL.year#-#URL.month#-#id#"  <cfif (URL.day eq id) AND (month(now()) eq URL.month) AND (year(now()) eq URL.year)>id="today"</cfif>>#id#</a>
+		<a href="index.cfm?action=select&format=#URLEncodedFormat(URL.format)#&form=#URLEncodedFormat(URL.form)#&field=#URLEncodedFormat(URL.field)#&date=#URLEncodedFormat(URL.year)#-#URLEncodedFormat(URL.month)#-#URLEncodedFormat(id)#"  <cfif (URL.day eq id) AND (month(now()) eq URL.month) AND (year(now()) eq URL.year)>id="today"</cfif>>#id#</a>
 		
 		</td>
 		<cfset posn=posn+1>

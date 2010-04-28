@@ -42,12 +42,12 @@ to your own modified versions of Mura CMS.
 --->
 
 <cfoutput><h2>#application.rbFactory.getKeyValue(session.rb,'user.sitemembersgroups')#</h2>
-	<ul id="navTask"><li><a href="index.cfm?fuseaction=cPublicUsers.edituser&siteid=#attributes.siteid#&userid=">#application.rbFactory.getKeyValue(session.rb,'user.addmember')#</a></li>
-<li><a href="index.cfm?fuseaction=cPublicUsers.editgroup&siteid=#attributes.siteid#&userid=">#application.rbFactory.getKeyValue(session.rb,'user.addgroup')#</a></li>
+	<ul id="navTask"><li><a href="index.cfm?fuseaction=cPublicUsers.edituser&siteid=#URLEncodedFormat(attributes.siteid)#&userid=">#application.rbFactory.getKeyValue(session.rb,'user.addmember')#</a></li>
+<li><a href="index.cfm?fuseaction=cPublicUsers.editgroup&siteid=#URLEncodedFormat(attributes.siteid)#&userid=">#application.rbFactory.getKeyValue(session.rb,'user.addgroup')#</a></li>
 </ul>
-<form action="index.cfm?fuseaction=cPublicUsers.search&siteid=#attributes.siteid#" method="post" name="form1" id="siteSearch">
+<form action="index.cfm?fuseaction=cPublicUsers.search&siteid=#URLEncodedFormat(attributes.siteid)#" method="post" name="form1" id="siteSearch">
 	<h3>#application.rbFactory.getKeyValue(session.rb,'user.searchformembers')#</h3>
-<input id="search" name="search" type="text" class="text"> <a class="submit" href="javascript:;" onclick="return submitForm(document.forms.form1);"><span>#application.rbFactory.getKeyValue(session.rb,'user.search')#</span></a><a class="submit" href="javascript:;" onclick="window.location='index.cfm?fuseaction=cPublicUsers.advancedSearch&siteid=#attributes.siteid#&newSearch=true'"><span>#application.rbFactory.getKeyValue(session.rb,'user.advanced')#</span></a></form>
+<input id="search" name="search" type="text" class="text"> <a class="submit" href="javascript:;" onclick="return submitForm(document.forms.form1);"><span>#application.rbFactory.getKeyValue(session.rb,'user.search')#</span></a><a class="submit" href="javascript:;" onclick="window.location='index.cfm?fuseaction=cPublicUsers.advancedSearch&siteid=#URLEncodedFormat(attributes.siteid)#&newSearch=true'"><span>#application.rbFactory.getKeyValue(session.rb,'user.advanced')#</span></a></form>
 
 <h3>#application.rbFactory.getKeyValue(session.rb,'user.usergroups')#</h3>
 
@@ -64,7 +64,7 @@ to your own modified versions of Mura CMS.
                 <cfoutput query="request.rsgroups"> 
                   <tr> 
                     <td class="varWidth"> 
-                      <a title="#application.rbFactory.getKeyValue(session.rb,'user.edit')#" href="index.cfm?fuseaction=cPublicUsers.editgroup&userid=#UserID#&siteid=#attributes.siteid#">#HTMLEditFormat(groupname)#</a> (#counter#)</td>
+                      <a title="#application.rbFactory.getKeyValue(session.rb,'user.edit')#" href="index.cfm?fuseaction=cPublicUsers.editgroup&userid=#UserID#&siteid=#URLEncodedFormat(attributes.siteid)#">#HTMLEditFormat(groupname)#</a> (#counter#)</td>
                     <td> 
                       <cfif email gt "" and not request.rsgroups.perm>
                         <a href="mailto:#email#">#HTMLEditFormat(email)#</a>
@@ -73,7 +73,7 @@ to your own modified versions of Mura CMS.
                     <td><cfif not request.rsgroups.perm>
                  #LSDateFormat(request.rsgroups.lastupdate,session.dateKeyFormat)# #LSTimeFormat(request.rsgroups.lastupdate,"short")#<cfelse>&nbsp;</cfif></td>
                   <td><cfif not request.rsgroups.perm>#HTMLEditFormat(LastUpdateBy)#<cfelse>&nbsp;</cfif></td>
-                    <td class="administration"><ul class="users"><li class="edit"><a title="#application.rbFactory.getKeyValue(session.rb,'user.edit')#" href="index.cfm?fuseaction=cPublicUsers.editgroup&userid=#UserID#&siteid=#attributes.siteid#">#application.rbFactory.getKeyValue(session.rb,'user.edit')#</a></li><cfif not request.rsgroups.perm><li class="delete"><a title="#application.rbFactory.getKeyValue(session.rb,'user.delete')#" href="index.cfm?fuseaction=cPublicUsers.update&action=delete&userid=#UserID#&siteid=#attributes.siteid#&type=1" onclick="return confirm('Delete the #jsStringFormat("'#request.rsGroups.groupname#'")# User Group?')">#application.rbFactory.getKeyValue(session.rb,'user.delete')#</a></li><cfelse><li class="deleteOff">#application.rbFactory.getKeyValue(session.rb,'user.delete')#</li></cfif></ul>
+                    <td class="administration"><ul class="users"><li class="edit"><a title="#application.rbFactory.getKeyValue(session.rb,'user.edit')#" href="index.cfm?fuseaction=cPublicUsers.editgroup&userid=#UserID#&siteid=#URLEncodedFormat(attributes.siteid)#">#application.rbFactory.getKeyValue(session.rb,'user.edit')#</a></li><cfif not request.rsgroups.perm><li class="delete"><a title="#application.rbFactory.getKeyValue(session.rb,'user.delete')#" href="index.cfm?fuseaction=cPublicUsers.update&action=delete&userid=#UserID#&siteid=#URLEncodedFormat(attributes.siteid)#&type=1" onclick="return confirm('Delete the #jsStringFormat("'#request.rsGroups.groupname#'")# User Group?')">#application.rbFactory.getKeyValue(session.rb,'user.delete')#</a></li><cfelse><li class="deleteOff">#application.rbFactory.getKeyValue(session.rb,'user.delete')#</li></cfif></ul>
                   </td>
                 </tr>
                 </cfoutput> 

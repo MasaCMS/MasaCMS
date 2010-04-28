@@ -43,10 +43,10 @@ to your own modified versions of Mura CMS.
 <cfoutput>
 <h2>#application.rbFactory.getKeyValue(session.rb,'advertising.viewcampaigns')#</h2>
 
-<h3 class="alt">#application.rbFactory.getKeyValue(session.rb,'advertising.campaignsearch')#</h3><form id="siteSearch" name="siteSearch" method="get"><input name="keywords" value="#attributes.keywords#" type="text" class="text" />  
+<h3 class="alt">#application.rbFactory.getKeyValue(session.rb,'advertising.campaignsearch')#</h3><form id="siteSearch" name="siteSearch" method="get"><input name="keywords" value="#HTMLEditFormat(attributes.keywords)#" type="text" class="text" />  
 	<a class="submit" href="javascript:;" onclick="return submitForm(document.forms.siteSearch);"><span>#application.rbFactory.getKeyValue(session.rb,'advertising.search')#</span></a>
 	<input type="hidden" name="fuseaction" value="cAdvertising.listCampaigns">
-	<input type="hidden" name="siteid" value="#attributes.siteid#">
+	<input type="hidden" name="siteid" value="#HTMLEditFormat(attributes.siteid)#">
 </form>
 
 <table class="stripe">
@@ -61,12 +61,12 @@ to your own modified versions of Mura CMS.
 <cfif request.rslist.recordcount>
 <cfoutput query="request.rslist">
 	<tr>
-		<td class="varWidth"><a title="#application.rbFactory.getKeyValue(session.rb,'advertising.edit')#" href="index.cfm?fuseaction=cAdvertising.editCampaign&userid=#request.rslist.userid#&campaignid=#request.rslist.campaignid#&siteid=#attributes.siteid#">#name#</a></td>
+		<td class="varWidth"><a title="#application.rbFactory.getKeyValue(session.rb,'advertising.edit')#" href="index.cfm?fuseaction=cAdvertising.editCampaign&userid=#request.rslist.userid#&campaignid=#request.rslist.campaignid#&siteid=#URLEncodedFormat(attributes.siteid)#">#name#</a></td>
 		<td>#company#</td>
 		<td>#LSDateFormat(startdate,session.dateKeyFormat)#</td>
 		<td>#LSDateFormat(enddate,session.dateKeyFormat)#</td>	<td>#application.rbFactory.getKeyValue(session.rb,'advertising.#yesnoformat(isActive)#')#</td>
 		<td class="administration"><ul class="two">
-		<li class="edit"><a title="#application.rbFactory.getKeyValue(session.rb,'advertising.edit')#" href="index.cfm?fuseaction=cAdvertising.editCampaign&userid=#request.rslist.userid#&campaignid=#request.rslist.campaignid#&siteid=#attributes.siteid#">#application.rbFactory.getKeyValue(session.rb,'advertising.edit')#</a></li><li class="viewReport"><a title="#application.rbFactory.getKeyValue(session.rb,'advertising.viewcampaignreport')#" href="index.cfm?fuseaction=cAdvertising.viewReportByCampaign&campaignid=#request.rsList.campaignid#&userid=#request.rslist.userid#&siteid=#attributes.siteid#">#application.rbFactory.getKeyValue(session.rb,'advertising.viewreport')#</a></li></ul>
+		<li class="edit"><a title="#application.rbFactory.getKeyValue(session.rb,'advertising.edit')#" href="index.cfm?fuseaction=cAdvertising.editCampaign&userid=#request.rslist.userid#&campaignid=#request.rslist.campaignid#&siteid=#URLEncodedFormat(attributes.siteid)#">#application.rbFactory.getKeyValue(session.rb,'advertising.edit')#</a></li><li class="viewReport"><a title="#application.rbFactory.getKeyValue(session.rb,'advertising.viewcampaignreport')#" href="index.cfm?fuseaction=cAdvertising.viewReportByCampaign&campaignid=#request.rsList.campaignid#&userid=#request.rslist.userid#&siteid=#URLEncodedFormat(attributes.siteid)#">#application.rbFactory.getKeyValue(session.rb,'advertising.viewreport')#</a></li></ul>
 		</td></tr>
 </cfoutput>
 <cfelse>

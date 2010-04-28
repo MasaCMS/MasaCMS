@@ -58,19 +58,19 @@ to your own modified versions of Mura CMS.
 		 <li><strong>#application.rbFactory.getKeyValue(session.rb,'email.sent')#:</strong> #sent#</li>
 		 <li><strong>#application.rbFactory.getKeyValue(session.rb,'email.opens')#:</strong> #opens# (<cfif sent gt 0>
 		 #evaluate(round((opens/sent)*100))#%<cfelse>0%</cfif>)</li>
-		 <li><a href="index.cfm?fuseaction=cEmail.showReturns&emailid=#attributes.emailid#&siteid=#attributes.siteid#"><strong>#application.rbFactory.getKeyValue(session.rb,'email.userswhoclicked')#:</strong></a> #clicks# (<cfif sent gt 0>
+		 <li><a href="index.cfm?fuseaction=cEmail.showReturns&emailid=#attributes.emailid#&siteid=#URLEncodedFormat(attributes.siteid)#"><strong>#application.rbFactory.getKeyValue(session.rb,'email.userswhoclicked')#:</strong></a> #clicks# (<cfif sent gt 0>
 		 #evaluate(round((clicks/sent)*100))#%<cfelse>0%</cfif>)</li>
-		 <li><a href="index.cfm?fuseaction=cEmail.showReturns&emailid=#attributes.emailid#&siteid=#attributes.siteid#"><strong>#application.rbFactory.getKeyValue(session.rb,'email.uniqueclicks')#:</strong></a> #uniqueClicks#
+		 <li><a href="index.cfm?fuseaction=cEmail.showReturns&emailid=#attributes.emailid#&siteid=#URLEncodedFormat(attributes.siteid)#"><strong>#application.rbFactory.getKeyValue(session.rb,'email.uniqueclicks')#:</strong></a> #uniqueClicks#
 		 </li>
-		 <li><a href="index.cfm?fuseaction=cEmail.showReturns&emailid=#attributes.emailid#&siteid=#attributes.siteid#"><strong>#application.rbFactory.getKeyValue(session.rb,'email.totalclicks')#:</strong></a> #totalClicks#
+		 <li><a href="index.cfm?fuseaction=cEmail.showReturns&emailid=#attributes.emailid#&siteid=#URLEncodedFormat(attributes.siteid)#"><strong>#application.rbFactory.getKeyValue(session.rb,'email.totalclicks')#:</strong></a> #totalClicks#
 		 </li>
-		 <li><a href="index.cfm?fuseaction=cEmail.showBounces&emailid=#attributes.emailid#&siteid=#attributes.siteid#"><strong>Bounces:</strong></a> #bounces# (<cfif sent gt 0>
+		 <li><a href="index.cfm?fuseaction=cEmail.showBounces&emailid=#attributes.emailid#&siteid=#URLEncodedFormat(attributes.siteid)#"><strong>Bounces:</strong></a> #bounces# (<cfif sent gt 0>
 		 #evaluate(round((bounces/sent)*100))#%<cfelse>0%</cfif>)</li>
 		 </cfif>
 		</ul>
 </cfif>
 	  
-	  <form action="index.cfm?fuseaction=cEmail.update&siteid=#attributes.siteid#" method="post" name="form1" onsubmit="return false;">
+	  <form action="index.cfm?fuseaction=cEmail.update&siteid=#URLEncodedFormat(attributes.siteid)#" method="post" name="form1" onsubmit="return false;">
 	  <div id="emailGroupsLists" class="clearfix"><h3>#application.rbFactory.getKeyValue(session.rb,'email.sendto')#:</h3>
 	  <dl>
 	  <cfif request.rsPrivateGroups.recordcount>

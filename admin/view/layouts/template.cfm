@@ -122,7 +122,7 @@ to your own modified versions of Mura CMS.
 </cfif>
 </cfsilent>
 
-<title>#application.configBean.getTitle()#<cfif len(moduleTitle)> - #moduleTitle#</cfif></title>
+<title>#application.configBean.getTitle()#<cfif len(moduleTitle)> - #HTMLEditFormat(moduleTitle)#</cfif></title>
 
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <cfheader name="cache-control" value="no-cache, no-store, must-revalidate"> 

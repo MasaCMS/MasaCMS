@@ -48,7 +48,7 @@ to your own modified versions of Mura CMS.
 #application.pluginManager.renderEvent("onCategoryEditMessageRender", event)#
 </span>
 
-<form action="index.cfm?fuseaction=cCategory.update&siteid=#attributes.siteid#" method="post" name="form1" onsubmit="return validate(this);">
+<form action="index.cfm?fuseaction=cCategory.update&siteid=#URLEncodedFormat(attributes.siteid)#" method="post" name="form1" onsubmit="return validate(this);">
 <dl class="oneColumn">
 <dt class="first">#application.rbFactory.getKeyValue(session.rb,'categorymanager.name')#</dt>
 <dd><input name="name" class="text" required="true" message="#application.rbFactory.getKeyValue(session.rb,'categorymanager.namerequired')#" value="#HTMLEditFormat(request.categoryBean.getName())#" maxlength="50"></dd>

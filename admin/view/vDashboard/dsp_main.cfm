@@ -64,7 +64,7 @@ to your own modified versions of Mura CMS.
 <cfoutput>
 <cfif application.configBean.getSessionHistory()>	
 <div id="userActivity"<cfif started> class="separate"</cfif>>
-<h3>#application.rbFactory.getKeyValue(session.rb,"dashboard.useractivity")# <span><a href="index.cfm?fuseaction=cDashboard.sessionSearch&siteID=#attributes.siteID#&newSearch=true">(#application.rbFactory.getKeyValue(session.rb,"dashboard.advancedsessionsearch")#)</a></span></h3>
+<h3>#application.rbFactory.getKeyValue(session.rb,"dashboard.useractivity")# <span><a href="index.cfm?fuseaction=cDashboard.sessionSearch&siteid=#URLEncodedFormat(attributes.siteid)#&newSearch=true">(#application.rbFactory.getKeyValue(session.rb,"dashboard.advancedsessionsearch")#)</a></span></h3>
 <span id="userActivityData"></span>
 </div>
 <script type="text/javascript">loadUserActivity('#attributes.siteid#');</script>
@@ -122,7 +122,7 @@ to your own modified versions of Mura CMS.
 <dd><form id="siteSearch" name="siteSearch" method="get"><input name="keywords" value="#HTMLEditFormat(session.keywords)#" type="text" class="text" align="absmiddle" />  
 	<a class="submit" href="javascript:;" onclick="return submitForm(document.forms.siteSearch);"><span>Search</span></a>
 	<input type="hidden" name="fuseaction" value="cArch.search">
-	<input type="hidden" name="siteid" value="#attributes.siteid#">
+	<input type="hidden" name="siteid" value="#HTMLEditFormat(attributes.siteid)#">
 	<input type="hidden" name="moduleid" value="00000000000000000000000000000000000">
 </form></dd>
 </dl>
@@ -159,7 +159,7 @@ to your own modified versions of Mura CMS.
 	<cfset crumbdata=application.contentManager.getCrumbList(rslist.contentid, attributes.siteid)/>
 	<cfset verdict=application.permUtility.getnodePerm(crumbdata)/>
 	<cfif verdict neq 'none'>
-	<li><a title="Version History" href="index.cfm?fuseaction=cArch.hist&contentid=#rslist.ContentID#&type=#rslist.type#&parentid=#rslist.parentID#&topid=#rslist.contentID#&siteid=#attributes.siteid#&moduleid=#rslist.moduleid#">#HTMLEditFormat(rsList.menuTitle)#</a> #application.rbFactory.getKeyValue(session.rb,"dashboard.by")# #HTMLEditFormat(rsList.lastUpdateBy)# (#LSDateFormat(rsList.lastUpdate,session.dateKeyFormat)#)</li>
+	<li><a title="Version History" href="index.cfm?fuseaction=cArch.hist&contentid=#rslist.ContentID#&type=#rslist.type#&parentid=#rslist.parentID#&topid=#rslist.contentID#&siteid=#URLEncodedFormat(attributes.siteid)#&moduleid=#rslist.moduleid#">#HTMLEditFormat(rsList.menuTitle)#</a> #application.rbFactory.getKeyValue(session.rb,"dashboard.by")# #HTMLEditFormat(rsList.lastUpdateBy)# (#LSDateFormat(rsList.lastUpdate,session.dateKeyFormat)#)</li>
 	<cfelse><li>#HTMLEditFormat(rslist.menuTitle)# #application.rbFactory.getKeyValue(session.rb,"dashboard.by")# #HTMLEditFormat(rsList.lastUpdateBy)# (#LSDateFormat(rsList.lastUpdate,session.dateKeyFormat)#)</li>
 	</cfif>
 	</cfloop>
@@ -171,7 +171,7 @@ to your own modified versions of Mura CMS.
 <h3>#application.rbFactory.getKeyValue(session.rb,"dashboard.draftsforreview")#</h3>
 <ul><cfif rsList.recordcount>
 	<cfloop query="rslist">
-	<li><a title="Version History" href="index.cfm?fuseaction=cArch.hist&contentid=#rslist.ContentID#&type=#rslist.type#&parentid=#rslist.parentID#&topid=#rslist.contentID#&siteid=#attributes.siteid#&moduleid=#rslist.moduleid#">#HTMLEditFormat(rsList.menuTitle)#</a> #application.rbFactory.getKeyValue(session.rb,"dashboard.by")# #HTMLEditFormat(rsList.lastUpdateBy)# (#LSDateFormat(rsList.lastUpdate,session.dateKeyFormat)#)</li>
+	<li><a title="Version History" href="index.cfm?fuseaction=cArch.hist&contentid=#rslist.ContentID#&type=#rslist.type#&parentid=#rslist.parentID#&topid=#rslist.contentID#&siteid=#URLEncodedFormat(attributes.siteid)#&moduleid=#rslist.moduleid#">#HTMLEditFormat(rsList.menuTitle)#</a> #application.rbFactory.getKeyValue(session.rb,"dashboard.by")# #HTMLEditFormat(rsList.lastUpdateBy)# (#LSDateFormat(rsList.lastUpdate,session.dateKeyFormat)#)</li>
 	</cfloop>
 	<cfelse>
 	<li>#application.rbFactory.getKeyValue(session.rb,"dashboard.nodrafts")#</li>

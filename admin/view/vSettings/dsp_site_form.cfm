@@ -49,11 +49,11 @@ to your own modified versions of Mura CMS.
 <cfoutput>
 <cfif len(attributes.siteid)>
 <ul id="navTask"
-<li><a href="index.cfm?fuseaction=cExtend.listSubTypes&siteid=#attributes.siteid#">Class Extension Manager</a></li>
+<li><a href="index.cfm?fuseaction=cExtend.listSubTypes&siteid=#URLEncodedFormat(attributes.siteid)#">Class Extension Manager</a></li>
 <cfif attributes.action eq "updateFiles">
-<li><a href="index.cfm?fuseaction=cSettings.editSite&siteid=#attributes.siteid#">Edit Site</a></li>
+<li><a href="index.cfm?fuseaction=cSettings.editSite&siteid=#URLEncodedFormat(attributes.siteid)#">Edit Site</a></li>
 <cfelse>
-<li><a href="index.cfm?fuseaction=cSettings.editSite&siteid=#attributes.siteid#&action=updateFiles" onclick="return confirm('WARNING: Do not update your site files unless you have backed up your current siteID directory.');">Update Site Files to Latest Version</a></li>
+<li><a href="index.cfm?fuseaction=cSettings.editSite&siteid=#URLEncodedFormat(attributes.siteid)#&action=updateFiles" onclick="return confirm('WARNING: Do not update your site files unless you have backed up your current siteID directory.');">Update Site Files to Latest Version</a></li>
 </cfif>
 </ul></cfif>
 </cfoutput>

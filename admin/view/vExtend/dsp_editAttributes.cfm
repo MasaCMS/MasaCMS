@@ -52,11 +52,11 @@ to your own modified versions of Mura CMS.
 </ul>
 
 <ul id="navTask">
-<li><a href="index.cfm?fuseaction=cExtend.listSubTypes&siteid=#attributes.siteid#">List All Class Extensions</a></li>
-<li><a href="index.cfm?fuseaction=cExtend.editSubType&subTypeID=#attributes.subTypeID#&siteid=#attributes.siteid#">Edit Class Extension</a></li>
-<li><a href="index.cfm?fuseaction=cExtend.editSet&subTypeID=#attributes.subTypeID#&extendSetID=#attributes.extendSetID#&siteid=#attributes.siteid#">Edit Attribute Set</a></li>
-<li><a href="index.cfm?fuseaction=cExtend.listSets&subTypeID=#attributes.subTypeID#&siteid=#attributes.siteid#">Back to Attribute Sets</a></li>
-<!--- <li><a href="index.cfm?fuseaction=cExtend.editSet&subTypeID=#attributes.subTypeID#&&extendSetID=#attributes.extendSetID#&siteid=#attributes.siteid#&attributeID=">Add Attribute</a></li> --->
+<li><a href="index.cfm?fuseaction=cExtend.listSubTypes&siteid=#URLEncodedFormat(attributes.siteid)#">List All Class Extensions</a></li>
+<li><a href="index.cfm?fuseaction=cExtend.editSubType&subTypeID=#URLEncodedFormat(attributes.subTypeID)#&siteid=#URLEncodedFormat(attributes.siteid)#">Edit Class Extension</a></li>
+<li><a href="index.cfm?fuseaction=cExtend.editSet&subTypeID=#URLEncodedFormat(attributes.subTypeID)#&extendSetID=#URLEncodedFormat(attributes.extendSetID)#&siteid=#URLEncodedFormat(attributes.siteid)#">Edit Attribute Set</a></li>
+<li><a href="index.cfm?fuseaction=cExtend.listSets&subTypeID=#URLEncodedFormat(attributes.subTypeID)#&siteid=#URLEncodedFormat(attributes.siteid)#">Back to Attribute Sets</a></li>
+<!--- <li><a href="index.cfm?fuseaction=cExtend.editSet&subTypeID=#attributes.subTypeID#&&extendSetID=#attributes.extendSetID#&siteid=#URLEncodedFormat(attributes.siteid)#&attributeID=">Add Attribute</a></li> --->
 </ul>
 
 <cfset newAttribute=extendSet.getAttributeBean() />
@@ -80,7 +80,7 @@ to your own modified versions of Mura CMS.
 		#attributeBean.getName()#
 		<a title="Edit" href="javascript:;" id="editFrm#a#open" onclick="new Effect.SlideDown($('editFrm#a#container'));this.style.display='none';$('editFrm#a#close').style.display='';return false;">[Edit]</a>
 		<a title="Edit" href="javascript:;" style="display:none;" id="editFrm#a#close" onclick="new Effect.SlideUp($('editFrm#a#container'));this.style.display='none';$('editFrm#a#open').style.display='';return false;">[Close]</a>
-		<a title="Delete" href="index.cfm?fuseaction=cExtend.updateAttribute&action=delete&subTypeID=#attributes.subTypeID#&extendSetID=#attributeBean.getExtendSetID()#&siteid=#attributes.siteid#&attributeID=#attributeBean.getAttributeID()#" onClick="return confirm('Delete the attribute #jsStringFormat("'#attributeBean.getname()#'")#?')">[Delete]</a>
+		<a title="Delete" href="index.cfm?fuseaction=cExtend.updateAttribute&action=delete&subTypeID=#URLEncodedFormat(attributes.subTypeID)#&extendSetID=#attributeBean.getExtendSetID()#&siteid=#URLEncodedFormat(attributes.siteid)#&attributeID=#attributeBean.getAttributeID()#" onClick="return confirm('Delete the attribute #jsStringFormat("'#attributeBean.getname()#'")#?')">[Delete]</a>
 
 	<div style="display:none;" id="editFrm#a#container">
 		<cf_dsp_attribute_form attributeBean="#attributeBean#" action="edit" subTypeID="#attributes.subTypeID#" formName="editFrm#a#">

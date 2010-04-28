@@ -49,7 +49,7 @@ to your own modified versions of Mura CMS.
 
 <title>#application.settingsManager.getSite(request.siteID).getSite()# - Send to a Friend</title>
 
-<link rel="stylesheet" href="#application.configBean.getContext()#/#request.siteid#/css/style.css" type="text/css" media="all" />
+<link rel="stylesheet" href="#application.configBean.getContext()#/#HTMLEditFormat(request.siteid)#/css/style.css" type="text/css" media="all" />
 </head>
 
 <body id="svSendToFriend">
@@ -57,7 +57,7 @@ to your own modified versions of Mura CMS.
 <cfform name="sendtofriend" method="post" action="sendlink.cfm">
 <fieldset>
 <legend>Send to a Friend</legend>
-<input type="hidden" name="link" value="#url.link#">
+<input type="hidden" name="link" value="#htmlEditFormat(url.link)s#">
 <ol>
 <li class="req"><label>Your First Name<ins> (Required)</ins></label><cfinput type="text"  name="fname" required="yes" message="Your first name is required" size="20" maxlength="16" value="" class="text"></li>
 <li class="req"><label>Your Last Name<ins> (Required)</ins></label><cfinput type="text" name="lname" message="Your last name is required" required="yes" size="20" maxlength="16" value="" class="text" /></li>
@@ -72,7 +72,7 @@ to your own modified versions of Mura CMS.
 </li>
 <li><label>Message</label><textarea rows="3" name="comments" cols="35"></textarea></li>
 </ol>
-<input type="hidden" name="siteID" value="#request.siteID#"/>
+<input type="hidden" name="siteID" value="#HTMLEditFormat(request.siteID)#"/>
 </fieldset>
 <div class="buttons"><input type="submit" name="btn_submit" value="Send" alt="send" class="submit"></div>
 </cfform>

@@ -19,7 +19,7 @@
 <cfoutput>
 <p>
 <form action="index.cfm" method="post">
-Enter an address: <input type="text" name="address" value="#form.address#"> <input type="submit" value="Geocode!">
+Enter an address: <input type="text" name="address" value="#HTMLEditFormat(form.address)#"> <input type="submit" value="Geocode!">
 </form>
 </p>
 </cfoutput>

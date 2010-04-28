@@ -43,10 +43,10 @@ to your own modified versions of Mura CMS.
 <cfoutput>
 <h2>#application.rbFactory.getKeyValue(session.rb,'advertising.viewcreativeassets')#</h2>
 
-<h3 class="alt">#application.rbFactory.getKeyValue(session.rb,'advertising.assetsearch')#</h3><form id="siteSearch" name="siteSearch" method="get"><input name="keywords" value="#attributes.keywords#" type="text" class="text" />  
+<h3 class="alt">#application.rbFactory.getKeyValue(session.rb,'advertising.assetsearch')#</h3><form id="siteSearch" name="siteSearch" method="get"><input name="keywords" value="#HTMLEditFormat(attributes.keywords)#" type="text" class="text" />  
 	<a class="submit" href="javascript:;" onclick="return submitForm(document.forms.siteSearch);"><span>#application.rbFactory.getKeyValue(session.rb,'advertising.search')#</span></a>
 	<input type="hidden" name="fuseaction" value="cAdvertising.listCreatives">
-	<input type="hidden" name="siteid" value="#attributes.siteid#">
+	<input type="hidden" name="siteid" value="#HTMLEditFormat(attributes.siteid)#">
 </form>
 
 <table class="stripe">
@@ -65,7 +65,7 @@ to your own modified versions of Mura CMS.
 <cfif request.rslist.recordcount>
 <cfoutput query="request.rsList">
 	<tr>
-		<td class="varWidth"><a title="#application.rbFactory.getKeyValue(session.rb,'advertising.edit')#" href="index.cfm?fuseaction=cAdvertising.editCreative&userid=#request.rslist.userid#&siteid=#attributes.siteid#&creativeid=#request.rslist.creativeID#">#request.rslist.name#</a></td>
+		<td class="varWidth"><a title="#application.rbFactory.getKeyValue(session.rb,'advertising.edit')#" href="index.cfm?fuseaction=cAdvertising.editCreative&userid=#request.rslist.userid#&siteid=#URLEncodedFormat(attributes.siteid)#&creativeid=#request.rslist.creativeID#">#request.rslist.name#</a></td>
 		<td class="varWidth">#request.rslist.company#</td>
 		<td>#application.rbFactory.getKeyValue(session.rb,'advertising.creativetype.#request.rslist.creativeType#')#</td>
 		<td>#application.rbFactory.getKeyValue(session.rb,'advertising.mediatype.#request.rslist.mediatype#')#</td>
@@ -75,7 +75,7 @@ to your own modified versions of Mura CMS.
 		<td>#LSDateFormat(request.rslist.lastUpdate,session.dateKeyFormat)#</td>
 		<td>#application.rbFactory.getKeyValue(session.rb,'advertising.active')#</td>
 		<td class="administration"><ul class="creatives">
-		<li class="edit"><a title="#application.rbFactory.getKeyValue(session.rb,'advertising.edit')#" href="index.cfm?fuseaction=cAdvertising.editCreative&userid=#request.rslist.userid#&siteid=#attributes.siteid#&creativeid=#request.rslist.creativeID#">#application.rbFactory.getKeyValue(session.rb,'advertising.edit')#</a></li></ul>
+		<li class="edit"><a title="#application.rbFactory.getKeyValue(session.rb,'advertising.edit')#" href="index.cfm?fuseaction=cAdvertising.editCreative&userid=#request.rslist.userid#&siteid=#URLEncodedFormat(attributes.siteid)#&creativeid=#request.rslist.creativeID#">#application.rbFactory.getKeyValue(session.rb,'advertising.edit')#</a></li></ul>
 		</td></tr>
 </cfoutput>
 <cfelse>

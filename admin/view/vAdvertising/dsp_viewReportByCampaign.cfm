@@ -59,8 +59,8 @@ to your own modified versions of Mura CMS.
 <cfset theMonth=createDate(year(attributes.date1),month(attributes.date1),1) /></cfsilent>
 <cfoutput><h2>#application.rbFactory.getKeyValue(session.rb,'advertising.campaignreport')#</h2>
 <ul id="navTask">
-<li><a href="index.cfm?fuseaction=cAdvertising.viewAdvertiser&&siteid=#attributes.siteid#&userid=#attributes.userid#">#application.rbFactory.getKeyValue(session.rb,'advertising.backtoadvertiser')#</a></li>
-<li><a href="index.cfm?fuseaction=cAdvertising.editCampaign&&siteid=#attributes.siteid#&userid=#attributes.userid#&campaignid=#attributes.campaignid#">#application.rbFactory.getKeyValue(session.rb,'advertising.backtocampaign')#</a></li>
+<li><a href="index.cfm?fuseaction=cAdvertising.viewAdvertiser&&siteid=#URLEncodedFormat(attributes.siteid)#&userid=#URLEncodedFormat(attributes.userid)#">#application.rbFactory.getKeyValue(session.rb,'advertising.backtoadvertiser')#</a></li>
+<li><a href="index.cfm?fuseaction=cAdvertising.editCampaign&&siteid=#URLEncodedFormat(attributes.siteid)#&userid=#URLEncodedFormat(attributes.userid)#&campaignid=#attributes.campaignid#">#application.rbFactory.getKeyValue(session.rb,'advertising.backtocampaign')#</a></li>
 </ul> 
 
 <h3>#application.rbFactory.getKeyValue(session.rb,'advertising.campaigninformation')#</h3>
@@ -70,7 +70,7 @@ to your own modified versions of Mura CMS.
 <li><strong>#application.rbFactory.getKeyValue(session.rb,'advertising.reportdaterange')#:</strong> #LSDateFormat(attributes.date1,session.dateKeyFormat)#&nbsp;-&nbsp;#LSDateFormat(attributes.date2,session.dateKeyFormat)#</li></ul>
 
 <h3>#application.rbFactory.getKeyValue(session.rb,'advertising.reportdaterange')#</h3>
-<form action="index.cfm?fuseaction=cAdvertising.viewReportByCampaign&campaignid=#attributes.campaignid#&userid=#attributes.userid#&siteid=#attributes.siteid#" method="post" name="download" onsubmit="return validate(this);">
+<form action="index.cfm?fuseaction=cAdvertising.viewReportByCampaign&campaignid=#attributes.campaignid#&userid=#URLEncodedFormat(attributes.userid)#&siteid=#URLEncodedFormat(attributes.siteid)#" method="post" name="download" onsubmit="return validate(this);">
 #application.rbFactory.getKeyValue(session.rb,'advertising.from')# <input type="text" class="dateSelect" name="date1"  validate="date" message="#application.rbFactory.getKeyValue(session.rb,'advertising.fromvalidate')#" required="true" value="#LSDateFormat(attributes.date1,session.dateKeyFormat)#" > <input class="calendar" type="image" src="images/icons/cal_24.png" width="14" height="14" onclick="window.open('date_picker/index.cfm?form=download&field=date1&format=MDY','refWin','toolbar=no,location=no,directories=no,status=no,menubar=no,resizable=yes,copyhistory=no,scrollbars=no,width=190,height=220,top=250,left=250');return false;"> 
 &nbsp;#application.rbFactory.getKeyValue(session.rb,'advertising.to')# 
 <input type="text" class="dateSelect" name="date2" validate="date" message="#application.rbFactory.getKeyValue(session.rb,'advertising.tovalidate')#" required="true" value="#LSDateFormat(attributes.date2,session.dateKeyFormat)#"><input class="calendar" type="image" src="images/icons/cal_24.png" width="14" height="14" onclick="window.open('date_picker/index.cfm?form=download&field=date2&format=MDY','refWin','toolbar=no,location=no,directories=no,status=no,menubar=no,resizable=yes,copyhistory=no,scrollbars=no,width=190,height=220,top=250,left=250');return false;"> <a class="submit" href="javascript:document.download.submit();"><span>#application.rbFactory.getKeyValue(session.rb,'advertising.view')#</span></a></form>
@@ -157,8 +157,8 @@ to your own modified versions of Mura CMS.
 	 	</cfsilent>
 	
 	<tr>
-				<td class="varWidth"><a href="index.cfm?fuseaction=cAdvertising.editAdZone&siteid=#attributes.siteid#&adzoneid=#rsplacements.adzoneid#">#rsplacements.Adzone#</a></td>
-				<td><a href="index.cfm?fuseaction=cAdvertising.editCreative&userid=#attributes.userid#&creativeid=#rsplacements.creativeid#&siteid=#attributes.siteid#">#rsplacements.creative#</a></td>
+				<td class="varWidth"><a href="index.cfm?fuseaction=cAdvertising.editAdZone&siteid=#URLEncodedFormat(attributes.siteid)#&adzoneid=#rsplacements.adzoneid#">#rsplacements.Adzone#</a></td>
+				<td><a href="index.cfm?fuseaction=cAdvertising.editCreative&userid=#URLEncodedFormat(attributes.userid)#&creativeid=#rsplacements.creativeid#&siteid=#URLEncodedFormat(attributes.siteid)#">#rsplacements.creative#</a></td>
 				<td>#LSDateFormat(rsplacements.startdate,session.dateKeyFormat)#</td>
 				<td>#LSDateFormat(rsplacements.enddate,session.dateKeyFormat)#</td>
 				<td>#application.rbFactory.getKeyValue(session.rb,'advertising.#yesnoFormat(rsplacements.isExclusive)#')#</td>
@@ -172,8 +172,8 @@ to your own modified versions of Mura CMS.
 				<td>#LSCurrencyFormat(rsplacements.costPerClick*Clicks)#</td>
 				<td>#LSCurrencyFormat((rsplacements.costPerClick*Clicks)+(rsplacements.costPerImp*Imps))#</td>
 				<td class="administration"><ul class="two">
-				<li class="edit"><a title="Edit" href="index.cfm?fuseaction=cAdvertising.editPlacement&userid=#attributes.userid#&siteid=#attributes.siteid#&campaignid=#attributes.campaignID#&placementid=#rsplacements.placementid#">Edit</a></li>
-				<li class="viewReport"><a title="View Placement Report" href="index.cfm?fuseaction=cAdvertising.viewReportByPlacement&placementid=#rsPlacements.placementid#&campaignid=#attributes.campaignid#&userid=#attributes.userid#&siteid=#attributes.siteid#&date1=#LSDateFormat(theMonthBegin,session.dateKeyFormat)#&date2=#LSDateFormat(theMonthEnd,session.dateKeyFormat)#">View Report</a></li></ul>
+				<li class="edit"><a title="Edit" href="index.cfm?fuseaction=cAdvertising.editPlacement&userid=#URLEncodedFormat(attributes.userid)#&siteid=#URLEncodedFormat(attributes.siteid)#&campaignid=#attributes.campaignID#&placementid=#rsplacements.placementid#">Edit</a></li>
+				<li class="viewReport"><a title="View Placement Report" href="index.cfm?fuseaction=cAdvertising.viewReportByPlacement&placementid=#rsPlacements.placementid#&campaignid=#attributes.campaignid#&userid=#URLEncodedFormat(attributes.userid)#&siteid=#URLEncodedFormat(attributes.siteid)#&date1=#LSDateFormat(theMonthBegin,session.dateKeyFormat)#&date2=#LSDateFormat(theMonthEnd,session.dateKeyFormat)#">View Report</a></li></ul>
 				</td>
 				</tr>
 		

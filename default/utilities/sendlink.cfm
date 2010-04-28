@@ -77,7 +77,7 @@ If the link doesn't work, copy and paste the full URL of the link (with no line 
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
 <title>#application.settingsManager.getSite(request.siteID).getSite()# - Send to a Friend</title>
-<link rel="stylesheet" href="#application.configBean.getContext()#/#request.siteid#/css/style.css" type="text/css" media="all" />
+<link rel="stylesheet" href="#application.configBean.getContext()#/#HTMLEditFormat(request.siteid)#/css/style.css" type="text/css" media="all" />
 </head>
 
 <body id="svSendToFriend">

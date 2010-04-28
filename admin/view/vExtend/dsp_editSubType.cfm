@@ -46,7 +46,7 @@ to your own modified versions of Mura CMS.
 <h2><cfif len(attributes.subTypeID)>Edit<cfelse>Add</cfif> Class Extension</h2>
 <cfoutput>
 <ul id="navTask">
-<li><a href="index.cfm?fuseaction=cExtend.listSubTypes&siteid=#attributes.siteid#">Class Extension Manager</a></li>
+<li><a href="index.cfm?fuseaction=cExtend.listSubTypes&siteid=#URLEncodedFormat(attributes.siteid)#">Class Extension Manager</a></li>
 </ul>
 
 <form name="subTypeFrm" method="post" action="index.cfm" onsubit="return validateForm(this);">
@@ -66,7 +66,7 @@ to your own modified versions of Mura CMS.
 
 <input type=hidden name="subTypeID" value="#subType.getsubtypeID()#"></cfif><input type="hidden" name="action" value="">
 <input name="fuseaction" value="cExtend.updateSubType" type="hidden">
-<input name="siteID" value="#attributes.siteID#" type="hidden">
+<input name="siteID" value="#HTMLEditFormat(attributes.siteid)#" type="hidden">
 <input type="hidden" name="baseTable" value="#subType.getBaseTable()#"/>
 <input type="hidden" name="baseKeyField" value="#subType.getBaseKeyField()#" />
 <input type="hidden" name="type" value="#subType.getType()#"/>

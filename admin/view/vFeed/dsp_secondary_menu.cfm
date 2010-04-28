@@ -43,5 +43,5 @@ to your own modified versions of Mura CMS.
 
 <cfif listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(attributes.siteid).getPrivateUserPoolID()#;0') or listFind(session.mura.memberships,'S2')><cfoutput>
 <ul>
-<li<cfif myfusebox.originalfuseaction eq "module"> class="current"</cfif>><a href="index.cfm?fuseaction=cPerm.module&contentid=00000000000000000000000000000000011&siteid=#attributes.siteid#&moduleid=00000000000000000000000000000000011">#application.rbFactory.getKeyValue(session.rb,'collections.permissions')#</a></li>
+<li<cfif myfusebox.originalfuseaction eq "module"> class="current"</cfif>><a href="index.cfm?fuseaction=cPerm.module&contentid=00000000000000000000000000000000011&siteid=#URLEncodedFormat(attributes.siteid)#&moduleid=00000000000000000000000000000000011">#application.rbFactory.getKeyValue(session.rb,'collections.permissions')#</a></li>
 </ul></cfoutput></cfif>

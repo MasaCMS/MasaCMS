@@ -86,7 +86,7 @@ update tcontent set orderno= #rsSetOrder.currentrow# where contentid ='#rsSetOrd
 </cfif>
 
 <cfif not len(crumbdata[1].siteid)>
-	<cflocation url="index.cfm?fuseaction=cDashboard.main&siteid=#attributes.siteID#&span=30" addtoken="false"/>
+	<cflocation url="index.cfm?fuseaction=cDashboard.main&siteid=#URLEncodedFormat(attributes.siteid)#&span=30" addtoken="false"/>
 </cfif>
 <cfset request.rowNum=0>
 <cfset request.menulist=attributes.topid>
@@ -119,7 +119,7 @@ copyAll = 'false';
 <form id="siteSearch" name="siteSearch" method="get"><h3>#application.rbFactory.getKeyValue(session.rb,"sitemanager.contentsearch")#</h3><input name="keywords" value="#HTMLEditFormat(session.keywords)#" type="text" class="text" align="absmiddle" />  
 	<a class="submit" href="javascript:;" onclick="return submitForm(document.forms.siteSearch);"><span>#application.rbFactory.getKeyValue(session.rb,"sitemanager.search")#</span></a>
 	<input type="hidden" name="fuseaction" value="cArch.search">
-	<input type="hidden" name="siteid" value="#attributes.siteid#">
+	<input type="hidden" name="siteid" value="#HTMLEditFormat(attributes.siteid)#">
 	<input type="hidden" name="moduleid" value="#attributes.moduleid#">
 	
 </form>
@@ -165,7 +165,7 @@ copyAll = 'false';
 		  <tr>
            <td class="add"> <cfif (request.rstop.type eq 'Page') or  (request.rstop.type eq 'Portal')  or  (request.rstop.type eq 'Calendar')  or  (request.rstop.type eq 'Gallery')><a href="javascript:;" onmouseover="showMenu('newContentMenu',#newcontent#,this,'#request.rstop.contentid#','#attributes.topid#','#request.rstop.parentid#','#attributes.siteid#','#request.rstop.type#');">&nbsp;</a><cfelse>&nbsp;</cfif></td>
             <td class="varWidth"><ul <cfif request.rstop.hasKids gt 0>class="neston"<cfelse>class="nestoff"</cfif>>
-			<li class="#icon#"><cfif perm neq 'none'><a title="Edit" href="index.cfm?fuseaction=cArch.edit&contenthistid=#request.rstop.ContentHistID#&siteid=#attributes.siteid#&contentid=#attributes.topid#&topid=#attributes.topid#&type=#request.rstop.type#&parentid=#request.rstop.parentid#&moduleid=#attributes.moduleid#"></cfif>#HTMLEditFormat(left(request.rsTop.menutitle,70))#<cfif len(request.rsTop.menutitle) gt 70>...</cfif><cfif perm neq 'none'></a></cfif></li>
+			<li class="#icon#"><cfif perm neq 'none'><a title="Edit" href="index.cfm?fuseaction=cArch.edit&contenthistid=#request.rstop.ContentHistID#&siteid=#URLEncodedFormat(attributes.siteid)#&contentid=#attributes.topid#&topid=#URLEncodedFormat(attributes.topid)#&type=#request.rstop.type#&parentid=#request.rstop.parentid#&moduleid=#attributes.moduleid#"></cfif>#HTMLEditFormat(left(request.rsTop.menutitle,70))#<cfif len(request.rsTop.menutitle) gt 70>...</cfif><cfif perm neq 'none'></a></cfif></li>
 			</ul></td>			
 		 <cfif application.settingsManager.getSite(attributes.siteid).getlocking() neq 'all'>
 		 <cfif attributes.sortBy eq 'orderno'><td class="order">&nbsp;</td></cfif>
@@ -176,7 +176,7 @@ copyAll = 'false';
 <td>#application.rbFactory.getKeyValue(session.rb,"sitemanager.#yesnoformat(request.rstop.isnav)#")#</td>
 <td>#LSDateFormat(request.rstop.lastupdate,session.dateKeyFormat)#</td>
 <td class="administration"><ul class="siteSummary"><cfif perm neq 'none'>
-        <li class="edit"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.edit")#" href="index.cfm?fuseaction=cArch.edit&contenthistid=#request.rstop.ContentHistID#&siteid=#attributes.siteid#&contentid=#attributes.topid#&topid=#attributes.topid#&type=#request.rstop.type#&parentid=#request.rstop.parentid#&moduleid=#attributes.moduleid#">#application.rbFactory.getKeyValue(session.rb,"sitemanager.edit")#</a></li>
+        <li class="edit"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.edit")#" href="index.cfm?fuseaction=cArch.edit&contenthistid=#request.rstop.ContentHistID#&siteid=#URLEncodedFormat(attributes.siteid)#&contentid=#attributes.topid#&topid=#URLEncodedFormat(attributes.topid)#&type=#request.rstop.type#&parentid=#request.rstop.parentid#&moduleid=#attributes.moduleid#">#application.rbFactory.getKeyValue(session.rb,"sitemanager.edit")#</a></li>
 		<cfswitch expression="#request.rsTop.type#">
 		<cfcase value="Page,Portal,Calendar,Gallery">
 		<li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.view")#" href="javascript:preview('http://#application.settingsManager.getSite(attributes.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##application.contentRenderer.getURLStem(attributes.siteid,request.rsTop.filename)#','#request.rsTop.targetParams#');">#HTMLEditFormat(left(request.rsTop.menutitle,70))#</a></li>
@@ -188,9 +188,9 @@ copyAll = 'false';
 		<li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.view")#" href="javascript:preview('http://#application.settingsManager.getSite(attributes.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##application.contentRenderer.getURLStem(attributes.siteid,"")#?LinkServID=#request.rsTop.contentid#','#request.rsTop.targetParams#');">#HTMLEditFormat(left(request.rsTop.menutitle,70))#</a></li>
 		</cfcase>
 		</cfswitch>
-		<li class="versionHistory"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.versionhistory")#" href="index.cfm?fuseaction=cArch.hist&contentid=#request.rstop.ContentID#&type=#request.rstop.type#&parentid=#request.rstop.parentID#&topid=#attributes.topid#&siteid=#attributes.siteid#&moduleid=#attributes.moduleid#">#application.rbFactory.getKeyValue(session.rb,"sitemanager.versionhistory")#</a></li>
+		<li class="versionHistory"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.versionhistory")#" href="index.cfm?fuseaction=cArch.hist&contentid=#request.rstop.ContentID#&type=#request.rstop.type#&parentid=#request.rstop.parentID#&topid=#URLEncodedFormat(attributes.topid)#&siteid=#URLEncodedFormat(attributes.siteid)#&moduleid=#attributes.moduleid#">#application.rbFactory.getKeyValue(session.rb,"sitemanager.versionhistory")#</a></li>
         <cfif listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(attributes.siteid).getPrivateUserPoolID()#;0') or listFind(session.mura.memberships,'S2')>
-			<li class="permissions"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.permissions")#" href="index.cfm?fuseaction=cPerm.main&contentid=#attributes.topid#&parentid=&topid=#attributes.topid#&siteid=#attributes.siteid#&moduleid=#attributes.moduleid#&type=#request.rstop.type#">#application.rbFactory.getKeyValue(session.rb,"sitemanager.permissions")#</a></li>
+			<li class="permissions"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.permissions")#" href="index.cfm?fuseaction=cPerm.main&contentid=#attributes.topid#&parentid=&topid=#URLEncodedFormat(attributes.topid)#&siteid=#URLEncodedFormat(attributes.siteid)#&moduleid=#attributes.moduleid#&type=#request.rstop.type#">#application.rbFactory.getKeyValue(session.rb,"sitemanager.permissions")#</a></li>
        	<cfelse>
 			<li class="permissionsOff"><a>#application.rbFactory.getKeyValue(session.rb,"sitemanager.permissions")#</a></li>
 		 </cfif>

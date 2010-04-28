@@ -42,6 +42,6 @@ to your own modified versions of Mura CMS.
 --->
 
 <cfoutput><ul>
-<li><a href="index.cfm?fuseaction=cPrivateUsers.edituser&siteid=#attributes.siteid#&userid=">#application.rbFactory.getKeyValue(session.rb,'user.adduser')#</a></li>
-<li><a href="index.cfm?fuseaction=cPrivateUsers.editgroup&siteid=#attributes.siteid#&userid=">#application.rbFactory.getKeyValue(session.rb,'user.addusergroup')#</a></li>
+<li><a href="index.cfm?fuseaction=cPrivateUsers.edituser&siteid=#URLEncodedFormat(attributes.siteid)#&userid=">#application.rbFactory.getKeyValue(session.rb,'user.adduser')#</a></li>
+<li><a href="index.cfm?fuseaction=cPrivateUsers.editgroup&siteid=#URLEncodedFormat(attributes.siteid)#&userid=">#application.rbFactory.getKeyValue(session.rb,'user.addusergroup')#</a></li>
 </ul></cfoutput>

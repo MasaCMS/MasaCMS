@@ -48,7 +48,7 @@ to your own modified versions of Mura CMS.
 <cfif attributes.moduleid eq '00000000000000000000000000000000000'>#application.contentRenderer.dspZoom(request.crumbdata,request.rsContent.fileEXT)#</cfif>
 <p>#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"permissions.nodetext"),request.rscontent.title)#</p>	
 	
-  <form method="post" name="form1" action="index.cfm?fuseaction=cPerm.update&contentid=#attributes.contentid#&parentid=#attributes.parentid#">
+  <form method="post" name="form1" action="index.cfm?fuseaction=cPerm.update&contentid=#URLEncodedFormat(attributes.contentid)#&parentid=#URLEncodedFormat(attributes.parentid)#">
            <h3>#application.rbFactory.getKeyValue(session.rb,'user.adminusergroups')#</h3>
 			<table class="stripe">
 			<tr> 
@@ -114,7 +114,7 @@ to your own modified versions of Mura CMS.
 	
 		 <a class="submit" href="javascript:document.form1.submit();"><span>#application.rbFactory.getKeyValue(session.rb,'permissions.update')#</span></a>
                     <input type="hidden" name="router" value="#cgi.HTTP_REFERER#">
-					<input type="hidden" name="siteid" value="#attributes.siteid#">
+					<input type="hidden" name="siteid" value="#HTMLEditFormat(attributes.siteid)#">
 					<input type="hidden" name="startrow" value="#attributes.startrow#">
 		  <input type="hidden" name="topid" value="#attributes.topid#"><input type="hidden" name="moduleid" value="#attributes.moduleid#"></form></td>
   </tr>

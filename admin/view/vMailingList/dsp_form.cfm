@@ -44,8 +44,8 @@ to your own modified versions of Mura CMS.
  <cfoutput><form action="index.cfm?fuseaction=cMailingList.update" method="post" enctype="multipart/form-data" name="form1" onsubmit="return validate(this);">
 <h2>#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager')#</h2>
 <cfif attributes.mlid neq ''><ul id="navTask">
-<li><a href="index.cfm?fuseaction=cMailingList.listmembers&mlid=#attributes.mlid#&siteid=#attributes.siteid#">#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.vieweditmembers')#</a></li>
-<li><a href="index.cfm?fuseaction=cMailingList.download&mlid=#attributes.mlid#&siteid=#attributes.siteid#">#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.downloadmembers')#</a></li>
+<li><a href="index.cfm?fuseaction=cMailingList.listmembers&mlid=#attributes.mlid#&siteid=#URLEncodedFormat(attributes.siteid)#">#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.vieweditmembers')#</a></li>
+<li><a href="index.cfm?fuseaction=cMailingList.download&mlid=#attributes.mlid#&siteid=#URLEncodedFormat(attributes.siteid)#">#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.downloadmembers')#</a></li>
 </ul></cfif>
 <dl class="oneColumn"><cfif request.listBean.getispurge() neq 1>
 <dt class="first">#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.name')#</dt>
@@ -74,7 +74,7 @@ to your own modified versions of Mura CMS.
 <dt class="first">
 </cfif>
 #application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.description')#</dt>
-<dd><textarea id="description" name="description" cols="17" rows="7" class="alt">#HTMLEditFormat(request.listBean.getdescription())#</textarea><input type=hidden name="siteid" value="#attributes.siteid#"></dd>
+<dd><textarea id="description" name="description" cols="17" rows="7" class="alt">#HTMLEditFormat(request.listBean.getdescription())#</textarea><input type=hidden name="siteid" value="#HTMLEditFormat(attributes.siteid)#"></dd>
 <dt>#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.uploadlistmaintenancefile')#</dt>
 <dd><input type="radio" name="direction" id="da" value="add" checked> <label for="da">#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.addaddressestolist')#</label></dd>
 <dd><input type="radio" name="direction" id="dm" value="remove"> <label for="dm">#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.removeaddressesfromlist')#</label></dd>

@@ -74,7 +74,7 @@ to your own modified versions of Mura CMS.
 <li class="editOff"><a>#application.rbFactory.getKeyValue(session.rb,'plugin.edit')#</a></li>
 </cfif>
 <cfif listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(attributes.siteid).getPrivateUserPoolID()#;0') or listFind(session.mura.memberships,'S2')>
-<li class="permissions"><a title="#application.rbFactory.getKeyValue(session.rb,'plugin.permissions')#" href="index.cfm?fuseaction=cPerm.module&contentid=#request.rslist.moduleID#&siteid=#attributes.siteID#&moduleid=#request.rslist.moduleID#">#application.rbFactory.getKeyValue(session.rb,'plugin.permissions')#</a></li>
+<li class="permissions"><a title="#application.rbFactory.getKeyValue(session.rb,'plugin.permissions')#" href="index.cfm?fuseaction=cPerm.module&contentid=#request.rslist.moduleID#&siteid=#URLEncodedFormat(attributes.siteid)#&moduleid=#request.rslist.moduleID#">#application.rbFactory.getKeyValue(session.rb,'plugin.permissions')#</a></li>
 <cfelse>
 <li class="permissionsOff"><a>#application.rbFactory.getKeyValue(session.rb,'plugin.permissions')#</a></li>
 </cfif>

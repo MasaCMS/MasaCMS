@@ -55,12 +55,12 @@ to your own modified versions of Mura CMS.
           <cfif request.rsList.recordcount>
             <cfoutput query="request.rsList" maxrows="#request.nextN.recordsperPage#" startrow="#attributes.startrow#"> 
               <tr> 
-                <td class="varWidth"><a  title="#application.rbFactory.getKeyValue(session.rb,'user.edit')#" href="index.cfm?fuseaction=cPrivateUsers.edituser&userid=#request.rsList.UserID#&type=2&siteid=#attributes.siteid#">#HTMLEditFormat(lname)#, #HTMLEditFormat(fname)# <cfif company neq ''> (#HTMLEditFormat(company)#)</cfif></a></td>
+                <td class="varWidth"><a  title="#application.rbFactory.getKeyValue(session.rb,'user.edit')#" href="index.cfm?fuseaction=cPrivateUsers.edituser&userid=#request.rsList.UserID#&type=2&siteid=#URLEncodedFormat(attributes.siteid)#">#HTMLEditFormat(lname)#, #HTMLEditFormat(fname)# <cfif company neq ''> (#HTMLEditFormat(company)#)</cfif></a></td>
                 <td><cfif request.rsList.email gt ""><a href="mailto:#HTMLEditFormat(request.rsList.email)#">#HTMLEditFormat(request.rsList.email)#</a><cfelse>&nbsp;</cfif></td>
                 <td>#LSDateFormat(request.rslist.lastupdate,session.dateKeyFormat)#</td>
               <td>#LSTimeFormat(request.rslist.lastupdate,"short")#</td>
 			  <td>#HTMLEditFormat(request.rsList.LastUpdateBy)#</td>
-                <td class="administration"><ul class="one"><li class="edit"><a  title="#application.rbFactory.getKeyValue(session.rb,'user.edit')#" href="index.cfm?fuseaction=cPrivateUsers.edituser&userid=#request.rsList.UserID#&type=2&siteid=#attributes.siteid#">#application.rbFactory.getKeyValue(session.rb,'user.edit')#</a></li></ul></td>
+                <td class="administration"><ul class="one"><li class="edit"><a  title="#application.rbFactory.getKeyValue(session.rb,'user.edit')#" href="index.cfm?fuseaction=cPrivateUsers.edituser&userid=#request.rsList.UserID#&type=2&siteid=#URLEncodedFormat(attributes.siteid)#">#application.rbFactory.getKeyValue(session.rb,'user.edit')#</a></li></ul></td>
               </tr>
             </cfoutput>
 		 <cfelse>
@@ -72,8 +72,8 @@ to your own modified versions of Mura CMS.
 		
 <cfif request.nextN.numberofpages gt 1>
 <cfoutput>#application.rbFactory.getKeyValue(session.rb,'user.moreresults')#: 
-<cfif request.nextN.currentpagenumber gt 1> <a class="nextn" href="index.cfm?fuseaction=cPrivateUsers.search&startrow=#request.nextN.previous#&search=#urlencodedformat(attributes.search)#&siteid=#attributes.siteid#">&laquo;&nbsp;#application.rbFactory.getKeyValue(session.rb,'user.prev')#</a></cfif>	
-<cfloop from="#request.nextN.firstPage#"  to="#request.nextN.lastPage#" index="i"><cfif request.nextN.currentpagenumber eq i> #i# <cfelse> <a class="nextn" href="index.cfm?fuseaction=cPrivateUsers.search&startrow=#evaluate('(#i#*#request.nextN.recordsperpage#)-#request.nextN.recordsperpage#+1')#&search=#urlencodedformat(attributes.search)#&siteid=#attributes.siteid#">#i#</a> </cfif></cfloop>
-<cfif request.nextN.currentpagenumber lt request.nextN.NumberOfPages><a class="nextn" href="index.cfm?fuseaction=cPrivateUsers.search&startrow=#request.nextN.next#&search=#urlencodedformat(attributes.search)#&siteid=#attributes.siteid#">#application.rbFactory.getKeyValue(session.rb,'user.next')#&nbsp;&raquo;</a></cfif> 
+<cfif request.nextN.currentpagenumber gt 1> <a class="nextn" href="index.cfm?fuseaction=cPrivateUsers.search&startrow=#request.nextN.previous#&search=#urlencodedformat(attributes.search)#&siteid=#URLEncodedFormat(attributes.siteid)#">&laquo;&nbsp;#application.rbFactory.getKeyValue(session.rb,'user.prev')#</a></cfif>	
+<cfloop from="#request.nextN.firstPage#"  to="#request.nextN.lastPage#" index="i"><cfif request.nextN.currentpagenumber eq i> #i# <cfelse> <a class="nextn" href="index.cfm?fuseaction=cPrivateUsers.search&startrow=#evaluate('(#i#*#request.nextN.recordsperpage#)-#request.nextN.recordsperpage#+1')#&search=#urlencodedformat(attributes.search)#&siteid=#URLEncodedFormat(attributes.siteid)#">#i#</a> </cfif></cfloop>
+<cfif request.nextN.currentpagenumber lt request.nextN.NumberOfPages><a class="nextn" href="index.cfm?fuseaction=cPrivateUsers.search&startrow=#request.nextN.next#&search=#urlencodedformat(attributes.search)#&siteid=#URLEncodedFormat(attributes.siteid)#">#application.rbFactory.getKeyValue(session.rb,'user.next')#&nbsp;&raquo;</a></cfif> 
 </cfoutput>
 </cfif>

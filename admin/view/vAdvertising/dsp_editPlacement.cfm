@@ -44,16 +44,16 @@ to your own modified versions of Mura CMS.
 <cfoutput>
 <h2>#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"advertising.editcampaignplacement"),request.campaignBean.getName())#</h2> 
 <ul id="navTask">
-<li><a href="index.cfm?fuseaction=cAdvertising.viewAdvertiser&&siteid=#attributes.siteid#&userid=#attributes.userid#">#application.rbFactory.getKeyValue(session.rb,'advertising.backtoadvertiser')#</a></li>
-<li><a href="index.cfm?fuseaction=cAdvertising.editCampaign&&siteid=#attributes.siteid#&userid=#attributes.userid#&campaignid=#attributes.campaignid#">#application.rbFactory.getKeyValue(session.rb,'advertising.backtocampaign')#</a></li>
-<cfif attributes.placementid neq ""><li><a href="index.cfm?fuseaction=cAdvertising.viewReportByPlacement&placementid=#attributes.placementid#&campaignid=#attributes.campaignid#&userid=#attributes.userid#&siteid=#attributes.siteid#">#application.rbFactory.getKeyValue(session.rb,'advertising.viewplacementreport')#</a></li></cfif>
+<li><a href="index.cfm?fuseaction=cAdvertising.viewAdvertiser&&siteid=#URLEncodedFormat(attributes.siteid)#&userid=#URLEncodedFormat(attributes.userid)#">#application.rbFactory.getKeyValue(session.rb,'advertising.backtoadvertiser')#</a></li>
+<li><a href="index.cfm?fuseaction=cAdvertising.editCampaign&&siteid=#URLEncodedFormat(attributes.siteid)#&userid=#URLEncodedFormat(attributes.userid)#&campaignid=#URLEncodedFormat(attributes.campaignid)#">#application.rbFactory.getKeyValue(session.rb,'advertising.backtocampaign')#</a></li>
+<cfif attributes.placementid neq ""><li><a href="index.cfm?fuseaction=cAdvertising.viewReportByPlacement&placementid=#URLEncodedFormat(attributes.placementid)#&campaignid=#URLEncodedFormat(attributes.campaignid)#&userid=#URLEncodedFormat(attributes.userid)#&siteid=#URLEncodedFormat(attributes.siteid)#">#application.rbFactory.getKeyValue(session.rb,'advertising.viewplacementreport')#</a></li></cfif>
 </ul> 
 <p class="overview">#application.rbFactory.getKeyValue(session.rb,'advertising.campaigndaterange')#: #LSDateFormat(request.campaignBean.getStartDate(),session.dateKeyFormat)# - #LSDateFormat(request.campaignBean.getEndDate(),session.dateKeyFormat)#</p>
 
 <h3>#application.rbFactory.getKeyValue(session.rb,'advertising.placementinformation')#</h3>
 #application.utility.displayErrors(request.placementBean.getErrors())#
 
-<form action="index.cfm?fuseaction=cAdvertising.updatePlacement&siteid=#attributes.siteid#&userid=#attributes.userid#&campaignid=#attributes.campaignid#" method="post" name="form1" onsubmit="return validate(this);">
+<form action="index.cfm?fuseaction=cAdvertising.updatePlacement&siteid=#URLEncodedFormat(attributes.siteid)#&userid=#URLEncodedFormat(attributes.userid)#&campaignid=#URLEncodedFormat(attributes.campaignid)#" method="post" name="form1" onsubmit="return validate(this);">
 <dl class="oneColumn">
 <dt>#application.rbFactory.getKeyValue(session.rb,'advertising.adzone')# (<em>#application.rbFactory.getKeyValue(session.rb,'advertising.dimensionscreativetype')#</em>)</dt>
 <dd><select name="adZoneID">

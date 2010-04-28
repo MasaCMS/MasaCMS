@@ -128,8 +128,8 @@ document.getElementById('responseDisplayFields').value=document.getElementById('
   <a class="submit" href="javascript:;" onclick="return submitForm(document.forms.frmDisplayFields,'setDisplay');"><span>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.update')#</span></a>
 <input type="hidden" value="setDisplay" name="action">
 <input type="hidden" name="fuseaction" value="cArch.datamanager" />
-<input type="hidden" name="contentid" value="#attributes.contentid#" />
-<input type="hidden" name="siteid" value="#session.siteid#" />
+<input type="hidden" name="contentid" value="#HTMLEditFormat(attributes.contentid)#" />
+<input type="hidden" name="siteid" value="#HTMLEditFormat(session.siteid)#" />
 <input type="hidden" name="moduleid" value="#attributes.moduleid#" />
 </cfoutput>
 </form>

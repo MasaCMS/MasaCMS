@@ -44,14 +44,14 @@ to your own modified versions of Mura CMS.
 <cfset typeList="TextBox,TextArea,HTMLEditor,SelectBox,MultiSelectBox,RadioGroup,File,Hidden"/>
 <cfoutput>
 <cfif attributes.action eq "add">
-<a href="javascript:;" id="#attributes.formName#open" onclick="new Effect.SlideDown($('#attributes.formName#container'));this.style.display='none';$('#attributes.formName#close').style.display='';return false;">[Add New Attribute]</a>
-<a href="javascript:;" style="display:none;" id="#attributes.formName#close" onclick="new Effect.SlideUp($('#attributes.formName#container'));this.style.display='none';$('#attributes.formName#open').style.display='';return false;">[Close]</a>
+<a href="javascript:;" id="#HTMLEditFormat(attributes.formName)#open" onclick="new Effect.SlideDown($('#HTMLEditFormat(attributes.formName)#container'));this.style.display='none';$('#HTMLEditFormat(attributes.formName)#close').style.display='';return false;">[Add New Attribute]</a>
+<a href="javascript:;" style="display:none;" id="#HTMLEditFormat(attributes.formName)#close" onclick="new Effect.SlideUp($('#HTMLEditFormat(attributes.formName)#container'));this.style.display='none';$('#HTMLEditFormat(attributes.formName)#open').style.display='';return false;">[Close]</a>
 <br/>
 </cfif>
 <cfif attributes.action eq "add">
-<div style="display:none;" id="#attributes.formName#container">
+<div style="display:none;" id="#HTMLEditFormat(attributes.formName)#container">
 </cfif>
-<form method="post" name="#attributes.formName#" action="index.cfm" onsubmit="return validateForm(this);">
+<form method="post" name="#HTMLEDitFormat(attributes.formName)#" action="index.cfm" onsubmit="return validateForm(this);">
 <dl class="oneColumn">
 <cfif attributes.action neq "add">
 <dt>Attribute ID</dt>
@@ -97,21 +97,21 @@ to your own modified versions of Mura CMS.
 </dl>
 
 <cfif attributes.action eq "add">
-<a class="submit" href="javascript:;" onclick="return submitForm(document.forms.#attributes.formName#,'add');"><span>Add</span></a>
-<a class="submit" href="javascript:;" onclick="new Effect.SlideUp($('#attributes.formName#container'));$('#attributes.formName#close').style.display='none';$('#attributes.formName#open').style.display='';return false;"><span>Cancel</span></a>
+<a class="submit" href="javascript:;" onclick="return submitForm(document.forms.#HTMLEditFormat(attributes.formName)#,'add');"><span>Add</span></a>
+<a class="submit" href="javascript:;" onclick="new Effect.SlideUp($('#HTMLEditFormat(attributes.formName)#container'));$('#HTMLEditFormat(attributes.formName)#close').style.display='none';$('#HTMLEditFormat(attributes.formName)#open').style.display='';return false;"><span>Cancel</span></a>
 <cfelse>
-<a class="submit" href="javascript:;" onclick="return submitForm(document.forms.#attributes.formName#,'update');"><span>Update</span></a>
-<a class="submit" href="javascript:;" onclick="return submitForm(document.forms.#attributes.formName#,'delete','Delete Attribute?');"><span>Delete</span></a>
-<a class="submit" href="javascript:;" onclick="new Effect.SlideUp($('#attributes.formName#container'));$('#attributes.formName#close').style.display='none';$('#attributes.formName#open').style.display='';return false;"><span>Cancel</span></a>
+<a class="submit" href="javascript:;" onclick="return submitForm(document.forms.#HTMLEditFormat(attributes.formName)#,'update');"><span>Update</span></a>
+<a class="submit" href="javascript:;" onclick="return submitForm(document.forms.#HTMLEditFormat(attributes.formName)#,'delete','Delete Attribute?');"><span>Delete</span></a>
+<a class="submit" href="javascript:;" onclick="new Effect.SlideUp($('#HTMLEditFormat(attributes.formName)#container'));$('#HTMLEditFormat(attributes.formName)#close').style.display='none';$('#HTMLEditFormat(attributes.formName)#open').style.display='';return false;"><span>Cancel</span></a>
 </cfif>
 
 <input name="orderno" type="hidden" value="#attributes.attributeBean.getOrderno()#"/>
 <input name="isActive" type="hidden" value="#attributes.attributeBean.getIsActive()#"/>
 <input name="siteID" type="hidden" value="#attributes.attributeBean.getSiteID()#"/>
 <input name="fuseaction" type="hidden" value="cExtend.updateAttribute"/>
-<input name="action" type="hidden" value="#attributes.action#"/>
-<input name="extendSetID" type="hidden" value="#attributes.attributeBean.getExtendSetID()#"/>
-<input name="subTypeID" type="hidden" value="#attributes.subTypeID#"/>
+<input name="action" type="hidden" value="#HTMLEditFormat(attributes.action)#"/>
+<input name="extendSetID" type="hidden" value="#HTMLEditFormat(attributes.attributeBean.getExtendSetID())#"/>
+<input name="subTypeID" type="hidden" value="#HTMLEditFormat(attributes.subTypeID)#"/>
 <input name="attributeID" type="hidden" value="#attributes.attributeBean.getAttributeID()#"/>
 </form><cfif attributes.action eq "add"></div></cfif>
 </cfoutput>

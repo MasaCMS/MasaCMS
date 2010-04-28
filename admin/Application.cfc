@@ -70,6 +70,12 @@
 			<cflocation url="index.cfm" addtoken="false">
 		</cfif>
 		
+		<!--- Preventing XSS attacks --->
+		<cfset structDelete(url,"session.dateKey")>
+		<cfset structDelete(form,"session.dateKey")>
+		<cfset structDelete(url,"fusebox.ajax")>
+		<cfset structDelete(form,"fusebox.ajax")>		
+		
 		<cfscript>
 			StructAppend(request.context, url, "no");
 			StructAppend(request.context, form, "no");
