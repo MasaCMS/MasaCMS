@@ -42,16 +42,16 @@ to your own modified versions of Mura CMS.
 --->
 <cfcomponent output="false" extends="mura.cfobject">
 
-<cffunction name="purgeSiteCache" access="remote" output="false">
+<cffunction name="purgeSiteCache" returntype="any" access="remote" output="false">
 <cfargument name="siteid" required="true" default="">
 	<cfset super.purgeSiteCache(arguments.siteid)>
 </cffunction>
 
-<cffunction name="reload" access="remote" output="false">
+<cffunction name="reload" returntype="any" access="remote" output="false">
 	<cfset super.reload()>
 </cffunction>
 
-<cffunction name="login" output="false" access="remote">
+<cffunction name="login" returntype="any" output="false" access="remote">
 	<cfargument name="username">
 	<cfargument name="password">
 	<cfargument name="siteID">
@@ -119,7 +119,7 @@ to your own modified versions of Mura CMS.
 	</cfif>
 </cffunction>
 
-<cffunction name="logout" output="false" access="remote">
+<cffunction name="logout" returntype="any" output="false" access="remote">
 	<cfargument name="authToken">
 	
 	<cfquery datasource="#application.configBean.getDatasource()#" username="#application.configBean.getDBUsername()#" password="#application.configBean.getDBPassword()#">
@@ -184,7 +184,7 @@ to your own modified versions of Mura CMS.
 	<cfreturn sessionData>
 </cffunction>
 
-<cffunction name="call" access="remote">
+<cffunction name="call" returntype="any" access="remote">
 <cfargument name="serviceName">
 <cfargument name="methodName">
 <cfargument name="authToken">
