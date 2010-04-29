@@ -95,7 +95,7 @@ to your own modified versions of Mura CMS.
 <cfset session.rememberMe=arguments.data.rememberMe />
 
 <!--- Make sure that the domain of the returnURL is the same as the current domain--->
-<cfif len(arguments.data.returnURL)>
+<cfif len(arguments.data.returnURL) and listFindNoCase("http,https",listFirst(arguments.data.returnURL,":"))>
 	<cfset returnDomain = reReplace( arguments.data.returnURL, "^\w+://([^\/:]+)[\w\W]*$", "\1", "one") />
 	
 	<cfif len(returnDomain)>
@@ -131,13 +131,18 @@ to your own modified versions of Mura CMS.
 			</cfloop>
 		
 			<cfif arguments.data.returnUrl eq ''>				
-				<cflocation url="./?LinkServID=#arguments.data.LinkServID#" addtoken="false">
-			<cfelseif arguments.data.returnUrl neq ''>
+				<cfif len(arguments.data.linkServID)>
+					<cflocation url="./?LinkServID=#arguments.data.linkServID#" addtoken="false">
+				<cfelse>
+					<cflocation url="./" addtoken="false">
+				</cfif>	
+			<cfelse>
 				<cfset returnUrl = replace(arguments.data.returnUrl, 'doaction=logout', '', 'ALL')>
 				<cflocation url="#returnUrl#" addtoken="false">
 			</cfif>
 		<cfelseif arguments.data.returnUrl neq ''>
-			<cflocation url="#arguments.data.returnUrl#" addtoken="false">
+			<cfset returnUrl = replace(arguments.data.returnUrl, 'doaction=logout', '', 'ALL')>
+			<cflocation url="#returnUrl#" addtoken="false">
 		<cfelse>
 			<cfif len(arguments.data.linkServID)>
 				<cflocation url="./?LinkServID=#arguments.data.linkServID#" addtoken="false">
@@ -146,7 +151,7 @@ to your own modified versions of Mura CMS.
 			</cfif>
 		</cfif>
 	<cfelse>
-		<cflocation url="?fuseaction=cLogin.main&display=login&status=failed&rememberMe=#arguments.data.rememberMe#&contentid=#arguments.data.contentid#&LinkServID=#arguments.data.linkServID#&returnURL=#urlEncodedFormat(arguments.data.returnUrl)#" addtoken="false">
+		<cflocation url="./?fuseaction=cLogin.main&display=login&status=failed&rememberMe=#arguments.data.rememberMe#&contentid=#arguments.data.contentid#&LinkServID=#arguments.data.linkServID#&returnURL=#urlEncodedFormat(arguments.data.returnUrl)#" addtoken="false">
 	</cfif>
 </cfif>
 
@@ -209,7 +214,7 @@ to your own modified versions of Mura CMS.
 <cfset session.rememberMe=arguments.data.rememberMe />
 
 <!--- Make sure that the domain of the returnURL is the same as the current domain--->
-<cfif len(arguments.data.returnURL)>
+<cfif len(arguments.data.returnURL) and listFindNoCase("http,https",listFirst(arguments.data.returnURL,":"))>
 	<cfset returnDomain = reReplace( arguments.data.returnURL, "^\w+://([^\/:]+)[\w\W]*$", "\1", "one") />
 	
 	<cfif len(returnDomain)>
@@ -241,7 +246,11 @@ to your own modified versions of Mura CMS.
 			</cfloop>
 
 			<cfif arguments.data.redirect eq '' and arguments.data.returnUrl eq ''>
-				<cflocation url="./?LinkServID=#arguments.data.LinkServID#" addtoken="false">
+				<cfif len(arguments.data.linkServID)>
+					<cflocation url="./?LinkServID=#arguments.data.linkServID#" addtoken="false">
+				<cfelse>
+					<cflocation url="./" addtoken="false">
+				</cfif>
 			<cfelseif arguments.data.returnUrl neq ''>
 				<cfset returnUrl = replace(arguments.data.returnUrl, 'doaction=logout', '', 'ALL')>
 				<cflocation url="#returnUrl#" addtoken="false">
@@ -249,7 +258,8 @@ to your own modified versions of Mura CMS.
 				<cflocation url="./?fuseaction=#arguments.data.redirect#&parentid=#arguments.data.parentid#&topid=#arguments.data.topid#&siteid=#arguments.data.siteid#&contentid=#arguments.data.contentid#&contenthistid=#arguments.data.contenthistid#&type=#arguments.data.type#&moduleid=#arguments.data.moduleid#" addtoken="false">
 			</cfif>
 		<cfelseif arguments.data.returnUrl neq ''>
-			<cflocation url="#arguments.data.returnUrl#" addtoken="false">
+			<cfset returnUrl = replace(arguments.data.returnUrl, 'doaction=logout', '', 'ALL')>
+			<cflocation url="#returnUrl#" addtoken="false">
 		<cfelse>
 			<cfif len(arguments.data.linkServID)>
 				<cflocation url="./?LinkServID=#arguments.data.linkServID#" addtoken="false">
