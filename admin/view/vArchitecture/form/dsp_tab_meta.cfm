@@ -43,7 +43,6 @@ to your own modified versions of Mura CMS.
 
 <div class="page_aTab">
 <dl class="oneColumn"><cfoutput>
-<cfif attributes.type eq 'Page' or attributes.type eq 'Portal' or attributes.type eq 'Calendar'  or attributes.type eq 'Gallery'>
 <dt class="first">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.metainformation')#</dt>
 <dd id="editMeta">
 	<dl>
@@ -54,9 +53,7 @@ to your own modified versions of Mura CMS.
 	</dl>
 </dd>
 <dt>
-<cfelse>
-<dt class="first">
-</cfif>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.tags')#</dt>
+<dt>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.tags')#</dt>
 <dd><input type="text" id="credits" name="tags" value="#HTMLEditFormat(request.contentBean.getTags())#"  maxlength="255" class="textLong"></dd>
 <dt>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.credits')#</dt>
 <dd><input type="text" id="credits" name="credits" value="#HTMLEditFormat(request.contentBean.getCredits())#"  maxlength="255" class="textLong"></dd>
