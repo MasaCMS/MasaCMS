@@ -39,7 +39,7 @@
 	<cfset variables.instance.blockTime = 86400/> 									<!---In Seconds, 86400 seconds equals 1 day--->
 	<cfset variables.instance.keepInnerText = false/> 								<!---Keep any text within a blocked tag--->
 	<cfset variables.instance.invalidMarker = "[INVALID]"/>							<!---Strongly encouraged to replace stripped items with some type of marker, otherwise the attacker can rebuild a bad string from the stripping---> 								
-	<cfset variables.instance.escapeChars = true/>									<!---So HtmlEditFormat and XMLFormat does not catch everything - we have a better method here--->
+	<cfset variables.instance.escapeChars = false/>									<!---So HtmlEditFormat and XMLFormat does not catch everything - we have a better method here--->
 	<cfset variables.instance.checkReferer = true/> 								<!---For form variables only--->
 	<cfset variables.instance.safeReferers = ""/> 									<!---Comma delimited list of sites that can send submit form variables to this site--->
 	<cfset variables.instance.exceptionFields = ""/>							 	<!---Comma delimited list of fields not to scan--->
