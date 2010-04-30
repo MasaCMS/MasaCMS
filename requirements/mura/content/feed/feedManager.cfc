@@ -317,7 +317,7 @@ to your own modified versions of Mura CMS.
 		<cfhttp result="temp" url="#arguments.feedURL#" method="GET" resolveurl="Yes" 
 		throwOnError="Yes" charset="UTF-8" timeout="#arguments.timeout#"/>
 	</cfif>
-	<cfcatch></cfcatch>
+	<cfcatch><cfreturn response /></cfcatch>
 	</cftry>
 
 	<cfset data=replace(temp.FileContent,chr(20),'','ALL') />

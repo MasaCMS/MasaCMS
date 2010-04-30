@@ -221,13 +221,11 @@ to your own modified versions of Mura CMS.
 		</cfquery>
 		
 		<!--- MSSQL needs to group by outside the original query --->
-		<cftry>
 		<cfquery name="rs" dbType="query">
-		Select baseID, name, label, attributeID, defaultValue, extendSetID, attributeValue, validation from rs
-		Group By baseID,name, label, attributeID, defaultValue, extendSetID, attributeValue, validation
+		Select Distinct baseID, name, label, attributeID, defaultValue, extendSetID, attributeValue, validation from rs
+		Order By baseID,name, label, attributeID, defaultValue, extendSetID, attributeValue, validation
 		</cfquery>
-		<cfcatch></cfcatch>
-		</cftry>
+		
 		
 		<!--- <cfdump var="#rs#"><cfdump var="#getBaseID()#">		<cfabort> --->
 		<cfset variables.instance.data=rs />
