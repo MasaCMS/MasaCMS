@@ -674,18 +674,18 @@ and tclassextendattributes.type='File'
 	<cfif variables.configBean.getDBType() eq "MSSQL">
 		<cfreturn "cast(tclassextenddata.attributeValue as Int)">
 	<cfelseif variables.configBean.getDBType() eq "ORACLE">
-		<cfreturn "to_number(to_char(tclassextenddata.attributeValue))">"
+		<cfreturn "to_number(to_char(tclassextenddata.attributeValue))">
 	<cfelse>
 		<cfreturn "cast(tclassextenddata.attributeValue as SIGNED)">
 	</cfif> 
 	</cfcase>
 	<cfcase value="Date">
 	<cfif variables.configBean.getDBType() eq "MSSQL">
-		<cfreturn "cast(tclassextenddata.attributeValue as datetime)">
+		<cfreturn "cast(subString(attributeValue,6,19) as dateTime)">
 	<cfelseif variables.configBean.getDBType() eq "ORACLE">
-		<cfreturn "to_date(to_char(tclassextenddata.attributeValue))">"
+		<cfreturn "to_date(subStr(to_char(attributeValue),6,19), 'YYYY-MM-DD HH24:MI:SS')">
 	<cfelse>
-		<cfreturn "cast(tclassextenddata.attributeValue as DATETIME)">
+		<cfreturn "cast(subString(attributeValue,6,19) as dateTime)">
 	</cfif> 
 	</cfcase>
 	<cfdefaultcase>
@@ -702,7 +702,7 @@ and tclassextendattributes.type='File'
 	<cfif variables.configBean.getDBType() eq "MSSQL">
 		<cfreturn "Cast(tclassextenddata.attributeValue as varchar(1000))">
 	<cfelseif variables.configBean.getDBType() eq "ORACLE">
-		<cfreturn "to_char(tclassextenddata.attributeValue)">"
+		<cfreturn "to_char(tclassextenddata.attributeValue)">
 	<cfelse>
 		<cfreturn "tclassextenddata.attributeValue">
 	</cfif> 
