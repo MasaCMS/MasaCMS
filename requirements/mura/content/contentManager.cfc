@@ -714,7 +714,7 @@ to your own modified versions of Mura CMS.
 			<cfset variables.fileManager.deleteIfNotUsed(newBean.getFileID(),newBean.getContentHistID())>
 			<cfset newBean.setFileID('')>
 			</cfif>
-					
+						
 		</cfif>
 		<!--- END CONTENT TYPE: PAGE, PORTAL, CALENDAR, GALLERY --->
 		
@@ -1097,10 +1097,11 @@ to your own modified versions of Mura CMS.
 		<cfargument name="keywords" type="string"/>
 		<cfargument name="tag" required="true" default=""/>
 		<cfargument name="sectionID" required="true" default=""/>
+		<cfargument name="searchType" type="string" required="true" default="default" hint="Can be default or image">
 		
 		<cfset var rs=""/>
 
-		<cfset rs=variables.contentGateway.getPrivateSearch(arguments.siteid,arguments.keywords,arguments.tag,arguments.sectionID) />
+		<cfset rs=variables.contentGateway.getPrivateSearch(arguments.siteid,arguments.keywords,arguments.tag,arguments.sectionID, arguments.searchType) />
 		
 		<cfreturn rs/>
 		
@@ -1111,8 +1112,9 @@ to your own modified versions of Mura CMS.
 		<cfargument name="keywords" type="string"/>
 		<cfargument name="tag" required="true" default=""/>
 		<cfargument name="sectionID" required="true" default=""/>
-
-		<cfset var rs=getPrivateSearch(arguments.siteid,arguments.keywords,arguments.tag,arguments.sectionID) />
+		<cfargument name="searchType" type="string" required="true" default="default" hint="Can be default or image">
+		
+		<cfset var rs=getPrivateSearch(arguments.siteid,arguments.keywords,arguments.tag,arguments.sectionID, arguments.searchType) />
 		<cfset var it = getServiceFactory().getBean("contentIterator")>
 		<cfset it.setQuery(rs)>
 		<cfreturn it/>	

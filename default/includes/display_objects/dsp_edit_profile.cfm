@@ -152,7 +152,15 @@ to your own modified versions of Mura CMS.
 
 <!--- extended attributes as defined in the class extension manager --->
 <cfsilent>
-<cfset extendSets=application.classExtensionManager.getSubTypeByName(request.userBean.gettype(),request.userBean.getsubtype(),request.siteid).getExtendSets(true) />
+<cfif request.userBean.getIsNew()>
+	<cfset request.userBean.setSiteID(event.getValue("siteid"))>
+</cfif>
+<cfif request.userBean.getIsPublic()>
+<cfset userPoolID=application.settingsManager.getSite(request.userBean.getSiteID()).getPublicUserPoolID()>
+<cfelse>
+<cfset userPoolID=application.settingsManager.getSite(request.userBean.getSiteID()).getPrivateUserPoolID()>
+</cfif>
+<cfset extendSets=application.classExtensionManager.getSubTypeByName(request.userBean.gettype(),request.userBean.getsubtype(),userPoolID).getExtendSets(true) />
 </cfsilent>
 <cfif arrayLen(extendSets)>
 <cfloop from="1" to="#arrayLen(extendSets)#" index="s">	

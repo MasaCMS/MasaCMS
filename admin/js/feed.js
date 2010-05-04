@@ -39,9 +39,13 @@
 function loadSiteFilters(siteid,keywords,isNew)	{
 		var url = 'index.cfm';
 		var pars = 'fuseaction=cFeed.loadSite&compactDisplay=true&siteid=' + siteid + '&keywords=' + keywords + '&isNew=' + isNew + '&cacheid=' + Math.random();
-		var d = $('selectFilter');
-			d.innerHTML='<br/><img src="images/progress_bar.gif">';
-		var myAjax = new Ajax.Updater({success: 'selectFilter'}, url, {method: 'get', parameters: pars});
+		var d = jQuery('#selectFilter');
+			d.html('<br/><img src="images/progress_bar.gif">');
+			jQuery.get(url + "?" + pars, 
+					function(data) {
+					jQuery("#selectFilter").html(data);
+					}
+			);
 	}
 	 
 function addContentFilter(contentID,contentType,title)	{
@@ -57,7 +61,7 @@ function addContentFilter(contentID,contentType,title)	{
 			admin.className="administration";
 		var deleteLink=document.createElement("A");
 			deleteLink.setAttribute("href","#");
-			deleteLink.onclick=function (){Element.remove("c" + contentID); stripe('stripe');return false;}
+			deleteLink.onclick=function (){jQuery("#c" + contentID).remove(); stripe('stripe');return false;}
 			deleteLink.appendChild(document.createTextNode('Delete'));
 	
 		var deleteUL=document.createElement("UL");
@@ -77,7 +81,7 @@ function addContentFilter(contentID,contentType,title)	{
 			row.appendChild(type);
 			row.appendChild(admin);
    			tbody.appendChild(row);
-		 if($('noFilters') != null) $('noFilters').style.display='none';
+		 if(jQuery('#noFilters').length) jQuery('#noFilters').hide();
 		
 		 stripe('stripe');
 		 
@@ -86,7 +90,7 @@ function addContentFilter(contentID,contentType,title)	{
  
 
 function removeFilter(contentID){
-	Element.remove(contentID); 
+	jQuery("#" + id).remove(); 
 	stripe('stripe');
 	return false;
 	}	
@@ -95,9 +99,13 @@ function removeFilter(contentID){
 function loadSiteParents(siteid,parentid,keywords,isNew)	{
 		var url = 'index.cfm';
 		var pars = 'fuseaction=cFeed.siteParents&compactDisplay=true&siteid=' + siteid + '&parentid=' +parentid+ '&keywords=' + keywords + '&isNew=' + isNew + '&cacheid=' + Math.random();
-		var d = $('move');
-			d.innerHTML='<br/><img src="images/progress_bar.gif"><inut type=hidden name=parentid value=' + parentid + ' >';
-		var myAjax = new Ajax.Updater({success: 'move'}, url, {method: 'get', parameters: pars});
+		var d = jQuery('#move');
+			d.html('<br/><img src="images/progress_bar.gif"><inut type=hidden name=parentid value=' + parentid + ' >');
+			jQuery.get(url + "?" + pars, 
+					function(data) {
+					jQuery("#move").html(data);
+					}
+			);
 	}
 
 

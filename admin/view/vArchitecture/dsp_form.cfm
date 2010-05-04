@@ -445,7 +445,6 @@ initTabs(Array(#tablist#),0,0,0);
 				<input name="action" type="hidden" value="add">
 				<input type="hidden" name="siteid" value="#HTMLEditFormat(attributes.siteid)#">
 				<input type="hidden" name="moduleid" value="#attributes.moduleid#">
-				<input type="hidden" name="fileid" value="#request.contentBean.getFileID()#">
 				<input type="hidden" name="preserveID" value="#request.contentBean.getPreserveID()#">
 				<input type="hidden" name="return" value="#attributes.return#">
 				<input type="hidden" name="topid" value="#attributes.topid#">

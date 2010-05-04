@@ -175,7 +175,7 @@ and fileExists(licenseFile)>
 </ul>
 </dd>
 <dt>Display Objects Location</dt>
-<dd><select name="location" onchange="if(this.value=='local'){$('ov').style.display='block';}else{$('ov').style.display='none';}">
+<dd><select name="location" onchange="if(this.value=='local'){jQuery('##ov').show();}else{jQuery('##ov').hide();}">
 	<option value="global" <cfif location eq "global">selected</cfif>>global</option>
 	<option value="local" <cfif location eq "local">selected</cfif>>local</option>
 	</select>

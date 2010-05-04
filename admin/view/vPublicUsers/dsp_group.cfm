@@ -41,7 +41,8 @@ the GNU General Public License version 2  without this exception.  You may, if y
 to your own modified versions of Mura CMS.
 --->
 <cfhtmlhead text="#session.dateKey#">
-<cfset rsSubTypes=application.classExtensionManager.getSubTypesByType(1,attributes.siteID) />
+<cfset userPoolID=application.settingsManager.getSite(attributes.siteID).getPublicUserPoolID()>
+<cfset rsSubTypes=application.classExtensionManager.getSubTypesByType(1,userPoolID) />
 <cfquery name="rsNonDefault" dbtype="query">
 select * from rsSubTypes where subType <> 'Default'
 </cfquery>
@@ -66,7 +67,7 @@ select * from rsSubTypes where subType <> 'Default'
 <dl class="oneColumn">
 <cfif rsNonDefault.recordcount>
 		<dt class="first">#application.rbFactory.getKeyValue(session.rb,'user.type')#</dt>
-		<dd><select name="subtype" class="dropdown" onchange="resetExtendedAttributes('#request.userBean.getUserID()#','1',this.value,'#application.settingsManager.getSite(attributes.siteID).getPublicUserPoolID()#','#application.configBean.getContext()#','#application.settingsManager.getSite(application.settingsManager.getSite(attributes.siteID).getPublicUserPoolID()).getThemeAssetPath()#');">
+		<dd><select name="subtype" class="dropdown" onchange="resetExtendedAttributes('#request.userBean.getUserID()#','1',this.value,'#userPoolID#','#application.configBean.getContext()#','#application.settingsManager.getSite(attributes.siteID).getThemeAssetPath()#');">
 			<option value="Default" <cfif  request.userBean.getSubType() eq "Default">selected</cfif>> #application.rbFactory.getKeyValue(session.rb,'user.default')#</option>
 				<cfloop query="rsNonDefault">
 					<option value="#rsNonDefault.subtype#" <cfif request.userBean.getSubType() eq rsNonDefault.subtype>selected</cfif>>#rsNonDefault.subtype#</option>
@@ -109,7 +110,7 @@ select * from rsSubTypes where subType <> 'Default'
 <cfhtmlhead text='<script type="text/javascript" src="js/tab-view.js"></script>'>
 <cfhtmlhead text='<script type="text/javascript" src="js/user.js"></script>'>
 <script type="text/javascript">
-loadExtendedAttributes('#request.userbean.getUserID()#','1','#request.userbean.getSubType()#','#application.settingsManager.getSite(attributes.siteID).getPublicUserPoolID()#','#application.configBean.getContext()#','#application.settingsManager.getSite(application.settingsManager.getSite(attributes.siteID).getPublicUserPoolID()).getThemeAssetPath()#');	
+loadExtendedAttributes('#request.userbean.getUserID()#','1','#request.userbean.getSubType()#','#userPoolID#','#application.configBean.getContext()#','#application.settingsManager.getSite(attributes.siteID).getThemeAssetPath()#');	
 initTabs(Array("#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'user.basic'))#","#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'user.extendedattributes'))#"),0,0,0);
 </script>	
 </cfif>

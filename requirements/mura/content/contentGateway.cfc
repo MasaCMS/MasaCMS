@@ -1046,6 +1046,7 @@ to your own modified versions of Mura CMS.
 	<cfargument name="keywords" type="string" required="true">
 	<cfargument name="tag" type="string" required="true" default="">
 	<cfargument name="sectionID" type="string" required="true" default="">
+	<cfargument name="searchType" type="string" required="true" default="default" hint="Can be default or image">
 	
 	<cfset var rs = "">
 	<cfset var kw = trim(arguments.keywords)>
@@ -1054,13 +1055,25 @@ to your own modified versions of Mura CMS.
 	SELECT tcontent.ContentHistID, tcontent.ContentID, tcontent.Approved, tcontent.filename, tcontent.Active, tcontent.Type, tcontent.OrderNo, tcontent.ParentID, 
 	tcontent.Title, tcontent.menuTitle, tcontent.lastUpdate, tcontent.lastUpdateBy, tcontent.lastUpdateByID, tcontent.Display, tcontent.DisplayStart, 
 	tcontent.DisplayStop,  tcontent.isnav, tcontent.restricted, count(tcontent2.parentid) AS hasKids,tcontent.isfeature,tcontent.inheritObjects,tcontent.target,tcontent.targetParams,
-	tcontent.islocked,tcontent.releaseDate,tfiles.fileSize,tfiles.fileExt, 2 AS Priority, tcontent.nextn
-	FROM tcontent LEFT JOIN tcontent tcontent2 ON (tcontent.contentid=tcontent2.parentid)
-	Left Join tfiles ON (tcontent.fileID=tfiles.fileID)
+	tcontent.islocked,tcontent.releaseDate,tfiles.fileSize,tfiles.fileExt, 2 AS Priority, tcontent.nextn, tfiles.fileid
+	FROM tcontent 
+	LEFT JOIN tcontent tcontent2 ON (tcontent.contentid=tcontent2.parentid)
+	
+	<cfif arguments.searchType eq "image">
+		Inner Join tfiles ON (tcontent.fileID=tfiles.fileID)
+	<cfelse>
+		Left Join tfiles ON (tcontent.fileID=tfiles.fileID)
+	</cfif>
+
 	<cfif len(arguments.tag)>
 		Inner Join tcontenttags on (tcontent.contentHistID=tcontenttags.contentHistID)
 	</cfif> 
+	
 	WHERE
+	
+	<cfif arguments.searchType eq "image">
+	tfiles.fileext in ('png','gif','jpg','jpeg') AND
+	</cfif>
 	
 	<cfif kw neq '' or arguments.tag neq ''>
          			(tcontent.Active = 1 
@@ -1098,7 +1111,7 @@ to your own modified versions of Mura CMS.
 		GROUP BY tcontent.ContentHistID, tcontent.ContentID, tcontent.Approved, tcontent.filename, tcontent.Active, tcontent.Type, tcontent.OrderNo, tcontent.ParentID, 
 		tcontent.Title, tcontent.menuTitle, tcontent.lastUpdate, tcontent.lastUpdateBy, tcontent.lastUpdateByID, tcontent.Display, tcontent.DisplayStart, 
 		tcontent.DisplayStop,  tcontent.isnav, tcontent.restricted,tcontent.isfeature,tcontent.inheritObjects,
-		tcontent.target,tcontent.targetParams,tcontent.islocked,tcontent.releaseDate,tfiles.fileSize,tfiles.fileExt, tcontent.nextn
+		tcontent.target,tcontent.targetParams,tcontent.islocked,tcontent.releaseDate,tfiles.fileSize,tfiles.fileExt, tcontent.nextn, tfiles.fileid
 		
 		
 		<cfif kw neq ''>	
@@ -1107,10 +1120,21 @@ to your own modified versions of Mura CMS.
 		SELECT tcontent.ContentHistID, tcontent.ContentID, tcontent.Approved, tcontent.filename, tcontent.Active, tcontent.Type, tcontent.OrderNo, tcontent.ParentID, 
 		tcontent.Title, tcontent.menuTitle, tcontent.lastUpdate, tcontent.lastUpdateBy, tcontent.lastUpdateByID, tcontent.Display, tcontent.DisplayStart, 
 		tcontent.DisplayStop,  tcontent.isnav, tcontent.restricted, count(tcontent2.parentid) AS hasKids,tcontent.isfeature,tcontent.inheritObjects,tcontent.target,tcontent.targetParams,
-		tcontent.islocked,tcontent.releaseDate,tfiles.fileSize,tfiles.fileExt, 1 AS Priority, tcontent.nextn
+		tcontent.islocked,tcontent.releaseDate,tfiles.fileSize,tfiles.fileExt, 1 AS Priority, tcontent.nextn, tfiles.fileid
 		FROM tcontent LEFT JOIN tcontent tcontent2 ON (tcontent.contentid=tcontent2.parentid)
+		
+		<cfif arguments.searchType eq "image">
+		Inner Join tfiles ON (tcontent.fileID=tfiles.fileID)
+		<cfelse>
 		Left Join tfiles ON (tcontent.fileID=tfiles.fileID)
+		</cfif>
+		
+		
 		WHERE		
+		
+		<cfif arguments.searchType eq "image">
+			tfiles.fileext in ('png','gif','jpg','jpeg') AND
+		</cfif>
 		
 		(tcontent.Active = 1 
 			  		AND tcontent.siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>)
@@ -1132,7 +1156,7 @@ to your own modified versions of Mura CMS.
 	GROUP BY tcontent.ContentHistID, tcontent.ContentID, tcontent.Approved, tcontent.filename, tcontent.Active, tcontent.Type, tcontent.OrderNo, tcontent.ParentID, 
 		tcontent.Title, tcontent.menuTitle, tcontent.lastUpdate, tcontent.lastUpdateBy, tcontent.lastUpdateByID, tcontent.Display, tcontent.DisplayStart, 
 		tcontent.DisplayStop,  tcontent.isnav, tcontent.restricted,tcontent.isfeature,tcontent.inheritObjects,
-		tcontent.target,tcontent.targetParams,tcontent.islocked,tcontent.releaseDate,tfiles.fileSize,tfiles.fileExt,tcontent.nextn
+		tcontent.target,tcontent.targetParams,tcontent.islocked,tcontent.releaseDate,tfiles.fileSize,tfiles.fileExt,tcontent.nextn, tfiles.fileid
 	</cfif>
 	</cfquery> 
 	

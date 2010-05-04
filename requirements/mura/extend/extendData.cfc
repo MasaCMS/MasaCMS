@@ -170,11 +170,9 @@ to your own modified versions of Mura CMS.
 			tclassextendattributes.label
 		</cfif>, 
 		tclassextendattributes.attributeID,tclassextendattributes.defaultValue,tclassextendattributes.extendSetID,
-		<cfif variables.configBean.getDBType() eq "oracle">
-			to_char(#dataTable#.attributeValue) as attributeValue
-		<cfelse>
-			#dataTable#.attributeValue
-		</cfif> 
+		
+		#dataTable#.attributeValue
+		
 		from #dataTable# inner join
 		tclassextendattributes On (#dataTable#.attributeID=tclassextendattributes.attributeID)
 		where #dataTable#.baseID=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#getBaseID()#">
@@ -190,11 +188,9 @@ to your own modified versions of Mura CMS.
 			tclassextendattributes.label
 		</cfif>,
 		tclassextendattributes.attributeID,tclassextendattributes.defaultValue,tclassextendattributes.extendSetID,
-		<cfif variables.configBean.getDBType() eq "oracle">
-			to_char(#dataTable#.attributeValue) as attributeValue
-		<cfelse>
-			#dataTable#.attributeValue
-		</cfif> 
+		
+		#dataTable#.attributeValue
+		 
 		from tclassextend 
 		inner join tclassextendsets On (tclassextend.subtypeid=tclassextendsets.subtypeid)
 		inner join tclassextendattributes On (tclassextendsets.extendsetid=tclassextendattributes.extendsetid)
@@ -219,13 +215,6 @@ to your own modified versions of Mura CMS.
 		</cfif>
 		
 		</cfquery>
-		
-		<!--- MSSQL needs to group by outside the original query --->
-		<cfquery name="rs" dbType="query">
-		Select Distinct baseID, name, label, attributeID, defaultValue, extendSetID, attributeValue, validation from rs
-		Order By baseID,name, label, attributeID, defaultValue, extendSetID, attributeValue, validation
-		</cfquery>
-		
 		
 		<!--- <cfdump var="#rs#"><cfdump var="#getBaseID()#">		<cfabort> --->
 		<cfset variables.instance.data=rs />

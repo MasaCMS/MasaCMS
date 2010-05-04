@@ -219,7 +219,7 @@ function openDisplay(id,close){
 		
 	if(document.getElementById(id).style.display== 'none'){
 		
-		 new Effect.SlideDown($(id));
+		 jQuery("#" + id).slideDown();
 		 if( document.getElementById(id + 'Link')){
 		  var theLink = document.getElementById(id + 'Link'); 
 		  theLink.innerHTML='[' + close + ']';

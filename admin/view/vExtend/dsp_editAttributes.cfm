@@ -78,8 +78,8 @@ to your own modified versions of Mura CMS.
 	<li attributeID="#attributeBean.getAttributeID()#">
 		<span id="handle#a#" class="handle" style="display:none;">[Drag]</span>
 		#attributeBean.getName()#
-		<a title="Edit" href="javascript:;" id="editFrm#a#open" onclick="new Effect.SlideDown($('editFrm#a#container'));this.style.display='none';$('editFrm#a#close').style.display='';return false;">[Edit]</a>
-		<a title="Edit" href="javascript:;" style="display:none;" id="editFrm#a#close" onclick="new Effect.SlideUp($('editFrm#a#container'));this.style.display='none';$('editFrm#a#open').style.display='';return false;">[Close]</a>
+		<a title="Edit" href="javascript:;" id="editFrm#a#open" onclick="jQuery('##editFrm#a#container').slideDown();this.style.display='none';jQuery('##editFrm#a#close').show();return false;">[Edit]</a>
+		<a title="Edit" href="javascript:;" style="display:none;" id="editFrm#a#close" onclick="jQuery('##editFrm#a#container').slideUp();this.style.display='none';jQuery('##editFrm#a#open').show();return false;">[Close]</a>
 		<a title="Delete" href="index.cfm?fuseaction=cExtend.updateAttribute&action=delete&subTypeID=#URLEncodedFormat(attributes.subTypeID)#&extendSetID=#attributeBean.getExtendSetID()#&siteid=#URLEncodedFormat(attributes.siteid)#&attributeID=#attributeBean.getAttributeID()#" onClick="return confirm('Delete the attribute #jsStringFormat("'#attributeBean.getname()#'")#?')">[Delete]</a>
 
 	<div style="display:none;" id="editFrm#a#container">

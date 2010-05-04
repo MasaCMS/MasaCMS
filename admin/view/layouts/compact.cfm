@@ -51,6 +51,8 @@ to your own modified versions of Mura CMS.
 	<cfheader name="expires" value="06 Nov 1994 08:37:34 GMT">
 	<meta http-equiv="cache control" content="no-cache, no-store, must-revalidate" />
 	<script src="js/admin.js" type="text/javascript" language="Javascript"></script>
+	<script src="js/jquery/jquery.js" type="text/javascript"></script>
+	<script src="js/jquery/jquery-ui.js" type="text/javascript"></script>
 	<script src="js/prototype.js" type="text/javascript" language="Javascript"></script>
 	<script type="text/javascript" src="#application.configBean.getContext()#/wysiwyg/fckeditor.js"></script>
 	#session.dateKey#

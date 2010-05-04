@@ -38,20 +38,20 @@
 
 	function openScheduler()
 	{
-		var s = $('scheduler');
-		var c = $('controls');
-		c.style.display='none';
-		s.style.display='inline';
+		var s = jQuery('#scheduler');
+		var c = jQuery('#controls');
+		c.css('display','none');
+		s.css('display','inline');
 		
 		return false;
 
 	}
 	function closeScheduler()
 	{
-		var s = $('scheduler');	
-		var c = $('controls');
-		s.style.display='none';
-		c.style.display='inline';
+		var s = jQuery('#scheduler');	
+		var c = jQuery('#controls');
+		s.css('display','none');
+		c.css('display','inline');
 		document.forms.form1.deliveryDate.value = '';
 
 		document.forms.form1.timehour.selectedIndex = 7;
@@ -66,23 +66,23 @@
 	{
 		var selObj = document.getElementById('messageFormat');
 		var selIndex = selObj.selectedIndex;
-		var h = $('htmlMessage');
-		var t = $('textMessage');
+		var h = jQuery('#htmlMessage');
+		var t = jQuery('#textMessage');
 		
 		if (selObj.options[selIndex].value == "HTML")
 		{
-			h.style.display='inline';
-			t.style.display='none';
+			h.css('display','inline');
+			t.css('display','none');
 		}
 		if (selObj.options[selIndex].value == "Text")
 		{
-			h.style.display='none';
-			t.style.display='inline';
+			h.css('display','none');
+			t.css('display','inline');
 		}
 		if (selObj.options[selIndex].value == "HTML & Text")
 		{
-			h.style.display='inline';
-			t.style.display='inline';
+			h.css('display','inline');
+			t.css('display','inline');
 		}
 	
 	}
@@ -103,9 +103,9 @@
 	
 	function validateScheduler(formAction, errorMessage, formField)
 	{
-		var f = $(formField);
+		var f = jQuery("#" + formField);
 		document.forms.form1.action.value=formAction;
-		if (f.value == ''){
+		if (f.val() == ''){
 			alert(errorMessage);
 			f.focus();
 		} else {

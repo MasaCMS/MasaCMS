@@ -133,7 +133,10 @@ to your own modified versions of Mura CMS.
 <cfif not attributes.jsLibLoaded>
 <cfif attributes.jsLib eq "jquery">
 <script src="#application.configBean.getContext()#/admin/js/jquery/jquery.js" type="text/javascript"></script>
+<script src="#application.configBean.getContext()#/admin/js/jquery/jquery-ui.js" type="text/javascript"></script>
 <cfelse>
+<script src="#application.configBean.getContext()#/admin/js/jquery/jquery.js" type="text/javascript"></script>
+<script src="#application.configBean.getContext()#/admin/js/jquery/jquery-ui.js" type="text/javascript"></script>
 <script src="#application.configBean.getContext()#/admin/js/prototype.js" type="text/javascript" language="Javascript"></script>
 </cfif>
 </cfif>

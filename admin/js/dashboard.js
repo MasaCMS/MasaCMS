@@ -41,9 +41,13 @@ function loadUserActivity(siteID)	{
 		var pars = 'fuseaction=cDashboard.loadUserActivity&siteID=' + siteID  + '&cacheid=' + Math.random();
 		
 		//location.href=url + "?" + pars;
-		var d = $('userActivityData');
-			d.innerHTML='<br/><img src="images/progress_bar.gif">';
-		var myAjax = new Ajax.Updater({success: 'userActivityData'}, url, {method: 'get', parameters: pars});
+		var d = jQuery('#userActivityData');
+			d.html('<br/><img src="images/progress_bar.gif">');
+			jQuery.get(url + "?" + pars, 
+					function(data) {
+					jQuery("#userActivityData").html(data);
+					}
+			);
 		return false;
 	}
 	
@@ -52,9 +56,13 @@ function loadPopularContent(siteID)	{
 		var pars = 'fuseaction=cDashboard.loadPopularContent&siteID=' + siteID  + '&cacheid=' + Math.random();
 		
 		//location.href=url + "?" + pars;
-		var d = $('popularContentData');
-			d.innerHTML='<br/><img src="images/progress_bar.gif">';
-		var myAjax = new Ajax.Updater({success: 'popularContentData'}, url, {method: 'get', parameters: pars});
+		var d = jQuery('#popularContentData');
+			d.html('<br/><img src="images/progress_bar.gif">');
+			jQuery.get(url + "?" + pars, 
+					function(data) {
+					jQuery("#popularContentData").html(data);
+					}
+			);
 		return false;
 	}
 	
@@ -63,9 +71,13 @@ function loadFormActivity(siteID)	{
 		var pars = 'fuseaction=cDashboard.loadFormActivity&siteID=' + siteID  + '&cacheid=' + Math.random();
 		
 		//location.href=url + "?" + pars;
-		var d = $('recentFormActivityData');
-			d.innerHTML='<br/><img src="images/progress_bar.gif">';
-		var myAjax = new Ajax.Updater({success: 'recentFormActivityData'}, url, {method: 'get', parameters: pars});
+		var d = jQuery('#recentFormActivityData');
+			d.html('<br/><img src="images/progress_bar.gif">');
+			jQuery.get(url + "?" + pars, 
+					function(data) {
+					jQuery("#recentFormActivityData").html(data);
+					}
+			);
 		return false;
 	}
 	
@@ -74,9 +86,13 @@ function loadEmailActivity(siteID)	{
 		var pars = 'fuseaction=cDashboard.loadEmailActivity&siteID=' + siteID  + '&cacheid=' + Math.random();
 		
 		//location.href=url + "?" + pars;
-		var d = $('emailBroadcastsData');
-			d.innerHTML='<div id="emailBroadcasts" class="separate"><h3>Email Broadcasts</h3><br/><img src="images/progress_bar.gif"></div>';
-		var myAjax = new Ajax.Updater({success: 'emailBroadcastsData'}, url, {method: 'get', parameters: pars});
+		var d = jQuery('#emailBroadcastsData');
+			d.html('<div id="emailBroadcasts" class="separate"><h3>Email Broadcasts</h3><br/><img src="images/progress_bar.gif"></div>');
+			jQuery.get(url + "?" + pars, 
+					function(data) {
+					jQuery("#emailBroadcastsData").html(data);
+					}
+			);
 		return false;
 	}
 	

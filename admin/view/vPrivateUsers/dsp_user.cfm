@@ -43,7 +43,8 @@ to your own modified versions of Mura CMS.
 <cfsilent>
 <cfhtmlhead text="#session.dateKey#">
 <cfparam name="attributes.activeTab" default="0" />
-<cfset rsSubTypes=application.classExtensionManager.getSubTypesByType(2,attributes.siteID) />
+<cfset userPoolID=application.settingsManager.getSite(attributes.siteID).getPrivateUserPoolID()>
+<cfset rsSubTypes=application.classExtensionManager.getSubTypesByType(2,userPoolID) />
 <cfquery name="rsNonDefault" dbtype="query">
 select * from rsSubTypes where subType <> 'Default'
 </cfquery>
@@ -80,7 +81,7 @@ select * from rsSubTypes where subType <> 'Default'
 	<dl class="oneColumn">
 		<cfif rsNonDefault.recordcount>
 		<dt class="first">#application.rbFactory.getKeyValue(session.rb,'user.type')#</dt>
-		<dd><select name="subtype" class="dropdown" onchange="resetExtendedAttributes('#request.userBean.getUserID()#','2',this.value,'#application.settingsManager.getSite(attributes.siteID).getPrivateUserPoolID()#','#application.configBean.getContext()#','#application.settingsManager.getSite(application.settingsManager.getSite(attributes.siteID).getPrivateUserPoolID()).getThemeAssetPath()#');">
+		<dd><select name="subtype" class="dropdown" onchange="resetExtendedAttributes('#request.userBean.getUserID()#','2',this.value,'#userPoolID#','#application.configBean.getContext()#','#application.settingsManager.getSite(attributes.siteid).getThemeAssetPath()#');">
 			<option value="Default" <cfif  request.userBean.getSubType() eq "Default">selected</cfif>> #application.rbFactory.getKeyValue(session.rb,'user.default')#</option>
 				<cfloop query="rsNonDefault">
 					<option value="#rsNonDefault.subtype#" <cfif request.userBean.getSubType() eq rsNonDefault.subtype>selected</cfif>>#rsNonDefault.subtype#</option>
@@ -231,7 +232,7 @@ select * from rsSubTypes where subType <> 'Default'
 		<div class="page_aTab">
 			<span id="extendSetsDefault"></span>
 			<script type="text/javascript">
-			loadExtendedAttributes('#request.userbean.getUserID()#','#request.userbean.getType()#','#request.userBean.getSubType()#','#application.settingsManager.getSite(attributes.siteID).getPrivateUserPoolID()#','#application.configBean.getContext()#','#application.settingsManager.getSite(application.settingsManager.getSite(attributes.siteID).getPrivateUserPoolID()).getThemeAssetPath()#');
+			loadExtendedAttributes('#request.userbean.getUserID()#','#request.userbean.getType()#','#request.userBean.getSubType()#','#userPoolID#','#application.settingsManager.getSite(attributes.siteid).getThemeAssetPath()#');
 			</script>	
 	</div>
 	<cfhtmlhead text='<script type="text/javascript" src="js/user.js"></script>'>

@@ -47,14 +47,12 @@
 
 function addSearchParam(){
 	
-	var num =$('searchParams').getElementsByTagName('LI').length;
-	var str= '<li>' + $('searchParams').getElementsByTagName('LI')[0].innerHTML + '</li>';
-	new Insertion.Bottom('searchParams', str);
-	
-	var newParam =$('searchParams').getElementsByTagName('LI')[num];
-	
-	var newParamSelects = newParam.getElementsByTagName('SELECT');
-	var newParamInputs = newParam.getElementsByTagName('INPUT');
+	var num =jQuery('#searchParams > li').length;
+	var str= '<li>' + jQuery('#searchParams > li').html() + '</li>';
+	jQuery('#searchParams').append(str);
+	var newParam = jQuery('#searchParams > li:last');
+	var newParamSelects = jQuery('#searchParams > li:last > select');
+	var newParamInputs = jQuery('#searchParams > li:last > input');
 	
 	newParamSelects[0].selectedIndex=0;
 	newParamSelects[1].selectedIndex=0;
@@ -65,9 +63,9 @@ function addSearchParam(){
 }
 
 function setSearchParamNames(param,num){
-	
-	var newParamSelects = param.getElementsByTagName('SELECT');
-	var newParamInputs = param.getElementsByTagName('INPUT');
+
+	var newParamSelects =jQuery(param).find("select");
+	var newParamInputs = jQuery(param).find("input");
 	
 	newParamSelects[0].setAttribute('name','paramRelationship' + num);
 	newParamSelects[1].setAttribute('name','paramField'  + num);
@@ -78,34 +76,40 @@ function setSearchParamNames(param,num){
 }
 
 function setSearchButtons(){
-	var params=$('searchParams').getElementsByTagName('LI');
+	var params=jQuery('#searchParams > li');
 	var num =params.length;
 	
 	if(num == 1){
-		var buttons = params[0].getElementsByTagName('A');
-			buttons[0].style.display='none';
-			buttons[1].style.display='';
-			params[0].getElementsByTagName('SELECT')[0].style.display='none';
+		var buttons = params.find("a");
+			jQuery(buttons[0]).hide();
+			jQuery(buttons[1]).show();
+			params.find("select:first").hide();
 	} else {
-		var buttons = params[0].getElementsByTagName('A');
-		buttons[0].style.display='none';
-		buttons[1].style.display='none';
-		params[0].getElementsByTagName('SELECT')[0].style.display='none';
 			
-		for(var p=1;p<num;p++){
-			var buttons = params[p].getElementsByTagName('A');
-			params[p].getElementsByTagName('SELECT')[0].style.display='';
-			if(p!= num-1){
-				buttons[0].style.display='';
-				buttons[1].style.display='none';
-				
-			}else{
-				buttons[0].style.display='';
-				buttons[1].style.display='';
+		params.each(function(index){
+				if(index==0){
+					var buttons =jQuery(params[index]).find("a");
+					jQuery(params[index]).find('select:first').hide();
+					jQuery(buttons[0]).hide();
+					jQuery(buttons[1]).hide();
+				} else {
+					var buttons =jQuery(params[index]).find("a");
+					jQuery(params[index]).find('select:first').show();
+					
+					if(index!= num-1){
+						jQuery(buttons[0]).show();
+						jQuery(buttons[1]).hide();
+						
+					}else{
+						jQuery(buttons[0]).show();
+						jQuery(buttons[1]).show();
+					}
+					
+					 setSearchParamNames(params[index],index + 1);
+				}
 			}
-			
-			 setSearchParamNames(params[p],p + 1);
-		}
+		);
+		
 	}
 	
 	return false;
@@ -113,7 +117,7 @@ function setSearchButtons(){
 
 function removeSeachParam(option){
 
-	new Element.remove($(option));
+	new jQuery(option).remove();
 	
 	return false;
 }

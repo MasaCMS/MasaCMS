@@ -324,7 +324,7 @@ to your own modified versions of Mura CMS.
 
 <cffunction name="setDomainAlias" access="public" output="false">
 	<cfargument name="domainAlias" type="String" />
-	<cfset variables.instance.domainAlias = arguments.domainAlias />
+	<cfset variables.instance.domainAlias = reReplace(arguments.domainAlias,"(#chr(10)##chr(13)#)|\n|(\r\n)",chr(13)&chr(10),"all") />
 	<cfreturn this>
 </cffunction>
 

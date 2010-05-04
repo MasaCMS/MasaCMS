@@ -11,7 +11,7 @@
 		<script src="#event.getSite().getAssetPath()#/js/DD_belatedPNG.js"></script>
 		<script>
 		  /* EXAMPLE */
-		  DD_belatedPNG.fix('dd.rating');
+		  DD_belatedPNG.fix('dd.rating, dd.comments');
 		  /* string argument can be any CSS selector */
 		</script>
 	<![endif]-->

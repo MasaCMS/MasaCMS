@@ -44,8 +44,8 @@ to your own modified versions of Mura CMS.
 <cfset typeList="TextBox,TextArea,HTMLEditor,SelectBox,MultiSelectBox,RadioGroup,File,Hidden"/>
 <cfoutput>
 <cfif attributes.action eq "add">
-<a href="javascript:;" id="#HTMLEditFormat(attributes.formName)#open" onclick="new Effect.SlideDown($('#HTMLEditFormat(attributes.formName)#container'));this.style.display='none';$('#HTMLEditFormat(attributes.formName)#close').style.display='';return false;">[Add New Attribute]</a>
-<a href="javascript:;" style="display:none;" id="#HTMLEditFormat(attributes.formName)#close" onclick="new Effect.SlideUp($('#HTMLEditFormat(attributes.formName)#container'));this.style.display='none';$('#HTMLEditFormat(attributes.formName)#open').style.display='';return false;">[Close]</a>
+<a href="javascript:;" id="#HTMLEditFormat(attributes.formName)#open" onclick="jQuery('###HTMLEditFormat(attributes.formName)#container').slideDown();this.style.display='none';jQuery('###HTMLEditFormat(attributes.formName)#close').show();return false;">[Add New Attribute]</a>
+<a href="javascript:;" style="display:none;" id="#HTMLEditFormat(attributes.formName)#close" onclick="jQuery('###HTMLEditFormat(attributes.formName)#container').slideUp();this.style.display='none';jQuery('###HTMLEditFormat(attributes.formName)#open').show();return false;">[Close]</a>
 <br/>
 </cfif>
 <cfif attributes.action eq "add">
@@ -98,11 +98,11 @@ to your own modified versions of Mura CMS.
 
 <cfif attributes.action eq "add">
 <a class="submit" href="javascript:;" onclick="return submitForm(document.forms.#HTMLEditFormat(attributes.formName)#,'add');"><span>Add</span></a>
-<a class="submit" href="javascript:;" onclick="new Effect.SlideUp($('#HTMLEditFormat(attributes.formName)#container'));$('#HTMLEditFormat(attributes.formName)#close').style.display='none';$('#HTMLEditFormat(attributes.formName)#open').style.display='';return false;"><span>Cancel</span></a>
+<a class="submit" href="javascript:;" onclick="jQuery('###HTMLEditFormat(attributes.formName)#container').slideUp();jQuery('###HTMLEditFormat(attributes.formName)#close').hide();jQuery('###HTMLEditFormat(attributes.formName)#open').show();return false;"><span>Cancel</span></a>
 <cfelse>
 <a class="submit" href="javascript:;" onclick="return submitForm(document.forms.#HTMLEditFormat(attributes.formName)#,'update');"><span>Update</span></a>
 <a class="submit" href="javascript:;" onclick="return submitForm(document.forms.#HTMLEditFormat(attributes.formName)#,'delete','Delete Attribute?');"><span>Delete</span></a>
-<a class="submit" href="javascript:;" onclick="new Effect.SlideUp($('#HTMLEditFormat(attributes.formName)#container'));$('#HTMLEditFormat(attributes.formName)#close').style.display='none';$('#HTMLEditFormat(attributes.formName)#open').style.display='';return false;"><span>Cancel</span></a>
+<a class="submit" href="javascript:;" onclick="jQuery('###HTMLEditFormat(attributes.formName)#container'));jQuery('###HTMLEditFormat(attributes.formName)#close').hide();jQuery('###HTMLEditFormat(attributes.formName)#open').show();return false;"><span>Cancel</span></a>
 </cfif>
 
 <input name="orderno" type="hidden" value="#attributes.attributeBean.getOrderno()#"/>

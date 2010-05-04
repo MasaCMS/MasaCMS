@@ -43,7 +43,6 @@ to your own modified versions of Mura CMS.
 
 <script src="js/architecture.js" type="text/javascript" language="Javascript" ></script>
 <cfif myfusebox.originalfuseaction eq 'edit'>
-<script src="js/scriptaculous/src/scriptaculous.js" type="text/javascript" language="Javascript"></script>
 <script type="text/javascript">
   summaryLoaded=false;
 </script>

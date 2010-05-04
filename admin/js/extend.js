@@ -37,84 +37,71 @@
 	to your own modified versions of Mura CMS. */
 
 function showSaveSort(id){
-	$('showSort').style.display='none';
-	$('saveSort').style.display='';
+	jQuery('#showSort').hide();
+	jQuery('#saveSort').show();
 	
-	var items=document.getElementsByClassName("handle");
-	
-	if(items.length){
-		for(var i=0;i<items.length;i++){
-			items[i].style.display="";
+	jQuery(".handle").each(
+		function(index) {
+			jQuery(this).show();
 		}
-	}
+	);
 	
 	setSortable(id);
 	
 }
 	
 function showSort(id){
-	$('showSort').style.display='';
-	$('saveSort').style.display='none';
+	jQuery('#showSort').show();
+	jQuery('#saveSort').hide();
 	
-	var items=document.getElementsByClassName("handle");
-	
-	if(items.length){
-		for(var i=0;i<items.length;i++){
-			items[i].style.display="none";
+	jQuery(".handle").each(
+		function(index) {
+			jQuery(this).hide();
 		}
-	}
+	);
+	
+	jQuery("#" + id).sortable('destroy');
+	jQuery("#" + id).enableSelection();
 	
 }
 	
 function saveAttributeSort(id){
-	var atts=$(id).getElementsByTagName('li');
-	var attList="";
-	for(var a=0;a<atts.length;a++){
-		if(a>0){attList=attList + ",";}
-		attList=attList + atts[a].getAttribute("attributeID");	
-	}
-
+	var attArray=new Array();
+	
+	jQuery("#" + id + ' > li').each(
+		function(index) {
+			attArray.push( jQuery(this).attr("attributeID") );
+		}
+	);
+	
 	var url = "index.cfm";
-	var pars = 'fuseaction=cExtend.saveAttributeSort&attributeID=' + attList + '&cacheID=' + Math.random();	
+	var pars = 'fuseaction=cExtend.saveAttributeSort&attributeID=' + attArray.toString() + '&cacheID=' + Math.random();	
 	
 	//location.href=url + "?" + pars;
-	var myAjax = new Ajax.Request(
-			url, 
-			{
-				method: 'get', 
-				parameters: pars
-			}); 
+	jQuery.get(url + "?" + pars); 
 	showSort(id)
 }
 
 function saveExtendSetSort(id){
-	var sets=$(id).getElementsByTagName('li');
-	var setList="";
-	for(var s=0;s<sets.length;s++){
-		if(s>0){setList=setList + ",";}
-		setList=setList + sets[s].getAttribute("extendSetID");	
-	}
+	var setArray=new Array();
+	
+	jQuery("#" + id + ' > li').each(
+		function(index) {
+			setArray.push( jQuery(this).attr("attributeID") );
+		}
+	);
 
 	var url = "index.cfm";
-	var pars = 'fuseaction=cExtend.saveExtendSetSort&extendSetID=' + setList + '&cacheID=' + Math.random();	
+	var pars = 'fuseaction=cExtend.saveExtendSetSort&extendSetID=' + setArray.toString() + '&cacheID=' + Math.random();	
 	
 	//location.href=url + "?" + pars;
-	var myAjax = new Ajax.Request(
-			url, 
-			{
-				method: 'get', 
-				parameters: pars
-			}); 
-			
+	jQuery.get(url + "?" + pars); 	
 	showSort(id);
 }
 
 function setSortable(id){	
-
-	Sortable.create(id,
-     {dropOnEmpty:false,handle:'handle',containment:$(id),tree:false,constraint:false,onChange:function(){showSaveSort()}});
-
-	
+	jQuery("#" + id).sortable();
+	jQuery("#" + id).disableSelection();
 }
 
 function setBaseInfo(str){

@@ -60,7 +60,7 @@ to your own modified versions of Mura CMS.
 </cfloop>
 </select></dd>
 <dt>#application.rbFactory.getKeyValue(session.rb,'advertising.mediatype')#</dt>
-<dd><select name="mediaType" onchange="$('textBodyContainer').style.display=(this.value=='Text')?'':'none';$('newMediaContainer').style.display=(this.value=='Text')?'none':'';">
+<dd><select name="mediaType" onchange="jQuery('##textBodyContainer').css('display',(this.value=='Text')?'':'none');jQuery('##newMediaContainer').css('display',(this.value=='Text')?'none':'');">
 <cfloop list="#application.advertiserManager.getMediaTypes()#" index="m">
 <option value="#m#" <cfif request.creativeBean.getMediaType() eq m>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'advertising.mediatype.#m#')#</option>
 </cfloop>

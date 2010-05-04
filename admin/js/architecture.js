@@ -450,44 +450,60 @@ function setTargetParams(frm){
  
  document.forms["contentForm"].targetParams.value =tb + loc + dir + st + mb +rs + hist + sb + wp + hp + tp + lp;
   }
-  
-
-/*function loadSiteParents(siteid,contentid,parentid)	{
-		var url = 'index.cfm';
-		var pars = 'fuseaction=cArch.siteParents&siteid=' + siteid +'&contentid=' + contentid + '&parentid=' +parentid+ '&cacheid=' + Math.random();
-		var d = $('move');
-			d.innerHTML='<br/><img src="images/progress_bar.gif">';
-		var myAjax = new Ajax.Updater({success: 'move'}, url, {method: 'get', parameters: pars});
-	}*/
 		
 function loadSiteParents(siteid,contentid,parentid,keywords,isNew)	{
-		var url = 'index.cfm';
-		var pars = 'fuseaction=cArch.siteParents&compactDisplay=true&siteid=' + siteid +'&contentid=' + contentid + '&parentid=' +parentid+ '&keywords=' + keywords + '&isNew=' + isNew + '&cacheid=' + Math.random();
-		var d = $('move');
-			d.innerHTML='<br/><img src="images/progress_bar.gif"><input type=hidden name=parentid value=' + parentid + ' >';
-		var myAjax = new Ajax.Updater({success: 'move'}, url, {method: 'get', parameters: pars});
-	}
+	var url = 'index.cfm';
+	var pars = 'fuseaction=cArch.siteParents&compactDisplay=true&siteid=' + siteid +'&contentid=' + contentid + '&parentid=' +parentid+ '&keywords=' + keywords + '&isNew=' + isNew + '&cacheid=' + Math.random();
+	var d = jQuery('#move');
+	d.html('<br/><img src="images/progress_bar.gif"><input type=hidden name=parentid value=' + parentid + ' >');
+	jQuery.get(url + "?" + pars, 
+			function(data) {
+			jQuery('#move').html(data);
+			}
+		);
+}
+
+function loadAssocImages(siteid,fileid,contentid,keywords,isNew)	{
+	var url = 'index.cfm';
+	var pars = 'fuseaction=cArch.assocImages&compactDisplay=true&siteid=' + siteid +'&fileid=' + fileid + '&contentid=' + contentid + '&keywords=' + keywords + '&isNew=' + isNew + '&cacheid=' + Math.random();
+	var d = jQuery('#selectAssocImage');
+	//d.html('<br/><img src="images/progress_bar.gif">');
+	jQuery.get(url + "?" + pars, 
+			function(data) {
+			jQuery('#selectAssocImage').html(data);
+			jQuery('#selectAssocImageResults').slideDown();
+			}
+		);
+}
 
 function loadObjectClass(siteid,classid,subclassid)	{
-		var url = 'index.cfm';
-		var pars = 'fuseaction=cArch.loadclass&compactDisplay=true&siteid=' + siteid +'&classid=' + classid  +'&subclassid=' + subclassid + '&cacheid=' + Math.random();
-		var d = $('classList');
-			d.innerHTML='<br/><img src="images/progress_bar.gif">';
-		var myAjax = new Ajax.Updater({success: 'classList'}, url, {method: 'get', parameters: pars});
-		return false;
-	}
+	var url = 'index.cfm';
+	var pars = 'fuseaction=cArch.loadclass&compactDisplay=true&siteid=' + siteid +'&classid=' + classid  +'&subclassid=' + subclassid + '&cacheid=' + Math.random();
+	var d=jQuery('#classList');
+	d.html('<br/><img src="images/progress_bar.gif">');
+	jQuery.get(url + "?" + pars, 
+		function(data) {
+		jQuery('#classList').html(data);
+		}
+	);
+	return false;
+}
 
 function loadNotify(siteid,contentid,parentid)	{
 		var url = 'index.cfm';
 		var pars = 'fuseaction=cArch.loadNotify&compactDisplay=true&siteid=' + siteid +'&contentid=' + contentid +'&parentid=' + parentid + '&cacheid=' + Math.random();
-		var d = $('selectNotify');
-		if(d.innerHTML==''){
-			d.style.display='';
-			d.innerHTML='<br/><img src="images/progress_bar.gif">';
-		var myAjax = new Ajax.Updater({success: 'selectNotify'}, url, {method: 'get', parameters: pars});
+		var d = jQuery('#selectNotify');
+		if(d.html()==''){
+			d.show();
+			d.html('<br/><img src="images/progress_bar.gif">');
+			jQuery.get(url + "?" + pars, 
+					function(data) {
+					jQuery('#selectNotify').html(data);
+					}
+			);
 		}
 		else {
-			d.style.display = (d.style.display == 'none')?'':'none';  
+			d.toggle();  
 		}
 		
 		return false;
@@ -500,9 +516,13 @@ function loadRelatedContent(siteid,keywords,isNew)	{
 		/*if(keywords != ''){
 		location.href="?" + pars;
 		}*/
-		var d = $('selectRelatedContent');
-			d.innerHTML='<br/><img src="images/progress_bar.gif">';
-		var myAjax = new Ajax.Updater({success: 'selectRelatedContent'}, url, {method: 'get', parameters: pars});
+		var d = jQuery('#selectRelatedContent');
+			d.html('<br/><img src="images/progress_bar.gif">');
+			jQuery.get(url + "?" + pars, 
+					function(data) {
+					jQuery('#selectRelatedContent').html(data);
+					}
+			);
 	}
 	
 	
@@ -519,7 +539,7 @@ function addRelatedContent(contentID,contentType,title)	{
 			admin.className="administration";
 		var deleteLink=document.createElement("A");
 			deleteLink.setAttribute("href","#");
-			deleteLink.onclick=function (){Element.remove("c" + contentID); stripe('stripe');return false;}
+			deleteLink.onclick=function (){jQuery("#c" + contentID).remove(); stripe('stripe');return false;}
 			deleteLink.appendChild(document.createTextNode('Delete'));
 	
 		var deleteUL=document.createElement("UL");
@@ -540,7 +560,7 @@ function addRelatedContent(contentID,contentType,title)	{
 			row.appendChild(type);
 			row.appendChild(admin);
    			tbody.appendChild(row);
-		 if($('noFilters') != null) $('noFilters').style.display='none';
+		 if(jQuery('#noFilters').length) jQuery('#noFilters').hide();
 		
 		 stripe('stripe');
 		 dirtyRelatedContent = true;
@@ -551,7 +571,7 @@ function addRelatedContent(contentID,contentType,title)	{
 
 function removeRelatedContent(contentID,confirmText){
 	if(confirm(confirmText)){
-		Element.remove(contentID); 
+		jQuery("#" + contentID).remove(); 
 		stripe('stripe');
 		dirtyRelatedContent = true;
 		}
@@ -602,7 +622,8 @@ function form_is_modified(oForm)
 function copyThis(siteID, contentID, _copyAll){
 	var url = 'index.cfm';
 	var pars = 'fuseaction=cArch.saveCopyInfo&siteid=' + siteID +'&contentid=' + contentID + '&copyAll='+ _copyAll + '&cacheid=' + Math.random();
-	new Ajax.Request(url, {parameters:pars});
+	
+	jQuery.get(url + "?" + pars);
 	
 	copyContentID = contentID;
 	copySiteID = siteID;
@@ -614,11 +635,15 @@ function copyThis(siteID, contentID, _copyAll){
 function pasteThis(parentID){
 	var url = 'index.cfm';
 	var pars = 'fuseaction=cArch.copy&compactDisplay=true&siteid=' + copySiteID +'&copyAll=' + copyAll +'&contentid=' + copyContentID + '&parentid=' + parentID + '&cacheid=' + Math.random();
-	var d = $('newPasteLink');
-	d.style.background='url(/admin/images/ajax-loader.gif) no-repeat 1px 5px;';
-	reloadURL = document.getElementById('newZoomLink').href;
+	var d = jQuery('#newPasteLink');
+	d.css('background','url(/admin/images/ajax-loader.gif) no-repeat 1px 5px;');
+	reloadURL = jQuery('#newZoomLink').attr("href");
 
-	new Ajax.Request(url, {parameters:pars, onSuccess:reloadPage});	
+	jQuery.get(url + "?" + pars, 
+			function(data) {
+				reloadPage();
+			}
+	);
 }
 
 function reloadPage(){
@@ -637,39 +662,38 @@ function loadExtendedAttributes(contentHistID,type,subType,_siteID,_context,_the
 		context=_context;
 		themeAssetPath=_themeAssetPath;
 		//location.href=url + "?" + pars;
-		var d = $('extendSetsDefault');
-		var b = $('extendSetsBasic');
-		if(d != null || b != null){	
+		var d = jQuery('#extendSetsDefault');
+		var b = jQuery('#extendSetsBasic');
+		if(d.length || b.length){	
 			
-			if(d != null)
-			{d.innerHTML='<br/><img src="images/progress_bar.gif">';}
+			if(d.length)
+			{d.html('<br/><img src="images/progress_bar.gif">');}
 
-			if(b != null)
-			{b.innerHTML='<br/><img src="images/progress_bar.gif">';}
+			if(b.length)
+			{b.html('<br/><img src="images/progress_bar.gif">');}
 			
-			var myAjax = new Ajax.Request(url, {method: 'get', parameters: pars, onSuccess:setExtendedAttributes});
+			jQuery.get(url + "?" + pars, 
+					function(data) {
+					setExtendedAttributes(data);
+					}
+			);
 		}
 		
 		return false;
 	}
 
-function setExtendedAttributes(transport){
-	var r=eval("(" + transport.responseText + ")");
-	var extended=document.getElementById("extendSetsDefault");
-	var basic=document.getElementById("extendSetsBasic");
-	
-	if(extended != null)
-	{extended.innerHTML=r.extended;}
-	
-	if(basic != null)
-	{basic.innerHTML=r.basic;}
+function setExtendedAttributes(data){
+	var r=eval("(" + data + ")");
+
+	jQuery("#extendSetsDefault").html(r.extended);
+	jQuery("#extendSetsBasic").html(r.basic);
 
 	//checkExtendSetTargeting();
 	setHTMLEditors(context,themeAssetPath);
 }
 
 function checkExtendSetTargeting(){
-	var extendSets=document.getElementsByClassName('extendset');
+	var extendSets=jQuery('.extendset');
 	var found=false;
 	var started=false;
 	var empty=true;
@@ -723,11 +747,11 @@ function checkExtendSetTargeting(){
 		}
 		
 		if(empty){
-			$('extendMessage').style.display="";
-			$('extendDL').style.display="none";
+			jQuery('#extendMessage').show();
+			jQuery('#extendDL').hide();
 		} else {
-			$('extendMessage').style.display="none";
-			$('extendDL').style.display="";
+			jQuery('#extendMessage').hide();
+			jQuery('#extendDL').show();
 		}
 	
 	}
@@ -772,14 +796,19 @@ function setFormElementsDisplay(container,display){
 
 
 function loadCategoryFeatureStartStop(id,display,siteID){
- if($(id).innerHTML.length > 10){
-  document.getElementById(id).style.display = (display== true)?'':'none';
+ var cat=jQuery("#" + id);
+ if(cat.html().length > 10){
+	 cat.toggle();
  } else if (display == true) {
   var url = 'index.cfm';
   var idParam = id;
   var pars = 'fuseaction=cArch.loadCategoryFeatureStartStop&id=' + idParam.replace(/editDates/, "") + '&siteID=' + siteID + '&cacheid=' + Math.random();
-  $(id).style.display = '';
-  var myAjax = new Ajax.Updater({success: id}, url, {method: 'get', parameters: pars});
+  cat.show();
+  jQuery.get(url + "?" + pars, 
+			function(data) {
+			jQuery("#" + id).html(data);
+			}
+	);
   
  }
 }

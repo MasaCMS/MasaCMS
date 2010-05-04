@@ -45,27 +45,30 @@ function loadExtendedAttributes(baseID,type,subType,_siteID,_context,_themeAsset
 		themeAssetPath=_themeAssetPath
 		
 		//location.href=url + "?" + pars;
-		var d = $('extendSetsDefault');
+		var d = jQuery('#extendSetsDefault');
 		
-		if(d != null){
-			d.innerHTML='<br/><img src="images/progress_bar.gif">';
-			$('extendSetsDefault').innerHTML='<br/><img src="images/progress_bar.gif">';
-			var myAjax = new Ajax.Request(url, {method: 'get', parameters: pars, onSuccess:setExtendedAttributes});
+		if(d.length){
+			d.html('<br/><img src="images/progress_bar.gif">');
+			jQuery.get(url + "?" + pars, 
+					function(data) {
+					setExtendedAttributes(data);
+					}
+			);
 		}
 		
 		return false;
 	}
 
-function setExtendedAttributes(transport){
-	var r=eval("(" + transport.responseText + ")");
-	$("extendSetsDefault").innerHTML=r.extended;
-	$("extendSetsBasic").innerHTML=r.basic;
+function setExtendedAttributes(data){
+	var r=eval("(" + data + ")");
+	jQuery("#extendSetsDefault").html(r.extended);
+	jQuery("#extendSetsBasic").html(r.basic);
 	//checkExtendSetTargeting();
 	setHTMLEditors(context,themeAssetPath);
 }
 
 function checkExtendSetTargeting(){
-	var extendSets=document.getElementsByClassName('extendset');
+	var extendSets=jQuery('.extendset');
 	var found=false;
 	var started=false;
 	var empty=true;
@@ -119,11 +122,11 @@ function checkExtendSetTargeting(){
 		}
 		
 		if(empty){
-			$('extendMessage').style.display="";
-			$('extendDL').style.display="none";
+			jQuery('#extendMessage').show();
+			jQuery('#extendDL').hide();
 		} else {
-			$('extendMessage').style.display="none";
-			$('extendDL').style.display="";
+			jQuery('#extendMessage').hide();
+			jQuery('#extendDL').show();
 		}
 	
 	}
