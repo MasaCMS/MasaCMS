@@ -119,6 +119,7 @@ to your own modified versions of Mura CMS.
 	<cfset var started=false />
 	<cfset var jointables="" />
 	<cfset var jointable="">
+	<cfset var openGrouping =false />
 
 	<cfset var rs=""/>
 
