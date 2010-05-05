@@ -82,7 +82,7 @@
 	<cfset rc.userBean=variables.userManager.read(rc.userid) />
 	<cfset rc.campaignBean=variables.advertiserManager.readCampaign(rc.campaignid) />
 	<cfset rc.placementBean=variables.advertiserManager.readPlacement(rc.placementid) />
-	<cfset rc.creativeBean=variables.advertiserManage.readCreative(rc.placementBean.getCreativeID()) />
+	<cfset rc.creativeBean=variables.advertiserManager.readCreative(rc.placementBean.getCreativeID()) />
 	<cfset rc.adZoneBean=variables.advertiserManager.readAdZone(rc.placementBean.getAdZoneID()) />
 	<cfset variables.advertiserManager.getReportDataByPlacement(rc,rc.placementBean) />
 </cffunction>

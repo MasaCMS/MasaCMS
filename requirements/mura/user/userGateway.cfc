@@ -120,7 +120,7 @@ to your own modified versions of Mura CMS.
 	<cfset var jointables="" />
 	<cfset var jointable="">
 	<cfset var openGrouping =false />
-
+	<cfset var userPoolID="">
 	<cfset var rs=""/>
 
 	<cfif not isObject(arguments.data)>
@@ -136,6 +136,12 @@ to your own modified versions of Mura CMS.
 	
 	<cfif isNumeric(arguments.isPublic)>
 		<cfset params.setIsPublic(arguments.isPublic)>
+	</cfif>
+	
+	<cfif params.getIsPublic() eq 0 >
+		<cfset userPoolID=variables.settingsManager.getSite(params.getSiteID()).getPrivateUserPoolID()>
+	<cfelse>
+		<cfset userPoolID=variables.settingsManager.getSite(params.getSiteID()).getPublicUserPoolID()>
 	</cfif>
 	
 	<cfset rsParams=params.getParams() />
@@ -157,11 +163,7 @@ to your own modified versions of Mura CMS.
 	</cfloop>
 	
 	where tusers.type=2 and tusers.isPublic =#params.getIsPublic()# and 
-	tusers.siteid = <cfif params.getIsPublic() eq 0 >
-		'#variables.settingsManager.getSite(params.getSiteID()).getPrivateUserPoolID()#'
-		<cfelse>
-		'#variables.settingsManager.getSite(params.getSiteID()).getPublicUserPoolID()#'
-		</cfif>
+	tusers.siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#userPoolID#">
 		
 		<cfif rsParams.recordcount>
 		<cfloop query="rsParams">
@@ -204,7 +206,7 @@ to your own modified versions of Mura CMS.
 											where tclassextenddatauseractivity.attributeID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#param.getField()#">
 											<cfelse>
 											inner join tclassextendattributes on (inner join tclassextendattributes on (tclassextenddatauseractivity.attributeID = tclassextendattributes.attributeID))
-											where tclassextendattributes.siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.feedBean.getSiteID()#">
+											where tclassextendattributes.siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#userPoolID#">
 											and tclassextendattributes.name=<cfqueryparam cfsqltype="cf_sql_varchar" value="#param.getField()#">
 											</cfif>
 											and tclassextenddatauseractivity.attributeValue #param.getCondition()# <cfif param.getCondition() eq "IN">(</cfif><cfqueryparam cfsqltype="cf_sql_#param.getDataType()#" value="#param.getCriteria()#" list="#iif(param.getCondition() eq 'IN',de('true'),de('false'))#"><cfif param.getCondition() eq "IN">)</cfif>)

@@ -78,6 +78,9 @@ to your own modified versions of Mura CMS.
 	<cfif len(getContextRoot()) and getContextRoot() NEQ "/">
 		<cfset parsed_path_info = replace(parsed_path_info,getContextRoot(),"")/>
 	</cfif>
+	<cfif len(application.configBean.getContext())>
+		<cfset parsed_path_info = replace(parsed_path_info,application.configBean.getContext(),"")/>
+	</cfif>
 	<cfif parsed_path_info eq cgi.script_name>
 		<cfset cgi_path=""/>
 	<cfelse>
