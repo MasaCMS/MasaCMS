@@ -47,7 +47,7 @@ to your own modified versions of Mura CMS.
 	<cfset _component=event.getValue("component")>
 	
 	<cfif isStruct(_component)>
-		<cfset structAppend(_component,rsTemplate,false)>
+		<cfset structAppend(_component,rsTemplate,true)>
 	<cfelse>
 		<cfset event.setValue("component",rsTemplate)>
 	</cfif>
