@@ -722,9 +722,16 @@ to your own modified versions of Mura CMS.
 		<!--- BEGIN CONTENT TYPE: FILE --->	
 		<!---<cfif newBean.gettype() eq 'File'>--->
 				
-			<cfif isDefined('arguments.data.newfile') and arguments.data.newfile neq ''>
+			<cfif isDefined('arguments.data.newfile') and len(arguments.data.newfile)>
 				
-				<cffile action="upload" result="tempFile" filefield="NewFile" nameconflict="makeunique" destination="#variables.configBean.getTempDir()#">
+				<!--- Check to see if it's a posted binary file--->
+				<cfif listFindNoCase("tmp,upload",listLast(arguments.data.newfile,"."))>
+					<cffile action="upload" result="tempFile" filefield="NewFile" nameconflict="makeunique" destination="#variables.configBean.getTempDir()#">
+				<!--- Else fake it to think it was a posted files--->
+				<cfelse>
+					<cfset tempFile=variables.fileManager.emulateUpload(arguments.data.newfile)>
+				</cfif>
+				
 				<cfset theFileStruct=variables.fileManager.process(tempFile,newBean.getSiteID()) />
 				<cfset newBean.setfileID(variables.fileManager.create(theFileStruct.fileObj,newBean.getcontentID(),newBean.getSiteID(),tempFile.ClientFile,tempFile.ContentType,tempFile.ContentSubType,tempFile.FileSize,newBean.getModuleID(),tempFile.ServerFileExt,theFileStruct.fileObjSmall,theFileStruct.fileObjMedium)) />
 				

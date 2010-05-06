@@ -63,6 +63,7 @@ to your own modified versions of Mura CMS.
 <cfset variables.instance.Display = 1 />
 <cfset variables.instance.ParentID = "" />
 <cfset variables.instance.Type = "" />
+<cfset variables.instance.newFile = "" />
 <cfset variables.instance.subType = "Default" />
 
 <cfif session.mura.isLoggedIn>
@@ -1278,6 +1279,16 @@ to your own modified versions of Mura CMS.
   
 <cffunction name="getHTMLTitle" returnType="string" output="false" access="public">
 	<cfreturn variables.instance.HTMLTitle />
+</cffunction>
+
+<cffunction name="setNewFile" output="false" access="public">
+    <cfargument name="newFile" required="true">
+	<cfset variables.instance.newFile = arguments.newFile />
+	<cfreturn this>
+</cffunction>
+  
+<cffunction name="getNewFile" returnType="any" output="false" access="public">
+	<cfreturn variables.instance.newFile />
 </cffunction>
 
 <cffunction name="getKidsQuery" returnType="query" output="false" access="public">

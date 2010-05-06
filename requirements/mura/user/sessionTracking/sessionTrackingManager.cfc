@@ -59,10 +59,10 @@ to your own modified versions of Mura CMS.
 	<cfargument name="keywords" type="string" required="yes" default="">
 	<cfargument name="contentID" type="string" required="yes" default="">
 	<cfset var myURLToken="" />
-	<cfparam name="session.remote_addr" default="#cgi.REMOTE_ADDR#">
+	<cfparam name="session.remote_addr" default="#request.remoteAddr#">
 	<cfparam name="session.trackingID" default="#createUUID()#">
 	
-	<cfif session.remote_addr eq cgi.REMOTE_ADDR>
+	<cfif session.remote_addr eq request.remoteAddr>
 		<cfif cgi.HTTP_USER_AGENT neq 'vspider'>
 			
 			<cftry>

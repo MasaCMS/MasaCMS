@@ -382,14 +382,26 @@ to your own modified versions of Mura CMS.
 	<cfif  userBean.getType() eq 1>	
 		<cfset pluginEvent.setValue("groupBean",userBean)/>			
 		<cfset variables.pluginManager.announceEvent("onGroupDelete",pluginEvent)>	
+		<cfset variables.pluginManager.announceEvent("onBeforeGroupDelete",pluginEvent)>
+		<cfset variables.pluginManager.announceEvent("onBeforeGroup#userBean.getSubType()#Delete",pluginEvent)>				
 	<cfelse>
 		<cfset pluginEvent.setValue("userBean",userBean)/>	
-		<cfset variables.pluginManager.announceEvent("onUserDelete",pluginEvent)>	
+		<cfset variables.pluginManager.announceEvent("onUserDelete",pluginEvent)>
+		<cfset variables.pluginManager.announceEvent("onBeforeUserDelete",pluginEvent)>
+		<cfset variables.pluginManager.announceEvent("onBeforeUser#userBean.getSubType()#Delete",pluginEvent)>		
 	</cfif>
 	
 	<cfset variables.globalUtility.logEvent("UserID:#arguments.userid# Type:#userBean.getType()# User:#userBean.getFName()# #userBean.getFName()# Group:#userBean.getGroupName()# was deleted","mura-users","Information",true) />
 	<cfif len(userBean.getPhotoFileID())>
 		<cfset variables.fileManager.deleteVersion(userBean.getPhotoFileID()) />
+	</cfif>
+	
+	<cfif  userBean.getType() eq 1>			
+		<cfset variables.pluginManager.announceEvent("onAfterGroupDelete",pluginEvent)>
+		<cfset variables.pluginManager.announceEvent("onAfterGroup#userBean.getSubType()#Delete",pluginEvent)>				
+	<cfelse>
+		<cfset variables.pluginManager.announceEvent("onAfterUserDelete",pluginEvent)>
+		<cfset variables.pluginManager.announceEvent("onAfterUser#userBean.getSubType()#Delete",pluginEvent)>		
 	</cfif>
 	<cfset variables.userDAO.delete(arguments.userid,arguments.type) />
 	

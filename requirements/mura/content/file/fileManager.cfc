@@ -356,4 +356,63 @@ to your own modified versions of Mura CMS.
 	</cfif>	
 </cffunction>
 
+<cffunction name="emulateUpload" returntype="any" output="false">
+	<cfargument name="filePath" type="string" required="true" />
+	<cfargument name="destinationDir" type="string" required="true" default="#variables.configBean.getTempDir()#"/>
+	<cfset local = structNew() />
+	
+	<!--- create a URLconnection to the file to emulate uploading --->
+	<cfset local.filePath=replace(arguments.filePath,"\","","all")>
+	<cfset local.results=structNew()>
+	
+	<cfif not find("://",local.filePath) or  find("file://",local.filePath)>
+		<cfset local.filePath=replaceNoCase(local.filePath,"file://","")>
+		<cfset local.connection=createObject("java","java.net.URL").init("file://" & local.filePath).openConnection()>
+		<cfset local.connection.connect()>
+		<cfset local.results.contentType=listFirst(local.connection.getContentType() ,"/")>
+		<cfset local.results.contentSubType=listLast(local.connection.getContentType() ,"/")>
+		<cfset local.results.charSet=local.connection.getContentEncoding()>
+		<cfset local.results.fileSize=local.connection.getContentLength()>
+		<cffile action="readBinary" file="#local.filePath#" variable="local.fileContent">
+	<cfelse>
+		<cfif len(variables.configBean.getProxyServer())>
+			<cfhttp url="#local.filePath#" result="local.remoteGet" getasbinary="yes" 
+			proxyUser="#variables.configBean.getProxyUser()#" proxyPassword="#variables.configBean.getProxyPassword()#"
+			proxyServer="#variables.configBean.getProxyServer()#" proxyPort="#variables.configBean.getProxyPort()#">
+		<cfelse>
+			<cfhttp url="#local.filePath#" result="local.remoteGet" getasbinary="yes">
+		</cfif>
+
+		<cfset local.results.contentType=listFirst(local.remoteGet.mimeType ,"/")>
+		<cfset local.results.contentSubType=listLast(local.remoteGet.mimeType ,"/")>
+		<cfset local.results.charSet=local.remoteGet.charSet>
+		<cfset local.results.fileSize=len(local.remoteGet.fileContent)>
+		<cfset local.fileContent=local.remoteGet.fileContent>
+			
+	</cfif>
+
+	<cfset local.results.serverFileExt=listLast(local.filePath ,".")>
+	<cfset local.results.serverDirectory=arguments.destinationDir>
+	<cfset local.results.serverFile=listLast(local.filePath ,"/")>
+	<cfset local.results.clientFile=listLast(local.filePath ,"/")>
+	<cfset local.results.serverFileName=listFirst(local.results.serverFile ,".")>
+	<cfset local.results.clientFileName=listFirst(local.results.clientFile ,".")>
+	<cfset local.results.clientFileExt=listLast(local.filePath ,".")>
+	
+	<cfset local.fileuploaded=false>
+	<cfset local.filecreateattempt=1>
+	<cfloop condition="not local.fileuploaded">
+		<cfif not fileExists("#local.results.serverDirectory#/#local.results.serverFile#")>
+			<cffile action="write" file="#local.results.serverDirectory#/#local.results.serverFile#" output="#local.fileContent#" >
+			<cfset local.fileuploaded=true>
+		<cfelse>
+			<cfset local.results.serverFile=local.result.serverFileName & local.filecreateattempt & "." & local.results.serverFileExt>
+			<cfset local.filecreateattempt=local.filecreateattempt+1>
+		</cfif>
+	</cfloop>
+	
+	<cfreturn local.results>
+
+</cffunction>
+
 </cfcomponent>

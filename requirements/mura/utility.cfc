@@ -161,7 +161,7 @@ to your own modified versions of Mura CMS.
 <cfset user=session.mura.fname & " " & session.mura.lname />
 </cfif>
 
-<cfset msg="#msg# By #user# from #cgi.REMOTE_ADDR#" />
+<cfset msg="#msg# By #user# from #request.remoteAddr#" />
 
 	<cflog 
 		text="#msg#"

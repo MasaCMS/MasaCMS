@@ -89,6 +89,7 @@ to your own modified versions of Mura CMS.
 	<!--- Used to help CF work with missing files and dir indexes --->
 	<cfset this.welcomeFileList = "">
 	
+	<cfset this.clientManagement = true>
 	<!--- Preferred method for ColdFusion 8, allows you to skip administering these settings in the CF admin	
 	1. Place Mura requirements directory in your webroot
 	2. Place Mura Custom Tags directory into "requirements/custom_tags/"

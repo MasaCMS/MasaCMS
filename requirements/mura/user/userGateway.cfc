@@ -48,6 +48,7 @@ to your own modified versions of Mura CMS.
 <cfargument name="configBean" type="any" required="yes"/>
 <cfargument name="settingsManager" type="any" required="yes"/>
 		<cfset variables.configBean=arguments.configBean />
+		<cfset variables.classExtensionManager=variables.configBean.getClassExtensionManager()>
 		<cfset variables.settingsManager=arguments.settingsManager />
 <cfreturn this />
 </cffunction> 
@@ -200,16 +201,16 @@ to your own modified versions of Mura CMS.
 				<cfif  listLen(param.getField(),".") gt 1>			
 					#param.getField()# #param.getCondition()# <cfif param.getCondition() eq "IN">(</cfif><cfqueryparam cfsqltype="cf_sql_#param.getDataType()#" value="#param.getCriteria()#" list="#iif(param.getCondition() eq 'IN',de('true'),de('false'))#"><cfif param.getCondition() eq "IN">)</cfif>  	
 				<cfelseif len(param.getField())>
-					tusers.userID IN (
-											select baseID from tclassextenddatauseractivity
-											<cfif isNumeric(param.getField())>
-											where tclassextenddatauseractivity.attributeID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#param.getField()#">
-											<cfelse>
-											inner join tclassextendattributes on (inner join tclassextendattributes on (tclassextenddatauseractivity.attributeID = tclassextendattributes.attributeID))
-											where tclassextendattributes.siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#userPoolID#">
-											and tclassextendattributes.name=<cfqueryparam cfsqltype="cf_sql_varchar" value="#param.getField()#">
-											</cfif>
-											and tclassextenddatauseractivity.attributeValue #param.getCondition()# <cfif param.getCondition() eq "IN">(</cfif><cfqueryparam cfsqltype="cf_sql_#param.getDataType()#" value="#param.getCriteria()#" list="#iif(param.getCondition() eq 'IN',de('true'),de('false'))#"><cfif param.getCondition() eq "IN">)</cfif>)
+					tusers.userid IN (
+						select tclassextenddatauseractivity.baseID from tclassextenddata
+						<cfif isNumeric(param.getField())>
+						where tclassextenddata.attributeID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#param.getField()#">
+						<cfelse>
+						inner join tclassextendattributes on (tclassextenddata.attributeID = tclassextendattributes.attributeID)
+						where tclassextendattributes.siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.feedBean.getSiteID()#">
+						and tclassextendattributes.name=<cfqueryparam cfsqltype="cf_sql_varchar" value="#param.getField()#">
+						</cfif>
+						and #variables.classExtensionManager.getCastString(param.getField(),arguments.feedBean.getSiteID())# #param.getCondition()# <cfif param.getCondition() eq "IN">(</cfif><cfqueryparam cfsqltype="cf_sql_#param.getDataType()#" value="#param.getCriteria()#" list="#iif(param.getCondition() eq 'IN',de('true'),de('false'))#"><cfif param.getCondition() eq "IN">)</cfif>)
 				</cfif>
 			</cfif>						
 		</cfloop>

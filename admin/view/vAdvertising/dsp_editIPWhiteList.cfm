@@ -43,7 +43,7 @@ to your own modified versions of Mura CMS.
 <cfoutput>
 <h2>#application.rbFactory.getKeyValue(session.rb,'advertising.ipwhitelist')#</h2>
 <cfset newline= chr(13)& chr(10)>
-<p>#application.rbFactory.getKeyValue(session.rb,'advertising.yourcurrentip')#: <strong>#cgi.REMOTE_ADDR#</strong></p>
+<p>#application.rbFactory.getKeyValue(session.rb,'advertising.yourcurrentip')#: <strong>#request.remoteAddr#</strong></p>
 <form name="form1" method="post" action="index.cfm?fuseaction=cAdvertising.updateIPWhiteList&siteid=#URLEncodedFormat(attributes.siteid)#">
 <dl class="oneColumn">
 <dt class="first">#application.rbFactory.getKeyValue(session.rb,'advertising.iplist')#</dt>

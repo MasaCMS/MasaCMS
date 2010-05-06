@@ -195,7 +195,7 @@
 
 	<cffunction name="setlog" output="false" access="public" returntype="Void">
 		<cfargument name="ipAddress" required="true" type="String">
-		<cfif isLogged(cgi.REMOTE_ADDR) eq 1>
+		<cfif isLogged(request.remoteAddr) eq 1>
 			<cfset updateLog(arguments.ipAddress)/>
 			<cfelse>
 			<cfset insertLog(arguments.ipAddress)/>

@@ -99,6 +99,21 @@ to your own modified versions of Mura CMS.
 <cfcatch></cfcatch>
 </cftry>
 
+<!--- look to see is there is a custom remote IP header in the settings.ini.cfm --->
+<cfset remoteIPHeader=application.configBean.getValue("remoteIPHeader")>
+<cfif len(remoteIPHeader)>
+	<cftry>
+		<cfif StructKeyExists(GetHttpRequestData().headers, remoteIPHeader)>
+	    	<cfset request.remoteAddr = GetHttpRequestData().headers[remoteIPHeader]>
+	    <cfelse>
+			<cfset request.remoteAddr = CGI.REMOTE_ADDR>
+	    </cfif>
+		<cfcatch type="any"><cfset request.remoteAddr = CGI.REMOTE_ADDR></cfcatch>
+	</cftry>
+<cfelse>
+	<cfset request.remoteAddr = CGI.REMOTE_ADDR>
+</cfif>
+
 <cfif structKeyExists(request,"doMuraGlobalSessionStart")>
 	<cfset application.pluginManager.executeScripts('onGlobalSessionStart')>
 </cfif>
