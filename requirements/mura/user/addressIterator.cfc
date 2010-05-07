@@ -43,7 +43,7 @@ to your own modified versions of Mura CMS.
 <cfcomponent extends="mura.iterator.queryIterator" output="false">
 	
 <cffunction name="packageRecord" access="public" output="false" returntype="any">
-	<cfset var address=createObject("component","addressBean").init(variables.configBean, variables.settingsManager, variables.userManager) />
+	<cfset var address=createObject("component","addressBean").init(variables.configBean, variables.settingsManager, variables.geoCoding, variables.userManager) />
 	<cfset address.set(queryRowToStruct(variables.records,currentIndex()))>
 	<cfif isObject(variables.recordTranslator)>
 		<cfset address.setTranslator(variables.recordTranslator)>
@@ -66,6 +66,12 @@ to your own modified versions of Mura CMS.
 <cffunction name="setSettingsManager" output="false" access="public">
 	<cfargument name="settingsManager">
 	<cfset variables.settingsManager=arguments.settingsManager>
+	<cfreturn this>
+</cffunction>
+
+<cffunction name="setGeoCoding" output="false" access="public">
+	<cfargument name="geoCoding">
+	<cfset variables.geoCoding=arguments.geoCoding>
 	<cfreturn this>
 </cffunction>
 </cfcomponent>

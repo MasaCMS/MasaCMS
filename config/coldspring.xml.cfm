@@ -234,6 +234,9 @@ to your own modified versions of Mura CMS.
 			<property name="configBean">
 			    <ref bean="configBean"/>
 			</property>
+			<property name="geoCoding">
+			    <ref bean="geoCoding"/>
+			</property>
 			<property name="settingsManager">
 			    <ref bean="settingsManager"/>
 			</property>

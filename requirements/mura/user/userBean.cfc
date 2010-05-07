@@ -1004,4 +1004,39 @@ to your own modified versions of Mura CMS.
 	
 	<cfreturn userlist>
 </cffunction>
+
+<cffunction name="readAddress" returntype="any" output="false">
+	<cfargument name="name" default="">
+	<cfargument name="addressID" default="">
+	<cfset var addressFound=false/>
+	<cfset var addressIterator=""/>
+	<cfset var address=""/>
+	
+	<cfif len(arguments.name) or len(arguments.addressID)>
+		<cfset addressIterator=getAddressesIterator()>
+		
+		<cfloop condition="addressIterator.hasNext() and not addressFound">
+			<cfset address=addressIterator.next()>
+		
+			<cfif len(arguments.name) and address.getAddressName() eq arguments.name>
+				<cfset addressFound = true/>
+			</cfif>
+			<cfif len(arguments.addressID) and address.getAddressID() eq arguments.addressID>
+				<cfset addressFound = true/>
+			</cfif>
+			
+		</cfloop>
+	</cfif>
+	
+	<cfif not addressFound>
+		<cfset address=getBean("address")>
+		<cfif len(arguments.name)>
+			<cfset address.setAddressName(arguments.name)>
+		</cfif>
+		<cfset address.setUserID(getUserID())>
+	</cfif>
+	
+	<cfreturn address>
+</cffunction>
+
 </cfcomponent>

@@ -71,9 +71,11 @@ to your own modified versions of Mura CMS.
 	<cfargument name="configBean" type="any" required="yes"/>
 	<cfargument name="settingsManager" type="any" required="yes"/>
 	<cfargument name="geoCoding" type="any" required="yes"/>
+	<cfargument name="userManager" type="any" required="yes"/>
 		<cfset variables.configBean=arguments.configBean />
 		<cfset variables.settingsManager=arguments.settingsManager />
 		<cfset variables.geoCoding=arguments.geoCoding />
+		<cfset variables.userManager=arguments.userManager />
 	<cfreturn this />
 	</cffunction>
 
@@ -493,7 +495,17 @@ to your own modified versions of Mura CMS.
 </cffunction>
 
 <cffunction name="save" output="false" access="public" returntype="any">
-	<cfset variables.userManager.updateAddress(this)>
+	<cfset var rs="">
+	<cfquery name="rs" datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDbUsername()#" password="#variables.configBean.getDbPassword()#">
+	select addressID from tuseraddresses where addressID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getAddressID()#">
+	</cfquery>
+	
+	<cfif rs.recordcount>
+		<cfset variables.userManager.updateAddress(this)>
+	<cfelse>
+		<cfset variables.userManager.createAddress(this)>
+	</cfif>
+	
 	<cfreturn this>
 </cffunction>
 
