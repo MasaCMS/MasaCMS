@@ -1034,6 +1034,7 @@ to your own modified versions of Mura CMS.
 			<cfset address.setAddressName(arguments.name)>
 		</cfif>
 		<cfset address.setUserID(getUserID())>
+		<cfset address.setSiteID(getSiteID())>
 	</cfif>
 	
 	<cfreturn address>
