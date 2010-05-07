@@ -415,4 +415,9 @@ to your own modified versions of Mura CMS.
 
 </cffunction>
 
+<cffunction name="isPostedFile" output="false">
+<cfargument name="theFileField">
+<cfreturn listFindNoCase("tmp,upload",listLast(arguments.theFileField,"."))>
+</cffunction>
+
 </cfcomponent>

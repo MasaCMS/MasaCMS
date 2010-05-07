@@ -725,7 +725,7 @@ to your own modified versions of Mura CMS.
 			<cfif isDefined('arguments.data.newfile') and len(arguments.data.newfile)>
 				
 				<!--- Check to see if it's a posted binary file--->
-				<cfif listFindNoCase("tmp,upload",listLast(arguments.data.newfile,"."))>
+				<cfif variables.fileManager.isPostedFile(arguments.data.newfile)>
 					<cffile action="upload" result="tempFile" filefield="NewFile" nameconflict="makeunique" destination="#variables.configBean.getTempDir()#">
 				<!--- Else fake it to think it was a posted files--->
 				<cfelse>
