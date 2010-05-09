@@ -40,7 +40,7 @@ for your modified version; it is your choice whether to do so, or to make such m
 the GNU General Public License version 2 �without this exception. �You may, if you choose, apply this exception
 to your own modified versions of Mura CMS.
 --->
-<cfset pluginEvent=createoObject("component","mura.event")>
+<cfset pluginEvent=createObject("component","mura.event")>
 <cfset pluginEvent.setValue("ApplicationScope",arguments.ApplicationScope)>	 
 <cfset pluginEvent.setValue("SessionScope",arguments.SessionScope)>
 <cfif structKeyExists(arguments.SessionScope,"mura") and len(arguments.SessionScope.mura.siteid)>
