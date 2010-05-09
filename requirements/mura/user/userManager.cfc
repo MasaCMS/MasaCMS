@@ -645,23 +645,30 @@ to your own modified versions of Mura CMS.
 
 <cfset var theFileStruct=structNew() />
 <cfset var error=structNew() />
+<cfset var tempFile=structNew()>
 
-<cffile action="upload" filefield="NewFile" nameconflict="makeunique" destination="#variables.configBean.getTempDir()#">
+<!--- Check to see if it's a posted binary file--->
+<cfif variables.fileManager.isPostedFile(userBean.getNewFile())>
+	<cffile action="upload" result="tempFile" filefield="NewFile" nameconflict="makeunique" destination="#variables.configBean.getTempDir()#">
+<!--- Else fake it to think it was a posted files--->
+<cfelse>
+	<cfset tempFile=variables.fileManager.emulateUpload(userBean.getNewFile())>
+</cfif>
 
-<cfif (cffile.ServerFileExt eq "jpg" or cffile.ServerFileExt eq "gif" or cffile.ServerFileExt eq "png") and cffile.ContentType eq "Image">
+<cfif (tempFile.ServerFileExt eq "jpg" or tempFile.ServerFileExt eq "gif" or tempFile.ServerFileExt eq "png") and tempFile.ContentType eq "Image">
 	<cftry>
 		<cfif len(arguments.userBean.getPhotoFileID())>
 			<cfset variables.fileManager.deleteVersion(arguments.userBean.getPhotoFileID()) />
 		</cfif>
-		<cfset theFileStruct=variables.fileManager.process(cffile,arguments.userBean.getSiteID()) />
-		<cfset arguments.userBean.setPhotoFileID(variables.fileManager.create(theFileStruct.fileObj,arguments.userBean.getUserID(),arguments.userBean.getSiteID(),cffile.ClientFile,cffile.ContentType,cffile.ContentSubType,cffile.FileSize,'00000000000000000000000000000000008',cffile.ServerFileExt,theFileStruct.fileObjSmall,theFileStruct.fileObjMedium)) />
+		<cfset theFileStruct=variables.fileManager.process(tempFile,arguments.userBean.getSiteID()) />
+		<cfset arguments.userBean.setPhotoFileID(variables.fileManager.create(theFileStruct.fileObj,arguments.userBean.getUserID(),arguments.userBean.getSiteID(),tempFile.ClientFile,tempFile.ContentType,tempFile.ContentSubType,tempFile.FileSize,'00000000000000000000000000000000008',tempFile.ServerFileExt,theFileStruct.fileObjSmall,theFileStruct.fileObjMedium)) />
 		<cfcatch>
 			<cfset error.photo="The file you uploaded appears to be corrupt. Please select another file to upload."/>
 			<cfset userBean.setErrors(error)/> 
 		</cfcatch>
 	</cftry>
 <cfelse>
-	<cffile action="delete" file="#variables.configBean.getTempDir()##cffile.serverfile#">
+	<cffile action="delete" file="#variables.configBean.getTempDir()##tempFile.serverfile#">
 	<cfset error.photo="The file you uploaded is not a supported format. Only, JPEG, GIF and PNG files are accepted."/>
 	<cfset userBean.setErrors(error)/> 
 </cfif>

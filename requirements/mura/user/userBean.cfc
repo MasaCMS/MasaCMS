@@ -90,6 +90,7 @@ to your own modified versions of Mura CMS.
     <cfset variables.instance.errors=structnew() />
 	<cfset variables.instance.isNew=1 />
 	<cfset variables.instance.tablist="" />
+	<cfset variables.instance.newFile="" />
 	<cfset variables.newAddresses = arrayNew(1) />
 	
 	<cffunction name="init" returntype="any" output="false" access="public">
@@ -842,6 +843,16 @@ to your own modified versions of Mura CMS.
 	</cfif>
 	<cfreturn this>
   </cffunction>
+
+<cffunction name="setNewFile" output="false" access="public">
+    <cfargument name="newFile" required="true">
+	<cfset variables.instance.newFile = arguments.newFile />
+	<cfreturn this>
+</cffunction>
+  
+<cffunction name="getNewFile" returnType="any" output="false" access="public">
+	<cfreturn variables.instance.newFile />
+</cffunction>
 
 <cffunction name="setValue" returntype="any" access="public" output="false">
 	<cfargument name="property"  type="string" required="true">
