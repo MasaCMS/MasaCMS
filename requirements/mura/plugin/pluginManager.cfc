@@ -1220,13 +1220,16 @@ select * from tplugins order by #arguments.orderby#
 	<cfset event.setValue("objectID",arguments.object)>
 	<cfset event.setValue("params",arguments.params)>
 	
+	
+
 	<cfquery name="rs" dbtype="query">
 	select pluginID, displayObjectFile,location,displaymethod, docache, objectID, directory, moduleID from variables.rsDisplayObjects 
 	where 
+	siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#event.getValue('siteID')#">
 	<cfif isvalid("UUID",event.getValue('objectID'))>
-	objectID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#event.getValue('objectID')#">
+	and objectID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#event.getValue('objectID')#">
 	<cfelse>
-	name=<cfqueryparam cfsqltype="cf_sql_varchar" value="#event.getValue('objectID')#">
+	and name=<cfqueryparam cfsqltype="cf_sql_varchar" value="#event.getValue('objectID')#">
 	</cfif>
 	<cfif len(arguments.moduleID)>
 	and moduleID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.moduleID#">

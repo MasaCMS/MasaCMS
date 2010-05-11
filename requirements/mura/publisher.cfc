@@ -783,10 +783,12 @@ to your own modified versions of Mura CMS.
 				<cfquery datasource="#arguments.toDSN#">
 					delete from tclassextend
 					where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.tositeid#"/>
+					and type not in ('1','2','User','Group')
 				</cfquery>
 				
 				<cfquery datasource="#arguments.fromDSN#" name="rstclassextend">
 					select * from tclassextend where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.fromsiteid#"/>
+					and type not in ('1','2','User','Group')
 				</cfquery>
 				
 				<cfloop query="rstclassextend">
@@ -814,10 +816,23 @@ to your own modified versions of Mura CMS.
 				<cfquery datasource="#arguments.toDSN#">
 					delete from tclassextendsets
 					where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.tositeid#"/>
+					and subTypeID not in (
+								select subTypeID 
+								from tclassextend 
+								where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.tositeid#"/>
+								and type not in ('1','2','User','Group')
+								)
 				</cfquery>
 				
 				<cfquery datasource="#arguments.fromDSN#" name="rstclassextendsets">
-					select * from tclassextendsets where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.fromsiteid#"/>
+					select * from tclassextendsets 
+					where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.fromsiteid#"/>
+					and subTypeID not in (
+								select subTypeID 
+								from tclassextend 
+								where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.tositeid#"/> 
+								and type not in ('1','2','User','Group')
+								)
 				</cfquery>
 				
 				<cfloop query="rstclassextendsets">
@@ -840,6 +855,12 @@ to your own modified versions of Mura CMS.
 				<cfquery datasource="#arguments.toDSN#">
 					delete from tclassextendattributes
 					where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.tositeid#"/>
+					and extendSetID not in (
+							select extendSetID from tclassextendsets
+							inner join tclassextend on (tclassextendsets.subTypeID=tclassextend.subTypeID)
+							where tclassextend.siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.tositeid#"/> 
+							and tclassextend.type not in ('1','2','User','Group')		
+							)
 				</cfquery>
 				
 				<cfquery datasource="#arguments.fromDSN#" name="rstclassextendattributes">
