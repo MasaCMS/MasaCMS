@@ -114,6 +114,8 @@
 	 
 	  <cfif not (rc.action eq  'add' or rc.action neq  'delete' and not structIsEmpty(rc.campaignBean.getErrors()))>
 	  	<cfset variables.fw.redirect(action="cAdvertising.viewAdvertiser",append="userid,siteid",path="")>
+	  <cfelse>
+	  	<cfset variables.fw.redirect(action="cAdvertising.editCampaign",append="userid,siteid,campaignid",path="")>
 	  </cfif>
 </cffunction>
 

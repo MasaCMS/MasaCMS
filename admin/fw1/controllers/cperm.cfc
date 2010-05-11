@@ -67,7 +67,7 @@
 		 <cfset variables.fw.redirect(action="cArch.list",append="siteid,topid,moduleid",path="")>
 	</cfif>
 	  <cfif rc.moduleid eq '00000000000000000000000000000000006'>
-		 <cfset variables.fw.redirect(action="cAdvertising.list",append="siteid",path="")>
+		 <cfset variables.fw.redirect(action="cAdvertising.listAdvertisers",append="siteid",path="")>
 	</cfif>
 	<cfif rc.moduleid eq '00000000000000000000000000000000010'>
 	 	<cfset variables.fw.redirect(action="cCategory.list",append="siteid",path="")>

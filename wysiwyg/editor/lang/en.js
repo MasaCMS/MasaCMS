@@ -147,7 +147,7 @@ SelectionFieldProp	: "Selection Field Properties",
 TextareaProp		: "Textarea Properties",
 FormProp			: "Form Properties",
 
-FontFormats			: "Normal;Formatted;Address;Heading 1;Heading 2;Headline;Subhead 1;Subhead 2;Subhead 3;Normal (DIV)",
+FontFormats			: "Normal;Formatted;Address;Heading 1;Heading 2;Subhead 1;Subhead 2;Subhead 3;Subhead 4;Normal (DIV)",
 
 // Alerts and Messages
 ProcessingXHTML		: "Processing XHTML. Please wait...",
