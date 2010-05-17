@@ -77,6 +77,7 @@ to your own modified versions of Mura CMS.
 	
 	<!--- Should we set cookies on the browser? --->
 	<cfset this.setClientCookies = true>
+	
 	<!--- should cookies be domain specific, ie, *.foo.com or www.foo.com 
 	<cfset this.setDomainCookies = not refind('\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b',listFirst(cgi.http_host,":"))>
 	--->
@@ -90,7 +91,11 @@ to your own modified versions of Mura CMS.
 	<cfset this.welcomeFileList = "">
 	
 	<cfset this.clientManagement = true>
-	<!--- Preferred method for ColdFusion 8, allows you to skip administering these settings in the CF admin	
+	<cfset this.clientStorage = "cookie">
+		
+
+
+<!--- Preferred method for ColdFusion 8, allows you to skip administering these settings in the CF admin	
 	1. Place Mura requirements directory in your webroot
 	2. Place Mura Custom Tags directory into "requirements/custom_tags/"
 	2. Change basedir to point to your webroot
