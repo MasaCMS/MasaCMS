@@ -122,7 +122,7 @@ to your own modified versions of Mura CMS.
 	
 	<cfif arguments.feedBean.getType() eq "Local">
 		<cfif arguments.aggregation>
-			<cfset doKids =true />
+			<cfset doKids=true />
 		<cfelse>
 			<cfif arguments.feedBean.getDisplayKids() 
 			or arguments.feedBean.getSortBy() eq 'kids'>
@@ -134,7 +134,7 @@ to your own modified versions of Mura CMS.
 	<cfif len(arguments.tag)>
 		<cfset jointables="tcontenttags">
 	</cfif>
-	
+
 	<cfloop query="rsParams">
 		<cfif listLen(rsParams.field,".") eq 2>
 			<cfset jointable=listFirst(rsParams.field,".") >
@@ -157,6 +157,15 @@ to your own modified versions of Mura CMS.
 	tcontentstats.rating,tcontentstats.totalVotes,tcontentstats.downVotes,tcontentstats.upVotes,
 	tcontentstats.comments, tparent.type parentType, <cfif doKids> qKids.kids<cfelse> null as kids</cfif>,tcontent.path, tcontent.created, tcontent.nextn
 	from tcontent
+	
+	<cfloop list="#jointables#" index="jointable">
+		<cfif listFindNoCase(histtables,jointable)>
+		inner join #jointable# on (tcontent.contenthistid=#jointable#.contenthistid)
+		<cfelse>
+		inner join #jointable# on (tcontent.contentid=#jointable#.contentid)
+		</cfif>
+	</cfloop>
+	
 	left Join tfiles on (tcontent.fileid=tfiles.fileid)
 	left Join tcontentstats on (tcontent.contentid=tcontentstats.contentid
 					    		and tcontent.siteid=tcontentstats.siteid)
@@ -184,6 +193,15 @@ to your own modified versions of Mura CMS.
 						   tcontent.contentID, 
 						   Count(TKids.contentID) as kids					   
 						   from tcontent 
+						   
+						   <cfloop list="#jointables#" index="jointable">
+								<cfif listFindNoCase(histtables,jointable)>
+								inner join #jointable# on (tcontent.contenthistid=#jointable#.contenthistid)
+								<cfelse>
+								inner join #jointable# on (tcontent.contentid=#jointable#.contentid)
+								</cfif>
+							</cfloop>
+						
 						   inner join tcontent TKids
 						   on (tcontent.contentID=TKids.parentID
 						   		and tcontent.siteID=TKids.siteID)
@@ -251,14 +269,6 @@ to your own modified versions of Mura CMS.
 							<cfif started>)</cfif>
 						</cfif>
 						<cfset started=false/>
-						
-						<cfloop list="#jointables#" index="jointable">
-							<cfif listFindNoCase(histtables,jointable)>
-							inner join #jointable# on (tcontent.contenthistid=#jointable#.contenthistid)
-							<cfelse>
-							inner join #jointable# on (tcontent.contentid=#jointable#.contentid)
-							</cfif>
-						</cfloop>
 						
 						<cfif categoryLen>
 							AND tcontent.contentHistID in (
@@ -373,15 +383,6 @@ to your own modified versions of Mura CMS.
 				
 				</cfif>
 <!--- end qKids --->
-
-					
-	<cfloop list="#jointables#" index="jointable">
-		<cfif listFindNoCase(histtables,jointable)>
-		inner join #jointable# on (tcontent.contenthistid=#jointable#.contenthistid)
-		<cfelse>
-		inner join #jointable# on (tcontent.contentid=#jointable#.contentid)
-		</cfif>
-	</cfloop>
 	
 	where tcontent.active=1
 	<cfif arguments.feedBean.getType() eq "Local">
