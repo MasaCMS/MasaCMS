@@ -57,6 +57,7 @@ to your own modified versions of Mura CMS.
 <cfparam name="session.rememberMe" type="numeric" default="0" />
 <cfparam name="session.loginAttempts" type="numeric" default="0" />
 <cfparam name="session.blockLoginUntil" type="string" default="" />
+<cfset request.doMuraGlobalSessionStart=true>
 	
 	
 	
