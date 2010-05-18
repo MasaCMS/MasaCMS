@@ -412,6 +412,16 @@ to your own modified versions of Mura CMS.
 	<cfreturn variables.userDAO.readGroupMemberships(arguments.userid) />
 </cffunction>
 
+<cffunction name="getAddresses" access="public" returntype="any" output="false">
+	<cfargument name="userid" type="string" default="" required="yes"/>		
+	<cfreturn variables.userDAO.getAddresses(arguments.userid) />
+</cffunction> 
+
+<cffunction name="getAddressByID" access="public" returntype="any" output="false">
+	<cfargument name="addressid" type="string" default="" required="yes"/>		
+	<cfreturn variables.userDAO.getAddressByID(arguments.addressid) />
+</cffunction> 
+
 <cffunction name="readInterestGroups" access="public" returntype="any" output="false">
 	<cfargument name="userid" type="string" default="" required="yes"/>		
 	<cfreturn variables.userDAO.readInterestGroups(arguments.userid) />

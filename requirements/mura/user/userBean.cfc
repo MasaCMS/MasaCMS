@@ -545,23 +545,23 @@ to your own modified versions of Mura CMS.
     <cfreturn variables.instance.CategoryID />
   </cffunction>
 
- <cffunction name="setAddresses" output="false" access="public">
+ <cffunction name="setAddresses" output="false" access="public" hint="deprecated">
     <cfargument name="addresses" type="query" required="true">
     <cfset variables.instance.addresses = arguments.addresses />
 	<cfreturn this>
   </cffunction>
   
   <cffunction name="getAddresses" returnType="query" output="false" access="public">
-    <cfreturn variables.instance.Addresses />
+    <cfreturn getAddressesQuery() />
   </cffunction>
 	
   <cffunction name="getAddressesQuery" returnType="query" output="false" access="public">
-    <cfreturn variables.instance.Addresses />
+   <cfreturn variables.userManager.getAddresses(getUserID()) />
   </cffunction>
 
   <cffunction name="getAddressesIterator" returnType="any" output="false" access="public">
    	<cfset var it=getServiceFactory().getBean("addressIterator").init()>
-	<cfset it.setQuery(variables.instance.Addresses)>
+	<cfset it.setQuery(getAddressesQuery())>
 	<cfreturn it />
   </cffunction>
 
@@ -654,29 +654,18 @@ to your own modified versions of Mura CMS.
 
   <cffunction name="getAddressByID" returnType="query" output="false" access="public">
 	<cfargument name="addressID" type="string" required="true">
-	
-	<cfset var rs="" />
-	
-	<cfquery name="rs" dbtype="query">
-	select * from variables.instance.addresses where addressID=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.addressID#">  
-	</cfquery>
-	
-	<cfreturn rs />
+	<cfreturn variables.userManager.getAddressByID(arguments.addressID) />
   </cffunction>
 
   <cffunction name="getAddressBeanByID" returnType="any" output="false" access="public">
 	<cfargument name="addressID" type="string" required="true">
-	
-	<cfset var rs="" />
 	<cfset var addressBean=application.serviceFactory.getBean("addressBean") />
 	
-	<cfquery name="rs" dbtype="query">
-	select * from variables.instance.addresses where addressID=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.addressID#">  
-	</cfquery>
-	
-	<cfset addressBean.set(rs)>
+	<cfset addressBean.set(getAddressByID(arguments.addressID))>
+	<cfset addressBean.setAddressID(arguments.addressID)>
 	<cfset addressBean.setUserID(getUserID())>
 	<cfset addressBean.setSiteID(getSiteID())>
+	
 	<cfreturn addressBean />
   </cffunction>
 

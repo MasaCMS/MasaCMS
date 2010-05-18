@@ -118,7 +118,7 @@ to your own modified versions of Mura CMS.
 				<cfset rsInterests=readInterestGroupIDs(userBean.getUserId()) />
 				<cfset userBean.setGroupId(valuelist(rsmembs.groupid))/>
 				<cfset userBean.setCategoryId(valuelist(rsInterests.categoryid))/>
-				<cfset userBean.setAddresses(getAddresses(userBean.getUserID()))/>	
+				<!---<cfset userBean.setAddresses(getAddresses(userBean.getUserID()))/>--->	
 				<cfset arrayAppend(beanArray,userBean)>	
 			</cfloop>
 			<cfreturn beanArray>
@@ -128,7 +128,7 @@ to your own modified versions of Mura CMS.
 			<cfset rsInterests=readInterestGroupIDs(userBean.getUserId()) />
 			<cfset userBean.setGroupId(valuelist(rsmembs.groupid))/>
 			<cfset userBean.setCategoryId(valuelist(rsInterests.categoryid))/>
-			<cfset userBean.setAddresses(getAddresses(userBean.getUserID()))/>
+			<!--- <cfset userBean.setAddresses(getAddresses(userBean.getUserID()))/> --->
 			<cfset userBean.setIsNew(0)>
 		<cfelse>
 			<cfset userBean.setIsNew(1)>
@@ -183,7 +183,7 @@ to your own modified versions of Mura CMS.
 				<cfset rsInterests=readInterestGroupIDs(userBean.getUserId()) />
 				<cfset userBean.setGroupId(valuelist(rsmembs.groupid))/>
 				<cfset userBean.setCategoryId(valuelist(rsInterests.categoryid))/>
-				<cfset userBean.setAddresses(getAddresses(userBean.getUserID()))/>
+				<!--- <cfset userBean.setAddresses(getAddresses(userBean.getUserID()))/> --->
 				<cfset arrayAppend(beanArray,userBean)>		
 			</cfloop>
 			<cfreturn beanArray>
@@ -193,7 +193,7 @@ to your own modified versions of Mura CMS.
 			<cfset rsInterests=readInterestGroupIDs(userBean.getUserId()) />
 			<cfset userBean.setGroupId(valuelist(rsmembs.groupid))/>
 			<cfset userBean.setCategoryId(valuelist(rsInterests.categoryid))/>
-			<cfset userBean.setAddresses(getAddresses(userBean.getUserID()))/>
+			<!--- <cfset userBean.setAddresses(getAddresses(userBean.getUserID()))/> --->
 			<cfset userBean.setIsNew(0)>
 		<cfelse>
 			<cfset userBean.setIsNew(1)>
@@ -232,7 +232,7 @@ to your own modified versions of Mura CMS.
 				<cfset rsInterests=readInterestGroupIDs(userBean.getUserId()) />
 				<cfset userBean.setGroupId(valuelist(rsmembs.groupid))/>
 				<cfset userBean.setCategoryId(valuelist(rsInterests.categoryid))/>
-				<cfset userBean.setAddresses(getAddresses(userBean.getUserID()))/>		
+				<!--- <cfset userBean.setAddresses(getAddresses(userBean.getUserID()))/>		 --->
 				<cfset arrayAppend(beanArray,userBean)>
 			</cfloop>
 			<cfreturn beanArray>
@@ -242,7 +242,7 @@ to your own modified versions of Mura CMS.
 			<cfset rsInterests=readInterestGroupIDs(userBean.getUserId()) />
 			<cfset userBean.setGroupId(valuelist(rsmembs.groupid))/>
 			<cfset userBean.setCategoryId(valuelist(rsInterests.categoryid))/>
-			<cfset userBean.setAddresses(getAddresses(userBean.getUserID()))/>
+			<!--- <cfset userBean.setAddresses(getAddresses(userBean.getUserID()))/> --->
 			<cfset userBean.setIsNew(0)>
 		<cfelse>
 			<cfset userBean.setIsNew(1)>
@@ -658,20 +658,27 @@ to your own modified versions of Mura CMS.
 		
 <cffunction name="readAddress" access="public" returntype="any" output="false">
 		<cfargument name="addressid" type="string" required="yes" />
-		<cfset var rs = 0 />
+		<cfset var rs = getAddressByID(arguments.addressID) />
 		<cfset var addressBean=application.serviceFactory.getBean("addressBean") />
-			
-		<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#" name="rsAddress">
+	s
+		<cfif rs.recordCount eq 1>
+			<cfset addressBean.set(rs) />
+		</cfif>
+		
+		<cfreturn addressBean />
+</cffunction>
+
+<cffunction name="getAddressByID" access="public" returntype="any" output="false">
+		<cfargument name="addressid" type="string" required="yes" />
+		<cfset var rs = 0 />
+		
+		<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#" name="rs">
 			select *
 			from tuseraddresses 
 			where addressid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.addressID#"> 
 		</cfquery>
-		
-		<cfif rsAddress.recordCount eq 1>
-			<cfset addressBean.set(rsAddress) />
-		</cfif>
-		
-		<cfreturn addressBean />
+			
+		<cfreturn rs />
 </cffunction>
 
 <cffunction name="updateAddress" returntype="void" access="public" output="false">
@@ -855,7 +862,7 @@ to your own modified versions of Mura CMS.
 	<cfset var rsInterests=readInterestGroupIDs(userBean.getUserId()) />
 	<cfset userBean.setGroupId(valuelist(rsmembs.groupid))/>
 	<cfset userBean.setCategoryId(valuelist(rsInterests.categoryid))/>
-	<cfset userBean.setAddresses(getAddresses(userBean.getUserId()))/>
+	<!--- <cfset userBean.setAddresses(getAddresses(userBean.getUserId()))/> --->
 	
 	<cfreturn userBean>
 	</cffunction>
