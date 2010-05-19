@@ -98,18 +98,16 @@
 				
 		<!---Clean up Ampersands and nonexistent names that may mess up variable naming later on--->
 		<cfloop collection="#object#" item="item">
-			<!---
 			<cfif isValidCFVariableName(item) eq false>
 				<!---Item name is invalid anyway in CF so we just dump it --->
 				<cfset structdelete(object,item,false)/>
 			<cfelse>
-			--->
 				<cfset newitem = replaceNoCase(item,"&amp;","","ALL")/>
 				<cfset newitem = replaceNoCase(newitem,"amp;","","ALL")/>
 				<cfset contents = "#object[item]#"/>
 				<cfset structdelete(object,item,false)/>
 				<cfset StructInsert(object,"#newitem#",contents,true)/>
-			<!---</cfif>--->
+			</cfif>
 		</cfloop>
 
 		<cfif structkeyexists(arguments,"exceptionFields") and len(arguments.exceptionFields)>
@@ -504,8 +502,10 @@
 
 		<cfif len(arguments.text) eq 0>
 			<cfset local.result = false/>
+		<!---
 		<cfelseif FindNoCase(".",arguments.text) gt 0>
 			<cfset local.result = false/>
+		--->
 		<cfelseif FindNoCase(" ",arguments.text) gt 0>
 			<cfset local.result = false/>
 		<cfelseif ReFindNoCase("^[A-Za-z][A-Za-z0-9_]*",arguments.text) eq 0>

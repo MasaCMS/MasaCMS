@@ -979,8 +979,7 @@ select * from tplugins order by #arguments.orderby#
 	<cfset var pluginConfig="">
 	<cfset var componentPath="">
 	<cfset var scriptPath="">
-	<cfset var theDisplay1="">
-	<cfset var theDisplay2="">
+	<cfset var local=structNew()>
 	<cfset var rsOnError="">
 	<!--- this is for non plugin bound event that are set in the local eventHandler--->
 	<cfset var localHandler="">
@@ -1018,17 +1017,17 @@ select * from tplugins order by #arguments.orderby#
 		<cfif isObject(event.getValue("localHandler"))>
 			<cfset localHandler=event.getValue("localHandler")>
 			<cfif structKeyExists(localHandler,runat)>
-				<cfsavecontent variable="theDisplay1">
-				<cfinvoke component="#localHandler#" method="#arguments.runat#" returnVariable="theDisplay2">
+				<cfsavecontent variable="local.theDisplay1">
+				<cfinvoke component="#localHandler#" method="#arguments.runat#" returnVariable="local.theDisplay2">
 					<cfinvokeargument name="event" value="#arguments.event#">
 					<cfinvokeargument name="$" value="#muraScope#">
 					<cfinvokeargument name="mura" value="#muraScope#">
 				</cfinvoke>	
 				</cfsavecontent>
-				<cfif isDefined("theDisplay2")>
-					<cfset str=str & theDisplay2>
+				<cfif isDefined("local.theDisplay2")>
+					<cfset str=str & local.theDisplay2>
 				<cfelse>
-					<cfset str=str & theDisplay1>
+					<cfset str=str & local.theDisplay1>
 				</cfif>
 			</cfif>
 		</cfif>
@@ -1042,17 +1041,17 @@ select * from tplugins order by #arguments.orderby#
 						<cfif not isObject(eventHandler)>
 							<cfset eventHandler=getEventHandlerFromPath(eventHandler)>
 						</cfif>
-						<cfsavecontent variable="theDisplay1">
-						<cfinvoke component="#eventHandler#"method="#arguments.runat#" returnVariable="theDisplay2">
+						<cfsavecontent variable="local.theDisplay1">
+						<cfinvoke component="#eventHandler#"method="#arguments.runat#" returnVariable="local.theDisplay2">
 							<cfinvokeargument name="event" value="#arguments.event#">
 							<cfinvokeargument name="$" value="#muraScope#">
 							<cfinvokeargument name="mura" value="#muraScope#">
 						</cfinvoke>	
 						</cfsavecontent>
-						<cfif isDefined("theDisplay2")>
-							<cfset str=str & theDisplay2>
+						<cfif isDefined("local.theDisplay2")>
+							<cfset str=str & local.theDisplay2>
 						<cfelse>
-							<cfset str=str & theDisplay1>
+							<cfset str=str & local.theDisplay1>
 						</cfif>
 					</cfloop>
 				</cfif>
@@ -1066,23 +1065,24 @@ select * from tplugins order by #arguments.orderby#
 						<cfif not isObject(eventHandler)>
 							<cfset eventHandler=getEventHandlerFromPath(eventHandler)>
 						</cfif>
-						<cfsavecontent variable="theDisplay1">
-						<cfinvoke component="#eventHandler#"method="#arguments.runat#" returnVariable="theDisplay2">
+						<cfsavecontent variable="local.theDisplay1">
+						<cfinvoke component="#eventHandler#"method="#arguments.runat#" returnVariable="local.theDisplay2">
 							<cfinvokeargument name="event" value="#arguments.event#">
 							<cfinvokeargument name="$" value="#muraScope#">
 							<cfinvokeargument name="mura" value="#muraScope#">
 						</cfinvoke>	
 						</cfsavecontent>
-						<cfif isDefined("theDisplay2")>
-							<cfset str=str & theDisplay2>
+						<cfif isDefined("local.theDisplay2")>
+							<cfset str=str & local.theDisplay2>
 						<cfelse>
-							<cfset str=str & theDisplay1>
+							<cfset str=str & local.theDisplay1>
 						</cfif>
 					</cfloop>
 				</cfif>
 			</cfif>
 		</cfif>
 	</cfif>
+	
 	<cfif isQuery(arguments.scripts)>
 		<cfset rs=arguments.scripts />
 	<cfelse>
@@ -1092,29 +1092,34 @@ select * from tplugins order by #arguments.orderby#
 	<cfif rs.recordcount>
 	
 	<cfloop query="rs">
+		
 	<cftry>
-		<cfif listLast(rs.scriptfile,".") neq "cfm">		
+		
+		<cfif listLast(rs.scriptfile,".") neq "cfm">
+				
 			<cfset componentPath="plugins.#rs.directory#.#rs.scriptfile#">
 			<cfset eventHandler=getComponent(componentPath, rs.pluginID, arguments.siteID, rs.docache)>
-			<cfsavecontent variable="theDisplay1">
-			<cfinvoke component="#eventHandler#" method="#arguments.runat#" returnVariable="theDisplay2">
+			<cfsavecontent variable="local.theDisplay1">
+			<cfinvoke component="#eventHandler#" method="#arguments.runat#" returnVariable="local.theDisplay2">
 				<cfinvokeargument name="event" value="#arguments.event#">
 				<cfinvokeargument name="$" value="#muraScope#">
 				<cfinvokeargument name="mura" value="#muraScope#">
 			</cfinvoke>	
 			</cfsavecontent>
-			<cfif isDefined("theDisplay2")>
-				<cfset str=str & theDisplay2>
+		
+			<cfif isDefined("local.theDisplay2")>
+				<cfset str=str & local.theDisplay2>
 			<cfelse>
-				<cfset str=str & theDisplay1>
+				<cfset str=str & local.theDisplay1>
 			</cfif>
+			
 		<cfelse>
-			<cfsavecontent variable="theDisplay1">
+			<cfsavecontent variable="local.theDisplay1">
 			<cfoutput>#getExecutor().renderScript(event=event,scriptfile="/plugins/#rs.directory#/#rs.scriptfile#",pluginConfig=getConfig(rs.pluginID), $=muraScope, mura=muraScope)#</cfoutput>
 			</cfsavecontent>
-			<cfset str=str & theDisplay1>
+			<cfset str=str & local.theDisplay1>
 		</cfif>
-		
+			
 		<cfcatch>
 			<cfset rsOnError=getScripts("onError",arguments.siteid,rs.moduleID) />
 			<cfif arguments.runat neq "onError" and rsOnError.recordcount>
@@ -1124,10 +1129,10 @@ select * from tplugins order by #arguments.orderby#
 			<cfelseif arguments.runat eq "onError">
 				<cfrethrow>
 			<cfelse>
-			<cfsavecontent variable="theDisplay1">
+			<cfsavecontent variable="local.theDisplay1">
 			<cfdump var="#cfcatch#">
 			</cfsavecontent>
-			<cfset str=str & theDisplay1>
+			<cfset str=str & local.theDisplay1>
 			</cfif>
 		</cfcatch>
 	</cftry>
@@ -1220,8 +1225,6 @@ select * from tplugins order by #arguments.orderby#
 	<cfset event.setValue("objectID",arguments.object)>
 	<cfset event.setValue("params",arguments.params)>
 	
-	
-
 	<cfquery name="rs" dbtype="query">
 	select pluginID, displayObjectFile,location,displaymethod, docache, objectID, directory, moduleID from variables.rsDisplayObjects 
 	where 
