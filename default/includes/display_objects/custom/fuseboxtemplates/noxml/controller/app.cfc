@@ -17,7 +17,7 @@
 		<cfset myFusebox.do( action="time.act_get_time" ) />
 		
 		<!--- do display fuse and set content variable body --->
-		<cfset myFusebox.do( action="display.dsp_hello", contentvariable="body" ) />
+		<cfset myFusebox.do( action="display.dsp_hello", contentvariable="mainbody" ) />
 		
 	</cffunction>
 

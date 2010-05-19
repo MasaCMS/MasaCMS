@@ -38,7 +38,7 @@
 <cfset myFusebox.thisFuseaction = "sayHello">
 <cfset myFusebox.trace("Runtime","&lt;include template=""dsp_hello.cfm"" circuit=""display""/&gt;") >
 <cftry>
-<cfsavecontent variable="body"><cfoutput><cfinclude template="../view/display/dsp_hello.cfm"></cfoutput></cfsavecontent>
+<cfsavecontent variable="mainbody"><cfoutput><cfinclude template="../view/display/dsp_hello.cfm"></cfoutput></cfsavecontent>
 <cfcatch type="missingInclude"><cfif len(cfcatch.MissingFileName) gte 13 and right(cfcatch.MissingFileName,13) is "dsp_hello.cfm">
 <cfthrow type="fusebox.missingFuse" message="missing Fuse" detail="You tried to include a fuse dsp_hello.cfm in circuit display which does not exist (from fuseaction display.sayHello).">
 <cfelse><cfrethrow></cfif></cfcatch></cftry>

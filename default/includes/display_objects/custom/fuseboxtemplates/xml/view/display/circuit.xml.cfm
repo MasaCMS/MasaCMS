@@ -10,7 +10,7 @@
 		in a content variable which is used in the layout template.
 	-->
 	<fuseaction name="sayHello">
-		<include template="dsp_hello" contentvariable="body" />
+		<include template="dsp_hello" contentvariable="mainbody" />
 	</fuseaction>
 	
 </circuit>
