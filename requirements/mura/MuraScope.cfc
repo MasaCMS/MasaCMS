@@ -69,7 +69,7 @@
 <cffunction name="OnMissingMethod" access="public" returntype="any" output="false" hint="Handles missing method exceptions.">
 <cfargument name="MissingMethodName" type="string" required="true" hint="The name of the missing method." />
 <cfargument name="MissingMethodArguments" type="struct" required="true"/>
-	<cfset var theValue="">
+	<cfset var local=structNew()>
 	<cfset var object="">
 	
 	<cfif len(MissingMethodName)>
@@ -84,14 +84,18 @@
 			<cfthrow message="The method '#arguments.MissingMethodName#' is not defined">
 		</cfif>
 	
+		<cfsavecontent variable="local.thevalue2">
 		<cfif not structIsEmpty(MissingMethodArguments)>
-			<cfinvoke component="#object#" method="#MissingMethodName#" argumentcollection="#MissingMethodArguments#" returnvariable="theValue">
+			<cfinvoke component="#object#" method="#MissingMethodName#" argumentcollection="#MissingMethodArguments#" returnvariable="local.theValue2">
 		<cfelse>
-			<cfinvoke component="#object#" method="#MissingMethodName#" returnvariable="theValue">
+			<cfinvoke component="#object#" method="#MissingMethodName#" returnvariable="local.theValue2">
 		</cfif>
+		</cfsavecontent>
 		
-		<cfif isDefined("theValue")>
-			<cfreturn theValue>
+		<cfif isDefined("local.theValue1")>
+			<cfreturn local.theValue1>
+		<cfelseif isDefined("local.theValue2")>
+			<cfreturn local.theValue2>
 		<cfelse>
 			<cfreturn "">
 		</cfif>
