@@ -341,7 +341,7 @@ form li.req {} /* could add background color */
 	left: -9999px;
 	}
 
-li span.req {
+li .req ins {
 	padding-right: 7px;
 	background: url(../images/icon_star.png) no-repeat 100% 0;
 	}
