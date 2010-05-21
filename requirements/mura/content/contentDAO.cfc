@@ -85,8 +85,6 @@ to your own modified versions of Mura CMS.
 			<cfset contentBean.setBody('The requested version of this content could not be found.')/>
 			<cfset contentBean.setTitle('404')/>
 			<cfset contentBean.setMenuTitle('404')/>
-			<cfset contentBean.setIsNew(1) />
-			<cfset contentBean.setActive(1) />
 			<cfset contentBean.setFilename('404') />
 			<cfset contentBean.setParentID('00000000000000000000000000000000END') />
 			<cfset contentBean.setcontentID('00000000000000000000000000000000001') />
@@ -129,8 +127,6 @@ to your own modified versions of Mura CMS.
 			<cfset contentBean.setBody('The requested page could not be found.')/>
 			<cfset contentBean.setTitle('404')/>
 			<cfset contentBean.setMenuTitle('404')/>
-			<cfset contentBean.setIsNew(1) />
-			<cfset contentBean.setActive(1) />
 			<cfset contentBean.setFilename('404') />
 			<cfset contentBean.setParentID('00000000000000000000000000000000END') />
 			<cfset contentBean.setcontentID('00000000000000000000000000000000001') />

@@ -63,7 +63,14 @@ to your own modified versions of Mura CMS.
 		<li<cfif myfusebox.originalcircuit eq 'cPlugins' > id="current"</cfif>>
 		<a href="#application.configBean.getContext()#/admin/index.cfm?fuseaction=cPlugins.list&siteid=#session.siteid#">#application.rbFactory.getKeyValue(session.rb,"layout.plugins")#</a>
         </li>
-		#application.pluginManager.renderEvent("onAdminModuleNav",request.event)#
+		<cfif isdefined("request.event")>
+			<cfset pluginEvent=request.event>
+		<cfelse>
+			<cfset params.siteID=session.siteID>
+			<cfset pluginEvent=createObject("component","mura.event")>
+			<cfset pluginEvent.init(params)>
+		</cfif>
+		#application.pluginManager.renderEvent("onAdminModuleNav",pluginEvent)#
       <cfif application.permUtility.getModulePerm("00000000000000000000000000000000010","#session.siteid#")>
         <li <cfif  myfusebox.originalcircuit eq 'cCategory' or (myfusebox.originalcircuit eq 'cPerm' and  attributes.moduleid eq '00000000000000000000000000000000010')>id="current"</cfif>><a href="#application.configBean.getContext()#/admin/index.cfm?fuseaction=cCategory.list&siteid=#session.siteid#">#application.rbFactory.getKeyValue(session.rb,"layout.categories")#</a>
           <cfif myfusebox.originalcircuit eq 'cCategory' or (myfusebox.originalcircuit eq 'cPerm' and  attributes.moduleid eq '00000000000000000000000000000000010')>
