@@ -66,7 +66,7 @@ to your own modified versions of Mura CMS.
 <cfset variables.instance.ExtranetSSL=0/>
 <cfset variables.instance.cache=0/>
 <cfset variables.instance.cacheCapacity=0/>
-<cfset variables.instance.cacheFreeMemoryThreshold=20/>
+<cfset variables.instance.cacheFreeMemoryThreshold=40/>
 <cfset variables.instance.ViewDepth=1/>
 <cfset variables.instance.nextN=20/>
 <cfset variables.instance.DataCollection=0/>
