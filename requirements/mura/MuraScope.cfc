@@ -86,9 +86,9 @@
 	
 		<cfsavecontent variable="local.thevalue2">
 		<cfif not structIsEmpty(MissingMethodArguments)>
-			<cfinvoke component="#object#" method="#MissingMethodName#" argumentcollection="#MissingMethodArguments#" returnvariable="local.theValue2">
+			<cfinvoke component="#object#" method="#MissingMethodName#" argumentcollection="#MissingMethodArguments#" returnvariable="local.theValue1">
 		<cfelse>
-			<cfinvoke component="#object#" method="#MissingMethodName#" returnvariable="local.theValue2">
+			<cfinvoke component="#object#" method="#MissingMethodName#" returnvariable="theValue1">
 		</cfif>
 		</cfsavecontent>
 		
