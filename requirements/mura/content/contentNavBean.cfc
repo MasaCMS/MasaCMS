@@ -87,8 +87,8 @@
 	<cfif isObject(variables.instance.content) >
 		<cfreturn variables.instance.content>
 	<cfelse>
-		<cfif variables.packageBy eq "version"  and structKeyExists(variables.instance.struct,"contentHistID")>
-			<cfset variables.instance.content=variables.contentManager.getContentBeanVersion(variables.instance.struct.contentHistID,variables.instance.struct.siteID)>
+		<cfif variables.packageBy eq "version" and structKeyExists(variables.instance.struct,"contentHistID")>
+			<cfset variables.instance.content=variables.contentManager.getContentVersion(variables.instance.struct.contentHistID,variables.instance.struct.siteID)>
 		<cfelseif structKeyExists(variables.instance.struct,"contentID")>
 			<cfset variables.instance.content=variables.contentManager.getActiveContent(variables.instance.struct.contentID,variables.instance.struct.siteID)>
 		<cfelse>

@@ -189,5 +189,20 @@ to your own modified versions of Mura CMS.
 	<cfreturn application.settingsManager.getSite(getValue('siteid')) />	
 </cffunction>
 
+<cffunction name="getMuraScope" returntype="any" access="public" output="false">
+	<cfreturn getValue("MuraScope") />	
+</cffunction>
+
+<cffunction name="getBean" returntype="any" access="public" output="false">
+	<cfargument name="beanName">
+	<cfargument name="siteID" required="false">
+	
+	<cfif structKeyExists(arguments,"siteid")>
+		<cfreturn super.getBean(arguments.beanName,arguments.siteID)>
+	<cfelse>
+		<cfreturn super.getBean(arguments.beanName,getValue('siteid'))>
+	</cfif>
+</cffunction>
+
 </cfcomponent>
 
