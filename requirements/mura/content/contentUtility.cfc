@@ -668,6 +668,7 @@ Sincerely,
 	<cfargument name="parentID" type="string" />
 	<cfargument name="recurse" type="boolean" required="true" default="false"/>
 	<cfargument name="appendTitle" type="boolean" required="true" default="true"/>
+	<cfargument name="path"/>
 	
 	<cfset var rs1 = "">
 	<cfset var strSQL = "">
@@ -701,6 +702,12 @@ Sincerely,
 	
 	<cfif listFindNoCase("Page,Portal,Gallery,Calendar",contentBean.getType())>
 		<cfset setUniqueFilename(contentBean)>
+	</cfif>
+	
+	<cfif not structKeyExists(arguments,"path")>
+		<cfset getBean("contentManager").setMaterializedPath(contentBean)>
+	<cfelse>
+		<cfset contentBean.setPath(listAppend(arguments.path,newContentID))>
 	</cfif>
 	
 	<cfset variables.contentDAO.create(contentBean)>
@@ -754,7 +761,7 @@ Sincerely,
 		<cfset rsKids=getServiceFactory().getBean("contentGateway").getNest(arguments.contentID, arguments.siteID)>
 		
 		<cfloop query="rsKids">
-			<cfset copy(arguments.siteID, rsKids.contentID, newContentID, rsKids.hasKids, false)>
+			<cfset copy(arguments.siteID, rsKids.contentID, newContentID, rsKids.hasKids, false, contentBean.getPath())>
 		</cfloop>
 	</cfif>
 </cffunction>
