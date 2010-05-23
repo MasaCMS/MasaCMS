@@ -45,7 +45,7 @@ to your own modified versions of Mura CMS.
 <cfif rsform.responseChart and not(refind("Mac",cgi.HTTP_USER_AGENT) and refind("MSIE 5",cgi.HTTP_USER_AGENT))>
 	
 	<cfset customResponse=application.pluginManager.renderEvent("onFormSubmitPollRender",event)>
-	<cfif len(customReponse)>
+	<cfif len(customResponse)>
 		#customResponse#
 	<cfelse>
 		<cfquery name="rsTotal" datasource="#application.configBean.getDatasource()#" username="#application.configBean.getDBUsername()#" password="#application.configBean.getDBPassword()#">
