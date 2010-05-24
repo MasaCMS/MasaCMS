@@ -290,8 +290,8 @@ ExtendSetID in(<cfloop from="1" to="#setLen#" index="s">
 	<cfset deletekey2="extDelete#rs.name#"/>
 	
 	<!--- if a new file has been submitted or a delete key exists, delete any existing file --->
-	<cfif (structKeyExists(arguments.data,key) and len(arguments.data[key]))
-		or (structKeyExists(arguments.data,rs.name) and len(arguments.data[rs.name]))
+	<cfif (structKeyExists(arguments.data,key) and len(arguments.data[key]) and not isValid("UUID",arguments.data[key]))
+		or (structKeyExists(arguments.data,rs.name) and len(arguments.data[rs.name]) and not isValid("UUID",arguments.data[rs.name]))
 		or structKeyExists(arguments.data,deletekey1) 
 		or structKeyExists(arguments.data,deletekey2)>
 	
@@ -314,8 +314,8 @@ ExtendSetID in(<cfloop from="1" to="#setLen#" index="s">
 	</cfif>
 		
 	<!--- if a new file has been submitted , save it --->
-	<cfif (structKeyExists(arguments.data,key) and len(arguments.data[key]))
-		or (structKeyExists(arguments.data,rs.name) and len(arguments.data[rs.name]))>
+	<cfif (structKeyExists(arguments.data,key) and len(arguments.data[key]) and not isValid("UUID",arguments.data[key]))
+		or (structKeyExists(arguments.data,rs.name) and len(arguments.data[rs.name]) and not isValid("UUID",arguments.data[rs.name]))>
 		
 		<cfif structKeyExists(arguments.data,key) and len(arguments.data[key])>
 			<cfset formField=key />
@@ -485,8 +485,8 @@ and tclassextendattributes.type='File'
 		<cfset deletekey1="extDelete#rs.attributeID#"/>
 		<cfset deletekey2="extDelete#rs.name#"/> 
 		
-		<cfif not((structKeyExists(arguments.data,key) and len(arguments.data[key]))
-			or (structKeyExists(arguments.data,rs.name) and len(arguments.data[rs.name]))
+		<cfif not((structKeyExists(arguments.data,key) and len(arguments.data[key]) and not isValid("UUID",arguments.data[key]))
+			or (structKeyExists(arguments.data,rs.name) and len(arguments.data[rs.name]) and not isValid("UUID",arguments.data[rs.name]))
 			or structKeyExists(arguments.data,deletekey1) 
 			or structKeyExists(arguments.data,deletekey2))
 			and len(rs.attributeValue)>

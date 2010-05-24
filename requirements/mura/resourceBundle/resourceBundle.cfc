@@ -15,7 +15,8 @@
 <cfset variables.resourceDirectory=getDirectoryFromPath(getCurrentTemplatePath()) & "/resources/"  />
 <cfset variables.isLoaded=false/>
 <cfset variables.rsFile=""/>
-<cfset variables.rB=createObject("java", "java.util.PropertyResourceBundle") />
+<cfset variables.br=createObject("java", "java.io.BufferedReader") />
+<cfset variables.fisr=createObject("java", "java.io.InputStreamReader") />
 <cfset variables.fis=createObject("java", "java.io.FileInputStream") />
 <cfset variables.msgFormat=createObject("java", "java.text.MessageFormat") />	
 <cfset variables.javaLocale=createObject("java","java.util.Locale") />
@@ -55,14 +56,13 @@
 	<cfreturn this />
 </cffunction>
 
-
 <cffunction name="getUtils" returntype="any" output="false">
 
 	<cfreturn variables.utils />
 
 </cffunction>
 
-<cffunction access="public" name="LoadResourceBundle" output="No" returntype="struct" hint="reads and parses java resource bundle per locale">
+<cffunction name="LoadResourceBundle" output="No" returntype="struct" hint="reads and parses java resource bundle per locale">
 <cfscript>
 	var isOk=false; // success flag
 	var keys=""; // var to hold rb keys
@@ -72,6 +72,8 @@
 	var thisDir=GetDirectoryFromPath(variables.rbFile);
 	var thisFile=getFileFromPath(variables.rbFile);
 	var thisRBfile=thisDir & listFirst(thisFile,".") & "_"& variables.Locale & "." & listLast(thisFile,".");
+	var local=structNew();
+	var linechecker=false;
 	
 	if (NOT fileExists(thisRBfile))// still nothing? strip thisRBfile back to base rb
 		thisRBfile=thisDir & thisLang & "." & listLast(thisFile,".");
@@ -85,14 +87,22 @@
 	if (fileExists(thisRBFile)) { // final check, if this fails the file is not where it should be
 		isOK=true;
 		fis.init(thisRBFile);
-		rB.init(fis);
-		keys=rB.getKeys();
-		while (keys.hasMoreElements()) {
-			thisKEY=keys.nextElement();
-			thisMSG=rB.handleGetObject(thisKey);
-			variables.resourceBundle["#thisKEY#"]=thisMSG;
-			}
-		fis.close();
+		fisr.init(fis,"UTF-8");
+		br.init(fisr);
+		
+		do
+			{
+			   local.line = br.readLine();
+			   linecheck = isDefined("local.line");
+			   if(lineCheck)
+			   {
+			     if(left(local.line,1) neq "##" and listLen(local.line,"=") gt 1){
+			     	variables.resourceBundle["#listFirst(local.line,'=')#"]=listRest(local.line,'=');
+			     	}
+			   }
+			} while(lineCheck);
+		
+		br.close();
 		}
 	</cfscript>
 	
@@ -100,8 +110,6 @@
 	<cfreturn resourceBundle>
 
 </cffunction> 
-
-
 
 <cffunction name="getResourceBundle" returntype="any" access="public" output="false">
 
@@ -165,7 +173,6 @@
 		return isOk;
 	</cfscript>		
 </cffunction>
-
 
 
 <cffunction name="getKeyValue" returnType="String">
