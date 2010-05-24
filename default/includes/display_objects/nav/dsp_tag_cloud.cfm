@@ -60,7 +60,7 @@ to your own modified versions of Mura CMS.
 		<cfset class="not-popular">
 	<cfelseif tags.tagCount EQ max>
 		<cfset class="ultra-popular">
-	<cfelseif tags.tagCount GT (min + (distribution*2))>
+	<cfelseif tags.tagCount GT (min + (distribution/2))>
 		<cfset class="somewhat-popular">
 	<cfelseif tags.tagCount GT (min + distribution)>
 		<cfset class="mediumTag">

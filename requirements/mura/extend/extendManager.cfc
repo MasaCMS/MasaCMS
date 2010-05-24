@@ -324,16 +324,20 @@ ExtendSetID in(<cfloop from="1" to="#setLen#" index="s">
 		</cfif>
 		
 		<!--- Check to see if it's a posted binary file--->
-		<cfif fileManager.isPostedFile(arguments.data[formField])>
-			<cffile action="upload" result="tempFile" filefield="#formField#" nameconflict="makeunique" destination="#variables.configBean.getTempDir()#">
-		<!--- Else fake it to think it was a posted files--->
-		<cfelse>
-			<cfset tempFile=fileManager.emulateUpload(arguments.data[formField])>
-		</cfif>
+		<cfif not isValid('UUID',arguments.data[formField])>
+			<cfif fileManager.isPostedFile(arguments.data[formField])>
+				<cffile action="upload" result="tempFile" filefield="#formField#" nameconflict="makeunique" destination="#variables.configBean.getTempDir()#">
+			<!--- Else fake it to think it was a posted files--->
+			<cfelse>
+				<cfset tempFile=fileManager.emulateUpload(arguments.data[formField])>
+			</cfif>
 		
-		<cfset theFileStruct=fileManager.process(tempFile,arguments.data.siteID) />
-		<cfset fileID=fileManager.create(theFileStruct.fileObj,arguments.baseID,arguments.data.siteID,tempFile.ClientFile,tempFile.ContentType,tempFile.ContentSubType,tempFile.FileSize,'00000000000000000000000000000000004',tempFile.ServerFileExt,theFileStruct.fileObjSmall,theFileStruct.fileObjMedium) />
-			
+			<cfset theFileStruct=fileManager.process(tempFile,arguments.data.siteID) />
+			<cfset fileID=fileManager.create(theFileStruct.fileObj,arguments.baseID,arguments.data.siteID,tempFile.ClientFile,tempFile.ContentType,tempFile.ContentSubType,tempFile.FileSize,'00000000000000000000000000000000004',tempFile.ServerFileExt,theFileStruct.fileObjSmall,theFileStruct.fileObjMedium) />
+		<cfelse>
+			<cfset fileID=arguments.data[formField]>
+		</cfif>	
+		
 		<cfquery  datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 			insert into #arguments.dataTable# (baseID,attributeID,siteID,attributeValue)
 			values (
