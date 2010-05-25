@@ -249,7 +249,10 @@ to your own modified versions of Mura CMS.
 		<cfif arrayLen(this.crumbdata) gt offset>
 			<cfset topID = replace(getCrumbVarByLevel("filename",offset),"_"," ","ALL")>
 			<cfset topID = setCamelback(topID)>
-			<cfset id = "#Left(LCase(topID), 1)##Right(topID, Len(topID)-1)#">
+			<cfset id = Left(LCase(topID), 1)>
+			<cfif len(topID) gt 1>
+				<cfset id=id & Right(topID, Len(topID)-1)>
+			</cfif>
 		</cfif>
 		
 		<cfif event.getValue('contentBean').getIsNew() eq 1>
