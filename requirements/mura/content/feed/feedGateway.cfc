@@ -145,8 +145,8 @@ to your own modified versions of Mura CMS.
 	</cfloop>
 	
 	<cfquery name="rs" datasource="#variables.configBean.getDatasource()#" blockfactor="#blockFactor#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-	<cfif dbType eq "oracle">select * from (</cfif>
-	select <cfif dbtype eq "mssql">top #arguments.feedBean.getMaxItems()#</cfif> 
+	<cfif dbType eq "oracle" and arguments.feedBean.getMaxItems()>select * from (</cfif>
+	select <cfif dbtype eq "mssql" and arguments.feedBean.getMaxItems()>top #arguments.feedBean.getMaxItems()#</cfif> 
 	tcontent.siteid, tcontent.title, tcontent.menutitle, tcontent.restricted, tcontent.restrictgroups, 
 	tcontent.type, tcontent.subType, tcontent.filename, tcontent.displaystart, tcontent.displaystop,
 	tcontent.remotesource, tcontent.remoteURL,tcontent.remotesourceURL, tcontent.keypoints,
@@ -564,8 +564,8 @@ to your own modified versions of Mura CMS.
 		</cfif>
 	</cfdefaultcase>
 	</cfswitch>
-	<cfif dbType eq "mysql">limit <cfqueryparam cfsqltype="cf_sql_integer" value="#arguments.feedBean.getMaxItems()#" /> </cfif>
-	<cfif dbType eq "oracle">) where ROWNUM <= <cfqueryparam cfsqltype="cf_sql_integer" value="#arguments.feedBean.getMaxItems()#" /> </cfif>
+	<cfif dbType eq "mysql" and arguments.feedBean.getMaxItems()>limit <cfqueryparam cfsqltype="cf_sql_integer" value="#arguments.feedBean.getMaxItems()#" /> </cfif>
+	<cfif dbType eq "oracle" and arguments.feedBean.getMaxItems()>) where ROWNUM <= <cfqueryparam cfsqltype="cf_sql_integer" value="#arguments.feedBean.getMaxItems()#" /> </cfif>
 	</cfquery>
 	
 	<cfreturn rs />
