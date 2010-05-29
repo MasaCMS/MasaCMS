@@ -117,15 +117,18 @@ a#editFormCloseLink {
 	list-style: none !important;
 	font-weight: normal !important;
 	font-family: "Lucida Grande", Arial, Helvetica, sans-serif !important;
+	font-style: normal !important;
 }
 
 #frontEndTools ul li a {
 	color: #666 !important;
 	background: transparent !important;
+	font-size: 11px !important;
 	line-height: 30px !important;
 	padding: 2px 0 2px 18px !important;
 	text-decoration: none !important;font-weight: normal !important;
 	font-family: "Lucida Grande", Arial, Helvetica, sans-serif !important;
+	font-style: normal !important;
 }
 
 #frontEndTools ul li a:hover {

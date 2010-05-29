@@ -95,10 +95,10 @@
 		<cfset var newitem = ""/>
 		<cfset var contents = ""/>
 		<cfset var nameregex = "[^a-zA-Z0-9_]"/>
-				
+			
 		<!---Clean up Ampersands and nonexistent names that may mess up variable naming later on--->
 		<cfloop collection="#object#" item="item">
-			<cfif isValidCFVariableName(item) eq false>
+			<cfif not isSimpleValue(object[item]) or isValidCFVariableName(item) eq false>
 				<!---Item name is invalid anyway in CF so we just dump it --->
 				<cfset structdelete(object,item,false)/>
 			<cfelse>
