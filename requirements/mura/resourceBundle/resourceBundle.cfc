@@ -68,7 +68,7 @@
 
 </cffunction>
 
-<cffunction name="LoadResourceBundle" output="No" returntype="struct" hint="reads and parses java resource bundle per locale">
+<cffunction name="LoadResourceBundle" returntype="any" hint="reads and parses java resource bundle per locale">
 <cfscript>
 	var isOk=false; // success flag
 	var keys=""; // var to hold rb keys
@@ -107,7 +107,7 @@
 
 </cffunction> 
 
-<cffunction name="LoadResourceBundleUTF" output="No" returntype="struct" hint="reads and parses java resource bundle per locale">
+<cffunction name="LoadResourceBundleUTF" returntype="any" hint="reads and parses java resource bundle per locale">
 <cfscript>
 	var isOk=false; // success flag
 	var keys=""; // var to hold rb keys
@@ -155,6 +155,7 @@
 	<cfreturn resourceBundle>
 
 </cffunction> 
+
 <cffunction name="getResourceBundle" returntype="any" access="public" output="false">
 
 	<cfif variables.isLoaded>	

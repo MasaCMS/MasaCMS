@@ -694,4 +694,13 @@ to your own modified versions of Mura CMS.
     <cfreturn variables.instance.RemotePubDate />
 </cffunction>
 
+<cffunction name="getEditUrl" access="public" returntype="string" output="false">
+	<cfargument name="compactDisplay" type="any" required="true" default="false"/>
+	<cfset var returnStr="">
+	
+	<cfset returnStr= "#variables.configBean.getContext()#/admin/?fuseaction=cFeed.edit&feedID=#getFeedID()#&siteid=#getSiteID()#&type=#getType()#&compactDisplay=#arguments.compactdisplay#" >
+	
+	<cfreturn returnStr>
+</cffunction> 
+
 </cfcomponent>

@@ -89,7 +89,7 @@ function addContentFilter(contentID,contentType,title)	{
   
  
 
-function removeFilter(contentID){
+function removeFilter(id){
 	jQuery("#" + id).remove(); 
 	stripe('stripe');
 	return false;

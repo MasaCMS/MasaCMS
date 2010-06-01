@@ -6,23 +6,23 @@ the Free Software Foundation, Version 2 of the License.
 
 Mura CMS is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. ï¿½See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-along with Mura CMS.  If not, see <http://www.gnu.org/licenses/>.
+along with Mura CMS. ï¿½If not, see <http://www.gnu.org/licenses/>.
 
 Linking Mura CMS statically or dynamically with other modules constitutes
 the preparation of a derivative work based on Mura CMS. Thus, the terms and 	
-conditions of the GNU General Public License version 2 (“GPL”) cover the entire combined work.
+conditions of the GNU General Public License version 2 (ï¿½GPLï¿½) cover the entire combined work.
 
 However, as a special exception, the copyright holders of Mura CMS grant you permission
 to combine Mura CMS with programs or libraries that are released under the GNU Lesser General Public License version 2.1.
 
-In addition, as a special exception,  the copyright holders of Mura CMS grant you permission
-to combine Mura CMS  with independent software modules that communicate with Mura CMS solely
+In addition, as a special exception, ï¿½the copyright holders of Mura CMS grant you permission
+to combine Mura CMS ï¿½with independent software modules that communicate with Mura CMS solely
 through modules packaged as Mura CMS plugins and deployed through the Mura CMS plugin installation API,
-provided that these modules (a) may only modify the  /trunk/www/plugins/ directory through the Mura CMS
+provided that these modules (a) may only modify the ï¿½/trunk/www/plugins/ directory through the Mura CMS
 plugin installation API, (b) must not alter any default objects in the Mura CMS database
 and (c) must not alter any files in the following directories except in cases where the code contains
 a separately distributed license.
@@ -37,7 +37,7 @@ the source code of that other code when and as the GNU GPL requires distribution
 
 For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception
 for your modified version; it is your choice whether to do so, or to make such modified version available under
-the GNU General Public License version 2  without this exception.  You may, if you choose, apply this exception
+the GNU General Public License version 2 ï¿½without this exception. ï¿½You may, if you choose, apply this exception
 to your own modified versions of Mura CMS.
 --->
 <cfcomponent extends="mura.cfobject" output="false">
@@ -822,18 +822,22 @@ to your own modified versions of Mura CMS.
 
 	<cfset var theIncludePath = event.getSite().getIncludePath() />
 	<cfset var fileDelim = application.configBean.getFileDelim() />
-	<cfset var filePath = theIncludePath  & fileDelim & "includes" & fileDelim & "display_objects" & fileDelim />
+	<cfset var filePath = theIncludePath  & fileDelim & "includes" & fileDelim />
 	<cfset var hasSummary = arguments.Summary />
 	<cfset var useRss = arguments.RSS />
 	<cfset var bean = "" />
 	<cfset var theContent = "" />
 	<cfset var editableControl = structNew()>
+	<cfset var theme =$.siteConfig("theme")>
+	<cfset var expandedPath=expandPath(filePath)>
 	
-	<cfsavecontent variable="theContent">	
-	<cfif fileExists(expandPath(filePath) & fileDelim & "custom" & fileDelim & arguments.theFile)>
-		<cfinclude  template="#filePath#custom/#arguments.theFile#" />
+	<cfsavecontent variable="theContent">
+	<cfif fileExists(expandedPath & "themes" & fileDelim & theme & fileDelim & "display_objects" & fileDelim & arguments.theFile)>
+		<cfinclude  template="#filePath#themes/#theme#/display_objects/#arguments.theFile#" />
+	<cfelseif fileExists(expandedPath & "display_objects" & fileDelim & "custom" & fileDelim & arguments.theFile)>
+		<cfinclude  template="#filePath#display_objects/custom/#arguments.theFile#" />
 	<cfelse>
-		<cfinclude  template="#filePath##arguments.theFile#" />
+		<cfinclude  template="#filePath#display_objects/#arguments.theFile#" />
 	</cfif>
 	</cfsavecontent>
 	<cfreturn theContent />
@@ -1005,6 +1009,8 @@ to your own modified versions of Mura CMS.
 					<cfoutput>#eventOutput#</cfoutput>
 				<cfelseif fileExists(expandPath(theIncludePath)  & fileDelim & "includes" & fileDelim & "display_objects" & fileDelim & "custom" & fileDelim & "extensions" & fileDelim & "dsp_" & event.getValue('contentBean').getType() & "_" & event.getValue('contentBean').getSubType() & ".cfm")>
 					 <cfinclude template="#theIncludePath#/includes/display_objects/custom/extensions/dsp_#event.getValue('contentBean').getType()#_#event.getValue('contentBean').getSubType()#.cfm">
+				<cfelseif fileExists(expandPath(theIncludePath)  & fileDelim & "includes" & fileDelim & "themes" & fileDelim & $.siteConfig("theme") & fileDelim & "display_objects" & fileDelim & "custom" & fileDelim & "extensions" & fileDelim & "dsp_" & event.getValue('contentBean').getType() & "_" & event.getValue('contentBean').getSubType() & ".cfm")>
+					 <cfinclude template="#theIncludePath#/includes/themes/#$.siteConfig('theme')#/display_objects/custom/extensions/dsp_#event.getValue('contentBean').getType()#_#event.getValue('contentBean').getSubType()#.cfm">
 				<cfelse>
 					<cfswitch expression="#event.getValue('contentBean').getType()#">
 					<cfcase value="File">
@@ -1588,6 +1594,8 @@ to your own modified versions of Mura CMS.
 	<cfset var pluginPath="" />
 	<cfset var pluginID=0 />
 	<cfset var pluginConfig="" />
+	<cfset var displayPoolID=application.settingsmanager.getSite(event.getValue('siteID')).getDisplayPoolID()>
+	<cfset var theme=application.settingsmanager.getSite(event.getValue('siteID')).getTheme()>
 	
 	<cfif getRenderHTMLHead()>	
 		<!--- Add global.js --->
@@ -1610,66 +1618,97 @@ to your own modified versions of Mura CMS.
 		<cfset headerFound=false/>
 		<cfsavecontent variable="headerStr">
 			<!--- look in default htmlHead directory --->
+			<cfif not refind('[\\/]',i)>
+				
+				<cfset pluginBasePath="/#displayPoolID#/includes/themes/#theme#/display_objects/htmlhead/">
+				<cfif fileExists(expandPath("/#application.configBean.getWebRootMap()##pluginbasePath#") & i)>
+					<cfset pluginPath= application.configBean.getContext() & pluginBasePath >
+					<cfinclude  template="/#application.configBean.getWebRootMap()##pluginbasePath##i#">
+					<cfset headerFound=true />
+				</cfif>
+				
+				<cfif not headerFound>
+					<cfset pluginBasePath="/#displayPoolID#/includes/display_objects/htmlhead/">
+					<cfif fileExists(expandPath("/#application.configBean.getWebRootMap()##pluginbasePath#") & i)>
+						<cfset pluginPath= application.configBean.getContext() & pluginBasePath >
+						<cfinclude  template="/#application.configBean.getWebRootMap()##pluginbasePath##i#">
+						<cfset headerFound=true />
+					</cfif>
+				</cfif>
 			
-			<cfset pluginBasePath="/#application.settingsmanager.getSite(event.getValue('siteID')).getDisplayPoolID()#/includes/display_objects/htmlhead/">
-			<cfif fileExists(expandPath("/#application.configBean.getWebRootMap()##pluginbasePath#") & i)>
-				<cfset pluginPath= application.configBean.getContext() & pluginBasePath >
-				<cfinclude  template="/#application.configBean.getWebRootMap()##pluginbasePath##i#">
-				<cfset headerFound=true />
-			</cfif>
-					
-			<!--- If not found, look in display_objects directory --->
-			<cfif not headerFound>
-				<cfset pluginBasePath="/#application.settingsmanager.getSite(event.getValue('siteID')).getDisplayPoolID()#/includes/display_objects/">
+			<cfelse>
+			
+				<!--- If not found, look in look in your theme --->
+				<cfset pluginBasePath="/#displayPoolID#/includes/themes/#theme#/display_objects/">
 				<cfif fileExists(expandPath("/#application.configBean.getWebRootMap()##pluginbasePath#") & i)>
 					<cfset pluginPath= application.configBean.getContext() & pluginBasePath >	
 					<cfinclude  template="/#application.configBean.getWebRootMap()##pluginBasePath##i#">
 					<cfset headerFound=true />
 				</cfif>
-			</cfif>
-			
-			<!--- If not found, look in includes directory --->
-			<cfif not headerFound>
-				<cfset pluginBasePath="/#application.settingsmanager.getSite(event.getValue('siteID')).getDisplayPoolID()#/includes/">
-				<cfif fileExists(expandPath("/#application.configBean.getWebRootMap()##pluginbasePath#") & i)>
-					<cfset pluginPath= application.configBean.getContext() & pluginBasePath >	
-					<cfinclude  template="/#application.configBean.getWebRootMap()##pluginBasePath##i#">
-					<cfset headerFound=true />
+						
+				<!--- If not found, look in display_objects directory --->
+				<cfif not headerFound>
+					<cfset pluginBasePath="/#displayPoolID#/includes/display_objects/">
+					<cfif fileExists(expandPath("/#application.configBean.getWebRootMap()##pluginbasePath#") & i)>
+						<cfset pluginPath= application.configBean.getContext() & pluginBasePath >	
+						<cfinclude  template="/#application.configBean.getWebRootMap()##pluginBasePath##i#">
+						<cfset headerFound=true />
+					</cfif>
+				</cfif>
+				
+				<!--- If not found, look in top of theme directory
+				<cfif not headerFound>
+					<cfset pluginBasePath="/#displayPoolID#/includes/themes/#theme#/">
+					<cfif fileExists(expandPath("/#application.configBean.getWebRootMap()##pluginbasePath#") & i)>
+						<cfset pluginPath= application.configBean.getContext() & pluginBasePath >	
+						<cfinclude  template="/#application.configBean.getWebRootMap()##pluginBasePath##i#">
+						<cfset headerFound=true />
+					</cfif>
+				</cfif>
+				 --->
+				 
+				<!--- If not found, look in includes directory --->
+				<cfif not headerFound>
+					<cfset pluginBasePath="/#displayPoolID#/includes/">
+					<cfif fileExists(expandPath("/#application.configBean.getWebRootMap()##pluginbasePath#") & i)>
+						<cfset pluginPath= application.configBean.getContext() & pluginBasePath >	
+						<cfinclude  template="/#application.configBean.getWebRootMap()##pluginBasePath##i#">
+						<cfset headerFound=true />
+					</cfif>
+				</cfif>
+				
+				<!--- If not found, look in local plugins directory --->
+				<cfif not headerFound>
+					<cfset pluginBasePath="/#displayPoolID#/includes/plugins/">		
+					<cfif fileExists(expandPath("/#application.configBean.getWebRootMap()##pluginbasePath#") & i)>
+						<cfset pluginID=listFirst(listLast(i,"_"),"/")>
+						<cfset event.setValue('pluginConfig',application.pluginManager.getConfig(pluginID))>
+						<cfset pluginConfig=event.getValue('pluginConfig')>
+						<cfset pluginPath= application.configBean.getContext() & pluginBasePath & pluginConfig.getDirectory() & "/" >		
+						<cfset event.setValue('pluginPath',pluginPath)>		
+						<cfinclude  template="/#application.configBean.getWebRootMap()##pluginBasePath##i#">
+						<cfset headerFound=true />
+						<cfset event.removeValue("pluginPath")>
+						<cfset event.removeValue("pluginConfig")>
+					</cfif>
+				</cfif>
+				
+				<!--- If not found, look in global plugins directory --->
+				<cfif not headerFound>
+					<cfset pluginBasePath="/plugins/">
+					<cfif fileExists(expandPath("/#application.configBean.getWebRootMap()##pluginbasePath#") & i)>
+						<cfset pluginID=listFirst(listLast(i,"_"),"/")>
+						<cfset event.setValue('pluginConfig',application.pluginManager.getConfig(pluginID))>
+						<cfset pluginConfig=event.getValue('pluginConfig')>
+						<cfset pluginPath= application.configBean.getContext() & pluginBasePath & pluginConfig.getDirectory() & "/" >		
+						<cfset event.setValue('pluginPath',pluginPath)>
+						<cfinclude  template="/#application.configBean.getWebRootMap()##pluginBasePath##i#">
+						<cfset headerFound=true />
+						<cfset event.removeValue("pluginPath")>
+						<cfset event.removeValue("pluginConfig")>
+					</cfif>
 				</cfif>
 			</cfif>
-			
-			<!--- If not found, look in local plugins directory --->
-			<cfif not headerFound>
-				<cfset pluginBasePath="/#application.settingsmanager.getSite(event.getValue('siteID')).getDisplayPoolID()#/includes/plugins/">		
-				<cfif fileExists(expandPath("/#application.configBean.getWebRootMap()##pluginbasePath#") & i)>
-					<cfset pluginID=listFirst(listLast(i,"_"),"/")>
-					<cfset event.setValue('pluginConfig',application.pluginManager.getConfig(pluginID))>
-					<cfset pluginConfig=event.getValue('pluginConfig')>
-					<cfset pluginPath= application.configBean.getContext() & pluginBasePath & pluginConfig.getDirectory() & "/" >		
-					<cfset event.setValue('pluginPath',pluginPath)>		
-					<cfinclude  template="/#application.configBean.getWebRootMap()##pluginBasePath##i#">
-					<cfset headerFound=true />
-					<cfset event.removeValue("pluginPath")>
-					<cfset event.removeValue("pluginConfig")>
-				</cfif>
-			</cfif>
-			
-			<!--- If not found, look in global plugins directory --->
-			<cfif not headerFound>
-				<cfset pluginBasePath="/plugins/">
-				<cfif fileExists(expandPath("/#application.configBean.getWebRootMap()##pluginbasePath#") & i)>
-					<cfset pluginID=listFirst(listLast(i,"_"),"/")>
-					<cfset event.setValue('pluginConfig',application.pluginManager.getConfig(pluginID))>
-					<cfset pluginConfig=event.getValue('pluginConfig')>
-					<cfset pluginPath= application.configBean.getContext() & pluginBasePath & pluginConfig.getDirectory() & "/" >		
-					<cfset event.setValue('pluginPath',pluginPath)>
-					<cfinclude  template="/#application.configBean.getWebRootMap()##pluginBasePath##i#">
-					<cfset headerFound=true />
-					<cfset event.removeValue("pluginPath")>
-					<cfset event.removeValue("pluginConfig")>
-				</cfif>
-			</cfif>
-			
 			<cfif not headerFound>
 			<cfoutput><!-- missing header include- #i# --></cfoutput>
 			</cfif>

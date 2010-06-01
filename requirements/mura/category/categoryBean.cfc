@@ -447,6 +447,14 @@ to your own modified versions of Mura CMS.
 		<cfreturn it>
 	</cffunction>
 	
+	<cffunction name="getEditUrl" access="public" returntype="string" output="false">
+	<cfargument name="compactDisplay" type="any" required="true" default="false"/>
+	<cfset var returnStr="">
+	
+	<cfset returnStr= "#variables.configBean.getContext()#/admin/?fuseaction=cCategory.edit&categoryID=#getCategoryID()#&parentID=#getParentID()#&siteid=#getSiteID()#&compactDisplay=#arguments.compactdisplay#" >
+	
+	<cfreturn returnStr>
+</cffunction> 
 </cfcomponent>
 
 

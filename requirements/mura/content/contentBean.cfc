@@ -1531,5 +1531,19 @@ to your own modified versions of Mura CMS.
 	<cfargument name="showMeta" type="string" required="true" default="0">
 	 <cfreturn variables.contentManager.getURL(this, arguments.queryString,arguments.complete, arguments.showMeta)>
 </cffunction>		
+
+<cffunction name="getEditUrl" access="public" returntype="string" output="false">
+	<cfargument name="compactDisplay" type="any" required="true" default="false"/>
+	<cfset var returnStr="">
+	<cfset var topID="00000000000000000000000000000000001">
 	
+	<cfif listFindNoCase("Form,Component", getType())>
+		<cfset topID=getModuleID()>
+	</cfif>
+	
+	<cfset returnStr= "#variables.configBean.getContext()#/admin/?fuseaction=cArch.edit&contentHistId=#getContentHistId()#&contentId=#getContentId()#&Type=#getType()#&siteId=#getSiteId()#&topId=#topID#&parentId=#arguments.contentBean.getParentId()#&moduleId=#getModuleId()#&compactDisplay=#arguments.compactdisplay#" >
+	
+	<cfreturn returnStr>
+</cffunction> 
+
 </cfcomponent>
