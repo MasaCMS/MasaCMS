@@ -6,23 +6,23 @@ the Free Software Foundation, Version 2 of the License.
 
 Mura CMS is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. ï¿½See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-along with Mura CMS.  If not, see <http://www.gnu.org/licenses/>.
+along with Mura CMS. ï¿½If not, see <http://www.gnu.org/licenses/>.
 
 Linking Mura CMS statically or dynamically with other modules constitutes
 the preparation of a derivative work based on Mura CMS. Thus, the terms and 	
-conditions of the GNU General Public License version 2 (“GPL”) cover the entire combined work.
+conditions of the GNU General Public License version 2 (ï¿½GPLï¿½) cover the entire combined work.
 
 However, as a special exception, the copyright holders of Mura CMS grant you permission
 to combine Mura CMS with programs or libraries that are released under the GNU Lesser General Public License version 2.1.
 
-In addition, as a special exception,  the copyright holders of Mura CMS grant you permission
-to combine Mura CMS  with independent software modules that communicate with Mura CMS solely
+In addition, as a special exception, ï¿½the copyright holders of Mura CMS grant you permission
+to combine Mura CMS ï¿½with independent software modules that communicate with Mura CMS solely
 through modules packaged as Mura CMS plugins and deployed through the Mura CMS plugin installation API,
-provided that these modules (a) may only modify the  /trunk/www/plugins/ directory through the Mura CMS
+provided that these modules (a) may only modify the ï¿½/trunk/www/plugins/ directory through the Mura CMS
 plugin installation API, (b) must not alter any default objects in the Mura CMS database
 and (c) must not alter any files in the following directories except in cases where the code contains
 a separately distributed license.
@@ -37,7 +37,7 @@ the source code of that other code when and as the GNU GPL requires distribution
 
 For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception
 for your modified version; it is your choice whether to do so, or to make such modified version available under
-the GNU General Public License version 2  without this exception.  You may, if you choose, apply this exception
+the GNU General Public License version 2 ï¿½without this exception. ï¿½You may, if you choose, apply this exception
 to your own modified versions of Mura CMS.
 --->
 
@@ -253,7 +253,7 @@ to your own modified versions of Mura CMS.
 
 <cffunction name="setWebRoot" access="public" output="false">
 	<cfargument name="webroot" type="String" />
-	<cfset variables.instance.webroot = arguments.webroot />
+	<cfset variables.instance.webroot = cleanFilePath(arguments.webroot) />
 	<cfreturn this>
 </cffunction>
 
@@ -293,6 +293,7 @@ to your own modified versions of Mura CMS.
 
 <cffunction name="setContext" access="public" output="false">
 	<cfargument name="Context" type="String" />
+	<cfset arguments.Context=cleanFilePath(arguments.Context) />
 	<cfif getContextRoot() NEQ "/">
 		<cfset arguments.Context = getContextRoot() & arguments.Context />
 	</cfif>
@@ -306,7 +307,7 @@ to your own modified versions of Mura CMS.
 
 <cffunction name="setStub" access="public" output="false">
 	<cfargument name="Stub" type="String" />
-	<cfset variables.instance.stub = arguments.Stub />
+	<cfset variables.instance.stub = cleanFilePath(arguments.Stub) />
 	<cfreturn this>
 </cffunction>
 
@@ -520,7 +521,9 @@ to your own modified versions of Mura CMS.
 	<cfargument name="fileDir" type="string" default="" />
 	
 	<cfset var ap=variables.instance.assetPath/>
-		
+	
+	<cfset arguments.fileDir=cleanFilePath(arguments.fileDir)>
+	
 	<cfif len(arguments.fileDir)>
 		<cfset variables.instance.fileDir = arguments.fileDir />
 	<cfelse>
@@ -533,6 +536,7 @@ to your own modified versions of Mura CMS.
 			<cfset variables.instance.fileDir = variables.instance.webroot  />
 		</cfif>
 	</cfif>
+	
 	<cfreturn this>
 </cffunction>
 
@@ -544,6 +548,8 @@ to your own modified versions of Mura CMS.
 	<cfargument name="assetDir" type="string" default="" />
 	
 	<cfset var ap=variables.instance.assetPath/>
+	
+	<cfset arguments.assetDir=cleanFilePath(arguments.assetDir)>
 		
 	<cfif len(arguments.assetDir)>
 		<cfset variables.instance.assetDir = arguments.assetDir />
@@ -557,6 +563,7 @@ to your own modified versions of Mura CMS.
 			<cfset variables.instance.assetDir = variables.instance.webroot  />
 		</cfif>
 	</cfif>
+	
 	<cfreturn this>
 </cffunction>
 
@@ -566,7 +573,7 @@ to your own modified versions of Mura CMS.
 
 <cffunction name="setAssetPath" access="public" output="false">
 	<cfargument name="assetPath" type="String" default="" />
-	<cfset variables.instance.assetPath = arguments.assetPath />
+	<cfset variables.instance.assetPath =cleanFilePath(arguments.assetPath) />
 	<cfreturn this>
 </cffunction>
 
@@ -586,7 +593,7 @@ to your own modified versions of Mura CMS.
 
 <cffunction name="setProductionAssetPath" access="public" output="false">
 	<cfargument name="ProductionAssetPath" type="String" />
-	<cfset variables.instance.productionAssetPath = arguments.ProductionAssetPath />
+	<cfset variables.instance.ProductionAssetPath=cleanFilePath(arguments.ProductionAssetPath) />
 	<cfreturn this>
 </cffunction>
 
@@ -596,7 +603,7 @@ to your own modified versions of Mura CMS.
 
 <cffunction name="setProductionWebroot" access="public" output="false">
 	<cfargument name="ProductionWebroot" type="String" />
-	<cfset variables.instance.ProductionWebroot = arguments.ProductionWebroot />
+	<cfset variables.instance.ProductionWebroot=cleanFilePath(arguments.ProductionWebroot) />
 	<cfreturn this>
 </cffunction>
 
@@ -606,7 +613,7 @@ to your own modified versions of Mura CMS.
 
 <cffunction name="setProductionFiledir" access="public" output="false">
 	<cfargument name="ProductionFiledir" type="String" />
-	<cfset variables.instance.productionFiledir = arguments.ProductionFiledir />
+	<cfset variables.instance.productionFiledir=cleanFilePath(arguments.ProductionFiledir)/>
 	<cfreturn this>
 </cffunction>
 
@@ -616,7 +623,7 @@ to your own modified versions of Mura CMS.
 
 <cffunction name="setProductionAssetdir" access="public" output="false">
 	<cfargument name="ProductionAssetdir" type="String" />
-	<cfset variables.instance.productionAssetdir = arguments.ProductionAssetdir />
+	<cfset variables.instance.productionAssetdir=cleanFilePath(arguments.ProductionAssetdir)/>
 	<cfreturn this>
 </cffunction>
 
@@ -899,7 +906,7 @@ to your own modified versions of Mura CMS.
 
 <cffunction name="setPluginDir" access="public" output="false">
 	<cfargument name="pluginDir" type="String" />
-	
+	<cfset arguments.pluginDir=cleanFilePath(arguments.pluginDir)>
 	<cfif len(arguments.pluginDir)>
 		<cfset variables.instance.pluginDir = arguments.pluginDir />
 	</cfif>
@@ -1020,4 +1027,26 @@ to your own modified versions of Mura CMS.
 	</cfif>
 
 </cffunction>
+
+<cffunction name="cleanFilePath" output="false">
+<cfargument name="filePath">
+	<cfset var last="">
+	<cfset var theLen=len(arguments.filePath)>
+	<cfset var returnStr=arguments.filePath>
+	
+	<cfif theLen>
+		<cfset last=right(arguments.filePath,1)>
+		<cfif listFind("/,\",last)>
+			<cfif theLen gt 1>
+				<cfset returnStr=left(returnStr,theLen-1) >
+			<cfelse>
+				<cfset returnStr="">
+			</cfif>
+		</cfif>
+	</cfif>
+	
+	<cfreturn returnStr>
+	
+</cffunction>
+
 </cfcomponent>
