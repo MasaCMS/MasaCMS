@@ -41,7 +41,7 @@ the GNU General Public License version 2 �without this exception. �You may, 
 to your own modified versions of Mura CMS.
 --->
 <cfcomponent extends="mura.cfobject" output="false">
-	
+
 	<cffunction name="update" returntype="void">
 		<cfargument name="find" type="string" default="" required="true">
 		<cfargument name="replace" type="string"  default="" required="true">
@@ -82,7 +82,7 @@ to your own modified versions of Mura CMS.
 		<cfargument name="toDSN" type="string" default="" required="true">
 		<cfargument name="mode" type="string" default="publish" required="true">
 		<cfargument name="keyFactory" type="any" required="true">
-	
+			
 		<cfset var keys=arguments.keyFactory/>
 		<cfset var rsContent=""/>
 		<cfset var rsContentObjects=""/>
@@ -115,9 +115,9 @@ to your own modified versions of Mura CMS.
 		<cfset var rstpluginscripts=""/>
 		<cfset var rstplugindisplayobjects=""/>
 		<cfset var rstpluginsettings=""/>		
-			
+		
 			<!--- pushed tables --->
-			
+		
 			<!--- tcontent --->
 			<cfquery datasource="#arguments.toDSN#">
 				delete from tcontent where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.tositeid#"/>
@@ -267,7 +267,7 @@ to your own modified versions of Mura CMS.
 					)
 				</cfquery>
 			</cfloop>
-			
+		
 			<!--- tpermissions--->
 			<cfquery datasource="#arguments.toDSN#">
 				delete from tpermissions where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.tositeid#"/>
@@ -443,6 +443,7 @@ to your own modified versions of Mura CMS.
 						)
 					</cfquery>
 				</cfloop>
+				
 				<!--- tadplacementdetails --->
 				<cfquery datasource="#arguments.toDSN#">
 					delete from tadplacementdetails where placementid in (select placementid from tadplacements where adzoneid in (select adzoneid from tadzones where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.tositeid#"/>))
@@ -549,7 +550,7 @@ to your own modified versions of Mura CMS.
 					)
 				</cfquery>
 			</cfloop>
-
+		
 			<!--- tcontentfeedadvancedparams --->
 			<cfquery datasource="#arguments.toDSN#">
 				delete from tcontentfeedadvancedparams where feedID in (select feedID from tcontentfeeds where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.tositeid#"/>)
@@ -642,6 +643,7 @@ to your own modified versions of Mura CMS.
 					)
 				</cfquery>
 			</cfloop>
+			
 			<!--- tcontentcategories --->
 			<cfquery datasource="#arguments.toDSN#">
 				delete from tcontentcategories where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.tositeid#"/>
@@ -678,6 +680,57 @@ to your own modified versions of Mura CMS.
 			
 			<!--- synced tables--->
 			<cfif arguments.mode eq "publish">
+				<cfset getToWorkPublish(argumentCollection=arguments)>
+			<cfelseif arguments.mode eq "copy">
+				<cfset getToWorkCopy(argumentCollection=arguments)>
+			</cfif>
+			<cfif not (arguments.mode eq "copy" and arguments.toDSN eq arguments.fromDSN)>
+				<cfset getToWorkCopySameDSN(argumentCollection=arguments)>
+			</cfif>
+		
+	</cffunction>
+	
+	<cffunction name="getToWorkPublish" returntype="void">
+		<cfargument name="fromSiteID" type="string" default="" required="true">
+		<cfargument name="toSiteID" type="string" default="" required="true">
+		<cfargument name="fromDSN" type="string" default="" required="true">
+		<cfargument name="toDSN" type="string" default="" required="true">
+		<cfargument name="mode" type="string" default="publish" required="true">
+		<cfargument name="keyFactory" type="any" required="true">
+			
+		<cfset var keys=arguments.keyFactory/>
+		<cfset var rsContent=""/>
+		<cfset var rsContentObjects=""/>
+		<cfset var rsContentTags=""/>
+		<cfset var rsSystemObjects=""/>
+		<cfset var rstpermissions=""/>
+		<cfset var rsSettings=""/>
+		<cfset var rstadcampaigns=""/>
+		<cfset var rstadcreatives=""/>
+		<cfset var rstadipwhitelist=""/>
+		<cfset var rstadzones=""/>
+		<cfset var rstadplacements=""/>
+		<cfset var rstadplacementdetails=""/>
+		<cfset var rstcontentcategoryassign=""/>
+		<cfset var rstcontentfeeds=""/>
+		<cfset var rstcontentfeeditems=""/>
+		<cfset var rstcontentfeedadvancedparams=""/>
+		<cfset var rstcontentrelated=""/>
+		<cfset var rsMailinglist=""/>
+		<cfset var rsFiles=""/>
+		<cfset var rstcontentcategories=""/>
+		<cfset var rstcontentcomments=""/>
+		<cfset var rstcontentratings=""/>
+		<cfset var rstusersinterests=""/>
+		<cfset var rstclassextend=""/>
+		<cfset var rstclassextendsets=""/>
+		<cfset var rstclassextendattributes=""/>
+		<cfset var rstclassextenddata=""/>
+		<cfset var getNewID=""/>
+		<cfset var rstpluginscripts=""/>
+		<cfset var rstplugindisplayobjects=""/>
+		<cfset var rstpluginsettings=""/>		
+		
 				<!--- tcontentcomments --->
 				<cfquery datasource="#arguments.toDSN#">
 					delete from tcontentcomments where commentid not in (select commentid from tcontent where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.tositeid#"/>)
@@ -777,8 +830,49 @@ to your own modified versions of Mura CMS.
 						)
 					</cfquery>
 				</cfloop>
+		
+	</cffunction>
+	
+	<cffunction name="getToWorkCopy" returntype="void">
+		<cfargument name="fromSiteID" type="string" default="" required="true">
+		<cfargument name="toSiteID" type="string" default="" required="true">
+		<cfargument name="fromDSN" type="string" default="" required="true">
+		<cfargument name="toDSN" type="string" default="" required="true">
+		<cfargument name="mode" type="string" default="publish" required="true">
+		<cfargument name="keyFactory" type="any" required="true">
 			
-			<cfelseif arguments.mode eq "copy">
+		<cfset var keys=arguments.keyFactory/>
+		<cfset var rsContent=""/>
+		<cfset var rsContentObjects=""/>
+		<cfset var rsContentTags=""/>
+		<cfset var rsSystemObjects=""/>
+		<cfset var rstpermissions=""/>
+		<cfset var rsSettings=""/>
+		<cfset var rstadcampaigns=""/>
+		<cfset var rstadcreatives=""/>
+		<cfset var rstadipwhitelist=""/>
+		<cfset var rstadzones=""/>
+		<cfset var rstadplacements=""/>
+		<cfset var rstadplacementdetails=""/>
+		<cfset var rstcontentcategoryassign=""/>
+		<cfset var rstcontentfeeds=""/>
+		<cfset var rstcontentfeeditems=""/>
+		<cfset var rstcontentfeedadvancedparams=""/>
+		<cfset var rstcontentrelated=""/>
+		<cfset var rsMailinglist=""/>
+		<cfset var rsFiles=""/>
+		<cfset var rstcontentcategories=""/>
+		<cfset var rstcontentcomments=""/>
+		<cfset var rstcontentratings=""/>
+		<cfset var rstusersinterests=""/>
+		<cfset var rstclassextend=""/>
+		<cfset var rstclassextendsets=""/>
+		<cfset var rstclassextendattributes=""/>
+		<cfset var rstclassextenddata=""/>
+		<cfset var getNewID=""/>
+		<cfset var rstpluginscripts=""/>
+		<cfset var rstplugindisplayobjects=""/>
+		<cfset var rstpluginsettings=""/>		
 			
 				<cfquery datasource="#arguments.toDSN#">
 					delete from tclassextend
@@ -926,11 +1020,51 @@ to your own modified versions of Mura CMS.
 						</cfcatch>
 					</cftry>
 				</cfloop>
+		
+	</cffunction>
+	<cffunction name="getToWorkCopySameDSN" returntype="void">
+		<cfargument name="fromSiteID" type="string" default="" required="true">
+		<cfargument name="toSiteID" type="string" default="" required="true">
+		<cfargument name="fromDSN" type="string" default="" required="true">
+		<cfargument name="toDSN" type="string" default="" required="true">
+		<cfargument name="mode" type="string" default="publish" required="true">
+		<cfargument name="keyFactory" type="any" required="true">
 			
-			</cfif>
-			
-			<cfif not (arguments.mode eq "copy" and arguments.toDSN eq arguments.fromDSN)>
-				<!--- tpluginscripts --->
+		<cfset var keys=arguments.keyFactory/>
+		<cfset var rsContent=""/>
+		<cfset var rsContentObjects=""/>
+		<cfset var rsContentTags=""/>
+		<cfset var rsSystemObjects=""/>
+		<cfset var rstpermissions=""/>
+		<cfset var rsSettings=""/>
+		<cfset var rstadcampaigns=""/>
+		<cfset var rstadcreatives=""/>
+		<cfset var rstadipwhitelist=""/>
+		<cfset var rstadzones=""/>
+		<cfset var rstadplacements=""/>
+		<cfset var rstadplacementdetails=""/>
+		<cfset var rstcontentcategoryassign=""/>
+		<cfset var rstcontentfeeds=""/>
+		<cfset var rstcontentfeeditems=""/>
+		<cfset var rstcontentfeedadvancedparams=""/>
+		<cfset var rstcontentrelated=""/>
+		<cfset var rsMailinglist=""/>
+		<cfset var rsFiles=""/>
+		<cfset var rstcontentcategories=""/>
+		<cfset var rstcontentcomments=""/>
+		<cfset var rstcontentratings=""/>
+		<cfset var rstusersinterests=""/>
+		<cfset var rstclassextend=""/>
+		<cfset var rstclassextendsets=""/>
+		<cfset var rstclassextendattributes=""/>
+		<cfset var rstclassextenddata=""/>
+		<cfset var getNewID=""/>
+		<cfset var rstpluginscripts=""/>
+		<cfset var rstplugindisplayobjects=""/>
+		<cfset var rstpluginsettings=""/>		
+		
+		
+				
 				<cfquery datasource="#arguments.toDSN#">
 					delete from tpluginscripts 
 					where moduleID in ( select moduleID from tcontent where siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.tositeid#"/> and type='Plugin')
@@ -939,6 +1073,7 @@ to your own modified versions of Mura CMS.
 					select * from tpluginscripts 
 					where moduleID in ( select moduleID from tcontent where siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.fromsiteid#"/> and type='Plugin')
 				</cfquery>
+				
 				<cfloop query="rstpluginscripts">
 					<cfquery datasource="#arguments.toDSN#">
 						insert into tpluginscripts (scriptID,moduleID,scriptfile,runat,docache)
@@ -999,9 +1134,10 @@ to your own modified versions of Mura CMS.
 						)
 					</cfquery>
 				</cfloop>
-			</cfif>
+		
 		
 	</cffunction>
+	
 	
 	<cffunction name="publish" returntype="void">
 		<cfargument name="siteid" required="yes" default="">
@@ -1136,7 +1272,7 @@ to your own modified versions of Mura CMS.
 			<!---</cfthread>--->
 		<!---</cfif>--->
 		
-		<cfif  arguments.fromWebRoot neq arguments.toAssetDir>
+		<cfif arguments.toWebRoot neq arguments.toAssetDir>
 			<!---<cfthread action="run" name="thread4">--->
 				<cfset application.utility.copyDir("#fromAssetDir##fileDelim##fromsiteid##fileDelim#assets#fileDelim#", "#toAssetDir##fileDelim##tositeid##fileDelim#assets#fileDelim#") />
 			<!---</cfthread>--->
@@ -1161,9 +1297,6 @@ to your own modified versions of Mura CMS.
 		
 	</cffunction>
 	
-	<cffunction name="init" returntype="any">
-		<cfreturn this />
-	</cffunction>
 	
 	<cffunction name="start" returntype="boolean">
 		<cfargument name="siteid" required="yes" default="">
@@ -1231,4 +1364,5 @@ to your own modified versions of Mura CMS.
 			</cfif>
 		</cfloop>
 	</cffunction>
+	
 </cfcomponent>
