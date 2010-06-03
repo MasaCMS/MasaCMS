@@ -1020,12 +1020,18 @@
 	<cffunction name="doController" access="private" output="false" hint="Executes a controller in context.">
 		<cfargument name="cfc" />
 		<cfargument name="method" />
-
+		<cfset var metadata="">
+		
 		<cfif structKeyExists(arguments.cfc,arguments.method) or structKeyExists(arguments.cfc,"onMissingMethod")>
 			<cftry>
 				<cfinvoke component="#arguments.cfc#" method="#arguments.method#" rc="#request.context#" />
 			<cfcatch type="any">
-				<cfset request.failedCfcName = getMetadata( arguments.cfc ).fullname />
+				<cfset metadata=getMetadata( arguments.cfc )>
+				<cfif structKeyExists(metadata,"fullname")>
+					<cfset request.failedCfcName = metadata.fullname />
+				<cfelse>
+					<cfset request.failedCfcName =metadata.name />
+				</cfif>
 				<cfset request.failedMethod = arguments.method />
 				<cfrethrow />
 			</cfcatch>

@@ -40,4 +40,16 @@ for your modified version; it is your choice whether to do so, or to make such m
 the GNU General Public License version 2  without this exception.  You may, if you choose, apply this exception
 to your own modified versions of Mura CMS.
 --->
-<cfoutput><script src="#event.getSite().getAssetPath()#/includes/display_objects/gallery/js/gallery.js" type="text/javascript"></script></cfoutput>
+<cfoutput>
+<script src="#event.getSite().getAssetPath()#/includes/display_objects/gallery/js/gallery.js" type="text/javascript"></script>
+
+<!--- <cfset imgWidth = #$.siteConfig('gallerySmallScale')#> --->
+<cfset addToWidth = 0> <!--- Add total number of pixels and padding applied to <li> via CSS  --->
+<cfset totalWidth = #$.siteConfig('gallerySmallScale')# + addToWidth>
+
+<style>
+##svGallery li {
+	width: #totalWidth#px;
+	}
+</style>
+</cfoutput>

@@ -674,16 +674,8 @@ h1 a {
 	padding-top: 1.8em;
 }
 
-.oneCol #svGallery li {
-	width: 9%;
-	}
-	
-.twoColSR #svGallery li, .twoColSL #svGallery li {
-	width: 11%;
-	}
-
-.threeCol #svGallery li {
-	width: 18%;
+#svGallery li a {
+	border: 0px solid #ccc; /* Add the the total number of pixels added by borders and padding here to includes/display_objects/gallery/htmlhead/gallery.cfm
 	}
 
 

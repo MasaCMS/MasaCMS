@@ -71,7 +71,7 @@
 
 <cffunction name="import2" output="false">
 	<cfargument name="rc">	
-	<cfset rc.import=variables.feedManager.import(rc) />
+	<cfset rc.theImport=variables.feedManager.doImport(rc) />
 </cffunction>
 
 </cfcomponent>

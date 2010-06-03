@@ -33,8 +33,8 @@
 	--->
 	 
 	<!---Start of settings--->
-	<cfset variables.instance.log = true/>	
-	<cfset variables.instance.ipBlock = true/>										<!---Requires variables.instance.log set to true--->
+	<cfset variables.instance.log = not StructKeyExists(SERVER,"bluedragon")/>	
+	<cfset variables.instance.ipBlock = not StructKeyExists(SERVER,"bluedragon")/>										<!---Requires variables.instance.log set to true--->
 	<cfset variables.instance.allowedAttempts = 10/>
 	<cfset variables.instance.blockTime = 86400/> 									<!---In Seconds, 86400 seconds equals 1 day--->
 	<cfset variables.instance.keepInnerText = false/> 								<!---Keep any text within a blocked tag--->

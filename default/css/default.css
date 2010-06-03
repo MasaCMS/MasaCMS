@@ -1,3 +1,5 @@
+/* @override http://mura:8500/default/css/default.css */
+
 /* This file is part of Mura CMS. 
 
 	Mura CMS is free software: you can redistribute it and/or modify 
@@ -850,16 +852,25 @@ table.svFlvPlayer td {
 	}
 	
 #svGallery li {
+	/* width : auto; Width is set dynamically in /includes/display_objects/gallery/htmlhead/gallery.cfm */
+	/* Height is being set by jQuery based on the rendered height of the <li> to avoid float issues. */
 	float: left;
-	width: 23%;
-	margin: 0 1%;
+	margin: 0 2% 0 0;
 	padding: 0 0 1.5em;
 	list-style: none;
 	font-size: 1.1em;
 	text-align: center;
 	}
 
-#svGallery li img { margin: 0; }
+#svGallery li a { 
+	display: block;
+	margin: 0 auto .75em;
+}
+
+#svGallery li img { 
+	margin: 0 auto;
+	display: block;
+	 }
 
 #svGallery li p {
 	margin: 0;
@@ -868,12 +879,12 @@ table.svFlvPlayer td {
 	}
 
 #svGallery dl {
-	margin: 0;
+	margin: 0 auto;
 	padding: 0;
 	}
 
 #svGallery dt {
-	margin: 0;
+	margin: 0 0 .25em;
 	padding: 0;
 	}
 
