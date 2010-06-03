@@ -43,4 +43,31 @@ to your own modified versions of Mura CMS.
 <cfoutput>
 <script src="#event.getSite().getAssetPath()#/includes/display_objects/feedslideshow/js/jquery.cycle.js" type="text/javascript"></script>
 <script src="#event.getSite().getAssetPath()#/includes/display_objects/feedslideshow/js/slideshow.jquery.js" type="text/javascript"></script>
+
+<cfset imageBorder = 6> <!--- Total number of pixels of top and bottom borders --->
+<cfset minHeight = #$.siteConfig('galleryMediumScale')# + imageBorder> <!--- Add the border to the size of the medium image set in site settings--->
+
+<cfset topBottomMargin = 20> <!--- Total of top and bottom margin on each slide (dl) --->
+<cfset slideMargin = #$.siteConfig('galleryMediumScale')# + topBottomMargin>
+
+<cfset addToPager = 10> <!--- Total of top and bottom margin on each slide (dl) --->
+<cfset pagerWidth = #$.siteConfig('galleryMediumScale')# + addToPager>
+
+<!--- Need conditional logic for x and y constrain --->
+<style>	
+	.home .svSlides { min-height: #minHeight#px !important; }
+	* html .home .svSlides { height: #minHeight#px !important; } <!-- ie6 -->
+
+	.home .svSlides dl { height: #slideMargin#px !important; }
+	
+	.svSlides dl.hasImage {
+	padding-left: #slideMargin#px !important;
+	min-height: #minHeight#px !important;
+	}
+	
+	.home ol.svPager { <!--- Center the pager beneath the image  --->
+	width: #pagerWidth#px !important;
+	}
+</style>
+
 </cfoutput>

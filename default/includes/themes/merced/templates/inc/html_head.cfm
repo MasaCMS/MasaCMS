@@ -18,11 +18,12 @@
 	<link rel="stylesheet" href="#themePath#/css/site.css" type="text/css" media="all" />
 	<link rel="stylesheet" href="#event.getSite().getAssetPath()#/css/print.css" type="text/css" media="print" />
 	<cfinclude template="ie_conditional_includes.cfm" />
-
+	
 	<cfset rs=application.feedManager.getFeeds(request.siteID,'Local',true,true) />
 	<cfloop query="rs">
 	<link rel="alternate" type="application/rss+xml" title="#HTMLEditFormat(renderer.getSite().getSite())# - #rs.name#" href="#XMLFormat('http://#listFirst(cgi.http_host,":")##application.configBean.getContext()#/tasks/feed/?feedID=#rs.feedID#')#" />
 	</cfloop>
 
 </head>
+
 </cfoutput>

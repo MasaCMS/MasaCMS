@@ -1,6 +1,11 @@
-/* @override http://mura:8500/mura/default/includes/themes/merced/css/site.css */
+/* @override 
+	http://mura:8500/default/includes/themes/merced/css/site.css
+*/
 
-/*	Theme: Merced */
+/*
+Theme:  Yuba
+Author: Blue River Interactive Group
+*/
 
 /* @group GLOBALS
 ===================================== */
@@ -904,9 +909,9 @@ a.boxItemHeader { /* Link of items inside dragable boxes */
 	}
 
 .svIndex dl.hasImage {
-		padding-left: 90px;
+		/*padding-left: 90px;
+		min-height: 90px; Both set dynamically in dsp_feed.cfm & dsp_portal.cfm*/
 		position: relative;
-		min-height: 90px;
 		}
 
 .sidebar .svIndex dl.hasImage {
@@ -983,15 +988,12 @@ div.stars a {
 	margin: 0;
 	}
 	
-.svSlides dl.hasImage { /* Optimized for 180px wide images. Edit image size in "site settings." Adjust here as necessary*/	position: relative;
-	padding-left: 200px;
-	min-height: 180px;
+.svSlides dl.hasImage { /* padding-left & min-height set dynamically in /display_ojects/feedslideshow/htmlhead/slideshow.jquery.cfm */	position: relative;
 	}
 	
 .home .svSlideshow {
 	position: relative;
 	width: 627px;
-	/*height: 234px;*/
 	overflow: hidden;
 	padding: 30px 30px 10px;
 	margin: 0 0 2.2em;
@@ -1006,12 +1008,13 @@ div.stars a {
 	z-index: 1;
 	padding: 0;
 	margin: 0 !important;
-	min-height: 186px;
+	/* min-height set dynamically in /display_ojects/feedslideshow/htmlhead/slideshow.jquery.cfm */
 	}
 
 .home .svSlides dl {
-	/*width: 440px;*/
-	height: 200px;
+	/* Height set dynamically in /display_ojects/feedslideshow/htmlhead/slideshow.jquery.cfm */
+	/*position is set by jquery.slidshow plugin */
+	width: auto !important;
 	padding-bottom: 0;
 	margin-right: 0;
 	border: 0;
@@ -1047,11 +1050,11 @@ div.stars a {
 	padding: 0;
 	}
 
-.home .svSlides dd.image { /* Optimized for 180px wide "medium" images - edit image size in "site settings." Adjust here as necessary */
+.home .svSlides dd.image { 
 	position: absolute;
+	top: 0;
+	left: 0;
 	display: block;
-	width: 180px;
-	height: 180px;
 	float: none;
 	padding: 0;
 	border: 3px solid #1c5981;
@@ -1062,7 +1065,7 @@ div.stars a {
 	}
 
 .home .svSlides .readMore {
-	float: right;
+	float: left;
 	}
 
 .home .svSlides .readMore a {
@@ -1077,7 +1080,6 @@ div.stars a {
 	width: 60px;
 	text-align: left;
 	padding-right: 22px;
-	margin-right: 339px;
 	margin-top: .75em;
 	background: #2e7aa7 url(../images/arrows_white.gif) no-repeat 6.8em 50%;
 	-webkit-border-radius: 11px;
@@ -1090,10 +1092,10 @@ div.stars a {
 	line-height: 2;
 	}
 
-.home ol.svPager {
+.home ol.svPager { /* width set dynamically in /display_ojects/feedslideshow/htmlhead/slideshow.jquery.cfm */
+	/* width: #pagerWidth#; */
 	position: relative;
 	z-index: 2;
-	width: 190px;
 	text-align: center;
 	margin: 10px 0;
 	padding: 0;

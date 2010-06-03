@@ -105,7 +105,8 @@ to your own modified versions of Mura CMS.
 			<cfset doMeta=0 />
 		  </cfsilent>
 	  	<cfif rs.recordcount>
-	  	<div class="svSlideshow svSyndLocal svFeed svIndex clearfix" id="<cfoutput>#cssID#</cfoutput>">
+	  	<!--- <div class="svSlideshow svSyndLocal svFeed svIndex clearfix" id="<cfoutput>#cssID#</cfoutput>"> --->
+	  	<div class="svSlideshow clearfix" id="<cfoutput>#cssID#</cfoutput>">
 	  		<cfif feedBean.getDisplayName()><cfoutput><#getHeaderTag('subHead1')#>#feedBean.renderName()#</#getHeaderTag('subHead1')#></cfoutput></cfif>
 			<cfoutput><div class="svSlides"></cfoutput>
 	         <cfloop condition="iterator.hasNext()">

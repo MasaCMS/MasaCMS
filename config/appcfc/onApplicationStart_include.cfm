@@ -263,12 +263,23 @@ to your own modified versions of Mura CMS.
 		<cfloop query="rsSites">	
 			<cfif fileExists(expandPath("/#application.configBean.getWebRootMap()#") & "/#rsSites.siteID#/includes/eventHandler.cfc")>
 				<cfset localHandler=createObject("component","#application.configBean.getWebRootMap()#.#rsSites.siteID#.includes.eventHandler").init()>
-					<cfif structKeyExists(localHandler,"onApplicationLoad")>		
+				<cfif structKeyExists(localHandler,"onApplicationLoad")>		
 						<cfset pluginEvent.setValue("siteID",rsSites.siteID)>
 						<cfset pluginEvent.loadSiteRelatedObjects()>
 						<cfset localHandler.onApplicationLoad(event=pluginEvent,$=pluginEvent.getValue("muraScope"),mura=pluginEvent.getValue("muraScope"))>
 				</cfif>
 			</cfif>
+			<cfset siteBean=application.settingsManager.getSite(rsSites.siteid)>
+			<cfset expandedPath=expandPath(siteBean.getThemeIncludePath()) & "/eventHandler.cfc">
+			<cfif fileExists(expandedPath)>
+				<cfset themeHandler=createObject("component","#siteBean.getThemeAssetMap()#.eventHandler").init()>
+				<cfif structKeyExists(themeHandler,"onApplicationLoad")>		
+						<cfset pluginEvent.setValue("siteID",rsSites.siteID)>
+						<cfset pluginEvent.loadSiteRelatedObjects()>
+						<cfset themeHandler.onApplicationLoad(event=pluginEvent,$=pluginEvent.getValue("muraScope"),mura=pluginEvent.getValue("muraScope"))>
+				</cfif>
+				<cfset application.pluginManager.addEventHandler(themeHandler,rsSites.siteID)>
+			</cfif>	
 		</cfloop>
 	</cflock>
 </cfif>		

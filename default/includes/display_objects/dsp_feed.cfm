@@ -113,6 +113,8 @@ to your own modified versions of Mura CMS.
 		
 		<cfset nextN=application.utility.getNextN(rs,feedBean.getNextN(),currentNextNIndex)>
 	  </cfsilent>
+	  
+	  
 	  	
 		<cfif iterator.getRecordCount()>
 			<cfoutput><div class="svSyndLocal svFeed svIndex clearfix" id="#cssID#"></cfoutput>
@@ -138,7 +140,26 @@ to your own modified versions of Mura CMS.
 				<cfset doMeta=item.getValue('type') eq 'Page' or showItemMeta(item.getValue('type')) or (len(item.getValue('fileID')) and showItemMeta(item.getValue('fileEXT')))>
 				</cfif>
 				</cfsilent>
-				<cfoutput>
+				
+				
+	  <cfset imageBorder = 10> <!--- Total number of pixels of top and bottom borders --->
+	  <cfset minHeight = #$.siteConfig('gallerySmallScale')# + imageBorder> <!--- Add the border to the size of the medium image set in site settings--->
+	  <cfset topBottomMargin = 10> <!--- Total of top and bottom margin on each slide (dl) --->
+	  <cfset slideMargin = #$.siteConfig('gallerySmallScale')# + topBottomMargin>
+		
+		<!--- Need conditional logic for x and y constrain --->
+		
+		<cfoutput>
+		<style>						
+			##primary .svIndex dl.hasImage {
+			padding-left: #slideMargin#px !important;
+			min-height: #minHeight#px !important;
+			}
+		</style>
+		</cfoutput>
+				
+				<cfoutput>				
+								
 				<dl<cfif class neq ''> class="#class#"</cfif>>
 				<cfif item.getValue('parentType') eq 'Calendar' and isDate(item.getValue('displayStart'))>
 					<dt class="releaseDate"><cfif LSDateFormat(item.getValue('displayStart'),"short") lt LSDateFormat(item.getValue('displayStop'),"short")>#LSDateFormat(item.getValue('displayStart'),getShortDateFormat())# - #LSDateFormat(item.getValue('displayStop'),getShortDateFormat())#<cfelse>#LSDateFormat(item.getValue('displayStart'),getLongDateFormat())#</cfif></dt>

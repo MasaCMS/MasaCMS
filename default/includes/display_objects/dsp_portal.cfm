@@ -99,6 +99,18 @@ to your own modified versions of Mura CMS.
 
 </cfsilent>
 
+<cfset addToHeight = 10> <!--- Total number of pixels to add for the final height --->
+<cfset minHeight = #$.siteConfig('gallerySmallScale')# + addToHeight> <!--- Adding to the size of the medium image size in site settings--->
+<!--- Need  logic for x and y constrain? --->
+
+<cfoutput>
+<style>						
+	.svIndex dl.hasImage {
+	min-height: #minHeight#px !important;
+	}
+</style>
+</cfoutput>
+
 <cfif iterator.getRecordcount()>
 <div id="svPortal" class="svIndex">
 		<cfloop condition="iterator.hasNext()">

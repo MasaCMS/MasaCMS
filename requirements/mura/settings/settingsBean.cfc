@@ -1067,7 +1067,7 @@ to your own modified versions of Mura CMS.
 </cffunction>
 
 <cffunction name="getThemeAssetMap" returntype="any" access="public" output="false">
-	<cfif getTheme()>
+	<cfif len(getTheme())>
 	<cfreturn "#getAssetMap()#.includes.themes.#getTheme()#" />
 	<cfelse>
 	<cfreturn getAssetMap() />
