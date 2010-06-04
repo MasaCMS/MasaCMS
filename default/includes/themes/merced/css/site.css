@@ -1,9 +1,9 @@
 /* @override 
-	http://mura:8500/default/includes/themes/merced/css/site.css
+	http://mura:8500/default/includes/themes/yuba/css/site.css
 */
 
 /*
-Theme:  Yuba
+Theme:  Merced
 Author: Blue River Interactive Group
 */
 
@@ -667,7 +667,6 @@ h1 a {
 
 /* @group Galleries
 ===================================== */
-/*Optimized Grid for 80px Thumbnails*/
 
 #svGallery {
 	border-top: 2px solid #e6e6e6;
@@ -675,7 +674,7 @@ h1 a {
 }
 
 #svGallery li a {
-	border: 0px solid #ccc; /* Add the the total number of pixels added by borders and padding here to includes/display_objects/gallery/htmlhead/gallery.cfm
+	border: 0px solid #ccc; /* Add the the total number of pixels added by borders and padding here to includes/display_objects/gallery/htmlhead/gallery.cfm */
 	}
 
 
