@@ -315,7 +315,9 @@ ExtendSetID in(<cfloop from="1" to="#setLen#" index="s">
 		
 	<!--- if a new file has been submitted , save it --->
 	<cfif (structKeyExists(arguments.data,key) and len(arguments.data[key]))
-		or (structKeyExists(arguments.data,rs.name) and len(arguments.data[rs.name]))>
+		or (structKeyExists(arguments.data,rs.name) and len(arguments.data[rs.name])) and not
+		(structKeyExists(arguments.data,deletekey1) 
+		or structKeyExists(arguments.data,deletekey2))>
 		
 		<cfif structKeyExists(arguments.data,key) and len(arguments.data[key])>
 			<cfset formField=key />

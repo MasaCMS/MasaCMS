@@ -219,6 +219,10 @@ dd.categoryAssignment input.textAlt {
 
 * html table td.add a { background: url(../images/icons/ie6/add_32.gif) no-repeat center center; }
 
+* html .addNew #newPage {
+	zoom: 1;
+}
+
 * html .addNew #newCopy a { background: url(../images/icons/ie6/copy_24.gif) no-repeat 1px 5px; }
 * html .addNew #newZoom a { background: url(../images/icons/ie6/zoomi_24.gif) no-repeat 1px 5px;  }
 * html .addNew #newPage a {  background: url(../images/icons/ie6/docs_24.gif) no-repeat 1px 5px; }

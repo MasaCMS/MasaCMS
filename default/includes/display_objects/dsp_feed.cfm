@@ -114,7 +114,22 @@ to your own modified versions of Mura CMS.
 		<cfset nextN=application.utility.getNextN(rs,feedBean.getNextN(),currentNextNIndex)>
 	  </cfsilent>
 	  
-	  
+	  <cfset imageBorder = 10> <!--- Total number of pixels of top and bottom borders --->
+	  <cfset minHeight = #$.siteConfig('gallerySmallScale')# + imageBorder> <!--- Add the border to the size of the medium image set in site settings--->
+	  <cfset topBottomMargin = 10> <!--- Total of top and bottom margin on each slide (dl) --->
+	  <cfset slideMargin = #$.siteConfig('gallerySmallScale')# + topBottomMargin>
+		
+		<!--- Need conditional logic for x and y constrain --->
+		
+		<cfoutput>
+		<style>						
+			##primary .svIndex dl.hasImage {
+			padding-left: #slideMargin#px !important;
+			min-height: #minHeight#px !important;
+			}
+		</style>
+		</cfoutput>
+
 	  	
 		<cfif iterator.getRecordCount()>
 			<cfoutput><div class="svSyndLocal svFeed svIndex clearfix" id="#cssID#"></cfoutput>
@@ -142,22 +157,7 @@ to your own modified versions of Mura CMS.
 				</cfsilent>
 				
 				
-	  <cfset imageBorder = 10> <!--- Total number of pixels of top and bottom borders --->
-	  <cfset minHeight = #$.siteConfig('gallerySmallScale')# + imageBorder> <!--- Add the border to the size of the medium image set in site settings--->
-	  <cfset topBottomMargin = 10> <!--- Total of top and bottom margin on each slide (dl) --->
-	  <cfset slideMargin = #$.siteConfig('gallerySmallScale')# + topBottomMargin>
-		
-		<!--- Need conditional logic for x and y constrain --->
-		
-		<cfoutput>
-		<style>						
-			##primary .svIndex dl.hasImage {
-			padding-left: #slideMargin#px !important;
-			min-height: #minHeight#px !important;
-			}
-		</style>
-		</cfoutput>
-				
+	  				
 				<cfoutput>				
 								
 				<dl<cfif class neq ''> class="#class#"</cfif>>
