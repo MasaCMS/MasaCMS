@@ -114,6 +114,11 @@ to your own modified versions of Mura CMS.
 	<cfset request.remoteAddr = CGI.REMOTE_ADDR>
 </cfif>
 
+
+<cfif not request.hasCFApplicationCFM>
+	<cfset application.serviceFactory.getBean("fileWriter").writeFile(file="#expandPath('/muraWRM/config')#/cfapplication.cfm", output='<!--- Add Custom Application.cfc Vars Here --->')>	
+</cfif>
+
 <cfif structKeyExists(request,"doMuraGlobalSessionStart")>
 	<cfset application.pluginManager.executeScripts('onGlobalSessionStart')>
 </cfif>

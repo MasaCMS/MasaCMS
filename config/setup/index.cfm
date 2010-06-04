@@ -53,7 +53,7 @@ to your own modified versions of Mura CMS.
 <!--- load settings into iniFile instance --->
 <cfset settingsIni = createObject( "component", "#getProfileString( settingsPath, "production", 'mapdir' )#.IniFile" ).init( settingsPath ) />
 <!--- get current file --->
-<cfset currentFile = getFileFromPath( getCurrentTemplatePath() ) />
+<cfset currentFile = getFileFromPath( getBaseTemplatePath() ) />
 <cfset webRoot = replaceNoCase( CGI.script_name, currentFile, "" ) />
 <!--- take out setup folder from webroot --->
 <cfset webRoot = replaceNoCase( webRoot, "default/", "" ) />
@@ -209,7 +209,11 @@ to your own modified versions of Mura CMS.
 				<!--- try to create the database --->
 				<!--- <cftry> --->
 					<!--- get selected DB type --->
-					<cffile action="read" file="#getDirectoryFromPath( getCurrentTemplatePath() )#/db/#FORM.production_dbtype#.sql" variable="sql" />
+					<cfif server.coldfusion.productname eq "BlueDragon">
+						<cffile action="read" file="#ExpandPath('.')#/config/setup/db/#FORM.production_dbtype#.sql" variable="sql" />
+					<cfelse>
+						<cffile action="read" file="#getDirectoryFromPath( getCurrentTemplatePath() )#/db/#FORM.production_dbtype#.sql" variable="sql" />
+					</cfif>
 					<!---
 					<cfsavecontent variable="sql">
 	                	<cfinclude template="db/#FORM.production_dbtype#.sql">
@@ -444,7 +448,13 @@ to your own modified versions of Mura CMS.
 <cffunction name="recordError" returntype="string" output="false">
 	<cfargument name="data" type="any" required="true" />
 	<cfset var str = "" />
-	<cfset var errorFile = "#getDirectoryFromPath( getCurrentTemplatePath() )#errors/#createUUID()#_error.html" />
+	<cfset var errorFile = "" />
+	
+	<cfif server.coldfusion.productname eq "BlueDragon">
+		<cfset errorFile = "#ExpandPath('.')#/config/setup/errors/#createUUID()#_error.html" />
+	<cfelse>
+		<cfset errorFile = "#getDirectoryFromPath( getCurrentTemplatePath() )#errors/#createUUID()#_error.html" />
+	</cfif>
 	<!--- dump the error into a variable --->
 	<cfsavecontent variable="str">
 		<cfdump var="#arguments.data#">
