@@ -295,7 +295,6 @@ to your own modified versions of Mura CMS.
 								)				
 							) 
 							<cfif categoryLen> OR tcontent.contentHistID in (
-							AND tcontent.contentHistID in (
 							select distinct tcontentcategoryassign.contentHistID from tcontentcategoryassign
 							inner join tcontentcategories 
 							ON (tcontentcategoryassign.categoryID=tcontentcategories.categoryID) 
