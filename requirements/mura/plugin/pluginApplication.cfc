@@ -146,8 +146,14 @@ to your own modified versions of Mura CMS.
 </cffunction>
 
 <cffunction name="getBean" returntype="any" access="public" output="false" hint="This is for fw1 autowiring">
-	<cfargument name="property" type="string" required="true">
-	<cfreturn getValue(arguments.property)>
+	<cfargument name="property" type="string" required="true">	
+	<cfif arguments.property eq "pluginConfig">
+		<cfreturn variables.pluginConfig>
+	<cfelseif getServiceFactory().containsBean(arguments.property)>
+		<cfreturn getServiceFactory().getBean(arguments.property)>
+	<cfelse>
+		<cfreturn getValue(arguments.property)>
+	</cfif>
 </cffunction>
 
 </cfcomponent>
