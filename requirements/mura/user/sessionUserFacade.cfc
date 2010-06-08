@@ -58,11 +58,10 @@
 
 <cffunction name="getValue" access="public" returntype="any" output="false">
 	<cfargument name="property">	
-	<cfif structKeyExists(session.mura,arguments.property)>
-		<cfreturn session.mura[arguments.property]>
-	<cfelse>
-		<cfreturn  getUserBean().getValue(arguments.property)>
+	<cfif not structKeyExists(session.mura,arguments.property)>
+		<cfset session.mura[arguments.property]=getUserBean().getValue(arguments.property)>
 	</cfif>
+	<cfreturn session.mura[arguments.property]>
 </cffunction>
 
 <cffunction name="setValue" access="public" returntype="any" output="false">
