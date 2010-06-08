@@ -87,7 +87,7 @@ function saveExtendSetSort(id){
 	
 	jQuery("#" + id + ' > li').each(
 		function(index) {
-			setArray.push( jQuery(this).attr("attributeID") );
+			setArray.push( jQuery(this).attr("extendSetID") );
 		}
 	);
 
