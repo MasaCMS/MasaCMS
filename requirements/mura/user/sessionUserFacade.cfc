@@ -58,7 +58,9 @@
 
 <cffunction name="getValue" access="public" returntype="any" output="false">
 	<cfargument name="property">	
-	<cfif not structKeyExists(session.mura,arguments.property)>
+	<cfif isDefined('get#arguments.property#')>
+		<cfreturn evaluate('get#arguments.property#()')>
+	<cfelseif not structKeyExists(session.mura,arguments.property)>
 		<cfset session.mura[arguments.property]=getUserBean().getValue(arguments.property)>
 	</cfif>
 	<cfreturn session.mura[arguments.property]>
@@ -67,10 +69,9 @@
 <cffunction name="setValue" access="public" returntype="any" output="false">
 	<cfargument name="property">
 	<cfargument name="propertyValue">	
-	
-		<cfset session.mura[arguments.property]=arguments.propertyValue>
-		<cfset getUserBean().setValue(arguments.property, arguments.propertyValue)>
-		<cfreturn this>
+	<cfset session.mura[arguments.property]=arguments.propertyValue>
+	<cfset getUserBean().setValue(arguments.property, arguments.propertyValue)>
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="getUserBean" access="public" returntype="any" output="false">
