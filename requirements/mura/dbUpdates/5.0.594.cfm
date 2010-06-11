@@ -1,6 +1,19 @@
 <cfswitch expression="#getDbType()#">
 <cfcase value="mssql">
 <cftransaction>
+
+<cfquery name="MSSQLversion" datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	EXEC sp_MSgetversion
+</cfquery>
+	
+<cfset MSSQLversion=left(MSSQLversion.CHARACTER_VALUE,1)>
+
+<cfif MSSQLversion gt 8>
+	<cfset MSSQLlob="[nvarchar](max) NULL">
+<cfelse>
+	<cfset MSSQLlob="[ntext]">
+</cfif>
+	
 <cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 IF NOT EXISTS (SELECT * FROM sysobjects WHERE id = object_id(N'[dbo].[tplugins]')
 AND OBJECTPROPERTY(id, N'IsUserTable') = 1)
@@ -82,7 +95,7 @@ AND OBJECTPROPERTY(id, N'IsUserTable') = 1)
 CREATE TABLE [dbo].[tpluginsettings] (
 	  [moduleID] [char](35) NOT NULL default '',
 	  [name] [nvarchar](100) NOT NULL default '',
-	  [settingValue] [nvarchar](200) default NULL
+	  [settingValue] #MSSQLlob#
 	) on [PRIMARY]
 </cfquery>
 
@@ -154,7 +167,7 @@ ALTER TABLE [dbo].[tpluginsettings] WITH NOCHECK ADD
 		CREATE TABLE IF NOT EXISTS `tpluginsettings` (
 	  `moduleID` char(35) NOT NULL default '',
 	  `name` varchar(100) NOT NULL default '',
-	  `settingValue` varchar(200) default NULL,
+	  `settingValue` longtext,
 	  PRIMARY KEY  (`moduleID`,`name`)
 	) ENGINE=InnoDB DEFAULT CHARSET=utf8
 	</cfquery>
@@ -201,7 +214,7 @@ ALTER TABLE [dbo].[tpluginsettings] WITH NOCHECK ADD
 			CREATE TABLE IF NOT EXISTS `tpluginsettings` (
 		  `moduleID` char(35) NOT NULL default '',
 		  `name` varchar(100) NOT NULL default '',
-		  `settingValue` varchar(200) default NULL,
+		  `settingValue` longtext,
 		  PRIMARY KEY  (`moduleID`,`name`)
 		) 
 		</cfquery>
@@ -308,8 +321,13 @@ select * from (select pluginID as CheckIfTableExists from tplugins) where ROWNUM
 		CREATE TABLE "TPLUGINSETTINGS" (
 	  "MODULEID" CHAR(35),
 	  "NAME" varchar2(100),
-	  "SETTINGVALUE" varchar2(200)
+	  "SETTINGVALUE" clob
 	) 
+		lob (SETTINGVALUE) STORE AS (
+		TABLESPACE "USERS" ENABLE STORAGE IN ROW CHUNK 8192 PCTVERSION 10
+		NOCACHE LOGGING
+		STORAGE(INITIAL 65536 NEXT 1048576 MINEXTENTS 1 MAXEXTENTS 2147483645
+		PCTINCREASE 0 FREELISTS 1 FREELIST GROUPS 1 BUFFER_POOL DEFAULT))
 	</cfquery>
 	
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">

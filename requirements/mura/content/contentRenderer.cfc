@@ -670,19 +670,23 @@ to your own modified versions of Mura CMS.
 	<cfset var tp=""/>
 	<cfset var begin=iif(arguments.complete,de('http://#application.settingsManager.getSite(arguments.siteID).getDomain()##application.configBean.getServerPort()#'),de('')) />
 	
-		<cfswitch expression="#arguments.type#">
-				<cfcase value="Link,File">
-					<cfset href=HTMLEditFormat("#begin##arguments.context##getURLStem(arguments.siteid,'')#?LinkServID=#arguments.contentid#&showMeta=#arguments.showMeta#")/>
-				</cfcase>
-				<cfdefaultcase>
-					<cfset href=HTMLEditFormat("#begin##arguments.context##getURLStem(arguments.siteid,'#arguments.filename#')##arguments.querystring#") />
-				</cfdefaultcase>
-		</cfswitch>
+	<cfif len(arguments.querystring) and not left(arguments.querystring,1) eq "?">
+		<cfset arguments.querystring="?" & arguments.querystring>
+	</cfif>
+	
+	<cfswitch expression="#arguments.type#">
+		<cfcase value="Link,File">
+			<cfset href=HTMLEditFormat("#begin##arguments.context##getURLStem(arguments.siteid,'')#?LinkServID=#arguments.contentid#&showMeta=#arguments.showMeta#")/>
+		</cfcase>
+		<cfdefaultcase>
+			<cfset href=HTMLEditFormat("#begin##arguments.context##getURLStem(arguments.siteid,'#arguments.filename#')##arguments.querystring#") />
+		</cfdefaultcase>
+	</cfswitch>
 		
-		<cfif arguments.target eq "_blank" and arguments.showMeta eq 0>
-			<cfset tp=iif(arguments.targetParams neq "",de(",'#arguments.targetParams#'"),de("")) />
-			<cfset href="javascript:newWin=window.open('#href#','NewWin#replace('#rand()#','.','')#'#tp#);newWin.focus();void(0);" />
-		</cfif>
+	<cfif arguments.target eq "_blank" and arguments.showMeta eq 0>
+		<cfset tp=iif(arguments.targetParams neq "",de(",'#arguments.targetParams#'"),de("")) />
+		<cfset href="javascript:newWin=window.open('#href#','NewWin#replace('#rand()#','.','')#'#tp#);newWin.focus();void(0);" />
+	</cfif>
 
 <cfreturn href />
 </cffunction>
@@ -1239,6 +1243,7 @@ to your own modified versions of Mura CMS.
 		<cfargument name="closePortals" type="string" default="">
 		<cfargument name="openPortals" type="string" default="">	
 		<cfargument name="menuClass" type="string" default="">
+		<cfargument name="showCurrentChildrenOnly" type="boolean" default="false">
 
 		<cfset var rsSection=application.contentGateway.getKids('00000000000000000000000000000000000',event.getValue('siteID'),arguments.contentid,arguments.type,arguments.today,0,'',0,arguments.sortBy,arguments.sortDirection,'','','',true)>
 		<cfset var adjust=0>
@@ -1255,7 +1260,7 @@ to your own modified versions of Mura CMS.
 		<cfset var isLimitingOn = false>
 		<cfset var isNotLimited = false>
 		<cfset var limitingBy = "">
-		<cfset var isNavSecondary=(arguments.id eq 'navSecondary' or arguments.menuClass eq 'navSecondary')>
+		<cfset var isNavSecondary=arguments.showCurrentChildrenOnly or (arguments.id eq 'navSecondary' or arguments.menuClass eq 'navSecondary')>
 		<cfset var homeDisplayed = false>
 			
 		<cfif len(arguments.closePortals)>
@@ -1354,11 +1359,12 @@ to your own modified versions of Mura CMS.
 	<cfargument name="closePortals" type="string" default="">
 	<cfargument name="openPortals" type="string" default="">
 	<cfargument name="class" type="string" default="">
+	<cfargument name="showCurrentChildrenOnly" type="boolean" default="false">
 
 	<cfset var thenav="" />
 	<cfset var topIndex= arrayLen(this.crumbdata)-this.navOffSet />
 
-	<cfset theNav = dspNestedNavPrimary(this.crumbdata[topIndex].contentID,arguments.viewDepth+1,1,'default',now(),arguments.id,'','orderno','asc',application.configBean.getContext(),application.configBean.getStub(),arguments.displayHome,arguments.closePortals,arguments.openPortals,arguments.class) />
+	<cfset theNav = dspNestedNavPrimary(this.crumbdata[topIndex].contentID,arguments.viewDepth+1,1,'default',now(),arguments.id,'','orderno','asc',application.configBean.getContext(),application.configBean.getStub(),arguments.displayHome,arguments.closePortals,arguments.openPortals,arguments.class,arguments.showCurrentChildrenOnly) />
 
 	<cfreturn thenav />
 </cffunction>
