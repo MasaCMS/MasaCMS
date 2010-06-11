@@ -653,10 +653,10 @@ to your own modified versions of Mura CMS.
 </cffunction>
 
 <cffunction name="createHREF" returntype="string" output="false" access="public">
-	<cfargument name="type" required="true">
+	<cfargument name="type" required="true" default="Page">
 	<cfargument name="filename" required="true">
-	<cfargument name="siteid" required="true">
-	<cfargument name="contentid" required="true">
+	<cfargument name="siteid" required="true" default="">
+	<cfargument name="contentid" required="true" default="">
 	<cfargument name="target" required="true" default="">
 	<cfargument name="targetParams" required="true" default="">
 	<cfargument name="querystring" required="true" default="">
@@ -692,10 +692,10 @@ to your own modified versions of Mura CMS.
 </cffunction>
 
 <cffunction name="createHREFforRSS" returntype="string" output="false" access="public">
-	<cfargument name="type" required="true">
+	<cfargument name="type" required="true" default="Page">
 	<cfargument name="filename" required="true">
 	<cfargument name="siteid" required="true">
-	<cfargument name="contentid" required="true">
+	<cfargument name="contentid" required="true" default="">
 	<cfargument name="target" required="true" default="">
 	<cfargument name="targetParams" required="true" default="">
 	<cfargument name="context" type="string" default="#application.configBean.getContext()#">
