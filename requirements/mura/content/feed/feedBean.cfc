@@ -576,7 +576,7 @@ to your own modified versions of Mura CMS.
 </cffunction>
 
 <cffunction name="getIterator" returnType="any" output="false" access="public">
-	<cfargument name="aggregation" required="true" default="true">
+	<cfargument name="aggregation" required="true" default="false">
 	<cfset var q=getQuery(aggregation=arguments.aggregation) />
 	<cfset var it=getServiceFactory().getBean("contentIterator")>
 	<cfset it.setQuery(q,getNextN())>
