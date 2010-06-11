@@ -20,7 +20,7 @@ select urltitle from tcontent  where 0=1
 	
 	<cfset MSSQLversion=left(MSSQLversion.CHARACTER_VALUE,1)>
 
-	<cfif MSSQLversion gt 8>
+	<cfif MSSQLversion neq 8>
 		<cfset MSSQLlob="[nvarchar](max)">
 	<cfelse>
 		<cfset MSSQLlob="[ntext]">

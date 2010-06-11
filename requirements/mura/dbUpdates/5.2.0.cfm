@@ -7,7 +7,7 @@
 	
 	<cfset MSSQLversion=left(MSSQLversion.CHARACTER_VALUE,1)>
 
-	<cfif MSSQLversion gt 8>
+	<cfif MSSQLversion neq 8>
 		
 		<cfset tableList="tadcampaigns,tadcreatives,tadplacements,tadzones,tclassextend,tclassextendattributes,tclassextenddata,tclassextenddatauseractivity,tclassextendsets,tcontent,tcontentcategories,tcontentcomments,tcontentfeeds,temails,tformresponsepackets,tformresponsequestions,tmailinglist,tsettings,tuseraddresses,tusers">		
 		
