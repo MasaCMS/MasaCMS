@@ -280,4 +280,19 @@
 	<cfreturn getEventManager().renderEvent(arguments.eventName,this)>
 </cffunction>
 
+<cffunction name="createHREF" returntype="string" output="false" access="public">
+	<cfargument name="type" required="true" default="Page">
+	<cfargument name="filename" required="true" default="">
+	<cfargument name="siteid" required="true" default="#event('siteid')#">
+	<cfargument name="contentid" required="true" default="">
+	<cfargument name="target" required="true" default="">
+	<cfargument name="targetParams" required="true" default="">
+	<cfargument name="querystring" required="true" default="">
+	<cfargument name="context" type="string" required="true" default="#application.configBean.getContext()#">
+	<cfargument name="stub" type="string" required="true" default="#application.configBean.getStub()#">
+	<cfargument name="indexFile" type="string" required="true" default="">
+	<cfargument name="complete" type="boolean" required="true" default="false">
+	<cfargument name="showMeta" type="string" required="true" default="0">
+	<cfreturn getContentRenderer().createHref(argumentCollection=arguments)>
+</cffunction>
 </cfcomponent>
