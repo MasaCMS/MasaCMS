@@ -5,11 +5,6 @@
 	<cfset variables.pluginManager=arguments.pluginManager>
 </cffunction>
 
-<cffunction name="setPublisher" output="false">
-	<cfargument name="publisher">
-	<cfset variables.publisher=arguments.publisher>
-</cffunction>
-
 <cffunction name="setClusterManager" output="false">
 	<cfargument name="clusterManager">
 	<cfset variables.clusterManager=arguments.clusterManager>
@@ -108,7 +103,7 @@
 <cffunction name="sitecopy" output="false">
 	<cfargument name="rc">
 	<cfif rc.fromSiteID neq rc.toSiteID>
-		<cfset variables.publisher.copy(fromSiteID=rc.fromSiteID,toSiteID=rc.toSiteID)>
+		<cfset getBean('publisher').copy(fromSiteID=rc.fromSiteID,toSiteID=rc.toSiteID)>
 	</cfif>
 	<cfset variables.fw.redirect(action="cSettings.sitecopyresult",append="fromSiteID,toSiteID",path="")>
 </cffunction>
