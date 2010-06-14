@@ -329,13 +329,14 @@
 	<cfset var f="">
 	<cfset var dtCh="">
 	<cfset var dtFormat="">
-	<cfset jsDateKey="">
-	<cfset dateKeyFormat="">
-	<cfset datekeyExample="">
+	<cfset var formatTest=LSDateFormat(createDate(2012,11,10),'short')/>
+	<cfset variables.jsDateKey="">
+	<cfset variables.dateKeyFormat="">
+	<cfset variables.datekeyExample="">
 	
 <!--- now we create a date so we can parse it and figure out the date format and then create a date validation key --->
 
-	<cfset formatTest=LSDateFormat(createDate(2012,11,10),'short')/>
+	
 	
 	<cfif find(".",formatTest)>
 		<cfset dtCh=	"."/>
@@ -377,15 +378,15 @@ var dtFormat =[#dtFormat#];
 </cffunction>
 
 	<cffunction name="getJSDateKey" output="false" returntype="any">
-	<cfreturn JSDateKey>
+	<cfreturn variables.JSDateKey>
 	</cffunction>
 	
 	<cffunction name="getJSDateKeyFormat" output="false" returntype="any">
-	<cfreturn datekeyFormat>
+	<cfreturn variables.datekeyFormat>
 	</cffunction>
 	
 	<cffunction name="getJSDateKeyExample" output="false" returntype="any">
-	<cfreturn datekeyExample>
+	<cfreturn variables.datekeyExample>
 	</cffunction>
 </cfcomponent>
 

@@ -389,7 +389,7 @@ select * from tplugins order by #arguments.orderby#
 	<cfset var mHash="">
 	<cfset var m="">
 	<cfset var baseDir=variables.configBean.getPluginDir()>
-	
+	<cfset var rsRequirements="">
 	<cfif StructKeyExists(SERVER,"bluedragon") and not findNoCase("Windows",server.os.name)>
 		<cfset mapPrefix="$" />
 	</cfif>
@@ -1430,6 +1430,7 @@ select * from rs order by name
 <cfset var handlerData=structNew()>
 <cfset var eventhandler=arguments.component>
 <cfset var siteIDadjusted=rereplace(arguments.siteID,"[^a-zA-Z0-9]","","ALL")>
+<cfset var _persist=false>
 
 	<cfif not StructKeyExists(variables.siteListeners,siteIDadjusted)>
 		<cfset variables.siteListeners[siteIDadjusted]=structNew()>
@@ -1481,6 +1482,7 @@ select * from rs order by name
 <cfargument name="runat">
 	
 	<cfset var siteIDadjusted=rereplace(arguments.siteID,"[^a-zA-Z0-9]","","ALL")>
+	<cfset var listenerArray="">
 	
 	<cfif isDefined("variables.siteListeners.#siteIDadjusted#.#arguments.runat#")>
 		<cfset variables.listeners[siteIDadjusted]=structNew()>

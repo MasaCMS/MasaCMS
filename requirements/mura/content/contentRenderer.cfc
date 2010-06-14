@@ -75,8 +75,8 @@ to your own modified versions of Mura CMS.
 	<cfelse>
 		<cfset variables.event=createObject("component","mura.servletEvent")>
 	</cfif>
-	<cfset $=variables.event.getValue("muraScope")>
-	<cfset mura=$>
+	<cfset variables.$=variables.event.getValue("muraScope")>
+	<cfset variables.mura=$>
 
 <cfreturn this />
 </cffunction>
@@ -1387,6 +1387,8 @@ to your own modified versions of Mura CMS.
 <cfset var newString=""/>
 <cfset var frontpointer=0/>
 <cfset var strlen = len(str) />
+<cfset var counter=0 />
+
 	<cfif strLen gt 0>
 		<cfscript>
 		 for (counter=1;counter LTE strlen;counter=counter + 1)
@@ -1771,6 +1773,8 @@ to your own modified versions of Mura CMS.
 <cfset var str="">
 <cfset var rsPages=getPagesQuery(arguments.body)>
 <cfset var currentNextNIndex=1>
+<cfset var nextN="">
+
 <cfset event.setValue("currentNextNID",event.getContentBean().getContentID())>
 
 <cfif not len(event.getValue("nextNID")) or event.getValue("nextNID") eq event.getValue("currentNextNID")>

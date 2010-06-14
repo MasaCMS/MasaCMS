@@ -95,6 +95,7 @@
 		<cfset var newitem = ""/>
 		<cfset var contents = ""/>
 		<cfset var nameregex = "[^a-zA-Z0-9_]"/>
+		
 			
 		<!---Clean up Ampersands and nonexistent names that may mess up variable naming later on--->
 		<cfloop collection="#object#" item="item">

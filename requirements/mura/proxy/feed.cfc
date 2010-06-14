@@ -8,7 +8,7 @@
 	<cfif len(event.getValue("feedID"))>
 		<cfset feed=application.feedManager.read(event.getValue("feedID"),event.getValue("siteid"))>
 	<cfelseif len(event.getValue("name"))>
-		<cfset user=application.feedManager.readByName(event.getValue("name"),event.getValue("siteid"))>
+		<cfset feed=application.feedManager.readByName(event.getValue("name"),event.getValue("siteid"))>
 	</cfif>
 	
 	<cfset event.setValue('feed',feed)>

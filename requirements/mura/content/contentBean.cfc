@@ -1432,7 +1432,7 @@ to your own modified versions of Mura CMS.
 	
 <cffunction name="getDisplayRegion" output="false" access="public" returntype="any">
 	<cfargument name="regionID">
-	<cfset rs="">
+	<cfset var rs="">
 	<cfif not structKeyExists(variables.displayRegions,"objectlist#arguments.regionID#")>
 		<cfset variables.displayRegions["objectlist#arguments.regionID#"]=variables.contentManager.getRegionObjects(getContentHistID(), getSiteID(), arguments.regionID)>
 	</cfif>

@@ -88,7 +88,7 @@
 		<cfif not structIsEmpty(MissingMethodArguments)>
 			<cfinvoke component="#object#" method="#MissingMethodName#" argumentcollection="#MissingMethodArguments#" returnvariable="local.theValue1">
 		<cfelse>
-			<cfinvoke component="#object#" method="#MissingMethodName#" returnvariable="theValue1">
+			<cfinvoke component="#object#" method="#MissingMethodName#" returnvariable="local.theValue1">
 		</cfif>
 		</cfsavecontent>
 		
@@ -163,7 +163,7 @@
 	<cfargument name="propertyValue">
 	<cfset var site="">
 	<cfset var theValue="">
-	<cfset siteID=event('siteid')>
+	<cfset var siteID=event('siteid')>
 	
 	<cfif len(siteid)>
 		<cfset site=application.settingsManager.getSite(siteid)>

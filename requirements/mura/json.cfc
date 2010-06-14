@@ -58,7 +58,7 @@ Version: 1.9 February 20, 2008
 		<cfset var unescapeVals2 = '\,",/,b,t,n,f,r' />
 		<cfset var unescapetoVals2 = '\,",/,#Chr(8)#,#Chr(9)#,#Chr(10)#,#Chr(12)#,#Chr(13)#' />
 		<cfset var dJSONString = "" />
-		
+		<cfset var pos=0>
 		<cfset var _data = Trim(arguments.data) />
 		
 		<!--- NUMBER --->

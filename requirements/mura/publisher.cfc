@@ -49,7 +49,7 @@ to your own modified versions of Mura CMS.
 		
 		<cfset var newBody=""/>
 		<cfset var newSummary=""/>
-	
+		<cfset var rs="">
 		<cfif len(arguments.find)>
 			<cfquery datasource="#arguments.datasource#" name="rs">
 				select contenthistid, body from tcontent where body like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.find#%"/>
@@ -1235,6 +1235,9 @@ to your own modified versions of Mura CMS.
 		<cfset var k=""/>
 		<cfset var p=""/>
 		<cfset var pluginEvent = createObject("component","mura.event") />
+		<cfset var fileDelim="/"/>
+		<cfset var rsplugins=""/>
+		<cfset var keys=""/>
 		
 		<cfloop collection="#arguments#" item="i">
 			<cfset variables[i] = arguments[i]>
