@@ -95,7 +95,7 @@ to your own modified versions of Mura CMS.
 	<cfset iterator.setPage(1)>
 </cfif>
 
-<cfset nextN=application.utility.getNextN(rsSection,request.contentBean.getNextN(),currentNextNIndex)>
+<cfset variables.nextN=application.utility.getNextN(rsSection,request.contentBean.getNextN(),currentNextNIndex)>
 
 </cfsilent>
 
@@ -175,7 +175,7 @@ to your own modified versions of Mura CMS.
 	 	</cfoutput>
 	 	</cfloop>
 	
-	<cfif nextn.numberofpages gt 1>
+	<cfif variables.nextn.numberofpages gt 1>
 		<cfoutput>#dspObject_Include(thefile='dsp_nextN.cfm')#</cfoutput>
 	</cfif>	
 </div>

@@ -111,7 +111,7 @@ to your own modified versions of Mura CMS.
 			<cfset iterator.setPage(1)>
 		</cfif>
 		
-		<cfset nextN=application.utility.getNextN(rs,feedBean.getNextN(),currentNextNIndex)>
+		<cfset variables.nextN=application.utility.getNextN(rs,feedBean.getNextN(),currentNextNIndex)>
 	  </cfsilent>
 	  
 	  <cfset imageBorder = 10> <!--- Total number of pixels of top and bottom borders --->
@@ -193,7 +193,7 @@ to your own modified versions of Mura CMS.
 			</cfoutput>
 			</cfloop>
 
-			<cfif nextN.numberofpages gt 1>
+			<cfif variables.nextN.numberofpages gt 1>
 			<cfoutput>#dspObject_Include(thefile='dsp_nextN.cfm')#</cfoutput>
 			</cfif>
 			</div>
