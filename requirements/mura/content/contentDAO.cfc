@@ -191,6 +191,26 @@ to your own modified versions of Mura CMS.
 		<cfset var contentBean=getbean()  />
 		<cfset var beanArray=arrayNew(1)>
 		<cfset var utility="">
+		
+		<cfif arguments.filename eq "/">
+			<cfset arguments.filename="">
+		<cfelse>
+			<cfif left(arguments.filename,1) eq "/">
+				<cfif len(arguments.filename) gt 1>
+					<cfset arguments.filename=right(arguments.filename,len(arguments.filename)-1)>
+				<cfelse>
+					<cfset arguments.filename="">
+				</cfif>
+			</cfif>
+			
+			<cfif right(arguments.filename,1) eq "/">
+				<cfif len(arguments.filename) gt 1>
+					<cfset arguments.filename=left(arguments.filename,len(arguments.filename)-1)>
+				<cfelse>
+					<cfset arguments.filename="">
+				</cfif>
+			</cfif>
+		</cfif>
 			
 		<cfquery datasource="#variables.dsn#" name="rsContent"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 			select tcontent.*, tfiles.fileSize, tfiles.contentType, tfiles.contentSubType, tfiles.fileExt from tcontent 
