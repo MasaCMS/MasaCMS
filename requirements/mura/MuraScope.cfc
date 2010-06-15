@@ -58,6 +58,16 @@
 	<cfreturn variables.instance.event>
 </cffunction>
 
+<cffunction name="getGlobalEvent" output="false" returntype="any">
+	<cfif structKeyExists(request,"servletEvent")>
+		<cfreturn request.servletEvent>
+	<cfelseif structKeyExists(request,"event")>
+		<cfreturn request.event>
+	<cfelse>
+		<cfreturn getEvent()>
+	</cfif>
+</cffunction>
+
 <cffunction name="setEvent" output="false" returntype="any">
 	<cfargument name="event">
 	<cfif isObject(arguments.event)>
