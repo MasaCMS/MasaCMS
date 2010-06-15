@@ -49,6 +49,7 @@ to your own modified versions of Mura CMS.
 <cfset variables.cacheFactories=structNew()>
 <cfset variables.siteListeners=structNew()>
 <cfset variables.globalListeners=structNew()>
+<cfset variables.pluginConfigs=structNew()>
 <cfset variables.eventHandlers=arrayNew(1)>
 
 <cffunction name="init" returntype="any" access="public" output="false">
@@ -143,7 +144,7 @@ inner join tcontent on (tplugins.moduleID=tcontent.moduleID)
 
 <cfset purgeEventManagers()/>
 <cfset purgeCacheFactories()/>
-
+<cfset purgePluginConfigs()/>
 </cffunction>
 
 <cffunction name="getLocation" returntype="string" access="public" output="false">
@@ -503,36 +504,42 @@ select * from tplugins order by #arguments.orderby#
 <cfargument name="cache" required="true" default="true">
 
 
-	<cfset var pluginConfig=createObject("component","mura.plugin.pluginConfig")>
+	<cfset var pluginConfig="">
 	<cfset var rs="">
+	<cfset var pluginID=0>
 	<cfset var settingStr=structNew()>
-	
 	<cfset rs=getPlugin(arguments.ID,arguments.siteID,arguments.cache)>
+	<cfset pluginID=rs.pluginID>
 	
-	<cfset pluginConfig.setVersion(rs.version) />
-	<cfset pluginConfig.setName(rs.name) />
-	<cfset pluginConfig.setProvider(rs.provider) />
-	<cfset pluginConfig.setProviderURL(rs.providerURL) />
-	<cfset pluginConfig.setPluginID(rs.pluginID) />
-	<cfset pluginConfig.setloadPriority(rs.loadPriority) />
-	<cfset pluginConfig.setModuleID(rs.moduleID) />
-	<cfset pluginConfig.setDeployed(rs.deployed) />
-	<cfset pluginConfig.setCategory(rs.category) />
-	<cfset pluginConfig.setCreated(rs.created) />
-	<cfset pluginConfig.setPackage(rs.package) />
-	<cfset pluginConfig.setDirectory(rs.directory) />
+	<cfif not arguments.cache or not structKeyExists(variables.pluginConfigs,"p#rs.pluginID#")>
+		<cfset pluginConfig=createObject("component","mura.plugin.pluginConfig")>
+		<cfset pluginConfig.setVersion(rs.version) />
+		<cfset pluginConfig.setName(rs.name) />
+		<cfset pluginConfig.setProvider(rs.provider) />
+		<cfset pluginConfig.setProviderURL(rs.providerURL) />
+		<cfset pluginConfig.setPluginID(rs.pluginID) />
+		<cfset pluginConfig.setloadPriority(rs.loadPriority) />
+		<cfset pluginConfig.setModuleID(rs.moduleID) />
+		<cfset pluginConfig.setDeployed(rs.deployed) />
+		<cfset pluginConfig.setCategory(rs.category) />
+		<cfset pluginConfig.setCreated(rs.created) />
+		<cfset pluginConfig.setPackage(rs.package) />
+		<cfset pluginConfig.setDirectory(rs.directory) />
+		
+		<cfquery name="rs"  dbtype="query">
+		select * from variables.rsSettings where  moduleID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#rs.moduleID#">
+		</cfquery>
+		
+		<cfloop query="rs">
+			<cfset settingStr["#rs.name#"]=rs.settingValue />
+		</cfloop>
+		
+		<cfset pluginConfig.initSettings(settingStr)/>
+		<cfset variables.pluginConfigs["p#pluginID#"]=pluginConfig>
+	</cfif>
 	
-	<cfquery name="rs"  dbtype="query">
-	select * from variables.rsSettings where  moduleID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#rs.moduleID#">
-	</cfquery>
 	
-	<cfloop query="rs">
-	<cfset settingStr["#rs.name#"]=rs.settingValue />
-	</cfloop>
-	
-	<cfset pluginConfig.initSettings(settingStr)/>
-	
-	<cfreturn pluginConfig/>
+	<cfreturn variables.pluginConfigs["p#pluginID#"]/>
 </cffunction>
 
 <cffunction name="getAssignedSites" returntype="query" output="false">
@@ -1358,6 +1365,10 @@ select * from tplugins order by #arguments.orderby#
 
 <cffunction name="purgeCacheFactories" returntype="any" output="false">
 <cfset variables.cacheFactories=structNew()/>
+</cffunction>
+
+<cffunction name="purgePluginConfigs" returntype="any" output="false">
+<cfset variables.pluginConfigs=structNew()/>
 </cffunction>
 
 <cffunction name="renderAdminTemplate" returntype="any" output="false">
