@@ -3,17 +3,25 @@
 <cfset variables.instance.event="">
 
 <cffunction name="init" output="false">
-	<cfargument name="data">
+	<cfargument name="data" hint="Can be an event object, struct or siteID">
+	<cfset var initArgs=structNew()>
+	
 	<cfif structKeyExists(arguments,"data")>
 		<cfif isObject(arguments.data)>
 			<cfset setEvent(arguments.data)>
 		<cfelse>
-			<cfset arguments.data.muraScope=this>
-			<cfset setEvent(createObject("component","mura.event").init(arguments.data))>
+			<cfif isStruct(arguments.data)>
+				<cfset initArgs=arguments.data>
+			<cfelse>
+				<cfset initArgs.siteID=arguments.data>
+			</cfif>
+			<cfset initArgs.muraScope=this>
+			<cfset setEvent(createObject("component","mura.event").init(initArgs))>
 		</cfif>
 	</cfif>
 	<cfreturn this>
 </cffunction>
+
 <cffunction name="getContentRenderer" output="false" returntype="any">
 	<cfif not isObject(event("contentRenderer"))>
 		<cfif structKeyExists(request,"contentRenderer")>
