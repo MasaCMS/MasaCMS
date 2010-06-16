@@ -116,7 +116,7 @@ to your own modified versions of Mura CMS.
 	<cfset this.mappings["/plugins"] = mapPrefix & baseDir & "/plugins">
 	<cfset this.mappings["/muraWRM"] = mapPrefix & baseDir>
 	<cfset this.mappings["/savaWRM"] = mapPrefix & baseDir>
-	<cfset this.mappings["/config"] = mapPrefix & baseDir>
+	<cfset this.mappings["/config"] = mapPrefix & baseDir & "/config">
 	
 	<cftry>
 		<cfinclude template="/config/mappings.cfm">
