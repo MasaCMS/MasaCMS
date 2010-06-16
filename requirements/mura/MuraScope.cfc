@@ -4,16 +4,16 @@
 
 <cffunction name="init" output="false">
 	<cfargument name="data">
-	<cfif isObject(arguments.data)>
-		<cfset setEvent(arguments.data)>
-	<cfelse>
-		<cfset arguments.data.muraScope=this>
-		<cfset setEvent(createObject("component","mura.event").init(arguments.data))>
+	<cfif structKeyExists(arguments,"data")>
+		<cfif isObject(arguments.data)>
+			<cfset setEvent(arguments.data)>
+		<cfelse>
+			<cfset arguments.data.muraScope=this>
+			<cfset setEvent(createObject("component","mura.event").init(arguments.data))>
+		</cfif>
 	</cfif>
-		
 	<cfreturn this>
 </cffunction>
-
 <cffunction name="getContentRenderer" output="false" returntype="any">
 	<cfif not isObject(event("contentRenderer"))>
 		<cfif structKeyExists(request,"contentRenderer")>
