@@ -1,13 +1,13 @@
 <cfoutput>
 <cfinclude template="inc/html_head.cfm" />
-<body id="#renderer.gettopid()#" class="oneCol">
-<div id="container" class="#renderer.CreateCSSid(request.contentBean.getMenuTitle())#">
+<body id="#$.getTopID()#" class="oneCol depth#arrayLen($.event('crumbdata'))#">
+<div id="container" class="#$.createCSSid($.content('menuTitle'))#">
 	<cfinclude template="inc/header.cfm" />
 	<div id="content" class="clearfix">
 		<div id="primary" class="content">
-			#renderer.dspCrumbListLinks("crumbList","&nbsp;&raquo;&nbsp;")#
-			#renderer.dspBody(body=request.contentBean.getbody(),pageTitle=request.contentBean.getTitle(),crumbList=0,showMetaImage=0)#
-			#renderer.dspObjects(2)#
+			#$.dspCrumbListLinks("crumbList","&nbsp;&raquo;&nbsp;")#
+			#$.dspBody(body=$.content('body'),pageTitle=$.content('title'),crumbList=0,showMetaImage=1)#
+			#$.dspObjects(2)#
 		</div>
 	</div>
 	<cfinclude template="inc/footer.cfm" />

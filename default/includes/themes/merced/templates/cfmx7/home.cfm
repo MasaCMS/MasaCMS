@@ -1,15 +1,15 @@
 <cfoutput>
 <cfinclude template="inc/html_head.cfm" />
-<body id="#$.getTopID()#" class="home">
-<div id="container" class="#$.createCSSid($.content('menuTitle'))#">
+<body id="#renderer.gettopid()#" class="home">
+<div id="container" class="#renderer.CreateCSSid(request.contentBean.getMenuTitle())#">
 	<cfinclude template="inc/header.cfm" />
 	<div id="content" class="clearfix">
 		<div id="primary" class="content">
-			#$.dspBody(body=$.content('body'),pageTitle=$.content('title'),crumbList=0,showMetaImage=0)#
-			#$.dspObjects(2)#
+			#renderer.dspBody(body=request.contentBean.getbody(),pageTitle='',crumbList=0,showMetaImage=0)#
+			#renderer.dspObjects(2)#
 		</div>
 		<div id="right" class="sidebar">
-		#$.dspObjects(3)#
+		#renderer.dspObjects(3)#
 		</div>
 	</div>
 	<cfinclude template="inc/footer.cfm" />

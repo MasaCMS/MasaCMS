@@ -1,16 +1,16 @@
 <cfoutput>
 <cfinclude template="inc/html_head.cfm" />
-<body id="#renderer.gettopid()#" class="twoColSR">
-<div id="container" class="#renderer.CreateCSSid(request.contentBean.getMenuTitle())#">
+<body id="#$.getTopID()#" class="twoColSR depth#arrayLen($.event('crumbdata'))#">
+<div id="container" class="#$.createCSSid($.content('menuTitle'))#">
 	<cfinclude template="inc/header.cfm" />
 	<div id="content" class="clearfix">
 		<div id="primary" class="content">
-			#renderer.dspCrumbListLinks("crumbList","&nbsp;&raquo;&nbsp;")#
-			#renderer.dspBody(body=request.contentBean.getbody(),pageTitle=request.contentBean.getTitle(),crumbList=0,showMetaImage=1)#
-			#renderer.dspObjects(2)#
+			#$.dspCrumbListLinks("crumbList","&nbsp;&raquo;&nbsp;")#
+			#$.dspBody(body=$.content('body'),pageTitle=$.content('title'),crumbList=0,showMetaImage=1)#
+			#$.dspObjects(2)#
 		</div>
 		<div id="right" class="sidebar">
-			#renderer.dspObjects(3)#
+			#$.dspObjects(3)#
 		</div>
 	</div>
 	<cfinclude template="inc/footer.cfm" />

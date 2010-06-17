@@ -1,1 +1,1 @@
-<cfoutput>#renderer.dspBody(request.contentBean.getbody(),'',0)#</cfoutput>
+<cfoutput>#$.dspBody(body=$.content('body'),pageTitle=$.content(''),crumbList=0,showMetaImage=0)#</cfoutput>

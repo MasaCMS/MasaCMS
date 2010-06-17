@@ -7,7 +7,7 @@
 				<li><a href="">Services</a></li>
 				<li class="last"><a href="">Contact Us</a></li>
 			</ul>
-			<p>&copy;#year(now())# #HTMLEditFormat($.siteConfig('site'))#</p>
+			<p>&copy;#year(now())# #HTMLEditFormat(renderer.getSite().getSite())#</p>
 		</div>
 	</div>
 </cfoutput>

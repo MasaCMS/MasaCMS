@@ -1,19 +1,19 @@
 <cfoutput>
 <cfinclude template="inc/html_head.cfm" />
-<body id="#renderer.gettopid()#" class="threeCol">
-<div id="container" class="#renderer.CreateCSSid(request.contentBean.getMenuTitle())#">
+<body id="#$.getTopID()#" class="threeCol depth#arrayLen($.event('crumbdata'))#">
+<div id="container" class="#$.createCSSid($.content('menuTitle'))#">
 	<cfinclude template="inc/header.cfm" />
 	<div id="content" class="clearfix">
 		<div id="left" class="sidebar">
-			#renderer.dspObjects(1)#
+			#$.dspObjects(1)#
 		</div>
 		<div id="primary" class="content">
-			#renderer.dspCrumbListLinks("crumbList","&nbsp;&raquo;&nbsp;")#
-			#renderer.dspBody(body=request.contentBean.getbody(),pageTitle=request.contentBean.getTitle(),crumbList=0,showMetaImage=1)#
-			#renderer.dspObjects(2)#
+			#$.dspCrumbListLinks("crumbList","&nbsp;&raquo;&nbsp;")#
+			#$.dspBody(body=$.content('body'),pageTitle=$.content('title'),crumbList=0,showMetaImage=1)#
+			#$.dspObjects(2)#
 		</div>
 		<div id="right" class="sidebar">
-			#renderer.dspObjects(3)#
+			#$.dspObjects(3)#
 		</div>
 	</div>
 	<cfinclude template="inc/footer.cfm" />

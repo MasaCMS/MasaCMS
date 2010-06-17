@@ -11,13 +11,13 @@
 	<!--- <meta name="robots" content="noindex, nofollow" /> ---><!--- use this to discourage search engines from indexing your site. (can be useful if developing on a live server for example) Delete if not needed. --->
 	<title>#request.contentBean.getTitle()# - #renderer.getSite().getSite()#</title>
 
-	<link rel="icon" href="#$.siteConfig('assetPath')#/images/favicon.ico" type="image/x-icon" />
-	<link rel="shortcut icon" href="#$.siteConfig('assetPath')#/images/favicon.ico" type="image/x-icon" />
+	<link rel="icon" href="#event.getSite().getAssetPath()#/images/favicon.ico" type="image/x-icon" />
+	<link rel="shortcut icon" href="#event.getSite().getAssetPath()#/images/favicon.ico" type="image/x-icon" />
 
-	<link rel="stylesheet" href="#$.siteConfig('assetPath')#/css/default.css" type="text/css" media="all" />
-	<link rel="stylesheet" href="#$.siteConfig('themeAssetPath')#/css/typography.css" type="text/css" media="all" />
-	<link rel="stylesheet" href="#$.siteConfig('themeAssetPath')#/css/site.css" type="text/css" media="all" />
-	<link rel="stylesheet" href="#$.siteConfig('assetPath')#/css/print.css" type="text/css" media="print" />
+	<link rel="stylesheet" href="#event.getSite().getAssetPath()#/css/default.css" type="text/css" media="all" />
+	<link rel="stylesheet" href="#themePath#/css/typography.css" type="text/css" media="all" />
+	<link rel="stylesheet" href="#themePath#/css/site.css" type="text/css" media="all" />
+	<link rel="stylesheet" href="#event.getSite().getAssetPath()#/css/print.css" type="text/css" media="print" />
 	
 	<cfinclude template="inc/ie_conditional_includes.cfm" />
 
@@ -28,8 +28,8 @@
 
 </head>
 	
-<body id="#$.getTopID()#" class="home">
-<div id="container" class="#$.createCSSid($.content('menuTitle'))#">
+<body id="#renderer.gettopid()#" class="home">
+<div id="container" class="#renderer.CreateCSSid(request.contentBean.getMenuTitle())#">
 	<cfinclude template="inc/header.cfm" />
 	<div id="content" class="clearfix">
 		<div id="primary" class="content">
@@ -42,7 +42,7 @@
 	          <dl class="first hasImage">
 	            <dt class="releaseDate">June 1, 2009</dt>
 	            <dt><a href="">How do I recreate this home page in Mura?</a></dt>
-	            <dd class="image"> <a href="" title="How do I recreate this home page in Mura?"><img src="#$.siteConfig('themeAssetPath')#/images/sample/slide.jpg" alt="How do I recreate this home page in Mura?"/></a> </dd>
+	            <dd class="image"> <a href="" title="How do I recreate this home page in Mura?"><img src="#themePath#/images/sample/slide.jpg" alt="How do I recreate this home page in Mura?"/></a> </dd>
 	            <dd class="summary">
 	              <p>Recreating this home page in Mura is fairly easy. Follow these
 	                steps, and you'll be up and running in no time.</p>
@@ -51,7 +51,7 @@
 	          <dl class="hasImage">
 	            <dt class="releaseDate">June 2, 2009</dt>
 	            <dt><a href="">Step 1: Assign the Correct Template</a></dt>
-	            <dd class="image"> <a href="" title="Step 1: Assign the Correct Template"><img src="#$.siteConfig('themeAssetPath')#/images/sample/slide.jpg" alt="Step 1: Assign the Correct Template"/></a> </dd>
+	            <dd class="image"> <a href="" title="Step 1: Assign the Correct Template"><img src="#themePath#/images/sample/slide.jpg" alt="Step 1: Assign the Correct Template"/></a> </dd>
 	            <dd class="summary">
 	              <p>The template used is aptly named home.cfm. To make sure you
 	                are using the correct template, edit the home page and select
@@ -61,7 +61,7 @@
 	          <dl class="hasImage">
 	            <dt class="releaseDate">June 3, 2009</dt>
 	            <dt><a href="">Step 2: Create Local Indexes</a></dt>
-	            <dd class="image"> <a href="" title="Step 2: Create Local Indexes"><img src="#$.siteConfig('themeAssetPath')#/images/sample/slide.jpg" alt="Step 2: Create Local Indexes"/></a> </dd>
+	            <dd class="image"> <a href="" title="Step 2: Create Local Indexes"><img src="#themePath#/images/sample/slide.jpg" alt="Step 2: Create Local Indexes"/></a> </dd>
 	            <dd class="summary">
 	              <p>The majority of content on the homepage is created via Local
 	                Indexes, a way to output custom navigation based on very specific
@@ -73,7 +73,7 @@
 	          <dl class="hasImage">
 	            <dt class="releaseDate">June 3, 2009</dt>
 	            <dt><a href="">Step 3: Create a "Features" Component</a></dt>
-	            <dd class="image"> <a href="" title="Step 3: Create a &quot;Features&quot; Component"><img src="#$.siteConfig('themeAssetPath')#/images/sample/slide.jpg" alt="Step 3: Create a &quot;Features&quot; Component"/></a> </dd>
+	            <dd class="image"> <a href="" title="Step 3: Create a &quot;Features&quot; Component"><img src="#themePath#/images/sample/slide.jpg" alt="Step 3: Create a &quot;Features&quot; Component"/></a> </dd>
 	            <dd class="summary">
 	              <p>The &quot;Features&quot; content in the three columns below
 	                is static content that can be copied out of home_static.cfm.
@@ -85,7 +85,7 @@
 	          <dl class="last hasImage">
 	            <dt class="releaseDate">June 4, 2009</dt>
 	            <dt><a href="">Step 4: Add Content Objects to the Page</a></dt>
-	            <dd class="image"> <a href="" title="Step 4: Add Content Objects to the Page"><img src="#$.siteConfig('themeAssetPath')#/images/sample/slide.jpg" alt="Step 4: Add Content Objects to the Page"/></a> </dd>
+	            <dd class="image"> <a href="" title="Step 4: Add Content Objects to the Page"><img src="#themePath#/images/sample/slide.jpg" alt="Step 4: Add Content Objects to the Page"/></a> </dd>
 	            <dd class="summary">
 	              <p>Place your Local Indexes into Display Regions by editing the
 	                home page and selecting the &quot;Content Objects&quot; tab.
@@ -102,7 +102,7 @@
 		<div id="features">
         <dl class="hasImage first">
           <dt> <a href="">Sans Pica Ultra</a></dt>
-          <dd class="image"><a href=""><img alt="" src="#$.siteConfig('themeAssetPath')#/images/sample/feature.jpg" /></a> </dd>
+          <dd class="image"><a href=""><img alt="" src="#themePath#/images/sample/feature.jpg" /></a> </dd>
           <dd class="summary">
             <p>Descender counter california job case clarendon hyphen kerning
               pair pica cap asterisk typophile, display clarendon thicks display
@@ -111,7 +111,7 @@
         </dl>
         <dl class="hasImage">
           <dt> <a href="">Humanist Stroke</a></dt>
-          <dd class="image"> <a href=""><img alt="" src="#$.siteConfig('themeAssetPath')#/images/sample/feature.jpg" /></a> </dd>
+          <dd class="image"> <a href=""><img alt="" src="#themePath#/images/sample/feature.jpg" /></a> </dd>
           <dd class="summary">
             <p>Descender counter california job case clarendon hyphen kerning
               pair pica cap asterisk typophile, display clarendon thicks display
@@ -120,7 +120,7 @@
         </dl>
         <dl class="hasImage last">
           <dt> <a href="">Ascender Dunc</a></dt>
-          <dd class="image"> <a href=""><img alt="" src="#$.siteConfig('themeAssetPath')#/images/sample/feature.jpg" /></a> </dd>
+          <dd class="image"> <a href=""><img alt="" src="#themePath#/images/sample/feature.jpg" /></a> </dd>
           <dd class="summary">
             <p>Descender counter california job case clarendon hyphen kerning
               pair pica cap asterisk typophile, display clarendon thicks display
@@ -187,8 +187,8 @@
 	<cfinclude template="inc/footer.cfm" />
 </div>
 	<!--- These are included dynamically in the normal home.cfm template but need to be here to load appropriately in this static version --->
-	<script src="#$.siteConfig('assetPath')#/includes/display_objects/feedslideshow/js/slideshow.jquery.js" type="text/javascript"></script>
-	<script src="#$.siteConfig('assetPath')#/includes/display_objects/feedslideshow/js/jquery.cycle.js" type="text/javascript"></script>
+	<script src="#event.getSite().getAssetPath()#/includes/display_objects/feedslideshow/js/slideshow.jquery.js" type="text/javascript"></script>
+	<script src="#event.getSite().getAssetPath()#/includes/display_objects/feedslideshow/js/jquery.cycle.js" type="text/javascript"></script>
 </body>
 </html>
 </cfoutput>
