@@ -5,7 +5,7 @@
 	<cfinclude template="inc/header.cfm" />
 	<div id="content" class="clearfix">
 		<div id="primary" class="content">
-			#$.dspBody(body=$.content('body'),pageTitle=$.content('title'),crumbList=0,showMetaImage=0)#
+			#$.dspBody(body=$.content('body'),pageTitle='',crumbList=0,showMetaImage=0)#
 			#$.dspObjects(2)#
 		</div>
 		<div id="right" class="sidebar">
