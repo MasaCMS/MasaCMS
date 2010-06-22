@@ -140,6 +140,7 @@ to your own modified versions of Mura CMS.
 	<cfargument name="config" type="struct"> 	
 	<cfset var prop="">
 	<cfset setWebRoot(config.webroot)/>
+	<cfset setContext(config.context)/>
 	<cfset setAssetPath(config.assetPath)/>
 	<cfset setFileDelim()/>
 	<!--- setFileDir must be after setWebRoot and setFileDelim and setAssetPath--->
@@ -148,7 +149,7 @@ to your own modified versions of Mura CMS.
 	<cfset setServerPort(config.port)>
 	
 	<cfloop collection="#arguments.config#" item="prop">
-		<cfif not listFindNoCase("webroot,filedir,plugindir,locale,port,assetpath",prop)>
+		<cfif not listFindNoCase("webroot,filedir,plugindir,locale,port,assetpath,context",prop)>
 			<cfif structKeyExists(this,"set#prop#")>
 				<cfset evaluate("set#prop#(arguments.config.#prop#)")>
 			<cfelse>

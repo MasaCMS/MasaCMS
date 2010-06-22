@@ -454,35 +454,46 @@ to your own modified versions of Mura CMS.
 					  </cfif>	
 
 				  order by 
-					<!--- <cfswitch expression="#arguments.sortBy#">
-					<cfcase value="rating">
-					tcontentstats.rating #arguments.sortDirection#,tcontentstats.totalVotes #arguments.sortDirection#, tcontent.releaseDate #arguments.sortDirection#
-					</cfcase>
-					<cfcase value="comments">
-					tcontentstats.comments #arguments.sortDirection#
-					</cfcase>
-					<cfdefaultcase>
-					tcontent.#arguments.sortBy# #arguments.sortDirection#
-					</cfdefaultcase>
-					</cfswitch> --->
-					<cfswitch expression="#arguments.sortBy#">
-					<cfcase value="menutitle,title,lastupdate,releasedate,orderno,displayStart,created,credits,type,subtype">
-					tcontent.#arguments.sortBy# #arguments.sortDirection#
-					</cfcase>
-					<cfcase value="rating">
-					 tcontentstats.rating #arguments.sortBy#, tcontentstats.totalVotes #arguments.sortDirection#
-					</cfcase>
-					<cfcase value="comments">
-					 tcontentstats.comments #arguments.sortDirection#
-					</cfcase>
-					<cfdefaultcase>
-						<cfif isExtendedSort>
-							qExtendedSort.extendedSort #arguments.sortDirection#
-						<cfelse>
-							tcontent.releaseDate desc,tcontent.lastUpdate desc,tcontent.menutitle
-						</cfif>
-					</cfdefaultcase>
-					</cfswitch>
+					
+					<cfif dbType neq "oracle">
+						<cfswitch expression="#arguments.sortBy#">
+							<cfcase value="menutitle,title,lastupdate,releasedate,orderno,displayStart,created,credits,type,subtype">
+								tcontent.#arguments.sortBy# #arguments.sortDirection#
+							</cfcase>
+							<cfcase value="rating">
+								tcontentstats.rating #arguments.sortBy#, tcontentstats.totalVotes #arguments.sortDirection#
+							</cfcase>
+							<cfcase value="comments">
+								tcontentstats.comments #arguments.sortDirection#
+							</cfcase>
+							<cfdefaultcase>
+								<cfif isExtendedSort>
+									qExtendedSort.extendedSort #arguments.sortDirection#
+								<cfelse>
+									tcontent.releaseDate desc,tcontent.lastUpdate desc,tcontent.menutitle
+								</cfif>
+							</cfdefaultcase>
+						</cfswitch>
+					<cfelse>
+						<cfswitch expression="#arguments.sortBy#">
+							<cfcase value="menutitle,title,lastupdate,releasedate,orderno,displayStart,created,credits,type,subtype">
+								lower(tcontent.#arguments.sortBy#) #arguments.sortDirection#
+							</cfcase>
+							<cfcase value="rating">
+								tcontentstats.rating #arguments.sortBy#, tcontentstats.totalVotes #arguments.sortDirection#
+							</cfcase>
+							<cfcase value="comments">
+								tcontentstats.comments #arguments.sortDirection#
+							</cfcase>
+							<cfdefaultcase>
+								<cfif isExtendedSort>
+									qExtendedSort.extendedSort #arguments.sortDirection#
+								<cfelse>
+									tcontent.releaseDate desc,tcontent.lastUpdate desc,tcontent.menutitle
+								</cfif>
+							</cfdefaultcase>
+						</cfswitch>
+					</cfif>
 					
 					<cfif dbType eq "mysql" and arguments.size>limit #arguments.size#</cfif>
 					<cfif dbType eq "oracle" and arguments.size>) where ROWNUM <=#arguments.size# </cfif>
