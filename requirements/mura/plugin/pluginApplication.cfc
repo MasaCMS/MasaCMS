@@ -107,7 +107,7 @@ to your own modified versions of Mura CMS.
 <cffunction name="getValue" returntype="any" access="public" output="false">
 <cfargument name="property"  type="string" required="true">
 <cfargument name="defaultValue" default="" required="true">
-<cfargument name="autowire" default="false" required="true" >
+<cfargument name="autowire" default="true" required="true" >
 	<cfset var returnValue="">
 	
 	<cfif structKeyExists(variables.properties,arguments.property)>
