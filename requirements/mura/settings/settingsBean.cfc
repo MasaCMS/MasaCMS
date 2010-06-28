@@ -114,6 +114,7 @@ to your own modified versions of Mura CMS.
 <cfset variables.instance.cacheFactory=""/> 
 <cfset variables.instance.theme=""/> 
 <cfset variables.instance.contentRenderer=""/>
+<cfset variables.instance.themeRenderer="">
 
 <cffunction name="init" returntype="any" output="false" access="public">
 <cfargument name="configBean" type="any" required="yes"/>
@@ -1173,6 +1174,17 @@ to your own modified versions of Mura CMS.
 	<cfset variables.instance.contentRenderer=createObject("component","#getAssetMap()#.includes.contentRenderer")>
 </cfif>
 <cfreturn variables.instance.contentRenderer>
+</cffunction>
+
+<cffunction name="getThemeRenderer" output="false">
+<cfif not isObject(variables.instance.themeRenderer)>
+	<cfif fileExists(expandPath(getThemeIncludePath()) & "/contentRenderer.cfc")>
+		<cfset variables.instance.themeRenderer=createObject("component","#getThemeAssetMap()#.contentRenderer")>
+	<cfelse>
+		<cfset variables.instance.themeRenderer=createObject("component","mura.cfobject").init()>
+	</cfif>
+</cfif>
+<cfreturn variables.instance.themeRenderer>
 </cffunction>
 
 </cfcomponent>

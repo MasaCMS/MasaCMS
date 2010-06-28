@@ -22,12 +22,52 @@
 	<cfreturn this>
 </cffunction>
 
+<cffunction name="OnMissingMethod" access="public" returntype="any" output="false" hint="Handles missing method exceptions.">
+<cfargument name="MissingMethodName" type="string" required="true" hint="The name of the missing method." />
+<cfargument name="MissingMethodArguments" type="struct" required="true"/>
+	<cfset var local=structNew()>
+	<cfset var object="">
+	
+	<cfif len(MissingMethodName)>
+		
+		<cfif isObject(getEvent()) and structKeyExists(variables.instance.event,MissingMethodName)>
+			<cfset object=variables.instance.event>
+		<cfelseif isObject(getThemeRenderer()) and structKeyExists(getThemeRenderer(),MissingMethodName)>
+			<cfset object=getThemeRenderer()>
+		<cfelseif isObject(getContentRenderer()) and structKeyExists(getContentRenderer(),MissingMethodName)>
+			<cfset object=getContentRenderer()>
+		<cfelseif isObject(getContentBean()) and structKeyExists(getContentBean(),MissingMethodName)>
+			<cfset object=getContentBean()>
+		<cfelse>
+			<cfthrow message="The method '#arguments.MissingMethodName#' is not defined">
+		</cfif>
+	
+		<cfsavecontent variable="local.thevalue2">
+		<cfif not structIsEmpty(MissingMethodArguments)>
+			<cfinvoke component="#object#" method="#MissingMethodName#" argumentcollection="#MissingMethodArguments#" returnvariable="local.theValue1">
+		<cfelse>
+			<cfinvoke component="#object#" method="#MissingMethodName#" returnvariable="local.theValue1">
+		</cfif>
+		</cfsavecontent>
+		
+		<cfif isDefined("local.theValue1")>
+			<cfreturn local.theValue1>
+		<cfelseif isDefined("local.theValue2")>
+			<cfreturn local.theValue2>
+		<cfelse>
+			<cfreturn "">
+		</cfif>
+	<cfelse>
+		<cfreturn "">
+	</cfif>
+</cffunction>
+
 <cffunction name="getContentRenderer" output="false" returntype="any">
 	<cfif not isObject(event("contentRenderer"))>
 		<cfif structKeyExists(request,"contentRenderer")>
 			<cfset event("contentRenderer",request.contentRenderer)>
 		<cfelseif len(event('siteid'))>
-			<cfset event("contentRenderer",createObject("component","#siteConfig().getAssetMap()#.contentRenderer").init(event))>
+			<cfset event("contentRenderer",createObject("component","#siteConfig().getAssetMap()#.contentRenderer").init(event=event,$=event("muraScope"),mura=event("muraScope") ) )>
 		<cfelseif structKeyExists(application,"contentRenderer")>
 			<cfset event("contentRenderer",application.contentRenderer)>
 		</cfif>
@@ -39,6 +79,24 @@
 	<cfargument name="contentRenderer">
 	<cfif isObject(arguments.contentRenderer)>
 		<cfset event("contentRenderer",arguments.contentRenderer)>
+	</cfif>
+	<cfreturn this>
+</cffunction>
+
+<cffunction name="getThemeRenderer" output="false" returntype="any">
+	<cfif isObject(event("themeRenderer"))>
+		<cfreturn event("themeRenderer")>
+	<cfelseif len(event('siteid')) and fileExists(expandPath(siteConfig().getThemeIncludePath()) & "/contentRenderer.cfc" )>
+		<cfset event("themeRenderer",createObject("component","#siteConfig().getThemeAssetMap()#.contentRenderer").init(event=event,$=event("muraScope"),mura=event("muraScope") ) )>
+	<cfelse>
+		<cfreturn event("themeRenderer")>
+	</cfif>
+</cffunction>
+
+<cffunction name="setThemeRenderer" output="false" returntype="any">
+	<cfargument name="themeRenderer">
+	<cfif isObject(arguments.themeRenderer)>
+		<cfset event("themeRenderer",arguments.themeRenderer)>
 	</cfif>
 	<cfreturn this>
 </cffunction>
@@ -82,44 +140,6 @@
 		<cfset variables.instance.event=arguments.event>
 	</cfif>
 	<cfreturn this>
-</cffunction>
-
-<cffunction name="OnMissingMethod" access="public" returntype="any" output="false" hint="Handles missing method exceptions.">
-<cfargument name="MissingMethodName" type="string" required="true" hint="The name of the missing method." />
-<cfargument name="MissingMethodArguments" type="struct" required="true"/>
-	<cfset var local=structNew()>
-	<cfset var object="">
-	
-	<cfif len(MissingMethodName)>
-		
-		<cfif isObject(getEvent()) and structKeyExists(variables.instance.event,MissingMethodName)>
-			<cfset object=variables.instance.event>
-		<cfelseif isObject(getContentRenderer()) and structKeyExists(getContentRenderer(),MissingMethodName)>
-			<cfset object=getContentRenderer()>
-		<cfelseif isObject(getContentBean()) and structKeyExists(getContentBean(),MissingMethodName)>
-			<cfset object=getContentBean()>
-		<cfelse>
-			<cfthrow message="The method '#arguments.MissingMethodName#' is not defined">
-		</cfif>
-	
-		<cfsavecontent variable="local.thevalue2">
-		<cfif not structIsEmpty(MissingMethodArguments)>
-			<cfinvoke component="#object#" method="#MissingMethodName#" argumentcollection="#MissingMethodArguments#" returnvariable="local.theValue1">
-		<cfelse>
-			<cfinvoke component="#object#" method="#MissingMethodName#" returnvariable="local.theValue1">
-		</cfif>
-		</cfsavecontent>
-		
-		<cfif isDefined("local.theValue1")>
-			<cfreturn local.theValue1>
-		<cfelseif isDefined("local.theValue2")>
-			<cfreturn local.theValue2>
-		<cfelse>
-			<cfreturn "">
-		</cfif>
-	<cfelse>
-		<cfreturn "">
-	</cfif>
 </cffunction>
 
 <cffunction name="event" output="false" returntype="any">

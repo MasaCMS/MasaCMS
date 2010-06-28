@@ -611,4 +611,8 @@ To Unsubscribe Click Here:
 	<cfset load()>
 	<cfreturn this>
 </cffunction>
+
+<cffunction name="hasParent" output="false">
+	<cfreturn listLen(getPath()) gt 1>
+</cffunction>
 </cfcomponent>

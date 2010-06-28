@@ -1548,4 +1548,8 @@ to your own modified versions of Mura CMS.
 	<cfreturn returnStr>
 </cffunction> 
 
+<cffunction name="hasParent" output="false">
+	<cfreturn listLen(getPath()) gt 1>
+</cffunction>
+
 </cfcomponent>

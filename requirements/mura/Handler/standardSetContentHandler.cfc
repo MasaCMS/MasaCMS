@@ -25,6 +25,7 @@
 	<cfargument name="event" required="true">
 	
 	<cfset var renderer=event.getValue("contentRenderer")>
+	<cfset var themeRenderer=event.getValue("themeRenderer")>
 	
 	<cfif event.valueExists('previewID')>
 		<cfset event.getHandler("standardSetPreview").handle(event)>
@@ -43,6 +44,10 @@
 	<cfset event.setValue('crumbdata',application.contentGateway.getCrumbList(event.getValue('contentBean').getcontentid(),event.getContentBean().getSiteID(),true,event.getValue('contentBean').getPath())) />
 	
 	<cfset renderer.crumbdata=event.getValue("crumbdata")>
+	
+	<cfif isObject(themeRenderer)>
+		<cfset themeRenderer.crumbdata=event.getValue("crumbdata")>
+	</cfif>
 </cffunction>
 
 </cfcomponent>

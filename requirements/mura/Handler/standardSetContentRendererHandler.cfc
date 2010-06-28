@@ -23,9 +23,11 @@
 	
 <cffunction name="handle" output="false" returnType="any">
 	<cfargument name="event" required="true">
-	
-	<cfset event.setValue('contentRenderer',createObject("component","#event.getSite().getAssetMap()#.includes.contentRenderer").init(event))/>
-
+	<cfset var $=event.getValue("muraScope")>
+	<cfset event.setValue('contentRenderer',createObject("component","#event.getSite().getAssetMap()#.includes.contentRenderer").init(event=event,$=$,mura=$))/>
+	<cfif fileExists(expandPath(event.getSite().getThemeIncludePath()) & "/contentRenderer.cfc")>
+		<cfset event.setValue("themeRenderer",createObject("component","#event.getSite().getThemeAssetMap()#.contentRenderer").init(event=event,$=$,mura=$))>
+	</cfif>
 </cffunction>
 
 </cfcomponent>
