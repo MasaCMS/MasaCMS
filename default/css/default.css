@@ -993,7 +993,9 @@ dd.rating {
 	}
 
 dl.hasImage .image { 
-	float: left;
+	position: absolute;
+	top: 0;
+	left: 0;
 	margin: 0 1em 0 0;
 	}
 	

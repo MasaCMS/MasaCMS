@@ -43,7 +43,7 @@ to your own modified versions of Mura CMS.
 <cfparam name="application.appInitializedTime" default="" />
 <cfparam name="application.appInitialized" default="false" />
 <cfparam name="application.appReloadKey" default="appreload" />
-<cfparam name="application.broadcastInit" default="true" />
+<cfparam name="application.broadcastInit" default="false" />
 	
 <cfprocessingdirective pageencoding="utf-8"/>
 <cfsetting requestTimeout = "1000"> 
@@ -126,7 +126,7 @@ to your own modified versions of Mura CMS.
 		<!--- If coldspring.custom.xml.cfm exists read it in an check it it is valid xml--->
 		<cfif fileExists(expandPath("/muraWRM/config/coldspring.custom.xml.cfm"))>	
 			<cffile action="read" variable="customServicesXML" file="#expandPath('/muraWRM/config/coldspring.custom.xml.cfm')#">
-			<cfif not findNoCase("<!---",customServicesXML)>
+			<cfif not findNoCase("<!-" & "--",customServicesXML)>
 				<cfif not findNoCase("<beans>",customServicesXML)>
 					<cfset customServicesXML= "<beans>" & customServicesXML & "</beans>">
 				</cfif>
@@ -213,7 +213,7 @@ to your own modified versions of Mura CMS.
 		</cfloop>	
 					
 		<cfset application.appInitialized=true/>
-					
+		<cfset application.appInitializedTime=now()>
 		<cfif application.broadcastInit>
 			<cfset application.clusterManager.reload()>
 		</cfif>

@@ -364,7 +364,7 @@
 		<cfset pluginManager.announceEvent("onBeforeCommentCreate",pluginEvent)>
 		
 		<cfquery datasource="#application.configBean.getDatasource()#" username="#application.configBean.getDBUsername()#" password="#application.configBean.getDBPassword()#" name="rslist">
-			insert into tcontentcomments (contentid,commentid,parentid,name,email,url,comments,entered,siteid,isApproved,subscribe,userID,path)
+			insert into tcontentcomments (contentid,commentid,parentid,name,email,url,comments,entered,siteid,isApproved,subscribe,userID,path, ip)
 			values (
 			<cfqueryparam cfsqltype="cf_sql_varchar" value="#getContentID()#"/>,
 			<cfqueryparam cfsqltype="cf_sql_varchar" value="#getCommentID()#"/>,
@@ -378,7 +378,8 @@
 			#getIsApproved()#,
 			<cfqueryparam cfsqltype="cf_sql_numeric" value="#getSubscribe()#">,
 			<cfqueryparam cfsqltype="cf_sql_varchar" value="#getUserID()#"/>,
-			<cfqueryparam cfsqltype="cf_sql_varchar" value="#path#"/>
+			<cfqueryparam cfsqltype="cf_sql_varchar" value="#path#"/>,
+			<cfqueryparam cfsqltype="cf_sql_varchar" value="#request.remoteAddr#"/>
 			)
 			</cfquery>
 			
