@@ -45,7 +45,9 @@ to your own modified versions of Mura CMS.
 <cffunction name="purgeSiteCache" returntype="any" access="remote" output="false">
 	<cfargument name="siteid" required="true" default="">
 	<cfargument name="appreloadkey" required="true" default="">
-	<cfif arguments.appreloadkey eq application.appreloadkey>
+	<cfargument name="instanceID" required="true" default="">
+	<cfif arguments.instanceID neq application.intanceID 
+		and arguments.appreloadkey eq application.appreloadkey>
 		<cfif len(arguments.siteid)>
 			<cfset application.settingsManager.getSite(arguments.siteID).getCacheFactory().purgeAll()>	
 		<cfelse>
@@ -56,7 +58,9 @@ to your own modified versions of Mura CMS.
 
 <cffunction name="reload" returntype="any" access="remote" output="false">
 	<cfargument name="appreloadkey" required="true" default="">
-	<cfif arguments.appreloadkey eq application.appreloadkey>
+	<cfargument name="instanceID" required="true" default="">
+	<cfif arguments.instanceID neq application.intanceID 
+		and arguments.appreloadkey eq application.appreloadkey>
 		<cfset application.appInitialized=false/>
 		<cfset application.broadcastInit=false />
 	</cfif>
