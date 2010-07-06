@@ -30,13 +30,17 @@
 
 <cffunction name="get" access="public" returntype="any" output="false">
 		<cfargument name="key" type="string" required="true" />
-		
+		<cfargument name="persist" default="true" required="true" />
 		<cfset var hashKey = getHashKey( arguments.key ) />
-		
+		<cfset var wrappedClassIntance="">
 		<!--- if the key cannot be found and context is passed then push it in --->
-		<cfif NOT has( arguments.key )>
+		<cfif NOT arguments.persist or NOT has( arguments.key )>
 			<!--- create object --->
-			<cfset super.set( arguments.key, wrapHandler(createObject("component",getComponentPath(arguments.key)).init()) ) />
+			<cfset wrappedClassIntance=wrapHandler(createObject("component",getComponentPath(arguments.key)).init())>
+			<cfif arguments.persist>
+				<cfset super.set( arguments.key, wrappedClassIntance) />
+			</cfif>
+			<cfreturn wrappedClassIntance>
 		</cfif>
 		
 		<!--- if the key cannot be found then throw an error --->

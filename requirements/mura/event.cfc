@@ -107,8 +107,9 @@ to your own modified versions of Mura CMS.
 
 <cffunction name="getHandler" returntype="any" access="public" output="false">
 	<cfargument name="handler">
+	<cfargument name="persist" default="true" required="true">
 	<cfif isObject(getValue('HandlerFactory'))>
-		<cfreturn getValue('HandlerFactory').get(arguments.handler,getValue("localHandler")) />
+		<cfreturn getValue('HandlerFactory').get(arguments.handler,getValue("localHandler"),arguments.persist) />
 	<cfelse>
 		<cfset throwSiteIDError()>
 	</cfif>
@@ -116,9 +117,9 @@ to your own modified versions of Mura CMS.
 
 <cffunction name="getValidator" returntype="any" access="public" output="false">
 	<cfargument name="validation">
-	
+	<cfargument name="persist" default="true" required="true">
 	<cfif isObject(getValue('ValidatorFactory'))>
-		<cfreturn getValue('ValidatorFactory').get(arguments.validation,getValue("localHandler")) />	
+		<cfreturn getValue('ValidatorFactory').get(arguments.validation,getValue("localHandler"),arguments.persist) />	
 	<cfelse>
 		<cfset throwSiteIDError()>
 	</cfif>
@@ -127,9 +128,9 @@ to your own modified versions of Mura CMS.
 
 <cffunction name="getTranslator" returntype="any" access="public" output="false">
 	<cfargument name="translator">
-	
+	<cfargument name="persist" default="true" required="true">
 	<cfif isObject(getValue('TranslatorFactory'))>
-		<cfreturn getValue('TranslatorFactory').get(arguments.translator,getValue("localHandler")) />	
+		<cfreturn getValue('TranslatorFactory').get(arguments.translator,getValue("localHandler"),arguments.persist) />	
 	<cfelse>
 		<cfset throwSiteIDError()>
 	</cfif>

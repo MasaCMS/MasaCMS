@@ -24,7 +24,7 @@
 <cffunction name="handle" output="false" returnType="any">
 	<cfargument name="event" required="true">
 	
-	<cfset event.getTranslator('standardHTML').translate(event)/>
+	<cfset event.getTranslator('standardHTML',false).translate(event)/>
 
 </cffunction>
 

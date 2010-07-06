@@ -160,17 +160,20 @@ to your own modified versions of Mura CMS.
 
 <cffunction name="getHandler" returntype="any" access="public" output="false">
 	<cfargument name="handler">
-	<cfreturn getValue('HandlerFactory').get(arguments.handler,getValue("localHandler")) />	
+	<cfargument name="persist" default="true" required="true">
+	<cfreturn getValue('HandlerFactory').get(arguments.handler,getValue("localHandler"),arguments.persist) />	
 </cffunction>
 
 <cffunction name="getValidator" returntype="any" access="public" output="false">
 	<cfargument name="validation">
-	<cfreturn getValue('ValidatorFactory').get(arguments.validation,getValue("localHandler")) />	
+	<cfargument name="persist" default="true" required="true">
+	<cfreturn getValue('ValidatorFactory').get(arguments.validation,getValue("localHandler"),arguments.persist) />	
 </cffunction>
 
 <cffunction name="getTranslator" returntype="any" access="public" output="false">
 	<cfargument name="translator">
-	<cfreturn getValue('TranslatorFactory').get(arguments.translator,getValue("localHandler")) />	
+	<cfargument name="persist" default="true" required="true">
+	<cfreturn getValue('TranslatorFactory').get(arguments.translator,getValue("localHandler"),arguments.persist) />	
 </cffunction>
 
 <cffunction name="getContentRenderer" returntype="any" access="public" output="false">
