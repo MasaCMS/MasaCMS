@@ -14,10 +14,8 @@
 	
 	<cfif len(clusterList)>
 		<cfloop list="#clusterList#" index="host">
-			<cfif host neq cgi.server_name>
-				<cfset remoteURL="#formatHost(host)#/MuraProxy.cfc?method=purgeSiteCache&siteID=#URLEncodedFormat(arguments.siteID)#&appreloadkey=siteID=#URLEncodedFormat(application.appreloadkey)#">
-				<cfset doRemoteCall(remoteURL)>
-			</cfif>
+			<cfset remoteURL="#formatHost(host)#/MuraProxy.cfc?method=purgeSiteCache&siteID=#URLEncodedFormat(arguments.siteID)#&appreloadkey=#URLEncodedFormat(application.appreloadkey)#&instanceID=#application.instanceID#">
+			<cfset doRemoteCall(remoteURL)>
 		</cfloop>
 	</cfif>
 	
@@ -29,10 +27,8 @@
 	
 	<cfif len(clusterList)>
 		<cfloop list="#clusterList#" index="host">
-			<cfif host neq cgi.server_name>
-				<cfset remoteURL="#formatHost(host)#/MuraProxy.cfc?method=reload&&appreloadkey=#URLEncodedFormat(application.appreloadkey)#">
-				<cfset doRemoteCall(remoteURL)>
-			</cfif>
+			<cfset remoteURL="#formatHost(host)#/MuraProxy.cfc?method=reload&&appreloadkey=#URLEncodedFormat(application.appreloadkey)#&instanceID=#application.instanceID#">
+			<cfset doRemoteCall(remoteURL)>
 		</cfloop>
 	</cfif>
 	
