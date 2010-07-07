@@ -1281,7 +1281,7 @@ to your own modified versions of Mura CMS.
 			</cfif>
 		</cfif>
 			
-		<cfif rsSection.recordcount and ((event.getValue('r').restrict and event.getValue('r').allow) or (not event.getValue('r').restrict) or (event.getValue('r').restrict and not session.mura.isLoggedIn))>
+		<cfif rsSection.recordcount>
 			<cfset adjust=rsSection.recordcount>
 			<cfsavecontent variable="theNav"><cfoutput>
 			<ul<cfif currDepth eq 1>#iif(arguments.id neq '',de(' id="#arguments.id#"'),de(''))##iif(arguments.menuClass neq '',de(' class="#arguments.menuClass#"'),de(''))#</cfif>><cfloop query="rsSection"><cfif allowLink(rssection.restricted,rssection.restrictgroups,event.getValue('r').loggedIn)><cfsilent>
