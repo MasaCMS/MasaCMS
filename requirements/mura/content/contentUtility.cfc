@@ -360,12 +360,14 @@ to your own modified versions of Mura CMS.
 	<cfset var i = '' />
 	<cfset var theLen=listLen(arguments.data.notify) />
 	<cfset var reviewLink = ''/>
-	<cfset var redirectID = createUUID()/>
+	<cfset var versionID = createUUID()/>
+	<cfset var historyID = createUUID()/>
 	<cfset var rsEmail = "" />
 	<cfset var mailText="" >
 	<cfset var crumbStr="" >
 	<cfset var crumbData="" >
-	<cfset var c = "" />
+	<cfset var c = "" />	
+	<cfset var sendVersionLink= variables.configBean.getNotifyWithVersionLink()>
 	
 	<cfif listFind("Portal,Page,Calendar,Gallery,Link,File",arguments.contentBean.getType()) and arguments.contentBean.getContentID() neq '00000000000000000000000000000000001'>
 		<cfset crumbData=getServiceFactory().getBean('contentGateway').getCrumblist(arguments.contentBean.getParentID(),arguments.contentBean.getSiteID())>
@@ -390,58 +392,81 @@ to your own modified versions of Mura CMS.
 		</cfif>
 		)
 	</cfquery>
-	
+	<cfif sendVersionLink>
 	<cfif (structKeyExists(data,"CompactDisplay") and data.compactDisplay eq "true")
 		or (structKeyExists(data,"closeCompactDisplay") and data.closeCompactDisplay eq "true")>
-		<cfset reviewLink='http://#listFirst(cgi.http_host,":")##variables.configBean.getServerPort()##variables.configBean.getContext()#/#arguments.data.siteid#/?contentID=#arguments.contentBean.getContentID()#&previewID=#arguments.contentBean.getContentHistID()#'>
+		<cfif variables.configBean.getSiteIDInURLS()>
+			<cfset versionLink='http://#listFirst(cgi.http_host,":")##variables.configBean.getServerPort()##variables.configBean.getContext()#/#arguments.data.siteid#/?contentID=#arguments.contentBean.getContentID()#&previewID=#arguments.contentBean.getContentHistID()#'>
+		<cfelse>
+			<cfset versionLink='http://#listFirst(cgi.http_host,":")##variables.configBean.getServerPort()##variables.configBean.getContext()#/?contentID=#arguments.contentBean.getContentID()#&previewID=#arguments.contentBean.getContentHistID()#'>
+		</cfif>
 	<cfelse>
-		<cfset reviewLink='http://#listFirst(cgi.http_host,":")##variables.configBean.getServerPort()##variables.configBean.getContext()#/admin/index.cfm?fuseaction=cArch.edit&parentid=#arguments.data.parentid#&&topid=#arguments.data.topid#&siteid=#arguments.data.siteid#&contentid=#arguments.contentBean.getcontentid()#&contenthistid=#arguments.contentBean.getcontenthistid()#&moduleid=#arguments.data.moduleid#&type=#arguments.data.type#&ptype=#arguments.data.ptype#'>
+		<cfset versionLink='http://#listFirst(cgi.http_host,":")##variables.configBean.getServerPort()##variables.configBean.getContext()#/admin/index.cfm?fuseaction=cArch.edit&parentid=#arguments.data.parentid#&&topid=#arguments.data.topid#&siteid=#arguments.data.siteid#&contentid=#arguments.contentBean.getcontentid()#&contenthistid=#arguments.contentBean.getcontenthistid()#&moduleid=#arguments.data.moduleid#&type=#arguments.data.type#&ptype=#arguments.data.ptype#'>
 	</cfif>
+	
 	<cfquery datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 		insert into tredirects (redirectID,URL,created) values(
-		<cfqueryparam cfsqltype="cf_sql_varchar" value="#redirectID#" >,
-		<cfqueryparam cfsqltype="cf_sql_varchar" value="#reviewLink#" >,
+		<cfqueryparam cfsqltype="cf_sql_varchar" value="#versionID#" >,
+		<cfqueryparam cfsqltype="cf_sql_varchar" value="#versionLink#" >,
+		#createODBCDateTime(now())#
+		)
+	</cfquery>
+	</cfif>
+	<cfset historyLink='http://#listFirst(cgi.http_host,":")##variables.configBean.getServerPort()##variables.configBean.getContext()#/admin/index.cfm?fuseaction=cArch.hist&parentid=#arguments.data.parentid#&&topid=#arguments.data.topid#&siteid=#arguments.data.siteid#&contentid=#arguments.contentBean.getcontentid()#&moduleid=#arguments.data.moduleid#&type=#arguments.data.type#'>
+	
+	<cfquery datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+		insert into tredirects (redirectID,URL,created) values(
+		<cfqueryparam cfsqltype="cf_sql_varchar" value="#historyID#" >,
+		<cfqueryparam cfsqltype="cf_sql_varchar" value="#historyLink#" >,
 		#createODBCDateTime(now())#
 		)
 	</cfquery>
 		
 <cfif session.mura.isLoggedIn>
-	<cfquery name="rsemail" datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+<cfquery name="rsemail" datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	select email, fname, lname from tusers where userid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#session.mura.userID#">
-	</cfquery>
+</cfquery>
 	
-	<cfloop query="rslist">
+<cfloop query="rslist">
 		
-		<cfset variables.contentDAO.createContentAssignment(arguments.contentBean,rsList.userID) />
+<cfset variables.contentDAO.createContentAssignment(arguments.contentBean,rsList.userID) />
 		
-		<cfif rsList.email neq ''>
+<cfif rsList.email neq ''>
+
 <cfsavecontent variable="mailText"><cfoutput>
 #arguments.data.message#
 
 TITLE: #arguments.contentBean.getTitle()#
 TYPE: #arguments.contentBean.getType()# / #arguments.contentBean.getSubType()#<cfif len(crumbStr)>
 LOCATION: #crumbStr#</cfif>
-AUTHOR: #arguments.contentBean.getLastUpdateBy()#						
-REVIEW LINK:
-http://#listFirst(cgi.http_host,":")##variables.configBean.getServerPort()##variables.configBean.getContext()##variables.contentRenderer.getURLStem(arguments.contentBean.getSiteID(),redirectID)#
-</cfoutput></cfsavecontent>
-		
-		<cfset variables.mailer.sendText(mailText,
-				rsList.email,
-				"#rsemail.fname# #rsemail.lname#",
-				"Site Content Review for #UCase(variables.settingsManager.getSite(arguments.contentBean.getSiteID()).getDomain())#",
-				contentBean.getSiteID(),
-				rsemail.email) />
-		</cfif>
-		</cfloop>
+AUTHOR: #arguments.contentBean.getLastUpdateBy()#
+
+HISTORY LINK:
+http://#listFirst(cgi.http_host,":")##variables.configBean.getServerPort()##variables.configBean.getContext()##variables.settingsManager.getSite(arguments.contentBean.getSiteID()).getContentRenderer().getURLStem(arguments.contentBean.getSiteID(),historyID)#						
+<cfif sendVersionLink>
+VERSION LINK:
+http://#listFirst(cgi.http_host,":")##variables.configBean.getServerPort()##variables.configBean.getContext()##variables.settingsManager.getSite(arguments.contentBean.getSiteID()).getContentRenderer().getURLStem(arguments.contentBean.getSiteID(),versionID)#
+</cfif></cfoutput></cfsavecontent>
+	
+<cfset variables.mailer.sendText(mailText,
+		rsList.email,
+		"#rsemail.fname# #rsemail.lname#",
+		"Site Content Review for #UCase(variables.settingsManager.getSite(arguments.contentBean.getSiteID()).getDomain())#",
+		contentBean.getSiteID(),
+		rsemail.email) />
+
+</cfif>
+
+</cfloop>
 		
 <cfelse>
 		
-	<cfloop query="rsList">
+<cfloop query="rsList">
 	
-		<cfset variables.contentDAO.createContentAssignment(arguments.contentBean,rsList.userID) />
+<cfset variables.contentDAO.createContentAssignment(arguments.contentBean,rsList.userID) />
 		
-		<cfif rsList.email neq ''>
+<cfif rsList.email neq ''>
+
 <cfsavecontent variable="mailText"><cfoutput>
 #arguments.data.message#
 
@@ -449,17 +474,22 @@ TITLE: #arguments.contentBean.getTitle()#
 TYPE: #arguments.contentBean.getType()# / #arguments.contentBean.getSubType()#<cfif len(crumbStr)>
 LOCATION: #crumbStr#</cfif>
 AUTHOR: #arguments.contentBean.getLastUpdateBy()#							
-REVIEW LINK:
-http://#listFirst(cgi.http_host,":")##variables.configBean.getServerPort()##variables.configBean.getContext()##variables.contentRenderer.getURLStem(arguments.contentBean.getSiteID(),redirectID)#
-</cfoutput></cfsavecontent>
-		<cfset variables.mailer.sendText(mailText,
-				rsList.email,
-				variables.settingsManager.getSite(arguments.contentBean.getsiteid()).getMailServerUsernameEmail(),
-				"Site Content Review for #Ucase(variables.settingsManager.getSite(arguments.contentBean.getSiteID()).getDomain())#",
-				request.siteid) />
-		</cfif>
 
-		</cfloop>
+HISTORY LINK:
+http://#listFirst(cgi.http_host,":")##variables.configBean.getServerPort()##variables.configBean.getContext()##variables.settingsManager.getSite(arguments.contentBean.getSiteID()).getContentRenderer().getURLStem(arguments.contentBean.getSiteID(),historyID)#						
+<cfif sendVersionLink>
+VERSION LINK:
+http://#listFirst(cgi.http_host,":")##variables.configBean.getServerPort()##variables.configBean.getContext()##variables.settingsManager.getSite(arguments.contentBean.getSiteID()).getContentRenderer().getURLStem(arguments.contentBean.getSiteID(),versionID)#
+</cfif></cfoutput></cfsavecontent>
+<cfset variables.mailer.sendText(mailText,
+		rsList.email,
+		variables.settingsManager.getSite(arguments.contentBean.getsiteid()).getMailServerUsernameEmail(),
+		"Site Content Review for #Ucase(variables.settingsManager.getSite(arguments.contentBean.getSiteID()).getDomain())#",
+		request.siteid) />
+
+</cfif>
+
+</cfloop>
 	
 </cfif>
 	

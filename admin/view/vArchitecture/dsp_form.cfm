@@ -49,7 +49,7 @@ to your own modified versions of Mura CMS.
 <script>
 var draftremovalnotice=<cfif application.configBean.getPurgeDrafts() and event.getValue("suppressDraftNotice") neq "true" and request.contentBean.hasDrafts()><cfoutput>'#jsStringFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.draftremovalnotice"))#'</cfoutput><cfelse>""</cfif>;
 </script>
-<cfif attributes.compactDisplay neq "true"><script>
+<cfif attributes.compactDisplay neq "true" and application.configBean.getConfirmSaveAsDraft()><script>
 var requestedURL="";
 onload=function(){
 	var anchors=document.getElementsByTagName("A");

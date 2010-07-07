@@ -105,6 +105,8 @@ to your own modified versions of Mura CMS.
 <cfset variables.instance.indexFileInURLS=true />
 <cfset variables.instance.strictExtendedData=false />
 <cfset variables.instance.purgeDrafts=true />
+<cfset variables.instance.confirmSaveAsDraft=true />
+<cfset variables.instance.notifyWithVersionLink=true />
 <cfset variables.instance.scriptProtect=true />
 <cfset variables.instance.appreloadKey=application.appreloadKey />
 <cfset variables.instance.loginStrikes=4 />
@@ -988,6 +990,30 @@ to your own modified versions of Mura CMS.
 
 <cffunction name="getPurgeDrafts" returntype="boolean" access="public" output="false">
 	<cfreturn variables.instance.purgeDrafts />
+</cffunction>
+
+<cffunction name="setConfirmSaveAsDraft" access="public" output="false">
+	<cfargument name="ConfirmSaveAsDraft" />
+	<cfif isBoolean(arguments.confirmSaveAsDraft)>
+		<cfset variables.instance.confirmSaveAsDraft = arguments.confirmSaveAsDraft />
+	</cfif>
+	<cfreturn this>
+</cffunction>
+
+<cffunction name="getConfirmSaveAsDraft" returntype="boolean" access="public" output="false">
+	<cfreturn variables.instance.confirmSaveAsDraft />
+</cffunction>
+
+<cffunction name="getNotifyWithVersionLink" returntype="boolean" access="public" output="false">
+	<cfreturn variables.instance.notifyWithVersionLink />
+</cffunction>
+
+<cffunction name="setNotifyWithVersionLink" access="public" output="false">
+	<cfargument name="notifyWithVersionLink" />
+	<cfif isBoolean(arguments.notifyWithVersionLink)>
+		<cfset variables.instance.notifyWithVersionLink = arguments.notifyWithVersionLink />
+	</cfif>
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="setScriptProtect" access="public" output="false">

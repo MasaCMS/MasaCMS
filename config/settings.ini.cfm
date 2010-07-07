@@ -58,3 +58,5 @@ strictExtendedData=1
 loginStrikes=4
 tempDir=
 purgeDrafts=true
+confirmSaveAsDraft=true
+notifyWithVersionLink=true
