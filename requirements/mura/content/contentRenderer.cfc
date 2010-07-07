@@ -1159,7 +1159,7 @@ to your own modified versions of Mura CMS.
 </cffunction>
 
 <cffunction name="createCSSID"  output="false" returntype="string">
-		<cfargument name="title" type="string">
+		<cfargument name="title" type="string" required="true" default="">
 		<cfset var id=setProperCase(arguments.title)>
 		<cfreturn "sys" & rereplace(id,"[^a-zA-Z0-9]","","ALL")>	
 </cffunction>
