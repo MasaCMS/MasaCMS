@@ -495,7 +495,7 @@ to your own modified versions of Mura CMS.
 					<cfqueryparam cfsqltype="cf_sql_numeric" value="#objectOrder#" />,
 					<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentBean.getsiteid()#" />,
 					<cfqueryparam cfsqltype="cf_sql_numeric" value="#r#" />,
-					<cfif listLen(i,"~") gt 3 ><cfqueryparam cfsqltype="cf_sql_numeric" value="#listgetat(i,4,"~")#" /><cfelse>null</cfif>
+					<cfif listLen(i,"~") gt 3 ><cfqueryparam cfsqltype="cf_sql_longvarchar" value="#listgetat(i,4,"~")#" /><cfelse>null</cfif>
 					)
 				</cfquery>
 			</cfloop>
@@ -516,7 +516,7 @@ to your own modified versions of Mura CMS.
 					<cfqueryparam cfsqltype="cf_sql_numeric" value="#rsOld.currentRow#" />,
 					<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentBean.getsiteid()#" />,
 					<cfqueryparam cfsqltype="cf_sql_numeric" value="#rsOld.columnid#" />,
-					<cfif listLen(i,"~") gt 3 ><cfqueryparam cfsqltype="cf_sql_numeric" value="#listgetat(i,4,"~")#" /><cfelse>null</cfif>
+					<cfif listLen(i,"~") gt 3 ><cfqueryparam cfsqltype="cf_sql_longvarchar" value="#listgetat(i,4,"~")#" /><cfelse>null</cfif>
 					)
 				</cfquery>
 			</cfloop>
