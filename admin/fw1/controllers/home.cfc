@@ -14,8 +14,9 @@
 		<cfargument name="rc" />
 		<cfset var siteID="">
 		<cfset var rsList="">
+		<cfset var rsDefault=structNew()>
 		
-		<cfset rc.siteid="">
+		<cfset arguments.rc.siteid="">
 		<cfif not listFind(session.mura.memberships,'S2IsPrivate')>
 			<cfset variables.fw.redirect(action="clogin.main",path="")>
 		</cfif>
@@ -35,17 +36,17 @@
 		</cfif>
 		
 		<cfif rsDefault.recordcount>
-			<cfset rc.siteid=rsDefault.siteid />
+			<cfset arguments.rc.siteid=rsDefault.siteid />
 		<cfelseif rsList.recordcount>
-			<cfset rc.siteid=rsList.siteid />
+			<cfset arguments.rc.siteid=rsList.siteid />
 		</cfif>
 		
-		<cfif len(rc.siteid)>
+		<cfif len(arguments.rc.siteid)>
 			<cfif application.configBean.getDashboard()>
 				<cfset variables.fw.redirect(action="cDashboard.main",append="siteid",path="index.cfm")>
 			<cfelse>
-				<cfset rc.moduleid="00000000000000000000000000000000000">
-				<cfset rc.topid="00000000000000000000000000000000001">
+				<cfset arguments.rc.moduleid="00000000000000000000000000000000000">
+				<cfset arguments.rc.topid="00000000000000000000000000000000001">
 				<cfset variables.fw.redirect(action="cArch.list",append="siteid,moduleid,topid",path="index.cfm")>
 			</cfif>
 		</cfif>

@@ -64,6 +64,13 @@
 	
 	<cffunction name="setupRequest" output="false">
 		
+		<cfset var siteCheck="">
+		<cfset var theParam="">
+		<cfset var temp="">
+		<cfset var page="">
+		<cfset var i="">
+		<cfset var site="">
+		
 		<cfinclude template="../config/appcfc/onRequestStart_include.cfm">
 		
 		<cfif right(cgi.script_name, Len("index.cfm")) NEQ "index.cfm" and right(cgi.script_name, Len("error.cfm")) NEQ "error.cfm" AND right(cgi.script_name, 3) NEQ "cfc">

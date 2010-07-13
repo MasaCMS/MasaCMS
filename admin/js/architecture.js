@@ -327,56 +327,112 @@ document.getElementById(id).style.visibility="hidden";
 }
 
 
-function addObject(availableList,publicList,privateList){
-   if(document.getElementById(availableList)==null
-	|| document.getElementById(availableList).selectedIndex ==-1){
-	   alert("Please select a display object."); return false;}
-   var selectedObjects =document.getElementById(publicList);
-   var addIndex = document.getElementById(availableList).selectedIndex;
-   
-   if(addIndex < 0)return;
-   
-   var addoption =document.getElementById(availableList).options[addIndex]; 
- 
-	if(selectedObjects.options.length){
+function addDisplayObject(objectToAdd,regionID){
+	var tmpObject="";
+	var tmpValue="";
+	var tmpText="";
+	
+	//If it's not a js object then it must be an id of a form input or select
+	if(typeof(objectToAdd)=="string"){
+	
+		// return error if the id does not exist.
+		if(document.getElementById(objectToAdd)==null){
+			alert("Please select a display object."); return false;
+		}
 		
+		if(document.getElementById(objectToAdd).tagName.toLowerCase() == "select"){
+		
+			if(document.getElementById(objectToAdd).selectedIndex ==-1){
+			   alert("Please select a display object."); return false;}
+		 
+			var addIndex = document.getElementById(objectToAdd).selectedIndex;
+		  
+			if(addIndex < 0)return;
+		   
+			var addoption =document.getElementById(objectToAdd).options[addIndex];
+			
+			tmpText=addoption.text;
+			tmpValue=addoption.value;
+
+		} else {
+			//If it's not a select box then the value must be json object.
+			addoption=document.getElementById(objectToAdd);		
+		}
+		
+		try
+		  {
+			tmpObject=eval('(' + addoption.value + ')');
+		  }
+		catch(err)
+		  {
+			tmpObject=addoption.value
+		  }
+	
+	} else {
+		//If it's not a select box then the value must be json object.
+		tmpObject=objectToAdd;
+	}
+	
+	
+	//if the tmpValue evaluated into a js object pull out it's values
+	if(typeof(tmpObject) == "object"){
+		//object^name^objectID^params
+		tmpValue=tmpObject.object;
+		tmpValue=tmpValue + "~" + tmpObject.name;	
+		tmpValue=tmpValue + "~" + tmpObject.objectid;
+		
+		if(typeof(tmpObject.params) == "string"){
+			tmpValue   = tmpValue + "~" + tmpObject.params;
+		} else if (typeof(tmpObject.params) == "object"){
+			tmpValue   = tmpValue + "~" + tmpObject.params.toSource();
+		}
+		
+		tmpText=tmpObject.name;	
+	}
+	
+	//get reference to the select where it will go.
+	var selectedObjects =document.getElementById("selectedObjects" + regionID);
+	
+	//double check that it's not already there
+	if(selectedObjects.options.length){	
 		for (var i=0;i < selectedObjects.options.length;i++){ 
-		
-			if(selectedObjects.options[i].value == addoption.value) {
+			if(selectedObjects.options[i].value==tmpValue) {
 			selectedObjects.selectedIndex=i;
 			return;
 			}
 		}
 	}
-	
+	// add it.
 	var myoption = document.createElement("option");
-	document.getElementById(publicList).appendChild(myoption);
-	myoption.text     = addoption.text;
-	myoption.value    = addoption.value;
+	selectedObjects.appendChild(myoption);
+	myoption.text= tmpText;
+	myoption.value=tmpValue;
 	myoption.selected = "selected"
 	
-	updateList(publicList,privateList);
+	updateDisplayObjectList(regionID);
 	
 }
 
-function deleteObject(publicList,privateList){
-   var selectedObjects =document.getElementById(publicList);
+function deleteDisplayObject(regionID){
+   var selectedObjects =document.getElementById("selectedObjects" + regionID);
    var deleteIndex =selectedObjects.selectedIndex;
    var len = (selectedObjects.options.length > 1)?selectedObjects.options.length-1:0;
    if(deleteIndex < 0) return;
 	
 	selectedObjects.options[deleteIndex]=null; 
-	updateList(publicList,privateList);
+	updateDisplayObjectList(regionID);
+	
 	if(selectedObjects.options.length){
 		selectedObjects.options[selectedObjects.options.length-1].selected=true;
 	}
 	 
 }
 
-function updateList(publicList,privateList){
-	var selectedObjects =document.getElementById(publicList);
-	 var objectList=document.getElementById(privateList)
-	 objectList.value=""; 
+function updateDisplayObjectList(regionID){
+	var selectedObjects =document.getElementById("selectedObjects" + regionID);
+	var objectList=document.getElementById("objectList" + regionID)
+	objectList.value=""; 
+	
 	for (var i=0;i<selectedObjects.options.length;i++){ 
 		if(objectList.value!=""){
 			objectList.value += "^" + selectedObjects.options[i].value; 
@@ -389,8 +445,8 @@ function updateList(publicList,privateList){
 
 }
 
-function moveUp(publicList,privateList){
-var selectedObjects=document.getElementById(publicList);
+function moveDisplayObjectUp(regionID){
+var selectedObjects=document.getElementById("selectedObjects" + regionID);
 var moverIndex=selectedObjects.selectedIndex;
 if(moverIndex<1)return;
 
@@ -407,11 +463,11 @@ movedoption.value = selectedObjects.options[moverIndex-1].value;
 selectedObjects[moverIndex-1]=moveroption;
 selectedObjects[moverIndex]=movedoption;
 
-updateList(publicList,privateList);
+updateDisplayObjectList(regionID);
 }
 
-function moveDown(publicList,privateList){
-var selectedObjects=document.getElementById(publicList);
+function moveDisplayObjectDown(regionID){
+var selectedObjects=document.getElementById("selectedObjects" + regionID);
 var moverIndex=selectedObjects.selectedIndex;
 if(moverIndex ==selectedObjects.length-1)return;
 
@@ -429,7 +485,7 @@ movedoption.value = selectedObjects.options[moverIndex+1].value;
 selectedObjects.options[moverIndex+1]=moveroption;
 selectedObjects.options[moverIndex]=movedoption;
 
-updateList(publicList,privateList);
+updateDisplayObjectList(regionID);
 
 }
 

@@ -7,17 +7,17 @@
 
 <cffunction name="before" output="false">
 	<cfargument name="rc">
-	<cfparam name="rc.returnurl" default=""/>
-	<cfparam name="rc.status" default=""/>
-	<cfparam name="rc.contentid" default=""/>
-	<cfparam name="rc.contenthistid" default=""/>
-	<cfparam name="rc.topid" default=""/>
-	<cfparam name="rc.type" default=""/>
-	<cfparam name="rc.moduleid" default=""/>
-	<cfparam name="rc.redirect" default=""/>
-	<cfparam name="rc.parentid" default=""/>
-	<cfparam name="rc.siteid" default=""/>
-	<cfparam name="rc.status" default=""/>
+	<cfparam name="arguments.rc.returnurl" default=""/>
+	<cfparam name="arguments.rc.status" default=""/>
+	<cfparam name="arguments.rc.contentid" default=""/>
+	<cfparam name="arguments.rc.contenthistid" default=""/>
+	<cfparam name="arguments.rc.topid" default=""/>
+	<cfparam name="arguments.rc.type" default=""/>
+	<cfparam name="arguments.rc.moduleid" default=""/>
+	<cfparam name="arguments.rc.redirect" default=""/>
+	<cfparam name="arguments.rc.parentid" default=""/>
+	<cfparam name="arguments.rc.siteid" default=""/>
+	<cfparam name="arguments.rc.status" default=""/>
 </cffunction>
 
 <cffunction name="main" output="false">
@@ -30,7 +30,7 @@
 
 <cffunction name="login" output="false">
 	<cfargument name="rc">
-	<cfset application.loginManager.login(rc)>	
+	<cfset application.loginManager.login(arguments.rc)>	
 </cffunction>
 
 <cffunction name="logout" output="false">

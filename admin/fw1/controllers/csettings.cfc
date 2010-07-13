@@ -14,95 +14,95 @@
 	<cfargument name="rc">
 
 	<cfif not listFind(session.mura.memberships,'S2')>
-		<cfset secure(rc)>
+		<cfset secure(arguments.rc)>
 	</cfif>
 </cffunction>
 
 <cffunction name="list" output="false">
 	<cfargument name="rc">
-	<cfparam name="rc.orderID" default="" />
-	<cfparam name="rc.orderno" default="" />
-	<cfparam name="rc.deploy" default="" />
-	<cfparam name="rc.action" default="" />
-	<cfparam name="rc.siteid" default="" />
+	<cfparam name="arguments.rc.orderID" default="" />
+	<cfparam name="arguments.rc.orderno" default="" />
+	<cfparam name="arguments.rc.deploy" default="" />
+	<cfparam name="arguments.rc.action" default="" />
+	<cfparam name="arguments.rc.siteid" default="" />
 	
-	<cfif rc.action eq 'deploy'>
-		<cfset variables.settingsManager.publishSite(rc.siteid)  />
+	<cfif arguments.rc.action eq 'deploy'>
+		<cfset variables.settingsManager.publishSite(arguments.rc.siteid)  />
 	</cfif>
 	
-	<cfset variables.settingsManager.saveOrder(rc.orderno,rc.orderID)  />
-	<cfset variables.settingsManager.saveDeploy(rc.deploy,rc.orderID) />
-	<cfset rc.rsSites=variables.settingsManager.getList() />
-	<cfset rc.rsPlugins=variables.pluginManager.getAllPlugins() />
+	<cfset variables.settingsManager.saveOrder(arguments.rc.orderno,arguments.rc.orderID)  />
+	<cfset variables.settingsManager.saveDeploy(arguments.rc.deploy,arguments.rc.orderID) />
+	<cfset arguments.rc.rsSites=variables.settingsManager.getList() />
+	<cfset arguments.rc.rsPlugins=variables.pluginManager.getAllPlugins() />
 </cffunction>
 
 <cffunction name="editSite" output="false">
 	<cfargument name="rc">
-	<cfset rc.siteBean=variables.settingsManager.read(rc.siteid) />
+	<cfset arguments.rc.siteBean=variables.settingsManager.read(arguments.rc.siteid) />
 </cffunction>
 
 <cffunction name="deletePlugin" output="false">
 	<cfargument name="rc">
-	<cfset variables.pluginManager.deletePlugin(rc.moduleID) />
-	<cfset rc.activeTab=1>
+	<cfset variables.pluginManager.deletePlugin(arguments.rc.moduleID) />
+	<cfset arguments.rc.activeTab=1>
 	<cfset variables.fw.redirect(action="cSettings.list",append="activeTab",path="")>
 </cffunction>
 
 <cffunction name="editPlugin" output="false">
 	<cfargument name="rc">
-	<cfset rc.pluginXML=variables.pluginManager.getPluginXML(rc.moduleID) />
-	<cfset rc.rsSites=variables.settingsManager.getList() />
+	<cfset arguments.rc.pluginXML=variables.pluginManager.getPluginXML(arguments.rc.moduleID) />
+	<cfset arguments.rc.rsSites=variables.settingsManager.getList() />
 </cffunction>
 
 <cffunction name="updatePluginVersion" output="false">
 	<cfargument name="rc">
-	<cfset rc.pluginConfig=variables.pluginManager.getConfig(rc.moduleID) />
+	<cfset arguments.rc.pluginConfig=variables.pluginManager.getConfig(arguments.rc.moduleID) />
 </cffunction>
 
 <cffunction name="deployPlugin" output="false">
 	<cfargument name="rc">
-	<cfparam name="rc.moduleID" default="" />
-	<cfset rc.moduleID=variables.pluginManager.deploy(rc.moduleID) />
+	<cfparam name="arguments.rc.moduleID" default="" />
+	<cfset arguments.rc.moduleID=variables.pluginManager.deploy(arguments.rc.moduleID) />
 	<cfset variables.fw.redirect(action="cSettings.editPlugin",append="moduleid",path="")>
 </cffunction>
 
 <cffunction name="updatePlugin" output="false">
 	<cfargument name="rc">
-	<cfset rc.moduleID=variables.pluginManager.updateSettings(rc) />
-	<cfset rc.activeTab=1>
+	<cfset arguments.rc.moduleID=variables.pluginManager.updateSettings(arguments.rc) />
+	<cfset arguments.rc.activeTab=1>
 	<cfset variables.fw.redirect(action="cSettings.list",append="activeTab",path="")>
 </cffunction>
 
 <cffunction name="updateSite" output="false">
 	<cfargument name="rc">
-	<cfif rc.action eq 'Update'>
-			<cfset variables.settingsManager.update(rc)  />
+	<cfif arguments.rc.action eq 'Update'>
+			<cfset variables.settingsManager.update(arguments.rc)  />
 			<cfset variables.clusterManager.reload() />
 	</cfif>
-	<cfif rc.action eq 'Add'>
-			<cfset variables.settingsManager.create(rc)  />
+	<cfif arguments.rc.action eq 'Add'>
+			<cfset variables.settingsManager.create(arguments.rc)  />
 			<cfset variables.settingsManager.setSites()  />
 			<cfset variables.clusterManager.reload() />
 			<cfset session.userFilesPath = "#application.configBean.getAssetPath()#/#rc.siteid#/assets/">
 			<cfset session.siteid=rc.siteid />
 	</cfif>
-	<cfif rc.action eq 'Delete'>
-			<cfset variables.settingsManager.delete(rc.siteid)  />
+	<cfif arguments.rc.action eq 'Delete'>
+			<cfset variables.settingsManager.delete(arguments.rc.siteid)  />
 			<cfset session.siteid="default" />
 			<cfset session.userFilesPath = "#application.configBean.getAssetPath()#/default/assets/">
-			<cfset rc.siteid="default"/>
+			<cfset arguments.rc.siteid="default"/>
 	</cfif>
 	<cfset variables.fw.redirect(action="cSettings.list",path="")>
 </cffunction>
 
 <cffunction name="sitecopyselect" output="false">
 	<cfargument name="rc">
-	<cfset rc.rsSites=variables.settingsManager.getList()>
+	<cfset arguments.rc.rsSites=variables.settingsManager.getList()>
 </cffunction>
 
 <cffunction name="sitecopy" output="false">
 	<cfargument name="rc">
-	<cfif rc.fromSiteID neq rc.toSiteID>
+	<cfif arguments.rc.fromSiteID neq arguments.rc.toSiteID>
 		<cfset getBean('publisher').copy(fromSiteID=rc.fromSiteID,toSiteID=rc.toSiteID)>
 	</cfif>
 	<cfset variables.fw.redirect(action="cSettings.sitecopyresult",append="fromSiteID,toSiteID",path="")>

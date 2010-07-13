@@ -9,14 +9,14 @@
 	<cfargument name="rc">
 	
 	<cfif not session.mura.isLoggedIn>
-		<cfset secure(rc)>
+		<cfset secure(arguments.rc)>
 	</cfif>
 	
 </cffunction>
 
 <cffunction name="list" output="false">
 	<cfargument name="rc">
-	<cfset rc.rslist=variables.pluginManager.getSitePlugins(rc.siteid) />
+	<cfset arguments.rc.rslist=variables.pluginManager.getSitePlugins(arguments.rc.siteid) />
 </cffunction>
 
 </cfcomponent>
