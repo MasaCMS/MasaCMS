@@ -42,8 +42,9 @@ to your own modified versions of Mura CMS.
 --->
 <cffunction name="onMissingTemplate" output="true">
 	<cfargument name="targetPage" required="true">
+	<cfset var local=structNew()>
 	<cfinclude template="/muraWRM/config/appcfc/onMissingTemplate_include.cfm">
-	<cfif len(pluginEvent.getValue("__MuraResponse__"))>
+	<cfif len(local.pluginEvent.getValue("__MuraResponse__"))>
 		<cfreturn true>
 	<cfelse>
 		<cfreturn false>

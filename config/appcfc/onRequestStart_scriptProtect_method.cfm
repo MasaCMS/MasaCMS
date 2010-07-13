@@ -41,6 +41,7 @@ the GNU General Public License version 2 �without this exception. �You may, 
 to your own modified versions of Mura CMS.
 --->
 <cffunction name="onRequestStart" returnType="boolean" output="false">
+	<cfset var local=structNew()>
 	<cfinclude template="/muraWRM/config/appcfc/onRequestStart_include.cfm">
 	<cfinclude template="/muraWRM/config/appcfc/scriptProtect_include.cfm">
 	<cfreturn true>

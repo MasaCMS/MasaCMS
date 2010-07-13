@@ -1,5 +1,5 @@
 <!--- Preventing XSS attacks --->
-
+<cfparam name="local" default="#structNew()#">
 <cfif structKeyExists(application,"scriptProtectionFilter") and application.configBean.getScriptProtect()>
 	<cfif isDefined("url") and isDefined("form")>
 		<cfset application.scriptProtectionFilter.scan(url,"url",request.remoteAddr)>

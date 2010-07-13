@@ -40,21 +40,22 @@ for your modified version; it is your choice whether to do so, or to make such m
 the GNU General Public License version 2 �without this exception. �You may, if you choose, apply this exception
 to your own modified versions of Mura CMS.
 --->
-<cfset pluginEvent="">					
+<cfparam name="local" default="#structNew()#">
+<cfset local.pluginEvent="">					
 <cfif structKeyExists(application,"pluginManager") and structKeyExists(application.pluginManager,"announceEvent")>
 	<cfif structKeyExists(request,"servletEvent")>
-		<cfset pluginEvent=request.servletEvent>
+		<cfset local.pluginEvent=request.servletEvent>
 	<cfelseif structKeyExists(request,"event")>
-		<cfset pluginEvent=request.event>
+		<cfset local.pluginEvent=request.event>
 	<cfelse>
-		<cfset pluginEvent=createObject("component","mura.event")>
+		<cfset local.pluginEvent=createObject("component","mura.event")>
 	</cfif>
-	<cfset pluginEvent.setValue("exception",arguments.exception)>
-	<cfset pluginEvent.setValue("eventname",arguments.eventname)>
-	<cfif len(pluginEvent.getValue("siteID"))>
-		<cfset application.pluginManager.announceEvent("onSiteError",pluginEvent)>
+	<cfset local.pluginEvent.setValue("exception",arguments.exception)>
+	<cfset local.pluginEvent.setValue("eventname",arguments.eventname)>
+	<cfif len(local.pluginEvent.getValue("siteID"))>
+		<cfset application.pluginManager.announceEvent("onSiteError",local.pluginEvent)>
 	</cfif>	
-	<cfset application.pluginManager.announceEvent("onGlobalError",pluginEvent)>
+	<cfset application.pluginManager.announceEvent("onGlobalError",local.pluginEvent)>
 </cfif>
 	
 <cfif structKeyExists(application,"configBean")>

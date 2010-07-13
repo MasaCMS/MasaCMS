@@ -43,5 +43,6 @@ to your own modified versions of Mura CMS.
 <cffunction name="onError"  returnType="void"  output="true">
 	<cfargument name="exception" required="true">
 	<cfargument name="eventname" type="string" required="true">
+	<cfset var local=structNew()>
 	<cfinclude template="/muraWRM/config/appcfc/onError_include.cfm">
 </cffunction>

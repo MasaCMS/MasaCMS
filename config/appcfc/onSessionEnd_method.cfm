@@ -43,7 +43,7 @@ to your own modified versions of Mura CMS.
 <cffunction name="onSessionEnd" returnType="void">
 	   	<cfargument name="SessionScope" required=True/>
 	    <cfargument name="ApplicationScope" required=False/>
-		
+		<cfset var local=structNew()>
 		<cfinclude template="/muraWRM/config/appcfc/onSessionEnd_include.cfm">
 </cffunction>
 	

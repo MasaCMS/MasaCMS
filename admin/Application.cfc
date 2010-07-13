@@ -46,6 +46,8 @@
 	<cfset variables.framework.applicationKey="muraAdmin">
 	
 	<cffunction name="setupApplication" output="false">
+		<cfset var local = structNew() />
+		
 		<cfinclude template="../config/appcfc/onApplicationStart_include.cfm">
 	
 		<cfif not structKeyExists(application,"muraAdmin") or not hasBeanFactory()>
@@ -70,6 +72,7 @@
 		<cfset var page="">
 		<cfset var i="">
 		<cfset var site="">
+		<cfset var local = structNew() />
 		
 		<cfinclude template="../config/appcfc/onRequestStart_include.cfm">
 		
@@ -213,10 +216,12 @@
 	</cffunction>
 	
 	<cffunction name="setupSession" output="false">
+		<cfset var local = structNew() />
 		<cfinclude template="../config/appcfc/onSessionStart_include.cfm">
 	</cffunction>
 	
 	<cffunction name="onSessionEnd" output="false">
+		<cfset var local = structNew() />
 		<cfinclude template="../config/appcfc/internals/onSessionEnd_include.cfm">
 		<cfset super.onSessionEnd()>
 	</cffunction>
@@ -263,13 +268,13 @@
 	<cffunction name="onError"  returnType="void"  output="true">
 	    <cfargument name="exception" required="true">
 	   	<cfargument name="eventname" type="string" required="true">
-	  
+	  	<cfset var local = structNew() />
 		<cfinclude template="../config/appcfc/onError_include.cfm">
 	</cffunction>
 	
 	<cffunction name="onMissingTemplate"  returnType="void"  output="true">
 	    <cfargument name="targetPage" required="true">
-
+		<cfset var local = structNew() />
 		<cfinclude template="../config/appcfc/onMissingTemplate_include.cfm">
 		<cfreturn false>
 	</cffunction>
