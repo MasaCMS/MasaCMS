@@ -2271,11 +2271,11 @@ table#fileList td.varWidth a,
 }
 
 .zip {
-	background-image: url(../images/icons/files/icon_zip_small.gif) no-repeat;
+	background-image: url(../images/icons/files/icon_zip_small.gif) !important;
 }
 
 .css {
-	background-image: url(../images/icons/files/icon_css_small.gif) no-repeat;
+	background-image: url(../images/icons/files/icon_css_small.gif) !important;
 }
 
 .flv {
@@ -2283,13 +2283,13 @@ table#fileList td.varWidth a,
 }
 
 .html, .htm {
-	background-image: url(../images/icons/files/icon_generic_small.gif) no-repeat;
+	background-image: url(../images/icons/files/icon_generic_small.gif) !important;
 }
 
 /* @group Locked */
 
 .docLocked, .docxLocked {
-	background-image: url(../images/icons/files/icon_doc_small_locked.gif) no-repeat;
+	background-image: url(../images/icons/files/icon_doc_small_locked.gif) !important;
 }
 
 .jpgLocked {
