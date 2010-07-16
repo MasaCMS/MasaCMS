@@ -53,7 +53,7 @@ to your own modified versions of Mura CMS.
 <script src="js/admin.js" type="text/javascript" language="Javascript"></script>
 <script src="#application.configBean.getContext()#/admin/js/jquery/jquery.js" type="text/javascript"></script>
 <script src="#application.configBean.getContext()#/admin/js/jquery/jquery-ui.js" type="text/javascript"></script>
-<script src="#application.configBean.getContext()#/admin/js/jquery/i18n/jquery-ui-i18n.js" type="text/javascript"></script>
+<script src="#application.configBean.getContext()#/admin/js/jquery/jquery-ui-i18n.js" type="text/javascript"></script>
 <link href="#application.configBean.getContext()#/admin/css/jquery/default/jquery.ui.all.css" rel="stylesheet" type="text/css" />
 <script src="js/prototype.js" type="text/javascript" language="Javascript"></script>
 <script type="text/javascript" src="#application.configBean.getContext()#/wysiwyg/fckeditor.js"></script>

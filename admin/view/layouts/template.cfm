@@ -132,7 +132,7 @@ to your own modified versions of Mura CMS.
 <meta http-equiv="cache control" content="no-cache, no-store, must-revalidate" />
 <script src="#application.configBean.getContext()#/admin/js/jquery/jquery.js" type="text/javascript"></script>
 <script src="#application.configBean.getContext()#/admin/js/jquery/jquery-ui.js" type="text/javascript"></script>
-<script src="#application.configBean.getContext()#/admin/js/jquery/i18n/jquery-ui-i18n.js" type="text/javascript"></script>
+<script src="#application.configBean.getContext()#/admin/js/jquery/jquery-ui-i18n.js" type="text/javascript"></script>
 <link href="#application.configBean.getContext()#/admin/css/jquery/default/jquery.ui.all.css" rel="stylesheet" type="text/css" />
 <cfif not attributes.jsLibLoaded and attributes.jsLib eq "prototype">
 <script src="#application.configBean.getContext()#/admin/js/prototype.js" type="text/javascript" language="Javascript"></script>
