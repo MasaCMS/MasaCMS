@@ -329,7 +329,7 @@
 	<cfset var f="">
 	<cfset var dtCh="">
 	<cfset var dtFormat="">
-	<cfset var formatTest=LSDateFormat(createDate(2012,11,10),'short')/>
+	<cfset var formatTest=LSDateFormat(createDate(2018,11,10),'short')/>
 	<cfset variables.jsDateKey="">
 	<cfset variables.dateKeyFormat="">
 	<cfset variables.datekeyExample="">
@@ -348,7 +348,7 @@
 	<cfset dtFormat=""/>
 	
 	<cfloop list="#formatTest#" index="f" delimiters="#dtCh#">
-		<cfif listFind("2012,12",f)>	
+		<cfif listFind("2018,18",f)>	
 			<cfset dateKeyFormat=listAppend(dateKeyFormat,"YYYY",dtCh)>
 		<cfelseif f eq 11>
 			<cfset dateKeyFormat=listAppend(dateKeyFormat,"MM",dtCh)>
@@ -359,19 +359,20 @@
 	
 	<cfset dtFormat=listAppend(dtFormat,listFind(formatTest,"11",dtCh) -1) />
 	<cfset dtFormat=listAppend(dtFormat,listFind(formatTest,"10",dtCh) -1) />
-	<cfif listFind(formatTest,"2012",dtCh)>
-		<cfset dtFormat=listAppend(dtFormat,listFind(formatTest,"2012",dtCh) -1) />
-	<cfelseif listFind(formatTest,"12",dtCh)>
-		<cfset dtFormat=listAppend(dtFormat,listFind(formatTest,"12",dtCh) -1) />
+	<cfif listFind(formatTest,"2018",dtCh)>
+		<cfset dtFormat=listAppend(dtFormat,listFind(formatTest,"2018",dtCh) -1) />
+	<cfelseif listFind(formatTest,"18",dtCh)>
+		<cfset dtFormat=listAppend(dtFormat,listFind(formatTest,"18",dtCh) -1) />
 	</cfif>
 	
-	<cfset datekeyExample=lsDateFormat(createDate(2012,11,10),datekeyFormat)/>
+	<cfset datekeyExample=lsDateFormat(createDate(2018,11,10),datekeyFormat)/>
 
 <cfsavecontent variable="jsDateKey">
 <cfoutput><script type="text/javascript">
 var dtExample="#datekeyExample#";
 var dtCh="#dtCh#";
 var dtFormat =[#dtFormat#];
+var dtLocale="#replace(session.rb,'_','-')#";
 </script></cfoutput>
 </cfsavecontent>
 

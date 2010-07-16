@@ -130,7 +130,7 @@ dd.categoryAssignment input.textAlt {
 .separate {
 	clear: both;
 	margin: 0;
-	padding: 10px 0 0 0;
+	padding: 20px 0 0 0;
 	background: url(../images/rule_dotted_big.gif) repeat-x;
 }
 
@@ -139,6 +139,7 @@ dd.categoryAssignment input.textAlt {
 /* @group IE 6 */
 
 * html #container { height: 1%; }
+
 
 * html #header #welcome {
 	right: 150px;

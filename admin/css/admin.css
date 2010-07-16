@@ -344,6 +344,7 @@ img.fmImage {
 
 #container {
 	clear: both;
+	float: left;
 	min-width: 984px;
 	position: relative;
 	margin: 0 20px 0 0;
@@ -357,15 +358,16 @@ img.fmImage {
 
 #navigation {
 	width: 139px;
-	position: absolute;
 	padding-top: 11px;
+	float: left;
+	clear: none;
 }
 
 
 #content {
-	position: absolute;
-	left: 139px;
-	margin: 0 20px 0 0;
+	float: left;
+	clear: none;
+	margin: 0 0 0 0;
 	padding: 36px 0 36px 30px;
 	line-height: 16px;
 	width: 830px;
@@ -428,7 +430,7 @@ form.alt {
 }
 
 form dl {
-	margin: 0 0 8px 0;
+	margin: 0;
 	padding: 0;
 }
 
@@ -463,7 +465,7 @@ form li {
 	}
 
 .oneColumn {
-	margin: 0 0 16px 0;
+	margin: 0 0 16px;
 	padding: 0 0 16px 0;
 	background: url(../images/rule_dotted_big.gif) repeat-x left bottom;
 }
@@ -496,9 +498,9 @@ dt.noBorder {
 }*/
 
 .oneColumn .first  {
-	margin-top: 16px;
-	padding-top: 16px;
-	background: url(../images/rule_dotted_big.gif) repeat-x left top;
+	margin-top: 4px;
+	padding-top: 0;
+	background: none;
 }
 
 #page_tabView .oneColumn .first, #cPlugins form ol li.first {
@@ -2196,7 +2198,18 @@ table#fileList td.varWidth a,
 	background-position: left center;
 }
 
+table.cfdebug {
+	width: auto !important;
+}
 
+table.cfdebug td {
+	text-align: left;
+	background: #fff;
+}
+
+table.cfdebug td a {
+	
+}
 /* @end */
 
 /* @group File Icons */

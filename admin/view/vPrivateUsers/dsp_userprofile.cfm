@@ -6,23 +6,23 @@ the Free Software Foundation, Version 2 of the License.
 
 Mura CMS is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. ï¿½See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-along with Mura CMS.  If not, see <http://www.gnu.org/licenses/>.
+along with Mura CMS. ï¿½If not, see <http://www.gnu.org/licenses/>.
 
 Linking Mura CMS statically or dynamically with other modules constitutes
 the preparation of a derivative work based on Mura CMS. Thus, the terms and 	
-conditions of the GNU General Public License version 2 (“GPL”) cover the entire combined work.
+conditions of the GNU General Public License version 2 (ï¿½GPLï¿½) cover the entire combined work.
 
 However, as a special exception, the copyright holders of Mura CMS grant you permission
 to combine Mura CMS with programs or libraries that are released under the GNU Lesser General Public License version 2.1.
 
-In addition, as a special exception,  the copyright holders of Mura CMS grant you permission
-to combine Mura CMS  with independent software modules that communicate with Mura CMS solely
+In addition, as a special exception, ï¿½the copyright holders of Mura CMS grant you permission
+to combine Mura CMS ï¿½with independent software modules that communicate with Mura CMS solely
 through modules packaged as Mura CMS plugins and deployed through the Mura CMS plugin installation API,
-provided that these modules (a) may only modify the  /trunk/www/plugins/ directory through the Mura CMS
+provided that these modules (a) may only modify the ï¿½/trunk/www/plugins/ directory through the Mura CMS
 plugin installation API, (b) must not alter any default objects in the Mura CMS database
 and (c) must not alter any files in the following directories except in cases where the code contains
 a separately distributed license.
@@ -37,7 +37,7 @@ the source code of that other code when and as the GNU GPL requires distribution
 
 For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception
 for your modified version; it is your choice whether to do so, or to make such modified version available under
-the GNU General Public License version 2  without this exception.  You may, if you choose, apply this exception
+the GNU General Public License version 2 ï¿½without this exception. ï¿½You may, if you choose, apply this exception
 to your own modified versions of Mura CMS.
 --->
 <cfhtmlhead text="#session.dateKey#">
@@ -46,16 +46,29 @@ to your own modified versions of Mura CMS.
 <cfquery name="rsNonDefault" dbtype="query">
 select * from rsSubTypes where subType <> 'Default'
 </cfquery>
-
+<cfset tabLabelList='#application.rbFactory.getKeyValue(session.rb,'user.basic')#,#application.rbFactory.getKeyValue(session.rb,'user.addressinformation')#,#application.rbFactory.getKeyValue(session.rb,'user.interests')#'>
+<cfset tablist="tabBasic,tabAddressinformation,tabInterests">
+<cfif rsSubTypes.recordcount>
+<cfset tabLabelList=listAppend(tabLabelList,application.rbFactory.getKeyValue(session.rb,'user.extendedattributes'))>
+<cfset tabList=listAppend(tabList,"tabExtendedattributes")>
+</cfif>
+<cfset tabLabelList=listAppend(tabLabelList,application.rbFactory.getKeyValue(session.rb,'user.advanced'))>
+<cfset tabList=listAppend(tabList,"tabAdvanced")>
 <form action="index.cfm?fuseaction=cEditProfile.update" method="post" enctype="multipart/form-data" name="form1" class="columns" onsubmit="return validate(this);">
-<cfoutput>	<h2>#application.rbFactory.getKeyValue(session.rb,'user.editprofile')#</h2>
+<cfoutput><h2>#application.rbFactory.getKeyValue(session.rb,'user.editprofile')#</h2>
 
 	#application.utility.displayErrors(request.userBean.getErrors())#
 	
 	<p>(*Required, **Required to login to Site)<p>
 
-<div id="page_tabView">
-<div class="page_aTab">
+<div class="tabs initActiveTab">
+<ul>
+<cfloop from="1" to="#listlen(tabList)#" index="t">
+<li><a href="###listGetAt(tabList,t)#" onclick="return false;"><span>#listGetAt(tabLabelList,t)#</span></a></li>
+</cfloop>
+</ul>
+	
+<div id="tabBasic">
 <dl class="oneColumn">
 		<cfif rsNonDefault.recordcount>
 		<dt class="first">#application.rbFactory.getKeyValue(session.rb,'user.type')#</dt>
@@ -84,14 +97,14 @@ select * from rsSubTypes where subType <> 'Default'
 		<dd><input id="email" name="email" type="text" validate="email" message="#application.rbFactory.getKeyValue(session.rb,'user.emailvalidate')#" value="#HTMLEditFormat(request.userBean.getemail())#" class="text"></dd>
 		<dt>#application.rbFactory.getKeyValue(session.rb,'user.username')#**</dt>
 		<dd><input id="username" name="usernameNoCache" type="text" value="#HTMLEditFormat(request.userBean.getusername())#" class="text" message="#application.rbFactory.getKeyValue(session.rb,'user.usernamerequired')#" ></dd>
-	<dt>#application.rbFactory.getKeyValue(session.rb,'user.newpassword')#**</dt>
-<dd><input name="passwordNoCache"  autocomplete="off" validate="match" matchfield="password2" type="password" value="" class="text"  message="#application.rbFactory.getKeyValue(session.rb,'user.passwordmatchvalidate')#"></dd> 
-<dt>#application.rbFactory.getKeyValue(session.rb,'user.newpasswordconfirm')#**</dt>
-<dd><input  name="password2" autocomplete="off" type="password" value="" class="text" message="#application.rbFactory.getKeyValue(session.rb,'user.passwordconfirmvalidate')#"></dd>  
+		<dt>#application.rbFactory.getKeyValue(session.rb,'user.newpassword')#**</dt>
+		<dd><input name="passwordNoCache"  autocomplete="off" validate="match" matchfield="password2" type="password" value="" class="text"  message="#application.rbFactory.getKeyValue(session.rb,'user.passwordmatchvalidate')#"></dd> 
+		<dt>#application.rbFactory.getKeyValue(session.rb,'user.newpasswordconfirm')#**</dt>
+		<dd><input  name="password2" autocomplete="off" type="password" value="" class="text" message="#application.rbFactory.getKeyValue(session.rb,'user.passwordconfirmvalidate')#"></dd>  
 <span id="extendSetsBasic"></span>
 </dl>
 </div>
-<div class="page_aTab">
+<div id="tabAddressinformation">
 <dl class="oneColumn">
 <dt class="first"><ul id="navTask"><li><a href="index.cfm?fuseaction=cPrivateUsers.editAddress&userID=#session.mura.userID#&siteid=#request.userBean.getsiteid()#&routeID=#attributes.routeid#&addressID=&returnURL=#urlencodedformat(cgi.query_string)#">#application.rbFactory.getKeyValue(session.rb,'user.addnewaddress')#</a></li></ul></dt>
 		<cfset rsAddresses=request.userBean.getAddresses()>
@@ -123,10 +136,10 @@ select * from rsSubTypes where subType <> 'Default'
 		<em>#application.rbFactory.getKeyValue(session.rb,'user.noaddressinformation')#</em>
 		</cfif>
 		</dd>
-		</dl>
+	</dl>
 </div>
 
-<div class="page_aTab">
+<div id="tabInterests">
 		<dl class="oneColumn">
 		<dd class="first">
 			<cfif application.categoryManager.getCategoryCount( request.userBean.getsiteID())>
@@ -147,16 +160,16 @@ select * from rsSubTypes where subType <> 'Default'
 		
 	</dl>
 </div>
- <cfif rsSubTypes.recordcount>
-		<div class="page_aTab">
+<cfif rsSubTypes.recordcount>
+<div id="tabExtendedattributes">
 			<span id="extendSetsDefault"></span>
 			<script type="text/javascript">
 			loadExtendedAttributes('#request.userbean.getUserID()#','#request.userbean.getType()#','#request.userBean.getSubType()#','#application.settingsManager.getSite(request.userBean.getSiteID()).getPrivateUserPoolID()#','#application.configBean.getContext()#','#application.settingsManager.getSite(request.userbean.getSiteID()).getThemeAssetPath()#');
 			</script>	
-	</div>
+</div>
 	<cfhtmlhead text='<script type="text/javascript" src="js/user.js"></script>'>
-	</cfif>
-<div class="page_aTab">
+</cfif>
+<div id="tabAdvanced">
 <dl class="oneColumn">
 <dt>#application.rbFactory.getKeyValue(session.rb,'user.emailbroadcaster')#</dt>
 <dd><ul class="radioGroup"><li><input name="subscribe" type="radio" class="radio" value="1"<cfif request.userBean.getsubscribe() eq 1>Checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'user.yes')#</li><li><input name="subscribe" type="radio" class="radio" value="0"<cfif request.userBean.getsubscribe() eq 0>Checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'user.no')#</li></ul></dd>
@@ -165,18 +178,20 @@ select * from rsSubTypes where subType <> 'Default'
 </dl>
 </div>
 </div>
-		<a class="submit" href="javascript:;" onclick="return submitForm(document.forms.form1,'update');"><span>#application.rbFactory.getKeyValue(session.rb,'user.update')#</span></a>
+
+<a class="submit" href="javascript:;" onclick="return submitForm(document.forms.form1,'update');"><span>#application.rbFactory.getKeyValue(session.rb,'user.update')#</span></a>
 	
 		<input type="hidden" name="type" value="2">
 		<input type="hidden" name="action" value="">
 		<input type="hidden" name="contact" value="0">
 		<input type="hidden" name="userid" value="#request.userBean.getuserid()#">
 		<input type="hidden" name="siteid" value="#request.userBean.getsiteid()#">
-		
-		<cfhtmlhead text='<link rel="stylesheet" href="css/tab-view.css" type="text/css" media="screen">'>
+<!---		
+<cfhtmlhead text='<link rel="stylesheet" href="css/tab-view.css" type="text/css" media="screen">'>
 <cfhtmlhead text='<script type="text/javascript" src="js/tab-view.js"></script>'>
 <script type="text/javascript">
 initTabs(Array("#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'user.basic'))#","#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'user.addressinformation'))#","#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'user.interests'))#"<cfif rsSubTypes.recordcount>,"#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'user.extendedattributes'))#"</cfif>,"#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'user.advanced'))#"),#attributes.activeTab#,0,0);
 </script>	
+--->
 	</cfoutput>
 </form>

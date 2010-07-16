@@ -574,3 +574,56 @@ function setHTMLEditors(context, themeAssetPath) {
 		}
 	}
 }
+
+function setDatePickers(target,locale,delim){
+	
+	if(jQuery.datepicker.regional[locale]==undefined){
+		var _locale=locale.substring(0, 2);
+	}else{
+		var _locale=locale;
+	}
+
+	if(jQuery.datepicker.regional[_locale]!=undefined){
+		jQuery(target).each(
+			function(index) {			
+				jQuery(this).datepicker(jQuery.datepicker.regional[_locale])
+				.datepicker( "option", "changeYear", true )
+				.datepicker( "option", "changeMonth", true );
+			}
+		);
+	} else {
+		jQuery(target).each(
+			function(index) {
+				jQuery(this).datepicker(jQuery.datepicker.regional[''])
+				.datepicker( "option", "changeYear", true )
+				.datepicker( "option", "changeMonth", true );
+			}
+		);
+	}
+}
+
+function setTabs(target,activetab){
+	jQuery(target).each(
+		function(index) {			
+			jQuery(this).tabs().show()
+			.find(".ui-corner-all")
+			.each(
+			 function(index){
+				 jQuery(this).removeClass("ui-corner-all");
+			 	}
+			)
+		}
+	);
+	
+	jQuery(".initActiveTab").each(
+			function(index) {			
+				jQuery(this).tabs("select",activetab);
+			}
+		);
+	
+	jQuery(".tooltip").each(
+			function(index) {			
+				jQuery(this).attr("onclick","return false;");
+			}
+		);
+}

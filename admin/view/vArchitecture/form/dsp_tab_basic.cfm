@@ -6,23 +6,23 @@ the Free Software Foundation, Version 2 of the License.
 
 Mura CMS is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. ï¿½See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-along with Mura CMS.  If not, see <http://www.gnu.org/licenses/>.
+along with Mura CMS. ï¿½If not, see <http://www.gnu.org/licenses/>.
 
 Linking Mura CMS statically or dynamically with other modules constitutes
 the preparation of a derivative work based on Mura CMS. Thus, the terms and 	
-conditions of the GNU General Public License version 2 (“GPL”) cover the entire combined work.
+conditions of the GNU General Public License version 2 (ï¿½GPLï¿½) cover the entire combined work.
 
 However, as a special exception, the copyright holders of Mura CMS grant you permission
 to combine Mura CMS with programs or libraries that are released under the GNU Lesser General Public License version 2.1.
 
-In addition, as a special exception,  the copyright holders of Mura CMS grant you permission
-to combine Mura CMS  with independent software modules that communicate with Mura CMS solely
+In addition, as a special exception, ï¿½the copyright holders of Mura CMS grant you permission
+to combine Mura CMS ï¿½with independent software modules that communicate with Mura CMS solely
 through modules packaged as Mura CMS plugins and deployed through the Mura CMS plugin installation API,
-provided that these modules (a) may only modify the  /trunk/www/plugins/ directory through the Mura CMS
+provided that these modules (a) may only modify the ï¿½/trunk/www/plugins/ directory through the Mura CMS
 plugin installation API, (b) must not alter any default objects in the Mura CMS database
 and (c) must not alter any files in the following directories except in cases where the code contains
 a separately distributed license.
@@ -37,13 +37,14 @@ the source code of that other code when and as the GNU GPL requires distribution
 
 For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception
 for your modified version; it is your choice whether to do so, or to make such modified version available under
-the GNU General Public License version 2  without this exception.  You may, if you choose, apply this exception
+the GNU General Public License version 2 ï¿½without this exception. ï¿½You may, if you choose, apply this exception
 to your own modified versions of Mura CMS.
 --->
-
-
-<div class="page_aTab">
-<dl class="oneColumn"><cfoutput>
+<cfset tabLabelList=listAppend(tabLabelList,application.rbFactory.getKeyValue(session.rb,"sitemanager.content.tabs.basic"))/>
+<cfset tabList=listAppend(tabList,"tabBasic")>
+<cfoutput>
+<div id="tabBasic">
+<dl class="oneColumn">
 <cfswitch expression="#attributes.type#">
 <cfcase value="Page,Portal,Calendar,Gallery,File,Link">
 <dt class="first"><a href="##" class="tooltip">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.title")#<span>#application.rbFactory.getKeyValue(session.rb,"tooltip.pageTitle")#</span></a></dt>
@@ -157,7 +158,7 @@ to your own modified versions of Mura CMS.
 </cfif>
 <cfif attributes.type neq 'Component' and attributes.type neq 'Form'>
 <dt><a href="##" class="tooltip">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.releasedate')#<span>#application.rbFactory.getKeyValue(session.rb,"tooltip.contentReleaseDate")#</span></a></dt>
-<dd><input type="text"  name="releaseDate" value="#LSDateFormat(request.contentBean.getreleasedate(),session.dateKeyFormat)#"  maxlength="12" class="textAlt" ><img class="calendar" type="image" src="images/icons/cal_24.png" width="14" height="14" hidefocus onclick="window.open('date_picker/index.cfm?form=contentForm&field=releaseDate&format=MDY','refWin','toolbar=no,location=no,directories=no,status=no,menubar=no,resizable=yes,copyhistory=no,scrollbars=no,width=190,height=220,top=250,left=250');return false;"></dd>
+<dd><input type="text" class="datepicker" name="releaseDate" value="#LSDateFormat(request.contentBean.getreleasedate(),session.dateKeyFormat)#"  maxlength="12" class="textAlt" ><!---<img class="calendar" type="image" src="images/icons/cal_24.png" width="14" height="14" hidefocus onclick="window.open('date_picker/index.cfm?form=contentForm&field=releaseDate&format=MDY','refWin','toolbar=no,location=no,directories=no,status=no,menubar=no,resizable=yes,copyhistory=no,scrollbars=no,width=190,height=220,top=250,left=250');return false;">---></dd>
 </cfif>	
 <cfif ((attributes.parentid neq '00000000000000000000000000000000001' and application.settingsManager.getSite(attributes.siteid).getlocking() neq 'all') or (attributes.parentid eq '00000000000000000000000000000000001' and application.settingsManager.getSite(attributes.siteid).getlocking() eq 'none')) and attributes.contentid neq '00000000000000000000000000000000001'>
 	<cfset bydate=iif(request.contentBean.getdisplay() EQ 2 or (attributes.ptype eq 'Calendar' and attributes.contentid eq ''),de('true'),de('false'))>
@@ -170,13 +171,13 @@ to your own modified versions of Mura CMS.
 <dd>
 	  <dl id="editDates" <cfif  not bydate>style="display: none;"</cfif>>
 		<dt>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.startdatetime')#</dt>
-		<dd><input type="text" name="displayStart" value="#LSDateFormat(request.contentBean.getdisplaystart(),session.dateKeyFormat)#" class="textAlt"><img class="calendar" type="image" src="images/icons/cal_24.png" width="14" height="14" hidefocus onclick="window.open('date_picker/index.cfm?form=contentForm&field=displayStart&format=MDY','refWin','toolbar=no,location=no,directories=no,status=no,menubar=no,resizable=yes,copyhistory=no,scrollbars=no,width=190,height=220,top=250,left=250');return false;">
+		<dd><input type="text" name="displayStart" value="#LSDateFormat(request.contentBean.getdisplaystart(),session.dateKeyFormat)#" class="textAlt datepicker"><!---<img class="calendar" type="image" src="images/icons/cal_24.png" width="14" height="14" hidefocus onclick="window.open('date_picker/index.cfm?form=contentForm&field=displayStart&format=MDY','refWin','toolbar=no,location=no,directories=no,status=no,menubar=no,resizable=yes,copyhistory=no,scrollbars=no,width=190,height=220,top=250,left=250');return false;">--->
 		<select name="starthour" class="dropdown"><cfloop from="1" to="12" index="h"><option value="#h#" <cfif not LSisDate(request.contentBean.getdisplaystart())  and h eq 12 or (LSisDate(request.contentBean.getdisplaystart()) and (hour(request.contentBean.getdisplaystart()) eq h or (hour(request.contentBean.getdisplaystart()) - 12) eq h or hour(request.contentBean.getdisplaystart()) eq 0 and h eq 12))>selected</cfif>>#h#</option></cfloop></select>
 		<select name="startMinute" class="dropdown"><cfloop from="0" to="59" index="m"><option value="#m#" <cfif LSisDate(request.contentBean.getdisplaystart()) and minute(request.contentBean.getdisplaystart()) eq m>selected</cfif>>#iif(len(m) eq 1,de('0#m#'),de('#m#'))#</option></cfloop></select>
 		<select name="startDayPart" class="dropdown"><option value="AM">AM</option><option value="PM" <cfif LSisDate(request.contentBean.getdisplaystart()) and hour(request.contentBean.getdisplaystart()) gte 12>selected</cfif>>PM</option></select>
 		</dd>
 		<dt>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.stopdatetime')#</dt>
-		<dd><input type="text" name="displayStop" value="#LSDateFormat(request.contentBean.getdisplaystop(),session.dateKeyFormat)#" class="textAlt"><img class="calendar" type="image" src="images/icons/cal_24.png" width="14" height="14" hidefocus onclick="window.open('date_picker/index.cfm?form=contentForm&field=displayStop&format=MDY','refWin','toolbar=no,location=no,directories=no,status=no,menubar=no,resizable=yes,copyhistory=no,scrollbars=no,width=190,height=220,top=250,left=250');return false;">
+		<dd><input type="text" name="displayStop" value="#LSDateFormat(request.contentBean.getdisplaystop(),session.dateKeyFormat)#" class="textAlt datepicker"><!---<img class="calendar" type="image" src="images/icons/cal_24.png" width="14" height="14" hidefocus onclick="window.open('date_picker/index.cfm?form=contentForm&field=displayStop&format=MDY','refWin','toolbar=no,location=no,directories=no,status=no,menubar=no,resizable=yes,copyhistory=no,scrollbars=no,width=190,height=220,top=250,left=250');return false;">--->
 	<select name="stophour" class="dropdown"><cfloop from="1" to="12" index="h"><option value="#h#" <cfif not LSisDate(request.contentBean.getdisplaystop())  and h eq 11 or (LSisDate(request.contentBean.getdisplaystop()) and (hour(request.contentBean.getdisplaystop()) eq h or (hour(request.contentBean.getdisplaystop()) - 12) eq h or hour(request.contentBean.getdisplaystop()) eq 0 and h eq 12))>selected</cfif>>#h#</option></cfloop></select>
 		<select name="stopMinute" class="dropdown"><cfloop from="0" to="59" index="m"><option value="#m#" <cfif (not LSisDate(request.contentBean.getdisplaystop()) and m eq 59) or (LSisDate(request.contentBean.getdisplaystop()) and minute(request.contentBean.getdisplaystop()) eq m)>selected</cfif>>#iif(len(m) eq 1,de('0#m#'),de('#m#'))#</option></cfloop></select>
 		<select name="stopDayPart" class="dropdown"><option value="AM">AM</option><option value="PM" <cfif (LSisDate(request.contentBean.getdisplaystop()) and (hour(request.contentBean.getdisplaystop()) gte 12)) or not LSisDate(request.contentBean.getdisplaystop())>selected</cfif>>PM</option></select>
@@ -229,13 +230,13 @@ to your own modified versions of Mura CMS.
 <dd>
 	  <dl id="editFeatureDates" <cfif request.contentBean.getisfeature() NEQ 2>style="display: none;"</cfif>>
 		<dt>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.startdatetime')#</dt>
-		<dd><input type="text" name="featureStart" value="#LSDateFormat(request.contentBean.getFeatureStart(),session.dateKeyFormat)#" class="textAlt"><img class="calendar" type="image" src="images/icons/cal_24.png" width="14" height="14" hidefocus onclick="window.open('date_picker/index.cfm?form=contentForm&field=featureStart&format=MDY','refWin','toolbar=no,location=no,directories=no,status=no,menubar=no,resizable=yes,copyhistory=no,scrollbars=no,width=190,height=220,top=250,left=250');return false;">
+		<dd><input type="text" name="featureStart" value="#LSDateFormat(request.contentBean.getFeatureStart(),session.dateKeyFormat)#" class="textAlt datepicker"><!---<img class="calendar" type="image" src="images/icons/cal_24.png" width="14" height="14" hidefocus onclick="window.open('date_picker/index.cfm?form=contentForm&field=featureStart&format=MDY','refWin','toolbar=no,location=no,directories=no,status=no,menubar=no,resizable=yes,copyhistory=no,scrollbars=no,width=190,height=220,top=250,left=250');return false;">--->
 			<select name="featureStartHour" class="dropdown"><cfloop from="1" to="12" index="h"><option value="#h#" <cfif not LSisDate(request.contentBean.getFeatureStart())  and h eq 12 or (LSisDate(request.contentBean.getFeatureStart()) and (hour(request.contentBean.getFeatureStart()) eq h or (hour(request.contentBean.getFeatureStart()) - 12) eq h or hour(request.contentBean.getFeatureStart()) eq 0 and h eq 12))>selected</cfif>>#h#</option></cfloop></select>
 		<select name="featureStartMinute" class="dropdown"><cfloop from="0" to="59" index="m"><option value="#m#" <cfif LSisDate(request.contentBean.getFeatureStart()) and minute(request.contentBean.getFeatureStart()) eq m>selected</cfif>>#iif(len(m) eq 1,de('0#m#'),de('#m#'))#</option></cfloop></select>
 		<select name="featureStartDayPart" class="dropdown"><option value="AM">AM</option><option value="PM" <cfif LSisDate(request.contentBean.getFeatureStart()) and hour(request.contentBean.getFeatureStart()) gte 12>selected</cfif>>PM</option></select>
 		</dd>
 		<dt>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.stopdatetime')#</dt>
-		<dd><input type="text" name="featureStop" value="#LSDateFormat(request.contentBean.getFeatureStop(),session.dateKeyFormat)#" class="textAlt"><img class="calendar" type="image" src="images/icons/cal_24.png" width="14" height="14" hidefocus onclick="window.open('date_picker/index.cfm?form=contentForm&field=featureStop&format=MDY','refWin','toolbar=no,location=no,directories=no,status=no,menubar=no,resizable=yes,copyhistory=no,scrollbars=no,width=190,height=220,top=250,left=250');return false;">
+		<dd><input type="text" name="featureStop" value="#LSDateFormat(request.contentBean.getFeatureStop(),session.dateKeyFormat)#" class="textAlt datepicker"><!---<img class="calendar" type="image" src="images/icons/cal_24.png" width="14" height="14" hidefocus onclick="window.open('date_picker/index.cfm?form=contentForm&field=featureStop&format=MDY','refWin','toolbar=no,location=no,directories=no,status=no,menubar=no,resizable=yes,copyhistory=no,scrollbars=no,width=190,height=220,top=250,left=250');return false;">--->
 	<select name="featureStophour" class="dropdown"><cfloop from="1" to="12" index="h"><option value="#h#" <cfif not LSisDate(request.contentBean.getFeatureStop())  and h eq 11 or (LSisDate(request.contentBean.getFeatureStop()) and (hour(request.contentBean.getFeatureStop()) eq h or (hour(request.contentBean.getFeatureStop()) - 12) eq h or hour(request.contentBean.getFeatureStop()) eq 0 and h eq 12))>selected</cfif>>#h#</option></cfloop></select>
 		<select name="featureStopMinute" class="dropdown"><cfloop from="0" to="59" index="m"><option value="#m#" <cfif (not LSisDate(request.contentBean.getFeatureStop()) and m eq 59) or (LSisDate(request.contentBean.getFeatureStop()) and minute(request.contentBean.getFeatureStop()) eq m)>selected</cfif>>#iif(len(m) eq 1,de('0#m#'),de('#m#'))#</option></cfloop></select>
 		<select name="featureStopDayPart" class="dropdown"><option value="AM">AM</option><option value="PM" <cfif (LSisDate(request.contentBean.getFeatureStop()) and (hour(request.contentBean.getFeatureStop()) gte 12)) or not LSisDate(request.contentBean.getFeatureStop())>selected</cfif>>PM</option></select>
@@ -256,14 +257,12 @@ to your own modified versions of Mura CMS.
 <dd id="editNote" style="display: none;">
 <textarea name="notes" rows="8" class="alt" id="abstract"></textarea>	
 </dd>
-</cfoutput>
 </dl>
 </div>
 <cfif request.contentBean.getSummary() neq ''>
-	<cfoutput>
 	<script>
 	toggleDisplay('editSummary','#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.expand')#','#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.close')#');
 	editSummary();
 	</script>
-	</cfoutput>
 </cfif>
+</cfoutput>

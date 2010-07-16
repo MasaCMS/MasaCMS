@@ -43,6 +43,7 @@ to your own modified versions of Mura CMS.
 <cfsilent>
 <cfparam name="attributes.jsLib" default="prototype">
 <cfparam name="attributes.jsLibLoaded" default="false">
+<cfparam name="attributes.activetab" default="0">
 </cfsilent>
 <cfoutput><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -129,19 +130,19 @@ to your own modified versions of Mura CMS.
 <cfheader name="expires" value="06 Nov 1994 08:37:34 GMT"> 
 <meta name="robots" content="noindex, nofollow, noarchive" />
 <meta http-equiv="cache control" content="no-cache, no-store, must-revalidate" />
-<script src="#application.configBean.getContext()#/admin/js/admin.js" type="text/javascript" language="Javascript"></script>
-<cfif not attributes.jsLibLoaded>
-<cfif attributes.jsLib eq "jquery">
 <script src="#application.configBean.getContext()#/admin/js/jquery/jquery.js" type="text/javascript"></script>
 <script src="#application.configBean.getContext()#/admin/js/jquery/jquery-ui.js" type="text/javascript"></script>
-<cfelse>
-<script src="#application.configBean.getContext()#/admin/js/jquery/jquery.js" type="text/javascript"></script>
-<script src="#application.configBean.getContext()#/admin/js/jquery/jquery-ui.js" type="text/javascript"></script>
+<script src="#application.configBean.getContext()#/admin/js/jquery/i18n/jquery-ui-i18n.js" type="text/javascript"></script>
+<link href="#application.configBean.getContext()#/admin/css/jquery/default/jquery.ui.all.css" rel="stylesheet" type="text/css" />
+<cfif not attributes.jsLibLoaded and attributes.jsLib eq "prototype">
 <script src="#application.configBean.getContext()#/admin/js/prototype.js" type="text/javascript" language="Javascript"></script>
 </cfif>
-</cfif>
+<script src="#application.configBean.getContext()#/admin/js/admin.js" type="text/javascript" language="Javascript"></script>
 <script type="text/javascript" src="#application.configBean.getContext()#/wysiwyg/fckeditor.js"></script>
 #session.dateKey#
+<script type="text/javascript">
+	jQuery(document).ready(function(){setDatePickers(".datepicker",dtLocale);setTabs(".tabs",#attributes.activeTab#)});
+</script>
 #fusebox.ajax#
 
 <cfif myfusebox.originalcircuit neq "cLogin">
@@ -226,5 +227,8 @@ stripe('stripe');
 window.setTimeout('CountDown()',100);
 </script>
 </cfif>
+<!--[if IE 6]>
+<script type="text/javascript" src="#application.configBean.getContext()#/admin/js/ie6notice.js"></script>
+<![endif]-->
 </body>
 </html></cfoutput>

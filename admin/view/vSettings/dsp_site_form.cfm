@@ -6,23 +6,23 @@ the Free Software Foundation, Version 2 of the License.
 
 Mura CMS is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. ï¿½See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-along with Mura CMS.  If not, see <http://www.gnu.org/licenses/>.
+along with Mura CMS. ï¿½If not, see <http://www.gnu.org/licenses/>.
 
 Linking Mura CMS statically or dynamically with other modules constitutes
 the preparation of a derivative work based on Mura CMS. Thus, the terms and 	
-conditions of the GNU General Public License version 2 (“GPL”) cover the entire combined work.
+conditions of the GNU General Public License version 2 (ï¿½GPLï¿½) cover the entire combined work.
 
 However, as a special exception, the copyright holders of Mura CMS grant you permission
 to combine Mura CMS with programs or libraries that are released under the GNU Lesser General Public License version 2.1.
 
-In addition, as a special exception,  the copyright holders of Mura CMS grant you permission
-to combine Mura CMS  with independent software modules that communicate with Mura CMS solely
+In addition, as a special exception, ï¿½the copyright holders of Mura CMS grant you permission
+to combine Mura CMS ï¿½with independent software modules that communicate with Mura CMS solely
 through modules packaged as Mura CMS plugins and deployed through the Mura CMS plugin installation API,
-provided that these modules (a) may only modify the  /trunk/www/plugins/ directory through the Mura CMS
+provided that these modules (a) may only modify the ï¿½/trunk/www/plugins/ directory through the Mura CMS
 plugin installation API, (b) must not alter any default objects in the Mura CMS database
 and (c) must not alter any files in the following directories except in cases where the code contains
 a separately distributed license.
@@ -37,7 +37,7 @@ the source code of that other code when and as the GNU GPL requires distribution
 
 For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception
 for your modified version; it is your choice whether to do so, or to make such modified version available under
-the GNU General Public License version 2  without this exception.  You may, if you choose, apply this exception
+the GNU General Public License version 2 ï¿½without this exception. ï¿½You may, if you choose, apply this exception
 to your own modified versions of Mura CMS.
 --->
 <cfsilent>
@@ -60,14 +60,21 @@ to your own modified versions of Mura CMS.
 <cfif attributes.action neq "updateFiles">
 <cfoutput>
 <form method ="post" action="index.cfm?fuseaction=cSettings.updateSite" name="form1"  onsubmit="return validate(this);">
-  
+<!---
 <cfhtmlhead text='<link rel="stylesheet" href="css/tab-view.css" type="text/css" media="screen">'>
 <cfhtmlhead text='<script type="text/javascript" src="js/ajax.js"></script>'>
 <cfhtmlhead text='<script type="text/javascript" src="js/tab-view.js"></script>'>
-  
-  <div id="page_tabView">
+ --->
+<cfset tabLabelList='Basic,Contact Info,Shared Resources,Modules,Email,Images (Galleries),Extranet,Display Regions'>
+<cfset tabList='tabBasic,tabContactinfo,tabSharedresources,tabModules,tabEmail,tabImages,tabExtranet,tabDisplayregions'>
+  <div class="tabs initActiveTab" style="display:none">
+  <ul>
+	<cfloop from="1" to="#listlen(tabList)#" index="t">
+	<li><a href="###listGetAt(tabList,t)#" onclick="return false;"><span>#listGetAt(tabLabelList,t)#</span></a></li>
+	</cfloop>
+  </ul>
   <!--- Basic --->
-  	<div class="page_aTab">
+  	<div id="tabBasic">
     <dl class="oneColumn">
       <dt class="first">Site ID <span>(Warning: no punctuation, dots or file delimiters)</span></dt>
       <dd>
@@ -165,7 +172,7 @@ to your own modified versions of Mura CMS.
       </div>
       
        <!--- Default Contact Info --->
-      <div class="page_aTab">
+      <div id="tabContactinfo">
       <dl class="oneColumn">
       <dt class="first">Contact Name</dt>
       <dd>
@@ -199,7 +206,7 @@ to your own modified versions of Mura CMS.
     </div>
       
        <!--- Shared Resources --->
-      <div class="page_aTab">
+      <div id="tabSharedresources">
       <dl class="oneColumn">
       <dt class="first">Member Pool</dt>
       <dd>
@@ -249,7 +256,7 @@ to your own modified versions of Mura CMS.
       </div>
       
       <!--- Modules --->
-      <div class="page_aTab">
+      <div id="tabModules">
       <dl class="oneColumn">
       <dt class="first">Extranet <span>(Password Protection)</span></dt>
       <dd>
@@ -289,7 +296,7 @@ to your own modified versions of Mura CMS.
       </div>
       
       <!--- Email --->
-      <div class="page_aTab">
+      <div id="tabEmail">
       <dl class="oneColumn">
       <dt class="first">Default "From" Email Address</dt>
       <dd>
@@ -362,7 +369,7 @@ to your own modified versions of Mura CMS.
       
            
       <!--- Galleries --->
-      <div class="page_aTab">
+      <div id="tabImages">
       <dl class="oneColumn">
 	  <dt class="first">Small (Thumbnail) Image Size</dt>
       <dd>
@@ -402,7 +409,7 @@ to your own modified versions of Mura CMS.
       </div>
       
       <!--- Extranet --->
-      <div class="page_aTab">
+      <div id="tabExtranet">
       <dl class="oneColumn">
       <dt class="first">Allow Public Site Registration</dt>
       <dd>
@@ -438,7 +445,7 @@ to your own modified versions of Mura CMS.
       </dl>
       </div>
       
-      <div class="page_aTab">
+      <div id="tabDisplayregions">
       <dl class="oneColumn">
       <dt class="first">Number of Display Regions</dt>
       <dd>
@@ -506,9 +513,11 @@ to your own modified versions of Mura CMS.
             </cfif>
   </form>
 </cfoutput>
+<!---
 <script type="text/javascript">
 initTabs(Array('Basic','Contact Info','Shared Resources','Modules','Email','Images (Galleries)','Extranet','Display Regions'),0,0,0);
 </script>
+--->
 <cfelse>
 <cftry>
 <cfset updated=application.autoUpdater.update(attributes.siteid)>

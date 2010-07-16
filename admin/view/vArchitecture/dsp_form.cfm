@@ -314,20 +314,21 @@ select * from rsPluginScripts3 order by pluginID
 	<input type="hidden" name="closeCompactDisplay" value="true" />
 </cfif>
 </cfoutput>
-
+<!---
 <cfhtmlhead text='<link rel="stylesheet" href="css/tab-view.css" type="text/css" media="screen">'>
 <cfhtmlhead text='<script type="text/javascript" src="js/ajax.js"></script>'>
 <cfhtmlhead text='<script type="text/javascript" src="js/tab-view.js"></script>'>
+--->
+<cfset tabLabelList=""/>
+<cfset tabList="">
+<cfsavecontent variable="tabContent">
 
-<cfset tablist="'#jsStringFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.tabs.basic"))#'"/>
-<div id="page_tabView">
 <cfinclude template="form/dsp_tab_basic.cfm">	
 	
 	<cfswitch expression="#attributes.type#">
 		<cfcase value="Page,Portal,Calendar,Gallery,File,Link">
 		<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Meta Data')>
 		<cfinclude template="form/dsp_tab_meta.cfm">
-		<cfset tablist=tablist & ",'#jsStringFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.tabs.metadata"))#'"/>
 		</cfif>
 		</cfcase>
 	</cfswitch>
@@ -337,37 +338,31 @@ select * from rsPluginScripts3 order by pluginID
 		<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Content Objects')>
 		<cfif listFind(session.mura.memberships,'S2IsPrivate')>
 		<cfinclude template="form/dsp_tab_objects.cfm">
-		<cfset tablist=tablist & ",'#jsStringFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.tabs.contentobjects"))#'"/>
 		</cfif>
 		</cfif>
 		<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Categorization')>
 		<cfif application.categoryManager.getCategoryCount(attributes.siteID)>
 		<cfinclude template="form/dsp_tab_categories.cfm">
-		<cfset tablist=tablist & ",'#jsStringFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.tabs.categorization"))#'"/>
 		</cfif>
 		</cfif>
 		<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Related Content')>
 		<cfinclude template="form/dsp_tab_related_content.cfm">
-		<cfset tablist=tablist & ",'#jsStringFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.tabs.relatedcontent"))#'"/>
 		</cfif>
 	</cfcase>
 	<cfcase value="Link,File">
 		<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Categorization')>
 		<cfif application.categoryManager.getCategoryCount(attributes.siteid)>
 		<cfinclude template="form/dsp_tab_categories.cfm">
-		<cfset tablist=tablist & ",'#jsStringFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.tabs.categorization"))#'"/>
 		</cfif>
 		</cfif>
 		<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Related Content')>
 		<cfinclude template="form/dsp_tab_related_content.cfm">
-		<cfset tablist=tablist & ",'#jsStringFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.tabs.relatedcontent"))#'"/>
 		</cfif>
 	</cfcase>
 	<cfcase value="Component">
 		<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Usage Report')>
 		<cfif attributes.contentID neq ''>
 		<cfinclude template="form/dsp_tab_usage.cfm">
-		<cfset tablist=tablist & ",'#jsStringFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.tabs.usagereport"))#'"/>
 		</cfif>
 		</cfif>		
 	</cfcase>
@@ -375,7 +370,6 @@ select * from rsPluginScripts3 order by pluginID
 		<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Usage Report')>
 		<cfif attributes.contentID neq ''>
 		<cfinclude template="form/dsp_tab_usage.cfm">
-		<cfset tablist=tablist & ",'#jsStringFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.tabs.usagereport"))#'"/>
 		</cfif>
 		</cfif>
 	</cfcase>
@@ -387,7 +381,6 @@ select * from rsPluginScripts3 order by pluginID
 		<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Extended Attributes')>
 		<cfset extendSets=application.classExtensionManager.getSubTypeByName(attributes.type,request.contentBean.getSubType(),attributes.siteid).getExtendSets() />
 		<cfinclude template="form/dsp_tab_extended_attributes.cfm">
-		<cfset tablist=tablist & ",'#jsStringFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.tabs.extendedattributes"))#'"/>
 		</cfif>
 		<cfoutput>
 		<script type="text/javascript">
@@ -400,27 +393,38 @@ select * from rsPluginScripts3 order by pluginID
 	<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Advanced')>
 	<cfif listFind(session.mura.memberships,'S2IsPrivate') and ((listFind(session.mura.memberships,'S2') and attributes.type eq 'Component') or attributes.type neq 'Component')>
 	<cfinclude template="form/dsp_tab_advanced.cfm">
-	<cfset tablist=tablist & ",'#jsStringFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.tabs.advanced"))#'"/>
 	</cfif> 
 	</cfif>
 	<cfoutput query="rsPluginScripts" group="pluginID">
-	<cfset tablist=tablist & ",'#jsStringFormat(rsPluginScripts.name)#'"/>
-	<cfset pluginEvent.setValue("tablist",tablist)>
-	<div class="page_aTab">
-		<cfoutput>
-		<cfset rsPluginScript=application.pluginManager.getScripts("onContentEdit",attributes.siteID,rsPluginScripts.moduleID)>
-		<cfif rsPluginScript.recordcount>
-		#application.pluginManager.renderScripts("onContentEdit",attributes.siteid,pluginEvent,rsPluginScript)#
-		<cfelse>
-		<cfset rsPluginScript=application.pluginManager.getScripts("on#attributes.type#Edit",attributes.siteID,rsPluginScripts.moduleID)>
-		#application.pluginManager.renderScripts("on#attributes.type#Edit",attributes.siteid,pluginEvent,rsPluginScript)#
-		</cfif>
-		</cfoutput>
-	</div>
+		<!---<cfset tabLabelList=tabLabelList & ",'#jsStringFormat(rsPluginScripts.name)#'"/>--->
+		<cfset tabLabelList=listAppend(tabLabelList,rsPluginScripts.name)/>
+		<cfset tabID="tab" & application.contentRenderer.createCSSID(rsPluginScripts.name)>
+		<cfset tabList=listAppend(tabList,tabID)>
+		<cfset pluginEvent.setValue("tabList",tabLabelList)>
+			<div id="#tabID#">
+			<cfoutput>
+			<cfset rsPluginScript=application.pluginManager.getScripts("onContentEdit",attributes.siteID,rsPluginScripts.moduleID)>
+			<cfif rsPluginScript.recordcount>
+			#application.pluginManager.renderScripts("onContentEdit",attributes.siteid,pluginEvent,rsPluginScript)#
+			<cfelse>
+			<cfset rsPluginScript=application.pluginManager.getScripts("on#attributes.type#Edit",attributes.siteID,rsPluginScripts.moduleID)>
+			#application.pluginManager.renderScripts("on#attributes.type#Edit",attributes.siteid,pluginEvent,rsPluginScript)#
+			</cfif>
+			</cfoutput>
+			</div>
 	</cfoutput>
+</cfsavecontent>
+<cfoutput>
+<div class="tabs initActiveTab" style="display:none">
+<ul>
+<cfloop from="1" to="#listlen(tabList)#" index="t">
+<li><a href="###listGetAt(tabList,t)#" onclick="return false;"><span>#listGetAt(tabLabelList,t)#</span></a></li>
+</cfloop>
+</ul>
+#tabContent#
 </div>
-
-<br/><cfoutput>
+</cfoutput>
+<cfoutput>
 <div class="clearfix">
 	 <a class="submit" href="javascript:;" onclick="javascript:if(ckContent(draftremovalnotice)){submitForm(document.contentForm,'add');}return false;"><span>#jsStringFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.savedraft"))#</span></a>
 	<cfif attributes.type eq 'Page' or attributes.type eq 'Portal' or attributes.type eq 'Calendar'  or attributes.type eq 'Gallery'>
@@ -430,10 +434,11 @@ select * from rsPluginScripts3 order by pluginID
 	<a class="submit" href="javascript:;" onclick="document.contentForm.approved.value=1;if(ckContent(draftremovalnotice)){submitForm(document.contentForm,'add');}return false;"><span>#jsStringFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.publish"))#</span></a>
 	</cfif> 
 </div>
-
+<!---
 <script type="text/javascript">
-initTabs(Array(#tablist#),0,0,0);
+initTabs(Array(#tabLabelList#),0,0,0);
 </script>
+--->
 	<input name="approved" type="hidden" value="0">
 	<input name="preview" type="hidden" value="0">	
 	<cfif attributes.type neq 'Link'><input name="filename" type="hidden" value="#request.contentBean.getfilename()#"></cfif>

@@ -46,7 +46,7 @@ to your own modified versions of Mura CMS.
 <cfset this.navDepthLimit=1000/>
 <cfset this.navParentIdx=2/>
 <cfset this.navGrandParentIdx=3/>
-<cfset this.navDepthAjust=0/>
+<cfset this.navDepthAdjust=0/>
 <cfset this.navSelfIdx=1/>
 <cfset this.jslib="prototype"/>
 <cfset this.jsLibLoaded=false/>
@@ -190,10 +190,10 @@ to your own modified versions of Mura CMS.
 	<cfset this.navDepthLimit=arguments.navDepthLimit />
 	
 	<cfif arrayLen(this.crumbdata) gt this.navDepthLimit >
-		<cfset this.navDepthAjust=arraylen(this.crumbdata)-this.navDepthLimit />
-		<cfset this.navGrandParentIdx= 3 + this.navDepthAjust />
-		<cfset this.navParentIdx=2 + this.navDepthAjust />
-		<cfset this.navSelfIdx= 1 + this.navDepthAjust />
+		<cfset this.navDepthAdjust=arraylen(this.crumbdata)-this.navDepthLimit />
+		<cfset this.navGrandParentIdx= 3 + this.navDepthAdjust />
+		<cfset this.navParentIdx=2 + this.navDepthAdjust />
+		<cfset this.navSelfIdx= 1 + this.navDepthAdjust />
 	</cfif>
 
 </cffunction>

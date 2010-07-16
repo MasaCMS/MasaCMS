@@ -42,20 +42,25 @@ to your own modified versions of Mura CMS.
 --->
 
 <cfoutput>
-	<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-	<html xmlns="http://www.w3.org/1999/xhtml">
-	<head>
-	<title>#application.configBean.getTitle()#</title>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-	<cfheader name="cache-control" value="no-cache, no-store, must-revalidate">
-	<cfheader name="expires" value="06 Nov 1994 08:37:34 GMT">
-	<meta http-equiv="cache control" content="no-cache, no-store, must-revalidate" />
-	<script src="js/admin.js" type="text/javascript" language="Javascript"></script>
-	<script src="js/jquery/jquery.js" type="text/javascript"></script>
-	<script src="js/jquery/jquery-ui.js" type="text/javascript"></script>
-	<script src="js/prototype.js" type="text/javascript" language="Javascript"></script>
-	<script type="text/javascript" src="#application.configBean.getContext()#/wysiwyg/fckeditor.js"></script>
-	#session.dateKey#
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>#application.configBean.getTitle()#</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<cfheader name="cache-control" value="no-cache, no-store, must-revalidate">
+<cfheader name="expires" value="06 Nov 1994 08:37:34 GMT">
+<meta http-equiv="cache control" content="no-cache, no-store, must-revalidate" />
+<script src="js/admin.js" type="text/javascript" language="Javascript"></script>
+<script src="#application.configBean.getContext()#/admin/js/jquery/jquery.js" type="text/javascript"></script>
+<script src="#application.configBean.getContext()#/admin/js/jquery/jquery-ui.js" type="text/javascript"></script>
+<script src="#application.configBean.getContext()#/admin/js/jquery/i18n/jquery-ui-i18n.js" type="text/javascript"></script>
+<link href="#application.configBean.getContext()#/admin/css/jquery/default/jquery.ui.all.css" rel="stylesheet" type="text/css" />
+<script src="js/prototype.js" type="text/javascript" language="Javascript"></script>
+<script type="text/javascript" src="#application.configBean.getContext()#/wysiwyg/fckeditor.js"></script>
+#session.dateKey#
+<script type="text/javascript">
+	jQuery(document).ready(function(){setDatePickers(".datepicker",dtLocale);setTabs(".tabs",#attributes.activeTab#)});
+</script>
 	#fusebox.ajax#
 	<cfif myfusebox.originalcircuit neq "cLogin">
 		<script language="JavaScript">

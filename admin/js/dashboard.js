@@ -45,7 +45,10 @@ function loadUserActivity(siteID)	{
 			d.html('<br/><img src="images/progress_bar.gif">');
 			jQuery.get(url + "?" + pars, 
 					function(data) {
-					jQuery("#userActivityData").html(data);
+					d.html(data).animate({'opacity':'hide'},1000,null,
+							function(){
+								d.animate({'opacity':'show'},1000);
+							});
 					}
 			);
 		return false;
@@ -60,7 +63,10 @@ function loadPopularContent(siteID)	{
 			d.html('<br/><img src="images/progress_bar.gif">');
 			jQuery.get(url + "?" + pars, 
 					function(data) {
-					jQuery("#popularContentData").html(data);
+					d.html(data).animate({'opacity':'hide'},1000,null,
+							function(){
+								d.animate({'opacity':'show'},1000);
+							});
 					}
 			);
 		return false;
@@ -75,7 +81,10 @@ function loadFormActivity(siteID)	{
 			d.html('<br/><img src="images/progress_bar.gif">');
 			jQuery.get(url + "?" + pars, 
 					function(data) {
-					jQuery("#recentFormActivityData").html(data);
+					d.html(data).animate({'opacity':'hide'},1000,null,
+							function(){
+								d.animate({'opacity':'show'},1000);
+							});
 					}
 			);
 		return false;
@@ -90,7 +99,10 @@ function loadEmailActivity(siteID)	{
 			d.html('<div id="emailBroadcasts" class="separate"><h3>Email Broadcasts</h3><br/><img src="images/progress_bar.gif"></div>');
 			jQuery.get(url + "?" + pars, 
 					function(data) {
-					jQuery("#emailBroadcastsData").html(data);
+					d.html(data).animate({'opacity':'hide'},1000,null,
+							function(){
+								d.animate({'opacity':'show'},1000);
+							});
 					}
 			);
 		return false;

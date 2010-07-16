@@ -89,6 +89,7 @@
 		<cfparam name="request.context.siteid" default="">
 		<cfparam name="request.context.fuseaction" default="">
 		<cfparam name="request.context.layout" default=""/>
+		<cfparam name="request.context.activetab" default="0"/>
 		<cfparam name="request.context.ajax" default="">
 		<cfparam name="request.context.rb" default="">
 		<cfparam name="request.context.closeCompactDisplay" default="false">

@@ -729,7 +729,7 @@ select * from tplugins order by #arguments.orderby#
 	set deployed=1
 	where moduleID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.args.moduleID#">
 	</cfquery>
-	
+	<cfset application.appInitialized=false>
 	<cfset loadPlugins() />
 </cffunction>
 

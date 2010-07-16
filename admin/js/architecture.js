@@ -746,6 +746,8 @@ function setExtendedAttributes(data){
 
 	//checkExtendSetTargeting();
 	setHTMLEditors(context,themeAssetPath);
+	setDatePickers("#extendSetsDefault .datepicker",dtLocale);
+	setDatePickers("#extendSetsBasic .datepicker",dtLocale);
 }
 
 function checkExtendSetTargeting(){
@@ -863,6 +865,7 @@ function loadCategoryFeatureStartStop(id,display,siteID){
   jQuery.get(url + "?" + pars, 
 			function(data) {
 			jQuery("#" + id).html(data);
+			setDatePickers("#" + id +" .datepicker",dtLocale)
 			}
 	);
   

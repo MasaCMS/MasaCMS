@@ -49,9 +49,11 @@ to your own modified versions of Mura CMS.
 <cfparam name="request.rsContentObjects6.recordcount" default=0>
 <cfparam name="request.rsContentObjects7.recordcount" default=0>
 <cfparam name="request.rsContentObjects8.recordcount" default=0>
-<div class="page_aTab">
-		<dl class="oneColumn">
-	<cfoutput>
+<cfset tabLabelList=listAppend(tabLabelList,application.rbFactory.getKeyValue(session.rb,"sitemanager.content.tabs.contentobjects"))/>
+<cfset tabList=listAppend(tabList,"tabContentobjects")>
+<cfoutput>
+<div id="tabContentobjects">
+<dl class="oneColumn">
 <dt class="first"><a href="##" class="tooltip">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.inheritancerules')#<span>#application.rbFactory.getKeyValue(session.rb,"tooltip.inheritanceRules")#</span></a></dt>
 <dd><input type="radio" name="inheritObjects" id="ioi" value="Inherit" <cfif request.contentBean.getinheritObjects() eq 'inherit' or request.contentBean.getinheritObjects() eq ''>checked</cfif>> <label for="ioi">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.inheritcascade')#</label>
 	<input type="radio" name="inheritObjects" id="ioc" value="Cascade" <cfif request.contentBean.getinheritObjects() eq 'cascade'>checked</cfif>> <label for="ioc">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.startnewcascade')#</label> 
