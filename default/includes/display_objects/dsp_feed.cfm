@@ -207,7 +207,7 @@ to your own modified versions of Mura CMS.
       	<cfset feedData=application.feedManager.getRemoteFeedData(feedBean.getChannelLink(),feedBean.getMaxItems())/>
 	</cfsilent>
 	  	<cfoutput>
-		 	<cfif feedData.maxItems>
+		 	<cfif isDefined("feedData.maxItems") and feedData.maxItems>
 				<div class="svSyndRemote svIndex svFeed clearfix" id="#cssID#">
 			        <#getHeaderTag('subHead1')#>#feedBean.getName()#</#getHeaderTag('subHead1')#>
 			        <cfif feedData.type neq "atom">
