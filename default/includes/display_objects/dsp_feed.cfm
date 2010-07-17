@@ -227,7 +227,7 @@ to your own modified versions of Mura CMS.
 									<cfcatch></cfcatch>
 									</cftry>
 								</cfif>
-								<dt><a href="#feedData.itemArray[i].link.xmlText#">#feedData.itemArray[i].title.xmlText#</a></dt>						
+								<dt><a href="#feedData.itemArray[i].link.xmlText#" target="_blank">#feedData.itemArray[i].title.xmlText#</a></dt>						
 								<cfif hasSummary and structKeyExists(feedData.itemArray[i],"description")><dd class="summary">#feedData.itemArray[i].description.xmlText#</dd></cfif>
 							</dl>
 						</cfloop>
@@ -242,7 +242,7 @@ to your own modified versions of Mura CMS.
 									<cfcatch></cfcatch>
 									</cftry>
 								</cfif>
-								<dt><a href="#feedData.itemArray[i].link.XmlAttributes.href#">#feedData.itemArray[i].title.xmlText#</a></dt>
+								<dt><a href="#feedData.itemArray[i].link.XmlAttributes.href#" target="_blank">#feedData.itemArray[i].title.xmlText#</a></dt>
 								<cfif hasSummary and structKeyExists(feedData.itemArray[i],"summary")><dd class="summary">#feedData.itemArray[i].summary.xmlText#</dd></cfif>
 							</dl>
 						</cfloop>
