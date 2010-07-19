@@ -44,6 +44,7 @@ to your own modified versions of Mura CMS.
 <cfparam name="attributes.jsLib" default="prototype">
 <cfparam name="attributes.jsLibLoaded" default="false">
 <cfparam name="attributes.activetab" default="0">
+<cfparam name="application.coreversion" default="#application.serviceFactory.getBean('autoUpdater').getCurrentVersion()#">
 </cfsilent>
 <cfoutput><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
