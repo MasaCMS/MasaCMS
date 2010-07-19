@@ -37,7 +37,7 @@
 	<cfset pluginConfig.setSetting("pluginPath","#variables.configBean.getContext()#/plugins/#pluginConfig.getDirectory()#/")/>
 
 	<cfsavecontent variable="str">
-	<cfinclude template="/#variables.configBean.getWebRootMap()#/plugins/#pluginConfig.getDirectory()#/#arguments.rsDisplayObject.displayObjectFile#">
+	<cfinclude template="/plugins/#pluginConfig.getDirectory()#/#arguments.rsDisplayObject.displayObjectFile#">
 	</cfsavecontent>
 	<cfelse>
 	

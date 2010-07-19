@@ -40,7 +40,6 @@ for your modified version; it is your choice whether to do so, or to make such m
 the GNU General Public License version 2  without this exception.  You may, if you choose, apply this exception
 to your own modified versions of Mura CMS.
 --->
-
 <cfoutput>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -51,10 +50,10 @@ to your own modified versions of Mura CMS.
 <cfheader name="expires" value="06 Nov 1994 08:37:34 GMT">
 <meta http-equiv="cache control" content="no-cache, no-store, must-revalidate" />
 <script src="js/admin.js" type="text/javascript" language="Javascript"></script>
-<script src="#application.configBean.getContext()#/admin/js/jquery/jquery.js" type="text/javascript"></script>
-<script src="#application.configBean.getContext()#/admin/js/jquery/jquery-ui.js" type="text/javascript"></script>
-<script src="#application.configBean.getContext()#/admin/js/jquery/jquery-ui-i18n.js" type="text/javascript"></script>
-<link href="#application.configBean.getContext()#/admin/css/jquery/default/jquery.ui.all.css" rel="stylesheet" type="text/css" />
+<script src="#application.configBean.getContext()#/admin/js/jquery/jquery.js?coreversion=#application.coreversion#" type="text/javascript"></script>
+<script src="#application.configBean.getContext()#/admin/js/jquery/jquery-ui.js?coreversion=#application.coreversion#" type="text/javascript"></script>
+<script src="#application.configBean.getContext()#/admin/js/jquery/jquery-ui-i18n.js?coreversion=#application.coreversion#" type="text/javascript"></script>
+<link href="#application.configBean.getContext()#/admin/css/jquery/default/jquery.ui.all.css?coreversion=#application.coreversion#" rel="stylesheet" type="text/css" />
 <script src="js/prototype.js" type="text/javascript" language="Javascript"></script>
 <script type="text/javascript" src="#application.configBean.getContext()#/wysiwyg/fckeditor.js"></script>
 #session.dateKey#
@@ -88,16 +87,17 @@ to your own modified versions of Mura CMS.
 		//  End -->
 		</script>
 	</cfif>
-	<link href="css/admin.css" rel="stylesheet" type="text/css" />
+	<link href="css/admin.css?coreversion=#application.coreversion#" rel="stylesheet" type="text/css" />
 	<!--[if IE]>
-	<link href="css/ie.css" rel="stylesheet" type="text/css" />
+	<link href="css/ie.css?coreversion=#application.coreversion#" rel="stylesheet" type="text/css" />
 	<![endif]-->
 		<!--[if IE 6]>
-	<link href="css/ie6.css" rel="stylesheet" type="text/css" />
+	<link href="css/ie6.cs?coreversion=#application.coreversion#" rel="stylesheet" type="text/css" />
 	<![endif]-->
 	<!---<cfif myfusebox.originalcircuit eq "cArch" and (myfusebox.originalfuseaction eq "list" or myfusebox.originalfuseaction eq "search") and (attributes.moduleid eq '00000000000000000000000000000000000' or attributes.moduleid eq '')>
 	<cfinclude template="../../view/vArchitecture/dsp_content_nav.cfm">
 	</cfif>--->
+	<cfinclude template="dialog.cfm">
 	</head>
 	<body id="#myfusebox.originalcircuit#" class="compact">
 	<!---<cfinclude template="header.cfm">--->

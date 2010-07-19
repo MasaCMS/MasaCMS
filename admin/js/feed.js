@@ -108,4 +108,23 @@ function loadSiteParents(siteid,parentid,keywords,isNew)	{
 			);
 	}
 
+function confirmImport(){
+	
+	
+	jQuery("#alertDialogMessage").html('Import Selections?');
+	jQuery("#alertDialog").dialog({
+			resizable: false,
+			modal: true,
+			buttons: {
+				'YES': function() {
+					jQuery(this).dialog('close');
+					submitForm(document.forms.contentForm,'Import');
+					},
+				'NO': function() {
+					jQuery(this).dialog('close');
+				}
+			}
+		});
 
+	return false;	
+}

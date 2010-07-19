@@ -120,7 +120,7 @@ copySiteID = '#session.copySiteID#';
 		</cfif>
         <cfif deletable>
           <li class="delete"><a  title="Delete" href="index.cfm?fuseaction=cArch.update&contentid=#request.rsList.ContentID#&type=#request.rsList.type#&action=deleteall&topid=#request.rsList.contentID#&siteid=#URLEncodedFormat(attributes.siteid)#&moduleid=#attributes.moduleid#&parentid=#URLEncodedFormat(attributes.parentid)#&startrow=#attributes.startrow#"
-			<cfif listFindNoCase("Page,Portal,Calendar,Gallery,Link,File",request.rsList.type)>onclick="return confirm('#jsStringFormat(application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.deletecontentrecursiveconfirm'),request.rslist.menutitle))#')"<cfelse>onclick="return confirm('#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.deletecontentconfirm'))#')"</cfif>>&nbsp;</a></li>
+			<cfif listFindNoCase("Page,Portal,Calendar,Gallery,Link,File",request.rsList.type)>onclick="return confirmDialog('#jsStringFormat(application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.deletecontentrecursiveconfirm'),request.rslist.menutitle))#',this.href)"<cfelse>onclick="return confirmDialog('#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.deletecontentconfirm'))#',this.href)"</cfif>>&nbsp;</a></li>
           <cfelseif attributes.locking neq 'all'>
           <li class="deleteOff">Delete</li>
         </cfif>

@@ -44,7 +44,7 @@ to your own modified versions of Mura CMS.
 <h2>Site Settings</h2>
 <ul id="navTask">
 <cfif attributes.action neq 'updateCore'>
-<li><a href="index.cfm?fuseaction=cSettings.list&action=updateCore" onclick="return confirm('WARNING: Do not update your core files unless you have backed up your current Mura install.\n\nIf your are using MSSQL you must uncheck Maintain Connections in your CF administrator datasource settings before proceeding. You may turn it back on after the update is complete.');">Update Core Files to Latest Version</a></li>
+<li><a href="index.cfm?fuseaction=cSettings.list&action=updateCore" onclick="return confirmDialog('WARNING: Do not update your core files unless you have backed up your current Mura install.\n\nIf your are using MSSQL you must uncheck Maintain Connections in your CF administrator datasource settings before proceeding. You may turn it back on after the update is complete.',this.href);">Update Core Files to Latest Version</a></li>
 <cfelse>
 <li><a href="index.cfm?fuseaction=cSettings.list">View Site List</a></li>
 </cfif>
@@ -75,9 +75,9 @@ to your own modified versions of Mura CMS.
 <td><select name="deploy" class="dropdown"><option value="1" <cfif request.rsSites.deploy eq 1>selected</cfif>>Yes</option><option value="0" <cfif request.rsSites.deploy neq 1>selected</cfif>>No</option></select></td>
 <td><cfif LSisDate(request.rsSites.lastDeployment)>#LSDateFormat(request.rsSites.lastDeployment,session.dateKeyFormat)#<cfelse>Never</cfif></td>
 </cfif>
-<td class="administration"><ul <cfif application.configBean.getMode() eq 'Staging'>class="three"<cfelse>class="two"</cfif>><li class="edit"><a title="Edit" href="index.cfm?fuseaction=cSettings.editSite&siteid=#request.rsSites.siteid#">Edit</a></li><cfif application.configBean.getMode() eq 'Staging'><li class="deploy"><a href="?fuseaction=cSettings.list&action=deploy&siteid=#request.rsSites.siteid#" onclick="return confirm('Deploy #JSStringFormat(request.rsSites.site)# to production?');" title="Deploy">Deploy</a></li></cfif>
+<td class="administration"><ul <cfif application.configBean.getMode() eq 'Staging'>class="three"<cfelse>class="two"</cfif>><li class="edit"><a title="Edit" href="index.cfm?fuseaction=cSettings.editSite&siteid=#request.rsSites.siteid#">Edit</a></li><cfif application.configBean.getMode() eq 'Staging'><li class="deploy"><a href="?fuseaction=cSettings.list&action=deploy&siteid=#request.rsSites.siteid#" onclick="return confirmDialog('Deploy #JSStringFormat(request.rsSites.site)# to production?',this.href);" title="Deploy">Deploy</a></li></cfif>
 <cfif request.rsSites.siteid neq 'default'>
-<li class="delete"><a title="Delete" href="index.cfm?fuseaction=cSettings.updateSite&action=delete&siteid=#request.rsSites.siteid#" onclick="if(confirm('Delete the #jsStringFormat("'#request.rsSites.site#'")# Site?')){return confirm('WARNING: A deleted site cannot be recovered. Are you sure that you want to continue?');} else {return false;}">Delete</a></li>
+<li class="delete"><a title="Delete" href="index.cfm?fuseaction=cSettings.updateSite&action=delete&siteid=#request.rsSites.siteid#" onclick="return confirmDialog('#JSStringFormat("WARNING: A deleted site and all of it's files cannot be recovered. Are you sure that you want to continue?")#',this.href);">Delete</a></li>
 <cfelse>
 <li class="deleteOff">&nbsp;</li>
 </cfif><!---<li class="export"><a title="Export" href="index.cfm?fuseaction=cArch.exportHtmlSite&siteid=#request.rsSites.siteid#" onclick="return confirm('Export the #jsStringFormat("'#request.rsSites.site#'")# Site?')">Export</a></li>---></ul></td></tr>
@@ -116,7 +116,7 @@ Upload New Plugin<br/>
 <!--- <td><a href="#request.rsPlugins.providerurl#" target="_blank">View</a></td> --->
 <td>#request.rsPlugins.pluginID#</td>
 <td class="administration"><ul class="two"><li class="edit"><a title="Edit" href="index.cfm?fuseaction=cSettings.editPlugin&moduleID=#request.rsPlugins.moduleID#">Edit</a></li>
-<li class="delete"><a title="Delete" href="index.cfm?fuseaction=cSettings.deletePlugin&moduleID=#request.rsPlugins.moduleID#" onclick="return confirm('Delete Plugin?');">Delete</a></li>
+<li class="delete"><a title="Delete" href="index.cfm?fuseaction=cSettings.deletePlugin&moduleID=#request.rsPlugins.moduleID#" onclick="return confirmDialog('Delete Plugin?',this.href);">Delete</a></li>
 </ul></td></tr>
 </cfoutput>
 <cfelse>

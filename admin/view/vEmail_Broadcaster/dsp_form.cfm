@@ -137,7 +137,7 @@ to your own modified versions of Mura CMS.
 		
 		fckEditor.create(); // create the editor.
 	</cfscript>
-	<div class="message"><input type="button" name="Count" value="Show Content Length" onclick="alert(FCKeditorAPI.GetInstance('bodyHTML').GetXHTML().length + ' Characters'); "> (#application.rbFactory.getKeyValue(session.rb,'email.maxcharacters')#)</div>
+	<div class="message"><input type="button" name="Count" value="Show Content Length" onclick="alertDialog(FCKeditorAPI.GetInstance('bodyHTML').GetXHTML().length + ' Characters'); "> (#application.rbFactory.getKeyValue(session.rb,'email.maxcharacters')#)</div>
 </cfif>			
 </dd>	
 </span>
@@ -145,7 +145,7 @@ to your own modified versions of Mura CMS.
 		<span id="textMessage" style="display:none;">
 		<dt>#application.rbFactory.getKeyValue(session.rb,'email.textmessage')#</dt>
 		<dd><textarea name="bodyText" id="textEditor">#HTMLEditFormat(request.emailBean.getbodytext())#</textarea>
-		<div class="message"><input type="button" name="Count" value="#application.rbFactory.getKeyValue(session.rb,'email.showcontentlength')#" onclick="alert(document.getElementById('textEditor').value.length + ' #jsStringFormat(application.rbFactory.getKeyValue(session.rb,'email.characters'))#'); "> (#application.rbFactory.getKeyValue(session.rb,'email.maxcharacters')#) </div></dd></span>
+		<div class="message"><input type="button" name="Count" value="#application.rbFactory.getKeyValue(session.rb,'email.showcontentlength')#" onclick="alertDialog(document.getElementById('textEditor').value.length + ' #jsStringFormat(application.rbFactory.getKeyValue(session.rb,'email.characters'))#'); "> (#application.rbFactory.getKeyValue(session.rb,'email.maxcharacters')#) </div></dd></span>
 	  </dl>
 	  <p>
 	   <div style="display:inline" id="controls"> 

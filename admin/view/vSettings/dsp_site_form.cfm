@@ -53,7 +53,7 @@ to your own modified versions of Mura CMS.
 <cfif attributes.action eq "updateFiles">
 <li><a href="index.cfm?fuseaction=cSettings.editSite&siteid=#URLEncodedFormat(attributes.siteid)#">Edit Site</a></li>
 <cfelse>
-<li><a href="index.cfm?fuseaction=cSettings.editSite&siteid=#URLEncodedFormat(attributes.siteid)#&action=updateFiles" onclick="return confirm('WARNING: Do not update your site files unless you have backed up your current siteID directory.');">Update Site Files to Latest Version</a></li>
+<li><a href="index.cfm?fuseaction=cSettings.editSite&siteid=#URLEncodedFormat(attributes.siteid)#&action=updateFiles" onclick="return confirmDialog('WARNING: Do not update your site files unless you have backed up your current siteID directory.',this.href);">Update Site Files to Latest Version</a></li>
 </cfif>
 </ul></cfif>
 </cfoutput>
@@ -507,7 +507,7 @@ to your own modified versions of Mura CMS.
       <a class="submit" href="javascript:;" onclick="return submitForm(document.forms.form1,'add');"><span>Add</span></a>
       <cfelse>
 		<cfif request.siteBean.getsiteid() neq 'default'>
-		<a class="submit" href="javascript:;" onclick="if(confirm('Delete the #jsStringFormat("'#request.siteBean.getSite()#'")# Site?')){if(confirm('WARNING: A deleted site cannot be recovered. Are you sure that you want to continue?')){document.forms.form1.action.value='delete';document.forms.form1.submit();};} else {return false;}"><span>Delete</span></a>
+		<a class="submit" href="index.cfm?fuseaction=cSettings.updateSite&action=delete&siteid=#request.siteBean.getSiteID()#" onclick="return confirmDialog('#JSStringFormat("WARNING: A deleted site and all of it's files cannot be recovered. Are you sure that you want to continue?")#',this.href);"><span>Delete</span></a>
 		</cfif>
       <a class="submit" href="javascript:;" onclick="return submitForm(document.forms.form1,'update');"><span>Update</span></a>
             </cfif>

@@ -50,11 +50,13 @@ function ckContent(draftremovalnotice){
 	var tempStop=document.contentForm.displayStop.value;
 		//alert(tempStart);
 		if (isDate(tempStart,'DISPLAY START DATE')==false) {
-			alert("Please enter a valid date in the 'Display Start Date' field");
+			
+			alertDialog("Please enter a valid date in the 'Display Start Date' field");
 			return false;				
 		}
 		else if (tempStop != '' && isDate(tempStop,'DISPLAY STOP DATE')==false) {
-			alert("Please enter a valid date in the 'Display Stop Date' field");
+	
+			alertDialog("Please enter a valid date in the 'Display Stop Date' field");
 			return false;				
 		}
 	}
@@ -65,19 +67,24 @@ function ckContent(draftremovalnotice){
 	
 	if(document.contentForm.title.value == ''){
 		   if(document.contentForm.type.value=='Component'){
-				alert("The form field 'Menu Title' is required");
-				return false;}
-		    else if(document.contentForm.type.value=='Form'){
-				alert("The form field 'Title' is required");
+			    
+			    alertDialog("The form field 'Menu Title' is required");
+				return false;
+				
+			} else if(document.contentForm.type.value=='Form'){
+		    	
+		    	alertDialog("The form field 'Title' is required");
 				return false;}
 			else{
-				alert("The form field 'Long Title' is required");
+			
+				alertDialog("The form field 'Long Title' is required");
 				return false;}
 			
 	}
 	
 	 if(document.contentForm.type.value=='Link' && document.contentForm.filename.value == ''){
-		alert("The form field 'Url' is required"); 
+
+		alertDialog("The form field 'Url' is required"); 
 		return false;
 	 }
 	
@@ -337,13 +344,20 @@ function addDisplayObject(objectToAdd,regionID){
 	
 		// return error if the id does not exist.
 		if(document.getElementById(objectToAdd)==null){
-			alert("Please select a display object."); return false;
+			
+			alertDialog("Please select a display object."); 
+			
+			return false;
 		}
 		
 		if(document.getElementById(objectToAdd).tagName.toLowerCase() == "select"){
 		
 			if(document.getElementById(objectToAdd).selectedIndex ==-1){
-			   alert("Please select a display object."); return false;}
+				alertDialog("Please select a display object.");
+				
+				return false;
+			}
+				//alert("Please select a display object."); return false;}
 		 
 			var addIndex = document.getElementById(objectToAdd).selectedIndex;
 		  

@@ -372,7 +372,7 @@
 var dtExample="#datekeyExample#";
 var dtCh="#dtCh#";
 var dtFormat =[#dtFormat#];
-var dtLocale="#replace(session.rb,'_','-')#";
+var dtLocale="#replace(session.locale,'_','-')#";
 </script></cfoutput>
 </cfsavecontent>
 

@@ -130,14 +130,14 @@ to your own modified versions of Mura CMS.
 <cfheader name="expires" value="06 Nov 1994 08:37:34 GMT"> 
 <meta name="robots" content="noindex, nofollow, noarchive" />
 <meta http-equiv="cache control" content="no-cache, no-store, must-revalidate" />
-<script src="#application.configBean.getContext()#/admin/js/jquery/jquery.js" type="text/javascript"></script>
-<script src="#application.configBean.getContext()#/admin/js/jquery/jquery-ui.js" type="text/javascript"></script>
-<script src="#application.configBean.getContext()#/admin/js/jquery/jquery-ui-i18n.js" type="text/javascript"></script>
-<link href="#application.configBean.getContext()#/admin/css/jquery/default/jquery.ui.all.css" rel="stylesheet" type="text/css" />
+<script src="#application.configBean.getContext()#/admin/js/jquery/jquery.js?coreversion=#application.coreversion#" type="text/javascript"></script>
+<script src="#application.configBean.getContext()#/admin/js/jquery/jquery-ui.js?coreversion=#application.coreversion#" type="text/javascript"></script>
+<script src="#application.configBean.getContext()#/admin/js/jquery/jquery-ui-i18n.js?coreversion=#application.coreversion#" type="text/javascript"></script>
+<link href="#application.configBean.getContext()#/admin/css/jquery/default/jquery.ui.all.css?coreversion=#application.coreversion#" rel="stylesheet" type="text/css" />
 <cfif not attributes.jsLibLoaded and attributes.jsLib eq "prototype">
 <script src="#application.configBean.getContext()#/admin/js/prototype.js" type="text/javascript" language="Javascript"></script>
 </cfif>
-<script src="#application.configBean.getContext()#/admin/js/admin.js" type="text/javascript" language="Javascript"></script>
+<script src="#application.configBean.getContext()#/admin/js/admin.js?coreversion=#application.coreversion#" type="text/javascript" language="Javascript"></script>
 <script type="text/javascript" src="#application.configBean.getContext()#/wysiwyg/fckeditor.js"></script>
 #session.dateKey#
 <script type="text/javascript">
@@ -179,13 +179,14 @@ if (top.location != self.location) {
 </script>
 
 </cfif>
-<link href="#application.configBean.getContext()#/admin/css/admin.css" rel="stylesheet" type="text/css" />
+<link href="#application.configBean.getContext()#/admin/css/admin.css?coreversion=#application.coreversion#" rel="stylesheet" type="text/css" />
 <!--[if LTE IE 7]>
-<link href="#application.configBean.getContext()#/admin/css/ie.css" rel="stylesheet" type="text/css" />
+<link href="#application.configBean.getContext()#/admin/css/ie.css?coreversion=#application.coreversion#" rel="stylesheet" type="text/css" />
 <![endif]-->
 <cfif myfusebox.originalcircuit eq "cArch" and (myfusebox.originalfuseaction eq "list" or myfusebox.originalfuseaction eq "search") and (attributes.moduleid eq '00000000000000000000000000000000000' or attributes.moduleid eq '')>
 <cfinclude template="../../view/vArchitecture/dsp_content_nav.cfm">
 </cfif>
+<cfinclude template="dialog.cfm">
 </head>
 <body id="#myfusebox.originalcircuit#" >
 <cfinclude template="header.cfm">

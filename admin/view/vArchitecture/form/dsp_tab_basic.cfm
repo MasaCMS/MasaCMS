@@ -127,7 +127,7 @@ to your own modified versions of Mura CMS.
 	}
 	</script>
 	
-	<div class="message"><input type="button" name="Count" value="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.showcontentlength')#" onclick="alert(FCKeditorAPI.GetInstance('body').GetXHTML().length + ' #jsStringFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.characters'))#'); "> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.maxcharacters')#</div>
+	<div class="message"><input type="button" name="Count" value="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.showcontentlength')#" onclick="alertDialog(FCKeditorAPI.GetInstance('body').GetXHTML().length + ' #jsStringFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.characters'))#'); "> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.maxcharacters')#</div>
 </cfif>
 </dd>
 

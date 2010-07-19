@@ -75,7 +75,7 @@
 		<cfset var local = structNew() />
 		
 		<cfinclude template="../config/appcfc/onRequestStart_include.cfm">
-		
+				
 		<cfif right(cgi.script_name, Len("index.cfm")) NEQ "index.cfm" and right(cgi.script_name, Len("error.cfm")) NEQ "error.cfm" AND right(cgi.script_name, 3) NEQ "cfc">
 			<cflocation url="index.cfm" addtoken="false">
 		</cfif>	
@@ -120,12 +120,13 @@
 			<cfif structKeyExists(siteCheck,request.context.siteID)>
 				<cfset session.siteid = request.context.siteid>
 				<cfset session.userFilesPath = "#application.configBean.getAssetPath()#/#request.context.siteid#/assets/">
-				<cfset application.rbFactory.resetSessionLocale()>
 			</cfif>
 		<cfelseif not len(session.siteID)>
 			<cfset session.siteID="default">
-			<cfset session.userFilesPath = "#application.configBean.getAssetPath()#/default/assets/">
+			<cfset session.userFilesPath = "#application.configBean.getAssetPath()#/default/assets/">	
 		</cfif>
+		
+		<cfset application.rbFactory.resetSessionLocale()>
 		
 		<cfif not structKeyExists(request.context,"siteid")>
 			<cfset request.context.siteID=session.siteID>

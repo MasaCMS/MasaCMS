@@ -277,11 +277,11 @@ function validateForm(theForm) {
 						}
 						
 						if(theField.getAttribute('message')==undefined){
-						 	errors += getFieldName(theField).toUpperCase() + ' is required\n';
+						 	errors += getFieldName(theField).toUpperCase() + ' is required<br/>';
 							 }
 						 else
 							 {
-							 errors += theField.getAttribute('message') + '\n';
+							 errors += theField.getAttribute('message') + '<br/>';
 						 }			
 					}
 				else if(theField.getAttribute('validate') != undefined && theField.value != ''){
@@ -295,11 +295,11 @@ function validateForm(theForm) {
 						}
 						
 						if(theField.getAttribute('message')==undefined){
-						 	 errors += getFieldName(theField).toUpperCase() + ' must be a valid email address\n';
+						 	 errors += getFieldName(theField).toUpperCase() + ' must be a valid email address<br/>';
 							 }
 						 else
 							 {
-							 errors += theField.getAttribute('message') + '\n';
+							 errors += theField.getAttribute('message') + '<br/>';
 						 }					
 					}
 	
@@ -317,11 +317,11 @@ function validateForm(theForm) {
 							}
 						
 							if(theField.getAttribute('message')==undefined){
-						 	 	errors += getFieldName(theField).toUpperCase() + ' must be numeric\n';
+						 	 	errors += getFieldName(theField).toUpperCase() + ' must be numeric<br/>';
 								 }
 							 else
 							 	{
-								 errors += theField.getAttribute('message') + '\n';
+								 errors += theField.getAttribute('message') + '<br/>';
 							 }
 						}					
 					}
@@ -338,11 +338,11 @@ function validateForm(theForm) {
 							}
 						
 							if(theField.getAttribute('message')==undefined){
-						 	 	errors += getFieldName(theField).toUpperCase() + ' is not valid\n';
+						 	 	errors += getFieldName(theField).toUpperCase() + ' is not valid<br/>';
 								 }
 							 else
 							 	{
-								 errors += theField.getAttribute('message') + '\n';
+								 errors += theField.getAttribute('message') + '<br/>';
 							 }
 						}					
 					}
@@ -360,7 +360,7 @@ function validateForm(theForm) {
 							 }
 						 else
 							 {
-							 errors += theField.getAttribute('message') + '\n';
+							 errors += theField.getAttribute('message') + '<br/>';
 						 }					
 					}
 					else if(theField.getAttribute('validate').toUpperCase()=='DATE' && !isDate(theField.value))
@@ -376,7 +376,7 @@ function validateForm(theForm) {
 							 }
 						 else
 							 {
-							 errors += theField.getAttribute('message') + '\n';
+							 errors += theField.getAttribute('message') + '<br/>';
 						 }			 
 					}
 				}
@@ -397,11 +397,11 @@ function validateForm(theForm) {
 					}
 					
 					if(theField.getAttribute('message')==undefined){
-					 	errors += getFieldName(theField).toUpperCase() + ' is required\n';
+					 	errors += getFieldName(theField).toUpperCase() + ' is required<br/>';
 						 }
 					 else
 						 {
-						 errors += theField.getAttribute('message') + '\n';
+						 errors += theField.getAttribute('message') + '<br/>';
 					 }			
 				}	
 				else if(theField.getAttribute('validate') != undefined && theField.value != ''){
@@ -417,11 +417,11 @@ function validateForm(theForm) {
 							}
 						
 							if(theField.getAttribute('message')==undefined){
-						 	 	errors += getFieldName(theField).toUpperCase() + ' is not valid\n';
+						 	 	errors += getFieldName(theField).toUpperCase() + ' is not valid<br/>';
 								 }
 							 else
 							 	{
-								 errors += theField.getAttribute('message') + '\n';
+								 errors += theField.getAttribute('message') + '<br/>';
 							 }
 						}					
 					}
@@ -440,26 +440,36 @@ function validateForm(theForm) {
 					}
 					
 					if(theField.getAttribute('message')==undefined){
-					 	errors += getFieldName(theField).toUpperCase() + ' is required\n';
+					 	errors += getFieldName(theField).toUpperCase() + ' is required<br/>';
 						 }
 					 else
 						 {
-						 errors += theField.getAttribute('message') + '\n';
+						 errors += theField.getAttribute('message') + '<br/>';
 					 }			
 				}	
 		}
 		
 		if(errors != ""){	
-			alert(errors);
-			if(firstErrorNode=="input"){
-				frmInputs[startAt].focus();
-			}
-			else if (firstErrorNode=="textarea"){
-				frmTextareas[startAt].focus();
-			}
-			else if (firstErrorNode=="select"){
-				frmSelects[startAt].focus();
-			}
+			jQuery("#alertDialogMessage").html(errors);
+			jQuery("#alertDialog").dialog({
+				resizable: false,
+				modal: true,
+				buttons: {
+					Ok: function() {
+						jQuery(this).dialog('close');
+						if(firstErrorNode=="input"){
+							frmInputs[startAt].focus();
+						}
+						else if (firstErrorNode=="textarea"){
+							frmTextareas[startAt].focus();
+						}
+						else if (firstErrorNode=="select"){
+							frmSelects[startAt].focus();
+						}
+					}
+				}
+			});
+
 			return false;
 		}
 		else
@@ -471,17 +481,34 @@ function validateForm(theForm) {
 
 
 function submitForm(frm,action,msg){
-
+	var message=msg;
+	var currentFrm=frm;
 	if(validateForm(frm)){
 		
-		if(typeof(action) != 'undefined' && (action=='delete' && confirm(msg) || action!='delete')){
+		if(typeof(action) != 'undefined' && action!='delete'){
 			var frmInputs = frm.getElementsByTagName("input");	
 			for (f=0; f < frmInputs.length; f++){
 				if(frmInputs[f].getAttribute('name')=='action'){
 				frmInputs[f].setAttribute('value',action);
 				}
 			}
+			
+		
 		} else if (action=='delete'){
+			jQuery("#alertDialogMessage").html(message);
+			jQuery("#alertDialog").dialog({
+					modal: true,
+					buttons: {
+						'YES': function() {
+							jQuery(this).dialog('close');
+							currentFrm.submit();
+							},
+						'NO': function() {
+							jQuery(this).dialog('close');
+						}
+					}
+				});
+			
 			return false;
 		}
 
@@ -626,4 +653,40 @@ function setTabs(target,activetab){
 				jQuery(this).attr("onclick","return false;");
 			}
 		);
+}
+
+function alertDialog(message) {
+jQuery("#alertDialogMessage").html(message);
+jQuery("#alertDialog").dialog({
+	resizable: false,
+	modal: true,
+	buttons: {
+		Ok: function() {
+			jQuery(this).dialog('close');
+		}
+	}
+});
+
+return false;
+}
+
+function confirmDialog(message,url){
+	confirmedURL=url;
+	
+	jQuery("#alertDialogMessage").html(message);
+	jQuery("#alertDialog").dialog({
+			resizable: false,
+			modal: true,
+			buttons: {
+				'YES': function() {
+					jQuery(this).dialog('close');
+					location.href=confirmedURL;
+					},
+				'NO': function() {
+					jQuery(this).dialog('close');
+				}
+			}
+		});
+
+	return false;	
 }

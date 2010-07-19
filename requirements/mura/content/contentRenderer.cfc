@@ -1704,13 +1704,13 @@ to your own modified versions of Mura CMS.
 				<!--- If not found, look in global plugins directory --->
 				<cfif not headerFound>
 					<cfset pluginBasePath="/plugins/">
-					<cfif fileExists(expandPath("/#application.configBean.getWebRootMap()##pluginbasePath#") & i)>
+					<cfif fileExists(expandPath("#pluginbasePath#") & i)>
 						<cfset pluginID=listFirst(listLast(i,"_"),"/")>
 						<cfset event.setValue('pluginConfig',application.pluginManager.getConfig(pluginID))>
 						<cfset pluginConfig=event.getValue('pluginConfig')>
 						<cfset pluginPath= application.configBean.getContext() & pluginBasePath & pluginConfig.getDirectory() & "/" >		
 						<cfset event.setValue('pluginPath',pluginPath)>
-						<cfinclude  template="/#application.configBean.getWebRootMap()##pluginBasePath##i#">
+						<cfinclude  template="#pluginBasePath##i#">
 						<cfset headerFound=true />
 						<cfset event.removeValue("pluginPath")>
 						<cfset event.removeValue("pluginConfig")>

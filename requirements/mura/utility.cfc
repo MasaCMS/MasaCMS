@@ -436,5 +436,25 @@ QuerySetCell( myQuery , colName[ c ] , myArray[ r ][colName[ c ] ] , r );
 			return stReturn;
 		</cfscript>
 </cffunction>
-	
+
+<!---
+Author: John Mason, mason@fusionlink.com
+Blog: www.codfusion.com--->
+<cffunction name="isValidCFVariableName" output="false" access="public" returntype="Any">
+		<cfargument name="text" required="true" type="String">
+		<cfset var local = StructNew()/>	
+		<cfset local.result = true/>
+
+		<cfif len(arguments.text) eq 0>
+			<cfset local.result = false/>
+		<cfelseif FindNoCase(".",arguments.text) gt 0>
+			<cfset local.result = false/>
+		<cfelseif FindNoCase(" ",arguments.text) gt 0>
+			<cfset local.result = false/>
+		<cfelseif ReFindNoCase("^[A-Za-z][A-Za-z0-9_]*",arguments.text) eq 0>
+			<cfset local.result = false/>
+		</cfif>
+
+		<cfreturn local.result/>
+	</cffunction>
 </cfcomponent>

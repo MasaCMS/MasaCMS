@@ -124,3 +124,5 @@ to your own modified versions of Mura CMS.
 	<cfset application.pluginManager.executeScripts('onGlobalSessionStart')>
 </cfif>
 <cfset application.pluginManager.executeScripts('onGlobalRequestStart')>
+<cfparam name="application.coreversion" default="#application.serviceFactory.getBean('autoUpdater').getCurrentVersion()#">
+

@@ -69,26 +69,35 @@ onunload=function(){
 	}
 }
 
-function conditionalExit(){
+function conditionalExit(msg){
+	jQuery("#alertDialog").html(msg);
+	jQuery("#alertDialog").dialog({
+			resizable: false,
+			modal: true,
+			buttons: {
+				'Yes': function() {
+					jQuery(this).dialog('close');
+					if(ckContent()){
+						document.getElementById('contentForm').returnURL.value=requestedURL;
+						submitForm(document.contentForm,'add');
+						}
+						return false;
+					},
+				'No': function() {
+					jQuery(this).dialog('close');
+					location.href=requestedURL;
+					requestedURL="";
+				}
+			}
+		});
 
-	if (confirm('<cfoutput>#jsStringFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.saveasdraft"))#</cfoutput>'))
-	{	
-	if(ckContent()){
-		document.getElementById('contentForm').returnURL.value=requestedURL;
-		submitForm(document.contentForm,'add');
-		}
-		return false;
-	} else {	
-		requestedURL='';
-		return true;
-	}
-			
+	return false;	
 }
-
+<cfoutput>
 function setRequestedURL(){
 	requestedURL=this.href
-	return conditionalExit();
-}
+	return conditionalExit("#JSStringFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.saveasdraft"))#");
+}</cfoutput>
 </script>
 </cfif> 
 <cfsilent>
@@ -285,9 +294,9 @@ select * from rsPluginScripts3 order by pluginID
 	</cfcase>
 	</cfswitch>
 	<li><a href="index.cfm?fuseaction=cArch.hist&contentid=#URLEncodedFormat(attributes.contentid)#&type=#attributes.type#&parentid=#URLEncodedFormat(attributes.parentid)#&topid=#URLEncodedFormat(attributes.topid)#&siteid=#URLEncodedFormat(attributes.siteid)#&startrow=#attributes.startrow#&moduleid=#attributes.moduleid#&compactDisplay=#attributes.compactDisplay#">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.versionhistory")#</a> </li>
-	<cfif attributes.compactDisplay neq 'true' and request.contentBean.getactive()lt 1 and (request.perm neq 'none')><li><a href="index.cfm?fuseaction=cArch.update&contenthistid=#URLEncodedFormat(attributes.contenthistid)#&action=delete&contentid=#URLEncodedFormat(attributes.contentid)#&type=#attributes.type#&parentid=#URLEncodedFormat(attributes.parentid)#&topid=#URLEncodedFormat(attributes.topid)#&siteid=#URLEncodedFormat(attributes.siteid)#&startrow=#attributes.startrow#&moduleid=#attributes.moduleid#&return=#attributes.return#" onclick="return confirm('#jsStringFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.deleteversionconfirm"))#')">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.deleteversion")#</a></li></cfif>
+	<cfif attributes.compactDisplay neq 'true' and request.contentBean.getactive()lt 1 and (request.perm neq 'none')><li><a href="index.cfm?fuseaction=cArch.update&contenthistid=#URLEncodedFormat(attributes.contenthistid)#&action=delete&contentid=#URLEncodedFormat(attributes.contentid)#&type=#attributes.type#&parentid=#URLEncodedFormat(attributes.parentid)#&topid=#URLEncodedFormat(attributes.topid)#&siteid=#URLEncodedFormat(attributes.siteid)#&startrow=#attributes.startrow#&moduleid=#attributes.moduleid#&return=#attributes.return#" onclick="return confirmDialog('#jsStringFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.deleteversionconfirm"))#',this.href)">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.deleteversion")#</a></li></cfif>
 		<cfif request.deletable><li><a href="index.cfm?fuseaction=cArch.update&action=deleteall&contentid=#URLEncodedFormat(attributes.contentid)#&type=#attributes.type#&parentid=#URLEncodedFormat(attributes.parentid)#&topid=#URLEncodedFormat(attributes.topid)#&siteid=#URLEncodedFormat(attributes.siteid)#&startrow=#attributes.startrow#&moduleid=#attributes.moduleid#" 
-		<cfif listFindNoCase(nodeLevelList,request.contentBean.getType())>onclick="return confirm('#jsStringFormat(application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.deletecontentrecursiveconfirm'),request.contentBean.getMenutitle()))#')"<cfelse>onclick="return confirm('#jsStringFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.deletecontentconfirm"))#')"</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.deletecontent")#</a></li></cfif>
+		<cfif listFindNoCase(nodeLevelList,request.contentBean.getType())>onclick="return confirmDialog('#jsStringFormat(application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.deletecontentrecursiveconfirm'),request.contentBean.getMenutitle()))#',this.href)"<cfelse>onclick="return confirmDialog('#jsStringFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.deletecontentconfirm"))#',this.href)"</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.deletecontent")#</a></li></cfif>
 	<cfif (listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(attributes.siteid).getPrivateUserPoolID()#;0') or listFind(session.mura.memberships,'S2'))><li><a href="index.cfm?fuseaction=cPerm.main&contentid=#URLEncodedFormat(attributes.contentid)#&type=#request.contentBean.gettype()#&parentid=#request.contentBean.getparentID()#&topid=#URLEncodedFormat(attributes.topid)#&siteid=#URLEncodedFormat(attributes.siteid)#&moduleid=#attributes.moduleid#&startrow=#attributes.startrow#">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.permissions")#</a></li></cfif>
 	</ul></cfif>
 </cfif>
