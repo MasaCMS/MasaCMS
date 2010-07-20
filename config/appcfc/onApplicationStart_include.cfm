@@ -253,7 +253,8 @@ to your own modified versions of Mura CMS.
 		<cfcatch></cfcatch>
 		</cftry>
 						
-		<cfif not directoryExists("#application.configBean.getWebRoot()##application.configBean.getFileDelim()#plugins")> 
+		<cfif application.configBean.getCreateRequiredDirectories() 
+			 	and not directoryExists("#application.configBean.getWebRoot()##application.configBean.getFileDelim()#plugins")> 
 			<cfdirectory action="create" mode="777" directory="#application.configBean.getWebRoot()##application.configBean.getFileDelim()#plugins"> 
 		</cfif>
 		

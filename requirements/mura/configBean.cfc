@@ -105,6 +105,7 @@ to your own modified versions of Mura CMS.
 <cfset variables.instance.indexFileInURLS=true />
 <cfset variables.instance.strictExtendedData=false />
 <cfset variables.instance.purgeDrafts=true />
+<cfset variables.instance.createRequiredDirectories=true />
 <cfset variables.instance.confirmSaveAsDraft=true />
 <cfset variables.instance.notifyWithVersionLink=true />
 <cfset variables.instance.scriptProtect=true />
@@ -1020,6 +1021,18 @@ to your own modified versions of Mura CMS.
 	<cfargument name="scriptProtect" />
 	<cfif isBoolean(arguments.scriptProtect)>
 		<cfset variables.instance.scriptProtect = arguments.scriptProtect />
+	</cfif>
+	<cfreturn this>
+</cffunction>
+
+<cffunction name="getCreateRequiredDirectories" returntype="boolean" access="public" output="false">
+	<cfreturn variables.instance.createRequiredDirectories />
+</cffunction>
+
+<cffunction name="setCreateRequiredDirectories" access="public" output="false">
+	<cfargument name="createRequiredDirectories" />
+	<cfif isBoolean(arguments.createRequiredDirectories)>
+		<cfset variables.instance.createRequiredDirectories = arguments.createRequiredDirectories />
 	</cfif>
 	<cfreturn this>
 </cffunction>
