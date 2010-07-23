@@ -171,9 +171,9 @@
   
 	 <cfif arguments.rc.allowAction and arguments.rc.action eq 'add'>
 		<cfif structKeyExists(arguments.rc,"preserveID") and isValid('UUID',arguments.rc.preserveID)>
-			 <cfset arguments.rc.contentBean=getBean('content').loadBy(contentHistID=rc.preserveID, siteid=rc.siteid).set(arguments.rc).save() />
+			 <cfset arguments.rc.contentBean=getBean('content').loadBy(contentHistID=arguments.rc.preserveID, siteid=arguments.rc.siteid).set(arguments.rc).save() />
 		<cfelse>
-			 <cfset arguments.rc.contentBean=getBean('content').loadBy(contentID=rc.contentID, siteid=rc.siteid).set(arguments.rc).save() />
+			 <cfset arguments.rc.contentBean=getBean('content').loadBy(contentID=arguments.rc.contentID, siteid=arguments.rc.siteid).set(arguments.rc).save() />
 		</cfif>
 	 </cfif>
 	 

@@ -832,7 +832,7 @@ to your own modified versions of Mura CMS.
 <cfset setLocale(mySession.locale) />
 
 <!--- now we create a date so we can parse it and figure out the date format and then create a date validation key --->
-<cfif not len(arguments.mySession.dateKey) or not len(arguments.mySession.dateKeyFormat)> --->
+<cfif not len(arguments.mySession.dateKey) or not len(arguments.mySession.dateKeyFormat)>
 	<cfset utils=getUtils(arguments.mySession.locale)>
 	<cfset arguments.mySession.dateKey=utils.getJSDateKey()>
 	<cfset arguments.mySession.dateKeyFormat=utils.getJSDateKeyFormat()>

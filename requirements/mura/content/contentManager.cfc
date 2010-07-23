@@ -462,7 +462,7 @@ to your own modified versions of Mura CMS.
 		<cfset var rsFile="" />
 		<cfset var rsDrafts = "" />
 		<cfset var d = "" />
-		<cfset var pluginEvent = createObject("component","mura.event") />
+		<cfset var pluginEvent = createObject("component","mura.MuraScope") />
 		<cfset var tempFile="" />
 		
 		<!---IF THE DATA WAS SUBMITTED AS AN OBJECT UNPACK THE VALUES --->
@@ -474,7 +474,7 @@ to your own modified versions of Mura CMS.
 			</cfif>
 		</cfif>
 		
-		<cfset pluginEvent.init(arguments.data)>
+		<cfset pluginEvent=pluginEvent.init(arguments.data).getEvent()>
 		
 		<!--- MAKE SURE ALL REQUIRED DATA IS THERE--->
 		<cfif not structKeyExists(arguments.data,"siteID") or (structKeyExists(arguments.data,"siteID") and not len(arguments.data.siteID))>
