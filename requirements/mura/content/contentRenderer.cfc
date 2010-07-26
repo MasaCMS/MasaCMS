@@ -1522,7 +1522,6 @@ to your own modified versions of Mura CMS.
 
 <cffunction name="setDynamicContent" returntype="string" output="false">
 	<cfargument name="str">
-	<cfargument name="keywords" required="true" default=""/>
 
 	<cfset var body=arguments.str>
 	<cfset var errorStr="">
