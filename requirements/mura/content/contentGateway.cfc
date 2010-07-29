@@ -814,6 +814,7 @@ to your own modified versions of Mura CMS.
 		<cfset var doAg=false/>
 		<cfset var sortOptions="menutitle,title,lastupdate,releasedate,orderno,displayStart,created,rating,comment,credits,type,subtype">
 		<cfset var isExtendedSort=(not listFindNoCase(sortOptions,arguments.sortBy))>
+		<cfset var dbType=variables.configBean.getDbType() />
 		
 		<cfif arguments.sortBy eq 'rating' 
 			or arguments.sortBy eq 'comments'>
