@@ -31,6 +31,23 @@
 <script src="../../../../js/jquery/jquery.js" type="text/javascript"></script>
 <script src="../../../display_objects/feedslideshow/js/slideshow.jquery.js" type="text/javascript"></script>
 <script src="../../../display_objects/feedslideshow/js/jquery.cycle.js" type="text/javascript"></script>
+
+<style>	
+	.home .svSlides { min-height: 186px; }
+	* html .home .svSlides { height: 186px; } <!-- ie6 -->
+
+	.home .svSlides dl { height: 200px; }
+	
+	.svSlides dl.hasImage {
+	padding-left: 200px;
+	min-height: 186px;
+	}
+	
+	.home ol.svPager { 
+	width: 190px;
+	}
+</style>
+
 </head>
 <body class="home">
 <div id="container" class="sysHome">
@@ -117,7 +134,7 @@
         </div>
       </div>
       <div id="features">
-        <dl class="hasImage first">
+        <dl class="first">
           <dt> <a href="">Sans Pica Ultra</a></dt>
           <dd class="image"><a href=""><img alt="" src="../images/sample/feature.jpg" /></a> </dd>
           <dd class="summary">
@@ -126,7 +143,7 @@
               bitmap.</p>
             <span class="readMore"><a href="">Read More</a></span></dd>
         </dl>
-        <dl class="hasImage">
+        <dl>
           <dt> <a href="">Humanist Stroke</a></dt>
           <dd class="image"> <a href=""><img alt="" src="../images/sample/feature.jpg" /></a> </dd>
           <dd class="summary">
@@ -135,7 +152,7 @@
               bitmap.</p>
             <span class="readMore"><a href="">Read More</a></span></dd>
         </dl>
-        <dl class="hasImage last">
+        <dl class="last">
           <dt> <a href="">Ascender Dunc</a></dt>
           <dd class="image"> <a href=""><img alt="" src="../images/sample/feature.jpg" /></a> </dd>
           <dd class="summary">

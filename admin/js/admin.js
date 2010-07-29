@@ -632,7 +632,7 @@ function setDatePickers(target,locale,delim){
 function setTabs(target,activetab){
 	jQuery(target).each(
 		function(index) {			
-			jQuery(this).tabs().show()
+			jQuery(this).tabs().fadeIn()
 			.find(".ui-corner-all")
 			.each(
 			 function(index){

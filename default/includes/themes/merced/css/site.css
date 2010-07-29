@@ -1,3 +1,5 @@
+/* @override http://mura:8500/default/includes/themes/merced/css/site.css */
+
 /*
 Theme:  Merced
 Author: Blue River Interactive Group
@@ -790,6 +792,7 @@ a.boxItemHeader { /* Link of items inside dragable boxes */
 #features dd.image {
 	float: none;
 	margin: 0 0 1.7em;
+	position: relative;
 	}
 
 #features dd.image img {

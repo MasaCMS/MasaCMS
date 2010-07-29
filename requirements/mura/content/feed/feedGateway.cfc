@@ -538,7 +538,11 @@ to your own modified versions of Mura CMS.
 	
 	<cfswitch expression="#arguments.feedBean.getSortBy()#">
 	<cfcase value="menutitle,title,lastupdate,releasedate,orderno,displayStart,created,credits,type,subtype">
-	tcontent.#arguments.feedBean.getSortBy()# #arguments.feedBean.getSortDirection()#
+		<cfif dbType neq "oracle" or arguments.feedBean.getSortBy() eq "orderno">
+			tcontent.#arguments.feedBean.getSortBy()# #arguments.feedBean.getSortDirection()#
+		<cfelse>
+			lower(tcontent.#arguments.feedBean.getSortBy()#) #arguments.feedBean.getSortDirection()#
+		</cfif>
 	</cfcase>
 	<cfcase value="rating">
 	 tcontentstats.rating #arguments.feedBean.getSortDirection()#, tcontentstats.totalVotes #arguments.feedBean.getSortDirection()#

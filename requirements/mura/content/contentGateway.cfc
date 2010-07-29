@@ -455,7 +455,7 @@ to your own modified versions of Mura CMS.
 
 				  order by 
 					
-					<cfif dbType neq "oracle">
+					<cfif dbType neq "oracle" or arguments.sortBy eq "orderno">
 						<cfswitch expression="#arguments.sortBy#">
 							<cfcase value="menutitle,title,lastupdate,releasedate,orderno,displayStart,created,credits,type,subtype">
 								tcontent.#arguments.sortBy# #arguments.sortDirection#
@@ -881,8 +881,12 @@ to your own modified versions of Mura CMS.
 				<cfif isExtendedSort>
 				qExtendedSort.extendedSort #arguments.sortDirection#	
 				<cfelse>
-				 tcontent.#arguments.sortBy# #arguments.sortDirection#
-				 </cfif> 
+					<cfif dbType neq "oracle" or arguments.sortBy eq "orderno">
+						tcontent.#arguments.sortBy# #arguments.sortDirection#
+					<cfelse>
+						lower(tcontent.#arguments.sortBy#) #arguments.sortDirection#
+					</cfif>
+				</cfif> 
 			<cfelseif arguments.sortBy eq 'rating'>
 				Rating #arguments.sortDirection#, Votes #arguments.sortDirection# 
 			<cfelse>

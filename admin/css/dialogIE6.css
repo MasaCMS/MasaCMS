@@ -1,5 +1,5 @@
 #frontEndToolsIE6 {
-	background: transparent url(../images/ie6/bg_fetools.jpg) repeat-x scroll 0% !important;
+	background: transparent url(../images/ie6/bg_feTools.jpg) repeat-x scroll 0% !important;
 	height: 36px !important;
 	left: 0px !important;
 	position: absolute;
@@ -78,7 +78,7 @@
 
 
 #frontEndToolsIE6 ul li#adminSiteManager {
-	background: url(../images/bg_fetools_site_manager.png) no-repeat scroll left center !important;
+	background: url(../images/bg_feTools_site_manager.png) no-repeat scroll left center !important;
 	padding-left: 21px !important;
 }
 
