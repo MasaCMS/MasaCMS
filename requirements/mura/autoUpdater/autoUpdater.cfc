@@ -164,6 +164,7 @@ to your own modified versions of Mura CMS.
 					</cfif>
 				</cfloop>
 				<cfset application.appInitialized=false />
+				<cfset application.coreversion=updateVersion>
 			</cfif>
 			<cfdirectory action="delete" directory="#currentDir##zipFileName#" recurse="true">
 		</cfif>
@@ -208,7 +209,7 @@ to your own modified versions of Mura CMS.
 		<cfset variables.fileWriter.writeFile(file="#versionDir#/version.cfm",output="<cfabort>:1")>
 		<cfreturn 1>
 	<cfelse>
-		<cfreturn currentVersion>
+		<cfreturn trim(currentVersion)>
 	</cfif>
 
 </cffunction>
