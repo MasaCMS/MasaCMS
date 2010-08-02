@@ -151,6 +151,8 @@ to your own modified versions of Mura CMS.
 	<cfset var pluginManager=getBean("pluginManager")>	
 	<cfset var pluginEvent = createObject("component","mura.event") />
 
+	<cfset arguments.fileID=replace(arguments.fileID,"../","","all")>
+	
 		<cfswitch expression="#variables.configBean.getFileStore()#">	
 			<cfcase value="database">
 				<cfset rsFileData=read(arguments.fileid) />
@@ -206,6 +208,8 @@ to your own modified versions of Mura CMS.
 	<cfset var delim="" />
 	<cfset var theFile="" />
 	<cfset var theFileLocation="" />
+	
+	<cfset arguments.fileID=replace(arguments.fileID,"../","","all")>
 		
 		<cfswitch expression="#variables.configBean.getFileStore()#">	
 			<cfcase value="database">
@@ -246,6 +250,8 @@ to your own modified versions of Mura CMS.
 	<cfset var delim="" />
 	<cfset var theFile="" />
 	<cfset var theFileLocation="" />
+	
+	<cfset arguments.fileID=replace(arguments.fileID,"../","","all")>
 		 
 		<cfswitch expression="#variables.configBean.getFileStore()#">	
 			<cfcase value="database">

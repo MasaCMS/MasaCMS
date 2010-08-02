@@ -455,48 +455,32 @@ to your own modified versions of Mura CMS.
 
 				  order by 
 					
-					<cfif dbType neq "oracle" or arguments.sortBy eq "orderno">
-						<cfswitch expression="#arguments.sortBy#">
-							<cfcase value="menutitle,title,lastupdate,releasedate,orderno,displayStart,created,credits,type,subtype">
-								tcontent.#arguments.sortBy# #arguments.sortDirection#
-							</cfcase>
-							<cfcase value="rating">
-								tcontentstats.rating #arguments.sortBy#, tcontentstats.totalVotes #arguments.sortDirection#
-							</cfcase>
-							<cfcase value="comments">
-								tcontentstats.comments #arguments.sortDirection#
-							</cfcase>
-							<cfdefaultcase>
-								<cfif isExtendedSort>
-									qExtendedSort.extendedSort #arguments.sortDirection#
-								<cfelse>
-									tcontent.releaseDate desc,tcontent.lastUpdate desc,tcontent.menutitle
-								</cfif>
-							</cfdefaultcase>
-						</cfswitch>
-					<cfelse>
-						<cfswitch expression="#arguments.sortBy#">
-							<cfcase value="menutitle,title,lastupdate,releasedate,orderno,displayStart,created,credits,type,subtype">
-								lower(tcontent.#arguments.sortBy#) #arguments.sortDirection#
-							</cfcase>
-							<cfcase value="rating">
-								tcontentstats.rating #arguments.sortBy#, tcontentstats.totalVotes #arguments.sortDirection#
-							</cfcase>
-							<cfcase value="comments">
-								tcontentstats.comments #arguments.sortDirection#
-							</cfcase>
-							<cfdefaultcase>
-								<cfif isExtendedSort>
-									qExtendedSort.extendedSort #arguments.sortDirection#
-								<cfelse>
-									tcontent.releaseDate desc,tcontent.lastUpdate desc,tcontent.menutitle
-								</cfif>
-							</cfdefaultcase>
-						</cfswitch>
-					</cfif>
 					
-					<cfif dbType eq "mysql" and arguments.size>limit #arguments.size#</cfif>
-					<cfif dbType eq "oracle" and arguments.size>) where ROWNUM <=#arguments.size# </cfif>
+				<cfswitch expression="#arguments.sortBy#">
+					<cfcase value="menutitle,title,lastupdate,releasedate,orderno,displayStart,created,credits,type,subtype">
+						<cfif dbType neq "oracle" or  listFindNoCase("orderno,lastUpdate,releaseDate,created",arguments.sortBy)>
+						tcontent.#arguments.sortBy# #arguments.sortDirection#
+						<cfelse>
+						lower(tcontent.#arguments.sortBy#) #arguments.sortDirection#
+						</cfif>
+					</cfcase>
+					<cfcase value="rating">
+						tcontentstats.rating #arguments.sortBy#, tcontentstats.totalVotes #arguments.sortDirection#
+					</cfcase>
+					<cfcase value="comments">
+						tcontentstats.comments #arguments.sortDirection#
+					</cfcase>
+					<cfdefaultcase>
+						<cfif isExtendedSort>
+							qExtendedSort.extendedSort #arguments.sortDirection#
+						<cfelse>
+							tcontent.releaseDate desc,tcontent.lastUpdate desc,tcontent.menutitle
+						</cfif>
+					</cfdefaultcase>
+				</cfswitch>
+						
+				<cfif dbType eq "mysql" and arguments.size>limit #arguments.size#</cfif>
+				<cfif dbType eq "oracle" and arguments.size>) where ROWNUM <=#arguments.size# </cfif>
 
 		</cfquery>
 	
@@ -882,7 +866,7 @@ to your own modified versions of Mura CMS.
 				<cfif isExtendedSort>
 				qExtendedSort.extendedSort #arguments.sortDirection#	
 				<cfelse>
-					<cfif dbType neq "oracle" or arguments.sortBy eq "orderno">
+					<cfif dbType neq "oracle" or listFindNoCase("orderno,releaseDate,lastUpdate,created",arguments.sortBy)>
 						tcontent.#arguments.sortBy# #arguments.sortDirection#
 					<cfelse>
 						lower(tcontent.#arguments.sortBy#) #arguments.sortDirection#
