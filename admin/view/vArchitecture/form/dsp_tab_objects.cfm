@@ -110,8 +110,8 @@ to your own modified versions of Mura CMS.
 							<cfset variables["objectlist#r#"]="">
 							<select name="selectedObjects#r#" id="selectedObjects#r#" class="multiSelect" multiple size="4">
 							<cfloop query="request.rsContentObjects#r#">
-							<option value="#request["rsContentObjects#r#"].object#~#request["rsContentObjects#r#"].name#~#request["rsContentObjects#r#"].objectid#~#request["rsContentObjects#r#"].params#">#request["rsContentObjects#r#"].name#</option>
-							<cfset variables["objectlist#r#"]=listappend(variables["objectlist#r#"],"#request["rsContentObjects#r#"].object#~#request["rsContentObjects#r#"].name#~#request["rsContentObjects#r#"].objectid#~#request["rsContentObjects#r#"].params#","^")>
+							<option value="#request["rsContentObjects#r#"].object#~#HTMLEditFormat(request["rsContentObjects#r#"].name)#~#request["rsContentObjects#r#"].objectid#~#HTMLEditFormat(request["rsContentObjects#r#"].params)#">#request["rsContentObjects#r#"].name#</option>
+							<cfset variables["objectlist#r#"]=listappend(variables["objectlist#r#"],"#request["rsContentObjects#r#"].object#~#HTMLEditFormat(request["rsContentObjects#r#"].name)#~#request["rsContentObjects#r#"].objectid#~#HTMLEditFormat(request["rsContentObjects#r#"].params)#","^")>
 							</cfloop>
 							</select>
 							<input type="hidden" name="objectList#r#" id="objectList#r#" value="#variables["objectlist#r#"]#">
