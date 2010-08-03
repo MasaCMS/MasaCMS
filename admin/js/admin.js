@@ -501,6 +501,12 @@ function submitForm(frm,action,msg){
 					buttons: {
 						'YES': function() {
 							jQuery(this).dialog('close');
+							var frmInputs = currentFrm.getElementsByTagName("input");	
+							for (f=0; f < frmInputs.length; f++){
+								if(frmInputs[f].getAttribute('name')=='action'){
+								frmInputs[f].setAttribute('value',action);
+								}
+							}
 							currentFrm.submit();
 							},
 						'NO': function() {
