@@ -70,6 +70,9 @@ onunload=function(){
 }
 
 function conditionalExit(msg){
+	if(msg==null){
+		<cfoutput>msg="#JSStringFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.saveasdraft"))#";</cfoutput>
+	}
 	jQuery("#alertDialog").html(msg);
 	jQuery("#alertDialog").dialog({
 			resizable: false,
