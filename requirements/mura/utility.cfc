@@ -457,4 +457,60 @@ Blog: www.codfusion.com--->
 
 		<cfreturn local.result/>
 	</cffunction>
+
+<!--- 
+Blog:http://www.modernsignal.com/coldfusionhttponlycookie--->
+<cffunction name="SetCookie" hint="Replacement for cfcookie that handles httponly cookies" output="false" returntype="void">
+    <cfargument name="name" type="string" required="true">
+    <cfargument name="value" type="string" required="true">
+    <cfargument name="expires" type="any" default="" hint="''=session only|now|never|[date]|[number of days]">
+    <cfargument name="domain" type="string" default="">
+    <cfargument name="path" type="string" default="/">
+    <cfargument name="secure" type="boolean" default="false">
+    <cfargument name="httponly" type="boolean" default="false">
+    <cfset var c = "">
+    <cfset var expDate = "">
+	
+	<cfif server.coldfusion.productname eq "BlueDragon">
+		<cfset c = "#LCase(name)#=#value#;">
+	<cfelse>
+		<cfset c = "#UCase(name)#=#value#;">
+	</cfif>
+	
+    <cfswitch expression="#Arguments.expires#">
+        <cfcase value="">
+        </cfcase>
+        <cfcase value="now">
+            <cfset expDate = DateAdd('d',-1,Now())>
+        </cfcase>
+        <cfcase value="never">
+            <cfset expDate = DateAdd('yyyy',30,Now())>
+        </cfcase>
+        <cfdefaultcase>
+            <cfif IsDate(Arguments.expires)>
+                <cfset expDate = Arguments.expires>
+            <cfelseif IsNumeric(Arguments.expires)>
+                <cfset expDate = DateAdd('d',Arguments.expires,Now())>
+            </cfif>
+        </cfdefaultcase>
+    </cfswitch>
+    <cfif IsDate(expDate) gt 0>
+        <cfset expDate = DateConvert('local2Utc',expDate)>
+        <cfset c = c & "expires=#DateFormat(expDate, 'ddd, dd-mmm-yyyy')# #TimeFormat(expDate, 'HH:mm:ss')# GMT;">
+    </cfif>
+    <cfif Len(Arguments.domain) gt 0>
+        <cfset c = c & "domain=#Arguments.domain#;">
+    </cfif>
+    <cfif Len(Arguments.path) gt 0>
+        <cfset c = c & "path=#Arguments.path#;">
+    </cfif>
+    <cfif Arguments.secure>
+        <cfset c = c & "secure;">
+    </cfif>
+    <cfif Arguments.httponly>
+        <cfset c = c & "httponly;">
+    </cfif>
+    <cfheader name="Set-Cookie" value="#c#" />
+</cffunction>
+
 </cfcomponent>

@@ -291,9 +291,24 @@ to your own modified versions of Mura CMS.
 		 #arguments.contentBean.getActive()#,
 		 #arguments.contentBean.getOrderNo()#,
 		#arguments.contentBean.getApproved()#,
-		<cfif arguments.contentBean.getDisplay() eq 2 and isdate(arguments.contentBean.getDisplayStart())> #createodbcdatetime(createDateTime(year(arguments.contentBean.getDisplayStart()),month(arguments.contentBean.getDisplayStart()),day(arguments.contentBean.getDisplayStart()),hour(arguments.contentBean.getDisplayStart()),minute(arguments.contentBean.getDisplayStart()),0))#<cfelse>null</cfif>,
-		<cfif arguments.contentBean.getDisplay() eq 2 and isdate(arguments.contentBean.getDisplayStop())> #createodbcdatetime(createDateTime(year(arguments.contentBean.getDisplayStop()),month(arguments.contentBean.getDisplayStop()),day(arguments.contentBean.getDisplayStop()),hour(arguments.contentBean.getDisplayStop()),minute(arguments.contentBean.getDisplayStop()),0))#<cfelse>null</cfif>,
-	    
+		<cfif arguments.contentBean.getDisplay() eq 2 and isdate(arguments.contentBean.getDisplayStart())> 
+			#createodbcdatetime(createDateTime(year(arguments.contentBean.getDisplayStart()),
+									month(arguments.contentBean.getDisplayStart()),
+									day(arguments.contentBean.getDisplayStart()),
+									hour(arguments.contentBean.getDisplayStart()),
+									minute(arguments.contentBean.getDisplayStart()),0))#
+		<cfelse>
+			null
+		</cfif>,
+		<cfif arguments.contentBean.getDisplay() eq 2 and isdate(arguments.contentBean.getDisplayStop())> 
+			#createodbcdatetime(createDateTime(year(arguments.contentBean.getDisplayStop()),
+									month(arguments.contentBean.getDisplayStop()),
+									day(arguments.contentBean.getDisplayStop()),
+									hour(arguments.contentBean.getDisplayStop()),
+									minute(arguments.contentBean.getDisplayStop()),0))#
+		<cfelse>
+			null
+		</cfif>,
 		<cfqueryparam cfsqltype="cf_sql_longvarchar" null="#iif(arguments.contentBean.getMetaDesc() neq '',de('no'),de('yes'))#" value="#arguments.contentBean.getMetaDesc()#">,
 		<cfqueryparam cfsqltype="cf_sql_longvarchar" null="#iif(arguments.contentBean.getMetaKeyWords() neq '',de('no'),de('yes'))#" value="#arguments.contentBean.getMetaKeywords()#">,  
 		<cfqueryparam cfsqltype="cf_sql_longvarchar" null="#iif(arguments.contentBean.getBody() neq '',de('no'),de('yes'))#" value="#arguments.contentBean.getBody()#"> , 
@@ -325,14 +340,40 @@ to your own modified versions of Mura CMS.
 		 <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.contentBean.getNotes() neq '',de('no'),de('yes'))#" value="#arguments.contentBean.getNotes()#">,
 		 <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.contentBean.getInheritObjects() neq '',de('no'),de('yes'))#" value="#arguments.contentBean.getInheritObjects()#">,
 		#arguments.contentBean.getisfeature()#,
-		<cfif isdate(arguments.contentBean.getReleaseDate())> #createodbcdatetime(LSDateFormat(arguments.contentBean.getReleaseDate(),'mm/dd/yyyy'))#<cfelse>null</cfif>,
+		<cfif isdate(arguments.contentBean.getReleaseDate())>
+			 #createodbcdatetime(
+			 	createDateTime(year(arguments.contentBean.getReleaseDate()), 
+			 				month(arguments.contentBean.getReleaseDate()),
+							day(arguments.contentBean.getReleaseDate()), 
+							hour(arguments.contentBean.getReleaseDate()), 
+							minute(arguments.contentBean.getReleaseDate()), 
+							second(arguments.contentBean.getReleaseDate())))#
+		<cfelse>
+			null
+		</cfif>,
 		<CFIF arguments.contentBean.getTarget() EQ "_blank" and arguments.contentBean.getTargetParams() NEQ ""> <cfqueryparam cfsqltype="cf_sql_varchar" null="no" value="#arguments.contentBean.getTargetParams()#"><CFELSE> Null </CFIF>,
 		#arguments.contentBean.getIsLocked()#,
 		<cfqueryparam cfsqltype="cf_sql_integer"  value="#arguments.contentBean.getNextN()#">,
 		<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.contentBean.getSortBy() neq '',de('no'),de('yes'))#" value="#arguments.contentBean.getSortBy()#">,
 		<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.contentBean.getSortDirection() neq '',de('no'),de('yes'))#" value="#arguments.contentBean.getSortDirection()#">,
-		<cfif arguments.contentBean.getIsFeature() eq 2 and isdate(arguments.contentBean.getFeatureStart())> #createodbcdatetime(createDateTime(year(arguments.contentBean.getFeatureStart()),month(arguments.contentBean.getFeatureStart()),day(arguments.contentBean.getFeatureStart()),hour(arguments.contentBean.getFeatureStart()),minute(arguments.contentBean.getFeatureStart()),0))#<cfelse>null</cfif>,
-		<cfif arguments.contentBean.getIsFeature() eq 2 and isdate(arguments.contentBean.getFeatureStop())> #createodbcdatetime(createDateTime(year(arguments.contentBean.getFeatureStop()),month(arguments.contentBean.getFeatureStop()),day(arguments.contentBean.getFeatureStop()),hour(arguments.contentBean.getFeatureStop()),minute(arguments.contentBean.getFeatureStop()),0))#<cfelse>null</cfif>,
+		<cfif arguments.contentBean.getIsFeature() eq 2 and isdate(arguments.contentBean.getFeatureStart())> 
+			#createodbcdatetime(createDateTime(year(arguments.contentBean.getFeatureStart()),
+											month(arguments.contentBean.getFeatureStart()),
+											day(arguments.contentBean.getFeatureStart()),
+											hour(arguments.contentBean.getFeatureStart()),
+											minute(arguments.contentBean.getFeatureStart()),0))#
+		<cfelse>
+			null
+		</cfif>,
+		<cfif arguments.contentBean.getIsFeature() eq 2 and isdate(arguments.contentBean.getFeatureStop())>
+			#createodbcdatetime(createDateTime(year(arguments.contentBean.getFeatureStop()),
+											month(arguments.contentBean.getFeatureStop()),
+											day(arguments.contentBean.getFeatureStop()),
+											hour(arguments.contentBean.getFeatureStop()),
+											minute(arguments.contentBean.getFeatureStop()),0))#
+		<cfelse>
+			null
+		</cfif>,
 		<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.contentBean.getFileID() neq '',de('no'),de('yes'))#" value="#arguments.contentBean.getFileID()#">,
 		<cfqueryparam cfsqltype="cf_sql_integer"  value="#arguments.contentBean.getForceSSL()#">,
 		<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.contentBean.getRemoteID() neq '',de('no'),de('yes'))#" value="#arguments.contentBean.getRemoteID()#">,
@@ -346,7 +387,17 @@ to your own modified versions of Mura CMS.
 		#arguments.contentBean.getSearchExclude()#,
 		#arguments.contentBean.getDisplayTitle()#,
 		#arguments.contentBean.getDoCache()#,
-		<cfif isdate(arguments.contentBean.getCreated())> #createodbcdatetime(LSDateFormat(arguments.contentBean.getCreated(),'mm/dd/yyyy'))#<cfelse>null</cfif>,
+		<cfif isdate(arguments.contentBean.getCreated())>
+			 #createodbcdatetime(
+			 	createDateTime(year(arguments.contentBean.getCreated()), 
+			 				month(arguments.contentBean.getCreated()),
+							day(arguments.contentBean.getCreated()), 
+							hour(arguments.contentBean.getCreated()), 
+							minute(arguments.contentBean.getCreated()), 
+							second(arguments.contentBean.getCreated())))#
+		<cfelse>
+			#createodbcdatetime(now())#
+		</cfif>,
 		<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.contentBean.getURLTitle() neq '',de('no'),de('yes'))#" value="#arguments.contentBean.getURLTitle()#">,
 		<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.contentBean.getHTMLTitle() neq '',de('no'),de('yes'))#" value="#arguments.contentBean.getHTMLTitle()#">
 		)

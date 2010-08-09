@@ -63,6 +63,12 @@
 <cfargument name="nameConflict" required="true" default="makeunique">
 <cfargument name="attributes" required="true" default="normal">
 <cfargument name="mode" required="true" default="775">
+<cfargument name="accept" required="false" default="" />
+
+<cfif not DirectoryExists(arguments.destination)>
+	<cfset createDir(arguments.destination,arguments.mode) />
+</cfif>
+
 <cfif variables.useMode >
 	<cffile action="upload"
 					fileField="#arguments.fileField#"
@@ -70,14 +76,16 @@
 					nameConflict="#arguments.nameConflict#"
 					mode="#arguments.mode#"
 					attributes="#arguments.attributes#"
-					result="upload">
+					result="upload"
+					accept="#arguments.accept#">
 <cfelse>
 	<cffile action="upload"
 					fileField="#arguments.fileField#"
 					destination="#arguments.destination#"
 					nameConflict="#arguments.nameConflict#"
 					attributes="#arguments.attributes#"
-					result="upload">
+					result="upload"
+					accept="#arguments.accept#">
 </cfif>
 <cfreturn upload>
 </cffunction>

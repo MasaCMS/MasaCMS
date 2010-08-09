@@ -69,7 +69,12 @@ to your own modified versions of Mura CMS.
 	<cfset menuType="default">
 </cfif>
 
-<cfset rsPreSection=application.contentGateway.getKids('00000000000000000000000000000000000',request.siteid,request.contentBean.getcontentid(),menuType,menuDate,100,request.keywords,0,request.contentBean.getsortBy(),request.contentBean.getsortDirection(),request.categoryID,request.relatedID,request.tag)>
+<cfset maxPortalItems=application.configBean.getValue("maxPortalItems")>
+<cfif not isNumeric(maxPortalItems)>
+	<cfset maxPortalItems=100>
+</cfif>
+
+<cfset rsPreSection=application.contentGateway.getKids('00000000000000000000000000000000000',request.siteid,request.contentBean.getcontentid(),menuType,menuDate,maxPortalItems,request.keywords,0,request.contentBean.getsortBy(),request.contentBean.getsortDirection(),request.categoryID,request.relatedID,request.tag)>
 
 <cfif getSite().getExtranet() eq 1 and request.r.restrict eq 1>
 	<cfset rssection=queryPermFilter(rsPreSection)/>
@@ -97,16 +102,16 @@ to your own modified versions of Mura CMS.
 
 <cfset variables.nextN=application.utility.getNextN(rsSection,request.contentBean.getNextN(),currentNextNIndex)>
 
-</cfsilent>
-
 <cfset addToHeight = 10> <!--- Total number of pixels to add for the final height --->
 <cfset minHeight = $.siteConfig('gallerySmallScale') + addToHeight> <!--- Adding to the size of the image set in site settings--->
 
 <cfset addToWidth = 10> <!--- Total number of pixels to add for the final height --->
 <cfset totalWidth = $.siteConfig('gallerySmallScale') + addToHeight> <!--- Adding to the size of the image set in site settings--->
 
-<!--- Need  logic for x and y constrain? --->
+</cfsilent>
 
+<cfif iterator.getRecordcount()>
+<!--- Need  logic for x and y constrain? --->
 <cfoutput>
 <style>						
 	##svPortal dl.hasImage {
@@ -116,7 +121,6 @@ to your own modified versions of Mura CMS.
 </style>
 </cfoutput>
 
-<cfif iterator.getRecordcount()>
 <div id="svPortal" class="svIndex">
 		<cfloop condition="iterator.hasNext()">
 		<cfsilent>

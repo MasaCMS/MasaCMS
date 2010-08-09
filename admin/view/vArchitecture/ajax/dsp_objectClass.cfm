@@ -40,7 +40,8 @@ for your modified version; it is your choice whether to do so, or to make such m
 the GNU General Public License version 2 �without this exception. �You may, if you choose, apply this exception
 to your own modified versions of Mura CMS.
 --->
-
+<cfparam name="attributes.contentid" default="">
+<cfparam name="attributes.parentid" default="">
 <cfswitch expression="#attributes.classid#">
 <cfcase value="component">
 <cfoutput>
@@ -126,7 +127,7 @@ to your own modified versions of Mura CMS.
 <cfcase value="portal">
 <cfset request.rsSections=application.contentManager.getSections(attributes.siteid,'Portal') />
 <cfoutput>
-<select name="subClassSelector" onchange="loadObjectClass('#attributes.siteid#','portal',this.value);" class="dropdown">
+<select name="subClassSelector" onchange="loadObjectClass('#attributes.siteid#','portal',this.value,'#attributes.contentid#','#attributes.parentid#');" class="dropdown">
 <option value="">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.selectportal')#</option>
 <cfloop query="request.rsSections">
 <option value="#request.rsSections.contentID#" <cfif request.rsSections.contentID eq attributes.subclassid>selected</cfif>>#HTMLEditFormat(request.rsSections.menutitle)#</option>
@@ -154,7 +155,7 @@ to your own modified versions of Mura CMS.
 
 <cfset request.rsSections=application.contentManager.getSections(attributes.siteid,'Calendar') />
 <cfoutput>
-<select name="subClassSelector" onchange="loadObjectClass('#attributes.siteid#','calendar',this.value);" class="dropdown">
+<select name="subClassSelector" onchange="loadObjectClass('#attributes.siteid#','calendar',this.value,'#attributes.contentid#','#attributes.parentid#');" class="dropdown">
 <option value="">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.selectcalendar')#</option>
 <cfloop query="request.rsSections">
 <option value="#request.rsSections.contentID#" <cfif request.rsSections.contentID eq attributes.subclassid>selected</cfif>>#HTMLEditFormat(request.rsSections.menutitle)#</option>
@@ -183,7 +184,7 @@ to your own modified versions of Mura CMS.
 
 <cfset request.rsSections=application.contentManager.getSections(attributes.siteid,'Gallery') />
 <cfoutput>
-<select name="subClassSelector" onchange="loadObjectClass('#attributes.siteid#','gallery',this.value);" class="dropdown">
+<select name="subClassSelector" onchange="loadObjectClass('#attributes.siteid#','gallery',this.value,'#attributes.contentid#','#attributes.parentid#');" class="dropdown">
 <option value="">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.selectgallery')#</option>
 <cfloop query="request.rsSections">
 <option value="#request.rsSections.contentID#" <cfif request.rsSections.contentID eq attributes.subclassid>selected</cfif>>#HTMLEditFormat(request.rsSections.menutitle)#</option>
@@ -252,7 +253,7 @@ to your own modified versions of Mura CMS.
 </cfif>
 <cfset request.rsPlugins=application.pluginManager.getDisplayObjectBySiteID(siteID=attributes.siteid,modulesOnly=true) />
 <cfoutput>
-<select name="subClassSelector" onchange="loadObjectClass('#attributes.siteid#','plugins',this.value);" class="dropdown">
+<select name="subClassSelector" onchange="loadObjectClass('#attributes.siteid#','plugins',this.value,'#attributes.contentid#','#attributes.parentid#');" class="dropdown">
 <option value="">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.selectplugin')#</option>
 <cfloop query="request.rsPlugins">
 <cfif application.permUtility.getModulePerm(request.rsPlugins.moduleID,attributes.siteid)>
@@ -305,7 +306,7 @@ objectID in (''
 	)
 </cfquery>
 <cfoutput>
-<select name="customObjectSelector" onchange="loadObjectClass('#attributes.siteid#','plugins',this.value);" class="dropdown">
+<select name="customObjectSelector" onchange="loadObjectClass('#attributes.siteid#','plugins',this.value,'#attributes.contentid#','#attributes.parentid#');" class="dropdown">
 <option value="">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.selectplugindisplayobjectclass')#</option>
 <cfloop query="rs">
 <cfif application.permUtility.getModulePerm(request.rsPlugins.moduleID,attributes.siteid)>

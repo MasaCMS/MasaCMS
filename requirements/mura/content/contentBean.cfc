@@ -141,6 +141,7 @@ to your own modified versions of Mura CMS.
 	<cfset var pageNum = 2 />
 	<cfset var featurestophour="" />
 	<cfset var featurestarthour="" />
+	<cfset var releasehour="" />
 	<cfset var prop="" />
 	
 	<cfif isQuery(arguments.content)>
@@ -317,6 +318,31 @@ to your own modified versions of Mura CMS.
 			</cfif>
 			
 			<cfset setFeatureStop(createDateTime(year(getFeatureStop()), month(getFeatureStop()), day(getFeatureStop()),Featurestophour, arguments.content.featurestopMinute, "0"))>
+		</cfif>
+		
+		<cfif isDate(getReleaseDate())>
+			
+			<cfif isdefined("arguments.content.releasehour")
+			and isdefined("arguments.content.releaseMinute")
+			and isdefined("arguments.content.releaseDayPart")>
+			
+				<cfif arguments.content.releasedaypart eq "PM">
+					<cfset releasehour = arguments.content.releasehour + 12>
+					
+					<cfif releasehour eq 24>
+						<cfset releasehour = 12>
+					</cfif>
+				<cfelse>
+					<cfset releasehour = arguments.content.releasehour>
+					
+					<cfif releasehour eq 12>
+						<cfset releasehour = 0>
+					</cfif>
+				</cfif>
+				
+				<cfset setReleaseDate(createDateTime(year(getReleaseDate()), month(getReleaseDate()), day(getReleaseDate()), releasehour, arguments.content.releaseMinute, "0"))>
+		
+			</cfif>
 		</cfif>
 		
 		<cfif not session.mura.isLoggedIn >

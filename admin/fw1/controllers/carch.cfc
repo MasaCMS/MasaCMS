@@ -112,13 +112,17 @@
 <cffunction name="edit" output="false">
 	<cfargument name="rc">
 
-  	<cfif not len(arguments.rc.contentID)>
+	<cfset var local=structNew()>
+	
+	<cfset local.currentBean=getBean("content").loadBy(contentID=arguments.rc.contentID, siteID= arguments.rc.siteid)> 
+	
+  	<cfif local.currentBean.getIsNew()>
 		<cfset arguments.rc.crumbdata=variables.contentManager.getCrumbList(arguments.rc.parentid,arguments.rc.siteid)/>
 	 <cfelse>
 		<cfset arguments.rc.crumbdata=variables.contentManager.getCrumbList(arguments.rc.contentID,arguments.rc.siteid)/>
 	</cfif>
 
-  <cfset arguments.rc.contentBean=variables.contentManager.getcontentVersion(arguments.rc.contenthistid,arguments.rc.siteid)/>
+   <cfset arguments.rc.contentBean=variables.contentManager.getcontentVersion(arguments.rc.contenthistid,arguments.rc.siteid)/>
   
    <cfif arguments.rc.contentid neq '' and arguments.rc.contenthistid neq '' and arguments.rc.contentBean.getIsNew() eq 1>
 		<cfset variables.fw.redirect(action="cArch.hist",append="contentid,siteid,startrow,moduleid,parentid,type",path="")>
@@ -138,19 +142,22 @@
 
 <cffunction name="update" ouput="false">
 	<cfargument name="rc">
+	<cfset var local=structNew()>
 	
 	<cfif not isNumeric(arguments.rc.orderno)>
 		<cfset arguments.rc.orderno=0>
 	</cfif>
 	
-	<cfset arguments.rc.crumbData=variables.contentGateway.getCrumblist(arguments.rc.contentID, arguments.rc.siteid) />  
+	<cfset arguments.rc.crumbData=variables.contentGateway.getCrumblist(arguments.rc.contentID, arguments.rc.siteid) /> 
 	
-	 <cfif len(arguments.rc.contentID)>
+	<cfset local.currentBean=getBean("content").loadBy(contentID=arguments.rc.contentID, siteID= arguments.rc.siteid)> 
+	
+	 <cfif not local.currentBean.getIsNew()>
 		 <cfset arguments.rc.crumbData=variables.contentGateway.getCrumblist(arguments.rc.contentID, arguments.rc.siteid) />
 		 <cfset arguments.rc.perm=variables.permUtility.getNodePerm(arguments.rc.crumbData) />  
 	 </cfif>
 	 
-	 <cfif not len(arguments.rc.contentID) and len(arguments.rc.parentID)>
+	 <cfif local.currentBean.getIsNew() and len(arguments.rc.parentID)>
 		<cfset arguments.rc.crumbData=variables.contentGateway.getCrumblist(arguments.rc.parentID, arguments.rc.siteid) />
 		<cfset arguments.rc.perm=variables.permUtility.getNodePerm(arguments.rc.crumbData) />  
 	 </cfif>

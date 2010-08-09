@@ -67,7 +67,7 @@ to your own modified versions of Mura CMS.
 	<table class="displayObjects">		
 			 <tr>
 				<td  class="nested" rowspan="#application.settingsManager.getSite(attributes.siteid).getcolumnCount()#" valign="top">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.availablecontentobjects')#<br />
-				<select name="classSelector" onchange="loadObjectClass('#attributes.siteid#',this.value,'');" class="dropdown" id="dragme">
+				<select name="classSelector" onchange="loadObjectClass('#attributes.siteid#',this.value,'','#request.contentBean.getContentID()#','#attributes.parentID#');" class="dropdown" id="dragme">
 				<option value="">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.selectobjecttype')#</option>
 				<option value="system">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.system')#</option>
 				<cfif application.settingsManager.getSite(attributes.siteid).getemailbroadcaster()>

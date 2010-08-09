@@ -402,6 +402,14 @@ function addDisplayObject(objectToAdd,regionID){
 		}
 		
 		tmpText=tmpObject.name;	
+		
+	} 
+
+	if(tmpValue == ""){
+			
+			alertDialog("Please select a display object."); 
+			
+			return false;
 	}
 	
 	//get reference to the select where it will go.
@@ -546,9 +554,9 @@ function loadAssocImages(siteid,fileid,contentid,keywords,isNew)	{
 		);
 }
 
-function loadObjectClass(siteid,classid,subclassid)	{
+function loadObjectClass(siteid,classid,subclassid,contentid,parentid)	{
 	var url = 'index.cfm';
-	var pars = 'fuseaction=cArch.loadclass&compactDisplay=true&siteid=' + siteid +'&classid=' + classid  +'&subclassid=' + subclassid + '&cacheid=' + Math.random();
+	var pars = 'fuseaction=cArch.loadclass&compactDisplay=true&siteid=' + siteid +'&classid=' + classid  +'&subclassid=' + subclassid + '&contentid=' + contentid + '&parentid=' + parentid + '&cacheid=' + Math.random();
 	var d=jQuery('#classList');
 	d.html('<br/><img src="images/progress_bar.gif">');
 	jQuery.get(url + "?" + pars, 

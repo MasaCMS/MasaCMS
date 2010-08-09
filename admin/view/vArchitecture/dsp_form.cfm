@@ -181,7 +181,7 @@ select * from rsPluginScripts3 order by pluginID
 <p class="notice">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.globallyappliednotice")#</p>
 </cfif>
 
-<form action="index.cfm?fuseaction=cArch.update&contentid=#URLEncodedFormat(attributes.contentid)#" method="post" enctype="multipart/form-data" name="contentForm" onsubmit="return ckContent(draftremovalnotice);" id="contentForm">
+<form action="./" method="post" enctype="multipart/form-data" name="contentForm" onsubmit="return ckContent(draftremovalnotice);" id="contentForm">
 <cfif attributes.compactDisplay neq "true">
 	<cfif attributes.moduleid eq '00000000000000000000000000000000000'>#application.contentRenderer.dspZoom(request.crumbdata,fileExt)#</cfif>
 		<ul class="metadata">
@@ -465,12 +465,14 @@ initTabs(Array(#tabLabelList#),0,0,0);
 				<input type="hidden" name="preserveID" value="#request.contentBean.getPreserveID()#">
 				<input type="hidden" name="return" value="#attributes.return#">
 				<input type="hidden" name="topid" value="#attributes.topid#">
+				<input type="hidden" name="contentid" value="#request.contentBean.getContentID()#">
 				<input type="hidden" name="ptype" value="#attributes.ptype#">
-				<input type="hidden" name="type"  value="#attributes.type#" />
+				<input type="hidden" name="type"  value="#attributes.type#">
 				<input type="hidden" name="subtype" value="#request.contentBean.getSubType()#">
+				<input type="hidden" name="fuseaction" value="cArch.update">
 				<input type="hidden" name="startrow" value="#attributes.startrow#">
 				<input type="hidden" name="returnURL" id="txtReturnURL" value="#attributes.returnURL#">
-				<input type="hidden" name="homeID" value="#attributes.homeID#" />
+				<input type="hidden" name="homeID" value="#attributes.homeID#">
 				<cfif not  listFind(session.mura.memberships,'S2')><input type="hidden" name="isLocked" value="#request.contentBean.getIsLocked()#"></cfif>
 				<input name="OrderNo" type="hidden" value="<cfif request.contentBean.getorderno() eq ''>0<cfelse>#request.contentBean.getOrderNo()#</cfif>">
 			
