@@ -119,11 +119,13 @@ to your own modified versions of Mura CMS.
 	</cfscript>
 
 	<script type="text/javascript" language="Javascript">
+	var loadEditorCount = 0;
+	
 	function FCKeditor_OnComplete( editorInstance ) { 	
 		<cfif attributes.preview eq 1>
 	   	preview('http://#application.settingsManager.getSite(attributes.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##application.contentRenderer.getURLStem(attributes.siteid,'')#?previewid=#request.contentBean.getcontenthistid()#&siteid=#request.contentBean.getsiteid()#','#request.contentBean.getTargetParams()#');
 		</cfif> 
-		editorInstance.ResetIsDirty();
+		htmlEditorOnComplete(editorInstance); 
 	}
 	</script>
 	
