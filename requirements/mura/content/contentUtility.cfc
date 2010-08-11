@@ -762,8 +762,8 @@ Sincerely,
 	
 	<!--- tcontentobjects --->
 	<cfquery datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-		insert into tcontentobjects (contentHistID, objectID, object, contentID, name, orderno, siteid, columnid)
-		select '#newContentHistID#',objectid, object, '#newContentID#',name,orderno,siteid,columnid from tcontentobjects
+		insert into tcontentobjects (contentHistID, objectID, object, contentID, name, orderno, siteid, columnid, params)
+		select '#newContentHistID#',objectid, object, '#newContentID#',name,orderno,siteid,columnid, params from tcontentobjects
 		where siteid='#arguments.siteid#' 
 		and contentID='#arguments.contentID#'
 		and contentHistID='#contentHistID#'

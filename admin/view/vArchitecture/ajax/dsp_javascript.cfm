@@ -60,7 +60,7 @@ to your own modified versions of Mura CMS.
  
  editSummary = function(){
  		if(!summaryLoaded){
-   		FCKeditor_OnComplete=null;
+   		FCKeditor_OnComplete=htmlEditorOnComplete;
      	var oFCKeditor = new FCKeditor( 'summary' ) ;
 	  	//oFCKeditor.instanceName	= "summary";
 		oFCKeditor.value			= document.contentForm.summary.value;

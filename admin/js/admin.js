@@ -608,6 +608,26 @@ function setHTMLEditors(context, themeAssetPath) {
 	}
 }
 
+var HTMLEditorLoadCount=0;
+
+function htmlEditorOnComplete( editorInstance ) { 	
+	
+	editorInstance.ResetIsDirty();
+	
+	HTMLEditorLoadCount++;
+    
+    var count = 0;
+
+    for (k in FCKeditorAPI.Instances){ count++ }
+
+    if (HTMLEditorLoadCount >= count ) {
+    	document.getElementById("actionButtons").style.display="block";	
+    } else {
+    	document.getElementById("actionButtons").style.display="none";
+   	}
+ 
+}
+
 function setDatePickers(target,locale,delim){
 	
 	if(jQuery.datepicker.regional[locale]==undefined){
