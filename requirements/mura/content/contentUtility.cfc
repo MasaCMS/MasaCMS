@@ -704,6 +704,7 @@ Sincerely,
 	<cfset var strSQL = "">
 	<cfset var tableName = "">
 	<cfset var counter = 0>
+	<cfset var sortDirection="asc">
 	<cfset var newContentID = createUUID()>
 	<cfset var newContentHistID = createUUID()>
 	<cfset var newOrderNo = 0>
@@ -788,8 +789,8 @@ Sincerely,
 	<cfset getPluginManager().announceEvent("onContentCopy",pluginEvent)>
 	
 	<cfif arguments.recurse>
-		<cfset rsKids=getServiceFactory().getBean("contentGateway").getNest(arguments.contentID, arguments.siteID)>
-		
+		<cfset rsKids=getServiceFactory().getBean("contentGateway").getNest(parentID=arguments.contentID, siteID=arguments.siteID, sortBy=contentBean.getSortBy(), sortDirection=sortDirection)>
+			
 		<cfloop query="rsKids">
 			<cfset copy(arguments.siteID, rsKids.contentID, newContentID, rsKids.hasKids, false, contentBean.getPath())>
 		</cfloop>
