@@ -77,7 +77,7 @@ to your own modified versions of Mura CMS.
 </cfif>
 <td class="administration"><ul <cfif application.configBean.getMode() eq 'Staging'>class="three"<cfelse>class="two"</cfif>><li class="edit"><a title="Edit" href="index.cfm?fuseaction=cSettings.editSite&siteid=#request.rsSites.siteid#">Edit</a></li><cfif application.configBean.getMode() eq 'Staging'><li class="deploy"><a href="?fuseaction=cSettings.list&action=deploy&siteid=#request.rsSites.siteid#" onclick="return confirmDialog('Deploy #JSStringFormat(request.rsSites.site)# to production?',this.href);" title="Deploy">Deploy</a></li></cfif>
 <cfif request.rsSites.siteid neq 'default'>
-<li class="delete"><a title="Delete" href="index.cfm?fuseaction=cSettings.updateSite&action=delete&siteid=#request.rsSites.siteid#" onclick="return confirmDialog('#JSStringFormat("WARNING: A deleted site and all of it's files cannot be recovered. Are you sure that you want to continue?")#',this.href);">Delete</a></li>
+<li class="delete"><a title="Delete" href="index.cfm?fuseaction=cSettings.updateSite&action=delete&siteid=#request.rsSites.siteid#" onclick="return confirmDialog('#JSStringFormat("WARNING: A deleted site and all of it's files cannot be recovered. Are you sure that you want to delete the site named '#Ucase(request.rsSites.site)#'?")#',this.href);">Delete</a></li>
 <cfelse>
 <li class="deleteOff">&nbsp;</li>
 </cfif><!---<li class="export"><a title="Export" href="index.cfm?fuseaction=cArch.exportHtmlSite&siteid=#request.rsSites.siteid#" onclick="return confirm('Export the #jsStringFormat("'#request.rsSites.site#'")# Site?')">Export</a></li>---></ul></td></tr>
@@ -116,7 +116,7 @@ Upload New Plugin<br/>
 <!--- <td><a href="#request.rsPlugins.providerurl#" target="_blank">View</a></td> --->
 <td>#request.rsPlugins.pluginID#</td>
 <td class="administration"><ul class="two"><li class="edit"><a title="Edit" href="index.cfm?fuseaction=cSettings.editPlugin&moduleID=#request.rsPlugins.moduleID#">Edit</a></li>
-<li class="delete"><a title="Delete" href="index.cfm?fuseaction=cSettings.deletePlugin&moduleID=#request.rsPlugins.moduleID#" onclick="return confirmDialog('Delete Plugin?',this.href);">Delete</a></li>
+<li class="delete"><a title="Delete" href="index.cfm?fuseaction=cSettings.deletePlugin&moduleID=#request.rsPlugins.moduleID#" onclick="return confirmDialog('Delete #jsStringFormat("'#Ucase(request.rsPlugins.name)#'")#?',this.href);">Delete</a></li>
 </ul></td></tr>
 </cfoutput>
 <cfelse>
