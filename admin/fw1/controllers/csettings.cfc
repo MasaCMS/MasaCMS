@@ -26,6 +26,10 @@
 	<cfparam name="arguments.rc.action" default="" />
 	<cfparam name="arguments.rc.siteid" default="" />
 	
+	<cfif isdefined("arguments.rc.refresh")>
+		<cfset variables.fw.redirect(action="cSettings.list",append="activeTab",path="")>
+	</cfif>
+	
 	<cfif arguments.rc.action eq 'deploy'>
 		<cfset variables.settingsManager.publishSite(arguments.rc.siteid)  />
 	</cfif>
@@ -45,7 +49,8 @@
 	<cfargument name="rc">
 	<cfset variables.pluginManager.deletePlugin(arguments.rc.moduleID) />
 	<cfset arguments.rc.activeTab=1>
-	<cfset variables.fw.redirect(action="cSettings.list",append="activeTab",path="")>
+	<cfset arguments.rc.refresh=1>
+	<cfset variables.fw.redirect(action="cSettings.list",append="activeTab,refresh",path="")>
 </cffunction>
 
 <cffunction name="editPlugin" output="false">
@@ -70,7 +75,8 @@
 	<cfargument name="rc">
 	<cfset arguments.rc.moduleID=variables.pluginManager.updateSettings(arguments.rc) />
 	<cfset arguments.rc.activeTab=1>
-	<cfset variables.fw.redirect(action="cSettings.list",append="activeTab",path="")>
+	<cfset arguments.rc.refresh=1>
+	<cfset variables.fw.redirect(action="cSettings.list",append="activeTab,refresh",path="")>
 </cffunction>
 
 <cffunction name="updateSite" output="false">
