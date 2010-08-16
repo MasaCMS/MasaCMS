@@ -52,10 +52,12 @@
 	<cfset variables.javaLocale.init(lang,country,variant)>
 
 
-	<cfif lang eq "ja">
-		<cfset loadResourceBundleUTF() />
-	<cfelse>
+	<!--- Temporary band aid to for property files that have pre-escapde charactars--->
+	<cfif listFindNoCase("fr,de,hu",lang)>
 		<cfset loadResourceBundle() />
+	<cfelse>
+		<cfset loadResourceBundleUTF() />
+		
 	</cfif>
 	
 	<cfreturn this />
