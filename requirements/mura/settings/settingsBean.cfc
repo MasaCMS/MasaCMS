@@ -144,9 +144,11 @@ to your own modified versions of Mura CMS.
 		<cfset variables.instance.errors.siteid="The 'SiteID' variable is invalid." />
 	</cfif>
 	
+	<!---
 	<cfif not getBean('utility').isValidCFVariableName(getSiteID())>
 		<cfset variables.instance.errors.siteid="The 'SiteID' variable is invalid." />
 	</cfif>
+	--->
 	<cfreturn this>
 </cffunction>
 

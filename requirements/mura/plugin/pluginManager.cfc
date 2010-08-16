@@ -1,4 +1,4 @@
-<!--- This file is part of Mura CMS.
+!--- This file is part of Mura CMS.
 
 Mura CMS is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -865,8 +865,8 @@ select * from tplugins order by #arguments.orderby#
 	<cfset var eventHandler="">
 	<cfset var listenerArray="">
 	<cfset var isGlobalEvent=left(arguments.runat,8) eq "onGlobal">
-	<cfset var isValidEvent=not REFind("[^A-Za-z0-9]",arguments.runat,1)>
-	<cfset var siteIDadjusted=rereplace(arguments.siteID,"[^a-zA-Z0-9]","","ALL")>
+	<cfset var isValidEvent=variables.utility.isValidCFVariableName(arguments.runat)>
+	<cfset var siteIDadjusted=adjustSiteID(arguments.siteID)>
 	<cfset var muraScope="">
 	
 	<cfif not left(arguments.runat,2) eq "on" or left(arguments.runat,7) eq "standard">
@@ -998,8 +998,8 @@ select * from tplugins order by #arguments.orderby#
 	<cfset var eventHandler="">
 	<cfset var listenerArray="">
 	<cfset var isGlobalEvent=left(arguments.runat,8) eq "onGlobal">
-	<cfset var isValidEvent=not REFind("[^A-Za-z0-9]",arguments.runat,1)>
-	<cfset var siteIDadjusted=rereplace(arguments.siteID,"[^a-zA-Z0-9]","","ALL")>
+	<cfset var isValidEvent=variables.utility.isValidCFVariableName(arguments.runat)>
+	<cfset var siteIDadjusted=adjustSiteID(arguments.siteID)>
 	<cfset var muraScope="">
 	<cfif not left(arguments.runat,2) eq "on" or left(arguments.runat,7) eq "standard">
 		<cfset arguments.runat="on" & arguments.runat>
@@ -1444,7 +1444,7 @@ select * from rs order by name
 <cfset var i = "">
 <cfset var handlerData=structNew()>
 <cfset var eventhandler=arguments.component>
-<cfset var siteIDadjusted=rereplace(arguments.siteID,"[^a-zA-Z0-9]","","ALL")>
+<cfset var siteIDadjusted=adjustSiteID(arguments.siteID)>
 <cfset var _persist=false>
 
 	<cfif not StructKeyExists(variables.siteListeners,siteIDadjusted)>
@@ -1496,7 +1496,7 @@ select * from rs order by name
 <cfargument name="siteID">
 <cfargument name="runat">
 	
-	<cfset var siteIDadjusted=rereplace(arguments.siteID,"[^a-zA-Z0-9]","","ALL")>
+	<cfset var siteIDadjusted=adjustSiteID(arguments.siteID)>
 	<cfset var listenerArray="">
 	
 	<cfif isDefined("variables.siteListeners.#siteIDadjusted#.#arguments.runat#")>
@@ -1509,4 +1509,8 @@ select * from rs order by name
 		
 </cffunction>
 
+<cffunction name="adjustSiteID" output="false">
+<cfargument name="siteID">
+<cfreturn "$" & rereplace(arguments.siteID,"[^a-zA-Z0-9]","","ALL")>
+</cffunction>
 </cfcomponent>
