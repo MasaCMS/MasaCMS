@@ -160,7 +160,13 @@ to your own modified versions of Mura CMS.
 </cfif>
 <cfif attributes.type neq 'Component' and attributes.type neq 'Form'>
 <dt><a href="##" class="tooltip">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.releasedate')#<span>#application.rbFactory.getKeyValue(session.rb,"tooltip.contentReleaseDate")#</span></a></dt>
-<dd><input type="text" class="datepicker" name="releaseDate" value="#LSDateFormat(request.contentBean.getreleasedate(),session.dateKeyFormat)#"  maxlength="12" class="textAlt" ><!---<img class="calendar" type="image" src="images/icons/cal_24.png" width="14" height="14" hidefocus onclick="window.open('date_picker/index.cfm?form=contentForm&field=releaseDate&format=MDY','refWin','toolbar=no,location=no,directories=no,status=no,menubar=no,resizable=yes,copyhistory=no,scrollbars=no,width=190,height=220,top=250,left=250');return false;">---></dd>
+<dd>
+	<input type="text" class="datepicker" name="releaseDate" value="#LSDateFormat(request.contentBean.getreleasedate(),session.dateKeyFormat)#"  maxlength="12" class="textAlt" ><!---<img class="calendar" type="image" src="images/icons/cal_24.png" width="14" height="14" hidefocus onclick="window.open('date_picker/index.cfm?form=contentForm&field=releaseDate&format=MDY','refWin','toolbar=no,location=no,directories=no,status=no,menubar=no,resizable=yes,copyhistory=no,scrollbars=no,width=190,height=220,top=250,left=250');return false;">--->
+	<select name="releasehour" class="dropdown"><cfloop from="1" to="12" index="h"><option value="#h#" <cfif not LSisDate(request.contentBean.getReleaseDate())  and h eq 12 or (LSisDate(request.contentBean.getReleaseDate()) and (hour(request.contentBean.getReleaseDate()) eq h or (hour(request.contentBean.getReleaseDate()) - 12) eq h or hour(request.contentBean.getReleaseDate()) eq 0 and h eq 12))>selected</cfif>>#h#</option></cfloop></select>
+	<select name="releaseMinute" class="dropdown"><cfloop from="0" to="59" index="m"><option value="#m#" <cfif LSisDate(request.contentBean.getReleaseDate()) and minute(request.contentBean.getReleaseDate()) eq m>selected</cfif>>#iif(len(m) eq 1,de('0#m#'),de('#m#'))#</option></cfloop></select>
+	<select name="releaseDayPart" class="dropdown"><option value="AM">AM</option><option value="PM" <cfif LSisDate(request.contentBean.getReleaseDate()) and hour(request.contentBean.getReleaseDate()) gte 12>selected</cfif>>PM</option></select>
+
+</dd>
 </cfif>	
 <cfif ((attributes.parentid neq '00000000000000000000000000000000001' and application.settingsManager.getSite(attributes.siteid).getlocking() neq 'all') or (attributes.parentid eq '00000000000000000000000000000000001' and application.settingsManager.getSite(attributes.siteid).getlocking() eq 'none')) and attributes.contentid neq '00000000000000000000000000000000001'>
 	<cfset bydate=iif(request.contentBean.getdisplay() EQ 2 or (attributes.ptype eq 'Calendar' and attributes.contentid eq ''),de('true'),de('false'))>
