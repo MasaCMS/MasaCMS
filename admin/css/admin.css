@@ -1,5 +1,6 @@
 /* @override 
 	http://mura:8500/admin/css/admin.css
+	http://mura:8500/admin/css/admin.css?coreversion=1
 */
 
 /* This file is part of Mura CMS. 
@@ -345,7 +346,7 @@ img.fmImage {
 #container {
 	clear: both;
 	float: left;
-	min-width: 984px;
+	min-width: 1005px;
 	position: relative;
 	margin: 0 20px 0 0;
 }

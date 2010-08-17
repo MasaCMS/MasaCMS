@@ -281,4 +281,10 @@
 		<cfreturn false>
 	</cffunction>
 	
+	<cffunction name="onRequestEnd"  returnType="void"  output="true">
+	   <cfargument name="targetPage" required="true">
+	  	<cfset var local = structNew() />
+		<cfinclude template="../config/appcfc/onRequestEnd_include.cfm">
+	</cffunction>
+	
 </cfcomponent>

@@ -138,7 +138,7 @@ dd.categoryAssignment input.textAlt {
 
 /* @group IE 6 */
 
-* html #container { height: 1%; }
+* html #container { height: 1%; width: 1025px; }
 
 
 * html #header #welcome {

@@ -7,9 +7,11 @@
 
 <cffunction name="before" output="false">
 	<cfargument name="rc">
-
-	<cfif (not listFind(session.mura.memberships,'Admin;#variables.settingsManager.getSite(arguments.rc.siteid).getPrivateUserPoolID()#;0') and not listFind(session.mura.memberships,'S2')) and not ( variables.permUtility.getModulePerm('00000000000000000000000000000000008','#rc.siteid#') and variables.permUtility.getModulePerm('00000000000000000000000000000000000','#rc.siteid#'))>
-		<cfset secure(arguments.rc)>
+	
+	<cfif not (isdefined("arguments.rc.baseID") and arguments.rc.fuseaction eq "cPublicUsers.loadExtendedAttributes" and arguments.rc.baseID eq session.mura.userID)>
+		<cfif (not listFind(session.mura.memberships,'Admin;#variables.settingsManager.getSite(arguments.rc.siteid).getPrivateUserPoolID()#;0') and not listFind(session.mura.memberships,'S2')) and not ( variables.permUtility.getModulePerm('00000000000000000000000000000000008','#rc.siteid#') and variables.permUtility.getModulePerm('00000000000000000000000000000000000','#rc.siteid#'))>
+			<cfset secure(arguments.rc)>
+		</cfif>
 	</cfif>
 	
 	<cfparam name="arguments.rc.error" default="#structnew()#" />
