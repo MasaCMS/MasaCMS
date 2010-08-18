@@ -46,5 +46,5 @@ to your own modified versions of Mura CMS.
 <cfelseif isDefined("request.event")>
 	<cfset application.eventManager.announceEvent("onGlobalRequestEnd",request.event)>
 <cfelse>
-	<cfset application.eventManager.announceEvent("onGlobalRequestEnd")>
+	<cfset application.eventManager.announceEvent("onGlobalRequestEnd",createObject("component","mura.cfobject"))>
 </cfif>
