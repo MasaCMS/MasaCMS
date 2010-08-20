@@ -93,7 +93,7 @@ function jsonencode(arg)
 	}
 	return "unknown";
 }
-</cfscript>
+</cfscript></cfsilent>
 <cfsetting enablecfoutputonly="yes">
 <cfoutput>#jsonencode(fusebox.layout)#</cfoutput><cfsetting enablecfoutputonly="no">
 

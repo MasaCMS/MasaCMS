@@ -62,7 +62,7 @@ to your own modified versions of Mura CMS.
 <cfset variables.instance.LastUpdate = now() />
 <cfset variables.instance.Display = 1 />
 <cfset variables.instance.ParentID = "" />
-<cfset variables.instance.Type = "" />
+<cfset variables.instance.Type = "Page" />
 <cfset variables.instance.newFile = "" />
 <cfset variables.instance.subType = "Default" />
 

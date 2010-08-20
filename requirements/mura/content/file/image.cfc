@@ -340,7 +340,7 @@
 	
 		resizedImage = CreateObject("java", "java.awt.image.BufferedImage");
 
-		while(targetWidth neq or targetHeight neq h){
+		while(targetWidth neq w or targetHeight neq h){
 			if(w gt targetWidth){
 				w=w/2;
 				if(w gt targetWidth){

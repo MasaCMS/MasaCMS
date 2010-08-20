@@ -6,23 +6,23 @@ the Free Software Foundation, Version 2 of the License.
 
 Mura CMS is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. ï¿½See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-along with Mura CMS.  If not, see <http://www.gnu.org/licenses/>.
+along with Mura CMS. ï¿½If not, see <http://www.gnu.org/licenses/>.
 
 Linking Mura CMS statically or dynamically with other modules constitutes
 the preparation of a derivative work based on Mura CMS. Thus, the terms and 	
-conditions of the GNU General Public License version 2 (“GPL”) cover the entire combined work.
+conditions of the GNU General Public License version 2 (ï¿½GPLï¿½) cover the entire combined work.
 
 However, as a special exception, the copyright holders of Mura CMS grant you permission
 to combine Mura CMS with programs or libraries that are released under the GNU Lesser General Public License version 2.1.
 
-In addition, as a special exception,  the copyright holders of Mura CMS grant you permission
-to combine Mura CMS  with independent software modules that communicate with Mura CMS solely
+In addition, as a special exception, ï¿½the copyright holders of Mura CMS grant you permission
+to combine Mura CMS ï¿½with independent software modules that communicate with Mura CMS solely
 through modules packaged as Mura CMS plugins and deployed through the Mura CMS plugin installation API,
-provided that these modules (a) may only modify the  /trunk/www/plugins/ directory through the Mura CMS
+provided that these modules (a) may only modify the ï¿½/trunk/www/plugins/ directory through the Mura CMS
 plugin installation API, (b) must not alter any default objects in the Mura CMS database
 and (c) must not alter any files in the following directories except in cases where the code contains
 a separately distributed license.
@@ -37,7 +37,7 @@ the source code of that other code when and as the GNU GPL requires distribution
 
 For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception
 for your modified version; it is your choice whether to do so, or to make such modified version available under
-the GNU General Public License version 2  without this exception.  You may, if you choose, apply this exception
+the GNU General Public License version 2 ï¿½without this exception. ï¿½You may, if you choose, apply this exception
 to your own modified versions of Mura CMS.
 --->
 <cfcomponent extends="mura.cfobject" output="false">
@@ -238,34 +238,54 @@ ExtendSetID in(<cfloop from="1" to="#setLen#" index="s">
 		</cfquery>
 			
 		<cfquery  datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-			insert into #arguments.dataTable# (baseID,attributeID,siteID,attributeValue)
+			insert into #arguments.dataTable# (baseID,attributeID,siteID,stringvalue,attributeValue,datetimevalue,numericvalue
+			)
 			values (
 			<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.baseID#">,
 			<cfqueryparam cfsqltype="cf_sql_varchar"  value="#rs.attributeID#">,
 			<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.data.siteID#">,
+			<cfqueryparam cfsqltype="cf_sql_varchar"  value="#left(theValue,255)#">,
+			
 			<cfif len(theValue)>
+				
 				<cfif rs.validation eq "Date">
 					<cfif lsisDate(theValue)>
 						<cftry>
 						<cfset theValue = lsparseDateTime(theValue) />
-						<cfqueryparam cfsqltype="cf_sql_longvarchar"  value="#lsparseDateTime(theValue)#">
+						<cfqueryparam cfsqltype="cf_sql_longvarchar"  value="#theValue#">,
+						#createODBCDateTime(theValue)#,
+						null
+						
 						<cfcatch>
-							<cfqueryparam cfsqltype="cf_sql_longvarchar"  value="#theValue#">
+							<cfqueryparam cfsqltype="cf_sql_longvarchar"  value="#theValue#">,
+							null,
+							null
 						</cfcatch>
 						</cftry>
+						
 					<cfelse>
+						null,
+						null,
 						null
 					</cfif>
 				<cfelseif rs.validation eq "Numeric">
 					<cfif isNumeric(theValue)>
-						<cfqueryparam cfsqltype="cf_sql_longvarchar"  value="#theValue#">
+						<cfqueryparam cfsqltype="cf_sql_longvarchar"  value="#theValue#">,
+						null,
+						<cfqueryparam cfsqltype="cf_sql_numeric"  value="#theValue#">
 					<cfelse>
+						null,
+						null,
 						null
 					</cfif>
 				<cfelse>
-					<cfqueryparam cfsqltype="cf_sql_longvarchar"  value="#theValue#">
+					<cfqueryparam cfsqltype="cf_sql_longvarchar"  value="#theValue#">,
+					null,
+					null
 				</cfif>	
 			<cfelse>
+				null,
+				null,
 				null
 			</cfif>
 			)
@@ -376,7 +396,8 @@ ExtendSetID in(<cfloop from="1" to="#setLen#" index="s">
 <cfset var hasExtendSets=isDefined("arguments.data.extendSetID") and len(arguments.data.extendSetID)>
 <!--- preserve data from extendsets that were'nt submitted --->
 <cfquery name="rs" datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-select #arguments.dataTable#.*, tclassextendattributes.name from #arguments.dataTable#
+select #arguments.dataTable#.dataID, #arguments.dataTable#.baseID, #arguments.dataTable#.attributeID,#arguments.dataTable#.siteID, #arguments.dataTable#.attributevalue, 
+#arguments.dataTable#.datetimevalue, #arguments.dataTable#.numericvalue, #arguments.dataTable#.stringvalue, tclassextendattributes.name from #arguments.dataTable#
 inner join tclassextendattributes on ( #arguments.dataTable#.attributeID=tclassextendattributes.attributeID)
 inner join tclassextendsets on (tclassextendattributes.extendsetID=tclassextendsets.extendsetID)
 inner join tclassextend on (tclassextendsets.subtypeID=tclassextend.subtypeID)
@@ -401,15 +422,30 @@ and tclassextendattributes.extendSetID not in (<cfloop from="1" to="#setLen#" in
 
 <cfloop query="rs">
 		<cfquery datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-		insert into #arguments.dataTable# (baseID,attributeID,siteID,attributeValue)
+		insert into #arguments.dataTable# (baseID,attributeID,siteID,attributeValue,datetimevalue,numericvalue,stringvalue)
 		values (
 		<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.baseID#">,
 		<cfqueryparam cfsqltype="cf_sql_numeric"  value="#rs.attributeID#">,
 		<cfqueryparam cfsqltype="cf_sql_varchar"  value="#rs.siteID#">,
 		<cfif len(rs.attributeValue)>
-		<cfqueryparam cfsqltype="cf_sql_varchar"  value="#rs.attributeValue#">	
+			<cfqueryparam cfsqltype="cf_sql_varchar"  value="#rs.attributeValue#">	
 		<cfelse>
-		null
+			null
+		</cfif>,
+		<cfif len(rs.datetimevalue)>
+			#createODBCDateTime(rs.datetimevalue)#	
+		<cfelse>
+			null
+		</cfif>,
+		<cfif len(rs.numericvalue)>
+			<cfqueryparam cfsqltype="cf_sql_numeric"  value="#rs.numericvalue#">	
+		<cfelse>
+			null
+		</cfif>,
+		<cfif len(rs.stringvalue)>
+			<cfqueryparam cfsqltype="cf_sql_varchar"  value="#rs.stringvalue#">	
+		<cfelse>
+			null
 		</cfif>
 		)
 		</cfquery>
@@ -685,42 +721,298 @@ and tclassextendattributes.type='File'
 	
 	<cfswitch expression="#arguments.datatype#">
 	<cfcase value="Numeric">
-	<cfif variables.configBean.getDBType() eq "MSSQL">
-		<cfreturn "cast(attributeValue as Int)">
-	<cfelseif variables.configBean.getDBType() eq "ORACLE">
-		<cfreturn "to_number(to_char(attributeValue))">
-	<cfelse>
-		<cfreturn "cast(attributeValue as SIGNED)">
-	</cfif> 
+		<cfreturn "numericvalue">
 	</cfcase>
 	<cfcase value="Date">
-	<cfif variables.configBean.getDBType() eq "MSSQL">
-		<cfreturn "cast(subString(attributeValue,6,19) as dateTime)">
-	<cfelseif variables.configBean.getDBType() eq "ORACLE">
-		<cfreturn "to_date(subStr(to_char(attributeValue),6,19), 'YYYY-MM-DD HH24:MI:SS')">
-	<cfelse>
-		<cfreturn "cast(subString(attributeValue,6,19) as dateTime)">
-	</cfif> 
+		<cfreturn "datetimevalue">
 	</cfcase>
 	<cfdefaultcase>
-	<cfif variables.configBean.getDBType() eq "MSSQL">
-		<cfreturn "Cast(attributeValue as varchar(1000))">
-	<cfelseif variables.configBean.getDBType() eq "ORACLE">
-		<cfreturn "to_char(attributeValue)">"
-	<cfelse>
-		<cfreturn "attributeValue">
-	</cfif> 
+		<cfreturn "stringvalue">
 	</cfdefaultcase>
 	</cfswitch>
 <cfelse>
-	<cfif variables.configBean.getDBType() eq "MSSQL">
-		<cfreturn "Cast(attributeValue as varchar(1000))">
-	<cfelseif variables.configBean.getDBType() eq "ORACLE">
-		<cfreturn "to_char(attributeValue)">
-	<cfelse>
-		<cfreturn "attributeValue">
-	</cfif> 
+	<cfreturn "stringvalue">
 </cfif>
+</cffunction>
+
+<cffunction name="resetTypedData" output="false">
+	<cfargument name="type" default="both">
+
+	<cfif variables.configBean.getStrictExtendedData()>
+		<cfif arguments.type eq "Both" or arguments.type eq "Content">
+			<cfquery datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+				<cfswitch expression="#variables.configBean.getDBType()#">
+				<cfcase value="mysql">
+				update tclassextenddata
+				inner join tcontent on (tclassextenddata.baseID=tcontent.contentHistID
+										and tcontent.active=1)
+				set datetimevalue=null,
+					numericvalue=null,
+					stringvalue=null
+				where tclassextenddata.attributeValue is not null
+				</cfcase>
+				<cfcase value="mssql">
+				update tclassextenddata
+				
+				set datetimevalue=null,
+					numericvalue=null,
+					stringvalue=null
+				
+				from tclassextenddata 
+				inner join tcontent on (tclassextenddata.baseID=tcontent.contentHistID
+										and tcontent.active=1)
+				where tclassextenddata.attributeValue is not null
+				</cfcase>
+				<cfcase value="oracle">
+				update tclassextenddata 				
+				set datetimevalue=null,
+					numericvalue=null,
+					stringvalue=null
+				where Exists(Select 
+						dataID
+						from tclassextenddata 
+						inner join tcontent on (tclassextenddata.baseID=tcontent.contentHistID
+												and tcontent.active=1)
+						where attributeValue is not null
+					) 
+				
+				</cfcase>
+				</cfswitch>
+			</cfquery>
+			
+			<cfquery datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+			<cfswitch expression="#variables.configBean.getDBType()#">
+				<cfcase value="mysql">
+				update tclassextenddata
+				inner join tcontent on (tclassextenddata.baseID=tcontent.contentHistID
+										and tcontent.active=1)
+				set stringvalue=Left(attributeValue,255)
+				where tclassextenddata.attributeValue is not null
+				</cfcase>
+				<cfcase value="mssql">
+				update tclassextenddata
+				
+				set stringvalue=left(attributeValue,255)
+					
+				from tclassextenddata
+				inner join tcontent on (tclassextenddata.baseID=tcontent.contentHistID
+										and tcontent.active=1)
+				where tclassextenddata.attributeValue is not null							
+				</cfcase>
+				<cfcase value="oracle">
+				update tclassextenddata 				
+				set stringvalue=DBMS_LOB.SUBSTR(attributeValue,1,255)
+				where Exists(Select 
+						dataID
+						from tclassextenddata 
+						inner join tcontent on (tclassextenddata.baseID=tcontent.contentHistID
+												and tcontent.active=1)
+						where attributeValue is not null
+					) 
+										
+				</cfcase>
+				</cfswitch>
+			</cfquery>
+			
+			<cfquery datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+				<cfswitch expression="#variables.configBean.getDBType()#">
+				<cfcase value="mysql">
+				update tclassextenddata
+				inner join tclassextendattributes on (tclassextendattributes.attributeID=tclassextenddata.attributeID
+													and tclassextendattributes.validation='date')
+				inner join tcontent on (tclassextenddata.baseID=tcontent.contentHistID
+										and tcontent.active=1)
+				set datetimevalue= cast(subString(stringvalue,6,19) as dateTime)
+				where tclassextenddata.attributeValue is not null
+				</cfcase>
+				<cfcase value="mssql">
+				update tclassextenddata
+				
+				set datetimevalue=cast(subString(attributeValue,6,19) as dateTime)
+				
+				from tclassextenddata 
+				inner join tclassextendattributes on (tclassextendattributes.attributeID=tclassextenddata.attributeID
+													and  tclassextendattributes.validation='date')
+				inner join tcontent on (tclassextenddata.baseID=tcontent.contentHistID
+										and tcontent.active=1)
+				where tclassextenddata.attributeValue is not null
+				</cfcase>
+				<cfcase value="oracle">
+				update tclassextenddata 				
+				set datetimevalue=to_date(subStr(stringvalue,6,19), 'YYYY-MM-DD HH24:MI:SS')
+				where Exists(Select 
+						dataID
+						from tclassextenddata 
+						inner join tclassextendattributes on (tclassextendattributes.attributeID=tclassextenddata.attributeID
+															and lower(tclassextendattributes.validation)='date')
+						inner join tcontent on (tclassextenddata.baseID=tcontent.contentHistID
+												and tcontent.active=1)
+						where attributeValue is not null
+					) 
+				</cfcase>
+				</cfswitch>
+			</cfquery>
+			
+			<cfquery datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+				<cfswitch expression="#variables.configBean.getDBType()#">
+				<cfcase value="mysql">
+				update tclassextenddata
+				inner join tclassextendattributes on (tclassextendattributes.attributeID=tclassextenddata.attributeID
+													and tclassextendattributes.validation='numeric')
+				inner join tcontent on (tclassextenddata.baseID=tcontent.contentHistID
+										and tcontent.active=1)
+				set numericvalue=cast(stringvalue as SIGNED)
+				where tclassextenddata.attributeValue is not null
+				</cfcase>
+				<cfcase value="mssql">
+				update tclassextenddata
+				
+				set numericvalue=cast(stringvalue as Int)
+				
+				from tclassextenddata 
+				inner join tclassextendattributes on (tclassextendattributes.attributeID=tclassextenddata.attributeID
+													and  tclassextendattributes.validation='numeric')
+				inner join tcontent on (tclassextenddata.baseID=tcontent.contentHistID
+										and tcontent.active=1)
+				where tclassextenddata.attributeValue is not null
+				</cfcase>
+				<cfcase value="oracle">
+				update tclassextenddata 				
+				set numericvalue=to_number(stringvalue)
+				where Exists(Select 
+						dataID
+						from tclassextenddata 
+						inner join tclassextendattributes on (tclassextendattributes.attributeID=tclassextenddata.attributeID
+															and lower(tclassextendattributes.validation)='numeric')
+						inner join tcontent on (tclassextenddata.baseID=tcontent.contentHistID
+												and tcontent.active=1)
+						where attributeValue is not null
+					) 
+				</cfcase>
+				</cfswitch>
+			</cfquery>
+			
+		</cfif>
+		
+		<cfif arguments.type eq "Both" or arguments.type eq "User">
+			
+			<cfquery datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+			<cfswitch expression="#variables.configBean.getDBType()#">
+				<cfcase value="mysql">
+				update tclassextenddatauseractivity
+				set datetimevalue=null,
+					numericvalue=null,
+					stringvalue=null
+				where tclassextenddatauseractivity.attributeValue is not null
+				</cfcase>
+				<cfcase value="mssql">
+				update tclassextenddatauseractivity
+				set datetimevalue=null,
+					numericvalue=null,
+					stringvalue=null
+				where tclassextenddatauseractivity.attributeValue is not null
+				</cfcase>
+				<cfcase value="oracle">
+				update tclassextenddatauseractivity
+				set datetimevalue=null,
+					numericvalue=null,
+					stringvalue=null
+				where tclassextenddatauseractivity.attributeValue is not null
+				</cfcase>
+				</cfswitch>
+			</cfquery>
+			
+			<cfquery datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+			<cfswitch expression="#variables.configBean.getDBType()#">
+				<cfcase value="mysql">
+				update tclassextenddatauseractivity
+				set stringvalue=Left(attributeValue,255)
+				where tclassextenddatauseractivity.attributeValue is not null
+				</cfcase>
+				<cfcase value="mssql">
+				update tclassextenddatauseractivity
+				set stringvalue=left(attributeValue,255)
+				where tclassextenddatauseractivity.attributeValue is not null
+				</cfcase>
+				<cfcase value="oracle">
+				update tclassextenddatauseractivity
+				set stringvalue=DBMS_LOB.SUBSTR(attributeValue,1,255)
+				where tclassextenddatauseractivity.attributeValue is not null
+				</cfcase>
+				</cfswitch>
+			</cfquery>
+		
+			<cfquery datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+				<cfswitch expression="#variables.configBean.getDBType()#">
+				<cfcase value="mysql">
+				update tclassextenddatauseractivity
+				inner join tclassextendattributes on (tclassextendattributes.attributeID=tclassextenddatauseractivity.attributeID
+													and tclassextendattributes.validation='date')
+				set datetimevalue= cast(subString(stringvalue,6,19) as dateTime)
+				where tclassextenddatauseractivity.attributeValue is not null
+				</cfcase>
+				<cfcase value="mssql">
+				update tclassextenddatauseractivity
+				
+				set datetimevalue=cast(subString(stringvalue,6,19) as dateTime)
+				
+				from tclassextenddatauseractivity 
+				inner join tclassextendattributes on (tclassextendattributes.attributeID=tclassextenddatauseractivity.attributeID
+													and  tclassextendattributes.validation='date')
+				where tclassextenddatauseractivity.attributeValue is not null
+				</cfcase>
+				<cfcase value="oracle">
+				update tclassextenddatauseractivity 				
+				set datetimevalue=to_date(subStr(to_char(stringvalue),6,19), 'YYYY-MM-DD HH24:MI:SS')
+				where Exists(Select 
+						dataID
+						from tclassextenddatauseractivity 
+						inner join tclassextendattributes on (tclassextendattributes.attributeID=tclassextenddatauseractivity.attributeID
+															and lower(tclassextendattributes.validation)='date')
+						inner join tcontent on (tclassextenddatauseractivity.baseID=tcontent.contentHistID
+												and tcontent.active=1)
+						where attributeValue is not null
+					) 
+				</cfcase>
+				</cfswitch>
+			</cfquery>
+			
+			<cfquery datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+				<cfswitch expression="#variables.configBean.getDBType()#">
+				<cfcase value="mysql">
+				update tclassextenddatauseractivity
+				inner join tclassextendattributes on (tclassextendattributes.attributeID=tclassextenddatauseractivity.attributeID
+													and tclassextendattributes.validation='numeric')
+				set numericvalue=cast(stringvalue as SIGNED)
+				where tclassextenddatauseractivity.attributeValue is not null
+				</cfcase>
+				<cfcase value="mssql">
+				update tclassextenddatauseractivity
+				
+				set numericvalue=cast(stringvalue as Int)
+				
+				from tclassextenddatauseractivity 
+				inner join tclassextendattributes on (tclassextendattributes.attributeID=tclassextenddatauseractivity.attributeID
+													and  tclassextendattributes.validation='numeric')
+				where tclassextenddatauseractivity.attributeValue is not null
+				</cfcase>
+				<cfcase value="oracle">
+				update tclassextenddatauseractivity 				
+				set numericvalue=to_number(stringvalue)
+				where Exists(Select 
+						dataID
+						from tclassextenddatauseractivity 
+						inner join tclassextendattributes on (tclassextendattributes.attributeID=tclassextenddatauseractivity.attributeID
+															and lower(tclassextendattributes.validation)='numeric')
+						inner join tcontent on (tclassextenddatauseractivity.baseID=tcontent.contentHistID
+												and tcontent.active=1)
+						where attributeValue is not null
+					) 
+				</cfcase>
+				</cfswitch>
+			</cfquery>
+		</cfif>
+	</cfif>
 </cffunction>
 
 </cfcomponent>

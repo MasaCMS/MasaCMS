@@ -815,18 +815,21 @@ to your own modified versions of Mura CMS.
 					and baseID  in (select contenthistid from tcontent where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.tositeid#"/>)
 				</cfquery>
 				<cfquery datasource="#arguments.fromDSN#" name="rstclassextenddata">
-					select * from tclassextenddata where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.fromsiteid#"/>
+					select baseID,attributeID,attributeValue,siteID, stringvalue, numericvalue, datetimevalue from tclassextenddata where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.fromsiteid#"/>
 					and baseID  in (select contenthistid from tcontent where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.fromsiteid#"/>)
 				</cfquery>
 				<cfloop query="rstclassextenddata">
 					<cfquery datasource="#arguments.toDSN#">
-						insert into tclassextenddata (baseID,attributeID,attributeValue,siteID)
+						insert into tclassextenddata (baseID,attributeID,attributeValue,siteID, stringvalue, numericvalue, datetimevalue)
 						values
 						(
 						<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(baseID)#">,
 						<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(attributeID),de(attributeID),de(0))#">,
 						<cfqueryparam cfsqltype="cf_sql_LONGVARCHAR" null="#iif(attributeValue neq '',de('no'),de('yes'))#" value="#attributeValue#">,
-						<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#arguments.tositeID#">
+						<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#arguments.tositeID#">,
+						<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(stringvalue neq '',de('no'),de('yes'))#" value="#stringvalue#">,
+						<cfqueryparam cfsqltype="cf_sql_NUMERIC" null="#iif(isNumeric(numericvalue),de('no'),de('yes'))#" value="#numericvalue#">,
+						<cfqueryparam cfsqltype="cf_sql_TIMESTAMP" null="#iif(isDate(datetimevalue),de('no'),de('yes'))#" value="#datetimevalue#">
 						)
 					</cfquery>
 				</cfloop>
@@ -993,7 +996,8 @@ to your own modified versions of Mura CMS.
 				</cfloop>
 				
 				<cfquery datasource="#arguments.fromDSN#" name="rstclassextenddata">
-					select tclassextenddata.* from tclassextenddata 
+					select tclassextenddata.baseID, tclassextenddata.attributeID, tclassextenddata.attributeValue, 
+					tclassextenddata.siteID, tclassextenddata.stringvalue, tclassextenddata.numericvalue, tclassextenddata.datetimevalue from tclassextenddata 
 					inner join tcontent on (tclassextenddata.baseid=tcontent.contenthistid)
 					where tclassextenddata.siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.fromsiteid#"/>
 					and tcontent.active = 1
@@ -1002,13 +1006,16 @@ to your own modified versions of Mura CMS.
 				<cfloop query="rstclassextenddata">
 					<cftry>
 						<cfquery datasource="#arguments.toDSN#">
-							insert into tclassextenddata (baseID,attributeID,attributeValue,siteID)
+							insert into tclassextenddata (baseID,attributeID,attributeValue,siteID,stringvalue,numericvalue,datetimevalue)
 							values
 							(
 							<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(baseID)#">,
 							<cfqueryparam cfsqltype="cf_sql_INTEGER" value="#keys.get(attributeID)#">,
 							<cfqueryparam cfsqltype="cf_sql_LONGVARCHAR" null="#iif(attributeValue neq '',de('no'),de('yes'))#" value="#attributeValue#">,
-							<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#arguments.tositeID#">
+							<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#arguments.tositeID#">,
+							<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(stringvalue neq '',de('no'),de('yes'))#" value="#stringvalue#">,
+							<cfqueryparam cfsqltype="cf_sql_NUMERIC" null="#iif(isNumeric(numericvalue),de('no'),de('yes'))#" value="#numericvalue#">,
+							<cfqueryparam cfsqltype="cf_sql_TIMESTAMP" null="#iif(isDate(datetimevalue),de('no'),de('yes'))#" value="#datetimevalue#">
 							)
 						</cfquery>
 						<cfcatch>
@@ -1022,6 +1029,7 @@ to your own modified versions of Mura CMS.
 				</cfloop>
 		
 	</cffunction>
+	
 	<cffunction name="getToWorkCopySameDSN" returntype="void">
 		<cfargument name="fromSiteID" type="string" default="" required="true">
 		<cfargument name="toSiteID" type="string" default="" required="true">
@@ -1137,8 +1145,6 @@ to your own modified versions of Mura CMS.
 		
 		
 	</cffunction>
-	
-	
 	<cffunction name="publish" returntype="void">
 		<cfargument name="siteid" required="yes" default="">
 
@@ -1299,7 +1305,6 @@ to your own modified versions of Mura CMS.
 		<cfset application.serviceFactory.getBean("categoryUtility").updateGlobalMaterializedPath(siteid=arguments.toSiteID,datasource=arguments.toDSN) />
 		
 	</cffunction>
-	
 	
 	<cffunction name="start" returntype="boolean">
 		<cfargument name="siteid" required="yes" default="">

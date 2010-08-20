@@ -80,6 +80,8 @@ to your own modified versions of Mura CMS.
 			<cfset contentBean.setIsNew(0) />
 			<cfset contentBean.setPreserveID(rsContent.contentHistID) />
 		<cfelseif arguments.use404>
+			<cfset contentBean.setType("Page") />
+			<cfset contentBean.setSubType("Default") />
 			<cfset contentBean.setIsNew(1) />
 			<cfset contentBean.setActive(1) />
 			<cfset contentBean.setBody('The requested version of this content could not be found.')/>
@@ -122,6 +124,8 @@ to your own modified versions of Mura CMS.
 			<cfset contentBean.setIsNew(0) />
 			<cfset contentBean.setPreserveID(rsContent.contentHistID) />
 		<cfelseif arguments.use404>
+			<cfset contentBean.setType("Page") />
+			<cfset contentBean.setSubType("Default") />
 			<cfset contentBean.setIsNew(1) />
 			<cfset contentBean.setActive(1) />
 			<cfset contentBean.setBody('The requested page could not be found.')/>
@@ -241,6 +245,8 @@ to your own modified versions of Mura CMS.
 			<cfset contentBean.setIsNew(0) />
 			<cfset contentBean.setPreserveID(rsContent.contentHistID) />
 		<cfelseif arguments.use404>
+			<cfset contentBean.setType("Page") />
+			<cfset contentBean.setSubType("Default") />
 			<cfset contentBean.setBody('The requested page could not be found.')/>
 			<cfset contentBean.setTitle('404')/>
 			<cfset contentBean.setMenuTitle('404')/>

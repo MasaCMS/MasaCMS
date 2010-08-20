@@ -65,6 +65,8 @@ function setExtendedAttributes(data){
 	jQuery("#extendSetsBasic").html(r.basic);
 	//checkExtendSetTargeting();
 	setHTMLEditors(context,themeAssetPath);
+	setDatePickers("#extendSetsDefault .datepicker",dtLocale);
+	setDatePickers("#extendSetsBasic .datepicker",dtLocale);
 }
 
 function checkExtendSetTargeting(){
