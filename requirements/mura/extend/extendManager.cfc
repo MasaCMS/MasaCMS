@@ -749,7 +749,7 @@ and tclassextendattributes.type='File'
 				set datetimevalue=null,
 					numericvalue=null,
 					stringvalue=null
-				where tclassextenddata.attributeValue is not null
+				where attributeValue is not null
 				</cfcase>
 				<cfcase value="mssql">
 				update tclassextenddata
@@ -761,14 +761,14 @@ and tclassextendattributes.type='File'
 				from tclassextenddata 
 				inner join tcontent on (tclassextenddata.baseID=tcontent.contentHistID
 										and tcontent.active=1)
-				where tclassextenddata.attributeValue is not null
+				where attributeValue is not null
 				</cfcase>
 				<cfcase value="oracle">
 				update tclassextenddata 				
 				set datetimevalue=null,
 					numericvalue=null,
 					stringvalue=null
-				where Exists(Select 
+				where dataID in (Select 
 						dataID
 						from tclassextenddata 
 						inner join tcontent on (tclassextenddata.baseID=tcontent.contentHistID
@@ -787,7 +787,7 @@ and tclassextendattributes.type='File'
 				inner join tcontent on (tclassextenddata.baseID=tcontent.contentHistID
 										and tcontent.active=1)
 				set stringvalue=Left(attributeValue,255)
-				where tclassextenddata.attributeValue is not null
+				where attributeValue is not null
 				</cfcase>
 				<cfcase value="mssql">
 				update tclassextenddata
@@ -797,12 +797,12 @@ and tclassextendattributes.type='File'
 				from tclassextenddata
 				inner join tcontent on (tclassextenddata.baseID=tcontent.contentHistID
 										and tcontent.active=1)
-				where tclassextenddata.attributeValue is not null							
+				where attributeValue is not null							
 				</cfcase>
 				<cfcase value="oracle">
 				update tclassextenddata 				
-				set stringvalue=DBMS_LOB.SUBSTR(attributeValue,1,255)
-				where Exists(Select 
+				set stringvalue=DBMS_LOB.SUBSTR(attributeValue,255,1)
+				where dataID in (Select 
 						dataID
 						from tclassextenddata 
 						inner join tcontent on (tclassextenddata.baseID=tcontent.contentHistID
@@ -840,7 +840,7 @@ and tclassextendattributes.type='File'
 				<cfcase value="oracle">
 				update tclassextenddata 				
 				set datetimevalue=to_date(subStr(stringvalue,6,19), 'YYYY-MM-DD HH24:MI:SS')
-				where Exists(Select 
+				where dataID in (Select 
 						dataID
 						from tclassextenddata 
 						inner join tclassextendattributes on (tclassextendattributes.attributeID=tclassextenddata.attributeID
@@ -861,25 +861,25 @@ and tclassextendattributes.type='File'
 													and tclassextendattributes.validation='numeric')
 				inner join tcontent on (tclassextenddata.baseID=tcontent.contentHistID
 										and tcontent.active=1)
-				set numericvalue=cast(stringvalue as SIGNED)
-				where tclassextenddata.attributeValue is not null
+				set numericvalue=0+stringvalue
+				where attributeValue is not null
 				</cfcase>
 				<cfcase value="mssql">
 				update tclassextenddata
 				
-				set numericvalue=cast(stringvalue as Int)
+				set numericvalue=cast(stringvalue as FLOAT)
 				
 				from tclassextenddata 
 				inner join tclassextendattributes on (tclassextendattributes.attributeID=tclassextenddata.attributeID
 													and  tclassextendattributes.validation='numeric')
 				inner join tcontent on (tclassextenddata.baseID=tcontent.contentHistID
 										and tcontent.active=1)
-				where tclassextenddata.attributeValue is not null
+				where attributeValue is not null
 				</cfcase>
 				<cfcase value="oracle">
 				update tclassextenddata 				
-				set numericvalue=to_number(stringvalue)
-				where Exists(Select 
+				set numericvalue=cast(stringvalue as NUMBER)
+				where dataID in (Select 
 						dataID
 						from tclassextenddata 
 						inner join tclassextendattributes on (tclassextendattributes.attributeID=tclassextenddata.attributeID
@@ -903,21 +903,21 @@ and tclassextendattributes.type='File'
 				set datetimevalue=null,
 					numericvalue=null,
 					stringvalue=null
-				where tclassextenddatauseractivity.attributeValue is not null
+				where attributeValue is not null
 				</cfcase>
 				<cfcase value="mssql">
 				update tclassextenddatauseractivity
 				set datetimevalue=null,
 					numericvalue=null,
 					stringvalue=null
-				where tclassextenddatauseractivity.attributeValue is not null
+				where attributeValue is not null
 				</cfcase>
 				<cfcase value="oracle">
 				update tclassextenddatauseractivity
 				set datetimevalue=null,
 					numericvalue=null,
 					stringvalue=null
-				where tclassextenddatauseractivity.attributeValue is not null
+				where attributeValue is not null
 				</cfcase>
 				</cfswitch>
 			</cfquery>
@@ -927,17 +927,17 @@ and tclassextendattributes.type='File'
 				<cfcase value="mysql">
 				update tclassextenddatauseractivity
 				set stringvalue=Left(attributeValue,255)
-				where tclassextenddatauseractivity.attributeValue is not null
+				where attributeValue is not null
 				</cfcase>
 				<cfcase value="mssql">
 				update tclassextenddatauseractivity
 				set stringvalue=left(attributeValue,255)
-				where tclassextenddatauseractivity.attributeValue is not null
+				where attributeValue is not null
 				</cfcase>
 				<cfcase value="oracle">
 				update tclassextenddatauseractivity
-				set stringvalue=DBMS_LOB.SUBSTR(attributeValue,1,255)
-				where tclassextenddatauseractivity.attributeValue is not null
+				set stringvalue=DBMS_LOB.SUBSTR(attributeValue,255,1)
+				where attributeValue is not null
 				</cfcase>
 				</cfswitch>
 			</cfquery>
@@ -949,7 +949,7 @@ and tclassextendattributes.type='File'
 				inner join tclassextendattributes on (tclassextendattributes.attributeID=tclassextenddatauseractivity.attributeID
 													and tclassextendattributes.validation='date')
 				set datetimevalue= cast(subString(stringvalue,6,19) as dateTime)
-				where tclassextenddatauseractivity.attributeValue is not null
+				where attributeValue is not null
 				</cfcase>
 				<cfcase value="mssql">
 				update tclassextenddatauseractivity
@@ -959,18 +959,16 @@ and tclassextendattributes.type='File'
 				from tclassextenddatauseractivity 
 				inner join tclassextendattributes on (tclassextendattributes.attributeID=tclassextenddatauseractivity.attributeID
 													and  tclassextendattributes.validation='date')
-				where tclassextenddatauseractivity.attributeValue is not null
+				where attributeValue is not null
 				</cfcase>
 				<cfcase value="oracle">
 				update tclassextenddatauseractivity 				
 				set datetimevalue=to_date(subStr(to_char(stringvalue),6,19), 'YYYY-MM-DD HH24:MI:SS')
-				where Exists(Select 
+				where dataID in (Select 
 						dataID
 						from tclassextenddatauseractivity 
 						inner join tclassextendattributes on (tclassextendattributes.attributeID=tclassextenddatauseractivity.attributeID
 															and lower(tclassextendattributes.validation)='date')
-						inner join tcontent on (tclassextenddatauseractivity.baseID=tcontent.contentHistID
-												and tcontent.active=1)
 						where attributeValue is not null
 					) 
 				</cfcase>
@@ -983,29 +981,27 @@ and tclassextendattributes.type='File'
 				update tclassextenddatauseractivity
 				inner join tclassextendattributes on (tclassextendattributes.attributeID=tclassextenddatauseractivity.attributeID
 													and tclassextendattributes.validation='numeric')
-				set numericvalue=cast(stringvalue as SIGNED)
-				where tclassextenddatauseractivity.attributeValue is not null
+				set numericvalue=0+stringvalue
+				where attributeValue is not null
 				</cfcase>
 				<cfcase value="mssql">
 				update tclassextenddatauseractivity
 				
-				set numericvalue=cast(stringvalue as Int)
+				set numericvalue=cast(stringvalue as FLOAT)
 				
 				from tclassextenddatauseractivity 
 				inner join tclassextendattributes on (tclassextendattributes.attributeID=tclassextenddatauseractivity.attributeID
 													and  tclassextendattributes.validation='numeric')
-				where tclassextenddatauseractivity.attributeValue is not null
+				where attributeValue is not null
 				</cfcase>
 				<cfcase value="oracle">
 				update tclassextenddatauseractivity 				
-				set numericvalue=to_number(stringvalue)
-				where Exists(Select 
+				set numericvalue=cast(stringvalue as NUMBER)
+				where dataID in (Select 
 						dataID
 						from tclassextenddatauseractivity 
 						inner join tclassextendattributes on (tclassextendattributes.attributeID=tclassextenddatauseractivity.attributeID
 															and lower(tclassextendattributes.validation)='numeric')
-						inner join tcontent on (tclassextenddatauseractivity.baseID=tcontent.contentHistID
-												and tcontent.active=1)
 						where attributeValue is not null
 					) 
 				</cfcase>

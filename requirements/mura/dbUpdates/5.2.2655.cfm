@@ -43,7 +43,7 @@ select * from tclassextenddata  where 0=1
 	ALTER TABLE tclassextenddata ADD datetimevalue [datetime] default NULL
 	</cfquery>
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
-	ALTER TABLE tclassextenddata ADD numericvalue [int] default NULL
+	ALTER TABLE tclassextenddata ADD numericvalue [float] default NULL
 	</cfquery>
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 	ALTER TABLE tclassextenddata ADD stringvalue [nvarchar](255) default NULL
@@ -65,7 +65,7 @@ select * from tclassextenddata  where 0=1
 	ALTER TABLE tclassextenddata ADD COLUMN datetimevalue datetime default NULL
 	</cfquery>
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
-	ALTER TABLE tclassextenddata ADD COLUMN numericvalue int(10) default NULL
+	ALTER TABLE tclassextenddata ADD COLUMN numericvalue float default NULL
 	</cfquery>
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 	ALTER TABLE tclassextenddata ADD COLUMN stringvalue varchar(255) default NULL
@@ -86,7 +86,7 @@ select * from tclassextenddata  where 0=1
 			ALTER TABLE tclassextenddata ADD  datetimevalue datetime default NULL
 			</cfquery>
 			<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
-			ALTER TABLE tclassextenddata ADD  numericvalue int(10) default NULL
+			ALTER TABLE tclassextenddata ADD  numericvalue real default NULL
 			</cfquery>
 			<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 			ALTER TABLE tclassextenddata ADD COLUMN stringvalue varchar(255) default NULL
@@ -109,7 +109,7 @@ select * from tclassextenddata  where 0=1
 	ALTER TABLE tclassextenddata ADD datetimevalue DATE default null
 	</cfquery>
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
-	ALTER TABLE tclassextenddata ADD numericvalue NUMBER(10,0) default NULL
+	ALTER TABLE tclassextenddata ADD numericvalue NUMBER default NULL
 	</cfquery>
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 	ALTER TABLE tclassextenddata ADD stringvalue varchar2(255) default NULL
@@ -143,7 +143,7 @@ select * from tclassextenddatauseractivity  where 0=1
 	ALTER TABLE tclassextenddatauseractivity ADD datetimevalue [datetime] default NULL
 	</cfquery>
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
-	ALTER TABLE tclassextenddatauseractivity ADD numericvalue [int] default NULL
+	ALTER TABLE tclassextenddatauseractivity ADD numericvalue [float] default NULL
 	</cfquery>
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 	ALTER TABLE tclassextenddatauseractivity ADD stringvalue [nvarchar](255) NULL
@@ -165,7 +165,7 @@ select * from tclassextenddatauseractivity  where 0=1
 	ALTER TABLE tclassextenddatauseractivity ADD COLUMN datetimevalue datetime default NULL
 	</cfquery>
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
-	ALTER TABLE tclassextenddatauseractivity ADD COLUMN numericvalue int(10) default NULL
+	ALTER TABLE tclassextenddatauseractivity ADD COLUMN numericvalue float default NULL
 	</cfquery>
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 	ALTER TABLE tclassextenddatauseractivity ADD COLUMN stringvalue varchar(255) default NULL
@@ -186,7 +186,7 @@ select * from tclassextenddatauseractivity  where 0=1
 			ALTER TABLE tclassextenddatauseractivity ADD  datetimevalue datetime default NULL
 			</cfquery>
 			<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
-			ALTER TABLE tclassextenddatauseractivity ADD  numericvalue int(10) default NULL
+			ALTER TABLE tclassextenddatauseractivity ADD  numericvalue real default NULL
 			</cfquery>
 			<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 			ALTER TABLE tclassextenddatauseractivity ADD COLUMN stringvalue varchar(255) default NULL
@@ -209,7 +209,7 @@ select * from tclassextenddatauseractivity  where 0=1
 	ALTER TABLE tclassextenddatauseractivity ADD datetimevalue DATE default null
 	</cfquery>
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
-	ALTER TABLE tclassextenddatauseractivity ADD numericvalue NUMBER(10,0) default null
+	ALTER TABLE tclassextenddatauseractivity ADD numericvalue NUMBER default null
 	</cfquery>
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 	ALTER TABLE tclassextenddatauseractivity ADD stringvalue varchar2(255)
