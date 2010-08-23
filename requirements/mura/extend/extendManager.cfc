@@ -822,20 +822,20 @@ and tclassextendattributes.type='File'
 													and tclassextendattributes.validation='date')
 				inner join tcontent on (tclassextenddata.baseID=tcontent.contentHistID
 										and tcontent.active=1)
-				set datetimevalue= cast(subString(stringvalue,6,19) as dateTime)
-				where tclassextenddata.attributeValue is not null
+				set datetimevalue=STR_TO_DATE(subString(stringvalue,6,19),'%Y-%m-%d %T')
+				where attributevalue is not null
 				</cfcase>
 				<cfcase value="mssql">
 				update tclassextenddata
 				
-				set datetimevalue=cast(subString(attributeValue,6,19) as dateTime)
+				set datetimevalue=cast(subString(stringvalue,6,19) as dateTime)
 				
 				from tclassextenddata 
 				inner join tclassextendattributes on (tclassextendattributes.attributeID=tclassextenddata.attributeID
 													and  tclassextendattributes.validation='date')
 				inner join tcontent on (tclassextenddata.baseID=tcontent.contentHistID
 										and tcontent.active=1)
-				where tclassextenddata.attributeValue is not null
+				where isDate(subString(stringvalue,6,19))=1
 				</cfcase>
 				<cfcase value="oracle">
 				update tclassextenddata 				
@@ -874,7 +874,7 @@ and tclassextendattributes.type='File'
 													and  tclassextendattributes.validation='numeric')
 				inner join tcontent on (tclassextenddata.baseID=tcontent.contentHistID
 										and tcontent.active=1)
-				where attributeValue is not null
+				where isNumeric(stringvalue)=1
 				</cfcase>
 				<cfcase value="oracle">
 				update tclassextenddata 				
@@ -887,6 +887,7 @@ and tclassextendattributes.type='File'
 						inner join tcontent on (tclassextenddata.baseID=tcontent.contentHistID
 												and tcontent.active=1)
 						where attributeValue is not null
+						and LENGTH(TRIM(TRANSLATE(stringvalue, ' +-.0123456789', ' '))) is null
 					) 
 				</cfcase>
 				</cfswitch>
@@ -948,8 +949,8 @@ and tclassextendattributes.type='File'
 				update tclassextenddatauseractivity
 				inner join tclassextendattributes on (tclassextendattributes.attributeID=tclassextenddatauseractivity.attributeID
 													and tclassextendattributes.validation='date')
-				set datetimevalue= cast(subString(stringvalue,6,19) as dateTime)
-				where attributeValue is not null
+				set datetimevalue=STR_TO_DATE(subString(stringvalue,6,19),'%Y-%m-%d %T')
+				where attributevalue is not null
 				</cfcase>
 				<cfcase value="mssql">
 				update tclassextenddatauseractivity
@@ -959,7 +960,7 @@ and tclassextendattributes.type='File'
 				from tclassextenddatauseractivity 
 				inner join tclassextendattributes on (tclassextendattributes.attributeID=tclassextenddatauseractivity.attributeID
 													and  tclassextendattributes.validation='date')
-				where attributeValue is not null
+				where isDate(subString(stringvalue,6,19))=1
 				</cfcase>
 				<cfcase value="oracle">
 				update tclassextenddatauseractivity 				
@@ -992,7 +993,7 @@ and tclassextendattributes.type='File'
 				from tclassextenddatauseractivity 
 				inner join tclassextendattributes on (tclassextendattributes.attributeID=tclassextenddatauseractivity.attributeID
 													and  tclassextendattributes.validation='numeric')
-				where attributeValue is not null
+				where isNumeric(stringvalue)=1
 				</cfcase>
 				<cfcase value="oracle">
 				update tclassextenddatauseractivity 				
@@ -1003,6 +1004,7 @@ and tclassextendattributes.type='File'
 						inner join tclassextendattributes on (tclassextendattributes.attributeID=tclassextenddatauseractivity.attributeID
 															and lower(tclassextendattributes.validation)='numeric')
 						where attributeValue is not null
+						and LENGTH(TRIM(TRANSLATE(stringvalue, ' +-.0123456789', ' '))) is null
 					) 
 				</cfcase>
 				</cfswitch>

@@ -202,7 +202,11 @@ to your own modified versions of Mura CMS.
 	<cfreturn variables.sites['#arguments.siteid#'] />
 	<cfcatch>
 			<cfset setSites() />
-			<cfreturn variables.sites['#arguments.siteid#'] />	
+			<cfif structKeyExists(variables.sites,'#arguments.siteid#')>
+				<cfreturn variables.sites['#arguments.siteid#'] />
+			<cfelse>
+				<cfreturn variables.sites['default'] />
+			</cfif>	
 	</cfcatch>
 	</cftry>
 </cffunction>

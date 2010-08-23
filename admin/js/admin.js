@@ -681,6 +681,19 @@ function setTabs(target,activetab){
 		);
 }
 
+function setAccordions(target,activepanel){
+	jQuery(target).each(
+			function(index) {
+				if(activepanel != null){
+					jQuery(this).accordion({ active: activepanel })	
+				} else {
+					jQuery(this).accordion();
+				}
+			}
+	);
+}	
+
+
 function alertDialog(message) {
 jQuery("#alertDialogMessage").html(message);
 jQuery("#alertDialog").dialog({

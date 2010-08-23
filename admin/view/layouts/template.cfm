@@ -44,6 +44,8 @@ to your own modified versions of Mura CMS.
 <cfparam name="attributes.jsLib" default="prototype">
 <cfparam name="attributes.jsLibLoaded" default="false">
 <cfparam name="attributes.activetab" default="0">
+<cfparam name="attributes.activepanel" default="0">
+<cfparam name="attributes.siteid" default='#session.siteID#'>
 <cfparam name="application.coreversion" default="#application.serviceFactory.getBean('autoUpdater').getCurrentVersion()#">
 </cfsilent>
 <cfoutput><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -142,7 +144,7 @@ to your own modified versions of Mura CMS.
 <script type="text/javascript" src="#application.configBean.getContext()#/wysiwyg/fckeditor.js"></script>
 #session.dateKey#
 <script type="text/javascript">
-	jQuery(document).ready(function(){setDatePickers(".datepicker",dtLocale);setTabs(".tabs",#attributes.activeTab#)});
+	jQuery(document).ready(function(){setDatePickers(".datepicker",dtLocale);setTabs(".tabs",#attributes.activeTab#);setHTMLEditors('#application.configBean.getContext()#','#application.settingsManager.getSite(attributes.siteID).getThemeAssetPath()#');setAccordions(".accordion",#attributes.activePanel#)});
 </script>
 #fusebox.ajax#
 
