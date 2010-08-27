@@ -42,6 +42,18 @@ to your own modified versions of Mura CMS.
 --->
 <cfcomponent extends="mura.cfobject" output="false">
 
+<cfsavecontent variable="variables.fieldlist"><cfoutput>tcontent.tcontent_ID,tcontent.Active,tcontent.Approved,tcontent.audience,tcontent.Body,tcontent.ContentHistID,
+tcontent.ContentID,tcontent.Credits,tcontent.Display,tcontent.DisplayStart,tcontent.DisplayStop,tcontent.featureStart,
+tcontent.featureStop,tcontent.FileID,tcontent.Filename,tcontent.forceSSL,tcontent.inheritObjects,tcontent.isFeature,
+tcontent.IsLocked,tcontent.IsNav,tcontent.keyPoints,tcontent.lastUpdate,tcontent.lastUpdateBy,tcontent.lastUpdateByID,
+tcontent.MenuTitle,tcontent.MetaDesc,tcontent.MetaKeyWords,tcontent.moduleAssign,tcontent.ModuleID,tcontent.nextN,
+tcontent.Notes,tcontent.OrderNo,tcontent.ParentID,tcontent.displayTitle,tcontent.ReleaseDate,tcontent.RemoteID,
+tcontent.RemotePubDate,tcontent.RemoteSource,tcontent.RemoteSourceURL,tcontent.RemoteURL,tcontent.responseChart,
+tcontent.responseDisplayFields,tcontent.responseMessage,tcontent.responseSendTo,tcontent.Restricted,tcontent.RestrictGroups,
+tcontent.searchExclude,tcontent.SiteID,tcontent.sortBy,tcontent.sortDirection,tcontent.Summary,tcontent.Target,
+tcontent.TargetParams,tcontent.Template,tcontent.Title,tcontent.Type,tcontent.subType,tcontent.Path,tcontent.tags,
+tcontent.doCache,tcontent.created,tcontent.urltitle,tcontent.htmltitle</cfoutput></cfsavecontent>
+
 <cffunction name="init" access="public" returntype="any" output="false">
 <cfargument name="configBean" type="any" required="yes"/>
 <cfargument name="settingsManager" type="any" required="yes"/>
@@ -69,7 +81,7 @@ to your own modified versions of Mura CMS.
 		
 		<cfif len(arguments.contentHistID)>	
 			<cfquery datasource="#variables.dsn#" name="rsContent"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-				select tcontent.*, tfiles.fileSize, tfiles.contentType, tfiles.contentSubType, tfiles.fileExt from tcontent 
+				select #variables.fieldlist#, tfiles.fileSize, tfiles.contentType, tfiles.contentSubType, tfiles.fileExt from tcontent 
 				left join tfiles on (tcontent.fileid=tfiles.fileid)
 				where tcontent.contenthistid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentHistID#" /> and tcontent.siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#" />
 			</cfquery>
@@ -112,7 +124,7 @@ to your own modified versions of Mura CMS.
 		
 		<cfif len(arguments.contentID)>
 			<cfquery datasource="#variables.dsn#" name="rsContent"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-				select tcontent.*, tfiles.fileSize, tfiles.contentType, tfiles.contentSubType, tfiles.fileExt from tcontent 
+				select #variables.fieldlist#, tfiles.fileSize, tfiles.contentType, tfiles.contentSubType, tfiles.fileExt from tcontent 
 				left join tfiles on (tcontent.fileid=tfiles.fileid)
 				where tcontent.contentid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentID#" /> and tcontent.active=1 and tcontent.siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#" />
 				and type in ('Page','Portal','File','Calendar','Link','Gallery','Component','Form')
@@ -158,7 +170,7 @@ to your own modified versions of Mura CMS.
 		
 		<cfif len(arguments.remoteID)>		
 			<cfquery datasource="#variables.dsn#" name="rsContent"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-				select tcontent.*, tfiles.fileSize, tfiles.contentType, tfiles.contentSubType, tfiles.fileExt from tcontent 
+				select #variables.fieldlist#, tfiles.fileSize, tfiles.contentType, tfiles.contentSubType, tfiles.fileExt from tcontent 
 				left join tfiles on (tcontent.fileid=tfiles.fileid)
 				where tcontent.remoteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.remoteID#" /> and tcontent.active=1 and tcontent.siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteid#" />
 				and type in ('Page','Portal','File','Calendar','Link','Gallery','Component','Form')
@@ -217,7 +229,7 @@ to your own modified versions of Mura CMS.
 		</cfif>
 			
 		<cfquery datasource="#variables.dsn#" name="rsContent"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-			select tcontent.*, tfiles.fileSize, tfiles.contentType, tfiles.contentSubType, tfiles.fileExt from tcontent 
+			select #variables.fieldlist#, tfiles.fileSize, tfiles.contentType, tfiles.contentSubType, tfiles.fileExt from tcontent 
 			left join tfiles on (tcontent.fileid=tfiles.fileid)
 			where 
 			<cfif arguments.filename neq ''>
