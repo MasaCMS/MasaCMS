@@ -47,6 +47,10 @@ to your own modified versions of Mura CMS.
 <cfparam name="attributes.activepanel" default="0">
 <cfparam name="attributes.siteid" default='#session.siteID#'>
 <cfparam name="application.coreversion" default="#application.serviceFactory.getBean('autoUpdater').getCurrentVersion()#">
+<!--- This code is just to prevent errors when people update past version 5.2.2652 --->
+<cfif not len(attributes.siteID)>
+<cfset attributes.siteID="default">
+</cfif>
 </cfsilent>
 <cfoutput><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
