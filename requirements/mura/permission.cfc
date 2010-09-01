@@ -760,4 +760,58 @@ username="#variables.configBean.getDBUsername()#" password="#variables.configBea
 		</cfif>	
 	<cfreturn objectVerdict>
 </cffunction>
+
+<cffunction name="addPermission" output="false">
+	<cfargument name="contentID">
+	<cfargument name="groupID">
+	<cfargument name="siteID">
+	<cfargument name="type">
+	
+	<cfset removePermission(argumentcollection=arguments)>
+	
+	<cfquery datasource="#variables.configBean.getDatasource()#"
+		username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+		Insert Into tpermissions (contentID,groupID,siteID,type) Value (
+		<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentID#"/> ,
+		<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.groupID#"/>,
+		<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>,
+		<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.type#"/> 
+		)
+	</cfquery>
+
+</cffunction>
+
+<cffunction name="removePermission" output="false">
+	<cfargument name="contentID">
+	<cfargument name="groupID">
+	<cfargument name="siteID">
+	
+	<cfquery datasource="#variables.configBean.getDatasource()#"
+		username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+		Delete From tpermissions 
+		where contentid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentID#"/> 
+		and siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteid#"/>
+		and groupID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.groupID#"/>
+	</cfquery>
+
+</cffunction>
+
+<cffunction name="grantModuleAccess" output="false">
+	<cfargument name="moduleID">
+	<cfargument name="groupID">
+	<cfargument name="siteID">
+	
+	<cfset addPermission(arguments.moduleID,arguments.groupID,arguments.siteID,"module")>
+	
+</cffunction>
+
+<cffunction name="removeModuleAccess" output="false">
+	<cfargument name="moduleID">
+	<cfargument name="groupID">
+	<cfargument name="siteID">
+	
+	<cfset removePermission(arguments.moduleID,arguments.groupID,arguments.siteID)>
+	
+</cffunction>
+
 </cfcomponent>

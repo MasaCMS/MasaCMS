@@ -795,6 +795,8 @@ Sincerely,
 			<cfset copy(arguments.siteID, rsKids.contentID, newContentID, rsKids.hasKids, false, contentBean.getPath())>
 		</cfloop>
 	</cfif>
+	
+	<cfreturn contentBean>
 </cffunction>
 
 <cffunction name="updateGlobalMaterializedPath" returntype="any" output="false">
