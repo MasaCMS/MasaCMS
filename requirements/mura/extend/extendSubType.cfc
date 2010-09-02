@@ -329,13 +329,15 @@ to your own modified versions of Mura CMS.
 	subTypeID=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#getsubtypeID()#">
 	</cfquery>
 	
-	<cfquery datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-	update #getBaseTable()#
-	set subType='Default'
-	where 
-	siteID=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#getSiteID()#">
-	and subType=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#getsubtype()#">
-	</cfquery>
+	<cfif getBaseTable() neq "Custom">
+		<cfquery datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+		update #getBaseTable()#
+		set subType='Default'
+		where 
+		siteID=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#getSiteID()#">
+		and subType=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#getsubtype()#">
+		</cfquery>
+	</cfif>
 
 	
 </cffunction>
