@@ -453,6 +453,9 @@ to your own modified versions of Mura CMS.
 			<constructor-arg name="configBean"><ref bean="configBean" /></constructor-arg>
 			<constructor-arg name="settingsManager"><ref bean="settingsManager" /></constructor-arg>
 		</bean>
+		<bean id="favoriteBean" class="mura.content.favorite.favoriteManager" singleton="true">
+			<constructor-arg name="configBean"><ref bean="configBean" /></constructor-arg>
+		</bean>
 		<bean id="raterManager" class="mura.content.rater.raterManager" singleton="true">
 			<constructor-arg name="configBean"><ref bean="configBean" /></constructor-arg>
 			<constructor-arg name="settingsManager"><ref bean="settingsManager" /></constructor-arg>
@@ -499,6 +502,15 @@ to your own modified versions of Mura CMS.
 		<bean id="autoUpdater" class="mura.autoUpdater.autoUpdater" singleton="true">
 			<constructor-arg name="configBean"><ref bean="configBean" /></constructor-arg>
 			<constructor-arg name="fileWriter"><ref bean="fileWriter" /></constructor-arg>
+		</bean>
+		<bean id="extendObjectIterator" class="mura.extend.extendObjectIterator" singleton="false">
+			<constructor-arg name="configBean"><ref bean="configBean" /></constructor-arg>
+		</bean>
+		<bean id="extendObject" class="mura.extend.extendObject" singleton="false">
+			<constructor-arg name="configBean"><ref bean="configBean" /></constructor-arg>
+		</bean>
+		<bean id="extendObjectFeedBean" class="mura.extend.extendObjectFeedBean" singleton="false">
+			<constructor-arg name="configBean"><ref bean="configBean" /></constructor-arg>
 		</bean>
 		<bean id="scriptProtectionFilter" class="mura.Portcullis" singleton="true" />
 		<bean id="MuraScope" class="mura.MuraScope" singleton="false"/>
