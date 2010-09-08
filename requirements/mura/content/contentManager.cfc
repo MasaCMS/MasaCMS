@@ -1258,7 +1258,7 @@ to your own modified versions of Mura CMS.
 		<cfargument name="recurse" type="boolean" required="true" default="false"/>
 		<cfargument name="appendTitle" type="boolean" required="true" default="true"/>
 		
-		<cfset variables.contentUtility.copy(arguments.siteID, arguments.contentID, arguments.parentID, arguments.recurse, arguments.appendTitle)>
+		<cfreturn variables.contentUtility.copy(arguments.siteID, arguments.contentID, arguments.parentID, arguments.recurse, arguments.appendTitle)>
 	
 	</cffunction>
 	

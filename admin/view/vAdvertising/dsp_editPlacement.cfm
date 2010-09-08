@@ -75,10 +75,19 @@ to your own modified versions of Mura CMS.
 <dd><input name="endDate" class="text datepicker" validate="date" required="true" message="#application.rbFactory.getKeyValue(session.rb,'advertising.enddatevalidate')#" value="#iif(request.placementBean.getEndDate() eq '',de(LSDateFormat(request.campaignBean.getEndDate(),session.dateKeyFormat)),de(LSDateFormat(request.placementBean.getEndDate(),session.dateKeyFormat)))#">
 <!---<input class="calendar" type="image" src="images/icons/cal_24.png" width="14" height="14" onclick="window.open('date_picker/index.cfm?form=form1&field=endDate&format=MDY','refWin','toolbar=no,location=no,directories=no,status=no,menubar=no,resizable=yes,copyhistory=no,scrollbars=no,width=190,height=220,top=250,left=250');return false;">---></dd>
 <dd class="divide">
+<script>
+function checkAllHours() {
+		 for(i=0;i<document.form1.hour.length;i++){document.form1.hour[i].checked=true;}
+		}
+		
+function uncheckAllHours() {
+		 for(i=0;i<document.form1.hour.length;i++){document.form1.hour[i].checked=false;}
+		}
+</script>
 <table border="0" cellspacing="10" cellpadding="0">
 <tr>
   <td><strong>#application.rbFactory.getKeyValue(session.rb,'advertising.daysofweek')# </strong></td>
-    <td colspan="4"><strong>#application.rbFactory.getKeyValue(session.rb,'advertising.hoursinday')#</strong> (<a href="javascript:void();" onclick="javascript:for(i=0;i<document.form1.hour.length;i++){document.form1.hour[i].checked=true;}return false;"> #application.rbFactory.getKeyValue(session.rb,'advertising.selectall')#</a> | <a href="javascript:void();" onclick="javascript:for(i=0;i<document.form1.hour.length;i++){document.form1.hour[i].checked=false;}return false;">#application.rbFactory.getKeyValue(session.rb,'advertising.removeall')#</a> )</td>
+    <td colspan="4"><strong>#application.rbFactory.getKeyValue(session.rb,'advertising.hoursinday')#</strong> (<a href="javascript:void();" onclick="javascript:checkAllHours();return false;"> #application.rbFactory.getKeyValue(session.rb,'advertising.selectall')#</a> | <a href="javascript:void();" onclick="javascript:uncheckAllHours();return false;">#application.rbFactory.getKeyValue(session.rb,'advertising.removeall')#</a> )</td>
 </tr>
 <tr>
 <td valign="top" nowrap>
@@ -109,6 +118,13 @@ to your own modified versions of Mura CMS.
 </tr>
 </table>
 </dd>
+<cfif application.categoryManager.getCategoryCount(attributes.siteid)>
+<dt>#application.rbFactory.getKeyValue(session.rb,'advertising.categoryfilters')#</dt>
+<dd>
+<cf_dsp_categories_nest siteID="#attributes.siteID#" parentID="" nestLevel="0" placementID="#attributes.placementID#">
+<dd>
+
+</cfif>
 <dt>#application.rbFactory.getKeyValue(session.rb,'advertising.costper1000impressions')#</dt>
 <dd><input name="costPerM" class="text" required="true" validate="float" message="#application.rbFactory.getKeyValue(session.rb,'advertising.cpmvalidate')#" value="#request.placementBean.getCostPerM()#"></dd>
 <dt>#application.rbFactory.getKeyValue(session.rb,'advertising.costperclick')#</dt>
@@ -127,7 +143,9 @@ to your own modified versions of Mura CMS.
 </dd>
 <dt>#application.rbFactory.getKeyValue(session.rb,'advertising.notes')#</dt>
 <dd><textarea name="notes" class="textArea">#request.placementBean.getNotes()#</textarea></dd>
+
 </dl>
+
 <cfif attributes.placementid eq ''>
 <a class="submit" href="javascript:;" onclick="return submitForm(document.forms.form1,'add');"><span>#application.rbFactory.getKeyValue(session.rb,'advertising.add')#</span></a><input type=hidden name="placementID" value=""><cfelse> <a class="submit" href="javascript:;" onclick="return submitForm(document.forms.form1,'delete','#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'advertising.deleteplacementconfirm'))#');"><span>#application.rbFactory.getKeyValue(session.rb,'advertising.delete')#</span></a> <a class="submit" href="javascript:;" onclick="return submitForm(document.forms.form1,'update');"><span>#application.rbFactory.getKeyValue(session.rb,'advertising.update')#</span></a>
 <input type=hidden name="placementID" value="#request.placementBean.getplacementID()#"></cfif><input type="hidden" name="action" value=""></form>

@@ -40,60 +40,22 @@ for your modified version; it is your choice whether to do so, or to make such m
 the GNU General Public License version 2 �without this exception. �You may, if you choose, apply this exception
 to your own modified versions of Mura CMS.
 --->
-<cfset addToHTMLHeadQueue("swfobject.cfm") />
-<cfset loadJSLib() />
-<cfset r="#replace('#rand()#','.','')#"/>
-<cfswitch expression="#getJSLib()#">
-<cfcase value="jquery">
-<cfoutput>
-<div id="svAd#r#" class="svAd"></div>
-<script type="text/javascript">
-function renderAdZone#r#(){			
-$.getJSON("#application.configBean.getContext()#/tasks/ads/renderAdZone.cfm", 
-		{AdZoneID: "#arguments.objectid#", siteID: "#request.siteid#",track:"#request.track#",cacheid:Math.random(), contentHistID: "#request.contentBean.getContentHistID()#"},
-		function(r){
-			if(typeof(r).mediatype  != 'undefined'){
-				if(r.mediatype.indexOf('lash') > -1){
-					var so = new SWFObject(r.mediaurl, "svAd#r#swf", r.width, r.height, r.version);
-				    so.addVariable("adUrl", "#application.configBean.getContext()#/tasks/ads/track.cfm?adUrl=" + escape(r.redirecturl) + "&placementid=" + r.placementid + "track=#request.track#&siteID=#request.siteid#");
-				    so.addParam("wmode", "transparent");
-				    so.write("svAd#r#");
-				} else {
-					$("##svAd#r#").html(r.creative);
-				}
-			}
-		}			
-	);
-}
-new renderAdZone#r#();
-</script>
+
+<cfsilent><cfparam name="attributes.siteID" default="">
+<cfparam name="attributes.parentID" default="">
+<cfparam name="attributes.categoryID" default="">
+<cfparam name="attributes.nestLevel" default="1">
+<cfset rslist=application.categoryManager.getCategories(attributes.siteID,attributes.ParentID,"") />
+</cfsilent>
+<cfif rslist.recordcount>
+<ul class="categories">
+<cfoutput query="rslist">
+<li>
+<cfif rslist.isOpen eq 1><input type="checkbox" name="categoryID" class="checkbox" <cfif listfind(request.placementBean.getCategoryID(),rslist.categoryID) or listfind(attributes.categoryID,rslist.CategoryID)>checked</cfif> value="#rslist.categoryID#" <cfif not application.permUtility.getCategoryPerm(rslist.restrictGroups,attributes.siteid)>disabled</cfif> > </cfif>#rslist.name#
+<cfif rslist.hasKids>
+<cf_dsp_categories_nest siteID="#attributes.siteID#" parentID="#rslist.categoryID#" categoryID="#attributes.categoryID#" nestLevel="#evaluate(attributes.nestLevel +1)#" >
+</cfif>
+</li>
 </cfoutput>
-</cfcase>
-<cfdefaultcase>
-<cfoutput>
-<div id="svAd#r#" class="svAd"></div>
-<script type="text/javascript">
-function renderAdZone#r#(){
-new Ajax.Request( '#application.configBean.getContext()#/tasks/ads/renderAdZone.cfm',
-	{method: 'get',
-	parameters: 'AdZoneID=#arguments.objectid#&siteid=#request.siteid#&track=#request.track#&contentHistID=#request.contentBean.getContentHistID()#&cacheid=' + Math.random(),
-	onSuccess: function(transport){
-			var r=eval("(" + transport.responseText + ")");
-			if(typeof(r).mediatype  != 'undefined'){
-				if(r.mediatype.indexOf('lash') > -1){
-					var so = new SWFObject(r.mediaurl, "svAd#r#swf", r.width, r.height, r.version);
-				    so.addVariable("adUrl", "#application.configBean.getContext()#/tasks/ads/track.cfm?adUrl=" + escape(r.redirecturl) + "&placementid=" + r.placementid + "track=#request.track#&siteID=#request.siteid#");
-				    so.addParam("wmode", "transparent");
-				    so.write("svAd#r#");
-				} else {
-					$("svAd#r#").innerHTML=r.creative;
-				}
-			}
-		}
-	}); 
-}
-new renderAdZone#r#();
-</script>
-</cfoutput>
-</cfdefaultcase>
-</cfswitch>
+</ul>
+</cfif>

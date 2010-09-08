@@ -40,60 +40,51 @@ for your modified version; it is your choice whether to do so, or to make such m
 the GNU General Public License version 2 �without this exception. �You may, if you choose, apply this exception
 to your own modified versions of Mura CMS.
 --->
-<cfset addToHTMLHeadQueue("swfobject.cfm") />
-<cfset loadJSLib() />
-<cfset r="#replace('#rand()#','.','')#"/>
-<cfswitch expression="#getJSLib()#">
-<cfcase value="jquery">
-<cfoutput>
-<div id="svAd#r#" class="svAd"></div>
-<script type="text/javascript">
-function renderAdZone#r#(){			
-$.getJSON("#application.configBean.getContext()#/tasks/ads/renderAdZone.cfm", 
-		{AdZoneID: "#arguments.objectid#", siteID: "#request.siteid#",track:"#request.track#",cacheid:Math.random(), contentHistID: "#request.contentBean.getContentHistID()#"},
-		function(r){
-			if(typeof(r).mediatype  != 'undefined'){
-				if(r.mediatype.indexOf('lash') > -1){
-					var so = new SWFObject(r.mediaurl, "svAd#r#swf", r.width, r.height, r.version);
-				    so.addVariable("adUrl", "#application.configBean.getContext()#/tasks/ads/track.cfm?adUrl=" + escape(r.redirecturl) + "&placementid=" + r.placementid + "track=#request.track#&siteID=#request.siteid#");
-				    so.addParam("wmode", "transparent");
-				    so.write("svAd#r#");
-				} else {
-					$("##svAd#r#").html(r.creative);
-				}
-			}
-		}			
-	);
-}
-new renderAdZone#r#();
-</script>
-</cfoutput>
-</cfcase>
-<cfdefaultcase>
-<cfoutput>
-<div id="svAd#r#" class="svAd"></div>
-<script type="text/javascript">
-function renderAdZone#r#(){
-new Ajax.Request( '#application.configBean.getContext()#/tasks/ads/renderAdZone.cfm',
-	{method: 'get',
-	parameters: 'AdZoneID=#arguments.objectid#&siteid=#request.siteid#&track=#request.track#&contentHistID=#request.contentBean.getContentHistID()#&cacheid=' + Math.random(),
-	onSuccess: function(transport){
-			var r=eval("(" + transport.responseText + ")");
-			if(typeof(r).mediatype  != 'undefined'){
-				if(r.mediatype.indexOf('lash') > -1){
-					var so = new SWFObject(r.mediaurl, "svAd#r#swf", r.width, r.height, r.version);
-				    so.addVariable("adUrl", "#application.configBean.getContext()#/tasks/ads/track.cfm?adUrl=" + escape(r.redirecturl) + "&placementid=" + r.placementid + "track=#request.track#&siteID=#request.siteid#");
-				    so.addParam("wmode", "transparent");
-				    so.write("svAd#r#");
-				} else {
-					$("svAd#r#").innerHTML=r.creative;
-				}
-			}
-		}
-	}); 
-}
-new renderAdZone#r#();
-</script>
-</cfoutput>
-</cfdefaultcase>
-</cfswitch>
+<cfcomponent extends="mura.iterator.queryIterator" output="false">
+
+<cfset variables.configBean="">
+<cfset variables.manager="">
+
+<cffunction name="init" access="public" output="false" returntype="any">
+	<cfargument name="configBean" default="">
+	<cfargument name="manager" default="">
+	<cfset super.init(argumentCollection=arguments)>
+	<cfif isObject(arguments.configBean)>
+		<cfset setConfigBean(arguments.configBean)>
+	</cfif>
+	<cfif isObject(arguments.manager)>
+		<cfset setManager(arguments.manager)>
+	</cfif>
+	<cfreturn this />
+</cffunction>
+
+<cffunction name="setConfigBean" output="false" access="public">
+	<cfargument name="configBean">
+	<cfset variables.configBean=arguments.configBean>
+	<cfreturn this>
+</cffunction>	
+
+<cffunction name="setManager" output="false" access="public">
+	<cfargument name="manager">
+	<cfset variables.manager=arguments.manager>
+	<cfreturn this>
+</cffunction>	
+
+<cffunction name="packageRecord" access="public" output="false" returntype="any">
+	<cfset var extendObject="">
+
+	<cfset extendObject=createObject("component","extendObject").init(
+			Type=variables.records.type[currentIndex()],
+			SubType=variables.records.subtype[currentIndex()],
+			SiteID=variables.records.SiteID[currentIndex()],
+			configBean=variables.configBean,
+			ID=variables.records.ID[currentIndex()],
+			manager=variables.manager) />
+	
+	<cfif isObject(variables.recordTranslator)>
+		<cfset extendObject.setTranslator(variables.recordTranslator)>
+	</cfif>
+	<cfreturn extendObject>
+</cffunction>
+	
+</cfcomponent>

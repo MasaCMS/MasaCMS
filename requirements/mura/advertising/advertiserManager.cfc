@@ -6,23 +6,23 @@ the Free Software Foundation, Version 2 of the License.
 
 Mura CMS is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. ï¿½See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-along with Mura CMS.  If not, see <http://www.gnu.org/licenses/>.
+along with Mura CMS. ï¿½If not, see <http://www.gnu.org/licenses/>.
 
 Linking Mura CMS statically or dynamically with other modules constitutes
 the preparation of a derivative work based on Mura CMS. Thus, the terms and 	
-conditions of the GNU General Public License version 2 (“GPL”) cover the entire combined work.
+conditions of the GNU General Public License version 2 (ï¿½GPLï¿½) cover the entire combined work.
 
 However, as a special exception, the copyright holders of Mura CMS grant you permission
 to combine Mura CMS with programs or libraries that are released under the GNU Lesser General Public License version 2.1.
 
-In addition, as a special exception,  the copyright holders of Mura CMS grant you permission
-to combine Mura CMS  with independent software modules that communicate with Mura CMS solely
+In addition, as a special exception, ï¿½the copyright holders of Mura CMS grant you permission
+to combine Mura CMS ï¿½with independent software modules that communicate with Mura CMS solely
 through modules packaged as Mura CMS plugins and deployed through the Mura CMS plugin installation API,
-provided that these modules (a) may only modify the  /trunk/www/plugins/ directory through the Mura CMS
+provided that these modules (a) may only modify the ï¿½/trunk/www/plugins/ directory through the Mura CMS
 plugin installation API, (b) must not alter any default objects in the Mura CMS database
 and (c) must not alter any files in the following directories except in cases where the code contains
 a separately distributed license.
@@ -37,7 +37,7 @@ the source code of that other code when and as the GNU GPL requires distribution
 
 For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception
 for your modified version; it is your choice whether to do so, or to make such modified version available under
-the GNU General Public License version 2  without this exception.  You may, if you choose, apply this exception
+the GNU General Public License version 2 ï¿½without this exception. ï¿½You may, if you choose, apply this exception
 to your own modified versions of Mura CMS.
 --->
 
@@ -243,7 +243,7 @@ to your own modified versions of Mura CMS.
 </cffunction>
 
 <cffunction name="getMediaTypes" returntype="String" output="false" access="public">
-<cfreturn "Image,Text,Flash6,Flash7,Flash7,Flash9" />
+<cfreturn "Image,Text,Flash6,Flash7,Flash7,,Flash8,Flash9,Flash10" />
 </cffunction>
 
 <cffunction name="readCreativeAndRender" returntype="String" output="false" access="public">
@@ -271,6 +271,7 @@ to your own modified versions of Mura CMS.
 	<cfargument name="siteID" type="string" />
 	<cfargument name="track" type="numeric" required="true" default="1"/>
 	<cfargument name="IP" type="string" required="true" default=""/>
+	<cfargument name="contentHistID" type="string" required="true" default=""/>
 	
 	<cfset var rs="" />
 	<cfset var doTrack=arguments.track />
@@ -302,7 +303,18 @@ to your own modified versions of Mura CMS.
 	and thours.placementType='hour'
 	and thours.placementValue=#hour(now())#
 	and tadplacements.billable < tadplacements.budget
-	</cfquery>
+	and 
+	 (
+		tadplacements.hasCategories=0
+	
+		OR 
+			tadplacements.placementID in (
+				select placementID from tadplacementcategoryassign
+				inner join tcontentcategoryassign on (tadplacementcategoryassign.categoryID=tcontentcategoryassign.categoryID
+													and tcontentcategoryassign.contentHistID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentHistID#" />)
+			)
+	)
+ 	</cfquery>
 	
 	<cfquery name="rsExclusive" dbType="query">
 	select * from rs where isExclusive=1
