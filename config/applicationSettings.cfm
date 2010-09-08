@@ -119,7 +119,7 @@ to your own modified versions of Mura CMS.
 	<cfset this.mappings["/config"] = mapPrefix & baseDir & "/config">
 	
 	<cftry>
-		<cfinclude template="/config/mappings.cfm">
+		<cfinclude template="/muraWRM/config/mappings.cfm">
 		<cfset hasMainMappings=true>
 		<cfcatch>
 			<cfset hasMainMappings=false>
@@ -133,7 +133,7 @@ to your own modified versions of Mura CMS.
 		</cfcatch>
 	</cftry>
 	<cftry>
-		<cfinclude template="/config/cfapplication.cfm">
+		<cfinclude template="/muraWRM/config/cfapplication.cfm">
 		<cfset request.hasCFApplicationCFM=true>
 		<cfcatch>
 			<cfset request.hasCFApplicationCFM=false>
