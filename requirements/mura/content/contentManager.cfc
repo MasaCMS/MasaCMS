@@ -1251,7 +1251,7 @@ to your own modified versions of Mura CMS.
 		<cfreturn it/>
 	</cffunction>
 	
-	<cffunction name="copy" returntype="void" access="public" output="false">
+	<cffunction name="copy" returntype="any" access="public" output="false">
 		<cfargument name="siteID" type="string" />
 		<cfargument name="contentID" type="string" />
 		<cfargument name="parentID" type="string" />

@@ -283,6 +283,10 @@ img.fmImage {
 	margin: 10px;
 }
 
+img.tabPreloader {
+	margin: 0 0 1em auto;
+}
+
 .results a {
 	text-decoration: none;
 }
@@ -1959,6 +1963,8 @@ a.removeCriteria {
 
 /* @end */
 
+
+
 /* @group Tables */
 
 table {
@@ -2213,11 +2219,292 @@ table.cfdebug td a {
 }
 /* @end */
 
+
+
+/* @group Sortable Grid */
+.mura-grid {
+	overflow: hidden;
+	border-bottom: 1px solid #DBDBDB;
+	border-right: 1px solid #DBDBDB;
+}
+
+.mura-grid li {
+	clear: both;
+	float: left;
+	white-space: nowrap;
+	margin: 0;
+	padding: 0;
+}
+
+/* @group Nested Offsets */
+
+.mura-grid li li .add {
+	margin-right: 28px;
+}
+
+.mura-grid li li li .add {
+	margin-right: 48px;
+}
+
+.mura-grid li li li li .add {
+	margin-right: 68px;
+}
+
+.mura-grid li li li li li .add {
+	margin-right: 88px;
+}
+
+.mura-grid li li li li li li .add {
+	margin-right: 108px;
+}
+
+.mura-grid li li li li li li li .add {
+	margin-right: 128px;
+}
+
+.mura-grid li li li li li li li li .add {
+	margin-right: 148px;
+}
+
+.mura-grid li li li li li li li li li .add {
+	margin-right: 168px;
+}
+
+.mura-grid li li li li li li li li li li .add {
+	margin-right: 188px;
+}
+
+.mura-grid li li li li li li li li li li li .add {
+	margin-right: 208px;
+}
+
+.mura-grid li li li li li li li li li li li li .add {
+	margin-right: 228px;
+}
+
+.mura-grid li li li li li li li li li li li li li .add {
+	margin-right: 248px;
+}
+
+/* @end */
+
+.mura-grid li {
+	float: left;
+	width: 100%;
+}
+
+.mura-grid dl {
+	background-color: #EAF4FE;
+	float: left;
+	width: 100%;
+	margin-bottom: 0;
+	min-height: 10px;
+	line-height: 20px;
+}
+
+.mura-grid dl.alt {
+	background-color: #fcfeff;
+}
+
+.mura-grid dt, .mura-grid dd  {
+	color: #333232;
+	border-right: 1px solid #DBDBDB;
+	text-align: center;
+	float: left;
+	margin: 0 !important;
+}
+
+.mura-grid dt {
+	width: 340px;
+	text-align: left;
+	line-height: 12px;
+	padding: 0 5px 0 0 !important;
+	border-left: 1px solid #DBDBDB;
+	font-weight: normal;
+}
+
+.mura-grid dd {
+	padding: 4px 5px;
+}
+
+.mura-grid dt a {
+	display: block;
+	height: auto;
+	min-height: 18px;
+	line-height: 20px;
+	white-space: wrap;
+	padding: 4px 5px 4px 22px;
+	float: left;
+	color: #000;
+}
+
+.mura-grid dt a.tooltip {
+	padding: 0 10px 0 20px;
+}
+
+.mura-grid dt img {
+	float: left;
+	padding: 11px 5px 0 0;
+	margin-left: -15px;
+}
+
+.mura-grid dt span.hasChildren {
+	float: left;
+	display: block;
+	width: 12px;
+	height: 28px;
+	padding: 0;
+	margin-left: -11px;
+	background: url(../images/icons/down_on.gif) no-repeat left 50%;
+}
+
+.mura-grid .order {
+	width: 40px;
+}
+
+.mura-grid .objects {
+	width: 50px;
+}
+
+.mura-grid .display {
+	width: 60px;
+}
+
+.mura-grid .feature {
+	width: 60px;
+}
+
+.mura-grid .nav {
+	width: 50px;
+}
+
+.mura-grid .updated {
+	width: 110px;
+}
+
+.mura-grid .admin {
+	width: 92px;
+	border-right: 0;
+}
+
+.mura-grid .admin ul {
+	margin: 0 auto;
+}
+
+.mura-grid a:link {
+	color: #000;
+	text-decoration: none;
+}
+
+.mura-grid a:hover {
+	color: #000;
+	text-decoration: underline;
+}
+
+.mura-grid dt .add {
+	width: 16px;
+	margin: 0;
+	margin-right: 7px;
+	display: block;
+	background: url(../images/icons/add_32.png) no-repeat center center;
+	height: 20px;
+	padding: 4px;
+	border: 0;
+	border-right: 1px solid #DBDBDB;
+}
+
+.mura-grid-hdr dt, .mura-grid-hdr dd {
+	background: #FFFEFE url(../images/bg_th.jpg) repeat-x left bottom;
+	font-style: normal;
+	color: #000;
+	border: 1px solid #DBDBDB;
+	white-space: nowrap;
+	text-align: center;
+	padding: 0;
+	padding-left: 5px;
+	padding-right: 5px;
+	height: 26px;
+}
+	
+.mura-grid-hdr dt {
+	text-align: left;
+	padding-left: 0 !important;
+}
+
+.mura-grid-hdr dd {
+	border-left: 0;
+}
+
+.mura-grid-hdr .add {
+	display: block;
+	float: left;
+	height: 18px !important;
+	background: none;
+}
+
+.mura-grid-hdr a.tooltip, .mura-grid-hdr span.add {
+	display: inline-block;
+	line-height: 18px;
+}
+
+.mura-grid-hdr a {
+	margin-top: 4px;
+	font-weight: bold;
+}	
+
+.mura-grid-hdr dt a.tooltip {
+	padding-left: 0;
+}
+
+dt a.add:hover {
+	text-decoration: none;
+}
+
+dt .add li.Page {
+	background: transparent url(../images/icons/files/icon_generic_small.gif) no-repeat;
+	color: #333232;
+	text-decoration: none;
+	margin: 0;
+	padding: 2px 0 2px 30px;
+	background-position: 11px 1px;
+}
+
+/* @group IE 6 */
+
+* html .mura-grid {
+	height: 1%;	
+}
+
+* html .mura-grid-hdr {
+	position: relative;
+}
+
+* html .mura-grid-hdr {
+	position: relative;
+}
+
+* html .mura-grid dt {
+	width: 352px;
+}
+
+* html .mura-grid .admin {
+	width: 101px;
+}
+
+* html .mura-grid .admin li.deleteOff, * html .mura-grid .admin li.deleteOn {
+	margin-right: 0;
+}
+
+/* @end */
+
+/* @end */
+
 /* @group File Icons */
 
-.title li  {
+dt li, dt a  {
 	background-image: url(../images/icons/files/icon_generic_small.gif);
 	background-repeat: no-repeat;
+	background-position: left center;
 }
 
 .doc, .docx {
@@ -2392,7 +2679,7 @@ table.cfdebug td a {
 
 /* @group Content Icons */
 
-li.Link {
+.Link {
 	background: url(../images/icons/link.gif) no-repeat 11px 2px;
 	color: #333232;
 	text-decoration: none;
@@ -2400,7 +2687,7 @@ li.Link {
 	padding: 2px 0 2px 30px;
 }
 
-li.Portal {
+.Portal {
 	background: transparent url(../images/icons/portal.gif) no-repeat 10px 1px;
 	color: #333232;
 	text-decoration: none;
@@ -2408,7 +2695,7 @@ li.Portal {
 	padding: 2px 0 2px 31px;
 }
 
-li.Gallery {
+.Gallery {
 	background: transparent url(../images/icons/smicn_32.png) no-repeat 12px 1px;
 	color: #333232;
 	text-decoration: none;
@@ -2416,7 +2703,7 @@ li.Gallery {
 	padding: 2px 0 2px 31px;
 }
 
-li.Image {
+.Image {
 	background: transparent url(../images/icons/image_32.png) no-repeat 10px 1px;
 	color: #333232;
 	text-decoration: none;
@@ -2424,7 +2711,7 @@ li.Image {
 	padding: 2px 0 2px 31px;
 }
 
-li.GalleryLocked {
+.GalleryLocked {
 	background: transparent url(../images/icons/smicn_32_locked.png) no-repeat 11px 1px;
 	color: #333232;
 	text-decoration: none;
@@ -2432,7 +2719,7 @@ li.GalleryLocked {
 	padding: 2px 0 2px 31px;
 }
 
-li.ImageLocked {
+.ImageLocked {
 	background: transparent url(../images/icons/image_32_locked.png) no-repeat 10px 1px;
 	color: #333232;
 	text-decoration: none;
@@ -2440,7 +2727,7 @@ li.ImageLocked {
 	padding: 2px 0 2px 31px;
 }
 
-li.Calendar {
+.Calendar {
 	background: transparent url(../images/icons/calendar.gif) no-repeat 13px 0;
 	color: #333232;
 	text-decoration: none;
@@ -2448,7 +2735,7 @@ li.Calendar {
 	padding: 2px 0 2px 31px;
 }
 
-li.PageLocked {
+.PageLocked {
 	background: transparent url(../images/icons/files/icon_generic_small_locked.gif) no-repeat 11px 1px;
 	color: #333232;
 	text-decoration: none;
@@ -2456,7 +2743,7 @@ li.PageLocked {
 	padding: 2px 0 2px 30px;
 }
 
-li.DocumentLocked, table td li.FileLocked {
+.DocumentLocked, .FileLocked {
 	background: transparent url(../images/icons/document_locked.gif) no-repeat 11px 1px;
 	color: #333232;
 	text-decoration: none;
@@ -2464,7 +2751,7 @@ li.DocumentLocked, table td li.FileLocked {
 	padding: 2px 0 2px 30px;
 }
 
-li.LinkLocked {
+.LinkLocked {
 	background: transparent url(../images/icons/link_locked.gif) no-repeat 11px 2px;
 	color: #333232;
 	text-decoration: none;
@@ -2472,7 +2759,7 @@ li.LinkLocked {
 	padding: 2px 0 2px 30px;
 }
 
-li.PortalLocked {
+.PortalLocked {
 	background: transparent url(../images/icons/portal_locked.gif) no-repeat 10px 1px;
 	color: #333232;
 	text-decoration: none;
@@ -2480,7 +2767,7 @@ li.PortalLocked {
 	padding: 2px 0 2px 31px;
 }
 
-li.CalendarLocked {
+.CalendarLocked {
 	background: transparent url(../images/icons/calendar_locked.gif) no-repeat 12px 0;
 	color: #333232;
 	text-decoration: none;
@@ -2497,7 +2784,7 @@ li.CalendarLocked {
 	padding: 2px 0 2px 18px;
 }
 
-.navZoom li.Portal, .navZoom li.PortalLocked {
+.navZoom .Portal, .navZoom .PortalLocked {
 	background-position: left center;
 	color: #333232;
 	text-decoration: none;
@@ -2506,14 +2793,14 @@ li.CalendarLocked {
 }
 
 
-table td li.Category {
+table td .Category {
 	color: #333232;
 	text-decoration: none;
 	margin: 0;
 	padding: 2px 0;
 }
 
-table td li.CategoryLocked {
+table td .CategoryLocked {
 	color: #333232;
 	text-decoration: none;
 	margin: 0;

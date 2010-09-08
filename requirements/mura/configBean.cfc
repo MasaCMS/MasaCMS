@@ -111,6 +111,7 @@ to your own modified versions of Mura CMS.
 <cfset variables.instance.scriptProtect=true />
 <cfset variables.instance.appreloadKey=application.appreloadKey />
 <cfset variables.instance.loginStrikes=4 />
+<cfset variables.instance.encryptPasswords=true />
 <cfset variables.instance.tempDir=getTempDirectory() />
 
 
@@ -1040,6 +1041,18 @@ to your own modified versions of Mura CMS.
 <cffunction name="getScriptProtect" returntype="boolean" access="public" output="false">
 	<cfreturn variables.instance.scriptProtect />
 </cffunction>
+
+<cffunction name="setEncryptPasswords" access="public" output="false">
+	<cfargument name="encryptPasswords" />
+	<cfif isBoolean(arguments.encryptPasswords)>
+		<cfset variables.instance.encryptPasswords = arguments.encryptPasswords />
+	</cfif>
+	<cfreturn this>
+</cffunction>
+
+<cffunction name="getEncryptPasswords" returntype="boolean" access="public" output="false">
+	<cfreturn variables.instance.encryptPasswords />
+</cffunction> 
 
 <cffunction name="getAllValues" returntype="any" access="public" output="false">
 	<cfreturn variables.instance />
