@@ -151,7 +151,7 @@ to your own modified versions of Mura CMS.
 	<cfset var pluginManager=getBean("pluginManager")>	
 	<cfset var pluginEvent = createObject("component","mura.event") />
 	
-	<cfif refind("[/\\]",arguments.fileID)>
+	<cfif not isValid("UUID",arguments.fileID)>
 		<cfdump var="Invalid fileID">
 		<cfabort>
 	</cfif>
@@ -212,7 +212,7 @@ to your own modified versions of Mura CMS.
 	<cfset var theFile="" />
 	<cfset var theFileLocation="" />
 	
-	<cfif refind("[/\\]",arguments.fileID)>
+	<cfif not isValid("UUID",arguments.fileID)>
 		<cfdump var="Invalid fileID">
 		<cfabort>
 	</cfif>
@@ -257,7 +257,7 @@ to your own modified versions of Mura CMS.
 	<cfset var theFile="" />
 	<cfset var theFileLocation="" />
 	
-	<cfif refind("[/\\]",arguments.fileID)>
+	<cfif not isValid("UUID",arguments.fileID)>
 		<cfdump var="Invalid fileID">
 		<cfabort>
 	</cfif>
