@@ -1,10 +1,3 @@
-/* @override http://site23.walkingmen.com/admin/css/admin.css?coreversion=2806 */
-
-/* @override 
-	http://mura:8500/admin/css/admin.css
-	http://mura:8500/admin/css/admin.css?coreversion=1
-*/
-
 /* This file is part of Mura CMS. 
 
 	Mura CMS is free software: you can redistribute it and/or modify 
@@ -2190,6 +2183,7 @@ table#fileList td.varWidth a,
 .overview span
  {
 	background-position: 11px 1px;
+	background-repeat: no-repeat;
 	color: #333232;
 	text-decoration: none;
 	margin: 0;

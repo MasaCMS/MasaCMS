@@ -1072,4 +1072,82 @@ and tclassextendattributes.type='File'
 	</cfif>
 </cffunction>
 
+<cffunction name="syncDefinitions" output="false">
+<cfargument name="fromSiteID" default="">
+<cfargument name="toSiteID" default="">
+<cfargument name="type" default="">
+<cfargument name="subType" default="">	
+
+<cfset var rsSubTypes=getSubTypes(arguments.fromSiteID)>
+<cfset var extendSets="">
+<cfset var sttributes="">
+<cfset var sourceSubType="">
+<cfset var destSubType="">
+<cfset var sourceExtendSet="">
+<cfset var destExtendSet="">
+<cfset var sourceAttribute="">
+<cfset var destAttribute="">
+<cfset var s="">
+<cfset var a="">
+
+<cfif len(arguments.type)>
+	<cfquery name="rsSubTypes" dbtype="query">	
+		select * from where type=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.type#">
+		<cfif len(argument.subType)>
+		and subtype=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.subtype#">
+		</cfif> 
+	</cfquery>
+</cfif>
+
+<cfloop query="rsSubTypes">
+	<cfset sourceSubType=getSubTypeByID(rsSubTypes.subTypeID)>
+	<cfset destSubType=getSubTypeByName(rsSubTypes.type,rsSubTypes.subType,arguments.toSiteID)>
+	
+	<cfset destSubType.setDataTable(sourceSubType.getDataTable())>
+	<cfset destSubType.setBaseTable(sourceSubType.getBaseTable())>
+	<cfset destSubType.setBaseKeyField(sourceSubType.getBaseKeyField())>
+	<cfset destSubType.setIsActive(sourceSubType.getIsActive())>
+	
+	<cfset destSubType.save()>
+	
+	<cfset extendSets=sourceSubType.getExtendSets()>
+	
+	<cfif arrayLen(extendSets)>
+		<cfloop from="1" to="#arrayLen(extendSets)#" index="s">
+			<cfset sourceExtendSet=extendSets[s]>
+			<cfset destExtendSet=destSubType.getExtendSetByName(sourceExtendSet.getName())>
+			<cfset destExtendSet.setContainer(sourceExtendSet.getContainer())>
+			<cfset destExtendSet.setIsActive(sourceExtendSet.getIsActive())>
+			<cfset destExtendSet.setOrderNo(sourceExtendSet.getOrderNo())>
+			<cfset destExtendSet.save()>
+			
+			<cfset attributes=sourceExtendSet.getAttributes()>
+			
+			<cfif arrayLen(attributes)>
+				<cfloop from="1" to="#arrayLen(attributes)#" index="a">
+					<cfset sourceAttribute=attributes[a]>
+					<cfset destAttribute=destExtendSet.getAttributeByName(sourceAttribute.getName())>
+					
+					<cfset destAttribute.setName(sourceAttribute.getName())>
+					<cfset destAttribute.setHint(sourceAttribute.getHint())>
+					<cfset destAttribute.setType(sourceAttribute.getType())>
+					<cfset destAttribute.setOrderNo(sourceAttribute.getOrderNo())>
+					<cfset destAttribute.setIsActive(sourceAttribute.getIsActive())>
+					<cfset destAttribute.setRequired(sourceAttribute.getRequired())>
+					<cfset destAttribute.setValidation(sourceAttribute.getValidation())>
+					<cfset destAttribute.setRegex(sourceAttribute.getRegex())>
+					<cfset destAttribute.setMessage(sourceAttribute.getMessage())>
+					<cfset destAttribute.setLabel(sourceAttribute.getLabel())>
+					<cfset destAttribute.setDefaultValue(sourceAttribute.getDefaultValue())>
+					<cfset destAttribute.setOptionList(sourceAttribute.getOptionList())>
+					<cfset destAttribute.setOptionLabelList(sourceAttribute.getOptionLabelList())>
+					<cfset destAttribute.save()>
+				</cfloop>
+			</cfif>
+			
+		</cfloop>
+	</cfif>
+</cfloop>
+</cffunction>
+
 </cfcomponent>
