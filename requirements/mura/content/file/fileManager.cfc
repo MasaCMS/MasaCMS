@@ -150,8 +150,11 @@ to your own modified versions of Mura CMS.
 	<cfset var theFileLocation="" />
 	<cfset var pluginManager=getBean("pluginManager")>	
 	<cfset var pluginEvent = createObject("component","mura.event") />
-
-	<cfset arguments.fileID=replace(arguments.fileID,"../","","all")>
+	
+	<cfif refind("[/\\]",arguments.fileID)>
+		<cfthrow message="Invalid FileID.">
+		<cfabort>
+	</cfif>
 	
 		<cfswitch expression="#variables.configBean.getFileStore()#">	
 			<cfcase value="database">
@@ -209,7 +212,10 @@ to your own modified versions of Mura CMS.
 	<cfset var theFile="" />
 	<cfset var theFileLocation="" />
 	
-	<cfset arguments.fileID=replace(arguments.fileID,"../","","all")>
+	<cfif refind("[/\\]",arguments.fileID)>
+		<cfthrow message="Invalid FileID.">
+		<cfabort>
+	</cfif>
 		
 		<cfswitch expression="#variables.configBean.getFileStore()#">	
 			<cfcase value="database">
@@ -251,7 +257,10 @@ to your own modified versions of Mura CMS.
 	<cfset var theFile="" />
 	<cfset var theFileLocation="" />
 	
-	<cfset arguments.fileID=replace(arguments.fileID,"../","","all")>
+	<cfif refind("[/\\]",arguments.fileID)>
+		<cfthrow message="Invalid FileID.">
+		<cfabort>
+	</cfif>
 		 
 		<cfswitch expression="#variables.configBean.getFileStore()#">	
 			<cfcase value="database">
