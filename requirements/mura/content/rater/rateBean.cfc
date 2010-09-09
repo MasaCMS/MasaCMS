@@ -96,6 +96,16 @@
 	<cfreturn variables.instance.entered />
 </cffunction>
 
+<cffunction name="setAllValues" returntype="any" access="public" output="false">
+	<cfargument name="instance">
+	<cfset variables.instance=arguments.instance/>
+	<cfreturn this>
+</cffunction>
+
+<cffunction name="getAllValues" returntype="any" access="public" output="false">
+	<cfreturn variables.instance>
+</cffunction>
+
 <cffunction name="setEntered" access="public" output="false">
 	<cfargument name="entered" />
 	<cfif isDate(arguments.entered)>
