@@ -48,7 +48,7 @@ to your own modified versions of Mura CMS.
 <cfset rslist=application.categoryManager.getCategories(attributes.siteID,attributes.ParentID,"") />
 </cfsilent>
 <cfif rslist.recordcount>
-<ul class="categories">
+<ul>
 <cfoutput query="rslist">
 <li>
 <cfif rslist.isOpen eq 1><input type="checkbox" name="categoryID" class="checkbox" <cfif listfind(request.placementBean.getCategoryID(),rslist.categoryID) or listfind(attributes.categoryID,rslist.CategoryID)>checked</cfif> value="#rslist.categoryID#" <cfif not application.permUtility.getCategoryPerm(rslist.restrictGroups,attributes.siteid)>disabled</cfif> > </cfif>#rslist.name#

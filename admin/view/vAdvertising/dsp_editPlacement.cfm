@@ -120,7 +120,7 @@ function uncheckAllHours() {
 </dd>
 <cfif application.categoryManager.getCategoryCount(attributes.siteid)>
 <dt>#application.rbFactory.getKeyValue(session.rb,'advertising.categoryfilters')#</dt>
-<dd>
+<dd class="categories">
 <cf_dsp_categories_nest siteID="#attributes.siteID#" parentID="" nestLevel="0" placementID="#attributes.placementID#">
 <dd>
 

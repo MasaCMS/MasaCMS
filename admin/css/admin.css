@@ -1,3 +1,5 @@
+/* @override http://site23.walkingmen.com/admin/css/admin.css?coreversion=2806 */
+
 /* @override 
 	http://mura:8500/admin/css/admin.css
 	http://mura:8500/admin/css/admin.css?coreversion=1
@@ -3731,6 +3733,40 @@ a.expand:hover span {
 }*/
 
 /* @end */
+
+/* @group Advertising */
+
+#cadvertising dd td {
+	width: auto;
+}
+
+#cadvertising .categories {
+	overflow: hidden;
+}
+
+#cadvertising .categories ul {
+	float: left;
+	clear: both !important;
+	width: 100%;
+	margin: .5em 0 0 0;
+	padding: 0;
+}
+
+#cadvertising .categories li {
+	font-style: italic;
+	margin-bottom: .5em;
+}
+
+#cadvertising .categories li li {
+	width: 30%;
+	margin-right: 1%;
+	float: left;
+	font-style: normal;
+}
+
+/* @end */
+
+
 
 /* @group Miscellaneous */
 .categories li ul, .interestGroups li ul li ul {
