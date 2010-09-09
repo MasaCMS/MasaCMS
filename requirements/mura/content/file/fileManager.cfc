@@ -152,7 +152,7 @@ to your own modified versions of Mura CMS.
 	<cfset var pluginEvent = createObject("component","mura.event") />
 	
 	<cfif refind("[/\\]",arguments.fileID)>
-		<cfthrow message="Invalid FileID.">
+		<cfdump var="Invalid fileID">
 		<cfabort>
 	</cfif>
 	
@@ -213,7 +213,7 @@ to your own modified versions of Mura CMS.
 	<cfset var theFileLocation="" />
 	
 	<cfif refind("[/\\]",arguments.fileID)>
-		<cfthrow message="Invalid FileID.">
+		<cfdump var="Invalid fileID">
 		<cfabort>
 	</cfif>
 		
@@ -258,7 +258,7 @@ to your own modified versions of Mura CMS.
 	<cfset var theFileLocation="" />
 	
 	<cfif refind("[/\\]",arguments.fileID)>
-		<cfthrow message="Invalid FileID.">
+		<cfdump var="Invalid fileID">
 		<cfabort>
 	</cfif>
 		 
