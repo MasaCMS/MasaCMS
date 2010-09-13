@@ -618,6 +618,7 @@ to your own modified versions of Mura CMS.
 			<!--- tfiles --->
 			<cfquery datasource="#arguments.toDSN#" name="rsFiles">
 				delete from tfiles where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.tositeid#"/>
+				and moduleid <> '00000000000000000000000000000000004'
 			</cfquery>
 			<cfquery datasource="#arguments.fromDSN#" name="rsFiles">
 				select * from tfiles where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.fromsiteid#"/>

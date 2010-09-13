@@ -138,7 +138,7 @@ to your own modified versions of Mura CMS.
 	<cfloop query="rsParams">
 		<cfif listLen(rsParams.field,".") eq 2>
 			<cfset jointable=listFirst(rsParams.field,".") >
-			<cfif jointable neq "tcontent" and not listFind(jointables,jointable)>
+			<cfif not listFindNoCase("tcontent,tcontentstats,tfiles,tparent",jointable) and not listFind(jointables,jointable)>
 				<cfset jointables=listAppend(jointables,jointable)>
 			</cfif>
 		</cfif>
