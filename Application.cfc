@@ -51,7 +51,7 @@ to your own modified versions of Mura CMS.
 		
 		<cftry>
 			<cfinclude template="config/mappings.cfm">
-			<cfcatch>
+			<cfcatch type="missingInclude">
 				<cfset hasMappings=false>
 			</cfcatch>
 		</cftry>
@@ -69,7 +69,7 @@ to your own modified versions of Mura CMS.
 		<cfset canWriteMappings=true>
 		<cftry>
 			<cfinclude template="plugins/mappings.cfm">
-			<cfcatch>
+			<cfcatch type="missingInclude">
 				<cfset hasMappings=false>
 			</cfcatch>
 		</cftry>

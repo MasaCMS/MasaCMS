@@ -10,7 +10,7 @@
 		
 		<cftry>
 			<cfinclude template="../config/mappings.cfm">
-			<cfcatch>
+			<cfcatch type="missingInclude">
 				<cfset hasMappings=false>
 			</cfcatch>
 		</cftry>
@@ -28,7 +28,7 @@
 		<cfset canWriteMappings=true>
 		<cftry>
 			<cfinclude template="../plugins/mappings.cfm">
-			<cfcatch>
+			<cfcatch type="missingInclude">
 				<cfset hasMappings=false>
 			</cfcatch>
 		</cftry>
