@@ -48,14 +48,20 @@ to your own modified versions of Mura CMS.
 	<cfelseif structKeyExists(request,"event")>
 		<cfset local.pluginEvent=request.event>
 	<cfelse>
+		<cftry>
 		<cfset local.pluginEvent=createObject("component","mura.event")>
+		<cfcatch></cfcatch>
+		</cftry>
 	</cfif>
-	<cfset local.pluginEvent.setValue("exception",arguments.exception)>
-	<cfset local.pluginEvent.setValue("eventname",arguments.eventname)>
-	<cfif len(local.pluginEvent.getValue("siteID"))>
-		<cfset application.pluginManager.announceEvent("onSiteError",local.pluginEvent)>
-	</cfif>	
-	<cfset application.pluginManager.announceEvent("onGlobalError",local.pluginEvent)>
+	
+	<cfif isObject(local.pluginEvent)>
+		<cfset local.pluginEvent.setValue("exception",arguments.exception)>
+		<cfset local.pluginEvent.setValue("eventname",arguments.eventname)>
+		<cfif len(local.pluginEvent.getValue("siteID"))>
+			<cfset application.pluginManager.announceEvent("onSiteError",local.pluginEvent)>
+		</cfif>	
+		<cfset application.pluginManager.announceEvent("onGlobalError",local.pluginEvent)>
+	</cfif>
 </cfif>
 	
 <cfif structKeyExists(application,"configBean")>

@@ -250,8 +250,8 @@
 	
 	<cfquery name="rs" datasource="#variables.configBean.getDatasource()#" blockfactor="#blockFactor#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	<cfif dbType eq "oracle" and getMaxItems()>select * from (</cfif>
-	select distinct <cfif dbtype eq "mssql" and getMaxItems()>top #getMaxItems()#</cfif> 	
-	tclassextend.type,tclassextend.subtype,tclassextend.siteID, #dataTable#.baseID as ID
+	select <cfif dbtype eq "mssql" and getMaxItems()>top #getMaxItems()#</cfif> 	
+	tclassextend.type,tclassextend.subtype,tclassextend.siteID, #dataTable#.baseID as ID, extendedSort
 	from #dataTable#
 	INNER JOIN  tclassextendattributes on (#dataTable#.attributeID=tclassextendattributes.attributeID)
 	INNER JOIN  tclassextendsets on (tclassextendattributes.extendsetID=tclassextendsets.extendsetID)
@@ -333,6 +333,8 @@
 		</cfloop>
 		<cfif started>)</cfif>
 	</cfif>
+	
+	Group By tclassextend.type,tclassextend.subtype,tclassextend.siteID, #dataTable#.baseID, extendedSort
 	
 	<cfif len(getSortBy())>
 		order by
