@@ -116,7 +116,7 @@ to your own modified versions of Mura CMS.
 </cfif>
 
 
-<cfif not request.hasCFApplicationCFM>
+<cfif not request.hasCFApplicationCFM and not fileExists("#expandPath('/muraWRM/config')#/cfapplication.cfm")>
 	<cfset application.serviceFactory.getBean("fileWriter").writeFile(file="#expandPath('/muraWRM/config')#/cfapplication.cfm", output='<!--- Add Custom Application.cfc Vars Here --->')>	
 </cfif>
 
