@@ -621,13 +621,24 @@ select * from tplugins order by #arguments.orderby#
 	<!--- remove none alphnumeric characters--->
 	<cfset arguments.args.package=rereplace(arguments.args.package,"[^a-zA-Z0-9\-_]","","ALL")>
 	
-	<cfif len(arguments.args.package)>
-		<cfset directory="#arguments.args.package#_#pluginConfig.getPluginID()#">
+	<<cfif len(arguments.args.package)>
+		 <cfif structKeyExists(pluginXML.plugin,"directoryFormat") 
+		 		and pluginXML.plugin.directoryFormat.xmlText eq "packageOnly">
+		 	<cfset directory=arguments.args.package>
+		<cfelse>
+			<cfset directory="#arguments.args.package#_#pluginConfig.getPluginID()#">
+		</cfif>
 	<cfelse>
 		<cfset directory=pluginConfig.getPluginID()>
 	</cfif>
 	
 	<cfif directory neq pluginConfig.getDirectory()>
+
+		<cfset i=0>
+		<cfloop condition="directoryExists('#variables.configBean.getPluginDir()#/#directory#')">
+			<cfset i=i+1>
+			<cfset directory=directory & i>
+		</cfloop>
 		
 		<cfset variables.fileWriter.renameDir(directory = "#variables.configBean.getPluginDir()#/#pluginConfig.getDirectory()#", newDirectory = "#directory#")>
 	

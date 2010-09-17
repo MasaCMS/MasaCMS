@@ -1,3 +1,5 @@
+/* @override http://mura:8500/admin/css/admin.css?coreversion=1 */
+
 /* This file is part of Mura CMS. 
 
 	Mura CMS is free software: you can redistribute it and/or modify 
@@ -2497,10 +2499,14 @@ dt .add li.Page {
 
 /* @group File Icons */
 
-dt li, dt a  {
+dt li  {
 	background-image: url(../images/icons/files/icon_generic_small.gif);
 	background-repeat: no-repeat;
 	background-position: left center;
+}
+
+form dt a {
+	margin-right: .5em;
 }
 
 .doc, .docx {
