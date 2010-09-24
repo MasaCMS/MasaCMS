@@ -199,33 +199,70 @@ to your own modified versions of Mura CMS.
 		from #dataTable# inner join
 		tclassextendattributes On (#dataTable#.attributeID=tclassextendattributes.attributeID)
 		where #dataTable#.baseID=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#getBaseID()#">
+		
+		<cfif variables.configBean.getDBType() eq "oracle" and len(getType()) and len(getSubType()) and len(getSiteID())>
+			Union All
+			
+			select 
+			#dataTable#.baseID, tclassextendattributes.name, tclassextendattributes.validation,
+			<cfif variables.configBean.getDBType() eq "oracle">
+				to_char(tclassextendattributes.label) as label
+			<cfelse>
+				tclassextendattributes.label
+			</cfif>,
+			tclassextendattributes.attributeID,tclassextendattributes.defaultValue,tclassextendattributes.extendSetID,
+			
+			#dataTable#.attributeValue
+			 
+			from tclassextend 
+			inner join tclassextendsets On (tclassextend.subtypeid=tclassextendsets.subtypeid)
+			inner join tclassextendattributes On (tclassextendsets.extendsetid=tclassextendattributes.extendsetid)
+			left join #dataTable# on (
+												(
+													tclassextendattributes.attributeID=#dataTable#.attributeID
+													and  #dataTable#.baseID=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#getBaseID()#">
+												)
+											)
+			where tclassextend.siteid=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#getSiteID()#">
+			and tclassextend.type=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#getType()#">
+			and (
+				<cfif getSubType() neq "Default">
+				tclassextend.subtype=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#getSubType()#">
+				or
+				</cfif>
+				tclassextend.subtype='Default'
+				)
+				
+			and #dataTable#.baseID is null
+			
+		</cfif>
 		</cfquery>
 		
-		<cfif len(getType()) and len(getSubType()) and len(getSiteID())>
+		<cfif variables.configBean.getDBType() neq "oracle" and len(getType()) and len(getSubType()) and len(getSiteID())>
 		
-		<cfquery name="rs" dbtype="query">
-			select baseID, name, validation, label, attributeID, defaultValue, extendSetID, attributeValue
-			from rs
+			<cfquery name="rs" dbtype="query">
+				select baseID, name, validation, label, attributeID, defaultValue, extendSetID, attributeValue
+				from rs
+				
+				union all
+				
+				select '' baseID, attributename, validation, label, attributeID, defaultValue, extendSetID, '' attributeValue
+				from rsDefinitions
+				where siteID=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#getSiteID()#">
+				and type=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#getType()#">
+	          	and (
+	                 <cfif getSubType() neq "Default">
+	                  subtype=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#getSubType()#">
+	                 
+					  or
+	                  </cfif>
+	                 subtype='Default'
+	                  )
+				<cfif rs.recordcount>
+				and attributeID not in (#valuelist(rs.attributeid)#)
+				</cfif>
 			
-			union all
-			
-			select '' baseID, attributename, validation, label, attributeID, defaultValue, extendSetID, '' attributeValue
-			from rsDefinitions
-			where siteID=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#getSiteID()#">
-			and type=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#getType()#">
-          	and (
-                 <cfif getSubType() neq "Default">
-                  subtype=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#getSubType()#">
-                 
-				  or
-                  </cfif>
-                 subtype='Default'
-                  )
-			<cfif rs.recordcount>
-			and attributeID not in (#valuelist(rs.attributeid)#)
-			</cfif>
-		
-		</cfquery>
+			</cfquery>
 		</cfif>
 		
 		<cfset variables.instance.data=rs />
