@@ -644,7 +644,7 @@ to your own modified versions of Mura CMS.
 						</cfif>
 					</cfif>
 				</cfquery>
-				<cfloop query="rstadplacementdetails">
+				<cfloop query="rstadplacementcategories">
 					<cfquery datasource="#arguments.toDSN#">
 						insert into tadplacementcategoryassign (placementID, categoryID)
 						values
@@ -1608,7 +1608,7 @@ to your own modified versions of Mura CMS.
 		
 			
 		<!---<cfthread action="run" name="thread0">--->
-			<cfset getToWork(fromsiteid, tositeid, fromDSN, toDSN, 'copy', '' , keys, 'full')>
+			<cfset getToWork(fromsiteid, tositeid, fromDSN, toDSN, 'copy', keys, 'full')>
 		<!---</cfthread>--->
 				
 		<!---<cfthread action="run" name="thread1">--->
