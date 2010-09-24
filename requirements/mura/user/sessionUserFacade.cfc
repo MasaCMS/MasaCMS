@@ -85,6 +85,9 @@
 		<cfreturn variables.userBean>
 	<cfelse>
 		<cfset variables.userBean=application.userManager.read(session.mura.userID)>
+		<cfif variables.userBean.getIsNew()>
+			<cfset variables.userBean.setSiteID(getValue('siteID'))>
+		</cfif>
 	</cfif>
 	<cfreturn variables.userBean>
 </cffunction>

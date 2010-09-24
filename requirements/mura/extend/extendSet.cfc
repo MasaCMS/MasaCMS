@@ -61,6 +61,8 @@ to your own modified versions of Mura CMS.
 	<cfset variables.configBean=arguments.configBean />
 	<cfset variables.contentRenderer=arguments.contentRenderer />
 	<cfset variables.dsn=variables.configBean.getDatasource()/>
+	<cfset variables.classExtensionManager=variables.configBean.getClassExtensionManager()>
+	
 	<cfreturn this />
 </cffunction>
 
@@ -299,6 +301,9 @@ to your own modified versions of Mura CMS.
 		<cfqueryparam cfsqltype="cf_sql_varchar"  value="#getContainer()#">)
 		</cfquery>
 	</cfif>
+	
+	<cfset variables.classExtensionManager.purgeDefinitionsQuery()>
+	
 	<cfreturn this>
 </cffunction>
 
@@ -315,6 +320,8 @@ to your own modified versions of Mura CMS.
 	<cfquery name="rs" datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	delete from tclassextendsets where extendSetID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getExtendSetID()#">
 	</cfquery>
+	
+	<cfset variables.classExtensionManager.purgeDefinitionsQuery()>
 
 </cffunction>
 

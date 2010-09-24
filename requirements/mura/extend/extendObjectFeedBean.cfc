@@ -337,20 +337,22 @@
 	Group By tclassextend.type,tclassextend.subtype,tclassextend.siteID, #dataTable#.baseID, extendedSort
 	
 	<cfif len(getSortBy())>
-		order by
+		
 		
 		<cfswitch expression="#getSortBy()#">
 		<cfcase value="random">
 			<cfif dbType eq "mysql">
-		          rand()
+		        order by   rand()
 		    <cfelseif dbType eq "mssql">
-		          newID()
+		        order by  newID()
 		    <cfelseif dbType eq "oracle">
-		          dbms_random.value
+		        order by  dbms_random.value
 		    </cfif>
 		</cfcase>
 		<cfdefaultcase>
-				qExtendedSort.extendedSort #getSortDirection()#
+			<cfif len(getSortBy())>
+				order by qExtendedSort.extendedSort #getSortDirection()#
+			</cfif>
 		</cfdefaultcase>
 		</cfswitch>
 	</cfif>

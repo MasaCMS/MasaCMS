@@ -40,11 +40,18 @@ for your modified version; it is your choice whether to do so, or to make such m
 the GNU General Public License version 2 �without this exception. �You may, if you choose, apply this exception
 to your own modified versions of Mura CMS.
 --->
-<cffunction name="onError"  returnType="void"  output="true">
-	<cfargument name="exception" required="true">
-	<cfargument name="eventname" type="string" required="true">
-	<cfset var local=structNew()>
-	<cfif fileExists(expandPath('/config/appcfc/onError_include.cfm'))>
-		<cfinclude template="/config/appcfc/onError_include.cfm">
+<cfcomponent extends="mura.iterator.queryIterator" output="false">
+
+<cffunction name="packageRecord" access="public" output="false" returntype="any">
+	<cfset var favorite=getBean("favoriteBean")>
+
+	<cfset favorite.set(queryRowToStruct(variables.records,currentIndex()))>
+	<cfset favorite.setIsNew(0)>
+	
+	<cfif isObject(variables.recordTranslator)>
+		<cfset favorite.setTranslator(variables.recordTranslator)>
 	</cfif>
+	<cfreturn favorite>
 </cffunction>
+	
+</cfcomponent>

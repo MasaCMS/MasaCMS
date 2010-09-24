@@ -813,5 +813,6 @@ username="#variables.configBean.getDBUsername()#" password="#variables.configBea
 	<cfset removePermission(arguments.moduleID,arguments.groupID,arguments.siteID)>
 	
 </cffunction>
+	
 
 </cfcomponent>

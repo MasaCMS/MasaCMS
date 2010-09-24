@@ -214,7 +214,8 @@ to your own modified versions of Mura CMS.
 							    AND tcontent.active = 1  
 							    AND TKids.Approved = 1
 							    AND TKids.active = 1
-							    AND TKids.isNav = 1 
+							    AND TKids.searchExclude = 0
+							    <cfif arguments.feedBean.getShowNavOnly()>AND TKids.isNav = 1</cfif>
 							 	AND tcontent.moduleid = '00000000000000000000000000000000000'
 							 
 							<cfif rsParams.recordcount>
@@ -384,7 +385,7 @@ to your own modified versions of Mura CMS.
 <!--- end qKids --->
 	
 	where tcontent.active=1
-	<cfif arguments.feedBean.getType() eq "Local">
+	<cfif arguments.feedBean.getType() eq "Local" and arguments.feedBean.getShowNavOnly()>
 	AND tcontent.isNav = 1
 	</cfif>
 	AND tcontent.Approved = 1
@@ -395,7 +396,8 @@ to your own modified versions of Mura CMS.
 	<cfelse>
 		AND tcontent.moduleid = '00000000000000000000000000000000000'
 	</cfif>
-	and tcontent.type !='Module'
+	AND tcontent.searchExclude = 0
+	AND tcontent.type !='Module'
 	AND tcontent.siteid = <cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.feedBean.getsiteid()#">
 	
 		<cfif rsParams.recordcount>

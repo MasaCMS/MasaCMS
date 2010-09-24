@@ -19,6 +19,11 @@
 			<cfset setEvent(createObject("component","mura.event").init(initArgs))>
 		</cfif>
 	</cfif>
+	
+	<cfif not getCurrentUser().isLoggedIn() and len(event('siteID'))>
+		<cfset getCurrentUser().setValue("siteID",event('siteID'))>
+	</cfif>
+	
 	<cfreturn this>
 </cffunction>
 
@@ -114,11 +119,15 @@
 </cffunction>
 
 <cffunction name="getEvent" output="false" returntype="any">
+	<cfset var local=structNew()>
 	<cfif not isObject(variables.instance.event)>
 		<cfif structKeyExists(request,"servletEvent")>
-			<cfset variables.instance.event=request.serlvetEvent>
+			<cfset variables.instance.event=request.servletEvent>
 		<cfelseif structKeyExists(request,"event")>
 			<cfset variables.instance.event=request.event>
+		<cfelse>
+			<cfset local.MuraScope=this>
+			<cfset variables.instance.event=createobject("component","mura.event").init(local)>
 		</cfif>
 	</cfif>
 	<cfreturn variables.instance.event>

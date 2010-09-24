@@ -100,7 +100,7 @@ to your own modified versions of Mura CMS.
 		<cfset mailServerSSL=variables.configBean.getMailserverSSL()/>
 	</cfif>
 
-<cfif isStruct(arguments.args) and REFindNoCase("^[^@%*<>' ]+@[^@%*<>' ]{1,255}\.[^@%*<>' ]{2,5}", trim(arguments.sendto)) neq 0>
+<cfif isStruct(arguments.args) and isValidEmailFormat(arguments.sendto)>
 	
 	<cfset fields=arguments.args>
 	
@@ -209,7 +209,7 @@ to your own modified versions of Mura CMS.
 <cfset var mailServerTLS=false />
 <cfset var mailServerSSL=false />
 
-<cfif REFindNoCase("^[^@%*<>' ]+@[^@%*<>' ]{1,255}\.[^@%*<>' ]{2,5}", trim(arguments.sendto)) neq 0>
+<cfif isValidEmailFormat(arguments.sendto)>
 	<cfif arguments.siteid neq ''>
 		<cfset useDefaultSMTPServer=variables.settingsManager.getSite(arguments.siteid).getUseDefaultSMTPServer()>
 		<cfset mailServerUsername=variables.settingsManager.getSite(arguments.siteid).getMailserverUsername(true)/>
@@ -291,7 +291,7 @@ to your own modified versions of Mura CMS.
 <cfset var mailServerTLS=false />
 <cfset var mailServerSSL=false />
 
-<cfif REFindNoCase("^[^@%*<>' ]+@[^@%*<>' ]{1,255}\.[^@%*<>' ]{2,5}", trim(arguments.sendto)) neq 0>
+<cfif isValidEmailFormat(arguments.sendto)>
 	<cfif arguments.siteid neq ''>
 		<cfset useDefaultSMTPServer=variables.settingsManager.getSite(arguments.siteid).getUseDefaultSMTPServer()>
 		<cfset mailServerUsername=variables.settingsManager.getSite(arguments.siteid).getMailserverUsername(true)/>
@@ -373,7 +373,7 @@ to your own modified versions of Mura CMS.
 <cfset var mailServerTLS=false />
 <cfset var mailServerSSL=false />
 
-<cfif REFindNoCase("^[^@%*<>' ]+@[^@%*<>' ]{1,255}\.[^@%*<>' ]{2,5}", trim(arguments.sendto)) neq 0>
+<cfif isValidEmailFormat(arguments.sendto)>
 	<cfif arguments.siteid neq ''>
 		<cfset useDefaultSMTPServer=variables.settingsManager.getSite(arguments.siteid).getUseDefaultSMTPServer()>
 		<cfset mailServerUsername=variables.settingsManager.getSite(arguments.siteid).getMailserverUsername(true)/>

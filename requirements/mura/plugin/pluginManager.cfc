@@ -621,7 +621,7 @@ select * from tplugins order by #arguments.orderby#
 	<!--- remove none alphnumeric characters--->
 	<cfset arguments.args.package=rereplace(arguments.args.package,"[^a-zA-Z0-9\-_]","","ALL")>
 	
-	<<cfif len(arguments.args.package)>
+	<cfif len(arguments.args.package)>
 		 <cfif structKeyExists(pluginXML.plugin,"directoryFormat") 
 		 		and pluginXML.plugin.directoryFormat.xmlText eq "packageOnly">
 		 	<cfset directory=arguments.args.package>

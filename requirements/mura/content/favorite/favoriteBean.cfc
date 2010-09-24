@@ -10,6 +10,7 @@
 <cfset variables.instance.columnNumber=0/>
 <cfset variables.instance.rowNumber=0/>
 <cfset variables.instance.maxRSSItems=0/>
+<cfset variables.instance.isNew=1/>
 <cfset variables.instance.errors=structnew() />
 
 <cffunction name="init" returntype="any" output="false" access="public">
@@ -38,6 +39,7 @@
 				<cfset setColumnNumber(arguments.data.columnNumber) />
 				<cfset setRowNumber(arguments.data.rowNumber) />
 				<cfset setMaxRSSItems(arguments.data.maxRssItems) />
+				<cfset setIsNew(0)>
 			</cfif>
 			
 		<cfelseif isStruct(arguments.data)>
@@ -48,15 +50,15 @@
 				</cfif>
 			</cfloop>
 	
-			
 		</cfif>
 		
 		<cfset validate() />
-		
+		<cfreturn this>
 </cffunction>
   
 <cffunction name="validate" access="public" output="false" returntype="void">
 	<cfset variables.instance.errors=structnew() />
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="getErrors" returnType="struct" output="false" access="public">
@@ -73,6 +75,7 @@
 <cffunction name="setFavoriteID" access="public" output="false">
 	<cfargument name="favoriteID" type="String" />
 	<cfset variables.instance.favoriteID = trim(arguments.favoriteID) />
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="getUserID" returntype="String" access="public" output="false">
@@ -82,6 +85,7 @@
 <cffunction name="setUserID" access="public" output="false">
 	<cfargument name="userID" type="String" />
 	<cfset variables.instance.userID = trim(arguments.userID) />
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="getFavoriteName" returntype="String" access="public" output="false">
@@ -91,6 +95,7 @@
 <cffunction name="setFavoriteName" access="public" output="false">
 	<cfargument name="FavoriteName" type="String" />
 	<cfset variables.instance.FavoriteName = trim(arguments.FavoriteName) />
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="getFavorite" returntype="String" access="public" output="false">
@@ -100,6 +105,7 @@
 <cffunction name="setFavorite" access="public" output="false">
 	<cfargument name="Favorite" type="String" />
 	<cfset variables.instance.Favorite = trim(arguments.Favorite) />
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="getType" returntype="String" access="public" output="false">
@@ -109,6 +115,7 @@
 <cffunction name="setType" access="public" output="false">
 	<cfargument name="Type" type="String" />
 	<cfset variables.instance.Type = trim(arguments.Type) />
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="getSiteID" returntype="String" access="public" output="false">
@@ -118,6 +125,7 @@
 <cffunction name="setSiteID" access="public" output="false">
 	<cfargument name="SiteID" type="String" />
 	<cfset variables.instance.SiteID = trim(arguments.SiteID) />
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="getColumnNumber" returntype="numeric" access="public" output="false">
@@ -129,6 +137,7 @@
 	<cfif isNumeric(arguments.ColumnNumber)>
 	<cfset variables.instance.ColumnNumber = arguments.ColumnNumber />
 	</cfif>
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="getRowNumber" returntype="numeric" access="public" output="false">
@@ -140,6 +149,7 @@
 	<cfif isNumeric(arguments.RowNumber)>
 	<cfset variables.instance.RowNumber = arguments.RowNumber />
 	</cfif>
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="getMaxRSSItems" returntype="numeric" access="public" output="false">
@@ -151,6 +161,7 @@
 	<cfif isNumeric(arguments.MaxRSSItems)>
 	<cfset variables.instance.MaxRSSItems = arguments.MaxRSSItems />
 	</cfif>
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="getDateCreated" returntype="string" access="public" output="false">
@@ -162,10 +173,21 @@
 	<cfif isDate(arguments.DateCreated)>
 	<cfset variables.instance.DateCreated = arguments.DateCreated />
 	</cfif>
+	<cfreturn this>
+</cffunction>
+
+<cffunction name="setIsNew" output="false" access="public">
+    <cfargument name="IsNew" type="numeric" required="true">
+    <cfset variables.instance.IsNew = arguments.IsNew />
+	<cfreturn this>
+</cffunction>
+
+<cffunction name="getIsNew" returnType="numeric" output="false" access="public">
+   <cfreturn variables.instance.IsNew />
 </cffunction>
 
 <cffunction name="load"  access="public" output="false" returntype="void">
-	<cfset var rs=getQuery()>
+	<cfset var rs=getQuery(argumentcollection=arguments)>
 	<cfif rs.recordcount>
 		<cfset set(rs) />
 	</cfif>
@@ -174,7 +196,21 @@
 <cffunction name="getQuery"  access="public" output="false" returntype="query">
 	<cfset var rs=""/>
 	<cfquery name="rs" datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-	select * from tusersfavorites where favoriteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getFavoriteID()#">
+	select * from tusersfavorites 
+	where 
+	<cfif structKeyExists(arguments,"favoriteID")>
+	favoriteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.favoriteID#">
+	<cfelseif structKeyExists(arguments,"favorite")>
+		siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getSiteID()#">
+		and favorite=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.favorite#">
+		<cfif structKeyExists(arguments,"userID")>
+			and userID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.userID#">
+		<cfelse>
+			and userID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getUserID()#">
+		</cfif>
+	<cfelse>
+	favoriteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getFavoriteID()#">
+	</cfif>
 	</cfquery>
 	
 	<cfreturn rs/>
@@ -228,4 +264,40 @@
 	
 </cffunction>
 
+<cffunction name="loadBy" returnType="any" output="false" access="public">
+	<cfset var response="">
+	
+	<cfif not structKeyExists(arguments,"siteID")>
+		<cfset arguments.siteID=getSiteID()>
+	</cfif>
+	
+	<cfif not structKeyExists(arguments,"userID")>
+		<cfset arguments.userID=getUserID()>
+	</cfif>
+	
+	<cfset load(argumentCollection=arguments)>
+	<cfreturn this>
+</cffunction>
+
+<cffunction name="setAllValues" returntype="any" access="public" output="false">
+	<cfargument name="instance">
+	<cfset variables.instance=arguments.instance/>
+	<cfreturn this>
+</cffunction>
+
+<cffunction name="getAllValues" returntype="any" access="public" output="false">
+	<cfreturn variables.instance>
+</cffunction>
+
+<cffunction name="getFavoritesByUser" returntype="any" access="public" output="false">
+	<cfargument name="userID">
+	<cfargument name="type">
+	<cfreturn variables.instance>
+</cffunction>
+
+<cffunction name="getUsersByFavorite" returntype="any" access="public" output="false">
+	<cfargument name="favorite">
+	<cfargument name="type">
+	<cfreturn variables.instance>
+</cffunction>
 </cfcomponent>

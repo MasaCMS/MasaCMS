@@ -1578,4 +1578,13 @@ to your own modified versions of Mura CMS.
 	<cfreturn listLen(getPath()) gt 1>
 </cffunction>
 
+<cffunction name="getIsOnDisplay" output="false">
+<cfreturn getDisplay() eq 1 or 
+			(
+				getDisplay() eq 2 and getDisplayStart() lte now()
+				AND (getDisplayStop() gte now() or getDisplayStop() eq "")
+			)
+			and (listFind("Page,Portal,Gallery,File,Calendar,Link,Form",getType()) or listFind(getModuleAssign(),'00000000000000000000000000000000000'))>
+</cffunction>
+
 </cfcomponent>

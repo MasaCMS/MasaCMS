@@ -6,23 +6,23 @@ the Free Software Foundation, Version 2 of the License.
 
 Mura CMS is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. ï¿½See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-along with Mura CMS.  If not, see <http://www.gnu.org/licenses/>.
+along with Mura CMS. ï¿½If not, see <http://www.gnu.org/licenses/>.
 
 Linking Mura CMS statically or dynamically with other modules constitutes
 the preparation of a derivative work based on Mura CMS. Thus, the terms and 	
-conditions of the GNU General Public License version 2 (“GPL”) cover the entire combined work.
+conditions of the GNU General Public License version 2 (ï¿½GPLï¿½) cover the entire combined work.
 
 However, as a special exception, the copyright holders of Mura CMS grant you permission
 to combine Mura CMS with programs or libraries that are released under the GNU Lesser General Public License version 2.1.
 
-In addition, as a special exception,  the copyright holders of Mura CMS grant you permission
-to combine Mura CMS  with independent software modules that communicate with Mura CMS solely
+In addition, as a special exception, ï¿½the copyright holders of Mura CMS grant you permission
+to combine Mura CMS ï¿½with independent software modules that communicate with Mura CMS solely
 through modules packaged as Mura CMS plugins and deployed through the Mura CMS plugin installation API,
-provided that these modules (a) may only modify the  /trunk/www/plugins/ directory through the Mura CMS
+provided that these modules (a) may only modify the ï¿½/trunk/www/plugins/ directory through the Mura CMS
 plugin installation API, (b) must not alter any default objects in the Mura CMS database
 and (c) must not alter any files in the following directories except in cases where the code contains
 a separately distributed license.
@@ -37,7 +37,7 @@ the source code of that other code when and as the GNU GPL requires distribution
 
 For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception
 for your modified version; it is your choice whether to do so, or to make such modified version available under
-the GNU General Public License version 2  without this exception.  You may, if you choose, apply this exception
+the GNU General Public License version 2 ï¿½without this exception. ï¿½You may, if you choose, apply this exception
 to your own modified versions of Mura CMS.
 --->
 <cfcomponent extends="mura.cfobject" output="false">
@@ -48,6 +48,7 @@ to your own modified versions of Mura CMS.
 <cfset variables.instance.type="">
 <cfset variables.instance.subType="">
 <cfset variables.instance.siteID="">
+<cfset variables.instance.definitionsQuery="">
 
 
 <cffunction name="init" returntype="any" output="false" access="public">
@@ -62,6 +63,7 @@ to your own modified versions of Mura CMS.
 	<cfset variables.dsn=variables.configBean.getDatasource()/>
 	<cfset setBaseID(arguments.baseID)/>
 	<cfset setDataTable(arguments.dataTable)/>
+	<cfset setDefinitionsQuery(arguments.configBean.getClassExtensionManager().getDefinitionsQuery())>
 	
 	<cfif structKeyExists(arguments,"type")>
 		<cfset setType(arguments.type)/>
@@ -86,6 +88,16 @@ to your own modified versions of Mura CMS.
 	<cfargument name="BaseID" type="String" />
 	<cfset variables.instance.BaseID = trim(arguments.BaseID) />
 </cffunction>
+
+<cffunction name="getDefinitionsQuery" access="public" output="false">
+	<cfreturn variables.instance.definitionsQuery />
+</cffunction>
+
+<cffunction name="setDefinitionsQuery" returntype="void" access="public" output="false">
+	<cfargument name="definitionsQuery" />
+	<cfset variables.instance.definitionsQuery= arguments.definitionsQuery />
+</cffunction>
+
 
 <cffunction name="getDataTable" returntype="String" access="public" output="false">
 	<cfreturn variables.instance.dataTable />
@@ -123,14 +135,16 @@ to your own modified versions of Mura CMS.
 	<cfset variables.instance.siteID = trim(arguments.siteID) />
 </cffunction>
 
-<cffunction name="getAttribute" access="public" returntype="any" output="false">Ä
+<cffunction name="getAttribute" access="public" returntype="any" output="false">
 <cfargument name="key">
-<cfargument name="useMuraDefault" type="boolean" required="true" default="false"> 
+<cfargument name="useMuraDefault" type="boolean" required="true" default="false">
+<cfargument name="format" required="true" default=""> 
+ 
 <cfset var rs="" />
 <cfset var tempDate="">
 	<cfquery name="rs" dbType="query">
 		 select baseID,attributeValue,defaultValue,validation from variables.instance.data
-		 where name=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#key#">
+		 where lower(name)=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#lcase(key)#">
 		 <cfif isNumeric(arguments.key)>
 			 or attributeID=<cfqueryparam cfsqltype="cf_sql_numeric"  value="#key#">
 		 </cfif>
@@ -141,7 +155,15 @@ to your own modified versions of Mura CMS.
 			<cfif rs.validation eq "Date">
 				<cfset tempDate=rs.attributeValue>
 				<cftry>
-					<cfreturn lsDateFormat(parseDateTime(tempDate),session.dateKeyFormat) />
+					<cfif len(arguments.format)>
+						<cfif arguments.format eq "object">
+							<cfreturn parseDateTime(tempDate) />
+						<cfelse>
+							<cfreturn lsDateFormat(parseDateTime(tempDate),arguments.format)>
+						</cfif>
+					<cfelse>
+						<cfreturn lsDateFormat(parseDateTime(tempDate),session.dateKeyFormat) />
+					</cfif>
 					<cfcatch><cfreturn rs.attributeValue /></cfcatch>
 				</cftry>	
 			<cfelse>
@@ -161,6 +183,7 @@ to your own modified versions of Mura CMS.
 <cffunction name="loadData" access="public" returntype="void" output="false">
 <cfset var rs=""/>
 <cfset var dataTable=getDataTable() />
+<cfset var rsDefinitions=getDefinitionsQuery()>
 
 		<cfquery name="rs" datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 		select #dataTable#.baseid, tclassextendattributes.name, tclassextendattributes.validation, 
@@ -176,47 +199,35 @@ to your own modified versions of Mura CMS.
 		from #dataTable# inner join
 		tclassextendattributes On (#dataTable#.attributeID=tclassextendattributes.attributeID)
 		where #dataTable#.baseID=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#getBaseID()#">
-		
-		<cfif len(getType()) and len(getSubType()) and len(getSiteID())>
-		Union All
-		
-		select 
-		#dataTable#.baseID, tclassextendattributes.name, tclassextendattributes.validation,
-		<cfif variables.configBean.getDBType() eq "oracle">
-			to_char(tclassextendattributes.label) as label
-		<cfelse>
-			tclassextendattributes.label
-		</cfif>,
-		tclassextendattributes.attributeID,tclassextendattributes.defaultValue,tclassextendattributes.extendSetID,
-		
-		#dataTable#.attributeValue
-		 
-		from tclassextend 
-		inner join tclassextendsets On (tclassextend.subtypeid=tclassextendsets.subtypeid)
-		inner join tclassextendattributes On (tclassextendsets.extendsetid=tclassextendattributes.extendsetid)
-		left join #dataTable# on (
-											(
-												tclassextendattributes.attributeID=#dataTable#.attributeID
-												and  #dataTable#.baseID=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#getBaseID()#">
-											)
-										)
-		where tclassextend.siteid=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#getSiteID()#">
-		and tclassextend.type=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#getType()#">
-		and (
-			<cfif getSubType() neq "Default">
-			tclassextend.subtype=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#getSubType()#">
-			or
-			</cfif>
-			tclassextend.subtype='Default'
-			)
-			
-		and #dataTable#.baseID is null
-		
-		</cfif>
-		
 		</cfquery>
 		
-		<!--- <cfdump var="#rs#"><cfdump var="#getBaseID()#">		<cfabort> --->
+		<cfif len(getType()) and len(getSubType()) and len(getSiteID())>
+		
+		<cfquery name="rs" dbtype="query">
+			select baseID, name, validation, label, attributeID, defaultValue, extendSetID, attributeValue
+			from rs
+			
+			union all
+			
+			select '' baseID, attributename, validation, label, attributeID, defaultValue, extendSetID, '' attributeValue
+			from rsDefinitions
+			where siteID=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#getSiteID()#">
+			and type=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#getType()#">
+          	and (
+                 <cfif getSubType() neq "Default">
+                  subtype=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#getSubType()#">
+                 
+				  or
+                  </cfif>
+                 subtype='Default'
+                  )
+			<cfif rs.recordcount>
+			and attributeID not in (#valuelist(rs.attributeid)#)
+			</cfif>
+		
+		</cfquery>
+		</cfif>
+		
 		<cfset variables.instance.data=rs />
 		
 </cffunction>

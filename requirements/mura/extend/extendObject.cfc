@@ -150,9 +150,10 @@
 
 <cffunction name="getExtendedAttribute" returnType="string" output="false" access="public">
  	<cfargument name="key" type="string" required="true">
-	<cfargument name="useMuraDefault" type="boolean" required="true" default="false"> 
+	<cfargument name="useMuraDefault" type="boolean" required="true" default="false">
+	<cfargument name="format" required="true" default="">  
 	
-  	<cfreturn getExtendedData().getAttribute(arguments.key,arguments.useMuraDefault) />
+  	<cfreturn getExtendedData().getAttribute(arguments.key,arguments.useMuraDefault,arguments.format) />
 </cffunction>
 
 <cffunction name="getDataTable" returntype="String" access="public" output="false">
@@ -193,13 +194,14 @@
 
 <cffunction name="getValue" returntype="any" access="public" output="false">
 	<cfargument name="property" type="string" required="true">
+	<cfargument name="format" required="true" default=""> 
 	
 	<cfif structKeyExists(this,"get#property#")>
 		<cfreturn evaluate("get#property#()") />
 	<cfelseif structKeyExists(variables.instance,"#arguments.property#")>
 		<cfreturn variables.instance["#arguments.property#"] />
 	<cfelse>
-		<cfreturn getExtendedAttribute(arguments.property) />
+		<cfreturn getExtendedAttribute(arguments.property,arguments.format) />
 	</cfif>
 
 </cffunction>

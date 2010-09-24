@@ -67,6 +67,7 @@ to your own modified versions of Mura CMS.
 	<cfset variables.configBean=arguments.configBean />
 	<cfset variables.contentRenderer=arguments.contentRenderer />
 	<cfset variables.dsn=variables.configBean.getDatasource()/>
+	<cfset variables.classExtensionManager=variables.configBean.getClassExtensionManager()>
 	<cfreturn this />
 </cffunction>
 
@@ -368,7 +369,7 @@ to your own modified versions of Mura CMS.
 		</cflock>
 	</cfif>
 	
-	
+	<cfset variables.classExtensionManager.purgeDefinitionsQuery()>
 	
 	<cfreturn this>
 	<!--- <cfset saveOptions() /> --->
@@ -419,6 +420,7 @@ to your own modified versions of Mura CMS.
 	</cfquery>
 	</cftransaction>
 	
+	<cfset variables.classExtensionManager.purgeDefinitionsQuery()>
 </cffunction>
 
 <cffunction name="renderAttribute" output="false" returntype="string">

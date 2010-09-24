@@ -61,6 +61,7 @@ to your own modified versions of Mura CMS.
 	<cfset variables.configBean=arguments.configBean />
 	<cfset variables.contentRenderer=arguments.contentRenderer />
 	<cfset variables.dsn=variables.configBean.getDatasource()/>
+	<cfset variables.classExtensionManager=variables.configBean.getClassExtensionManager()>
 	<cfreturn this />
 </cffunction>
 
@@ -289,6 +290,9 @@ to your own modified versions of Mura CMS.
 		<cfset extendSetBean.save() />
 		--->
 	</cfif>
+	
+	<cfset variables.classExtensionManager.purgeDefinitionsQuery()>
+	
 	<cfreturn this>
 </cffunction>
 
@@ -338,7 +342,7 @@ to your own modified versions of Mura CMS.
 		and subType=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#getsubtype()#">
 		</cfquery>
 	</cfif>
-
+	<cfset variables.classExtensionManager.purgeDefinitionsQuery()>
 	
 </cffunction>
 

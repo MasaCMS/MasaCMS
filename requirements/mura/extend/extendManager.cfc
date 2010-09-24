@@ -42,6 +42,8 @@ to your own modified versions of Mura CMS.
 --->
 <cfcomponent extends="mura.cfobject" output="false">
 
+<cfset variables.definitionsQuery="">
+
 <cffunction name="init" returntype="any" output="false" access="public">
 	<cfargument name="configBean">
 	<cfargument name="contentRenderer">
@@ -51,6 +53,36 @@ to your own modified versions of Mura CMS.
 	<cfset variables.dsn=variables.configBean.getDatasource()/>
 	
 	<cfreturn this />
+</cffunction>
+
+<cffunction name="getDefinitionsQuery" output="false">
+
+<cfif not isQuery(variables.definitionsQuery)>
+	<cfquery name="variables.definitionsQuery" datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+	select tclassextend.subtypeid, tclassextend.siteid, tclassextend.basekeyfield, tclassextend.datatable, tclassextend.type, 
+	tclassextend.subtype, tclassextendsets.extendsetid, tclassextendsets.categoryid, tclassextendsets.name extendsetname, 
+	tclassextendsets.container, tclassextendattributes.attributeid, tclassextendattributes.name attributename, 
+	<cfif variables.configBean.getDBType() eq "oracle">
+		to_char(tclassextendattributes.label) as label
+	<cfelse>
+		tclassextendattributes.label
+	</cfif>, 
+	tclassextendattributes.hint, tclassextendattributes.type inputtype, tclassextendattributes.required, 
+	tclassextendattributes.validation, tclassextendattributes.regex, tclassextendattributes.message, tclassextendattributes.optionlist, 
+	tclassextendattributes.optionlabellist, tclassextendattributes.defaultvalue
+	from tclassextend
+	inner join tclassextendsets on (tclassextend.subtypeid=tclassextendsets.subtypeid)
+	inner join tclassextendattributes on (tclassextendsets.extendsetid=tclassextendattributes.extendsetid)
+	order by tclassextend.siteID, tclassextend.type, tclassextend.subtype, tclassextendsets.orderno, tclassextendattributes.orderno 
+	</cfquery>
+</cfif>
+
+<cfreturn variables.definitionsQuery>
+
+</cffunction>
+
+<cffunction name="purgeDefinitionsQuery" output="false">
+	<cfset variables.definitionsQuery="">
 </cffunction>
 
 <cffunction name="setContentRenderer" access="public" returntype="void">
@@ -153,7 +185,7 @@ ExtendSetID in(<cfloop from="1" to="#setLen#" index="s">
 
 		<cfif len(theValue)>
 			<cfif rs.validation eq "Date">
-				<cfif not lsisDate(theValue)>
+				<cfif not (lsisDate(theValue) or isDate(theValue))>
 					<cfif len(rs.message)>
 						<cfset errors[rs.name]=rs.message>
 					<cfelse>
@@ -257,15 +289,19 @@ ExtendSetID in(<cfloop from="1" to="#setLen#" index="s">
 						<cfset theValue = lsparseDateTime(theValue) />
 						<cfqueryparam cfsqltype="cf_sql_longvarchar"  value="#theValue#">,
 						#createODBCDateTime(theValue)#,
-						null
-						
+						null						
 						<cfcatch>
+							<cfset theValue = parseDateTime(theValue) />
 							<cfqueryparam cfsqltype="cf_sql_longvarchar"  value="#theValue#">,
-							null,
+							#createODBCDateTime(theValue)#,
 							null
 						</cfcatch>
 						</cftry>
-						
+					<cfelseif isDate(theValue)>	
+						<cfset theValue = parseDateTime(theValue) />
+						<cfqueryparam cfsqltype="cf_sql_longvarchar"  value="#theValue#">,
+						#createODBCDateTime(theValue)#,
+						null
 					<cfelse>
 						null,
 						null,

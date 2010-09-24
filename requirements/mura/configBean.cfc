@@ -83,6 +83,7 @@ to your own modified versions of Mura CMS.
 <cfset variables.instance.productionWebroot=""/>
 <cfset variables.instance.productionFiledir=""/>
 <cfset variables.instance.productionAssetdir=""/>
+<cfset variables.instance.productionPushMode="full"/>
 <cfset variables.instance.fileStore=""/>
 <cfset variables.instance.fileStoreAccessInfo=""/>
 <cfset variables.instance.tooltips=structNew()/>
@@ -112,6 +113,7 @@ to your own modified versions of Mura CMS.
 <cfset variables.instance.appreloadKey=application.appreloadKey />
 <cfset variables.instance.loginStrikes=4 />
 <cfset variables.instance.encryptPasswords=true />
+<cfset variables.instance.sessionTimeout=180 />
 <cfset variables.instance.tempDir=getTempDirectory() />
 
 
@@ -629,6 +631,16 @@ to your own modified versions of Mura CMS.
 <cffunction name="setProductionAssetdir" access="public" output="false">
 	<cfargument name="ProductionAssetdir" type="String" />
 	<cfset variables.instance.productionAssetdir=cleanFilePath(arguments.ProductionAssetdir)/>
+	<cfreturn this>
+</cffunction>
+
+<cffunction name="getProductionPushMode" returntype="any" access="public" output="false">
+	<cfreturn variables.instance.ProductionPushMode />
+</cffunction>
+
+<cffunction name="setProductionPushMode" access="public" output="false">
+	<cfargument name="productionPushMode" type="String" />
+	<cfset variables.instance.productionPushMode=arguments.productionPushMode/>
 	<cfreturn this>
 </cffunction>
 

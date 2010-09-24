@@ -51,6 +51,7 @@ to your own modified versions of Mura CMS.
 <cfset variables.instance.altName=""/>
 <cfset variables.instance.Lang="en-us"/>
 <cfset variables.instance.isActive=1 />
+<cfset variables.instance.showNavOnly=1 />
 <cfset variables.instance.isPublic=0 />
 <cfset variables.instance.isDefault=0 />
 <cfset variables.instance.description=""/>
@@ -482,6 +483,18 @@ to your own modified versions of Mura CMS.
 	<cfargument name="DisplayKids" type="any" />
 	<cfif isNumeric(arguments.DisplayKids)>
 	<cfset variables.instance.displayKids = arguments.DisplayKids />
+	</cfif>
+	<cfreturn this>
+</cffunction>
+
+<cffunction name="getShowNavOnly" returntype="numeric" access="public" output="false">
+	<cfreturn variables.instance.showNavOnly />
+</cffunction>
+
+<cffunction name="setShowNavOnly" access="public" output="false">
+	<cfargument name="showNavOnly" type="any" />
+	<cfif isBoolean(arguments.showNavOnly)>
+	<cfset variables.instance.showNavOnly = arguments.showNavOnly />
 	</cfif>
 	<cfreturn this>
 </cffunction>
