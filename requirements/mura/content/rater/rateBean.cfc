@@ -113,12 +113,6 @@
 	</cfif>
 </cffunction>
 
-<cffunction name="setAllValues" returntype="any" access="public" output="false">
-	<cfargument name="instance">
-	<cfset variables.instance=arguments.instance/>
-	<cfreturn this>
-</cffunction>
-
 <cffunction name="load"  access="public" output="false" returntype="void">
 	<cfset var rs=getQuery()>
 	<cfif rs.recordcount>
