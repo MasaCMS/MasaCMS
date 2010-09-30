@@ -129,7 +129,7 @@ to your own modified versions of Mura CMS.
 			<!--- tcontent --->
 			<cfif arguments.pushMode eq "UpdatesOnly">
 				<cfquery datasource="#arguments.fromDSN#" name="rsContentNew">
-					select contentID from tcontent where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.fromsiteid#"/> and active = 1 and lastUpdate >= #createODBCCDateTime(lastDeployment)#
+					select contentID from tcontent where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.fromsiteid#"/> and active = 1 and lastUpdate >= #createODBCDateTime(lastDeployment)#
 				</cfquery>
 			</cfif>
 			<cfquery datasource="#arguments.toDSN#">
@@ -360,7 +360,7 @@ to your own modified versions of Mura CMS.
 					(select userID from tusers where
 					siteid = '#application.settingsManager.getSite(rsSettings.advertiserUserPoolID).getPrivateUserPoolID()#' or
 					siteid = '#application.settingsManager.getSite(rsSettings.advertiserUserPoolID).getPublicUserPoolID()#') 
-					and lastUpdate >= #createODBCCDateTime(lastDeployment)#
+					and lastUpdate >= #createODBCDateTime(lastDeployment)#
 					</cfquery>
 				</cfif>
 				<cfquery datasource="#arguments.toDSN#">
@@ -417,7 +417,7 @@ to your own modified versions of Mura CMS.
 						(select userID from tusers where
 						siteid = '#application.settingsManager.getSite(rsSettings.advertiserUserPoolID).getPrivateUserPoolID()#' or
 						siteid = '#application.settingsManager.getSite(rsSettings.advertiserUserPoolID).getPublicUserPoolID()#')
-						and lastUpdate >= #createODBCCDateTime(lastDeployment)#
+						and lastUpdate >= #createODBCDateTime(lastDeployment)#
 					</cfquery>
 				</cfif>
 				<cfquery datasource="#arguments.toDSN#">
@@ -494,7 +494,7 @@ to your own modified versions of Mura CMS.
 				<cfif arguments.pushMode eq "UpdatesOnly">
 					<cfquery datasource="#arguments.fromDSN#" name="rstadzonesnew">
 						select addzoneID from tadzones where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.fromsiteid#"/>
-						and lastUpdate >= #createODBCCDateTime(lastDeployment)#
+						and lastUpdate >= #createODBCDateTime(lastDeployment)#
 					</cfquery>
 				</cfif>
 				<cfquery datasource="#arguments.toDSN#">
@@ -540,7 +540,7 @@ to your own modified versions of Mura CMS.
 				<cfif arguments.pushMode eq "UpdatesOnly">
 					<cfquery datasource="#arguments.fromDSN#" name="rstadplacementsnew">
 						select placementID from tadplacements where adzoneid in (select adzoneid from tadzones where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.fromsiteid#"/>)
-						and lastUpdate >= #createODBCCDateTime(lastDeployment)#
+						and lastUpdate >= #createODBCDateTime(lastDeployment)#
 					</cfquery>
 				</cfif>
 				<cfquery datasource="#arguments.toDSN#">
