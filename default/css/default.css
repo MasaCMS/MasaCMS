@@ -210,7 +210,7 @@ form li {
 	clear: both;
 	width: 100%;
 	margin-bottom: 1em;
-	list-style: none !important;
+	list-style: none;
 	}
 
 form li#svCaptcha {
@@ -367,8 +367,8 @@ li .req ins {
 
 .hide { display: none !important; }
 
-.left { float: left !important; }
-.right { float: right !important; }
+.left { float: left; }
+.right { float: right; }
 
 img.left { margin: 0 1em 1em 0; }
 img.right { margin: 0 0 1em 1em; }

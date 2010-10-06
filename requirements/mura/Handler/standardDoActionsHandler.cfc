@@ -49,7 +49,7 @@
 			
 			<cfcase value="logout">
 				<cfset application.loginManager.logout()>
-				<cfset event.getValue('HandlerFactory').get("standardPostLogout").handle(event)>
+				<cfset event.getHandler("standardPostLogout").handle(event)>
 			</cfcase>
 			
 			<cfcase value="updateprofile">

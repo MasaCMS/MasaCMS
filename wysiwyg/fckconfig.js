@@ -51,7 +51,7 @@ FCKConfig.PreloadImages = [ FCKConfig.SkinPath + 'images/toolbar.start.gif', FCK
 FCKConfig.PluginsPath = FCKConfig.BasePath + 'plugins/' ;
 
 FCKConfig.Plugins.Add( 'Selectlink', 'en' ) ;
-FCKConfig.Plugins.Add( 'findreplace', 'en' ) ;
+//FCKConfig.Plugins.Add( 'findreplace', 'en' ) ;
 FCKConfig.Plugins.Add( 'SelectComponent', 'en' ) ;
 FCKConfig.AutoGrowMax = 1000 ;
 FCKConfig.Plugins.Add( 'flvPlayer','en') ;
