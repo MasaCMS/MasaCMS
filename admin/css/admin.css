@@ -1,3 +1,5 @@
+/* @override http://mura:8500/5.2.1/admin/css/admin.css?coreversion=1 */
+
 /* This file is part of Mura CMS. 
 
 	Mura CMS is free software: you can redistribute it and/or modify 
@@ -2127,7 +2129,7 @@ table td table td {
 
 .alt td {
 	/*border: 1px solid #DBDBDB;*/
-	background-color: #fcfeff;
+	background-color: #fff;
 }
 
 table td.email {
@@ -2269,60 +2271,53 @@ table.cfdebug td a {
 /* @group Nested Offsets */
 
 #mura-nodes li .add { margin-right: 16px; }
-#mura-nodes li .title { max-width: 80%; }
+#mura-nodes li .title { width: 311px; }
 
 #mura-nodes li li .add { margin-right: 32px; }
-#mura-nodes li li .title { max-width: 76%; }
+#mura-nodes li li .title { width: 295px; }
 
 #mura-nodes li li li .add { margin-right: 53px; }
-#mura-nodes li li li .title { max-width: 71%; }
+#mura-nodes li li li .title { width: 274px; }
 
 #mura-nodes li li li li .add { margin-right: 73px; }
-#mura-nodes li li li li .title { max-width: 66%; }
+#mura-nodes li li li li .title { width: 254px; }
 
 #mura-nodes li li li li li .add { margin-right: 93px; }
-#mura-nodes li li li li li .title { max-width: 61%; }
+#mura-nodes li li li li li .title { width: 234px; }
 
 #mura-nodes li li li li li li .add { margin-right: 113px; }
-#mura-nodes li li li li li li .title { max-width: 56%; }
+#mura-nodes li li li li li li .title { width: 214px; }
 
 #mura-nodes li li li li li li li .add { margin-right: 133px; }
-#mura-nodes li li li li li li li .title { max-width: 50%; }
+#mura-nodes li li li li li li li .title { width: 194px; }
 
 #mura-nodes li li li li li li li li .add { margin-right: 153px; }
-#mura-nodes li li li li li li li li .title { max-width: 45%; }
+#mura-nodes li li li li li li li li .title { width: 174px; }
 
 #mura-nodes li li li li li li li li li .add { margin-right: 173px; }
-#mura-nodes li li li li li li li li li .title { max-width: 40%; }
+#mura-nodes li li li li li li li li li .title { width: 154px; }
 
 #mura-nodes li li li li li li li li li li .add { margin-right: 193px; }
-#mura-nodes li li li li li li li li li li .title { max-width: 35%; }
+#mura-nodes li li li li li li li li li li .title { width: 134px; }
 
 #mura-nodes li li li li li li li li li li li .add { margin-right: 213px; }
-#mura-nodes li li li li li li li li li li li .title { max-width: 30%; }
+#mura-nodes li li li li li li li li li li li .title { width: 114px; }
 
 #mura-nodes li li li li li li li li li li li li .add { margin-right: 233px; }
-#mura-nodes li li li li li li li li li li li li .title { max-width: 25%; }
+#mura-nodes li li li li li li li li li li li li .title { width: 94px; }
 
 #mura-nodes li li li li li li li li li li li li li .add { margin-right: 253px; }
-#mura-nodes li li li li li li li li li li li li li .title { max-width: 20%; }
+#mura-nodes li li li li li li li li li li li li li .title { width: 74px; }
 
 /* @end */
 .mura-grid .ui-draggable-dragging {
-	/*border: 2px solid #fff;*/
+	border: 2px solid #fff;
 	-webkit-box-shadow: 0px 0px 8px #666;
 	-moz-box-shadow: 0px 0px 8px #666;
 	box-shadow: 0px 0px 8px #666;
 }
 
-/*Fix Firefox wrapping issue when zoomed in 1 level and dragging. Safari has a different issue when zoomed in and dragging where the row you're dragging gets positioned about 400 pixels below your cursor, not sure what the fix is. */
-/*@-moz-document url-prefix() {
-	.mura-grid .ui-draggable-dragging {
-	width: 81.5% !important;
-	height: 28px !important;
-	overflow: hidden;
-	}
-}*/
+
 
 .mura-grid dl {
 	background-color: #EAF4FE;
@@ -2351,13 +2346,14 @@ table.cfdebug td a {
 	line-height: 12px;
 	min-height: 20px;
 	padding: 0 5px 0 0 !important;
+	/*border-left: 1px solid #DBDBDB;*/
 	font-weight: normal;
-	position: relative;
+	overflow: ;
 }
 
 .mura-grid dd {
 	padding: 4px 5px;
-	height: 20px;
+	min-height: 18px;
 }
 
 .mura-grid dt a {
@@ -2402,20 +2398,6 @@ table.cfdebug td a {
 .mura-grid dt span.hasMore {
 	font-style: italic;
 	color: #666;
-}
-
-#mura-nodes dt .mura-title-fade {	
-	display: block;
-	position: absolute;
-	top: 0px;
-	right: 0px;
-	height: 28px;
-	width: 50px;
-	background: transparent url(../images/fade-grid-row-dk.png) left top repeat-y;
-}
-
-#mura-nodes .alt dt .mura-title-fade {
-	background: transparent url(../images/fade-grid-row-lt.png) left top repeat-y;
 }
 
 .mura-grid .order {
@@ -2550,6 +2532,34 @@ dt .add li.Page {
 	padding: 2px 0 2px 30px;
 	background-position: 11px 1px;
 }
+
+/* @group IE 6 */
+
+* html .mura-grid {
+	height: 1%;	
+}
+
+* html .mura-grid-hdr {
+	position: relative;
+}
+
+* html .mura-grid-hdr {
+	position: relative;
+}
+
+* html .mura-grid dt {
+	width: 352px;
+}
+
+* html .mura-grid .admin {
+	width: 101px;
+}
+
+* html .mura-grid .admin li.deleteOff, * html .mura-grid .admin li.deleteOn {
+	margin-right: 0;
+}
+
+/* @end */
 
 /* @end */
 
@@ -2846,7 +2856,7 @@ ul.four, ul.component { /* 4 Icons */
 	width: 76px;
 }
 
-ul.five, ul.form, .admin ul { /* 5 Icons */
+ul.five, ul.form, ul.siteSummary { /* 5 Icons */
 	width: 95px;
 }
 
@@ -3009,21 +3019,13 @@ ul.seven { /* 7 Icons */
 	margin: 0 6px;
 }
 
-#manageData table {
-	width: 1%;
-}
-
 #manageData th, #manageData td {
 	text-align: left;
+	vertical-align: middle;
 }
 
 #manageData td {
 	white-space: normal;
-	vertical-align: middle !important;
-}
-
-#manageData td.mForm-data p {
-	margin: 0;
 }
 
 .admin, #manageData .dateSubmitted {
@@ -3753,8 +3755,6 @@ a.tooltip:hover span {
 
 /* @end */
 
-/* @group Trash Bin */
-
 #ctrash #selectNewParent {
 	margin-bottom: 1em;
 }
@@ -3763,8 +3763,6 @@ a.tooltip:hover span {
 	font-size: 11px;
 	margin-bottom: .5em;
 }
-
-/* @end */
 
 /* @group Miscellaneous */
 .categories li ul, .interestGroups li ul li ul {
