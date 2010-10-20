@@ -93,7 +93,11 @@
 </cffunction>
 
 <cffunction name="getFullName" access="public" returntype="any" output="false">
-	<cfreturn trim("#session.mura.fname# #session.mura.lname#")>
+	<cfif hasSession()>
+		<cfreturn trim("#session.mura.fname# #session.mura.lname#")>
+	<cfelse>
+		<cfreturn "">
+	</cfif>
 </cffunction>
 
 <cffunction name="isInGroup" access="public" returntype="any" output="false">
@@ -103,46 +107,64 @@
 	<cfset var publicPool="">
 	<cfset var privatePool="">
 	
-	<cfif structKeyExists(request,"siteid")>
-		<cfset siteID=request.siteID>
-	</cfif>
-	
-	<cfset publicPool=application.settingsManager.getSite(siteid).getPublicUserPoolID()>
-	<cfset privatePool=application.settingsManager.getSite(siteid).getPrivateUserPoolID()>
-	
-	<cfif session.mura.isLoggedIn and len(siteID)>
-		<cfif structKeyExists(arguments,"isPublic")>
-			<cfif arguments.isPublic>
-				<cfreturn application.permUtility.isUserInGroup(arguments.group,publicPool,1)>
-			<cfelse>
-				<cfreturn application.permUtility.isUserInGroup(arguments.group,privatePool,0)>
-			</cfif>
-		<cfelse>
-			<cfreturn application.permUtility.isUserInGroup(arguments.group,publicPool,1) or application.permUtility.isUserInGroup(arguments.group,privatePool,0)>
+	<cfif hasSession()>
+		<cfset siteid=session.mura.siteID>
+		<cfif structKeyExists(request,"siteid")>
+			<cfset siteID=request.siteID>
 		</cfif>
+		
+		<cfset publicPool=application.settingsManager.getSite(siteid).getPublicUserPoolID()>
+		<cfset privatePool=application.settingsManager.getSite(siteid).getPrivateUserPoolID()>
+		
+		<cfif session.mura.isLoggedIn and len(siteID)>
+			<cfif structKeyExists(arguments,"isPublic")>
+				<cfif arguments.isPublic>
+					<cfreturn application.permUtility.isUserInGroup(arguments.group,publicPool,1)>
+				<cfelse>
+					<cfreturn application.permUtility.isUserInGroup(arguments.group,privatePool,0)>
+				</cfif>
+			<cfelse>
+				<cfreturn application.permUtility.isUserInGroup(arguments.group,publicPool,1) or application.permUtility.isUserInGroup(arguments.group,privatePool,0)>
+			</cfif>
+		</cfif>
+	<cfelse>
+		<cfreturn false>
 	</cfif>
 </cffunction>
 
 <cffunction name="isPrivateUser" access="public" returntype="any" output="false">
 	<cfset var siteid=session.mura.siteID>
+	<cfif hasSession()>
+		<cfset siteid=session.mura.siteID>
+		
+		<cfif structKeyExists(request,"siteid")>
+			<cfset siteID=request.siteID>
+		</cfif>
 	
-	<cfif structKeyExists(request,"siteid")>
-		<cfset siteID=request.siteID>
+		<cfreturn application.permUtility.isPrivateUser(siteid)>
+	<cfelse>
+		<cfreturn false>
 	</cfif>
-	
-	<cfreturn application.permUtility.isPrivateUser(siteid)>
 </cffunction>
 
 <cffunction name="isSuperUser" access="public" returntype="boolean" output="false">
-	
-	<cfreturn application.permUtility.isS2() />
-	
+	<cfif hasSession()>
+		<cfreturn application.permUtility.isS2() />
+	<cfelse>
+		<cfreturn false>
+	</cfif>
 </cffunction>
 
-<cffunction name="isLoggedIn" access="public" returntype="boolean" output="false">
-	
-	<cfreturn session.mura.isLoggedIn />
-	
+<cffunction name="isLoggedIn" access="public" returntype="boolean" output="false">	
+	<cfif hasSession()>
+		<cfreturn session.mura.isLoggedIn>
+	<cfelse>
+		<cfreturn false>
+	</cfif>
+</cffunction>
+
+<cffunction name="hasSession" output="false">
+	<cfreturn isDefined("session.mura")>
 </cffunction>
 
 <cffunction name="logout" access="public" returntype="any" output="false">
