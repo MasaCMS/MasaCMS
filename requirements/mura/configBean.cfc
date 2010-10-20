@@ -44,7 +44,7 @@ to your own modified versions of Mura CMS.
 <cfcomponent extends="mura.cfobject" output="false">
 <cfset variables.instance=structNew()/>
 <cfset variables.instance.mode=""/>
-<cfset variables.instance.version="5.2.1"/>
+<cfset variables.instance.version="5.3"/> 
 <cfset variables.instance.title=""/>
 <cfset variables.instance.webroot=""/>
 <cfset variables.instance.webrootmap=""/>
