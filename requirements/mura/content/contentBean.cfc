@@ -66,7 +66,7 @@ to your own modified versions of Mura CMS.
 <cfset variables.instance.newFile = "" />
 <cfset variables.instance.subType = "Default" />
 
-<cfif session.mura.isLoggedIn>
+<cfif isDefined("session.mura") and session.mura.isLoggedIn>
 	<cfset variables.instance.LastUpdateBy = left(session.mura.fname & " " & session.mura.lname,50) />
 	<cfset variables.instance.LastUpdateByID = session.mura.userID />
 <cfelse>
