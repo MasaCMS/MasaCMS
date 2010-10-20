@@ -79,6 +79,7 @@ to your own modified versions of Mura CMS.
 </div>
 </cfoutput>--->
 <cfif iterator.getRecordcount()>
+<cfset addToHTMLHeadQueue("listImageStyles.cfm")>
 <div id="svPortal" class="svIndex">
 		<cfloop condition="iterator.hasNext()">
 		<cfsilent>

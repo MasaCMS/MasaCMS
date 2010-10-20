@@ -207,15 +207,12 @@ to your own modified versions of Mura CMS.
 <cfset var dbType=variables.configBean.getDbType() />					
 	
 	<cfquery name="rs" datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-		<cfif dbType eq "oracle">select * from (</cfif>
-		select <cfif dbType eq "mssql">top 1</cfif> *  from tformresponsepackets 
+		select distinct formField from tformresponsequestions
 		where formID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.formID#"/>
-		order by entered desc
-		<cfif dbType eq "mysql">limit 1</cfif>
-		<cfif dbType eq "oracle">) where ROWNUM <=1 </cfif>
+		order by formField asc
 	</cfquery>
 
-<cfreturn rs.fieldList />
+	<cfreturn valueList(rs.formField) />
 </cffunction>
 
 <cffunction name="getData" returntype="query" access="public" output="false">
@@ -227,8 +224,8 @@ to your own modified versions of Mura CMS.
 <cfset var stop="" />
 <cfquery datasource="#variables.dsn#" name="rs"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 select tformresponsepackets.* from tformresponsepackets 
-<cfif extend>
-inner join tformresponsequestions on tformresponsepackets.responseid= tformresponsequestions.responseid
+<cfif extend or arguments.data.keywords neq ''>
+left join tformresponsequestions on tformresponsepackets.responseid= tformresponsequestions.responseid
 </cfif>
 where tformresponsepackets.siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.data.siteID#"/> and tformresponsepackets.formid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.data.contentID#"/>
 <cfif extend>

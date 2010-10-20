@@ -300,6 +300,8 @@
 	<cfset eventArgs.commentBean=this>
 	<cfset pluginEvent.init(eventArgs)>
 	
+	<cfset getBean('trashManager').throwIn(this)>
+	
 	<cfset pluginManager.announceEvent("onBeforeCommentDelete",pluginEvent)>
 	
 	<cfquery datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
@@ -384,7 +386,7 @@
 			</cfquery>
 			
 		<cfset pluginManager.announceEvent("onAfterCommentCreate",pluginEvent)>
-		
+		<cfset getBean('trashManager').takeOut(this)>
 	</cfif>
 	
 	<cfset pluginManager.announceEvent("onAfterCommentSave",pluginEvent)>
@@ -616,4 +618,38 @@ To Unsubscribe Click Here:
 <cffunction name="hasParent" output="false">
 	<cfreturn listLen(getPath()) gt 1>
 </cffunction>
+
+<cffunction name="getAllValues" access="public" returntype="struct" output="false">
+	<cfreturn variables.instance />
+</cffunction>
+
+<cffunction name="setAllValues" returntype="any" access="public" output="false">
+	<cfargument name="instance">
+	<cfset variables.instance=arguments.instance/>
+	<cfreturn this>
+</cffunction>
+
+<cffunction name="setValue" returntype="any" access="public" output="false">
+<cfargument name="property"  type="string" required="true">
+<cfargument name="propertyValue" default="" >
+
+	<cfset variables.instance["#arguments.property#"]=arguments.propertyValue />
+	<cfreturn this>
+</cffunction>
+
+<cffunction name="getValue" returntype="any" access="public" output="false">
+<cfargument name="property"  type="string" required="true">
+<cfargument name="defaultValue">
+	
+	<cfif structKeyExists(variables.instance,"#arguments.property#")>
+		<cfreturn variables.instance["#arguments.property#"] />
+	<cfelseif structKeyExists(arguments,"defaultValue")>
+		<cfset variables.instance["#arguments.property#"]=arguments.defaultValue />
+		<cfreturn variables.instance["#arguments.property#"] />
+	<cfelse>
+		<cfreturn "" />
+	</cfif>
+
+</cffunction>
+
 </cfcomponent>

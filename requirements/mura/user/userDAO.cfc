@@ -312,37 +312,14 @@ to your own modified versions of Mura CMS.
 		<cfargument name="UserID" type="String" />
 		<cfargument name="Type" type="String" />
 		<cftransaction>
-		
-		<!--- <cfswitch expression="#arguments.type#">
-		
-		<cfcase value="1"> --->
-		
-			<cfset deleteGroupPermissions(arguments.UserID) />
-			<cfset deleteGroupMemberships(arguments.UserID) />
-			
-		<!--- </cfcase>
-		
-		<cfcase value="2"> --->
-		
-			<cfset deleteUserMemberships(arguments.UserID) />
-			<cfset deleteUserInterests(arguments.UserID) />
-			<cfset deleteUserFavorites(arguments.UserID) />
-			<cfset deleteUserRatings(arguments.UserID) />
-			<cfset deleteUserAddresses(arguments.UserID) />
-			<cfset deleteExtendData(arguments.UserID) />
-			<cfset deleteTags(arguments.UserID) />
-		
-		<!--- </cfcase>
-		
-	
-		
-		</cfswitch> --->
+
+		<cfset deleteExtendData(arguments.UserID) />
+		<cfset deleteTags(arguments.UserID) />
 		
 		<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 		DELETE FROM tusers where userid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.userid#">
 		</cfquery>
-		
-		
+			
 		</cftransaction>
 
 </cffunction>

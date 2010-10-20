@@ -198,7 +198,7 @@ to your own modified versions of Mura CMS.
 			<cfinclude template="/muraWRM/config/settings.custom.managers.cfm">
 		</cfif>
 					
-		<cfset baseDir= left(getDirectoryFromPath(getCurrentTemplatePath()),len(getDirectoryFromPath(getCurrentTemplatePath()))-15) />
+		<cfset baseDir=expandPath("/muraWRM")/>
 					
 		<cfif StructKeyExists(SERVER,"bluedragon") and not findNoCase("Windows",server.os.name)>
 			<cfset mapPrefix="$" />

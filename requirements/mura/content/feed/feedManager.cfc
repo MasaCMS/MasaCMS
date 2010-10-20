@@ -49,6 +49,7 @@ to your own modified versions of Mura CMS.
 <cfargument name="utility" type="any" required="yes"/>
 <cfargument name="feedUtility" type="any" required="yes"/>
 <cfargument name="pluginManager" type="any" required="yes"/>
+<cfargument name="trashManager" type="any" required="yes"/>
 
 	<cfset variables.configBean=arguments.configBean />
 	<cfset variables.feedgateway=arguments.feedGateway />
@@ -56,6 +57,7 @@ to your own modified versions of Mura CMS.
 	<cfset variables.globalUtility=arguments.utility />
 	<cfset variables.feedUtility=arguments.feedUtility />
 	<cfset variables.pluginManager=arguments.pluginManager />
+	<cfset variables.trashManager=arguments.trashManager />
 	
 	<cfset variables.feedDAO.setFeedManager(this) />
 	
@@ -111,10 +113,13 @@ to your own modified versions of Mura CMS.
 	
 	<cfif structIsEmpty(feedBean.getErrors())>
 		<cfset feedBean.setLastUpdateBy(left(session.mura.fname & " " & session.mura.lname,50) ) />
-		<cfset feedBean.setFeedID("#createUUID()#") />
+		<cfif not (structKeyExists(arguments.data,"feedID") and len(arguments.data.feedID))>
+			<cfset feedBean.setFeedID("#createUUID()#") />
+		</cfif>
 		<cfset variables.globalUtility.logEvent("feedID:#feedBean.getfeedID()# Name:#feedBean.getName()# was created","mura-content","Information",true) />
 		<cfset variables.feedDAO.create(feedBean) />
 		<cfset feedBean.setIsNew(0)>
+		<cfset variables.trashManager.takeOut(feedBean)>
 		<cfset variables.pluginManager.announceEvent("onFeedSave",pluginEvent)>
 		<cfset variables.pluginManager.announceEvent("onFeedCreate",pluginEvent)>
 		<cfset variables.pluginManager.announceEvent("onAfterFeedSave",pluginEvent)>
@@ -197,8 +202,8 @@ to your own modified versions of Mura CMS.
 	<cfset var rs="">
 	
 	<cfif isObject(arguments.data)>
-		<cfif getMetaData(arguments.data).name eq "mura.content.feed.feedBean">
-		<cfset arguments.data=arguments.data.getAllValues()>
+		<cfif listLast(getMetaData(arguments.data).name,".") eq "feedBean">
+			<cfset arguments.data=arguments.data.getAllValues()>
 		<cfelse>
 			<cfthrow type="custom" message="The attribute 'DATA' is not of type 'mura.content.feed.feedBean'">
 		</cfif>
@@ -230,6 +235,7 @@ to your own modified versions of Mura CMS.
 	<cfset pluginEvent.setValue("siteID",feedBean.getSiteID())>
 	
 	<cfset variables.pluginManager.announceEvent("onBeforeFeedDelete",pluginEvent)>
+	<cfset variables.trashManager.throwIn(feedBean)>
 	<cfset variables.globalUtility.logEvent("feedID:#feedBean.getfeedID()# Name:#feedBean.getName()# was deleted","mura-content","Information",true) />
 	<cfset variables.feedDAO.delete(arguments.feedID) />
 	

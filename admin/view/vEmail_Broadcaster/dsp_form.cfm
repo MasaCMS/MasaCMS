@@ -70,7 +70,7 @@ to your own modified versions of Mura CMS.
 		</ul>
 </cfif>
 	  
-	  <form action="index.cfm?fuseaction=cEmail.update&siteid=#URLEncodedFormat(attributes.siteid)#" method="post" name="form1" onsubmit="return false;">
+	  <form novalidate="novalidate" action="index.cfm?fuseaction=cEmail.update&siteid=#URLEncodedFormat(attributes.siteid)#" method="post" name="form1" onsubmit="return false;">
 	  <div id="emailGroupsLists" class="clearfix"><h3>#application.rbFactory.getKeyValue(session.rb,'email.sendto')#:</h3>
 	  <dl>
 	  <cfif request.rsPrivateGroups.recordcount>
@@ -118,6 +118,7 @@ to your own modified versions of Mura CMS.
 	<cfset variables.pluginEvent=createObject("component","mura.event").init(event.getAllValues())/>
 	#application.pluginManager.renderScripts("onHTMLEdit",attributes.siteid,pluginEvent,rsPluginScripts)#
 <cfelse>
+	<cfif application.configBean.getValue("htmlEditorType") eq "fckeditor">
 	<cfscript>
 		fckEditor = createObject("component", "mura.fckeditor");
 		fckEditor.instanceName	= "bodyHTML";
@@ -127,7 +128,7 @@ to your own modified versions of Mura CMS.
 		fckEditor.config.StylesXmlPath = '#application.settingsManager.getSite(attributes.siteid).getThemeAssetPath()#/css/fckstyles.xml';
 		fckEditor.config.DefaultLanguage=lcase(session.rb);
 		fckEditor.config.AutoDetectLanguage=false;
-		fckEditor.width			= "100%";
+		fckEditor.width			= "98%";
 		fckEditor.height		= 400;
 		
 		if(fileExists("#expandPath(application.settingsManager.getSite(attributes.siteid).getThemeIncludePath())#/js/fckconfig.js.cfm"))
@@ -137,7 +138,19 @@ to your own modified versions of Mura CMS.
 		
 		fckEditor.create(); // create the editor.
 	</cfscript>
-	<div class="message"><input type="button" name="Count" value="Show Content Length" onclick="alertDialog(FCKeditorAPI.GetInstance('bodyHTML').GetXHTML().length + ' Characters'); "> (#application.rbFactory.getKeyValue(session.rb,'email.maxcharacters')#)</div>
+	<cfelse>
+		<textarea name="bodyHTML" id="bodyHTML"><cfif len(request.emailBean.getBodyHTML())>#HTMLEditFormat(request.emailBean.getBodyHTML())#<cfelse><p></p></cfif></textarea>
+		<script type="text/javascript" language="Javascript">
+		var loadEditorCount = 0;
+		jQuery('##bodyHTML').ckeditor({
+			toolbar:'Default',
+			height: '550',
+			customConfig : 'config.js.cfm'
+			},
+			htmlEditorOnComplete
+		);
+		</script>
+	</cfif>
 </cfif>			
 </dd>	
 </span>
@@ -145,7 +158,8 @@ to your own modified versions of Mura CMS.
 		<span id="textMessage" style="display:none;">
 		<dt>#application.rbFactory.getKeyValue(session.rb,'email.textmessage')#</dt>
 		<dd><textarea name="bodyText" id="textEditor">#HTMLEditFormat(request.emailBean.getbodytext())#</textarea>
-		<div class="message"><input type="button" name="Count" value="#application.rbFactory.getKeyValue(session.rb,'email.showcontentlength')#" onclick="alertDialog(document.getElementById('textEditor').value.length + ' #jsStringFormat(application.rbFactory.getKeyValue(session.rb,'email.characters'))#'); "> (#application.rbFactory.getKeyValue(session.rb,'email.maxcharacters')#) </div></dd></span>
+		</dd>
+		</span>
 	  </dl>
 	  <p>
 	   <div style="display:inline" id="controls"> 

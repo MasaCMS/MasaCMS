@@ -68,17 +68,4 @@ to your own modified versions of Mura CMS.
 <!---<cfset this.subHead3="h5"/>--->
 <!---<cfset this.subHead4="h6"/>--->
 
-<!--- This is to used when removing both siteID and index.cfm from urls
-<cffunction name="getURLStem" access="public" output="false" returntype="string">
-	<cfargument name="siteID">
-	<cfargument name="filename">
-	
-		<cfif arguments.filename neq ''>
-			<cfreturn  "/" & arguments.filename & "/"/>
-		<cfelse>
-			<cfreturn "/" />
-		</cfif>
-
-</cffunction>
---->
 </cfcomponent>

@@ -12,11 +12,14 @@
 
 	<link rel="icon" href="#$.siteConfig('assetPath')#/images/favicon.ico" type="image/x-icon" />
 	<link rel="shortcut icon" href="#$.siteConfig('assetPath')#/images/favicon.ico" type="image/x-icon" />
-
-	<link rel="stylesheet" href="#$.siteConfig('assetPath')#/css/default.css" type="text/css" media="all" />
+	
+	<!--- Shared Styles --->
+	<link rel="stylesheet" href="#$.siteConfig('assetPath')#/css/reset.css" type="text/css" media="all" />
+	<link rel="stylesheet" href="#$.siteConfig('assetPath')#/css/mura.css" type="text/css" media="all" />
+	<!--- Theme-Specific Styles --->
 	<link rel="stylesheet" href="#$.siteConfig('themeAssetPath')#/css/typography.css" type="text/css" media="all" />
 	<link rel="stylesheet" href="#$.siteConfig('themeAssetPath')#/css/site.css" type="text/css" media="all" />
-	<link rel="stylesheet" href="#$.siteConfig('assetPath')#/css/print.css" type="text/css" media="print" />
+	<link rel="stylesheet" href="#$.siteConfig('themeAssetPath')#/css/print.css" type="text/css" media="print" />
 	<cfinclude template="ie_conditional_includes.cfm" />
 	
 	<cfset rs=$.getBean('feedManager').getFeeds($.event('siteID'),'Local',true,true) />

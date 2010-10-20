@@ -113,25 +113,9 @@ to your own modified versions of Mura CMS.
 		
 		<cfset variables.nextN=application.utility.getNextN(rs,feedBean.getNextN(),currentNextNIndex)>
 	  </cfsilent>
-	  
-	  <cfset imageBorder = 10> <!--- Total number of pixels of top and bottom borders --->
-	  <cfset minHeight = $.siteConfig('gallerySmallScale') + imageBorder> <!--- Add the border to the size of the medium image set in site settings--->
-	  <cfset topBottomMargin = 10> <!--- Total of top and bottom margin on each slide (dl) --->
-	  <cfset slideMargin = $.siteConfig('gallerySmallScale') + topBottomMargin>
-		
-		<!--- Need conditional logic for x and y constrain --->
-		
-		<cfoutput>
-		<style>						
-			##primary .svIndex dl.hasImage {
-			padding-left: #slideMargin#px !important;
-			min-height: #minHeight#px !important;
-			}
-		</style>
-		</cfoutput>
 
-	  	
 		<cfif iterator.getRecordCount()>
+			<cfset addToHTMLHeadQueue("listImageStyles.cfm")>
 			<cfoutput><div class="svSyndLocal svFeed svIndex clearfix" id="#cssID#"></cfoutput>
 	        <cfif feedBean.getDisplayName()><cfoutput><#getHeaderTag('subHead1')#>#feedBean.renderName()#</#getHeaderTag('subHead1')#></cfoutput></cfif>
 			<cfloop condition="iterator.hasNext()">

@@ -741,6 +741,8 @@ Sincerely,
 		<cfset contentBean.setPath(listAppend(arguments.path,newContentID))>
 	</cfif>
 	
+	<cfset contentBean.setCreated(now())>
+	
 	<cfset variables.contentDAO.create(contentBean)>
 	
 	<!--- tcontentcategoryassign --->

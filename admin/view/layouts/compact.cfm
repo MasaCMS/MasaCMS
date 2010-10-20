@@ -58,7 +58,7 @@ to your own modified versions of Mura CMS.
 <script type="text/javascript" src="#application.configBean.getContext()#/wysiwyg/fckeditor.js"></script>
 #session.dateKey#
 <script type="text/javascript">
-	jQuery(document).ready(function(){setDatePickers(".datepicker",dtLocale);setTabs(".tabs",#attributes.activeTab#);setHTMLEditors('#application.configBean.getContext()#','#application.settingsManager.getSite(attributes.siteID).getThemeAssetPath()#');setAccordions(".accordion",#attributes.activePanel#)});
+	jQuery(document).ready(function(){setDatePickers(".datepicker",dtLocale);setTabs(".tabs",#attributes.activeTab#);setHTMLEditors('#application.configBean.getContext()#','#application.settingsManager.getSite(attributes.siteID).getThemeAssetPath()#'');setAccordions(".accordion",#attributes.activePanel#)});
 </script>
 	#fusebox.ajax#
 	<cfif myfusebox.originalcircuit neq "cLogin">

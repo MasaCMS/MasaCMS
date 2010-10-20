@@ -92,25 +92,7 @@ function ckContent(draftremovalnotice){
 		 return false;
 	 }	
 	
-	/*
-	if(typeof(FCKeditorAPI) != 'undefined' && (document.contentForm.type.value=='Page' ||
-	   document.contentForm.type.value=='Portal' ||
-	   document.contentForm.type.value=='Calendar')) 
-	{ 
-		var content =FCKeditorAPI.GetInstance('body').GetXHTML();
-		var contentLength = content.length;
-		var pageSize=32000;
-		
-		if(contentLength > pageSize ){
 	
-		alert("The content length must be less than 32000 characters.");
-		return false;	
-		}
-		
-		// FCKeditorAPI.GetInstance('body').SetHTML(content.substr(0,pageSize),false)
-	
-	}
-	*/
 	formSubmitted = true;
 	return true;
 }
@@ -173,8 +155,9 @@ if(navigator.appName=="Microsoft Internet Explorer" && parseInt(navigator.appVer
 	xPos = xPos -14;
 	yPos = yPos -7;
 } else {
-	xPos = xPos +17;
-	yPos = yPos -9;
+	xPos = xPos +20;
+	//xPos = xPos +17;
+	//yPos = yPos -9;
 	
 }
 
@@ -692,6 +675,12 @@ function form_is_modified(oForm)
 			return true;
 		if (dirtyRelatedContent)
 			return true;
+	} else if (typeof(CKEDITOR) != 'undefined' && typeof(CKEDITOR.instances["body"]) != 'undefined'){
+		var instance = CKEDITOR.instances["body"];
+		if(intance.checkDirty()){
+			return true;
+		}
+		
 	}
 		
 	return false;

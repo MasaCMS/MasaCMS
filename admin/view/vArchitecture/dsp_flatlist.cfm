@@ -79,7 +79,7 @@ to your own modified versions of Mura CMS.
 <ul id="navTask"><cfif attributes.moduleid eq '00000000000000000000000000000000003'><li><a href="index.cfm?fuseaction=cArch.edit&type=Component&contentid=&topid=#URLEncodedFormat(attributes.topid)#&parentid=#attributes.topid#&siteid=#URLEncodedFormat(attributes.siteid)#&moduleid=#attributes.moduleid#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.addcomponent')#</a></li><cfelse><li><a href="index.cfm?fuseaction=cArch.edit&type=Form&contentid=&topid=#URLEncodedFormat(attributes.topid)#&parentid=#attributes.topid#&siteid=#URLEncodedFormat(attributes.siteid)#&moduleid=#attributes.moduleid#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.addform')#</a></li></cfif></ul>
 
   <h3 class="alt">#application.rbFactory.getKeyValue(session.rb,'sitemanager.filterview')#:</h3>
-  <form id="filterByTitle" action="index.cfm" method="get">
+  <form novalidate="novalidate" id="filterByTitle" action="index.cfm" method="get">
 	  <h4>#application.rbFactory.getKeyValue(session.rb,'sitemanager.filterviewdesc')#</h4>
 	  <input type="text" name="searchString" value="#HTMLEditFormat(attributes.searchString)#" class="text">
 	  <a class="submit" href="javascript:;" onclick="document.getElementById('filterByTitle').submit();"><span>#application.rbFactory.getKeyValue(session.rb,'sitemanager.filter')#</span></a>
@@ -126,7 +126,7 @@ to your own modified versions of Mura CMS.
           <!--- <cfif verdict eq 'editor'><td nowrap class="order"><cfif request.rstop.currentrow neq 1><a href="index.cfm?fuseaction=cArch.order&contentid=#request.rstop.contentid#&parentid=#request.rstop.parentid#&direction=down&topid=#URLEncodedFormat(attributes.topid)#&siteid=#URLEncodedFormat(attributes.siteid)#&startrow=#attributes.startrow#&moduleid=#attributes.moduleid#"><img src="images/icons/up_on.gif" width="9" height="6" border="0"></a><cfelse><img src="images/icons/up_off.gif" width="9" height="6" border="0"></cfif><cfif request.rstop.currentrow lt request.rstop.recordcount><a href="index.cfm?fuseaction=cArch.order&contentid=#request.rstop.contentid#&parentid=#request.rstop.parentid#&direction=up&topid=#URLEncodedFormat(attributes.topid)#&siteid=#URLEncodedFormat(attributes.siteid)#&startrow=#attributes.startrow#&moduleid=#attributes.moduleid#"><img src="images/icons/down_on.gif" width="9" height="6" border="0"></a><cfelse><img src="images/icons/down_off.gif" width="9" height="6" border="0"></cfif></td>	--->  
 			   <td> 
 	    <cfif request.rstop.Display and (request.rstop.Display eq 1 and request.rstop.approved and request.rstop.approved)>#application.rbFactory.getKeyValue(session.rb,'sitemanager.yes')#<cfelseif(request.rstop.Display eq 2 and request.rstop.approved and request.rstop.approved)>#LSDateFormat(request.rstop.displaystart,"short")# - #LSDateFormat(request.rstop.displaystop,"short")#<cfelse>#application.rbFactory.getKeyValue(session.rb,'sitemanager.no')#</cfif></td>
-		<td>#LSDateFormat(request.rstop.lastupdate,session.dateKeyFormat)#</td>
+		<td>#LSDateFormat(request.rstop.lastupdate,session.dateKeyFormat)# #LSTimeFormat(request.rstop.lastupdate,"medium")#</td>
           <td class="administration">
 			<ul class="#lcase(request.rstop.type)#">
 				<cfif verdict neq 'none'>

@@ -44,7 +44,7 @@ to your own modified versions of Mura CMS.
 <h2>#application.rbFactory.getKeyValue(session.rb,'advertising.editadzone')#</h2>
 #application.utility.displayErrors(request.adZoneBean.getErrors())#
 
-<form name="form1" method="post" action="index.cfm?fuseaction=cAdvertising.updateAdZone&siteid=#URLEncodedFormat(attributes.siteid)#" onsubmit="return false;">
+<form novalidate="novalidate" name="form1" method="post" action="index.cfm?fuseaction=cAdvertising.updateAdZone&siteid=#URLEncodedFormat(attributes.siteid)#" onsubmit="return false;">
 <dl class="oneColumn">
 <dt class="first">#application.rbFactory.getKeyValue(session.rb,'advertising.name')#</dt>
 <dd><input name="name" class="text" required="true" message="#application.rbFactory.getKeyValue(session.rb,'advertising.namerequired')#" value="#HTMLEditFormat(request.adZoneBean.getName())#" maxlength="50"><dd>

@@ -122,7 +122,7 @@ to your own modified versions of Mura CMS.
 		</cfswitch>
 		
 			
-		<cfset ImageWrite(img,arguments.target)>
+		<cfset ImageWrite(img,arguments.target,1)>
 
 		<cfif len(tempFile)>
 			<cfimage action="READ" source="#arguments.target#" name="img">

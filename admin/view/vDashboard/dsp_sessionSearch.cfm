@@ -122,7 +122,7 @@ to your own modified versions of Mura CMS.
 <cfoutput>
 <h2>#application.rbFactory.getKeyValue(session.rb,"dashboard.session.advancedsearch")#</h2>
 
-<form  method="get" name="searchFrm" id="advancedSearch" class="sessionHistory">
+<form novalidate="novalidate"  method="get" name="searchFrm" id="advancedSearch" class="sessionHistory">
 <input type="hidden" name="startSearch" value="true"/>
 <dl class="clearfix">
 <dt class="from">#application.rbFactory.getKeyValue(session.rb,"params.from")#</dt>

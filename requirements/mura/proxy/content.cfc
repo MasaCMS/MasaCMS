@@ -135,7 +135,11 @@
 	<cfset var perm=getPerm(event)>
 	
 	<cfif perm.level neq 'Deny'>
-		<cfset event.setValue("__response__", format(content.getKidsQuery(),event.getValue("responseFormat")))>
+		<cfif not isBoolean(event.getValue("liveOnly"))>
+			<cfset event.setValue("__response__", format(content.getKidsQuery(),event.getValue("responseFormat")))>
+		<cfelse>
+			<cfset event.setValue("__response__", format(content.getKidsIterator(liveOnly=event.getValue("liveOnly")).getQuery(),event.getValue("responseFormat")))>
+		</cfif>
 	<cfelse>
 		<cfset event.setValue("__response__", format("access denied",event.getValue("responseFormat")))>
 	</cfif>

@@ -47,7 +47,7 @@ to your own modified versions of Mura CMS.
 <h2>#application.rbFactory.getKeyValue(session.rb,"dashboard.session.topviewedcontent")#</h2>
 
 <h3 class="alt">#application.rbFactory.getKeyValue(session.rb,"params.daterange")#</h3>
-<form name="searchFrm" onsubmit="return validate(this);" id="advancedSearch">
+<form novalidate="novalidate" name="searchFrm" onsubmit="return validate(this);" id="advancedSearch">
 <dl>
 <dt>#application.rbFactory.getKeyValue(session.rb,"params.from")#</dt>
 <dd>

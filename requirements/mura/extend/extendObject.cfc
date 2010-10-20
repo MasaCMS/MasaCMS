@@ -236,10 +236,12 @@
 	<cfelse>
 		<cfset getConfigBean().getClassExtensionManager().saveExtendedData(getID(),getAllValues(), getDataTable())/>
 	</cfif>
+	<cfset variables.trashManager.takeOut(this)>
 	<cfreturn this>
 </cffunction>
 
 <cffunction name="delete" output="false">
+	<cfset getBean("trashManager").throwIn(this)>
 	<cfif isObject(getManager())>
 		<cfset getManager().delete(this)>
 	<cfelse>

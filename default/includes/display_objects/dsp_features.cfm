@@ -63,6 +63,7 @@ to your own modified versions of Mura CMS.
 </cfsilent>
 <cfoutput>
 <cfif rsSection.recordcount and rsFeatures.recordcount>
+<cfset addToHTMLHeadQueue("listImageStyles.cfm")>
 <div id="#cssID#" class="svSyndLocal svIndex clearfix">
 <#getHeaderTag('subHead1')#>#rsSection.menutitle#</#getHeaderTag('subHead1')#>
 <cfloop query="rsFeatures">

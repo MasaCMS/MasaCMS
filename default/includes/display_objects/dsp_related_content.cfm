@@ -52,6 +52,7 @@ to your own modified versions of Mura CMS.
 	<cfset rsRelatedContent = application.contentManager.getRelatedContent(request.siteID,request.contentBean.getcontentHistID(),true) />
 </cfsilent>
 <cfif rsRelatedContent.recordCount>
+<cfset addToHTMLHeadQueue("listImageStyles.cfm")>
 	<div class="svRelContent svIndex">
 	<#getHeaderTag('subHead1')#>#rbFactory.getKey('list.relatedcontent')#</#getHeaderTag('subHead1')#>
 	<cfloop query="rsRelatedContent">

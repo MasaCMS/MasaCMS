@@ -46,8 +46,8 @@ to your own modified versions of Mura CMS.
   <cfset summaryList=listfirst(request.contentBean.getResponseDisplayFields(),"~")>
   <cfset detailList=listLast(request.contentBean.getResponseDisplayFields(),"~")>
   <cfelse>
-  <cfset summaryList=fieldnames>
-  <cfset detailList=fieldnames>
+  <cfset summaryList="">
+  <cfset detailList="">
 </cfif>
 <cfhtmlhead text='<script src="js/manageData.js?coreversion=#application.coreversion#" type="text/javascript"></script>'>
 </cfsilent>
@@ -58,7 +58,7 @@ document.getElementById('responseDisplayFields').value=document.getElementById('
 </script>
 
 <cfoutput>
-  <form name="frmDisplayFields" method="post" action="index.cfm">
+  <form novalidate="novalidate" name="frmDisplayFields" method="post" action="index.cfm">
   <dl class="oneColumn">
   <dt class="first">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.selectfields')#</dt>
   <dd><table>

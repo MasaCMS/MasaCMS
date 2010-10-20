@@ -45,7 +45,7 @@ to your own modified versions of Mura CMS.
 	<ul id="navTask"><li><a href="index.cfm?fuseaction=cPublicUsers.edituser&siteid=#URLEncodedFormat(attributes.siteid)#&userid=">#application.rbFactory.getKeyValue(session.rb,'user.addmember')#</a></li>
 <li><a href="index.cfm?fuseaction=cPublicUsers.editgroup&siteid=#URLEncodedFormat(attributes.siteid)#&userid=">#application.rbFactory.getKeyValue(session.rb,'user.addgroup')#</a></li>
 </ul>
-<form action="index.cfm?fuseaction=cPublicUsers.search&siteid=#URLEncodedFormat(attributes.siteid)#" method="post" name="form1" id="siteSearch">
+<form novalidate="novalidate" action="index.cfm?fuseaction=cPublicUsers.search&siteid=#URLEncodedFormat(attributes.siteid)#" method="post" name="form1" id="siteSearch">
 	<h3>#application.rbFactory.getKeyValue(session.rb,'user.searchformembers')#</h3>
 <input id="search" name="search" type="text" class="text"> <a class="submit" href="javascript:;" onclick="return submitForm(document.forms.form1);"><span>#application.rbFactory.getKeyValue(session.rb,'user.search')#</span></a><a class="submit" href="javascript:;" onclick="window.location='index.cfm?fuseaction=cPublicUsers.advancedSearch&siteid=#URLEncodedFormat(attributes.siteid)#&newSearch=true'"><span>#application.rbFactory.getKeyValue(session.rb,'user.advanced')#</span></a></form>
 

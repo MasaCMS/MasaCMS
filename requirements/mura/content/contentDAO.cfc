@@ -719,11 +719,6 @@ tcontent.doCache,tcontent.created,tcontent.urltitle,tcontent.htmltitle</cfoutput
 	ContentID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentBean.getContentID()#"/>
 	</cfquery>
 	
-	<cfquery datasource="#variables.dsn#"   username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-	DELETE FROM tpermissions where siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentBean.getsiteid()#"/> and 
-	ContentID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentBean.getcontentid()#"/>
-	</cfquery>
-
 	<cfif arguments.contentBean.gettype() neq 'Form'  and arguments.contentBean.gettype() neq 'Component'>
 	
 		<cfquery datasource="#variables.dsn#"   username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
@@ -737,17 +732,7 @@ tcontent.doCache,tcontent.created,tcontent.urltitle,tcontent.htmltitle</cfoutput
 		</cfquery>
 		
 		<cfquery datasource="#variables.dsn#"   username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-		DELETE FROM tcontenteventreminders where contentID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentBean.getcontentid()#"/>
-		AND siteID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentBean.getsiteid()#"/>
-		</cfquery>	
-		
-		<cfquery datasource="#variables.dsn#"   username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 		DELETE FROM tcontentcategoryassign where contentID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentBean.getcontentid()#"/>
-		AND siteID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentBean.getsiteid()#"/>
-		</cfquery>
-		
-		<cfquery datasource="#variables.dsn#"   username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-		DELETE FROM tcontentratings where contentID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentBean.getcontentid()#"/>
 		AND siteID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentBean.getsiteid()#"/>
 		</cfquery>
 		
@@ -755,31 +740,6 @@ tcontent.doCache,tcontent.created,tcontent.urltitle,tcontent.htmltitle</cfoutput
 		DELETE FROM tcontentrelated where (contentID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentBean.getcontentid()#"/> or relatedID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentBean.getcontentid()#"/>)
 		AND siteID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentBean.getsiteid()#"/>
 		</cfquery>
-		
-		<cfquery datasource="#variables.dsn#"   username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-		DELETE FROM tusersfavorites where favorite= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentBean.getcontentid()#"/>
-		AND siteID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentBean.getsiteid()#"/>
-		</cfquery>
-		
-		<cfquery datasource="#variables.dsn#"   username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-		DELETE FROM tsessiontracking where contentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentBean.getcontentid()#"/>
-		AND siteID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentBean.getsiteid()#"/>
-		</cfquery>
-	
-		<cfquery datasource="#variables.dsn#"   username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-		DELETE FROM tcontentcomments where contentID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentBean.getcontentid()#"/>
-		AND siteID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentBean.getsiteid()#"/>
-		</cfquery>
-		
-		<!--- sometimes apps allow content to have an address --->
-	<!--- 	<cfquery datasource="#variables.dsn#">
-		delete from tcontentratings where contentid
-		in (select addressID from tuseraddresses where userid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentBean.getcontentid()#"/>)
-		</cfquery>
-		
-		<cfquery datasource="#variables.dsn#">
-		delete from tuseraddresses where userid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentBean.getcontentid()#"/>
-		</cfquery> --->
 	
 	<cfelse>
 	
@@ -790,18 +750,6 @@ tcontent.doCache,tcontent.created,tcontent.urltitle,tcontent.htmltitle</cfoutput
 		
 	</cfif>
 	
-	
-	<cfif arguments.contentBean.gettype() eq 'Form'>
-	
-		<cfquery datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-		DELETE FROM tformresponsequestions where formID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentBean.getcontentid()#"/>
-		</cfquery>
-		
-		<cfquery datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-		DELETE FROM tformresponsepackets where formID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentBean.getcontentid()#"/>
-		</cfquery>
-	
-	</cfif>
 	</cfif>
 </cffunction>
 

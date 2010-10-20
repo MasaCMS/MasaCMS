@@ -49,7 +49,7 @@ to your own modified versions of Mura CMS.
 <li><a href="index.cfm?fuseaction=cExtend.listSubTypes&siteid=#URLEncodedFormat(attributes.siteid)#">Class Extension Manager</a></li>
 </ul>
 
-<form name="subTypeFrm" method="post" action="index.cfm" onsubit="return validateForm(this);">
+<form novalidate="novalidate" name="subTypeFrm" method="post" action="index.cfm" onsubit="return validateForm(this);">
 <dl class="oneColumn">
 <dt class="first">Base Type</dt>
 <dd><select name="typeSelector" required="true" message="The BASE CLASS field is required." onchange="setBaseInfo(this.value);">

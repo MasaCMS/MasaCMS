@@ -125,9 +125,7 @@ to your own modified versions of Mura CMS.
 		<cfelseif isStruct(arguments.feed)>
 		
 			<cfloop collection="#arguments.feed#" item="prop">
-				<cfif structKeyExists(this,"set#prop#")>
-				<cfset evaluate("set#prop#(arguments.feed[prop])") />
-			</cfif>
+				<cfset setValue(prop,arguments.feed[prop])>
 			</cfloop>
 			
 			<cfset setAdvancedParams(arguments.feed) />
@@ -622,7 +620,7 @@ to your own modified versions of Mura CMS.
 	<cfif isDefined("this.set#arguments.property#")>
 		<cfset evaluate("set#property#(arguments.propertyValue)") />
 	<cfelse>
-		<cfset variables.intance["#arguments.property#"]=arguments.propertyValue />
+		<cfset variables.instance["#arguments.property#"]=arguments.propertyValue />
 	</cfif>
 	<cfreturn this>
 </cffunction>

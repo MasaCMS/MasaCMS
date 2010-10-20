@@ -87,7 +87,58 @@ form.sessionHistory a.submit {
 	clear: both;
 }
 
+.mura-grid li {
+	width: 914px;
+}
 
+.mura-grid dt {
+	width: 362px;
+}
+
+#mura-nodes li .admin {
+	width: 110px;
+	margin: 0;
+}
+
+#mura-nodes li .admin li {
+	width: auto;
+}
+
+.mura-grid-hdr .admin {
+	width: 110px;
+}
+
+.mura-grid li dt a.title  {
+	background-repeat: no-repeat !important;
+	background-position: center left !important;
+}
+
+#mura-nodes dt {
+	position: relative;
+}
+
+#mura-nodes dt .mura-title-fade {	
+	display: none; /* Couldn't get the div to show up when absolutely positioned in IE so we're hiding it to make sure it doesn't blow anything up inadvertently */
+}
+
+/* @group Nested Offsets */
+/*#mura-nodes li .title { background: red; zoom: 1; }*/
+
+#mura-nodes li .title { width: 297px; }
+#mura-nodes li li .title { width: 281px; }
+#mura-nodes li li li .title { width: 261px; }
+#mura-nodes li li li li .title { width: 241px; }
+#mura-nodes li li li li li .title { width: 221px; }
+#mura-nodes li li li li li li .title { width: 201px; }
+#mura-nodes li li li li li li li .title { width: 181px; }
+#mura-nodes li li li li li li li li .title { width: 161px; }
+#mura-nodes li li li li li li li li li .title { width: 141px; }
+#mura-nodes li li li li li li li li li li .title { width: 121px; }
+#mura-nodes li li li li li li li li li li li .title { width: 101px; }
+#mura-nodes li li li li li li li li li li li li .title { width: 81px; }
+#mura-nodes li li li li li li li li li li li li li .title { width: 61px; }
+
+/* @end */
 
 /* @group Category Assignment */
 
@@ -137,8 +188,13 @@ dd.categoryAssignment input.textAlt {
 /* @end */
 
 /* @group IE 6 */
+* html #container { height: 1%; width: 1150px; }
+* html #content { height: 1%; width: 980px; }
+* html #content form { height: 1%; width: 980px; }
 
-* html #container { height: 1%; width: 1025px; }
+* html #cdashboard #contentSecondary form {
+	width: 230px;
+}
 
 
 * html #header #welcome {
@@ -263,15 +319,30 @@ dd.categoryAssignment input.textAlt {
     padding: 0 0 0 20px;
 	background: url(../images/icons/ie6/zoomi_24.gif) no-repeat;
     }
-/* Uncomment this after adding "Copy All" feature
-* html .addNew #newCopy a {
-	background: url(../images/icons/ie6/copy_24.gif) no-repeat 1px 5px;
-float: left;	 
-}
+    
+* html .mura-grid, * html #mura-nodes li, * html #mura-nodes dl, * html .mura-grid-hdr   { height: 1%; position: relative; width: 918px; }
+* html .mura-grid .admin li.deleteOff, * html .mura-grid .admin li.deleteOn { margin-right: 0; }
+* html .mura-grid-hdr dt { width: 364px; }
+* html .mura-grid-hdr .admin { width: 113px; }
 
-* html .addNew #newCopy {
-position: relative;
-height: 1%;
-}
-*/
+
+
+/* @group Nested Offsets */
+
+* html #mura-nodes li .title { width: 80%; }
+* html #mura-nodes li li .title { width: 76%; }
+* html #mura-nodes li li li .title { width: 71%; }
+* html #mura-nodes li li li li .title { width: 66%; }
+* html #mura-nodes li li li li li .title { width: 61%; }
+* html #mura-nodes li li li li li li .title { width: 56%; }
+* html #mura-nodes li li li li li li li .title { width: 50%; }
+* html #mura-nodes li li li li li li li li .title { width: 45%; }
+* html #mura-nodes li li li li li li li li li .title { width: 40%; }
+* html #mura-nodes li li li li li li li li li li .title { width: 35%; }
+* html #mura-nodes li li li li li li li li li li li .title { width: 30%; }
+* html #mura-nodes li li li li li li li li li li li li .title { width: 25%; }
+* html #mura-nodes li li li li li li li li li li li li li .title { width: 20%; }
+
+/* @end */
+
 /* @end */

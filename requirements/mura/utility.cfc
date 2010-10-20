@@ -185,22 +185,29 @@ to your own modified versions of Mura CMS.
 	<cfargument name="baseDir" default="" required="true" />
 	<cfargument name="destDir" default="" required="true" />
 	<cfargument name="excludeList" default="" required="true" />
+	<cfargument name="sinceDate" default="" required="true" />
+	<cfset var rsAll = "">
 	<cfset var rs = "">
 	<cfset var i="">
 	<cfset var errors=arrayNew(1)>
 	<cfset var copyItem="">
 	
 	<cfif arguments.baseDir neq arguments.destDir>	
-		<cfdirectory directory="#arguments.baseDir#" name="rs" action="list" recurse="true" />
+		<cfdirectory directory="#arguments.baseDir#" name="rsAll" action="list" recurse="true" />
 		<!--- filter out Subversion hidden folders --->
-		<cfquery name="rs" dbtype="query">
-		SELECT * FROM rs
+		<cfquery name="rsAll" dbtype="query">
+		SELECT * FROM rsAll
 		WHERE directory NOT LIKE '%#variables.configBean.getFileDelim()#.svn%'
 		<cfif len(arguments.excludeList)>
 		<cfloop list="#arguments.excludeList#" index="i">
 		and directory NOT LIKE '%#i#%'
 		</cfloop>
 		</cfif>
+		
+		<cfif isDate(arguments.sinceDate)>
+		and dateLastModified >= #createODBCDateTime(arguments.sinceDate)#
+		</cfif>
+		
 		AND name <> '.svn'
 		</cfquery>
 
@@ -210,20 +217,34 @@ to your own modified versions of Mura CMS.
 			<cfcatch><!---<cfset arrayAppend(errors,copyItem)>---></cfcatch>
 		</cftry>
 		
+		<cfquery name="rs" dbtype="query">
+			select * from rsAll where lower(type) = 'dir'
+		</cfquery>
+		
 		<cfloop query="rs">
-			<cfif rs.type eq "dir">
-				<cfset copyItem="#replace('#rs.directory##variables.configBean.getFileDelim()#',arguments.baseDir,arguments.destDir)##rs.name##variables.configBean.getFileDelim()#">
-				<cftry>
-					<cfset variables.fileWriter.createDir(directory=copyItem)>
-					<cfcatch><!---<cfset arrayAppend(errors,copyItem)>---></cfcatch>
-				</cftry>
-			<cfelse>
-			<cfset copyItem="#replace('#rs.directory##variables.configBean.getFileDelim()#',arguments.baseDir,arguments.destDir)#">
-				<cftry>
-					<cfset variables.fileWriter.copyFile(source="#rs.directory##variables.configBean.getFileDelim()##rs.name#", destination=copyItem)>
-					<cfcatch><<cfset arrayAppend(errors,copyItem)></cfcatch>
-				</cftry>
+			<cfset copyItem="#replace('#rs.directory##variables.configBean.getFileDelim()#',arguments.baseDir,arguments.destDir)##rs.name##variables.configBean.getFileDelim()#">
+			<cfif not DirectoryExists(copyItem)>
+			<cftry>
+				<cfset variables.fileWriter.createDir(directory=copyItem)>
+				<cfcatch><!---<cfset arrayAppend(errors,copyItem)>---></cfcatch>
+			</cftry>
 			</cfif>
+		</cfloop>
+		
+		<cfquery name="rs" dbtype="query">
+			select * from rsAll where lower(type) = 'file'
+		</cfquery>
+		
+		<cfloop query="rs">
+			<cfset copyItem="#replace('#rs.directory##variables.configBean.getFileDelim()#',arguments.baseDir,arguments.destDir)#">
+			<cfif fileExists(copyItem)>
+				<cffile action="delete" file="#copyItem#">
+			</cfif>
+			
+			<cftry>
+				<cfset variables.fileWriter.copyFile(source="#rs.directory##variables.configBean.getFileDelim()##rs.name#", destination=copyItem, sinceDate=arguments.sinceDate)>
+				<cfcatch><cfset arrayAppend(errors,copyItem)></cfcatch>
+			</cftry>
 		</cfloop>
 	</cfif>
 	

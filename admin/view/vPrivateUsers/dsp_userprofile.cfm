@@ -54,7 +54,7 @@ select * from rsSubTypes where subType <> 'Default'
 </cfif>
 <cfset tabLabelList=listAppend(tabLabelList,application.rbFactory.getKeyValue(session.rb,'user.advanced'))>
 <cfset tabList=listAppend(tabList,"tabAdvanced")>
-<form action="index.cfm?fuseaction=cEditProfile.update" method="post" enctype="multipart/form-data" name="form1" class="columns" onsubmit="return validate(this);">
+<form novalidate="novalidate" action="index.cfm?fuseaction=cEditProfile.update" method="post" enctype="multipart/form-data" name="form1" class="columns" onsubmit="return validate(this);">
 <cfoutput><h2>#application.rbFactory.getKeyValue(session.rb,'user.editprofile')#</h2>
 
 	#application.utility.displayErrors(request.userBean.getErrors())#

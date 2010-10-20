@@ -1,0 +1,1 @@
+These templates are used ONLY if there is no theme selected for a specific site. Use of this directory is deprecated in favor of using themes.

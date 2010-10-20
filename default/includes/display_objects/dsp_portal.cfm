@@ -102,25 +102,14 @@ to your own modified versions of Mura CMS.
 
 <cfset variables.nextN=application.utility.getNextN(rsSection,request.contentBean.getNextN(),currentNextNIndex)>
 
-<cfset addToHeight = 10> <!--- Total number of pixels to add for the final height --->
-<cfset minHeight = $.siteConfig('gallerySmallScale') + addToHeight> <!--- Adding to the size of the image set in site settings--->
-
-<cfset addToWidth = 10> <!--- Total number of pixels to add for the final height --->
-<cfset totalWidth = $.siteConfig('gallerySmallScale') + addToHeight> <!--- Adding to the size of the image set in site settings--->
-
+<cfset addToHeight = 10> <!--- Total number of pixels to add for the final height of the DL --->
+<cfset minHeight = $.siteConfig('gallerySmallScale') + addToHeight> <!--- padding + border + margin of the top and bottom of the image --->
+<cfset addToWidth = 10> <!--- Total number of pixels to add for the final padding i.e. the "gutter" taht the image lives in --->
+<cfset totalPadding = $.siteConfig('gallerySmallScale') + addToWidth> <!--- padding + border + margin after image  --->
 </cfsilent>
 
 <cfif iterator.getRecordcount()>
-<!--- Need  logic for x and y constrain? --->
-<cfoutput>
-<style>						
-	##svPortal dl.hasImage {
-	min-height: #minHeight#px;
-	padding-left: #totalWidth#px;
-	}
-</style>
-</cfoutput>
-
+<cfset addToHTMLHeadQueue("listImageStyles.cfm")>
 <div id="svPortal" class="svIndex">
 		<cfloop condition="iterator.hasNext()">
 		<cfsilent>

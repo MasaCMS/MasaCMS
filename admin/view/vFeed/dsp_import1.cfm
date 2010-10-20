@@ -43,7 +43,7 @@ to your own modified versions of Mura CMS.
 <cfoutput>
 <h2>#application.rbFactory.getKeyValue(session.rb,'collections.remotefeedimportselection')#</h2>
 
-<form action="index.cfm?fuseaction=cFeed.import2&feedid=#URLEncodedFormat(attributes.feedid)#&siteid=#URLEncodedFormat(attributes.siteid)#" method="post" name="contentForm" onsubmit="return false;">
+<form novalidate="novalidate" action="index.cfm?fuseaction=cFeed.import2&feedid=#URLEncodedFormat(attributes.feedid)#&siteid=#URLEncodedFormat(attributes.siteid)#" method="post" name="contentForm" onsubmit="return false;">
 	<cfset feedBean=application.feedManager.read(attributes.feedID) />
 	<h3>#feedBean.getName()#</h3>
 		</cfoutput>

@@ -531,6 +531,9 @@ The #contactName# staff</cfoutput>
 <cfparam name="session.loginAttempts" type="numeric" default="0" />
 <cfparam name="session.blockLoginUntil" type="string" default="" />
 
+<!--- clear out all existing values --->
+<cfset session.mura=structNew()>
+
 <cfif structKeyExists(arguments,"user")>
 	<cfset session.mura.isLoggedIn=true>			
 	<cfset session.mura.userID=arguments.user.userID>
@@ -542,11 +545,7 @@ The #contactName# staff</cfoutput>
 	<cfset session.mura.lname=arguments.user.lname>
 	<cfset session.mura.email=arguments.user.email>
 	<cfset session.mura.remoteID=arguments.user.remoteID>
-	<cfif arguments.user.company neq ''>
-		<cfset session.mura.company=arguments.user.company>
-	<cfelse>
-		<cfset session.mura.company="#arguments.user.lname# #arguments.user.lname#">
-	</cfif>
+	<cfset session.mura.company=arguments.user.company>
 	<cfset session.mura.lastlogin=arguments.user.lastlogin>
 	<cfset session.mura.passwordCreated=arguments.user.passwordCreated>
 	<cfset session.mura.memberships=arguments.memberships>

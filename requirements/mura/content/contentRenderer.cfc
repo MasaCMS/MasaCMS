@@ -424,31 +424,33 @@ to your own modified versions of Mura CMS.
 </cffunction>
 
 <cffunction name="dspPortalNav" output="false" returntype="string">
+	<cfargument name="class" default="navSecondary" required="true">
 	<cfset var thenav="" />
 	<cfset var menutype="" />
 
 			<cfif event.getValue('contentBean').getType() eq 'Portal' or event.getValue('contentBean').getType() eq 'Gallery'>
 				<cfif arraylen(this.crumbdata) gt (this.navParentIdx+this.navOffSet)>
 					<cfif arraylen(this.crumbdata) gt (this.navGrandParentIdx+this.navOffSet) and (this.crumbdata[this.navGrandParentIdx].type neq 'Portal' or this.crumbdata[this.navGrandParentIdx].type neq 'Gallery') and not application.contentGateway.getCount(event.getValue('siteID'),this.crumbdata[this.navSelfIdx].contentID)>
-						<cfset theNav = dspNestedNav(this.crumbdata[this.navGrandParentIdx].contentid,2,1,'default',now(),'navSecondary','',this.crumbdata[this.navGrandParentIdx].sortBy,this.crumbdata[this.navGrandParentIdx].sortDirection,application.configBean.getContext(),application.configBean.getStub(),event.getValue('categoryID')) />
+						<cfset theNav = dspNestedNav(this.crumbdata[this.navGrandParentIdx].contentid,2,1,'default',now(),arguments.class,'',this.crumbdata[this.navGrandParentIdx].sortBy,this.crumbdata[this.navGrandParentIdx].sortDirection,application.configBean.getContext(),application.configBean.getStub(),event.getValue('categoryID')) />
 					<cfelse>
-						<cfset thenav=dspPeerNav() />
+						<cfset thenav=dspPeerNav(arguments.class) />
 					</cfif>
 				</cfif>
 			<cfelseif arrayLen(this.crumbdata) gt (this.navSelfIdx+this.navOffSet) and this.crumbdata[this.navParentIdx].type eq 'Portal' or (arraylen(this.crumbdata) gt (this.navGrandParentIdx+this.navOffSet) and this.crumbdata[this.navGrandParentIdx].type eq 'Portal')>
 				<cfif arraylen(this.crumbdata) gt (this.navGrandParentIdx+this.navOffSet) and this.crumbdata[this.navGrandParentIdx].type neq 'Portal' and not application.contentGateway.getCount(event.getValue('siteID'),this.crumbdata[this.navSelfIdx].contentID)>
-					<cfset theNav = dspNestedNav(this.crumbdata[this.navGrandParentIdx].contentid,1,1,'default',now(),'navSecondary','',this.crumbdata[this.navGrandParentIdx].sortBy,this.crumbdata[this.navGrandParentIdx].sortDirection,application.configBean.getContext(),application.configBean.getStub(),event.getValue('categoryID')) />
+					<cfset theNav = dspNestedNav(this.crumbdata[this.navGrandParentIdx].contentid,1,1,'default',now(),arguments.class,'',this.crumbdata[this.navGrandParentIdx].sortBy,this.crumbdata[this.navGrandParentIdx].sortDirection,application.configBean.getContext(),application.configBean.getStub(),event.getValue('categoryID')) />
 				<cfelse>
-					<cfset thenav=dspSubNav() />
+					<cfset thenav=dspSubNav(arguments.class) />
 				</cfif>
 			<cfelse>
-			<cfset thenav=dspStandardNav() />
+			<cfset thenav=dspStandardNav(arguments.class) />
 			</cfif>
 			
 			<cfreturn thenav />
 </cffunction>
 
 <cffunction name="dspStandardNav" output="false" returntype="string">
+	<cfargument name="class" default="navSecondary" required="true">
 	<cfset var thenav="" />
 	<cfset var menutype="" />
 	
@@ -460,32 +462,34 @@ to your own modified versions of Mura CMS.
 					<cfset menutype='default'>
 				</cfif>
 				<cfif arraylen(this.crumbdata) gt (this.navGrandParentIdx+this.navOffSet) and not application.contentGateway.getCount(event.getValue('siteID'),this.crumbdata[this.navSelfIdx].contentID)>
-					<cfset theNav = dspNestedNav(this.crumbdata[this.navGrandParentIdx].contentid,2,1,menutype,now(),'navSecondary','',this.crumbdata[this.navGrandParentIdx].sortBy,this.crumbdata[this.navGrandParentIdx].sortDirection,application.configBean.getContext(),application.configBean.getStub()) />	
+					<cfset theNav = dspNestedNav(this.crumbdata[this.navGrandParentIdx].contentid,2,1,menutype,now(),arguments.class,'',this.crumbdata[this.navGrandParentIdx].sortBy,this.crumbdata[this.navGrandParentIdx].sortDirection,application.configBean.getContext(),application.configBean.getStub()) />	
 				<cfelse>
-					<cfset theNav = dspNestedNav(this.crumbdata[this.navParentIdx].contentid,2,1,menutype,now(),'navSecondary','',this.crumbdata[this.navParentIdx].sortBy,this.crumbdata[this.navParentIdx].sortDirection,application.configBean.getContext(),application.configBean.getStub()) />	
+					<cfset theNav = dspNestedNav(this.crumbdata[this.navParentIdx].contentid,2,1,menutype,now(),arguments.class,'',this.crumbdata[this.navParentIdx].sortBy,this.crumbdata[this.navParentIdx].sortDirection,application.configBean.getContext(),application.configBean.getStub()) />	
 				</cfif>			
 			<cfelse>
-			<cfset theNav=dspSubNav() />
+			<cfset theNav=dspSubNav(arguments.class) />
 			</cfif>	
 			
 			<cfreturn thenav />
 	<cfelse>
-			<cfreturn dspPortalNav() />
+			<cfreturn dspPortalNav(arguments.class) />
 	</cfif>
 </cffunction>
 
 <cffunction name="dspSubNav" output="false" returntype="string">
+	<cfargument name="class" default="navSecondary" required="true">
 	<cfset var thenav="" />
 	<cfset var menutype="">
 			<cfif arraylen(this.crumbdata) gt (this.navSelfIdx+this.navOffSet)>
 			<cfif this.crumbdata[this.navSelfIdx].type eq 'Calendar'><cfset menutype='fixed'><cfelse><cfset menutype='default'></cfif>
-			<cfset theNav = dspNestedNav(this.crumbdata[this.navSelfIdx].contentID,1,1,menutype,now(),'navSecondary','',this.crumbdata[this.navSelfIdx].sortBy,this.crumbdata[this.navSelfIdx].sortDirection,application.configBean.getContext(),application.configBean.getStub()) />
+			<cfset theNav = dspNestedNav(this.crumbdata[this.navSelfIdx].contentID,1,1,menutype,now(),arguments.class,'',this.crumbdata[this.navSelfIdx].sortBy,this.crumbdata[this.navSelfIdx].sortDirection,application.configBean.getContext(),application.configBean.getStub()) />
 			</cfif>
 			
 			<cfreturn thenav />
 </cffunction>
 
 <cffunction name="dspPeerNav" output="false" returntype="string">
+	<cfargument name="class" default="navSecondary" required="true">
 	<cfset var thenav="" />
 	<cfset var menutype = "" />
 		
@@ -496,7 +500,7 @@ to your own modified versions of Mura CMS.
 				<cfelse>
 					<cfset menutype='default'>
 				</cfif>
-				<cfset theNav = dspNestedNav(this.crumbdata[this.navParentIdx].contentID,1,1,menutype,now(),'navSecondary','',this.crumbdata[this.navParentIdx].sortBy,this.crumbdata[this.navParentIdx].sortDirection,application.configBean.getContext(),application.configBean.getStub()) />
+				<cfset theNav = dspNestedNav(this.crumbdata[this.navParentIdx].contentID,1,1,menutype,now(),arguments.class,'',this.crumbdata[this.navParentIdx].sortBy,this.crumbdata[this.navParentIdx].sortDirection,application.configBean.getContext(),application.configBean.getStub()) />
 			</cfif>
 			
 			<cfreturn theNav />
@@ -1483,7 +1487,14 @@ to your own modified versions of Mura CMS.
 	<cfif event.valueExists("contentBean") and not listFind("Link,File",event.getValue('contentBean').getType())>		
 		<cfreturn host & application.configBean.getContext() & getURLStem(event.getValue('siteID'),event.getValue('contentBean').getFilename()) & qrystr >
 	<cfelse>
-		<cfreturn host &  application.configBean.getContext() & "/" & event.getValue('siteID') & "/" & qrystr >
+		<!--- If the current node is a link of file you need to make sure that the linkServID is in the URL --->
+		<cfif not len(qrystr)>
+			<cfreturn host &  application.configBean.getContext() & "/" & event.getValue('siteID') & "/?linkServID=" & event.getValue("contentBean").getContentID() >
+		<cfelseif not findNocase("linkServID",qrystr)>
+			<cfreturn host &  application.configBean.getContext() & "/" & event.getValue('siteID') & "/" & qrystr & "&linkServID=" & event.getValue("contentBean").getContentID() >
+		<cfelse>
+			<cfreturn host &  application.configBean.getContext() & "/" & event.getValue('siteID') & "/" & qrystr >
+		</cfif>
 	</cfif>
 	
 	
@@ -1608,7 +1619,9 @@ to your own modified versions of Mura CMS.
 	<cfset var displayPoolID=application.settingsmanager.getSite(event.getValue('siteID')).getDisplayPoolID()>
 	<cfset var theme=application.settingsmanager.getSite(event.getValue('siteID')).getTheme()>
 	
-	<cfif getRenderHTMLHead()>	
+	<cfif getRenderHTMLHead()>
+		<!--- ensure that the js lb is always there --->
+		<cfset loadJSLib() />
 		<!--- Add global.js --->
 		<cfsavecontent variable="headerStr">
 				<cfinclude  template="/#application.configBean.getWebRootMap()#/#application.settingsmanager.getSite(event.getValue('siteID')).getDisplayPoolID()#/includes/display_objects/htmlhead/global.cfm">

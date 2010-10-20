@@ -55,6 +55,7 @@ to your own modified versions of Mura CMS.
 		<cfargument name="configBean" type="any" required="yes"/>
 		<cfargument name="fileManager" type="any" required="yes"/>
 		<cfargument name="pluginManager" type="any" required="yes"/>
+		<cfargument name="trashManager" type="any" required="yes"/>
 		
 		<cfset variables.contentGateway=arguments.contentGateway />
 		<cfset variables.contentDAO=arguments.contentDAO />
@@ -66,6 +67,7 @@ to your own modified versions of Mura CMS.
 		<cfset variables.configBean=arguments.configBean />
 		<cfset variables.fileManager=arguments.fileManager />
 		<cfset variables.pluginManager=arguments.pluginManager />
+		<cfset variables.trashManager=arguments.trashManager />
 		<cfset variables.ClassExtensionManager=variables.configBean.getClassExtensionManager() />
 		
 		<cfset variables.contentDAO.setContentManager(this)/>
@@ -460,6 +462,7 @@ to your own modified versions of Mura CMS.
 		<cfset var refused=false />
 		<cfset var imageData="" />
 		<cfset var rsFile="" />
+		<cfset var rsComments="" />
 		<cfset var rsDrafts = "" />
 		<cfset var d = "" />
 		<cfset var pluginEvent = createObject("component","mura.MuraScope") />
@@ -467,7 +470,7 @@ to your own modified versions of Mura CMS.
 		
 		<!---IF THE DATA WAS SUBMITTED AS AN OBJECT UNPACK THE VALUES --->
 		<cfif isObject(arguments.data)>
-			<cfif getMetaData(arguments.data).name eq "mura.content.contentBean">
+			<cfif listLast(getMetaData(arguments.data).name,".") eq "contentBean">
 				<cfset arguments.data=arguments.data.getAllValues() />
 			<cfelse>
 				<cfthrow type="custom" message="The attribute 'DATA' is not of type 'mura.content.contentBean'.">
@@ -583,11 +586,30 @@ to your own modified versions of Mura CMS.
 				<cfset variables.ClassExtensionManager.preserveExtendedData(newBean.getcontentHistID(),newBean.getPreserveID(),arguments.data,"tclassextenddata", newBean.getType(), newBean.getSubType())/>
 			</cfif>
 		</cfif>
+		
+		<!--- Category Persistence --->	
+		<cfif not newBean.getIsNew() and isdefined("arguments.data.mode") and arguments.data.mode eq 'import'>
+			<cfset variables.categoryManager.keepCategories(newBean.getcontentHistID(),getCategoriesByHistID(currentBean.getcontentHistID())) />	
+		<cfelse>
+			<cfif isQuery(newBean.getValue("categoriesFromMuraTrash"))>
+				<cfset variables.categoryManager.setCategories(arguments.data,newBean.getcontentID(),
+				newBean.getcontentHistID(),arguments.data.siteid,newBean.getValue("categoriesFromMuraTrash")) />	
+			<cfelse>
+				<cfif newBean.getIsNew()>
+					<cfset variables.categoryManager.setCategories(arguments.data,newBean.getcontentID(),
+					newBean.getcontentHistID(),arguments.data.siteid,getCategoriesByHistID('')) />	
+				<cfelse>
+					<cfset variables.categoryManager.setCategories(arguments.data,newBean.getcontentID(),
+					newBean.getcontentHistID(),arguments.data.siteid,getCategoriesByHistID(currentBean.getcontentHistID())) />	
+				</cfif>	
+			</cfif>
+		</cfif>
 		<!--- END CONTENT TYPE: ALL EXTENDABLE CONTENT TYPES --->
 		
 		<!--- BEGIN CONTENT TYPE: ALL SITE TREE LEVEL CONTENT TYPES --->
 		<cfif  listFindNoCase(this.TreeLevelList,newBean.getType())>
 			
+			<!--- Reminder Persistence --->	
 			<cfif newBean.getapproved() and not newBean.getIsNew() and currentBean.getDisplay() eq 2 and newBean.getDisplay() eq 2>
 				<cfset variables.reminderManager.updateReminders(newBean.getcontentID(),newBean.getSiteid(),newBean.getDisplayStart()) />
 			<cfelseif newBean.getapproved() and not newBean.getIsNew() and currentBean.getDisplay() eq 2 and newBean.getDisplay() neq 2>
@@ -600,6 +622,7 @@ to your own modified versions of Mura CMS.
 				<cfset updateMaterializedPath(newBean.getPath(),currentBean.getPath(),newBean.getSiteID()) />
 			</cfif>
 			
+			<!--- Related content persistence --->	
 			<cfif not newBean.getIsNew()>
 				<cfset variables.contentDAO.createRelatedItems(newBean.getcontentID(),
 				newBean.getcontentHistID(),arguments.data,newBean.getSiteID(),currentBean.getcontentHistID()) />
@@ -608,38 +631,9 @@ to your own modified versions of Mura CMS.
 				<cfset variables.contentDAO.createRelatedItems(newBean.getcontentID(),
 				newBean.getcontentHistID(),arguments.data,newBean.getSiteID(),'') />
 			</cfif>
-				
-			<cfif not newBean.getIsNew() and isdefined("arguments.data.mode") and arguments.data.mode eq 'import'>
-				
-				<cfset variables.categoryManager.keepCategories(newBean.getcontentHistID(),
-				getCategoriesByHistID(currentBean.getcontentHistID())) />	
-			<cfelse>
-				<cfif newBean.getIsNew()>
-					<cfset variables.categoryManager.setCategories(arguments.data,newBean.getcontentID(),
-					newBean.getcontentHistID(),arguments.data.siteid,getCategoriesByHistID('')) />	
-				<cfelse>
-					<cfset variables.categoryManager.setCategories(arguments.data,newBean.getcontentID(),
-					newBean.getcontentHistID(),arguments.data.siteid,getCategoriesByHistID(currentBean.getcontentHistID())) />	
-				</cfif>	
-			</cfif>
 		</cfif>
 		
-		<cfif  newBean.getType() eq "Component" >
-			<cfif not newBean.getIsNew() and isdefined("arguments.data.mode") and arguments.data.mode eq 'import'>
-				<cfset variables.categoryManager.keepCategories(newBean.getcontentHistID(),
-				getCategoriesByHistID(currentBean.getcontentHistID())) />	
-			<cfelse>
-				<cfif newBean.getIsNew()>
-					<cfset variables.categoryManager.setCategories(arguments.data,newBean.getcontentID(),
-					newBean.getcontentHistID(),arguments.data.siteid,getCategoriesByHistID('')) />	
-				<cfelse>
-					<cfset variables.categoryManager.setCategories(arguments.data,newBean.getcontentID(),
-					newBean.getcontentHistID(),arguments.data.siteid,getCategoriesByHistID(currentBean.getcontentHistID())) />	
-				</cfif>	
-			</cfif>
-		</cfif>
-		
-		<!--- Public Content Submision  --->
+		<!--- PUBLIC CONTENT SUBMISSION --DEPRICATED    --->
 		<cfif newBean.getIsNew() and isdefined('arguments.data.email') and isdefined('arguments.data.approvalqueue') and arguments.data.approvalqueue>
 			<cftry>
 			<cfset variables.contentUtility.setApprovalQue(newBean,arguments.data.email) />
@@ -846,8 +840,20 @@ to your own modified versions of Mura CMS.
 		
 		<cfset variables.utility.logEvent("ContentID:#newBean.getcontentID()# ContentHistID:#newBean.getcontentHistID()# MenuTitle:#newBean.getMenuTitle()# Type:#newBean.getType()# was created","mura-content","Information",true) />
 		<cfset variables.contentDAO.create(newBean) />
-		<!--- END CONTENT TYPE: ALL CONTENT TYPES --->
+		<!---
+		<cfif isQuery(newBean.getValue("commentsFromMuraTrash") ) >
+			<cfset rsComments=newBean.getValue("commentsFromMuraTrash")>
+			<cfloop query="rsComments">
+				<cfset getBean("contentCommentBean").set( variables.utility.queryRowToStruct(rsComments, currentrow)  ).save()>
+			</cfloop>
+		</cfif>
+		--->
 		</cftransaction>
+		
+		<cfset variables.trashManager.takeOut(newBean)>
+		
+		<!--- END CONTENT TYPE: ALL CONTENT TYPES --->
+		
 		</cflock>	
 		
 		<!--- re-read the node to make sure that all extended attributes are cleaned 
@@ -885,6 +891,10 @@ to your own modified versions of Mura CMS.
 	<cfset var rs ="">
 	<cfset var subContent = structNew() />
 	
+	<cfif not structKeyExists(arguments.data,"muraDeleteDateTime") or not isDate(arguments.data.muraDeleteDateTime) >
+		<cfset arguments.data.muraDeleteDateTime=now()>
+	</cfif>
+	
 	<cflock type="exclusive" name="editingContent#arguments.data.siteid#" timeout="60">
 		<cfif arguments.data.contentID eq '00000000000000000000000000000000001'>
 			<cfabort>
@@ -899,11 +909,13 @@ to your own modified versions of Mura CMS.
 			<cfloop query="rs">
 				<cfset subContent.contentID = rs.contentiD/>
 				<cfset subContent.siteID = arguments.data.siteID/>
+				<cfset subContent.muraDeleteDateTime = arguments.data.muraDeleteDateTime/>
 				<cfset deleteAll(subContent)/>
 			</cfloop>
 		</cfif>
 	
 		<cfset currentBean=variables.contentDAO.readActive(arguments.data.contentid,arguments.data.siteid) />
+		<cfset currentBean.setValue("muraDeleteDateTime",arguments.data.muraDeleteDateTime)>
 		<cfset pluginEvent.setValue("contentBean",currentBean) />	
 		<cfif currentBean.getContentID() neq '00000000000000000000000000000000001'>
 				
@@ -918,33 +930,11 @@ to your own modified versions of Mura CMS.
 				<cfset variables.pluginManager.announceEvent("on#currentBean.getType()##currentBean.getSubType()#Delete",pluginEvent)>
 				<cfset variables.pluginManager.announceEvent("onBefore#currentBean.getType()##currentBean.getSubType()#Delete",pluginEvent)>
 				
-				<!--- Now that it delete all children along with the node this is not needed 
-				<cfif  ListFindNoCase(this.TreeLevelList,currentBean.getType())>						
-					<cfif currentBean.getPath() neq "">
-						<cfset newPath=listDeleteAt(currentBean.getPath(),listLen(currentBean.getPath())) />
-						<cfset currentPath=currentBean.getPath() />
-						<cfset updateMaterializedPath(newPath,currentPath,currentBean.getSiteID()) />
-					</cfif>
-				</cfif>
-				--->
-
+				<cfset variables.utility.logEvent("ContentID:#currentBean.getcontentID()# MenuTitle:#currentBean.getMenuTitle()# Type:#currentBean.getType()# was completely deleted","mura-content","Information",true) />		
+				<cfset variables.trashManager.throwIn(currentBean)>
 				<cfif len(currentBean.getFileID()) or currentBean.getType() eq 'Form'>
 					<cfset variables.fileManager.deleteAll(currentBean.getcontentID()) />
 				</cfif>
-				
-				<!---<cfset variables.contentUtility.deleteFile(currentBean) />--->
-					
-				<cfif currentBean.getType() neq 'File'>
-					<cfset variables.contentDAO.deleteObjects(currentBean.getcontentID(),currentBean.getSiteID()) />
-					<cfquery datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-						 update tcontent set orderno=OrderNo-1 where parentid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#currentBean.getParentID()#"> 
-						 and siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#currentBean.getSiteID()#">
-						 and type in ('Page','Portal','Link','File','Component','Calendar','Form') and active=1
-						 and orderno > <cfqueryparam cfsqltype="cf_sql_numeric" value="#currentBean.getOrderNo()#">
-					</cfquery>
-				</cfif>
-				
-				<cfset variables.utility.logEvent("ContentID:#currentBean.getcontentID()# MenuTitle:#currentBean.getMenuTitle()# Type:#currentBean.getType()# was completely deleted","mura-content","Information",true) />		
 				<cfset variables.contentDAO.delete(currentBean) />
 				<cfif  ListFindNoCase(this.TreeLevelList,currentBean.getType())>
 					<cfset variables.pluginManager.announceEvent("onAfterContentDelete",pluginEvent)>

@@ -63,6 +63,7 @@ to your own modified versions of Mura CMS.
 			<constructor-arg name="categoryManager"><ref bean="categoryManager" /></constructor-arg>
 			<constructor-arg name="fileManager"><ref bean="fileManager" /></constructor-arg>
 			<constructor-arg name="pluginManager"><ref bean="pluginManager" /></constructor-arg>
+			<constructor-arg name="trashManager"><ref bean="trashManager" /></constructor-arg>
 		</bean>
 		<bean id="contentGateway" class="mura.content.contentGateway" singleton="true">
 			<constructor-arg name="configBean"><ref bean="configBean" /></constructor-arg>
@@ -97,7 +98,7 @@ to your own modified versions of Mura CMS.
 			    <ref bean="contentManager"/>
 			</property>
 		</bean>
-		<bean id="contentComment" class="mura.content.file.fileManager" singleton="true" >
+		<bean id="contentCommentBean" class="mura.content.contentCommentBean" singleton="true" >
 			<constructor-arg name="configBean"><ref bean="configBean" /></constructor-arg>
 			<constructor-arg name="settingsManager"><ref bean="settingsManager" /></constructor-arg>
 			<constructor-arg name="utility"><ref bean="utility" /></constructor-arg>
@@ -159,6 +160,7 @@ to your own modified versions of Mura CMS.
 			<constructor-arg name="categoryUtility"><ref bean="categoryUtility" /></constructor-arg>
 			<constructor-arg name="settingsManager"><ref bean="settingsManager" /></constructor-arg>
 			<constructor-arg name="pluginManager"><ref bean="pluginManager" /></constructor-arg>
+			<constructor-arg name="trashManager"><ref bean="trashManager" /></constructor-arg>
 		</bean>
 		<bean id="categoryDAO" class="mura.category.categoryDAO" singleton="true" >
 			<constructor-arg name="configBean"><ref bean="configBean" /></constructor-arg>
@@ -206,6 +208,7 @@ to your own modified versions of Mura CMS.
 			<constructor-arg name="utility"><ref bean="utility" /></constructor-arg>
 			<constructor-arg name="fileManager"><ref bean="fileManager" /></constructor-arg>
 			<constructor-arg name="pluginManager"><ref bean="pluginManager" /></constructor-arg>
+			<constructor-arg name="trashManager"><ref bean="trashManager" /></constructor-arg>
 		</bean>
 		<bean id="userDAO" class="mura.user.userDAO" singleton="true">
 			<constructor-arg name="configBean"><ref bean="configBean" /></constructor-arg>
@@ -283,6 +286,7 @@ to your own modified versions of Mura CMS.
 			<constructor-arg name="memberManager"><ref bean="memberManager" /></constructor-arg>
 			<constructor-arg name="utility"><ref bean="utility" /></constructor-arg>
 			<constructor-arg name="settingsManager"><ref bean="settingsManager" /></constructor-arg>
+			<constructor-arg name="trashManager"><ref bean="trashManager" /></constructor-arg>
 		</bean>
 		<bean id="mailinglistBean" class="mura.mailinglist.mailinglistBean" singleton="false" />
 		<bean id="memberBean" class="mura.mailinglist.memberBean" singleton="false" />
@@ -315,6 +319,7 @@ to your own modified versions of Mura CMS.
 			<constructor-arg name="emailUtility"><ref bean="emailUtility" /></constructor-arg>
 			<constructor-arg name="settingsManager"><ref bean="settingsManager" /></constructor-arg>
 			<constructor-arg name="utility"><ref bean="utility" /></constructor-arg>
+			<constructor-arg name="trashManager"><ref bean="trashManager" /></constructor-arg>
 		</bean>
 		<bean id="emailDAO" class="mura.email.emailDAO" singleton="true">
 			<constructor-arg name="configBean"><ref bean="configBean" /></constructor-arg>
@@ -343,6 +348,7 @@ to your own modified versions of Mura CMS.
 			<constructor-arg name="advertiserUtility"><ref bean="advertiserUtility" /></constructor-arg>
 			<constructor-arg name="utility"><ref bean="utility" /></constructor-arg>
 			<constructor-arg name="settingsManager"><ref bean="settingsManager" /></constructor-arg>
+			<constructor-arg name="trashManager"><ref bean="trashManager" /></constructor-arg>
 		</bean>
 		<bean id="advertiserGateway" class="mura.advertising.advertiserGateway" singleton="true">
 			<constructor-arg name="configBean"><ref bean="configBean" /></constructor-arg>
@@ -361,6 +367,7 @@ to your own modified versions of Mura CMS.
 			<constructor-arg name="campaignDAO"><ref bean="campaignDAO" /></constructor-arg>
 			<constructor-arg name="placementManager"><ref bean="placementManager" /></constructor-arg>
 			<constructor-arg name="utility"><ref bean="utility" /></constructor-arg>
+			<constructor-arg name="trashManager"><ref bean="trashManager" /></constructor-arg>
 		</bean>
 		<bean id="campaignGateway" class="mura.advertising.campaign.campaignGateway" singleton="true">
 			<constructor-arg name="configBean"><ref bean="configBean" /></constructor-arg>
@@ -374,6 +381,7 @@ to your own modified versions of Mura CMS.
 			<constructor-arg name="placementGateway"><ref bean="placementGateway" /></constructor-arg>
 			<constructor-arg name="placementDAO"><ref bean="placementDAO" /></constructor-arg>
 			<constructor-arg name="utility"><ref bean="utility" /></constructor-arg>
+			<constructor-arg name="trashManager"><ref bean="trashManager" /></constructor-arg>
 		</bean>
 		<bean id="placementGateway" class="mura.advertising.campaign.placement.placementGateway" singleton="true">
 			<constructor-arg name="configBean"><ref bean="configBean" /></constructor-arg>
@@ -387,6 +395,7 @@ to your own modified versions of Mura CMS.
 			<constructor-arg name="adZoneGateway"><ref bean="adZoneGateway" /></constructor-arg>
 			<constructor-arg name="adZoneDAO"><ref bean="adZoneDAO" /></constructor-arg>
 			<constructor-arg name="utility"><ref bean="utility" /></constructor-arg>
+			<constructor-arg name="trashManager"><ref bean="trashManager" /></constructor-arg>
 		</bean>
 		<bean id="adZoneGateway" class="mura.advertising.adZone.adZoneGateway" singleton="true">
 			<constructor-arg name="configBean"><ref bean="configBean" /></constructor-arg>
@@ -402,6 +411,7 @@ to your own modified versions of Mura CMS.
 			<constructor-arg name="creativeDAO"><ref bean="creativeDAO" /></constructor-arg>
 			<constructor-arg name="utility"><ref bean="utility" /></constructor-arg>
 			<constructor-arg name="fileManager"><ref bean="fileManager" /></constructor-arg>
+			<constructor-arg name="trashManager"><ref bean="trashManager" /></constructor-arg>
 		</bean>
 		<bean id="creativeGateway" class="mura.advertising.creative.creativeGateway" singleton="true">
 			<constructor-arg name="configBean"><ref bean="configBean" /></constructor-arg>
@@ -417,6 +427,7 @@ to your own modified versions of Mura CMS.
 			<constructor-arg name="utility"><ref bean="utility" /></constructor-arg>
 			<constructor-arg name="feedUtility"><ref bean="feedUtility" /></constructor-arg>
 			<constructor-arg name="pluginManager"><ref bean="pluginManager" /></constructor-arg>
+			<constructor-arg name="trashManager"><ref bean="trashManager" /></constructor-arg>
 		</bean>
 		<bean id="feedGateway" class="mura.content.feed.feedGateway" singleton="true">
 			<constructor-arg name="configBean"><ref bean="configBean" /></constructor-arg>
@@ -512,6 +523,11 @@ to your own modified versions of Mura CMS.
 		<bean id="extendObjectFeedBean" class="mura.extend.extendObjectFeedBean" singleton="false">
 			<constructor-arg name="configBean"><ref bean="configBean" /></constructor-arg>
 		</bean>
+		<bean id="trashManager" class="mura.trash.trashManager" singleton="false">
+			<property name="configBean">
+			    <ref bean="configBean"/>
+			</property>
+		</bean>
 		<bean id="scriptProtectionFilter" class="mura.Portcullis" singleton="true" />
 		<bean id="MuraScope" class="mura.MuraScope" singleton="false"/>
 		<alias name="contentBean" alias="content"/>
@@ -520,7 +536,7 @@ to your own modified versions of Mura CMS.
 		<alias name="addressBean" alias="address"/>
 		<alias name="categoryBean" alias="category"/>
 		<alias name="userFeedBean" alias="userFeed"/>
-		<alias name="commentBean" alias="comment"/>
+		<alias name="contentCommentBean" alias="comment"/>
 		<alias name="pluginManager" alias="eventManager"/>
 		<!---coldspring.custom.xml.cfm reference is for backwards compatability --->
 		<cfif not servicesLoaded and fileExists(expandPath("/muraWRM/config/coldspring.custom.xml.cfm"))><cfinclude template="/muraWRM/config/coldspring.custom.xml.cfm"></cfif>

@@ -50,6 +50,7 @@ to your own modified versions of Mura CMS.
 <cfif len(attributes.siteid)>
 <ul id="navTask"
 <li><a href="index.cfm?fuseaction=cExtend.listSubTypes&siteid=#URLEncodedFormat(attributes.siteid)#">Class Extension Manager</a></li>
+<li><a href="index.cfm?fuseaction=cTrash.list&siteID=#URLEncodedFormat(attributes.siteid)#">Trash Bin</a></li>
 <cfif attributes.action eq "updateFiles">
 <li><a href="index.cfm?fuseaction=cSettings.editSite&siteid=#URLEncodedFormat(attributes.siteid)#">Edit Site</a></li>
 <cfelse>
@@ -59,7 +60,7 @@ to your own modified versions of Mura CMS.
 </cfoutput>
 <cfif attributes.action neq "updateFiles">
 <cfoutput>
-<form method ="post" action="index.cfm?fuseaction=cSettings.updateSite" name="form1"  onsubmit="return validate(this);">
+<form novalidate="novalidate" method ="post" action="index.cfm?fuseaction=cSettings.updateSite" name="form1"  onsubmit="return validate(this);">
 <!---
 <cfhtmlhead text='<link rel="stylesheet" href="css/tab-view.css" type="text/css" media="screen">'>
 <cfhtmlhead text='<script type="text/javascript" src="js/ajax.js"></script>'>

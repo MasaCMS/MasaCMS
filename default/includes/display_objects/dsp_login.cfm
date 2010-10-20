@@ -59,7 +59,7 @@ to your own modified versions of Mura CMS.
 		</cfif>
 	</cfif>
 	<cfif not request.isBlocked>
-	<form id="login" name="frmLogin" method="post" action="?nocache=1" onsubmit="return validate(this); novalidate="novalidate"">
+	<form id="login" name="frmLogin" method="post" action="?nocache=1" onsubmit="return validate(this);" novalidate="novalidate">
 		<fieldset>
 			<ol>
 				<li class="req">
@@ -90,7 +90,7 @@ to your own modified versions of Mura CMS.
 			<cfset msg2=application.userManager.sendLoginByEmail('#request.email#', '#request.siteid#','#urlencodedformat("#request.returnURL#")#')>
 	</cfif>
 	
-	<form name="form2" method="post" action="?nocache=1" id="sendLogin" onsubmit="return validate(this);">
+	<form name="form2" method="post" action="?nocache=1" id="sendLogin" onsubmit="return validate(this);" novalidate="novalidate">
 		<fieldset>
 			<legend>#rbFactory.getKey('user.forgetusernameorpassword')#</legend>
 			<p>#rbFactory.getKey('user.forgotloginmessage')#</p>

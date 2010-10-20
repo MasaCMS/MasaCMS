@@ -409,4 +409,8 @@ to your own modified versions of Mura CMS.
 </cfif>
 </cffunction>
 
+<cffunction name="isValidEmailFormat" output="false">
+<cfargument name="email">
+<cfreturn REFindNoCase("^[^@%*<>' ]+@[^@%*<>' ]{1,255}\.[^@%*<>' ]{2,5}", trim(arguments.email)) neq 0>
+</cffunction>
 </cfcomponent>

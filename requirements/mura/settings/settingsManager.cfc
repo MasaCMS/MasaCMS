@@ -48,15 +48,12 @@ to your own modified versions of Mura CMS.
 <cfargument name="settingsGateway" type="any" required="yes"/>
 <cfargument name="settingsDAO" type="any" required="yes"/>
 <cfargument name="clusterManager" type="any" required="yes"/>
-
 		<cfset variables.configBean=arguments.configBean />
 		<cfset variables.utility=arguments.utility />
 		<cfset variables.Gateway=arguments.settingsGateway />
 		<cfset variables.DAO=arguments.settingsDAO />
-		<cfset variables.clusterManager=arguments.clusterManager />
-		
+		<cfset variables.clusterManager=arguments.clusterManager />	
 		<cfset setSites() />
-
 <cfreturn this />
 </cffunction>
 

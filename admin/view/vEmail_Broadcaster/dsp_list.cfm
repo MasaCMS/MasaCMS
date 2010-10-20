@@ -72,7 +72,7 @@ to your own modified versions of Mura CMS.
 
 	  <div id="filterView" >
 	  <h3>#application.rbFactory.getKeyValue(session.rb,"email.emails")#</h3></cfoutput>
-<form action="index.cfm?fuseaction=cEmail.list&siteid=<cfoutput>#attributes.siteid#</cfoutput>" method="post" name="form1" id="advancedSearch" class="clearfix">
+<form novalidate="novalidate" action="index.cfm?fuseaction=cEmail.list&siteid=<cfoutput>#attributes.siteid#</cfoutput>" method="post" name="form1" id="advancedSearch" class="clearfix">
 <dl class="filter">
 <dt><cfoutput>#application.rbFactory.getKeyValue(session.rb,"email.filterby")#:</dt>
 <dd><select name="groupID">

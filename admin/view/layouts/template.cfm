@@ -145,44 +145,30 @@ to your own modified versions of Mura CMS.
 <script src="#application.configBean.getContext()#/admin/js/prototype.js" type="text/javascript" language="Javascript"></script>
 </cfif>
 <script src="#application.configBean.getContext()#/admin/js/admin.js?coreversion=#application.coreversion#" type="text/javascript" language="Javascript"></script>
+<cfif application.configBean.getValue("htmlEditorType") eq "fckeditor">
 <script type="text/javascript" src="#application.configBean.getContext()#/wysiwyg/fckeditor.js"></script>
+<cfelse>
+<script type="text/javascript" src="#application.configBean.getContext()#/tasks/widgets/ckeditor/ckeditor.js"></script>
+<script type="text/javascript" src="#application.configBean.getContext()#/tasks/widgets/ckeditor/adapters/jquery.js"></script>
+<script type="text/javascript" src="#application.configBean.getContext()#/tasks/widgets/ckfinder/ckfinder.js"></script>
+</cfif>
+<script type="text/javascript">
+var htmlEditorType='#application.configBean.getValue("htmlEditorType")#';
+var context='#application.configBean.getContext()#';
+var themepath='#application.settingsManager.getSite(attributes.siteID).getThemeAssetPath()#';
+var rb='#lcase(session.rb)#';
+var sessionTimeout=#evaluate("application.configBean.getValue('sessionTimeout') * 60")#;
+</script>
 #session.dateKey#
 <script type="text/javascript">
-	jQuery(document).ready(function(){setDatePickers(".datepicker",dtLocale);setTabs(".tabs",#attributes.activeTab#);setHTMLEditors('#application.configBean.getContext()#','#application.settingsManager.getSite(attributes.siteID).getThemeAssetPath()#');setAccordions(".accordion",#attributes.activePanel#)});
+	jQuery(document).ready(function(){setDatePickers(".datepicker",dtLocale);setTabs(".tabs",#attributes.activeTab#);setHTMLEditors();setAccordions(".accordion",#attributes.activePanel#)});
 </script>
 #fusebox.ajax#
-
 <cfif myfusebox.originalcircuit neq "cLogin">
 <script language="JavaScript">
-
-	var start=new Date();
-	start=Date.parse(start)/1000;
-	var counts=10800;
-	function CountDown(){
-		var now=new Date();
-		now=Date.parse(now)/1000;
-		var x=parseInt(counts-(now-start),10);
-		var hours = Math.floor(x/3600); 
-		var minutes = Math.floor((x-(hours*3600))/60); 
-		var seconds = x-((hours*3600)+(minutes*60));
-		minutes=(minutes <= 9)?'0' + minutes:minutes;
-		seconds=(seconds <= 9)?'0' + seconds:seconds;
-		
-		if(document.getElementById('clock').innerHTML != undefined ){document.getElementById('clock').innerHTML = hours  + ':' + minutes + ':' + seconds ;}
-	
-		if(x>0){
-			timerID=setTimeout("CountDown()", 100)
-		}else{
-		
-			location.href="#application.configBean.getContext()#/admin/index.cfm?fuseaction=cLogin.logout"
-			
-		}
-	}
-
 if (top.location != self.location) {
     top.location.replace(self.location)
 }
-//  End -->
 </script>
 
 </cfif>
@@ -231,7 +217,7 @@ Never
 <script type="text/javascript" language="javascript">
 stripe('stripe');
 </script>
-<cfif  myfusebox.originalcircuit neq 'cLogin'>
+<cfif  myfusebox.originalcircuit neq 'cLogin' and yesNoFormat(application.configBean.getValue("sessionTimeout"))>
 <script type="text/javascript" language="javascript">
 window.setTimeout('CountDown()',100);
 </script>

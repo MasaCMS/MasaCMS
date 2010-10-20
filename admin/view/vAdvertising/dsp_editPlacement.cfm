@@ -53,7 +53,7 @@ to your own modified versions of Mura CMS.
 <h3>#application.rbFactory.getKeyValue(session.rb,'advertising.placementinformation')#</h3>
 #application.utility.displayErrors(request.placementBean.getErrors())#
 
-<form action="index.cfm?fuseaction=cAdvertising.updatePlacement&siteid=#URLEncodedFormat(attributes.siteid)#&userid=#URLEncodedFormat(attributes.userid)#&campaignid=#URLEncodedFormat(attributes.campaignid)#" method="post" name="form1" onsubmit="return validate(this);">
+<form novalidate="novalidate" action="index.cfm?fuseaction=cAdvertising.updatePlacement&siteid=#URLEncodedFormat(attributes.siteid)#&userid=#URLEncodedFormat(attributes.userid)#&campaignid=#URLEncodedFormat(attributes.campaignid)#" method="post" name="form1" onsubmit="return validate(this);">
 <dl class="oneColumn">
 <dt>#application.rbFactory.getKeyValue(session.rb,'advertising.adzone')# (<em>#application.rbFactory.getKeyValue(session.rb,'advertising.dimensionscreativetype')#</em>)</dt>
 <dd><select name="adZoneID">

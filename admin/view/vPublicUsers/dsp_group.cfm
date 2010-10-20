@@ -60,7 +60,7 @@ select * from rsSubTypes where subType <> 'Default'
 
 #application.utility.displayErrors(request.userBean.getErrors())#
 
-<form action="index.cfm?fuseaction=cPublicUsers.update&userid=#URLEncodedFormat(attributes.userid)#" enctype="multipart/form-data" method="post" name="form1" class="formclass" onsubmit="return validate(this);">
+<form novalidate="novalidate" action="index.cfm?fuseaction=cPublicUsers.update&userid=#URLEncodedFormat(attributes.userid)#" enctype="multipart/form-data" method="post" name="form1" class="formclass" onsubmit="return validate(this);">
 <cfif rsSubTypes.recordcount>
 <div class="tabs initActiveTab">
 <ul>

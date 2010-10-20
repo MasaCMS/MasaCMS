@@ -41,10 +41,10 @@ the GNU General Public License version 2  without this exception.  You may, if y
 to your own modified versions of Mura CMS.
 --->
 <cfcomponent extends="mura.cfobject">
-<!--- 
-<cffunction name="onPageBodyRender" output="true" returntype="any">
-<cfargument name="event">
-<cfreturn "Hello World">
+<!---	
+<cffunction name="onPageDefaultBodyRender" output="true" returntype="void">
+<cfargument name="$">
+	<cfoutput>#$.setDynamicContent($.content("body"))#</cfoutput>
 </cffunction>
 --->
 </cfcomponent>

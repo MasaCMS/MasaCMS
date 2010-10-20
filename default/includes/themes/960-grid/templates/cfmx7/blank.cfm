@@ -1,0 +1,1 @@
+<cfoutput>#renderer.dspBody(request.contentBean.getbody(),'',0)#</cfoutput>

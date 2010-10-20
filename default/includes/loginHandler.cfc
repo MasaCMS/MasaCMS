@@ -41,6 +41,9 @@ the GNU General Public License version 2  without this exception.  You may, if y
 to your own modified versions of Mura CMS.
 --->
 
+<!--- 
+DEPRECATED in favor of using Mura event model.
+--->
 <cfcomponent>
 
 <cfset variables.LDAP_server= '' />

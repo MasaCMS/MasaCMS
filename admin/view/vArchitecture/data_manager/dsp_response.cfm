@@ -64,7 +64,7 @@ to your own modified versions of Mura CMS.
 <cfif request.rsDataInfo.CountEntered>
 <cfparam name="attributes.columns" default="fixed" />
 <cfoutput>
-<form action="index.cfm" method="get" name="download" onsubmit="return validate(this);">
+<form novalidate="novalidate" action="index.cfm" method="get" name="download" onsubmit="return validate(this);">
 <dl class="oneColumn">
 <dt>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.from')#</dt>
 <dd><input type="text" class="text" name="date1"  validate="date" message="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.tovalidate')#" required="true" value="#LSDateFormat(attributes.date1,session.dateKeyFormat)#"><input class="calendar" type="image" src="images/icons/cal_24.png" width="14" height="14" onclick="window.open('date_picker/index.cfm?form=download&field=date1&format=MDY','refWin','toolbar=no,location=no,directories=no,status=no,menubar=no,resizable=yes,copyhistory=no,scrollbars=no,width=190,height=220,top=250,left=250');return false;">
@@ -97,7 +97,6 @@ to your own modified versions of Mura CMS.
 </dd>
 </dl>
 
-<br/>
 <input type="hidden" name="fuseaction" value="cArch.datamanager" />
 <input type="hidden" name="contentid" value="#HTMLEditFormat(attributes.contentid)#" />
 <input type="hidden" name="siteid" value="#HTMLEditFormat(session.siteid)#" />
@@ -110,12 +109,12 @@ to your own modified versions of Mura CMS.
 <cfif isdefined ('attributes.minute1')>
 <cfsilent>
 <cfset rsData=application.dataCollectionManager.getData(attributes)/>
-</cfsilent><br/><br/>
+</cfsilent>
 <cfif rsData.recordcount>
 <table class="stripe">
 <tr>
 <th>&nbsp;</th>
-<th <cfoutput>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.datetimeentered')#</cfoutput></th>
+<th><cfoutput>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.datetimeentered')#</cfoutput></th>
 <cfloop list="#attributes.fieldnames#" index="f">
 <th><cfoutput>#f#</cfoutput></th>
 </cfloop>
@@ -124,11 +123,26 @@ to your own modified versions of Mura CMS.
 <cfoutput query="rsData">
 <tr>
 <cfsilent><cfwddx action="wddx2cfml" input="#rsdata.data#" output="info"></cfsilent>
-<td class="administration"><ul class="two"><li class="edit"><a href="index.cfm?fuseaction=cArch.datamanager&contentid=#URLEncodedFormat(attributes.contentid)#&siteid=#URLEncodedFormat(attributes.siteid)#&date1=#attributes.date1#&hour1=#attributes.hour1#&minute1=#attributes.minute1#&date2=#attributes.date2#&hour2=#attributes.hour2#&minute2=#attributes.minute2#&responseid=#rsdata.responseid#&action=edit&moduleid=#attributes.moduleid#&sortBy=#urlEncodedFormat(attributes.sortBy)#&sortDirection=#attributes.sortDirection#&filterBy=#urlEncodedFormat(attributes.filterBy)#&keywords=#urlEncodedFormat(attributes.keywords)#"><img src="images/icons/edit_24.png" width="14" height="14" border="0" />#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.edit')#</a></li><li class="delete"><a href="index.cfm?fuseaction=cArch.datamanager&contentid=#URLEncodedFormat(attributes.contentid)#&siteid=#URLEncodedFormat(attributes.siteid)#&date1=#attributes.date1#&hour1=#attributes.hour1#&minute1=#attributes.minute1#&date2=#attributes.date2#&hour2=#attributes.hour2#&minute2=#attributes.minute2#&responseid=#rsdata.responseid#&action=delete&moduleid=#attributes.moduleid#&sortBy=#urlEncodedFormat(attributes.sortBy)#&sortDirection=#attributes.sortDirection#&filterBy=#urlEncodedFormat(attributes.filterBy)#&keywords=#urlEncodedFormat(attributes.keywords)#" onclick="return confirmDialog('#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.deleteresponseconfirm'))#',this.href)"><img src="images/icons/remov_24.png" width="14" height="14" border="0" />#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.deleteresponse')#</a></li></ul></td>
+<td class="administration">
+	<ul class="two">
+		<li class="edit">
+			<a href="index.cfm?fuseaction=cArch.datamanager&contentid=#URLEncodedFormat(attributes.contentid)#&siteid=#URLEncodedFormat(attributes.siteid)#&date1=#attributes.date1#&hour1=#attributes.hour1#&minute1=#attributes.minute1#&date2=#attributes.date2#&hour2=#attributes.hour2#&minute2=#attributes.minute2#&responseid=#rsdata.responseid#&action=edit&moduleid=#attributes.moduleid#&sortBy=#urlEncodedFormat(attributes.sortBy)#&sortDirection=#attributes.sortDirection#&filterBy=#urlEncodedFormat(attributes.filterBy)#&keywords=#urlEncodedFormat(attributes.keywords)#">
+				<img src="images/icons/edit_24.png" width="14" height="14" border="0" />
+				#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.edit')#
+			</a>
+		</li>
+		<li class="delete">
+			<a href="index.cfm?fuseaction=cArch.datamanager&contentid=#URLEncodedFormat(attributes.contentid)#&siteid=#URLEncodedFormat(attributes.siteid)#&date1=#attributes.date1#&hour1=#attributes.hour1#&minute1=#attributes.minute1#&date2=#attributes.date2#&hour2=#attributes.hour2#&minute2=#attributes.minute2#&responseid=#rsdata.responseid#&action=delete&moduleid=#attributes.moduleid#&sortBy=#urlEncodedFormat(attributes.sortBy)#&sortDirection=#attributes.sortDirection#&filterBy=#urlEncodedFormat(attributes.filterBy)#&keywords=#urlEncodedFormat(attributes.keywords)#" onclick="return confirmDialog('#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.deleteresponseconfirm'))#',this.href)">
+				<img src="images/icons/remov_24.png" width="14" height="14" border="0" />
+				#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.deleteresponse')#
+			</a>
+		</li>
+	</ul>
+</td>
 <td class="dateSubmitted">#lsdateformat(rsdata.entered,session.dateKeyFormat)# #lstimeformat(rsdata.entered,"short")#</td>
 <cfloop list="#attributes.fieldnames#" index="f">
 	<cftry><cfset fValue=info['#f#']><cfcatch><cfset fValue=""></cfcatch></cftry>
-<td><cfif findNoCase('attachment',f) and isValid("UUID",fvalue)><a  href="javascript:preview('http://#application.settingsManager.getSite(attributes.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()#/tasks/render/file/?fileID=#fvalue#');">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.viewattachment')#</a><cfelse>#application.contentRenderer.setParagraphs(htmleditformat(fvalue))#</cfif></td>
+<td class="mForm-data"><cfif findNoCase('attachment',f) and isValid("UUID",fvalue)><a  href="javascript:preview('http://#application.settingsManager.getSite(attributes.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()#/tasks/render/file/?fileID=#fvalue#');">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.viewattachment')#</a><cfelse>#application.contentRenderer.setParagraphs(htmleditformat(fvalue))#</cfif></td>
 </cfloop>
 
 </tr>

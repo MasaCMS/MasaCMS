@@ -6,23 +6,23 @@ the Free Software Foundation, Version 2 of the License.
 
 Mura CMS is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. ï¿½See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-along with Mura CMS.  If not, see <http://www.gnu.org/licenses/>.
+along with Mura CMS. ï¿½If not, see <http://www.gnu.org/licenses/>.
 
 Linking Mura CMS statically or dynamically with other modules constitutes
 the preparation of a derivative work based on Mura CMS. Thus, the terms and 	
-conditions of the GNU General Public License version 2 (“GPL”) cover the entire combined work.
+conditions of the GNU General Public License version 2 (ï¿½GPLï¿½) cover the entire combined work.
 
 However, as a special exception, the copyright holders of Mura CMS grant you permission
 to combine Mura CMS with programs or libraries that are released under the GNU Lesser General Public License version 2.1.
 
-In addition, as a special exception,  the copyright holders of Mura CMS grant you permission
-to combine Mura CMS  with independent software modules that communicate with Mura CMS solely
+In addition, as a special exception, ï¿½the copyright holders of Mura CMS grant you permission
+to combine Mura CMS ï¿½with independent software modules that communicate with Mura CMS solely
 through modules packaged as Mura CMS plugins and deployed through the Mura CMS plugin installation API,
-provided that these modules (a) may only modify the  /trunk/www/plugins/ directory through the Mura CMS
+provided that these modules (a) may only modify the ï¿½/trunk/www/plugins/ directory through the Mura CMS
 plugin installation API, (b) must not alter any default objects in the Mura CMS database
 and (c) must not alter any files in the following directories except in cases where the code contains
 a separately distributed license.
@@ -37,7 +37,7 @@ the source code of that other code when and as the GNU GPL requires distribution
 
 For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception
 for your modified version; it is your choice whether to do so, or to make such modified version available under
-the GNU General Public License version 2  without this exception.  You may, if you choose, apply this exception
+the GNU General Public License version 2 ï¿½without this exception. ï¿½You may, if you choose, apply this exception
 to your own modified versions of Mura CMS.
 --->
 <cfcomponent extends="mura.cfobject" output="false">
@@ -50,6 +50,7 @@ to your own modified versions of Mura CMS.
 <cfargument name="utility" type="any" required="yes"/>
 <cfargument name="fileManager" type="any" required="yes"/>
 <cfargument name="pluginManager" type="any" required="yes"/>
+<cfargument name="trashManager" type="any" required="yes"/>
 
 	<cfset variables.configBean=arguments.configBean />
 	<cfset variables.userDAO=arguments.userDAO />
@@ -59,6 +60,7 @@ to your own modified versions of Mura CMS.
 	<cfset variables.ClassExtensionManager=variables.configBean.getClassExtensionManager() />
 	<cfset variables.fileManager=arguments.fileManager />
 	<cfset variables.pluginManager=arguments.pluginManager />
+	<cfset variables.trashManager=arguments.trashManager />
 	
 	<cfset variables.userDAO.setUserManager(this)>
 	
@@ -131,7 +133,7 @@ to your own modified versions of Mura CMS.
 	<cfset var rs="">
 	
 	<cfif isObject(arguments.data)>
-		<cfif getMetaData(arguments.data).name eq "mura.user.userBean">
+		<cfif listLast(getMetaData(arguments.data).name,".") eq "userBean">
 		<cfset arguments.data=arguments.data.getAllValues()>
 		<cfelse>
 			<cfthrow type="custom" message="The attribute 'DATA' is not of type 'mura.user.userBean'">
@@ -295,14 +297,14 @@ to your own modified versions of Mura CMS.
 		<cfthrow type="custom" message="The attribute 'SITEID' is required when saving a user.">
 	</cfif>
 	
-	<!--- <cfif userBean.getType() eq 2> --->
-	<cfset addressBean=application.serviceFactory.getBean("addressBean") />
-	<cfset addressBean.set(arguments.data) />
-	<cfset addressBean.setAddressID(createuuid()) />
-	<cfset addressBean.setUserID(userBean.getUserID()) />
-	<cfset addressBean.setIsPrimary(1) />
-	<cfset addressBean.setAddressName('Primary') />
-	<!--- </cfif> --->
+	<cfif not structKeyExists(arguments.data,"fromMuraTrash")>
+		<cfset addressBean=application.serviceFactory.getBean("addressBean") />
+		<cfset addressBean.set(arguments.data) />
+		<cfset addressBean.setAddressID(createuuid()) />
+		<cfset addressBean.setUserID(userBean.getUserID()) />
+		<cfset addressBean.setIsPrimary(1) />
+		<cfset addressBean.setAddressName('Primary') />
+	</cfif>
 	
 	<cfif userBean.getPassword() eq ''>
 	<cfset userBean.setPassword(variables.userUtility.getRandomPassword(6,"Alpha","no"))/>
@@ -339,7 +341,10 @@ to your own modified versions of Mura CMS.
 			<cfset variables.globalUtility.logEvent("UserID:#userBean.getUserID()# Type:#userBean.getType()# User:#userBean.getFName()# #userBean.getFName()# Group:#userBean.getGroupName()# was created","mura-users","Information",true) />
 			<cfset setLastUpdateInfo(userBean) />
 			<cfset variables.userDAO.create(userBean) />
-			<cfset variables.userDAO.createAddress(addressBean) />
+			<cfset variables.trashManager.takeOut(userBean)>
+			<cfif isObject(addressBean)>
+				<cfset variables.userDAO.createAddress(addressBean) />
+			</cfif>
 		</cfif>
 		
 		<cfset userBean.purgeExtendedData()>
@@ -377,6 +382,7 @@ to your own modified versions of Mura CMS.
 	
 	<cfset var userBean=read(arguments.userid) />
 	<cfset var pluginEvent = createObject("component","mura.event").init(arguments) />
+	<cfset var addresses="">
 	<cfset pluginEvent.setValue("siteID", userBean.getSiteID())>
 	
 	<cfif  userBean.getType() eq 1>	
@@ -391,6 +397,7 @@ to your own modified versions of Mura CMS.
 		<cfset variables.pluginManager.announceEvent("onBeforeUser#userBean.getSubType()#Delete",pluginEvent)>		
 	</cfif>
 	
+	<cfset variables.trashManager.throwIn(userBean)>
 	<cfset variables.globalUtility.logEvent("UserID:#arguments.userid# Type:#userBean.getType()# User:#userBean.getFName()# #userBean.getFName()# Group:#userBean.getGroupName()# was deleted","mura-users","Information",true) />
 	<cfif len(userBean.getPhotoFileID())>
 		<cfset variables.fileManager.deleteVersion(userBean.getPhotoFileID()) />
@@ -403,6 +410,7 @@ to your own modified versions of Mura CMS.
 		<cfset variables.pluginManager.announceEvent("onAfterUserDelete",pluginEvent)>
 		<cfset variables.pluginManager.announceEvent("onAfterUser#userBean.getSubType()#Delete",pluginEvent)>		
 	</cfif>
+	
 	<cfset variables.userDAO.delete(arguments.userid,arguments.type) />
 	
 </cffunction>
@@ -560,7 +568,7 @@ to your own modified versions of Mura CMS.
 			<cfset variables.ClassExtensionManager.saveExtendedData(addressBean.getAddressID(),arguments.data,'tclassextenddatauseractivity')/>
 		</cfif>
 	</cfif>
-	
+	<cfset variables.trashManager.takeOut(addressBean)>
 	<cfreturn addressBean />
 </cffunction>
 
@@ -606,8 +614,11 @@ to your own modified versions of Mura CMS.
 
 <cffunction name="deleteAddress" access="public" returntype="void" output="false">
 	<cfargument name="addressid" type="string" default=""/>			
-	
-	<cfset variables.userDAO.deleteAddress(arguments.addressid) />
+	<cfset var addressBean=variables.userDAO.readAddress(arguments.addressID) />
+	<cfif not addressBean.getIsNew()>
+		<cfset variables.trashManager.throwIn(addressBean)>
+		<cfset variables.userDAO.deleteAddress(arguments.addressid) />
+	</cfif>
 	
 </cffunction>
 

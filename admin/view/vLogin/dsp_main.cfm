@@ -56,7 +56,7 @@ to your own modified versions of Mura CMS.
 </cfif>
 
 <cfif not isBlocked>
-<form id="loginForm" name="frmLogin" method="post" action="index.cfm">
+<form novalidate="novalidate" id="loginForm" name="frmLogin" method="post" action="index.cfm">
 <dl>
 <dt>#application.rbFactory.getKeyValue(session.rb,'login.username')#</dt>
 <dd><input id="username" name="username" type="text" class="text"></dd>
@@ -79,7 +79,7 @@ to your own modified versions of Mura CMS.
 <input type="hidden" name="fuseaction" value="cLogin.login">
  </form>
 
-	<form id="sendLogin"  class="separate" name="sendLogin" method="post" action="index.cfm?fuseaction=cLogin.main" onsubmit="javascript:if(document.sendLogin.email.value !=''){return true;}else{return false;}">
+	<form novalidate="novalidate" id="sendLogin"  class="separate" name="sendLogin" method="post" action="index.cfm?fuseaction=cLogin.main" onsubmit="javascript:if(document.sendLogin.email.value !=''){return true;}else{return false;}">
 	<dl>
 	<dt>#application.rbFactory.getKeyValue(session.rb,'login.forgetpassword')#</dt>
 	<dd><cfif attributes.status eq 'sendLogin'>

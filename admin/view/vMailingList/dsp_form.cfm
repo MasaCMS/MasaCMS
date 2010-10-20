@@ -42,7 +42,7 @@ to your own modified versions of Mura CMS.
 --->
 <cfset tabLabelList="#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.basic')#,#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.usagereport')#">
 <cfset tabList="tabBasic,tabUsagereport">
-<cfoutput><form action="index.cfm?fuseaction=cMailingList.update" method="post" enctype="multipart/form-data" name="form1" onsubmit="return validate(this);">
+<cfoutput><form novalidate="novalidate" action="index.cfm?fuseaction=cMailingList.update" method="post" enctype="multipart/form-data" name="form1" onsubmit="return validate(this);">
 <h2>#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager')#</h2>
 <cfif attributes.mlid neq ''><ul id="navTask">
 <li><a href="index.cfm?fuseaction=cMailingList.listmembers&mlid=#attributes.mlid#&siteid=#URLEncodedFormat(attributes.siteid)#">#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.vieweditmembers')#</a></li>

@@ -32,15 +32,15 @@
 		<cfargument name="key" type="string" required="true" />
 		<cfargument name="persist" default="true" required="true" />
 		<cfset var hashKey = getHashKey( arguments.key ) />
-		<cfset var wrappedClassIntance="">
+		<cfset var wrappedClassinstance="">
 		<!--- if the key cannot be found and context is passed then push it in --->
 		<cfif NOT arguments.persist or NOT has( arguments.key )>
 			<!--- create object --->
-			<cfset wrappedClassIntance=wrapHandler(createObject("component",getComponentPath(arguments.key)).init())>
+			<cfset wrappedClassinstance=wrapHandler(createObject("component",getComponentPath(arguments.key)).init())>
 			<cfif arguments.persist>
-				<cfset super.set( arguments.key, wrappedClassIntance) />
+				<cfset super.set( arguments.key, wrappedClassinstance) />
 			</cfif>
-			<cfreturn wrappedClassIntance>
+			<cfreturn wrappedClassinstance>
 		</cfif>
 		
 		<!--- if the key cannot be found then throw an error --->

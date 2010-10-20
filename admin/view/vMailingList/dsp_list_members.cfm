@@ -48,7 +48,7 @@ to your own modified versions of Mura CMS.
 <li><a href="index.cfm?fuseaction=cMailingList.download&mlid=#attributes.mlid#&siteid=#URLEncodedFormat(attributes.siteid)#">#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.downloadmembers')#</a></li>
 </ul>
 
-<form action="index.cfm?fuseaction=cMailingList.updatemember" name="form1" method="post" onsubmit="return validate(this);">
+<form novalidate="novalidate" action="index.cfm?fuseaction=cMailingList.updatemember" name="form1" method="post" onsubmit="return validate(this);">
 <dl class="oneColumn">
 <dt class="first">#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.email')#</dt>
 <dd><input type=text name="email" class="text" required="true" message="#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.emailrequired')#"></dd>

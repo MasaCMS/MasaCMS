@@ -6,23 +6,23 @@ the Free Software Foundation, Version 2 of the License.
 
 Mura CMS is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. ï¿½See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-along with Mura CMS.  If not, see <http://www.gnu.org/licenses/>.
+along with Mura CMS. ï¿½If not, see <http://www.gnu.org/licenses/>.
 
 Linking Mura CMS statically or dynamically with other modules constitutes
 the preparation of a derivative work based on Mura CMS. Thus, the terms and 	
-conditions of the GNU General Public License version 2 (“GPL”) cover the entire combined work.
+conditions of the GNU General Public License version 2 (ï¿½GPLï¿½) cover the entire combined work.
 
 However, as a special exception, the copyright holders of Mura CMS grant you permission
 to combine Mura CMS with programs or libraries that are released under the GNU Lesser General Public License version 2.1.
 
-In addition, as a special exception,  the copyright holders of Mura CMS grant you permission
-to combine Mura CMS  with independent software modules that communicate with Mura CMS solely
+In addition, as a special exception, ï¿½the copyright holders of Mura CMS grant you permission
+to combine Mura CMS ï¿½with independent software modules that communicate with Mura CMS solely
 through modules packaged as Mura CMS plugins and deployed through the Mura CMS plugin installation API,
-provided that these modules (a) may only modify the  /trunk/www/plugins/ directory through the Mura CMS
+provided that these modules (a) may only modify the ï¿½/trunk/www/plugins/ directory through the Mura CMS
 plugin installation API, (b) must not alter any default objects in the Mura CMS database
 and (c) must not alter any files in the following directories except in cases where the code contains
 a separately distributed license.
@@ -37,7 +37,7 @@ the source code of that other code when and as the GNU GPL requires distribution
 
 For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception
 for your modified version; it is your choice whether to do so, or to make such modified version available under
-the GNU General Public License version 2  without this exception.  You may, if you choose, apply this exception
+the GNU General Public License version 2 ï¿½without this exception. ï¿½You may, if you choose, apply this exception
 to your own modified versions of Mura CMS.
 --->
 <cfcomponent extends="mura.cfobject" output="false">
@@ -48,12 +48,14 @@ to your own modified versions of Mura CMS.
 <cfargument name="emailUtility" type="any" required="yes"/>
 <cfargument name="settingsManager" type="any" required="yes"/>
 <cfargument name="utility" type="any" required="yes"/>
+<cfargument name="trashManager" type="any" required="yes"/>
 		<cfset variables.configBean=arguments.configBean />
 		<cfset variables.emailDAO=arguments.emailDAO />
 		<cfset variables.emailGateway=arguments.emailGateway />
 		<cfset variables.emailUtility=arguments.emailUtility />
 		<cfset variables.settingsManager=arguments.settingsManager />
 		<cfset variables.globalUtility=arguments.utility />
+		<cfset variables.trashManager=arguments.trashManager />
 	<cfreturn this />	
 </cffunction>
 
@@ -92,6 +94,38 @@ to your own modified versions of Mura CMS.
 		
 		<cfreturn rs />
 	</cffunction>
+
+<cffunction name="save" returntype="any" access="public" output="false">
+	<cfargument name="data" />
+	<cfset var rs="">
+	<cfset var emailBean="">
+	
+	<cfif isObject(arguments.data)>
+		<cfset arguments.data=arguments.data.getAllValues()>
+	</cfif>
+	
+	<cfquery name="rs" datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+		select emailID from temails where emailID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.data.emailID#">
+	</cfquery>
+	
+	<cfif structKeyExists(arguments.data,"fromMuraTrash")>
+		<cfquery name="rs" datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+		update temails set isDeleted=0 where emailID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.data.emailID#">
+		</cfquery>
+		<cfset emailBean=read(arguments.data.emailID)>
+		<cfset emailBean.setValue("fromMuraTrash",true)>
+		<cfset variables.trashManager.takeOut(emailBean)>
+		<cfreturn emailBean>
+	</cfif>
+	
+	<cfif rs.recordcount>
+		<cfset arguments.data.action="update">
+	<cfelse>
+		<cfset arguments.data.action="add">
+	</cfif>
+	
+	<cfreturn update(arguments.data) />
+</cffunction>
 	
 <cffunction name="update" access="public" returntype="void" output="false">
 	<cfargument name="args" type="struct"/>	
@@ -130,6 +164,7 @@ to your own modified versions of Mura CMS.
 	
 	<cfcase value="Delete">
 		<cfset emailBean=read(data.emailid) />
+		<cfset variables.trashManager.throwIn(emailBean)>
 		<cfset variables.globalUtility.logEvent("EmailID:#data.emailid# Subject:#emailBean.getSubject()# was deleted","mura-email","Information",true) />
 		<cfset variables.emailDAO.delete(data.emailid) />
 	</cfcase>

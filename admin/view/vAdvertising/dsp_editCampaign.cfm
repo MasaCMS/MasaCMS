@@ -50,7 +50,7 @@ to your own modified versions of Mura CMS.
 
 <h3>#application.rbFactory.getKeyValue(session.rb,'advertising.campaigninformation')#</h3>
 #application.utility.displayErrors(request.campaignBean.getErrors())#
-<form action="index.cfm?fuseaction=cAdvertising.updateCampaign&siteid=#URLEncodedFormat(attributes.siteid)#" name="form1"  method="post" onsubmit="return validate(this);">
+<form novalidate="novalidate" action="index.cfm?fuseaction=cAdvertising.updateCampaign&siteid=#URLEncodedFormat(attributes.siteid)#" name="form1"  method="post" onsubmit="return validate(this);">
 <dl class="oneColumn">
 <dt class="first">#application.rbFactory.getKeyValue(session.rb,'advertising.name')#</dt>
 <dd><input name="name" class="text" required="true" message="The 'Name' field is required." value="#HTMLEditFormat(request.campaignBean.getName())#" maxlength="50"></dd>

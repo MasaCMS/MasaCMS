@@ -1044,8 +1044,8 @@ to your own modified versions of Mura CMS.
 			<cfset variables.instance.RemotePubDate = arguments.RemotePubDate />
 		</cfcatch>
 		</cftry>
-		<cfelse>
-		<cfset variables.instance.RemotePubDate = ""/>
+	<cfelse>
+		<cfset variables.instance.RemotePubDate = arguments.RemotePubDate/>
 	</cfif>
 	<cfreturn this>
   </cffunction>

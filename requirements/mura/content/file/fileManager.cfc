@@ -78,8 +78,9 @@ to your own modified versions of Mura CMS.
 		<cfargument name="fileExt" type="string" required="yes"/>
 		<cfargument name="fileObjSmall" type="any" required="yes"/>
 		<cfargument name="fileObjMedium" type="any" required="yes"/>
+		<cfargument name="fileID" type="any" required="yes" default="#createUUID()#"/>
 	
-		<cfreturn variables.fileDAO.create(arguments.fileObj,arguments.contentid,arguments.siteid,arguments.filename,arguments.contentType,arguments.contentSubType,arguments.fileSize,arguments.moduleID,arguments.fileExt,arguments.fileObjSmall,arguments.fileObjMedium) />
+		<cfreturn variables.fileDAO.create(arguments.fileObj,arguments.contentid,arguments.siteid,arguments.filename,arguments.contentType,arguments.contentSubType,arguments.fileSize,arguments.moduleID,arguments.fileExt,arguments.fileObjSmall,arguments.fileObjMedium,arguments.fileID) />
 	
 </cffunction>
 
@@ -377,7 +378,7 @@ to your own modified versions of Mura CMS.
 	<cfset var local = structNew() />
 	
 	<!--- create a URLconnection to the file to emulate uploading --->
-	<cfset local.filePath=replace(arguments.filePath,"\","","all")>
+	<cfset local.filePath=replace(arguments.filePath,"\","/","all")>
 	<cfset local.results=structNew()>
 	
 	<cfif not find("://",local.filePath) or  find("file://",local.filePath)>
@@ -386,7 +387,7 @@ to your own modified versions of Mura CMS.
 		<cfset local.connection.connect()>
 		<cfset local.results.contentType=listFirst(local.connection.getContentType() ,"/")>
 		<cfset local.results.contentSubType=listLast(local.connection.getContentType() ,"/")>
-		<cfset local.results.charSet=local.connection.getContentEncoding()>
+		<!---<cfset local.results.charSet=local.connection.getContentEncoding()>--->
 		<cfset local.results.fileSize=local.connection.getContentLength()>
 		<cffile action="readBinary" file="#local.filePath#" variable="local.fileContent">
 	<cfelse>
@@ -394,13 +395,16 @@ to your own modified versions of Mura CMS.
 			<cfhttp url="#local.filePath#" result="local.remoteGet" getasbinary="yes" 
 			proxyUser="#variables.configBean.getProxyUser()#" proxyPassword="#variables.configBean.getProxyPassword()#"
 			proxyServer="#variables.configBean.getProxyServer()#" proxyPort="#variables.configBean.getProxyPort()#">
+				<cfhttpparam type="header" name="accept-encoding" value="no-compression" />
+			</cfhttp>
 		<cfelse>
 			<cfhttp url="#local.filePath#" result="local.remoteGet" getasbinary="yes">
+				<cfhttpparam type="header" name="accept-encoding" value="no-compression" />
+			</cfhttp>
 		</cfif>
 
 		<cfset local.results.contentType=listFirst(local.remoteGet.mimeType ,"/")>
 		<cfset local.results.contentSubType=listLast(local.remoteGet.mimeType ,"/")>
-		<cfset local.results.charSet=local.remoteGet.charSet>
 		<cfset local.results.fileSize=len(local.remoteGet.fileContent)>
 		<cfset local.fileContent=local.remoteGet.fileContent>
 			
@@ -408,11 +412,15 @@ to your own modified versions of Mura CMS.
 
 	<cfset local.results.serverFileExt=listLast(local.filePath ,".")>
 	<cfset local.results.serverDirectory=arguments.destinationDir>
-	<cfset local.results.serverFile=listLast(local.filePath ,"/")>
-	<cfset local.results.clientFile=listLast(local.filePath ,"/")>
+	<cfset local.results.serverFile=replace(listLast(local.filePath ,"/")," ","-","all")>
+	<cfset local.results.clientFile=local.results.serverFile>
 	<cfset local.results.serverFileName=listFirst(local.results.serverFile ,".")>
 	<cfset local.results.clientFileName=listFirst(local.results.clientFile ,".")>
 	<cfset local.results.clientFileExt=listLast(local.filePath ,".")>
+	
+	<cfif listFind("/,\",right(local.results.serverDirectory,1))>
+		<cfset local.results.serverDirectory=left(local.results.serverDirectory, len(local.results.serverDirectory)-1 )>
+	</cfif>
 	
 	<cfset local.fileuploaded=false>
 	<cfset local.filecreateattempt=1>
@@ -421,7 +429,7 @@ to your own modified versions of Mura CMS.
 			<cffile action="write" file="#local.results.serverDirectory#/#local.results.serverFile#" output="#local.fileContent#" >
 			<cfset local.fileuploaded=true>
 		<cfelse>
-			<cfset local.results.serverFile=local.result.serverFileName & local.filecreateattempt & "." & local.results.serverFileExt>
+			<cfset local.results.serverFile=local.results.serverFileName & local.filecreateattempt & "." & local.results.serverFileExt>
 			<cfset local.filecreateattempt=local.filecreateattempt+1>
 		</cfif>
 	</cfloop>
@@ -433,6 +441,15 @@ to your own modified versions of Mura CMS.
 <cffunction name="isPostedFile" output="false">
 <cfargument name="theFileField">
 <cfreturn listFindNoCase("tmp,upload",listLast(arguments.theFileField,"."))>
+</cffunction>
+
+<cffunction name="purgeDeleted" output="false">
+	<cfset variables.fileDAO.purgeDeleted()>
+</cffunction>
+
+<cffunction name="restoreVersion" output="false">
+	<cfargument name="fileID">
+	<cfset variables.fileDAO.restoreVersion(arguments.fileID)>
 </cffunction>
 
 </cfcomponent>

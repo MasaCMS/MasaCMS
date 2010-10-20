@@ -47,10 +47,12 @@ to your own modified versions of Mura CMS.
 <cfparam name="rsNext.recordcount" default=0>
 
 <cfif attributes.nestlevel neq 1><cfset variables.startrow=1><cfelse><cfset variables.startrow=attributes.startrow></cfif>
+<cfset sortable=attributes.nestlevel eq  1 and attributes.sortby eq 'orderno'>
 <cfset currentPos=variables.startrow>
 <cfset endRow=iif((currentPos + attributes.nextn) gt attributes.rsnest.recordcount,attributes.rsnest.recordcount,currentPos + attributes.nextn)>
 </cfsilent>
-
+<!--- Start Level UL List--->
+<ul<cfif sortable> id='sortableKids'</cfif>>
 <cfoutput query="attributes.rsNest" startrow="#variables.startrow#" maxrows="#attributes.nextN#">
 <cfsilent><cfset request.menulist=listappend(request.menulist,attributes.rsnest.contentid)>
 <cfif attributes.rsnest.hasKids> 
@@ -107,33 +109,51 @@ to your own modified versions of Mura CMS.
 
 <cfset request.rowNum=request.rowNum+1>
 </cfsilent>
-<tr> 
-<td class="add">
+<!--- Start LI for content Item --->
+<li>
+<dl>
+<dt>
 <!---<cfif (attributes.rsNest.type eq 'Page') or  (attributes.rsNest.type eq 'Portal')  or  (attributes.rsNest.type eq 'Calendar') or (attributes.rsNest.type eq 'Gallery')>--->
-<a href="javascript:;" onmouseover="showMenu('newContentMenu',#newcontent#,this,'#attributes.rsNest.contentid#','#attributes.topid#','#attributes.rsNest.parentid#','#attributes.siteid#','#attributes.rsNest.type#');">&nbsp;</a>
-<!---<cfelse>&nbsp;</cfif>---></td>
+<a class="add" href="javascript:;" onmouseover="showMenu('newContentMenu',#newcontent#,this,'#attributes.rsNest.contentid#','#attributes.topid#','#attributes.rsNest.parentid#','#attributes.siteid#','#attributes.rsNest.type#');"></a>
+	
+	<cfif attributes.rsNest.haskids><span class="hasChildren"></span></cfif>
 
-<td class="title varWidth"><ul <cfif attributes.rsNest.hasKids>class="nest#attributes.nestlevel#on"<cfelse>class="nest#attributes.nestlevel#off"</cfif>>
-			<li class="#icon#"><cfif verdict neq 'none'><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.edit")#" href="index.cfm?fuseaction=cArch.edit&contenthistid=#attributes.rsNest.ContentHistID#&contentid=#attributes.rsNest.ContentID#&type=#attributes.rsNest.type#&parentid=#attributes.rsNest.parentID#&topid=#URLEncodedFormat(attributes.topid)#&siteid=#URLEncodedFormat(attributes.siteid)#&moduleid=#attributes.moduleid#&startrow=#attributes.startrow#"></cfif>#HTMLEditFormat(left(attributes.rsNest.menutitle,70))#<cfif len(attributes.rsNest.menutitle) gt 70>...</cfif><cfif verdict neq 'none'></a></cfif><cfif isMore>&nbsp;(#application.rbFactory.getKeyValue(session.rb,"sitemanager.more")#...)</cfif></li>
-</ul></td>	
+	<cfif verdict neq 'none'><a class="#icon# title" title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.edit")#" href="index.cfm?fuseaction=cArch.edit&contenthistid=#attributes.rsNest.ContentHistID#&contentid=#attributes.rsNest.ContentID#&type=#attributes.rsNest.type#&parentid=#attributes.rsNest.parentID#&topid=#URLEncodedFormat(attributes.topid)#&siteid=#URLEncodedFormat(attributes.siteid)#&moduleid=#attributes.moduleid#&startrow=#attributes.startrow#"></cfif>
+		#HTMLEditFormat(left(attributes.rsNest.menutitle,70))#
+		<cfif len(attributes.rsNest.menutitle) gt 70>&hellip;</cfif>
+		<cfif isMore><span class="hasMore">&nbsp;(#application.rbFactory.getKeyValue(session.rb,"sitemanager.more")#)</span></cfif><cfif verdict neq 'none'></a></cfif>
+		<div class="mura-title-fade"></div>
+</dt>	
 
 <cfif attributes.locking neq 'all'>
-<cfif attributes.sortBy eq 'orderno'><td class="order">
+<!---
+<cfif attributes.sortBy eq 'orderno'>
+<dd class="order">
 <cfif attributes.parentid eq attributes.topid>
 <input type="hidden" name="orderid" value="#attributes.rsnest.contentid#">
 <select name="orderno" class="dropdown" <cfif attributes.perm neq 'editor'>#application.rbFactory.getKeyValue(session.rb,"sitemanager.disabled")#</cfif>>
 <cfloop from="#variables.startrow#" to="#endrow#" index="o">
 <option value="#o#" <cfif o eq currentPos>selected</cfif>>#o#</option>
 </cfloop>
-</select><cfelse>&nbsp;</cfif></td>
+</select></cfif></dd>
 </cfif>
-		<td>#attributes.rsNest.inheritObjects#</td> 
-		<td><cfif attributes.rsNest.Display and (attributes.rsNest.Display eq 1 and attributes.rsNest.approved and attributes.rsNest.approved)>#application.rbFactory.getKeyValue(session.rb,"sitemanager.yes")#<cfelseif(attributes.rsNest.Display eq 2 and attributes.rsNest.approved and attributes.rsNest.approved)>#LSDateFormat(attributes.rsNest.displaystart,"short")#&nbsp;-&nbsp;#LSDateFormat(attributes.rsNest.displaystop,"short")#<cfelse>#application.rbFactory.getKeyValue(session.rb,"sitemanager.no")#</cfif></td>
-	 <td>#application.rbFactory.getKeyValue(session.rb,"sitemanager.#yesnoformat(attributes.rsNest.isfeature)#")#</td> 
+--->
+		<dd class="objects">#attributes.rsNest.inheritObjects#</dd> 
+		<dd class="display">
+			<cfif attributes.rsNest.Display and (attributes.rsNest.Display eq 1 and attributes.rsNest.approved and attributes.rsNest.approved)>#application.rbFactory.getKeyValue(session.rb,"sitemanager.yes")#
+			<cfelseif(attributes.rsNest.Display eq 2 and attributes.rsNest.approved and attributes.rsNest.approved)>
+				<a href="##" class="tooltip"><span>#LSDateFormat(attributes.rsNest.displaystart,"short")#&nbsp;-&nbsp;#LSDateFormat(attributes.rsNest.displaystop,"short")#</span></a>
+			<cfelse>
+				#application.rbFactory.getKeyValue(session.rb,"sitemanager.no")#
+			</cfif>
+		</dd>
+	 <dd class="feature">#application.rbFactory.getKeyValue(session.rb,"sitemanager.#yesnoformat(attributes.rsNest.isfeature)#")#</dd> 
 		</cfif>
-	<td>#application.rbFactory.getKeyValue(session.rb,"sitemanager.#yesnoformat(attributes.rsNest.isNav)#")#</td>
-    <td>#LSDateFormat(attributes.rsnest.lastupdate,session.dateKeyFormat)# <!---#LSTimeFormat(attributes.rsnest.lastupdate,"short")#---></td>
-    <td class="administration"><ul class="siteSummary"><cfif verdict neq 'none'>
+	<dd class="nav">#application.rbFactory.getKeyValue(session.rb,"sitemanager.#yesnoformat(attributes.rsNest.isNav)#")#</dd>
+    <dd class="updated">#LSDateFormat(attributes.rsnest.lastupdate,session.dateKeyFormat)# #LSTimeFormat(attributes.rsnest.lastupdate,"medium")#</dd>
+    <dd class="admin">
+    <ul>
+    	<cfif verdict neq 'none'>
        <li class="edit"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.edit")#" href="index.cfm?fuseaction=cArch.edit&contenthistid=#attributes.rsNest.ContentHistID#&contentid=#attributes.rsNest.ContentID#&type=#attributes.rsNest.type#&parentid=#attributes.rsNest.parentID#&topid=#URLEncodedFormat(attributes.topid)#&siteid=#URLEncodedFormat(attributes.siteid)#&moduleid=#attributes.moduleid#&startrow=#attributes.startrow#">&nbsp;</a></li>
 	   <cfswitch expression="#attributes.rsnest.type#">
 		<cfcase value="Page,Portal,Calendar,Gallery">
@@ -179,8 +199,9 @@ to your own modified versions of Mura CMS.
 		</cfif>
 		#application.pluginManager.renderScripts("on#attributes.rsNest.type#List",attributes.siteid,attributes.pluginEvent)#
 		#application.pluginManager.renderScripts("on#attributes.rsNest.type##attributes.rsNest.subtype#List",attributes.siteid,attributes.pluginEvent)#
-	</ul></td>
-</tr>
+	</ul>
+	</dd>
+</dl>
    <cfif attributes.rsNest.hasKids and attributes.nestlevel lt attributes.viewDepth>
    <cf_dsp_nest parentid="#attributes.rsNest.contentid#"  
    locking="#attributes.locking#" 
@@ -195,6 +216,14 @@ to your own modified versions of Mura CMS.
    nextn="#attributes.nextN#"
    startrow="#attributes.startrow#"
    sortBy="#attributes.sortBy#"
-   pluginEvent="#attributes.pluginEvent#"></cfif>
+   pluginEvent="#attributes.pluginEvent#">
+   </cfif>
    <cfset currentPos=currentPos+1>
+   <cfif sortable>
+   		<input type="hidden" name="orderid" value="#attributes.rsnest.contentID#"/>
+   </cfif>
+   <!--- Close LI for contentID--->
+   </li>
    </cfoutput>
+   <!--- Close UL --->
+   </ul>

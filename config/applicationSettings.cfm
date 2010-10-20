@@ -121,21 +121,21 @@ to your own modified versions of Mura CMS.
 	<cftry>
 		<cfinclude template="/config/mappings.cfm">
 		<cfset hasMainMappings=true>
-		<cfcatch type="missingInclude">
+		<cfcatch>
 			<cfset hasMainMappings=false>
 		</cfcatch>
 	</cftry>
 	<cftry>
 		<cfinclude template="/plugins/mappings.cfm">
 		<cfset hasPluginMappings=true>
-		<cfcatch type="missingInclude">
+		<cfcatch>
 			<cfset hasPluginMappings=false>
 		</cfcatch>
 	</cftry>
 	<cftry>
 		<cfinclude template="/config/cfapplication.cfm">
 		<cfset request.hasCFApplicationCFM=true>
-		<cfcatch type="missingInclude">
+		<cfcatch>
 			<cfset request.hasCFApplicationCFM=false>
 		</cfcatch>
 	</cftry>

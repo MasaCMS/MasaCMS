@@ -60,7 +60,7 @@ select * from rsSubTypes where subType <> 'Default'
 <cfoutput>
 #application.utility.displayErrors(request.userBean.getErrors())#
 
- <form action="index.cfm?fuseaction=cPrivateUsers.update&userid=#URLEncodedFormat(attributes.userid)#" enctype="multipart/form-data" method="post" name="form1" onsubmit="return validate(this);">
+ <form novalidate="novalidate" action="index.cfm?fuseaction=cPrivateUsers.update&userid=#URLEncodedFormat(attributes.userid)#" enctype="multipart/form-data" method="post" name="form1" onsubmit="return validate(this);">
 <cfif rsSubTypes.recordcount>
 <div class="tabs initActiveTab">
 <ul>
@@ -168,7 +168,7 @@ loadExtendedAttributes('#request.userbean.getUserID()#','1','#request.userbean.g
      </cfif>
 	
 	<cfif request.nextN.numberofpages gt 1> 
-		<p class="moreResults">#application.rbFactory.getKeyValue(session.rb,'user.moreresults')#: <cfoutput>
+		<p class="moreResults"><cfoutput>#application.rbFactory.getKeyValue(session.rb,'user.moreresults')#:
 			<cfif request.nextN.currentpagenumber gt 1>
 			<a href="index.cfm?fuseaction=cPrivateUsers.editgroup&startrow=#request.nextN.previous#&userid=#URLEncodedFormat(attributes.userid)#&siteid=#URLEncodedFormat(attributes.siteid)#">&laquo;&nbsp;#application.rbFactory.getKeyValue(session.rb,'user.prev')#</a> 
 			</cfif>

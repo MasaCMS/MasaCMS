@@ -63,7 +63,7 @@ to your own modified versions of Mura CMS.
 	<cfset variables.dsn=variables.configBean.getDatasource()/>
 	<cfset setBaseID(arguments.baseID)/>
 	<cfset setDataTable(arguments.dataTable)/>
-	<cfset setDefinitionsQuery(arguments.configBean.getClassExtensionManager().getDefinitionsQuery())>
+	<cfset setDefinitions(arguments.configBean.getClassExtensionManager().getDefinitionsQuery())>
 	
 	<cfif structKeyExists(arguments,"type")>
 		<cfset setType(arguments.type)/>
@@ -90,12 +90,12 @@ to your own modified versions of Mura CMS.
 </cffunction>
 
 <cffunction name="getDefinitionsQuery" access="public" output="false">
-	<cfreturn variables.instance.definitionsQuery />
+	<cfreturn variables.instance.definitions />
 </cffunction>
 
-<cffunction name="setDefinitionsQuery" returntype="void" access="public" output="false">
-	<cfargument name="definitionsQuery" />
-	<cfset variables.instance.definitionsQuery= arguments.definitionsQuery />
+<cffunction name="setDefinitions" returntype="void" access="public" output="false">
+	<cfargument name="definitions" />
+	<cfset variables.instance.definitions= arguments.definitions />
 </cffunction>
 
 

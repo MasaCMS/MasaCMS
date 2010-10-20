@@ -62,7 +62,7 @@ to your own modified versions of Mura CMS.
 </ul>
 <div id="tabCurrentsites">
 <br/>
-<form name="form1" action="index.cfm?fuseaction=csettings.list" method="post">
+<form novalidate="novalidate" name="form1" action="index.cfm?fuseaction=csettings.list" method="post">
 <table class="stripe">
 <tr><th class="varWidth">Site</th>
 <th>Order</th>
@@ -89,7 +89,7 @@ to your own modified versions of Mura CMS.
 
 <div id="tabPlugins">
 <br/>
-<form name="frmNewPlugin" action="index.cfm?fuseaction=cSettings.deployPlugin" enctype="multipart/form-data" method="post" onsubmit="return validateForm(this);">
+<form novalidate="novalidate" name="frmNewPlugin" action="index.cfm?fuseaction=cSettings.deployPlugin" enctype="multipart/form-data" method="post" onsubmit="return validateForm(this);">
 Upload New Plugin<br/>
 <input name="newPlugin" type="file" required="true" message="Please select a plugin file.">
 <input type="submit" value="Deploy"/>

@@ -51,6 +51,7 @@ to your own modified versions of Mura CMS.
 <cfargument name="settingsManager" type="any" required="yes"/>
 <cfargument name="categoryUtility" type="any" required="yes"/>
 <cfargument name="pluginManager" type="any" required="yes"/>
+<cfargument name="trashManager" type="any" required="yes"/>
 
 	<cfset variables.configBean=arguments.configBean />
 	<cfset variables.gateway=arguments.categoryGateway />
@@ -60,6 +61,7 @@ to your own modified versions of Mura CMS.
 	<cfset variables.settingsManager=arguments.settingsManager />
 	<cfset variables.categoryUtility=arguments.categoryUtility />
 	<cfset variables.pluginManager=arguments.pluginManager />
+	<cfset variables.trashManager=arguments.trashManager />
 	
 	<cfreturn this />
 </cffunction>
@@ -195,8 +197,8 @@ to your own modified versions of Mura CMS.
 	<cfset var rs="">
 	
 	<cfif isObject(arguments.data)>
-		<cfif getMetaData(arguments.data).name eq "mura.category.categoryBean">
-		<cfset arguments.data=arguments.data.getAllValues()>
+		<cfif listLast(getMetaData(arguments.data).name,".") eq "categoryBean">
+			<cfset arguments.data=arguments.data.getAllValues()>
 		<cfelse>
 			<cfthrow type="custom" message="The attribute 'DATA' is not of type 'mura.category.categoryBean'">
 		</cfif>
@@ -232,12 +234,15 @@ to your own modified versions of Mura CMS.
 	<cfset variables.pluginManager.announceEvent("onBeforeCategoryCreate",pluginEvent)>
 	
 	<cfif structIsEmpty(categoryBean.getErrors())>
-
 		<cfset categoryBean.setLastUpdateBy(left(session.mura.fname & " " & session.mura.lname,50)) />
-		<cfset categoryBean.setCategoryID("#createUUID()#") />
+		<cfif not (structKeyExists(arguments.data,"categoryID") and len(arguments.data.categoryID))>
+			<cfset categoryBean.setCategoryID("#createUUID()#") />
+		</cfif>
 		<cfset setMaterializedPath(categoryBean) />
 		<cfset variables.utility.logEvent("CategoryID:#categoryBean.getCategoryID()# Name:#categoryBean.getName()# was created","mura-content","Information",true) />
 		<cfset variables.DAO.create(categoryBean) />
+		
+		<cfset variables.trashManager.takeOut(categoryBean)>
 		<cfset categoryBean.setIsNew(0)>
 		<cfset variables.pluginManager.announceEvent("onCategorySave",pluginEvent)>
 		<cfset variables.pluginManager.announceEvent("onCategoryCreate",pluginEvent)>
@@ -344,10 +349,11 @@ to your own modified versions of Mura CMS.
 		<cfset newPath=listDeleteAt(categoryBean.getPath(),listLen(categoryBean.getPath())) /> 
 		<cfset updateMaterializedPath(newPath,currentPath,categoryBean.getSiteID())>
 	</cfif>
+	
+	<cfset variables.trashManager.throwIn(categoryBean)>
 	<cfset variables.utility.logEvent("CategoryID:#categoryBean.getCategoryID()# Name:#categoryBean.getName()# was deleted","mura-content","Information",true) />
 	<cfset variables.DAO.delete(arguments.categoryID) />
-	
-	
+
 	<cfset variables.pluginManager.announceEvent("onCategoryDelete",pluginEvent)>
 	<cfset variables.pluginManager.announceEvent("onAfterCategoryDelete",pluginEvent)>
 

@@ -6,23 +6,23 @@ the Free Software Foundation, Version 2 of the License.
 
 Mura CMS is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. ï¿½See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-along with Mura CMS.  If not, see <http://www.gnu.org/licenses/>.
+along with Mura CMS. ï¿½If not, see <http://www.gnu.org/licenses/>.
 
 Linking Mura CMS statically or dynamically with other modules constitutes
 the preparation of a derivative work based on Mura CMS. Thus, the terms and 	
-conditions of the GNU General Public License version 2 (“GPL”) cover the entire combined work.
+conditions of the GNU General Public License version 2 (ï¿½GPLï¿½) cover the entire combined work.
 
 However, as a special exception, the copyright holders of Mura CMS grant you permission
 to combine Mura CMS with programs or libraries that are released under the GNU Lesser General Public License version 2.1.
 
-In addition, as a special exception,  the copyright holders of Mura CMS grant you permission
-to combine Mura CMS  with independent software modules that communicate with Mura CMS solely
+In addition, as a special exception, ï¿½the copyright holders of Mura CMS grant you permission
+to combine Mura CMS ï¿½with independent software modules that communicate with Mura CMS solely
 through modules packaged as Mura CMS plugins and deployed through the Mura CMS plugin installation API,
-provided that these modules (a) may only modify the  /trunk/www/plugins/ directory through the Mura CMS
+provided that these modules (a) may only modify the ï¿½/trunk/www/plugins/ directory through the Mura CMS
 plugin installation API, (b) must not alter any default objects in the Mura CMS database
 and (c) must not alter any files in the following directories except in cases where the code contains
 a separately distributed license.
@@ -37,7 +37,7 @@ the source code of that other code when and as the GNU GPL requires distribution
 
 For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception
 for your modified version; it is your choice whether to do so, or to make such modified version available under
-the GNU General Public License version 2  without this exception.  You may, if you choose, apply this exception
+the GNU General Public License version 2 ï¿½without this exception. ï¿½You may, if you choose, apply this exception
 to your own modified versions of Mura CMS.
 --->
 <cfcomponent extends="mura.cfobject" output="false">
@@ -87,39 +87,39 @@ to your own modified versions of Mura CMS.
 		<cfargument name="fileExt" type="string" required="yes"/>
 		<cfargument name="fileObjSmall" type="any" required="yes"/>
 		<cfargument name="fileObjMedium" type="any" required="yes"/>
+		<cfargument name="fileID" type="any" required="yes" default="#createUUID()#"/>
 		
-		<cfset var fileID=createUUID() />
 		<cfset var ct=arguments.contentType & "/" & arguments.contentSubType />
 		<cfset var pluginEvent = createObject("component","mura.event").init(arguments) />
 		<cfset variables.pluginManager.announceEvent("onBeforeFileCache",pluginEvent)>
 		
 		<cfswitch expression="#variables.configBean.getFileStore()#">
 			<cfcase value="fileDir">
-				<cfset variables.fileWriter.writeFile(mode="774", file="#application.configBean.getFileDir()##application.configBean.getFileDelim()##arguments.siteid##application.configBean.getFileDelim()#cache#application.configBean.getFileDelim()#file#application.configBean.getFileDelim()##fileID#.#arguments.fileExt#", output="#arguments.fileObj#")>
+				<cfset variables.fileWriter.writeFile(mode="774", file="#application.configBean.getFileDir()##application.configBean.getFileDelim()##arguments.siteid##application.configBean.getFileDelim()#cache#application.configBean.getFileDelim()#file#application.configBean.getFileDelim()##arguments.fileID#.#arguments.fileExt#", output="#arguments.fileObj#")>
 				<cfif listFindNoCase("png,gif,jpg,jpeg",arguments.fileExt)>
 					<cfif isBinary(fileObjSmall)>
-						<cfset variables.fileWriter.writeFile(mode="774", file="#application.configBean.getFileDir()##application.configBean.getFileDelim()##arguments.siteid##application.configBean.getFileDelim()#cache#application.configBean.getFileDelim()#file#application.configBean.getFileDelim()##fileID#_small.#arguments.fileExt#", output="#arguments.fileObjSmall#")>
+						<cfset variables.fileWriter.writeFile(mode="774", file="#application.configBean.getFileDir()##application.configBean.getFileDelim()##arguments.siteid##application.configBean.getFileDelim()#cache#application.configBean.getFileDelim()#file#application.configBean.getFileDelim()##arguments.fileID#_small.#arguments.fileExt#", output="#arguments.fileObjSmall#")>
 					</cfif>
 					<cfif isBinary(fileObjMedium)>
-						<cfset variables.fileWriter.writeFile(mode="774", file="#application.configBean.getFileDir()##application.configBean.getFileDelim()##arguments.siteid##application.configBean.getFileDelim()#cache#application.configBean.getFileDelim()#file#application.configBean.getFileDelim()##fileID#_medium.#arguments.fileExt#", output="#arguments.fileObjMedium#")/>
+						<cfset variables.fileWriter.writeFile(mode="774", file="#application.configBean.getFileDir()##application.configBean.getFileDelim()##arguments.siteid##application.configBean.getFileDelim()#cache#application.configBean.getFileDelim()#file#application.configBean.getFileDelim()##arguments.fileID#_medium.#arguments.fileExt#", output="#arguments.fileObjMedium#")/>
 					</cfif>
 				<cfelseif arguments.fileExt eq 'flv'>
 					<cfif isBinary(fileObjSmall)>
-						<cfset variables.fileWriter.writeFile(mode="774", file="#application.configBean.getFileDir()##application.configBean.getFileDelim()##arguments.siteid##application.configBean.getFileDelim()#cache#application.configBean.getFileDelim()#file#application.configBean.getFileDelim()##fileID#_small.jpg", output="#arguments.fileObjSmall#")>
+						<cfset variables.fileWriter.writeFile(mode="774", file="#application.configBean.getFileDir()##application.configBean.getFileDelim()##arguments.siteid##application.configBean.getFileDelim()#cache#application.configBean.getFileDelim()#file#application.configBean.getFileDelim()##arguments.fileID#_small.jpg", output="#arguments.fileObjSmall#")>
 					</cfif>
 					<cfif isBinary(fileObjMedium)>
-						<cfset variables.fileWriter.writeFile( mode="774",  file="#application.configBean.getFileDir()##application.configBean.getFileDelim()##arguments.siteid##application.configBean.getFileDelim()#cache#application.configBean.getFileDelim()#file#application.configBean.getFileDelim()##fileID#_medium.jpg", output="#arguments.fileObjMedium#")>
+						<cfset variables.fileWriter.writeFile( mode="774",  file="#application.configBean.getFileDir()##application.configBean.getFileDelim()##arguments.siteid##application.configBean.getFileDelim()#cache#application.configBean.getFileDelim()#file#application.configBean.getFileDelim()##arguments.fileID#_medium.jpg", output="#arguments.fileObjMedium#")>
 					</cfif>
 				</cfif>
 			</cfcase>
 			<cfcase value="s3">
-				<cfset variables.s3.putFileOnS3(arguments.fileObj,ct,variables.bucket,'#arguments.siteid#/#fileid#.#arguments.fileExt#') />
+				<cfset variables.s3.putFileOnS3(arguments.fileObj,ct,variables.bucket,'#arguments.siteid#/#arguments.fileid#.#arguments.fileExt#') />
 				<cfif arguments.fileExt eq 'jpg' or arguments.fileExt eq 'jpeg' or arguments.fileExt eq 'png' or arguments.fileExt eq 'gif'>
-					<cfif isBinary(fileObjSmall)><cfset variables.s3.putFileOnS3(arguments.fileObjSmall,ct,variables.bucket,'#arguments.siteid#/#fileid#_small.#arguments.fileExt#') /></cfif>
-					<cfif isBinary(fileObjMedium)><cfset variables.s3.putFileOnS3(arguments.fileObjMedium,ct,variables.bucket,'#arguments.siteid#/#fileid#_medium.#arguments.fileExt#') /></cfif>
+					<cfif isBinary(fileObjSmall)><cfset variables.s3.putFileOnS3(arguments.fileObjSmall,ct,variables.bucket,'#arguments.siteid#/#arguments.fileid#_small.#arguments.fileExt#') /></cfif>
+					<cfif isBinary(fileObjMedium)><cfset variables.s3.putFileOnS3(arguments.fileObjMedium,ct,variables.bucket,'#arguments.siteid#/#arguments.fileid#_medium.#arguments.fileExt#') /></cfif>
 				<cfelseif arguments.fileExt eq 'flv'>
-					<cfif isBinary(fileObjSmall)><cfset variables.s3.putFileOnS3(arguments.fileObjSmall,'image/jpeg',variables.bucket,'#arguments.siteid#/#fileid#_small.jpg') /></cfif>
-					<cfif isBinary(fileObjMedium)><cfset variables.s3.putFileOnS3(arguments.fileObjMedium,'image/jpeg',variables.bucket,'#arguments.siteid#/#fileid#_medium.jpg') /></cfif>
+					<cfif isBinary(fileObjSmall)><cfset variables.s3.putFileOnS3(arguments.fileObjSmall,'image/jpeg',variables.bucket,'#arguments.siteid#/#arguments.fileid#_small.jpg') /></cfif>
+					<cfif isBinary(fileObjMedium)><cfset variables.s3.putFileOnS3(arguments.fileObjMedium,'image/jpeg',variables.bucket,'#arguments.siteid#/#arguments.fileid#_medium.jpg') /></cfif>
 				</cfif>
 			</cfcase>
 		</cfswitch>
@@ -127,7 +127,7 @@ to your own modified versions of Mura CMS.
 		<cfquery datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 		INSERT INTO tfiles (fileID,contentID,siteID,filename,contentType,contentSubType,fileSize,moduleID,fileExt,created<cfif variables.configBean.getFileStore() eq 'database'>,image,imageSmall,imageMedium</cfif>)
 		VALUES(
-		'#fileid#',
+		<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.fileid#">,
 		<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.contentid#">,
 		<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.siteid#">,
 		<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.filename#">,
@@ -145,7 +145,6 @@ to your own modified versions of Mura CMS.
 		)	
 		</cfquery>
 		
-		<cfset pluginEvent.setValue("fileid",fileID) />
 		<cfset variables.pluginManager.announceEvent("onFileCache", pluginEvent)>
 		<cfset variables.pluginManager.announceEvent("onAfterFileCache",pluginEvent)>
 		<cfreturn fileid />
@@ -153,13 +152,9 @@ to your own modified versions of Mura CMS.
 
 <cffunction name="deleteVersion" returntype="void" access="public" output="false">
 		<cfargument name="fileID" type="any" required="yes"/>
-			
-		<cfif application.configBean.getFileStore() neq 'database'>
-			<cfset deleteCachedFile(arguments.fileID) />
-		</cfif>
 		
 		<cfquery datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-		delete from tfiles where fileid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.fileID#">
+		update tfiles set deleted=1 where fileid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.fileID#">
 		</cfquery>
 	
 </cffunction>
@@ -167,20 +162,9 @@ to your own modified versions of Mura CMS.
 <cffunction name="deleteAll" returntype="void" access="public" output="false">
 		<cfargument name="contentID" type="string" required="yes"/>
 		<cfset var rs='' />
-		<cfif variables.configBean.getFileStore() neq 'database'>
-			
-			<cfquery name="rs" datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-			select fileID from tfiles where contentid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentID#">
-			</cfquery>
-		
-			<cfloop query="rs">
-				<cfset deleteCachedFile(rs.fileID) />
-			</cfloop>
-		</cfif>
-		
 			
 		<cfquery datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-		delete from tfiles where contentid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentID#">
+		update tfiles set deleted=1 where contentid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentID#">
 		</cfquery>
 	
 </cffunction>
@@ -268,6 +252,32 @@ to your own modified versions of Mura CMS.
 			<cfset deleteVersion(arguments.fileID) />
 		</cfif>
 	
+</cffunction>
+
+<cffunction name="purgeDeleted" output="false">
+<cfset var rs="">
+	
+<cflock type="exclusive" name="purgingDeletedFile" timeout="1000">
+	<cfquery name="rs" datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+	select fileID from tfiles where deleted=1 
+	</cfquery>
+	
+	<cfloop query="rs">
+		<cfset deleteCachedFile(rs.fileID)>
+	</cfloop>
+	
+	<cfquery name="rs" datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+	delete from tfiles where deleted=1 
+	</cfquery>
+</cflock>
+
+</cffunction>
+
+<cffunction name="restoreVersion" output="false">
+	<cfargument name="fileID">
+	<cfquery name="rs" datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+	update tfiles set deleted=0 where fileID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.fileID#">
+	</cfquery>
 </cffunction>
 
 <cffunction name="deleteCachedFile" returntype="void" access="public">

@@ -83,7 +83,8 @@ to your own modified versions of Mura CMS.
 		<cfargument name="mode" type="string" default="publish" required="true">
 		<cfargument name="keyFactory" type="any" required="true">
 		<cfargument name="pushMode" type="string" default="full" required="true">
-			
+		<cfargument name="lastDeployment" default="" required="true">
+		<cfargument name="rsDeleted" required="true" default="#queryNew('objectID')#">	
 		<cfset var keys=arguments.keyFactory/>
 		<cfset var rsContentNew=""/>
 		<cfset var rsContent=""/>
@@ -122,7 +123,7 @@ to your own modified versions of Mura CMS.
 		<cfset var rstpluginscripts=""/>
 		<cfset var rstplugindisplayobjects=""/>
 		<cfset var rstpluginsettings=""/>
-		<cfset var lastDeployment=application.settingsManager.getSite(arguments.fromSiteID).getLastDeployment()/>		
+		<cfset var rsCheck="">		
 		
 			<!--- pushed tables --->
 		
@@ -135,8 +136,16 @@ to your own modified versions of Mura CMS.
 			<cfquery datasource="#arguments.toDSN#">
 				delete from tcontent where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.tositeid#"/>
 				<cfif arguments.pushMode eq "UpdatesOnly">
-					<cfif rsContentNew.recordcount>
-						and contentID in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#valueList(rsContentNew.contentID)#">)
+					<cfif rsContentNew.recordcount or rsDeleted.recordcount>
+						and (
+						<cfif rsContentNew.recordcount>
+							contentID in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#valueList(rsContentNew.contentID)#">)
+						</cfif>
+						<cfif rsDeleted.recordcount>
+							<cfif rsContentNew.recordcount>or</cfif>
+							contentID in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#valueList(rsDeleted.objectID)#">)
+						</cfif>
+						)
 					<cfelse>
 						and 0=1
 					</cfif>
@@ -226,8 +235,16 @@ to your own modified versions of Mura CMS.
 			<cfquery datasource="#arguments.toDSN#">
 				delete from tcontentobjects where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.tositeid#"/>
 				<cfif arguments.pushMode eq "UpdatesOnly">
-					<cfif rsContentNew.recordcount>
-						and contentID in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#valueList(rsContentNew.contentID)#">)
+					<cfif rsContentNew.recordcount or rsDeleted.recordcount>
+						and (
+						<cfif rsContentNew.recordcount>
+							contentID in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#valueList(rsContentNew.contentID)#">)
+						</cfif>
+						<cfif rsDeleted.recordcount>
+							<cfif rsContentNew.recordcount>or</cfif>
+							contentID in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#valueList(rsDeleted.objectID)#">)
+						</cfif>
+						)
 					<cfelse>
 						and 0=1
 					</cfif>
@@ -273,8 +290,16 @@ to your own modified versions of Mura CMS.
 			<cfquery datasource="#arguments.toDSN#">
 				delete from tcontenttags where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.tositeid#"/>
 				<cfif arguments.pushMode eq "UpdatesOnly">
-					<cfif rsContentNew.recordcount>
-						and contentID in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#valueList(rsContentNew.contentID)#">)
+					<cfif rsContentNew.recordcount or rsDeleted.recordcount>
+					and (
+						<cfif rsContentNew.recordcount>
+							contentID in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#valueList(rsContentNew.contentID)#">)
+						</cfif>
+						<cfif rsDeleted.recordcount>
+							<cfif rsContentNew.recordcount>or</cfif>
+							contentID in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#valueList(rsDeleted.objectID)#">)
+						</cfif>
+						)
 					<cfelse>
 						and 0=1
 					</cfif>
@@ -370,8 +395,16 @@ to your own modified versions of Mura CMS.
 					siteid = '#application.settingsManager.getSite(rsSettings.advertiserUserPoolID).getPrivateUserPoolID()#' or
 					siteid = '#application.settingsManager.getSite(rsSettings.advertiserUserPoolID).getPublicUserPoolID()#')
 					<cfif arguments.pushMode eq "UpdatesOnly">
-						<cfif rstadcampaignsnew.recordcount>
-							and campaignID in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#valueList(rstadcampaignsnew.campaignID)#">)
+						<cfif rstadcampaignsnew.recordcount or rsDeleted.recordcount>
+							and (
+							<cfif rstadcampaignsnew.recordcount>
+								campaignID in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#valueList(rstadcampaignsnew.campaignID)#">)
+							</cfif>
+							<cfif rsDeleted.recordcount>
+								<cfif rstadcampaignsnew.recordcount>or</cfif>
+								campaignID in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#valueList(rsDeleted.objectID)#">)
+							</cfif>
+							)
 						<cfelse>
 							and 0=1
 						</cfif>
@@ -391,7 +424,13 @@ to your own modified versions of Mura CMS.
 						</cfif>
 					</cfif>
 				</cfquery>
+				
 				<cfloop query="rstadcampaigns">
+					<cfquery name="rsCheck" datasource="#arguments.toDSN#">
+						select userID from tusers where userID=<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(userID)#">
+					</cfquery>
+					<!--- only add the campaign if the user exists--->
+					<cfif rsCheck.recordcount>
 					<cfquery datasource="#arguments.toDSN#">
 						insert into tadcampaigns (campaignID,dateCreated,endDate,isActive,lastUpdate,lastUpdateBy,name,notes,startDate,userID)
 						values
@@ -408,6 +447,7 @@ to your own modified versions of Mura CMS.
 						<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(userID neq '',de('no'),de('yes'))#" value="#userID#">
 						)
 					</cfquery>
+					</cfif>
 				</cfloop>
 				<!--- tadcreatives --->
 				<cfif arguments.pushMode eq "UpdatesOnly">
@@ -427,8 +467,16 @@ to your own modified versions of Mura CMS.
 					siteid = '#application.settingsManager.getSite(rsSettings.advertiserUserPoolID).getPrivateUserPoolID()#' or
 					siteid = '#application.settingsManager.getSite(rsSettings.advertiserUserPoolID).getPublicUserPoolID()#')
 					<cfif arguments.pushMode eq "UpdatesOnly">
-						<cfif tadcreativesnew.recordcount>
-							and creativeID in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#valueList(tadcreativesnew.creativeID)#">)
+						<cfif tadcreativesnew.recordcount or rsDeleted.recordcount>
+							and (
+							<cfif tadcreativesnew.recordcount>
+								creativeID in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#valueList(tadcreativesnew.creativeID)#">)
+							</cfif>
+							<cfif rsDeleted.recordcount>
+								<cfif tadcreativesnew.recordcount>or</cfif>
+								creativeID in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#valueList(rsDeleted.objectID)#">)
+							</cfif>
+							)
 						<cfelse>
 							and 0=1
 						</cfif>
@@ -449,6 +497,11 @@ to your own modified versions of Mura CMS.
 					</cfif>
 				</cfquery>
 				<cfloop query="rstadcreatives">
+					<cfquery name="rsCheck" datasource="#arguments.toDSN#">
+						select userID from tusers where userID=<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(userID)#">
+					</cfquery>
+					<!--- only add the campaign if the user exists--->
+					<cfif rsCheck.recordcount>
 					<cfquery datasource="#arguments.toDSN#">
 						insert into tadcreatives (altText,creativeID,creativeType,dateCreated,fileID,height,isActive,lastUpdate,lastUpdateBy,mediaType,name,notes,redirectURL,textBody,userID,width,target)
 						values
@@ -472,6 +525,7 @@ to your own modified versions of Mura CMS.
 						<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(target neq '',de('no'),de('yes'))#" value="#target#">
 						)				
 					</cfquery>
+					</cfif>
 				</cfloop>
 				<!--- tadipwhitelist --->
 				<cfquery datasource="#arguments.toDSN#">
@@ -493,18 +547,27 @@ to your own modified versions of Mura CMS.
 				<!--- tadzones --->
 				<cfif arguments.pushMode eq "UpdatesOnly">
 					<cfquery datasource="#arguments.fromDSN#" name="rstadzonesnew">
-						select addzoneID from tadzones where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.fromsiteid#"/>
+						select adzoneID from tadzones where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.fromsiteid#"/>
 						and lastUpdate >= #createODBCDateTime(lastDeployment)#
 					</cfquery>
 				</cfif>
 				<cfquery datasource="#arguments.toDSN#">
 					delete from tadzones where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.tositeid#"/>
 					<cfif arguments.pushMode eq "UpdatesOnly">
-						<cfif rstadzonesnew.recordcount>
-							and adzoneID in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#valueList(rstadzonesnew.adzoneID)#">)
+						<cfif rstadzonesnew.recordcount or rsDeleleted.recordcount>
+							and (
+							<cfif rstadzonesnew.recordcount>
+								adzoneID in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#valueList(rstadzonesnew.adzoneID)#">)
+							</cfif>
+							<cfif rsDeleted.recordcount>
+								<cfif rstadzonesnew.recordcount>or</cfif>
+								adzoneID in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#valueList(rsDeleted.objectID)#">)
+							</cfif>
+							)
 						<cfelse>
 							and 0=1
 						</cfif>
+						)
 					</cfif>
 				</cfquery>
 				<cfquery datasource="#arguments.fromDSN#" name="rstadzones">
@@ -546,8 +609,16 @@ to your own modified versions of Mura CMS.
 				<cfquery datasource="#arguments.toDSN#">
 					delete from tadplacements where adzoneid in (select adzoneid from tadzones where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.tositeid#"/>)
 					<cfif arguments.pushMode eq "UpdatesOnly">
-						<cfif rstadplacementsnew.recordcount>
-							and placementID in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#valueList(rstadplacementsnew.placementID)#">)
+						<cfif rstadplacementsnew.recordcount or rsDeleted.recordcount>
+							and (
+							<cfif rstadplacementsnew.recordcount>
+								placementID in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#valueList(rstadplacementsnew.placementID)#">)
+							</cfif>
+							<cfif rsDeleted.recordcount>
+								<cfif rstadplacementsnew.recordcount>or</cfif>
+								placementID in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#valueList(rsDeleted.objectID)#">)
+							</cfif>
+							)
 						<cfelse>
 							and 0=1
 						</cfif>
@@ -583,7 +654,7 @@ to your own modified versions of Mura CMS.
 						<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(lastUpdateBy neq '',de('no'),de('yes'))#" value="#lastUpdateBy#">,
 						<cfqueryparam cfsqltype="cf_sql_LONGVARCHAR" null="#iif(notes neq '',de('no'),de('yes'))#" value="#notes#">,
 						<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(placementID)#">,
-						<cfqueryparam cfsqltype="cf_sql_TIMESTAMP" null="#iif(isDate(startDate),de('no'),de('yes'))#" value="#startDate#">
+						<cfqueryparam cfsqltype="cf_sql_TIMESTAMP" null="#iif(isDate(startDate),de('no'),de('yes'))#" value="#startDate#">,
 						<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(hasCategories),de(hasCategories),de(0))#">
 						)
 					</cfquery>
@@ -593,8 +664,16 @@ to your own modified versions of Mura CMS.
 				<cfquery datasource="#arguments.toDSN#">
 					delete from tadplacementdetails where placementid in (select placementid from tadplacements where adzoneid in (select adzoneid from tadzones where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.tositeid#"/>))
 					<cfif arguments.pushMode eq "UpdatesOnly">
-						<cfif rstadplacementsnew.recordcount>
-							and placementID in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#valueList(rstadplacementsnew.placementID)#">)
+						<cfif rstadplacementsnew.recordcount or rsDeleted.recordcount>
+							and (
+							<cfif rstadplacementsnew.recordcount>
+								placementID in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#valueList(rstadplacementsnew.placementID)#">)
+							</cfif>
+							<cfif rsDeleted.recordcount>
+								<cfif rstadplacementsnew.recordcount>or</cfif>
+								placementID in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#valueList(rsDeleted.objectID)#">)
+							</cfif>
+							)
 						<cfelse>
 							and 0=1
 						</cfif>
@@ -627,8 +706,16 @@ to your own modified versions of Mura CMS.
 				<cfquery datasource="#arguments.toDSN#">
 					delete from tadplacementcategoryassign where placementid in (select placementid from tadplacements where adzoneid in (select adzoneid from tadzones where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.tositeid#"/>))
 					<cfif arguments.pushMode eq "UpdatesOnly">
-						<cfif rstadplacementsnew.recordcount>
-							and placementID in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#valueList(rstadplacementsnew.placementID)#">)
+						<cfif rstadplacementsnew.recordcount or rsDeleted.recordcount>
+							and (
+							<cfif rstadplacementsnew.recordcount>
+								placementID in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#valueList(rstadplacementsnew.placementID)#">)
+							</cfif>
+							<cfif rsDeleted.recordcount>
+								<cfif rstadplacementsnew.recordcount>or</cfif>
+								placementID in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#valueList(rsDeleted.objectID)#">)
+							</cfif>
+							)
 						<cfelse>
 							and 0=1
 						</cfif>
@@ -658,8 +745,16 @@ to your own modified versions of Mura CMS.
 			<cfquery datasource="#arguments.toDSN#">
 				delete from tcontentcategoryassign where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.tositeid#"/>
 				<cfif arguments.pushMode eq "UpdatesOnly">
-					<cfif rsContentNew.recordcount>
-						and contentID in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#valueList(rsContentNew.contentID)#">)
+					<cfif rsContentNew.recordcount or rsDeleted.recordcount>
+						and (
+						<cfif rsContentNew.recordcount>
+							contentID in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#valueList(rsContentNew.contentID)#">)
+						</cfif>
+						<cfif rsDeleted.recordcount>
+							<cfif rstcontentfeedsnew.recordcount>or</cfif>
+							contentID in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#valueList(rsDeleted.objectID)#">)
+						</cfif>
+						)
 					<cfelse>
 						and 0=1
 					</cfif>
@@ -700,8 +795,16 @@ to your own modified versions of Mura CMS.
 			<cfquery datasource="#arguments.toDSN#">
 				delete from tcontentfeeds where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.tositeid#"/>
 				<cfif arguments.pushMode eq "UpdatesOnly">
-					<cfif rstcontentfeedsnew.recordcount>
-						and feedID in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#valueList(rstcontentfeedsnew.feedID)#">)
+					<cfif rstcontentfeedsnew.recordcount or rsDeleted.recordcount>
+						and (
+						<cfif rstcontentfeedsnew.recordcount>
+							feedID in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#valueList(rstcontentfeedsnew.contentID)#">)
+						</cfif>
+						<cfif rsDeleted.recordcount>
+							<cfif rstcontentfeedsnew.recordcount>or</cfif>
+							feedID in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#valueList(rsDeleted.objectID)#">)
+						</cfif>
+						)
 					<cfelse>
 						and 0=1
 					</cfif>
@@ -759,8 +862,16 @@ to your own modified versions of Mura CMS.
 			<cfquery datasource="#arguments.toDSN#">
 				delete from tcontentfeeditems where feedID in (select feedID from tcontentfeeds where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.tositeid#"/>)
 				<cfif arguments.pushMode eq "UpdatesOnly">
-					<cfif rstcontentfeedsnew.recordcount>
-						and feedID in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#valueList(rstcontentfeedsnew.feedID)#">)
+					<cfif rstcontentfeedsnew.recordcount or rsDeleted.recordcount>
+						and (
+						<cfif rstcontentfeedsnew.recordcount>
+							feedID in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#valueList(rstcontentfeedsnew.contentID)#">)
+						</cfif>
+						<cfif rsDeleted.recordcount>
+							<cfif rstcontentfeedsnew.recordcount>or</cfif>
+							feedID in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#valueList(rsDeleted.objectID)#">)
+						</cfif>
+						)
 					<cfelse>
 						and 0=1
 					</cfif>
@@ -792,8 +903,16 @@ to your own modified versions of Mura CMS.
 			<cfquery datasource="#arguments.toDSN#">
 				delete from tcontentfeedadvancedparams where feedID in (select feedID from tcontentfeeds where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.tositeid#"/>)
 				<cfif arguments.pushMode eq "UpdatesOnly">
-					<cfif rstcontentfeedsnew.recordcount>
-						and feedID in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#valueList(rstcontentfeedsnew.feedID)#">)
+					<cfif rstcontentfeedsnew.recordcount or rsDeleted.recordcount>
+						and (
+						<cfif rstcontentfeedsnew.recordcount>
+							feedID in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#valueList(rstcontentfeedsnew.contentID)#">)
+						</cfif>
+						<cfif rsDeleted.recordcount>
+							<cfif rstcontentfeedsnew.recordcount>or</cfif>
+							feedID in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#valueList(rsDeleted.objectID)#">)
+						</cfif>
+						)
 					<cfelse>
 						and 0=1
 					</cfif>
@@ -829,8 +948,16 @@ to your own modified versions of Mura CMS.
 			<cfquery datasource="#arguments.toDSN#">
 				delete from tcontentrelated where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.tositeid#"/>
 				<cfif arguments.pushMode eq "UpdatesOnly">
-					<cfif rsContentNew.recordcount>
-						and contentID in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#valueList(rsContentNew.contentID)#">)
+					<cfif rsContentNew.recordcount or rsDeleted.recordcount>
+						and (
+						<cfif rsContentNew.recordcount>
+							contentID in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#valueList(rsContentNew.contentID)#">)
+						</cfif>
+						<cfif rsDeleted.recordcount>
+							<cfif rstcontentfeedsnew.recordcount>or</cfif>
+							contentID in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#valueList(rsDeleted.objectID)#">)
+						</cfif>
+						)
 					<cfelse>
 						and 0=1
 					</cfif>
@@ -867,8 +994,16 @@ to your own modified versions of Mura CMS.
 			<cfquery datasource="#arguments.toDSN#" name="rsMailingList">
 				delete from tmailinglist where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.tositeid#"/>
 				<cfif arguments.pushMode eq "UpdatesOnly">
-					<cfif rsMailingListNew.recordcount>
-						and mlid in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#valueList(rsMailingListNew.mlid)#">)
+					<cfif rsMailingListNew.recordcount or rsDeleted.recordcount>
+						and (
+						<cfif rsMailingListNew.recordcount>
+							mlid in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#valueList(rsMailingListNew.contentID)#">)
+						</cfif>
+						<cfif rsDeleted.recordcount>
+							<cfif rsMailingListNew.recordcount>or</cfif>
+							mlid in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#valueList(rsDeleted.objectID)#">)
+						</cfif>
+						)
 					<cfelse>
 						and 0=1
 					</cfif>
@@ -900,12 +1035,18 @@ to your own modified versions of Mura CMS.
 				</cfquery>
 			</cfloop>
 			<!--- tfiles --->
-			<cfquery datasource="#arguments.toDSN#" name="rsFiles">
-				delete from tfiles where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.tositeid#"/>
-				and moduleid <> '00000000000000000000000000000000004'
-			</cfquery>
+			<cfif arguments.pushMode neq "changesOnly">
+				<cfquery datasource="#arguments.toDSN#">
+					delete from tfiles where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.tositeid#"/>
+					and moduleid <> '00000000000000000000000000000000004'
+				</cfquery>
+			</cfif>
 			<cfquery datasource="#arguments.fromDSN#" name="rsFiles">
 				select * from tfiles where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.fromsiteid#"/>
+				and moduleid <> '00000000000000000000000000000000004'
+				<cfif arguments.pushMode eq "changesOnly">
+					created >= #createODBCDateTime(created)#
+				</cfif>
 			</cfquery>
 			<cfloop query="rsFiles">
 				<cfquery datasource="#arguments.toDSN#">
@@ -931,15 +1072,23 @@ to your own modified versions of Mura CMS.
 			
 			<!--- tcontentcategories --->
 			<cfif arguments.pushMode eq "UpdatesOnly">
-				<cfquery datasource="#arguments.fromDSN#" name="rsMailingListNew">
+				<cfquery datasource="#arguments.fromDSN#" name="rstcontentcategoriesnew">
 					select categoryID from tcontentcategories where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.fromsiteid#"/> and lastUpdate >= #createODBCDateTime(lastDeployment)#
 				</cfquery>
 			</cfif>
 			<cfquery datasource="#arguments.toDSN#">
 				delete from tcontentcategories where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.tositeid#"/>
 				<cfif arguments.pushMode eq "UpdatesOnly">
-					<cfif rstcontentcategoriesnew.recordcount>
-						and categoryID in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#valueList(rstcontentcategoriesnew.categoryID)#">)
+					<cfif rstcontentcategoriesnew.recordcount or rsDeleted.recordcount>
+						and (
+						<cfif rstcontentcategoriesnew.recordcount>
+							categoryID in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#valueList(rstcontentcategoriesnew.contentID)#">)
+						</cfif>
+						<cfif rsDeleted.recordcount>
+							<cfif rstcontentcategoriesnew.recordcount>or</cfif>
+							categoryID in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#valueList(rsDeleted.objectID)#">)
+						</cfif>
+						)
 					<cfelse>
 						and 0=1
 					</cfif>
@@ -984,7 +1133,7 @@ to your own modified versions of Mura CMS.
 			
 			<!--- synced tables--->
 			<cfif arguments.mode eq "publish">
-				<cfset argument.rsContentNew=rsContentNew>
+				<cfset arguments.rsContentNew=rsContentNew>
 				<cfset getToWorkPublish(argumentCollection=arguments)>
 			<cfelseif arguments.mode eq "copy">
 				<cfset getToWorkCopy(argumentCollection=arguments)>
@@ -1001,10 +1150,10 @@ to your own modified versions of Mura CMS.
 		<cfargument name="fromDSN" type="string" default="" required="true">
 		<cfargument name="toDSN" type="string" default="" required="true">
 		<cfargument name="mode" type="string" default="publish" required="true">
-		<cfargument name="keyFactory" type="any" required="true">
+		<cfargument name="keyFactory" type="any" required="true">rsContentNew
 		<cfargument name="pushMode" type="any" default="full" required="true">
-		<cfargument name="rsContentNew" type="any">
-			
+		<cfargument name="rsContentNew" type="any" required="true">
+		<cfargument name="rsDeleted" type="any" required="true">	
 		<cfset var keys=arguments.keyFactory/>
 		<cfset var rsContent=""/>
 		<cfset var rsContentObjects=""/>
@@ -1036,7 +1185,9 @@ to your own modified versions of Mura CMS.
 		<cfset var getNewID=""/>
 		<cfset var rstpluginscripts=""/>
 		<cfset var rstplugindisplayobjects=""/>
-		<cfset var rstpluginsettings=""/>		
+		<cfset var rstpluginsettings=""/>
+		<cfset var rsRemoteDefinitions=application.configBean.getClassExtensionManager().buildDefinitionsQuery(arguments.toDSN)>		
+		<cfset var rsRemoteAttribute="">
 		
 		<cfif arguments.pushMode eq "Full">
 				<!--- tcontentcomments --->
@@ -1125,17 +1276,31 @@ to your own modified versions of Mura CMS.
 					and baseID  
 						in (select contenthistid from tcontent where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.tositeid#"/>
 							<cfif arguments.pushMode eq "UpdatesOnly">
-								<cfif arguments.rsContentNew.recordcount>
-									and contentID in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#valueList(arguments.rsContentNew.contentID)#">)
+								<cfif arguments.rsContentNew.recordcount or arguments.rsDeleted.recordcount>
+									and (
+									<cfif arguments.rsContentNew.recordcount>
+										contentID in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#valueList(arguments.rsContentNew.contentID)#">)
+									</cfif>
+									<cfif arguments.rsDeleted.recordcount>
+										<cfif arguments.rsContentNew.recordcount>or</cfif>
+										contentID in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#valueList(arguments.rsDeleted.objectID)#">)
+									</cfif>
+									)
 								<cfelse>
 									and 0=1
 								</cfif>
 							</cfif>
 							)
 				</cfquery>
+				
 				<cfquery datasource="#arguments.fromDSN#" name="rstclassextenddata">
-					select baseID,attributeID,attributeValue,siteID, stringvalue, numericvalue, datetimevalue, remoteID from tclassextenddata where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.fromsiteid#"/>
-					and baseID 
+					select tclassextenddata.baseID, tclassextenddata.attributeID, tclassextenddata.attributeValue, tclassextenddata.siteID, 
+					tclassextenddata.stringvalue, tclassextenddata.numericvalue, tclassextenddata.datetimevalue, tclassextenddata.remoteID,
+					tclassextendattributes.name
+					from tclassextenddata 
+					Inner Join tclassextendattributes on (tclassextendattributes.attributeID=tclassextenddata.attributeID)
+					where tclassextenddata.siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.fromsiteid#"/>
+					and tclassextenddata.baseID 
 						in (
 							select contenthistid from tcontent where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.fromsiteid#"/>
 							<cfif arguments.pushMode eq "UpdatesOnly">
@@ -1147,21 +1312,30 @@ to your own modified versions of Mura CMS.
 							</cfif>
 							)
 				</cfquery>
+				
 				<cfloop query="rstclassextenddata">
-					<cfquery datasource="#arguments.toDSN#">
-						insert into tclassextenddata (baseID,attributeID,attributeValue,siteID, stringvalue, numericvalue, datetimevalue, remoteID)
-						values
-						(
-						<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(baseID)#">,
-						<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(attributeID),de(attributeID),de(0))#">,
-						<cfqueryparam cfsqltype="cf_sql_LONGVARCHAR" null="#iif(attributeValue neq '',de('no'),de('yes'))#" value="#attributeValue#">,
-						<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#arguments.tositeID#">,
-						<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(stringvalue neq '',de('no'),de('yes'))#" value="#stringvalue#">,
-						<cfqueryparam cfsqltype="cf_sql_NUMERIC" null="#iif(isNumeric(numericvalue),de('no'),de('yes'))#" value="#numericvalue#">,
-						<cfqueryparam cfsqltype="cf_sql_TIMESTAMP" null="#iif(isDate(datetimevalue),de('no'),de('yes'))#" value="#datetimevalue#">,
-						<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(remoteID neq '',de('no'),de('yes'))#" value="#remoteID#">
-						)
+					<cfquery name="rsRemoteAttribute" dbtype="query">
+					select attributeID from rsRemoteDefinitions 
+					where attributename=<cfqueryparam cfsqltype="cf_sql_varchar" value="#rstclassextenddata.name#">
+					and siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.toSiteID#">
 					</cfquery>
+					<!--- Only move the data over if the attribute exists --->
+					<cfif rsRemoteAttribute.recordcount>
+						<cfquery datasource="#arguments.toDSN#">
+							insert into tclassextenddata (baseID,attributeID,attributeValue,siteID, stringvalue, numericvalue, datetimevalue, remoteID)
+							values
+							(
+							<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(baseID)#">,
+							<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(rsRemoteAttribute.attributeID),de(rsRemoteAttribute.attributeID),de(0))#">,
+							<cfqueryparam cfsqltype="cf_sql_LONGVARCHAR" null="#iif(attributeValue neq '',de('no'),de('yes'))#" value="#attributeValue#">,
+							<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#arguments.tositeID#">,
+							<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(stringvalue neq '',de('no'),de('yes'))#" value="#stringvalue#">,
+							<cfqueryparam cfsqltype="cf_sql_NUMERIC" null="#iif(isNumeric(numericvalue),de('no'),de('yes'))#" value="#numericvalue#">,
+							<cfqueryparam cfsqltype="cf_sql_TIMESTAMP" null="#iif(isDate(datetimevalue),de('no'),de('yes'))#" value="#datetimevalue#">,
+							<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(remoteID neq '',de('no'),de('yes'))#" value="#remoteID#">
+							)
+						</cfquery>
+					</cfif>
 				</cfloop>
 		
 	</cffunction>
@@ -1493,18 +1667,26 @@ to your own modified versions of Mura CMS.
 		<cfset var errors=arrayNew(1)>
 		<cfset var itemErrors=arrayNew(1)>
 		<cfset var publisherPushMode="Full">
+		<cfset var lastDeployment=application.settingsManager.getSite(arguments.siteID).getLastDeployment()>
+		<cfset var rsDeleted=queryNew("objectID")>
 		
 		<cfif len(arguments.pushMode)>
 			<cfset publisherPushMode=arguments.pushMode>
-		<cfelseif isDate(application.settingsManager.getSite(arguments.siteID).getLastDeployment()) and application.confiBean.getPushlisherPushMode() eq "UpdatesOnly">
+		<cfelseif isDate(lastDeployment) and application.configBean.getPushlisherPushMode() eq "UpdatesOnly">
 			<cfset publisherPushMode="UpdatesOnly">
+		</cfif>
+		
+		<cfif publisherPushMode eq "UpdatesOnly" and isDate(lastDeployment)>
+			<cfset rsDeleted=getBean("trashManager").getQuery(siteID=arguments.fromSiteID,sinceDate=lastDeployment)>
+		<cfelse>
+			<cfset rsDeleted=queryNew("objectID")>
 		</cfif>
 		
 		<cfset application.pluginManager.announceEvent("onSiteDeploy",pluginEvent)>
 		<cfset application.pluginManager.announceEvent("onBeforeSiteDeploy",pluginEvent)>
 		
 		<cfloop list="#application.configBean.getProductionDatasource()#" index="i">
-			<cfset getToWork(arguments.siteid, arguments.siteid, '#application.configBean.getDatasource()#', '#i#','publish',keys,publisherPushMode)>
+			<cfset getToWork(arguments.siteid, arguments.siteid, '#application.configBean.getDatasource()#', '#i#','publish',keys,publisherPushMode,lastDeployment,rsDeleted)>
 			<cfif len(application.configBean.getAssetPath())>
 				<cfset update("#application.configBean.getAssetPath()#","#application.configBean.getProductionAssetPath()#",i)>
 			</cfif>
@@ -1519,7 +1701,7 @@ to your own modified versions of Mura CMS.
 		
 		<cfloop list="#application.configBean.getProductionWebroot()#" index="p">
 			<cfloop query="rsPlugins">
-				<cfset itemErrors=application.utility.copyDir("#application.configBean.getWebRoot()##fileDelim#plugins#fileDelim##rsPlugins.directory##fileDelim#", "#p##fileDelim#plugins#fileDelim##rsPlugins.directory##fileDelim#") />
+				<cfset itemErrors=application.utility.copyDir("#application.configBean.getWebRoot()##fileDelim#plugins#fileDelim##rsPlugins.directory##fileDelim#", "#p##fileDelim#plugins#fileDelim##rsPlugins.directory##fileDelim#","",lastDeployment) />
 				<cfset errors=application.utility.joinArrays(errors,itemErrors)>
 			</cfloop>
 			<!--- delete mappings file so that it will be recreated but prod instance --->
@@ -1528,19 +1710,18 @@ to your own modified versions of Mura CMS.
 			</cfif>
 		</cfloop>
 			
-		<cfloop list="#application.configBean.getProductionFiledir()#" index="k">
-			<cfif publisherPushMode eq "Full">
-				<cfset itemErrors=application.utility.copyDir("#application.configBean.getFiledir()##fileDelim##arguments.siteid##fileDelim#", "#k##fileDelim##arguments.siteid##fileDelim#") />
-				<cfset errors=application.utility.joinArrays(errors,itemErrors)>
-			<cfelse>
-				<!--- implement partial file push --->
-			</cfif>
-		</cfloop>
+		<cfif publisherPushMode neq "UpdatesOnly">
+			<cfset lastDeployment="">
+		</cfif>
 		
+		<cfloop list="#application.configBean.getProductionFiledir()#" index="k">
+				<cfset itemErrors=application.utility.copyDir("#application.configBean.getFiledir()##fileDelim##arguments.siteid##fileDelim#", "#k##fileDelim##arguments.siteid##fileDelim#","",lastDeployment) />
+				<cfset errors=application.utility.joinArrays(errors,itemErrors)>
+		</cfloop>
 		
 		<cfloop list="#application.configBean.getProductionAssetdir()#" index="k">
 			<cfif not listFindNoCase(application.configBean.getProductionFiledir(),k)>
-				<cfset itemErrors=application.utility.copyDir("#application.configBean.getAssetdir()##fileDelim##arguments.siteid##fileDelim#", "#k##fileDelim##arguments.siteid##fileDelim#") />
+				<cfset itemErrors=application.utility.copyDir("#application.configBean.getAssetdir()##fileDelim##arguments.siteid##fileDelim#", "#k##fileDelim##arguments.siteid##fileDelim#","",lastDeployment) />
 				<cfset errors=application.utility.joinArrays(errors,itemErrors)>
 			</cfif>
 		</cfloop>

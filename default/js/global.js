@@ -181,26 +181,102 @@ function validate(theForm) {
 	return validateForm(theForm);
 }
 
-function getFieldName(theField){
-	if(theField.getAttribute('label')!=undefined){
+function getValidationFieldName(theField){
+	if(theField.getAttribute('data-label')!=undefined){
+		return theField.getAttribute('data-label');
+	}else if(theField.getAttribute('label')!=undefined){
 		return theField.getAttribute('label');
 	}else{
 		return theField.getAttribute('name');
 	}
 }
 
-function validateForm(theForm) {
+function getValidationIsRequired(theField){
+	if(theField.getAttribute('data-required')!=undefined){
+		return (theField.getAttribute('data-required').toLowerCase() =='true');
+	}else if(theField.getAttribute('required')!=undefined){
+		return (theField.getAttribute('required').toLowerCase() =='true');
+	}else{
+		return false;
+	}
+}
 
+function getValidationMessage(theField, defaultMessage){
+	if(theField.getAttribute('data-message') != undefined){
+		return theField.getAttribute('data-message') + '\n';
+	} else if(theField.getAttribute('message') != undefined){
+		return theField.getAttribute('message') + '\n';
+	} else {
+		return getValidationFieldName(theField).toUpperCase() + defaultMessage + '\n';
+	}	
+}
+
+function getValidationType(theField){
+	if(theField.getAttribute('data-validate')!=undefined){
+		return theField.getAttribute('data-validate').toUpperCase();
+	}else if(theField.getAttribute('validate')!=undefined){
+		return theField.getAttribute('validate').toUpperCase();
+	}else{
+		return '';
+	}
+}
+
+function hasValidationMatchField(theField){
+	if(theField.getAttribute('data-matchfield')!=undefined && theField.getAttribute('data-matchfield') != ''){
+		return true;
+	}else if(theField.getAttribute('matchfield')!=undefined && theField.getAttribute('matchfield') != ''){
+		return true;
+	}else{
+		return false;
+	}
+}
+
+function getValidationMatchField(theField){
+	if(theField.getAttribute('data-matchfield')!=undefined){
+		return theField.getAttribute('data-matchfield');
+	}else if(theField.getAttribute('matchfield')!=undefined){
+		return theField.getAttribute('matchfield');
+	}else{
+		return '';
+	}
+}
+
+function hasValidationRegex(theField){
+	if(theField.value != undefined){
+		if(theField.getAttribute('data-regex')!=undefined && theField.getAttribute('data-regex') != ''){
+			return true;
+		}else if(theField.getAttribute('regex')!=undefined && theField.getAttribute('regex') != ''){
+			return true;
+		}
+	}else{
+		return false;
+	}
+}
+
+function getValidationRegex(theField){
+	if(theField.getAttribute('data-regex')!=undefined){
+		return theField.getAttribute('data-regex');
+	}else if(theField.getAttribute('regex')!=undefined){
+		return theField.getAttribute('regex');
+	}else{
+		return '';
+	}
+}
+
+function validateForm(theForm) {
 		var errors="";
 		var setFocus=0;
 		var started=false;
 		var startAt;
 		var firstErrorNode;
+		var validationType='';
 		var frmInputs = theForm.getElementsByTagName("input");	
 		for (f=0; f < frmInputs.length; f++) {
 		 theField=frmInputs[f];
+		 validationType=getValidationType(theField);
+		 
 			if(theField.style.display==""){
-				if(theField.getAttribute('required')=='true' && theField.value == "" )
+				if(getValidationIsRequired(theField) && theField.value == "" )
 					{	
 						if (!started) {
 						started=true;
@@ -208,17 +284,12 @@ function validateForm(theForm) {
 						firstErrorNode="input";
 						}
 						
-						if(theField.getAttribute('message')==undefined){
-						 	errors += getFieldName(theField).toUpperCase() + ' is required\n';
-							 }
-						 else
-							 {
-							 errors += theField.getAttribute('message') + '\n';
-						 }			
+						errors += getValidationMessage(theField,' is required.');
+						 			
 					}
-				else if(theField.getAttribute('validate') != undefined && theField.value != ''){
+				else if(validationType != ''){
 						
-					if(theField.getAttribute('validate').toUpperCase()=='EMAIL' && !isEmail(theField.value))
+					if(validationType=='EMAIL' && theField.value.value != '' && !isEmail(theField.value))
 					{	
 						if (!started) {
 						started=true;
@@ -226,16 +297,11 @@ function validateForm(theForm) {
 						firstErrorNode="input";
 						}
 						
-						if(theField.getAttribute('message')==undefined){
-						 	 errors += getFieldName(theField).toUpperCase() + ' must be a valid email address\n';
-							 }
-						 else
-							 {
-							 errors += theField.getAttribute('message') + '\n';
-						 }					
+						errors += getValidationMessage(theField,' must be a valid email address.');
+								
 					}
 	
-					else if(theField.getAttribute('validate').toUpperCase()=='NUMERIC' && isNaN(theField.value))
+					else if(validationType=='NUMERIC' && isNaN(theField.value))
 					{	
 						if(!isNaN(theField.value.replace(/\$|\,|\%/g,'')))
 						{
@@ -248,19 +314,13 @@ function validateForm(theForm) {
 							firstErrorNode="input";
 							}
 						
-							if(theField.getAttribute('message')==undefined){
-						 	 	errors += getFieldName(theField).toUpperCase() + ' must be numeric\n';
-								 }
-							 else
-							 	{
-								 errors += theField.getAttribute('message') + '\n';
-							 }
+							 errors += getValidationMessage(theField,' must be numeric.');
 						}					
 					}
 					
-					else if(theField.getAttribute('validate').toUpperCase()=='REGEX' && theField.getAttribute('regex') != undefined)
+					else if(validationType=='REGEX' && hasValidationRegex(theField))
 					{	
-						var re = new RegExp(theField.getAttribute('regex'));
+						var re = new RegExp(getValidationRegex(theField));
 						if(!theField.value.match(re))
 						{
 							if (!started) {
@@ -269,17 +329,11 @@ function validateForm(theForm) {
 							firstErrorNode="input";
 							}
 						
-							if(theField.getAttribute('message')==undefined){
-						 	 	errors += getFieldName(theField).toUpperCase() + ' must be numeric\n';
-								 }
-							 else
-							 	{
-								 errors += theField.getAttribute('message') + '\n';
-							 }
+							 errors += getValidationMessage(theField,' is not valid.');
 						}					
 					}
-					else if(theField.getAttribute('validate').toUpperCase()=='MATCH' 
-							&& theField.getAttribute('matchfield') != undefined && theField.value != theForm[theField.getAttribute('matchfield')].value)
+					else if(validationType=='MATCH' 
+							&& hasValidationMatchField(theField) && theField.value != theForm[getValidationMatchField(theField)].value)
 					{	
 						if (!started) {
 						started=true;
@@ -287,15 +341,10 @@ function validateForm(theForm) {
 						firstErrorNode="input";
 						}
 						
-						if(theField.getAttribute('message')==undefined){
-						 	 errors += getFieldName(theField).toUpperCase() + ' must match' + theField.getAttribute('matchfield') + '\n';
-							 }
-						 else
-							 {
-							 errors += theField.getAttribute('message') + '\n';
-						 }					
+						errors += getValidationMessage(theField, ' must match' + getValidationMatchField(theField) + '.' );
+									
 					}
-					else if(theField.getAttribute('validate').toUpperCase()=='DATE' && !isDate(theField.value))
+					else if(validationType=='DATE' && theField.value.value != '' && !isDate(theField.value))
 					{
 						if (!started) {
 						started=true;
@@ -303,13 +352,8 @@ function validateForm(theForm) {
 						firstErrorNode="input";
 						}
 						
-						if(theField.getAttribute('message')==undefined){
-						 	 errors += getFieldName(theField).toUpperCase() + ' must be a valid date [MM/DD/YYYY]' + '\n';			
-							 }
-						 else
-							 {
-							 errors += theField.getAttribute('message') + '\n';
-						 }			 
+						errors += getValidationMessage(theField, ' must be a valid date [MM/DD/YYYY].' );
+						 
 					}
 				}
 					
@@ -320,7 +364,9 @@ function validateForm(theForm) {
 		
 			
 				theField=frmTextareas[f];
-				if(theField.style.display=="" && theField.getAttribute('required')=='true' && theField.value == "" )
+				validationType=getValidationType(theField);
+				 
+				if(theField.style.display=="" && getValidationIsRequired(theField) && theField.value == "" )
 				{	
 					if (!started) {
 					started=true;
@@ -328,18 +374,12 @@ function validateForm(theForm) {
 					firstErrorNode="textarea";
 					}
 					
-					if(theField.getAttribute('message')==undefined){
-					 	errors += getFieldName(theField).toUpperCase() + ' is required\n';
-						 }
-					 else
-						 {
-						 errors += theField.getAttribute('message') + '\n';
-					 }			
+					errors += getValidationMessage(theField, ' is required.' );		
 				}	
-				else if(theField.getAttribute('validate') != undefined && theField.value != ''){
-					if(theField.getAttribute('validate').toUpperCase()=='REGEX' && theField.getAttribute('regex') != undefined)
+				else if(validationType != ''){
+					if(validationType=='REGEX' && hasValidationRegex(theField))
 					{	
-						var re = new RegExp(theField.getAttribute('regex'));
+						var re = new RegExp(getValidationRegex(theField));
 						if(!theField.value.match(re))
 						{
 							if (!started) {
@@ -348,13 +388,7 @@ function validateForm(theForm) {
 							firstErrorNode="input";
 							}
 						
-							if(theField.getAttribute('message')==undefined){
-						 	 	errors += getFieldName(theField).toUpperCase() + ' is not valid\n';
-								 }
-							 else
-							 	{
-								 errors += theField.getAttribute('message') + '\n';
-							 }
+							errors += getValidationMessage(theField, ' is not valid.' );
 						}					
 					}
 				}
@@ -363,7 +397,8 @@ function validateForm(theForm) {
 		var frmSelects = theForm.getElementsByTagName("select");	
 		for (f=0; f < frmSelects.length; f++) {
 				theField=frmSelects[f];
-				if(theField.style.display=="" && theField.getAttribute('required')=='true' && theField.value == "" )
+				validationType=getValidationType(theField);
+				if(theField.style.display=="" && getValidationIsRequired(theField) && theField.value == "" )
 				{	
 					if (!started) {
 					started=true;
@@ -371,13 +406,7 @@ function validateForm(theForm) {
 					firstErrorNode="select";
 					}
 					
-					if(theField.getAttribute('message')==undefined){
-					 	errors += getFieldName(theField).toUpperCase() + ' is required\n';
-						 }
-					 else
-						 {
-						 errors += theField.getAttribute('message') + '\n';
-					 }			
+					errors += getValidationMessage(theField, ' is required.' );	
 				}	
 		}
 		
@@ -662,22 +691,71 @@ function setHTMLEditors(height,width) {
 	var allPageTags = document.getElementsByTagName("textarea");
 	var editors = new Array();
 	for (i = 0; i < allPageTags.length; i++) {
-		if (allPageTags[i].className == "htmlEditor") {
-			var oFCKeditor = new FCKeditor(allPageTags[i].id);
-			oFCKeditor.ToolbarSet			= "htmlEditor";
-			oFCKeditor.Config.EditorAreaCSS	= themepath + '/css/editor.css';
-			oFCKeditor.Config.StylesXmlPath = themepath + '/css/fckstyles.xml';
-			oFCKeditor.BasePath = context + '/wysiwyg/';
-			oFCKeditor.Height = height;
-			oFCKeditor.Width = width;
-			oFCKeditor.Config.ImageBrowser=false;
-			oFCKeditor.Config.ImageUpload=false;
-			oFCKeditor.Config.ForcePasteAsPlainText = true;
-			oFCKeditor.Config.StartupFocus = false;
-			oFCKeditor.ReplaceTextarea();
-			editors.push(oFCKeditor);
+		if (allPageTags[i].className.toLowerCase() == "htmleditor") {
+			if (htmlEditorType=='fckeditor') {
+				var oFCKeditor = new FCKeditor(allPageTags[i].id);
+				oFCKeditor.ToolbarSet			= "htmlEditor";
+				oFCKeditor.Config.EditorAreaCSS	= themepath + '/css/editor.css';
+				oFCKeditor.Config.StylesXmlPath = themepath + '/css/fckstyles.xml';
+				oFCKeditor.BasePath = context + '/wysiwyg/';
+				oFCKeditor.Height = height;
+				oFCKeditor.Width = width;
+				oFCKeditor.Config.ImageBrowser=false;
+				oFCKeditor.Config.ImageUpload=false;
+				oFCKeditor.Config.ForcePasteAsPlainText = true;
+				oFCKeditor.Config.StartupFocus = false;
+				oFCKeditor.ReplaceTextarea();
+				editors.push(oFCKeditor);
+			} else {
+				var instance=CKEDITOR.instances[allPageTags[i].id];
+				if (instance) {
+					CKEDITOR.remove(instance);
+				} 
+				
+				if(jQuery('#' + allPageTags[i].id).html() == ''){
+					jQuery('#' + allPageTags[i].id).html("<p></p>")
+				}
+				
+				jQuery('#' + allPageTags[i].id).ckeditor(getHTMLEditorConfig({height:height,width:width}),htmlEditorOnComplete);
+					
+			}
 		}
 	}
+}
+
+var HTMLEditorLoadCount=0;
+
+function htmlEditorOnComplete( editorInstance ) { 	
+	
+	if( htmlEditorType=='fckeditor'){
+		editorInstance.ResetIsDirty();
+		var totalIntances=FCKeditorAPI.Instances;
+	}else{
+		var instance=jQuery(editorInstance).ckeditorGet();
+		instance.resetDirty();
+		var totalIntances=CKEDITOR.instances;
+		//CKFinder.setupCKEditor( instance, { basePath : context + '/tasks/widgets/ckfinder/', rememberLastFolder : false } ) ;
+	}
+ 
+}
+
+function extendObject(obj1,obj2){
+	for (var attrname in obj2) { obj1[attrname] = obj2[attrname]; }
+	return obj1;
+}
+
+function getHTMLEditorConfig(customConfig) {
+	var attrname='';
+	var htmlEditorConfig={
+		toolbar:'htmlEditor',
+		customConfig : 'config.js.cfm'
+		}
+	
+	if(typeof(customConfig)== 'object'){	
+		htmlEditorConfig=extendObject(htmlEditorConfig,customConfig);
+	}
+	
+	return htmlEditorConfig;
 }
 
 addLoadEvent(setKeyCheck);

@@ -1,5 +1,3 @@
-/* @override http://mura:8500/admin/css/admin.css?coreversion=1 */
-
 /* This file is part of Mura CMS. 
 
 	Mura CMS is free software: you can redistribute it and/or modify 
@@ -91,7 +89,7 @@ ol li {
 
 form textarea {
 	margin: 0;
-	width: 100%;
+	width: 99%;
 	height: 120px;
 	background-color: #fff;
 	border: 1px solid #DBDBDB;
@@ -126,6 +124,11 @@ input.text {
 	border: 1px solid #DBDBDB;
 	padding: 3px;
 }
+
+input#file {
+	margin-top: 2px;
+}
+
 input.textAlt, input.date, input.medium {
 	width: 100px;
 }
@@ -212,6 +215,7 @@ a.submit:hover {
 a.submit span {
 	background: url(../images/btn.gif) no-repeat top right;
 	padding: 5px 8px 5px 0;
+	color: #fff;
 }
 
 input.checkbox {
@@ -252,7 +256,7 @@ p {
 	line-height: 1.3;
 }
 
-a {
+a, .tabs dt a {
 	color: #ff3a00;
 	text-decoration: none;
 }
@@ -347,7 +351,7 @@ img.tabPreloader {
 #container {
 	clear: both;
 	float: left;
-	min-width: 1005px;
+	min-width: 1120px;
 	position: relative;
 	margin: 0 20px 0 0;
 }
@@ -372,7 +376,9 @@ img.tabPreloader {
 	margin: 0 0 0 0;
 	padding: 36px 0 36px 30px;
 	line-height: 16px;
-	width: 830px;
+	min-width: 830px;
+	max-width: 950px;
+	width: auto;
 }
 
 body.compact #content {
@@ -414,7 +420,7 @@ body.compact #content {
 form {
 	margin: 0 0 20px 0;
 	padding: 0;
-	width: 830px;
+	width: 920px;
 }
 
 body.compact form {
@@ -706,48 +712,48 @@ dd ul.interestGroups li, dd ul.categories li {
 
 /* @group View Options */
 
-form#viewUpdate {
+.viewUpdate {
 	color: #636261;
 	position: relative;
+	display: table;
 }
 
-form#viewUpdate h3 {
+.viewUpdate h3 {
 	color: #000;
 }
 
-form#viewUpdate dl {
-	margin: 0 0 10px 0;
+.viewUpdate dl#mura-view-options {
+	margin: 0 0 10px !important;
 }
 
-form#viewUpdate dt {
+dl#mura-view-options dt {
 	float: left;
 	margin: 0 4px 0 0;
 	padding: 6px 0;
 	font-weight: normal;
-	vertical-align: middle;
+	line-height: 10px;
 }
 
-form#viewUpdate dt.sort {
+dl#mura-view-options dt.sort {
 	padding-left: 10px;
 	background: url(../images/rule_vertical_dotted.gif) left center no-repeat;
 }
 
-form#viewUpdate dd {
+dl#mura-view-options dd {
 	float: left;
 	margin: 0 4px 0 0;
 	padding: 2px 0;
-	vertical-align: middle;
 }
 
-form#viewUpdate dd.rows, form#viewUpdate dd.button {
+dl#mura-view-options dd.rows, dl#mura-view-options dd.button {
 	margin: 0 4px 0 0;
 }
 
-form#viewUpdate dt.viewDepth, form#viewUpdate dt.sort {
+dl#mura-view-options dt.viewDepth, dl#mura-view-options dt.sort {
 	padding-left: 6px;
 }
 
-form#viewUpdate input.text {
+dl#mura-view-options input.text {
 	color: #000;
 	background-color: #fff;
 	border: 1px solid #DBDBDB;
@@ -759,8 +765,12 @@ form .long {
 	width: 100%;
 }
 
-form#viewUpdate input.submit {
-	
+a#submitSort.pulse {
+	background-image: url(../images/btn_pulse.gif);
+}
+
+a#submitSort.pulse span {
+	background-image: url(../images/btn_pulse.gif);
 }
 
 form dd table {
@@ -1544,7 +1554,7 @@ h3.alt {
 	color: #000 !important;
 }
 
-#viewUpdate h3 {
+.viewUpdate h3 {
 	margin-bottom: .25em;
 }
 
@@ -1850,7 +1860,7 @@ h5 {
 	border: 0;
 	background: none;
 }
-/*#viewUpdate dl {
+/*.viewUpdate dl {
 	padding-top: 8px;
 }*/
 
@@ -1926,6 +1936,19 @@ a.removeCriteria {
 
 /* @end */
 
+#selectAssocImage a.selectImage {
+
+}
+
+#selectAssocImage dt {
+	margin-bottom: 1em;
+	font-weight: bold;
+}
+
+#selectAssocImageResults table {
+	margin: 0;
+}
+
 /* @end */
 
 /* @group Site Search */
@@ -1959,8 +1982,6 @@ a.removeCriteria {
 }
 
 /* @end */
-
-
 
 /* @group Tables */
 
@@ -2014,6 +2035,10 @@ h4 + table {
 	width: 100%;
 }
 
+#ctrash table {
+	width: 920px;
+}
+
 table + .divide {
 	margin-top: 8px;
 }
@@ -2023,6 +2048,7 @@ table + .divide {
 }
 
 th {
+	margin: 0 !important;
 	background: #FFFEFE url(../images/bg_th.jpg) repeat-x left bottom;
 	font-style: normal;
 	color: #000;
@@ -2032,17 +2058,11 @@ th {
 	text-align: center;
 }
 
-/*#cdashboard th, #cdashboard td {
-	text-align: left;
-	line-height: 20px;
-}*/
-
 th.alt {
 	text-align: left;
 	background-image: none;
 	background-color: #EAF4FE;
 	font-weight: normal;
-	width: 1%;
 	border: 0;
 }
 
@@ -2107,7 +2127,7 @@ table td table td {
 
 .alt td {
 	/*border: 1px solid #DBDBDB;*/
-	background-color: #fff;
+	background-color: #fcfeff;
 }
 
 table td.email {
@@ -2118,7 +2138,7 @@ table th.url, table td.url {
 	text-align: left;
 }
 
-table tr.alt th, table tr.alt td {
+table tr.alt th, table tr.alt td, .alt dl {
 	background-color: #FCFEFF;
 }
 
@@ -2133,8 +2153,6 @@ table td a {
 	text-decoration: none;
 }
 
-
-
 table td a:hover {
 	color: #000;
 	text-decoration: underline;
@@ -2144,12 +2162,17 @@ table td.add {
 	padding: 5px 4px 0;
 }
 
-table td.add a {
+table td.add a, .mura-grid a.add {
 	display: block;
 	background: url(../images/icons/add_32.png) no-repeat center center;
 	width: 12px;
 	height: 12px;
 	padding: 0;
+}
+
+.mura-grid a.add { /* really only needed for ie7 */
+	width: 24px;
+	height: 28px;
 }
 
 #ccategory table td.add a, #cFeed table td.add a {
@@ -2185,7 +2208,6 @@ table#fileList td.varWidth a,
 .overview span
  {
 	background-position: 11px 1px;
-	background-repeat: no-repeat;
 	color: #333232;
 	text-decoration: none;
 	margin: 0;
@@ -2215,15 +2237,17 @@ table.cfdebug td {
 table.cfdebug td a {
 	
 }
+
 /* @end */
 
+/* @group Mura Grid */
 
-
-/* @group Sortable Grid */
 .mura-grid {
-	overflow: hidden;
-	border-bottom: 1px solid #DBDBDB;
-	border-right: 1px solid #DBDBDB;
+	/*overflow: hidden;*/
+	border: 1px solid #DBDBDB;
+	border-top: 0;
+	float: left;
+	background: #f9f9f9;
 }
 
 .mura-grid li {
@@ -2234,67 +2258,76 @@ table.cfdebug td a {
 	padding: 0;
 }
 
+.mura-grid li:hover {
+	cursor: move;
+}
+
+.mura-grid li:hover #top-node  {
+	cursor: auto;
+}
+
 /* @group Nested Offsets */
 
-.mura-grid li li .add {
-	margin-right: 28px;
-}
+#mura-nodes li .add { margin-right: 16px; }
+#mura-nodes li .title { max-width: 80%; }
 
-.mura-grid li li li .add {
-	margin-right: 48px;
-}
+#mura-nodes li li .add { margin-right: 32px; }
+#mura-nodes li li .title { max-width: 76%; }
 
-.mura-grid li li li li .add {
-	margin-right: 68px;
-}
+#mura-nodes li li li .add { margin-right: 53px; }
+#mura-nodes li li li .title { max-width: 71%; }
 
-.mura-grid li li li li li .add {
-	margin-right: 88px;
-}
+#mura-nodes li li li li .add { margin-right: 73px; }
+#mura-nodes li li li li .title { max-width: 66%; }
 
-.mura-grid li li li li li li .add {
-	margin-right: 108px;
-}
+#mura-nodes li li li li li .add { margin-right: 93px; }
+#mura-nodes li li li li li .title { max-width: 61%; }
 
-.mura-grid li li li li li li li .add {
-	margin-right: 128px;
-}
+#mura-nodes li li li li li li .add { margin-right: 113px; }
+#mura-nodes li li li li li li .title { max-width: 56%; }
 
-.mura-grid li li li li li li li li .add {
-	margin-right: 148px;
-}
+#mura-nodes li li li li li li li .add { margin-right: 133px; }
+#mura-nodes li li li li li li li .title { max-width: 50%; }
 
-.mura-grid li li li li li li li li li .add {
-	margin-right: 168px;
-}
+#mura-nodes li li li li li li li li .add { margin-right: 153px; }
+#mura-nodes li li li li li li li li .title { max-width: 45%; }
 
-.mura-grid li li li li li li li li li li .add {
-	margin-right: 188px;
-}
+#mura-nodes li li li li li li li li li .add { margin-right: 173px; }
+#mura-nodes li li li li li li li li li .title { max-width: 40%; }
 
-.mura-grid li li li li li li li li li li li .add {
-	margin-right: 208px;
-}
+#mura-nodes li li li li li li li li li li .add { margin-right: 193px; }
+#mura-nodes li li li li li li li li li li .title { max-width: 35%; }
 
-.mura-grid li li li li li li li li li li li li .add {
-	margin-right: 228px;
-}
+#mura-nodes li li li li li li li li li li li .add { margin-right: 213px; }
+#mura-nodes li li li li li li li li li li li .title { max-width: 30%; }
 
-.mura-grid li li li li li li li li li li li li li .add {
-	margin-right: 248px;
-}
+#mura-nodes li li li li li li li li li li li li .add { margin-right: 233px; }
+#mura-nodes li li li li li li li li li li li li .title { max-width: 25%; }
+
+#mura-nodes li li li li li li li li li li li li li .add { margin-right: 253px; }
+#mura-nodes li li li li li li li li li li li li li .title { max-width: 20%; }
 
 /* @end */
-
-.mura-grid li {
-	float: left;
-	width: 100%;
+.mura-grid .ui-draggable-dragging {
+	/*border: 2px solid #fff;*/
+	-webkit-box-shadow: 0px 0px 8px #666;
+	-moz-box-shadow: 0px 0px 8px #666;
+	box-shadow: 0px 0px 8px #666;
 }
+
+/*Fix Firefox wrapping issue when zoomed in 1 level and dragging. Safari has a different issue when zoomed in and dragging where the row you're dragging gets positioned about 400 pixels below your cursor, not sure what the fix is. */
+/*@-moz-document url-prefix() {
+	.mura-grid .ui-draggable-dragging {
+	width: 81.5% !important;
+	height: 28px !important;
+	overflow: hidden;
+	}
+}*/
 
 .mura-grid dl {
 	background-color: #EAF4FE;
 	float: left;
-	width: 100%;
+	width: auto;
 	margin-bottom: 0;
 	min-height: 10px;
 	line-height: 20px;
@@ -2313,16 +2346,18 @@ table.cfdebug td a {
 }
 
 .mura-grid dt {
-	width: 340px;
+	width: 380px;
 	text-align: left;
 	line-height: 12px;
+	min-height: 20px;
 	padding: 0 5px 0 0 !important;
-	border-left: 1px solid #DBDBDB;
 	font-weight: normal;
+	position: relative;
 }
 
 .mura-grid dd {
 	padding: 4px 5px;
+	height: 20px;
 }
 
 .mura-grid dt a {
@@ -2335,6 +2370,14 @@ table.cfdebug td a {
 	float: left;
 	color: #000;
 }
+
+.mura-grid dt a.title {
+	overflow: hidden;
+}
+
+/*.mura-grid dt a.title:after {
+	content: ;
+}*/
 
 .mura-grid dt a.tooltip {
 	padding: 0 10px 0 20px;
@@ -2356,8 +2399,28 @@ table.cfdebug td a {
 	background: url(../images/icons/down_on.gif) no-repeat left 50%;
 }
 
+.mura-grid dt span.hasMore {
+	font-style: italic;
+	color: #666;
+}
+
+#mura-nodes dt .mura-title-fade {	
+	display: block;
+	position: absolute;
+	top: 0px;
+	right: 0px;
+	height: 28px;
+	width: 50px;
+	background: transparent url(../images/fade-grid-row-dk.png) left top repeat-y;
+}
+
+#mura-nodes .alt dt .mura-title-fade {
+	background: transparent url(../images/fade-grid-row-lt.png) left top repeat-y;
+}
+
 .mura-grid .order {
 	width: 40px;
+	/*display: none;*/
 }
 
 .mura-grid .objects {
@@ -2366,6 +2429,18 @@ table.cfdebug td a {
 
 .mura-grid .display {
 	width: 60px;
+}
+
+.mura-grid #mura-nodes .display a {
+	display: inline-block;
+	height: 20px;
+	width: 20px;
+	background: url(../images/icons/cal.png) no-repeat 50% 50%;
+}
+
+.mura-grid #mura-nodes .display a span {
+	width: 110px;
+	text-align: center;
 }
 
 .mura-grid .feature {
@@ -2377,15 +2452,23 @@ table.cfdebug td a {
 }
 
 .mura-grid .updated {
-	width: 110px;
+	width: 150px;
 }
 
-.mura-grid .admin {
+/*.mura-grid .date {
+	width: 90px;
+}
+
+.mura-grid .time {
+	width: 60px;
+}*/
+
+.mura-grid .admin, td.administration {
 	width: 92px;
 	border-right: 0;
 }
 
-.mura-grid .admin ul {
+.mura-grid .admin ul, td.administration ul {
 	margin: 0 auto;
 }
 
@@ -2426,6 +2509,7 @@ table.cfdebug td a {
 	
 .mura-grid-hdr dt {
 	text-align: left;
+	border-left: 0;
 	padding-left: 0 !important;
 }
 
@@ -2433,14 +2517,14 @@ table.cfdebug td a {
 	border-left: 0;
 }
 
-.mura-grid-hdr .add {
+.mura-grid-hdr .add, #mura-nodes span.add {
 	display: block;
 	float: left;
 	height: 18px !important;
-	background: none;
+	background: none !important;
 }
 
-.mura-grid-hdr a.tooltip, .mura-grid-hdr span.add {
+.mura-grid-hdr a.tooltip, .mura-grid-hdr span.add, #mura-nodes span.add {
 	display: inline-block;
 	line-height: 18px;
 }
@@ -2467,47 +2551,18 @@ dt .add li.Page {
 	background-position: 11px 1px;
 }
 
-/* @group IE 6 */
-
-* html .mura-grid {
-	height: 1%;	
-}
-
-* html .mura-grid-hdr {
-	position: relative;
-}
-
-* html .mura-grid-hdr {
-	position: relative;
-}
-
-* html .mura-grid dt {
-	width: 352px;
-}
-
-* html .mura-grid .admin {
-	width: 101px;
-}
-
-* html .mura-grid .admin li.deleteOff, * html .mura-grid .admin li.deleteOn {
-	margin-right: 0;
-}
-
-/* @end */
-
 /* @end */
 
 /* @group File Icons */
 
-dt li  {
-	background-image: url(../images/icons/files/icon_generic_small.gif);
-	background-repeat: no-repeat;
-	background-position: left center;
+.mura-grid li dt a  {
+	background: url(../images/icons/files/icon_generic_small.gif) 1px center no-repeat;
+	color: #333232;
+	text-decoration: none;
+	margin: 0;
 }
 
-form dt a {
-	margin-right: .5em;
-}
+/* @group Default */
 
 .doc, .docx {
 	background-image: url(../images/icons/files/icon_doc_small.gif) !important;
@@ -2588,6 +2643,8 @@ form dt a {
 .html, .htm {
 	background-image: url(../images/icons/files/icon_generic_small.gif) !important;
 }
+
+/* @end */
 
 /* @group Locked */
 
@@ -2681,100 +2738,52 @@ form dt a {
 
 /* @group Content Icons */
 
-.Link {
-	background: url(../images/icons/link.gif) no-repeat 11px 2px;
-	color: #333232;
-	text-decoration: none;
-	margin: 0;
-	padding: 2px 0 2px 30px;
+li.Link, .mura-grid li dt a.Link {
+	background: url(../images/icons/link.png) no-repeat 2px .7em;
 }
 
-.Portal {
-	background: transparent url(../images/icons/portal.gif) no-repeat 10px 1px;
-	color: #333232;
-	text-decoration: none;
-	margin: 0;
-	padding: 2px 0 2px 31px;
+li.Portal, .mura-grid li dt a.Portal {
+	background: url(../images/icons/portal.png) no-repeat 0 .6em;
 }
 
-.Gallery {
-	background: transparent url(../images/icons/smicn_32.png) no-repeat 12px 1px;
-	color: #333232;
-	text-decoration: none;
-	margin: 0;
-	padding: 2px 0 2px 31px;
+li.Gallery, .mura-grid li dt a.Gallery {
+	background: url(../images/icons/smicn_32.png) no-repeat 3px .7em;
 }
 
-.Image {
-	background: transparent url(../images/icons/image_32.png) no-repeat 10px 1px;
-	color: #333232;
-	text-decoration: none;
-	margin: 0;
-	padding: 2px 0 2px 31px;
+li.Image, .mura-grid li dt a.Image {
+	background: url(../images/icons/image_32.png) no-repeat 0 .6em;
 }
 
-.GalleryLocked {
-	background: transparent url(../images/icons/smicn_32_locked.png) no-repeat 11px 1px;
-	color: #333232;
-	text-decoration: none;
-	margin: 0;
-	padding: 2px 0 2px 31px;
+li.GalleryLocked, .mura-grid li dt a.GalleryLocked {
+	background: url(../images/icons/smicn_32_locked.png) no-repeat 1px .7em;
 }
 
-.ImageLocked {
-	background: transparent url(../images/icons/image_32_locked.png) no-repeat 10px 1px;
-	color: #333232;
-	text-decoration: none;
-	margin: 0;
-	padding: 2px 0 2px 31px;
+li.ImageLocked, .mura-grid li dt a.ImageLocked {
+	background: url(../images/icons/image_32_locked.png) no-repeat 0 .1em;
 }
 
-.Calendar {
-	background: transparent url(../images/icons/calendar.gif) no-repeat 13px 0;
-	color: #333232;
-	text-decoration: none;
-	margin: 0;
-	padding: 2px 0 2px 31px;
+li.Calendar, .mura-grid li dt a.Calendar {
+	background: url(../images/icons/calendar.gif) no-repeat 2px .6em;
 }
 
-.PageLocked {
-	background: transparent url(../images/icons/files/icon_generic_small_locked.gif) no-repeat 11px 1px;
-	color: #333232;
-	text-decoration: none;
-	margin: 0;
-	padding: 2px 0 2px 30px;
+li.PageLocked, .mura-grid li dt a.PageLocked {
+	background: url(../images/icons/files/icon_generic_small_locked.gif) no-repeat 1px .6em;
 }
 
-.DocumentLocked, .FileLocked {
-	background: transparent url(../images/icons/document_locked.gif) no-repeat 11px 1px;
-	color: #333232;
-	text-decoration: none;
-	margin: 0 0 0 0;
-	padding: 2px 0 2px 30px;
+li.DocumentLocked, li.FileLocked, .mura-grid li dt a.DocumentLocked, .mura-grid li dt a.FileLocked {
+	background: url(../images/icons/document_locked.png) no-repeat 1px .1em;
 }
 
-.LinkLocked {
-	background: transparent url(../images/icons/link_locked.gif) no-repeat 11px 2px;
-	color: #333232;
-	text-decoration: none;
-	margin: 0 0 0 0;
-	padding: 2px 0 2px 30px;
+li.LinkLocked, .mura-grid li dt a.LinkLocked {
+	background: url(../images/icons/link_locked.png) no-repeat 1px .7em;
 }
 
-.PortalLocked {
-	background: transparent url(../images/icons/portal_locked.gif) no-repeat 10px 1px;
-	color: #333232;
-	text-decoration: none;
-	margin: 0 0 0 0;
-	padding: 2px 0 2px 31px;
+li.PortalLocked, .mura-grid li dt a.PortalLocked {
+	background: url(../images/icons/portal_locked.png) no-repeat 0 .6em;
 }
 
-.CalendarLocked {
-	background: transparent url(../images/icons/calendar_locked.gif) no-repeat 12px 0;
-	color: #333232;
-	text-decoration: none;
-	margin: 0 0 0 0;
-	padding: 2px 0 2px 31px;
+li.CalendarLocked, .mura-grid li dt a.CalendarLocked {
+	background: url(../images/icons/calendar_locked.png) no-repeat 1px .6em;
 }
 
 
@@ -2786,7 +2795,7 @@ form dt a {
 	padding: 2px 0 2px 18px;
 }
 
-.navZoom .Portal, .navZoom .PortalLocked {
+.navZoom li.Portal, .navZoom li.PortalLocked {
 	background-position: left center;
 	color: #333232;
 	text-decoration: none;
@@ -2795,14 +2804,14 @@ form dt a {
 }
 
 
-table td .Category {
+table td li.Category {
 	color: #333232;
 	text-decoration: none;
 	margin: 0;
 	padding: 2px 0;
 }
 
-table td .CategoryLocked {
+table td li.CategoryLocked {
 	color: #333232;
 	text-decoration: none;
 	margin: 0;
@@ -2821,14 +2830,6 @@ table td.title img {
 
 /* @group Admin Icons */
 
-/*table td.administration ul {
-	margin-top: 2px;
-}*/
-
-table td.administration ul {
-	margin: 0 auto;
-}
-
 ul.one, ul.drafts, ul.creatives, ul.advertisers, ul.mailingListMembers { /* 1 Icon */
 	width: 14px;
 }
@@ -2845,7 +2846,7 @@ ul.four, ul.component { /* 4 Icons */
 	width: 76px;
 }
 
-ul.five, ul.form, ul.siteSummary { /* 5 Icons */
+ul.five, ul.form, .admin ul { /* 5 Icons */
 	width: 95px;
 }
 
@@ -2857,162 +2858,175 @@ ul.seven { /* 7 Icons */
 	width: 133px;
 }
 
-table td.administration li {
+.mura-grid .admin li, td.administration li {
 	list-style: none; 
-		float: left;
-		height: 14px;
-		width: 14px;
-		margin: 0 5px 0 0;
+	float: left !important;
+	width: 14px;
+	margin: 0 5px 0 0;
+	padding: 0;
+	clear: none;
+	background-position: 50% 50% !important;
+	background-repeat: no-repeat;
+	border: 0;
 }
 
-table td.administration li.add, table td.administration .select {
+.mura-grid .admin a, td.administration li a {
+	height: 18px;
+	width: 14px;
+	float: left;
+	clear: none;
+	text-indent: -999em;
+}
+
+.mura-grid .admin .add, .mura-grid .admin .select, table td.administration li.add, table td.administration .select {
 	background: url(../images/icons/add_24.png) no-repeat;
 }
 
-table td.administration li.preview {
+.mura-grid .admin li.preview, table td.administration li.preview {
 	background: url(../images/icons/opnbr_24.png) no-repeat;
 }
 
-table td.administration li.edit {
+.mura-grid .admin li.edit, table td.administration li.edit {
 	background: url(../images/icons/edit_24.png) no-repeat;
 }
 
-table td.administration li.config {
+.mura-grid .admin li.config, table td.administration li.config {
 	background: url(../images/icons/apps_24.png) no-repeat;
 }
 
-table td.administration li.versionHistory {
+.mura-grid .admin li.versionHistory, table td.administration li.versionHistory {
 	background: url(../images/icons/hist_24.png) no-repeat;
 }
 
-table td.administration li.permissions {
+.mura-grid .admin li.permissions, table td.administration li.permissions {
 	background: url(../images/icons/group_24.png) no-repeat;
 }
 
-table td.administration li.delete {
+.mura-grid .admin li.delete, table td.administration li.delete {
 	background: url(../images/icons/remov_24.png) no-repeat;
 }
 
-table td.administration li.viewDetails {
+.mura-grid .admin li.viewDetails, table td.administration li.viewDetails {
 	background: url(../images/icons/srch_24.png) no-repeat;
 }
 
-table td.administration li.rss {
+.mura-grid .admin li.rss, table td.administration li.rss {
 	background: url(../images/icons/rss_14.png) no-repeat;
 }
 
-table td.administration li.viewReport {
+.mura-grid .admin li.viewReport, table td.administration li.viewReport {
 	background: url(../images/icons/chart_24.png) no-repeat;
 }
 
-table td.administration li.download {
+.mura-grid .admin li.download, table td.administration li.download {
 	background: url(../images/icons/save_24.png) no-repeat;
 }
 
-table td.administration li.manageData {
+.mura-grid .admin li.manageData, table td.administration li.manageData {
 	background: url(../images/icons/confg_24.png) no-repeat;
 }
 
-table td.administration li.deploy {
+.mura-grid .admin li.deploy, table td.administration li.deploy {
 	background: url(../images/icons/go_24.png) no-repeat;
 }
 
-table td.administration li.moveCopy {
+.mura-grid li.admin li.moveCopy, table td.administration li.moveCopy {
 	background: url(../images/icons/move_24.png) no-repeat;
 }
 
-table td.administration li.source {
+.mura-grid li.admin li.source, table td.administration li.source {
 	background: url(../images/icons/notep_24.png) no-repeat;
 }
 
-table td.administration li.rename {
+.mura-grid .admin li.rename, table td.administration li.rename {
 	background: url(../images/icons/wiz_24.png) no-repeat;
 }
 
-table td.administration li.viewUnzip {
+.mura-grid .admin li.viewUnzip, table td.administration li.viewUnzip {
 	background: url(../images/icons/open_24.png) no-repeat;
 }
 
-table td.administration li.manipulate {
+.mura-grid .admin li.manipulate, table td.administration li.manipulate {
 	background: url(../images/icons/confg_24.png) no-repeat;
 }
 
-table td.administration li.addOff {
+.mura-grid .admin li.addOff, table td.administration li.addOff {
 	background: url(../images/icons/add_24_off.png) no-repeat;
 	text-indent: -999em;
 }
 
-table td.administration li.editOff {
+.mura-grid .admin li.editOff, table td.administration li.editOff {
 	background: url(../images/icons/edit_24_off.png) no-repeat;
 	text-indent: -999em;
 }
 
-table td.administration li.versionHistoryOff {
+.mura-grid .admin li.versionHistoryOff, table td.administration li.versionHstoryOff {
 	background: url(../images/icons/hist_24_off.png) no-repeat;
 	text-indent: -999em;
 }
 
-table td.administration li.permissionsOff {
+.mura-grid .admin li.permissionsOff, table td.administration li.permissionsOff {
 	background: url(../images/icons/group_24_off.png) no-repeat;
 	text-indent: -999em;
 }
 
-table td.administration li.deleteOff {
+.mura-grid .admin li.deleteOff, table td.administration li.deleteOff {
 	background: url(../images/icons/remov_24_off.png) no-repeat;
 	text-indent: -999em;
 }
 
-table td.administration li.moveCopyOff {
+.mura-grid .admin li.moveCopyOff, table td.administration li.moveCopyOff {
 	background: url(../images/icons/move_24_off.png) no-repeat;
 	text-indent: -999em;
 }
 
-table td.administration li.sourceOff {
+.mura-grid .admin li.sourceOff, table td.administration li.sourceOff {
 	background: url(../images/icons/notep_24_off.png) no-repeat;
 	text-indent: -999em;
 }
 
-table td.administration li.renameOff {
+.mura-grid .admin li.renameOff, table td.administration li.renameOff {
 	background: url(../images/icons/wiz_24_off.png) no-repeat;
 	text-indent: -999em;
 }
 
-table td.administration li.viewUnzipOff {
+.mura-grid .admin li.viewUnzipOff, table td.administration li.viewUnzipOff {
 	background: url(../images/icons/open_24_off.png) no-repeat;
 	text-indent: -999em;
 }
 
-table td.administration li.manipulateOff {
+.mura-grid .admin li.manipulateOff, table td.administration li.manipulateOff {
 	background: url(../images/icons/confg_24_off.png) no-repeat;
 	text-indent: -999em;
 }
 
-table td.administration li.manageDataOff {
+.mura-grid .admin li.manageDataOff, table td.administration li.manageDataOff {
 	background: url(../images/icons/confg_24_off.png) no-repeat;
 	text-indent: -999em;
 }
 
-table td.administration a {
-	height: 14px;
-	width: 14px;
-	float: left;
-	text-indent: -999em;
-}
-
-td.administration img.solo {
+.admin img.solo, td.administration img.solo {
 	margin: 0 6px;
+}
+
+#manageData table {
+	width: 1%;
 }
 
 #manageData th, #manageData td {
 	text-align: left;
-	vertical-align: middle;
 }
 
 #manageData td {
 	white-space: normal;
+	vertical-align: middle !important;
 }
 
-td.administration, #manageData td.dateSubmitted {
+#manageData td.mForm-data p {
+	margin: 0;
+}
+
+.admin, #manageData .dateSubmitted {
 	white-space: nowrap;
 }
 
@@ -3552,13 +3566,18 @@ a.tooltip {
 	padding-right: 8px;
 	background: url(../images/icons/icon_tool_tip.gif) no-repeat right top;
 	display: block;
-		line-height: 1.2;
+	line-height: 1.2;
 }
 
-dt a.tooltip, th.varWidth a.tooltip {
-	display: inline;
+dt a.tooltip, th.varWidth a.tooltip, .mura-table-header a.tooltip {
+	display: inline-block;
 	color: #000;
 	padding-right: 10px;
+}
+
+.mura-table-header a.tooltip {
+	line-height: 20px;
+	border: 0;
 }
 
 a.tooltip:hover {
@@ -3583,40 +3602,8 @@ a.tooltip:hover span {
 	white-space: normal;
 	text-align: left;
 	text-decoration: none;
+	line-height: 1;
 }
-
-
-
-/* @group IE5 Fix */
-
-
-
-
-
-a.expand {
-	position: relative;
-	text-decoration: none;
-	cursor: help;
-}
-
-a.expand span {
-	display: none;
-}
-
-a.expand:hover span {
-	display: block;
-	position: absolute;
-	padding: 10px;
-	background: #f3f3f3;
-	border: 1px solid #ccc;
-	color: #000;
-	margin: 3px 0 0 3px;
-	width: 250px;
-	z-index: 50;
-	top: -30px;
-}
-
-/* @end */
 
 /* @end */
 
@@ -3766,7 +3753,18 @@ a.expand:hover span {
 
 /* @end */
 
+/* @group Trash Bin */
 
+#ctrash #selectNewParent {
+	margin-bottom: 1em;
+}
+
+#ctrash #selectNewParent h3 {
+	font-size: 11px;
+	margin-bottom: .5em;
+}
+
+/* @end */
 
 /* @group Miscellaneous */
 .categories li ul, .interestGroups li ul li ul {

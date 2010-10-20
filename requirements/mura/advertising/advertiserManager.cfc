@@ -148,6 +148,25 @@ to your own modified versions of Mura CMS.
 	<cfreturn variables.instance.adZoneManager.create(arguments.data) />
 </cffunction>
 
+<cffunction name="saveAdZone" returntype="any" access="public" output="false">
+	<cfargument name="data" />
+	<cfset var rs="">
+	
+	<cfif isObject(arguments.data)>
+		<cfset arguments.data=arguments.data.getAllValues()>
+	</cfif>
+	
+	<cfquery name="rs" datasource="#variables.instance.configBean.getDatasource()#"  username="#variables.instance.configBean.getDBUsername()#" password="#variables.instance.configBean.getDBPassword()#">
+		select adzoneID from tadzones where adzoneID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.data.adzoneID#">
+	</cfquery>
+	
+	<cfif rs.recordcount>
+		<cfreturn updateAdZone(arguments.data) />
+	<cfelse>
+		<cfreturn createAdZone(arguments.data) />
+	</cfif>
+</cffunction>
+
 <cffunction name="readAdZone" returntype="any" access="public" output="false">
 	<cfargument name="adZoneID"  type="string" />
 
@@ -164,6 +183,25 @@ to your own modified versions of Mura CMS.
 	<cfargument name="adZoneID"  type="string" />
 
 	<cfreturn variables.instance.adZoneManager.delete(arguments.adZoneID) />
+</cffunction>
+
+<cffunction name="saveCreative" returntype="any" access="public" output="false">
+	<cfargument name="data" />
+	<cfset var rs="">
+	
+	<cfif isObject(arguments.data)>
+		<cfset arguments.data=arguments.data.getAllValues()>
+	</cfif>
+	
+	<cfquery name="rs" datasource="#variables.instance.configBean.getDatasource()#"  username="#variables.instance.configBean.getDBUsername()#" password="#variables.instance.configBean.getDBPassword()#">
+		select creativeID from tadcreatives where creativeID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.data.creativeID#">
+	</cfquery>
+	
+	<cfif rs.recordcount>
+		<cfreturn updateCreative(arguments.data) />
+	<cfelse>
+		<cfreturn createCreative(arguments.data) />
+	</cfif>
 </cffunction>
 
 <cffunction name="createCreative" returntype="any" access="public" output="false">
@@ -190,6 +228,25 @@ to your own modified versions of Mura CMS.
 	<cfreturn variables.instance.CreativeManager.delete(arguments.CreativeID) />
 </cffunction>
 
+<cffunction name="saveCampaign" returntype="any" access="public" output="false">
+	<cfargument name="data" />
+	<cfset var rs="">
+	
+	<cfif isObject(arguments.data)>
+		<cfset arguments.data=arguments.data.getAllValues()>
+	</cfif>
+	
+	<cfquery name="rs" datasource="#variables.instance.configBean.getDatasource()#"  username="#variables.instance.configBean.getDBUsername()#" password="#variables.instance.configBean.getDBPassword()#">
+		select campaignID from tadcampaigns where campaignID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.data.campaignID#">
+	</cfquery>
+	
+	<cfif rs.recordcount>
+		<cfreturn updateCampaign(arguments.data) />
+	<cfelse>
+		<cfreturn createCampaign(arguments.data) />
+	</cfif>
+</cffunction>
+
 <cffunction name="createCampaign" returntype="any" access="public" output="false">
 	<cfargument name="data"  type="struct" />
 
@@ -212,6 +269,25 @@ to your own modified versions of Mura CMS.
 	<cfargument name="CampaignID"  type="string" />
 
 	<cfreturn variables.instance.campaignManager.delete(arguments.CampaignID) />
+</cffunction>
+
+<cffunction name="savePlacement" returntype="any" access="public" output="false">
+	<cfargument name="data" />
+	<cfset var rs="">
+	
+	<cfif isObject(arguments.data)>
+		<cfset arguments.data=arguments.data.getAllValues()>
+	</cfif>
+	
+	<cfquery name="rs" datasource="#variables.instance.configBean.getDatasource()#"  username="#variables.instance.configBean.getDBUsername()#" password="#variables.instance.configBean.getDBPassword()#">
+		select placementID from tadplacements where placementID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.data.placementID#">
+	</cfquery>
+	
+	<cfif rs.recordcount>
+		<cfreturn updatePlacement(arguments.data) />
+	<cfelse>
+		<cfreturn createPlacement(arguments.data) />
+	</cfif>
 </cffunction>
 
 <cffunction name="createPlacement" returntype="any" access="public" output="false">

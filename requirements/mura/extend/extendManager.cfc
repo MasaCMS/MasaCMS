@@ -55,10 +55,18 @@ to your own modified versions of Mura CMS.
 	<cfreturn this />
 </cffunction>
 
-<cffunction name="getDefinitionsQuery" output="false">
-
-<cfif not isQuery(variables.definitionsQuery)>
-	<cfquery name="variables.definitionsQuery" datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+<cffunction name="buildDefinitionsQuery" output="false">
+<cfargument name="datasource" required="true" default="#application.configBean.getDatasource()#">
+<cfargument name="dbUsername" required="true" default="#application.configBean.getDbUsername()#">
+<cfargument name="dbPassword" required="true" default="#application.configBean.getDbPassword()#">
+	<cfset var rs="">
+	
+	<cfif arguments.datasource neq variables.configBean.getDatasource()>
+		<cfset arguments.dbUsername="">
+		<cfset arguments.dbPassword="">
+	</cfif>
+	
+	<cfquery name="rs" datasource="#arguments.datasource#" username="#arguments.dbUsername#" password="#arguments.dbPassword#">
 	select tclassextend.subtypeid, tclassextend.siteid, tclassextend.basekeyfield, tclassextend.datatable, tclassextend.type, 
 	tclassextend.subtype, tclassextendsets.extendsetid, tclassextendsets.categoryid, tclassextendsets.name extendsetname, 
 	tclassextendsets.container, tclassextendattributes.attributeid, tclassextendattributes.name attributename, 
@@ -75,10 +83,16 @@ to your own modified versions of Mura CMS.
 	inner join tclassextendattributes on (tclassextendsets.extendsetid=tclassextendattributes.extendsetid)
 	order by tclassextend.siteID, tclassextend.type, tclassextend.subtype, tclassextendsets.orderno, tclassextendattributes.orderno 
 	</cfquery>
-</cfif>
 
-<cfreturn variables.definitionsQuery>
+	<cfreturn rs>
 
+</cffunction>
+
+<cffunction name="getDefinitionsQuery" output="false">
+	<cfif not isQuery(variables.definitionsQuery)>
+		<cfset variables.definitionsQuery=buildDefinitionsQuery()>
+	</cfif>
+	<cfreturn variables.definitionsQuery>
 </cffunction>
 
 <cffunction name="purgeDefinitionsQuery" output="false">

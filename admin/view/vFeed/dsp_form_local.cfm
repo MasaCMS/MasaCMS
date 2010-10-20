@@ -145,7 +145,7 @@ function previewFeed(){
 #application.pluginManager.renderEvent("onFeedEditMessageRender",event)#
 </span>
 
-<form action="index.cfm?fuseaction=cFeed.update&siteid=#URLEncodedFormat(attributes.siteid)#" method="post" name="form1" id="feedFrm" onsubmit="return validate(this);">
+<form novalidate="novalidate" action="index.cfm?fuseaction=cFeed.update&siteid=#URLEncodedFormat(attributes.siteid)#" method="post" name="form1" id="feedFrm" onsubmit="return validate(this);">
 
 <dl class="oneColumn">
 <dt class="first">#application.rbFactory.getKeyValue(session.rb,'collections.name')#</dt>

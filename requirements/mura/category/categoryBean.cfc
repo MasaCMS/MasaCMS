@@ -99,13 +99,10 @@ to your own modified versions of Mura CMS.
 			<cfset setRemoteSourceURL(arguments.category.remoteSourceURL) />
 			<cfset setRemotePubDate(arguments.category.remotePubDate) />
 	
-			
 		<cfelseif isStruct(arguments.category)>
 		
 			<cfloop collection="#arguments.category#" item="prop">
-				<cfif structKeyExists(this,"set#prop#")>
-					<cfset evaluate("set#prop#(arguments.category[prop])") />
-				</cfif>
+				<cfset setValue(prop,arguments.category[prop])>
 			</cfloop>
 			
 		</cfif>
@@ -408,7 +405,7 @@ to your own modified versions of Mura CMS.
 		<cfif isDefined("this.set#arguments.property#")>
 			<cfset evaluate("set#property#(arguments.propertyValue)") />
 		<cfelse>
-			<cfset variables.intance["#arguments.property#"]=arguments.propertyValue />
+			<cfset variables.instance["#arguments.property#"]=arguments.propertyValue />
 		</cfif>
 		<cfreturn this>
 	</cffunction>

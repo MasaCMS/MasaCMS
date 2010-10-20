@@ -209,15 +209,17 @@ to your own modified versions of Mura CMS.
 							<a href="javascript:noSpam('#listFirst(htmlEditFormat(rsComments.email),'@')#','#listlast(HTMLEditFormat(rsComments.email),'@')#')" onfocus="this.blur();">#rbFactory.getKey('comments.email')#</a>
 						</cfif>
 					</dt>
+					<!---Uncomment this to add gravatars to comments
+					<dd class="gravatar"><img src=''http://www.gravatar.com/avatar/#lcase(Hash(lcase(rsComments.email)))#'' /></dd> --->
 					<dd class="comment">
 						#setParagraphs(htmleditformat(rsComments.comments))#
 					</dd>
 					<dd class="dateTime">
 						#LSDateFormat(rsComments.entered,"long")#, #LSTimeFormat(rsComments.entered,"short")#
 						<cfif request.isEditor>
-							| <a href="index.cfm?deletecommentid=#rscomments.commentid#&nocache=1" onClick="return confirm('Delete Comment?');">#rbFactory.getKey('comments.delete')#</a>
+							| <a href="./?deletecommentid=#rscomments.commentid#&nocache=1&linkServID=#request.contentBean.getContentID()#" onClick="return confirm('Delete Comment?');">#rbFactory.getKey('comments.delete')#</a>
 							<cfif rsComments.isApproved neq 1>
-								| <a href="index.cfm?approvedcommentid=#rscomments.commentid#&nocache=1" onClick="return confirm('Approve Comment?');">#rbFactory.getKey('comments.approve')#</a>
+								| <a href="./?approvedcommentid=#rscomments.commentid#&nocache=1&linkServID=#request.contentBean.getContentID()#" onClick="return confirm('Approve Comment?');">#rbFactory.getKey('comments.approve')#</a>
 							</cfif>
 						</cfif>
 					</dd>

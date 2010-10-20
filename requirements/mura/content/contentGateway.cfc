@@ -1177,13 +1177,16 @@ to your own modified versions of Mura CMS.
 	<cfset var w = "">
 	
 	<cfquery name="rs" datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+	<!--- Find direct matches with no releasedate --->
+	
 	select tcontent.contentid,tcontent.contenthistid,tcontent.siteid,tcontent.title,tcontent.menutitle,tcontent.targetParams,tcontent.filename,tcontent.summary,tcontent.tags,
 	tcontent.restricted,tcontent.releaseDate,tcontent.type,tcontent.subType,
 	tcontent.restrictgroups,tcontent.target ,tcontent.displaystart,tcontent.displaystop,0 as Comments, 
 	tcontent.credits, tcontent.remoteSource, tcontent.remoteSourceURL, 
 	tcontent.remoteURL,tfiles.fileSize,tfiles.fileExt,tcontent.fileID,tcontent.audience,tcontent.keyPoints,
 	tcontentstats.rating,tcontentstats.totalVotes,tcontentstats.downVotes,tcontentstats.upVotes, 0 as kids, 
-	tparent.type parentType,tcontent.nextn,tcontent.path,tcontent.orderno,tcontent.lastupdate,tcontent.created
+	tparent.type parentType,tcontent.nextn,tcontent.path,tcontent.orderno,tcontent.lastupdate,tcontent.created,
+	tcontent.created sortdate, 0 sortpriority
 	from tcontent Left Join tfiles ON (tcontent.fileID=tfiles.fileID)
 	Left Join tcontent tparent on (tcontent.parentid=tparent.contentid
 						    			and tcontent.siteid=tparent.siteid
@@ -1221,6 +1224,8 @@ to your own modified versions of Mura CMS.
 				AND
 				tcontent.type in ('Page','Portal','Calendar','File','Link')
 				
+				AND tcontent.releaseDate is null
+				
 				<cfif len(arguments.sectionID)>
 				and tcontent.path like  <cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.sectionID#%">	
 				</cfif>
@@ -1228,6 +1233,7 @@ to your own modified versions of Mura CMS.
 				<cfif len(arguments.tag)>
 					and tcontenttags.Tag= <cfqueryparam cfsqltype="cf_sql_varchar" value="#trim(arguments.tag)#"/> 
 				<cfelse>
+					<!---
 					<cfloop list="#trim(arguments.keywords)#" index="w" delimiters=" ">
 							and
 							(tcontent.Title like  <cfqueryparam cfsqltype="cf_sql_varchar" value="%#w#%">
@@ -1236,12 +1242,249 @@ to your own modified versions of Mura CMS.
 							or tcontent.summary like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#w#%"> 
 							or tcontent.body like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#w#%">)
 					</cfloop>
+					--->
+					and
+							(tcontent.Title like  <cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.keywords#%">
+							or tcontent.menuTitle like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.keywords#%">
+							or tcontent.metaKeywords like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.keywords#%">
+							or tcontent.summary like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.keywords#%"> 
+							or tcontent.body like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.keywords#%">)
 				</cfif>
 				and tcontent.searchExclude=0
+	union 
 	
+	<!--- Find direct matches with releasedate --->
+	
+	select tcontent.contentid,tcontent.contenthistid,tcontent.siteid,tcontent.title,tcontent.menutitle,tcontent.targetParams,tcontent.filename,tcontent.summary,tcontent.tags,
+	tcontent.restricted,tcontent.releaseDate,tcontent.type,tcontent.subType,
+	tcontent.restrictgroups,tcontent.target ,tcontent.displaystart,tcontent.displaystop,0 as Comments, 
+	tcontent.credits, tcontent.remoteSource, tcontent.remoteSourceURL, 
+	tcontent.remoteURL,tfiles.fileSize,tfiles.fileExt,tcontent.fileID,tcontent.audience,tcontent.keyPoints,
+	tcontentstats.rating,tcontentstats.totalVotes,tcontentstats.downVotes,tcontentstats.upVotes, 0 as kids, 
+	tparent.type parentType,tcontent.nextn,tcontent.path,tcontent.orderno,tcontent.lastupdate,tcontent.created,
+	tcontent.releaseDate sortdate, 0 sortpriority
+	from tcontent Left Join tfiles ON (tcontent.fileID=tfiles.fileID)
+	Left Join tcontent tparent on (tcontent.parentid=tparent.contentid
+						    			and tcontent.siteid=tparent.siteid
+						    			and tparent.active=1) 
+	Left Join tcontentstats on (tcontent.contentid=tcontentstats.contentid
+					    and tcontent.siteid=tcontentstats.siteid) 
+	
+	
+	
+	<cfif len(arguments.tag)>
+		Inner Join tcontenttags on (tcontent.contentHistID=tcontenttags.contentHistID)
+	</cfif> 
+		where
+	
+	         			(tcontent.Active = 1 
+						AND tcontent.Approved = 1
+				  		AND tcontent.siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/> )
 						
-				order by tcontent.title 
-						 
+						AND
+						   
+						(
+						  tcontent.Display = 2 
+							AND 
+							(
+								(tcontent.DisplayStart <= #createodbcdate(now())#
+								AND (tcontent.DisplayStop >= #createodbcdate(now())# or tcontent.DisplayStop is null)
+								)
+								OR  tparent.type='Calendar'
+							)
+							
+							OR tcontent.Display = 1
+						)
+						
+						
+				AND
+				tcontent.type in ('Page','Portal','Calendar','File','Link')
+				
+				AND tcontent.releaseDate is not null
+				
+				<cfif len(arguments.sectionID)>
+				and tcontent.path like  <cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.sectionID#%">	
+				</cfif>
+				
+				<cfif len(arguments.tag)>
+					and tcontenttags.Tag= <cfqueryparam cfsqltype="cf_sql_varchar" value="#trim(arguments.tag)#"/> 
+				<cfelse>
+					<!---
+					<cfloop list="#trim(arguments.keywords)#" index="w" delimiters=" ">
+							and
+							(tcontent.Title like  <cfqueryparam cfsqltype="cf_sql_varchar" value="%#w#%">
+							or tcontent.menuTitle like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#w#%">
+							or tcontent.metaKeywords like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#w#%">
+							or tcontent.summary like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#w#%"> 
+							or tcontent.body like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#w#%">)
+					</cfloop>
+					--->
+					and
+							(tcontent.Title like  <cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.keywords#%">
+							or tcontent.menuTitle like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.keywords#%">
+							or tcontent.metaKeywords like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.keywords#%">
+							or tcontent.summary like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.keywords#%"> 
+							or tcontent.body like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.keywords#%">)
+				</cfif>
+				and tcontent.searchExclude=0				
+				
+		UNION
+		
+		<!--- Find in-direct matches with no releasedate --->
+		select tcontent.contentid,tcontent.contenthistid,tcontent.siteid,tcontent.title,tcontent.menutitle,tcontent.targetParams,tcontent.filename,tcontent.summary,tcontent.tags,
+	tcontent.restricted,tcontent.releaseDate,tcontent.type,tcontent.subType,
+	tcontent.restrictgroups,tcontent.target ,tcontent.displaystart,tcontent.displaystop,0 as Comments, 
+	tcontent.credits, tcontent.remoteSource, tcontent.remoteSourceURL, 
+	tcontent.remoteURL,tfiles.fileSize,tfiles.fileExt,tcontent.fileID,tcontent.audience,tcontent.keyPoints,
+	tcontentstats.rating,tcontentstats.totalVotes,tcontentstats.downVotes,tcontentstats.upVotes, 0 as kids, 
+	tparent.type parentType,tcontent.nextn,tcontent.path,tcontent.orderno,tcontent.lastupdate,tcontent.created,
+	tcontent.created sortdate, 1 sortpriority
+	from tcontent Left Join tfiles ON (tcontent.fileID=tfiles.fileID)
+	Left Join tcontent tparent on (tcontent.parentid=tparent.contentid
+						    			and tcontent.siteid=tparent.siteid
+						    			and tparent.active=1) 
+	Left Join tcontentstats on (tcontent.contentid=tcontentstats.contentid
+					    and tcontent.siteid=tcontentstats.siteid) 
+	
+	
+	
+	<cfif len(arguments.tag)>
+		Inner Join tcontenttags on (tcontent.contentHistID=tcontenttags.contentHistID)
+	</cfif> 
+		where
+	
+	         			(tcontent.Active = 1 
+						AND tcontent.Approved = 1
+				  		AND tcontent.siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/> )
+						
+						AND
+						   
+						(
+						  tcontent.Display = 2 
+							AND 
+							(
+								(tcontent.DisplayStart <= #createodbcdate(now())#
+								AND (tcontent.DisplayStop >= #createodbcdate(now())# or tcontent.DisplayStop is null)
+								)
+								OR  tparent.type='Calendar'
+							)
+							
+							OR tcontent.Display = 1
+						)
+						
+						
+				AND
+				tcontent.type in ('Page','Portal','Calendar','File','Link')
+				
+				AND tcontent.releaseDate is null
+				
+				<cfif len(arguments.sectionID)>
+				and tcontent.path like  <cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.sectionID#%">	
+				</cfif>
+				
+				<cfif len(arguments.tag)>
+					and tcontenttags.Tag= <cfqueryparam cfsqltype="cf_sql_varchar" value="#trim(arguments.tag)#"/> 
+				<cfelse>
+					and not
+							(tcontent.Title like  <cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.keywords#%">
+							or tcontent.menuTitle like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.keywords#%">
+							or tcontent.metaKeywords like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.keywords#%">
+							or tcontent.summary like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.keywords#%"> 
+							or tcontent.body like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.keywords#%">)
+							
+					<cfloop list="#trim(arguments.keywords)#" index="w" delimiters=" ">
+							and
+							(tcontent.Title like  <cfqueryparam cfsqltype="cf_sql_varchar" value="%#w#%">
+							or tcontent.menuTitle like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#w#%">
+							or tcontent.metaKeywords like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#w#%">
+							or tcontent.summary like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#w#%"> 
+							or tcontent.body like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#w#%">)
+					</cfloop>
+					
+				</cfif>
+				and tcontent.searchExclude=0
+	union 
+	
+	<!--- Find in-direct matches with releasedate --->
+	
+	select tcontent.contentid,tcontent.contenthistid,tcontent.siteid,tcontent.title,tcontent.menutitle,tcontent.targetParams,tcontent.filename,tcontent.summary,tcontent.tags,
+	tcontent.restricted,tcontent.releaseDate,tcontent.type,tcontent.subType,
+	tcontent.restrictgroups,tcontent.target ,tcontent.displaystart,tcontent.displaystop,0 as Comments, 
+	tcontent.credits, tcontent.remoteSource, tcontent.remoteSourceURL, 
+	tcontent.remoteURL,tfiles.fileSize,tfiles.fileExt,tcontent.fileID,tcontent.audience,tcontent.keyPoints,
+	tcontentstats.rating,tcontentstats.totalVotes,tcontentstats.downVotes,tcontentstats.upVotes, 0 as kids, 
+	tparent.type parentType,tcontent.nextn,tcontent.path,tcontent.orderno,tcontent.lastupdate,tcontent.created,
+	tcontent.releaseDate sortdate, 1 sortpriority
+	from tcontent Left Join tfiles ON (tcontent.fileID=tfiles.fileID)
+	Left Join tcontent tparent on (tcontent.parentid=tparent.contentid
+						    			and tcontent.siteid=tparent.siteid
+						    			and tparent.active=1) 
+	Left Join tcontentstats on (tcontent.contentid=tcontentstats.contentid
+					    and tcontent.siteid=tcontentstats.siteid) 
+	
+	
+	
+	<cfif len(arguments.tag)>
+		Inner Join tcontenttags on (tcontent.contentHistID=tcontenttags.contentHistID)
+	</cfif> 
+		where
+	
+	         			(tcontent.Active = 1 
+						AND tcontent.Approved = 1
+				  		AND tcontent.siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/> )
+						
+						AND
+						   
+						(
+						  tcontent.Display = 2 
+							AND 
+							(
+								(tcontent.DisplayStart <= #createodbcdate(now())#
+								AND (tcontent.DisplayStop >= #createodbcdate(now())# or tcontent.DisplayStop is null)
+								)
+								OR  tparent.type='Calendar'
+							)
+							
+							OR tcontent.Display = 1
+						)
+						
+						
+				AND
+				tcontent.type in ('Page','Portal','Calendar','File','Link')
+				
+				AND tcontent.releaseDate is not null
+				
+				<cfif len(arguments.sectionID)>
+				and tcontent.path like  <cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.sectionID#%">	
+				</cfif>
+				
+				<cfif len(arguments.tag)>
+					and tcontenttags.Tag= <cfqueryparam cfsqltype="cf_sql_varchar" value="#trim(arguments.tag)#"/> 
+				<cfelse>
+					and not
+							(tcontent.Title like  <cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.keywords#%">
+							or tcontent.menuTitle like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.keywords#%">
+							or tcontent.metaKeywords like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.keywords#%">
+							or tcontent.summary like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.keywords#%"> 
+							or tcontent.body like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.keywords#%">)
+					
+					<cfloop list="#trim(arguments.keywords)#" index="w" delimiters=" ">
+							and
+							(tcontent.Title like  <cfqueryparam cfsqltype="cf_sql_varchar" value="%#w#%">
+							or tcontent.menuTitle like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#w#%">
+							or tcontent.metaKeywords like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#w#%">
+							or tcontent.summary like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#w#%"> 
+							or tcontent.body like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#w#%">)
+					</cfloop>
+					
+				</cfif>
+				and tcontent.searchExclude=0					 
+	</cfquery>
+	
+	<cfquery name="rs" dbtype="query">
+		select *
+		from rs 
+		order by sortpriority, sortdate desc
 	</cfquery>
 	
 	<cfreturn rs />

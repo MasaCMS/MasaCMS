@@ -6,23 +6,23 @@ the Free Software Foundation, Version 2 of the License.
 
 Mura CMS is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. ï¿½See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-along with Mura CMS.  If not, see <http://www.gnu.org/licenses/>.
+along with Mura CMS. ï¿½If not, see <http://www.gnu.org/licenses/>.
 
 Linking Mura CMS statically or dynamically with other modules constitutes
 the preparation of a derivative work based on Mura CMS. Thus, the terms and 	
-conditions of the GNU General Public License version 2 (“GPL”) cover the entire combined work.
+conditions of the GNU General Public License version 2 (ï¿½GPLï¿½) cover the entire combined work.
 
 However, as a special exception, the copyright holders of Mura CMS grant you permission
 to combine Mura CMS with programs or libraries that are released under the GNU Lesser General Public License version 2.1.
 
-In addition, as a special exception,  the copyright holders of Mura CMS grant you permission
-to combine Mura CMS  with independent software modules that communicate with Mura CMS solely
+In addition, as a special exception, ï¿½the copyright holders of Mura CMS grant you permission
+to combine Mura CMS ï¿½with independent software modules that communicate with Mura CMS solely
 through modules packaged as Mura CMS plugins and deployed through the Mura CMS plugin installation API,
-provided that these modules (a) may only modify the  /trunk/www/plugins/ directory through the Mura CMS
+provided that these modules (a) may only modify the ï¿½/trunk/www/plugins/ directory through the Mura CMS
 plugin installation API, (b) must not alter any default objects in the Mura CMS database
 and (c) must not alter any files in the following directories except in cases where the code contains
 a separately distributed license.
@@ -37,7 +37,7 @@ the source code of that other code when and as the GNU GPL requires distribution
 
 For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception
 for your modified version; it is your choice whether to do so, or to make such modified version available under
-the GNU General Public License version 2  without this exception.  You may, if you choose, apply this exception
+the GNU General Public License version 2 ï¿½without this exception. ï¿½You may, if you choose, apply this exception
 to your own modified versions of Mura CMS.
 --->
 
@@ -48,7 +48,8 @@ to your own modified versions of Mura CMS.
 <cfset rbFactory=getSite().getRBFactory() />
 <cfparam name="msg" default="#rbFactory.getKey('user.message')#">
 <cfparam name="request.categoryID" default="">
-<cfset addToHTMLHeadQueue("fckeditor.cfm")>
+<cfset loadJSLib()>
+<cfset addToHTMLHeadQueue("htmlEditor.cfm")>
 </cfsilent>
 <cfoutput>
 
@@ -174,18 +175,20 @@ to your own modified versions of Mura CMS.
 		<cfset attributeBean=attributesArray[a]/>
 		<cfset attributeValue=request.userBean.getExtendedAttribute(attributeBean.getAttributeID(),true)/>
 			<cfif attributeBean.getType() neq "hidden">
-			<cfif not started>
-			<fieldset>
-			<legend>#extendSetBean.getName()#</legend>
-				<input name="extendSetID" type="hidden" value="#extendSetBean.getExtendSetID()#"/>
-				<ul>
+				<cfif not started>
+				<fieldset>
+				<legend>#extendSetBean.getName()#</legend>
+					<input name="extendSetID" type="hidden" value="#extendSetBean.getExtendSetID()#"/>
+					<ul>
+					<cfset started=true>
+				</cfif>
 				<li>
 				<cfif not listFind("TextArea,MultiSelectBox",attributeBean.getType())>
 					<label for="ext#attributeBean.getAttributeID()#"><cfif attributeBean.getRequired()><b>*</b></cfif>#attributeBean.getLabel()#<!--- <cfif len(attributeBean.gethint())><br />#attributeBean.gethint()#</cfif> ---></label>
 				<cfelse>
 					<label for="ext#attributeBean.getAttributeID()#"><cfif attributeBean.getRequired()><b>*</b></cfif>#attributeBean.getLabel()#<cfif len(attributeBean.gethint())><br/>#attributeBean.gethint()#</cfif></label>
 				</cfif>
-			</cfif>
+			
 				<cfif attributeBean.getType() neq 'TextArea'>		
 					#attributeBean.renderAttribute(attributeValue,true)#
 					<cfif attributeBean.getType() neq "MultiSelectBox" and len(attributeBean.gethint())>
@@ -203,14 +206,13 @@ to your own modified versions of Mura CMS.
 				<cfelse>
 				#attributeBean.renderAttribute(attributeValue)#
 				</cfif>	
-			</cfif>
-			</li>
-			<cfif not started>
-			</ul>
-			</fieldset>
-			<cfset started=true>
-			</cfif>
+				</li>
+			</cfif>	
 		</cfloop>
+		<cfif started>
+			</ul>
+			</fieldset>	
+		</cfif>
 		
 </cfloop>
 </cfif>
@@ -237,7 +239,7 @@ to your own modified versions of Mura CMS.
 </div>
 <script type="text/javascript"> 
 document.getElementById("profile").elements[0].focus();
-setHTMLEditors(200,500);
+setHTMLEditors(200,"70%");
 </script>
 <cfelse>
 <!--- This is where the script for a newly created account does if inactive is default to 1 for new accounts--->

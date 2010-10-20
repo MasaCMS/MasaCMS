@@ -68,7 +68,7 @@ to your own modified versions of Mura CMS.
 </ul></cfif>
 
 
-<form method="post" name="frmSettings" action="index.cfm?fuseaction=cSettings.updatePlugin" onsubmit="return validateForm(this);">
+<form novalidate="novalidate" method="post" name="frmSettings" action="index.cfm?fuseaction=cSettings.updatePlugin" onsubmit="return validateForm(this);">
 <cfsilent>
 
 <cfquery name="rsLocation" datasource="#application.configbean.getDatasource()#" username="#application.configBean.getDBUsername()#" password="#application.configBean.getDBPassword()#">

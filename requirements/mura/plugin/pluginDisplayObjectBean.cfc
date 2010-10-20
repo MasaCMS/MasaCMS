@@ -232,7 +232,7 @@ to your own modified versions of Mura CMS.
 		<cfquery datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 		update tplugindisplayobjects set
 			moduleID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getModuleID()#">,
-			name=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getName()#">,
+			name=<cfqueryparam cfsqltype="cf_sql_varchar" value="#left(getName(),50)#">,
 			location=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getLocation()#">,
 			displayObjectFile=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getDisplayObjectFile()#">,
 			displayMethod=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getDisplayMethod()#">,
@@ -246,7 +246,7 @@ to your own modified versions of Mura CMS.
 			insert into tplugindisplayobjects (objectID,moduleID,name,location,displayobjectfile,displaymethod,docache) values (
 			<cfqueryparam cfsqltype="cf_sql_varchar" value="#getObjectID()#">,
 			<cfqueryparam cfsqltype="cf_sql_varchar" value="#getModuleID()#">,
-			<cfqueryparam cfsqltype="cf_sql_varchar" value="#getName()#">,
+			<cfqueryparam cfsqltype="cf_sql_varchar" value="#left(getName(),50)#">,
 			<cfqueryparam cfsqltype="cf_sql_varchar" value="#getLocation()#">,
 			<cfqueryparam cfsqltype="cf_sql_varchar" value="#getDisplayObjectFile()#">,
 			<cfqueryparam cfsqltype="cf_sql_varchar" value="#getDisplayMethod()#">,

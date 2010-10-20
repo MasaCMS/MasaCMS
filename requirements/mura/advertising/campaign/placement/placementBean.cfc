@@ -97,9 +97,7 @@ to your own modified versions of Mura CMS.
 		<cfelseif isStruct(arguments.placement)>
 		
 			<cfloop collection="#arguments.placement#" item="prop">
-				<cfif isdefined("variables.instance.#prop#")>
-					<cfset evaluate("set#prop#(arguments.placement[prop])") />
-				</cfif>
+				<cfset setValue(prop,arguments.placement[prop])>
 			</cfloop>
 			
 			<cfif isdefined("arguments.placement.costPerM") and arguments.placement.costPerM gt 0 >
@@ -127,7 +125,13 @@ to your own modified versions of Mura CMS.
 <cffunction name="getAllValues" access="public" returntype="struct" output="false">
 	<cfreturn variables.instance />
 </cffunction>
- 
+
+<cffunction name="setAllValues" returntype="any" access="public" output="false">
+	<cfargument name="instance">
+	<cfset variables.instance=arguments.instance/>
+	<cfreturn this>
+</cffunction>
+
 <cffunction name="validate" access="public" output="false" returntype="void">
 	<cfset variables.instance.errors=structnew() />
 </cffunction>
@@ -354,6 +358,40 @@ to your own modified versions of Mura CMS.
 <cffunction name="setBudget" access="public" output="false">
 	<cfargument name="budget" type="numeric" />
 	<cfset variables.instance.budget = arguments.budget />
+</cffunction>
+
+<cffunction name="setValue" returntype="any" access="public" output="false">
+<cfargument name="property"  type="string" required="true">
+<cfargument name="propertyValue" default="" >
+		
+	<cfif isDefined("this.set#arguments.property#")>
+		<cfset evaluate("set#property#(arguments.propertyValue)") />
+	<cfelse>
+		<cfset variables.instance["#arguments.property#"]=arguments.propertyValue />
+	</cfif>
+	<cfreturn this>
+</cffunction>
+
+<cffunction name="getValue" returntype="any" access="public" output="false">
+<cfargument name="property"  type="string" required="true">
+	
+	<cfif structKeyExists(this,"get#property#")>
+		<cfreturn evaluate("get#property#()") />
+	<cfelseif structKeyExists(variables.instance,"#arguments.property#")>
+		<cfreturn variables.instance["#arguments.property#"] />
+	<cfelse>
+		<cfreturn "" />
+	</cfif>
+
+</cffunction>
+
+<cffunction name="save" output="false">
+<cfset setAllValues(getBean("advertiserManager").savePlacement(this).getAllValues())>
+<cfreturn this>
+</cffunction>
+
+<cffunction name="delete" output="false">
+<cfset getBean("advertiserManager").deletePlacement(getPlacementID())>
 </cffunction>
 
 </cfcomponent>
