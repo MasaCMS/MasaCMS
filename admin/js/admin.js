@@ -165,7 +165,7 @@ return true;
 function isEmail(cur){
 			var string1=cur
 			if (string1.indexOf("@") == -1 || string1.indexOf(".") == -1)
-			{
+			{alert(cur)
 			return false;
 			}else{
 			return true;}
@@ -370,7 +370,7 @@ function validateForm(theForm) {
 					}
 				else if(validationType != ''){
 						
-					if(validationType=='EMAIL' && theField.value.value != '' && !isEmail(theField.value))
+					if(validationType=='EMAIL' && theField.value != '' && !isEmail(theField.value))
 					{	
 						if (!started) {
 						started=true;
@@ -382,7 +382,7 @@ function validateForm(theForm) {
 								
 					}
 	
-					else if(validationType=='NUMERIC' && theField.value.value != '' && isNaN(theField.value))
+					else if(validationType=='NUMERIC' && theField.value != '' && isNaN(theField.value))
 					{	
 						if(!isNaN(theField.value.replace(/\$|\,|\%/g,'')))
 						{
@@ -401,7 +401,7 @@ function validateForm(theForm) {
 					
 					else if(validationType=='REGEX' && hasValidationRegex(theField))
 					{	
-						alert(theField.value.value);
+						alert(theField.value);
 						var re = new RegExp(getValidationRegex(theField));
 						if(!theField.value.match(re))
 						{
@@ -426,7 +426,7 @@ function validateForm(theForm) {
 						errors += getValidationMessage(theField, ' must match' + getValidationMatchField(theField) + '.' );
 									
 					}
-					else if(validationType=='DATE' && theField.value.value != '' && !isDate(theField.value))
+					else if(validationType=='DATE' && theField.value != '' && !isDate(theField.value))
 					{
 						if (!started) {
 						started=true;

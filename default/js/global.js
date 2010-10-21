@@ -289,7 +289,7 @@ function validateForm(theForm) {
 					}
 				else if(validationType != ''){
 						
-					if(validationType=='EMAIL' && theField.value.value != '' && !isEmail(theField.value))
+					if(validationType=='EMAIL' && theField.value != '' && !isEmail(theField.value))
 					{	
 						if (!started) {
 						started=true;
@@ -344,7 +344,7 @@ function validateForm(theForm) {
 						errors += getValidationMessage(theField, ' must match' + getValidationMatchField(theField) + '.' );
 									
 					}
-					else if(validationType=='DATE' && theField.value.value != '' && !isDate(theField.value))
+					else if(validationType=='DATE' && theField.value != '' && !isDate(theField.value))
 					{
 						if (!started) {
 						started=true;
