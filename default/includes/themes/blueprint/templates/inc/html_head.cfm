@@ -14,10 +14,12 @@
 	<link rel="shortcut icon" href="#$.siteConfig('assetPath')#/images/favicon.ico" type="image/x-icon" />
 	
 	
-	<!--- Theme-Specific Styles --->
+	<!--- Blueprint-Specific Style --->
     <link rel="stylesheet" href="#$.siteConfig('themeAssetPath')#/css/screen.css" type="text/css" media="all" />
+    <!--- Mura-Specific Styles --->
     <link rel="stylesheet" href="#$.siteConfig('assetPath')#/css/mura.css" type="text/css" media="all" />
-    <link rel="stylesheet" href="#$.siteConfig('themeAssetPath')#/css/site.css" type="text/css" media="all" />
+    <!--- Optional. Extended styles for Mura objects and conventions. --->
+    <link rel="stylesheet" href="#$.siteConfig('themeAssetPath')#/css/extended.css" type="text/css" media="all" />
     <link rel="stylesheet" href="#$.siteConfig('themeAssetPath')#/css/print.css" type="text/css" media="print" />
 	<cfinclude template="ie_conditional_includes.cfm" />
 	

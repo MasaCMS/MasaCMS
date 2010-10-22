@@ -24,6 +24,17 @@
 <cffunction name="handle" output="false" returnType="any">
 	<cfargument name="event" required="true">
 	
+	<cfset var showMeta=0>
+	<cfset var renderer="">
+	<cfset var siteRenderer=arguments.event.getContentRenderer()>
+	<cfset var themeRenderer=arguments.event.getThemeRenderer()>
+	
+	<cfif structKeyExists(themeRenderer,"showItemMeta")>
+		<cfset renderer=themeRenderer>
+	<cfelse>
+		<cfset renderer=siteRenderer>
+	</cfif>
+	
 	<cfset application.pluginManager.announceEvent('onRenderStart', event)/>
 	
 	<cfswitch expression="#event.getValue('contentBean').getType()#">
@@ -33,14 +44,14 @@
 			<cfif event.getValue('showMeta') neq 1>
 				<cfswitch expression="#event.getValue('contentBean').getType()#">
 					<cfcase value="Link">
-						<cfif not event.getValue('contentRenderer').showItemMeta("Link") or event.getValue('showMeta') eq 2>
+						<cfif not renderer.showItemMeta("Link") or event.getValue('showMeta') eq 2>
 							<cfset event.getHandler('standardLinkTranslation').handle(event) />
 						<cfelse>
 							<cfset event.getHandler('standardTranslation').handle(event) />	
 						</cfif>
 					</cfcase>
 					<cfcase value="File">		
-						<cfif not event.getValue('contentRenderer').showItemMeta(event.getValue('contentBean').getFileExt()) or event.getValue('showMeta') eq 2>
+						<cfif not renderer.showItemMeta(event.getValue('contentBean').getFileExt()) or event.getValue('showMeta') eq 2>
 							<!---<cftry>--->
 							<cfset event.getHandler('standardFileTranslation').handle(event) />
 							<!---

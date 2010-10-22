@@ -18,7 +18,7 @@
 	<link rel="stylesheet" href="#$.siteConfig('assetPath')#/css/mura.css" type="text/css" media="all" />
 	<!--- Theme-Specific Styles --->
 	<link rel="stylesheet" href="#$.siteConfig('themeAssetPath')#/css/typography.css" type="text/css" media="all" />
-	<link rel="stylesheet" href="#$.siteConfig('themeAssetPath')#/css/site.css" type="text/css" media="all" />
+	<link rel="stylesheet" href="#$.siteConfig('themeAssetPath')#/css/merced.css" type="text/css" media="all" />
 	<link rel="stylesheet" href="#$.siteConfig('themeAssetPath')#/css/print.css" type="text/css" media="print" />
 	<cfinclude template="ie_conditional_includes.cfm" />
 	

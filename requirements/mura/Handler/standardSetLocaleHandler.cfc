@@ -25,7 +25,7 @@
 	<cfargument name="event" required="true">
 	<cfparam name="session.siteID" default="">
 	<cfset setLocale(application.settingsManager.getSite(event.getValue('siteid')).getJavaLocale()) />
-	<cfif session.siteid neq event.getValue('siteid')>
+	<cfif session.siteid neq event.getValue('siteid') or not structKeyExists(session,"locale")>
 		<!---These are use for admin purposes--->
 		<cfset session.siteID=event.getValue('siteid')>
 		<cfset session.userFilesPath = "#application.configBean.getAssetPath()#/#event.getValue('siteid')#/assets/">

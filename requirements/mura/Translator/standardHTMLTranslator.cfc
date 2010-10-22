@@ -24,10 +24,18 @@
 <cffunction name="translate" output="false" returnType="any">
 	<cfargument name="event" required="true">
 	<cfset var page = "" />
-	<cfset var renderer=event.getValue("contentRenderer") />
 	<cfset var themePath=event.getSite().getThemeAssetPath()  />
 	<cfset var $=event.getValue("MuraScope")>
 	<cfset var mura=event.getValue("MuraScope")>
+	<cfset var renderer="">
+	<cfset var siteRenderer=arguments.event.getContentRenderer()>
+	<cfset var themeRenderer=arguments.event.getThemeRenderer()>
+	
+	<cfif structKeyExists(themeRenderer,"renderHTMLHeadQueue")>
+		<cfset renderer=themeRenderer>
+	<cfelse>
+		<cfset renderer=siteRenderer>
+	</cfif>
 	
 	<cfset event.setValue('themePath',themePath)>
 	

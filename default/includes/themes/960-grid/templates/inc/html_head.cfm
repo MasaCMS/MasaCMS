@@ -19,7 +19,7 @@
     <!--- Theme-Specific --->
 	<link rel="stylesheet" href="#$.siteConfig('themeAssetPath')#/css/typography.css" type="text/css" media="all" />
     <link rel="stylesheet" href="#$.siteConfig('themeAssetPath')#/css/960.css" type="text/css" media="all" />
-	<link rel="stylesheet" href="#$.siteConfig('themeAssetPath')#/css/site.css" type="text/css" media="all" />
+	<link rel="stylesheet" href="#$.siteConfig('themeAssetPath')#/css/merced-lite.css" type="text/css" media="all" />
     <link rel="stylesheet" href="#$.siteConfig('themeAssetPath')#/css/text.css" type="text/css" media="all" />
 	<link rel="stylesheet" href="#$.siteConfig('themeAssetPath')#/css/print.css" type="text/css" media="print" />
 	<cfinclude template="ie_conditional_includes.cfm" />
