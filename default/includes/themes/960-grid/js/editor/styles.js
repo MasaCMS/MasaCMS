@@ -70,7 +70,7 @@ CKEDITOR.stylesSet.add( 'default',
 		element : 'img',
 		attributes :
 		{
-			'class' : 'left',
+			'class' : 'left'
 		}
 	},
 
@@ -79,7 +79,7 @@ CKEDITOR.stylesSet.add( 'default',
 		element : 'img',
 		attributes :
 		{
-			'class' : 'right',
+			'class' : 'right'
 		}
 	},
 
