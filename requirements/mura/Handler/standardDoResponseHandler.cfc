@@ -29,7 +29,7 @@
 	<cfset var siteRenderer=arguments.event.getContentRenderer()>
 	<cfset var themeRenderer=arguments.event.getThemeRenderer()>
 	
-	<cfif structKeyExists(themeRenderer,"showItemMeta")>
+	<cfif not isSimpleValue(themeRenderer) and structKeyExists(themeRenderer,"showItemMeta")>
 		<cfset renderer=themeRenderer>
 	<cfelse>
 		<cfset renderer=siteRenderer>

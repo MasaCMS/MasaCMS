@@ -1,5 +1,3 @@
-/* @override http://mura:8500/admin/css/dialog.css */
-
 /*This file is part of Mura CMS.
 
     Mura CMS is free software: you can redistribute it and/or modify
@@ -25,7 +23,7 @@
 	position: absolute;
 	top:0;
 	width: 100%;
-	z-index: 5000;
+	z-index: 500000;
 	opacity: 0.7;
 	filter: alpha(opacity:70);
 }
@@ -42,7 +40,7 @@
 	top: 2%;
 	width: 90%;
 	height: 90%;
-	z-index: 9998;
+	z-index: 499998;
 }
 
 .editForm[id] {
@@ -85,7 +83,7 @@ a#editFormCloseLink {
 	position: fixed !important;
 	top: 0px !important;
 	width: 100% !important;
-	z-index: 999 !important;
+	z-index: 499999 !important;
 	text-align: left !important;
 	font-weight: normal !important;
 	font-family: "Lucida Grande", Arial, Helvetica, sans-serif !important;
@@ -96,7 +94,7 @@ a#editFormCloseLink {
 	left: 12px !important;
 	position: fixed !important;
 	top: 0px !important;
-	z-index: 1000 !important;
+	z-index: 500001 !important;
 	cursor: pointer !important;
 	border: 0 !important;
 }
