@@ -31,7 +31,7 @@
 	<cfset var siteRenderer=arguments.event.getContentRenderer()>
 	<cfset var themeRenderer=arguments.event.getThemeRenderer()>
 	
-	<cfif not isSimpleValue(themeRenderer) and structKeyExists(themeRenderer,"renderHTMLHeadQueue")>
+	<cfif isObject(themeRenderer) and structKeyExists(themeRenderer,"renderHTMLHeadQueue")>
 		<cfset renderer=themeRenderer>
 	<cfelse>
 		<cfset renderer=siteRenderer>
