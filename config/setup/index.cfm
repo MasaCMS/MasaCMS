@@ -488,7 +488,7 @@ to your own modified versions of Mura CMS.
 <div id="header"><h1>Mura CMS</h1></div>
 <div id="container">
 <div id="navigation" class="sidebar">
-<p id="copyright">Version 5.2</p>
+<p id="copyright">Version 5.3</p>
 </div>
 <div id="content">
 <h2>Mura Set Up</h2>
