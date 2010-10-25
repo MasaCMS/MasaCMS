@@ -140,7 +140,9 @@ to your own modified versions of Mura CMS.
 				{ toolbar:<cfif attributes.type eq "Form">'Form'<cfelse>'Default'</cfif>,
 				height:'550',
 				customConfig : 'config.js.cfm' },htmlEditorOnComplete);
-			
+				<cfif attributes.preview eq 1>
+			   	preview('http://#application.settingsManager.getSite(attributes.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##application.contentRenderer.getURLStem(attributes.siteid,'')#?previewid=#request.contentBean.getcontenthistid()#&siteid=#request.contentBean.getsiteid()#','#request.contentBean.getTargetParams()#');
+				</cfif> 
 			</script>
 		</cfif>
 	</cfif>
