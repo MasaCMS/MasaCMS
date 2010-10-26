@@ -168,11 +168,12 @@ to your own modified versions of Mura CMS.
 		<cfreturn rs />
 	</cffunction>
 	
-	<cffunction name="read" output="false" returntype="Any" hint="Takes (contentid | contenthistid | filename | remoteid), siteid, use404">
+	<cffunction name="read" output="false" returntype="Any" hint="Takes (contentid | contenthistid | filename | remoteid | title), siteid, use404">
 	<cfargument name="contentID" required="true" default="">
 	<cfargument name="contentHistID" required="true" default="">
 	<cfargument name="filename">
 	<cfargument name="remoteID" required="true" default="">
+	<cfargument name="title" required="true" default="">
 	<cfargument name="siteID" required="true" default=""> 
 	<cfargument name="use404" required="true" default="false">
 
@@ -186,6 +187,8 @@ to your own modified versions of Mura CMS.
 		<cfreturn getActiveContentByFilename(arguments.filename, arguments.siteid, arguments.use404)>
 	<cfelseif len(arguments.remoteid)>
 		<cfreturn getActiveByRemoteID(arguments.remoteid, arguments.siteid)>
+	<cfelseif len(arguments.title)>
+		<cfreturn getActiveByTitle(arguments.title, arguments.siteid)>
 	<cfelse>	
 		<cfreturn getActiveContent(arguments.contentid, arguments.siteid, arguments.use404)>
 	</cfif>
@@ -275,6 +278,35 @@ to your own modified versions of Mura CMS.
 			</cfif>
 		<cfelse>
 			<cfreturn variables.contentDAO.readActiveByRemoteID(arguments.remoteID,arguments.siteid)/>
+		</cfif>
+		
+	</cffunction>
+	
+	<cffunction name="getActiveByTitle" access="public" returntype="any" output="false">
+		<cfargument name="title" type="string" required="yes" />
+		<cfargument name="siteID" type="string" required="yes" />
+		
+		<cfset var key="title" & arguments.siteid & arguments.title />
+		<cfset var site=variables.settingsManager.getSite(arguments.siteid)/>
+		<cfset var cacheFactory=site.getCacheFactory()/>
+		<cfset var contentBean=""/>
+		
+		<cfif site.getCache()>
+			<!--- check to see if it is cached. if not then pass in the context --->
+			<!--- otherwise grab it from the cache --->
+			<cfif NOT cacheFactory.has( key )>
+				<cfset contentBean=variables.contentDAO.readActiveByTitle(arguments.title,arguments.siteid)  />
+				<cfif not isArray(contentBean) and not contentBean.getIsNew()>
+					<cfset cacheFactory.get( key, structCopy(contentBean.getAllValues()) ) />
+				</cfif>
+				<cfreturn contentBean/>
+			<cfelse>
+				<cfset contentBean=variables.contentDAO.getBean()/>
+				<cfset contentBean.setAllValues( structCopy(cacheFactory.get( key )) )>
+				<cfreturn contentBean />
+			</cfif>
+		<cfelse>
+			<cfreturn variables.contentDAO.readActiveByTitle(arguments.title,arguments.siteid)/>
 		</cfif>
 		
 	</cffunction>

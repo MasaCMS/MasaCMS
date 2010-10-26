@@ -41,7 +41,12 @@ the GNU General Public License version 2  without this exception.  You may, if y
 to your own modified versions of Mura CMS.
 --->
 <cfsilent>
-	<cfset bean = application.contentManager.getActiveContent(arguments.objectID, arguments.siteID)>
+	<cfif isValid("UUID",arguments.objectID)>
+		<cfset bean = $.getBean("content").loadBy(contentID=arguments.objectID)>
+	<cfelse>
+		<cfset bean = $.getBean("content").loadBy(title=arguments.objectID)>
+	</cfif>
+	
 	<cfset rsTemplate=bean.getAllValues()>
 	
 	<cfset _component=event.getValue("component")>
@@ -66,7 +71,7 @@ to your own modified versions of Mura CMS.
 	--->
 	<cfset editableControl.innerHTML = "">
 
-	<cfif this.showEditableObjects  and objectPerm eq 'editor'>
+	<cfif not bean.getIsNew() and this.showEditableObjects  and objectPerm eq 'editor'>
 		<cfset loadShadowBoxJS()>
 		<cfset addToHTMLHeadQueue('editableObjects.cfm')>
 		<cfif len(application.configBean.getAdminDomain())>

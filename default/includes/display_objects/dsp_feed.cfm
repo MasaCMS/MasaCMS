@@ -44,7 +44,12 @@ to your own modified versions of Mura CMS.
 
 <!--- <cftry> --->
   <cfparam name="hasSummary" default="true"/>
-  <cfset feedBean=application.feedManager.read(arguments.objectID) />
+  <cfif isValid("UUID",arguments.objectID)>	
+	<cfset feedBean = $.getBean("feed").loadBy(feedID=arguments.objectID)>
+  <cfelse>
+	<cfset feedBean = $.getBean("feed").loadBy(name=arguments.objectID)>
+  </cfif>
+
   <cfif feedBean.getIsActive()>
 	<cfset cssID=createCSSid(feedBean.renderName())>
     
@@ -54,7 +59,7 @@ to your own modified versions of Mura CMS.
 	--->
 	<cfset editableControl.innerHTML = "">
 	
-	<cfif this.showEditableObjects and objectPerm eq 'editor'>
+	<cfif not feedBean.getIsNew() and this.showEditableObjects and objectPerm eq 'editor'>
 		<cfset bean = feedBean>
 		<cfset loadShadowBoxJS()>
 		<cfset addToHTMLHeadQueue('editableObjects.cfm')>

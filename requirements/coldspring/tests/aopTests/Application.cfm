@@ -1,1 +1,0 @@
-<cfapplication name="aopTests">

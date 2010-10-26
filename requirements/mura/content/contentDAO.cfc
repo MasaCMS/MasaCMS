@@ -199,6 +199,47 @@ tcontent.doCache,tcontent.created,tcontent.urltitle,tcontent.htmltitle</cfoutput
 		<cfreturn contentBean />
 </cffunction>
 
+<cffunction name="readActiveByTitle" access="public" returntype="any" output="false">
+		<cfargument name="title" type="string" required="yes" />
+		<cfargument name="siteID" type="string" required="yes" />
+		<cfargument name="use404" type="boolean" required="yes" default="false"/>
+		<cfset var rsContent = queryNew('empty') />
+		<cfset var contentBean=getbean()  />
+		<cfset var beanArray=arrayNew(1)>
+		<cfset var utility="">
+		
+		<cfif len(arguments.title)>		
+			<cfquery datasource="#variables.dsn#" name="rsContent"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+				select #variables.fieldlist#, tfiles.fileSize, tfiles.contentType, tfiles.contentSubType, tfiles.fileExt from tcontent 
+				left join tfiles on (tcontent.fileid=tfiles.fileid)
+				where tcontent.title=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.title#" /> and tcontent.active=1 and tcontent.siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteid#" />
+				and type in ('Page','Portal','File','Calendar','Link','Gallery','Component','Form')
+			</cfquery>
+		</cfif>
+		
+		<cfif rsContent.recordcount gt 1>
+				<cfset utility=getServiceFactory().getBean("utility")>
+				<cfloop query="rscontent">
+				<cfset contentBean=getbean().set(utility.queryRowToStruct(rsContent,rsContent.currentrow))>
+				<cfset contentBean.setIsNew(0)>
+				<cfset contentBean.setPreserveID(rsContent.contentHistID)>
+				<cfset arrayAppend(beanArray,contentBean)>				
+				</cfloop>
+				<cfreturn beanArray>
+		<cfelseif rsContent.recordCount>
+			<cfset contentBean.set(rsContent) />
+			<cfset contentBean.setIsNew(0) />
+			<cfset contentBean.setPreserveID(rsContent.contentHistID) />
+		<cfelse>
+			<cfset contentBean.setIsNew(1) />
+			<cfset contentBean.setActive(1) />
+			<cfset contentBean.setSiteID(arguments.siteid) />
+		</cfif>
+		
+		<cfreturn contentBean />
+</cffunction>
+
+
 <cffunction name="readActiveByFilename" access="public" returntype="any" output="true">
 		<cfargument name="filename" type="string" required="yes" default="" />
 		<cfargument name="siteID" type="string" required="yes" default="" />
