@@ -93,7 +93,7 @@ CKEDITOR.editorConfig = function( config )
 	<cfelse>
 	config.GoogleMaps_Key='none';
 	</cfif>				
-	config.contentCss='#$.siteConfig('themeAssetPath')#/css/editor.css';
+	config.contentsCss='#$.siteConfig('themeAssetPath')#/css/editor.css';
 	<cfif fileExists(expandPath($.siteConfig("themeIncludePath") & '/js/editor/templates/default.js') )>
 	config.templates='sitetemplates';
 	config.templates_files= ['#$.siteConfig('themeAssetPath')#/js/editor/templates/default.js'];
