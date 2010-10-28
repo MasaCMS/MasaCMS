@@ -18,13 +18,13 @@
 		</cfif>
 	</cfif>
 	<cfif attributes.type neq 'File'>
-	<input type="hidden" name="fileid" value="#htmlEditFormat(request.contentBean.getfileid())#" />
-		<span id="selectAssocImage">		
+		<span id="selectAssocImage">
+		<input type="hidden" name="fileid" value="#htmlEditFormat(request.contentBean.getfileid())#" />		
 		<a class="selectImage" href="javascript:##;" onclick="javascript: loadAssocImages('#htmlEditFormat(attributes.siteid)#','#htmlEditFormat(request.contentBean.getFileID())#','#htmlEditFormat(attributes.contentID)#','',1);return false;">[#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.selectassocimage')#]</a>
 		</span>
 		
-		<input type="hidden" name="fileidReInit" value="#htmlEditFormat(request.contentBean.getfileid())#" />
 		<span id="selectAssocImageReInit" style="display:none">
+			<input type="hidden" name="fileidReInit" value="#htmlEditFormat(request.contentBean.getfileid())#" />
 			<a href="javascript:##;" onclick="javascript: loadAssocImages('#htmlEditFormat(attributes.siteid)#','#htmlEditFormat(request.contentBean.getFileID())#','#htmlEditFormat(attributes.contentID)#','',1);return false;">[#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.selectassocimage')#]</a>
 		</span>
 	<cfelse>

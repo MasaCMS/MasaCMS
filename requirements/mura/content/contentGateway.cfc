@@ -1870,10 +1870,10 @@ to your own modified versions of Mura CMS.
 					  		tcontent.Display = 2 	 
 					 		AND 
 					 	 		(
-					 	 			tcontent.DisplayStart < #createodbcdate(dateadd("D",1,arguments.menuDateTime))#
+					 	 			tcontent.DisplayStart < #createodbcdatetime(arguments.menuDateTime)#
 						  			AND 
 						  				(
-						  					tcontent.DisplayStop >= #createodbcdate(arguments.menuDateTime)# or tcontent.DisplayStop is null
+						  					tcontent.DisplayStop >= #createodbcdatetime(arguments.menuDateTime)# or tcontent.DisplayStop is null
 						  				)  
 						  		)
 						)

@@ -31,7 +31,7 @@
   padding: 0;
   top: 0;
   left: 0;
-  z-index: 998;
+  z-index: 400000;
 }
 
 /*_______________________________________________________________  Container  */
@@ -43,7 +43,7 @@
   padding: 0;
   top: 0;
   left: 0;
-  z-index: 999;
+  z-index: 400001;
   text-align: center; /* centers in quirks and IE */
 }
 
