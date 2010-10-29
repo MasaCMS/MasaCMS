@@ -40,11 +40,15 @@
 	<cfset event.setValue('themePath',themePath)>
 	
 	<cfsavecontent variable="page">
+		<cfif fileExists(expandPath("#$.siteConfig('templateIncludePath')#/#renderer.getTemplate()#") )>
 		<cfinclude template="#event.getSite().getTemplateIncludePath()#/#renderer.getTemplate()#">
+		<cfelse>
+		<cfinclude template="#event.getSite().getTemplateIncludePath()#/default.cfm">
+		</cfif>
 	</cfsavecontent>
 		
 	<cfset renderer.renderHTMLHeadQueue() />
-	<cfset event.setValue('__MuraResponse__',page)>
+	<cfset event.setValue('__MuraResponse__',trim(page))>
 </cffunction>
 
 </cfcomponent>

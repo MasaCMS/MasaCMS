@@ -49,7 +49,7 @@ to your own modified versions of Mura CMS.
 	<cfelse>
 	<#getHeaderTag('subHead1')#>#application.emailManager.read(request.emailid).getSubject()#</#getHeaderTag('subHead1')#>
 	<cfif listfind(request.doaction,"forwardEmail")>
-	<p>#rbFactory.getKey('email.fowarded')#</p>
+	<p>#rbFactory.getKey('email.forwarded')#</p>
 	</cfif>
 	<form name="forwardFrm" action="?nocache=1" method="post" format="html" onsubmit="return validate(this);" novalidate="novalidate">
 	<fieldset>
