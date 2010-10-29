@@ -401,7 +401,6 @@ function validateForm(theForm) {
 					
 					else if(validationType=='REGEX' && hasValidationRegex(theField))
 					{	
-						alert(theField.value);
 						var re = new RegExp(getValidationRegex(theField));
 						if(!theField.value.match(re))
 						{
