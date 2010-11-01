@@ -224,8 +224,8 @@
 	</cffunction>
 	
 	<cffunction name="onSessionEnd" output="false">
-		<cfset var local = structNew() />
-		<cfinclude template="../config/appcfc/internals/onSessionEnd_include.cfm">
+		<cfset var local = structNew() /
+		<cfinclude template="../config/appcfc/onSessionEnd_include.cfm">
 		<cfset super.onSessionEnd()>
 	</cffunction>
 	
