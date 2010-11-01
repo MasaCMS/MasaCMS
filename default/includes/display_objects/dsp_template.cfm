@@ -42,9 +42,9 @@ to your own modified versions of Mura CMS.
 --->
 <cfsilent>
 	<cfif isValid("UUID",arguments.objectID)>
-		<cfset bean = $.getBean("content").loadBy(contentID=arguments.objectID)>
+		<cfset bean = $.getBean("content").loadBy(contentID=arguments.objectID,siteID=arguments.siteID)>
 	<cfelse>
-		<cfset bean = $.getBean("content").loadBy(title=arguments.objectID)>
+		<cfset bean = $.getBean("content").loadBy(title=arguments.objectID,siteID=arguments.siteID)>
 	</cfif>
 	
 	<cfset rsTemplate=bean.getAllValues()>

@@ -1221,7 +1221,7 @@ select * from tplugins order by #arguments.orderby#
 
 </cffunction>
 
-<cffunction name="displayObject" output="true" returntype="any">
+<cffunction name="displayObject" output="false" returntype="any">
 <cfargument name="object">
 <cfargument name="event" required="true" default="">
 <cfargument name="moduleID" required="true" default="">

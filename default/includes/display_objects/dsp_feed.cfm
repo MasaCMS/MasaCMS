@@ -45,9 +45,9 @@ to your own modified versions of Mura CMS.
 <!--- <cftry> --->
   <cfparam name="hasSummary" default="true"/>
   <cfif isValid("UUID",arguments.objectID)>	
-	<cfset feedBean = $.getBean("feed").loadBy(feedID=arguments.objectID)>
+	<cfset feedBean = $.getBean("feed").loadBy(feedID=arguments.objectID,siteID=arguments.siteID)>
   <cfelse>
-	<cfset feedBean = $.getBean("feed").loadBy(name=arguments.objectID)>
+	<cfset feedBean = $.getBean("feed").loadBy(name=arguments.objectID,siteID=arguments.siteID)>
   </cfif>
 
   <cfif feedBean.getIsActive()>
