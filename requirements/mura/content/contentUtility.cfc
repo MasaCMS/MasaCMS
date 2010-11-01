@@ -707,7 +707,6 @@ Sincerely,
 	<cfset var sortDirection="asc">
 	<cfset var newContentID = createUUID()>
 	<cfset var newContentHistID = createUUID()>
-	<cfset var newOrderNo = 0>
 	<cfset var contentBean = "">
 	<cfset var contentBeanParent = "">
 	<cfset var contentHistID = "">
@@ -721,7 +720,8 @@ Sincerely,
 	<!--- <cfif contentBeanParent.getFilename() neq "">
 		<cfset contentBean.setUniqueFilename(contentBean)>
 	</cfif> --->
-	<cfset contentBean.setOrderNo(0)>
+	
+	<cfset contentBean.setIsNew(1)>
 	<cfset contentBean.setcontentID(newContentID)>
 	<cfset contentBean.setcontentHistID(newContentHistID)>
 	<cfset contentBean.setParentID(arguments.parentID)>
@@ -791,6 +791,16 @@ Sincerely,
 	<cfset getPluginManager().announceEvent("onContentCopy",pluginEvent)>
 	
 	<cfif arguments.recurse>
+		<cfif contentBean.getSortBy() eq "orderno">
+			<cfif contentBean.getSortDirection() eq "asc">
+				<cfset sortDirection="desc">
+			<cfelse>
+				<cfset sortDirection=contentBean.getSortDirection()>
+			</cfif>
+		<cfelse>
+			<cfset sortDirection="asc">
+		</cfif>
+		
 		<cfset rsKids=getServiceFactory().getBean("contentGateway").getNest(parentID=arguments.contentID, siteID=arguments.siteID, sortBy=contentBean.getSortBy(), sortDirection=sortDirection)>
 			
 		<cfloop query="rsKids">
