@@ -17,6 +17,8 @@
 	data structures.
 	--->
 	<cfinclude template="../../../../../../config/applicationSettings.cfm">
+	<cfinclude template="../../../../../../config/mappings.cfm">
+	<cfinclude template="../../../../../../plugins/mappings.cfm">
 	<cfscript>
 	THIS.mappings["/CKFinder_Connector"] = mapPrefix & BaseDir & "/tasks/widgets/ckfinder/core/connector/cfm/";
 	</cfscript>
