@@ -743,7 +743,7 @@ Sincerely,
 	
 	<cfset contentBean.setCreated(now())>
 	
-	<cfset variables.contentDAO.create(contentBean)>
+	<cfset contentBean.save()>
 	
 	<!--- tcontentcategoryassign --->
 	<cfquery datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
@@ -807,7 +807,7 @@ Sincerely,
 			<cfset copy(arguments.siteID, rsKids.contentID, newContentID, rsKids.hasKids, true, contentBean.getPath())>
 		</cfloop>
 	</cfif>
-	
+
 	<cfreturn contentBean>
 </cffunction>
 
