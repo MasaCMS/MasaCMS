@@ -53,7 +53,7 @@
 
 
 	<!--- Temporary band aid to for property files that have pre-escapde charactars--->
-	<cfif listFindNoCase("fr,de,hu",lang)>
+	<cfif listFindNoCase("fr,de,hu,en",lang)>
 		<cfset loadResourceBundle() />
 	<cfelse>
 		<cfset loadResourceBundleUTF() />
@@ -160,7 +160,7 @@
 
 <cffunction name="getResourceBundle" returntype="any" access="public" output="false">
 
-	<cfif variables.isLoaded>	
+	<cfif not variables.isLoaded>	
 
 		<cfset variables.resourceBundle=loadResourceBundle() />	
 		
