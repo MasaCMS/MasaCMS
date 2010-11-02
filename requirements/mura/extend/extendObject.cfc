@@ -201,7 +201,7 @@
 	<cfelseif structKeyExists(variables.instance,"#arguments.property#")>
 		<cfreturn variables.instance["#arguments.property#"] />
 	<cfelse>
-		<cfreturn getExtendedAttribute(arguments.property,arguments.format) />
+		<cfreturn getExtendedAttribute(key=arguments.property,format=arguments.format) />
 	</cfif>
 
 </cffunction>
@@ -236,7 +236,7 @@
 	<cfelse>
 		<cfset getConfigBean().getClassExtensionManager().saveExtendedData(getID(),getAllValues(), getDataTable())/>
 	</cfif>
-	<cfset variables.trashManager.takeOut(this)>
+	<cfset getBean("trashManager").takeOut(this)>
 	<cfreturn this>
 </cffunction>
 
