@@ -60,4 +60,4 @@ tempDir=
 purgeDrafts=true
 confirmSaveAsDraft=true
 notifyWithVersionLink=true
-autoresetpasswords=true
+autoresetpasswords=false

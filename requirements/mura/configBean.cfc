@@ -115,7 +115,7 @@ to your own modified versions of Mura CMS.
 <cfset variables.instance.encryptPasswords=true />
 <cfset variables.instance.sessionTimeout=180 />
 <cfset variables.instance.tempDir=getTempDirectory() />
-
+<cfset variables.instance.autoresetpasswords=true />
 
 <cffunction name="OnMissingMethod" access="public" returntype="any" output="false" hint="Handles missing method exceptions.">
 <cfargument name="MissingMethodName" type="string" required="true" hint="The name of the missing method." />
@@ -1065,6 +1065,18 @@ to your own modified versions of Mura CMS.
 <cffunction name="getEncryptPasswords" returntype="boolean" access="public" output="false">
 	<cfreturn variables.instance.encryptPasswords />
 </cffunction> 
+
+<cffunction name="setAutoResetPasswords" access="public" output="false">
+	<cfargument name="autoresetpasswords" />
+	<cfif isBoolean(arguments.autoresetpasswords)>
+		<cfset variables.instance.autoresetpasswords = arguments.autoresetpasswords />
+	</cfif>
+	<cfreturn this>
+</cffunction>
+
+<cffunction name="getAutoResetPasswords" returntype="boolean" access="public" output="false">
+	<cfreturn variables.instance.autoresetpasswords />
+</cffunction>
 
 <cffunction name="getAllValues" returntype="any" access="public" output="false">
 	<cfreturn variables.instance />

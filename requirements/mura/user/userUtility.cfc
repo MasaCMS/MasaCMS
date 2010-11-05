@@ -289,7 +289,7 @@ to your own modified versions of Mura CMS.
 	<cfset var struser=structnew()>
 	<cfset var rsuser = ""/>
 	<cfset var userBean = ""/>
-	<cfset var autoresetpassword=variables.configBean.getValue("autoresetpassword")>
+	<cfset var autoresetpasswords=variables.configBean.getValue("autoresetpasswords")>
 	
 		<cfif REFindNoCase("^[^@%*<>' ]+@[^@%*<>' ]{1,255}\.[^@%*<>' ]{2,5}", trim(arguments.email)) neq 0>
 					<cfset rsuser=getUserByEmail('#arguments.email#','#arguments.siteid#')>
@@ -299,7 +299,7 @@ to your own modified versions of Mura CMS.
 						<cfset userBean=variables.userDAO.read(rsuser.userid)>
 
 							<cfif userBean.getUsername() neq ''>
-								<cfif isBoolean(autoresetpassword) and autoresetpassword>
+								<cfif autoresetpasswords>
 									<cfset userBean.setPassword(getRandomPassword()) />
 									<cfset userBean.save() />
 								</cfif>
@@ -331,8 +331,9 @@ to your own modified versions of Mura CMS.
 	
 	<cfset var struser=structnew()>
 	<cfset var bcc="">
-	<cfset var autoresetpassword=variables.configBean.getValue("autoresetpassword")>
-		<cfif isBoolean(autoresetpassword) and autoresetpassword>
+	<cfset var autoresetpasswords=variables.configBean.getValue("autoresetpasswords")>
+	
+		<cfif autoresetpasswords>
 			<cfset arguments.userBean.setPassword(getRandomPassword()) />
 			<cfset arguments.userBean.save() />
 		</cfif>
@@ -373,18 +374,12 @@ to your own modified versions of Mura CMS.
 <cfset var contactName=""/>
 <cfset var finder=""/>
 <cfset var theString=""/>
-<cfset var autoresetpassword=variables.configBean.getValue("autoresetpassword")>
+<cfset var autoresetpasswords=variables.configBean.getValue("autoresetpasswords")>
 <cfset var returnID=createUUID()>
 <cfset var editProfileURL="">
 <cfset var returnURL="">		
-<cfset var urlBase="">
+<cfset var urlBase="http://#listFirst(cgi.http_host,":")##variables.configBean.getServerPort()##variables.configBean.getContext()#">
 <cfset var site="">
-
-<cfif variables.configBean.getSiteIDInURLS()>
-	<cfset urlBase='http://#listFirst(cgi.http_host,":")##variables.configBean.getServerPort()##variables.configBean.getContext()#'>
-<cfelse>
-	<cfset urlBase='http://#listFirst(cgi.http_host,":")##variables.configBean.getServerPort()##variables.configBean.getContext()#'>
-</cfif>
 
 <cfif arguments.siteid neq ''>
 	<cfset site=variables.settingsManager.getSite(arguments.siteid)>
@@ -397,16 +392,18 @@ to your own modified versions of Mura CMS.
 	<cfelse>
 		<cfset editProfileURL=urlBase & site.getEditProfileURL()>
 	</cfif>
-	
-	<cfset returnURL="http://#listFirst(cgi.http_host,":")##variables.configBean.getServerPort()##variables.configBean.getContext()##site.getContentRenderer().getURLStem(site.getSiteID(),returnID)#">
-	
+		
+	<cfset returnURL="#urlBase##site.getContentRenderer().getURLStem(site.getSiteID(),returnID)#">	
 <cfelse>
 	<cfset site=variables.settingsManager.getSite("default")>
 	<cfset contactEmail=variables.configBean.getAdminEmail()/>
 	<cfset contactName=variables.configBean.getTitle()/>
-	<cfset returnURL="http://#listFirst(cgi.http_host,":")##variables.configBean.getServerPort()##variables.configBean.getContext()##site.getContentRenderer().getURLStem(site.getSiteID(),returnID)#">
-	<cfset editProfileURL =urlBase & "/admin/index.cfm?fuseaction=cEditProfile.edit">
+	
+	<cfset returnURL="#urlBase##site.getContentRenderer().getURLStem(site.getSiteID(),returnID)#">
+	<cfset editProfileURL =urlBase & "/admin/index.cfm?fuseaction=cEditProfile.edit">	
+
 </cfif>
+
 
 <!--- make sure that there is a ? in the editProfileURL--->
 <cfif not find("?",editProfileURL)>
@@ -442,13 +439,13 @@ to your own modified versions of Mura CMS.
 	</cftry>
 	<cfset finder=refind('##.+?##',theString,1,"true")>
 </cfloop>
-<cfset sendLoginScript = theString/>
+<cfset sendLoginScript = theString>
 	
 <cfsavecontent variable="mailText">
 <cfoutput>#sendLoginScript#</cfoutput>
 </cfsavecontent>
 
-<cfelseif isBoolean(autoresetpassword) and autoresetpassword>
+<cfelseif autoresetpasswords>
 
 <cfsavecontent variable="mailText">
 <cfoutput>Dear #firstname#,
@@ -464,10 +461,12 @@ have any questions or comments on this process.
 Thank you,
 
 The #contactName# staff</cfoutput>
-	</cfsavecontent>
+</cfsavecontent>
+
 <cfelse>
-	<cfsavecontent variable="mailText">
-<cfoutput>Greetings from #contactName#.
+
+<cfsavecontent variable="mailText">
+<cfoutput>Dear #firstname#,
 
 We received a request to reset the password associated with this
 e-mail address. If you made this request, please follow the
@@ -486,7 +485,8 @@ have returned to #contactName#, you can then access your account and reset
 your password.
 
 Thanks for using #contactName#</cfoutput>
-	</cfsavecontent>
+</cfsavecontent>
+
 </cfif>
 
 <cfset variables.mailer.sendText(mailText,
