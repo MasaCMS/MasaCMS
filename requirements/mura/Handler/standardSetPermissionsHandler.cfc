@@ -24,6 +24,8 @@
 <cffunction name="handle" output="false" returnType="any">
 	<cfargument name="event" required="true">
 	
+	<cfset application.serviceFactory.getBean("userUtility").returnLoginCheck(arguments.event.getValue("MuraScope"))>
+	
 	<cfset event.setValue('r',application.permUtility.setRestriction(event.getValue('crumbdata')))>
 	<cfif event.getValue('r').restrict>
 		<cfset event.setValue('nocache',1)>

@@ -139,6 +139,8 @@
 			<cfset session.moduleid = request.context.moduleid>
 		</cfif>
 		
+		<cfset application.serviceFactory.getBean("userUtility").returnLoginCheck(request.event.getValue("MuraScope"))>
+		
 		<cfif application.configBean.getAdminDomain() neq '' and application.configBean.getAdminDomain() neq listFirst(cgi.http_host,":") and request.context.compactDisplay eq '' and request.context.closeCompactDisplay eq ''>
 			<cflocation url="#application.configBean.getContext()#/" addtoken="false">
 		</cfif>

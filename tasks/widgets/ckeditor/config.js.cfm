@@ -87,25 +87,40 @@ CKEDITOR.editorConfig = function( config )
 	config.menu_groups = 'clipboard,form,tablecell,tablecellproperties,tablerow,tablecolumn,table,anchor,link,image,flash,checkbox,radio,textfield,hiddenfield,imagebutton,button,select,textarea,removeMedia';
  
 	<cfset $=application.serviceFactory.getBean("MuraScope").init(session.siteID)>
+	
 	<cfoutput>
 	<cfif len($.siteConfig('GoogleAPIKey'))>
-	config.GoogleMaps_Key='#$.siteConfig('GoogleAPIKey')#';
+		config.GoogleMaps_Key='#$.siteConfig('GoogleAPIKey')#';
 	<cfelse>
-	config.GoogleMaps_Key='none';
-	</cfif>				
-	config.contentsCss='#$.siteConfig('themeAssetPath')#/css/editor.css';
-	<cfif fileExists(expandPath($.siteConfig("themeIncludePath") & '/js/editor/templates/default.js') )>
-	config.templates='sitetemplates';
-	config.templates_files= ['#$.siteConfig('themeAssetPath')#/js/editor/templates/default.js'];
+		config.GoogleMaps_Key='none';
+	</cfif>	
+	
+	<cfif fileExists(expandPath($.siteConfig("themeIncludePath") & '/css/editor.css.cfm') )>
+		config.contentsCss='#$.siteConfig('themeAssetPath')#/css/editor.css.cfm';
+	<cfelse>		
+		config.contentsCss='#$.siteConfig('themeAssetPath')#/css/editor.css';
 	</cfif>
-	<cfif fileExists(expandPath($.siteConfig("themeIncludePath") & '/js/editor/styles.js') )>
-	config.stylesCombo_stylesSet='default:#$.siteConfig('themeAssetPath')#/js/editor/styles.js';
+	
+	<cfif fileExists(expandPath($.siteConfig("themeIncludePath") & '/js/editor/templates/default.js.cfm') )>
+		config.templates='default';
+		config.templates_files= ['#$.siteConfig('themeAssetPath')#/js/editor/templates/default.js.cfm'];
+	<cfelseif fileExists(expandPath($.siteConfig("themeIncludePath") & '/js/editor/templates/default.js') )>
+		config.templates='default';
+		config.templates_files= ['#$.siteConfig('themeAssetPath')#/js/editor/templates/default.js'];
 	</cfif>
+	
+	<cfif fileExists(expandPath($.siteConfig("themeIncludePath") & '/js/editor/styles.js.cfm') )>
+		config.stylesCombo_stylesSet='default:#$.siteConfig('themeAssetPath')#/js/editor/styles.js.cfm';
+	<cfelseif fileExists(expandPath($.siteConfig("themeIncludePath") & '/js/editor/styles.js') )>
+		config.stylesCombo_stylesSet='default:#$.siteConfig('themeAssetPath')#/js/editor/styles.js';
+	</cfif>
+	
 	<cfif fileExists(expandPath($.siteConfig("themeIncludePath") & '/js/editor/config.js.cfm') )>
-	config.customConfig='#$.siteConfig('themeAssetPath')#/js/editor/config.js.cfm';
+		config.customConfig='#$.siteConfig('themeAssetPath')#/js/editor/config.js.cfm';
 	<cfelseif fileExists(expandPath($.siteConfig("themeIncludePath") & '/js/editor/config.js') )>
-	config.customConfig='#$.siteConfig('themeAssetPath')#/js/editor/config.js';
+		config.customConfig='#$.siteConfig('themeAssetPath')#/js/editor/config.js';
 	</cfif>
+	
 	config.defaultLanguage='#listFirst($.siteConfig('JavaLocale'),'_')#';
     </cfoutput>
 

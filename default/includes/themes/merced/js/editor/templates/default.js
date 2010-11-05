@@ -8,15 +8,15 @@ CKEDITOR.addTemplates( 'default',
 {
     // The name of sub folder which hold the shortcut preview images of the
     // templates.
-    imagesPath : CKEDITOR.getUrl( CKEDITOR.plugins.getPath( 'templates' ) + 'templates/images/' ),
-
+	//imagesPath : CKEDITOR.getUrl( themepath + '/js/editor/templates/images/' ),
+	 imagesPath : themepath + '/js/editor/templates/images/',
     // The templates definitions.
     templates :
             [
                     {
                             title: '2 Columns',
                             image: 'template-cols2.gif',
-                            description: 'An area with 2 equally wide columns',
+                            description: 'An area with 200 equally wide columns',
                             html:
                                     '<div class="columns2 clearfix">' +
                                             '<div class="col">' +

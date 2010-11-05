@@ -422,7 +422,7 @@ ExtendSetID in(<cfloop from="1" to="#setLen#" index="s">
 			<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.data.siteID#">,
 			<cfqueryparam cfsqltype="cf_sql_varchar"  value="#fileID#">,
 			<cfqueryparam cfsqltype="cf_sql_varchar"  value="#fileID#">,
-			<cfqueryparam cfsqltype="cf_sql_longvarchar"  value="#theValue#">	
+			<cfqueryparam cfsqltype="cf_sql_longvarchar"  value="#remoteID#">	
 			)
 		</cfquery>
 					

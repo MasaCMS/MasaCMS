@@ -345,7 +345,7 @@ to your own modified versions of Mura CMS.
        No
 	  </dd>
       <dt class="separate">User Login Info Request Script</dt>
-      <dd>Available Dynamic Content: ##firstName## ##lastName## ##username## ##password## ##contactEmail## ##contactName##<br/>
+      <dd>Available Dynamic Content: ##firstName## ##lastName## ##username## ##password## ##contactEmail## ##contactName## ##returnURL##<br/>
         <textarea name="sendLoginScript">#HTMLEditFormat(request.siteBean.getSendLoginScript())#</textarea>
       </dd>
 	    <dt>Mailing List Confirmation Script</dt>
