@@ -823,14 +823,28 @@ to your own modified versions of Mura CMS.
 </cffunction>
 
 <cffunction name="getDashboard" returntype="any" access="public" output="false">
-	<cfreturn variables.instance.dashboard />
+	<cfset var i="">
+	<cfset var currentUser=getCurrentUser()>
+	<cfif isBoolean(variables.instance.dashboard)>
+		<cfreturn variables.instance.dashboard />
+	<cfelseif len(variables.instance.dashboard)>
+		<cfif currentUser.isSuperUser()>
+			<cfreturn true>
+		</cfif>
+		<cfloop list="#variables.instance.dashboard#" index="i">
+			<cfif currentUser.isInGroup(group=i,isPublic=0)>
+				<cfreturn true>	
+			</cfif>
+		</cfloop>
+		<cfreturn false>
+	<cfelse>
+		<cfreturn true>
+	</cfif>
 </cffunction>
 
 <cffunction name="setDashboard" access="public" output="false">
 	<cfargument name="dashboard" type="String" />
-	<cfif isBoolean(arguments.dashboard)>
 	<cfset variables.instance.dashboard = arguments.dashboard />
-	</cfif>
 	<cfreturn this>
 </cffunction>
 

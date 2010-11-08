@@ -81,6 +81,24 @@ to your own modified versions of Mura CMS.
 		
 	</cfif>
 	
+	<cfif not hasPluginCFApplication>
+		<!--- Try and include plugin mappings --->
+		<cfset canWriteMode=true>
+		<cfset hasMappings=true>
+		<cfset canWriteMappings=true>
+		<cftry>
+			<cfinclude template="../../plugins/cfapplication.cfm">
+			<cfcatch type="missingInclude">
+				<cfset hasMappings=false>
+			</cfcatch>
+		</cftry>
+		
+		<cfif not hasMappings>
+			<cfinclude template="../../config/buildPluginCFApplication.cfm">
+		</cfif>
+		
+	</cfif>
+	
 	<cfinclude template="../../config/appcfc/onApplicationStart_method.cfm">
 	<cfinclude template="../../config/appcfc/onRequestStart_scriptProtect_method.cfm">
 	<cfinclude template="../../config/appcfc/onSessionStart_method.cfm">

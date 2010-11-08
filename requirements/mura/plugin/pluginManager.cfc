@@ -411,6 +411,31 @@ select * from tplugins order by #arguments.orderby#
 			</cfif>
 		</cfif>
 	</cfloop>
+</cffunction>
+
+<cffunction name="createCFApplications" output="false">
+	<cfset var mapPrefix="">
+	<cfset var rsRequitements="">
+	<cfset var baseDir=variables.configBean.getPluginDir()>
+	<cfset var rsRequirements="">
+	<cfif StructKeyExists(SERVER,"bluedragon") and not findNoCase("Windows",server.os.name)>
+		<cfset mapPrefix="$" />
+	</cfif>
+	<cffile action="delete" file="#baseDir#/cfapplication.cfm">
+	<cfset variables.fileWriter.writeFile(file="#baseDir#/cfapplication.cfm", output="<!--- Do Not Edit --->", addnewline="true")>
+	<cfdirectory action="list" directory="#baseDir#" name="rsRequirements">
+	<cfloop query="rsRequirements">
+          <cfif rsRequirements.type eq 'DIR' and rsRequirements.name neq '.svn'>
+                <cfif fileExists(expandPath('/plugins/#rsRequirements.Name#/plugin/cfapplication.cfm'))>
+                     <cfset variables.fileWriter.appendFile(file="#baseDir#/cfapplication.cfm", output='<cfinclude template="/plugins/#rsRequirements.name#/plugin/cfapplication.cfm">')>
+                 <cfelseif fileExists(expandPath('/plugins/#rsRequirements.Name#/cfapplication.cfm'))>
+                     <cfset variables.fileWriter.appendFile(file="#baseDir#/cfapplication.cfm", output='<cfinclude template="/plugins/#rsRequirements.name#/cfapplication.cfm">')>
+				<cfelseif fileExists(expandPath('/plugins/#rsRequirements.Name#/config/cfapplication.cfm'))>
+                     <cfset variables.fileWriter.appendFile(file="#baseDir#/cfapplication.cfm", output='<cfinclude template="/plugins/#rsRequirements.name#/config/cfapplication.cfm">')>
+				</cfif>
+          </cfif>
+    </cfloop>
+
 </cffunction>	
 
 <cffunction name="hasPlugin" returntype="any" output="false">
@@ -686,7 +711,6 @@ select * from tplugins order by #arguments.orderby#
 	</cfquery>
 	
 	<cfset loadPlugins() />
-	
 
 	<cfif arguments.args.location eq "local" and structKeyExists(arguments.args,"siteAssignID") and len(arguments.args.siteAssignID)>
 		<cfquery name="rsObjects" dbType="query">
@@ -746,6 +770,7 @@ select * from tplugins order by #arguments.orderby#
 	</cfquery>
 	<cfset application.appInitialized=false>
 	<cfset loadPlugins() />
+	<cfset createCFApplications()/>
 </cffunction>
 
 <cffunction name="deleteSettings" returntype="void" output="false">
@@ -811,9 +836,10 @@ select * from tplugins order by #arguments.orderby#
 	<cfcatch></cfcatch>
 	</cftry>
 
-	<cfif isNumeric(rsPlugin.pluginID) and directoryExists(location)>
+	<cfif directoryExists(location)>
 		<cfdirectory action="delete" directory="#location#" recurse="true">
 		<cfset createMappings() />
+		<cfset createCFApplications() />
 	</cfif>
 	
 	<cfset deleteSettings(arguments.moduleID)>
