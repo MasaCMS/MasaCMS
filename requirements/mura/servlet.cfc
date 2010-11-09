@@ -77,6 +77,8 @@ to your own modified versions of Mura CMS.
 	<cfset event.getValidator("standardRequireLogin").validate(event)>
 	
 	<cfset event.getHandler("standardSetLocale").handle(event)>
+	
+	<cfset event.getValidator("standardMobile").validate(event)>
 
  	<cfset event.getHandler("standardDoResponse").handle(event)>
 	

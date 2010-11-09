@@ -535,6 +535,9 @@ to your own modified versions of Mura CMS.
 	
 	) 
 	
+	<cfif structkeyExists(request,"isMobileRequest") and request.isMobileRequest>
+		and (tcontent.mobileExclude!=1 or tcontent.mobileExclude is null)
+	</cfif>
 									
 	order by
 	

@@ -827,7 +827,7 @@ to your own modified versions of Mura CMS.
 	<cfset var currentUser=getCurrentUser()>
 	<cfif isBoolean(variables.instance.dashboard)>
 		<cfreturn variables.instance.dashboard />
-	<cfelseif len(variables.instance.dashboard)>
+	<cfelseif isdefined("session.mura") and len(session.mura.siteID) and len(variables.instance.dashboard)>
 		<cfif currentUser.isSuperUser()>
 			<cfreturn true>
 		</cfif>

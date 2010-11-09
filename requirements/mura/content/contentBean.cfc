@@ -121,6 +121,7 @@ to your own modified versions of Mura CMS.
 <cfset variables.instance.extendSetID="" />
 <cfset variables.instance.doCache = 1 />
 <cfset variables.instance.created = now() />
+<cfset variables.instance.mobileExclude = 0 />
 <cfset variables.instance.errors=structnew() />
 <cfset variables.kids = arrayNew(1) />
 <cfset variables.displayRegions = structNew()>
@@ -211,6 +212,7 @@ to your own modified versions of Mura CMS.
 		<cfset setPath(arguments.Content.path) />
 		<cfset setTags(arguments.Content.tags) />
 		<cfset setdoCache(arguments.Content.doCache) />
+		<cfset setMobileExclude(arguments.Content.mobileExclude) />
 		<cfset setCreated(arguments.Content.created) />
 		
 	<cfelseif isStruct(arguments.content)>
@@ -1156,6 +1158,18 @@ to your own modified versions of Mura CMS.
 
   <cffunction name="getDoCache" returnType="numeric" output="false" access="public">
     <cfreturn variables.instance.doCache />
+  </cffunction>
+
+  <cffunction name="setMobileExclude" output="false" access="public">
+    <cfargument name="mobileExclude" required="true">
+	<cfif isNumeric(arguments.mobileExclude)>
+    <cfset variables.instance.mobileExclude = arguments.mobileExclude />
+	</cfif>
+	<cfreturn this>
+  </cffunction>
+
+  <cffunction name="getMobileExclude" returnType="numeric" output="false" access="public">
+    <cfreturn variables.instance.mobileExclude />
   </cffunction>
 
   <cffunction name="setCreated" output="false" access="public">

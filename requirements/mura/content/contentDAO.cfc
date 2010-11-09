@@ -52,7 +52,7 @@ tcontent.RemotePubDate,tcontent.RemoteSource,tcontent.RemoteSourceURL,tcontent.R
 tcontent.responseDisplayFields,tcontent.responseMessage,tcontent.responseSendTo,tcontent.Restricted,tcontent.RestrictGroups,
 tcontent.searchExclude,tcontent.SiteID,tcontent.sortBy,tcontent.sortDirection,tcontent.Summary,tcontent.Target,
 tcontent.TargetParams,tcontent.Template,tcontent.Title,tcontent.Type,tcontent.subType,tcontent.Path,tcontent.tags,
-tcontent.doCache,tcontent.created,tcontent.urltitle,tcontent.htmltitle</cfoutput></cfsavecontent>
+tcontent.doCache,tcontent.created,tcontent.urltitle,tcontent.htmltitle,tcontent.mobileExclude</cfoutput></cfsavecontent>
 
 <cffunction name="init" access="public" returntype="any" output="false">
 <cfargument name="configBean" type="any" required="yes"/>
@@ -239,7 +239,6 @@ tcontent.doCache,tcontent.created,tcontent.urltitle,tcontent.htmltitle</cfoutput
 		<cfreturn contentBean />
 </cffunction>
 
-
 <cffunction name="readActiveByFilename" access="public" returntype="any" output="true">
 		<cfargument name="filename" type="string" required="yes" default="" />
 		<cfargument name="siteID" type="string" required="yes" default="" />
@@ -343,7 +342,8 @@ tcontent.doCache,tcontent.created,tcontent.urltitle,tcontent.htmltitle</cfoutput
 	   remoteID,remoteURL,remotePubDate,remoteSource,RemoteSourceURL,Credits,
 	   audience, keyPoints, searchExclude, displayTitle, doCache, created,
 	   urltitle,
-	   htmltitle)
+	   htmltitle,
+	   mobileExclude)
       VALUES (
 	  	 <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentBean.getContentHistID()#">, 
          <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentBean.getContentID()#">,
@@ -458,7 +458,8 @@ tcontent.doCache,tcontent.created,tcontent.urltitle,tcontent.htmltitle</cfoutput
 			#createodbcdatetime(now())#
 		</cfif>,
 		<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.contentBean.getURLTitle() neq '',de('no'),de('yes'))#" value="#arguments.contentBean.getURLTitle()#">,
-		<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.contentBean.getHTMLTitle() neq '',de('no'),de('yes'))#" value="#arguments.contentBean.getHTMLTitle()#">
+		<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.contentBean.getHTMLTitle() neq '',de('no'),de('yes'))#" value="#arguments.contentBean.getHTMLTitle()#">,
+		#arguments.contentBean.getMobileExclude()#
 		)
  </CFQUERY>
 

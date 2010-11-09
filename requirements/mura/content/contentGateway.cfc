@@ -452,7 +452,10 @@ to your own modified versions of Mura CMS.
 							</cfif>
 					  )
 					  </cfif>	
-
+				
+				 <cfif structkeyExists(request,"isMobileRequest") and request.isMobileRequest>
+				 	and (tcontent.mobileExclude!=1 or tcontent.mobileExclude is null)
+				 </cfif>
 				  order by 
 					
 					
@@ -539,7 +542,10 @@ to your own modified versions of Mura CMS.
 					  OR 
                    		  tcontent.Display = 1
 					  )
-					 					  
+					 
+					 <cfif structkeyExists(request,"isMobileRequest") and request.isMobileRequest>
+				 		and (tcontent.mobileExclude!=1 or tcontent.mobileExclude is null)
+				 	 </cfif>			  
 					 <cfif relatedListLen >
 					  and tcontent.contentID in (
 							select tcontentrelated.contentID from tcontentrelated 
@@ -1251,6 +1257,12 @@ to your own modified versions of Mura CMS.
 							or tcontent.body like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.keywords#%">)
 				</cfif>
 				and tcontent.searchExclude=0
+				
+				<cfif structkeyExists(request,"isMobileRequest") and request.isMobileRequest>
+				    and (tcontent.mobileExclude!=1 or tcontent.mobileExclude is null)
+				</cfif>
+				
+				
 	union 
 	
 	<!--- Find direct matches with releasedate --->
@@ -1326,7 +1338,11 @@ to your own modified versions of Mura CMS.
 							or tcontent.summary like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.keywords#%"> 
 							or tcontent.body like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.keywords#%">)
 				</cfif>
-				and tcontent.searchExclude=0				
+				and tcontent.searchExclude=0
+				
+				<cfif structkeyExists(request,"isMobileRequest") and request.isMobileRequest>
+				 	and (tcontent.mobileExclude!=1 or tcontent.mobileExclude is null)
+				</cfif>				
 				
 		UNION
 		
@@ -1403,6 +1419,10 @@ to your own modified versions of Mura CMS.
 					
 				</cfif>
 				and tcontent.searchExclude=0
+				
+				<cfif structkeyExists(request,"isMobileRequest") and request.isMobileRequest>
+				 	and (tcontent.mobileExclude!=1 or tcontent.mobileExclude is null)
+				</cfif>
 	union 
 	
 	<!--- Find in-direct matches with releasedate --->
@@ -1478,7 +1498,11 @@ to your own modified versions of Mura CMS.
 					</cfloop>
 					
 				</cfif>
-				and tcontent.searchExclude=0					 
+				and tcontent.searchExclude=0
+				
+				<cfif structkeyExists(request,"isMobileRequest") and request.isMobileRequest>
+				 	and (tcontent.mobileExclude!=1 or tcontent.mobileExclude is null)
+				</cfif>					 
 	</cfquery>
 	
 	<cfquery name="rs" dbtype="query">
@@ -1534,6 +1558,10 @@ to your own modified versions of Mura CMS.
 			AND tcontent.Display = 2)
 			OR  (tcontent.Display = 1)
 		)
+	</cfif>
+	
+	<cfif structkeyExists(request,"isMobileRequest") and request.isMobileRequest>
+		and (tcontent.mobileExclude!=1 or tcontent.mobileExclude is null)
 	</cfif>
 	
 	order by tcontent.created desc
@@ -1704,6 +1732,9 @@ to your own modified versions of Mura CMS.
 		
 		
 		) 
+	<cfif structkeyExists(request,"isMobileRequest") and request.isMobileRequest>
+		and (tcontent.mobileExclude!=1 or tcontent.mobileExclude is null)
+	</cfif>
 	<cfif isQuery(arguments.rsContent)  and arguments.rsContent.recordcount> and contentID in (#quotedValuelist(arguments.rsContent.contentID)#)</cfif>
 	group by tag
 	order by tag
@@ -1854,6 +1885,13 @@ to your own modified versions of Mura CMS.
 						  	(
 						  		tcontent.displayStop < #createodbcdate(dateadd("D",1,createDate(year(arguments.menuDateTime),month(arguments.menuDateTime),daysInMonth(arguments.menuDateTime))))#
 						  		AND  tcontent.displayStop >= #createodbcdate(createDate(year(arguments.menuDateTime),month(arguments.menuDateTime),1))# 
+						  	)
+						  	
+						  	or 
+						  	
+						  	(
+						  		tcontent.displayStart < #createodbcdate(createDate(year(arguments.menuDateTime),month(arguments.menuDateTime),1))#
+						  		and tcontent.displayStop >= #createodbcdate(dateadd("D",1,createDate(year(arguments.menuDateTime),month(arguments.menuDateTime),daysInMonth(arguments.menuDateTime))))# 
 						  	)
 						 )
 					  </cfcase>
