@@ -139,6 +139,7 @@ to your own modified versions of Mura CMS.
 			<cfset request.hasCFApplicationCFM=false>
 		</cfcatch>
 	</cftry>
+	<!---
 	<cftry>
 		<cfinclude template="/plugins/cfapplication.cfm">
 		<cfset hasPluginCFApplication=true>
@@ -146,3 +147,4 @@ to your own modified versions of Mura CMS.
 			<cfset hasPluginCFApplication=false>
 		</cfcatch>
 	</cftry>
+	--->

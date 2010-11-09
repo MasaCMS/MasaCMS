@@ -39,24 +39,6 @@
 		
 	</cfif>
 	
-	<cfif not hasPluginCFApplication>
-		<!--- Try and include plugin mappings --->
-		<cfset canWriteMode=true>
-		<cfset hasMappings=true>
-		<cfset canWriteMappings=true>
-		<cftry>
-			<cfinclude template="../plugins/cfapplication.cfm">
-			<cfcatch type="missingInclude">
-				<cfset hasMappings=false>
-			</cfcatch>
-		</cftry>
-		
-		<cfif not hasMappings>
-			<cfinclude template="../config/buildPluginCFApplication.cfm">
-		</cfif>
-		
-	</cfif>
-	
 	<cfset variables.framework=structNew()>
 	<cfset variables.framework.home = "home.redirect">
 	<cfset variables.framework.action="fuseaction">
