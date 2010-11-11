@@ -61,10 +61,18 @@ CKEDITOR.plugins.add( 'Selectlink',
 
 					if(theChoice != -1) {
 
-						mySelection = this._.editor.getSelection();
 						
-						if(mySelection.length > 0 ){
-							this._.editor.createLink(theLink[0]) ;
+						var mySelection = this._.editor.getSelection();
+						
+						if (CKEDITOR.env.ie) {
+						    mySelection.unlock(true);
+						    var selectedText = mySelection.getNative().createRange().text;
+						} else {
+						    var selectedText = mySelection.getNative();
+						}
+					
+						if(selectedText != "" ){
+							this._.editor.insertHtml('<a href="' + theLink[0] + '">' + selectedText + '</a>') ;
 						} else {
 							this._.editor.insertHtml('<a href="' + theLink[0] + '">' + theLink[1] + '</a>') ;	
 						} 

@@ -186,7 +186,7 @@ function stripe(theclass) {
 				}
 			}
 		}
-   
+   if(typeof(jQuery) != "undefined"){
    jQuery('div.mura-grid.' + theclass + ' dl').each(
 		function(index) {
 			if(index % 2){
@@ -196,6 +196,7 @@ function stripe(theclass) {
 			}
 		}
 	);
+   }
 }
 
 
@@ -571,11 +572,13 @@ function submitForm(frm,action,msg){
 			return false;
 		}
 
+		if(typeof(htmlEditorType) != "undefined"){
 		if( htmlEditorType!='fckeditor'){
 			 for(var name in CKEDITOR.instances){
 				 CKEDITOR.instances[name].updateElement();
                  };
 
+		}
 		}
 		
 		frm.submit();
