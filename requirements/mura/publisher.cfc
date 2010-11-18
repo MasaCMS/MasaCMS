@@ -555,7 +555,7 @@ to your own modified versions of Mura CMS.
 				<cfquery datasource="#arguments.toDSN#">
 					delete from tadzones where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.tositeid#"/>
 					<cfif arguments.pushMode eq "UpdatesOnly">
-						<cfif rstadzonesnew.recordcount or rsDeleleted.recordcount>
+						<cfif rstadzonesnew.recordcount or rsDeleted.recordcount>
 							and (
 							<cfif rstadzonesnew.recordcount>
 								adzoneID in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#valueList(rstadzonesnew.adzoneID)#">)
@@ -568,7 +568,6 @@ to your own modified versions of Mura CMS.
 						<cfelse>
 							and 0=1
 						</cfif>
-						)
 					</cfif>
 				</cfquery>
 				<cfquery datasource="#arguments.fromDSN#" name="rstadzones">
@@ -1861,9 +1860,11 @@ to your own modified versions of Mura CMS.
 		<cfargument name="baseDir" default="" required="true" />
 		<cfargument name="destDir" default="" required="true" />
 		<cfargument name="keyFactory" required="true" />
+		<cfargument name="sinceDate" default="" />
 		<cfset var rs = "" />
 		<cfset var keys=arguments.keyFactory>
 		<cfset var newFile="">
+		<cfset var newDir="">
 		<cfset var fileDelim=application.configBean.getFileDelim()>
 		<cfset var fileWriter=application.serviceFactory.getBean("fileWriter")>
 		<cfdirectory directory="#arguments.baseDir#" name="rs" action="list" recurse="true" />
@@ -1872,15 +1873,27 @@ to your own modified versions of Mura CMS.
 		SELECT * FROM rs
 		WHERE directory NOT LIKE '%#application.configBean.getFileDelim()#.svn%'
 		AND name <> '.svn'
+		
+		<cfif isDate(arguments.sinceDate)>
+		and dateLastModified >= #createODBCDateTime(arguments.sinceDate)#
+		</cfif>
 		</cfquery>
 		
-		<cfset fileWriter.deleteDir(directory="#arguments.destDir#")>
-		<cfset fileWriter.createDir(directory="#arguments.destDir#")>
+		<cfif not isDate(arguments.sinceDate) and directoryExists(arguments.destDir)>
+			<cfset fileWriter.deleteDir(directory="#arguments.destDir#")>
+		</cfif>
+		
+		<cfif not directoryExists(arguments.destDir)>
+			<cfset fileWriter.createDir(directory="#arguments.destDir#")>
+		</cfif>
 		
 		<cfloop query="rs">
 			<cfif rs.type eq "dir">
 				<cftry>
-					<cfset fileWriter.createDir(directory="#replace('#rs.directory##fileDelim#',arguments.baseDir,arguments.destDir)##rs.name##fileDelim#")>
+					<cfset newDir="#replace('#rs.directory##fileDelim#',arguments.baseDir,arguments.destDir)##rs.name##fileDelim#">
+					<cfif not directoryExists(newDir)>
+						<cfset fileWriter.createDir(directory=newDir)>
+					</cfif>
 					<cfcatch></cfcatch>
 				</cftry>
 			<cfelse>
