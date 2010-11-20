@@ -468,7 +468,7 @@ to your own modified versions of Mura CMS.
 						</cfif>
 					</cfcase>
 					<cfcase value="rating">
-						tcontentstats.rating #arguments.sortBy#, tcontentstats.totalVotes #arguments.sortDirection#
+						tcontentstats.rating #arguments.sortDirection#, tcontentstats.totalVotes #arguments.sortDirection#
 					</cfcase>
 					<cfcase value="comments">
 						tcontentstats.comments #arguments.sortDirection#
@@ -1263,7 +1263,7 @@ to your own modified versions of Mura CMS.
 				</cfif>
 				
 				
-	union 
+	union all
 	
 	<!--- Find direct matches with releasedate --->
 	
@@ -1344,7 +1344,7 @@ to your own modified versions of Mura CMS.
 				 	and (tcontent.mobileExclude!=1 or tcontent.mobileExclude is null)
 				</cfif>				
 				
-		UNION
+		union all
 		
 		<!--- Find in-direct matches with no releasedate --->
 		select tcontent.contentid,tcontent.contenthistid,tcontent.siteid,tcontent.title,tcontent.menutitle,tcontent.targetParams,tcontent.filename,tcontent.summary,tcontent.tags,
@@ -1423,7 +1423,7 @@ to your own modified versions of Mura CMS.
 				<cfif structkeyExists(request,"isMobileRequest") and request.isMobileRequest>
 				 	and (tcontent.mobileExclude!=1 or tcontent.mobileExclude is null)
 				</cfif>
-	union 
+	union all
 	
 	<!--- Find in-direct matches with releasedate --->
 	
