@@ -9,8 +9,10 @@ CKEDITOR.editorConfig = function( config )
     config.startupFocus = 'false';
     
 	//config.uiColor = '#AADC6E';
-	CKEditorBasePath=context + '/tasks/widgets';
-	CKFinderBasePath=context + '/tasks/widgets';
+	<cfoutput>
+	CKEditorBasePath='#application.configBean.getContent()#/tasks/widgets';
+	CKFinderBasePath='#application.configBean.getContent()#/tasks/widgets';
+	</cfoutput>
 	
 	config.skin = 'mura';
 	

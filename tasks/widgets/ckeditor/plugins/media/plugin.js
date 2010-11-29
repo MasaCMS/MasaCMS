@@ -11,13 +11,21 @@
  */
 (function() {
 
+  var basePathArray=CKEDITOR.basePath.split("/");
+	  basePathArray=basePathArray.slice(3);
+  var basePath="";
+	  
+  for (var i=0; i<basePathArray.length;i++){
+	  basePath = basePath + "/" + basePathArray[i];
+  }
+  
   var d = new Date();
   var config = {
     // General
-    player: CKEDITOR.basePath + 'plugins/media/mediaplayer-5.3/player.swf', 
-    replacement: CKEDITOR.basePath + 'plugins/media/images/replacement.gif',
-    swfobject: CKEDITOR.basePath + 'plugins/media/mediaplayer-5.3/swfobject.js',
-    yt: CKEDITOR.basePath + 'plugins/media/mediaplayer-5.3/yt.swf',
+    player: basePath + 'plugins/media/mediaplayer-5.3/player.swf', 
+    replacement: basePath + 'plugins/media/images/replacement.gif',
+    swfobject: basePath + 'plugins/media/mediaplayer-5.3/swfobject.js',
+    yt: basePath + 'plugins/media/mediaplayer-5.3/yt.swf',
     player_id:'player_'+d.getTime(),
     div_id:'media_'+d.getTime(),
     version:'9',
