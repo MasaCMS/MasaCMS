@@ -116,7 +116,7 @@
 <cffunction name="getEvent" output="false" returntype="any">
 	<cfif not isObject(variables.instance.event)>
 		<cfif structKeyExists(request,"servletEvent")>
-			<cfset variables.instance.event=request.serlvetEvent>
+			<cfset variables.instance.event=request.servletEvent>
 		<cfelseif structKeyExists(request,"event")>
 			<cfset variables.instance.event=request.event>
 		</cfif>
