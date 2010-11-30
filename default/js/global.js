@@ -377,7 +377,7 @@ function validateForm(theForm) {
 					errors += getValidationMessage(theField, ' is required.' );		
 				}	
 				else if(validationType != ''){
-					if(validationType=='REGEX' && hasValidationRegex(theField))
+					if(validationType=='REGEX' && theField.value !='' && hasValidationRegex(theField))
 					{	
 						var re = new RegExp(getValidationRegex(theField));
 						if(!theField.value.match(re))
