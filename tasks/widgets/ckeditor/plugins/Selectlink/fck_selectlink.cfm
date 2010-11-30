@@ -71,7 +71,9 @@ StructAppend(attributes, form, "no");
 </td></tr></table></div></cfif></form>
 <script type="text/javascript" language="javascript">
 stripe('stripe');
+<cfif not ( len(attributes.keywords) and request.rslist.recordcount )>
 document.forms.siteSearch.keywords.focus();
+</cfif>
 </script>
 
 	</body>

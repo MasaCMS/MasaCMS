@@ -61,22 +61,28 @@ CKEDITOR.plugins.add( 'Selectlink',
 
 					if(theChoice != -1) {
 
-						
-						var mySelection = this._.editor.getSelection();
+						var mySelection = this._.editor.getSelection(),
+							ranges = mySelection.getRanges( true ),
+							selectedText, href, html;
 						
 						if (CKEDITOR.env.ie) {
 						    mySelection.unlock(true);
-						    var selectedText = mySelection.getNative().createRange().text;
+						    selectedText = mySelection.getNative().createRange().text;
 						} else {
-						    var selectedText = mySelection.getNative();
+						    selectedText = mySelection.getNative();
 						}
-					
-						if(selectedText != "" ){
-							this._.editor.insertHtml('<a href="' + theLink[0] + '">' + selectedText + '</a>') ;
-						} else {
-							this._.editor.insertHtml('<a href="' + theLink[0] + '">' + theLink[1] + '</a>') ;	
-						} 
-				
+						
+						if ( ranges.length == 1 )
+						{
+							href = '<a href="' + theLink[0] + '">' + ( selectedText != "" ? selectedText :
+					theLink[1] ) + '</a>';
+							html = CKEDITOR.dom.element.createFromHtml( href );
+							
+							ranges[0].deleteContents();
+							ranges[0].insertNode( html );
+							ranges[0].selectNodeContents( html );
+							mySelection.selectRanges( ranges );
+						}
 					}
 				}
 				/* End insert links */

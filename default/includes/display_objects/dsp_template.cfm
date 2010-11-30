@@ -119,13 +119,16 @@ to your own modified versions of Mura CMS.
 	<cfoutput>#renderEditableObjectHeader("editableComponent")#</cfoutput>
 </cfif>
 <cfif rsTemplate.isOnDisplay>
-	<cfif len(rsTemplate.template) and fileExists("#getSite().getTemplateIncludeDir()#/components/#rsTemplate.template#")>
-		<cfset componentBody=rsTemplate.body>
-		<cfinclude template="#getSite().getTemplateIncludePath()#/components/#rsTemplate.template#">
-	<cfelse>
-		<cfoutput>
-			#setDynamicContent(rsTemplate.body)#
-		</cfoutput>
+	<cfset componentOutput=application.pluginManager.renderEvent("onComponent#bean.getSubType()#BodyRender",event)>
+	<cfif len(componentOutput)>
+		<cfoutput>#componentOutput#</cfoutput>
+		<cfelse>
+		<cfif len(rsTemplate.template) and fileExists("#getSite().getTemplateIncludeDir()#/components/#rsTemplate.template#")>
+			<cfset componentBody=rsTemplate.body>
+			<cfinclude template="#getSite().getTemplateIncludePath()#/components/#rsTemplate.template#">
+		<cfelse>
+			<cfoutput>#setDynamicContent(rsTemplate.body)#</cfoutput>
+		</cfif>
 	</cfif>
 </cfif>
 <cfif editableControl.innerHTML neq "">

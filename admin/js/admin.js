@@ -400,7 +400,7 @@ function validateForm(theForm) {
 						}					
 					}
 					
-					else if(validationType=='REGEX' && hasValidationRegex(theField))
+					else if(validationType=='REGEX' && theField.value !='' && hasValidationRegex(theField))
 					{	
 						var re = new RegExp(getValidationRegex(theField));
 						if(!theField.value.match(re))
