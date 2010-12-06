@@ -41,12 +41,19 @@ the GNU General Public License version 2 �without this exception. �You may, 
 to your own modified versions of Mura CMS.
 --->
 <cfparam name="local" default="#structNew()#">
-<cfset local.pluginEvent=createObject("component","mura.event")>
-<cfset local.pluginEvent.setValue("ApplicationScope",arguments.ApplicationScope)>	 
-<cfset local.pluginEvent.setValue("SessionScope",arguments.SessionScope)>
-<cfif structKeyExists(arguments.SessionScope,"mura") and len(arguments.SessionScope.mura.siteid)>
-	<cfset local.pluginEvent.setValue("siteid",arguments.SessionScope.siteid)>
-	<cfset arguments.ApplicationScope.pluginManager.announceEvent("onSiteSessionEnd",local.pluginEvent)>
-</cfif>	
+<cftry>
+<cfif isDefined("arguments.ApplicationScope")>
+	<cfset session=arguments.SessionScope>
+	<cfset application=arguments.ApplicationScope>
+	<cfset local.pluginEvent=createObject("component","mura.event")>
+	<cfset local.pluginEvent.setValue("ApplicationScope",arguments.ApplicationScope)>	 
+	<cfset local.pluginEvent.setValue("SessionScope",arguments.SessionScope)>
+	<cfif structKeyExists(arguments.SessionScope,"mura") and len(arguments.SessionScope.mura.siteid)>
+		<cfset local.pluginEvent.setValue("siteid",arguments.SessionScope.siteid)>
+		<cfset arguments.ApplicationScope.pluginManager.announceEvent("onSiteSessionEnd",local.pluginEvent)>
+	</cfif>	
+</cfif>
+<cfcatch></cfcatch>
+</cftry>
 
 	

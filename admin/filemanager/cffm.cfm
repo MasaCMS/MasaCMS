@@ -48,7 +48,7 @@
 	variables.rbm = createObject('component','javaRB');
 	variables.defaultJavaLocale = "en_US";
 	variables.rbDir=ExpandPath("/#application.configBean.getWebRootMap()#/admin/filemanager/");
-	variables.rbFile= rbDir & "cffm.properties"; //base resource file
+	variables.rbFile= ExpandPath("/#application.configBean.getWebRootMap()#/admin/filemanager/cffm.properties"); //base resource file
 	variables.resourceKit = variables.rbm.getResourceBundle("#variables.rbFile#","#variables.defaultJavaLocale#");
 </cfscript>
 
@@ -162,7 +162,7 @@
 	<cfif abort><cfabort></cfif>
 </cffunction>
 
-<cffunction name="setCookie" output="yes" returntype="void">
+<cffunction name="_setCookie" output="yes" returntype="void">
 	<cfargument name="cookieName" type="string" required="yes">
 	<cfargument name="cookieValue" type="any" required="yes">
 	<cfcookie name="#cookieName#" value="#cookieValue#">
@@ -201,7 +201,7 @@
 	if (variables.sessionEnabled) {
 		session.EDITOR_RESOURCE_TYPE = variables.EDITOR_RESOURCE_TYPE;
 	} else {
-		setCookie("EDITOR_RESOURCE_TYPE", variables.EDITOR_RESOURCE_TYPE);
+		_setCookie("EDITOR_RESOURCE_TYPE", variables.EDITOR_RESOURCE_TYPE);
 	}
 
 	if (isDefined("url.editorType")) {
@@ -216,7 +216,7 @@
 	if (variables.sessionEnabled) {
 		session.editorType = variables.editorType;
 	} else {
-		setCookie("editorType", variables.editorType);
+		_setCookie("editorType", variables.editorType);
 	}
 
 	if (isDefined("url.subdir")) {
@@ -233,7 +233,7 @@
 	if (variables.sessionEnabled) {
 		session.subdir = variables.subdir;
 	} else {
-		setCookie("subdir", variables.subdir);
+		_setCookie("subdir", variables.subdir);
 	}
 	
 </cfscript>
