@@ -1058,43 +1058,67 @@ to your own modified versions of Mura CMS.
 </cffunction>
 
 <cffunction name="getThemeAssetPath" returntype="any" access="public" output="false">
-	<cfif len(getTheme())>
-	<cfreturn "#getAssetPath()#/includes/themes/#getTheme()#" />
+	<cfargument name="theme" default="#request.altTheme#">
+	
+	<cfif len(arguments.theme) and directoryExists(getTemplateIncludeDir(arguments.theme))>
+		<cfreturn "#getAssetPath()#/includes/themes/#arguments.theme#" />
+	<cfelseif len(getTheme())>
+		<cfreturn "#getAssetPath()#/includes/themes/#getTheme()#" />
 	<cfelse>
-	<cfreturn getAssetPath() />
+		<cfreturn getAssetPath() />
 	</cfif>
 </cffunction>
 
 <cffunction name="getThemeIncludePath" returntype="any" access="public" output="false">
-	<cfif len(getTheme())>
-	<cfreturn "#getIncludePath()#/includes/themes/#getTheme()#" />
+	<cfargument name="theme" default="#request.altTheme#">
+	
+	<cfif len(arguments.theme) and directoryExists(getTemplateIncludeDir(arguments.theme))>
+		<cfreturn "#getIncludePath()#/includes/themes/#theme#" />
+	<cfelseif len(getTheme())>
+		<cfreturn "#getIncludePath()#/includes/themes/#getTheme()#" />
 	<cfelse>
-	<cfreturn getIncludePath() />
+		<cfreturn getIncludePath() />
 	</cfif>
 </cffunction>
 
 <cffunction name="getThemeAssetMap" returntype="any" access="public" output="false">
-	<cfif len(getTheme())>
-	<cfreturn "#getAssetMap()#.includes.themes.#getTheme()#" />
+	<cfargument name="theme" default="#request.altTheme#">
+	
+	<cfif len(arguments.theme) and directoryExists(getTemplateIncludeDir(arguments.theme))>
+		<cfreturn "#getAssetMap()#.includes.themes.#arguments.theme#" />
+	<cfelseif len(getTheme())>
+		<cfreturn "#getAssetMap()#.includes.themes.#getTheme()#" />
 	<cfelse>
-	<cfreturn getAssetMap() />
+		<cfreturn getAssetMap() />
 	</cfif>
 </cffunction>
 
 <cffunction name="getTemplateIncludePath" returntype="any" access="public" output="false">
-	<cfif len(getTheme())>
-	<cfreturn "#getIncludePath()#/includes/themes/#getTheme()#/templates" />
+	<cfargument name="theme" default="#request.altTheme#">
+	
+	<cfif len(arguments.theme) and directoryExists(getTemplateIncludeDir(arguments.theme))>
+		<cfreturn "#getIncludePath()#/includes/themes/#arguments.theme#/templates" />
+	<cfelseif len(getTheme())>
+		<cfreturn "#getIncludePath()#/includes/themes/#getTheme()#/templates" />
 	<cfelse>
-	<cfreturn "#getIncludePath()#/includes/templates" />
+		<cfreturn "#getIncludePath()#/includes/templates" />
 	</cfif>
 </cffunction>
 
+<cffunction name="hasNonThemeTemplates" returntype="any" access="public" output="false">
+	<cfreturn directoryExists(expandPath("#getIncludePath()#/includes/templates")) />
+</cffunction>
+
 <cffunction name="getTemplateIncludeDir" returntype="any" access="public" output="false">
-	<cfif len(getTheme())>
-			<cfreturn "#expandPath('/#variables.configBean.getWebRootMap()#')#/#getDisplayPoolID()#/includes/themes/#getTheme()#/templates">
-		<cfelse>
-			<cfreturn "#expandPath('/#variables.configBean.getWebRootMap()#')#/#getDisplayPoolID()#/includes/templates">
-		</cfif>
+	<cfargument name="theme" default="#request.altTheme#">
+	
+	<cfif len(arguments.theme)>
+		<cfreturn "#expandPath('/#variables.configBean.getWebRootMap()#')#/#getDisplayPoolID()#/includes/themes/#arguments.theme#/templates">
+	<cfelseif len(getTheme())>
+		<cfreturn "#expandPath('/#variables.configBean.getWebRootMap()#')#/#getDisplayPoolID()#/includes/themes/#getTheme()#/templates">
+	<cfelse>
+		<cfreturn "#expandPath('/#variables.configBean.getWebRootMap()#')#/#getDisplayPoolID()#/includes/templates">
+	</cfif>
 </cffunction>
 
 <cffunction name="getThemes" returntype="query" access="public" output="false">

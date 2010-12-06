@@ -26,7 +26,6 @@
 	<cfif request.isMobileRequest and not (isdefined("cookie.mobileFormat") and cookie.mobileFormat eq "false")>
 		<cfset event.getHandler("standardMobile").handle(event)>
 	</cfif>
-
 </cffunction>
 
 </cfcomponent>

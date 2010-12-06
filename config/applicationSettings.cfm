@@ -148,3 +148,4 @@ to your own modified versions of Mura CMS.
 		</cfcatch>
 	</cftry>
 	--->
+	<cfset request.altTheme = "">		

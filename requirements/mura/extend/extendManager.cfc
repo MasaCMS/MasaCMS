@@ -1145,7 +1145,7 @@ and tclassextendattributes.type='File'
 
 <cfif len(arguments.type)>
 	<cfquery name="rsSubTypes" dbtype="query">	
-		select * from where type=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.type#">
+		select * from rsSubTypes where type=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.type#">
 		<cfif len(argument.subType)>
 		and subtype=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.subtype#">
 		</cfif> 
