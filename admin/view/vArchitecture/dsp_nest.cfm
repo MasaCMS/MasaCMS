@@ -118,10 +118,14 @@ to your own modified versions of Mura CMS.
 	
 	<cfif attributes.rsNest.haskids><span class="hasChildren"></span></cfif>
 
-	<cfif verdict neq 'none'><a class="#icon# title" title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.edit")#" href="index.cfm?fuseaction=cArch.edit&contenthistid=#attributes.rsNest.ContentHistID#&contentid=#attributes.rsNest.ContentID#&type=#attributes.rsNest.type#&parentid=#attributes.rsNest.parentID#&topid=#URLEncodedFormat(attributes.topid)#&siteid=#URLEncodedFormat(attributes.siteid)#&moduleid=#attributes.moduleid#&startrow=#attributes.startrow#"></cfif>
+	<cfif verdict neq 'none'>
+		<a class="#icon# title" title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.edit")#" href="index.cfm?fuseaction=cArch.edit&contenthistid=#attributes.rsNest.ContentHistID#&contentid=#attributes.rsNest.ContentID#&type=#attributes.rsNest.type#&parentid=#attributes.rsNest.parentID#&topid=#URLEncodedFormat(attributes.topid)#&siteid=#URLEncodedFormat(attributes.siteid)#&moduleid=#attributes.moduleid#&startrow=#attributes.startrow#">
+	<cfelse>
+			<a class="#icon# title">
+	</cfif>
 		#HTMLEditFormat(left(attributes.rsNest.menutitle,70))#
 		<cfif len(attributes.rsNest.menutitle) gt 70>&hellip;</cfif>
-		<cfif isMore><span class="hasMore">&nbsp;(#application.rbFactory.getKeyValue(session.rb,"sitemanager.more")#)</span></cfif><cfif verdict neq 'none'></a></cfif>
+		<cfif isMore><span class="hasMore">&nbsp;(#application.rbFactory.getKeyValue(session.rb,"sitemanager.more")#)</span></cfif></a>
 		<div class="mura-title-fade"></div>
 </dt>	
 

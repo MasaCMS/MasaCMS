@@ -251,13 +251,13 @@ function setAsSorted(){
        
        <cfif request.rstop.haskids><span class="hasChildren"></span></cfif>
         <cfif perm neq 'none'>
-          <a class="#icon# title" title="Edit" href="index.cfm?fuseaction=cArch.edit&contenthistid=#request.rstop.ContentHistID#&siteid=#URLEncodedFormat(attributes.siteid)#&contentid=#attributes.topid#&topid=#URLEncodedFormat(attributes.topid)#&type=#request.rstop.type#&parentid=#request.rstop.parentid#&moduleid=#attributes.moduleid#">
-        </cfif>
+          <a class="#icon# title" title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.edit")#" href="index.cfm?fuseaction=cArch.edit&contenthistid=#request.rstop.ContentHistID#&siteid=#URLEncodedFormat(attributes.siteid)#&contentid=#attributes.topid#&topid=#URLEncodedFormat(attributes.topid)#&type=#request.rstop.type#&parentid=#request.rstop.parentid#&moduleid=#attributes.moduleid#">
+        <cfelse>
+		  <a class="#icon# title">
+		</cfif>
 		#HTMLEditFormat(left(request.rsTop.menutitle,70))#
         <cfif len(request.rsTop.menutitle) gt 70>&hellip;</cfif>
-        <cfif perm neq 'none'>
-          </a>
-        </cfif>
+        </a>
         <div class="mura-title-fade"></div>
       </dt>
       <cfif application.settingsManager.getSite(attributes.siteid).getlocking() neq 'all'>
