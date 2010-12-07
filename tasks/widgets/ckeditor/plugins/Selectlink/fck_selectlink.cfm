@@ -45,8 +45,8 @@ StructAppend(attributes, form, "no");
 </cfoutput>
 <form name="frmLinks" method="post" onSubmit="return false;">
 <cfif attributes.keywords neq ''>
-<div style="overflow:scroll;width:395px;height:325px; ">
- <table id="metadata" class="stripe">
+<div style="overflow:auto;width:549px;height:300px; ">
+ <table id="metadata" class="stripe" style="margin-bottom: 2px;">
     <tr> 
       <th class="varWidth">Title</th>
 	  <th class="administration">&nbsp;</th>
@@ -55,8 +55,8 @@ StructAppend(attributes, form, "no");
      <cfoutput query="request.rslist" maxrows="#request.nextn.recordsperPage#" startrow="#attributes.startrow#">
 		<cfset crumbdata=application.contentManager.getCrumbList(request.rslist.contentid, attributes.siteid)/>
         <tr>  
-          <td class="varWidth">#application.contentRenderer.dspZoomNoLinks(crumbdata,request.rsList.fileExt)#</td>
-		  <td class="administration" id="test"><input type="radio" name="theLinks" value="#htmlEditFormat(request.contentRenderer.createHREF(request.rslist.type,request.rslist.filename,session.siteid,request.rslist.contentid,request.rslist.target,request.rslist.targetParams,'',application.configBean.getContext(),application.configBean.getStub(),application.configBean.getIndexFile()))#^#htmleditformat(request.rslist.menutitle)#"<cfif request.rslist.currentrow eq 1> checked</cfif>></td>
+          <td class="varWidth"><label for="theLinks#request.rslist.currentrow#">#application.contentRenderer.dspZoomNoLinks(crumbdata,request.rsList.fileExt)#</label></td>
+		  <td class="administration" id="test"><input type="radio" name="theLinks" id="theLinks#request.rslist.currentrow#" value="#htmlEditFormat(request.contentRenderer.createHREF(request.rslist.type,request.rslist.filename,session.siteid,request.rslist.contentid,request.rslist.target,request.rslist.targetParams,'',application.configBean.getContext(),application.configBean.getStub(),application.configBean.getIndexFile()))#^#htmleditformat(request.rslist.menutitle)#"<cfif request.rslist.currentrow eq 1> checked</cfif>></td>
 		</tr>
        </cfoutput>
       <cfelse>

@@ -17,8 +17,8 @@ CKEDITOR.plugins.add( 'Selectlink',
 		CKEDITOR.dialog.add( 'Selectlink', function () {
 		  return {
 			 title : 'Select Link',
-			 minWidth : 400,
-			 minHeight : 400,
+			 minWidth : 550,
+			 minHeight : 500,
 			 contents :
 				   [
 					  {
@@ -31,7 +31,7 @@ CKEDITOR.plugins.add( 'Selectlink',
 									 type : 'iframe',
 									 src : me.path + 'fck_selectlink.cfm',
 									 width : '100%',
-									 height : '100%',
+									 height : '380px',
 									 onContentLoad : function() {
 										var iframe = document.getElementById(this._.frameId);
 										iframeWindow = iframe.contentWindow;
@@ -45,44 +45,43 @@ CKEDITOR.plugins.add( 'Selectlink',
 				/* Begin insert links */
 				if (typeof(iframeWindow.document.forms.frmLinks.theLinks) != 'undefined') {
 
-					var theChoice = -1;
+					var theChoice = -1,
+						theLink;
 					
 					if(iframeWindow.document.frmLinks.theLinks.length == undefined) {
 						theChoice = 0; 
-						theLink=iframeWindow.document.forms.frmLinks.theLinks.value.split("^")
+						theLink = iframeWindow.document.forms.frmLinks.theLinks.value.split("^");
 					} else {
 						for (counter = 0; counter < iframeWindow.document.frmLinks.theLinks.length; counter++) {
 							if (iframeWindow.document.frmLinks.theLinks[counter].checked) {
 								theChoice = counter; 
-								var theLink=iframeWindow.document.forms.frmLinks.theLinks[theChoice].value.split("^");
+								theLink = iframeWindow.document.forms.frmLinks.theLinks[theChoice].value.split("^");
 							}
 						}
 					}
 
 					if(theChoice != -1) {
 
-						var mySelection = this._.editor.getSelection(),
-							ranges = mySelection.getRanges( true ),
-							selectedText, href, html;
+						var editor = this._.editor,
+							selection = editor.getSelection(),
+							ranges = selection.getRanges( true );
 						
-						if (CKEDITOR.env.ie) {
-						    mySelection.unlock(true);
-						    selectedText = mySelection.getNative().createRange().text;
-						} else {
-						    selectedText = mySelection.getNative();
-						}
-						
-						if ( ranges.length == 1 )
+						if ( ranges.length == 1 && ranges[0].collapsed )
 						{
-							href = '<a href="' + theLink[0] + '">' + ( selectedText != "" ? selectedText :
-					theLink[1] ) + '</a>';
-							html = CKEDITOR.dom.element.createFromHtml( href );
-							
-							ranges[0].deleteContents();
-							ranges[0].insertNode( html );
-							ranges[0].selectNodeContents( html );
-							mySelection.selectRanges( ranges );
+							var text = new CKEDITOR.dom.text( theLink[1], editor.document );
+							ranges[0].insertNode( text );
+							ranges[0].selectNodeContents( text );
+							selection.selectRanges( ranges );
 						}
+						
+						var style = new CKEDITOR.style( {
+							element : 'a',
+							attributes : {
+								href : theLink[0]
+								}
+							} );
+						style.type = CKEDITOR.STYLE_INLINE;
+						style.apply( editor.document );
 					}
 				}
 				/* End insert links */
