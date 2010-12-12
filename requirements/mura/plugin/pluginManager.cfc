@@ -810,7 +810,7 @@ select * from tplugins order by #arguments.orderby#
 	<cfcatch></cfcatch>
 	</cftry>
 
-	<cfif directoryExists(location)>
+	<cfif len(rsPlugin.directory) and directoryExists(location)>
 		<cfdirectory action="delete" directory="#location#" recurse="true">
 		<cfset createMappings() />
 	</cfif>
