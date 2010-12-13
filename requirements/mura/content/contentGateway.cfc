@@ -1342,8 +1342,9 @@ to your own modified versions of Mura CMS.
 				
 				<cfif structkeyExists(request,"isMobileRequest") and request.isMobileRequest>
 				 	and (tcontent.mobileExclude!=1 or tcontent.mobileExclude is null)
-				</cfif>				
-				
+				</cfif>		
+						
+	<cfif not len(arguments.tag)>		
 		union all
 		
 		<!--- Find in-direct matches with no releasedate --->
@@ -1502,7 +1503,8 @@ to your own modified versions of Mura CMS.
 				
 				<cfif structkeyExists(request,"isMobileRequest") and request.isMobileRequest>
 				 	and (tcontent.mobileExclude!=1 or tcontent.mobileExclude is null)
-				</cfif>					 
+				</cfif>	
+		</cfif>				 
 	</cfquery>
 	
 	<cfquery name="rs" dbtype="query">

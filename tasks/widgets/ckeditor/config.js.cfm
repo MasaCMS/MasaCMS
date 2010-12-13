@@ -128,3 +128,18 @@ CKEDITOR.editorConfig = function( config )
 
 
 };
+
+// keep CKEDITOR from putting a line break and indentation after each tag in 'Source' view
+CKEDITOR.on('instanceReady', function(ev){
+	var dtd = CKEDITOR.dtd;
+	for ( var e in CKEDITOR.tools.extend( {}, dtd.$nonBodyContent, dtd.$block, dtd.$listItem, dtd.$tableContent ) )
+	{
+		ev.editor.dataProcessor.writer.setRules(e, {
+			indent : false,
+			breakBeforeOpen : true,
+			breakAfterOpen : false,
+			breakBeforeClose : false,
+			breakAfterClose : true
+		});	
+	};
+});
