@@ -69,7 +69,7 @@ tcontent.doCache,tcontent.created,tcontent.urltitle,tcontent.htmltitle,tcontent.
 </cffunction>
 
 <cffunction name="getBean" access="public" returntype="any">
-	<cfreturn createObject("component","#variables.configBean.getMapDir()#.content.contentBean").init(variables.configBean,variables.contentManager)>
+	<cfreturn application.serviceFactory.getBean("contentBean")>
 </cffunction>
 
 <cffunction name="readVersion" access="public" returntype="any" output="false">

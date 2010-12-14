@@ -60,7 +60,7 @@ to your own modified versions of Mura CMS.
 </cffunction>
 
 <cffunction name="getBean" access="public" returntype="any">
-	<cfreturn createObject("component","mura.user.userBean").init(variables.configBean,variables.settingsManager,variables.userManager)>
+	<cfreturn application.serviceFactory.getBean("userBean")>
 </cffunction>
 
 <cffunction name="read" access="public" returntype="any" output="false">
