@@ -35,7 +35,7 @@ CKEDITOR.addTemplates( 'default',
                             image: 'template-cols3.gif',
                             description: 'An area with 3 equally wide columns',
                             html:
-                                    '<div class="columns2 clearfix">' +
+                                    '<div class="columns3 clearfix">' +
                                             '<div class="col">' +
                                             '<h3>Edit or Delete Header</h3>'+
                                           '<p>Content for the first column goes here.</p>' +
@@ -57,7 +57,7 @@ CKEDITOR.addTemplates( 'default',
                             image: 'template-cols4.gif',
                             description: 'An area with 4 equally wide columns',
                             html:
-                                    '<div class="columns2 clearfix">' +
+                                    '<div class="columns4 clearfix">' +
                                             '<div class="col">' +
                                             '<h3>Edit or Delete Header</h3>'+
                                           '<p>Content for the first column goes here.</p>' +
