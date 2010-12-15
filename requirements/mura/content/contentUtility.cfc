@@ -705,8 +705,8 @@ Sincerely,
 	<cfset var tableName = "">
 	<cfset var counter = 0>
 	<cfset var sortDirection="asc">
-	<cfset var newContentID = createUUID()>
-	<cfset var newContentHistID = createUUID()>
+	<cfset var newContentID = "">
+	<cfset var newContentHistID = "">
 	<cfset var contentBean = "">
 	<cfset var contentBeanParent = "">
 	<cfset var contentHistID = "">
@@ -722,8 +722,8 @@ Sincerely,
 	</cfif> --->
 	
 	<cfset contentBean.setIsNew(1)>
-	<cfset contentBean.setcontentID(newContentID)>
-	<cfset contentBean.setcontentHistID(newContentHistID)>
+	<cfset contentBean.setContentID("")>
+	<cfset contentBean.setContentHistID("")>
 	<cfset contentBean.setParentID(arguments.parentID)>
 	<cfif arguments.appendTitle>
 		<cfset contentBean.setMenuTitle(contentBean.getMenuTitle() & " - Copy")>
@@ -738,12 +738,14 @@ Sincerely,
 	<cfif not structKeyExists(arguments,"path")>
 		<cfset getBean("contentManager").setMaterializedPath(contentBean)>
 	<cfelse>
-		<cfset contentBean.setPath(listAppend(arguments.path,newContentID))>
+		<cfset contentBean.setPath(listAppend(arguments.path,contentBean.getContentID()))>
 	</cfif>
 	
 	<cfset contentBean.setCreated(now())>
 	
 	<cfset contentBean.save()>
+	<cfset newContentHistID=contentBean.getContentHistID()>
+	<cfset newContentID=contentBean.getContentID()>
 	
 	<!--- tcontentcategoryassign --->
 	<cfquery datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
