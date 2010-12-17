@@ -880,8 +880,14 @@ to your own modified versions of Mura CMS.
 				<cfcase value="mailing_list">#dspObject_Render(siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,fileName="dsp_mailing_list.cfm")#</cfcase>
 				<cfcase value="mailing_list_master">#dspObject_Render(siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,fileName="dsp_mailing_list_master.cfm")#</cfcase>
 				<cfcase value="site_map">#dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"dsp_site_map.cfm",cacheKeyObjectId)#</cfcase>
-				<cfcase value="features">#dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"dsp_features.cfm",cacheKeyObjectId)#</cfcase>
-				<cfcase value="features_no_summary">#dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"dsp_features.cfm",cacheKeyObjectId,false)#</cfcase>
+				<cfcase value="features">
+					<cfset addToHTMLHeadQueue("listImageStyles.cfm")>
+					#dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"dsp_features.cfm",cacheKeyObjectId)#
+				</cfcase>
+				<cfcase value="features_no_summary">
+					<cfset addToHTMLHeadQueue("listImageStyles.cfm")>
+					#dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"dsp_features.cfm",cacheKeyObjectId,false)#
+				</cfcase>
 				<cfcase value="category_features">#dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"dsp_category_features.cfm",cacheKeyObjectId)#</cfcase>
 				<cfcase value="category_features_no_summary">#dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"dsp_category_features.cfm",cacheKeyObjectId,false)#</cfcase>
 				<cfcase value="category_portal_features">#dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"dsp_category_portal_features.cfm",cacheKeyObjectId)#</cfcase>
@@ -899,8 +905,14 @@ to your own modified versions of Mura CMS.
 				<cfcase value="event_reminder_form">#dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"dsp_event_reminder_form.cfm",cacheKeyContentId)#</cfcase>
 				<cfcase value="forward_email">#dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"dsp_forward_email.cfm")#</cfcase>
 				<cfcase value="adzone">#dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"dsp_adZone.cfm")#</cfcase>
-				<cfcase value="feed">#dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"dsp_feed.cfm",cacheKeyObjectId & "startrow#request.startrow#")#</cfcase>
-				<cfcase value="feed_no_summary">#dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"dsp_feed.cfm",cacheKeyObjectId & "startrow#request.startrow#",false)#</cfcase>
+				<cfcase value="feed">
+					<cfset addToHTMLHeadQueue("listImageStyles.cfm")>
+					#dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"dsp_feed.cfm",cacheKeyObjectId & "startrow#request.startrow#")#
+				</cfcase>
+				<cfcase value="feed_no_summary">
+					<cfset addToHTMLHeadQueue("listImageStyles.cfm")>
+					#dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"dsp_feed.cfm",cacheKeyObjectId & "startrow#request.startrow#",false)#
+				</cfcase>
 				<cfcase value="feed_slideshow_no_summary">#dspObject_Render(siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,fileName="feedslideshow/index.cfm",hasSummary=false)#</cfcase>
 				<cfcase value="feed_slideshow">#dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"feedslideshow/index.cfm")#</cfcase>
 				<cfcase value="feed_table">#dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"feedtable/index.cfm",arguments.object,false)#</cfcase>
@@ -908,9 +920,18 @@ to your own modified versions of Mura CMS.
 				<cfcase value="rater">#dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"rater/index.cfm")#</cfcase>
 				<cfcase value="favorites">#dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"favorites/index.cfm")#</cfcase>
 				<cfcase value="dragable_feeds">#dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"dragablefeeds/index.cfm")#</cfcase>
-				<cfcase value="related_content">#dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"dsp_related_content.cfm",cacheKeyContentId)#</cfcase>
-				<cfcase value="related_section_content">#dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"dsp_related_section_content.cfm",cacheKeyContentId)#</cfcase>
-				<cfcase value="related_section_content_no_summary">#dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"dsp_related_section_content.cfm",cacheKeyContentId,false)#</cfcase>
+				<cfcase value="related_content">
+					<cfset addToHTMLHeadQueue("listImageStyles.cfm")>
+					#dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"dsp_related_content.cfm",cacheKeyContentId)#
+				</cfcase>
+				<cfcase value="related_section_content">
+					<cfset addToHTMLHeadQueue("listImageStyles.cfm")>
+					#dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"dsp_related_section_content.cfm",cacheKeyContentId)#
+				</cfcase>
+				<cfcase value="related_section_content_no_summary">
+					<cfset addToHTMLHeadQueue("listImageStyles.cfm")>
+					#dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"dsp_related_section_content.cfm",cacheKeyContentId,false)#
+				</cfcase>
 				<cfcase value="user_tools">#dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"dsp_user_tools.cfm")#</cfcase>
 				<cfcase value="tag_cloud"><cfoutput>#dspTagCloud()#</cfoutput></cfcase>
 				<cfcase value="goToFirstChild">#dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"act_goToFirstChild.cfm")#</cfcase>
@@ -1065,11 +1086,13 @@ to your own modified versions of Mura CMS.
 					</cfswitch>
 					<cfswitch expression="#event.getValue('contentBean').gettype()#">
 					<cfcase value="Portal">
+						<cfset addToHTMLHeadQueue("listImageStyles.cfm")>
 						<cf_CacheOMatic key="portalBody#cacheStub#" nocache="#event.getValue('r').restrict#">
 						 <cfoutput>#dspObject_Include(thefile='dsp_portal.cfm')#</cfoutput>
 						</cf_CacheOMatic>
 					</cfcase> 
 					<cfcase value="Calendar">
+						 <cfset addToHTMLHeadQueue("listImageStyles.cfm")>
 						 <cf_CacheOMatic key="calendarBody#cacheStub#" nocache="#event.getValue('r').restrict#">
 						 <cfoutput>#dspObject_Include(thefile='calendar/index.cfm')#</cfoutput>
 						 </cf_CacheOMatic>

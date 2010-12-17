@@ -63,7 +63,6 @@ to your own modified versions of Mura CMS.
 	<cfset hasComments=application.contentGateway.getHasComments(request.siteid,arguments.objectid) />
 	<cfparam name="hasSummary" default="true"/>
 	<cfset cssID=createCSSID(rsSection.menuTitle)>
-	<cfset addToHTMLHeadQueue("listImageStyles.cfm")>
 </cfsilent>
 <div id="#cssID#" class="svRelSecContent svIndex">
 <#getHeaderTag('subHead1')#>#rsSection.menutitle#</#getHeaderTag('subHead1')#>

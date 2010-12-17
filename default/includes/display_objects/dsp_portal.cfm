@@ -101,15 +101,9 @@ to your own modified versions of Mura CMS.
 </cfif>
 
 <cfset variables.nextN=application.utility.getNextN(rsSection,request.contentBean.getNextN(),currentNextNIndex)>
-
-<cfset addToHeight = 10> <!--- Total number of pixels to add for the final height of the DL --->
-<cfset minHeight = $.siteConfig('gallerySmallScale') + addToHeight> <!--- padding + border + margin of the top and bottom of the image --->
-<cfset addToWidth = 10> <!--- Total number of pixels to add for the final padding i.e. the "gutter" taht the image lives in --->
-<cfset totalPadding = $.siteConfig('gallerySmallScale') + addToWidth> <!--- padding + border + margin after image  --->
 </cfsilent>
 
 <cfif iterator.getRecordcount()>
-<cfset addToHTMLHeadQueue("listImageStyles.cfm")>
 <div id="svPortal" class="svIndex">
 		<cfloop condition="iterator.hasNext()">
 		<cfsilent>
