@@ -832,24 +832,24 @@ to your own modified versions of Mura CMS.
 	<cfargument name="RSS" type="boolean" required="true" default="false" />
 	<cfargument name="objectPerm" type="string" required="true" default="none" />
 
-	<cfset var theIncludePath = event.getSite().getIncludePath() />
 	<cfset var fileDelim = application.configBean.getFileDelim() />
-	<cfset var filePath = theIncludePath  & fileDelim & "includes" & fileDelim />
+	<cfset var displayObjectPath = $.siteConfig('IncludePath') & fileDelim & "includes"  & fileDelim & "display_objects"/>
+	<cfset var themeObjectPath = $.siteConfig('ThemeIncludePath') & fileDelim & "display_objects"/>
 	<cfset var hasSummary = arguments.Summary />
 	<cfset var useRss = arguments.RSS />
 	<cfset var bean = "" />
 	<cfset var theContent = "" />
 	<cfset var editableControl = structNew()>
-	<cfset var theme =$.siteConfig("theme")>
-	<cfset var expandedPath=expandPath(filePath)>
+	<cfset var expandedDisplayObjectPath=expandPath(displayObjectPath)>
+	<cfset var expandedThemeObjectPath=expandPath(themeObjectPath)>
 	
 	<cfsavecontent variable="theContent">
-	<cfif fileExists(expandedPath & "themes" & fileDelim & theme & fileDelim & "display_objects" & fileDelim & arguments.theFile)>
-		<cfinclude  template="#filePath#themes/#theme#/display_objects/#arguments.theFile#" />
-	<cfelseif fileExists(expandedPath & "display_objects" & fileDelim & "custom" & fileDelim & arguments.theFile)>
-		<cfinclude  template="#filePath#display_objects/custom/#arguments.theFile#" />
+	<cfif fileExists(expandedThemeObjectPath & fileDelim & arguments.theFile)>
+		<cfinclude  template="#themeObjectPath#/#arguments.theFile#" />
+	<cfelseif fileExists(expandedDisplayObjectPath & fileDelim & "custom" & fileDelim & arguments.theFile)>
+		<cfinclude  template="#displayObjectPath#/custom/#arguments.theFile#" />
 	<cfelse>
-		<cfinclude  template="#filePath#display_objects/#arguments.theFile#" />
+		<cfinclude  template="#displayObjectPath#/#arguments.theFile#" />
 	</cfif>
 	</cfsavecontent>
 	<cfreturn theContent />

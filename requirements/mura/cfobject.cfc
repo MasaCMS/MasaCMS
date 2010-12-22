@@ -94,22 +94,19 @@ to your own modified versions of Mura CMS.
 	<cfargument name="siteID" required="false">
 	<cfset var bean="">
 	
-	<cfif application.serviceFactory.containsBean(arguments.beanName)>
-		<cfset bean=application.serviceFactory.getBean(arguments.beanName) />
+	<cfset bean=application.serviceFactory.getBean(arguments.beanName) />
 	
-		<cfif structKeyExists(bean,"setSiteID")>		
-			<cfif structKeyExists(arguments,"siteID") and len(arguments.siteID)>
-				<cfset bean.setSiteID(arguments.siteID)>			
-			<cfelseif isDefined("getSiteID")>
-				<cfset bean.setSiteID(getSiteID())>
-			<cfelseif len(getValue("siteID"))>
-				<cfset bean.setSiteID(getValue("siteID"))>		
-			</cfif>		
-		</cfif>
-		<cfreturn bean>
-	<cfelse>
-		<cfthrow message="The requested bean '#arguments.beanName#' is not defined.">
-	</cfif>	
+	<cfif structKeyExists(bean,"setSiteID")>		
+		<cfif structKeyExists(arguments,"siteID") and len(arguments.siteID)>
+			<cfset bean.setSiteID(arguments.siteID)>			
+		<cfelseif isDefined("getSiteID")>
+			<cfset bean.setSiteID(getSiteID())>
+		<cfelseif len(getValue("siteID"))>
+			<cfset bean.setSiteID(getValue("siteID"))>		
+		</cfif>		
+	</cfif>
+	<cfreturn bean>
+	
 </cffunction>
 
 <cffunction name="getPluginManager" returntype="any" access="public" output="false">

@@ -200,14 +200,14 @@ select * from rsSubTypes where subType <> 'Default'
 		<dt class="first">#application.rbFactory.getKeyValue(session.rb,'user.admingroups')#</dt>
 		<dd><ul>
 			<cfloop query="request.rsPrivateGroups">
-				<li><input name="GroupID" type="checkbox" class="checkbox" value="#request.rsPrivateGroups.UserID#" <cfif listfind(request.userBean.getgroupid(),request.rsPrivateGroups.UserID) or listfind(attributes.groupid,request.rsPrivateGroups.UserID)>checked</cfif>>#groupname#</li>
+				<li><input name="groupid" type="checkbox" class="checkbox" value="#request.rsPrivateGroups.UserID#" <cfif listfind(request.userBean.getgroupid(),request.rsPrivateGroups.UserID) or listfind(attributes.groupid,request.rsPrivateGroups.UserID)>checked</cfif>>#groupname#</li>
 			</cfloop></ul>
 		</dd>
 		<cfif request.rsPublicGroups.recordcount>
 		<dt>#application.rbFactory.getKeyValue(session.rb,'user.membergroups')#</dt>
 		<dd><ul>
 			<cfloop query="request.rsPublicGroups">
-				<li><input name="GroupID" type="checkbox" class="checkbox" value="#request.rsPublicGroups.UserID#" <cfif listfind(request.userBean.getgroupid(),request.rsPublicGroups.UserID) or listfind(attributes.groupid,request.rsPublicGroups.UserID)>checked</cfif>>#request.rsPublicGroups.site# - #request.rsPublicGroups.groupname#</li>
+				<li><input name="groupid" type="checkbox" class="checkbox" value="#request.rsPublicGroups.UserID#" <cfif listfind(request.userBean.getgroupid(),request.rsPublicGroups.UserID) or listfind(attributes.groupid,request.rsPublicGroups.UserID)>checked</cfif>>#request.rsPublicGroups.site# - #request.rsPublicGroups.groupname#</li>
 			</cfloop></ul>
 		</dd>
 		</cfif>

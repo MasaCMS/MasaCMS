@@ -202,7 +202,7 @@ select * from rsSubTypes where subType <> 'Default'
 		<dt class="first">#application.rbFactory.getKeyValue(session.rb,'user.groups')#</dt>
 		<dd>
 		<ul><cfloop query="request.rspublicgroups">
-		<li><input name="GroupID" type="checkbox" class="checkbox" value="#request.rspublicgroups.UserID#" <cfif listfind(request.userBean.getgroupid(),request.rspublicgroups.UserID) or listfind(attributes.groupid,request.rsPublicGroups.UserID)>checked</cfif>> #request.rsPublicGroups.site# - #request.rspublicgroups.groupname#</li>
+		<li><input name="groupid" type="checkbox" class="checkbox" value="#request.rspublicgroups.UserID#" <cfif listfind(request.userBean.getgroupid(),request.rspublicgroups.UserID) or listfind(attributes.groupid,request.rsPublicGroups.UserID)>checked</cfif>> #request.rsPublicGroups.site# - #request.rspublicgroups.groupname#</li>
 		</cfloop>
 		</ul>
 		</dd>
