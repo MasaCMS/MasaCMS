@@ -150,9 +150,8 @@ to your own modified versions of Mura CMS.
 			<cfset variables.serviceFactory.setParent(parentServiceFactory)>
 		</cfif>
 		
-		<cfif not isDefined("application.serviceFactory")>
-			<cfset application.serviceFactory=variables.serviceFactory>
-		</cfif>
+		
+		<cfset application.serviceFactory=variables.serviceFactory>
 		
 		<cfobjectcache action="clear" />
 		
@@ -166,37 +165,36 @@ to your own modified versions of Mura CMS.
 		
 		<cfset application.configBean.applyDbUpdates() />
 		
-		<cfset application.settingsManager=variables.serviceFactory.getBean("settingsManager") />
-		<cfset application.pluginManager=variables.serviceFactory.getBean("pluginManager") />
+		<cfset application.settingsManager=application.serviceFactory.getBean("settingsManager") />
+		<cfset application.pluginManager=application.serviceFactory.getBean("pluginManager") />
 		<cfset application.eventManager=application.pluginManager />
-		<cfset application.contentManager=variables.serviceFactory.getBean("contentManager") />
-		<cfset application.utility=variables.serviceFactory.getBean("utility") />
-		<cfset application.permUtility=variables.serviceFactory.getBean("permUtility") />
-		<cfset application.contentUtility=variables.serviceFactory.getBean("contentUtility") />
-		<cfset application.contentRenderer=variables.serviceFactory.getBean("contentRenderer") />
-		<cfset application.contentGateway=variables.serviceFactory.getBean("contentGateway") />
-		<cfset application.emailManager=variables.serviceFactory.getBean("emailManager") />
-		<cfset application.loginManager=variables.serviceFactory.getBean("loginManager") />
-		<cfset application.mailinglistManager=variables.serviceFactory.getBean("mailinglistManager") />
-		<cfset application.userManager=variables.serviceFactory.getBean("userManager") />
-		<cfset application.dataCollectionManager=variables.serviceFactory.getBean("dataCollectionManager") />
-		<cfset application.advertiserManager=variables.serviceFactory.getBean("advertiserManager") />
-		<cfset application.categoryManager=variables.serviceFactory.getBean("categoryManager") />
-		<cfset application.feedManager=variables.serviceFactory.getBean("feedManager") />
-		<cfset application.sessionTrackingManager=variables.serviceFactory.getBean("sessionTrackingManager") />
-		<cfset application.favoriteManager=variables.serviceFactory.getBean("favoriteManager") />
-		<cfset application.raterManager=variables.serviceFactory.getBean("raterManager") />
+		<cfset application.contentManager=application.serviceFactory.getBean("contentManager") />
+		<cfset application.utility=application.serviceFactory.getBean("utility") />
+		<cfset application.permUtility=application.serviceFactory.getBean("permUtility") />
+		<cfset application.contentUtility=application.serviceFactory.getBean("contentUtility") />
+		<cfset application.contentRenderer=application.serviceFactory.getBean("contentRenderer") />
+		<cfset application.contentGateway=application.serviceFactory.getBean("contentGateway") />
+		<cfset application.emailManager=application.serviceFactory.getBean("emailManager") />
+		<cfset application.loginManager=application.serviceFactory.getBean("loginManager") />
+		<cfset application.mailinglistManager=application.serviceFactory.getBean("mailinglistManager") />
+		<cfset application.userManager=application.serviceFactory.getBean("userManager") />
+		<cfset application.dataCollectionManager=application.serviceFactory.getBean("dataCollectionManager") />
+		<cfset application.advertiserManager=application.serviceFactory.getBean("advertiserManager") />
+		<cfset application.categoryManager=application.serviceFactory.getBean("categoryManager") />
+		<cfset application.feedManager=application.serviceFactory.getBean("feedManager") />
+		<cfset application.sessionTrackingManager=application.serviceFactory.getBean("sessionTrackingManager") />
+		<cfset application.favoriteManager=application.serviceFactory.getBean("favoriteManager") />
+		<cfset application.raterManager=application.serviceFactory.getBean("raterManager") />
 		<cfsavecontent variable="variables.temp"><cfoutput><cfinclude template="/mura/bad_words.txt"></cfoutput></cfsavecontent>
 		<cfset application.badwords = ReReplaceNoCase(variables.temp, "," , "|" , "ALL")/> 
-		<cfset application.dashboardManager=variables.serviceFactory.getBean("dashboardManager") />
+		<cfset application.dashboardManager=application.serviceFactory.getBean("dashboardManager") />
 		<cfset application.classExtensionManager=application.configBean.getClassExtensionManager() />
 		<cfset application.classExtensionManager.setContentRenderer(application.contentRenderer)>
-		<cfset application.rbFactory=variables.serviceFactory.getBean("resourceBundleFactory") />
-		<cfset application.clusterManager=variables.serviceFactory.getBean("clusterManager") />
-		<cfset application.contentServer=variables.serviceFactory.getBean("contentServer") />
-		<cfset application.autoUpdater=variables.serviceFactory.getBean("autoUpdater") />
-		<cfset application.scriptProtectionFilter=variables.serviceFactory.getBean("scriptProtectionFilter") >
-		<cfset application.serviceFactory=variables.serviceFactory>
+		<cfset application.rbFactory=application.serviceFactory.getBean("resourceBundleFactory") />
+		<cfset application.clusterManager=application.serviceFactory.getBean("clusterManager") />
+		<cfset application.contentServer=application.serviceFactory.getBean("contentServer") />
+		<cfset application.autoUpdater=application.serviceFactory.getBean("autoUpdater") />
+		<cfset application.scriptProtectionFilter=application.serviceFactory.getBean("scriptProtectionFilter") >
 		
 		<!---settings.custom.managers.cfm reference is for backwards compatibility --->
 		<cfif fileExists(ExpandPath("/muraWRM/config/settings.custom.managers.cfm"))>
