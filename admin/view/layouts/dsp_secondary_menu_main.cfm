@@ -52,14 +52,24 @@ to your own modified versions of Mura CMS.
       <li <cfif attributes.moduleid eq '00000000000000000000000000000000000' and myfusebox.originalcircuit eq 'cArch'>id="current"</cfif>><a href="#application.configBean.getContext()#/admin/index.cfm?fuseaction=cArch.list&siteid=#session.siteid#&moduleid=00000000000000000000000000000000000&topid=00000000000000000000000000000000001">#application.rbFactory.getKeyValue(session.rb,"layout.sitemanager")#</a>
 	   <cfif attributes.moduleid eq '00000000000000000000000000000000000' and myfusebox.originalcircuit neq 'cDashboard'>
 	    <cfinclude template="../../view/vArchitecture/dsp_secondary_menu.cfm"></cfif></li>
-      <li <cfif myfusebox.originalfuseaction eq 'draft'>id="current"</cfif>><a href="#application.configBean.getContext()#/admin/index.cfm?fuseaction=cArch.draft&siteid=#session.siteid#" >#application.rbFactory.getKeyValue(session.rb,"layout.drafts")#</a></li>
-      <cfif application.permUtility.getModulePerm("00000000000000000000000000000000003","#session.siteid#")>
+	<li <cfif myfusebox.originalfuseaction eq 'draft'>id="current"</cfif>><a href="#application.configBean.getContext()#/admin/index.cfm?fuseaction=cArch.draft&siteid=#session.siteid#" >#application.rbFactory.getKeyValue(session.rb,"layout.drafts")#</a></li>
+    
+	  <cfif application.settingsManager.getSite(session.siteid).getHasChangesets() and application.permUtility.getModulePerm("00000000000000000000000000000000014","#session.siteid#")>
+        <li <cfif  myfusebox.originalcircuit eq 'cChangesets' or (myfusebox.originalcircuit eq 'cPerm' and  attributes.moduleid eq '00000000000000000000000000000000014')>id="current"</cfif>><a href="#application.configBean.getContext()#/admin/index.cfm?fuseaction=cChangesets.list&siteid=#session.siteid#">#application.rbFactory.getKeyValue(session.rb,"layout.changesets")#</a>
+          <cfif myfusebox.originalcircuit eq 'cChangesets' or (myfusebox.originalcircuit eq 'cPerm' and  attributes.moduleid eq '00000000000000000000000000000000014')>
+            <cfinclude template="/muraWRM/admin/fw1/views/cchangesets/dsp_secondary_menu.cfm">
+          </cfif>
+        </li>
+      </cfif>   
+	
+	<cfif application.permUtility.getModulePerm("00000000000000000000000000000000003","#session.siteid#")>
         <li <cfif attributes.moduleid eq '00000000000000000000000000000000003'>id="current"</cfif>><a href="#application.configBean.getContext()#/admin/index.cfm?fuseaction=cArch.list&siteid=#session.siteid#&topid=00000000000000000000000000000000003&parentid=00000000000000000000000000000000003&moduleid=00000000000000000000000000000000003">#application.rbFactory.getKeyValue(session.rb,"layout.components")#</a>
           <cfif attributes.moduleid eq '00000000000000000000000000000000003' or (myfusebox.originalcircuit eq 'cPerm' and  attributes.moduleid eq '00000000000000000000000000000000003')>
             <cfinclude template="../../view/vArchitecture/dsp_secondary_menu.cfm">
           </cfif>
         </li>
       </cfif>
+	 
 		<li<cfif myfusebox.originalcircuit eq 'cPlugins' > id="current"</cfif>>
 		<a href="#application.configBean.getContext()#/admin/index.cfm?fuseaction=cPlugins.list&siteid=#session.siteid#">#application.rbFactory.getKeyValue(session.rb,"layout.plugins")#</a>
         </li>
@@ -130,19 +140,22 @@ to your own modified versions of Mura CMS.
 	  </cfif>
 	  
       <!--- <cfif listFind(session.mura.memberships,'S2') or listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(session.siteid).getPrivateUserPoolID()#;0')><li<cfif myfusebox.originalcircuit eq 'cPrivateUsers'>id="current"</cfif>><a href="index.cfm?fuseaction=cPrivateUsers.list&siteid=#session.siteid#" >Administrative Users</a><cfif myfusebox.originalcircuit eq 'cPrivateUsers'><cfinclude template="../../view/vPrivateUsers/dsp_secondary_menu.cfm"></cfif></li></cfif> --->
-      <cfif listFind(session.mura.memberships,'S2')>
-        <li <cfif myfusebox.originalcircuit eq 'cFilemanager'>id="current"</cfif>><a href="index.cfm?fuseaction=cFilemanager.default&siteid=#session.siteid#">#application.rbFactory.getKeyValue(session.rb,"layout.filemanager")#</a>
-<cfif myfusebox.originalcircuit eq 'cFilemanager'>
-<ul>
-<li<cfif session.location eq 'assets'> class="current"</cfif>><a href="#application.configBean.getContext()#/admin/index.cfm?fuseaction=cFilemanager.default&siteid=#session.siteid#&subdir=&location=assets">#application.rbFactory.getKeyValue(session.rb,"layout.userassets")#</a></li>
-<li<cfif session.location eq 'files'> class="current"</cfif>><a href="#application.configBean.getContext()#/admin/index.cfm?fuseaction=cFilemanager.default&siteid=#session.siteid#&subdir=&location=files">#application.rbFactory.getKeyValue(session.rb,"layout.sitefiles")#</a></li>
-<cfif listFind(session.mura.memberships,'S2')>
-<li<cfif session.location eq 'root'> class="current"</cfif>><a href="#application.configBean.getContext()#/admin/index.cfm?fuseaction=cFilemanager.default&siteid=#session.siteid#&subdir=&location=root">#application.rbFactory.getKeyValue(session.rb,"layout.applicationroot")#</a></li>
-</cfif>
-</ul>
-</cfif>
-</li>
-      </cfif>
+     
+	<cfif listFind(session.mura.memberships,'S2')>
+	<li <cfif myfusebox.originalcircuit eq 'cFilemanager'>id="current"</cfif>><a href="index.cfm?fuseaction=cFilemanager.default&siteid=#session.siteid#">#application.rbFactory.getKeyValue(session.rb,"layout.filemanager")#</a>
+	<cfif myfusebox.originalcircuit eq 'cFilemanager'>
+	<ul>
+	<li<cfif session.resourceType eq 'assets'> class="current"</cfif>><a href="#application.configBean.getContext()#/admin/index.cfm?fuseaction=cFilemanager.default&siteid=#session.siteid#&resourceType=assets">#application.rbFactory.getKeyValue(session.rb,"layout.userassets")#</a></li>
+	<li<cfif session.resourceType eq 'files'> class="current"</cfif>><a href="#application.configBean.getContext()#/admin/index.cfm?fuseaction=cFilemanager.default&siteid=#session.siteid#&resourceType=files">#application.rbFactory.getKeyValue(session.rb,"layout.sitefiles")#</a></li>
+	<cfif listFind(session.mura.memberships,'S2')>
+	<li<cfif session.resourceType eq 'root'> class="current"</cfif>><a href="#application.configBean.getContext()#/admin/index.cfm?fuseaction=cFilemanager.default&siteid=#session.siteid#&resourceType=root">#application.rbFactory.getKeyValue(session.rb,"layout.applicationroot")#</a></li>
+	</cfif>
+	</li>
+	</ul>
+	</cfif>
+	</li>
+	</cfif>
+      
       <cfif listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(session.siteid).getPrivateUserPoolID()#;0') or listFind(session.mura.memberships,'S2')>
         <li <cfif (myfusebox.originalcircuit eq 'cPerm' and  attributes.moduleid eq '00000000000000000000000000000000000')>id='current'</cfif>><a href="#application.configBean.getContext()#/admin/index.cfm?fuseaction=cPerm.module&contentid=00000000000000000000000000000000000&siteid=#session.siteid#&moduleid=00000000000000000000000000000000000">#application.rbFactory.getKeyValue(session.rb,"layout.permissions")#</a></li>
       </cfif>

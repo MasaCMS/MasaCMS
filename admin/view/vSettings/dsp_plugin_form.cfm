@@ -65,8 +65,14 @@ to your own modified versions of Mura CMS.
 <cfif rsPlugin.recordcount and rsPlugin.deployed>
 <ul id="navTask">
 <li><a href="index.cfm?fuseaction=cSettings.updatePluginVersion&moduleid=#attributes.moduleid#">Update Plugin Version</a></li>
+<li><a href="index.cfm?fuseaction=cSettings.createBundle&moduleid=#attributes.moduleid#&siteID=&BundleName=#URLEncodedFormat(application.serviceFactory.getBean('contentUtility').formatFilename(rsPlugin.name))#">Create and Download Plugin Bundle</a></li>
 </ul></cfif>
 
+<cfset errors=application.userManager.getCurrentUser().getValue("errors")>
+<cfif isStruct(errors) and not structIsEmpty(errors)>
+<p class="error">#application.utility.displayErrors(errors)#</p>
+</cfif>
+<cfset application.userManager.getCurrentUser().setValue("errors","")>
 
 <form novalidate="novalidate" method="post" name="frmSettings" action="index.cfm?fuseaction=cSettings.updatePlugin" onsubmit="return validateForm(this);">
 <cfsilent>

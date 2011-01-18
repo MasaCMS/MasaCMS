@@ -55,20 +55,24 @@ to your own modified versions of Mura CMS.
 <li><a href="index.cfm?fuseaction=cSettings.editSite&siteid=#URLEncodedFormat(attributes.siteid)#">Edit Site</a></li>
 <cfelse>
 <li><a href="index.cfm?fuseaction=cSettings.editSite&siteid=#URLEncodedFormat(attributes.siteid)#&action=updateFiles" onclick="return confirmDialog('WARNING: Do not update your site files unless you have backed up your current siteID directory.',this.href);">Update Site Files to Latest Version</a></li>
+<li><a href="?fuseaction=cSettings.selectBundleOptions&siteID=#URLEncodedFormat(request.siteBean.getSiteID())#">Create Site Bundle</a></li>
+<cfif len(request.siteBean.getExportLocation()) and directoryExists(request.siteBean.getExportLocation())>
+<li><a href="./?fuseaction=csettings.exportHTML&siteID=#request.siteBean.getSiteID()#"  onclick="return confirmDialog('Export static HTML files to #JSStringFormat("'#request.siteBean.getExportLocation()#'")#.',this.href);">Export Static HTML (BETA)</a></li>
+</cfif>
 </cfif>
 </ul></cfif>
 </cfoutput>
 <cfif attributes.action neq "updateFiles">
 <cfoutput>
-<form novalidate="novalidate" method ="post" action="index.cfm?fuseaction=cSettings.updateSite" name="form1"  onsubmit="return validate(this);">
+<form novalidate="novalidate" method ="post"  enctype="multipart/form-data" action="index.cfm?fuseaction=cSettings.updateSite" name="form1"  onsubmit="return validate(this);">
 <!---
 <cfhtmlhead text='<link rel="stylesheet" href="css/tab-view.css" type="text/css" media="screen">'>
 <cfhtmlhead text='<script type="text/javascript" src="js/ajax.js"></script>'>
 <cfhtmlhead text='<script type="text/javascript" src="js/tab-view.js"></script>'>
  --->
-<cfset tabLabelList='Basic,Contact Info,Shared Resources,Modules,Email,Images (Galleries),Extranet,Display Regions'>
-<cfset tabList='tabBasic,tabContactinfo,tabSharedresources,tabModules,tabEmail,tabImages,tabExtranet,tabDisplayregions'>
-  <div class="tabs initActiveTab" style="display:none">
+<cfset tabLabelList='Basic,Contact Info,Shared Resources,Modules,Email,Images,Extranet,Display Regions,Deploy Bundle'>
+<cfset tabList='tabBasic,tabContactinfo,tabSharedresources,tabModules,tabEmail,tabImages,tabExtranet,tabDisplayregions,tabBundles'>
+ <div class="tabs initActiveTab" style="display:none">
   <ul>
 	<cfloop from="1" to="#listlen(tabList)#" index="t">
 	<li><a href="###listGetAt(tabList,t)#" onclick="return false;"><span>#listGetAt(tabLabelList,t)#</span></a></li>
@@ -110,7 +114,7 @@ to your own modified versions of Mura CMS.
 	  <dt>Theme</dt>
       <dd>
 		<select name="theme">
-		<option value="">None</option>	
+		<cfif request.siteBean.hasNonThemeTemplates()><option value="">None</option></cfif>	
 		<cfloop query="rsThemes">
         <option value="#rsThemes.name#"<cfif rsThemes.name eq request.siteBean.getTheme() or (not len(request.siteBean.getSiteID()) and rsThemes.currentRow eq 1)> selected</cfif>>#rsThemes.name#</option>
 		</cfloop>
@@ -157,14 +161,20 @@ to your own modified versions of Mura CMS.
         <input type="radio" name="CommentApprovalDefault" value="0" <cfif request.siteBean.getCommentApprovalDefault() neq 1> CHECKED</CFIF>>
        No
 </dd>
-      <!--- <dt>Export Location</dt>
+       <dt>Static HTML Export Location (BETA)
+		<cfif len(request.siteBean.getExportLocation()) and not directoryExists(request.siteBean.getExportLocation())>
+			<p class="error">ERROR: The current value is not a valid directory</p>
+		</cfif>
+		</dt>
       <dd>
-        <input name="exportLocation" type="text" class="text" value="#request.siteBean.getExportLocation()#" maxlength="50">
-      </dd> --->
-       <dt>Google API Key <a href="http://www.google.com/apis/maps/signup.html" target="_blank">(Required for Google Maps Support)</a></dt>
+        <input name="exportLocation" type="text" class="text" value="#request.siteBean.getExportLocation()#" maxlength="100"/>
+      </dd> 
+     <!--- 
+	  <dt>Google API Key <a href="http://www.google.com/apis/maps/signup.html" target="_blank">(Required for Google Maps Support)</a></dt>
       <dd>
         <input name="googleAPIKey" type="text" class="text" value="#HTMLEditFormat(request.siteBean.getGoogleAPIKey())#">
       </dd>
+	   --->
       <!--- <dt>Google Analytics Account #</dt>
       <dd>
         <input name="googleAnalyticsAcct" type="text" class="text" value="#HTMLEditFormat(request.siteBean.getGoogleAnalyticsAcct())#">
@@ -267,10 +277,12 @@ to your own modified versions of Mura CMS.
         On</dd>
       <dt>Email Broadcaster</dt>
       <dd>
+		<!--- <p class="notice">NOTE: The Email Broadcaster is not supported within Mura Bundles.</p> --->
         <input type="radio" name="EmailBroadcaster" value="0" <cfif request.siteBean.getemailbroadcaster() neq 1> CHECKED</CFIF>>
         Off&nbsp;&nbsp;
         <input type="radio" name="EmailBroadcaster" value="1" <cfif request.siteBean.getemailbroadcaster()  eq 1> CHECKED</CFIF>>
-        On</dd>
+        On
+		</dd>
       <dt>Email Broadcaster Limit</dt>
       <dd>
         <input name="EmailBroadcasterLimit" type="text" class="text medium" value="#HTMLEditFormat(request.siteBean.getEmailBroadcasterLimit())#" size="50" maxlength="50">
@@ -289,9 +301,16 @@ to your own modified versions of Mura CMS.
         On</dd>
       <dt>Advertisement Manager</dt>
       <dd>
+		<!--- <p class="notice">NOTE: The Advertisement Manager is not supported within Mura Bundles and Staging to Production configurations.</p> --->
         <input type="radio" name="adManager" value="0" <cfif request.siteBean.getadManager() neq 1> CHECKED</CFIF>>
         Off&nbsp;&nbsp;
         <input type="radio" name="adManager" value="1" <cfif request.siteBean.getadManager() eq 1> CHECKED</CFIF>>
+        On</dd>
+	  <dt>Change Sets Manager</dt>
+      <dd>
+        <input type="radio" name="hasChangesets" value="0" <cfif request.siteBean.getHasChangesets() neq 1> CHECKED</CFIF>>
+        Off&nbsp;&nbsp;
+        <input type="radio" name="hasChangesets" value="1" <cfif request.siteBean.getHasChangesets() eq 1> CHECKED</CFIF>>
         On</dd>
       </dl>
       </div>
@@ -500,7 +519,66 @@ to your own modified versions of Mura CMS.
       </dd>
       </dl>
       </div>
-      
+	 
+      <div id="tabBundles">
+      <dl class="oneColumn">
+
+	<dt class="first"> 
+	  	Are you restoring a site from a backup bundle?
+	  </dt>
+	  <dd>
+	  <label for=""><input type="radio" name="bundleImportKeyMode" value="copy" checked="checked">No - <em>Assign New Keys to Imported Items</em></label>
+	  <label for=""><input type="radio" name="bundleImportKeyMode" value="publish">Yes - <em>Maintain All Keys from Imported Items</em></label>
+	  </dd>
+	  <dt> 
+	  	Include:
+	  </dt>
+	  <dd>
+		  <ul>
+			  <li>
+			  	<label for="bundleImportContentMode"><input id="bundleImportContentMode" name="bundleImportContentMode" value="all" type="checkbox" onchange="if(this.checked){jQuery('##contentRemovalNotice').show();}else{jQuery('##contentRemovalNotice').hide();}">Site Architecture &amp; Content</label>
+			 </li>
+			 <li>
+			  	<label for="bundleImportUsersMode"><input id="bundleImportUsersMode" name="bundleImportUsersMode" value="all" type="checkbox"  onchange="if(this.checked){jQuery('##userNotice').show();}else{jQuery('##userNotice').hide();}">Site Members &amp; Administrative Users</label>
+			 </li>
+			 <li>
+			  	<label for="bundleImportMailingListMembersMode"><input id="bundleImportMailingListMembersMode" name="bundleImportMailingListMembersMode" value="all" type="checkbox">Mailing Lists Members</label>
+			 </li>
+			 <li>
+			  	<label for="bundleImportPluginMode"><input id="bundleImportPluginMode" name="bundleImportPluginMode" value="all" type="checkbox">All Plugins</label>
+			 </li>
+		 </ul>
+		 <p class="notice" style="display:none" id="contentRemovalNotice"><strong>Important:</strong> When importing content from a Mura bundle ALL of the existing content will be deleted.</p>
+		 <p class="notice" style="display:none" id="userNotice"><strong>Important:</strong> Importing users will remove all existing user data which may include the account that you are currently logged in as.</p>
+	 </dd>
+	 <dt> 
+	  	Which rendering files would you like to import?
+	  </dt>
+	  <dd>
+	  <label for=""><input type="radio" name="bundleImportRenderingMode" value="none" checked="checked" onchange="if(this.value!='none'){jQuery('##themeNotice').show();}else{jQuery('##themeNotice').hide();}">None</label>
+	  <label for=""><input type="radio" name="bundleImportRenderingMode" value="all" onchange="if(this.value!='none'){jQuery('##themeNotice').show();}else{jQuery('##themeNotice').hide();}">All</label>
+	  <label for=""><input type="radio" name="bundleImportRenderingMode" value="theme" onchange="if(this.value!='none'){jQuery('##themeNotice').show();}else{jQuery('##themeNotice').hide();}">Theme Only</label>
+	  <p class="notice" style="display:none" id="themeNotice"><strong>Important:</strong> Your site's theme assignment and gallery image settings will be updated.</p>
+		  <!---
+			<select name="bundleImportRenderingMode" onchange="if(this.value!='none'){jQuery('##themeNotice').show();}else{jQuery('##themeNotice').hide();}">
+		  	<option>Select Rendering Files</option>
+			<option value="none">None</option>
+			<option value="all">The entire siteID directory</option>
+			<option value="theme">Theme only</option>
+		  </select>	
+			--->
+	 </dd>
+	  <!---
+<dd>
+		  
+	  </dd>
+--->
+	 
+	  <dt>Bundle File</dt>
+	  <dd><input type="file" name="bundleFile" accept=".zip"/></dd>
+	  </dl>
+	  </div>
+	
     </div>
     <input type="hidden" name="action" value="update">
     <cfif request.siteBean.getsiteid() eq ''>
@@ -508,17 +586,13 @@ to your own modified versions of Mura CMS.
       <a class="submit" href="javascript:;" onclick="return submitForm(document.forms.form1,'add');"><span>Add</span></a>
       <cfelse>
 		<cfif request.siteBean.getsiteid() neq 'default'>
-		<a class="submit" href="index.cfm?fuseaction=cSettings.updateSite&action=delete&siteid=#request.siteBean.getSiteID()#" onclick="return confirmDialog('#JSStringFormat("WARNING: A deleted site and all of it's files cannot be recovered. Are you sure that you want to continue?")#',this.href);"><span>Delete</span></a>
+		<a class="submit" href="index.cfm?fuseaction=cSettings.updateSite&action=delete&siteid=#request.siteBean.getSiteID()#" onclick="return confirmDialog('#JSStringFormat("WARNING: A deleted site and all of it''s files cannot be recovered. Are you sure that you want to continue?")#',this.href);"><span>Delete</span></a>
 		</cfif>
       <a class="submit" href="javascript:;" onclick="return submitForm(document.forms.form1,'update');"><span>Update</span></a>
             </cfif>
   </form>
 </cfoutput>
-<!---
-<script type="text/javascript">
-initTabs(Array('Basic','Contact Info','Shared Resources','Modules','Email','Images (Galleries)','Extranet','Display Regions'),0,0,0);
-</script>
---->
+
 <cfelse>
 <cftry>
 <cfset updated=application.autoUpdater.update(attributes.siteid)>

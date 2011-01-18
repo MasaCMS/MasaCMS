@@ -77,14 +77,9 @@ select * from rsSubTypes where subType <> 'Default'
 	#application.utility.displayErrors(request.userBean.getErrors())#
 	
 	<p>#application.rbFactory.getKeyValue(session.rb,'user.requiredtext')#</p>
-	
-<div class="tabs initActiveTab">
-<ul>
-<cfloop from="1" to="#listlen(tabList)#" index="t">
-<li><a href="###listGetAt(tabList,t)#" onclick="return false;"><span>#listGetAt(tabLabelList,t)#</span></a></li>
-</cfloop>
-</ul>
-	
+</cfoutput>	
+<cfsavecontent variable="tabContent">
+<cfoutput>	
 <div id="tabBasic">
 	<dl class="oneColumn">
 		<cfif rsNonDefault.recordcount>
@@ -245,6 +240,7 @@ select * from rsSubTypes where subType <> 'Default'
 </div>
 <cfhtmlhead text='<script type="text/javascript" src="js/user.js"></script>'>
 </cfif>
+
 <div id="tabAdvanced">
 		<dl class="oneColumn">
 				<cfif listFind(session.mura.memberships,'S2')>
@@ -289,8 +285,17 @@ select * from rsSubTypes where subType <> 'Default'
 			</cfoutput>
 			</div>
 		</cfoutput>
-	</div>
-	<cfoutput>
+</cfsavecontent>	
+<cfoutput>	
+<div class="tabs initActiveTab">
+<ul>
+<cfloop from="1" to="#listlen(tabList)#" index="t">
+<li><a href="###listGetAt(tabList,t)#" onclick="return false;"><span>#listGetAt(tabLabelList,t)#</span></a></li>
+</cfloop>
+</ul>
+#tabContent#
+</div>
+
 	
 	<cfif attributes.userid eq ''>
 		<a class="submit" href="javascript:;" onclick="return submitForm(document.forms.form1,'add');"><span>#application.rbFactory.getKeyValue(session.rb,'user.add')#</span></a>

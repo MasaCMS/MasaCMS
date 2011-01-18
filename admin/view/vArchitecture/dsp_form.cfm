@@ -44,6 +44,15 @@ to your own modified versions of Mura CMS.
 <cfset pageLevelList="Page,Portal,Calendar,Gallery"/>
 <cfset extendedList="Page,Portal,Calendar,Gallery,Link,File,Component"/>
 <cfset nodeLevelList="Page,Portal,Calendar,Gallery,Link,File"/>
+<cfset hasChangesets=application.settingsManager.getSite(attributes.siteID).getHasChangesets() and listFindNoCase("Page,Portal,Calendar,Gallery,File,Link",attributes.type)>
+<cfset request.perm=application.permUtility.getnodePerm(request.crumbdata)>
+
+<cfif hasChangesets>
+<cfset currentChangeset=application.changesetManager.read(request.contentBean.getChangesetID())>
+<cfset pendingChangesets=application.changesetManager.getPendingByContentID(request.contentBean.getContentID(),attributes.siteID)>
+</cfif>
+<cfset request.deletable=attributes.compactDisplay neq "true" and ((attributes.parentid neq '00000000000000000000000000000000001' and application.settingsManager.getSite(attributes.siteid).getlocking() neq 'all') or (attributes.parentid eq '00000000000000000000000000000000001' and application.settingsManager.getSite(attributes.siteid).getLocking() eq 'none')) and (request.perm eq 'editor' and attributes.contentid neq '00000000000000000000000000000000001') and request.contentBean.getIsLocked() neq 1>
+<cfset assignChangesets=request.perm eq 'editor' and hasChangesets>
 <cfset $=event.getValue("MuraScope")>
 <cfset tabAssignments=$.getBean("user").loadBy(userID=session.mura.userID, siteID=session.mura.siteID).getContentTabAssignments()>
 <script>
@@ -105,9 +114,6 @@ function setRequestedURL(){
 </script>
 </cfif> 
 <cfsilent>
-<cfset request.perm=application.permUtility.getnodePerm(request.crumbdata)>
-<cfset request.deletable=attributes.compactDisplay neq "true" and ((attributes.parentid neq '00000000000000000000000000000000001' and application.settingsManager.getSite(attributes.siteid).getlocking() neq 'all') or (attributes.parentid eq '00000000000000000000000000000000001' and application.settingsManager.getSite(attributes.siteid).getLocking() eq 'none')) and (request.perm eq 'editor' and attributes.contentid neq '00000000000000000000000000000000001') and request.contentBean.getIsLocked() neq 1>
-
 <cfif request.contentBean.getType() eq 'File'>
 <cfset rsFile=application.serviceFactory.getBean('fileManager').readMeta(request.contentBean.getFileID())>
 <cfset fileExt=rsFile.fileExt>
@@ -180,6 +186,14 @@ select * from rsPluginScripts3 order by pluginID
 </cfif>
 <cfif attributes.compactDisplay eq "true" and not ListFindNoCase(nodeLevelList,attributes.type)>
 <p class="notice">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.globallyappliednotice")#</p>
+</cfif>
+
+<cfif hasChangesets and (not currentChangeset.getIsNew() or pendingChangesets.recordcount)>
+<p class="notice">
+<cfif pendingChangesets.recordcount>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.changesetnodenotify")#: 
+<cfloop query="pendingChangesets"><a href="?fuseaction=cArch.edit&moduleID=#URLEncodedFormat(attributes.moduleID)#&siteID=#URLEncodedFormat(attributes.siteID)#&topID=#URLEncodedFormat(attributes.topID)#&contentID=#URLEncodedFormat(attributes.contentID)#&return=#URLEncodedFormat(attributes.return)#&contentHistID=#pendingChangesets.contentHistID#&parentID=#URLEncodedFormat(attributes.parentID)#&startrow=#URLEncodedFormat(attributes.startrow)#">"#HTMLEditFormat(pendingChangesets.changesetName)#"</a><cfif pendingChangesets.currentrow lt pendingChangesets.recordcount>, </cfif></cfloop><br/></cfif>
+<cfif not currentChangeset.getIsNew()>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.changesetversionnotify")#: "#HTMLEditFormat(currentChangeset.getName())#"</cfif>
+</p>
 </cfif>
 
 <form novalidate="novalidate" action="index.cfm" method="post" enctype="multipart/form-data" name="contentForm" onsubmit="return ckContent(draftremovalnotice);" id="contentForm">
@@ -434,23 +448,26 @@ select * from rsPluginScripts3 order by pluginID
 	</ul>
 	#tabContent#
 </div>
-</cfoutput>
-<cfoutput>
+
+<cfif assignChangesets>
+	<cfinclude template="form/dsp_changesets.cfm">
+</cfif>
+
 <div class="clearfix" id="actionButtons">
+	<cfif assignChangesets>
+	<a class="submit"  href="javascript:;" onclick="saveToChangeset('#request.contentBean.getChangesetID()#','#HTMLEditFormat(attributes.siteID)#','');return false;"><span>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.savetochangeset")#</span></a>	
+	</cfif>
 	 <a class="submit" href="javascript:;" onclick="javascript:if(ckContent(draftremovalnotice)){submitForm(document.contentForm,'add');}return false;"><span>#jsStringFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.savedraft"))#</span></a>
-	<cfif attributes.type eq 'Page' or attributes.type eq 'Portal' or attributes.type eq 'Calendar'  or attributes.type eq 'Gallery'>
+	<cfif listFindNoCase("Page,Portal,Calendar,Gallery",attributes.type)>
 	<a class="submit"  href="javascript:;" onclick="javascript:document.contentForm.preview.value=1;if(ckContent(draftremovalnotice)){submitForm(document.contentForm,'add');}return false;"><span>#jsStringFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.preview"))#</span></a>
 	</cfif>
 	<cfif request.perm eq 'editor'>
 	<a class="submit" href="javascript:;" onclick="document.contentForm.approved.value=1;if(ckContent(draftremovalnotice)){submitForm(document.contentForm,'add');}return false;"><span>#jsStringFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.publish"))#</span></a>
 	</cfif> 
 </div>
-<!---
-<script type="text/javascript">
-initTabs(Array(#tabLabelList#),0,0,0);
-</script>
---->
 	<input name="approved" type="hidden" value="0">
+	<input name="removePreviousChangeset" type="hidden" value="false">
+	<input name="changesetID" type="hidden" value="">
 	<input name="preview" type="hidden" value="0">	
 	<cfif attributes.type neq 'Link'>
 		<input name="filename" type="hidden" value="#request.contentBean.getfilename()#">

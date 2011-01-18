@@ -224,7 +224,7 @@ function setAsSorted(){
 	<input type="hidden" id="sorted" name="sorted" value="false">
     
     <!-- Begin Grid Header -->
-    <div class="mura-grid stripe">
+    <div class="mura-grid stripe<cfif attributes.sortBy neq 'orderno'> noDrag</cfif>">
     <dl class="mura-grid-hdr">
       <dt><span class="add"></span><a href="##" class="tooltip">#application.rbFactory.getKeyValue(session.rb,"sitemanager.title")#<span>#application.rbFactory.getKeyValue(session.rb,"tooltip.managerTitle")#</span></a></dt>
       <cfif application.settingsManager.getSite(attributes.siteid).getlocking() neq 'all'>
@@ -257,7 +257,7 @@ function setAsSorted(){
 		</cfif>
 		#HTMLEditFormat(left(request.rsTop.menutitle,70))#
         <cfif len(request.rsTop.menutitle) gt 70>&hellip;</cfif>
-        </a>
+          </a>
         <div class="mura-title-fade"></div>
       </dt>
       <cfif application.settingsManager.getSite(attributes.siteid).getlocking() neq 'all'>

@@ -83,7 +83,7 @@ to your own modified versions of Mura CMS.
 <cfset options[17][1]="tcontent.path^varchar">
 <cfset options[17][2]="Path"/>
 
-<cfset rsExtend=application.configBean.getClassExtensionManager().getExtendedAttributeList(attributes.siteid)>
+<cfset rsExtend=application.configBean.getClassExtensionManager().getExtendedAttributeList(attributes.siteid,"tcontent")>
 <cfloop query="rsExtend">
 <cfset options[rsExtend.currentRow + 17][1]="#rsExtend.attributeID#^varchar">
 <cfset options[rsExtend.currentRow + 17][2]="#rsExtend.Type#/#rsExtend.subType# - #rsExtend.attribute#"/>

@@ -52,6 +52,8 @@ to your own modified versions of Mura CMS.
 <dl class="oneColumn">
 <dt class="first">#application.rbFactory.getKeyValue(session.rb,'categorymanager.name')#</dt>
 <dd><input name="name" class="text" required="true" message="#application.rbFactory.getKeyValue(session.rb,'categorymanager.namerequired')#" value="#HTMLEditFormat(request.categoryBean.getName())#" maxlength="50"></dd>
+<dt>#application.rbFactory.getKeyValue(session.rb,'categorymanager.urltitle')#</dt>
+<dd><input name="urltitle" class="text" value="#HTMLEditFormat(request.categoryBean.getURLTitle())#" maxlength="255"></dd>
 <!---
 <cfif attributes.categoryID neq ''>
 </dl>

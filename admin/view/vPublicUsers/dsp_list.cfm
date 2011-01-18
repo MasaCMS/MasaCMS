@@ -64,7 +64,7 @@ to your own modified versions of Mura CMS.
                 <cfoutput query="request.rsgroups"> 
                   <tr> 
                     <td class="varWidth"> 
-                      <a title="#application.rbFactory.getKeyValue(session.rb,'user.edit')#" href="index.cfm?fuseaction=cPublicUsers.editgroup&userid=#UserID#&siteid=#URLEncodedFormat(attributes.siteid)#">#HTMLEditFormat(groupname)#</a> (#counter#)</td>
+                      <a title="#application.rbFactory.getKeyValue(session.rb,'user.edit')#" href="index.cfm?fuseaction=cPublicUsers.editgroup&userid=#UserID#&siteid=#URLEncodedFormat(attributes.siteid)#">#HTMLEditFormat(groupname)#</a> (<cfif isNumeric(counter)>#counter#<cfelse>0</cfif>) </td>
                     <td> 
                       <cfif email gt "" and not request.rsgroups.perm>
                         <a href="mailto:#email#">#HTMLEditFormat(email)#</a>

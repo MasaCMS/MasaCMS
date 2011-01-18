@@ -42,13 +42,46 @@ to your own modified versions of Mura CMS.
 --->
 <cfoutput>
 <h2>#application.rbFactory.getKeyValue(session.rb,"email.bouncedemailaddresses")#</h2>
+<h3 class="alt">#application.rbFactory.getKeyValue(session.rb,"email.filterbynumberofbounces")#:</h3>
+<div id="advancedSearch" class="clearfix bounces">
+<form novalidate="novalidate" action="index.cfm?fuseaction=cEmail.showAllBounces" method="post" name="form1" id="filterBounces">
+<dl>
+<dt>
+	  <select name="bounceFilter">
+	  	<option value="">#application.rbFactory.getKeyValue(session.rb,"email.all")#</option>
+			<cfloop from="1" to="5" index="i">
+			  <option value="#i#"<cfif isDefined('attributes.bounceFilter') and attributes.bounceFilter eq i> selected</cfif>>#i#</option>
+			</cfloop>
+	  </select>
+</dt>
+<dd><a class="submit" href="javascript:;" onclick="return submitForm(document.forms.form1);"><span>#application.rbFactory.getKeyValue(session.rb,"email.filter")#</span></a></dd>
+</dl>
+
+<cfoutput>			  
+	<input type="hidden" name="siteID" value="#attributes.siteid#">
+</cfoutput>
+
+</form>
+</div>
+
 <h3>#application.rbFactory.getKeyValue(session.rb,"email.emailaddressbounces")#</h3></cfoutput>
 <cfif request.rsBounces.recordcount>
-	<ul class="metadata">
-		<cfoutput query="request.rsBounces">
-			<li>#email# - #bounceCount#</li>
+	<cfset bouncedEmailList = "">
+
+	<form novalidate="novalidate" action="index.cfm?fuseaction=cEmail.deleteBounces" method="post" name="form2" id="bounces">
+	
+		<ul class="metadata">
+			<cfoutput query="request.rsBounces">
+				<li>#email# - #bounceCount#</li>
+				<cfset bouncedEmailList = listAppend(bouncedEmailList,email)>
+			</cfoutput>
+		</ul>
+		<cfoutput>
+		<input type="hidden" value="#bouncedEmailList#" name="bouncedEmail" />
+		<input type="hidden" name="siteID" value="#attributes.siteid#">
+		<a class="submit" href="javascript:;" onclick="return submitForm(document.forms.form2,'delete','Delete bounced emails from mailing lists?');"><span>#application.rbFactory.getKeyValue(session.rb,"email.delete")#</span></a>
 		</cfoutput>
-	</ul>
+	</form>
 </cfif>
 
 	

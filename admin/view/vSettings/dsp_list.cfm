@@ -55,6 +55,11 @@ to your own modified versions of Mura CMS.
 <cfif attributes.action eq "deploy">
 <cfoutput>#application.pluginManager.announceEvent("onAfterSiteDeployRender",event)#</cfoutput>
 </cfif>
+<cfset errors=application.userManager.getCurrentUser().getValue("errors")>
+<cfif isStruct(errors) and not structIsEmpty(errors)>
+<cfoutput><p class="error">#application.utility.displayErrors(errors)#</p></cfoutput>
+</cfif>
+<cfset application.userManager.getCurrentUser().setValue("errors","")>
 <div class="tabs initActiveTab">
 <ul>
 <li><a href="#tabCurrentsites" onclick="return false;"><span>Current Sites</span></a></li>
@@ -77,7 +82,7 @@ to your own modified versions of Mura CMS.
 </cfif>
 <td class="administration"><ul <cfif application.configBean.getMode() eq 'Staging'>class="three"<cfelse>class="two"</cfif>><li class="edit"><a title="Edit" href="index.cfm?fuseaction=cSettings.editSite&siteid=#request.rsSites.siteid#">Edit</a></li><cfif application.configBean.getMode() eq 'Staging'><li class="deploy"><a href="?fuseaction=cSettings.list&action=deploy&siteid=#request.rsSites.siteid#" onclick="return confirmDialog('Deploy #JSStringFormat(request.rsSites.site)# to production?',this.href);" title="Deploy">Deploy</a></li></cfif>
 <cfif request.rsSites.siteid neq 'default'>
-<li class="delete"><a title="Delete" href="index.cfm?fuseaction=cSettings.updateSite&action=delete&siteid=#request.rsSites.siteid#" onclick="return confirmDialog('#JSStringFormat("WARNING: A deleted site and all of it's files cannot be recovered. Are you sure that you want to delete the site named '#Ucase(request.rsSites.site)#'?")#',this.href);">Delete</a></li>
+<li class="delete"><a title="Delete" href="index.cfm?fuseaction=cSettings.updateSite&action=delete&siteid=#request.rsSites.siteid#" onclick="return confirmDialog('#JSStringFormat("WARNING: A deleted site and all of it''s files cannot be recovered. Are you sure that you want to delete the site named '#Ucase(request.rsSites.site)#'?")#',this.href);">Delete</a></li>
 <cfelse>
 <li class="deleteOff">&nbsp;</li>
 </cfif><!---<li class="export"><a title="Export" href="index.cfm?fuseaction=cArch.exportHtmlSite&siteid=#request.rsSites.siteid#" onclick="return confirm('Export the #jsStringFormat("'#request.rsSites.site#'")# Site?')">Export</a></li>---></ul></td></tr>
