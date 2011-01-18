@@ -59,9 +59,11 @@ to your own modified versions of Mura CMS.
 <cfset emailList="" />
 <cfloop collection="#application.settingsManager.getSites()#" item="site"> 
 <cfset theEmail = application.settingsManager.getSite(site).getMailServerUsername() />
-	<cfif not listFind(emailList,theEmail)>
-		<cfset application.emailManager.trackBounces(site) />
-		<cfset listAppend(emailList,theEmail) />
+	<cfif application.settingsManager.getSite(site).getEmailBroadcaster()>
+		<cfif not listFind(emailList,theEmail)>
+			<cfset application.emailManager.trackBounces(site) />
+			<cfset listAppend(emailList,theEmail) />
+		</cfif>
 	</cfif>
 </cfloop>
 

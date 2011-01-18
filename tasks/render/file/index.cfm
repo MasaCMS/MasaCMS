@@ -41,4 +41,4 @@ the GNU General Public License version 2  without this exception.  You may, if y
 to your own modified versions of Mura CMS.
 --->
 
-<cfparam name="url.method" default="inline"><cfoutput>#application.contentRenderer.renderFile(url.fileID,url.method)#</cfoutput>
+<cfparam name="url.method" default="inline"><cfparam name="url.fileID" default=""><cfoutput>#application.contentRenderer.renderFile(url.fileID,url.method)#</cfoutput>
