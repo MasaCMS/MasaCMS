@@ -1,2 +1,2 @@
 <cfset rc.ajax=doFBInclude("/muraWRM/admin/view/vEmail_Broadcaster/ajax/dsp_javascript.cfm")>
-<cfset rc.layout=doFBInclude("/muraWRM/admin/view/vEmail_Broadcaster/dsp_bounces.cfm")>
+<cfset rc.layout=doFBInclude("/muraWRM/admin/view/vEmail_Broadcaster/dsp_all_bounces.cfm")>

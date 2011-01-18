@@ -4,7 +4,7 @@
 <h2>Trash Bin</h2>
 
 <ul id="navTask"
-<li><a href="index.cfm?fuseaction=cSettings.editSite&siteID=#URLEncodedFormat(rc.siteID)#">Back to Site</a></li>
+<li><a href="index.cfm?fuseaction=cSettings.editSite&siteID=#URLEncodedFormat(rc.siteID)#">Back to Site Settings</a></li>
 <li><a href="index.cfm?fuseaction=cTrash.empty&siteID=#URLEncodedFormat(rc.siteID)#" onclick="return confirmDialog('Empty Site Trash?', this.href);">Empty Trash</a></li>
 </ul>
 
