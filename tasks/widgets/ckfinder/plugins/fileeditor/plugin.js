@@ -1,8 +1,8 @@
 ﻿CKFinder.addPlugin( 'fileeditor', function( api ) {
 
 	var regexExt = /^(.*)\.([^\.]+)$/,
-		regexTextExt = /^(txt|css|html|htm|js|asp|cfm|cfc|ascx|php|inc|xml|xslt|xsl)$/i,
-		regexCodeMirrorExt = /^(css|html|htm|js|xml|xsl|php)$/i,
+		regexTextExt = /^(txt|css|html|htm|js|asp|cfm|cfc|ascx|php|inc|xml|xslt|xsl|properties)$/i,
+		regexCodeMirrorExt = /^(css|html|htm|js|xml|xsl|php|cfm|cfc)$/i,
 		codemirror,
 		file,
 		fileLoaded = false,
@@ -13,13 +13,17 @@
 		css : 'parsecss.js',
 		js : [ 'tokenizejavascript.js', 'parsejavascript.js' ],
 		xml : 'parsexml.js',
-		php : ['parsexml.js', 'parsecss.js', 'tokenizejavascript.js', 'parsejavascript.js', '../contrib/php/js/tokenizephp.js', '../contrib/php/js/parsephp.js', '../contrib/php/js/parsephphtmlmixed.js']
+		php : ['parsexml.js', 'parsecss.js', 'tokenizejavascript.js', 'parsejavascript.js', '../contrib/php/js/tokenizephp.js', '../contrib/php/js/parsephp.js', '../contrib/php/js/parsephphtmlmixed.js'],
+		cfm : ['parsecss.js', 'tokenizejavascript.js', 'parsejavascript.js', '../contrib/sql/js/parsesql.js','../contrib/cfml/js/parsecfml.js','../contrib/cfml/js/parsecfmlmixed.js'],
+		cfc : ['parsecss.js', 'tokenizejavascript.js', 'parsejavascript.js', '../contrib/sql/js/parsesql.js','../contrib/cfml/js/parsecfml.js', '../contrib/cfml/js/parsecfmlmixed.js']
 	};
 	var codeMirrorCss = {
 		css : codemirrorPath + 'css/csscolors.css',
 		js : codemirrorPath + 'css/jscolors.css',
 		xml : codemirrorPath + 'css/xmlcolors.css',
-		php : [ codemirrorPath + 'css/xmlcolors.css', codemirrorPath + 'css/jscolors.css', codemirrorPath + 'css/csscolors.css', codemirrorPath + 'contrib/php/css/phpcolors.css' ]
+		php : [ codemirrorPath + 'css/xmlcolors.css', codemirrorPath + 'css/jscolors.css', codemirrorPath + 'css/csscolors.css', codemirrorPath + 'contrib/php/css/phpcolors.css' ],
+		cfm : [ codemirrorPath + 'css/xmlcolors.css', codemirrorPath + 'css/jscolors.css', codemirrorPath + 'css/csscolors.css', codemirrorPath + 'contrib/sql/css/sqlcolors.css'],
+		cfc : [ codemirrorPath + 'css/xmlcolors.css', codemirrorPath + 'css/jscolors.css', codemirrorPath + 'css/csscolors.css', codemirrorPath + 'contrib/sql/css/sqlcolors.css']
 	};
 
 	codeMirrorCss.xsl = codeMirrorCss.xml;
@@ -110,11 +114,12 @@
 
 				if ( enableCodeMirror && typeof( window.CodeMirror ) == 'undefined' )
 				{
-					var head= doc.$.getElementsByTagName( 'head' )[0];
-					var script= doc.$.createElement( 'script' );
+					var head= window.document.getElementsByTagName( 'head' )[0];
+					var script= window.document.createElement( 'script' );
 					script.type= 'text/javascript';
 					script.src = CKFinder.getPluginPath( 'fileeditor' ) + 'codemirror/js/codemirror.js';
 					head.appendChild( script );
+					
 				}
 
 				// If CKFinder is runninng under a different domain than baseUrl, then the following call will fail:

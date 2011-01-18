@@ -174,6 +174,45 @@ config.resourceType[3].maxSize = 0;
 config.resourceType[3].allowedExtensions = 'swf,flv';
 config.resourceType[3].deniedExtensions = '';
 
+config.resourceType[4] = structNew();
+config.resourceType[4].name = 'Application Root';
+config.resourceType[4].url =  application.configBean.getContext();
+config.resourceType[4].directory =  application.configBean.getWebRoot();
+config.resourceType[4].maxSize = 0;
+config.resourceType[4].allowedExtensions = '';
+config.resourceType[4].deniedExtensions = '';
+
+
+if (not isdefined('application.CKFinderResources')){
+	application.CKFinderResources=arrayNew(1);
+	rsSites=application.settingsManager.getList();
+	
+	for (i=1; i lte rsSites.recordcount; i=(i+1)){
+		temp = structNew();
+		temp.name = '#rsSites.siteID[i]#: User Assets';
+		temp.url =  application.configBean.getAssetPath() & '/' & rsSites.siteID[i] & '/assets';
+		temp.directory ="#application.configBean.getAssetDir()##application.configBean.getFileDelim()##session.siteid##application.configBean.getFileDelim()#assets";
+		temp.maxSize = 0;
+		temp.allowedExtensions = '7z,aiff,asf,avi,bmp,csv,doc,docx,fla,flv,gif,gz,gzip,jpeg,jpg,mid,mov,mp3,mp4,mpc,mpeg,mpg,ods,odt,pdf,png,ppt,pptx,pxd,qt,ram,rar,rm,rmi,rmvb,rtf,sdc,sitd,swf,sxc,sxw,tar,tgz,tif,tiff,txt,vsd,wav,wma,wmv,xls,xlsx,zip';
+		temp.deniedExtensions = '';
+		
+		arrayAppend(application.CKFinderResources,temp);
+		
+		temp = structNew();
+		temp.name = '#rsSites.siteID[i]#: Site Files';
+		temp.url =  application.configBean.getContext() & '/' & rsSites.siteID[i];
+		temp.directory =  application.configBean.getWebRoot() & '/' & rsSites.siteID[i];
+		temp.maxSize = 0;
+		temp.allowedExtensions = '';
+		temp.deniedExtensions = '';
+		arrayAppend(application.CKFinderResources,temp);
+		
+	}
+
+}
+
+config.resourceType.addAll(application.CKFinderResources);
+
 /*
  Due to security issues with Apache modules, it is recommended to leave the
  following setting enabled.
@@ -212,7 +251,7 @@ config.checkSizeAfterScaling = true ;
 /* For security, HTML is allowed in the first Kb of data for files having the
  * following extensions only.
  */
-config.htmlExtensions = 'html,htm,xml,js' ;
+config.htmlExtensions = 'html,htm,xml,js,cfm,cfc' ;
 
 /*
 Folders to not display in CKFinder, no matter their location.
@@ -260,7 +299,7 @@ config.chmodFolders = 755;
 config.hooks = arrayNew(1);
 config.plugins = arrayNew(1);
 
-if (APPLICATION.CFVersion gte 8) {
+if (APPLICATION.CFVersion gte 8 or StructKeyExists(SERVER,"bluedragon")) {
 	include("plugins/fileeditor/plugin.cfm");
 	include("plugins/imageresize/plugin.cfm");
 	// include("plugins/watermark/plugin.cfm");
