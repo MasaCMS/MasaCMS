@@ -1,3 +1,7 @@
+/* @override
+	http://mura:8500/5.4/admin/css/admin.css?coreversion=1
+*/
+
 /* This file is part of Mura CMS. 
 
 	Mura CMS is free software: you can redistribute it and/or modify 
@@ -377,7 +381,7 @@ img.tabPreloader {
 	padding: 36px 0 36px 30px;
 	line-height: 16px;
 	min-width: 830px;
-	max-width: 950px;
+	max-width: 920px;
 	width: auto;
 }
 
@@ -505,13 +509,13 @@ dt.noBorder {
 	background: url(../images/rule_dotted_big.gif) repeat-x left bottom;
 }*/
 
-.oneColumn .first  {
+.oneColumn .first, .oneColumn :first-child   {
 	margin-top: 4px;
 	padding-top: 0;
 	background: none;
 }
 
-#page_tabView .oneColumn .first, #cPlugins form ol li.first {
+#page_tabView .oneColumn .first, #page_tabView .oneColumn :first-child, #cPlugins form ol li.first {
 	padding: 0;
 	background-image: none;
 }
@@ -564,8 +568,18 @@ dd ul, dd form {
 
 dd ul li {
 	list-style: none;
-	margin: 0 0 2px 0;
+	margin: 0 0 .5em 0;
 	padding: 0;
+}
+
+#tabBundles dd ul {
+	overflow: hidden;
+}
+
+#tabBundles dd li {
+	/*float: left;
+	margin-right: 1em;
+	width: 25%;*/
 }
 
 dd ul li ul {
@@ -706,6 +720,10 @@ dd ul.interestGroups li, dd ul.categories li {
 	margin: 0 0 0 210px;
 	padding: 2px;
 	line-height: 22px;
+}
+
+label {
+	margin-right: .5em;
 }
 
 /* @end */
@@ -1488,6 +1506,8 @@ div.menu {
 /* @end Tag Clouds
 ----------------------------------------- */
 
+
+
 /* @end */
 
 /* @group Headings */
@@ -2262,7 +2282,12 @@ table.cfdebug td a {
 	cursor: move;
 }
 
-.mura-grid li:hover #top-node  {
+/* Use this to highlight node on hover */
+.mura-grid li dl:hover {
+	/*outline: 1px solid red;*/
+}
+
+.mura-grid li:hover #top-node, .mura-grid.noDrag li:hover  {
 	cursor: auto;
 }
 
@@ -2470,6 +2495,7 @@ table.cfdebug td a {
 
 .mura-grid .admin ul, td.administration ul {
 	margin: 0 auto;
+	float: left;
 }
 
 .mura-grid a:link {
@@ -2843,7 +2869,7 @@ ul.three, ul.rss, ul.mailingLists { /* 3 Icons */
 }
 
 ul.four, ul.component { /* 4 Icons */
-	width: 76px;
+	width: 72px !important;
 }
 
 ul.five, ul.form, .admin ul { /* 5 Icons */
@@ -2898,12 +2924,18 @@ ul.seven { /* 7 Icons */
 	background: url(../images/icons/hist_24.png) no-repeat;
 }
 
+.mura-grid .admin li.changeSets, table td.administration li.changeSets {
+	background: url(../images/icons/change_set_24.png) no-repeat;
+}
+
+
 .mura-grid .admin li.permissions, table td.administration li.permissions {
 	background: url(../images/icons/group_24.png) no-repeat;
 }
 
 .mura-grid .admin li.delete, table td.administration li.delete {
 	background: url(../images/icons/remov_24.png) no-repeat;
+	margin-right: 0;
 }
 
 .mura-grid .admin li.viewDetails, table td.administration li.viewDetails {
@@ -2973,6 +3005,7 @@ ul.seven { /* 7 Icons */
 .mura-grid .admin li.deleteOff, table td.administration li.deleteOff {
 	background: url(../images/icons/remov_24_off.png) no-repeat;
 	text-indent: -999em;
+	margin-right: 0;
 }
 
 .mura-grid .admin li.moveCopyOff, table td.administration li.moveCopyOff {
@@ -3588,6 +3621,7 @@ a.tooltip:hover {
 
 a.tooltip span {
 	display: none;
+	font-weight: normal;
 }
 
 a.tooltip:hover span {
@@ -3607,6 +3641,38 @@ a.tooltip:hover span {
 }
 
 /* @end */
+
+a.expand {
+	position: relative;
+	text-decoration: none;
+	cursor: help;
+}
+
+a.expand span {
+	display: none;
+}
+
+#content a.expand span p {
+	text-decoration: none;
+	font-weight: normal;
+	border: 0;
+}
+
+#content a.expand:hover span {
+	display: block;
+	position: absolute;
+	padding: 10px;
+	background: #f3f3f3;
+	border: 1px solid #ccc;
+	color: #000;
+	margin: 3px 0 0 3px;
+	width: 250px;
+	z-index: 50;
+	top: -30px;
+	text-decoration: none;
+	font-weight: normal;
+}
+
 
 /* @group Copyright */
 
@@ -4038,9 +4104,14 @@ li span.req {
 
 /* @end */
 
+
+
 /* @group User Feedback */
 
 .error, .notice, .success { padding: .8em !important; margin-bottom: 1em !important; border: 2px solid #ddd; }
+
+#tabBundles .error,#tabBundles .notice,#tabBundles .success { 
+margin: .5em 0; }
 
 .error { background: #FBE3E4; color: #8a1f11; border-color: #FBC2C4; }
 .notice { background: #FFF6BF; color: #514721; border-color: #FFD324; }

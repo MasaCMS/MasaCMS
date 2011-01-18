@@ -14,7 +14,13 @@
 */
 
 /* @group Modal Dialog */
+#shadowbox_container {
+	z-index: 499997;
+}
 
+#shadowbox_overlay {
+	z-index: 499996;
+}
 #dialog_overlay {
 	background-color: #000000;
 	display: none;
@@ -108,6 +114,7 @@ a#editFormCloseLink {
 
 #frontEndTools ul li {
 	color: #333 !important;
+	color: rgba(0,0,0,.95) !important;
 	float: left !important;
 	font-size: 11px !important;
 	line-height: 26px !important;
@@ -116,6 +123,7 @@ a#editFormCloseLink {
 	font-weight: normal !important;
 	font-family: "Lucida Grande", Arial, Helvetica, sans-serif !important;
 	font-style: normal !important;
+	text-shadow: rgba(255,255,255,.4) 0px 1px 0px !important;
 }
 
 #frontEndTools ul li a {
@@ -214,6 +222,11 @@ a#editFormCloseLink {
 	-webkit-border-bottom-left-radius: 5px;
 	-moz-border-radius-bottomright: 5px;
 	-webkit-border-bottom-right-radius: 5px;
+	-webkit-box-shadow: 3px 3px 5px #555 !important;
+	-moz-box-shadow: 3px 3px 5px #555 !important;
+	filter: progid:DXImageTransform.Microsoft.dropShadow( offX=5, offY=5, positive=true);
+	box-shadow: 3px 3px 3px #555 !important;
+	/*z-index: 4999 !important;*/
 }
 
 #frontEndTools li li { /* all list items */

@@ -1,0 +1,36 @@
+#m-changesets {
+	background: transparent;
+	-ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#F2AAAAAA,endColorstr=#F2AAAAAA)"; /* IE8 */
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#F2AAAAAA,endColorstr=#F2AAAAAA);   /* IE6 & 7 */
+    zoom: 1;
+}
+
+#m-changesets h1 {
+	color: #fff;
+	background: transparent;
+	-ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#4C000000,endColorstr=#4C000000)"; /* IE8 */
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#4C000000,endColorstr=#4C000000);   /* IE6 & 7 */
+      zoom: 1;
+	}
+
+#m-changesets #m-cs-utility li a {
+	color: #fff;
+	background: transparent;
+	-ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#4C000000,endColorstr=#4C000000)"; /* IE8 */
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#4C000000,endColorstr=#4C000000);   /* IE6 & 7 */
+      zoom: 1;
+}
+
+#m-changesets dt {
+	color: rgba(0,0,0,.95);
+	text-shadow: rgba(255,255,255,.3) 0px 1px 0px;
+	font-size: 12px;
+	margin: 0 0 4px;
+}
+
+#m-changesets dd {
+	margin: 0;
+	color: rgba(0,0,0,.95);
+	font-size: 11px;
+}
+

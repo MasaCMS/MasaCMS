@@ -1,6 +1,6 @@
 
 div.editableObject {
-	display: block !important;
+	display: inline-block !important;
 	visibility: !important;
 	float: none !important;
 	position: relative !important;
@@ -30,8 +30,8 @@ div.editableObject:after {
 	clear: both !important;
 	height: 0 !important;
 	}
-* html div.editableObject  { zoom: 1; } /* IE6 */
-*:first-child+html div.editableObject { zoom: 1; } /* IE7 */
+* html div.editableObject  { zoom: 1; display: inline; } /* IE6 */
+*:first-child+html div.editableObject { zoom: 1; display: inline; } /* IE7 */
 
 div.editableObject:hover {
 	outline-width: 2px !important;

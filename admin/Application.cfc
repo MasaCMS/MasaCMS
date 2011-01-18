@@ -1,5 +1,7 @@
 <cfcomponent extends="framework">
 
+	<cfsetting showdebugoutput="no">
+	
 	<cfinclude template="../config/applicationSettings.cfm">
 	
 	<cfif not hasMainMappings>
@@ -83,6 +85,11 @@
 		<cfscript>
 			StructAppend(request.context, url, "no");
 			StructAppend(request.context, form, "no");
+			
+			if (IsDefined("request.muraGlobalEvent")){
+				StructAppend(request, request.muraGlobalEvent.getAllValues(), "no");
+				StructDelete(request,"muraGlobalEvent");	
+			}
 		</cfscript>
 		
 		<cfparam name="request.context.moduleid" default="">
