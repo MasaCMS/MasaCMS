@@ -225,7 +225,7 @@ to your own modified versions of Mura CMS.
 	
 	<cfset var categoryBean=application.serviceFactory.getBean("categoryBean") />
 	<cfset var pluginEvent = createObject("component","mura.event").init(arguments.data) />
-	
+	<cfset var parentBean="">
 	<cfset categoryBean.set(arguments.data) />
 	
 	<cfset pluginEvent.setValue("categoryBean",categoryBean)>
@@ -238,7 +238,26 @@ to your own modified versions of Mura CMS.
 		<cfif not (structKeyExists(arguments.data,"categoryID") and len(arguments.data.categoryID))>
 			<cfset categoryBean.setCategoryID("#createUUID()#") />
 		</cfif>
+		
 		<cfset setMaterializedPath(categoryBean) />
+		
+		<cfif not len(categoryBean.getURLTitle())>
+			<cfset categoryBean.setURLTitle(categoryBean.getName())>
+		</cfif>
+
+		<cfset parentBean=read(categoryBean.getParentID())>
+		<cfif not parentBean.getIsNew()>
+			<cfif not len(parentBean.getFilename())>
+				<cfset parentBean.save()>
+				<cfset parentBean=read(categoryBean.getParentID())>
+			</cfif>
+			<cfset categoryBean.setFilename(parentBean.getFilename() & "/" & categoryBean.getURLTitle())>
+		<cfelse>
+			<cfset categoryBean.setFilename(categoryBean.getURLTitle())>
+		</cfif>
+		
+		<cfset makeFilenameUnique(categoryBean)>
+		
 		<cfset variables.utility.logEvent("CategoryID:#categoryBean.getCategoryID()# Name:#categoryBean.getName()# was created","mura-content","Information",true) />
 		<cfset variables.DAO.create(categoryBean) />
 		
@@ -253,10 +272,37 @@ to your own modified versions of Mura CMS.
 	<cfreturn categoryBean />
 </cffunction>
 
+<cffunction name="makeFilenameUnique" output="false">
+<cfargument name="categoryBean">
+	<cfset var count=0>
+	<cfset var isUnique=false>
+	<cfset var rsCheck="">
+	<cfset var tempFilename=arguments.categoryBean.getFilename()>
+	<cfloop condition="not isUnique">
+		<cfquery name="rsCheck" datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDbUsername()#" password="#variables.configBean.getDbPassword()#">
+			select categoryID from tcontentcategories 
+			where categoryID != <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.categoryBean.getCategoryID()#">
+			and filename=<cfqueryparam cfsqltype="cf_sql_varchar" value="#tempFilename#">
+		</cfquery>
+		<cfif rsCheck.recordcount>
+			<cfset count=count+1>
+			<cfset tempFilename=arguments.categoryBean.getFilename() & count>
+		<cfelse>
+			<cfset isUnique=true>
+		</cfif>
+	</cfloop>
+	
+	<cfif count>
+		<cfset arguments.categoryBean.setFilename(tempFilename)>
+		<cfset arguments.categoryBean.setURLTitle(listLast(tempFilename,"/"))>
+	</cfif>
+</cffunction>
+
 <cffunction name="read" access="public" returntype="any" output="false">
 	<cfargument name="categoryID" required="true" default=""/>
 	<cfargument name="name" required="true" default=""/>
 	<cfargument name="remoteID" required="true" default=""/>
+	<cfargument name="filename" required="true" default=""/>
 	<cfargument name="siteID" required="true" default=""/>		
 	
 	<cfif not len(arguments.categoryID) and len(arguments.siteID)>
@@ -264,6 +310,8 @@ to your own modified versions of Mura CMS.
 			<cfreturn variables.DAO.readByName(arguments.name, arguments.siteID) />
 		<cfelseif len(arguments.remoteID)>
 			<cfreturn variables.DAO.readByRemoteID(arguments.remoteID, arguments.siteID) />
+		<cfelseif len(arguments.filename)>
+			<cfreturn variables.DAO.readByFilename(arguments.filename, arguments.siteID) />
 		</cfif>
 	</cfif>
 	
@@ -276,6 +324,14 @@ to your own modified versions of Mura CMS.
 	<cfargument name="siteid" type="string" />
 	
 	<cfreturn variables.DAO.readByName(arguments.name,arguments.siteid) />
+
+</cffunction>
+
+<cffunction name="readByFilename" access="public" returntype="any" output="false">
+	<cfargument name="filename" type="String" />		
+	<cfargument name="siteid" type="string" />
+	
+	<cfreturn variables.DAO.readByFilename(arguments.filename,arguments.siteid) />
 
 </cffunction>
 
@@ -292,10 +348,13 @@ to your own modified versions of Mura CMS.
 	
 	<cfset var categoryBean=variables.DAO.read(arguments.data.categoryID) />
 	<cfset var currentParentID= "" />
+	<cfset var currentURLTitle= "" />
 	<cfset var currentPath= "" />
 	<cfset var pluginEvent = createObject("component","mura.event").init(arguments.data) />
 	
 	<cfset currentParentID=categoryBean.getParentID() />
+	<cfset currentURLTitle=categoryBean.getURLTitle() />
+	<cfset currentFilename=categoryBean.getFilename() />
 	<cfset categoryBean.set(arguments.data) />
 	<cfset currentPath=categoryBean.getPath() />
 	
@@ -310,7 +369,31 @@ to your own modified versions of Mura CMS.
 			<cfset setMaterializedPath(categoryBean) />
 			<cfset updateMaterializedPath(categoryBean.getPath(),currentPath,categoryBean.getSiteID())>
 		</cfif>
+		
+		<cfif not len(categoryBean.getURLTitle())>
+			<cfset categoryBean.setURLTitle(categoryBean.getName())>
+		</cfif>
 	
+		<cfif currentURLTitle neq categoryBean.getURLTitle()>
+			<cfset parentBean=read(categoryBean.getParentID())>
+			<cfif not parentBean.getIsNew()>
+				<cfif not len(parentBean.getFilename())>
+					<cfset parentBean.save()>
+					<cfset parentBean=read(categoryBean.getParentID())>
+				</cfif>
+				<cfset categoryBean.setFilename(parentBean.getFilename() & "/" & categoryBean.getURLTitle())>
+			<cfelse>
+				<cfset categoryBean.setFilename(categoryBean.getURLTitle())>
+			</cfif>
+		
+			<cfset makeFilenameUnique(categoryBean)>
+			
+			<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+			update tcontentcategories set filename=replace(filename,<cfqueryparam cfsqltype="cf_sql_varchar" value="#currentFilename#/"/>,<cfqueryparam cfsqltype="cf_sql_varchar" value="#categoryBean.getFilename()#/"/>) where siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#categoryBean.getSiteID()#"/>
+			and filename like <cfqueryparam cfsqltype="cf_sql_varchar" value="#currentFilename#/%"/>
+			</cfquery>
+		</cfif>
+		
 		<cfset categoryBean.setLastUpdateBy(left(session.mura.fname & " " & session.mura.lname,50)) />
 		<cfset variables.DAO.update(categoryBean) />
 		<cfif isdefined('arguments.data.OrderID')>

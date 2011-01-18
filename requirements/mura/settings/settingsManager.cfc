@@ -121,6 +121,7 @@ to your own modified versions of Mura CMS.
 	<cfif structIsEmpty(bean.getErrors())>
 		<cfset variables.utility.logEvent("SiteID:#bean.getSiteID()# Site:#bean.getSite()# was updated","mura-settings","Information",true) />
 		<cfset variables.DAO.update(bean) />
+		<cfset checkForBundle(arguments.data,bean.getErrors())>
 		<cfset setSites()/>
 	</cfif>
 
@@ -153,6 +154,7 @@ to your own modified versions of Mura CMS.
 	<cfargument name="data" type="struct" />
 	<cfset var rs=""/>
 	<cfset var bean=application.serviceFactory.getBean("settingsBean") />
+	
 	<cfset bean.set(arguments.data) />
 	
 	<cfif structIsEmpty(bean.getErrors()) and  bean.getSiteID() neq ''>
@@ -166,12 +168,17 @@ to your own modified versions of Mura CMS.
 			<cfabort>
 		</cfif>
 		
+		<cfif directoryExists(expandPath("/muraWRM/#bean.getSiteID()#"))>
+			<cfthrow message="A directory with the same name as the SiteID you entered is already being used.">
+		</cfif>
+		
 		<cfset variables.utility.logEvent("SiteID:#bean.getSiteID()# Site:#bean.getSite()# was created","mura-settings","Information",true) />
 		<cfset variables.DAO.create(bean) />
 		<cfset variables.utility.copyDir("#variables.configBean.getWebRoot()##variables.configBean.getFileDelim()#default#variables.configBean.getFileDelim()#", "#variables.configBean.getWebRoot()##variables.configBean.getFileDelim()##bean.getSiteID()##variables.configBean.getFileDelim()#") />
 		<cfif variables.configBean.getCreateRequiredDirectories()>
 			<cfset variables.utility.createRequiredSiteDirectories(bean.getSiteID()) />
 		</cfif>
+		<cfset checkForBundle(arguments.data,bean.getErrors())>
 		<cfset setSites() />
 	</cfif>
 
@@ -253,5 +260,94 @@ to your own modified versions of Mura CMS.
 
 	<cfreturn rs />
 </cffunction>
+
+<cffunction name="checkForBundle" output="false">
+<cfargument name="data">
+<cfargument name="errors">
+	<cfset var fileManager=getBean("fileManager")>
+	<cfset var tempfile="">
+	<cfif structKeyExists(arguments.data,"bundleFile") and len(arguments.data.bundleFile)>
+		<cfif fileManager.isPostedFile(arguments.data.bundleFile)>
+			<cffile action="upload" result="tempFile" filefield="bundleFile" nameconflict="makeunique" destination="#variables.configBean.getTempDir()#">
+		<cfelse>
+			<cfset tempFile=fileManager.emulateUpload(arguments.data.bundleFile)>
+		</cfif>
+		<cfparam name="arguments.data.bundleImportKeyMode" default="copy">
+		<cfparam name="arguments.data.bundleImportContentMode" default="none">
+		<cfparam name="arguments.data.bundleImportRenderingMode" default="none">
+		<cfparam name="arguments.data.bundleImportPluginMode" default="none">
+		<cfparam name="arguments.data.bundleImportMailingListMembersMode" default="none">
+		<cfparam name="arguments.data.bundleImportUsersMode" default="none">
+		<cfset restoreBundle(
+			"#tempfile.serverDirectory#/#tempfile.serverFilename#.#tempfile.serverFileExt#" , 
+			arguments.data.siteID,
+			arguments.errors, 
+			arguments.data.bundleImportKeyMode,
+			arguments.data.bundleImportContentMode, 
+			arguments.data.bundleImportRenderingMode,
+			arguments.data.bundleImportMailingListMembersMode,
+			arguments.data.bundleImportUsersMode,
+			arguments.data.bundleImportPluginMode
+			)>
+		<cffile action="delete" file="#tempfile.serverDirectory#/#tempfile.serverFilename#.#tempfile.serverFileExt#">
+	</cfif>
+	
+</cffunction>
+
+<cffunction name="restoreBundle" output="false">
+<cfargument name="bundleFile">
+<cfargument name="siteID" default="">
+<cfargument name="errors" default="#structNew()#">
+<cfargument name="keyMode" default="copy">
+<cfargument name="contentMode" default="none">
+<cfargument name="renderingMode" default="none">
+<cfargument name="mailingListMembersMode" default="none">
+<cfargument name="usersMode" default="none">
+<cfargument name="pluginMode" default="none">
+<cfargument name="lastDeployment" default="">
+<cfargument name="moduleID" default="">
+
+    <cfset var sArgs			= structNew()>
+	<cfset var config 			= application.configBean />
+	<cfset var Bundle			= application.serviceFactory.getBean("bundle") />
+	<cfset var publisher 		= application.serviceFactory.getBean("publisher") />
+	<cfset var keyFactory		= createObject("component","mura.publisherKeys").init(arguments.keyMode,application.utility)>
+	
+	<cfset Bundle.restore( arguments.BundleFile)>
+	
+	<cfset sArgs.fromDSN		= config.getDatasource() />
+	<cfset sArgs.toDSN			= config.getDatasource() />
+	<cfset sArgs.fromSiteID		= "" />
+	<cfset sArgs.toSiteID		= arguments.siteID />
+	<cfset sArgs.contentMode			= arguments.contentMode />
+	<cfset sArgs.keyMode			= arguments.keyMode />
+	<cfset sArgs.renderingMode			= arguments.renderingMode />
+	<cfset sArgs.mailingListMembersMode			= arguments.mailingListMembersMode />
+	<cfset sArgs.usersMode			= arguments.usersMode />
+	<cfset sArgs.keyFactory		= keyFactory />
+	<cfset sArgs.pluginMode		= arguments.pluginMode  />
+	<cfset sArgs.Bundle		= Bundle />
+	<cfset sArgs.moduleID		= arguments.moduleID />
+	<cfset sArgs.errors			= arguments.errors />
+	<cfset sArgs.lastDeployment = arguments.lastDeployment />
+	
+	<cfset publisher.getToWork( argumentCollection=sArgs )>
+	
+	<cfif len(arguments.siteID)>
+		<cfset getSite(arguments.siteID).getCacheFactory().purgeAll()>
+		<cfset getBean("contentUtility").updateGlobalMaterializedPath(siteID=arguments.siteID)>
+	</cfif>
+	<cfreturn errors>
+</cffunction>
+
+<cffunction name="isBundle" output="false">
+	<cfargument name="BundleFile">
+	<cfset var rs=createObject("component","mura.Zip").List(zipFilePath="#arguments.BundleFile#")>
+
+	<cfquery name="rs" dbType="query">
+		select entry from rs where entry in ('sitefiles.zip','pluginfiles.zip','filefiles.zip','pluginfiles.zip')
+	</cfquery>
+	<cfreturn rs.recordcount>
+</cffunction>	
 
 </cfcomponent>

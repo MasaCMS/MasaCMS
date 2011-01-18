@@ -249,16 +249,16 @@ to your own modified versions of Mura CMS.
 			</div>
 		</cfif>
 
-		<form id="postcomment" method="post" name="addComment" action="?nocache=1" onsubmit="return validate(this);" novalidate="novalidate">
-			<fieldset>
+		<form id="postcomment" method="post" name="addComment" action="?nocache=1" onsubmit="return validate(this);" novalidate="novalidate" data-role="fieldcontain">
+			<fieldset data-role="controlgroup">
 				<cfoutput><legend>#rbFactory.getKey('comments.postacomment')#</legend>
 				<ol>
 					<li class="req">
-						<label for="txtName">#rbFactory.getKey('comments.name')#<ins> (#rbFactory.getKey('comments.required')#)</ins></label>
+						<label for="txtName">#rbFactory.getKey('comments.name')# <ins>(#rbFactory.getKey('comments.required')#)</ins></label>
 						<input id="txtName" name="name" type="text" size="38" class="text" maxlength="50" required="true" message="#htmlEditFormat(rbFactory.getKey('comments.namerequired'))#" value="#HTMLEditFormat(request.name)#" />
 					</li>
 					<li class="req">
-						<label for="txtEmail">#rbFactory.getKey('comments.email')#</label>
+						<label for="txtEmail">#rbFactory.getKey('comments.email')# <ins>(#rbFactory.getKey('comments.required')#)</ins></label>
 						<input id="txtEmail" name="email" type="text" size="38" class="text" maxlength="50" required="true" message="#htmlEditFormat(rbFactory.getKey('comments.emailvalidate'))#" value="#HTMLEditFormat(request.email)#" />
 					</li>
 					<li>
@@ -266,14 +266,14 @@ to your own modified versions of Mura CMS.
 						<input id="txtUrl" name="url" type="text" size="38" class="text" maxlength="50" value="#HTMLEditFormat(request.url)#" />
 					</li>
 					<li class="req">
-						<label for="txtComment">#rbFactory.getKey('comments.comment')#<ins> (#rbFactory.getKey('comments.required')#)</ins></label>
+						<label for="txtComment">#rbFactory.getKey('comments.comment')# <ins>(#rbFactory.getKey('comments.required')#)</ins></label>
 						<textarea id="txtComment" name="comments" message="#htmlEditFormat(rbFactory.getKey('comments.commentrequired'))#" cols="30" rows="20" required="true">#HTMLEditFormat(request.comments)#</textarea>
 					</li>
-					<li>
+					<li class="controlgroup">
 						<label for="txtRemember">#rbFactory.getKey('comments.rememberinfo')#</label>
 						<input type="checkbox" id="txtRemember" name="remember" value="1"<cfif isBoolean(request.remember) and request.remember> checked="checked"</cfif> />
 					</li>
-					<li>
+					<li class="controlgroup">
 						<label for="txtSubscribe">#rbFactory.getKey('comments.subscribe')#</label>
 						<input type="checkbox" id="txtSubscribe" name="subscribe" value="1"<cfif isBoolean(request.subscribe) and request.subscribe> checked="checked"</cfif> />
 					</li></cfoutput>

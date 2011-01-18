@@ -40,8 +40,8 @@ for your modified version; it is your choice whether to do so, or to make such m
 the GNU General Public License version 2  without this exception.  You may, if you choose, apply this exception
 to your own modified versions of Mura CMS.
 --->
-<cfset rbFactory=getSite().getRBFactory() />
+<cfset variables.rbFactory=getSite().getRBFactory() />
 <cfoutput>
 <#getHeaderTag('headline')#>#rbFactory.getKey('sitemanager.offline')#</#getHeaderTag('headline')#>
-<p>#rbFactory.getKey('sitemanager.offlineinstructions')#</p>
+<p>#variables.rbFactory.getKey('sitemanager.offlineinstructions')#</p>
 </cfoutput>

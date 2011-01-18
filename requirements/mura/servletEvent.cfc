@@ -50,6 +50,11 @@ to your own modified versions of Mura CMS.
 	    request=structNew();
 	StructAppend(request, url, "no");
 	StructAppend(request, form, "no");
+	
+	if (IsDefined("request.muraGlobalEvent")){
+		StructAppend(request, request.muraGlobalEvent.getAllValues(), "no");
+		StructDelete(request,"muraGlobalEvent");	
+	}
 	</cfscript>
 	
 	<cfparam name="request.doaction" default=""/>

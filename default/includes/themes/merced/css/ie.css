@@ -89,7 +89,16 @@
 ===================================== */
 hr { margin: -8px auto 11px; } /* IE 6/7 has problems with setting proper <hr> margins. */
 
-.home #right { margin: 0; }
+#content {
+	z-index: 1;
+}
+
+.home #right {
+	position: relative;
+	top: -40px;
+	z-index: 2;
+	margin: 0; 
+}
 /*
 For design consistency. Uncomment this if you want Local Index or Remote Feed Headers to start the same place it does on *good* browsers on the homepage
 .home #navPrimary { width: 687px; }
@@ -140,7 +149,7 @@ h1 {
 #svAddNewFeed form {
 	zoom: 1;
 	padding: 1em;
-		padding-bottom: 0;
+	padding-bottom: 0;
 	}
 
 legend {
@@ -173,7 +182,8 @@ html>body h1 a {
 	margin: 0 0 20px 0;
 	}
 
-html>body # right .svIndex dl {
+
+html>body #right .svIndex dl {
 	width:  100px;
 }
 

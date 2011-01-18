@@ -43,49 +43,25 @@ to your own modified versions of Mura CMS.
 
 <cfoutput>
 <cfsilent>
-	<!---<cfset addToHTMLHeadQueue("prototype.cfm")>
-	<cfset addToHTMLHeadQueue("scriptaculous.cfm")>
-	<cfset addToHTMLHeadQueue("shadowbox-prototype.cfm")>
-	<cfset addToHTMLHeadQueue("shadowbox.cfm")>--->
-	<cfparam name="hasSummary" default="false"/>
-	<cfset rbFactory=getSite().getRBFactory() />
-	<cfset rsRelatedContent = application.contentManager.getRelatedContent(request.siteID,request.contentBean.getcontentHistID(),true) />
+	<cfset variables.rbFactory=getSite().getRBFactory() />
+	<cfset variables.iterator=$.content().getRelatedContentIterator(liveOnly=true)>
+	
+	<cfset variables.contentListType="Related">
+	<cfset variables.contentListFields="Title,Date,Image,Tags,Credits">
+	
+	<cfif arguments.hasSummary >
+		<cfset variables.contentListFields=listAppend(contentListFields,"Summary")>
+	</cfif>
 </cfsilent>
-<cfif rsRelatedContent.recordCount>
+<cfif variables.iterator.getRecordCount()>
 	<div class="svRelContent svIndex">
-	<#getHeaderTag('subHead1')#>#rbFactory.getKey('list.relatedcontent')#</#getHeaderTag('subHead1')#>
-	<cfloop query="rsRelatedContent">
-		<cfsilent>
-			<cfset contentLink = createHref(rsRelatedContent.Type, rsRelatedContent.filename, request.siteid, contentID, rsRelatedContent.target,rsRelatedContent.targetParams, '', '#application.configBean.getContext()#', '#application.configBean.getStub()#', '', 'false') />
-			<cfset contentLink = "<a href='#contentLink#'>#menuTitle#</a>" />
-			<cfset class=""/>
-			<cfif rsRelatedContent.currentRow eq 1> 
-			<cfset class=listAppend(class,"first"," ")/> 
-			</cfif>
-			<cfif rsRelatedContent.currentRow eq rsRelatedContent.recordcount> 
-			<cfset class=listAppend(class,"last"," ")/> 
-			</cfif>
-			
-			<cfset hasImage=len(rsRelatedContent.fileID) and listFindNoCase("jpg,jpeg,png",rsRelatedContent.fileExt) />
-			
-			<cfif hasImage>
-				<cfset class=listAppend(class,"hasImage"," ")>
-			</cfif>
-
-		</cfsilent>
-	<dl<cfif len(class)> class="#class#"</cfif>>
-		<cfif isDate(rsRelatedContent.releasedate)>
-			<dt class="releaseDate">#LSDateFormat(rsRelatedContent.releasedate,getLongDateFormat())#</dt>
-		</cfif>
-		<dt>#contentLink#</dt>
-		<cfif hasImage>
-				<dd class="image">
-					<!---<a href="#application.configBean.getContext()#/tasks/render/file/index.cfm?fileID=#rsRelatedContent.FileID#&ext=.#rsRelatedContent.fileExt#" title="#HTMLEditFormat(rsRelatedContent.title)#" rel="shadowbox[svRelatedContent]">---><img src="#application.configBean.getContext()#/tasks/render/small/index.cfm?fileid=#rsRelatedContent.fileid#"/><!---</a>--->
-				</dd>
-		</cfif>
-		<cfif hasSummary><dd>#setDynamicContent(rsRelatedContent.summary)#</dd></cfif>
-	</dl>
-	</cfloop>
+	<#getHeaderTag('subHead1')#>#variables.rbFactory.getKey('list.relatedcontent')#</#getHeaderTag('subHead1')#>
+	#dspObject_Include(
+			thefile='dsp_content_list.cfm',
+			fields=variables.contentListFields,
+			type=variables.contentListType, 
+			iterator= variables.iterator
+			)#
 	</div>
 <cfelse>
 	<!-- Empty Related Content -->

@@ -61,6 +61,8 @@ to your own modified versions of Mura CMS.
 <cfset variables.instance.remoteID = "" />
 <cfset variables.instance.remoteSourceURL = "" />
 <cfset variables.instance.remotePubDate = "">
+<cfset variables.instance.URLTitle = "">
+<cfset variables.instance.filename = "">
 <cfset variables.categoryManager = "" />
 <cfset variables.instance.isNew=1 />
 <cfset variables.instance.errors=structnew() />
@@ -98,6 +100,8 @@ to your own modified versions of Mura CMS.
 			<cfset setRemoteID(arguments.category.remoteID) />
 			<cfset setRemoteSourceURL(arguments.category.remoteSourceURL) />
 			<cfset setRemotePubDate(arguments.category.remotePubDate) />
+			<cfset setURLTitle(arguments.category.URLTitle) />
+			<cfset setFilename(arguments.category.filename) />
 	
 		<cfelseif isStruct(arguments.category)>
 		
@@ -397,6 +401,28 @@ to your own modified versions of Mura CMS.
   <cffunction name="getRemotePubDate" returnType="string" output="false" access="public">
     <cfreturn variables.instance.RemotePubDate />
   </cffunction>
+
+	<cffunction name="setURLTitle" output="false" access="public">
+	    <cfargument name="URLTitle" type="string" required="true">
+	    <cfif arguments.URLTitle neq variables.instance.URLTitle>
+	   		<cfset variables.instance.URLTitle = getBean("contentUtility").formatFilename(arguments.URLTitle) />
+	    </cfif>
+	    <cfreturn this>
+	</cffunction>
+	
+	<cffunction name="getURLTitle" returnType="string" output="false" access="public">
+	    <cfreturn variables.instance.URLTitle />
+	 </cffunction>
+	 
+	<cffunction name="setFilename" output="false" access="public">
+	    <cfargument name="filename" type="string" required="true">
+	    <cfset variables.instance.filename = left(trim(arguments.filename),255) />
+	    <cfreturn this>
+	</cffunction>
+	
+	<cffunction name="getFilename" returnType="string" output="false" access="public">
+	    <cfreturn variables.instance.filename />
+	 </cffunction>
 
 	<cffunction name="setValue" returntype="any" access="public" output="false">
 	<cfargument name="property"  type="string" required="true">

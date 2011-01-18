@@ -122,6 +122,7 @@ to your own modified versions of Mura CMS.
 <cfset variables.instance.doCache = 1 />
 <cfset variables.instance.created = now() />
 <cfset variables.instance.mobileExclude = 0 />
+<cfset variables.instance.changesetID = "" />
 <cfset variables.instance.errors=structnew() />
 <cfset variables.kids = arrayNew(1) />
 <cfset variables.displayRegions = structNew()>
@@ -214,6 +215,7 @@ to your own modified versions of Mura CMS.
 		<cfset setdoCache(arguments.Content.doCache) />
 		<cfset setMobileExclude(arguments.Content.mobileExclude) />
 		<cfset setCreated(arguments.Content.created) />
+		<cfset setChangesetID(arguments.Content.changesetID) />
 		
 	<cfelseif isStruct(arguments.content)>
 	
@@ -1318,7 +1320,11 @@ to your own modified versions of Mura CMS.
 </cffunction>
   
 <cffunction name="getHTMLTitle" returnType="string" output="false" access="public">
-	<cfreturn variables.instance.HTMLTitle />
+	<cfif len(variables.instance.HTMLTitle)>
+		<cfreturn variables.instance.HTMLTitle />
+	<cfelse>
+		<cfreturn variables.instance.MenuTitle />
+	</cfif>
 </cffunction>
 
 <cffunction name="setNewFile" output="false" access="public">
@@ -1601,4 +1607,14 @@ to your own modified versions of Mura CMS.
 			and (listFind("Page,Portal,Gallery,File,Calendar,Link,Form",getType()) or listFind(getModuleAssign(),'00000000000000000000000000000000000'))>
 </cffunction>
 
+<cffunction name="setChangesetID" output="false" access="public">
+    <cfargument name="changesetID" type="string" required="true">
+    <cfset variables.instance.changesetID = trim(arguments.changesetID) />
+	<cfreturn this>
+</cffunction>
+
+<cffunction name="getChangesetID" returnType="string" output="false" access="public">
+    <cfreturn variables.instance.changesetID />
+</cffunction>
+  
 </cfcomponent>

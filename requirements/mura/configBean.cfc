@@ -44,7 +44,7 @@ to your own modified versions of Mura CMS.
 <cfcomponent extends="mura.cfobject" output="false">
 <cfset variables.instance=structNew()/>
 <cfset variables.instance.mode=""/>
-<cfset variables.instance.version="5.3"/> 
+<cfset variables.instance.version="5.4"/> 
 <cfset variables.instance.title=""/>
 <cfset variables.instance.webroot=""/>
 <cfset variables.instance.webrootmap=""/>
@@ -116,6 +116,9 @@ to your own modified versions of Mura CMS.
 <cfset variables.instance.sessionTimeout=180 />
 <cfset variables.instance.tempDir=getTempDirectory() />
 <cfset variables.instance.autoresetpasswords=true />
+<cfset variables.instance.encryptionKey=createUUID() />
+
+
 
 <cffunction name="OnMissingMethod" access="public" returntype="any" output="false" hint="Handles missing method exceptions.">
 <cfargument name="MissingMethodName" type="string" required="true" hint="The name of the missing method." />
@@ -1091,6 +1094,18 @@ to your own modified versions of Mura CMS.
 <cffunction name="getAutoResetPasswords" returntype="boolean" access="public" output="false">
 	<cfreturn variables.instance.autoresetpasswords />
 </cffunction>
+
+<cffunction name="setEncryptionKey" access="public" output="false">
+	<cfargument name="encryptionKey" />
+	<cfif len(arguments.encryptionKey)>
+		<cfset variables.instance.encryptionKey = arguments.encryptionKey />
+	</cfif>
+	<cfreturn this>
+</cffunction>
+
+<cffunction name="getEncryptionKey" returntype="any" access="public" output="false">
+	<cfreturn variables.instance.encryptionKey />
+</cffunction> 
 
 <cffunction name="getAllValues" returntype="any" access="public" output="false">
 	<cfreturn variables.instance />

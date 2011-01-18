@@ -52,7 +52,7 @@ tcontent.RemotePubDate,tcontent.RemoteSource,tcontent.RemoteSourceURL,tcontent.R
 tcontent.responseDisplayFields,tcontent.responseMessage,tcontent.responseSendTo,tcontent.Restricted,tcontent.RestrictGroups,
 tcontent.searchExclude,tcontent.SiteID,tcontent.sortBy,tcontent.sortDirection,tcontent.Summary,tcontent.Target,
 tcontent.TargetParams,tcontent.Template,tcontent.Title,tcontent.Type,tcontent.subType,tcontent.Path,tcontent.tags,
-tcontent.doCache,tcontent.created,tcontent.urltitle,tcontent.htmltitle,tcontent.mobileExclude</cfoutput></cfsavecontent>
+tcontent.doCache,tcontent.created,tcontent.urltitle,tcontent.htmltitle,tcontent.mobileExclude,tcontent.changesetID</cfoutput></cfsavecontent>
 
 <cffunction name="init" access="public" returntype="any" output="false">
 <cfargument name="configBean" type="any" required="yes"/>
@@ -126,7 +126,9 @@ tcontent.doCache,tcontent.created,tcontent.urltitle,tcontent.htmltitle,tcontent.
 			<cfquery datasource="#variables.dsn#" name="rsContent"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 				select #variables.fieldlist#, tfiles.fileSize, tfiles.contentType, tfiles.contentSubType, tfiles.fileExt from tcontent 
 				left join tfiles on (tcontent.fileid=tfiles.fileid)
-				where tcontent.contentid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentID#" /> and tcontent.active=1 and tcontent.siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#" />
+				where tcontent.contentid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentID#" /> 
+				#renderActiveClause("tcontent",arguments.siteID)#
+				and tcontent.siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#" />
 				and type in ('Page','Portal','File','Calendar','Link','Gallery','Component','Form')
 			</cfquery>
 		</cfif>
@@ -172,7 +174,9 @@ tcontent.doCache,tcontent.created,tcontent.urltitle,tcontent.htmltitle,tcontent.
 			<cfquery datasource="#variables.dsn#" name="rsContent"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 				select #variables.fieldlist#, tfiles.fileSize, tfiles.contentType, tfiles.contentSubType, tfiles.fileExt from tcontent 
 				left join tfiles on (tcontent.fileid=tfiles.fileid)
-				where tcontent.remoteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.remoteID#" /> and tcontent.active=1 and tcontent.siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteid#" />
+				where tcontent.remoteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.remoteID#" /> 
+				#renderActiveClause("tcontent",arguments.siteID)#
+				and tcontent.siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteid#" />
 				and type in ('Page','Portal','File','Calendar','Link','Gallery','Component','Form')
 			</cfquery>
 		</cfif>
@@ -212,7 +216,9 @@ tcontent.doCache,tcontent.created,tcontent.urltitle,tcontent.htmltitle,tcontent.
 			<cfquery datasource="#variables.dsn#" name="rsContent"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 				select #variables.fieldlist#, tfiles.fileSize, tfiles.contentType, tfiles.contentSubType, tfiles.fileExt from tcontent 
 				left join tfiles on (tcontent.fileid=tfiles.fileid)
-				where tcontent.title=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.title#" /> and tcontent.active=1 and tcontent.siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteid#" />
+				where tcontent.title=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.title#" /> 
+				#renderActiveClause("tcontent",arguments.siteID)#
+				and tcontent.siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteid#" />
 				and type in ('Page','Portal','File','Calendar','Link','Gallery','Component','Form')
 			</cfquery>
 		</cfif>
@@ -274,16 +280,16 @@ tcontent.doCache,tcontent.created,tcontent.urltitle,tcontent.htmltitle,tcontent.
 			where 
 			<cfif arguments.filename neq ''>
 			 tcontent.filename=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.filename#" />
-			 and  tcontent.active=1 and 
-			 tcontent.type in('Page','Portal','Calendar','Gallery','File') 
+			#renderActiveClause("tcontent",arguments.siteID)#
+			and tcontent.type in('Page','Portal','Calendar','Gallery','File') 
 			<cfelse>
 			 tcontent.filename is null
-			 and  tcontent.active=1 and 
-			 tcontent.type in('Page','Portal','Calendar','Gallery') 
+			#renderActiveClause("tcontent",arguments.siteID)#
+			 and tcontent.type in('Page','Portal','Calendar','Gallery') 
 			</cfif>
 			and  tcontent.siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#" />
 		</cfquery>
-		
+
 		<cfif rsContent.recordcount gt 1>
 			<cfset utility=getServiceFactory().getBean("utility")>
 				<cfloop query="rscontent">
@@ -343,7 +349,8 @@ tcontent.doCache,tcontent.created,tcontent.urltitle,tcontent.htmltitle,tcontent.
 	   audience, keyPoints, searchExclude, displayTitle, doCache, created,
 	   urltitle,
 	   htmltitle,
-	   mobileExclude)
+	   mobileExclude,
+	  changesetID)
       VALUES (
 	  	 <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentBean.getContentHistID()#">, 
          <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentBean.getContentID()#">,
@@ -459,13 +466,14 @@ tcontent.doCache,tcontent.created,tcontent.urltitle,tcontent.htmltitle,tcontent.
 		</cfif>,
 		<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.contentBean.getURLTitle() neq '',de('no'),de('yes'))#" value="#arguments.contentBean.getURLTitle()#">,
 		<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.contentBean.getHTMLTitle() neq '',de('no'),de('yes'))#" value="#arguments.contentBean.getHTMLTitle()#">,
-		#arguments.contentBean.getMobileExclude()#
+		#arguments.contentBean.getMobileExclude()#,
+		<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.contentBean.getChangesetID() neq '',de('no'),de('yes'))#" value="#arguments.contentBean.getChangesetID()#">
 		)
  </CFQUERY>
 
 </cffunction>
 
-<cffunction name="deleteHistAll" access="public" returntype="void" output="false">
+<cffunction name="deleteHistAll" access="public" returntype="void" output="false" hint="I delete all archived and draft versions">
 <cfargument name="contentID" type="string" required="yes" />
 <cfargument name="siteID" type="string" required="yes" />
 	<cfset var rsdate= "">
@@ -476,14 +484,26 @@ tcontent.doCache,tcontent.created,tcontent.urltitle,tcontent.htmltitle,tcontent.
 	</cfquery>
 	
 	<cfquery datasource="#variables.dsn#" name="rslist"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-	select contenthistid from tcontent where siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#" /> and contentid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentID#" />
-	and lastupdate < #createodbcdatetime(rsdate.lastupdate)#
+	select contenthistid from tcontent 
+	where siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#" /> 
+	and contentid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentID#" />
+	<!---and lastupdate < #createodbcdatetime(rsdate.lastupdate)#--->
+	and (
+		 		(approved=0 and changesetID is null)
+				 or 
+				(approved=1 and active=0)
+			)
 	</cfquery>
 	
 	<cfif rslist.recordcount>
 		<cfquery datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 		 Delete from tcontent where siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#" /> and contentid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentID#" />
-		 and lastupdate < #createodbcdatetime(rsdate.lastupdate)#
+		 <!---and lastupdate < #createodbcdatetime(rsdate.lastupdate)#--->
+		 and (
+		 		(approved=0 and changesetID is null)
+				 or 
+				(approved=1 and active=0)
+			)
 		</cfquery>
 		
 		<cfquery datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
@@ -516,16 +536,17 @@ tcontent.doCache,tcontent.created,tcontent.urltitle,tcontent.htmltitle,tcontent.
 	</cfif>
 </cffunction>
 
-<cffunction name="deleteDraftHistAll" access="public" returntype="void" output="false">
+<cffunction name="deleteDraftHistAll" access="public" returntype="void" output="false" hint="I delete all draft versions">
 <cfargument name="contentID" type="string" required="yes" />
 <cfargument name="siteID" type="string" required="yes" />
 	<cfset var rslist= "">
 	<cfset var rsFiles= "">
 		
 	<cfquery datasource="#variables.dsn#" name="rslist"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-	select contenthistid from tcontent where siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#" />
+	select contenthistid from tcontent 
+	where siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#" />
 	and contentid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentID#" />
-	and approved=0
+	and approved=0 and changesetID is null
 	</cfquery>
 	
 	<cfif rslist.recordcount>	
@@ -561,7 +582,7 @@ tcontent.doCache,tcontent.created,tcontent.urltitle,tcontent.htmltitle,tcontent.
 	<cfquery datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	Delete from tcontent where siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#" />
 	and contentid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentID#" />
-	and approved=0
+	and approved=0 and changesetID is null
 	</cfquery>
 	
 </cffunction>
@@ -967,4 +988,30 @@ tcontent.doCache,tcontent.created,tcontent.urltitle,tcontent.htmltitle,tcontent.
 	<cfreturn rs />
 </cffunction>
 
+<cffunction name="renderActiveClause" output="true">
+<cfargument name="table" default="tcontent">
+<cfargument name="siteID">
+	<cfset var previewData="">
+	<cfoutput>
+			<cfif request.muraChangesetPreview>
+				<cfset previewData=getCurrentUser().getValue("ChangesetPreviewData")>
+				and (
+						(#arguments.table#.active = 1
+						
+						and #arguments.table#.contentID not in (#previewData.contentIDList#)	
+						)
+						
+						or 
+						
+						(
+						#arguments.table#.contentHistID in (#previewData.contentHistIDList#)
+						)
+						
+					)	
+			<cfelse>
+				and #arguments.table#.active = 1
+				
+			</cfif>	
+	</cfoutput>
+</cffunction>
 </cfcomponent>

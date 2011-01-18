@@ -41,65 +41,69 @@ the GNU General Public License version 2  without this exception.  You may, if y
 to your own modified versions of Mura CMS.
 --->
 <cfsilent>
-<cfset rbFactory=getSite().getRBFactory() />
+<cfset variables.rbFactory=getSite().getRBFactory() />
 </cfsilent>
-<cfoutput><#getHeaderTag('headline')#>#rbFactory.getKey('search.searchresults')#</#getHeaderTag('headline')#></cfoutput>
+<cfoutput><#getHeaderTag('headline')#>#variables.rbFactory.getKey('search.searchresults')#</#getHeaderTag('headline')#></cfoutput>
 <div id="svSearchResults">
 <cfsilent>
-<cfset rbFactory=getSite().getRBFactory() />
-<cfparam name="rsnewsearch.recordcount" default="0"/>
+<cfparam name="variables.rsnewsearch.recordcount" default="0"/>
 <cfparam name="request.aggregation" default="false">
 <cfparam name="request.searchSectionID" default="">
 <cfparam name="session.rsSearch.recordcount" default=0>
 <cfif (len(request.keywords) or len(request.tag) ) and isdefined('request.newSearch')>
 <cfset session.aggregation=request.aggregation />
-<cfset rsNewSearch=application.contentManager.getPublicSearch(request.siteid,request.keywords,request.tag,request.searchSectionID) /> 
+<cfset variables.rsNewSearch=application.contentManager.getPublicSearch(request.siteid,request.keywords,request.tag,request.searchSectionID) /> 
 
 <cfif getSite().getExtranet() eq 1>
-	<cfset session.rsSearch=queryPermFilter(rsnewsearch)/>
+	<cfset session.rsSearch=queryPermFilter(variables.rsnewsearch)/>
 <cfelse>
-	<cfset session.rsSearch=rsnewsearch/>
+	<cfset session.rsSearch=variables.rsnewsearch/>
 </cfif>
 
 <cfelseif request.keywords eq '' and isdefined('request.newSearch')>
 <cfset session.rsSearch=newResultQuery()/>
 </cfif>
 
-<cfset TotalRecords=session.rsSearch.RecordCount>
-<cfset RecordsPerPage=10> 
-<cfset NumberOfPages=Ceiling(TotalRecords/RecordsPerPage)>
-<cfset CurrentPageNumber=Ceiling(request.StartRow/RecordsPerPage)> 
-<cfset next=evaluate((request.startrow+recordsperpage))	>
-<cfset previous=evaluate((request.startrow-recordsperpage))	>
-<cfset through=iif(totalRecords lt next,totalrecords,next-1)> 
+<cfset variables.TotalRecords=session.rsSearch.RecordCount>
+<cfset variables.RecordsPerPage=10> 
+<cfset variables.NumberOfPages=Ceiling(TotalRecords/RecordsPerPage)>
+<cfset variables.CurrentPageNumber=Ceiling(request.StartRow/RecordsPerPage)> 
+<cfset variables.next=evaluate((request.startrow+recordsperpage))	>
+<cfset variables.previous=evaluate((request.startrow-recordsperpage))	>
+<cfset variables.through=iif(variables.totalRecords lt variables.next,totalrecords,variables.next-1)> 
 
-<cfset iterator=application.serviceFactory.getBean("contentIterator")>
-<cfset iterator.setQuery(session.rsSearch,RecordsPerPage)>
-<cfset iterator.setStartRow(event.getValue("startrow"))>
+<cfset variables.iterator=application.serviceFactory.getBean("contentIterator")>
+<cfset variables.iterator.setQuery(session.rsSearch,RecordsPerPage)>
+<cfset variables.iterator.setStartRow(event.getValue("startrow"))>
 
 <cfif len(request.searchSectionID)>
-<cfset sectionBean=application.contentManager.getActiveContent(request.searchSectionID,request.siteid) />
-</cfif>	
+<cfset variables.sectionBean=application.contentManager.getActiveContent(request.searchSectionID,request.siteid) />
+</cfif>
+
+<cfset variables.contentListType="Search">
+<cfset variables.contentListFields="Title,Summary,Tags,Credits">
+
+<cfset addToHTMLHeadQueue("listImageStyles.cfm")>
 </cfsilent>
 
 <cfoutput>
-	<cfset args=arrayNew(1)>
-	<cfset args[1]=session.rsSearch.recordcount>
+	<cfset variables.args=arrayNew(1)>
+	<cfset variables.args[1]=session.rsSearch.recordcount>
 	<cfif len(request.tag)>
-		<cfset args[2]=htmlEditFormat(request.tag)>
+		<cfset variables.args[2]=htmlEditFormat(request.tag)>
 		<cfif len(request.searchSectionID)>
-			<cfset args[3]=htmlEditFormat(sectionBean.getTitle())>
-			<p>#rbFactory.getResourceBundle().messageFormat(rbFactory.getKey('search.searchtagsection'),args)#</p>
+			<cfset variables.args[3]=htmlEditFormat(variables.sectionBean.getTitle())>
+			<p>#variables.rbFactory.getResourceBundle().messageFormat(variables.rbFactory.getKey('search.searchtagsection'),variables.args)#</p>
 		<cfelse>
-			<p>#rbFactory.getResourceBundle().messageFormat(rbFactory.getKey('search.searchtag'),args)#</p>
+			<p>#variables.rbFactory.getResourceBundle().messageFormat(rbFactory.getKey('search.searchtag'),variables.args)#</p>
 		</cfif>
 	<cfelse>
-		<cfset args[2]=htmlEditFormat(request.keywords)>
+		<cfset variables.args[2]=htmlEditFormat(request.keywords)>
 		<cfif len(request.searchSectionID)>
-			<cfset args[3]=htmlEditFormat(sectionBean.getTitle())>
-	 		<p>#rbFactory.getResourceBundle().messageFormat(rbFactory.getKey('search.searchkeywordsection'),args)#</p>
+			<cfset variables.args[3]=htmlEditFormat(variables.sectionBean.getTitle())>
+	 		<p>#variables.rbFactory.getResourceBundle().messageFormat(variables.rbFactory.getKey('search.searchkeywordsection'),variables.args)#</p>
 		<cfelse>
-			<p>#rbFactory.getResourceBundle().messageFormat(rbFactory.getKey('search.searchkeyword'),args)#</p>
+			<p>#variables.rbFactory.getResourceBundle().messageFormat(variables.rbFactory.getKey('search.searchkeyword'),variables.args)#</p>
 		</cfif>
 	</cfif>
 </cfoutput>
@@ -107,52 +111,42 @@ to your own modified versions of Mura CMS.
 <cfoutput>
 	<div class="moreResults top">
 		<ul>
-		<li class="resultsFound">#rbFactory.getKey('search.displaying')#: #request.startrow# - #through# #rbFactory.getKey('search.of')# #session.rsSearch.recordcount#</li>
+		<li class="resultsFound">#variables.rbFactory.getKey('search.displaying')#: #request.startrow# - #variables.through# #rbFactory.getKey('search.of')# #session.rsSearch.recordcount#</li>
 		<cfif previous gte 1>
-		<li class="navPrev"><a href="?startrow=#previous#&display=search&keywords=#HTMLEditFormat(request.keywords)#&searchSectionID=#HTMLEditFormat(request.searchSectionID)#&tag=#HTMLEditFormat(request.tag)#">&laquo;#rbFactory.getKey('search.prev')#</a></li>
+		<li class="navPrev"><a href="?startrow=#previous#&display=search&keywords=#HTMLEditFormat(request.keywords)#&searchSectionID=#HTMLEditFormat(request.searchSectionID)#&tag=#HTMLEditFormat(request.tag)#">&laquo;#variables.rbFactory.getKey('search.prev')#</a></li>
 		</cfif>
-		<cfif session.rsSearch.recordcount gt 0 and  through lt session.rsSearch.recordcount>
-		<li class="navNext"><a href="?startrow=#next#&display=search&keywords=#HTMLEditFormat(request.keywords)#&searchSectionID=#HTMLEditFormat(request.searchSectionID)#&tag=#HTMLEditFormat(request.tag)#">#rbFactory.getKey('search.next')#&raquo;</a></li>
+		<cfif session.rsSearch.recordcount gt 0 and  variables.through lt session.rsSearch.recordcount>
+		<li class="navNext"><a href="?startrow=#next#&display=search&keywords=#HTMLEditFormat(request.keywords)#&searchSectionID=#HTMLEditFormat(request.searchSectionID)#&tag=#HTMLEditFormat(request.tag)#">#variables.rbFactory.getKey('search.next')#&raquo;</a></li>
 		</cfif>
 		</ul>
-		</div>
-</cfoutput>
-		<dl id="svPortal" class="svIndex">
-		<cfloop condition="iterator.hasNext()">
-		<cfsilent> 
-		<cfset class=iif(session.rsSearch.currentrow eq 1,de('first'),de(iif(session.rsSearch.currentrow eq session.rsSearch.recordcount,de('last'),de(''))))>
-		<cfset item=iterator.next()>
-		<cfset link=addlink(item.getValue('type'),item.getValue('filename'),item.getValue('menutitle'),item.getValue('target'),item.getValue('targetparams'),item.getValue('contentid'),item.getValue('siteid'),'?keywords=#request.keywords#',application.configBean.getContext(),application.configBean.getStub(),application.configBean.getIndexFile())>
-		<cfset class=""/>
-				<cfif not iterator.hasPrevious()> 
-					<cfset class=listAppend(class,"first"," ")/> 
-				</cfif>
-				<cfif not iterator.hasNext()> 
-					<cfset class=listAppend(class,"last"," ")/> 
-				</cfif>
-		</cfsilent>
-		<cfoutput>
-		<dt class="#class#">#iterator.getRecordIndex()#. #link#</dt>
-	 	<cfif len(item.getValue('summary'))><dd class="#class#">#setDynamicContent(item.getValue('summary'),request.keywords)#</dd></cfif>
-		<cfif len(item.getValue('tags'))><dd class="#class#"><cfmodule template="nav/dsp_tag_line.cfm"  tags="#item.getValue('tags')#"></dd></cfif>
-		</cfoutput>
-		</cfloop>
-		</dl>
-	<cfoutput>
+	</div>
+	
+	<div id="svPortal" class="svIndex">
+		#dspObject_Include(
+			thefile='dsp_content_list.cfm',
+			fields=variables.contentListFields,
+			type=variables.contentListType, 
+			iterator= variables.iterator
+			)#
+	</div>
+		
 	<div class="moreResults bottom">
 		<ul>
-		<li class="resultsFound">#rbFactory.getKey('search.displaying')#: #request.startrow# - #through# #rbFactory.getKey('search.of')# #session.rsSearch.recordcount#</li>
+		<li class="resultsFound">#variables.rbFactory.getKey('search.displaying')#: #request.startrow# - #variables.through# #rbFactory.getKey('search.of')# #session.rsSearch.recordcount#</li>
 		<cfif previous gte 1>
-		<li class="navPrev"><a href="?startrow=#previous#&display=search&keywords=#HTMLEditFormat(request.keywords)#&searchSectionID=#HTMLEditFormat(request.searchSectionID)#&tag=#HTMLEditFormat(request.tag)#">&laquo;#rbFactory.getKey('search.prev')#</a></li>
+		<li class="navPrev"><a href="?startrow=#previous#&display=search&keywords=#HTMLEditFormat(request.keywords)#&searchSectionID=#HTMLEditFormat(request.searchSectionID)#&tag=#HTMLEditFormat(request.tag)#">&laquo;#variables.rbFactory.getKey('search.prev')#</a></li>
 		</cfif>
 		<cfif session.rsSearch.recordcount gt 0 and  through lt session.rsSearch.recordcount>
-		<li class="navNext"><a href="?startrow=#next#&display=search&keywords=#HTMLEditFormat(request.keywords)#&searchSectionID=#HTMLEditFormat(request.searchSectionID)#&tag=#HTMLEditFormat(request.tag)#">#rbFactory.getKey('search.next')#&raquo;</a></li>
-		</cfif></ul></div>
+		<li class="navNext"><a href="?startrow=#next#&display=search&keywords=#HTMLEditFormat(request.keywords)#&searchSectionID=#HTMLEditFormat(request.searchSectionID)#&tag=#HTMLEditFormat(request.tag)#">#variables.rbFactory.getKey('search.next')#&raquo;</a></li>
+		</cfif></ul>
+	</div>
 	</cfoutput>
 	</cfif>	
 	
-	<cfoutput>
-<form id="svSearchAgain" name="searchFrm" action="" method="get">
-<p>#rbFactory.getKey('search.didnotfind')#</p>
-#rbFactory.getKey('search.search')#: <input type="text" name="keywords" value="#HTMLEditFormat(request.keywords)#" /><input name="newSearch" value="true" type="hidden"/><input name="nocache" value="1" type="hidden"/><input name="searchSectionID" value="#HTMLEditFormat(request.searchSectionID)#" type="hidden"/>  <input name="display" value="search" type="hidden"/><input type="submit" class="submit" value="#htmlEditFormat(rbFactory.getKey('search.go'))#" alt="submit" /><!--- <input type="image" class="submit" src="/default/images/btn_search.gif" alt="submit" /> ---></form>
-</cfoutput></div>
+<cfoutput>
+	<form id="svSearchAgain" name="searchFrm" action="" method="get">
+		<p>#rbFactory.getKey('search.didnotfind')#</p>
+		#rbFactory.getKey('search.search')#: <input type="text" name="keywords" value="#HTMLEditFormat(request.keywords)#" /><input name="newSearch" value="true" type="hidden"/><input name="nocache" value="1" type="hidden"/><input name="searchSectionID" value="#HTMLEditFormat(request.searchSectionID)#" type="hidden"/>  <input name="display" value="search" type="hidden"/><input type="submit" class="submit" value="#htmlEditFormat(rbFactory.getKey('search.go'))#" alt="submit" />
+	</form>
+</cfoutput>
+</div>

@@ -8,6 +8,7 @@
 				<li class="last"><a href="">Contact Us</a></li>
 			</ul>
 			<p>&copy;#year(now())# #HTMLEditFormat($.siteConfig('site'))#</p>
+			<a href="./?mobileFormat=true">#$.rbKey("mobile.mobileversion")#</a>
 		</div>
 	</div>
 </cfoutput>

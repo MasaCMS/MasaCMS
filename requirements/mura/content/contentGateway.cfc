@@ -262,7 +262,15 @@ to your own modified versions of Mura CMS.
 			<cfset var dbType=variables.configBean.getDbType() />
 			<cfset var sortOptions="menutitle,title,lastupdate,releasedate,orderno,displayStart,created,rating,comment,credits,type,subtype">
 			<cfset var isExtendedSort=(not listFindNoCase(sortOptions,arguments.sortBy))>
-			<cfset var nowAdjusted=createDateTime(year(arguments.today),month(arguments.today),day(arguments.today),hour(arguments.today),int((minute(arguments.today)/5)*5),0)>
+			<cfset var nowAdjusted="">
+			
+			<cfif request.muraChangesetPreview>
+				<cfset nowAdjusted=getCurrentUser().getValue("ChangesetPreviewData").publishDate>
+			</cfif>
+			
+			<cfif not isdate(nowAdjusted)>
+				<cfset nowAdjusted=createDateTime(year(arguments.today),month(arguments.today),day(arguments.today),hour(arguments.today),int((minute(arguments.today)/5)*5),0)>
+			</cfif>
 			
 			<cfif arguments.aggregation >
 				<cfset doKids =true />
@@ -309,12 +317,10 @@ to your own modified versions of Mura CMS.
 							Inner Join tcontenttags on (tcontent.contentHistID=tcontenttags.contentHistID)
 							</cfif>
 						   where tcontent.siteid='#arguments.siteid#'
-						        AND tcontent.parentid =<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.parentID#"/>
-						   		AND tcontent.Approved = 1
-							    AND tcontent.active = 1 
+						   		 AND tcontent.parentid =<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.parentID#"/>
+						      	#renderActiveClause("tcontent",arguments.siteID)#
 							    AND tcontent.isNav = 1 
-							    AND TKids.Approved = 1
-							    AND TKids.active = 1 
+							    #renderActiveClause("TKids",arguments.siteID)#
 							    AND TKids.isNav = 1 
 							    AND tcontent.moduleid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.moduleid#"/>
 							    
@@ -351,7 +357,7 @@ to your own modified versions of Mura CMS.
 					 </cfif>
 
 					  <cfif categoryListLen>
-					  and contentHistID in (
+					  and tcontent.contentHistID in (
 							select tcontentcategoryassign.contentHistID from 
 							tcontentcategoryassign 
 							inner join tcontentcategories 
@@ -387,8 +393,7 @@ to your own modified versions of Mura CMS.
 				</cfif>
 				WHERE  	
 				    tcontent.parentid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.parentID#"/>
-					  AND tcontent.Approved = 1
-					  AND tcontent.active = 1 
+					  #renderActiveClause("tcontent",arguments.siteID)# 
 					  AND tcontent.isNav = 1 
 					  AND tcontent.moduleid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.moduleID#"/>
 					  AND tcontent.siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
@@ -428,7 +433,7 @@ to your own modified versions of Mura CMS.
 					 </cfif>
 
 					  <cfif categoryListLen>
-					  and contentHistID in (
+					  and tcontent.contentHistID in (
 							select tcontentcategoryassign.contentHistID from 
 							tcontentcategoryassign 
 							inner join tcontentcategories 
@@ -453,7 +458,7 @@ to your own modified versions of Mura CMS.
 					  )
 					  </cfif>	
 				
-				 <cfif structkeyExists(request,"isMobileRequest") and request.isMobileRequest>
+				 <cfif request.muraMobileRequest>
 				 	and (tcontent.mobileExclude!=1 or tcontent.mobileExclude is null)
 				 </cfif>
 				  order by 
@@ -468,7 +473,7 @@ to your own modified versions of Mura CMS.
 						</cfif>
 					</cfcase>
 					<cfcase value="rating">
-						tcontentstats.rating #arguments.sortDirection#, tcontentstats.totalVotes #arguments.sortDirection#
+						tcontentstats.rating #arguments.sortDirection#, tcontentstats.totalVotes  #arguments.feedBean.getSortDirection()#
 					</cfcase>
 					<cfcase value="comments">
 						tcontentstats.comments #arguments.sortDirection#
@@ -503,7 +508,7 @@ to your own modified versions of Mura CMS.
 			<cfset var nowAdjusted=createDateTime(year(arguments.today),month(arguments.today),day(arguments.today),hour(arguments.today),int((minute(arguments.today)/5)*5),0)>
 			
 				<cfquery name="rs" datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-				SELECT tcontentcategories.categoryID, Count(tcontent.contenthistID) as "Count", tcontentcategories.name from tcontent inner join tcontentcategoryassign
+				SELECT tcontentcategories.categoryID, tcontentcategories.filename, Count(tcontent.contenthistID) as "Count", tcontentcategories.name from tcontent inner join tcontentcategoryassign
 				ON (tcontent.contenthistID=tcontentcategoryassign.contentHistID
 					and tcontent.siteID=tcontentcategoryassign.siteID)
 					 inner join tcontentcategories ON
@@ -513,9 +518,8 @@ to your own modified versions of Mura CMS.
 				WHERE 
 				      tcontent.parentid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.parentID#"/>
 					  AND tcontentcategories.isActive=1  
-					  AND tcontent.Active = 1
+					 #renderActiveClause("tcontent",arguments.siteID)# 
 					  AND tcontent.moduleid = '00000000000000000000000000000000000'
-					  AND tcontent.Approved = 1 
 					  AND tcontent.isNav = 1 
 					  AND tcontent.siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
 					  AND 
@@ -543,7 +547,7 @@ to your own modified versions of Mura CMS.
                    		  tcontent.Display = 1
 					  )
 					 
-					 <cfif structkeyExists(request,"isMobileRequest") and request.isMobileRequest>
+					 <cfif request.muraMobileRequest>
 				 		and (tcontent.mobileExclude!=1 or tcontent.mobileExclude is null)
 				 	 </cfif>			  
 					 <cfif relatedListLen >
@@ -558,7 +562,7 @@ to your own modified versions of Mura CMS.
 						)
 					 </cfif>
 					 
-					  group by tcontentcategories.name,tcontentcategories.categoryID
+					  group by tcontentcategories.name,tcontentcategories.categoryID,tcontentcategories.filename
 					  order by tcontentcategories.name asc
 
 		</cfquery>
@@ -709,26 +713,29 @@ to your own modified versions of Mura CMS.
 	<cfquery name="rspre" datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	SELECT DISTINCT tmodule.Title AS module, active.ModuleID, active.SiteID, active.ParentID, active.Type, active.subtype, active.MenuTitle, active.Filename, active.ContentID,
 	 tmodule.SiteID, draft.SiteID, active.SiteID, active.targetparams, draft.lastUpdate,
-	 draft.lastUpdateBy,tfiles.fileExt
+	 draft.lastUpdateBy,tfiles.fileExt, draft.changesetID
 	FROM tcontent active INNER JOIN tcontent draft ON active.ContentID = draft.ContentID
 	INNER JOIN tcontent tmodule ON draft.ModuleID = tmodule.ContentID
 	INNER JOIN tcontentassignments ON active.contentID=tcontentassignments.contentID
 	LEFT join tfiles on active.fileID=tfiles.fileID
-	WHERE draft.Active=0 AND active.Active=1 AND draft.lastUpdate>active.lastupdate
+	WHERE draft.Active=0 
+	AND active.Active=1 
+	AND draft.lastUpdate>active.lastupdate 
+	and draft.changesetID is null
 	and tcontentassignments.userID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.userID#"/>
 	<cfif isdate(arguments.stopDate)>and active.lastUpdate <=  #createODBCDateTime(createDateTime(year(arguments.stopDate),month(arguments.stopDate),day(arguments.stopDate),23,59,0))#</cfif>
 	<cfif isdate(arguments.startDate)>and active.lastUpdate >=  #createODBCDateTime(createDateTime(year(arguments.startDate),month(arguments.startDate),day(arguments.startDate),0,0,0))#</cfif>
 	GROUP BY tmodule.Title, active.ModuleID, active.SiteID, active.ParentID, active.Type, active.subType,
 	active.MenuTitle, active.Filename, active.ContentID, draft.IsNav, tmodule.SiteID, 
 	draft.SiteID, active.SiteID, active.targetparams, draft.lastUpdate,
-	draft.lastUpdateBy,tfiles.fileExt
+	draft.lastUpdateBy,tfiles.fileExt, draft.changesetID
 	HAVING tmodule.SiteID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/> AND draft.SiteID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>  AND active.SiteID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
 	
 	union 
 	
 	SELECT DISTINCT tmodule.Title AS module, draft.ModuleID, draft.SiteID, draft.ParentID, draft.Type, draft.subtype, draft.MenuTitle, draft.Filename, draft.ContentID,
 	 tmodule.SiteID, draft.SiteID, draft.SiteID, draft.targetparams,draft.lastUpdate,
-	 draft.lastUpdateBy,tfiles.fileExt
+	 draft.lastUpdateBy,tfiles.fileExt, draft.changesetID
 	FROM  tcontent draft INNER JOIN tcontent tmodule ON draft.ModuleID = tmodule.ContentID
 		   INNER JOIN tcontentassignments ON draft.contentID=tcontentassignments.contentID
 			LEFT JOIN tcontent active ON draft.ContentID = active.ContentID and active.approved=1
@@ -737,13 +744,14 @@ to your own modified versions of Mura CMS.
 		draft.Active=1 
 		AND draft.approved=0
 		and active.contentid is null
+		and draft.changesetID is null
 		and tcontentassignments.userID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.userID#"/>
 		<cfif isdate(arguments.stopDate)>and draft.lastUpdate <=  #createODBCDateTime(createDateTime(year(arguments.stopDate),month(arguments.stopDate),day(arguments.stopDate),23,59,0))#</cfif>
 		<cfif isdate(arguments.startDate)>and draft.lastUpdate >=  #createODBCDateTime(createDateTime(year(arguments.startDate),month(arguments.startDate),day(arguments.startDate),0,0,0))#</cfif>
 	GROUP BY tmodule.Title, draft.ModuleID, draft.SiteID, draft.ParentID, draft.Type, draft.subType,
 	draft.MenuTitle, draft.Filename, draft.ContentID, draft.IsNav, tmodule.SiteID, 
 	draft.SiteID, draft.SiteID, draft.targetparams, draft.lastUpdate,
-	draft.lastUpdateBy,tfiles.fileExt
+	draft.lastUpdateBy,tfiles.fileExt, draft.changesetID
 	HAVING tmodule.SiteID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/> AND draft.SiteID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
 	
 	
@@ -751,25 +759,28 @@ to your own modified versions of Mura CMS.
 	
 	SELECT DISTINCT tmodule.Title AS module, active.ModuleID, active.SiteID, active.ParentID, active.Type, active.subtype, active.MenuTitle, active.Filename, active.ContentID,
 	 tmodule.SiteID, draft.SiteID, active.SiteID, active.targetparams, draft.lastUpdate,
-	 draft.lastUpdateBy,tfiles.fileExt
+	 draft.lastUpdateBy,tfiles.fileExt, draft.changesetID
 	FROM tcontent active INNER JOIN tcontent draft ON active.ContentID = draft.ContentID
 	INNER JOIN tcontent tmodule ON draft.ModuleID = tmodule.ContentID
 	LEFT join tfiles on active.fileID=tfiles.fileID
-	WHERE draft.Active=0 AND active.Active=1 AND draft.lastUpdate>active.lastupdate
+	WHERE draft.Active=0 
+	AND active.Active=1 
+	AND draft.lastUpdate>active.lastupdate 
+	and draft.changesetID is null
 	and draft.lastUpdateByID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.userID#"/>
 	<cfif isdate(arguments.stopDate)>and active.lastUpdate <=  #createODBCDateTime(createDateTime(year(arguments.stopDate),month(arguments.stopDate),day(arguments.stopDate),23,59,0))#</cfif>
 	<cfif isdate(arguments.startDate)>and active.lastUpdate >=  #createODBCDateTime(createDateTime(year(arguments.startDate),month(arguments.startDate),day(arguments.startDate),0,0,0))#</cfif>
 	GROUP BY tmodule.Title, active.ModuleID, active.SiteID, active.ParentID, active.Type,active.subType, 
 	active.MenuTitle, active.Filename, active.ContentID, draft.IsNav, tmodule.SiteID, 
 	draft.SiteID, active.SiteID, active.targetparams, draft.lastUpdate,
-	draft.lastUpdateBy,tfiles.fileExt
+	draft.lastUpdateBy,tfiles.fileExt, draft.changesetID
 	HAVING tmodule.SiteID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>  AND draft.SiteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/> AND active.SiteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
 	
 	union 
 	
 	SELECT DISTINCT module.Title AS module, draft.ModuleID, draft.SiteID, draft.ParentID, draft.Type, draft.subtype, draft.MenuTitle, draft.Filename, draft.ContentID,
 	 module.SiteID, draft.SiteID, draft.SiteID, draft.targetparams,draft.lastUpdate,
-	 draft.lastUpdateBy,tfiles.fileExt
+	 draft.lastUpdateBy,tfiles.fileExt, draft.changesetID
 	FROM  tcontent draft INNER JOIN tcontent module ON draft.ModuleID = module.ContentID
 			LEFT JOIN tcontent active ON draft.ContentID = active.ContentID and active.approved=1
 			LEFT join tfiles on draft.fileID=tfiles.fileID
@@ -777,13 +788,14 @@ to your own modified versions of Mura CMS.
 		draft.Active=1 
 		AND draft.approved=0
 		and active.contentid is null
+		and draft.changesetID is null
 		and draft.lastUpdateByID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.userID#"/>
 		<cfif isdate(arguments.stopDate)>and draft.lastUpdate <=  #createODBCDateTime(createDateTime(year(arguments.stopDate),month(arguments.stopDate),day(arguments.stopDate),23,59,0))#</cfif>
 		<cfif isdate(arguments.startDate)>and draft.lastUpdate >=  #createODBCDateTime(createDateTime(year(arguments.startDate),month(arguments.startDate),day(arguments.startDate),0,0,0))#</cfif>
 	GROUP BY module.Title, draft.ModuleID, draft.SiteID, draft.ParentID, draft.Type,draft.subType, 
 	draft.MenuTitle, draft.Filename, draft.ContentID, draft.IsNav, module.SiteID, 
 	draft.SiteID, draft.SiteID, draft.targetparams, draft.lastUpdate,
-	draft.lastUpdateBy,tfiles.fileExt
+	draft.lastUpdateBy,tfiles.fileExt, draft.changesetID
 	HAVING module.SiteID='#arguments.siteid#' AND draft.SiteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
 	</cfquery>
 	
@@ -971,21 +983,24 @@ to your own modified versions of Mura CMS.
 	<cfreturn rs />
 </cffunction>
 
-<cffunction name="getHist" returntype="query" access="public" output="false">
+<cffunction name="getHist" returntype="query" access="public" output="false" hint="I get all versions">
 	<cfargument name="contentid" type="string" required="true">
 	<cfargument name="siteid" type="string" required="true">
 	<cfset var rs = "">
 	
 	<cfquery name="rs" datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-	select menutitle, siteid, contentid, contenthistid, fileID, type, lastupdateby, active, approved, lastupdate, 
-	display, displaystart, displaystop, moduleid, isnav, notes,isfeature,inheritObjects,filename,targetParams,releaseDate
-	from tcontent where contentid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentID#"/> and siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/> order by lastupdate desc
+	select menutitle, tcontent.siteid, contentid, contenthistid, fileID, type, tcontent.lastupdateby, active, approved, tcontent.lastupdate, 
+	display, displaystart, displaystop, moduleid, isnav, notes,isfeature,inheritObjects,filename,targetParams,releaseDate,
+	tcontent.changesetID, tchangesets.name changesetName, tchangesets.published changsetPublished,tchangesets.publishDate changesetPublishDate 
+	from tcontent 
+	left Join tchangesets on (tcontent.changesetID=tchangesets.changesetID)
+	where contentid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentID#"/> and tcontent.siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/> order by tcontent.lastupdate desc
 	</cfquery>
 
 	<cfreturn rs />
 </cffunction>
 
-<cffunction name="getDraftHist" returntype="query" access="public" output="false">
+<cffunction name="getDraftHist" returntype="query" access="public" output="false" hint="I get all draft versions">
 	<cfargument name="contentid" type="string" required="true">
 	<cfargument name="siteid" type="string" required="true">
 	<cfset var rs = "">
@@ -995,14 +1010,31 @@ to your own modified versions of Mura CMS.
 	display, displaystart, displaystop, moduleid, isnav, notes,isfeature,inheritObjects,filename,targetParams,releaseDate,path
 	from tcontent where contentid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentID#"/>
 	and siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/> 
-	and approved=0 
+	and approved=0 and changesetID is null
 	order by lastupdate desc
 	</cfquery>
 
 	<cfreturn rs />
 </cffunction>
 
-<cffunction name="getArchiveHist" returntype="query" access="public" output="false">
+<cffunction name="getPendingChangesets" returntype="query" access="public" output="false" hint="I get all draft versions">
+	<cfargument name="contentid" type="string" required="true">
+	<cfargument name="siteid" type="string" required="true">
+	<cfset var rs = "">
+	
+	<cfquery name="rs" datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+	select menutitle, contentid, contenthistid, fileID, type, lastupdateby, active, approved, lastupdate, 
+	display, displaystart, displaystop, moduleid, isnav, notes,isfeature,inheritObjects,filename,targetParams,releaseDate,path
+	from tcontent where contentid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentID#"/>
+	and siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/> 
+	and approved=0 and changesetID is not null
+	order by lastupdate desc
+	</cfquery>
+
+	<cfreturn rs />
+</cffunction>
+
+<cffunction name="getArchiveHist" returntype="query" access="public" output="false" hint="I get all archived versions">
 	<cfargument name="contentid" type="string" required="true">
 	<cfargument name="siteid" type="string" required="true">
 	<cfset var rs = "">
@@ -1258,7 +1290,7 @@ to your own modified versions of Mura CMS.
 				</cfif>
 				and tcontent.searchExclude=0
 				
-				<cfif structkeyExists(request,"isMobileRequest") and request.isMobileRequest>
+				<cfif request.muraMobileRequest>
 				    and (tcontent.mobileExclude!=1 or tcontent.mobileExclude is null)
 				</cfif>
 				
@@ -1340,10 +1372,10 @@ to your own modified versions of Mura CMS.
 				</cfif>
 				and tcontent.searchExclude=0
 				
-				<cfif structkeyExists(request,"isMobileRequest") and request.isMobileRequest>
+				<cfif request.muraMobileRequest>
 				 	and (tcontent.mobileExclude!=1 or tcontent.mobileExclude is null)
-				</cfif>		
-						
+				</cfif>				
+		
 	<cfif not len(arguments.tag)>		
 		union all
 		
@@ -1421,10 +1453,10 @@ to your own modified versions of Mura CMS.
 				</cfif>
 				and tcontent.searchExclude=0
 				
-				<cfif structkeyExists(request,"isMobileRequest") and request.isMobileRequest>
+				<cfif request.muraMobileRequest>
 				 	and (tcontent.mobileExclude!=1 or tcontent.mobileExclude is null)
 				</cfif>
-	union all
+	union all 
 	
 	<!--- Find in-direct matches with releasedate --->
 	
@@ -1501,7 +1533,7 @@ to your own modified versions of Mura CMS.
 				</cfif>
 				and tcontent.searchExclude=0
 				
-				<cfif structkeyExists(request,"isMobileRequest") and request.isMobileRequest>
+				<cfif request.muraMobileRequest>
 				 	and (tcontent.mobileExclude!=1 or tcontent.mobileExclude is null)
 				</cfif>	
 		</cfif>				 
@@ -1521,10 +1553,10 @@ to your own modified versions of Mura CMS.
 	<cfset var rs = "">
 	
 	<cfquery name="rs" datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-		select tcontentcategoryassign.*, tcontentcategories.name  from tcontentcategories inner join tcontentcategoryassign
+		select tcontentcategoryassign.*, tcontentcategories.name, tcontentcategories.filename  from tcontentcategories inner join tcontentcategoryassign
 		ON (tcontentcategories.categoryID=tcontentcategoryassign.categoryID)
 		where tcontentcategoryassign.contentHistID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentHistID#"/>
-		Order By tcontentcategories.name
+		Order By tcontentcategories.filename
 	</cfquery> 
 
 
@@ -1562,7 +1594,7 @@ to your own modified versions of Mura CMS.
 		)
 	</cfif>
 	
-	<cfif structkeyExists(request,"isMobileRequest") and request.isMobileRequest>
+	<cfif request.muraMobileRequest>
 		and (tcontent.mobileExclude!=1 or tcontent.mobileExclude is null)
 	</cfif>
 	
@@ -1734,7 +1766,7 @@ to your own modified versions of Mura CMS.
 		
 		
 		) 
-	<cfif structkeyExists(request,"isMobileRequest") and request.isMobileRequest>
+	<cfif request.muraMobileRequest>
 		and (tcontent.mobileExclude!=1 or tcontent.mobileExclude is null)
 	</cfif>
 	<cfif isQuery(arguments.rsContent)  and arguments.rsContent.recordcount> and contentID in (#quotedValuelist(arguments.rsContent.contentID)#)</cfif>
@@ -1782,6 +1814,33 @@ to your own modified versions of Mura CMS.
 	
 	<cfreturn rsObjects>
 		
+</cffunction>
+
+<cffunction name="renderActiveClause" output="true">
+<cfargument name="table" default="tcontent">
+<cfargument name="siteID">
+	<cfset var previewData="">
+ 	<cfoutput>
+			<cfif request.muraChangesetPreview>
+				<cfset previewData=getCurrentUser().getValue("ChangesetPreviewData")>
+				and (
+						(#arguments.table#.active = 1
+						and #arguments.table#.Approved = 1
+						and #arguments.table#.contentID not in (#previewData.contentIDList#)	
+						)
+						
+						or 
+						
+						(
+						#arguments.table#.contentHistID in (#previewData.contentHistIDList#)
+						)
+						
+					)	
+			<cfelse>
+				and #arguments.table#.active = 1
+				and #arguments.table#.Approved = 1
+			</cfif>	
+	</cfoutput>
 </cffunction>
 
 <cffunction name="renderMenuTypeClause" output="true">

@@ -45,8 +45,28 @@ to your own modified versions of Mura CMS.
 <cffunction name="doRequest" output="false" returntype="any">
 <cfargument name="event">
 	<cfset var response=""/>
-	<cfset var servlet = createObject("component","#application.configBean.getWebRootMap()#.#event.getValue('siteid')#.includes.servlet").init(event) />
+	<cfset var servlet = "" />
 	<cfset var localHandler=""/>
+	<cfset var previewData="">
+	
+	<cfif fileExists(expandPath("#application.configBean.getWebRootMap()#.#event.getValue('siteid')#.includes.servlet"))>
+		<cfset servlet=createObject("component","#application.configBean.getWebRootMap()#.#event.getValue('siteid')#.includes.servlet").init(event)>
+	<cfelse>
+		<cfset servlet=createObject("component","mura.servlet").init(event)>
+	</cfif>
+	
+	<cfset request.muraFrontEndRequest=true>
+
+	<cfif structKeyExists(url,"changesetID")>
+		<cfset application.changesetManager.setSessionPreviewData(url.changesetID)>
+	</cfif>
+	
+	<cfset previewData=getCurrentUser().getValue("ChangesetPreviewData")>
+	<cfset request.muraChangesetPreview=isStruct(previewData) and previewData.siteID eq arguments.event.getValue("siteID") and len(previewData.contentIDList)>
+	
+	<cfif request.muraChangesetPreview>
+		<cfset request.nocache=1>
+	</cfif>
 	
 	<cfif fileExists(expandPath("/#application.configBean.getWebRootMap()#") & "/#event.getValue('siteid')#/includes/eventHandler.cfc")>
 		<cfset localHandler=createObject("component","#application.configBean.getWebRootMap()#.#event.getValue('siteid')#.includes.eventHandler").init()>

@@ -24,7 +24,7 @@ monthLong=rbFactory.getKey('calendar.monthlong');
 	<cfargument name="navPath" type="string"  default="">
 
 	<cfset var rs = "">	
-	<cfset var qrystr="?day=#day(arguments.today)#&month=#month(arguments.today)#&year=#year(arguments.today)#&filterBy=releaseDate">
+	<cfset var qrystr="">
 
 	<cfquery name="rs" dbtype="query">
 	select contentID from rsMonth where
@@ -51,19 +51,10 @@ monthLong=rbFactory.getKey('calendar.monthlong');
 	</cfquery>
 	
 	<cfif rs.recordcount>
-		<cfif len(request.sortBy)>
-			<cfset qrystr="&sortBy=#request.sortBy#&sortDirection=#request.sortDirection#"/>
-		</cfif>
-		<cfif len(request.categoryID)>
-			<cfset qrystr=qrystr & "&categoryID=#request.categoryID#"/>
-		</cfif>
-		<cfif len(request.relatedID)>
-			<cfset qrystr=qrystr & "&relatedID=#request.relatedID#"/>
-		</cfif>
 		<cfif request.day eq day(arguments.today)>
-		<cfreturn '<a href="#arguments.navPath##qrystr#" class="current">#day(arguments.today)#</a>' />
+		<cfreturn '<a href="#arguments.navPath#date/#year(arguments.today)#/#month(arguments.today)#/#day(arguments.today)#/#qrystr#" class="current">#day(arguments.today)#</a>' />
 		<cfelse>
-		<cfreturn '<a href="#arguments.navPath##qrystr#">#day(arguments.today)#</a>' />
+		<cfreturn '<a href="#arguments.navPath#date/#year(arguments.today)#/#month(arguments.today)#/#day(arguments.today)#/#qrystr#">#day(arguments.today)#</a>' />
 		</cfif>
 	<cfelse>
 		<cfreturn "#day(arguments.today)#">
@@ -99,15 +90,30 @@ if (nextMonth gt 12) {nextMonth=1;nextYear=nextYear+1;}
 dateLong = "#listGetAt(monthLong,navMonth,",")# #navYear#";
 dateShort = "#listGetAt(monthShort,navMonth,",")# #navYear#";
 </cfscript>
+<cfset qrystr="">
+<!---
+<cfif len(request.sortBy) or len(request.categoryID) or len(request.relatedID)>
+	<cfset qrystr="?">
+</cfif>
+<cfif len(request.sortBy)>
+	<cfset qrystr="&sortBy=#request.sortBy#&sortDirection=#request.sortDirection#"/>
+</cfif>
+<cfif len(request.categoryID)>
+	<cfset qrystr=qrystr & "&categoryID=#request.categoryID#"/>
+</cfif>
+<cfif len(request.relatedID)>
+	<cfset qrystr=qrystr & "&relatedID=#request.relatedID#"/>
+</cfif>
+--->
 </cffunction>
 
 <cffunction name="dspMonth" output="true">
 <cfoutput>
 <table>
 <tr>
-<th title="#dateLong#" id="previousMonth"><a href="#navPath#?month=#previousmonth#&year=#previousyear#&categoryID=#htmlEditFormat(request.categoryID)#&relatedID=#htmlEditFormat(request.relatedID)#&filterBy=releaseMonth">&laquo;</a></th>
-<th colspan="5"><a href="#navPath#?month=#navMonth#&year=#navYear#&categoryID=#htmlEditFormat(request.categoryID)#&relatedID=#htmlEditFormat(request.relatedID)#&filterBy=releaseMonth">#dateLong#</a></th>
-<th id="nextMonth"><a href="?month=#nextmonth#&year=#nextyear#&categoryID=#htmlEditFormat(request.categoryID)#&relatedID=#htmlEditFormat(request.relatedID)#&filterBy=releaseMonth">&raquo;</a></th>
+<th title="#dateLong#" id="previousMonth"><a href="#navPath#date/#previousYear#/#previousMonth#/#qrystr#">&laquo;</a></th>
+<th colspan="5"><a href="#navPath#date/#navYear#/#navmonth#/#qrystr#">#dateLong#</a></th>
+<th id="nextMonth"><a href="#navPath#date/#nextyear#/#nextmonth#/#qrystr#">&raquo;</a></th>
 </tr>
 </tr>
 	<tr class="dayofweek">

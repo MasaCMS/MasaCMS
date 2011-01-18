@@ -43,7 +43,16 @@ to your own modified versions of Mura CMS.
 
 <cfsilent>
 	<cfquery datasource="#application.configBean.getDatasource()#" username="#application.configBean.getDBUsername()#" password="#application.configBean.getDBPassword()#" name="rslist">
-	select mlid, name, ispurge, description from tmailinglist where siteid='#request.siteid#' and mlid='#arguments.objectid#'
+	select mlid, name, ispurge, description 
+	from tmailinglist 
+	where siteid='#request.siteid#' 
+	and 
+	<cfif isValid('UUID',arguments.objectID)>
+	mlid
+	<cfelse>
+	name
+	</cfif>
+	=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.objectid#">
 	</cfquery>
 	<cfset rbFactory=getSite().getRBFactory() />
 </cfsilent>
@@ -71,7 +80,7 @@ to your own modified versions of Mura CMS.
 		</cfif>	
 	<cfelse>
 	<cfif #rslist.description# neq ''><p class="description">#rslist.description#</p></cfif>
-	<form name="frmMailingList" action="?nocache=1" method="post" onsubmit="return validate(this);" class="clearfix" novalidate="novalidate">
+	<form name="frmMailingList" action="?nocache=1" method="post" onsubmit="return validate(this);" class="clearfix" novalidate="novalidate" data-role="fieldcontain">
 		<fieldset>
 			<legend>#rbFactory.getKey('mailinglist.yourinfo')#</legend>
 			<ol>

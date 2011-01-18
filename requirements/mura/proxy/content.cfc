@@ -42,7 +42,7 @@
 	
 	<cfif len(event.getValue("contenthistid"))>
 		<cfset content=application.contentManager.getcontentVersion(event.getValue("contenthistid"),event.getValue("siteid"),event.getValue("use404"))>
-	<cfelseif len(event.getValue("filename"))>
+	<cfelseif event.valueExists("filename")>
 		<cfset content=application.contentManager.getActiveContentByFilename(event.getValue("filename"),event.getValue("siteid"),event.getValue("use404"))>
 	<cfelseif len(event.getValue("remoteID"))>
 		<cfset content=application.contentManager.getActiveByRemoteID(event.getValue("remoteid"),event.getValue("siteid"))>

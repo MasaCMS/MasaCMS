@@ -80,7 +80,8 @@
 		<cfargument name="recurse"     required="no"  type="boolean" default="no"  hint="Get recursive files of subdirectories. Only if argument 'directory' is set.">
 		<cfargument name="compression" required="no"  type="numeric" default="9"   hint="Compression level (0 through 9, 0=minimum, 9=maximum).">
 		<cfargument name="savePaths"   required="no"  type="boolean" default="no"  hint="Save full path info.">
-
+		<cfargument name="sinceDate"   required="no"  type="string" default=""  hint="Filter for files created since this datetime">
+		<cfargument name="hiddenFiles"   required="no"  type="boolean" default="no"  hint="Whether to include .svn or .git files.">
 		<cfscript>
 
 			/* Default variables */
@@ -103,10 +104,11 @@
 
 				else if(IsDefined("arguments.directory"))
 				{
-					files = FilesList(arguments.directory, arguments.filter, arguments.recurse);
+					files = FilesList(arguments.directory, arguments.filter, arguments.recurse, arguments.sinceDate, arguments.hiddenFiles);
 					arguments.directory = PathFormat(arguments.directory);
 				}
 
+				if(arrayLen(files)){
 				/* Loop over files array */
 				for(i=1; i LTE ArrayLen(files); i=i+1)
 				{
@@ -158,6 +160,7 @@
 						{ skip = "yes"; }
 					}
 				}
+			}
 
 				/* Close Zip file */
 				zipOutput.close();
@@ -288,6 +291,8 @@
 		<cfargument name="extractFiles"   required="no"  type="string"                              hint="| (Chr(124)) delimited list of files to extract.">
 		<cfargument name="useFolderNames" required="no"  type="boolean" default="yes"               hint="Create folders using the pathinfo stored in the Zip file.">
 		<cfargument name="overwriteFiles" required="no"  type="boolean" default="no"                hint="Overwrite existing files.">
+		<cfargument name="extractDirs"   required="no"  type="string"             hint="| (Chr(124)) delimited list of dirs to extract.">
+		<cfargument name="excludeDirs"   required="no"  type="string"             hint="| (Chr(124)) delimited list of dirs to not extract.">
 
 		<cfscript>
 
@@ -299,7 +304,46 @@
 			var path     = "";
 			var filePath = "";
 			var buffer   = RepeatString(" ",1024).getBytes();
-
+			var rsdir	 = "";
+			var extractStruct	 = structNew();
+			var excludeStruct	 = structNew();
+			var i		="";
+			var entryHash= "";
+			var started = false;
+			</cfscript>
+			
+			<cfif IsDefined("arguments.extractDirs") and len(arguments.extractDirs)>
+				<cfset rsdir=List(arguments.zipFilePath)>
+				<cfquery name="rsdir" dbtype="query">
+				select * from rsdir where 
+				<cfloop list="#arguments.extractDirs#" index="i" delimiters="|">
+				<cfif started>or</cfif>
+				entry like '#i#%'
+				<cfset started=true>
+				</cfloop>
+				</cfquery>
+				<cfloop query="rsDir">
+					<cfset extractStruct["#hash(rsdir.entry)#"]=true>
+				</cfloop>
+			</cfif>
+			
+			<cfif IsDefined("arguments.excludeDirs") and len(arguments.excludeDirs)>
+				<cfset rsdir=List(arguments.zipFilePath)>
+				<cfset started=false>
+				<cfquery name="rsdir" dbtype="query">
+				select * from rsdir where 
+				<cfloop list="#arguments.excludeDirs#" index="i" delimiters="|">
+				<cfif started>and</cfif>
+				entry not like '#i#%'
+				<cfset started=true>
+				</cfloop>
+				</cfquery>
+				<cfloop query="rsDir">
+					<cfset excludeStruct["#hash(rsdir.entry)#"]=true>
+				</cfloop>
+			</cfif>
+		
+			<cfscript>
 			/* Convert to the right path format */
 			arguments.zipFilePath = PathFormat(arguments.zipFilePath);
 			arguments.extractPath = PathFormat(arguments.extractPath);
@@ -323,8 +367,23 @@
 				while(entries.hasMoreElements())
 				{
 					entry = entries.nextElement();
-
-					if(NOT entry.isDirectory())
+					entryHash = hash(pathFormat(entry.getName()));
+					
+					if(NOT entry.isDirectory()
+						AND 
+						(
+							not structKeyExists(excludeStruct,entryHash)
+							
+							and (
+									(
+										not IsDefined(arguments.extractDirs) or not len(arguments.extractDirs)
+									)
+							
+								OR
+									structKeyExists(extractStruct,entryHash)
+							)
+						)
+					)
 					{
 						name = entry.getName();
 
@@ -592,7 +651,8 @@
 		<cfargument name="directory" required="yes" type="string"               hint="Absolute pathname of directory to get files list.">
 		<cfargument name="filter"    required="no"  type="string"  default=""   hint="File extension filter. One filter can be applied.">
 		<cfargument name="recurse"   required="no"  type="boolean" default="no" hint="Get recursive files of subdirectories.">
-
+		<cfargument name="sinceDate"   required="no"  type="string" default=""  hint="Filter for files created since this datetime">
+		<cfargument name="hiddenFiles"   required="no"  type="boolean" default="no"  hint="Whether to include .svn or .git files.">
 		<cfset var i = 0>
 		<cfset var n = 0>
 		<cfset var dir   = "">
@@ -602,25 +662,37 @@
 					 name      = "dir"
 		             directory = "#PathFormat(arguments.directory)#"
 					 filter    = "#arguments.filter#">
-
+		
+		<cfif isDate(arguments.sinceDate)>
+			<cfquery name="dir" dbtype="query">
+			SELECT * FROM dir
+			WHERE 
+			dateLastModified >= #createODBCDateTime(arguments.sinceDate)#
+			</cfquery>
+		</cfif>
+		
 		<cfscript>
 
-			/* Loop over directory query */
-			for(i=1; i LTE dir.recordcount; i=i+1)
-			{
-				path = PathFormat(arguments.directory & this.slash & dir.name[i]);
-
-				/* Add file to array */
-				if(dir.type[i] eq "file")
-					ArrayAppend(array, path);
-
-				/* Get files from sub directorys and add them to the array */
-				else if(dir.type[i] EQ "dir" AND arguments.recurse EQ "yes")
+			if(dir.recordcount){
+				/* Loop over directory query */
+				for(i=1; i LTE dir.recordcount; i=i+1)
 				{
-					subdir = FilesList(path, arguments.filter, arguments.recurse);
-
-					for(n=1; n LTE ArrayLen(subdir); n=n+1)
-						ArrayAppend(array, subdir[n]);
+					if(arguments.hiddenFiles or left(dir.name[i],1) neq "."){
+						path = PathFormat(arguments.directory & this.slash & dir.name[i]);
+		
+						/* Add file to array */
+						if(dir.type[i] eq "file")
+							ArrayAppend(array, path);
+		
+						/* Get files from sub directorys and add them to the array */
+						else if(dir.type[i] EQ "dir" AND arguments.recurse EQ "yes")
+						{
+							subdir = FilesList(path, arguments.filter, arguments.recurse);
+		
+							for(n=1; n LTE ArrayLen(subdir); n=n+1)
+								ArrayAppend(array, subdir[n]);
+						}
+					}
 				}
 			}
 

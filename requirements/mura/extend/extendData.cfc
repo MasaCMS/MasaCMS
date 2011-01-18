@@ -292,7 +292,7 @@ to your own modified versions of Mura CMS.
 	
 	<cfquery name="rs" dbType="query">
 		 select baseID, extendSetID, name, defaultValue, attributeValue, validation from variables.instance.data
-		 where name=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#key#">
+		 where lower(name)=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#lcase(key)#">
 		 <cfif isNumeric(arguments.key)>
 			 or attributeID=<cfqueryparam cfsqltype="cf_sql_numeric"  value="#key#">
 		 </cfif>

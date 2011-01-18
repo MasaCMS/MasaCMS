@@ -50,45 +50,71 @@ to your own modified versions of Mura CMS.
 <cfparam name="request.filterBy" default=""/>
 <cfparam name="request.currentNextNID" default=""/>
 <cfif variables.nextN.recordsPerPage gt 1>
-<cfset paginationKey="startRow">
+<cfset variables.paginationKey="startRow">
 <cfelse>
-<cfset paginationKey="pageNum">
+<cfset variables.paginationKey="pageNum">
 </cfif>
-<cfset qrystr="" />
-<cfset rbFactory=getSite().getRBFactory() />
+<cfset variables.qrystr="" />
+<cfset variables.rbFactory=getSite().getRBFactory() />
 <cfif len(request.sortBy)>
-	<cfset qrystr="&sortBy=#request.sortBy#&sortDirection=#request.sortDirection#"/>
+	<cfset variables.qrystr="&sortBy=#request.sortBy#&sortDirection=#request.sortDirection#"/>
 </cfif>
 <cfif len(request.categoryID)>
-	<cfset qrystr=qrystr & "&categoryID=#request.categoryID#"/>
+	<cfset variables.variables.qrystr=variables.qrystr & "&categoryID=#request.categoryID#"/>
 </cfif>
 <cfif len(request.relatedID)>
-	<cfset qrystr=qrystr & "&relatedID=#request.relatedID#"/>
+	<cfset variables.qrystr=variables.qrystr & "&relatedID=#request.relatedID#"/>
 </cfif>
 <cfif len(request.currentNextNID)>
-	<cfset qrystr=qrystr & "&nextNID=#request.currentNextNID#"/>
+	<cfset variables.qrystr=variables.qrystr & "&nextNID=#request.currentNextNID#"/>
 </cfif>
 <cfif len(request.filterBy)>
 <cfif isNumeric(request.day) and request.day>
-	<cfset qrystr=qrystr & "&month=#request.month#&year=#request.year#&day=#request.day#&filterBy=#request.filterBy#">
+	<cfset variables.qrystr=variables.qrystr & "&month=#request.month#&year=#request.year#&day=#request.day#&filterBy=#request.filterBy#">
 </cfif>
 <cfelse>
 <cfif isNumeric(request.day) and request.day>
-	<cfset qrystr=qrystr & "&month=#request.month#&year=#request.year#&day=#request.day#">
+	<cfset variables.qrystr=variables.qrystr & "&month=#request.month#&year=#request.year#&day=#request.day#">
 </cfif>
 </cfif>
 </cfsilent>
 <cfoutput>
 <dl class="moreResults">
-	<cfif variables.nextN.recordsPerPage gt 1><dt>#rbFactory.getKey('list.moreresults')#:</dt></cfif>
+	<cfif variables.nextN.recordsPerPage gt 1><dt>#variables.rbFactory.getKey('list.moreresults')#:</dt></cfif>
 	<dd>
 		<ul>
 		<cfif variables.nextN.currentpagenumber gt 1>
-		<li class="navPrev"><a href="#xmlFormat('?#paginationKey#=#nextN.previous##qrystr#')#">&laquo;&nbsp;#rbFactory.getKey('list.previous')#</a></li>
+		<cfif request.muraExportHtml>
+			<cfif variables.nextN.currentpagenumber eq 2>
+			<li class="navPrev"><a href="index.html">&laquo;&nbsp;#variables.rbFactory.getKey('list.previous')#</a></li>
+			<cfelse>
+			<li class="navPrev"><a href="index#evaluate('#variables.nextn.currentpagenumber#-1')#.html">&laquo;&nbsp;#variables.rbFactory.getKey('list.previous')#</a></li>
+			</cfif>
+		<cfelse>
+			<li class="navPrev"><a href="#xmlFormat('?#paginationKey#=#variables.nextN.previous##qrystr#')#">&laquo;&nbsp;#rbFactory.getKey('list.previous')#</a></li>
 		</cfif>
-		<cfloop from="#nextN.firstPage#"  to="#variables.nextN.lastPage#" index="i"><cfif variables.nextn.currentpagenumber eq i><li class="current">#i#</li><cfelse><li><a href="#xmlFormat('?#paginationKey#=#evaluate('(#i#*#variables.nextN.recordsperpage#)-#variables.nextN.recordsperpage#+1')##qrystr#')#">#i#</a></li></cfif></cfloop>
+		</cfif>
+		<cfloop from="#variables.nextN.firstPage#"  to="#variables.nextN.lastPage#" index="i">
+			<cfif variables.nextn.currentpagenumber eq i>
+				<li class="current">#i#</li>
+			<cfelse>
+				<cfif request.muraExportHtml>
+					<cfif i eq 1>
+					<li><a href="index.html">#i#</a></li>
+					<cfelse>
+					<li><a href="index#i#.html">#i#</a></li>
+					</cfif>
+				<cfelse>
+					<li><a href="#xmlFormat('?#paginationKey#=#evaluate('(#i#*#variables.nextN.recordsperpage#)-#variables.nextN.recordsperpage#+1')##qrystr#')#">#i#</a></li>
+				</cfif>
+			</cfif>
+		</cfloop>
 		<cfif variables.nextN.currentpagenumber lt variables.nextN.NumberOfPages>
-			<li class="navNext"><a href="#xmlFormat('?#paginationKey#=#variables.nextN.next##qrystr#')#">#rbFactory.getKey('list.next')#&nbsp;&raquo;</a></li>
+			<cfif request.muraExportHtml>
+				<li class="navNext"><a href="index#evaluate('#variables.nextn.currentpagenumber#+1')#.html">#rbFactory.getKey('list.next')#&nbsp;&raquo;</a></li>
+			<cfelse>
+				<li class="navNext"><a href="#xmlFormat('?#paginationKey#=#variables.nextN.next##variables.qrystr#')#">#rbFactory.getKey('list.next')#&nbsp;&raquo;</a></li>
+			</cfif>
 		</cfif>
 		</ul>
 	</dd>

@@ -23,9 +23,14 @@
 	
 <cffunction name="handle" output="false" returnType="any">
 	<cfargument name="event" required="true">
+	<cfset var renderer=event.getValue("contentRenderer")>
 	
 	<cfif fileExists(ExpandPath( "#event.getSite().getThemeIncludePath()#/templates/mobile.cfm"))>
+		<cfset renderer.listFormat="ul">
 		<cfset event.getValue("contentBean").setTemplate("mobile.cfm")>
+		<cfset renderer.showAdminToolbar=false>
+		<cfset renderer.showMemberToolbar=false>
+		<cfset renderer.showEditableObjects=false>
 	<cfelse>
 	</cfif>
 </cffunction>

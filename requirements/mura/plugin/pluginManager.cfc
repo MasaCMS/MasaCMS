@@ -180,73 +180,105 @@ select * from tplugins order by #arguments.orderby#
 <cfset var eventHandler=""/>
 <cfset var isNew=false />
 <cfset var zipTool=createObject("component","mura.Zip")>
+<cfset var errors=structNew()>
 
 <cflock name="addPlugin" timeout="200">
 	<!--- <cftry> --->
-	<cfif not len(modID)>
-		<cfset isNew=true/>
-		<cfset modID=createUUID()/>	
-	<cfelse>
-		<cfset deleteScripts(modID) />
-	</cfif>
-	
+
 	<cffile action="upload" filefield="NewPlugin" nameconflict="makeunique" destination="#variables.configBean.getTempDir()#">	
 	
-	<cfif isNew>
-		<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-		insert into tplugins (moduleID,name,provider,providerURL,version,deployed,category,created,loadPriority) values (
-		<cfqueryparam cfsqltype="cf_sql_varchar" value="#modID#">,
-		<cfqueryparam cfsqltype="cf_sql_varchar" value="An error occurred.">,
-		null,
-		null,
-		null,
-		0,
-		null,
-		#createODBCDateTime(now())#,
-		5
-		)
-		</cfquery>
+	<!--- Check to see if this is an Bundled plugin --->
+	<cfif variables.settingsManager.isBundle("#variables.configBean.getTempDir()##delim##cffile.serverfile#")>
+		
+		<cfif len(modID)>
+			<cfset errors=variables.settingsManager.restoreBundle(BundleFile="#variables.configBean.getTempDir()##delim##cffile.serverfile#",siteID="",keyMode="publish",contentMode="none", renderingMode="none",pluginMode="all", moduleID=modID)>
+			<cfif not structIsEmpty(errors)>
+				<cfset getCurrentUser().setValue("errors",bean.getErrors())>
+				<cfreturn "">
+			</cfif>	
+		<cfelse>
+			<cfset errors=variables.settingsManager.restoreBundle(BundleFile="#variables.configBean.getTempDir()##delim##cffile.serverfile#",siteID="",keyMode="copy", contentMode="none", renderingMode="none",pluginMode="all", moduleID="")>
+			<cfif not structIsEmpty(errors)>
+				<cfset getCurrentUser().setValue("errors",bean.getErrors())>
+				<cfreturn "">
+			</cfif>
+			
+			<cfquery name="rsPlugin" datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDbUsername()#" password="#variables.configBean.getDbPassword()#">
+			select pluginID,moduleID from tplugins order by pluginID desc
+			</cfquery>
+			<cfset modID=rsPlugin.moduleID>
+		</cfif>
+		
+		<cfset loadPlugins() />
+		
+		<cfreturn modID>
+	
 	<cfelse>
+	
+		<cfif not len(modID)>
+			<cfset isNew=true/>
+			<cfset modID=createUUID()/>	
+		<cfelse>
+			<cfset deleteScripts(modID) />
+		</cfif>
+		
+		<cfif isNew>
+			<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+			insert into tplugins (moduleID,name,provider,providerURL,version,deployed,category,created,loadPriority) values (
+			<cfqueryparam cfsqltype="cf_sql_varchar" value="#modID#">,
+			<cfqueryparam cfsqltype="cf_sql_varchar" value="An error occurred.">,
+			null,
+			null,
+			null,
+			0,
+			null,
+			#createODBCDateTime(now())#,
+			5
+			)
+			</cfquery>
+		<cfelse>
+			<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+			update tplugins set deployed=2 where moduleID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#modID#">
+			</cfquery>
+		</cfif>
+		
+		<cfset rsPlugin=getPlugin(modID,'',false) />
+		
+		<!--- Set the directory to the newly installed pluginID--->
+		<cfif isNew>
 		<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-		update tplugins set deployed=2 where moduleID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#modID#">
+		update tplugins set
+		directory=<cfqueryparam cfsqltype="cf_sql_varchar" value="#rsPlugin.pluginID#">
+		where moduleID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#rsPlugin.moduleID#">			
 		</cfquery>
+		<cfset rsPlugin=getPlugin(modID,'',false) />
+		</cfif>
+		
+		<cfset location=getLocation(rsPlugin.directory) />
+		
+		<!---
+		<cfif directoryExists(location)>
+			<cfdirectory action="delete" directory="#location#" recurse="true">
+		</cfif>
+		--->
+		
+		<cfif not directoryExists(location)>
+		<cfset variables.fileWriter.createDir(directory="#location#")>
+		</cfif>
+		
+		<cfset zipTool.extract(zipFilePath="#variables.configBean.getTempDir()##delim##cffile.serverfile#",extractPath="#location#", overwriteFiles=true)>
+		
+		<cffile action="delete" file="#variables.configBean.getTempDir()##delim##cffile.serverfile#">
+		
+		<cfset savePluginXML(modID) />
+		<cfset loadPlugins() />
+	
+		<cfreturn modID/>
 	</cfif>
 	
-	<cfset rsPlugin=getPlugin(modID,'',false) />
+	</cflock>
 	
-	<!--- Set the directory to the newly installed pluginID--->
-	<cfif isNew>
-	<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-	update tplugins set
-	directory=<cfqueryparam cfsqltype="cf_sql_varchar" value="#rsPlugin.pluginID#">
-	where moduleID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#rsPlugin.moduleID#">			
-	</cfquery>
-	<cfset rsPlugin=getPlugin(modID,'',false) />
-	</cfif>
 	
-	<cfset location=getLocation(rsPlugin.directory) />
-	
-	<!---
-	<cfif directoryExists(location)>
-		<cfdirectory action="delete" directory="#location#" recurse="true">
-	</cfif>
-	--->
-	
-	<cfif not directoryExists(location)>
-	<cfset variables.fileWriter.createDir(directory="#location#")>
-	</cfif>
-	
-	<cfset zipTool.extract(zipFilePath="#variables.configBean.getTempDir()##delim##cffile.serverfile#",extractPath="#location#", overwriteFiles=true)>
-	
-	<cffile action="delete" file="#variables.configBean.getTempDir()##delim##cffile.serverfile#">
-	
-</cflock>
-
-<cfset savePluginXML(modID) />
-<cfset loadPlugins() />
-
-<cfreturn modID/>
-
 </cffunction>
 
 <cffunction name="savePluginXML" output="false" access="public">
@@ -577,6 +609,19 @@ select * from tplugins order by #arguments.orderby#
 	<cfset var dopID=""/>
 	<cfset var rsObjects="">
 	<cfset var directory="">
+	<cfset var rsCheck="">
+	
+	<cfif len(arguments.args.package)>
+		<cfquery datasource="#variables.configBean.getDatasource()#" name="rsCheck">
+				select moduleID from tplugins
+				where package=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.args.package#"/>
+				and moduleID!=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.args.moduleID#"/>
+		</cfquery>
+	</cfif>
+							
+	<cfif rsCheck.recordcount>
+			<cfthrow message="A plugin with the package value '#arguments.args.package#' is already being used by another plugin.">	
+	</cfif>
 	
 	<cfset deleteSettings(arguments.args.moduleID) />
 	
@@ -878,12 +923,16 @@ select * from tplugins order by #arguments.orderby#
 	<cfset var isValidEvent=variables.utility.isValidCFVariableName(arguments.runat)>
 	<cfset var siteIDadjusted=adjustSiteID(arguments.siteID)>
 	<cfset var muraScope="">
+	<cfset var currentModuleID="">
 	
 	<cfif not left(arguments.runat,2) eq "on" or left(arguments.runat,7) eq "standard">
 		<cfset arguments.runat="on" & arguments.runat>
 	</cfif>
 	
-	<cfif isValidEvent and not isQuery(arguments.scripts) and not len(arguments.moduleID)>
+	<cfif isValidEvent>
+	
+	<cftry>
+		
 		<cfif not isObject(arguments.event)>
 			<cfif isStruct(arguments.event)>
 				<cfset variables.event=createObject("component","mura.event").init(arguments.event)/>
@@ -903,90 +952,104 @@ select * from tplugins order by #arguments.orderby#
 			<cfset muraScope=arguments.event.getValue("muraScope")>
 		</cfif>
 		
-		<cfif isObject(event.getValue("localHandler"))>
-			<cfset localHandler=event.getValue("localHandler")>
-			<cfif structKeyExists(localHandler,runat)>
-				<cfinvoke component="#localHandler#" method="#arguments.runat#">
+		<cfif not isQuery(arguments.scripts) and not len(arguments.moduleID)>
+			<cfif isObject(event.getValue("localHandler"))>
+				<cfset localHandler=event.getValue("localHandler")>
+				<cfif structKeyExists(localHandler,runat)>
+					<cfinvoke component="#localHandler#" method="#arguments.runat#">
+						<cfinvokeargument name="event" value="#arguments.event#">
+						<cfinvokeargument name="$" value="#muraScope#">
+						<cfinvokeargument name="mura" value="#muraScope#">
+					</cfinvoke>
+					<cfset request.muraHandledEvents["#arguments.runat#"]=true>	
+				</cfif>
+			</cfif>
+			
+			<cfif not isGlobalEvent and len(arguments.siteID)>
+				<cfif isDefined("variables.siteListeners.#siteIDadjusted#.#arguments.runat#")>
+					<cfset listenerArray=evaluate("variables.siteListeners.#siteIDadjusted#.#arguments.runat#")>
+					<cfif arrayLen(listenerArray)>
+						<cfloop from="1" to="#arrayLen(listenerArray)#" index="i">
+							<cfset eventHandlerIndex=listenerArray[i].index>
+							<cfset eventHandler=variables.eventHandlers[eventHandlerIndex]>
+							<cfif not isObject(eventHandler)>
+								<cfset eventHandler=getEventHandlerFromPath(eventHandler)>
+							</cfif>
+							<cfinvoke component="#eventHandler#" method="#arguments.runat#">
+								<cfinvokeargument name="event" value="#arguments.event#">
+								<cfinvokeargument name="$" value="#muraScope#">
+								<cfinvokeargument name="mura" value="#muraScope#">
+							</cfinvoke>
+							<cfset request.muraHandledEvents["#arguments.runat#"]=true>	
+						</cfloop>
+					</cfif>
+				</cfif>
+			<cfelseif isGlobalEvent>
+				<cfif isDefined("variables.globalListeners.#arguments.runat#")>
+					<cfset listenerArray=evaluate("variables.globalListeners.#arguments.runat#")>
+					<cfif arrayLen(listenerArray)>
+						<cfloop from="1" to="#arrayLen(listenerArray)#" index="i">
+							<cfset eventHandlerIndex=listenerArray[i].index>
+							<cfset eventHandler=variables.eventHandlers[eventHandlerIndex]>
+							<cfif not isObject(eventHandler)>
+								<cfset eventHandler=getEventHandlerFromPath(eventHandler)>
+							</cfif>
+							<cfinvoke component="#eventHandler#" method="#arguments.runat#">
+								<cfinvokeargument name="event" value="#arguments.event#">
+								<cfinvokeargument name="$" value="#muraScope#">
+								<cfinvokeargument name="mura" value="#muraScope#">
+							</cfinvoke>	
+							<cfset request.muraHandledEvents["#arguments.runat#"]=true>
+						</cfloop>
+					</cfif>
+				</cfif>
+			</cfif>
+		</cfif>
+		
+		<cfif isQuery(arguments.scripts)>
+			<cfset rs=arguments.scripts />
+		<cfelse>
+			<cfset rs=getScripts(arguments.runat,arguments.siteid,arguments.moduleID) />
+		</cfif>
+		
+		<cfloop query="rs">
+			<cfset event.setValue("siteid",arguments.siteID)>
+			<cfset currentModuleID=rs.moduleID>
+			<cfif listLast(rs.scriptfile,".") neq "cfm">
+				<cfset componentPath="plugins.#rs.directory#.#rs.scriptfile#">
+				<cfset eventHandler=getComponent(componentPath, rs.pluginID, arguments.siteID, rs.docache)>
+				<cfinvoke component="#eventHandler#" method="#arguments.runat#">
 					<cfinvokeargument name="event" value="#arguments.event#">
 					<cfinvokeargument name="$" value="#muraScope#">
 					<cfinvokeargument name="mura" value="#muraScope#">
 				</cfinvoke>	
-			</cfif>
-		</cfif>
-		
-		<cfif not isGlobalEvent and len(arguments.siteID)>
-			<cfif isDefined("variables.siteListeners.#siteIDadjusted#.#arguments.runat#")>
-				<cfset listenerArray=evaluate("variables.siteListeners.#siteIDadjusted#.#arguments.runat#")>
-				<cfif arrayLen(listenerArray)>
-					<cfloop from="1" to="#arrayLen(listenerArray)#" index="i">
-						<cfset eventHandlerIndex=listenerArray[i].index>
-						<cfset eventHandler=variables.eventHandlers[eventHandlerIndex]>
-						<cfif not isObject(eventHandler)>
-							<cfset eventHandler=getEventHandlerFromPath(eventHandler)>
-						</cfif>
-						<cfinvoke component="#eventHandler#" method="#arguments.runat#">
-							<cfinvokeargument name="event" value="#arguments.event#">
-							<cfinvokeargument name="$" value="#muraScope#">
-							<cfinvokeargument name="mura" value="#muraScope#">
-						</cfinvoke>	
-					</cfloop>
-				</cfif>
-			</cfif>
-		<cfelseif isGlobalEvent>
-			<cfif isDefined("variables.globalListeners.#arguments.runat#")>
-				<cfset listenerArray=evaluate("variables.globalListeners.#arguments.runat#")>
-				<cfif arrayLen(listenerArray)>
-					<cfloop from="1" to="#arrayLen(listenerArray)#" index="i">
-						<cfset eventHandlerIndex=listenerArray[i].index>
-						<cfset eventHandler=variables.eventHandlers[eventHandlerIndex]>
-						<cfif not isObject(eventHandler)>
-							<cfset eventHandler=getEventHandlerFromPath(eventHandler)>
-						</cfif>
-						<cfinvoke component="#eventHandler#" method="#arguments.runat#">
-							<cfinvokeargument name="event" value="#arguments.event#">
-							<cfinvokeargument name="$" value="#muraScope#">
-							<cfinvokeargument name="mura" value="#muraScope#">
-						</cfinvoke>	
-					</cfloop>
-				</cfif>
-			</cfif>
-		</cfif>
-	</cfif>
-	
-	<cfif isQuery(arguments.scripts)>
-		<cfset rs=arguments.scripts />
-	<cfelse>
-		<cfset rs=getScripts(arguments.runat,arguments.siteid,arguments.moduleID) />
-	</cfif>
-	
-	<cfloop query="rs">
-		<cftry>
-		<cfset event.setValue("siteid",arguments.siteID)>
-		
-		<cfif listLast(rs.scriptfile,".") neq "cfm">
-			<cfset componentPath="plugins.#rs.directory#.#rs.scriptfile#">
-			<cfset eventHandler=getComponent(componentPath, rs.pluginID, arguments.siteID, rs.docache)>
-			<cfinvoke component="#eventHandler#" method="#arguments.runat#">
-				<cfinvokeargument name="event" value="#arguments.event#">
-				<cfinvokeargument name="$" value="#muraScope#">
-				<cfinvokeargument name="mura" value="#muraScope#">
-			</cfinvoke>	
-		<cfelse>
-			<cfset getExecutor().executeScript(event=event,scriptfile="/plugins/#rs.directory#/#rs.scriptfile#",pluginConfig=getConfig(rs.pluginID), $=muraScope, mura=muraScope)>
-		</cfif>
-		<cfcatch>
-			<cfset rsOnError=getScripts("onError",arguments.siteid,rs.moduleID) />
-			<cfif arguments.runat neq "onError" and rsOnError.recordcount>
-				<cfset arguments.event.setValue("errorType","script")>
-				<cfset arguments.event.setValue("error",cfcatch)>
-				<cfset executeScripts("onError",arguments.siteid,arguments.event,rsOnError)>
 			<cfelse>
-				<cfrethrow>
+				<cfset getExecutor().executeScript(event=event,scriptfile="/plugins/#rs.directory#/#rs.scriptfile#",pluginConfig=getConfig(rs.pluginID), $=muraScope, mura=muraScope)>
 			</cfif>
-		</cfcatch>
-	</cftry>
-	</cfloop>
-
+			<cfset request.muraHandledEvents["#arguments.runat#"]=true>
+		</cfloop>
+		
+		<cfcatch>
+				<cfif len(currentModuleID)>
+					<cfset rsOnError=getScripts("onError",arguments.siteid,currentModuleID) />
+					<cfif arguments.runat neq "onError" and rsOnError.recordcount>
+						<cfset arguments.event.setValue("errorType","event")>
+						<cfset arguments.event.setValue("errorEvent",arguments.runat)>
+						<cfset arguments.event.setValue("error",cfcatch)>
+						<cfset executeScripts("onError",arguments.siteid,arguments.event,rsOnError)>
+						<cfif not yesNoFormat(arguments.event.getValue("errorIsHandled"))>
+							<cfrethrow>
+						</cfif>
+					<cfelse>
+						<cfrethrow>
+					</cfif>
+				<cfelse>
+					<cfrethrow>
+				</cfif>
+			</cfcatch>
+		</cftry>
+	</cfif>
+	
 </cffunction>
 
 <cffunction name="renderScripts" output="false" returntype="any">
@@ -997,6 +1060,7 @@ select * from tplugins order by #arguments.orderby#
 <cfargument name="moduleID" required="true" default="" type="any">
 	<cfset var rs=""/>
 	<cfset var str=""/>
+	<cfset var testStr=""/>
 	<cfset var pluginConfig="">
 	<cfset var componentPath="">
 	<cfset var scriptPath="">
@@ -1011,6 +1075,8 @@ select * from tplugins order by #arguments.orderby#
 	<cfset var isValidEvent=variables.utility.isValidCFVariableName(arguments.runat)>
 	<cfset var siteIDadjusted=adjustSiteID(arguments.siteID)>
 	<cfset var muraScope="">
+	<cfset var currentModuleID="">
+	
 	<cfif not left(arguments.runat,2) eq "on" or left(arguments.runat,7) eq "standard">
 		<cfset arguments.runat="on" & arguments.runat>
 	</cfif>
@@ -1034,130 +1100,149 @@ select * from tplugins order by #arguments.orderby#
 		<cfset muraScope=arguments.event.getValue("muraScope")>
 	</cfif>
 	
-	<cfif isValidEvent and not isQuery(arguments.scripts) and not len(arguments.moduleID)>
-		<cfif isObject(event.getValue("localHandler"))>
-			<cfset localHandler=event.getValue("localHandler")>
-			<cfif structKeyExists(localHandler,runat)>
-				<cfsavecontent variable="local.theDisplay1">
-				<cfinvoke component="#localHandler#" method="#arguments.runat#" returnVariable="local.theDisplay2">
-					<cfinvokeargument name="event" value="#arguments.event#">
-					<cfinvokeargument name="$" value="#muraScope#">
-					<cfinvokeargument name="mura" value="#muraScope#">
-				</cfinvoke>	
-				</cfsavecontent>
-				<cfif isDefined("local.theDisplay2")>
-					<cfset str=str & local.theDisplay2>
-				<cfelse>
-					<cfset str=str & local.theDisplay1>
-				</cfif>
-			</cfif>
-		</cfif>
-		
-		<cfif not isGlobalEvent and len(arguments.siteID)>
-			<cfif isDefined("variables.siteListeners.#siteIDadjusted#.#arguments.runat#")>
-				<cfset listenerArray=evaluate("variables.siteListeners.#siteIDadjusted#.#arguments.runat#")>
-				<cfif arrayLen(listenerArray)>
-					<cfloop from="1" to="#arrayLen(listenerArray)#" index="i">
-						<cfset eventHandler=variables.eventHandlers[listenerArray[i].index]>
-						<cfif not isObject(eventHandler)>
-							<cfset eventHandler=getEventHandlerFromPath(eventHandler)>
-						</cfif>
-						<cfsavecontent variable="local.theDisplay1">
-						<cfinvoke component="#eventHandler#"method="#arguments.runat#" returnVariable="local.theDisplay2">
-							<cfinvokeargument name="event" value="#arguments.event#">
-							<cfinvokeargument name="$" value="#muraScope#">
-							<cfinvokeargument name="mura" value="#muraScope#">
-						</cfinvoke>	
-						</cfsavecontent>
-						<cfif isDefined("local.theDisplay2")>
-							<cfset str=str & local.theDisplay2>
-						<cfelse>
-							<cfset str=str & local.theDisplay1>
-						</cfif>
-					</cfloop>
-				</cfif>
-			</cfif>
-		<cfelseif isGlobalEvent>
-			<cfif isDefined("variables.globalListeners.#arguments.runat#")>
-				<cfset listenerArray=evaluate("variables.globalListeners.#arguments.runat#")>
-				<cfif arrayLen(listenerArray)>
-					<cfloop from="1" to="#arrayLen(listenerArray)#" index="i">
-						<cfset eventHandler=variables.eventHandlers[listenerArray[i].index]>
-						<cfif not isObject(eventHandler)>
-							<cfset eventHandler=getEventHandlerFromPath(eventHandler)>
-						</cfif>
-						<cfsavecontent variable="local.theDisplay1">
-						<cfinvoke component="#eventHandler#"method="#arguments.runat#" returnVariable="local.theDisplay2">
-							<cfinvokeargument name="event" value="#arguments.event#">
-							<cfinvokeargument name="$" value="#muraScope#">
-							<cfinvokeargument name="mura" value="#muraScope#">
-						</cfinvoke>	
-						</cfsavecontent>
-						<cfif isDefined("local.theDisplay2")>
-							<cfset str=str & local.theDisplay2>
-						<cfelse>
-							<cfset str=str & local.theDisplay1>
-						</cfif>
-					</cfloop>
-				</cfif>
-			</cfif>
-		</cfif>
-	</cfif>
-	
-	<cfif isQuery(arguments.scripts)>
-		<cfset rs=arguments.scripts />
-	<cfelse>
-		<cfset rs=getScripts(arguments.runat,arguments.siteid,arguments.moduleID) />
-	</cfif>
-	
-	<cfif rs.recordcount>
-	
-	<cfloop query="rs">
+	<cfif isValidEvent>
 		
 	<cftry>
-		
-		<cfif listLast(rs.scriptfile,".") neq "cfm">
-				
-			<cfset componentPath="plugins.#rs.directory#.#rs.scriptfile#">
-			<cfset eventHandler=getComponent(componentPath, rs.pluginID, arguments.siteID, rs.docache)>
-			<cfsavecontent variable="local.theDisplay1">
-			<cfinvoke component="#eventHandler#" method="#arguments.runat#" returnVariable="local.theDisplay2">
-				<cfinvokeargument name="event" value="#arguments.event#">
-				<cfinvokeargument name="$" value="#muraScope#">
-				<cfinvokeargument name="mura" value="#muraScope#">
-			</cfinvoke>	
-			</cfsavecontent>
-		
-			<cfif isDefined("local.theDisplay2")>
-				<cfset str=str & local.theDisplay2>
-			<cfelse>
-				<cfset str=str & local.theDisplay1>
+		<cfif not isQuery(arguments.scripts) and not len(arguments.moduleID)>
+			<cfif isObject(event.getValue("localHandler"))>
+				<cfset localHandler=event.getValue("localHandler")>
+				<cfif structKeyExists(localHandler,runat)>
+					<cfsavecontent variable="local.theDisplay1">
+					<cfinvoke component="#localHandler#" method="#arguments.runat#" returnVariable="local.theDisplay2">
+						<cfinvokeargument name="event" value="#arguments.event#">
+						<cfinvokeargument name="$" value="#muraScope#">
+						<cfinvokeargument name="mura" value="#muraScope#">
+					</cfinvoke>	
+					</cfsavecontent>
+					<cfif isDefined("local.theDisplay2")>
+						<cfset str=str & local.theDisplay2>
+					<cfelse>
+						<cfset str=str & local.theDisplay1>
+					</cfif>
+					<cfset request.muraHandledEvents["#arguments.runat#"]=true>
+				</cfif>
 			</cfif>
 			
-		<cfelse>
-			<cfsavecontent variable="local.theDisplay1">
-			<cfoutput>#getExecutor().renderScript(event=event,scriptfile="/plugins/#rs.directory#/#rs.scriptfile#",pluginConfig=getConfig(rs.pluginID), $=muraScope, mura=muraScope)#</cfoutput>
-			</cfsavecontent>
-			<cfset str=str & local.theDisplay1>
-		</cfif>
 			
-		<cfcatch>
-			<cfset rsOnError=getScripts("onError",arguments.siteid,rs.moduleID) />
-			<cfif arguments.runat neq "onError" and rsOnError.recordcount>
-				<cfset arguments.event.setValue("errorType","render")>
-				<cfset arguments.event.setValue("error",cfcatch)>
-				<cfset str=str & renderScripts("onError",arguments.siteid,arguments.event,rsOnError)>
-			<cfelseif arguments.runat eq "onError">
-				<cfrethrow>
+			<cfif not isGlobalEvent and len(arguments.siteID)>
+				<cfif isDefined("variables.siteListeners.#siteIDadjusted#.#arguments.runat#")>
+					<cfset listenerArray=evaluate("variables.siteListeners.#siteIDadjusted#.#arguments.runat#")>
+					<cfif arrayLen(listenerArray)>
+						<cfloop from="1" to="#arrayLen(listenerArray)#" index="i">
+							<cfset eventHandler=variables.eventHandlers[listenerArray[i].index]>
+							<cfif not isObject(eventHandler)>
+								<cfset eventHandler=getEventHandlerFromPath(eventHandler)>
+							</cfif>
+							<cfsavecontent variable="local.theDisplay1">
+							<cfinvoke component="#eventHandler#"method="#arguments.runat#" returnVariable="local.theDisplay2">
+								<cfinvokeargument name="event" value="#arguments.event#">
+								<cfinvokeargument name="$" value="#muraScope#">
+								<cfinvokeargument name="mura" value="#muraScope#">
+							</cfinvoke>	
+							</cfsavecontent>
+							<cfif isDefined("local.theDisplay2")>
+								<cfset str=str & local.theDisplay2>
+							<cfelse>
+								<cfset str=str & local.theDisplay1>
+							</cfif>
+							<cfset request.muraHandledEvents["#arguments.runat#"]=true>
+						</cfloop>
+					</cfif>
+				</cfif>
+			<cfelseif isGlobalEvent>
+				<cfif isDefined("variables.globalListeners.#arguments.runat#")>
+					<cfset listenerArray=evaluate("variables.globalListeners.#arguments.runat#")>
+					<cfif arrayLen(listenerArray)>
+						<cfloop from="1" to="#arrayLen(listenerArray)#" index="i">
+							<cfset eventHandler=variables.eventHandlers[listenerArray[i].index]>
+							<cfif not isObject(eventHandler)>
+								<cfset eventHandler=getEventHandlerFromPath(eventHandler)>
+							</cfif>
+							<cfsavecontent variable="local.theDisplay1">
+							<cfinvoke component="#eventHandler#"method="#arguments.runat#" returnVariable="local.theDisplay2">
+								<cfinvokeargument name="event" value="#arguments.event#">
+								<cfinvokeargument name="$" value="#muraScope#">
+								<cfinvokeargument name="mura" value="#muraScope#">
+							</cfinvoke>	
+							</cfsavecontent>
+							<cfif isDefined("local.theDisplay2")>
+								<cfset str=str & local.theDisplay2>
+							<cfelse>
+								<cfset str=str & local.theDisplay1>
+							</cfif>
+							<cfset request.muraHandledEvents["#arguments.runat#"]=true>
+						</cfloop>
+					</cfif>
+				</cfif>
+			</cfif>
+		</cfif>
+		
+		<cfif isQuery(arguments.scripts)>
+			<cfset rs=arguments.scripts />
+		<cfelse>
+			<cfset rs=getScripts(arguments.runat,arguments.siteid,arguments.moduleID) />
+		</cfif>
+	
+		<cfif rs.recordcount>
+		
+			<cfloop query="rs">
+				<cfset currentModuleID=rs.moduleID>
+				<cfif listLast(rs.scriptfile,".") neq "cfm">			
+					<cfset componentPath="plugins.#rs.directory#.#rs.scriptfile#">
+					<cfset eventHandler=getComponent(componentPath, rs.pluginID, arguments.siteID, rs.docache)>
+					<cfsavecontent variable="local.theDisplay1">
+					<cfinvoke component="#eventHandler#" method="#arguments.runat#" returnVariable="local.theDisplay2">
+						<cfinvokeargument name="event" value="#arguments.event#">
+						<cfinvokeargument name="$" value="#muraScope#">
+						<cfinvokeargument name="mura" value="#muraScope#">
+					</cfinvoke>	
+					</cfsavecontent>
+				
+					<cfif isDefined("local.theDisplay2")>
+						<cfset str=str & local.theDisplay2>
+					<cfelse>
+						<cfset str=str & local.theDisplay1>
+					</cfif>
+					
+				<cfelse>
+					<cfsavecontent variable="local.theDisplay1">
+					<cfoutput>#getExecutor().renderScript(event=event,scriptfile="/plugins/#rs.directory#/#rs.scriptfile#",pluginConfig=getConfig(rs.pluginID), $=muraScope, mura=muraScope)#</cfoutput>
+					</cfsavecontent>
+					<cfset str=str & local.theDisplay1>
+				</cfif>
+				<cfset request.muraHandledEvents["#arguments.runat#"]=true>	
+			</cfloop>
+		</cfif>
+		
+	<cfcatch>
+			<cfif len(currentModuleID)>
+				<cfset rsOnError=getScripts("onError",arguments.siteid,currentModuleID) />
+				<cfif arguments.runat neq "onError" and rsOnError.recordcount>
+					<cfset arguments.event.setValue("errorType","render")>
+					<cfset arguments.event.setValue("errorEvent",arguments.runat)>
+					<cfset arguments.event.setValue("error",cfcatch)>
+					<cfset testStr=renderScripts("onError",arguments.siteid,arguments.event,rsOnError)>
+					<cfif len(testStr) or yesNoFormat(arguments.event.getValue("errorIsHandled"))>
+						<cfset str=str & testStr>
+					<cfelse>
+						<cfrethrow>
+					</cfif>
+				<cfelseif arguments.runat eq "onError">
+					<cfrethrow>
+				<cfelse>
+				<cfsavecontent variable="local.theDisplay1">
+				<cfdump var="#cfcatch#">
+				</cfsavecontent>
+				<cfset str=str & local.theDisplay1>
+				</cfif>
 			<cfelse>
-			<cfsavecontent variable="local.theDisplay1">
-			<cfdump var="#cfcatch#">
-			</cfsavecontent>
-			<cfset str=str & local.theDisplay1>
+				<cfsavecontent variable="local.theDisplay1">
+				<cfdump var="#cfcatch#">
+				</cfsavecontent>
+				<cfset str=str & local.theDisplay1>
 			</cfif>
 		</cfcatch>
 	</cftry>
-	</cfloop>
 	</cfif>
 
 	<cfreturn trim(str)>

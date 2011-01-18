@@ -493,15 +493,15 @@ Select EmailID from temails where deliverydate <=#createodbcdatetime(now())# and
 		<cfset endPos = findNoCase("mura_broadcaster_end", body)>
 		<cfif startPos gt 0 and endPos gt 0>
 			<cfset messageList = listAppend(messageList, UID) />
-			<cfset startPos = startPos + 26>
+			<cfset startPos = startPos + 22>
 			<cfset emailID = mid(body, startPos, endPos - startPos)>
 			<cfset emailID = trim(emailID)>
 
 			<!--- now get the "to" email" --->			
-			<cfset startPos = findNoCase("to:", body)>
+			<cfset startPos = findNoCase("failed recipient:", body)>
 			<cfset endPos = findNoCase(newLine, body, startPos)>
 			<cfif startPos gt 0 and endPos gt 0>
-				<cfset startPos = startPos + 3>
+				<cfset startPos = startPos + 17>
 				<cfset email = mid(body, startPos, endPos - startPos)>
 				<cfset email = trim(email)>
 				

@@ -62,6 +62,7 @@ to your own modified versions of Mura CMS.
 <!---<cfset this.showMemberToolBar=false/>--->
 <!---<cfset this.showEditableObjects=false/>--->
 <!---<cfset this.renderHTMLHead=true/>--->
+<!---<cfset this.listFormat="dl"/>--->
 <!---<cfset this.headline="h2"/>--->
 <!---<cfset this.subHead1="h3"/>--->
 <!---<cfset this.subHead2="h4"/>--->

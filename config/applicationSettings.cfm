@@ -139,13 +139,10 @@ to your own modified versions of Mura CMS.
 			<cfset request.hasCFApplicationCFM=false>
 		</cfcatch>
 	</cftry>
-	<!---
-	<cftry>
-		<cfinclude template="/plugins/cfapplication.cfm">
-		<cfset hasPluginCFApplication=true>
-		<cfcatch type="missingInclude">
-			<cfset hasPluginCFApplication=false>
-		</cfcatch>
-	</cftry>
-	--->
-	<cfset request.altTheme = "">		
+	
+	<cfset request.muraFrontEndRequest=false>
+	<cfset request.muraChangesetPreview=false>
+	<cfset request.muraExportHtml = false>
+	<cfset request.muraMobileRequest=false>
+	<cfset request.muraHandledEvents = structNew()>
+	<cfset request.altTHeme = "">		

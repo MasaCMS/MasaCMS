@@ -126,7 +126,7 @@ to your own modified versions of Mura CMS.
 <cfargument name="siteid" type="string" default="" required="yes"/>
 	
 	<!--- make sure that the file cache directory exists, for node level files --->
-	<cfif not directoryExists("#variables.configBean.getFileDir()##variables.configBean.getFileDelim()##arguments.siteid##variables.configBean.getFileDelim()#cache#variables.configBean.getFileDelim()#component")> 
+	<cfif not directoryExists("#variables.configBean.getFileDir()##variables.configBean.getFileDelim()##arguments.siteid##variables.configBean.getFileDelim()#cache#variables.configBean.getFileDelim()#file")> 
 	
 		<cfif not directoryExists("#variables.configBean.getFileDir()##variables.configBean.getFileDelim()##arguments.siteid#")> 
 			<cfset variables.fileWriter.createDir(directory="#variables.configBean.getFileDir()##variables.configBean.getFileDelim()##arguments.siteid#")>
@@ -136,7 +136,6 @@ to your own modified versions of Mura CMS.
 			<cfset variables.fileWriter.createDir(directory="#variables.configBean.getFileDir()##variables.configBean.getFileDelim()##arguments.siteid##variables.configBean.getFileDelim()#cache")>
 		</cfif>
 		
-		<cfset variables.fileWriter.createDir(directory="#variables.configBean.getFileDir()##variables.configBean.getFileDelim()##arguments.siteid##variables.configBean.getFileDelim()#cache#variables.configBean.getFileDelim()#component")>
 		<cfset variables.fileWriter.createDir(directory="#variables.configBean.getFileDir()##variables.configBean.getFileDelim()##arguments.siteid##variables.configBean.getFileDelim()#cache#variables.configBean.getFileDelim()#file")>
 	</cfif>
 	

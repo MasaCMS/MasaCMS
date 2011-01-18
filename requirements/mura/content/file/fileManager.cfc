@@ -153,13 +153,15 @@ to your own modified versions of Mura CMS.
 	<cfset var pluginEvent = createObject("component","mura.event") />
 	
 	<cfif not isValid("UUID",arguments.fileID)>
-		<cfdump var="Invalid fileID">
-		<cfabort>
+		<cfset getBean("contentServer").render404()>
 	</cfif>
 	
 		<cfswitch expression="#variables.configBean.getFileStore()#">	
 			<cfcase value="database">
 				<cfset rsFileData=read(arguments.fileid) />
+				<cfif not rsFileData.recordcount>
+					<cfset getBean("contentServer").render404()>
+				</cfif>
 				<cfset arguments.siteID=rsFileData.siteid>
 				<cfset arguments.rsFile=rsFileData>
 				<cfset pluginEvent.init(arguments)>
@@ -175,6 +177,9 @@ to your own modified versions of Mura CMS.
 			</cfcase>
 			<cfcase value="filedir">
 				<cfset rsFileData=readMeta(arguments.fileid) />
+				<cfif not rsFileData.recordcount>
+					<cfset getBean("contentServer").render404()>
+				</cfif>
 				<cfset arguments.siteID=rsFileData.siteid>
 				<cfset arguments.rsFile=rsFileData>
 				<cfset pluginEvent.init(arguments)>
@@ -193,6 +198,9 @@ to your own modified versions of Mura CMS.
 			</cfcase>
 			<cfcase value="S3">	
 				<cfset rsFileData=readMeta(arguments.fileid) />
+				<cfif not rsFileData.recordcount>
+					<cfset getBean("contentServer").render404()>
+				</cfif>
 				<cfset arguments.siteID=rsFileData.siteid>
 				<cfset arguments.rsFile=rsFileData>
 				<cfset pluginEvent.init(arguments)>
@@ -214,13 +222,15 @@ to your own modified versions of Mura CMS.
 	<cfset var theFileLocation="" />
 	
 	<cfif not isValid("UUID",arguments.fileID)>
-		<cfdump var="Invalid fileID">
-		<cfabort>
+		<cfset getBean("contentServer").render404()>
 	</cfif>
 		
 		<cfswitch expression="#variables.configBean.getFileStore()#">	
 			<cfcase value="database">
 				<cfset rsFile=readSmall(arguments.fileid) />
+				<cfif not rsFile.recordcount>
+					<cfset getBean("contentServer").render404()>
+				</cfif>
 				<cfheader name="Content-Disposition" value='#arguments.method#;filename="#rsfile.filename#"'>
 				<cfheader name="Content-Length" value="#arrayLen(rsFile.imageSmall)#">
 				<cfif variables.configBean.getCompiler() neq 'Railo'>
@@ -231,6 +241,9 @@ to your own modified versions of Mura CMS.
 			</cfcase>
 			<cfcase value="filedir">
 				<cfset rsFile=readMeta(arguments.fileid) />
+				<cfif not rsFile.recordcount>
+					<cfset getBean("contentServer").render404()>
+				</cfif>
 				<cfset delim=variables.configBean.getFileDelim() />
 				<cfset theFileLocation="#variables.configBean.getFileDir()##delim##rsFile.siteid##delim#cache#delim#file#delim##arguments.fileID#_small.#rsFile.fileExt#" />
 				<cffile action="readBinary" file="#theFileLocation#" variable="theFile">
@@ -259,13 +272,15 @@ to your own modified versions of Mura CMS.
 	<cfset var theFileLocation="" />
 	
 	<cfif not isValid("UUID",arguments.fileID)>
-		<cfdump var="Invalid fileID">
-		<cfabort>
+		<cfset getBean("contentServer").render404()>
 	</cfif>
 		 
 		<cfswitch expression="#variables.configBean.getFileStore()#">	
 			<cfcase value="database">
 				<cfset rsFile=readMedium(arguments.fileid) />
+				<cfif not rsFile.recordcount>
+					<cfset getBean("contentServer").render404()>
+				</cfif>
 				<cfheader name="Content-Disposition" value='#arguments.method#;filename="#rsfile.filename#"'>
 				<cfheader name="Content-Length" value="#arrayLen(rsFile.imageMedium)#">
 				<cfif variables.configBean.getCompiler() neq 'Railo'>
@@ -276,6 +291,9 @@ to your own modified versions of Mura CMS.
 			</cfcase>
 			<cfcase value="filedir">
 				<cfset rsFile=readMeta(arguments.fileid) />
+				<cfif not rsFile.recordcount>
+					<cfset getBean("contentServer").render404()>
+				</cfif>
 				<cfset delim=variables.configBean.getFileDelim() />
 				<cfset theFileLocation="#variables.configBean.getFileDir()##delim##rsFile.siteid##delim#cache#delim#file#delim##arguments.fileID#_medium.#rsFile.fileExt#" />
 				<cffile action="readBinary" file="#theFileLocation#" variable="theFile">
@@ -450,6 +468,31 @@ to your own modified versions of Mura CMS.
 <cffunction name="restoreVersion" output="false">
 	<cfargument name="fileID">
 	<cfset variables.fileDAO.restoreVersion(arguments.fileID)>
+</cffunction>
+
+<cffunction name="cleanFileCache" output="false">
+<cfargument name="siteID">
+<cfset var rsDB="">
+<cfset var rsDIR="">
+<cfset var rsCheck="">
+<cfset var filePath="#application.configBean.getFileDir()#/#arguments.siteID#/file/">
+
+<cfquery name="rsDB" datasource="#variables.configBean.getDatasource()#" password="#variables.configBean.getDbPassword()#" username="#variables.configBean.getDbUsername()#">
+select fileID from tfiles where siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#">
+</cfquery>
+
+<cfdirectory action="list" name="rsDIR" directory="#filePath#">
+
+<cfloop query="rsDir">
+
+	<cfquery name="rsCheck" dbType="query">
+	select * from rsDB where fileID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#left(rsDIR.name,35)#">
+	</cfquery>
+	
+	<cfif not rsCheck.recordcount>
+		<cffile action="delete" file="#filepath##rsDir.name#">
+	</cfif>
+</cfloop>
 </cffunction>
 
 </cfcomponent>

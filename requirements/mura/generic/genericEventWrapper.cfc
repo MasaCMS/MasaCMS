@@ -22,10 +22,12 @@
 <cfcomponent extends="mura.cfobject" output="false">
 	
 <cfset variables.eventHandler="">
+<cfset variables.eventName="">
 
 <cffunction name="init" output="false" returntype="any">
 <cfargument name="eventHandler">
 <cfset variables.eventHandler=arguments.eventHandler>
+<cfset variables.eventName=listLast(getMetaData(variables.eventHandler).name,'.')>
 <cfreturn this>
 </cffunction>
 
@@ -45,23 +47,26 @@
 
 <cffunction name="handle" output="false">
 <cfargument name="context">
-	<cfset var contexts=splitContexts(arguments.context)>
-	
+	<cfset var contexts=splitContexts(arguments.context)>	
 	<cfset variables.eventHandler.handle(event=contexts.event, mura=contexts.muraScope, $=contexts.muraScope)>
+	<cfset request.muraHandledEvents["#variables.eventName#"]=true>
 </cffunction>
 
 <cffunction name="validate" output="false">
 <cfargument name="context">
 	<cfset var contexts=splitContexts(arguments.context)>
-	
-	<cfreturn variables.eventHandler.validate(event=contexts.event, mura=contexts.muraScope, $=contexts.muraScope)>
+	<cfset var verdict=variables.eventHandler.validate(event=contexts.event, mura=contexts.muraScope, $=contexts.muraScope)>
+	<cfset request.muraHandledEvents["#variables.eventName#"]=true>
+	<cfif isdefined("verdict")>
+		<cfreturn verdict>
+	</cfif>
 </cffunction>
 
 <cffunction name="translate" output="false">
 <cfargument name="context">
 	<cfset var contexts=splitContexts(arguments.context)>
-	
 	<cfset variables.eventHandler.translate(event=contexts.event, mura=contexts.muraScope, $=contexts.muraScope)>
+	<cfset request.muraHandledEvents["#variables.eventName#"]=true>
 </cffunction>
 
 </cfcomponent>

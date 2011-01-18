@@ -202,14 +202,24 @@ to your own modified versions of Mura CMS.
 <cffunction name="call" returntype="any" access="remote">
 <cfargument name="serviceName">
 <cfargument name="methodName">
-<cfargument name="authToken">
-<cfargument name="args">
+<cfargument name="authToken" default="">
+<cfargument name="args" default="#structNew()#">
 
 <cfset var event="">
 <cfset var service="">	
 
-<cfif len(arguments.authToken) and isValidSession(arguments.authToken)>
-	<cfset session.mura=getSession(arguments.authToken)>
+<cfif isJSON(arguments.args)>
+	<cfset arguments.args=deserializeJSON(arguments.args)>
+<cfelseif isWddx(arguments.args)>
+	<cfwddx action="wddx2cfml" input="#arguments.args#" output="arguments.args">
+</cfif>
+
+<cfif (isDefined("session.mura.isLoggedIn") and session.mura.isLoggedIn)
+		or (len(arguments.authToken) and isValidSession(arguments.authToken))>
+	
+	<cfif len(arguments.authToken)>
+		<cfset session.mura=getSession(arguments.authToken)>
+	</cfif>
 	
 	<cfif not isObject(arguments.args)>
 		<cfset event=createObject("component","mura.event")>
@@ -228,7 +238,10 @@ to your own modified versions of Mura CMS.
 		<cfinvokeargument name="event" value="#event#" />
 	</cfinvoke>
 	
-	<cfset application.loginManager.logout()>
+	<cfif len(arguments.authToken)>
+		<cfset application.loginManager.logout()>
+	</cfif>
+	
 	<cfreturn event.getValue("__response__")>
 
 <cfelse>

@@ -59,13 +59,14 @@ to your own modified versions of Mura CMS.
 		<cfargument name="key" type="string" required="true" />
 		<cfargument name="context" type="any" required="false" />
 		<cfargument name="isSoft" type="boolean" required="false" default="#variables.isSoft#">
+		<cfargument name="timespan" required="false" default="">
 		<cfset var hashKey = getHashKey( arguments.key ) />
 		
 		<!--- if the key cannot be found and context is passed then push it in --->
 		<cfif NOT has( arguments.key ) AND isDefined("arguments.context")>		
 			<cfif hasFreeMemoryAvailable()>
 				<!--- create object --->
-				<cfset set( key, arguments.context, arguments.isSoft ) />
+				<cfset set( key, arguments.context, arguments.isSoft, arguments.timespan ) />
 			<cfelse>
 				<cfreturn arguments.context>
 			</cfif>

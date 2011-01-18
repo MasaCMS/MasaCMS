@@ -115,6 +115,7 @@ to your own modified versions of Mura CMS.
 <cfset variables.instance.theme=""/> 
 <cfset variables.instance.contentRenderer=""/>
 <cfset variables.instance.themeRenderer="">
+<cfset variables.instance.hasChangesets=0>
 
 <cffunction name="init" returntype="any" output="false" access="public">
 <cfargument name="configBean" type="any" required="yes"/>
@@ -224,6 +225,7 @@ to your own modified versions of Mura CMS.
 			<cfset setMailServerSSL(arguments.data.mailserverSSL) />
 			<cfset setTheme(arguments.data.theme) />
 			<cfset setTagline(arguments.data.tagline) />
+			<cfset setHasChangesets(arguments.data.hasChangesets) />
 			
 		<cfelseif isStruct(arguments.data)>
 		
@@ -1152,6 +1154,9 @@ to your own modified versions of Mura CMS.
 		
 		<cfif directoryExists(dir)>
 			<cfdirectory action="list" directory="#dir#" name="rs" filter="*.cfm">
+			<cfquery name="rs" dbType="query">
+			select * from rs order by name
+			</cfquery>
 		<cfelse>
 			<cfset rs=queryNew("empty")>
 		</cfif>
@@ -1159,7 +1164,9 @@ to your own modified versions of Mura CMS.
 	<cfdefaultcase>
 		
 		<cfdirectory action="list" directory="#getTemplateIncludeDir()#" name="rs" filter="*.cfm">
-		
+		<cfquery name="rs" dbType="query">
+			select * from rs order by name
+		</cfquery>
 	</cfdefaultcase>
 	</cfswitch>
 	
@@ -1215,6 +1222,25 @@ to your own modified versions of Mura CMS.
 	</cfif>
 </cfif>
 <cfreturn variables.instance.themeRenderer>
+</cffunction>
+
+<cffunction name="getHasChangesets" returntype="Numeric" access="public" output="false">
+	<cfreturn variables.instance.hasChangesets />
+</cffunction>
+
+<cffunction name="setHasChangesets" access="public" output="false">
+	<cfargument name="hasChangesets" type="Numeric" />
+	<cfset variables.instance.hasChangesets = arguments.hasChangesets />
+	<cfreturn this>
+</cffunction>
+
+<cffunction name="exportHTML" output="false">
+	<cfargument name="exportDir">
+	<cfif isDefined("arguments.exportDir")>
+		<cfset getBean("HTMLExporter").export(getSiteID(),arguments.exportDir)>
+	<cfelse>
+		<cfset getBean("HTMLExporter").export(getSiteID(),getExportLocation())>
+	</cfif>
 </cffunction>
 
 </cfcomponent>

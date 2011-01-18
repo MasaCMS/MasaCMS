@@ -284,18 +284,19 @@ order by tformresponsepackets.entered asc
 <cfset finder=refind('\svalue="##.+?##"\s',body,1,"true")>
 </cfloop>
 
-<cfset body=rereplacenocase(arguments.preBody,'</FORM>','#formHTML#</FORM>')>
-<cfset body=rereplacenocase(body,'<FORM ','<FORM id="#frmID#" ')>
+<cfset body=rereplacenocase(arguments.preBody,'</form>','#formHTML#</form>')>
+<cfset body=rereplacenocase(body,'<form ','<form data-role="fieldcontain" id="#frmID#" ')>
 
 <cfsavecontent variable="frm"><cfoutput>
 #body#
 <script type="text/javascript">
 		var frm=document.getElementById('#frmID#');
-		frm.method='post';
-		frm.setAttribute('action','?nocache=1');
-		if( frm.getAttribute('onsubmit') == null || frm.getAttribute('onsubmit')=='')
-		{
-		frm.onsubmit=function(){return validateForm(this);}
+		if( frm.getAttribute('action') == null || frm.getAttribute('action')==''){
+			frm.setAttribute('action','?nocache=1');
+			frm.method='post';
+		}
+		if( frm.getAttribute('onsubmit') == null || frm.getAttribute('onsubmit')==''){
+			frm.onsubmit=function(){return validateForm(this);}
 		}
 		<cfif not(refind("Mac",cgi.HTTP_USER_AGENT) and refind("MSIE 5",cgi.HTTP_USER_AGENT))>	
 			<cfif arguments.responseChart>

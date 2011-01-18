@@ -56,6 +56,15 @@ to your own modified versions of Mura CMS.
 	<cfreturn this />
 </cffunction>
 
+<cffunction name="getMode" output="false" returntype="any">
+	<cfreturn variables.mode>
+</cffunction>
+
+<cffunction name="setMode" output="false" returntype="any">
+	<cfargument name="mode">
+	<cfset variables.mode=arguments.mode>
+</cffunction>
+
 <cffunction name="has" output="false" returntype="any">
 	<cfargument name="key">
 	<cfreturn variables.keys.hasValue(hash(arguments.key))>

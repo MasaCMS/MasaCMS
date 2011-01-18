@@ -35,9 +35,11 @@
 		<cfif len(event.getValue('linkServID'))>
 			<cfset event.setValue('contentBean',application.contentManager.getActiveContent(event.getValue('linkServID'),event.getValue('siteid'),true)) />
 		<cfelse>
-			<cfset event.setValue('contentBean',application.contentManager.getActiveContentByFilename(event.getValue('currentFilename'),event.getValue('siteid'),true)) />
+			<cfset event.setValue('contentBean',application.contentManager.getActiveContentByFilename(event.getValue('currentFilenameAdjusted'),event.getValue('siteid'),true)) />
 		</cfif>
 	</cfif>
+	
+	<cfset event.getValidator("standard404").validate(event)>
 	
 	<cfset event.setValue('forceSSL',event.getValue('contentBean').getForceSSL())/>
 	

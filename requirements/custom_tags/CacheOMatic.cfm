@@ -43,25 +43,28 @@ to your own modified versions of Mura CMS.
 
 <!--- Either the user provides a name or the tag
 uses the query string as the key --->
-
-<cfparam name="Attributes.key" default="#CGI.script_name##CGI.query_string#">
-<cfparam name="Attributes.expiration" default="#createTimeSpan(0,0,30,0)#">
-<cfparam name="Attributes.scope" default="application">
-<cfparam name="Attributes.nocache" default="0">
-<cfparam name="Attributes.siteid" default="#request.siteid#">
-<cfparam name="Attributes.cacheFactory" default="#application.settingsManager.getSite(request.siteid).getCacheFactory()#">
+<cfparam name="request.siteID" default="default">
+<cfparam name="attributes.key" default="#CGI.script_name##CGI.query_string#">
+<cfparam name="attributes.timespan" default="#createTimeSpan(0,0,30,0)#">
+<cfparam name="attributes.scope" default="application">
+<cfparam name="attributes.nocache" default="0">
+<cfparam name="attributes.siteid" default="#request.siteid#">
+<cfparam name="attributes.cacheFactory" default="#application.settingsManager.getSite(attributes.siteid).getCacheFactory()#">
 <cfparam name="request.forceCache" default="false">
 <cfparam name="request.cacheItem" default="true">
+<cfparam name="request.cacheItemTimeSpan" default="">
 
 <cfif not isBoolean(request.cacheItem)>
        <cfset request.cacheItem=true/>
 </cfif>
+
 <cfif thisTag.executionMode IS "Start">
        <cfset request.cacheItem=true/>
+	   <cfset request.cacheItemTimeSpan="">
 </cfif>
 
-<cfif request.cacheItem and NOT attributes.nocache AND (application.settingsManager.getSite(request.siteid).getCache()  OR request.forceCache IS true)>
-       <cfset cacheFactory=Attributes.cacheFactory/>
+<cfif request.cacheItem and NOT attributes.nocache AND (application.settingsManager.getSite(attributes.siteid).getCache()  OR request.forceCache IS true)>
+       <cfset cacheFactory=attributes.cacheFactory/>
        
        <cfif thisTag.executionMode IS "Start">
                <cfif cacheFactory.has( attributes.key )>
@@ -71,6 +74,10 @@ uses the query string as the key --->
                        <cfexit method="EXITTAG">      
                </cfif>
        <cfelse>        
-               <cfset cacheFactory.set( attributes.key ,thisTag.generatedContent)>
+			  <cfif isDate(request.cacheItemTimeSpan)>
+				 <cfset cacheFactory.set( attributes.key ,thisTag.generatedContent, true, request.cacheItemTimeSpan)>
+			  <cfelse>
+              	 <cfset cacheFactory.set( attributes.key ,thisTag.generatedContent, true, attributes.timespan)>
+			  </cfif>
        </cfif>
 </cfif>

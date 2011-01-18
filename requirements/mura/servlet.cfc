@@ -62,8 +62,6 @@ to your own modified versions of Mura CMS.
 	
 	<cfset event.getHandler("standardSetContent").handle(event)>
 	
-	<cfset event.getValidator("standard404").validate(event)>
-	
 	<cfset event.getValidator("standardWrongDomain").validate(event)> 
 	
 	<cfset event.getValidator("standardTrackSession").validate(event)>

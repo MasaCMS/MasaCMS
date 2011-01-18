@@ -59,15 +59,25 @@ to your own modified versions of Mura CMS.
 	<cfset var rs = "" />
 	
 	<cfquery name="rs" datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-	SELECT tusers.UserID, tusers.Email, tusers.GroupName, tusers.Type, tusers.LastLogin, tusers.LastUpdate, tusers.LastUpdateBy, tusers.LastUpdateByID, Count(tusersmemb.UserID) AS Counter, tusers.Perm, tusers.isPublic
-	FROM tusers LEFT JOIN tusersmemb ON tusers.UserID = tusersmemb.GroupID
+	SELECT tusers.UserID, tusers.Email, tusers.GroupName, tusers.Type, tusers.LastLogin, tusers.LastUpdate, tusers.LastUpdateBy, 
+	tusers.LastUpdateByID, memberQuery.Counter, tusers.Perm, tusers.isPublic
+	FROM tusers LEFT JOIN 
+	(select tusersmemb.groupID, count(tusersmemb.groupID) Counter
+	from tusersmemb inner join tusers on (tusersmemb.userID=tusers.userID)
+	where
+	tusers.siteid = <cfif arguments.isPublic eq 0 >
+		'#variables.settingsManager.getSite(arguments.siteid).getPrivateUserPoolID()#'
+		<cfelse>
+		'#variables.settingsManager.getSite(arguments.siteid).getPublicUserPoolID()#'
+		</cfif>
+	group by tusersmemb.groupID
+	) memberQuery ON tusers.UserID = memberQuery.GroupID
 	WHERE tusers.Type=1 and tusers.isPublic=<cfqueryparam cfsqltype="cf_sql_numeric" value="#arguments.isPublic#"> and 
 	tusers.siteid = <cfif arguments.isPublic eq 0 >
 		'#variables.settingsManager.getSite(arguments.siteid).getPrivateUserPoolID()#'
 		<cfelse>
 		'#variables.settingsManager.getSite(arguments.siteid).getPublicUserPoolID()#'
-		</cfif> 
-	GROUP BY tusers.UserID, tusers.Email, tusers.GroupName, tusers.Type, tusers.LastLogin, tusers.LastUpdate, tusers.LastUpdateBy, tusers.LastUpdateByID, tusers.perm, tusers.isPublic,tusers.siteid
+		</cfif>
 	Order by tusers.perm desc, tusers.GroupName
 	</cfquery>
 	

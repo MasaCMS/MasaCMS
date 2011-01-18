@@ -46,7 +46,6 @@ to your own modified versions of Mura CMS.
 <cfparam name="application.appReloadKey" default="appreload" />
 <cfparam name="application.broadcastInit" default="false" />
 <cfparam name="application.instanceID" default="#createUUID()#" />
-	
 <cfprocessingdirective pageencoding="utf-8"/>
 <cfsetting requestTimeout = "1000"> 
 	
@@ -150,11 +149,10 @@ to your own modified versions of Mura CMS.
 			<cfset variables.serviceFactory.setParent(parentServiceFactory)>
 		</cfif>
 		
-		
 		<cfset application.serviceFactory=variables.serviceFactory>
 		
 		<cfobjectcache action="clear" />
-		
+		 
 		<cfset application.configBean=variables.serviceFactory.getBean("configBean") />
 		<cfset application.configBean.set(variables.iniProperties)>
 		
@@ -167,7 +165,7 @@ to your own modified versions of Mura CMS.
 		
 		<cfset application.settingsManager=application.serviceFactory.getBean("settingsManager") />
 		<cfset application.pluginManager=application.serviceFactory.getBean("pluginManager") />
-		<cfset application.eventManager=application.pluginManager />
+		<cfset application.eventManager= application.pluginManager />
 		<cfset application.contentManager=application.serviceFactory.getBean("contentManager") />
 		<cfset application.utility=application.serviceFactory.getBean("utility") />
 		<cfset application.permUtility=application.serviceFactory.getBean("permUtility") />
@@ -193,13 +191,14 @@ to your own modified versions of Mura CMS.
 		<cfset application.rbFactory=application.serviceFactory.getBean("resourceBundleFactory") />
 		<cfset application.clusterManager=application.serviceFactory.getBean("clusterManager") />
 		<cfset application.contentServer=application.serviceFactory.getBean("contentServer") />
+		<cfset application.changesetManager=application.serviceFactory.getBean("changesetManager") />
 		<cfset application.autoUpdater=application.serviceFactory.getBean("autoUpdater") />
 		<cfset application.scriptProtectionFilter=application.serviceFactory.getBean("scriptProtectionFilter") >
 		
 		<!---settings.custom.managers.cfm reference is for backwards compatibility --->
 		<cfif fileExists(ExpandPath("/muraWRM/config/settings.custom.managers.cfm"))>
 			<cfinclude template="/muraWRM/config/settings.custom.managers.cfm">
-		</cfif>
+		</cfif>		
 					
 		<cfset baseDir=expandPath("/muraWRM")/>
 					
@@ -207,6 +206,10 @@ to your own modified versions of Mura CMS.
 			<cfset mapPrefix="$" />
 		<cfelse>
 			<cfset mapPrefix="" />
+		</cfif>
+		
+		<cfif len(application.configBean.getValue('encryptionKey'))>
+			<cfset application.encryptionKey=application.configBean.getValue('encryptionKey')>
 		</cfif>
 					
 		<cfdirectory action="list" directory="#mapPrefix##baseDir#/requirements/" name="rsRequirements">
@@ -225,6 +228,7 @@ to your own modified versions of Mura CMS.
 		<cfset application.broadcastInit=true/>
 		<cfset structDelete(application,"muraAdmin")>
 		<cfset structDelete(application,"proxyServices")>
+		<cfset structDelete(application,"CKFinderResources")>
 		
 		<!--- Set up scheduled tasks --->
 		<cfif (len(application.configBean.getServerPort())-1) lt 1>
@@ -240,7 +244,7 @@ to your own modified versions of Mura CMS.
 		</cfif>
 			
 		<cftry>
-			<cfif variables.ini.get(mode, "ping") eq 1>
+			<cfif variables.iniProperties.ping eq 1>
 				<cfschedule action = "update"
 					task = "#siteMonitorTask#"
 					operation = "HTTPRequest"

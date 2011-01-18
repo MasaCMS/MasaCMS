@@ -7,7 +7,7 @@
 		</ul>
 		<form action="" id="searchForm">
 			<fieldset>
-				<input type="text" name="Keywords" id="txtKeywords" class="text" value="Search" onfocus="this.value=(this.value=='Search') ? '' : this.value;" onblur="this.value=(this.value=='') ? 'Search' : this.value;" />
+				<input type="search" name="Keywords" id="txtKeywords" class="text" value="Search" onfocus="this.value=(this.value=='Search') ? '' : this.value;" onblur="this.value=(this.value=='') ? 'Search' : this.value;" />
 				<input type="hidden" name="display" value="search" />
 				<input type="hidden" name="newSearch" value="true" />
 				<input type="hidden" name="noCache" value="1" />

@@ -53,7 +53,7 @@
 
 
 	<!--- Temporary band aid to for property files that have pre-escapde charactars--->
-	<cfif listFindNoCase("fr,de,hu,en",lang)>
+	<cfif listFindNoCase("fr,de,hu,en,es",lang)>
 		<cfset loadResourceBundle() />
 	<cfelse>
 		<cfset loadResourceBundleUTF() />

@@ -42,59 +42,46 @@ to your own modified versions of Mura CMS.
 --->
 
 <cfsilent>
-	<!---<cfset addToHTMLHeadQueue("prototype.cfm")>
-	<cfset addToHTMLHeadQueue("scriptaculous.cfm")>
-	<cfset addToHTMLHeadQueue("shadowbox-prototype.cfm")>
-	<cfset addToHTMLHeadQueue("shadowbox.cfm")>--->
 	<cfquery datasource="#application.configBean.getDatasource()#" username="#application.configBean.getDBUsername()#" password="#application.configBean.getDBPassword()#" name="rsSection">select contentid,filename,menutitle,target,restricted,restrictgroups,type,sortBy,sortDirection from tcontent where siteid='#request.siteid#' and contentid='#arguments.objectid#' and approved=1 and active=1 and display=1</cfquery>
-	<cfif rsSection.recordcount>
-	<cfset menutype=iif(rsSection.type eq 'Portal',de('default'),de('calendar_features'))/>
-	<cfset rsPreFeatures=application.contentGateway.getkids('00000000000000000000000000000000000','#request.siteid#','#arguments.objectid#',menutype,now(),0,"",0,iif(rsSection.type eq 'Portal',de('#rsSection.sortBy#'),de('displaystart')),iif(rsSection.type eq 'Portal',de('#rsSection.sortDirection#'),de('desc')),'','#request.contentBean.getcontentID()#')>
+	<cfif variables.rsSection.recordcount>
+	<cfset variables.menutype=iif(variables.rsSection.type eq 'Portal',de('default'),de('calendar_features'))/>
+	<cfset rsPreFeatures=application.contentGateway.getkids('00000000000000000000000000000000000','#request.siteid#','#arguments.objectid#',variables.menutype,now(),0,"",0,iif(variables.rsSection.type eq 'Portal',de('#variables.rsSection.sortBy#'),de('displaystart')),iif(variables.rsSection.type eq 'Portal',de('#variables.rsSection.sortDirection#'),de('desc')),'','#request.contentBean.getcontentID()#')>
 		<cfif getSite().getExtranet() eq 1 and request.r.restrict eq 1>
-			<cfset rsFeatures=queryPermFilter(rsPreFeatures)/>
+			<cfset variables.rsFeatures=queryPermFilter(variables.rsPreFeatures)/>
 		<cfelse>
-			<cfset rsFeatures=rsPreFeatures/>
+			<cfset variables.rsFeatures=rsPreFeatures/>
 		</cfif>
 	</cfif>
 </cfsilent>
 <cfoutput>
-<cfif rsSection.recordcount and rsFeatures.recordcount>
+<cfif variables.rsSection.recordcount and variables.rsFeatures.recordcount>
 <cfsilent>
-	<cfset hasComments=application.contentGateway.getHasComments(request.siteid,arguments.objectid) />
-	<cfparam name="hasSummary" default="true"/>
-	<cfset cssID=createCSSID(rsSection.menuTitle)>
+	<cfset variables.iterator=$.getBean("contentIterator")>
+	<cfset variables.iterator.setQuery(rsFeatures)>
+	
+	<cfset variables.contentListType="Related">
+	<cfset variables.contentListFields="Title,Date,Image,Tags,Credits">
+	
+	<cfif application.contentGateway.getHasComments(request.siteid,arguments.objectid) >
+		<cfset variables.contentListFields=listAppend(variables.contentListFields,"Comments")>
+	</cfif>
+	
+	<cfif arguments.hasSummary >
+		<cfset variables.contentListFields=listAppend(variables.contentListFields,"Summary")>
+	</cfif>
+	
+	<cfset variables.cssID=createCSSID(variables.rsSection.menuTitle)>
 </cfsilent>
-<div id="#cssID#" class="svRelSecContent svIndex">
-<#getHeaderTag('subHead1')#>#rsSection.menutitle#</#getHeaderTag('subHead1')#>
-<cfloop query="rsFeatures">
-		<cfsilent>
-			<cfset class=iif(rsFeatures.currentrow eq 1,de('first'),de(iif(rsFeatures.currentrow eq rsFeatures.recordcount,de('last'),de(''))))>
-			<cfset hasImage=len(rsFeatures.fileID) and listFindNoCase("jpg,jpeg,png",rsFeatures.fileExt) />
-			
-			<cfif hasImage>
-				<cfset class=listAppend(class,"hasImage"," ")>
-			</cfif>
-			
-			<cfset link=addlink('#rsFeatures.type#','#rsFeatures.filename#','#rsFeatures.menutitle#','#rsFeatures.target#','#rsFeatures.targetParams#','#rsFeatures.contentid#','#request.siteid#','','#application.configBean.getContext()#','#application.configBean.getStub()#','')>
-			<cfif rsFeatures.type eq 'Page' and hasComments>
-				<cfset commentsLink=addlink('#rsFeatures.type#','#rsFeatures.filename#','Comments(#application.contentGateway.getCommentCount(request.siteid,rsFeatures.contentid)#)','#rsFeatures.target#','#rsFeatures.targetParams#','#rsFeatures.contentid#','#request.siteid#','##comments','#application.configBean.getContext()#','#application.configBean.getStub()#','')>
-			</cfif>
-		</cfsilent>
-		<dl<cfif class neq ''> class="#class#"</cfif>>
-		<cfif isDate(rsFeatures.releasedate) or menutype eq 'calendar_features'>
-		  <dt class="releaseDate"><cfif menutype neq 'calendar_features'>#LSDateFormat(rsFeatures.releasedate,getLongDateFormat())#<cfelse><cfif LSDateFormat(rsFeatures.displaystart,"short") lt LSDateFormat(rsFeatures.displaystop,"short")>#LSDateFormat(rsFeatures.displaystart,getShortDateFormat())#  - #LSDateFormat(rsFeatures.displaystop,getShortDateFormat())#<cfelse>#LSDateFormat(rsFeatures.displaystart,getLongDateFormat())#</cfif></cfif></dt>
-		</cfif>
-		<dt>#link#</dt>
-		<cfif hasImage>
-				<dd class="image">
-					<!---<a href="#application.configBean.getContext()#/tasks/render/file/index.cfm?fileID=#rsFeatures.FileID#&ext=.#rsFeatures.fileExt#" title="#HTMLEditFormat(rsFeatures.title)#" rel="shadowbox[#cssID#]">---><img src="#createHREFForImage(rsFeatures.siteID,rsFeatures.fileID,rsFeatures.fileExt,'small')#"/><!---</a>--->
-				</dd>
-		</cfif>
-		<cfif hasSummary or (rsFeatures.type eq 'Page' and  hasComments)><dd>#setDynamicContent(rsFeatures.summary)#<cfif hasComments><ul class="navComment"><li>#commentsLink#</li></ul></cfif></dd></cfif>
-		</dl>
-		</cfloop>
-		<dl class="moreResults">
-		<dt><a href="#application.configBean.getServerPort()##application.configBean.getContext()##application.contentRenderer.getURLStem(request.siteid,rsSection.filename)#">View All</a></dt></dl>
+<div id="#variables.cssID#" class="svRelSecContent svIndex">
+	<#getHeaderTag('subHead1')#>#rsSection.menutitle#</#getHeaderTag('subHead1')#>
+	#dspObject_Include(thefile='dsp_content_list.cfm',
+			fields=variables.contentListFields,
+			type=variables.contentListType, 
+			iterator= variables.iterator
+			)#
+	<dl class="moreResults">
+		<dt><a href="#application.configBean.getServerPort()##application.configBean.getContext()##application.contentRenderer.getURLStem(request.siteid,variables.rsSection.filename)#">View All</a></dt>
+	</dl>
 </div>
 <cfelse>
 	<!-- Empty Related Section Content '#rsSection.menutitle#' -->

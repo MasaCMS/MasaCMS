@@ -53,6 +53,7 @@
 		<cfargument name="key" type="string" required="true" />
 		
 		<cfset var hashedKey = getHashKey( arguments.key ) />
+		<cfset var cacheData=structNew()>
 		
 		<!--- check to see if the item is in the parent --->
 		<!--- only if a parent is present --->
@@ -63,13 +64,14 @@
 		<!--- check to make sure the key exists within the factory collection --->
 		<cfif has( arguments.key )>
 			<!--- if it's a soft reference then do a get against the soft reference --->
-			<cfif isSoftReference( variables.collection.get( getHashKey( arguments.key ) ) )>
+			<cfset cacheData=variables.collection.get( getHashKey( arguments.key ) )>
+			<cfif isSoftReference( cacheData.object )>
 				<!--- is it still a soft reference --->
 				<!--- if so then return it --->
-				<cfreturn variables.collection.get( getHashKey( arguments.key ) ).get() />
+				<cfreturn cacheData.object.get() />
 			<cfelse>
 				<!--- return the object from the factory collection --->
-				<cfreturn variables.collection.get( getHashKey( arguments.key ) ) />
+				<cfreturn cacheData.object />
 			</cfif>
 		</cfif>
 
@@ -84,21 +86,29 @@
 		<cfargument name="key" type="string" required="true" />
 		<cfargument name="obj" type="any" required="true" />
 		<cfargument name="isSoft" type="boolean" required="false" default="false" />
+		<cfargument name="timespan" required="false" default="">
 		
 		<cfset var softRef = "" />
 		<cfset var hashedKey = getHashKey( arguments.key ) />
-
+		<cfset var cacheData=structNew()>
+		
+		<cfif isDate(arguments.timespan)>
+			<cfset cacheData.expires=now() + arguments.timespan>
+		<cfelse>
+			<cfset cacheData.expires=dateAdd("yyyy",1,now())>
+		</cfif>
+		
 		<!--- check to see if this should be a soft reference --->
 		<cfif arguments.isSoft>
 			<!--- create the soft reference --->
-			<cfset softRef = createObject( "java", "java.lang.ref.SoftReference" ).init( arguments.obj ) />
-
-			<!--- assign object to main collection --->
-			<cfset variables.collection.put( hashedKey, softRef ) />
+			<cfset cacheData.object = createObject( "java", "java.lang.ref.SoftReference" ).init( arguments.obj ) />
 		<cfelse>
 			<!--- assign object to main collection --->
-			<cfset variables.collection.put( hashedKey, arguments.obj ) />
+			<cfset cacheData.object =arguments.obj>
 		</cfif>
+		
+		<!--- assign object to main collection --->
+		<cfset variables.collection.put( hashedKey, cacheData ) />
 
 	</cffunction>
 	
@@ -111,15 +121,21 @@
 
 		<cfset var refLocal = structnew() />
 		<cfset var hashLocal=getHashKey( arguments.key ) />
+		<cfset var cacheData=""/>
 		<cfset refLocal.tmpObj=0 />
-
+		
 		<!--- Check for Object in Cache. --->
 		<cfif structKeyExists( variables.collection , hashLocal ) >
-			<cfif isSoftReference( variables.collection.get( hashLocal ) ) >
-				<cfset refLocal.tmpObj = variables.collection.get( hashLocal ).get() />
-				<cfreturn structKeyExists(refLocal, "tmpObj") />
+			<cfset cacheData=variables.collection.get( hashLocal )>
+			<cfif cacheData.expires gt now()>
+				<cfif isSoftReference( cacheData.object ) >
+					<cfset refLocal.tmpObj =cacheData.object.get() />
+					<cfreturn structKeyExists(refLocal, "tmpObj") />
+				</cfif>
+				<cfreturn true />
+			<cfelse>
+				<cfreturn false>
 			</cfif>
-			<cfreturn true />
 		<cfelse>
 			<cfreturn false />
 		</cfif>	

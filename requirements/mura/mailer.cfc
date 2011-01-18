@@ -114,7 +114,7 @@ to your own modified versions of Mura CMS.
 
 	<cfset tmt_mail_body = "">
 	<cfset tmt_cr = Chr(13) & Chr(10)>
-	<cfset tmt_mail_head = "This form was sent at: #LSDateFormat(Now())# #LSTimeFormat(Now(),'short')#">
+	<cfset tmt_mail_head = "This form was sent at: #LSDateFormat(Now())# #LSTimeFormat(Now(),'short')# #tmt_cr#">
 	<cfloop index="form_element" list="#fields.fieldnames#">
 	
 		<cfif form_element neq 'siteid' 
@@ -196,7 +196,6 @@ to your own modified versions of Mura CMS.
 <cfargument name="subject" type="string" default="">
 <cfargument name="siteid" type="string" default="">
 <cfargument name="replyTo" type="string" default="">
-<cfargument name="failto" type="string" default="">
 <cfargument name="mailerID" type="string" default="">
 <cfargument name="bcc" type="string" required="true" default="">
 
@@ -278,7 +277,6 @@ to your own modified versions of Mura CMS.
 <cfargument name="subject" type="string" default="">
 <cfargument name="siteid" type="string" default="">
 <cfargument name="replyTo" type="string" default="">
-<cfargument name="failto" type="string" default="">
 <cfargument name="mailerID" type="string" default="">
 <cfargument name="bcc" type="string" required="true" default="">
 

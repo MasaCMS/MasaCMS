@@ -64,6 +64,7 @@ to your own modified versions of Mura CMS.
 			<constructor-arg name="fileManager"><ref bean="fileManager" /></constructor-arg>
 			<constructor-arg name="pluginManager"><ref bean="pluginManager" /></constructor-arg>
 			<constructor-arg name="trashManager"><ref bean="trashManager" /></constructor-arg>
+			<constructor-arg name="changesetManager"><ref bean="changesetManager" /></constructor-arg>
 		</bean>
 		<bean id="contentGateway" class="mura.content.contentGateway" singleton="true">
 			<constructor-arg name="configBean"><ref bean="configBean" /></constructor-arg>
@@ -104,6 +105,13 @@ to your own modified versions of Mura CMS.
 			<constructor-arg name="utility"><ref bean="utility" /></constructor-arg>
 			<constructor-arg name="contentDAO"><ref bean="contentDAO" /></constructor-arg>
 			<constructor-arg name="contentManager"><ref bean="contentManager" /></constructor-arg>
+		</bean>
+		<bean id="HTMLExporter" class="mura.content.contentHTMLExporter" singleton="true">
+			<constructor-arg name="configBean"><ref bean="configBean" /></constructor-arg>
+			<constructor-arg name="settingsManager"><ref bean="settingsManager" /></constructor-arg>
+			<constructor-arg name="contentManager"><ref bean="contentManager" /></constructor-arg>
+			<constructor-arg name="utility"><ref bean="utility" /></constructor-arg>
+			<constructor-arg name="fileWriter"><ref bean="fileWriter" /></constructor-arg>
 		</bean>
 		<bean id="fileManager" class="mura.content.file.fileManager" singleton="true" >
 			<constructor-arg name="fileDAO"><ref bean="fileDAO" /></constructor-arg>
@@ -200,6 +208,9 @@ to your own modified versions of Mura CMS.
 			<constructor-arg name="configBean"><ref bean="configBean" /></constructor-arg>
 			<constructor-arg name="clusterManager"><ref bean="clusterManager" /></constructor-arg>
 		</bean>
+		<bean id="settingsBundle" class="mura.settings.settingsBundle" singleton="true">
+            <constructor-arg name="configBean"><ref bean="configBean" /></constructor-arg>
+        </bean>
 		<bean id="userManager" class="mura.user.userManager" singleton="true">
 			<constructor-arg name="configBean"><ref bean="configBean" /></constructor-arg>
 			<constructor-arg name="userDAO"><ref bean="userDAO" /></constructor-arg>
@@ -528,16 +539,44 @@ to your own modified versions of Mura CMS.
 			    <ref bean="configBean"/>
 			</property>
 		</bean>
+		<bean id="changesetManager" class="mura.content.changeset.changesetManager" singleton="true">
+			<property name="configBean">
+			    <ref bean="configBean"/>
+			</property>
+			<property name="contentManager">
+			    <ref bean="contentManager"/>
+			</property>
+			<property name="trashManager">
+			    <ref bean="trashManager"/>
+			</property>
+		</bean>
+		<bean id="changesetBean" class="mura.content.changeset.changesetBean" singleton="false">
+			<constructor-arg name="changesetManager"><ref bean="changesetManager" /></constructor-arg>
+		</bean>
+		<bean id="changesetIterator" class="mura.content.changeset.changesetIterator" singleton="false">
+			<property name="changesetManager">
+			    <ref bean="changesetManager"/>
+			</property>
+		</bean>
 		<bean id="scriptProtectionFilter" class="mura.Portcullis" singleton="true" />
 		<bean id="MuraScope" class="mura.MuraScope" singleton="false"/>
+		<bean id="HTTPSession" class="mura.http.httpSession" singleton="false">
+			<constructor-arg name="configBean"><ref bean="configBean" /></constructor-arg>
+		</bean>
+		<bean id="httpSession" class="mura.client.httpSession" singleton="false">
+			<constructor-arg name="configBean"><ref bean="configBean" /></constructor-arg>
+		</bean>
 		<alias name="contentBean" alias="content"/>
 		<alias name="feedBean" alias="feed"/>
 		<alias name="userBean" alias="user"/>
+		<alias name="userBean" alias="group"/>
 		<alias name="addressBean" alias="address"/>
 		<alias name="categoryBean" alias="category"/>
 		<alias name="userFeedBean" alias="userFeed"/>
 		<alias name="contentCommentBean" alias="comment"/>
+		<alias name="changesetBean" alias="changeset"/>
 		<alias name="pluginManager" alias="eventManager"/>
+		<alias name="settingsBundle" alias="bundle"/>
 		<!---coldspring.custom.xml.cfm reference is for backwards compatability --->
 		<cfif not servicesLoaded and fileExists(expandPath("/muraWRM/config/coldspring.custom.xml.cfm"))><cfinclude template="/muraWRM/config/coldspring.custom.xml.cfm"></cfif>
 	</beans></cfoutput>

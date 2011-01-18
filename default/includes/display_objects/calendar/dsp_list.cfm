@@ -42,122 +42,73 @@ to your own modified versions of Mura CMS.
 --->
 
 <cfsilent>
-<!---<cfset loadShadowBoxJS() />--->
-<cfset hasComments=application.contentGateway.getHasComments(event.getValue('siteid'),event.getContentBean().getContentID()) />
-<cfset hasRatings=application.contentGateway.getHasRatings(event.getValue('siteid'),event.getContentBean().getContentID()) />
-<cfset iterator=application.serviceFactory.getBean("contentIterator")>
-<cfset iterator.setQuery(rsSection,request.contentBean.getNextN())>
+<cfset variables.iterator=application.serviceFactory.getBean("contentIterator")>
+<cfset variables.iterator.setQuery(variables.rsSection,request.contentBean.getNextN())>
 
 <cfset event.setValue("currentNextNID",event.getContentBean().getContentID())>
 
 <cfif not len(event.getValue("nextNID")) or event.getValue("nextNID") eq event.getValue("currentNextNID")>
 	<cfif event.getContentBean().getNextN() gt 1>
-		<cfset currentNextNIndex=event.getValue("startRow")>
-		<cfset iterator.setStartRow(currentNextNIndex)>
+		<cfset variables.currentNextNIndex=event.getValue("startRow")>
+		<cfset variables.iterator.setStartRow(variables.currentNextNIndex)>
 	<cfelse>
-		<cfset currentNextNIndex=event.getValue("pageNum")>
-		<cfset iterator.setPage(currentNextNIndex)>
+		<cfset variables.currentNextNIndex=event.getValue("pageNum")>
+		<cfset variables.iterator.setPage(variables.currentNextNIndex)>
 	</cfif>
 <cfelse>	
-	<cfset currentNextNIndex=1>
-	<cfset iterator.setPage(1)>
+	<cfset variables.currentNextNIndex=1>
+	<cfset variables.iterator.setPage(1)>
 </cfif>
 
 <cfset variables.nextN=application.utility.getNextN(rsSection,event.getContentBean().getNextN(),currentNextNIndex)>
 
-</cfsilent>
-<!---
-<div id="svCalendar" class="svCalendar">
-<cfoutput>
-<table>
-<tr>
-<th title="#dateLong#" id="previousMonth"><a href="?month=#previousmonth#&year=#previousyear#&categoryID=#htmlEditFormat(request.categoryID)#&relatedID=#htmlEditFormat(request.relatedID)#&filterBy=releaseMonth">&laquo;</a></th>
-<th colspan="5">#dateLong#</th>
-<th id="nextMonth"><a href="?month=#nextmonth#&year=#nextyear#&categoryID=#htmlEditFormat(request.categoryID)#&relatedID=#htmlEditFormat(request.relatedID)#&filterBy=releaseMonth">&raquo;</a></th>
-</tr>
-</table>
-</div>
-</cfoutput>--->
-<cfif iterator.getRecordcount()>
-<div id="svPortal" class="svIndex">
-		<cfloop condition="iterator.hasNext()">
-		<cfsilent>
-		<cfset item=iterator.next()>
-		<cfset class=""/>
-		<cfif not iterator.hasPrevious()> 
-			<cfset class=listAppend(class,"first"," ")/> 
-		</cfif>
-		<cfif not iterator.hasNext()> 
-			<cfset class=listAppend(class,"last"," ")/> 
-		</cfif>
-		
-		<cfset link=addlink(item.getValue('type'),item.getValue('filename'),item.getValue('menutitle'),item.getValue('target'),item.getValue('targetparams'),item.getValue('contentID'),item.getValue('siteID'),'',application.configBean.getContext(),application.configBean.getStub(),application.configBean.getIndexFile())>
-		
-		<cfif hasComments and (item.getValue('type') eq 'Page' or showItemMeta(item.getValue('type')) or (len(item.getValue('fileID')) and showItemMeta(item.getValue('fileEXT')))) >
-		<cfset commentsLink=addlink(item.getValue('type'),item.getValue('filename'),'#rbFactory.getKey("list.comments")#(#application.contentGateway.getCommentCount(request.siteid,item.getValue('contentID'))#)',item.getValue('target'),item.getValue('targetparams'),item.getValue('contentID'),request.siteid,'##comments',application.configBean.getContext(),application.configBean.getStub(),application.configBean.getIndexFile())>
-		<cfelse>
-		<cfset commentsLink="">
-		</cfif>
-		
-		<cfset hasImage=len(item.getValue('fileID')) and showImageInList(item.getValue('fileEXT')) />
-		
-		<cfif hasImage>
-			<cfset class=listAppend(class,"hasImage"," ")>
-		</cfif>
-		
-		</cfsilent>
-		<cfoutput>
-		<dl class="clearfix<cfif class neq ''> #class#</cfif>">
-		<dt class="releaseDate"><cfif LSDateFormat(item.getValue('displayStart'),"short") lt LSDateFormat(item.getValue('displayStop'),"short")>#LSDateFormat(item.getValue('displayStart'),getShortDateFormat())# - #LSDateFormat(item.getValue('displayStop'),getShortDateFormat())#<cfelse>#LSDateFormat(item.getValue('displayStart'),getLongDateFormat())#</cfif></dt>
-		<dt>#link#</dt>
-		<cfif hasImage>
-		<dd class="image">
-			<a href="#createHREF(item.getValue('type'),item.getValue('filename'),item.getValue('siteID'),item.getValue('contentID'),item.getValue('target'),item.getValue('targetparams'),"",application.configBean.getContext(),application.configBean.getStub(),application.configBean.getIndexFile())#" title="#HTMLEditFormat(item.getValue('title'))#"><img src="#createHREFForImage(item.getValue('siteID'),item.getValue('fileID'),item.getValue('fileEXT'),'small')#"  alt="#htmlEditFormat(item.getValue('title'))#"/></a>
-		</dd>
-		</cfif>
-	 	<cfif len(item.getValue('summary'))>
-	 	<dd class="summary">#setDynamicContent(item.getValue('summary'))# <span class="readMore">#addlink(item.getValue('type'),item.getValue('filename'),rbFactory.getKey('list.readmore'),item.getValue('target'),item.getValue('targetparams'),item.getValue('contentID'),item.getValue('siteID'),'',application.configBean.getContext(),application.configBean.getStub(),application.configBean.getIndexFile())#</span></dd>
-	 	</cfif>
-	 	<cfif len(item.getValue('credits'))>
-	 	<dd class="credits">#rbFactory.getKey('list.by')# #HTMLEditFormat(item.getValue('credits'))#</dd>
-	 	</cfif>
-	 	<cfif len(commentsLink)>
-	 	<dd class="comments">#commentsLink#</dd>
-	 	</cfif>
-	 	<cfif len(item.getValue('tags'))>
-	 	<dd class="tags"><cfmodule template="#getSite(event.getValue('siteid')).getIncludePath()#/includes/display_objects/nav/dsp_tag_line.cfm" tags="#item.getValue('tags')#"></dd>
-	 	</cfif>
-	 	<cfif hasRatings and (item.getValue('type') eq 'Page' or showItemMeta(item.getValue('type')) or (len(item.getValue('fileID')) and showItemMeta(item.getValue('fileEXT'))))>
-		<!--- rating#replace(rateBean.getRate(),".","")# --->
-	 	<dd class="rating #application.raterManager.getStarText(item.getValue('rating'))#">#rbFactory.getKey('list.rating')#: <span><cfif isNumeric(item.getValue('rating'))>#item.getValue('rating')# star<cfif item.getValue('rating') gt 1>s</cfif> <cfelse>Zero stars</cfif></span></dd>	 	
-	 	</cfif>
-	 	</dl>
-	 	</cfoutput>
-	 	</cfloop>
-	
-	<cfif variables.nextn.numberofpages gt 1>
-		<cfoutput>#dspObject_Include(thefile='dsp_nextN.cfm')#</cfoutput>
-	</cfif>	
-</div>
+<cfset variables.contentListType="Calendar">
+<cfset variables.contentListFields="Title,Summary,Date,Image,Tags,Credits">
+
+<cfif application.contentGateway.getHasComments(event.getValue('siteid'),event.getContentBean().getContentID())>
+	<cfset variables.contentListFields=listAppend(variables.contentListFields,"Comments")>
 </cfif>
 
-<cfif not iterator.getRecordCount()>
-       <cfoutput>
-       <cfif request.filterBy eq "releaseMonth">
-            <div id="svPortal">
-            <br>
-            <p>#rbFactory.getKey('list.nocontentmonth')#</p>    
-            </div>
-       <cfelseif request.filterBy eq "releaseDate">
-            <div id="svPortal">
-            <br>
-            <p>#rbFactory.getKey('list.nocontentday')#</p>
-            </div>
-       <cfelse>
-            <div id="svPortal">
-            <p>#rbFactory.getKey('list.nocontent')#</p>   
-            </div>
-       </cfif>
-       </cfoutput>
+<cfif application.contentGateway.getHasRatings(event.getValue('siteid'),event.getContentBean().getContentID())>
+	<cfset variables.contentListFields=listAppend(variables.contentListFields,"Rating")>
 </cfif>
-	
+
+</cfsilent>
+
+<cfif variables.iterator.getRecordcount()>
+	<cfoutput>
+	<div id="svPortal" class="svIndex">
+			
+		#dspObject_Include(
+			thefile='dsp_content_list.cfm',
+			fields=variables.contentListFields,
+			type=variables.contentListType, 
+			iterator= variables.iterator
+			)#
+		 
+		<cfif variables.nextn.numberofpages gt 1>
+			#dspObject_Include(thefile='dsp_nextN.cfm')#
+		</cfif>	
+	</div>
+	</cfoutput>
+</cfif>
+
+<cfif not variables.iterator.getRecordCount()>
+     <cfoutput>
+     <cfif request.filterBy eq "releaseMonth">
+     <div id="svPortal">
+	     <br>
+	     <p>#rbFactory.getKey('list.nocontentmonth')#</p>    
+     </div>
+     <cfelseif request.filterBy eq "releaseDate">
+     <div id="svPortal">
+	     <br>
+	     <p>#rbFactory.getKey('list.nocontentday')#</p>
+     </div>
+     <cfelse>
+     <div id="svPortal">
+         <p>#rbFactory.getKey('list.nocontent')#</p>   
+     </div>
+     </cfif>
+     </cfoutput>
+</cfif>

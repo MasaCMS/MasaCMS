@@ -40,7 +40,11 @@
 
 		<cfswitch expression="#arguments.theaction#">
 			<cfcase value="login">
-				<cfset createObject("component","#application.configBean.getWebRootMap()#.#event.getValue('siteid')#.includes.loginHandler").init().handleLogin(event.getAllValues())>
+				<cfif fileExists(expandPath("#application.configBean.getWebRootMap()#/#event.getValue('siteid')#/includes/loginHandler.cfc"))>
+					<cfset createObject("component","#application.configBean.getWebRootMap()#.#event.getValue('siteid')#.includes.loginHandler").init().handleLogin(event.getAllValues())>
+				<cfelse>
+					<cfset application.loginManager.login(event.getAllValues(),'') />
+				</cfif>
 			</cfcase>
 			
 			<cfcase value="return">
@@ -54,6 +58,7 @@
 			
 			<cfcase value="updateprofile">
 				<cfif session.mura.isLoggedIn>
+					<cfset arguments.event.setValue("userID",session.mura.userID)>
 					<cfif isDefined('request.addressAction')>
 						<cfif event.getValue('addressAction') eq "create">
 							<cfset application.userManager.createAddress(event.getAllValues())>
@@ -76,7 +81,8 @@
 			
 			<cfcase value="createprofile">
 				<cfif application.settingsManager.getSite(event.getValue('siteid')).getextranetpublicreg() eq 1>
-				
+					<cfset arguments.event.setValue("userID","")>
+					
 					<cfif event.valueExists("useProtect")>
 						<cfset event.setValue("passedProtect",application.utility.cfformprotect(event))>
 					</cfif>

@@ -47,22 +47,22 @@ to your own modified versions of Mura CMS.
 		<cfset bean = $.getBean("content").loadBy(title=arguments.objectID,siteID=arguments.siteID)>
 	</cfif>
 	
-	<cfset rsTemplate=bean.getAllValues()>
+	<cfset variables.rsTemplate=bean.getAllValues()>
 	
-	<cfset _component=event.getValue("component")>
+	<cfset variables._component=event.getValue("component")>
 	
-	<cfif isStruct(_component)>
-		<cfset structAppend(_component,rsTemplate,true)>
+	<cfif isStruct(variables._component)>
+		<cfset structAppend(variables._component,variables.rsTemplate,true)>
 	<cfelse>
-		<cfset event.setValue("component",rsTemplate)>
+		<cfset event.setValue("component",variables.rsTemplate)>
 	</cfif>
 	
-	<cfset rsTemplate.isOnDisplay=rsTemplate.display eq 1 or 
+	<cfset variables.rsTemplate.isOnDisplay=variables.rsTemplate.display eq 1 or 
 			(
-				rsTemplate.display eq 2 and rsTemplate.DisplayStart lte now()
-				AND (rsTemplate.DisplayStop gte now() or rsTemplate.DisplayStop eq "")
+				variables.rsTemplate.display eq 2 and variables.rsTemplate.DisplayStart lte now()
+				AND (variables.rsTemplate.DisplayStop gte now() or variables.rsTemplate.DisplayStop eq "")
 			)
-			and listFind(rsTemplate.moduleAssign,'00000000000000000000000000000000000')>
+			and listFind(variables.rsTemplate.moduleAssign,'00000000000000000000000000000000000')>
 
 	
 	<cfset editableControl.editLink = "">
@@ -76,15 +76,15 @@ to your own modified versions of Mura CMS.
 		<cfset addToHTMLHeadQueue('editableObjects.cfm')>
 		<cfif len(application.configBean.getAdminDomain())>
 			<cfif application.configBean.getAdminSSL()>
-				<cfset adminBase="https://#application.configBean.getAdminDomain()#"/>
+				<cfset variables.adminBase="https://#application.configBean.getAdminDomain()#"/>
 			<cfelse>
-				<cfset adminBase="http://#application.configBean.getAdminDomain()#"/>
+				<cfset variables.adminBase="http://#application.configBean.getAdminDomain()#"/>
 			</cfif>
 		<cfelse>
-			<cfset adminBase=""/>
+			<cfset variables.adminBase=""/>
 		</cfif>
 		
-		<cfset editableControl.editLink = adminBase & "#application.configBean.getContext()#/admin/index.cfm?fuseaction=cArch.edit">
+		<cfset editableControl.editLink = variables.adminBase & "#application.configBean.getContext()#/admin/index.cfm?fuseaction=cArch.edit">
 		<cfif structKeyExists(request,"previewID") and len(request.previewID)>
 			<cfset editableControl.editLink = editableControl.editLink & "&amp;contenthistid=" & request.previewID>
 		<cfelse>
@@ -118,16 +118,16 @@ to your own modified versions of Mura CMS.
 <cfif editableControl.innerHTML neq "">
 	<cfoutput>#renderEditableObjectHeader("editableComponent")#</cfoutput>
 </cfif>
-<cfif rsTemplate.isOnDisplay>
-	<cfset componentOutput=application.pluginManager.renderEvent("onComponent#bean.getSubType()#BodyRender",event)>
-	<cfif len(componentOutput)>
-		<cfoutput>#componentOutput#</cfoutput>
+<cfif variables.rsTemplate.isOnDisplay>
+	<cfset variables.componentOutput=application.pluginManager.renderEvent("onComponent#bean.getSubType()#BodyRender",event)>
+	<cfif len(variables.componentOutput)>
+		<cfoutput>#variables.componentOutput#</cfoutput>
 		<cfelse>
-		<cfif len(rsTemplate.template) and fileExists("#getSite().getTemplateIncludeDir()#/components/#rsTemplate.template#")>
-			<cfset componentBody=rsTemplate.body>
-			<cfinclude template="#getSite().getTemplateIncludePath()#/components/#rsTemplate.template#">
+		<cfif len(variables.rsTemplate.template) and fileExists("#getSite().getTemplateIncludeDir()#/components/#variables.rsTemplate.template#")>
+			<cfset variables.componentBody=variables.rsTemplate.body>
+			<cfinclude template="#getSite().getTemplateIncludePath()#/components/#variables.rsTemplate.template#">
 		<cfelse>
-			<cfoutput>#setDynamicContent(rsTemplate.body)#</cfoutput>
+			<cfoutput>#setDynamicContent(variables.rsTemplate.body)#</cfoutput>
 		</cfif>
 	</cfif>
 </cfif>
@@ -135,4 +135,4 @@ to your own modified versions of Mura CMS.
 	<cfoutput>#renderEditableObjectFooter(editableControl.innerHTML)#</cfoutput>
 </cfif>
 
-<cfset request.cacheItem=rsTemplate.doCache/>
+<cfset request.cacheItem=variables.rsTemplate.doCache/>

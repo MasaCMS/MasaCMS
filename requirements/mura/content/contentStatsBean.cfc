@@ -84,7 +84,7 @@
 <cffunction name="setViews" access="public" output="false">
 	<cfargument name="views" />
 	<cfif isNumeric(arguments.views)>
-	<cfset variables.instance.ColumnNumber = arguments.views />
+	<cfset variables.instance.views = arguments.views />
 	</cfif>
 </cffunction>
 

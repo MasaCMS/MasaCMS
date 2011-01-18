@@ -43,7 +43,7 @@ to your own modified versions of Mura CMS.
 
 <cfcomponent extends="mura.cfobject" output="false">
 
-<cfset variables.fieldlist="categoryID,siteID,dateCreated,lastUpdate,lastUpdateBy,name,isInterestGroup,parentID,isActive,isOpen,notes,sortBy,sortDirection,restrictGroups,path,remoteID,remoteSourceURL,remotePubDate">
+<cfset variables.fieldlist="categoryID,siteID,dateCreated,lastUpdate,lastUpdateBy,name,isInterestGroup,parentID,isActive,isOpen,notes,sortBy,sortDirection,restrictGroups,path,remoteID,remoteSourceURL,remotePubDate,urlTitle,filename">
 
 <cffunction name="init" returntype="any" output="false" access="public">
 <cfargument name="configBean" type="any" required="yes"/>
@@ -66,7 +66,7 @@ to your own modified versions of Mura CMS.
 	 
 	<cfquery datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	insert into tcontentcategories (categoryID,siteid,parentID,dateCreated,lastupdate,lastupdateBy,
-	name,notes,isInterestGroup,isActive,isOpen,sortBy,sortDirection,restrictgroups,path,remoteID,remoteSourceURL,remotePubDate)
+	name,notes,isInterestGroup,isActive,isOpen,sortBy,sortDirection,restrictgroups,path,remoteID,remoteSourceURL,remotePubDate,urltitle,filename)
 	values (
 	'#arguments.categoryBean.getCategoryID()#',
 	<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.categoryBean.getSiteID() neq '',de('no'),de('yes'))#" value="#arguments.categoryBean.getsiteID()#">,
@@ -85,7 +85,9 @@ to your own modified versions of Mura CMS.
 	<cfqueryparam cfsqltype="cf_sql_longvarchar" null="#iif(arguments.categoryBean.getPath() neq '',de('no'),de('yes'))#" value="#arguments.categoryBean.getPath()#">,
 	<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.categoryBean.getRemoteID() neq '',de('no'),de('yes'))#" value="#arguments.categoryBean.getRemoteID()#">,
 	<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.categoryBean.getRemoteSourceURL() neq '',de('no'),de('yes'))#" value="#arguments.categoryBean.getRemoteSourceURL()#">,
-	<cfqueryparam cfsqltype="cf_sql_timestamp" null="#iif(arguments.categoryBean.getRemotePubDate() neq '',de('no'),de('yes'))#" value="#arguments.categoryBean.getRemotePubDate()#">)
+	<cfqueryparam cfsqltype="cf_sql_timestamp" null="#iif(arguments.categoryBean.getRemotePubDate() neq '',de('no'),de('yes'))#" value="#arguments.categoryBean.getRemotePubDate()#">,
+	<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.categoryBean.getURLTitle() neq '',de('no'),de('yes'))#" value="#arguments.categoryBean.getURLTitle()#">,
+	<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.categoryBean.getFilename() neq '',de('no'),de('yes'))#" value="#arguments.categoryBean.getFilename()#">)
 	</cfquery>
 
 </cffunction> 
@@ -125,6 +127,59 @@ to your own modified versions of Mura CMS.
 	#variables.fieldlist#
 	from tcontentcategories where 
 	name=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.name#" />
+	and siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#" />
+	</cfquery>
+	
+	<cfif rs.recordcount gt 1>
+		<cfset utility=getServiceFactory().getBean("utility")>
+		<cfloop query="rs">
+			<cfset categoryBean=getbean().set(utility.queryRowToStruct(rs,rs.currentrow))>
+			<cfset categoryBean.setIsNew(0)>
+			<cfset arrayAppend(beanArray,categoryBean)>		
+		</cfloop>
+		<cfreturn beanArray>
+	<cfelseif rs.recordcount>
+		<cfset categoryBean.set(rs) />
+		<cfset categoryBean.setIsNew(0)>
+	</cfif>
+	
+	<cfreturn categoryBean />
+</cffunction>
+
+<cffunction name="readByFilename" access="public" output="false" returntype="any" >
+	<cfargument name="filename" type="string" />
+	<cfargument name="siteID" type="string" />
+
+	<cfset var categoryBean=getBean() />
+	<cfset var rs ="" />
+	<cfset var beanArray=arrayNew(1)>
+	<cfset var utility="">
+	
+	<cfif arguments.filename eq "/">
+		<cfset arguments.filename="">
+	<cfelse>
+		<cfif left(arguments.filename,1) eq "/">
+			<cfif len(arguments.filename) gt 1>
+				<cfset arguments.filename=right(arguments.filename,len(arguments.filename)-1)>
+			<cfelse>
+				<cfset arguments.filename="">
+			</cfif>
+		</cfif>
+			
+		<cfif right(arguments.filename,1) eq "/">
+			<cfif len(arguments.filename) gt 1>
+				<cfset arguments.filename=left(arguments.filename,len(arguments.filename)-1)>
+			<cfelse>
+				<cfset arguments.filename="">
+			</cfif>
+		</cfif>
+	</cfif>
+	
+	<cfquery name="rs" datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+	Select
+	#variables.fieldlist#
+	from tcontentcategories where 
+	filename=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.filename#" />
 	and siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#" />
 	</cfquery>
 	
@@ -234,7 +289,9 @@ to your own modified versions of Mura CMS.
 	path= <cfqueryparam cfsqltype="cf_sql_longvarchar" null="#iif(arguments.categoryBean.getPath() neq '',de('no'),de('yes'))#" value="#arguments.categoryBean.getPath()#">,
 	remoteID= <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.categoryBean.getRemoteID() neq '',de('no'),de('yes'))#" value="#arguments.categoryBean.getRemoteID()#">,
 	remoteSourceURL= <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.categoryBean.getRemoteSourceURL() neq '',de('no'),de('yes'))#" value="#arguments.categoryBean.getRemoteSourceURL()#">,
-	remotePubDate=<cfqueryparam cfsqltype="cf_sql_timestamp" null="#iif(arguments.categoryBean.getRemotePubDate() neq '',de('no'),de('yes'))#" value="#arguments.categoryBean.getRemotePubDate()#">
+	remotePubDate=<cfqueryparam cfsqltype="cf_sql_timestamp" null="#iif(arguments.categoryBean.getRemotePubDate() neq '',de('no'),de('yes'))#" value="#arguments.categoryBean.getRemotePubDate()#">,
+	urlTitle=<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.categoryBean.getURLTitle() neq '',de('no'),de('yes'))#" value="#arguments.categoryBean.getURLTitle()#">,
+	filename=<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.categoryBean.getFilename() neq '',de('no'),de('yes'))#" value="#arguments.categoryBean.getFilename()#">
 	where categoryID =<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.categoryBean.getCategoryID()#" />
 	</cfquery>
 

@@ -62,10 +62,12 @@ to your own modified versions of Mura CMS.
 <cfset this.renderHTMLHead=true/>
 <cfset this.enableMuraTag=getConfigBean().getEnableMuraTag() />
 <cfset this.crumbdata=arrayNew(1)/>
+<cfset this.listFormat="dl">
 <cfset this.headline="h2"/>
 <cfset this.subHead1="h3"/>
 <cfset this.subHead2="h4"/>
 <cfset this.subHead3="h5"/>
+<cfset this.subHead4="h6">
 
 <cffunction name="init" returntype="any" access="public" output="false">
 <cfargument name="event" required="true" default="">
@@ -77,6 +79,12 @@ to your own modified versions of Mura CMS.
 	</cfif>
 	<cfset variables.$=variables.event.getValue("muraScope")>
 	<cfset variables.mura=$>
+	
+	<cfif request.muraExportHtml>
+		<cfset this.showEditableObjects=false>
+		<cfset this.showAdminToolBar=false>
+		<cfset this.showMemberToolBar=false>
+	</cfif>
 
 <cfreturn this />
 </cffunction>
@@ -132,6 +140,16 @@ to your own modified versions of Mura CMS.
 	</cfif>
 </cffunction>
 
+<cffunction name="getListFormat" returntype="string" output="false">
+	<cfreturn this.listFormat />
+</cffunction>
+
+<cffunction name="setListFormat" returntype="string" output="false">
+	<cfargument name="listFormat">
+	<cfset this.listFormat=arguments.listFormat>
+	<cfreturn this/>
+</cffunction>
+
 <cffunction name="loadJSLib" returntype="void" output="false">
 	<cfif not this.jsLibLoaded>
 	<cfswitch expression="#getJsLib()#">
@@ -147,6 +165,7 @@ to your own modified versions of Mura CMS.
 </cffunction>
 
 <cffunction name="loadShadowboxJS" returntype="void" output="false">
+	<cfif not cookie.mobileFormat>
 		<cfset loadJSLib() />
 		<cfswitch expression="#getJsLib()#">
 			<cfcase value="jquery">
@@ -156,7 +175,8 @@ to your own modified versions of Mura CMS.
 				<cfset addToHTMLHeadQueue("shadowbox-prototype.cfm")>
 			</cfdefaultcase>
 		</cfswitch>			
-	<cfset addToHTMLHeadQueue("shadowbox.cfm")>
+		<cfset addToHTMLHeadQueue("shadowbox.cfm")>
+	</cfif>
 </cffunction>
 
 <cffunction name="setLongDateFormat" returntype="void" output="false">
@@ -611,12 +631,25 @@ to your own modified versions of Mura CMS.
 <cfargument name="parentID" type="any"  required="true" default="" />
 <cfargument name="categoryID"  type="any" required="true" default="" />
 <cfargument name="rsContent"  type="any"  required="true"  default="" />
-<cfset var theIncludePath = event.getSite().getIncludePath() />
-<cfset var str ="" />
+	<cfset var theIncludePath = event.getSite().getIncludePath() />
+	<cfset var fileDelim = application.configBean.getFileDelim() />
+	<cfset var filePath = theIncludePath  & fileDelim & "includes" & fileDelim />
+	<cfset var theContent = "" />
+	<cfset var theme =$.siteConfig("theme")>
+	<cfset var expandedPath=expandPath(filePath)>
 
 <cfsavecontent variable="str">
 <cfinclude  template="#theIncludePath#/includes/display_objects/nav/dsp_tag_cloud.cfm">
 </cfsavecontent>
+<cfsavecontent variable="theContent">
+	<cfif fileExists(expandedPath & "themes/"  & theme & "/display_objects/nav/dsp_tag_cloud.cfm")>
+		<cfinclude  template="#filePath#themes/#theme#/display_objects/nav/dsp_tag_cloud.cfm" />
+	<cfelseif fileExists(expandedPath & "display_objects/custom/nav/dsp_tag_cloud.cfm")>
+		<cfinclude  template="#filePath#display_objects/custom/nav/dsp_tag_cloud.cfm" />
+	<cfelse>
+		<cfinclude  template="#filePath#display_objects/nav/dsp_tag_cloud.cfm" />
+	</cfif>
+	</cfsavecontent>
 
 <cfreturn str />
 </cffunction>
@@ -628,7 +661,7 @@ to your own modified versions of Mura CMS.
 	<cfif not application.configBean.getSiteIDInURLS()>
 		<cfif arguments.filename neq ''>
 			<cfif application.configBean.getStub() eq ''>
-				<cfif application.configBean.getIndexFileInURLS()>
+				<cfif application.configBean.getIndexFileInURLS() and not request.muraExportHTML>
 					<cfreturn "/index.cfm" & "/" & arguments.filename & "/"/>
 				<cfelse>
 					<cfreturn  "/" & arguments.filename & "/"/>
@@ -677,6 +710,7 @@ to your own modified versions of Mura CMS.
 	<cfset var href=""/>
 	<cfset var tp=""/>
 	<cfset var begin=iif(arguments.complete,de('http://#application.settingsManager.getSite(arguments.siteID).getDomain()##application.configBean.getServerPort()#'),de('')) />
+	<cfset var fileBean="">
 	
 	<cfif len(arguments.querystring) and not left(arguments.querystring,1) eq "?">
 		<cfset arguments.querystring="?" & arguments.querystring>
@@ -684,7 +718,14 @@ to your own modified versions of Mura CMS.
 	
 	<cfswitch expression="#arguments.type#">
 		<cfcase value="Link,File">
-			<cfset href=HTMLEditFormat("#begin##arguments.context##getURLStem(arguments.siteid,'')#?LinkServID=#arguments.contentid#&showMeta=#arguments.showMeta#")/>
+			<cfif not request.muraExportHTML>
+				<cfset href=HTMLEditFormat("#begin##arguments.context##getURLStem(arguments.siteid,'linkservid/#arguments.contentid#/showMeta/#arguments.showMeta#')##arguments.querystring#")/>
+			<cfelseif arguments.type eq "Link">
+				<cfset href=argument.filename>
+			<cfelse>
+				<cfset fileBean=$.getBean("content").loadBy(contentID=arguments.contentID)>
+				<cfset href="#arguments.context#/#arguments.siteID#/cache/file/#fileBean.getFileID()#/#fileBean.getFilename()#">
+			</cfif>
 		</cfcase>
 		<cfdefaultcase>
 			<cfset href=HTMLEditFormat("#begin##arguments.context##getURLStem(arguments.siteid,'#arguments.filename#')##arguments.querystring#") />
@@ -742,6 +783,10 @@ to your own modified versions of Mura CMS.
 	<cfset var imgSuffix=arguments.size>
 	<cfset var returnURL="">
 	<cfset var begin=iif(arguments.complete,de('http://#application.settingsManager.getSite(arguments.siteID).getDomain()##application.configBean.getServerPort()#'),de('')) />
+
+	<cfif request.muraExportHtml>
+		<cfset arguments.direct=true>
+	</cfif>
 	
 	<cfif arguments.direct and application.configBean.getFileStore() eq "fileDir">
 		<cfif imgSuffix eq "large">
@@ -754,7 +799,7 @@ to your own modified versions of Mura CMS.
 		<cfif imgSuffix eq "large">
 			<cfset imgSuffix="file">
 		</cfif>
-		<cfset returnURL=application.configBean.getContext() & "/tasks/render/" & imgSuffix & "/?fileID=" & arguments.fileID>
+		<cfset returnURL=application.configBean.getContext() & "/tasks/render/" & imgSuffix & "/?fileID=" & arguments.fileID & "&fileEXT=" &  arguments.fileEXT>
 	</cfif>
 	
 	<cfreturn begin & returnURL>
@@ -828,14 +873,13 @@ to your own modified versions of Mura CMS.
 	<cfargument name="object" type="string" />
 	<cfargument name="objectid" type="string" />
 	<cfargument name="theFile" type="string" />
-	<cfargument name="Summary" type="boolean" required="true" default="false"/>
+	<cfargument name="hasSummary" type="boolean" required="true" default="false"/>
 	<cfargument name="RSS" type="boolean" required="true" default="false" />
 	<cfargument name="objectPerm" type="string" required="true" default="none" />
 
 	<cfset var fileDelim = application.configBean.getFileDelim() />
 	<cfset var displayObjectPath = $.siteConfig('IncludePath') & fileDelim & "includes"  & fileDelim & "display_objects"/>
 	<cfset var themeObjectPath = $.siteConfig('ThemeIncludePath') & fileDelim & "display_objects"/>
-	<cfset var hasSummary = arguments.Summary />
 	<cfset var useRss = arguments.RSS />
 	<cfset var bean = "" />
 	<cfset var theContent = "" />
@@ -1050,7 +1094,7 @@ to your own modified versions of Mura CMS.
 								<cfset loadShadowBoxJS() />
 								<cfoutput>
 								<div id="svAssetDetail" class="image">
-								<a href="#application.configBean.getContext()#/tasks/render/file/?fileID=#event.getValue('contentBean').getFileID()#&amp;ext=.#event.getValue('contentBean').getFileExt()#" title="#HTMLEditFormat(event.getValue('contentBean').getMenuTitle())#" rel="shadowbox[body]" id="svAsset"><img src="#createHREFForImage(event.getValue('siteID'),event.getValue('contentBean').getFileID(),event.getValue('contentBean').getFileEXT(),'medium')#" class="imgMed" alt="#HTMLEditFormat(event.getValue('contentBean').getMenuTitle())#" /></a>
+								<a href="#createHREFForImage(event.getValue('siteid'),event.getValue('contentBean').getFileID(),event.getValue('contentBean').getFileEXT(),'large')#" title="#HTMLEditFormat(event.getValue('contentBean').getMenuTitle())#" rel="shadowbox[body]" id="svAsset"><img src="#createHREFForImage(event.getValue('siteID'),event.getValue('contentBean').getFileID(),event.getValue('contentBean').getFileEXT(),'medium')#" class="imgMed" alt="#HTMLEditFormat(event.getValue('contentBean').getMenuTitle())#" /></a>
 								#setDynamicContent(event.getValue('contentBean').getSummary(),event.getValue('keywords'))#
 								</div>
 								</cfoutput>
@@ -1078,7 +1122,7 @@ to your own modified versions of Mura CMS.
 							and listFind("jpg,jpeg,gif,png",lcase(event.getValue('contentBean').getFileExt()))>
 								<cfset loadShadowBoxJS() />
 								<cfoutput>
-								<a href="#application.configBean.getContext()#/tasks/render/file/?fileID=#event.getValue('contentBean').getFileID()#&amp;ext=.#event.getValue('contentBean').getFileExt()#" title="#HTMLEditFormat(event.getValue('contentBean').getMenuTitle())#" rel="shadowbox[body]" id="svAsset"><img src="#createHREFForImage(event.getValue('siteID'),event.getValue('contentBean').getFileID(),event.getValue('contentBean').getFileEXT(),'medium')#" class="imgMed" alt="#HTMLEditFormat(event.getValue('contentBean').getMenuTitle())#" /></a>
+								<a href="#createHREFForImage(event.getValue('siteID'),event.getValue('contentBean').getFileID(),event.getValue('contentBean').getFileEXT(),'large')#" title="#HTMLEditFormat(event.getValue('contentBean').getMenuTitle())#" rel="shadowbox[body]" id="svAsset"><img src="#createHREFForImage(event.getValue('siteID'),event.getValue('contentBean').getFileID(),event.getValue('contentBean').getFileEXT(),'medium')#" class="imgMed" alt="#HTMLEditFormat(event.getValue('contentBean').getMenuTitle())#" /></a>
 								</cfoutput>	
 						</cfif>		
 						<cfoutput>#dspMultiPageContent(arguments.body)#</cfoutput>
@@ -1092,7 +1136,7 @@ to your own modified versions of Mura CMS.
 						</cf_CacheOMatic>
 					</cfcase> 
 					<cfcase value="Calendar">
-						 <cfset addToHTMLHeadQueue("listImageStyles.cfm")>
+						<cfset addToHTMLHeadQueue("listImageStyles.cfm")>
 						 <cf_CacheOMatic key="calendarBody#cacheStub#" nocache="#event.getValue('r').restrict#">
 						 <cfoutput>#dspObject_Include(thefile='calendar/index.cfm')#</cfoutput>
 						 </cf_CacheOMatic>
@@ -1131,7 +1175,6 @@ to your own modified versions of Mura CMS.
 			<cfoutput>#dspObject_Include(thefile='dsp_offline.cfm')#</cfoutput>
 			</cfif>
 		</cfif>
-		
 	</cfsavecontent>
 	
 	<cfreturn str />
@@ -1506,15 +1549,15 @@ to your own modified versions of Mura CMS.
 	</cfif>
 	
 	<cfif event.valueExists("contentBean") and not listFind("Link,File",event.getValue('contentBean').getType())>		
-		<cfreturn host & application.configBean.getContext() & getURLStem(event.getValue('siteID'),event.getValue('contentBean').getFilename()) & qrystr >
+		<cfreturn host & application.configBean.getContext() & getURLStem(event.getValue('siteID'),event.getValue('currentFilename')) & qrystr >
 	<cfelse>
 		<!--- If the current node is a link of file you need to make sure that the linkServID is in the URL --->
 		<cfif not len(qrystr)>
-			<cfreturn host &  application.configBean.getContext() & "/" & event.getValue('siteID') & "/?linkServID=" & event.getValue("contentBean").getContentID() >
+			<cfreturn host &  application.configBean.getContext() & getURLStem(event.getValue('siteID'),event.getValue('currentFilename')) & "?linkServID=" & event.getValue("contentBean").getContentID() >
 		<cfelseif not findNocase("linkServID",qrystr)>
-			<cfreturn host &  application.configBean.getContext() & "/" & event.getValue('siteID') & "/" & qrystr & "&linkServID=" & event.getValue("contentBean").getContentID() >
+			<cfreturn host &  application.configBean.getContext() & getURLStem(event.getValue('siteID'),event.getValue('currentFilename')) & qrystr & "&linkServID=" & event.getValue("contentBean").getContentID() >
 		<cfelse>
-			<cfreturn host &  application.configBean.getContext() & "/" & event.getValue('siteID') & "/" & qrystr >
+			<cfreturn host &  application.configBean.getContext() & getURLStem(event.getValue('siteID'),event.getValue('currentFilename')) & qrystr >
 		</cfif>
 	</cfif>
 	
@@ -1620,18 +1663,29 @@ to your own modified versions of Mura CMS.
 
 <cffunction name="addToHTMLHeadQueue" output="false">
 	<cfargument name="text">
-		
 	<cfif not listFind(event.getValue('HTMLHeadQueue'),arguments.text)>
 		<cfset event.setValue('HTMLHeadQueue',listappend(event.getValue('HTMLHeadQueue'),arguments.text)) />
 	</cfif>
 </cffunction>
 
-<cffunction name="renderHTMLHeadQueue" output="false">
+<cffunction name="addToHTMLFootQueue" output="false">
+	<cfargument name="text">	
+	<cfif not listFind(event.getValue('HTMLFootQueue'),arguments.text)>
+		<cfset event.setValue('HTMLFootQueue',listappend(event.getValue('HTMLFootQueue'),arguments.text)) />
+	</cfif>
+</cffunction>
+
+<cffunction name="getShowModal" output="false">
+<cfreturn ((listFind(session.mura.memberships,'S2IsPrivate;#application.settingsManager.getSite(event.getValue('siteID')).getPrivateUserPoolID()#') or listFind(session.mura.memberships,'S2')) or (listFindNoCase("editor,author",event.getValue('r').perm) and this.showMemberToolBar)) and getShowAdminToolBar() />
+</cffunction>
+
+<cffunction name="renderHTMLQueue" output="false">
+	<cfargument name="queueType">
 	<cfset var headerStr="" />
-	<cfset var HTMLHeadQueue="" />
+	<cfset var itemStr="" />
+	<cfset var HTMLQueue="" />
 	<cfset var i = "" />
 	<cfset var iLen = 0 />
-	<cfset var showModal= ((listFind(session.mura.memberships,'S2IsPrivate;#application.settingsManager.getSite(event.getValue('siteID')).getPrivateUserPoolID()#') or listFind(session.mura.memberships,'S2')) or (listFindNoCase("editor,author",event.getValue('r').perm) and this.showMemberToolBar)) and getShowAdminToolBar() />
 	<cfset var headerFound=false />	
 	<cfset var pluginBasePath="" />
 	<cfset var pluginPath="" />
@@ -1639,29 +1693,42 @@ to your own modified versions of Mura CMS.
 	<cfset var pluginConfig="" />
 	<cfset var displayPoolID=application.settingsmanager.getSite(event.getValue('siteID')).getDisplayPoolID()>
 	<cfset var theme=application.settingsmanager.getSite(event.getValue('siteID')).getTheme()>
-	
+
 	<cfif getRenderHTMLHead()>
-		<!--- ensure that the js lb is always there --->
-		<cfset loadJSLib() />
-		<!--- Add global.js --->
-		<cfsavecontent variable="headerStr">
-				<cfinclude  template="/#application.configBean.getWebRootMap()#/#application.settingsmanager.getSite(event.getValue('siteID')).getDisplayPoolID()#/includes/display_objects/htmlhead/global.cfm">
-		</cfsavecontent>
-		<cfhtmlhead text="#headerStr#">
-					
-		<!--- Add modal edit --->
-		<cfif showModal>
-			<cfset loadShadowboxJS() />
-			<cfif this.showEditableObjects>
-				<cfset addToHTMLHeadQueue('editableObjects.cfm')>
-			</cfif>
-		</cfif>
 		
+		<cfif arguments.queueType eq "HEAD">
+			<!--- ensure that the js lb is always there --->
+			<cfset loadJSLib() />
+			<!--- Add global.js --->
+			<cfsavecontent variable="headerStr">
+					<cfinclude  template="/#application.configBean.getWebRootMap()#/#application.settingsmanager.getSite(event.getValue('siteID')).getDisplayPoolID()#/includes/display_objects/htmlhead/global.cfm">
+			</cfsavecontent>
+						
+			<!--- Add modal edit --->
+			<cfif getShowModal()>
+				<cfset loadShadowboxJS() />
+				<cfif this.showEditableObjects and not request.muraExportHTML>
+					<cfset addToHTMLHEADQueue('editableObjects.cfm')>
+				</cfif>
+			</cfif>
+		<cfelseif arguments.queueType eq "FOOT">
+				<cfif (getShowModal() or event.getValue("muraChangesetPreview")) and not request.muraExportHTML>
+					<cfsavecontent variable="headerStr">
+						<cfif getShowModal()>
+							<cfinclude template="/#application.configBean.getWebRootMap()#/admin/modal/dsp_modal_edit.cfm">
+						</cfif>	
+						<cfif event.getValue("muraChangesetPreview")>
+							<cfinclude template="/#application.configBean.getWebRootMap()#/admin/modal/dsp_modal_changeset.cfm">
+						</cfif>
+					</cfsavecontent>
+				</cfif>
+		</cfif>
 		<!--- Loop through the HTML Head Que--->
-		<cfset HTMLHeadQueue=event.getValue('HTMLHeadQueue') />
-		<cfloop list="#HTMLHeadQueue#" index="i">
+		<cfset HTMLQueue=event.getValue('HTML#arguments.queueType#Queue') />
+		
+		<cfloop list="#HTMLQueue#" index="i">
 		<cfset headerFound=false/>
-		<cfsavecontent variable="headerStr">
+		<cfsavecontent variable="itemStr">
 			<!--- look in default htmlHead directory --->
 			<cfif not refind('[\\/]',i)>
 				
@@ -1689,6 +1756,12 @@ to your own modified versions of Mura CMS.
 					<cfset pluginPath= application.configBean.getContext() & pluginBasePath >	
 					<cfinclude  template="/#application.configBean.getWebRootMap()##pluginBasePath##i#">
 					<cfset headerFound=true />
+				</cfif>
+
+				<!--- if not found, try the path that was passed --->
+				<cfif not headerFound and fileExists(expandPath(i))>
+					<cfinclude template="#i#" />
+					<cfset headerFound = true />
 				</cfif>
 						
 				<!--- If not found, look in display_objects directory --->
@@ -1758,16 +1831,10 @@ to your own modified versions of Mura CMS.
 			<cfoutput><!-- missing header include- #i# --></cfoutput>
 			</cfif>
 		</cfsavecontent>
-		<cfhtmlhead text="#trim(headerStr)#">
+		<cfset headerStr=headerStr & " " & trim(itemStr)>
 		</cfloop>
-		
-		<cfif showmodal>
-			<cfsavecontent variable="headerStr">
-				<cfinclude template="/#application.configBean.getWebRootMap()#/admin/modal/dsp_modal_edit.cfm">
-			</cfsavecontent>
-			<cfhtmlhead text="#headerStr#">
-		</cfif>
 	</cfif>	
+	<cfreturn headerStr>
 </cffunction>
 
 <cffunction name="redirect" output="false" returntype="void">

@@ -128,4 +128,60 @@
 <cfdirectory action="delete" directory="#arguments.directory#" recurse="#arguments.recurse#"/>
 </cffunction>
 
+<cffunction name="copyDir" returnType="any" output="false">
+	<cfargument name="baseDir" default="" required="true" />
+	<cfargument name="destDir" default="" required="true" />
+	<cfargument name="excludeList" default="" required="true" />
+	<cfargument name="sinceDate" default="" required="true" />
+	<cfset getBean("utility").copyDir(argumentCollection=arguments)>
+</cffunction>
+
+<cffunction name="getFreeSpace" output="false">
+	<cfargument name="file">
+	<cfargument name="unit" default="gb">
+	<cfset var space=createObject("java", "java.io.File").init(arguments.file).getFreeSpace()>
+	
+	<cfif arguments.unit eq "bytes">
+		<cfreturn space>
+	<cfelseif arguments.unit eq "kb">
+		<cfreturn space /1024 >
+	<cfelseif arguments.unit eq "mb">
+		<cfreturn space /1024 / 1024>
+	<cfelse>
+		<cfreturn space /1024 / 1024 / 1024>
+	</cfif>
+</cffunction>
+
+<cffunction name="getTotalSpace" output="false">
+	<cfargument name="file">
+	<cfargument name="unit" default="gb">
+	<cfset var space=createObject("java", "java.io.File").init(arguments.file).getTotalSpace()>
+	
+	<cfif arguments.unit eq "byte">
+		<cfreturn space>
+	<cfelseif arguments.unit eq "kb">
+		<cfreturn space /1024 >
+	<cfelseif arguments.unit eq "mb">
+		<cfreturn space /1024 / 1024>
+	<cfelse>
+		<cfreturn space /1024 / 1024 / 1024>
+	</cfif>
+</cffunction>
+
+<cffunction name="getUsableSpace" output="false">
+	<cfargument name="file">
+	<cfargument name="unit" default="gb">
+	<cfset var space=createObject("java", "java.io.File").init(arguments.file).getUsableSpace()>
+	
+	<cfif arguments.unit eq "byte">
+		<cfreturn space>
+	<cfelseif arguments.unit eq "kb">
+		<cfreturn space /1024 >
+	<cfelseif arguments.unit eq "mb">
+		<cfreturn space /1024 / 1024>
+	<cfelse>
+		<cfreturn space /1024 / 1024 / 1024>
+	</cfif>
+</cffunction>
+
 </cfcomponent>

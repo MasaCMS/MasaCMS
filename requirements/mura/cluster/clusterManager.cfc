@@ -45,6 +45,7 @@
 
 <cffunction name="doRemoteCall" output="false">
 <cfargument name="remoteURL">
+	<cftry>
 	<cfif len(variables.configBean.getProxyServer())>
 		<cfhttp url="#remoteURL#" 
 				proxyUser="#variables.configBean.getProxyUser()#" proxyPassword="#variables.configBean.getProxyPassword()#"
@@ -52,6 +53,8 @@
 	<cfelse>
 		<cfhttp url="#remoteURL#">
 	</cfif>
+	<cfcatch></cfcatch>
+	</cftry>
 </cffunction>
 
 <cffunction name="formatHost" output="false">

@@ -49,7 +49,7 @@ publicUserPoolID,PrivateUserPoolID,AdvertiserUserPoolID,displayPoolID,orderno,fe
 galleryMainScaleBy, galleryMainScale, gallerySmallScaleBy, gallerySmallScale, galleryMediumScaleBy, galleryMediumScale,
 sendLoginScript, mailingListConfirmScript,publicSubmissionApprovalScript,reminderScript,ExtranetPublicRegNotify,
 loginURL,editProfileURL,CommentApprovalDefault,deploy,accountActivationScript,
-googleAPIKey,useDefaultSMTPServer,siteLocale, mailServerSMTPPort, mailServerPOPPort, mailserverTLS, mailserverSSL, theme, tagline</cfoutput></cfsavecontent>
+googleAPIKey,useDefaultSMTPServer,siteLocale, mailServerSMTPPort, mailServerPOPPort, mailserverTLS, mailserverSSL, theme, tagline,hasChangesets</cfoutput></cfsavecontent>
 
 <cffunction name="init" access="public" returntype="any" output="false">
 <cfargument name="configBean" type="any" required="yes"/>
@@ -296,7 +296,8 @@ googleAPIKey,useDefaultSMTPServer,siteLocale, mailServerSMTPPort, mailServerPOPP
 	 	 mailserverTLS=<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.bean.getMailserverTLS() neq '',de('no'),de('yes'))#" value="#arguments.bean.getMailserverTLS()#" />,
 	 	 mailserverSSL=<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.bean.getMailserverSSL() neq '',de('no'),de('yes'))#" value="#arguments.bean.getMailserverSSL()#" />,
 	 	 theme= <cfif arguments.bean.getTheme() neq ''><cfqueryparam cfsqltype="cf_sql_varchar" value="#trim(arguments.bean.getTheme())#" /><cfelse>null</cfif>,
-	 	 tagline=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.bean.getTagline()#" />
+	 	 tagline=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.bean.getTagline()#" />,
+	 	 hasChangesets=#arguments.bean.getHasChangesets()#
 		 
 		where siteid='#arguments.bean.getsiteid()#'
    </CFQUERY>
@@ -378,7 +379,8 @@ googleAPIKey,useDefaultSMTPServer,siteLocale, mailServerSMTPPort, mailServerPOPP
 	 	<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.bean.getMailserverTLS() neq '',de('no'),de('yes'))#" value="#arguments.bean.getMailserverTLS()#" />,
 	 	<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.bean.getMailserverSSL() neq '',de('no'),de('yes'))#" value="#arguments.bean.getMailserverSSL()#" />,
 	 	 <cfif arguments.bean.getTheme() neq ''><cfqueryparam cfsqltype="cf_sql_varchar" value="#trim(arguments.bean.getTheme())#" /><cfelse>null</cfif>,
-	 	 <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.bean.getTagline()#" />
+	 	 <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.bean.getTagline()#" />,
+	 	 #arguments.bean.getHasChangesets()#
 		   )
    </CFQUERY>
   
@@ -433,8 +435,8 @@ googleAPIKey,useDefaultSMTPServer,siteLocale, mailServerSMTPPort, mailServerPOPP
 	  'Page',
 	  'Default',
 	  1,
-	  'Home Page',
-	  'Home Page',
+	  'Home',
+	  'Home',
 	  1,
 	  1,
 	  1,
@@ -611,6 +613,26 @@ googleAPIKey,useDefaultSMTPServer,siteLocale, mailServerSMTPPort, mailServerPOPP
 	  'Default',
 	  1,
 	  'Filemanager Manager',
+	  1,
+	  1,
+	  1,
+	  0,
+	  0
+	)
+   </CFQUERY>
+
+	<CFQUERY datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+      Insert into tcontent (siteid,moduleid,parentid,contentid,contenthistid,type,subType,active,title,display,approved,isnav ,forceSSL,searchExclude)
+	  values(
+	  '#arguments.bean.getsiteid()#',
+	  '00000000000000000000000000000000014',
+	  '00000000000000000000000000000000END',
+	  '00000000000000000000000000000000014',
+	  '#createuuid()#',
+	  'Module',
+	  'Default',
+	  1,
+	  'Change Sets Manager',
 	  1,
 	  1,
 	  1,

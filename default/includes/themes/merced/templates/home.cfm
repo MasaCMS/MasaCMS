@@ -4,11 +4,11 @@
 <div id="container" class="#$.createCSSid($.content('menuTitle'))#">
 	<cfinclude template="inc/header.cfm" />
 	<div id="content" class="clearfix">
-		<div id="primary" class="content">
+		<div id="primary" class="article">
 			#$.dspBody(body=$.content('body'),pageTitle='',crumbList=0,showMetaImage=0)#
 			#$.dspObjects(2)#
 		</div>
-		<div id="right" class="sidebar">
+		<div id="right" class="aside">
 		#$.dspObjects(3)#
 		</div>
 	</div>

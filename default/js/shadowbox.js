@@ -2150,6 +2150,7 @@ if(typeof Shadowbox == 'undefined'){
             if(options.onOpen && typeof options.onOpen == 'function'){
                 options.onOpen(obj);
             }
+            document.body.style.overflow = "hidden";
 
             // display:block here helps with correct dimension calculations
             SL.setStyle(SL.get('shadowbox'), 'display', 'block');
@@ -2267,6 +2268,7 @@ if(typeof Shadowbox == 'undefined'){
         if(options.onClose && typeof options.onClose == 'function'){
             options.onClose(current_gallery[current]);
         }
+        document.body.style.overflow = "auto";
 
         activated = false;
     };

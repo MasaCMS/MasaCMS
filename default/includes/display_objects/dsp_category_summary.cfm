@@ -51,6 +51,11 @@ to your own modified versions of Mura CMS.
 <cfset today=createDate(request.year,request.month,1) />
 </cfif>
 <cfset rs=application.contentGateway.getKidsCategorySummary(request.siteid,arguments.objectid,request.relatedID,today,rsSection.type)>
+
+<cfset viewAllURL="#application.configBean.getContext()##getURLStem(request.siteid,rsSection.filename)#">
+<cfif len(request.relatedID)>
+	<cfset viewAllURL=viewAllURL & "?relatedID=#HTMLEditFormat(request.relatedID)#">
+</cfif>
 </cfsilent>
 <cfif rs.recordcount>
 <cfset rbFactory=getSite().getRBFactory() />
@@ -58,10 +63,23 @@ to your own modified versions of Mura CMS.
 <div class="svCatSummary svIndex">
 <#getHeaderTag('subHead1')#>#rbFactory.getKey('list.categories')#</#getHeaderTag('subHead1')#>
 <ul class="navSecondary"><cfloop query="rs">
+	<cfsilent>
+	<cfif len(rs.filename)>
+		<cfset categoryURL="#application.configBean.getContext()##getURLStem(request.siteid,rsSection.filename & '/category/' & rs.filename)#">
+		<cfif len(request.relatedID)>
+			<cfset categoryURL=categoryURL & "?relatedID=#HTMLEditFormat(request.relatedID)#">
+		</cfif>
+	<cfelse>
+		<cfset categoryURL="#application.configBean.getContext()##getURLStem(request.siteid,rsSection.filename)#?categoryID=#rs.categoryID#">
+		<cfif len(request.relatedID)>
+			<cfset categoryURL=categoryURL & "&relatedID=#HTMLEditFormat(request.relatedID)#">
+		</cfif>
+	</cfif>
+	</cfsilent>
 	<cfset class=iif(rs.currentrow eq 1,de('first'),de(''))>
-		<li class="#class#<cfif listFind(request.categoryID,rs.categoryID)> current</cfif>"><a href="#application.configBean.getContext()##getURLStem(request.siteid,rsSection.filename)#?categoryID=#rs.categoryID#&relatedID=#HTMLEditFormat(request.relatedID)#">#rs.name# (#rs.count#)</a><cfif useRss><a class="rss" href="#application.configBean.getContext()#/tasks/feed/index.cfm?siteid=#request.siteid#&contentID=#rsSection.contentid#&categoryID=#rs.categoryID#" <cfif listFind(request.categoryID,rs.categoryID)>class="current"</cfif>>RSS</a></cfif></li>
+		<li class="#class#<cfif listFind(request.categoryID,rs.categoryID)> current</cfif>"><a href="#categoryURL#">#rs.name# (#rs.count#)</a><cfif useRss><a class="rss" href="#application.configBean.getContext()#/tasks/feed/index.cfm?siteid=#request.siteid#&contentID=#rsSection.contentid#&categoryID=#rs.categoryID#" <cfif listFind(request.categoryID,rs.categoryID)>class="current"</cfif>>RSS</a></cfif></li>
 	</cfloop>
-	<li class="last"><a href="#application.configBean.getContext()##getURLStem(request.siteid,rsSection.filename)#?relatedID=#HTMLEditFormat(request.relatedID)#">View All</a><cfif useRss><a class="rss" href="#application.configBean.getContext()#/tasks/feed/index.cfm?siteid=#request.siteid#&contentID=#rsSection.contentid#">RSS</a></cfif></li>
+	<li class="last"><a href="#viewAllURL#">View All</a><cfif useRss><a class="rss" href="#application.configBean.getContext()#/tasks/feed/index.cfm?siteid=#request.siteid#&contentID=#rsSection.contentid#">RSS</a></cfif></li>
 </ul>
 </div>
 </cfoutput>

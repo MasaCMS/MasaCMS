@@ -1,4 +1,8 @@
-/* @override http://mura:8500/default/includes/themes/merced/css/site.css */
+/* @override http://mura:8500/5.4/merced/includes/themes/merced/css/merced.css */
+
+/* @override
+	http://mura:8500/5.4/default/includes/themes/merced/css/merced.css
+*/
 
 /*
 Theme:  Merced
@@ -44,7 +48,7 @@ p.intro {
 /* @group Globals - Tables
 ===================================== */
 
-.content table {
+.article table {
 	width: 100%;
 	margin-top: 30px;
 	}
@@ -179,7 +183,7 @@ tr.alt td { background: #eee; }  /*Move*/
 /* @end Globals - Forms - Login
 -------------------------------- */
 
-.sidebar #login {
+.aside #login {
 	padding: 0;
 	}
 
@@ -266,8 +270,8 @@ tr.alt td { background: #eee; }  /*Move*/
 	width: 504px;
 	}
 
-.content,
-.sidebar {
+.article,
+.aside {
 	min-height: 100px; /*Fixes odd no-content disappearing bug.*/
 	}
 
@@ -300,9 +304,9 @@ tr.alt td { background: #eee; }  /*Move*/
 	width: 167px;
 	}
 
-.sidebar {}
-#left.sidebar {}
-#right.sidebar {}
+.aside {}
+#left.aside {}
+#right.aside {}
 
 
 /* @group Layout - Header
@@ -693,6 +697,7 @@ h1 a {
 
 .svCalendar th a, .svCalendar th a:hover {
 	background: #0c2846;
+	color: #fff;
 	}
 
 .svCalendar th a:hover {
@@ -703,6 +708,7 @@ h1 a {
 .svCalendar tr.dayofweek td {
 	background: #2e7aa7;
 	color: #fff;
+	font-weight: normal;
 	}
 
 .svCalendar th,
@@ -713,6 +719,23 @@ h1 a {
 .svCalendar td {
 		background: #e9f3f7;
 	}
+
+#svCalendarNav td {
+	vertical-align: middle;
+}
+	
+#svCalendarNav td a {
+	display: block;
+	margin-bottom: 1px;
+	padding: 3px 4px;
+	background: #ff3405;
+	color: #fff;
+}
+
+#svCalendarNav td a:hover {
+	background: #0c2846;
+	text-decoration: none;
+}
 
 
 /* @end Calendar
@@ -809,7 +832,7 @@ a.boxItemHeader { /* Link of items inside dragable boxes */
 /* @group Home Feeds
 ===================================== */
 
-.home .sidebar .svIndex h3 {
+.home .aside .svIndex h3 {
 	display: block;
 	padding: 0 1em;
 	margin-bottom: 1em;
@@ -820,18 +843,18 @@ a.boxItemHeader { /* Link of items inside dragable boxes */
 	background: #ff3405;
 	}
 
-.home .sidebar .svIndex dl {
+.home .aside .svIndex dl {
 	margin: 0 1.5em 1em;
 	padding: 0 0 .5em;
 	border-bottom: 1px solid #d6d6d6;
 	}
 
-.home .sidebar .svIndex dl.last, .home .sidebar .svIndex dl:last-child {
+.home .aside .svIndex dl.last, .home .aside .svIndex dl:last-child {
 	border-bottom: 0;
 	padding-bottom: 0;
 	}
 
-.home .sidebar .svIndex dt {
+.home .aside .svIndex dt {
 	margin: 0 0 .5em;
 	padding: 0;
 	font-size: 1.3em;
@@ -839,46 +862,46 @@ a.boxItemHeader { /* Link of items inside dragable boxes */
 	line-height: 1.3;
 	}
 
-.home .sidebar .svIndex dt.releaseDate {
+.home .aside .svIndex dt.releaseDate {
 	margin: 0 0 3px;
 	font-size: 1em;
 	text-transform: uppercase;
 	color: #979797;
 	}
 
-.home .sidebar .svIndex dd {
+.home .aside .svIndex dd {
 	margin: 0 0 .25em;
 	padding: 0;
 	font-size: 1.1em;
 	color: #434343;
 	}
 
-.home .sidebar .svIndex dd.summary {
+.home .aside .svIndex dd.summary {
 	margin: 0 0 .5em;
 	}
 
-/*.home .sidebar .credits,
-.home .sidebar .tags,
-.home .sidebar .ratings,
-.home .sidebar .credits {
+/*.home .aside .credits,
+.home .aside .tags,
+.home .aside .ratings,
+.home .aside .credits {
 	color: #999 !important;
 	}*/
 
-.home .sidebar .svIndex dl.hasImage .image {
+.home .aside .svIndex dl.hasImage .image {
 	margin: 0 .5em 0em 0;
 	}
 
-.home .sidebar .svIndex dl.hasImage .image img {
+.home .aside .svIndex dl.hasImage .image img {
 	width: 50px;
 	}
 
-.home .sidebar .svIndex dd p {
+.home .aside .svIndex dd p {
 	margin: 0;
 	padding: 0;
 	line-height: inherit;
 	}
 
-.home .sidebar .svIndex span.readMore a {
+.home .aside .svIndex span.readMore a {
 	display: none;
 	}
 
@@ -887,13 +910,16 @@ a.boxItemHeader { /* Link of items inside dragable boxes */
 
 /* @group Indexes
 ===================================== */
+.aside .svIndex {
+	margin-top: 0;
+}
 
 .svIndex dl {
 	padding-bottom: 1em;
 	border-bottom: 1px dotted #ccc;
 	}
 
-.sidebar .svIndex dl {
+.aside .svIndex dl {
 	margin: .5em 0;
 	padding: .5em 0 .5em;
 	}
@@ -904,7 +930,7 @@ a.boxItemHeader { /* Link of items inside dragable boxes */
 		position: relative;
 		}
 
-.sidebar .svIndex dl.hasImage {
+.aside .svIndex dl.hasImage {
 	min-height: 0;
 	padding-left: 0;
 	}
@@ -913,15 +939,15 @@ a.boxItemHeader { /* Link of items inside dragable boxes */
 		float: none;
 		}
 
-.sidebar .svIndex dl.hasImage .image {
+.aside .svIndex dl.hasImage .image {
 	display: none;
 	}
 
-.content .svIndex {
+.article .svIndex {
 	margin-top: 2em;
 	}
 
-.content .svIndex dt {
+.article .svIndex dt {
 	font-size: 1.6em;
 	margin-bottom: .5em;
 	}
@@ -945,10 +971,10 @@ a.boxItemHeader { /* Link of items inside dragable boxes */
 
 /* @group Ratings */
 
-.content .svIndex dd.credits,
-.content .svIndex  dd.comments,
-.content .svIndex  dd.tags,
-.content .svIndex  dd.rating {
+.article .svIndex dd.credits,
+.article .svIndex  dd.comments,
+.article .svIndex  dd.tags,
+.article .svIndex  dd.rating {
 	line-height: 20px; /* acommodate height of stars */
 	}
 
@@ -1035,7 +1061,7 @@ div.stars a {
 .home .svSlides dd {
 	margin-bottom: 1.1em;
 	letter-spacing: -0.025em;
-	font-size: 1.4em !important;
+	font-size: 12px !important;
 	line-height: 1.2em;
 	padding: 0;
 	}
@@ -1053,9 +1079,15 @@ div.stars a {
 .home .svSlides dd.image img {
 	display: block;
 	}
+	
+.home .svSlides dd.credits {
+	font-size: 11px !important;
+	color: #fff;
+	}
 
 .home .svSlides .readMore {
-	float: left;
+	position: absolute;
+	bottom: 0px;
 	}
 
 .home .svSlides .readMore a {

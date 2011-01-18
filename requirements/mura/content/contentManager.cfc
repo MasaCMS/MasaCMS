@@ -56,6 +56,7 @@ to your own modified versions of Mura CMS.
 		<cfargument name="fileManager" type="any" required="yes"/>
 		<cfargument name="pluginManager" type="any" required="yes"/>
 		<cfargument name="trashManager" type="any" required="yes"/>
+		<cfargument name="changesetManager" type="any" required="yes"/>
 		
 		<cfset variables.contentGateway=arguments.contentGateway />
 		<cfset variables.contentDAO=arguments.contentDAO />
@@ -68,6 +69,7 @@ to your own modified versions of Mura CMS.
 		<cfset variables.fileManager=arguments.fileManager />
 		<cfset variables.pluginManager=arguments.pluginManager />
 		<cfset variables.trashManager=arguments.trashManager />
+		<cfset variables.changesetManager=arguments.changesetManager />
 		<cfset variables.ClassExtensionManager=variables.configBean.getClassExtensionManager() />
 		
 		<cfset variables.contentDAO.setContentManager(this)/>
@@ -125,6 +127,16 @@ to your own modified versions of Mura CMS.
 		<cfset var rs ="" />
 		
 		<cfset rs=variables.contentGateway.getDraftHist(arguments.contentid,arguments.siteid) />
+		
+		<cfreturn rs />
+	</cffunction>
+	
+	<cffunction name="getPendingChangesets" access="public" returntype="query" output="false">
+		<cfargument name="contentid" type="string"/>
+		<cfargument name="siteid" type="string"/>
+		<cfset var rs ="" />
+		
+		<cfset rs=variables.contentGateway.getPendingChangesets(arguments.contentid,arguments.siteid) />
 		
 		<cfreturn rs />
 	</cffunction>
@@ -483,9 +495,9 @@ to your own modified versions of Mura CMS.
 		<cfargument name="data" type="any"/>
 		<cfset var newBean=""/>
 		<cfset var currentBean=""/>
-		<cfset var deletedList=""/>
-		<cfset var rsHist=""/>
-		<cfset var histList=""/>
+		<cfset var deleteFileList=""/>
+		<cfset var rsArchive=""/>
+		<cfset var preserveFileList=""/>
 		<cfset var draftList=""/>
 		<cfset var ext=""/>
 		<cfset var rsOrder=""/>
@@ -499,6 +511,9 @@ to your own modified versions of Mura CMS.
 		<cfset var d = "" />
 		<cfset var pluginEvent = createObject("component","mura.MuraScope") />
 		<cfset var tempFile="" />
+		<cfset var previousChangesetID="">
+		<cfset var changesetData="">
+		<cfset var rsPendingChangesets="">
 		
 		<!---IF THE DATA WAS SUBMITTED AS AN OBJECT UNPACK THE VALUES --->
 		<cfif isObject(arguments.data)>
@@ -561,6 +576,7 @@ to your own modified versions of Mura CMS.
 	
 	
 	<cfif not refused>
+		<cfset previousChangesetID=newBean.getChangesetID()>
 		<cfset newBean.set(arguments.data) />
 		<cfset pluginEvent.setValue("newBean",newBean)>	
 		<cfif newBean.getIsNew()>
@@ -679,7 +695,27 @@ to your own modified versions of Mura CMS.
 			<cfcatch></cfcatch>
 			</cftry>
 		</cfif>
-		<!--- End Public Content Submision  --->	
+		<!--- End Public Content Submision  --->
+		
+		
+	<!--- Begin Changeset --->
+	<cfif not newBean.getIsNew() and isBoolean(newBean.getValue("removePreviousChangeset")) and newBean.getValue("removePreviousChangeset") and isValid("uuid",previousChangesetID)>
+		<cfquery datasource="#variables.configBean.getDatasource()#" password="#variables.configBean.getDbPassword()#" username="#variables.configBean.getDbUsername()#">
+			update tcontent set changesetID=null 
+			where contentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#newBean.getContentID()#">
+			and changesetID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#previousChangesetID#">
+			and siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#newBean.getSiteID()#">
+		</cfquery>
+	</cfif>
+	<cfif len(newBean.getChangesetID())>
+		<cfquery datasource="#variables.configBean.getDatasource()#" password="#variables.configBean.getDbPassword()#" username="#variables.configBean.getDbUsername()#">
+			update tcontent set changesetID=null 
+			where contentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#newBean.getContentID()#">
+			and changesetID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#newBean.getChangesetID()#">
+			and siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#newBean.getSiteID()#">
+		</cfquery>
+	</cfif>
+	<!--- End Changeset--->	
 		
 		<!--- END CONTENT TYPE: ALL SITE TREE LEVEL CONTENT TYPES --->
 		
@@ -771,26 +807,41 @@ to your own modified versions of Mura CMS.
 			<!--- Delete Files that are not attached to any version in versin history--->	
 			<cfif variables.configBean.getPurgeDrafts() and newBean.getApproved() and not newBean.getIsNew()>
 		
-					<cfset rsHist=getArchiveHist(newbean.getcontentID(),arguments.data.siteid)/>
+					<cfset rsArchive=getArchiveHist(newbean.getcontentID(),arguments.data.siteid)/>
 					<cfset rsDrafts=getDraftHist(newbean.getcontentID(),arguments.data.siteid)/>
-						
-					<cfloop query="rsHist">
-						<cfset histList=listAppend(histList,rsHist.filename,"^")/>
+					<cfset rsPendingChangesets=getPendingChangesets(newbean.getcontentID(),arguments.data.siteid)/>
+					
+					<!--- Get version attached to pending changesets--->
+					<cfloop query="rsPendingChangesets">
+						<cfif len(rsPendingChangesets.fileID)>
+							<cfset preserveFileList=listAppend(preserveFileList,rsPendingChangesets.fileID,"^")/>
+						</cfif>
 					</cfloop>
 					
-					<cfloop query="rsDrafts">
-						<cfset draftList=listAppend(draftList,rsDrafts.filename,"^")/>
+					<!--- Get archived versions--->
+					<cfloop query="rsArchive">
+						<cfif len(rsPendingChangesets.fileID)>
+							<cfset preserveFileList=listAppend(preserveFileList,rsArchive.fileID,"^")/>
+						</cfif>
 					</cfloop>
-						
+					
+					<!--- Get archived versions--->
+					<cfloop query="rsDrafts">
+						<cfif len(rsDrafts.fileID)>
+							<cfset deleteFileList=listAppend(deleteFileList,rsDrafts.fileID,"^")/>
+						</cfif>
+					</cfloop>
+					
+					<!--- delete files in rsDafts that are not in the preserveFileList or attached to the newBean --->	
 					<cfloop list="#draftList#" index="d">
-						<cfif newBean.getFilename() neq d and not listFind(histList,d,"^") and not listFind(deletedList,d,"^")>
+						<cfif newBean.getFileID() neq d and not listFind(preserveFileList,d,"^") and not listFind(deleteFileList,d,"^")>
 							<cftry>
 							<cflock name="#d#" type="exclusive" timeout="500">
 							<cfset variables.fileManager.deleteVersion(d) />
 							</cflock>
 							<cfcatch></cfcatch>
 							</cftry>
-							<cfset deletedList=listAppend(deletedList,d,"^")/>
+							<cfset deletedList=listAppend(deleteFileList,d,"^")/>
 						</cfif>
 	
 						
@@ -881,6 +932,16 @@ to your own modified versions of Mura CMS.
 		</cfif>
 		--->
 		</cftransaction>
+		
+		<!--- Make sure preview data is in sync --->	
+		<cfset changesetData=getCurrentUser().getValue("ChangesetPreviewData")>
+		<cfif isdefined("changesetData.changesetID")
+			and (
+					previousChangesetID eq changesetData.changesetID
+					or newBean.getChangesetID() eq changesetData.changesetID
+				)>
+			<cfset variables.changesetManager.setSessionPreviewData(changesetData.changesetID)>
+		</cfif>
 		
 		<cfset variables.trashManager.takeOut(newBean)>
 		
@@ -1004,9 +1065,11 @@ to your own modified versions of Mura CMS.
 		<cfset var currentBean=getActiveContent(arguments.data.contentid,arguments.data.siteid)/>
 		<cfset var pluginEvent = createObject("component","mura.event").init(arguments.data) />
 		<cfset var historyIterator=application.serviceFactory.getBean("contentIterator")>
+		<cfset var rsPendingChangesets=""/>
 		
 		<cfset pluginEvent.setValue("contentBean",currentBean)/>
 		<cfset rsHist=getHist(arguments.data.contentid,arguments.data.siteid)/>
+		<cfset rsPendingChangesets=getPendingChangesets(arguments.data.contentid,arguments.data.siteid)/>
 		<cfset historyIterator.setQuery(rsHist)>
 		<cfset pluginEvent.setValue("historyIterator",historyIterator)/>
 		
@@ -1019,9 +1082,19 @@ to your own modified versions of Mura CMS.
 		<cfset variables.pluginManager.announceEvent("on#currentBean.getType()##currentBean.getSubType()#DeleteVersionHistory",pluginEvent)>
 		<cfset variables.pluginManager.announceEvent("onBefore#currentBean.getType()##currentBean.getSubType()#DeleteVersionHistory",pluginEvent)>
 		
+		<!--- Add the current fileID and any attached to pending changeset versions to the fileList
+		so that they will not be deleted.
+		--->
 		<cfset fileList=currentBean.getFileID()/>
+		
+		<cfloop query="rsPendingChangesets">
+			<cfif len(rsPendingChangesets.fileID)>
+				<cfset fileList=listAppend(fileList,rsPendingChangesets.FileID,"^")/>
+			</cfif>
+		</cfloop>
+		
 		<cfloop query="rsHist">
-			<cfif rshist.active neq 1 and len(rshist.FileID)>
+			<cfif not (rshist.active eq 1 or (rshist.approved eq 0 and len(rshist.changesetID))) and len(rshist.FileID)>
 					<cfif not listFind(fileList,rshist.FileID,"^")>
 						<cfset variables.filemanager.deleteVersion(rshist.FileID,false) />
 						<cfset fileList=listAppend(fileList,rshist.FileID,"^")/>
@@ -1279,8 +1352,9 @@ to your own modified versions of Mura CMS.
 		<cfargument name="parentID" type="string" />
 		<cfargument name="recurse" type="boolean" required="true" default="false"/>
 		<cfargument name="appendTitle" type="boolean" required="true" default="true"/>
+		<cfargument name="setNotOnDisplay" type="boolean" required="true" default="false"/>
 		
-		<cfreturn variables.contentUtility.copy(arguments.siteID, arguments.contentID, arguments.parentID, arguments.recurse, arguments.appendTitle)>
+		<cfreturn variables.contentUtility.copy(arguments.siteID, arguments.contentID, arguments.parentID, arguments.recurse, arguments.appendTitle, "", arguments.setNotOnDisplay)>
 	
 	</cffunction>
 	

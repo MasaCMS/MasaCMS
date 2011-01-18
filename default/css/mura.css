@@ -1,3 +1,9 @@
+/* @override 
+	http://mura:8500/5.4/default/css/mura.css
+	http://mura:8500/5.4/Merced/css/mura.css
+	http://mura:8500/5.4/merced/css/mura.css
+*/
+
 /* This file is part of Mura CMS. 
 
 	Mura CMS is free software: you can redistribute it and/or modify 
@@ -235,12 +241,14 @@ div.svAd { margin: 0 0 2em; }
 
 a#svAsset {
 	display: block;
-	margin: 2em 0;
+	float: right;
+	margin: 1.6em 0;
 	padding-left: 20px;
 	line-height: 2;
 	background-position: 0 50%;
 	background-repeat: no-repeat;
 	}
+	
 .image a#svAsset {
 	padding-left: 0;
 	line-height: 1.5;
@@ -293,7 +301,7 @@ a#svAsset.zip { background-image: url(../images/file-icons/zip.gif); }
 /* This image gets output only if a specific image has been uploaded for a specific content type.
 It gets output between the h2 and the body content and launches the large image in shadowbox when clicked */
 
-.content#primary .imgMed {
+.content#primary .imgMed, article .imgMed {
 	float: right;
 	margin-bottom: 1em;
 	margin-left: 1em;
@@ -527,8 +535,8 @@ table.svFlvPlayer td {
 	}
 	
 #svGallery li {
-	/* width : auto; Width is set dynamically in /includes/display_objects/gallery/htmlhead/gallery.cfm */
-	/* Height is being set by jQuery based on the rendered height of the <li> to avoid float issues. */
+	/* Width is set dynamically in /includes/display_objects/gallery/htmlhead/gallery.cfm */
+	/* Height is being set by javascript based on the rendered height of the <li> to avoid float issues. */
 	float: left;
 	margin: 0 2% 0 0;
 	padding: 0 0 1.5em;
@@ -585,7 +593,9 @@ table.svFlvPlayer td {
 	margin: 2em 0;
 	}
 
-.sidebar .svIndex {
+.sidebar .svIndex,
+.aside .svIndex,
+aside .svIndex {
 	margin: 0 0 2em 0;
 }
 
@@ -598,7 +608,9 @@ table.svFlvPlayer td {
 	margin: 1.3em 0 1em;
 	}
 
-.sidebar .svIndex dl.first {
+.sidebar .svIndex dl.first,
+.aside .svIndex dl.first,
+aside .svIndex dl.first {
 	margin-top: 0;
 	}
 
@@ -607,7 +619,9 @@ table.svFlvPlayer td {
 	padding: 0;
 	}
 
-.sidebar .svIndex dl.first {
+.sidebar .svIndex dl.first,
+.aside .svIndex dl.first,
+aside .svIndex dl.first {
 	padding-top: 0;
 	}
 
@@ -615,7 +629,9 @@ table.svFlvPlayer td {
 	margin-bottom: .75em;
 }
 
-.sidebar .svIndex dt {
+.sidebar .svIndex dt,
+.aside .svIndex dt,
+aside .svIndex dt {
 	margin: 0 0 .25em 0;
 	}
 
@@ -640,7 +656,15 @@ dd.rating {
 .sidebar dd.credits,
 .sidebar dd.comments,
 .sidebar dd.tags,
-.sidebar dd.rating {
+.sidebar dd.rating,
+.aside dd.credits,
+.aside dd.comments,
+.aside dd.tags,
+.aside dd.rating,
+aside dd.credits,
+aside dd.comments,
+aside dd.tags,
+aside dd.rating {
 	float: none;
 	margin-bottom: .35em;
 	padding: 0;
@@ -674,12 +698,16 @@ dl.hasImage .image {
 	margin: 0 1em 0 0;
 	}
 	
-.sidebar dl.hasImage {
+.sidebar dl.hasImage,
+.aside dl.hasImage,
+aside dl.hasImage {
 	min-height: 0;
 	padding-left: 0;
 }
 
-.sidebar dl.hasImage .image {
+.sidebar dl.hasImage .image,
+.aside dl.hasImage .image,
+aside dl.hasImage .image {
 	display: none;
 }
 
@@ -855,7 +883,7 @@ ul#svSiteMap {
 
 #svTagCloud ol { margin: 0 0 2em; }
 #svTagCloud li { display: inline; }
-#svTagCloud span { position: absolute; left: -9999px; width: 990px; }
+#svTagCloud li span { position: absolute; left: -9999px; width: 990px; }
 
 #svTagCloud .not-popular { font-size: .9em; }
 #svTagCloud .not-very-popular { font-size: 1.2em; }
@@ -974,7 +1002,9 @@ form#login { margin-bottom: .5em; }
 
 form#sendLogin { margin-bottom: 2em; }
 
-.sidebar #login h3 {
+.sidebar #login h3,
+.aside #login h3,
+aside #login h3 {
 	padding-bottom: 0;
 	border-bottom: 0;
 	}
@@ -1010,16 +1040,23 @@ form#sendLogin { margin-bottom: 2em; }
 /* @group System Forms - Mailing Lists
 ===================================== */
 
-.sidebar .svMailingList fieldset {
+.sidebar .svMailingList fieldset,
+.aside .svMailingList fieldset,
+aside .svMailingList fieldset {
 	padding: 0;
 	border: 0;
 	}
 
-.sidebar .svMailingList ol {
+.sidebar .svMailingList ol,
+.aside .svMailingList ol,
+aside .svMailingList ol {
 	padding: 0;
 	}
 
-.sidebar .svMailingList legend { display: none; }
+.sidebar .svMailingList legend,
+.aside .svMailingList legend,
+aside .svMailingList legend { 
+	display: none; }
 
 #svMasterEmail {}
 
@@ -1048,37 +1085,6 @@ form#sendLogin { margin-bottom: 2em; }
 	margin: 0 .5em 0 0;
 	}
 
-#svSearchResults dl#svPortal {
-	margin: 0 0 1em;
-	padding: 0;
-	border: 0;
-	}
-
-#svSearchResults dt {
-	margin: 1em 0 .5em;
-	padding: 1em 0 0;
-	border-top: 1px dotted #ccc;
-	}
-
-#svSearchResults dt.first { border-top: 0; }
-
-#svSearchResults dd {
-	margin: 0 0 1em;
-	padding: 0;
-	}
-
-#svSearchResults dd.last {
-	margin: 0;
-	padding: 0 0 1em;
-	border-bottom: 0;
-	}
-
-#svSearchResults dd h3 {
-	margin: 0 0 .5em;
-	font-weight: normal;
-	}
-
-#svSearchResults dl img { display: none; }
 
 #svSearchResults .moreResults {
 	margin: .75em 0;
@@ -1140,9 +1146,13 @@ form li .cke_skin_mura table {
 /* @group System Forms - Responses
 ===================================== */
 
-.sidebar .responseMessage { color: red; }
+.sidebar .responseMessage,
+.aside .responseMessage,
+aside .responseMessage { color: red; }
 
-.sidebar .responseMessage em { font-style: normal; }
+.sidebar .responseMessage em,
+.aside .responseMessage em,
+aside .responseMessage em { font-style: normal; }
 
 #dsp_response.dataCollection .pollResults { list-style: none; }
 

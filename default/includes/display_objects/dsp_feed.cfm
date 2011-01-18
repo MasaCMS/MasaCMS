@@ -43,34 +43,30 @@ to your own modified versions of Mura CMS.
 
 
 <!--- <cftry> --->
-  <cfparam name="hasSummary" default="true"/>
   <cfif isValid("UUID",arguments.objectID)>	
-	<cfset feedBean = $.getBean("feed").loadBy(feedID=arguments.objectID,siteID=arguments.siteID)>
+	<cfset variables.feedBean = $.getBean("feed").loadBy(feedID=arguments.objectID,siteID=arguments.siteID)>
   <cfelse>
-	<cfset feedBean = $.getBean("feed").loadBy(name=arguments.objectID,siteID=arguments.siteID)>
+	<cfset variables.feedBean = $.getBean("feed").loadBy(name=arguments.objectID,siteID=arguments.siteID)>
   </cfif>
 
-  <cfif feedBean.getIsActive()>
-	<cfset cssID=createCSSid(feedBean.renderName())>
+  <cfif variables.feedBean.getIsActive()>
+	<cfset variables.cssID=createCSSid(feedBean.renderName())>
     
 	<cfset editableControl.editLink = "">
-	<!---
-	<cfset editableControl.historyLink = "">
-	--->
 	<cfset editableControl.innerHTML = "">
 	
-	<cfif not feedBean.getIsNew() and this.showEditableObjects and objectPerm eq 'editor'>
+	<cfif not variables.feedBean.getIsNew() and this.showEditableObjects and arguments.objectPerm eq 'editor'>
 		<cfset bean = feedBean>
 		<cfset loadShadowBoxJS()>
 		<cfset addToHTMLHeadQueue('editableObjects.cfm')>
 		<cfif len(application.configBean.getAdminDomain())>
 			<cfif application.configBean.getAdminSSL()>
-				<cfset adminBase="https://#application.configBean.getAdminDomain()#"/>
+				<cfset variables.adminBase="https://#application.configBean.getAdminDomain()#"/>
 			<cfelse>
-				<cfset adminBase="http://#application.configBean.getAdminDomain()#"/>
+				<cfset variables.adminBase="http://#application.configBean.getAdminDomain()#"/>
 			</cfif>
 		<cfelse>
-			<cfset adminBase=""/>
+			<cfset variables.adminBase=""/>
 		</cfif>
 		
 		<cfset editableControl.editLink = adminBase & "#application.configBean.getContext()#/admin/index.cfm?fuseaction=cFeed.edit">
@@ -86,152 +82,119 @@ to your own modified versions of Mura CMS.
 		<cfoutput>#renderEditableObjectHeader("editableFeed")#</cfoutput>
 	</cfif>
 	
-	<cfif feedBean.getType() eq 'local'>
+	<cfif variables.feedBean.getType() eq 'local'>
       <cfsilent>
-		<!---<cfset loadShadowBoxJS() />--->
-		<cfset rsPreFeed=application.feedManager.getFeed(feedBean) />
+		<cfset variables.rsPreFeed=application.feedManager.getFeed(feedBean) />
 		<cfif getSite().getExtranet() eq 1 and request.r.restrict eq 1>
-			<cfset rs=queryPermFilter(rsPreFeed)/>
+			<cfset variables.rs=queryPermFilter(rsPreFeed)/>
 		<cfelse>
-			<cfset rs=rsPreFeed />
+			<cfset variables.rs=rsPreFeed />
 		</cfif>
 		
-		<cfset iterator=application.serviceFactory.getBean("contentIterator")>
-		<cfset iterator.setQuery(rs,feedBean.getNextN())>
-		<cfset rbFactory=getSite().getRBFactory() />
-		<cfset checkMeta=feedBean.getDisplayRatings() or feedBean.getDisplayComments()>
-		<cfset doMeta=0 />
+		<cfset variables.iterator=application.serviceFactory.getBean("contentIterator")>
+		<cfset variables.iterator.setQuery(rs,feedBean.getNextN())>
+		<cfset variables.rbFactory=getSite().getRBFactory() />
+		<cfset variables.checkMeta=feedBean.getDisplayRatings() or feedBean.getDisplayComments()>
+		<cfset variables.doMeta=0 />
 		<cfset event.setValue("currentNextNID",feedBean.getFeedID())>
 
 		<cfif not len(event.getValue("nextNID")) or event.getValue("nextNID") eq event.getValue("currentNextNID")>
 			<cfif event.getContentBean().getNextN() gt 1>
-				<cfset currentNextNIndex=event.getValue("startRow")>
-				<cfset iterator.setStartRow(currentNextNIndex)>
+				<cfset variables.currentNextNIndex=event.getValue("startRow")>
+				<cfset variables.iterator.setStartRow(currentNextNIndex)>
 			<cfelse>
-				<cfset currentNextNIndex=event.getValue("pageNum")>
-				<cfset iterator.setPage(currentNextNIndex)>
+				<cfset variables.currentNextNIndex=event.getValue("pageNum")>
+				<cfset variables.iterator.setPage(currentNextNIndex)>
 			</cfif>
 		<cfelse>	
-			<cfset currentNextNIndex=1>
-			<cfset iterator.setPage(1)>
+			<cfset variables.currentNextNIndex=1>
+			<cfset variables.iterator.setPage(1)>
 		</cfif>
 		
-		<cfset variables.nextN=application.utility.getNextN(rs,feedBean.getNextN(),currentNextNIndex)>
+		<cfset variables.nextN=application.utility.getNextN(variables.rs,variables.feedBean.getNextN(),variables.currentNextNIndex)>
+		
+		<cfset variables.contentListType="Feed">
+		<cfset variables.contentListFields="Title,Date,Image,Tags,Credits">
+		
+		<cfif arguments.hasSummary>
+			<cfset variables.contentListFields=listAppend(variables.contentListFields,"Summary")>
+		</cfif>
+		
+		<cfif variables.feedBean.getDisplayComments()>
+			<cfset variables.contentListFields=listAppend(variables.contentListFields,"Comments")>
+		</cfif>
+		
+		<cfif variables.feedBean.getDisplayRatings()>
+			<cfset variables.contentListFields=listAppend(variables.contentListFields,"Rating")>
+		</cfif>
 	  </cfsilent>
 
-		<cfif iterator.getRecordCount()>
-			<cfoutput><div class="svSyndLocal svFeed svIndex clearfix" id="#cssID#"></cfoutput>
-	        <cfif feedBean.getDisplayName()><cfoutput><#getHeaderTag('subHead1')#>#feedBean.renderName()#</#getHeaderTag('subHead1')#></cfoutput></cfif>
-			<cfloop condition="iterator.hasNext()">
-				<cfsilent>
-				<cfset item=iterator.next()>
-				 <cfset theLink=createHREF(item.getValue('type'),item.getValue('filename'),item.getValue('siteID'),item.getValue('contentID'),item.getValue('target'),item.getValue('targetparams'),"",application.configBean.getContext(),application.configBean.getStub(),application.configBean.getIndexFile()) />
-				<cfset class=""/>
-				<cfif not iterator.hasPrevious()> 
-					<cfset class=listAppend(class,"first"," ")/> 
-				</cfif>
-				<cfif not iterator.hasNext()> 
-					<cfset class=listAppend(class,"last"," ")/> 
-				</cfif>
-				
-				<cfset hasImage=len(item.getValue('fileID')) and showImageInList(item.getValue('fileExt')) />
-
-				<cfif hasImage>
-					<cfset class=listAppend(class,"hasImage"," ")>
-				</cfif>
-				<cfif checkMeta> 
-				<cfset doMeta=item.getValue('type') eq 'Page' or showItemMeta(item.getValue('type')) or (len(item.getValue('fileID')) and showItemMeta(item.getValue('fileEXT')))>
-				</cfif>
-				</cfsilent>
-				
-				
-	  				
-				<cfoutput>				
-								
-				<dl<cfif class neq ''> class="#class#"</cfif>>
-				<cfif item.getValue('parentType') eq 'Calendar' and isDate(item.getValue('displayStart'))>
-					<dt class="releaseDate"><cfif LSDateFormat(item.getValue('displayStart'),"short") lt LSDateFormat(item.getValue('displayStop'),"short")>#LSDateFormat(item.getValue('displayStart'),getShortDateFormat())# - #LSDateFormat(item.getValue('displayStop'),getShortDateFormat())#<cfelse>#LSDateFormat(item.getValue('displayStart'),getLongDateFormat())#</cfif></dt>
-				<cfelseif LSisDate(item.getValue('releaseDate'))>
-					<dt class="releaseDate">#LSDateFormat(item.getValue('releaseDate'),getLongDateFormat())#</dt>
-				</cfif>
-				<dt><a href="#theLink#">#HTMLEditFormat(item.getValue('menuTitle'))#</a></dt>
-				<cfif hasImage>
-					<dd class="image">
-						<a href="#theLink#" title="#HTMLEditFormat(item.getValue('title'))#"><img src="#createHREFForImage(item.getValue('siteID'),item.getValue('fileID'),item.getValue('fileEXT'),'small')#" alt="#htmlEditFormat(item.getValue('title'))#"/></a>
-					</dd>
-				</cfif>
-				<cfif hasSummary and len(item.getValue('summary'))>
-					<dd class="summary">#setDynamicContent(item.getValue('summary'))#
-						<span class="readMore">#addlink(item.getValue('type'),item.getValue('filename'),rbFactory.getKey('list.readmore'),item.getValue('target'),item.getValue('targetparams'),item.getValue('contentID'),item.getValue('siteID'),'',application.configBean.getContext(),application.configBean.getStub(),application.configBean.getIndexFile())#</span>
-					</dd>
-				</cfif>
-				<cfif len(item.getValue('credits'))>
-					<dd class="credits">#rbFactory.getKey('list.by')# #HTMLEditFormat(item.getValue('credits'))#</dd>
-				</cfif>
-				<cfif doMeta and feedBean.getDisplayComments()>
-					<dd class="comments"><cfif isNumeric(item.getValue('comments'))>#item.getValue('comments')#<cfelse>0</cfif> <cfif item.getValue('comments') neq 1>#rbFactory.getKey('list.comments')#<cfelse>#rbFactory.getKey('list.comment')#</cfif></dd>
-				</cfif>
-				<cfif len(item.getValue('tags'))>
-					<dd class="tags"><cfmodule template="#getSite(event.getValue('siteid')).getIncludePath()#/includes/display_objects/nav/dsp_tag_line.cfm" tags="#item.getValue('tags')#"></dd>
-				</cfif>
-				<cfif doMeta and feedBean.getDisplayRatings()>
-					<dd class="rating #application.raterManager.getStarText(item.getValue('rating'))#">#rbFactory.getKey('list.rating')#: <span><cfif isNumeric(item.getValue('rating'))>#item.getValue('rating')# star<cfif item.getValue('rating') gt 1>s</cfif><cfelse>Zero stars</cfif></span></dd>
-				</cfif>	
-				</dl>
-			</cfoutput>
-			</cfloop>
+		<cfif variables.iterator.getRecordCount()>
+			<cfoutput>
+			<div class="svSyndLocal svFeed svIndex clearfix" id="#variables.cssID#">
+	        <cfif variables.feedBean.getDisplayName()>
+		       <#getHeaderTag('subHead1')#>#HTMLEditFormat(feedBean.renderName())#</#getHeaderTag('subHead1')#>
+			</cfif>
+			
+			#dspObject_Include(
+				thefile='dsp_content_list.cfm',
+				fields=variables.contentListFields,
+				type=variables.contentListType, 
+				iterator= variables.iterator
+				)#
 
 			<cfif variables.nextN.numberofpages gt 1>
-			<cfoutput>#dspObject_Include(thefile='dsp_nextN.cfm')#</cfoutput>
+			#dspObject_Include(thefile='dsp_nextN.cfm')#
 			</cfif>
 			</div>
+			</cfoutput>
 		<cfelse>
 			<!-- Empty Collection '<cfoutput>#feedBean.getName()#</cfoutput>'  -->
 		</cfif>
     <cfelse>
     <!---<cftry> --->
 	<cfsilent>
-		<cfset request.cacheItem=false>
-      	<cfset feedData=application.feedManager.getRemoteFeedData(feedBean.getChannelLink(),feedBean.getMaxItems())/>
+		<cfset request.cacheItemTimespan=createTimeSpan(0,0,5,0)>
+      	<cfset variables.feedData=application.feedManager.getRemoteFeedData(variables.feedBean.getChannelLink(),variables.feedBean.getMaxItems())/>
 	</cfsilent>
 	  	<cfoutput>
-		 	<cfif isDefined("feedData.maxItems") and feedData.maxItems>
-				<div class="svSyndRemote svIndex svFeed clearfix" id="#cssID#">
-			        <#getHeaderTag('subHead1')#>#feedBean.getName()#</#getHeaderTag('subHead1')#>
-			        <cfif feedData.type neq "atom">
-						<cfloop from="1" to="#feedData.maxItems#" index="i">
-							<dl<cfif (i EQ 1)> class="first"<cfelseif (i EQ feedData.maxItems)> class="last"</cfif>>
+		 	<cfif isDefined("variables.feedData.maxItems") and variables.feedData.maxItems>
+				<div class="svSyndRemote svIndex svFeed clearfix" id="#variables.cssID#">
+			        <#getHeaderTag('subHead1')#>#HTMLEditFormat(variables.feedBean.getName())#</#getHeaderTag('subHead1')#>
+			        <cfif variables.feedData.type neq "atom">
+						<cfloop from="1" to="#variables.feedData.maxItems#" index="i">
+							<dl<cfif (i EQ 1)> class="first"<cfelseif (i EQ variables.feedData.maxItems)> class="last"</cfif>>
 								<!--- Date stuff--->
-								<cfif structKeyExists(feedData.itemArray[i],"pubDate")>
+								<cfif structKeyExists(variables.feedData.itemArray[i],"pubDate")>
 									<cftry>
-									<cfset itemDate=parseDateTime(feedData.itemArray[i].pubDate.xmlText)>
-									<dt class="releaseDate"><cfif isDate(itemDate)>#LSDateFormat(itemDate,getLongDateFormat())#<cfelse>#feedData.itemArray[i].pubDate.xmlText#</cfif></dt>
+									<cfset variables.itemDate=parseDateTime(variables.feedData.itemArray[i].pubDate.xmlText)>
+									<dt class="releaseDate"><cfif isDate(variables.itemDate)>#LSDateFormat(variables.itemDate,getLongDateFormat())#<cfelse>#variables.feedData.itemArray[i].pubDate.xmlText#</cfif></dt>
 									<cfcatch></cfcatch>
 									</cftry>
-								<cfelseif structKeyExists(feedData.itemArray[i],"dc:date")>
+								<cfelseif structKeyExists(variables.feedData.itemArray[i],"dc:date")>
 									<cftry>
-									<cfset itemDate=parseDateTime(feedData.itemArray[i]["dc:date"].xmlText)>
-									<dt class="releaseDate"><cfif isDate(itemDate)>#LSDateFormat(itemDate,getLongDateFormat())#<cfelse>#feedData.itemArray[i]["dc:date"].xmlText#</cfif></dt>
+									<cfset itemDate=parseDateTime(variables.feedData.itemArray[i]["dc:date"].xmlText)>
+									<dt class="releaseDate"><cfif isDate(variables.itemDate)>#LSDateFormat(variables.itemDate,getLongDateFormat())#<cfelse>#variables.feedData.itemArray[i]["dc:date"].xmlText#</cfif></dt>
 									<cfcatch></cfcatch>
 									</cftry>
 								</cfif>
-								<dt><a href="#feedData.itemArray[i].link.xmlText#" onclick="window.open(this.href); return false;">#feedData.itemArray[i].title.xmlText#</a></dt>						
-								<cfif hasSummary and structKeyExists(feedData.itemArray[i],"description")><dd class="summary">#feedData.itemArray[i].description.xmlText#</dd></cfif>
+								<dt><a href="#variables.feedData.itemArray[i].link.xmlText#" onclick="window.open(this.href); return false;">#variables.feedData.itemArray[i].title.xmlText#</a></dt>						
+								<cfif arguments.hasSummary and structKeyExists(variables.feedData.itemArray[i],"description")><dd class="summary">#variables.feedData.itemArray[i].description.xmlText#</dd></cfif>
 							</dl>
 						</cfloop>
 					<cfelse>
-						<cfloop from="1" to="#feedData.maxItems#" index="i">
-							<dl<cfif (i EQ 1)> class="first"<cfelseif (i EQ feedData.maxItems)> class="last"</cfif>>
+						<cfloop from="1" to="#variables.feedData.maxItems#" index="i">
+							<dl<cfif (i EQ 1)> class="first"<cfelseif (i EQ variables.feedData.maxItems)> class="last"</cfif>>
 								<!--- Date stuff--->
-								<cfif structKeyExists(feedData.itemArray[i],"updated")>
+								<cfif structKeyExists(variables.feedData.itemArray[i],"updated")>
 									<cftry>
-									<cfset itemDate=parseDateTime(feedData.itemArray[i].updated.xmlText)>
-									<dt class="releaseDate"><cfif isDate(itemDate)>#LSDateFormat(itemDate,getLongDateFormat())#<cfelse>#feedData.itemArray[i].updated.xmlText#</cfif></dt>
+									<cfset variables.itemDate=parseDateTime(variables.feedData.itemArray[i].updated.xmlText)>
+									<dt class="releaseDate"><cfif isDate(variables.itemDate)>#LSDateFormat(variables.itemDate,getLongDateFormat())#<cfelse>#variables.feedData.itemArray[i].updated.xmlText#</cfif></dt>
 									<cfcatch></cfcatch>
 									</cftry>
 								</cfif>
-								<dt><a href="#feedData.itemArray[i].link.XmlAttributes.href#" onclick="window.open(this.href); return false;">#feedData.itemArray[i].title.xmlText#</a></dt>
-								<cfif hasSummary and structKeyExists(feedData.itemArray[i],"summary")><dd class="summary">#feedData.itemArray[i].summary.xmlText#</dd></cfif>
+								<dt><a href="#variables.feedData.itemArray[i].link.XmlAttributes.href#" onclick="window.open(this.href); return false;">#variables.feedData.itemArray[i].title.xmlText#</a></dt>
+								<cfif arguments.hasSummary and structKeyExists(variables.feedData.itemArray[i],"summary")><dd class="summary">#variables.feedData.itemArray[i].summary.xmlText#</dd></cfif>
 							</dl>
 						</cfloop>
 					</cfif>

@@ -61,8 +61,11 @@ to your own modified versions of Mura CMS.
 	<cfif this.showEditableObjects and objectPerm eq 'editor'>
 		<cfset loadShadowBoxJS()>
 		<cfset addToHTMLHeadQueue('editableObjects.cfm')>
-		<cfset bean = application.contentManager.getActiveContent(arguments.objectID, arguments.siteID)>
-		
+		<cfif isValid("UUID",arguments.objectID)>
+			<cfset bean = $.getBean("content").loadBy(contentID=arguments.objectID)>
+		<cfelse>
+			<cfset bean = $.getBean("content").loadBy(title=arguments.objectID)>
+		</cfif>
 		<cfif len(application.configBean.getAdminDomain())>
 			<cfif application.configBean.getAdminSSL()>
 				<cfset adminBase="https://#application.configBean.getAdminDomain()#"/>

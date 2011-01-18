@@ -209,6 +209,8 @@ to your own modified versions of Mura CMS.
 		
 		<cfset application.pluginManager.announceEvent('onSiteRequestInit',request.servletEvent)/>
 		
+		<cfset parseCustomURLVars(request.servletEvent)>
+		
 		<cfreturn variables.Mura.doRequest(request.servletEvent)>
 		
 	<cfelse>
@@ -324,6 +326,80 @@ to your own modified versions of Mura CMS.
 		<cfset application.contentRenderer.redirect("http://#rsSites.domain##application.configBean.getServerPort()##application.configBean.getContext()##application.contentRenderer.getURLStem(rsSites.siteid,"")#")>
 	</cfif>
 	
+</cffunction>
+
+<cffunction name="render404" output="true" access="public">
+<cfif application.configBean.getSiteIDInURLs()>
+	<cfset getPageContext().forward("#application.configBean.getContext()#/#bindToDomain()#/index.cfm/404/")>
+<cfelse>
+	<cfset getPageContext().forward("#application.configBean.getContext()#/index.cfm/404/")>
+</cfif>
+</cffunction>
+
+<cffunction name="parseCustomURLVars" output="false">
+<cfargument name="event">
+	<cfset var categoryFilename="">
+	<cfset var categoryBean="">
+	<cfset var contentBean="">
+	<cfset var i="">
+	<cfset var dateArray=arrayNew(1)>
+	<cfset var categoryArray=arrayNew(1)>
+	<cfset var fileArray=arrayNew(1)>
+	<cfset var currentArrayName="fileArray">
+	<cfset var currentItem="">
+	<cfset var currentFilename=arguments.event.getValue('currentFilename')>	
+	<cfset var currentParam="">
+	
+	<cfloop from="1" to="#listLen(currentFilename,'/')#" index="i">
+		<cfset currentItem=listGetAt(currentFilename,i,'/')>
+		<cfif listFindNoCase('date,category,params,tag,linkservid,showmeta',currentItem)>
+			<cfset currentArrayName="#currentItem#Array">
+		<cfelseif currentArrayName eq "paramsArray">
+			<cfif len(currentParam)>
+				<cfset arguments.event.setValue(currentParam,currentItem)>
+				<cfset currentParam="">
+			<cfelse>
+				<cfset currentParam=currentItem>
+			</cfif>
+		<cfelseif currentArrayName eq "tagArray">
+			<cfset arguments.event.setValue("tag",currentItem)>
+			<cfset currentArrayName="">
+		<cfelseif currentArrayName eq "linkServIDArray">
+			<cfset arguments.event.setValue("linkServID",currentItem)>
+			<cfset currentArrayName="">
+		<cfelseif currentArrayName eq "showmetaArray">
+			<cfset arguments.event.setValue("showmeta",currentItem)>
+			<cfset currentArrayName="">
+		<cfelseif len(currentArrayName)>
+			<cfset evaluate("arrayAppend(#currentArrayName#,'#currentItem#')")>	
+		</cfif>
+	</cfloop>
+	
+	<cfset arguments.event.setValue("currentFilenameAdjusted",arrayToList(fileArray,"/"))>
+
+	<cfif arrayLen(categoryArray)>
+		<cfset categoryBean=getBean("category").loadBy(filename=arrayToList(categoryArray,"/"), siteID=arguments.event.getValue('siteid'))>
+		<cfset arguments.event.setValue('categoryID',categoryBean.getCategoryID())>
+		<cfset arguments.event.setValue('currentCategory',categoryBean)>
+	</cfif>	
+	
+	<cfif arrayLen(dateArray)>
+		<cfif arrayLen(dateArray) gte 1 and isNumeric(dateArray[1])>
+			<cfset arguments.event.setValue("year",dateArray[1])>
+			<cfset arguments.event.setValue("filterBy","releaseYear")>		
+		</cfif>
+			
+		<cfif arrayLen(dateArray) gte 2 and isNumeric(dateArray[2])>
+			<cfset arguments.event.setValue("month",dateArray[2])>
+			<cfset arguments.event.setValue("filterBy","releaseMonth")>		
+		</cfif>
+			
+		<cfif arrayLen(dateArray) gte 3 and isNumeric(dateArray[3])>
+			<cfset arguments.event.setValue("day",dateArray[3])>	
+			<cfset arguments.event.setValue("filterBy","releaseDate")>	
+		</cfif>
+	</cfif>
+
 </cffunction>
 
 </cfcomponent>

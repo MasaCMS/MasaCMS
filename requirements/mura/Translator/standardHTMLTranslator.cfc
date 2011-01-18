@@ -30,6 +30,7 @@
 	<cfset var renderer="">
 	<cfset var siteRenderer=arguments.event.getContentRenderer()>
 	<cfset var themeRenderer=arguments.event.getThemeRenderer()>
+	<cfset var modal="">
 	
 	<cfif isObject(themeRenderer) and structKeyExists(themeRenderer,"renderHTMLHeadQueue")>
 		<cfset renderer=themeRenderer>
@@ -46,8 +47,9 @@
 		<cfinclude template="#event.getSite().getTemplateIncludePath()#/default.cfm">
 		</cfif>
 	</cfsavecontent>
-		
-	<cfset renderer.renderHTMLHeadQueue() />
+	
+	<cfset page=replaceNoCase(page,"</head>", renderer.renderHTMLQueue("Head") & "</head>")>
+	<cfset page=replaceNoCase(page,"</body>", renderer.renderHTMLQueue("Foot") & "</body>")>
 	<cfset event.setValue('__MuraResponse__',trim(page))>
 </cffunction>
 

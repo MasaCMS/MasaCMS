@@ -23,7 +23,7 @@
 	
 <cffunction name="validate" output="false" returnType="any">
 	<cfargument name="event" required="true">
-	<cfif request.isMobileRequest and not (isdefined("cookie.mobileFormat") and cookie.mobileFormat eq "false")>
+	<cfif request.muraMobileRequest>
 		<cfset event.getHandler("standardMobile").handle(event)>
 	</cfif>
 </cffunction>

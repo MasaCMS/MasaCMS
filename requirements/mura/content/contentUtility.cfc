@@ -562,7 +562,16 @@ http://#listFirst(cgi.http_host,":")##variables.configBean.getServerPort()##vari
 			<cfargument name="parentid"  type="string">
 			<cfargument name="parentType"  type="string" required="yes" default="Page">
 		
+			<cfset var nowAdjusted="">
 			<cfset var isOn=1>
+		
+			<cfif request.muraChangesetPreview>
+				<cfset nowAdjusted=getCurrentUser().getValue("ChangesetPreviewData").publishDate>
+			</cfif>
+			
+			<cfif not isdate(nowAdjusted)>
+				<cfset nowAdjusted=now()>
+			</cfif>
 		
 			<cfswitch expression="#arguments.display#">
 					<cfcase value="1">
@@ -572,7 +581,7 @@ http://#listFirst(cgi.http_host,":")##variables.configBean.getServerPort()##vari
 						<cfset isOn=0>
 					</cfcase>
 					<cfcase value="2">
-						<cfif arguments.parentType eq 'Calendar' or (arguments.displaystart lte now() and (arguments.displaystop gte now() or arguments.displaystop eq ''))>
+						<cfif arguments.parentType eq 'Calendar' or (arguments.displaystart lte nowAdjusted and (arguments.displaystop gte nowAdjusted or arguments.displaystop eq ''))>
 							<cfset isOn=1>
 						<cfelse>
 							<cfset isOn=0>
@@ -699,7 +708,7 @@ Sincerely,
 	<cfargument name="recurse" type="boolean" required="true" default="false"/>
 	<cfargument name="appendTitle" type="boolean" required="true" default="true"/>
 	<cfargument name="path"/>
-	
+	<cfargument name="setNotOnDisplay" type="boolean" required="true" default="false"/>
 	<cfset var rs1 = "">
 	<cfset var strSQL = "">
 	<cfset var tableName = "">
@@ -729,6 +738,10 @@ Sincerely,
 		<cfset contentBean.setMenuTitle(contentBean.getMenuTitle() & " - Copy")>
 	<cfelse>
 		<cfset contentBean.setMenuTitle(contentBean.getMenuTitle())>
+	</cfif>
+	
+	<cfif arguments.setNotOnDisplay>
+		<cfset contentBean.setDisplay(0)>
 	</cfif>
 	
 	<cfif listFindNoCase("Page,Portal,Gallery,Calendar",contentBean.getType())>
@@ -806,7 +819,7 @@ Sincerely,
 		<cfset rsKids=getServiceFactory().getBean("contentGateway").getNest(parentID=arguments.contentID, siteID=arguments.siteID, sortBy=contentBean.getSortBy(), sortDirection=sortDirection)>
 			
 		<cfloop query="rsKids">
-			<cfset copy(arguments.siteID, rsKids.contentID, newContentID, rsKids.hasKids, true, contentBean.getPath())>
+			<cfset copy(arguments.siteID, rsKids.contentID, newContentID, rsKids.hasKids, true, contentBean.getPath(), arguments.setNotOnDisplay)>
 		</cfloop>
 	</cfif>
 

@@ -8,8 +8,8 @@
 </cffunction>
 
 <cffunction name="empty" output="false">
-	<cfset rs=getQuery(argumentCollecton=arguments)>
-	 
+	<cfset rs=getQuery(argumentCollection=arguments)>
+	
 	 <cftransaction>
 	
 	<!--- CONTENT --->
@@ -179,7 +179,7 @@
 		<!--- Store related content --->
 		<cfset rsRelated=arguments.deleted.getRelatedContentQuery()>
 		<cfif rsRelated.recordcount>
-			<cfset arguments.deleted.setValue(  "relatedContentID"  ,  valueList( rsRelated ) ) >
+			<cfset arguments.deleted.setValue(  "relatedContentID"  ,  valueList( rsRelated.contentID ) ) >
 		</cfif>
 		<!--- store categories --->
 		<cfset arguments.deleted.setValue("categoriesFromMuraTrash",  getBean("contentManager").getCategoriesByHistID( arguments.deleted.getContentHistID() )  )>
@@ -443,6 +443,10 @@
 			<cfreturn "siteID">
 		</cfcase>
 		
+		<cfcase value="changesetBean">
+			<cfreturn "changesetID">
+		</cfcase>
+		
 		<cfcase value="adzoneBean">
 			<cfreturn "adZoneID">
 		</cfcase>
@@ -491,6 +495,10 @@
 		</cfcase>
 		
 		<cfcase value="feedBean">
+			<cfreturn "name">
+		</cfcase>
+		
+		<cfcase value="changesetBean">
 			<cfreturn "name">
 		</cfcase>
 		

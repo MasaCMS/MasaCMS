@@ -78,6 +78,12 @@ to your own modified versions of Mura CMS.
 	<cfreturn this>
 </cffunction>
 
+<cffunction name="setPackageBy" output="false" access="public">
+	<cfargument name="packageBy">
+	<cfset variables.packageBy=arguments.packageBy>
+	<cfreturn this>
+</cffunction>
+
 <cffunction name="buildQueryFromList" output="false" access="public">
 	<cfargument name="idList">
 	<cfargument name="siteid">

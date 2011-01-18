@@ -109,7 +109,7 @@ to your own modified versions of Mura CMS.
 	<cfset var dbType=variables.configBean.getDbType() />
 	<cfset var sortOptions="menutitle,title,lastupdate,releasedate,orderno,displayStart,created,rating,comment,credits,type,subtype">
 	<cfset var isExtendedSort=(not listFindNoCase(sortOptions,feedBean.getSortBy()))>
-	<cfset var nowAdjusted=createDateTime(year(now()),month(now()),day(now()),hour(now()),int((minute(now())/5)*5),0)>
+	<cfset var nowAdjusted="">
 	<cfset var blockFactor=arguments.feedBean.getNextN()>
 	<cfset var jointables="" />
 	<cfset var jointable="">
@@ -118,6 +118,14 @@ to your own modified versions of Mura CMS.
 	
 	<cfif blockFactor gt 100>
 		<cfset blockFactor=100>
+	</cfif>
+	
+	<cfif request.muraChangesetPreview>
+		<cfset nowAdjusted=getCurrentUser().getValue("ChangesetPreviewData").publishDate>
+	</cfif>
+			
+	<cfif not isdate(nowAdjusted)>
+		<cfset nowAdjusted=createDateTime(year(now()),month(now()),day(now()),hour(now()),int((minute(now())/5)*5),0)>
 	</cfif>
 	
 	<cfif arguments.feedBean.getType() eq "Local">
@@ -210,10 +218,8 @@ to your own modified versions of Mura CMS.
 							Inner Join tcontenttags on (tcontent.contentHistID=tcontenttags.contentHistID)
 							</cfif>
 						   where tcontent.siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.feedBean.getsiteid()#"/>
-						   		AND tcontent.Approved = 1
-							    AND tcontent.active = 1  
-							    AND TKids.Approved = 1
-							    AND TKids.active = 1
+						   		#renderActiveClause("tcontent",arguments.feedBean.getSiteID())#
+							    #renderActiveClause("TKids",arguments.feedBean.getSiteID())#
 							    AND TKids.searchExclude = 0
 							    <cfif arguments.feedBean.getShowNavOnly()>AND TKids.isNav = 1</cfif>
 							 	AND tcontent.moduleid = '00000000000000000000000000000000000'
@@ -344,7 +350,7 @@ to your own modified versions of Mura CMS.
 										OR
 										tcontent.parentID in (select contentID from tcontent 
 															where type='Calendar'
-															and active=1
+															#renderActiveClause("tcontent",arguments.feedBean.getSiteID())#
 															and siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#feedBean.getSiteID()#">
 														   )
 									)
@@ -369,7 +375,7 @@ to your own modified versions of Mura CMS.
 										OR
 										TKids.parentID in (select contentID from tcontent 
 															where type='Calendar'
-															and active=1
+															#renderActiveClause("tcontent",arguments.feedBean.getSiteID())#
 															and siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#feedBean.getSiteID()#">
 														   )
 									)
@@ -384,11 +390,12 @@ to your own modified versions of Mura CMS.
 				</cfif>
 <!--- end qKids --->
 	
-	where tcontent.active=1
+	where
+	tcontent.siteid = <cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.feedBean.getsiteid()#">
+	#renderActiveClause("tcontent",arguments.feedBean.getSiteID())#
 	<cfif arguments.feedBean.getType() eq "Local" and arguments.feedBean.getShowNavOnly()>
 	AND tcontent.isNav = 1
 	</cfif>
-	AND tcontent.Approved = 1
 	<cfif arguments.feedBean.getType() eq "Remote">
 		<cfthrow message="This function is not available for remote feeds.">
 	<cfelseif arguments.feedBean.getType() eq "Component">
@@ -398,8 +405,7 @@ to your own modified versions of Mura CMS.
 	</cfif>
 	AND tcontent.searchExclude = 0
 	AND tcontent.type !='Module'
-	AND tcontent.siteid = <cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.feedBean.getsiteid()#">
-	
+
 		<cfif rsParams.recordcount>
 		<cfloop query="rsParams">
 			<cfset param=createObject("component","mura.queryParam").init(rsParams.relationship,
@@ -535,7 +541,7 @@ to your own modified versions of Mura CMS.
 	
 	) 
 	
-	<cfif structkeyExists(request,"isMobileRequest") and request.isMobileRequest>
+	<cfif request.muraMobileRequest>
 		and (tcontent.mobileExclude!=1 or tcontent.mobileExclude is null)
 	</cfif>
 									
@@ -649,4 +655,30 @@ to your own modified versions of Mura CMS.
 	<cfreturn rs />
 </cffunction>
 
+<cffunction name="renderActiveClause" output="true">
+<cfargument name="table" default="tcontent">
+<cfargument name="siteID">
+	<cfset var previewData="">
+	<cfoutput>
+			<cfif request.muraChangesetPreview>
+				<cfset previewData=getCurrentUser().getValue("ChangesetPreviewData")>
+				and (
+						(#arguments.table#.active = 1
+						and #arguments.table#.Approved = 1
+						and #arguments.table#.contentID not in (#previewData.contentIDList#)	
+						)
+						
+						or 
+						
+						(
+						#arguments.table#.contentHistID in (#previewData.contentHistIDList#)
+						)
+						
+					)	
+			<cfelse>
+				and #arguments.table#.active = 1
+				and #arguments.table#.Approved = 1
+			</cfif>	
+	</cfoutput>
+</cffunction>
 </cfcomponent>

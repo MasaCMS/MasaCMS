@@ -91,7 +91,7 @@ to your own modified versions of Mura CMS.
 
 <cffunction name="getBean" returntype="any" access="public" output="false">
 	<cfargument name="beanName">
-	<cfargument name="siteID" required="false">
+	<cfargument name="siteID" required="false" default="">
 	<cfset var bean="">
 	
 	<cfset bean=application.serviceFactory.getBean(arguments.beanName) />
@@ -105,6 +105,7 @@ to your own modified versions of Mura CMS.
 			<cfset bean.setSiteID(getValue("siteID"))>		
 		</cfif>		
 	</cfif>
+	
 	<cfreturn bean>
 	
 </cffunction>

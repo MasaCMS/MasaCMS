@@ -41,7 +41,9 @@ the GNU General Public License version 2  without this exception.  You may, if y
 to your own modified versions of Mura CMS.
 --->
 <cfoutput>
+<cfif not cookie.mobileFormat>
 <script src="#event.getSite().getAssetPath()#/includes/display_objects/gallery/js/gallery.js" type="text/javascript"></script>
+</cfif>
 
 <!--- <cfset imgWidth = #$.siteConfig('gallerySmallScale')#> --->
 <cfset addToWidth = 0> <!--- Add total number of pixels and padding applied to <li> via CSS  --->

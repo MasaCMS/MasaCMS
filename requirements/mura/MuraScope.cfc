@@ -125,12 +125,18 @@
 </cffunction>
 
 <cffunction name="getGlobalEvent" output="false" returntype="any">
+	<cfset var temp="">
 	<cfif structKeyExists(request,"servletEvent")>
 		<cfreturn request.servletEvent>
 	<cfelseif structKeyExists(request,"event")>
 		<cfreturn request.event>
 	<cfelse>
-		<cfreturn getEvent()>
+		<cfset temp=structNew()>
+		<cfif isdefined("session.siteid")>
+			<cfset temp.siteID=session.siteID>
+		</cfif>
+		<cfset request.muraGlobalEvent=createObject("component","mura.event").init(temp)>
+		<cfreturn request.muraGlobalEvent>
 	</cfif>
 </cffunction>
 
@@ -332,5 +338,10 @@
 	<cfargument name="complete" type="boolean" required="true" default="false">
 	<cfargument name="showMeta" type="string" required="true" default="0">
 	<cfreturn getContentRenderer().createHref(argumentCollection=arguments)>
+</cffunction>
+
+<cffunction name="rbKey" output="false" returntype="any">
+	<cfargument name="key">
+	<cfreturn siteConfig("RBFactory").getKey(arguments.key)>
 </cffunction>
 </cfcomponent>

@@ -112,7 +112,7 @@ to your own modified versions of Mura CMS.
 			</cfsilent>
 			<cfoutput>
 			<li class="#class#">
-			<a href="#application.configBean.getContext()#/tasks/render/file/index.cfm?fileID=#item.getValue('fileid')#&ext=.#item.getValue('fileext')#" title="#HTMLEditFormat(item.getValue('title'))#" rel="shadowbox[gallery]" class="gallery"><img src="#createHREFForImage(item.getValue('siteid'),item.getValue('fileid'),item.getValue('fileext'),'small')#" alt="#HTMLEditFormat(item.getValue('title'))#"/></a>	 
+			<a href="#createHREFForImage(item.getValue('siteid'),item.getValue('fileid'),item.getValue('fileext'),'large',false)#" title="#HTMLEditFormat(item.getValue('title'))#" rel="shadowbox[gallery]" class="gallery"><img src="#createHREFForImage(item.getValue('siteid'),item.getValue('fileid'),item.getValue('fileext'),'small')#" alt="#HTMLEditFormat(item.getValue('title'))#"/></a>	 
 		 	<dl>
 		 	<dt>
 		 	<cfif hasComments>

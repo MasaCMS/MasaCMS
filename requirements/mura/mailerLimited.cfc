@@ -188,7 +188,6 @@ to your own modified versions of Mura CMS.
 <cfargument name="subject" type="string" default="">
 <cfargument name="siteid" type="string" default="">
 <cfargument name="replyTo" type="string" default="">
-<cfargument name="failto" type="string" default="">
 <cfargument name="mailerID" type="string" default="">
 <cfargument name="bcc" type="string" required="true" default="">
 
@@ -262,7 +261,6 @@ to your own modified versions of Mura CMS.
 <cfargument name="subject" type="string" default="">
 <cfargument name="siteid" type="string" default="">
 <cfargument name="replyTo" type="string" default="">
-<cfargument name="failto" type="string" default="">
 <cfargument name="mailerID" type="string" default="">
 <cfargument name="bcc" type="string" required="true" default="">
 

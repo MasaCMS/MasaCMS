@@ -55,5 +55,3 @@ to your own modified versions of Mura CMS.
 </cfif>
 <cfcatch></cfcatch>
 </cftry>
-
-	
