@@ -8,7 +8,17 @@
 </cffunction>
 
 <cffunction name="empty" output="false">
-	<cfset rs=getQuery(argumentCollection=arguments)>
+	<cfset var rs=getQuery(argumentCollection=arguments)>
+	<cfset var pluginEvent = createObject("component","mura.MuraScope") />
+	
+	<cfset pluginEvent=pluginEvent.init(arguments).getEvent()>
+	<cfset pluginEvent.setValue("rsTrash",rs)>
+	
+	<cfif isdefined("arguments.siteID") and len(arguments.siteID)>
+		<cfset getBean("pluginManager").announceEvent("onBeforeSiteEmptyTrash",pluginEvent)>
+	<cfelse>
+		<cfset getBean("pluginManager").announceEvent("onBeforeGlobalEmptyTrash",pluginEvent)>
+	</cfif>
 	
 	 <cftransaction>
 	
@@ -135,6 +145,12 @@
 	
 	</cftransaction>
 
+	<cfif isdefined("arguments.siteID") and len(arguments.siteID)>
+		<cfset getBean("pluginManager").announceEvent("onAfterSiteEmptyTrash",pluginEvent)>
+	<cfelse>
+		<cfset getBean("pluginManager").announceEvent("onAfterGlobalEmptyTrash",pluginEvent)>
+	</cfif>
+	
 </cffunction>
 
 <cffunction name="throwIn" output="false">

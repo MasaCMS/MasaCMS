@@ -772,11 +772,11 @@ select * from tplugins order by #arguments.orderby#
 			<cfset pluginCFC.init(pluginConfig)>
 		</cfif>
 
-		<cfif pluginConfig.getDeployed() eq 2>
+		<cfif pluginConfig.getDeployed()>
 			<cfif structKeyExists(pluginCFC,"update")>
 				<cfset pluginCFC.update() />
 			</cfif>
-		<cfelseif pluginConfig.getDeployed() eq 0>
+		<cfelse>
 			<cfif structKeyExists(pluginCFC,"install")>
 				<cfset pluginCFC.install() />
 			</cfif>
