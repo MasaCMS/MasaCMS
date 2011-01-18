@@ -1837,6 +1837,10 @@ to your own modified versions of Mura CMS.
 	<cfreturn headerStr>
 </cffunction>
 
+<cffunction name="renderHTMLHeadQueue" output="false">
+	<cfreturn renderHTMLQueue("Head")>
+</cffunction>
+
 <cffunction name="redirect" output="false" returntype="void">
 	<cfargument name="location">
 	<cfargument name="addToken" required="true" default="false">
