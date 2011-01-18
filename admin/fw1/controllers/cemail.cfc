@@ -56,7 +56,12 @@
 	<cfset variables.fw.redirect(action="cEmail.list",append="siteid",path="")>
 </cffunction>
 
-<cffunction name="showALLBounces" output="false">
+<cffunction name="showAllBounces" output="false">
+<cfargument name="rc">
+	<cfset arguments.rc.rsBounces=variables.emailManager.getAllBounces(arguments.rc) />
+</cffunction>
+
+<cffunction name="showBounces" output="false">
 <cfargument name="rc">
 	<cfset arguments.rc.rsBounces=variables.emailManager.getBounces(arguments.rc.emailid) />
 </cffunction>
@@ -65,6 +70,12 @@
 <cfargument name="rc">
 	<cfset arguments.rc.rsReturns=variables.emailManager.getReturns(arguments.rc.emailid) />
 	<cfset arguments.rc.rsReturnsByUser=variables.emailManager.getReturnsByUser(arguments.rc.emailid) />
+</cffunction>
+
+<cffunction name="deleteBounces" output="false">
+<cfargument name="rc">
+	<cfset variables.emailManager.deleteBounces(arguments.rc)>
+	<cflocation url="index.cfm?fuseaction=cEmail.showAllBounces&siteid=#arguments.rc.siteid#">
 </cffunction>
 
 </cfcomponent>

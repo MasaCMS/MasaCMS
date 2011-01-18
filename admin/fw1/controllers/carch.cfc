@@ -202,6 +202,10 @@
 				<cfset variables.fw.redirect(action="cArch.hist",append="contentid,siteid,startrow,moduleid,parentid,type,compactDisplay",path="")>
 			</cfif>
 			
+			<cfif arguments.rc.return eq 'changesets' and len(rc.contentBean.getChangesetID())>
+				<cfset variables.fw.redirect(action="cChangesets.assignments",append="changesetID,siteid",path="")>
+			</cfif>
+			
 			<cfif arguments.rc.preview eq 0>
 				<cfset variables.fw.redirect(action="cArch.list",append="topid,siteid,startrow,moduleid",path="")>
 			<cfelse>
@@ -253,7 +257,7 @@
 
 <cffunction name="copy" ouput="false">
 	<cfargument name="rc">
-	<cfset variables.contentManager.copy(arguments.rc.siteid,arguments.rc.contentID,arguments.rc.parentID,arguments.rc.copyAll)  />
+	<cfset variables.contentManager.copy(arguments.rc.siteid,arguments.rc.contentID,arguments.rc.parentID,arguments.rc.copyAll, true, true)  />
 </cffunction>
 
 <cffunction name="saveCopyInfo" ouput="false">

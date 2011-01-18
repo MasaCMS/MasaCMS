@@ -66,9 +66,24 @@
 
 <cffunction name="deployPlugin" output="false">
 	<cfargument name="rc">
+	<cfset var tempID="">
 	<cfparam name="arguments.rc.moduleID" default="" />
-	<cfset arguments.rc.moduleID=variables.pluginManager.deploy(arguments.rc.moduleID) />
-	<cfset variables.fw.redirect(action="cSettings.editPlugin",append="moduleid",path="")>
+	
+	<cfset tempID=variables.pluginManager.deploy(arguments.rc.moduleID) />
+	
+	<cfif len(tempID)>
+		<cfset arguments.rc.moduleID=tempID>
+		<cfset variables.fw.redirect(action="cSettings.editPlugin",append="moduleid",path="")>
+	<cfelse>
+		<cfif len(arguments.rc.moduleID)>
+			<cfset variables.fw.redirect(action="cSettings.editPlugin",append="moduleid",path="")>
+		<cfelse>
+			<cfset arguments.rc.activeTab=1>
+			<cfset arguments.rc.refresh=1>
+			<cfset variables.fw.redirect(action="cSettings.list",append="activeTab,refresh",path="")>
+		</cfif>	
+	</cfif>
+	
 </cffunction>
 
 <cffunction name="updatePlugin" output="false">
@@ -81,16 +96,23 @@
 
 <cffunction name="updateSite" output="false">
 	<cfargument name="rc">
+	<cfset var bean="">
 	<cfif arguments.rc.action eq 'Update'>
-			<cfset variables.settingsManager.update(arguments.rc)  />
+			<cfset bean=variables.settingsManager.update(arguments.rc)  />
 			<cfset variables.clusterManager.reload() />
+			<cfif not structIsEmpty(bean.getErrors())>
+				<cfset getCurrentUser().setValue("errors",bean.getErrors())>
+			</cfif>
 	</cfif>
 	<cfif arguments.rc.action eq 'Add'>
-			<cfset variables.settingsManager.create(arguments.rc)  />
+			<cfset bean=variables.settingsManager.create(arguments.rc)  />
 			<cfset variables.settingsManager.setSites()  />
 			<cfset variables.clusterManager.reload() />
 			<cfset session.userFilesPath = "#application.configBean.getAssetPath()#/#rc.siteid#/assets/">
 			<cfset session.siteid=rc.siteid />
+			<cfif not structIsEmpty(bean.getErrors())>
+				<cfset getCurrentUser().setValue("errors",bean.getErrors())>
+			</cfif>
 	</cfif>
 	<cfif arguments.rc.action eq 'Delete'>
 			<cfset variables.settingsManager.delete(arguments.rc.siteid)  />
@@ -106,6 +128,10 @@
 	<cfset arguments.rc.rsSites=variables.settingsManager.getList()>
 </cffunction>
 
+<cffunction name="exportHTML" output="false">
+	<cfargument name="rc">
+	<cfset variables.settingsManager.getSite(arguments.rc.siteID).exportHTML()>
+</cffunction>
 <cffunction name="sitecopy" output="false">
 	<cfargument name="rc">
 	<cfif arguments.rc.fromSiteID neq arguments.rc.toSiteID>
@@ -114,4 +140,29 @@
 	<cfset variables.fw.redirect(action="cSettings.sitecopyresult",append="fromSiteID,toSiteID",path="")>
 </cffunction>
 
+<cffunction name="createBundle" output="false">
+	<cfargument name="rc">
+	<cfparam name="arguments.rc.moduleID" default="">
+	<cfparam name="arguments.rc.BundleName" default="">
+	<cfparam name="arguments.rc.includeTrash" default="false">
+	<cfparam name="arguments.rc.includeVersionHistory" default="false">
+	<cfparam name="arguments.rc.includeMetaData" default="false">
+	<cfparam name="arguments.rc.includeMailingListMembers" default="false">
+	<cfparam name="arguments.rc.includeUsers" default="false">
+	
+	<cfset application.serviceFactory.getBean("Bundle").Bundle(
+			siteID=arguments.rc.siteID,
+			moduleID=arguments.rc.moduleID,
+			BundleName=arguments.rc.BundleName, 
+			includeVersionHistory=arguments.rc.includeVersionHistory,
+			includeTrash=arguments.rc.includeTrash,
+			includeMetaData=arguments.rc.includeMetaData,
+			includeMailingListMembers=arguments.rc.includeMailingListMembers,
+			includeUsers=arguments.rc.includeUsers) />
+</cffunction>
+
+<cffunction name="selectBundleOptions" output="false">
+	<cfargument name="rc">
+	<cfset arguments.rc.rsplugins=application.serviceFactory.getBean("pluginManager").getSitePlugins(arguments.rc.siteID) />
+</cffunction>
 </cfcomponent>

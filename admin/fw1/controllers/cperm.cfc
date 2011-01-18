@@ -75,6 +75,9 @@
 	 <cfif arguments.rc.moduleid eq '00000000000000000000000000000000011'>
 		<cfset variables.fw.redirect(action="cFeed.list",append="siteid",path="")>
 	</cfif>
+	 <cfif arguments.rc.moduleid eq '00000000000000000000000000000000014'>
+		<cfset variables.fw.redirect(action="cChangesets.list",append="siteid",path="")>
+	</cfif>
 	
 	 <cfset variables.fw.redirect(action="cPlugins.list",append="siteid",path="")>
 </cffunction>
