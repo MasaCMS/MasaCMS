@@ -98,8 +98,16 @@ to your own modified versions of Mura CMS.
 
 		<cfloop query="rsImportFiles">
 			<cfset fname = rereplace(name,"^wddx_(.*)\.xml","\1") />
-			<cffile action="read" file="#variables.unpackPath##name#" variable="importWDDX">
-			<cfwddx action="wddx2cfml" input=#importWDDX# output="importValue">
+			<cffile action="read" file="#variables.unpackPath##name#" variable="importWDDX" charset="utf-8">
+			<cfset importWDDX=REReplace(importWDDX,'[\xc]','','ALL')>
+			<cftry>
+				<cfwddx action="wddx2cfml" input=#importWDDX# output="importValue">
+			<cfcatch>
+				<cfdump var="An error happened while trying to deserialize #name#.">
+				<cfdump var="#cfcatch#">
+				<cfabort>
+			</cfcatch>
+			</cftry>
 			<cfset variables.data[fname] = importValue />
 		</cfloop>
 
@@ -203,12 +211,12 @@ to your own modified versions of Mura CMS.
 			<cfif variables.configBean.getValue('assetdir') neq variables.configBean.getValue('webroot')>
 				<cfset zipDir = variables.configBean.getValue('assetdir') & variables.fileDelim & arguments.siteID />
 				<cffile action="write" file="#zipDir##variables.fileDelim#blank.txt" output="empty file" />  
-				<cfset variables.zipTool.AddFiles(zipFilePath="#variables.backupDir#assetfiles.zip",directory=#zipDir#,recurse="true",sinceDate=arguments.sinceDate)>
+				<cfset variables.zipTool.AddFiles(zipFilePath="#variables.backupDir#assetfiles.zip",directory=#zipDir#,recurse="true",sinceDate=arguments.sinceDate,excludeDirs="cache")>
 			</cfif> 
 			<cfif variables.configBean.getValue('filedir') neq variables.configBean.getValue('webroot')>
 				<cfset zipDir = variables.configBean.getValue('filedir') & variables.fileDelim & arguments.siteID /> 
 				<cffile action="write" file="#zipDir##variables.fileDelim#blank.txt" output="empty file" />  
-				<cfset variables.zipTool.AddFiles(zipFilePath="#variables.backupDir#filefiles.zip",directory=#zipDir#,recurse="true",sinceDate=arguments.sinceDate)>
+				<cfset variables.zipTool.AddFiles(zipFilePath="#variables.backupDir#filefiles.zip",directory=#zipDir#,recurse="true",sinceDate=arguments.sinceDate,excludeDirs="assets")>
 				
 					<cfif variables.configBean.getValue('filedir') eq variables.configBean.getValue('webroot')>
 						<cfloop query="rsInActivefiles">
@@ -309,7 +317,7 @@ to your own modified versions of Mura CMS.
 				</cfif>
 				<cfif fileExists( getBundle() & "sitefiles.zip" )>
 					<cfset zipPath = getBundle() & "sitefiles.zip" />
-					<cfset variables.zipTool.Extract(zipFilePath="#zipPath#",extractPath=siteRoot, overwriteFiles=true, extractDirs="cache#variables.fileDelim#|assets#variables.fileDelim#")>
+					<cfset variables.zipTool.Extract(zipFilePath="#zipPath#",extractPath=siteRoot, overwriteFiles=true, extractDirs="cache|assets")>
 				</cfif>
 				<cfif fileExists( getBundle() & "assetfiles.zip" )>
 					<cfset zipPath = getBundle() & "assetfiles.zip" />
@@ -324,11 +332,11 @@ to your own modified versions of Mura CMS.
 			</cfif>
 			<cfif arguments.renderingMode eq "all">
 				<cfset zipPath = getBundle() & "sitefiles.zip" />
-				<cfset variables.zipTool.Extract(zipFilePath="#zipPath#",extractPath=siteRoot, overwriteFiles=true, excludeDirs="cache#variables.fileDelim#|assets#variables.fileDelim#")>
+				<cfset variables.zipTool.Extract(zipFilePath="#zipPath#",extractPath=siteRoot, overwriteFiles=true, excludeDirs="cache|assets")>
 			<cfelseif arguments.renderingMode eq "theme">
 				<cfset zipPath = getBundle() & "sitefiles.zip" />
 				<cfset theme=application.settingsManager.getSite(siteID).getTheme()>>
-				<cfset variables.zipTool.Extract(zipFilePath="#zipPath#",extractPath=siteRoot, overwriteFiles=true, extractDirs="includes#variables.fileDelim#themes#variables.fileDelim##theme##variables.fileDelim#")>
+				<cfset variables.zipTool.Extract(zipFilePath="#zipPath#",extractPath=siteRoot, overwriteFiles=true, extractDirs="includes#variables.fileDelim#themes#variables.fileDelim##theme#")>
 			</cfif>
 		</cfif>
 		
@@ -442,6 +450,7 @@ to your own modified versions of Mura CMS.
 		<cfset var rssite	= "" />
 		<cfset var moduleIDSqlList="">
 		<cfset var i="">
+		<cfset var availableSpace=0>
 		
 		<cfloop list="#arguments.moduleID#" index="i">
 			<cfset moduleIDSQLlist=listAppend(moduleIDlist,"'#i#'")>
@@ -456,20 +465,22 @@ to your own modified versions of Mura CMS.
 		<cfif not isNumeric(requiredSpace)>
 			<cfset requiredSpace=1>
 		</cfif>
-			
+		
 		<cftry>
-			<cfif variables.fileWriter.getUsableSpace(variables.backupDir) lt requiredSpace>
-				<cfthrow message="The required disk space of #requiredSpace# gb is not available.">
-			</cfif>
+			<cfset availableSpace=variables.fileWriter.getUsableSpace(variables.backupDir) >
 		<cfcatch></cfcatch>
 		</cftry>
+		
+		<cfif availableSpace and availableSpace lt requiredSpace>
+			<cfthrow message="The required disk space of #requiredSpace# gb is not available.  You currently only have #availableSpace# gb available.">
+		</cfif>
 		
 		<cfif not directoryExists(variables.backupDir)>
 			<cfdirectory action="create" directory="#variables.backupDir#">
 		</cfif>
 
 		<cfset BundleFiles( argumentCollection=sArgs ) />
-		
+	
 		<cfif len(arguments.siteID)>	
 			<cfquery datasource="#arguments.dsn#" name="rstcontent">
 				select * from tcontent where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/> 
@@ -1150,24 +1161,15 @@ to your own modified versions of Mura CMS.
 			</cftry>
 		</cfloop>
 	
-		<cffile action="readbinary" file="#variables.workDir##variables.dirName#.zip" variable="rsZipFile" /> 
-		<cffile action="delete" file="#variables.workDir##variables.dirName#.zip" />
-
 		<cfif not len(arguments.bundleName)>
 			<cfset arguments.bundleName="MuraBundle">
 		</cfif>
 		<cfif len(arguments.siteID)>
 			<cfset arguments.bundleName=arguments.bundleName & "_#arguments.siteID#">
 		</cfif>
-		
+			
 		<cfheader name="Content-Disposition" value='attachment;filename="#arguments.bundleName#_#dateformat(now(),"dd_mm_yyyy")#_#timeformat(now(),"HH_mm")#.zip"'>
-		<cfheader name="Content-Length" value="#arrayLen(rsZipFile)#">
-		
-		<cfif variables.configBean.getCompiler() neq 'Railo'>
-			<cfset createObject("component","mura.content.file.renderAdobe").init("application/zip",rsZipFile)>
-		<cfelse>
-			<cfset createObject("component","mura.content.file.renderRailo").init("application/zip",rsZipFile)>
-		</cfif>
+		<cfcontent TYPE="application/zip" file="#variables.workDir##variables.dirName#.zip" deletefile="Yes">
 		
 	</cffunction>
 

@@ -82,6 +82,7 @@
 		<cfargument name="savePaths"   required="no"  type="boolean" default="no"  hint="Save full path info.">
 		<cfargument name="sinceDate"   required="no"  type="string" default=""  hint="Filter for files created since this datetime">
 		<cfargument name="hiddenFiles"   required="no"  type="boolean" default="no"  hint="Whether to include .svn or .git files.">
+		<cfargument name="excludeDirs"   required="yes"  type="string"  default=""          hint="| (Chr(124)) delimited list of dirs to not zip.">
 		<cfscript>
 
 			/* Default variables */
@@ -104,7 +105,7 @@
 
 				else if(IsDefined("arguments.directory"))
 				{
-					files = FilesList(arguments.directory, arguments.filter, arguments.recurse, arguments.sinceDate, arguments.hiddenFiles);
+					files = FilesList(arguments.directory, arguments.filter, arguments.recurse, arguments.sinceDate, arguments.hiddenFiles, arguments.excludeDirs);
 					arguments.directory = PathFormat(arguments.directory);
 				}
 
@@ -310,6 +311,7 @@
 			var i		="";
 			var entryHash= "";
 			var started = false;
+			var delim=application.configBean.getFileDelim();
 			</cfscript>
 			
 			<cfif IsDefined("arguments.extractDirs") and len(arguments.extractDirs)>
@@ -318,7 +320,11 @@
 				select * from rsdir where 
 				<cfloop list="#arguments.extractDirs#" index="i" delimiters="|">
 				<cfif started>or</cfif>
+				<cfif right(i,1) neq delim>
+				entry like '#i##delim#%'
+				<cfelse>
 				entry like '#i#%'
+				</cfif>
 				<cfset started=true>
 				</cfloop>
 				</cfquery>
@@ -334,7 +340,11 @@
 				select * from rsdir where 
 				<cfloop list="#arguments.excludeDirs#" index="i" delimiters="|">
 				<cfif started>and</cfif>
+				<cfif right(i,1) neq delim>
+				entry not like '#i##delim#%'
+				<cfelse>
 				entry not like '#i#%'
+				</cfif>
 				<cfset started=true>
 				</cfloop>
 				</cfquery>
@@ -653,6 +663,7 @@
 		<cfargument name="recurse"   required="no"  type="boolean" default="no" hint="Get recursive files of subdirectories.">
 		<cfargument name="sinceDate"   required="no"  type="string" default=""  hint="Filter for files created since this datetime">
 		<cfargument name="hiddenFiles"   required="no"  type="boolean" default="no"  hint="Whether to include .svn or .git files.">
+		<cfargument name="excludeDirs"   required="yes"  type="string"  default=""          hint="| (Chr(124)) delimited list of dirs to not zip.">
 		<cfset var i = 0>
 		<cfset var n = 0>
 		<cfset var dir   = "">
@@ -670,6 +681,19 @@
 			dateLastModified >= #createODBCDateTime(arguments.sinceDate)#
 			</cfquery>
 		</cfif>
+		
+		<cfif len(arguments.excludeDirs)>
+			<cfquery name="dir" dbtype="query">
+			SELECT * FROM dir
+			WHERE 
+			type = 'File'
+			or
+			(	type='Dir'
+				and name not in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" separator="|" value="#arguments.excludeDirs#">) 
+			)
+			</cfquery>
+		</cfif>
+	
 		
 		<cfscript>
 

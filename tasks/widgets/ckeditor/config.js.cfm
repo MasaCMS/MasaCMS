@@ -47,7 +47,7 @@ CKEDITOR.editorConfig = function( config )
 	                                	['NumberedList','BulletedList','-','Outdent','Indent','Blockquote','CreateDiv'],
 	                                	['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock'],
 	                                	['Link','Unlink','Anchor'],
-	                                	['Image','Flash','Media','gmap','-','Table','Rule','SpecialChar','PageBreak'],
+	                                	['Image','Flash','Media','gmap','-','Table','HorizontalRule','SpecialChar','PageBreak'],
 	                                	['Selectlink','SelectComponent','Templates'<cfif application.configBean.getEnableMuraTag()>,'muratag'</cfif>,'-','Styles','Format','-','Maximize','ShowBlocks','-','About']	
 	                                ] ;
 
@@ -73,7 +73,7 @@ CKEDITOR.editorConfig = function( config )
 										['NumberedList','BulletedList','-','Outdent','Indent','Blockquote','CreateDiv'],
 										['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock'],
 										['Link','Unlink','Anchor'],
-										['Image','Flash','Media','gmap','-','Table','Rule','SpecialChar','PageBreak'],
+										['Image','Flash','Media','gmap','-','Table','HorizontalRule','SpecialChar','PageBreak'],
 										['Form', 'Checkbox', 'Radio', 'TextField', 'Textarea', 'Select', 'Button', 'ImageButton', 'HiddenField'],
 										['Selectlink','SelectComponent','Templates'<cfif application.configBean.getEnableMuraTag()>,'muratag'</cfif>,'-','Styles','Format','-','Maximize','ShowBlocks','-','About']	
 	                                ] ;

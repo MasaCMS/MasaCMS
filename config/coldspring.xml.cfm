@@ -208,7 +208,7 @@ to your own modified versions of Mura CMS.
 			<constructor-arg name="configBean"><ref bean="configBean" /></constructor-arg>
 			<constructor-arg name="clusterManager"><ref bean="clusterManager" /></constructor-arg>
 		</bean>
-		<bean id="settingsBundle" class="mura.settings.settingsBundle" singleton="true">
+		<bean id="settingsBundle" class="mura.settings.settingsBundle" singleton="false">
             <constructor-arg name="configBean"><ref bean="configBean" /></constructor-arg>
         </bean>
 		<bean id="userManager" class="mura.user.userManager" singleton="true">
