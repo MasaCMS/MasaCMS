@@ -1903,7 +1903,6 @@ to your own modified versions of Mura CMS.
 		<cfargument name="pluginMode" type="string" default="all" required="true">		
 		
 		<cfset var keys=arguments.keyFactory/>
-		<cfset var rstContent=""/>
 		<cfset var rstContentObjects=""/>
 		<cfset var rstContentTags=""/>
 		<cfset var rstSystemObjects=""/>
