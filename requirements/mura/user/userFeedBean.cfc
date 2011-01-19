@@ -6,6 +6,9 @@
 <cfset variables.groupID="">
 <cfset variables.categoryID="">
 <cfset variables.siteID="">
+<cfset variables.instance.sortBy="lname" />
+<cfset variables.instance.sortDirection="asc" />
+
 <cfset variables.instance.params=queryNew("param,relationship,field,condition,criteria,dataType","integer,varchar,varchar,varchar,varchar,varchar" )  />
 
 <cffunction name="setUserManager" returntype="any" output="false">
@@ -207,5 +210,26 @@
 <cffunction name="getCategoryID" returnType="string" output="false" access="public">
     <cfreturn variables.categoryID />
 </cffunction>
+
+<cffunction name="getSortBy" returntype="String" access="public" output="false">
+	<cfreturn variables.instance.sortBy />
+</cffunction>
+
+<cffunction name="setSortBy" access="public" output="false">
+	<cfargument name="sortBy" type="String" />
+	<cfset variables.instance.sortBy = trim(arguments.sortBy) />
+	<cfreturn this>
+</cffunction>
+
+<cffunction name="getSortDirection" returntype="String" access="public" output="false">
+	<cfreturn variables.instance.sortDirection />
+</cffunction>
+
+<cffunction name="setSortDirection" access="public" output="false">
+	<cfargument name="sortDirection" type="String" />
+	<cfset variables.instance.sortDirection = trim(arguments.sortDirection) />
+	<cfreturn this>
+</cffunction>
+
 
 </cfcomponent>

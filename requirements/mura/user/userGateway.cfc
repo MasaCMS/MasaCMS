@@ -134,6 +134,8 @@ to your own modified versions of Mura CMS.
 	<cfset var userPoolID="">
 	<cfset var rs=""/>
 	<cfset var rsParams="">
+	<cfset var sortOptions="fname,lname,username,company,lastupdate,created,isPubic,email">
+	<cfset var isExtendedSort="">
 
 	<cfif not isObject(arguments.data)>
 		<cfset params=getServiceFactory().getBean("userFeedBean")>
@@ -141,6 +143,9 @@ to your own modified versions of Mura CMS.
 	<cfelse>
 		<cfset params=arguments.data>
 	</cfif>
+	
+
+	<cfset isExtendedSort=(not listFindNoCase(sortOptions,params.getSortBy()))>
 	
 	<cfif len(arguments.siteID)>
 		<cfset params.setSiteID(arguments.siteID)>
@@ -173,6 +178,20 @@ to your own modified versions of Mura CMS.
 	<cfloop list="#jointables#" index="jointable">
 	inner join #jointable# on (tusers.userid=#jointable#.userid)
 	</cfloop>
+	
+	<cfif isExtendedSort>
+	left Join (select 
+			
+			#variables.classExtensionManager.getCastString(data.getSortBy(),data.getSiteID())# extendedSort
+			 ,tclassextenddata.baseID 
+			from tclassextenddatauseractivity inner join tclassextendattributes
+			on (tclassextenddatauseractivity.attributeID=tclassextendattributes.attributeID)
+			where tclassextendattributes.siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#data.getSiteID()#">
+			and tclassextendattributes.name=<cfqueryparam cfsqltype="cf_sql_varchar" value="#data.getSortBy()#">
+	) qExtendedSort
+	
+	on (tusers.userID=qExtendedSort.baseID)
+	</cfif>
 	
 	where tusers.type=2 and tusers.isPublic =#params.getIsPublic()# and 
 	tusers.siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#userPoolID#">
@@ -271,8 +290,19 @@ to your own modified versions of Mura CMS.
 	and tusers.inactive=#params.getInActive()#
 	
 	
-	<cfif not listFind(session.mura.memberships,'S2')> and tusers.s2=0 </cfif> order by tusers.lname
- 
+	<cfif not listFind(session.mura.memberships,'S2')> and tusers.s2=0 </cfif> 
+	
+	order by
+	
+	<cfif isExtendedSort>
+			qExtendedSort.extendedSort #arguments.feedBean.getSortDirection()#
+	<cfelse>	
+		<cfif variables.configBean.getDbType() neq "oracle" or listFindNoCase("lastUpdate,created,isPublic",params.getSortBy())>
+			tusers.#params.getSortBy()# #params.getSortDirection()#
+		<cfelse>
+			lower(tusers.#params.getSortBy()#) #params.getSortDirection()#
+		</cfif>
+	</cfif>
 	</cfquery>
 	
 	<cfreturn rs />
