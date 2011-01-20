@@ -108,7 +108,7 @@ to your own modified versions of Mura CMS.
 			</cfif>
 		</cfif>
 		
-		<cfif structKeyExists(arguments,"keyFactory")>
+		<cfif not structKeyExists(arguments,"keyFactory")>
 			<cfset arguments.keyFactory=createObject("component" ,"mura.publisherKeys").init(arguments.keyMode,application.utility)>
 		</cfif>
 		
@@ -140,7 +140,7 @@ to your own modified versions of Mura CMS.
 			<cfset getToWorkUsers(argumentCollection=arguments)>
 		</cfif>
 		
-		<cfif structKeyExists(arguments,"Bundle") and len(arguments.toSiteID) and (arguments.usersMode neq "none" or arguments.contentMode neq "none")>
+		<cfif len(arguments.toSiteID) and (arguments.usersMode neq "none" or arguments.contentMode neq "none")>
 			<cfset getToWorkFiles(argumentCollection=arguments)>
 		</cfif>
 		
@@ -1330,8 +1330,12 @@ to your own modified versions of Mura CMS.
 		</cfloop>
 		
 		<!--- tfiles --->
-			<cfset rsttrashfiles=bundle.getValue("rsttrashfiles")/>
-			
+			<cfif structKeyExists(arguments,"Bundle")>
+				<cfset rsttrashfiles=bundle.getValue("rsttrashfiles")/>
+			<cfelse>
+				<cfset rsttrashfiles=queryNew("objectID")>
+			</cfif>		
+				
 			<cfif isDate(arguments.lastDeployment) and rsttrashfiles.recordcount>
 				<cfif rsttrashfiles.recordcount>
 					<cfloop query="rsttrashfiles">
@@ -2843,7 +2847,7 @@ to your own modified versions of Mura CMS.
 		
 			
 		<!---<cfthread action="run" name="thread0">--->
-			<cfset getToWork(fromSiteID=fromsiteid, toSiteID=tositeid, fromDSN=fromDSN, toDSN=toDSN, contentMode='all', keyfactory=keys, keyMode="copy")>
+			<cfset getToWork(fromSiteID=fromsiteid, toSiteID=tositeid, fromDSN=fromDSN, toDSN=toDSN, contentMode='all', keyFactory=keys, keyMode="copy")>
 		<!---</cfthread>--->
 				
 		<!---<cfthread action="run" name="thread1">--->
@@ -2914,7 +2918,7 @@ to your own modified versions of Mura CMS.
 		<cfargument name="baseDir" default="" required="true" />
 		<cfargument name="destDir" default="" required="true" />
 		<cfargument name="keyFactory" required="true" />
-		<cfargument name="sinceDate" default="true" />
+		<cfargument name="sinceDate" default="" />
 		<cfset var rs = "" />
 		<cfset var keys=arguments.keyFactory>
 		<cfset var newFile="">

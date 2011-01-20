@@ -498,24 +498,13 @@ dt.noBorder {
 	padding-top: 0;
 }
 
-/*.oneColumn dt.subHead a {
-	font-weight: normal;
-	font-style: italic !important;
-}*/
-
-/*#page_tabView .oneColumn dt.first {
-	margin: 0 0 16px 0;
-	padding: 0 0 16px 0;
-	background: url(../images/rule_dotted_big.gif) repeat-x left bottom;
-}*/
-
-.oneColumn .first, .oneColumn :first-child   {
+.oneColumn .first   {
 	margin-top: 4px;
 	padding-top: 0;
 	background: none;
 }
 
-#page_tabView .oneColumn .first, #page_tabView .oneColumn :first-child, #cPlugins form ol li.first {
+#page_tabView .oneColumn .first, #cPlugins form ol li.first {
 	padding: 0;
 	background-image: none;
 }
