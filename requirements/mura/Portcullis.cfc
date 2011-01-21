@@ -231,7 +231,7 @@
 			<cfquery dbtype="query" name="find">
 			SELECT blocked 
 			FROM variables.internal.iplog
-			WHERE IP = <cfqueryparam cfsqltype="cf_sql_varchar" maxlength="20" value="#arguments.ipAddress#">
+			WHERE IP = <cfqueryparam cfsqltype="cf_sql_varchar" maxlength="50" value="#arguments.ipAddress#">
 			</cfquery>
 			<cfif find.blocked eq 1>
 				<cfset blocked = true/>

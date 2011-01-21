@@ -38,6 +38,10 @@ CKEDITOR.stylesSet.add( 'default',
 	{ name : 'Subscript'		, element : 'sub' },
 	{ name : 'Superscript'		, element : 'sup' },
 	*/
+	
+	{ name : 'Notice'	, element : 'span', styles : { 'class' : 'notice' } },
+	{ name : 'Success'	, element : 'span', styles : { 'class' : 'success' } },
+	{ name : 'Error'	, element : 'span', styles : { 'class' : 'error' } },
 
 	{ name : 'Marker: Yellow'	, element : 'span', styles : { 'background-color' : 'Yellow' } },
 	{ name : 'Marker: Green'	, element : 'span', styles : { 'background-color' : 'Lime' } },

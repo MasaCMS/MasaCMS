@@ -1084,6 +1084,11 @@ div.stars a {
 	font-size: 11px !important;
 	color: #fff;
 	}
+	
+.home .svSlides dd.tags {
+	margin-left: 1em;
+	font-size: 11px !important;
+	}
 
 .home .svSlides .readMore {
 	position: absolute;

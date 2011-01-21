@@ -47,11 +47,15 @@ to your own modified versions of Mura CMS.
 	<cfset variables.iterator=$.content().getRelatedContentIterator(liveOnly=true)>
 	
 	<cfset variables.contentListType="Related">
-	<cfset variables.contentListFields="Title,Date,Image,Tags,Credits">
+	<cfset variables.contentListFields="Title">
+	<!--- Other available fields to output 
+	<cfset variables.contentListFields="Title,Date,Image,Tags,Credits"> --->
 	
+	<!--- Omitting summaries
 	<cfif arguments.hasSummary >
 		<cfset variables.contentListFields=listAppend(contentListFields,"Summary")>
 	</cfif>
+	--->
 </cfsilent>
 <cfif variables.iterator.getRecordCount()>
 	<div class="svRelContent svIndex">

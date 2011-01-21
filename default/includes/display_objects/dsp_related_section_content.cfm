@@ -60,15 +60,17 @@ to your own modified versions of Mura CMS.
 	<cfset variables.iterator.setQuery(rsFeatures)>
 	
 	<cfset variables.contentListType="Related">
-	<cfset variables.contentListFields="Title,Date,Image,Tags,Credits">
+	<cfset variables.contentListFields="Title">
 	
 	<cfif application.contentGateway.getHasComments(request.siteid,arguments.objectid) >
 		<cfset variables.contentListFields=listAppend(variables.contentListFields,"Comments")>
 	</cfif>
 	
+	<!--- Omitting Summaries
 	<cfif arguments.hasSummary >
 		<cfset variables.contentListFields=listAppend(variables.contentListFields,"Summary")>
 	</cfif>
+	--->
 	
 	<cfset variables.cssID=createCSSID(variables.rsSection.menuTitle)>
 </cfsilent>

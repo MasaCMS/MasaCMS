@@ -314,8 +314,9 @@
 			var delim=application.configBean.getFileDelim();
 			</cfscript>
 			
+			<cfset rsdir=List(arguments.zipFilePath)>
+			
 			<cfif IsDefined("arguments.extractDirs") and len(arguments.extractDirs)>
-				<cfset rsdir=List(arguments.zipFilePath)>
 				<cfquery name="rsdir" dbtype="query">
 				select * from rsdir where 
 				<cfloop list="#arguments.extractDirs#" index="i" delimiters="|">
@@ -333,8 +334,7 @@
 				</cfloop>
 			</cfif>
 			
-			<cfif IsDefined("arguments.excludeDirs") and len(arguments.excludeDirs)>
-				<cfset rsdir=List(arguments.zipFilePath)>
+			<cfif IsDefined("arguments.excludeDirs") and len(arguments.excludeDirs)>		
 				<cfset started=false>
 				<cfquery name="rsdir" dbtype="query">
 				select * from rsdir where 
@@ -386,7 +386,7 @@
 							
 							and (
 									(
-										not IsDefined(arguments.extractDirs) or not len(arguments.extractDirs)
+										not IsDefined("arguments.extractDirs") or not len(arguments.extractDirs)
 									)
 							
 								OR

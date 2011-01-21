@@ -54,13 +54,15 @@ to your own modified versions of Mura CMS.
 	    <cfinclude template="../../view/vArchitecture/dsp_secondary_menu.cfm"></cfif></li>
 	<li <cfif myfusebox.originalfuseaction eq 'draft'>id="current"</cfif>><a href="#application.configBean.getContext()#/admin/index.cfm?fuseaction=cArch.draft&siteid=#session.siteid#" >#application.rbFactory.getKeyValue(session.rb,"layout.drafts")#</a></li>
     
+	<cfif structKeyExists(application.settingsManager.getSite(session.siteid),"getHasChangesets")>
 	  <cfif application.settingsManager.getSite(session.siteid).getHasChangesets() and application.permUtility.getModulePerm("00000000000000000000000000000000014","#session.siteid#")>
         <li <cfif  myfusebox.originalcircuit eq 'cChangesets' or (myfusebox.originalcircuit eq 'cPerm' and  attributes.moduleid eq '00000000000000000000000000000000014')>id="current"</cfif>><a href="#application.configBean.getContext()#/admin/index.cfm?fuseaction=cChangesets.list&siteid=#session.siteid#">#application.rbFactory.getKeyValue(session.rb,"layout.changesets")#</a>
           <cfif myfusebox.originalcircuit eq 'cChangesets' or (myfusebox.originalcircuit eq 'cPerm' and  attributes.moduleid eq '00000000000000000000000000000000014')>
             <cfinclude template="/muraWRM/admin/fw1/views/cchangesets/dsp_secondary_menu.cfm">
           </cfif>
         </li>
-      </cfif>   
+      </cfif> 
+	</cfif>  
 	
 	<cfif application.permUtility.getModulePerm("00000000000000000000000000000000003","#session.siteid#")>
         <li <cfif attributes.moduleid eq '00000000000000000000000000000000003'>id="current"</cfif>><a href="#application.configBean.getContext()#/admin/index.cfm?fuseaction=cArch.list&siteid=#session.siteid#&topid=00000000000000000000000000000000003&parentid=00000000000000000000000000000000003&moduleid=00000000000000000000000000000000003">#application.rbFactory.getKeyValue(session.rb,"layout.components")#</a>
