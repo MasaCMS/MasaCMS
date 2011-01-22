@@ -555,9 +555,9 @@ to your own modified versions of Mura CMS.
 	  	Which rendering files would you like to import?
 	  </dt>
 	  <dd>
-	  <label for=""><input type="radio" name="bundleImportRenderingMode" value="none" checked="checked" onchange="if(this.value!='none'){jQuery('##themeNotice').show();}else{jQuery('##themeNotice').hide();}">None</label>
 	  <label for=""><input type="radio" name="bundleImportRenderingMode" value="all" onchange="if(this.value!='none'){jQuery('##themeNotice').show();}else{jQuery('##themeNotice').hide();}">All</label>
 	  <label for=""><input type="radio" name="bundleImportRenderingMode" value="theme" onchange="if(this.value!='none'){jQuery('##themeNotice').show();}else{jQuery('##themeNotice').hide();}">Theme Only</label>
+	  <label for=""><input type="radio" name="bundleImportRenderingMode" value="none" checked="checked" onchange="if(this.value!='none'){jQuery('##themeNotice').show();}else{jQuery('##themeNotice').hide();}">None</label>
 	  <p class="notice" style="display:none" id="themeNotice"><strong>Important:</strong> Your site's theme assignment and gallery image settings will be updated.</p>
 		  <!---
 			<select name="bundleImportRenderingMode" onchange="if(this.value!='none'){jQuery('##themeNotice').show();}else{jQuery('##themeNotice').hide();}">

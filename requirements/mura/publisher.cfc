@@ -1634,260 +1634,261 @@ to your own modified versions of Mura CMS.
 	<cfif arguments.usersMode neq "none" and structKeyExists(arguments,"Bundle")>
 		<cfset rstusers = arguments.Bundle.getValue("rstusers")>
 		
-		<cfquery name="arguments.rsUserConflicts"datasource="#arguments.toDSN#">
-			select userID,username from tusers where 
-			username in (
-						<cfqueryparam cfsqltype="cf_sql_varchar" value="#valueList(rstusers.username)#" list="true">
-						)
-			and siteID != <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.toSiteID#">	
-		</cfquery>
-			
-		<cfif arguments.rsUserConflicts.recordcount>
-			<cfset arguments.errors["existingusers"]="#arguments.rsUserConflicts.recordcount# users were not imported because username conflicts.">
-		</cfif>
-			
-		<cfif arguments.rsUserConflicts.recordcount>
-			<cfquery name="rstusers" dbtype="query">
-				select * from rstusers
-				where username not in (<cfqueryparam cfsqltype="cf_sql_varchar" value="#valuelist(arguments.rsUserConflicts.username)#" list="true">)
-			</cfquery>  
-		</cfif>
-			
-		<cfif not rstusers.recordcount>
-			<cfset arguments.errors["nousers"]="No users were found to be imported.">
-		</cfif>
-
 		<cfif rstusers.recordcount>
-			
-			<!--- TUSERSMEMB--->
-			<cfset rstusersmemb = arguments.Bundle.getValue("rstusersmemb")>
-
-			<cfquery datasource="#arguments.toDSN#">
-				delete from tusersmemb where 
-				userID in (
-							select userID from tusers where siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.toSiteID#">	
+			<cfquery name="arguments.rsUserConflicts"datasource="#arguments.toDSN#">
+				select userID,username from tusers where 
+				username in (
+							<cfqueryparam cfsqltype="cf_sql_varchar" value="#valueList(rstusers.username)#" list="true">
 							)
-			   <cfif arguments.rsUserConflicts.recordcount>
-					and userID not in (<cfqueryparam cfsqltype="cf_sql_varchar" value="#valuelist(arguments.rsUserConflicts.userID)#" list="true">)
-			   </cfif>
+				and siteID != <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.toSiteID#">	
 			</cfquery>
-			
+				
 			<cfif arguments.rsUserConflicts.recordcount>
-				<cfquery name="rstusersmemb" dbtype="query">
-					select * from rstusersmemb
-					where userID in (<cfqueryparam cfsqltype="cf_sql_varchar" value="#valuelist(rstusers.userID)#" list="true">)
+				<cfset arguments.errors["existingusers"]="#arguments.rsUserConflicts.recordcount# users were not imported because username conflicts.">
+			</cfif>
+				
+			<cfif arguments.rsUserConflicts.recordcount>
+				<cfquery name="rstusers" dbtype="query">
+					select * from rstusers
+					where username not in (<cfqueryparam cfsqltype="cf_sql_varchar" value="#valuelist(arguments.rsUserConflicts.username)#" list="true">)
 				</cfquery>  
 			</cfif>
-			
-			<cfloop query="rstusersmemb">
+				
+			<cfif not rstusers.recordcount>
+				<cfset arguments.errors["nousers"]="No users were found to be imported.">
+			</cfif>
+	
+			<cfif rstusers.recordcount>
+				
+				<!--- TUSERSMEMB--->
+				<cfset rstusersmemb = arguments.Bundle.getValue("rstusersmemb")>
+	
 				<cfquery datasource="#arguments.toDSN#">
-					insert into tusersmemb (userID,groupID) values (
-					<cfqueryparam cfsqltype="cf_sql_varchar" value="#keys.get(userID)#">,
-					<cfqueryparam cfsqltype="cf_sql_varchar" value="#keys.get(groupID)#">
-					)
+					delete from tusersmemb where 
+					userID in (
+								select userID from tusers where siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.toSiteID#">	
+								)
+				   <cfif arguments.rsUserConflicts.recordcount>
+						and userID not in (<cfqueryparam cfsqltype="cf_sql_varchar" value="#valuelist(arguments.rsUserConflicts.userID)#" list="true">)
+				   </cfif>
 				</cfquery>
-			</cfloop>
-			
-			<!--- TUSERSTAGS--->
-			<cfset rstuserstags = arguments.Bundle.getValue("rstuserstags")>
-			
-			<cfif arguments.rsUserConflicts.recordcount>
-				<cfquery name="rstuserstags" dbtype="query">
-					select * from rstuserstags
-					where userID in (<cfqueryparam cfsqltype="cf_sql_varchar" value="#valuelist(rstusers.userID)#" list="true">)
-				</cfquery>  
-			</cfif>
-			
-			<cfquery datasource="#arguments.toDSN#">
-				delete from tuserstags where 
-				siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.toSiteID#">
 				
 				<cfif arguments.rsUserConflicts.recordcount>
-					and userID not in (<cfqueryparam cfsqltype="cf_sql_varchar" value="#valuelist(arguments.rsUserConflicts.userID)#" list="true">)
-			   </cfif>		
-			</cfquery>
-			
-			<cfloop query="rstuserstags">
-				<cfquery datasource="#arguments.toDSN#">
-					insert into tuserstags (userID,siteID,tag) values (
-					<cfqueryparam cfsqltype="cf_sql_varchar" value="#keys.get(userID)#">,
-					<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.toSiteID#">,
-					<cfqueryparam cfsqltype="cf_sql_varchar" value="#tag#">
-					)
-				</cfquery>
-			</cfloop>
-			
-			<!--- TUSERSINTERESTS--->
-			<cfset rstusersinterests = arguments.Bundle.getValue("rstusersinterests")>
-			
-			<cfif arguments.rsUserConflicts.recordcount>
-				<cfquery name="rstusersinterests" dbtype="query">
-					select * from rstusersinterests
-					where userID in (<cfqueryparam cfsqltype="cf_sql_varchar" value="#valuelist(rstusers.userID)#" list="true">)
-				</cfquery>  
-			</cfif>
-			
-			<cfquery datasource="#arguments.toDSN#">
-				delete from tusersinterests where 
-				userID in (
-							select userID from tusers where siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.toSiteID#">	
-							)
+					<cfquery name="rstusersmemb" dbtype="query">
+						select * from rstusersmemb
+						where userID in (<cfqueryparam cfsqltype="cf_sql_varchar" value="#valuelist(rstusers.userID)#" list="true">)
+					</cfquery>  
+				</cfif>
+				
+				<cfloop query="rstusersmemb">
+					<cfquery datasource="#arguments.toDSN#">
+						insert into tusersmemb (userID,groupID) values (
+						<cfqueryparam cfsqltype="cf_sql_varchar" value="#keys.get(userID)#">,
+						<cfqueryparam cfsqltype="cf_sql_varchar" value="#keys.get(groupID)#">
+						)
+					</cfquery>
+				</cfloop>
+				
+				<!--- TUSERSTAGS--->
+				<cfset rstuserstags = arguments.Bundle.getValue("rstuserstags")>
+				
 				<cfif arguments.rsUserConflicts.recordcount>
-					and userID not in (<cfqueryparam cfsqltype="cf_sql_varchar" value="#valuelist(arguments.rsUserConflicts.userID)#" list="true">)
-			   </cfif>
-			</cfquery>
-			
-			<cfloop query="rstusersinterests">
+					<cfquery name="rstuserstags" dbtype="query">
+						select * from rstuserstags
+						where userID in (<cfqueryparam cfsqltype="cf_sql_varchar" value="#valuelist(rstusers.userID)#" list="true">)
+					</cfquery>  
+				</cfif>
+				
 				<cfquery datasource="#arguments.toDSN#">
-					insert into tusersinterests (userID,categoryID) values (
-					<cfqueryparam cfsqltype="cf_sql_varchar" value="#keys.get(userID)#">,
-					<cfqueryparam cfsqltype="cf_sql_varchar" value="#keys.get(categoryID)#">
-					)
+					delete from tuserstags where 
+					siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.toSiteID#">
+					
+					<cfif arguments.rsUserConflicts.recordcount>
+						and userID not in (<cfqueryparam cfsqltype="cf_sql_varchar" value="#valuelist(arguments.rsUserConflicts.userID)#" list="true">)
+				   </cfif>		
 				</cfquery>
-			</cfloop>
-			
-			<!--- TUSERSFAVORITES--->
-			<cfset rstusersfavorites = arguments.Bundle.getValue("rstusersfavorites")>
-			
-			<cfif arguments.rsUserConflicts.recordcount>
-				<cfquery name="rstusersfavorites" dbtype="query">
-					select * from rstusersfavorites
-					where userID in (<cfqueryparam cfsqltype="cf_sql_varchar" value="#valuelist(rstusers.userID)#" list="true">)
-				</cfquery>  
-			</cfif>
-			
-			<cfquery datasource="#arguments.toDSN#">
-				delete from tusersfavorites where 
-				siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.toSiteID#">
-				<cfif arguments.rsUserConflicts.recordcount>
-					and userID not in (<cfqueryparam cfsqltype="cf_sql_varchar" value="#valuelist(arguments.rsUserConflicts.userID)#" list="true">)
-			   </cfif>	
-			</cfquery>
-			
-			<cfloop query="rstusersfavorites">
-				<cfquery datasource="#arguments.toDSN#">
-					insert into tusersfavorites (userID,favoriteName,favorite,type,siteID,dateCreated,columnNumber,rowNumber,maxRssItems ) values (
-					<cfqueryparam cfsqltype="cf_sql_varchar" value="#keys.get(userID)#">,
-					<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(favoriteName neq '',de('no'),de('yes'))#" value="#favoriteName#">,
-					<cfif isValid("UUID",favorite)>
-						<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(favorite neq '',de('no'),de('yes'))#" value="#keys.get(favorite)#">,
-					<cfelse>
-						<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(favorite neq '',de('no'),de('yes'))#" value="#favorite#">,
-					</cfif>
-					<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(type neq '',de('no'),de('yes'))#" value="#type#">,
-					<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.toSiteID#">,
-				    #createODBCDateTime(dateCreated)#,
-					<cfqueryparam cfsqltype="cf_sql_integer" null="#iif(isnumeric(columnNumber),de('no'),de('yes'))#" value="#columnNumber#">,
-					<cfqueryparam cfsqltype="cf_sql_integer" null="#iif(isnumeric(rowNumber),de('no'),de('yes'))#" value="#rowNumber#">,
-					<cfqueryparam cfsqltype="cf_sql_integer" null="#iif(isnumeric(maxRSSItems),de('no'),de('yes'))#" value="#maxRSSItems#">
-					)
-				</cfquery>
-			</cfloop>
-			
-			<!--- TUSERADDRESSES --->
-			<cfset rstuseraddresses = arguments.Bundle.getValue("rstuseraddresses")>
-			
-			<cfif arguments.rsUserConflicts.recordcount>
-				<cfquery name="rstuseraddresses" dbtype="query">
-					select * from rstuseraddresses
-					where userID in (<cfqueryparam cfsqltype="cf_sql_varchar" value="#valuelist(rstusers.userID)#" list="true">)
-				</cfquery>  
-			</cfif>
-			
-			<cfquery datasource="#arguments.toDSN#">
-				delete from tuseraddresses where 
-				siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.toSiteID#">
-				<cfif arguments.rsUserConflicts.recordcount>
-					and userID not in (<cfqueryparam cfsqltype="cf_sql_varchar" value="#valuelist(arguments.rsUserConflicts.userID)#" list="true">)
-			   </cfif>	
-			</cfquery>
-			
-			<cfloop query="rstuseraddresses">
-				<cfquery datasource="#arguments.toDSN#">
-					INSERT INTO tuseraddresses  (AddressID,UserID,siteID,
-						phone,fax,address1, address2, city, state, zip ,
-						addressName,country,isPrimary,addressNotes,addressURL,
-						longitude,latitude,addressEmail,hours)
-				     VALUES(
-				        <cfqueryparam cfsqltype="cf_sql_varchar" value="#keys.get(addressID)#">,
+				
+				<cfloop query="rstuserstags">
+					<cfquery datasource="#arguments.toDSN#">
+						insert into tuserstags (userID,siteID,tag) values (
 						<cfqueryparam cfsqltype="cf_sql_varchar" value="#keys.get(userID)#">,
 						<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.toSiteID#">,
-						<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(Phone neq '',de('no'),de('yes'))#" value="#Phone#">,
-						<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(Fax neq '',de('no'),de('yes'))#" value="#Fax#">,
-						<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(Address1 neq '',de('no'),de('yes'))#" value="#Address1#">,
-						<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(Address2 neq '',de('no'),de('yes'))#" value="#Address2#">,
-						<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(City neq '',de('no'),de('yes'))#" value="#City#">,
-						<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(State neq '',de('no'),de('yes'))#" value="#State#">,
-						<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(Zip neq '',de('no'),de('yes'))#" value="#Zip#">,
-						<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(AddressName neq '',de('no'),de('yes'))#" value="#AddressName#">,
-						<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(Country neq '',de('no'),de('yes'))#" value="#Country#">,
-						#isprimary#,
-						<cfqueryparam cfsqltype="cf_sql_longvarchar" null="#iif(AddressNotes neq '',de('no'),de('yes'))#" value="#AddressNotes#">,
-						<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(AddressURL neq '',de('no'),de('yes'))#" value="#AddressURL#">,
-						#Longitude#,
-						#Latitude#,
-						<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(AddressEmail neq '',de('no'),de('yes'))#" value="#AddressEmail#">,
-						<cfqueryparam cfsqltype="cf_sql_longvarchar" null="#iif(Hours neq '',de('no'),de('yes'))#" value="#Hours#">
-						  )
-				</cfquery>
-			</cfloop>
-			
-			<cfquery datasource="#arguments.toDSN#">
-				delete from tusers where siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.toSiteID#">
-				 <cfif arguments.rsUserConflicts.recordcount>
-					and userID not in (<cfqueryparam cfsqltype="cf_sql_varchar" value="#valuelist(arguments.rsUserConflicts.userID)#" list="true">)
-			   </cfif>	
-			</cfquery>
-			
-			<cfloop query="rstusers">
+						<cfqueryparam cfsqltype="cf_sql_varchar" value="#tag#">
+						)
+					</cfquery>
+				</cfloop>
+				
+				<!--- TUSERSINTERESTS--->
+				<cfset rstusersinterests = arguments.Bundle.getValue("rstusersinterests")>
+				
+				<cfif arguments.rsUserConflicts.recordcount>
+					<cfquery name="rstusersinterests" dbtype="query">
+						select * from rstusersinterests
+						where userID in (<cfqueryparam cfsqltype="cf_sql_varchar" value="#valuelist(rstusers.userID)#" list="true">)
+					</cfquery>  
+				</cfif>
+				
 				<cfquery datasource="#arguments.toDSN#">
-					INSERT INTO tusers  (UserID, RemoteID, s2, Fname, Lname, Password, PasswordCreated,
-					Email, GroupName, Type, subType, ContactForm, LastUpdate, lastupdateby, lastupdatebyid,InActive, username,  perm, isPublic,
-					company,jobtitle,subscribe,siteid,website,notes,mobilePhone,
-					description,interests,photoFileID,keepPrivate,IMName,IMService,created,tags, tablist)
-			     VALUES(
-			        <cfqueryparam cfsqltype="cf_sql_varchar" value="#keys.get(userID)#">,
-					 <cfqueryparam cfsqltype="cf_sql_varchar" value="#remoteID#">,
-					 #s2#, 
-					 <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(Fname neq '',de('no'),de('yes'))#" value="#fname#">,
-					  <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(Lname neq '',de('no'),de('yes'))#" value="#lname#">, 
-			         <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(Password neq '',de('no'),de('yes'))#" value="#password#">,
-					 <cfif isDate(passwordCreated)>#createODBCDateTime(passwordCreated)#<cfelse>null</cfif>,
-					 <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(Email neq '',de('no'),de('yes'))#" value="#email#">,
-			         <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(GroupName neq '',de('no'),de('yes'))#" value="#groupname#">, 
-			         #Type#,
-					 <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(SubType neq '',de('no'),de('yes'))#" value="#subtype#">, 
-			        <cfqueryparam cfsqltype="cf_sql_longvarchar" null="#iif(ContactForm neq '',de('no'),de('yes'))#" value="#contactform#">,
-					  <cfif isDate(lastUpdate)>#createodbcdatetime(lastUpdate)#<cfelse>null</cfif>,
-					 <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(LastUpdateBy neq '',de('no'),de('yes'))#" value="#lastupdateBy#">,
-					 <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(LastUpdateById neq '',de('no'),de('yes'))#" value="#keys.get(lastUpdateByID)#">,
-					 #InActive#,
-					 <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(Username neq '',de('no'),de('yes'))#" value="#username#">,
-					  #perm#,
-					  #ispublic#,
-					   <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(Company neq '',de('no'),de('yes'))#" value="#company#">,
-					   <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(JobTitle neq '',de('no'),de('yes'))#" value="#jobTitle#">, 
-					  #subscribe#,
-					   <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.toSiteID#">,
-					  <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(Website neq '',de('no'),de('yes'))#" value="#website#">,
-					 <cfqueryparam cfsqltype="cf_sql_longvarchar" null="#iif(Notes neq '',de('no'),de('yes'))#" value="#notes#">,
-					 <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(MobilePhone neq '',de('no'),de('yes'))#" value="#mobilePhone#">,
-					  <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(Description neq '',de('no'),de('yes'))#" value="#description#">,
-					 <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(Interests neq '',de('no'),de('yes'))#" value="#translateKeyList(interests,keys)#">,
-					 <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(photoFileID neq '',de('no'),de('yes'))#" value="#keys.get(photoFileID)#">,
-					#KeepPrivate#,
-					 <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(IMName neq '',de('no'),de('yes'))#" value="#IMName#">,
-					 <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(IMService neq '',de('no'),de('yes'))#" value="#IMService#">,
-					  <cfif isDate(created)>#createODBCDAteTime(created)#<cfelse>null</cfif>,
-					 <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(tags neq '',de('no'),de('yes'))#" value="#tags#">,
-					 <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(tablist neq '',de('no'),de('yes'))#" value="#tablist#">
-					 )
+					delete from tusersinterests where 
+					userID in (
+								select userID from tusers where siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.toSiteID#">	
+								)
+					<cfif arguments.rsUserConflicts.recordcount>
+						and userID not in (<cfqueryparam cfsqltype="cf_sql_varchar" value="#valuelist(arguments.rsUserConflicts.userID)#" list="true">)
+				   </cfif>
 				</cfquery>
-			</cfloop>
-			
-			
+				
+				<cfloop query="rstusersinterests">
+					<cfquery datasource="#arguments.toDSN#">
+						insert into tusersinterests (userID,categoryID) values (
+						<cfqueryparam cfsqltype="cf_sql_varchar" value="#keys.get(userID)#">,
+						<cfqueryparam cfsqltype="cf_sql_varchar" value="#keys.get(categoryID)#">
+						)
+					</cfquery>
+				</cfloop>
+				
+				<!--- TUSERSFAVORITES--->
+				<cfset rstusersfavorites = arguments.Bundle.getValue("rstusersfavorites")>
+				
+				<cfif arguments.rsUserConflicts.recordcount>
+					<cfquery name="rstusersfavorites" dbtype="query">
+						select * from rstusersfavorites
+						where userID in (<cfqueryparam cfsqltype="cf_sql_varchar" value="#valuelist(rstusers.userID)#" list="true">)
+					</cfquery>  
+				</cfif>
+				
+				<cfquery datasource="#arguments.toDSN#">
+					delete from tusersfavorites where 
+					siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.toSiteID#">
+					<cfif arguments.rsUserConflicts.recordcount>
+						and userID not in (<cfqueryparam cfsqltype="cf_sql_varchar" value="#valuelist(arguments.rsUserConflicts.userID)#" list="true">)
+				   </cfif>	
+				</cfquery>
+				
+				<cfloop query="rstusersfavorites">
+					<cfquery datasource="#arguments.toDSN#">
+						insert into tusersfavorites (userID,favoriteName,favorite,type,siteID,dateCreated,columnNumber,rowNumber,maxRssItems ) values (
+						<cfqueryparam cfsqltype="cf_sql_varchar" value="#keys.get(userID)#">,
+						<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(favoriteName neq '',de('no'),de('yes'))#" value="#favoriteName#">,
+						<cfif isValid("UUID",favorite)>
+							<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(favorite neq '',de('no'),de('yes'))#" value="#keys.get(favorite)#">,
+						<cfelse>
+							<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(favorite neq '',de('no'),de('yes'))#" value="#favorite#">,
+						</cfif>
+						<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(type neq '',de('no'),de('yes'))#" value="#type#">,
+						<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.toSiteID#">,
+					    #createODBCDateTime(dateCreated)#,
+						<cfqueryparam cfsqltype="cf_sql_integer" null="#iif(isnumeric(columnNumber),de('no'),de('yes'))#" value="#columnNumber#">,
+						<cfqueryparam cfsqltype="cf_sql_integer" null="#iif(isnumeric(rowNumber),de('no'),de('yes'))#" value="#rowNumber#">,
+						<cfqueryparam cfsqltype="cf_sql_integer" null="#iif(isnumeric(maxRSSItems),de('no'),de('yes'))#" value="#maxRSSItems#">
+						)
+					</cfquery>
+				</cfloop>
+				
+				<!--- TUSERADDRESSES --->
+				<cfset rstuseraddresses = arguments.Bundle.getValue("rstuseraddresses")>
+				
+				<cfif arguments.rsUserConflicts.recordcount>
+					<cfquery name="rstuseraddresses" dbtype="query">
+						select * from rstuseraddresses
+						where userID in (<cfqueryparam cfsqltype="cf_sql_varchar" value="#valuelist(rstusers.userID)#" list="true">)
+					</cfquery>  
+				</cfif>
+				
+				<cfquery datasource="#arguments.toDSN#">
+					delete from tuseraddresses where 
+					siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.toSiteID#">
+					<cfif arguments.rsUserConflicts.recordcount>
+						and userID not in (<cfqueryparam cfsqltype="cf_sql_varchar" value="#valuelist(arguments.rsUserConflicts.userID)#" list="true">)
+				   </cfif>	
+				</cfquery>
+				
+				<cfloop query="rstuseraddresses">
+					<cfquery datasource="#arguments.toDSN#">
+						INSERT INTO tuseraddresses  (AddressID,UserID,siteID,
+							phone,fax,address1, address2, city, state, zip ,
+							addressName,country,isPrimary,addressNotes,addressURL,
+							longitude,latitude,addressEmail,hours)
+					     VALUES(
+					        <cfqueryparam cfsqltype="cf_sql_varchar" value="#keys.get(addressID)#">,
+							<cfqueryparam cfsqltype="cf_sql_varchar" value="#keys.get(userID)#">,
+							<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.toSiteID#">,
+							<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(Phone neq '',de('no'),de('yes'))#" value="#Phone#">,
+							<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(Fax neq '',de('no'),de('yes'))#" value="#Fax#">,
+							<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(Address1 neq '',de('no'),de('yes'))#" value="#Address1#">,
+							<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(Address2 neq '',de('no'),de('yes'))#" value="#Address2#">,
+							<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(City neq '',de('no'),de('yes'))#" value="#City#">,
+							<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(State neq '',de('no'),de('yes'))#" value="#State#">,
+							<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(Zip neq '',de('no'),de('yes'))#" value="#Zip#">,
+							<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(AddressName neq '',de('no'),de('yes'))#" value="#AddressName#">,
+							<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(Country neq '',de('no'),de('yes'))#" value="#Country#">,
+							#isprimary#,
+							<cfqueryparam cfsqltype="cf_sql_longvarchar" null="#iif(AddressNotes neq '',de('no'),de('yes'))#" value="#AddressNotes#">,
+							<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(AddressURL neq '',de('no'),de('yes'))#" value="#AddressURL#">,
+							#Longitude#,
+							#Latitude#,
+							<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(AddressEmail neq '',de('no'),de('yes'))#" value="#AddressEmail#">,
+							<cfqueryparam cfsqltype="cf_sql_longvarchar" null="#iif(Hours neq '',de('no'),de('yes'))#" value="#Hours#">
+							  )
+					</cfquery>
+				</cfloop>
+				
+				<cfquery datasource="#arguments.toDSN#">
+					delete from tusers where siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.toSiteID#">
+					 <cfif arguments.rsUserConflicts.recordcount>
+						and userID not in (<cfqueryparam cfsqltype="cf_sql_varchar" value="#valuelist(arguments.rsUserConflicts.userID)#" list="true">)
+				   </cfif>	
+				</cfquery>
+				
+				<cfloop query="rstusers">
+					<cfquery datasource="#arguments.toDSN#">
+						INSERT INTO tusers  (UserID, RemoteID, s2, Fname, Lname, Password, PasswordCreated,
+						Email, GroupName, Type, subType, ContactForm, LastUpdate, lastupdateby, lastupdatebyid,InActive, username,  perm, isPublic,
+						company,jobtitle,subscribe,siteid,website,notes,mobilePhone,
+						description,interests,photoFileID,keepPrivate,IMName,IMService,created,tags, tablist)
+				     VALUES(
+				        <cfqueryparam cfsqltype="cf_sql_varchar" value="#keys.get(userID)#">,
+						 <cfqueryparam cfsqltype="cf_sql_varchar" value="#remoteID#">,
+						 #s2#, 
+						 <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(Fname neq '',de('no'),de('yes'))#" value="#fname#">,
+						  <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(Lname neq '',de('no'),de('yes'))#" value="#lname#">, 
+				         <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(Password neq '',de('no'),de('yes'))#" value="#password#">,
+						 <cfif isDate(passwordCreated)>#createODBCDateTime(passwordCreated)#<cfelse>null</cfif>,
+						 <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(Email neq '',de('no'),de('yes'))#" value="#email#">,
+				         <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(GroupName neq '',de('no'),de('yes'))#" value="#groupname#">, 
+				         #Type#,
+						 <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(SubType neq '',de('no'),de('yes'))#" value="#subtype#">, 
+				        <cfqueryparam cfsqltype="cf_sql_longvarchar" null="#iif(ContactForm neq '',de('no'),de('yes'))#" value="#contactform#">,
+						  <cfif isDate(lastUpdate)>#createodbcdatetime(lastUpdate)#<cfelse>null</cfif>,
+						 <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(LastUpdateBy neq '',de('no'),de('yes'))#" value="#lastupdateBy#">,
+						 <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(LastUpdateById neq '',de('no'),de('yes'))#" value="#keys.get(lastUpdateByID)#">,
+						 #InActive#,
+						 <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(Username neq '',de('no'),de('yes'))#" value="#username#">,
+						  #perm#,
+						  #ispublic#,
+						   <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(Company neq '',de('no'),de('yes'))#" value="#company#">,
+						   <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(JobTitle neq '',de('no'),de('yes'))#" value="#jobTitle#">, 
+						  #subscribe#,
+						   <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.toSiteID#">,
+						  <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(Website neq '',de('no'),de('yes'))#" value="#website#">,
+						 <cfqueryparam cfsqltype="cf_sql_longvarchar" null="#iif(Notes neq '',de('no'),de('yes'))#" value="#notes#">,
+						 <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(MobilePhone neq '',de('no'),de('yes'))#" value="#mobilePhone#">,
+						  <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(Description neq '',de('no'),de('yes'))#" value="#description#">,
+						 <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(Interests neq '',de('no'),de('yes'))#" value="#translateKeyList(interests,keys)#">,
+						 <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(photoFileID neq '',de('no'),de('yes'))#" value="#keys.get(photoFileID)#">,
+						#KeepPrivate#,
+						 <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(IMName neq '',de('no'),de('yes'))#" value="#IMName#">,
+						 <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(IMService neq '',de('no'),de('yes'))#" value="#IMService#">,
+						  <cfif isDate(created)>#createODBCDAteTime(created)#<cfelse>null</cfif>,
+						 <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(tags neq '',de('no'),de('yes'))#" value="#tags#">,
+						 <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(tablist neq '',de('no'),de('yes'))#" value="#tablist#">
+						 )
+					</cfquery>
+				</cfloop>
+			</cfif>
+		<cfelse>
+			<cfset arguments.errors["nousers"]="No users were found to be imported.">
 		</cfif>
-	
 	</cfif>
 		
 		

@@ -463,10 +463,10 @@
 			div.id = 'dragableBoxesColumn' + (no+1);
 			columnParentBox.appendChild(div);
 			
-			var clearObj = document.createElement('HR');	
-			clearObj.style.clear = 'both';
-			clearObj.style.visibility = 'hidden';
-			div.appendChild(clearObj);
+//			var clearObj = document.createElement('HR');	
+//			clearObj.style.clear = 'both';
+//			clearObj.style.visibility = 'hidden';
+//			div.appendChild(clearObj);
 		}
 		
 		

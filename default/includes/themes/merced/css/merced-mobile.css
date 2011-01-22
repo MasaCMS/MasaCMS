@@ -47,6 +47,10 @@ dt a {
 	text-decoration: none;
 }
 
+dd {
+	margin-left: 0;
+}
+
 dd.summary {
 	margin-left: 0;
 	font-size: .75em;
@@ -58,6 +62,7 @@ dd.summary p {
 
 dl.hasImage dd.image {
 	position: relative;
+	margin-left: 0;
 }
 
 dl.hasImage dd.image img {
