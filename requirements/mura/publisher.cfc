@@ -1631,27 +1631,28 @@ to your own modified versions of Mura CMS.
 				</cfquery>
 			</cfloop>
 			
-	<cfif arguments.usersMode neq "none" and structKeyExists(arguments,"Bundle")>
-		<cfset rstusers = arguments.Bundle.getValue("rstusers")>
+		<cfif arguments.usersMode neq "none" and structKeyExists(arguments,"Bundle")>
+			<cfset rstusers = arguments.Bundle.getValue("rstusers")>
 		
-		<cfif rstusers.recordcount>
-			<cfquery name="arguments.rsUserConflicts"datasource="#arguments.toDSN#">
-				select userID,username from tusers where 
-				username in (
-							<cfqueryparam cfsqltype="cf_sql_varchar" value="#valueList(rstusers.username)#" list="true">
-							)
-				and siteID != <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.toSiteID#">	
-			</cfquery>
-				
-			<cfif arguments.rsUserConflicts.recordcount>
-				<cfset arguments.errors["existingusers"]="#arguments.rsUserConflicts.recordcount# users were not imported because username conflicts.">
-			</cfif>
-				
-			<cfif arguments.rsUserConflicts.recordcount>
-				<cfquery name="rstusers" dbtype="query">
-					select * from rstusers
-					where username not in (<cfqueryparam cfsqltype="cf_sql_varchar" value="#valuelist(arguments.rsUserConflicts.username)#" list="true">)
-				</cfquery>  
+			<cfif rstusers.recordcount>
+				<cfquery name="arguments.rsUserConflicts"datasource="#arguments.toDSN#">
+					select userID,username from tusers where 
+					username in (
+								<cfqueryparam cfsqltype="cf_sql_varchar" value="#valueList(rstusers.username)#" list="true">
+								)
+					and siteID != <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.toSiteID#">	
+				</cfquery>
+					
+				<cfif arguments.rsUserConflicts.recordcount>
+					<cfset arguments.errors["existingusers"]="#arguments.rsUserConflicts.recordcount# users were not imported because username conflicts.">
+				</cfif>
+					
+				<cfif arguments.rsUserConflicts.recordcount>
+					<cfquery name="rstusers" dbtype="query">
+						select * from rstusers
+						where username not in (<cfqueryparam cfsqltype="cf_sql_varchar" value="#valuelist(arguments.rsUserConflicts.username)#" list="true">)
+					</cfquery>  
+				</cfif>
 			</cfif>
 				
 			<cfif not rstusers.recordcount>
@@ -1886,10 +1887,7 @@ to your own modified versions of Mura CMS.
 					</cfquery>
 				</cfloop>
 			</cfif>
-		<cfelse>
-			<cfset arguments.errors["nousers"]="No users were found to be imported.">
 		</cfif>
-	</cfif>
 		
 		
 	</cffunction>
