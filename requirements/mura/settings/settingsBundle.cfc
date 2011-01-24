@@ -1040,12 +1040,13 @@ to your own modified versions of Mura CMS.
 			
 			<cfquery datasource="#arguments.dsn#" name="rssite">
 				select theme,galleryMainScaleBy,galleryMediumScaleBy,gallerySmallScaleBy,
-			    galleryMainScale,galleryMediumScale,gallerySmallScale
+			    galleryMainScale,galleryMediumScale,gallerySmallScale,columnCount,columnNames,primaryColumn
 			    from tsettings where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/> 
 			</cfquery>
 			
 			<cfset setValue("rssite",rssite)>	
-			
+			<cfset setValue("assetPath",application.configBean.getAssetPath())>
+			<cfset setValue("context",application.configBean.getContext())>
 			
 		</cfif>
 		<!--- BEGIN PLUGINS --->

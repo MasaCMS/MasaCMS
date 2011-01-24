@@ -721,7 +721,7 @@ to your own modified versions of Mura CMS.
 			<cfif not request.muraExportHTML>
 				<cfset href=HTMLEditFormat("#begin##arguments.context##getURLStem(arguments.siteid,'linkservid/#arguments.contentid#/showMeta/#arguments.showMeta#')##arguments.querystring#")/>
 			<cfelseif arguments.type eq "Link">
-				<cfset href=argument.filename>
+				<cfset href=arguments.filename>
 			<cfelse>
 				<cfset fileBean=$.getBean("content").loadBy(contentID=arguments.contentID)>
 				<cfset href="#arguments.context#/#arguments.siteID#/cache/file/#fileBean.getFileID()#/#fileBean.getFilename()#">

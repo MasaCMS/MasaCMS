@@ -339,11 +339,11 @@
 				<cfquery name="rsdir" dbtype="query">
 				select * from rsdir where 
 				<cfloop list="#arguments.excludeDirs#" index="i" delimiters="|">
-				<cfif started>and</cfif>
+				<cfif started>or</cfif>
 				<cfif right(i,1) neq delim>
-				entry not like '#i##delim#%'
+				entry like '#i##delim#%'
 				<cfelse>
-				entry not like '#i#%'
+				entry like '#i#%'
 				</cfif>
 				<cfset started=true>
 				</cfloop>

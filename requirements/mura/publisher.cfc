@@ -93,6 +93,8 @@ to your own modified versions of Mura CMS.
 		<cfargument name="usersMode" type="string" default="none" required="true">	
 		<cfargument name="keyMode" type="string" default="copy" required="true">		
 		<cfset var rstplugins="">
+		<cfset var bundleAssetPath="">
+		<cfset var bundleContext="">
 		
 		<cfif structKeyExists(arguments,"Bundle")>
 			<cfset arguments.lastDeployment=arguments.bundle.getValue("sincedate","")>
@@ -133,7 +135,26 @@ to your own modified versions of Mura CMS.
 			<cfif StructKeyExists(arguments,"Bundle")>
 				<cfset getToWorkSyncMeta(argumentCollection=arguments)>
 				<cfset getToWorkTrash(argumentCollection=arguments)>
+				
+				<cfset bundleAssetPath=arguments.Bundle.getValue("assetPath")>
+				<cfif isSimpleValue(bundleAssetPath) and len(bundleAssetPath)>
+					<cfif bundleAssetPath neq application.configBean.getAssetPath()>
+						<cfset application.contentUtility.findAndReplace("#bundleAssetPath#/", "#application.configBean.getAssetPath()#/", "#toSiteID#")>
+					</cfif>
+				</cfif>
+				
+				<cfif arguments.fromSiteID neq arguments.toSiteID>
+					<cfset application.contentUtility.findAndReplace("/#fromsiteID#/", "/#toSiteID#/", "#toSiteID#")>
+				</cfif>
+				
+				<cfset bundleContext=arguments.Bundle.getValue("context")>
+				<cfif isSimpleValue(bundleContext) and len(bundleContext) >
+					<cfif bundleContext neq application.configBean.getContext()>
+						<cfset application.contentUtility.findAndReplace("#bundleContext#/", "#application.configBean.getContext()#/", "#toSiteID#")>
+					</cfif>
+				</cfif>
 			</cfif>
+			
 		</cfif>
 		
 		<cfif len(arguments.toSiteID) and arguments.usersMode neq "none">
@@ -165,9 +186,16 @@ to your own modified versions of Mura CMS.
 			<cfif listFindNoCase("All,Theme",arguments.renderingMode)>
 				<cfset rssite=Bundle.getValue("rssite")>
 						
-				<cfif rssite.recordcount>
+				<cfif rssite.recordcount and directoryExists(expandPath("/muraWRM/#arguments.toSiteID#/includes/themes/#rssite.theme#"))>
 					<cfquery datasource="#arguments.toDSN#">
 						update tsettings set 
+						
+						<cfif isdefined("rssite.columnCount")>
+						columnCount=<cfqueryparam cfsqltype="cf_sql_integer" value="#rssite.columnCount#">,
+						columnNames=<cfqueryparam cfsqltype="cf_sql_varchar" value="#rssite.columnNames#">,
+						primaryColumn=<cfqueryparam cfsqltype="cf_sql_integer" value="#rssite.primaryColumn#">,
+						</cfif>
+						
 						theme=<cfqueryparam cfsqltype="cf_sql_varchar" value="#rssite.theme#">,
 						displayPoolID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.toSiteID#">,
 						galleryMainScaleBy=<cfqueryparam cfsqltype="cf_sql_varchar" value="#rssite.galleryMainScaleBy#">,
@@ -179,6 +207,8 @@ to your own modified versions of Mura CMS.
 						where siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.toSiteID#">
 					</cfquery>
 					<cfset application.settingsManager.setSites()>
+				<cfelse>
+					<cfset arguments.errors.missingtheme="The submitted bundle did not provide valid theme settings information.">
 				</cfif>
 			</cfif>
 			<cfset arguments.Bundle.cleanUp() />
@@ -2877,13 +2907,13 @@ to your own modified versions of Mura CMS.
 		--->		
 		<!---<cfthread action="run" name="thread5">--->
 			<cfif fromAssetPath neq toAssetPath>
-				<cfset application.contentUtility.findAndReplace("#fromAssetPath#", "#toAssetPath#", "#toSiteID#")>
+				<cfset application.contentUtility.findAndReplace("#fromAssetPath#/", "#toAssetPath#/", "#toSiteID#")>
 			</cfif>
 		<!---</cfthread>--->
 		
 		<!---<cfthread action="run" name="thread6">--->
 			<cfif fromSiteID neq toSiteID>
-				<cfset application.contentUtility.findAndReplace("/#fromsiteID#", "/#toSiteID#", "#toSiteID#")>
+				<cfset application.contentUtility.findAndReplace("/#fromsiteID#/", "/#toSiteID#/", "#toSiteID#")>
 			</cfif>
 		<!---</cfthread>--->
 		
