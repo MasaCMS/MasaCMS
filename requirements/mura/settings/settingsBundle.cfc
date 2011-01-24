@@ -1039,7 +1039,7 @@ to your own modified versions of Mura CMS.
 			</cfif>
 			
 			<cfquery datasource="#arguments.dsn#" name="rssite">
-				select theme,galleryMainScaleBy,galleryMediumScaleBy,gallerySmallScaleBy,
+				select siteid,theme,galleryMainScaleBy,galleryMediumScaleBy,gallerySmallScaleBy,
 			    galleryMainScale,galleryMediumScale,gallerySmallScale,columnCount,columnNames,primaryColumn
 			    from tsettings where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/> 
 			</cfquery>

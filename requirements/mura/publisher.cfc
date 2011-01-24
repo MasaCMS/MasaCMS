@@ -95,6 +95,7 @@ to your own modified versions of Mura CMS.
 		<cfset var rstplugins="">
 		<cfset var bundleAssetPath="">
 		<cfset var bundleContext="">
+		<cfset var rssite="">
 		
 		<cfif structKeyExists(arguments,"Bundle")>
 			<cfset arguments.lastDeployment=arguments.bundle.getValue("sincedate","")>
@@ -136,21 +137,26 @@ to your own modified versions of Mura CMS.
 				<cfset getToWorkSyncMeta(argumentCollection=arguments)>
 				<cfset getToWorkTrash(argumentCollection=arguments)>
 				
-				<cfset bundleAssetPath=arguments.Bundle.getValue("assetPath")>
-				<cfif isSimpleValue(bundleAssetPath) and len(bundleAssetPath)>
-					<cfif bundleAssetPath neq application.configBean.getAssetPath()>
-						<cfset application.contentUtility.findAndReplace("#bundleAssetPath#/", "#application.configBean.getAssetPath()#/", "#toSiteID#")>
+				<cfset rssite=arguments.Bundle.getValue("rssite")>
+				<cfif rssite.recordcount and isDefined("rssite.siteID")>
+					<cfset bundleAssetPath=arguments.Bundle.getValue("assetPath")>
+					
+					<cfif isSimpleValue(bundleAssetPath)>
+						<cfif bundleAssetPath neq application.configBean.getAssetPath()>
+							<cfset application.contentUtility.findAndReplace("#bundleAssetPath#/#rssite.siteID#/cache/", "#application.configBean.getAssetPath()#/#arguments.toSiteID#/cache/", "#arguments.toSiteID#")>
+							<cfset application.contentUtility.findAndReplace("#bundleAssetPath#/#rssite.siteID#/assets/", "#application.configBean.getAssetPath()#/#arguments.toSiteID#/assets/", "#arguments.toSiteID#")>
+						</cfif>
 					</cfif>
-				</cfif>
-				
-				<cfif arguments.fromSiteID neq arguments.toSiteID>
-					<cfset application.contentUtility.findAndReplace("/#fromsiteID#/", "/#toSiteID#/", "#toSiteID#")>
-				</cfif>
-				
-				<cfset bundleContext=arguments.Bundle.getValue("context")>
-				<cfif isSimpleValue(bundleContext) and len(bundleContext) >
-					<cfif bundleContext neq application.configBean.getContext()>
-						<cfset application.contentUtility.findAndReplace("#bundleContext#/", "#application.configBean.getContext()#/", "#toSiteID#")>
+					
+					<cfif rssite.siteID neq arguments.toSiteID>
+						<cfset application.contentUtility.findAndReplace("/#rssite.siteID#/", "/#arguments.toSiteID#/", "#arguments.toSiteID#")>
+					</cfif>
+					
+					<cfset bundleContext=arguments.Bundle.getValue("context")>
+					<cfif isSimpleValue(bundleContext) and len(bundleContext) >
+						<cfif bundleContext neq application.configBean.getContext()>
+							<cfset application.contentUtility.findAndReplace("#bundleContext#/", "#application.configBean.getContext()#/", "#arguments.toSiteID#")>
+						</cfif>
 					</cfif>
 				</cfif>
 			</cfif>
