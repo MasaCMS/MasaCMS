@@ -1211,8 +1211,11 @@ to your own modified versions of Mura CMS.
 	<cfargument name="keywords" type="string" required="true">
 	<cfargument name="tag" type="string" required="true" default="">
 	<cfargument name="sectionID" type="string" required="true" default="">
+	<cfargument name="categoryID" type="string" required="true" default="">
 	<cfset var rs = "">
 	<cfset var w = "">
+	<cfset var c = "">
+	<cfset var categoryListLen=listLen(arguments.categoryID)>
 	
 	<cfquery name="rs" datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	<!--- Find direct matches with no releasedate --->
@@ -1286,9 +1289,24 @@ to your own modified versions of Mura CMS.
 							or tcontent.menuTitle like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.keywords#%">
 							or tcontent.metaKeywords like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.keywords#%">
 							or tcontent.summary like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.keywords#%"> 
-							or tcontent.body like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.keywords#%">)
+							or tcontent.body like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.keywords#%">
+							or tcontent.credits like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.keywords#%">)
 				</cfif>
+				
 				and tcontent.searchExclude=0
+				
+				<cfif categoryListLen>
+					  and tcontent.contentHistID in (
+							select tcontentcategoryassign.contentHistID from 
+							tcontentcategoryassign 
+							inner join tcontentcategories 
+							ON (tcontentcategoryassign.categoryID=tcontentcategories.categoryID)
+							where (<cfloop from="1" to="#categoryListLen#" index="c">
+									tcontentcategories.path like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#listgetat(arguments.categoryID,c)#%"/> 
+									<cfif c lt categoryListLen> or </cfif>
+									</cfloop>) 
+					  )
+				</cfif>
 				
 				<cfif request.muraMobileRequest>
 				    and (tcontent.mobileExclude!=1 or tcontent.mobileExclude is null)
@@ -1368,9 +1386,24 @@ to your own modified versions of Mura CMS.
 							or tcontent.menuTitle like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.keywords#%">
 							or tcontent.metaKeywords like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.keywords#%">
 							or tcontent.summary like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.keywords#%"> 
-							or tcontent.body like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.keywords#%">)
+							or tcontent.body like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.keywords#%">
+							or tcontent.credits like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.keywords#%">)
 				</cfif>
+				
 				and tcontent.searchExclude=0
+				
+				<cfif categoryListLen>
+					  and tcontent.contentHistID in (
+							select tcontentcategoryassign.contentHistID from 
+							tcontentcategoryassign 
+							inner join tcontentcategories 
+							ON (tcontentcategoryassign.categoryID=tcontentcategories.categoryID)
+							where (<cfloop from="1" to="#categoryListLen#" index="c">
+									tcontentcategories.path like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#listgetat(arguments.categoryID,c)#%"/> 
+									<cfif c lt categoryListLen> or </cfif>
+									</cfloop>) 
+					  )
+				</cfif>
 				
 				<cfif request.muraMobileRequest>
 				 	and (tcontent.mobileExclude!=1 or tcontent.mobileExclude is null)
@@ -1439,7 +1472,8 @@ to your own modified versions of Mura CMS.
 							or tcontent.menuTitle like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.keywords#%">
 							or tcontent.metaKeywords like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.keywords#%">
 							or tcontent.summary like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.keywords#%"> 
-							or tcontent.body like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.keywords#%">)
+							or tcontent.body like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.keywords#%">
+							or tcontent.credits like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.keywords#%">)
 							
 					<cfloop list="#trim(arguments.keywords)#" index="w" delimiters=" ">
 							and
@@ -1447,11 +1481,25 @@ to your own modified versions of Mura CMS.
 							or tcontent.menuTitle like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#w#%">
 							or tcontent.metaKeywords like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#w#%">
 							or tcontent.summary like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#w#%"> 
-							or tcontent.body like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#w#%">)
-					</cfloop>
-					
+							or tcontent.body like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#w#%">
+							or tcontent.credits like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#w#%">)
+					</cfloop>		
 				</cfif>
+				
 				and tcontent.searchExclude=0
+				
+				<cfif categoryListLen>
+					  and tcontent.contentHistID in (
+							select tcontentcategoryassign.contentHistID from 
+							tcontentcategoryassign 
+							inner join tcontentcategories 
+							ON (tcontentcategoryassign.categoryID=tcontentcategories.categoryID)
+							where (<cfloop from="1" to="#categoryListLen#" index="c">
+									tcontentcategories.path like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#listgetat(arguments.categoryID,c)#%"/> 
+									<cfif c lt categoryListLen> or </cfif>
+									</cfloop>) 
+					  )
+				</cfif>
 				
 				<cfif request.muraMobileRequest>
 				 	and (tcontent.mobileExclude!=1 or tcontent.mobileExclude is null)
@@ -1519,7 +1567,8 @@ to your own modified versions of Mura CMS.
 							or tcontent.menuTitle like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.keywords#%">
 							or tcontent.metaKeywords like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.keywords#%">
 							or tcontent.summary like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.keywords#%"> 
-							or tcontent.body like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.keywords#%">)
+							or tcontent.body like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.keywords#%">
+							or tcontent.credits like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.keywords#%">)
 					
 					<cfloop list="#trim(arguments.keywords)#" index="w" delimiters=" ">
 							and
@@ -1527,11 +1576,25 @@ to your own modified versions of Mura CMS.
 							or tcontent.menuTitle like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#w#%">
 							or tcontent.metaKeywords like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#w#%">
 							or tcontent.summary like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#w#%"> 
-							or tcontent.body like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#w#%">)
-					</cfloop>
-					
+							or tcontent.body like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#w#%">
+							or tcontent.credits like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#w#%">)
+					</cfloop>		
 				</cfif>
+				
 				and tcontent.searchExclude=0
+				
+				<cfif categoryListLen>
+					  and tcontent.contentHistID in (
+							select tcontentcategoryassign.contentHistID from 
+							tcontentcategoryassign 
+							inner join tcontentcategories 
+							ON (tcontentcategoryassign.categoryID=tcontentcategories.categoryID)
+							where (<cfloop from="1" to="#categoryListLen#" index="c">
+									tcontentcategories.path like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#listgetat(arguments.categoryID,c)#%"/> 
+									<cfif c lt categoryListLen> or </cfif>
+									</cfloop>) 
+					  )
+				</cfif>
 				
 				<cfif request.muraMobileRequest>
 				 	and (tcontent.mobileExclude!=1 or tcontent.mobileExclude is null)

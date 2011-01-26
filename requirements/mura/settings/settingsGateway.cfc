@@ -42,17 +42,31 @@ to your own modified versions of Mura CMS.
 --->
 <cfcomponent extends="mura.cfobject" output="false">
 
+
 <cffunction name="init" access="public" returntype="any" output="false">
 <cfargument name="configBean" type="any" required="yes"/>
 		<cfset variables.configBean=arguments.configBean />
+		
 <cfreturn this />
 </cffunction>
 
 <cffunction name="getList" access="public" output="false" returntype="query">
+	<cfargument name="sortBy" default="orderno">
+	<cfargument name="sortDirection" default="asc">
 	<cfset var rs = "" />
 
 	<cfquery name="rs" datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#" cachedwithin="#createtimespan(1,0,0,0)#"  >
-	select * from tsettings order by orderno, site
+	select * from tsettings order by 
+	<cfif listFindNoCase("domain,site,orderno",arguments.sortBy)>
+	#arguments.sortBy#
+	<cfelse>
+	orderno
+	</cfif>
+	<cfif listFindNoCase("asc,desc",arguments.sortDirection)>
+	#arguments.sortDirection#
+	<cfelse>
+	asc
+	</cfif>
 	</cfquery>
 	
 	<cfreturn rs />

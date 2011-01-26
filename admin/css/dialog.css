@@ -1,3 +1,5 @@
+/* @override http://mura:8500/5.4/admin/css/dialog.css */
+
 /*This file is part of Mura CMS.
 
     Mura CMS is free software: you can redistribute it and/or modify
@@ -113,8 +115,8 @@ a#editFormCloseLink {
 }
 
 #frontEndTools ul li {
-	color: #333 !important;
-	color: rgba(0,0,0,.95) !important;
+	color: #f0f0f0 !important;
+	color: rgba(255,255,255,.8) !important;
 	float: left !important;
 	font-size: 11px !important;
 	line-height: 26px !important;
@@ -123,11 +125,11 @@ a#editFormCloseLink {
 	font-weight: normal !important;
 	font-family: "Lucida Grande", Arial, Helvetica, sans-serif !important;
 	font-style: normal !important;
-	text-shadow: rgba(255,255,255,.4) 0px 1px 0px !important;
+	text-shadow: rgba(0,0,0,.8) 0px -1px 0px !important;
 }
 
 #frontEndTools ul li a {
-	color: #666 !important;
+	color: #f0f0f0 !important;
 	background: transparent !important;
 	font-size: 11px !important;
 	line-height: 30px !important;
@@ -138,7 +140,15 @@ a#editFormCloseLink {
 }
 
 #frontEndTools ul li a:hover {
-	color: #000 !important;
+	color:#bbb !important;
+}
+
+#frontEndTools ul#addMenuDropDown li a {
+	color:#bbb !important;
+}
+
+#frontEndTools ul#addMenuDropDown li a:hover {
+	color:#f0f0f0 !important;
 }
 
 #frontEndTools ul li#adminEditPage a {
@@ -165,7 +175,6 @@ a#editFormCloseLink {
 	background: url(../images/icons/apps_24.png) no-repeat scroll left center !important;
 }
 
-
 #frontEndTools ul li#adminSiteManager {
 	background: url(../images/bg_fetools_site_manager.png) no-repeat scroll left center !important;
 	padding-left: 17px !important;
@@ -180,38 +189,47 @@ a#editFormCloseLink {
 }
 
 #frontEndTools ul li#adminWelcome {
+	color: #f0f0f0 !important;
 	float: right !important;
 	margin-right: 10px !important;
-	padding: 2px 0;
+	padding: 2px 0 !important;
 }
 
 #frontEndTools ul li#adminLogOut {
-	background: transparent url(../images/bg_feTools_logout.png) no-repeat scroll left center !important;
 	float: right !important;
-	font-size: 10px !important;
-	line-height: 24px !important;
 	margin-right: 14px !important;
-	padding: 0 !important;
+	padding: 6px 0 0 0 !important;
 	text-align: center !important;
-	width: 98px !important;
-	height: 24px;
 }
 
 #frontEndTools ul li#adminLogOut a {
-	padding: 0 !important;
-	line-height: 24px !important;
+	display: block !important;
+	font-size: 9px !important;
+	color: #555 !important;
+	padding: 1px 10px !important;
+	line-height: 16px !important;
+	text-shadow: none !important;
+	border-radius: 8px !important;
+	-webkit-border-radius: 8px !important;
+	-moz-border-radius: 8px !important;
+	background: #898989 !important;
+}
+
+#frontEndTools ul li#adminLogOut a:hover {
+	
 }
 
 /* @group Add Content Nav */
 
 #frontEndTools li ul { /* all lists */
 	padding: .75em 1em .75em !important;
-	margin: 0 0 0 -16px !important;
+	margin: -1px 0 0 -16px !important;
 	list-style: none !important;
 	line-height: 1 !important;
 	background-image: none !important;
 	position: absolute !important;
-	background: #999 !important;
+	border-top: 1px solid #4a4a4a !important;
+	background: #505050 !important;
 	width: 12em !important;
 	left: -999em !important; /* using left instead of display to hide menus because display: none isn't read by screen readers */
 	height: auto !important;
@@ -255,7 +273,7 @@ a#editFormCloseLink {
 	left: auto !important;
 }
 
-#frontEndTools li:hover a, #frontEndTools li.sfhover a { /* lists nested under hovered list items */
+#frontEndTools li:hover ul a, #frontEndTools li.sfhover ul a { /* lists nested under hovered list items */
 	color: #000 !important;
 }
 

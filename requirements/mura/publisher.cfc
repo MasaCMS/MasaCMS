@@ -143,13 +143,19 @@ to your own modified versions of Mura CMS.
 					
 					<cfif isSimpleValue(bundleAssetPath)>
 						<cfif bundleAssetPath neq application.configBean.getAssetPath()>
-							<cfset application.contentUtility.findAndReplace("#bundleAssetPath#/#rssite.siteID#/cache/", "#application.configBean.getAssetPath()#/#arguments.toSiteID#/cache/", "#arguments.toSiteID#")>
-							<cfset application.contentUtility.findAndReplace("#bundleAssetPath#/#rssite.siteID#/assets/", "#application.configBean.getAssetPath()#/#arguments.toSiteID#/assets/", "#arguments.toSiteID#")>
+							<cfset application.contentUtility.findAndReplace("#bundleAssetPath#/#rssite.siteID#/cache/", "#application.configBean.getAssetPath()#/#arguments.toSiteID#/cache/", arguments.toSiteID)>
+							<cfset application.contentUtility.findAndReplace("#bundleAssetPath#/#rssite.siteID#/assets/", "#application.configBean.getAssetPath()#/#arguments.toSiteID#/assets/", arguments.toSiteID)>
 						</cfif>
 					</cfif>
 					
+					<cfif isDefined("rssite.domain") 
+						and len(rssite.domain) 
+						and rssite.domain neq application.settingsManager.getSite(arguments.toSiteID).getDomain()>
+						<cfset application.contentUtility.findAndReplace(rssite.domain,application.settingsManager.getSite(arguments.toSiteID).getDomain() , arguments.toSiteID)>
+					</cfif>
+					
 					<cfif rssite.siteID neq arguments.toSiteID>
-						<cfset application.contentUtility.findAndReplace("/#rssite.siteID#/", "/#arguments.toSiteID#/", "#arguments.toSiteID#")>
+						<cfset application.contentUtility.findAndReplace("/#rssite.siteID#/", "/#arguments.toSiteID#/", arguments.toSiteID)>
 					</cfif>
 					
 					<cfset bundleContext=arguments.Bundle.getValue("context")>
@@ -1358,12 +1364,14 @@ to your own modified versions of Mura CMS.
 		<cfset var rstfiles="">
 		<cfset var keys=arguments.keyfactory>
 		<cfset var rstplugins="">
-		<cfset var moduleIDSqlList="">
+		<!---<cfset var moduleIDSqlList="">--->
 		<cfset var i="">
 		
+		<!---
 		<cfloop list="#arguments.moduleID#" index="i">
 			<cfset moduleIDSQLlist=listAppend(moduleIDlist,"'#keys.get(i)#'")>
 		</cfloop>
+		--->
 		
 		<!--- tfiles --->
 			<cfif structKeyExists(arguments,"Bundle")>
@@ -1386,7 +1394,7 @@ to your own modified versions of Mura CMS.
 				
 				<cfquery datasource="#arguments.toDSN#">
 				delete from tfiles where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.tositeid#"/>
-				and moduleid  in (''<cfif len(moduleIDSqlList)>,#moduleIDSqlList#</cfif><cfif arguments.usersMode neq "none">,'00000000000000000000000000000000008'</cfif><cfif arguments.contentMode neq "none">,'00000000000000000000000000000000000'</cfif>)
+				and moduleid  in (''<cfif len(arguments.moduleID)>,<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.moduleID#" list="true"></cfif><cfif arguments.usersMode neq "none">,'00000000000000000000000000000000008'</cfif><cfif arguments.contentMode neq "none">,'00000000000000000000000000000000000'</cfif>)
 				and fileID in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#valuesList(rsttrashfiles.fileID)#">)
 				</cfquery>
 			</cfif>
@@ -1394,14 +1402,14 @@ to your own modified versions of Mura CMS.
 			<cfif not isDate(arguments.lastDeployment)>
 				<cfquery datasource="#arguments.toDSN#">
 					delete from tfiles where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.tositeid#"/>
-					and moduleid  in (''<cfif len(moduleIDSqlList)>,#moduleIDSqlList#</cfif><cfif arguments.usersMode neq "none">,'00000000000000000000000000000000008'</cfif><cfif arguments.contentMode neq "none">,'00000000000000000000000000000000000'</cfif>)
+					and moduleid  in (''<cfif len(arguments.moduleID)>,<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.moduleID#" list="true"></cfif><cfif arguments.usersMode neq "none">,'00000000000000000000000000000000008'</cfif><cfif arguments.contentMode neq "none">,'00000000000000000000000000000000000'</cfif>)
 				</cfquery>
 			</cfif>
 			
 			<cfif not StructKeyExists(arguments,"Bundle")>
 				<cfquery datasource="#arguments.fromDSN#" name="rstFiles">
 					select * from tfiles where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.fromsiteid#"/>
-					and moduleid  in (''<cfif len(moduleIDSqlList)>,#moduleIDSqlList#</cfif><cfif arguments.usersMode neq "none">,'00000000000000000000000000000000008'</cfif><cfif arguments.contentMode neq "none">,'00000000000000000000000000000000000'</cfif>)
+					and moduleid  in (''<cfif len(arguments.moduleID)>,<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.moduleID#" list="true"></cfif><cfif arguments.usersMode neq "none">,'00000000000000000000000000000000008'</cfif><cfif arguments.contentMode neq "none">,'00000000000000000000000000000000000'</cfif>)
 					<cfif isDate(arguments.lastDeployment)>
 						created >= #createODBCDateTime(created)#
 					</cfif>
@@ -1410,7 +1418,7 @@ to your own modified versions of Mura CMS.
 				<cfset rstFiles = arguments.Bundle.getValue("rstfiles")>
 				<cfquery name="rstfiles" dbtype="query">
 					select * from rstfiles where
-					moduleid  in (''<cfif len(moduleIDSqlList)>,#moduleIDSqlList#</cfif><cfif arguments.usersMode neq "none">,'00000000000000000000000000000000008'</cfif><cfif arguments.contentMode neq "none">,'00000000000000000000000000000000000'</cfif>)
+					moduleid  in (''<cfif len(arguments.moduleID)>,<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.moduleID#" list="true"></cfif><cfif arguments.usersMode neq "none">,'00000000000000000000000000000000008'</cfif><cfif arguments.contentMode neq "none">,'00000000000000000000000000000000000'</cfif>)
 				</cfquery>
 			</cfif>
 			

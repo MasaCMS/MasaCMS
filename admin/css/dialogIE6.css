@@ -96,20 +96,12 @@
 	line-height: 34px !important;
 }
 
-#frontEndToolsIE6 ul li#adminLogOut {
-	background: transparent url(../images/ie6/bg_feTools_logout.gif) no-repeat scroll left center !important;
-	float: right !important;
-	font-size: 10px !important;
-	line-height: 26px !important;
-	margin-right: 14px !important;
-	padding: 0 !important;
-	text-align: center !important;
-	width: 98px !important;
+#frontEndTools ul li#adminLogOut a {
+	background: transparent url(../images/bg_feTools_logout.gif) no-repeat scroll center top !important;
 }
 
-#frontEndToolsIE6 ul li#adminLogOut a {
-	padding: 0 !important;
-		line-height: 1 !important;
+#frontEndTools ul li#adminLogOut a:hover {
+	
 }
 
 /* @group Add Content Nav */

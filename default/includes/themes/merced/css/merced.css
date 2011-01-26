@@ -871,7 +871,7 @@ a.boxItemHeader { /* Link of items inside dragable boxes */
 	}
 
 .home .aside .svIndex dd {
-	margin: 0 0 .25em;
+	margin: 0 1em 0.25em 0;
 	padding: 0;
 	font-size: 1.1em;
 	color: #434343;
@@ -964,6 +964,10 @@ a.boxItemHeader { /* Link of items inside dragable boxes */
 	line-height: 1.2;
 	}
 
+.aside .svIndex dd {
+	margin: 0 1em .25em 0;
+	}
+	
 .svIndex dd.image {
 	position: absolute;
 	top: 0;

@@ -96,7 +96,7 @@ to your own modified versions of Mura CMS.
 	<cfargument name="isAdmin" required="true" default="false">
 	<cfargument name="domain" required="true" default="#cgi.http_host#">
 	<cfset var siteID= "" />
-	<cfset var rsSites=application.settingsManager.getList() />
+	<cfset var rsSites=application.settingsManager.getList(sortBy="orderno") />
 	<cfset var site="">
 	<cfset var i="">
 	<cfset var lineBreak=chr(13)&chr(10)>
@@ -307,7 +307,7 @@ to your own modified versions of Mura CMS.
 
 <cffunction name="Redirect" output="false" returntype="any">
 
-	<cfset var rsSites=application.settingsManager.getList() />
+	<cfset var rsSites=application.settingsManager.getList(sortBy="orderno") />
 	<cfset var site="">
 	<cfloop query="rssites">
 	<cfset site=application.settingsManager.getSite(rsSites.siteID)>

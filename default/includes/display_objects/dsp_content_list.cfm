@@ -2,7 +2,7 @@
 	<cfset arguments.hasTitle=listFindNoCase(arguments.fields,"Title")>
 	<cfset arguments.hasDate=listFindNoCase(arguments.fields,"Date")>
 	<cfset arguments.hasImages=listFindNoCase(arguments.fields,"Image")>
-	<cfset arguments.hasSummary=listFindNoCase(arguments.fields,"Summary")>
+	<cfset arguments.hasSummary=listFindNoCase(arguments.fields,"Summary") and not cookie.mobileFormat>
 	<cfset arguments.hasComments=listFindNoCase(arguments.fields,"Comments")>
 	<cfset arguments.hasRatings=listFindNoCase(arguments.fields,"Rating")>
 	<cfset arguments.hasCredits=listFindNoCase(arguments.fields,"Credits")>
@@ -41,7 +41,7 @@
 		</cfif>
 	</cfsilent>
 	<cfoutput>
-	<cfif cookie.mobileFormat>
+	<cfif getListFormat() eq "ul">
 		<li>
 			<cfif arguments.hasImage>
 				<cfif cookie.mobileFormat>
@@ -50,32 +50,33 @@
 				<a href="#createHREF(arguments.item.getValue('type'),arguments.item.getValue('filename'),arguments.item.getValue('siteID'),arguments.item.getValue('contentID'),arguments.item.getValue('target'),arguments.item.getValue('targetparams'),"",application.configBean.getContext(),application.configBean.getStub(),application.configBean.getIndexFile())#" title="#HTMLEditFormat(arguments.item.getValue('title'))#"><img src="#createHREFForImage(arguments.item.getValue('siteID'),arguments.item.getValue('fileID'),arguments.item.getValue('fileEXT'),'small')#"  alt="#htmlEditFormat(arguments.item.getValue('title'))#"/></a>	
 				</cfif>
 			</cfif>
+			<cfif arguments.hasDate>
+				<cfif arguments.type eq "Portal" and isDate(arguments.item.getValue('releaseDate'))>
+				<p class="releaseDate">#LSDateFormat(arguments.item.getValue('releaseDate'),getLongDateFormat())#</dt>
+				<cfelseif listFind("Search,Feed,Related",arguments.type) and arguments.item.getValue('parentType') eq 'Calendar' and isDate(arguments.item.getValue('displayStart'))>
+				<p class="releaseDate"><cfif LSDateFormat(arguments.item.getValue('displayStart'),"short") lt LSDateFormat(arguments.item.getValue('displayStop'),"short")>#LSDateFormat(arguments.item.getValue('displayStart'),getShortDateFormat())# - #LSDateFormat(arguments.item.getValue('displayStop'),getShortDateFormat())#<cfelse>#LSDateFormat(arguments.item.getValue('displayStart'),getLongDateFormat())#</cfif></p>
+				<cfelseif arguments.type eq "Calendar">
+				<p class="releaseDate"><cfif LSDateFormat(arguments.item.getValue('displayStart'),"short") lt LSDateFormat(arguments.item.getValue('displayStop'),"short")>#LSDateFormat(arguments.item.getValue('displayStart'),getShortDateFormat())# - #LSDateFormat(arguments.item.getValue('displayStop'),getShortDateFormat())#<cfelse>#LSDateFormat(arguments.item.getValue('displayStart'),getLongDateFormat())#</cfif></p>
+				<cfelseif LSisDate(arguments.item.getValue('releaseDate'))>
+				<p class="releaseDate">#LSDateFormat(arguments.item.getValue('releaseDate'),getLongDateFormat())#</p>		
+				</cfif>
+			</cfif>
 			<cfif arguments.hasTitle>
 				<h3><cfif arguments.type eq "Search">#arguments.iterator.getRecordIndex()#. </cfif>#arguments.link#</h3>
 			</cfif>
-			<cfif arguments.hasDate>
-				<cfif arguments.type eq "Portal" and isDate(arguments.item.getValue('releaseDate'))>
-				<p>#LSDateFormat(arguments.item.getValue('releaseDate'),getLongDateFormat())#</dt>
-				<cfelseif listFind("Search,Feed,Related",arguments.type) and arguments.item.getValue('parentType') eq 'Calendar' and isDate(arguments.item.getValue('displayStart'))>
-				<p><cfif LSDateFormat(arguments.item.getValue('displayStart'),"short") lt LSDateFormat(arguments.item.getValue('displayStop'),"short")>#LSDateFormat(arguments.item.getValue('displayStart'),getShortDateFormat())# - #LSDateFormat(arguments.item.getValue('displayStop'),getShortDateFormat())#<cfelse>#LSDateFormat(arguments.item.getValue('displayStart'),getLongDateFormat())#</cfif></p>
-				<cfelseif arguments.type eq "Calendar">
-				<p><cfif LSDateFormat(arguments.item.getValue('displayStart'),"short") lt LSDateFormat(arguments.item.getValue('displayStop'),"short")>#LSDateFormat(arguments.item.getValue('displayStart'),getShortDateFormat())# - #LSDateFormat(arguments.item.getValue('displayStop'),getShortDateFormat())#<cfelse>#LSDateFormat(arguments.item.getValue('displayStart'),getLongDateFormat())#</cfif></p>
-				<cfelseif LSisDate(arguments.item.getValue('releaseDate'))>
-				<p>#LSDateFormat(arguments.item.getValue('releaseDate'),getLongDateFormat())#</p>		
-				</cfif>
-			</cfif>
+			
 			<cfif arguments.hasSummary and len(arguments.item.getValue('summary')) and arguments.item.getValue('summary') neq "<p></p>">
 				#setDynamicContent(arguments.item.getValue('summary'))#
 			</cfif>
 			<cfif arguments.hasCredits and len(arguments.item.getValue('credits'))>
-				<p>#variables.rbFactory.getKey('list.by')# #HTMLEditFormat(arguments.item.getValue('credits'))#</dd>
+				<p class="credits">#variables.rbFactory.getKey('list.by')# #HTMLEditFormat(arguments.item.getValue('credits'))#</p>
 			</cfif>
 			<cfif not cookie.mobileFormat and len(arguments.commentsLink)>
-			 	<p>#arguments.commentsLink#</p>
+			 	<p class="comments">#arguments.commentsLink#</p>
 			</cfif>
 			<cfif arguments.hasTags and len(arguments.item.getValue('tags'))>
 				<cfset arguments.tagLen=listLen(arguments.item.getValue('tags')) />
-				<p>
+				<p class="tags">
 					#variables.rbFactory.getKey('tagcloud.tags')#: 
 					<cfif cookie.mobileFormat>
 					<cfloop from="1" to="#arguments.tagLen#" index="arguments.t">

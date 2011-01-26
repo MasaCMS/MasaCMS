@@ -70,7 +70,7 @@ to your own modified versions of Mura CMS.
 <form novalidate="novalidate" name="form1" action="index.cfm?fuseaction=csettings.list" method="post">
 <table class="stripe">
 <tr><th class="varWidth">Site</th>
-<th>Order</th>
+<th>Bind Order</th>
 <cfif application.configBean.getMode() eq 'staging'><th>Batch&nbsp;Deploy</th><th>Last&nbsp;Deployment</th></cfif>
 <th class="administration">&nbsp;</th></tr>
 <cfoutput query="request.rsSites">

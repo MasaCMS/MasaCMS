@@ -173,9 +173,18 @@ if (top.location != self.location) {
 
 </cfif>
 <link href="#application.configBean.getContext()#/admin/css/admin.css?coreversion=#application.coreversion#" rel="stylesheet" type="text/css" />
+<cfif cgi.http_user_agent contains 'msie'>
 <!--[if LTE IE 7]>
-<link href="#application.configBean.getContext()#/admin/css/ie.css?coreversion=#application.coreversion#" rel="stylesheet" type="text/css" />
+	<link href="#application.configBean.getContext()#/admin/css/ie.css?coreversion=#application.coreversion#" rel="stylesheet" type="text/css" />
 <![endif]-->
+<!--[if IE 6]>
+	<script src="#application.configBean.getContext()#/admin/js/DD_belatedPNG.js"></script>
+	<script>
+		//DD_belatedPNG.fix('##header h1,##navUtility ##navAdminUsers a,##navUtility ##navSiteSettings a,##navUtility ##navEditProfile a,##navUtility ##navHelp a');
+		DD_belatedPNG.fix('##header h1');
+	</script>
+<![endif]-->
+</cfif>
 <cfif myfusebox.originalcircuit eq "cArch" and (myfusebox.originalfuseaction eq "list" or myfusebox.originalfuseaction eq "search") and (attributes.moduleid eq '00000000000000000000000000000000000' or attributes.moduleid eq '')>
 <cfinclude template="../../view/vArchitecture/dsp_content_nav.cfm">
 </cfif>
@@ -187,7 +196,7 @@ if (top.location != self.location) {
 <div id="container"><div id="navigation" class="sidebar">
 <cfset hidelist="cLogin">
 <cfif not listfindNoCase(hidelist,myfusebox.originalcircuit)>
-<select name="rb" onchange="location.href='#application.configBean.getContext()#/admin/index.cfm?fuseaction=cDashboard.main&siteid=#session.siteid#&rb=' + this.value;" id="lang">
+<!---<select name="rb" onchange="location.href='#application.configBean.getContext()#/admin/index.cfm?fuseaction=cDashboard.main&siteid=#session.siteid#&rb=' + this.value;" id="lang">
 	<option value="#session.rb#">#application.rbFactory.getKeyValue(session.rb,"layout.selectlanguage")#</option>
 		<option value="en">English</option>
 		<option value="de">Deutsch</option>
@@ -195,7 +204,7 @@ if (top.location != self.location) {
 		<option value="hu">Hungarian</option>
 		<option value="pt">Portuguese</option>
 		<option value="es">Spanish</option>
-	</select>	
+	</select>--->	
 <cfinclude template="dsp_secondary_menu_main.cfm">
 </cfif>
 <cfif session.mura.isLoggedIn>
@@ -211,7 +220,7 @@ Never
 </cfcatch>
 </cftry>
 </cfif>
-</p></cfif></div>
+</p><cfelse>&nbsp;</cfif></div>
 <div id="content">#fusebox.layout#
 </div></div>
 <script type="text/javascript" language="javascript">

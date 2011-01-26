@@ -184,6 +184,7 @@ select * from rsPluginScripts3 order by pluginID
 <cfelse>
 <h2>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.editcontent")#</h2>
 </cfif>
+<!--- Experimental Treatment <h2 class="editTitle"><span>Currently Editing:</span> #HTMLEditFormat(request.contentBean.getTitle())#</h2> --->
 <cfif attributes.compactDisplay eq "true" and not ListFindNoCase(nodeLevelList,attributes.type)>
 <p class="notice">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.globallyappliednotice")#</p>
 </cfif>

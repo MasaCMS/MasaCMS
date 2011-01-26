@@ -58,8 +58,9 @@ to your own modified versions of Mura CMS.
 </cffunction>
 
 <cffunction name="getList" access="public" output="false" returntype="query">
-
-	<cfset var rs = variables.gateway.getList() />
+	<cfargument name="sortBy" default="orderno">
+	<cfargument name="sortDirection" default="asc">
+	<cfset var rs = variables.gateway.getList(arguments.sortBy,arguments.sortDirection) />
 	
 	<cfreturn rs />
 	

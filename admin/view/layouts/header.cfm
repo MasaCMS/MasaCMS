@@ -48,7 +48,7 @@ to your own modified versions of Mura CMS.
 <cfoutput>
   <cfif listFind(session.mura.memberships,'S2IsPrivate')>
     <div id="header">
-      <h1>#application.configBean.getTitle()#</h1>
+      <a href="http://blueriver.com" target="_blank" title="mura by blueRiver"><h1>#application.configBean.getTitle()#</h1></a>
       <ul id="navUtility">
         <cfif session.siteid neq '' and listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(session.siteid).getPrivateUserPoolID()#;0') or listFind(session.mura.memberships,'S2')>
           <li id="navAdminUsers"><a href="#application.configBean.getContext()#/admin/index.cfm?fuseaction=cPrivateUsers.list&siteid=#session.siteid#">#application.rbFactory.getKeyValue(session.rb,"layout.administrativeusers")#</a>
@@ -78,6 +78,7 @@ to your own modified versions of Mura CMS.
         </li>
         <li id="navLogout"><a href="#application.configBean.getContext()#/admin/index.cfm?fuseaction=cLogin.logout">#application.rbFactory.getKeyValue(session.rb,"layout.logout")#</a></li>
       </ul>
+	  <div id="siteSelectWrapper">
       <form novalidate="novalidate" id="siteSelect" name="siteSelect" method="get" action="#application.configBean.getContext()#/admin/">
        	<cfif application.configBean.getDashboard()>
 		<input type="hidden" name="fuseaction" value="cDashboard.main">
@@ -94,12 +95,14 @@ to your own modified versions of Mura CMS.
 			</cfloop>
         </select>
       </form>
+	  </div>
      <cftry><cfset siteName=application.settingsManager.getSite(session.siteid).getSite()><cfif len(siteName)><p id="currentSite">#application.rbFactory.getKeyValue(session.rb,"layout.currentsite")# &rarr; <a href="http://#application.settingsManager.getSite(session.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##application.configBean.getStub()#/#session.siteid#/" target="_blank">#application.settingsManager.getSite(session.siteid).getSite()#</a></p></cfif><cfcatch></cfcatch></cftry>
 	<p id="welcome"><strong>#application.rbFactory.getKeyValue(session.rb,"layout.welcome")#, #HTMLEditFormat("#session.mura.fname# #session.mura.lname#")#.</strong><cfif yesNoFormat(application.configBean.getValue("sessionTimeout"))> #application.rbFactory.getKeyValue(session.rb,"layout.loggedoutin")# <span id="clock">3:00:00</span>.</cfif></p>
     </div>
     <cfelse>
     <div id="header">
       <h1>#application.configBean.getTitle()#</h1>
+	  <div id="siteSelectWrapper"></div>
     </div>
   </cfif>
 </cfoutput>

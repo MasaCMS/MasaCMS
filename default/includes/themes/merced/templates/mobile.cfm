@@ -55,6 +55,11 @@
 		</cfif>
 		#$.dspObjects($.siteConfig('primaryColumn'))#
 		<cfif $.content('contentID') eq "00000000000000000000000000000000001">
+		<!---
+<div id="navHeader" class="header-fullscreen" data-role="header" data-nobackbtn="true" data-theme="a">
+		<h1>More</h1>
+		</div>
+--->
 		<cf_CacheOMatic key="dspMobilePrimaryNav#request.contentBean.getcontentID()#">
 			#$.dspPrimaryNav(
 				viewDepth="0",
@@ -65,6 +70,11 @@
 				)#
 		</cf_cacheomatic>
 		<cfelseif not listFindNoCase('Gallery,Portal',$.content('type'))>
+		<!---
+<div id="navHeader" class="header-fullscreen" data-role="header" data-nobackbtn="true" data-theme="a">
+		<h1>More</h1>
+		</div>
+--->
 		<div id="navSub">#$.dspSubNav()#</div>
 		</cfif>
 	</div><!-- /content -->
@@ -84,7 +94,7 @@
 	<!--- Primary Nav on Home Screen --->
 	$('##navPrimary').attr({
  		'data-role': 'listview',
-  		'data-inset': 'true',
+  		'data-inset': 'false',
   		'data-theme': 'c',
   		'data-dividertheme': 'b',
 	});
@@ -110,9 +120,8 @@
   		'data-theme': 'c',
   		'data-dividertheme': 'b'
 	});
-	
-	<!--- This is for hen ajaxLinksEnabled enabled to
-	make sure certain link types render as external. 
+
+	<!--- This is for when ajaxLinksEnabled enabled to make sure certain link types render as external. 
 	$('.gallery').attr({
  		'rel': 'external'
 	});

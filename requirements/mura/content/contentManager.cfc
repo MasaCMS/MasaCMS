@@ -1228,10 +1228,11 @@ to your own modified versions of Mura CMS.
 		<cfargument name="keywords" type="string"/>
 		<cfargument name="tag" required="true" default=""/>
 		<cfargument name="sectionID" required="true" default=""/>
+		<cfargument name="categoryID" required="true" default=""/>
 		
 		<cfset var rs=""/>
 
-		<cfset rs=variables.contentGateway.getPublicSearch(arguments.siteid,arguments.keywords,arguments.tag,arguments.sectionID) />
+		<cfset rs=variables.contentGateway.getPublicSearch(arguments.siteid,arguments.keywords,arguments.tag,arguments.sectionID,arguments.categoryID) />
 		
 		<cfreturn rs/>
 		
@@ -1242,8 +1243,9 @@ to your own modified versions of Mura CMS.
 		<cfargument name="keywords" type="string"/>
 		<cfargument name="tag" required="true" default=""/>
 		<cfargument name="sectionID" required="true" default=""/>
+		<cfargument name="categoryID" required="true" default=""/>
 		
-		<cfset var rs=getPublicSearch(arguments.siteid,arguments.keywords,arguments.tag,arguments.sectionID) />
+		<cfset var rs=getPublicSearch(arguments.siteid,arguments.keywords,arguments.tag,arguments.sectionID,arguments.categoryID) />
 		<cfset var it = getServiceFactory().getBean("contentIterator")>
 		<cfset it.setQuery(rs)>
 		<cfreturn it/>	

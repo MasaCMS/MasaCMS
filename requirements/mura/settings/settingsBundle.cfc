@@ -154,17 +154,19 @@ to your own modified versions of Mura CMS.
 		<cfset var rstplugins = "" />
 		<cfset var rsInActivefiles = "" />
 		<cfset var deleteList =	"" />
-		<cfset var moduleIDSQLlist="" />
+		<!---<cfset var moduleIDSQLlist="" />--->
 		<cfset var i="" />
 		
 		<cfif isDate(arguments.sinceDate)>
 			<cfset arguments.includeTrash=true>
 		</cfif>
 		
+		<!---
 		<cfloop list="#arguments.moduleID#" index="i">
-			<cfset moduleIDSQLlist=listAppend(moduleIDlist,"'#i#'")>
+			<cfset moduleIDSQLlist=listAppend(moduleIDSQLlist,"'#i#'")>
 		</cfloop>
-	
+		--->
+		
 		<cfif len(arguments.siteID)>
 			<cfset variables.zipTool.AddFiles(zipFilePath="#variables.backupDir#sitefiles.zip",directory=siteRoot,recurse="true",sinceDate=arguments.sinceDate)>
 	
@@ -174,7 +176,7 @@ to your own modified versions of Mura CMS.
 				where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/> 
 				and (
 					
-					moduleid in ('00000000000000000000000000000000000'<cfif len(moduleIDSQLlist)>,#moduleIDSQLlist#</cfif><cfif arguments.includeUsers>,'00000000000000000000000000000000008'</cfif>)
+					moduleid in ('00000000000000000000000000000000000'<cfif len(arguments.moduleID)>,<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.moduleID#" list="true"></cfif><cfif arguments.includeUsers>,'00000000000000000000000000000000008'</cfif>)
 							
 					<cfif not arguments.includeVersionHistory>
 						or 
@@ -448,13 +450,15 @@ to your own modified versions of Mura CMS.
 		<cfset var rsZipFile	= "" />
 		<cfset var requiredSpace=variables.configBean.getValue("BundleMinSpaceRequired")>
 		<cfset var rssite	= "" />
-		<cfset var moduleIDSqlList="">
+		<!---<cfset var moduleIDSqlList="">--->
 		<cfset var i="">
 		<cfset var availableSpace=0>
 		
+		<!---
 		<cfloop list="#arguments.moduleID#" index="i">
-			<cfset moduleIDSQLlist=listAppend(moduleIDlist,"'#i#'")>
+			<cfset moduleIDSQLlist=listAppend(moduleIDSQLlist,"'#i#'")>
 		</cfloop>
+		--->
 		
 		<cfif isDate(arguments.sinceDate)>
 			<cfset arguments.includeTrash=true>
@@ -881,7 +885,7 @@ to your own modified versions of Mura CMS.
 			<!--- tfiles --->
 			<cfquery datasource="#arguments.dsn#" name="rstfiles">
 				select * from tfiles where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
-				and moduleid in ('00000000000000000000000000000000000'<cfif len(moduleIDSQLlist)>,#moduleIDSQLlist#</cfif><cfif arguments.includeUsers>,'00000000000000000000000000000000008'</cfif>)
+				and moduleid in ('00000000000000000000000000000000000'<cfif len(arguments.moduleID)>,<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.moduleID#" list="true"></cfif><cfif arguments.includeUsers>,'00000000000000000000000000000000008'</cfif>)
 				<cfif not arguments.includeVersionHistory>
 				and fileID in
 				(
@@ -1029,7 +1033,7 @@ to your own modified versions of Mura CMS.
 			<cfif isDate(arguments.sinceDate)>
 			<cfquery datasource="#arguments.dsn#" name="rsttrashfiles">
 				select * from tfiles where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
-				and moduleid in ('00000000000000000000000000000000000'<cfif len(moduleIDSQLlist)>,#moduleIDSQLlist#</cfif><cfif arguments.includeUsers>,'00000000000000000000000000000000008'</cfif>)
+				and moduleid in ('00000000000000000000000000000000000'<cfif len(arguments.moduleID)>,<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.moduleID#" list="true"></cfif><cfif arguments.includeUsers>,'00000000000000000000000000000000008'</cfif>)
 				and deleted=1
 			</cfquery>
 	
@@ -1039,7 +1043,7 @@ to your own modified versions of Mura CMS.
 			</cfif>
 			
 			<cfquery datasource="#arguments.dsn#" name="rssite">
-				select siteid,theme,galleryMainScaleBy,galleryMediumScaleBy,gallerySmallScaleBy,
+				select domain,siteid,theme,galleryMainScaleBy,galleryMediumScaleBy,gallerySmallScaleBy,
 			    galleryMainScale,galleryMediumScale,gallerySmallScale,columnCount,columnNames,primaryColumn
 			    from tsettings where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/> 
 			</cfquery>
