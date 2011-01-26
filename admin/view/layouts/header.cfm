@@ -48,11 +48,12 @@ to your own modified versions of Mura CMS.
 <cfoutput>
   <cfif listFind(session.mura.memberships,'S2IsPrivate')>
     <div id="header">
-      <a href="http://blueriver.com" target="_blank" title="mura by blueRiver"><h1>#application.configBean.getTitle()#</h1></a>
+      <a id="blueRiverLink" href="http://blueriver.com" target="_blank" title="mura by blueRiver"></a>
+	  <h1>#application.configBean.getTitle()#</h1>
       <ul id="navUtility">
         <cfif session.siteid neq '' and listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(session.siteid).getPrivateUserPoolID()#;0') or listFind(session.mura.memberships,'S2')>
           <li id="navAdminUsers"><a href="#application.configBean.getContext()#/admin/index.cfm?fuseaction=cPrivateUsers.list&siteid=#session.siteid#">#application.rbFactory.getKeyValue(session.rb,"layout.administrativeusers")#</a>
-            <ul>
+            <ul class="addMenuNav">
               <li><a href="#application.configBean.getContext()#/admin/index.cfm?fuseaction=cPrivateUsers.edituser&siteid=#session.siteid#&userid=">#application.rbFactory.getKeyValue(session.rb,"layout.adduser")#</a></li>
               <li class="last"><a href="#application.configBean.getContext()#/admin/index.cfm?fuseaction=cPrivateUsers.editgroup&siteid=#session.siteid#&userid=">#application.rbFactory.getKeyValue(session.rb,"layout.addgroup")#</a></li>
             </ul>
@@ -60,7 +61,7 @@ to your own modified versions of Mura CMS.
         </cfif>
         <cfif listFind(session.mura.memberships,'S2')>
           <li id="navSiteSettings"><a href="#application.configBean.getContext()#/admin/index.cfm?fuseaction=cSettings.list">#application.rbFactory.getKeyValue(session.rb,"layout.sitesettings")#</a>
-            <ul>
+            <ul class="addMenuNav">
 			<li><a href="#application.configBean.getContext()#/admin/index.cfm?fuseaction=cSettings.editSite&siteid=#session.siteid#">#application.rbFactory.getKeyValue(session.rb,"layout.editcurrentsite")#</a></li>
               <li><a href="#application.configBean.getContext()#/admin/index.cfm?fuseaction=cSettings.editSite&siteid=">#application.rbFactory.getKeyValue(session.rb,"layout.addsite")#</a></li>
 			  <li class="last"><a href="#application.configBean.getContext()#/admin/index.cfm?fuseaction=cSettings.sitecopyselect">#application.rbFactory.getKeyValue(session.rb,"layout.sitecopytool")#</a></li>
@@ -69,7 +70,7 @@ to your own modified versions of Mura CMS.
         </cfif>
         <li id="navEditProfile"><a href="#application.configBean.getContext()#/admin/index.cfm?fuseaction=cEditProfile.edit">#application.rbFactory.getKeyValue(session.rb,"layout.editprofile")#</a></li>
         <li id="navHelp"><a href="http://www.getmura.com/index.cfm/support/">#application.rbFactory.getKeyValue(session.rb,"layout.help")#</a>
-          <ul><li><a id="navHelpDocs" href="http://docs.getmura.com/index.cfm">#application.rbFactory.getKeyValue(session.rb,"layout.cmsdocumentation")#</a></li>
+          <ul class="addMenuNav"><li><a id="navHelpDocs" href="http://docs.getmura.com/index.cfm">#application.rbFactory.getKeyValue(session.rb,"layout.cmsdocumentation")#</a></li>
 	    	<li><a id="navFckEditorDocs" href="http://docs.fckeditor.net/" target="_blank">#application.rbFactory.getKeyValue(session.rb,"layout.editordocumentation")#</a></li>
 	    	<li><a id="navProg-API" href="http://www.getmura.com/mura/5/components/" target="_blank">Programmer API</a></li>
 	    	<li><a id="navCSS-API" href="http://docs.getmura.com/index.cfm/developer-guides/front-end-development/" target="_blank">#application.rbFactory.getKeyValue(session.rb,"layout.xhtmlcssapi")#</a></li>
@@ -101,6 +102,7 @@ to your own modified versions of Mura CMS.
     </div>
     <cfelse>
     <div id="header">
+	  <a id="blueRiverLink" href="http://blueriver.com" target="_blank" title="mura by blueRiver"></a>
       <h1>#application.configBean.getTitle()#</h1>
 	  <div id="siteSelectWrapper"></div>
     </div>

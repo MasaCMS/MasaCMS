@@ -195,18 +195,7 @@ if (top.location != self.location) {
 
 <div id="container"><div id="navigation" class="sidebar">
 <cfset hidelist="cLogin">
-<cfif not listfindNoCase(hidelist,myfusebox.originalcircuit)>
-<!---<select name="rb" onchange="location.href='#application.configBean.getContext()#/admin/index.cfm?fuseaction=cDashboard.main&siteid=#session.siteid#&rb=' + this.value;" id="lang">
-	<option value="#session.rb#">#application.rbFactory.getKeyValue(session.rb,"layout.selectlanguage")#</option>
-		<option value="en">English</option>
-		<option value="de">Deutsch</option>
-		<option value="fr">Fran&ccedil;ais</option>
-		<option value="hu">Hungarian</option>
-		<option value="pt">Portuguese</option>
-		<option value="es">Spanish</option>
-	</select>--->	
-<cfinclude template="dsp_secondary_menu_main.cfm">
-</cfif>
+<cfif not listfindNoCase(hidelist,myfusebox.originalcircuit)><cfinclude template="dsp_secondary_menu_main.cfm"></cfif>
 <cfif session.mura.isLoggedIn>
 <p id="copyright"><!--- &copy; 2001-#year(now())#<br /> --->
 Core Version #application.autoUpdater.getCurrentCompleteVersion()#<br />
@@ -231,8 +220,10 @@ stripe('stripe');
 window.setTimeout('CountDown()',100);
 </script>
 </cfif>
+<cfif cgi.http_user_agent contains 'msie'>
 <!--[if IE 6]>
 <script type="text/javascript" src="#application.configBean.getContext()#/admin/js/ie6notice.js"></script>
 <![endif]-->
+</cfif>
 </body>
 </html></cfoutput>

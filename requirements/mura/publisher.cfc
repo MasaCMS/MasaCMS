@@ -119,7 +119,7 @@ to your own modified versions of Mura CMS.
 			<cfset rstplugins=arguments.Bundle.getValue("rstplugins")>
 			
 			<cfloop query="rstplugins">
-				<cfset arguments.moduleID=listAppend(arguments.moduleID,arguments.keyFactory.get(rstplugins.moduleID))>
+				<cfset arguments.moduleID=listAppend(arguments.moduleID,rstplugins.moduleID)>
 			</cfloop>
 		</cfif>
 		
@@ -2564,7 +2564,8 @@ to your own modified versions of Mura CMS.
 					where moduleID in (<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.moduleID#" list="true">)
 				</cfquery>
 				</cfif>
-			</cfif>		
+			</cfif>
+			
 				<cfloop query="rstplugins">
 						<cfset proceed=false>
 						

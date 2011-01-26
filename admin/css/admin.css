@@ -833,6 +833,14 @@ form .displayObjects .dropdown {
 	color: #666;
 }
 
+#header a#blueRiverLink {
+	position:absolute;
+	top:0;
+	left:58px;
+	width:95px;
+	height:35px;
+}
+
 #clogin #header {
 	background: url(../images/bg_header_login.png) repeat-x;
 }
