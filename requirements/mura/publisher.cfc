@@ -2178,6 +2178,7 @@ to your own modified versions of Mura CMS.
 		<cfset var rsbaseids=""/>
 		<cfset var typeList="">
 		<cfset var incomingAttributeList="">
+		<cfset var rsCheck="">
 		
 		<cfparam name="arguments.rsUserConflicts" default="#queryNew('userID')#">
 		
@@ -2210,7 +2211,26 @@ to your own modified versions of Mura CMS.
 					where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.tositeid#"/>
 					and type in (<cfqueryparam cfsqltype="cf_sql_varchar" value="#typeList#" list="true">)
 				</cfquery>
-			
+				
+				<cfquery datasource="#arguments.toDSN#">
+					delete from tclassextendsets
+					where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.tositeid#"/>
+					and subTypeID not in (
+								select subTypeID 
+								from tclassextend 
+								where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.tositeid#"/>
+								)
+				</cfquery>
+				
+				<cfquery datasource="#arguments.toDSN#">
+					delete from tclassextendattributes
+					where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.tositeid#"/>
+					and extendSetID not in (
+							select extendSetID from tclassextendsets
+							where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.tositeid#"/> 			
+							)
+				</cfquery>
+				
 				<cfloop query="rstclassextend">
 					<cfquery datasource="#arguments.toDSN#">
 						insert into tclassextend (subTypeID,siteID, baseTable, baseKeyField, dataTable, type, subType,
@@ -2252,33 +2272,41 @@ to your own modified versions of Mura CMS.
 				select * from rstclassextendsets where 
 				subtypeID in (<cfqueryparam cfsqltype="cf_sql_varchar" value="#valueList(rstclassextend.subtypeID)#" list="true">)
 				</cfquery>
-			
-				<cfquery datasource="#arguments.toDSN#">
-					delete from tclassextendsets
-					where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.tositeid#"/>
-					and subTypeID not in (
-								select subTypeID 
-								from tclassextend 
-								where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.tositeid#"/>
-								)
-				</cfquery>
-			
+				
 				<cfloop query="rstclassextendsets">
-					
-					<cfquery datasource="#arguments.toDSN#">
-						insert into tclassextendsets (extendsetID, subTypeID, categoryID, siteID, name, orderno, isActive, container)
-						values
-						(
-						<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(extendSetID)#">,
-						<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(subTypeID)#">,
-						<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(categoryID neq '',de('no'),de('yes'))#" value="#translateKeyList(categoryID,keys)#">,
-						<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#arguments.toSiteID#">,
-						<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(name neq '',de('no'),de('yes'))#" value="#name#">,
-						<cfqueryparam cfsqltype="cf_sql_NUMERIC" null="#iif(orderno neq '',de('no'),de('yes'))#" value="#orderno#">,
-						<cfqueryparam cfsqltype="cf_sql_NUMERIC" null="#iif(isActive neq '',de('no'),de('yes'))#" value="#isActive#">,
-						<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(container neq '',de('no'),de('yes'))#" value="#container#">
-						)
+					<cfquery name="rsCheck" datasource="#arguments.toDSN#">
+					select * from tclassextendsets
+					where extendsetID = <cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(rstclassextendsets.extendSetID)#">
 					</cfquery>
+					
+					<cfif not rsCheck.recordcount>
+						<cfquery datasource="#arguments.toDSN#">
+							insert into tclassextendsets (extendsetID, subTypeID, categoryID, siteID, name, orderno, isActive, container)
+							values
+							(
+							<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(rstclassextendsets.extendSetID)#">,
+							<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(rstclassextendsets.subTypeID)#">,
+							<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(categoryID neq '',de('no'),de('yes'))#" value="#translateKeyList(categoryID,keys)#">,
+							<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#arguments.toSiteID#">,
+							<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(name neq '',de('no'),de('yes'))#" value="#name#">,
+							<cfqueryparam cfsqltype="cf_sql_NUMERIC" null="#iif(orderno neq '',de('no'),de('yes'))#" value="#orderno#">,
+							<cfqueryparam cfsqltype="cf_sql_NUMERIC" null="#iif(isActive neq '',de('no'),de('yes'))#" value="#isActive#">,
+							<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(container neq '',de('no'),de('yes'))#" value="#container#">
+							)
+						</cfquery>
+					<cfelse>
+						<cfquery datasource="#arguments.toDSN#">
+							update tclassextendsets set
+							subtypeID=<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(rstclassextendsets.subTypeID)#">,
+							categoryID=<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(categoryID neq '',de('no'),de('yes'))#" value="#translateKeyList(categoryID,keys)#">,
+							siteiD=<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#arguments.toSiteID#">,
+							name=<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(name neq '',de('no'),de('yes'))#" value="#name#">,
+							orderno=<cfqueryparam cfsqltype="cf_sql_NUMERIC" null="#iif(orderno neq '',de('no'),de('yes'))#" value="#orderno#">,
+							isactive=<cfqueryparam cfsqltype="cf_sql_NUMERIC" null="#iif(isActive neq '',de('no'),de('yes'))#" value="#isActive#">,
+							container=<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(container neq '',de('no'),de('yes'))#" value="#container#">
+							where extendsetID = <cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(rstclassextendsets.extendSetID)#">
+						</cfquery>	
+					</cfif>
 					
 				</cfloop>
 				
@@ -2371,15 +2399,6 @@ to your own modified versions of Mura CMS.
 					<cfset incomingAttributeList=listAppend(incomingAttributeList,attributeID)>
 					
 				</cfloop>
-			
-				<cfquery datasource="#arguments.toDSN#">
-					delete from tclassextendattributes
-					where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.tositeid#"/>
-					and extendSetID not in (
-							select extendSetID from tclassextendsets
-							where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.tositeid#"/> 			
-							)
-				</cfquery>
 			
 			<cfif arguments.contentMode neq "none">	
 				<cfif not StructKeyExists(arguments,"Bundle")>
