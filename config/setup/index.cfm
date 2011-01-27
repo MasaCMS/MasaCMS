@@ -476,6 +476,8 @@ to your own modified versions of Mura CMS.
 <meta name="robots" content="noindex, nofollow, noarchive" />
 <script src="#webRoot#/admin/js/admin.js" type="text/javascript" language="Javascript"></script>
 <link href="#webRoot#/admin/css/admin.css" rel="stylesheet" type="text/css" />
+<link rel="icon" href="#webRoot#/admin/images/favicon.ico" type="image/x-icon" />
+<link rel="shortcut icon" href="#webRoot#/admin/images/favicon.ico" type="image/x-icon" />
 <!--[if IE]>
 <link href="#webRoot#/admin/css/ie.css" rel="stylesheet" type="text/css" />
 <![endif]-->
@@ -485,14 +487,13 @@ to your own modified versions of Mura CMS.
 </head>
 </cfoutput>
 <body id="cSetUp" >
-<div id="header"><h1>Mura CMS</h1></div>
+<div id="header"><a id="blueRiverLink" href="http://blueriver.com" target="_blank" title="mura by blueRiver"></a><p id="version">Version 5.4</p><h1>Mura CMS</h1></div>
 <div id="container">
 <div id="navigation" class="sidebar">
-<p id="copyright">Version 5.4</p>
+<!---<p id="copyright">Version 5.4</p>--->
 </div>
 <div id="content">
 <h2>Mura Set Up</h2>
-
 <cfoutput>
 <cfif len( trim( message ) )><p class="error">#message#</p></cfif>
 

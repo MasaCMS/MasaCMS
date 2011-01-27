@@ -131,7 +131,8 @@ to your own modified versions of Mura CMS.
 </cfsilent>
 
 <title>#application.configBean.getTitle()#<cfif len(moduleTitle)> - #HTMLEditFormat(moduleTitle)#</cfif></title>
-
+<link rel="icon" href="#application.configBean.getContext()#/admin/images/favicon.ico" type="image/x-icon" />
+<link rel="shortcut icon" href="#application.configBean.getContext()#/admin/images/favicon.ico" type="image/x-icon" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <cfheader name="cache-control" value="no-cache, no-store, must-revalidate"> 
 <cfheader name="expires" value="06 Nov 1994 08:37:34 GMT"> 

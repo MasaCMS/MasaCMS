@@ -371,7 +371,7 @@ to your own modified versions of Mura CMS.
 					
 					<cfif fileExists("#pluginDir#/plugin/plugin.cfc")>	
 						<cfset pluginConfig=getPlugin(ID=keyFactory.get(rstplugins.moduleID), siteID="", cache=false)>
-						<cfset pluginCFC= createObject("component","plugins.#rstplugins.directory#.plugin.plugin") />
+						<cfset pluginCFC= createObject("component","plugins.#qCheck.directory#.plugin.plugin") />
 						
 						<!--- only call the methods if they have been defined --->
 						<cfif structKeyExists(pluginCFC,"init")>
@@ -660,7 +660,7 @@ to your own modified versions of Mura CMS.
 							)
 				</cfquery>
 				
-				<cfset setValue("tusersinterests",rstusersinterests)>
+				<cfset setValue("rstusersinterests",rstusersinterests)>
 				
 				<cfquery datasource="#arguments.dsn#" name="rstuserstags">
 					select * from tuserstags where
@@ -689,7 +689,7 @@ to your own modified versions of Mura CMS.
 							)
 				</cfquery>
 				
-				<cfset setValue("tuserstags",rstuserstags)>
+				<cfset setValue("rstuserstags",rstuserstags)>
 				
 				<cfquery datasource="#arguments.dsn#" name="rstusersfavorites">
 					select * from tusersfavorites where

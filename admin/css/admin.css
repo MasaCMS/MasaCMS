@@ -1,5 +1,6 @@
-/* @override
+/* @override 
 	http://mura:8500/5.4/admin/css/admin.css?coreversion=1
+	http://mura:8500/5.4/admin/css/admin.css
 */
 
 /* This file is part of Mura CMS. 
@@ -56,7 +57,7 @@ body {
 	background: url(../images/bg_sidebar_nav_grey.png) repeat-y left top;
 }
 
-body#clogin {
+body#clogin, body#cSetUp {
 	background: none;
 }
 
@@ -74,11 +75,20 @@ body#popUp {
 /* @group Defaults */
 
 #clogin #content {
-	width: 260px;
+	width: 268px;
 }
 
 #login, #login form {
-	width: 300px;
+	width: 268px;
+}
+
+#login {
+	padding: 26px 30px;
+	background: #f2f2f2;
+	border-radius: 6px;
+	-webkit-border-radius: 6px;
+	-moz-border-radius: 6px;
+	margin: 0 auto;
 }
 
 #login #email {
@@ -833,6 +843,12 @@ form .displayObjects .dropdown {
 	color: #666;
 }
 
+
+#cSetUp #header, #clogin #header {
+	background: url(../images/bg_header_login.png) repeat-x;
+	height: 70px;
+}
+
 #header a#blueRiverLink {
 	position:absolute;
 	top:0;
@@ -841,8 +857,13 @@ form .displayObjects .dropdown {
 	height:35px;
 }
 
-#clogin #header {
-	background: url(../images/bg_header_login.png) repeat-x;
+#header p#version {
+	position:absolute;
+	top: 10px;
+	right: 10px;
+	font-size: 10px;
+	color: #f0f0f0;
+	text-shadow: rgba(0,0,0,.80) 0px -1px 0px;
 }
 
 h1 {

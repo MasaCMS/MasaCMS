@@ -71,9 +71,9 @@ to your own modified versions of Mura CMS.
         <li id="navEditProfile"><a href="#application.configBean.getContext()#/admin/index.cfm?fuseaction=cEditProfile.edit">#application.rbFactory.getKeyValue(session.rb,"layout.editprofile")#</a></li>
         <li id="navHelp"><a href="http://www.getmura.com/index.cfm/support/">#application.rbFactory.getKeyValue(session.rb,"layout.help")#</a>
           <ul class="addMenuNav"><li><a id="navHelpDocs" href="http://docs.getmura.com/index.cfm">#application.rbFactory.getKeyValue(session.rb,"layout.cmsdocumentation")#</a></li>
-	    	<li><a id="navFckEditorDocs" href="http://docs.fckeditor.net/" target="_blank">#application.rbFactory.getKeyValue(session.rb,"layout.editordocumentation")#</a></li>
-	    	<li><a id="navProg-API" href="http://www.getmura.com/mura/5/components/" target="_blank">Programmer API</a></li>
-	    	<li><a id="navCSS-API" href="http://docs.getmura.com/index.cfm/developer-guides/front-end-development/" target="_blank">#application.rbFactory.getKeyValue(session.rb,"layout.xhtmlcssapi")#</a></li>
+	    	<li><a id="navFckEditorDocs" href="http://docs.cksource.com/" target="_blank">#application.rbFactory.getKeyValue(session.rb,"layout.editordocumentation")#</a></li>
+	    	<li><a id="navProg-API" href="http://www.getmura.com/mura/5/components/" target="_blank">Component API</a></li>
+	    	<li><a id="navCSS-API" href="http://docs.getmura.com/index.cfm/developer-guides/" target="_blank">#application.rbFactory.getKeyValue(session.rb,"layout.developers")#</a></li>
            <li class="last"><a id="navHelpForums" href="http://www.getmura.com/forum/" target="_blank">#application.rbFactory.getKeyValue(session.rb,"layout.supportforum")#</a></li>
           </ul>
         </li>

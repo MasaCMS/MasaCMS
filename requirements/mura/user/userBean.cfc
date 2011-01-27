@@ -1042,4 +1042,26 @@ to your own modified versions of Mura CMS.
 	<cfreturn address>
 </cffunction>
 
+<cffunction name="isInGroup" access="public" returntype="any" output="false">
+	<cfargument name="group">
+	<cfargument name="isPublic" hint="optional">
+	
+	<cfset var rsMemberships=getMembershipsQuery()>
+	
+	<cfquery name="rsMemberships" dbtype="query">
+      SELECT
+            userID
+      FROM
+            rsMemberships
+      WHERE
+            groupname = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.group#">
+		<cfif structKeyExists(arguments,"isPublic")>
+			and isPublic=<cfqueryparam cfsqltype="cf_sql_integer" value="#arguments.isPublic#">
+		</cfif>
+	</cfquery>
+	
+	<cfreturn rsMemberships.recordcount>
+	
+</cffunction>
+
 </cfcomponent>

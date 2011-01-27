@@ -1679,7 +1679,7 @@ to your own modified versions of Mura CMS.
 			<cfset rstusers = arguments.Bundle.getValue("rstusers")>
 		
 			<cfif rstusers.recordcount>
-				<cfquery name="arguments.rsUserConflicts"datasource="#arguments.toDSN#">
+				<cfquery name="arguments.rsUserConflicts" datasource="#arguments.toDSN#">
 					select userID,username from tusers where 
 					username in (
 								<cfqueryparam cfsqltype="cf_sql_varchar" value="#valueList(rstusers.username)#" list="true">
@@ -1737,61 +1737,64 @@ to your own modified versions of Mura CMS.
 				<!--- TUSERSTAGS--->
 				<cfset rstuserstags = arguments.Bundle.getValue("rstuserstags")>
 				
-				<cfif arguments.rsUserConflicts.recordcount>
-					<cfquery name="rstuserstags" dbtype="query">
-						select * from rstuserstags
-						where userID in (<cfqueryparam cfsqltype="cf_sql_varchar" value="#valuelist(rstusers.userID)#" list="true">)
-					</cfquery>  
-				</cfif>
-				
-				<cfquery datasource="#arguments.toDSN#">
-					delete from tuserstags where 
-					siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.toSiteID#">
-					
+				<cfif rstuserstags.recordcount>
 					<cfif arguments.rsUserConflicts.recordcount>
-						and userID not in (<cfqueryparam cfsqltype="cf_sql_varchar" value="#valuelist(arguments.rsUserConflicts.userID)#" list="true">)
-				   </cfif>		
-				</cfquery>
-				
-				<cfloop query="rstuserstags">
+						<cfquery name="rstuserstags" dbtype="query">
+							select * from rstuserstags
+							where userID in (<cfqueryparam cfsqltype="cf_sql_varchar" value="#valuelist(rstusers.userID)#" list="true">)
+						</cfquery>  
+					</cfif>
+					
 					<cfquery datasource="#arguments.toDSN#">
-						insert into tuserstags (userID,siteID,tag) values (
-						<cfqueryparam cfsqltype="cf_sql_varchar" value="#keys.get(userID)#">,
-						<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.toSiteID#">,
-						<cfqueryparam cfsqltype="cf_sql_varchar" value="#tag#">
-						)
+						delete from tuserstags where 
+						siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.toSiteID#">
+						
+						<cfif arguments.rsUserConflicts.recordcount>
+							and userID not in (<cfqueryparam cfsqltype="cf_sql_varchar" value="#valuelist(arguments.rsUserConflicts.userID)#" list="true">)
+					   </cfif>		
 					</cfquery>
-				</cfloop>
+					
+					<cfloop query="rstuserstags">
+						<cfquery datasource="#arguments.toDSN#">
+							insert into tuserstags (userID,siteID,tag) values (
+							<cfqueryparam cfsqltype="cf_sql_varchar" value="#keys.get(userID)#">,
+							<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.toSiteID#">,
+							<cfqueryparam cfsqltype="cf_sql_varchar" value="#tag#">
+							)
+						</cfquery>
+					</cfloop>
+				</cfif>
 				
 				<!--- TUSERSINTERESTS--->
 				<cfset rstusersinterests = arguments.Bundle.getValue("rstusersinterests")>
 				
-				<cfif arguments.rsUserConflicts.recordcount>
-					<cfquery name="rstusersinterests" dbtype="query">
-						select * from rstusersinterests
-						where userID in (<cfqueryparam cfsqltype="cf_sql_varchar" value="#valuelist(rstusers.userID)#" list="true">)
-					</cfquery>  
-				</cfif>
-				
-				<cfquery datasource="#arguments.toDSN#">
-					delete from tusersinterests where 
-					userID in (
-								select userID from tusers where siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.toSiteID#">	
-								)
+				<cfif rstusersinterests.recordcount>
 					<cfif arguments.rsUserConflicts.recordcount>
-						and userID not in (<cfqueryparam cfsqltype="cf_sql_varchar" value="#valuelist(arguments.rsUserConflicts.userID)#" list="true">)
-				   </cfif>
-				</cfquery>
-				
-				<cfloop query="rstusersinterests">
+						<cfquery name="rstusersinterests" dbtype="query">
+							select * from rstusersinterests
+							where userID in (<cfqueryparam cfsqltype="cf_sql_varchar" value="#valuelist(rstusers.userID)#" list="true">)
+						</cfquery>  
+					</cfif>
+					
 					<cfquery datasource="#arguments.toDSN#">
-						insert into tusersinterests (userID,categoryID) values (
-						<cfqueryparam cfsqltype="cf_sql_varchar" value="#keys.get(userID)#">,
-						<cfqueryparam cfsqltype="cf_sql_varchar" value="#keys.get(categoryID)#">
-						)
+						delete from tusersinterests where 
+						userID in (
+									select userID from tusers where siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.toSiteID#">	
+									)
+						<cfif arguments.rsUserConflicts.recordcount>
+							and userID not in (<cfqueryparam cfsqltype="cf_sql_varchar" value="#valuelist(arguments.rsUserConflicts.userID)#" list="true">)
+					   </cfif>
 					</cfquery>
-				</cfloop>
-				
+					
+					<cfloop query="rstusersinterests">
+						<cfquery datasource="#arguments.toDSN#">
+							insert into tusersinterests (userID,categoryID) values (
+							<cfqueryparam cfsqltype="cf_sql_varchar" value="#keys.get(userID)#">,
+							<cfqueryparam cfsqltype="cf_sql_varchar" value="#keys.get(categoryID)#">
+							)
+						</cfquery>
+					</cfloop>
+				</cfif>
 				<!--- TUSERSFAVORITES--->
 				<cfset rstusersfavorites = arguments.Bundle.getValue("rstusersfavorites")>
 				
