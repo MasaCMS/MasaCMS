@@ -8,8 +8,8 @@ function submitBundle(){
 			buttons: {
 				'YES': function() {
 					jQuery(this).dialog('close');
-					jQuery("##actionButtons").hide();
-					jQuery("##actionIndicator").show();
+					//jQuery("##actionButtons").hide();
+					//jQuery("##actionIndicator").show();
 					jQuery("##pluginSelectFrm").submit();
 					},
 				'NO': function() {
