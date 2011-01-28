@@ -581,6 +581,14 @@ function submitForm(frm,action,msg){
 		}
 		}
 		
+		jQuery('#actionIndicator').each(function(){
+			jQuery(this).show();	
+			});
+
+		jQuery('#actionButtons').each(function(){
+			jQuery(this).hide();	
+			});
+		
 		frm.submit();
 		formSubmitted = true;
 	

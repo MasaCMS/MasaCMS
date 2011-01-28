@@ -8,6 +8,8 @@ function submitBundle(){
 			buttons: {
 				'YES': function() {
 					jQuery(this).dialog('close');
+					jQuery("##actionButtons").hide();
+					jQuery("##actionIndicator").show();
 					jQuery("##pluginSelectFrm").submit();
 					},
 				'NO': function() {
@@ -72,8 +74,12 @@ function checkAll (form) {
 <dd class="notice"><strong>Note:</strong> The Advertising Module &amp; Email Broadcaster are not included in Mura Bundles.</dd>
 <!--- </cfif>  --->
 </dl>
-
-<a href="javascript:;" onclick="return submitBundle();" class="submit"><span>Create and Download Bundle</span></a>
+<div class="clearfix" id="actionButtons">
+	<a href="javascript:;" onclick="return submitBundle();" class="submit"><span>Create and Download Bundle</span></a>
+</div>
+<div id="actionIndicator" style="display: none;">
+	<img src="#application.configBean.getContext()#/admin/images/progress_bar.gif">
+</div>
 <input type="hidden" name="fuseaction" value="cSettings.createBundle"/>
 <input type="hidden" name="siteID" value="#HTMLEditFormat(rc.siteID)#"/>
 

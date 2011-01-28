@@ -581,15 +581,19 @@ to your own modified versions of Mura CMS.
 	
     </div>
     <input type="hidden" name="action" value="update">
-    <cfif request.siteBean.getsiteid() eq ''>
-     
+    <div id="actionButtons">
+	<cfif request.siteBean.getsiteid() eq ''> 
       <a class="submit" href="javascript:;" onclick="return submitForm(document.forms.form1,'add');"><span>Add</span></a>
-      <cfelse>
+    <cfelse>
 		<cfif request.siteBean.getsiteid() neq 'default'>
 		<a class="submit" href="index.cfm?fuseaction=cSettings.updateSite&action=delete&siteid=#request.siteBean.getSiteID()#" onclick="return confirmDialog('#JSStringFormat("WARNING: A deleted site and all of it''s files cannot be recovered. Are you sure that you want to continue?")#',this.href);"><span>Delete</span></a>
 		</cfif>
-      <a class="submit" href="javascript:;" onclick="return submitForm(document.forms.form1,'update');"><span>Update</span></a>
-            </cfif>
+      	<a class="submit" href="javascript:;" onclick="return submitForm(document.forms.form1,'update');"><span>Update</span></a>
+     </cfif>
+	 </div>
+	 <div id="actionIndicator" style="display: none;">
+	<img src="#application.configBean.getContext()#/admin/images/progress_bar.gif">
+</div>
   </form>
 </cfoutput>
 

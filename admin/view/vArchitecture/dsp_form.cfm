@@ -466,6 +466,9 @@ select * from rsPluginScripts3 order by pluginID
 	<a class="submit" href="javascript:;" onclick="document.contentForm.approved.value=1;if(ckContent(draftremovalnotice)){submitForm(document.contentForm,'add');}return false;"><span>#jsStringFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.publish"))#</span></a>
 	</cfif> 
 </div>
+<div id="actionIndicator" style="display: none;">
+	<img src="#application.configBean.getContext()#/admin/images/progress_bar.gif">
+</div>
 	<input name="approved" type="hidden" value="0">
 	<input name="removePreviousChangeset" type="hidden" value="false">
 	<input name="changesetID" type="hidden" value="">
