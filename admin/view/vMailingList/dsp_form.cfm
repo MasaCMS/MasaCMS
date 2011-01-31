@@ -100,10 +100,16 @@ to your own modified versions of Mura CMS.
 </div>
 <cfinclude template="dsp_tab_usage.cfm">
 </div>
-</cfif>  			
+</cfif>
+<div class="clearfix" id="actionButtons">			
 <cfif attributes.mlid eq ''>
 <a class="submit" href="javascript:;" onclick="return submitForm(document.forms.form1,'add');"><span>#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.add')#</span></a><input type=hidden name="mlid" value="#createuuid()#"><cfelse><cfif not request.listBean.getispurge()><a class="submit" href="javascript:;" onclick="return submitForm(document.forms.form1,'delete','#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.deleteconfirm'))#');"><span>#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.delete')#</span></a></cfif> <a class="submit" href="javascript:;" onclick="return submitForm(document.forms.form1,'update');"><span>#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.update')#</span></a>
-<input type=hidden name="mlid" value="#request.listBean.getmlid()#"></cfif><input type="hidden" name="action" value=""></form></cfoutput>
+<input type=hidden name="mlid" value="#request.listBean.getmlid()#"></cfif><input type="hidden" name="action" value=""></form>
+</div>
+<div id="actionIndicator" style="display: none;">
+	<img src="#application.configBean.getContext()#/admin/images/progress_bar.gif">
+</div>
+</cfoutput>
 <!---
 <cfif attributes.mlid neq ''>
 <cfhtmlhead text='<link rel="stylesheet" href="css/tab-view.css" type="text/css" media="screen">'>

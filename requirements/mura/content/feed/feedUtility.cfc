@@ -103,11 +103,20 @@ to your own modified versions of Mura CMS.
 				<cfset feedItem = structNew() />
 				<cfset feedItem.remoteURL=left(items[i].link.xmlText,255) />
 				<cfset feedItem.title=left(items[i].title.xmlText,255) />
-				<cfset feedItem.summary=items[i].description.xmlText />
+				<cfset feedItem.summary="" />
+				
+				<cfif isdefined("items[i].description.xmlText")>
+					<cfset feedItem.summary=items[i].description.xmlText />
+				<cfelseif isdefined("items[i].summary.xmlText")>
+					<cfset feedItem.summary=items[i].summary.xmlText />
+				</cfif>
+				
 				<cfset feedItem.remotePubDate=items[i].pubDate.xmlText />
+				
 				<cfif isDate(items[i].pubDate.xmlText)>
 					<cfset feedItem.releaseDate=parseDateTime(items[i].pubDate.xmlText) />
 				</cfif>
+				
 				<cftry>
 					<cfset feedItem.remoteID=left(items[i].guid.xmlText,255) />
 					<cfcatch>
@@ -117,15 +126,26 @@ to your own modified versions of Mura CMS.
 				
 				<cftry>
 					<cfset content = xmlFeed.rss.channel.item[i]["content:encoded"]>
+					
 					<cfif ArrayLen(content)>
 						<cfset feedItem.body = content[1].xmlText>   
 					<cfelse>     
-						<cfset feedItem.body=items[i].description.xmlText>   
+						<cfif isdefined("items[i].description.xmlText")>
+							<cfset feedItem.summary=items[i].description.xmlText />
+						<cfelseif isdefined("items[i].summary.xmlText")>
+							<cfset feedItem.summary=items[i].summary.xmlText />
+						</cfif>   
 					</cfif>
+					
 					<cfcatch>
-						<cfset feedItem.body=items[i].description.xmlText> 
+						<cfif isdefined("items[i].description.xmlText")>
+							<cfset feedItem.summary=items[i].description.xmlText />
+						<cfelseif isdefined("items[i].summary.xmlText")>
+							<cfset feedItem.summary=items[i].summary.xmlText />
+						</cfif> 
 					</cfcatch>
 				</cftry>
+				
 				<cfset feedItem.parentID=theImport.feedBean.getParentID() />
 				<cfset feedItem.siteID=theImport.feedBean.getSiteID() />
 				<cfset feedItem.approved=1 />
@@ -135,8 +155,7 @@ to your own modified versions of Mura CMS.
 				<cfset feedItem.moduleID='00000000000000000000000000000000000' />
 				<cfset feedItem.mode='import' />
 				<!---<cfset feedItem.releaseDate=dateformat(now(),"m/d/yy") />--->
-				
-				
+			
 				<cfif theImport.feedBean.getCategoryID() neq ''>
 					<cfloop from="1" to="#listLen(theImport.feedBean.getCategoryID())#" index="c">
 					<cfset feedItem["categoryAssign#replace(listGetAt(theImport.feedBean.getCategoryID(),c),'-','','ALL')#"]=0 />

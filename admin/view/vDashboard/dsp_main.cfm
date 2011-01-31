@@ -41,6 +41,7 @@ the GNU General Public License version 2 �without this exception. �You may, 
 to your own modified versions of Mura CMS.
 --->
 <cfset started=false>
+<cfparam name="application.sessionTrackingThrottle" default="false">
 <cfset variables.pluginEvent=createObject("component","mura.event").init(event.getAllValues())/>
 <cfinclude template="act_defaults.cfm"/>
 <cfoutput>
@@ -62,18 +63,29 @@ to your own modified versions of Mura CMS.
 <cfset started=true>
 </cfoutput>
 <cfoutput>
-<cfif application.configBean.getSessionHistory()>	
+<cfif application.configBean.getSessionHistory() and not application.sessionTrackingThrottle>	
 <div id="userActivity"<cfif started> class="separate"</cfif>>
 <h3>#application.rbFactory.getKeyValue(session.rb,"dashboard.useractivity")# <span><a href="index.cfm?fuseaction=cDashboard.sessionSearch&siteid=#URLEncodedFormat(attributes.siteid)#&newSearch=true">(#application.rbFactory.getKeyValue(session.rb,"dashboard.advancedsessionsearch")#)</a></span></h3>
 <span id="userActivityData"></span>
 </div>
 <script type="text/javascript">loadUserActivity('#attributes.siteid#');</script>
 <cfset started=true>
+
 <div id="popularContent"<cfif started> class="separate"</cfif>>
 <h3>#application.rbFactory.getKeyValue(session.rb,"dashboard.popularcontent")# <span>(#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"dashboard.span"),attributes.span)#)</span></h3>
 <span id="popularContentData"></span>
 </div>
 <script type="text/javascript">loadPopularContent('#attributes.siteid#');</script>
+<cfset started=true>
+
+</cfif>
+
+<cfif application.contentManager.getRecentCommentsQuery(session.siteID,1,false).recordCount>
+<div id="recentComments"<cfif started> class="separate"</cfif>>
+<h3>#application.rbFactory.getKeyValue(session.rb,"dashboard.comments")#</h3>
+<span id="recentCommentsData"></span>
+</div>
+<script type="text/javascript">loadRecentComments('#attributes.siteid#');</script>
 <cfset started=true>
 </cfif>
 

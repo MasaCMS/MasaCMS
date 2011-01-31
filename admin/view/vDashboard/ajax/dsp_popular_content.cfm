@@ -67,7 +67,7 @@ to your own modified versions of Mura CMS.
 <cfif count lt 2><tr><td>&mdash;</td></tr></cfif>
 <cfif count lt 3><tr class="alt"><td>&mdash;</td></tr></cfif>
 </table>
-
+<!---
 <cfset rsList=application.dashboardManager.getTopReferers(attributes.siteID,3,attributes.startDate,attributes.stopDate) />
 <cfset count=rsList.recordcount>
 <table id="topReferrers">
@@ -83,7 +83,7 @@ to your own modified versions of Mura CMS.
 <cfif count lt 2><tr><td>&mdash;</td></tr></cfif>
 <cfif count lt 3><tr class="alt"><td>&mdash;</td></tr></cfif>
 </table>
-
+--->
 <cfset rsList=application.dashboardManager.getTopKeywords(attributes.siteID,3,false,"All",attributes.startDate,attributes.stopDate) />
 <cfset count=rsList.recordcount>
 <table id="topSearches">
@@ -99,7 +99,7 @@ to your own modified versions of Mura CMS.
 <cfif count lt 2><tr><td>&mdash;</td></tr></cfif>
 <cfif count lt 3><tr class="alt"><td>&mdash;</td></tr></cfif>
 </table>
-
+<!---
 <cfset rsList=application.dashboardManager.getTopRated(attributes.siteID,attributes.threshold,3,attributes.startDate,attributes.stopDate) />
 <cfset count=rsList.recordcount>
 <table id="topRated">
@@ -125,5 +125,6 @@ to your own modified versions of Mura CMS.
 <cfif count lt 2><tr><td>&mdash;</td></tr></cfif>
 <cfif count lt 3><tr class="alt"><td>&mdash;</td></tr></cfif>
 </table>
+--->
 </cfoutput>
 

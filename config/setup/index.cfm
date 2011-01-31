@@ -488,10 +488,7 @@ to your own modified versions of Mura CMS.
 </cfoutput>
 <body id="cSetUp" >
 <div id="header"><a id="blueRiverLink" href="http://blueriver.com" target="_blank" title="mura by blueRiver"></a><p id="version">Version 5.4</p><h1>Mura CMS</h1></div>
-<div id="container">
-<div id="navigation" class="sidebar">
-<!---<p id="copyright">Version 5.4</p>--->
-</div>
+
 <div id="content">
 <h2>Mura Set Up</h2>
 <cfoutput>
@@ -501,7 +498,7 @@ to your own modified versions of Mura CMS.
 
 <cfif isDefined( "FORM.#cookie.setupSubmitButton#" ) AND errorType IS "">
 		<div id="installationComplete" class="success">
-			<p id="congrats">Congratulations! Mura is now set up and ready to use.</p>
+			<p id="congrats">Mura is now set up and ready to use.</p>
 			<h3>Important</h3>
 			<p>When you are done with setup, it is recommended you remove the "/config/setup" directory to maintain security. Once deleted, all settings can be edited in "/config/settings.ini.cfm" directly.</p>
 			<p>The default <strong>Username and Password is the word "admin" for both fields</strong>. It is highly reccommended that you change this immediately by editing your profile after logging into the Mura Admin.</p>
@@ -560,7 +557,7 @@ to your own modified versions of Mura CMS.
 <h3>Optional Settings</h3>
 <p>By default, Mura is set to use the mail server specified in your application server. If you would like to override this setting to use a specific mail server and mail account, complete the settings below.</p>
 	<dl class="twoColumn">
-	<dt><a href="" class="tooltip">Mail Server<span><strong>The Mail Server used by Mura to send global system emails. Example: mail.domain.com, 278.23.45.697.</span></a></dt>
+	<dt><a href="" class="tooltip">Mail Server<span>The Mail Server used by Mura to send global system emails. Example: mail.domain.com, 278.23.45.697.</span></a></dt>
 	<dd><input type="text" name="production_mailserverip" value="#FORM.production_mailserverip#"></dd>
 	
 	<dt><a href="" class="tooltip">Mail Server Username<span>This is the username used to log into and send emails from the Admin Email account. This may or may not be the same as Admin Email Address.</span></a></dt>
@@ -592,13 +589,13 @@ to your own modified versions of Mura CMS.
 	</dd>
 	</dl>
 
-	<input type="submit" name="#cookie.setupSubmitButton#" value="Save Settings" />
+	<input class="submit" type="submit" name="#cookie.setupSubmitButton#" value="Save Settings" />
 </form>
 </cfoutput>
 
-<p>If you are setting up a Staging <em>and</em> Production type of configuration, you'll need to create the Staging set up manually in "/config/settings.ini.cfm"</p>
+<!--- <p>If you are setting up a Staging <em>and</em> Production type of configuration, you'll need to create the Staging set up manually in "/config/settings.ini.cfm"</p> --->
 
-</div></div>
+</div>
 <script type="text/javascript" language="javascript">
 document.forms[0].elements[0].focus();
 </script>

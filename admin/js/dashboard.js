@@ -71,6 +71,25 @@ function loadPopularContent(siteID)	{
 			);
 		return false;
 	}
+
+function loadRecentComments(siteID)	{
+	var url = 'index.cfm';
+	var pars = 'fuseaction=cDashboard.loadRecentComments&siteID=' + siteID  + '&cacheid=' + Math.random();
+	
+	//location.href=url + "?" + pars;
+	var d = jQuery('#recentCommentsData');
+		d.html('<br/><img src="images/progress_bar.gif">');
+		jQuery.get(url + "?" + pars, 
+				function(data) {
+				d.html(data).animate({'opacity':'hide'},1000,null,
+						function(){
+							d.animate({'opacity':'show'},1000);
+						});
+				}
+		);
+	return false;
+}
+
 	
 function loadFormActivity(siteID)	{
 		var url = 'index.cfm';

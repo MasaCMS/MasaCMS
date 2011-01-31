@@ -592,8 +592,8 @@ to your own modified versions of Mura CMS.
      </cfif>
 	 </div>
 	 <div id="actionIndicator" style="display: none;">
-	<img src="#application.configBean.getContext()#/admin/images/progress_bar.gif">
-</div>
+		<img src="#application.configBean.getContext()#/admin/images/progress_bar.gif">
+	</div>
   </form>
 </cfoutput>
 

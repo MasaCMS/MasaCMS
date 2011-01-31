@@ -79,20 +79,33 @@ body#popUp {
 }
 
 #login, #login form {
-	width: 268px;
+	width: 340px;
 }
 
-#login {
+#login, #cSetUp #content {
 	padding: 26px 30px;
-	background: #f2f2f2;
+	background: #f9f9f9;
+	float: none;
 	border-radius: 6px;
 	-webkit-border-radius: 6px;
 	-moz-border-radius: 6px;
-	margin: 0 auto;
+	margin: 2em auto !important;
+	box-shadow: 0px 0px 6px #999;
+	-webkit-box-shadow: 0px 0px 6px #999;
+	-moz-box-shadow: 0px 0px 6px #999;
+	filter: progid:DXImageTransform.Microsoft.dropShadow( offX=0, offY=0, positive=true);
+}
+
+#cSetUp input.submit {
+	float: right;
+}
+
+#cSetUp dd input {
+	width: 200px;
 }
 
 #login #email {
-	margin-bottom: 1em;
+	
 }
 
 
@@ -206,10 +219,14 @@ input.textMed, input.med {
 input.submit {
 	background-color: #69c;
 	vertical-align: middle;
-	padding: 0;
+	/*padding: 0;*/
 	width: auto;
-	border: 1px solid #fff;
+	border: 0 solid #fff;
 	color: #fff;
+	padding: .4em .6em;
+	border-radius: 3px;
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
 }
 
 /* Uncomment this after button conversion
@@ -862,8 +879,8 @@ form .displayObjects .dropdown {
 	top: 10px;
 	right: 10px;
 	font-size: 10px;
-	color: #f0f0f0;
-	text-shadow: rgba(0,0,0,.80) 0px -1px 0px;
+	color: #919191;
+	text-shadow: rgba(0,0,0,.30) 0px -1px 0px;
 }
 
 h1 {
@@ -1060,8 +1077,9 @@ h1 {
 	-webkit-border-bottom-left-radius: 5px;
 	-moz-border-radius-bottomright: 5px;
 	-webkit-border-bottom-right-radius: 5px;
-	-webkit-box-shadow: 2px 2px 5px #666 !important;
-	-moz-box-shadow: 3px 3px 5px #555 !important;
+	box-shadow: 3px 3px 5px #555;
+	-webkit-box-shadow: 2px 2px 5px #666;
+	-moz-box-shadow: 3px 3px 5px #555;
 	filter: progid:DXImageTransform.Microsoft.dropShadow( offX=5, offY=5, positive=true);
 	box-shadow: 3px 3px 3px #555 !important;
 	color:#fff !important;
@@ -4188,8 +4206,12 @@ li span.req {
 
 /* @group Installation/Set Up */
 
-#cSetUp #content, #cSetUp #content form {
-	width: 50em;
+#cSetUp #content {
+	min-width: 0;
+	width: 46em !important;
+}
+#cSetUp #content form {
+	width: auto !important;
 }
 
 #cSetUp .success {

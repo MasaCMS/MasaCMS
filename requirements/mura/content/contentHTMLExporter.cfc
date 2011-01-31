@@ -72,6 +72,10 @@ to your own modified versions of Mura CMS.
 		<cfset arguments.exportDir=left(arguments.exportDir, len(arguments.exportDir)-1 )>
 	</cfif>
 	
+	<cfif directoryExists("#arguments.exportDir##$.globalConfig('context')#/#arguments.siteID#/")>
+		<cfset variables.fileWriter.deleteDir("#arguments.exportDir##$.globalConfig('context')#/#arguments.siteID#/")>
+	</cfif>
+	
 	<cfif len($.globalConfig("context"))>
 		<cfset variables.fileWriter.createDir("#arguments.exportDir##$.globalConfig("context")#")>
 	</cfif>
@@ -142,6 +146,7 @@ to your own modified versions of Mura CMS.
 	<cfset var nextn = "" />
 	<cfset var rsSection = "" />
 	<cfset var rsFiles = "" />
+	<cfset var filedir = "" />
 	<cfset var i = "" />
 	<cfset var $=getBean("MuraScope").init(arguments.contentBean.getSiteID())>
 	
@@ -164,19 +169,21 @@ to your own modified versions of Mura CMS.
 				<cfset filePath = "#arguments.exportDir##$.globalConfig('context')#/#arguments.contentBean.getFilename()#/index.html">
 			</cfif>
 			
-			<cftry>
 			<cfif variables.configBean.getSiteIDInURLS()>
-				<cfset variables.fileWriter.createDir("#arguments.exportDir##$.globalConfig('context')#/#arguments.contentBean.getSiteID()#/#arguments.contentBean.getFilename()#")>
+				<cfset newdir="#arguments.exportDir##$.globalConfig('context')#/#arguments.contentBean.getSiteID()#/#arguments.contentBean.getFilename()#">
 			<cfelse>
-				<cfset variables.fileWriter.createDir("#arguments.exportDir##$.globalConfig('context')#/#arguments.contentBean.getFilename()#")>
+				<cfset newdir="#arguments.exportDir##$.globalConfig('context')#/#arguments.contentBean.getFilename()#">
 			</cfif>
-			<cfcatch></cfcatch>
-			</cftry>
 			
-			<cftry>
-				<cfset variables.fileWriter.writeFile(file = "#filepath#",output = "#fileOutput#")>
-			<cfcatch></cfcatch>
-			</cftry>
+			<cfif not directoryExists(newdir)>
+				<cfset variables.fileWriter.createDir(newdir)>
+			</cfif>
+			
+			<cfif fileExists(filepath)>
+				<cffile action="delete" file="#filepath#">
+			</cfif>
+					
+			<cfset variables.fileWriter.writeFile(file = "#filepath#",output = "#fileOutput#")>
 	</cfif>		
 	
 	<cfif len(arguments.contentBean.getFileID())>
@@ -213,10 +220,12 @@ to your own modified versions of Mura CMS.
 						<cfset filePath = "#arguments.exportDir##variables.configBean.getContext()#/#arguments.contentBean.getFilename()#/index#i#.html">
 					</cfif>
 					
-					<cftry>
-						<cfset variables.fileWriter.writeFile(file = "#filepath#",output = "#fileOutput#")>
-					<cfcatch></cfcatch>
-					</cftry>
+					<cfif fileExists(filepath)>
+						<cffile action="delete" file="#filepath#">
+					</cfif>
+					
+					<cfset variables.fileWriter.writeFile(file = "#filepath#",output = "#fileOutput#")>
+					
 				</cfloop>
 				
 			</cfif>		

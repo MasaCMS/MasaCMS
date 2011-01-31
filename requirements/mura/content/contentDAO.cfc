@@ -955,6 +955,35 @@ tcontent.doCache,tcontent.created,tcontent.urltitle,tcontent.htmltitle,tcontent.
 	<cfreturn rs />
 </cffunction>
 
+<cffunction name="readRecentComments" access="public" output="false" returntype="query">
+	<cfargument name="siteID" type="string" required="true" default="">
+	<cfargument name="size" type="numeric" required="true" default="5">
+	<cfargument name="approvedOnly" type="boolean" required="true" default="true">
+	
+	<cfset var rs= ''/>
+	<cfset var dbType=variables.configBean.getDbType() />
+	
+	<cfquery name="rs" datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+	<cfif dbType eq "oracle" and arguments.size>select * from (</cfif>
+	select 
+	<cfif dbType eq "mssql" and arguments.size>Top #arguments.size#</cfif> 
+	c.contentid, c.commentid, c.parentid, c.name, c.email, c.url, c.comments, c.entered, c.siteid, c.isApproved, c.subscribe, c.userID, c.path,
+	f.fileid, f.fileExt
+	from tcontentcomments c 
+	left join tusers u on c.userid=u.userid
+	left join tfiles f on u.photofileid=f.fileid
+	where c.siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
+	<cfif arguments.approvedOnly>
+	and approved=1
+	</cfif>
+	order by entered desc
+	<cfif dbType eq "mysql" and arguments.size>limit #arguments.size#</cfif>
+	<cfif dbType eq "oracle" and arguments.size>) where ROWNUM <=#arguments.size# </cfif>
+	</cfquery>
+	
+	<cfreturn rs />
+</cffunction>
+
 <cffunction name="getCommentCount" access="public" output="false" returntype="numeric">
 	<cfargument name="contentID" type="String" required="true" default="">
 	<cfargument name="siteID" type="string" required="true" default="">

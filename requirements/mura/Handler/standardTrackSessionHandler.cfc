@@ -20,11 +20,23 @@
 
 	 --->
 <cfcomponent extends="Handler" output="false">
-	
+
+<cfset variables.longRequests=0>
+
 <cffunction name="handle" output="false" returnType="any">
 	<cfargument name="event" required="true">	
-	<cfif application.configBean.getSessionHistory() and application.configBean.getDashboard()>
+	<cfset var startCount = "">
+	<cfif application.configBean.getSessionHistory() and application.configBean.getDashboard() and not application.sessionTrackingThrottle>
+		<cfset startCount =GetTickCount()>
 		<cfset application.sessionTrackingManager.trackRequest(event.getValue('siteID'),event.getValue('path'),event.getValue('keywords'),event.getValue('contentBean').getcontentID()) />
+		<cfif (GetTickCount()-startCount) gt 5000>
+			<cfset variables.longRequests=variables.longRequests+1>
+		<cfelse>
+			<cfset variables.longRequests=0>
+		</cfif>
+		<cfif variables.longRequests gt 10>
+			<cfset application.sessionTrackingThrottle=true>
+		</cfif>
 	</cfif>
 </cffunction>
 

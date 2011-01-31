@@ -2019,6 +2019,31 @@ to your own modified versions of Mura CMS.
 						  	)
 						 )
 					  </cfcase>
+					  <cfcase value="ReleaseYear"> 
+						  (
+							
+							    tcontent.Display = 1
+							
+							    OR
+							        (
+							            tcontent.Display = 2	
+							                AND (
+							                    tcontent.DisplayStart < #createodbcdate(dateadd("D",1,arguments.menuDateTime))# AND (
+							                        tcontent.DisplayStop >= #createodbcdate(arguments.menuDateTime)# or tcontent.DisplayStop is null
+							                    )
+							            )
+							    )
+							
+							) AND (
+							
+							    (
+							        tcontent.releaseDate < #createodbcdate(dateadd("D",1,createDate(year(arguments.menuDateTime),12,31)))# AND tcontent.releaseDate >= #createodbcdate(createDate(year(arguments.menuDateTime),1,1))#)
+							    OR
+							        (
+							            tcontent.releaseDate is Null AND tcontent.lastUpdate < #createodbcdate(dateadd("D",1,createDate(year(arguments.menuDateTime),12,31)))# AND tcontent.lastUpdate >= #createodbcdate(createDate(year(arguments.menuDateTime),1,1))#			
+							        )
+							    )
+					  </cfcase> 
 					  <cfcase value="fixed">
 					  	
 					  	tcontent.Display = 1 

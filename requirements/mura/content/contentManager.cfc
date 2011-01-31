@@ -1417,6 +1417,28 @@ to your own modified versions of Mura CMS.
 	
 	</cffunction>
 	
+	<cffunction name="getRecentCommentsQuery" access="public" output="false" returntype="query">
+	<cfargument name="siteID" type="string" required="true" default="">
+	<cfargument name="size" type="numeric" required="true" default="5">
+	<cfargument name="approvedOnly" type="boolean" required="true" default="true">
+	
+		<cfreturn variables.contentDAO.readRecentComments(argumentCollection=arguments) />
+	
+	</cffunction>
+	
+	<cffunction name="getRecentCommentsIterator" access="public" output="false" returntype="any">
+	<cfargument name="siteID" type="string" required="true" default="">
+	<cfargument name="size" type="numeric" required="true" default="5">
+	<cfargument name="approvedOnly" type="boolean" required="true" default="true">
+	
+		<cfset var rs=getRecentCommentsQuery(argumentCollection=arguments)>
+		<cfset var it=getServiceFactory().getBean("contentCommentIterator").init()>
+		<cfset it.setQuery(rs)>	
+	
+		<cfreturn it>
+	
+	</cffunction>
+	
 	<cffunction name="getCommentCount" access="public" output="false" returntype="numeric">
 	<cfargument name="contentID" type="String" required="true" default="">
 	<cfargument name="siteID" type="string" required="true" default="">

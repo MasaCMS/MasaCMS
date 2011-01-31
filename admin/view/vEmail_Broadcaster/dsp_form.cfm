@@ -183,6 +183,7 @@ to your own modified versions of Mura CMS.
 				<cfset showScheduler = true>
 			</cfif>
 		</cfif></cfsilent>
+		<div class="clearfix" id="actionButtons">
 		 <a class="submit" href="javascript:;" onclick="validateEmailForm('#formAction#', '#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'email.saveconfirm'))#');return false;"><span>#application.rbFactory.getKeyValue(session.rb,'email.save')#</span></a>
 		 <a class="submit" href="javascript:;" onclick="document.forms.form1.sendNow.value='true'; validateEmailForm('#formAction#', '#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'email.sendnowconfirm'))#');return false;"><span>#application.rbFactory.getKeyValue(session.rb,'email.sendnow')#</span></a>
 		<a class="submit" href="javascript:;" onclick="openScheduler();"><span>#application.rbFactory.getKeyValue(session.rb,'email.schedule')#</span></a>
@@ -241,6 +242,10 @@ to your own modified versions of Mura CMS.
 		<input type="hidden" name="sendNow" value="">
 		
 		</p>
+		</div>
+		<div id="actionIndicator" style="display: none;">
+			<img src="#application.configBean.getContext()#/admin/images/progress_bar.gif">
+		</div>
 		
 		
 		</form> </cfoutput>

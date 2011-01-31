@@ -343,7 +343,9 @@ to your own modified versions of Mura CMS.
 
 <cffunction name="setExportLocation" access="public" output="false">
 	<cfargument name="ExportLocation" type="String" />
+	<cfif arguments.ExportLocation neq "export1">
 	<cfset variables.instance.ExportLocation = arguments.ExportLocation />
+	</cfif>
 	<cfreturn this>
 </cffunction>
 

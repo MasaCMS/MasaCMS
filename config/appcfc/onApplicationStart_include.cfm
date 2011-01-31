@@ -45,6 +45,7 @@ to your own modified versions of Mura CMS.
 <cfparam name="application.appInitialized" default="false" />
 <cfparam name="application.appReloadKey" default="appreload" />
 <cfparam name="application.broadcastInit" default="false" />
+<cfparam name="application.sessionTrackingThrottle" default="true"/>
 <cfparam name="application.instanceID" default="#createUUID()#" />
 <cfprocessingdirective pageencoding="utf-8"/>
 <cfsetting requestTimeout = "1000"> 
@@ -291,5 +292,7 @@ to your own modified versions of Mura CMS.
 				<cfset application.pluginManager.addEventHandler(themeHandler,rsSites.siteID)>
 			</cfif>	
 		</cfloop>
+		
+		<cfset application.sessionTrackingThrottle=false>
 	</cflock>
 </cfif>		
