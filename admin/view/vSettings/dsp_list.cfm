@@ -77,11 +77,13 @@ to your own modified versions of Mura CMS.
 <table class="stripe">
 <tr>
 	<th class="varWidth">Site</th>
+	<th>Domain</th>
 	<cfif attributes.siteSortBy eq "orderno"><th>Bind Order</th></cfif>
 <cfif application.configBean.getMode() eq 'staging'><th>Batch&nbsp;Deploy</th><th>Last&nbsp;Deployment</th></cfif>
 <th class="administration">&nbsp;</th></tr>
 <cfoutput query="request.rsSites">
 <tr><td class="varWidth"><a title="Edit" href="index.cfm?fuseaction=cSettings.editSite&siteid=#request.rsSites.siteid#">#request.rsSites.site#</a></td>
+<td><cfif len(request.rsSites.domain)>#HTMLEditFormat(request.rsSites.domain)#<cfelse>-</cfif></td>
 <cfif attributes.siteSortBy eq "orderno">
 	<td><select name="orderno" class="dropdown"><cfloop from="1" to="#request.rsSites.recordcount#" index="I"><option value="#I#" <cfif I eq request.rsSites.currentrow>selected</cfif>>#I#</option></cfloop></select><input type="hidden" value="#request.rsSites.siteid#" name="orderid" /></td>
 </cfif>
