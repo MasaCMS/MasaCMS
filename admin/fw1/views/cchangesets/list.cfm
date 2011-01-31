@@ -45,8 +45,8 @@ to your own modified versions of Mura CMS.
 
 <ul id="navTask"><li><a  title="#application.rbFactory.getKeyValue(session.rb,'changesets.addchangeset')#" href="index.cfm?fuseaction=cChangesets.edit&changesetID=&siteid=#URLEncodedFormat(rc.siteid)#">#application.rbFactory.getKeyValue(session.rb,'changesets.addchangeset')#</a></li></ul>
 
-<h3>#application.rbFactory.getKeyValue(session.rb,'changesets.filterview')#:</h3>
-<p>#application.rbFactory.getKeyValue(session.rb,'changesets.filterviewnotice')#</p>
+<!--- <h3>#application.rbFactory.getKeyValue(session.rb,'changesets.filterview')#:</h3> --->
+<h3 class="alt">#application.rbFactory.getKeyValue(session.rb,'changesets.filterviewnotice')#</h3>
 
 <form novalidate="novalidate" id="changesetSearch" name="changesetSearch" method="get">
 	<input name="keywords" value="#HTMLEditFormat(rc.keywords)#" type="text" class="text" maxlength="50" />

@@ -41,10 +41,16 @@ the GNU General Public License version 2 �without this exception. �You may, 
 to your own modified versions of Mura CMS.
 --->
 <cfparam name="attributes.action" default="">
+<cfparam name="attributes.siteSortBy" default="site">
 <h2>Site Settings</h2>
 <ul id="navTask">
 <cfif attributes.action neq 'updateCore'>
 <li><a href="index.cfm?fuseaction=cSettings.list&action=updateCore" onclick="return confirmDialog('WARNING: Do not update your core files unless you have backed up your current Mura install.\n\nIf your are using MSSQL you must uncheck Maintain Connections in your CF administrator datasource settings before proceeding. You may turn it back on after the update is complete.',this.href);">Update Core Files to Latest Version</a></li>
+<cfif attributes.siteSortBy eq "site">
+<li><a href="index.cfm?fuseaction=cSettings.list&siteSortBy=orderno">View Site List by Bind Order</a></li>
+<cfelse>
+<li><a href="index.cfm?fuseaction=cSettings.list&siteSortBy=site">View Site List by Site Name</a></li>
+</cfif>
 <cfelse>
 <li><a href="index.cfm?fuseaction=cSettings.list">View Site List</a></li>
 </cfif>
@@ -69,13 +75,16 @@ to your own modified versions of Mura CMS.
 <br/>
 <form novalidate="novalidate" name="form1" action="index.cfm?fuseaction=csettings.list" method="post">
 <table class="stripe">
-<tr><th class="varWidth">Site</th>
-<th>Bind Order</th>
+<tr>
+	<th class="varWidth">Site</th>
+	<cfif attributes.siteSortBy eq "orderno"><th>Bind Order</th></cfif>
 <cfif application.configBean.getMode() eq 'staging'><th>Batch&nbsp;Deploy</th><th>Last&nbsp;Deployment</th></cfif>
 <th class="administration">&nbsp;</th></tr>
 <cfoutput query="request.rsSites">
 <tr><td class="varWidth"><a title="Edit" href="index.cfm?fuseaction=cSettings.editSite&siteid=#request.rsSites.siteid#">#request.rsSites.site#</a></td>
-<td><select name="orderno" class="dropdown"><cfloop from="1" to="#request.rsSites.recordcount#" index="I"><option value="#I#" <cfif I eq request.rsSites.currentrow>selected</cfif>>#I#</option></cfloop></select><input type="hidden" value="#request.rsSites.siteid#" name="orderid" /></td>
+<cfif attributes.siteSortBy eq "orderno">
+	<td><select name="orderno" class="dropdown"><cfloop from="1" to="#request.rsSites.recordcount#" index="I"><option value="#I#" <cfif I eq request.rsSites.currentrow>selected</cfif>>#I#</option></cfloop></select><input type="hidden" value="#request.rsSites.siteid#" name="orderid" /></td>
+</cfif>
 <cfif application.configBean.getMode() eq 'staging'>
 <td><select name="deploy" class="dropdown"><option value="1" <cfif request.rsSites.deploy eq 1>selected</cfif>>Yes</option><option value="0" <cfif request.rsSites.deploy neq 1>selected</cfif>>No</option></select></td>
 <td><cfif LSisDate(request.rsSites.lastDeployment)>#LSDateFormat(request.rsSites.lastDeployment,session.dateKeyFormat)#<cfelse>Never</cfif></td>

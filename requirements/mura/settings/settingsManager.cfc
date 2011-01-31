@@ -242,8 +242,9 @@ to your own modified versions of Mura CMS.
 <cfargument name="isS2" type="boolean" required="yes" default="false">
 	<cfset var rs=""/>
 	<cfset var counter=1/>
-	<cfset var rsSites=getList()/>
+	<cfset var rsSites=getList(sortby="site")/>
 	<cfset var s=0/>
+	
 	<cfquery name="rs" dbtype="query">
 		select * from rsSites
 		<cfif arrayLen(arguments.siteArray) and not arguments.isS2>

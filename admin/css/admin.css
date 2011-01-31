@@ -74,12 +74,8 @@ body#popUp {
 }
 /* @group Defaults */
 
-#clogin #content {
-	width: 268px;
-}
-
 #login, #login form {
-	width: 340px;
+	width: 300px;
 }
 
 #login, #cSetUp #content {
@@ -96,6 +92,19 @@ body#popUp {
 	filter: progid:DXImageTransform.Microsoft.dropShadow( offX=0, offY=0, positive=true);
 }
 
+#sendLogin {
+	width: 360px;
+	margin: 0 auto;
+}
+
+#sendLogin dt {
+	margin-bottom: 0;
+}
+
+#sendLogin input.text {
+	width: 290px;
+}
+
 #cSetUp input.submit {
 	float: right;
 }
@@ -104,8 +113,8 @@ body#popUp {
 	width: 200px;
 }
 
-#login #email {
-	
+#login dd input.text {
+	width: 290px;
 }
 
 

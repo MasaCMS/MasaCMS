@@ -80,8 +80,8 @@ to your own modified versions of Mura CMS.
 	<input name="returnUrl" type="hidden" value="#HTMLEditFormat(attributes.returnURL)#">
 <input type="hidden" name="fuseaction" value="cLogin.login">
  </form>
-
-	<form novalidate="novalidate" id="sendLogin"  class="separate" name="sendLogin" method="post" action="index.cfm?fuseaction=cLogin.main" onsubmit="javascript:if(document.sendLogin.email.value !=''){return true;}else{return false;}">
+</div>
+	<form novalidate="novalidate" id="sendLogin" name="sendLogin" method="post" action="index.cfm?fuseaction=cLogin.main" onsubmit="javascript:if(document.sendLogin.email.value !=''){return true;}else{return false;}">
 	<dl>
 	<dt>#application.rbFactory.getKeyValue(session.rb,'login.forgetpassword')#</dt>
 	<dd><cfif attributes.status eq 'sendLogin'>
@@ -102,4 +102,3 @@ to your own modified versions of Mura CMS.
 		</dl>
     </form>
 </cfif></cfoutput>
-</div>

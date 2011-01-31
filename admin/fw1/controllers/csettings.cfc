@@ -25,6 +25,7 @@
 	<cfparam name="arguments.rc.deploy" default="" />
 	<cfparam name="arguments.rc.action" default="" />
 	<cfparam name="arguments.rc.siteid" default="" />
+	<cfparam name="arguments.rc.siteSortBy" default="site" />
 	
 	<cfif isdefined("arguments.rc.refresh")>
 		<cfset variables.fw.redirect(action="cSettings.list",append="activeTab",path="")>
@@ -36,7 +37,7 @@
 	
 	<cfset variables.settingsManager.saveOrder(arguments.rc.orderno,arguments.rc.orderID)  />
 	<cfset variables.settingsManager.saveDeploy(arguments.rc.deploy,arguments.rc.orderID) />
-	<cfset arguments.rc.rsSites=variables.settingsManager.getList() />
+	<cfset arguments.rc.rsSites=variables.settingsManager.getList(sortBy=arguments.rc.siteSortBy) />
 	<cfset arguments.rc.rsPlugins=variables.pluginManager.getAllPlugins() />
 </cffunction>
 
