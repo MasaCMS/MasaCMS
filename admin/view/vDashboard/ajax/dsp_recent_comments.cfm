@@ -57,7 +57,10 @@ to your own modified versions of Mura CMS.
 	--->
 	<cfset content=application.serviceFactory.getBean("content").loadBy(contentID=comment.getContentID(),siteID=session.siteID)>
 	<tr<cfif comments.currentIndex() mod 2> class="alt"</cfif>>
-		<td class="varWidth"><strong>#HTMLEditFormat(comment.getName())#</strong> commented on <strong>#HTMLEditFormat(content.getMenuTitle())#</strong></a></td>
+		<cfset args=arrayNew(1)>
+		<cfset args[1]="<strong>#HTMLEditFormat(comment.getName())#</strong>">
+		<cfset args[2]="<strong>#HTMLEditFormat(content.getMenuTitle())#</strong>">
+		<td class="varWidth">#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"dashboard.comments.description"),args)#</td>
 		<td class="dateTime">#LSDateFormat(comment.getEntered(),session.dateKeyFormat)# #LSTimeFormat(comment.getEntered(),"short")#</td>
 		<td class="administration">
 		<ul class="one">
