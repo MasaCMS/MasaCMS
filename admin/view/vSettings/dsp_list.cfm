@@ -100,6 +100,7 @@ to your own modified versions of Mura CMS.
 </cfoutput>
 </table>
 <a class="submit" href="javascript:document.form1.submit();"><span>Save</span></a>
+<cfoutput><input type="hidden" name="siteSortBy" value="#htmlEditFormat(attributes.siteSortBy)#"></cfoutput>
 </form>
 </div>
 
