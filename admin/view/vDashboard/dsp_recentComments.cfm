@@ -86,7 +86,7 @@ to your own modified versions of Mura CMS.
 #application.rbFactory.getKeyValue(session.rb,"dashboard.session.moreresults")#: <cfif comments.getPageIndex() gt 1> <a href="index.cfm?fuseaction=cDashboard.recentComments&page=#evaluate('comments.getPageIndex()-1')#&siteid=#URLEncodedFormat(attributes.siteid)#">&laquo;&nbsp;#application.rbFactory.getKeyValue(session.rb,"dashboard.session.prev")#</a></cfif>
 <cfloop from="1"  to="#comments.pageCount()#" index="i">
 	<cfif comments.getPageIndex() eq i> #i# <cfelse> <a href="index.cfm?fuseaction=cDashBoard.recentComments&page=#i#&siteid=#URLEncodedFormat(attributes.siteid)#">#i#</a> </cfif></cfloop>
-	<cfif comments.getPageIndex() lt comments.pageCount()><a href="index.cfm?fuseaction=cDashboard.listSessions&page=#evaluate('comments.getPageIndex()+1')#&siteid=#URLEncodedFormat(attributes.siteid)#">#application.rbFactory.getKeyValue(session.rb,"dashboard.session.next")#&nbsp;&raquo;</a></cfif> 
+	<cfif comments.getPageIndex() lt comments.pageCount()><a href="index.cfm?fuseaction=cDashboard.recentComments&page=#evaluate('comments.getPageIndex()+1')#&siteid=#URLEncodedFormat(attributes.siteid)#">#application.rbFactory.getKeyValue(session.rb,"dashboard.session.next")#&nbsp;&raquo;</a></cfif> 
 </cfif>	
 </cfoutput>
 

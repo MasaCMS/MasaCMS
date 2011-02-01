@@ -1813,7 +1813,7 @@ to your own modified versions of Mura CMS.
 				<cfif not headerFound>
 					<cfset pluginBasePath="/#displayPoolID#/includes/plugins/">		
 					<cfif fileExists(expandPath("/#application.configBean.getWebRootMap()##pluginbasePath##i#"))>
-						<cfset pluginID=listFirst(listLast(i,"_"),"/")>
+						<cfset pluginID=listLast(listFirst(i,"/"),"_")>
 						<cfset event.setValue('pluginConfig',application.pluginManager.getConfig(pluginID))>
 						<cfset pluginConfig=event.getValue('pluginConfig')>
 						<cfset pluginPath= application.configBean.getContext() & pluginBasePath & pluginConfig.getDirectory() & "/" >		
@@ -1829,7 +1829,7 @@ to your own modified versions of Mura CMS.
 				<cfif not headerFound>
 					<cfset pluginBasePath="/plugins/">
 					<cfif fileExists(expandPath("#pluginbasePath##i#"))>
-						<cfset pluginID=listFirst(listLast(i,"_"),"/")>
+						<cfset pluginID=listLast(listFirst(i,"/"),"_")>
 						<cfset event.setValue('pluginConfig',application.pluginManager.getConfig(pluginID))>
 						<cfset pluginConfig=event.getValue('pluginConfig')>
 						<cfset pluginPath= application.configBean.getContext() & pluginBasePath & pluginConfig.getDirectory() & "/" >		

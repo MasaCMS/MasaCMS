@@ -210,7 +210,7 @@ to your own modified versions of Mura CMS.
 <cfset var event="">
 <cfset var eventData=structNew()>	
 
-<cfif structKeyExists(request,"servletEvent")> and structKeyExists(request,"contentRenderer")>
+<cfif structKeyExists(request,"servletEvent") and structKeyExists(request,"contentRenderer")>
 	<cfset request.contentRenderer.addtoHTMLHeadQueue(getDirectory() & "/" & arguments.text) />
 <cfelse>
 <cfif structKeyExists(request,"servletEvent")>
