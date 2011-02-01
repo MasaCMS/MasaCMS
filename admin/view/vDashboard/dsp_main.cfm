@@ -82,7 +82,7 @@ to your own modified versions of Mura CMS.
 
 <cfif application.contentManager.getRecentCommentsQuery(session.siteID,1,false).recordCount>
 <div id="recentComments"<cfif started> class="separate"</cfif>>
-<h3>#application.rbFactory.getKeyValue(session.rb,"dashboard.comments")#</h3>
+<h3>#application.rbFactory.getKeyValue(session.rb,"dashboard.comments")# <span><a href="?fuseaction=cDashboard.recentComments&siteID=#session.siteID#">(#application.rbFactory.getKeyValue(session.rb,"dashboard.comments.last100")#)</a></span></h3>
 <span id="recentCommentsData"></span>
 </div>
 <script type="text/javascript">loadRecentComments('#attributes.siteid#');</script>

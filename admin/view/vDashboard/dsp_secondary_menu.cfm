@@ -48,4 +48,5 @@ to your own modified versions of Mura CMS.
 <li<cfif myfusebox.originalfuseaction eq "topSearches"> class="current"</cfif>><a href="index.cfm?fuseaction=cDashboard.topSearches&siteID=#session.siteid#">#application.rbFactory.getKeyValue(session.rb,"dashboard.topsearches")#</a></li>
 </cfif>
 <li<cfif myfusebox.originalfuseaction eq "topRated"> class="current"</cfif>><a href="index.cfm?fuseaction=cDashboard.topRated&siteID=#session.siteid#">#application.rbFactory.getKeyValue(session.rb,"dashboard.toprated")#</a></li>
+<li<cfif myfusebox.originalfuseaction eq "recentComments"> class="current"</cfif>><a href="index.cfm?fuseaction=cDashboard.recentComments&siteID=#session.siteid#">#application.rbFactory.getKeyValue(session.rb,"dashboard.comments")#</a></li>
 </ul></cfoutput>
