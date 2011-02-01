@@ -24,7 +24,7 @@
 <cffunction name="validate" output="false" returnType="any">
 	<cfargument name="event" required="true">
 	
-	<cfif event.geValue("contentBean").getFilename() neq "404" 
+	<cfif event.getValue("contentBean").getFilename() neq "404" 
 			and 
 			(
 				(event.getValue('forceSSL') or (event.getValue('r').restrict and application.settingsManager.getSite(event.getValue('siteID')).getExtranetSSL() eq 1)) and not application.utility.isHTTPS()
