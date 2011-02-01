@@ -398,7 +398,7 @@ function validateForm(theForm) {
 		for (f=0; f < frmSelects.length; f++) {
 				theField=frmSelects[f];
 				validationType=getValidationType(theField);
-				if(theField.style.display=="" && getValidationIsRequired(theField) && theField.value == "" )
+				if(theField.style.display=="" && getValidationIsRequired(theField) && theField.options[theField.selectedIndex].value == "")
 				{	
 					if (!started) {
 					started=true;
