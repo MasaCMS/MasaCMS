@@ -1,8 +1,4 @@
-/* @override 
-	http://mura:8500/5.4/admin/css/admin.css?coreversion=1
-	http://mura:8500/5.4/admin/css/admin.css
-	http://www.getmura.com/admin/css/admin.css?coreversion=3923
-*/
+/* @override http://mura:8500/5.4/admin/css/admin.css?coreversion=1 */
 
 /* This file is part of Mura CMS. 
 
@@ -1086,7 +1082,7 @@ h1 {
 #navUtility li ul {
 	top: 23px;
 	padding: .5em !important;
-	margin: 11px 0 0 -3px !important;
+	margin: 11px 0 0 6px !important;
 	list-style: none !important;
 	line-height: 1 !important;
 	background-image: none !important;
@@ -2198,7 +2194,7 @@ h4 + table {
 	clear: none;
 }
 
-#popularContent #topPages, #popularContent #topSearches {
+#popularContent #topPages{
 	float: left;
 }
 

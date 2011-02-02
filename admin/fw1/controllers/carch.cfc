@@ -143,7 +143,7 @@
 <cffunction name="update" ouput="false">
 	<cfargument name="rc">
 	<cfset var local=structNew()>
-	
+	 
 	<cfif not isNumeric(arguments.rc.orderno)>
 		<cfset arguments.rc.orderno=0>
 	</cfif>
@@ -186,6 +186,7 @@
 	 
 	 <cfif arguments.rc.allowAction and arguments.rc.action eq 'multiFileUpload'>
 		  <cfset variables.contentManager.multiFileUpload(arguments.rc) />
+		  <cfabort>
 	 </cfif>
 	 
 	  <cfif arguments.rc.allowAction and arguments.rc.action eq 'add' and arguments.rc.contentID neq '00000000000000000000000000000000001'>

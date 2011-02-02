@@ -1525,6 +1525,7 @@ to your own modified versions of Mura CMS.
 	<cfset var f=1 />	
 	<cfset var fileBean="" />
 	<cfset var tempFile="">
+	<cfset var requestData = GetHttpRequestData()>
 	
 	<cfset fileItem.siteID=arguments.data.siteID/>
 	<cfset fileItem.parentID=arguments.data.parentID/>
@@ -1534,6 +1535,39 @@ to your own modified versions of Mura CMS.
 	<cfset fileItem.isNav=1 />	
 	<cfset fileItem.contentID=""/>
 	<cfset fileItem.approved=arguments.data.approved/>
+	
+	
+	<cfif structKeyExists(arguments.data,'qqfile')>
+		<cftry>
+		
+		<cfif len(requestData.content) GT 0>
+			
+			<cffile action="write" file="#variables.configBean.getTempDir()##arguments.data.qqfile#" output="#requestData.content#">     
+			<cfset tempFile=variables.fileManager.emulateUpload("#variables.configBean.getTempDir()##arguments.data.qqfile#")>
+		
+		<cfelse>
+			
+			<cffile action="upload" result="tempFile" filefield="qqfile" nameconflict="makeunique" destination="#variables.configBean.getTempDir()#">		
+		</cfif>	
+		
+		<cfset theFileStruct=variables.fileManager.process(tempFile,arguments.data.siteid) />
+		<cfset fileItem.title=tempFile.serverfile/>	
+		<cfset fileItem.fileid=variables.fileManager.create(theFileStruct.fileObj, '', arguments.data.siteid, tempFile.ClientFile, tempFile.ContentType, tempFile.ContentSubType, tempFile.FileSize, "0000000000000000000000000000000000", tempFile.ServerFileExt, theFileStruct.fileObjSmall, theFileStruct.fileObjMedium) />
+		
+		<cfset fileBean=add(structCopy(fileItem)) />
+		<cfquery datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+			 update tfiles set contentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#fileBean.getContentID()#"> 
+			 where fileid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#fileBean.getFileID()#">
+		</cfquery>
+		
+		<cfif len(requestData.content) GT 0>
+		<cffile action="delete" file="#variables.configBean.getTempDir()##arguments.data.qqfile#">
+		</cfif>
+		<cfcatch>
+		<cflog log="application" text="#cfcatch.message#">
+		</cfcatch>
+		</cftry>
+	</cfif>
 	
 	<cfloop condition="structKeyExists(arguments.data,'newFile#f#')">
 		<cfif len(form["NewFile#f#"])>

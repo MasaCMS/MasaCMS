@@ -8,7 +8,7 @@ div.editableObject {
 	right: auto !important;
 	bottom: auto !important;
 	left: auto !important;
-	width: auto !important;
+	width: 100% !important;
 	height: auto !important;
 	margin-top: 0 !important;
 	margin-right: 0 !important;
