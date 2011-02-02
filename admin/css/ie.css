@@ -191,6 +191,12 @@ dd.categoryAssignment input.textAlt {
 * html #content { height: 1%; width: 980px; }
 * html #content form { height: 1%; width: 980px; }
 
+* html #clogin #container { width: 100%; }
+* html #clogin #content { width: 290px; }
+* html #clogin #content #login { width: 290px; }
+* html #clogin #content #login form { width: 290px; }
+
+
 * html #cdashboard #contentSecondary form {
 	width: 230px;
 }
