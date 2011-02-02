@@ -126,6 +126,11 @@ to your own modified versions of Mura CMS.
 		<cfif len(arguments.toSiteID) and arguments.contentMode neq "none">
 			<cfset getToWorkSite(argumentCollection=arguments)>
 			
+			<cfif arguments.keyMode eq "copy">
+				<cfset application.serviceFactory.getBean("contentUtility").updateGlobalMaterializedPath(siteid=arguments.toSiteID,datasource=arguments.toDSN) />
+				<cfset application.serviceFactory.getBean("categoryUtility").updateGlobalMaterializedPath(siteid=arguments.toSiteID,datasource=arguments.toDSN) />
+		 	</cfif>
+		 	
 			<cfif arguments.contentMode eq "all" and arguments.keyMode eq "publish" and not StructKeyExists(arguments,"Bundle")>
 				<cfif not isDate(arguments.lastDeployment)>
 					<cfset getToWorkSyncMetaOLD(argumentCollection=arguments)>
