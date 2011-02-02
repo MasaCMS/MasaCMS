@@ -9,6 +9,7 @@
 	display: block;
     float: left;
 	padding: .4em .6em;
+	margin-bottom: 2em;
 	text-align: center;
 	background: #69c;
 	color: #fff;
@@ -51,14 +52,16 @@
 }
 
 .qq-upload-list {
-	margin: 15px 35px;
+	margin: 0 2em;
 	padding: 0;
 	list-style: disc;
+	clear:  both;
 }
 
 .qq-upload-list li {
-	margin: 0;
-	padding: 0;
+	margin: 1em 0 0 0;
+	padding: 1em 0 0;
+	border-top: 1px dotted #ccc;
 	line-height: 15px;
 	font-size: 12px;
 }
