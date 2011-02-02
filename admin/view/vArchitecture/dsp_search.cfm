@@ -99,7 +99,7 @@ copySiteID = '#session.copySiteID#';
 	    <cfif request.rslist.Display and (request.rslist.Display eq 1 and request.rslist.approved and request.rslist.approved)>Yes<cfelseif(request.rslist.Display eq 2 and request.rslist.approved and request.rslist.approved)>#LSDateFormat(request.rslist.displaystart,session.dateKeyFormat)# - #LSDateFormat(request.rslist.displaystop,session.dateKeyFormat)#<cfelse>No</cfif></td>
 		<td>#LSDateFormat(request.rslist.lastupdate,session.dateKeyFormat)#</td>
         
- <td class="administration"><ul class="siteSummary"><cfif verdict neq 'none'>
+ <td class="administration"><ul class="siteSummary five"><cfif verdict neq 'none'>
        <li class="edit"><a title="Edit" href="index.cfm?fuseaction=cArch.edit&contenthistid=#request.rsList.ContentHistID#&contentid=#request.rsList.ContentID#&type=#request.rsList.type#&parentid=#request.rsList.parentID#&topid=#URLEncodedFormat(attributes.topid)#&siteid=#URLEncodedFormat(attributes.siteid)#&moduleid=#attributes.moduleid#&startrow=#attributes.startrow#">&nbsp;</a></li>
 	   <cfswitch expression="#request.rsList.type#">
 		<cfcase value="Page,Portal,Calendar,Gallery">
@@ -119,7 +119,7 @@ copySiteID = '#session.copySiteID#';
 		  <li class="permissionsOff"><a>Permissions</a></li>
 		</cfif>
         <cfif deletable>
-          <li class="delete"><a  title="Delete" href="index.cfm?fuseaction=cArch.update&contentid=#request.rsList.ContentID#&type=#request.rsList.type#&action=deleteall&topid=#request.rsList.contentID#&siteid=#URLEncodedFormat(attributes.siteid)#&moduleid=#attributes.moduleid#&parentid=#URLEncodedFormat(attributes.parentid)#&startrow=#attributes.startrow#"
+          <li class="delete"><a title="Delete" href="index.cfm?fuseaction=cArch.update&contentid=#request.rsList.ContentID#&type=#request.rsList.type#&action=deleteall&topid=#request.rsList.contentID#&siteid=#URLEncodedFormat(attributes.siteid)#&moduleid=#attributes.moduleid#&parentid=#URLEncodedFormat(attributes.parentid)#&startrow=#attributes.startrow#"
 			<cfif listFindNoCase("Page,Portal,Calendar,Gallery,Link,File",request.rsList.type)>onclick="return confirmDialog('#jsStringFormat(application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.deletecontentrecursiveconfirm'),request.rslist.menutitle))#',this.href)"<cfelse>onclick="return confirmDialog('#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.deletecontentconfirm'))#',this.href)"</cfif>>&nbsp;</a></li>
           <cfelseif attributes.locking neq 'all'>
           <li class="deleteOff">Delete</li>

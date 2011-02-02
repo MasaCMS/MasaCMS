@@ -34,6 +34,10 @@
 	<cfreturn this>
 </cffunction>
 
+<cffunction name="getReferer" output="false">
+	<cfreturn variables.referer>
+</cffunction>
+
 <cffunction name="getHost" output="false">
 	<cfreturn variables.host>
 </cffunction>

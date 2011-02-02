@@ -32,6 +32,7 @@
 		<cfset renderer.showMemberToolbar=false>
 		<cfset renderer.showEditableObjects=false>
 	<cfelse>
+		<cfcookie name="mobileFormat" value="false" expires="never" />
 	</cfif>
 </cffunction>
 

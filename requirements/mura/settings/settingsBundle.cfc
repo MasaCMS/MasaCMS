@@ -907,7 +907,7 @@ to your own modified versions of Mura CMS.
 			<cfset setValue("hasmetadata",arguments.includeMetaData)>
 			
 			<cfif arguments.includeMetaData>
-			<cfquery datasource="#arguments.dsn#" name="tcontentstats">
+			<cfquery datasource="#arguments.dsn#" name="rstcontentstats">
 				select * from tcontentstats where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
 				<cfif isDate(arguments.sinceDate)>
 				and contentID in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#valueList(rstcontent.contentID)#">)
@@ -917,7 +917,7 @@ to your own modified versions of Mura CMS.
 				</cfif>
 			</cfquery>
 	
-			<cfset setValue("tcontentstats",tcontentstats)>
+			<cfset setValue("rstcontentstats",rstcontentstats)>
 
 			<cfquery datasource="#arguments.dsn#" name="rstcontentcomments">
 				select * from tcontentcomments where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
