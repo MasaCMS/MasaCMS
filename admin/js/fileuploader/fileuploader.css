@@ -52,16 +52,19 @@
 }
 
 .qq-upload-list {
-	margin: 0 2em;
-	padding: 0;
+	margin: 0;
+	padding: 1em 1em .25em;
+	background: #f9f9f9;
 	list-style: disc;
+	list-style-position: inside;
 	clear:  both;
+	border-radius: 4px;
 }
 
 .qq-upload-list li {
-	margin: 1em 0 0 0;
-	padding: 1em 0 0;
-	border-top: 1px dotted #ccc;
+	margin: 0 0 1em;
+	padding: 0;
+	/*border-bottom: 1px dotted #ccc;*/
 	line-height: 15px;
 	font-size: 12px;
 }
