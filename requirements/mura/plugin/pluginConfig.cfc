@@ -230,6 +230,14 @@ to your own modified versions of Mura CMS.
 	
 </cffunction>
 
+<cffunction name="addToHTMLFootQueue" output="false">
+<cfargument name="text">
+	
+<cfif structKeyExists(request,"servletEvent") and structKeyExists(request,"contentRenderer")>
+	<cfset request.contentRenderer.addtoHTMLFootQueue(getDirectory() & "/" & arguments.text) />
+</cfif>	
+</cffunction>
+
 <cffunction name="getApplication" returntype="any" access="public" output="false">
 <cfargument name="purge" default="false">
 		

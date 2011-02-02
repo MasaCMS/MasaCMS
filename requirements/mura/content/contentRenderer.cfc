@@ -59,7 +59,9 @@ to your own modified versions of Mura CMS.
 <cfset this.showAdminToolBar=true/>
 <cfset this.showMemberToolBar=true/>
 <cfset this.showEditableObjects=true/>
+<!--- renderHTMLHead has been deprecated in favor of renderHTMLQueues---->
 <cfset this.renderHTMLHead=true/>
+<cfset this.renderHTMLQueues=true/>
 <cfset this.enableMuraTag=getConfigBean().getEnableMuraTag() />
 <cfset this.crumbdata=arrayNew(1)/>
 <cfset this.listFormat="dl">
@@ -107,13 +109,22 @@ to your own modified versions of Mura CMS.
 	<cfreturn this.jsLib />
 </cffunction>
 
-<cffunction name="setRenderHTMLHead" returntype="void" output="false">
-<cfargument name="renderHTMLHead">
-	<cfset this.renderHTMLHead=arguments.renderHTMLHead />
+<cffunction name="setRenderHTMLQueues" returntype="void" output="false">
+<cfargument name="renderHTMLQueues">
+	<cfset this.renderHTMLQueues=arguments.renderHTMLQueues />
 </cffunction>
 
-<cffunction name="getRenderHTMLHead" returntype="string" output="false">
-	<cfreturn this.renderHTMLHead />
+<cffunction name="getRenderHTMLQueues" returntype="string" output="false">
+	<cfreturn this.renderHTMLQueues and this.renderHTMLHead />
+</cffunction>
+
+<cffunction name="setRenderHTMLHead" returntype="void" output="false" hint="This is deprecated.">
+<cfargument name="renderHTMLHead">
+	<cfset this.renderHTMLQueues=arguments.renderHTMLQueues />
+</cffunction>
+
+<cffunction name="getRenderHTMLHead" returntype="string" output="false" hint="This is deprecated.">
+	<cfreturn this.renderHTMLQueues />
 </cffunction>
 
 <cffunction name="setShowAdminToolBar" returntype="void" output="false">
@@ -1708,7 +1719,7 @@ to your own modified versions of Mura CMS.
 	<cfset var displayPoolID=application.settingsmanager.getSite(event.getValue('siteID')).getDisplayPoolID()>
 	<cfset var theme=application.settingsmanager.getSite(event.getValue('siteID')).getTheme()>
 
-	<cfif getRenderHTMLHead()>
+	<cfif getRenderHTMLQueues()>
 		
 		<cfif arguments.queueType eq "HEAD">
 			<!--- ensure that the js lb is always there --->
@@ -1851,7 +1862,7 @@ to your own modified versions of Mura CMS.
 	<cfreturn headerStr>
 </cffunction>
 
-<cffunction name="renderHTMLHeadQueue" output="false">
+<cffunction name="renderHTMLHeadQueue" output="false" hint="deprecated">
 	<cfreturn renderHTMLQueue("Head")>
 </cffunction>
 

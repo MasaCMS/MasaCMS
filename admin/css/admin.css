@@ -1,6 +1,7 @@
 /* @override 
 	http://mura:8500/5.4/admin/css/admin.css?coreversion=1
 	http://mura:8500/5.4/admin/css/admin.css
+	http://www.getmura.com/admin/css/admin.css?coreversion=3923
 */
 
 /* This file is part of Mura CMS. 
@@ -73,6 +74,18 @@ body#popUp {
 	padding: 0;
 }
 /* @group Defaults */
+
+#clogin #container {
+	margin: 0 auto;
+	width: 100%;
+	max-width: 100%;
+	float: none;
+}
+#clogin #content {
+	width: 100%;
+	max-width: 100%;
+	padding: 0;
+}
 
 #login, #login form {
 	width: 300px;
@@ -2628,7 +2641,7 @@ table.cfdebug td a {
 	width: 60px;
 }*/
 
-.mura-grid .admin, td.administration {
+.mura-grid .admin {
 	width: 92px;
 	border-right: 0;
 }

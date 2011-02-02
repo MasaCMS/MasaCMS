@@ -63,7 +63,8 @@ to your own modified versions of Mura CMS.
 <cfset started=true>
 </cfoutput>
 <cfoutput>
-<cfif application.configBean.getSessionHistory() and not application.sessionTrackingThrottle>	
+<cfif application.configBean.getSessionHistory() >	
+<cfif not application.sessionTrackingThrottle>
 <div id="userActivity"<cfif started> class="separate"</cfif>>
 <h3>#application.rbFactory.getKeyValue(session.rb,"dashboard.useractivity")# <span><a href="index.cfm?fuseaction=cDashboard.sessionSearch&siteid=#URLEncodedFormat(attributes.siteid)#&newSearch=true">(#application.rbFactory.getKeyValue(session.rb,"dashboard.advancedsessionsearch")#)</a></span></h3>
 <span id="userActivityData"></span>
@@ -77,7 +78,13 @@ to your own modified versions of Mura CMS.
 </div>
 <script type="text/javascript">loadPopularContent('#attributes.siteid#');</script>
 <cfset started=true>
-
+<cfelse>
+<div id="userActivity"<cfif started> class="separate"</cfif>>
+<h3>#application.rbFactory.getKeyValue(session.rb,"dashboard.useractivity")#</h3>
+<p>#application.rbFactory.getKeyValue(session.rb,"dashboard.session.trackingthrottled")# </p>
+</div>
+<cfset started=true>
+</cfif>
 </cfif>
 
 <cfif application.contentManager.getRecentCommentsQuery(session.siteID,1,false).recordCount>

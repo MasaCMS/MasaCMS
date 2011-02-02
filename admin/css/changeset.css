@@ -1,130 +1,140 @@
-/* @override 
-	http://mura:8500/5.4/admin/css/changeset.css
-	http://demo54.getmura.com/admin/css/changeset.css
-*/
+/*May need to implement for style consistency*/
+/*#m-changesets * {
+	margin: 0;
+	padding: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}*/
 
 #m-changesets {
-	position: fixed;
-	z-index: 50;
-	bottom: 0px;
-	left: 0px;
-	min-height: 27px;
-	font-size: 11px;
-	padding: 22px 0 0;
-	width: 100%;
+	position: fixed !important;
+	z-index: 50 !important;
+	bottom: 0px !important;
+	left: 0px !important;
+	min-height: 27px !important;
+	font-size: 11px !important;
+	padding: 22px 0 0 !important;
+	width: 100% !important;
 	/*background-color: rgb(100,100,100);*/ /* fallback */
-	background: rgba(170,170,170,.95);
-	border-top: 1px solid rgba(255,255,255,.6);
+	background: rgba(170,170,170,.95) !important;
 }
 
 #m-changesets h1 {
-	font-size: 11px;
-	text-transform: uppercase;
-	font-weight: normal;
-	padding: 5px 5px 4px 10px;
-	margin: 0;
+	font-size: 11px !important;
+	text-transform: uppercase !important;
+	font-weight: normal !important;
+	padding: 5px 5px 4px 10px !important;
+	margin: 0 !important;
 	/*background-color: rgb(100,100,100);*/ /* fallback */
-	background: rgba(0, 0, 0, .35);
-	position: absolute;
-	top: 0px;
-	left: 0px;
-	width: 100%;
-	color: rgba(255,255,255,.8);
-	text-shadow: rgba(0,0,0,.8) 0px -1px 0px;
+	background: rgba(0, 0, 0, .35) !important;
+	position: absolute !important;
+	top: 0px !important;
+	left: 0px !important;
+	width: 100% !important;
+	color: rgba(255,255,255,.8) !important;
+	text-shadow: rgba(0,0,0,.8) 0px -1px 0px !important;
+	height: 13px !important;
 }
 
 #m-changesets #m-cs-utility {
-	position: absolute;
-	top: -2px;
-	right:10px;
-	list-style: none;
-	margin: 0;
+	position: absolute !important;
+	top: -2px !important;
+	right:10px !important;
+	list-style: none !important;
+	margin: 0 !important;
 }
 
 #m-changesets #m-cs-utility li {
-	float: left;
-	margin-left: 3px;
+	float: left !important;
+	margin-left: 3px !important;
 }
 
 #m-changesets #m-cs-utility li a {
-	color: #fff;
-	display: block;
-	text-align: center;
-	line-height: 12px;
-	font-size: 11px;
-	color: rgba(255,255,255,.95);
-	padding: 2px 8px;
-	margin: 5px 0;
-	border-radius: 8px;
-	-moz-border-radius: 8px;
+	color: #fff !important;
+	display: block !important;
+	text-align: center !important;
+	text-decoration: none !important;
+	line-height: 12px !important;
+	font-size: 11px !important;
+	color: rgba(255,255,255,.95) !important;
+	padding: 2px 8px !important;
+	margin: 5px 0 !important;
+	border-radius: 8px !important;
+	-moz-border-radius: 8px !important;
 	/*background-color: rgb(175,175,175);*/ /* fallback */
-	background: rgba(0,0,0,.3);
-	text-shadow: #000 0px -1px 0px;
-	-moz-text-shadow: #000 0px 1px 0px;
-	-webkit-box-shadow: rgba(255,255,255,.2) 0px 1px 0px;
-	-moz-box-shadow: rgba(255,255,255,.2) 0px 1px 0px;
-	box-shadow: rgba(255,255,255,.2) 0px 1px 0px;
+	background: rgba(0,0,0,.3) !important;
+	text-shadow: #000 0px -1px 0px !important;
+	-moz-text-shadow: #000 0px 1px 0px !important;
+	-webkit-box-shadow: rgba(255,255,255,.2) 0px 1px 0px !important;
+	-moz-box-shadow: rgba(255,255,255,.2) 0px 1px 0px !important;
+	box-shadow: rgba(255,255,255,.2) 0px 1px 0px !important;
 }
 
 #m-changesets #m-cs-utility li a:hover {
-	text-decoration: none;
-	background-color: rgb(0,0,0); /* fallback */
-	background: rgba(0,0,0,.8);
+	text-decoration: none !important;
+	background-color: rgb(0,0,0) !important; /* fallback */
+	background: rgba(0,0,0,.8) !important;
+	text-decoration: none !important;
 }
 
 #m-changesets li#m-cs-close a:hover {
-	text-decoration: none;
-	background: #333;
+	text-decoration: none !important;
+	background: #333 !important;
 }
 
 #m-changesets dl {
-	float: left;
-	clear: none;
-	margin: 0;
-	padding: 8px 1% 8px 1.5%;
-	width: 22.5%;
-	position: relative;
+	float: left !important;
+	clear: none !important;
+	margin: 0 !important;
+	padding: 8px 1% 8px 1.5% !important;
+	width: 22.5% !important;
+	position: relative !important;
 	overflow: hidden !important;
-	background: url(../images/cs-vert-rule.png) repeat-y left top;
+	background: url(../images/cs-vert-rule.png) repeat-y left top !important;
 }
 
 #m-changesets dl#m-cs-changeset {
-	border-left: 0;
-	background: none;
+	border-left: 0 !important;
+	background: none !important;
 }
 
 #m-changesets dl#m-cs-dependencies {
-	border-right: 0;
+	border-right: 0 !important;
 }
 
 #m-changesets dt {
-	color: rgba(0,0,0,.95);
-	text-shadow: rgba(255,255,255,.3) 0px 1px 0px;
-	font-size: 12px;
-	margin: 0 0 4px;
+	color: rgba(0,0,0,.95) !important;
+	text-shadow: rgba(255,255,255,.3) 0px 1px 0px !important;
+	font-size: 12px !important;
+	margin: 0 0 4px !important;
+	border: 0 !important;
+	padding: 0 !important;
 }
 
 #m-changesets dd {
-	margin: 0;
-	color: rgba(0,0,0,.95);
-	font-size: 11px;
+	margin: 0 !important;
+	color: rgba(0,0,0,.95) !important;
+	font-size: 11px !important;
+	border: 0 !important;
+	padding: 0 !important;
 }
 
 #m-changesets #m-cs-status dd/*, #m-changesets #m-cs-dependencies dd*/ {
-	padding: 6px 0 6px 32px;
-	line-height: 1.2;
+	padding: 6px 0 6px 32px !important;
+	line-height: 1.2 !important;
 }
 
 #m-cs-status #m-cs-included {
-	background: url(../images/icons/cs-status-included.png) no-repeat left center;
+	background: url(../images/icons/cs-status-included.png) no-repeat left center !important;
 }
 
 #m-cs-status #m-cs-other {
-	background: url(../images/icons/cs-status-other.png) no-repeat;
+	background: url(../images/icons/cs-status-other.png) no-repeat !important;
 }
 
 #m-changesets #m-cs-status #m-cs-none {
-	padding-left: 0;
+	padding-left: 0 !important;
 }
 
 #m-changesets #m-cs-dependencies dd {
@@ -133,5 +143,5 @@
 
 
 #m-changesets select {
-	width: 99%;
+	width: 99% !important;
 }
