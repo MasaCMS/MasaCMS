@@ -61,17 +61,17 @@ to your own modified versions of Mura CMS.
                 <cfoutput query="request.rsgroups"> 
                   <tr> 
                     <td class="varWidth"> 
-                      <a title="Edit" href="index.cfm?fuseaction=cPrivateUsers.editgroup&userid=#UserID#&siteid=#URLEncodedFormat(attributes.siteid)#">#HTMLEditFormat(groupname)#</a>  (<cfif isNumeric(counter)>#counter#<cfelse>0</cfif>) 
+                      <a title="Edit" href="index.cfm?fuseaction=cPrivateUsers.editgroup&userid=#request.rsgroups.userID#&siteid=#URLEncodedFormat(attributes.siteid)#">#HTMLEditFormat(request.rsgroups.groupname)#</a>  (<cfif isNumeric(request.rsgroups.counter)>#request.rsgroups.counter#<cfelse>0</cfif>) 
                  </td>
                     <td> 
-                      <cfif email gt "" and not request.rsgroups.perm>
-                        <a href="mailto:#email#">#HTMLEditFormat(email)#</a>
+                      <cfif request.rsgroups.email gt "" and not request.rsgroups.perm>
+                        <a href="mailto:#request.rsgroups.email#">#HTMLEditFormat(request.rsgroups.email)#</a>
                         <cfelse>&nbsp;</cfif> 
                   </td>
                     <td><cfif not request.rsgroups.perm>
                   #LSDateFormat(request.rsgroups.lastupdate,session.dateKeyFormat)# #LSTimeFormat(request.rsgroups.lastupdate,"short")# <cfelse>&nbsp;</cfif></td>
-                  <td><cfif not request.rsgroups.perm>#HTMLEditFormat(LastUpdateBy)#<cfelse>&nbsp;</cfif></td>
-                    <td class="administration"><ul class="users"><li class="edit"><a title="#application.rbFactory.getKeyValue(session.rb,'user.edit')#" href="index.cfm?fuseaction=cPrivateUsers.editgroup&userid=#UserID#&siteid=#URLEncodedFormat(attributes.siteid)#">#application.rbFactory.getKeyValue(session.rb,'user.edit')#</a></li><cfif not request.rsgroups.perm><li class="delete"><a title="#application.rbFactory.getKeyValue(session.rb,'user.delete')#" href="index.cfm?fuseaction=cPrivateUsers.update&action=delete&userid=#UserID#&type=1&siteid=#URLEncodedFormat(attributes.siteid)#" onclick="return confirmDialog('#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'user.deletegroupconfirm'))#',this.href)">#application.rbFactory.getKeyValue(session.rb,'user.delete')#</a></li><cfelse><li class="deleteOff">#application.rbFactory.getKeyValue(session.rb,'user.delete')#</li></cfif></ul>
+                  <td><cfif not request.rsgroups.perm>#HTMLEditFormat(request.rsgroups.LastUpdateBy)#<cfelse>&nbsp;</cfif></td>
+                    <td class="administration"><ul class="users"><li class="edit"><a title="#application.rbFactory.getKeyValue(session.rb,'user.edit')#" href="index.cfm?fuseaction=cPrivateUsers.editgroup&userid=#request.rsgroups.UserID#&siteid=#URLEncodedFormat(attributes.siteid)#">#application.rbFactory.getKeyValue(session.rb,'user.edit')#</a></li><cfif not request.rsgroups.perm><li class="delete"><a title="#application.rbFactory.getKeyValue(session.rb,'user.delete')#" href="index.cfm?fuseaction=cPrivateUsers.update&action=delete&userid=#request.rsgroups.UserID#&type=1&siteid=#URLEncodedFormat(attributes.siteid)#" onclick="return confirmDialog('#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'user.deletegroupconfirm'))#',this.href)">#application.rbFactory.getKeyValue(session.rb,'user.delete')#</a></li><cfelse><li class="deleteOff">#application.rbFactory.getKeyValue(session.rb,'user.delete')#</li></cfif></ul>
                   </td>
                 </tr>
                 </cfoutput> 

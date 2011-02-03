@@ -57,7 +57,7 @@ to your own modified versions of Mura CMS.
 <tr>
 <td class="add">
  <a href="javascript:;" onmouseover="showMenu('newContentMenu',this,'#rslist.categoryid#','#attributes.siteid#');">&nbsp;</a></td>
-<td class="varWidth"><ul <cfif rslist.hasKids>class="nest#variables.nestlevel#on"<cfelse>class="nest#variables.nestlevel#off"</cfif>><li class="Category#iif(rslist.restrictGroups neq '',de('Locked'),de(''))#"><a title="Edit" href="index.cfm?fuseaction=cCategory.edit&categoryID=#rslist.categoryID#&parentID=#rslist.parentID#&siteid=#URLEncodedFormat(attributes.siteid)#">#name#</a></li></ul></td>
+<td class="varWidth"><ul <cfif rslist.hasKids>class="nest#variables.nestlevel#on"<cfelse>class="nest#variables.nestlevel#off"</cfif>><li class="Category#iif(rslist.restrictGroups neq '',de('Locked'),de(''))#"><a title="Edit" href="index.cfm?fuseaction=cCategory.edit&categoryID=#rslist.categoryID#&parentID=#rslist.parentID#&siteid=#URLEncodedFormat(attributes.siteid)#">#rslist.name#</a></li></ul></td>
 <td>#application.rbFactory.getKeyValue(session.rb,'categorymanager.#yesnoformat(isOpen)#')#</td>
 <td>#application.rbFactory.getKeyValue(session.rb,'categorymanager.#yesnoformat(isInterestGroup)#')#</td>
 <td>#application.rbFactory.getKeyValue(session.rb,'categorymanager.#yesnoformat(isActive)#')#</td>
