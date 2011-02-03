@@ -156,7 +156,7 @@ to your own modified versions of Mura CMS.
 					<cfif isDefined("rssite.domain") 
 						and len(rssite.domain) 
 						and rssite.domain neq application.settingsManager.getSite(arguments.toSiteID).getDomain()>
-						<cfset application.contentUtility.findAndReplace(rssite.domain,application.settingsManager.getSite(arguments.toSiteID).getDomain() , arguments.toSiteID)>
+						<cfset application.contentUtility.findAndReplace("//#rssite.domain#","//#application.settingsManager.getSite(arguments.toSiteID).getDomain()#" , arguments.toSiteID)>
 					</cfif>
 					
 					<cfif rssite.siteID neq arguments.toSiteID>
