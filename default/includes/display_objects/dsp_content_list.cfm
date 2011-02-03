@@ -135,7 +135,7 @@
 					</cfloop>
 				</dd>
 			</cfif>
-			<cfif arguments.hasRatings and (arguments.item.getValue('type') eq 'Page' or arguments.showItem.itemMeta(arguments.item.getValue('type')) or (len(arguments.item.getValue('fileID')) and arguments.showItem.itemMeta(arguments.item.getValue('fileEXT'))))>
+			<cfif arguments.hasRatings and (arguments.item.getValue('type') eq 'Page' or showItemMeta(arguments.item.getValue('type')) or (len(arguments.item.getValue('fileID')) and showItemMeta(arguments.item.getValue('fileEXT'))))>
 			 	<dd class="rating #application.raterManager.getStarText(arguments.item.getValue('rating'))#">#variables.rbFactory.getKey('list.rating')#: <span><cfif isNumeric(arguments.item.getValue('rating'))>#arguments.item.getValue('rating')# star<cfif arguments.item.getValue('rating') gt 1>s</cfif> <cfelse>Zero stars</cfif></span></dd>	 	
 			</cfif>
 		</dl>

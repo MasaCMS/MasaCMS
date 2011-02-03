@@ -35,8 +35,8 @@
 				  [siteID] 			[nvarchar](25) 	NULL		DEFAULT NULL,
 				  [name] 			[nvarchar](100) NULL		DEFAULT NULL,
 				  [description] 	<cfoutput>#MSSQLlob#</cfoutput>,
-				  [created] 		[datetime] 		NOT NULL	DEFAULT (GetDate()),
-				  [publishDate] 	[datetime] 		NOT NULL	DEFAULT (GetDate()),
+				  [created] 		[datetime] 		NOT NULL	DEFAULT NULL,
+				  [publishDate] 	[datetime] 		NULL		DEFAULT NULL,
 				  [published] 		[tinyint] 		NULL		DEFAULT NULL,
 				  [lastUpdate] 		[datetime] 		NULL		DEFAULT NULL,
 				  [lastUpdateBy] 	[nvarchar](50) 	NULL		DEFAULT NULL,
@@ -47,7 +47,7 @@
 			) on [PRIMARY]
 			</cfquery>
 			
-			<!---
+			
 			<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 			ALTER TABLE [dbo].[tchangesets] 
 			WITH NOCHECK 
@@ -79,19 +79,18 @@
 				PRIMARY KEY CLUSTERED ([remoteID]) 
 				ON [PRIMARY] 
 			</cfquery>
-			--->
-
+			
 			<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 				ALTER TABLE tcontent ADD changesetID [char](35) default NULL
 			</cfquery>
 			
-			<!---<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+			<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 			ALTER TABLE [dbo].[tcontent] 
 			WITH NOCHECK 
 				ADD CONSTRAINT [IX_tcontent_changesetID] 
 				PRIMARY KEY CLUSTERED ([changesetID]) 
 				ON [PRIMARY] 
-			</cfquery>--->
+			</cfquery>
 		</cftransaction>
 		</cfif>
 	
@@ -443,4 +442,46 @@ select urltitle from tcontentcategories  where 0=1
 	</cfquery>
 </cfcase>
 </cfswitch>
+</cfif>
+
+<cfif getDbType() eq "MSSQL">
+	<cfquery name="rscheck" datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+		select * from information_schema.columns
+		where table_name = 'tchangesets'
+		and column_name = 'publishDate'
+		and is_nullable = 'No'
+	</cfquery>
+	
+	<cfif rscheck.recordcount>
+		<cftry>
+			<cftransaction>
+			<!--- remove not null constrain  --->
+			<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+			ALTER TABLE [dbo].[tchangesets]
+			ALTER COLUMN [publishDate] [datetime] NULL 
+			</cfquery>
+			
+			<!--- Unbind previous default value --->
+			<cfquery name="rscheck" datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+			SELECT name 
+			FROM sysobjects so JOIN sysconstraints sc
+			ON so.id = sc.constid 
+			WHERE object_name(so.parent_obj) = 'tchangesets' 
+			AND so.xtype = 'D'
+			AND sc.colid = 
+			 (SELECT colid FROM syscolumns 
+			 WHERE id = object_id('dbo.tchangesets') AND 
+			 name = 'publishDate')
+			</cfquery>
+			
+			<cfif rscheck.recordcount>
+				<cfquery name="rscheck" datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+				ALTER TABLE [dbo].[tchangesets] DROP CONSTRAINT #rscheck.name#
+				</cfquery>
+			</cfif>
+			
+			</cftransaction>
+		<cfcatch></cfcatch>
+		</cftry>
+	</cfif>
 </cfif>
