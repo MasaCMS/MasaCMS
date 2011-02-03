@@ -35,7 +35,7 @@
 				  [siteID] 			[nvarchar](25) 	NULL		DEFAULT NULL,
 				  [name] 			[nvarchar](100) NULL		DEFAULT NULL,
 				  [description] 	<cfoutput>#MSSQLlob#</cfoutput>,
-				  [created] 		[datetime] 		NOT NULL	DEFAULT NULL,
+				  [created] 		[datetime] 		NULL		DEFAULT NULL,
 				  [publishDate] 	[datetime] 		NULL		DEFAULT NULL,
 				  [published] 		[tinyint] 		NULL		DEFAULT NULL,
 				  [lastUpdate] 		[datetime] 		NULL		DEFAULT NULL,
