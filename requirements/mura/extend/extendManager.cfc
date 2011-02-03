@@ -259,7 +259,7 @@ ExtendSetID in(<cfloop from="1" to="#setLen#" index="s">
 	<cfset remoteID=left(arguments.data.remoteID,35)>
 </cfif>
 
-<cfif isdefined("arguments.data.moduleID")>
+<cfif not isdefined("arguments.data.moduleID")>
 	<cfset arguments.data.moduleID="00000000000000000000000000000000004">
 </cfif>
 <!--- process non-file attributes --->
