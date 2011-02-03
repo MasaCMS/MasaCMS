@@ -13,8 +13,8 @@ CKEDITOR.editorConfig = function( config )
     
 	//config.uiColor = '#AADC6E';
 	<cfoutput>
-	CKEditorBasePath='#application.configBean.getContent()#/tasks/widgets';
-	CKFinderBasePath='#application.configBean.getContent()#/tasks/widgets';
+	CKEditorBasePath='#application.configBean.getContext()#/tasks/widgets';
+	CKFinderBasePath='#application.configBean.getContext()#/tasks/widgets';
 	</cfoutput>
 	
 	config.skin = 'mura';

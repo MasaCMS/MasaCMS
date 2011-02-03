@@ -49,35 +49,23 @@
 			
 			
 			<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
-			ALTER TABLE [dbo].[tchangesets] 
-			WITH NOCHECK 
-				ADD	CONSTRAINT [PK_tchangesets_changesetID] 
-				PRIMARY KEY CLUSTERED ([changesetID])
-				ON [PRIMARY] 
+				ALTER TABLE [dbo].[tchangesets] 
+				WITH NOCHECK 
+					ADD	CONSTRAINT [PK_tchangesets_changesetID] 
+					PRIMARY KEY CLUSTERED ([changesetID])
+					ON [PRIMARY] 
 			</cfquery>
 			
 			<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
-			ALTER TABLE [dbo].[tchangesets] 
-			WITH NOCHECK 
-				ADD CONSTRAINT [IX_changsets_siteID] 
-				PRIMARY KEY CLUSTERED ([siteID]) 
-				ON [PRIMARY] 
+				CREATE INDEX [IX_tchangesets_siteid] ON [dbo].[tchangesets]([siteid]) ON [PRIMARY]
 			</cfquery>
 			
 			<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
-			ALTER TABLE [dbo].[tchangesets] 
-			WITH NOCHECK 
-				ADD CONSTRAINT [IX_changsets_publishDate] 
-				PRIMARY KEY CLUSTERED ([publishDate]) 
-				ON [PRIMARY] 
+				CREATE INDEX [IX_tchangesets_publishDate] ON [dbo].[tchangesets]([publishDate]) ON [PRIMARY]
 			</cfquery>
 			
 			<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
-			ALTER TABLE [dbo].[tchangesets] 
-			WITH NOCHECK 
-				ADD CONSTRAINT [IX_changsets_remoteID] 
-				PRIMARY KEY CLUSTERED ([remoteID]) 
-				ON [PRIMARY] 
+				CREATE INDEX [IX_tchangesets_remoteid] ON [dbo].[tchangesets]([remoteid]) ON [PRIMARY]
 			</cfquery>
 			
 			<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
@@ -85,11 +73,7 @@
 			</cfquery>
 			
 			<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
-			ALTER TABLE [dbo].[tcontent] 
-			WITH NOCHECK 
-				ADD CONSTRAINT [IX_tcontent_changesetID] 
-				PRIMARY KEY CLUSTERED ([changesetID]) 
-				ON [PRIMARY] 
+				CREATE INDEX [IX_tcontent_changesetID] ON [dbo].[tcontent]([changesetID]) ON [PRIMARY]
 			</cfquery>
 		</cftransaction>
 		</cfif>
