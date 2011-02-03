@@ -48,7 +48,7 @@ to your own modified versions of Mura CMS.
 <h2>Site Settings</h2>
 <cfoutput>
 <cfif len(attributes.siteid)>
-<ul id="navTask"
+<ul id="navTask">
 <li><a href="index.cfm?fuseaction=cExtend.listSubTypes&siteid=#URLEncodedFormat(attributes.siteid)#">Class Extension Manager</a></li>
 <li><a href="index.cfm?fuseaction=cTrash.list&siteID=#URLEncodedFormat(attributes.siteid)#">Trash Bin</a></li>
 <cfif attributes.action eq "updateFiles">

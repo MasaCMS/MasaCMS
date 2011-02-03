@@ -906,7 +906,6 @@ to your own modified versions of Mura CMS.
 					or fileID in
 					(
 						select photoFileID from tusers where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/> 
-						where photoFileID is not null
 					)
 					</cfif>
 				)
@@ -916,7 +915,7 @@ to your own modified versions of Mura CMS.
 					and (deleted is null or deleted != 1)
 				</cfif>
 				<cfif isDate(arguments.sinceDate)>
-				and created >= #createODBDateTime(arguments.sinceDate)#
+				and created >= #createODBCDateTime(arguments.sinceDate)#
 				</cfif>
 			</cfquery>
 			
@@ -940,7 +939,7 @@ to your own modified versions of Mura CMS.
 			<cfquery datasource="#arguments.dsn#" name="rstcontentcomments">
 				select * from tcontentcomments where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
 				<cfif isDate(arguments.sinceDate)>
-				and entered >= #createODBDateTime(arguments.sinceDate)#
+				and entered >= #createODBCDateTime(arguments.sinceDate)#
 				</cfif>
 				<cfif not arguments.includeTrash>
 				and contentID in (select distinct contentID from tcontent)
@@ -952,7 +951,7 @@ to your own modified versions of Mura CMS.
 			<cfquery datasource="#arguments.dsn#" name="rstcontentratings">
 				select * from tcontentratings where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
 				<cfif isDate(arguments.sinceDate)>
-				and entered >= #createODBDateTime(arguments.sinceDate)#
+				and entered >= #createODBCDateTime(arguments.sinceDate)#
 				</cfif>
 				<cfif not arguments.includeTrash>
 				and contentID in (select distinct contentID from tcontent)
