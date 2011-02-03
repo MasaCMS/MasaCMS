@@ -135,7 +135,11 @@
 	</cfquery>
 	
 	<!--- FILES --->
-	<cfset getBean('fileManager').purgeDeleted()>
+	<cfif isdefined("arguments.siteID") and len(arguments.siteID)>
+		<cfset getBean('fileManager').purgeDeleted(arguments.siteID)>
+	<cfelse>
+		<cfset getBean('fileManager').purgeDeleted("")>
+	</cfif>
 	
 	<!--- EMPTY TRASH TABLE--->
 	<cfquery datasource="#variables.configBean.getDatasource()#" password="#variables.configBean.getDbPassword()#" username="#variables.configBean.getDbUsername()#">

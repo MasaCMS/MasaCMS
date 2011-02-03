@@ -255,11 +255,15 @@ to your own modified versions of Mura CMS.
 </cffunction>
 
 <cffunction name="purgeDeleted" output="false">
+<cfargument name="siteid" default="">
 <cfset var rs="">
 	
 <cflock type="exclusive" name="purgingDeletedFile" timeout="1000">
 	<cfquery name="rs" datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	select fileID from tfiles where deleted=1 
+	<cfif len(arguments.siteID)>
+	and siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#">
+	</cfif>
 	</cfquery>
 	
 	<cfloop query="rs">
@@ -267,7 +271,10 @@ to your own modified versions of Mura CMS.
 	</cfloop>
 	
 	<cfquery name="rs" datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-	delete from tfiles where deleted=1 
+	delete from tfiles where deleted=1
+	<cfif len(arguments.siteID)>
+	and siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#">
+	</cfif> 
 	</cfquery>
 </cflock>
 

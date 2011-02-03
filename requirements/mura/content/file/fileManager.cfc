@@ -462,7 +462,8 @@ to your own modified versions of Mura CMS.
 </cffunction>
 
 <cffunction name="purgeDeleted" output="false">
-	<cfset variables.fileDAO.purgeDeleted()>
+	<cfargument name="siteid" default="">
+	<cfset variables.fileDAO.purgeDeleted(arguments.siteID)>
 </cffunction>
 
 <cffunction name="restoreVersion" output="false">
