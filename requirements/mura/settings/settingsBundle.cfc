@@ -154,6 +154,7 @@ to your own modified versions of Mura CMS.
 		<cfset var rstplugins = "" />
 		<cfset var rsInActivefiles = "" />
 		<cfset var deleteList =	"" />
+		<cfset var rstfiles=getValue("rstfiles")>
 		<!---<cfset var moduleIDSQLlist="" />--->
 		<cfset var i="" />
 		
@@ -179,25 +180,7 @@ to your own modified versions of Mura CMS.
 					moduleid in ('00000000000000000000000000000000000'<cfif len(arguments.moduleID)>,<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.moduleID#" list="true"></cfif><cfif arguments.includeUsers>,'00000000000000000000000000000000008'</cfif>)
 							
 					<cfif not arguments.includeVersionHistory>
-						or 
-						(fileID not in
-							(
-								select fileID from tcontent where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/> 
-								and fileID is not null
-								and (active = 1 or (changesetID is not null and approved=0))
-							)
-							
-						and fileID not in
-							(
-								select attributeValue from tclassextenddata
-								inner join tclassextendattributes on (tclassextenddata.attributeID=tclassextendattributes.attributeID)
-								inner join tcontent on (tclassextenddata.baseID=tcontent.contenthistID)
-								where tcontent.siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/> 
-								and lower(tclassextendattributes.type)='File'
-								and tclassextenddata.stringvalue !=''
-								and (tcontent.active = 1 or (tcontent.changesetID is not null and tcontent.approved=0))
-							)
-						)
+						or fileID not in (<cfqueryparam cfsqltype="cf_sql_varchar" value="#valueList(rstfiles.fileID)#" list="true">)				
 					</cfif>
 							
 					<cfif not arguments.includeTrash>
@@ -482,8 +465,6 @@ to your own modified versions of Mura CMS.
 		<cfif not directoryExists(variables.backupDir)>
 			<cfdirectory action="create" directory="#variables.backupDir#">
 		</cfif>
-
-		<cfset BundleFiles( argumentCollection=sArgs ) />
 	
 		<cfif len(arguments.siteID)>	
 			<cfquery datasource="#arguments.dsn#" name="rstcontent">
@@ -887,12 +868,49 @@ to your own modified versions of Mura CMS.
 				select * from tfiles where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
 				and moduleid in ('00000000000000000000000000000000000'<cfif len(arguments.moduleID)>,<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.moduleID#" list="true"></cfif><cfif arguments.includeUsers>,'00000000000000000000000000000000008'</cfif>)
 				<cfif not arguments.includeVersionHistory>
-				and fileID in
+				and 
 				(
-					select fileID from tcontent where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/> 
-					and fileID is not null
-					and (active = 1 or (changesetID is not null and approved=0))
+					<!--- Get files attached to active content --->
+					fileID in
+					(
+						select fileID from tcontent where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/> 
+						and fileID is not null
+						and (active = 1 or (changesetID is not null and approved=0))
+					)
+					
+					<!--- Get files attached to active content extended attributes --->
+					or fileID in 
+					(
+						select tclassextenddata.stringvalue from tclassextenddata
+						inner join tcontent on (tclassextenddata.baseID=tcontent.contenthistid)
+						inner join tclassextendattributes on (tclassextenddata.attributeid=tclassextendattributes.attributeid)
+						where tclassextenddata.siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/> 
+						and tcontent.siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/> 
+						and (tcontent.active = 1 or (tcontent.changesetID is not null and tcontent.approved=0))
+						and tclassextendattributes.type='File'
+					)
+					
+					or fileID in 
+					(
+						select tclassextenddata.stringvalue from tclassextenddata
+						inner join tclassextendattributes on (tclassextenddata.attributeid=tclassextendattributes.attributeid)
+						inner join tclassextendsets on (tclassextendattributes.extendsetid=tclassextendsets.extendsetid)
+						inner join tclassextend on (tclassextendsets.subtypeid=tclassextend.subtypeid)
+						where tclassextenddata.siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/> 
+						and tclassextendattributes.type='File'
+						and tclassextend.type='Custom'
+					)
+					
+					<cfif arguments.includeUsers>
+					<!--- Get files attached to tusers --->
+					or fileID in
+					(
+						select photoFileID from tusers where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/> 
+						where photoFileID is not null
+					)
+					</cfif>
 				)
+				
 				</cfif>
 				<cfif not arguments.includeTrash>
 					and (deleted is null or deleted != 1)
@@ -901,7 +919,7 @@ to your own modified versions of Mura CMS.
 				and created >= #createODBDateTime(arguments.sinceDate)#
 				</cfif>
 			</cfquery>
-	
+			
 			<cfset setValue("rstfiles",rstfiles)>
 			
 			<cfset setValue("hasmetadata",arguments.includeMetaData)>
@@ -1154,6 +1172,8 @@ to your own modified versions of Mura CMS.
 		
 		<cfset setValue("sincedate",arguments.sincedate)>
 		<cfset setValue("bundledate",now())>
+		
+		<cfset BundleFiles( argumentCollection=sArgs ) />
 			
 		<cfset variables.zipTool.AddFiles(zipFilePath="#variables.workDir##variables.dirName#.zip",directory=#variables.backupDir#)>
 
@@ -1213,6 +1233,7 @@ to your own modified versions of Mura CMS.
 		<cfargument name="name" type="string" required="true">
 		<cfargument name="value" type="any" required="true">
 		<cfset var temp="">
+		<cfset variables.data["#name#"]=arguments.value>
 		<cfwddx action="cfml2wddx" input="#arguments.value#" output="temp">
 		<cffile action="write" output="#temp#" file="#variables.backupDir#wddx_#arguments.name#.xml">
 	</cffunction>

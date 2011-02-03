@@ -1536,7 +1536,6 @@ to your own modified versions of Mura CMS.
 	<cfset fileItem.contentID=""/>
 	<cfset fileItem.approved=arguments.data.approved/>
 	
-	
 	<cfif structKeyExists(arguments.data,'qqfile')>
 		<cftry>
 		
@@ -1552,7 +1551,7 @@ to your own modified versions of Mura CMS.
 		
 		<cfset theFileStruct=variables.fileManager.process(tempFile,arguments.data.siteid) />
 		<cfset fileItem.title=tempFile.serverfile/>	
-		<cfset fileItem.fileid=variables.fileManager.create(theFileStruct.fileObj, '', arguments.data.siteid, tempFile.ClientFile, tempFile.ContentType, tempFile.ContentSubType, tempFile.FileSize, "0000000000000000000000000000000000", tempFile.ServerFileExt, theFileStruct.fileObjSmall, theFileStruct.fileObjMedium) />
+		<cfset fileItem.fileid=variables.fileManager.create(theFileStruct.fileObj, '', arguments.data.siteid, tempFile.ClientFile, tempFile.ContentType, tempFile.ContentSubType, tempFile.FileSize, "00000000000000000000000000000000000", tempFile.ServerFileExt, theFileStruct.fileObjSmall, theFileStruct.fileObjMedium) />
 		
 		<cfset fileBean=add(structCopy(fileItem)) />
 		<cfquery datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
@@ -1574,7 +1573,7 @@ to your own modified versions of Mura CMS.
 		<cffile action="upload" result="tempFile" filefield="NewFile#f#" nameconflict="makeunique" destination="#variables.configBean.getTempDir()#">
 		<cfset theFileStruct=variables.fileManager.process(tempFile,arguments.data.siteid) />		
 		<cfset fileItem.title=tempFile.serverfile/>
-		<cfset fileItem.fileid=variables.fileManager.create(theFileStruct.fileObj, '', arguments.data.siteid, tempFile.ClientFile, tempFile.ContentType, tempFile.ContentSubType, tempFile.FileSize, "0000000000000000000000000000000000", tempFile.ServerFileExt, theFileStruct.fileObjSmall, theFileStruct.fileObjMedium) />
+		<cfset fileItem.fileid=variables.fileManager.create(theFileStruct.fileObj, '', arguments.data.siteid, tempFile.ClientFile, tempFile.ContentType, tempFile.ContentSubType, tempFile.FileSize, "00000000000000000000000000000000000", tempFile.ServerFileExt, theFileStruct.fileObjSmall, theFileStruct.fileObjMedium) />
 		<cfset fileBean=add(structCopy(fileItem)) />
 		<cfquery datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 			 update tfiles set contentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#fileBean.getContentID()#"> 

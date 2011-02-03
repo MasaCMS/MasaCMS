@@ -251,11 +251,16 @@ ExtendSetID in(<cfloop from="1" to="#setLen#" index="s">
 <cfset var tempDate=""/>
 <cfset var tempFile=""/>
 <cfset var remoteID=""/>
+
 <cfif isDefined("arguments.data.extendSetID") and len(arguments.data.extendSetID)>
 <cfset setLen=listLen(arguments.data.extendSetID)/>
 
 <cfif isdefined("arguments.data.remoteID")>
 	<cfset remoteID=left(arguments.data.remoteID,35)>
+</cfif>
+
+<cfif isdefined("arguments.data.moduleID")>
+	<cfset arguments.data.moduleID="00000000000000000000000000000000004">
 </cfif>
 <!--- process non-file attributes --->
 <cfquery name="rs" datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
@@ -409,7 +414,7 @@ ExtendSetID in(<cfloop from="1" to="#setLen#" index="s">
 			</cfif>
 		
 			<cfset theFileStruct=fileManager.process(tempFile,arguments.data.siteID) />
-			<cfset fileID=fileManager.create(theFileStruct.fileObj,arguments.baseID,arguments.data.siteID,tempFile.ClientFile,tempFile.ContentType,tempFile.ContentSubType,tempFile.FileSize,'00000000000000000000000000000000004',tempFile.ServerFileExt,theFileStruct.fileObjSmall,theFileStruct.fileObjMedium) />
+			<cfset fileID=fileManager.create(theFileStruct.fileObj,arguments.baseID,arguments.data.siteID,tempFile.ClientFile,tempFile.ContentType,tempFile.ContentSubType,tempFile.FileSize,arguments.data.moduleID,tempFile.ServerFileExt,theFileStruct.fileObjSmall,theFileStruct.fileObjMedium) />
 		<cfelse>
 			<cfset fileID=arguments.data[formField]>
 		</cfif>	

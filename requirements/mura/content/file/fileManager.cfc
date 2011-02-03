@@ -475,7 +475,7 @@ to your own modified versions of Mura CMS.
 <cfset var rsDB="">
 <cfset var rsDIR="">
 <cfset var rsCheck="">
-<cfset var filePath="#application.configBean.getFileDir()#/#arguments.siteID#/file/">
+<cfset var filePath="#application.configBean.getFileDir()#/#arguments.siteID#/cache/file/">
 
 <cfquery name="rsDB" datasource="#variables.configBean.getDatasource()#" password="#variables.configBean.getDbPassword()#" username="#variables.configBean.getDbUsername()#">
 select fileID from tfiles where siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#">
