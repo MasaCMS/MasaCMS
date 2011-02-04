@@ -191,7 +191,7 @@ if (not isdefined('application.CKFinderResources')){
 		temp = structNew();
 		temp.name = '#rsSites.siteID[i]#: User Assets';
 		temp.url =  application.configBean.getAssetPath() & '/' & rsSites.siteID[i] & '/assets';
-		temp.directory ="#application.configBean.getAssetDir()##application.configBean.getFileDelim()##session.siteid##application.configBean.getFileDelim()#assets";
+		temp.directory ="#application.configBean.getAssetDir()##application.configBean.getFileDelim()##rsSites.siteID[i]##application.configBean.getFileDelim()#assets";
 		temp.maxSize = 0;
 		temp.allowedExtensions = '7z,aiff,asf,avi,bmp,csv,doc,docx,fla,flv,gif,gz,gzip,jpeg,jpg,mid,mov,mp3,mp4,mpc,mpeg,mpg,ods,odt,pdf,png,ppt,pptx,pxd,qt,ram,rar,rm,rmi,rmvb,rtf,sdc,sitd,swf,sxc,sxw,tar,tgz,tif,tiff,txt,vsd,wav,wma,wmv,xls,xlsx,zip';
 		temp.deniedExtensions = '';
