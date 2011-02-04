@@ -40,7 +40,7 @@
 
 		<cfswitch expression="#arguments.theaction#">
 			<cfcase value="login">
-				<cfif fileExists(expandPath("#application.configBean.getWebRootMap()#/#event.getValue('siteid')#/includes/loginHandler.cfc"))>
+				<cfif fileExists(expandPath("/#application.configBean.getWebRootMap()#/#event.getValue('siteid')#/includes/loginHandler.cfc"))>
 					<cfset createObject("component","#application.configBean.getWebRootMap()#.#event.getValue('siteid')#.includes.loginHandler").init().handleLogin(event.getAllValues())>
 				<cfelse>
 					<cfset application.loginManager.login(event.getAllValues(),'') />
