@@ -26,7 +26,11 @@
 	<cfparam name="arguments.rc.action" default="" />
 	<cfparam name="arguments.rc.siteid" default="" />
 	<cfparam name="arguments.rc.siteSortBy" default="site" />
-	
+
+	<cfif isdefined("arguments.rc.ckUpdate")>
+		<cfset rc.sitesUpdated = updateSiteFilesToLatestVersion(rc) />
+	</cfif>
+
 	<cfif isdefined("arguments.rc.refresh")>
 		<cfset variables.fw.redirect(action="cSettings.list",append="activeTab",path="")>
 	</cfif>
@@ -166,4 +170,54 @@
 	<cfargument name="rc">
 	<cfset arguments.rc.rsplugins=application.serviceFactory.getBean("pluginManager").getSitePlugins(arguments.rc.siteID) />
 </cffunction>
+
+	<cffunction name="updateSiteFilesToLatestVersion" access="private" output="false" returntype="string">
+		<cfargument name="rc" required="true" type="struct" />
+		<cfscript>
+			var local = StructNew();
+			local.str = '';
+			if ( not StructKeyExists(rc, 'ckUpdate') ) {
+				return local.str;
+			};
+		</cfscript>
+		<cfsavecontent variable="local.str">
+			<cfoutput>
+				<cfloop list="#rc.ckUpdate#" index="local.i" delimiters=",">
+					<cftry>
+						<cfscript>
+							local.updated = application.autoUpdater.update(local.i);
+							local.files = local.updated.files;
+						</cfscript>
+						<div class="success">
+							<dl>
+								<dt>#local.i#</dt>
+								<dd>Updated to version #application.autoUpdater.getCurrentCompleteVersion(local.i)#</dd>
+								<dd>Updated Files (#ArrayLen(local.files)#)</dd>
+								<!---<cfif ArrayLen(local.files)>
+									<dd>
+										<cfloop from="1" to="#ArrayLen(local.files)#" index="local.f"> 
+											#local.files[local.f]#<br />
+										</cfloop>
+									</dd>
+								</cfif>--->					
+							</dl>
+						</div>
+						<cfcatch>
+							<div class="error">
+								<h3>An error occurred while trying to update #local.i#</h3>
+								<cfif len(trim(cfcatch.message))>
+									<p><strong>Error Message</strong><br />#cfcatch.message#</p>
+								</cfif>
+								<cfif len(trim(cfcatch.detail))>
+									<p><strong>Error Detail</strong><br />#cfcatch.detail#</p>
+								</cfif>
+							</div>
+						</cfcatch>
+					</cftry>
+				</cfloop>
+			</cfoutput>
+		</cfsavecontent>
+		<cfreturn local.str />
+	</cffunction>
+
 </cfcomponent>

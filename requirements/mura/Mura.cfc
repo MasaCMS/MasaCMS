@@ -49,7 +49,7 @@ to your own modified versions of Mura CMS.
 	<cfset var localHandler=""/>
 	<cfset var previewData="">
 	
-	<cfif fileExists(expandPath("#application.configBean.getWebRootMap()#.#event.getValue('siteid')#.includes.servlet"))>
+	<cfif fileExists(expandPath("/#application.configBean.getWebRootMap()#/#event.getValue('siteid')#/includes/servlet.cfc"))>
 		<cfset servlet=createObject("component","#application.configBean.getWebRootMap()#.#event.getValue('siteid')#.includes.servlet").init(event)>
 	<cfelse>
 		<cfset servlet=createObject("component","mura.servlet").init(event)>

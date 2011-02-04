@@ -811,9 +811,9 @@ jQuery("#alertDialog").dialog({
 
 return false;
 }
-
-function confirmDialog(message,url){
-	confirmedURL=url;
+ 
+function confirmDialog(message,action){
+	confirmedAction=action;
 	
 	jQuery("#alertDialogMessage").html(message);
 	jQuery("#alertDialog").dialog({
@@ -822,7 +822,12 @@ function confirmDialog(message,url){
 			buttons: {
 				'YES': function() {
 					jQuery(this).dialog('close');
-					location.href=confirmedURL;
+					if(typeof(confirmedAction)=='function'){
+						confirmedAction();
+					} else {
+						location.href=confirmedAction;
+					}
+					
 					},
 				'NO': function() {
 					jQuery(this).dialog('close');

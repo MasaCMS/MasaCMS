@@ -1046,6 +1046,7 @@ to your own modified versions of Mura CMS.
 	<cfargument name="crumblist" type="numeric" default="1">
 	<cfargument name="crumbseparator" type="string" default="&raquo;&nbsp;">
 	<cfargument name="showMetaImage" type="numeric" default="1">
+	<cfargument name="includeMetaHREF" type="boolean" default="false" />
 	
 	<cfset var theIncludePath = event.getSite().getIncludePath() />
 	<cfset var str = "" />
@@ -1147,7 +1148,11 @@ to your own modified versions of Mura CMS.
 							and listFind("jpg,jpeg,gif,png",lcase(event.getValue('contentBean').getFileExt()))>
 								<cfset loadShadowBoxJS() />
 								<cfoutput>
-								<a href="#createHREFForImage(event.getValue('siteID'),event.getValue('contentBean').getFileID(),event.getValue('contentBean').getFileEXT(),'large')#" title="#HTMLEditFormat(event.getValue('contentBean').getMenuTitle())#" rel="shadowbox[body]" id="svAsset"><img src="#createHREFForImage(event.getValue('siteID'),event.getValue('contentBean').getFileID(),event.getValue('contentBean').getFileEXT(),'medium')#" class="imgMed" alt="#HTMLEditFormat(event.getValue('contentBean').getMenuTitle())#" /></a>
+								<cfif arguments.includeMetaHREF>
+									<a href="#createHREFForImage(event.getValue('siteID'),event.getValue('contentBean').getFileID(),event.getValue('contentBean').getFileEXT(),'large')#" title="#HTMLEditFormat(event.getValue('contentBean').getMenuTitle())#" rel="shadowbox[body]" id="svAsset"><img src="#createHREFForImage(event.getValue('siteID'),event.getValue('contentBean').getFileID(),event.getValue('contentBean').getFileEXT(),'medium')#" class="imgMed" alt="#HTMLEditFormat(event.getValue('contentBean').getMenuTitle())#" /></a>
+									<cfelse>
+									<img src="#createHREFForImage(event.getValue('siteID'),event.getValue('contentBean').getFileID(),event.getValue('contentBean').getFileEXT(),'medium')#" class="imgMed" alt="#HTMLEditFormat(event.getValue('contentBean').getMenuTitle())#" />
+								</cfif>
 								</cfoutput>	
 						</cfif>		
 						<cfoutput>#dspMultiPageContent(arguments.body)#</cfoutput>

@@ -8,7 +8,7 @@ div.editableObject {
 	right: auto !important;
 	bottom: auto !important;
 	left: auto !important;
-	width: 100% !important;
+	width: auto !important;
 	height: auto !important;
 	margin-top: 0 !important;
 	margin-right: 0 !important;
@@ -235,7 +235,7 @@ div.editableObject ul.editableObjectControl li li a:hover {
 
 div.editableObject ul.editableObjectControl li:hover ul,
 div.editableObject ul.editableObjectControl li.sfhover ul { /* lists nested under hovered list items */
-	display: block !important;
+	display: none !important;
 	}
 
 div.editableObject ul.editableObjectControl li:hover a,
