@@ -55,7 +55,7 @@ to your own modified versions of Mura CMS.
 			<li><a href="index.cfm?fuseaction=cSettings.list&siteSortBy=orderno">View Site List by Bind Order</a></li>
 		</cfif>
 		<cfif attributes.siteUpdateSelect neq "true">
-			<li><a href="index.cfm?fuseaction=cSettings.list&siteUpdateSelect=true">Multi-Site Version update</a></li>
+			<li><a href="index.cfm?fuseaction=cSettings.list&siteUpdateSelect=true">Multi-Site Version Update</a></li>
 		</cfif>
 		<cfelse>
 		<li><a href="index.cfm?fuseaction=cSettings.list">View Site List</a></li>
