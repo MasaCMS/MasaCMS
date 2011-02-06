@@ -1625,7 +1625,7 @@ to your own modified versions of Mura CMS.
 					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(totalVotes),de(totalVotes),de(0))#">,
 					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(upVotes),de(upVotes),de(0))#">,
 					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(downVotes),de(downVotes),de(0))#">,
-					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(comments),de(comments),de(0))#">,
+					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(comments),de(comments),de(0))#">
 					)
 				</cfquery>
 			</cfloop>
