@@ -900,7 +900,7 @@ to your own modified versions of Mura CMS.
 						inner join tclassextend on (tclassextendsets.subtypeid=tclassextend.subtypeid)
 						where tclassextenddata.siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/> 
 						and tclassextendattributes.type='File'
-						and tclassextend.type='Custom'
+						and tclassextend.type in ('Custom','1','2','User','Group','Address')
 					)
 					
 					<cfif arguments.includeUsers>
