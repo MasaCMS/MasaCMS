@@ -1046,7 +1046,7 @@ to your own modified versions of Mura CMS.
 	<cfargument name="crumblist" type="numeric" default="1">
 	<cfargument name="crumbseparator" type="string" default="&raquo;&nbsp;">
 	<cfargument name="showMetaImage" type="numeric" default="1">
-	<cfargument name="includeMetaHREF" type="boolean" default="false" />
+	<cfargument name="includeMetaHREF" type="boolean" default="true" />
 	
 	<cfset var theIncludePath = event.getSite().getIncludePath() />
 	<cfset var str = "" />
