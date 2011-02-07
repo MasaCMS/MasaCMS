@@ -2574,6 +2574,7 @@ table.cfdebug td a {
 	padding: 0;
 	margin-left: -11px;
 	background: url(../images/icons/down_on.gif) no-repeat left 50%;
+	cursor:pointer;
 }
 
 .mura-grid dt span.hasMore {
