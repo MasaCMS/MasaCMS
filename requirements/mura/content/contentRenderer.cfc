@@ -891,6 +891,7 @@ to your own modified versions of Mura CMS.
 	<cfset var fileDelim = application.configBean.getFileDelim() />
 	<cfset var displayObjectPath = $.siteConfig('IncludePath') & fileDelim & "includes"  & fileDelim & "display_objects"/>
 	<cfset var themeObjectPath = $.siteConfig('ThemeIncludePath') & fileDelim & "display_objects"/>
+	<cfset var themePath = $.siteConfig('themeAssetPath') />
 	<cfset var useRss = arguments.RSS />
 	<cfset var bean = "" />
 	<cfset var theContent = "" />

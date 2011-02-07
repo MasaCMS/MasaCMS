@@ -137,7 +137,7 @@ to your own modified versions of Mura CMS.
 		 	</cfif>
 		 	<cfif hasRatings>
 			<!--- rating#replace(rateBean.getRate(),".","")# --->
-		 	<dd class="ratings stars">#rbFactory.getKey('list.rating')#: <img class="ratestars" src="#themepath#/images/rater/star_#application.raterManager.getStarText(item.getValue('rating'))#.png" alt="<cfif isNumeric(item.getValue('rating'))>#item.getValue('rating')# star<cfif item.getValue('rating') gt 1>s</cfif></cfif>" border="0"></dd>
+		 	<dd class="ratings stars">#rbFactory.getKey('list.rating')#: <img class="ratestars" src="#$.siteConfig('themeAssetPath')#/images/rater/star_#application.raterManager.getStarText(item.getValue('rating'))#.png" alt="<cfif isNumeric(item.getValue('rating'))>#item.getValue('rating')# star<cfif item.getValue('rating') gt 1>s</cfif></cfif>" border="0"></dd>
 		 	</cfif>
 		 	</dl>
 			</li>
