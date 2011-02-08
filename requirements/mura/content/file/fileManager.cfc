@@ -151,6 +151,7 @@ to your own modified versions of Mura CMS.
 	<cfset var theFileLocation="" />
 	<cfset var pluginManager=getBean("pluginManager")>	
 	<cfset var pluginEvent = createObject("component","mura.event") />
+	<cfset var fileCheck="" />
 	
 	<cfif not isValid("UUID",arguments.fileID)>
 		<cfset getBean("contentServer").render404()>
@@ -186,14 +187,13 @@ to your own modified versions of Mura CMS.
 				<cfset pluginManager.announceEvent("onBeforeFileRender",pluginEvent)>
 				<cfset delim=variables.configBean.getFileDelim() />
 				<cfset theFileLocation="#variables.configBean.getFileDir()##delim##rsFileData.siteid##delim#cache#delim#file#delim##arguments.fileID#.#rsFileData.fileExt#" />
-				<cffile action="readBinary" file="#theFileLocation#" variable="theFile">
-				<cfheader name="Content-Disposition" value='#arguments.method#;filename="#rsfileData.filename#"'> 
-				<cfheader name="Content-Length" value="#arrayLen(theFile)#">
-				<cfif variables.configBean.getCompiler() neq 'Railo'>
-					<cfset createObject("component","mura.content.file.renderAdobe").init("#rsfileData.contentType#/#rsfileData.contentSubType#",theFile)>
-				<cfelse>
-					<cfset createObject("component","mura.content.file.renderRailo").init("#rsfileData.contentType#/#rsfileData.contentSubType#",theFile)>
+				<cfset fileCheck = FileOpen(theFileLocation, "readBinary")>
+				<cfif rsFileData.contentType eq "video">
+					<cfset arguments.method = "attachment">
 				</cfif>
+				<cfheader name="Content-Disposition" value='#arguments.method#;filename="#rsfileData.filename#"'> 
+				<cfheader name="Content-Length" value="#fileCheck.size#">
+				<cfcontent file="#theFileLocation#" type="#rsfileData.contentType#/#rsfileData.contentSubType#">
 				<cfset pluginManager.announceEvent("onAfterFileRender",pluginEvent)>
 			</cfcase>
 			<cfcase value="S3">	
@@ -220,6 +220,7 @@ to your own modified versions of Mura CMS.
 	<cfset var delim="" />
 	<cfset var theFile="" />
 	<cfset var theFileLocation="" />
+	<cfset var fileCheck="" />
 	
 	<cfif not isValid("UUID",arguments.fileID)>
 		<cfset getBean("contentServer").render404()>
@@ -246,14 +247,10 @@ to your own modified versions of Mura CMS.
 				</cfif>
 				<cfset delim=variables.configBean.getFileDelim() />
 				<cfset theFileLocation="#variables.configBean.getFileDir()##delim##rsFile.siteid##delim#cache#delim#file#delim##arguments.fileID#_small.#rsFile.fileExt#" />
-				<cffile action="readBinary" file="#theFileLocation#" variable="theFile">
-				<cfheader name="Content-Disposition" value='#arguments.method#;filename="#rsfile.filename#"'> 
-				<cfheader name="Content-Length" value="#arrayLen(theFile)#">
-				<cfif variables.configBean.getCompiler() neq 'Railo'>
-					<cfset createObject("component","mura.content.file.renderAdobe").init("#rsfile.contentType#/#rsfile.contentSubType#",theFile)>
-				<cfelse>
-					<cfset createObject("component","mura.content.file.renderRailo").init("#rsfile.contentType#/#rsfile.contentSubType#",theFile)>
-				</cfif>
+				<cfset fileCheck = FileOpen(theFileLocation, "readBinary")>
+				<cfheader name="Content-Disposition" value='#arguments.method#;filename="#rsFile.filename#"'> 
+				<cfheader name="Content-Length" value="#fileCheck.size#">
+				<cfcontent file="#theFileLocation#" type="#rsFile.contentType#/#rsFile.contentSubType#">
 			</cfcase>
 			<cfcase value="S3">
 				<cfset renderS3(fileid=arguments.fileid,method=arguments.method,size="_small") />
@@ -270,6 +267,7 @@ to your own modified versions of Mura CMS.
 	<cfset var delim="" />
 	<cfset var theFile="" />
 	<cfset var theFileLocation="" />
+	<cfset var fileCheck="" />
 	
 	<cfif not isValid("UUID",arguments.fileID)>
 		<cfset getBean("contentServer").render404()>
@@ -296,14 +294,10 @@ to your own modified versions of Mura CMS.
 				</cfif>
 				<cfset delim=variables.configBean.getFileDelim() />
 				<cfset theFileLocation="#variables.configBean.getFileDir()##delim##rsFile.siteid##delim#cache#delim#file#delim##arguments.fileID#_medium.#rsFile.fileExt#" />
-				<cffile action="readBinary" file="#theFileLocation#" variable="theFile">
-				<cfheader name="Content-Disposition" value='#arguments.method#;filename="#rsfile.filename#"'> 
-				<cfheader name="Content-Length" value="#arrayLen(theFile)#">
-				<cfif variables.configBean.getCompiler() neq 'Railo'>
-					<cfset createObject("component","mura.content.file.renderAdobe").init("#rsfile.contentType#/#rsfile.contentSubType#",theFile)>
-				<cfelse>
-					<cfset createObject("component","mura.content.file.renderRailo").init("#rsfile.contentType#/#rsfile.contentSubType#",theFile)>
-				</cfif>
+				<cfset fileCheck = FileOpen(theFileLocation, "readBinary")>
+				<cfheader name="Content-Disposition" value='#arguments.method#;filename="#rsFile.filename#"'> 
+				<cfheader name="Content-Length" value="#fileCheck.size#">
+				<cfcontent file="#theFileLocation#" type="#rsFile.contentType#/#rsFile.contentSubType#">
 			</cfcase>
 			<cfcase value="S3">
 				<cfset renderS3(fileid=arguments.fileid,method=arguments.method,size="_medium") />

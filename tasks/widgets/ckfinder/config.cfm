@@ -174,14 +174,15 @@ config.resourceType[3].maxSize = 0;
 config.resourceType[3].allowedExtensions = 'swf,flv';
 config.resourceType[3].deniedExtensions = '';
 
-config.resourceType[4] = structNew();
-config.resourceType[4].name = 'Application Root';
-config.resourceType[4].url =  application.configBean.getContext();
-config.resourceType[4].directory =  application.configBean.getWebRoot();
-config.resourceType[4].maxSize = 0;
-config.resourceType[4].allowedExtensions = '';
-config.resourceType[4].deniedExtensions = '';
-
+if(application.configBean.getValue('fmShowApplicationRoot') neq 0){
+	config.resourceType[4] = structNew();
+	config.resourceType[4].name = 'Application Root';
+	config.resourceType[4].url =  application.configBean.getContext();
+	config.resourceType[4].directory =  application.configBean.getWebRoot();
+	config.resourceType[4].maxSize = 0;
+	config.resourceType[4].allowedExtensions = '';
+	config.resourceType[4].deniedExtensions = '';
+}
 
 if (not isdefined('application.CKFinderResources')){
 	application.CKFinderResources=arrayNew(1);
@@ -193,19 +194,25 @@ if (not isdefined('application.CKFinderResources')){
 		temp.url =  application.configBean.getAssetPath() & '/' & rsSites.siteID[i] & '/assets';
 		temp.directory ="#application.configBean.getAssetDir()##application.configBean.getFileDelim()##rsSites.siteID[i]##application.configBean.getFileDelim()#assets";
 		temp.maxSize = 0;
-		temp.allowedExtensions = '7z,aiff,asf,avi,bmp,csv,doc,docx,fla,flv,gif,gz,gzip,jpeg,jpg,mid,mov,mp3,mp4,mpc,mpeg,mpg,ods,odt,pdf,png,ppt,pptx,pxd,qt,ram,rar,rm,rmi,rmvb,rtf,sdc,sitd,swf,sxc,sxw,tar,tgz,tif,tiff,txt,vsd,wav,wma,wmv,xls,xlsx,zip';
+		if(application.configBean.getValue('fmAllowedExtensions') neq ''){
+			temp.allowedExtensions ='7z,aiff,asf,avi,bmp,csv,doc,docx,fla,flv,gif,gz,gzip,jpeg,jpg,mid,mov,mp3,mp4,mpc,mpeg,mpg,ods,odt,pdf,png,ppt,pptx,pxd,qt,ram,rar,rm,rmi,rmvb,rtf,sdc,sitd,swf,sxc,sxw,tar,tgz,tif,tiff,txt,vsd,wav,wma,wmv,xls,xlsx,zip';
+		} else {
+			temp.allowedExtensions ='';		
+		}
 		temp.deniedExtensions = '';
 		
 		arrayAppend(application.CKFinderResources,temp);
 		
-		temp = structNew();
-		temp.name = '#rsSites.siteID[i]#: Site Files';
-		temp.url =  application.configBean.getContext() & '/' & rsSites.siteID[i];
-		temp.directory =  application.configBean.getWebRoot() & '/' & rsSites.siteID[i];
-		temp.maxSize = 0;
-		temp.allowedExtensions = '';
-		temp.deniedExtensions = '';
-		arrayAppend(application.CKFinderResources,temp);
+		if(application.configBean.getValue('fmShowSiteFiles') neq 0){
+			temp = structNew();
+			temp.name = '#rsSites.siteID[i]#: Site Files';
+			temp.url =  application.configBean.getContext() & '/' & rsSites.siteID[i];
+			temp.directory =  application.configBean.getWebRoot() & '/' & rsSites.siteID[i];
+			temp.maxSize = 0;
+			temp.allowedExtensions = '';
+			temp.deniedExtensions = '';
+			arrayAppend(application.CKFinderResources,temp);
+		}
 		
 	}
 

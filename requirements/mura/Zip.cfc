@@ -735,8 +735,6 @@
 		<cfargument name="path" required="yes" type="string" hint="The path to convert.">
 
 		<cfif FindNoCase("Windows", this.os)>
-			<cfset arguments.path = Replace(arguments.path, "/", "\", "ALL")>
-		<cfelse>
 			<cfset arguments.path = Replace(arguments.path, "\", "/", "ALL")>
 		</cfif>
 

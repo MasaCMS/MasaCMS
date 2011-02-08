@@ -45,16 +45,46 @@
 </cfif>
 </cffunction>
 
-<cffunction name="writeFile" output="false">
-<cfargument name="file">
-<cfargument name="output">
-<cfargument name="addNewLine" required="true" default="true">
-<cfargument name="mode" required="true" default="775">
-<cfif variables.useMode >
-	<cffile action="write" mode="#arguments.mode#" file="#arguments.file#" output="#arguments.output#" addnewline="#arguments.addNewLine#"/>
-<cfelse>
-	<cffile action="write" file="#arguments.file#" output="#arguments.output#" addnewline="#arguments.addNewLine#"/>
-</cfif>
+<cffunction name="writeFile" output="true">
+	<cfargument name="file">
+	<cfargument name="output">
+	<cfargument name="addNewLine" required="true" default="true">
+	<cfargument name="mode" required="true" default="775">
+	<cfset var new = "">
+	<cfset var x = "">
+	<cfset var counter = 0>
+	
+	<cfif isStruct(arguments.output)>
+		<cftry>
+			<cfset new = FileOpen(arguments.file, "write")>
+
+			<cfloop condition="!fileIsEOF( arguments.output )">
+				<cfset x = FileRead(arguments.output, 10000)>
+				<cfset FileWrite(new, x)>
+				<cfset counter = counter + 1>
+			</cfloop>
+
+			<cfset FileClose(arguments.output)>
+			<cfset FileClose(new)>
+			
+			<cfset FileDelete(arguments.output.path & "/" & arguments.output.name)>
+			
+			<cfcatch>
+				<cfif session.mura.username eq "Admin">
+					<cfdump var="#arguments.output#">
+					<cfdump var="#counter#">
+					<cfdump var="#cfcatch#">
+				</cfif>
+				<cfabort>
+			</cfcatch>
+		</cftry>
+	<cfelse>
+		<cfif variables.useMode >
+			<cffile action="write" mode="#arguments.mode#" file="#arguments.file#" output="#arguments.output#" addnewline="#arguments.addNewLine#"/>
+		<cfelse>
+			<cffile action="write" file="#arguments.file#" output="#arguments.output#" addnewline="#arguments.addNewLine#"/>
+		</cfif>
+	</cfif>
 </cffunction>
 
 <cffunction name="uploadFile" output="false">
