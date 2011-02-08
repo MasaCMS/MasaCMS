@@ -406,7 +406,6 @@ to your own modified versions of Mura CMS.
 		<cfset var rstcontentcategories=""/>
 		<cfset var rstcontentcomments=""/>
 		<cfset var rstcontentratings=""/>
-		<cfset var rstusersinterests=""/>
 		<cfset var rstclassextend=""/>
 		<cfset var rstclassextendsets=""/>
 		<cfset var rstclassextendattributes=""/>
