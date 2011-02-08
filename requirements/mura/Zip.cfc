@@ -311,12 +311,13 @@
 			var i		="";
 			var entryHash= "";
 			var started = false;
-			var delim=application.configBean.getFileDelim();
+			var delim="/";
 			</cfscript>
 			
 			<cfset rsdir=List(arguments.zipFilePath)>
 			
 			<cfif IsDefined("arguments.extractDirs") and len(arguments.extractDirs)>
+				<cfset arguments.extractDirs=PathFormat(arguments.extractDirs)>
 				<cfquery name="rsdir" dbtype="query">
 				select * from rsdir where 
 				<cfloop list="#arguments.extractDirs#" index="i" delimiters="|">
@@ -334,7 +335,8 @@
 				</cfloop>
 			</cfif>
 			
-			<cfif IsDefined("arguments.excludeDirs") and len(arguments.excludeDirs)>		
+			<cfif IsDefined("arguments.excludeDirs") and len(arguments.excludeDirs)>
+				<cfset arguments.excludeDirs=PathFormat(arguments.excludeDirs)>		
 				<cfset started=false>
 				<cfquery name="rsdir" dbtype="query">
 				select * from rsdir where 
@@ -671,7 +673,7 @@
 
 		<cfdirectory action    = "list"
 					 name      = "dir"
-		             directory = "#PathFormat(arguments.directory)#"
+		             directory = "#localPathFormat(arguments.directory)#"
 					 filter    = "#arguments.filter#">
 		
 		<cfif isDate(arguments.sinceDate)>
@@ -681,7 +683,7 @@
 			dateLastModified >= #createODBCDateTime(arguments.sinceDate)#
 			</cfquery>
 		</cfif>
-		
+	
 		<cfif len(arguments.excludeDirs)>
 			<cfquery name="dir" dbtype="query">
 			SELECT * FROM dir
@@ -689,11 +691,10 @@
 			type = 'File'
 			or
 			(	type='Dir'
-				and name not in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" separator="|" value="#arguments.excludeDirs#">) 
+				and name not in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" separator="|" value="#localPathFormat(arguments.excludeDirs)#">) 
 			)
 			</cfquery>
 		</cfif>
-	
 		
 		<cfscript>
 
@@ -735,6 +736,21 @@
 		<cfargument name="path" required="yes" type="string" hint="The path to convert.">
 
 		<cfif FindNoCase("Windows", this.os)>
+			<cfset arguments.path = Replace(arguments.path, "\", "/", "ALL")>
+		</cfif>
+
+		<cfreturn arguments.path>
+
+	</cffunction>
+	
+	<cffunction name="localPathFormat" access="private" output="no" returntype="string" hint="Convert path into Windows or Unix format.">
+
+		<!--- Function Arguments --->
+		<cfargument name="path" required="yes" type="string" hint="The path to convert.">
+
+		<cfif FindNoCase("Windows", this.os)>
+			<cfset arguments.path = Replace(arguments.path, "/", "\", "ALL")>
+		<cfelse>
 			<cfset arguments.path = Replace(arguments.path, "\", "/", "ALL")>
 		</cfif>
 
