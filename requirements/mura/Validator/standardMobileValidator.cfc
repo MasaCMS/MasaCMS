@@ -23,7 +23,7 @@
 	
 <cffunction name="validate" output="false" returnType="any">
 	<cfargument name="event" required="true">
-	<cfif request.muraMobileRequest>
+	<cfif request.muraMobileRequest and not len(event.getValue('altTheme'))>
 		<cfset event.getHandler("standardMobile").handle(event)>
 	</cfif>
 </cffunction>
