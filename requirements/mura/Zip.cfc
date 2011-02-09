@@ -311,13 +311,12 @@
 			var i		="";
 			var entryHash= "";
 			var started = false;
-			var delim="/";
+			var delim=application.configBean.getFileDelim();
 			</cfscript>
 			
 			<cfset rsdir=List(arguments.zipFilePath)>
 			
 			<cfif IsDefined("arguments.extractDirs") and len(arguments.extractDirs)>
-				<cfset arguments.extractDirs=PathFormat(arguments.extractDirs)>
 				<cfquery name="rsdir" dbtype="query">
 				select * from rsdir where 
 				<cfloop list="#arguments.extractDirs#" index="i" delimiters="|">
@@ -335,8 +334,7 @@
 				</cfloop>
 			</cfif>
 			
-			<cfif IsDefined("arguments.excludeDirs") and len(arguments.excludeDirs)>
-				<cfset arguments.excludeDirs=PathFormat(arguments.excludeDirs)>		
+			<cfif IsDefined("arguments.excludeDirs") and len(arguments.excludeDirs)>		
 				<cfset started=false>
 				<cfquery name="rsdir" dbtype="query">
 				select * from rsdir where 
@@ -402,9 +400,9 @@
 						/* Create directory only if 'useFolderNames' is 'yes' */
 						if(arguments.useFolderNames EQ "yes")
 						{
-							lenPath = Len(name) - Len(GetFileFromPath(name));
+							lenPath = Len(name) - Len(GetFileFromPath(PathFormat(name)));
 
-							if(lenPath) path = extractPath & Left(name, lenPath);
+							if(lenPath) path = extractPath & Left(PathFormat(name), lenPath);
 							else        path = extractPath;
 
 							if(NOT DirectoryExists(path))
@@ -415,15 +413,15 @@
 						}
 
 						/* Set file path */
-						if(arguments.useFolderNames EQ "yes") filePath = arguments.extractPath & name;
-						else                                  filePath = arguments.extractPath & GetFileFromPath(name);
+						if(arguments.useFolderNames EQ "yes") filePath = arguments.extractPath & PathFormat(name);
+						else                                  filePath = arguments.extractPath & GetFileFromPath(PathFormat(name));
 
 						/* Extract files. Files would be extract when following conditions are fulfilled:
 						   If the 'extractFiles' list is not defined,
 						   or the 'extractFiles' list is defined and the entry filename is found in the list,
 						   or the file already exists and 'overwriteFiles' is 'yes'. */
 						if((NOT IsDefined("arguments.extractFiles")
-						    OR (IsDefined("arguments.extractFiles") AND ListFindNoCase(arguments.extractFiles, GetFileFromPath(name), "|")))
+						    OR (IsDefined("arguments.extractFiles") AND ListFindNoCase(arguments.extractFiles, GetFileFromPath(PathFormat(name)), "|")))
 						   AND (NOT FileExists(filePath) OR (FileExists(filePath) AND arguments.overwriteFiles EQ "yes")))
 						{
 							// Skip if entry contains special characters
@@ -673,7 +671,7 @@
 
 		<cfdirectory action    = "list"
 					 name      = "dir"
-		             directory = "#localPathFormat(arguments.directory)#"
+		             directory = "#PathFormat(arguments.directory)#"
 					 filter    = "#arguments.filter#">
 		
 		<cfif isDate(arguments.sinceDate)>
@@ -683,7 +681,7 @@
 			dateLastModified >= #createODBCDateTime(arguments.sinceDate)#
 			</cfquery>
 		</cfif>
-	
+		
 		<cfif len(arguments.excludeDirs)>
 			<cfquery name="dir" dbtype="query">
 			SELECT * FROM dir
@@ -695,6 +693,7 @@
 			)
 			</cfquery>
 		</cfif>
+	
 		
 		<cfscript>
 
@@ -731,19 +730,6 @@
 	<!--- -------------------------------------------------- --->
 	<!--- PathFormat --->
 	<cffunction name="PathFormat" access="private" output="no" returntype="string" hint="Convert path into Windows or Unix format.">
-
-		<!--- Function Arguments --->
-		<cfargument name="path" required="yes" type="string" hint="The path to convert.">
-
-		<cfif FindNoCase("Windows", this.os)>
-			<cfset arguments.path = Replace(arguments.path, "\", "/", "ALL")>
-		</cfif>
-
-		<cfreturn arguments.path>
-
-	</cffunction>
-	
-	<cffunction name="localPathFormat" access="private" output="no" returntype="string" hint="Convert path into Windows or Unix format.">
 
 		<!--- Function Arguments --->
 		<cfargument name="path" required="yes" type="string" hint="The path to convert.">
