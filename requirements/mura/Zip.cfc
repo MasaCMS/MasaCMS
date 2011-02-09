@@ -142,7 +142,7 @@
 							ioFile.init(path);
 							ioInput.init(ioFile.getPath());
 
-							zipEntry.init(entryPath & entryFile);
+							zipEntry.init(ZipPathFormat(entryPath & entryFile));
 							zipOutput.putNextEntry(zipEntry);
 
 							l = ioInput.read(buffer);
@@ -740,6 +740,15 @@
 			<cfset arguments.path = Replace(arguments.path, "\", "/", "ALL")>
 		</cfif>
 
+		<cfreturn arguments.path>
+
+	</cffunction>
+	
+	<cffunction name="ZipPathFormat" access="private" output="no" returntype="string" hint="Convert path into Windows or Unix format.">
+		<!--- Function Arguments --->
+		<cfargument name="path" required="yes" type="string" hint="The path to convert.">
+		<cfset arguments.path = Replace(arguments.path, "\", "/", "ALL")>
+		
 		<cfreturn arguments.path>
 
 	</cffunction>

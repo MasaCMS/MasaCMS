@@ -120,7 +120,7 @@ to your own modified versions of Mura CMS.
 
 <cffunction name="setRenderHTMLHead" returntype="void" output="false" hint="This is deprecated.">
 <cfargument name="renderHTMLHead">
-	<cfset this.renderHTMLQueues=arguments.renderHTMLQueues />
+	<cfset this.renderHTMLQueues=arguments.renderHTMLHead />
 </cffunction>
 
 <cffunction name="getRenderHTMLHead" returntype="string" output="false" hint="This is deprecated.">

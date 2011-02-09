@@ -36,7 +36,6 @@
 		<cfset APPLICATION.CreateCFC = THIS.CreateCFC />
 		<cfset APPLICATION.CFVersion = Left(SERVER.COLDFUSION.PRODUCTVERSION,Find(",",SERVER.COLDFUSION.PRODUCTVERSION)-1) />
 		<cfinclude template="../../../../../../config/appcfc/onRequestStart_include.cfm">
-		<cfinclude template="../../../../../../config/appcfc/scriptProtect_include.cfm">
 		<cfreturn true />
 	</cffunction>
 	

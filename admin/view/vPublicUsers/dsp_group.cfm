@@ -146,11 +146,11 @@ loadExtendedAttributes('#request.userbean.getUserID()#','1','#request.userbean.g
           <cfif request.rsgrouplist.recordcount>
             <cfoutput query="request.rsgrouplist" maxrows="#request.nextN.recordsperPage#" startrow="#attributes.startrow#"> 
 			  <tr> 
-                <td class="varWidth"><a href="index.cfm?fuseaction=#iif(request.rsgrouplist.isPublic,de('cPublicUsers'),de('cPrivateUsers'))#.edituser&userid=#request.rsgrouplist.UserID#&routeid=#attributes.userid#&siteid=#URLEncodedFormat(attributes.siteid)#">#HTMLEditFormat(lname)#, #HTMLEditFormat(fname)# <cfif company neq ''> (#HTMLEditFormat(company)#)</cfif></a></td>
+                <td class="varWidth"><a href="index.cfm?fuseaction=#iif(request.rsgrouplist.isPublic,de('cPublicUsers'),de('cPrivateUsers'))#.edituser&userid=#request.rsgrouplist.UserID#&routeid=#attributes.userid#&siteid=#URLEncodedFormat(attributes.siteid)#">#HTMLEditFormat(request.rsgrouplist.lname)#, #HTMLEditFormat(request.rsgrouplist.fname)# <cfif request.rsgrouplist.company neq ''> (#HTMLEditFormat(request.rsgrouplist.company)#)</cfif></a></td>
                 <td><cfif request.rsgrouplist.email gt ""><a href="mailto:#request.rsgrouplist.email#">#email#</a><cfelse>&nbsp;</cfif></td>
-                <td>#LSDateFormat(lastupdate,session.dateKeyFormat)#</td>
-				<td>#LSTimeFormat(lastupdate,"short")#</td>
-              <td>#LastUpdateBy#</td>
+                <td>#LSDateFormat(request.rsgrouplist.lastupdate,session.dateKeyFormat)#</td>
+				<td>#LSTimeFormat(request.rsgrouplist.lastupdate,"short")#</td>
+              <td>#request.rsgrouplist.LastUpdateBy#</td>
                 <td class="administration"><ul class="group"><li class="edit"><a href="index.cfm?fuseaction=#iif(request.rsgrouplist.isPublic,de('cPublicUsers'),de('cPrivateUsers'))#.edituser&userid=#request.rsgrouplist.UserID#&routeid=#attributes.userid#&siteid=#URLEncodedFormat(attributes.siteid)#">#application.rbFactory.getKeyValue(session.rb,'user.edit')#</a></li><li class="delete"><a href="index.cfm?fuseaction=cPublicUsers.removefromgroup&userid=#request.rsgrouplist.UserID#&routeid=#attributes.userid#&groupid=#attributes.userid#&siteid=#URLEncodedFormat(attributes.siteid)#" onclick="return confirmDialog('#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'user.removeconfirm'))#',this.href)">#application.rbFactory.getKeyValue(session.rb,'user.remove')#</a></li></ul></td>
               </tr>
             </cfoutput> 

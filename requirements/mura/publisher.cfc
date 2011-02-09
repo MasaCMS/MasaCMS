@@ -304,7 +304,7 @@ to your own modified versions of Mura CMS.
 					and (tcontent.active = 1 or (tcontent.changesetID is not null and tcontent.approved=0))
 					and type !='Module'
 					<cfif isDate(arguments.lastDeployment)>
-						and lastUpdate >= #createODBCDateTime(lastDeployment)#
+						and lastUpdate >= #createODBCDateTime(arguments.lastDeployment)#
 					</cfif>
 				</cfquery>
 			<cfelse>
@@ -336,74 +336,74 @@ to your own modified versions of Mura CMS.
 					insert into tcontent (Active,Approved,audience,Body,ContentHistID,ContentID,Credits,Display,DisplayStart,DisplayStop,featureStart,featureStop,FileID,Filename,forceSSL,inheritObjects,isFeature,IsLocked,IsNav,keyPoints,lastUpdate,lastUpdateBy,lastUpdateByID,MenuTitle,MetaDesc,MetaKeyWords,moduleAssign,ModuleID,nextN,Notes,OrderNo,ParentID,displayTitle,ReleaseDate,RemoteID,RemotePubDate,RemoteSource,RemoteSourceURL,RemoteURL,responseChart,responseDisplayFields,responseMessage,responseSendTo,Restricted,RestrictGroups,searchExclude,SiteID,sortBy,sortDirection,Summary,Target,TargetParams,Template,Title,Type,subType,Path,tags,doCache,created,urltitle,htmltitle,mobileExclude,changesetID)
 					values
 					(
-					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(Active),de(Active),de(0))#">,
-					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(Approved),de(Approved),de(0))#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(audience neq '',de('no'),de('yes'))#" value="#audience#">,
-					<cfqueryparam cfsqltype="cf_sql_LONGVARCHAR" null="#iif(Body neq '',de('no'),de('yes'))#" value="#Body#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(contentHistID)#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(contentID)#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(Credits neq '',de('no'),de('yes'))#" value="#Credits#">,
-					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(Display),de(Display),de(0))#">,
-					<cfqueryparam cfsqltype="cf_sql_TIMESTAMP" null="#iif(isDate(DisplayStart),de('no'),de('yes'))#" value="#DisplayStart#">,
-					<cfqueryparam cfsqltype="cf_sql_TIMESTAMP" null="#iif(isDate(DisplayStop),de('no'),de('yes'))#" value="#DisplayStop#">,
-					<cfqueryparam cfsqltype="cf_sql_TIMESTAMP" null="#iif(isDate(featureStart),de('no'),de('yes'))#" value="#featureStart#">,
-					<cfqueryparam cfsqltype="cf_sql_TIMESTAMP" null="#iif(isDate(featureStop),de('no'),de('yes'))#" value="#featureStop#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(FileID neq '',de('no'),de('yes'))#" value="#keys.get(fileID)#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(Filename neq '',de('no'),de('yes'))#" value="#Filename#">,
-					<cfqueryparam cfsqltype="cf_sql_TINYINT" null="no" value="#iif(isNumeric(forceSSL),de(forceSSL),de(0))#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(inheritObjects neq '',de('no'),de('yes'))#" value="#inheritObjects#">,
-					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(isFeature),de(isFeature),de(0))#">,
-					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(IsLocked),de(IsLocked),de(0))#">,
-					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(IsNav),de(IsNav),de(0))#">,
-					<cfqueryparam cfsqltype="cf_sql_LONGVARCHAR" null="#iif(keyPoints neq '',de('no'),de('yes'))#" value="#keyPoints#">,
-					<cfqueryparam cfsqltype="cf_sql_TIMESTAMP" null="#iif(isDate(lastUpdate),de('no'),de('yes'))#" value="#lastUpdate#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(lastUpdateBy neq '',de('no'),de('yes'))#" value="#lastUpdateBy#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(lastUpdateByID neq '',de('no'),de('yes'))#" value="#lastUpdateByID#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(MenuTitle neq '',de('no'),de('yes'))#" value="#MenuTitle#">,
-					<cfqueryparam cfsqltype="cf_sql_LONGVARCHAR" null="#iif(MetaDesc neq '',de('no'),de('yes'))#" value="#MetaDesc#">,
-					<cfqueryparam cfsqltype="cf_sql_LONGVARCHAR" null="#iif(MetaKeyWords neq '',de('no'),de('yes'))#" value="#MetaKeyWords#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(moduleAssign neq '',de('no'),de('yes'))#" value="#moduleAssign#">,
-					<cfif type eq "plugin">
+					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(rstContent.Active),de(rstContent.Active),de(0))#">,
+					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(rstContent.Approved),de(rstContent.Approved),de(0))#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstContent.audience neq '',de('no'),de('yes'))#" value="#rstContent.audience#">,
+					<cfqueryparam cfsqltype="cf_sql_LONGVARCHAR" null="#iif(rstContent.Body neq '',de('no'),de('yes'))#" value="#rstContent.Body#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(rstContent.contentHistID)#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(rstContent.contentID)#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstContent.Credits neq '',de('no'),de('yes'))#" value="#rstContent.Credits#">,
+					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(rstContent.Display),de(rstContent.Display),de(0))#">,
+					<cfqueryparam cfsqltype="cf_sql_TIMESTAMP" null="#iif(isDate(rstContent.DisplayStart),de('no'),de('yes'))#" value="#rstContent.DisplayStart#">,
+					<cfqueryparam cfsqltype="cf_sql_TIMESTAMP" null="#iif(isDate(rstContent.DisplayStop),de('no'),de('yes'))#" value="#rstContent.DisplayStop#">,
+					<cfqueryparam cfsqltype="cf_sql_TIMESTAMP" null="#iif(isDate(rstContent.featureStart),de('no'),de('yes'))#" value="#rstContent.featureStart#">,
+					<cfqueryparam cfsqltype="cf_sql_TIMESTAMP" null="#iif(isDate(rstContent.featureStop),de('no'),de('yes'))#" value="#rstContent.featureStop#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstContent.FileID neq '',de('no'),de('yes'))#" value="#keys.get(rstContent.fileID)#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstContent.Filename neq '',de('no'),de('yes'))#" value="#rstContent.Filename#">,
+					<cfqueryparam cfsqltype="cf_sql_TINYINT" null="no" value="#iif(isNumeric(rstContent.forceSSL),de(rstContent.forceSSL),de(0))#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstContent.inheritObjects neq '',de('no'),de('yes'))#" value="#rstContent.inheritObjects#">,
+					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(rstContent.isFeature),de(rstContent.isFeature),de(0))#">,
+					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(rstContent.IsLocked),de(rstContent.IsLocked),de(0))#">,
+					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(rstContent.IsNav),de(rstContent.IsNav),de(0))#">,
+					<cfqueryparam cfsqltype="cf_sql_LONGVARCHAR" null="#iif(rstContent.keyPoints neq '',de('no'),de('yes'))#" value="#rstContent.keyPoints#">,
+					<cfqueryparam cfsqltype="cf_sql_TIMESTAMP" null="#iif(isDate(rstContent.lastUpdate),de('no'),de('yes'))#" value="#rstContent.lastUpdate#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstContent.lastUpdateBy neq '',de('no'),de('yes'))#" value="#rstContent.lastUpdateBy#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstContent.lastUpdateByID neq '',de('no'),de('yes'))#" value="#rstContent.lastUpdateByID#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstContent.MenuTitle neq '',de('no'),de('yes'))#" value="#rstContent.MenuTitle#">,
+					<cfqueryparam cfsqltype="cf_sql_LONGVARCHAR" null="#iif(rstContent.MetaDesc neq '',de('no'),de('yes'))#" value="#rstContent.MetaDesc#">,
+					<cfqueryparam cfsqltype="cf_sql_LONGVARCHAR" null="#iif(rstContent.MetaKeyWords neq '',de('no'),de('yes'))#" value="#rstContent.MetaKeyWords#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstContent.moduleAssign neq '',de('no'),de('yes'))#" value="#rstContent.moduleAssign#">,
+					<cfif rstContent.type eq "plugin">
 						<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstcontent.ModuleID neq '',de('no'),de('yes'))#" value="#keys.get(rstcontent.ModuleID)#">,
 					<cfelse>
 						<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstcontent.ModuleID neq '',de('no'),de('yes'))#" value="#rstcontent.ModuleID#">,
 					</cfif>
-					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(nextN),de(nextN),de(0))#">,
-					<cfqueryparam cfsqltype="cf_sql_LONGVARCHAR" null="#iif(Notes neq '',de('no'),de('yes'))#" value="#Notes#">,
-					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(OrderNo),de(OrderNo),de(0))#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(parentID)#">,
-					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(displayTitle),de(displayTitle),de(0))#">,
-					<cfqueryparam cfsqltype="cf_sql_TIMESTAMP" null="#iif(isDate(ReleaseDate),de('no'),de('yes'))#" value="#ReleaseDate#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(RemoteID neq '',de('no'),de('yes'))#" value="#RemoteID#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(RemotePubDate neq '',de('no'),de('yes'))#" value="#RemotePubDate#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(RemoteSource neq '',de('no'),de('yes'))#" value="#RemoteSource#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(RemoteSourceURL neq '',de('no'),de('yes'))#" value="#RemoteSourceURL#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(RemoteURL neq '',de('no'),de('yes'))#" value="#RemoteURL#">,
-					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(responseChart),de(responseChart),de(0))#">,
-					<cfqueryparam cfsqltype="cf_sql_LONGVARCHAR" null="#iif(responseDisplayFields neq '',de('no'),de('yes'))#" value="#responseDisplayFields#">,
-					<cfqueryparam cfsqltype="cf_sql_LONGVARCHAR" null="#iif(responseMessage neq '',de('no'),de('yes'))#" value="#responseMessage#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(responseSendTo neq '',de('no'),de('yes'))#" value="#responseSendTo#">,
-					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(Restricted),de(Restricted),de(0))#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(RestrictGroups neq '',de('no'),de('yes'))#" value="#RestrictGroups#">,
-					<cfqueryparam cfsqltype="cf_sql_TINYINT" null="no" value="#iif(isNumeric(searchExclude),de(searchExclude),de(0))#">,
+					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(rstContent.nextN),de(rstContent.nextN),de(0))#">,
+					<cfqueryparam cfsqltype="cf_sql_LONGVARCHAR" null="#iif(rstContent.Notes neq '',de('no'),de('yes'))#" value="#rstContent.Notes#">,
+					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(rstContent.OrderNo),de(rstContent.OrderNo),de(0))#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(rstContent.parentID)#">,
+					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(rstContent.displayTitle),de(rstContent.displayTitle),de(0))#">,
+					<cfqueryparam cfsqltype="cf_sql_TIMESTAMP" null="#iif(isDate(rstContent.ReleaseDate),de('no'),de('yes'))#" value="#rstContent.ReleaseDate#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstContent.RemoteID neq '',de('no'),de('yes'))#" value="#rstContent.RemoteID#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstContent.RemotePubDate neq '',de('no'),de('yes'))#" value="#rstContent.RemotePubDate#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstContent.RemoteSource neq '',de('no'),de('yes'))#" value="#rstContent.RemoteSource#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstContent.RemoteSourceURL neq '',de('no'),de('yes'))#" value="#rstContent.RemoteSourceURL#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstContent.RemoteURL neq '',de('no'),de('yes'))#" value="#rstContent.RemoteURL#">,
+					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(rstContent.responseChart),de(rstContent.responseChart),de(0))#">,
+					<cfqueryparam cfsqltype="cf_sql_LONGVARCHAR" null="#iif(rstContent.responseDisplayFields neq '',de('no'),de('yes'))#" value="#rstContent.responseDisplayFields#">,
+					<cfqueryparam cfsqltype="cf_sql_LONGVARCHAR" null="#iif(rstContent.responseMessage neq '',de('no'),de('yes'))#" value="#rstContent.responseMessage#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstContent.responseSendTo neq '',de('no'),de('yes'))#" value="#rstContent.responseSendTo#">,
+					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(rstContent.Restricted),de(rstContent.Restricted),de(0))#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstContent.RestrictGroups neq '',de('no'),de('yes'))#" value="#rstContent.RestrictGroups#">,
+					<cfqueryparam cfsqltype="cf_sql_TINYINT" null="no" value="#iif(isNumeric(rstContent.searchExclude),de(rstContent.searchExclude),de(0))#">,
 					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#arguments.toSiteID#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(sortBy neq '',de('no'),de('yes'))#" value="#sortBy#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(sortDirection neq '',de('no'),de('yes'))#" value="#sortDirection#">,
-					<cfqueryparam cfsqltype="cf_sql_LONGVARCHAR" null="#iif(Summary neq '',de('no'),de('yes'))#" value="#Summary#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(Target neq '',de('no'),de('yes'))#" value="#Target#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(TargetParams neq '',de('no'),de('yes'))#" value="#TargetParams#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(Template neq '',de('no'),de('yes'))#" value="#Template#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(Title neq '',de('no'),de('yes'))#" value="#Title#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(Type neq '',de('no'),de('yes'))#" value="#Type#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(subType neq '',de('no'),de('yes'))#" value="#subType#">,
-					<cfqueryparam cfsqltype="cf_sql_LONGVARCHAR" null="#iif(Path neq '',de('no'),de('yes'))#" value="#Path#">,
-					<cfqueryparam cfsqltype="cf_sql_LONGVARCHAR" null="#iif(Tags neq '',de('no'),de('yes'))#" value="#Tags#">,
-					<cfqueryparam cfsqltype="cf_sql_TINYINT" null="no" value="#iif(isNumeric(doCache),de(doCache),de(0))#">,
-					<cfqueryparam cfsqltype="cf_sql_TIMESTAMP" null="#iif(isDate(created),de('no'),de('yes'))#" value="#created#">,
-					<cfqueryparam cfsqltype="cf_sql_LONGVARCHAR" null="#iif(urlTitle neq '',de('no'),de('yes'))#" value="#urltitle#">,
-					<cfqueryparam cfsqltype="cf_sql_LONGVARCHAR" null="#iif(htmltitle neq '',de('no'),de('yes'))#" value="#htmltitle#">,
-					<cfqueryparam cfsqltype="cf_sql_TINYINT" null="no" value="#iif(isNumeric(mobileExclude),de(mobileExclude),de(0))#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(changesetID neq '',de('no'),de('yes'))#" value="#changesetID#">
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstContent.sortBy neq '',de('no'),de('yes'))#" value="#rstContent.sortBy#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstContent.sortDirection neq '',de('no'),de('yes'))#" value="#rstContent.sortDirection#">,
+					<cfqueryparam cfsqltype="cf_sql_LONGVARCHAR" null="#iif(rstContent.Summary neq '',de('no'),de('yes'))#" value="#rstContent.Summary#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstContent.Target neq '',de('no'),de('yes'))#" value="#rstContent.Target#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstContent.TargetParams neq '',de('no'),de('yes'))#" value="#rstContent.TargetParams#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstContent.Template neq '',de('no'),de('yes'))#" value="#rstContent.Template#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstContent.Title neq '',de('no'),de('yes'))#" value="#rstContent.Title#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstContent.Type neq '',de('no'),de('yes'))#" value="#rstContent.Type#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstContent.subType neq '',de('no'),de('yes'))#" value="#rstContent.subType#">,
+					<cfqueryparam cfsqltype="cf_sql_LONGVARCHAR" null="#iif(rstContent.Path neq '',de('no'),de('yes'))#" value="#rstContent.Path#">,
+					<cfqueryparam cfsqltype="cf_sql_LONGVARCHAR" null="#iif(rstContent.Tags neq '',de('no'),de('yes'))#" value="#rstContent.Tags#">,
+					<cfqueryparam cfsqltype="cf_sql_TINYINT" null="no" value="#iif(isNumeric(rstContent.doCache),de(rstContent.doCache),de(0))#">,
+					<cfqueryparam cfsqltype="cf_sql_TIMESTAMP" null="#iif(isDate(rstContent.created),de('no'),de('yes'))#" value="#rstContent.created#">,
+					<cfqueryparam cfsqltype="cf_sql_LONGVARCHAR" null="#iif(rstContent.urlTitle neq '',de('no'),de('yes'))#" value="#rstContent.urltitle#">,
+					<cfqueryparam cfsqltype="cf_sql_LONGVARCHAR" null="#iif(rstContent.htmltitle neq '',de('no'),de('yes'))#" value="#rstContent.htmltitle#">,
+					<cfqueryparam cfsqltype="cf_sql_TINYINT" null="no" value="#iif(isNumeric(rstContent.mobileExclude),de(rstContent.mobileExclude),de(0))#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstContent.changesetID neq '',de('no'),de('yes'))#" value="#rstContent.changesetID#">
 					)
 				</cfquery>
 			</cfloop>
@@ -447,23 +447,23 @@ to your own modified versions of Mura CMS.
 					insert into tcontentobjects (ColumnID,ContentHistID,ContentID,Name,Object,ObjectID,OrderNo,SiteID,params)
 					values
 					(
-					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(ColumnID),de(ColumnID),de(0))#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(contentHistID)#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(contentID)#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(Name neq '',de('no'),de('yes'))#" value="#Name#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(Object neq '',de('no'),de('yes'))#" value="#Object#">,
+					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(rstContentObjects.ColumnID),de(rstContentObjects.ColumnID),de(0))#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(rstContentObjects.contentHistID)#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(rstContentObjects.contentID)#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstContentObjects.Name neq '',de('no'),de('yes'))#" value="#rstContentObjects.Name#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstContentObjects.Object neq '',de('no'),de('yes'))#" value="#rstContentObjects.Object#">,
 					<cfif arguments.keyMode eq "copy" and arguments.fromDSN eq arguments.toDSN>
-						<cfif listFindNoCase("plugin,adzone", object)>
-							<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(ObjectID neq '',de('no'),de('yes'))#" value="#objectID#">,
+						<cfif listFindNoCase("plugin,adzone", rstContentObjects.object)>
+							<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstContentObjects.ObjectID neq '',de('no'),de('yes'))#" value="#rstContentObjects.objectID#">,
 						<cfelse>
-							<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(ObjectID neq '',de('no'),de('yes'))#" value="#keys.get(objectID)#">,
+							<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstContentObjects.ObjectID neq '',de('no'),de('yes'))#" value="#keys.get(rstContentObjects.objectID)#">,
 						</cfif>
 					<cfelse>
-						<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(ObjectID neq '',de('no'),de('yes'))#" value="#keys.get(objectID)#">,
+						<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstContentObjects.ObjectID neq '',de('no'),de('yes'))#" value="#keys.get(rstContentObjects.objectID)#">,
 					</cfif>
-					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(OrderNo),de(OrderNo),de(0))#">,
+					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(rstContentObjects.OrderNo),de(rstContentObjects.OrderNo),de(0))#">,
 					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#arguments.toSiteID#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(params neq '',de('no'),de('yes'))#" value="#params#">
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstContentObjects.params neq '',de('no'),de('yes'))#" value="#rstContentObjects.params#">
 					)
 				</cfquery>
 			</cfloop>
@@ -506,10 +506,10 @@ to your own modified versions of Mura CMS.
 					insert into tcontenttags (ContentHistID,ContentID,siteID,tag)
 					values
 					(
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(contentHistID)#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(contentID)#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(rstContentTags.contentHistID)#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(rstContentTags.contentID)#">,
 					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#arguments.tositeID#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(tag neq '',de('no'),de('yes'))#" value="#tag#">
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstContentTags.tag neq '',de('no'),de('yes'))#" value="#rstContentTags.tag#">
 					)
 				</cfquery>
 			</cfloop>
@@ -531,9 +531,9 @@ to your own modified versions of Mura CMS.
 					insert into tsystemobjects (Name,Object,OrderNo,SiteID)
 					values
 					(
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(Name neq '',de('no'),de('yes'))#" value="#Name#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(Object neq '',de('no'),de('yes'))#" value="#Object#">,
-					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(OrderNo),de(OrderNo),de(0))#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstSystemObjects.Name neq '',de('no'),de('yes'))#" value="#rstSystemObjects.Name#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstSystemObjects.Object neq '',de('no'),de('yes'))#" value="#rstSystemObjects.Object#">,
+					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(rstSystemObjects.OrderNo),de(rstSystemObjects.OrderNo),de(0))#">,
 					<cfqueryparam cfsqltype="cf_sql_VARCHAR"  value="#arguments.toSiteID#">
 					)
 				</cfquery>
@@ -594,7 +594,7 @@ to your own modified versions of Mura CMS.
 						
 						<cfloop query="rstadcampaigns">
 							<cfquery name="rsCheck" datasource="#arguments.toDSN#">
-								select userID from tusers where userID=<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(userID)#">
+								select userID from tusers where userID=<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(rstadcampaigns.userID)#">
 							</cfquery>
 							<!--- only add the campaign if the user exists--->
 							<cfif rsCheck.recordcount>
@@ -602,16 +602,16 @@ to your own modified versions of Mura CMS.
 								insert into tadcampaigns (campaignID,dateCreated,endDate,isActive,lastUpdate,lastUpdateBy,name,notes,startDate,userID)
 								values
 								(
-								<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(campaignID)#">,
-								<cfqueryparam cfsqltype="cf_sql_TIMESTAMP" null="#iif(isDate(dateCreated),de('no'),de('yes'))#" value="#dateCreated#">,
-								<cfqueryparam cfsqltype="cf_sql_TIMESTAMP" null="#iif(isDate(endDate),de('no'),de('yes'))#" value="#endDate#">,
-								<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(isActive),de(isActive),de(0))#">,
-								<cfqueryparam cfsqltype="cf_sql_TIMESTAMP" null="#iif(isDate(lastUpdate),de('no'),de('yes'))#" value="#lastUpdate#">,
-								<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(lastUpdateBy neq '',de('no'),de('yes'))#" value="#lastUpdateBy#">,
-								<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(name neq '',de('no'),de('yes'))#" value="#name#">,
-								<cfqueryparam cfsqltype="cf_sql_LONGVARCHAR" null="#iif(notes neq '',de('no'),de('yes'))#" value="#notes#">,
-								<cfqueryparam cfsqltype="cf_sql_TIMESTAMP" null="#iif(isDate(startDate),de('no'),de('yes'))#" value="#startDate#">,
-								<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(userID neq '',de('no'),de('yes'))#" value="#userID#">
+								<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(rstadcampaigns.campaignID)#">,
+								<cfqueryparam cfsqltype="cf_sql_TIMESTAMP" null="#iif(isDate(rstadcampaigns.dateCreated),de('no'),de('yes'))#" value="#rstadcampaigns.dateCreated#">,
+								<cfqueryparam cfsqltype="cf_sql_TIMESTAMP" null="#iif(isDate(rstadcampaigns.endDate),de('no'),de('yes'))#" value="#rstadcampaigns.endDate#">,
+								<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(rstadcampaigns.isActive),de(rstadcampaigns.isActive),de(0))#">,
+								<cfqueryparam cfsqltype="cf_sql_TIMESTAMP" null="#iif(isDate(rstadcampaigns.lastUpdate),de('no'),de('yes'))#" value="#rstadcampaigns.lastUpdate#">,
+								<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstadcampaigns.lastUpdateBy neq '',de('no'),de('yes'))#" value="#rstadcampaigns.lastUpdateBy#">,
+								<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstadcampaigns.name neq '',de('no'),de('yes'))#" value="#rstadcampaigns.name#">,
+								<cfqueryparam cfsqltype="cf_sql_LONGVARCHAR" null="#iif(rstadcampaigns.notes neq '',de('no'),de('yes'))#" value="#rstadcampaigns.notes#">,
+								<cfqueryparam cfsqltype="cf_sql_TIMESTAMP" null="#iif(isDate(rstadcampaigns.startDate),de('no'),de('yes'))#" value="#rstadcampaigns.startDate#">,
+								<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstadcampaigns.userID neq '',de('no'),de('yes'))#" value="#rstadcampaigns.userID#">
 								)
 							</cfquery>
 							</cfif>
@@ -626,7 +626,7 @@ to your own modified versions of Mura CMS.
 							siteid = '#application.settingsManager.getSite(rstSettings.advertiserUserPoolID).getPrivateUserPoolID()#' or
 							siteid = '#application.settingsManager.getSite(rstSettings.advertiserUserPoolID).getPublicUserPoolID()#')
 							<cfif isDate(arguments.lastDeployment)>
-								and lastUpdate >= #createODBCDateTime(lastDeployment)#
+								and lastUpdate >= #createODBCDateTime(arguments.lastDeployment)#
 							</cfif>
 						</cfquery>
 					<cfelse>
@@ -658,7 +658,7 @@ to your own modified versions of Mura CMS.
 					
 					<cfloop query="rstadcreatives">
 						<cfquery name="rsCheck" datasource="#arguments.toDSN#">
-							select userID from tusers where userID=<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(userID)#">
+							select userID from tusers where userID=<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(rstadcreatives.userID)#">
 						</cfquery>
 						<!--- only add the campaign if the user exists--->
 						<cfif rsCheck.recordcount>
@@ -666,23 +666,23 @@ to your own modified versions of Mura CMS.
 							insert into tadcreatives (altText,creativeID,creativeType,dateCreated,fileID,height,isActive,lastUpdate,lastUpdateBy,mediaType,name,notes,redirectURL,textBody,userID,width,target)
 							values
 							(
-							<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(altText neq '',de('no'),de('yes'))#" value="#altText#">,
-							<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(creativeID)#">,
-							<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(creativeType neq '',de('no'),de('yes'))#" value="#creativeType#">,
-							<cfqueryparam cfsqltype="cf_sql_TIMESTAMP" null="#iif(isDate(dateCreated),de('no'),de('yes'))#" value="#dateCreated#">,
-							<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(fileID neq '',de('no'),de('yes'))#" value="#keys.get(fileID)#">,
-							<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(height),de(height),de(0))#">,
-							<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(isActive),de(isActive),de(0))#">,
-							<cfqueryparam cfsqltype="cf_sql_TIMESTAMP" null="#iif(isDate(lastUpdate),de('no'),de('yes'))#" value="#lastUpdate#">,
-							<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(lastUpdateBy neq '',de('no'),de('yes'))#" value="#lastUpdateBy#">,
-							<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(mediaType neq '',de('no'),de('yes'))#" value="#mediaType#">,
-							<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(name neq '',de('no'),de('yes'))#" value="#name#">,
-							<cfqueryparam cfsqltype="cf_sql_LONGVARCHAR" null="#iif(notes neq '',de('no'),de('yes'))#" value="#notes#">,
-							<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(redirectURL neq '',de('no'),de('yes'))#" value="#redirectURL#">,
-							<cfqueryparam cfsqltype="cf_sql_LONGVARCHAR" null="#iif(textBody neq '',de('no'),de('yes'))#" value="#textBody#">,
-							<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(userID neq '',de('no'),de('yes'))#" value="#userID#">,
-							<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(width),de(width),de(0))#">,
-							<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(target neq '',de('no'),de('yes'))#" value="#target#">
+							<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstadcreatives.altText neq '',de('no'),de('yes'))#" value="#rstadcreatives.altText#">,
+							<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(rstadcreatives.creativeID)#">,
+							<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstadcreatives.creativeType neq '',de('no'),de('yes'))#" value="#rstadcreatives.creativeType#">,
+							<cfqueryparam cfsqltype="cf_sql_TIMESTAMP" null="#iif(isDate(rstadcreatives.dateCreated),de('no'),de('yes'))#" value="#rstadcreatives.dateCreated#">,
+							<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstadcreatives.fileID neq '',de('no'),de('yes'))#" value="#keys.get(rstadcreatives.fileID)#">,
+							<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(rstadcreatives.height),de(rstadcreatives.height),de(0))#">,
+							<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(rstadcreatives.isActive),de(rstadcreatives.isActive),de(0))#">,
+							<cfqueryparam cfsqltype="cf_sql_TIMESTAMP" null="#iif(isDate(rstadcreatives.lastUpdate),de('no'),de('yes'))#" value="#rstadcreatives.lastUpdate#">,
+							<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstadcreatives.lastUpdateBy neq '',de('no'),de('yes'))#" value="#rstadcreatives.lastUpdateBy#">,
+							<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstadcreatives.mediaType neq '',de('no'),de('yes'))#" value="#rstadcreatives.mediaType#">,
+							<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstadcreatives.name neq '',de('no'),de('yes'))#" value="#rstadcreatives.name#">,
+							<cfqueryparam cfsqltype="cf_sql_LONGVARCHAR" null="#iif(rstadcreatives.notes neq '',de('no'),de('yes'))#" value="#rstadcreatives.notes#">,
+							<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstadcreatives.redirectURL neq '',de('no'),de('yes'))#" value="#rstadcreatives.redirectURL#">,
+							<cfqueryparam cfsqltype="cf_sql_LONGVARCHAR" null="#iif(rstadcreatives.textBody neq '',de('no'),de('yes'))#" value="#rstadcreatives.textBody#">,
+							<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstadcreatives.userID neq '',de('no'),de('yes'))#" value="#rstadcreatives.userID#">,
+							<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(rstadcreatives.width),de(rstadcreatives.width),de(0))#">,
+							<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstadcreatives.target neq '',de('no'),de('yes'))#" value="#rstadcreatives.target#">
 							)				
 						</cfquery>
 						</cfif>
@@ -703,7 +703,7 @@ to your own modified versions of Mura CMS.
 							insert into tadipwhitelist (IP,siteID)
 							values
 							(
-							<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(IP neq '',de('no'),de('yes'))#" value="#IP#">,
+							<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstadipwhitelist.IP neq '',de('no'),de('yes'))#" value="#rstadipwhitelist.IP#">,
 							<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#arguments.toSiteID#">
 							)
 						</cfquery>
@@ -714,7 +714,7 @@ to your own modified versions of Mura CMS.
 					<cfquery datasource="#arguments.fromDSN#" name="rstadzones">
 						select * from tadzones where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.fromsiteid#"/>
 						<cfif isDate(arguments.lastDeployment)>
-							and lastUpdate >= #createODBCDateTime(lastDeployment)#
+							and lastUpdate >= #createODBCDateTime(arguments.lastDeployment)#
 						</cfif>
 					</cfquery>
 				<cfelse>
@@ -745,17 +745,17 @@ to your own modified versions of Mura CMS.
 							insert into tadzones (adZoneID,creativeType,dateCreated,height,isActive,lastUpdate,lastUpdateBy,name,notes,siteID,width)
 							values
 							(
-							<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(adZoneID)#">,
-							<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(creativeType neq '',de('no'),de('yes'))#" value="#creativeType#">,
-							<cfqueryparam cfsqltype="cf_sql_TIMESTAMP" null="#iif(isDate(dateCreated),de('no'),de('yes'))#" value="#dateCreated#">,
-							<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(height),de(height),de(0))#">,
-							<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(isActive),de(isActive),de(0))#">,
-							<cfqueryparam cfsqltype="cf_sql_TIMESTAMP" null="#iif(isDate(lastUpdate),de('no'),de('yes'))#" value="#lastUpdate#">,
-							<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(lastUpdateBy neq '',de('no'),de('yes'))#" value="#lastUpdateBy#">,
-							<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(name neq '',de('no'),de('yes'))#" value="#name#">,
-							<cfqueryparam cfsqltype="cf_sql_LONGVARCHAR" null="#iif(notes neq '',de('no'),de('yes'))#" value="#notes#">,
+							<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(rstadzones.adZoneID)#">,
+							<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstadzones.creativeType neq '',de('no'),de('yes'))#" value="#creativeType#">,
+							<cfqueryparam cfsqltype="cf_sql_TIMESTAMP" null="#iif(isDate(rstadzones.dateCreated),de('no'),de('yes'))#" value="#dateCreated#">,
+							<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(rstadzones.height),de(rstadzones.height),de(0))#">,
+							<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(rstadzones.isActive),de(rstadzones.isActive),de(0))#">,
+							<cfqueryparam cfsqltype="cf_sql_TIMESTAMP" null="#iif(isDate(rstadzones.lastUpdate),de('no'),de('yes'))#" value="#rstadzones.lastUpdate#">,
+							<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstadzones.lastUpdateBy neq '',de('no'),de('yes'))#" value="#rstadzones.lastUpdateBy#">,
+							<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstadzones.name neq '',de('no'),de('yes'))#" value="#rstadzones.name#">,
+							<cfqueryparam cfsqltype="cf_sql_LONGVARCHAR" null="#iif(rstadzones.notes neq '',de('no'),de('yes'))#" value="#rstadzones.notes#">,
 							<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#arguments.tositeid#">,
-							<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(width),de(width),de(0))#">
+							<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(rstadzones.width),de(rstadzones.width),de(0))#">
 							)
 						</cfquery>
 					</cfloop>
@@ -794,23 +794,23 @@ to your own modified versions of Mura CMS.
 							insert into tadplacements (adZoneID,billable,budget,campaignID,costPerClick,costPerImp,creativeID,dateCreated,endDate,isActive,isExclusive,lastUpdate,lastUpdateBy,notes,placementID,startDate,hasCategories)
 							values
 							(
-							<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(adZoneID neq '',de('no'),de('yes'))#" value="#keys.get(adZoneID)#">,
-							<cfqueryparam cfsqltype="cf_sql_DECIMAL" null="no" value="#iif(isNumeric(billable),de(billable),de(0))#">,
-							<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(budget),de(budget),de(0))#">,
-							<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(campaignID neq '',de('no'),de('yes'))#" value="#keys.get(campaignID)#">,
-							<cfqueryparam cfsqltype="cf_sql_DECIMAL" null="no" value="#iif(isNumeric(costPerClick),de(costPerClick),de(0))#">,
-							<cfqueryparam cfsqltype="cf_sql_DECIMAL" null="no" value="#iif(isNumeric(costPerImp),de(costPerImp),de(0))#">,
-							<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(creativeID neq '',de('no'),de('yes'))#" value="#keys.get(creativeID)#">,
-							<cfqueryparam cfsqltype="cf_sql_TIMESTAMP" null="#iif(isDate(dateCreated),de('no'),de('yes'))#" value="#dateCreated#">,
-							<cfqueryparam cfsqltype="cf_sql_TIMESTAMP" null="#iif(isDate(endDate),de('no'),de('yes'))#" value="#endDate#">,
-							<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(isActive),de(isActive),de(0))#">,
-							<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(isExclusive),de(isExclusive),de(0))#">,
-							<cfqueryparam cfsqltype="cf_sql_TIMESTAMP" null="#iif(isDate(lastUpdate),de('no'),de('yes'))#" value="#lastUpdate#">,
-							<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(lastUpdateBy neq '',de('no'),de('yes'))#" value="#lastUpdateBy#">,
-							<cfqueryparam cfsqltype="cf_sql_LONGVARCHAR" null="#iif(notes neq '',de('no'),de('yes'))#" value="#notes#">,
-							<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(placementID)#">,
-							<cfqueryparam cfsqltype="cf_sql_TIMESTAMP" null="#iif(isDate(startDate),de('no'),de('yes'))#" value="#startDate#">,
-							<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(hasCategories),de(hasCategories),de(0))#">
+							<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstadplacements.adZoneID neq '',de('no'),de('yes'))#" value="#keys.get(rstadplacements.adZoneID)#">,
+							<cfqueryparam cfsqltype="cf_sql_DECIMAL" null="no" value="#iif(isNumeric(rstadplacements.billable),de(rstadplacements.billable),de(0))#">,
+							<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(rstadplacements.budget),de(rstadplacements.budget),de(0))#">,
+							<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstadplacements.campaignID neq '',de('no'),de('yes'))#" value="#keys.get(rstadplacements.campaignID)#">,
+							<cfqueryparam cfsqltype="cf_sql_DECIMAL" null="no" value="#iif(isNumeric(rstadplacements.costPerClick),de(rstadplacements.costPerClick),de(0))#">,
+							<cfqueryparam cfsqltype="cf_sql_DECIMAL" null="no" value="#iif(isNumeric(rstadplacements.costPerImp),de(rstadplacements.costPerImp),de(0))#">,
+							<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstadplacements.creativeID neq '',de('no'),de('yes'))#" value="#keys.get(rstadplacements.creativeID)#">,
+							<cfqueryparam cfsqltype="cf_sql_TIMESTAMP" null="#iif(isDate(rstadplacements.dateCreated),de('no'),de('yes'))#" value="#rstadplacements.dateCreated#">,
+							<cfqueryparam cfsqltype="cf_sql_TIMESTAMP" null="#iif(isDate(rstadplacements.endDate),de('no'),de('yes'))#" value="#rstadplacements.endDate#">,
+							<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(rstadplacements.isActive),de(rstadplacements.isActive),de(0))#">,
+							<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(rstadplacements.isExclusive),de(rstadplacements.isExclusive),de(0))#">,
+							<cfqueryparam cfsqltype="cf_sql_TIMESTAMP" null="#iif(isDate(rstadplacements.lastUpdate),de('no'),de('yes'))#" value="#rstadplacements.lastUpdate#">,
+							<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstadplacements.lastUpdateBy neq '',de('no'),de('yes'))#" value="#rstadplacements.lastUpdateBy#">,
+							<cfqueryparam cfsqltype="cf_sql_LONGVARCHAR" null="#iif(rstadplacements.notes neq '',de('no'),de('yes'))#" value="#rstadplacements.notes#">,
+							<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(rstadplacements.placementID)#">,
+							<cfqueryparam cfsqltype="cf_sql_TIMESTAMP" null="#iif(isDate(rstadplacements.startDate),de('no'),de('yes'))#" value="#rstadplacements.startDate#">,
+							<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(rstadplacements.hasCategories),de(rstadplacements.hasCategories),de(0))#">
 							)
 						</cfquery>
 					</cfloop>
@@ -853,9 +853,9 @@ to your own modified versions of Mura CMS.
 							insert into tadplacementdetails (placementID, placementType, placementValue)
 							values
 							(
-							<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(placementID)#">,
-							<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(placementType neq '',de('no'),de('yes'))#" value="#placementType#">,
-							<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(placementValue),de(placementValue),de(0))#">
+							<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(rstadplacementdetails.placementID)#">,
+							<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstadplacementdetails.placementType neq '',de('no'),de('yes'))#" value="#rstadplacementdetails.placementType#">,
+							<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(rstadplacementdetails.placementValue),de(rstadplacementdetails.placementValue),de(0))#">
 							)
 						</cfquery>
 					</cfloop>
@@ -898,8 +898,8 @@ to your own modified versions of Mura CMS.
 							insert into tadplacementcategoryassign (placementID, categoryID)
 							values
 							(
-							<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(placementID)#">,
-							<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(categoryID)#">
+							<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(rstadplacementcategories.placementID)#">,
+							<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(rstadplacementcategories.categoryID)#">
 							)
 						</cfquery>
 					</cfloop>
@@ -946,13 +946,13 @@ to your own modified versions of Mura CMS.
 					insert into tcontentcategoryassign (categoryID,contentHistID,contentID,featureStart,featureStop,isFeature,orderno,siteID)
 					values
 					(
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(categoryID)#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(contentHistID)#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(contentID)#">,
-					<cfqueryparam cfsqltype="cf_sql_TIMESTAMP" null="#iif(isDate(featureStart),de('no'),de('yes'))#" value="#featureStart#">,
-					<cfqueryparam cfsqltype="cf_sql_TIMESTAMP" null="#iif(isDate(featureStop),de('no'),de('yes'))#" value="#featureStop#">,
-					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(isFeature),de(isFeature),de(0))#">,
-					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(orderno),de(orderno),de(0))#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(rstcontentcategoryassign.categoryID)#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(rstcontentcategoryassign.contentHistID)#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(rstcontentcategoryassign.contentID)#">,
+					<cfqueryparam cfsqltype="cf_sql_TIMESTAMP" null="#iif(isDate(rstcontentcategoryassign.featureStart),de('no'),de('yes'))#" value="#rstcontentcategoryassign.featureStart#">,
+					<cfqueryparam cfsqltype="cf_sql_TIMESTAMP" null="#iif(isDate(rstcontentcategoryassign.featureStop),de('no'),de('yes'))#" value="#rstcontentcategoryassign.featureStop#">,
+					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(rstcontentcategoryassign.isFeature),de(rstcontentcategoryassign.isFeature),de(0))#">,
+					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(rstcontentcategoryassign.orderno),de(rstcontentcategoryassign.orderno),de(0))#">,
 					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#arguments.tositeID#">
 					)
 				</cfquery>
@@ -962,7 +962,7 @@ to your own modified versions of Mura CMS.
 				<cfquery datasource="#arguments.fromDSN#" name="rstcontentfeeds">
 					select * from tcontentfeeds where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.fromsiteid#"/>
 					<cfif isDate(arguments.lastDeployment)>
-						and lastUpdate >= #createODBCDateTime(lastDeployment)#
+						and lastUpdate >= #createODBCDateTime(arguments.lastDeployment)#
 					</cfif>
 				</cfquery>
 			<cfelse>
@@ -991,36 +991,36 @@ to your own modified versions of Mura CMS.
 					insert into tcontentfeeds (allowHTML,channelLink,dateCreated,description,feedID,isActive,isDefault,isFeaturesOnly,isPublic,lang,lastUpdate,lastUpdateBy,maxItems,name,parentID,restricted,restrictGroups,siteID,Type,version,sortBy,sortDirection,nextN,displayName,displayRatings,displayComments,altname,remoteID,remoteSourceURL,remotePubDate)
 					values
 					(
-					<cfqueryparam cfsqltype="cf_sql_TINYINT" null="no" value="#iif(isNumeric(allowHTML),de(allowHTML),de(0))#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(channelLink neq '',de('no'),de('yes'))#" value="#channelLink#">,
-					<cfqueryparam cfsqltype="cf_sql_TIMESTAMP" null="#iif(isDate(dateCreated),de('no'),de('yes'))#" value="#dateCreated#">,
-					<cfqueryparam cfsqltype="cf_sql_LONGVARCHAR" null="#iif(description neq '',de('no'),de('yes'))#" value="#description#">,
-					<cfqueryparam cfsqltype="cf_sql_IDSTAMP" value="#keys.get(feedID)#">,
-					<cfqueryparam cfsqltype="cf_sql_TINYINT" null="no" value="#iif(isNumeric(isActive),de(isActive),de(0))#">,
-					<cfqueryparam cfsqltype="cf_sql_TINYINT" null="no" value="#iif(isNumeric(isDefault),de(isDefault),de(0))#">,
-					<cfqueryparam cfsqltype="cf_sql_TINYINT" null="no" value="#iif(isNumeric(isFeaturesOnly),de(isFeaturesOnly),de(0))#">,
-					<cfqueryparam cfsqltype="cf_sql_TINYINT" null="no" value="#iif(isNumeric(isPublic),de(isPublic),de(0))#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(lang neq '',de('no'),de('yes'))#" value="#lang#">,
-					<cfqueryparam cfsqltype="cf_sql_TIMESTAMP" null="#iif(isDate(lastUpdate),de('no'),de('yes'))#" value="#lastUpdate#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(lastUpdateBy neq '',de('no'),de('yes'))#" value="#lastUpdateBy#">,
-					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(maxItems),de(maxItems),de(0))#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(name neq '',de('no'),de('yes'))#" value="#name#">,
-					<cfqueryparam cfsqltype="cf_sql_IDSTAMP" null="#iif(parentID neq '',de('no'),de('yes'))#" value="#keys.get(parentID)#">,
-					<cfqueryparam cfsqltype="cf_sql_TINYINT" null="no" value="#iif(isNumeric(restricted),de(restricted),de(0))#">,
-					<cfqueryparam cfsqltype="cf_sql_LONGVARCHAR" null="#iif(restrictGroups neq '',de('no'),de('yes'))#" value="#restrictGroups#">,
+					<cfqueryparam cfsqltype="cf_sql_TINYINT" null="no" value="#iif(isNumeric(rstcontentfeeds.allowHTML),de(rstcontentfeeds.allowHTML),de(0))#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstcontentfeeds.channelLink neq '',de('no'),de('yes'))#" value="#rstcontentfeeds.channelLink#">,
+					<cfqueryparam cfsqltype="cf_sql_TIMESTAMP" null="#iif(isDate(rstcontentfeeds.dateCreated),de('no'),de('yes'))#" value="#rstcontentfeeds.dateCreated#">,
+					<cfqueryparam cfsqltype="cf_sql_LONGVARCHAR" null="#iif(rstcontentfeeds.description neq '',de('no'),de('yes'))#" value="#rstcontentfeeds.description#">,
+					<cfqueryparam cfsqltype="cf_sql_IDSTAMP" value="#keys.get(rstcontentfeeds.feedID)#">,
+					<cfqueryparam cfsqltype="cf_sql_TINYINT" null="no" value="#iif(isNumeric(rstcontentfeeds.isActive),de(rstcontentfeeds.isActive),de(0))#">,
+					<cfqueryparam cfsqltype="cf_sql_TINYINT" null="no" value="#iif(isNumeric(rstcontentfeeds.isDefault),de(rstcontentfeeds.isDefault),de(0))#">,
+					<cfqueryparam cfsqltype="cf_sql_TINYINT" null="no" value="#iif(isNumeric(rstcontentfeeds.isFeaturesOnly),de(rstcontentfeeds.isFeaturesOnly),de(0))#">,
+					<cfqueryparam cfsqltype="cf_sql_TINYINT" null="no" value="#iif(isNumeric(rstcontentfeeds.isPublic),de(rstcontentfeeds.isPublic),de(0))#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstcontentfeeds.lang neq '',de('no'),de('yes'))#" value="#rstcontentfeeds.lang#">,
+					<cfqueryparam cfsqltype="cf_sql_TIMESTAMP" null="#iif(isDate(rstcontentfeeds.lastUpdate),de('no'),de('yes'))#" value="#rstcontentfeeds.lastUpdate#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstcontentfeeds.lastUpdateBy neq '',de('no'),de('yes'))#" value="#rstcontentfeeds.lastUpdateBy#">,
+					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(rstcontentfeeds.maxItems),de(rstcontentfeeds.maxItems),de(0))#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstcontentfeeds.name neq '',de('no'),de('yes'))#" value="#rstcontentfeeds.name#">,
+					<cfqueryparam cfsqltype="cf_sql_IDSTAMP" null="#iif(rstcontentfeeds.parentID neq '',de('no'),de('yes'))#" value="#keys.get(rstcontentfeeds.parentID)#">,
+					<cfqueryparam cfsqltype="cf_sql_TINYINT" null="no" value="#iif(isNumeric(rstcontentfeeds.restricted),de(rstcontentfeeds.restricted),de(0))#">,
+					<cfqueryparam cfsqltype="cf_sql_LONGVARCHAR" null="#iif(rstcontentfeeds.restrictGroups neq '',de('no'),de('yes'))#" value="#rstcontentfeeds.restrictGroups#">,
 					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#arguments.toSiteid#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(Type neq '',de('no'),de('yes'))#" value="#Type#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(version neq '',de('no'),de('yes'))#" value="#version#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(sortBy neq '',de('no'),de('yes'))#" value="#sortBy#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(sortDirection neq '',de('no'),de('yes'))#" value="#sortDirection#">,
-					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(nextN),de(nextN),de(20))#">,
-					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(displayName),de(displayName),de(1))#">,
-					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(displayRatings),de(displayRatings),de(0))#">,
-					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(displayComments),de(displayComments),de(0))#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(altname neq '',de('no'),de('yes'))#" value="#altname#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(remoteid neq '',de('no'),de('yes'))#" value="#remoteid#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(remoteSourceURL neq '',de('no'),de('yes'))#" value="#remoteSourceURL#">,
-					<cfqueryparam cfsqltype="cf_sql_TIMESTAMP" null="#iif(remotePubDate neq '',de('no'),de('yes'))#" value="#remotePubDate#">
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstcontentfeeds.Type neq '',de('no'),de('yes'))#" value="#rstcontentfeeds.Type#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstcontentfeeds.version neq '',de('no'),de('yes'))#" value="#rstcontentfeeds.version#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstcontentfeeds.sortBy neq '',de('no'),de('yes'))#" value="#rstcontentfeeds.sortBy#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstcontentfeeds.sortDirection neq '',de('no'),de('yes'))#" value="#rstcontentfeeds.sortDirection#">,
+					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(rstcontentfeeds.nextN),de(rstcontentfeeds.nextN),de(20))#">,
+					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(rstcontentfeeds.displayName),de(rstcontentfeeds.displayName),de(1))#">,
+					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(rstcontentfeeds.displayRatings),de(rstcontentfeeds.displayRatings),de(0))#">,
+					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(rstcontentfeeds.displayComments),de(rstcontentfeeds.displayComments),de(0))#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstcontentfeeds.altname neq '',de('no'),de('yes'))#" value="#rstcontentfeeds.altname#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstcontentfeeds.remoteid neq '',de('no'),de('yes'))#" value="#rstcontentfeeds.remoteid#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstcontentfeeds.remoteSourceURL neq '',de('no'),de('yes'))#" value="#rstcontentfeeds.remoteSourceURL#">,
+					<cfqueryparam cfsqltype="cf_sql_TIMESTAMP" null="#iif(rstcontentfeeds.remotePubDate neq '',de('no'),de('yes'))#" value="#rstcontentfeeds.remotePubDate#">
 					)
 				</cfquery>
 			</cfloop>
@@ -1062,9 +1062,9 @@ to your own modified versions of Mura CMS.
 					insert into tcontentfeeditems (feedID,itemID,type)
 					values
 					(
-					<cfqueryparam cfsqltype="cf_sql_IDSTAMP" value="#keys.get(feedID)#">,
-					<cfqueryparam cfsqltype="cf_sql_IDSTAMP" value="#keys.get(itemID)#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(type neq '',de('no'),de('yes'))#" value="#type#">
+					<cfqueryparam cfsqltype="cf_sql_IDSTAMP" value="#keys.get(rstcontentFeedItems.feedID)#">,
+					<cfqueryparam cfsqltype="cf_sql_IDSTAMP" value="#keys.get(rstcontentFeedItems.itemID)#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstcontentFeedItems.type neq '',de('no'),de('yes'))#" value="#rstcontentFeedItems.type#">
 					)
 				</cfquery>
 			</cfloop>
@@ -1107,14 +1107,14 @@ to your own modified versions of Mura CMS.
 					insert into tcontentfeedadvancedparams (paramID,feedID,param,relationship,field,dataType,<cfif application.configBean.getDbType() eq "mysql">`condition`<cfelse>condition</cfif>,criteria)
 					values
 					(
-					<cfqueryparam cfsqltype="cf_sql_IDSTAMP" value="#keys.get(paramID)#">,
-					<cfqueryparam cfsqltype="cf_sql_IDSTAMP" value="#keys.get(feedID)#">,
-					<cfqueryparam cfsqltype="cf_sql_NUMERIC" null="#iif(isNumeric(param),de('no'),de('yes'))#" value="#param#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(relationship neq '',de('no'),de('yes'))#" value="#relationship#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(field neq '',de('no'),de('yes'))#" value="#field#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(dataType neq '',de('no'),de('yes'))#" value="#dataType#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(condition neq '',de('no'),de('yes'))#" value="#condition#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(criteria neq '',de('no'),de('yes'))#" value="#criteria#">
+					<cfqueryparam cfsqltype="cf_sql_IDSTAMP" value="#keys.get(rstcontentFeedAdvancedParams.paramID)#">,
+					<cfqueryparam cfsqltype="cf_sql_IDSTAMP" value="#keys.get(rstcontentFeedAdvancedParams.feedID)#">,
+					<cfqueryparam cfsqltype="cf_sql_NUMERIC" null="#iif(isNumeric(rstcontentFeedAdvancedParams.param),de('no'),de('yes'))#" value="#rstcontentFeedAdvancedParams.param#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstcontentFeedAdvancedParams.relationship neq '',de('no'),de('yes'))#" value="#rstcontentFeedAdvancedParams.relationship#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstcontentFeedAdvancedParams.field neq '',de('no'),de('yes'))#" value="#rstcontentFeedAdvancedParams.field#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstcontentFeedAdvancedParams.dataType neq '',de('no'),de('yes'))#" value="#rstcontentFeedAdvancedParams.dataType#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstcontentFeedAdvancedParams.condition neq '',de('no'),de('yes'))#" value="#rstcontentFeedAdvancedParams.condition#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstcontentFeedAdvancedParams.criteria neq '',de('no'),de('yes'))#" value="#rstcontentFeedAdvancedParams.criteria#">
 					)
 				</cfquery>
 			</cfloop>
@@ -1156,9 +1156,9 @@ to your own modified versions of Mura CMS.
 					insert into tcontentrelated (contentHistID,contentID,relatedID,siteID)
 					values
 					(
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(contentHistID)#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(contentID)#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(relatedID)#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(rstcontentrelated.contentHistID)#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(rstcontentrelated.contentID)#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(rstcontentrelated.relatedID)#">,
 					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#arguments.tositeID#">
 					)
 				</cfquery>
@@ -1168,7 +1168,7 @@ to your own modified versions of Mura CMS.
 				<cfquery datasource="#arguments.fromDSN#" name="rstMailinglist">
 					select * from tmailinglist where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.fromsiteid#"/>
 					<cfif isDate(arguments.lastDeployment)>
-						 and lastUpdate >= #createODBCDateTime(lastDeployment)#
+						 and lastUpdate >= #createODBCDateTime(arguments.lastDeployment)#
 					</cfif>
 				</cfquery>
 			<cfelse>
@@ -1179,7 +1179,7 @@ to your own modified versions of Mura CMS.
 				<cfif isDate(arguments.lastDeployment)>
 					<cfif rstMailinglist.recordcount or rsDeleted.recordcount>
 						and (
-							lastUpdate >= #createODBCDateTime(lastDeployment)#
+							lastUpdate >= #createODBCDateTime(arguments.lastDeployment)#
 						<cfif rsDeleted.recordcount>
 							or
 							mlid in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#valueList(rsDeleted.objectID)#">)
@@ -1195,12 +1195,12 @@ to your own modified versions of Mura CMS.
 					insert into tmailinglist (Description,isPublic,isPurge,LastUpdate,MLID,Name,SiteID)
 					values
 					(
-					<cfqueryparam cfsqltype="cf_sql_LONGVARCHAR" null="#iif(Description neq '',de('no'),de('yes'))#" value="#Description#">,
-					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(isPublic),de(isPublic),de(0))#">,
-					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(isPurge),de(isPurge),de(0))#">,
-					<cfqueryparam cfsqltype="cf_sql_TIMESTAMP" null="#iif(isDate(LastUpdate),de('no'),de('yes'))#" value="#LastUpdate#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(MLID)#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(Name neq '',de('no'),de('yes'))#" value="#Name#">,
+					<cfqueryparam cfsqltype="cf_sql_LONGVARCHAR" null="#iif(rstMailinglist.Description neq '',de('no'),de('yes'))#" value="#rstMailinglist.Description#">,
+					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(rstMailinglist.isPublic),de(rstMailinglist.isPublic),de(0))#">,
+					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(rstMailinglist.isPurge),de(rstMailinglist.isPurge),de(0))#">,
+					<cfqueryparam cfsqltype="cf_sql_TIMESTAMP" null="#iif(isDate(rstMailinglist.LastUpdate),de('no'),de('yes'))#" value="#rstMailinglist.LastUpdate#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(rstMailinglist.MLID)#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstMailinglist.Name neq '',de('no'),de('yes'))#" value="#rstMailinglist.Name#">,
 					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#arguments.toSiteID#">
 					)
 				</cfquery>
@@ -1219,14 +1219,14 @@ to your own modified versions of Mura CMS.
 					insert into tmailinglistmembers (MLID,Email,SiteID,fname,lname,company,isVerified,created)
 					values
 					(
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(MLID)#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#Email#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(rstMailinglistmembers.MLID)#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#rstMailinglistmembers.Email#">,
 					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#arguments.toSiteID#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(fname neq '',de('no'),de('yes'))#" value="#fname#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(lname neq '',de('no'),de('yes'))#" value="#lname#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(company neq '',de('no'),de('yes'))#" value="#company#">,
-					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(isVerified),de(isVerified),de(0))#">,
-					<cfqueryparam cfsqltype="cf_sql_TIMESTAMP" null="#iif(isDate(created),de('no'),de('yes'))#" value="#created#">
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstMailinglistmembers.fname neq '',de('no'),de('yes'))#" value="#rstMailinglistmembers.fname#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstMailinglistmembers.lname neq '',de('no'),de('yes'))#" value="#rstMailinglistmembers.lname#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstMailinglistmembers.company neq '',de('no'),de('yes'))#" value="#rstMailinglistmembers.company#">,
+					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(rstMailinglistmembers.isVerified),de(rstMailinglistmembers.isVerified),de(0))#">,
+					<cfqueryparam cfsqltype="cf_sql_TIMESTAMP" null="#iif(isDate(rstMailinglistmembers.created),de('no'),de('yes'))#" value="#rstMailinglistmembers.created#">
 					)
 				</cfquery>
 			</cfloop>
@@ -1237,7 +1237,7 @@ to your own modified versions of Mura CMS.
 				<cfquery datasource="#arguments.fromDSN#" name="rstchangesets">
 					select * from tchangesets where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.fromsiteid#"/>
 					<cfif isDate(arguments.lastDeployment)>
-						and lastUpdate >= #createODBCDateTime(lastDeployment)#
+						and lastUpdate >= #createODBCDateTime(arguments.lastDeployment)#
 					</cfif>
 				</cfquery>
 			<cfelse>
@@ -1267,19 +1267,19 @@ to your own modified versions of Mura CMS.
 					published, lastupdate, lastUpdateBy, lastUpdateByID,
 					remoteID, remotePubDate, remoteSourceURL)
 					values (
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(changesetID)#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(rstchangesets.changesetID)#">,
 					<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.toSiteID#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(Name neq '',de('no'),de('yes'))#" value="#Name#">,
-					<cfqueryparam cfsqltype="cf_sql_LONGVARCHAR" null="#iif(Description neq '',de('no'),de('yes'))#" value="#Description#">,
-					<cfqueryparam cfsqltype="cf_sql_TIMESTAMP" null="#iif(isDate(Created),de('no'),de('yes'))#" value="#Created#">,
-					<cfqueryparam cfsqltype="cf_sql_TIMESTAMP" null="#iif(isDate(publishDate),de('no'),de('yes'))#" value="#publishDate#">,
-					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(published),de(published),de(0))#">,
-					<cfqueryparam cfsqltype="cf_sql_TIMESTAMP" null="#iif(isDate(LastUpdate),de('no'),de('yes'))#" value="#LastUpdate#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(LastUpdateBy neq '',de('no'),de('yes'))#" value="#LastUpdateBy#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(LastUpdateByID neq '',de('no'),de('yes'))#" value="#LastUpdateByID#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(remoteID neq '',de('no'),de('yes'))#" value="#remoteID#">,
-					<cfqueryparam cfsqltype="cf_sql_TIMESTAMP" null="#iif(isDate(remotePubDate),de('no'),de('yes'))#" value="#remotePubDate#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(remoteSourceURL neq '',de('no'),de('yes'))#" value="#remoteSourceURL#">
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstchangesets.Name neq '',de('no'),de('yes'))#" value="#rstchangesets.Name#">,
+					<cfqueryparam cfsqltype="cf_sql_LONGVARCHAR" null="#iif(rstchangesets.Description neq '',de('no'),de('yes'))#" value="#rstchangesets.Description#">,
+					<cfqueryparam cfsqltype="cf_sql_TIMESTAMP" null="#iif(isDate(rstchangesets.Created),de('no'),de('yes'))#" value="#rstchangesets.Created#">,
+					<cfqueryparam cfsqltype="cf_sql_TIMESTAMP" null="#iif(isDate(rstchangesets.publishDate),de('no'),de('yes'))#" value="#rstchangesets.publishDate#">,
+					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(rstchangesets.published),de(rstchangesets.published),de(0))#">,
+					<cfqueryparam cfsqltype="cf_sql_TIMESTAMP" null="#iif(isDate(rstchangesets.LastUpdate),de('no'),de('yes'))#" value="#rstchangesets.LastUpdate#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstchangesets.LastUpdateBy neq '',de('no'),de('yes'))#" value="#rstchangesets.LastUpdateBy#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstchangesets.LastUpdateByID neq '',de('no'),de('yes'))#" value="#rstchangesets.LastUpdateByID#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstchangesets.remoteID neq '',de('no'),de('yes'))#" value="#rstchangesets.remoteID#">,
+					<cfqueryparam cfsqltype="cf_sql_TIMESTAMP" null="#iif(isDate(rstchangesets.remotePubDate),de('no'),de('yes'))#" value="#rstchangesets.remotePubDate#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstchangesets.remoteSourceURL neq '',de('no'),de('yes'))#" value="#rstchangesets.remoteSourceURL#">
 					)
 				</cfquery>
 			</cfloop>
@@ -1290,7 +1290,7 @@ to your own modified versions of Mura CMS.
 				<cfquery datasource="#arguments.fromDSN#" name="rstcontentcategories">
 					select * from tcontentcategories where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.fromsiteid#"/>
 					<cfif isDate(arguments.lastDeployment)>
-						and lastUpdate >= #createODBCDateTime(lastDeployment)#
+						and lastUpdate >= #createODBCDateTime(arguments.lastDeployment)#
 					</cfif>
 				</cfquery>
 			<cfelse>
@@ -1319,26 +1319,26 @@ to your own modified versions of Mura CMS.
 					insert into tcontentcategories (categoryID,dateCreated,isActive,isInterestGroup,isOpen,lastUpdate,lastUpdateBy,name,notes,parentID,restrictGroups,siteID,sortBy,sortDirection,Path,remoteID,remoteSourceURL,remotePubDate,filename,urltitle)
 					values
 					(
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(categoryID)#">,
-					<cfqueryparam cfsqltype="cf_sql_TIMESTAMP" null="#iif(isDate(dateCreated),de('no'),de('yes'))#" value="#dateCreated#">,
-					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(isActive),de(isActive),de(0))#">,
-					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(isInterestGroup),de(isInterestGroup),de(0))#">,
-					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(isOpen),de(isOpen),de(0))#">,
-					<cfqueryparam cfsqltype="cf_sql_TIMESTAMP" null="#iif(isDate(lastUpdate),de('no'),de('yes'))#" value="#lastUpdate#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(lastUpdateBy neq '',de('no'),de('yes'))#" value="#lastUpdateBy#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(name neq '',de('no'),de('yes'))#" value="#name#">,
-					<cfqueryparam cfsqltype="cf_sql_LONGVARCHAR" null="#iif(notes neq '',de('no'),de('yes'))#" value="#notes#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(parentID neq '',de('no'),de('yes'))#" value="#keys.get(parentID)#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(restrictGroups neq '',de('no'),de('yes'))#" value="#restrictGroups#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(rstcontentcategories.categoryID)#">,
+					<cfqueryparam cfsqltype="cf_sql_TIMESTAMP" null="#iif(isDate(rstcontentcategories.dateCreated),de('no'),de('yes'))#" value="#rstcontentcategories.dateCreated#">,
+					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(rstcontentcategories.isActive),de(rstcontentcategories.isActive),de(0))#">,
+					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(rstcontentcategories.isInterestGroup),de(rstcontentcategories.isInterestGroup),de(0))#">,
+					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(rstcontentcategories.isOpen),de(rstcontentcategories.isOpen),de(0))#">,
+					<cfqueryparam cfsqltype="cf_sql_TIMESTAMP" null="#iif(isDate(rstcontentcategories.lastUpdate),de('no'),de('yes'))#" value="#rstcontentcategories.lastUpdate#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstcontentcategories.lastUpdateBy neq '',de('no'),de('yes'))#" value="#rstcontentcategories.lastUpdateBy#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstcontentcategories.name neq '',de('no'),de('yes'))#" value="#rstcontentcategories.name#">,
+					<cfqueryparam cfsqltype="cf_sql_LONGVARCHAR" null="#iif(rstcontentcategories.notes neq '',de('no'),de('yes'))#" value="#rstcontentcategories.notes#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstcontentcategories.parentID neq '',de('no'),de('yes'))#" value="#keys.get(rstcontentcategories.parentID)#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstcontentcategories.restrictGroups neq '',de('no'),de('yes'))#" value="#rstcontentcategories.restrictGroups#">,
 					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#arguments.tositeID#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(sortBy neq '',de('no'),de('yes'))#" value="#sortBy#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(sortDirection neq '',de('no'),de('yes'))#" value="#sortDirection#">,
-					<cfqueryparam cfsqltype="cf_sql_LONGVARCHAR" null="#iif(Path neq '',de('no'),de('yes'))#" value="#Path#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(remoteid neq '',de('no'),de('yes'))#" value="#remoteID#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(remoteSourceURL neq '',de('no'),de('yes'))#" value="#remoteSourceURL#">,
-					<cfqueryparam cfsqltype="cf_sql_TIMESTAMP" null="#iif(remotePubDate neq '',de('no'),de('yes'))#" value="#remotePubDate#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(filename neq '',de('no'),de('yes'))#" value="#filename#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(urltitle neq '',de('no'),de('yes'))#" value="#urltitle#">
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstcontentcategories.sortBy neq '',de('no'),de('yes'))#" value="#rstcontentcategories.sortBy#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstcontentcategories.sortDirection neq '',de('no'),de('yes'))#" value="#rstcontentcategories.sortDirection#">,
+					<cfqueryparam cfsqltype="cf_sql_LONGVARCHAR" null="#iif(rstcontentcategories.Path neq '',de('no'),de('yes'))#" value="#rstcontentcategories.Path#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstcontentcategories.remoteid neq '',de('no'),de('yes'))#" value="#rstcontentcategories.remoteID#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstcontentcategories.remoteSourceURL neq '',de('no'),de('yes'))#" value="#rstcontentcategories.remoteSourceURL#">,
+					<cfqueryparam cfsqltype="cf_sql_TIMESTAMP" null="#iif(rstcontentcategories.remotePubDate neq '',de('no'),de('yes'))#" value="#rstcontentcategories.remotePubDate#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstcontentcategories.filename neq '',de('no'),de('yes'))#" value="#rstcontentcategories.filename#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstcontentcategories.urltitle neq '',de('no'),de('yes'))#" value="#rstcontentcategories.urltitle#">
 					)
 				</cfquery>
 			</cfloop>
@@ -1416,7 +1416,7 @@ to your own modified versions of Mura CMS.
 					select * from tfiles where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.fromsiteid#"/>
 					and moduleid  in (''<cfif len(arguments.moduleID)>,<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.moduleID#" list="true"></cfif><cfif arguments.usersMode neq "none">,'00000000000000000000000000000000008'</cfif><cfif arguments.contentMode neq "none">,'00000000000000000000000000000000000'</cfif>)
 					<cfif isDate(arguments.lastDeployment)>
-						created >= #createODBCDateTime(created)#
+						created >= #createODBCDateTime(arguments.lastDeployment)#
 					</cfif>
 				</cfquery>
 			<cfelse>
@@ -1433,19 +1433,19 @@ to your own modified versions of Mura CMS.
 					image,imageMedium,imageSmall,moduleID,siteID,created)
 					values
 					(
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(contentID neq '',de('no'),de('yes'))#" value="#keys.get(contentID)#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(contentSubType neq '',de('no'),de('yes'))#" value="#contentSubType#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(contentType neq '',de('no'),de('yes'))#" value="#contentType#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(fileExt neq '',de('no'),de('yes'))#" value="#fileExt#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(fileID neq '',de('no'),de('yes'))#" value="#keys.get(fileID)#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(filename neq '',de('no'),de('yes'))#" value="#filename#">,
-					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(fileSize),de(fileSize),de(0))#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstFiles.contentID neq '',de('no'),de('yes'))#" value="#keys.get(rstFiles.contentID)#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstFiles.contentSubType neq '',de('no'),de('yes'))#" value="#rstFiles.contentSubType#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstFiles.contentType neq '',de('no'),de('yes'))#" value="#rstFiles.contentType#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstFiles.fileExt neq '',de('no'),de('yes'))#" value="#rstFiles.fileExt#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstFiles.fileID neq '',de('no'),de('yes'))#" value="#keys.get(rstFiles.fileID)#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstFiles.filename neq '',de('no'),de('yes'))#" value="#rstFiles.filename#">,
+					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(rstFiles.fileSize),de(rstFiles.fileSize),de(0))#">,
 					<cfqueryparam cfsqltype="cf_sql_BLOB" null="#iif(toBase64(rstFiles.image) eq '',de('yes'),de('no'))#" value="#rstFiles.image#">,
 					<cfqueryparam cfsqltype="cf_sql_BLOB" null="#iif(toBase64(rstFiles.imageMedium) eq '',de('yes'),de('no'))#" value="#rstFiles.imageMedium#">,
 					<cfqueryparam cfsqltype="cf_sql_BLOB" null="#iif(toBase64(rstFiles.imageSmall) eq '',de('yes'),de('no'))#" value="#rstFiles.imageSmall#">,
 					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstfiles.moduleID neq '',de('no'),de('yes'))#" value="#rstfiles.moduleID#">,
 					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#arguments.tositeID#">,
-					<cfqueryparam cfsqltype="cf_sql_TIMESTAMP" null="#iif(isDate(created),de('no'),de('yes'))#" value="#created#">
+					<cfqueryparam cfsqltype="cf_sql_TIMESTAMP" null="#iif(isDate(rstFiles.created),de('no'),de('yes'))#" value="#rstFiles.created#">
 					)
 				</cfquery>
 			</cfloop>
@@ -1523,16 +1523,16 @@ to your own modified versions of Mura CMS.
 					<cfquery datasource="#arguments.toDSN#">
 						insert into ttrash (objectID,parentID,siteID,objectClass,objectLabel,objectType,objectSubType,objectString,deletedDate,deletedBy)
 							values(	
-								<cfqueryparam cfsqltype="cf_sql_varchar" value="#keys.get(objectID)#" />,
-								<cfqueryparam cfsqltype="cf_sql_varchar" value="#keys.get(parentID)#" />,
+								<cfqueryparam cfsqltype="cf_sql_varchar" value="#keys.get(rsttrash.objectID)#" />,
+								<cfqueryparam cfsqltype="cf_sql_varchar" value="#keys.get(rsttrash.parentID)#" />,
 								<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.tositeid#" />,
-								<cfqueryparam cfsqltype="cf_sql_varchar" value="#objectClass#" />,
-								<cfqueryparam cfsqltype="cf_sql_varchar" value="#objectLabel#" />,
-								<cfqueryparam cfsqltype="cf_sql_varchar" value="#objectType#" />,
-								<cfqueryparam cfsqltype="cf_sql_varchar" value="#objectSubType#" />,
+								<cfqueryparam cfsqltype="cf_sql_varchar" value="#rsttrash.objectClass#" />,
+								<cfqueryparam cfsqltype="cf_sql_varchar" value="#rsttrash.objectLabel#" />,
+								<cfqueryparam cfsqltype="cf_sql_varchar" value="#rsttrash.objectType#" />,
+								<cfqueryparam cfsqltype="cf_sql_varchar" value="#rsttrash.objectSubType#" />,
 								<cfqueryparam cfsqltype="cf_sql_longvarchar" value="#allValues#" />,
 								#createODBCDateTime(deletedDate)#,
-								<cfqueryparam cfsqltype="cf_sql_varchar" value="#deletedBy#" />
+								<cfqueryparam cfsqltype="cf_sql_varchar" value="#rsttrash.deletedBy#" />
 							)			
 					</cfquery>
 					
@@ -1573,20 +1573,20 @@ to your own modified versions of Mura CMS.
 							insert into tcontentcomments (comments,commentid,contenthistid,contentid,email,entered,ip,isApproved,name,siteid,url,subscribe,parentID,path)
 							values
 							(
-							<cfqueryparam cfsqltype="cf_sql_LONGVARCHAR" null="#iif(comments neq '',de('no'),de('yes'))#" value="#comments#">,
-							<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(commentid neq '',de('no'),de('yes'))#" value="#keys.get(commentID)#">,
-							<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(contenthistid neq '',de('no'),de('yes'))#" value="#keys.get(contentHistID)#">,
-							<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(contentid neq '',de('no'),de('yes'))#" value="#keys.get(contentID)#">,
-							<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(email neq '',de('no'),de('yes'))#" value="#email#">,
-							<cfqueryparam cfsqltype="cf_sql_TIMESTAMP" null="#iif(isDate(entered),de('no'),de('yes'))#" value="#entered#">,
-							<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(ip neq '',de('no'),de('yes'))#" value="#ip#">,
-							<cfqueryparam cfsqltype="cf_sql_TINYINT" null="no" value="#iif(isNumeric(isApproved),de(isApproved),de(0))#">,
-							<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(name neq '',de('no'),de('yes'))#" value="#name#">,
+							<cfqueryparam cfsqltype="cf_sql_LONGVARCHAR" null="#iif(rstcontentcomments.comments neq '',de('no'),de('yes'))#" value="#rstcontentcomments.comments#">,
+							<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstcontentcomments.commentid neq '',de('no'),de('yes'))#" value="#keys.get(rstcontentcomments.commentID)#">,
+							<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstcontentcomments.contenthistid neq '',de('no'),de('yes'))#" value="#keys.get(rstcontentcomments.contentHistID)#">,
+							<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstcontentcomments.contentid neq '',de('no'),de('yes'))#" value="#keys.get(rstcontentcomments.contentID)#">,
+							<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstcontentcomments.email neq '',de('no'),de('yes'))#" value="#rstcontentcomments.email#">,
+							<cfqueryparam cfsqltype="cf_sql_TIMESTAMP" null="#iif(isDate(rstcontentcomments.entered),de('no'),de('yes'))#" value="#rstcontentcomments.entered#">,
+							<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstcontentcomments.ip neq '',de('no'),de('yes'))#" value="#rstcontentcomments.ip#">,
+							<cfqueryparam cfsqltype="cf_sql_TINYINT" null="no" value="#iif(isNumeric(rstcontentcomments.isApproved),de(rstcontentcomments.isApproved),de(0))#">,
+							<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstcontentcomments.name neq '',de('no'),de('yes'))#" value="#rstcontentcomments.name#">,
 							<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#arguments.tositeid#">,
 							<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstcontentcomments.url neq '',de('no'),de('yes'))#" value="#rstcontentcomments.url#">,
-							<cfqueryparam cfsqltype="cf_sql_TINYINT" null="no" value="#iif(isNumeric(subscribe),de(subscribe),de(0))#">,
-							<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(parentID neq '',de('no'),de('yes'))#" value="#keys.get(parentID)#">,
-							<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(path neq '',de('no'),de('yes'))#" value="#path#">
+							<cfqueryparam cfsqltype="cf_sql_TINYINT" null="no" value="#iif(isNumeric(rstcontentcomments.subscribe),de(rstcontentcomments.subscribe),de(0))#">,
+							<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstcontentcomments.parentID neq '',de('no'),de('yes'))#" value="#keys.get(rstcontentcomments.parentID)#">,
+							<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstcontentcomments.path neq '',de('no'),de('yes'))#" value="#rstcontentcomments.path#">
 							)
 					</cfquery>
 			</cfloop>
@@ -1600,11 +1600,11 @@ to your own modified versions of Mura CMS.
 					insert into tcontentratings (contentID,rate,siteID,userID,entered)
 					values
 					(
-					<cfqueryparam cfsqltype="cf_sql_IDSTAMP" value="#keys.get(contentID)#">,
-					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(rate),de(rate),de(0))#">,
+					<cfqueryparam cfsqltype="cf_sql_IDSTAMP" value="#keys.get(rstcontentratings.contentID)#">,
+					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(rstcontentratings.rate),de(rstcontentratings.rate),de(0))#">,
 					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#arguments.fromsiteID#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(userID neq '',de('no'),de('yes'))#" value="#keys.get(userID)#">,
-					<cfqueryparam cfsqltype="cf_sql_TIMESTAMP" null="#iif(isDate(entered),de('no'),de('yes'))#" value="#entered#">
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstcontentratings.userID neq '',de('no'),de('yes'))#" value="#keys.get(rstcontentratings.userID)#">,
+					<cfqueryparam cfsqltype="cf_sql_TIMESTAMP" null="#iif(isDate(rstcontentratings.entered),de('no'),de('yes'))#" value="#rstcontentratings.entered#">
 					)
 				</cfquery>
 			</cfloop>
@@ -1618,14 +1618,14 @@ to your own modified versions of Mura CMS.
 					insert into tcontentstats (contentID,siteID,views,rating,totalVotes,upVotes,downVotes,comments)
 					values
 					(
-					<cfqueryparam cfsqltype="cf_sql_IDSTAMP" value="#keys.get(contentID)#">,
+					<cfqueryparam cfsqltype="cf_sql_IDSTAMP" value="#keys.get(rstcontentstats.contentID)#">,
 					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#arguments.tositeID#">,
-					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(views),de(views),de(0))#">,
-					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(rating),de(rating),de(0))#">,
-					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(totalVotes),de(totalVotes),de(0))#">,
-					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(upVotes),de(upVotes),de(0))#">,
-					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(downVotes),de(downVotes),de(0))#">,
-					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(comments),de(comments),de(0))#">
+					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(rstcontentstats.views),de(rstcontentstats.views),de(0))#">,
+					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(rstcontentstats.rating),de(rstcontentstats.rating),de(0))#">,
+					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(rstcontentstats.totalVotes),de(rstcontentstats.totalVotes),de(0))#">,
+					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(rstcontentstats.upVotes),de(rstcontentstats.upVotes),de(0))#">,
+					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(rstcontentstats.downVotes),de(rstcontentstats.downVotes),de(0))#">,
+					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(rstcontentstats.comments),de(rstcontentstats.comments),de(0))#">
 					)
 				</cfquery>
 			</cfloop>
@@ -1668,13 +1668,13 @@ to your own modified versions of Mura CMS.
 					insert into tpermissions (contentID,groupID,Type,SiteID)
 					values
 					(
-					<cfif type eq "module" or not find("-",contentID)>
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#contentID#">
+					<cfif rsTPermissions.type eq "module" or not find("-",rsTPermissions.contentID)>
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#rsTPermissions.contentID#">
 					<cfelse>
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(contentID)#">
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(rsTPermissions.contentID)#">
 					</cfif>,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#groupID#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(type neq '',de('no'),de('yes'))#" value="#type#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#rsTPermissions.groupID#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rsTPermissions.type neq '',de('no'),de('yes'))#" value="#rsTPermissions.type#">,
 					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#arguments.toSiteID#">
 					)
 				</cfquery>
@@ -1733,8 +1733,8 @@ to your own modified versions of Mura CMS.
 				<cfloop query="rstusersmemb">
 					<cfquery datasource="#arguments.toDSN#">
 						insert into tusersmemb (userID,groupID) values (
-						<cfqueryparam cfsqltype="cf_sql_varchar" value="#keys.get(userID)#">,
-						<cfqueryparam cfsqltype="cf_sql_varchar" value="#keys.get(groupID)#">
+						<cfqueryparam cfsqltype="cf_sql_varchar" value="#keys.get(rstusersmemb.userID)#">,
+						<cfqueryparam cfsqltype="cf_sql_varchar" value="#keys.get(rstusersmemb.groupID)#">
 						)
 					</cfquery>
 				</cfloop>
@@ -1762,9 +1762,9 @@ to your own modified versions of Mura CMS.
 					<cfloop query="rstuserstags">
 						<cfquery datasource="#arguments.toDSN#">
 							insert into tuserstags (userID,siteID,tag) values (
-							<cfqueryparam cfsqltype="cf_sql_varchar" value="#keys.get(userID)#">,
+							<cfqueryparam cfsqltype="cf_sql_varchar" value="#keys.get(rstuserstags.userID)#">,
 							<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.toSiteID#">,
-							<cfqueryparam cfsqltype="cf_sql_varchar" value="#tag#">
+							<cfqueryparam cfsqltype="cf_sql_varchar" value="#rstuserstags.tag#">
 							)
 						</cfquery>
 					</cfloop>
@@ -1794,8 +1794,8 @@ to your own modified versions of Mura CMS.
 					<cfloop query="rstusersinterests">
 						<cfquery datasource="#arguments.toDSN#">
 							insert into tusersinterests (userID,categoryID) values (
-							<cfqueryparam cfsqltype="cf_sql_varchar" value="#keys.get(userID)#">,
-							<cfqueryparam cfsqltype="cf_sql_varchar" value="#keys.get(categoryID)#">
+							<cfqueryparam cfsqltype="cf_sql_varchar" value="#keys.get(rstusersinterests.userID)#">,
+							<cfqueryparam cfsqltype="cf_sql_varchar" value="#keys.get(rstusersinterests.categoryID)#">
 							)
 						</cfquery>
 					</cfloop>
@@ -1821,19 +1821,19 @@ to your own modified versions of Mura CMS.
 				<cfloop query="rstusersfavorites">
 					<cfquery datasource="#arguments.toDSN#">
 						insert into tusersfavorites (userID,favoriteName,favorite,type,siteID,dateCreated,columnNumber,rowNumber,maxRssItems ) values (
-						<cfqueryparam cfsqltype="cf_sql_varchar" value="#keys.get(userID)#">,
-						<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(favoriteName neq '',de('no'),de('yes'))#" value="#favoriteName#">,
+						<cfqueryparam cfsqltype="cf_sql_varchar" value="#keys.get(rstusersfavorites.userID)#">,
+						<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(rstusersfavorites.favoriteName neq '',de('no'),de('yes'))#" value="#rstusersfavorites.favoriteName#">,
 						<cfif isValid("UUID",favorite)>
-							<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(favorite neq '',de('no'),de('yes'))#" value="#keys.get(favorite)#">,
+							<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(rstusersfavorites.favorite neq '',de('no'),de('yes'))#" value="#keys.get(rstusersfavorites.favorite)#">,
 						<cfelse>
-							<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(favorite neq '',de('no'),de('yes'))#" value="#favorite#">,
+							<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(rstusersfavorites.favorite neq '',de('no'),de('yes'))#" value="#rstusersfavorites.favorite#">,
 						</cfif>
-						<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(type neq '',de('no'),de('yes'))#" value="#type#">,
+						<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(rstusersfavorites.type neq '',de('no'),de('yes'))#" value="#rstusersfavorites.type#">,
 						<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.toSiteID#">,
 					    #createODBCDateTime(dateCreated)#,
-						<cfqueryparam cfsqltype="cf_sql_integer" null="#iif(isnumeric(columnNumber),de('no'),de('yes'))#" value="#columnNumber#">,
-						<cfqueryparam cfsqltype="cf_sql_integer" null="#iif(isnumeric(rowNumber),de('no'),de('yes'))#" value="#rowNumber#">,
-						<cfqueryparam cfsqltype="cf_sql_integer" null="#iif(isnumeric(maxRSSItems),de('no'),de('yes'))#" value="#maxRSSItems#">
+						<cfqueryparam cfsqltype="cf_sql_integer" null="#iif(isnumeric(rstusersfavorites.columnNumber),de('no'),de('yes'))#" value="#rstusersfavorites.columnNumber#">,
+						<cfqueryparam cfsqltype="cf_sql_integer" null="#iif(isnumeric(rstusersfavorites.rowNumber),de('no'),de('yes'))#" value="#rstusersfavorites.rowNumber#">,
+						<cfqueryparam cfsqltype="cf_sql_integer" null="#iif(isnumeric(rstusersfavorites.maxRSSItems),de('no'),de('yes'))#" value="#rstusersfavorites.maxRSSItems#">
 						)
 					</cfquery>
 				</cfloop>
@@ -1863,25 +1863,25 @@ to your own modified versions of Mura CMS.
 							addressName,country,isPrimary,addressNotes,addressURL,
 							longitude,latitude,addressEmail,hours)
 					     VALUES(
-					        <cfqueryparam cfsqltype="cf_sql_varchar" value="#keys.get(addressID)#">,
-							<cfqueryparam cfsqltype="cf_sql_varchar" value="#keys.get(userID)#">,
+					        <cfqueryparam cfsqltype="cf_sql_varchar" value="#keys.get(rstuseraddresses.addressID)#">,
+							<cfqueryparam cfsqltype="cf_sql_varchar" value="#keys.get(rstuseraddresses.userID)#">,
 							<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.toSiteID#">,
-							<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(Phone neq '',de('no'),de('yes'))#" value="#Phone#">,
-							<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(Fax neq '',de('no'),de('yes'))#" value="#Fax#">,
-							<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(Address1 neq '',de('no'),de('yes'))#" value="#Address1#">,
-							<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(Address2 neq '',de('no'),de('yes'))#" value="#Address2#">,
-							<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(City neq '',de('no'),de('yes'))#" value="#City#">,
-							<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(State neq '',de('no'),de('yes'))#" value="#State#">,
-							<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(Zip neq '',de('no'),de('yes'))#" value="#Zip#">,
-							<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(AddressName neq '',de('no'),de('yes'))#" value="#AddressName#">,
-							<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(Country neq '',de('no'),de('yes'))#" value="#Country#">,
-							#isprimary#,
-							<cfqueryparam cfsqltype="cf_sql_longvarchar" null="#iif(AddressNotes neq '',de('no'),de('yes'))#" value="#AddressNotes#">,
-							<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(AddressURL neq '',de('no'),de('yes'))#" value="#AddressURL#">,
-							#Longitude#,
-							#Latitude#,
-							<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(AddressEmail neq '',de('no'),de('yes'))#" value="#AddressEmail#">,
-							<cfqueryparam cfsqltype="cf_sql_longvarchar" null="#iif(Hours neq '',de('no'),de('yes'))#" value="#Hours#">
+							<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(rstuseraddresses.Phone neq '',de('no'),de('yes'))#" value="#rstuseraddresses.Phone#">,
+							<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(rstuseraddresses.Fax neq '',de('no'),de('yes'))#" value="#rstuseraddresses.Fax#">,
+							<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(rstuseraddresses.Address1 neq '',de('no'),de('yes'))#" value="#rstuseraddresses.Address1#">,
+							<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(rstuseraddresses.Address2 neq '',de('no'),de('yes'))#" value="#rstuseraddresses.Address2#">,
+							<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(rstuseraddresses.City neq '',de('no'),de('yes'))#" value="#rstuseraddresses.City#">,
+							<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(rstuseraddresses.State neq '',de('no'),de('yes'))#" value="#rstuseraddresses.State#">,
+							<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(rstuseraddresses.Zip neq '',de('no'),de('yes'))#" value="#rstuseraddresses.Zip#">,
+							<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(rstuseraddresses.AddressName neq '',de('no'),de('yes'))#" value="#rstuseraddresses.AddressName#">,
+							<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(rstuseraddresses.Country neq '',de('no'),de('yes'))#" value="#rstuseraddresses.Country#">,
+							#rstuseraddresses.isprimary#,
+							<cfqueryparam cfsqltype="cf_sql_longvarchar" null="#iif(rstuseraddresses.AddressNotes neq '',de('no'),de('yes'))#" value="#rstuseraddresses.AddressNotes#">,
+							<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(rstuseraddresses.AddressURL neq '',de('no'),de('yes'))#" value="#rstuseraddresses.AddressURL#">,
+							#rstuseraddresses.Longitude#,
+							#rstuseraddresses.Latitude#,
+							<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(rstuseraddresses.AddressEmail neq '',de('no'),de('yes'))#" value="#rstuseraddresses.AddressEmail#">,
+							<cfqueryparam cfsqltype="cf_sql_longvarchar" null="#iif(rstuseraddresses.Hours neq '',de('no'),de('yes'))#" value="#rstuseraddresses.Hours#">
 							  )
 					</cfquery>
 				</cfloop>
@@ -1900,41 +1900,41 @@ to your own modified versions of Mura CMS.
 						company,jobtitle,subscribe,siteid,website,notes,mobilePhone,
 						description,interests,photoFileID,keepPrivate,IMName,IMService,created,tags, tablist)
 				     VALUES(
-				        <cfqueryparam cfsqltype="cf_sql_varchar" value="#keys.get(userID)#">,
-						 <cfqueryparam cfsqltype="cf_sql_varchar" value="#remoteID#">,
-						 #s2#, 
-						 <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(Fname neq '',de('no'),de('yes'))#" value="#fname#">,
-						  <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(Lname neq '',de('no'),de('yes'))#" value="#lname#">, 
-				         <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(Password neq '',de('no'),de('yes'))#" value="#password#">,
-						 <cfif isDate(passwordCreated)>#createODBCDateTime(passwordCreated)#<cfelse>null</cfif>,
-						 <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(Email neq '',de('no'),de('yes'))#" value="#email#">,
-				         <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(GroupName neq '',de('no'),de('yes'))#" value="#groupname#">, 
-				         #Type#,
-						 <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(SubType neq '',de('no'),de('yes'))#" value="#subtype#">, 
-				        <cfqueryparam cfsqltype="cf_sql_longvarchar" null="#iif(ContactForm neq '',de('no'),de('yes'))#" value="#contactform#">,
-						  <cfif isDate(lastUpdate)>#createodbcdatetime(lastUpdate)#<cfelse>null</cfif>,
-						 <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(LastUpdateBy neq '',de('no'),de('yes'))#" value="#lastupdateBy#">,
-						 <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(LastUpdateById neq '',de('no'),de('yes'))#" value="#keys.get(lastUpdateByID)#">,
-						 #InActive#,
-						 <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(Username neq '',de('no'),de('yes'))#" value="#username#">,
-						  #perm#,
-						  #ispublic#,
-						   <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(Company neq '',de('no'),de('yes'))#" value="#company#">,
-						   <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(JobTitle neq '',de('no'),de('yes'))#" value="#jobTitle#">, 
-						  #subscribe#,
+				        <cfqueryparam cfsqltype="cf_sql_varchar" value="#keys.get(rstusers.userID)#">,
+						 <cfqueryparam cfsqltype="cf_sql_varchar" value="#rstusers.remoteID#">,
+						 #rstusers.s2#, 
+						 <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(rstusers.Fname neq '',de('no'),de('yes'))#" value="#rstusers.fname#">,
+						  <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(rstusers.Lname neq '',de('no'),de('yes'))#" value="#rstusers.lname#">, 
+				         <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(rstusers.Password neq '',de('no'),de('yes'))#" value="#rstusers.password#">,
+						 <cfif isDate(rstusers.passwordCreated)>#createODBCDateTime(rstusers.passwordCreated)#<cfelse>null</cfif>,
+						 <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(rstusers.Email neq '',de('no'),de('yes'))#" value="#rstusers.email#">,
+				         <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(rstusers.GroupName neq '',de('no'),de('yes'))#" value="#rstusers.groupname#">, 
+				         #rstusers.Type#,
+						 <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(rstusers.SubType neq '',de('no'),de('yes'))#" value="#rstusers.subtype#">, 
+				        <cfqueryparam cfsqltype="cf_sql_longvarchar" null="#iif(rstusers.ContactForm neq '',de('no'),de('yes'))#" value="#rstusers.contactform#">,
+						  <cfif isDate(rstusers.lastUpdate)>#createodbcdatetime(rstusers.lastUpdate)#<cfelse>null</cfif>,
+						 <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(rstusers.LastUpdateBy neq '',de('no'),de('yes'))#" value="#rstusers.lastupdateBy#">,
+						 <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(rstusers.LastUpdateById neq '',de('no'),de('yes'))#" value="#keys.get(rstusers.lastUpdateByID)#">,
+						 #rstusers.InActive#,
+						 <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(rstusers.Username neq '',de('no'),de('yes'))#" value="#rstusers.username#">,
+						  #rstusers.perm#,
+						  #rstusers.ispublic#,
+						   <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(rstusers.Company neq '',de('no'),de('yes'))#" value="#rstusers.company#">,
+						   <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(rstusers.JobTitle neq '',de('no'),de('yes'))#" value="#rstusers.jobTitle#">, 
+						  #rstusers.subscribe#,
 						   <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.toSiteID#">,
-						  <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(Website neq '',de('no'),de('yes'))#" value="#website#">,
-						 <cfqueryparam cfsqltype="cf_sql_longvarchar" null="#iif(Notes neq '',de('no'),de('yes'))#" value="#notes#">,
-						 <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(MobilePhone neq '',de('no'),de('yes'))#" value="#mobilePhone#">,
-						  <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(Description neq '',de('no'),de('yes'))#" value="#description#">,
-						 <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(Interests neq '',de('no'),de('yes'))#" value="#translateKeyList(interests,keys)#">,
-						 <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(photoFileID neq '',de('no'),de('yes'))#" value="#keys.get(photoFileID)#">,
-						#KeepPrivate#,
-						 <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(IMName neq '',de('no'),de('yes'))#" value="#IMName#">,
-						 <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(IMService neq '',de('no'),de('yes'))#" value="#IMService#">,
-						  <cfif isDate(created)>#createODBCDAteTime(created)#<cfelse>null</cfif>,
-						 <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(tags neq '',de('no'),de('yes'))#" value="#tags#">,
-						 <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(tablist neq '',de('no'),de('yes'))#" value="#tablist#">
+						  <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(rstusers.Website neq '',de('no'),de('yes'))#" value="#rstusers.website#">,
+						 <cfqueryparam cfsqltype="cf_sql_longvarchar" null="#iif(rstusers.Notes neq '',de('no'),de('yes'))#" value="#rstusers.notes#">,
+						 <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(rstusers.MobilePhone neq '',de('no'),de('yes'))#" value="#rstusers.mobilePhone#">,
+						  <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(rstusers.Description neq '',de('no'),de('yes'))#" value="#rstusers.description#">,
+						 <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(rstusers.Interests neq '',de('no'),de('yes'))#" value="#translateKeyList(rstusers.interests,keys)#">,
+						 <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(rstusers.photoFileID neq '',de('no'),de('yes'))#" value="#keys.get(rstusers.photoFileID)#">,
+						#rstusers.KeepPrivate#,
+						 <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(rstusers.IMName neq '',de('no'),de('yes'))#" value="#rstusers.IMName#">,
+						 <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(rstusers.IMService neq '',de('no'),de('yes'))#" value="#rstusers.IMService#">,
+						  <cfif isDate(rstusers.created)>#createODBCDAteTime(rstusers.created)#<cfelse>null</cfif>,
+						 <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(rstusers.tags neq '',de('no'),de('yes'))#" value="#rstusers.tags#">,
+						 <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(rstusers.tablist neq '',de('no'),de('yes'))#" value="#rstusers.tablist#">
 						 )
 					</cfquery>
 				</cfloop>
@@ -2242,15 +2242,15 @@ to your own modified versions of Mura CMS.
 						isActive, notes, lastUpdate, dateCreated, lastUpdateBy)
 						values
 						(
-						<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(subTypeID)#">,
+						<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(rstclassextend.subTypeID)#">,
 						<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#arguments.toSiteID#">,
-						<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(baseTable neq '',de('no'),de('yes'))#" value="#baseTable#">,
-						<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(baseKeyField neq '',de('no'),de('yes'))#" value="#baseKeyField#">,
-						<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(baseTable neq '',de('no'),de('yes'))#" value="#baseTable#">,
-						<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(type neq '',de('no'),de('yes'))#" value="#type#">,
-						<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(subType neq '',de('no'),de('yes'))#" value="#subType#">,
-						<cfqueryparam cfsqltype="cf_sql_INTEGER" null="#iif(isActive neq '',de('no'),de('yes'))#" value="#isActive#">,
-						<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(notes neq '',de('no'),de('yes'))#" value="#notes#">,
+						<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstclassextend.baseTable neq '',de('no'),de('yes'))#" value="#rstclassextend.baseTable#">,
+						<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstclassextend.baseKeyField neq '',de('no'),de('yes'))#" value="#rstclassextend.baseKeyField#">,
+						<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstclassextend.baseTable neq '',de('no'),de('yes'))#" value="#rstclassextend.baseTable#">,
+						<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstclassextend.type neq '',de('no'),de('yes'))#" value="#rstclassextend.type#">,
+						<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstclassextend.subType neq '',de('no'),de('yes'))#" value="#rstclassextend.subType#">,
+						<cfqueryparam cfsqltype="cf_sql_INTEGER" null="#iif(rstclassextend.isActive neq '',de('no'),de('yes'))#" value="#rstclassextend.isActive#">,
+						<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstclassextend.notes neq '',de('no'),de('yes'))#" value="#rstclassextend.notes#">,
 						#createODBCDateTime(now())#,
 						#createODBCDateTime(now())#,
 						'System'
@@ -2291,24 +2291,24 @@ to your own modified versions of Mura CMS.
 							(
 							<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(rstclassextendsets.extendSetID)#">,
 							<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(rstclassextendsets.subTypeID)#">,
-							<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(categoryID neq '',de('no'),de('yes'))#" value="#translateKeyList(categoryID,keys)#">,
+							<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstclassextendsets.categoryID neq '',de('no'),de('yes'))#" value="#translateKeyList(rstclassextendsets.categoryID,keys)#">,
 							<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#arguments.toSiteID#">,
-							<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(name neq '',de('no'),de('yes'))#" value="#name#">,
-							<cfqueryparam cfsqltype="cf_sql_NUMERIC" null="#iif(orderno neq '',de('no'),de('yes'))#" value="#orderno#">,
-							<cfqueryparam cfsqltype="cf_sql_NUMERIC" null="#iif(isActive neq '',de('no'),de('yes'))#" value="#isActive#">,
-							<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(container neq '',de('no'),de('yes'))#" value="#container#">
+							<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstclassextendsets.name neq '',de('no'),de('yes'))#" value="#rstclassextendsets.name#">,
+							<cfqueryparam cfsqltype="cf_sql_NUMERIC" null="#iif(rstclassextendsets.orderno neq '',de('no'),de('yes'))#" value="#rstclassextendsets.orderno#">,
+							<cfqueryparam cfsqltype="cf_sql_NUMERIC" null="#iif(rstclassextendsets.isActive neq '',de('no'),de('yes'))#" value="#rstclassextendsets.isActive#">,
+							<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstclassextendsets.container neq '',de('no'),de('yes'))#" value="#rstclassextendsets.container#">
 							)
 						</cfquery>
 					<cfelse>
 						<cfquery datasource="#arguments.toDSN#">
 							update tclassextendsets set
 							subtypeID=<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(rstclassextendsets.subTypeID)#">,
-							categoryID=<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(categoryID neq '',de('no'),de('yes'))#" value="#translateKeyList(categoryID,keys)#">,
+							categoryID=<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstclassextendsets.categoryID neq '',de('no'),de('yes'))#" value="#translateKeyList(rstclassextendsets.categoryID,keys)#">,
 							siteiD=<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#arguments.toSiteID#">,
-							name=<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(name neq '',de('no'),de('yes'))#" value="#name#">,
-							orderno=<cfqueryparam cfsqltype="cf_sql_NUMERIC" null="#iif(orderno neq '',de('no'),de('yes'))#" value="#orderno#">,
-							isactive=<cfqueryparam cfsqltype="cf_sql_NUMERIC" null="#iif(isActive neq '',de('no'),de('yes'))#" value="#isActive#">,
-							container=<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(container neq '',de('no'),de('yes'))#" value="#container#">
+							name=<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstclassextendsets.name neq '',de('no'),de('yes'))#" value="#rstclassextendsets.name#">,
+							orderno=<cfqueryparam cfsqltype="cf_sql_NUMERIC" null="#iif(rstclassextendsets.orderno neq '',de('no'),de('yes'))#" value="#rstclassextendsets.orderno#">,
+							isactive=<cfqueryparam cfsqltype="cf_sql_NUMERIC" null="#iif(rstclassextendsets.isActive neq '',de('no'),de('yes'))#" value="#rstclassextendsets.isActive#">,
+							container=<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstclassextendsets.container neq '',de('no'),de('yes'))#" value="#rstclassextendsets.container#">
 							where extendsetID = <cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(rstclassextendsets.extendSetID)#">
 						</cfquery>	
 					</cfif>
@@ -2340,26 +2340,26 @@ to your own modified versions of Mura CMS.
 					</cfquery>
 
 					<cfif getAttributeID.recordcount>
-						<cfset keys.get(attributeID, getAttributeID.attributeID)>
+						<cfset keys.get(rstclassextendattributes.attributeID, getAttributeID.attributeID)>
 						<cfset existingAttributeList=listAppend(existingAttributeList,keys.get(attributeID))>
 						<cfquery datasource="#arguments.toDSN#">
 							update tclassextendattributes set
-							extendSetID=<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(extendSetID)#">,
+							extendSetID=<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(rstclassextendattributes.extendSetID)#">,
 							siteID=<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#arguments.toSiteID#">,
-							name=<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(name neq '',de('no'),de('yes'))#" value="#name#">,
-							label=<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(label neq '',de('no'),de('yes'))#" value="#label#">,
-							hint=<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(hint neq '',de('no'),de('yes'))#" value="#hint#">,
-							type=<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(type neq '',de('no'),de('yes'))#" value="#type#">,
-							orderno=<cfqueryparam cfsqltype="cf_sql_INTEGER" null="#iif(orderno neq '',de('no'),de('yes'))#" value="#orderno#">,
-							isActive=<cfqueryparam cfsqltype="cf_sql_INTEGER" null="#iif(isActive neq '',de('no'),de('yes'))#" value="#isActive#">,
-							required=<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(required neq '',de('no'),de('yes'))#" value="#required#">,
-							validation=<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(validation neq '',de('no'),de('yes'))#" value="#validation#">,
-							regex=<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(regex neq '',de('no'),de('yes'))#" value="#regex#">,
-							message=<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(message neq '',de('no'),de('yes'))#" value="#message#">,
-							defaultValue=<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(defaultValue neq '',de('no'),de('yes'))#" value="#defaultValue#">,
-							optionlist=<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(optionList neq '',de('no'),de('yes'))#" value="#optionList#">,
-							optionlabellist=<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(optionLabelList neq '',de('no'),de('yes'))#" value="#optionLabelList#">
-							where attributeID=<cfqueryparam cfsqltype="cf_sql_INTEGER" value="#keys.get(attributeID)#">
+							name=<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstclassextendattributes.name neq '',de('no'),de('yes'))#" value="#vname#">,
+							label=<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstclassextendattributes.label neq '',de('no'),de('yes'))#" value="#rstclassextendattributes.label#">,
+							hint=<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstclassextendattributes.hint neq '',de('no'),de('yes'))#" value="#rstclassextendattributes.hint#">,
+							type=<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstclassextendattributes.type neq '',de('no'),de('yes'))#" value="#rstclassextendattributes.type#">,
+							orderno=<cfqueryparam cfsqltype="cf_sql_INTEGER" null="#iif(rstclassextendattributes.orderno neq '',de('no'),de('yes'))#" value="#rstclassextendattributes.orderno#">,
+							isActive=<cfqueryparam cfsqltype="cf_sql_INTEGER" null="#iif(rstclassextendattributes.isActive neq '',de('no'),de('yes'))#" value="#rstclassextendattributes.isActive#">,
+							required=<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstclassextendattributes.required neq '',de('no'),de('yes'))#" value="#rstclassextendattributes.required#">,
+							validation=<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstclassextendattributes.validation neq '',de('no'),de('yes'))#" value="#rstclassextendattributes.validation#">,
+							regex=<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstclassextendattributes.regex neq '',de('no'),de('yes'))#" value="#rstclassextendattributes.regex#">,
+							message=<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstclassextendattributes.message neq '',de('no'),de('yes'))#" value="#rstclassextendattributes.message#">,
+							defaultValue=<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstclassextendattributes.defaultValue neq '',de('no'),de('yes'))#" value="#rstclassextendattributes.defaultValue#">,
+							optionlist=<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstclassextendattributes.optionList neq '',de('no'),de('yes'))#" value="#rstclassextendattributes.optionList#">,
+							optionlabellist=<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstclassextendattributes.optionLabelList neq '',de('no'),de('yes'))#" value="#rstclassextendattributes.optionLabelList#">
+							where attributeID=<cfqueryparam cfsqltype="cf_sql_INTEGER" value="#keys.get(rstclassextendattributes.attributeID)#">
 						</cfquery>
 				
 						
@@ -2370,21 +2370,21 @@ to your own modified versions of Mura CMS.
 								type, orderno, isActive, required, validation, regex, message, defaultValue, optionList, optionLabelList)
 							values
 							(
-							<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(extendSetID)#">,
+							<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(rstclassextendattributes.extendSetID)#">,
 							<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#arguments.toSiteID#">,
-							<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(name neq '',de('no'),de('yes'))#" value="#name#">,
-							<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(label neq '',de('no'),de('yes'))#" value="#label#">,
-							<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(hint neq '',de('no'),de('yes'))#" value="#hint#">,
-							<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(type neq '',de('no'),de('yes'))#" value="#type#">,
-							<cfqueryparam cfsqltype="cf_sql_INTEGER" null="#iif(orderno neq '',de('no'),de('yes'))#" value="#orderno#">,
-							<cfqueryparam cfsqltype="cf_sql_INTEGER" null="#iif(isActive neq '',de('no'),de('yes'))#" value="#isActive#">,
-							<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(required neq '',de('no'),de('yes'))#" value="#required#">,
-							<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(validation neq '',de('no'),de('yes'))#" value="#validation#">,
-							<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(regex neq '',de('no'),de('yes'))#" value="#regex#">,
-							<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(message neq '',de('no'),de('yes'))#" value="#message#">,
-							<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(defaultValue neq '',de('no'),de('yes'))#" value="#defaultValue#">,
-							<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(optionList neq '',de('no'),de('yes'))#" value="#optionList#">,
-							<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(optionLabelList neq '',de('no'),de('yes'))#" value="#optionLabelList#">
+							<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstclassextendattributes.name neq '',de('no'),de('yes'))#" value="#rstclassextendattributes.name#">,
+							<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstclassextendattributes.label neq '',de('no'),de('yes'))#" value="#rstclassextendattributes.label#">,
+							<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstclassextendattributes.hint neq '',de('no'),de('yes'))#" value="#rstclassextendattributes.hint#">,
+							<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstclassextendattributes.type neq '',de('no'),de('yes'))#" value="#rstclassextendattributes.type#">,
+							<cfqueryparam cfsqltype="cf_sql_INTEGER" null="#iif(rstclassextendattributes.orderno neq '',de('no'),de('yes'))#" value="#rstclassextendattributes.orderno#">,
+							<cfqueryparam cfsqltype="cf_sql_INTEGER" null="#iif(rstclassextendattributes.isActive neq '',de('no'),de('yes'))#" value="#rstclassextendattributes.isActive#">,
+							<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstclassextendattributes.required neq '',de('no'),de('yes'))#" value="#rstclassextendattributes.required#">,
+							<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstclassextendattributes.validation neq '',de('no'),de('yes'))#" value="#rstclassextendattributes.validation#">,
+							<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstclassextendattributes.regex neq '',de('no'),de('yes'))#" value="#rstclassextendattributes.regex#">,
+							<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstclassextendattributes.message neq '',de('no'),de('yes'))#" value="#rstclassextendattributes.message#">,
+							<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstclassextendattributes.defaultValue neq '',de('no'),de('yes'))#" value="#rstclassextendattributes.defaultValue#">,
+							<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstclassextendattributes.optionList neq '',de('no'),de('yes'))#" value="#rstclassextendattributes.optionList#">,
+							<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstclassextendattributes.optionLabelList neq '',de('no'),de('yes'))#" value="#rstclassextendattributes.optionLabelList#">
 							)
 						</cfquery>
 						
@@ -2392,16 +2392,16 @@ to your own modified versions of Mura CMS.
 						select max(attributeID) as newID from tclassextendattributes
 						</cfquery>
 						
-						<cfset keys.get(attributeID, getAttributeID.newID)>
+						<cfset keys.get(rstclassextendattributes.attributeID, getAttributeID.newID)>
 						
 					</cfif>
 					
 					<!--- Extended attribute values of type file need to go through the key factory--->
-					<cfif type eq "File">
-						<cfset fileattributelist=listAppend(fileattributelist,keys.get(attributeID))>
+					<cfif rstclassextendattributes.type eq "File">
+						<cfset fileattributelist=listAppend(fileattributelist,keys.get(rstclassextendattributes.attributeID))>
 					</cfif>
 					
-					<cfset incomingAttributeList=listAppend(incomingAttributeList,attributeID)>
+					<cfset incomingAttributeList=listAppend(incomingAttributeList,rstclassextendattributes.attributeID)>
 					
 				</cfloop>
 			
@@ -2474,29 +2474,29 @@ to your own modified versions of Mura CMS.
 							)
 							values
 							(
-							<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(baseID)#">,
-							<cfqueryparam cfsqltype="cf_sql_INTEGER" value="#keys.get(attributeID)#">,
+							<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(rstclassextenddata.baseID)#">,
+							<cfqueryparam cfsqltype="cf_sql_INTEGER" value="#keys.get(rstclassextenddata.attributeID)#">,
 							
 							<!--- Extended attribute values of type file need to go through the key factory--->
-							<cfif listFind(fileattributelist,keys.get(attributeID))>
-								<cfqueryparam cfsqltype="cf_sql_LONGVARCHAR" null="#iif(attributeValue neq '',de('no'),de('yes'))#" value="#keys.get(attributeValue)#">,
-								<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(stringvalue neq '',de('no'),de('yes'))#" value="#keys.get(stringValue)#">,
+							<cfif listFind(fileattributelist,keys.get(rstclassextenddata.attributeID))>
+								<cfqueryparam cfsqltype="cf_sql_LONGVARCHAR" null="#iif(rstclassextenddata.attributeValue neq '',de('no'),de('yes'))#" value="#keys.get(rstclassextenddata.attributeValue)#">,
+								<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstclassextenddata.stringvalue neq '',de('no'),de('yes'))#" value="#keys.get(rstclassextenddata.stringValue)#">,
 							<cfelse>
-								<cfqueryparam cfsqltype="cf_sql_LONGVARCHAR" null="#iif(attributeValue neq '',de('no'),de('yes'))#" value="#attributeValue#">,
-								<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(stringvalue neq '',de('no'),de('yes'))#" value="#stringvalue#">,
+								<cfqueryparam cfsqltype="cf_sql_LONGVARCHAR" null="#iif(rstclassextenddata.attributeValue neq '',de('no'),de('yes'))#" value="#rstclassextenddata.attributeValue#">,
+								<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstclassextenddata.stringvalue neq '',de('no'),de('yes'))#" value="#rstclassextenddata.stringvalue#">,
 							</cfif>
 							
 							<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#arguments.tositeID#">,
-							<cfqueryparam cfsqltype="cf_sql_NUMERIC" null="#iif(isNumeric(numericvalue),de('no'),de('yes'))#" value="#numericvalue#">,
-							<cfqueryparam cfsqltype="cf_sql_TIMESTAMP" null="#iif(isDate(datetimevalue),de('no'),de('yes'))#" value="#datetimevalue#">,
-							<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(remoteID neq '',de('no'),de('yes'))#" value="#remoteID#">
+							<cfqueryparam cfsqltype="cf_sql_NUMERIC" null="#iif(isNumeric(rstclassextenddata.numericvalue),de('no'),de('yes'))#" value="#rstclassextenddata.numericvalue#">,
+							<cfqueryparam cfsqltype="cf_sql_TIMESTAMP" null="#iif(isDate(rstclassextenddata.datetimevalue),de('no'),de('yes'))#" value="#rstclassextenddata.datetimevalue#">,
+							<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstclassextenddata.remoteID neq '',de('no'),de('yes'))#" value="#rstclassextenddata.remoteID#">
 							
 							)
 						</cfquery>
 						<cfcatch>
-							<cfdump var="#baseID#">
-							<cfdump var="#attributeID#">
-							<cfdump var="#keys.get(attributeID)#">
+							<cfdump var="#rstclassextenddata.baseID#">
+							<cfdump var="#rstclassextenddata.attributeID#">
+							<cfdump var="#keys.get(rstclassextenddata.attributeID)#">
 							<cfdump var="#cfcatch#">
 							<cfabort>
 						</cfcatch>
@@ -2524,28 +2524,28 @@ to your own modified versions of Mura CMS.
 							insert into tclassextenddatauseractivity (baseID,attributeID,attributeValue,stringvalue,siteID,numericvalue,datetimevalue,remoteID)
 							values
 							(
-							<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(baseID)#">,
-							<cfqueryparam cfsqltype="cf_sql_INTEGER" value="#keys.get(attributeID)#">,
+							<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(rstclassextenddatauseractivity.baseID)#">,
+							<cfqueryparam cfsqltype="cf_sql_INTEGER" value="#keys.get(rstclassextenddatauseractivity.attributeID)#">,
 							
 							<!--- Extended attribute values of type file need to go through the key factory--->
-							<cfif listFind(fileattributelist,keys.get(attributeID))>
-								<cfqueryparam cfsqltype="cf_sql_LONGVARCHAR" null="#iif(attributeValue neq '',de('no'),de('yes'))#" value="#keys.get(attributeValue)#">,
-								<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(stringvalue neq '',de('no'),de('yes'))#" value="#keys.get(stringValue)#">,
+							<cfif listFind(fileattributelist,keys.get(rstclassextenddatauseractivity.attributeID))>
+								<cfqueryparam cfsqltype="cf_sql_LONGVARCHAR" null="#iif(rstclassextenddatauseractivity.attributeValue neq '',de('no'),de('yes'))#" value="#keys.get(rstclassextenddatauseractivity.attributeValue)#">,
+								<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstclassextenddatauseractivity.stringvalue neq '',de('no'),de('yes'))#" value="#keys.get(rstclassextenddatauseractivity.stringValue)#">,
 							<cfelse>
-								<cfqueryparam cfsqltype="cf_sql_LONGVARCHAR" null="#iif(attributeValue neq '',de('no'),de('yes'))#" value="#attributeValue#">,
-								<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(stringvalue neq '',de('no'),de('yes'))#" value="#stringvalue#">,
+								<cfqueryparam cfsqltype="cf_sql_LONGVARCHAR" null="#iif(rstclassextenddatauseractivity.attributeValue neq '',de('no'),de('yes'))#" value="#rstclassextenddatauseractivity.attributeValue#">,
+								<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstclassextenddatauseractivity.stringvalue neq '',de('no'),de('yes'))#" value="#rstclassextenddatauseractivity.stringvalue#">,
 							</cfif>
 							
 							<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#arguments.tositeID#">,
-							<cfqueryparam cfsqltype="cf_sql_NUMERIC" null="#iif(isNumeric(numericvalue),de('no'),de('yes'))#" value="#numericvalue#">,
-							<cfqueryparam cfsqltype="cf_sql_TIMESTAMP" null="#iif(isDate(datetimevalue),de('no'),de('yes'))#" value="#datetimevalue#">,
-							<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(remoteID neq '',de('no'),de('yes'))#" value="#remoteID#">
+							<cfqueryparam cfsqltype="cf_sql_NUMERIC" null="#iif(isNumeric(rstclassextenddatauseractivity.numericvalue),de('no'),de('yes'))#" value="#rstclassextenddatauseractivity.numericvalue#">,
+							<cfqueryparam cfsqltype="cf_sql_TIMESTAMP" null="#iif(isDate(rstclassextenddatauseractivity.datetimevalue),de('no'),de('yes'))#" value="#rstclassextenddatauseractivity.datetimevalue#">,
+							<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstclassextenddatauseractivity.remoteID neq '',de('no'),de('yes'))#" value="#rstclassextenddatauseractivity.remoteID#">
 							)
 						</cfquery>
 						<cfcatch>
-							<cfdump var="#baseID#">
-							<cfdump var="#attributeID#">
-							<cfdump var="#attributeValue#">
+							<cfdump var="#rstclassextenddatauseractivity.baseID#">
+							<cfdump var="#rstclassextenddatauseractivity.attributeID#">
+							<cfdump var="#rstclassextenddatauseractivity.attributeValue#">
 							<cfdump var="#cfcatch#">
 							<cfabort>
 						</cfcatch>
@@ -2719,11 +2719,11 @@ to your own modified versions of Mura CMS.
 								insert into tpluginscripts (scriptID,moduleID,scriptfile,runat,docache)
 								values
 								(
-								<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(scriptID)#">,
+								<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(rstpluginscripts.scriptID)#">,
 								<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(rstplugins.moduleID)#">,
-								<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(scriptfile neq '',de('no'),de('yes'))#" value="#scriptfile#">,
-								<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(runat neq '',de('no'),de('yes'))#" value="#runat#">,
-								<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(docache),de(docache),de(0))#">
+								<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstpluginscripts.scriptfile neq '',de('no'),de('yes'))#" value="#rstpluginscripts.scriptfile#">,
+								<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstpluginscripts.runat neq '',de('no'),de('yes'))#" value="#rstpluginscripts.runat#">,
+								<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(rstpluginscripts.docache),de(rstpluginscripts.docache),de(0))#">
 								
 								)
 							</cfquery>
@@ -2746,13 +2746,13 @@ to your own modified versions of Mura CMS.
 								insert into tplugindisplayobjects (objectID,moduleID,name,location,displayObjectFile,displayMethod,docache)
 								values
 								(
-								<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(objectID)#">,
+								<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(rstplugindisplayobjects.objectID)#">,
 								<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(rstplugins.moduleID)#">,
-								<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(name neq '',de('no'),de('yes'))#" value="#name#">,
-								<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(location neq '',de('no'),de('yes'))#" value="#location#">,
-								<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(displayObjectFile neq '',de('no'),de('yes'))#" value="#displayObjectFile#">,
-								<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(displayMethod neq '',de('no'),de('yes'))#" value="#displayMethod#">,
-								<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(docache),de(docache),de(0))#">
+								<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstplugindisplayobjects.name neq '',de('no'),de('yes'))#" value="#rstplugindisplayobjects.name#">,
+								<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstplugindisplayobjects.location neq '',de('no'),de('yes'))#" value="#rstplugindisplayobjects.location#">,
+								<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstplugindisplayobjects.displayObjectFile neq '',de('no'),de('yes'))#" value="#rstplugindisplayobjects.displayObjectFile#">,
+								<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstplugindisplayobjects.displayMethod neq '',de('no'),de('yes'))#" value="#rstplugindisplayobjects.displayMethod#">,
+								<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(rstplugindisplayobjects.docache),de(rstplugindisplayobjects.docache),de(0))#">
 								
 								)
 							</cfquery>
@@ -2776,8 +2776,8 @@ to your own modified versions of Mura CMS.
 								values
 								(
 								<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(rstplugins.moduleID)#">,
-								<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(name neq '',de('no'),de('yes'))#" value="#name#">,
-								<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(settingValue neq '',de('no'),de('yes'))#" value="#settingValue#">
+								<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstpluginsettings.name neq '',de('no'),de('yes'))#" value="#rstpluginsettings.name#">,
+								<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstpluginsettings.settingValue neq '',de('no'),de('yes'))#" value="#rstpluginsettings.settingValue#">
 								
 								)
 							</cfquery>

@@ -97,13 +97,13 @@ to your own modified versions of Mura CMS.
 		<cfdirectory action="list" directory="#variables.unpackPath#" name="rsImportFiles" filter="*.xml" type="file">
 
 		<cfloop query="rsImportFiles">
-			<cfset fname = rereplace(name,"^wddx_(.*)\.xml","\1") />
-			<cffile action="read" file="#variables.unpackPath##name#" variable="importWDDX" charset="utf-8">
+			<cfset fname = rereplace(rsImportFiles.name,"^wddx_(.*)\.xml","\1") />
+			<cffile action="read" file="#variables.unpackPath##rsImportFiles.name#" variable="importWDDX" charset="utf-8">
 			<cfset importWDDX=REReplace(importWDDX,'[\xc]','','ALL')>
 			<cftry>
 				<cfwddx action="wddx2cfml" input=#importWDDX# output="importValue">
 			<cfcatch>
-				<cfdump var="An error happened while trying to deserialize #name#.">
+				<cfdump var="An error happened while trying to deserialize #rsImportFiles.name#.">
 				<cfdump var="#cfcatch#">
 				<cfabort>
 			</cfcatch>
@@ -134,8 +134,8 @@ to your own modified versions of Mura CMS.
 			<cfset nFileID = rstfiles.fileID />
 			<cfdirectory name="rsNameFiles" directory="#filePath#" filter="#nFileID#*.*">
 			<cfloop query="rsNameFiles">
-				<cfset toName = replace(name,nFileID,keys.get(nFileID))>
-				<cfset variables.fileWriter.renameFile(source="#filePath##variables.fileDelim##name#", destination="#filePath##variables.fileDelim##toName#")>
+				<cfset toName = replace(rsNameFiles.name,nFileID,keys.get(nFileID))>
+				<cfset variables.fileWriter.renameFile(source="#filePath##variables.fileDelim##rsNameFiles.name#", destination="#filePath##variables.fileDelim##toName#")>
 			</cfloop>
 		</cfloop>
 	</cffunction>

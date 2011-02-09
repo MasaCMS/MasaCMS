@@ -55,7 +55,7 @@ to your own modified versions of Mura CMS.
           <cfif request.rsList.recordcount>
             <cfoutput query="request.rsList" maxrows="#request.nextN.recordsperPage#" startrow="#attributes.startrow#"> 
               <tr> 
-                <td class="varWidth"><a  title="#application.rbFactory.getKeyValue(session.rb,'user.edit')#" href="index.cfm?fuseaction=cPrivateUsers.edituser&userid=#request.rsList.UserID#&type=2&siteid=#URLEncodedFormat(attributes.siteid)#">#HTMLEditFormat(lname)#, #HTMLEditFormat(fname)# <cfif company neq ''> (#HTMLEditFormat(company)#)</cfif></a></td>
+                <td class="varWidth"><a  title="#application.rbFactory.getKeyValue(session.rb,'user.edit')#" href="index.cfm?fuseaction=cPrivateUsers.edituser&userid=#request.rsList.UserID#&type=2&siteid=#URLEncodedFormat(attributes.siteid)#">#HTMLEditFormat(request.rslist.lname)#, #HTMLEditFormat(request.rslist.fname)# <cfif request.rslist.company neq ''> (#HTMLEditFormat(request.rslist.company)#)</cfif></a></td>
                 <td><cfif request.rsList.email gt ""><a href="mailto:#HTMLEditFormat(request.rsList.email)#">#HTMLEditFormat(request.rsList.email)#</a><cfelse>&nbsp;</cfif></td>
                 <td>#LSDateFormat(request.rslist.lastupdate,session.dateKeyFormat)#</td>
               <td>#LSTimeFormat(request.rslist.lastupdate,"short")#</td>
