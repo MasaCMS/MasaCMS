@@ -187,13 +187,7 @@ to your own modified versions of Mura CMS.
 				<cfset pluginManager.announceEvent("onBeforeFileRender",pluginEvent)>
 				<cfset delim=variables.configBean.getFileDelim() />
 				<cfset theFileLocation="#variables.configBean.getFileDir()##delim##rsFileData.siteid##delim#cache#delim#file#delim##arguments.fileID#.#rsFileData.fileExt#" />
-				<cfset fileCheck = FileOpen(theFileLocation, "readBinary")>
-				<cfif rsFileData.contentType eq "video">
-					<cfset arguments.method = "attachment">
-				</cfif>
-				<cfheader name="Content-Disposition" value='#arguments.method#;filename="#rsfileData.filename#"'> 
-				<cfheader name="Content-Length" value="#fileCheck.size#">
-				<cfcontent file="#theFileLocation#" type="#rsfileData.contentType#/#rsfileData.contentSubType#">
+				<cfset streamFile(theFileLocation,rsfileData.filename,"#rsfileData.contentType#/#rsfileData.contentSubType#",arguments.method)>
 				<cfset pluginManager.announceEvent("onAfterFileRender",pluginEvent)>
 			</cfcase>
 			<cfcase value="S3">	
@@ -247,10 +241,7 @@ to your own modified versions of Mura CMS.
 				</cfif>
 				<cfset delim=variables.configBean.getFileDelim() />
 				<cfset theFileLocation="#variables.configBean.getFileDir()##delim##rsFile.siteid##delim#cache#delim#file#delim##arguments.fileID#_small.#rsFile.fileExt#" />
-				<cfset fileCheck = FileOpen(theFileLocation, "readBinary")>
-				<cfheader name="Content-Disposition" value='#arguments.method#;filename="#rsFile.filename#"'> 
-				<cfheader name="Content-Length" value="#fileCheck.size#">
-				<cfcontent file="#theFileLocation#" type="#rsFile.contentType#/#rsFile.contentSubType#">
+				<cfset streamFile(theFileLocation,rsFile.filename,"#rsFile.contentType#/#rsFile.contentSubType#",arguments.method)>
 			</cfcase>
 			<cfcase value="S3">
 				<cfset renderS3(fileid=arguments.fileid,method=arguments.method,size="_small") />
@@ -294,10 +285,7 @@ to your own modified versions of Mura CMS.
 				</cfif>
 				<cfset delim=variables.configBean.getFileDelim() />
 				<cfset theFileLocation="#variables.configBean.getFileDir()##delim##rsFile.siteid##delim#cache#delim#file#delim##arguments.fileID#_medium.#rsFile.fileExt#" />
-				<cfset fileCheck = FileOpen(theFileLocation, "readBinary")>
-				<cfheader name="Content-Disposition" value='#arguments.method#;filename="#rsFile.filename#"'> 
-				<cfheader name="Content-Length" value="#fileCheck.size#">
-				<cfcontent file="#theFileLocation#" type="#rsFile.contentType#/#rsFile.contentSubType#">
+				<cfset streamFile(theFileLocation,rsFile.filename,"#rsFile.contentType#/#rsFile.contentSubType#",arguments.method)>
 			</cfcase>
 			<cfcase value="S3">
 				<cfset renderS3(fileid=arguments.fileid,method=arguments.method,size="_medium") />
@@ -306,7 +294,7 @@ to your own modified versions of Mura CMS.
 		
 </cffunction>
 
-<cffunction name="renderMimeType" output="true" access="public">
+<cffunction name="renderMimeType" output="true" access="public" hint="deprecated in favor of streamFile">
 <cfargument name="mimeType" default="" required="yes" type="string">
 <cfargument name="file" default="" required="yes" type="any">
 
@@ -488,6 +476,27 @@ select fileID from tfiles where siteID=<cfqueryparam cfsqltype="cf_sql_varchar" 
 		<cffile action="delete" file="#filepath##rsDir.name#">
 	</cfif>
 </cfloop>
+</cffunction>
+
+<cffunction name="streamFile" output="false">
+<cfargument name="filePath">
+<cfargument name="filename">
+<cfargument name="mimetype">
+<cfargument name="method" type="string" required="true" default="inline">
+<cfset var local=structNew()>
+
+	<cfif findNoCase("video",arguments.mimetype)>
+		<cfset arguments.method = "attachment">
+	</cfif>
+
+	<cfif application.CFVersion gt 7>
+    	    <cfset local.fileCheck = FileOpen(arguments.filepath, "readBinary")>
+    		<cfheader name="Content-Length" value="#listFirst(local.fileCheck.size,' ')#">
+    </cfif>
+
+	<cfheader name="Content-Disposition" value='#arguments.method#;filename="#arguments.filename#"'>
+	<cfcontent file="#arguments.filePath#" type="#arguments.mimetype#">
+
 </cffunction>
 
 </cfcomponent>

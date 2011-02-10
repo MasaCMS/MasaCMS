@@ -578,6 +578,6 @@ to your own modified versions of Mura CMS.
 		<alias name="pluginManager" alias="eventManager"/>
 		<alias name="settingsBundle" alias="bundle"/>
 		<!---coldspring.custom.xml.cfm reference is for backwards compatability --->
-		<cfif not servicesLoaded and fileExists(expandPath("/muraWRM/config/coldspring.custom.xml.cfm"))><cfinclude template="/muraWRM/config/coldspring.custom.xml.cfm"></cfif>
+		<cfif fileExists(expandPath("/muraWRM/config/coldspring.custom.xml.cfm"))><cfinclude template="/muraWRM/config/coldspring.custom.xml.cfm"></cfif>
 	</beans></cfoutput>
 	</cfsavecontent>

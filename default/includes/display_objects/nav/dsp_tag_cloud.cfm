@@ -42,8 +42,8 @@ to your own modified versions of Mura CMS.
 --->
 <cfsilent>
 <cfset tags=application.contentGateway.getTagCloud(request.siteID,arguments.parentID,arguments.categoryID,arguments.rsContent) />
-<cfset  tagValueArray = ListToArray(ValueList(tags.tagCount))>
-<cfset  max = ArrayMax(tagValueArray)>
+<cfset tagValueArray = ListToArray(ValueList(tags.tagCount))>
+<cfset max = ArrayMax(tagValueArray)>
 <cfset min = ArrayMin(tagValueArray)>
 <cfset diff = max - min>
 <cfset distribution = diff>
@@ -69,7 +69,7 @@ to your own modified versions of Mura CMS.
 	</cfif>
 	<cfset args = ArrayNew(1)>
      <cfset args[1] = tags.tagcount>
-</cfsilent><li class="#class#"><span><cfif tags.tagcount gt 1> #rbFactory.getResourceBundle().messageFormat(rbFactory.getKey('tagcloud.itemsare'), args)#<cfelse>#rbFactory.getResourceBundle().messageFormat(rbFactory.getKey('tagcloud.itemis'), args)#</cfif> tagged with </span><a href="?tag=#urlEncodedFormat(tags.tag)#&newSearch=true&display=search" class="tag">#tag#</a></li>
+</cfsilent><li class="#class#"><span><cfif tags.tagcount gt 1> #rbFactory.getResourceBundle().messageFormat(rbFactory.getKey('tagcloud.itemsare'), args)#<cfelse>#rbFactory.getResourceBundle().messageFormat(rbFactory.getKey('tagcloud.itemis'), args)#</cfif> tagged with </span><a href="?tag=#urlEncodedFormat(tags.tag)#&newSearch=true&display=search" class="tag">#tags.tag#</a></li>
 </cfloop>
 </ol>
 <cfelse>

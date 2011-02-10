@@ -683,11 +683,11 @@ function setHTMLEditors() {
 					CKEDITOR.remove(instance);
 				} 
 				
-				if(jQuery('#' + allPageTags[i].id).val() == ''){
-					jQuery('#' + allPageTags[i].id).val("<p></p>")
+				if(jQuery(document.getElementById(allPageTags[i].id)).val() == ''){
+					jQuery(document.getElementById(allPageTags[i].id)).val("<p></p>")
 				}
 				
-				jQuery('#' + allPageTags[i].id).ckeditor( { toolbar: 'Default',customConfig : 'config.js.cfm' },htmlEditorOnComplete);
+				jQuery(document.getElementById(allPageTags[i].id)).ckeditor( { toolbar: 'Default',customConfig : 'config.js.cfm' },htmlEditorOnComplete);
 				
 			}
 		}

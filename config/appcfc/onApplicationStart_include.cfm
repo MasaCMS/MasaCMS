@@ -124,7 +124,12 @@ to your own modified versions of Mura CMS.
 		
 		<cfset variables.iniProperties.webroot = expandPath("/muraWRM") />
 		
-		<cfset servicesLoaded=false>	
+		<cfinclude template="/muraWRM/config/coldspring.xml.cfm" />
+		
+		<!--- load the core services.xml --->
+		<cfset variables.serviceFactory=createObject("component","coldspring.beans.DefaultXmlBeanFactory").init() />
+		<cfset variables.serviceFactory.loadBeansFromXMLRaw(servicesXML,true) />
+		
 		<!--- If coldspring.custom.xml.cfm exists read it in an check it it is valid xml--->
 		<cfif fileExists(expandPath("/muraWRM/config/coldspring.custom.xml.cfm"))>	
 			<cffile action="read" variable="customServicesXML" file="#expandPath('/muraWRM/config/coldspring.custom.xml.cfm')#">
@@ -133,21 +138,8 @@ to your own modified versions of Mura CMS.
 					<cfset customServicesXML= "<beans>" & customServicesXML & "</beans>">
 				</cfif>
 				<cfset customServicesXML=replaceNoCase(customServicesXML, "##mapdir##","mura","ALL")>
-				<cfset variables.serviceFactory=createObject("component","coldspring.beans.DefaultXmlBeanFactory").init() />
 				<cfset variables.serviceFactory.loadBeansFromXMLRaw(customServicesXML,true) />
-				<cfset servicesLoaded=true>	
 			</cfif>
-		</cfif>
-		
-		<cfinclude template="/muraWRM/config/coldspring.xml.cfm" />
-		
-		<cfif not servicesLoaded>
-			<cfset variables.serviceFactory=createObject("component","coldspring.beans.DefaultXmlBeanFactory").init() />
-			<cfset variables.serviceFactory.loadBeansFromXMLRaw(servicesXML,true) />
-		<cfelse>
-			<cfset parentServiceFactory=createObject("component","coldspring.beans.DefaultXmlBeanFactory").init() />
-			<cfset parentServiceFactory.loadBeansFromXMLRaw(servicesXML,true) />
-			<cfset variables.serviceFactory.setParent(parentServiceFactory)>
 		</cfif>
 		
 		<cfset application.serviceFactory=variables.serviceFactory>
@@ -222,6 +214,7 @@ to your own modified versions of Mura CMS.
 		</cfloop>	
 					
 		<cfset application.appInitialized=true/>
+		<cfset application.CFVersion = Left(SERVER.COLDFUSION.PRODUCTVERSION,Find(",",SERVER.COLDFUSION.PRODUCTVERSION)-1) />
 		<cfset application.appInitializedTime=now()>
 		<cfif application.broadcastInit>
 			<cfset application.clusterManager.reload()>

@@ -53,8 +53,8 @@
 	<cfset var new = "">
 	<cfset var x = "">
 	<cfset var counter = 0>
-	
-	<cfif isStruct(arguments.output)>
+
+	<cfif isDefined('arguments.output.mode')>
 		<cftry>
 			<cfset new = FileOpen(arguments.file, "write")>
 
@@ -67,7 +67,11 @@
 			<cfset FileClose(arguments.output)>
 			<cfset FileClose(new)>
 			
-			<cfset FileDelete(arguments.output.path & "/" & arguments.output.name)>
+			<cfif fileExists(arguments.output.path)>
+				<cfset FileDelete(arguments.output.path)>
+			<cfelseif fileExists(arguments.output.path & "/" & arguments.output.name)>
+				<cfset FileDelete(arguments.output.path & "/" & arguments.output.name)>
+			</cfif>
 			
 			<cfcatch>
 				<cfif session.mura.username eq "Admin">
@@ -79,7 +83,7 @@
 			</cfcatch>
 		</cftry>
 	<cfelse>
-		<cfif variables.useMode >
+		<cfif variables.useMode >		
 			<cffile action="write" mode="#arguments.mode#" file="#arguments.file#" output="#arguments.output#" addnewline="#arguments.addNewLine#"/>
 		<cfelse>
 			<cffile action="write" file="#arguments.file#" output="#arguments.output#" addnewline="#arguments.addNewLine#"/>

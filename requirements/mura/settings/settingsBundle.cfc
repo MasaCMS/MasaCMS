@@ -1192,10 +1192,15 @@ to your own modified versions of Mura CMS.
 		<cfif len(arguments.siteID)>
 			<cfset arguments.bundleName=arguments.bundleName & "_#arguments.siteID#">
 		</cfif>
-			
-		<cfheader name="Content-Disposition" value='attachment;filename="#arguments.bundleName#_#dateformat(now(),"dd_mm_yyyy")#_#timeformat(now(),"HH_mm")#.zip"'>
-		<cfcontent TYPE="application/zip" file="#variables.workDir##variables.dirName#.zip" deletefile="Yes">
 		
+		<cfset getBean("fileManager").streamFile(
+			filePath="#variables.workDir##variables.dirName#.zip",
+			filename="#arguments.bundleName#_#dateformat(now(),'dd_mm_yyyy')#_#timeformat(now(),'HH_mm')#.zip",
+			mimetype="application/zip",
+			method="attachment"
+			)>
+
+		<cfset fileDelete("#variables.workDir##variables.dirName#.zip")>
 	</cffunction>
 
 	<cffunction name="getBundle" returntype="string">
