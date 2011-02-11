@@ -3,9 +3,9 @@
 
  In a generic usage case, the following tasks must be done to configure
  CKFinder:
- 	1. Check the baseUrl and baseDir variables.
- 	2. If available, paste your license key in the "licenseKey" setting.
- 	3. Create the CheckAuthentication() function that enables CKFinder for authenticated users.
+   1. Check the baseUrl and baseDir variables.
+   2. If available, paste your license key in the "licenseKey" setting.
+   3. Create the CheckAuthentication() function that enables CKFinder for authenticated users.
 
  Other settings may be left with their default values, or used to control
  advanced features of CKFinder.
@@ -18,15 +18,15 @@ config = structNew();
 // authorized to upload and access files in the File Browser. '
 function CheckAuthentication()
 {
-	
-	if (isDefined('session.siteID') and application.permUtility.getModulePerm("00000000000000000000000000000000000",session.siteid)) {
-		return true; 
-	} else {
-		return false;
-	}
+  
+  if (isDefined('session.siteID') and application.permUtility.getModulePerm("00000000000000000000000000000000000",session.siteid)) {
+    return true;
+  } else {
+    return false;
+  }
 }
 
-config.licenseName	= 'Mura CMS';
+config.licenseName  = 'Mura CMS';
 config.licenseKey = '9EJW-TKDF-PFVT-Q3VW-NG6B-MKQF-3HVP';
 
 /* To make it easy to configure CKFinder, the config.baseUrl and config.baseDir can be used.
@@ -36,8 +36,8 @@ config.licenseKey = '9EJW-TKDF-PFVT-Q3VW-NG6B-MKQF-3HVP';
  * in CKFinder. If empty, the default value (/userfiles/) is used.
  *
  * Examples:
- * 	config.baseUrl = 'http://example.com/ckfinder/files/';
- * 	config.baseUrl = '/userfiles/';
+ *   config.baseUrl = 'http://example.com/ckfinder/files/';
+ *   config.baseUrl = '/userfiles/';
  */
 
 //ATTENTION: The trailing slash is required.
@@ -83,10 +83,10 @@ config.roleSessionVar = 'CKFinder_UserRole';
  * Many "config.accessControl" entries can be added. All attributes are optional.
  * Subfolders inherit their default settings from their parents' definitions.
  *
- * 	- The "role" attribute accepts the special '*' value, which means
- * 	  "everybody".
- * 	- The "resourceType" attribute accepts the special value '*', which
- * 	  means "all resource types".
+ *   - The "role" attribute accepts the special '*' value, which means
+ *     "everybody".
+ *   - The "resourceType" attribute accepts the special value '*', which
+ *     means "all resource types".
  */
 config.accessControl = arrayNew(1);
 
@@ -144,7 +144,7 @@ config.accessControl[2].fileDelete = true;
  * Available options are: G, M, K (case insensitive).
  * 1M equals 1048576 bytes (one Megabyte), 1K equals 1024 bytes (one Kilobyte), 1G equals one Gigabyte.
  * Example:
- * 	config.resourceType[1].maxSize = "2M";
+ *   config.resourceType[1].maxSize = "2M";
  */
 config.defaultResourceTypes = '';
 
@@ -175,46 +175,46 @@ config.resourceType[3].allowedExtensions = 'swf,flv';
 config.resourceType[3].deniedExtensions = '';
 
 if(application.configBean.getValue('fmShowApplicationRoot') neq 0){
-	config.resourceType[4] = structNew();
-	config.resourceType[4].name = 'Application Root';
-	config.resourceType[4].url =  application.configBean.getContext();
-	config.resourceType[4].directory =  application.configBean.getWebRoot();
-	config.resourceType[4].maxSize = 0;
-	config.resourceType[4].allowedExtensions = '';
-	config.resourceType[4].deniedExtensions = '';
+  config.resourceType[4] = structNew();
+  config.resourceType[4].name = 'Application_Root';
+  config.resourceType[4].url =  application.configBean.getContext();
+  config.resourceType[4].directory =  application.configBean.getWebRoot();
+  config.resourceType[4].maxSize = 0;
+  config.resourceType[4].allowedExtensions = '';
+  config.resourceType[4].deniedExtensions = '';
 }
 
 if (not isdefined('application.CKFinderResources')){
-	application.CKFinderResources=arrayNew(1);
-	rsSites=application.settingsManager.getList();
-	
-	for (i=1; i lte rsSites.recordcount; i=(i+1)){
-		temp = structNew();
-		temp.name = '#rsSites.siteID[i]#: User Assets';
-		temp.url =  application.configBean.getAssetPath() & '/' & rsSites.siteID[i] & '/assets';
-		temp.directory ="#application.configBean.getAssetDir()##application.configBean.getFileDelim()##rsSites.siteID[i]##application.configBean.getFileDelim()#assets";
-		temp.maxSize = 0;
-		if(application.configBean.getValue('fmAllowedExtensions') neq ''){
-			temp.allowedExtensions ='7z,aiff,asf,avi,bmp,csv,doc,docx,fla,flv,gif,gz,gzip,jpeg,jpg,mid,mov,mp3,mp4,mpc,mpeg,mpg,ods,odt,pdf,png,ppt,pptx,pxd,qt,ram,rar,rm,rmi,rmvb,rtf,sdc,sitd,swf,sxc,sxw,tar,tgz,tif,tiff,txt,vsd,wav,wma,wmv,xls,xlsx,zip';
-		} else {
-			temp.allowedExtensions ='';		
-		}
-		temp.deniedExtensions = '';
-		
-		arrayAppend(application.CKFinderResources,temp);
-		
-		if(application.configBean.getValue('fmShowSiteFiles') neq 0){
-			temp = structNew();
-			temp.name = '#rsSites.siteID[i]#: Site Files';
-			temp.url =  application.configBean.getContext() & '/' & rsSites.siteID[i];
-			temp.directory =  application.configBean.getWebRoot() & '/' & rsSites.siteID[i];
-			temp.maxSize = 0;
-			temp.allowedExtensions = '';
-			temp.deniedExtensions = '';
-			arrayAppend(application.CKFinderResources,temp);
-		}
-		
-	}
+  application.CKFinderResources=arrayNew(1);
+  rsSites=application.settingsManager.getList();
+  
+  for (i=1; i lte rsSites.recordcount; i=(i+1)){
+    temp = structNew();
+    temp.name = '#rsSites.siteID[i]#_User_Assets';
+    temp.url =  application.configBean.getAssetPath() & '/' & rsSites.siteID[i] & '/assets';
+    temp.directory ="#application.configBean.getAssetDir()##application.configBean.getFileDelim()##rsSites.siteID[i]##application.configBean.getFileDelim()#assets";
+    temp.maxSize = 0;
+    if(application.configBean.getValue('fmAllowedExtensions') neq ''){
+      temp.allowedExtensions ='7z,aiff,asf,avi,bmp,csv,doc,docx,fla,flv,gif,gz,gzip,jpeg,jpg,mid,mov,mp3,mp4,mpc,mpeg,mpg,ods,odt,pdf,png,ppt,pptx,pxd,qt,ram,rar,rm,rmi,rmvb,rtf,sdc,sitd,swf,sxc,sxw,tar,tgz,tif,tiff,txt,vsd,wav,wma,wmv,xls,xlsx,zip';
+    } else {
+      temp.allowedExtensions ='';    
+    }
+    temp.deniedExtensions = '';
+    
+    arrayAppend(application.CKFinderResources,temp);
+    
+    if(application.configBean.getValue('fmShowSiteFiles') neq 0){
+      temp = structNew();
+      temp.name = '#rsSites.siteID[i]#_Site_Files';
+      temp.url =  application.configBean.getContext() & '/' & rsSites.siteID[i];
+      temp.directory =  application.configBean.getWebRoot() & '/' & rsSites.siteID[i];
+      temp.maxSize = 0;
+      temp.allowedExtensions = '';
+      temp.deniedExtensions = '';
+      arrayAppend(application.CKFinderResources,temp);
+    }
+    
+  }
 
 }
 
@@ -226,12 +226,12 @@ config.resourceType.addAll(application.CKFinderResources);
 
  How does it work? Suppose the following:
 
-	- If "cfm" is on the denied extensions list, a file named foo.cfm cannot be
-	  uploaded.
-	- If "rar" (or any other) extension is allowed, one can upload a file named
-	  foo.rar.
-	- The file foo.cfm.rar has "rar" extension so, in theory, it can be also
-	  uploaded.
+  - If "cfm" is on the denied extensions list, a file named foo.cfm cannot be
+    uploaded.
+  - If "rar" (or any other) extension is allowed, one can upload a file named
+    foo.rar.
+  - The file foo.cfm.rar has "rar" extension so, in theory, it can be also
+    uploaded.
 
 In some conditions Apache can treat the foo.cfm.rar file just like any ColdFusion
 script and execute it.
@@ -307,8 +307,8 @@ config.hooks = arrayNew(1);
 config.plugins = arrayNew(1);
 
 if (APPLICATION.CFVersion gte 8 or StructKeyExists(SERVER,"bluedragon")) {
-	include("plugins/fileeditor/plugin.cfm");
-	include("plugins/imageresize/plugin.cfm");
-	// include("plugins/watermark/plugin.cfm");
+  include("plugins/fileeditor/plugin.cfm");
+  include("plugins/imageresize/plugin.cfm");
+  // include("plugins/watermark/plugin.cfm");
 }
 </cfscript>
