@@ -734,7 +734,7 @@ and tclassextendattributes.type='File'
 		<cfif rs.validation eq "Date">
 			<cfset tempDate=rs.attributeValue>
 			<cftry>
-				<cfreturn lsDateFormat(parseDateTime(tempDate),session.dateKeyFormat) />
+				<cfreturn parseDateTime(tempDate) />
 				<cfcatch><cfreturn rs.attributeValue /></cfcatch>
 			</cftry>
 		<cfelse>
