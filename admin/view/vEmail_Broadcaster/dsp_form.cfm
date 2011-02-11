@@ -252,7 +252,8 @@ to your own modified versions of Mura CMS.
       </div>
       </cfif>
     </div>
- 
+ </div> <!--- End Tab Container --->
+      
       <div style="display:inline" id="controls"> 
         <!---Delivery Options---><br />
         <cfsilent>
@@ -331,8 +332,7 @@ to your own modified versions of Mura CMS.
 
       </div>
       <div id="actionIndicator" style="display: none;"> <img src="#application.configBean.getContext()#/admin/images/progress_bar.gif"> </div>
-    </div>
-    <!--- End Tab Container --->
+    
     
   </form>
 </cfoutput>

@@ -386,15 +386,11 @@ img.tabPreloader {
 	background: url(../images/rule_dotted.gif) left bottom repeat-x;
 }
 
-.separate, .oneColumn dt.separate {
+.separate, .oneColumn dt.separate, #actionButtons {
 	clear: both;
 	margin: 16px 0 0 0;
 	padding: 20px 0 0 0;
 	background: url(../images/rule_dotted_big.gif) repeat-x;
-}
-
-#actionButtons.separate {
-	margin-top: 0;
 }
 
 .separateAlt {

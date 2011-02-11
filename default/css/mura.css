@@ -540,6 +540,12 @@ table.svFlvPlayer td {
 	list-style: none;
 	font-size: 1.1em;
 	text-align: center;
+	display: -moz-inline-stack; /* FF 2 */
+	display: inline-block;
+    zoom: 1; /* Trigger hasLayout for IE */
+    *display: inline; /* IE 7 & lower */
+    _height: 1%; /* IE 6 & lower */
+    overflow: hidden;
 	}
 
 #svGallery li a { 
