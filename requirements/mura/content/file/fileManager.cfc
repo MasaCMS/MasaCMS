@@ -382,8 +382,15 @@ to your own modified versions of Mura CMS.
 	<cfset local.results=structNew()>
 	
 	<cfif not find("://",local.filePath) or  find("file://",local.filePath)>
+		<cfset local.filePath=replaceNoCase(local.filePath,"file:///","")>
 		<cfset local.filePath=replaceNoCase(local.filePath,"file://","")>
-		<cfset local.connection=createObject("java","java.net.URL").init("file://" & local.filePath).openConnection()>
+		
+		<cfif not findNoCase("windows",server.os.name)>
+			<cfset local.connection=createObject("java","java.net.URL").init("file://" & local.filePath).openConnection()>
+		<cfelse>
+			<cfset local.connection=createObject("java","java.net.URL").init("file:///" & local.filePath).openConnection()>
+		</cfif>
+		
 		<cfset local.connection.connect()>
 		<cfset local.results.contentType=listFirst(local.connection.getContentType() ,"/")>
 		<cfset local.results.contentSubType=listLast(local.connection.getContentType() ,"/")>
