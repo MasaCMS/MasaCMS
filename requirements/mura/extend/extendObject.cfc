@@ -193,15 +193,14 @@
 </cffunction>
 
 <cffunction name="getValue" returntype="any" access="public" output="false">
-	<cfargument name="property" type="string" required="true">
-	<cfargument name="format" required="true" default=""> 
+	<cfargument name="property" type="string" required="true"> 
 	
 	<cfif structKeyExists(this,"get#property#")>
 		<cfreturn evaluate("get#property#()") />
 	<cfelseif structKeyExists(variables.instance,"#arguments.property#")>
 		<cfreturn variables.instance["#arguments.property#"] />
 	<cfelse>
-		<cfreturn getExtendedAttribute(key=arguments.property,format=arguments.format) />
+		<cfreturn getExtendedAttribute(key=arguments.property) />
 	</cfif>
 
 </cffunction>

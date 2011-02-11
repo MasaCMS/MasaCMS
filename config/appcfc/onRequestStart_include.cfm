@@ -122,7 +122,7 @@ to your own modified versions of Mura CMS.
 </cfif>
 
 <cfif not isdefined("cookie.mobileFormat")>
-	<cfif reFindNoCase("android|avantgo|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge |maemo|midp|mmp|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|symbian|treo|up\.(browser|link)|vodafone|wap|windows (ce|phone)|xda|xiino",CGI.HTTP_USER_AGENT) GT 0>
+	<cfif reFindNoCase("android|blackberry|iemobile|windows ce|windows phone|iphone|mobile",CGI.HTTP_USER_AGENT) GT 0>
 		<cfcookie name="mobileFormat" value="true" expires="never" />
 	<cfelse>	
 		<cfcookie name="mobileFormat" value="false" expires="never" />

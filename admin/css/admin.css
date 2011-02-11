@@ -1,4 +1,8 @@
-/* @override http://mura:8500/5.4/admin/css/admin.css?coreversion=1 */
+/* @override 
+	http://mura:8500/5.4/admin/css/admin.css?coreversion=1
+	http://cmsdemo.agcmass.org/admin/css/admin.css?coreversion=4066
+	http://cmsdemo.agcmass.org/admin/css/admin.css?coreversion=4073
+*/
 
 /* This file is part of Mura CMS. 
 
@@ -389,6 +393,10 @@ img.tabPreloader {
 	background: url(../images/rule_dotted_big.gif) repeat-x;
 }
 
+#actionButtons.separate {
+	margin-top: 0;
+}
+
 .separateAlt {
 	clear: both;
 	margin: 0 0 16px 0;
@@ -545,8 +553,10 @@ form li {
 	background: url(../images/rule_dotted_big.gif) repeat-x left bottom;
 }
 
-#page_tabView .oneColumn {
-	/*background-image: none;*/
+.tabs .oneColumn {
+	background: none;
+	padding-bottom: 0;
+	margin-bottom: 0;
 }
 
 .oneColumn dt, #cPlugins form ol li  {
@@ -636,13 +646,84 @@ dd ul li {
 
 dd ul li ul {
 	list-style: none;
-	margin: 0;
+	margin: 1em 0;
 	padding: 0;
 }
 
-dd ul.interestGroups li, dd ul.categories li {
-	margin: 0 0 6px;
-	width: 600px;
+dd ul.interestGroups ul, dd ul.categories ul, #emailGroupsLists dd ul {
+	overflow: hidden;
+	margin: 1em 0 .5em 0;
+}
+
+
+dd ul.interestGroups ul ul, dd ul.categories ul ul {
+	overflow: hidden;
+	margin: .75em 0 0 1.8em;
+}
+
+#emailGroupsLists dd ul {
+	overflow: hidden;
+	margin: .5em 0 0 0;
+}
+
+#emailGroupsLists dd ul ul {
+	margin: .75em 0 0 1.8em;
+}
+
+
+dd ul.interestGroups li, dd ul.categories li, #emailGroupsLists dt {
+	font-size: 15px;
+	color: #636261;
+	font-weight: normal;
+	width: 100%;
+}
+
+dd ul.interestGroups li li, dd ul.categories li li, #emailGroupsLists dd ul li {
+	margin: 0 1% .5em 0;
+    display: -moz-inline-stack; /* FF 2 */
+	display: inline-block;
+    zoom: 1; /* Trigger hasLayout for IE */
+    *display: inline; /* IE 7 */
+    _height: 1%; /* IE 6 */
+	float: left;
+	vertical-align: top;
+	font-size: 11px;
+	color: #000;
+	width: 100%;
+}
+
+dd ul.interestGroups li li li, dd ul.categories li li li, #emailGroupsLists dd ul li li {
+	font-weight: normal;
+	width: 31% !important;
+}
+
+dd ul.interestGroups li li li li, dd ul.categories li li li li, #emailGroupsLists dd ul li li {
+	color: #636261;
+	width: 100%;
+}
+
+#tabInterests dd ul.interestGroups li li {
+	margin: 0 1% .5em 0;
+    display: -moz-inline-stack; /* FF 2 */
+	display: inline-block;
+    zoom: 1; /* Trigger hasLayout for IE */
+    *display: inline; /* IE 7 */
+    _height: 1%; /* IE 6 */
+	/*float: left;*/
+	vertical-align: top;
+	font-size: 11px;
+	color: #000;
+	width: auto;
+}
+
+#tabInterests dd ul.interestGroups li li {
+	font-weight: normal;
+	width: 100%;	
+}
+
+#tabInterests dd ul.interestGroups li li li {
+	color: #636261;
+	width: 31%;
 }
 
 .categoryAssignment {
@@ -3715,10 +3796,6 @@ ul.params li {
 	font-weight: normal;
 }
 
-#emailGroupsLists #tabView0 { /*Mailing Lists*/
-	
-}
-
 #emailGroupsLists #tabView1 dl { /*Private & Public Groups*/
 	margin: 0 10px 0 0;
 	float: left;
@@ -3987,9 +4064,6 @@ a.expand span {
 /* @end */
 
 /* @group Miscellaneous */
-.categories li ul, .interestGroups li ul li ul {
-	margin-left: 20px;
-}
 
 #contentForm #move h3 { display: none; }
 #cArch #move {

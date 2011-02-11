@@ -765,6 +765,12 @@ function setTabs(target,activetab){
 		}
 	);
 	
+	jQuery(".ui-tabs .ui-tabs .ui-tabs-nav li").each(
+			function(index) {			
+				jQuery(this).removeClass("ui-corner-top").addClass("ui-corner-all");
+			}
+		);
+	
 	jQuery(".initActiveTab").each(
 			function(index) {			
 				jQuery(this).tabs("select",activetab);

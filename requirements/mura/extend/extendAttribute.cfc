@@ -433,9 +433,13 @@ to your own modified versions of Mura CMS.
 <cfset var o=0/>
 <cfset var optionlist=""/>
 <cfset var optionLabellist=""/>
-
+<cfset var renderInstanceValue=renderValue>
 <cfif renderValue eq "useMuraDefault">
 	<cfset renderValue=variables.contentRenderer.setDynamicContent(getDefaultValue()) />
+</cfif>
+
+<cfif getValidation() eq "Date">
+	<cfset renderValue=lsDateFormat(renderValue,session.dateKeyFormat) />
 </cfif>
 
 <cfswitch expression="#getType()#">

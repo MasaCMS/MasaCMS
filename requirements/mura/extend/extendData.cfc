@@ -138,8 +138,6 @@ to your own modified versions of Mura CMS.
 <cffunction name="getAttribute" access="public" returntype="any" output="false">
 <cfargument name="key">
 <cfargument name="useMuraDefault" type="boolean" required="true" default="false">
-<cfargument name="format" required="true" default=""> 
- 
 <cfset var rs="" />
 <cfset var tempDate="">
 	<cfquery name="rs" dbType="query">
@@ -155,15 +153,7 @@ to your own modified versions of Mura CMS.
 			<cfif rs.validation eq "Date">
 				<cfset tempDate=rs.attributeValue>
 				<cftry>
-					<cfif len(arguments.format)>
-						<cfif arguments.format eq "object">
-							<cfreturn parseDateTime(tempDate) />
-						<cfelse>
-							<cfreturn lsDateFormat(parseDateTime(tempDate),arguments.format)>
-						</cfif>
-					<cfelse>
-						<cfreturn lsDateFormat(parseDateTime(tempDate),session.dateKeyFormat) />
-					</cfif>
+					<cfreturn parseDateTime(tempDate) />	
 					<cfcatch><cfreturn rs.attributeValue /></cfcatch>
 				</cftry>	
 			<cfelse>
@@ -316,7 +306,7 @@ to your own modified versions of Mura CMS.
 				<cfif rs.validation eq "Date">
 					<cfset tempDate=rs.attributeValue>
 					<cftry>
-						<cfset extData.data['#rs.name#']=lsDateFormat(parseDateTime(tempDate),session.dateKeyFormat)>
+						<cfset extData.data['#rs.name#']=parseDateTime(tempDate)>
 						<cfcatch><cfset extData.data['#rs.name#']=tempDate></cfcatch>
 					</cftry>
 				<cfelse>
