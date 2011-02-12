@@ -79,10 +79,10 @@ to your own modified versions of Mura CMS.
 <cfif request.rslist.recordcount>
 <cfoutput query="request.rslist" startrow="#attributes.startrow#" maxrows="#request.nextN.RecordsPerPage#">
 	<tr>
-		<td class="varWidth"><a href="mailto:#HTMLEditFormat(email)#">#HTMLEditFormat(email)#</a></td>
-		<td>#HTMLEditFormat(fname)#&nbsp;#HTMLEditFormat(lname)#</td>
-		<td>#HTMLEditFormat(company)#</td>
-		<td><cfif isVerified eq 1>#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.yes')#<cfelse>#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.no')#</cfif></td>
+		<td class="varWidth"><a href="mailto:#HTMLEditFormat(request.rslist.email)#">#HTMLEditFormat(request.rslist.email)#</a></td>
+		<td>#HTMLEditFormat(request.rslist.fname)#&nbsp;#HTMLEditFormat(request.rslist.lname)#</td>
+		<td>#HTMLEditFormat(request.rslist.company)#</td>
+		<td><cfif request.rslist.isVerified eq 1>#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.yes')#<cfelse>#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.no')#</cfif></td>
 		<td>#LSDateFormat(request.rslist.created,session.dateKeyFormat)#</td>
 		<td class="administration"><ul class="mailingListMembers"><li class="delete"><a title="#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.delete')#" href="index.cfm?fuseaction=cMailingList.updatemember&action=delete&mlid=#request.rslist.mlid#&email=#urlencodedformat(request.rslist.email)#&siteid=#URLEncodedFormat(attributes.siteid)#" onclick="return confirmDialog('#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.deletememberconfirm'))#',this.href);">#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.delete')#</a></li></ul></td></tr>
 </cfoutput>

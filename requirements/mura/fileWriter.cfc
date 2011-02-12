@@ -55,7 +55,7 @@
 	<cfset var counter = 0>
 
 	<cfif isDefined('arguments.output.mode')>
-		<cftry>
+		<!---<cftry>--->
 			<cfset new = FileOpen(arguments.file, "write")>
 
 			<cfloop condition="!fileIsEOF( arguments.output )">
@@ -72,7 +72,7 @@
 			<cfelseif fileExists(arguments.output.path & "/" & arguments.output.name)>
 				<cfset FileDelete(arguments.output.path & "/" & arguments.output.name)>
 			</cfif>
-			
+		<!---
 			<cfcatch>
 				<cfif session.mura.username eq "Admin">
 					<cfdump var="#arguments.output#">
@@ -81,7 +81,7 @@
 				</cfif>
 				<cfabort>
 			</cfcatch>
-		</cftry>
+		</cftry--->
 	<cfelse>
 		<cfif variables.useMode >		
 			<cffile action="write" mode="#arguments.mode#" file="#arguments.file#" output="#arguments.output#" addnewline="#arguments.addNewLine#"/>

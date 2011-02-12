@@ -196,8 +196,12 @@ to your own modified versions of Mura CMS.
 		</cfif>
 		<!--- END IMAGE MANIPULATION --->
 			
-		<!---<cfset fileStruct.fileObj=fromPath2Binary(theFile,false) />--->
-		<cfset fileStruct.fileObj = FileOpen(theFile, "readBinary")>
+		<cfif application.CFVersion lt 9>
+			<cfset fileStruct.fileObj=fromPath2Binary(theFile,false) />
+		<cfelse>
+			<cfset fileStruct.fileObj = FileOpen(theFile, "readBinary")>
+		</cfif>
+		
 		<cfset fileStruct.theFile=theFile/>
 		<!---<cftry><cffile action="delete" file="#theFile#"><cfcatch></cfcatch></cftry>--->
 			
