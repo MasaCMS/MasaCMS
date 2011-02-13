@@ -998,7 +998,7 @@ to your own modified versions of Mura CMS.
 						<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#arguments.toSiteID#">,
 						<cfqueryparam cfsqltype="cf_sql_LONGVARCHAR" null="#iif(rstformresponsepackets.fieldlist neq '',de('no'),de('yes'))#" value="#rstformresponsepackets.fieldlist#">,
 						<cfqueryparam cfsqltype="cf_sql_LONGVARCHAR" null="#iif(rstformresponsepackets.data neq '',de('no'),de('yes'))#" value="#rstformresponsepackets.data#">,
-						<cfqueryparam cfsqltype="cf_sql_TIMESTAMP" null="#iif(isDate(rstchangesets.Created),de('no'),de('yes'))#" value="#rstformresponsepackets.entered#">	
+						<cfqueryparam cfsqltype="cf_sql_TIMESTAMP" null="#iif(isDate(rstformresponsepackets.entered),de('no'),de('yes'))#" value="#rstformresponsepackets.entered#">	
 						)
 					</cfquery>
 				</cfloop>
@@ -1019,11 +1019,11 @@ to your own modified versions of Mura CMS.
 					<cfquery datasource="#arguments.toDSN#">
 						insert into tformresponsequestions (responseid,formid,formField,formValue,pollValue)
 						values (
-						<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(tformresponsequestions.responseID)#">,
-						<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(tformresponsequestions.formID)#">,
-						<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(tformresponsequestions.formField neq '',de('no'),de('yes'))#" value="#tformresponsequestions.formField#">,
-						<cfqueryparam cfsqltype="cf_sql_LONGVARCHAR" null="#iif(tformresponsequestions.formValue neq '',de('no'),de('yes'))#" value="#tformresponsequestions.formValue#">,
-						<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(tformresponsequestions.pollValue neq '',de('no'),de('yes'))#" value="#tformresponsequestions.pollValue#">
+						<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(rstformresponsequestions.responseID)#">,
+						<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(rstformresponsequestions.formID)#">,
+						<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstformresponsequestions.formField neq '',de('no'),de('yes'))#" value="#rstformresponsequestions.formField#">,
+						<cfqueryparam cfsqltype="cf_sql_LONGVARCHAR" null="#iif(rstformresponsequestions.formValue neq '',de('no'),de('yes'))#" value="#rstformresponsequestions.formValue#">,
+						<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstformresponsequestions.pollValue neq '',de('no'),de('yes'))#" value="#rstformresponsequestions.pollValue#">
 						)
 					</cfquery>
 				</cfloop>
