@@ -493,7 +493,7 @@ to your own modified versions of Mura CMS.
 			<constructor-arg name="raterManager"><ref bean="raterManager" /></constructor-arg>
 			<constructor-arg name="feedGateway"><ref bean="feedGateway" /></constructor-arg>
 		</bean>
-		<bean id="publisher" <cfif StructKeyExists(SERVER,"bluedragon") or (server.coldfusion.productname eq "ColdFusion Server" and listFirst(server.coldfusion.productversion) lt 8) or (server.coldfusion.productname eq "Railo" and listFirst(server.railo.version,".") lt 3)>class="mura.publisherLimited"<cfelse>class="mura.publisher"</cfif> singleton="true"/>
+		<bean id="publisher" <cfif (server.coldfusion.productname eq "ColdFusion Server" and listFirst(server.coldfusion.productversion) lt 8) or (server.coldfusion.productname eq "Railo" and listFirst(server.railo.version,".") lt 3)>class="mura.publisherLimited"<cfelse>class="mura.publisher"</cfif> singleton="true"/>
 		<bean id="projectManager" class="mura.workspace.project.projectManager" singleton="true">
 			<constructor-arg name="configBean"><ref bean="configBean" /></constructor-arg>
 			<constructor-arg name="settingsManager"><ref bean="settingsManager" /></constructor-arg>

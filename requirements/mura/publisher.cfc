@@ -91,7 +91,8 @@ to your own modified versions of Mura CMS.
 		<cfargument name="pluginMode" type="string" default="all" required="true">
 		<cfargument name="mailingListMembersMode" type="string" default="none" required="true">
 		<cfargument name="usersMode" type="string" default="none" required="true">	
-		<cfargument name="keyMode" type="string" default="copy" required="true">		
+		<cfargument name="keyMode" type="string" default="copy" required="true">
+		<cfargument name="formDataMode" type="string" default="none" required="true">		
 		<cfset var rstplugins="">
 		<cfset var bundleAssetPath="">
 		<cfset var bundleContext="">
@@ -250,6 +251,7 @@ to your own modified versions of Mura CMS.
 		<cfargument name="pluginMode" type="string" default="all" required="true">
 		<cfargument name="keyMode" type="string" default="copy" required="true">			
 		<cfargument name="mailingListMembersMode" type="string" default="none" required="true">
+		<cfargument name="formDataMode" type="string" default="none" required="true">
 		
 		<cfset var keys=arguments.keyFactory/>
 		<cfset var rstContentNew=""/>
@@ -294,6 +296,8 @@ to your own modified versions of Mura CMS.
 		<cfset var rstchangesetsnew=""/>
 		<cfset var rssite=""/>
 		<cfset var rsttrashfiles=""/>
+		<cfset var rstformresponsepackets="">
+		<cfset var rstformresponsequestions="">
 			<!--- pushed tables --->
 		
 			<!--- tcontent --->
@@ -630,7 +634,7 @@ to your own modified versions of Mura CMS.
 					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstcontentfeeds.channelLink neq '',de('no'),de('yes'))#" value="#rstcontentfeeds.channelLink#">,
 					<cfqueryparam cfsqltype="cf_sql_TIMESTAMP" null="#iif(isDate(rstcontentfeeds.dateCreated),de('no'),de('yes'))#" value="#rstcontentfeeds.dateCreated#">,
 					<cfqueryparam cfsqltype="cf_sql_LONGVARCHAR" null="#iif(rstcontentfeeds.description neq '',de('no'),de('yes'))#" value="#rstcontentfeeds.description#">,
-					<cfqueryparam cfsqltype="cf_sql_IDSTAMP" value="#keys.get(rstcontentfeeds.feedID)#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(rstcontentfeeds.feedID)#">,
 					<cfqueryparam cfsqltype="cf_sql_TINYINT" null="no" value="#iif(isNumeric(rstcontentfeeds.isActive),de(rstcontentfeeds.isActive),de(0))#">,
 					<cfqueryparam cfsqltype="cf_sql_TINYINT" null="no" value="#iif(isNumeric(rstcontentfeeds.isDefault),de(rstcontentfeeds.isDefault),de(0))#">,
 					<cfqueryparam cfsqltype="cf_sql_TINYINT" null="no" value="#iif(isNumeric(rstcontentfeeds.isFeaturesOnly),de(rstcontentfeeds.isFeaturesOnly),de(0))#">,
@@ -640,7 +644,7 @@ to your own modified versions of Mura CMS.
 					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstcontentfeeds.lastUpdateBy neq '',de('no'),de('yes'))#" value="#rstcontentfeeds.lastUpdateBy#">,
 					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(rstcontentfeeds.maxItems),de(rstcontentfeeds.maxItems),de(0))#">,
 					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstcontentfeeds.name neq '',de('no'),de('yes'))#" value="#rstcontentfeeds.name#">,
-					<cfqueryparam cfsqltype="cf_sql_IDSTAMP" null="#iif(rstcontentfeeds.parentID neq '',de('no'),de('yes'))#" value="#keys.get(rstcontentfeeds.parentID)#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstcontentfeeds.parentID neq '',de('no'),de('yes'))#" value="#keys.get(rstcontentfeeds.parentID)#">,
 					<cfqueryparam cfsqltype="cf_sql_TINYINT" null="no" value="#iif(isNumeric(rstcontentfeeds.restricted),de(rstcontentfeeds.restricted),de(0))#">,
 					<cfqueryparam cfsqltype="cf_sql_LONGVARCHAR" null="#iif(rstcontentfeeds.restrictGroups neq '',de('no'),de('yes'))#" value="#rstcontentfeeds.restrictGroups#">,
 					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#arguments.toSiteid#">,
@@ -697,8 +701,8 @@ to your own modified versions of Mura CMS.
 					insert into tcontentfeeditems (feedID,itemID,type)
 					values
 					(
-					<cfqueryparam cfsqltype="cf_sql_IDSTAMP" value="#keys.get(rstcontentFeedItems.feedID)#">,
-					<cfqueryparam cfsqltype="cf_sql_IDSTAMP" value="#keys.get(rstcontentFeedItems.itemID)#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(rstcontentFeedItems.feedID)#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(rstcontentFeedItems.itemID)#">,
 					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstcontentFeedItems.type neq '',de('no'),de('yes'))#" value="#rstcontentFeedItems.type#">
 					)
 				</cfquery>
@@ -742,8 +746,8 @@ to your own modified versions of Mura CMS.
 					insert into tcontentfeedadvancedparams (paramID,feedID,param,relationship,field,dataType,<cfif application.configBean.getDbType() eq "mysql">`condition`<cfelse>condition</cfif>,criteria)
 					values
 					(
-					<cfqueryparam cfsqltype="cf_sql_IDSTAMP" value="#keys.get(rstcontentFeedAdvancedParams.paramID)#">,
-					<cfqueryparam cfsqltype="cf_sql_IDSTAMP" value="#keys.get(rstcontentFeedAdvancedParams.feedID)#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(rstcontentFeedAdvancedParams.paramID)#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(rstcontentFeedAdvancedParams.feedID)#">,
 					<cfqueryparam cfsqltype="cf_sql_NUMERIC" null="#iif(isNumeric(rstcontentFeedAdvancedParams.param),de('no'),de('yes'))#" value="#rstcontentFeedAdvancedParams.param#">,
 					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstcontentFeedAdvancedParams.relationship neq '',de('no'),de('yes'))#" value="#rstcontentFeedAdvancedParams.relationship#">,
 					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstcontentFeedAdvancedParams.field neq '',de('no'),de('yes'))#" value="#rstcontentFeedAdvancedParams.field#">,
@@ -978,6 +982,52 @@ to your own modified versions of Mura CMS.
 				</cfquery>
 			</cfloop>
 			
+			<cfif arguments.formDataMode neq "none" and structKeyExists(arguments,"Bundle")>
+				<cfset rstformresponsepackets = arguments.Bundle.getValue("rstformresponsepackets")>
+				
+				<cfquery datasource="#arguments.toDSN#">
+					delete from tformresponsepackets where siteID=<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#arguments.toSiteID#">
+				</cfquery>
+				
+				<cfloop query="rstformresponsepackets">
+					<cfquery datasource="#arguments.toDSN#">
+						insert into tformresponsepackets (responseid,formid,siteid,fieldlist,data,entered)
+						values (
+						<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(rstformresponsepackets.responseID)#">,
+						<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(rstformresponsepackets.formID)#">,
+						<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#arguments.toSiteID#">,
+						<cfqueryparam cfsqltype="cf_sql_LONGVARCHAR" null="#iif(rstformresponsepackets.fieldlist neq '',de('no'),de('yes'))#" value="#rstformresponsepackets.fieldlist#">,
+						<cfqueryparam cfsqltype="cf_sql_LONGVARCHAR" null="#iif(rstformresponsepackets.data neq '',de('no'),de('yes'))#" value="#rstformresponsepackets.data#">,
+						<cfqueryparam cfsqltype="cf_sql_TIMESTAMP" null="#iif(isDate(rstchangesets.Created),de('no'),de('yes'))#" value="#rstformresponsepackets.entered#">	
+						)
+					</cfquery>
+				</cfloop>
+				
+				<cfset rstformresponsequestions = arguments.Bundle.getValue("rstformresponsequestions")>
+				
+				<cfquery datasource="#arguments.toDSN#">
+					delete from tformresponsequestions 
+					where formID in (
+									select contentID from tcontent where 
+									type='Form'
+									and active=1
+									and siteID=<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#arguments.toSiteID#">
+									)
+				</cfquery>
+				
+				<cfloop query="rstformresponsequestions">
+					<cfquery datasource="#arguments.toDSN#">
+						insert into tformresponsequestions (responseid,formid,formField,formValue,pollValue)
+						values (
+						<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(tformresponsequestions.responseID)#">,
+						<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(tformresponsequestions.formID)#">,
+						<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(tformresponsequestions.formField neq '',de('no'),de('yes'))#" value="#tformresponsequestions.formField#">,
+						<cfqueryparam cfsqltype="cf_sql_LONGVARCHAR" null="#iif(tformresponsequestions.formValue neq '',de('no'),de('yes'))#" value="#tformresponsequestions.formValue#">,
+						<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(tformresponsequestions.pollValue neq '',de('no'),de('yes'))#" value="#tformresponsequestions.pollValue#">
+						)
+					</cfquery>
+				</cfloop>
+			</cfif>
 			<!--- synced tables--->
 			<cfset arguments.rstcontent=rstcontent>
 			
@@ -1034,22 +1084,26 @@ to your own modified versions of Mura CMS.
 				
 				<cfquery datasource="#arguments.toDSN#">
 				delete from tfiles where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.tositeid#"/>
-				and moduleid  in (''<cfif len(arguments.moduleID)>,<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.moduleID#" list="true"></cfif><cfif arguments.usersMode neq "none">,'00000000000000000000000000000000008'</cfif><cfif arguments.contentMode neq "none">,'00000000000000000000000000000000000'</cfif>)
-				and fileID in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#valuesList(rsttrashfiles.fileID)#">)
+				and moduleid  in (''<cfif len(arguments.moduleID)>,<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.moduleID#" list="true"></cfif><cfif arguments.usersMode neq "none">,'00000000000000000000000000000000008'</cfif><cfif arguments.contentMode neq "none">,'00000000000000000000000000000000000'</cfif><cfif arguments.formDataMode neq "none">,'00000000000000000000000000000000004'</cfif>)
+				<cfif rsttrashfiles.recordcount>
+					and fileID in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#valuesList(rsttrashfiles.fileID)#">)
+				<cfelse>
+					and 0=1
+				</cfif>
 				</cfquery>
 			</cfif>
 			
 			<cfif not isDate(arguments.lastDeployment)>
 				<cfquery datasource="#arguments.toDSN#">
 					delete from tfiles where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.tositeid#"/>
-					and moduleid  in (''<cfif len(arguments.moduleID)>,<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.moduleID#" list="true"></cfif><cfif arguments.usersMode neq "none">,'00000000000000000000000000000000008'</cfif><cfif arguments.contentMode neq "none">,'00000000000000000000000000000000000'</cfif>)
+					and moduleid  in (''<cfif len(arguments.moduleID)>,<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.moduleID#" list="true"></cfif><cfif arguments.usersMode neq "none">,'00000000000000000000000000000000008'</cfif><cfif arguments.contentMode neq "none">,'00000000000000000000000000000000000'</cfif><cfif arguments.formDataMode neq "none">,'00000000000000000000000000000000004'</cfif>)
 				</cfquery>
 			</cfif>
 			
 			<cfif not StructKeyExists(arguments,"Bundle")>
 				<cfquery datasource="#arguments.fromDSN#" name="rstFiles">
 					select * from tfiles where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.fromsiteid#"/>
-					and moduleid  in (''<cfif len(arguments.moduleID)>,<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.moduleID#" list="true"></cfif><cfif arguments.usersMode neq "none">,'00000000000000000000000000000000008'</cfif><cfif arguments.contentMode neq "none">,'00000000000000000000000000000000000'</cfif>)
+					and moduleid  in (''<cfif len(arguments.moduleID)>,<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.moduleID#" list="true"></cfif><cfif arguments.usersMode neq "none">,'00000000000000000000000000000000008'</cfif><cfif arguments.contentMode neq "none">,'00000000000000000000000000000000000'</cfif><cfif arguments.formDataMode neq "none">,'00000000000000000000000000000000004'</cfif>)
 					<cfif isDate(arguments.lastDeployment)>
 						created >= #createODBCDateTime(arguments.lastDeployment)#
 					</cfif>
@@ -1058,7 +1112,7 @@ to your own modified versions of Mura CMS.
 				<cfset rstFiles = arguments.Bundle.getValue("rstfiles")>
 				<cfquery name="rstfiles" dbtype="query">
 					select * from rstfiles where
-					moduleid  in (''<cfif len(arguments.moduleID)>,<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.moduleID#" list="true"></cfif><cfif arguments.usersMode neq "none">,'00000000000000000000000000000000008'</cfif><cfif arguments.contentMode neq "none">,'00000000000000000000000000000000000'</cfif>)
+					moduleid  in (''<cfif len(arguments.moduleID)>,<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.moduleID#" list="true"></cfif><cfif arguments.usersMode neq "none">,'00000000000000000000000000000000008'</cfif><cfif arguments.contentMode neq "none">,'00000000000000000000000000000000000'</cfif><cfif arguments.formDataMode neq "none">,'00000000000000000000000000000000004'</cfif>)
 				</cfquery>
 			</cfif>
 			
@@ -1235,7 +1289,7 @@ to your own modified versions of Mura CMS.
 					insert into tcontentratings (contentID,rate,siteID,userID,entered)
 					values
 					(
-					<cfqueryparam cfsqltype="cf_sql_IDSTAMP" value="#keys.get(rstcontentratings.contentID)#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(rstcontentratings.contentID)#">,
 					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(rstcontentratings.rate),de(rstcontentratings.rate),de(0))#">,
 					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#arguments.fromsiteID#">,
 					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstcontentratings.userID neq '',de('no'),de('yes'))#" value="#keys.get(rstcontentratings.userID)#">,
@@ -1253,7 +1307,7 @@ to your own modified versions of Mura CMS.
 					insert into tcontentstats (contentID,siteID,views,rating,totalVotes,upVotes,downVotes,comments)
 					values
 					(
-					<cfqueryparam cfsqltype="cf_sql_IDSTAMP" value="#keys.get(rstcontentstats.contentID)#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(rstcontentstats.contentID)#">,
 					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#arguments.tositeID#">,
 					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(rstcontentstats.views),de(rstcontentstats.views),de(0))#">,
 					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(rstcontentstats.rating),de(rstcontentstats.rating),de(0))#">,
@@ -2099,7 +2153,7 @@ to your own modified versions of Mura CMS.
 						insert into tcontentratings (contentID,rate,siteID,userID,entered)
 						values
 						(
-						<cfqueryparam cfsqltype="cf_sql_IDSTAMP" value="#keys.get(contentID)#">,
+						<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(contentID)#">,
 						<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(rate),de(rate),de(0))#">,
 						<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#arguments.fromsiteID#">,
 						<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(userID neq '',de('no'),de('yes'))#" value="#keys.get(userID)#">,
@@ -2296,6 +2350,7 @@ to your own modified versions of Mura CMS.
 							)
 				</cfquery>
 				
+		<cfif rstclassextend.recordcount>
 				<cfloop query="rstclassextend">
 					<cfquery datasource="#arguments.toDSN#">
 						insert into tclassextend (subTypeID,siteID, baseTable, baseKeyField, dataTable, type, subType,
@@ -2335,7 +2390,11 @@ to your own modified versions of Mura CMS.
 	
 				<cfquery name="rstclassextendsets" dbtype="query">
 				select * from rstclassextendsets where 
-				subtypeID in (<cfqueryparam cfsqltype="cf_sql_varchar" value="#valueList(rstclassextend.subtypeID)#" list="true">)
+				<cfif rstclassextend.recordcount>
+					subtypeID in (<cfqueryparam cfsqltype="cf_sql_varchar" value="#valueList(rstclassextend.subtypeID)#" list="true">)
+				<cfelse>
+					0=1
+				</cfif>
 				</cfquery>
 				
 				<cfloop query="rstclassextendsets">
@@ -2378,14 +2437,22 @@ to your own modified versions of Mura CMS.
 			<cfif not StructKeyExists(arguments,"Bundle")>
 				<cfquery datasource="#arguments.fromDSN#" name="rstclassextendattributes">
 					select * from tclassextendattributes where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.fromsiteid#"/>
-					and extendsetID in (<cfqueryparam cfsqltype="cf_sql_varchar" value="#valueList(rstclassextendsets.extendsetID)#" list="true">)
+					<cfif rstclassextendsets.recordcount>
+						and extendsetID in (<cfqueryparam cfsqltype="cf_sql_varchar" value="#valueList(rstclassextendsets.extendsetID)#" list="true">)
+					<cfelse>
+						and 0=1
+					</cfif>
 				</cfquery>
 			<cfelse>
 				<cfset rstclassextendattributes = arguments.Bundle.getValue("rstclassextendattributes")>
 				
 				<cfquery name="rstclassextendattributes" dbtype="query">
 					select * from rstclassextendattributes where 
-					extendsetID in (<cfqueryparam cfsqltype="cf_sql_varchar" value="#valueList(rstclassextendsets.extendsetID)#" list="true">)
+					<cfif rstclassextendsets.recordcount>
+						extendsetID in (<cfqueryparam cfsqltype="cf_sql_varchar" value="#valueList(rstclassextendsets.extendsetID)#" list="true">)
+					<cfelse>
+						0=1
+					</cfif>
 				</cfquery>
 			</cfif>
 		
@@ -2612,6 +2679,7 @@ to your own modified versions of Mura CMS.
 					</cftry>
 				</cfloop>
 			</cfif>
+		</cfif>
 	</cffunction>
 
 	<cffunction name="getToWorkPlugins" returntype="void">

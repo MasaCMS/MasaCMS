@@ -99,7 +99,6 @@ to your own modified versions of Mura CMS.
 		<cfloop query="rsImportFiles">
 			<cfset fname = rereplace(rsImportFiles.name,"^wddx_(.*)\.xml","\1") />
 			<cffile action="read" file="#variables.unpackPath##rsImportFiles.name#" variable="importWDDX" charset="utf-8">
-			<cfset importWDDX=REReplace(importWDDX,'[\xc]','','ALL')>
 			<cftry>
 				<cfwddx action="wddx2cfml" input=#importWDDX# output="importValue">
 			<cfcatch>
@@ -382,6 +381,7 @@ to your own modified versions of Mura CMS.
 		<cfargument name="sinceDate" default="">
 		<cfargument name="includeMailingListMembers" type="boolean" default="false" required="true">
 		<cfargument name="includeUsers" type="boolean" default="false" required="true">
+		<cfargument name="includeFormData" type="boolean" default="false" required="true">
 		
 		<cfset var rstcontent=""/>
 		<cfset var rstcontentstats=""/>
@@ -419,6 +419,8 @@ to your own modified versions of Mura CMS.
 		<cfset var rstpluginsettings=""/>	
 		<cfset var rsttrash=""/>
 		<cfset var rsttrashfiles=""/>
+		<cfset var rstformresponsequestions=""/>
+		<cfset var rstformeresponsepackets=""/>
 		
 		<cfset var rstusers=""/>
 		<cfset var rstusersmemb=""/>	
@@ -491,7 +493,11 @@ to your own modified versions of Mura CMS.
 				)
 				</cfif>
 				<cfif isDate(arguments.sinceDate)>
-				and contentHistID in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#valueList(rstcontent.contentHistID)#">)
+					<cfif rstcontent.recordcount>
+						and contentHistID in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#valueList(rstcontent.contentHistID)#">)
+					<cfelse>
+						0=1
+					</cfif>
 				</cfif>
 				
 				<cfif not arguments.includeTrash>
@@ -511,7 +517,11 @@ to your own modified versions of Mura CMS.
 				)
 				</cfif>
 				<cfif isDate(arguments.sinceDate)>
-				and contentHistID in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#valueList(rstcontent.contentHistID)#">)
+					<cfif rstcontent.recordcount>
+						and contentHistID in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#valueList(rstcontent.contentHistID)#">)
+					<cfelse>
+						0=1
+					</cfif>
 				</cfif>
 				<cfif not arguments.includeTrash>
 				and contentID in (select distinct contentID from tcontent)
@@ -778,7 +788,11 @@ to your own modified versions of Mura CMS.
 				)
 				</cfif>
 				<cfif isDate(arguments.sinceDate)>
-				and contentHistID in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#valueList(rstcontent.contentHistID)#">)
+					<cfif rstcontent.recordcount>
+						and contentHistID in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#valueList(rstcontent.contentHistID)#">)
+					<cfelse>
+						0=1
+					</cfif>
 				</cfif>
 				<cfif not arguments.includeTrash>
 				and categoryID in (select categoryID from tcontentcategories)
@@ -802,7 +816,11 @@ to your own modified versions of Mura CMS.
 			<cfquery datasource="#arguments.dsn#" name="rstcontentfeeditems">
 				select * from tcontentfeeditems where feedID in (select feedID from tcontentfeeds where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>)
 				<cfif isDate(arguments.sinceDate)>
-				and feedID in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#valueList(rstcontentfeeds.feedID)#">)
+					<cfif rstcontentfeeds.recordcount>
+						and feedID in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#valueList(rstcontentfeeds.feedID)#">)
+					<cfelse>
+						0=1
+					</cfif>
 				</cfif>
 				<cfif not arguments.includeTrash>
 				and feedID in (select feedID from tcontentfeeds)
@@ -815,7 +833,11 @@ to your own modified versions of Mura CMS.
 			<cfquery datasource="#arguments.dsn#" name="rstcontentfeedadvancedparams">
 				select * from tcontentfeedadvancedparams where feedID in (select feedID from tcontentfeeds where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>)
 				<cfif isDate(arguments.sinceDate)>
-				and feedID in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#valueList(rstcontentfeeds.feedID)#">)
+					<cfif rstcontentfeeds.recordcount>
+						and feedID in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#valueList(rstcontentfeeds.feedID)#">)
+					<cfelse>
+						and 0=1
+					</cfif>
 				</cfif>
 				<cfif not arguments.includeTrash>
 				and feedID in (select feedID from tcontentfeeds)
@@ -835,7 +857,11 @@ to your own modified versions of Mura CMS.
 				)
 				</cfif>
 				<cfif isDate(arguments.sinceDate)>
-				and contentHistID in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#valueList(rstcontent.contentHistID)#">)
+					<cfif rstcontent.recordcount>
+						and contentHistID in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#valueList(rstcontent.contentHistID)#">)
+					<cfelse>
+						and 0=1
+					</cfif>
 				</cfif>
 				<cfif not arguments.includeTrash>
 				and contentID in (select distinct contentID from tcontent)
@@ -867,7 +893,7 @@ to your own modified versions of Mura CMS.
 			<!--- tfiles --->
 			<cfquery datasource="#arguments.dsn#" name="rstfiles">
 				select * from tfiles where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
-				and moduleid in ('00000000000000000000000000000000000'<cfif len(arguments.moduleID)>,<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.moduleID#" list="true"></cfif><cfif arguments.includeUsers>,'00000000000000000000000000000000008'</cfif>)
+				and moduleid in ('00000000000000000000000000000000000'<cfif len(arguments.moduleID)>,<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.moduleID#" list="true"></cfif><cfif arguments.includeUsers>,'00000000000000000000000000000000008'</cfif><cfif arguments.includeFormData>,'00000000000000000000000000000000004'</cfif>)
 				<cfif not arguments.includeVersionHistory>
 				and 
 				(
@@ -909,6 +935,10 @@ to your own modified versions of Mura CMS.
 						select photoFileID from tusers where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/> 
 					)
 					</cfif>
+					
+					<cfif arguments.includeFormData>
+					or moduleID='00000000000000000000000000000000004'
+					</cfif>
 				)
 				
 				</cfif>
@@ -928,7 +958,11 @@ to your own modified versions of Mura CMS.
 			<cfquery datasource="#arguments.dsn#" name="rstcontentstats">
 				select * from tcontentstats where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
 				<cfif isDate(arguments.sinceDate)>
-				and contentID in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#valueList(rstcontent.contentID)#">)
+					<cfif rstcontent.recordcount>
+						and contentID in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#valueList(rstcontent.contentID)#">)
+					<cfelse>
+						and 0=1
+					</cfif>
 				</cfif>
 				<cfif not arguments.includeTrash>
 				and contentID in (select distinct contentID from tcontent)
@@ -973,40 +1007,48 @@ to your own modified versions of Mura CMS.
 			<cfquery datasource="#arguments.dsn#" name="rstclassextendsets">
 				select * from tclassextendsets 
 				where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
-				and subTypeID in (<cfqueryparam cfsqltype="cf_sql_varchar" value="#valueList(rstclassextend.subtypeID)#" list="true">)
+				<cfif rstclassextend.recordcount>
+					and subTypeID in (<cfqueryparam cfsqltype="cf_sql_varchar" value="#valueList(rstclassextend.subtypeID)#" list="true">)
+				<cfelse>
+					and 0=1
+				</cfif>
 			</cfquery>
-	
+		
 			<cfset setValue("rstclassextendsets",rstclassextendsets)>
-	
+		
 			<cfquery datasource="#arguments.dsn#" name="rstclassextendattributes">
 				select * from tclassextendattributes where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
-				and extendsetID in (<cfqueryparam cfsqltype="cf_sql_varchar" value="#valueList(rstclassextendsets.extendsetID)#" list="true">)
+				<cfif rstclassextendsets.recordcount>
+					and extendsetID in (<cfqueryparam cfsqltype="cf_sql_varchar" value="#valueList(rstclassextendsets.extendsetID)#" list="true">)
+				<cfelse>
+					and 0=1
+				</cfif>
 			</cfquery>
-	
+		
 			<cfset setValue("rstclassextendattributes",rstclassextendattributes)>
-	
+		
 			<cfquery datasource="#arguments.dsn#" name="rstclassextenddata">
 				select tclassextenddata.baseID, tclassextenddata.attributeID, tclassextenddata.attributeValue, 
 				tclassextenddata.siteID, tclassextenddata.stringvalue, tclassextenddata.numericvalue, tclassextenddata.datetimevalue, tclassextenddata.remoteID from tclassextenddata 
 				inner join tcontent on (tclassextenddata.baseid=tcontent.contenthistid)
 				where tclassextenddata.siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
 				<cfif not arguments.includeVersionHistory>
-				and (tcontent.active = 1 or (tcontent.changesetID is not null and tcontent.approved=0))
+					and (tcontent.active = 1 or (tcontent.changesetID is not null and tcontent.approved=0))
 				</cfif>
 				<cfif isDate(arguments.sinceDate)>
 					and lastUpdate >= #createODBCDateTime(arguments.sinceDate)#
 				</cfif>
 			</cfquery>
-	
+		
 			<cfset setValue("rstclassextenddata",rstclassextenddata)>
-			
+				
 			<cfif arguments.includeUsers>
-			<cfquery datasource="#arguments.dsn#" name="rstclassextenddatauseractivity">
-				select * from tclassextenddatauseractivity
-				where siteID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
-			</cfquery>
-	
-			<cfset setValue("rstclassextenddatauseractivity",rstclassextenddatauseractivity)>
+				<cfquery datasource="#arguments.dsn#" name="rstclassextenddatauseractivity">
+					select * from tclassextenddatauseractivity
+					where siteID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
+				</cfquery>
+		
+				<cfset setValue("rstclassextenddatauseractivity",rstclassextenddatauseractivity)>
 			</cfif>
 				
 			<!--- tcontentcategories --->
@@ -1051,7 +1093,7 @@ to your own modified versions of Mura CMS.
 			<cfif isDate(arguments.sinceDate)>
 			<cfquery datasource="#arguments.dsn#" name="rsttrashfiles">
 				select * from tfiles where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
-				and moduleid in ('00000000000000000000000000000000000'<cfif len(arguments.moduleID)>,<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.moduleID#" list="true"></cfif><cfif arguments.includeUsers>,'00000000000000000000000000000000008'</cfif>)
+				and moduleid in ('00000000000000000000000000000000000'<cfif len(arguments.moduleID)>,<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.moduleID#" list="true"></cfif><cfif arguments.includeUsers>,'00000000000000000000000000000000008'</cfif><cfif arguments.includeFormData>,'00000000000000000000000000000000004'</cfif>)
 				and deleted=1
 			</cfquery>
 	
@@ -1170,6 +1212,29 @@ to your own modified versions of Mura CMS.
 		<cfset setValue("rstpluginsettings",rstpluginsettings)>
 		<!--- END PLUGINS --->
 		
+		
+		<!--- BEGIN FORM DATA --->
+		<cfif arguments.includeFormData and not isDate(arguments.sinceDate)>
+				<cfquery datasource="#arguments.dsn#" name="rstformresponsepackets">
+					select * from tformresponsepackets
+					where siteID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
+				</cfquery>
+		
+				<cfset setValue("rstformresponsepackets",rstformresponsepackets)>
+				
+				<cfquery datasource="#arguments.dsn#" name="rstformresponsequestions">
+					select * from tformresponsequestions
+					where formid in (
+									select distinct formID from tformresponsepackets 
+									where siteID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
+									)
+				</cfquery>
+				
+				<cfset setValue("rstformresponsequestions",rstformresponsequestions)>
+		</cfif>
+		
+		<!--- END FORM DATA --->
+		
 		<cfset setValue("sincedate",arguments.sincedate)>
 		<cfset setValue("bundledate",now())>
 		
@@ -1240,7 +1305,7 @@ to your own modified versions of Mura CMS.
 		<cfset var temp="">
 		<cfset variables.data["#name#"]=arguments.value>
 		<cfwddx action="cfml2wddx" input="#arguments.value#" output="temp">
-		<cffile action="write" output="#temp#" file="#variables.backupDir#wddx_#arguments.name#.xml">
+		<cffile action="write" output="#temp#" file="#variables.backupDir#wddx_#arguments.name#.xml"  charset="utf-8">
 	</cffunction>
 
 </cfcomponent>

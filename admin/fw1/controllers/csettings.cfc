@@ -154,6 +154,7 @@
 	<cfparam name="arguments.rc.includeMetaData" default="false">
 	<cfparam name="arguments.rc.includeMailingListMembers" default="false">
 	<cfparam name="arguments.rc.includeUsers" default="false">
+	<cfparam name="arguments.rc.includeFormData" default="false">
 	
 	<cfset application.serviceFactory.getBean("Bundle").Bundle(
 			siteID=arguments.rc.siteID,
@@ -163,7 +164,8 @@
 			includeTrash=arguments.rc.includeTrash,
 			includeMetaData=arguments.rc.includeMetaData,
 			includeMailingListMembers=arguments.rc.includeMailingListMembers,
-			includeUsers=arguments.rc.includeUsers) />
+			includeUsers=arguments.rc.includeUsers,
+			includeFormData=arguments.rc.includeFormData) />
 </cffunction>
 
 <cffunction name="selectBundleOptions" output="false">

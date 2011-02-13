@@ -280,6 +280,7 @@ to your own modified versions of Mura CMS.
 		<cfparam name="arguments.data.bundleImportPluginMode" default="none">
 		<cfparam name="arguments.data.bundleImportMailingListMembersMode" default="none">
 		<cfparam name="arguments.data.bundleImportUsersMode" default="none">
+		<cfparam name="arguments.data.bundleImportFormDataMode" default="none">
 		<cfset restoreBundle(
 			"#tempfile.serverDirectory#/#tempfile.serverFilename#.#tempfile.serverFileExt#" , 
 			arguments.data.siteID,
@@ -289,7 +290,10 @@ to your own modified versions of Mura CMS.
 			arguments.data.bundleImportRenderingMode,
 			arguments.data.bundleImportMailingListMembersMode,
 			arguments.data.bundleImportUsersMode,
-			arguments.data.bundleImportPluginMode
+			arguments.data.bundleImportPluginMode,
+			'',
+			'',
+			arguments.data.bundleImportFormDataMode
 			)>
 		<cffile action="delete" file="#tempfile.serverDirectory#/#tempfile.serverFilename#.#tempfile.serverFileExt#">
 	</cfif>
@@ -308,6 +312,7 @@ to your own modified versions of Mura CMS.
 <cfargument name="pluginMode" default="none">
 <cfargument name="lastDeployment" default="">
 <cfargument name="moduleID" default="">
+<cfargument name="formDataMode" default="none">
 
     <cfset var sArgs			= structNew()>
 	<cfset var config 			= application.configBean />
@@ -326,6 +331,7 @@ to your own modified versions of Mura CMS.
 	<cfset sArgs.renderingMode			= arguments.renderingMode />
 	<cfset sArgs.mailingListMembersMode			= arguments.mailingListMembersMode />
 	<cfset sArgs.usersMode			= arguments.usersMode />
+	<cfset sArgs.formDataMode			= arguments.formDataMode />
 	<cfset sArgs.keyFactory		= keyFactory />
 	<cfset sArgs.pluginMode		= arguments.pluginMode  />
 	<cfset sArgs.Bundle		= Bundle />

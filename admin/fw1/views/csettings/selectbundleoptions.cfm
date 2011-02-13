@@ -52,6 +52,7 @@ function checkAll (form) {
 	<li><input type="checkbox" name="includeVersionHistory" value="true"/> Content Version Histories</li>
 	<li><input type="checkbox" name="includeMetaData" value="true"/> Content Comments and Ratings</li>
 	<li><input type="checkbox" name="includeMailingListMembers" value="true" /> Mailing List Members</li>
+	<li><input type="checkbox" name="includeFormData" value="true" /> Form Resonse Data</li>
 	<li><input type="checkbox" name="includeUsers" value="true" /> Site Members &amp; Administrative Users</li>
 </ul>
 </dd>

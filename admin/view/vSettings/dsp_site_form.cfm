@@ -544,6 +544,9 @@ to your own modified versions of Mura CMS.
 			 <li>
 			  	<label for="bundleImportMailingListMembersMode"><input id="bundleImportMailingListMembersMode" name="bundleImportMailingListMembersMode" value="all" type="checkbox">Mailing Lists Members</label>
 			 </li>
+			  <li>
+			  	<label for="bundleImportFormDataMode"><input id="bundleImportFormDataMode" name="bundleImportFormDataMode" value="all" type="checkbox">Form Response Data</label>
+			 </li>
 			 <li>
 			  	<label for="bundleImportPluginMode"><input id="bundleImportPluginMode" name="bundleImportPluginMode" value="all" type="checkbox">All Plugins</label>
 			 </li>
