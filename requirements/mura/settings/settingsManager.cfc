@@ -67,9 +67,75 @@ to your own modified versions of Mura CMS.
 </cffunction>
 
 <cffunction name="publishSite" access="public" output="false" returntype="void">
-<cfargument name="siteID" required="yes" default="">
-
-	<cfset application.serviceFactory.getBean("publisher").start(arguments.siteid) />
+	<cfargument name="siteID" required="yes" default="">
+	<cfset var bundleFileName = "">
+	<cfset var authToken = "">
+	<cfset var i = "">
+	<cfset var bundleArgs = structNew()>
+	<cfset var serverArgs = structNew()>
+	<cfset var rsPlugins = application.serviceFactory.getBean("pluginManager").getSitePlugins(arguments.siteID)>
+	
+	<cfif variables.configBean.getValue('deployMode') eq "bundle">
+		<cfset bundleFileName = application.serviceFactory.getBean("Bundle").Bundle(
+			siteID=arguments.siteID,
+			moduleID=ValueList(rsPlugins.moduleID),
+			BundleName='deployBundle', 
+			includeVersionHistory=false,
+			includeTrash=false,
+			includeMetaData=true,
+			includeMailingListMembers=false,
+			includeUsers=false,
+			includeFormData=false,
+			saveFile=true) />
+		
+		<cfloop list="#variables.configBean.getServerList()#" index="i" delimiters="^">
+			<cfset serverArgs = deserializeJSON(i)>
+			<cfinvoke webservice="#serverArgs.serverURL#?wsdl"
+				method="login"
+				returnVariable="authToken">
+				<cfinvokeargument name="username" value="#serverArgs.username#">
+				<cfinvokeargument name="password" value="#serverArgs.password#">
+				<cfinvokeargument name="siteID" value="#serverArgs.siteID#">
+			</cfinvoke>
+			
+			<cfset bundleArgs.siteID = arguments.siteID />
+			<cfset bundleArgs.bundleImportKeyMode = "publish">
+			
+			<cfif serverArgs.deployMode eq "files">
+				<!--- push just files --->
+				<cfset bundleArgs.bundleImportContentMode = "none">
+			<cfelse>
+				<!--- files and content --->
+				<cfset bundleArgs.bundleImportContentMode = "all">
+			</cfif>
+			
+			<cfset bundleArgs.bundleImportRenderingMode = "all">
+			<cfset bundleArgs.bundleImportPluginMode = "all">
+			<cfset bundleArgs.bundleImportMailingListMembersMode = "none">
+			<cfset bundleArgs.bundleImportUsersMode = "none">
+			<cfset bundleArgs.bundleImportLastDeployment = "">
+			<cfset bundleArgs.bundleImportModuleID = "">
+			<cfset bundleArgs.bundleImportFormDataMode = "none">
+						
+			<cfhttp method="post" url="#serverArgs.serverURL#">
+				<cfhttpparam name="method" type="url" value="call">
+				<cfhttpparam name="serviceName" type="url" value="bundle">
+				<cfhttpparam name="methodName" type="url" value="deploy">
+				<cfhttpparam name="authToken" type="url" value="#authToken#">
+				<cfhttpparam name="args" type="url" value="#serializeJSON(bundleArgs)#">
+				<cfhttpparam name="bundleFile" type="file" file="#bundleFileName#">
+			</cfhttp>
+		</cfloop>
+		
+		<cfquery datasource="#application.configBean.getDatasource()#" username="#application.configBean.getDBUsername()#" password="#application.configBean.getDBPassword()#">
+			update tsettings set lastDeployment = #createODBCDateTime(now())#
+			where siteID = <cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#arguments.siteID#">
+		</cfquery>
+		
+		<cfset fileDelete(bundleFileName)>
+	<cfelse>
+		<cfset application.serviceFactory.getBean("publisher").start(arguments.siteid) />
+	</cfif>
 	<cfset variables.clusterManager.reload() />
 	
 </cffunction>

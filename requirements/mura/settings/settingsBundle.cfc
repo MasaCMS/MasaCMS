@@ -370,7 +370,7 @@ to your own modified versions of Mura CMS.
 		</cfif>
 	</cffunction>
 
-	<cffunction name="bundle" returntype="void">
+	<cffunction name="bundle" returntype="any">
 		<cfargument name="siteID" type="string" default="" required="true">
 		<cfargument name="dsn" type="string" default="#variables.configBean.getDatasource()#" required="true">
 		<cfargument name="includeVersionHistory" type="boolean" default="true" required="true">
@@ -382,6 +382,7 @@ to your own modified versions of Mura CMS.
 		<cfargument name="includeMailingListMembers" type="boolean" default="false" required="true">
 		<cfargument name="includeUsers" type="boolean" default="false" required="true">
 		<cfargument name="includeFormData" type="boolean" default="false" required="true">
+		<cfargument name="saveFile" type="boolean" default="false" required="true">
 		
 		<cfset var rstcontent=""/>
 		<cfset var rstcontentstats=""/>
@@ -1258,14 +1259,19 @@ to your own modified versions of Mura CMS.
 			<cfset arguments.bundleName=arguments.bundleName & "_#arguments.siteID#">
 		</cfif>
 		
-		<cfset getBean("fileManager").streamFile(
-			filePath="#variables.workDir##variables.dirName#.zip",
-			filename="#arguments.bundleName#_#dateformat(now(),'dd_mm_yyyy')#_#timeformat(now(),'HH_mm')#.zip",
-			mimetype="application/zip",
-			method="attachment"
-			)>
+		<cfif not arguments.saveFile>
+			<cfset getBean("fileManager").streamFile(
+				filePath="#variables.workDir##variables.dirName#.zip",
+				filename="#arguments.bundleName#_#dateformat(now(),'dd_mm_yyyy')#_#timeformat(now(),'HH_mm')#.zip",
+				mimetype="application/zip",
+				method="attachment"
+				)>
 
-		<cfset fileDelete("#variables.workDir##variables.dirName#.zip")>
+			<cfset fileDelete("#variables.workDir##variables.dirName#.zip")>
+		<cfelse>
+			<cfreturn "#variables.workDir##variables.dirName#.zip">
+		</cfif>
+		
 	</cffunction>
 
 	<cffunction name="getBundle" returntype="string">

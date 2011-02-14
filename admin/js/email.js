@@ -89,14 +89,17 @@
 	function validateEmailForm(formAction, errorMessage)
 	{
 		document.forms.form1.action.value=formAction;
-		if (confirm(errorMessage))
-		{
-			
-			if(!checkContentLength())
-				{return false;}
-			
-			submitForm(document.forms.form1);
-		}
+		confirmDialog(errorMessage, 
+				function()
+				{
+					if(!checkContentLength()){
+						return false;
+					}
+					
+				submitForm(document.forms.form1);
+				}
+		);
+		
 		
 		return false;
 	}
@@ -106,7 +109,7 @@
 		var f = jQuery("#" + formField);
 		document.forms.form1.action.value=formAction;
 		if (f.val() == ''){
-			alert(errorMessage);
+			alertDialog(errorMessage);
 			f.focus();
 		} else {
 			submitForm(document.forms.form1);
