@@ -609,17 +609,15 @@ qq.extend(qq.FileUploader.prototype, {
     },
     _onComplete: function(id, fileName, result){
         qq.FileUploaderBasic.prototype._onComplete.apply(this, arguments);
-
         // mark completed
         var item = this._getItemByFileId(id);                
         qq.remove(this._find(item, 'cancel'));
         qq.remove(this._find(item, 'spinner'));
-       // if (result.success){
-        	
+        if (result.success){	
             qq.addClass(item, this._classes.success);    
-       // } else {
-        //    qq.addClass(item, this._classes.fail);
-        //}         
+        } else {
+             qq.addClass(item, this._classes.fail);
+        }         
     },
     _addToList: function(id, fileName){
         var item = qq.toElement(this._options.fileTemplate);                
@@ -1211,13 +1209,13 @@ qq.extend(qq.UploadHandlerXhr.prototype, {
         var size = this.getSize(id);
         
         this._options.onProgress(id, name, size, size);
-                
+        
         if (xhr.status == 200){
             this.log("xhr - server response received");
             this.log("responseText = " + xhr.responseText);
                         
             var response;
-                    
+          
             try {
                 response = eval("(" + xhr.responseText + ")");
             } catch(err){

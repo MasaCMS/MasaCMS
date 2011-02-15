@@ -186,14 +186,13 @@
 	 
 	 <cfif arguments.rc.allowAction and arguments.rc.action eq 'multiFileUpload'>
 		  <cfset variables.contentManager.multiFileUpload(arguments.rc) />
-		  <cfabort>
 	 </cfif>
 	 
 	  <cfif arguments.rc.allowAction and arguments.rc.action eq 'add' and arguments.rc.contentID neq '00000000000000000000000000000000001'>
 	      <cfset arguments.rc.topid=rc.contentBean.getParentID() />	
 	  </cfif>
 	 
-	<cfif arguments.rc.closeCompactDisplay neq 'true'>
+	<cfif arguments.rc.closeCompactDisplay neq 'true' and arguments.rc.action neq 'multiFileUpload'>
 		
 			<cfif len(arguments.rc.returnURL) and (arguments.rc.action eq 'delete' or arguments.rc.action eq 'deletehistall' or arguments.rc.preview eq 0)>
 					<cflocation url="#rc.returnURL#" addtoken="false"/>

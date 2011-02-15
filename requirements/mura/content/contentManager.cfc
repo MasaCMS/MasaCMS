@@ -1412,8 +1412,8 @@ to your own modified versions of Mura CMS.
 	<cfargument name="isEditor" type="boolean" required="true" default="false">
 	<cfargument name="sortOrder" type="string" required="true" default="asc">
 	<cfargument name="parentID" type="String" required="true" default="">
-	
-	<cfreturn variables.contentDAO.readComments(arguments.contentID,arguments.siteid,arguments.isEditor,arguments.sortOrder,arguments.parentID) />
+	<cfargument name="filterByParentID" type="boolean" required="true" default="true">
+	<cfreturn variables.contentDAO.readComments(arguments.contentID,arguments.siteid,arguments.isEditor,arguments.sortOrder,arguments.parentID,arguments.filterByParentID) />
 	
 	</cffunction>
 	

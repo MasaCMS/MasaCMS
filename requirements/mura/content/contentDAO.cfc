@@ -923,6 +923,7 @@ tcontent.doCache,tcontent.created,tcontent.urltitle,tcontent.htmltitle,tcontent.
 	<cfargument name="isEditor" type="boolean" required="true" default="false">
 	<cfargument name="sortOrder" type="string" required="true" default="asc">
 	<cfargument name="parentID" type="string" required="true" default="">
+	<cfargument name="filterByParentID" type="boolean" required="true" default="true">
 	<cfset var rs= ''/>
 	
 	<cfquery name="rs" datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
@@ -945,7 +946,9 @@ tcontent.doCache,tcontent.created,tcontent.urltitle,tcontent.htmltitle,tcontent.
 				)  k on c.commentID=k.parentID
 	where c.contentid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentid#"/> 
 	and c.siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
+	<cfif arguments.filterByParentID>
 	and c.parentID <cfif len(arguments.parentID)>=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.parentID#"/><cfelse>is null</cfif>
+	</cfif>
 	<cfif not arguments.isEditor>
 	and c.isApproved=1
 	</cfif>

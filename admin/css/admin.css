@@ -1,8 +1,4 @@
-/* @override 
-	http://mura:8500/5.4/admin/css/admin.css?coreversion=1
-	http://cmsdemo.agcmass.org/admin/css/admin.css?coreversion=4066
-	http://cmsdemo.agcmass.org/admin/css/admin.css?coreversion=4073
-*/
+/* @override http://mura:8500/5.4/admin/css/admin.css?coreversion=1 */
 
 /* This file is part of Mura CMS. 
 
@@ -698,7 +694,7 @@ dd ul.interestGroups li li li li, dd ul.categories li li li li, #emailGroupsList
 	width: 100%;
 }
 
-#tabInterests dd ul.interestGroups li li {
+#tabInterests dd ul.interestGroups li li, #tabChoosecontent dd ul.categories li {
 	margin: 0 1% .5em 0;
     display: -moz-inline-stack; /* FF 2 */
 	display: inline-block;
@@ -709,7 +705,7 @@ dd ul.interestGroups li li li li, dd ul.categories li li li li, #emailGroupsList
 	vertical-align: top;
 	font-size: 11px;
 	color: #000;
-	width: auto;
+	width: 100%;
 }
 
 #tabInterests dd ul.interestGroups li li {
@@ -717,7 +713,7 @@ dd ul.interestGroups li li li li, dd ul.categories li li li li, #emailGroupsList
 	width: 100%;	
 }
 
-#tabInterests dd ul.interestGroups li li li {
+#tabInterests dd ul.interestGroups li li li, #tabChoosecontent dd ul.categories li li {
 	color: #636261;
 	width: 31%;
 }
@@ -770,8 +766,8 @@ dd ul.interestGroups li li li li, dd ul.categories li li li li, #emailGroupsList
 	font-weight: normal;
 }
 
-.categoryAssignment li ul {
-	/*margin-top: .5em;*/
+#tabCategorization .categoryAssignment li ul {
+	margin-top: 0;	
 }
 
 .categoryAssignment select {
