@@ -1243,6 +1243,7 @@ to your own modified versions of Mura CMS.
 			
 		<cfset variables.zipTool.AddFiles(zipFilePath="#variables.workDir##variables.dirName#.zip",directory=#variables.backupDir#)>
 
+		<!---
 		<cfdirectory action="list" directory="#variables.procDir#" type="dir" name="rsCleanDir">
 
 		<cfloop query="rsCleanDir">
@@ -1251,7 +1252,10 @@ to your own modified versions of Mura CMS.
 			<cfcatch></cfcatch>
 			</cftry>
 		</cfloop>
-	
+		--->
+		
+		<cfdirectory action="delete" directory="#variables.backupDir#" recurse="true" >
+		
 		<cfif not len(arguments.bundleName)>
 			<cfset arguments.bundleName="MuraBundle">
 		</cfif>
