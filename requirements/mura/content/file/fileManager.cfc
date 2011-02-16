@@ -490,6 +490,7 @@ select fileID from tfiles where siteID=<cfqueryparam cfsqltype="cf_sql_varchar" 
 <cfargument name="filename">
 <cfargument name="mimetype">
 <cfargument name="method" type="string" required="true" default="inline">
+<cfargument name="deleteFile" type="boolean" required="true" default="false">
 <cfset var local=structNew()>
 
 	<cfif findNoCase("video",arguments.mimetype)>
@@ -502,7 +503,7 @@ select fileID from tfiles where siteID=<cfqueryparam cfsqltype="cf_sql_varchar" 
     </cfif>
 
 	<cfheader name="Content-Disposition" value='#arguments.method#;filename="#arguments.filename#"'>
-	<cfcontent file="#arguments.filePath#" type="#arguments.mimetype#">
+	<cfcontent file="#arguments.filePath#" type="#arguments.mimetype#" deletefile="#arguments.deleteFile#">
 
 </cffunction>
 

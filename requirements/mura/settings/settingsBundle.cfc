@@ -1264,10 +1264,9 @@ to your own modified versions of Mura CMS.
 				filePath="#variables.workDir##variables.dirName#.zip",
 				filename="#arguments.bundleName#_#dateformat(now(),'dd_mm_yyyy')#_#timeformat(now(),'HH_mm')#.zip",
 				mimetype="application/zip",
-				method="attachment"
+				method="attachment",
+				deleteFile=true
 				)>
-
-			<cfset fileDelete("#variables.workDir##variables.dirName#.zip")>
 		<cfelse>
 			<cfreturn "#variables.workDir##variables.dirName#.zip">
 		</cfif>
