@@ -145,4 +145,5 @@ to your own modified versions of Mura CMS.
 	<cfset request.muraExportHtml = false>
 	<cfset request.muraMobileRequest=false>
 	<cfset request.muraHandledEvents = structNew()>
-	<cfset request.altTHeme = "">		
+	<cfset request.altTHeme = "">	
+	<cfset request.customMuraScopeKeys = structNew()>	

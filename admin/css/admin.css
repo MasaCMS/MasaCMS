@@ -384,8 +384,8 @@ img.tabPreloader {
 
 .separate, .oneColumn dt.separate, #actionButtons {
 	clear: both;
-	margin: 16px 0 0 0;
-	padding: 20px 0 0 0;
+	margin: 0;
+	padding: 26px 0 0 0;
 	background: url(../images/rule_dotted_big.gif) repeat-x;
 }
 
@@ -540,9 +540,9 @@ form li {
 	}
 
 .oneColumn {
-	margin: 0 0 16px;
+	/*margin: 0 0 16px;
 	padding: 0 0 16px 0;
-	background: url(../images/rule_dotted_big.gif) repeat-x left bottom;
+	background: url(../images/rule_dotted_big.gif) repeat-x left bottom;*/
 }
 
 .tabs .oneColumn {

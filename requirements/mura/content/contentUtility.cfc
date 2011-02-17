@@ -863,6 +863,46 @@ and active=1
 
 </cffunction>
 
+<cffunction name="updateGlobalCommentsMaterializedPath" returntype="any" output="false">
+<cfargument name="siteID">
+<cfargument name="parentID" required="true" default="">
+<cfargument name="path" required="true" default=""/>
+<cfargument name="datasource" required="true" default="#variables.dsn#"/>
+
+<cfset var rs="" />
+<cfset var newPath = "" />
+<cfset var updateDSN=arguments.datasource>
+<cfset var updatePWD="">
+<cfset var updateUSER="">
+
+<cfif updateDSN eq variables.dsn>
+	<cfset updatePWD=variables.configBean.getDBPassword()>
+	<cfset updateUSER=variables.configBean.getDBUsername()>
+</cfif>
+
+<cfquery name="rs" datasource="#updateDSN#" username="#updateUSER#" password="#updatePWD#">
+select commentID from tcontentcomments
+where siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#" />
+<cfif len(arguments.parentID)>
+and parentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.parentID#" />
+<cfelse>
+and parentID is null
+</cfif>
+</cfquery>
+
+	<cfloop query="rs">
+		<cfset newPath=listappend(arguments.path,rs.commentID) />
+		<cfquery datasource="#updateDSN#" username="#updateUSER#" password="#updatePWD#">
+		update tcontentcomments
+		set path=<cfqueryparam cfsqltype="cf_sql_longvarchar" value="#newPath#" />
+		where siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#" />
+		and commentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#rs.commentID#" />
+		</cfquery>
+		<cfset updateGlobalCommentsMaterializedPath(arguments.siteID,rs.commentID,newPath,updateDSN) />
+	</cfloop>
+
+</cffunction>
+
 <cffunction name="findAndReplace" returntype="void" output="false">
 	<cfargument name="find" type="string" default="" required="true">
 	<cfargument name="replace" type="string" default="" required="true">

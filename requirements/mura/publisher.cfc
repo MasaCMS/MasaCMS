@@ -129,6 +129,7 @@ to your own modified versions of Mura CMS.
 			
 			<cfif arguments.keyMode eq "copy">
 				<cfset application.serviceFactory.getBean("contentUtility").updateGlobalMaterializedPath(siteid=arguments.toSiteID,datasource=arguments.toDSN) />
+				<cfset application.serviceFactory.getBean("contentUtility").updateGlobalCommentsMaterializedPath(siteid=arguments.toSiteID,datasource=arguments.toDSN) />
 				<cfset application.serviceFactory.getBean("categoryUtility").updateGlobalMaterializedPath(siteid=arguments.toSiteID,datasource=arguments.toDSN) />
 		 	</cfif>
 		 	
@@ -3088,6 +3089,7 @@ to your own modified versions of Mura CMS.
 		<!---</cfthread>--->
 		
 		<cfset application.serviceFactory.getBean("contentUtility").updateGlobalMaterializedPath(siteid=arguments.toSiteID,datasource=arguments.toDSN) />
+		<cfset application.serviceFactory.getBean("contentUtility").updateGlobalCommentsMaterializedPath(siteid=arguments.toSiteID,datasource=arguments.toDSN) />
 		<cfset application.serviceFactory.getBean("categoryUtility").updateGlobalMaterializedPath(siteid=arguments.toSiteID,datasource=arguments.toDSN) />
 		
 	</cffunction>

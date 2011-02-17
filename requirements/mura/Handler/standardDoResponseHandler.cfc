@@ -28,7 +28,7 @@
 	<cfset var renderer="">
 	<cfset var siteRenderer=arguments.event.getContentRenderer()>
 	<cfset var themeRenderer=arguments.event.getThemeRenderer()>
-	
+	<cfset var translator="">
 	<cfif isObject(themeRenderer) and structKeyExists(themeRenderer,"showItemMeta")>
 		<cfset renderer=themeRenderer>
 	<cfelse>
@@ -45,15 +45,15 @@
 				<cfswitch expression="#event.getValue('contentBean').getType()#">
 					<cfcase value="Link">
 						<cfif not renderer.showItemMeta("Link") or event.getValue('showMeta') eq 2>
-							<cfset event.getHandler('standardLinkTranslation').handle(event) />
+							<cfset translator=event.getHandler('standardLinkTranslation')>
 						<cfelse>
-							<cfset event.getHandler('standardTranslation').handle(event) />	
+							<cfset translator=event.getHandler('standardTranslation')>
 						</cfif>
 					</cfcase>
 					<cfcase value="File">		
 						<cfif not renderer.showItemMeta(event.getValue('contentBean').getFileExt()) or event.getValue('showMeta') eq 2>
 							<!---<cftry>--->
-							<cfset event.getHandler('standardFileTranslation').handle(event) />
+							<cfset translator=event.getHandler('standardFileTranslation')>
 							<!---
 							<cfcatch>
 								<cfset event.setValue('contentBean',application.contentManager.getActiveContentByFilename("404",event.getValue('siteID'))) />
@@ -62,24 +62,24 @@
 							</cftry>
 							--->
 						<cfelse>
-							<cfset event.getHandler('standardTranslation').handle(event) />
+							<cfset translator=event.getHandler('standardTranslation')>	
 						</cfif>
 					</cfcase>
 				</cfswitch>
 			<cfelse>
-				<cfset event.getHandler('standardTranslation').handle(event) />
+				<cfset translator=event.getHandler('standardTranslation')>	
 			</cfif>
 		<cfelse>
-			<cfset event.getHandler('standardTranslation').handle(event) />
-		</cfif>
-		
+			<cfset translator=event.getHandler('standardTranslation')>	
+		</cfif>	
 	</cfcase>
-	
 	<cfdefaultcase>
-		<cfset event.getHandler('standardTranslation').handle(event) />
+		<cfset translator=event.getHandler('standardTranslation')>
 	</cfdefaultcase>
-	
 	</cfswitch>
+	
+	<cfset translator.handle(event) />
+	
 	<cfset application.pluginManager.announceEvent('onRenderEnd', event)/>
 	<cfset event.getValidator('standardForceSSL').validate(event)>
 

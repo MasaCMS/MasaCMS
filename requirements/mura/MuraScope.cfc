@@ -23,6 +23,9 @@
 			</cfif>
 		</cfif>
 	</cfif>
+	
+	<cfset structAppend(this,request.customMuraScopeKeys,false)>
+	
 	<cfreturn this>
 </cffunction>
 
@@ -347,5 +350,13 @@
 <cffunction name="rbKey" output="false" returntype="any">
 	<cfargument name="key">
 	<cfreturn siteConfig("RBFactory").getKey(arguments.key)>
+</cffunction>
+
+<cffunction name="setCustomMuraScopeKey" output="false">
+	<cfargument name="name">
+	<cfargument name="value">
+	
+	<cfset this['#arguments.name#']=arguments.value>
+	<cfset request.customMuraScopeKeys['#arguments.name#']=arguments.value>
 </cffunction>
 </cfcomponent>

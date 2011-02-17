@@ -1,6 +1,6 @@
 
 div.editableObject {
-	display: inline-block !important;
+	display: block !important;
 	visibility: !important;
 	float: none !important;
 	position: relative !important;
@@ -18,7 +18,7 @@ div.editableObject {
 	border: 0 !important;
 	outline-width: 0px !important;
 	outline-style: dotted !important;
-	outline-color: #ff3a00 !important; /* Mura yellow: #f1bf00 */
+	outline-color: #ff3a00 !important;
 	background: transparent !important;
 	}
 

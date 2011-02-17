@@ -47,6 +47,7 @@ to your own modified versions of Mura CMS.
 	
 	<cfloop query="rslist">
 		<cfset contentUtility.updateGlobalMaterializedPath(rslist.siteID)/>
+		<cfset contentUtility.updateGlobalCommentsMaterializedPath(rslist.siteID)/>
 		<cfset categoryUtility.updateGlobalMaterializedPath(rslist.siteID)/>
 	</cfloop>
 	The paths have been reset.
