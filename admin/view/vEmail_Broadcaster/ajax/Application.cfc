@@ -41,5 +41,51 @@ the GNU General Public License version 2 †without this exception. †You may, 
 to your own modified versions of Mura CMS.
 --->
 <cfcomponent output="false">
-	<cfabort>
+	
+	<cfinclude template="../../../../config/applicationSettings.cfm">
+	
+	<cfif not hasMainMappings>
+		<!--- Try and include global mappings --->
+		<cfset canWriteMode=true>
+		<cfset canWriteMappings=true>
+		<cfset hasMappings=true>
+		
+		<cftry>
+			<cfinclude template="../../../../config/mappings.cfm">
+			<cfcatch type="missingInclude">
+				<cfset hasMappings=false>
+			</cfcatch>
+		</cftry>
+		
+		<cfif not hasMappings>
+			<cfinclude template="../../../../config/buildMainMappings.cfm">
+		</cfif>
+		
+	</cfif>
+	
+	<cfif not hasPluginMappings>
+		<!--- Try and include plugin mappings --->
+		<cfset canWriteMode=true>
+		<cfset hasMappings=true>
+		<cfset canWriteMappings=true>
+		<cftry>
+			<cfinclude template="../../../../plugins/mappings.cfm">
+			<cfcatch type="missingInclude">
+				<cfset hasMappings=false>
+			</cfcatch>
+		</cftry>
+		
+		<cfif not hasMappings>
+			<cfinclude template="../../../../config/buildPluginMappings.cfm">
+		</cfif>
+		
+	</cfif>
+	
+	<cfinclude template="../../config/appcfc/onApplicationStart_method.cfm">
+	<cfinclude template="../../config/appcfc/onRequestStart_scriptProtect_method.cfm">
+	<cfinclude template="../../config/appcfc/onSessionStart_method.cfm">
+	<cfinclude template="../../config/appcfc/onSessionEnd_method.cfm">
+	<cfinclude template="../../config/appcfc/onError_method.cfm">
+	<cfinclude template="../../config/appcfc/onMissingTemplate_method.cfm">
+	
 </cfcomponent>
