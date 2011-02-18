@@ -5,23 +5,18 @@
 <cffunction name="init" output="false">
 	<cfargument name="data" hint="Can be an event object, struct or siteID">
 	<cfset var initArgs=structNew()>
-	<cfset var hasInitData=false>
-	<cfif structKeyExists(arguments,"data")>
-		<cfif isObject(arguments.data)>
-			<cfset setEvent(arguments.data)>
-		<cfelse>
-			<cfif isStruct(arguments.data) and not structIsEmpty(arguments.data)>
-				<cfset initArgs=arguments.data>
-				<cfset hasInitData=true>
-			<cfelseif isSimpleValue(arguments.data) and len(arguments.data)>
-				<cfset initArgs.siteID=arguments.data>
-				<cfset hasInitData=true>
-			</cfif>
-			<cfif hasInitData>
-				<cfset initArgs.muraScope=this>
-				<cfset setEvent(createObject("component","mura.event").init(initArgs))>
-			</cfif>
+	
+	<cfif isObject(arguments.data)>
+		<cfset setEvent(arguments.data)>
+	<cfelse>
+		<cfif isStruct(arguments.data) and not structIsEmpty(arguments.data)>
+			<cfset initArgs=arguments.data>
+		<cfelseif isSimpleValue(arguments.data) and len(arguments.data)>
+			<cfset initArgs.siteID=arguments.data>
 		</cfif>
+		
+		<cfset initArgs.muraScope=this>
+		<cfset setEvent(createObject("component","mura.event").init(initArgs))>
 	</cfif>
 	
 	<cfset structAppend(this,request.customMuraScopeKeys,false)>
