@@ -41,5 +41,8 @@ the GNU General Public License version 2 †without this exception. †You may, 
 to your own modified versions of Mura CMS.
 --->
 <cfcomponent output="false">
+	<cffunction name="onRequestStart">
+	<cfoutput>Access Restricted.</cfoutput>
 	<cfabort>
+	</cffunction>
 </cfcomponent>

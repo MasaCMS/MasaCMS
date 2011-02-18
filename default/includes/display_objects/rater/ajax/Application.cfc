@@ -41,8 +41,15 @@ the GNU General Public License version 2 †without this exception. †You may, 
 to your own modified versions of Mura CMS.
 --->
 <cfcomponent output="false">
-	<cffunction name="onRequestStart">
-	<cfoutput>Access Restricted.</cfoutput>
-	<cfabort>
-	</cffunction>
+	<cfset depth=5>
+	<cfinclude template="#repeatString('../',depth)#config/applicationSettings.cfm">
+	<cfinclude template="#repeatString('../',depth)#config/mappings.cfm">
+	<cfinclude template="#repeatString('../',depth)#plugins/mappings.cfm">
+	<cfinclude template="#repeatString('../',depth)#config/appcfc/onApplicationStart_method.cfm">
+	<cfinclude template="#repeatString('../',depth)#config/appcfc/onRequestStart_scriptProtect_method.cfm">
+	<cfinclude template="#repeatString('../',depth)#config/appcfc/onSessionStart_method.cfm">
+	<cfinclude template="#repeatString('../',depth)#config/appcfc/onSessionEnd_method.cfm">
+	<cfinclude template="#repeatString('../',depth)#config/appcfc/onError_method.cfm">
+	<cfinclude template="#repeatString('../',depth)#config/appcfc/onMissingTemplate_method.cfm">
+	
 </cfcomponent>
