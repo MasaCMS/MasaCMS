@@ -1,3 +1,8 @@
+/* @override 
+	http://mura:8500/5.4/default/css/mura.css
+	http://mura:8500/5.4/default/includes/display_objects/comments/css/comments.css
+*/
+
 /* This file is part of Mura CMS. 
 
 	Mura CMS is free software: you can redistribute it and/or modify 
@@ -197,6 +202,7 @@ p.center { text-align: center; }
 #svComments dl {
 	margin-bottom: 1em;
 	padding-bottom: 1em;
+	border: 0;
 	border-bottom: 1px dotted #ccc;
 	line-height: 1.2;
 	}
@@ -204,8 +210,25 @@ p.center { text-align: center; }
 	margin-bottom: 2em;
 	border-bottom: 0;
 	}
+	
+#svComments dl.indent-1 {
+	padding-left: 30px;
+}
+#svComments dl.indent-2 {
+	padding-left: 60px;
+}
+#svComments dl.indent-3 {
+	padding-left: 90px;
+}
+#svComments dl.indent-4 {
+	padding-left: 120px;
+}
 
-#svComments dt { margin-bottom: .25em; }
+#svComments .indent-5,#svComments .indent-6,#svComments .indent-7,#svComments .indent-8,#svComments .indent-9 {
+	border-left: 120px solid #fff;
+}
+
+#svComments dt { margin-bottom: .5em; }
 #svComments dd { margin-bottom: .25em; }
 #svComments dd.comment p { margin-top: .5em; }
 #svComments dd.comment p:first-child { margin-top: 0; }
@@ -213,7 +236,17 @@ p.center { text-align: center; }
 #svComments dd.dateTime {
 	font-size: 1em;
 	color: #666;
+	margin-bottom: .5em;
 	}
+
+#svComments dd.gravatar {
+	float: left;
+	margin-right: 1em;
+}
+
+#svComments dd.reply {
+	font-size: 1em;
+}
 
 /* @end Add Comment Component
 -------------------------------- */
