@@ -196,7 +196,7 @@ to your own modified versions of Mura CMS.
 		</cfif>
 		<!--- END IMAGE MANIPULATION --->
 			
-		<cfif application.CFVersion lt 9>
+		<cfif application.CFVersion lt 9 or variables.configBean.getFileStore() eq "s3">
 			<cfset fileStruct.fileObj=fromPath2Binary(theFile,false) />
 		<cfelse>
 			<cfset fileStruct.fileObj = FileOpen(theFile, "readBinary")>
