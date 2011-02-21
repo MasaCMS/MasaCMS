@@ -761,7 +761,7 @@ select * from tplugins order by #arguments.orderby#
 	</cfif>
 	
 
-	<cfset pluginConfig=getConfig(arguments.args.moduleID) />
+	<cfset pluginConfig=getConfig(arguments.args.moduleID,'',false) />
 	
 	<!--- check to see is the plugin.cfc exists --->
 	<cfif fileExists(ExpandPath("/plugins") & "/" & pluginConfig.getDirectory() & "/plugin/plugin.cfc")>	
