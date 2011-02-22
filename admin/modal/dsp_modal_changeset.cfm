@@ -109,7 +109,7 @@
 		<cfset rsChangesets=application.changesetManager.getQuery(siteID=$.event('siteID'),published=0,sortby="PublishDate")>
 		<select id="changesetSelector" onchange="location.href='?changesetID=' + this.value">
 		<cfloop query="rsChangesets">
-		<option value="#rsChangesets.changesetID#"<cfif previewdata.changesetID eq rsChangesets.changesetID> selected="true"</cfif>>#HTMLEditFormat(rsChangesets.name)# (#LSDateFormat(rsChangesets.publishDate,session.dateKeyFormat)#)</option>
+		<option value="#rsChangesets.changesetID#"<cfif previewdata.changesetID eq rsChangesets.changesetID> selected="true"</cfif>>#HTMLEditFormat(rsChangesets.name)#<cfif isDate(rsChangesets.publishDate)> (#LSDateFormat(rsChangesets.publishDate,session.dateKeyFormat)#)</cfif></option>
 		</cfloop>
 		</select>
 		</dd>

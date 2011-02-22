@@ -58,12 +58,29 @@ order by lname
 
 <head><cfoutput>
 <title>#application.rbFactory.getKeyValue(session.rb,'user.selectuser')#</title>
-
-<script src="#application.configBean.getContext()#/admin/js/admin.js" type="text/javascript" language="Javascript">
-<!--
-//-->
+<script src="#application.configBean.getContext()#/admin/js/jquery/jquery.js?coreversion=#application.coreversion#" type="text/javascript"></script>
+<script src="#application.configBean.getContext()#/admin/js/jquery/jquery-ui.js?coreversion=#application.coreversion#" type="text/javascript"></script>
+<script src="#application.configBean.getContext()#/admin/js/jquery/jquery-ui-i18n.js?coreversion=#application.coreversion#" type="text/javascript"></script>
+<link href="#application.configBean.getContext()#/admin/css/jquery/default/jquery.ui.all.css?coreversion=#application.coreversion#" rel="stylesheet" type="text/css" />
+<script src="#application.configBean.getContext()#/admin/js/admin.js?coreversion=#application.coreversion#" type="text/javascript" language="Javascript"></script>
+<cfif application.configBean.getValue("htmlEditorType") eq "fckeditor">
+<script type="text/javascript" src="#application.configBean.getContext()#/wysiwyg/fckeditor.js"></script>
+<cfelse>
+<script type="text/javascript" src="#application.configBean.getContext()#/tasks/widgets/ckeditor/ckeditor.js"></script>
+<script type="text/javascript" src="#application.configBean.getContext()#/tasks/widgets/ckeditor/adapters/jquery.js"></script>
+<script type="text/javascript" src="#application.configBean.getContext()#/tasks/widgets/ckfinder/ckfinder.js"></script>
+</cfif>
+<script type="text/javascript">
+var htmlEditorType='#application.configBean.getValue("htmlEditorType")#';
+var context='#application.configBean.getContext()#';
+var themepath='#application.settingsManager.getSite(session.siteID).getThemeAssetPath()#';
+var rb='#lcase(session.rb)#';
+var sessionTimeout=<cfif isNumeric(application.configBean.getValue('sessionTimeout'))>#evaluate("application.configBean.getValue('sessionTimeout') * 60")#<cfelse>180</cfif>;
 </script>
-<script src="#application.configBean.getContext()#/admin/js/prototype.js" type="text/javascript" language="Javascript"></script>
+#session.dateKey#
+<script type="text/javascript">
+	jQuery(document).ready(function(){setDatePickers(".datepicker",dtLocale);setTabs(".tabs",0);setHTMLEditors();setAccordions(".accordion",0)});
+</script>
 <script language="JavaScript" type="text/javascript">
 <!--
 
@@ -73,7 +90,7 @@ if (window.opener)	{
 
 function goAndClose(userid)	{
 	<cfoutput>
-	mainwin.location.href='../../index.cfm?fuseaction=cPublicUsers.addtogroup&groupid=#url.groupid#&routeid=#url.groupid#&siteid=#url.siteid#&userid='+userid;
+	mainwin.location.href='../../index.cfm?fuseaction=cPublicUsers.addtogroup&groupid=#URLEncodedFormat(url.groupid)#&routeid=#URLEncodedFormat(url.groupid)#&siteid=#URLEncodedFormat(url.siteid)#&userid='+userid;
 	</cfoutput>
 	window.close();
 }
