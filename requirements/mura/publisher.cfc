@@ -1333,6 +1333,7 @@ to your own modified versions of Mura CMS.
 		<cfargument name="errors" type="any" required="true" default="#structNew()#">
 		
 		<cfset var rstusers="">
+		<cfset var rstusersonly="">
 		<cfset var rstusersmemb="">
 		<cfset var rstuserstags="">
 		<cfset var rstusersinterests="">
@@ -1373,7 +1374,12 @@ to your own modified versions of Mura CMS.
 		<cfif arguments.usersMode neq "none" and structKeyExists(arguments,"Bundle")>
 			<cfset rstusers = arguments.Bundle.getValue("rstusers")>
 		
-			<cfif rstusers.recordcount>
+			<cfquery name="rstusersonly" dbtype="query">
+				select * from rstusers
+				where type=2
+			</cfquery>  
+			
+			<cfif rstusersonly.recordcount>	
 				<cfquery name="arguments.rsUserConflicts" datasource="#arguments.toDSN#">
 					select userID,username from tusers where 
 					username in (
