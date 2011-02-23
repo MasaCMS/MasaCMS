@@ -26,8 +26,11 @@
 
 <cffunction name="init" output="false" returntype="any">
 <cfargument name="eventHandler">
+<cfargument name="eventName">
+
 <cfset variables.eventHandler=arguments.eventHandler>
-<cfset variables.eventName=listLast(getMetaData(variables.eventHandler).name,'.')>
+<cfset variables.eventName=arguments.eventName>
+
 <cfreturn this>
 </cffunction>
 
@@ -48,14 +51,23 @@
 <cffunction name="handle" output="false">
 <cfargument name="context">
 	<cfset var contexts=splitContexts(arguments.context)>	
-	<cfset variables.eventHandler.handle(event=contexts.event, mura=contexts.muraScope, $=contexts.muraScope)>
+	<cfif structKeyExists(variables.eventHandler,variables.eventName)>
+		<cfset evaluate("variables.eventHandler.#variables.eventName#(event=contexts.event, mura=contexts.muraScope, $=contexts.muraScope)")>
+	<cfelse>
+		<cfset variables.eventHandler.handle(event=contexts.event, mura=contexts.muraScope, $=contexts.muraScope)>
+	</cfif>
 	<cfset request.muraHandledEvents["#variables.eventName#"]=true>
 </cffunction>
 
 <cffunction name="validate" output="false">
 <cfargument name="context">
 	<cfset var contexts=splitContexts(arguments.context)>
-	<cfset var verdict=variables.eventHandler.validate(event=contexts.event, mura=contexts.muraScope, $=contexts.muraScope)>
+	<cfset var verdict="">
+	<cfif structKeyExists(variables.eventHandler,variables.eventName)>
+		<cfset verdict=evaluate("variables.eventHandler.#variables.eventName#(event=contexts.event, mura=contexts.muraScope, $=contexts.muraScope)")>
+	<cfelse>
+		<cfset verdict=variables.eventHandler.validate(event=contexts.event, mura=contexts.muraScope, $=contexts.muraScope)>
+	</cfif>
 	<cfset request.muraHandledEvents["#variables.eventName#"]=true>
 	<cfif isdefined("verdict")>
 		<cfreturn verdict>
@@ -65,7 +77,11 @@
 <cffunction name="translate" output="false">
 <cfargument name="context">
 	<cfset var contexts=splitContexts(arguments.context)>
-	<cfset variables.eventHandler.translate(event=contexts.event, mura=contexts.muraScope, $=contexts.muraScope)>
+	<cfif structKeyExists(variables.eventHandler,variables.eventName)>
+		<cfset evaluate("variables.eventHandler.#variables.eventName#(event=contexts.event, mura=contexts.muraScope, $=contexts.muraScope)")>
+	<cfelse>
+		<cfset variables.eventHandler.translate(event=contexts.event, mura=contexts.muraScope, $=contexts.muraScope)>
+	</cfif>
 	<cfset request.muraHandledEvents["#variables.eventName#"]=true>
 </cffunction>
 

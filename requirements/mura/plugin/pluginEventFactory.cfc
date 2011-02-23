@@ -46,23 +46,12 @@
 		<cfset var event="" />
 		<cfset var classInstance="" />
 		<cfset var wrappedClassInstance="" />
-		
+	
 		<!---If the local handler has a locally defined method then use it instead --->
 		<cfif NOT arguments.persist or NOT has( localKey )>
-			<cfif isObject(arguments.localHandler) and structKeyExists(arguments.localHandler,arguments.key & variables.class)>
+			<cfif isObject(arguments.localHandler) and structKeyExists(arguments.localHandler, localKey)>
 				<cfset classInstance=localHandler>
-				<cfswitch expression="#variables.class#">
-					<cfcase value="Validator">
-						<cfset classInstance.validate=classInstance[arguments.key & variables.class]>
-					</cfcase>
-					<cfcase value="Handler">
-						<cfset classInstance.handle=classInstance[arguments.key & variables.class]>
-					</cfcase>
-					<cfcase value="Translator">
-						<cfset classInstance.translate=classInstance[arguments.key & variables.class]>
-					</cfcase>
-				</cfswitch>
-				<cfset wrappedClassInstance=variables.genericManager.getFactory(variables.class).wrapHandler(classInstance)>
+				<cfset wrappedClassInstance=variables.genericManager.getFactory(variables.class).wrapHandler(classInstance, localKey)>	
 				<cfif arguments.persist>
 					<cfset super.set( localKey, wrappedClassInstance )>
 				</cfif>
@@ -70,22 +59,11 @@
 			</cfif>
 		
 			<!---If there is a non plugin listener then use it instead --->
-			<cfset classInstance=variables.pluginManager.getSiteListener(variables.siteID, arguments.key & variables.class)>
+			<cfset classInstance=variables.pluginManager.getSiteListener(variables.siteID, localKey)>
 			<cfif isObject(classInstance)>
-				<cfswitch expression="#variables.class#">
-					<cfcase value="Validator">
-						<cfset classInstance.validate=classInstance[arguments.key & variables.class]>
-					</cfcase>
-					<cfcase value="Handler">
-						<cfset classInstance.handle=classInstance[arguments.key & variables.class]>
-					</cfcase>
-					<cfcase value="Translator">
-						<cfset classInstance.translate=classInstance[arguments.key & variables.class]>
-					</cfcase>
-				</cfswitch>
-				<cfset wrappedClassInstance=variables.genericManager.getFactory(variables.class).wrapHandler(classInstance)>
+				<cfset wrappedClassInstance=variables.genericManager.getFactory(variables.class).wrapHandler(classInstance, localKey)>
 				<cfif arguments.persist>
-					<cfset super.set( localKey, wrappedClassInstance )>
+					<cfset super.set( localKey, wrappedClassInstance )>			
 				</cfif>
 				<cfreturn wrappedClassInstance />
 			</cfif>
@@ -94,14 +72,15 @@
 		<!--- Check if the prelook for plugins has been made --->
 		<cfif NOT arguments.persist or NOT has( checkKey )>	
 			
-			<cfset rs=variables.pluginManager.getScripts(arguments.key & variables.class,variables.siteid)>
+			<cfset rs=variables.pluginManager.getScripts(localKey, variables.siteid)>
 			<!--- If it has not then get it--->
 			<cfif arguments.persist>
 				<cfset super.set( checkKey, rs.recordcount ) />
 			</cfif>
 			
 			<cfif rs.recordcount>
-				<cfset wrappedClassInstance=variables.genericManager.getFactory(variables.class).wrapHandler(variables.pluginManager.getComponent("plugins.#rs.directory#.#rs.scriptfile#", rs.pluginID, variables.siteID, rs.docache))>
+				<cfset classInstance=variables.pluginManager.getComponent("plugins.#rs.directory#.#rs.scriptfile#", rs.pluginID, variables.siteID, rs.docache)>
+				<cfset wrappedClassInstance=variables.genericManager.getFactory(variables.class).wrapHandler(classInstance, localKey)>
 				<cfif arguments.persist>
 					<cfset super.set( localKey, wrappedClassInstance )>
 				</cfif>

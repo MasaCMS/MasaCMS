@@ -36,7 +36,7 @@
 		<!--- if the key cannot be found and context is passed then push it in --->
 		<cfif NOT arguments.persist or NOT has( arguments.key )>
 			<!--- create object --->
-			<cfset wrappedClassinstance=wrapHandler(createObject("component",getComponentPath(arguments.key)).init())>
+			<cfset wrappedClassinstance=wrapHandler(createObject("component",getComponentPath(arguments.key)).init(),"#arguments.key##variables.class#")>
 			<cfif arguments.persist>
 				<cfset super.set( arguments.key, wrappedClassinstance) />
 			</cfif>
@@ -60,6 +60,7 @@
 
 <cffunction name="wrapHandler" access="public"  output="false">
 <cfargument name="handler">
-<cfreturn createObject("component","mura.generic.genericEventWrapper").init(arguments.handler)>
+<cfargument name="eventName">
+<cfreturn createObject("component","mura.generic.genericEventWrapper").init(arguments.handler,arguments.eventName)>
 </cffunction>
 </cfcomponent>
