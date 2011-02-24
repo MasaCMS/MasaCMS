@@ -2712,6 +2712,7 @@ to your own modified versions of Mura CMS.
 		<cfset var rstplugindisplayobjects=""/>
 		<cfset var rstpluginsettings=""/>	
 		<cfset var newdirectory="">
+		<cfset var rsTemp="">
 		
 			<cfif not StructKeyExists(arguments,"Bundle")>
 				<cfquery datasource="#arguments.fromDSN#" name="rstplugins">
@@ -2840,15 +2841,22 @@ to your own modified versions of Mura CMS.
 						<cfif not StructKeyExists(arguments,"Bundle")>
 						<cfquery datasource="#arguments.fromDSN#" name="rstpluginscripts">
 							select * from tpluginscripts 
-							where moduleID =<cfqueryparam cfsqltype="cf_sql_varchar" value="#keys.get(rstplugins.moduleID)#"/>
+							where moduleID = <cfqueryparam cfsqltype="cf_sql_varchar" value="#keys.get(rstplugins.moduleID)#"/>
 						</cfquery>
 						<cfelse>
 							<cfset rstpluginscripts = arguments.Bundle.getValue("rstpluginscripts")>
+							<cfquery name="rsTemp" dbtype="query">
+								select * from rstpluginscripts
+								where moduleID = <cfqueryparam cfsqltype="cf_sql_varchar" value="#keys.get(rstplugins.moduleID)#"/>
+							</cfquery>
+							<cfset rstpluginscripts = rsTemp>
 						</cfif>	
 						<cfquery datasource="#arguments.toDSN#">
 							delete from tpluginscripts 
 							where moduleID =<cfqueryparam cfsqltype="cf_sql_varchar" value="#keys.get(rstplugins.moduleID)#"/>
 						</cfquery>
+						
+						
 						<cfloop query="rstpluginscripts">
 							<cfquery datasource="#arguments.toDSN#">
 								insert into tpluginscripts (scriptID,moduleID,scriptfile,runat,docache)
@@ -2867,10 +2875,15 @@ to your own modified versions of Mura CMS.
 						<cfif not StructKeyExists(arguments,"Bundle")>
 						<cfquery datasource="#arguments.fromDSN#" name="rstplugindisplayobjects">
 							select * from tplugindisplayobjects 
-							where moduleID  =<cfqueryparam cfsqltype="cf_sql_varchar" value="#keys.get(rstplugins.moduleID)#"/>
+							where moduleID = <cfqueryparam cfsqltype="cf_sql_varchar" value="#keys.get(rstplugins.moduleID)#"/>
 						</cfquery>
 						<cfelse>
 							<cfset rstplugindisplayobjects = arguments.Bundle.getValue("rstplugindisplayobjects")>
+							<cfquery name="rsTemp" dbtype="query">
+								select * from rstplugindisplayobjects
+								where moduleID = <cfqueryparam cfsqltype="cf_sql_varchar" value="#keys.get(rstplugins.moduleID)#"/>
+							</cfquery>
+							<cfset rstplugindisplayobjects = rsTemp>
 						</cfif>	
 						<cfquery datasource="#arguments.toDSN#">
 							delete from tplugindisplayobjects 
@@ -2896,10 +2909,15 @@ to your own modified versions of Mura CMS.
 						<cfif not StructKeyExists(arguments,"Bundle")>
 						<cfquery datasource="#arguments.fromDSN#" name="rstpluginsettings">
 							select * from tpluginsettings 
-							where moduleID =<cfqueryparam cfsqltype="cf_sql_varchar" value="#keys.get(rstplugins.moduleID)#"/>
+							where moduleID = <cfqueryparam cfsqltype="cf_sql_varchar" value="#keys.get(rstplugins.moduleID)#"/>
 						</cfquery>
 						<cfelse>
 							<cfset rstpluginsettings = arguments.Bundle.getValue("rstpluginsettings")>
+							<cfquery name="rsTemp" dbtype="query">
+								select * from rstpluginsettings
+								where moduleID = <cfqueryparam cfsqltype="cf_sql_varchar" value="#keys.get(rstplugins.moduleID)#"/>
+							</cfquery>
+							<cfset rstpluginsettings = rsTemp>
 						</cfif>	
 						<cfquery datasource="#arguments.toDSN#">
 							delete from tpluginsettings 
