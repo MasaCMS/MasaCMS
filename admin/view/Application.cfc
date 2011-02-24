@@ -47,14 +47,16 @@ to your own modified versions of Mura CMS.
 	<cfinclude template="#repeatString('../',depth)#plugins/mappings.cfm">
 	
 	<cffunction name="onRequestStart">
-	<cfif listLast(cgi.SCRIPT_NAME,"/") neq "index.cfm">
-	<cfoutput>Access Restricted.</cfoutput>
-	<cfabort>
-	</cfif>
+		<cfset var local=structNew()>
+		<cfif listLast(cgi.SCRIPT_NAME,"/") neq "index.cfm">
+		<cfoutput>Access Restricted.</cfoutput>
+		<cfabort>
+		</cfif>
+		<cfinclude template="/muraWRM/config/appcfc/onRequestStart_include.cfm">
+		<cfinclude template="/muraWRM/config/appcfc/scriptProtect_include.cfm">
+		<cfreturn true>
 	</cffunction>
-	
 	<cfinclude template="#repeatString('../',depth)#config/appcfc/onApplicationStart_method.cfm">
-	<cfinclude template="#repeatString('../',depth)#config/appcfc/onRequestStart_scriptProtect_method.cfm">
 	<cfinclude template="#repeatString('../',depth)#config/appcfc/onSessionStart_method.cfm">
 	<cfinclude template="#repeatString('../',depth)#config/appcfc/onSessionEnd_method.cfm">
 	<cfinclude template="#repeatString('../',depth)#config/appcfc/onError_method.cfm">

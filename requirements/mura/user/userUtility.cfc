@@ -647,6 +647,7 @@ Thanks for using #contactName#</cfoutput>
 		</cfquery>
 		<cfif rs.recordcount and rs.created gte dateAdd("d",-1,now())>
 			<cfset loginByUserID($.event('returnUserID'),$.event('siteID'))>
+			<cfset structDelete(session,"siteArray")>
 		</cfif>
 	</cfif>
 </cffunction>
