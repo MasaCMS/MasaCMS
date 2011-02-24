@@ -337,7 +337,7 @@ to your own modified versions of Mura CMS.
 			<cfset arguments.userBean.setPassword(getRandomPassword()) />
 			<cfset arguments.userBean.save() />
 		</cfif>
-		<cfset struser.username=arguments.userBean.getAllValues()>
+		<cfset struser=arguments.userBean.getAllValues()>
 		
 		<cfset struser.fieldnames='Username,Password'>
 		<cfif arguments.siteid eq ''>

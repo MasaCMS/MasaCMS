@@ -2321,7 +2321,6 @@ to your own modified versions of Mura CMS.
 			<cfif not StructKeyExists(arguments,"Bundle")>
 				<cfquery datasource="#arguments.fromDSN#" name="rstclassextend">
 					select * from tclassextend where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.fromsiteid#"/>
-					and type in (<cfqueryparam cfsqltype="cf_sql_varchar" value="#typeList#" list="true">)
 				</cfquery>
 			<cfelse>
 				<cfset rstclassextend = arguments.Bundle.getValue("rstclassextend")>
@@ -2336,6 +2335,9 @@ to your own modified versions of Mura CMS.
 					delete from tclassextend
 					where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.tositeid#"/>
 					and type in (<cfqueryparam cfsqltype="cf_sql_varchar" value="#typeList#" list="true">)
+					<cfif keys.getMode() eq "publish">
+						and subtypeID not in (<cfqueryparam cfsqltype="cf_sql_varchar" value="#valueList(rstclassextend.subTypeID)#" list="true">)
+					</cfif>
 				</cfquery>
 				
 				<cfquery datasource="#arguments.toDSN#">
@@ -2347,7 +2349,6 @@ to your own modified versions of Mura CMS.
 								where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.tositeid#"/>
 								)
 				</cfquery>
-				
 				<cfquery datasource="#arguments.toDSN#">
 					delete from tclassextendattributes
 					where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.tositeid#"/>
@@ -2359,25 +2360,46 @@ to your own modified versions of Mura CMS.
 				
 		<cfif rstclassextend.recordcount>
 				<cfloop query="rstclassextend">
-					<cfquery datasource="#arguments.toDSN#">
-						insert into tclassextend (subTypeID,siteID, baseTable, baseKeyField, dataTable, type, subType,
-						isActive, notes, lastUpdate, dateCreated, lastUpdateBy)
-						values
-						(
-						<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(rstclassextend.subTypeID)#">,
-						<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#arguments.toSiteID#">,
-						<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstclassextend.baseTable neq '',de('no'),de('yes'))#" value="#rstclassextend.baseTable#">,
-						<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstclassextend.baseKeyField neq '',de('no'),de('yes'))#" value="#rstclassextend.baseKeyField#">,
-						<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstclassextend.baseTable neq '',de('no'),de('yes'))#" value="#rstclassextend.baseTable#">,
-						<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstclassextend.type neq '',de('no'),de('yes'))#" value="#rstclassextend.type#">,
-						<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstclassextend.subType neq '',de('no'),de('yes'))#" value="#rstclassextend.subType#">,
-						<cfqueryparam cfsqltype="cf_sql_INTEGER" null="#iif(rstclassextend.isActive neq '',de('no'),de('yes'))#" value="#rstclassextend.isActive#">,
-						<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstclassextend.notes neq '',de('no'),de('yes'))#" value="#rstclassextend.notes#">,
-						#createODBCDateTime(now())#,
-						#createODBCDateTime(now())#,
-						'System'
-						)
+					<cfquery name="rsCheck" datasource="#arguments.toDSN#">
+						select * from tclassextend
+						where subTypeID = <cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(rstclassextend.subTypeID)#">
 					</cfquery>
+					<cfif rsCheck.recordcount>
+						<cfquery datasource="#arguments.toDSN#">
+							update tclassextend set
+							siteID=<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#arguments.toSiteID#">,
+							baseTable=<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstclassextend.baseTable neq '',de('no'),de('yes'))#" value="#rstclassextend.baseTable#">,
+							baseKeyField=<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstclassextend.baseKeyField neq '',de('no'),de('yes'))#" value="#rstclassextend.baseKeyField#">,
+							dataTable=<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstclassextend.dataTable neq '',de('no'),de('yes'))#" value="#rstclassextend.dataTable#">,
+							type=<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstclassextend.type neq '',de('no'),de('yes'))#" value="#rstclassextend.type#">,
+							subtype=<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstclassextend.subType neq '',de('no'),de('yes'))#" value="#rstclassextend.subType#">,
+							isActive=<cfqueryparam cfsqltype="cf_sql_INTEGER" null="#iif(rstclassextend.isActive neq '',de('no'),de('yes'))#" value="#rstclassextend.isActive#">,
+							notes=<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstclassextend.notes neq '',de('no'),de('yes'))#" value="#rstclassextend.notes#">,
+							lastUpdate=#createODBCDateTime(now())#,
+							lastUpdateBy='System'
+							where subTypeID = <cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(rstclassextend.subTypeID)#">
+						</cfquery>
+					<cfelse>
+						<cfquery datasource="#arguments.toDSN#">
+							insert into tclassextend (subTypeID,siteID, baseTable, baseKeyField, dataTable, type, subType,
+							isActive, notes, lastUpdate, dateCreated, lastUpdateBy)
+							values
+							(
+							<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(rstclassextend.subTypeID)#">,
+							<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#arguments.toSiteID#">,
+							<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstclassextend.baseTable neq '',de('no'),de('yes'))#" value="#rstclassextend.baseTable#">,
+							<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstclassextend.baseKeyField neq '',de('no'),de('yes'))#" value="#rstclassextend.baseKeyField#">,
+							<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstclassextend.dataTable neq '',de('no'),de('yes'))#" value="#rstclassextend.dataTable#">,
+							<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstclassextend.type neq '',de('no'),de('yes'))#" value="#rstclassextend.type#">,
+							<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstclassextend.subType neq '',de('no'),de('yes'))#" value="#rstclassextend.subType#">,
+							<cfqueryparam cfsqltype="cf_sql_INTEGER" null="#iif(rstclassextend.isActive neq '',de('no'),de('yes'))#" value="#rstclassextend.isActive#">,
+							<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstclassextend.notes neq '',de('no'),de('yes'))#" value="#rstclassextend.notes#">,
+							#createODBCDateTime(now())#,
+							#createODBCDateTime(now())#,
+							'System'
+							)
+						</cfquery>
+					</cfif>
 				</cfloop>
 			
 			<cfif not StructKeyExists(arguments,"Bundle")>
@@ -2480,7 +2502,7 @@ to your own modified versions of Mura CMS.
 							update tclassextendattributes set
 							extendSetID=<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(rstclassextendattributes.extendSetID)#">,
 							siteID=<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#arguments.toSiteID#">,
-							name=<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstclassextendattributes.name neq '',de('no'),de('yes'))#" value="#vname#">,
+							name=<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstclassextendattributes.name neq '',de('no'),de('yes'))#" value="#rstclassextendattributes.name#">,
 							label=<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstclassextendattributes.label neq '',de('no'),de('yes'))#" value="#rstclassextendattributes.label#">,
 							hint=<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstclassextendattributes.hint neq '',de('no'),de('yes'))#" value="#rstclassextendattributes.hint#">,
 							type=<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstclassextendattributes.type neq '',de('no'),de('yes'))#" value="#rstclassextendattributes.type#">,
@@ -2532,7 +2554,7 @@ to your own modified versions of Mura CMS.
 					
 					<!--- Extended attribute values of type file need to go through the key factory--->
 					<cfif rstclassextendattributes.type eq "File">
-						<cfset fileattributelist=listAppend(fileattributelist,keys.get(rstclassextendattributes.attributeID))>
+						<cfset fileattributelist=listAppend(fileattributelist,rstclassextendattributes.attributeID)>
 					</cfif>
 					
 					<cfset incomingAttributeList=listAppend(incomingAttributeList,rstclassextendattributes.attributeID)>
@@ -2612,7 +2634,7 @@ to your own modified versions of Mura CMS.
 							<cfqueryparam cfsqltype="cf_sql_INTEGER" value="#keys.get(rstclassextenddata.attributeID)#">,
 							
 							<!--- Extended attribute values of type file need to go through the key factory--->
-							<cfif listFind(fileattributelist,keys.get(rstclassextenddata.attributeID))>
+							<cfif listFind(fileattributelist,rstclassextenddata.attributeID)>
 								<cfqueryparam cfsqltype="cf_sql_LONGVARCHAR" null="#iif(rstclassextenddata.attributeValue neq '',de('no'),de('yes'))#" value="#keys.get(rstclassextenddata.attributeValue)#">,
 								<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstclassextenddata.stringvalue neq '',de('no'),de('yes'))#" value="#keys.get(rstclassextenddata.stringValue)#">,
 							<cfelse>
@@ -2662,7 +2684,7 @@ to your own modified versions of Mura CMS.
 							<cfqueryparam cfsqltype="cf_sql_INTEGER" value="#keys.get(rstclassextenddatauseractivity.attributeID)#">,
 							
 							<!--- Extended attribute values of type file need to go through the key factory--->
-							<cfif listFind(fileattributelist,keys.get(rstclassextenddatauseractivity.attributeID))>
+							<cfif listFind(fileattributelist,rstclassextenddatauseractivity.attributeID)>
 								<cfqueryparam cfsqltype="cf_sql_LONGVARCHAR" null="#iif(rstclassextenddatauseractivity.attributeValue neq '',de('no'),de('yes'))#" value="#keys.get(rstclassextenddatauseractivity.attributeValue)#">,
 								<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstclassextenddatauseractivity.stringvalue neq '',de('no'),de('yes'))#" value="#keys.get(rstclassextenddatauseractivity.stringValue)#">,
 							<cfelse>

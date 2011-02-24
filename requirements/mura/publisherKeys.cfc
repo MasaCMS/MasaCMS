@@ -74,7 +74,7 @@ to your own modified versions of Mura CMS.
 	<cfargument name="key">
 	<cfargument name="defaultValue" required="true" default="#variables.utility.getUUID()#">
 	
-	<cfif variables.mode eq "publish">
+	<cfif variables.mode eq "publish" and not isNumeric(arguments.key)>
 		<cfreturn arguments.key>
 	<cfelse>
 		<cfif left(key,32) neq '00000000000000000000000000000000'>
