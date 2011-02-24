@@ -53,7 +53,10 @@ function checkAll (form) {
 	<li><input type="checkbox" name="includeMetaData" value="true"/> Content Comments and Ratings</li>
 	<li><input type="checkbox" name="includeMailingListMembers" value="true" /> Mailing List Members</li>
 	<li><input type="checkbox" name="includeFormData" value="true" /> Form Response Data</li>
+	<cfset siteBean=application.settingsManager.getSite(session.siteID)>
+	<cfif siteBean.getPublicUserPoolID() eq siteBean.getSiteID() and siteBean.getPrivateUserPoolID() eq siteBean.getSiteID()>
 	<li><input type="checkbox" name="includeUsers" value="true" /> Site Members &amp; Administrative Users</li>
+	</cfif>
 </ul>
 </dd>
 

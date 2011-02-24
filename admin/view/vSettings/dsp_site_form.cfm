@@ -221,7 +221,7 @@ to your own modified versions of Mura CMS.
       <dl class="oneColumn">
       <dt class="first">Member Pool</dt>
       <dd>
-        <select name="publicUserPoolID">
+        <select id="publicUserPoolID" name="publicUserPoolID" onchange="if(this.value!='' || jQuery('##privateUserPoolID').val()!=''){jQuery('##bundleImportUsersModeLI').hide();jQuery('##bundleImportUsersMode').attr('checked',false);}else{jQuery('##bundleImportUsersModeLI').show();}">
           <option value="">This site</option>
           <cfloop query="rsSites">
             <cfif rsSites.siteid neq request.siteBean.getSiteID()>
@@ -232,7 +232,7 @@ to your own modified versions of Mura CMS.
       </dd>
       <dt>Administrative User Pool</dt>
       <dd>
-        <select name="privateUserPoolID">
+        <select id="privateUserPoolID" name="privateUserPoolID" onchange="if(this.value!='' || jQuery('##publicUserPoolID').val()!=''){jQuery('##bundleImportUsersModeLI').hide();jQuery('##bundleImportUsersMode').attr('checked',false);}else{jQuery('##bundleImportUsersModeLI').show();}">
           <option value="">This site</option>
           <cfloop query="rsSites">
             <cfif rsSites.siteid neq request.siteBean.getSiteID()>
@@ -538,7 +538,7 @@ to your own modified versions of Mura CMS.
 			  <li>
 			  	<label for="bundleImportContentMode"><input id="bundleImportContentMode" name="bundleImportContentMode" value="all" type="checkbox" onchange="if(this.checked){jQuery('##contentRemovalNotice').show();}else{jQuery('##contentRemovalNotice').hide();}">Site Architecture &amp; Content</label>
 			 </li>
-			 <li>
+			 <li id="bundleImportUsersModeLI"<cfif not (request.siteBean.getPublicUserPoolID() eq request.siteBean.getSiteID() and request.siteBean.getPrivateUserPoolID() eq request.siteBean.getSiteID())> style="display:none;"</cfif>>
 			  	<label for="bundleImportUsersMode"><input id="bundleImportUsersMode" name="bundleImportUsersMode" value="all" type="checkbox"  onchange="if(this.checked){jQuery('##userNotice').show();}else{jQuery('##userNotice').hide();}">Site Members &amp; Administrative Users</label>
 			 </li>
 			 <li>
