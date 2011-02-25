@@ -2,7 +2,7 @@
 	<div id="footer">
 		<div class="wrap clearfix">
 			<ul class="navUtility">
-				<li><a href="#$.createHREF(filename='about-us')#">About Us</a></li>
+				<li><a href="#$.createHREF(filename='about')#">About Us</a></li>
 				<li><a href="#$.createHREF(filename='news')#">News</a></li>
 				<li><a href="#$.createHREF(filename='blog')#">Blog</a></li>
 				<li><a href="#$.createHREF(filename='mura')#">Mura</a></li>

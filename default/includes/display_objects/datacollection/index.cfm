@@ -42,7 +42,11 @@ to your own modified versions of Mura CMS.
 --->
 
 <cfsilent>
-	<cfset bean = application.contentManager.getActiveContent(arguments.objectID, arguments.siteID)>
+	<cfif isValid("UUID",arguments.objectID)>
+		<cfset bean = $.getBean("content").loadBy(contentID=arguments.objectID,siteID=arguments.siteID)>
+	<cfelse>
+		<cfset bean = $.getBean("content").loadBy(title=arguments.objectID,siteID=arguments.siteID)>
+	</cfif>
 	<cfset rsForm=bean.getAllValues()>
 	<cfset event.setValue("formBean",bean)>
 	
