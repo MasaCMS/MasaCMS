@@ -554,9 +554,16 @@ Select EmailID from temails where deliverydate <=#createodbcdatetime(now())# and
 				SELECT DISTINCT tusers.Email, tusers.fname, tusers.lname, tusers.company
 				FROM         tusersmemb INNER JOIN
 							 tusers ON tusersmemb.UserID = tusers.UserID
-				WHERE     tusersmemb.GroupID IN (
-				<cfloop from="1" to="#listlen(arguments.GroupList)#" index="G"><cfqueryparam cfsqltype="cf_sql_varchar" value="#listgetat(arguments.GroupList,G)#" /> <cfif G lt listlen(arguments.GroupList)>,</cfif></cfloop>
-				) AND tusers.InActive = 0 AND tusers.subscribe = 1 
+				WHERE     
+				<cfif Len(arguments.grouplist)>  
+					tusersmemb.GroupID IN (
+					<cfloop from="1" to="#listlen(arguments.GroupList)#" index="G"><cfqueryparam cfsqltype="cf_sql_varchar" value="#listgetat(arguments.GroupList,G)#" /> <cfif G lt listlen(arguments.GroupList)>,</cfif></cfloop>
+					)
+				<cfelse>
+					0=1  
+				</cfif>
+				
+				AND tusers.InActive = 0 AND tusers.subscribe = 1 
 				
 				
 				<cfif len(arguments.grouplist)>
@@ -566,23 +573,33 @@ Select EmailID from temails where deliverydate <=#createodbcdatetime(now())# and
 				FROM         tusersinterests INNER JOIN
 							 tusers ON tusersinterests.UserID = tusers.UserID
 							 INNER JOIN tcontentcategories ON (tusersinterests.categoryID=tcontentcategories.categoryID)
-				WHERE       
-				(
-				<cfloop from=1 to="#listLen(arguments.grouplist)#" index="f">
-						tcontentcategories.Path like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#listGetAt(arguments.grouplist,f)#%" />
-						<cfif f lt listLen(arguments.grouplist) > or </cfif>
-				</cfloop>
-				) AND tusers.InActive = 0 AND tusers.subscribe = 1
-				
+				WHERE
+				<cfif Len(arguments.grouplist)>       
+					(
+					<cfloop from=1 to="#listLen(arguments.grouplist)#" index="f">
+							tcontentcategories.Path like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#listGetAt(arguments.grouplist,f)#%" />
+							<cfif f lt listLen(arguments.grouplist) > or </cfif>
+					</cfloop>
+					) 
+				<cfelse>
+					0=1  
+				</cfif>
+				AND tusers.InActive = 0 AND tusers.subscribe = 1
 				</cfif> 
 					
 				Union
 				
 				SELECT DISTINCT tmailinglistmembers.Email, tmailinglistmembers.fname, tmailinglistmembers.lname, tmailinglistmembers.company
 				FROM         tmailinglistmembers   INNER JOIN tmailinglist ON(tmailinglistmembers.mlid=tmailinglist.mlid)               
-				WHERE     tmailinglistmembers.mlid IN (
-				<cfloop from="1" to="#listlen(arguments.GroupList)#" index="G"><cfqueryparam cfsqltype="cf_sql_varchar" value="#listgetat(arguments.GroupList,G)#" /> <cfif G lt listlen(arguments.GroupList)>,</cfif></cfloop>) 
-				and tmailinglist.siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#" /> and tmailinglistmembers.isVerified = 1
+				WHERE     
+				<cfif Len(arguments.grouplist)>     
+					tmailinglistmembers.mlid IN (
+					<cfloop from="1" to="#listlen(arguments.GroupList)#" index="G"><cfqueryparam cfsqltype="cf_sql_varchar" value="#listgetat(arguments.GroupList,G)#" /> <cfif G lt listlen(arguments.GroupList)>,</cfif></cfloop>) 
+				<cfelse>
+					0=1  
+				</cfif>
+				AND tmailinglist.siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#" /> 
+				and tmailinglistmembers.isVerified = 1
 				</cfquery>
 				
 				<cfquery name="rsUnsubscribe" datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">

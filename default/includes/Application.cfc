@@ -41,8 +41,23 @@ the GNU General Public License version 2 †without this exception. †You may, 
 to your own modified versions of Mura CMS.
 --->
 <cfcomponent output="false">
+	<cfset depth=2>
+	<cfinclude template="#repeatString('../',depth)#config/applicationSettings.cfm">
+	<cfinclude template="#repeatString('../',depth)#config/mappings.cfm">
+	<cfinclude template="#repeatString('../',depth)#plugins/mappings.cfm">
+	<cfinclude template="#repeatString('../',depth)#config/appcfc/onApplicationStart_method.cfm">
 	<cffunction name="onRequestStart">
-	<cfoutput>Access Restricted.</cfoutput>
-	<cfabort>
+		<cfset var local=structNew()>
+		<cfif not listFindNoCase("styles.js.cfm,templates.js.cfm,editor.css.cfm,default.js.cfm,config.js.cfm",listLast(cgi.SCRIPT_NAME,"/"))>
+		<cfoutput>Access Restricted.</cfoutput>
+		<cfabort>
+		</cfif>
+		<cfinclude template="#repeatString('../',depth)#config/appcfc/onRequestStart_include.cfm">
+		<cfinclude template="#repeatString('../',depth)#config/appcfc/scriptProtect_include.cfm">
+		<cfreturn true>
 	</cffunction>
+	<cfinclude template="#repeatString('../',depth)#config/appcfc/onSessionStart_method.cfm">
+	<cfinclude template="#repeatString('../',depth)#config/appcfc/onSessionEnd_method.cfm">
+	<cfinclude template="#repeatString('../',depth)#config/appcfc/onError_method.cfm">
+	<cfinclude template="#repeatString('../',depth)#config/appcfc/onMissingTemplate_method.cfm">
 </cfcomponent>

@@ -52,8 +52,8 @@ to your own modified versions of Mura CMS.
 		<cfoutput>Access Restricted.</cfoutput>
 		<cfabort>
 		</cfif>
-		<cfinclude template="/muraWRM/config/appcfc/onRequestStart_include.cfm">
-		<cfinclude template="/muraWRM/config/appcfc/scriptProtect_include.cfm">
+		<cfinclude template="#repeatString('../',depth)#config/appcfc/onRequestStart_include.cfm">
+		<cfinclude template="#repeatString('../',depth)#config/appcfc/scriptProtect_include.cfm">
 		<cfreturn true>
 	</cffunction>
 	<cfinclude template="#repeatString('../',depth)#config/appcfc/onApplicationStart_method.cfm">
