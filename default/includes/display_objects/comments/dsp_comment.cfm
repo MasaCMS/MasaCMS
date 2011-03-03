@@ -10,7 +10,9 @@
 				<a href="javascript:noSpam('#listFirst(htmlEditFormat(request['rsSubComments#level#'].email),'@')#','#listlast(HTMLEditFormat(request['rsSubComments#level#'].email),'@')#')" onfocus="this.blur();">#rbFactory.getKey('comments.email')#</a>
 			</cfif>
 			<cfif request.isEditor>
-				| <a class="editcomment" data-id="#request['rsSubComments#level#'].commentID#">#rbFactory.getKey('comments.edit')#</a>
+				<cfif yesnoformat(application.configBean.getValue("editablecomments"))>
+					| <a class="editcomment" data-id="#request['rsSubComments#level#'].commentID#">#rbFactory.getKey('comments.edit')#</a>
+				</cfif>
 				<cfif request['rsSubComments#level#'].isApproved neq 1>
 					| <a href="./?approvedcommentid=#request['rsSubComments#level#'].commentid#&nocache=1&linkServID=#request.contentBean.getContentID()#" onClick="return confirm('Approve Comment?');">#rbFactory.getKey('comments.approve')#</a>
 				</cfif>
