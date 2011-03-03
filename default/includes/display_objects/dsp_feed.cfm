@@ -130,6 +130,7 @@ to your own modified versions of Mura CMS.
 	  </cfsilent>
 
 		<cfif variables.iterator.getRecordCount()>
+			<cfset addToHTMLHeadQueue("listImageStyles.cfm")>
 			<cfoutput>
 			<div class="svSyndLocal svFeed svIndex clearfix" id="#variables.cssID#">
 	        <cfif variables.feedBean.getDisplayName()>
