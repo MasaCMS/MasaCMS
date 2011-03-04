@@ -249,6 +249,10 @@ p.center { text-align: center; }
 	font-size: 1em;
 }
 
+#svComments a.editcomment {
+	cursor: pointer;
+}
+
 /* @end Add Comment Component
 -------------------------------- */
 
