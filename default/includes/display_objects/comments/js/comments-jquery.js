@@ -21,10 +21,16 @@ jQuery(document).ready(function() {
 	$name=jQuery("#postcomment [name=name]").val();
 	$url=jQuery("#postcomment [name=url]").val();
 	$email=jQuery("#postcomment [name=email]").val();
+	$currentedit="";
 	
 	jQuery(".reply a").live('click',function( event ) {
 		var id = jQuery(this).attr('data-id');
 	
+		if($.currentedit != ''){
+			jQuery($currentedit).show();
+			$currentedit='';
+		}
+		
 		event.preventDefault();
 		$editor.hide();
 		$editor.detach();
@@ -51,12 +57,22 @@ jQuery(document).ready(function() {
 			actionURL,
 			function(data){
 				data=eval("(" + data + ")" );
+				
+				if($.currentedit != ''){
+					 jQuery($currentedit).show();
+					 $currentedit='';
+				}
+				
 				$editor.hide();
 				$editor.detach();
 				jQuery("#postcomment-" + id).append($editor);
 				jQuery("#postacomment").hide();
 				jQuery("#editcomment").show();
 				jQuery("#replytocomment").hide();
+				
+				jQuery("#comment-" + id + " .comment").hide();
+				$currentedit="#comment-" + id + " .comment";
+				
 				jQuery("#postcomment-" + id + " [name=parentid]").val(data.parentid);
 				jQuery("#postcomment-" + id + " [name=name]").val(data.name);
 				jQuery("#postcomment-" + id + " [name=email]").val(data.email);
@@ -72,6 +88,12 @@ jQuery(document).ready(function() {
 	
 	jQuery("#postcomment-comment a").click( function( event ) {
 		jQuery("#postcomment-comment").hide();
+		
+		if($.currentedit != ''){
+			 jQuery($currentedit).show();
+			 $currentedit='';
+		}
+		
 		event.preventDefault();
 		$editor.hide();
 		$editor.detach();
