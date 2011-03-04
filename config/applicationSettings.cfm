@@ -42,7 +42,7 @@ to your own modified versions of Mura CMS.
 --->
 
 	<!--- Application name, should be unique --->
-	<cfset this.name = right(REReplace(getDirectoryFromPath(getCurrentTemplatePath()),'[^A-Za-z0-9]','','all'),64) />
+	<cfset this.name = "mura" & hash(getCurrentTemplatePath()) />
 	<!--- How long application vars persist --->
 	<cfset this.applicationTimeout = createTimeSpan(3,0,0,0)>
 	<!--- Where should cflogin stuff persist --->

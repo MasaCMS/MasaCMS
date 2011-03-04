@@ -18,7 +18,7 @@
 		
 		<cfset arguments.rc.siteid="">
 		<cfif not listFind(session.mura.memberships,'S2IsPrivate')>
-			<cfset variables.fw.redirect(action="clogin.main",path="")>
+			<cfset variables.fw.redirect(action="clogin.main",path="index.cfm")>
 		</cfif>
 		
 		<cfset rsList=application.settingsManager.getUserSites(session.siteArray,listFind(session.mura.memberships,'S2')) />
@@ -51,7 +51,7 @@
 			</cfif>
 		</cfif>
 		
-		<cfset variables.fw.redirect(action="cMessage.noAccess",path="")>
+		<cfset variables.fw.redirect(action="cMessage.noAccess",path="index.cfm")>
 
 	</cffunction>
 
