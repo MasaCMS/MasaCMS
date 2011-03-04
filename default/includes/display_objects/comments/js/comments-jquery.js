@@ -75,10 +75,10 @@ jQuery(document).ready(function() {
 		event.preventDefault();
 		$editor.hide();
 		$editor.detach();
+		jQuery("#postcomment-form").append($editor);
 		jQuery("#postacomment").show();
 		jQuery("#editcomment").hide();
 		jQuery("#replytocomment").hide();
-		jQuery("#postcomment-form").append($editor);
 		jQuery("#postcomment [name=parentid]").val("");
 		jQuery("#postcomment [name=name]").val($name);
 		jQuery("#postcomment [name=email]").val($email);
