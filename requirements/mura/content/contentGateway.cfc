@@ -990,7 +990,7 @@ to your own modified versions of Mura CMS.
 	
 	<cfquery name="rs" datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	select menutitle, tcontent.siteid, contentid, contenthistid, fileID, type, tcontent.lastupdateby, active, approved, tcontent.lastupdate, 
-	display, displaystart, displaystop, moduleid, isnav, notes,isfeature,inheritObjects,filename,targetParams,releaseDate,
+	display, displaystart, displaystop, moduleid, isnav, notes,isfeature,featurestart,featurestop,inheritObjects,filename,targetParams,releaseDate,
 	tcontent.changesetID, tchangesets.name changesetName, tchangesets.published changsetPublished,tchangesets.publishDate changesetPublishDate 
 	from tcontent 
 	left Join tchangesets on (tcontent.changesetID=tchangesets.changesetID)

@@ -121,9 +121,25 @@ to your own modified versions of Mura CMS.
 <td class="title"><cfif request.rsHist.notes neq ''><a class="expand">View&nbsp;Note<span>#application.contentRenderer.setParagraphs(htmleditformat(request.rshist.notes))#</span></a></cfif></td>
 <cfif hasChangesets><td class="changeset"><cfif isDate(request.rshist.changesetPublishDate)><a href="##" class="tooltip"><span>#LSDateFormat(request.rshist.changesetPublishDate,"short")#</span></a></cfif>#HTMLEditFormat(request.rshist.changesetName)#</td></cfif> 
 <td nowrap class="status">#versionStatus#</td> 
-<td> <cfif request.rshist.Display and (request.rshist.Display eq 1 and request.rshist.approved and request.rshist.approved)> #application.rbFactory.getKeyValue(session.rb,'sitemanager.yes')# <cfelseif(request.rshist.Display eq 2 and request.rshist.approved and request.rshist.approved)> #LSDateFormat(request.rshist.displaystart,session.dateKeyFormat)#&nbsp;-&nbsp;#LSDateFormat(request.rshist.displaystop,session.dateKeyFormat)# <cfelse> #application.rbFactory.getKeyValue(session.rb,'sitemanager.no')# </cfif></td>
+<td class="display<cfif request.rshist.Display eq 2> scheduled</cfif>"> 
+	<cfif request.rshist.Display eq 1>
+      #application.rbFactory.getKeyValue(session.rb,"sitemanager.true")#
+    <cfelseif request.rshist.Display eq 2>
+      <a href="##" class="tooltip"><span>#LSDateFormat(request.rshist.displaystart,"short")#&nbsp;-&nbsp;#LSDateFormat(request.rshist.displaystop,"short")#</span></a>
+     <cfelse>
+       #application.rbFactory.getKeyValue(session.rb,"sitemanager.false")#
+     </cfif>
+</td>
 <td> #application.rbFactory.getKeyValue(session.rb,'sitemanager.#lcase(request.rshist.inheritobjects)#')#</td>
-<td> #application.rbFactory.getKeyValue(session.rb,'sitemanager.#yesnoformat(request.rshist.isFeature)#')#</td>
+<td class="feature<cfif request.rshist.isfeature eq 2>> scheduled</cfif>"> 
+	<cfif request.rshist.isfeature eq 1>
+			#application.rbFactory.getKeyValue(session.rb,"sitemanager.yes")#
+		<cfelseif request.rshist.isfeature eq 2>
+			<a href="##" class="tooltip"><span>#LSDateFormat(request.rshist.featurestart,"short")#&nbsp;-&nbsp;#LSDateFormat(request.rshist.featurestop,"short")#</span></a>
+		<cfelse>
+			#application.rbFactory.getKeyValue(session.rb,"sitemanager.no")#
+		</cfif>
+</td>
  <td> #application.rbFactory.getKeyValue(session.rb,'sitemanager.#yesnoformat(request.rshist.isnav)#')#</td>
 <td>#LSDateFormat(request.rshist.lastupdate,session.dateKeyFormat)#</td> 
 <td>#LSTimeFormat(request.rshist.lastupdate,"short")#</td>

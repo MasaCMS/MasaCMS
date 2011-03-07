@@ -229,10 +229,10 @@ function setAsSorted(){
       <dt><span class="add"></span><a href="##" class="tooltip">#application.rbFactory.getKeyValue(session.rb,"sitemanager.title")#<span>#application.rbFactory.getKeyValue(session.rb,"tooltip.managerTitle")#</span></a></dt>
       <cfif application.settingsManager.getSite(attributes.siteid).getlocking() neq 'all'>
         <!---
-<cfif attributes.sortBy eq 'orderno'>
+		<cfif attributes.sortBy eq 'orderno'>
           <dd class="order"><a href="##" class="tooltip">#application.rbFactory.getKeyValue(session.rb,"sitemanager.order")#<span>#application.rbFactory.getKeyValue(session.rb,"tooltip.managerOrder")#</span></a></dd>
         </cfif>
---->
+		--->
         <dd class="objects"><a href="##" class="tooltip">#application.rbFactory.getKeyValue(session.rb,"sitemanager.objects")#<span>#application.rbFactory.getKeyValue(session.rb,"tooltip.managerObjects")#</span></a></dd>
         <dd class="display"><a href="##" class="tooltip">#application.rbFactory.getKeyValue(session.rb,"sitemanager.display")#<span>#application.rbFactory.getKeyValue(session.rb,"tooltip.managerDisplay")#</span></a></dd>
         <dd class="feature"><a href="##" class="tooltip">#application.rbFactory.getKeyValue(session.rb,"sitemanager.feature")#<span>#application.rbFactory.getKeyValue(session.rb,"tooltip.managerFeature")#</span></a></dd>
@@ -260,22 +260,32 @@ function setAsSorted(){
           </a>
         <div class="mura-title-fade"></div>
       </dt>
-      <cfif application.settingsManager.getSite(attributes.siteid).getlocking() neq 'all'>
+     <cfif application.settingsManager.getSite(attributes.siteid).getlocking() neq 'all'>
         <!---
-<cfif attributes.sortBy eq 'orderno'>
+		<cfif attributes.sortBy eq 'orderno'>
           <dd class="order">&nbsp;</dd>
         </cfif>
---->
+		--->
         <dd class="objects">#application.rbFactory.getKeyValue(session.rb,"sitemanager.#lcase(request.rstop.inheritObjects)#")#</dd>
-        <dd class="display"><cfif request.rstop.Display gt 0 and (request.rstop.Display eq 1 and request.rstop.approved and request.rstop.approved)>
-            #application.rbFactory.getKeyValue(session.rb,"sitemanager.true")#
-            <cfelseif(request.rstop.Display eq 2 and request.rstop.approved and request.rstop.approved)>
-            <a href="##" class="tooltip"><span>#LSDateFormat(request.rstop.displaystart,"short")#&nbsp;-&nbsp;#LSDateFormat(request.rstop.displaystop,"short")#</span></a>
+        <dd class="display<cfif request.rstop.Display eq 2 and request.rstop.approved>scheduled</cfif>">
+			<cfif request.rstop.Display eq 1 and request.rstop.approved >
+            	#application.rbFactory.getKeyValue(session.rb,"sitemanager.true")#
+            <cfelseif request.rstop.Display eq 2 and request.rstop.approved>
+           	 	<a href="##" class="tooltip"><span>#LSDateFormat(request.rstop.displaystart,"short")#&nbsp;-&nbsp;#LSDateFormat(request.rstop.displaystop,"short")#</span></a>
             <cfelse>
-            #application.rbFactory.getKeyValue(session.rb,"sitemanager.false")#
-          </cfif></dd>
-        <dd class="feature">#application.rbFactory.getKeyValue(session.rb,"sitemanager.#yesnoformat(request.rstop.isfeature)#")#</dd>
-      </cfif>
+           		 #application.rbFactory.getKeyValue(session.rb,"sitemanager.false")#
+         	</cfif>
+		</dd>
+        <dd class="feature<cfif request.rstop.isfeature eq 2> scheduled</cfif>">
+			<cfif request.rstop.isfeature eq 1>
+            	#application.rbFactory.getKeyValue(session.rb,"sitemanager.true")#
+            <cfelseif request.rstop.isfeature eq 2>
+           	 	<a href="##" class="tooltip"><span>#LSDateFormat(request.rstop.featurestart,"short")#&nbsp;-&nbsp;#LSDateFormat(request.rstop.featurestop,"short")#</span></a>
+            <cfelse>
+           		#application.rbFactory.getKeyValue(session.rb,"sitemanager.false")#
+         	 </cfif>
+		</dd>
+     </cfif>
       <dd class="nav">#application.rbFactory.getKeyValue(session.rb,"sitemanager.#yesnoformat(request.rstop.isnav)#")#</dd>
       <dd class="updated">#LSDateFormat(request.rstop.lastupdate,session.dateKeyFormat)# #LSTimeFormat(request.rstop.lastupdate,"medium")#</dd>
       <dd class="admin">

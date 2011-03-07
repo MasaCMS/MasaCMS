@@ -130,29 +130,26 @@ to your own modified versions of Mura CMS.
 </dt>	
 
 <cfif attributes.locking neq 'all'>
-<!---
-<cfif attributes.sortBy eq 'orderno'>
-<dd class="order">
-<cfif attributes.parentid eq attributes.topid>
-<input type="hidden" name="orderid" value="#attributes.rsnest.contentid#">
-<select name="orderno" class="dropdown" <cfif attributes.perm neq 'editor'>#application.rbFactory.getKeyValue(session.rb,"sitemanager.disabled")#</cfif>>
-<cfloop from="#variables.startrow#" to="#endrow#" index="o">
-<option value="#o#" <cfif o eq currentPos>selected</cfif>>#o#</option>
-</cfloop>
-</select></cfif></dd>
-</cfif>
---->
-		<dd class="objects">#attributes.rsNest.inheritObjects#</dd> 
-		<dd class="display">
-			<cfif attributes.rsNest.Display and (attributes.rsNest.Display eq 1 and attributes.rsNest.approved and attributes.rsNest.approved)>#application.rbFactory.getKeyValue(session.rb,"sitemanager.yes")#
-			<cfelseif(attributes.rsNest.Display eq 2 and attributes.rsNest.approved and attributes.rsNest.approved)>
-				<a href="##" class="tooltip"><span>#LSDateFormat(attributes.rsNest.displaystart,"short")#&nbsp;-&nbsp;#LSDateFormat(attributes.rsNest.displaystop,"short")#</span></a>
-			<cfelse>
-				#application.rbFactory.getKeyValue(session.rb,"sitemanager.no")#
-			</cfif>
-		</dd>
-	 <dd class="feature">#application.rbFactory.getKeyValue(session.rb,"sitemanager.#yesnoformat(attributes.rsNest.isfeature)#")#</dd> 
+	<dd class="objects">#attributes.rsNest.inheritObjects#</dd> 
+	<dd class="display<cfif attributes.rsNest.Display eq 2 and attributes.rsNest.approved> scheduled</cfif>">
+		<cfif attributes.rsNest.Display eq 1 and attributes.rsNest.approved>
+			#application.rbFactory.getKeyValue(session.rb,"sitemanager.yes")#
+		<cfelseif attributes.rsNest.Display eq 2 and attributes.rsNest.approved>
+			<a href="##" class="tooltip"><span>#LSDateFormat(attributes.rsNest.displaystart,"short")#&nbsp;-&nbsp;#LSDateFormat(attributes.rsNest.displaystop,"short")#</span></a>
+		<cfelse>
+			#application.rbFactory.getKeyValue(session.rb,"sitemanager.no")#
 		</cfif>
+	</dd>
+	 <dd class="feature<cfif attributes.rsNest.isfeature eq 2> scheduled</cfif>">
+		<cfif attributes.rsNest.isfeature eq 1>
+			#application.rbFactory.getKeyValue(session.rb,"sitemanager.yes")#
+		<cfelseif attributes.rsNest.isfeature eq 2>
+			<a href="##" class="tooltip"><span>#LSDateFormat(attributes.rsNest.featurestart,"short")#&nbsp;-&nbsp;#LSDateFormat(attributes.rsNest.featurestop,"short")#</span></a>
+		<cfelse>
+			#application.rbFactory.getKeyValue(session.rb,"sitemanager.no")#
+		</cfif>
+	</dd> 
+</cfif>
 	<dd class="nav">#application.rbFactory.getKeyValue(session.rb,"sitemanager.#yesnoformat(attributes.rsNest.isNav)#")#</dd>
     <dd class="updated">#LSDateFormat(attributes.rsnest.lastupdate,session.dateKeyFormat)# #LSTimeFormat(attributes.rsnest.lastupdate,"medium")#</dd>
     <dd class="admin">
