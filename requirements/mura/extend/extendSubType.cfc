@@ -251,8 +251,30 @@ to your own modified versions of Mura CMS.
 <cfset var rs=""/>
 <cfset var extendSetBean=""/>
 
+	<cfif not len(getBaseTable())>
+		<cfswitch expression="#getType()#">
+			<cfcase value="Page,Portal,Component,File,Link,Calendar,Gallery">
+				<cfset setBaseTable("tcontent")>
+			</cfcase>
+			<cfcase value="1,2,User,Group,Address">
+				<cfset setBaseTable("tusers")>
+			</cfcase>
+		</cfswitch>
+	</cfif>
+	
+	<cfif not len(getBaseKeyField())>
+		<cfswitch expression="#getType()#">
+			<cfcase value="Page,Portal,Component,File,Link,Calendar,Gallery">
+				<cfset setBaseKeyField("contentHistID")>
+			</cfcase>
+			<cfcase value="1,2,User,Group,Address">
+				<cfset setBaseKeyField("userID")>
+			</cfcase>
+		</cfswitch>
+	</cfif>
+
 	<cfquery name="rs" datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-	select subTypeID from tclassextend where subTypeID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getSubTypeID()#">
+	select subTypeID,type,subtype,siteid from tclassextend where subTypeID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getSubTypeID()#">
 	</cfquery>
 	
 	<cfif rs.recordcount>
@@ -268,6 +290,18 @@ to your own modified versions of Mura CMS.
 		isActive = #getIsActive()#
 		where subTypeID=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#getSubTypeID()#">
 		</cfquery>
+		
+		<cfif rs.type neq getType() or rs.subtype neq getSubType() and getBaseTable() neq "Custom">
+			<cfquery datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+				update #getBaseTable()# set
+				type = <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(getType() neq '',de('no'),de('yes'))#" value="#getType()#">,
+				subType = <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(getSubType() neq '',de('no'),de('yes'))#" value="#getSubType()#" maxlength="25">
+				where 
+				subType = <cfqueryparam cfsqltype="cf_sql_varchar" value="#rs.subtype#" maxlength="25">
+				and type = <cfqueryparam cfsqltype="cf_sql_varchar" value="#rs.type#">
+				and siteID = <cfqueryparam cfsqltype="cf_sql_varchar" value="#rs.siteID#">
+			</cfquery>	
+		</cfif>
 		
 	<cfelse>
 	
@@ -355,7 +389,6 @@ to your own modified versions of Mura CMS.
 	<cfreturn extendSetBean/>
 
 </cffunction>
-
 
 <cffunction name="addExtendSet" access="public" output="false">
 <cfargument name="rawdata">

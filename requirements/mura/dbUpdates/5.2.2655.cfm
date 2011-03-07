@@ -128,7 +128,10 @@ select * from tclassextenddata  where 0=1
 
 </cfswitch>
 	
+	<cftry>
 	<cfset getClassExtensionManager().resetTypedData("Content")>
+	<cfcatch></cfcatch>
+	</cftry>
 
 </cfif>
 
@@ -227,5 +230,9 @@ select * from tclassextenddatauseractivity  where 0=1
 </cfcase>
 
 </cfswitch>
+
+	<cftry>
 	<cfset getClassExtensionManager().resetTypedData("User")>
+	<cfcatch></cfcatch>
+	</cftry>
 </cfif>

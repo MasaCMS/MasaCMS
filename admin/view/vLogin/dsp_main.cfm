@@ -100,5 +100,6 @@ to your own modified versions of Mura CMS.
 		<input type="hidden" name="status" value="sendlogin" />
 		<input name="returnURL" type="hidden" value="#HTMLEditFormat(attributes.returnURL)#"></dd>
 		</dl>
+		<input type="hidden" name="isAdminLogin" value="true">
     </form>
 </cfif></cfoutput>

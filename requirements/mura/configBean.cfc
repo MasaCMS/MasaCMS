@@ -441,7 +441,7 @@ to your own modified versions of Mura CMS.
 
 <cffunction name="setDbType" access="public" output="false">
 	<cfargument name="dbType" type="string" />
-	<cfif left(arguments.dbType,5) eq "mysql">
+	<cfif left(arguments.dbType,5) eq "mysql" or arguments.dbType eq "h2">
 		<cfset variables.instance.dbType = "mysql" />
 	<cfelse>
 		<cfset variables.instance.dbType = arguments.dbType />
@@ -515,10 +515,10 @@ to your own modified versions of Mura CMS.
 
 <cffunction name="setServerPort" access="public" output="false">
 	<cfargument name="ServerPort" type="string" />
-	<cfif arguments.serverPort neq "80">
-	<cfset variables.instance.ServerPort = ":#arguments.ServerPort#" />
+	<cfif arguments.serverPort neq "80" and len(trim(arguments.serverPort))>
+		<cfset variables.instance.ServerPort = ":#arguments.ServerPort#" />
 	<cfelse>
-	<cfset variables.instance.ServerPort = "" />
+		<cfset variables.instance.ServerPort = "" />
 	</cfif>
 	<cfreturn this>
 </cffunction>

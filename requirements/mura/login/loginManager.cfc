@@ -86,11 +86,17 @@ to your own modified versions of Mura CMS.
 <cfset var returnUrl ="" />
 <cfset var site=""/>
 <cfset var returnDomain="">
+<cfset var indexFile="./">
 
 <cfparam name="arguments.data.returnUrl" default="" />
 <cfparam name="arguments.data.rememberMe" default="0" />
 <cfparam name="arguments.data.contentid" default="" />
 <cfparam name="arguments.data.linkServID" default="" />
+<cfparam name="arguments.data.isAdminLogin" default="false" />
+
+<cfif arguments.data.isAdminLogin>
+	<cfset var indexFile="./index.cfm">
+</cfif>
 
 <cfset session.rememberMe=arguments.data.rememberMe />
 
@@ -109,7 +115,7 @@ to your own modified versions of Mura CMS.
 
 <cfif not isdefined('arguments.data.username')>
 
-	<cflocation url="?fuseaction=clogin.main&linkServID=#arguments.data.linkServID#" addtoken="false">
+	<cflocation url="#indexFile#?fuseaction=clogin.main&linkServID=#arguments.data.linkServID#" addtoken="false">
 
 <cfelse>
 	
@@ -132,9 +138,9 @@ to your own modified versions of Mura CMS.
 		
 			<cfif arguments.data.returnUrl eq ''>				
 				<cfif len(arguments.data.linkServID)>
-					<cflocation url="./?LinkServID=#arguments.data.linkServID#" addtoken="false">
+					<cflocation url="#indexFile#?LinkServID=#arguments.data.linkServID#" addtoken="false">
 				<cfelse>
-					<cflocation url="./" addtoken="false">
+					<cflocation url="#indexFile#" addtoken="false">
 				</cfif>	
 			<cfelse>
 				<cfset returnUrl = replace(arguments.data.returnUrl, 'doaction=logout', '', 'ALL')>
@@ -145,13 +151,17 @@ to your own modified versions of Mura CMS.
 			<cflocation url="#returnUrl#" addtoken="false">
 		<cfelse>
 			<cfif len(arguments.data.linkServID)>
-				<cflocation url="./?LinkServID=#arguments.data.linkServID#" addtoken="false">
+				<cflocation url="#indexFile#?LinkServID=#arguments.data.linkServID#" addtoken="false">
 			<cfelse>
-				<cflocation url="./" addtoken="false">
+				<cflocation url="#indexFile#" addtoken="false">
 			</cfif>
 		</cfif>
 	<cfelse>
-		<cflocation url="./?fuseaction=cLogin.main&display=login&status=failed&rememberMe=#arguments.data.rememberMe#&contentid=#arguments.data.contentid#&LinkServID=#arguments.data.linkServID#&returnURL=#urlEncodedFormat(arguments.data.returnUrl)#" addtoken="false">
+		<cfif arguments.data.isAdminLogin>
+			<cflocation url="./index.cfm?fuseaction=cLogin.main&display=login&status=failed&rememberMe=#arguments.data.rememberMe#&contentid=#arguments.data.contentid#&LinkServID=#arguments.data.linkServID#&returnURL=#urlEncodedFormat(arguments.data.returnUrl)#" addtoken="false">
+		<cfelse>
+			<cflocation url="?display=login&status=failed&rememberMe=#arguments.data.rememberMe#&contentid=#arguments.data.contentid#&LinkServID=#arguments.data.linkServID#&returnURL=#urlEncodedFormat(arguments.data.returnUrl)#" addtoken="false">
+		</cfif>
 	</cfif>
 </cfif>
 

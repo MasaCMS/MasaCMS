@@ -145,12 +145,15 @@ select params from tcontentobjects  where 0=1
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 	ALTER TABLE tcontentobjects ADD Params longtext default NULL
 	</cfquery>
+	<cftry>
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 	ALTER TABLE tcontentobjects drop primary key
 	</cfquery>
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 	ALTER TABLE tcontentobjects add primary key (`ContentHistID`,`ObjectID`,`Object`,`ColumnID`,`OrderNo`)
 	</cfquery>
+	<cfcatch></cfcatch>
+	</cftry>
 </cfcase>
 <cfcase value="oracle">
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">

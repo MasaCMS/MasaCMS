@@ -382,7 +382,7 @@ CREATE TABLE `tcontentobjects` (
   `OrderNo` int(10) default NULL,
   `SiteID` varchar(25) default NULL,
   `ColumnID` int(10) default NOT NULL,
-  PRIMARY KEY  (`ContentHistID`,`ObjectID`,`Object`,`ColumnID`)
+  PRIMARY KEY  (`ContentHistID`,`ObjectID`,`Object`,`ColumnID`,`OrderNo`)
 );
 
 CREATE INDEX IX_TContentObjects ON tcontentobjects(siteID);
