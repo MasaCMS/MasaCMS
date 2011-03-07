@@ -53,7 +53,7 @@ to your own modified versions of Mura CMS.
 		<dt><a href="##" class="tooltip">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.menutitle")#<span>#application.rbFactory.getKeyValue(session.rb,"tooltip.navigationTitle")#</span></a></dt>
 		<dd><input type="text" id="menuTitle" name="menuTitle" value="#HTMLEditFormat(request.contentBean.getmenuTitle())#"  maxlength="255" class="textLong" <cfif not request.contentBean.getIsNew() and not listFind("File,Link",attributes.type)>onkeypress="openDisplay('editSEOTitles','#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.close')#');"</cfif>></dd>
 		
-		<cfif not listFind("File,Link",attributes.type)>
+		<!---<cfif not listFind("File,Link",attributes.type)>--->
 			<dt><a href="##" class="tooltip">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.seotitles")#<span>#application.rbFactory.getKeyValue(session.rb,"tooltip.seotitles")#</span> <a href="##" id="editSEOTitlesLink" onclick="javascript: toggleDisplay('editSEOTitles','#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.expand')#','#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.close')#');return false">[#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.expand")#]</a></dt>
 			<dd id="editSEOTitles" style="display:none;">
 			<p class="notice">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.seotitlesnote")#</p>
@@ -64,7 +64,7 @@ to your own modified versions of Mura CMS.
 			<dd><input type="text" id="htmlTitle" name="htmlTitle" value="#HTMLEditFormat(request.contentBean.getHTMLTitle())#"  maxlength="255" class="textLong"></dd>
 			</dl>
 			</dd>
-		</cfif>
+		<!---</cfif>--->
 	</cfcase>
 	<cfdefaultcase>
 		<input type="hidden" id="menuTitle" name="menuTitle" value="">
