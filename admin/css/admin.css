@@ -2678,7 +2678,7 @@ table.cfdebug td a {
 	width: 50px;
 }
 
-.mura-grid .display {
+.mura-grid .display, .mura-grid .feature {
 	width: 60px;
 }
 
@@ -2694,10 +2694,6 @@ td.scheduled a {
 td.scheduled a span {
 	max-width: 110px;
 	text-align: center;
-}
-
-.mura-grid .feature {
-	width: 60px;
 }
 
 .mura-grid .nav {
