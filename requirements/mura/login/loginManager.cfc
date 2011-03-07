@@ -95,7 +95,7 @@ to your own modified versions of Mura CMS.
 <cfparam name="arguments.data.isAdminLogin" default="false" />
 
 <cfif arguments.data.isAdminLogin>
-	<cfset var indexFile="./index.cfm">
+	<cfset indexFile="./index.cfm">
 </cfif>
 
 <cfset session.rememberMe=arguments.data.rememberMe />
