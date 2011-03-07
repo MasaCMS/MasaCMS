@@ -272,6 +272,17 @@ to your own modified versions of Mura CMS.
 			</cfcase>
 		</cfswitch>
 	</cfif>
+	
+	<cfif not len(getDataTable())>
+		<cfswitch expression="#getType()#">
+			<cfcase value="Page,Portal,Component,File,Link,Calendar,Gallery">
+				<cfset setDataTable("tclassextenddata")>
+			</cfcase>
+			<cfcase value="1,2,User,Group,Address">
+				<cfset setDataTable("tclassextenddatauseractivity")>
+			</cfcase>
+		</cfswitch>
+	</cfif>
 
 	<cfquery name="rs" datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	select subTypeID,type,subtype,siteid from tclassextend where subTypeID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getSubTypeID()#">
