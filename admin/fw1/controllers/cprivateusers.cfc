@@ -129,6 +129,8 @@
 <cffunction name="update" output="false">
 	<cfargument name="rc">
 	
+	  <cfset var origSiteID=arguments.rc.siteID>	
+	
 	  <cfif arguments.rc.action eq 'Update'>
 	  	<cfset arguments.rc.userBean=variables.userManager.update(arguments.rc) />
 	  </cfif>
@@ -144,6 +146,8 @@
 	   <cfif arguments.rc.action eq 'Add' and structIsEmpty(arguments.rc.userBean.getErrors())>
 	   	<cfset arguments.rc.userid=rc.userBean.getUserID() />
 	   </cfif>
+	   
+	   <cfset arguments.rc.siteID=origSiteID>
 	   
 	  <cfif (arguments.rc.action neq 'delete' and structIsEmpty(arguments.rc.userBean.getErrors())) or arguments.rc.action eq 'delete'>
 	    <cfset route(arguments.rc)>

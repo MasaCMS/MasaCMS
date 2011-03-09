@@ -127,8 +127,8 @@ loadExtendedAttributes('#request.userbean.getUserID()#','1','#request.userbean.g
 <cfif attributes.userid eq ''>
 <a class="submit" href="javascript:;" onclick="return submitForm(document.forms.form1,'add');"><span>#application.rbFactory.getKeyValue(session.rb,'user.add')#</span></a>
 <cfelse>
-<a class="submit" href="javascript:;" onclick="return submitForm(document.forms.form1,'update');"><span>#application.rbFactory.getKeyValue(session.rb,'user.update')#</span></a>
 <a class="submit" href="javascript:;" onclick="return submitForm(document.forms.form1,'delete','#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'user.deletegroupconfirm'))#');"><span>#application.rbFactory.getKeyValue(session.rb,'user.delete')#</span></a>
+<a class="submit" href="javascript:;" onclick="return submitForm(document.forms.form1,'update');"><span>#application.rbFactory.getKeyValue(session.rb,'user.update')#</span></a>
 </cfif>
 <input type="hidden" name="action" value=""><input type="hidden" name="type" value="1"><input type="hidden" name="contact" value="0">
 <input type="hidden" name="isPublic" value="0">

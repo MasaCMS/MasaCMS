@@ -289,11 +289,12 @@ to your own modified versions of Mura CMS.
 
 <cffunction name="deleteCachedFile" returntype="void" access="public">
 <cfargument name="fileID" type="string" required="yes"/>
-<cfset var delim=variables.configBean.getFileDelim() />
-<cfset var rsFile=readMeta(arguments.fileID) />
-<cfset var pluginEvent = createObject("component","mura.event") />
-<cfset var data=arguments />
-
+		<cfset var delim=variables.configBean.getFileDelim() />
+		<cfset var rsFile=readMeta(arguments.fileID) />
+		<cfset var pluginEvent = createObject("component","mura.event") />
+		<cfset var data=arguments />
+		<cfset var filePath="#application.configBean.getFileDir()#/#rsfile.siteID#/cache/file/"/>
+		<cfset var rsDir=""/>
 		<cfset data.siteID=rsFile.siteID />
 		<cfset data.rsFile=rsFile />
 		<cfset pluginEvent.init(data)>
@@ -303,31 +304,21 @@ to your own modified versions of Mura CMS.
 		
 		<cfswitch expression="#variables.configBean.getFileStore()#">
 		<cfcase value="fileDir">
-		<cftry>
-		<cffile action="delete"  file="#application.configBean.getFileDir()##delim##rsFile.siteid##delim#cache#delim#file#delim##arguments.fileID#.#rsFile.fileExt#" >
-		<cfcatch></cfcatch>
-		</cftry>
-		
-		<cftry>
-		<cffile action="delete"  file="#application.configBean.getFileDir()##delim##rsFile.siteid##delim#cache#delim#file#delim##arguments.fileID#_small.#rsFile.fileExt#" >
-		<cfcatch></cfcatch>
-		</cftry>
-		
-		<cftry>
-		<cffile action="delete"  file="#application.configBean.getFileDir()##delim##rsFile.siteid##delim#cache#delim#file#delim##arguments.fileID#_medium.#rsFile.fileExt#" >
-		<cfcatch></cfcatch>
-		</cftry>
+			<cfdirectory action="list" name="rsDIR" directory="#filepath#" filter="#arguments.fileid#*">
+			<cfloop query="rsDir">
+				<cffile action="delete" file="#filepath##rsDir.name#">
+			</cfloop>		
 		</cfcase>
 		
 		<cfcase value="s3">
-		<cfset variables.s3.deleteS3File(variables.bucket,'#rsFile.siteID#/#arguments.fileid#.#rsFile.fileExt#') />
-				<cfif listFindNoCase("png,gif,jpg,jpeg",rsFile.fileExt)>
-					<cfset variables.s3.deleteS3File(variables.bucket,'#rsFile.siteID#/#arguments.fileid#_small.#rsFile.fileExt#') />
-					<cfset variables.s3.deleteS3File(variables.bucket,'#rsFile.siteID#/#arguments.fileid#_medium.#rsFile.fileExt#') />
-				<cfelseif rsFile.fileEXT eq "flv">
-					<cfset variables.s3.deleteS3File(variables.bucket,'#rsFile.siteID#/#arguments.fileid#_small.jpg') />
-					<cfset variables.s3.deleteS3File(variables.bucket,'#rsFile.siteID#/#arguments.fileid#_medium.jpg') />
-				</cfif>
+			<cfset variables.s3.deleteS3File(variables.bucket,'#rsFile.siteID#/#arguments.fileid#.#rsFile.fileExt#') />
+			<cfif listFindNoCase("png,gif,jpg,jpeg",rsFile.fileExt)>
+				<cfset variables.s3.deleteS3File(variables.bucket,'#rsFile.siteID#/#arguments.fileid#_small.#rsFile.fileExt#') />
+				<cfset variables.s3.deleteS3File(variables.bucket,'#rsFile.siteID#/#arguments.fileid#_medium.#rsFile.fileExt#') />
+			<cfelseif rsFile.fileEXT eq "flv">
+				<cfset variables.s3.deleteS3File(variables.bucket,'#rsFile.siteID#/#arguments.fileid#_small.jpg') />
+				<cfset variables.s3.deleteS3File(variables.bucket,'#rsFile.siteID#/#arguments.fileid#_medium.jpg') />
+			</cfif>
 		</cfcase>
 		
 		</cfswitch>

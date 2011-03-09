@@ -1616,5 +1616,15 @@ to your own modified versions of Mura CMS.
 <cffunction name="getChangesetID" returnType="string" output="false" access="public">
     <cfreturn variables.instance.changesetID />
 </cffunction>
-  
+
+<cffunction name="getImageURL" output="false">
+	<cfargument name="size" required="true" default="Large">
+	<cfargument name="direct" default="true"/>
+	<cfargument name="complete" default="false"/>
+	<cfargument name="height" default=""/>
+	<cfargument name="width" default=""/>
+	<cfset arguments.bean=this>
+	<cfreturn variables.contentManager.getImageURL(argumentCollection=arguments)>
+</cffunction>
+
 </cfcomponent>

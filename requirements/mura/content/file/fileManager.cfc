@@ -507,4 +507,71 @@ select fileID from tfiles where siteID=<cfqueryparam cfsqltype="cf_sql_varchar" 
 
 </cffunction>
 
+<cffunction name="getCustomImage">
+	<cfargument name="Image" required="true" />
+	<cfargument name="Height" default="AUTO" />
+	<cfargument name="Width" default="AUTO" />
+
+	<cfset var NewImageSource = "">
+	<cfset var NewImageLocal = "">
+	<cfset var ReturnImageHTML = "">
+	<cfset var OriginalImageFilename = "" />
+	<cfset var OriginalImageType = "" />
+	<cfset var thisImage="">
+	<cfset var OriginalImageFile = trim(arguments.Image) />
+	<cfset var OriginalImagePath = GetDirectoryFromPath(OriginalImageFile) />
+	<cfset var arguments.Width = trim(replaceNoCase(arguments.Width,"px","","all")) />
+	<cfset var arguments.Height = trim(replaceNoCase(arguments.Width,"px","","all")) />
+		
+	<cfif not fileExists(OriginalImageFile)>
+		<cfset OriginalImageFile = expandPath(OriginalImageFile) />
+		<cfset OriginalImagePath = GetDirectoryFromPath(OriginalImageFile) />
+	</cfif>
+	
+	<cfset OriginalImageType = listLast(OriginalImageFile,".") />
+	<cfset OriginalImageFilename = Replace(OriginalImageFile, ".#OriginalImageType#", "", "all") />
+	
+	<cfif arguments.Width eq "AUTO" and arguments.Height eq "AUTO">
+		<cfset NewImageSource = OriginalImageFile />
+		<cfset NewImageLocal = arguments.Image />
+	<cfelse>
+		<cfset NewImageSource = "#OriginalImageFilename#_H#arguments.Height#_W#arguments.Width#.#OriginalImageType#" />
+		<cfset NewImageLocal = Replace(OriginalImageFile, ".#OriginalImageType#", "_H#arguments.height#_W#arguments.width#.#OriginalImageType#") />
+	</cfif>
+	
+	<cfset NewImageLocal = listLast(NewImageLocal,variables.configBean.getFileDelim())>
+		
+	<cfif not FileExists(NewImageSource)>
+	
+		<cfimage source="#OriginalImageFile#" name="ThisImage" />
+
+		<cfif arguments.Width eq "AUTO">
+			<cfimage source="#ThisImage#" action="resize" height="#arguments.height#" width="" name="ThisImage" />
+			<cfimage source="#ThisImage#" action="write" destination="#NewImageSource#" overwrite="yes" />
+		<cfelseif arguments.Height eq "AUTO">
+			<cfimage source="#ThisImage#" action="resize" height="" width="#arguments.width#" name="ThisImage" />
+			<cfimage source="#ThisImage#" action="write" destination="#NewImageSource#" overwrite="yes" />
+		<cfelse>
+			<cfset ImageAspectRatio = ThisImage.Width / ThisImage.height />
+			<cfset NewAspectRatio = arguments.Width / arguments.height />
+				
+			<cfif ImageAspectRatio eq NewAspectRatio>
+				<cfimage source="#ThisImage#" action="resize" height="" width="#arguments.width#" name="ThisImage" />
+				<cfimage source="#ThisImage#" action="write" destination="#NewImageSource#" overwrite="yes" />
+			<cfelseif ImageAspectRatio lt NewAspectRatio>
+				<cfimage source="#ThisImage#" action="resize" height="" width="#arguments.width#" name="ThisImage" />
+				<cfset CropY = (ThisImage.height - arguments.height)/2 />
+				<cfset ImageCrop(ThisImage, 0, #CropY#, arguments.Width, arguments.height) />
+				<cfimage source="#ThisImage#" action="write" destination="#NewImageSource#" overwrite="yes" name="ThisImage" />
+			<cfelseif ImageAspectRatio gt NewAspectRatio>
+				<cfimage source="#ThisImage#" action="resize" height="#arguments.height#" width="" name="ThisImage" />
+				<cfset CropX = (ThisImage.width - arguments.width)/2 />
+				<cfset ImageCrop(ThisImage, #CropX#, 0, arguments.width, arguments.height) />
+				<cfimage source="#ThisImage#" action="write" destination="#NewImageSource#" overwrite="yes" name="ThisImage" />
+			</cfif>
+		</cfif>
+	</cfif>
+	
+	<cfreturn NewImageLocal />
+	</cffunction>
 </cfcomponent>

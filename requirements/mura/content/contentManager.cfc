@@ -1630,12 +1630,14 @@ to your own modified versions of Mura CMS.
 		<cfreturn variables.contentDAO.getBean()>
 	</cffunction>
 	
-	<cffunction name="getURL" output="false">
+	<cffunction name="getImageURL" output="false">
 		<cfargument name="bean" required="true">
-		<cfargument name="querystring" required="true" default="">
-		<cfargument name="complete" type="boolean" required="true" default="false">
-		<cfargument name="showMeta" type="string" required="true" default="0">
-		<cfreturn variables.settingsManager.getSite(arguments.bean.getValue("siteID")).getContentRenderer().createHREF(arguments.bean.getValue("type"), arguments.bean.getValue("filename"), arguments.bean.getValue("siteID"), arguments.bean.getValue("contentID"), arguments.bean.getValue("target"), arguments.bean.getValue("targetParams"), arguments.queryString, application.configBean.getContext(), application.configBean.getStub(), application.configBean.getIndexFile(), arguments.complete, arguments.showMeta)>
+		<cfargument name="size" required="true" default="Large">
+		<cfargument name="direct" default="true"/>
+		<cfargument name="complete" default="false"/>
+		<cfargument name="height" default=""/>
+		<cfargument name="width" default=""/>
+		<cfreturn variables.settingsManager.getSite(arguments.bean.getValue("siteID")).getContentRenderer().createHREFForImage(arguments.bean.getValue("siteID"), arguments.bean.getValue("fileID"), arguments.bean.getValue("fileEXT"), arguments.size, arguments.direct, arguments.complete, arguments.height, arguments.width)>
 	</cffunction>
 	
 </cfcomponent>

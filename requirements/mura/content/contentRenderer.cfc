@@ -791,21 +791,44 @@ to your own modified versions of Mura CMS.
 <cfargument name="size" required="true" default="large">
 <cfargument name="direct" required="true" default="#this.directImages#">
 <cfargument name="complete" type="boolean" required="true" default="false">
+<cfargument name="height" default=""/>
+<cfargument name="width" default=""/>
+
 	<cfset var imgSuffix=arguments.size>
 	<cfset var returnURL="">
-	<cfset var begin=iif(arguments.complete,de('http://#application.settingsManager.getSite(arguments.siteID).getDomain()##application.configBean.getServerPort()#'),de('')) />
-
+	<cfset var begin="">
+	
+	<cfif not structKeyExists(arguments,"fileEXT")>
+		<cfset arguments.fileEXT=getBean("fileManager").readMeta(arguments.fileID).fileEXT>
+	</cfif>
+	
+	<cfif not structKeyExists(arguments,"siteID")>
+		<cfset arguments.siteID=session.siteID>
+	</cfif>
+	
+	<cfset begin=iif(arguments.complete,de('http://#application.settingsManager.getSite(arguments.siteID).getDomain()##application.configBean.getServerPort()#'),de('')) />
+	
 	<cfif request.muraExportHtml>
 		<cfset arguments.direct=true>
 	</cfif>
 	
 	<cfif arguments.direct and application.configBean.getFileStore() eq "fileDir">
-		<cfif imgSuffix eq "large">
-			<cfset imgSuffix="">
+		<cfif not len(arguments.width) and not len(arguments.height)>
+			<cfif imgSuffix eq "large">
+				<cfset imgSuffix="">
+			<cfelse>
+				<cfset imgSuffix="_" & imgSuffix>
+			</cfif>
+			<cfset returnURL=application.configBean.getAssetPath() & "/" & arguments.siteID & "/cache/file/" & arguments.fileID & imgSuffix & "." & arguments.fileEXT>
 		<cfelse>
-			<cfset imgSuffix="_" & imgSuffix>
+			<cfif not len(arguments.width)>
+				<cfset arguments.width="auto">
+			</cfif>
+			<cfif not len(arguments.height)>
+				<cfset arguments.height="auto">
+			</cfif>
+			<cfreturn application.configBean.getAssetPath() & "/" & arguments.siteID & "/cache/file/" & getBean("filemanager").getCustomImage("#application.configBean.getFileDir()##application.configBean.getFileDelim()##arguments.siteid##application.configBean.getFileDelim()#cache#application.configBean.getFileDelim()#file#application.configBean.getFileDelim()##arguments.fileID#.#arguments.fileExt#",arguments.height,arguments.width)>
 		</cfif>
-		<cfset returnURL=application.configBean.getAssetPath() & "/" & arguments.siteID & "/cache/file/" & arguments.fileID & imgSuffix & "." & arguments.fileEXT>
 	<cfelse>
 		<cfif imgSuffix eq "large">
 			<cfset imgSuffix="file">

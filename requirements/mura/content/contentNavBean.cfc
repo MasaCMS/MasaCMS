@@ -160,10 +160,20 @@
 </cffunction>
 
 <cffunction name="getURL" output="false">
-<cfargument name="querystring" required="true" default="">
-<cfargument name="complete" type="boolean" required="true" default="false">
-<cfargument name="showMeta" type="string" required="true" default="0">
-<cfreturn variables.contentManager.getURL(this, arguments.queryString, arguments.complete, arguments.showMeta)>
+	<cfargument name="querystring" required="true" default="">
+	<cfargument name="complete" type="boolean" required="true" default="false">
+	<cfargument name="showMeta" type="string" required="true" default="0">
+	<cfreturn variables.contentManager.getURL(this, arguments.queryString, arguments.complete, arguments.showMeta)>
 </cffunction>			
-	
+
+<cffunction name="getImageURL" output="false">
+	<cfargument name="size" required="true" default="Large">
+	<cfargument name="direct" default="true"/>
+	<cfargument name="complete" default="false"/>
+	<cfargument name="height" default=""/>
+	<cfargument name="width" default=""/>
+	<cfset arguments.bean=this>
+	<cfreturn variables.contentManager.getImageURL(argumentCollection=arguments)>
+</cffunction>
+
 </cfcomponent>
