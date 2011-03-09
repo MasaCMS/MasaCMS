@@ -368,6 +368,8 @@ to your own modified versions of Mura CMS.
 	<cfset var crumbData="" >
 	<cfset var c = "" />	
 	<cfset var sendVersionLink= variables.configBean.getNotifyWithVersionLink()>
+	<cfset var versionLink="">
+	<cfset var historyLink="">
 	
 	<cfif listFind("Portal,Page,Calendar,Gallery,Link,File",arguments.contentBean.getType()) and arguments.contentBean.getContentID() neq '00000000000000000000000000000000001'>
 		<cfset crumbData=getServiceFactory().getBean('contentGateway').getCrumblist(arguments.contentBean.getParentID(),arguments.contentBean.getSiteID())>

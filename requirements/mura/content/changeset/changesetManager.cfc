@@ -87,7 +87,7 @@
 <cffunction name="save" access="public" returntype="any" output="false">
 	<cfargument name="bean"/>
 	
-	<cfset rs="">
+	<cfset var rs="">
 	
 	<cfquery name="rs" datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDbUsername()#" password="#variables.configBean.getDbPassword()#">
 		select changesetID from tchangesets
@@ -394,11 +394,11 @@
 	<cfreturn rs>
 </cffunction>
 
-<cffunction name="remoteItem" access="public" returntype="any" output="false">
+<cffunction name="removeItem" access="public" returntype="any" output="false">
 <cfargument name="changesetID">
 <cfargument name="contentHistID">
-
-	<cfquery name="rs" datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDbUsername()#" password="#variables.configBean.getDbPassword()#">
+	
+	<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDbUsername()#" password="#variables.configBean.getDbPassword()#">
 	update tcontent
 	set changesetID=null
 	where 

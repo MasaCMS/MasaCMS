@@ -351,7 +351,8 @@ to your own modified versions of Mura CMS.
 	<cfset var currentURLTitle= "" />
 	<cfset var currentPath= "" />
 	<cfset var pluginEvent = createObject("component","mura.event").init(arguments.data) />
-	
+	<cfset var currentFilename="">
+	<cfset var parentBean="">
 	<cfset currentParentID=categoryBean.getParentID() />
 	<cfset currentURLTitle=categoryBean.getURLTitle() />
 	<cfset currentFilename=categoryBean.getFilename() />

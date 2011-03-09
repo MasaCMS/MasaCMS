@@ -78,7 +78,9 @@ to your own modified versions of Mura CMS.
 		<cfset var importValue	= "" />
 		<cfset var fname			= "" />
 		<cfset var sArgs			= StructNew() />
-
+		<cfset var rsImportFiles = "" />
+		<cfset var importWDDX = "" />
+		
 		<cfset variables.Bundle	= variables.unpackPath />
  
 
@@ -285,6 +287,7 @@ to your own modified versions of Mura CMS.
 		<cfset var pluginConfig="">
 		<cfset var pluginCFC="">
 		<cfset var theme="">
+		<cfset var pluginDir="">
 		
 		<cfif not len( getBundle() ) or not directoryExists( getBundle() )>
 			<cfreturn>
@@ -440,6 +443,11 @@ to your own modified versions of Mura CMS.
 		<!---<cfset var moduleIDSqlList="">--->
 		<cfset var i="">
 		<cfset var availableSpace=0>
+		<cfset var pluginConfig="">
+		<cfset var pluginCFC="">
+		<cfset var rstadplacementcategories="">
+		<cfset var rstformresponsepackets="">
+		<cfset var rsCleanDir="">
 		
 		<!---
 		<cfloop list="#arguments.moduleID#" index="i">

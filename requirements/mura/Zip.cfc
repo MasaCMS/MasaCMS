@@ -91,7 +91,7 @@
 			var buffer    = RepeatString(" ",1024).getBytes();
 			var entryPath = "";
 			var entryFile = "";
-
+			var skip="no";
 			try
 			{
 				/* Initialize Zip file */
@@ -202,7 +202,11 @@
 			/* Default variables */
 			var l = 0;
 			var buffer = RepeatString(" ",1024).getBytes();
-
+			var entries="";
+			var entry="";
+			var inStream="";
+			var zipTemp="";
+			var zipRename="";
 			/* Convert to the right path format */
 			arguments.zipFilePath = PathFormat(arguments.zipFilePath);
 
@@ -312,6 +316,10 @@
 			var entryHash= "";
 			var started = false;
 			var delim=application.configBean.getFileDelim();
+			var lastChr="";
+			var lenPath=0;
+			var inStream="";
+			var skip="no";
 			</cfscript>
 			
 			<cfset rsdir=List(arguments.zipFilePath)>
@@ -485,6 +493,12 @@
 			var entry   = "";
 			var cols    = "entry,date,size,packed,ratio,crc";
 			var query   = QueryNew(cols);
+			var qEntry="";
+			var qDate="";
+			var qSize=0;
+			var qPacked="";
+			var qCrc="";
+			
 
 			cols = ListToArray(cols);
 
@@ -542,7 +556,7 @@
 			var buffer     = RepeatString(" ",1024).getBytes();
 			var gzFileName = "";
 			var outputFile = "";
-
+			var lastChr="";
 			/* Convert to the right path format */
 			arguments.gzipFilePath = PathFormat(arguments.gzipFilePath);
 			arguments.filePath     = PathFormat(arguments.filePath);
@@ -604,7 +618,7 @@
 			var buffer     = RepeatString(" ",1024).getBytes();
 			var gzFileName = "";
 			var outputFile = "";
-
+			var lastChr="";
 			/* Convert to the right path format */
 			arguments.gzipFilePath = PathFormat(arguments.gzipFilePath);
 			arguments.extractPath  = PathFormat(arguments.extractPath);
@@ -668,7 +682,7 @@
 		<cfset var n = 0>
 		<cfset var dir   = "">
 		<cfset var array = ArrayNew(1)>
-
+		<cfset var subdir="">
 		<cfdirectory action    = "list"
 					 name      = "dir"
 		             directory = "#PathFormat(arguments.directory)#"

@@ -278,6 +278,7 @@ to your own modified versions of Mura CMS.
 		<cfset var rstcontentrelated=""/>
 		<cfset var rstMailinglist=""/>
 		<cfset var rstMailinglistnew=""/>
+		<cfset var rstMailinglistmembers="">
 		<cfset var rstFiles=""/>
 		<cfset var rstcontentcategories=""/>
 		<cfset var rstcontentcategoriesnew=""/>
@@ -1057,6 +1058,7 @@ to your own modified versions of Mura CMS.
 		<cfset var rstplugins="">
 		<!---<cfset var moduleIDSqlList="">--->
 		<cfset var i="">
+		<cfset var rsFileCheck="">
 		
 		<!---
 		<cfloop list="#arguments.moduleID#" index="i">
@@ -1340,6 +1342,7 @@ to your own modified versions of Mura CMS.
 		<cfset var rstusersfavorites="">
 		<cfset var rstuseraddresses="">
 		<cfset var keys=arguments.keyFactory>
+		<cfset var rstpermissions="">
 		
 		<cfset arguments.rsUserConflicts=queryNew("userID")>
 		
@@ -1348,24 +1351,24 @@ to your own modified versions of Mura CMS.
 				delete from tpermissions where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.tositeid#"/>
 			</cfquery>
 			<cfif not StructKeyExists(arguments,"Bundle")>
-				<cfquery datasource="#arguments.fromDSN#" name="rsTPermissions">
+				<cfquery datasource="#arguments.fromDSN#" name="rstpermissions">
 					select * from tpermissions where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.fromsiteid#"/>
 				</cfquery>
 			<cfelse>
-				<cfset rsTPermissions = arguments.Bundle.getValue("rsTPermissions")>
+				<cfset rsTPermissions = arguments.Bundle.getValue("rstpermissions")>
 			</cfif>
-			<cfloop query="rsTPermissions">
+			<cfloop query="rstpermissions">
 				<cfquery datasource="#arguments.toDSN#">
 					insert into tpermissions (contentID,groupID,Type,SiteID)
 					values
 					(
-					<cfif rsTPermissions.type eq "module" or not find("-",rsTPermissions.contentID)>
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#rsTPermissions.contentID#">
+					<cfif rstpermissions.type eq "module" or not find("-",rstpermissions.contentID)>
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#rstpermissions.contentID#">
 					<cfelse>
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(rsTPermissions.contentID)#">
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(rstpermissions.contentID)#">
 					</cfif>,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#rsTPermissions.groupID#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rsTPermissions.type neq '',de('no'),de('yes'))#" value="#rsTPermissions.type#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#rstpermissions.groupID#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstpermissions.type neq '',de('no'),de('yes'))#" value="#rstpermissions.type#">,
 					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#arguments.toSiteID#">
 					)
 				</cfquery>
@@ -1666,6 +1669,7 @@ to your own modified versions of Mura CMS.
 		<cfset var rstadplacements=""/>
 		<cfset var rstadplacementdetails=""/>
 		<cfset var rstadplacementcategories=""/>
+		<cfset var rstSettings="">
 		<cfset var rstcontentcategoryassign=""/>
 		<cfset var rstcontentfeeds=""/>
 		<cfset var rstcontentfeedsnew=""/>
@@ -2205,7 +2209,10 @@ to your own modified versions of Mura CMS.
 		<cfargument name="errors" type="any" required="true">
 		<cfargument name="renderingMode" type="string" default="all" required="true">
 		<cfargument name="pluginMode" type="string" default="all" required="true">		
-					
+		
+		<cfset var rstclassextenddata="">
+		<cfset var rsRemoteAttribute="">
+			
 				<!--- tclassextenddata --->
 				<cfquery datasource="#arguments.toDSN#">
 					delete from tclassextenddata 
@@ -2305,7 +2312,7 @@ to your own modified versions of Mura CMS.
 		<cfset var typeList="">
 		<cfset var incomingAttributeList="">
 		<cfset var rsCheck="">
-		
+		<cfset var rstclassextenddatauseractivity="">
 		<cfparam name="arguments.rsUserConflicts" default="#queryNew('userID')#">
 		
 		<cfif arguments.usersMode neq "none">

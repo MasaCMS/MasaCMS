@@ -149,6 +149,7 @@ to your own modified versions of Mura CMS.
 	<cfset var filedir = "" />
 	<cfset var i = "" />
 	<cfset var $=getBean("MuraScope").init(arguments.contentBean.getSiteID())>
+	<cfset var newdir="">
 	
 	<cfif listFind("/,\",right(arguments.exportDir,1))>
 		<cfset arguments.exportDir=left(arguments.exportDir, len(arguments.exportDir)-1 )>

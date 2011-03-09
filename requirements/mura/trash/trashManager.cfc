@@ -373,6 +373,7 @@
 	<cfset var idString=getIDString(objectClass)>
 	<cfset var doPurge=false>
 	<cfset var it="">
+	<cfset var item="">
 	
 	<cfif structKeyExists(arguments.restored,"getValue")>
 		<cfif arguments.restored.getValue("fromMuraTrash") eq "true">

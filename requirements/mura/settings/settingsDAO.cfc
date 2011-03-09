@@ -322,6 +322,7 @@ googleAPIKey,useDefaultSMTPServer,siteLocale, mailServerSMTPPort, mailServerPOPP
 
 <cfset var rssites="">
 <cfset var orderno=1>
+<cfset var rsSystemObject="">
 <cftransaction>
 
 <cfquery name="rssites" datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">

@@ -648,7 +648,7 @@ to your own modified versions of Mura CMS.
 	<cfset var theContent = "" />
 	<cfset var theme =$.siteConfig("theme")>
 	<cfset var expandedPath=expandPath(filePath)>
-
+	<cfset var str="">
 <cfsavecontent variable="str">
 <cfinclude  template="#theIncludePath#/includes/display_objects/nav/dsp_tag_cloud.cfm">
 </cfsavecontent>

@@ -282,7 +282,7 @@ to your own modified versions of Mura CMS.
 
 <cffunction name="restoreVersion" output="false">
 	<cfargument name="fileID">
-	<cfquery name="rs" datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+	<cfquery datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	update tfiles set deleted=0 where fileID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.fileID#">
 	</cfquery>
 </cffunction>

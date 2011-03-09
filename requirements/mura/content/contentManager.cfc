@@ -496,6 +496,7 @@ to your own modified versions of Mura CMS.
 		<cfset var newBean=""/>
 		<cfset var currentBean=""/>
 		<cfset var deleteFileList=""/>
+		<cfset var deletedList="">
 		<cfset var rsArchive=""/>
 		<cfset var preserveFileList=""/>
 		<cfset var draftList=""/>

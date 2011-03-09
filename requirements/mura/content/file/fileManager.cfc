@@ -522,7 +522,11 @@ select fileID from tfiles where siteID=<cfqueryparam cfsqltype="cf_sql_varchar" 
 	<cfset var OriginalImagePath = GetDirectoryFromPath(OriginalImageFile) />
 	<cfset var arguments.Width = trim(replaceNoCase(arguments.Width,"px","","all")) />
 	<cfset var arguments.Height = trim(replaceNoCase(arguments.Width,"px","","all")) />
-		
+	<cfset var ImageAspectRatio=0>
+	<cfset var NewAspectRatio=0>
+	<cfset var CropX=0>
+	<cfset var CropY=0>
+	
 	<cfif not fileExists(OriginalImageFile)>
 		<cfset OriginalImageFile = expandPath(OriginalImageFile) />
 		<cfset OriginalImagePath = GetDirectoryFromPath(OriginalImageFile) />

@@ -37,7 +37,7 @@
 
 <cffunction name="removeitem" output="false">
 <cfargument name="rc">
-<cfset variables.changesetManager.remoteItem(rc.changesetID,rc.contenthistID)>
+<cfset variables.changesetManager.removeItem(rc.changesetID,rc.contenthistID)>
 <cfset variables.fw.redirect(action="cChangesets.assignments",append="changesetID,siteID,keywords",path="")>
 </cffunction>
 

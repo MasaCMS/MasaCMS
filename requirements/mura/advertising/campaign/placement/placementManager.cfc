@@ -120,7 +120,7 @@ to your own modified versions of Mura CMS.
 <cffunction name="deleteByCampaign" access="public" returntype="void" output="false">
 	<cfargument name="campaignID" type="String" />		
 	
-	<cfset rs=getPlacementsByCampaign(arguments.campaignID)>
+	<cfset var rs=getPlacementsByCampaign(arguments.campaignID)>
 	<cfif rs.recordcount>
 		<cfset variables.instance.globalUtility.logEvent("All Placements for CampaignID:#arguments.campaignID# were deleted","mura-advertising","Information",true) />
 	

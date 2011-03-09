@@ -24,7 +24,7 @@
 <cffunction name="reload" output="false" returntype="void">	
 	<cfset var clusterList=getClusterList()>
 	<cfset var host="">
-	
+	<cfset var remoteURL="">
 	<cfif len(clusterList)>
 		<cfloop list="#clusterList#" index="host">
 			<cfset remoteURL="#formatHost(host)#/MuraProxy.cfc?method=reload&&appreloadkey=#URLEncodedFormat(application.appreloadkey)#&instanceID=#application.instanceID#">
@@ -59,13 +59,13 @@
 
 <cffunction name="formatHost" output="false">
 	<cfargument name="host">
-	<cfif left(host,4) neq "http">
-		<cfset host="http://" & host>
+	<cfif left(arguments.host,4) neq "http">
+		<cfset arguments.host="http://" & arguments.host>
 	</cfif>
 	<cfif listLen(host,":") neq 3>
-		<cfset host = host & variables.configBean.getServerPort()>
+		<cfset arguments.host = arguments.host & variables.configBean.getServerPort()>
 	</cfif>
-	<cfreturn host & variables.configBean.getContext()>
+	<cfreturn arguments.host & variables.configBean.getContext()>
 </cffunction>
 
 </cfcomponent>

@@ -320,6 +320,7 @@
 	<cfargument name="subject" required="true" default="" hint="I'm the subject that is sent to the subscribers.">
 	<cfargument name="notify" required="true" default="false" hint="I tell whether to notify subscribers.">
 	<cfset var rs=""/>
+	<cfset var rslist=""/>
 	<cfset var path=""/>
 	<cfset var pluginManager=getPluginManager()>
 	<cfset var pluginEvent=createObject("component","mura.event")>

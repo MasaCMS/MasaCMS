@@ -74,7 +74,7 @@
 <cfscript>
 	var isOk=false; // success flag
 	var keys=""; // var to hold rb keys
-	var thisKey="";
+	var thisKEY="";
 	var thisMSG="";
 	var thisLang=listFirst(variables.Locale,"_");
 	var thisDir=GetDirectoryFromPath(variables.rbFile);

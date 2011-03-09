@@ -34,6 +34,7 @@
 		<cfargument name="data" type="any" required="true">
 
 		<cfset var prop="" />
+		<cfset var publishhour="">
 		
 		<cfif isquery(arguments.data)>
 		
