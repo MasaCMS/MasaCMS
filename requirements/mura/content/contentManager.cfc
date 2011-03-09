@@ -1630,6 +1630,14 @@ to your own modified versions of Mura CMS.
 		<cfreturn variables.contentDAO.getBean()>
 	</cffunction>
 	
+	<cffunction name="getURL" output="false">
+		<cfargument name="bean" required="true">
+		<cfargument name="querystring" required="true" default="">
+		<cfargument name="complete" type="boolean" required="true" default="false">
+		<cfargument name="showMeta" type="string" required="true" default="0">
+		<cfreturn variables.settingsManager.getSite(arguments.bean.getValue("siteID")).getContentRenderer().createHREF(arguments.bean.getValue("type"), arguments.bean.getValue("filename"), arguments.bean.getValue("siteID"), arguments.bean.getValue("contentID"), arguments.bean.getValue("target"), arguments.bean.getValue("targetParams"), arguments.queryString, application.configBean.getContext(), application.configBean.getStub(), application.configBean.getIndexFile(), arguments.complete, arguments.showMeta)>
+	</cffunction>
+
 	<cffunction name="getImageURL" output="false">
 		<cfargument name="bean" required="true">
 		<cfargument name="size" required="true" default="Large">

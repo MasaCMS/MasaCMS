@@ -1144,7 +1144,7 @@ to your own modified versions of Mura CMS.
 								<cfset loadShadowBoxJS() />
 								<cfoutput>
 								<div id="svAssetDetail" class="image">
-								<a href="#createHREFForImage(event.getValue('siteid'),event.getValue('contentBean').getFileID(),event.getValue('contentBean').getFileEXT(),'large')#" title="#HTMLEditFormat(event.getValue('contentBean').getMenuTitle())#" rel="shadowbox[body]" id="svAsset"><img src="#createHREFForImage(event.getValue('siteID'),event.getValue('contentBean').getFileID(),event.getValue('contentBean').getFileEXT(),'medium')#" class="imgMed" alt="#HTMLEditFormat(event.getValue('contentBean').getMenuTitle())#" /></a>
+								<a href="#$.content().getImageURL(size='large')#" title="#HTMLEditFormat(event.getValue('contentBean').getMenuTitle())#" rel="shadowbox[body]" id="svAsset"><img src="#$.content().getImageURL(size='medium')#" class="imgMed" alt="#HTMLEditFormat(event.getValue('contentBean').getMenuTitle())#" /></a>
 								#setDynamicContent(event.getValue('contentBean').getSummary(),event.getValue('keywords'))#
 								</div>
 								</cfoutput>
@@ -1173,9 +1173,9 @@ to your own modified versions of Mura CMS.
 								<cfset loadShadowBoxJS() />
 								<cfoutput>
 								<cfif arguments.includeMetaHREF>
-									<a href="#createHREFForImage(event.getValue('siteID'),event.getValue('contentBean').getFileID(),event.getValue('contentBean').getFileEXT(),'large')#" title="#HTMLEditFormat(event.getValue('contentBean').getMenuTitle())#" rel="shadowbox[body]" id="svAsset"><img src="#createHREFForImage(event.getValue('siteID'),event.getValue('contentBean').getFileID(),event.getValue('contentBean').getFileEXT(),'medium')#" class="imgMed" alt="#HTMLEditFormat(event.getValue('contentBean').getMenuTitle())#" /></a>
+									<a href="#$.content().getImageURL(size='large')#" title="#HTMLEditFormat(event.getValue('contentBean').getMenuTitle())#" rel="shadowbox[body]" id="svAsset"><img src="#$.content().getImageURL(size='medium')#" class="imgMed" alt="#HTMLEditFormat(event.getValue('contentBean').getMenuTitle())#" /></a>
 									<cfelse>
-									<img src="#createHREFForImage(event.getValue('siteID'),event.getValue('contentBean').getFileID(),event.getValue('contentBean').getFileEXT(),'medium')#" class="imgMed" alt="#HTMLEditFormat(event.getValue('contentBean').getMenuTitle())#" />
+									<img src="#$.content().getImageURL(size='medium')#" class="imgMed" alt="#HTMLEditFormat(event.getValue('contentBean').getMenuTitle())#" />
 								</cfif>
 								</cfoutput>	
 						</cfif>		
