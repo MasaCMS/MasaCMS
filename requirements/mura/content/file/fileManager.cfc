@@ -495,6 +495,53 @@ to your own modified versions of Mura CMS.
 		</cfif>
 	</cfloop>
 
+	<cfdirectory action="list" name="rsDIR" directory="#filePath#">
+	
+	<cfquery name="rsCheck" dbType="query">
+	select * from rsDIR where name like '%_H%'
+	</cfquery>
+
+	<cfif rsCheck.recordcount>
+		<cfloop query="rscheck">
+			<cffile action="delete" file="#filepath##rsCheck.name#">
+		</cfloop>
+	</cfif>
+</cffunction>
+
+<cffunction name="rebuildImageCache" output="false">
+<cfargument name="siteID">
+	<cfset var rsDB="">
+	<cfset var filePath="#application.configBean.getFileDir()#/#arguments.siteID#/cache/file/">
+	<cfset var currentSource="">
+	<cfset var currentSmall="">
+	<cfset var currentMedium="">
+	<cfset var currentLarge="">
+	<cfset var rsCheck="">
+	<cfset var rsDir="">
+	<cfset var currentSite=variables.settingsManager.getSite(arguments.siteID)>
+	
+	<cfquery name="rsDB" datasource="#variables.configBean.getDatasource()#" password="#variables.configBean.getDbPassword()#" username="#variables.configBean.getDbUsername()#">
+	select fileID,fileEXT from tfiles 
+	where siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#">
+	and fileEXT in ('jpg','jpeg','png')
+	</cfquery>
+	
+	<cfloop query="rsDB">
+		<cfset currentSource=filepath & rsDB.fileID & "_source." & rsDB.fileEXT>
+		<cfif not fileExists(currentSource)>
+			<cfset currentSource=filepath & rsDB.fileID & "." & rsDB.fileEXT>
+		</cfif>
+
+		<cfif FileExists(currentSource)>
+			<cfset var currentSmall=filepath & rsDB.fileID & "_small." & rsDB.fileEXT>
+			<cfset var currentMedium=filepath & rsDB.fileID & "_medium." & rsDB.fileEXT>
+			<cfset var currentLarge=filepath & rsDB.fileID & "." & rsDB.fileEXT>
+			
+			<cfset variables.imageProcessor.resizeImage(currentSource, currentSmall, currentSite.getGallerySmallScaleBy(), currentSite.getGallerySmallScale(), filePath)>
+			<cfset variables.imageProcessor.resizeImage(currentSource, currentMedium, currentSite.getGalleryMediumScaleBy(), currentSite.getGalleryMediumScale(), filePath)>
+			<cfset variables.imageProcessor.resizeImage(currentSource, currentLarge, currentSite.getGalleryMainScaleBy(), currentSite.getGalleryMainScale(), filePath)>
+		</cfif>
+	</cfloop>
 	
 	<cfdirectory action="list" name="rsDIR" directory="#filePath#">
 	
@@ -507,6 +554,7 @@ to your own modified versions of Mura CMS.
 			<cffile action="delete" file="#filepath##rsCheck.name#">
 		</cfloop>
 	</cfif>
+	
 </cffunction>
 
 <cffunction name="streamFile" output="false">

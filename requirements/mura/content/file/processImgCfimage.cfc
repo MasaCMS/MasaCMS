@@ -208,7 +208,6 @@ to your own modified versions of Mura CMS.
 		<cfset ImageWrite(img,arguments.target,1)>
 
 		<cfif len(tempFile)>
-			<cfset img=imageRead(arguments.target)>	
 			<cftry><cffile action="delete" file="#tempFile#"><cfcatch></cfcatch></cftry>
 		</cfif>		
 						
