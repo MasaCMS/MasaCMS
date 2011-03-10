@@ -703,7 +703,8 @@ to your own modified versions of Mura CMS.
 <cffunction name="setUserStructDefaults" output="false" access="public" returntype="void">
 <cfset var user="">
 <cfif not structKeyExists(session,"mura")>
-	<cfif len(getAuthUser()) and isValid("UUID",listFirst(getAuthUser(),"^"))>
+	<cfif yesNoFormat(variables.configBean.getValue("useLegacySessions")) 
+			and len(getAuthUser()) and isValid("UUID",listFirst(getAuthUser(),"^"))>
 		<cfset user=read(listFirst(getAuthUser(),"^"))>
 		<cfset variables.userUtility.setUserStruct(user.getAllValues())>
 	<cfelse>

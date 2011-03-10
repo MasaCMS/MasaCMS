@@ -84,7 +84,10 @@ to your own modified versions of Mura CMS.
 		<cfset var pluginEvent = createObject("component","mura.event").init(arguments) />
 		<cfset var strikes = createObject("component","mura.user.userstrikes").init(arguments.username,variables.configBean) />
 		
-		<cflogout>
+		<cfif yesNoFormat(variables.configBean.getValue("useLegacySessions"))>
+			<cflogout>
+		</cfif>
+		
 		<cfparam name="session.blockLoginUntil" type="string" default="#strikes.blockedUntil()#" />
 		
 		<cfif len(arguments.siteID)>
@@ -226,28 +229,30 @@ to your own modified versions of Mura CMS.
 					<cfset rolelist=listappend(rolelist, 'S2')>
 				</cfif>
 				
-				<cfif isDate(rsuser.lastLogin)>
-					<cfset lastLogin=rsuser.lastLogin/>
+				<cfif yesNoFormat(variables.configBean.getValue("useLegacySessions"))>
+					<cfif isDate(rsuser.lastLogin)>
+						<cfset lastLogin=rsuser.lastLogin/>
+					</cfif>
+					
+					<cfif rsuser.company neq ''>
+						<cfset group=rsuser.company>
+					<cfelse>
+						<cfset group="#rsUser.Fname# #rsUser.Lname#">
+					</cfif>
+					
+					<cfif rsuser.lname eq '' and rsuser.fname eq ''>
+						<cfset user=rsuser.company>
+					<cfelse>
+						<cfset user="#rsUser.Fname# #rsUser.Lname#">
+					</cfif>
+					
+					<cflogin>
+					<cfloginuser name="#rsuser.userID#^#user#^#dateFormat(lastLogin,'m/d/yy')#^#group#^#rsUser.username#^#dateFormat(rsUser.passwordCreated,'m/d/yy')#^#rsUser.password#"
+					 roles="#rolelist#"
+					 password="#rsUser.password#">
+					</cflogin>	
 				</cfif>
 				
-				<cfif rsuser.company neq ''>
-					<cfset group=rsuser.company>
-				<cfelse>
-					<cfset group="#rsUser.Fname# #rsUser.Lname#">
-				</cfif>
-				
-				<cfif rsuser.lname eq '' and rsuser.fname eq ''>
-					<cfset user=rsuser.company>
-				<cfelse>
-					<cfset user="#rsUser.Fname# #rsUser.Lname#">
-				</cfif>
-				
-				<cflogin>
-				<cfloginuser name="#rsuser.userID#^#user#^#dateFormat(lastLogin,'m/d/yy')#^#group#^#rsUser.username#^#dateFormat(rsUser.passwordCreated,'m/d/yy')#^#rsUser.password#"
-				 roles="#rolelist#"
-				 password="#rsUser.password#">
-				</cflogin>	
-			
 				<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 				UPDATE tusers SET LastLogin = #createodbcdatetime(now())#
 				WHERE tusers.UserID='#rsUser.UserID#'

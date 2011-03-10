@@ -61,7 +61,7 @@ to your own modified versions of Mura CMS.
                 <cfoutput query="request.rsgroups"> 
                   <tr> 
                     <td class="varWidth"> 
-                      <a title="Edit" href="index.cfm?fuseaction=cPrivateUsers.editgroup&userid=#request.rsgroups.userID#&siteid=#URLEncodedFormat(attributes.siteid)#">#HTMLEditFormat(request.rsgroups.groupname)#</a>  (<cfif isNumeric(request.rsgroups.counter)>#request.rsgroups.counter#<cfelse>0</cfif>) 
+                      <a title="Edit" href="index.cfm?fuseaction=cPrivateUsers.editgroup&userid=#URLEncodedFormat(request.rsgroups.userID)#&siteid=#URLEncodedFormat(attributes.siteid)#">#HTMLEditFormat(request.rsgroups.groupname)#</a>  (<cfif isNumeric(request.rsgroups.counter)>#request.rsgroups.counter#<cfelse>0</cfif>) 
                  </td>
                     <td> 
                       <cfif request.rsgroups.email gt "" and not request.rsgroups.perm>

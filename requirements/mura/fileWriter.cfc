@@ -54,7 +54,7 @@
 	<cfset var x = "">
 	<cfset var counter = 0>
 	
-	<cfif isSimpleValue(output)>
+	<cfif isSimpleValue(output) and fileExists(output)>
 		<cfif len(output)>
 		<cfif variables.useMode >
 			<cffile action="move" mode="#arguments.mode#" source="#arguments.output#" destination="#arguments.file#">

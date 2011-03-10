@@ -44,16 +44,7 @@ to your own modified versions of Mura CMS.
 <cfparam name="url.groupid" default="">
 <cfparam name="url.s2" default="0">
 <cfparam name="form.search" default="">
-<cfquery name="rsList" datasource="#application.configBean.getDatasource()#" username="#application.configBean.getDBUsername()#" password="#application.configBean.getDBPassword()#">
-Select userid, fname, lname, company from tusers where type=2 and siteid='#application.settingsManager.getSite(url.siteid).getPublicUserPoolID()#' and ispublic=1 and 
-<cfif trim(form.search) neq ''>
-(lname like '%#form.search#%' or company like '%#form.search#%' )
-<cfelse>
-0=1
-</cfif>
-order by lname
-</cfquery>
-
+<cfset rsList = application.serviceFactory.getBean('userGateway').getSearch(form.search, url.siteid, 1)>
 <html>
 
 <head><cfoutput>

@@ -49,7 +49,7 @@ to your own modified versions of Mura CMS.
 <cfsetting requestTimeout = "1000">
 	
 <!--- Making sure that session is valid --->
-<cfif structKeyExists(session,"mura")>
+<cfif yesNoFormat(application.configBean.getValue("useLegacySessions")) and structKeyExists(session,"mura")>
 	<cfif 
 		(not session.mura.isLoggedIn and isValid("UUID",listFirst(getAuthUser(),"^")))
 			or
@@ -58,7 +58,7 @@ to your own modified versions of Mura CMS.
 		<cfset application.loginManager.logout()>	
 	</cfif>
 </cfif>
-	
+
 <cfset application.userManager.setUserStructDefaults()>
 	
 <!---settings.custom.vars.cfm reference is for backwards compatability --->
