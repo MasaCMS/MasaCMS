@@ -85,7 +85,7 @@ to your own modified versions of Mura CMS.
 	<cfset var CropY=0>
 	
 	<cfset arguments.Width = trim(replaceNoCase(arguments.Width,"px","","all")) />
-	<cfset arguments.Height = trim(replaceNoCase(arguments.Width,"px","","all")) />
+	<cfset arguments.Height = trim(replaceNoCase(arguments.Height,"px","","all")) />
 	
 	<cfif not fileExists(OriginalImageFile)>
 		<cfset OriginalImageFile = expandPath(OriginalImageFile) />
@@ -131,12 +131,12 @@ to your own modified versions of Mura CMS.
 			<cfelseif ImageAspectRatio lt NewAspectRatio>
 				<cfset ImageResize(ThisImage,arguments.width,'',variables.instance.imageInterpolation)>
 				<cfset CropY = (ThisImage.height - arguments.height)/2 />
-				<cfset ImageCrop(ThisImage, 0, #CropY#, arguments.Width, arguments.height) />
+				<cfset ImageCrop(ThisImage, 0, CropY, arguments.Width, arguments.height) />
 				<cfset ImageWrite(ThisImage,NewImageSource,1)>
 			<cfelseif ImageAspectRatio gt NewAspectRatio>
 				<cfset ImageResize(ThisImage,'',arguments.height,variables.instance.imageInterpolation)>
 				<cfset CropX = (ThisImage.width - arguments.width)/2 />
-				<cfset ImageCrop(ThisImage, #CropX#, 0, arguments.width, arguments.height) />
+				<cfset ImageCrop(ThisImage, CropX, 0, arguments.width, arguments.height) />
 				<cfset ImageWrite(ThisImage,NewImageSource,1)>
 			</cfif>
 		</cfif>
