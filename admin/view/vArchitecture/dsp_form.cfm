@@ -440,7 +440,7 @@ select * from rsPluginScripts3 order by pluginID
 	</cfoutput>
 </cfsavecontent>
 <cfoutput>
-<img class="loadProgress" src="images/progress_bar.gif" class="tabPreloader">
+<img class="loadProgress tabPreloader" src="images/progress_bar.gif">
 <div class="tabs initActiveTab" style="display:none">
 	<ul>
 	<cfloop from="1" to="#listlen(tabList)#" index="t">
