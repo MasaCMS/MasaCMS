@@ -92,7 +92,7 @@ to your own modified versions of Mura CMS.
   </cfif>
   <form novalidate="novalidate" action="index.cfm?fuseaction=cEmail.update&siteid=#URLEncodedFormat(attributes.siteid)#" method="post" name="form1" onSubmit="return false;">
     
-    <img src="images/progress_bar.gif" class="tabPreloader">
+    <img class="loadProgress tabPreloader" src="images/progress_bar.gif">
     
     <div class="tabs initActiveTab" style="display:none">
 	

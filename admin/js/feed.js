@@ -40,7 +40,7 @@ function loadSiteFilters(siteid,keywords,isNew)	{
 		var url = 'index.cfm';
 		var pars = 'fuseaction=cFeed.loadSite&compactDisplay=true&siteid=' + siteid + '&keywords=' + keywords + '&isNew=' + isNew + '&cacheid=' + Math.random();
 		var d = jQuery('#selectFilter');
-			d.html('<br/><img src="images/progress_bar.gif">');
+			d.html('<img class="loadProgress" src="images/progress_bar.gif">');
 			jQuery.get(url + "?" + pars, 
 					function(data) {
 					jQuery("#selectFilter").html(data);
@@ -100,7 +100,7 @@ function loadSiteParents(siteid,parentid,keywords,isNew)	{
 		var url = 'index.cfm';
 		var pars = 'fuseaction=cFeed.siteParents&compactDisplay=true&siteid=' + siteid + '&parentid=' +parentid+ '&keywords=' + keywords + '&isNew=' + isNew + '&cacheid=' + Math.random();
 		var d = jQuery('#move');
-			d.html('<br/><img src="images/progress_bar.gif"><inut type=hidden name=parentid value=' + parentid + ' >');
+			d.html('<img class="loadProgress" src="images/progress_bar.gif"><inut type=hidden name=parentid value=' + parentid + ' >');
 			jQuery.get(url + "?" + pars, 
 					function(data) {
 					jQuery("#move").html(data);

@@ -516,7 +516,7 @@ function loadSiteParents(siteid,contentid,parentid,keywords,isNew)	{
 	var url = 'index.cfm';
 	var pars = 'fuseaction=cArch.siteParents&compactDisplay=true&siteid=' + siteid +'&contentid=' + contentid + '&parentid=' +parentid+ '&keywords=' + keywords + '&isNew=' + isNew + '&cacheid=' + Math.random();
 	var d = jQuery('#move');
-	d.html('<br/><img src="images/progress_bar.gif"><input type=hidden name=parentid value=' + parentid + ' >');
+	d.html('<img src="images/progress_bar.gif"><input type=hidden name=parentid value=' + parentid + ' >');
 	jQuery.get(url + "?" + pars, 
 			function(data) {
 			jQuery('#move').html(data);
@@ -528,7 +528,7 @@ function loadAssocImages(siteid,fileid,contentid,keywords,isNew)	{
 	var url = 'index.cfm';
 	var pars = 'fuseaction=cArch.assocImages&compactDisplay=true&siteid=' + siteid +'&fileid=' + fileid + '&contentid=' + contentid + '&keywords=' + keywords + '&isNew=' + isNew + '&cacheid=' + Math.random();
 	var d = jQuery('#selectAssocImage');
-	//d.html('<br/><img src="images/progress_bar.gif">');
+	//d.html('<img class="loadProgress" src="images/progress_bar.gif">');
 	jQuery.get(url + "?" + pars, 
 			function(data) {
 			jQuery('#selectAssocImage').html(data);
@@ -541,7 +541,7 @@ function loadObjectClass(siteid,classid,subclassid,contentid,parentid)	{
 	var url = 'index.cfm';
 	var pars = 'fuseaction=cArch.loadclass&compactDisplay=true&siteid=' + siteid +'&classid=' + classid  +'&subclassid=' + subclassid + '&contentid=' + contentid + '&parentid=' + parentid + '&cacheid=' + Math.random();
 	var d=jQuery('#classList');
-	d.html('<br/><img src="images/progress_bar.gif">');
+	d.html('<img class="loadProgress" src="images/progress_bar.gif">');
 	jQuery.get(url + "?" + pars, 
 		function(data) {
 		jQuery('#classList').html(data);
@@ -556,7 +556,7 @@ function loadNotify(siteid,contentid,parentid)	{
 		var d = jQuery('#selectNotify');
 		if(d.html()==''){
 			d.show();
-			d.html('<br/><img src="images/progress_bar.gif">');
+			d.html('<img class="loadProgress" src="images/progress_bar.gif">');
 			jQuery.get(url + "?" + pars, 
 					function(data) {
 					jQuery('#selectNotify').html(data);
@@ -578,7 +578,7 @@ function loadRelatedContent(siteid,keywords,isNew)	{
 		location.href="?" + pars;
 		}*/
 		var d = jQuery('#selectRelatedContent');
-			d.html('<br/><img src="images/progress_bar.gif">');
+			d.html('<img class="loadProgress" src="images/progress_bar.gif">');
 			jQuery.get(url + "?" + pars, 
 					function(data) {
 					jQuery('#selectRelatedContent').html(data);
@@ -734,10 +734,10 @@ function loadExtendedAttributes(contentHistID,type,subType,_siteID,_context,_the
 		if(d.length || b.length){	
 			
 			if(d.length)
-			{d.html('<br/><img src="images/progress_bar.gif">');}
+			{d.html('<img class="loadProgress" src="images/progress_bar.gif">');}
 
 			if(b.length)
-			{b.html('<br/><img src="images/progress_bar.gif">');}
+			{b.html('<img class="loadProgress" src="images/progress_bar.gif">');}
 			
 			jQuery.get(url + "?" + pars, 
 					function(data) {

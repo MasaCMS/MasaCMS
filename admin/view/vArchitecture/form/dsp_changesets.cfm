@@ -28,7 +28,7 @@ function saveToChangeset(changesetid,siteid,keywords){
 	var url = 'index.cfm';
 	var pars = 'fuseaction=cArch.availablechangesets&compactDisplay=true&siteid=' + siteid  + '&keywords=' + keywords + '&changesetid=' + changesetid +'&cacheid=' + Math.random();
 	var d = jQuery('##changesetContainer');
-	d.html('<br/><img src="images/progress_bar.gif">');
+	d.html('<img class="loadProgress" src="images/progress_bar.gif">');
 	jQuery.get(url + "?" + pars, 
 			function(data) {
 			jQuery('##changesetContainer').html(data);

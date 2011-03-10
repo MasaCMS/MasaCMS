@@ -107,7 +107,7 @@ to your own modified versions of Mura CMS.
 <input type=hidden name="mlid" value="#request.listBean.getmlid()#"></cfif><input type="hidden" name="action" value=""></form>
 </div>
 <div id="actionIndicator" style="display: none;">
-	<img src="#application.configBean.getContext()#/admin/images/progress_bar.gif">
+	<img class="loadProgress" src="#application.configBean.getContext()#/admin/images/progress_bar.gif">
 </div>
 </cfoutput>
 <!---

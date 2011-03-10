@@ -4062,6 +4062,10 @@ a.expand span {
 	margin-top: 1em;
 }
 
+img.loadProgress {
+	display: block;
+	margin: 3em 0;
+}
 
 /* @end */ 
 

@@ -42,7 +42,7 @@ function loadUserActivity(siteID)	{
 		
 		//location.href=url + "?" + pars;
 		var d = jQuery('#userActivityData');
-			d.html('<br/><img src="images/progress_bar.gif">');
+			d.html('<img class="loadProgress" src="images/progress_bar.gif">');
 			jQuery.get(url + "?" + pars, 
 					function(data) {
 					d.html(data).animate({'opacity':'hide'},1000,null,
@@ -60,7 +60,7 @@ function loadPopularContent(siteID)	{
 		
 		//location.href=url + "?" + pars;
 		var d = jQuery('#popularContentData');
-			d.html('<br/><img src="images/progress_bar.gif">');
+			d.html('<img class="loadProgress" src="images/progress_bar.gif">');
 			jQuery.get(url + "?" + pars, 
 					function(data) {
 					d.html(data).animate({'opacity':'hide'},1000,null,
@@ -78,7 +78,7 @@ function loadRecentComments(siteID)	{
 	
 	//location.href=url + "?" + pars;
 	var d = jQuery('#recentCommentsData');
-		d.html('<br/><img src="images/progress_bar.gif">');
+		d.html('<img class="loadProgress" src="images/progress_bar.gif">');
 		jQuery.get(url + "?" + pars, 
 				function(data) {
 				d.html(data).animate({'opacity':'hide'},1000,null,
@@ -97,7 +97,7 @@ function loadFormActivity(siteID)	{
 		
 		//location.href=url + "?" + pars;
 		var d = jQuery('#recentFormActivityData');
-			d.html('<br/><img src="images/progress_bar.gif">');
+			d.html('<img class="loadProgress" src="images/progress_bar.gif">');
 			jQuery.get(url + "?" + pars, 
 					function(data) {
 					d.html(data).animate({'opacity':'hide'},1000,null,
@@ -115,7 +115,7 @@ function loadEmailActivity(siteID)	{
 		
 		//location.href=url + "?" + pars;
 		var d = jQuery('#emailBroadcastsData');
-			d.html('<div id="emailBroadcasts" class="separate"><h3>Email Broadcasts</h3><br/><img src="images/progress_bar.gif"></div>');
+			d.html('<div id="emailBroadcasts" class="separate"><h3>Email Broadcasts</h3><img class="loadProgress" src="images/progress_bar.gif"></div>');
 			jQuery.get(url + "?" + pars, 
 					function(data) {
 					d.html(data).animate({'opacity':'hide'},1000,null,

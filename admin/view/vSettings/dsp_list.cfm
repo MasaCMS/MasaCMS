@@ -187,7 +187,7 @@ to your own modified versions of Mura CMS.
 					<a class="submit" id="btnUpdateSites" href="javascript:;"><span>Update Selected Sites to Latest Version</span></a>
 					</div>
 					<div id="actionIndicator" style="display: none;">
-						<cfoutput><img src="#application.configBean.getContext()#/admin/images/progress_bar.gif"></cfoutput>
+						<cfoutput><img class="loadProgress" src="#application.configBean.getContext()#/admin/images/progress_bar.gif"></cfoutput>
 					</div>
 				</cfif>
 				<cfif application.configBean.getMode() eq 'staging'

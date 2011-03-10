@@ -48,7 +48,7 @@ function loadExtendedAttributes(baseID,type,subType,_siteID,_context,_themeAsset
 		var d = jQuery('#extendSetsDefault');
 		
 		if(d.length){
-			d.html('<br/><img src="images/progress_bar.gif">');
+			d.html('<img class="loadProgress" src="images/progress_bar.gif">');
 			jQuery.get(url + "?" + pars, 
 					function(data) {
 					setExtendedAttributes(data);

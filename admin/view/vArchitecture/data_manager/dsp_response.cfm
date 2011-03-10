@@ -105,7 +105,7 @@ to your own modified versions of Mura CMS.
 	<a class="submit" href="javascript:location.href='index.cfm?fuseaction=cArch.downloaddata&siteid=#URLEncodedFormat(attributes.siteid)#&contentid=#URLEncodedFormat(attributes.contentid)#&date1=' + document.download.date1.value + '&hour1=' +document.download.hour1.value + '&minute1=' +document.download.minute1.value + '&date2=' + document.download.date2.value + '&hour2=' + document.download.hour2.value + '&minute2=' + document.download.minute2.value + '&sortBy=' +  document.download.sortBy.value + '&sortDirection=' +  document.download.sortDirection.value + '&filterBy='  + document.download.filterBy.value + '&keywords=' + document.download.keywords.value + '&columns=#attributes.columns#';"><span>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.download')#</span></a>
 </div>
 <div id="actionIndicator" style="display: none;">
-	<img src="#application.configBean.getContext()#/admin/images/progress_bar.gif">
+	<img class="loadProgress" src="#application.configBean.getContext()#/admin/images/progress_bar.gif">
 </div>
 </form></cfoutput>
 </cfif>

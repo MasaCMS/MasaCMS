@@ -82,7 +82,7 @@ function checkAll (form) {
 	<a href="javascript:;" onclick="return submitBundle();" class="submit"><span>Create and Download Bundle</span></a>
 </div>
 <div id="actionIndicator" style="display: none;">
-	<img src="#application.configBean.getContext()#/admin/images/progress_bar.gif">
+	<img class="loadProgress" src="#application.configBean.getContext()#/admin/images/progress_bar.gif">
 </div>
 <input type="hidden" name="fuseaction" value="cSettings.createBundle"/>
 <input type="hidden" name="siteID" value="#HTMLEditFormat(rc.siteID)#"/>

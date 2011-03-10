@@ -40,7 +40,7 @@ function loadSiteRSS(siteid)	{
 		var url = 'index.cfm';
 		var pars = 'fuseaction=cRss.loadSite&siteid=' + siteid + '&cacheid=' + Math.random();
 		var d = $('contentSelectorContainer');
-			d.innerHTML='<br/><img src="images/progress_bar.gif">';
+			d.innerHTML='<img class="loadProgress" src="images/progress_bar.gif">';
 		var myAjax = new Ajax.Updater({success: 'contentSelectorContainer'}, url, {method: 'get', parameters: pars});
 	}	
 	
