@@ -50,6 +50,10 @@ to your own modified versions of Mura CMS.
 		<cfset variables.settingsManager=arguments.settingsManager/>
 		<cfset variables.instance.imageInterpolation=arguments.configBean.getImageInterpolation()> 
 		
+		<cfif StructKeyExists(SERVER,"bluedragon") and not listFindNoCase("bicubic,bilinear,nearest",variables.instance.imageInterpolation)>
+			<cfset variables.instance.imageInterpolation="bicubic">
+		</cfif>
+		
 		<cfreturn this />
 	</cffunction>
 

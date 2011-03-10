@@ -57,7 +57,17 @@ to your own modified versions of Mura CMS.
 			<cfset variables.bucket="sava" />
 		</cfif>
 
-		<cfif StructKeyExists(SERVER,"bluedragon") or (server.coldfusion.productname eq "ColdFusion Server" and listFirst(server.coldfusion.productversion) lt 8)>
+		<cfif 	(
+					StructKeyExists(SERVER,"bluedragon")
+					and
+					server.bluedragon.version lt 1.5
+				)
+				or 
+				(
+					server.coldfusion.productname eq "ColdFusion Server" 
+					and 
+					listFirst(server.coldfusion.productversion) lt 8
+				)>
 			<cfset variables.imageProcessor=createObject("component","processImgImagecfc").init(arguments.configBean,arguments.settingsManager) />
 		<cfelse>
 			<cfset variables.imageProcessor=createObject("component","processImgCfimage").init(arguments.configBean,arguments.settingsManager) />
