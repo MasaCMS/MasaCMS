@@ -48,12 +48,12 @@ to your own modified versions of Mura CMS.
 
 		<cfset variables.configBean=arguments.configBean/>
 		<cfset variables.settingsManager=arguments.settingsManager/>
-		<cfset variables.instance.imageInterpolation=arguments.configBean.getImageInterpolation()>
+		<cfset variables.instance.imageInterpolation=arguments.configBean.getImageInterpolation()> 
 		
 		<cfreturn this />
 	</cffunction>
 
-	<cffunction name="touchDir" returntype="void" output="no">
+	<cffunction name="touchDir" returntype="void" output="false">
 		<cfargument name="dir" required="Yes" type="string">
 		<cfargument name="mode" required="no" type="string" default="777">
 		
@@ -62,7 +62,86 @@ to your own modified versions of Mura CMS.
 		</cfif>
 	</cffunction>
 
-	<cffunction name="resizeImage" returntype="void" output="no">
+	<cffunction name="getCustomImage" output="false">
+	<cfargument name="Image" required="true" />
+	<cfargument name="Height" default="AUTO" />
+	<cfargument name="Width" default="AUTO" />
+
+	<cfset var NewImageSource = "">
+	<cfset var NewImageLocal = "">
+	<cfset var ReturnImageHTML = "">
+	<cfset var OriginalImageFilename = "" />
+	<cfset var OriginalImageType = "" />
+	<cfset var thisImage="">
+	<cfset var OriginalImageFile = trim(arguments.Image) />
+	<cfset var OriginalImagePath = GetDirectoryFromPath(OriginalImageFile) />
+	<cfset var ImageAspectRatio=0>
+	<cfset var NewAspectRatio=0>
+	<cfset var CropX=0>
+	<cfset var CropY=0>
+	
+	<cfset arguments.Width = trim(replaceNoCase(arguments.Width,"px","","all")) />
+	<cfset arguments.Height = trim(replaceNoCase(arguments.Width,"px","","all")) />
+	
+	<cfif not fileExists(OriginalImageFile)>
+		<cfset OriginalImageFile = expandPath(OriginalImageFile) />
+		<cfset OriginalImagePath = GetDirectoryFromPath(OriginalImageFile) />
+	</cfif>
+	
+	<cfset OriginalImageType = listLast(OriginalImageFile,".") />
+	<cfset OriginalImageFilename = Replace(OriginalImageFile, ".#OriginalImageType#", "", "all") />
+	
+	<cfif arguments.Width eq "AUTO" and arguments.Height eq "AUTO">
+		<cfset NewImageSource = OriginalImageFile />
+		<cfset NewImageLocal = arguments.Image />
+	<cfelse>
+		<cfset NewImageSource = "#OriginalImageFilename#_H#arguments.Height#_W#arguments.Width#.#OriginalImageType#" />
+		<cfset NewImageLocal = Replace(OriginalImageFile, ".#OriginalImageType#", "_H#arguments.height#_W#arguments.width#.#OriginalImageType#") />
+	</cfif>
+	
+	<cfset NewImageLocal = listLast(NewImageLocal,variables.configBean.getFileDelim())>
+		
+	<cfif not FileExists(NewImageSource)>
+	
+		<cfset OriginalImageFile = Replace(OriginalImageFile, ".#OriginalImageType#", "_source.#OriginalImageType#", "all") />
+		
+		<cfif not fileExists(OriginalImageFile)>
+			<cfset OriginalImageFile = Replace(OriginalImageFile, "_source.#OriginalImageType#", ".#OriginalImageType#", "all") />
+		</cfif>
+	
+		<cfset ThisImage=imageRead(OriginalImageFile)>
+
+		<cfif arguments.Width eq "AUTO">
+			<cfset ImageResize(ThisImage,'',arguments.height,variables.instance.imageInterpolation)>
+			<cfset ImageWrite(ThisImage,NewImageSource,1)>
+		<cfelseif arguments.Height eq "AUTO">
+			<cfset ImageResize(ThisImage,arguments.width,'',variables.instance.imageInterpolation)>
+			<cfset ImageWrite(ThisImage,NewImageSource,1)>
+		<cfelse>
+			<cfset ImageAspectRatio = ThisImage.Width / ThisImage.height />
+			<cfset NewAspectRatio = arguments.Width / arguments.height />
+				
+			<cfif ImageAspectRatio eq NewAspectRatio>
+				<cfset ImageResize(ThisImage,arguments.width,'',variables.instance.imageInterpolation)>
+				<cfset ImageWrite(ThisImage,NewImageSource,1)>
+			<cfelseif ImageAspectRatio lt NewAspectRatio>
+				<cfset ImageResize(ThisImage,arguments.width,'',variables.instance.imageInterpolation)>
+				<cfset CropY = (ThisImage.height - arguments.height)/2 />
+				<cfset ImageCrop(ThisImage, 0, #CropY#, arguments.Width, arguments.height) />
+				<cfset ImageWrite(ThisImage,NewImageSource,1)>
+			<cfelseif ImageAspectRatio gt NewAspectRatio>
+				<cfset ImageResize(ThisImage,'',arguments.height,variables.instance.imageInterpolation)>
+				<cfset CropX = (ThisImage.width - arguments.width)/2 />
+				<cfset ImageCrop(ThisImage, #CropX#, 0, arguments.width, arguments.height) />
+				<cfset ImageWrite(ThisImage,NewImageSource,1)>
+			</cfif>
+		</cfif>
+	</cfif>
+	
+	<cfreturn NewImageLocal />
+	</cffunction>
+
+	<cffunction name="resizeImage" returntype="void" x>
 		<cfargument name="source" required="Yes" type="string">
 		<cfargument name="target" required="Yes" type="string">
 		<cfargument name="scaleBy" required="Yes" type="string">
@@ -77,9 +156,9 @@ to your own modified versions of Mura CMS.
 		<cfif arguments.source eq arguments.target>
 			<cfset tempFile= "#serverDirectory##createUUID()#.#listLast(source,'.')#"/>
 			<cffile action="copy" source="#arguments.source#" destination="#tempFile#"/>
-			<cfimage action="READ" source="#tempFile#" name="img">
-		<cfelse>		
-			<cfimage action="READ" source="#arguments.source#" name="img">
+			<cfset img=imageRead(tempFile)>
+		<cfelse>
+			<cfset img=imageRead(arguments.source)>		
 		</cfif>
 		
 
@@ -121,12 +200,11 @@ to your own modified versions of Mura CMS.
 				</cfif>
 			</cfcase>
 		</cfswitch>
-		
 			
 		<cfset ImageWrite(img,arguments.target,1)>
 
 		<cfif len(tempFile)>
-			<cfimage action="READ" source="#arguments.target#" name="img">
+			<cfset img=imageRead(arguments.target)>	
 			<cftry><cffile action="delete" file="#tempFile#"><cfcatch></cfcatch></cftry>
 		</cfif>		
 						
@@ -155,17 +233,20 @@ to your own modified versions of Mura CMS.
 		<cfset var fileObj=""/>
 		<cfset var fileObjSmall=""/>
 		<cfset var fileObjMedium=""/>
+		<cfset var fileObjOrig=""/>
 		<cfset var refused=false />
 		<cfset var serverFilename=arguments.file.serverfilename />
 		<cfset var serverDirectory=arguments.file.serverDirectory & "/"/>
-		
+		<cfset var sourceImageScale=variables.configBean.getValue("sourceImageScale")>
+		<cfset var sourceImageScaleBy=variables.configBean.getValue("sourceImageScaleBy")>
+				
 		<cfset fileStruct.fileObj = '' />
 		<cfset fileStruct.fileObjSmall = '' />
 		<cfset fileStruct.fileObjMedium =  ''/>
+		<cfset fileStruct.fileObjSource =  ''/>
 	
 		<cfset touchDir("#variables.configBean.getFileDir()##variables.configBean.getFileDelim()##arguments.siteID#")> 
 				
-			
 		<cfif listLen(serverfilename," ") gt 1>
 			<cfset serverFilename=replace(serverFilename," ","-","ALL") />
 			
@@ -175,36 +256,56 @@ to your own modified versions of Mura CMS.
 			<cffile action="rename" source="#serverDirectory##arguments.file.serverfile#" destination="#serverDirectory##serverFilename#.#arguments.file.serverFileExt#" attributes="normal">
 		</cfif>
 
-		<cfset theFile = "#serverDirectory##serverFilename#.#arguments.file.serverFileExt#" />
+		<cfset fileStruct.fileObj = "#serverDirectory##serverFilename#.#arguments.file.serverFileExt#" />
 			
 		<!--- BEGIN IMAGE MANIPULATION --->
 		<cfif listFindNoCase('jpg,jpeg,png,gif',arguments.file.ServerFileExt)>
 			
-			<cfset resizeImage(theFile,theFile,variables.settingsManager.getSite(arguments.siteID).getGalleryMainScaleBy(),variables.settingsManager.getSite(arguments.siteID).getGalleryMainScale(),serverDirectory) />			
-			<cfset theSmall = "#serverDirectory##serverFilename#_small.#arguments.file.serverFileExt#" />
-	
-			<cfset resizeImage(theFile,theSmall,variables.settingsManager.getSite(arguments.siteID).getGallerySmallScaleBy(),variables.settingsManager.getSite(arguments.siteID).getGallerySmallScale(),serverDirectory) />
-			<cfset fileStruct.fileObjSmall=fromPath2Binary(theSmall,false) />
-			
-			<cfset theMedium = "#serverDirectory##serverFilename#_medium.#arguments.file.serverFileExt#" />
-			<cfset resizeImage(theFile,theMedium,variables.settingsManager.getSite(arguments.siteID).getGalleryMediumScaleBy(),variables.settingsManager.getSite(arguments.siteID).getGalleryMediumScale(),serverDirectory) />
-			<cfset fileStruct.fileObjMedium=fromPath2Binary(theMedium,false) />
+			<cfif variables.configBean.getFileStore() eq "fileDir">
+				<cfif not isNumeric(sourceImageScale)>
+					<cfset sourceImageScale=3000>
+				</cfif>
+				
+				<cfif not len(sourceImageScaleBy)>
+					<cfset sourceImageScaleBy="x">
+				</cfif>
 
-			<cftry><cffile action="delete" file="#theMedium#"><cfcatch></cfcatch></cftry>
-			<cftry><cffile action="delete" file="#theSmall#"><cfcatch></cfcatch></cftry>
-
-		</cfif>
-		<!--- END IMAGE MANIPULATION --->
+				<cfset fileStruct.fileObjSource =  '#serverDirectory##serverFilename#_source.#arguments.file.serverFileExt#'/>
+				<cfset resizeImage(fileStruct.fileObj,fileStruct.fileObjSource,sourceImageScaleBy,sourceImageScale,serverDirectory) />			
+			</cfif>
+		
+			<cfset fileStruct.fileObjSmall = "#serverDirectory##serverFilename#_small.#arguments.file.serverFileExt#" />
+			<cfset resizeImage(fileStruct.fileObj,fileStruct.fileObjSmall,variables.settingsManager.getSite(arguments.siteID).getGallerySmallScaleBy(),variables.settingsManager.getSite(arguments.siteID).getGallerySmallScale(),serverDirectory) />
 			
-		<cfif application.CFVersion lt 9 or variables.configBean.getFileStore() eq "s3">
-			<cfset fileStruct.fileObj=fromPath2Binary(theFile,false) />
-		<cfelse>
-			<cfset fileStruct.fileObj = FileOpen(theFile, "readBinary")>
+			<cfif variables.configBean.getFileStore() neq "fileDir">
+				<cfset fileStruct.fileObjSmall=fromPath2Binary(fileStruct.fileObjSmall,false) />
+				<cftry><cffile action="delete" file="#fileStruct.fileObjSmall#"><cfcatch></cfcatch></cftry>
+			</cfif>
+			
+			<cfset fileStruct.fileObjMedium = "#serverDirectory##serverFilename#_medium.#arguments.file.serverFileExt#" />
+			<cfset resizeImage(fileStruct.fileObj,fileStruct.fileObjMedium,variables.settingsManager.getSite(arguments.siteID).getGalleryMediumScaleBy(),variables.settingsManager.getSite(arguments.siteID).getGalleryMediumScale(),serverDirectory) />
+			
+			<cfif variables.configBean.getFileStore() neq "fileDir">
+				<cfset fileStruct.fileObjMedium=fromPath2Binary(fileStruct.fileObjMedium,false) />
+				<cftry><cffile action="delete" file="#fileStruct.fileObjMedium#"><cfcatch></cfcatch></cftry>
+			</cfif>
+
+			<cfset resizeImage(fileStruct.fileObj,fileStruct.fileObj,variables.settingsManager.getSite(arguments.siteID).getGalleryMainScaleBy(),variables.settingsManager.getSite(arguments.siteID).getGalleryMainScale(),serverDirectory) />			
+		
 		</cfif>
 		
-		<cfset fileStruct.theFile=theFile/>
+		<cfset fileStruct.theFile=fileStruct.fileObj/>
+		
+		<cfif variables.configBean.getFileStore() neq "fileDir">
+			<cfset fileStruct.fileObj=fromPath2Binary(fileStruct.fileObj,false) />
+			<cftry><cffile action="delete" file="#fileStruct.fileObj#"><cfcatch></cfcatch></cftry>
+		</cfif>
+		
+		
 		<!---<cftry><cffile action="delete" file="#theFile#"><cfcatch></cfcatch></cftry>--->
-			
+		
+		<!--- END IMAGE MANIPULATION --->
+	
 		<cfreturn fileStruct>
 		
 	</cffunction>

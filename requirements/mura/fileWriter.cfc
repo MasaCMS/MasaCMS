@@ -53,8 +53,16 @@
 	<cfset var new = "">
 	<cfset var x = "">
 	<cfset var counter = 0>
-
-	<cfif isDefined('arguments.output.mode')>
+	
+	<cfif isSimpleValue(output)>
+		<cfif len(output)>
+		<cfif variables.useMode >
+			<cffile action="move" mode="#arguments.mode#" source="#arguments.output#" destination="#arguments.file#">
+		<cfelse>
+			<cffile action="move" source="#arguments.output#" destination="#arguments.file#">
+		</cfif>
+		</cfif>
+	<cfelseif isDefined('arguments.output.mode')>
 		<!---<cftry>--->
 			<cfset new = FileOpen(arguments.file, "write")>
 

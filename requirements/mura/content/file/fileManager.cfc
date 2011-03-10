@@ -79,8 +79,9 @@ to your own modified versions of Mura CMS.
 		<cfargument name="fileObjSmall" type="any" required="yes"/>
 		<cfargument name="fileObjMedium" type="any" required="yes"/>
 		<cfargument name="fileID" type="any" required="yes" default="#createUUID()#"/>
+		<cfargument name="fileObjSource" type="any" required="yes" default=""/>
 	
-		<cfreturn variables.fileDAO.create(arguments.fileObj,arguments.contentid,arguments.siteid,arguments.filename,arguments.contentType,arguments.contentSubType,arguments.fileSize,arguments.moduleID,arguments.fileExt,arguments.fileObjSmall,arguments.fileObjMedium,arguments.fileID) />
+		<cfreturn variables.fileDAO.create(arguments.fileObj,arguments.contentid,arguments.siteid,arguments.filename,arguments.contentType,arguments.contentSubType,arguments.fileSize,arguments.moduleID,arguments.fileExt,arguments.fileObjSmall,arguments.fileObjMedium,arguments.fileID,arguments.fileObjSource) />
 	
 </cffunction>
 
@@ -462,27 +463,40 @@ to your own modified versions of Mura CMS.
 
 <cffunction name="cleanFileCache" output="false">
 <cfargument name="siteID">
-<cfset var rsDB="">
-<cfset var rsDIR="">
-<cfset var rsCheck="">
-<cfset var filePath="#application.configBean.getFileDir()#/#arguments.siteID#/cache/file/">
+	<cfset var rsDB="">
+	<cfset var rsDIR="">
+	<cfset var rsCheck="">
+	<cfset var filePath="#application.configBean.getFileDir()#/#arguments.siteID#/cache/file/">
 
-<cfquery name="rsDB" datasource="#variables.configBean.getDatasource()#" password="#variables.configBean.getDbPassword()#" username="#variables.configBean.getDbUsername()#">
-select fileID from tfiles where siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#">
-</cfquery>
-
-<cfdirectory action="list" name="rsDIR" directory="#filePath#">
-
-<cfloop query="rsDir">
-
-	<cfquery name="rsCheck" dbType="query">
-	select * from rsDB where fileID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#left(rsDIR.name,35)#">
+	<cfquery name="rsDB" datasource="#variables.configBean.getDatasource()#" password="#variables.configBean.getDbPassword()#" username="#variables.configBean.getDbUsername()#">
+	select fileID from tfiles where siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#">
 	</cfquery>
 	
-	<cfif not rsCheck.recordcount>
-		<cffile action="delete" file="#filepath##rsDir.name#">
+	<cfdirectory action="list" name="rsDIR" directory="#filePath#">
+	
+	<cfloop query="rsDir">
+	
+		<cfquery name="rsCheck" dbType="query">
+		select * from rsDB where fileID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#left(rsDIR.name,35)#">
+		</cfquery>
+		
+		<cfif not rsCheck.recordcount>
+			<cffile action="delete" file="#filepath##rsDir.name#">
+		</cfif>
+	</cfloop>
+
+	
+	<cfdirectory action="list" name="rsDIR" directory="#filePath#">
+	
+	<cfquery name="rsCheck" dbType="query">
+	select * from rsDIR where name like '%_H%'
+	</cfquery>
+
+	<cfif rsCheck.recordcount>
+		<cfloop query="rscheck">
+			<cffile action="delete" file="#filepath##rsCheck.name#">
+		</cfloop>
 	</cfif>
-</cfloop>
 </cffunction>
 
 <cffunction name="streamFile" output="false">
@@ -512,70 +526,7 @@ select fileID from tfiles where siteID=<cfqueryparam cfsqltype="cf_sql_varchar" 
 	<cfargument name="Height" default="AUTO" />
 	<cfargument name="Width" default="AUTO" />
 
-	<cfset var NewImageSource = "">
-	<cfset var NewImageLocal = "">
-	<cfset var ReturnImageHTML = "">
-	<cfset var OriginalImageFilename = "" />
-	<cfset var OriginalImageType = "" />
-	<cfset var thisImage="">
-	<cfset var OriginalImageFile = trim(arguments.Image) />
-	<cfset var OriginalImagePath = GetDirectoryFromPath(OriginalImageFile) />
-	<cfset var arguments.Width = trim(replaceNoCase(arguments.Width,"px","","all")) />
-	<cfset var arguments.Height = trim(replaceNoCase(arguments.Width,"px","","all")) />
-	<cfset var ImageAspectRatio=0>
-	<cfset var NewAspectRatio=0>
-	<cfset var CropX=0>
-	<cfset var CropY=0>
-	
-	<cfif not fileExists(OriginalImageFile)>
-		<cfset OriginalImageFile = expandPath(OriginalImageFile) />
-		<cfset OriginalImagePath = GetDirectoryFromPath(OriginalImageFile) />
-	</cfif>
-	
-	<cfset OriginalImageType = listLast(OriginalImageFile,".") />
-	<cfset OriginalImageFilename = Replace(OriginalImageFile, ".#OriginalImageType#", "", "all") />
-	
-	<cfif arguments.Width eq "AUTO" and arguments.Height eq "AUTO">
-		<cfset NewImageSource = OriginalImageFile />
-		<cfset NewImageLocal = arguments.Image />
-	<cfelse>
-		<cfset NewImageSource = "#OriginalImageFilename#_H#arguments.Height#_W#arguments.Width#.#OriginalImageType#" />
-		<cfset NewImageLocal = Replace(OriginalImageFile, ".#OriginalImageType#", "_H#arguments.height#_W#arguments.width#.#OriginalImageType#") />
-	</cfif>
-	
-	<cfset NewImageLocal = listLast(NewImageLocal,variables.configBean.getFileDelim())>
-		
-	<cfif not FileExists(NewImageSource)>
-	
-		<cfimage source="#OriginalImageFile#" name="ThisImage" />
-
-		<cfif arguments.Width eq "AUTO">
-			<cfimage source="#ThisImage#" action="resize" height="#arguments.height#" width="" name="ThisImage" />
-			<cfimage source="#ThisImage#" action="write" destination="#NewImageSource#" overwrite="yes" />
-		<cfelseif arguments.Height eq "AUTO">
-			<cfimage source="#ThisImage#" action="resize" height="" width="#arguments.width#" name="ThisImage" />
-			<cfimage source="#ThisImage#" action="write" destination="#NewImageSource#" overwrite="yes" />
-		<cfelse>
-			<cfset ImageAspectRatio = ThisImage.Width / ThisImage.height />
-			<cfset NewAspectRatio = arguments.Width / arguments.height />
-				
-			<cfif ImageAspectRatio eq NewAspectRatio>
-				<cfimage source="#ThisImage#" action="resize" height="" width="#arguments.width#" name="ThisImage" />
-				<cfimage source="#ThisImage#" action="write" destination="#NewImageSource#" overwrite="yes" />
-			<cfelseif ImageAspectRatio lt NewAspectRatio>
-				<cfimage source="#ThisImage#" action="resize" height="" width="#arguments.width#" name="ThisImage" />
-				<cfset CropY = (ThisImage.height - arguments.height)/2 />
-				<cfset ImageCrop(ThisImage, 0, #CropY#, arguments.Width, arguments.height) />
-				<cfimage source="#ThisImage#" action="write" destination="#NewImageSource#" overwrite="yes" name="ThisImage" />
-			<cfelseif ImageAspectRatio gt NewAspectRatio>
-				<cfimage source="#ThisImage#" action="resize" height="#arguments.height#" width="" name="ThisImage" />
-				<cfset CropX = (ThisImage.width - arguments.width)/2 />
-				<cfset ImageCrop(ThisImage, #CropX#, 0, arguments.width, arguments.height) />
-				<cfimage source="#ThisImage#" action="write" destination="#NewImageSource#" overwrite="yes" name="ThisImage" />
-			</cfif>
-		</cfif>
-	</cfif>
-	
-	<cfreturn NewImageLocal />
+	<cfreturn variables.imageProcessor.getCustomImage(argumentCollection=arguments) />
 	</cffunction>
+
 </cfcomponent>

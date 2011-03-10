@@ -95,7 +95,6 @@ to your own modified versions of Mura CMS.
 	<cfreturn blurMe />
 </cffunction>
 
-
 <cffunction name="Process" returnType="struct">
 <cfargument name="file">
 <cfargument name="siteID">
@@ -117,6 +116,7 @@ to your own modified versions of Mura CMS.
 	<cfset fileStruct.fileObj = '' />
 	<cfset fileStruct.fileObjSmall = '' />
 	<cfset fileStruct.fileObjMedium = '' />
+	<cfset fileStruct.fileObjSource = '' />
 
 	<cfif not directoryExists("#variables.configBean.getFileDir()##variables.configBean.getFileDelim()##arguments.siteID#")> 
 		<cfdirectory action="create" directory="#variables.configBean.getFileDir()##variables.configBean.getFileDelim()##arguments.siteID#"> 
@@ -228,7 +228,7 @@ to your own modified versions of Mura CMS.
 				<cfset fileStruct.fileObjMedium=fileObj />
 			</cfif>
 			<!--- END BEGIN IMAGE MANIPULATION --->
-			
+		
 			<cffile action="delete" file="#serverDirectory##serverFilename#.#arguments.file.serverFileExt#">
 			
 			<cfif listFindNoCase('jpg,jpeg,png',arguments.file.ServerFileExt)>

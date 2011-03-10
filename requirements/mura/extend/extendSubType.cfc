@@ -103,7 +103,7 @@ to your own modified versions of Mura CMS.
 			<cfset setType(arguments.data.type) />
 			<cfset setSubType(arguments.data.subType) />
 			<cfset setBaseTable(arguments.data.BaseTable) />
-			<cfset setDataTable(arguments.data.BaseTable) />
+			<cfset setDataTable(arguments.data.DataTable) />
 			<cfset setbaseKeyField(arguments.data.baseKeyField) />
 			<cfset setIsActive(arguments.data.isActive) />
 			
