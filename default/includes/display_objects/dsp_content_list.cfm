@@ -45,9 +45,9 @@
 		<li>
 			<cfif arguments.hasImage>
 				<cfif cookie.mobileFormat>
-				<img src="#createHREFForImage(arguments.item.getValue('siteID'),arguments.item.getValue('fileID'),arguments.item.getValue('fileEXT'),'small')#"  alt="#htmlEditFormat(arguments.item.getValue('title'))#"/>	
+				<img src="#arguments.item.getImageURL(size='small')#"  alt="#htmlEditFormat(arguments.item.getValue('title'))#"/>	
 				<cfelse>
-				<a href="#createHREF(arguments.item.getValue('type'),arguments.item.getValue('filename'),arguments.item.getValue('siteID'),arguments.item.getValue('contentID'),arguments.item.getValue('target'),arguments.item.getValue('targetparams'),"",application.configBean.getContext(),application.configBean.getStub(),application.configBean.getIndexFile())#" title="#HTMLEditFormat(arguments.item.getValue('title'))#"><img src="#createHREFForImage(arguments.item.getValue('siteID'),arguments.item.getValue('fileID'),arguments.item.getValue('fileEXT'),'small')#"  alt="#htmlEditFormat(arguments.item.getValue('title'))#"/></a>	
+				<a href="#arguments.item.getURL()#" title="#HTMLEditFormat(arguments.item.getValue('title'))#"><img src="#arguments.item.getImageURL(size='small')#"  alt="#htmlEditFormat(arguments.item.getValue('title'))#"/></a>	
 				</cfif>
 			</cfif>
 			<cfif arguments.hasDate>
@@ -113,7 +113,7 @@
 			</cfif>
 			<cfif arguments.hasImage>
 				<dd class="image">
-					<a href="#createHREF(arguments.item.getValue('type'),arguments.item.getValue('filename'),arguments.item.getValue('siteID'),arguments.item.getValue('contentID'),arguments.item.getValue('target'),arguments.item.getValue('targetparams'),"",application.configBean.getContext(),application.configBean.getStub(),application.configBean.getIndexFile())#" title="#HTMLEditFormat(arguments.item.getValue('title'))#"><img src="#createHREFForImage(arguments.item.getValue('siteID'),arguments.item.getValue('fileID'),arguments.item.getValue('fileEXT'),'small')#"  alt="#htmlEditFormat(arguments.item.getValue('title'))#"/></a>
+					<a href="#arguments.item.getURL()#" title="#HTMLEditFormat(arguments.item.getValue('title'))#"><img src="#arguments.item.getImageURL(size='small')#"  alt="#htmlEditFormat(arguments.item.getValue('title'))#"/></a>
 				</dd>
 			</cfif>
 			<cfif arguments.hasSummary and len(arguments.item.getValue('summary'))>
