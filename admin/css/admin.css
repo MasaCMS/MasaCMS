@@ -499,6 +499,10 @@ body.compact form {
 	width: auto;
 }
 
+#cemail form {
+	clear: both;
+}
+
 form.alt {
 	margin: 0;
 	padding: 0;
