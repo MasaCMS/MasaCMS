@@ -7,6 +7,29 @@
 	<cfset arguments.hasRatings=listFindNoCase(arguments.fields,"Rating")>
 	<cfset arguments.hasCredits=listFindNoCase(arguments.fields,"Credits")>
 	<cfset arguments.hasTags=listFindNoCase(arguments.fields,"Tags")>
+	
+	<cfif arguments.hasImages>
+		<cfset arguments.imageURLArgs=structNew()>
+		<cfset arguments.imageURLArgs.size="small">
+		
+		<cfif structKeyExists(arguments,"imageSize")>
+			<cfset arguments.imageURLArgs.size=arguments.imageSize>
+		<cfelse>
+			<cfif structKeyExists(arguments,"imageWidth") or structKeyExists(arguments,"imageHeight")>
+				<cfif structKeyExists(arguments,"imageWidth")>
+					<cfset arguments.imageURLArgs.width=arguments.imageWidth>
+				<cfelse>
+					<cfset arguments.imageURLArgs.width="auto">
+				</cfif>
+				<cfif structKeyExists(arguments,"imageHeight")>
+					<cfset arguments.imageURLArgs.height=arguments.imageHeight>
+				<cfelse>
+					<cfset arguments.imageURLArgs.height="auto">
+				</cfif>
+			</cfif>
+		</cfif>
+	</cfif>
+	
 	<cfset variables.rbFactory=getSite().getRBFactory()>
 	<cfset addToHTMLHeadQueue("listImageStyles.cfm")>
 </cfsilent>
@@ -45,9 +68,9 @@
 		<li>
 			<cfif arguments.hasImage>
 				<cfif cookie.mobileFormat>
-				<img src="#arguments.item.getImageURL(size='small')#"  alt="#htmlEditFormat(arguments.item.getValue('title'))#"/>	
+				<img src="#arguments.item.getImageURL(argumentCollection=arguments.imageURLArgs)#"  alt="#htmlEditFormat(arguments.item.getValue('title'))#"/>	
 				<cfelse>
-				<a href="#arguments.item.getURL()#" title="#HTMLEditFormat(arguments.item.getValue('title'))#"><img src="#arguments.item.getImageURL(size='small')#"  alt="#htmlEditFormat(arguments.item.getValue('title'))#"/></a>	
+				<a href="#arguments.item.getURL()#" title="#HTMLEditFormat(arguments.item.getValue('title'))#"><img src="#arguments.item.getImageURL(argumentCollection=arguments.imageURLArgs)#"  alt="#htmlEditFormat(arguments.item.getValue('title'))#"/></a>	
 				</cfif>
 			</cfif>
 			<cfif arguments.hasDate>
@@ -113,7 +136,7 @@
 			</cfif>
 			<cfif arguments.hasImage>
 				<dd class="image">
-					<a href="#arguments.item.getURL()#" title="#HTMLEditFormat(arguments.item.getValue('title'))#"><img src="#arguments.item.getImageURL(size='small')#"  alt="#htmlEditFormat(arguments.item.getValue('title'))#"/></a>
+					<a href="#arguments.item.getURL()#" title="#HTMLEditFormat(arguments.item.getValue('title'))#"><img src="#arguments.item.getImageURL(argumentCollection=arguments.imageURLArgs)#"  alt="#htmlEditFormat(arguments.item.getValue('title'))#"/></a>
 				</dd>
 			</cfif>
 			<cfif arguments.hasSummary and len(arguments.item.getValue('summary'))>

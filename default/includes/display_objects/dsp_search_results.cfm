@@ -46,10 +46,10 @@ to your own modified versions of Mura CMS.
 <cfoutput><#getHeaderTag('headline')#>#variables.rbFactory.getKey('search.searchresults')#</#getHeaderTag('headline')#></cfoutput>
 <div id="svSearchResults">
 <cfsilent>
-<cfparam name="variables.rsnewsearch.recordcount" default="0"/>
+<cfparam name="variables.rsnewsearch.recordcount" default="#queryNew('empty')#"/>
 <cfparam name="request.aggregation" default="false">
 <cfparam name="request.searchSectionID" default="">
-<cfparam name="session.rsSearch.recordcount" default=0>
+<cfparam name="session.rsSearch" default="#queryNew('empty')#">
 <cfif (len(request.keywords) or len(request.tag) ) and isdefined('request.newSearch')>
 <cfset session.aggregation=request.aggregation />
 <cfset variables.rsNewSearch=application.contentManager.getPublicSearch(request.siteid,request.keywords,request.tag,request.searchSectionID) /> 
