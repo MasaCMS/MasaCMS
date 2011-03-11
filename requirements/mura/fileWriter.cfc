@@ -83,18 +83,10 @@
 			</cfcatch>
 		</cftry--->
 	<cfelse>
-		<cfif isSimpleValue(arguments.output) and fileExists(arguments.output)>
-			<cfif variables.useMode >
-				<cffile action="move" mode="#arguments.mode#" source="#arguments.output#" destination="#arguments.file#">
-			<cfelse>
-				<cffile action="move" source="#arguments.output#" destination="#arguments.file#">
-			</cfif>
+		<cfif variables.useMode >		
+			<cffile action="write" mode="#arguments.mode#" file="#arguments.file#" output="#arguments.output#" addnewline="#arguments.addNewLine#"/>
 		<cfelse>
-			<cfif variables.useMode >		
-				<cffile action="write" mode="#arguments.mode#" file="#arguments.file#" output="#arguments.output#" addnewline="#arguments.addNewLine#"/>
-			<cfelse>
-				<cffile action="write" file="#arguments.file#" output="#arguments.output#" addnewline="#arguments.addNewLine#"/>
-			</cfif>
+			<cffile action="write" file="#arguments.file#" output="#arguments.output#" addnewline="#arguments.addNewLine#"/>
 		</cfif>
 	</cfif>
 </cffunction>
