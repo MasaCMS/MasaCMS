@@ -3,7 +3,7 @@
 <cfset variables.instance.event="">
 
 <cffunction name="init" output="false">
-	<cfargument name="data" hint="Can be an event object, struct or siteID" default>
+	<cfargument name="data" hint="Can be an event object, struct or siteID">
 	<cfset var initArgs=structNew()>
 	
 	<cfif structKeyExists(arguments,"data")>
