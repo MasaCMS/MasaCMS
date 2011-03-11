@@ -533,9 +533,9 @@ to your own modified versions of Mura CMS.
 		</cfif>
 
 		<cfif FileExists(currentSource)>
-			<cfset var currentSmall=filepath & rsDB.fileID & "_small." & rsDB.fileEXT>
-			<cfset var currentMedium=filepath & rsDB.fileID & "_medium." & rsDB.fileEXT>
-			<cfset var currentLarge=filepath & rsDB.fileID & "." & rsDB.fileEXT>
+			<cfset currentSmall=filepath & rsDB.fileID & "_small." & rsDB.fileEXT>
+			<cfset currentMedium=filepath & rsDB.fileID & "_medium." & rsDB.fileEXT>
+			<cfset currentLarge=filepath & rsDB.fileID & "." & rsDB.fileEXT>
 			
 			<cfset variables.imageProcessor.resizeImage(currentSource, currentSmall, currentSite.getGallerySmallScaleBy(), currentSite.getGallerySmallScale(), filePath)>
 			<cfset variables.imageProcessor.resizeImage(currentSource, currentMedium, currentSite.getGalleryMediumScaleBy(), currentSite.getGalleryMediumScale(), filePath)>
