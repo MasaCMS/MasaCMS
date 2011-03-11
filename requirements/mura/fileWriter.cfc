@@ -54,15 +54,7 @@
 	<cfset var x = "">
 	<cfset var counter = 0>
 	
-	<cfif isSimpleValue(output) and fileExists(output)>
-		<cfif len(output)>
-		<cfif variables.useMode >
-			<cffile action="move" mode="#arguments.mode#" source="#arguments.output#" destination="#arguments.file#">
-		<cfelse>
-			<cffile action="move" source="#arguments.output#" destination="#arguments.file#">
-		</cfif>
-		</cfif>
-	<cfelseif isDefined('arguments.output.mode')>
+	<cfif isDefined('arguments.output.mode')>
 		<!---<cftry>--->
 			<cfset new = FileOpen(arguments.file, "write")>
 
@@ -91,10 +83,18 @@
 			</cfcatch>
 		</cftry--->
 	<cfelse>
-		<cfif variables.useMode >		
-			<cffile action="write" mode="#arguments.mode#" file="#arguments.file#" output="#arguments.output#" addnewline="#arguments.addNewLine#"/>
+		<cfif isSimpleValue(arguments.output) and fileExists(arguments.output)>
+			<cfif variables.useMode >
+				<cffile action="move" mode="#arguments.mode#" source="#arguments.output#" destination="#arguments.file#">
+			<cfelse>
+				<cffile action="move" source="#arguments.output#" destination="#arguments.file#">
+			</cfif>
 		<cfelse>
-			<cffile action="write" file="#arguments.file#" output="#arguments.output#" addnewline="#arguments.addNewLine#"/>
+			<cfif variables.useMode >		
+				<cffile action="write" mode="#arguments.mode#" file="#arguments.file#" output="#arguments.output#" addnewline="#arguments.addNewLine#"/>
+			<cfelse>
+				<cffile action="write" file="#arguments.file#" output="#arguments.output#" addnewline="#arguments.addNewLine#"/>
+			</cfif>
 		</cfif>
 	</cfif>
 </cffunction>
