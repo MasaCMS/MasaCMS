@@ -617,10 +617,10 @@ select * from tplugins order by #arguments.orderby#
 				where package=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.args.package#"/>
 				and moduleID!=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.args.moduleID#"/>
 		</cfquery>
-	</cfif>
 							
-	<cfif rsCheck.recordcount>
-			<cfthrow message="A plugin with the package value '#arguments.args.package#' is already being used by another plugin.">	
+		<cfif rsCheck.recordcount>
+				<cfthrow message="A plugin with the package value '#arguments.args.package#' is already being used by another plugin.">	
+		</cfif>
 	</cfif>
 	
 	<cfset deleteSettings(arguments.args.moduleID) />
