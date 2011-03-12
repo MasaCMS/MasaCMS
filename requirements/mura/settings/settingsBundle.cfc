@@ -96,8 +96,13 @@ to your own modified versions of Mura CMS.
 			<cfreturn false />
 		</cfif>
 
-		<cfdirectory action="list" directory="#variables.unpackPath#" name="rsImportFiles" filter="*.xml" type="file">
+		<cfdirectory action="list" directory="#variables.unpackPath#" name="rsImportFiles" filter="*.xml">
 
+		<!--- this is done for cf7 compatability --->
+		<cfquery name="rsImportFiles" dbtype="query">
+			select * from rsImportFiles where type='File'
+		</cfquery>
+		
 		<cfloop query="rsImportFiles">
 			<cfset fname = rereplace(rsImportFiles.name,"^wddx_(.*)\.xml","\1") />
 			<cffile action="read" file="#variables.unpackPath##rsImportFiles.name#" variable="importWDDX" charset="utf-8">

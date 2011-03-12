@@ -117,7 +117,7 @@ to your own modified versions of Mura CMS.
 <cfset variables.instance.tempDir=getTempDirectory() />
 <cfset variables.instance.autoresetpasswords=true />
 <cfset variables.instance.encryptionKey=createUUID() />
-
+<cfset variables.instance.uselegacysessions=true />
 
 
 <cffunction name="OnMissingMethod" access="public" returntype="any" output="false" hint="Handles missing method exceptions.">

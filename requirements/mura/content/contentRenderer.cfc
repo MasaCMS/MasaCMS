@@ -560,7 +560,7 @@ to your own modified versions of Mura CMS.
 			<cfoutput>
 			<ul class="navSequential">
 			<cfif rsSection.contentID[1] neq event.getValue('contentBean').getContentID()>
-			<li><a href="index.cfm?linkServID=#rsSection.contentID[prev]#">&laquo; #getSite().getRBFactory().getKey("sitemanager.prev")#</a></li>
+			<li><a href="./?linkServID=#rsSection.contentID[prev]#">&laquo; #getSite().getRBFactory().getKey("sitemanager.prev")#</a></li>
 			</cfif>
 			<cfloop query="rsSection">
 			<cfsilent>
@@ -570,7 +570,7 @@ to your own modified versions of Mura CMS.
 			<li class="#itemClass#">#link#</li>
 			</cfloop>
 			<cfif rsSection.contentID[rsSection.recordcount] neq event.getValue('contentBean').getContentID()>
-			<li><a href="index.cfm?linkServID=#rsSection.contentID[next]#">&raquo; #getSite().getRBFactory().getKey("sitemanager.next")#</a></li>
+			<li><a href="./?linkServID=#rsSection.contentID[next]#">#getSite().getRBFactory().getKey("sitemanager.next")# &raquo;</a></li>
 			</cfif>
 			</ul></cfoutput>
 			</cfsavecontent>
