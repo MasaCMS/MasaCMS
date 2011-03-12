@@ -100,7 +100,7 @@ to your own modified versions of Mura CMS.
 
 		<!--- this is done for cf7 compatability --->
 		<cfquery name="rsImportFiles" dbtype="query">
-			select * from rsImportFiles where type='File'
+			select * from rsImportFiles where lower(type)='file'
 		</cfquery>
 		
 		<cfloop query="rsImportFiles">
