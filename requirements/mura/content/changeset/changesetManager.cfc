@@ -351,14 +351,23 @@
 <cfargument name="changesetID">
 <cfargument name="byDate" default="false">
 	<cfset var it=getAssignmentsIterator(argumentCollection=arguments)>
+	<cfset var item="">
+	<cfset var changeset="">
+	
 	<cfloop condition="it.hasNext()">
+		<cfset item=it.next()>
+		<cfset item.setApproved(1)>
 		<cfif arguments.byDate>
-			<cfset it.next().setApproved(1).setLastUpdateBy("System").setLastUpdateByID("").save()>
-		<cfelse>
-			<cfset it.next().setApproved(1).save()>
+			<cfset item.setLastUpdateBy("System")>
+			<cfset item.setLastUpdateByID("")>
 		</cfif>
+		<cfset item.save()>
 	</cfloop>
-	<cfset read(arguments.changesetID).setPublished(1).setPublishDate(now()).save()>
+	
+	<cfset changeset=read(arguments.changesetID)>
+	<cfset changeset.setPublished(1)>
+	<cfset changeset.setPublishDate(now())>
+	<cfset changeset.save()>
 </cffunction>
 
 <cffunction name="getAssignmentsIterator" access="public" returntype="any" output="false">
