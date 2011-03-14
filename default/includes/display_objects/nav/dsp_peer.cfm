@@ -41,4 +41,4 @@ the GNU General Public License version 2  without this exception.  You may, if y
 to your own modified versions of Mura CMS.
 --->
 
-<cf_CacheOMatic key="peerNav#request.contentBean.getcontentID()#" nocache="#request.nocache#"><cfoutput><div id="navPeer">#dspPeerNav()#</div></cfoutput></cf_CacheOMatic>
+<cfoutput><div id="navPeer">#dspPeerNav()#</div></cfoutput>

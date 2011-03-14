@@ -42,5 +42,4 @@ to your own modified versions of Mura CMS.
 --->
 
 <!--- This gives you top level nav only. It's a legacy object that has been replaced by the dspNavPrimary function in the content renderer. --->
-
-<cf_CacheOMatic key="topNav#request.contentBean.getcontentID()#" nocache="#request.nocache#"><cfoutput>#dspTopNav("navPrimary","")#</cfoutput></cf_CacheOMatic>
+<cfoutput>#dspTopNav("navPrimary","")#</cfoutput>

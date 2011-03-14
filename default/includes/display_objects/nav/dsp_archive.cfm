@@ -41,12 +41,13 @@ the GNU General Public License version 2  without this exception.  You may, if y
 to your own modified versions of Mura CMS.
 --->
 <cfset rsArchive=application.contentGateway.getReleaseCountByMonth($.event('siteID'),arguments.objectID)>
+<cfset hasArchiveFilter=listFindNoCase("releaseMonth,releaseDate,releaseYear",$.event("filterBy"))>
 <cfoutput>
 <#getHeaderTag('subHead1')#>#$.rbKey('list.archive')#</#getHeaderTag('subHead1')#>
 <div class="navArchive">
 <ul class="navSecondary">
 	<cfloop query="rsArchive">
-		<cfset isCurrentArchive=$.event("month") eq rsArchive.month and $.event("year") eq rsArchive.year>
+		<cfset isCurrentArchive=hasArchiveFilter and $.event("month") eq rsArchive.month and $.event("year") eq rsArchive.year>
 		<li<cfif isCurrentArchive> class="current"</cfif>><a href="#$.createHREF(filename='#$.event('currentFilenameAdjusted')#/date/#rsArchive.year#/#rsArchive.month#/')#"<cfif isCurrentArchive> class="current"</cfif>>#monthasstring(rsArchive.month)# #rsArchive.year# (#rsArchive.items#)</a></li>
 	</cfloop>
 </ul>

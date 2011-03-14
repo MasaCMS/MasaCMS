@@ -42,4 +42,4 @@ to your own modified versions of Mura CMS.
 --->
 
 <!--- This outputs peer nav and the sub nav of the page you are on if there is any. It omits top level nav for the sake of redundancy and dead-ends if there is no content below the page you are on. Usually works best when used in conjunction with the breadcrumb nav since it changes as you get deeper into a site. --->
-<cf_CacheOMatic key="standardNav#request.contentBean.getcontentID()#" nocache="#request.nocache#"><cfoutput><div id="navStandard">#dspStandardNav()#</div></cfoutput></cf_CacheOMatic>
+<cfoutput><div id="navStandard">#dspStandardNav()#</div></cfoutput>

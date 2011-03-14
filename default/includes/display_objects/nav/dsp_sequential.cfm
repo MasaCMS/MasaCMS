@@ -42,7 +42,5 @@ to your own modified versions of Mura CMS.
 --->
 <!--- Outputs nav of portal and calendar child content in sequence in the form of "Previous 1 2 3 4 5 Next" --->
 <cfif not listFind("Portal,Gallery",request.contentBean.getType())>
-	<cf_CacheOMatic key="seqNav#request.contentBean.getcontentID()#" nocache="#request.nocache#">
-		<cfoutput>#dspSequentialNav()#</cfoutput>
-	</cf_CacheOMatic>
+<cfoutput>#dspSequentialNav()#</cfoutput>
 </cfif>
