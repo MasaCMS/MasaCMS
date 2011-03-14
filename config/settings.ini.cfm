@@ -12,6 +12,7 @@ assetdir=
 assetpath=
 plugindir=
 usefilemode=true
+defaultfilemode=775
 mapdir=mura
 webrootmap=muraWRM
 datasource=

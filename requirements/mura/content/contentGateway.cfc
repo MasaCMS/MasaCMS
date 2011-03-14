@@ -1687,6 +1687,50 @@ to your own modified versions of Mura CMS.
 		
 </cffunction>
 
+<cffunction name="getReleaseCountByMonth" output="false">
+<cfargument name="siteid">
+<cfargument name="parentID">
+<cfset var rspre="">
+<cfset var rs="">
+
+	<cfquery name="rspre" datasource="#variables.configBean.getDatasource()#">
+		select
+			parentID,
+			month(releaseDate) month,
+			year(releaseDate) year,
+			count(*) items  
+		from tcontent 
+		where parentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.parentID#"> 
+		and siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"> 
+        #renderActiveClause("tcontent",arguments.siteID)#
+		and releaseDate <> ''
+		group by parentID, month(releaseDate),year(releaseDate)
+		
+		union
+		
+		select
+			parentID,
+			month(lastUpdate) month,
+			year(lastUpdate) year,
+			count(*) items  
+		from tcontent 
+		where parentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.parentID#"> 
+		and siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"> 
+        #renderActiveClause("tcontent",arguments.siteID)#
+		and releaseDate is null
+		group by parentID, month(lastUpdate),year(lastUpdate)
+	</cfquery>
+	
+	<cfquery name="rs"dbtype="query">
+		select rspre.month,rspre.year, sum(rspre.items) items
+		from rspre
+		group by rspre.year,rspre.month
+		order by rspre.year 
+ 	</cfquery>
+	
+	<cfreturn rs>
+</cffunction>
+
 <cffunction name="renderActiveClause" output="true">
 <cfargument name="table" default="tcontent">
 <cfargument name="siteID">

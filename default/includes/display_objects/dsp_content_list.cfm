@@ -1,4 +1,12 @@
 <cfsilent>
+	<cfif not structKeyExists(arguments,"type")>
+		<cfset arguments.type="Feed">
+	</cfif>
+	
+	<cfif not structKeyExists(arguments,"fields")>
+		<cfset arguments.fields="Title,Summary,Date,Image,Tags,Credits">
+	</cfif>
+	
 	<cfset arguments.hasTitle=listFindNoCase(arguments.fields,"Title")>
 	<cfset arguments.hasDate=listFindNoCase(arguments.fields,"Date")>
 	<cfset arguments.hasImages=listFindNoCase(arguments.fields,"Image")>
@@ -109,7 +117,7 @@
 					<cfelse>
 					<cfloop from="1" to="#arguments.tagLen#" index="arguments.t">
 						<cfset arguments.tag=#trim(listgetAt(arguments.item.getValue('tags'),arguments.t))#>
-						<a href="?tag=#urlEncodedFormat(arguments.tag)#&newSearch=1&display=search">#arguments.tag#</a><cfif arguments.tagLen gt arguments.t>, </cfif>
+						<a href="#$.createHREF(filename='#$.event('currentFilenameAdjusted')#/tag/#urlEncodedFormat(arguments.tag)#')#">#arguments.tag#</a><cfif arguments.tagLen gt arguments.t>, </cfif>
 					</cfloop>
 					</cfif>
 				</p>
@@ -154,7 +162,7 @@
 					#variables.rbFactory.getKey('tagcloud.tags')#: 
 					<cfloop from="1" to="#arguments.tagLen#" index="t">
 					<cfset arguments.tag=#trim(listgetAt(arguments.item.getValue('tags'),t))#>
-					<a href="?tag=#urlEncodedFormat(arguments.tag)#&newSearch=1&display=search">#arguments.tag#</a><cfif arguments.tagLen gt t>, </cfif>
+					<a href="#$.createHREF(filename='#$.event('currentFilenameAdjusted')#/tag/#urlEncodedFormat(arguments.tag)#')#">#arguments.tag#</a><cfif arguments.tagLen gt t>, </cfif>
 					</cfloop>
 				</dd>
 			</cfif>

@@ -370,6 +370,7 @@ to your own modified versions of Mura CMS.
 		<cfargument name="categoryID" type="string" default="">
 		<cfargument name="relatedID" type="string" default="">
 		<cfargument name="rs" required="true" default="">
+		<cfargument name="subNavExpression" required="true" default="">
 		
 		<cfset var rsSection=arguments.rs>
 		<cfset var adjust=0>
@@ -393,10 +394,15 @@ to your own modified versions of Mura CMS.
 			
 			<cfset current=current+1>
 			<cfset nest=''>
-			<cfset subnav=(((rsSection.type eq 'Page' or  rsSection.type eq 'Calendar' or rsSection.type eq 'Portal') and arguments.class eq 'navSecondary' and (this.crumbData[this.navSelfIdx].contentID eq rsSection.contentid or this.crumbData[this.navSelfIdx].parentID eq rsSection.contentid) ) or ((rsSection.type eq 'Page' or  rsSection.type eq 'Calendar' ) and arguments.class neq 'navSecondary')) and arguments.currDepth lt arguments.viewDepth and rsSection.type neq 'Gallery' and not (rsSection.restricted and not session.mura.isLoggedIn) >
+			
+			<cfif len(arguments.subNavExpression)>
+				<cfset subnav=evaluate(arguments.subNavExpression)>
+			<cfelse>
+				<cfset subnav=(((ListFind("Page,Portal,Calendar",rsSection.type)) and arguments.class eq 'navSecondary' and (this.crumbData[this.navSelfIdx].contentID eq rsSection.contentid or this.crumbData[this.navSelfIdx].parentID eq rsSection.contentid) ) or ((listFindNoCase("Page,Calendar",rsSection.type)) and arguments.class neq 'navSecondary')) and arguments.currDepth lt arguments.viewDepth and rsSection.type neq 'Gallery' and not (rsSection.restricted and not session.mura.isLoggedIn) >
+			</cfif>
 			
 			<cfif subnav>
-				<cfset nest=dspNestedNav(rssection.contentid,arguments.viewDepth,arguments.currDepth+1,iif(rssection.type eq 'calendar',de('fixed'),de('default')),now(),'','',rsSection.sortBy,rsSection.sortDirection,arguments.context,arguments.stub,arguments.categoryID,arguments.relatedID) />
+				<cfset nest=dspNestedNav(rssection.contentid,arguments.viewDepth,arguments.currDepth+1,iif(rssection.type eq 'calendar',de('fixed'),de('default')),now(),'','',rsSection.sortBy,rsSection.sortDirection,arguments.context,arguments.stub,arguments.categoryID,arguments.relatedID,"",arguments.subNavExpression) />
 			</cfif>
 			
 			<cfset itemClass=iif(current eq 1,de('first'),de(iif(current eq adjust,de('last'),de('')))) />
@@ -667,16 +673,25 @@ to your own modified versions of Mura CMS.
 	<cfargument name="siteID">
 	<cfargument name="filename">
 	
+	<cfif len(arguments.filename)>
+		<cfif left(arguments.filename,1) neq "/">
+			<cfset arguments.filename= "/" & arguments.filename>
+		</cfif>
+		<cfif right(arguments.filename,1) neq "/">
+			<cfset arguments.filename=  arguments.filename & "/">
+		</cfif>
+	</cfif>
+	
 	<cfif not application.configBean.getSiteIDInURLS()>
 		<cfif arguments.filename neq ''>
 			<cfif application.configBean.getStub() eq ''>
 				<cfif application.configBean.getIndexFileInURLS() and not request.muraExportHTML>
-					<cfreturn "/index.cfm" & "/" & arguments.filename & "/"/>
+					<cfreturn "/index.cfm" &  arguments.filename />
 				<cfelse>
-					<cfreturn  "/" & arguments.filename & "/"/>
+					<cfreturn arguments.filename />
 				</cfif>
 			<cfelse>
-				<cfreturn application.configBean.getStub() & "/"  & arguments.filename & "/" />
+				<cfreturn application.configBean.getStub() & arguments.filename />
 			</cfif>
 		<cfelse>
 			<cfreturn "/" />
@@ -685,12 +700,12 @@ to your own modified versions of Mura CMS.
 		<cfif arguments.filename neq ''>
 			<cfif not len(application.configBean.getStub())>
 				<cfif application.configBean.getIndexFileInURLS()>
-					<cfreturn "/" & arguments.siteID & "/index.cfm" & "/" & arguments.filename & "/"/>
+					<cfreturn "/" & arguments.siteID & "/index.cfm" & arguments.filename />
 				<cfelse>
-					<cfreturn "/" & arguments.siteID & "/" & arguments.filename & "/"/>
+					<cfreturn "/" & arguments.siteID & arguments.filename />
 				</cfif>
 			<cfelse>
-				<cfreturn application.configBean.getStub() & "/" & arguments.siteID & "/" & arguments.filename & "/" />
+				<cfreturn application.configBean.getStub() & "/" & arguments.siteID  & arguments.filename />
 			</cfif>
 		<cfelse>
 			<cfif not len(application.configBean.getStub())>
@@ -949,6 +964,7 @@ to your own modified versions of Mura CMS.
 				<cfcase value="peer_nav">#dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"nav/dsp_peer.cfm",cacheKeyContentId)#</cfcase>
 				<cfcase value="standard_nav">#dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"nav/dsp_standard.cfm",cacheKeyContentId)#</cfcase>
 				<cfcase value="portal_nav">#dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"nav/dsp_portal.cfm",cacheKeyContentId)#</cfcase>
+				<cfcase value="multilevel_nav">#dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"nav/dsp_multilevel.cfm",cacheKeyContentId)#</cfcase>
 				<cfcase value="seq_nav">#dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"nav/dsp_sequential.cfm","#arguments.object##arguments.objectid##event.getValue('startRow')#")#</cfcase>
 				<cfcase value="top_nav">#dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"nav/dsp_top.cfm",cacheKeyContentId)#</cfcase>
 				<cfcase value="contact">#dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"dsp_contact.cfm")#</cfcase>
@@ -971,6 +987,7 @@ to your own modified versions of Mura CMS.
 				<cfcase value="category_portal_features_no_summary">#dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"dsp_category_portal_features.cfm",cacheKeyObjectId,false)#</cfcase>
 				<cfcase value="category_summary">#dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"dsp_category_summary.cfm",cacheKeyObjectId & event.getValue('categoryID'))#</cfcase>
 				<cfcase value="category_summary_rss">#dspObject_Render(siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,fileName="dsp_category_summary.cfm",cacheKey=cacheKeyObjectId & event.getValue('categoryID'),useRss=true)#</cfcase>
+				<cfcase value="archive_nav">#dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"nav/dsp_archive.cfm",cacheKeyObjectId)#</cfcase>
 				<cfcase value="form">#dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"datacollection/index.cfm",cacheKeyObjectId)#</cfcase>
 				<cfcase value="form_responses">#dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"dataresponses/index.cfm",cacheKeyObjectId)#</cfcase>
 				<cfcase value="component">#dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"dsp_template.cfm",cacheKeyObjectId)#</cfcase>

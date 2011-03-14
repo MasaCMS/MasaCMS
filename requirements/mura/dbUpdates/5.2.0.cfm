@@ -365,5 +365,5 @@ update tplugins set loadPriority=5
 </cfif>
 
 <cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
-delete from tsystemobjects where siteid='IASiteMap'
+delete from tsystemobjects where object='IASiteMap'
 </cfquery>

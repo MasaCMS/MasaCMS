@@ -523,7 +523,7 @@ to your own modified versions of Mura CMS.
 	<cfquery name="rsDB" datasource="#variables.configBean.getDatasource()#" password="#variables.configBean.getDbPassword()#" username="#variables.configBean.getDbUsername()#">
 	select fileID,fileEXT from tfiles 
 	where siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#">
-	and fileEXT in ('jpg','jpeg','png')
+	and fileEXT in ('jpg','jpeg','png','gif')
 	</cfquery>
 	
 	<cfloop query="rsDB">

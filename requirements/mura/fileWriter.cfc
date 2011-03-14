@@ -8,14 +8,22 @@
 <cfelse>
 <cfset variables.useMode=true>
 </cfif>
+
 <cfset variables.tempDir=arguments.tempDir >
+
+<cfif isNumeric(application.configBean.getValue("defaultFileMode"))>
+	<cfset variables.defaultFileMode=application.configBean.getValue("defaultFileMode")>
+<cfelse>
+	<cfset variables.defaultFileMode=775>
+</cfif>
+
 <cfreturn this>
 </cffunction>
 
 <cffunction name="copyFile" output="false">
 <cfargument name="source">
 <cfargument name="destination">
-<cfargument name="mode" required="true" default="775">
+<cfargument name="mode" required="true" default="#variables.defaultFileMode#">
 <cfif variables.useMode >
 	<cffile action="copy" mode="#arguments.mode#" source="#arguments.source#" destination="#arguments.destination#" />
 <cfelse>
@@ -26,7 +34,7 @@
 <cffunction name="moveFile" output="false">
 <cfargument name="source">
 <cfargument name="destination">
-<cfargument name="mode" required="true" default="775">
+<cfargument name="mode" required="true" default="#variables.defaultFileMode#">
 <cfif variables.useMode >
 	<cffile action="move" mode="#arguments.mode#" source="#arguments.source#" destination="#arguments.destination#" />
 <cfelse>
@@ -37,7 +45,7 @@
 <cffunction name="renameFile" output="false">
 <cfargument name="source">
 <cfargument name="destination">
-<cfargument name="mode" required="true" default="775">
+<cfargument name="mode" required="true" default="#variables.defaultFileMode#">
 <cfif variables.useMode >
 	<cffile action="rename" mode="#arguments.mode#" source="#arguments.source#" destination="#arguments.destination#" />
 <cfelse>
@@ -49,7 +57,7 @@
 	<cfargument name="file">
 	<cfargument name="output">
 	<cfargument name="addNewLine" required="true" default="true">
-	<cfargument name="mode" required="true" default="775">
+	<cfargument name="mode" required="true" default="#variables.defaultFileMode#">
 	<cfset var new = "">
 	<cfset var x = "">
 	<cfset var counter = 0>
@@ -96,7 +104,7 @@
 <cfargument name="destination" required="true" default="#variables.tempDir#">
 <cfargument name="nameConflict" required="true" default="makeunique">
 <cfargument name="attributes" required="true" default="normal">
-<cfargument name="mode" required="true" default="775">
+<cfargument name="mode" required="true" default="#variables.defaultFileMode#">
 <cfargument name="accept" required="false" default="" />
 
 <cfif not DirectoryExists(arguments.destination)>
@@ -127,7 +135,7 @@
 <cffunction name="appendFile" output="false">
 <cfargument name="file">
 <cfargument name="output">
-<cfargument name="mode" required="true" default="775">
+<cfargument name="mode" required="true" default="#variables.defaultFileMode#">
 <cfif variables.useMode >
 	<cffile action="append" mode="#arguments.mode#" file="#arguments.file#" output="#arguments.output#"/>
 <cfelse>
@@ -137,7 +145,7 @@
 
 <cffunction name="createDir" output="false">
 <cfargument name="directory">
-<cfargument name="mode" required="true" default="775">
+<cfargument name="mode" required="true" default="#variables.defaultFileMode#">
 <cfif variables.useMode >
 	<cfdirectory action="create" mode="#arguments.mode#" directory="#arguments.directory#"/>
 <cfelse>
@@ -148,7 +156,7 @@
 <cffunction name="renameDir" output="false">
 <cfargument name="directory">
 <cfargument name="newDirectory">
-<cfargument name="mode" required="true" default="775">
+<cfargument name="mode" required="true" default="#variables.defaultFileMode#">
 <cfif variables.useMode >
 	<cfdirectory action="rename" mode="#arguments.mode#" directory="#arguments.directory#" newDirectory="#arguments.newDirectory#"/>
 <cfelse>

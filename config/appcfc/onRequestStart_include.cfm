@@ -116,16 +116,16 @@ to your own modified versions of Mura CMS.
 </cfif>
 
 <cfif isDefined("form.mobileFormat") and isBoolean(form.mobileFormat)>
-	<cfcookie name="mobileFormat" value="#form.mobileFormat#" expires="never" />	
+	<cfcookie name="mobileFormat" value="#form.mobileFormat#" />	
 <cfelseif isDefined("url.mobileFormat") and isBoolean(url.mobileFormat)>
-	<cfcookie name="mobileFormat" value="#url.mobileFormat#" expires="never" />
+	<cfcookie name="mobileFormat" value="#url.mobileFormat#" />
 </cfif>
 
 <cfif not isdefined("cookie.mobileFormat")>
 	<cfif findNoCase("Mobile",CGI.HTTP_USER_AGENT) GT 0>
-		<cfcookie name="mobileFormat" value="true" expires="never" />
+		<cfcookie name="mobileFormat" value="true" />
 	<cfelse>	
-		<cfcookie name="mobileFormat" value="false" expires="never" />
+		<cfcookie name="mobileFormat" value="false" />
 	</cfif>	
 </cfif>
 

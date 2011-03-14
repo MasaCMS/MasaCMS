@@ -161,6 +161,8 @@ to your own modified versions of Mura CMS.
 		<cfset var rsInActivefiles = "" />
 		<cfset var deleteList =	"" />
 		<cfset var rstfiles=getValue("rstfiles")>
+		<cfset var rscheck="">
+		
 		<!---<cfset var moduleIDSQLlist="" />--->
 		<cfset var i="" />
 		
@@ -175,6 +177,7 @@ to your own modified versions of Mura CMS.
 		--->
 		
 		<cfif len(arguments.siteID)>
+			<cfset  getBean("fileManager").cleanFileCache(arguments.siteID)>
 			<cfset variables.zipTool.AddFiles(zipFilePath="#variables.backupDir#sitefiles.zip",directory=siteRoot,recurse="true",sinceDate=arguments.sinceDate)>
 	
 			<!--- We do not want to include files collected from mura forms or the advertising manager --->
@@ -198,6 +201,17 @@ to your own modified versions of Mura CMS.
 					and created >= #createODBCDateTime(arguments.sinceDate)#
 				</cfif>
 			</cfquery>
+			
+			<cfloop query="rsInActivefiles">
+				<cfdirectory action="list" name="rscheck" directory="#variables.configBean.getValue('filedir')##variables.fileDelim#cache#variables.fileDelim#file#variables.fileDelim#" filter="#rsInActivefiles.fileID#*">
+								
+				<cfif rscheck.recordcount>
+					<cfloop query="rscheck">
+						<cfset deleteList=listAppend(deleteList,"cache#variables.fileDelim#file#variables.fileDelim##rscheck.name#","|")>
+					</cfloop>
+				</cfif>
+						
+			</cfloop>
 				
 			<cfif variables.configBean.getValue('assetdir') neq variables.configBean.getValue('webroot')>
 				<cfset zipDir = variables.configBean.getValue('assetdir') & variables.fileDelim & arguments.siteID />
@@ -208,37 +222,16 @@ to your own modified versions of Mura CMS.
 				<cfset zipDir = variables.configBean.getValue('filedir') & variables.fileDelim & arguments.siteID /> 
 				<cffile action="write" file="#zipDir##variables.fileDelim#blank.txt" output="empty file" />  
 				<cfset variables.zipTool.AddFiles(zipFilePath="#variables.backupDir#filefiles.zip",directory=#zipDir#,recurse="true",sinceDate=arguments.sinceDate,excludeDirs="assets")>
-				
-					<cfif variables.configBean.getValue('filedir') eq variables.configBean.getValue('webroot')>
-						<cfloop query="rsInActivefiles">
-							<cfif fileExists("#variables.configBean.getValue('filedir')##variables.fileDelim#cache#variables.fileDelim#file#variables.fileDelim##rsInActivefiles.fileid#.#rsInActivefiles.fileEXT#")>
-								<cfset deleteList=listAppend(deleteList,"cache#variables.fileDelim#file#variables.fileDelim##rsInActivefiles.fileid#.#rsInActivefiles.fileEXT#","|")>
-								<cfif listFindNoCase("gif,jpg,jpeg,png",rsInActivefiles.fileEXT)>
-									<cfset deleteList=listAppend(deleteList,"cache#variables.fileDelim#file#variables.fileDelim##rsInActivefiles.fileid#_small.#rsInActivefiles.fileEXT#","|")>
-									<cfset deleteList=listAppend(deleteList,"cache#variables.fileDelim#file#variables.fileDelim##rsInActivefiles.fileid#_medium.#rsInActivefiles.fileEXT#","|")>
-								</cfif>
-							</cfif>
-						</cfloop>
 						
-						<cfif len(deleteList)>
-							<cfset variables.zipTool.deleteFiles(zipFilePath="#variables.backupDir#filefiles.zip",files="#deleteList#")>
-						</cfif>
-					</cfif>
-				
+				<cfif len(deleteList)>
+					<cfset variables.zipTool.deleteFiles(zipFilePath="#variables.backupDir#filefiles.zip",files="#deleteList#")>
+				</cfif>
+	
 			<cfelse>
-				<cfloop query="rsInActivefiles">
-					<cfif fileExists("#variables.configBean.getValue('filedir')##variables.fileDelim#cache#variables.fileDelim#file#variables.fileDelim##rsInActivefiles.fileid#.#rsInActivefiles.fileEXT#")>
-						<cfset deleteList=listAppend(deleteList,"cache#variables.fileDelim#file#variables.fileDelim##rsInActivefiles.fileid#.#rsInActivefiles.fileEXT#","|")>
-						<cfif listFindNoCase("gif,jpg,jpeg,png",rsInActivefiles.fileEXT)>
-							<cfset deleteList=listAppend(deleteList,"cache#variables.fileDelim#file#variables.fileDelim##rsInActivefiles.fileid#_small.#rsInActivefiles.fileEXT#","|")>
-							<cfset deleteList=listAppend(deleteList,"cache#variables.fileDelim#file#variables.fileDelim##rsInActivefiles.fileid#_medium.#rsInActivefiles.fileEXT#","|")>
-						</cfif>
-					</cfif>
-				</cfloop>
-				
 				<cfif len(deleteList)>
 					<cfset variables.zipTool.deleteFiles(zipFilePath="#variables.backupDir#sitefiles.zip",files="#deleteList#")>
 				</cfif>
+				
 			</cfif>
 		</cfif>
 		
@@ -281,6 +274,7 @@ to your own modified versions of Mura CMS.
 		<cfargument name="pluginMode" type="any" required="true" default="all">
 		<cfargument name="sinceDate" type="any" required="true" default="">
 		<cfargument name="keyMode" type="string" default="copy" required="true">
+		<cfargument name="themeDir" type="string" default="" required="true">
 		
 		<cfset var zipPath = "" />
 		<cfset var siteRoot = variables.configBean.getValue('webroot') & variables.fileDelim & arguments.siteID /> 
@@ -293,6 +287,7 @@ to your own modified versions of Mura CMS.
 		<cfset var pluginCFC="">
 		<cfset var theme="">
 		<cfset var pluginDir="">
+		<cfset var rssite="">
 		
 		<cfif not len( getBundle() ) or not directoryExists( getBundle() )>
 			<cfreturn>
@@ -325,10 +320,9 @@ to your own modified versions of Mura CMS.
 			<cfif arguments.renderingMode eq "all">
 				<cfset zipPath = getBundle() & "sitefiles.zip" />
 				<cfset variables.zipTool.Extract(zipFilePath="#zipPath#",extractPath=siteRoot, overwriteFiles=true, excludeDirs="cache|assets")>
-			<cfelseif arguments.renderingMode eq "theme">
+			<cfelseif arguments.renderingMode eq "theme" and len(arguments.themeDir)>
 				<cfset zipPath = getBundle() & "sitefiles.zip" />
-				<cfset theme=application.settingsManager.getSite(siteID).getTheme()>>
-				<cfset variables.zipTool.Extract(zipFilePath="#zipPath#",extractPath=siteRoot, overwriteFiles=true, extractDirs="includes#variables.fileDelim#themes#variables.fileDelim##theme#")>
+				<cfset variables.zipTool.Extract(zipFilePath="#zipPath#",extractPath=siteRoot, overwriteFiles=true, extractDirs="includes#variables.fileDelim#themes#variables.fileDelim##arguments.themeDir#")>
 			</cfif>
 		</cfif>
 		

@@ -97,6 +97,7 @@ to your own modified versions of Mura CMS.
 		<cfset var bundleAssetPath="">
 		<cfset var bundleContext="">
 		<cfset var rssite="">
+		<cfset var themeDir="">
 		
 		<cfif structKeyExists(arguments,"Bundle")>
 			<cfset arguments.lastDeployment=arguments.bundle.getValue("sincedate","")>
@@ -194,7 +195,11 @@ to your own modified versions of Mura CMS.
 		</cfif>
 		
 		<cfif StructKeyExists(arguments,"Bundle")>
-			<cfset arguments.Bundle.unpackFiles( arguments.toSiteID,arguments.keyFactory,arguments.toDSN, arguments.moduleID, arguments.errors , arguments.renderingMode, arguments.contentMode, arguments.pluginMode, arguments.lastDeployment,arguments.keyMode) />
+			<cfset rssite=Bundle.getValue("rssite")>
+			<cfif isDefined("rssite.theme")>
+				<cfset themeDir=rssite.theme>
+			</cfif>
+			<cfset arguments.Bundle.unpackFiles( arguments.toSiteID,arguments.keyFactory,arguments.toDSN, arguments.moduleID, arguments.errors , arguments.renderingMode, arguments.contentMode, arguments.pluginMode, arguments.lastDeployment,arguments.keyMode,themeDir) />
 			<cfif arguments.keyMode eq "copy" and arguments.contentMode eq "all">
 				<cfset arguments.Bundle.renameFiles( arguments.toSiteID,arguments.keyFactory,arguments.toDSN ) />
 			</cfif>

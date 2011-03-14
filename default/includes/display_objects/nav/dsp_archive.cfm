@@ -40,8 +40,15 @@ for your modified version; it is your choice whether to do so, or to make such m
 the GNU General Public License version 2  without this exception.  You may, if you choose, apply this exception
 to your own modified versions of Mura CMS.
 --->
-<cfset rbFactory=application.settingsManager.getSite(request.siteid).getRBFactory()/>
-<cfparam name="attributes.tags" default="">
-<cfset tagLen=listLen(attributes.tags) />
-
-<cfif len(tagLen)><cfoutput>#rbFactory.getKey('tagcloud.tags')#: <cfloop from="1" to="#tagLen#" index="t"><cfset tag=#trim(listgetAt(attributes.tags,t))#><a href="#$.createHREF(filename='#request.currentFilenameAdjusted#/tag/#urlEncodedFormat(tags.tag)#')#">#tag#</a><cfif tagLen gt t>, </cfif></cfloop></cfoutput></cfif>
+<cfset rsArchive=application.contentGateway.getReleaseCountByMonth($.event('siteID'),arguments.objectID)>
+<cfoutput>
+<#getHeaderTag('subHead1')#>#$.rbKey('list.archive')#</#getHeaderTag('subHead1')#>
+<div class="navArchive">
+<ul class="navSecondary">
+	<cfloop query="rsArchive">
+		<cfset isCurrentArchive=$.event("month") eq rsArchive.month and $.event("year") eq rsArchive.year>
+		<li<cfif isCurrentArchive> class="current"</cfif>><a href="#$.createHREF(filename='#$.event('currentFilenameAdjusted')#/date/#rsArchive.year#/#rsArchive.month#/')#"<cfif isCurrentArchive> class="current"</cfif>>#monthasstring(rsArchive.month)# #rsArchive.year# (#rsArchive.items#)</a></li>
+	</cfloop>
+</ul>
+</div>
+</cfoutput>

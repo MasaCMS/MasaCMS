@@ -644,6 +644,7 @@ table.svFlvPlayer td {
 }
 
 .svIndex dl {
+	position: relative;
 	margin: 1.3em 0 1em;
 	}
 

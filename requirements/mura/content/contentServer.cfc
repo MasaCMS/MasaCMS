@@ -362,6 +362,8 @@ to your own modified versions of Mura CMS.
 				<cfset currentParam=currentItem>
 			</cfif>
 		<cfelseif currentArrayName eq "tagArray">
+			<cfset arguments.event.setValue("display","search")>
+			<cfset arguments.event.setValue("newSearch","true")>
 			<cfset arguments.event.setValue("tag",currentItem)>
 			<cfset currentArrayName="">
 		<cfelseif currentArrayName eq "linkServIDArray">

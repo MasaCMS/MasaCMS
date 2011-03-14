@@ -40,8 +40,21 @@ for your modified version; it is your choice whether to do so, or to make such m
 the GNU General Public License version 2  without this exception.  You may, if you choose, apply this exception
 to your own modified versions of Mura CMS.
 --->
-<cfset rbFactory=application.settingsManager.getSite(request.siteid).getRBFactory()/>
-<cfparam name="attributes.tags" default="">
-<cfset tagLen=listLen(attributes.tags) />
 
-<cfif len(tagLen)><cfoutput>#rbFactory.getKey('tagcloud.tags')#: <cfloop from="1" to="#tagLen#" index="t"><cfset tag=#trim(listgetAt(attributes.tags,t))#><a href="#$.createHREF(filename='#request.currentFilenameAdjusted#/tag/#urlEncodedFormat(tags.tag)#')#">#tag#</a><cfif tagLen gt t>, </cfif></cfloop></cfoutput></cfif>
+<!--- This outputs peer nav and the sub nav of the page you are on if there is any. It omits top level nav for the sake of redundancy and dead-ends if there is no content below the page you are on. Usually works best when used in conjunction with the breadcrumb nav since it changes as you get deeper into a site. --->
+<cf_CacheOMatic key="multilevelNav#request.contentBean.getcontentID()#" nocache="#request.nocache#">
+	<cfoutput>
+
+		<div id="navMultilevel">
+			#dspNestedNav(
+							class="navSecondary",
+							contentID=$.getTopVar("contentID"),
+							viewDepth=4,
+							currDepth=1,
+							sortBy=$.getTopVar("sortBy"),
+							sortDirection=$.getTopVar("sortDirection"),
+							subNavExpression="listFind($.content('path'),rsSection.contentID) and arguments.currDepth lt arguments.viewDepth"
+			)#
+		</div>
+	</cfoutput>
+</cf_CacheOMatic>

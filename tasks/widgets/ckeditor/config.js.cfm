@@ -18,9 +18,22 @@ CKEDITOR.editorConfig = function( config )
 	</cfoutput>
 	
 	config.skin = 'mura';
-	config.format_tags = 'p;h1;h2;h3;h4;h5;pre;address;div';
 	
-	//config.format_h1 = { element : 'h1' };
+	<!--- If the page title is an <h2> (the Mura default), output the Format Dropdown list like this --->
+	<!---
+config.format_tags = 'p;h1;h2;h3;h4;pre;address;div';
+	
+	<cfoutput>
+	config.format_h1 = { element : '#renderer.getHeaderTag('subHead1')#' };
+	config.format_h2 = { element : '#renderer.getHeaderTag('subHead2')#' };
+	config.format_h3 = { element : '#renderer.getHeaderTag('subHead3')#' };
+	config.format_h4 = { element : '#renderer.getHeaderTag('subHead4')#' };
+	</cfoutput>
+--->
+	
+	
+	<!--- Else, output it like this --->
+	config.format_tags = 'p;h1;h2;h3;h4;h5;pre;address;div';
 	
 	<cfoutput>
 	config.format_h1 = { element : '#renderer.getHeaderTag('headline')#' };
@@ -29,6 +42,7 @@ CKEDITOR.editorConfig = function( config )
 	config.format_h4 = { element : '#renderer.getHeaderTag('subHead3')#' };
 	config.format_h5 = { element : '#renderer.getHeaderTag('subHead4')#' };
 	</cfoutput>
+	
     // config.ignoreEmptyParagraph = 'false';
     
     /* Pasting into Editor Options */
