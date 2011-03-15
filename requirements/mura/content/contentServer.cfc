@@ -334,6 +334,7 @@ to your own modified versions of Mura CMS.
 	<cfset request.currentFilenameAdjusted=request.currentFilename>
 	<cfset request.servletEvent = createObject("component","mura.servletEvent").init() />
 	<cfset fileOutput=variables.Mura.doRequest(request.servletEvent)>
+	<cfheader statuscode="404" statustext="Content Not Found" /> 
 	<cfoutput>#fileOutput#</cfoutput>
 	<cfabort>
 </cffunction>
