@@ -323,8 +323,13 @@ to your own modified versions of Mura CMS.
 <cfargument name="file">
 <cfargument name="siteID">
 
-	<cfreturn variables.imageProcessor.process(arguments.file,arguments.siteID) />
+	<cfset var fileStruct=variables.imageProcessor.process(arguments.file,arguments.siteID) />
 		
+	<cfif not structKeyExists(arguments,"fileObjSource")>
+		<cfset fileStruct.fileObjSource="">
+	</cfif>
+	
+	<cfreturn fileStruct>
 </cffunction>		
 
 <cffunction name="renderS3" output="true" access="public" returntype="any">
