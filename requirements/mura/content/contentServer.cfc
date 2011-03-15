@@ -329,11 +329,13 @@ to your own modified versions of Mura CMS.
 </cffunction>
 
 <cffunction name="render404" output="true" access="public">
-<cfif application.configBean.getSiteIDInURLs()>
-	<cfset getPageContext().forward("#application.configBean.getContext()#/#bindToDomain()#/index.cfm/404/")>
-<cfelse>
-	<cfset getPageContext().forward("#application.configBean.getContext()#/index.cfm/404/")>
-</cfif>
+	<cfset request.siteid = bindToDomain()>
+	<cfset request.currentFilename = "404">
+	<cfset request.currentFilenameAdjusted=request.currentFilename>
+	<cfset request.servletEvent = createObject("component","mura.servletEvent").init() />
+	<cfset fileOutput=variables.Mura.doRequest(request.servletEvent)>
+	<cfoutput>#fileOutput#</cfoutput>
+	<cfabort>
 </cffunction>
 
 <cffunction name="parseCustomURLVars" output="false">
