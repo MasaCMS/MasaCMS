@@ -51,7 +51,7 @@ to your own modified versions of Mura CMS.
 	currDepth=1,
 	sortBy=$.getTopVar("sortBy"),
 	sortDirection=$.getTopVar("sortDirection"),
-subNavExpression="listFind($.content('path'),rsSection.contentID) and arguments.currDepth lt arguments.viewDepth"
+	subNavExpression="listFindNoCase('Page,Calendar',rsSection.type) and listFind($.content('path'),rsSection.contentID) and arguments.currDepth lt arguments.viewDepth"
 )#
 </div>
 </cfoutput>
