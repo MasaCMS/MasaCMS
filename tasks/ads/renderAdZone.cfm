@@ -45,4 +45,4 @@ to your own modified versions of Mura CMS.
 <cfparam name="url.siteid" default="">
 <cfparam name="url.track" default="">
 <cfparam name="url.contentHistID" default="">
-<cfoutput>#application.contentRenderer.jsonEncode(application.advertiserManager.renderAdZone(url.adzoneid,url.siteid,url.track,cgi.REMOTE_ADDR,url.contentHistID))#</cfoutput>
+<cfoutput>#application.contentRenderer.jsonEncode(application.advertiserManager.renderAdZone(url.adzoneid,url.siteid,val(url.track),cgi.REMOTE_ADDR,url.contentHistID))#</cfoutput>

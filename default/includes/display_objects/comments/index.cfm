@@ -240,7 +240,7 @@ to your own modified versions of Mura CMS.
 		</cfif>
 		<dd id="postcomment-form">
 		<cfoutput><span id="postcomment-comment" style="display: none"><a href="##postcomment">#rbFactory.getKey('comments.newcomment')#</a></span></cfoutput>
-		<form id="postcomment" method="post" name="addComment" action="?nocache=1" onsubmit="return validate(this);" novalidate="novalidate">
+		<form id="postcomment" method="post" name="addComment" action="?nocache=1#postcomment" onsubmit="return validate(this);" novalidate="novalidate">
 			<a name="postcomment"></a>
 			<fieldset>
 				<cfoutput><legend id="postacomment">#rbFactory.getKey('comments.postacomment')#</legend>

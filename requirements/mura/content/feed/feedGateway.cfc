@@ -236,24 +236,23 @@ to your own modified versions of Mura CMS.
 								<cfif param.getIsValid()>	
 									<cfif not started >
 										<cfset started = true />and (
+									</cfif>
+									<cfif listFindNoCase("openGrouping,(",param.getRelationship())>
+										(
+										<cfset openGrouping=true />
+									<cfelseif listFindNoCase("orOpenGrouping,or (",param.getRelationship())>
+										or (
+										<cfset openGrouping=true />
+									<cfelseif listFindNoCase("andOpenGrouping,and (",param.getRelationship())>
+										and (
+										<cfset openGrouping=true />
+									<cfelseif listFindNoCase("closeGrouping,)",param.getRelationship())>
+										)
 									<cfelse>
-										<cfif listFindNoCase("openGrouping,(",param.getRelationship())>
-											(
-											<cfset openGrouping=true />
-										<cfelseif listFindNoCase("orOpenGrouping,or (",param.getRelationship())>
-											or (
-											<cfset openGrouping=true />
-										<cfelseif listFindNoCase("andOpenGrouping,and (",param.getRelationship())>
-											and (
-											<cfset openGrouping=true />
-										<cfelseif listFindNoCase("closeGrouping,)",param.getRelationship())>
-											)
-										<cfelse>
-											<cfif not openGrouping>
+										<cfif not openGrouping>
 											#param.getRelationship()#
-											<cfelse>
+										<cfelse>
 											<cfset openGrouping=false />
-											</cfif>
 										</cfif>
 									</cfif>
 									<cfif  listLen(param.getField(),".") gt 1>			
@@ -418,26 +417,26 @@ to your own modified versions of Mura CMS.
 			<cfif param.getIsValid()>	
 				<cfif not started >
 					<cfset started = true />and (
+				</cfif>
+				<cfif listFindNoCase("openGrouping,(",param.getRelationship())>
+					(
+					<cfset openGrouping=true />
+				<cfelseif listFindNoCase("orOpenGrouping,or (",param.getRelationship())>
+					or (
+					<cfset openGrouping=true />
+				<cfelseif listFindNoCase("andOpenGrouping,and (",param.getRelationship())>
+					and (
+					<cfset openGrouping=true />
+				<cfelseif listFindNoCase("closeGrouping,)",param.getRelationship())>
+					)
 				<cfelse>
-					<cfif listFindNoCase("openGrouping,(",param.getRelationship())>
-						(
-						<cfset openGrouping=true />
-					<cfelseif listFindNoCase("orOpenGrouping,or (",param.getRelationship())>
-						or (
-						<cfset openGrouping=true />
-					<cfelseif listFindNoCase("andOpenGrouping,and (",param.getRelationship())>
-						and (
-						<cfset openGrouping=true />
-					<cfelseif listFindNoCase("closeGrouping,)",param.getRelationship())>
-						)
-					<cfelse>
-						<cfif not openGrouping>
+					<cfif not openGrouping>
 						#param.getRelationship()#
-						<cfelse>
+					<cfelse>
 						<cfset openGrouping=false />
-						</cfif>
 					</cfif>
 				</cfif>
+				
 				<cfif  listLen(param.getField(),".") gt 1>			
 					#param.getField()# #param.getCondition()# <cfif param.getCondition() eq "IN">(</cfif><cfqueryparam cfsqltype="cf_sql_#param.getDataType()#" value="#param.getCriteria()#" list="#iif(param.getCondition() eq 'IN',de('true'),de('false'))#"><cfif param.getCondition() eq "IN">)</cfif>  	
 				<cfelseif len(param.getField())>

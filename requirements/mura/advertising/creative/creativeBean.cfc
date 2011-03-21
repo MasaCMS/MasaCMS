@@ -59,6 +59,8 @@ to your own modified versions of Mura CMS.
 <cfset variables.instance.height=0/>
 <cfset variables.instance.width=0/>
 <cfset variables.instance.textBody=""/>
+<cfset variables.instance.title=""/>
+<cfset variables.instance.linkTitle=""/>
 <cfset variables.instance.fileExt=""/>
 <cfset variables.instance.siteID=""/>
 <cfset variables.instance.target="_blank"/>
@@ -91,6 +93,8 @@ to your own modified versions of Mura CMS.
 			<cfset setheight(arguments.creative.height) />
 			<cfset setwidth(arguments.creative.width) />
 			<cfset setTextBody(arguments.creative.textBody) />
+			<cfset setTitle(arguments.creative.title) />
+			<cfset setLinkTitle(arguments.creative.linkTitle) />
 			<cfset setFileExt(arguments.creative.fileExt) />
 			<cfset setSiteID(arguments.creative.SiteID) />
 			<cfset setTarget(arguments.creative.target) />
@@ -274,6 +278,24 @@ to your own modified versions of Mura CMS.
 <cffunction name="setTextBody" access="public" output="false">
 	<cfargument name="textBody" type="String" />
 	<cfset variables.instance.textBody = trim(arguments.textBody) />
+</cffunction>
+
+<cffunction name="getTitle" returntype="String" access="public" output="false">
+	<cfreturn variables.instance.title />
+</cffunction>
+
+<cffunction name="setTitle" access="public" output="false">
+	<cfargument name="title" type="String" />
+	<cfset variables.instance.title = trim(arguments.title) />
+</cffunction>
+
+<cffunction name="getLinkTitle" returntype="String" access="public" output="false">
+	<cfreturn variables.instance.linkTitle />
+</cffunction>
+
+<cffunction name="setLinkTitle" access="public" output="false">
+	<cfargument name="linkTitle" type="String" />
+	<cfset variables.instance.linkTitle = trim(arguments.linkTitle) />
 </cffunction>
 
 

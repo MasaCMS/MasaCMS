@@ -319,7 +319,7 @@ to your own modified versions of Mura CMS.
 </cffunction>
 
 <cffunction name="getMediaTypes" returntype="String" output="false" access="public">
-<cfreturn "Image,Text,Flash6,Flash7,Flash7,,Flash8,Flash9,Flash10" />
+<cfreturn "Image,Text,Flash6,Flash7,Flash8,Flash9,Flash10" />
 </cffunction>
 
 <cffunction name="readCreativeAndRender" returntype="String" output="false" access="public">
@@ -414,6 +414,12 @@ to your own modified versions of Mura CMS.
 			<cfset response.redirecturl=creativeBean.getRedirectURL() />
 			<cfset response.version=right(creativeBean.getMediaType(),1) />
 			<cfset response.placementid=rsExclusive.placementID[choice] />
+			<cfelseif response.mediaType eq "text">
+			<cfset response.creative=creativeBean.getTextBody()>
+			<cfset response.title=creativeBean.getTitle()>
+			<cfset response.linktitle=creativeBean.getLinkTitle()>
+			<cfset response.link=variables.instance.renderer.getTrackingURL(creativeBean,rsExclusive.placementID[choice],arguments.siteid,dotrack)>
+			<cfset response.linktarget=creativeBean.getTarget() />
 			<cfelse>
 			<cfset response.creative=renderCreative(creativeBean,rsExclusive.placementID[choice],arguments.siteid,dotrack)>
 			</cfif>
@@ -431,6 +437,12 @@ to your own modified versions of Mura CMS.
 			<cfset response.redirecturl=creativeBean.getRedirectURL() />
 			<cfset response.version=right(creativeBean.getMediaType(),1) />
 			<cfset response.placementid=rs.placementID[choice] />
+			<cfelseif response.mediaType eq "text">
+			<cfset response.creative=creativeBean.getTextBody()>
+			<cfset response.title=creativeBean.getTitle()>
+			<cfset response.linktitle=creativeBean.getLinkTitle()>
+			<cfset response.link=variables.instance.renderer.getTrackingURL(creativeBean,rs.placementID[choice],arguments.siteid,dotrack)>
+			<cfset response.linktarget=creativeBean.getTarget() />
 			<cfelse>
 			<cfset response.creative=renderCreative(creativeBean,rs.placementID[choice],arguments.siteid,dotrack)>
 			</cfif>

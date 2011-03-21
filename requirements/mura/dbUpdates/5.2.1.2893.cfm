@@ -83,7 +83,7 @@ CREATE INDEX IX_ttrash_parentid ON ttrash (parentid)
 	</cfquery>
 	
 	<cfcatch>
-		
+		<cftry>
 		<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 		CREATE TABLE IF NOT EXISTS  `ttrash` (
 		  objectID char(35) NOT NULL,
@@ -99,9 +99,10 @@ CREATE INDEX IX_ttrash_parentid ON ttrash (parentid)
 		  PRIMARY KEY  (`objectID`)
 		) 
 		</cfquery>
-	
+		<cfcatch></cfcatch>
+		</cftry>
 	</cfcatch>
-	</cftry>s
+	</cftry>
 </cfcase>
 <cfcase value="oracle">
 <cfset runDBUpdate=false/>

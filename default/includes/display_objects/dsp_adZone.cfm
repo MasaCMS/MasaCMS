@@ -58,6 +58,18 @@ $.getJSON("#application.configBean.getContext()#/tasks/ads/renderAdZone.cfm",
 				    so.addVariable("adUrl", "#application.configBean.getContext()#/tasks/ads/track.cfm?adUrl=" + escape(r.redirecturl) + "&placementid=" + r.placementid + "track=#request.track#&siteID=#request.siteid#");
 				    so.addParam("wmode", "transparent");
 				    so.write("svAd#r#");
+				} else if(r.mediatype.indexOf('Text') > -1) {			
+					if(r.linktarget!=''){
+						var titlelink = '<a href="' + r.link + '" target="'+ r.linktarget +'">' + r.title + '</a><br/>' ;
+					} else {
+						var titlelink = '';
+					}
+					if(r.linktarget!=''){
+					 	readmorelink = '<br/><a href="' + r.link + '" target="'+ r.linktarget +'">' + r.linktitle + '</a>' ;
+					} else {
+						var readmorelink = '';	
+					}
+					$("##svAd#r#").html(titlelink  + r.creative  + readmorelink);
 				} else {
 					$("##svAd#r#").html(r.creative);
 				}

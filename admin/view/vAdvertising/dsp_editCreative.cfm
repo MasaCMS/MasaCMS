@@ -72,15 +72,19 @@ to your own modified versions of Mura CMS.
 </select></dd>
 <span id="textBodyContainer" <cfif request.creativeBean.getMediaType() neq 'Text'>style="display:none;"</cfif>>
 <dt>#application.rbFactory.getKeyValue(session.rb,'advertising.textbody')#</dt>
-<dd><textarea name="textBody" class="textArea">#HTMLEditFormat(request.creativeBean.getTextBody())#</textarea></dd>
+<dd><textarea name="textBody" id="textBody" class="textArea htmlEditor">#HTMLEditFormat(request.creativeBean.getTextBody())#</textarea></dd>
+<dt>#application.rbFactory.getKeyValue(session.rb,'advertising.title')#</dt>
+<dd><input name="title" class="text"  value="#HTMLEditFormat(request.creativeBean.getTitle())#" maxlength="200"></dd>
+<dt>#application.rbFactory.getKeyValue(session.rb,'advertising.linktitle')#</dt>
+<dd><input name="linkTitle" class="text"  value="#HTMLEditFormat(request.creativeBean.getLinkTitle())#" maxlength="100"></dd>
 </span>
 <dt>#application.rbFactory.getKeyValue(session.rb,'advertising.height')#</dt>
 <dd><input name="height" validate="integer" class="text" message="#application.rbFactory.getKeyValue(session.rb,'advertising.heightvalidate')#" value="#request.creativeBean.getHeight()#"></dd>
 <dt>#application.rbFactory.getKeyValue(session.rb,'advertising.width')#</dt>
 <dd><input name="width" validate="integer" class="text" message="#application.rbFactory.getKeyValue(session.rb,'advertising.widthvalidate')#" value="#request.creativeBean.getWidth()#"></dd>
-<span id="newMediaContainer" <cfif request.creativeBean.getMediaType() eq 'Text'>style="display:none;"</cfif>>
 <dt>#application.rbFactory.getKeyValue(session.rb,'advertising.advertisementurl')#</dt>
 <dd><input name="redirectURL" class="text" value="#HTMLEditFormat(request.creativeBean.getRedirectURL())#" maxlength="200"></dd>
+<span id="newMediaContainer" <cfif request.creativeBean.getMediaType() eq 'Text'>style="display:none;"</cfif>>
 <dt>#application.rbFactory.getKeyValue(session.rb,'advertising.alttext')#</dt>
 <dd><input name="altText" class="text"  value="#HTMLEditFormat(request.creativeBean.getAltText())#" maxlength="200"></dd>
 <dt>#application.rbFactory.getKeyValue(session.rb,'advertising.uploadmedia')#</dt>
@@ -102,3 +106,10 @@ to your own modified versions of Mura CMS.
 <h3 class="divide">#application.rbFactory.getKeyValue(session.rb,'advertising.currentasset')#</h3>
 <cfoutput>#application.advertiserManager.renderCreative(request.creativeBean)#</cfoutput>
 </cfif></cfoutput>
+<script type="text/javascript" language="Javascript">
+	var loadEditorCount = 0;
+	jQuery('#textBody').ckeditor(
+	{ toolbar:'Default',
+	height:'150',
+	customConfig : 'config.js.cfm' },htmlEditorOnComplete);	 
+</script>

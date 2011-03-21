@@ -46,7 +46,7 @@ ALTER TABLE [dbo].[tadplacementcategoryassign] WITH NOCHECK ADD
 	
 	
 	<cfcatch>
-		
+		<cftry>
 		<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 		CREATE TABLE IF NOT EXISTS  `tadplacementcategoryassign` (
 		  `placementID` char(35) NOT NULL,
@@ -54,7 +54,8 @@ ALTER TABLE [dbo].[tadplacementcategoryassign] WITH NOCHECK ADD
 		  PRIMARY KEY  (`placementID`,`categoryID`)
 		) 
 		</cfquery>
-	
+		<cfcatch></cfcatch>
+		</cftry>
 	</cfcatch>
 	</cftry>
 	</cfif>
