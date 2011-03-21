@@ -225,6 +225,7 @@ to your own modified versions of Mura CMS.
 							 	AND tcontent.moduleid = '00000000000000000000000000000000000'
 							 
 							<cfif rsParams.recordcount>
+							<cfset started=false>
 							<cfloop query="rsParams">
 								<cfset param=createObject("component","mura.queryParam").init(rsParams.relationship,
 										rsParams.field,
@@ -235,26 +236,29 @@ to your own modified versions of Mura CMS.
 													 
 								<cfif param.getIsValid()>	
 									<cfif not started >
-										<cfset started = true />and (
+										and (
 									</cfif>
 									<cfif listFindNoCase("openGrouping,(",param.getRelationship())>
 										(
 										<cfset openGrouping=true />
 									<cfelseif listFindNoCase("orOpenGrouping,or (",param.getRelationship())>
-										or (
+										<cfif started>or</cfif> (
 										<cfset openGrouping=true />
 									<cfelseif listFindNoCase("andOpenGrouping,and (",param.getRelationship())>
-										and (
+										<cfif started>and</cfif> (
 										<cfset openGrouping=true />
 									<cfelseif listFindNoCase("closeGrouping,)",param.getRelationship())>
 										)
 									<cfelse>
-										<cfif not openGrouping>
+										<cfif not openGrouping and started>
 											#param.getRelationship()#
 										<cfelse>
 											<cfset openGrouping=false />
 										</cfif>
 									</cfif>
+									
+									<cfset started = true />
+									
 									<cfif  listLen(param.getField(),".") gt 1>			
 										#param.getField()# #param.getCondition()# <cfif param.getCondition() eq "IN">(</cfif><cfqueryparam cfsqltype="cf_sql_#param.getDataType()#" value="#param.getCriteria()#" list="#iif(param.getCondition() eq 'IN',de('true'),de('false'))#"><cfif param.getCondition() eq "IN">)</cfif>  	
 									<cfelseif len(param.getField())>
@@ -406,6 +410,7 @@ to your own modified versions of Mura CMS.
 	AND tcontent.type !='Module'
 
 		<cfif rsParams.recordcount>
+		<cfset started=false>
 		<cfloop query="rsParams">
 			<cfset param=createObject("component","mura.queryParam").init(rsParams.relationship,
 					rsParams.field,
@@ -416,26 +421,28 @@ to your own modified versions of Mura CMS.
 								 
 			<cfif param.getIsValid()>	
 				<cfif not started >
-					<cfset started = true />and (
+					and (
 				</cfif>
 				<cfif listFindNoCase("openGrouping,(",param.getRelationship())>
 					(
 					<cfset openGrouping=true />
 				<cfelseif listFindNoCase("orOpenGrouping,or (",param.getRelationship())>
-					or (
+					<cfif started>or</cfif> (
 					<cfset openGrouping=true />
 				<cfelseif listFindNoCase("andOpenGrouping,and (",param.getRelationship())>
-					and (
+					<cfif started>and</cfif> (
 					<cfset openGrouping=true />
 				<cfelseif listFindNoCase("closeGrouping,)",param.getRelationship())>
 					)
 				<cfelse>
-					<cfif not openGrouping>
+					<cfif not openGrouping and started>
 						#param.getRelationship()#
 					<cfelse>
 						<cfset openGrouping=false />
 					</cfif>
 				</cfif>
+				
+				<cfset started = true />
 				
 				<cfif  listLen(param.getField(),".") gt 1>			
 					#param.getField()# #param.getCondition()# <cfif param.getCondition() eq "IN">(</cfif><cfqueryparam cfsqltype="cf_sql_#param.getDataType()#" value="#param.getCriteria()#" list="#iif(param.getCondition() eq 'IN',de('true'),de('false'))#"><cfif param.getCondition() eq "IN">)</cfif>  	
