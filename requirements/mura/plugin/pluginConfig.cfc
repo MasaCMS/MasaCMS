@@ -55,10 +55,12 @@ to your own modified versions of Mura CMS.
 <cfset variables.version="" />
 <cfset variables.package="" />
 <cfset variables.directory="" />
+<cfset variables.customSettings=structNew()>
+<cfset variables.hasCustomSettingsDir=false />
 
 <cffunction name="initSettings" returntype="any" access="public" output="false">
 	<cfargument name="data"  type="any" default="#structNew()#">
-	
+	<cfset var appcfcStr="">
 	<cfset variables.settings=arguments.data />
 	
 	<cfreturn this />
@@ -278,6 +280,111 @@ to your own modified versions of Mura CMS.
 
 <cffunction name="getAssignedSites" output="false" returntype="any">
     <cfreturn getPluginManager().getAssignedSites(getModuleID())>
+</cffunction>
+
+<cffunction name="deleteCustomSetting" returntype="any" output="false">
+	<cfargument name="name" type="string" required="true">
+	<cfset var wddxFile="#getFullPath()#/plugin/customSettings/wddx_#arguments.name#.xml.cfm">
+	
+	<cfif fileExists(wddxFile)>
+		<cffile action="delete" file="#wddxFile#">
+	</cfif>
+	
+	<cfset structDelete(variables.customSettings,arguments.name)>
+
+</cffunction>
+
+<cffunction name="getCustomSetting" returntype="any" output="false">
+	<cfargument name="name" type="string" required="true">
+	<cfargument name="default">
+	<cfset var customValue="">
+	<cfset var customWDDX="">
+	<cfset var wddxFile="#getFullPath()#/plugin/customSettings/wddx_#arguments.name#.xml.cfm">
+	
+	<cfif not variables.hasCustomSettingsDir>
+		<cfset createCustomSettingsDir()>
+	</cfif>
+	
+	<cfif structKeyExists(variables.customSettings,arguments.name)>
+		<cfreturn variables.customSettings["#arguments.name#"]>
+	<cfelseif fileExists(wddxFile)>
+		<cffile action="read" file="#wddxFile#" variable="customWDDX" charset="utf-8">
+		<cfwddx action="wddx2cfml" input=#customWDDX# output="customValue">
+		<cfset variables.customSettings["#arguments.name#"]=customValue>
+		<cfreturn customValue>
+	<cfelse>
+		<cfif structKeyExists(arguments,"default")>
+			<cfreturn arguments.default>
+		<cfelse>
+			<cfreturn "" />
+		</cfif>
+	</cfif>
+</cffunction>
+	
+<cffunction name="setCustomSetting" returntype="void">
+	<cfargument name="name" type="string" required="true">
+	<cfargument name="value" type="any" required="true">
+	<cfset var temp="">
+	
+	<cfif not variables.hasCustomSettingsDir>
+		<cfset createCustomSettingsDir()>
+	</cfif>
+	
+	<cfif isQuery(arguments.value) and application.configBean.getDBType() eq "Oracle">
+		<cfset arguments.value=fixOracleClobs(arguments.value)>
+	</cfif>
+		
+	<cfset variables.customSettings["#name#"]=arguments.value>
+	<cfwddx action="cfml2wddx" input="#arguments.value#" output="temp">
+	<cffile action="write" output="#temp#" file="#getFullPath()#/plugin/customSettings/wddx_#arguments.name#.xml.cfm"  charset="utf-8">
+</cffunction>
+
+<cffunction name="fixOracleClobs" output="false">
+	<cfargument name="rs">
+	<cfset var rsmeta=getMetaData(arguments.rs)>
+	<cfset var clobArray=arrayNew(1)>
+	<cfset var i=1>
+		
+	<cfif arrayLen(rsmeta)>
+	<cfloop from="1" to="#arrayLen(rsmeta)#" index="i">
+		<cfif rsmeta[i].typename eq "clob">
+			<cfset arrayAppend(clobArray,rsmeta[i].name)>
+		</cfif>
+	</cfloop>
+	</cfif>
+		
+	<cfif arrayLen(clobArray)>
+		<cfloop query="arguments.rs">
+			<cfloop from="1" to="#arrayLen(clobArray)#" index="i">
+				 <cfset QuerySetCell(arguments.rs, clobArray[i],evaluate('arguments.rs.#clobArray[i]#'), arguments.rs.currentRow)>
+			</cfloop>
+		</cfloop>
+	</cfif>
+	<cfreturn arguments.rs>
+</cffunction>
+
+<cffunction name="purgeCustomSettings" output="false">
+	<cfif directoryExists(getFullPath() & "/plugin/customSettings")>
+		<cfdirectory action="delete" directory="#getFullPath()#/plugin/customSettings" recurse="true">
+	</cfif>
+	<cfset variables.hasCustomSettingsDir=false>
+	<cfset variables.customSettings=structNew()>
+</cffunction>
+
+<cffunction name="createCustomSettingsDir" output="false">
+	<cftry>
+	<cfif not directoryExists(getFullPath() & "/plugin/customSettings/")>
+		<cfdirectory action="create" directory="#getFullPath()#/plugin/customSettings/">
+		<cfset appcfcStr='<cfcomponent><cffunction name="onRequestStart">Access Restricted</cffunction></cfcomponent>'>
+		<cffile action="write" output="#appcfcStr#" file="#getFullPath()#/plugin/customSettings/Application.cfc">
+	</cfif>
+	<cfset variables.hasCustomSettingsDir=true>
+	<cfcatch></cfcatch>
+	</cftry>
+</cffunction>
+
+<cffunction name="getFullPath" output="false">
+	<cfreturn application.configBean.getPluginDir() & "/" & getDirectory()>
 </cffunction>
 
 </cfcomponent>

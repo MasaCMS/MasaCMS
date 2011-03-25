@@ -106,22 +106,27 @@ to your own modified versions of Mura CMS.
 					server.coldfusion.productname eq "ColdFusion Server" 
 					and 
 					listFirst(server.coldfusion.productversion) lt 8
-				)>
+				)
+				or isBinary(arguments.fileObj)
+				>
 				
 					<cfset variables.fileWriter.writeFile(mode="774", file="#application.configBean.getFileDir()##application.configBean.getFileDelim()##arguments.siteid##application.configBean.getFileDelim()#cache#application.configBean.getFileDelim()#file#application.configBean.getFileDelim()##arguments.fileID#.#arguments.fileExt#", output="#arguments.fileObj#")>
 				
 					<cfif listFindNoCase("png,gif,jpg,jpeg",arguments.fileExt)>					
-						<cfif isBinary(fileObjSmall)>
+						<cfif isBinary(arguments.fileObjSource)>
+							<cfset variables.fileWriter.writeFile(mode="774", file="#application.configBean.getFileDir()##application.configBean.getFileDelim()##arguments.siteid##application.configBean.getFileDelim()#cache#application.configBean.getFileDelim()#file#application.configBean.getFileDelim()##arguments.fileID#_source.#arguments.fileExt#", output="#arguments.fileObjSource#")>
+						</cfif>
+						<cfif isBinary(arguments.fileObjSmall)>
 							<cfset variables.fileWriter.writeFile(mode="774", file="#application.configBean.getFileDir()##application.configBean.getFileDelim()##arguments.siteid##application.configBean.getFileDelim()#cache#application.configBean.getFileDelim()#file#application.configBean.getFileDelim()##arguments.fileID#_small.#arguments.fileExt#", output="#arguments.fileObjSmall#")>
 						</cfif>
-						<cfif isBinary(fileObjMedium)>
+						<cfif isBinary(arguments.fileObjMedium)>
 							<cfset variables.fileWriter.writeFile(mode="774", file="#application.configBean.getFileDir()##application.configBean.getFileDelim()##arguments.siteid##application.configBean.getFileDelim()#cache#application.configBean.getFileDelim()#file#application.configBean.getFileDelim()##arguments.fileID#_medium.#arguments.fileExt#", output="#arguments.fileObjMedium#")/>
 						</cfif>
 					<cfelseif arguments.fileExt eq 'flv'>
-						<cfif isBinary(fileObjSmall)>
+						<cfif isBinary(arguments.fileObjSmall)>
 							<cfset variables.fileWriter.writeFile(mode="774", file="#application.configBean.getFileDir()##application.configBean.getFileDelim()##arguments.siteid##application.configBean.getFileDelim()#cache#application.configBean.getFileDelim()#file#application.configBean.getFileDelim()##arguments.fileID#_small.jpg", output="#arguments.fileObjSmall#")>
 						</cfif>
-						<cfif isBinary(fileObjMedium)>
+						<cfif isBinary(arguments.fileObjMedium)>
 							<cfset variables.fileWriter.writeFile( mode="774",  file="#application.configBean.getFileDir()##application.configBean.getFileDelim()##arguments.siteid##application.configBean.getFileDelim()#cache#application.configBean.getFileDelim()#file#application.configBean.getFileDelim()##arguments.fileID#_medium.jpg", output="#arguments.fileObjMedium#")>
 						</cfif>
 					</cfif>			

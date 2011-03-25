@@ -1,7 +1,12 @@
 <cfoutput>
 <script>
 function submitBundle(){
-	jQuery("##alertDialogMessage").html("Create and Download Bundle File?");
+	if(jQuery("##saveFileDir").val() != ''){
+		var message="Create and Save Bundle to Server?";
+	} else {
+		var message="Create and Download Bundle File?";
+	}
+	jQuery("##alertDialogMessage").html(message);
 	jQuery("##alertDialog").dialog({
 			resizable: false,
 			modal: true,
@@ -74,12 +79,16 @@ function checkAll (form) {
 <cfelse>
 <p>This site currently has no plugins assigned to it.</p>
 </cfif></dd>
+<dt><strong>Server Directory</strong></dt>
+<dd>
+<p>OPTIONAL: You can set the complete server path to the directory where you would like the bundle to be created.  If left blank the bundle file will immediately download from your browser after creation.</p>
+<input type="text" name="saveFileDir" id="saveFileDir"></dd>
 <!--- <cfif application.settingsManager.getSite(rc.siteid).getAdManager()> --->
 <dd class="notice"><strong>Note:</strong> The Advertising Module &amp; Email Broadcaster are not included in Mura Bundles.</dd>
 <!--- </cfif>  --->
 </dl>
 <div class="clearfix" id="actionButtons">
-	<a href="javascript:;" onclick="return submitBundle();" class="submit"><span>Create and Download Bundle</span></a>
+	<a href="javascript:;" onclick="return submitBundle();" class="submit"><span>Create Bundle</span></a>
 </div>
 <div id="actionIndicator" style="display: none;">
 	<img class="loadProgress" src="#application.configBean.getContext()#/admin/images/progress_bar.gif">

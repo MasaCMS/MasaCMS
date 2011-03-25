@@ -334,6 +334,11 @@ to your own modified versions of Mura CMS.
 <cfargument name="errors">
 	<cfset var fileManager=getBean("fileManager")>
 	<cfset var tempfile="">
+	
+	<cfif isDefined("arguments.data.serverBundlePath") and fileExists(arguments.data.serverBundlePath)>
+		<cfset arguments.data.bundleFile=arguments.data.serverBundlePath>
+	</cfif>
+	
 	<cfif structKeyExists(arguments.data,"bundleFile") and len(arguments.data.bundleFile)>
 		<cfif fileManager.isPostedFile(arguments.data.bundleFile)>
 			<cffile action="upload" result="tempFile" filefield="bundleFile" nameconflict="makeunique" destination="#variables.configBean.getTempDir()#">
@@ -405,12 +410,28 @@ to your own modified versions of Mura CMS.
 	<cfset sArgs.errors			= arguments.errors />
 	<cfset sArgs.lastDeployment = arguments.lastDeployment />
 	
+	<cftry>
 	<cfset publisher.getToWork( argumentCollection=sArgs )>
 	
 	<cfif len(arguments.siteID)>
 		<cfset getSite(arguments.siteID).getCacheFactory().purgeAll()>
 		<cfset getBean("contentUtility").updateGlobalMaterializedPath(siteID=arguments.siteID)>
 	</cfif>
+	<cfcatch>
+		
+		<cfset errors.message="The bundle was not successfully imported:<br/>ERROR: " & cfcatch.message>
+		<cfif findNoCase("duplicate",errors.message)>
+			<cfset errors.message=errors.message & "<br/>HINT: This error is most often caused by 'Maintaining Keys' when the bundle data already exists within another site in the current Mura instance.">
+		</cfif>
+		<cfif isDefined("cfcatch.sql") and len(cfcatch.sql)>
+			<cfset errors.message=errors.message & "<br/>SQL: " & cfcatch.sql>
+		</cfif>
+		
+		<cfif isDefined("cfcatch.detail") and len(cfcatch.detail)>
+			<cfset errors.message=errors.message & "<br/>DETAIL: " & cfcatch.detail>
+		</cfif>
+	</cfcatch>
+	</cftry>
 	<cfreturn errors>
 </cffunction>
 

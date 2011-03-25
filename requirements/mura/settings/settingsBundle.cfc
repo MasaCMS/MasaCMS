@@ -385,6 +385,7 @@ to your own modified versions of Mura CMS.
 		<cfargument name="includeUsers" type="boolean" default="false" required="true">
 		<cfargument name="includeFormData" type="boolean" default="false" required="true">
 		<cfargument name="saveFile" type="boolean" default="false" required="true">
+		<cfargument name="saveFileDir" type="string" default="" required="true">
 		
 		<cfset var rstcontent=""/>
 		<cfset var rstcontentstats=""/>
@@ -447,6 +448,16 @@ to your own modified versions of Mura CMS.
 		<cfset var rstadplacementcategories="">
 		<cfset var rstformresponsepackets="">
 		<cfset var rsCleanDir="">
+		
+		<cfif len(arguments.saveFileDir) and listFind("/,\",arguments.saveFileDir)>
+			<cfset arguments.saveFileDir="">
+		</cfif>
+		<cfif len(arguments.saveFileDir) and listFind("/,\",right(arguments.saveFileDir,1))>
+			<cfset arguments.saveFileDir=left(arguments.saveFileDir, len(arguments.saveFileDir)-1 ) & "/">
+		</cfif>
+		<cfif len(arguments.saveFileDir) and not listFind("/,\",right(arguments.saveFileDir,1))>
+			<cfset arguments.saveFileDir=arguments.saveFileDir & "/">
+		</cfif>
 		
 		<!---
 		<cfloop list="#arguments.moduleID#" index="i">
@@ -1270,16 +1281,24 @@ to your own modified versions of Mura CMS.
 			<cfset arguments.bundleName=arguments.bundleName & "_#arguments.siteID#">
 		</cfif>
 		
+		<cfset arguments.bundleName="#arguments.bundleName#_#dateformat(now(),'dd_mm_yyyy')#_#timeformat(now(),'HH_mm')#.zip">
+		
 		<cfif not arguments.saveFile>
 			<cfset getBean("fileManager").streamFile(
 				filePath="#variables.workDir##variables.dirName#.zip",
-				filename="#arguments.bundleName#_#dateformat(now(),'dd_mm_yyyy')#_#timeformat(now(),'HH_mm')#.zip",
+				filename=arguments.bundleName,
 				mimetype="application/zip",
 				method="attachment",
 				deleteFile=true
 				)>
+		<cfelseif len(arguments.saveFileDir) and directoryExists(arguments.saveFileDir)>
+			<cfset getBean("fileWriter").moveFile(source="#variables.workDir##variables.dirName#.zip",
+											  destination="#arguments.saveFileDir##arguments.bundleName#")>
+			<cfreturn "#arguments.saveFileDir##arguments.bundleName#">
 		<cfelse>
-			<cfreturn "#variables.workDir##variables.dirName#.zip">
+			<cfset getBean("fileWriter").moveFile(source="#variables.workDir##variables.dirName#.zip",
+											  destination="#variables.workDir##arguments.bundleName#")>
+			<cfreturn "#variables.workDir##arguments.bundleName#">
 		</cfif>
 		
 	</cffunction>

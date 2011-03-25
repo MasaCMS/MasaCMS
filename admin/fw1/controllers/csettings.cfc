@@ -155,8 +155,19 @@
 	<cfparam name="arguments.rc.includeMailingListMembers" default="false">
 	<cfparam name="arguments.rc.includeUsers" default="false">
 	<cfparam name="arguments.rc.includeFormData" default="false">
+	<cfparam name="arguments.rc.saveFile" default="false">
+	<cfparam name="arguments.rc.saveFileDir" default="">
 	
-	<cfset application.serviceFactory.getBean("Bundle").Bundle(
+	<cfif len(arguments.rc.saveFileDir)>
+		<cfif directoryExists(arguments.rc.saveFileDir)>
+			<cfset arguments.rc.saveFile=true>
+		<cfelse>
+			<cfset arguments.rc.saveFileDir="">
+			<cfset arguments.rc.saveFile=false>
+		</cfif>
+	</cfif>
+	
+	<cfset arguments.rc.bundleFilePath=application.serviceFactory.getBean("Bundle").Bundle(
 			siteID=arguments.rc.siteID,
 			moduleID=arguments.rc.moduleID,
 			BundleName=arguments.rc.BundleName, 
@@ -165,7 +176,10 @@
 			includeMetaData=arguments.rc.includeMetaData,
 			includeMailingListMembers=arguments.rc.includeMailingListMembers,
 			includeUsers=arguments.rc.includeUsers,
-			includeFormData=arguments.rc.includeFormData) />
+			includeFormData=arguments.rc.includeFormData,
+			saveFile=arguments.rc.saveFile,
+			saveFileDir=arguments.rc.saveFileDir
+			) />
 </cffunction>
 
 <cffunction name="selectBundleOptions" output="false">
