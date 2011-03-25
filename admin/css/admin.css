@@ -179,7 +179,7 @@ input.text, input.textAlt, input.date {
 }
 
 input.text {
-	margin: -3px 2px 0 0;
+	margin: 0 2px 0 0;
 	width: 300px;
 	vertical-align: middle;
 	background-color: #fff;

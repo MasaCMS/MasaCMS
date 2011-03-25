@@ -327,6 +327,7 @@ to your own modified versions of Mura CMS.
 	</cftry>
 
 	<cfset data=replace(temp.FileContent,chr(20),'','ALL') />
+	<cfset data=REReplace( data, "^[^<]*", "", "all" )/>
 
 	<cfif isXML(data)>
 		<cfset response.xml=XMLParse(data)/>

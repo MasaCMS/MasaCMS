@@ -579,6 +579,12 @@ to your own modified versions of Mura CMS.
 	 
 	  <dt>Bundle File</dt>
 	  <dd><input type="file" name="bundleFile" accept=".zip"/></dd>
+	  
+	  <dt><a class="tooltip">Site Bundle Location (Optional)<span>You can deploy a bundle that exists on the server by entering the complete server path to the Site Bundle here. This eliminates the need to upload the file via your web browser, avoiding some potential timeout issues.</span></a></dt>
+      <dd>
+        <input class="text" type="text" name="serverBundlePath" id="serverBundlePath">
+      </dd>
+	  
 	  </dl>
 	  </div>
 	

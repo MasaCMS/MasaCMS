@@ -96,19 +96,7 @@ to your own modified versions of Mura CMS.
 		
 		<cfswitch expression="#variables.configBean.getFileStore()#">
 			<cfcase value="fileDir">		
-				<cfif 	(
-					StructKeyExists(SERVER,"bluedragon")
-					and
-					server.bluedragon.version lt 1.5
-				)
-				or 
-				(
-					server.coldfusion.productname eq "ColdFusion Server" 
-					and 
-					listFirst(server.coldfusion.productversion) lt 8
-				)
-				or isBinary(arguments.fileObj)
-				>
+				<cfif isBinary(arguments.fileObj)>
 				
 					<cfset variables.fileWriter.writeFile(mode="774", file="#application.configBean.getFileDir()##application.configBean.getFileDelim()##arguments.siteid##application.configBean.getFileDelim()#cache#application.configBean.getFileDelim()#file#application.configBean.getFileDelim()##arguments.fileID#.#arguments.fileExt#", output="#arguments.fileObj#")>
 				

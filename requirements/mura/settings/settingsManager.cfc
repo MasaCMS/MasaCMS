@@ -334,6 +334,7 @@ to your own modified versions of Mura CMS.
 <cfargument name="errors">
 	<cfset var fileManager=getBean("fileManager")>
 	<cfset var tempfile="">
+	<cfset var deletetempfile=true>
 	
 	<cfif isDefined("arguments.data.serverBundlePath") and fileExists(arguments.data.serverBundlePath)>
 		<cfset arguments.data.bundleFile=arguments.data.serverBundlePath>
@@ -344,6 +345,7 @@ to your own modified versions of Mura CMS.
 			<cffile action="upload" result="tempFile" filefield="bundleFile" nameconflict="makeunique" destination="#variables.configBean.getTempDir()#">
 		<cfelse>
 			<cfset tempFile=fileManager.emulateUpload(arguments.data.bundleFile)>
+			<cfset deletetempfile=false>
 		</cfif>
 		<cfparam name="arguments.data.bundleImportKeyMode" default="copy">
 		<cfparam name="arguments.data.bundleImportContentMode" default="none">
@@ -366,7 +368,9 @@ to your own modified versions of Mura CMS.
 			'',
 			arguments.data.bundleImportFormDataMode
 			)>
-		<cffile action="delete" file="#tempfile.serverDirectory#/#tempfile.serverFilename#.#tempfile.serverFileExt#">
+		<cfif deletetempfile>
+			<cffile action="delete" file="#tempfile.serverDirectory#/#tempfile.serverFilename#.#tempfile.serverFileExt#">
+		</cfif>
 	</cfif>
 	
 </cffunction>

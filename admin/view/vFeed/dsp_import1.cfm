@@ -49,7 +49,7 @@ to your own modified versions of Mura CMS.
 		</cfoutput>
 		
 	<CFHTTP url="#feedBean.getChannelLink()#" method="GET" resolveurl="Yes" throwOnError="Yes" />
-	<cfset xmlFeed=xmlParse(CFHTTP.FileContent)/>
+	<cfset xmlFeed=xmlParse( REReplace( CFHTTP.FileContent, "^[^<]*", "", "all" ) )/>
 	<cfswitch expression="#feedBean.getVersion()#">
 		<cfcase value="RSS 0.920,RSS 2.0">
 			

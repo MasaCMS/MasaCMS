@@ -1,6 +1,5 @@
 /* @override 
 	http://mura:8500/5.4/default/css/mura.css
-	http://mura:8500/5.4/default/includes/display_objects/comments/css/comments.css
 */
 
 /* This file is part of Mura CMS. 
@@ -1098,7 +1097,7 @@ form#sendLogin { margin-bottom: 2em; }
 	margin: 0 .5em 0 0;
 	}
 
-#svSearchResults dl#svPortal {
+/*#svSearchResults dl#svPortal {
 	margin: 0 0 1em;
 	padding: 0;
 	border: 0;
@@ -1110,7 +1109,7 @@ form#sendLogin { margin-bottom: 2em; }
 	border-top: 1px dotted #ccc;
 	}
 
-#svSearchResults dt.first { border-top: 0; }
+#svSearchResults dl.first { border-top: 0; }
 
 #svSearchResults dd {
 	margin: 0 0 1em;
@@ -1126,9 +1125,9 @@ form#sendLogin { margin-bottom: 2em; }
 #svSearchResults dd h3 {
 	margin: 0 0 .5em;
 	font-weight: normal;
-	}
+	}*/
 
-#svSearchResults dl img { display: none; }
+/*#svSearchResults dl img { display: none; }*/
 
 #svSearchResults .moreResults {
 	margin: .75em 0;
