@@ -336,7 +336,7 @@ to your own modified versions of Mura CMS.
 	<cfset var tempfile="">
 	<cfset var deletetempfile=true>
 	
-	<cfif isDefined("arguments.data.serverBundlePath") and fileExists(arguments.data.serverBundlePath)>
+	<cfif isDefined("arguments.data.serverBundlePath") and len(arguments.data.serverBundlePath) and fileExists(arguments.data.serverBundlePath)>
 		<cfset arguments.data.bundleFile=arguments.data.serverBundlePath>
 	</cfif>
 	
