@@ -2329,7 +2329,7 @@ to your own modified versions of Mura CMS.
 			<cfif arguments.usersMode neq "none">
 				<cfset typeList=typeList & ",">
 			</cfif>
-			<cfset typeList=typeList & "Custom,Page,Portal,Gallery,Calendar,Link,File">
+			<cfset typeList=typeList & "Custom,Page,Portal,Gallery,Calendar,Link,File,Component">
 		</cfif>
 		
 			<cfif not StructKeyExists(arguments,"Bundle")>

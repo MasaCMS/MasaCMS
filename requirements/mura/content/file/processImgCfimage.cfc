@@ -269,10 +269,16 @@ to your own modified versions of Mura CMS.
 					<cfset sourceImageScale=3000>
 				</cfif>
 				
-				<cfif not len(sourceImageScaleBy)>
+				<cfif not len(sourceImageScaleBy) or sourceImageScaleBy eq "w" or sourceImageScaleBy eq "width">
 					<cfset sourceImageScaleBy="x">
+				<cfelseif sourceImageScaleBy eq "h" or sourceImageScaleBy eq "Height">
+					<cfset sourceImageScaleBy="y">
 				</cfif>
 
+				<cfif listFindNoCase("x,y",sourceImageScaleBy)>
+					<cfset sourceImageScaleBy="x">
+				</cfif>
+				
 				<cfset fileStruct.fileObjSource =  '#serverDirectory##serverFilename#_source.#arguments.file.serverFileExt#'/>
 				<cfset resizeImage(fileStruct.fileObj,fileStruct.fileObjSource,sourceImageScaleBy,sourceImageScale,serverDirectory) />			
 			</cfif>

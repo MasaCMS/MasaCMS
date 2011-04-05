@@ -55,6 +55,7 @@ to your own modified versions of Mura CMS.
 <cfset variables.instance.admindomain=""/>
 <cfset variables.instance.indexfile=""/>
 <cfset variables.instance.contact=""/>
+<cfset variables.instance.sendfrommailserverusername=true/>
 <cfset variables.instance.mailserverusername=""/>
 <cfset variables.instance.mailserverusernameemail=""/>
 <cfset variables.instance.mailserverpassword=""/>
@@ -118,7 +119,6 @@ to your own modified versions of Mura CMS.
 <cfset variables.instance.autoresetpasswords=true />
 <cfset variables.instance.encryptionKey=createUUID() />
 <cfset variables.instance.uselegacysessions=true />
-
 
 <cffunction name="OnMissingMethod" access="public" returntype="any" output="false" hint="Handles missing method exceptions.">
 <cfargument name="MissingMethodName" type="string" required="true" hint="The name of the missing method." />
@@ -349,6 +349,18 @@ to your own modified versions of Mura CMS.
 	<cfargument name="AdminEmail" type="String" />
 	<cfset variables.instance.adminEmail = arguments.AdminEmail />
 	<cfreturn this>
+</cffunction>
+
+<cffunction name="setSendFromMailServerUsername" access="public" output="false">
+	<cfargument name="sendFromMailServerUsername"/>
+	<cfif isBoolean(arguments.sendFromMailServerUsername)>
+		<cfset variables.instance.sendFromMailServerUsername = arguments.sendFromMailServerUsername />
+	</cfif>
+	<cfreturn this>
+</cffunction>
+
+<cffunction name="getSendFromMailServerUsername" returntype="any" access="public" output="false">
+	<cfreturn variables.instance.SendFromMailServerUsername />
 </cffunction>
 
 <cffunction name="setMailServerUsernameEmail" returntype="any" access="public" output="false">

@@ -49,6 +49,8 @@ to your own modified versions of Mura CMS.
 		<cfset variables.configBean=arguments.configBean />
 		<cfset variables.settingsManager=arguments.settingsManager />
 		<cfset variables.contentRenderer=arguments.contentRenderer />
+		<cfset variables.sendFromMailServerUserName=variables.configBean.getSendFromMailServerUserName()>
+		
 <cfreturn this />
 </cffunction>
 
@@ -79,6 +81,7 @@ to your own modified versions of Mura CMS.
 <cfset var fields=""/>
 <cfset var fn=""/>
 <cfset var useDefaultSMTPServer=0/>
+<cfset var fromEmail="" />
 
 	<cfif arguments.siteid neq ''>
 		<cfset useDefaultSMTPServer=variables.settingsManager.getSite(arguments.siteid).getUseDefaultSMTPServer()>
@@ -98,6 +101,18 @@ to your own modified versions of Mura CMS.
 		<cfset mailServerPort=variables.configBean.getMailserverSMTPPort()/>
 		<cfset mailServerTLS=variables.configBean.getMailserverTLS()/>
 		<cfset mailServerSSL=variables.configBean.getMailserverSSL()/>
+	</cfif>
+	
+	<cfif not variables.sendFromMailServerUserName>
+		<cfif len(arguments.siteID)>
+			<cfset fromEmail=variables.settingsManager.getSite(arguments.siteid).getContact() />
+		<cfelse>
+			<cfset fromEmail=variables.configBean.getAdminEmail() />
+		</cfif>
+	</cfif>
+		
+	<cfif not len(fromEmail)>
+		<cfset fromEmail=MailServerUsernameEmail />
 	</cfif>
 
 <cfif isStruct(arguments.args) and isValidEmailFormat(arguments.sendto)>
@@ -153,7 +168,7 @@ to your own modified versions of Mura CMS.
 <cftry>
 <cfif useDefaultSMTPServer>
 <cfmail to="#arguments.sendto#" 
-		from='"#arguments.from#" <#MailServerUsernameEmail#>' 
+		from='"#arguments.from#" <#fromEmail#>'
 		subject="#arguments.subject#" 
 		replyto="#arguments.replyto#"
 		bcc="#arguments.bcc#">#tmt_mail_head#
@@ -161,7 +176,7 @@ to your own modified versions of Mura CMS.
 </cfmail>
 <cfelse>
 <cfmail to="#arguments.sendto#" 
-		from='"#arguments.from#" <#MailServerUsernameEmail#>' 
+		from='"#arguments.from#" <#fromEmail#>'
 		subject="#arguments.subject#" 
 		server="#MailServerIp#" 
 		username="#MailServerUsername#" 
@@ -207,6 +222,8 @@ to your own modified versions of Mura CMS.
 <cfset var mailserverPort=80/>
 <cfset var mailServerTLS=false />
 <cfset var mailServerSSL=false />
+<cfset var mailServerFailto="" />
+<cfset var fromEmail="" />
 
 <cfif isValidEmailFormat(arguments.sendto)>
 	<cfif arguments.siteid neq ''>
@@ -228,20 +245,35 @@ to your own modified versions of Mura CMS.
 		<cfset mailServerTLS=variables.configBean.getMailserverTLS()/>
 		<cfset mailServerSSL=variables.configBean.getMailserverSSL()/>
 	</cfif>
-
+		
+	<cfif not variables.sendFromMailServerUserName>
+		<cfif len(arguments.siteID)>
+			<cfset fromEmail=variables.settingsManager.getSite(arguments.siteid).getContact() />
+		<cfelse>
+			<cfset fromEmail=variables.configBean.getAdminEmail() />
+		</cfif>
+	</cfif>
+		
+	<cfif not len(fromEmail)>
+		<cfset fromEmail=MailServerUsernameEmail />
+		<cfif isValidEmailFormat(mailServerUsernameEmail)>
+			<cfset mailServerFailto=mailServerUsernameEmail />
+		</cfif>
+	</cfif>
+	
 	<cftry>
 	<cfif useDefaultSMTPServer>
 		<cfmail to="#arguments.sendto#" 
-				from='"#arguments.from#" <#MailServerUsernameEmail#>' 
+				from='"#arguments.from#" <#fromEmail#>'
 				subject="#arguments.subject#" 
 				replyto="#arguments.replyto#"
-				failto="#mailServerUsernameEmail#"
+				failto="#mailServerFailto#"
 				type="text"
 				mailerid="#arguments.mailerID#"
 				bcc="#arguments.bcc#">#trim(arguments.text)#</cfmail>
 	<cfelse>
 		<cfmail to="#arguments.sendto#" 
-				from='"#arguments.from#" <#MailServerUsernameEmail#>' 
+				from='"#arguments.from#" <#fromEmail#>'
 				subject="#arguments.subject#" 
 				server="#MailServerIp#" 
 				username="#MailServerUsername#" 
@@ -250,7 +282,7 @@ to your own modified versions of Mura CMS.
 				useTLS="#mailserverTLS#"
 				useSSL="#mailserverSSL#"
 				replyto="#arguments.replyto#"
-				failto="#mailServerUsernameEmail#"
+				failto="#mailServerFailto#"
 				type="text"
 				mailerid="#arguments.mailerID#"
 				bcc="#arguments.bcc#">#trim(arguments.text)#</cfmail>
@@ -288,6 +320,8 @@ to your own modified versions of Mura CMS.
 <cfset var mailserverPort=80/>
 <cfset var mailServerTLS=false />
 <cfset var mailServerSSL=false />
+<cfset var mailServerFailto="" />
+<cfset var fromEmail="" />
 
 <cfif isValidEmailFormat(arguments.sendto)>
 	<cfif arguments.siteid neq ''>
@@ -309,20 +343,35 @@ to your own modified versions of Mura CMS.
 		<cfset mailServerTLS=variables.configBean.getMailserverTLS()/>
 		<cfset mailServerSSL=variables.configBean.getMailserverSSL()/>
 	</cfif>
+	
+	<cfif not variables.sendFromMailServerUserName>
+		<cfif len(arguments.siteID)>
+			<cfset fromEmail=variables.settingsManager.getSite(arguments.siteid).getContact() />
+		<cfelse>
+			<cfset fromEmail=variables.configBean.getAdminEmail() />
+		</cfif>
+	</cfif>
+		
+	<cfif not len(fromEmail)>
+		<cfset fromEmail=MailServerUsernameEmail />
+		<cfif isValidEmailFormat(mailServerUsernameEmail)>
+			<cfset mailServerFailto=mailServerUsernameEmail />
+		</cfif>
+	</cfif>
 
 	<cftry>
 	<cfif useDefaultSMTPServer>
 		<cfmail to="#arguments.sendto#" 
-				from='"#arguments.from#" <#MailServerUsernameEmail#>' 
+				from='"#arguments.from#" <#fromEmail#>'
 				subject="#arguments.subject#" 
 				replyto="#arguments.replyto#"
-				failto="#mailServerUsernameEmail#"
+				failto="#mailServerFailto#"
 				type="html"
 				mailerid="#arguments.mailerID#"
 				bcc="#arguments.bcc#">#trim(arguments.html)#</cfmail>
 	<cfelse>
 		<cfmail to="#arguments.sendto#" 
-				from='"#arguments.from#" <#MailServerUsernameEmail#>' 
+				from='"#arguments.from#" <#fromEmail#>'
 				subject="#arguments.subject#" 
 				server="#MailServerIp#" 
 				username="#MailServerUsername#" 
@@ -331,7 +380,7 @@ to your own modified versions of Mura CMS.
 				useTLS="#mailserverTLS#"
 				useSSL="#mailserverSSL#"
 				replyto="#arguments.replyto#"
-				failto="#mailServerUsernameEmail#"
+				failto="#mailServerFailto#"
 				type="html"
 				mailerid="#arguments.mailerID#"
 				bcc="#arguments.bcc#">#trim(arguments.html)#</cfmail>
@@ -370,6 +419,8 @@ to your own modified versions of Mura CMS.
 <cfset var mailserverPort=80/>
 <cfset var mailServerTLS=false />
 <cfset var mailServerSSL=false />
+<cfset var mailServerFailto="" />
+<cfset var fromEmail="" />
 
 <cfif isValidEmailFormat(arguments.sendto)>
 	<cfif arguments.siteid neq ''>
@@ -391,14 +442,29 @@ to your own modified versions of Mura CMS.
 		<cfset mailServerTLS=variables.configBean.getMailserverTLS()/>
 		<cfset mailServerSSL=variables.configBean.getMailserverSSL()/>
 	</cfif>
+	
+	<cfif not variables.sendFromMailServerUserName>
+		<cfif len(arguments.siteID)>
+			<cfset fromEmail=variables.settingsManager.getSite(arguments.siteid).getContact() />
+		<cfelse>
+			<cfset fromEmail=variables.configBean.getAdminEmail() />
+		</cfif>
+	</cfif>
+		
+	<cfif not len(fromEmail)>
+		<cfset fromEmail=MailServerUsernameEmail />
+		<cfif isValidEmailFormat(mailServerUsernameEmail)>
+			<cfset mailServerFailto=mailServerUsernameEmail />
+		</cfif>
+	</cfif>
 
 	<cftry>
 	<cfif useDefaultSMTPServer>
 		<cfmail to="#arguments.sendto#" 
-				from='"#arguments.from#" <#MailServerUsernameEmail#>' 
+				from='"#arguments.from#" <#fromEmail#>'
 				subject="#arguments.subject#" 
 				replyto="#arguments.replyto#"
-				failto="#mailServerUsernameEmail#"
+				failto="#mailServerFailto#"
 				type="html"
 				mailerid="#arguments.mailerID#"
 				bcc="#arguments.bcc#">
@@ -407,7 +473,7 @@ to your own modified versions of Mura CMS.
 				</cfmail>
 	<cfelse>
 		<cfmail to="#arguments.sendto#" 
-				from='"#arguments.from#" <#MailServerUsernameEmail#>' 
+				from='"#arguments.from#" <#fromEmail#>'
 				subject="#arguments.subject#" 
 				server="#MailServerIp#" 
 				username="#MailServerUsername#" 
@@ -416,7 +482,7 @@ to your own modified versions of Mura CMS.
 				useTLS="#mailserverTLS#"
 				useSSL="#mailserverSSL#"
 				replyto="#arguments.replyto#"
-				failto="#mailServerUsernameEmail#"
+				failto="#mailServerFailto#"
 				type="html"
 				mailerid="#arguments.mailerID#"
 				bcc="#arguments.bcc#">

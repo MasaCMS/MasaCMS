@@ -1696,36 +1696,64 @@ to your own modified versions of Mura CMS.
 	<cfquery name="rspre" datasource="#variables.configBean.getDatasource()#">
 		select
 			parentID,
-			month(releaseDate) month,
-			year(releaseDate) year,
+			<cfif variables.configBean.getDbTYpe() neq 'oracle'>
+			month(releaseDate) m,
+			year(releaseDate) y,
+			<cfelse>
+			TO_NUMBER(TO_CHAR(releaseDate, 'mm')) m,
+			TO_NUMBER(TO_CHAR(releaseDate, 'yyyy')) y,
+			</cfif>
 			count(*) items  
 		from tcontent 
 		where parentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.parentID#"> 
 		and siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"> 
         #renderActiveClause("tcontent",arguments.siteID)#
 		and releaseDate <> ''
-		group by parentID, month(releaseDate),year(releaseDate)
+		group by parentID,
+		<cfif variables.configBean.getDbTYpe() neq 'oracle'>
+			month(releaseDate),
+			year(releaseDate)
+			<cfelse>
+			TO_NUMBER(TO_CHAR(releaseDate, 'mm')),
+			TO_NUMBER(TO_CHAR(releaseDate, 'yyyy'))
+		</cfif>
 		
 		union
 		
 		select
 			parentID,
-			month(lastUpdate) month,
-			year(lastUpdate) year,
+			<cfif variables.configBean.getDbTYpe() neq 'oracle'>
+			month(lastUpdate) m,
+			year(lastUpdate) y,
+			<cfelse>
+			TO_NUMBER(TO_CHAR(lastUpdate, 'mm')) m,
+			TO_NUMBER(TO_CHAR(lastUpdate, 'yyyy')) y,
+			</cfif>
 			count(*) items  
 		from tcontent 
 		where parentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.parentID#"> 
 		and siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"> 
         #renderActiveClause("tcontent",arguments.siteID)#
 		and releaseDate is null
-		group by parentID, month(lastUpdate),year(lastUpdate)
+		group by parentID,
+		<cfif variables.configBean.getDbTYpe() neq 'oracle'>
+			month(lastUpdate),
+			year(lastUpdate)
+			<cfelse>
+			TO_NUMBER(TO_CHAR(lastUpdate, 'mm')),
+			TO_NUMBER(TO_CHAR(lastUpdate, 'yyyy'))
+		</cfif>
 	</cfquery>
 	
 	<cfquery name="rs"dbtype="query">
-		select rspre.month,rspre.year, sum(rspre.items) items
+		select rspre.m,rspre.y, sum(rspre.items) items
 		from rspre
-		group by rspre.year,rspre.month
-		order by rspre.year 
+		group by rspre.y,rspre.m
+		order by rspre.y,rspre.m desc 
+ 	</cfquery>
+
+	<cfquery name="rs"dbtype="query">
+		select m as [month] ,y as [year], items from rs	
  	</cfquery>
 	
 	<cfreturn rs>
