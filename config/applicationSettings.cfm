@@ -52,6 +52,7 @@ to your own modified versions of Mura CMS.
 	<!--- Should we even use sessions? --->
 	<cfset request.trackSession = not (NOT Len( request.userAgent ) OR
 	 REFind( "bot\b", request.userAgent ) OR
+	 Find( "_bot_", request.userAgent ) OR
 	 Find( "crawl", request.userAgent ) OR
 	 REFind( "\brss", request.userAgent ) OR
 	 Find( "feed", request.userAgent ) OR
@@ -64,8 +65,12 @@ to your own modified versions of Mura CMS.
 	 Find( "google", request.userAgent ) OR
 	 Find( "zyborg", request.userAgent ) OR
 	 Find( "emonitor", request.userAgent ) OR
-	 Find( "jeeves", request.userAgent )
-	 OR Find( "spider", request.userAgent ))>
+	 Find( "jeeves", request.userAgent ) OR 
+	 Find( "ping", request.userAgent ) OR 
+	 FindNoCase( "java", request.userAgent ) OR 
+	 FindNoCase( "cfschedule", request.userAgent ) OR
+	 FindNoCase( "reeder", request.userAgent ) OR
+	 Find( "spider", request.userAgent ))>
 	
 	<cfset this.sessionManagement = true>
 	<!--- How long do session vars persist? --->
