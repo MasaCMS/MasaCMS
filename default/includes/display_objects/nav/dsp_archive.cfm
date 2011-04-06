@@ -48,7 +48,7 @@ to your own modified versions of Mura CMS.
 <ul class="navSecondary">
 	<cfloop query="rsArchive">
 		<cfset isCurrentArchive=hasArchiveFilter and $.event("month") eq rsArchive.month and $.event("year") eq rsArchive.year>
-		<li<cfif isCurrentArchive> class="current"</cfif>><a href="#$.createHREF(filename='#$.event('currentFilenameAdjusted')#/date/#rsArchive.year#/#rsArchive.month#/')#"<cfif isCurrentArchive> class="current"</cfif>>#monthasstring(rsArchive.month)# #rsArchive.year# (#rsArchive.items#)</a></li>
+		<li<cfif isCurrentArchive> class="current"</cfif>><a href="#$.createHREF(filename='#$.getBean('content').loadBy(contentID=arguments.objectID).getFilename()#/date/#rsArchive.year#/#rsArchive.month#/')#"<cfif isCurrentArchive> class="current"</cfif>>#monthasstring(rsArchive.month)# #rsArchive.year# (#rsArchive.items#)</a></li>
 	</cfloop>
 </ul>
 </div>
