@@ -1483,7 +1483,7 @@ to your own modified versions of Mura CMS.
 					<cfset homeLink="#application.configBean.getContext()##getURLStem(event.getValue('siteID'),rsHome.filename)#">
 					<cfset homeDisplayed = true>
 				</cfsilent>
-				<li class="first<cfif event.getValue('contentBean').getcontentid() eq "00000000000000000000000000000000001"> current</cfif>" id="navHome"><a href="#homeLink#">#HTMLEditFormat(rsHome.menuTitle)#</a></li>
+				<li class="first<cfif event.getValue('contentBean').getcontentid() eq arguments.contentid> current</cfif>" id="navHome"><a href="#homeLink#">#HTMLEditFormat(rsHome.menuTitle)#</a></li>
 				<cfset class=listRest(class," ")/>
 				</cfif>
 				<li<cfif len(class)> class="#class#"</cfif> id="#itemId#">#link#<cfif subnav and find("<li",nest)>#nest#</cfif></li>

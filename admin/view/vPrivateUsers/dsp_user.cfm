@@ -264,6 +264,8 @@ select * from rsSubTypes where subType <> 'Default'
 				</cfif>
 			</cfloop></ul>
 		</dd>
+		<dt>#application.rbFactory.getKeyValue(session.rb,'user.remoteid')#</dt>
+		<dd><input id="remoteID" name="remoteID" type="text" value="#HTMLEditFormat(request.userBean.getRemoteID())#"  class="text"></dd>
 		</dl>
 </div>
 	</cfoutput>

@@ -44,6 +44,10 @@ config.licenseKey = '9EJW-TKDF-PFVT-Q3VW-NG6B-MKQF-3HVP';
 config.baseUrl = application.configBean.getAssetPath() & '/' & session.siteid & '/assets';
 config.baseDir = "#application.configBean.getAssetDir()##application.configBean.getFileDelim()##session.siteid##application.configBean.getFileDelim()#assets";
 
+if(not isdefined("url.type")){
+	url.type="#session.siteID#_User_Assets";	
+}
+
 /*
  * Thumbnails : thumbnails settings. All thumbnails will end up in the same
  * directory, no matter the resource type.
