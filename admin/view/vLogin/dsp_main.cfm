@@ -79,6 +79,7 @@ to your own modified versions of Mura CMS.
 <a class="submit" href="javascript:document.frmLogin.submit();"><span>#application.rbFactory.getKeyValue(session.rb,'login.login')#</span></a>
 	<input name="returnUrl" type="hidden" value="#HTMLEditFormat(attributes.returnURL)#">
 <input type="hidden" name="fuseaction" value="cLogin.login">
+<input type="hidden" name="isAdminLogin" value="true">
  </form>
 </div>
 	<form novalidate="novalidate" id="sendLogin" name="sendLogin" method="post" action="index.cfm?fuseaction=cLogin.main" onsubmit="javascript:if(document.sendLogin.email.value !=''){return true;}else{return false;}">
