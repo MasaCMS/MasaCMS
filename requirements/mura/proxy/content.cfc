@@ -64,7 +64,7 @@
 	<cfif perm.level neq "deny">
 		<cfset content=content.getAllValues()>
 	
-		<cfset event.setValue("__response__", format(content,event.getValue("responseFormat")))>
+		<cfset event.setValue("__response__", format(content.getAllValues(),event.getValue("responseFormat")))>
 	<cfelse>
 		<cfset event.setValue("__response__", format("access denied",event.getValue("responseFormat")))>
 	</cfif>

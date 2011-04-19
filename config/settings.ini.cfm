@@ -68,3 +68,4 @@ sourceimagescale=3000
 sourceimagescaleby=x
 fmshowsitefiles=1
 fmshowapplicationroot=1
+editablecomments=0

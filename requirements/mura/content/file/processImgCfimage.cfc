@@ -84,6 +84,11 @@ to your own modified versions of Mura CMS.
 	<cfset var CropX=0>
 	<cfset var CropY=0>
 	
+	<cfif not len(arguments.image) 
+		or not listFindNoCase("png,gif,jpg,jpeg",listLast(arguments.image,"."))>
+		<cfreturn "">
+	</cfif>
+	
 	<cfset arguments.Width = trim(replaceNoCase(arguments.Width,"px","","all")) />
 	<cfset arguments.Height = trim(replaceNoCase(arguments.Height,"px","","all")) />
 	

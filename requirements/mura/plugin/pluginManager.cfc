@@ -419,7 +419,7 @@ select * from tplugins order by #arguments.orderby#
 	
 </cffunction>
 
-<cffunction name="createMappings" output="false">
+<cffunction name="createAppCFCIncludes" output="false">
 	<cfset var mapPrefix="" />
 	<cfset var rsRequitements="">
 	<cfset var done=structNew()>
@@ -427,19 +427,92 @@ select * from tplugins order by #arguments.orderby#
 	<cfset var m="">
 	<cfset var baseDir=variables.configBean.getPluginDir()>
 	<cfset var rsRequirements="">
+	<cfset var currentConfig="">
+	<cfset var currentDir="">
+	<cfset var p="">
+	<cfset var currentPath="">
+	
 	<cfif StructKeyExists(SERVER,"bluedragon") and not findNoCase("Windows",server.os.name)>
 		<cfset mapPrefix="$" />
 	</cfif>
+	
 	<cffile action="delete" file="#baseDir#/mappings.cfm">
 	<cfset variables.fileWriter.writeFile(file="#baseDir#/mappings.cfm", output="<!--- Do Not Edit --->", addnewline="true")>
+	<cfset variables.fileWriter.appendFile(file="#baseDir#/mappings.cfm", output="<cfif not isDefined('this.name')>", addnewline="true")>
+	<cfset variables.fileWriter.appendFile(file="#baseDir#/mappings.cfm", output="<cfoutput>Access Restricted.</cfoutput>", addnewline="true")>
+	<cfset variables.fileWriter.appendFile(file="#baseDir#/mappings.cfm", output="<cfabort>", addnewline="true")>
+	<cfset variables.fileWriter.appendFile(file="#baseDir#/mappings.cfm", output="</cfif>", addnewline="true")>
+	
+	<cffile action="delete" file="#baseDir#/cfapplication.cfm">
+	<cfset variables.fileWriter.writeFile(file="#baseDir#/cfapplication.cfm", output="<!--- Do Not Edit --->", addnewline="true")>
+	<cfset variables.fileWriter.appendFile(file="#baseDir#/cfapplication.cfm", output="<cfif not isDefined('this.name')>", addnewline="true")>
+	<cfset variables.fileWriter.appendFile(file="#baseDir#/cfapplication.cfm", output="<cfoutput>Access Restricted.</cfoutput>", addnewline="true")>
+	<cfset variables.fileWriter.appendFile(file="#baseDir#/cfapplication.cfm", output="<cfabort>", addnewline="true")>
+	<cfset variables.fileWriter.appendFile(file="#baseDir#/cfapplication.cfm", output="</cfif>", addnewline="true")>
+	
 	<cfdirectory action="list" directory="#baseDir#" name="rsRequirements">
 	<cfloop query="rsRequirements">
-		<cfif rsRequirements.type eq "dir" and rsRequirements.name neq '.svn'>
+		<cfif rsRequirements.type eq "dir" and rsRequirements.name neq '.svn'>	
 			<cfset m=listFirst(rsRequirements.name,"_")>
 			<cfset mHash=hash(m)>
 			<cfif not isNumeric(m) and not structKeyExists(done,mHash)>
 				<cfset variables.fileWriter.appendFile(file="#baseDir#/mappings.cfm", output='<cfset this.mappings["/#m#"] = mapPrefix & BaseDir & "/plugins/#rsRequirements.name#">')>
 				<cfset done[mHash]=true>
+			</cfif>
+		
+			<cfset currentDir="#baseDir#/#rsRequirements.name#">
+			<cfset currentConfig=getPluginXML(listLast(rsRequirements.name,"_"))>
+					<cfif isDefined("currentConfig.plugin.mappings.mapping") and arrayLen(currentConfig.plugin.mappings.mapping)>
+				<cfloop from="1" to="#arrayLen(currentConfig.plugin.mappings.mapping)#" index="m">
+				<cfif structkeyExists(currentConfig.plugin.mappings.mapping[m].xmlAttributes,"directory")
+				and len(currentConfig.plugin.mappings.mapping[m].xmlAttributes.directory)
+				and structkeyExists(currentConfig.plugin.mappings.mapping[m].xmlAttributes,"name")
+				and len(currentConfig.plugin.mappings.mapping[m].xmlAttributes.name)>
+					<cfset p=currentConfig.plugin.mappings.mapping[m].xmlAttributes.directory>
+					<cfif listFind("/,\",left(p,1))>
+						<cfif len(p) gt 1>
+							<cfset p=right(p,len(p)-1)>
+						<cfelse>
+							<cfset p="">
+						</cfif>
+					</cfif>
+					<cfset currentPath=currentDir & "/" & p>
+					<cfif len(p) and directoryExists(currentPath)>
+						<cfset variables.fileWriter.appendFile(file="#baseDir#/mappings.cfm", output='<cfset this.mappings["/#currentConfig.plugin.mappings.mapping[m].xmlAttributes.name#"] = mapPrefix & BaseDir & "/plugins/#rsRequirements.name#/#p#">')>
+					</cfif>
+				</cfif>
+				</cfloop>
+			</cfif>
+			<cfif isDefined("currentConfig.plugin.customtagpaths.xmlText") and len(currentConfig.plugin.customtagpaths.xmlText)>
+				<cfloop list="#currentConfig.plugin.customtagpaths.xmlText#" index="p">
+				<cfif listFind("/,\",left(p,1))>
+					<cfif len(p) gt 1>
+						<cfset p=right(p,len(p)-1)>
+					<cfelse>
+						<cfset p="">
+					</cfif>
+				</cfif>
+				<cfset currentPath=currentDir & "/" & p>
+				<cfif len(p) and directoryExists(currentPath)>
+					<cfset variables.fileWriter.appendFile(file="#baseDir#/cfapplication.cfm", output='<cfset this.customtagpaths = listAppend(this.customtagpaths, mapPrefix & BaseDir & "/plugins/#rsRequirements.name#/#p#")>')>
+				</cfif>
+				</cfloop>
+			</cfif>
+			<cfif isDefined("currentConfig.plugin.ormcfclocation.xmlText") and len(currentConfig.plugin.ormcfclocation.xmlText)>
+				<cfloop list="#currentConfig.plugin.ormcfclocation.xmlText#" index="p">
+				<cfif listFind("/,\",left(p,1))>
+					<cfif len(p) gt 1>
+						<cfset p=right(p,len(p)-1)>
+					<cfelse>
+						<cfset p="">
+					</cfif>
+				</cfif>
+				<cfset currentPath=currentDir & "/" & p>
+				<cfdump var="#currentpath#">
+				<cfif len(p) and directoryExists(currentPath)>
+					<cfset variables.fileWriter.appendFile(file="#baseDir#/cfapplication.cfm", output='<cfset this.ormsettings.cfclocation = listAppend(this.ormsettings.cfclocation,"/plugins/#rsRequirements.name#/#p#")>')>
+				</cfif>
+				</cfloop>
 			</cfif>
 		</cfif>
 	</cfloop>
@@ -694,8 +767,9 @@ select * from tplugins order by #arguments.orderby#
 		</cfquery>
 		
 		<cfset pluginConfig=getConfig(arguments.args.moduleID,'',false) />
-		<cfset createMappings()/>
 	</cfif>
+
+	<cfset createAppCFCIncludes()/>
 	
 	<cfset deleteAssignedSites(arguments.args.moduleID) />
 	
@@ -856,9 +930,10 @@ select * from tplugins order by #arguments.orderby#
 	</cftry>
 
 	<cfif len(rsPlugin.directory) and directoryExists(location)>
-		<cfdirectory action="delete" directory="#location#" recurse="true">
-		<cfset createMappings() />
+		<cfdirectory action="delete" directory="#location#" recurse="true">	
 	</cfif>
+	
+	<cfset createAppCFCIncludes() />
 	
 	<cfset deleteSettings(arguments.moduleID)>
 	<cfset deleteAssignedSites(arguments.moduleID)>

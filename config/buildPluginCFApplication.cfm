@@ -40,20 +40,20 @@ for your modified version; it is your choice whether to do so, or to make such m
 the GNU General Public License version 2 �without this exception. �You may, if you choose, apply this exception
 to your own modified versions of Mura CMS.
 --->
-<cftry>		
-		<cffile action="write" file="#baseDir#/plugins/mappings.cfm" output="<!--- Do Not Edit --->" addnewline="true" mode="775">
-		<cffile action="append" file="#baseDir#/plugins/mappings.cfm" output="<cfif not isDefined('this.name')>" addnewline="true" mode="775">
-		<cffile action="append" file="#baseDir#/plugins/mappings.cfm" output="<cfoutput>Access Restricted.</cfoutput>" addnewline="true" mode="775">
-		<cffile action="append" file="#baseDir#/plugins/mappings.cfm" output="<cfabort>" addnewline="true" mode="775">
-		<cffile action="append" file="#baseDir#/plugins/mappings.cfm" output="</cfif>" addnewline="true" mode="775">
+<cftry>
+		<cffile action="write" file="#baseDir#/plugins/cfapplication.cfm" output="<!--- Do Not Edit --->" addnewline="true" mode="775">
+		<cffile action="append" file="#baseDir#/plugins/cfapplication.cfm" output="<cfif not isDefined('this.name')>" addnewline="true" mode="775">
+		<cffile action="append" file="#baseDir#/plugins/cfapplication.cfm" output="<cfoutput>Access Restricted.</cfoutput>" addnewline="true" mode="775">
+		<cffile action="append" file="#baseDir#/plugins/cfapplication.cfm" output="<cfabort>" addnewline="true" mode="775">
+		<cffile action="append" file="#baseDir#/plugins/cfapplication.cfm" output="</cfif>" addnewline="true" mode="775">
 		<cfcatch>
 			<cfset canWriteMode=false>
 			<cftry>
-				<cffile action="write" file="#baseDir#/plugins/mappings.cfm" output="<!--- Do Not Edit --->" addnewline="true">
-				<cffile action="append" file="#baseDir#/plugins/mappings.cfm" output="<cfif not isDefined('this.name')>" addnewline="true">
-				<cffile action="append" file="#baseDir#/plugins/mappings.cfm" output="<cfoutput>Access Restricted.</cfoutput>" addnewline="true">
-				<cffile action="append" file="#baseDir#/plugins/mappings.cfm" output="<cfabort>" addnewline="true">
-				<cffile action="append" file="#baseDir#/plugins/mappings.cfm" output="</cfif>" addnewline="true">
+				<cffile action="write" file="#baseDir#/plugins/cfapplication.cfm" output="<!--- Do Not Edit --->" addnewline="true">
+				<cffile action="append" file="#baseDir#/plugins/cfapplication.cfm" output="<cfif not isDefined('this.name')>" addnewline="true">
+				<cffile action="append" file="#baseDir#/plugins/cfapplication.cfm" output="<cfoutput>Access Restricted.</cfoutput>">
+				<cffile action="append" file="#baseDir#/plugins/cfapplication.cfm" output="<cfabort>" addnewline="true">
+				<cffile action="append" file="#baseDir#/plugins/cfapplication.cfm" output="</cfif>" addnewline="true">
 				<cfcatch>
 					<cfset canWriteMappings=false>
 				</cfcatch>
@@ -65,16 +65,6 @@ to your own modified versions of Mura CMS.
 				
 <cfloop query="rsRequirements">
 	<cfif rsRequirements.type eq "dir" and rsRequirements.name neq '.svn'>
-		<cfset m=listFirst(rsRequirements.name,"_")>
-		<cfif not isNumeric(m) and not structKeyExists(this.mappings,m)>
-			<cfif canWriteMode>
-				<cffile action="append" file="#baseDir#/plugins/mappings.cfm" output='<cfset this.mappings["/#m#"] = mapPrefix & BaseDir & "/plugins/#rsRequirements.name#">' mode="775">
-			<cfelseif canWriteMappings>
-				<cffile action="append" file="#baseDir#/plugins/mappings.cfm" output='<cfset this.mappings["/#m#"] = mapPrefix & BaseDir & "/plugins/#rsRequirements.name#">'>		
-			</cfif>
-			<cfset this.mappings["/#m#"] = mapPrefix & rsRequirements.directory & "/" & rsRequirements.name>
-		</cfif>
-		
 		<cfset currentDir="#baseDir#/plugins/#rsRequirements.name#">
 		<cfset currentConfigFile="#currentDir#/plugin/config.xml">
 		<cfif fileExists(currentConfigFile)>
@@ -98,31 +88,47 @@ to your own modified versions of Mura CMS.
 			<cfelse>
 				<cfset currentConfig=structNew()>
 			</cfif>
+		</cfif>	
+		<cfif isDefined("currentConfig.plugin.customtagpaths.xmlText") and len(currentConfig.plugin.customtagpaths.xmlText)>
+			<cfloop list="#currentConfig.plugin.customtagpaths.xmlText#" index="p">
+			<cfif listFind("/,\",left(p,1))>
+				<cfif len(p) gt 1>
+					<cfset p=right(p,len(p)-1)>
+				<cfelse>
+					<cfset p="">
+				</cfif>
+			</cfif>
+			<cfset currentPath=currentDir & "/" & p>
+			<cfif len(p) and directoryExists(currentPath)>
+				<cfif canWriteMode>
+					<cffile action="append" file="#baseDir#/plugins/cfapplication.cfm" output='<cfset this.customtagpaths = listAppend(this.customtagpaths, mapPrefix & BaseDir & "/plugins/#rsRequirements.name#/#p#")>' mode="775">
+				<cfelseif canWriteMappings>
+					<cffile action="append" file="#baseDir#/plugins/cfapplication.cfm" output='<cfset this.customtagpaths = listAppend(this.customtagpaths,mapPrefix & BaseDir & "/plugins/#rsRequirements.name#/#p#")>'>		
+				</cfif>
+				<cfset this.customtagpaths = listAppend(this.customtagpaths,mapPrefix & BaseDir & "/plugins/#rsRequirements.name#/#p#")>
+			</cfif>
+			</cfloop>
 		</cfif>
-		<cfif isDefined("currentConfig.plugin.mappings.mapping") and arrayLen(currentConfig.plugin.mappings.mapping)>
-			<cfloop from="1" to="#arrayLen(currentConfig.plugin.mappings.mapping)#" index="m">
-			<cfif structkeyExists(currentConfig.plugin.mappings.mapping[m].xmlAttributes,"directory")
-			and len(currentConfig.plugin.mappings.mapping[m].xmlAttributes.directory)
-			and structkeyExists(currentConfig.plugin.mappings.mapping[m].xmlAttributes,"name")
-			and len(currentConfig.plugin.mappings.mapping[m].xmlAttributes.name)>
-				<cfset p=currentConfig.plugin.mappings.mapping[m].xmlAttributes.directory>
-				<cfif listFind("/,\",left(p,1))>
-					<cfif len(p) gt 1>
-						<cfset p=right(p,len(p)-1)>
-					<cfelse>
-						<cfset p="">
-					</cfif>
+		<cfif isDefined("currentConfig.plugin.ormcfclocation.xmlText") and len(currentConfig.plugin.ormcfclocation.xmlText)>
+			<cfloop list="#currentConfig.plugin.ormcfclocation.xmlText#" index="p">
+			<cfif listFind("/,\",left(p,1))>
+				<cfif len(p) gt 1>
+					<cfset p=right(p,len(p)-1)>
+				<cfelse>
+					<cfset p="">
 				</cfif>
-				<cfset currentPath=currentDir & "/" & p>
-				<cfif len(p) and directoryExists(currentPath)>
-					<cfif canWriteMode>
-						<cffile action="append" file="#baseDir#/plugins/mappings.cfm" output='<cfset this.mappings["/#currentConfig.plugin.mappings.mapping[m].xmlAttributes.name#"] = mapPrefix & BaseDir & "/plugins/#rsRequirements.name#/#p#">' mode="775">
-					<cfelseif canWriteMappings>
-						<cffile action="append" file="#baseDir#/plugins/mappings.cfm" output='<cfset this.mappings["/#currentConfig.plugin.mappings.mapping[m].xmlAttributes.name#"] = mapPrefix & BaseDir & "/plugins/#rsRequirements.name#/#p#">'>		
-					</cfif>
+			</cfif>
+			<cfset currentPath=currentDir & "/" & p>
+			<cfif len(p) and directoryExists(currentPath)>
+				<cfif canWriteMode>
+					<cffile action="append" file="#baseDir#/plugins/cfapplication.cfm" output='<cfset this.ormsettings.cfclocation = listAppend(this.ormsettings.cfclocation,"/plugins/#rsRequirements.name#/#p#")>' mode="775">
+				<cfelseif canWriteMappings>
+					<cffile action="append" file="#baseDir#/plugins/cfapplication.cfm" output='<cfset this.ormsettings.cfclocation = listAppend(this.ormsettings.cfclocation,"/plugins/#rsRequirements.name#/#p#")>'>		
 				</cfif>
+				<cfset this.ormsettings.cfclocation = listAppend(this.ormsettings.cfclocation,"/plugins/#rsRequirements.name#/#p#")>
 			</cfif>
 			</cfloop>
 		</cfif>
 	</cfif>
 </cfloop>
+

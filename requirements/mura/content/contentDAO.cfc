@@ -936,7 +936,6 @@ tcontent.doCache,tcontent.created,tcontent.urltitle,tcontent.htmltitle,tcontent.
 				where parentID in (select commentID from tcontentcomments
 									where contentid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentid#"/> 
 									and siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
-									and parentID <cfif len(arguments.parentID)>=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.parentID#"/><cfelse>is null</cfif>
 								  	<cfif not arguments.isEditor>
 									and isApproved=1
 									</cfif>
@@ -954,7 +953,7 @@ tcontent.doCache,tcontent.created,tcontent.urltitle,tcontent.htmltitle,tcontent.
 	</cfif>
 	order by c.entered #arguments.sortOrder#
 	</cfquery>
-	
+
 	<cfreturn rs />
 </cffunction>
 

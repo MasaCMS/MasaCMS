@@ -1,4 +1,6 @@
-/* @override http://mura:8500/5.4/admin/css/admin.css?coreversion=1 */
+/* @override 
+	http://mura:8500/5.4/admin/css/admin.css
+*/
 
 /* This file is part of Mura CMS. 
 
@@ -288,7 +290,8 @@ input.checkbox {
 	margin: 0 3px 0 0;
 }
 
-input.radio {
+input.radio, input[type=radio] {
+	width: auto !important;
 	margin: 0 2px;
 }
 
@@ -4330,6 +4333,7 @@ li span.req {
 #cSetUp form h3 {
 	margin-top: 1em;
 }
+
 
 /* @end */
 

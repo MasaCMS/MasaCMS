@@ -13,7 +13,7 @@
 
 <cfscript>
 config = structNew();
-
+currentUser=application.usermanager.read(session.mura.userID);
 // This function must check the user session to be sure that he/she is
 // authorized to upload and access files in the File Browser. '
 function CheckAuthentication()
@@ -43,10 +43,6 @@ config.licenseKey = '9EJW-TKDF-PFVT-Q3VW-NG6B-MKQF-3HVP';
 //ATTENTION: The trailing slash is required.
 config.baseUrl = application.configBean.getAssetPath() & '/' & session.siteid & '/assets';
 config.baseDir = "#application.configBean.getAssetDir()##application.configBean.getFileDelim()##session.siteid##application.configBean.getFileDelim()#assets";
-
-if(not isdefined("url.type")){
-	url.type="#session.siteID#_User_Assets";	
-}
 
 /*
  * Thumbnails : thumbnails settings. All thumbnails will end up in the same
@@ -178,7 +174,7 @@ config.resourceType[3].maxSize = 0;
 config.resourceType[3].allowedExtensions = 'swf,flv';
 config.resourceType[3].deniedExtensions = '';
 
-if (application.usermanager.read(session.mura.userID).getS2()){
+if (isdefined("url.type") and currentUser.getS2()){
 	if(application.configBean.getValue('fmShowApplicationRoot') neq 0){
 	  config.resourceType[4] = structNew();
 	  config.resourceType[4].name = 'Application_Root';

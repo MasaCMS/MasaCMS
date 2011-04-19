@@ -45,7 +45,7 @@
 	<cfargument name="event">
 	<cfset var user=getBean(event)>
 	
-	<cfset event.setValue("__response__", format(user,event.getValue("responseFormat")))>
+	<cfset event.setValue("__response__", format(user.getAllValues(),event.getValue("responseFormat")))>
 </cffunction>
 
 <cffunction name="save" output="false">

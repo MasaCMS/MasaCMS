@@ -67,7 +67,7 @@
 
 <cffunction name="getValue" access="public" returntype="any" output="false">
 	<cfargument name="property">	
-	<cfif structKeyExists(variables.instance.struct,arguments.property)>
+	<cfif isdefined("variables.instance.struct.#arguments.property#")>
 		<cfreturn variables.instance.struct[arguments.property]>
 	<cfelse>
 		<cfreturn  getContentBean().getValue(arguments.property)>

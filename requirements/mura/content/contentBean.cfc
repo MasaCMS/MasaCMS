@@ -52,7 +52,6 @@ to your own modified versions of Mura CMS.
 <cfset variables.instance.Approved = 0 />
 <cfset variables.instance.DisplayStart = "" />
 <cfset variables.instance.Displaystop = "">
-<cfset variables.instance.Body = "" />
 <cfset variables.instance.Title = "" />
 <cfset variables.instance.MenuTitle = "" />
 <cfset variables.instance.URLTitle="" />
@@ -1241,9 +1240,9 @@ to your own modified versions of Mura CMS.
 <cffunction name="getValue" returntype="any" access="public" output="false">
 	<cfargument name="property" type="string" required="true">
 	
-	<cfif structKeyExists(this,"get#property#")>
+	<cfif isdefined("this.get#property#")>
 		<cfreturn evaluate("get#property#()") />
-	<cfelseif structKeyExists(variables.instance,"#arguments.property#")>
+	<cfelseif isdefined("variables.instance#arguments.property#")>
 		<cfreturn variables.instance["#arguments.property#"] />
 	<cfelse>
 		<cfreturn getExtendedAttribute(arguments.property) />

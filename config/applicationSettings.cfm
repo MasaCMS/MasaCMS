@@ -40,45 +40,15 @@ for your modified version; it is your choice whether to do so, or to make such m
 the GNU General Public License version 2 �without this exception. �You may, if you choose, apply this exception
 to your own modified versions of Mura CMS.
 --->
-
+	<cfset this.configPath=getDirectoryFromPath(getCurrentTemplatePath())>
 	<!--- Application name, should be unique --->
-	<cfset this.name = "mura" & hash(getCurrentTemplatePath()) />
+	<cfset this.name = "mura" & hash(this.configPath) />
 	<!--- How long application vars persist --->
 	<cfset this.applicationTimeout = createTimeSpan(3,0,0,0)>
 	<!--- Where should cflogin stuff persist --->
 	<cfset this.loginStorage = "cookie">
 	
-	<cfset request.userAgent = LCase( CGI.http_user_agent ) />
-	<!--- Should we even use sessions? --->
-	<cfset request.trackSession = not (NOT Len( request.userAgent ) OR
-	 REFind( "bot\b", request.userAgent ) OR
-	 Find( "_bot_", request.userAgent ) OR
-	 Find( "crawl", request.userAgent ) OR
-	 REFind( "\brss", request.userAgent ) OR
-	 Find( "feed", request.userAgent ) OR
-	 Find( "news", request.userAgent ) OR
-	 Find( "blog", request.userAgent ) OR
-	 Find( "reader", request.userAgent ) OR
-	 Find( "syndication", request.userAgent ) OR
-	 Find( "coldfusion", request.userAgent ) OR
-	 Find( "slurp", request.userAgent ) OR
-	 Find( "google", request.userAgent ) OR
-	 Find( "zyborg", request.userAgent ) OR
-	 Find( "emonitor", request.userAgent ) OR
-	 Find( "jeeves", request.userAgent ) OR 
-	 Find( "ping", request.userAgent ) OR 
-	 FindNoCase( "java", request.userAgent ) OR 
-	 FindNoCase( "cfschedule", request.userAgent ) OR
-	 FindNoCase( "reeder", request.userAgent ) OR
-	 Find( "spider", request.userAgent ))>
-	
 	<cfset this.sessionManagement = true>
-	<!--- How long do session vars persist? --->
-	<cfif request.trackSession>
-		<cfset this.sessionTimeout = createTimeSpan(0,3,0,0)>
-	<cfelse>
-		<cfset this.sessionTimeout = createTimeSpan(0,0,5,0)>
-	</cfif>
 	
 	<!--- Should we set cookies on the browser? --->
 	<cfset this.setClientCookies = true>
@@ -105,16 +75,13 @@ to your own modified versions of Mura CMS.
 	<!--- Define the location of your frameworks 
 		The default here is dynamically pointing at the webroot
 	--->
-	<cfset baseDir= left(getDirectoryFromPath(getCurrentTemplatePath()),len(getDirectoryFromPath(getCurrentTemplatePath()))-8) />
+	<cfset baseDir= left(this.configPath,len(this.configPath)-8) />
 			
 	<cfif StructKeyExists(SERVER,"bluedragon") and not findNoCase("Windows",server.os.name)>
 		<cfset mapPrefix="$" />
 	<cfelse>
 		<cfset mapPrefix="" />
 	</cfif>
-
-	<!--- define a list of custom tag paths. --->
-	<cfset this.customtagpaths =mapPrefix & baseDir  &  "/requirements/custom_tags/">
 
 	<!--- define custom coldfusion mappings. Keys are mapping names, values are full paths  --->
 	<cfset this.mappings = structNew()>
@@ -137,13 +104,75 @@ to your own modified versions of Mura CMS.
 			<cfset hasPluginMappings=false>
 		</cfcatch>
 	</cftry>
-	<cftry>
-		<cfinclude template="/config/cfapplication.cfm">
-		<cfset request.hasCFApplicationCFM=true>
-		<cfcatch>
-			<cfset request.hasCFApplicationCFM=false>
-		</cfcatch>
-	</cftry>
+	
+	<cfset properties = createObject( 'java', 'java.util.Properties' ).init()>
+	<cfset fileStream = createObject( 'java', 'java.io.FileInputStream').init( getDirectoryFromPath(getCurrentTemplatePath()) & "/settings.ini.cfm")>
+	<cfset properties.load( fileStream )>
+	
+	<cfset request.userAgent = LCase( CGI.http_user_agent ) />
+	<!--- Should we even use sessions? --->
+	<cfset request.trackSession = not (NOT Len( request.userAgent ) OR
+	 REFind( "bot\b", request.userAgent ) OR
+	 Find( "_bot_", request.userAgent ) OR
+	 Find( "crawl", request.userAgent ) OR
+	 REFind( "\brss", request.userAgent ) OR
+	 Find( "feed", request.userAgent ) OR
+	 Find( "news", request.userAgent ) OR
+	 Find( "blog", request.userAgent ) OR
+	 Find( "reader", request.userAgent ) OR
+	 Find( "syndication", request.userAgent ) OR
+	 Find( "coldfusion", request.userAgent ) OR
+	 Find( "slurp", request.userAgent ) OR
+	 Find( "google", request.userAgent ) OR
+	 Find( "zyborg", request.userAgent ) OR
+	 Find( "emonitor", request.userAgent ) OR
+	 Find( "jeeves", request.userAgent ) OR 
+	 Find( "ping", request.userAgent ) OR 
+	 FindNoCase( "java", request.userAgent ) OR 
+	 FindNoCase( "cfschedule", request.userAgent ) OR
+	 FindNoCase( "reeder", request.userAgent ) OR
+	 Find( "spider", request.userAgent ))>
+	 
+	<!--- How long do session vars persist? --->
+	<cfif request.trackSession>
+		<cfset this.sessionTimeout = (properties.getProperty("sessionTimeout","180") / 24) / 60>
+	<cfelse>
+		<cfset this.sessionTimeout = createTimeSpan(0,0,5,0)>
+	</cfif>
+	
+	<!--- define a list of custom tag paths. --->
+	<cfset this.customtagpaths = properties.getProperty("customtagpaths","") />
+	<cfset this.customtagpaths = listAppend(this.customtagpaths,mapPrefix & baseDir  &  "/requirements/custom_tags/")>
+	
+	<cfset this.clientManagement = properties.getProperty("clientManagement","false") />
+	<cfset this.clientStorage = properties.getProperty("clientStorage","registry") />
+	<cfset this.ormenabled = properties.getProperty("ormenabled","true") />
+	<cfset this.datasource = properties.getProperty("datasource","") />
+	<cfset this.ormSettings=structNew()>
+	<cfset this.ormSettings.cfclocation=""/>
+	
+	<cfif this.ormenabled>
+		<cfswitch expression="#properties.getProperty('dbtype','')#">
+			<cfcase value="mssql">
+				<cfset this.ormSettings.dialect = "MicrosoftSQLServer" />
+			</cfcase>
+			<cfcase value="mysql">
+				<cfset this.ormSettings.dialect = "MySQL" />
+			</cfcase>
+			<cfcase value="oracle">
+				<cfset this.ormSettings.dialect = "Oracle10g" />
+			</cfcase>
+		</cfswitch>
+		<cfset this.ormSettings.dbcreate = properties.getProperty("ormdbcreate","update") />
+		<cfset this.ormSettings.cfclocation = properties.getProperty("ormcfclocation","") />
+		<cfset this.ormSettings.flushAtRequestEnd = properties.getProperty("ormflushAtRequestEnd","false") />
+		<cfset this.ormsettings.eventhandling = properties.getProperty("ormeventhandling","true") />
+		<cfset this.ormSettings.automanageSession = properties.getProperty("ormautomanageSession","false") />
+		<cfset this.ormSettings.savemapping=properties.getProperty("ormsavemapping","false") />
+		<cfset this.ormSettings.skipCFCwitherror=properties.getProperty("ormskipCFCwitherror","false") />
+		<cfset this.ormSettings.useDBforMapping=properties.getProperty("ormuseDBforMapping","true") />
+		<cfset this.ormSettings.autogenmap=properties.getProperty("ormautogenmap","true") />
+	</cfif>
 	
 	<cfset request.muraFrontEndRequest=false>
 	<cfset request.muraChangesetPreview=false>
@@ -152,3 +181,22 @@ to your own modified versions of Mura CMS.
 	<cfset request.muraHandledEvents = structNew()>
 	<cfset request.altTHeme = "">	
 	<cfset request.customMuraScopeKeys = structNew()>	
+	
+	<cftry>
+		<cfinclude template="/plugins/cfapplication.cfm">
+		<cfset hasPluginCFApplication=true>
+		<cfcatch>
+			<cfset hasPluginCFApplication=false>
+		</cfcatch>
+	</cftry>
+	<cftry>
+		<cfinclude template="/config/cfapplication.cfm">
+		<cfset request.hasCFApplicationCFM=true>
+		<cfcatch>
+			<cfset request.hasCFApplicationCFM=false>
+		</cfcatch>
+	</cftry>
+		
+	<cfif not len(this.ormSettings.cfclocation)>
+		<cfset this.ormenabled=false>
+	</cfif>

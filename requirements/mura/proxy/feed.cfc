@@ -11,7 +11,7 @@
 		<cfset feed=application.feedManager.readByName(event.getValue("name"),event.getValue("siteid"))>
 	</cfif>
 	
-	<cfset event.setValue('feed',feed)>
+	<cfset event.setValue('feed',feed.getAllValues())>
 	
 	<cfreturn feed>
 	

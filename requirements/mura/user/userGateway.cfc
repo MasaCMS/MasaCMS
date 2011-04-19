@@ -319,7 +319,7 @@ to your own modified versions of Mura CMS.
 	FROM tsettings INNER JOIN tusers ON tsettings.SiteID = tusers.SiteID
 	LEFT JOIN tfiles on tusers.photofileID=tfiles.fileID
 	WHERE tusers.Type=1 AND tusers.isPublic=0
-	and tsettings.PublicUserPoolID = <cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.settingsManager.getSite(arguments.siteid).getPrivateUserPoolID()#">
+	and tsettings.PrivateUserPoolID = <cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.settingsManager.getSite(arguments.siteid).getPrivateUserPoolID()#">
 	and tusers.siteID = <cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.settingsManager.getSite(arguments.siteid).getPrivateUserPoolID()#">
 	ORDER BY tsettings.Site, tusers.Perm DESC, tusers.GroupName
 	</cfquery>
