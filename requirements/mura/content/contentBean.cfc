@@ -1243,7 +1243,7 @@ to your own modified versions of Mura CMS.
 	
 	<cfif isdefined("this.get#property#")>
 		<cfreturn evaluate("get#property#()") />
-	<cfelseif isdefined("variables.instance#arguments.property#")>
+	<cfelseif isdefined("variables.instance.#arguments.property#")>
 		<cfreturn variables.instance["#arguments.property#"] />
 	<cfelse>
 		<cfreturn getExtendedAttribute(arguments.property) />
