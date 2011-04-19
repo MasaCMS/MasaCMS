@@ -73,6 +73,7 @@ to your own modified versions of Mura CMS.
 	<cfset variables.instance.LastUpdateByID = "" />
 </cfif>
 
+<cfset variables.instance.Body = "" />
 <cfset variables.instance.Summary = "" />
 <cfset variables.instance.SiteID = "" />
 <cfset variables.instance.ModuleID = "00000000000000000000000000000000000" />
