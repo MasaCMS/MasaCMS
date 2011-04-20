@@ -149,7 +149,7 @@ to your own modified versions of Mura CMS.
 	<cfset this.ormenabled = properties.getProperty("ormenabled","true") />
 	<cfset this.datasource = properties.getProperty("datasource","") />
 	<cfset this.ormSettings=structNew()>
-	<cfset this.ormSettings.cfclocation=""/>
+	<cfset this.ormSettings.cfclocation=arrayNew(1)>
 	
 	<cfif this.ormenabled>
 		<cfswitch expression="#properties.getProperty('dbtype','')#">
@@ -164,7 +164,9 @@ to your own modified versions of Mura CMS.
 			</cfcase>
 		</cfswitch>
 		<cfset this.ormSettings.dbcreate = properties.getProperty("ormdbcreate","update") />
-		<cfset this.ormSettings.cfclocation = properties.getProperty("ormcfclocation","") />
+		<cfif len(properties.getProperty("ormcfclocation",""))>
+			<cfset arrayAppend(this.ormSettings.cfclocation,properties.getProperty("ormcfclocation")) />
+		</cfif>
 		<cfset this.ormSettings.flushAtRequestEnd = properties.getProperty("ormflushAtRequestEnd","false") />
 		<cfset this.ormsettings.eventhandling = properties.getProperty("ormeventhandling","true") />
 		<cfset this.ormSettings.automanageSession = properties.getProperty("ormautomanageSession","false") />
@@ -196,7 +198,10 @@ to your own modified versions of Mura CMS.
 			<cfset request.hasCFApplicationCFM=false>
 		</cfcatch>
 	</cftry>
-		
-	<cfif not len(this.ormSettings.cfclocation)>
+	
+	<cfif not (isSimpleValue(this.ormSettings.cfclocation) and len(this.ormSettings.cfclocation))
+		and not (isArray(this.ormSettings.cfclocation) and arrayLen(this.ormSettings.cfclocation))>
 		<cfset this.ormenabled=false>
+	<cfelseif isSimpleValue(this.ormSettings.cfclocation) and listLen(this.ormSettings.cfclocation)>
+		<cfset this.ormSettings.cfclocation=listToArray(this.ormSettings.cfclocation)>
 	</cfif>

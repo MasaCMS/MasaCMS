@@ -510,7 +510,7 @@ select * from tplugins order by #arguments.orderby#
 				<cfset currentPath=currentDir & "/" & p>
 				<cfdump var="#currentpath#">
 				<cfif len(p) and directoryExists(currentPath)>
-					<cfset variables.fileWriter.appendFile(file="#baseDir#/cfapplication.cfm", output='<cfset this.ormsettings.cfclocation = listAppend(this.ormsettings.cfclocation,"/plugins/#rsRequirements.name#/#p#")>')>
+					<cfset variables.fileWriter.appendFile(file="#baseDir#/cfapplication.cfm", output='<cfset arrayAppend(this.ormsettings.cfclocation,"/plugins/#rsRequirements.name#/#p#")>')>
 				</cfif>
 				</cfloop>
 			</cfif>

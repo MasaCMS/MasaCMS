@@ -121,11 +121,11 @@ to your own modified versions of Mura CMS.
 			<cfset currentPath=currentDir & "/" & p>
 			<cfif len(p) and directoryExists(currentPath)>
 				<cfif canWriteMode>
-					<cffile action="append" file="#baseDir#/plugins/cfapplication.cfm" output='<cfset this.ormsettings.cfclocation = listAppend(this.ormsettings.cfclocation,"/plugins/#rsRequirements.name#/#p#")>' mode="775">
+					<cffile action="append" file="#baseDir#/plugins/cfapplication.cfm" output='<cfset arrayAppend(this.ormsettings.cfclocation,"/plugins/#rsRequirements.name#/#p#")>' mode="775">
 				<cfelseif canWriteMappings>
-					<cffile action="append" file="#baseDir#/plugins/cfapplication.cfm" output='<cfset this.ormsettings.cfclocation = listAppend(this.ormsettings.cfclocation,"/plugins/#rsRequirements.name#/#p#")>'>		
+					<cffile action="append" file="#baseDir#/plugins/cfapplication.cfm" output='<cfset arrayAppend(this.ormsettings.cfclocation,"/plugins/#rsRequirements.name#/#p#")>'>		
 				</cfif>
-				<cfset this.ormsettings.cfclocation = listAppend(this.ormsettings.cfclocation,"/plugins/#rsRequirements.name#/#p#")>
+				<cfset arrayAppend(this.ormsettings.cfclocation,"/plugins/#rsRequirements.name#/#p#")>
 			</cfif>
 			</cfloop>
 		</cfif>
