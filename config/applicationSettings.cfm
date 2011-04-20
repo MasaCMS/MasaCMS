@@ -202,6 +202,4 @@ to your own modified versions of Mura CMS.
 	<cfif not (isSimpleValue(this.ormSettings.cfclocation) and len(this.ormSettings.cfclocation))
 		and not (isArray(this.ormSettings.cfclocation) and arrayLen(this.ormSettings.cfclocation))>
 		<cfset this.ormenabled=false>
-	<cfelseif isSimpleValue(this.ormSettings.cfclocation) and listLen(this.ormSettings.cfclocation)>
-		<cfset this.ormSettings.cfclocation=listToArray(this.ormSettings.cfclocation)>
 	</cfif>
