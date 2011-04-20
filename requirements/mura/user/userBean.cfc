@@ -875,15 +875,17 @@ to your own modified versions of Mura CMS.
 
 <cffunction name="getValue" returntype="any" access="public" output="false">
 	<cfargument name="property"  type="string" required="true">
-	
-	<cfif isdefined("this.get#property#")>
-		<cfreturn evaluate("get#property#()") />
-	<cfelseif isdefined("variables.instance.#arguments.property#")>
-		<cfreturn variables.instance["#arguments.property#"] />
+	<cfif len(arguments.property)>
+		<cfif isdefined("this.get#property#")>
+			<cfreturn evaluate("get#property#()") />
+		<cfelseif isdefined("variables.instance.#arguments.property#")>
+			<cfreturn variables.instance["#arguments.property#"] />
+		<cfelse>
+			<cfreturn getExtendedAttribute(arguments.property) />
+		</cfif>
 	<cfelse>
-		<cfreturn getExtendedAttribute(arguments.property) />
+		<cfreturn "">
 	</cfif>
-
 </cffunction>
 
 <cffunction name="setAllValues" returntype="any" access="public" output="false">

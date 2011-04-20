@@ -66,11 +66,15 @@
 </cffunction>
 
 <cffunction name="getValue" access="public" returntype="any" output="false">
-	<cfargument name="property">	
-	<cfif isdefined("variables.instance.struct.#arguments.property#")>
-		<cfreturn variables.instance.struct[arguments.property]>
+	<cfargument name="property">
+	<cfif len(arguments.property)>	
+		<cfif isdefined("variables.instance.struct.#arguments.property#")>
+			<cfreturn variables.instance.struct[arguments.property]>
+		<cfelse>
+			<cfreturn  getContentBean().getValue(arguments.property)>
+		</cfif>
 	<cfelse>
-		<cfreturn  getContentBean().getValue(arguments.property)>
+		<cfreturn "">
 	</cfif>
 </cffunction>
 

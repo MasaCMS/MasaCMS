@@ -52,6 +52,7 @@ to your own modified versions of Mura CMS.
 <cfset variables.instance.Approved = 0 />
 <cfset variables.instance.DisplayStart = "" />
 <cfset variables.instance.Displaystop = "">
+<cfset variables.instance.Body = "" />
 <cfset variables.instance.Title = "" />
 <cfset variables.instance.MenuTitle = "" />
 <cfset variables.instance.URLTitle="" />
@@ -73,7 +74,6 @@ to your own modified versions of Mura CMS.
 	<cfset variables.instance.LastUpdateByID = "" />
 </cfif>
 
-<cfset variables.instance.Body = "" />
 <cfset variables.instance.Summary = "" />
 <cfset variables.instance.SiteID = "" />
 <cfset variables.instance.ModuleID = "00000000000000000000000000000000000" />
@@ -1239,16 +1239,16 @@ to your own modified versions of Mura CMS.
 </cffunction>
 
 <cffunction name="getValue" returntype="any" access="public" output="false">
-	<cfargument name="property" type="string" required="true">
-	
-	<cfif isdefined("this.get#property#")>
-		<cfreturn evaluate("get#property#()") />
-	<cfelseif isdefined("variables.instance.#arguments.property#")>
-		<cfreturn variables.instance["#arguments.property#"] />
-	<cfelse>
-		<cfreturn getExtendedAttribute(arguments.property) />
+	<cfargument name="property" type="string" required="true">	
+	<cfif len(arguments.property)>
+		<cfif isdefined("this.get#property#")>
+			<cfreturn evaluate("get#property#()") />
+		<cfelseif isdefined("variables.instance.#arguments.property#")>
+			<cfreturn variables.instance["#arguments.property#"] />
+		<cfelse>
+			<cfreturn getExtendedAttribute(arguments.property) />
+		</cfif>
 	</cfif>
-
 </cffunction>
 
 <cffunction name="setCategory" returntype="any" access="public" output="false">
