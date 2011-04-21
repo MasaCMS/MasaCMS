@@ -64,9 +64,9 @@
 	<cfif perm.level neq "deny">
 		<cfset content=content.getAllValues()>
 	
-		<cfset event.setValue("__response__", format(content.getAllValues(),event.getValue("responseFormat")))>
+		<cfset event.setValue("__response__", removeObjects(content.getAllValues()))>
 	<cfelse>
-		<cfset event.setValue("__response__", format("access denied",event.getValue("responseFormat")))>
+		<cfset event.setValue("__response__", "access denied")>
 	</cfif>
 	
 </cffunction>
@@ -84,9 +84,9 @@
 		
 		<cfset content.set(event.getAllValues())>
 		<cfset content.save()>
-		<cfset event.setValue("__response__", format(content.getAllValues(),event.getValue("responseFormat")))>
+		<cfset event.setValue("__response__",  removeObjects(content.getAllValues()))>
 	<cfelse>
-		<cfset event.setValue("__response__", format("false",event.getValue("responseFormat")))>
+		<cfset event.setValue("__response__", "false")>
 	</cfif>
 </cffunction>
 
@@ -97,9 +97,9 @@
 	
 	<cfif perm.allowAction>
 		<cfset content.delete()>
-		<cfset event.setValue("__response__", format("true",event.getValue("responseFormat")))>
+		<cfset event.setValue("__response__", "true")>
 	<cfelse>
-		<cfset event.setValue("__response__", format("false",event.getValue("responseFormat")))>
+		<cfset event.setValue("__response__", "false")>
 	</cfif>
 </cffunction>
 
@@ -110,9 +110,9 @@
 	
 	<cfif perm.allowAction>
 		<cfset content.deleteVersion()>
-		<cfset event.setValue("__response__", format("true",event.getValue("responseFormat")))>
+		<cfset event.setValue("__response__", "true")>
 	<cfelse>
-		<cfset event.setValue("__response__", format("false",event.getValue("responseFormat")))>
+		<cfset event.setValue("__response__", "false")>
 	</cfif>
 
 </cffunction>
@@ -125,7 +125,7 @@
 	<cfif perm.allowAction>
 		<cfset content.deleteVersionHistory()>
 	<cfelse>
-		<cfset event.setValue("__response__", format("access denied",event.getValue("responseFormat")))>
+		<cfset event.setValue("__response__","access denied")>
 	</cfif>
 </cffunction>
 
@@ -136,12 +136,12 @@
 	
 	<cfif perm.level neq 'Deny'>
 		<cfif not isBoolean(event.getValue("liveOnly"))>
-			<cfset event.setValue("__response__", format(content.getKidsQuery(),event.getValue("responseFormat")))>
+			<cfset event.setValue("__response__", content.getKidsQuery())>
 		<cfelse>
-			<cfset event.setValue("__response__", format(content.getKidsIterator(liveOnly=event.getValue("liveOnly")).getQuery(),event.getValue("responseFormat")))>
+			<cfset event.setValue("__response__", content.getKidsIterator(liveOnly=event.getValue("liveOnly")).getQuery())>
 		</cfif>
 	<cfelse>
-		<cfset event.setValue("__response__", format("access denied",event.getValue("responseFormat")))>
+		<cfset event.setValue("__response__", "access denied")>
 	</cfif>
 </cffunction>
 
@@ -151,9 +151,9 @@
 	<cfset var perm=getPerm(event)>
 	
 	<cfif perm.level neq 'Deny'>
-		<cfset event.setValue("__response__", format(getBean(event).getCategoriesQuery(),event.getValue("responseFormat")))>
+		<cfset event.setValue("__response__", getBean(event).getCategoriesQuery())>
 	<cfelse>
-		<cfset event.setValue("__response__", format("access denied",event.getValue("responseFormat")))>
+		<cfset event.setValue("__response__", "access denied")>
 	</cfif>
 </cffunction>
 
@@ -163,9 +163,9 @@
 	<cfset var perm=getPerm(event)>
 	
 	<cfif perm.level neq 'Deny'>
-		<cfset event.setValue("__response__", format(content.getRelateContentQuery(),event.getValue("responseFormat")))>
+		<cfset event.setValue("__response__", content.getRelateContentQuery())>
 	<cfelse>
-		<cfset event.setValue("__response__", format("access denied",event.getValue("responseFormat")))>
+		<cfset event.setValue("__response__", "access denied")>
 	</cfif>
 </cffunction>
 

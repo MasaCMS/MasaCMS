@@ -11,7 +11,7 @@
 		<cfset feed=application.feedManager.readByName(event.getValue("name"),event.getValue("siteid"))>
 	</cfif>
 	
-	<cfset event.setValue('feed',feed.getAllValues())>
+	<cfset event.setValue('feed',removeObjects(feed.getAllValues()))>
 	
 	<cfreturn feed>
 	
@@ -21,9 +21,9 @@
 	<cfargument name="event">
 		<cfset var feed = getBean(event)>
 		<cfif not application.feedManager.allowFeed(feedBean=feed,userID=session.mura.userID) >
-			<cfset event.setValue("__response__", format("access denied",event.getValue("responseFormat")))>
+			<cfset event.setValue("__response__", "access denied")>
 		<cfelse>
-			<cfset event.setValue("__response__", format(feed.getQuery(),event.getValue("responseFormat")))>
+			<cfset event.setValue("__response__", feed.getQuery())>
 		</cfif>
 </cffunction>
 

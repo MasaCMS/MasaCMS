@@ -23,7 +23,22 @@
 
 <cffunction name="format" returntype="any">
 	<cfargument name="data">
-	<cfargument name="format">
+	
+	<cfreturn removeObjects(arguments.data)>
+</cffunction>
+
+<cffunction name="removeObjects" returntype="any">
+	<cfargument name="data">
+	
+	<cfif isstruct(arguments.data)>
+		<cfloop collection="#arguments.data#" item="local.dataitem">
+			<cfif isobject(arguments.data[local.dataitem])>
+				<cfset structdelete(arguments.data,local.dataitem,false)>
+			<cfelseif isstruct(arguments.data[local.dataitem])>
+				<cfset removeObjects(arguments.data[local.dataitem])>
+			</cfif>
+		</cfloop>
+	</cfif>
 	
 	<cfreturn arguments.data>
 </cffunction>

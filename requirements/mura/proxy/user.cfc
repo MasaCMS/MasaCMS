@@ -45,7 +45,7 @@
 	<cfargument name="event">
 	<cfset var user=getBean(event)>
 	
-	<cfset event.setValue("__response__", format(user.getAllValues(),event.getValue("responseFormat")))>
+	<cfset event.setValue("__response__", removeObjects(user.getAllValues()))>
 </cffunction>
 
 <cffunction name="save" output="false">
@@ -54,7 +54,7 @@
 	
 	<cfset user.set(event.getAllValues())>
 	<cfset user.save()>
-	<cfset event.setValue("__response__", format(user.getAllValues(),event.getValue("responseFormat")))>
+	<cfset event.setValue("__response__", removeObjects(user.getAllValues()))>
 
 </cffunction>
 
@@ -63,7 +63,7 @@
 	<cfset var user=getBean(event)>
 
 	<cfset user.delete()>
-	<cfset event.setValue("__response__", format("true",event.getValue("responseFormat")))>
+	<cfset event.setValue("__response__", "true")>
 </cffunction>
 
 <cffunction name="saveAddress" output="false">
@@ -72,7 +72,7 @@
 	
 	<cfset address.set(event.getAllValues())>
 	<cfset address.save()>
-	<cfset event.setValue("__response__", format(address.getAllValues(),event.getValue("responseFormat")))>
+	<cfset event.setValue("__response__", removeObjects(address.getAllValues()))>
 
 </cffunction>
 
@@ -81,14 +81,14 @@
 	<cfset var address=getAddressBean(event)>
 
 	<cfset address.delete()>
-	<cfset event.setValue("__response__", format("true",event.getValue("responseFormat")))>
+	<cfset event.setValue("__response__", "true")>
 </cffunction>
 
 <cffunction name="getMemberships" output="false">
 	<cfargument name="event">
 	<cfset var user=getBean(event)>
 	
-	<cfset event.setValue("__response__", format(user.getMembershipsQuery(),event.getValue("responseFormat")))>
+	<cfset event.setValue("__response__",user.getMembershipsQuery())>
 	
 </cffunction>
 
@@ -96,7 +96,7 @@
 	<cfargument name="event">
 	<cfset var user=getBean(event)>
 	
-	<cfset event.setValue("__response__", format(user.getMembersQuery(),event.getValue("responseFormat")))>
+	<cfset event.setValue("__response__",user.getMembersQuery())>
 	
 </cffunction>
 
@@ -104,7 +104,7 @@
 	<cfargument name="event">
 	<cfset var user=getBean(event)>
 	
-	<cfset event.setValue("__response__", format(user.getAddressesQuery(),event.getValue("responseFormat")))>
+	<cfset event.setValue("__response__", user.getAddressesQuery())>
 	
 </cffunction>
 
@@ -112,7 +112,7 @@
 	<cfargument name="event">
 	<cfset var user=getBean(event)>
 	
-	<cfset event.setValue("__response__", format(user.getInterestGroupsQuery(),event.getValue("responseFormat")))>
+	<cfset event.setValue("__response__", user.getInterestGroupsQuery())>
 	
 </cffunction>
 
@@ -121,9 +121,9 @@
 	
 	<cfif isValid('UUID',event.getValue("userID")) and isValid('UUID',event.getValue("groupID")) >
 		<cfset application.userManager.createUserInGroup(event.getValue("userID"),event.getValue("groupID"))>
-		<cfset event.setValue("__response__", format(true,event.getValue("responseFormat")))>
+		<cfset event.setValue("__response__", "true")>
 	<cfelse>
-		<cfset event.setValue("__response__", format(false,event.getValue("responseFormat")))>
+		<cfset event.setValue("__response__", "false")>
 	</cfif>
 </cffunction>
 
@@ -132,9 +132,9 @@
 	
 	<cfif isValid('UUID',event.getValue("userID")) and isValid('UUID',event.getValue("groupID")) >
 		<cfset application.userManager.deleteUserFromGroup(event.getValue("userID"),event.getValue("groupID"))>
-		<cfset event.setValue("__response__", format(true,event.getValue("responseFormat")))>
+		<cfset event.setValue("__response__", "true")>
 	<cfelse>
-		<cfset event.setValue("__response__", format(false,event.getValue("responseFormat")))>
+		<cfset event.setValue("__response__", "false")>
 	</cfif>
 </cffunction>
 

@@ -219,6 +219,8 @@ to your own modified versions of Mura CMS.
 	
 	<cfif len(arguments.authToken)>
 		<cfset session.mura=getSession(arguments.authToken)>
+		<cfset session.siteID=session.mura.siteID>
+		<cfset application.rbFactory.resetSessionLocale()>
 	</cfif>
 	
 	<cfif not isObject(arguments.args)>
