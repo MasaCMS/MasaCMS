@@ -2,7 +2,7 @@
  * http://github.com/valums/file-uploader
  * 
  * Multiple file upload component with progress-bar, drag-and-drop. 
- * Â© 2010 Andrew Valums ( andrew(at)valums.com ) 
+ * © 2010 Andrew Valums ( andrew(at)valums.com ) 
  * 
  * Licensed under GNU GPL 2 or later, see license.txt.
  */    
@@ -609,14 +609,16 @@ qq.extend(qq.FileUploader.prototype, {
     },
     _onComplete: function(id, fileName, result){
         qq.FileUploaderBasic.prototype._onComplete.apply(this, arguments);
+
         // mark completed
         var item = this._getItemByFileId(id);                
         qq.remove(this._find(item, 'cancel'));
         qq.remove(this._find(item, 'spinner'));
-        if (result.success){	
+        
+        if (result.success){
             qq.addClass(item, this._classes.success);    
         } else {
-             qq.addClass(item, this._classes.fail);
+            qq.addClass(item, this._classes.fail);
         }         
     },
     _addToList: function(id, fileName){
@@ -938,7 +940,7 @@ qq.UploadHandlerAbstract.prototype = {
                 
         var max = this._options.maxConnections;
         
-        if (this._queue.length >= max){
+        if (this._queue.length >= max && i < max){
             var nextId = this._queue[max-1];
             this._upload(nextId, this._params[nextId]);
         }
@@ -1209,13 +1211,13 @@ qq.extend(qq.UploadHandlerXhr.prototype, {
         var size = this.getSize(id);
         
         this._options.onProgress(id, name, size, size);
-        
+                
         if (xhr.status == 200){
             this.log("xhr - server response received");
             this.log("responseText = " + xhr.responseText);
                         
             var response;
-          
+                    
             try {
                 response = eval("(" + xhr.responseText + ")");
             } catch(err){

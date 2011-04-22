@@ -325,7 +325,7 @@ to your own modified versions of Mura CMS.
 
 	<cfset var fileStruct=variables.imageProcessor.process(arguments.file,arguments.siteID) />
 		
-	<cfif not structKeyExists(arguments,"fileObjSource")>
+	<cfif not structKeyExists(fileStruct,"fileObjSource")>
 		<cfset fileStruct.fileObjSource="">
 	</cfif>
 	
