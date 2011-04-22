@@ -181,6 +181,8 @@ select * from tplugins order by #arguments.orderby#
 <cfset var isNew=false />
 <cfset var zipTool=createObject("component","mura.Zip")>
 <cfset var errors=structNew()>
+<cfset var rsZipFiles="">
+<cfset var zipTrim="">
 
 <cflock name="addPlugin" timeout="200">
 	<!--- <cftry> --->
@@ -193,13 +195,13 @@ select * from tplugins order by #arguments.orderby#
 		<cfif len(modID)>
 			<cfset errors=variables.settingsManager.restoreBundle(BundleFile="#variables.configBean.getTempDir()##delim##cffile.serverfile#",siteID="",keyMode="publish",contentMode="none", renderingMode="none",pluginMode="all", moduleID=modID)>
 			<cfif not structIsEmpty(errors)>
-				<cfset getCurrentUser().setValue("errors",bean.getErrors())>
+				<cfset getCurrentUser().setValue("errors",errors)>
 				<cfreturn "">
 			</cfif>	
 		<cfelse>
 			<cfset errors=variables.settingsManager.restoreBundle(BundleFile="#variables.configBean.getTempDir()##delim##cffile.serverfile#",siteID="",keyMode="copy", contentMode="none", renderingMode="none",pluginMode="all", moduleID="")>
 			<cfif not structIsEmpty(errors)>
-				<cfset getCurrentUser().setValue("errors",bean.getErrors())>
+				<cfset getCurrentUser().setValue("errors",errors)>
 				<cfreturn "">
 			</cfif>
 			
@@ -266,7 +268,28 @@ select * from tplugins order by #arguments.orderby#
 		<cfset variables.fileWriter.createDir(directory="#location#")>
 		</cfif>
 		
-		<cfset zipTool.extract(zipFilePath="#variables.configBean.getTempDir()##delim##cffile.serverfile#",extractPath="#location#", overwriteFiles=true)>
+		<cfset rsZipFiles=zipTool.list(zipFilePath="#variables.configBean.getTempDir()##delim##cffile.serverfile#")>
+		
+		<cfquery name="rsZipFiles" dbtype="query">
+		select * from rsZipFiles
+		where entry like '%#delim#plugin#delim#%'
+		or entry like 'plugin#delim#%'
+		</cfquery>
+		
+		
+		<cfloop list="#rsZipFiles.entry#" delimiters="#delim#" index="i">
+			<cfif i eq "plugin">
+				<cfbreak>
+			<cfelse>
+				<cfset zipTrim=listAppend(zipTrim,i,delim)>
+			</cfif>	
+		</cfloop>
+
+		<cfif len(zipTrim)>
+			<cfset zipTool.extract(zipFilePath="#variables.configBean.getTempDir()##delim##cffile.serverfile#",extractPath="#location#", overwriteFiles=true, extractDirs=zipTrim, extractDirsToTop=true)>
+		<cfelse>
+			<cfset zipTool.extract(zipFilePath="#variables.configBean.getTempDir()##delim##cffile.serverfile#",extractPath="#location#", overwriteFiles=true)>
+		</cfif>
 		
 		<cffile action="delete" file="#variables.configBean.getTempDir()##delim##cffile.serverfile#">
 		
@@ -461,6 +484,7 @@ select * from tplugins order by #arguments.orderby#
 			</cfif>
 		
 			<cfset currentDir="#baseDir#/#rsRequirements.name#">
+			<cftry>
 			<cfset currentConfig=getPluginXML(listLast(rsRequirements.name,"_"))>
 					<cfif isDefined("currentConfig.plugin.mappings.mapping") and arrayLen(currentConfig.plugin.mappings.mapping)>
 				<cfloop from="1" to="#arrayLen(currentConfig.plugin.mappings.mapping)#" index="m">
@@ -514,6 +538,8 @@ select * from tplugins order by #arguments.orderby#
 				</cfif>
 				</cfloop>
 			</cfif>
+			<cfcatch></cfcatch>
+			</cftry>
 		</cfif>
 	</cfloop>
 </cffunction>

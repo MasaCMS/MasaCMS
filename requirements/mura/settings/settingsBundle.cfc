@@ -368,7 +368,7 @@ to your own modified versions of Mura CMS.
 				</cfif>
 			</cfloop>
 			
-			<cfset application.pluginManager.createMappings()>
+			<cfset application.pluginManager.createAppCFCIncludes()>
 		</cfif>
 	</cffunction>
 

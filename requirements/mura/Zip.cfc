@@ -298,6 +298,7 @@
 		<cfargument name="overwriteFiles" required="no"  type="boolean" default="no"                hint="Overwrite existing files.">
 		<cfargument name="extractDirs"   required="no"  type="string"             hint="| (Chr(124)) delimited list of dirs to extract.">
 		<cfargument name="excludeDirs"   required="no"  type="string"             hint="| (Chr(124)) delimited list of dirs to not extract.">
+		<cfargument name="extractDirsToTop"   required="no"  type="string" >
 
 		<cfscript>
 
@@ -377,7 +378,7 @@
 			{
 				/* Open Zip file */
 				zipFile.init(arguments.zipFilePath);
-
+	
 				/* Zip file entries */
 				entries = zipFile.entries();
 
@@ -404,7 +405,11 @@
 					)
 					{
 						name = entry.getName();
-
+						
+						if(isDefined("arguments.extractDirs") and isDefined("arguments.extractDirsToTop") and yesNoFormat(arguments.extractDirsToTop)){
+							name=right(name,len(name)-len(arguments.extractDirs));					
+						}
+						
 						/* Create directory only if 'useFolderNames' is 'yes' */
 						if(arguments.useFolderNames EQ "yes")
 						{

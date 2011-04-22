@@ -109,10 +109,6 @@ to your own modified versions of Mura CMS.
 		<cfset editableControl.innerHTML = generateEditableObjectControl(editableControl.editLink)>
 	</cfif>
 </cfsilent>
-
-<cfif rsForm.isOnDisplay and rsForm.forceSSL eq 1>
-<cfset request.forceSSL = 1>
-</cfif>
 <cfoutput>
 <cfif editableControl.innerHTML neq "">
 	#renderEditableObjectHeader("editableForm")#
@@ -135,4 +131,9 @@ to your own modified versions of Mura CMS.
 #renderEditableObjectFooter(editableControl.innerHTML)#
 </cfif>
 </cfoutput>
+<cfif rsForm.isOnDisplay and rsForm.forceSSL eq 1>
+<cfset request.forceSSL = 1>
+<cfset request.cacheItem=false>
+<cfelse>
 <cfset request.cacheItem=rsForm.doCache>
+</cfif>
