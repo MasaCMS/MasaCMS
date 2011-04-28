@@ -49,7 +49,7 @@ to your own modified versions of Mura CMS.
 <cfparam name="application.instanceID" default="#createUUID()#" />
 <cfprocessingdirective pageencoding="utf-8"/>
 <cfsetting requestTimeout = "1000"> 
-	
+
 <!--- do a settings setup check --->
 <cfif NOT structKeyExists( application, "setupComplete" ) OR (not application.appInitialized or structKeyExists(url,application.appReloadKey) )>
 	<cfif getProfileString( baseDir & "/config/settings.ini.cfm", "settings", "mode" ) eq "production">
@@ -259,6 +259,16 @@ to your own modified versions of Mura CMS.
 			<cfdirectory action="create" mode="777" directory="#application.configBean.getWebRoot()##application.configBean.getFileDelim()#plugins"> 
 		</cfif>
 		
+		<cfif not fileExists(baseDir & "/robots.txt")>	
+			<cfset application.serviceFactory.getBean("fileWriter").copyFile(source="#baseDir#/config/templates/robots.template.cfm", destination="#baseDir#/robots.txt")>
+		</cfif>
+		<cfif not fileExists(baseDir & "/.htaccess")>	
+			<cfset application.serviceFactory.getBean("fileWriter").copyFile(source="#baseDir#/config/templates/htaccess.template.cfm", destination="#baseDir#/.htaccess")>
+		</cfif>
+		<cfif not fileExists(baseDir & "/web.config")>	
+			<cfset application.serviceFactory.getBean("fileWriter").copyFile(source="#baseDir#/config/templates/webconfig.template.cfm", destination="#baseDir#/web.config")>
+		</cfif>
+			
 		<cfset pluginEvent=createObject("component","mura.event").init()>			
 		<cfset application.pluginManager.executeScripts(runat='onApplicationLoad',event= pluginEvent)>
 				

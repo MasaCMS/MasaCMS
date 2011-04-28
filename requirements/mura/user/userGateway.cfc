@@ -136,6 +136,7 @@ to your own modified versions of Mura CMS.
 	<cfset var rsParams="">
 	<cfset var sortOptions="fname,lname,username,company,lastupdate,created,isPubic,email">
 	<cfset var isExtendedSort="">
+	<cfset var isListParam=false>
 
 	<cfif not isObject(arguments.data)>
 		<cfset params=getServiceFactory().getBean("userFeedBean")>
@@ -230,9 +231,9 @@ to your own modified versions of Mura CMS.
 				</cfif>
 				
 				<cfset started = true />
-				
-				<cfif  listLen(param.getField(),".") gt 1>			
-					#param.getField()# #param.getCondition()# <cfif param.getCondition() eq "IN">(</cfif><cfqueryparam cfsqltype="cf_sql_#param.getDataType()#" value="#param.getCriteria()#" list="#iif(param.getCondition() eq 'IN',de('true'),de('false'))#"><cfif param.getCondition() eq "IN">)</cfif>  	
+				<cfset isListParam=listFindNoCase("IN,NOT IN",param.getCondition())>		
+				<cfif  listLen(param.getField(),".") gt 1>					
+					#param.getField()# #param.getCondition()# <cfif isListParam>(</cfif><cfqueryparam cfsqltype="cf_sql_#param.getDataType()#" value="#param.getCriteria()#" list="#iif(isListParam,de('true'),de('false'))#"><cfif isListParam>)</cfif>  	
 				<cfelseif len(param.getField())>
 					tusers.userid IN (
 						select tclassextenddatauseractivity.baseID from tclassextenddatauseractivity
@@ -243,7 +244,7 @@ to your own modified versions of Mura CMS.
 						where tclassextendattributes.siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#params.getSiteID()#">
 						and tclassextendattributes.name=<cfqueryparam cfsqltype="cf_sql_varchar" value="#param.getField()#">
 						</cfif>
-						and #variables.classExtensionManager.getCastString(param.getField(),params.getSiteID())# #param.getCondition()# <cfif param.getCondition() eq "IN">(</cfif><cfqueryparam cfsqltype="cf_sql_#param.getDataType()#" value="#param.getCriteria()#" list="#iif(param.getCondition() eq 'IN',de('true'),de('false'))#"><cfif param.getCondition() eq "IN">)</cfif>)
+						and #variables.classExtensionManager.getCastString(param.getField(),params.getSiteID())# #param.getCondition()# <cfif isListParam>(</cfif><cfqueryparam cfsqltype="cf_sql_#param.getDataType()#" value="#param.getCriteria()#" list="#iif(isListParam,de('true'),de('false'))#"><cfif isListParam>)</cfif>)
 				</cfif>
 			</cfif>						
 		</cfloop>

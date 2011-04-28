@@ -105,6 +105,15 @@ to your own modified versions of Mura CMS.
 		</cfcatch>
 	</cftry>
 	
+	<cfif not fileExists(baseDir & "/config/settings.ini.cfm")>
+		<cftry>
+		<cffile action="copy" source="#baseDir#/config/templates/settings.template.cfm" destination="#baseDir#/config/settings.ini.cfm" mode="777">
+		<cfcatch>
+			<cffile action="copy" source="#baseDir#/config/templates/settings.template.cfm" destination="#baseDir#/config/settings.ini.cfm">
+		</cfcatch>
+		</cftry>
+	</cfif>
+	
 	<cfset properties = createObject( 'java', 'java.util.Properties' ).init()>
 	<cfset fileStream = createObject( 'java', 'java.io.FileInputStream').init( getDirectoryFromPath(getCurrentTemplatePath()) & "/settings.ini.cfm")>
 	<cfset properties.load( fileStream )>

@@ -115,6 +115,7 @@ to your own modified versions of Mura CMS.
 	<cfset var jointable="">
 	<cfset var histtables="tcontenttags,tcontentcategorysassign,tcontentobjects,tcontentrelated">
 	<cfset var rsAttribute="">
+	<cfset var isListParam=false>
 	
 	<cfif blockFactor gt 100>
 		<cfset blockFactor=100>
@@ -258,9 +259,9 @@ to your own modified versions of Mura CMS.
 									</cfif>
 									
 									<cfset started = true />
-									
-									<cfif  listLen(param.getField(),".") gt 1>			
-										#param.getField()# #param.getCondition()# <cfif param.getCondition() eq "IN">(</cfif><cfqueryparam cfsqltype="cf_sql_#param.getDataType()#" value="#param.getCriteria()#" list="#iif(param.getCondition() eq 'IN',de('true'),de('false'))#"><cfif param.getCondition() eq "IN">)</cfif>  	
+									<cfset isListParam=listFindNoCase("IN,NOT IN",param.getCondition())>			
+									<cfif  listLen(param.getField(),".") gt 1>
+										#param.getField()# #param.getCondition()# <cfif isListParam>(</cfif><cfqueryparam cfsqltype="cf_sql_#param.getDataType()#" value="#param.getCriteria()#" list="#iif(isListParam,de('true'),de('false'))#"><cfif isListParam>)</cfif>  	
 									<cfelseif len(param.getField())>
 										tcontent.contentHistID IN (
 											select tclassextenddata.baseID from tclassextenddata
@@ -272,7 +273,7 @@ to your own modified versions of Mura CMS.
 											where tclassextendattributes.siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.feedBean.getSiteID()#">
 											and tclassextendattributes.name=<cfqueryparam cfsqltype="cf_sql_varchar" value="#param.getField()#">
 											</cfif>
-											and <cfif param.getCondition() neq "like">#variables.classExtensionManager.getCastString(param.getField(),arguments.feedBean.getSiteID())#<cfelse>attributeValue</cfif> #param.getCondition()# <cfif param.getCondition() eq "IN">(</cfif><cfqueryparam cfsqltype="cf_sql_#param.getDataType()#" value="#param.getCriteria()#" list="#iif(param.getCondition() eq 'IN',de('true'),de('false'))#"><cfif param.getCondition() eq "IN">)</cfif>)
+											and <cfif param.getCondition() neq "like">#variables.classExtensionManager.getCastString(param.getField(),arguments.feedBean.getSiteID())#<cfelse>attributeValue</cfif> #param.getCondition()# <cfif isListParam>(</cfif><cfqueryparam cfsqltype="cf_sql_#param.getDataType()#" value="#param.getCriteria()#" list="#iif(isListParam,de('true'),de('false'))#"><cfif isListParam>)</cfif>)
 									</cfif>
 								</cfif>						
 							</cfloop>
@@ -443,9 +444,9 @@ to your own modified versions of Mura CMS.
 				</cfif>
 				
 				<cfset started = true />
-				
-				<cfif  listLen(param.getField(),".") gt 1>			
-					#param.getField()# #param.getCondition()# <cfif param.getCondition() eq "IN">(</cfif><cfqueryparam cfsqltype="cf_sql_#param.getDataType()#" value="#param.getCriteria()#" list="#iif(param.getCondition() eq 'IN',de('true'),de('false'))#"><cfif param.getCondition() eq "IN">)</cfif>  	
+				<cfset isListParam=listFindNoCase("IN,NOT IN",param.getCondition())>	
+				<cfif  listLen(param.getField(),".") gt 1>						
+					#param.getField()# #param.getCondition()# <cfif isListParam>(</cfif><cfqueryparam cfsqltype="cf_sql_#param.getDataType()#" value="#param.getCriteria()#" list="#iif(isListParam,de('true'),de('false'))#"><cfif isListParam>)</cfif>  	
 				<cfelseif len(param.getField())>
 					tcontent.contentHistID IN (
 						select tclassextenddata.baseID from tclassextenddata
@@ -457,7 +458,7 @@ to your own modified versions of Mura CMS.
 						where tclassextendattributes.siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.feedBean.getSiteID()#">
 						and tclassextendattributes.name=<cfqueryparam cfsqltype="cf_sql_varchar" value="#param.getField()#">
 						</cfif>
-						and <cfif param.getCondition() neq "like">#variables.classExtensionManager.getCastString(param.getField(),arguments.feedBean.getSiteID())#<cfelse>attributeValue</cfif> #param.getCondition()# <cfif param.getCondition() eq "IN">(</cfif><cfqueryparam cfsqltype="cf_sql_#param.getDataType()#" value="#param.getCriteria()#" list="#iif(param.getCondition() eq 'IN',de('true'),de('false'))#"><cfif param.getCondition() eq "IN">)</cfif>)
+						and <cfif param.getCondition() neq "like">#variables.classExtensionManager.getCastString(param.getField(),arguments.feedBean.getSiteID())#<cfelse>attributeValue</cfif> #param.getCondition()# <cfif isListParam>(</cfif><cfqueryparam cfsqltype="cf_sql_#param.getDataType()#" value="#param.getCriteria()#" list="#iif(isListParam,de('true'),de('false'))#"><cfif isListParam>)</cfif>)
 				</cfif>
 			</cfif>						
 		</cfloop>

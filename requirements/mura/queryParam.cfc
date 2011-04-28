@@ -103,6 +103,9 @@ to your own modified versions of Mura CMS.
 	 		<cfcase value="IN">
 	 			<cfset variables.condition="in" />
 	 		</cfcase>
+	 		<cfcase value="NOTIN,NOT IN">
+	 			<cfset variables.condition="not in" />
+	 		</cfcase>
 	 		<cfcase value="NEQ">
 	 			<cfset variables.condition="!=" />
 	 		</cfcase>
