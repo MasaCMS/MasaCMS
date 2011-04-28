@@ -34,7 +34,7 @@
 		
 		<cfif not event.valueExists('contentBean')>
 			<cfif len(event.getValue('linkServID'))>
-				<cfset event.setValue('contentBean',application.contentManager.getActiveContent(event.getValue('linkServID'),event.getValue('siteid'),true)) />
+				<cfset event.setValue('contentBean',application.contentManager.getActiveContent(listFirst(event.getValue('linkServID')),event.getValue('siteid'),true)) />
 			<cfelse>
 				<cfset event.setValue('contentBean',application.contentManager.getActiveContentByFilename(event.getValue('currentFilenameAdjusted'),event.getValue('siteid'),true)) />
 			</cfif>

@@ -264,6 +264,7 @@ order by tformresponsepackets.entered asc
 <cfargument name="siteid" type="string">
 <cfargument name="preBody" type="string">
 <cfargument name="responseChart" type="numeric" required="yes" default="0">
+<cfargument name="linkServID" type="string" required="yes" default="">
 
 <cfset var frm=""/>
 <cfset var finder=""/>
@@ -271,6 +272,9 @@ order by tformresponsepackets.entered asc
 <cfset var formHTML='<input type="hidden" name="siteid" value="#arguments.siteid#"><input type="hidden" name="formid" value="#arguments.formid#">'>
 <cfset var body=""/>
 
+<cfif len(arguments.linkServID)>
+	<cfset formHTML='#formHTML#<input type="hidden" name="linkservid" value="#arguments.linkServID#">'>
+</cfif>
 <!--- dynamic content set by 
 <cfset body=variables.contentRenderer.setDynamicContent(body) />
  --->
@@ -291,13 +295,11 @@ order by tformresponsepackets.entered asc
 #body#
 <script type="text/javascript">
 		var frm=document.getElementById('#frmID#');
-		if( frm.getAttribute('action') == null || frm.getAttribute('action')==''){
 			frm.setAttribute('action','?nocache=1');
 			frm.method='post';
-		}
-		if( frm.getAttribute('onsubmit') == null || frm.getAttribute('onsubmit')==''){
-			frm.onsubmit=function(){return validateForm(this);}
-		}
+			if( frm.getAttribute('onsubmit') == null || frm.getAttribute('onsubmit')==''){
+				frm.onsubmit=function(){return validateForm(this);}
+			}
 		<cfif not(refind("Mac",cgi.HTTP_USER_AGENT) and refind("MSIE 5",cgi.HTTP_USER_AGENT))>	
 			<cfif arguments.responseChart>
 				polllist=new Array();
