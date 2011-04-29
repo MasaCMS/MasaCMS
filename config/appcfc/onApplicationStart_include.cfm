@@ -262,13 +262,7 @@ to your own modified versions of Mura CMS.
 		<cfif not fileExists(baseDir & "/robots.txt")>	
 			<cfset application.serviceFactory.getBean("fileWriter").copyFile(source="#baseDir#/config/templates/robots.template.cfm", destination="#baseDir#/robots.txt")>
 		</cfif>
-		<cfif not fileExists(baseDir & "/.htaccess")>	
-			<cfset application.serviceFactory.getBean("fileWriter").copyFile(source="#baseDir#/config/templates/htaccess.template.cfm", destination="#baseDir#/.htaccess")>
-		</cfif>
-		<cfif not fileExists(baseDir & "/web.config")>	
-			<cfset application.serviceFactory.getBean("fileWriter").copyFile(source="#baseDir#/config/templates/webconfig.template.cfm", destination="#baseDir#/web.config")>
-		</cfif>
-			
+		
 		<cfset pluginEvent=createObject("component","mura.event").init()>			
 		<cfset application.pluginManager.executeScripts(runat='onApplicationLoad',event= pluginEvent)>
 				
