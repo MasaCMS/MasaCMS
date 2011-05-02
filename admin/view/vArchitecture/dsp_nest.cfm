@@ -117,11 +117,15 @@ to your own modified versions of Mura CMS.
 <a class="add" href="javascript:;" onmouseover="showMenu('newContentMenu',#newcontent#,this,'#attributes.rsNest.contentid#','#attributes.topid#','#attributes.rsNest.parentid#','#attributes.siteid#','#attributes.rsNest.type#');"></a>
 	
 	<cfif attributes.rsNest.haskids><span class="hasChildren" onclick="location.href='?fuseaction=cArch.list&siteid=#JSStringFormat(attributes.siteID)#&moduleid=#JSStringFormat(attributes.moduleID)#&topid=#JSStringFormat(attributes.rsNest.contentID)#';"></span></cfif>
-
+	
+	<cfsilent>
+		<cfset draftPromptData = application.contentManager.getDraftPromptData(attributes.rsNest.contentid,attributes.siteid) />
+	</cfsilent>
+	
 	<cfif verdict neq 'none'>
-		<a class="#icon# title" title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.edit")#" href="index.cfm?fuseaction=cArch.edit&contenthistid=#attributes.rsNest.ContentHistID#&contentid=#attributes.rsNest.ContentID#&type=#attributes.rsNest.type#&parentid=#attributes.rsNest.parentID#&topid=#URLEncodedFormat(attributes.topid)#&siteid=#URLEncodedFormat(attributes.siteid)#&moduleid=#attributes.moduleid#&startrow=#attributes.startrow#">
+		<a class="#icon# title" data-showdialog="#draftPromptData.showdialog#" data-contentid="#attributes.rsNest.contentid#" data-historyid="#draftPromptData.historyID#" title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.edit")#" href="index.cfm?fuseaction=cArch.edit&contenthistid=#attributes.rsNest.ContentHistID#&contentid=#attributes.rsNest.ContentID#&type=#attributes.rsNest.type#&parentid=#attributes.rsNest.parentID#&topid=#URLEncodedFormat(attributes.topid)#&siteid=#URLEncodedFormat(attributes.siteid)#&moduleid=#attributes.moduleid#&startrow=#attributes.startrow#">
 	<cfelse>
-		<a class="#icon# title">
+		<a class="#icon# title" data-showdialog="#draftPromptData.showdialog#" data-contentid="#attributes.rsNest.contentid#" data-historyid="#draftPromptData.historyID#">
 	</cfif>
 		#HTMLEditFormat(left(attributes.rsNest.menutitle,70))#
 		<cfif len(attributes.rsNest.menutitle) gt 70>&hellip;</cfif>
