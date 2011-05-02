@@ -123,9 +123,9 @@ to your own modified versions of Mura CMS.
 	</cfsilent>
 	
 	<cfif verdict neq 'none'>
-		<a class="#icon# title" data-showdialog="#draftPromptData.showdialog#" data-contentid="#attributes.rsNest.contentid#" data-historyid="#draftPromptData.historyID#" title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.edit")#" href="index.cfm?fuseaction=cArch.edit&contenthistid=#attributes.rsNest.ContentHistID#&contentid=#attributes.rsNest.ContentID#&type=#attributes.rsNest.type#&parentid=#attributes.rsNest.parentID#&topid=#URLEncodedFormat(attributes.topid)#&siteid=#URLEncodedFormat(attributes.siteid)#&moduleid=#attributes.moduleid#&startrow=#attributes.startrow#">
+		<a class="#icon# title" data-showdialog="#draftPromptData.showdialog#" data-contentid="#attributes.rsNest.contentid#" data-historyid="#draftPromptData.historyID#" data-publishedHistoryID="#draftPromptData.publishedHistoryID#" title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.edit")#" href="index.cfm?fuseaction=cArch.edit&contenthistid=#attributes.rsNest.ContentHistID#&contentid=#attributes.rsNest.ContentID#&type=#attributes.rsNest.type#&parentid=#attributes.rsNest.parentID#&topid=#URLEncodedFormat(attributes.topid)#&siteid=#URLEncodedFormat(attributes.siteid)#&moduleid=#attributes.moduleid#&startrow=#attributes.startrow#">
 	<cfelse>
-		<a class="#icon# title" data-showdialog="#draftPromptData.showdialog#" data-contentid="#attributes.rsNest.contentid#" data-historyid="#draftPromptData.historyID#">
+		<a class="#icon# title" data-showdialog="#draftPromptData.showdialog#" data-contentid="#attributes.rsNest.contentid#" data-historyid="#draftPromptData.historyID#" data-publishedHistoryID="#draftPromptData.publishedHistoryID#">
 	</cfif>
 		#HTMLEditFormat(left(attributes.rsNest.menutitle,70))#
 		<cfif len(attributes.rsNest.menutitle) gt 70>&hellip;</cfif>

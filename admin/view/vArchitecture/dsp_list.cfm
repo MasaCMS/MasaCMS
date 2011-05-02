@@ -255,9 +255,9 @@ function setAsSorted(){
 		
        <cfif request.rstop.haskids><span class="hasChildren"></span></cfif>
         <cfif perm neq 'none'>
-          <a class="#icon# title" data-showdialog="#draftPromptData.showdialog#" data-contentid="#request.rstop.contentid#" data-historyid="#draftPromptData.historyID#" title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.edit")#" href="index.cfm?fuseaction=cArch.edit&contenthistid=#request.rstop.ContentHistID#&siteid=#URLEncodedFormat(attributes.siteid)#&contentid=#attributes.topid#&topid=#URLEncodedFormat(attributes.topid)#&type=#request.rstop.type#&parentid=#request.rstop.parentid#&moduleid=#attributes.moduleid#">
+          <a class="#icon# title" data-showdialog="#draftPromptData.showdialog#" data-contentid="#request.rstop.contentid#" data-historyid="#draftPromptData.historyID#" data-publishedHistoryID="#draftPromptData.publishedHistoryID#" title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.edit")#" href="index.cfm?fuseaction=cArch.edit&contenthistid=#request.rstop.ContentHistID#&siteid=#URLEncodedFormat(attributes.siteid)#&contentid=#attributes.topid#&topid=#URLEncodedFormat(attributes.topid)#&type=#request.rstop.type#&parentid=#request.rstop.parentid#&moduleid=#attributes.moduleid#">
         <cfelse>
-		  <a class="#icon# title" data-showdialog="#draftPromptData.showdialog#" data-contentid="#request.rstop.contentid#" data-historyid="#draftPromptData.historyID#">
+		  <a class="#icon# title" data-showdialog="#draftPromptData.showdialog#" data-contentid="#request.rstop.contentid#" data-historyid="#draftPromptData.historyID#" data-publishedHistoryID="#draftPromptData.publishedHistoryID#">
 		</cfif>
 		#HTMLEditFormat(left(request.rsTop.menutitle,70))#
         <cfif len(request.rsTop.menutitle) gt 70>&hellip;</cfif>

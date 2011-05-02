@@ -1675,6 +1675,7 @@ to your own modified versions of Mura CMS.
 		
 		<cfset data['showdialog'] = showdialog />
 		<cfset data['historyID'] = historyID />
+		<cfset data['publishedHistoryID'] = cb.getContentHistID() />
 		
 		<cfreturn data />
 	</cffunction>

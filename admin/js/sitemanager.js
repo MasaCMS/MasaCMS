@@ -43,7 +43,23 @@ jQuery(function($){
 		
 		var a = $(this);
 		if (a.attr('data-showdialog') !== undefined && a.attr('data-showdialog') === "true"){
-			// show the dialog here
+			$('<div><p>This content has a draft newer than the currently published version. What do you want to do?</p></div>').dialog({
+				title:"Notice!",
+				modal:true,
+				width:"400px",
+				buttons: {
+					Cancel:function(){
+						$(this).dialog('close');
+					},
+					"Edit Latest Draft": function(){
+						var href = a.attr('href').replace(a.attr('data-publishedHistoryID'),a.attr('data-historyID'));
+						window.location = href;
+					},
+					"Edit Currently Published": function(){
+						window.location = a.attr('href');
+					}
+				}
+			});
 		} else {
 			window.location = a.attr('href');
 		}
