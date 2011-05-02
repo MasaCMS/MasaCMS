@@ -1,3 +1,4 @@
 /.project
-/.settings/*
-/WEB-INF/*
+/.settings
+/WEB-INF
+/config/settings.ini.cfm
