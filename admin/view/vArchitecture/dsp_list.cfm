@@ -257,8 +257,8 @@ function setAsSorted(){
 					
 				</cfif>
 			</cfif>
-		</cfsilent><cfdump var="#cb.getContentHistId()#" abort />
-		<cfdump var="#cb#" abort />
+		</cfsilent>
+		
        <cfif request.rstop.haskids><span class="hasChildren"></span></cfif>
         <cfif perm neq 'none'>
           <a class="#icon# title" data-showdialog="#showdialog#" title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.edit")#" href="index.cfm?fuseaction=cArch.edit&contenthistid=#request.rstop.ContentHistID#&siteid=#URLEncodedFormat(attributes.siteid)#&contentid=#attributes.topid#&topid=#URLEncodedFormat(attributes.topid)#&type=#request.rstop.type#&parentid=#request.rstop.parentid#&moduleid=#attributes.moduleid#">
