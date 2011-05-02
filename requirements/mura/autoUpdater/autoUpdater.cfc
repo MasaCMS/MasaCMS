@@ -130,7 +130,7 @@ to your own modified versions of Mura CMS.
 				and entry not like 'trunk#variables.fileDelim#www#variables.fileDelim#default#variables.fileDelim#includes#variables.fileDelim#templates%'
 				</cfquery>
 				<cfloop query="rs">
-					<cfif not listFind("contentRenderer.cfc,eventHandler.cfc,servlet.cfc,loginHandler.cfc,robots.txt,.htaccess,web.config",listLast(rs.entry,variables.fileDelim))>
+					<cfif not listFind("contentRenderer.cfc,eventHandler.cfc,servlet.cfc,loginHandler.cfc,.gitignore",listLast(rs.entry,variables.fileDelim))>
 						<cfset destination="#baseDir##right(rs.entry,len(rs.entry)-trimLen)#">
 						<cfif fileExists(destination)>
 							<cffile action="delete" file="#destination#">
@@ -150,7 +150,7 @@ to your own modified versions of Mura CMS.
 				</cfquery>
 				
 				<cfloop query="rs">
-					<cfif not listFind("settings.ini.cfm,settings.custom.vars.cfm,settings.custom.managers.cfm,coldspring.custom.xml.cfm,robots.txt,.htaccess,web.config",listLast(rs.entry,variables.fileDelim))>
+					<cfif not listFind("settings.ini.cfm,settings.custom.vars.cfm,settings.custom.managers.cfm,coldspring.custom.xml.cfm,.gitignore",listLast(rs.entry,variables.fileDelim))>
 						<cfset destination="#baseDir##right(rs.entry,len(rs.entry)-trimLen)#">
 						<cfif fileExists(destination)>
 							<cffile action="delete" file="#destination#">
