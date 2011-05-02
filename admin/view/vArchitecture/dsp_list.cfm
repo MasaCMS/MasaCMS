@@ -248,12 +248,22 @@ function setAsSorted(){
       <dt>
        
        <a  class="add" href="javascript:;" onmouseover="showMenu('newContentMenu',#newcontent#,this,'#request.rstop.contentid#','#attributes.topid#','#request.rstop.parentid#','#attributes.siteid#','#request.rstop.type#');">&nbsp;</a>
-       
+    	
+		<cfsilent>
+			<cfset cb = request.murascope.getBean('content',attributes.siteid).loadby(contentid=request.rstop.contentid) />   
+			<cfset showdialog = false />
+			<cfif cb.getActive()>
+				<cfif cb.hasDrafts()>
+					
+				</cfif>
+			</cfif>
+		</cfsilent><cfdump var="#cb.getContentHistId()#" abort />
+		<cfdump var="#cb#" abort />
        <cfif request.rstop.haskids><span class="hasChildren"></span></cfif>
         <cfif perm neq 'none'>
-          <a class="#icon# title" title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.edit")#" href="index.cfm?fuseaction=cArch.edit&contenthistid=#request.rstop.ContentHistID#&siteid=#URLEncodedFormat(attributes.siteid)#&contentid=#attributes.topid#&topid=#URLEncodedFormat(attributes.topid)#&type=#request.rstop.type#&parentid=#request.rstop.parentid#&moduleid=#attributes.moduleid#">
+          <a class="#icon# title" data-showdialog="#showdialog#" title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.edit")#" href="index.cfm?fuseaction=cArch.edit&contenthistid=#request.rstop.ContentHistID#&siteid=#URLEncodedFormat(attributes.siteid)#&contentid=#attributes.topid#&topid=#URLEncodedFormat(attributes.topid)#&type=#request.rstop.type#&parentid=#request.rstop.parentid#&moduleid=#attributes.moduleid#">
         <cfelse>
-		  <a class="#icon# title">
+		  <a class="#icon# title" data-showdialog="#showdialog#">
 		</cfif>
 		#HTMLEditFormat(left(request.rsTop.menutitle,70))#
         <cfif len(request.rsTop.menutitle) gt 70>&hellip;</cfif>
@@ -344,3 +354,5 @@ function setAsSorted(){
 	#pageList#
   </cfif>
 </cfoutput>
+
+<script type="text/javascript" src="js/sitemanager.js"></script>
