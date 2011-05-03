@@ -3,3 +3,5 @@
 /WEB-INF
 /robots.txt
 /dev
+/web.config
+/.htaccess
