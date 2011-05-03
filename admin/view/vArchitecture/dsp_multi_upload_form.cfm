@@ -130,17 +130,16 @@ jQuery(document).ready(function(){
 			onSubmit : function(file , ext){
 			                // Allow only images. You should add security check on the server-side.
 			if (ext && /^(jpg|png|jpeg|gif)$/.test(ext)){
-			jQuery('##uploader .text').text('Uploading: ' + file);
+				jQuery('<li><img src="#application.configBean.getContext()#/admin/images/progress_bar.gif"></li>').appendTo('##uploader .files');	
 			} else {
 			// extension is not allowed
-			jQuery('##uploader .text').text('Error: only images are allowed');
-			// cancel upload
-			return false;
+				alertDialog('Error: only images are allowed');
+				// cancel upload
+				return false;
 			}
 			},
 			onComplete : function(file){
-			jQuery('##uploader .text').text('Uploaded: ' + file);
-			jQuery('<li></li>').appendTo('##uploader .files').text(file);	
+				jQuery('.files li:last').html(file);	
 			}
 		});
 
