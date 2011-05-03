@@ -42,7 +42,8 @@ to your own modified versions of Mura CMS.
 --->
 <cfsavecontent variable="str"><cfoutput>
 <link href="#application.configBean.getContext()#/admin/js/fileuploader/fileuploader.css?coreversion=#application.coreversion#" rel="stylesheet" type="text/css">
-<script src="#application.configBean.getContext()#/admin/js/fileuploader/fileuploader.js?coreversion=#application.coreversion#s" type="text/javascript"></script>	
+<!---<script src="#application.configBean.getContext()#/admin/js/fileuploader/fileuploader.js?coreversion=#application.coreversion#s" type="text/javascript"></script>--->
+<script src="#application.configBean.getContext()#/admin/js/fileuploader/ajaxupload.js?coreversion=#application.coreversion#s" type="text/javascript"></script>		
 #session.dateKey#
 </cfoutput>
 </cfsavecontent>
@@ -68,7 +69,7 @@ to your own modified versions of Mura CMS.
 Please select images to upload. You may select multiple, and they will begin 
 as soon as you click Ok on the Open Dialog box.
 </p>
-
+<!---
 <div id="newfile">
 <noscript>
 <p>Please enable JavaScript to use file uploader.</p>
@@ -102,6 +103,54 @@ as soon as you click Ok on the Open Dialog box.
         });
         
     </script> 
+--->
+
+
+<script type="text/javascript">/*<![CDATA[*/
+jQuery(document).ready(function(){
+	new AjaxUpload('uploadbutton', {
+            action: './index.cfm',
+            multiple: true,
+            name:'newfile1',
+			data:{
+				'fuseaction':'cArch.update',
+				'action':'multiFileUpload',
+				'siteid':'#jsStringFormat(attributes.siteid)#',
+				'moduleid':'#jsStringFormat(attributes.moduleid)#',
+				'topid':'#jsStringFormat(attributes.topid)#',
+				'ptype':'#jsStringFormat(attributes.ptype)#',
+				'parentid':'#jsStringFormat(attributes.parentid)#',
+				'contentid':'',
+				'type':'File',
+				'subtype':'Default',
+				'startrow':#attributes.startrow#,
+				'orderno':0,
+				'approved':<cfif request.perm eq "editor">1<cfelse>0</cfif>
+			},
+			onSubmit : function(file , ext){
+			                // Allow only images. You should add security check on the server-side.
+			if (ext && /^(jpg|png|jpeg|gif)$/.test(ext)){
+			jQuery('##uploader .text').text('Uploading: ' + file);
+			} else {
+			// extension is not allowed
+			jQuery('##uploader .text').text('Error: only images are allowed');
+			// cancel upload
+			return false;
+			}
+			},
+			onComplete : function(file){
+			jQuery('##uploader .text').text('Uploaded: ' + file);
+			jQuery('<li></li>').appendTo('##uploader .files').text(file);	
+			}
+		});
+
+});/*]]>*/
+</script>
+<div id="uploader">
+<p><a class="submit" href="##" id="uploadbutton"><span>Upload Image</span></a></p>
+<p class="text"></p>
+<ol class="files"></ol>
+</div>
 </cfoutput>
 <cfelse>
 <div>
