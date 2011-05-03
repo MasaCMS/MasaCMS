@@ -147,7 +147,6 @@ jQuery(document).ready(function(){
 </script>
 <div id="uploader">
 <p><a class="submit" href="##" id="uploadbutton"><span>Upload Image</span></a></p>
-<p class="text"></p>
 <ol class="files"></ol>
 </div>
 </cfoutput>
