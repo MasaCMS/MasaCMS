@@ -248,12 +248,16 @@ function setAsSorted(){
       <dt>
        
        <a  class="add" href="javascript:;" onmouseover="showMenu('newContentMenu',#newcontent#,this,'#request.rstop.contentid#','#attributes.topid#','#request.rstop.parentid#','#attributes.siteid#','#request.rstop.type#');">&nbsp;</a>
-       
+    	
+		<cfsilent>
+			<cfset draftPromptData = application.contentManager.getDraftPromptData(request.rstop.contentid,attributes.siteid) />
+		</cfsilent>
+		
        <cfif request.rstop.haskids><span class="hasChildren"></span></cfif>
         <cfif perm neq 'none'>
-          <a class="#icon# title" title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.edit")#" href="index.cfm?fuseaction=cArch.edit&contenthistid=#request.rstop.ContentHistID#&siteid=#URLEncodedFormat(attributes.siteid)#&contentid=#attributes.topid#&topid=#URLEncodedFormat(attributes.topid)#&type=#request.rstop.type#&parentid=#request.rstop.parentid#&moduleid=#attributes.moduleid#">
+          <a class="#icon# title" data-showdialog="#draftPromptData.showdialog#" data-contentid="#request.rstop.contentid#" data-historyid="#draftPromptData.historyID#" data-publishedHistoryID="#draftPromptData.publishedHistoryID#" title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.edit")#" href="index.cfm?fuseaction=cArch.edit&contenthistid=#request.rstop.ContentHistID#&siteid=#URLEncodedFormat(attributes.siteid)#&contentid=#attributes.topid#&topid=#URLEncodedFormat(attributes.topid)#&type=#request.rstop.type#&parentid=#request.rstop.parentid#&moduleid=#attributes.moduleid#">
         <cfelse>
-		  <a class="#icon# title">
+		  <a class="#icon# title" data-showdialog="#draftPromptData.showdialog#" data-contentid="#request.rstop.contentid#" data-historyid="#draftPromptData.historyID#" data-publishedHistoryID="#draftPromptData.publishedHistoryID#">
 		</cfif>
 		#HTMLEditFormat(left(request.rsTop.menutitle,70))#
         <cfif len(request.rsTop.menutitle) gt 70>&hellip;</cfif>
@@ -344,3 +348,5 @@ function setAsSorted(){
 	#pageList#
   </cfif>
 </cfoutput>
+
+<script type="text/javascript" src="js/sitemanager.js"></script>
