@@ -141,7 +141,8 @@ to your own modified versions of Mura CMS.
 				and form_element neq 'submit' 
 				and form_element neq 'sendto'
 				and form_element neq 'HKEY'
-				and form_element neq 'UKEY'>
+				and form_element neq 'UKEY'
+				and structkeyexists(fields, form_element)>
 			
 			<cfif findNoCase('attachment',form_element) and isValid("UUID",fields['#form_element#'])>
 				
