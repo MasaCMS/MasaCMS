@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
+Copyright (c) 2003-2011, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
 
@@ -175,18 +175,19 @@ CKEDITOR.lang['vi'] =
 		langDirRTL		: 'Phải sang trái (RTL)',
 		acccessKey		: 'Phím hỗ trợ truy cập',
 		name			: 'Tên',
-		langCode		: 'Mã ngôn ngữ',
-		tabIndex		: 'Chỉ số của Tab',
-		advisoryTitle	: 'Nhan đề hướng dẫn',
+		langCode			: 'Mã ngôn ngữ',
+		tabIndex			: 'Chỉ số của Tab',
+		advisoryTitle		: 'Nhan đề hướng dẫn',
 		advisoryContentType	: 'Nội dung hướng dẫn',
 		cssClasses		: 'Lớp Stylesheet',
 		charset			: 'Bảng mã của tài nguyên được liên kết đến',
 		styles			: 'Kiểu (style)',
-		selectAnchor	: 'Chọn một điểm neo',
+		rel			: 'Relationship', // MISSING
+		selectAnchor		: 'Chọn một điểm neo',
 		anchorName		: 'Theo tên điểm neo',
-		anchorId		: 'Theo định danh thành phần',
-		emailAddress	: 'Thư điện tử',
-		emailSubject	: 'Tiêu đề thông điệp',
+		anchorId			: 'Theo định danh thành phần',
+		emailAddress		: 'Thư điện tử',
+		emailSubject		: 'Tiêu đề thông điệp',
 		emailBody		: 'Nội dung thông điệp',
 		noAnchors		: '(Không có điểm neo nào trong tài liệu)',
 		noUrl			: 'Hãy đưa vào đường dẫn liên kết (URL)',
@@ -601,9 +602,9 @@ CKEDITOR.lang['vi'] =
 
 	iframe :
 	{
-		title		: 'iFrame Properties', // MISSING
-		toolbar		: 'iFrame', // MISSING
-		noUrl		: 'Please type the iFrame URL', // MISSING
+		title		: 'IFrame Properties', // MISSING
+		toolbar		: 'IFrame', // MISSING
+		noUrl		: 'Please type the iframe URL', // MISSING
 		scrolling	: 'Enable scrollbars', // MISSING
 		border		: 'Show frame border' // MISSING
 	},
@@ -725,7 +726,7 @@ CKEDITOR.lang['vi'] =
 	{
 		anchor		: 'Điểm neo',
 		flash		: 'Flash',
-		iframe		: 'iFrame', // MISSING
+		iframe		: 'IFrame', // MISSING
 		hiddenfield	: 'Hidden Field', // MISSING
 		unknown		: 'Đối tượng không rõ ràng'
 	},

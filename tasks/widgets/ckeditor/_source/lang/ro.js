@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
+Copyright (c) 2003-2011, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
 
@@ -175,18 +175,19 @@ CKEDITOR.lang['ro'] =
 		langDirRTL		: 'dreapta-stânga (RTL)',
 		acccessKey		: 'Tasta de acces',
 		name			: 'Nume',
-		langCode		: 'Direcţia cuvintelor',
-		tabIndex		: 'Indexul tabului',
-		advisoryTitle	: 'Titlul consultativ',
+		langCode			: 'Direcţia cuvintelor',
+		tabIndex			: 'Indexul tabului',
+		advisoryTitle		: 'Titlul consultativ',
 		advisoryContentType	: 'Tipul consultativ al titlului',
 		cssClasses		: 'Clasele cu stilul paginii (CSS)',
 		charset			: 'Setul de caractere al resursei legate',
 		styles			: 'Stil',
-		selectAnchor	: 'Selectaţi o ancoră',
+		rel			: 'Relationship', // MISSING
+		selectAnchor		: 'Selectaţi o ancoră',
 		anchorName		: 'după numele ancorei',
-		anchorId		: 'după Id-ul elementului',
-		emailAddress	: 'Adresă de e-mail',
-		emailSubject	: 'Subiectul mesajului',
+		anchorId			: 'după Id-ul elementului',
+		emailAddress		: 'Adresă de e-mail',
+		emailSubject		: 'Subiectul mesajului',
 		emailBody		: 'Conţinutul mesajului',
 		noAnchors		: '(Nicio ancoră disponibilă în document)',
 		noUrl			: 'Vă rugăm să scrieţi URL-ul',
@@ -601,9 +602,9 @@ CKEDITOR.lang['ro'] =
 
 	iframe :
 	{
-		title		: 'iFrame Properties', // MISSING
-		toolbar		: 'iFrame', // MISSING
-		noUrl		: 'Please type the iFrame URL', // MISSING
+		title		: 'IFrame Properties', // MISSING
+		toolbar		: 'IFrame', // MISSING
+		noUrl		: 'Please type the iframe URL', // MISSING
 		scrolling	: 'Enable scrollbars', // MISSING
 		border		: 'Show frame border' // MISSING
 	},
@@ -725,7 +726,7 @@ CKEDITOR.lang['ro'] =
 	{
 		anchor		: 'Anchor', // MISSING
 		flash		: 'Flash Animation', // MISSING
-		iframe		: 'iFrame', // MISSING
+		iframe		: 'IFrame', // MISSING
 		hiddenfield	: 'Hidden Field', // MISSING
 		unknown		: 'Unknown Object' // MISSING
 	},

@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
+Copyright (c) 2003-2011, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
 
@@ -26,7 +26,7 @@ CKEDITOR.dialog.add( 'anchor', function( editor )
 		{
 			// Always create a new anchor, because of IE BUG.
 			var name = this.getValueOf( 'info', 'txtName' ),
-				element = CKEDITOR.env.ie ?
+				element = CKEDITOR.env.ie && !( CKEDITOR.document.$.documentMode >= 8 ) ?
 				editor.document.createElement( '<a name="' + CKEDITOR.tools.htmlEncode( name ) + '">' ) :
 				editor.document.createElement( 'a' );
 

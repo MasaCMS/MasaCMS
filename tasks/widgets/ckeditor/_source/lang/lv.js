@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
+Copyright (c) 2003-2011, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
 
@@ -175,18 +175,19 @@ CKEDITOR.lang['lv'] =
 		langDirRTL		: 'No labās uz kreiso (RTL)',
 		acccessKey		: 'Pieejas kods',
 		name			: 'Nosaukums',
-		langCode		: 'Valodas lasīšanas virziens',
-		tabIndex		: 'Ciļņu indekss',
-		advisoryTitle	: 'Konsultatīvs virsraksts',
+		langCode			: 'Valodas lasīšanas virziens',
+		tabIndex			: 'Ciļņu indekss',
+		advisoryTitle		: 'Konsultatīvs virsraksts',
 		advisoryContentType	: 'Konsultatīvs satura tips',
 		cssClasses		: 'Stilu saraksta klases',
 		charset			: 'Pievienotā resursa kodu tabula',
 		styles			: 'Stils',
-		selectAnchor	: 'Izvēlēties iezīmi',
+		rel			: 'Relationship', // MISSING
+		selectAnchor		: 'Izvēlēties iezīmi',
 		anchorName		: 'Pēc iezīmes nosaukuma',
-		anchorId		: 'Pēc elementa ID',
-		emailAddress	: 'E-pasta adrese',
-		emailSubject	: 'Ziņas tēma',
+		anchorId			: 'Pēc elementa ID',
+		emailAddress		: 'E-pasta adrese',
+		emailSubject		: 'Ziņas tēma',
 		emailBody		: 'Ziņas saturs',
 		noAnchors		: '(Šajā dokumentā nav iezīmju)',
 		noUrl			: 'Lūdzu norādi hipersaiti',
@@ -601,9 +602,9 @@ CKEDITOR.lang['lv'] =
 
 	iframe :
 	{
-		title		: 'iFrame Properties', // MISSING
-		toolbar		: 'iFrame', // MISSING
-		noUrl		: 'Please type the iFrame URL', // MISSING
+		title		: 'IFrame Properties', // MISSING
+		toolbar		: 'IFrame', // MISSING
+		noUrl		: 'Please type the iframe URL', // MISSING
 		scrolling	: 'Enable scrollbars', // MISSING
 		border		: 'Show frame border' // MISSING
 	},
@@ -725,7 +726,7 @@ CKEDITOR.lang['lv'] =
 	{
 		anchor		: 'Anchor', // MISSING
 		flash		: 'Flash Animation', // MISSING
-		iframe		: 'iFrame', // MISSING
+		iframe		: 'IFrame', // MISSING
 		hiddenfield	: 'Hidden Field', // MISSING
 		unknown		: 'Unknown Object' // MISSING
 	},

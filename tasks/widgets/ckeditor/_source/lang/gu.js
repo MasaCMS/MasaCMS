@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
+Copyright (c) 2003-2011, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
 
@@ -175,18 +175,19 @@ CKEDITOR.lang['gu'] =
 		langDirRTL		: 'જમણે થી ડાબે (RTL)',
 		acccessKey		: 'ઍક્સેસ કી',
 		name			: 'નામ',
-		langCode		: 'ભાષા લેખવાની પદ્ધતિ',
-		tabIndex		: 'ટૅબ ઇન્ડેક્સ',
-		advisoryTitle	: 'મુખ્ય મથાળું',
+		langCode			: 'ભાષા લેખવાની પદ્ધતિ',
+		tabIndex			: 'ટૅબ ઇન્ડેક્સ',
+		advisoryTitle		: 'મુખ્ય મથાળું',
 		advisoryContentType	: 'મુખ્ય કન્ટેન્ટ પ્રકાર',
 		cssClasses		: 'સ્ટાઇલ-શીટ ક્લાસ',
 		charset			: 'લિંક રિસૉર્સ કૅરિક્ટર સેટ',
 		styles			: 'સ્ટાઇલ',
-		selectAnchor	: 'ઍંકર પસંદ કરો',
+		rel			: 'Relationship', // MISSING
+		selectAnchor		: 'ઍંકર પસંદ કરો',
 		anchorName		: 'ઍંકર નામથી પસંદ કરો',
-		anchorId		: 'ઍંકર એલિમન્ટ Id થી પસંદ કરો',
-		emailAddress	: 'ઈ-મેલ સરનામું',
-		emailSubject	: 'ઈ-મેલ વિષય',
+		anchorId			: 'ઍંકર એલિમન્ટ Id થી પસંદ કરો',
+		emailAddress		: 'ઈ-મેલ સરનામું',
+		emailSubject		: 'ઈ-મેલ વિષય',
 		emailBody		: 'સંદેશ',
 		noAnchors		: '(ડૉક્યુમન્ટમાં ઍંકરની સંખ્યા)',
 		noUrl			: 'લિંક  URL ટાઇપ કરો',
@@ -601,9 +602,9 @@ CKEDITOR.lang['gu'] =
 
 	iframe :
 	{
-		title		: 'iFrame Properties', // MISSING
-		toolbar		: 'iFrame', // MISSING
-		noUrl		: 'Please type the iFrame URL', // MISSING
+		title		: 'IFrame Properties', // MISSING
+		toolbar		: 'IFrame', // MISSING
+		noUrl		: 'Please type the iframe URL', // MISSING
 		scrolling	: 'Enable scrollbars', // MISSING
 		border		: 'Show frame border' // MISSING
 	},
@@ -725,7 +726,7 @@ CKEDITOR.lang['gu'] =
 	{
 		anchor		: 'Anchor', // MISSING
 		flash		: 'Flash Animation', // MISSING
-		iframe		: 'iFrame', // MISSING
+		iframe		: 'IFrame', // MISSING
 		hiddenfield	: 'Hidden Field', // MISSING
 		unknown		: 'Unknown Object' // MISSING
 	},

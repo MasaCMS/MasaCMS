@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
+Copyright (c) 2003-2011, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
 
@@ -175,18 +175,19 @@ CKEDITOR.lang['ar'] =
 		langDirRTL		: 'اليمين لليسار (RTL)',
 		acccessKey		: 'مفاتيح الإختصار',
 		name			: 'الاسم',
-		langCode		: 'كود النص',
-		tabIndex		: 'الترتيب',
-		advisoryTitle	: 'عنوان التقرير',
+		langCode			: 'كود النص',
+		tabIndex			: 'الترتيب',
+		advisoryTitle		: 'عنوان التقرير',
 		advisoryContentType	: 'نوع التقرير',
 		cssClasses		: 'فئات التنسيق',
 		charset			: 'ترميز المادة المطلوبة',
 		styles			: 'نمط',
-		selectAnchor	: 'اختر علامة مرجعية',
+		rel			: 'Relationship', // MISSING
+		selectAnchor		: 'اختر علامة مرجعية',
 		anchorName		: 'حسب الاسم',
-		anchorId		: 'حسب رقم العنصر',
-		emailAddress	: 'عنوان البريد إلكتروني',
-		emailSubject	: 'موضوع الرسالة',
+		anchorId			: 'حسب رقم العنصر',
+		emailAddress		: 'عنوان البريد إلكتروني',
+		emailSubject		: 'موضوع الرسالة',
 		emailBody		: 'محتوى الرسالة',
 		noAnchors		: '(لا توجد علامات مرجعية في هذا المستند)',
 		noUrl			: 'من فضلك أدخل عنوان الموقع الذي يشير إليه الرابط',
@@ -601,9 +602,9 @@ CKEDITOR.lang['ar'] =
 
 	iframe :
 	{
-		title		: 'iFrame Properties', // MISSING
-		toolbar		: 'iFrame', // MISSING
-		noUrl		: 'Please type the iFrame URL', // MISSING
+		title		: 'IFrame Properties', // MISSING
+		toolbar		: 'IFrame', // MISSING
+		noUrl		: 'Please type the iframe URL', // MISSING
 		scrolling	: 'Enable scrollbars', // MISSING
 		border		: 'Show frame border' // MISSING
 	},
@@ -725,7 +726,7 @@ CKEDITOR.lang['ar'] =
 	{
 		anchor		: 'إرساء',
 		flash		: 'رسم متحرك بالفلاش',
-		iframe		: 'iFrame', // MISSING
+		iframe		: 'IFrame', // MISSING
 		hiddenfield	: 'Hidden Field', // MISSING
 		unknown		: 'كائن غير معروف'
 	},

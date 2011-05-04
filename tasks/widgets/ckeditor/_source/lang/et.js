@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
+Copyright (c) 2003-2011, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
 
@@ -175,18 +175,19 @@ CKEDITOR.lang['et'] =
 		langDirRTL		: 'Paremalt vasakule (RTL)',
 		acccessKey		: 'Juurdepääsu võti',
 		name			: 'Nimi',
-		langCode		: 'Keele suund',
-		tabIndex		: 'Tab indeks',
-		advisoryTitle	: 'Juhendav tiitel',
+		langCode			: 'Keele suund',
+		tabIndex			: 'Tab indeks',
+		advisoryTitle		: 'Juhendav tiitel',
 		advisoryContentType	: 'Juhendava sisu tüüp',
 		cssClasses		: 'Stiilistiku klassid',
 		charset			: 'Lingitud ressurssi märgistik',
 		styles			: 'Laad',
-		selectAnchor	: 'Vali ankur',
+		rel			: 'Relationship', // MISSING
+		selectAnchor		: 'Vali ankur',
 		anchorName		: 'Ankru nime järgi',
-		anchorId		: 'Elemendi id järgi',
-		emailAddress	: 'E-posti aadress',
-		emailSubject	: 'Sõnumi teema',
+		anchorId			: 'Elemendi id järgi',
+		emailAddress		: 'E-posti aadress',
+		emailSubject		: 'Sõnumi teema',
 		emailBody		: 'Sõnumi tekst',
 		noAnchors		: '(Selles dokumendis ei ole ankruid)',
 		noUrl			: 'Palun kirjuta lingi URL',
@@ -601,9 +602,9 @@ CKEDITOR.lang['et'] =
 
 	iframe :
 	{
-		title		: 'iFrame Properties', // MISSING
-		toolbar		: 'iFrame', // MISSING
-		noUrl		: 'Please type the iFrame URL', // MISSING
+		title		: 'IFrame Properties', // MISSING
+		toolbar		: 'IFrame', // MISSING
+		noUrl		: 'Please type the iframe URL', // MISSING
 		scrolling	: 'Enable scrollbars', // MISSING
 		border		: 'Show frame border' // MISSING
 	},
@@ -725,7 +726,7 @@ CKEDITOR.lang['et'] =
 	{
 		anchor		: 'Anchor', // MISSING
 		flash		: 'Flash Animation', // MISSING
-		iframe		: 'iFrame', // MISSING
+		iframe		: 'IFrame', // MISSING
 		hiddenfield	: 'Hidden Field', // MISSING
 		unknown		: 'Unknown Object' // MISSING
 	},

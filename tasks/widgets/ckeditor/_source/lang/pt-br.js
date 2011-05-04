@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
+Copyright (c) 2003-2011, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
 
@@ -174,18 +174,19 @@ CKEDITOR.lang['pt-br'] =
 		langDirRTL		: 'Direita para Esquerda (RTL)',
 		acccessKey		: 'Chave de Acesso',
 		name			: 'Nome',
-		langCode		: 'Direção do idioma',
-		tabIndex		: 'Índice de Tabulação',
-		advisoryTitle	: 'Título',
+		langCode			: 'Direção do idioma',
+		tabIndex			: 'Índice de Tabulação',
+		advisoryTitle		: 'Título',
 		advisoryContentType	: 'Tipo de Conteúdo',
 		cssClasses		: 'Classe de CSS',
 		charset			: 'Charset do Link',
 		styles			: 'Estilos',
-		selectAnchor	: 'Selecione uma âncora',
+		rel			: 'Relationship', // MISSING
+		selectAnchor		: 'Selecione uma âncora',
 		anchorName		: 'Nome da âncora',
-		anchorId		: 'Id da âncora',
-		emailAddress	: 'Endereço E-Mail',
-		emailSubject	: 'Assunto da Mensagem',
+		anchorId			: 'Id da âncora',
+		emailAddress		: 'Endereço E-Mail',
+		emailSubject		: 'Assunto da Mensagem',
 		emailBody		: 'Corpo da Mensagem',
 		noAnchors		: '(Não há âncoras no documento)',
 		noUrl			: 'Por favor, digite o endereço do Link',
@@ -600,9 +601,9 @@ CKEDITOR.lang['pt-br'] =
 
 	iframe :
 	{
-		title		: 'iFrame Properties', // MISSING
-		toolbar		: 'iFrame', // MISSING
-		noUrl		: 'Please type the iFrame URL', // MISSING
+		title		: 'IFrame Properties', // MISSING
+		toolbar		: 'IFrame', // MISSING
+		noUrl		: 'Please type the iframe URL', // MISSING
 		scrolling	: 'Enable scrollbars', // MISSING
 		border		: 'Show frame border' // MISSING
 	},
@@ -724,7 +725,7 @@ CKEDITOR.lang['pt-br'] =
 	{
 		anchor		: 'Âncora',
 		flash		: 'Animação em Flash',
-		iframe		: 'iFrame', // MISSING
+		iframe		: 'IFrame', // MISSING
 		hiddenfield	: 'Hidden Field', // MISSING
 		unknown		: 'Objeto desconhecido'
 	},

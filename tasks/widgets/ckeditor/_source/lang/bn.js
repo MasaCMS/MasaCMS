@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
+Copyright (c) 2003-2011, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
 
@@ -175,18 +175,19 @@ CKEDITOR.lang['bn'] =
 		langDirRTL		: 'ডান থেকে বাম (RTL)',
 		acccessKey		: 'এক্সেস কী',
 		name			: 'নাম',
-		langCode		: 'ভাষা লেখার দিক',
-		tabIndex		: 'ট্যাব ইন্ডেক্স',
-		advisoryTitle	: 'পরামর্শ শীর্ষক',
+		langCode			: 'ভাষা লেখার দিক',
+		tabIndex			: 'ট্যাব ইন্ডেক্স',
+		advisoryTitle		: 'পরামর্শ শীর্ষক',
 		advisoryContentType	: 'পরামর্শ কন্টেন্টের প্রকার',
 		cssClasses		: 'স্টাইল-শীট ক্লাস',
 		charset			: 'লিংক রিসোর্স ক্যারেক্টর সেট',
 		styles			: 'স্টাইল',
-		selectAnchor	: 'নোঙর বাছাই',
+		rel			: 'Relationship', // MISSING
+		selectAnchor		: 'নোঙর বাছাই',
 		anchorName		: 'নোঙরের নাম দিয়ে',
-		anchorId		: 'নোঙরের আইডি দিয়ে',
-		emailAddress	: 'ইমেইল ঠিকানা',
-		emailSubject	: 'মেসেজের বিষয়',
+		anchorId			: 'নোঙরের আইডি দিয়ে',
+		emailAddress		: 'ইমেইল ঠিকানা',
+		emailSubject		: 'মেসেজের বিষয়',
 		emailBody		: 'মেসেজের দেহ',
 		noAnchors		: '(No anchors available in the document)', // MISSING
 		noUrl			: 'অনুগ্রহ করে URL লিংক টাইপ করুন',
@@ -601,9 +602,9 @@ CKEDITOR.lang['bn'] =
 
 	iframe :
 	{
-		title		: 'iFrame Properties', // MISSING
-		toolbar		: 'iFrame', // MISSING
-		noUrl		: 'Please type the iFrame URL', // MISSING
+		title		: 'IFrame Properties', // MISSING
+		toolbar		: 'IFrame', // MISSING
+		noUrl		: 'Please type the iframe URL', // MISSING
 		scrolling	: 'Enable scrollbars', // MISSING
 		border		: 'Show frame border' // MISSING
 	},
@@ -725,7 +726,7 @@ CKEDITOR.lang['bn'] =
 	{
 		anchor		: 'Anchor', // MISSING
 		flash		: 'Flash Animation', // MISSING
-		iframe		: 'iFrame', // MISSING
+		iframe		: 'IFrame', // MISSING
 		hiddenfield	: 'Hidden Field', // MISSING
 		unknown		: 'Unknown Object' // MISSING
 	},

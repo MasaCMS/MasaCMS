@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
+Copyright (c) 2003-2011, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
 
@@ -56,7 +56,7 @@ CKEDITOR.lang['es'] =
 	superscript		: 'Superíndice',
 	horizontalrule	: 'Insertar Línea Horizontal',
 	pagebreak		: 'Insertar Salto de Página',
-	pagebreakAlt		: 'Page Break', // MISSING
+	pagebreakAlt		: 'Salto de página',
 	unlink			: 'Eliminar Vínculo',
 	undo			: 'Deshacer',
 	redo			: 'Rehacer',
@@ -175,22 +175,23 @@ CKEDITOR.lang['es'] =
 		langDirRTL		: 'Derecha a Izquierda (RTL)',
 		acccessKey		: 'Clave de Acceso',
 		name			: 'Nombre',
-		langCode		: 'Código idioma',
-		tabIndex		: 'Indice de tabulación',
-		advisoryTitle	: 'Título',
+		langCode			: 'Código idioma',
+		tabIndex			: 'Indice de tabulación',
+		advisoryTitle		: 'Título',
 		advisoryContentType	: 'Tipo de Contenido',
 		cssClasses		: 'Clases de hojas de estilo',
 		charset			: 'Fuente de caracteres vinculado',
 		styles			: 'Estilo',
-		selectAnchor	: 'Seleccionar una referencia',
+		rel			: 'Relación',
+		selectAnchor		: 'Seleccionar una referencia',
 		anchorName		: 'Por Nombre de Referencia',
-		anchorId		: 'Por ID de elemento',
-		emailAddress	: 'Dirección de E-Mail',
-		emailSubject	: 'Título del Mensaje',
+		anchorId			: 'Por ID de elemento',
+		emailAddress		: 'Dirección de E-Mail',
+		emailSubject		: 'Título del Mensaje',
 		emailBody		: 'Cuerpo del Mensaje',
 		noAnchors		: '(No hay referencias disponibles en el documento)',
-		noUrl			: 'Por favor tipee el vínculo URL',
-		noEmail			: 'Por favor tipee la dirección de e-mail'
+		noUrl			: 'Por favor escriba el vínculo URL',
+		noEmail			: 'Por favor escriba la dirección de e-mail'
 	},
 
 	// Anchor dialog
@@ -601,11 +602,11 @@ CKEDITOR.lang['es'] =
 
 	iframe :
 	{
-		title		: 'iFrame Properties', // MISSING
-		toolbar		: 'iFrame', // MISSING
-		noUrl		: 'Please type the iFrame URL', // MISSING
-		scrolling	: 'Enable scrollbars', // MISSING
-		border		: 'Show frame border' // MISSING
+		title		: 'Propiedades de iframe',
+		toolbar		: 'IFrame',
+		noUrl		: 'Por favor, escriba la dirección del iframe',
+		scrolling	: 'Activar barras de desplazamiento',
+		border		: 'Mostrar borde del marco'
 	},
 
 	font :
@@ -725,8 +726,8 @@ CKEDITOR.lang['es'] =
 	{
 		anchor		: 'Ancla',
 		flash		: 'Animación flash',
-		iframe		: 'iFrame', // MISSING
-		hiddenfield	: 'Hidden Field', // MISSING
+		iframe		: 'IFrame',
+		hiddenfield	: 'Campo oculto',
 		unknown		: 'Objeto desconocido'
 	},
 

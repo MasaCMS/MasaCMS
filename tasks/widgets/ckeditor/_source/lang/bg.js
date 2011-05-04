@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
+Copyright (c) 2003-2011, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
 
@@ -175,18 +175,19 @@ CKEDITOR.lang['bg'] =
 		langDirRTL		: 'От дясно на ляво',
 		acccessKey		: 'Бърз клавиш',
 		name			: 'Име',
-		langCode		: 'посока на речта',
-		tabIndex		: 'Ред на достъп',
-		advisoryTitle	: 'Препоръчително заглавие',
+		langCode			: 'посока на речта',
+		tabIndex			: 'Ред на достъп',
+		advisoryTitle		: 'Препоръчително заглавие',
 		advisoryContentType	: 'Препоръчителен тип на съдържанието',
 		cssClasses		: 'Клас от стиловите таблици',
 		charset			: 'Тип на свързания ресурс',
 		styles			: 'Стил',
-		selectAnchor	: 'Изберете котва',
+		rel			: 'Relationship', // MISSING
+		selectAnchor		: 'Изберете котва',
 		anchorName		: 'По име на котвата',
-		anchorId		: 'По идентификатор на елемент',
-		emailAddress	: 'Адрес за е-поща',
-		emailSubject	: 'Тема на писмото',
+		anchorId			: 'По идентификатор на елемент',
+		emailAddress		: 'Адрес за е-поща',
+		emailSubject		: 'Тема на писмото',
 		emailBody		: 'Текст на писмото',
 		noAnchors		: '(Няма котви в текущия документ)',
 		noUrl			: 'Моля, напишете пълния път (URL)',
@@ -601,9 +602,9 @@ CKEDITOR.lang['bg'] =
 
 	iframe :
 	{
-		title		: 'iFrame Properties', // MISSING
-		toolbar		: 'iFrame', // MISSING
-		noUrl		: 'Please type the iFrame URL', // MISSING
+		title		: 'IFrame Properties', // MISSING
+		toolbar		: 'IFrame', // MISSING
+		noUrl		: 'Please type the iframe URL', // MISSING
 		scrolling	: 'Enable scrollbars', // MISSING
 		border		: 'Show frame border' // MISSING
 	},
@@ -725,7 +726,7 @@ CKEDITOR.lang['bg'] =
 	{
 		anchor		: 'Anchor', // MISSING
 		flash		: 'Flash Animation', // MISSING
-		iframe		: 'iFrame', // MISSING
+		iframe		: 'IFrame', // MISSING
 		hiddenfield	: 'Hidden Field', // MISSING
 		unknown		: 'Unknown Object' // MISSING
 	},

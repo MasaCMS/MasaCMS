@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
+Copyright (c) 2003-2011, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
 
@@ -175,18 +175,19 @@ CKEDITOR.lang['ru'] =
 		langDirRTL		: 'Справа налево (RTL)',
 		acccessKey		: 'Горячая клавиша',
 		name			: 'Имя',
-		langCode		: 'Код языка',
-		tabIndex		: 'Последовательность перехода',
-		advisoryTitle	: 'Заголовок',
+		langCode			: 'Код языка',
+		tabIndex			: 'Последовательность перехода',
+		advisoryTitle		: 'Заголовок',
 		advisoryContentType	: 'Тип содержимого',
 		cssClasses		: 'Класс CSS',
 		charset			: 'Кодировка',
 		styles			: 'Стиль CSS',
-		selectAnchor	: 'Выберите якорь',
+		rel			: 'Relationship', // MISSING
+		selectAnchor		: 'Выберите якорь',
 		anchorName		: 'По имени якоря',
-		anchorId		: 'По идентификатору элемента',
-		emailAddress	: 'Адрес эл. почты',
-		emailSubject	: 'Заголовок сообщения',
+		anchorId			: 'По идентификатору элемента',
+		emailAddress		: 'Адрес эл. почты',
+		emailSubject		: 'Заголовок сообщения',
 		emailBody		: 'Тело сообщения',
 		noAnchors		: '(Нет якорей доступных в этом документе)',
 		noUrl			: 'Пожалуйста, введите URL ссылки',
@@ -601,9 +602,9 @@ CKEDITOR.lang['ru'] =
 
 	iframe :
 	{
-		title		: 'iFrame Properties', // MISSING
-		toolbar		: 'iFrame', // MISSING
-		noUrl		: 'Please type the iFrame URL', // MISSING
+		title		: 'IFrame Properties', // MISSING
+		toolbar		: 'IFrame', // MISSING
+		noUrl		: 'Please type the iframe URL', // MISSING
 		scrolling	: 'Enable scrollbars', // MISSING
 		border		: 'Show frame border' // MISSING
 	},
@@ -725,7 +726,7 @@ CKEDITOR.lang['ru'] =
 	{
 		anchor		: 'Якорь',
 		flash		: 'Flash-анимация',
-		iframe		: 'iFrame', // MISSING
+		iframe		: 'IFrame', // MISSING
 		hiddenfield	: 'Hidden Field', // MISSING
 		unknown		: 'Неизвестный объект'
 	},

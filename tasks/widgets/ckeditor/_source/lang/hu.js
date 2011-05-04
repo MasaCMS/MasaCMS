@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
+Copyright (c) 2003-2011, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
 
@@ -175,18 +175,19 @@ CKEDITOR.lang['hu'] =
 		langDirRTL		: 'Jobbról balra',
 		acccessKey		: 'Billentyűkombináció',
 		name			: 'Név',
-		langCode		: 'Írás iránya',
-		tabIndex		: 'Tabulátor index',
-		advisoryTitle	: 'Súgócimke',
+		langCode			: 'Írás iránya',
+		tabIndex			: 'Tabulátor index',
+		advisoryTitle		: 'Súgócimke',
 		advisoryContentType	: 'Súgó tartalomtípusa',
 		cssClasses		: 'Stíluskészlet',
 		charset			: 'Hivatkozott tartalom kódlapja',
 		styles			: 'Stílus',
-		selectAnchor	: 'Horgony választása',
+		rel			: 'Relationship', // MISSING
+		selectAnchor		: 'Horgony választása',
 		anchorName		: 'Horgony név szerint',
-		anchorId		: 'Azonosító szerint',
-		emailAddress	: 'E-Mail cím',
-		emailSubject	: 'Üzenet tárgya',
+		anchorId			: 'Azonosító szerint',
+		emailAddress		: 'E-Mail cím',
+		emailSubject		: 'Üzenet tárgya',
 		emailBody		: 'Üzenet',
 		noAnchors		: '(Nincs horgony a dokumentumban)',
 		noUrl			: 'Adja meg a hivatkozás webcímét',
@@ -601,9 +602,9 @@ CKEDITOR.lang['hu'] =
 
 	iframe :
 	{
-		title		: 'iFrame Properties', // MISSING
-		toolbar		: 'iFrame', // MISSING
-		noUrl		: 'Please type the iFrame URL', // MISSING
+		title		: 'IFrame Properties', // MISSING
+		toolbar		: 'IFrame', // MISSING
+		noUrl		: 'Please type the iframe URL', // MISSING
 		scrolling	: 'Enable scrollbars', // MISSING
 		border		: 'Show frame border' // MISSING
 	},
@@ -725,7 +726,7 @@ CKEDITOR.lang['hu'] =
 	{
 		anchor		: 'Horgony',
 		flash		: 'Flash animáció',
-		iframe		: 'iFrame', // MISSING
+		iframe		: 'IFrame', // MISSING
 		hiddenfield	: 'Hidden Field', // MISSING
 		unknown		: 'Ismeretlen objektum'
 	},

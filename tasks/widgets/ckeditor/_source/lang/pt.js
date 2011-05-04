@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
+Copyright (c) 2003-2011, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
 
@@ -175,18 +175,19 @@ CKEDITOR.lang['pt'] =
 		langDirRTL		: 'Direita a Esquerda (RTL)',
 		acccessKey		: 'Chave de Acesso',
 		name			: 'Nome',
-		langCode		: 'Orientação de idioma',
-		tabIndex		: 'Índice de Tubulação',
-		advisoryTitle	: 'Título',
+		langCode			: 'Orientação de idioma',
+		tabIndex			: 'Índice de Tubulação',
+		advisoryTitle		: 'Título',
 		advisoryContentType	: 'Tipo de Conteúdo',
 		cssClasses		: 'Classes de Estilo de Folhas Classes',
 		charset			: 'Fonte de caracteres vinculado',
 		styles			: 'Estilo',
-		selectAnchor	: 'Seleccionar una referência',
+		rel			: 'Relationship', // MISSING
+		selectAnchor		: 'Seleccionar una referência',
 		anchorName		: 'Por Nome de Referência',
-		anchorId		: 'Por ID de elemento',
-		emailAddress	: 'Endereço de E-Mail',
-		emailSubject	: 'Título de Mensagem',
+		anchorId			: 'Por ID de elemento',
+		emailAddress		: 'Endereço de E-Mail',
+		emailSubject		: 'Título de Mensagem',
 		emailBody		: 'Corpo da Mensagem',
 		noAnchors		: '(Não há referências disponíveis no documento)',
 		noUrl			: 'Por favor introduza a hiperligação URL',
@@ -601,9 +602,9 @@ CKEDITOR.lang['pt'] =
 
 	iframe :
 	{
-		title		: 'iFrame Properties', // MISSING
-		toolbar		: 'iFrame', // MISSING
-		noUrl		: 'Please type the iFrame URL', // MISSING
+		title		: 'IFrame Properties', // MISSING
+		toolbar		: 'IFrame', // MISSING
+		noUrl		: 'Please type the iframe URL', // MISSING
 		scrolling	: 'Enable scrollbars', // MISSING
 		border		: 'Show frame border' // MISSING
 	},
@@ -725,7 +726,7 @@ CKEDITOR.lang['pt'] =
 	{
 		anchor		: 'Anchor', // MISSING
 		flash		: 'Flash Animation', // MISSING
-		iframe		: 'iFrame', // MISSING
+		iframe		: 'IFrame', // MISSING
 		hiddenfield	: 'Hidden Field', // MISSING
 		unknown		: 'Unknown Object' // MISSING
 	},

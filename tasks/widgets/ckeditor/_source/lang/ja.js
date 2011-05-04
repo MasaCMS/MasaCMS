@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
+Copyright (c) 2003-2011, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
 
@@ -175,18 +175,19 @@ CKEDITOR.lang['ja'] =
 		langDirRTL		: '右から左 (RTL)',
 		acccessKey		: 'アクセスキー',
 		name			: 'Name属性',
-		langCode		: '言語コード',
-		tabIndex		: 'タブインデックス',
-		advisoryTitle	: 'Title属性',
+		langCode			: '言語コード',
+		tabIndex			: 'タブインデックス',
+		advisoryTitle		: 'Title属性',
 		advisoryContentType	: 'Content Type属性',
 		cssClasses		: 'スタイルシートクラス',
 		charset			: 'リンクcharset属性',
 		styles			: 'スタイルシート',
-		selectAnchor	: 'アンカーを選択',
+		rel			: 'Relationship', // MISSING
+		selectAnchor		: 'アンカーを選択',
 		anchorName		: 'アンカー名',
-		anchorId		: 'エレメントID',
-		emailAddress	: 'E-Mail アドレス',
-		emailSubject	: '件名',
+		anchorId			: 'エレメントID',
+		emailAddress		: 'E-Mail アドレス',
+		emailSubject		: '件名',
 		emailBody		: '本文',
 		noAnchors		: '(ドキュメントにおいて利用可能なアンカーはありません。)',
 		noUrl			: 'リンクURLを入力してください。',
@@ -601,9 +602,9 @@ CKEDITOR.lang['ja'] =
 
 	iframe :
 	{
-		title		: 'iFrame Properties', // MISSING
-		toolbar		: 'iFrame', // MISSING
-		noUrl		: 'Please type the iFrame URL', // MISSING
+		title		: 'IFrame Properties', // MISSING
+		toolbar		: 'IFrame', // MISSING
+		noUrl		: 'Please type the iframe URL', // MISSING
 		scrolling	: 'Enable scrollbars', // MISSING
 		border		: 'Show frame border' // MISSING
 	},
@@ -725,7 +726,7 @@ CKEDITOR.lang['ja'] =
 	{
 		anchor		: 'アンカー',
 		flash		: 'Flash Animation',
-		iframe		: 'iFrame', // MISSING
+		iframe		: 'IFrame', // MISSING
 		hiddenfield	: 'Hidden Field', // MISSING
 		unknown		: 'Unknown Object'
 	},

@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
+Copyright (c) 2003-2011, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
 
@@ -175,18 +175,19 @@ CKEDITOR.lang['ms'] =
 		langDirRTL		: 'Kanan ke Kiri (RTL)',
 		acccessKey		: 'Kunci Akses',
 		name			: 'Nama',
-		langCode		: 'Arah Tulisan',
-		tabIndex		: 'Indeks Tab ',
-		advisoryTitle	: 'Tajuk Makluman',
+		langCode			: 'Arah Tulisan',
+		tabIndex			: 'Indeks Tab ',
+		advisoryTitle		: 'Tajuk Makluman',
 		advisoryContentType	: 'Jenis Kandungan Makluman',
 		cssClasses		: 'Kelas-kelas Stylesheet',
 		charset			: 'Linked Resource Charset',
 		styles			: 'Stail',
-		selectAnchor	: 'Sila pilih pautan',
+		rel			: 'Relationship', // MISSING
+		selectAnchor		: 'Sila pilih pautan',
 		anchorName		: 'dengan menggunakan nama pautan',
-		anchorId		: 'dengan menggunakan ID elemen',
-		emailAddress	: 'Alamat E-Mail',
-		emailSubject	: 'Subjek Mesej',
+		anchorId			: 'dengan menggunakan ID elemen',
+		emailAddress		: 'Alamat E-Mail',
+		emailSubject		: 'Subjek Mesej',
 		emailBody		: 'Isi Kandungan Mesej',
 		noAnchors		: '(Tiada pautan terdapat dalam dokumen ini)',
 		noUrl			: 'Sila taip sambungan URL',
@@ -601,9 +602,9 @@ CKEDITOR.lang['ms'] =
 
 	iframe :
 	{
-		title		: 'iFrame Properties', // MISSING
-		toolbar		: 'iFrame', // MISSING
-		noUrl		: 'Please type the iFrame URL', // MISSING
+		title		: 'IFrame Properties', // MISSING
+		toolbar		: 'IFrame', // MISSING
+		noUrl		: 'Please type the iframe URL', // MISSING
 		scrolling	: 'Enable scrollbars', // MISSING
 		border		: 'Show frame border' // MISSING
 	},
@@ -725,7 +726,7 @@ CKEDITOR.lang['ms'] =
 	{
 		anchor		: 'Anchor', // MISSING
 		flash		: 'Flash Animation', // MISSING
-		iframe		: 'iFrame', // MISSING
+		iframe		: 'IFrame', // MISSING
 		hiddenfield	: 'Hidden Field', // MISSING
 		unknown		: 'Unknown Object' // MISSING
 	},

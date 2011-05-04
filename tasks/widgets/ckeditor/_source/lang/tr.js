@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
+Copyright (c) 2003-2011, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
 
@@ -174,18 +174,19 @@ CKEDITOR.lang['tr'] =
 		langDirRTL		: 'Sağdan Sola (RTL)',
 		acccessKey		: 'Erişim Tuşu',
 		name			: 'Ad',
-		langCode		: 'Dil Yönü',
-		tabIndex		: 'Sekme İndeksi',
-		advisoryTitle	: 'Danışma Başlığı',
+		langCode			: 'Dil Yönü',
+		tabIndex			: 'Sekme İndeksi',
+		advisoryTitle		: 'Danışma Başlığı',
 		advisoryContentType	: 'Danışma İçerik Türü',
 		cssClasses		: 'Biçem Sayfası Sınıfları',
 		charset			: 'Bağlı Kaynak Karakter Gurubu',
 		styles			: 'Biçem',
-		selectAnchor	: 'Bağlantı Seç',
+		rel			: 'Relationship', // MISSING
+		selectAnchor		: 'Bağlantı Seç',
 		anchorName		: 'Bağlantı Adı ile',
-		anchorId		: 'Eleman Kimlik Numarası ile',
-		emailAddress	: 'E-Posta Adresi',
-		emailSubject	: 'İleti Konusu',
+		anchorId			: 'Eleman Kimlik Numarası ile',
+		emailAddress		: 'E-Posta Adresi',
+		emailSubject		: 'İleti Konusu',
 		emailBody		: 'İleti Gövdesi',
 		noAnchors		: '(Bu belgede hiç çapa yok)',
 		noUrl			: 'Lütfen Link URL\'sini yazın',
@@ -600,9 +601,9 @@ CKEDITOR.lang['tr'] =
 
 	iframe :
 	{
-		title		: 'iFrame Properties', // MISSING
-		toolbar		: 'iFrame', // MISSING
-		noUrl		: 'Please type the iFrame URL', // MISSING
+		title		: 'IFrame Properties', // MISSING
+		toolbar		: 'IFrame', // MISSING
+		noUrl		: 'Please type the iframe URL', // MISSING
 		scrolling	: 'Enable scrollbars', // MISSING
 		border		: 'Show frame border' // MISSING
 	},
@@ -724,7 +725,7 @@ CKEDITOR.lang['tr'] =
 	{
 		anchor		: 'Bağlantı',
 		flash		: 'Flash Animasyonu',
-		iframe		: 'iFrame', // MISSING
+		iframe		: 'IFrame', // MISSING
 		hiddenfield	: 'Hidden Field', // MISSING
 		unknown		: 'Bilinmeyen Nesne'
 	},

@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
+Copyright (c) 2003-2011, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
 
@@ -14,6 +14,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 	{
 		toolbarFocus :
 		{
+			editorFocus : false,
 			exec : function( editor )
 			{
 				var idBase = editor._.elementsPath.idBase;
@@ -199,3 +200,10 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		}
 	});
 })();
+
+/**
+ * Fired when the contents of the elementsPath are changed
+ * @name CKEDITOR.editor#elementsPathUpdate
+ * @event
+ * @param {Object} eventData.space The elementsPath container
+ */
