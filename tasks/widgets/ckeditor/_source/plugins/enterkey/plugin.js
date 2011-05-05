@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
+Copyright (c) 2003-2011, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
 
@@ -75,7 +75,8 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			else if ( previousBlock && ( node = previousBlock.getParent() ) && node.is( 'li' ) )
 			{
 				previousBlock.breakParent( node );
-				range.moveToElementEditStart( previousBlock.getNext() );
+				node = previousBlock.getNext();
+				range.moveToElementEditStart( node );
 				previousBlock.move( previousBlock.getPrevious() );
 			}
 
@@ -110,6 +111,8 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 					{
 						// Otherwise, duplicate the previous block.
 						newBlock = previousBlock.clone();
+						// Value attribute of list item should not be duplicated (#7330).
+						newBlock.is( 'li' ) && newBlock.removeAttribute( 'value' );
 					}
 				}
 				else if ( nextBlock )
@@ -117,9 +120,15 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 				if ( !newBlock )
 				{
-					newBlock = doc.createElement( blockTag );
-					if ( previousBlock && ( newBlockDir = previousBlock.getDirection() ) )
-						newBlock.setAttribute( 'dir', newBlockDir );
+					// We have already created a new list item. (#6849)
+					if ( node && node.is( 'li' ) )
+						newBlock = node;
+					else
+					{
+						newBlock = doc.createElement( blockTag );
+						if ( previousBlock && ( newBlockDir = previousBlock.getDirection() ) )
+							newBlock.setAttribute( 'dir', newBlockDir );
+					}
 				}
 				// Force the enter block unless we're talking of a list item.
 				else if ( forceMode && !newBlock.is( 'li' ) )
@@ -150,7 +159,8 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				if ( !CKEDITOR.env.ie )
 					newBlock.appendBogus();
 
-				range.insertNode( newBlock );
+				if ( !newBlock.getParent() )
+					range.insertNode( newBlock );
 
 				// This is tricky, but to make the new block visible correctly
 				// we must select it.
@@ -265,29 +275,27 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				range.deleteContents();
 				range.insertNode( lineBreak );
 
-				// A text node is required by Gecko only to make the cursor blink.
-				// We need some text inside of it, so the bogus <br> is properly
-				// created.
-				if ( !CKEDITOR.env.ie )
-					doc.createText( '\ufeff' ).insertAfter( lineBreak );
-
-				// If we are at the end of a block, we must be sure the bogus node is available in that block.
-				if ( isEndOfBlock && !CKEDITOR.env.ie )
-					lineBreak.getParent().appendBogus();
-
-				// Now we can remove the text node contents, so the caret doesn't
-				// stop on it.
-				if ( !CKEDITOR.env.ie )
-					lineBreak.getNext().$.nodeValue = '';
 				// IE has different behavior regarding position.
 				if ( CKEDITOR.env.ie )
 					range.setStartAt( lineBreak, CKEDITOR.POSITION_AFTER_END );
 				else
+				{
+					// A text node is required by Gecko only to make the cursor blink.
+					// We need some text inside of it, so the bogus <br> is properly
+					// created.
+					doc.createText( '\ufeff' ).insertAfter( lineBreak );
+
+					// If we are at the end of a block, we must be sure the bogus node is available in that block.
+					if ( isEndOfBlock )
+						lineBreak.getParent().appendBogus();
+
+					// Now we can remove the text node contents, so the caret doesn't
+					// stop on it.
+					lineBreak.getNext().$.nodeValue = '';
+
 					range.setStartAt( lineBreak.getNext(), CKEDITOR.POSITION_AFTER_START );
 
-				// Scroll into view, for non IE.
-				if ( !CKEDITOR.env.ie )
-				{
+					// Scroll into view, for non IE.
 					var dummy = null;
 
 					// BR is not positioned in Opera and Webkit.
@@ -362,7 +370,6 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 		return true;
 	}
-
 
 	function getRange( editor )
 	{

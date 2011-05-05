@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
+Copyright (c) 2003-2011, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
 
@@ -175,18 +175,19 @@ CKEDITOR.lang['eu'] =
 		langDirRTL		: 'Eskumatik Ezkerrera (RTL)',
 		acccessKey		: 'Sarbide-gakoa',
 		name			: 'Izena',
-		langCode		: 'Hizkuntzaren Norabidea',
-		tabIndex		: 'Tabulazio Indizea',
-		advisoryTitle	: 'Izenburua',
+		langCode			: 'Hizkuntzaren Norabidea',
+		tabIndex			: 'Tabulazio Indizea',
+		advisoryTitle		: 'Izenburua',
 		advisoryContentType	: 'Eduki Mota (Content Type)',
 		cssClasses		: 'Estilo-orriko Klaseak',
 		charset			: 'Estekatutako Karaktere Multzoa',
 		styles			: 'Estiloa',
-		selectAnchor	: 'Aingura bat hautatu',
+		rel			: 'Relationship', // MISSING
+		selectAnchor		: 'Aingura bat hautatu',
 		anchorName		: 'Aingura izenagatik',
-		anchorId		: 'Elementuaren ID-gatik',
-		emailAddress	: 'ePosta Helbidea',
-		emailSubject	: 'Mezuaren Gaia',
+		anchorId			: 'Elementuaren ID-gatik',
+		emailAddress		: 'ePosta Helbidea',
+		emailSubject		: 'Mezuaren Gaia',
 		emailBody		: 'Mezuaren Gorputza',
 		noAnchors		: '(Ez daude aingurak eskuragarri dokumentuan)',
 		noUrl			: 'Mesedez URL esteka idatzi',
@@ -601,9 +602,9 @@ CKEDITOR.lang['eu'] =
 
 	iframe :
 	{
-		title		: 'iFrame Properties', // MISSING
-		toolbar		: 'iFrame', // MISSING
-		noUrl		: 'Please type the iFrame URL', // MISSING
+		title		: 'IFrame Properties', // MISSING
+		toolbar		: 'IFrame', // MISSING
+		noUrl		: 'Please type the iframe URL', // MISSING
 		scrolling	: 'Enable scrollbars', // MISSING
 		border		: 'Show frame border' // MISSING
 	},
@@ -725,7 +726,7 @@ CKEDITOR.lang['eu'] =
 	{
 		anchor		: 'Aingura',
 		flash		: 'Flash Animazioa',
-		iframe		: 'iFrame', // MISSING
+		iframe		: 'IFrame', // MISSING
 		hiddenfield	: 'Hidden Field', // MISSING
 		unknown		: 'Objektu ezezaguna'
 	},

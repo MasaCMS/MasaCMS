@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
+Copyright (c) 2003-2011, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
 
@@ -175,18 +175,19 @@ CKEDITOR.lang['zh'] =
 		langDirRTL		: '由右而左 (RTL)',
 		acccessKey		: '存取鍵',
 		name			: '名稱',
-		langCode		: '語言方向',
-		tabIndex		: '定位順序',
-		advisoryTitle	: '標題',
+		langCode			: '語言方向',
+		tabIndex			: '定位順序',
+		advisoryTitle		: '標題',
 		advisoryContentType	: '內容類型',
 		cssClasses		: '樣式表類別',
 		charset			: '連結資源之編碼',
 		styles			: '樣式',
-		selectAnchor	: '請選擇錨點',
+		rel			: 'Relationship', // MISSING
+		selectAnchor		: '請選擇錨點',
 		anchorName		: '依錨點名稱',
-		anchorId		: '依元件 ID',
-		emailAddress	: '電子郵件',
-		emailSubject	: '郵件主旨',
+		anchorId			: '依元件 ID',
+		emailAddress		: '電子郵件',
+		emailSubject		: '郵件主旨',
 		emailBody		: '郵件內容',
 		noAnchors		: '(本文件尚無可用之錨點)',
 		noUrl			: '請輸入欲連結的 URL',
@@ -601,9 +602,9 @@ CKEDITOR.lang['zh'] =
 
 	iframe :
 	{
-		title		: 'iFrame Properties', // MISSING
-		toolbar		: 'iFrame', // MISSING
-		noUrl		: 'Please type the iFrame URL', // MISSING
+		title		: 'IFrame Properties', // MISSING
+		toolbar		: 'IFrame', // MISSING
+		noUrl		: 'Please type the iframe URL', // MISSING
 		scrolling	: 'Enable scrollbars', // MISSING
 		border		: 'Show frame border' // MISSING
 	},
@@ -725,7 +726,7 @@ CKEDITOR.lang['zh'] =
 	{
 		anchor		: '錨點',
 		flash		: 'Flash 動畫',
-		iframe		: 'iFrame', // MISSING
+		iframe		: 'IFrame', // MISSING
 		hiddenfield	: 'Hidden Field', // MISSING
 		unknown		: '不明物件'
 	},

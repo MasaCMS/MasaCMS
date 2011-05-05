@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
+Copyright (c) 2003-2011, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
 
@@ -175,18 +175,19 @@ CKEDITOR.lang['sl'] =
 		langDirRTL		: 'Od desne proti levi (RTL)',
 		acccessKey		: 'Vstopno geslo',
 		name			: 'Ime',
-		langCode		: 'Smer jezika',
-		tabIndex		: 'Številka tabulatorja',
-		advisoryTitle	: 'Predlagani naslov',
+		langCode			: 'Smer jezika',
+		tabIndex			: 'Številka tabulatorja',
+		advisoryTitle		: 'Predlagani naslov',
 		advisoryContentType	: 'Predlagani tip vsebine (content-type)',
 		cssClasses		: 'Razred stilne predloge',
 		charset			: 'Kodna tabela povezanega vira',
 		styles			: 'Slog',
-		selectAnchor	: 'Izberi zaznamek',
+		rel			: 'Relationship', // MISSING
+		selectAnchor		: 'Izberi zaznamek',
 		anchorName		: 'Po imenu zaznamka',
-		anchorId		: 'Po ID-ju elementa',
-		emailAddress	: 'Elektronski naslov',
-		emailSubject	: 'Predmet sporočila',
+		anchorId			: 'Po ID-ju elementa',
+		emailAddress		: 'Elektronski naslov',
+		emailSubject		: 'Predmet sporočila',
 		emailBody		: 'Vsebina sporočila',
 		noAnchors		: '(V tem dokumentu ni zaznamkov)',
 		noUrl			: 'Vnesite URL povezave',
@@ -601,9 +602,9 @@ CKEDITOR.lang['sl'] =
 
 	iframe :
 	{
-		title		: 'iFrame Properties', // MISSING
-		toolbar		: 'iFrame', // MISSING
-		noUrl		: 'Please type the iFrame URL', // MISSING
+		title		: 'IFrame Properties', // MISSING
+		toolbar		: 'IFrame', // MISSING
+		noUrl		: 'Please type the iframe URL', // MISSING
 		scrolling	: 'Enable scrollbars', // MISSING
 		border		: 'Show frame border' // MISSING
 	},
@@ -725,7 +726,7 @@ CKEDITOR.lang['sl'] =
 	{
 		anchor		: 'Sidro',
 		flash		: 'Flash animacija',
-		iframe		: 'iFrame', // MISSING
+		iframe		: 'IFrame', // MISSING
 		hiddenfield	: 'Hidden Field', // MISSING
 		unknown		: 'Neznan objekt'
 	},

@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
+Copyright (c) 2003-2011, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
 
@@ -175,18 +175,19 @@ CKEDITOR.lang['el'] =
 		langDirRTL		: 'Δεξιά προς Αριστερά (RTL)',
 		acccessKey		: 'Συντόμευση (Access Key)',
 		name			: 'Όνομα',
-		langCode		: 'Κατεύθυνση κειμένου',
-		tabIndex		: 'Tab Index',
-		advisoryTitle	: 'Συμβουλευτικός τίτλος',
+		langCode			: 'Κατεύθυνση κειμένου',
+		tabIndex			: 'Tab Index',
+		advisoryTitle		: 'Συμβουλευτικός τίτλος',
 		advisoryContentType	: 'Συμβουλευτικός τίτλος περιεχομένου',
 		cssClasses		: 'Stylesheet Classes',
 		charset			: 'Linked Resource Charset',
 		styles			: 'Στύλ',
-		selectAnchor	: 'Επιλέξτε μια άγκυρα',
+		rel			: 'Relationship', // MISSING
+		selectAnchor		: 'Επιλέξτε μια άγκυρα',
 		anchorName		: 'Βάσει του Ονόματος (Name) της άγκυρας',
-		anchorId		: 'Βάσει του Element Id',
-		emailAddress	: 'Διεύθυνση Ηλεκτρονικού Ταχυδρομείου',
-		emailSubject	: 'Θέμα Μηνύματος',
+		anchorId			: 'Βάσει του Element Id',
+		emailAddress		: 'Διεύθυνση Ηλεκτρονικού Ταχυδρομείου',
+		emailSubject		: 'Θέμα Μηνύματος',
 		emailBody		: 'Κείμενο Μηνύματος',
 		noAnchors		: '(Δεν υπάρχουν άγκυρες στο κείμενο)',
 		noUrl			: 'Εισάγετε την τοποθεσία (URL) του υπερσυνδέσμου (Link)',
@@ -601,9 +602,9 @@ CKEDITOR.lang['el'] =
 
 	iframe :
 	{
-		title		: 'iFrame Properties', // MISSING
-		toolbar		: 'iFrame', // MISSING
-		noUrl		: 'Please type the iFrame URL', // MISSING
+		title		: 'IFrame Properties', // MISSING
+		toolbar		: 'IFrame', // MISSING
+		noUrl		: 'Please type the iframe URL', // MISSING
 		scrolling	: 'Enable scrollbars', // MISSING
 		border		: 'Show frame border' // MISSING
 	},
@@ -725,7 +726,7 @@ CKEDITOR.lang['el'] =
 	{
 		anchor		: 'Anchor', // MISSING
 		flash		: 'Flash Animation', // MISSING
-		iframe		: 'iFrame', // MISSING
+		iframe		: 'IFrame', // MISSING
 		hiddenfield	: 'Hidden Field', // MISSING
 		unknown		: 'Unknown Object' // MISSING
 	},

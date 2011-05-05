@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
+Copyright (c) 2003-2011, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
 
@@ -175,18 +175,19 @@ CKEDITOR.lang['mn'] =
 		langDirRTL		: 'Баруунаас зүүн (RTL)',
 		acccessKey		: 'Холбох түлхүүр',
 		name			: 'Нэр',
-		langCode		: 'Хэлний чиглэл',
-		tabIndex		: 'Tab индекс',
-		advisoryTitle	: 'Зөвлөлдөх гарчиг',
+		langCode			: 'Хэлний чиглэл',
+		tabIndex			: 'Tab индекс',
+		advisoryTitle		: 'Зөвлөлдөх гарчиг',
 		advisoryContentType	: 'Зөвлөлдөх төрлийн агуулга',
 		cssClasses		: 'Stylesheet классууд',
 		charset			: 'Тэмдэгт оноох нөөцөд холбогдсон',
 		styles			: 'Загвар',
-		selectAnchor	: 'Холбоос сонгох',
+		rel			: 'Relationship', // MISSING
+		selectAnchor		: 'Холбоос сонгох',
 		anchorName		: 'Холбоосын нэрээр',
-		anchorId		: 'Элемэнт Id-гаар',
-		emailAddress	: 'E-Mail Хаяг',
-		emailSubject	: 'Message гарчиг',
+		anchorId			: 'Элемэнт Id-гаар',
+		emailAddress		: 'E-Mail Хаяг',
+		emailSubject		: 'Message гарчиг',
 		emailBody		: 'Message-ийн агуулга',
 		noAnchors		: '(Баримт бичиг холбоосгүй байна)',
 		noUrl			: 'Линк URL-ээ төрөлжүүлнэ үү',
@@ -601,9 +602,9 @@ CKEDITOR.lang['mn'] =
 
 	iframe :
 	{
-		title		: 'iFrame Properties', // MISSING
-		toolbar		: 'iFrame', // MISSING
-		noUrl		: 'Please type the iFrame URL', // MISSING
+		title		: 'IFrame Properties', // MISSING
+		toolbar		: 'IFrame', // MISSING
+		noUrl		: 'Please type the iframe URL', // MISSING
 		scrolling	: 'Enable scrollbars', // MISSING
 		border		: 'Show frame border' // MISSING
 	},
@@ -725,7 +726,7 @@ CKEDITOR.lang['mn'] =
 	{
 		anchor		: 'Anchor', // MISSING
 		flash		: 'Flash Animation', // MISSING
-		iframe		: 'iFrame', // MISSING
+		iframe		: 'IFrame', // MISSING
 		hiddenfield	: 'Hidden Field', // MISSING
 		unknown		: 'Unknown Object' // MISSING
 	},

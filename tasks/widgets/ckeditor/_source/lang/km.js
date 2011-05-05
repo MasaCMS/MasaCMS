@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
+Copyright (c) 2003-2011, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
 
@@ -175,18 +175,19 @@ CKEDITOR.lang['km'] =
 		langDirRTL		: 'ពីស្តាំទៅឆ្វេង(RTL)',
 		acccessKey		: 'ឃី សំរាប់ចូល',
 		name			: 'ឈ្មោះ',
-		langCode		: 'ទិសដៅភាសា',
-		tabIndex		: 'លេខ Tab',
-		advisoryTitle	: 'ចំណងជើង ប្រឹក្សា',
+		langCode			: 'ទិសដៅភាសា',
+		tabIndex			: 'លេខ Tab',
+		advisoryTitle		: 'ចំណងជើង ប្រឹក្សា',
 		advisoryContentType	: 'ប្រភេទអត្ថបទ ប្រឹក្សា',
 		cssClasses		: 'Stylesheet Classes',
 		charset			: 'លេខកូតអក្សររបស់ឈ្នាប់',
 		styles			: 'ម៉ូត',
-		selectAnchor	: 'ជ្រើសរើសយុថ្កា',
+		rel			: 'Relationship', // MISSING
+		selectAnchor		: 'ជ្រើសរើសយុថ្កា',
 		anchorName		: 'តាមឈ្មោះរបស់យុថ្កា',
-		anchorId		: 'តាម Id',
-		emailAddress	: 'អ៊ីមែល',
-		emailSubject	: 'ចំណងជើងអត្ថបទ',
+		anchorId			: 'តាម Id',
+		emailAddress		: 'អ៊ីមែល',
+		emailSubject		: 'ចំណងជើងអត្ថបទ',
 		emailBody		: 'អត្ថបទ',
 		noAnchors		: '(No anchors available in the document)', // MISSING
 		noUrl			: 'សូមសរសេរ អាស័យដ្ឋាន URL',
@@ -601,9 +602,9 @@ CKEDITOR.lang['km'] =
 
 	iframe :
 	{
-		title		: 'iFrame Properties', // MISSING
-		toolbar		: 'iFrame', // MISSING
-		noUrl		: 'Please type the iFrame URL', // MISSING
+		title		: 'IFrame Properties', // MISSING
+		toolbar		: 'IFrame', // MISSING
+		noUrl		: 'Please type the iframe URL', // MISSING
 		scrolling	: 'Enable scrollbars', // MISSING
 		border		: 'Show frame border' // MISSING
 	},
@@ -725,7 +726,7 @@ CKEDITOR.lang['km'] =
 	{
 		anchor		: 'Anchor', // MISSING
 		flash		: 'Flash Animation', // MISSING
-		iframe		: 'iFrame', // MISSING
+		iframe		: 'IFrame', // MISSING
 		hiddenfield	: 'Hidden Field', // MISSING
 		unknown		: 'Unknown Object' // MISSING
 	},

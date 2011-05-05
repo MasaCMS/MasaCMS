@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
+Copyright (c) 2003-2011, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
 
@@ -175,18 +175,19 @@ CKEDITOR.lang['sk'] =
 		langDirRTL		: 'Sprava doľava (RTL)',
 		acccessKey		: 'Prístupový kľúč',
 		name			: 'Meno',
-		langCode		: 'Orientácia jazyka',
-		tabIndex		: 'Poradie prvku',
-		advisoryTitle	: 'Pomocný titulok',
+		langCode			: 'Orientácia jazyka',
+		tabIndex			: 'Poradie prvku',
+		advisoryTitle		: 'Pomocný titulok',
 		advisoryContentType	: 'Pomocný typ obsahu',
 		cssClasses		: 'Trieda štýlu',
 		charset			: 'Priradená znaková sada',
 		styles			: 'Štýl',
-		selectAnchor	: 'Vybrať kotvu',
+		rel			: 'Relationship', // MISSING
+		selectAnchor		: 'Vybrať kotvu',
 		anchorName		: 'Podľa mena kotvy',
-		anchorId		: 'Podľa Id objektu',
-		emailAddress	: 'E-Mailová adresa',
-		emailSubject	: 'Predmet správy',
+		anchorId			: 'Podľa Id objektu',
+		emailAddress		: 'E-Mailová adresa',
+		emailSubject		: 'Predmet správy',
 		emailBody		: 'Telo správy',
 		noAnchors		: '(V stránke nie je definovaná žiadna kotva)',
 		noUrl			: 'Zadajte prosím URL odkazu',
@@ -601,9 +602,9 @@ CKEDITOR.lang['sk'] =
 
 	iframe :
 	{
-		title		: 'iFrame Properties', // MISSING
-		toolbar		: 'iFrame', // MISSING
-		noUrl		: 'Please type the iFrame URL', // MISSING
+		title		: 'IFrame Properties', // MISSING
+		toolbar		: 'IFrame', // MISSING
+		noUrl		: 'Please type the iframe URL', // MISSING
 		scrolling	: 'Enable scrollbars', // MISSING
 		border		: 'Show frame border' // MISSING
 	},
@@ -725,7 +726,7 @@ CKEDITOR.lang['sk'] =
 	{
 		anchor		: 'Anchor', // MISSING
 		flash		: 'Flash Animation', // MISSING
-		iframe		: 'iFrame', // MISSING
+		iframe		: 'IFrame', // MISSING
 		hiddenfield	: 'Hidden Field', // MISSING
 		unknown		: 'Unknown Object' // MISSING
 	},

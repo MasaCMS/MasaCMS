@@ -104,7 +104,7 @@ to your own modified versions of Mura CMS.
 			<cfset info.fieldnames=listappend(info.fieldnames,thefield)>
 		</cfif>
 		
-			<cfif thefield neq ''>
+			<cfif thefield neq '' and structkeyexists(arguments.data, thefield)>
 				
 				<cfif findNoCase('attachment',theField) and arguments.data['#thefield#'] neq ''>
 					<cftry>

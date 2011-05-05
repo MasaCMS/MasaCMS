@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
+Copyright (c) 2003-2011, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
 
@@ -175,18 +175,19 @@ CKEDITOR.lang['en-au'] =
 		langDirRTL		: 'Right to Left (RTL)',
 		acccessKey		: 'Access Key',
 		name			: 'Name',
-		langCode		: 'Language Code',
-		tabIndex		: 'Tab Index',
-		advisoryTitle	: 'Advisory Title',
+		langCode			: 'Language Code',
+		tabIndex			: 'Tab Index',
+		advisoryTitle		: 'Advisory Title',
 		advisoryContentType	: 'Advisory Content Type',
 		cssClasses		: 'Stylesheet Classes',
 		charset			: 'Linked Resource Charset',
 		styles			: 'Style',
-		selectAnchor	: 'Select an Anchor',
+		rel			: 'Relationship', // MISSING
+		selectAnchor		: 'Select an Anchor',
 		anchorName		: 'By Anchor Name',
-		anchorId		: 'By Element Id',
-		emailAddress	: 'E-Mail Address',
-		emailSubject	: 'Message Subject',
+		anchorId			: 'By Element Id',
+		emailAddress		: 'E-Mail Address',
+		emailSubject		: 'Message Subject',
 		emailBody		: 'Message Body',
 		noAnchors		: '(No anchors available in the document)',
 		noUrl			: 'Please type the link URL',
@@ -601,9 +602,9 @@ CKEDITOR.lang['en-au'] =
 
 	iframe :
 	{
-		title		: 'iFrame Properties', // MISSING
-		toolbar		: 'iFrame', // MISSING
-		noUrl		: 'Please type the iFrame URL', // MISSING
+		title		: 'IFrame Properties', // MISSING
+		toolbar		: 'IFrame', // MISSING
+		noUrl		: 'Please type the iframe URL', // MISSING
 		scrolling	: 'Enable scrollbars', // MISSING
 		border		: 'Show frame border' // MISSING
 	},
@@ -725,7 +726,7 @@ CKEDITOR.lang['en-au'] =
 	{
 		anchor		: 'Anchor', // MISSING
 		flash		: 'Flash Animation', // MISSING
-		iframe		: 'iFrame', // MISSING
+		iframe		: 'IFrame', // MISSING
 		hiddenfield	: 'Hidden Field', // MISSING
 		unknown		: 'Unknown Object' // MISSING
 	},

@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
+Copyright (c) 2003-2011, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
 
@@ -175,18 +175,19 @@ CKEDITOR.lang['ko'] =
 		langDirRTL		: '오른쪽에서 왼쪽 (RTL)',
 		acccessKey		: '엑세스 키',
 		name			: 'Name',
-		langCode		: '쓰기 방향',
-		tabIndex		: '탭 순서',
-		advisoryTitle	: 'Advisory Title',
+		langCode			: '쓰기 방향',
+		tabIndex			: '탭 순서',
+		advisoryTitle		: 'Advisory Title',
 		advisoryContentType	: 'Advisory Content Type',
 		cssClasses		: 'Stylesheet Classes',
 		charset			: 'Linked Resource Charset',
 		styles			: 'Style',
-		selectAnchor	: '책갈피 선택',
+		rel			: 'Relationship', // MISSING
+		selectAnchor		: '책갈피 선택',
 		anchorName		: '책갈피 이름',
-		anchorId		: '책갈피 ID',
-		emailAddress	: '이메일 주소',
-		emailSubject	: '제목',
+		anchorId			: '책갈피 ID',
+		emailAddress		: '이메일 주소',
+		emailSubject		: '제목',
 		emailBody		: '내용',
 		noAnchors		: '(문서에 책갈피가 없습니다.)',
 		noUrl			: '링크 URL을 입력하십시요.',
@@ -601,9 +602,9 @@ CKEDITOR.lang['ko'] =
 
 	iframe :
 	{
-		title		: 'iFrame Properties', // MISSING
-		toolbar		: 'iFrame', // MISSING
-		noUrl		: 'Please type the iFrame URL', // MISSING
+		title		: 'IFrame Properties', // MISSING
+		toolbar		: 'IFrame', // MISSING
+		noUrl		: 'Please type the iframe URL', // MISSING
 		scrolling	: 'Enable scrollbars', // MISSING
 		border		: 'Show frame border' // MISSING
 	},
@@ -725,7 +726,7 @@ CKEDITOR.lang['ko'] =
 	{
 		anchor		: 'Anchor', // MISSING
 		flash		: 'Flash Animation', // MISSING
-		iframe		: 'iFrame', // MISSING
+		iframe		: 'IFrame', // MISSING
 		hiddenfield	: 'Hidden Field', // MISSING
 		unknown		: 'Unknown Object' // MISSING
 	},

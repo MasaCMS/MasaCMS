@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
+Copyright (c) 2003-2011, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
 
@@ -175,18 +175,19 @@ CKEDITOR.lang['lt'] =
 		langDirRTL		: 'Iš dešinės į kairę (RTL)',
 		acccessKey		: 'Prieigos raktas',
 		name			: 'Vardas',
-		langCode		: 'Teksto kryptis',
-		tabIndex		: 'Tabuliavimo indeksas',
-		advisoryTitle	: 'Konsultacinė antraštė',
+		langCode			: 'Teksto kryptis',
+		tabIndex			: 'Tabuliavimo indeksas',
+		advisoryTitle		: 'Konsultacinė antraštė',
 		advisoryContentType	: 'Konsultacinio turinio tipas',
 		cssClasses		: 'Stilių lentelės klasės',
 		charset			: 'Susietų išteklių simbolių lentelė',
 		styles			: 'Stilius',
-		selectAnchor	: 'Pasirinkite žymę',
+		rel			: 'Relationship', // MISSING
+		selectAnchor		: 'Pasirinkite žymę',
 		anchorName		: 'Pagal žymės vardą',
-		anchorId		: 'Pagal žymės Id',
-		emailAddress	: 'El.pašto adresas',
-		emailSubject	: 'Žinutės tema',
+		anchorId			: 'Pagal žymės Id',
+		emailAddress		: 'El.pašto adresas',
+		emailSubject		: 'Žinutės tema',
 		emailBody		: 'Žinutės turinys',
 		noAnchors		: '(Šiame dokumente žymių nėra)',
 		noUrl			: 'Prašome įvesti nuorodos URL',
@@ -601,9 +602,9 @@ CKEDITOR.lang['lt'] =
 
 	iframe :
 	{
-		title		: 'iFrame Properties', // MISSING
-		toolbar		: 'iFrame', // MISSING
-		noUrl		: 'Please type the iFrame URL', // MISSING
+		title		: 'IFrame Properties', // MISSING
+		toolbar		: 'IFrame', // MISSING
+		noUrl		: 'Please type the iframe URL', // MISSING
 		scrolling	: 'Enable scrollbars', // MISSING
 		border		: 'Show frame border' // MISSING
 	},
@@ -725,7 +726,7 @@ CKEDITOR.lang['lt'] =
 	{
 		anchor		: 'Anchor', // MISSING
 		flash		: 'Flash Animation', // MISSING
-		iframe		: 'iFrame', // MISSING
+		iframe		: 'IFrame', // MISSING
 		hiddenfield	: 'Hidden Field', // MISSING
 		unknown		: 'Unknown Object' // MISSING
 	},

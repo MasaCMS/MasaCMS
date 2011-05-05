@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
+Copyright (c) 2003-2011, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
 
@@ -175,18 +175,19 @@ CKEDITOR.lang['th'] =
 		langDirRTL		: 'จากขวามาซ้าย (RTL)',
 		acccessKey		: 'แอคเซส คีย์',
 		name			: 'ชื่อ',
-		langCode		: 'การเขียน-อ่านภาษา',
-		tabIndex		: 'ลำดับของ แท็บ',
-		advisoryTitle	: 'คำเกริ่นนำ',
+		langCode			: 'การเขียน-อ่านภาษา',
+		tabIndex			: 'ลำดับของ แท็บ',
+		advisoryTitle		: 'คำเกริ่นนำ',
 		advisoryContentType	: 'ชนิดของคำเกริ่นนำ',
 		cssClasses		: 'คลาสของไฟล์กำหนดลักษณะการแสดงผล',
 		charset			: 'ลิงค์เชื่อมโยงไปยังชุดตัวอักษร',
 		styles			: 'ลักษณะการแสดงผล',
-		selectAnchor	: 'ระบุข้อมูลของจุดเชื่อมโยง (Anchor)',
+		rel			: 'Relationship', // MISSING
+		selectAnchor		: 'ระบุข้อมูลของจุดเชื่อมโยง (Anchor)',
 		anchorName		: 'ชื่อ',
-		anchorId		: 'ไอดี',
-		emailAddress	: 'อีเมล์ (E-Mail)',
-		emailSubject	: 'หัวเรื่อง',
+		anchorId			: 'ไอดี',
+		emailAddress		: 'อีเมล์ (E-Mail)',
+		emailSubject		: 'หัวเรื่อง',
 		emailBody		: 'ข้อความ',
 		noAnchors		: '(ยังไม่มีจุดเชื่อมโยงภายในหน้าเอกสารนี้)',
 		noUrl			: 'กรุณาระบุที่อยู่อ้างอิงออนไลน์ (URL)',
@@ -601,9 +602,9 @@ CKEDITOR.lang['th'] =
 
 	iframe :
 	{
-		title		: 'iFrame Properties', // MISSING
-		toolbar		: 'iFrame', // MISSING
-		noUrl		: 'Please type the iFrame URL', // MISSING
+		title		: 'IFrame Properties', // MISSING
+		toolbar		: 'IFrame', // MISSING
+		noUrl		: 'Please type the iframe URL', // MISSING
 		scrolling	: 'Enable scrollbars', // MISSING
 		border		: 'Show frame border' // MISSING
 	},
@@ -725,7 +726,7 @@ CKEDITOR.lang['th'] =
 	{
 		anchor		: 'Anchor', // MISSING
 		flash		: 'Flash Animation', // MISSING
-		iframe		: 'iFrame', // MISSING
+		iframe		: 'IFrame', // MISSING
 		hiddenfield	: 'Hidden Field', // MISSING
 		unknown		: 'Unknown Object' // MISSING
 	},

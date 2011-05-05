@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
+Copyright (c) 2003-2011, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
 
@@ -26,7 +26,9 @@ CKEDITOR.themes.add( 'default', (function()
 		{
 			// Creates an HTML structure that reproduces the editor class hierarchy.
 			var html =
-				'<span class="cke_shared">' +
+				'<span class="cke_shared "' +
+				' dir="'+ editor.lang.dir + '"' +
+				'>' +
 				'<span class="' + editor.skinClass + ' ' + editor.id + ' cke_editor_' + editor.name + '">' +
 				'<span class="' + CKEDITOR.env.cssClass + '">' +
 				'<span class="cke_wrapper cke_' + editor.lang.dir + '">' +
@@ -166,6 +168,18 @@ CKEDITOR.themes.add( 'default', (function()
 			// Disable browser context menu for editor's chrome.
 			container.disableContextMenu();
 
+			// Use a class to indicate that the current selection is in different direction than the UI.
+			editor.on( 'contentDirChanged', function( evt )
+			{
+				var func = ( editor.lang.dir != evt.data ? 'add' : 'remove' ) + 'Class';
+
+				container.getChild( 1 )[ func ]( 'cke_mixed_dir_content' );
+
+				// Put the mixed direction class on the respective element also for shared spaces.
+				var toolbarSpace = this.sharedSpaces && this.sharedSpaces[ this.config.toolbarLocation ];
+				toolbarSpace && toolbarSpace.getParent().getParent()[ func ]( 'cke_mixed_dir_content' );
+			});
+
 			editor.fireOnce( 'themeLoaded' );
 			editor.fireOnce( 'uiReady' );
 		},
@@ -241,17 +255,21 @@ CKEDITOR.themes.add( 'default', (function()
 
 		destroy : function( editor )
 		{
-			var container = editor.container;
-			container.clearCustomData();
-			editor.element.clearCustomData();
+			var container = editor.container,
+				element = editor.element;
 
 			if ( container )
+			{
+				container.clearCustomData();
 				container.remove();
+			}
 
-			if ( editor.elementMode == CKEDITOR.ELEMENT_MODE_REPLACE )
-				editor.element.show();
-
-			delete editor.element;
+			if ( element )
+			{
+				element.clearCustomData();
+				editor.elementMode == CKEDITOR.ELEMENT_MODE_REPLACE && element.show();
+				delete editor.element;
+			}
 		}
 	};
 })() );
@@ -331,7 +349,7 @@ CKEDITOR.editor.prototype.resize = function( width, height, isContentHeight, res
  */
 CKEDITOR.editor.prototype.getResizable = function()
 {
-	return this.container.getChild( 1 );
+	return this.container;
 };
 
 /**
@@ -363,6 +381,6 @@ CKEDITOR.editor.prototype.getResizable = function()
 /**
  * Fired after the editor instance is resized through
  * the {@link CKEDITOR.editor.prototype.resize} method.
- * @name CKEDITOR#resize
+ * @name CKEDITOR.editor#resize
  * @event
  */

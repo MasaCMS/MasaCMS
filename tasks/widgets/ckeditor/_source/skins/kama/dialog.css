@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
+Copyright (c) 2003-2011, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
 
@@ -561,6 +561,11 @@ body .cke_dialog
 	background-position: right -1242px;
 }
 /* END Firefox2 buttons */
+
+.cke_skin_kama .cke_browser_ie9.cke_rtl .cke_dialog_footer_buttons td
+{
+	padding-left: 2px;
+}
 
 .cke_skin_kama strong
 {

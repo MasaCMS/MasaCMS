@@ -117,9 +117,9 @@ to your own modified versions of Mura CMS.
 <a class="add" href="javascript:;" onmouseover="showMenu('newContentMenu',#newcontent#,this,'#attributes.rsNest.contentid#','#attributes.topid#','#attributes.rsNest.parentid#','#attributes.siteid#','#attributes.rsNest.type#');"></a>
 	
 	<cfif attributes.rsNest.haskids><span class="hasChildren" onclick="location.href='?fuseaction=cArch.list&siteid=#JSStringFormat(attributes.siteID)#&moduleid=#JSStringFormat(attributes.moduleID)#&topid=#JSStringFormat(attributes.rsNest.contentID)#';"></span></cfif>
-
+	
 	<cfif verdict neq 'none'>
-		<a class="#icon# title" title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.edit")#" href="index.cfm?fuseaction=cArch.edit&contenthistid=#attributes.rsNest.ContentHistID#&contentid=#attributes.rsNest.ContentID#&type=#attributes.rsNest.type#&parentid=#attributes.rsNest.parentID#&topid=#URLEncodedFormat(attributes.topid)#&siteid=#URLEncodedFormat(attributes.siteid)#&moduleid=#attributes.moduleid#&startrow=#attributes.startrow#">
+		<a class="#icon# title draftprompt" data-siteid="#attributes.siteid#" data-contentid="#attributes.rsNest.contentid#" data-contenthistid="#attributes.rsNest.contenthistid#" title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.edit")#" href="index.cfm?fuseaction=cArch.edit&contenthistid=#attributes.rsNest.ContentHistID#&contentid=#attributes.rsNest.ContentID#&type=#attributes.rsNest.type#&parentid=#attributes.rsNest.parentID#&topid=#URLEncodedFormat(attributes.topid)#&siteid=#URLEncodedFormat(attributes.siteid)#&moduleid=#attributes.moduleid#&startrow=#attributes.startrow#">
 	<cfelse>
 		<a class="#icon# title">
 	</cfif>
@@ -155,7 +155,7 @@ to your own modified versions of Mura CMS.
     <dd class="admin">
     <ul>
     	<cfif verdict neq 'none'>
-       <li class="edit"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.edit")#" href="index.cfm?fuseaction=cArch.edit&contenthistid=#attributes.rsNest.ContentHistID#&contentid=#attributes.rsNest.ContentID#&type=#attributes.rsNest.type#&parentid=#attributes.rsNest.parentID#&topid=#URLEncodedFormat(attributes.topid)#&siteid=#URLEncodedFormat(attributes.siteid)#&moduleid=#attributes.moduleid#&startrow=#attributes.startrow#">&nbsp;</a></li>
+       <li class="edit"><a class="draftprompt"  data-siteid="#attributes.siteid#" data-contentid="#attributes.rsNest.contentid#" data-contenthistid="#attributes.rsNest.contenthistid#" title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.edit")#" href="index.cfm?fuseaction=cArch.edit&contenthistid=#attributes.rsNest.ContentHistID#&contentid=#attributes.rsNest.ContentID#&type=#attributes.rsNest.type#&parentid=#attributes.rsNest.parentID#&topid=#URLEncodedFormat(attributes.topid)#&siteid=#URLEncodedFormat(attributes.siteid)#&moduleid=#attributes.moduleid#&startrow=#attributes.startrow#">&nbsp;</a></li>
 	   <cfswitch expression="#attributes.rsnest.type#">
 		<cfcase value="Page,Portal,Calendar,Gallery">
 		<li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.view")#" href="javascript:preview('http://#application.settingsManager.getSite(attributes.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##application.contentRenderer.getURLStem(attributes.siteid,attributes.rsNest.filename)#','#attributes.rsnest.targetParams#');">#application.rbFactory.getKeyValue(session.rb,"sitemanager.view")#</a></li>

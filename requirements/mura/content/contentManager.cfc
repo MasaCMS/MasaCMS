@@ -1649,4 +1649,37 @@ to your own modified versions of Mura CMS.
 		<cfreturn variables.settingsManager.getSite(arguments.bean.getValue("siteID")).getContentRenderer().createHREFForImage(arguments.bean.getValue("siteID"), arguments.bean.getValue("fileID"), arguments.bean.getValue("fileEXT"), arguments.size, arguments.direct, arguments.complete, arguments.height, arguments.width)>
 	</cffunction>
 	
+	<cffunction name="getDraftPromptData" access="public" returntype="struct" output="false">
+		<cfargument name="contentid" type="string" required="true" />
+		<cfargument name="siteid" type="string" required="true" />
+		
+		<cfset var data = structNew() />
+		<cfset var cb = getBean().loadby(contentid=arguments.contentid,siteid=arguments.siteid) />   
+		<cfset var showdialog = false />
+		<cfset var historyID = cb.getContentHistID() />
+		<cfset var newDraft = "" />
+		<cfset var history = "" />
+		
+		<cfif cb.getActive()>
+			<cfif cb.hasDrafts()>
+				<cfset history = getDraftHist(arguments.contentid,arguments.siteid) />
+				<cfquery name="newDraft" dbtype="query">
+					select * from history where lastUpdate > #createODBCDateTime(cb.getLastUpdate())# 
+					and changesetid is null
+					order by lastUpdate desc
+				</cfquery>
+				<cfif newDraft.recordCount>
+					<cfset showdialog = true />
+					<cfset historyID = newDraft.contentHistId[1] />
+				</cfif>
+			</cfif>
+		</cfif>
+		
+		<cfset data['showdialog'] = showdialog />
+		<cfset data['historyID'] = historyID />
+		<cfset data['publishedHistoryID'] = cb.getContentHistID() />
+		
+		<cfreturn data />
+	</cffunction>
+	
 </cfcomponent>

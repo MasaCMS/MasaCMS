@@ -1,7 +1,14 @@
 /.project
-/plugins
+/.settings
 /WEB-INF
+/config/settings.ini.cfm
+/config/version.cfm
+/config/mappings.cfm
+/config/cfapplication.cfm
+/plugins
 /robots.txt
+/default/assets
+/default/cache
 /dev
 /web.config
 /.htaccess

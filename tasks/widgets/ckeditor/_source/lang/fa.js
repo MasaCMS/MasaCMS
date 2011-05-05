@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
+Copyright (c) 2003-2011, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
 
@@ -175,18 +175,19 @@ CKEDITOR.lang['fa'] =
 		langDirRTL		: 'راست به چپ (RTL)',
 		acccessKey		: 'کلید دستیابی',
 		name			: 'نام',
-		langCode		: 'جهتنمای زبان',
-		tabIndex		: 'نمایهٴ دسترسی با Tab',
-		advisoryTitle	: 'عنوان کمکی',
+		langCode			: 'جهتنمای زبان',
+		tabIndex			: 'نمایهٴ دسترسی با Tab',
+		advisoryTitle		: 'عنوان کمکی',
 		advisoryContentType	: 'نوع محتوای کمکی',
 		cssClasses		: 'کلاسهای شیوهنامه(Stylesheet)',
 		charset			: 'نویسهگان منبع ِپیوندشده',
 		styles			: 'شیوه(style)',
-		selectAnchor	: 'یک لنگر برگزینید',
+		rel			: 'Relationship', // MISSING
+		selectAnchor		: 'یک لنگر برگزینید',
 		anchorName		: 'با نام لنگر',
-		anchorId		: 'با شناسهٴ المان',
-		emailAddress	: 'نشانی پست الکترونیکی',
-		emailSubject	: 'موضوع پیام',
+		anchorId			: 'با شناسهٴ المان',
+		emailAddress		: 'نشانی پست الکترونیکی',
+		emailSubject		: 'موضوع پیام',
 		emailBody		: 'متن پیام',
 		noAnchors		: '(در این سند لنگری دردسترس نیست)',
 		noUrl			: 'لطفا URL پیوند را بنویسید',
@@ -601,9 +602,9 @@ CKEDITOR.lang['fa'] =
 
 	iframe :
 	{
-		title		: 'iFrame Properties', // MISSING
-		toolbar		: 'iFrame', // MISSING
-		noUrl		: 'Please type the iFrame URL', // MISSING
+		title		: 'IFrame Properties', // MISSING
+		toolbar		: 'IFrame', // MISSING
+		noUrl		: 'Please type the iframe URL', // MISSING
 		scrolling	: 'Enable scrollbars', // MISSING
 		border		: 'Show frame border' // MISSING
 	},
@@ -725,7 +726,7 @@ CKEDITOR.lang['fa'] =
 	{
 		anchor		: 'Anchor', // MISSING
 		flash		: 'Flash Animation', // MISSING
-		iframe		: 'iFrame', // MISSING
+		iframe		: 'IFrame', // MISSING
 		hiddenfield	: 'Hidden Field', // MISSING
 		unknown		: 'Unknown Object' // MISSING
 	},

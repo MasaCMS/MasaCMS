@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
+Copyright (c) 2003-2011, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
 
@@ -175,18 +175,19 @@ CKEDITOR.lang['eo'] =
 		langDirRTL		: 'De dekstro maldekstren (RTL)',
 		acccessKey		: 'Fulmoklavo',
 		name			: 'Nomo',
-		langCode		: 'Skribdirekto',
-		tabIndex		: 'Taba Ordo',
-		advisoryTitle	: 'Indika Titolo',
+		langCode			: 'Skribdirekto',
+		tabIndex			: 'Taba Ordo',
+		advisoryTitle		: 'Indika Titolo',
 		advisoryContentType	: 'Indika Enhavotipo',
 		cssClasses		: 'Klasoj de Stilfolioj',
 		charset			: 'Signaro de la Ligita Rimedo',
 		styles			: 'Stilo',
-		selectAnchor	: 'Elekti Ankron',
+		rel			: 'Relationship', // MISSING
+		selectAnchor		: 'Elekti Ankron',
 		anchorName		: 'Per Ankronomo',
-		anchorId		: 'Per Elementidentigilo',
-		emailAddress	: 'Retadreso',
-		emailSubject	: 'Temlinio',
+		anchorId			: 'Per Elementidentigilo',
+		emailAddress		: 'Retadreso',
+		emailSubject		: 'Temlinio',
 		emailBody		: 'Mesaĝa korpo',
 		noAnchors		: '<Ne disponeblas ankroj en la dokumento>',
 		noUrl			: 'Bonvolu entajpi la URL-on',
@@ -601,9 +602,9 @@ CKEDITOR.lang['eo'] =
 
 	iframe :
 	{
-		title		: 'iFrame Properties', // MISSING
-		toolbar		: 'iFrame', // MISSING
-		noUrl		: 'Please type the iFrame URL', // MISSING
+		title		: 'IFrame Properties', // MISSING
+		toolbar		: 'IFrame', // MISSING
+		noUrl		: 'Please type the iframe URL', // MISSING
 		scrolling	: 'Enable scrollbars', // MISSING
 		border		: 'Show frame border' // MISSING
 	},
@@ -725,7 +726,7 @@ CKEDITOR.lang['eo'] =
 	{
 		anchor		: 'Anchor', // MISSING
 		flash		: 'Flash Animation', // MISSING
-		iframe		: 'iFrame', // MISSING
+		iframe		: 'IFrame', // MISSING
 		hiddenfield	: 'Hidden Field', // MISSING
 		unknown		: 'Unknown Object' // MISSING
 	},

@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
+Copyright (c) 2003-2011, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
 
@@ -196,7 +196,8 @@ CKEDITOR.dialog.add( 'link', function( editor )
 					var featureMatch;
 					while ( ( featureMatch = popupFeaturesRegex.exec( onclickMatch[2] ) ) )
 					{
-						if ( featureMatch[2] == 'yes' || featureMatch[2] == '1' )
+						// Some values should remain numbers (#7300)
+						if ( ( featureMatch[2] == 'yes' || featureMatch[2] == '1' ) && !( featureMatch[1] in { height:1, width:1, top:1, left:1 } ) )
 							retval.target[ featureMatch[1] ] = true;
 						else if ( isFinite( featureMatch[2] ) )
 							retval.target[ featureMatch[1] ] = featureMatch[2];
@@ -225,7 +226,11 @@ CKEDITOR.dialog.add( 'link', function( editor )
 			advAttr( 'advId', 'id' );
 			advAttr( 'advLangDir', 'dir' );
 			advAttr( 'advAccessKey', 'accessKey' );
-			advAttr( 'advName', 'name' );
+
+			retval.adv.advName =
+				element.data( 'cke-saved-name' )
+				|| element.getAttribute( 'name' )
+				|| '';
 			advAttr( 'advLangCode', 'lang' );
 			advAttr( 'advTabIndex', 'tabindex' );
 			advAttr( 'advTitle', 'title' );
@@ -233,6 +238,7 @@ CKEDITOR.dialog.add( 'link', function( editor )
 			advAttr( 'advCSSClasses', 'class' );
 			advAttr( 'advCharset', 'charset' );
 			advAttr( 'advStyles', 'style' );
+			advAttr( 'advRel', 'rel' );
 		}
 
 		// Find out whether we have any anchors in the editor.
@@ -450,8 +456,8 @@ CKEDITOR.dialog.add( 'link', function( editor )
 											this.allowOnChange = false;
 											var	protocolCmb = this.getDialog().getContentElement( 'info', 'protocol' ),
 												url = this.getValue(),
-												urlOnChangeProtocol = /^(http|https|ftp|news):\/\/(?=.)/gi,
-												urlOnChangeTestOther = /^((javascript:)|[#\/\.\?])/gi;
+												urlOnChangeProtocol = /^(http|https|ftp|news):\/\/(?=.)/i,
+												urlOnChangeTestOther = /^((javascript:)|[#\/\.\?])/i;
 
 											var protocol = urlOnChangeProtocol.exec( url );
 											if ( protocol )
@@ -760,7 +766,7 @@ CKEDITOR.dialog.add( 'link', function( editor )
 								setup : function( data )
 								{
 									if ( data.target )
-										this.setValue( data.target.type );
+										this.setValue( data.target.type || 'notSet' );
 									targetChanged.call( this );
 								},
 								commit : function( data )
@@ -1117,8 +1123,17 @@ CKEDITOR.dialog.add( 'link', function( editor )
 							},
 							{
 								type : 'hbox',
+								widths : [ '45%', '55%' ],
 								children :
 								[
+									{
+										type : 'text',
+										label : linkLang.rel,
+										'default' : '',
+										id : 'advRel',
+										setup : setupAdvParams,
+										commit : commitAdvParams
+									},
 									{
 										type : 'text',
 										label : linkLang.styles,
@@ -1126,7 +1141,6 @@ CKEDITOR.dialog.add( 'link', function( editor )
 										id : 'advStyles',
 										setup : setupAdvParams,
 										commit : commitAdvParams
-
 									}
 								]
 							}
@@ -1161,9 +1175,9 @@ CKEDITOR.dialog.add( 'link', function( editor )
 		},
 		onOk : function()
 		{
-			var attributes = { href : 'javascript:void(0)/*' + CKEDITOR.tools.getNextNumber() + '*/' },
+			var attributes = {},
 				removeAttributes = [],
-				data = { href : attributes.href },
+				data = {},
 				me = this,
 				editor = this.getParentEditor();
 
@@ -1283,11 +1297,18 @@ CKEDITOR.dialog.add( 'link', function( editor )
 						removeAttributes.push( attrName );
 				};
 
-				if ( this._.selectedElement )
-					advAttr( 'advId', 'id' );
+				advAttr( 'advId', 'id' );
 				advAttr( 'advLangDir', 'dir' );
 				advAttr( 'advAccessKey', 'accessKey' );
-				advAttr( 'advName', 'name' );
+
+				if ( data.adv[ 'advName' ] )
+				{
+					attributes[ 'name' ] = attributes[ 'data-cke-saved-name' ] = data.adv[ 'advName' ];
+					attributes[ 'class' ] = ( attributes[ 'class' ] ? attributes[ 'class' ] + ' ' : '' ) + 'cke_anchor';
+				}
+				else
+					removeAttributes = removeAttributes.concat( [ 'data-cke-saved-name', 'name' ] );
+
 				advAttr( 'advLangCode', 'lang' );
 				advAttr( 'advTabIndex', 'tabindex' );
 				advAttr( 'advTitle', 'title' );
@@ -1295,7 +1316,12 @@ CKEDITOR.dialog.add( 'link', function( editor )
 				advAttr( 'advCSSClasses', 'class' );
 				advAttr( 'advCharset', 'charset' );
 				advAttr( 'advStyles', 'style' );
+				advAttr( 'advRel', 'rel' );
 			}
+
+
+			// Browser need the "href" fro copy/paste link to work. (#6641)
+			attributes.href = attributes[ 'data-cke-saved-href' ];
 
 			if ( !this._.selectedElement )
 			{
@@ -1316,20 +1342,6 @@ CKEDITOR.dialog.add( 'link', function( editor )
 				var style = new CKEDITOR.style( { element : 'a', attributes : attributes } );
 				style.type = CKEDITOR.STYLE_INLINE;		// need to override... dunno why.
 				style.apply( editor.document );
-
-				// Id. Apply only to the first link.
-				if ( data.adv && data.adv.advId )
-				{
-					var links = this.getParentEditor().document.$.getElementsByTagName( 'a' );
-					for ( i = 0 ; i < links.length ; i++ )
-					{
-						if ( links[i].href == attributes.href )
-						{
-							links[i].id = data.adv.advId;
-							break;
-						}
-					}
-				}
 			}
 			else
 			{
@@ -1340,15 +1352,15 @@ CKEDITOR.dialog.add( 'link', function( editor )
 
 				// IE BUG: Setting the name attribute to an existing link doesn't work.
 				// Must re-create the link from weired syntax to workaround.
-				if ( CKEDITOR.env.ie && attributes.name != element.getAttribute( 'name' ) )
+				if ( CKEDITOR.env.ie && !( CKEDITOR.document.$.documentMode >= 8 ) && attributes.name != element.getAttribute( 'name' ) )
 				{
 					var newElement = new CKEDITOR.dom.element( '<a name="' + CKEDITOR.tools.htmlEncode( attributes.name ) + '">',
 							editor.document );
 
 					selection = editor.getSelection();
 
-					element.moveChildren( newElement );
 					element.copyAttributes( newElement, { name : 1 } );
+					element.moveChildren( newElement );
 					newElement.replace( element );
 					element = newElement;
 

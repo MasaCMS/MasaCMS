@@ -189,6 +189,16 @@ select * from rsPluginScripts3 order by pluginID
 <p class="notice">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.globallyappliednotice")#</p>
 </cfif>
 
+<cfif not request.contentBean.getIsNew()>
+<cfset draftcheck=application.contentManager.getDraftPromptData(request.contentBean.getContentID(),request.contentBean.getSiteID())>
+
+<cfif yesNoFormat(draftcheck.showdialog) and draftcheck.historyid neq request.contentBean.getContentHistID()>
+<p class="notice">
+#application.rbFactory.getKeyValue(session.rb,'sitemanager.draftprompt.inline')#: <strong><a href="./?#replace(cgi.query_string,'#request.contentBean.getContentHistID()#','#draftcheck.historyid#')#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.draftprompt.gotolatest')#</a></strong>
+<p>
+</cfif>
+</cfif>
+
 <cfif hasChangesets and (not currentChangeset.getIsNew() or pendingChangesets.recordcount)>
 <p class="notice">
 <cfif pendingChangesets.recordcount>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.changesetnodenotify")#: 

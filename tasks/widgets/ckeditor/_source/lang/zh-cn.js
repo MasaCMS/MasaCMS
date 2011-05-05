@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
+Copyright (c) 2003-2011, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
 
@@ -175,18 +175,19 @@ CKEDITOR.lang['zh-cn'] =
 		langDirRTL		: '从右到左 (RTL)',
 		acccessKey		: '访问键',
 		name			: '名称',
-		langCode		: '语言代码',
-		tabIndex		: 'Tab 键次序',
-		advisoryTitle	: '标题',
+		langCode			: '语言代码',
+		tabIndex			: 'Tab 键次序',
+		advisoryTitle		: '标题',
 		advisoryContentType	: '内容类型',
 		cssClasses		: '样式类名称',
 		charset			: '字符编码',
 		styles			: '行内样式',
-		selectAnchor	: '选择一个锚点',
+		rel			: 'Relationship', // MISSING
+		selectAnchor		: '选择一个锚点',
 		anchorName		: '按锚点名称',
-		anchorId		: '按锚点 ID',
-		emailAddress	: '地址',
-		emailSubject	: '主题',
+		anchorId			: '按锚点 ID',
+		emailAddress		: '地址',
+		emailSubject		: '主题',
 		emailBody		: '内容',
 		noAnchors		: '(此文档没有可用的锚点)',
 		noUrl			: '请输入超链接地址',
@@ -725,7 +726,7 @@ CKEDITOR.lang['zh-cn'] =
 	{
 		anchor		: '锚点',
 		flash		: 'Flash 动画',
-		iframe		: 'iFrame', // MISSING
+		iframe		: 'IFrame', // MISSING
 		hiddenfield	: 'Hidden Field', // MISSING
 		unknown		: '未知对象'
 	},

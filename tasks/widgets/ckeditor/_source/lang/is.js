@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
+Copyright (c) 2003-2011, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
 
@@ -175,18 +175,19 @@ CKEDITOR.lang['is'] =
 		langDirRTL		: 'Frá hægri til vinstri (RTL)',
 		acccessKey		: 'Skammvalshnappur',
 		name			: 'Nafn',
-		langCode		: 'Lesstefna',
-		tabIndex		: 'Raðnúmer innsláttarreits',
-		advisoryTitle	: 'Titill',
+		langCode			: 'Lesstefna',
+		tabIndex			: 'Raðnúmer innsláttarreits',
+		advisoryTitle		: 'Titill',
 		advisoryContentType	: 'Tegund innihalds',
 		cssClasses		: 'Stílsniðsflokkur',
 		charset			: 'Táknróf',
 		styles			: 'Stíll',
-		selectAnchor	: 'Veldu akkeri',
+		rel			: 'Relationship', // MISSING
+		selectAnchor		: 'Veldu akkeri',
 		anchorName		: 'Eftir akkerisnafni',
-		anchorId		: 'Eftir auðkenni einingar',
-		emailAddress	: 'Netfang',
-		emailSubject	: 'Efni',
+		anchorId			: 'Eftir auðkenni einingar',
+		emailAddress		: 'Netfang',
+		emailSubject		: 'Efni',
 		emailBody		: 'Meginmál',
 		noAnchors		: '<Engin bókamerki á skrá>',
 		noUrl			: 'Sláðu inn veffang stiklunnar!',
@@ -601,9 +602,9 @@ CKEDITOR.lang['is'] =
 
 	iframe :
 	{
-		title		: 'iFrame Properties', // MISSING
-		toolbar		: 'iFrame', // MISSING
-		noUrl		: 'Please type the iFrame URL', // MISSING
+		title		: 'IFrame Properties', // MISSING
+		toolbar		: 'IFrame', // MISSING
+		noUrl		: 'Please type the iframe URL', // MISSING
 		scrolling	: 'Enable scrollbars', // MISSING
 		border		: 'Show frame border' // MISSING
 	},
@@ -725,7 +726,7 @@ CKEDITOR.lang['is'] =
 	{
 		anchor		: 'Anchor', // MISSING
 		flash		: 'Flash Animation', // MISSING
-		iframe		: 'iFrame', // MISSING
+		iframe		: 'IFrame', // MISSING
 		hiddenfield	: 'Hidden Field', // MISSING
 		unknown		: 'Unknown Object' // MISSING
 	},
