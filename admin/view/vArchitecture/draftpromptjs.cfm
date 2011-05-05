@@ -16,7 +16,7 @@ jQuery(function($){
 							modal:true,
 							width:"400px",
 							buttons: {
-								Cancel:function(){
+								"#JSStringFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.draftprompt.cancel'))#":function(){
 									$(this).dialog('close');
 								},
 								"#JSStringFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.draftprompt.latest'))#": function(){
