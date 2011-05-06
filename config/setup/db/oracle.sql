@@ -1622,9 +1622,6 @@ Insert into TSYSTEMOBJECTS (OBJECT,SITEID,NAME,ORDERNO) values ('comments','defa
 Insert into TSYSTEMOBJECTS (OBJECT,SITEID,NAME,ORDERNO) values ('seq_nav','default','Sequential Nav',8);
 --|
 
-Insert into TSYSTEMOBJECTS (OBJECT,SITEID,NAME,ORDERNO) values ('payPalCart','default','PayPal Shopping Cart',14);
---|
-
 Insert into TSYSTEMOBJECTS (OBJECT,SITEID,NAME,ORDERNO) values ('rater','default','Content Rater',16);
 --|
 
