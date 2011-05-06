@@ -2320,6 +2320,8 @@ to your own modified versions of Mura CMS.
 		<cfset var incomingAttributeList="">
 		<cfset var rsCheck="">
 		<cfset var rstclassextenddatauseractivity="">
+		<cfset var rsFeedParams="">
+		
 		<cfparam name="arguments.rsUserConflicts" default="#queryNew('userID')#">
 		
 		<cfif arguments.usersMode neq "none">
@@ -2672,6 +2674,31 @@ to your own modified versions of Mura CMS.
 						</cfcatch>
 					</cftry>
 				</cfloop>
+				
+				<cfif keys.getMode() eq "Copy">
+					<cfquery name="rsFeedParams" datasource="#arguments.toDSN#">
+						select field 
+						from tcontentfeedadvancedparams 
+						where feedID in (select feedID 
+										 from tcontentfeeds 
+										 where siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.tositeID#"> 
+										 )
+						group by field
+					</cfquery>
+					<cfloop query="rsFeedParams">
+						<cfif isNumeric(rsFeedParams.field)>
+							<cfquery name="rsFeedParams" datasource="#arguments.toDSN#">
+								update tcontentfeedadvancedparams 
+								set field=<cfqueryparam cfsqltype="cf_sql_varchar" value="#keys.get(rsFeedParams.field)#"> 
+								where field=<cfqueryparam cfsqltype="cf_sql_varchar" value="#rsFeedParams.field#">
+								and feedID in (select feedID 
+										 from tcontentfeeds 
+										 where siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.tositeID#"> 
+										 )
+							</cfquery>		
+						</cfif>
+					</cfloop>
+				</cfif>
 			</cfif>
 			
 			<cfif arguments.usersMode neq "none" and structKeyExists(arguments,"Bundle")>
