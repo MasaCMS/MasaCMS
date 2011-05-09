@@ -663,7 +663,6 @@ INSERT INTO `tsystemobjects` (`Object`,`SiteID`,`Name`,`OrderNo`) VALUES
  ('portal_nav','default','Portal Navigation',6),
  ('comments','default','Accept Comments',9),
  ('seq_nav','default','Sequential Nav',8),
- ('payPalCart','default','PayPal Shopping Cart',14),
  ('rater','default','Content Rater',16),
  ('favorites','default','User Favorites',17),
  ('dragable_feeds','default','Dragable Feeds',18),
