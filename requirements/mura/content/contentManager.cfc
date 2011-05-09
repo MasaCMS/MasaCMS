@@ -1665,7 +1665,6 @@ to your own modified versions of Mura CMS.
 				<cfset history = getDraftHist(arguments.contentid,arguments.siteid) />
 				<cfquery name="newDraft" dbtype="query">
 					select * from history where lastUpdate > #createODBCDateTime(cb.getLastUpdate())# 
-					and changesetid is null
 					order by lastUpdate desc
 				</cfquery>
 				<cfif newDraft.recordCount>
