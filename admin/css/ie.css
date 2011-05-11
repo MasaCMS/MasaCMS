@@ -351,11 +351,3 @@ dd.categoryAssignment input.textAlt {
 /* @end */
 
 /* @end */
-
-/* @group IE 7 */
-*:first-child+html .editableObject, *:first-child+html .editableObjectContents {
-zoom: 1;
-display: inline;
-}
-
-/* @end */
