@@ -1,6 +1,6 @@
 
 div.editableObject {
-	display: block !important;
+	display: inline-block !important;
 	visibility: !important;
 	float: none !important;
 	position: relative !important;
@@ -9,7 +9,7 @@ div.editableObject {
 	bottom: auto !important;
 	left: auto !important;
 	width: auto !important;
-	height: auto !important;
+	/*height: auto !important;*/
 	margin-top: 0 !important;
 	margin-right: 0 !important;
 	margin-bottom: 0;
@@ -40,7 +40,7 @@ div.editableObject:hover {
 
 
 div.editableObject div.editableObjectContents {
-	display: block !important;
+	display: inline-block !important;
 	visibility: !important;
 	float: none !important;
 	position: relative !important;
@@ -48,7 +48,7 @@ div.editableObject div.editableObjectContents {
 	right: auto !important;
 	bottom: auto !important;
 	left: auto !important;
-	width: auto !important;
+	/*width: auto !important;*/
 	height: auto !important;
 	overflow: hidden !important;
 	margin: 0 !important;
