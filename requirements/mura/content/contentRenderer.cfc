@@ -1996,7 +1996,7 @@ to your own modified versions of Mura CMS.
 		<cfif this.showEditableObjects>		
 		<cfsavecontent variable="str">
 			<cfoutput>
-			<div class="editableObject #arguments.class#"><div class="editableObjectContents">
+			<span class="editableObject #arguments.class#"><span class="editableObjectContents">
 			</cfoutput>
 		</cfsavecontent>
 		</cfif>
@@ -2011,7 +2011,7 @@ to your own modified versions of Mura CMS.
 		<cfif this.showEditableObjects>		
 		<cfsavecontent variable="str">
 			<cfoutput>
-			<cfoutput></div>#arguments.control#</cfoutput></div>
+			<cfoutput></span>#arguments.control#</cfoutput></span>
 			</cfoutput>
 		</cfsavecontent>
 		</cfif>

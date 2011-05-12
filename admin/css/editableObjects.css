@@ -1,5 +1,5 @@
 
-div.editableObject {
+.editableObject {
 	display: inline-block !important;
 	visibility: !important;
 	float: none !important;
@@ -22,7 +22,7 @@ div.editableObject {
 	background: transparent !important;
 	}
 
-div.editableObject:after {
+.editableObject:after {
 	visibility: hidden !important;
 	display: block !important;
 	font-size: 0 !important;
@@ -30,16 +30,16 @@ div.editableObject:after {
 	clear: both !important;
 	height: 0 !important;
 	}
-* html div.editableObject  { zoom: 1; display: inline; } /* IE6 */
-*:first-child+html div.editableObject { zoom: 1; display: inline; } /* IE7 */
+* html .editableObject  { zoom: 1; display: inline; } /* IE6 */
+*:first-child+html .editableObject { zoom: 1; display: inline; } /* IE7 */
 
-div.editableObject:hover {
+.editableObject:hover {
 	outline-width: 2px !important;
 	/*overflow: hidden !important;*/
 	}
 
 
-div.editableObject div.editableObjectContents {
+.editableObject .editableObjectContents {
 	display: inline-block !important;
 	visibility: !important;
 	float: none !important;
@@ -60,7 +60,7 @@ div.editableObject div.editableObjectContents {
 
 
 
-div.editableObject ul.editableObjectControl {
+.editableObject ul.editableObjectControl {
 	display: block !important;
 	visibility: visible !important;
 	float: none !important;
@@ -77,7 +77,7 @@ div.editableObject ul.editableObjectControl {
 	list-style: none !important;
 	}
 	
-* html div.editableObject ul.editableObjectControl {
+* html .editableObject ul.editableObjectControl {
 	position: absolute !important;
 	top: 2px !important;
 	right: 2px !important;
@@ -85,11 +85,11 @@ div.editableObject ul.editableObjectControl {
 	left: auto !important;
 	}
 	
-div.editableObject:hover ul.editableObjectControl {
+.editableObject:hover ul.editableObjectControl {
 	border-color: #aaa !important;
 	}
 
-div.editableObject ul.editableObjectControl li {
+.editableObject ul.editableObjectControl li {
 	display: block !important;
 	visibility: visible !important;
 	float: none !important;
@@ -107,11 +107,11 @@ div.editableObject ul.editableObjectControl li {
 	background: url(../images/feTools_bg_button.png) no-repeat 50% 50% !important;
 	}
 
-* html div.editableObject ul.editableObjectControl li {
+* html .editableObject ul.editableObjectControl li {
 	background: url(../images/ie6/feTools_bg_button.gif) no-repeat 50% 50% !important;
 	}
 
-div.editableObject ul.editableObjectControl a {
+.editableObject ul.editableObjectControl a {
 	display: block !important;
 	visibility: visible !important;
 	float: none !important;
@@ -143,23 +143,23 @@ div.editableObject ul.editableObjectControl a {
 	box-shadow: 0 0 2px #c89f02 inset !important;*/
 	}
 	
-* html div.editableObject ul.editableObjectControl a {
+* html .editableObject ul.editableObjectControl a {
 	background: url(../images/icons/ie6/edit_24.gif) no-repeat 50% 50% !important;
 	line-height: 16px !important;	
 }
 
 
-div.editableObjectHide:hover {
+.editableObjectHide:hover {
 	outline-width: 0 !important;
 	}
-div.editableObjectHide ul.editableObjectControl {
+.editableObjectHide ul.editableObjectControl {
 	display: none !important;
 	}
 
 
 /* @group Add Content Nav */
 
-div.editableObject ul.editableObjectControl li ul { /* all lists */
+.editableObject ul.editableObjectControl li ul { /* all lists */
 	padding: .5em .5em .5em !important;
 	margin: 0 0 0 -4px !important;
 	list-style: none !important;
@@ -179,7 +179,7 @@ div.editableObject ul.editableObjectControl li ul { /* all lists */
 	height: auto !important;
 	}
 
-div.editableObject ul.editableObjectControl li li { /* all list items */
+.editableObject ul.editableObjectControl li li { /* all list items */
 	float: left !important;
 	width: 100% !important; /* width needed or else Opera goes nuts */
 	padding: 0 !important;
@@ -188,11 +188,11 @@ div.editableObject ul.editableObjectControl li li { /* all list items */
 	border-bottom: 1px dotted #989a9b !important;
 	}
 
-div.editableObject ul.editableObjectControl li.last { 
+.editableObject ul.editableObjectControl li.last { 
 	border: 0 !important;
 	}
 
-div.editableObject ul.editableObjectControl li li a {
+.editableObject ul.editableObjectControl li li a {
 	display: block !important;
 	visibility: !important;
 	float: none !important;
@@ -229,30 +229,30 @@ div.editableObject ul.editableObjectControl li li a {
 	box-shadow: none !important;
 	}
 
-div.editableObject ul.editableObjectControl li li a:hover {
+.editableObject ul.editableObjectControl li li a:hover {
 	text-decoration: underline !important;
 	}
 
-div.editableObject ul.editableObjectControl li:hover ul,
-div.editableObject ul.editableObjectControl li.sfhover ul { /* lists nested under hovered list items */
+.editableObject ul.editableObjectControl li:hover ul,
+.editableObject ul.editableObjectControl li.sfhover ul { /* lists nested under hovered list items */
 	display: none !important;
 	}
 
-div.editableObject ul.editableObjectControl li:hover a,
-div.editableObject ul.editableObjectControl li.sfhover a { /* lists nested under hovered list items */
+.editableObject ul.editableObjectControl li:hover a,
+.editableObject ul.editableObjectControl li.sfhover a { /* lists nested under hovered list items */
 	color: #000 !important;
 	}
 
-div.editableObject .edit a { background-image: url(../images/edit_16.png); }	
+.editableObject .edit a { background-image: url(../images/edit_16.png); }	
 
 
-div.editableObject ul.editableObjectControl li li.objEdit a {
+.editableObject ul.editableObjectControl li li.objEdit a {
 	background-image: url(/admin/images/icons/edit_24.png) !important;
 	}
-div.editableObject ul.editableObjectControl li li.objHistory a {
+.editableObject ul.editableObjectControl li li.objHistory a {
 	background-image: url(/admin/images/icons/hist_24.png) !important;
 	}
 
-div.editableObject li li:last-child {
+.editableObject li li:last-child {
 	border: 0 !important;
 	}
