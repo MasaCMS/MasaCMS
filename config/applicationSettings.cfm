@@ -6,43 +6,39 @@ the Free Software Foundation, Version 2 of the License.
 
 Mura CMS is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. �See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-along with Mura CMS. If not, see <http://www.gnu.org/licenses/>.
+along with Mura CMS. �If not, see <http://www.gnu.org/licenses/>.
 
-Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on 
-Mura CMS. Thus, the terms and conditions of the GNU General Public License version 2 ("GPL") cover the entire combined work.
+Linking Mura CMS statically or dynamically with other modules constitutes
+the preparation of a derivative work based on Mura CMS. Thus, the terms and 	
+conditions of the GNU General Public License version 2 (�GPL�) cover the entire combined work.
 
-However, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with programs
-or libraries that are released under the GNU Lesser General Public License version 2.1.
+However, as a special exception, the copyright holders of Mura CMS grant you permission
+to combine Mura CMS with programs or libraries that are released under the GNU Lesser General Public License version 2.1.
 
-In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with 
-independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without 
-Mura CMS under the license of your choice, provided that you follow these specific guidelines: 
+In addition, as a special exception, �the copyright holders of Mura CMS grant you permission
+to combine Mura CMS �with independent software modules that communicate with Mura CMS solely
+through modules packaged as Mura CMS plugins and deployed through the Mura CMS plugin installation API,
+provided that these modules (a) may only modify the �/trunk/www/plugins/ directory through the Mura CMS
+plugin installation API, (b) must not alter any default objects in the Mura CMS database
+and (c) must not alter any files in the following directories except in cases where the code contains
+a separately distributed license.
 
-Your custom code 
+/trunk/www/admin/
+/trunk/www/tasks/
+/trunk/www/config/
+/trunk/www/requirements/mura/
 
-• Must not alter any default objects in the Mura CMS database and
-• May not alter the default display of the Mura CMS logo within Mura CMS and
-• Must not alter any files in the following directories.
+You may copy and distribute such a combined work under the terms of GPL for Mura CMS, provided that you include
+the source code of that other code when and as the GNU GPL requires distribution of source code.
 
- /admin/
- /tasks/
- /config/
- /requirements/mura/
- /Application.cfc
- /index.cfm
- /MuraProxy.cfc
-
-You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work 
-under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL 
-requires distribution of source code.
-
-For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your 
-modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
-version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
+For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception
+for your modified version; it is your choice whether to do so, or to make such modified version available under
+the GNU General Public License version 2 �without this exception. �You may, if you choose, apply this exception
+to your own modified versions of Mura CMS.
 --->
 	<cfset this.configPath=getDirectoryFromPath(getCurrentTemplatePath())>
 	<!--- Application name, should be unique --->
@@ -68,20 +64,48 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset this.secureJSONPrefix = "">
 	<!--- Used to help CF work with missing files and dir indexes --->
 	<cfset this.welcomeFileList = "">
+
+<!--- Preferred method for ColdFusion 8, allows you to skip administering these settings in the CF admin	
+	1. Place Mura requirements directory in your webroot
+	2. Place Mura Custom Tags directory into "requirements/custom_tags/"
+	2. Change basedir to point to your webroot
+	3. Uncomment the code below
+	--->
 	
-	<cfparam name="request.muraFrontEndRequest" default="false"/>
-	<cfparam name="request.muraChangesetPreview" default="false"/>
-	<cfparam name="request.muraExportHtml" default="false"/>
-	<cfparam name="request.muraMobileRequest" default="false"/>
-	<cfparam name="request.muraHandledEvents" default="#structNew()#"/>
-	<cfparam name="request.altTHeme" default=""/>
-	<cfparam name="request.customMuraScopeKeys" default="#structNew()#"/>
-	<cfparam name="request.muraTraceRoute" default="#arrayNew(1)#"/>
-	<cfparam name="request.muraRequestStart" default="#getTickCount()#"/>
-	<cfparam name="request.muraShowTrace" default="false"/>
-	<cfparam name="request.muraValidateDomain" default="true"/>
+	<!--- Define the location of your frameworks 
+		The default here is dynamically pointing at the webroot
+	--->
+	<cfset baseDir= left(this.configPath,len(this.configPath)-8) />
+			
+	<cfif StructKeyExists(SERVER,"bluedragon") and not findNoCase("Windows",server.os.name)>
+		<cfset mapPrefix="$" />
+	<cfelse>
+		<cfset mapPrefix="" />
+	</cfif>
+
+	<!--- define custom coldfusion mappings. Keys are mapping names, values are full paths  --->
+	<cfset this.mappings = structNew()>
+	<cfset this.mappings["/plugins"] = mapPrefix & baseDir & "/plugins">
+	<cfset this.mappings["/muraWRM"] = mapPrefix & baseDir>
+	<cfset this.mappings["/savaWRM"] = mapPrefix & baseDir>
+	<cfset this.mappings["/config"] = mapPrefix & baseDir & "/config">
 	
-	<cfset baseDir= left(this.configPath,len(this.configPath)-8) /><cfif not fileExists(baseDir & "/config/settings.ini.cfm")>
+	<cftry>
+		<cfinclude template="/config/mappings.cfm">
+		<cfset hasMainMappings=true>
+		<cfcatch>
+			<cfset hasMainMappings=false>
+		</cfcatch>
+	</cftry>
+	<cftry>
+		<cfinclude template="/plugins/mappings.cfm">
+		<cfset hasPluginMappings=true>
+		<cfcatch>
+			<cfset hasPluginMappings=false>
+		</cfcatch>
+	</cftry>
+	
+	<cfif not fileExists(baseDir & "/config/settings.ini.cfm")>
 		<cftry>
 		<cffile action="copy" source="#baseDir#/config/templates/settings.template.cfm" destination="#baseDir#/config/settings.ini.cfm" mode="777">
 		<cfcatch>
@@ -93,35 +117,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset properties = createObject( 'java', 'java.util.Properties' ).init()>
 	<cfset fileStream = createObject( 'java', 'java.io.FileInputStream').init( getDirectoryFromPath(getCurrentTemplatePath()) & "/settings.ini.cfm")>
 	<cfset properties.load( fileStream )>
-	<cfset fileStream.close()>
-
-	<!--- define custom coldfusion mappings. Keys are mapping names, values are full paths  --->
-	<cfif StructKeyExists(SERVER,"bluedragon") and not findNoCase("Windows",server.os.name)>
-		<cfset mapPrefix="$" />
-	<cfelse>
-		<cfset mapPrefix="" />
-	</cfif>
-	
-	<cfset this.mappings = structNew()>
-	<cfset this.mappings["/plugins"] = mapPrefix & baseDir & "/plugins">
-	<cfset this.mappings["/muraWRM"] = mapPrefix & baseDir>
-	<cfset this.mappings["/savaWRM"] = mapPrefix & baseDir>
-	<cfset this.mappings["/config"] = mapPrefix & baseDir & "/config">
-	
-	<cftry>
-		<cfinclude template="#properties.getProperty("context","")#/config/mappings.cfm">
-		<cfset hasMainMappings=true>
-		<cfcatch>
-			<cfset hasMainMappings=false>
-		</cfcatch>
-	</cftry>
-	<cftry>
-		<cfinclude template="#properties.getProperty("context","")#/plugins/mappings.cfm">
-		<cfset hasPluginMappings=true>
-		<cfcatch>
-			<cfset hasPluginMappings=false>
-		</cfcatch>
-	</cftry>
 	
 	<cfset request.userAgent = LCase( CGI.http_user_agent ) />
 	<!--- Should we even use sessions? --->
@@ -188,18 +183,25 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset this.ormSettings.skipCFCwitherror=properties.getProperty("ormskipCFCwitherror","false") />
 		<cfset this.ormSettings.useDBforMapping=properties.getProperty("ormuseDBforMapping","true") />
 		<cfset this.ormSettings.autogenmap=properties.getProperty("ormautogenmap","true") />
-		<cfset this.ormSettings.logsql=properties.getProperty("ormlogsql","false") />
 	</cfif>
-
+	
+	<cfset request.muraFrontEndRequest=false>
+	<cfset request.muraChangesetPreview=false>
+	<cfset request.muraExportHtml = false>
+	<cfset request.muraMobileRequest=false>
+	<cfset request.muraHandledEvents = structNew()>
+	<cfset request.altTHeme = "">	
+	<cfset request.customMuraScopeKeys = structNew()>	
+	
 	<cftry>
-		<cfinclude template="#properties.getProperty("context","")#/plugins/cfapplication.cfm">
+		<cfinclude template="/plugins/cfapplication.cfm">
 		<cfset hasPluginCFApplication=true>
 		<cfcatch>
 			<cfset hasPluginCFApplication=false>
 		</cfcatch>
 	</cftry>
 	<cftry>
-		<cfinclude template="#properties.getProperty("context","")#/config/cfapplication.cfm">
+		<cfinclude template="/config/cfapplication.cfm">
 		<cfset request.hasCFApplicationCFM=true>
 		<cfcatch>
 			<cfset request.hasCFApplicationCFM=false>

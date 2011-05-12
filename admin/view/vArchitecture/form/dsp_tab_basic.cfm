@@ -6,147 +6,48 @@ the Free Software Foundation, Version 2 of the License.
 
 Mura CMS is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. �See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-along with Mura CMS. If not, see <http://www.gnu.org/licenses/>.
+along with Mura CMS. �If not, see <http://www.gnu.org/licenses/>.
 
-Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on 
-Mura CMS. Thus, the terms and conditions of the GNU General Public License version 2 ("GPL") cover the entire combined work.
+Linking Mura CMS statically or dynamically with other modules constitutes
+the preparation of a derivative work based on Mura CMS. Thus, the terms and 	
+conditions of the GNU General Public License version 2 (�GPL�) cover the entire combined work.
 
-However, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with programs
-or libraries that are released under the GNU Lesser General Public License version 2.1.
+However, as a special exception, the copyright holders of Mura CMS grant you permission
+to combine Mura CMS with programs or libraries that are released under the GNU Lesser General Public License version 2.1.
 
-In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with 
-independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without 
-Mura CMS under the license of your choice, provided that you follow these specific guidelines: 
+In addition, as a special exception, �the copyright holders of Mura CMS grant you permission
+to combine Mura CMS �with independent software modules that communicate with Mura CMS solely
+through modules packaged as Mura CMS plugins and deployed through the Mura CMS plugin installation API,
+provided that these modules (a) may only modify the �/trunk/www/plugins/ directory through the Mura CMS
+plugin installation API, (b) must not alter any default objects in the Mura CMS database
+and (c) must not alter any files in the following directories except in cases where the code contains
+a separately distributed license.
 
-Your custom code 
+/trunk/www/admin/
+/trunk/www/tasks/
+/trunk/www/config/
+/trunk/www/requirements/mura/
 
-• Must not alter any default objects in the Mura CMS database and
-• May not alter the default display of the Mura CMS logo within Mura CMS and
-• Must not alter any files in the following directories.
+You may copy and distribute such a combined work under the terms of GPL for Mura CMS, provided that you include
+the source code of that other code when and as the GNU GPL requires distribution of source code.
 
- /admin/
- /tasks/
- /config/
- /requirements/mura/
- /Application.cfc
- /index.cfm
- /MuraProxy.cfc
-
-You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work 
-under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL 
-requires distribution of source code.
-
-For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your 
-modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
-version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
+For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception
+for your modified version; it is your choice whether to do so, or to make such modified version available under
+the GNU General Public License version 2 �without this exception. �You may, if you choose, apply this exception
+to your own modified versions of Mura CMS.
 --->
 <cfset tabLabelList=listAppend(tabLabelList,application.rbFactory.getKeyValue(session.rb,"sitemanager.content.tabs.basic"))/>
 <cfset tabList=listAppend(tabList,"tabBasic")>
-<cfset started=false>
 <cfoutput>
 <div id="tabBasic">
 <dl class="oneColumn">
-		<!---<cfif attributes.compactDisplay neq "true">
-			<div class="selectContentType">
-			<cfif listFindNoCase(pageLevelList,attributes.type)>
-				<cfset started=true>
-				<dt class="first">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.type")#<!---</dt>
-				<dd>--->
-				<select name="typeSelector" class="dropdown" onchange="resetExtendedAttributes('#request.contentBean.getcontentHistID()#',this.value,'#attributes.siteID#','#application.configBean.getContext()#','#application.settingsManager.getSite(attributes.siteID).getThemeAssetPath()#');">
-				<cfloop list="#baseTypeList#" index="t">
-				<cfsilent><cfquery name="rsst" dbtype="query">select * from rsSubTypes where type=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#t#"> and subtype not in ('Default','default')</cfquery></cfsilent>
-				<option value="#t#^Default" <cfif attributes.type eq t and request.contentBean.getSubType() eq "Default">selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.type.#lcase(t)#")#</option>
-				<cfif rsst.recordcount>
-					<cfloop query="rsst">
-						<option value="#t#^#rsst.subtype#" <cfif attributes.type eq t and request.contentBean.getSubType() eq rsst.subtype>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.type.#lcase(t)#")#  / #rsst.subtype#</option>
-					</cfloop>
-				</cfif>
-				</cfloop>
-				</select>
-				</dt>
-			<cfelseif attributes.type eq 'File'>
-				<cfset t="File"/>
-				<cfsilent><cfquery name="rsst" dbtype="query">select * from rsSubTypes where type=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#t#"> and subtype not in ('Default','default')</cfquery></cfsilent>
-				<cfif rsst.recordcount>
-				<cfset started=true>
-				<dt class="first">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.type")#<!---</dt>
-				</dd>--->
-				<select name="typeSelector" class="dropdown" onchange="resetExtendedAttributes('#request.contentBean.getcontentHistID()#',this.value,'#attributes.siteID#','#application.configBean.getContext()#','#application.settingsManager.getSite(attributes.siteID).getThemeAssetPath()#');">
-				<option value="#t#^Default" <cfif attributes.type eq t and request.contentBean.getSubType() eq "Default">selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.type.#t#")#</option>
-				<cfif rsst.recordcount>
-					<cfloop query="rsst">
-						<option value="#t#^#rsst.subtype#" <cfif attributes.type eq t and request.contentBean.getSubType() eq rsst.subtype>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.type.#lcase(t)#")# / #rsst.subtype#</option>
-					</cfloop>
-				</cfif>
-				</select>
-				</dt>
-				</cfif>
-			<cfelseif attributes.type eq 'Link'>	
-				<cfset t="Link"/>
-				<cfsilent><cfquery name="rsst" dbtype="query">select * from rsSubTypes where type=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#t#"> and subtype not in ('Default','default')</cfquery></cfsilent>
-				<cfif rsst.recordcount>
-				<cfset started=true>
-				<dt class="first">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.type")#<!---</dt>
-				<dd>--->
-				<select name="typeSelector" class="dropdown" onchange="resetExtendedAttributes('#request.contentBean.getcontentHistID()#',this.value,'#attributes.siteID#','#application.configBean.getContext()#','#application.settingsManager.getSite(attributes.siteID).getThemeAssetPath()#');">
-				<option value="#t#^Default" <cfif attributes.type eq t and request.contentBean.getSubType() eq "Default">selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.type.#lcase(t)#")#</option>
-				<cfif rsst.recordcount>
-					<cfloop query="rsst">
-						<cfif rsst.subtype neq 'Default'><option value="#t#^#rsst.subtype#" <cfif attributes.type eq t and request.contentBean.getSubType() eq rsst.subtype>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.type.#lcase(t)#")#  / #rsst.subtype#</option></cfif>
-					</cfloop>
-				</cfif>
-				</select>
-				</dt>
-				</cfif>
-			<cfelseif attributes.type eq 'Component'>	
-				<cfset t="Component"/>
-				<cfsilent><cfquery name="rsst" dbtype="query">select * from rsSubTypes where type=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#t#"> and subtype not in ('Default','default')</cfquery></cfsilent>
-				<cfif rsst.recordcount>
-				<cfset started=true>
-				<dt class="first">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.type")#<!---</dt>
-				<dd>--->
-				<select name="typeSelector" class="dropdown" onchange="resetExtendedAttributes('#request.contentBean.getcontentHistID()#',this.value,'#attributes.siteID#','#application.configBean.getContext()#','#application.settingsManager.getSite(attributes.siteID).getThemeAssetPath()#');">
-				<option value="#t#^Default" <cfif attributes.type eq t and request.contentBean.getSubType() eq "Default">selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.type.#lcase(t)#")#</option>
-				<cfif rsst.recordcount>
-					<cfloop query="rsst">
-						<cfif rsst.subtype neq 'Default'><option value="#t#^#rsst.subtype#" <cfif attributes.type eq t and request.contentBean.getSubType() eq rsst.subtype>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.type.#lcase(t)#")#  / #rsst.subtype#</option></cfif>
-					</cfloop>
-				</cfif>
-				</select>
-				</dt>
-				</cfif>
-			</cfif>
-		</div>
-	</cfif>--->
-	
-	<!---<cfif attributes.compactDisplay eq "true">
-		<cfif not listFindNoCase("Component,Form", attributes.type)>
-			<cfquery name="rsst" dbtype="query">select * from rsSubTypes where type=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#attributes.type#"> and subtype not in ('Default','default')</cfquery>
-			<cfif rsst.recordcount>
-					<cfset t=attributes.type/>
-					<cfsilent></cfsilent>
-					<cfset started=true>
-					<dt class="first">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.type")#</dt>
-					<dd>
-					<select name="typeSelector" class="dropdown" onchange="resetExtendedAttributes('#request.contentBean.getcontentHistID()#',this.value,'#attributes.siteID#','#application.configBean.getContext()#','#application.settingsManager.getSite(attributes.siteID).getThemeAssetPath()#');">
-					<option value="#t#^Default" <cfif attributes.type eq t and request.contentBean.getSubType() eq "Default">selected</cfif>>#t#</option>
-					<cfloop query="rsst">
-						<option value="#t#^#rsst.subtype#" <cfif attributes.type eq t and request.contentBean.getSubType() eq rsst.subtype>selected</cfif>>#t#  / #rsst.subtype#</option>
-					</cfloop>
-					</select>	
-					</dd>								
-			</cfif>
-		</cfif>
-			
-		<input type="hidden" name="closeCompactDisplay" value="true" />
-	</cfif>--->
 <cfswitch expression="#attributes.type#">
 	<cfcase value="Page,Portal,Calendar,Gallery,File,Link">
-		<dt<cfif not started> class="first"</cfif>><a href="##" class="tooltip">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.title")#<span>#application.rbFactory.getKeyValue(session.rb,"tooltip.pageTitle")#</span></a></dt>
+		<dt class="first"><a href="##" class="tooltip">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.title")#<span>#application.rbFactory.getKeyValue(session.rb,"tooltip.pageTitle")#</span></a></dt>
 		<dd><input type="text" id="title" name="title" value="#HTMLEditFormat(request.contentBean.gettitle())#"  maxlength="255" class="textLong" required="true" message="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.titlerequired')#" <cfif not request.contentBean.getIsNew() and not listFind("File,Link",attributes.type)>onkeypress="openDisplay('editSEOTitles','#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.close')#');"</cfif>></dd>
 		
 		<dt><a href="##" class="tooltip">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.menutitle")#<span>#application.rbFactory.getKeyValue(session.rb,"tooltip.navigationTitle")#</span></a></dt>
@@ -167,7 +68,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfcase>
 	<cfdefaultcase>
 		<input type="hidden" id="menuTitle" name="menuTitle" value="">
-		<dt<cfif not started> class="first"</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.title')#</dt>
+		<dt class="first">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.title')#</dt>
 		<dd><input type="text" id="title" name="title" value="#HTMLEditFormat(request.contentBean.getTitle())#"  maxlength="255" class="textLong" required="true" message="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.titlerequired')#"></dd>
 	</cfdefaultcase>
 </cfswitch>
@@ -224,7 +125,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			
 			function FCKeditor_OnComplete( editorInstance ) { 	
 				<cfif attributes.preview eq 1>
-			   	preview('http://#application.settingsManager.getSite(attributes.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##application.contentRenderer.getURLStem(attributes.siteid,'')#?previewid=#request.contentBean.getcontenthistid()#','#request.contentBean.getTargetParams()#');
+			   	preview('http://#application.settingsManager.getSite(attributes.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##application.contentRenderer.getURLStem(attributes.siteid,'')#?previewid=#request.contentBean.getcontenthistid()#&siteid=#request.contentBean.getsiteid()#','#request.contentBean.getTargetParams()#');
 				</cfif> 
 				htmlEditorOnComplete(editorInstance); 
 			}
@@ -278,7 +179,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfif attributes.type neq 'Component' and attributes.type neq 'Form'>
 	<dt class="separate"><a href="##" class="tooltip">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.releasedate')#<span>#application.rbFactory.getKeyValue(session.rb,"tooltip.contentReleaseDate")#</span></a></dt>
 	<dd>
-		<input type="text" class="datepicker textAlt" name="releaseDate" value="#LSDateFormat(request.contentBean.getreleasedate(),session.dateKeyFormat)#"  maxlength="12" ><!---<img class="calendar" type="image" src="images/icons/cal_24.png" width="14" height="14" hidefocus onclick="window.open('date_picker/index.cfm?form=contentForm&field=releaseDate&format=MDY','refWin','toolbar=no,location=no,directories=no,status=no,menubar=no,resizable=yes,copyhistory=no,scrollbars=no,width=190,height=220,top=250,left=250');return false;">--->
+		<input type="text" class="datepicker" name="releaseDate" value="#LSDateFormat(request.contentBean.getreleasedate(),session.dateKeyFormat)#"  maxlength="12" class="textAlt" ><!---<img class="calendar" type="image" src="images/icons/cal_24.png" width="14" height="14" hidefocus onclick="window.open('date_picker/index.cfm?form=contentForm&field=releaseDate&format=MDY','refWin','toolbar=no,location=no,directories=no,status=no,menubar=no,resizable=yes,copyhistory=no,scrollbars=no,width=190,height=220,top=250,left=250');return false;">--->
 		<select name="releasehour" class="dropdown"><cfloop from="1" to="12" index="h"><option value="#h#" <cfif not LSisDate(request.contentBean.getReleaseDate())  and h eq 12 or (LSisDate(request.contentBean.getReleaseDate()) and (hour(request.contentBean.getReleaseDate()) eq h or (hour(request.contentBean.getReleaseDate()) - 12) eq h or hour(request.contentBean.getReleaseDate()) eq 0 and h eq 12))>selected</cfif>>#h#</option></cfloop></select>
 		<select name="releaseMinute" class="dropdown"><cfloop from="0" to="59" index="m"><option value="#m#" <cfif LSisDate(request.contentBean.getReleaseDate()) and minute(request.contentBean.getReleaseDate()) eq m>selected</cfif>>#iif(len(m) eq 1,de('0#m#'),de('#m#'))#</option></cfloop></select>
 		<select name="releaseDayPart" class="dropdown"><option value="AM">AM</option><option value="PM" <cfif LSisDate(request.contentBean.getReleaseDate()) and hour(request.contentBean.getReleaseDate()) gte 12>selected</cfif>>PM</option></select>
@@ -290,8 +191,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset bydate=iif(request.contentBean.getdisplay() EQ 2 or (attributes.ptype eq 'Calendar' and attributes.contentid eq ''),de('true'),de('false'))>
 	<dt><a href="##" class="tooltip">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.display')#<span>#application.rbFactory.getKeyValue(session.rb,"tooltip.displayContent")#</span></a></dt>
 	<dd><select name="display" class="dropdown" onchange="javascript: this.selectedIndex==2?toggleDisplay2('editDates',true):toggleDisplay2('editDates',false);">
-					<option value="1"  <cfif  request.contentBean.getdisplay() EQ 1> selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.yes')#</option>
-					<option value="0"  <cfif  request.contentBean.getdisplay() EQ 0> selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.no')#</option>
+					<option value="1"  <cfif  request.contentBean.getdisplay() EQ 1> selected</CFIF>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.yes')#</option>
+					<option value="0"  <cfif  request.contentBean.getdisplay() EQ 0> selected</CFIF>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.no')#</option>
 					<option value="2"  <cfif  bydate> selected</CFIF>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.perstopstart')#</option>
 					</select>
 	<dd>
@@ -342,20 +243,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfif>
 	</dd>
 </cfif>
-<cfif listFind("Page,Portal,Calendar,Gallery,Link,File,Link",attributes.type)>
-<dt>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.expires')#</dt>
-<dd class="clearfix"><div id="expires-date-selector">
-	<input type="text" name="expires" value="#LSDateFormat(request.contentBean.getExpires(),session.dateKeyFormat)#" class="textAlt datepicker">
-	<select name="expireshour" class="dropdown"><cfloop from="1" to="12" index="h"><option value="#h#" <cfif not LSisDate(request.contentBean.getExpires())  and h eq 12 or (LSisDate(request.contentBean.getExpires()) and (hour(request.contentBean.getExpires()) eq h or (hour(request.contentBean.getExpires()) - 12) eq h or hour(request.contentBean.getExpires()) eq 0 and h eq 12))>selected</cfif>>#h#</option></cfloop></select>
-	<select name="expiresMinute" class="dropdown"><cfloop from="0" to="59" index="m"><option value="#m#" <cfif LSisDate(request.contentBean.getExpires()) and minute(request.contentBean.getExpires()) eq m>selected</cfif>>#iif(len(m) eq 1,de('0#m#'),de('#m#'))#</option></cfloop></select>
-	<select name="expiresDayPart" class="dropdown"><option value="AM">AM</option><option value="PM" <cfif LSisDate(request.contentBean.getExpires()) and hour(request.contentBean.getExpires()) gte 12>selected</cfif>>PM</option></select>
-	</div>
-	<div id="expires-notify">
-		<label for="dspexpiresnotify"><input type="checkbox" name="dspExpiresNotify"  id="dspexpiresnotify" onclick="loadExpiresNotify('#attributes.siteid#','#attributes.contenthistid#','#attributes.parentid#');"  class="checkbox"><!---<a href="##" class="tooltip">--->#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.expiresnotify')#<!---<span>#application.rbFactory.getKeyValue(session.rb,"tooltip.notifyReview")#</span></a>---></label>
-		<div id="selectExpiresNotify" style="display: none;"></div>
-	</div>
-</dd>
-</cfif>
+
 <cfif attributes.type neq 'Component' and attributes.type neq 'Form' and  attributes.contentid neq '00000000000000000000000000000000001'>
 <dt>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.isfeature')#</dt>
 
@@ -390,7 +278,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <dt><input type="checkbox" name="dspNotify"  id="dspnotify" onclick="loadNotify('#attributes.siteid#','#attributes.contentid#','#attributes.parentid#');"  class="checkbox"> <label for="dspnotify"><a href="##" class="tooltip">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.notifyforreview')#<span>#application.rbFactory.getKeyValue(session.rb,"tooltip.notifyReview")#</span></a></label></dt>
 <dd id="selectNotify" style="display: none;"></dd>
 
-<dt>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.addnotes')# <a href="" id="editNoteLink" onclick="toggleDisplay('editNote','#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.expand')#','#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.close')#');return false;">[#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.expand')#]</a></dt>
+<dt>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.addnotes')# <a href="##" id="editNoteLink" onclick="javascript: toggleDisplay('editNote','#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.expand')#','#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.close')#'); document.getElementById('page_tabView').height = '800px';return false">[#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.expand')#]</a></dt>
 <dd id="editNote" style="display: none;">
 <textarea name="notes" rows="8" class="alt" id="abstract"></textarea>	
 </dd>

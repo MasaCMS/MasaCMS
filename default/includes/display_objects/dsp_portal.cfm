@@ -12,84 +12,83 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Mura CMS. If not, see <http://www.gnu.org/licenses/>.
 
-Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on 
-Mura CMS. Thus, the terms and conditions of the GNU General Public License version 2 ("GPL") cover the entire combined work.
+Linking Mura CMS statically or dynamically with other modules constitutes
+the preparation of a derivative work based on Mura CMS. Thus, the terms and 
+'conditions of the GNU General Public License version 2 (GPL) cover the entire combined work.
 
-However, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with programs
-or libraries that are released under the GNU Lesser General Public License version 2.1.
+However, as a special exception, the copyright holders of Mura CMS grant you permission
+to combine Mura CMS with programs or libraries that are released under the GNU Lesser General Public License version 2.1.
 
-In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with 
-independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without 
-Mura CMS under the license of your choice, provided that you follow these specific guidelines: 
+In addition, as a special exception, the copyright holders of Mura CMS grant you permission
+to combine Mura CMS with independent software modules that communicate with Mura CMS solely
+through modules packaged as Mura CMS plugins and deployed through the Mura CMS plugin installation API,
+provided that these modules (a) may only modify the /trunk/www/plugins/ directory through the Mura CMS
+plugin installation API, (b) must not alter any default objects in the Mura CMS database
+and (c) must not alter any files in the following directories except in cases where the code contains
+a separately distributed license.
 
-Your custom code 
+/trunk/www/admin/
+/trunk/www/tasks/
+/trunk/www/config/
+/trunk/www/requirements/mura/
 
-• Must not alter any default objects in the Mura CMS database and
-• May not alter the default display of the Mura CMS logo within Mura CMS and
-• Must not alter any files in the following directories.
+You may copy and distribute such a combined work under the terms of GPL for Mura CMS, provided that you include
+the source code of that other code when and as the GNU GPL requires distribution of source code.
 
- /admin/
- /tasks/
- /config/
- /requirements/mura/
- /Application.cfc
- /index.cfm
- /MuraProxy.cfc
-
-You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work 
-under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL 
-requires distribution of source code.
-
-For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your 
-modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
-version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
+For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception
+for your modified version; it is your choice whether to do so, or to make such modified version available under
+the GNU General Public License version 2 without this exception. You may, if you choose, apply this exception
+to your own modified versions of Mura CMS.
 --->
 
 <cfsilent>
-<cfif not isNumeric($.event('month'))>
-	<cfset $.event('month',month(now()))>
+<cfparam name="request.day" default="0">
+<cfparam name="request.filterBy" default="">
+
+<cfif not isNumeric(request.month)>
+	<cfset request.month=month(now())>
 </cfif>
 
-<cfif not isNumeric($.event('year'))>
-	<cfset $.event('year',year(now()))>
+<cfif not isNumeric(request.year)>
+	<cfset request.year=year(now())>
 </cfif>
 
-<cfif isNumeric($.event('day')) and $.event('day')
-	and $.event('filterBy') eq "releaseDate">
+<cfif isNumeric(request.day) and request.day
+	and request.filterBy eq "releaseDate">
 	<cfset menuType="releaseDate">
-	<cfset menuDate=createDate($.event('year'),$.event('month'),$.event('day'))>
-<cfelseif $.event('filterBy') eq "releaseMonth">
+	<cfset menuDate=createDate(request.year,request.month,request.day)>
+<cfelseif request.filterBy eq "releaseMonth">
 	<cfset menuType="releaseMonth">
-	<cfset menuDate=createDate($.event('year'),$.event('month'),1)>
+	<cfset menuDate=createDate(request.year,request.month,1)>
 <cfelse>
 	<cfset menuDate=now()>
 	<cfset menuType="default">
 </cfif>
 
-<cfset maxPortalItems=$.globalConfig("maxPortalItems")>
+<cfset maxPortalItems=application.configBean.getValue("maxPortalItems")>
 <cfif not isNumeric(maxPortalItems)>
 	<cfset maxPortalItems=100>
 </cfif>
 
-<cfset variables.rsPreSection=$.getBean('contentGateway').getKids('00000000000000000000000000000000000',$.event('siteID'),$.content('contentID'),menuType,menuDate,maxPortalItems,$.event('keywords'),0,$.content('sortBy'),$.content('sortDirection'),$.event('categoryID'),$.event('relatedID'),$.event('tag'))>
+<cfset variables.rsPreSection=application.contentGateway.getKids('00000000000000000000000000000000000',request.siteid,request.contentBean.getcontentid(),menuType,menuDate,maxPortalItems,request.keywords,0,request.contentBean.getsortBy(),request.contentBean.getsortDirection(),request.categoryID,request.relatedID,request.tag)>
 
-<cfif $.siteConfig('extranet') eq 1 and $.event('r').restrict eq 1>
-	<cfset variables.rssection=$.queryPermFIlter(variables.rsPreSection)/>
+<cfif getSite().getExtranet() eq 1 and request.r.restrict eq 1>
+	<cfset variables.rssection=queryPermFilter(variables.rsPreSection)/>
 <cfelse>
 	<cfset variables.rssection=variables.rsPreSection/>
 </cfif>
-	
-<cfset variables.iterator=$.getBean("contentIterator")>
-<cfset variables.iterator.setQuery(rsSection,$.content('nextN'))>
+<cfset variables.rbFactory=getSite().getRBFactory() />	
+<cfset variables.iterator=application.serviceFactory.getBean("contentIterator")>
+<cfset variables.iterator.setQuery(rsSection,request.contentBean.getNextN())>
 
-<cfset event.setValue("currentNextNID",$.content('contentID'))>
+<cfset event.setValue("currentNextNID",event.getContentBean().getContentID())>
 
-<cfif not len($.event("nextNID")) or $.event("nextNID") eq $.event("currentNextNID")>
+<cfif not len(event.getValue("nextNID")) or event.getValue("nextNID") eq event.getValue("currentNextNID")>
 	<cfif event.getContentBean().getNextN() gt 1>
-		<cfset variables.currentNextNIndex=$.event("startRow")>
+		<cfset variables.currentNextNIndex=event.getValue("startRow")>
 		<cfset variables.iterator.setStartRow(variables.currentNextNIndex)>
 	<cfelse>
-		<cfset variables.currentNextNIndex=$.event("pageNum")>
+		<cfset variables.currentNextNIndex=event.getValue("pageNum")>
 		<cfset variables.iterator.setPage(variables.currentNextNIndex)>
 	</cfif>
 <cfelse>	
@@ -97,39 +96,32 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.iterator.setPage(1)>
 </cfif>
 
-<cfset variables.nextN=$.getBean('utility').getNextN(rsSection,$.content('nextN'),variables.currentNextNIndex)>
+<cfset variables.nextN=application.utility.getNextN(rsSection,request.contentBean.getNextN(),variables.currentNextNIndex)>
+
+<cfset variables.contentListType="Portal">
+<cfset variables.contentListFields="Title,Summary,Date,Image,Tags,Credits">
+
+<cfif application.contentGateway.getHasComments(event.getValue('siteid'),event.getContentBean().getContentID())>
+	<cfset variables.contentListFields=listAppend(contentListFields,"Comments")>
+</cfif>
+
+<cfif application.contentGateway.getHasRatings(event.getValue('siteid'),event.getContentBean().getContentID())>
+	<cfset variables.contentListFields=listAppend(contentListFields,"Rating")>
+</cfif>
 
 </cfsilent>
 
 <cfif iterator.getRecordcount()>
 	<cfoutput>
 	<div id="svPortal" class="svIndex">
-		<cfsilent>
-			<cfif NOT len($.content("displayList"))>
-				<cfset variables.contentListFields="Date,Title,Image,Summary,ReadMore,Credits">
-				
-				<cfif $.getBean('contentGateway').getHasComments($.event('siteid'),$.content('contentID'))>
-					<cfset variables.contentListFields=listAppend(contentListFields,"Comments")>
-				</cfif>
-				
-				<cfset variables.contentListFields=listAppend(variables.contentListFields,"Tags")>
-				
-				<cfif $.getBean('contentGateway').getHasRatings($.event('siteid'),$.content('contentID'))>
-					<cfset variables.contentListFields=listAppend(variables.contentListFields,"Rating")>
-				</cfif>
-				<cfset $.content("displayList",variables.contentListFields)>
-			</cfif>
-		</cfsilent>
-		#$.dspObject_Include(thefile='dsp_content_list.cfm',
-			fields=$.content("displayList"),
-			type="Portal", 
-			iterator= variables.iterator,
-			imageSize=$.content("ImageSize"),
-			imageHeight=$.content("ImageHeight"),
-			imageWidth=$.content("ImageWidth")
+		#dspObject_Include(thefile='dsp_content_list.cfm',
+			fields=variables.contentListFields,
+			type=variables.contentListType, 
+			iterator= variables.iterator
 			)#
+		
 		<cfif variables.nextn.numberofpages gt 1>
-			#$.dspObject_Include(thefile='dsp_nextN.cfm')#
+			#dspObject_Include(thefile='dsp_nextN.cfm')#
 		</cfif>	
 	</div>
 	</cfoutput>
@@ -137,19 +129,19 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfif not variables.iterator.getRecordCount()>
      <cfoutput>
-     <cfif $.event('filterBy') eq "releaseMonth">
+     <cfif request.filterBy eq "releaseMonth">
      <div id="svPortal">
 	     <br>
-	     <p>#$.rbKey('list.nocontentmonth')#</p>    
+	     <p>#rbFactory.getKey('list.nocontentmonth')#</p>    
      </div>
-     <cfelseif $.event('filterBy') eq "releaseDate">
+     <cfelseif request.filterBy eq "releaseDate">
      <div id="svPortal">
 	     <br>
-	     <p>#$.rbKey('list.nocontentday')#</p>
+	     <p>#rbFactory.getKey('list.nocontentday')#</p>
      </div>
      <cfelse>
      <div id="svPortal">
-         <p>#$.rbKey('list.nocontent')#</p>   
+         <p>#rbFactory.getKey('list.nocontent')#</p>   
      </div>
      </cfif>
      </cfoutput>

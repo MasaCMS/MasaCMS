@@ -20,6 +20,10 @@
 	<cfreturn this />
 </cffunction>
 
+<cffunction name="getBean" access="public" returntype="any">
+	<cfreturn createObject("component","#variables.instance.configBean.getMapDir()#.advertising.campaign.campaignBean").init()>
+</cffunction>
+
 <cffunction name="create" returntype="void" access="public" output="false">
 	<cfargument name="campaignBean" type="any" />
  
@@ -28,12 +32,12 @@
 	values (
 	'#arguments.campaignBean.getcampaignID()#',
 	<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.campaignBean.getUserID() neq '',de('no'),de('yes'))#" value="#arguments.campaignBean.getUserID()#">,
-	<cfif isDate(arguments.campaignBean.getDateCreated()) ><cfqueryparam cfsqltype="cf_sql_timestamp" value="#arguments.campaignBean.getDateCreated()#"><cfelse>null</cfif>,
-	<cfif isDate(arguments.campaignBean.getLastUpdate()) ><cfqueryparam cfsqltype="cf_sql_timestamp" value="#arguments.campaignBean.getLastUpdate()#"><cfelse>null</cfif>,
+	<cfif isDate(arguments.campaignBean.getDateCreated()) >#createODBCDateTime(arguments.campaignBean.getDateCreated())#<cfelse>null</cfif>,
+	<cfif isDate(arguments.campaignBean.getLastUpdate()) >#createODBCDateTime(arguments.campaignBean.getLastUpdate())#<cfelse>null</cfif>,
 	<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.campaignBean.getLastUpdateBy() neq '',de('no'),de('yes'))#" value="#arguments.campaignBean.getLastUpdateBy()#">,
 	<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.campaignBean.getName() neq '',de('no'),de('yes'))#" value="#arguments.campaignBean.getName()#">,
-	<cfif isDate(arguments.campaignBean.getStartDate()) ><cfqueryparam cfsqltype="cf_sql_timestamp" value="#LSDateFormat(arguments.campaignBean.getStartDate(),'mm/dd/yyyy')#"><cfelse>null</cfif>,
-	<cfif isDate(arguments.campaignBean.getEndDate()) ><cfqueryparam cfsqltype="cf_sql_timestamp" value="#LSDateFormat(arguments.campaignBean.getEndDate(),'mm/dd/yyyy')#"><cfelse>null</cfif>,
+	<cfif isDate(arguments.campaignBean.getStartDate()) >#createODBCDateTime(LSDateFormat(arguments.campaignBean.getStartDate(),'mm/dd/yyyy'))#<cfelse>null</cfif>,
+	<cfif isDate(arguments.campaignBean.getEndDate()) >#createODBCDateTime(LSDateFormat(arguments.campaignBean.getEndDate(),'mm/dd/yyyy'))#<cfelse>null</cfif>,
 	#arguments.campaignBean.getIsActive()#,
 	<cfqueryparam cfsqltype="cf_sql_longvarchar" null="#iif(arguments.campaignBean.getNotes() neq '',de('no'),de('yes'))#" value="#arguments.campaignBean.getNotes()#">
 	)
@@ -44,10 +48,10 @@
 <cffunction name="read" access="public" output="false" returntype="any" >
 	<cfargument name="campaignID" type="string" />
 
-	<cfset var campaignBean=getBean("campaign") />
+	<cfset var campaignBean=getBean() />
 	<cfset var rs ="" />
 	
-	<cfquery name="rs" datasource="#application.configBean.getReadOnlyDatasource()#"  username="#variables.instance.configBean.getReadOnlyDbUsername()#" password="#variables.instance.configBean.getReadOnlyDbPassword()#">
+	<cfquery name="rs" datasource="#application.configBean.getDatasource()#"  username="#variables.instance.configBean.getDBUsername()#" password="#variables.instance.configBean.getDBPassword()#">
 	Select * from tadcampaigns where 
 	campaignID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.campaignID#" />
 	</cfquery>
@@ -64,11 +68,11 @@
 	
 	<cfquery datasource="#variables.instance.configBean.getDatasource()#"  username="#variables.instance.configBean.getDBUsername()#" password="#variables.instance.configBean.getDBPassword()#">
 	update tadcampaigns set
-	lastUpdate = <cfif isDate(arguments.campaignBean.getLastUpdate()) ><cfqueryparam cfsqltype="cf_sql_timestamp" value="#arguments.campaignBean.getLastUpdate()#"><cfelse>null</cfif>,
+	lastUpdate = <cfif isDate(arguments.campaignBean.getLastUpdate()) >#createODBCDateTime(arguments.campaignBean.getLastUpdate())#<cfelse>null</cfif>,
 	lastupdateBy = <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.campaignBean.getLastUpdateBy() neq '',de('no'),de('yes'))#" value="#arguments.campaignBean.getLastUpdateBy()#">,
 	name = <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.campaignBean.getName() neq '',de('no'),de('yes'))#" value="#arguments.campaignBean.getName()#">,
-	startDate = <cfif isDate(arguments.campaignBean.getStartDate()) ><cfqueryparam cfsqltype="cf_sql_timestamp" value="#LSDateFormat(arguments.campaignBean.getStartDate(),'mm/dd/yyyy')#"><cfelse>null</cfif>,
-	endDate = <cfif isDate(arguments.campaignBean.getEndDate()) ><cfqueryparam cfsqltype="cf_sql_timestamp" value="#LSDateFormat(arguments.campaignBean.getEndDate(),'mm/dd/yyyy')#"><cfelse>null</cfif>,
+	startDate = <cfif isDate(arguments.campaignBean.getStartDate()) >#createODBCDateTime(LSDateFormat(arguments.campaignBean.getStartDate(),'mm/dd/yyyy'))#<cfelse>null</cfif>,
+	endDate = <cfif isDate(arguments.campaignBean.getEndDate()) >#createODBCDateTime(LSDateFormat(arguments.campaignBean.getEndDate(),'mm/dd/yyyy'))#<cfelse>null</cfif>,
 	isActive = #arguments.campaignBean.getIsActive()#,
 	notes = <cfqueryparam cfsqltype="cf_sql_longvarchar" null="#iif(arguments.campaignBean.getNotes() neq '',de('no'),de('yes'))#" value="#arguments.campaignBean.getNotes()#">
 	where campaignID = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.campaignBean.getCampaignID()#" />

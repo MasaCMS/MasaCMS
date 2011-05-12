@@ -6,43 +6,39 @@ the Free Software Foundation, Version 2 of the License.
 
 Mura CMS is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-along with Mura CMS. If not, see <http://www.gnu.org/licenses/>.
+along with Mura CMS.  If not, see <http://www.gnu.org/licenses/>.
 
-Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on 
-Mura CMS. Thus, the terms and conditions of the GNU General Public License version 2 ("GPL") cover the entire combined work.
+Linking Mura CMS statically or dynamically with other modules constitutes
+the preparation of a derivative work based on Mura CMS. Thus, the terms and 	
+conditions of the GNU General Public License version 2 (“GPL”) cover the entire combined work.
 
-However, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with programs
-or libraries that are released under the GNU Lesser General Public License version 2.1.
+However, as a special exception, the copyright holders of Mura CMS grant you permission
+to combine Mura CMS with programs or libraries that are released under the GNU Lesser General Public License version 2.1.
 
-In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with 
-independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without 
-Mura CMS under the license of your choice, provided that you follow these specific guidelines: 
+In addition, as a special exception,  the copyright holders of Mura CMS grant you permission
+to combine Mura CMS  with independent software modules that communicate with Mura CMS solely
+through modules packaged as Mura CMS plugins and deployed through the Mura CMS plugin installation API,
+provided that these modules (a) may only modify the  /trunk/www/plugins/ directory through the Mura CMS
+plugin installation API, (b) must not alter any default objects in the Mura CMS database
+and (c) must not alter any files in the following directories except in cases where the code contains
+a separately distributed license.
 
-Your custom code 
+/trunk/www/admin/
+/trunk/www/tasks/
+/trunk/www/config/
+/trunk/www/requirements/mura/
 
-â€¢ Must not alter any default objects in the Mura CMS database and
-â€¢ May not alter the default display of the Mura CMS logo within Mura CMS and
-â€¢ Must not alter any files in the following directories.
+You may copy and distribute such a combined work under the terms of GPL for Mura CMS, provided that you include
+the source code of that other code when and as the GNU GPL requires distribution of source code.
 
- /admin/
- /tasks/
- /config/
- /requirements/mura/
- /Application.cfc
- /index.cfm
- /MuraProxy.cfc
-
-You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work 
-under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL 
-requires distribution of source code.
-
-For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your 
-modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
-version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
+For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception
+for your modified version; it is your choice whether to do so, or to make such modified version available under
+the GNU General Public License version 2  without this exception.  You may, if you choose, apply this exception
+to your own modified versions of Mura CMS.
 --->
 <cfcomponent extends="mura.cfobject" output="false">
 
@@ -92,7 +88,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<cfloop list="#fieldlist#" index="f">
 	<cfif f neq 'DOACTION' and f neq 'SUBMIT' and f neq 'MLID' and f neq 'SITEID' and f neq 'FORMID' and f neq 'POLLLIST' and f neq 'REDIRECT_URL' and f neq 'REDIRECT_LABEL' and f neq 'X' and f neq 'Y' and f neq 'UKEY' and f neq 'HKEY'
-		and f neq 'formfield1234567891' and f neq 'formfield1234567892' and f neq 'formfield1234567893' and f neq 'formfield1234567894' and f neq 'useProtect' and f neq "linkservid">
+		and f neq 'formfield1234567891' and f neq 'formfield1234567892' and f neq 'formfield1234567893' and f neq 'formfield1234567894' and f neq 'useProtect'>
 	
 		<cfif action eq 'create' and right(f,8) eq '_default'>
 			<cfset rf=left(f,len(f)-8)>
@@ -150,7 +146,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfqueryparam cfsqltype="cf_sql_varchar" value="#responseID#"/>,
 				<cfqueryparam cfsqltype="cf_sql_varchar" value="#formID#"/>,
 				<cfqueryparam cfsqltype="cf_sql_varchar" value="#siteID#"/>,
-				<cfqueryparam cfsqltype="cf_sql_timestamp" value="#entered#">,
+				#createodbcdatetime(entered)#,
 				<cfqueryparam cfsqltype="cf_sql_longvarchar" value="#theXML#">,
 				<cfqueryparam cfsqltype="cf_sql_varchar" value="#info.fieldnames#">)
 			</cfquery>
@@ -237,12 +233,12 @@ and tformresponsequestions.formField= <cfqueryparam cfsqltype="cf_sql_varchar" v
 </cfif>
 <cfif isdefined('arguments.data.date1') and lsIsDate(arguments.data.date1)>
 <cfset start=lsParseDateTime(arguments.data.date1) />
-and entered >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#createdatetime(year(start),month(start),day(start),arguments.data.hour1,arguments.data.minute1,0)#">
+and entered >= #createodbcdatetime(createdatetime(year(start),month(start),day(start),arguments.data.hour1,arguments.data.minute1,0))#
 </cfif>
 
 <cfif isdefined('arguments.data.date2') and lsIsDate(arguments.data.date2)>
 <cfset stop=lsParseDateTime(arguments.data.date2) />
-and entered <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#createdatetime(year(stop),month(stop),day(stop),arguments.data.hour2,arguments.data.minute2,59)#">
+and entered <= #createodbcdatetime(createdatetime(year(stop),month(stop),day(stop),arguments.data.hour2,arguments.data.minute2,59))#
 </cfif>
 <cfif arguments.data.keywords neq ''>
 and tformresponsequestions.pollValue = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.data.keywords#">
@@ -293,7 +289,7 @@ order by tformresponsepackets.entered asc
 </cfloop>
 
 <cfset body=rereplacenocase(arguments.preBody,'</form>','#formHTML#</form>')>
-<cfset body=rereplacenocase(body,'<form','<form id="#frmID#" ')>
+<cfset body=rereplacenocase(body,'<form','<form data-role="fieldcontain" id="#frmID#" ')>
 
 <cfsavecontent variable="frm"><cfoutput>
 #body#
@@ -311,10 +307,9 @@ order by tformresponsepackets.entered asc
 					for (p=0; p < poll.length; p++) {
 							if(poll[p].type =='radio'){polllist.push(escape(poll[p].value));}
 						}
-				if(polllist.length > 0) {frm.action='?nocache=1&polllist='+ polllist.toString();}		
+				if(polllist.length > 0) frm.action='?nocache=1&polllist='+ polllist.toString();
 			</cfif>
 		</cfif>
-		frm.action=frm.action + "###frmID#";
 </script></cfoutput>
 </cfsavecontent>
 

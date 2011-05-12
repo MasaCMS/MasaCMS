@@ -22,15 +22,15 @@ to combine Mura CMS with programs or libraries that are released under the GNU L
 In addition, as a special exception, ?the copyright holders of Mura CMS grant you permission
 to combine Mura CMS ?with independent software modules that communicate with Mura CMS solely
 through modules packaged as Mura CMS plugins and deployed through the Mura CMS plugin installation API,
-provided that these modules (a) may only modify the ?/plugins/ directory through the Mura CMS
+provided that these modules (a) may only modify the ?/trunk/www/plugins/ directory through the Mura CMS
 plugin installation API, (b) must not alter any default objects in the Mura CMS database
 and (c) must not alter any files in the following directories except in cases where the code contains
 a separately distributed license.
 
-/admin/
-/tasks/
-/config/
-/requirements/mura/
+/trunk/www/admin/
+/trunk/www/tasks/
+/trunk/www/config/
+/trunk/www/requirements/mura/
 
 You may copy and distribute such a combined work under the terms of GPL for Mura CMS, provided that you include
 the source code of that other code when and as the GNU GPL requires distribution of source code.
@@ -318,7 +318,8 @@ to your own modified versions of Mura CMS.
 									</cfif>
 								</cfloop>
 							</cfcase>
-							<cfcase value="mysql" delimiters=",">
+							<!--- we are treating h2 and mysql the same way during DB creation (bsoylu 12/4/2010) --->
+							<cfcase value="mysql,h2" delimiters=",">
 								<cfset aSql = ListToArray(sql, ';')>
 								<!--- loop over items --->
 								<cfloop index="x" from="1" to="#arrayLen(aSql) - 1#">
@@ -512,19 +513,12 @@ to your own modified versions of Mura CMS.
 	<cfargument name="data" type="any" required="true" />
 	<cfset var str = "" />
 	<cfset var errorFile = "" />
-	<cfset var dir = "" />
 	
 	<cfif server.coldfusion.productname eq "BlueDragon">
 		<cfset errorFile = "#ExpandPath('.')#/config/setup/errors/#createUUID()#_error.html" />
 	<cfelse>
 		<cfset errorFile = "#getDirectoryFromPath( getCurrentTemplatePath() )#errors/#createUUID()#_error.html" />
 	</cfif>
-	
-	<!--- make sure the error directory exists --->
-	<cfset dir = getDirectoryFromPath(errorFile) />	
-	<cfif not directoryExists(dir)>
-		<cfdirectory action="create" directory="#dir#" />
-	</cfif>	
 	<!--- dump the error into a variable --->
 	<cfsavecontent variable="str">
 		<cfdump var="#arguments.data#">
@@ -560,7 +554,7 @@ to your own modified versions of Mura CMS.
 </head>
 </cfoutput>
 <body id="cSetUp" >
-<div id="header"><a id="blueRiverLink" href="http://blueriver.com" target="_blank" title="mura by blueRiver"></a><p id="version">Version 5.5</p><h1>Mura CMS</h1></div>
+<div id="header"><a id="blueRiverLink" href="http://blueriver.com" target="_blank" title="mura by blueRiver"></a><p id="version">Version 5.4</p><h1>Mura CMS</h1></div>
 
 <div id="content">
 <h2>Mura Set Up</h2>
@@ -606,6 +600,7 @@ if (server.ColdFusion.ProductName CONTAINS "Railo"){
 		<option value="mysql" <cfif FORM.production_dbtype IS "mysql">selected</cfif>>MySQL</option>
 		<option value="mssql" <cfif FORM.production_dbtype IS "mssql">selected</cfif>>MSSQL</option>
 		<option value="oracle" <cfif FORM.production_dbtype IS "oracle">selected</cfif>>Oracle</option>
+		<option value="h2" <cfif FORM.production_dbtype IS "h2">selected</cfif>>H2</option>
 	</select>
 	</dd>
 

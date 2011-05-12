@@ -15,30 +15,29 @@
 </cfif>
 <ul class="navTask">
   <li<cfif session.resourceType eq 'assets'> class="current"</cfif>><a href="#application.configBean.getContext()#/admin/index.cfm?fuseaction=cFilemanager.default&siteid=#session.siteid#&&resourceType=assets">#application.rbFactory.getKeyValue(session.rb,"layout.userassets")#</a></li>
-  <cfif listFind(session.mura.memberships,'S2')>
-	  <cfif application.configBean.getValue('fmShowSiteFiles') neq 0>
-	 	 <li<cfif session.resourceType eq 'files'> class="current"</cfif>><a href="#application.configBean.getContext()#/admin/index.cfm?fuseaction=cFilemanager.default&siteid=#session.siteid#&&resourceType=files">#application.rbFactory.getKeyValue(session.rb,"layout.sitefiles")#</a></li>
-	  </cfif>
-	  <cfif listFind(session.mura.memberships,'S2') and application.configBean.getValue('fmShowApplicationRoot') neq 0>
-	  	<li<cfif session.resourceType eq 'root'> class="current"</cfif>><a href="#application.configBean.getContext()#/admin/index.cfm?fuseaction=cFilemanager.default&siteid=#session.siteid#&&resourceType=root">#application.rbFactory.getKeyValue(session.rb,"layout.applicationroot")#</a></li>
-	  </cfif>
+  <cfif application.configBean.getValue('fmShowSiteFiles') neq 0>
+  <li<cfif session.resourceType eq 'files'> class="current"</cfif>><a href="#application.configBean.getContext()#/admin/index.cfm?fuseaction=cFilemanager.default&siteid=#session.siteid#&&resourceType=files">#application.rbFactory.getKeyValue(session.rb,"layout.sitefiles")#</a></li>
   </cfif>
+  <cfif listFind(session.mura.memberships,'S2') and application.configBean.getValue('fmShowApplicationRoot') neq 0>
+  <li<cfif session.resourceType eq 'root'> class="current"</cfif>><a href="#application.configBean.getContext()#/admin/index.cfm?fuseaction=cFilemanager.default&siteid=#session.siteid#&&resourceType=root">#application.rbFactory.getKeyValue(session.rb,"layout.applicationroot")#</a></li>
+  </cfif>
+</li>
 </ul>
 <script type="text/javascript">
 var finder = new CKFinder();
-finder.basePath = '#application.configBean.getContext()#/tasks/widgets/ckfinder/';
+finder.basePath = '#application.configBean.getContext()#/tasks/widgets/ckfinder/' ;
 finder.language = '#lcase(session.rb)#';
 finder.height="600";
 <cfif session.resourceType eq "assets">
-finder.resourceType="#JSStringFormat('#session.siteID#_User_Assets')#";
+finder.resourceType="#JSStringFormat('#session.siteID#_User_Assets')#"
 <cfelseif session.resourceType eq "files" and application.configBean.getValue('fmShowSiteFiles') neq 0>
 finder.resourceType="#JSStringFormat('#session.siteID#_Site_Files')#"
 <cfelseif session.resourceType eq "root" and application.configBean.getValue('fmShowApplicationRoot') neq 0>
-finder.resourceType="#JSStringFormat('Application_Root')#";
+finder.resourceType="#JSStringFormat('Application_Root')#"
 <cfelse>
-finder.resourceType="#JSStringFormat('#session.siteID#_User_Assets')#";
+finder.resourceType="#JSStringFormat('#session.siteID#_User_Assets')#"
 </cfif>
-finder.create();
+finder.create() ;
 </script>
 </cfoutput>
 </cfsavecontent>

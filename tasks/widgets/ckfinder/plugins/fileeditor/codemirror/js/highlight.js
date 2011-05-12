@@ -41,7 +41,7 @@ var indentUnit = 2;
       callback = function(line) {
         for (var i = 0; i < line.length; i++)
           node.appendChild(line[i]);
-        node.appendChild(document.createElement("br"));
+        node.appendChild(document.createElement("BR"));
       };
     }
 
@@ -53,7 +53,7 @@ var indentUnit = 2;
           line = [];
         }
         else {
-          var span = document.createElement("span");
+          var span = document.createElement("SPAN");
           span.className = token.style;
           span.appendChild(document.createTextNode(token.value));
           line.push(span);

@@ -168,7 +168,6 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 								children :
 								[
 									{
-										id : 'selectTplText',
 										type : 'html',
 										html :
 											'<span>'  +

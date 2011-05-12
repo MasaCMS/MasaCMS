@@ -1,10 +1,10 @@
 <cfsilent>
 <cfprocessingdirective pageencoding="utf-8">
 <!---
-Copyright (c) 2003-2011, CKSource - Frederico Knabben. All rights reserved.
+Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckfinder.com/license
 
- Defines the object for the Greek language.
+
 --->
 <cfscript>
 CKFLang = structNew();
@@ -23,13 +23,13 @@ CKFLang = structNew();
 	CKFLang.Errors[116] = 'Ο φάκελος δεν βρέθηκε. Παρακαλούμε ανανεώστε τη σελίδα και προσπαθήστε ξανά.';
 	CKFLang.Errors[117] = 'Το αρχείο δεν βρέθηκε. Παρακαλούμε ανανεώστε τη σελίδα και προσπαθήστε ξανά.';
 	CKFLang.Errors[118] = 'Source and target paths are equal.';
-	CKFLang.Errors[201] = 'Ένα αρχείο με την ίδια ονομασία υπάρχει ήδη. Το μεταφορτωμένο αρχείο μετονομάστηκε σε "%1".';
-	CKFLang.Errors[202] = 'Λανθασμένο Αρχείο.';
+	CKFLang.Errors[201] = 'Ένα αρχείο με την ίδια ονομασία υπάρχει ήδη. Το μεταφορτωμένο αρχείο μετονομάστηκε σε "%1"';
+	CKFLang.Errors[202] = 'Λανθασμένο Αρχείο';
 	CKFLang.Errors[203] = 'Λανθασμένο Αρχείο. Το μέγεθος του αρχείου είναι πολύ μεγάλο.';
 	CKFLang.Errors[204] = 'Το μεταφορτωμένο αρχείο είναι χαλασμένο.';
 	CKFLang.Errors[205] = 'Δεν υπάρχει προσωρινός φάκελος για να χρησιμοποιηθεί για τις μεταφορτώσεις των αρχείων.';
 	CKFLang.Errors[206] = 'Η μεταφόρτωση ακυρώθηκε για λόγους ασφαλείας. Το αρχείο περιέχει δεδομένα μορφής HTML.';
-	CKFLang.Errors[207] = 'Το μεταφορτωμένο αρχείο μετονομάστηκε σε "%1".';
+	CKFLang.Errors[207] = 'Το μεταφορτωμένο αρχείο μετονομάστηκε σε "%1"';
 	CKFLang.Errors[300] = 'Moving file(s) failed.';
 	CKFLang.Errors[301] = 'Copying file(s) failed.';
 	CKFLang.Errors[500] = 'Ο πλοηγός αρχείων έχει απενεργοποιηθεί για λόγους ασφαλείας. Παρακαλούμε επικοινωνήστε με τον διαχειριστή της ιστοσελίδας και ελέγξτε το αρχείο ρυθμίσεων του πλοηγού (CKFinder).';

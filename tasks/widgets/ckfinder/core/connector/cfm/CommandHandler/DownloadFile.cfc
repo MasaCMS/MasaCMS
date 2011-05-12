@@ -3,7 +3,7 @@
  * CKFinder
  * ========
  * http://ckfinder.com
- * Copyright (C) 2007-2011, CKSource - Frederico Knabben. All rights reserved.
+ * Copyright (C) 2007-2010, CKSource - Frederico Knabben. All rights reserved.
  *
  * The software, this file and its contents are subject to the CKFinder
  * License. Please read the license.txt file before using, installing, copying,
@@ -12,31 +12,6 @@
 --->
 
 <cfset THIS.command = "DownloadFile" >
-
-<cffunction name="throwError" access="public" hint="throw HTTP error" returntype="boolean" output="false" description="throw file upload error">
-	<cfargument name="errorCode" type="Numeric" required="true">
-	<cfargument name="errorMsg" type="String" required="false" default="">
-	<cfargument name="fileName" type="String" required="false" default="">
-	<cfset var er = REQUEST.constants>
-
-	<cfif errorCode eq er.CKFINDER_CONNECTOR_ERROR_INVALID_REQUEST OR
-		errorCode eq er.CKFINDER_CONNECTOR_ERROR_INVALID_NAME or
-		errorCode eq er.CKFINDER_CONNECTOR_ERROR_THUMBNAILS_DISABLED or
-		errorCode eq er.CKFINDER_CONNECTOR_ERROR_CONNECTOR_DISABLED or
-		errorCode eq er.CKFINDER_CONNECTOR_ERROR_UNAUTHORIZED>
-		<cfheader statuscode="403" statustext="Forbidden">
-		<cfheader name="X-CKFinder-Error" value="#errorCode#">
-	<cfelseif errorCode eq er.CKFINDER_CONNECTOR_ERROR_ACCESS_DENIED>
-		<cfheader statuscode="500" statustext="Internal Server Error">
-		<cfheader name="X-CKFinder-Error" value="#errorCode#">
-	<cfelse>
-		<cfheader statuscode="404" statustext="Not Found">
-		<cfheader name="X-CKFinder-Error" value="#errorCode#">
-	</cfif>
-
-	<cfabort>
-	<cfreturn true />
-</cffunction>
 
 <cffunction access="public" name="sendResponse" hint="send response" returntype="boolean" description="send response" output="false">
 
@@ -47,16 +22,33 @@
 	<cfset var result = arrayNew(1) />
 	<cfset var coreConfig = APPLICATION.CreateCFC("Core.Config")>
 	<cfset var er = "">
-	<cfset var encodedName = "">
 
 	<!--- TODO: create generic HTTP error handler --->
 	<cftry>
 		<cfset THIS.checkRequest()>
 		<cfcatch type="ckfinder">
-			<cfset this.throwerror(CFCATCH.ErrorCode)>
+			<cfset er = REQUEST.constants>
+			<!--- cfswitch useless here --->
+			<cfif CFCATCH.ErrorCode eq er.CKFINDER_CONNECTOR_ERROR_INVALID_REQUEST OR
+				CFCATCH.ErrorCode eq er.CKFINDER_CONNECTOR_ERROR_INVALID_NAME or
+				CFCATCH.ErrorCode eq er.CKFINDER_CONNECTOR_ERROR_THUMBNAILS_DISABLED or
+				CFCATCH.ErrorCode eq er.CKFINDER_CONNECTOR_ERROR_UNAUTHORIZED>
+				<cfheader statuscode="403" statustext="Forbidden">
+				<cfheader name="X-CKFinder-Error" value="#CFCATCH.ErrorCode#">
+				<cfabort>
+			<cfelseif CFCATCH.ErrorCode eq er.CKFINDER_CONNECTOR_ERROR_ACCESS_DENIED>
+				<cfheader statuscode="500" statustext="Internal Server Error">
+				<cfheader name="X-CKFinder-Error" value="#CFCATCH.ErrorCode#">
+				<cfabort>
+			<cfelse>
+				<cfheader statuscode="404" statustext="Not Found">
+				<cfheader name="X-CKFinder-Error" value="#CFCATCH.ErrorCode#">
+				<cfabort>
+			</cfif>
 		</cfcatch>
 		<cfcatch type="any">
-			<cfset this.throwerror(REQUEST.constants.CKFINDER_CONNECTOR_ERROR_UNAUTHORIZED)>
+			<cfheader statuscode="403" statustext="Forbidden">
+			<cfabort>
 		</cfcatch>
 	</cftry>
 
@@ -65,20 +57,28 @@
 	<cfset filePath = currentFolderServerPath & fileName>
 
 	<cfif not THIS.currentFolder.checkAcl(REQUEST.constants.CKFINDER_CONNECTOR_ACL_FILE_VIEW) >
-		<cfset this.throwerror(REQUEST.constants.CKFINDER_CONNECTOR_ERROR_UNAUTHORIZED)>
+		<cfheader statuscode="403" statustext="Forbidden">
+		<cfheader name="X-CKFinder-Error" value="#REQUEST.constants.CKFINDER_CONNECTOR_ERROR_UNAUTHORIZED#">
+		<cfabort>
 	</cfif>
 
 	<cfif not fileSystem.checkFileName(fileName)>
-		<cfset this.throwerror(REQUEST.constants.CKFINDER_CONNECTOR_ERROR_INVALID_REQUEST)>
+		<cfheader statuscode="403" statustext="Forbidden">
+		<cfheader name="X-CKFinder-Error" value="#REQUEST.constants.CKFINDER_CONNECTOR_ERROR_INVALID_REQUEST#">
+		<cfabort>
 	</cfif>
 
 	<cfset result = THIS.currentFolder.checkExtension(URL.FileName)>
 	<cfif not result[1]>
-		<cfset this.throwerror(REQUEST.constants.CKFINDER_CONNECTOR_ERROR_INVALID_REQUEST)>
+		<cfheader statuscode="403" statustext="Forbidden">
+		<cfheader name="X-CKFinder-Error" value="#REQUEST.constants.CKFINDER_CONNECTOR_ERROR_INVALID_REQUEST#">
+		<cfabort>
 	</cfif>
 
 	<cfif not fileexists(filePath) or coreConfig.checkIsHiddenFile(fileName)>>
-		<cfset this.throwerror(REQUEST.constants.CKFINDER_CONNECTOR_ERROR_FILE_NOT_FOUND)>
+		<cfheader statuscode="404" statustext="Not Found">
+		<cfheader name="X-CKFinder-Error" value="#REQUEST.constants.CKFINDER_CONNECTOR_ERROR_FILE_NOT_FOUND#">
+		<cfabort>
 	</cfif>
 
 	<cfheader name="Cache-Control" value="cache, must-revalidate">
@@ -94,11 +94,7 @@
 	<cfif structkeyexists(URL, "format") and URL.format eq "text">
 		<cfcontent type="text/plain; charset=utf-8" file="#filePath#" />
 	<cfelse>
-		<cfset encodedName = Replace(fileName, """", """""")>
-		<cfif FindNoCase('MSIE','#CGI.HTTP_USER_AGENT#') gt 0>
-			<cfset encodedName = Replace(Replace(URLEncodedFormat(fileName), "+", " ", "all"), "%2E", ".", "all")>
-		</cfif>
-		<cfheader charset="utf-8" name="Content-Disposition" value="attachment; filename=#encodedName#">
+		<cfheader name="Content-Disposition" value="attachment; filename=#fileName#">
 		<cfcontent type="application/octet-stream" file="#filePath#" />
 	</cfif>
 

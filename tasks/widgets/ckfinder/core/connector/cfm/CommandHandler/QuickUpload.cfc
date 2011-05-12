@@ -3,7 +3,7 @@
  * CKFinder
  * ========
  * http://ckfinder.com
- * Copyright (C) 2007-2011, CKSource - Frederico Knabben. All rights reserved.
+ * Copyright (C) 2007-2010, CKSource - Frederico Knabben. All rights reserved.
  *
  * The software, this file and its contents are subject to the CKFinder
  * License. Please read the license.txt file before using, installing, copying,
@@ -18,7 +18,6 @@
 	<cfargument name="errorMsg" type="String" required="false" default="">
 	<cfargument name="fileName" type="String" required="false" default="">
 	<cfset var funcNum = 0>
-	<cfcontent reset="true" type="text/html; charset=UTF-8">
 	<cfif not isDefined('URL.CKEditor')>
 		<cfif ARGUMENTS.errorCode eq REQUEST.constants.CKFINDER_CONNECTOR_ERROR_UPLOADED_FILE_RENAMED or
 		ARGUMENTS.errorCode eq REQUEST.constants.CKFINDER_CONNECTOR_ERROR_NONE>

@@ -454,7 +454,7 @@
 			sumWidth = sumWidth + columnWidth;
 			div.style.cssText = 'float:left;';
 //			div.style.cssText = 'float:left;width:'+columnWidth+'%;';
-//			div.style.height='100%';
+			div.style.height='100%';
 			div.style.styleFloat='left';
 //			div.style.width = columnWidth + '%';
 //			div.style.padding = '0px';

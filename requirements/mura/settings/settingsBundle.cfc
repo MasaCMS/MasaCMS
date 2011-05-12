@@ -6,54 +6,52 @@ the Free Software Foundation, Version 2 of the License.
 
 Mura CMS is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. �See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-along with Mura CMS. If not, see <http://www.gnu.org/licenses/>.
+along with Mura CMS. �If not, see <http://www.gnu.org/licenses/>.
 
-Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on 
-Mura CMS. Thus, the terms and conditions of the GNU General Public License version 2 ("GPL") cover the entire combined work.
+Linking Mura CMS statically or dynamically with other modules constitutes
+the preparation of a derivative work based on Mura CMS. Thus, the terms and 	
+conditions of the GNU General Public License version 2 (�GPL�) cover the entire combined work.
 
-However, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with programs
-or libraries that are released under the GNU Lesser General Public License version 2.1.
+However, as a special exception, the copyright holders of Mura CMS grant you permission
+to combine Mura CMS with programs or libraries that are released under the GNU Lesser General Public License version 2.1.
 
-In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with 
-independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without 
-Mura CMS under the license of your choice, provided that you follow these specific guidelines: 
+In addition, as a special exception, �the copyright holders of Mura CMS grant you permission
+to combine Mura CMS �with independent software modules that communicate with Mura CMS solely
+through modules packaged as Mura CMS plugins and deployed through the Mura CMS plugin installation API,
+provided that these modules (a) may only modify the �/trunk/www/plugins/ directory through the Mura CMS
+plugin installation API, (b) must not alter any default objects in the Mura CMS database
+and (c) must not alter any files in the following directories except in cases where the code contains
+a separately distributed license.
 
-Your custom code 
+/trunk/www/admin/
+/trunk/www/tasks/
+/trunk/www/config/
+/trunk/www/requirements/mura/
 
-• Must not alter any default objects in the Mura CMS database and
-• May not alter the default display of the Mura CMS logo within Mura CMS and
-• Must not alter any files in the following directories.
+You may copy and distribute such a combined work under the terms of GPL for Mura CMS, provided that you include
+the source code of that other code when and as the GNU GPL requires distribution of source code.
 
- /admin/
- /tasks/
- /config/
- /requirements/mura/
- /Application.cfc
- /index.cfm
- /MuraProxy.cfc
-
-You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work 
-under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL 
-requires distribution of source code.
-
-For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your 
-modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
-version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
+For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception
+for your modified version; it is your choice whether to do so, or to make such modified version available under
+the GNU General Public License version 2 �without this exception. �You may, if you choose, apply this exception
+to your own modified versions of Mura CMS.
 --->
 <cfcomponent extends="mura.cfobject" output="false">
 
 	<cffunction name="init" access="public" returntype="any" output="false">
-		<cfset variables.configBean	= application.configBean />
+		<cfargument name="configBean" type="any" required="yes"/>
+
+		<cfset variables.configBean	= arguments.configBean />
 		<cfset variables.dsn		= variables.configBean.getDatasource() />
 
 		<cfset variables.data		= StructNew() />
 		<cfset variables.Bundle	= "" />
 		<cfset variables.zipTool	= createObject("component","mura.Zip") />
-		<cfset variables.fileWriter	= getBean("fileWriter")>
+		<cfset variables.fileWriter	= application.serviceFactory.getBean("fileWriter")>
 		<cfset variables.utility	= application.utility.getBean("utility")>
 		<cfset variables.fileDelim	= application.configBean.getFileDelim()>
 		<cfset variables.dirName	= "Bundle_#createUUID()#" />
@@ -188,7 +186,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/> 
 				and (
 					
-					moduleid in ('00000000000000000000000000000000000','00000000000000000000000000000000003'<cfif len(arguments.moduleID)>,<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.moduleID#" list="true"></cfif><cfif arguments.includeUsers>,'00000000000000000000000000000000008'</cfif>)
+					moduleid in ('00000000000000000000000000000000000'<cfif len(arguments.moduleID)>,<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.moduleID#" list="true"></cfif><cfif arguments.includeUsers>,'00000000000000000000000000000000008'</cfif>)
 							
 					<cfif not arguments.includeVersionHistory>
 						or fileID not in (<cfqueryparam cfsqltype="cf_sql_varchar" value="#valueList(rstfiles.fileID)#" list="true">)				
@@ -200,7 +198,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				)	
 				
 				<cfif isDate(arguments.sinceDate)>
-					and created >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#arguments.sinceDate#">
+					and created >= #createODBCDateTime(arguments.sinceDate)#
 				</cfif>
 			</cfquery>
 			
@@ -306,12 +304,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</cfif>
 				<cfif fileExists( getBundle() & "sitefiles.zip" )>
 					<cfset zipPath = getBundle() & "sitefiles.zip" />
-					
-					<cfset destDir = variables.configBean.getValue('filedir') & variables.fileDelim & arguments.siteID />
-					<cfset variables.zipTool.Extract(zipFilePath="#zipPath#",extractPath=destDir, overwriteFiles=true, extractDirs="cache")>
-					
-					<cfset destDir = variables.configBean.getValue('assetdir') & variables.fileDelim & arguments.siteID />
-					<cfset variables.zipTool.Extract(zipFilePath="#zipPath#",extractPath=destDir, overwriteFiles=true, extractDirs="assets")>
+					<cfset variables.zipTool.Extract(zipFilePath="#zipPath#",extractPath=siteRoot, overwriteFiles=true, extractDirs="cache|assets")>
 				</cfif>
 				<cfif fileExists( getBundle() & "assetfiles.zip" )>
 					<cfset zipPath = getBundle() & "assetfiles.zip" />
@@ -503,7 +496,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					and (active = 1 or (changesetID is not null and approved=0))
 				</cfif>
 				<cfif isDate(arguments.sinceDate)>
-					and lastUpdate >=<cfqueryparam cfsqltype="cf_sql_timestamp" value="#arguments.sinceDate#">
+					and lastUpdate >= #createODBCDateTime(arguments.sinceDate)#
 				</cfif>
 			</cfquery>
 
@@ -832,7 +825,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfquery datasource="#arguments.dsn#" name="rstcontentfeeds">
 				select * from tcontentfeeds where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
 				<cfif isDate(arguments.sinceDate)>
-				and lastUpdate >=<cfqueryparam cfsqltype="cf_sql_timestamp" value="#arguments.sinceDate#">
+				and lastUpdate >= #createODBCDateTime(arguments.sinceDate)#
 				</cfif>
 			</cfquery>
 	
@@ -901,7 +894,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfquery datasource="#arguments.dsn#" name="rstmailinglist">
 				select * from tmailinglist where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
 				<cfif isDate(arguments.sinceDate)>
-				and lastUpdate >=<cfqueryparam cfsqltype="cf_sql_timestamp" value="#arguments.sinceDate#">
+				and lastUpdate >= #createODBCDateTime(arguments.sinceDate)#
 				</cfif>
 			</cfquery>
 	
@@ -919,7 +912,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<!--- tfiles --->
 			<cfquery datasource="#arguments.dsn#" name="rstfiles">
 				select * from tfiles where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
-				and moduleid in ('00000000000000000000000000000000000','00000000000000000000000000000000003'<cfif len(arguments.moduleID)>,<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.moduleID#" list="true"></cfif><cfif arguments.includeUsers>,'00000000000000000000000000000000008'</cfif><cfif arguments.includeFormData>,'00000000000000000000000000000000004'</cfif>)
+				and moduleid in ('00000000000000000000000000000000000'<cfif len(arguments.moduleID)>,<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.moduleID#" list="true"></cfif><cfif arguments.includeUsers>,'00000000000000000000000000000000008'</cfif><cfif arguments.includeFormData>,'00000000000000000000000000000000004'</cfif>)
 				<cfif not arguments.includeVersionHistory>
 				and 
 				(
@@ -972,7 +965,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					and (deleted is null or deleted != 1)
 				</cfif>
 				<cfif isDate(arguments.sinceDate)>
-				and created >=<cfqueryparam cfsqltype="cf_sql_timestamp" value="#arguments.sinceDate#">
+				and created >= #createODBCDateTime(arguments.sinceDate)#
 				</cfif>
 			</cfquery>
 			
@@ -1000,7 +993,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfquery datasource="#arguments.dsn#" name="rstcontentcomments">
 				select * from tcontentcomments where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
 				<cfif isDate(arguments.sinceDate)>
-				and entered >=<cfqueryparam cfsqltype="cf_sql_timestamp" value="#arguments.sinceDate#">
+				and entered >= #createODBCDateTime(arguments.sinceDate)#
 				</cfif>
 				<cfif not arguments.includeTrash>
 				and contentID in (select distinct contentID from tcontent)
@@ -1012,7 +1005,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfquery datasource="#arguments.dsn#" name="rstcontentratings">
 				select * from tcontentratings where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
 				<cfif isDate(arguments.sinceDate)>
-				and entered >=<cfqueryparam cfsqltype="cf_sql_timestamp" value="#arguments.sinceDate#">
+				and entered >= #createODBCDateTime(arguments.sinceDate)#
 				</cfif>
 				<cfif not arguments.includeTrash>
 				and contentID in (select distinct contentID from tcontent)
@@ -1062,9 +1055,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					and (tcontent.active = 1 or (tcontent.changesetID is not null and tcontent.approved=0))
 				</cfif>
 				<cfif isDate(arguments.sinceDate)>
-					and lastUpdate >=<cfqueryparam cfsqltype="cf_sql_timestamp" value="#arguments.sinceDate#">
+					and lastUpdate >= #createODBCDateTime(arguments.sinceDate)#
 				</cfif>
-				and tclassextenddata.attributeID in (select attributeID from tclassextendattributes)
 			</cfquery>
 		
 			<cfset setValue("rstclassextenddata",rstclassextenddata)>
@@ -1073,7 +1065,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfquery datasource="#arguments.dsn#" name="rstclassextenddatauseractivity">
 					select * from tclassextenddatauseractivity
 					where siteID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
-					and attributeID in (select attributeID from tclassextendattributes)
 				</cfquery>
 		
 				<cfset setValue("rstclassextenddatauseractivity",rstclassextenddatauseractivity)>
@@ -1083,7 +1074,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfquery datasource="#arguments.dsn#" name="rstcontentcategories">
 				select * from tcontentcategories where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
 				<cfif isDate(arguments.sinceDate)>
-					and lastUpdate >=<cfqueryparam cfsqltype="cf_sql_timestamp" value="#arguments.sinceDate#">
+					and lastUpdate >= #createODBCDateTime(arguments.sinceDate)#
 				</cfif>
 			</cfquery>
 	
@@ -1096,7 +1087,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				and published=0
 				</cfif>
 				<cfif isDate(arguments.sinceDate)>
-					and lastUpdate >=<cfqueryparam cfsqltype="cf_sql_timestamp" value="#arguments.sinceDate#">
+					and lastUpdate >= #createODBCDateTime(arguments.sinceDate)#
 				</cfif>
 			</cfquery>
 	
@@ -1111,7 +1102,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				and objectClass not in ('userBean','addressBean')
 				</cfif>
 				<cfif isDate(arguments.sinceDate)>
-					and deletedDate >=<cfqueryparam cfsqltype="cf_sql_timestamp" value="#arguments.sinceDate#">
+					and deletedDate >= #createODBCDateTime(arguments.sinceDate)#
 				</cfif>
 			</cfquery>
 			
@@ -1121,7 +1112,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfif isDate(arguments.sinceDate)>
 			<cfquery datasource="#arguments.dsn#" name="rsttrashfiles">
 				select * from tfiles where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
-				and moduleid in ('00000000000000000000000000000000000','00000000000000000000000000000000003'<cfif len(arguments.moduleID)>,<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.moduleID#" list="true"></cfif><cfif arguments.includeUsers>,'00000000000000000000000000000000008'</cfif><cfif arguments.includeFormData>,'00000000000000000000000000000000004'</cfif>)
+				and moduleid in ('00000000000000000000000000000000000'<cfif len(arguments.moduleID)>,<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.moduleID#" list="true"></cfif><cfif arguments.includeUsers>,'00000000000000000000000000000000008'</cfif><cfif arguments.includeFormData>,'00000000000000000000000000000000004'</cfif>)
 				and deleted=1
 			</cfquery>
 	
@@ -1290,7 +1281,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset arguments.bundleName=arguments.bundleName & "_#arguments.siteID#">
 		</cfif>
 		
-		<cfset arguments.bundleName="#arguments.bundleName#_#dateformat(now(),'yyyy_mm_dd')#_#timeformat(now(),'HH_mm')#.zip">
+		<cfset arguments.bundleName="#arguments.bundleName#_#dateformat(now(),'dd_mm_yyyy')#_#timeformat(now(),'HH_mm')#.zip">
 		
 		<cfif not arguments.saveFile>
 			<cfset getBean("fileManager").streamFile(

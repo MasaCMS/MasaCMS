@@ -1,5 +1,4 @@
-/* @override http://72.29.5.128/intranet/includes/display_objects/dragablefeeds/css/dragablefeeds.css
-	http://localhost:8500/muracore/default/includes/display_objects/dragablefeeds/css/dragablefeeds.css */
+/* @override http://72.29.5.128/intranet/includes/display_objects/dragablefeeds/css/dragablefeeds.css */
 
 /* RSS Feed */
 
@@ -114,15 +113,10 @@
 	right: 2px;
 	width: 16px;
 	height: 16px;
-	background-image: url(../images/delete-lt.png); /* dk = dark option */
-	background-repeat: no-repeat;
-	background-position: center center;
+	background: url(../images/delete.gif) no-repeat center center;
 	text-indent: -999em;
 	margin: 0;
 	padding: 0;
-	border-radius: 3px;
-	-moz-border-radius: 3px;
-	-webkit-border-radius: 3px;
 }
 
 .RSSbuttonEdit {
@@ -131,15 +125,10 @@
 	right: 20px;
 	width: 16px;
 	height: 16px;
-	background-image: url(../images/info-lt.png); /* dk = dark option */
-	background-repeat: no-repeat;
-	background-position: center center;
+	background: url(../images/info.gif) no-repeat center center;
 	text-indent: -999em;
 	margin: 0;
 	padding: 0;
-	border-radius: 3px;
-	-moz-border-radius: 3px;
-	-webkit-border-radius: 3px;
 }
 
 /*#content .dragableBox * {  Reset all values to avoid conflicts 
@@ -148,12 +137,14 @@
 }*/
 
 .dragableBoxHeader { /* Header inside RSS box */
+	color: #333;
 	font-weight: bold;
 	position: relative;
-	height: 17px;
+	min-height: 17px;
+	border-bottom: 1px solid #c8c8c8;
 	line-height:  17px !important;
 	margin: 0 0 10px 0 !important;
-	background: #ccc url(../images/bg_hdr.png) repeat-x;
+	background: #eee url(../images/bg_hdr.jpg) repeat-x;
 	padding: .25em 30px .25em .5em !important;
 }
 

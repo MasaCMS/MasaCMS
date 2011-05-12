@@ -6,43 +6,39 @@ the Free Software Foundation, Version 2 of the License.
 
 Mura CMS is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. �See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-along with Mura CMS. If not, see <http://www.gnu.org/licenses/>.
+along with Mura CMS. �If not, see <http://www.gnu.org/licenses/>.
 
-Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on 
-Mura CMS. Thus, the terms and conditions of the GNU General Public License version 2 ("GPL") cover the entire combined work.
+Linking Mura CMS statically or dynamically with other modules constitutes
+the preparation of a derivative work based on Mura CMS. Thus, the terms and 	
+conditions of the GNU General Public License version 2 (�GPL�) cover the entire combined work.
 
-However, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with programs
-or libraries that are released under the GNU Lesser General Public License version 2.1.
+However, as a special exception, the copyright holders of Mura CMS grant you permission
+to combine Mura CMS with programs or libraries that are released under the GNU Lesser General Public License version 2.1.
 
-In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with 
-independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without 
-Mura CMS under the license of your choice, provided that you follow these specific guidelines: 
+In addition, as a special exception, �the copyright holders of Mura CMS grant you permission
+to combine Mura CMS �with independent software modules that communicate with Mura CMS solely
+through modules packaged as Mura CMS plugins and deployed through the Mura CMS plugin installation API,
+provided that these modules (a) may only modify the �/trunk/www/plugins/ directory through the Mura CMS
+plugin installation API, (b) must not alter any default objects in the Mura CMS database
+and (c) must not alter any files in the following directories except in cases where the code contains
+a separately distributed license.
 
-Your custom code 
+/trunk/www/admin/
+/trunk/www/tasks/
+/trunk/www/config/
+/trunk/www/requirements/mura/
 
-• Must not alter any default objects in the Mura CMS database and
-• May not alter the default display of the Mura CMS logo within Mura CMS and
-• Must not alter any files in the following directories.
+You may copy and distribute such a combined work under the terms of GPL for Mura CMS, provided that you include
+the source code of that other code when and as the GNU GPL requires distribution of source code.
 
- /admin/
- /tasks/
- /config/
- /requirements/mura/
- /Application.cfc
- /index.cfm
- /MuraProxy.cfc
-
-You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work 
-under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL 
-requires distribution of source code.
-
-For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your 
-modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
-version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
+For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception
+for your modified version; it is your choice whether to do so, or to make such modified version available under
+the GNU General Public License version 2 �without this exception. �You may, if you choose, apply this exception
+to your own modified versions of Mura CMS.
 --->
 <cfcomponent extends="mura.cfobject" output="false">
 
@@ -51,6 +47,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfargument name="settingsManager" type="any" required="yes"/>
 		<cfset variables.configBean=arguments.configBean />
 		<cfset variables.settingsManager=arguments.settingsManager />
+		<cfset variables.dsn=variables.configBean.getDatasource() />
 		<cfset variables.classExtensionManager=variables.configBean.getClassExtensionManager()>
 <cfreturn this />
 </cffunction>
@@ -116,9 +113,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			
 			<cfloop condition="ID neq '00000000000000000000000000000000END'">
 
-			<cfquery name="rsContent" datasource="#variables.configBean.getReadOnlyDatasource()#"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+			<cfquery name="rsContent" datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 			select contenthistid, contentid, menutitle, filename, parentid, type, target, targetParams, 
-			siteid, restricted, restrictgroups,template,childTemplate,inheritObjects,metadesc,metakeywords,sortBy,
+			siteid, restricted, restrictgroups,template,inheritObjects,metadesc,metakeywords,sortBy,
 			sortDirection from tcontent where active=1 and contentid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#ID#"/> and siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
 			</cfquery>
 			
@@ -132,11 +129,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset crumb.siteid=rscontent.siteid />
 			<cfset crumb.restricted=rscontent.restricted />
 			<cfset crumb.restrictGroups=rscontent.restrictgroups />
-			<cfif len(rscontent.childTemplate)>
-				<cfset crumb.template=rscontent.childTemplate />
-			<cfelse>
-				<cfset crumb.template=rscontent.template />
-			</cfif>
+			<cfset crumb.template=rscontent.template />
 			<cfset crumb.contenthistid=rscontent.contenthistid />
 			<cfset crumb.targetPrams=rscontent.targetParams />
 			<cfset crumb.metadesc=rscontent.metadesc />
@@ -166,9 +159,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			
 			<cfelse>
 			
-			<cfquery name="rsContent" datasource="#variables.configBean.getReadOnlyDatasource()#"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+			<cfquery name="rsContent" datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 			select contenthistid, contentid, menutitle, filename, parentid, type, target, targetParams, 
-			siteid, restricted, restrictgroups,template,childTemplate,inheritObjects,metadesc,metakeywords,sortBy,
+			siteid, restricted, restrictgroups,template,inheritObjects,metadesc,metakeywords,sortBy,
 			sortDirection,
 			<cfif variables.configBean.getDBType() eq "MSSQL">
 			len(Cast(path as varchar(1000))) depth
@@ -194,11 +187,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset crumb.siteid=rscontent.siteid />
 			<cfset crumb.restricted=rscontent.restricted />
 			<cfset crumb.restrictGroups=rscontent.restrictgroups />
-			<cfif len(rscontent.childtemplate)>
-				<cfset crumb.template=rscontent.childtemplate />
-			<cfelse>
-				<cfset crumb.template=rscontent.template />
-			</cfif>
+			<cfset crumb.template=rscontent.template />
 			<cfset crumb.contenthistid=rscontent.contenthistid />
 			<cfset crumb.targetPrams=rscontent.targetParams />
 			<cfset crumb.metadesc=rscontent.metadesc />
@@ -226,35 +215,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			
 </cffunction>
 
-<cffunction name="getContentIDFromContentHistID" returntype="string" access="public" output="false">
-	<cfargument name="contenthistid" required="true" default="">
-	<cfset var rs="">
-	<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#" blockfactor="20"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
-		select contentID from tcontent where contenthistid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contenthistid#">
-	</cfquery>
-	<cfreturn rs.contentID>
-</cffunction>
-
-<cffunction name="getContentHistIDFromContentID" returntype="string" access="public" output="false">
-	<cfargument name="contentID" required="true" default="">
-	<cfargument name="siteID" required="true" default="">
-	<cfset var rs="">
-	<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#" blockfactor="20"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
-		select contentHistID from tcontent where 
-		
-		<cfif isValid("UUID",arguments.contentID)>
-			contentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentID#">
-			and active=1
-			and siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#">
-		<cfelse>
-			active=1
-			and siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#">
-			and title=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentID#">
-		</cfif>
-	</cfquery>
-	<cfreturn rs.contentHistID>
-</cffunction>
-
 <cffunction name="getKidsIterator" returntype="any" output="false">
 			<cfargument name="moduleid" type="string" required="true" default="00000000000000000000000000000000000">
 			<cfargument name="siteid" type="string">
@@ -272,7 +232,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfargument name="aggregation" type="boolean" required="yes" default="false" >
 			
 			<cfset var rs = getKids(arguments.moduleID, arguments.siteid, arguments.parentID, arguments.type, arguments.today, arguments.size, arguments.keywords, arguments.hasFeatures, arguments.sortBy, arguments.sortDirection, arguments.categoryID, arguments.relatedID, arguments.tag, arguments.aggregation)>
-			<cfset var it = getBean("contentIterator")>
+			<cfset var it = getServiceFactory().getBean("contentIterator")>
 			<cfset it.setQuery(rs)>
 			<cfreturn it/>	
 </cffunction>
@@ -317,7 +277,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfif>
 
 			
-				<cfquery name="rsKids" datasource="#variables.configBean.getReadOnlyDatasource()#" blockfactor="20"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+				<cfquery name="rsKids" datasource="#variables.dsn#" blockfactor="20"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 				<cfif dbType eq "oracle" and arguments.size>select * from (</cfif>
 				SELECT <cfif dbType eq "mssql" and arguments.size>Top #arguments.size#</cfif> 
 				title, releasedate, menuTitle, tcontent.lastupdate,summary, tags,tcontent.filename, type,subType, tcontent.siteid,
@@ -326,8 +286,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				tcontent.fileid, credits, remoteSource, remoteSourceURL, remoteURL,
 				tfiles.fileSize,tfiles.fileExt, audience, keypoints
 				,tcontentstats.rating,tcontentstats.totalVotes,tcontentstats.downVotes,tcontentstats.upVotes
-				,tcontentstats.comments, '' parentType, <cfif doKids> qKids.kids<cfelse>null as kids</cfif>,tcontent.path, tcontent.created, tcontent.nextn,
-				tcontent.majorVersion, tcontent.minorVersion, tcontentstats.lockID, tcontent.expires
+				,tcontentstats.comments, '' parentType, <cfif doKids> qKids.kids<cfelse>null as kids</cfif>,tcontent.path, tcontent.created, tcontent.nextn
 				
 				FROM tcontent Left Join tfiles ON (tcontent.fileID=tfiles.fileID)
 				left Join tcontentstats on (tcontent.contentid=tcontentstats.contentid
@@ -369,7 +328,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					  and  (tcontent.isFeature=1
 	 						 or
 	 						tcontent.isFeature = 2 
-							and tcontent.FeatureStart <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#nowAdjusted#"> AND  (tcontent.FeatureStop >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#nowAdjusted#"> or tcontent.FeatureStop is null)
+							and tcontent.FeatureStart <= #createodbcdatetime(nowAdjusted)# AND  (tcontent.FeatureStop >= #createodbcdatetime(nowAdjusted)# or tcontent.FeatureStop is null)
 							)
 					  </cfif>
 					  <cfif arguments.keywords neq ''>
@@ -415,8 +374,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		 
 									tcontentcategoryassign.isFeature = 2 
 		
-								and tcontentcategoryassign.FeatureStart <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#nowAdjusted#"> AND  					
-								(tcontentcategoryassign.FeatureStop >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#nowAdjusted#"> or 
+								and tcontentcategoryassign.FeatureStart <= #createodbcdatetime(nowAdjusted)# AND  					
+								(tcontentcategoryassign.FeatureStop >= #createodbcdatetime(nowAdjusted)# or 
 								tcontentcategoryassign.FeatureStop is null)
 								)
 							</cfif>
@@ -443,7 +402,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					  and  (tcontent.isFeature=1
 	 						 or
 	 						tcontent.isFeature = 2 
-							and tcontent.FeatureStart <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#nowAdjusted#"> AND  (tcontent.FeatureStop >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#nowAdjusted#"> or tcontent.FeatureStop is null)
+							and tcontent.FeatureStart <= #createodbcdatetime(nowAdjusted)# AND  (tcontent.FeatureStop >= #createodbcdatetime(nowAdjusted)# or tcontent.FeatureStop is null)
 							)
 					  </cfif>
 					  
@@ -491,29 +450,30 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		 
 									tcontentcategoryassign.isFeature = 2 
 		
-								and tcontentcategoryassign.FeatureStart <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#nowAdjusted#"> AND  					
-								(tcontentcategoryassign.FeatureStop >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#nowAdjusted#"> or 
+								and tcontentcategoryassign.FeatureStart <= #createodbcdatetime(nowAdjusted)# AND  					
+								(tcontentcategoryassign.FeatureStop >= #createodbcdatetime(nowAdjusted)# or 
 								tcontentcategoryassign.FeatureStop is null)
 								)
 							</cfif>
 					  )
 					  </cfif>	
 				
-				#renderMobileClause()#
-						
-				order by 
+				 <cfif request.muraMobileRequest>
+				 	and (tcontent.mobileExclude!=1 or tcontent.mobileExclude is null)
+				 </cfif>
+				  order by 
 					
 					
 				<cfswitch expression="#arguments.sortBy#">
-					<cfcase value="menutitle,title,lastupdate,releasedate,orderno,displaystart,displaystop,created,credits,type,subtype">
-						<cfif dbType neq "oracle" or  listFindNoCase("orderno,lastUpdate,releaseDate,created,displayStart,displayStop",arguments.sortBy)>
+					<cfcase value="menutitle,title,lastupdate,releasedate,orderno,displayStart,created,credits,type,subtype">
+						<cfif dbType neq "oracle" or  listFindNoCase("orderno,lastUpdate,releaseDate,created",arguments.sortBy)>
 						tcontent.#arguments.sortBy# #arguments.sortDirection#
 						<cfelse>
 						lower(tcontent.#arguments.sortBy#) #arguments.sortDirection#
 						</cfif>
 					</cfcase>
 					<cfcase value="rating">
-						tcontentstats.rating #arguments.sortDirection#, tcontentstats.totalVotes  #arguments.sortDirection#
+						tcontentstats.rating #arguments.sortDirection#, tcontentstats.totalVotes  #arguments.feedBean.getSortDirection()#
 					</cfcase>
 					<cfcase value="comments">
 						tcontentstats.comments #arguments.sortDirection#
@@ -547,7 +507,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset var f=""/>
 			<cfset var nowAdjusted=createDateTime(year(arguments.today),month(arguments.today),day(arguments.today),hour(arguments.today),int((minute(arguments.today)/5)*5),0)>
 			
-				<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+				<cfquery name="rs" datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 				SELECT tcontentcategories.categoryID, tcontentcategories.filename, Count(tcontent.contenthistID) as "Count", tcontentcategories.name from tcontent inner join tcontentcategoryassign
 				ON (tcontent.contenthistID=tcontentcategoryassign.contentHistID
 					and tcontent.siteID=tcontentcategoryassign.siteID)
@@ -566,18 +526,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					  (
 					  	(tcontent.Display = 2 
 					  <cfif arguments.menuType neq 'Calendar'>
-					  AND (tcontent.DisplayStart <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#nowAdjusted#">) 
-					  AND (tcontent.DisplayStop >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#nowAdjusted#"> or tcontent.DisplayStop is null)
+					  AND (tcontent.DisplayStart <= #createodbcdatetime(nowAdjusted)#) 
+					  AND (tcontent.DisplayStop >= #createodbcdatetime(nowAdjusted)# or tcontent.DisplayStop is null)
 					  	)
 					 <cfelse>
 					  AND (
 					  		(
-					  			tcontent.DisplayStart >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#nowAdjusted#">
-					  			AND tcontent.DisplayStart < <cfqueryparam cfsqltype="cf_sql_timestamp" value="#dateAdd('m',1,nowAdjusted)#">
+					  			tcontent.DisplayStart >= #createodbcdatetime(nowAdjusted)#
+					  			AND tcontent.DisplayStart < #createodbcdatetime(dateAdd('m',1,nowAdjusted))#
 					  		)
 					  	OR (
-					  			tcontent.DisplayStop >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#nowAdjusted#">
-					  			AND tcontent.DisplayStop < <cfqueryparam cfsqltype="cf_sql_timestamp" value="#dateAdd('m',1,nowAdjusted)#">
+					  			tcontent.DisplayStop >= #createodbcdatetime(nowAdjusted)#
+					  			AND tcontent.DisplayStop < #createodbcdatetime(dateAdd('m',1,nowAdjusted))#
 					  		)
 					  	   )
 					  	  )
@@ -587,8 +547,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
                    		  tcontent.Display = 1
 					  )
 					 
-					#renderMobileClause()#
-								  
+					 <cfif request.muraMobileRequest>
+				 		and (tcontent.mobileExclude!=1 or tcontent.mobileExclude is null)
+				 	 </cfif>			  
 					 <cfif relatedListLen >
 					  and tcontent.contentID in (
 							select tcontentrelated.contentID from tcontentrelated 
@@ -615,7 +576,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			
 			<cfset var rs=""/>
 	
-			<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+			<cfquery name="rs" datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 				SELECT count(tcontentcomments.contentid) as CommentCount
 				FROM tcontentcomments
 				WHERE contentid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentID#"/> and siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/> and isApproved=1	 
@@ -628,9 +589,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="siteID"  type="string" />
 	<cfset var rs = "">
 	
-	<cfquery datasource="#variables.configBean.getReadOnlyDatasource()#" name="rs"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+	<cfquery datasource="#variables.dsn#" name="rs"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	select object,name, '' as objectid, orderno from tsystemobjects where siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
-	order by name
+	order by orderno
 	</cfquery>
 	
 	<cfreturn rs />
@@ -641,7 +602,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="contenthistid"  type="string" />
 	<cfset var rs = "">
 	
-	<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+	<cfquery name="rs" datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	SELECT count(ContentID) as theCount FROM tcontentobjects WHERE
 	 (contenthistID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentHistID#"/> <cfif request.inheritedObjects neq ''>or contenthistID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#request.inheritedObjects#"/></cfif>)
 	 and siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
@@ -656,7 +617,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="contenthistid"  type="string" />
 	<cfset var rs = "">
 	
-	<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+	<cfquery name="rs" datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	SELECT count(ContentID) as theCount FROM tcontentobjects WHERE
 	 (contenthistID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentHistID#"/> <cfif request.inheritedObjects neq ''>or contenthistID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#request.inheritedObjects#"/></cfif>)
 	 and siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
@@ -671,7 +632,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="contenthistid"  type="string" />
 	<cfset var rs = "">
 	
-	<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+	<cfquery name="rs" datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	SELECT count(ContentID) as theCount FROM tcontentobjects WHERE
 	 (contenthistID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentHistID#"/> <cfif request.inheritedObjects neq ''>or contenthistID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#request.inheritedObjects#"/></cfif>)
 	 and siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
@@ -686,7 +647,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="contentid"  type="string" />
 	<cfset var rs = "">
 	
-	<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+	<cfquery name="rs" datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	SELECT count(ContentID) as theCount FROM tcontent WHERE
 	 ParentID='#arguments.ContentID#' 
 	 and siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
@@ -695,8 +656,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	 and isNav=1
 	 and (display=1
 	 	 or 
-	 	 (display=2 AND (DisplayStart <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#">) 
-					  AND (DisplayStop >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#"> or tcontent.DisplayStop is null)
+	 	 (display=2 AND (DisplayStart <= #createodbcdatetime(now())#) 
+					  AND (DisplayStop >= #createodbcdatetime(now())# or tcontent.DisplayStop is null)
 		)
 		)
 				
@@ -710,7 +671,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="type"  type="string" required="true" default="" />
 	<cfset var rs = "">
 	
-	<cfquery datasource="#variables.configBean.getReadOnlyDatasource()#" name="rs"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+	<cfquery datasource="#variables.dsn#" name="rs"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	select contentid, menutitle, type from tcontent where siteid='#arguments.siteid#' and 
 	<cfif arguments.type eq ''>
 	(type='Portal' or type='Calendar' or type='Gallery')
@@ -728,7 +689,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="siteID"  type="string" />
 	<cfset var rs = "">
 	
-	<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+	<cfquery name="rs" datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	SELECT Count(tcontent.ContentID) AS counter
 	FROM tcontent
 	WHERE Type in ('Page','Portal','File','Calendar','Gallery') and 
@@ -749,54 +710,48 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var rspre = "">
 	<cfset var rs = "">
 	
-	<cfquery name="rspre" datasource="#variables.configBean.getReadOnlyDatasource()#"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+	<cfquery name="rspre" datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	SELECT DISTINCT tmodule.Title AS module, active.ModuleID, active.SiteID, active.ParentID, active.Type, active.subtype, active.MenuTitle, active.Filename, active.ContentID,
 	 tmodule.SiteID, draft.SiteID, active.SiteID, active.targetparams, draft.lastUpdate,
-	 draft.lastUpdateBy,tfiles.fileExt, draft.changesetID, draft.majorVersion, draft.minorVersion, tcontentstats.lockID, draft.expires
+	 draft.lastUpdateBy,tfiles.fileExt, draft.changesetID
 	FROM tcontent active INNER JOIN tcontent draft ON active.ContentID = draft.ContentID
 	INNER JOIN tcontent tmodule ON draft.ModuleID = tmodule.ContentID
-	INNER JOIN tcontentassignments ON (active.contentID=tcontentassignments.contentID and tcontentassignments.type='draft')
+	INNER JOIN tcontentassignments ON active.contentID=tcontentassignments.contentID
 	LEFT join tfiles on active.fileID=tfiles.fileID
-	LEFT JOIN tcontentstats on (draft.contentID=tcontentstats.contentID 
-								and draft.siteID=tcontentstats.siteID
-								)
 	WHERE draft.Active=0 
 	AND active.Active=1 
 	AND draft.lastUpdate>active.lastupdate 
 	and draft.changesetID is null
 	and tcontentassignments.userID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.userID#"/>
-	<cfif isdate(arguments.stopDate)>and active.lastUpdate <=  <cfqueryparam cfsqltype="cf_sql_timestamp" value="#createDateTime(year(arguments.stopDate),month(arguments.stopDate),day(arguments.stopDate),23,59,0)#"></cfif>
-	<cfif isdate(arguments.startDate)>and active.lastUpdate >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#createDateTime(year(arguments.startDate),month(arguments.startDate),day(arguments.startDate),0,0,0)#"></cfif>
+	<cfif isdate(arguments.stopDate)>and active.lastUpdate <=  #createODBCDateTime(createDateTime(year(arguments.stopDate),month(arguments.stopDate),day(arguments.stopDate),23,59,0))#</cfif>
+	<cfif isdate(arguments.startDate)>and active.lastUpdate >=  #createODBCDateTime(createDateTime(year(arguments.startDate),month(arguments.startDate),day(arguments.startDate),0,0,0))#</cfif>
 	GROUP BY tmodule.Title, active.ModuleID, active.SiteID, active.ParentID, active.Type, active.subType,
 	active.MenuTitle, active.Filename, active.ContentID, draft.IsNav, tmodule.SiteID, 
 	draft.SiteID, active.SiteID, active.targetparams, draft.lastUpdate,
-	draft.lastUpdateBy,tfiles.fileExt, draft.changesetID, draft.majorVersion, draft.minorVersion, tcontentstats.lockID, draft.expires
+	draft.lastUpdateBy,tfiles.fileExt, draft.changesetID
 	HAVING tmodule.SiteID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/> AND draft.SiteID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>  AND active.SiteID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
 	
 	union 
 	
 	SELECT DISTINCT tmodule.Title AS module, draft.ModuleID, draft.SiteID, draft.ParentID, draft.Type, draft.subtype, draft.MenuTitle, draft.Filename, draft.ContentID,
 	 tmodule.SiteID, draft.SiteID, draft.SiteID, draft.targetparams,draft.lastUpdate,
-	 draft.lastUpdateBy,tfiles.fileExt, draft.changesetID, draft.majorVersion, draft.minorVersion, tcontentstats.lockID, draft.expires
+	 draft.lastUpdateBy,tfiles.fileExt, draft.changesetID
 	FROM  tcontent draft INNER JOIN tcontent tmodule ON draft.ModuleID = tmodule.ContentID
-		   INNER JOIN tcontentassignments ON (draft.contentID=tcontentassignments.contentID and tcontentassignments.type='draft')
+		   INNER JOIN tcontentassignments ON draft.contentID=tcontentassignments.contentID
 			LEFT JOIN tcontent active ON draft.ContentID = active.ContentID and active.approved=1
 			LEFT join tfiles on draft.fileID=tfiles.fileID
-			LEFT JOIN tcontentstats on (draft.contentID=tcontentstats.contentID 
-								and draft.siteID=tcontentstats.siteID
-								)
 	WHERE 
 		draft.Active=1 
 		AND draft.approved=0
 		and active.contentid is null
 		and draft.changesetID is null
 		and tcontentassignments.userID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.userID#"/>
-		<cfif isdate(arguments.stopDate)>and draft.lastUpdate <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#createDateTime(year(arguments.stopDate),month(arguments.stopDate),day(arguments.stopDate),23,59,0)#"></cfif>
-		<cfif isdate(arguments.startDate)>and draft.lastUpdate >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#createDateTime(year(arguments.startDate),month(arguments.startDate),day(arguments.startDate),0,0,0)#"></cfif>
+		<cfif isdate(arguments.stopDate)>and draft.lastUpdate <=  #createODBCDateTime(createDateTime(year(arguments.stopDate),month(arguments.stopDate),day(arguments.stopDate),23,59,0))#</cfif>
+		<cfif isdate(arguments.startDate)>and draft.lastUpdate >=  #createODBCDateTime(createDateTime(year(arguments.startDate),month(arguments.startDate),day(arguments.startDate),0,0,0))#</cfif>
 	GROUP BY tmodule.Title, draft.ModuleID, draft.SiteID, draft.ParentID, draft.Type, draft.subType,
 	draft.MenuTitle, draft.Filename, draft.ContentID, draft.IsNav, tmodule.SiteID, 
 	draft.SiteID, draft.SiteID, draft.targetparams, draft.lastUpdate,
-	draft.lastUpdateBy,tfiles.fileExt, draft.changesetID, draft.majorVersion, draft.minorVersion, tcontentstats.lockID, draft.expires
+	draft.lastUpdateBy,tfiles.fileExt, draft.changesetID
 	HAVING tmodule.SiteID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/> AND draft.SiteID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
 	
 	
@@ -804,49 +759,43 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	SELECT DISTINCT tmodule.Title AS module, active.ModuleID, active.SiteID, active.ParentID, active.Type, active.subtype, active.MenuTitle, active.Filename, active.ContentID,
 	 tmodule.SiteID, draft.SiteID, active.SiteID, active.targetparams, draft.lastUpdate,
-	 draft.lastUpdateBy,tfiles.fileExt, draft.changesetID, draft.majorVersion, draft.minorVersion, tcontentstats.lockID, draft.expires
+	 draft.lastUpdateBy,tfiles.fileExt, draft.changesetID
 	FROM tcontent active INNER JOIN tcontent draft ON active.ContentID = draft.ContentID
 	INNER JOIN tcontent tmodule ON draft.ModuleID = tmodule.ContentID
 	LEFT join tfiles on active.fileID=tfiles.fileID
-	LEFT JOIN tcontentstats on (draft.contentID=tcontentstats.contentID 
-								and draft.siteID=tcontentstats.siteID
-								)
 	WHERE draft.Active=0 
 	AND active.Active=1 
 	AND draft.lastUpdate>active.lastupdate 
 	and draft.changesetID is null
 	and draft.lastUpdateByID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.userID#"/>
-	<cfif isdate(arguments.stopDate)>and active.lastUpdate <=  <cfqueryparam cfsqltype="cf_sql_timestamp" value="#createDateTime(year(arguments.stopDate),month(arguments.stopDate),day(arguments.stopDate),23,59,0)#"></cfif>
-	<cfif isdate(arguments.startDate)>and active.lastUpdate >=  <cfqueryparam cfsqltype="cf_sql_timestamp" value="#createDateTime(year(arguments.startDate),month(arguments.startDate),day(arguments.startDate),0,0,0)#"></cfif>
+	<cfif isdate(arguments.stopDate)>and active.lastUpdate <=  #createODBCDateTime(createDateTime(year(arguments.stopDate),month(arguments.stopDate),day(arguments.stopDate),23,59,0))#</cfif>
+	<cfif isdate(arguments.startDate)>and active.lastUpdate >=  #createODBCDateTime(createDateTime(year(arguments.startDate),month(arguments.startDate),day(arguments.startDate),0,0,0))#</cfif>
 	GROUP BY tmodule.Title, active.ModuleID, active.SiteID, active.ParentID, active.Type,active.subType, 
 	active.MenuTitle, active.Filename, active.ContentID, draft.IsNav, tmodule.SiteID, 
 	draft.SiteID, active.SiteID, active.targetparams, draft.lastUpdate,
-	draft.lastUpdateBy,tfiles.fileExt, draft.changesetID, draft.majorVersion, draft.minorVersion, tcontentstats.lockID, draft.expires
+	draft.lastUpdateBy,tfiles.fileExt, draft.changesetID
 	HAVING tmodule.SiteID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>  AND draft.SiteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/> AND active.SiteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
 	
 	union 
 	
 	SELECT DISTINCT module.Title AS module, draft.ModuleID, draft.SiteID, draft.ParentID, draft.Type, draft.subtype, draft.MenuTitle, draft.Filename, draft.ContentID,
 	 module.SiteID, draft.SiteID, draft.SiteID, draft.targetparams,draft.lastUpdate,
-	 draft.lastUpdateBy,tfiles.fileExt, draft.changesetID, draft.majorVersion, draft.minorVersion, tcontentstats.lockID, draft.expires
+	 draft.lastUpdateBy,tfiles.fileExt, draft.changesetID
 	FROM  tcontent draft INNER JOIN tcontent module ON draft.ModuleID = module.ContentID
 			LEFT JOIN tcontent active ON draft.ContentID = active.ContentID and active.approved=1
 			LEFT join tfiles on draft.fileID=tfiles.fileID
-			LEFT JOIN tcontentstats on (draft.contentID=tcontentstats.contentID 
-								and draft.siteID=tcontentstats.siteID
-								)
 	WHERE 
 		draft.Active=1 
 		AND draft.approved=0
 		and active.contentid is null
 		and draft.changesetID is null
 		and draft.lastUpdateByID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.userID#"/>
-		<cfif isdate(arguments.stopDate)>and draft.lastUpdate <=  <cfqueryparam cfsqltype="cf_sql_timestamp" value="#createDateTime(year(arguments.stopDate),month(arguments.stopDate),day(arguments.stopDate),23,59,0)#"></cfif>
-		<cfif isdate(arguments.startDate)>and draft.lastUpdate >=  <cfqueryparam cfsqltype="cf_sql_timestamp" value="#createDateTime(year(arguments.startDate),month(arguments.startDate),day(arguments.startDate),0,0,0)#"></cfif>
+		<cfif isdate(arguments.stopDate)>and draft.lastUpdate <=  #createODBCDateTime(createDateTime(year(arguments.stopDate),month(arguments.stopDate),day(arguments.stopDate),23,59,0))#</cfif>
+		<cfif isdate(arguments.startDate)>and draft.lastUpdate >=  #createODBCDateTime(createDateTime(year(arguments.startDate),month(arguments.startDate),day(arguments.startDate),0,0,0))#</cfif>
 	GROUP BY module.Title, draft.ModuleID, draft.SiteID, draft.ParentID, draft.Type,draft.subType, 
 	draft.MenuTitle, draft.Filename, draft.ContentID, draft.IsNav, module.SiteID, 
 	draft.SiteID, draft.SiteID, draft.targetparams, draft.lastUpdate,
-	draft.lastUpdateBy,tfiles.fileExt, draft.changesetID, draft.majorVersion, draft.minorVersion, tcontentstats.lockID, draft.expires
+	draft.lastUpdateBy,tfiles.fileExt, draft.changesetID
 	HAVING module.SiteID='#arguments.siteid#' AND draft.SiteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
 	</cfquery>
 	
@@ -874,13 +823,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset doAg=true/>
 		</cfif>
 		
-		<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#"   username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+		<cfquery name="rs" datasource="#variables.dsn#"   username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 		SELECT tcontent.ContentHistID, tcontent.ContentID, tcontent.Approved, tcontent.filename, tcontent.Active, tcontent.Type, tcontent.subtype, tcontent.OrderNo, tcontent.ParentID, 
 		tcontent.Title, tcontent.menuTitle, tcontent.lastUpdate, tcontent.lastUpdateBy, tcontent.lastUpdateByID, tcontent.Display, tcontent.DisplayStart, 
 		tcontent.DisplayStop,  tcontent.isnav, tcontent.restricted, count(tcontent2.parentid) AS hasKids,tcontent.isfeature,tcontent.inheritObjects,tcontent.target,
 		tcontent.targetParams,tcontent.islocked,tcontent.sortBy,tcontent.sortDirection,tcontent.releaseDate,
-		tfiles.fileSize,tfiles.FileExt,tfiles.ContentType,tfiles.ContentSubType, tcontent.siteID, tcontent.featureStart,tcontent.featureStop,tcontent.template,tcontent.childTemplate,
-		tcontent.majorVersion, tcontent.minorVersion, tcontentstats.lockID, tcontent.expires
+		tfiles.fileSize,tfiles.FileExt,tfiles.ContentType,tfiles.ContentSubType, tcontent.siteID, tcontent.featureStart,tcontent.featureStop
 		<cfif doAg>
 			,avg(tcontentratings.rate) As Rating,count(tcontentcomments.contentID) as Comments,count(tcontentratings.contentID) as Votes
 		<cfelse>
@@ -889,9 +837,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 		FROM tcontent LEFT JOIN tcontent tcontent2 ON tcontent.contentid=tcontent2.parentid
 		LEFT JOIN tfiles On tcontent.FileID=tfiles.FileID and tcontent.siteID=tfiles.siteID
-		LEFT JOIN tcontentstats on (tcontent.contentID=tcontentstats.contentID 
-								and tcontent.siteID=tcontentstats.siteID
-								)
 		<cfif doAg>
 		Left Join tcontentcomments on tcontent.contentID=tcontentcomments.contentID
 		Left Join tcontentratings on tcontent.contentID=tcontentratings.contentID
@@ -929,8 +874,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		tcontent.Title, tcontent.menuTitle, tcontent.lastUpdate, tcontent.lastUpdateBy, tcontent.lastUpdateByID, tcontent.Display, tcontent.DisplayStart, 
 		tcontent.DisplayStop,  tcontent.isnav, tcontent.restricted,tcontent.isfeature,tcontent.inheritObjects,
 		tcontent.target,tcontent.targetParams,tcontent.islocked,tcontent.sortBy,tcontent.sortDirection,tcontent.releaseDate,
-		tfiles.fileSize,tfiles.FileExt,tfiles.ContentType,tfiles.ContentSubType, tcontent.created, tcontent.siteID, tcontent.featureStart,tcontent.featureStop,tcontent.template,tcontent.childTemplate,
-		tcontent.majorVersion, tcontent.minorVersion, tcontentstats.lockID, tcontent.expires
+		tfiles.fileSize,tfiles.FileExt,tfiles.ContentType,tfiles.ContentSubType, tcontent.created, tcontent.siteID, tcontent.featureStart,tcontent.featureStop
 		<cfif isExtendedSort>
 			,qExtendedSort.extendedSort	
 		</cfif>
@@ -964,7 +908,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfargument name="siteid" type="string" required="true">
 		<cfset var rs = "">
 		
-		<cfquery datasource="#variables.configBean.getReadOnlyDatasource()#" name="rs"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+		<cfquery datasource="#variables.dsn#" name="rs"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 		SELECT contentid, menutitle, body, title, filename
 		FROM  tcontent 
 		WHERE     	         (tcontent.Active = 1) 
@@ -994,18 +938,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfargument name="siteid" type="string" required="true">
 		<cfset var rs = "">
 		
-		<cfquery datasource="#variables.configBean.getReadOnlyDatasource()#" name="rs"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+		<cfquery datasource="#variables.dsn#" name="rs"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 		SELECT tcontent.ContentHistID, tcontent.ContentID, tcontent.Approved, tcontent.filename, tcontent.Active, tcontent.Type, tcontent.subtype, tcontent.OrderNo, tcontent.ParentID, 
 		tcontent.Title, tcontent.menuTitle, tcontent.lastUpdate, tcontent.lastUpdateBy, tcontent.lastUpdateByID, tcontent.Display, tcontent.DisplayStart, 
 		tcontent.DisplayStop,  tcontent.isnav, tcontent.restricted, count(tcontent2.parentid) AS hasKids,tcontent.isFeature,tcontent.inheritObjects,tcontent.target,tcontent.targetParams,
-		tcontent.isLocked,tcontent.sortBy,tcontent.sortDirection,tcontent.releaseDate,tfiles.fileEXT, tcontent.featurestart, tcontent.featurestop,tcontent.template,tcontent.childTemplate
+		tcontent.isLocked,tcontent.sortBy,tcontent.sortDirection,tcontent.releaseDate,tfiles.fileEXT
 		FROM tcontent LEFT JOIN tcontent tcontent2 ON (tcontent.contentid=tcontent2.parentid)
 		LEFT JOIN tfiles On tcontent.FileID=tfiles.FileID
 		WHERE tcontent.siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/> and tcontent.Active=1 and tcontent.contentid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.topID#"/>
 		group by tcontent.ContentHistID, tcontent.ContentID, tcontent.Approved, tcontent.filename, tcontent.Active, tcontent.Type, tcontent.subtype, tcontent.OrderNo, tcontent.ParentID, 
 		tcontent.Title, tcontent.menuTitle, tcontent.lastUpdate, tcontent.lastUpdateBy, tcontent.lastUpdateByID, tcontent.Display, tcontent.DisplayStart, 
 		tcontent.DisplayStop,  tcontent.isnav, tcontent.restricted,tcontent.isfeature,tcontent.inheritObjects,
-		tcontent.inheritObjects,tcontent.target,tcontent.targetParams,tcontent.isLocked,tcontent.sortBy,tcontent.sortDirection,tcontent.releaseDate,tfiles.fileEXT, tcontent.featurestart, tcontent.featurestop, tcontent.template,tcontent.childTemplate
+		tcontent.inheritObjects,tcontent.target,tcontent.targetParams,tcontent.isLocked,tcontent.sortBy,tcontent.sortDirection,tcontent.releaseDate,tfiles.fileEXT
 		</cfquery>
 		
 		<cfreturn rs />
@@ -1016,7 +960,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="type" type="string" required="true">
 	<cfset var rs = "">
 	
-	<cfquery datasource="#variables.configBean.getReadOnlyDatasource()#" name="rs"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+	<cfquery datasource="#variables.dsn#" name="rs"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	select contentid, menutitle, responseChart FROM  tcontent 
 	WHERE     	         (tcontent.Active = 1) 
 			<!--- 		    AND (tcontent.DisplayStart <= #createodbcdatetime(now())#) 
@@ -1044,11 +988,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="siteid" type="string" required="true">
 	<cfset var rs = "">
 	
-	<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+	<cfquery name="rs" datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	select menutitle, tcontent.siteid, contentid, contenthistid, fileID, type, tcontent.lastupdateby, active, approved, tcontent.lastupdate, 
 	display, displaystart, displaystop, moduleid, isnav, notes,isfeature,featurestart,featurestop,inheritObjects,filename,targetParams,releaseDate,
-	tcontent.changesetID, tchangesets.name changesetName, tchangesets.published changsetPublished,tchangesets.publishDate changesetPublishDate , 
-	tcontent.majorVersion,tcontent.minorVersion
+	tcontent.changesetID, tchangesets.name changesetName, tchangesets.published changsetPublished,tchangesets.publishDate changesetPublishDate 
 	from tcontent 
 	left Join tchangesets on (tcontent.changesetID=tchangesets.changesetID)
 	where contentid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentID#"/> and tcontent.siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/> order by tcontent.lastupdate desc
@@ -1062,7 +1005,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="siteid" type="string" required="true">
 	<cfset var rs = "">
 	
-	<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+	<cfquery name="rs" datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	select menutitle, contentid, contenthistid, fileID, type, lastupdateby, active, approved, lastupdate, 
 	display, displaystart, displaystop, moduleid, isnav, notes,isfeature,inheritObjects,filename,targetParams,releaseDate,path
 	from tcontent where contentid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentID#"/>
@@ -1079,7 +1022,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="siteid" type="string" required="true">
 	<cfset var rs = "">
 	
-	<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+	<cfquery name="rs" datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	select menutitle, contentid, contenthistid, fileID, type, lastupdateby, active, approved, lastupdate, 
 	display, displaystart, displaystop, moduleid, isnav, notes,isfeature,inheritObjects,filename,targetParams,releaseDate,path
 	from tcontent where contentid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentID#"/>
@@ -1096,7 +1039,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="siteid" type="string" required="true">
 	<cfset var rs = "">
 	
-	<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+	<cfquery name="rs" datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	select menutitle, contentid, contenthistid, fileID, type, lastupdateby, active, approved, lastupdate, 
 	display, displaystart, displaystop, moduleid, isnav, notes,isfeature,inheritObjects,filename,targetParams,releaseDate
 	from tcontent where contentid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentID#"/> 
@@ -1114,7 +1057,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="siteid" type="string" required="true">
 	<cfset var rs = "">
 	
-	<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+	<cfquery name="rs" datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	SELECT menuTitle, Title, filename, lastupdate, type  from  tcontent WHERE
 	 contentID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentID#"/> and active=1 and siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
 	</cfquery> 
@@ -1128,7 +1071,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="siteid" type="string" required="true">
 	<cfset var rs = "">
 	
-	<cfquery datasource="#variables.configBean.getReadOnlyDatasource()#" name="rs"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+	<cfquery datasource="#variables.dsn#" name="rs"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	select min(entered) as FirstEntered, max(entered) as LastEntered, Count(*) as CountEntered from tformresponsepackets 
 	where siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/> and formid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentID#"/>
 	</cfquery>
@@ -1147,17 +1090,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var rs = "">
 	<cfset var kw = trim(arguments.keywords)>
 	
-	<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#" maxrows="1000">
+	<cfquery name="rs" datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	SELECT tcontent.ContentHistID, tcontent.ContentID, tcontent.Approved, tcontent.filename, tcontent.Active, tcontent.Type, tcontent.OrderNo, tcontent.ParentID, 
 	tcontent.Title, tcontent.menuTitle, tcontent.lastUpdate, tcontent.lastUpdateBy, tcontent.lastUpdateByID, tcontent.Display, tcontent.DisplayStart, 
 	tcontent.DisplayStop,  tcontent.isnav, tcontent.restricted, count(tcontent2.parentid) AS hasKids,tcontent.isfeature,tcontent.inheritObjects,tcontent.target,tcontent.targetParams,
-	tcontent.islocked,tcontent.releaseDate,tfiles.fileSize,tfiles.fileExt, 2 AS Priority, tcontent.nextn, tfiles.fileid,
-	tcontent.majorVersion, tcontent.minorVersion, tcontentstats.lockID, tcontent.expires
+	tcontent.islocked,tcontent.releaseDate,tfiles.fileSize,tfiles.fileExt, 2 AS Priority, tcontent.nextn, tfiles.fileid
 	FROM tcontent 
 	LEFT JOIN tcontent tcontent2 ON (tcontent.contentid=tcontent2.parentid)
-	LEFT JOIN tcontentstats on (tcontent.contentID=tcontentstats.contentID 
-								and tcontent.siteID=tcontentstats.siteID
-								)
+	
 	<cfif arguments.searchType eq "image">
 		Inner Join tfiles ON (tcontent.fileID=tfiles.fileID)
 	<cfelse>
@@ -1210,8 +1150,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		GROUP BY tcontent.ContentHistID, tcontent.ContentID, tcontent.Approved, tcontent.filename, tcontent.Active, tcontent.Type, tcontent.OrderNo, tcontent.ParentID, 
 		tcontent.Title, tcontent.menuTitle, tcontent.lastUpdate, tcontent.lastUpdateBy, tcontent.lastUpdateByID, tcontent.Display, tcontent.DisplayStart, 
 		tcontent.DisplayStop,  tcontent.isnav, tcontent.restricted,tcontent.isfeature,tcontent.inheritObjects,
-		tcontent.target,tcontent.targetParams,tcontent.islocked,tcontent.releaseDate,tfiles.fileSize,tfiles.fileExt, tcontent.nextn, tfiles.fileid,
-		tcontent.majorVersion, tcontent.minorVersion, tcontentstats.lockID, tcontent.expires
+		tcontent.target,tcontent.targetParams,tcontent.islocked,tcontent.releaseDate,tfiles.fileSize,tfiles.fileExt, tcontent.nextn, tfiles.fileid
 		
 		
 		<cfif kw neq ''>	
@@ -1220,13 +1159,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		SELECT tcontent.ContentHistID, tcontent.ContentID, tcontent.Approved, tcontent.filename, tcontent.Active, tcontent.Type, tcontent.OrderNo, tcontent.ParentID, 
 		tcontent.Title, tcontent.menuTitle, tcontent.lastUpdate, tcontent.lastUpdateBy, tcontent.lastUpdateByID, tcontent.Display, tcontent.DisplayStart, 
 		tcontent.DisplayStop,  tcontent.isnav, tcontent.restricted, count(tcontent2.parentid) AS hasKids,tcontent.isfeature,tcontent.inheritObjects,tcontent.target,tcontent.targetParams,
-		tcontent.islocked,tcontent.releaseDate,tfiles.fileSize,tfiles.fileExt, 1 AS Priority, tcontent.nextn, tfiles.fileid,
-		tcontent.majorVersion, tcontent.minorVersion, tcontentstats.lockID, tcontent.expires
-		FROM tcontent 
-		LEFT JOIN tcontent tcontent2 ON (tcontent.contentid=tcontent2.parentid)
-		LEFT JOIN tcontentstats on (tcontent.contentID=tcontentstats.contentID 
-								and tcontent.siteID=tcontentstats.siteID
-								)
+		tcontent.islocked,tcontent.releaseDate,tfiles.fileSize,tfiles.fileExt, 1 AS Priority, tcontent.nextn, tfiles.fileid
+		FROM tcontent LEFT JOIN tcontent tcontent2 ON (tcontent.contentid=tcontent2.parentid)
+		
 		<cfif arguments.searchType eq "image">
 		Inner Join tfiles ON (tcontent.fileID=tfiles.fileID)
 		<cfelse>
@@ -1260,8 +1195,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	GROUP BY tcontent.ContentHistID, tcontent.ContentID, tcontent.Approved, tcontent.filename, tcontent.Active, tcontent.Type, tcontent.OrderNo, tcontent.ParentID, 
 		tcontent.Title, tcontent.menuTitle, tcontent.lastUpdate, tcontent.lastUpdateBy, tcontent.lastUpdateByID, tcontent.Display, tcontent.DisplayStart, 
 		tcontent.DisplayStop,  tcontent.isnav, tcontent.restricted,tcontent.isfeature,tcontent.inheritObjects,
-		tcontent.target,tcontent.targetParams,tcontent.islocked,tcontent.releaseDate,tfiles.fileSize,tfiles.fileExt,tcontent.nextn, tfiles.fileid,
-		tcontent.majorVersion, tcontent.minorVersion, tcontentstats.lockID, tcontent.expires
+		tcontent.target,tcontent.targetParams,tcontent.islocked,tcontent.releaseDate,tfiles.fileSize,tfiles.fileExt,tcontent.nextn, tfiles.fileid
 	</cfif>
 	</cfquery> 
 	
@@ -1283,7 +1217,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var c = "">
 	<cfset var categoryListLen=listLen(arguments.categoryID)>
 	
-	<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+	<cfquery name="rs" datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	<!--- Find direct matches with no releasedate --->
 	
 	select tcontent.contentid,tcontent.contenthistid,tcontent.siteid,tcontent.title,tcontent.menutitle,tcontent.targetParams,tcontent.filename,tcontent.summary,tcontent.tags,
@@ -1293,7 +1227,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	tcontent.remoteURL,tfiles.fileSize,tfiles.fileExt,tcontent.fileID,tcontent.audience,tcontent.keyPoints,
 	tcontentstats.rating,tcontentstats.totalVotes,tcontentstats.downVotes,tcontentstats.upVotes, 0 as kids, 
 	tparent.type parentType,tcontent.nextn,tcontent.path,tcontent.orderno,tcontent.lastupdate,tcontent.created,
-	tcontent.created sortdate, 0 sortpriority,tcontent.majorVersion, tcontent.minorVersion, tcontentstats.lockID, tcontent.expires
+	tcontent.created sortdate, 0 sortpriority
 	from tcontent Left Join tfiles ON (tcontent.fileID=tfiles.fileID)
 	Left Join tcontent tparent on (tcontent.parentid=tparent.contentid
 						    			and tcontent.siteid=tparent.siteid
@@ -1318,8 +1252,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						  tcontent.Display = 2 
 							AND 
 							(
-								(tcontent.DisplayStart <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#">
-								AND (tcontent.DisplayStop >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#"> or tcontent.DisplayStop is null)
+								(tcontent.DisplayStart <= #createodbcdate(now())#
+								AND (tcontent.DisplayStop >= #createodbcdate(now())# or tcontent.DisplayStop is null)
 								)
 								OR  tparent.type='Calendar'
 							)
@@ -1374,7 +1308,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					  )
 				</cfif>
 				
-				#renderMobileClause()#
+				<cfif request.muraMobileRequest>
+				    and (tcontent.mobileExclude!=1 or tcontent.mobileExclude is null)
+				</cfif>
 				
 				
 	union all
@@ -1388,7 +1324,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	tcontent.remoteURL,tfiles.fileSize,tfiles.fileExt,tcontent.fileID,tcontent.audience,tcontent.keyPoints,
 	tcontentstats.rating,tcontentstats.totalVotes,tcontentstats.downVotes,tcontentstats.upVotes, 0 as kids, 
 	tparent.type parentType,tcontent.nextn,tcontent.path,tcontent.orderno,tcontent.lastupdate,tcontent.created,
-	tcontent.releaseDate sortdate, 0 sortpriority,tcontent.majorVersion, tcontent.minorVersion, tcontentstats.lockID, tcontent.expires
+	tcontent.releaseDate sortdate, 0 sortpriority
 	from tcontent Left Join tfiles ON (tcontent.fileID=tfiles.fileID)
 	Left Join tcontent tparent on (tcontent.parentid=tparent.contentid
 						    			and tcontent.siteid=tparent.siteid
@@ -1413,8 +1349,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						  tcontent.Display = 2 
 							AND 
 							(
-								(tcontent.DisplayStart <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#">
-								AND (tcontent.DisplayStop >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#"> or tcontent.DisplayStop is null)
+								(tcontent.DisplayStart <= #createodbcdate(now())#
+								AND (tcontent.DisplayStop >= #createodbcdate(now())# or tcontent.DisplayStop is null)
 								)
 								OR  tparent.type='Calendar'
 							)
@@ -1469,7 +1405,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					  )
 				</cfif>
 				
-				#renderMobileClause()#			
+				<cfif request.muraMobileRequest>
+				 	and (tcontent.mobileExclude!=1 or tcontent.mobileExclude is null)
+				</cfif>				
 	</cfquery>
 	
 	<cfquery name="rs" dbtype="query">
@@ -1485,7 +1423,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="contentHistID" type="string" required="true">
 	<cfset var rs = "">
 	
-	<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+	<cfquery name="rs" datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 		select tcontentcategoryassign.*, tcontentcategories.name, tcontentcategories.filename  from tcontentcategories inner join tcontentcategoryassign
 		ON (tcontentcategories.categoryID=tcontentcategoryassign.categoryID)
 		where tcontentcategoryassign.contentHistID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentHistID#"/>
@@ -1501,20 +1439,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="contentHistID" type="String">
 	<cfargument name="liveOnly" type="boolean" required="yes" default="false">
 	<cfargument name="today" type="date" required="yes" default="#now()#" />
-	<cfargument name="sortBy" type="string" default="created" >
-	<cfargument name="sortDirection" type="string" default="desc" >
+	
 	<cfset var rs ="" />
 
-	<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
-	SELECT tcontent.title, tcontent.releasedate, tcontent.menuTitle, tcontent.lastupdate, tcontent.summary, tcontent.filename, tcontent.type, tcontent.contentid,
-	tcontent.target,tcontent.targetParams, tcontent.restricted, tcontent.restrictgroups, tcontent.displaystart, tcontent.displaystop, tcontent.orderno,tcontent.sortBy,tcontent.sortDirection,
-	tcontent.fileid, tcontent.credits, tcontent.remoteSource, tcontent.remoteSourceURL, tcontent.remoteURL,
-	tfiles.fileSize,tfiles.fileExt,tcontent.path, tcontent.siteid, tcontent.contenthistid
+	<cfquery name="rs" datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+	SELECT title, releasedate, menuTitle, lastupdate, summary, tcontent.filename, type, tcontent.contentid,
+	target,targetParams, restricted, restrictgroups, displaystart, displaystop, orderno,sortBy,sortDirection,
+	tcontent.fileid, credits, remoteSource, remoteSourceURL, remoteURL,
+	tfiles.fileSize,tfiles.fileExt,path, tcontent.siteid, tcontent.contenthistid
 	FROM  tcontent Left Join tfiles ON (tcontent.fileID=tfiles.fileID)
-
 	WHERE
 	tcontent.siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
-	and tcontent.active=1 and
+	and active=1 and
 	
 	tcontent.contentID in (
 	select relatedID from tcontentrelated where contentHistID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentHistID#"/>
@@ -1522,62 +1458,24 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<cfif arguments.liveOnly>
 	  AND (
-			  (
-			  	tcontent.Display = 2
-			  	AND (
-				  		(
-				  			tcontent.DisplayStart >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#arguments.today#">   
-							AND tcontent.parentID in (select contentID from tcontent 
-															where type='Calendar'
-															#renderActiveClause("tcontent",arguments.siteID)#
-															and siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#">
-														   ) 
-						 )	
-					   OR 
-					   	(
-					   		tcontent.DisplayStart <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#arguments.today#"> 
-							AND 
-							(
-								tcontent.DisplayStop >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#arguments.today#"> 
-								or tcontent.DisplayStop is null
-							)
-					   )
-				)
-		   )
-		   OR 
-		   	(
-		   		tcontent.Display = 1
-		   	)
+		  (tcontent.DisplayStart <= #createodbcdatetime(arguments.today)# 
+			AND (tcontent.DisplayStop >= #createodbcdatetime(arguments.today)# or tcontent.DisplayStop is null)
+			AND tcontent.Display = 2)
+			OR  (tcontent.Display = 1)
 		)
 	</cfif>
 	
-	#renderMobileClause()#
+	<cfif request.muraMobileRequest>
+		and (tcontent.mobileExclude!=1 or tcontent.mobileExclude is null)
+	</cfif>
 	
-	order by 
-	
-	<cfswitch expression="#arguments.sortBy#">
-		<cfcase value="menutitle,title,lastupdate,releasedate,orderno,displaystart,displaystop,created,credits,type,subtype">
-			<cfif variables.configBean.getDbType() neq "oracle" or  listFindNoCase("orderno,lastUpdate,releaseDate,created,displayStart,displayStop",arguments.sortBy)>
-				tcontent.#arguments.sortBy# #arguments.sortDirection#
-			<cfelse>
-				lower(tcontent.#arguments.sortBy#) #arguments.sortDirection#
-			</cfif>
-		</cfcase>
-		<cfcase value="rating">
-			tcontentstats.rating #arguments.sortDirection#, tcontentstats.totalVotes  #arguments.sortDirection#
-		</cfcase>
-		<cfcase value="comments">
-			tcontentstats.comments #arguments.sortDirection#
-		</cfcase>
-		<cfdefaultcase>
-			tcontent.created desc
-		</cfdefaultcase>
-	</cfswitch>
+	order by tcontent.created desc
 	
 	</cfquery>
 	
 	<cfreturn rs />
-
+	
+	
 </cffunction>
 
 <cffunction name="getUsage" access="public" output="false" returntype="query">
@@ -1585,7 +1483,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<cfset var rs= ''/>
 	
-	<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+	<cfquery name="rs" datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	select tcontent.menutitle, tcontent.type, tcontent.filename, tcontent.lastupdate, tcontent.contentID, tcontent.siteID,
 	tcontent.approved,tcontent.display,tcontent.displayStart,tcontent.displayStop,tcontent.moduleid,tcontent.contenthistID,
 	tcontent.parentID
@@ -1603,7 +1501,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<cfset var rs= ''/>
 	
-	<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+	<cfquery name="rs" datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	select count(*) as Total from tcontent
 	where active=1
 	<cfif arguments.siteID neq ''>
@@ -1631,7 +1529,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var rs= ''/>
 	<cfset var dbType=variables.configBean.getDbType() />
 	
-	<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+	<cfquery name="rs" datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	<cfif dbType eq "oracle" and arguments.limit>select * from (</cfif>
 	select <cfif dbType eq "mssql"  and arguments.limit>Top #arguments.limit#</cfif>
 	contentID,contentHistID,approved,menutitle,parentID,moduleID,siteid,lastupdate,lastUpdatebyID,lastUpdateBy,type from tcontent
@@ -1640,8 +1538,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	and siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
 	</cfif>
 
-	<cfif isdate(arguments.stopDate)>and lastUpdate <=  <cfqueryparam cfsqltype="cf_sql_timestamp" value="#createDateTime(year(arguments.stopDate),month(arguments.stopDate),day(arguments.stopDate),23,59,0)#"></cfif>
-	<cfif isdate(arguments.startDate)>and lastUpdate >=  <cfqueryparam cfsqltype="cf_sql_timestamp" value="#createDateTime(year(arguments.startDate),month(arguments.startDate),day(arguments.startDate),0,0,0)#"></cfif>
+	<cfif isdate(arguments.stopDate)>and lastUpdate <=  #createODBCDateTime(createDateTime(year(arguments.stopDate),month(arguments.stopDate),day(arguments.stopDate),23,59,0))#</cfif>
+	<cfif isdate(arguments.startDate)>and lastUpdate >=  #createODBCDateTime(createDateTime(year(arguments.startDate),month(arguments.startDate),day(arguments.startDate),0,0,0))#</cfif>
 	
 	order by lastupdate desc
 	
@@ -1659,7 +1557,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var rs= ''/>
 	<cfset var dbType=variables.configBean.getDbType() />
 	
-	<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+	<cfquery name="rs" datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	<cfif dbType eq "oracle" and arguments.limit>select * from (</cfif>
 	select <cfif dbType eq "mssql"  and arguments.limit>Top #arguments.limit#</cfif>
 	contentID,contentHistID,approved,menutitle,parentID,moduleID,tcontent.siteid,
@@ -1693,7 +1591,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<cfset var rs= ''/>
 	
-	<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+	<cfquery name="rs" datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	select tag, count(tag) as tagCount from tcontenttags 
 	inner join tcontent on (tcontenttags.contenthistID=tcontent.contenthistID)
 	left Join tcontent tparent on (tcontent.parentid=tparent.contentid
@@ -1730,8 +1628,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				AND
 				 (
 					(
-						tcontent.DisplayStart <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#"> 
-						AND (tcontent.DisplayStop >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#"> or tcontent.DisplayStop is null)
+						tcontent.DisplayStart <= #createodbcdatetime(now())# 
+						AND (tcontent.DisplayStop >= #createodbcdatetime(now())# or tcontent.DisplayStop is null)
 					)
 					OR tparent.type='Calendar'
 				  )			 
@@ -1739,9 +1637,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		
 		
 		) 
-		
-	#renderMobileClause()#
-	
+	<cfif request.muraMobileRequest>
+		and (tcontent.mobileExclude!=1 or tcontent.mobileExclude is null)
+	</cfif>
 	<cfif isQuery(arguments.rsContent)  and arguments.rsContent.recordcount> and contentID in (#quotedValuelist(arguments.rsContent.contentID)#)</cfif>
 	group by tag
 	order by tag
@@ -1757,17 +1655,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<cfset var rsObjects=""/>
 	
-	<cfquery datasource="#variables.configBean.getReadOnlyDatasource()#" name="rsObjects"  username="#application.configBean.getReadOnlyDbUsername()#" password="#application.configBean.getReadOnlyDbPassword()#">
-	select tcontentobjects.object,tcontentobjects.objectid, tcontentobjects.orderno, tcontentobjects.params, tplugindisplayobjects.configuratorInit from tcontentobjects 
+	<cfquery datasource="#variables.configBean.getDatasource()#" name="rsObjects"  username="#application.configBean.getDBUsername()#" password="#application.configBean.getDBPassword()#">
+	select object,objectid, tcontentobjects.orderno, params from tcontentobjects 
 	inner join tcontent On(
 	tcontentobjects.contenthistid=tcontent.contenthistid
 	and tcontentobjects.siteid=tcontent.siteid) 
-	left join tplugindisplayobjects on (tcontentobjects.object='plugin' 
-										and tcontentobjects.objectID=tplugindisplayobjects.objectID)
-	where tcontent.siteid='#arguments.siteid#' 
-	and tcontent.contenthistid ='#arguments.contentHistID#'
-	and tcontentobjects.columnid=#arguments.columnID# 
-	order by tcontentobjects.orderno
+	where tcontent.siteid='#arguments.siteid#' and tcontent.contenthistid ='#arguments.contentHistID#'
+	and columnid=#arguments.columnID# order by tcontentobjects.orderno
 	</cfquery>
 		
 	<cfreturn rsObjects>
@@ -1780,55 +1674,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="siteID" required="yes" type="string" >
 	
 	<cfset var rsObjects=""/>
-	<cfquery datasource="#application.configBean.getReadOnlyDatasource()#" name="rsObjects"  username="#application.configBean.getReadOnlyDbUsername()#" password="#application.configBean.getReadOnlyDbPassword()#">
-	select tcontentobjects.object, tcontentobjects.objectid, tcontentobjects.orderno, tcontentobjects.params, tplugindisplayobjects.configuratorInit from tcontentobjects
-	left join tplugindisplayobjects on (tcontentobjects.object='plugin' 
-										and tcontentobjects.objectID=tplugindisplayobjects.objectID)  
-	where 
-	tcontentobjects.contenthistid ='#arguments.inheritedObjects#' 
-	and tcontentobjects.siteid='#arguments.siteid#'
-	and tcontentobjects.columnid=#arguments.columnID#
-	and tcontentobjects.object !='goToFirstChild'
+	<cfquery datasource="#application.configBean.getDatasource()#" name="rsObjects"  username="#application.configBean.getDBUsername()#" password="#application.configBean.getDBPassword()#">
+	select object,objectid,orderno,params from tcontentobjects  
+	where contenthistid 
+	='#arguments.inheritedObjects#' and siteid='#arguments.siteid#'
+	and columnid=#arguments.columnID#
+	and object !='goToFirstChild'
 	order by orderno
 	</cfquery>
 	
 	<cfreturn rsObjects>
 		
-</cffunction>
-
-<cffunction name="getExpiringContent" returntype="query" access="public" output="false">
-	<cfargument name="siteid" type="string" required="true">
-	<cfargument name="userid" type="string" required="true">
-	<cfset var rs = "">
-	
-	<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#" maxrows="1000">
-	SELECT contentid 
-	FROM tcontent 
-	
-	WHERE
-	lastUpdateByID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.userID#"/> 
-	and
-	active=1 
-	and siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
-	and expires <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#dateAdd("m",1,now())#"> 
-	and expires > <cfqueryparam cfsqltype="cf_sql_timestamp" value="#dateAdd("m",-12,now())#"> 
-	
-	UNION
-	
-	SELECT tcontent.contentid 
-	FROM tcontent inner join tcontentassignments on (tcontent.contentHistID=tcontentassignments.contentHistID
-													and tcontentassignments.type='expire')
-	
-	WHERE 
-	tcontent.active=1 
-	and tcontent.siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
-	and tcontentassignments.userid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.userID#"/> 
-	and tcontent.expires <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#dateAdd("m",1,now())#"> 
-	and tcontent.expires > <cfqueryparam cfsqltype="cf_sql_timestamp" value="#dateAdd("m",-12,now())#"> 
-	</cfquery> 
-
-
-	<cfreturn rs />
 </cffunction>
 
 <cffunction name="getReleaseCountByMonth" output="false">
@@ -1897,8 +1753,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
  	</cfquery>
 
 	<cfquery name="rs"dbtype="query">
-		select m as [month] ,y as [year], items from rs
-		order by [year] desc, [month] desc	
+		select m as [month] ,y as [year], items from rs	
  	</cfquery>
 	
 	<cfreturn rs>
@@ -1940,10 +1795,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						tcontent.Display = 2 	 
 					 	AND 
 						  (
-						  	tcontent.DisplayStart < #createODBCDateTime(dateadd("D",1,arguments.menuDateTime))#
+						  	tcontent.DisplayStart < #createodbcdate(dateadd("D",1,arguments.menuDateTime))#
 						  	AND 
 						  		(
-						  			tcontent.DisplayStop >= #createODBCDateTime(arguments.menuDateTime)# or tcontent.DisplayStop is null
+						  			tcontent.DisplayStop >= #createodbcdate(arguments.menuDateTime)# or tcontent.DisplayStop is null
 						  		)
 						  	)  
 					</cfcase>
@@ -1951,8 +1806,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					  	tcontent.Display = 2 	 
 					 	AND
 					  		(
-					  			tcontent.DisplayStart >= #createODBCDateTime(arguments.menuDateTime)# 
-					  			OR (tcontent.DisplayStart < #createODBCDateTime(arguments.menuDateTime)# AND tcontent.DisplayStop >= #createODBCDateTime(arguments.menuDateTime)#)
+					  			tcontent.DisplayStart >= #createodbcdatetime(arguments.menuDateTime)# 
+					  			OR (tcontent.DisplayStart < #createodbcdatetime(arguments.menuDateTime)# AND tcontent.DisplayStop >= #createodbcdatetime(arguments.menuDateTime)#)
 					  		)
 					 </cfcase>
 					 <cfcase value="ReleaseDate">
@@ -1964,9 +1819,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						   	tcontent.Display = 2 	 
 						 	 	AND 
 						 	 	(
-						 	 		tcontent.DisplayStart < #createODBCDateTime(dateadd("D",1,arguments.menuDateTime))#
+						 	 		tcontent.DisplayStart < #createodbcdate(dateadd("D",1,arguments.menuDateTime))#
 							  		AND (
-							  				tcontent.DisplayStop >= #createODBCDateTime(arguments.menuDateTime)# or tcontent.DisplayStop is null
+							  				tcontent.DisplayStop >= #createodbcdate(arguments.menuDateTime)# or tcontent.DisplayStop is null
 							  			)  
 								)
 							)
@@ -1976,15 +1831,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						
 						(
 						  	(
-						  		tcontent.releaseDate < #createODBCDateTime(dateadd("D",1,arguments.menuDateTime))#
-						  		AND tcontent.releaseDate >= #createODBCDateTime(arguments.menuDateTime)#
-						  	)
+						  		tcontent.releaseDate < #createodbcdate(dateadd("D",1,arguments.menuDateTime))#
+						  		AND tcontent.releaseDate >= #createodbcdate(arguments.menuDateTime)#) 
 						  		
 						  	OR 
 						  	 (
 						  	 	tcontent.releaseDate is Null
-						  		AND tcontent.lastUpdate < #createODBCDateTime(dateadd("D",1,arguments.menuDateTime))#
-						  		AND tcontent.lastUpdate >= #createODBCDateTime(arguments.menuDateTime)#
+						  		AND tcontent.lastUpdate < #createodbcdate(dateadd("D",1,arguments.menuDateTime))#
+						  		AND tcontent.lastUpdate >= #createodbcdate(arguments.menuDateTime)#
 						  	)
 					  	)	
 					  	
@@ -1998,9 +1852,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						   	tcontent.Display = 2 	 
 						 	 	AND 
 						 	 	(
-						 	 		tcontent.DisplayStart < #createODBCDateTime(dateadd("D",1,arguments.menuDateTime))#
+						 	 		tcontent.DisplayStart < #createodbcdate(dateadd("D",1,arguments.menuDateTime))#
 							  		AND (
-							  				tcontent.DisplayStop >= #createODBCDateTime(arguments.menuDateTime)# or tcontent.DisplayStop is null
+							  				tcontent.DisplayStop >= #createodbcdate(arguments.menuDateTime)# or tcontent.DisplayStop is null
 							  			)  
 								)
 							)
@@ -2009,14 +1863,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						AND
 						(
 						  	(
-						  		tcontent.releaseDate < #createODBCDateTime(dateadd("D",1,createDate(year(arguments.menuDateTime),month(arguments.menuDateTime),daysInMonth(arguments.menuDateTime))))#
-						  		AND  tcontent.releaseDate >= #createODBCDateTime(createDate(year(arguments.menuDateTime),month(arguments.menuDateTime),1))#) 
+						  		tcontent.releaseDate < #createodbcdate(dateadd("D",1,createDate(year(arguments.menuDateTime),month(arguments.menuDateTime),daysInMonth(arguments.menuDateTime))))#
+						  		AND  tcontent.releaseDate >= #createodbcdate(createDate(year(arguments.menuDateTime),month(arguments.menuDateTime),1))#) 
 						  		
 						  	OR 
 					  		(
 					  			tcontent.releaseDate is Null
-					  			AND tcontent.lastUpdate < #createODBCDateTime(dateadd("D",1,createDate(year(arguments.menuDateTime),month(arguments.menuDateTime),daysInMonth(arguments.menuDateTime))))#
-					  			AND tcontent.lastUpdate >= #createODBCDateTime(createDate(year(arguments.menuDateTime),month(arguments.menuDateTime),1))#
+					  			AND tcontent.lastUpdate < #createodbcdate(dateadd("D",1,createDate(year(arguments.menuDateTime),month(arguments.menuDateTime),daysInMonth(arguments.menuDateTime))))#
+					  			AND tcontent.lastUpdate >= #createodbcdate(createDate(year(arguments.menuDateTime),month(arguments.menuDateTime),1))#
 					  		)  
 					  	)
 					   </cfcase>
@@ -2026,22 +1880,22 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						AND
 						(
 						  	(
-						  		tcontent.displayStart < #createODBCDateTime(dateadd("D",1,createDate(year(arguments.menuDateTime),month(arguments.menuDateTime),daysInMonth(arguments.menuDateTime))))#
-						  		AND  tcontent.displayStart >= #createODBCDateTime(createDate(year(arguments.menuDateTime),month(arguments.menuDateTime),1))#
+						  		tcontent.displayStart < #createodbcdate(dateadd("D",1,createDate(year(arguments.menuDateTime),month(arguments.menuDateTime),daysInMonth(arguments.menuDateTime))))#
+						  		AND  tcontent.displayStart >= #createodbcdate(createDate(year(arguments.menuDateTime),month(arguments.menuDateTime),1))# 
 						  	)
 						  	
 						  	or 
 						  	
 						  	(
-						  		tcontent.displayStop < #createODBCDateTime(dateadd("D",1,createDate(year(arguments.menuDateTime),month(arguments.menuDateTime),daysInMonth(arguments.menuDateTime))))#
-						  		AND  tcontent.displayStop >= #createODBCDateTime(createDate(year(arguments.menuDateTime),month(arguments.menuDateTime),1))# 
+						  		tcontent.displayStop < #createodbcdate(dateadd("D",1,createDate(year(arguments.menuDateTime),month(arguments.menuDateTime),daysInMonth(arguments.menuDateTime))))#
+						  		AND  tcontent.displayStop >= #createodbcdate(createDate(year(arguments.menuDateTime),month(arguments.menuDateTime),1))# 
 						  	)
 						  	
 						  	or 
 						  	
 						  	(
-						  		tcontent.displayStart < #createODBCDateTime(createDate(year(arguments.menuDateTime),month(arguments.menuDateTime),1))#
-						  		and tcontent.displayStop >= #createODBCDateTime(dateadd("D",1,createDate(year(arguments.menuDateTime),month(arguments.menuDateTime),daysInMonth(arguments.menuDateTime))))#
+						  		tcontent.displayStart < #createodbcdate(createDate(year(arguments.menuDateTime),month(arguments.menuDateTime),1))#
+						  		and tcontent.displayStop >= #createodbcdate(dateadd("D",1,createDate(year(arguments.menuDateTime),month(arguments.menuDateTime),daysInMonth(arguments.menuDateTime))))# 
 						  	)
 						 )
 					  </cfcase>
@@ -2054,8 +1908,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							        (
 							            tcontent.Display = 2	
 							                AND (
-							                    tcontent.DisplayStart < #createODBCDateTime(dateadd("D",1,arguments.menuDateTime))# AND (
-							                        tcontent.DisplayStop >= #createODBCDateTime(arguments.menuDateTime)# or tcontent.DisplayStop is null
+							                    tcontent.DisplayStart < #createodbcdate(dateadd("D",1,arguments.menuDateTime))# AND (
+							                        tcontent.DisplayStop >= #createodbcdate(arguments.menuDateTime)# or tcontent.DisplayStop is null
 							                    )
 							            )
 							    )
@@ -2063,10 +1917,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							) AND (
 							
 							    (
-							        tcontent.releaseDate < #createODBCDateTime(dateadd("D",1,createDate(year(arguments.menuDateTime),12,31)))# AND tcontent.releaseDate >= #createDate(year(arguments.menuDateTime),1,1)#)
+							        tcontent.releaseDate < #createodbcdate(dateadd("D",1,createDate(year(arguments.menuDateTime),12,31)))# AND tcontent.releaseDate >= #createodbcdate(createDate(year(arguments.menuDateTime),1,1))#)
 							    OR
 							        (
-							            tcontent.releaseDate is Null AND tcontent.lastUpdate < #createODBCDateTime(dateadd("D",1,createDate(year(arguments.menuDateTime),12,31)))# AND tcontent.lastUpdate >= #createODBCDateTime(createDate(year(arguments.menuDateTime),1,1))#			
+							            tcontent.releaseDate is Null AND tcontent.lastUpdate < #createodbcdate(dateadd("D",1,createDate(year(arguments.menuDateTime),12,31)))# AND tcontent.lastUpdate >= #createodbcdate(createDate(year(arguments.menuDateTime),1,1))#			
 							        )
 							    )
 					  </cfcase> 
@@ -2083,10 +1937,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					  		tcontent.Display = 2 	 
 					 		AND 
 					 	 		(
-					 	 			tcontent.DisplayStart < #createODBCDateTime(arguments.menuDateTime)#
+					 	 			tcontent.DisplayStart < #createodbcdatetime(arguments.menuDateTime)#
 						  			AND 
 						  				(
-						  					tcontent.DisplayStop >= #createODBCDateTime(createODBCDateTime(arguments.menuDateTime))# or tcontent.DisplayStop is null
+						  					tcontent.DisplayStop >= #createodbcdatetime(arguments.menuDateTime)# or tcontent.DisplayStop is null
 						  				)  
 						  		)
 						)
@@ -2095,18 +1949,4 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfswitch>
 </cfoutput>
 </cffunction>
-
-<cffunction name="renderMobileClause" output="true">
-	<cfoutput>
-	and (tcontent.mobileExclude is null
-		OR 
-		<cfif request.muraMobileRequest>
-			tcontent.mobileExclude in (0,2)
-		<cfelse>
-			tcontent.mobileExclude in (0,1)
-		</cfif>
-	)
-	</cfoutput>
-</cffunction>
-
 </cfcomponent>

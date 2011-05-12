@@ -6,43 +6,39 @@ the Free Software Foundation, Version 2 of the License.
 
 Mura CMS is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. �See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-along with Mura CMS. If not, see <http://www.gnu.org/licenses/>.
+along with Mura CMS. �If not, see <http://www.gnu.org/licenses/>.
 
-Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on 
-Mura CMS. Thus, the terms and conditions of the GNU General Public License version 2 ("GPL") cover the entire combined work.
+Linking Mura CMS statically or dynamically with other modules constitutes
+the preparation of a derivative work based on Mura CMS. Thus, the terms and 	
+conditions of the GNU General Public License version 2 (�GPL�) cover the entire combined work.
 
-However, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with programs
-or libraries that are released under the GNU Lesser General Public License version 2.1.
+However, as a special exception, the copyright holders of Mura CMS grant you permission
+to combine Mura CMS with programs or libraries that are released under the GNU Lesser General Public License version 2.1.
 
-In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with 
-independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without 
-Mura CMS under the license of your choice, provided that you follow these specific guidelines: 
+In addition, as a special exception, �the copyright holders of Mura CMS grant you permission
+to combine Mura CMS �with independent software modules that communicate with Mura CMS solely
+through modules packaged as Mura CMS plugins and deployed through the Mura CMS plugin installation API,
+provided that these modules (a) may only modify the �/trunk/www/plugins/ directory through the Mura CMS
+plugin installation API, (b) must not alter any default objects in the Mura CMS database
+and (c) must not alter any files in the following directories except in cases where the code contains
+a separately distributed license.
 
-Your custom code 
+/trunk/www/admin/
+/trunk/www/tasks/
+/trunk/www/config/
+/trunk/www/requirements/mura/
 
-• Must not alter any default objects in the Mura CMS database and
-• May not alter the default display of the Mura CMS logo within Mura CMS and
-• Must not alter any files in the following directories.
+You may copy and distribute such a combined work under the terms of GPL for Mura CMS, provided that you include
+the source code of that other code when and as the GNU GPL requires distribution of source code.
 
- /admin/
- /tasks/
- /config/
- /requirements/mura/
- /Application.cfc
- /index.cfm
- /MuraProxy.cfc
-
-You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work 
-under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL 
-requires distribution of source code.
-
-For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your 
-modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
-version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
+For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception
+for your modified version; it is your choice whether to do so, or to make such modified version available under
+the GNU General Public License version 2 �without this exception. �You may, if you choose, apply this exception
+to your own modified versions of Mura CMS.
 --->
 <cfcomponent extends="mura.cfobject" output="false">
 
@@ -62,7 +58,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		
 		<cfset var key=arguments.type & arguments.groupID & arguments.ContentID & arguments.siteid />
 		<cfset var site=variables.settingsManager.getSite(arguments.siteid)/>
-		<cfset var cacheFactory=site.getCacheFactory(name="output")>
+		<cfset var cacheFactory=site.getCacheFactory()>
 			
 		<cfif site.getCache()>
 			<!--- check to see if it is cached. if not then pass in the context --->
@@ -87,7 +83,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset var perm=0>
 		<cfset var rsPermited="">
 		
-		<cfquery name="rsPermited" datasource="#variables.configBean.getReadOnlyDatasource()#"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+		<cfquery name="rsPermited" datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 		Select GroupID from tpermissions where ContentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentID#"/> and type=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.type#"/> and siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/> and groupid='#arguments.groupid#'
 		</cfquery>
 		
@@ -129,7 +125,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset var rsPermited="">
 		<cfset var key=arguments.type & arguments.ContentID & arguments.siteid />
 		<cfset var site=variables.settingsManager.getSite(arguments.siteid)/>
-		<cfset var cacheFactory=site.getCacheFactory(name="output")>
+		<cfset var cacheFactory=site.getCacheFactory()>
 		
 		<cfif site.getCache()>
 			<!--- check to see if it is cached. if not then pass in the context --->
@@ -165,7 +161,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfargument name="siteid" type="string" required="true">
 		<cfset var rs="">
 		
-		<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">	
+		<cfquery name="rs" datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">	
 		Select tusers.GroupName, tusers.isPublic 
 		from tpermissions inner join tusers on tusers.userid in (tpermissions.groupid)
 		where tpermissions.ContentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentID#"/>
@@ -261,7 +257,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset var rsgroups="">
 		<cfset var key="perm" & arguments.moduleID & arguments.siteid  />
 		<cfset var site=variables.settingsManager.getSite(arguments.siteid)/>
-		<cfset var cacheFactory=site.getCacheFactory(name="output")>
+		<cfset var cacheFactory=site.getCacheFactory()>
 
 			<cfif listFind(session.mura.memberships,'Admin;#variables.settingsManager.getSite(arguments.siteid).getPrivateUserPoolID()#;0') or  listFind(session.mura.memberships,'S2') >
 				<cfset Verdict=1>
@@ -303,7 +299,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfargument name="siteid" type="string" required="true">
 		<cfset var rs="">
 		
-		<cfquery datasource="#variables.configBean.getReadOnlyDatasource()#" name="rs" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+		<cfquery datasource="#variables.configBean.getDatasource()#" name="rs" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 			select tusers.groupname,isPublic from tusers INNER JOIN tpermissions ON (tusers.userid = tpermissions.groupid) where tpermissions.contentid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.moduleID#"/> and tpermissions.siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/> 
 		</cfquery>
 
@@ -428,7 +424,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset var Verdictlist=""/>
 		<cfset var I = "" />
 		
-		<cfquery name="rsGroups" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+		<cfquery name="rsGroups" datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 		select groupid from tpermissions where contentid='00000000000000000000000000000000000' and siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.crumbdata[1].siteid#"/>
 		</cfquery>
 		
@@ -460,7 +456,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfargument name="data" type="struct" />
 <cfset var rsGroups=""/>
 
-	<cfquery name="rsgroups" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+	<cfquery name="rsgroups" datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	select UserID from tusers where type =1 
 	</cfquery> 
 	
@@ -493,7 +489,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfargument name="data" type="struct" />
 <cfset var rsContentlist=""/>
 <cftransaction>
-	<cfquery name="rsContentlist" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+	<cfquery name="rsContentlist" datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	select contentID from tcontent where siteid='#arguments.data.siteid#' group by contentid
 	</cfquery> 
 	
@@ -531,7 +527,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="getModule" access="public" returntype="query" output="false">
 <cfargument name="data" type="struct" />
 <cfset var rs = "" />
-<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+<cfquery name="rs" datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 SELECT * FROM tcontent WHERE 
  ContentID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.data.contentID#"/> and  siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.data.siteid#"/> and active=1
 </cfquery>
@@ -542,7 +538,7 @@ SELECT * FROM tcontent WHERE
 <cfargument name="data" type="struct" />
 <cfset var rs = "" />
 <cfset var returnStruct=structNew() />
-<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+<cfquery name="rs" datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 select userid, groupname from tusers where type=1 and groupname <>'Admin' and isPublic=0 
 and siteid='#application.settingsManager.getSite(arguments.data.siteid).getPrivateUserPoolID()#' 
 order by groupname
@@ -550,7 +546,7 @@ order by groupname
 
 <cfset returnStruct.privateGroups=rs />
 
-<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+<cfquery name="rs" datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 select userid, groupname from tusers where type=1  and isPublic=1 
 and siteid='#application.settingsManager.getSite(arguments.data.siteid).getPublicUserPoolID()#' 
 order by groupname
@@ -564,8 +560,8 @@ order by groupname
 <cffunction name="getPermitedGroups"  access="public" returntype="query" output="false">
 <cfargument name="data" type="struct" />
 <cfset var rs = "" />
-<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#"
-username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+<cfquery name="rs" datasource="#variables.configBean.getDatasource()#"
+username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 select * from tpermissions where contentid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.data.contentID#"/> and siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.data.siteid#"/> and type='module'
 </cfquery>
 <cfreturn rs />
@@ -574,8 +570,8 @@ select * from tpermissions where contentid= <cfqueryparam cfsqltype="cf_sql_varc
 <cffunction name="getcontent" access="public" returntype="query" output="false">
 <cfargument name="data" type="struct" />
 <cfset var rs = "" />
-<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#"
-username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+<cfquery name="rs" datasource="#variables.configBean.getDatasource()#"
+username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 SELECT tcontent.*, tfiles.fileEXT FROM tcontent 
 LEFT Join tfiles ON (tcontent.fileID=tfiles.fileID)
 WHERE tcontent.ContentID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.data.contentID#"/> and tcontent.active=1 and tcontent.siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.data.siteid#"/>
@@ -662,57 +658,42 @@ username="#variables.configBean.getDBUsername()#" password="#variables.configBea
 		<cfset r=setRestriction(application.contentGateway.getCrumblist('#arguments.rawQuery.contentid#','#arguments.siteid#',false),arguments.hasModuleAccess)/>
 	</cfif>
 	<cfif not r.restrict or r.restrict and r.allow>
-		<cfset rows=rows+1/>
-		<cfset queryAddRow(rs,1)/>
-		<cfset querysetcell(rs,"contentid",arguments.rawQuery.contentid,rows)/>
-		<cfset querysetcell(rs,"contentHistid",arguments.rawQuery.contentHistid,rows)/>
-		<cfset querysetcell(rs,"siteid",request.siteid,rows)/>
-		<cfset querysetcell(rs,"filename",arguments.rawQuery.filename,rows)/>
-		<cfset querysetcell(rs,"menutitle",arguments.rawQuery.menutitle,rows)/>
-		<cfset querysetcell(rs,"title",arguments.rawQuery.title,rows)/>
-		<cfset querysetcell(rs,"targetParams",arguments.rawQuery.targetParams,rows)/>
-		<cfset querysetcell(rs,"Summary",arguments.rawQuery.summary,rows)/>
-		<cfset querysetcell(rs,"tags",arguments.rawQuery.tags,rows)/>
-		<cfset querysetcell(rs,"restricted",arguments.rawQuery.restricted,rows)/>
-		<cfset querysetcell(rs,"releasedate",arguments.rawQuery.releasedate,rows)/>
-		<cfset querysetcell(rs,"type",arguments.rawQuery.type,rows)/>
-		<cfset querysetcell(rs,"subtype",arguments.rawQuery.subtype,rows)/>
-		<cfset querysetcell(rs,"restrictGroups",arguments.rawQuery.restrictGroups,rows)/>
-		<cfset querysetcell(rs,"target",arguments.rawQuery.target,rows)/>
-		<cfset querysetcell(rs,"displaystart",arguments.rawQuery.displaystart,rows)/>
-		<cfset querysetcell(rs,"displaystop",arguments.rawQuery.displaystop,rows)/>
-		<cfset querysetcell(rs,"fileid",arguments.rawQuery.fileid,rows)/>
-		<cfset querysetcell(rs,"fileSize",arguments.rawQuery.fileSize,rows)/>
-		<cfset querysetcell(rs,"fileExt",arguments.rawQuery.fileExt,rows)/>
-		<cfset querysetcell(rs,"credits",arguments.rawQuery.credits,rows)/>
-		<cfset querysetcell(rs,"remoteSource",arguments.rawQuery.remoteSource,rows)/>
-		<cfset querysetcell(rs,"remoteSourceURL",arguments.rawQuery.remoteSourceURL,rows)/>
-		<cfset querysetcell(rs,"remoteURL",arguments.rawQuery.remoteURL,rows)/>
-		<cfset querysetcell(rs,"audience",arguments.rawQuery.audience,rows)/>
-		<cfset querysetcell(rs,"keyPoints",arguments.rawQuery.keyPoints,rows)/>
-		<cfset querysetcell(rs,"rating",arguments.rawQuery.rating,rows)/>
-		<cfset querysetcell(rs,"comments",arguments.rawQuery.comments,rows)/>
-		<cfset querysetcell(rs,"kids",arguments.rawQuery.kids,rows)/>
-		<cfset querysetcell(rs,"upVotes",arguments.rawQuery.upVotes,rows)/>
-		<cfset querysetcell(rs,"totalVotes",arguments.rawQuery.totalVotes,rows)/>
-		<cfset querysetcell(rs,"downVotes",arguments.rawQuery.downVotes,rows)/>
-		<cfset querysetcell(rs,"parentType",arguments.rawQuery.parentType,rows)/>
-		<cfset querysetcell(rs,"nextn",arguments.rawQuery.nextn,rows)/>
-		<cfif structKeyExists(arguments.rawQuery,"majorVersion")>
-			<cfset querysetcell(rs,"majorVersion",arguments.rawQuery.majorVersion,rows)/>
-		<cfelse>
-			<cfset querysetcell(rs,"majorVersion",0,rows)/>
-		</cfif>
-		<cfif structKeyExists(arguments.rawQuery,"minorVersion")>
-			<cfset querysetcell(rs,"minorVersion",arguments.rawQuery.minorVersion,rows)/>
-		<cfelse>
-			<cfset querysetcell(rs,"minorVersion",0,rows)/>
-		</cfif>
-		<cfif structKeyExists(arguments.rawQuery,"lockID")>
-			<cfset querysetcell(rs,"lockID",arguments.rawQuery.lockID,rows)/>
-		<cfelse>
-			<cfset querysetcell(rs,"lockID","",rows)/>
-		</cfif>
+	<cfset rows=rows+1/>
+	<cfset queryAddRow(rs,1)/>
+	<cfset querysetcell(rs,"contentid",arguments.rawQuery.contentid,rows)/>
+	<cfset querysetcell(rs,"contentHistid",arguments.rawQuery.contentHistid,rows)/>
+	<cfset querysetcell(rs,"siteid",request.siteid,rows)/>
+	<cfset querysetcell(rs,"filename",arguments.rawQuery.filename,rows)/>
+	<cfset querysetcell(rs,"menutitle",arguments.rawQuery.menutitle,rows)/>
+	<cfset querysetcell(rs,"title",arguments.rawQuery.title,rows)/>
+	<cfset querysetcell(rs,"targetParams",arguments.rawQuery.targetParams,rows)/>
+	<cfset querysetcell(rs,"Summary",arguments.rawQuery.summary,rows)/>
+	<cfset querysetcell(rs,"tags",arguments.rawQuery.tags,rows)/>
+	<cfset querysetcell(rs,"restricted",arguments.rawQuery.restricted,rows)/>
+	<cfset querysetcell(rs,"releasedate",arguments.rawQuery.releasedate,rows)/>
+	<cfset querysetcell(rs,"type",arguments.rawQuery.type,rows)/>
+	<cfset querysetcell(rs,"subtype",arguments.rawQuery.subtype,rows)/>
+	<cfset querysetcell(rs,"restrictGroups",arguments.rawQuery.restrictGroups,rows)/>
+	<cfset querysetcell(rs,"target",arguments.rawQuery.target,rows)/>
+	<cfset querysetcell(rs,"displaystart",arguments.rawQuery.displaystart,rows)/>
+	<cfset querysetcell(rs,"displaystop",arguments.rawQuery.displaystop,rows)/>
+	<cfset querysetcell(rs,"fileid",arguments.rawQuery.fileid,rows)/>
+	<cfset querysetcell(rs,"fileSize",arguments.rawQuery.fileSize,rows)/>
+	<cfset querysetcell(rs,"fileExt",arguments.rawQuery.fileExt,rows)/>
+	<cfset querysetcell(rs,"credits",arguments.rawQuery.credits,rows)/>
+	<cfset querysetcell(rs,"remoteSource",arguments.rawQuery.remoteSource,rows)/>
+	<cfset querysetcell(rs,"remoteSourceURL",arguments.rawQuery.remoteSourceURL,rows)/>
+	<cfset querysetcell(rs,"remoteURL",arguments.rawQuery.remoteURL,rows)/>
+	<cfset querysetcell(rs,"audience",arguments.rawQuery.audience,rows)/>
+	<cfset querysetcell(rs,"keyPoints",arguments.rawQuery.keyPoints,rows)/>
+	<cfset querysetcell(rs,"rating",arguments.rawQuery.rating,rows)/>
+	<cfset querysetcell(rs,"comments",arguments.rawQuery.comments,rows)/>
+	<cfset querysetcell(rs,"kids",arguments.rawQuery.kids,rows)/>
+	<cfset querysetcell(rs,"upVotes",arguments.rawQuery.upVotes,rows)/>
+	<cfset querysetcell(rs,"totalVotes",arguments.rawQuery.totalVotes,rows)/>
+	<cfset querysetcell(rs,"downVotes",arguments.rawQuery.downVotes,rows)/>
+	<cfset querysetcell(rs,"parentType",arguments.rawQuery.parentType,rows)/>
+	<cfset querysetcell(rs,"nextn",arguments.rawQuery.nextn,rows)/>
 	</cfif>
 	</cfloop>
 	
@@ -723,10 +704,10 @@ username="#variables.configBean.getDBUsername()#" password="#variables.configBea
 <cfset var rs = "" />
 		<cfswitch expression="#variables.configBean.getCompiler()#">
 		<cfcase value="railo">
-		<cfset rs=queryNew("contentid,contenthistid,siteid,title,menutitle,targetParams,filename,summary,tags,restricted,type,subType,restrictgroups,target,fileid,fileSize,fileExt,credits,remoteSource,remoteSourceURL,remoteURL,audience,keyPoints,rating,comments,kids,totalVotes,downVotes,upVotes,parentType,displaystart,displaystop,releasedate,nextn,majorVersion,minorVersion,lockID","VARCHAR,VARCHAR,VARCHAR,VARCHAR,VARCHAR,VARCHAR,VARCHAR,VARCHAR,VARCHAR,INTEGER,VARCHAR,VARCHAR,VARCHAR,VARCHAR,VARCHAR,VARCHAR,VARCHAR,VARCHAR,VARCHAR,VARCHAR,VARCHAR,VARCHAR,VARCHAR,VARCHAR,VARCHAR,VARCHAR,VARCHAR,VARCHAR,VARCHAR,VARCHAR,VARCHAR,VARCHAR,VARCHAR,VARCHAR,VARCHAR,VARCHAR,VARCHAR")/>
+		<cfset rs=queryNew("contentid,contenthistid,siteid,title,menutitle,targetParams,filename,summary,tags,restricted,type,subType,restrictgroups,target,fileid,fileSize,fileExt,credits,remoteSource,remoteSourceURL,remoteURL,audience,keyPoints,rating,comments,kids,totalVotes,downVotes,upVotes,parentType,displaystart,displaystop,releasedate,nextn","VARCHAR,VARCHAR,VARCHAR,VARCHAR,VARCHAR,VARCHAR,VARCHAR,VARCHAR,VARCHAR,INTEGER,VARCHAR,VARCHAR,VARCHAR,VARCHAR,VARCHAR,VARCHAR,VARCHAR,VARCHAR,VARCHAR,VARCHAR,VARCHAR,VARCHAR,VARCHAR,VARCHAR,VARCHAR,VARCHAR,VARCHAR,VARCHAR,VARCHAR,VARCHAR,VARCHAR,VARCHAR,VARCHAR,VARCHAR")/>
 		</cfcase>
 		<cfdefaultcase>
-		<cfset rs=queryNew("contentid,contenthistid,siteid,title,menutitle,targetParams,filename,summary,tags,restricted,type,subType,restrictgroups,target,fileid,fileSize,fileExt,credits,remoteSource,remoteSourceURL,remoteURL,audience,keyPoints,rating,comments,kids,totalVotes,downVotes,upVotes,parentType,displaystart,displaystop,releasedate,nextn,majorVersion,minorVersion,lockID","CF_SQL_VARCHAR,CF_SQL_VARCHAR,CF_SQL_VARCHAR,CF_SQL_VARCHAR,CF_SQL_VARCHAR,CF_SQL_VARCHAR,CF_SQL_VARCHAR,CF_SQL_VARCHAR,CF_SQL_VARCHAR,CF_SQL_INTEGER,CF_SQL_VARCHAR,CF_SQL_VARCHAR,CF_SQL_VARCHAR,CF_SQL_VARCHAR,CF_SQL_VARCHAR,CF_SQL_VARCHAR,CF_SQL_VARCHAR,CF_SQL_VARCHAR,CF_SQL_VARCHAR,CF_SQL_VARCHAR,CF_SQL_VARCHAR,CF_SQL_VARCHAR,CF_SQL_VARCHAR,CF_SQL_VARCHAR,CF_SQL_VARCHAR,CF_SQL_VARCHAR,CF_SQL_VARCHAR,CF_SQL_VARCHAR,CF_SQL_VARCHAR,CF_SQL_VARCHAR,CF_SQL_TIMESTAMP,CF_SQL_TIMESTAMP,CF_SQL_TIMESTAMP,CF_SQL_VARCHAR,CF_SQL_VARCHAR,CF_SQL_VARCHAR,CF_SQL_VARCHAR")/>
+		<cfset rs=queryNew("contentid,contenthistid,siteid,title,menutitle,targetParams,filename,summary,tags,restricted,type,subType,restrictgroups,target,fileid,fileSize,fileExt,credits,remoteSource,remoteSourceURL,remoteURL,audience,keyPoints,rating,comments,kids,totalVotes,downVotes,upVotes,parentType,displaystart,displaystop,releasedate,nextn","CF_SQL_VARCHAR,CF_SQL_VARCHAR,CF_SQL_VARCHAR,CF_SQL_VARCHAR,CF_SQL_VARCHAR,CF_SQL_VARCHAR,CF_SQL_VARCHAR,CF_SQL_VARCHAR,CF_SQL_VARCHAR,CF_SQL_INTEGER,CF_SQL_VARCHAR,CF_SQL_VARCHAR,CF_SQL_VARCHAR,CF_SQL_VARCHAR,CF_SQL_VARCHAR,CF_SQL_VARCHAR,CF_SQL_VARCHAR,CF_SQL_VARCHAR,CF_SQL_VARCHAR,CF_SQL_VARCHAR,CF_SQL_VARCHAR,CF_SQL_VARCHAR,CF_SQL_VARCHAR,CF_SQL_VARCHAR,CF_SQL_VARCHAR,CF_SQL_VARCHAR,CF_SQL_VARCHAR,CF_SQL_VARCHAR,CF_SQL_VARCHAR,CF_SQL_VARCHAR,CF_SQL_TIMESTAMP,CF_SQL_TIMESTAMP,CF_SQL_TIMESTAMP,CF_SQL_VARCHAR")/>
 		</cfdefaultcase>
 		</cfswitch>
 	<cfreturn rs/>

@@ -38,11 +38,6 @@ var XMLParser = Editor.Parser = (function() {
             setState(inBlock("xml-comment", "-->"));
             return null;
           }
-          else if (source.lookAhead("DOCTYPE", true)) {
-            source.nextWhileMatches(/[\w\._\-]/);
-            setState(inBlock("xml-doctype", ">"));
-            return "xml-doctype";
-          }
           else {
             return "xml-text";
           }
@@ -187,7 +182,7 @@ var XMLParser = Editor.Parser = (function() {
     function base() {
       return pass(element, base);
     }
-    var harmlessTokens = {"xml-text": true, "xml-entity": true, "xml-comment": true, "xml-processing": true, "xml-doctype": true};
+    var harmlessTokens = {"xml-text": true, "xml-entity": true, "xml-comment": true, "xml-processing": true};
     function element(style, content) {
       if (content == "<") cont(tagname, attributes, endtag(tokenNr == 1));
       else if (content == "</") cont(closetagname, expect(">"));

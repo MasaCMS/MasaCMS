@@ -13,29 +13,37 @@
 <cfif len(arguments.MissingMethodName)>
 
 	<!--- forward normal getters to the default getValue method --->
-	<cfif listFindNoCase("set,get",prefix) and len(arguments.MissingMethodName) gt 3>
-		<cfset prop=right(arguments.MissingMethodName,len(arguments.MissingMethodName)-3)>	
-		<cfif prefix eq "get">
-			<cfreturn getValue(prop)>
-		<cfelseif prefix eq "set" and not structIsEmpty(MissingMethodArguments)>
-			<cfset setValue(prop,MissingMethodArguments[1])>	
-			<cfreturn this>
+	<cfif prefix eq "get" and len(arguments.MissingMethodName)gt 3>
+		<cfset prop=right(arguments.MissingMethodName,len(arguments.MissingMethodName)-3)>
+		<cfreturn getValue(prop)>
+	<!---
+	<cfelseif listfindNoCase("get,set",arguments.MissingMethodName) and not structIsEmpty(MissingMethodArguments)>
+		<cfif arguments.MissingMethodName eq "get">
+			<cfreturn getValue(argumentCollection=MissingMethodArguments)>
+		<cfelse>
+			<cfreturn setValue(argumentCollection=MissingMethodArguments)>
 		</cfif>
+	--->
 	</cfif>
 	
 	<!--- otherwise get the bean and if the method exsists forward request --->
 	<cfset bean=getUserBean()>
 	
-	<cfif not structIsEmpty(MissingMethodArguments)>
-		<cfinvoke component="#bean#" method="#MissingMethodName#" argumentcollection="#MissingMethodArguments#" returnvariable="theValue">
-	<cfelse>
-		<cfinvoke component="#bean#" method="#MissingMethodName#" returnvariable="theValue">
-	</cfif>
+	<cfif structKeyExists(bean,arguments.MissingMethodName)>
+		<cfif not structIsEmpty(MissingMethodArguments)>
+			<cfinvoke component="#bean#" method="#MissingMethodName#" argumentcollection="#MissingMethodArguments#" returnvariable="theValue">
+		<cfelse>
+			<cfinvoke component="#bean#" method="#MissingMethodName#" returnvariable="theValue">
+		</cfif>
 		
-	<cfif isDefined("theValue")>
-		<cfreturn theValue>
+		<cfif isDefined("theValue")>
+			<cfreturn theValue>
+		<cfelse>
+			<cfreturn "">
+		</cfif>
+		
 	<cfelse>
-		<cfreturn "">
+		<cfthrow message="The method '#arguments.MissingMethodName#' is not defined">
 	</cfif>
 
 <cfelse>

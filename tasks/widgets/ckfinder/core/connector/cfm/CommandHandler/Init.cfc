@@ -3,7 +3,7 @@
  * CKFinder
  * ========
  * http://ckfinder.com
- * Copyright (C) 2007-2011, CKSource - Frederico Knabben. All rights reserved.
+ * Copyright (C) 2007-2010, CKSource - Frederico Knabben. All rights reserved.
  *
  * The software, this file and its contents are subject to the CKFinder
  * License. Please read the license.txt file before using, installing, copying,
@@ -27,7 +27,6 @@
 	<cfset var c = "" />
 	<cfset var nodeResourcetype = "" />
 	<cfset var thumbsUrl = "" />
-	<cfset var maxSize = "0" />
 
 	<cfset nodeConnectorInfo.xmlAttributes["enabled"] = REQUEST.CheckAuthentication() >
 	<cfset nodeConnectorInfo.xmlAttributes["thumbsEnabled"] = THIS.config.thumbnails.enabled >
@@ -44,11 +43,9 @@
 	<cfscript>
 		if (structkeyexists(THIS.config,"licenseKey") and issimplevalue(THIS.config.licenseKey)) {
 			lc = THIS.config.licenseKey;
-			c = (find(left(lc,1), REQUEST.constants.CKFINDER_CHARS) - 1) MOD 5;
-			if ((c eq 1) or (c eq 4)) {
+			if (((find(left(lc,1), REQUEST.constants.CKFINDER_CHARS) - 1) MOD 5) eq 1) {
 				ln = THIS.config.licenseName;
 			}
-			c = "";
 		}
 		if (Len(lc) gte 13) {
 			c = Mid(lc, 12, 1) & Mid(lc, 1, 1) & Mid(lc, 9, 1) & Mid(lc, 13, 1) & Mid(lc, 27, 1) & Mid(lc, 3, 1) & Mid(lc, 4, 1) & Mid(lc, 26, 1) & Mid(lc, 2, 1);
@@ -58,12 +55,6 @@
 		nodeConnectorInfo.xmlAttributes["c"] = c;
 		nodeConnectorInfo.xmlAttributes["imgWidth"] = THIS.config.images.maxWidth;
 		nodeConnectorInfo.xmlAttributes["imgHeight"] = THIS.config.images.maxHeight;
-		if (THIS.config.checkSizeAfterScaling) {
-			nodeConnectorInfo.xmlAttributes["uploadCheckImages"] = "false";
-		}
-		else {
-			nodeConnectorInfo.xmlAttributes["uploadCheckImages"] = "true";
-		}
 		ArrayAppend(THIS.xmlObject["Connector"].xmlChildren, nodeConnectorInfo);
 		nodeResourceTypes = XMLElemNew(THIS.xmlObject, "ResourceTypes");
 		nodePluginsInfo = XMLElemNew(THIS.xmlObject, "PluginsInfo");
@@ -71,11 +62,6 @@
 
 	<cfloop from="1" to="#arrayLen(THIS.config.resourceType)#" step="1" index="i">
 		<cfif not ListLen(THIS.config.defaultResourceTypes) or ListContains(THIS.config.defaultResourceTypes,THIS.config.resourceType[i].name)>
-			<cfif structkeyexists(THIS.config.resourceType[i], "maxSize")>
-				<cfset maxSize = APPLICATION.CreateCFC("Utils.Misc").returnBytes(THIS.config.resourceType[i].maxSize) />
-			<cfelse>
-				<cfset maxSize = 0 />
-			</cfif>
 			<cfscript>
 				if (not isDefined("URL.type") or URL.type eq THIS.config.resourceType[i].name) {
 				aclMask = acl.getComputedMask(THIS.config.resourceType[i].name, "/");
@@ -88,7 +74,6 @@
 				nodeResourceType.xmlAttributes["deniedExtensions"] = THIS.config.resourceType[i].deniedExtensions;
 				nodeResourceType.xmlAttributes["hash"] = Mid(Hash(THIS.currentFolder.getServerPath(THIS.config.resourceType[i])), 1, 16);
 				nodeResourceType.xmlAttributes["acl"] = aclMask;
-				nodeResourceType.xmlAttributes["maxSize"] = maxSize;
 				ArrayAppend(nodeResourceTypes.xmlChildren, nodeResourceType);
 				}
 			</cfscript>

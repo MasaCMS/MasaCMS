@@ -6,43 +6,39 @@ the Free Software Foundation, Version 2 of the License.
 
 Mura CMS is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. �See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-along with Mura CMS. If not, see <http://www.gnu.org/licenses/>.
+along with Mura CMS. �If not, see <http://www.gnu.org/licenses/>.
 
-Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on 
-Mura CMS. Thus, the terms and conditions of the GNU General Public License version 2 ("GPL") cover the entire combined work.
+Linking Mura CMS statically or dynamically with other modules constitutes
+the preparation of a derivative work based on Mura CMS. Thus, the terms and 	
+conditions of the GNU General Public License version 2 (�GPL�) cover the entire combined work.
 
-However, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with programs
-or libraries that are released under the GNU Lesser General Public License version 2.1.
+However, as a special exception, the copyright holders of Mura CMS grant you permission
+to combine Mura CMS with programs or libraries that are released under the GNU Lesser General Public License version 2.1.
 
-In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with 
-independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without 
-Mura CMS under the license of your choice, provided that you follow these specific guidelines: 
+In addition, as a special exception, �the copyright holders of Mura CMS grant you permission
+to combine Mura CMS �with independent software modules that communicate with Mura CMS solely
+through modules packaged as Mura CMS plugins and deployed through the Mura CMS plugin installation API,
+provided that these modules (a) may only modify the �/trunk/www/plugins/ directory through the Mura CMS
+plugin installation API, (b) must not alter any default objects in the Mura CMS database
+and (c) must not alter any files in the following directories except in cases where the code contains
+a separately distributed license.
 
-Your custom code 
+/trunk/www/admin/
+/trunk/www/tasks/
+/trunk/www/config/
+/trunk/www/requirements/mura/
 
-• Must not alter any default objects in the Mura CMS database and
-• May not alter the default display of the Mura CMS logo within Mura CMS and
-• Must not alter any files in the following directories.
+You may copy and distribute such a combined work under the terms of GPL for Mura CMS, provided that you include
+the source code of that other code when and as the GNU GPL requires distribution of source code.
 
- /admin/
- /tasks/
- /config/
- /requirements/mura/
- /Application.cfc
- /index.cfm
- /MuraProxy.cfc
-
-You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work 
-under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL 
-requires distribution of source code.
-
-For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your 
-modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
-version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
+For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception
+for your modified version; it is your choice whether to do so, or to make such modified version available under
+the GNU General Public License version 2 �without this exception. �You may, if you choose, apply this exception
+to your own modified versions of Mura CMS.
 --->
 <cfcomponent extends="mura.cfobject" output="false">
 
@@ -202,7 +198,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfset pluginManager.announceEvent("onBeforeFileRender",pluginEvent)>
 				<cfset delim=variables.configBean.getFileDelim() />
 				<cfset theFileLocation="#variables.configBean.getFileDir()##delim##rsFileData.siteid##delim#cache#delim#file#delim##arguments.fileID#.#rsFileData.fileExt#" />
-				<cfset streamFile(theFileLocation,rsfileData.filename,"#rsfileData.contentType#/#rsfileData.contentSubType#",arguments.method,rsfileData.created)>
+				<cfset streamFile(theFileLocation,rsfileData.filename,"#rsfileData.contentType#/#rsfileData.contentSubType#",arguments.method)>
 				<cfset pluginManager.announceEvent("onAfterFileRender",pluginEvent)>
 			</cfcase>
 			<cfcase value="S3">	
@@ -256,7 +252,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</cfif>
 				<cfset delim=variables.configBean.getFileDelim() />
 				<cfset theFileLocation="#variables.configBean.getFileDir()##delim##rsFile.siteid##delim#cache#delim#file#delim##arguments.fileID#_small.#rsFile.fileExt#" />
-				<cfset streamFile(theFileLocation,rsFile.filename,"#rsFile.contentType#/#rsFile.contentSubType#",arguments.method,rsFile.created)>
+				<cfset streamFile(theFileLocation,rsFile.filename,"#rsFile.contentType#/#rsFile.contentSubType#",arguments.method)>
 			</cfcase>
 			<cfcase value="S3">
 				<cfset renderS3(fileid=arguments.fileid,method=arguments.method,size="_small") />
@@ -300,7 +296,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</cfif>
 				<cfset delim=variables.configBean.getFileDelim() />
 				<cfset theFileLocation="#variables.configBean.getFileDir()##delim##rsFile.siteid##delim#cache#delim#file#delim##arguments.fileID#_medium.#rsFile.fileExt#" />
-				<cfset streamFile(theFileLocation,rsFile.filename,"#rsFile.contentType#/#rsFile.contentSubType#",arguments.method,rsFile.created)>
+				<cfset streamFile(theFileLocation,rsFile.filename,"#rsFile.contentType#/#rsFile.contentSubType#",arguments.method)>
 			</cfcase>
 			<cfcase value="S3">
 				<cfset renderS3(fileid=arguments.fileid,method=arguments.method,size="_medium") />
@@ -402,7 +398,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset local.results=structNew()>
 	
 	<cfif not find("://",local.filePath) or  find("file://",local.filePath)>
-		<cfset local.isLocalFile=true>
 		<cfset local.filePath=replaceNoCase(local.filePath,"file:///","")>
 		<cfset local.filePath=replaceNoCase(local.filePath,"file://","")>
 		
@@ -417,9 +412,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset local.results.contentSubType=listLast(local.connection.getContentType() ,"/")>
 		<!---<cfset local.results.charSet=local.connection.getContentEncoding()>--->
 		<cfset local.results.fileSize=local.connection.getContentLength()>
-		<!---<cffile action="readBinary" file="#local.filePath#" variable="local.fileContent">--->
+		<cffile action="readBinary" file="#local.filePath#" variable="local.fileContent">
 	<cfelse>
-		<cfset local.isLocalFile=false>
 		<cfif len(variables.configBean.getProxyServer())>
 			<cfhttp url="#local.filePath#" result="local.remoteGet" getasbinary="yes" 
 			proxyUser="#variables.configBean.getProxyUser()#" proxyPassword="#variables.configBean.getProxyPassword()#"
@@ -435,7 +429,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset local.results.contentType=listFirst(local.remoteGet.mimeType ,"/")>
 		<cfset local.results.contentSubType=listLast(local.remoteGet.mimeType ,"/")>
 		<cfset local.results.fileSize=len(local.remoteGet.fileContent)>
-		<!---<cfset local.fileContent=local.remoteGet.fileContent>--->
+		<cfset local.fileContent=local.remoteGet.fileContent>
 			
 	</cfif>
 
@@ -455,11 +449,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset local.filecreateattempt=1>
 	<cfloop condition="not local.fileuploaded">
 		<cfif not fileExists("#local.results.serverDirectory#/#local.results.serverFile#")>
-			<cfif local.isLocalFile>
-				<cffile action="copy" destination="#local.results.serverDirectory#/#local.results.serverFile#" source="#local.filePath#" >
-			<cfelse>
-				<cffile action="write" file="#local.results.serverDirectory#/#local.results.serverFile#" output="#local.remoteGet.fileContent#" >
-			</cfif>
+			<cffile action="write" file="#local.results.serverDirectory#/#local.results.serverFile#" output="#local.fileContent#" >
 			<cfset local.fileuploaded=true>
 		<cfelse>
 			<cfset local.results.serverFile=local.results.serverFileName & local.filecreateattempt & "." & local.results.serverFileExt>
@@ -493,21 +483,20 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var rsCheck="">
 	<cfset var filePath="#application.configBean.getFileDir()#/#arguments.siteID#/cache/file/">
 
-	<cfquery name="rsDB" datasource="#variables.configBean.getReadOnlyDatasource()#" password="#variables.configBean.getReadOnlyDbPassword()#" username="#variables.configBean.getReadOnlyDbUsername()#">
+	<cfquery name="rsDB" datasource="#variables.configBean.getDatasource()#" password="#variables.configBean.getDbPassword()#" username="#variables.configBean.getDbUsername()#">
 	select fileID from tfiles where siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#">
 	</cfquery>
 	
 	<cfdirectory action="list" name="rsDIR" directory="#filePath#">
 	
 	<cfloop query="rsDir">
-		<cfif not find('.svn',#rsDir.name#)>
-			<cfquery name="rsCheck" dbType="query">
-			select * from rsDB where fileID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#left(rsDIR.name,35)#">
-			</cfquery>
-			
-			<cfif not rsCheck.recordcount>
-				<cffile action="delete" file="#filepath##rsDir.name#">
-			</cfif>
+	
+		<cfquery name="rsCheck" dbType="query">
+		select * from rsDB where fileID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#left(rsDIR.name,35)#">
+		</cfquery>
+		
+		<cfif not rsCheck.recordcount>
+			<cffile action="delete" file="#filepath##rsDir.name#">
 		</cfif>
 	</cfloop>
 
@@ -536,7 +525,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var rsDir="">
 	<cfset var currentSite=variables.settingsManager.getSite(arguments.siteID)>
 	
-	<cfquery name="rsDB" datasource="#variables.configBean.getReadOnlyDatasource()#" password="#variables.configBean.getReadOnlyDbPassword()#" username="#variables.configBean.getReadOnlyDbUsername()#">
+	<cfquery name="rsDB" datasource="#variables.configBean.getDatasource()#" password="#variables.configBean.getDbPassword()#" username="#variables.configBean.getDbUsername()#">
 	select fileID,fileEXT from tfiles 
 	where siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#">
 	and fileEXT in ('jpg','jpeg','png','gif')
@@ -578,7 +567,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfargument name="filename">
 <cfargument name="mimetype">
 <cfargument name="method" type="string" required="true" default="inline">
-<cfargument name="lastModified" required="true" default="#now()#">
 <cfargument name="deleteFile" type="boolean" required="true" default="false">
 <cfset var local=structNew()>
 
@@ -587,22 +575,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 
 	<cfif application.CFVersion gt 7>
-		<cftry>
-			<cfif structkeyexists(cgi, "http_if_modified_since")>
-				<cfif parsedatetime(cgi.http_if_modified_since) gt arguments.lastModified>
-				 	 <cfheader statuscode=304 statustext="Not modified"/>
-				 	 <cfabort/>
-			 	</cfif>
-			</cfif>
-			
-			<cfheader name="Last-Modified" value="#gethttptimestring(arguments.lastModified)#"/>
-		<cfcatch></cfcatch>
-		</cftry>
-
-		<cfheader name="Last-Modified" value="#gethttptimestring(arguments.lastModified)#"/>
-		
-    	<cfset local.fileCheck = FileOpen(arguments.filepath, "readBinary")>
-    	<cfheader name="Content-Length" value="#listFirst(local.fileCheck.size,' ')#">		
+    	    <cfset local.fileCheck = FileOpen(arguments.filepath, "readBinary")>
+    		<cfheader name="Content-Length" value="#listFirst(local.fileCheck.size,' ')#">
     </cfif>
 
 	<cfheader name="Content-Disposition" value='#arguments.method#;filename="#arguments.filename#"'>
@@ -616,67 +590,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="Width" default="AUTO" />
 
 	<cfreturn variables.imageProcessor.getCustomImage(argumentCollection=arguments) />
-</cffunction>
-
-<cffunction name="createHREFForImage" output="false" returntype="any">
-<cfargument name="siteID">
-<cfargument name="fileID">
-<cfargument name="fileExt">
-<cfargument name="size" required="true" default="large">
-<cfargument name="direct" required="true" default="#this.directImages#">
-<cfargument name="complete" type="boolean" required="true" default="false">
-<cfargument name="height" default=""/>
-<cfargument name="width" default=""/>
-
-	<cfset var imgSuffix=arguments.size>
-	<cfset var returnURL="">
-	<cfset var begin="">
-
-	<cfif not structKeyExists(arguments,"fileEXT")>
-		<cfset arguments.fileEXT=getBean("fileManager").readMeta(arguments.fileID).fileEXT>
-	</cfif>
-	
-	<cfif not structKeyExists(arguments,"siteID")>
-		<cfset arguments.siteID=session.siteID>
-	</cfif>
-	
-	<cfset begin=iif(arguments.complete,de('http://#application.settingsManager.getSite(arguments.siteID).getDomain()##application.configBean.getServerPort()#'),de('')) />
-	
-	<cfif request.muraExportHtml>
-		<cfset arguments.direct=true>
-	</cfif>
-	
-	<cfif arguments.direct and application.configBean.getFileStore() eq "fileDir">
-		<cfif isNumeric(arguments.height) or isNumeric(arguments.width)>
-			<cfset arguments.size="Custom">
-		<cfelseif arguments.height eq "auto" and  arguments.width eq "auto">
-			<cfset arguments.size="small">
-		</cfif>
-		<cfif arguments.size neq "Custom">
-			<cfif imgSuffix eq "large">
-				<cfset imgSuffix="">
-			<cfelse>
-				<cfset imgSuffix="_" & lcase(imgSuffix)>
-			</cfif>
-			<cfset returnURL=application.configBean.getAssetPath() & "/" & arguments.siteID & "/cache/file/" & arguments.fileID & imgSuffix & "." & arguments.fileEXT>
-		<cfelse>
-			<cfif not len(arguments.width)>
-				<cfset arguments.width="auto">
-			</cfif>
-			<cfif not len(arguments.height)>
-				<cfset arguments.height="auto">
-			</cfif>
-			<cfreturn application.configBean.getAssetPath() & "/" & arguments.siteID & "/cache/file/" & getCustomImage("#application.configBean.getFileDir()##application.configBean.getFileDelim()##arguments.siteid##application.configBean.getFileDelim()#cache#application.configBean.getFileDelim()#file#application.configBean.getFileDelim()##arguments.fileID#.#arguments.fileExt#",arguments.height,arguments.width)>
-		</cfif>
-	<cfelse>
-		<cfif imgSuffix eq "large">
-			<cfset imgSuffix="file">
-		</cfif>
-		<cfset returnURL=application.configBean.getContext() & "/tasks/render/" & imgSuffix & "/?fileID=" & arguments.fileID & "&fileEXT=" &  arguments.fileEXT>
-	</cfif>
-	
-	<cfreturn begin & returnURL>
-	
-</cffunction>
+	</cffunction>
 
 </cfcomponent>

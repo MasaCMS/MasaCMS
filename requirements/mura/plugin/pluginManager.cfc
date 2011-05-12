@@ -6,67 +6,63 @@ the Free Software Foundation, Version 2 of the License.
 
 Mura CMS is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. �See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-along with Mura CMS. If not, see <http://www.gnu.org/licenses/>.
+along with Mura CMS. �If not, see <http://www.gnu.org/licenses/>.
 
-Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on 
-Mura CMS. Thus, the terms and conditions of the GNU General Public License version 2 ("GPL") cover the entire combined work.
+Linking Mura CMS statically or dynamically with other modules constitutes
+the preparation of a derivative work based on Mura CMS. Thus, the terms and 	
+conditions of the GNU General Public License version 2 (�GPL�) cover the entire combined work.
 
-However, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with programs
-or libraries that are released under the GNU Lesser General Public License version 2.1.
+However, as a special exception, the copyright holders of Mura CMS grant you permission
+to combine Mura CMS with programs or libraries that are released under the GNU Lesser General Public License version 2.1.
 
-In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with 
-independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without 
-Mura CMS under the license of your choice, provided that you follow these specific guidelines: 
+In addition, as a special exception, �the copyright holders of Mura CMS grant you permission
+to combine Mura CMS �with independent software modules that communicate with Mura CMS solely
+through modules packaged as Mura CMS plugins and deployed through the Mura CMS plugin installation API,
+provided that these modules (a) may only modify the �/trunk/www/plugins/ directory through the Mura CMS
+plugin installation API, (b) must not alter any default objects in the Mura CMS database
+and (c) must not alter any files in the following directories except in cases where the code contains
+a separately distributed license.
 
-Your custom code 
+/trunk/www/admin/
+/trunk/www/tasks/
+/trunk/www/config/
+/trunk/www/requirements/mura/
 
-• Must not alter any default objects in the Mura CMS database and
-• May not alter the default display of the Mura CMS logo within Mura CMS and
-• Must not alter any files in the following directories.
+You may copy and distribute such a combined work under the terms of GPL for Mura CMS, provided that you include
+the source code of that other code when and as the GNU GPL requires distribution of source code.
 
- /admin/
- /tasks/
- /config/
- /requirements/mura/
- /Application.cfc
- /index.cfm
- /MuraProxy.cfc
-
-You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work 
-under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL 
-requires distribution of source code.
-
-For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your 
-modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
-version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
+For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception
+for your modified version; it is your choice whether to do so, or to make such modified version available under
+the GNU General Public License version 2 �without this exception. �You may, if you choose, apply this exception
+to your own modified versions of Mura CMS.
 --->
 <cfcomponent extends="mura.cfobject" output="false">
 
 <cfset variables.configBean="">
 <cfset variables.settingsManager="">
-<cfset variables.standardEventsHandlers="">
+<cfset variables.genericManager="">
+<cfset variables.eventManagers=structNew()>
 <cfset variables.cacheFactories=structNew()>
 <cfset variables.siteListeners=structNew()>
 <cfset variables.globalListeners=structNew()>
 <cfset variables.pluginConfigs=structNew()>
 <cfset variables.eventHandlers=arrayNew(1)>
-<cfset variables.zipTool=createObject("component","mura.Zip")>
 
 <cffunction name="init" returntype="any" access="public" output="false">
 	<cfargument name="configBean">
 	<cfargument name="settingsManager">
 	<cfargument name="utility">
-	<cfargument name="standardEventsHandler">
+	<cfargument name="genericManager">
 	<cfargument name="fileWriter"/>
 	
 	<cfset setConfigBean(arguments.configBean)>
 	<cfset setSettingsManager(arguments.settingsManager)>
 	<cfset setUtility(arguments.utility)>
-	<cfset setstandardEventsHandler(arguments.standardEventsHandler)>
+	<cfset setGenericManager(arguments.genericManager)>
 	<cfset variables.fileWriter=arguments.fileWriter>
 	
 <cfreturn this />
@@ -74,14 +70,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="setConfigBean" returntype="void" access="public" output="false">
 <cfargument name="configBean">
-	
-	<cfset variables.configBean=arguments.configBean />
-	
-	<cfif isdefined("url.safemode") and isDefined("session.mura.memberships") and listFindNoCase(session.mura.memberships,"S2")>
-		<cfset loadPlugins(safeMode=true)>
-	<cfelse>	
-		<cfset loadPlugins(safeMode=false)>
-	</cfif>
+<cfset variables.configBean=arguments.configBean />
+
+<cfset loadPlugins()>
+
 </cffunction>
 
 <cffunction name="setSettingsManager" returntype="void" access="public" output="false">
@@ -89,9 +81,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset variables.settingsManager=arguments.settingsManager />
 </cffunction>
 
-<cffunction name="setstandardEventsHandler" returntype="void" access="public" output="false">
-<cfargument name="standardEventsHandler">
-<cfset variables.standardEventsHandler=arguments.standardEventsHandler />
+<cffunction name="setGenericManager" returntype="void" access="public" output="false">
+<cfargument name="genericManager">
+<cfset variables.genericManager=arguments.genericManager />
 </cffunction>
 
 <cffunction name="setUtility" returntype="void" access="public" output="false">
@@ -100,29 +92,19 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="loadPlugins" returntype="void" access="public" output="false">
-<cfargument name="safeMode" default="false">
 <cfset var rsScripts1="">
 <cfset var rsScripts2="">
 
 <cfquery name="variables.rsPlugins" datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 select * from tplugins
-<cfif arguments.safeMode>
-	where 0=1
-</cfif>
 </cfquery>
 
 <cfquery name="variables.rsPluginSiteAsignments" datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 select moduleID, siteid from tcontent where type='Plugin'
-<cfif arguments.safeMode>
-	and 0=1
-</cfif>
 </cfquery>
 
 <cfquery name="variables.rsSettings" datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 select * from tpluginsettings
-<cfif arguments.safeMode>
-	where 0=1
-</cfif>
 </cfquery>
 
 <cfquery name="rsScripts1" datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
@@ -132,9 +114,6 @@ inner join tplugins on (tpluginscripts.moduleID=tplugins.moduleID)
 inner join tcontent on (tplugins.moduleID=tcontent.moduleID)
 where tpluginscripts.runat not in ('onGlobalLogin','onGlobalRequestStart','onApplicationLoad','onGlobalError','onGlobalSessionStart','onGlobalSessionEnd')
 and tplugins.deployed=1
-<cfif arguments.safeMode>
-	and 0=1
-</cfif>
 </cfquery>
 
 <cfquery name="rsScripts2" datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
@@ -142,9 +121,6 @@ select tplugins.name, tplugins.package, tplugins.directory, tpluginscripts.modul
 inner join tplugins on (tpluginscripts.moduleID=tplugins.moduleID)
 where tpluginscripts.runat in ('onGlobalLogin','onGlobalRequestStart','onApplicationLoad','onGlobalError','onGlobalSessionStart','onGlobalSessionEnd')
 and tplugins.deployed=1
-<cfif arguments.safeMode>
-	and 0=1
-</cfif>
 </cfquery>
 
 
@@ -160,13 +136,10 @@ select * from rsScripts order by loadPriority
 
 <cfquery name="variables.rsDisplayObjects" datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 select tplugindisplayobjects.objectID, tplugindisplayobjects.moduleID, tplugindisplayobjects.name, 
-tplugindisplayobjects.displayObjectfile, tplugins.pluginID, tplugins.package, tplugins.directory, tcontent.siteID, tplugins.name title, tplugins.package, tplugins.directory,
-tplugindisplayobjects.location, tplugindisplayobjects.displaymethod, tplugindisplayobjects.docache,tplugindisplayobjects.configuratorInit, configuratorJS
+tplugindisplayobjects.displayObjectfile, tplugins.pluginID, tplugins.package, tplugins.directory, tcontent.siteID, tplugins.name title,
+tplugindisplayobjects.location, tplugindisplayobjects.displaymethod, tplugindisplayobjects.docache
 from tplugindisplayobjects inner join tplugins on (tplugindisplayobjects.moduleID=tplugins.moduleID)
 inner join tcontent on (tplugins.moduleID=tcontent.moduleID)
-<cfif arguments.safeMode>
-	where 0=1
-</cfif>
 </cfquery>
 
 <cfset purgeEventManagers()/>
@@ -190,14 +163,8 @@ select * from tplugins order by #arguments.orderby#
 <cfreturn rs/>
 </cffunction>
 
-<cffunction name="deploy" returntype="any" access="public" output="false" hint="This method is primarily used internally by Mura. See deployPlugin." >
+<cffunction name="deploy" returntype="any" access="public" output="false">
 <cfargument name="moduleID" required="true" default="">
-<cfargument name="id" required="true" default="" hint="Either ModuleID, PluginID or Package. Can be used instead of moduleID argument.">
-<cfargument name="useDefaultSettings" required="true" default="false" hint="Deploy default config.xml settings values, not applicable for bundles">
-<cfargument name="siteID" default="" hint="List of siteIDs to assign the plugin. Only applicable when useDefaultSettings is set to true.">
-<cfargument name="pluginFile" required="true" default="">
-<cfargument name="pluginDir" required="true" default="">
-<cfargument name="autoDeploy" required="true" default="true">
 
 <cfset var delim=variables.configBean.getFileDelim() />
 <cfset var location="">
@@ -212,41 +179,27 @@ select * from tplugins order by #arguments.orderby#
 <cfset var script="" />
 <cfset var eventHandler=""/>
 <cfset var isNew=false />
+<cfset var zipTool=createObject("component","mura.Zip")>
 <cfset var errors=structNew()>
 <cfset var rsZipFiles="">
 <cfset var zipTrim="">
-<cfset var deployArgs=structNew()>
-<cfset var settingsLen=0>
-<cfset var settingsBean="">
-<cfset var serverFile="">
-<cfset var cffileData=structNew()>
-<cfset var isPostedFile=false>
-<cfset var settingBean="">
-<cflock name="addPlugin#application.instanceID#" timeout="200">
-	<!--- <cftry> --->
-	
-	<cfif not len(modID) and len(arguments.id)>
-		<cfset modID=getPlugin(id,'',false).moduleID>
-	</cfif>
-	
-	<cfif not len(arguments.pluginFile) and isDefined("form.NewPlugin") and getBean("fileManager").isPostedFile(form.NewPlugin)>
-		<cffile action="upload" result="cffileData" filefield="NewPlugin" nameconflict="makeunique" destination="#variables.configBean.getTempDir()#" >	
-		<cfset serverFile="#variables.configBean.getTempDir()##delim##cffileData.serverFile#">
-	<cfelseif len(arguments.pluginFile)>
-		<cfset serverFile=arguments.pluginFile>
-	</cfif>
 
+<cflock name="addPlugin" timeout="200">
+	<!--- <cftry> --->
+
+	<cffile action="upload" filefield="NewPlugin" nameconflict="makeunique" destination="#variables.configBean.getTempDir()#">	
+	
 	<!--- Check to see if this is an Bundled plugin --->
-	<cfif len(serverFile) and variables.settingsManager.isBundle(serverfile)>
+	<cfif variables.settingsManager.isBundle("#variables.configBean.getTempDir()##delim##cffile.serverfile#")>
 		
 		<cfif len(modID)>
-			<cfset errors=variables.settingsManager.restoreBundle(BundleFile=serverfile,siteID=arguments.siteID,keyMode="publish",contentMode="none", renderingMode="none",pluginMode="all", moduleID=modID)>
+			<cfset errors=variables.settingsManager.restoreBundle(BundleFile="#variables.configBean.getTempDir()##delim##cffile.serverfile#",siteID="",keyMode="publish",contentMode="none", renderingMode="none",pluginMode="all", moduleID=modID)>
 			<cfif not structIsEmpty(errors)>
 				<cfset getCurrentUser().setValue("errors",errors)>
 				<cfreturn "">
 			</cfif>	
 		<cfelse>
-			<cfset errors=variables.settingsManager.restoreBundle(BundleFile=serverfile,siteID=arguments.siteID,keyMode="copy", contentMode="none", renderingMode="none",pluginMode="all", moduleID="")>
+			<cfset errors=variables.settingsManager.restoreBundle(BundleFile="#variables.configBean.getTempDir()##delim##cffile.serverfile#",siteID="",keyMode="copy", contentMode="none", renderingMode="none",pluginMode="all", moduleID="")>
 			<cfif not structIsEmpty(errors)>
 				<cfset getCurrentUser().setValue("errors",errors)>
 				<cfreturn "">
@@ -281,7 +234,7 @@ select * from tplugins order by #arguments.orderby#
 			null,
 			0,
 			null,
-			<cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#">,
+			#createODBCDateTime(now())#,
 			5
 			)
 			</cfquery>
@@ -295,90 +248,55 @@ select * from tplugins order by #arguments.orderby#
 		
 		<!--- Set the directory to the newly installed pluginID--->
 		<cfif isNew>
-			<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-			update tplugins set
-			directory=<cfqueryparam cfsqltype="cf_sql_varchar" value="#rsPlugin.pluginID#">
-			where moduleID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#rsPlugin.moduleID#">			
-			</cfquery>
-			<cfset rsPlugin=getPlugin(modID,'',false) />
+		<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+		update tplugins set
+		directory=<cfqueryparam cfsqltype="cf_sql_varchar" value="#rsPlugin.pluginID#">
+		where moduleID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#rsPlugin.moduleID#">			
+		</cfquery>
+		<cfset rsPlugin=getPlugin(modID,'',false) />
 		</cfif>
 		
 		<cfset location=getLocation(rsPlugin.directory) />
 		
+		<!---
+		<cfif directoryExists(location)>
+			<cfdirectory action="delete" directory="#location#" recurse="true">
+		</cfif>
+		--->
+		
 		<cfif not directoryExists(location)>
-			<cfset variables.fileWriter.createDir(directory=location)>
+		<cfset variables.fileWriter.createDir(directory="#location#")>
 		</cfif>
 		
-		<cfif len(serverFile)>
-			<cfset zipTrim=getZipTrim(serverFile)>
-	
-			<cfif len(zipTrim)>
-				<cfset variables.zipTool.extract(zipFilePath=serverfile,extractPath=location, overwriteFiles=true, extractDirs=zipTrim, extractDirsToTop=true)>
+		<cfset rsZipFiles=zipTool.list(zipFilePath="#variables.configBean.getTempDir()##delim##cffile.serverfile#")>
+		
+		<cfquery name="rsZipFiles" dbtype="query">
+		select * from rsZipFiles
+		where entry like '%#delim#plugin#delim#%'
+		or entry like 'plugin#delim#%'
+		</cfquery>
+		
+		
+		<cfloop list="#rsZipFiles.entry#" delimiters="#delim#" index="i">
+			<cfif i eq "plugin">
+				<cfbreak>
 			<cfelse>
-				<cfset variables.zipTool.extract(zipFilePath=serverfile,extractPath=location, overwriteFiles=true)>
-			</cfif>
-			
-			<cfif not structIsEmpty(cffileData)>
-				<cffile action="delete" file="#serverfile#">
-			</cfif>
-		<cfelseif getLocation(arguments.pluginDir) neq location>
-			<cfset variables.fileWriter.copyDir(getLocation(arguments.pluginDir),location)>
+				<cfset zipTrim=listAppend(zipTrim,i,delim)>
+			</cfif>	
+		</cfloop>
+
+		<cfif len(zipTrim)>
+			<cfset zipTool.extract(zipFilePath="#variables.configBean.getTempDir()##delim##cffile.serverfile#",extractPath="#location#", overwriteFiles=true, extractDirs=zipTrim, extractDirsToTop=true)>
+		<cfelse>
+			<cfset zipTool.extract(zipFilePath="#variables.configBean.getTempDir()##delim##cffile.serverfile#",extractPath="#location#", overwriteFiles=true)>
 		</cfif>
 		
-		<cfset savePluginXML(modID=modID) />
+		<cffile action="delete" file="#variables.configBean.getTempDir()##delim##cffile.serverfile#">
+		
+		<cfset savePluginXML(modID) />
 		<cfset loadPlugins() />
-		
-		<cfif arguments.useDefaultSettings>
-
-			<cfset pluginXML=getPluginXML(modID)>
-			<cfset rsPlugin=getPlugin(modID)>
-			
-			<cfset deployArgs.location="global">
-			<cfset deployArgs.overwrite="false">
-			
-			<cfif structKeyExists(pluginXML.plugin,"package") and len(pluginXML.plugin.package.xmlText)>
-				<cfset deployArgs.package=pluginXML.plugin.package.xmlText>
-			<cfelse>
-				<cfset deployArgs.package="">
-			</cfif>
-			
-			<cfif structKeyExists(pluginXML.plugin,"autoDeploy") and isBoolean(pluginXML.plugin.autoDeploy.xmlText)>
-				<cfset deployArgs.autoDeploy=pluginXML.plugin.autoDeploy.xmlText>
-			<cfelse>
-				<cfset deployArgs.autoDeploy=arguments.autoDeploy>
-			</cfif>
-			
-			<cfif structKeyExists(pluginXML.plugin,"siteid") and len(pluginXML.plugin.siteid.xmlText)>
-				<cfset deployArgs.siteAssignID=pluginXML.plugin.siteID.xmlText>
-			<cfelse>
-				<cfset deployArgs.siteAssignID=arguments.siteID>
-			</cfif>
-			
-			<cfif structKeyExists(pluginXML.plugin.settings,"setting")>
-				<cfset settingsLen=arraylen(pluginXML.plugin.settings.setting)/>
-			<cfelse>
-				<cfset settingsLen=0>
-			</cfif>
-			
-			<cfset deployArgs.pluginAlias=rsPlugin.name>
-			<cfset deployArgs.loadPriority= rsPlugin.loadPriority>
-			<cfset deployArgs.moduleID=modID>
-			
-			<cfloop from="1" to="#settingsLen#" index="i">
-				<cfset settingBean=application.pluginManager.getAttributeBean(pluginXML.plugin.settings.setting[i],modID)/>		
-				<cfif not len(settingBean.getSettingValue())
-						and not rsPlugin.deployed and structKeyExists(pluginXML.plugin.settings.setting[i],'defaultValue')>
-					<cfset settingBean.setSettingValue(pluginXML.plugin.settings.setting[i].defaultValue.xmlText)>
-				</cfif>
-				<cfset deployArgs["#settingBean.getname()#"]=application.contentRenderer.setDynamicContent(settingBean.getSettingValue())>
-			</cfloop>
-			
-			<cfset updateSettings(deployArgs)>
-
-		</cfif>
-		
-		<cfreturn modID/>	
-		
+	
+		<cfreturn modID/>
 	</cfif>
 	
 	</cflock>
@@ -408,7 +326,7 @@ select * from tplugins order by #arguments.orderby#
 	providerURL=<cfqueryparam cfsqltype="cf_sql_varchar" value="#pluginXML.plugin.providerURL.xmlText#">,
 	version=<cfqueryparam cfsqltype="cf_sql_varchar" value="#pluginXML.plugin.version.xmlText#">,
 	category=<cfqueryparam cfsqltype="cf_sql_varchar" value="#pluginXML.plugin.category.xmlText#">,
-	created=<cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#">
+	created=#createODBCDateTime(now())#
 	
 	<cfif not rsPlugin.deployed>,
 		name=<cfqueryparam cfsqltype="cf_sql_varchar" value="#pluginXML.plugin.name.xmlText#">,
@@ -516,16 +434,6 @@ select * from tplugins order by #arguments.orderby#
 				<cfelse>
 					<cfset displayObject.setDoCache("false") />
 				</cfif>
-				<cfif structKeyExists(pluginXML.plugin.displayobjects.displayobject[i].xmlAttributes,"configuratorInit")>
-					<cfset displayObject.setConfiguratorInit(pluginXML.plugin.displayobjects.displayobject[i].xmlAttributes.configuratorInit) />
-				<cfelse>
-					<cfset displayObject.setConfiguratorInit("") />
-				</cfif>
-				<cfif structKeyExists(pluginXML.plugin.displayobjects.displayobject[i].xmlAttributes,"configuratorJS")>
-					<cfset displayObject.setconfiguratorJS(pluginXML.plugin.displayobjects.displayobject[i].xmlAttributes.configuratorJS) />
-				<cfelse>
-					<cfset displayObject.setconfiguratorJS("") />
-				</cfif>
 				<cfset displayObject.save() />
 			</cfloop>
 			
@@ -536,6 +444,7 @@ select * from tplugins order by #arguments.orderby#
 
 <cffunction name="createAppCFCIncludes" output="false">
 	<cfset var mapPrefix="" />
+	<cfset var rsRequitements="">
 	<cfset var done=structNew()>
 	<cfset var mHash="">
 	<cfset var m="">
@@ -545,9 +454,7 @@ select * from tplugins order by #arguments.orderby#
 	<cfset var currentDir="">
 	<cfset var p="">
 	<cfset var currentPath="">
-	<cfset var pluginmapping="">
 	
-	<cflock name="createAppCFCIncludes#application.instanceID#" type="exclusive" timeout="200">
 	<cfif StructKeyExists(SERVER,"bluedragon") and not findNoCase("Windows",server.os.name)>
 		<cfset mapPrefix="$" />
 	</cfif>
@@ -595,8 +502,7 @@ select * from tplugins order by #arguments.orderby#
 					</cfif>
 					<cfset currentPath=currentDir & "/" & p>
 					<cfif len(p) and directoryExists(currentPath)>
-						<cfset pluginmapping=currentConfig.plugin.mappings.mapping[m].xmlAttributes.name>
-						<cfset variables.fileWriter.appendFile(file="#baseDir#/mappings.cfm", output='<cfif not structKeyExists(this.mappings,"/#pluginmapping#")><cfset this.mappings["/#pluginmapping#"] = mapPrefix & BaseDir & "/plugins/#rsRequirements.name#/#p#"></cfif>')>
+						<cfset variables.fileWriter.appendFile(file="#baseDir#/mappings.cfm", output='<cfset this.mappings["/#currentConfig.plugin.mappings.mapping[m].xmlAttributes.name#"] = mapPrefix & BaseDir & "/plugins/#rsRequirements.name#/#p#">')>
 					</cfif>
 				</cfif>
 				</cfloop>
@@ -636,61 +542,6 @@ select * from tplugins order by #arguments.orderby#
 			</cftry>
 		</cfif>
 	</cfloop>
-	</cflock>
-</cffunction>
-
-
-<cffunction name="discover" output="false">
-	<cfset var mapPrefix="" />
-	<cfset var baseDir=variables.configBean.getPluginDir()>
-	<cfset var rsRequirements="">
-	<cfset var configXML="">
-	<cfset var item="">
-	<cfset var rs="">
-	<cfset var tempDir="">
-
-	<cflock name="pluginDiscovery#application.instanceID#" type="exclusive" timeout="200">
-		<cfdirectory action="list" directory="#baseDir#" name="rsRequirements">
-		<cfloop query="rsRequirements">
-			
-			<cfif rsRequirements.type eq "dir" and rsRequirements.name neq '.svn'>	
-	
-				<cfif not hasPlugin(listLast(rsRequirements.name,"_"),"",false)>
-					<cfset configXML="">
-					<cftry>
-						<cfset configXML=getPluginXML(moduleID="",pluginDir=rsRequirements.name)>
-						<cfcatch></cfcatch>
-					</cftry>
-					
-					<cfif isXml(configXML)>
-						<cfset tempDir="#baseDir#/#createUUID()#">
-						<cfset variables.fileWriter.renameDir(directory="#baseDir#/#rsRequirements.name#",newDirectory=tempDir)>
-						<cfset deployDirectory(directory=tempDir,autoDeploy=false)>
-						<cfset variables.fileWriter.deleteDir(directory=tempDir)>
-					</cfif>
-				</cfif>
-			<cfelseif listLast(rsRequirements.name,".") eq 'zip'>
-				<cfset item="#baseDir#/#rsRequirements.name#">
-				<cfif variables.settingsManager.isBundle(item)>
-					<cfset deployBundle(siteID="", bundleFile=item)>
-					<cfset fileDelete(item)>
-				<cfelse>
-					<cfset item="#baseDir#/#rsRequirements.name#">
-					<cfset rs=createObject("component","mura.Zip").list(item)>
-					<cfquery name="rs" dbtype="query">
-						select * from rs 
-						where entry like '%plugin#variables.configBean.getFileDelim()#config.xml'
-						or entry like '%plugin#variables.configBean.getFileDelim()#config.xml.cfm'
-					</cfquery>
-					<cfif rs.recordcount>
-						<cfset deployPlugin(siteID="",pluginFile=item,useDefaultSettings=true,autoDeploy=false)>
-						<cfset fileDelete(item)>
-					</cfif>
-				</cfif>	
-			</cfif>
-			
-		</cfloop>
-	</cflock>
 </cffunction>
 
 <cffunction name="hasPlugin" returntype="any" output="false">
@@ -762,20 +613,13 @@ select * from tplugins order by #arguments.orderby#
 
 <cffunction name="getPluginXML" returntype="xml" output="false">
 <cfargument name="moduleID">
-<cfargument name="pluginDir" default="">
 	<cfset var theXML="">
-	<cfset var rsPlugin="">
+	<cfset var rsPlugin=getPlugin(arguments.moduleID,'',false)>
 	<cfset var delim=variables.configBean.getFileDelim() />
-
-	<cfif not len(arguments.pluginDir)>
-		<cfset rsPlugin=getPlugin(arguments.moduleID,'',false)>	
-		<cfset arguments.pluginDir=rsPlugin.directory>
-	</cfif>
-	
-	<cfif fileExists("#getLocation(arguments.pluginDir)#plugin#delim#config.xml")>
-		<cffile action="read" file="#getLocation(arguments.pluginDir)#plugin#delim#config.xml" variable="theXML">
+	<cfif fileExists("#getLocation(rsPlugin.directory)#plugin#delim#config.xml")>
+		<cffile action="read" file="#getLocation(rsPlugin.directory)#plugin#delim#config.xml" variable="theXML">
 	<cfelse>
-		<cfsavecontent variable="theXML"><cfoutput><cfinclude template="/plugins/#arguments.pluginDir#/plugin/config.xml.cfm"></cfoutput></cfsavecontent>
+		<cfsavecontent variable="theXML"><cfoutput><cfinclude template="/plugins/#rsPlugin.directory#/plugin/config.xml.cfm"></cfoutput></cfsavecontent>
 	</cfif>
 	<cfreturn xmlParse(theXML)/>
 </cffunction>
@@ -783,7 +627,7 @@ select * from tplugins order by #arguments.orderby#
 <cffunction name="getAttributeBean" returntype="any" output="false">
 <cfargument name="theXML">
 <cfargument name="moduleID">
-	<cfset var bean=createObject("component","mura.plugin.pluginSettingBean").init()>
+	<cfset var bean=createObject("component","mura.plugin.pluginSettingBean").init(variables.configBean)>
 	<cfset bean.set(arguments.theXML,arguments.moduleID)/>
 	
 	<cfreturn bean/>
@@ -1016,37 +860,36 @@ select * from tplugins order by #arguments.orderby#
 		</cfif>
 	</cfif>
 	
-	<cfif not isDefined("arguments.args.autoDeploy") or arguments.args.autoDeploy>
-		<cfset pluginConfig=getConfig(arguments.args.moduleID,'',false) />
-		
-		<!--- check to see is the plugin.cfc exists --->
-		<cfif fileExists(ExpandPath("/plugins") & "/" & pluginConfig.getDirectory() & "/plugin/plugin.cfc")>	
-			<cfset pluginCFC= createObject("component","plugins.#pluginConfig.getDirectory()#.plugin.plugin") />
-			
-			<!--- only call the methods if they have been defined --->
-			<cfif structKeyExists(pluginCFC,"init")>
-				<cfset pluginCFC.init(pluginConfig)>
-			</cfif>
+
+	<cfset pluginConfig=getConfig(arguments.args.moduleID,'',false) />
 	
-			<cfif pluginConfig.getDeployed()>
-				<cfif structKeyExists(pluginCFC,"update")>
-					<cfset pluginCFC.update() />
-				</cfif>
-			<cfelse>
-				<cfif structKeyExists(pluginCFC,"install")>
-					<cfset pluginCFC.install() />
-				</cfif>
+	<!--- check to see is the plugin.cfc exists --->
+	<cfif fileExists(ExpandPath("/plugins") & "/" & pluginConfig.getDirectory() & "/plugin/plugin.cfc")>	
+		<cfset pluginCFC= createObject("component","plugins.#pluginConfig.getDirectory()#.plugin.plugin") />
+		
+		<!--- only call the methods if they have been defined --->
+		<cfif structKeyExists(pluginCFC,"init")>
+			<cfset pluginCFC.init(pluginConfig)>
+		</cfif>
+
+		<cfif pluginConfig.getDeployed()>
+			<cfif structKeyExists(pluginCFC,"update")>
+				<cfset pluginCFC.update() />
+			</cfif>
+		<cfelse>
+			<cfif structKeyExists(pluginCFC,"install")>
+				<cfset pluginCFC.install() />
 			</cfif>
 		</cfif>
-		
-		<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-		update tplugins 
-		set deployed=1
-		where moduleID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.args.moduleID#">
-		</cfquery>
-		<cfset application.appInitialized=false>
-		<cfset loadPlugins() />
 	</cfif>
+	
+	<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+	update tplugins 
+	set deployed=1
+	where moduleID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.args.moduleID#">
+	</cfquery>
+	<cfset application.appInitialized=false>
+	<cfset loadPlugins() />
 </cffunction>
 
 <cffunction name="deleteSettings" returntype="void" output="false">
@@ -1077,69 +920,14 @@ select * from tplugins order by #arguments.orderby#
 <cffunction name="getSitePlugins" returntype="query" output="false">
 <cfargument name="siteID">
 <cfargument name="orderby" default="name" required="true">
-<cfargument name="applyPermFilter" default="false" required="true">
 	<cfset var rs="">
-	<cfset var moduleList="">
-	
 	<cfquery name="rs" datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	select tplugins.pluginID,tplugins.moduleID, tplugins.package, tplugins.directory, tplugins.name,tplugins.version,
 	tplugins.provider, tplugins.providerURL,tplugins.category,tplugins.created from tplugins inner join tcontent
 	on (tplugins.moduleID=tcontent.moduleID and tcontent.siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#">)
 	order by tplugins.#arguments.orderby#
 	</cfquery>
-	
-	<cfif arguments.applyPermFilter>
-		<cfloop query="rs">
-			<cfif application.permUtility.getModulePerm(rs.moduleID,session.siteid)>
-				<cfset moduleList=listAppend(moduleList,rs.moduleID)>
-			</cfif>	
-		</cfloop>	
-		<cfquery dbtype="query" name="rs">
-			select * from rs where
-			<cfif len(moduleList)>
-			moduleID in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#moduleList#">)
-			<cfelse>
-			0=1
-			</cfif>
-		</cfquery>
-	</cfif>
-	
 	<cfreturn rs>
-</cffunction>
-
-<cffunction name="getSitePluginGroups" returntype="struct" output="false">
-<cfargument name="rsplugins" type="query">
-
-	<cfset var str=StructNew()>
-	<cfset var rs="">
-	<cfset var rssub="">
-
-	<cfset str['Application'] = querynew('null') />
-	<cfset str['Utility'] = querynew('null') />
-
-	<cfquery name="rs" dbtype="query">
-		select distinct category
-		from arguments.rsplugins
-	</cfquery>
-
-	<cfloop query="rs">
-		<cfif not StructKeyExists(str,rs.category)>
-			<cfset str[rs.category] = structNew() />
-		</cfif>
-		<cfquery name="rssub" dbtype="query">
-			select *
-			from arguments.rsplugins
-			where category = '#rs.category#'
-		</cfquery>
-		
-		<cfif rssub.recordcount>
-			<cfset str[rs.category] = rssub />
-		<cfelse>
-			<cfset str[rs.category] = querynew('null') />
-		</cfif>		
-	</cfloop>
-
-	<cfreturn str>
 </cffunction>
 
 <cffunction name="deletePlugin" returntype="void" output="false">
@@ -1193,7 +981,7 @@ select * from tplugins order by #arguments.orderby#
 <cfargument name="rsHandlers" required="true" default="" type="any">
 <cfargument name="moduleID" required="true" default="" type="any">
 	<cfset var siteID="">
-	<cfif variables.utility.checkForInstanceOf(arguments.currentEventObject,"mura.MuraScope")>
+	<cfif getMetaData(arguments.currentEventObject).name eq "mura.MuraScope">
 		<cfset siteID=arguments.currentEventObject.event('siteID')>
 	<cfelse>
 		<cfset siteID=arguments.currentEventObject.getValue('siteID')>
@@ -1207,7 +995,7 @@ select * from tplugins order by #arguments.orderby#
 <cfargument name="rsHandlers" required="true" default="" type="any">
 <cfargument name="moduleID" required="true" default="" type="any">
 	<cfset var siteID="">
-	<cfif variables.utility.checkForInstanceOf(arguments.currentEventObject,"mura.MuraScope")>
+	<cfif getMetaData(arguments.currentEventObject).name eq "mura.MuraScope">
 		<cfset siteID=arguments.currentEventObject.event('siteID')>
 	<cfelse>
 		<cfset siteID=arguments.currentEventObject.getValue('siteID')>
@@ -1233,15 +1021,10 @@ select * from tplugins order by #arguments.orderby#
 	<cfset var eventHandler="">
 	<cfset var listenerArray="">
 	<cfset var isGlobalEvent=left(arguments.runat,8) eq "onGlobal">
-	<cfset var isValidEvent=false>
+	<cfset var isValidEvent=variables.utility.isValidCFVariableName(arguments.runat)>
 	<cfset var siteIDadjusted=adjustSiteID(arguments.siteID)>
 	<cfset var muraScope="">
 	<cfset var currentModuleID="">
-	<cfset var tracePoint=0>
-	
-	<cfset arguments.runat=replace(arguments.runat," ", "","ALL")>
-	
-	<cfset isValidEvent=variables.utility.isValidCFVariableName(arguments.runat)>
 	
 	<cfif not left(arguments.runat,2) eq "on" or left(arguments.runat,7) eq "standard">
 		<cfset arguments.runat="on" & arguments.runat>
@@ -1258,12 +1041,12 @@ select * from tplugins order by #arguments.orderby#
 				<cfif structKeyExists(request,"servletEvent")>
 					<cfset arguments.event=request.servletEvent />
 				<cfelse>
-					<cfset arguments.event=createObject("component","mura.event").init()/>
+					<cfset arguments.event=createObject("component","mura.event")/>
 				</cfif>
 			</cfif>
 		</cfif>
 		
-		<cfif variables.utility.checkForInstanceOf(arguments.event,"mura.MuraScope")>
+		<cfif getMetaData(arguments.event).name eq "mura.MuraScope">
 			<cfset muraScope=arguments.event>
 			<cfset arguments.event=arguments.event.event()>
 		<cfelse>
@@ -1274,13 +1057,11 @@ select * from tplugins order by #arguments.orderby#
 			<cfif isObject(event.getValue("localHandler"))>
 				<cfset localHandler=event.getValue("localHandler")>
 				<cfif structKeyExists(localHandler,runat)>
-					<cfset tracePoint=initTracePoint("#localHandler._objectName#.#arguments.runat#")>
 					<cfinvoke component="#localHandler#" method="#arguments.runat#">
 						<cfinvokeargument name="event" value="#arguments.event#">
 						<cfinvokeargument name="$" value="#muraScope#">
 						<cfinvokeargument name="mura" value="#muraScope#">
 					</cfinvoke>
-					<cfset commitTracePoint(tracePoint)>
 					<cfset request.muraHandledEvents["#arguments.runat#"]=true>	
 				</cfif>
 			</cfif>
@@ -1295,13 +1076,11 @@ select * from tplugins order by #arguments.orderby#
 							<cfif not isObject(eventHandler)>
 								<cfset eventHandler=getEventHandlerFromPath(eventHandler)>
 							</cfif>
-							<cfset tracePoint=initTracePoint("#eventHandler._objectName#.#arguments.runat#")>
 							<cfinvoke component="#eventHandler#" method="#arguments.runat#">
 								<cfinvokeargument name="event" value="#arguments.event#">
 								<cfinvokeargument name="$" value="#muraScope#">
 								<cfinvokeargument name="mura" value="#muraScope#">
 							</cfinvoke>
-							<cfset commitTracePoint(tracePoint)>
 							<cfset request.muraHandledEvents["#arguments.runat#"]=true>	
 						</cfloop>
 					</cfif>
@@ -1316,13 +1095,11 @@ select * from tplugins order by #arguments.orderby#
 							<cfif not isObject(eventHandler)>
 								<cfset eventHandler=getEventHandlerFromPath(eventHandler)>
 							</cfif>
-							<cfset tracePoint=initTracePoint("#eventHandler._objectName#.#arguments.runat#")>
 							<cfinvoke component="#eventHandler#" method="#arguments.runat#">
 								<cfinvokeargument name="event" value="#arguments.event#">
 								<cfinvokeargument name="$" value="#muraScope#">
 								<cfinvokeargument name="mura" value="#muraScope#">
 							</cfinvoke>	
-							<cfset commitTracePoint(tracePoint)>
 							<cfset request.muraHandledEvents["#arguments.runat#"]=true>
 						</cfloop>
 					</cfif>
@@ -1342,13 +1119,11 @@ select * from tplugins order by #arguments.orderby#
 			<cfif listLast(rs.scriptfile,".") neq "cfm">
 				<cfset componentPath="plugins.#rs.directory#.#rs.scriptfile#">
 				<cfset eventHandler=getComponent(componentPath, rs.pluginID, arguments.siteID, rs.docache)>
-				<cfset tracePoint=initTracePoint("#componentPath#.#arguments.runat#")>
 				<cfinvoke component="#eventHandler#" method="#arguments.runat#">
 					<cfinvokeargument name="event" value="#arguments.event#">
 					<cfinvokeargument name="$" value="#muraScope#">
 					<cfinvokeargument name="mura" value="#muraScope#">
-				</cfinvoke>
-				<cfset commitTracePoint(tracePoint)>	
+				</cfinvoke>	
 			<cfelse>
 				<cfset getExecutor().executeScript(event=event,scriptfile="/plugins/#rs.directory#/#rs.scriptfile#",pluginConfig=getConfig(rs.pluginID), $=muraScope, mura=muraScope)>
 			</cfif>
@@ -1398,15 +1173,10 @@ select * from tplugins order by #arguments.orderby#
 	<cfset var eventHandler="">
 	<cfset var listenerArray="">
 	<cfset var isGlobalEvent=left(arguments.runat,8) eq "onGlobal">
-	<cfset var isValidEvent=false>
+	<cfset var isValidEvent=variables.utility.isValidCFVariableName(arguments.runat)>
 	<cfset var siteIDadjusted=adjustSiteID(arguments.siteID)>
 	<cfset var muraScope="">
 	<cfset var currentModuleID="">
-	<cfset var tracePoint=0>
-	
-	<cfset arguments.runat=replace(arguments.runat," ", "","ALL")>
-	
-	<cfset isValidEvent=variables.utility.isValidCFVariableName(arguments.runat)>
 	
 	<cfif not left(arguments.runat,2) eq "on" or left(arguments.runat,7) eq "standard">
 		<cfset arguments.runat="on" & arguments.runat>
@@ -1419,12 +1189,12 @@ select * from tplugins order by #arguments.orderby#
 			<cfif structKeyExists(request,"servletEvent")>
 				<cfset arguments.event=request.servletEvent />
 			<cfelse>
-				<cfset arguments.event=createObject("component","mura.event").init()/>
+				<cfset arguments.event=createObject("component","mura.event")/>
 			</cfif>
 		</cfif>
 	</cfif>
 	
-	<cfif variables.utility.checkForInstanceOf(arguments.event,"mura.MuraScope")>
+	<cfif getMetaData(arguments.event).name eq "mura.MuraScope">
 		<cfset muraScope=arguments.event>
 		<cfset arguments.event=arguments.event.event()>
 	<cfelse>
@@ -1438,7 +1208,6 @@ select * from tplugins order by #arguments.orderby#
 			<cfif isObject(event.getValue("localHandler"))>
 				<cfset localHandler=event.getValue("localHandler")>
 				<cfif structKeyExists(localHandler,runat)>
-					<cfset tracePoint=initTracePoint("#localHandler._objectName#.#arguments.runat#")>
 					<cfsavecontent variable="local.theDisplay1">
 					<cfinvoke component="#localHandler#" method="#arguments.runat#" returnVariable="local.theDisplay2">
 						<cfinvokeargument name="event" value="#arguments.event#">
@@ -1451,7 +1220,6 @@ select * from tplugins order by #arguments.orderby#
 					<cfelse>
 						<cfset str=str & local.theDisplay1>
 					</cfif>
-					<cfset commitTracePoint(tracePoint)>
 					<cfset request.muraHandledEvents["#arguments.runat#"]=true>
 				</cfif>
 			</cfif>
@@ -1466,7 +1234,6 @@ select * from tplugins order by #arguments.orderby#
 							<cfif not isObject(eventHandler)>
 								<cfset eventHandler=getEventHandlerFromPath(eventHandler)>
 							</cfif>
-							<cfset tracePoint=initTracePoint("#eventHandler._objectName#.#arguments.runat#")>
 							<cfsavecontent variable="local.theDisplay1">
 							<cfinvoke component="#eventHandler#"method="#arguments.runat#" returnVariable="local.theDisplay2">
 								<cfinvokeargument name="event" value="#arguments.event#">
@@ -1479,7 +1246,6 @@ select * from tplugins order by #arguments.orderby#
 							<cfelse>
 								<cfset str=str & local.theDisplay1>
 							</cfif>
-							<cfset commitTracePoint(tracePoint)>
 							<cfset request.muraHandledEvents["#arguments.runat#"]=true>
 						</cfloop>
 					</cfif>
@@ -1493,7 +1259,6 @@ select * from tplugins order by #arguments.orderby#
 							<cfif not isObject(eventHandler)>
 								<cfset eventHandler=getEventHandlerFromPath(eventHandler)>
 							</cfif>
-							<cfset tracePoint=initTracePoint("#eventHandler._objectName#.#arguments.runat#")>
 							<cfsavecontent variable="local.theDisplay1">
 							<cfinvoke component="#eventHandler#"method="#arguments.runat#" returnVariable="local.theDisplay2">
 								<cfinvokeargument name="event" value="#arguments.event#">
@@ -1506,7 +1271,6 @@ select * from tplugins order by #arguments.orderby#
 							<cfelse>
 								<cfset str=str & local.theDisplay1>
 							</cfif>
-							<cfset commitTracePoint(tracePoint)>
 							<cfset request.muraHandledEvents["#arguments.runat#"]=true>
 						</cfloop>
 					</cfif>
@@ -1527,13 +1291,12 @@ select * from tplugins order by #arguments.orderby#
 				<cfif listLast(rs.scriptfile,".") neq "cfm">			
 					<cfset componentPath="plugins.#rs.directory#.#rs.scriptfile#">
 					<cfset eventHandler=getComponent(componentPath, rs.pluginID, arguments.siteID, rs.docache)>
-					<cfset tracePoint=initTracePoint("#componentPath#.#arguments.runat#")>	
 					<cfsavecontent variable="local.theDisplay1">
 					<cfinvoke component="#eventHandler#" method="#arguments.runat#" returnVariable="local.theDisplay2">
 						<cfinvokeargument name="event" value="#arguments.event#">
 						<cfinvokeargument name="$" value="#muraScope#">
 						<cfinvokeargument name="mura" value="#muraScope#">
-					</cfinvoke>
+					</cfinvoke>	
 					</cfsavecontent>
 				
 					<cfif isDefined("local.theDisplay2")>
@@ -1543,13 +1306,11 @@ select * from tplugins order by #arguments.orderby#
 					</cfif>
 					
 				<cfelse>
-					<cfset tracePoint=initTracePoint("/plugins/#rs.directory#/#rs.scriptfile#")>
 					<cfsavecontent variable="local.theDisplay1">
 					<cfoutput>#getExecutor().renderScript(event=event,scriptfile="/plugins/#rs.directory#/#rs.scriptfile#",pluginConfig=getConfig(rs.pluginID), $=muraScope, mura=muraScope)#</cfoutput>
 					</cfsavecontent>
 					<cfset str=str & local.theDisplay1>
 				</cfif>
-				<cfset commitTracePoint(tracePoint)>
 				<cfset request.muraHandledEvents["#arguments.runat#"]=true>	
 			</cfloop>
 		</cfif>
@@ -1564,29 +1325,22 @@ select * from tplugins order by #arguments.orderby#
 					<cfset testStr=renderScripts("onError",arguments.siteid,arguments.event,rsOnError)>
 					<cfif len(testStr) or yesNoFormat(arguments.event.getValue("errorIsHandled"))>
 						<cfset str=str & testStr>
-					<cfelseif yesNoFormat(variables.configBean.getValue("debuggingenabled"))>
-						<cfsavecontent variable="local.theDisplay1">
-						<cfdump var="#cfcatch#">
-						</cfsavecontent>
-						<cfset str=str & local.theDisplay1>
-					<cfelse>	
+					<cfelse>
 						<cfrethrow>
 					</cfif>
-				<cfelseif yesNoFormat(variables.configBean.getValue("debuggingenabled"))>
-					<cfsavecontent variable="local.theDisplay1">
-					<cfdump var="#cfcatch#">
-					</cfsavecontent>
-					<cfset str=str & local.theDisplay1>
-				<cfelse>
+				<cfelseif arguments.runat eq "onError">
 					<cfrethrow>
-				</cfif>
-			<cfelseif yesNoFormat(variables.configBean.getValue("debuggingenabled"))>
-                <cfsavecontent variable="local.theDisplay1">
+				<cfelse>
+				<cfsavecontent variable="local.theDisplay1">
 				<cfdump var="#cfcatch#">
 				</cfsavecontent>
 				<cfset str=str & local.theDisplay1>
+				</cfif>
 			<cfelse>
-				<cfrethrow />
+				<cfsavecontent variable="local.theDisplay1">
+				<cfdump var="#cfcatch#">
+				</cfsavecontent>
+				<cfset str=str & local.theDisplay1>
 			</cfif>
 		</cfcatch>
 	</cftry>
@@ -1599,7 +1353,7 @@ select * from tplugins order by #arguments.orderby#
 <cfargument name="eventToHandle">
 <cfargument name="siteID" required="true" default="">
 <cfargument name="moduleID" required="true" default="">
-	<cfreturn getScripts(arguments.eventToHandle,arguments.siteID,arguments.moduleID)>
+	<cfreturn getScripts(arguments.eventToHandle,argument.siteID,arguments.moduleID)>
 </cffunction>
 
 <cffunction name="getScripts" output="false" returntype="query">
@@ -1623,12 +1377,10 @@ select * from tplugins order by #arguments.orderby#
 
 </cffunction>
 
-<cffunction name="getDisplayObjectsBySiteID" output="false" returntype="query">
+<cffunction name="getDisplayObjectBySiteID" output="false" returntype="query">
 <cfargument name="siteID" required="true" default="">
 <cfargument name="modulesOnly" required="true" default="false">
 <cfargument name="moduleID" required="true" default="">
-<cfargument name="configuratorsOnly" required="true" default="false">
-
 	<cfset var rs="">
 
 	<cfquery name="rs" dbtype="query">
@@ -1641,15 +1393,12 @@ select * from tplugins order by #arguments.orderby#
 		group by moduleID, title, siteID
 		order by moduleID, title
 		<cfelse>
-		select pluginID, objectID, moduleID, siteID, name, title, displayObjectfile, docache, directory, displayMethod, configuratorInit, configuratorJS from variables.rsDisplayObjects 
+		select pluginID, objectID, moduleID, siteID, name, title, displayObjectfile, docache, directory, displayMethod from variables.rsDisplayObjects 
 		where siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#">
 		<cfif len(arguments.moduleID)>
 		and moduleID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.moduleID#">
 		</cfif>
-		<cfif arguments.configuratorsOnly>
-			and configuratorInit > ''
-		</cfif>
-		 order by moduleID, title, name
+		order by moduleID, title
 		</cfif>
 	</cfquery>
 
@@ -1672,9 +1421,8 @@ select * from tplugins order by #arguments.orderby#
 	<cfset var theDisplay2="">
 	<cfset var rsOnError="">
 	<cfset var muraScope="">
-	<cfset var tracePoint=0>
 	
-	<cfif variables.utility.checkForInstanceOf(arguments.event,"mura.MuraScope")>
+	<cfif getMetaData(arguments.event).name eq "mura.MuraScope">
 		<cfset muraScope=arguments.event>
 		<cfset arguments.event=arguments.event.event()>
 	<cfelse>
@@ -1684,14 +1432,8 @@ select * from tplugins order by #arguments.orderby#
 	<cfset event.setValue("objectID",arguments.object)>
 	<cfset event.setValue("params",arguments.params)>
 	
-	<cfif isJSON(arguments.params)>
-		<cfset event.setValue("objectparams",deserializeJSON(arguments.params))>
-	<cfelse>
-		<cfset event.setValue("objectparams",structNew())>
-	</cfif>
-	
 	<cfquery name="rs" dbtype="query">
-	select pluginID, displayObjectFile,location,displaymethod, docache, objectID, directory, moduleID, configuratorInit, configuratorJS from variables.rsDisplayObjects 
+	select pluginID, displayObjectFile,location,displaymethod, docache, objectID, directory, moduleID from variables.rsDisplayObjects 
 	where 
 	siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#event.getValue('siteID')#">
 	<cfif isvalid("UUID",event.getValue('objectID'))>
@@ -1702,7 +1444,7 @@ select * from tplugins order by #arguments.orderby#
 	<cfif len(arguments.moduleID)>
 	and moduleID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.moduleID#">
 	</cfif>
-	group by pluginID, displayObjectFile, location, displaymethod, docache, objectID, directory, moduleID, configuratorInit, configuratorJS
+	group by pluginID, displayObjectFile, location, displaymethod, docache, objectID, directory, moduleID
 	</cfquery>
 	
 		<cfif rs.recordcount>
@@ -1714,7 +1456,6 @@ select * from tplugins order by #arguments.orderby#
 				<cfset componentPath="#variables.configBean.getWebRootMap()#.#event.getSite().getDisplayPoolID()#.includes.plugins.#rs.directory#.#rs.displayobjectfile#">
 			</cfif>
 			<cfset eventHandler=getComponent(componentPath, rs.pluginID, event.getValue('siteID'),rs.docache)>
-			<cfset tracePoint=initTracePoint("#getMetaData(eventHandler).name#.#rs.displaymethod#")>
 			<cfsavecontent variable="theDisplay1">
 			<cfinvoke component="#eventHandler#" method="#rs.displaymethod#" returnvariable="theDisplay2">
 				<cfinvokeargument name="event" value="#arguments.event#">
@@ -1722,7 +1463,6 @@ select * from tplugins order by #arguments.orderby#
 				<cfinvokeargument name="mura" value="#muraScope#">
 			</cfinvoke>
 			</cfsavecontent>
-			<cfset commitTracePoint(tracePoint)>
 			<cfif isdefined("theDisplay2")>
 				<cfreturn trim(theDisplay2)>
 			<cfelse>
@@ -1790,11 +1530,11 @@ select * from tplugins order by #arguments.orderby#
 </cffunction>
 
 <cffunction name="getDisplayObjectBean" returntype="any" output="false">
-<cfreturn createObject("component","pluginDisplayObjectBean").init() />
+<cfreturn createObject("component","pluginDisplayObjectBean").init(variables.configBean,this) />
 </cffunction>
 
 <cffunction name="getScriptBean" returntype="any" output="false">
-<cfreturn createObject("component","pluginScriptBean").init() />
+<cfreturn createObject("component","pluginScriptBean").init(variables.configBean) />
 </cffunction>
 
 <cffunction name="purgeEventManagers" returntype="any" output="false">
@@ -1806,7 +1546,7 @@ select * from tplugins order by #arguments.orderby#
 
 
 	<cfif not structKeyExists(variables.eventManagers,arguments.siteid)>
-		<cfset variables.eventManagers[arguments.siteid]=createObject("component","pluginStandardEventManager").init(arguments.siteID,variables.standardEventsHandler,this)>
+		<cfset variables.eventManagers[arguments.siteid]=createObject("component","pluginEventManager").init(arguments.siteID,variables.genericManager,this)>
 	</cfif>
 	
 	<cfreturn variables.eventManagers[arguments.siteid]>
@@ -1836,14 +1576,11 @@ select * from tplugins order by #arguments.orderby#
 <cfargument name="pageTitle">
 <cfargument name="jsLib" required="true" default="prototype">
 <cfargument name="jsLibLoaded" required="true" default="false">
-<cfargument name="compactDisplay" required="false" default="false" />
-
 <cfset var fusebox=structNew()>
 <cfset var myFusebox=structNew()>
 <cfset var returnStr="">
 <cfset var moduleTitle=arguments.pageTitle>
 <cfset var attributes=structNew()>
-<cfset var layoutTemplate="template" />
 
 <cfset fusebox.layout =arguments.body>
 <cfset fusebox.ajax ="">
@@ -1852,13 +1589,8 @@ select * from tplugins order by #arguments.orderby#
 <cfset attributes.moduleID="">
 <cfset attributes.jsLib=arguments.jsLib>
 <cfset attributes.jsLibLoaded=arguments.jsLibLoaded>
-
-<cfif arguments.compactDisplay>
-	<cfset layoutTemplate = "compact" />
-</cfif>
-
 <cfsavecontent variable="returnStr">
-	<cfinclude template="/#variables.configBean.getWebrootMap()#/admin/view/layouts/#layoutTemplate#.cfm">
+<cfinclude template="/#variables.configBean.getWebrootMap()#/admin/view/layouts/template.cfm">
 </cfsavecontent>
 
 <cfreturn returnStr/>
@@ -1926,8 +1658,6 @@ select * from rs order by name
 			<cfset arrayAppend(variables.eventHandlers,arguments.component)>
 		</cfif>
 	</cfif>
-	
-	<cfset eventhandler._objectName=getMetaData(eventhandler).name>
 		
 	<cfloop collection="#eventhandler#" item="i">
 		<cfif left(i,2) eq "on" or left(i,8) eq "standard">
@@ -1979,173 +1709,4 @@ select * from rs order by name
 <cfargument name="siteID">
 <cfreturn "_" & rereplace(arguments.siteID,"[^a-zA-Z0-9]","","ALL")>
 </cffunction>
-
-<cffunction name="deployBundle" output="false" hint="I return a struct of any errors that occured.">
-	<cfargument name="siteID" hint="List of siteIDs to assign the plugin">
-	<cfargument name="bundleFile" hint="Complete path to bundle zip file">
-	<cfset var errors=structNew()>
-	
-	<cfif not variables.settingsManager.isBundle(arguments.pluginFile)>
-		<cfreturn deployPlugin(siteID=arguments.siteID, pluginFile=arguments.pluginFile)>	
-	</cfif>
-	
-	<cfset errors=getBean("settingsManager").restoreBundle(
-			BundleFile=arguments.bundleFile,
-			siteID=arguments.siteID,
-			keyMode="publish",
-			contentMode="none", 
-			renderingMode="none",
-			pluginMode="all", 
-			moduleID="")>
-	
-	<cfset loadPlugins()>
-	
-	<cfreturn errors>
-</cffunction>
-
-<cffunction name="deployPlugin" output="false">
-	<cfargument name="siteID" hint="List of siteIDs to assign the plugin">
-	<cfargument name="pluginFile" hint="Complete path to plugin zip file">
-	<cfargument name="useDefaultSettings" required="true" default="true">
-	<cfargument name="autoDeploy" required="true" default="true">
-	
-	<cfset var zipTrim=getZipTrim(arguments.pluginFile)>
-	<cfset var errors=structNew()>
-	<cfset var tempDir=createUUID()>
-	<cfset var result="">
-	<cfset var pluginXml="">
-	<cfset var rsSites="">
-	<cfset var id="">
-	
-	<cfif variables.settingsManager.isBundle(arguments.pluginFile)>
-		<cfreturn deployBundle(siteID=arguments.siteID, bundleFile=arguments.pluginFile)>	
-	</cfif>
-	
-	<cfset variables.fileWriter.createDir(directory=getLocation(tempDir))>
-
-	<cfif len(zipTrim)>
-		<cfset variables.zipTool.extract(zipFilePath=arguments.pluginFile,extractPath=getLocation(tempDir), overwriteFiles=true, extractDirs=zipTrim, extractDirsToTop=true)>
-	<cfelse>
-		<cfset variables.zipTool.extract(zipFilePath=arguments.pluginFile,extractPath=getLocation(tempDir), overwriteFiles=true)>
-	</cfif>
-	
-	<cfset pluginXml=getPluginXML(moduleID="",pluginDir=tempDir)>
-	
-	<cfif structKeyExists(pluginXML.plugin,"package") and len(pluginXML.plugin.package.xmlText)>
-		<cfset id=pluginXML.plugin.package.xmlText>
-	<cfelse>
-		<cfset id=pluginXML.plugin.name.xmlText>
-	</cfif>	
-	
-	<cfset result=deploy(id=id, pluginDir=tempDir, useDefaultSettings=arguments.useDefaultSettings, siteID=arguments.siteID,autoDeploy=arguments.autoDeploy)>
-	
-	<cfset variables.fileWriter.deleteDir(directory=getLocation(tempDir))>
-	
-	<cfreturn result>
-
-</cffunction>
-
-<cffunction name="deployDirectory" output="false">
-	<cfargument name="siteID" hint="List of siteIDs to assign the plugin. If not defined will defiend to existing assignment.">
-	<cfargument name="directory" hint="Complete path to external plugin directory">
-	<cfargument name="useDefaultSettings" required="true" default="true">
-	<cfargument name="autoDeploy" required="true" default="true">
-	<cfset var errors=structNew()>
-	<cfset var tempDir=createUUID()>
-	<cfset var id="">
-	<cfset var result="">
-	<cfset var pluginXml="">
-	<cfset var rsSites="">
-	
-	<cfset variables.fileWriter.createDir(directory=getLocation(tempDir))>
-	<cfset variables.fileWriter.copyDir(arguments.directory,getLocation(tempDir))>
-	<cfset pluginXml=getPluginXML(moduleID="",pluginDir=tempDir)>
-	
-	<cfif structKeyExists(pluginXML.plugin,"package") and len(pluginXML.plugin.package.xmlText)>
-		<cfset id=pluginXML.plugin.package.xmlText>
-	<cfelse>
-		<cfset id=pluginXML.plugin.name.xmlText>
-	</cfif>	
-
-	<cfif not structKeyExists(arguments,"siteID")>
-		<cfset rsSites=getConfig(id).getAssignedSites()>
-		<cfset arguments.siteID=valueList(rsSites.siteID)>
-	</cfif>
-	
-	<cfset result=deploy(id=id, pluginDir=tempDir, useDefaultSettings=arguments.useDefaultSettings, siteID=arguments.siteID, autoDeploy=arguments.autoDeploy)>
-	
-	<cfset variables.fileWriter.deleteDir(directory=getLocation(tempDir))>
-	
-	<cfreturn result>
-
-</cffunction>
-
-<cffunction name="reDeploy" output="false">
-	<cfargument name="siteID" hint="List of siteIDs to assign the plugin. If not defined will defiend to existing assignment.">
-	<cfargument name="ID" hint="The moduleID, pluginID, package or name of plugin to redeploy">
-
-	<cfset var errors=structNew()>
-	<cfset var tempDir=createUUID()>
-	<cfset var rsSites="">
-	<cfset var pluginConfig=getConfig(arguments.id)>
-	<cfset var result="">
-	
-	<cfif not len(pluginConfig.getDirectory())>
-		<cfthrow message="A plugin with the package, pluginID or moduleID with a value '#arguments.id#' does not exist.">	
-	</cfif>
-
-	<cfif not structKeyExists(arguments,"siteID")>
-		<cfset rsSites=pluginConfig.getAssignedSites()>
-		<cfset arguments.siteID=valueList(rsSites.siteID)>
-	</cfif>
-	
-	<cfset result=deploy(moduleid=pluginConfig.getModuleID(), pluginDir=pluginConfig.getDirectory(), useDefaultSettings=true, siteID=arguments.siteID)>
-	
-	<cfreturn result>
-
-</cffunction>
-
-<cffunction name="createBundle" output="false" hint="I bundle a plugin and return it's filename">
-	<cfargument name="id" hint="ModuleID or pluginID or Package">
-	<cfargument name="directory" hint="Server directory to save the bundle">
-	<cfset var pluginConfig=getConfig(arguments.id)>
-	
-	<cfreturn getBean("Bundle").Bundle(
-			siteID="",
-			moduleID=pluginConfig.getModuleID(),
-			BundleName=getBean('contentUtility').formatFilename(pluginConfig.getName()), 
-			includeVersionHistory=false,
-			includeTrash=false,
-			includeMetaData=false,
-			includeMailingListMembers=false,
-			includeUsers=false,
-			includeFormData=false,
-			saveFile=true,
-			saveFileDir=arguments.directory) />
-</cffunction>
-
-<cffunction name="getZipTrim" output="false">
-	<cfargument name="pluginFile">
-	<cfset var i="">
-	<cfset var zipTrim="">
-	<cfset var delim=variables.configBean.getFileDelim() />
-	<cfset var rsZipFiles=variables.zipTool.list(zipFilePath=arguments.pluginFile)>
-		
-	<cfquery name="rsZipFiles" dbtype="query">
-		select * from rsZipFiles
-		where entry like '%#delim#plugin#delim#%'
-		or entry like 'plugin#delim#%'
-	</cfquery>
-				
-	<cfloop list="#rsZipFiles.entry#" delimiters="#delim#" index="i">
-		<cfif i eq "plugin">
-			<cfbreak>
-		<cfelse>
-			<cfset zipTrim=listAppend(zipTrim,i,delim)>
-		</cfif>	
-	</cfloop>
-		
-	<cfreturn zipTrim>
-</cffunction>
-
 </cfcomponent>

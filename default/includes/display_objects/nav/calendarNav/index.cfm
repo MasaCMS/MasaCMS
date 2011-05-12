@@ -4,20 +4,20 @@
 <cfparam name="request.sortDirection" default=""/>
 <cfparam name="request.day" default="#day(now())#"/>
 
-<cfset $.addToHTMLHeadQueue('nav/calendarNav/htmlhead/htmlhead.cfm')>
+<cfset addToHTMLHeadQueue('nav/calendarNav/htmlhead/htmlhead.cfm')>
 </cfsilent>
-<cf_CacheOMatic key="#arguments.object##$.event('siteid')##arguments.objectid##$.event('month')##$.event('year')#" nocache="#$.event('nocache')#">
+<cf_CacheOMatic key="#arguments.object##event.getValue('siteid')##arguments.objectid##event.getValue('month')##event.getvalue('year')#" nocache="#event.getValue('nocache')#">
 <cfsilent>
-<cfset navTools=createObject("component","navTools").init($)>
+<cfset navTools=createObject("component","navTools")>
 <cfset navID=arguments.objectID>	
 <cfquery datasource="#application.configBean.getDatasource()#" 
 		username="#application.configBean.getDBUsername()#" 
 		password="#application.configBean.getDBPassword()#" 
 		name="rsSection">
-		select filename,menutitle,type from tcontent where siteid='#$.event('siteID')#' and contentid='#arguments.objectid#' and approved=1 and active=1 and display=1
+		select filename,menutitle,type from tcontent where siteid='#request.siteid#' and contentid='#arguments.objectid#' and approved=1 and active=1 and display=1
 </cfquery>
 
-<cfset navPath="#$.globalConfig('context')##getURLStem($.event('siteID'),rsSection.filename)#">
+<cfset navPath="#application.configBean.getContext()##getURLStem(request.siteID,rsSection.filename)#">
 <cfset navMonth=request.month >
 <cfset navYear=request.year >
 <cfset navDay=request.day >

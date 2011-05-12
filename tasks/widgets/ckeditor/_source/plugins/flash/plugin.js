@@ -7,6 +7,8 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 {
 	var flashFilenameRegex = /\.swf(?:$|\?)/i;
 
+	var cssifyLength = CKEDITOR.tools.cssLength;
+
 	function isFlashEmbed( element )
 	{
 		var attributes = element.attributes;
@@ -16,7 +18,19 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 	function createFakeElement( editor, realElement )
 	{
-		return editor.createFakeParserElement( realElement, 'cke_flash', 'flash', true );
+		var fakeElement = editor.createFakeParserElement( realElement, 'cke_flash', 'flash', true ),
+			fakeStyle = fakeElement.attributes.style || '';
+
+		var width = realElement.attributes.width,
+			height = realElement.attributes.height;
+
+		if ( typeof width != 'undefined' )
+			fakeStyle = fakeElement.attributes.style = fakeStyle + 'width:' + cssifyLength( width ) + ';';
+
+		if ( typeof height != 'undefined' )
+			fakeStyle = fakeElement.attributes.style = fakeStyle + 'height:' + cssifyLength( height ) + ';';
+
+		return fakeElement;
 	}
 
 	CKEDITOR.plugins.add( 'flash',

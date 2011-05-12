@@ -14,7 +14,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 */
 
 /**
- * Contains the dictionary of language entries.
+ * Constains the dictionary of language entries.
  * @namespace
  */
 CKEDITOR.lang['ca'] =
@@ -34,8 +34,8 @@ CKEDITOR.lang['ca'] =
 	editorTitle : 'Editor de text enriquit, %1, prem ALT 0 per obtenir ajuda.',
 
 	// ARIA descriptions.
-	toolbars	: 'Editor toolbars', // MISSING
-	editor		: 'Editor de text enriquit',
+	toolbar	: 'Barra d\'eines',
+	editor	: 'Editor de text enriquit',
 
 	// Toolbar buttons without dialogs.
 	source			: 'Codi font',
@@ -121,10 +121,6 @@ CKEDITOR.lang['ca'] =
 		alignBottom		: 'Inferior',
 		invalidHeight	: 'L\'alçada ha de ser un nombre.',
 		invalidWidth	: 'L\'amplada ha de ser un nombre.',
-		invalidCssLength	: 'Value specified for the "%1" field must be a positive number with or without a valid CSS measurement unit (px, %, in, cm, mm, em, ex, pt, or pc).', // MISSING
-		invalidHtmlLength	: 'Value specified for the "%1" field must be a positive number with or without a valid HTML measurement unit (px or %).', // MISSING
-		invalidInlineStyle	: 'Value specified for the inline style must consist of one or more tuples with the format of "name : value", separated by semi-colons.', // MISSING
-		cssLengthTooltip	: 'Enter a number for a value in pixels or a number with a valid CSS unit (px, %, in, cm, mm, em, ex, pt, or pc).', // MISSING
 
 		// Put the voice-only part of the label in the span.
 		unavailable		: '%1<span class="cke_accessibility">, no disponible</span>'
@@ -205,8 +201,7 @@ CKEDITOR.lang['ca'] =
 		menu		: 'Propietats de l\'àncora',
 		title		: 'Propietats de l\'àncora',
 		name		: 'Nom de l\'àncora',
-		errorName	: 'Si us plau, escriviu el nom de l\'ancora',
-		remove		: 'Remove Anchor' // MISSING
+		errorName	: 'Si us plau, escriviu el nom de l\'ancora'
 	},
 
 	// List style dialog
@@ -242,7 +237,6 @@ CKEDITOR.lang['ca'] =
 		findWhat			: 'Cerca:',
 		replaceWith			: 'Remplaça amb:',
 		notFoundMsg			: 'El text especificat no s\'ha trobat.',
-		findOptions			: 'Find Options', // MISSING
 		matchCase			: 'Distingeix majúscules/minúscules',
 		matchWord			: 'Només paraules completes',
 		matchCyclic			: 'Match cyclic',
@@ -419,6 +413,7 @@ CKEDITOR.lang['ca'] =
 		upload		: 'Puja',
 		alt			: 'Text alternatiu',
 		lockRatio	: 'Bloqueja les proporcions',
+		unlockRatio	: 'Desbloqueja el ràtio',
 		resetSize	: 'Restaura la mida',
 		border		: 'Vora',
 		hSpace		: 'Espaiat horit.',
@@ -720,8 +715,6 @@ CKEDITOR.lang['ca'] =
 	{
 		title		: 'Quant al CKEditor',
 		dlgTitle	: 'Quant al CKEditor',
-		help	: 'Check $1 for help.', // MISSING
-		userGuide : 'CKEditor User\'s Guide', // MISSING
 		moreInfo	: 'Per informació sobre llicències visiteu el web:',
 		copy		: 'Copyright &copy; $1. Tots els drets reservats.'
 	},
@@ -752,64 +745,9 @@ CKEDITOR.lang['ca'] =
 	toolbarCollapse	: 'Redueix la barra d\'eines',
 	toolbarExpand	: 'Amplia la barra d\'eines',
 
-	toolbarGroups :
-	{
-		document : 'Document', // MISSING
-		clipboard : 'Clipboard/Undo', // MISSING
-		editing : 'Editing', // MISSING
-		forms : 'Forms', // MISSING
-		basicstyles : 'Basic Styles', // MISSING
-		paragraph : 'Paragraph', // MISSING
-		links : 'Links', // MISSING
-		insert : 'Insert', // MISSING
-		styles : 'Styles', // MISSING
-		colors : 'Colors', // MISSING
-		tools : 'Tools' // MISSING
-	},
-
 	bidi :
 	{
 		ltr : 'Direcció del text d\'esquerra a dreta',
 		rtl : 'Direcció del text de dreta a esquerra'
-	},
-
-	docprops :
-	{
-		label : 'Propietats del document',
-		title : 'Propietats del document',
-		design : 'Design', // MISSING
-		meta : 'Metadades',
-		chooseColor : 'Trieu',
-		other : '<altre>',
-		docTitle :	'Títol de la pàgina',
-		charset : 	'Codificació de conjunt de caràcters',
-		charsetOther : 'Una altra codificació de caràcters',
-		charsetASCII : 'ASCII', // MISSING
-		charsetCE : 'Centreeuropeu',
-		charsetCT : 'Xinès tradicional (Big5)',
-		charsetCR : 'Ciríl·lic',
-		charsetGR : 'Grec',
-		charsetJP : 'Japonès',
-		charsetKR : 'Coreà',
-		charsetTR : 'Turc',
-		charsetUN : 'Unicode (UTF-8)', // MISSING
-		charsetWE : 'Europeu occidental',
-		docType : 'Capçalera de tipus de document',
-		docTypeOther : 'Un altra capçalera de tipus de document',
-		xhtmlDec : 'Incloure declaracions XHTML',
-		bgColor : 'Color de fons',
-		bgImage : 'URL de la imatge de fons',
-		bgFixed : 'Fons fixe',
-		txtColor : 'Color de Text',
-		margin : 'Marges de pàgina',
-		marginTop : 'Cap',
-		marginLeft : 'Esquerra',
-		marginRight : 'Dreta',
-		marginBottom : 'Peu',
-		metaKeywords : 'Mots clau per a indexació (separats per coma)',
-		metaDescription : 'Descripció del document',
-		metaAuthor : 'Autor',
-		metaCopyright : 'Copyright', // MISSING
-		previewHtml : '<p>This is some <strong>sample text</strong>. You are using <a href="javascript:void(0)">CKEditor</a>.</p>' // MISSING
 	}
 };

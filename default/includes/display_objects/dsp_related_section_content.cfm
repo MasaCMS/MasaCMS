@@ -6,52 +6,48 @@ the Free Software Foundation, Version 2 of the License.
 
 Mura CMS is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-along with Mura CMS. If not, see <http://www.gnu.org/licenses/>.
+along with Mura CMS.  If not, see <http://www.gnu.org/licenses/>.
 
-Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on 
-Mura CMS. Thus, the terms and conditions of the GNU General Public License version 2 ("GPL") cover the entire combined work.
+Linking Mura CMS statically or dynamically with other modules constitutes
+the preparation of a derivative work based on Mura CMS. Thus, the terms and 	
+conditions of the GNU General Public License version 2 (“GPL”) cover the entire combined work.
 
-However, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with programs
-or libraries that are released under the GNU Lesser General Public License version 2.1.
+However, as a special exception, the copyright holders of Mura CMS grant you permission
+to combine Mura CMS with programs or libraries that are released under the GNU Lesser General Public License version 2.1.
 
-In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with 
-independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without 
-Mura CMS under the license of your choice, provided that you follow these specific guidelines: 
+In addition, as a special exception,  the copyright holders of Mura CMS grant you permission
+to combine Mura CMS  with independent software modules that communicate with Mura CMS solely
+through modules packaged as Mura CMS plugins and deployed through the Mura CMS plugin installation API,
+provided that these modules (a) may only modify the  /trunk/www/plugins/ directory through the Mura CMS
+plugin installation API, (b) must not alter any default objects in the Mura CMS database
+and (c) must not alter any files in the following directories except in cases where the code contains
+a separately distributed license.
 
-Your custom code 
+/trunk/www/admin/
+/trunk/www/tasks/
+/trunk/www/config/
+/trunk/www/requirements/mura/
 
-â€¢ Must not alter any default objects in the Mura CMS database and
-â€¢ May not alter the default display of the Mura CMS logo within Mura CMS and
-â€¢ Must not alter any files in the following directories.
+You may copy and distribute such a combined work under the terms of GPL for Mura CMS, provided that you include
+the source code of that other code when and as the GNU GPL requires distribution of source code.
 
- /admin/
- /tasks/
- /config/
- /requirements/mura/
- /Application.cfc
- /index.cfm
- /MuraProxy.cfc
-
-You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work 
-under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL 
-requires distribution of source code.
-
-For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your 
-modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
-version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
+For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception
+for your modified version; it is your choice whether to do so, or to make such modified version available under
+the GNU General Public License version 2  without this exception.  You may, if you choose, apply this exception
+to your own modified versions of Mura CMS.
 --->
 
 <cfsilent>
-	<cfquery datasource="#application.configBean.getDatasource(mode='readOnly')#" username="#application.configBean.getDBUsername(mode='readOnly')#" password="#application.configBean.getDBPassword(mode='readOnly')#" name="rsSection">select contentid,filename,menutitle,target,restricted,restrictgroups,type,sortBy,sortDirection from tcontent where siteid='#$.event('siteID')#' and contentid='#arguments.objectid#' and approved=1 and active=1 and display=1</cfquery>
+	<cfquery datasource="#application.configBean.getDatasource()#" username="#application.configBean.getDBUsername()#" password="#application.configBean.getDBPassword()#" name="rsSection">select contentid,filename,menutitle,target,restricted,restrictgroups,type,sortBy,sortDirection from tcontent where siteid='#request.siteid#' and contentid='#arguments.objectid#' and approved=1 and active=1 and display=1</cfquery>
 	<cfif variables.rsSection.recordcount>
 	<cfset variables.menutype=iif(variables.rsSection.type eq 'Portal',de('default'),de('calendar_features'))/>
-	<cfset rsPreFeatures=$.getBean('contentGateway').getkids('00000000000000000000000000000000000','#$.event('siteID')#','#arguments.objectid#',variables.menutype,now(),0,"",0,iif(variables.rsSection.type eq 'Portal',de('#variables.rsSection.sortBy#'),de('displaystart')),iif(variables.rsSection.type eq 'Portal',de('#variables.rsSection.sortDirection#'),de('desc')),'','#$.content('contentID')#')>
-		<cfif $.siteConfig('extranet') eq 1 and $.event('r').restrict eq 1>
-			<cfset variables.rsFeatures=$.queryPermFIlter(variables.rsPreFeatures)/>
+	<cfset rsPreFeatures=application.contentGateway.getkids('00000000000000000000000000000000000','#request.siteid#','#arguments.objectid#',variables.menutype,now(),0,"",0,iif(variables.rsSection.type eq 'Portal',de('#variables.rsSection.sortBy#'),de('displaystart')),iif(variables.rsSection.type eq 'Portal',de('#variables.rsSection.sortDirection#'),de('desc')),'','#request.contentBean.getcontentID()#')>
+		<cfif getSite().getExtranet() eq 1 and request.r.restrict eq 1>
+			<cfset variables.rsFeatures=queryPermFilter(variables.rsPreFeatures)/>
 		<cfelse>
 			<cfset variables.rsFeatures=rsPreFeatures/>
 		</cfif>
@@ -62,38 +58,31 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfsilent>
 	<cfset variables.iterator=$.getBean("contentIterator")>
 	<cfset variables.iterator.setQuery(rsFeatures)>
-	<cfset variables.cssID=$.createCSSid(variables.rsSection.menuTitle)>
-</cfsilent>
-<div id="#variables.cssID#" class="svRelSecContent svIndex">
-	<#$.getHeaderTag('subHead1')#>#rsSection.menutitle#</#$.getHeaderTag('subHead1')#>
-	<cfif not structIsEmpty(objectparams)>
-		#$.dspObject_Include(
-				thefile='dsp_content_list.cfm',
-				fields=params.displayList,
-				type='objectparams', 
-				iterator=variables.iterator,
-				imageSize=objectparams.imageSize,
-				imageHeight=objectparams.imageHeight,
-				imageWidth=objectparams.imageWidth
-				)#
-	<cfelse>
-		<cfsilent>
-		<cfset variables.contentListFields="Title">
-		
-		<cfif $.getBean('contentGateway').getHasComments($.event('siteID'),arguments.objectid) >
-			<cfset variables.contentListFields=listAppend(variables.contentListFields,"Comments")>
-		</cfif>
-		</cfsilent>
-		#$.dspObject_Include(
-			thefile='dsp_content_list.cfm',
-			fields=variables.contentListFields,
-			type='Related', 
-			iterator= variables.iterator
-			)#
+	
+	<cfset variables.contentListType="Related">
+	<cfset variables.contentListFields="Title">
+	
+	<cfif application.contentGateway.getHasComments(request.siteid,arguments.objectid) >
+		<cfset variables.contentListFields=listAppend(variables.contentListFields,"Comments")>
 	</cfif>
 	
+	<!--- Omitting Summaries
+	<cfif arguments.hasSummary >
+		<cfset variables.contentListFields=listAppend(variables.contentListFields,"Summary")>
+	</cfif>
+	--->
+	
+	<cfset variables.cssID=createCSSID(variables.rsSection.menuTitle)>
+</cfsilent>
+<div id="#variables.cssID#" class="svRelSecContent svIndex">
+	<#getHeaderTag('subHead1')#>#rsSection.menutitle#</#getHeaderTag('subHead1')#>
+	#dspObject_Include(thefile='dsp_content_list.cfm',
+			fields=variables.contentListFields,
+			type=variables.contentListType, 
+			iterator= variables.iterator
+			)#
 	<dl class="moreResults">
-		<dt><a href="#application.configBean.getServerPort()##$.globalConfig('context')##application.contentRenderer.getURLStem($.event('siteID'),variables.rsSection.filename)#">View All</a></dt>
+		<dt><a href="#application.configBean.getServerPort()##application.configBean.getContext()##application.contentRenderer.getURLStem(request.siteid,variables.rsSection.filename)#">View All</a></dt>
 	</dl>
 </div>
 <cfelse>

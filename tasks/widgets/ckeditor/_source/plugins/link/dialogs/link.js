@@ -235,51 +235,37 @@ CKEDITOR.dialog.add( 'link', function( editor )
 			advAttr( 'advTabIndex', 'tabindex' );
 			advAttr( 'advTitle', 'title' );
 			advAttr( 'advContentType', 'type' );
-			CKEDITOR.plugins.link.synAnchorSelector ?
-				retval.adv.advCSSClasses = getLinkClass( element )
-				: advAttr( 'advCSSClasses', 'class' );
+			advAttr( 'advCSSClasses', 'class' );
 			advAttr( 'advCharset', 'charset' );
 			advAttr( 'advStyles', 'style' );
 			advAttr( 'advRel', 'rel' );
 		}
 
 		// Find out whether we have any anchors in the editor.
-		var anchors = retval.anchors = [],
-			item;
+		// Get all IMG elements in CK document.
+		var elements = editor.document.getElementsByTag( 'img' ),
+			realAnchors = new CKEDITOR.dom.nodeList( editor.document.$.anchors ),
+			anchors = retval.anchors = [];
 
-		// For some browsers we set contenteditable="false" on anchors, making document.anchors not to include them, so we must traverse the links manually (#7893).
-		if ( CKEDITOR.plugins.link.emptyAnchorFix )
+		for ( var i = 0; i < elements.count() ; i++ )
 		{
-			var links = editor.document.getElementsByTag( 'a' );
-			for ( i = 0, count = links.count(); i < count; i++ )
-			{
-				item = links.getItem( i );
-				if ( item.data( 'cke-saved-name' ) || item.hasAttribute( 'name' ) )
-					anchors.push( { name : item.data( 'cke-saved-name' ) || item.getAttribute( 'name' ), id : item.getAttribute( 'id' ) } );
-			}
-		}
-		else
-		{
-			var anchorList = new CKEDITOR.dom.nodeList( editor.document.$.anchors );
-			for ( var i = 0, count = anchorList.count(); i < count; i++ )
-			{
-				item = anchorList.getItem( i );
-				anchors[ i ] = { name : item.getAttribute( 'name' ), id : item.getAttribute( 'id' ) };
-			}
+			var item = elements.getItem( i );
+			if ( item.data( 'cke-realelement' ) && item.data( 'cke-real-element-type' ) == 'anchor' )
+				anchors.push( editor.restoreRealElement( item ) );
 		}
 
-		if ( CKEDITOR.plugins.link.fakeAnchor )
+		for ( i = 0 ; i < realAnchors.count() ; i++ )
+			anchors.push( realAnchors.getItem( i ) );
+
+		for ( i = 0 ; i < anchors.length ; i++ )
 		{
-			var imgs = editor.document.getElementsByTag( 'img' );
-			for ( i = 0, count = imgs.count(); i < count; i++ )
-			{
-				if ( ( item = CKEDITOR.plugins.link.tryRestoreFakeAnchor( editor, imgs.getItem( i ) ) ) )
-					anchors.push( { name : item.getAttribute( 'name' ), id : item.getAttribute( 'id' ) } );
-			}
+			item = anchors[ i ];
+			anchors[ i ] = { name : item.getAttribute( 'name' ), id : item.getAttribute( 'id' ) };
 		}
 
 		// Record down the selected element in the dialog.
 		this._.selectedElement = element;
+
 		return retval;
 	};
 
@@ -381,12 +367,6 @@ CKEDITOR.dialog.add( 'link', function( editor )
 			encodedChars.push( charCode );
 		}
 		return 'String.fromCharCode(' + encodedChars.join( ',' ) + ')';
-	}
-
-	function getLinkClass( ele )
-	{
-		var className = ele.getAttribute( 'class' );
-		return className ? className.replace( /\s*(?:cke_anchor_empty|cke_anchor)(?:\s*$)?/g, '' ) : '';
 	}
 
 	var commonLang = editor.lang.common,
@@ -1159,7 +1139,6 @@ CKEDITOR.dialog.add( 'link', function( editor )
 										label : linkLang.styles,
 										'default' : '',
 										id : 'advStyles',
-										validate : CKEDITOR.dialog.validate.inlineStyle( editor.lang.common.invalidInlineStyle ),
 										setup : setupAdvParams,
 										commit : commitAdvParams
 									}
@@ -1172,6 +1151,8 @@ CKEDITOR.dialog.add( 'link', function( editor )
 		],
 		onShow : function()
 		{
+			this.fakeObj = false;
+
 			var editor = this.getParentEditor(),
 				selection = editor.getSelection(),
 				element = null;
@@ -1179,6 +1160,14 @@ CKEDITOR.dialog.add( 'link', function( editor )
 			// Fill in all the relevant fields if there's already one link selected.
 			if ( ( element = plugin.getSelectedLink( editor ) ) && element.hasAttribute( 'href' ) )
 				selection.selectElement( element );
+			else if ( ( element = selection.getSelectedElement() ) && element.is( 'img' )
+					&& element.data( 'cke-real-element-type' )
+					&& element.data( 'cke-real-element-type' ) == 'anchor' )
+			{
+				this.fakeObj = element;
+				element = editor.restoreRealElement( this.fakeObj );
+				selection.selectElement( this.fakeObj );
+			}
 			else
 				element = null;
 
@@ -1199,7 +1188,7 @@ CKEDITOR.dialog.add( 'link', function( editor )
 			{
 				case 'url':
 					var protocol = ( data.url && data.url.protocol != undefined ) ? data.url.protocol : 'http://',
-						url = ( data.url && CKEDITOR.tools.trim( data.url.url ) ) || '';
+						url = ( data.url && data.url.url ) || '';
 					attributes[ 'data-cke-saved-href' ] = ( url.indexOf( '/' ) === 0 ) ? url : protocol + url;
 					break;
 				case 'anchor':
@@ -1313,7 +1302,10 @@ CKEDITOR.dialog.add( 'link', function( editor )
 				advAttr( 'advAccessKey', 'accessKey' );
 
 				if ( data.adv[ 'advName' ] )
+				{
 					attributes[ 'name' ] = attributes[ 'data-cke-saved-name' ] = data.adv[ 'advName' ];
+					attributes[ 'class' ] = ( attributes[ 'class' ] ? attributes[ 'class' ] + ' ' : '' ) + 'cke_anchor';
+				}
 				else
 					removeAttributes = removeAttributes.concat( [ 'data-cke-saved-name', 'name' ] );
 
@@ -1358,12 +1350,25 @@ CKEDITOR.dialog.add( 'link', function( editor )
 					href = element.data( 'cke-saved-href' ),
 					textView = element.getHtml();
 
+				// IE BUG: Setting the name attribute to an existing link doesn't work.
+				// Must re-create the link from weired syntax to workaround.
+				if ( CKEDITOR.env.ie && !( CKEDITOR.document.$.documentMode >= 8 ) && attributes.name != element.getAttribute( 'name' ) )
+				{
+					var newElement = new CKEDITOR.dom.element( '<a name="' + CKEDITOR.tools.htmlEncode( attributes.name ) + '">',
+							editor.document );
+
+					selection = editor.getSelection();
+
+					element.copyAttributes( newElement, { name : 1 } );
+					element.moveChildren( newElement );
+					newElement.replace( element );
+					element = newElement;
+
+					selection.selectElement( element );
+				}
+
 				element.setAttributes( attributes );
 				element.removeAttributes( removeAttributes );
-
-				if ( data.adv && data.adv.advName && CKEDITOR.plugins.link.synAnchorSelector )
-					element.addClass( element.getChildCount() ? 'cke_anchor' : 'cke_anchor_empty' );
-
 				// Update text view when user changes protocol (#4612).
 				if ( href == textView || data.type == 'email' && textView.indexOf( '@' ) != -1 )
 				{
@@ -1371,6 +1376,14 @@ CKEDITOR.dialog.add( 'link', function( editor )
 					element.setHtml( data.type == 'email' ?
 						data.email.address : attributes[ 'data-cke-saved-href' ] );
 				}
+				// Make the element display as an anchor if a name has been set.
+				if ( element.getAttribute( 'name' ) )
+					element.addClass( 'cke_anchor' );
+				else
+					element.removeClass( 'cke_anchor' );
+
+				if ( this.fakeObj )
+					editor.createFakeElement( element, 'cke_anchor', 'anchor' ).replace( this.fakeObj );
 
 				delete this._.selectedElement;
 			}

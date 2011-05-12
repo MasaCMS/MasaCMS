@@ -2,29 +2,28 @@
 <!DOCTYPE html> 
 <html>
 <head>
-	<meta name="viewport" content="width=device-width, minimum-scale=1, maximum-scale=1" />
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<meta name="description" content="#HTMLEditFormat($.getMetaDesc())#" />
 	<meta name="keywords" content="#HTMLEditFormat($.getMetaKeywords())#" />
 	<cfif len($.content('credits'))><meta name="author" content="#HTMLEditFormat($.content('credits'))#" /></cfif>
 	<meta name="generator" content="Mura CMS #$.globalConfig('version')#" />
-	<meta name="robots" content="noindex, follow" />
+	
 	<title>#HTMLEditFormat($.content('HTMLTitle'))# - #HTMLEditFormat($.siteConfig('site'))#</title>
 
 	<link rel="icon" href="#$.siteConfig('assetPath')#/images/favicon.ico" type="image/x-icon" />
 	<link rel="shortcut icon" href="#$.siteConfig('assetPath')#/images/favicon.ico" type="image/x-icon" />	
 	
-	<link rel="stylesheet" href="#$.siteConfig('assetPath')#/css/mura.min.css" />
+	<link rel="stylesheet" href="#$.siteConfig('assetPath')#/css/mura.css" />
 	<link rel="stylesheet" href="#$.siteConfig('assetPath')#/mobile/jquery.mobile.min.css" />
-	<link rel="stylesheet" href="#$.siteConfig('themeAssetPath')#/css/mobile/mobile.css" />
+	<link rel="stylesheet" href="#$.siteConfig('themeAssetPath')#/css/merced-mobile.css" />
 	
 	<script src="#$.siteConfig('assetPath')#/js/jquery/jquery.js"></script>
 	
 	<script type="text/javascript">
       $(document).bind("mobileinit", function(){
             $.extend(  $.mobile , { 
-                  ajaxEnabled : false,
-				  pushStateEnabled : false
+                  ajaxFormsEnabled : false,
+                  ajaxLinksEnabled : false
              });
       });
 	</script>
@@ -54,17 +53,14 @@
 		<cfelse>
 			#$.dspBody(body=$.content('body'),pageTitle='',crumbList=0,showMetaImage=0)#
 		</cfif>
-		
 		#$.dspObjects($.siteConfig('primaryColumn'))#
-		
 		<cfif $.content('contentID') eq "00000000000000000000000000000000001">
 		<!---
-		<div id="navHeader" class="header-fullscreen" data-role="header" data-nobackbtn="true" data-theme="a">
+<div id="navHeader" class="header-fullscreen" data-role="header" data-nobackbtn="true" data-theme="a">
 		<h1>More</h1>
 		</div>
-		--->
-		
-		<cf_CacheOMatic key="dspMobilePrimaryNav#$.content('contentID')#">
+--->
+		<cf_CacheOMatic key="dspMobilePrimaryNav#request.contentBean.getcontentID()#">
 			#$.dspPrimaryNav(
 				viewDepth="0",
 				id="navPrimary",
@@ -75,14 +71,12 @@
 		</cf_cacheomatic>
 		<cfelseif not listFindNoCase('Gallery,Portal',$.content('type'))>
 		<!---
-		<div id="navHeader" class="header-fullscreen" data-role="header" data-nobackbtn="true" data-theme="a">
+<div id="navHeader" class="header-fullscreen" data-role="header" data-nobackbtn="true" data-theme="a">
 		<h1>More</h1>
 		</div>
-		--->
+--->
 		<div id="navSub">#$.dspSubNav()#</div>
 		</cfif>
-		
-		
 	</div><!-- /content -->
 
 		<div data-role="footer"  data-theme="a" class="ui-bar">
@@ -91,7 +85,8 @@
 	
 </div><!-- /page -->
 
-<script>
+	<script>
+	
 	$('body').live('pagebeforecreate',init);
 	
 	function init() {
@@ -119,30 +114,34 @@
 	});
 	
 	<!--- Indexes --->	
-	$('.svIndex ul:first').attr({
+	$('.svIndex ul').attr({
  		'data-role': 'listview',
   		'data-inset': 'true',
   		'data-theme': 'c',
   		'data-dividertheme': 'b'
 	});
-	
-	$('.svIndex .moreResults ul').attr({
-			'data-role': 'controlgroup',
-			'data-type': 'horizontal',
+
+	<!--- This is for when ajaxLinksEnabled enabled to make sure certain link types render as external. 
+	$('.gallery').attr({
+ 		'rel': 'external'
 	});
 	
-	$('.svIndex .moreResults ul li').attr({
-			'data-role': 'button',
-			'data-theme': 'c'
-	});
-	<!--- Forms --->
-	$('form ul, form ol').attr({
-			'data-role': 'fieldcontain'
+	$('##svAsset').attr({
+ 		'rel': 'external'
 	});
 	
-	$('form li').attr({
-			'data-role': 'controlgroup'
+	$('a[href*="LinkServID"]').attr({
+ 		'rel': 'external'
 	});
+	
+	$('a[href*="linkServID"]').attr({
+ 		'rel': 'external'
+	});
+	
+	$('a[rel*="shadowbox"]').attr({
+ 		'rel': 'external'
+	});
+	--->
 	
 	$('##btn-back').live('tap',function() {
 	  history.back(); return false;
@@ -151,7 +150,7 @@
 	});
 	
 }	
-</script>
+	</script>
 
 </body>	
 </html>

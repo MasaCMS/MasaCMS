@@ -4,7 +4,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 */
 
 /**
- * @fileOverview Defines the {@link CKEDITOR.lang} object for the
+ * @fileOverview Defines the {@link CKEDITOR.lang} object, for the
  * Lithuanian language.
  */
 
@@ -14,7 +14,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 */
 
 /**
- * Contains the dictionary of language entries.
+ * Constains the dictionary of language entries.
  * @namespace
  */
 CKEDITOR.lang['lt'] =
@@ -31,11 +31,11 @@ CKEDITOR.lang['lt'] =
 	 * Screenreader titles. Please note that screenreaders are not always capable
 	 * of reading non-English words. So be careful while translating it.
 	 */
-	editorTitle : 'Pilnas redaktorius, %1, spauskite ALT 0 dėl pagalbos.',
+	editorTitle : 'Rich text editor, %1, press ALT 0 for help.', // MISSING
 
 	// ARIA descriptions.
-	toolbars	: 'Redaktoriaus įrankiai',
-	editor		: 'Pilnas redaktorius',
+	toolbar	: 'Toolbar', // MISSING
+	editor	: 'Rich Text Editor', // MISSING
 
 	// Toolbar buttons without dialogs.
 	source			: 'Šaltinis',
@@ -56,7 +56,7 @@ CKEDITOR.lang['lt'] =
 	superscript		: 'Viršutinis indeksas',
 	horizontalrule	: 'Įterpti horizontalią liniją',
 	pagebreak		: 'Įterpti puslapių skirtuką',
-	pagebreakAlt		: 'Puslapio skirtukas',
+	pagebreakAlt		: 'Page Break', // MISSING
 	unlink			: 'Panaikinti nuorodą',
 	undo			: 'Atšaukti',
 	redo			: 'Atstatyti',
@@ -93,23 +93,23 @@ CKEDITOR.lang['lt'] =
 		cssStyle		: 'Stilius',
 		ok				: 'OK',
 		cancel			: 'Nutraukti',
-		close			: 'Uždaryti',
-		preview			: 'Peržiūrėti',
+		close			: 'Close', // MISSING
+		preview			: 'Preview', // MISSING
 		generalTab		: 'Bendros savybės',
 		advancedTab		: 'Papildomas',
-		validateNumberFailed : 'Ši reikšmė nėra skaičius.',
-		confirmNewPage	: 'Visas neišsaugotas turinys bus prarastas. Ar tikrai norite įkrauti naują puslapį?',
-		confirmCancel	: 'Kai kurie parametrai pasikeitė. Ar tikrai norite užverti langą?',
-		options			: 'Parametrai',
-		target			: 'Tikslinė nuoroda',
-		targetNew		: 'Naujas langas (_blank)',
-		targetTop		: 'Viršutinis langas (_top)',
-		targetSelf		: 'Esamas langas (_self)',
-		targetParent	: 'Paskutinis langas (_parent)',
-		langDirLTR		: 'Iš kairės į dešinę (LTR)',
-		langDirRTL		: 'Iš dešinės į kairę (RTL)',
-		styles			: 'Stilius',
-		cssClasses		: 'Stilių klasės',
+		validateNumberFailed : 'This value is not a number.', // MISSING
+		confirmNewPage	: 'Any unsaved changes to this content will be lost. Are you sure you want to load new page?', // MISSING
+		confirmCancel	: 'Some of the options have been changed. Are you sure to close the dialog?', // MISSING
+		options			: 'Options', // MISSING
+		target			: 'Target', // MISSING
+		targetNew		: 'New Window (_blank)', // MISSING
+		targetTop		: 'Topmost Window (_top)', // MISSING
+		targetSelf		: 'Same Window (_self)', // MISSING
+		targetParent	: 'Parent Window (_parent)', // MISSING
+		langDirLTR		: 'Left to Right (LTR)', // MISSING
+		langDirRTL		: 'Right to Left (RTL)', // MISSING
+		styles			: 'Style', // MISSING
+		cssClasses		: 'Stylesheet Classes', // MISSING
 		width			: 'Plotis',
 		height			: 'Aukštis',
 		align			: 'Lygiuoti',
@@ -119,20 +119,16 @@ CKEDITOR.lang['lt'] =
 		alignTop		: 'Viršūnę',
 		alignMiddle		: 'Vidurį',
 		alignBottom		: 'Apačią',
-		invalidHeight	: 'Aukštis turi būti nurodytas skaičiais.',
-		invalidWidth	: 'Plotis turi būti nurodytas skaičiais.',
-		invalidCssLength	: 'Reikšmė nurodyta "%1" laukui, turi būti teigiamas skaičius su arba be tinkamo CSS matavimo vieneto (px, %, in, cm, mm, em, ex, pt arba pc).',
-		invalidHtmlLength	: 'Reikšmė nurodyta "%1" laukui, turi būti teigiamas skaičius su arba be tinkamo HTML matavimo vieneto (px arba %).',
-		invalidInlineStyle	: 'Reikšmė nurodyta vidiniame stiliuje turi būti sudaryta iš vieno šių reikšmių "vardas : reikšmė", atskirta kabliataškiais.',
-		cssLengthTooltip	: 'Įveskite reikšmę pikseliais arba skaičiais su tinkamu CSS vienetu (px, %, in, cm, mm, em, ex, pt arba pc).',
+		invalidHeight	: 'Height must be a number.', // MISSING
+		invalidWidth	: 'Width must be a number.', // MISSING
 
 		// Put the voice-only part of the label in the span.
-		unavailable		: '%1<span class="cke_accessibility">, netinkamas</span>'
+		unavailable		: '%1<span class="cke_accessibility">, unavailable</span>' // MISSING
 	},
 
 	contextmenu :
 	{
-		options : 'Kontekstinio meniu parametrai'
+		options : 'Context Menu Options' // MISSING
 	},
 
 	// Special char dialog.
@@ -140,7 +136,7 @@ CKEDITOR.lang['lt'] =
 	{
 		toolbar		: 'Įterpti specialų simbolį',
 		title		: 'Pasirinkite specialų simbolį',
-		options : 'Specialaus simbolio nustatymai'
+		options : 'Special Character Options' // MISSING
 	},
 
 	// Link dialog.
@@ -155,7 +151,7 @@ CKEDITOR.lang['lt'] =
 		upload		: 'Siųsti',
 		advanced	: 'Papildomas',
 		type		: 'Nuorodos tipas',
-		toUrl		: 'Nuoroda',
+		toUrl		: 'URL', // MISSING
 		toAnchor	: 'Žymė šiame puslapyje',
 		toEmail		: 'El.paštas',
 		targetFrame		: '<kadras>',
@@ -163,7 +159,7 @@ CKEDITOR.lang['lt'] =
 		targetFrameName	: 'Paskirties kadro vardas',
 		targetPopupName	: 'Paskirties lango vardas',
 		popupFeatures	: 'Išskleidžiamo lango savybės',
-		popupResizable	: 'Kintamas dydis',
+		popupResizable	: 'Resizable', // MISSING
 		popupStatusBar	: 'Būsenos juosta',
 		popupLocationBar: 'Adreso juosta',
 		popupToolbar	: 'Mygtukų juosta',
@@ -173,7 +169,7 @@ CKEDITOR.lang['lt'] =
 		popupDependent	: 'Priklausomas (Netscape)',
 		popupLeft		: 'Kairė pozicija',
 		popupTop		: 'Viršutinė pozicija',
-		id				: 'Id',
+		id				: 'Id', // MISSING
 		langDir			: 'Teksto kryptis',
 		langDirLTR		: 'Iš kairės į dešinę (LTR)',
 		langDirRTL		: 'Iš dešinės į kairę (RTL)',
@@ -186,7 +182,7 @@ CKEDITOR.lang['lt'] =
 		cssClasses		: 'Stilių lentelės klasės',
 		charset			: 'Susietų išteklių simbolių lentelė',
 		styles			: 'Stilius',
-		rel			: 'Sąsajos',
+		rel			: 'Relationship', // MISSING
 		selectAnchor		: 'Pasirinkite žymę',
 		anchorName		: 'Pagal žymės vardą',
 		anchorId			: 'Pagal žymės Id',
@@ -205,32 +201,31 @@ CKEDITOR.lang['lt'] =
 		menu		: 'Žymės savybės',
 		title		: 'Žymės savybės',
 		name		: 'Žymės vardas',
-		errorName	: 'Prašome įvesti žymės vardą',
-		remove		: 'Pašalinti žymę'
+		errorName	: 'Prašome įvesti žymės vardą'
 	},
 
 	// List style dialog
 	list:
 	{
-		numberedTitle		: 'Skaitmeninio sąrašo nustatymai',
-		bulletedTitle		: 'Ženklelinio sąrašo nustatymai',
-		type				: 'Rūšis',
-		start				: 'Pradžia',
-		validateStartNumber				:'Sąrašo pradžios skaitmuo turi būti sveikas skaičius.',
-		circle				: 'Apskritimas',
-		disc				: 'Diskas',
-		square				: 'Kvadratas',
-		none				: 'Niekas',
-		notset				: '<nenurodytas>',
-		armenian			: 'Armėniški skaitmenys',
-		georgian			: 'Gruziniški skaitmenys (an, ban, gan, t.t)',
-		lowerRoman			: 'Mažosios Romėnų (i, ii, iii, iv, v, t.t)',
-		upperRoman			: 'Didžiosios Romėnų (I, II, III, IV, V, t.t)',
-		lowerAlpha			: 'Mažosios Alpha (a, b, c, d, e, t.t)',
-		upperAlpha			: 'Didžiosios Alpha (A, B, C, D, E, t.t)',
-		lowerGreek			: 'Mažosios Graikų (alpha, beta, gamma, t.t)',
-		decimal				: 'Dešimtainis (1, 2, 3, t.t)',
-		decimalLeadingZero	: 'Dešimtainis su nuliu priekyje (01, 02, 03, t.t)'
+		numberedTitle		: 'Numbered List Properties', // MISSING
+		bulletedTitle		: 'Bulleted List Properties', // MISSING
+		type				: 'Type', // MISSING
+		start				: 'Start', // MISSING
+		validateStartNumber				:'List start number must be a whole number.', // MISSING
+		circle				: 'Circle', // MISSING
+		disc				: 'Disc', // MISSING
+		square				: 'Square', // MISSING
+		none				: 'None', // MISSING
+		notset				: '<not set>', // MISSING
+		armenian			: 'Armenian numbering', // MISSING
+		georgian			: 'Georgian numbering (an, ban, gan, etc.)', // MISSING
+		lowerRoman			: 'Lower Roman (i, ii, iii, iv, v, etc.)', // MISSING
+		upperRoman			: 'Upper Roman (I, II, III, IV, V, etc.)', // MISSING
+		lowerAlpha			: 'Lower Alpha (a, b, c, d, e, etc.)', // MISSING
+		upperAlpha			: 'Upper Alpha (A, B, C, D, E, etc.)', // MISSING
+		lowerGreek			: 'Lower Greek (alpha, beta, gamma, etc.)', // MISSING
+		decimal				: 'Decimal (1, 2, 3, etc.)', // MISSING
+		decimalLeadingZero	: 'Decimal leading zero (01, 02, 03, etc.)' // MISSING
 	},
 
 	// Find And Replace Dialog
@@ -242,12 +237,11 @@ CKEDITOR.lang['lt'] =
 		findWhat			: 'Surasti tekstą:',
 		replaceWith			: 'Pakeisti tekstu:',
 		notFoundMsg			: 'Nurodytas tekstas nerastas.',
-		findOptions			: 'Paieškos nustatymai',
 		matchCase			: 'Skirti didžiąsias ir mažąsias raides',
 		matchWord			: 'Atitikti pilną žodį',
-		matchCyclic			: 'Sutampantis cikliškumas',
+		matchCyclic			: 'Match cyclic', // MISSING
 		replaceAll			: 'Pakeisti viską',
-		replaceSuccessMsg	: '%1 sutapimas(ų) buvo pakeisti.'
+		replaceSuccessMsg	: '%1 occurrence(s) replaced.' // MISSING
 	},
 
 	// Table Dialog
@@ -262,7 +256,7 @@ CKEDITOR.lang['lt'] =
 		border		: 'Rėmelio dydis',
 		widthPx		: 'taškais',
 		widthPc		: 'procentais',
-		widthUnit	: 'pločio vienetas',
+		widthUnit	: 'width unit', // MISSING
 		cellSpace	: 'Tarpas tarp langelių',
 		cellPad		: 'Trapas nuo langelio rėmo iki teksto',
 		caption		: 'Antraštė',
@@ -272,13 +266,13 @@ CKEDITOR.lang['lt'] =
 		headersColumn	: 'Pirmas stulpelis',
 		headersRow		: 'Pirma eilutė',
 		headersBoth		: 'Abu',
-		invalidRows		: 'Skaičius turi būti didesnis nei 0.',
-		invalidCols		: 'Skaičius turi būti didesnis nei 0.',
-		invalidBorder	: 'Reikšmė turi būti nurodyta skaičiumi.',
-		invalidWidth	: 'Reikšmė turi būti nurodyta skaičiumi.',
-		invalidHeight	: 'Reikšmė turi būti nurodyta skaičiumi.',
-		invalidCellSpacing	: 'Reikšmė turi būti nurodyta skaičiumi.',
-		invalidCellPadding	: 'Reikšmė turi būti nurodyta skaičiumi.',
+		invalidRows		: 'Number of rows must be a number greater than 0.', // MISSING
+		invalidCols		: 'Number of columns must be a number greater than 0.', // MISSING
+		invalidBorder	: 'Border size must be a number.', // MISSING
+		invalidWidth	: 'Table width must be a number.', // MISSING
+		invalidHeight	: 'Table height must be a number.', // MISSING
+		invalidCellSpacing	: 'Cell spacing must be a number.', // MISSING
+		invalidCellPadding	: 'Cell padding must be a number.', // MISSING
 
 		cell :
 		{
@@ -291,25 +285,25 @@ CKEDITOR.lang['lt'] =
 			mergeDown		: 'Sujungti su apačia',
 			splitHorizontal	: 'Skaidyti langelį horizontaliai',
 			splitVertical	: 'Skaidyti langelį vertikaliai',
-			title			: 'Cell nustatymai',
-			cellType		: 'Cell rūšis',
-			rowSpan			: 'Eilučių Span',
-			colSpan			: 'Stulpelių Span',
-			wordWrap		: 'Sutraukti raides',
-			hAlign			: 'Horizontalus lygiavimas',
-			vAlign			: 'Vertikalus lygiavimas',
-			alignBaseline	: 'Apatinė linija',
-			bgColor			: 'Fono spalva',
-			borderColor		: 'Rėmelio spalva',
-			data			: 'Data',
-			header			: 'Antraštė',
-			yes				: 'Taip',
-			no				: 'Ne',
-			invalidWidth	: 'Reikšmė turi būti skaičius.',
-			invalidHeight	: 'Reikšmė turi būti skaičius.',
-			invalidRowSpan	: 'Reikšmė turi būti skaičius.',
-			invalidColSpan	: 'Reikšmė turi būti skaičius.',
-			chooseColor		: 'Pasirinkite'
+			title			: 'Cell Properties', // MISSING
+			cellType		: 'Cell Type', // MISSING
+			rowSpan			: 'Rows Span', // MISSING
+			colSpan			: 'Columns Span', // MISSING
+			wordWrap		: 'Word Wrap', // MISSING
+			hAlign			: 'Horizontal Alignment', // MISSING
+			vAlign			: 'Vertical Alignment', // MISSING
+			alignBaseline	: 'Baseline', // MISSING
+			bgColor			: 'Background Color', // MISSING
+			borderColor		: 'Border Color', // MISSING
+			data			: 'Data', // MISSING
+			header			: 'Header', // MISSING
+			yes				: 'Yes', // MISSING
+			no				: 'No', // MISSING
+			invalidWidth	: 'Cell width must be a number.', // MISSING
+			invalidHeight	: 'Cell height must be a number.', // MISSING
+			invalidRowSpan	: 'Rows span must be a whole number.', // MISSING
+			invalidColSpan	: 'Columns span must be a whole number.', // MISSING
+			chooseColor		: 'Choose' // MISSING
 		},
 
 		row :
@@ -356,7 +350,7 @@ CKEDITOR.lang['lt'] =
 		menu		: 'Formos savybės',
 		action		: 'Veiksmas',
 		method		: 'Metodas',
-		encoding	: 'Kodavimas'
+		encoding	: 'Encoding' // MISSING
 	},
 
 	// Select Field Dialog.
@@ -419,69 +413,70 @@ CKEDITOR.lang['lt'] =
 		upload		: 'Nusiųsti',
 		alt			: 'Alternatyvus Tekstas',
 		lockRatio	: 'Išlaikyti proporciją',
+		unlockRatio	: 'Unlock Ratio', // MISSING
 		resetSize	: 'Atstatyti dydį',
 		border		: 'Rėmelis',
 		hSpace		: 'Hor.Erdvė',
 		vSpace		: 'Vert.Erdvė',
 		alertUrl	: 'Prašome įvesti vaizdo URL',
 		linkTab		: 'Nuoroda',
-		button2Img	: 'Ar norite mygtuką paversti paprastu paveiksliuku?',
-		img2Button	: 'Ar norite paveiksliuką paversti mygtuku?',
-		urlMissing	: 'Paveiksliuko nuorodos nėra.',
-		validateBorder	: 'Reikšmė turi būti sveikas skaičius.',
-		validateHSpace	: 'Reikšmė turi būti sveikas skaičius.',
-		validateVSpace	: 'Reikšmė turi būti sveikas skaičius.'
+		button2Img	: 'Do you want to transform the selected image button on a simple image?', // MISSING
+		img2Button	: 'Do you want to transform the selected image on a image button?', // MISSING
+		urlMissing	: 'Image source URL is missing.', // MISSING
+		validateBorder	: 'Border must be a whole number.', // MISSING
+		validateHSpace	: 'HSpace must be a whole number.', // MISSING
+		validateVSpace	: 'VSpace must be a whole number.' // MISSING
 	},
 
 	// Flash Dialog
 	flash :
 	{
 		properties		: 'Flash savybės',
-		propertiesTab	: 'Nustatymai',
+		propertiesTab	: 'Properties', // MISSING
 		title			: 'Flash savybės',
 		chkPlay			: 'Automatinis paleidimas',
 		chkLoop			: 'Ciklas',
 		chkMenu			: 'Leisti Flash meniu',
-		chkFull			: 'Leisti per visą ekraną',
+		chkFull			: 'Allow Fullscreen', // MISSING
  		scale			: 'Mastelis',
 		scaleAll		: 'Rodyti visą',
 		scaleNoBorder	: 'Be rėmelio',
 		scaleFit		: 'Tikslus atitikimas',
-		access			: 'Skripto priėjimas',
-		accessAlways	: 'Visada',
-		accessSameDomain: 'Tas pats domenas',
-		accessNever		: 'Niekada',
+		access			: 'Script Access', // MISSING
+		accessAlways	: 'Always', // MISSING
+		accessSameDomain: 'Same domain', // MISSING
+		accessNever		: 'Never', // MISSING
 		alignAbsBottom	: 'Absoliučią apačią',
 		alignAbsMiddle	: 'Absoliutų vidurį',
 		alignBaseline	: 'Apatinę liniją',
 		alignTextTop	: 'Teksto viršūnę',
-		quality			: 'Kokybė',
-		qualityBest		: 'Geriausia',
-		qualityHigh		: 'Gera',
-		qualityAutoHigh	: 'Automatiškai Gera',
-		qualityMedium	: 'Vidutinė',
-		qualityAutoLow	: 'Automatiškai Žema',
-		qualityLow		: 'Žema',
-		windowModeWindow: 'Langas',
-		windowModeOpaque: 'Nepermatomas',
-		windowModeTransparent : 'Permatomas',
-		windowMode		: 'Lango režimas',
-		flashvars		: 'Flash kintamieji',
+		quality			: 'Quality', // MISSING
+		qualityBest		: 'Best', // MISSING
+		qualityHigh		: 'High', // MISSING
+		qualityAutoHigh	: 'Auto High', // MISSING
+		qualityMedium	: 'Medium', // MISSING
+		qualityAutoLow	: 'Auto Low', // MISSING
+		qualityLow		: 'Low', // MISSING
+		windowModeWindow: 'Window', // MISSING
+		windowModeOpaque: 'Opaque', // MISSING
+		windowModeTransparent : 'Transparent', // MISSING
+		windowMode		: 'Window mode', // MISSING
+		flashvars		: 'Variables for Flash', // MISSING
 		bgcolor			: 'Fono spalva',
 		hSpace			: 'Hor.Erdvė',
 		vSpace			: 'Vert.Erdvė',
 		validateSrc		: 'Prašome įvesti nuorodos URL',
-		validateHSpace	: 'HSpace turi būti skaičius.',
-		validateVSpace	: 'VSpace turi būti skaičius.'
+		validateHSpace	: 'HSpace must be a number.', // MISSING
+		validateVSpace	: 'VSpace must be a number.' // MISSING
 	},
 
 	// Speller Pages Dialog
 	spellCheck :
 	{
 		toolbar			: 'Rašybos tikrinimas',
-		title			: 'Tikrinti klaidas',
-		notAvailable	: 'Atleiskite, šiuo metu servisas neprieinamas.',
-		errorLoading	: 'Klaida įkraunant servisą: %s.',
+		title			: 'Spell Check', // MISSING
+		notAvailable	: 'Sorry, but service is unavailable now.', // MISSING
+		errorLoading	: 'Error loading application service host: %s.', // MISSING
 		notInDic		: 'Žodyne nerastas',
 		changeTo		: 'Pakeisti į',
 		btnIgnore		: 'Ignoruoti',
@@ -502,13 +497,13 @@ CKEDITOR.lang['lt'] =
 	{
 		toolbar	: 'Veideliai',
 		title	: 'Įterpti veidelį',
-		options : 'Šypsenėlių nustatymai'
+		options : 'Smiley Options' // MISSING
 	},
 
 	elementsPath :
 	{
-		eleLabel : 'Elemento kelias',
-		eleTitle : '%1 elementas'
+		eleLabel : 'Elements path', // MISSING
+		eleTitle : '%1 element' // MISSING
 	},
 
 	numberedlist	: 'Numeruotas sąrašas',
@@ -533,15 +528,15 @@ CKEDITOR.lang['lt'] =
 		copyError	: 'Jūsų naršyklės saugumo nustatymai neleidžia redaktoriui automatiškai įvykdyti kopijavimo operacijų. Tam prašome naudoti klaviatūrą (Ctrl/Cmd+C).',
 		pasteMsg	: 'Žemiau esančiame įvedimo lauke įdėkite tekstą, naudodami klaviatūrą (<STRONG>Ctrl/Cmd+V</STRONG>) ir paspauskite mygtuką <STRONG>OK</STRONG>.',
 		securityMsg	: 'Dėl jūsų naršyklės saugumo nustatymų, redaktorius negali tiesiogiai pasiekti laikinosios atminties. Jums reikia nukopijuoti dar kartą į šį langą.',
-		pasteArea	: 'Įkelti dalį'
+		pasteArea	: 'Paste Area' // MISSING
 	},
 
 	pastefromword :
 	{
-		confirmCleanup	: 'Tekstas, kurį įkeliate yra kopijuojamas iš Word. Ar norite jį išvalyti prieš įkeliant?',
+		confirmCleanup	: 'The text you want to paste seems to be copied from Word. Do you want to clean it before pasting?', // MISSING
 		toolbar			: 'Įdėti iš Word',
 		title			: 'Įdėti iš Word',
-		error			: 'Dėl vidinių sutrikimų, nepavyko išvalyti įkeliamo teksto'
+		error			: 'It was not possible to clean up the pasted data due to an internal error' // MISSING
 	},
 
 	pasteText :
@@ -554,7 +549,7 @@ CKEDITOR.lang['lt'] =
 	{
 		button			: 'Šablonai',
 		title			: 'Turinio šablonai',
-		options : 'Template Options',
+		options : 'Template Options', // MISSING
 		insertOption	: 'Pakeisti dabartinį turinį pasirinktu šablonu',
 		selectPromptMsg	: 'Pasirinkite norimą šabloną<br>(<b>Dėmesio!</b> esamas turinys bus prarastas):',
 		emptyListMsg	: '(Šablonų sąrašas tuščias)'
@@ -565,10 +560,10 @@ CKEDITOR.lang['lt'] =
 	stylesCombo :
 	{
 		label		: 'Stilius',
-		panelTitle	: 'Stilių formatavimas',
-		panelTitle1	: 'Blokų stiliai',
-		panelTitle2	: 'Vidiniai stiliai',
-		panelTitle3	: 'Objektų stiliai'
+		panelTitle	: 'Formatting Styles', // MISSING
+		panelTitle1	: 'Block Styles', // MISSING
+		panelTitle2	: 'Inline Styles', // MISSING
+		panelTitle3	: 'Object Styles' // MISSING
 	},
 
 	format :
@@ -585,46 +580,46 @@ CKEDITOR.lang['lt'] =
 		tag_h4		: 'Antraštinis 4',
 		tag_h5		: 'Antraštinis 5',
 		tag_h6		: 'Antraštinis 6',
-		tag_div		: 'Normalus (DIV)'
+		tag_div		: 'Normal (DIV)' // MISSING
 	},
 
 	div :
 	{
-		title				: 'Sukurti Div elementą',
-		toolbar				: 'Sukurti Div elementą',
-		cssClassInputLabel	: 'Stilių klasės',
-		styleSelectLabel	: 'Stilius',
-		IdInputLabel		: 'Id',
-		languageCodeInputLabel	: ' Kalbos kodas',
-		inlineStyleInputLabel	: 'Vidiniai stiliai',
-		advisoryTitleInputLabel	: 'Patariamas pavadinimas',
-		langDirLabel		: 'Kalbos nurodymai',
-		langDirLTRLabel		: 'Iš kairės į dešinę (LTR)',
-		langDirRTLLabel		: 'Iš dešinės į kairę (RTL)',
-		edit				: 'Redaguoti Div',
-		remove				: 'Pašalinti Div'
+		title				: 'Create Div Container', // MISSING
+		toolbar				: 'Create Div Container', // MISSING
+		cssClassInputLabel	: 'Stylesheet Classes', // MISSING
+		styleSelectLabel	: 'Style', // MISSING
+		IdInputLabel		: 'Id', // MISSING
+		languageCodeInputLabel	: ' Language Code', // MISSING
+		inlineStyleInputLabel	: 'Inline Style', // MISSING
+		advisoryTitleInputLabel	: 'Advisory Title', // MISSING
+		langDirLabel		: 'Language Direction', // MISSING
+		langDirLTRLabel		: 'Left to Right (LTR)', // MISSING
+		langDirRTLLabel		: 'Right to Left (RTL)', // MISSING
+		edit				: 'Edit Div', // MISSING
+		remove				: 'Remove Div' // MISSING
   	},
 
 	iframe :
 	{
-		title		: 'IFrame nustatymai',
-		toolbar		: 'IFrame',
-		noUrl		: 'Nurodykite iframe nuorodą',
-		scrolling	: 'Įjungti slankiklius',
-		border		: 'Rodyti rėmelį'
+		title		: 'IFrame Properties', // MISSING
+		toolbar		: 'IFrame', // MISSING
+		noUrl		: 'Please type the iframe URL', // MISSING
+		scrolling	: 'Enable scrollbars', // MISSING
+		border		: 'Show frame border' // MISSING
 	},
 
 	font :
 	{
 		label		: 'Šriftas',
-		voiceLabel	: 'Šriftas',
+		voiceLabel	: 'Font', // MISSING
 		panelTitle	: 'Šriftas'
 	},
 
 	fontSize :
 	{
 		label		: 'Šrifto dydis',
-		voiceLabel	: 'Šrifto dydis',
+		voiceLabel	: 'Font Size', // MISSING
 		panelTitle	: 'Šrifto dydis'
 	},
 
@@ -632,184 +627,127 @@ CKEDITOR.lang['lt'] =
 	{
 		textColorTitle	: 'Teksto spalva',
 		bgColorTitle	: 'Fono spalva',
-		panelTitle		: 'Spalva',
+		panelTitle		: 'Colors', // MISSING
 		auto			: 'Automatinis',
 		more			: 'Daugiau spalvų...'
 	},
 
 	colors :
 	{
-		'000' : 'Juoda',
-		'800000' : 'Kaštoninė',
-		'8B4513' : 'Tamsiai ruda',
-		'2F4F4F' : 'Pilka tamsaus šiferio',
-		'008080' : 'Teal',
-		'000080' : 'Karinis',
-		'4B0082' : 'Indigo',
-		'696969' : 'Tamsiai pilka',
-		'B22222' : 'Ugnies',
-		'A52A2A' : 'Ruda',
-		'DAA520' : 'Aukso',
-		'006400' : 'Tamsiai žalia',
-		'40E0D0' : 'Turquoise',
-		'0000CD' : 'Vidutinė mėlyna',
-		'800080' : 'Violetinė',
-		'808080' : 'Pilka',
-		'F00' : 'Raudona',
-		'FF8C00' : 'Tamsiai oranžinė',
-		'FFD700' : 'Auksinė',
-		'008000' : 'Žalia',
-		'0FF' : 'Žydra',
-		'00F' : 'Mėlyna',
-		'EE82EE' : 'Violetinė',
-		'A9A9A9' : 'Dim Gray',
-		'FFA07A' : 'Light Salmon',
-		'FFA500' : 'Oranžinė',
-		'FFFF00' : 'Geltona',
-		'00FF00' : 'Citrinų',
-		'AFEEEE' : 'Pale Turquoise',
-		'ADD8E6' : 'Šviesiai mėlyna',
-		'DDA0DD' : 'Plum',
-		'D3D3D3' : 'Šviesiai pilka',
-		'FFF0F5' : 'Lavender Blush',
-		'FAEBD7' : 'Antique White',
-		'FFFFE0' : 'Šviesiai geltona',
-		'F0FFF0' : 'Honeydew',
-		'F0FFFF' : 'Azure',
-		'F0F8FF' : 'Alice Blue',
-		'E6E6FA' : 'Lavender',
-		'FFF' : 'Balta'
+		'000' : 'Black', // MISSING
+		'800000' : 'Maroon', // MISSING
+		'8B4513' : 'Saddle Brown', // MISSING
+		'2F4F4F' : 'Dark Slate Gray', // MISSING
+		'008080' : 'Teal', // MISSING
+		'000080' : 'Navy', // MISSING
+		'4B0082' : 'Indigo', // MISSING
+		'696969' : 'Dark Gray', // MISSING
+		'B22222' : 'Fire Brick', // MISSING
+		'A52A2A' : 'Brown', // MISSING
+		'DAA520' : 'Golden Rod', // MISSING
+		'006400' : 'Dark Green', // MISSING
+		'40E0D0' : 'Turquoise', // MISSING
+		'0000CD' : 'Medium Blue', // MISSING
+		'800080' : 'Purple', // MISSING
+		'808080' : 'Gray', // MISSING
+		'F00' : 'Red', // MISSING
+		'FF8C00' : 'Dark Orange', // MISSING
+		'FFD700' : 'Gold', // MISSING
+		'008000' : 'Green', // MISSING
+		'0FF' : 'Cyan', // MISSING
+		'00F' : 'Blue', // MISSING
+		'EE82EE' : 'Violet', // MISSING
+		'A9A9A9' : 'Dim Gray', // MISSING
+		'FFA07A' : 'Light Salmon', // MISSING
+		'FFA500' : 'Orange', // MISSING
+		'FFFF00' : 'Yellow', // MISSING
+		'00FF00' : 'Lime', // MISSING
+		'AFEEEE' : 'Pale Turquoise', // MISSING
+		'ADD8E6' : 'Light Blue', // MISSING
+		'DDA0DD' : 'Plum', // MISSING
+		'D3D3D3' : 'Light Grey', // MISSING
+		'FFF0F5' : 'Lavender Blush', // MISSING
+		'FAEBD7' : 'Antique White', // MISSING
+		'FFFFE0' : 'Light Yellow', // MISSING
+		'F0FFF0' : 'Honeydew', // MISSING
+		'F0FFFF' : 'Azure', // MISSING
+		'F0F8FF' : 'Alice Blue', // MISSING
+		'E6E6FA' : 'Lavender', // MISSING
+		'FFF' : 'White' // MISSING
 	},
 
 	scayt :
 	{
-		title			: 'Tikrinti klaidas kai rašoma',
-		opera_title		: 'Nepalaikoma naršyklėje Opera',
-		enable			: 'Įjungti SCAYT',
-		disable			: 'Išjungti SCAYT',
-		about			: 'Apie SCAYT',
-		toggle			: 'Perjungti SCAYT',
-		options			: 'Parametrai',
-		langs			: 'Kalbos',
-		moreSuggestions	: 'Daugiau patarimų',
-		ignore			: 'Ignoruoti',
-		ignoreAll		: 'Ignoruoti viską',
-		addWord			: 'Pridėti žodį',
-		emptyDic		: 'Žodyno vardas neturėtų būti tuščias.',
+		title			: 'Spell Check As You Type', // MISSING
+		opera_title		: 'Not supported by Opera', // MISSING
+		enable			: 'Enable SCAYT', // MISSING
+		disable			: 'Disable SCAYT', // MISSING
+		about			: 'About SCAYT', // MISSING
+		toggle			: 'Toggle SCAYT', // MISSING
+		options			: 'Options', // MISSING
+		langs			: 'Languages', // MISSING
+		moreSuggestions	: 'More suggestions', // MISSING
+		ignore			: 'Ignore', // MISSING
+		ignoreAll		: 'Ignore All', // MISSING
+		addWord			: 'Add Word', // MISSING
+		emptyDic		: 'Dictionary name should not be empty.', // MISSING
 
-		optionsTab		: 'Parametrai',
-		allCaps			: 'Ignoruoti visas didžiąsias raides',
-		ignoreDomainNames : 'Ignoruoti domenų vardus',
-		mixedCase		: 'Ignoruoti maišyto dydžio raides',
-		mixedWithDigits	: 'Ignoruoti raides su skaičiais',
+		optionsTab		: 'Options', // MISSING
+		allCaps			: 'Ignore All-Caps Words', // MISSING
+		ignoreDomainNames : 'Ignore Domain Names', // MISSING
+		mixedCase		: 'Ignore Words with Mixed Case', // MISSING
+		mixedWithDigits	: 'Ignore Words with Numbers', // MISSING
 
-		languagesTab	: 'Kalbos',
+		languagesTab	: 'Languages', // MISSING
 
-		dictionariesTab	: 'Žodynai',
-		dic_field_name	: 'Žodyno pavadinimas',
-		dic_create		: 'Sukurti',
-		dic_restore		: 'Atstatyti',
-		dic_delete		: 'Ištrinti',
-		dic_rename		: 'Pervadinti',
-		dic_info		: 'Paprastai žodynas yra saugojamas sausainėliuose (cookies), kurių dydis, bet kokiu atveju, yra apribotas. Esant sausainėlių apimties pervišiui, viskas bus saugoma serveryje. Jei norite iš kart viską saugoti serveryje, turite sugalvoti žodynui pavadinimą. Jei jau turite žodyną, įrašykite pavadinimą ir nuspauskite Atstatyti mygtuką.',
+		dictionariesTab	: 'Dictionaries', // MISSING
+		dic_field_name	: 'Dictionary name', // MISSING
+		dic_create		: 'Create', // MISSING
+		dic_restore		: 'Restore', // MISSING
+		dic_delete		: 'Delete', // MISSING
+		dic_rename		: 'Rename', // MISSING
+		dic_info		: 'Initially the User Dictionary is stored in a Cookie. However, Cookies are limited in size. When the User Dictionary grows to a point where it cannot be stored in a Cookie, then the dictionary may be stored on our server. To store your personal dictionary on our server you should specify a name for your dictionary. If you already have a stored dictionary, please type its name and click the Restore button.', // MISSING
 
-		aboutTab		: 'Apie'
+		aboutTab		: 'About' // MISSING
 	},
 
 	about :
 	{
-		title		: 'Apie CKEditor',
-		dlgTitle	: 'Apie CKEditor',
-		help	: 'Patikrinkite $1 dėl pagalbos.',
-		userGuide : 'CKEditor Vartotojo Gidas',
-		moreInfo	: 'Dėl licencijavimo apsilankykite mūsų svetainėje:',
-		copy		: 'Copyright &copy; $1. Visos teiss saugomos.'
+		title		: 'About CKEditor', // MISSING
+		dlgTitle	: 'About CKEditor', // MISSING
+		moreInfo	: 'For licensing information please visit our web site:', // MISSING
+		copy		: 'Copyright &copy; $1. All rights reserved.' // MISSING
 	},
 
-	maximize : 'Išdidinti',
-	minimize : 'Sumažinti',
+	maximize : 'Maximize', // MISSING
+	minimize : 'Minimize', // MISSING
 
 	fakeobjects :
 	{
-		anchor		: 'Žymė',
-		flash		: 'Flash animacija',
-		iframe		: 'IFrame',
-		hiddenfield	: 'Paslėptas laukas',
-		unknown		: 'Nežinomas objektas'
+		anchor		: 'Anchor', // MISSING
+		flash		: 'Flash Animation', // MISSING
+		iframe		: 'IFrame', // MISSING
+		hiddenfield	: 'Hidden Field', // MISSING
+		unknown		: 'Unknown Object' // MISSING
 	},
 
-	resize : 'Pavilkite, kad pakeistumėte dydį',
+	resize : 'Drag to resize', // MISSING
 
 	colordialog :
 	{
-		title		: 'Pasirinkite spalvą',
-		options	:	'Spalvos nustatymai',
-		highlight	: 'Paryškinti',
-		selected	: 'Pasirinkta spalva',
-		clear		: 'Išvalyti'
+		title		: 'Select color', // MISSING
+		options	:	'Color Options', // MISSING
+		highlight	: 'Highlight', // MISSING
+		selected	: 'Selected Color', // MISSING
+		clear		: 'Clear' // MISSING
 	},
 
-	toolbarCollapse	: 'Apjungti įrankių juostą',
-	toolbarExpand	: 'Išplėsti įrankių juostą',
-
-	toolbarGroups :
-	{
-		document : 'Dokumentas',
-		clipboard : 'Atmintinė/Atgal',
-		editing : 'Redagavimas',
-		forms : 'Formos',
-		basicstyles : 'Pagrindiniai stiliai',
-		paragraph : 'Paragrafas',
-		links : 'Nuorodos',
-		insert : 'Įterpti',
-		styles : 'Stiliai',
-		colors : 'Spalvos',
-		tools : 'Įrankiai'
-	},
+	toolbarCollapse	: 'Collapse Toolbar', // MISSING
+	toolbarExpand	: 'Expand Toolbar', // MISSING
 
 	bidi :
 	{
-		ltr : 'Tekstas iš kairės į dešinę',
-		rtl : 'Tekstas iš dešinės į kairę'
-	},
-
-	docprops :
-	{
-		label : 'Dokumento savybės',
-		title : 'Dokumento savybės',
-		design : 'Išdėstymas',
-		meta : 'Meta duomenys',
-		chooseColor : 'Pasirinkite',
-		other : '<kitas>',
-		docTitle :	'Puslapio antraštė',
-		charset : 	'Simbolių kodavimo lentelė',
-		charsetOther : 'Kita simbolių kodavimo lentelė',
-		charsetASCII : 'ASCII',
-		charsetCE : 'Centrinės Europos',
-		charsetCT : 'Tradicinės kinų (Big5)',
-		charsetCR : 'Kirilica',
-		charsetGR : 'Graikų',
-		charsetJP : 'Japonų',
-		charsetKR : 'Korėjiečių',
-		charsetTR : 'Turkų',
-		charsetUN : 'Unikodas (UTF-8)',
-		charsetWE : 'Vakarų Europos',
-		docType : 'Dokumento tipo antraštė',
-		docTypeOther : 'Kita dokumento tipo antraštė',
-		xhtmlDec : 'Įtraukti XHTML deklaracijas',
-		bgColor : 'Fono spalva',
-		bgImage : 'Fono paveikslėlio nuoroda (URL)',
-		bgFixed : 'Neslenkantis fonas',
-		txtColor : 'Teksto spalva',
-		margin : 'Puslapio kraštinės',
-		marginTop : 'Viršuje',
-		marginLeft : 'Kairėje',
-		marginRight : 'Dešinėje',
-		marginBottom : 'Apačioje',
-		metaKeywords : 'Dokumento indeksavimo raktiniai žodžiai (atskirti kableliais)',
-		metaDescription : 'Dokumento apibūdinimas',
-		metaAuthor : 'Autorius',
-		metaCopyright : 'Autorinės teisės',
-		previewHtml : '<p>Tai yra <strong>pavyzdinis tekstas</strong>. Jūs naudojate <a href="javascript:void(0)">CKEditor</a>.</p>'
+		ltr : 'Text direction from left to right', // MISSING
+		rtl : 'Text direction from right to left' // MISSING
 	}
 };

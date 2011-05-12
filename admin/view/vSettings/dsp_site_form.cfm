@@ -6,38 +6,38 @@ the Free Software Foundation, Version 2 of the License.
 
 Mura CMS is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. �See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-along with Mura CMS. If not, see <http://www.gnu.org/licenses/>.
+along with Mura CMS. �If not, see <http://www.gnu.org/licenses/>.
 
 Linking Mura CMS statically or dynamically with other modules constitutes
 the preparation of a derivative work based on Mura CMS. Thus, the terms and 	
-conditions of the GNU General Public License version 2 (GPL) cover the entire combined work.
+conditions of the GNU General Public License version 2 (�GPL�) cover the entire combined work.
 
 However, as a special exception, the copyright holders of Mura CMS grant you permission
 to combine Mura CMS with programs or libraries that are released under the GNU Lesser General Public License version 2.1.
 
-In addition, as a special exception, the copyright holders of Mura CMS grant you permission
-to combine Mura CMS with independent software modules that communicate with Mura CMS solely
+In addition, as a special exception, �the copyright holders of Mura CMS grant you permission
+to combine Mura CMS �with independent software modules that communicate with Mura CMS solely
 through modules packaged as Mura CMS plugins and deployed through the Mura CMS plugin installation API,
-provided that these modules (a) may only modify the /plugins/ directory through the Mura CMS
+provided that these modules (a) may only modify the �/trunk/www/plugins/ directory through the Mura CMS
 plugin installation API, (b) must not alter any default objects in the Mura CMS database
 and (c) must not alter any files in the following directories except in cases where the code contains
 a separately distributed license.
 
-/admin/
-/tasks/
-/config/
-/requirements/mura/
+/trunk/www/admin/
+/trunk/www/tasks/
+/trunk/www/config/
+/trunk/www/requirements/mura/
 
 You may copy and distribute such a combined work under the terms of GPL for Mura CMS, provided that you include
 the source code of that other code when and as the GNU GPL requires distribution of source code.
 
 For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception
 for your modified version; it is your choice whether to do so, or to make such modified version available under
-the GNU General Public License version 2 without this exception. You may, if you choose, apply this exception
+the GNU General Public License version 2 �without this exception. �You may, if you choose, apply this exception
 to your own modified versions of Mura CMS.
 --->
 <cfsilent>
@@ -72,7 +72,6 @@ to your own modified versions of Mura CMS.
  --->
 <cfset tabLabelList='Basic,Contact Info,Shared Resources,Modules,Email,Images,Extranet,Display Regions,Deploy Bundle'>
 <cfset tabList='tabBasic,tabContactinfo,tabSharedresources,tabModules,tabEmail,tabImages,tabExtranet,tabDisplayregions,tabBundles'>
- <img class="loadProgress tabPreloader" src="images/progress_bar.gif">
  <div class="tabs initActiveTab" style="display:none">
   <ul>
 	<cfloop from="1" to="#listlen(tabList)#" index="t">
@@ -84,7 +83,7 @@ to your own modified versions of Mura CMS.
     <dl class="oneColumn">
       <dt class="first">Site ID <span>(Warning: no punctuation, dots or file delimiters)</span></dt>
       <dd>
-        <cfif attributes.siteid eq ''><input name="siteid" type="text" class="text" value="#request.siteBean.getsiteid()#" size="25" maxlength="25" required="true"><cfelse>#request.siteBean.getsiteid()#<input name="siteid" type="hidden" value="#request.siteBean.getsiteid()#"></cfif>
+        <cfif attributes.siteid eq ''><input name="siteid" type="text" class="text forceLC" value="#request.siteBean.getsiteid()#" size="25" maxlength="25" required="true"><cfelse>#request.siteBean.getsiteid()#<input name="siteid" type="hidden" value="#request.siteBean.getsiteid()#"></cfif>
       <dd>
       <dt>Site</dt>
       <dd>
@@ -96,7 +95,7 @@ to your own modified versions of Mura CMS.
       </dd>
       <dt>Domain <span>(Example: www.google.com)</span></dt>
       <dd>
-        <input name="domain" type="text" class="text" value="#HTMLEditFormat(request.siteBean.getdomain('production'))#" size="50" maxlength="255">
+        <input name="domain" type="text" class="text" value="#HTMLEditFormat(request.siteBean.getdomain('production'))#" size="50" maxlength="50">
       </dd>
 	 <dt>Domain Alias List <span>(Line Delimited)</span></dt>
       <dd>
@@ -125,25 +124,25 @@ to your own modified versions of Mura CMS.
       <dd>
         <input name="pagelimit" type="text" class="text short" value="#HTMLEditFormat(request.siteBean.getpagelimit())#" size="5" maxlength="6">
       </dd>
-    <!---  <dt>Default View Depth <span>(in Site Manager)</span></dt>
+      <dt>Default View Depth <span>(in Site Manager)</span></dt>
       <dd>
         <input name="viewDepth" type="text" class="text short" value="#HTMLEditFormat(request.siteBean.getviewDepth())#" size="5" maxlength="5">
-      </dd>--->
+      </dd>
       <dt>Default  Rows <span>(in Site Manager)</span></dt>
       <dd>
         <input name="nextN" type="text" class="text short" value="#HTMLEditFormat(request.siteBean.getnextN())#" size="5" maxlength="5">
       </dd>
       <dt>Site Caching</dt>
-      <dd>		 
-       <input type="radio" name="cache" value="0"<cfif request.siteBean.getcache() neq 1> CHECKED</CFIF>>
+      <dd>
+        <input type="radio" name="cache" value="0" <cfif request.siteBean.getcache() neq 1> CHECKED</CFIF>>
         Off&nbsp;&nbsp;
-       <input type="radio" name="cache" value="1"<cfif request.siteBean.getcache() eq 1> CHECKED</CFIF>>
-        On
+        <input type="radio" name="cache" value="1" <cfif request.siteBean.getcache()  eq 1> CHECKED</CFIF>>
+        On</dd>
 	  <dt>Cache Capacity <span>(0=Unlimited)</span></dt>
       <dd>
         <input name="cacheCapacity" type="text" class="text short" value="#HTMLEditFormat(request.siteBean.getCacheCapacity())#" size="15" maxlength="15">
       </dd>
-	  <dt>Cache Free Memory Threshold <span>(Defaults to 60%)</span></dt>
+	  <dt>Cache Free Memory Threshold <span>(Defaults to 40%)</span></dt>
       <dd>
         <input name="cacheFreeMemoryThreshold" type="text" class="text short" value="#HTMLEditFormat(request.siteBean.getCacheFreeMemoryThreshold())#" size="3" maxlength="3">%
       </dd>
@@ -403,7 +402,7 @@ to your own modified versions of Mura CMS.
         <input type="radio" name="gallerySmallScaleBy" value="y" <cfif request.siteBean.getgallerySmallScaleBy() eq 'y'> CHECKED</CFIF>>
         Height
 		 <input type="radio" name="gallerySmallScaleBy" value="s" <cfif request.siteBean.getgallerySmallScaleBy() neq 'x' and request.siteBean.getgallerySmallScaleBy() neq 'y'> CHECKED</CFIF>>
-        Square <span>(Recommended)</span></dd>
+        Square</dd>
 <dt>Medium Image Size</dt>
       <dd>
         <input name="galleryMediumScale" type="text" class="text short" value="#request.siteBean.getGalleryMediumScale()#" size="5" maxlength="5">px
@@ -415,7 +414,7 @@ to your own modified versions of Mura CMS.
         <input type="radio" name="galleryMediumScaleBy" value="y" <cfif request.siteBean.getgalleryMediumScaleBy() neq 's' and request.siteBean.getgalleryMediumScaleBy() neq 'x'> CHECKED</CFIF>>
         Height
 		 <input type="radio" name="galleryMediumScaleBy" value="s" <cfif request.siteBean.getgalleryMediumScaleBy() eq 's' > CHECKED</CFIF>>
-        Square <span>(Recommended)</span></dd>
+        Square</dd>
          <dt>Large (Full) Image Size</dt>
       <dd>
         <input name="galleryMainScale" type="text" class="text short" value="#request.siteBean.getgalleryMainScale()#" size="5" maxlength="5">px
@@ -440,11 +439,11 @@ to your own modified versions of Mura CMS.
         Yes</dd>
 	   <dt>Custom Login URL</dt>
       <dd>
-        <input name="loginURL" type="text" class="text" value="#HTMLEditFormat(request.siteBean.getLoginURL(parseMuraTag=false))#" maxlength="255">
+        <input name="loginURL" type="text" class="text" value="#HTMLEditFormat(request.siteBean.getLoginURL())#" maxlength="255">
       </dd>
 	   <dt>Custom Profile URL</dt>
       <dd>
-        <input name="editProfileURL" type="text" class="text" value="#HTMLEditFormat(request.siteBean.getEditProfileURL(parseMuraTag=false))#" maxlength="255">
+        <input name="editProfileURL" type="text" class="text" value="#HTMLEditFormat(request.siteBean.getEditProfileURL())#" maxlength="255">
       </dd>
      <!---  <dt>Allow Public Submission In To Portals</dt>
       <dd>
@@ -470,24 +469,53 @@ to your own modified versions of Mura CMS.
       <dl class="oneColumn">
       <dt class="first">Number of Display Regions</dt>
       <dd>
-      	<select name="columnCount">
-      		<option value="1" <cfif request.siteBean.getcolumnCount() eq 1 or request.siteBean.getcolumnCount() eq 0> selected</cfif>> 1</option>
-      		<cfloop from="2" to="20" index="i">
-				<option value="#i#" <cfif request.siteBean.getcolumnCount() eq i> selected</cfif>>#i#</option> 	
-			</cfloop>
-      	</select>
-       </dd>
+        <input type="radio" name="columnCount" value="1" <cfif request.siteBean.getcolumnCount() eq 1 or request.siteBean.getcolumnCount() eq 0> CHECKED</CFIF>>
+        1&nbsp;&nbsp;
+        <input type="radio" name="columnCount" value="2" <cfif request.siteBean.getcolumnCount() eq 2> CHECKED</CFIF>>
+        2 &nbsp;&nbsp;
+        <input type="radio" name="columnCount" value="3" <cfif request.siteBean.getcolumnCount() eq 3> CHECKED</CFIF>>
+        3
+        &nbsp;&nbsp;
+        <input type="radio" name="columnCount" value="4" <cfif request.siteBean.getcolumnCount() eq 4> CHECKED</CFIF>>
+        4
+        &nbsp;&nbsp;
+        <input type="radio" name="columnCount" value="5" <cfif request.siteBean.getcolumnCount() eq 5> CHECKED</CFIF>>
+        5
+        &nbsp;&nbsp;
+        <input type="radio" name="columnCount" value="6" <cfif request.siteBean.getcolumnCount() eq 6> CHECKED</CFIF>>
+        6
+        &nbsp;&nbsp;
+        <input type="radio" name="columnCount" value="7" <cfif request.siteBean.getcolumnCount() eq 7> CHECKED</CFIF>>
+        7
+        &nbsp;&nbsp;
+        <input type="radio" name="columnCount" value="8" <cfif request.siteBean.getcolumnCount() eq 8> CHECKED</CFIF>>
+        8</dd>
       <dt>Primary Display Region <span>(Dynamic System Content such as Login Forms and Search Results get displayed here)</span></dt>
       <dd>
-       <select name="primaryColumn">
-      		<cfloop from="1" to="20" index="i">
-				<option value="#i#" <cfif request.siteBean.getPrimaryColumn() eq i> selected</cfif>>#i#</option> 	
-			</cfloop>
-      	</select>
-	  </dd>
+        <input type="radio" name="primaryColumn" value="1" <cfif request.siteBean.getprimaryColumn() eq 1 or request.siteBean.getprimaryColumn() eq 0> CHECKED</CFIF>>
+        1&nbsp;&nbsp;
+        <input type="radio" name="primaryColumn" value="2" <cfif request.siteBean.getprimaryColumn() eq 2> CHECKED</CFIF>>
+        2 &nbsp;&nbsp;
+        <input type="radio" name="primaryColumn" value="3" <cfif request.siteBean.getprimaryColumn() eq 3> CHECKED</CFIF>>
+        3
+        &nbsp;&nbsp;
+        <input type="radio" name="primaryColumn" value="4" <cfif request.siteBean.getprimaryColumn() eq 4> CHECKED</CFIF>>
+        4
+        &nbsp;&nbsp;
+        <input type="radio" name="primaryColumn" value="5" <cfif request.siteBean.getprimaryColumn() eq 5> CHECKED</CFIF>>
+        5
+        &nbsp;&nbsp;
+        <input type="radio" name="primaryColumn" value="6" <cfif request.siteBean.getprimaryColumn() eq 6> CHECKED</CFIF>>
+        6
+        &nbsp;&nbsp;
+        <input type="radio" name="primaryColumn" value="7" <cfif request.siteBean.getprimaryColumn() eq 7> CHECKED</CFIF>>
+        7
+        &nbsp;&nbsp;
+        <input type="radio" name="primaryColumn" value="8" <cfif request.siteBean.getprimaryColumn() eq 8> CHECKED</CFIF>>
+        8</dd>
       <dt>Display Region Names <span>("^" Delimiter)</span></dt>
       <dd>
-        <input name="columnNames" type="text" class="text long" value="#HTMLEditFormat(request.siteBean.getcolumnNames())#">
+        <input name="columnNames" type="text" class="text" value="#HTMLEditFormat(request.siteBean.getcolumnNames())#" maxlength="255">
       </dd>
       </dl>
       </div>
@@ -549,37 +577,14 @@ to your own modified versions of Mura CMS.
 	  </dd>
 --->
 	 
-	
+	  <dt>Bundle File</dt>
+	  <dd><input type="file" name="bundleFile" accept=".zip"/></dd>
 	  
-	  <dt><a class="tooltip">Select Bundle File From Server<cfif application.configBean.getPostBundles()> (Preferred)</cfif><span>You can deploy a bundle that exists on the server by entering the complete server path to the Site Bundle here. This eliminates the need to upload the file via your web browser, avoiding some potential timeout issues.</span></a></dt>
+	  <dt><a class="tooltip">Site Bundle Location (Optional)<span>You can deploy a bundle that exists on the server by entering the complete server path to the Site Bundle here. This eliminates the need to upload the file via your web browser, avoiding some potential timeout issues.</span></a></dt>
       <dd>
-        <input class="text" type="text" name="serverBundlePath" id="serverBundlePath" value=""><input type="button" value="Browse Server" id="serverBundleBrowser"/>
-		<script>
-		jQuery(document).ready( function() {
-			var finder = new CKFinder();
-				finder.basePath = '#application.configBean.getContext()#/tasks/widgets/ckfinder/';
-				finder.selectActionFunction = setServerBundlePath;
-				finder.resourceType='Application_Root';
-			
-				 jQuery("##serverBundleBrowser").bind("click", function(){
-					 finder.popup();
-				 });		
-		});
-		
-		function setServerBundlePath(fileUrl) {
-			var check=fileUrl.split(".");
-			if(check[check.length-1].toLowerCase() == 'zip'){
-			jQuery('##serverBundlePath').val("#JSStringFormat('#application.configBean.getWebRoot()##application.configBean.getFileDelim()#')#" + fileUrl);
-			}
-		}
-		</script>
+        <input class="text" type="text" name="serverBundlePath" id="serverBundlePath">
       </dd>
-	  <cfif application.configBean.getPostBundles()>
-	  	<dt><a class="tooltip">Upload Bundle File <span>Uploading large files via a web browser can produce inconsistent results.</span></a></dt>
-	  	<dd><input type="file" name="bundleFile" accept=".zip"/></dd>
-	  <cfelse>
-	  	<input type="hidden" name="bundleFile" value=""/>
-	  </cfif>
+	  
 	  </dl>
 	  </div>
 	
@@ -587,12 +592,12 @@ to your own modified versions of Mura CMS.
     <input type="hidden" name="action" value="update">
     <div id="actionButtons">
 	<cfif request.siteBean.getsiteid() eq ''> 
-      <input type="button" class="submit" onclick="submitForm(document.forms.form1,'add');" value="Add" />
+      <a class="submit" href="javascript:;" onclick="return submitForm(document.forms.form1,'add');"><span>Add</span></a>
     <cfelse>
 		<cfif request.siteBean.getsiteid() neq 'default'>
-		<input type="button" class="submit" onclick="return confirmDialog('#JSStringFormat("WARNING: A deleted site and all of it''s files cannot be recovered. Are you sure that you want to continue?")#','index.cfm?fuseaction=cSettings.updateSite&action=delete&siteid=#request.siteBean.getSiteID()#');" value="Delete" />
+		<a class="submit" href="index.cfm?fuseaction=cSettings.updateSite&action=delete&siteid=#request.siteBean.getSiteID()#" onclick="return confirmDialog('#JSStringFormat("WARNING: A deleted site and all of it''s files cannot be recovered. Are you sure that you want to continue?")#',this.href);"><span>Delete</span></a>
 		</cfif>
-      	<input type="button" class="submit" onclick="submitForm(document.forms.form1,'update');" value="Update" />
+      	<a class="submit" href="javascript:;" onclick="return submitForm(document.forms.form1,'update');"><span>Update</span></a>
      </cfif>
 	 </div>
 	 <div id="actionIndicator" style="display: none;">

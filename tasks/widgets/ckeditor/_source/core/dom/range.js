@@ -359,7 +359,7 @@ CKEDITOR.dom.range = function( document )
 			if ( node.type == CKEDITOR.NODE_TEXT )
 			{
 				// If there's any visible text, then we're not at the start.
-				if ( node.hasAscendant( 'pre' ) || CKEDITOR.tools.trim( node.getText() ).length )
+				if ( CKEDITOR.tools.trim( node.getText() ).length )
 					return false;
 			}
 			else if ( node.type == CKEDITOR.NODE_ELEMENT )
@@ -1320,22 +1320,6 @@ CKEDITOR.dom.range = function( document )
 								CKEDITOR.POSITION_AFTER_START :
 								CKEDITOR.POSITION_AFTER_END );
 
-					// Avoid enlarging the range further when end boundary spans right after the BR. (#7490)
-					if ( unit == CKEDITOR.ENLARGE_LIST_ITEM_CONTENTS )
-					{
-						var theRange = this.clone();
-						walker = new CKEDITOR.dom.walker( theRange );
-
-						var whitespaces = CKEDITOR.dom.walker.whitespaces(),
-							bookmark = CKEDITOR.dom.walker.bookmark();
-
-						walker.evaluator = function( node ) { return !whitespaces( node ) && !bookmark( node ); };
-						var previous = walker.previous();
-						if ( previous && previous.type == CKEDITOR.NODE_ELEMENT && previous.is( 'br' ) )
-							return;
-					}
-
-
 					// Enlarging the end boundary.
 					walkerRange = this.clone();
 					walkerRange.collapse();
@@ -1886,7 +1870,7 @@ CKEDITOR.dom.range = function( document )
 							return 0;
 						}
 						// Range enclosed entirely in an editable element.
-						else if ( node.is( 'html' )
+						else if ( node.is( 'body' )
 							|| node.getAttribute( 'contentEditable' ) == 'true'
 							&& ( node.contains( anotherEnd ) || node.equals( anotherEnd ) ) )
 						{
@@ -1920,53 +1904,47 @@ CKEDITOR.dom.range = function( document )
 		 */
 		moveToElementEditablePosition : function( el, isMoveToEnd )
 		{
-			function nextDFS( node, childOnly )
+			var isEditable;
+
+			// Empty elements are rejected.
+			if ( CKEDITOR.dtd.$empty[ el.getName() ] )
+				return false;
+
+			while ( el && el.type == CKEDITOR.NODE_ELEMENT )
 			{
-				var next;
+				isEditable = el.isEditable();
 
-				if ( node.type == CKEDITOR.NODE_ELEMENT
-						&& node.isEditable( false )
-						&& !CKEDITOR.dtd.$nonEditable[ node.getName() ] )
-				{
-					next = node[ isMoveToEnd ? 'getLast' : 'getFirst' ]( nonWhitespaceOrBookmarkEval );
-				}
-
-				if ( !childOnly && !next )
-					next = node[ isMoveToEnd ? 'getPrevious' : 'getNext' ]( nonWhitespaceOrBookmarkEval );
-
-				return next;
-			}
-
-			var found = 0;
-
-			while ( el )
-			{
-				// Stop immediately if we've found a text node.
-				if ( el.type == CKEDITOR.NODE_TEXT )
+				// If an editable element is found, move inside it.
+				if ( isEditable )
+					this.moveToPosition( el, isMoveToEnd ?
+					                         CKEDITOR.POSITION_BEFORE_END :
+					                         CKEDITOR.POSITION_AFTER_START );
+				// Stop immediately if we've found a non editable inline element (e.g <img>).
+				else if ( CKEDITOR.dtd.$inline[ el.getName() ] )
 				{
 					this.moveToPosition( el, isMoveToEnd ?
 					                         CKEDITOR.POSITION_AFTER_END :
 					                         CKEDITOR.POSITION_BEFORE_START );
-					found = 1;
-					break;
+					return true;
 				}
 
-				// If an editable element is found, move inside it, but not stop the searching.
-				if ( el.type == CKEDITOR.NODE_ELEMENT )
+				// Non-editable non-inline elements are to be bypassed, getting the next one.
+				if ( CKEDITOR.dtd.$empty[ el.getName() ] )
+					el = el[ isMoveToEnd ? 'getPrevious' : 'getNext' ]( nonWhitespaceOrBookmarkEval );
+				else
+					el = el[ isMoveToEnd ? 'getLast' : 'getFirst' ]( nonWhitespaceOrBookmarkEval );
+
+				// Stop immediately if we've found a text node.
+				if ( el && el.type == CKEDITOR.NODE_TEXT )
 				{
-					if ( el.isEditable() )
-					{
-						this.moveToPosition( el, isMoveToEnd ?
-												 CKEDITOR.POSITION_BEFORE_END :
-												 CKEDITOR.POSITION_AFTER_START );
-						found = 1;
-					}
+					this.moveToPosition( el, isMoveToEnd ?
+					                         CKEDITOR.POSITION_AFTER_END :
+					                         CKEDITOR.POSITION_BEFORE_START );
+					return true;
 				}
-
-				el = nextDFS( el, found );
 			}
 
-			return !!found;
+			return isEditable;
 		},
 
 		/**

@@ -41,20 +41,10 @@ CKEDITOR.htmlParser.fragment = function()
 	// parser fixing.
 	var nonBreakingBlocks = CKEDITOR.tools.extend( { table:1,ul:1,ol:1,dl:1 }, CKEDITOR.dtd.table, CKEDITOR.dtd.ul, CKEDITOR.dtd.ol, CKEDITOR.dtd.dl );
 
-	// IE < 8 don't output the close tag on definition list items. (#6975)
-	var optionalCloseTags = CKEDITOR.env.ie && CKEDITOR.env.version < 8 ? { dd : 1, dt :1 } : {};
-
 	var listBlocks = { ol:1, ul:1 };
 
 	// Dtd of the fragment element, basically it accept anything except for intermediate structure, e.g. orphan <li>.
 	var rootDtd = CKEDITOR.tools.extend( {}, { html: 1 }, CKEDITOR.dtd.html, CKEDITOR.dtd.body, CKEDITOR.dtd.head, { style:1,script:1 } );
-
-	function isRemoveEmpty( node )
-	{
-		// Empty link is to be removed when empty but not anchor. (#7894)
-		return node.name == 'a' && node.attributes.href
-			|| CKEDITOR.dtd.$removeEmpty[ node.name ];
-	}
 
 	/**
 	 * Creates a {@link CKEDITOR.htmlParser.fragment} from an HTML string.
@@ -74,8 +64,6 @@ CKEDITOR.htmlParser.fragment = function()
 			pendingInline = [],
 			pendingBRs = [],
 			currentNode = fragment,
-		    // Indicate we're inside a <textarea> element, spaces should be touched differently.
-			inTextarea = false,
 		    // Indicate we're inside a <pre> element, spaces should be touched differently.
 			inPre = false;
 
@@ -112,13 +100,6 @@ CKEDITOR.htmlParser.fragment = function()
 						// to properly process the next entry).
 						pendingInline.splice( i, 1 );
 						i--;
-					}
-					else
-					{
-						// Some element of the same type cannot be nested, flat them,
-						// e.g. <a href="#">foo<a href="#">bar</a></a>. (#7894)
-						if ( pendingName == currentNode.name )
-							addElement( currentNode, currentNode.parent, 1 ), i--;
 					}
 				}
 			}
@@ -177,7 +158,7 @@ CKEDITOR.htmlParser.fragment = function()
 
 			// Rtrim empty spaces on block end boundary. (#3585)
 			if ( element._.isBlockLike
-				 && element.name != 'pre' && element.name != 'textarea' )
+				 && element.name != 'pre' )
 			{
 
 				var length = element.children.length,
@@ -212,11 +193,10 @@ CKEDITOR.htmlParser.fragment = function()
 			if ( element.isUnknown && selfClosing )
 				element.isEmpty = true;
 
-			// Check for optional closed elements, including browser quirks and manually opened blocks.
-			element.isOptionalClose = tagName in optionalCloseTags || optionalClose;
+			element.isOptionalClose = optionalClose;
 
 			// This is a tag to be removed if empty, so do not add it immediately.
-			if ( isRemoveEmpty( element ) )
+			if ( CKEDITOR.dtd.$removeEmpty[ tagName ] )
 			{
 				pendingInline.push( element );
 				return;
@@ -228,8 +208,6 @@ CKEDITOR.htmlParser.fragment = function()
 				currentNode.add( new CKEDITOR.htmlParser.text( '\n' ) );
 				return;
 			}
-			else if ( tagName == 'textarea' )
-				inTextarea = true;
 
 			if ( tagName == 'br' )
 			{
@@ -363,9 +341,6 @@ CKEDITOR.htmlParser.fragment = function()
 				if ( currentNode.name == 'pre' )
 					inPre = false;
 
-				if ( currentNode.name == 'textarea' )
-					inTextarea = false;
-
 				if ( candidate._.isBlockLike )
 					sendPendingBRs();
 
@@ -385,8 +360,8 @@ CKEDITOR.htmlParser.fragment = function()
 
 		parser.onText = function( text )
 		{
-			// Trim empty spaces at beginning of text contents except <pre> and <textarea>.
-			if ( ( !currentNode._.hasInlineStarted || pendingBRs.length ) && !inPre && !inTextarea )
+			// Trim empty spaces at beginning of element contents except <pre>.
+			if ( !currentNode._.hasInlineStarted && !inPre )
 			{
 				text = CKEDITOR.tools.ltrim( text );
 
@@ -406,7 +381,7 @@ CKEDITOR.htmlParser.fragment = function()
 
 			// Shrinking consequential spaces into one single for all elements
 			// text contents.
-			if ( !inPre && !inTextarea )
+			if ( !inPre )
 				text = text.replace( /[\t\r\n ]{2,}|[\t\r\n]/g, ' ' );
 
 			currentNode.add( new CKEDITOR.htmlParser.text( text ) );
@@ -445,14 +420,13 @@ CKEDITOR.htmlParser.fragment = function()
 		 *		following types: {@link CKEDITOR.htmlParser.element},
 		 *		{@link CKEDITOR.htmlParser.text} and
 		 *		{@link CKEDITOR.htmlParser.comment}.
-		 *	@param {Number} [index] From where the insertion happens.
 		 * @example
 		 */
-		add : function( node, index )
+		add : function( node )
 		{
-			isNaN( index ) && ( index = this.children.length );
+			var len = this.children.length,
+				previous = len > 0 && this.children[ len - 1 ] || null;
 
-			var previous = index > 0 ? this.children[ index - 1 ] : null;
 			if ( previous )
 			{
 				// If the block to be appended is following text, trim spaces at
@@ -477,7 +451,7 @@ CKEDITOR.htmlParser.fragment = function()
 			node.previous = previous;
 			node.parent = this;
 
-			this.children.splice( index, 0, node );
+			this.children.push( node );
 
 			this._.hasInlineStarted = node.type == CKEDITOR.NODE_TEXT || ( node.type == CKEDITOR.NODE_ELEMENT && !node._.isBlockLike );
 		},

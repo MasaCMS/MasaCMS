@@ -22,10 +22,6 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 	{
 		var editor = evt.editor,
 			path = evt.data.path;
-
-		if ( editor.readOnly )
-			return;
-
 		var useComputedState = editor.config.useComputedState,
 			selectedElement;
 
@@ -38,13 +34,10 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		selectedElement = selectedElement || path.block || path.blockLimit;
 
 		// If we're having BODY here, user probably done CTRL+A, let's try to get the enclosed node, if any.
-		if ( selectedElement.is( 'body' ) )
-		{
-			var enclosedNode = editor.getSelection().getRanges()[ 0 ].getEnclosedNode();
-			enclosedNode && enclosedNode.type == CKEDITOR.NODE_ELEMENT && ( selectedElement = enclosedNode );
-		}
+		selectedElement.is( 'body' ) &&
+			( selectedElement = editor.getSelection().getRanges()[ 0 ].getEnclosedNode() );
 
-		if ( !selectedElement  )
+		if ( !selectedElement )
 			return;
 
 		var selectionDir = useComputedState ?

@@ -41,7 +41,6 @@ config.format_tags = 'p;h1;h2;h3;h4;pre;address;div';
 	config.format_h3 = { element : '#renderer.getHeaderTag('subHead2')#' };
 	config.format_h4 = { element : '#renderer.getHeaderTag('subHead3')#' };
 	config.format_h5 = { element : '#renderer.getHeaderTag('subHead4')#' };
-	// config.format_h6 = { element : '#renderer.getHeaderTag('subHead5')#' };
 	</cfoutput>
 	
     // config.ignoreEmptyParagraph = 'false';
@@ -63,8 +62,8 @@ config.format_tags = 'p;h1;h2;h3;h4;pre;address;div';
 	                                	['NumberedList','BulletedList','-','Outdent','Indent','Blockquote','CreateDiv'],
 	                                	['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock'],
 	                                	['Link','Unlink','Anchor'],
-	                                	['Image','Flash','Media','gmap','-','Table','HorizontalRule','SpecialChar','PageBreak','-','Selectlink','SelectComponent','Templates'<cfif application.configBean.getEnableMuraTag()>,'muratag'</cfif>],
-										['Styles','Format','-','Maximize','ShowBlocks','About']
+	                                	['Image','Flash','Media','gmap','-','Table','HorizontalRule','SpecialChar','PageBreak'],
+	                                	['Selectlink','SelectComponent','Templates'<cfif application.configBean.getEnableMuraTag()>,'muratag'</cfif>,'-','Styles','Format','-','Maximize','ShowBlocks','-','About']	
 	                                ] ;
 
 	config.toolbar_Summary = [
@@ -76,8 +75,8 @@ config.format_tags = 'p;h1;h2;h3;h4;pre;address;div';
 										['NumberedList','BulletedList','-','Outdent','Indent','Blockquote','CreateDiv'],
 										['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock'],
 										['Link','Unlink','Anchor'],
-										['Image','Flash','Media','gmap','-','Table','HorizontalRule','SpecialChar','PageBreak','-','Selectlink','SelectComponent','Templates'<cfif application.configBean.getEnableMuraTag()>,'muratag'</cfif>],
-										['Styles','Format','-','Maximize','ShowBlocks','About']
+										['Image','Flash','Media','gmap','-','Table','HorizontalRule','SpecialChar','PageBreak'],
+										['Selectlink','SelectComponent','Templates'<cfif application.configBean.getEnableMuraTag()>,'muratag'</cfif>,'-','Styles','Format','-','Maximize','ShowBlocks','-','About']	
 	                                ] ;
 
 	config.toolbar_Form = [
@@ -89,9 +88,9 @@ config.format_tags = 'p;h1;h2;h3;h4;pre;address;div';
 										['NumberedList','BulletedList','-','Outdent','Indent','Blockquote','CreateDiv'],
 										['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock'],
 										['Link','Unlink','Anchor'],
-										['Image','Flash','Media','gmap','-','Table','HorizontalRule','SpecialChar','PageBreak','-','Selectlink','SelectComponent','Templates'<cfif application.configBean.getEnableMuraTag()>,'muratag'</cfif>],
+										['Image','Flash','Media','gmap','-','Table','HorizontalRule','SpecialChar','PageBreak'],
 										['Form', 'Checkbox', 'Radio', 'TextField', 'Textarea', 'Select', 'Button', 'ImageButton', 'HiddenField'],
-										['Styles','Format','-','Maximize','ShowBlocks','About']
+										['Selectlink','SelectComponent','Templates'<cfif application.configBean.getEnableMuraTag()>,'muratag'</cfif>,'-','Styles','Format','-','Maximize','ShowBlocks','-','About']	
 	                                ] ;
 
 	config.toolbar_Basic = [
@@ -119,11 +118,7 @@ config.format_tags = 'p;h1;h2;h3;h4;pre;address;div';
 		config.GoogleMaps_Key='none';
 	</cfif>	
 	
-	<cfif fileExists(expandPath($.siteConfig("themeIncludePath") & '/css/editor/editor.css.cfm') )>
-		config.contentsCss='#$.siteConfig('themeAssetPath')#/css/editor/editor.css.cfm';
-	<cfelseif fileExists(expandPath($.siteConfig("themeIncludePath") & '/css/editor/editor.css') )>
-		config.contentsCss='#$.siteConfig('themeAssetPath')#/css/editor/editor.css';	
-	<cfelseif fileExists(expandPath($.siteConfig("themeIncludePath") & '/css/editor.css.cfm') )>
+	<cfif fileExists(expandPath($.siteConfig("themeIncludePath") & '/css/editor.css.cfm') )>
 		config.contentsCss='#$.siteConfig('themeAssetPath')#/css/editor.css.cfm';
 	<cfelse>		
 		config.contentsCss='#$.siteConfig('themeAssetPath')#/css/editor.css';
@@ -138,9 +133,9 @@ config.format_tags = 'p;h1;h2;h3;h4;pre;address;div';
 	</cfif>
 	
 	<cfif fileExists(expandPath($.siteConfig("themeIncludePath") & '/js/editor/styles.js.cfm') )>
-		config.stylesSet='default:#$.siteConfig('themeAssetPath')#/js/editor/styles.js.cfm';
+		config.stylesCombo_stylesSet='default:#$.siteConfig('themeAssetPath')#/js/editor/styles.js.cfm';
 	<cfelseif fileExists(expandPath($.siteConfig("themeIncludePath") & '/js/editor/styles.js') )>
-		config.stylesSet='default:#$.siteConfig('themeAssetPath')#/js/editor/styles.js';
+		config.stylesCombo_stylesSet='default:#$.siteConfig('themeAssetPath')#/js/editor/styles.js';
 	</cfif>
 	
 	<cfif fileExists(expandPath($.siteConfig("themeIncludePath") & '/js/editor/config.js.cfm') )>

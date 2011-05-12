@@ -6,43 +6,39 @@ the Free Software Foundation, Version 2 of the License.
 
 Mura CMS is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-along with Mura CMS. If not, see <http://www.gnu.org/licenses/>.
+along with Mura CMS.  If not, see <http://www.gnu.org/licenses/>.
 
-Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on 
-Mura CMS. Thus, the terms and conditions of the GNU General Public License version 2 ("GPL") cover the entire combined work.
+Linking Mura CMS statically or dynamically with other modules constitutes
+the preparation of a derivative work based on Mura CMS. Thus, the terms and 	
+conditions of the GNU General Public License version 2 (“GPL”) cover the entire combined work.
 
-However, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with programs
-or libraries that are released under the GNU Lesser General Public License version 2.1.
+However, as a special exception, the copyright holders of Mura CMS grant you permission
+to combine Mura CMS with programs or libraries that are released under the GNU Lesser General Public License version 2.1.
 
-In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with 
-independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without 
-Mura CMS under the license of your choice, provided that you follow these specific guidelines: 
+In addition, as a special exception,  the copyright holders of Mura CMS grant you permission
+to combine Mura CMS  with independent software modules that communicate with Mura CMS solely
+through modules packaged as Mura CMS plugins and deployed through the Mura CMS plugin installation API,
+provided that these modules (a) may only modify the  /trunk/www/plugins/ directory through the Mura CMS
+plugin installation API, (b) must not alter any default objects in the Mura CMS database
+and (c) must not alter any files in the following directories except in cases where the code contains
+a separately distributed license.
 
-Your custom code 
+/trunk/www/admin/
+/trunk/www/tasks/
+/trunk/www/config/
+/trunk/www/requirements/mura/
 
-â€¢ Must not alter any default objects in the Mura CMS database and
-â€¢ May not alter the default display of the Mura CMS logo within Mura CMS and
-â€¢ Must not alter any files in the following directories.
+You may copy and distribute such a combined work under the terms of GPL for Mura CMS, provided that you include
+the source code of that other code when and as the GNU GPL requires distribution of source code.
 
- /admin/
- /tasks/
- /config/
- /requirements/mura/
- /Application.cfc
- /index.cfm
- /MuraProxy.cfc
-
-You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work 
-under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL 
-requires distribution of source code.
-
-For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your 
-modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
-version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
+For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception
+for your modified version; it is your choice whether to do so, or to make such modified version available under
+the GNU General Public License version 2  without this exception.  You may, if you choose, apply this exception
+to your own modified versions of Mura CMS.
 --->
 <cfcomponent extends="mura.cfobject">
 
@@ -124,7 +120,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfloop query="rssites">
 	<cfset site=application.settingsManager.getSite(rsSites.siteID)>
 	<cftry>
-	<cfif site.isValidDomain(domain:checkDomain, mode:"partial")>
+	<cfif site.isValidDomain(domain:checkDomain, mode:"partial")>>
 		<cflocation addtoken="no" url="http://#application.settingsManager.getSite(rsSites.siteID).getDomain()##application.configBean.getContext()#">
 	</cfif>
 	<cfcatch></cfcatch>
@@ -169,7 +165,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfif>
 		
 		<cfif isValid("UUID",last)>
-			<cfquery name="rsRedirect" datasource="#application.configBean.getReadOnlyDatasource()#"  username="#application.configBean.getReadOnlyDbUsername()#" password="#application.configBean.getReadOnlyDbPassword()#">
+			<cfquery name="rsRedirect" datasource="#application.configBean.getDatasource()#"  username="#application.configBean.getDBUsername()#" password="#application.configBean.getDBPassword()#">
 			select * from tredirects where redirectID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#last#">
 			</cfquery>
 			
@@ -332,31 +328,22 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 </cffunction>
 
-<cffunction name="renderFilename" output="true" access="public">
-	<cfargument name="filename" default="">
-	<cfargument name="validateDomain" default="true">
-	<cfset var fileoutput="">
- 
+<cffunction name="render404" output="true" access="public">
 	<cfset request.siteid = bindToDomain()>
+	<cfset request.currentFilename = "404">
+	<cfset request.currentFilenameAdjusted=request.currentFilename>
 	<cfset request.servletEvent = createObject("component","mura.servletEvent").init() />
-	<cfset request.servletEvent.setValue("muraValidateDomain",arguments.validateDomain)>
-	<cfset request.servletEvent.setValue("currentfilename",arguments.filename)>
-	<cfset parseCustomURLVars(request.servletEvent)>
-	<cfset fileOutput=variables.Mura.doRequest(request.servletEvent)>	
+	<cfset fileOutput=variables.Mura.doRequest(request.servletEvent)>
+	<cfheader statuscode="404" statustext="Content Not Found" /> 
 	<cfoutput>#fileOutput#</cfoutput>
 	<cfabort>
-
-</cffunction>
-
-<cffunction name="render404" output="true" access="public">
-	<cfheader statuscode="404" statustext="Content Not Found" /> 
-	<cfset renderFilename("404")> 
 </cffunction>
 
 <cffunction name="parseCustomURLVars" output="false">
 <cfargument name="event">
 	<cfset var categoryFilename="">
 	<cfset var categoryBean="">
+	<cfset var contentBean="">
 	<cfset var i="">
 	<cfset var dateArray=arrayNew(1)>
 	<cfset var categoryArray=arrayNew(1)>
@@ -368,9 +355,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<cfloop from="1" to="#listLen(currentFilename,'/')#" index="i">
 		<cfset currentItem=listGetAt(currentFilename,i,'/')>
-		<cfif listFindNoCase(application.configBean.getCustomURLVarDelimiters(),currentItem,"^")>
-			<cfset currentItem="params">
-		</cfif>
 		<cfif listFindNoCase('date,category,params,tag,linkservid,showmeta',currentItem)>
 			<cfset currentArrayName="#currentItem#Array">
 		<cfelseif currentArrayName eq "paramsArray">

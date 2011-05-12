@@ -3,7 +3,7 @@
  * CKFinder
  * ========
  * http://ckfinder.com
- * Copyright (C) 2007-2011, CKSource - Frederico Knabben. All rights reserved.
+ * Copyright (C) 2007-2010, CKSource - Frederico Knabben. All rights reserved.
  *
  * The software, this file and its contents are subject to the CKFinder
  * License. Please read the license.txt file before using, installing, copying,
@@ -23,7 +23,7 @@
 
 	<cfswitch expression="#command#" >
 		<!--- execute command that returns XML --->
-		<cfcase value="CopyFiles;MoveFiles;Init;LoadCookies;GetFiles;GetFolders;RenameFile;DeleteFile;CreateFolder;RenameFolder;DeleteFolder;Thumbnail" delimiters=";">
+		<cfcase value="CopyFiles;MoveFiles;Init;GetFiles;GetFolders;RenameFile;DeleteFile;CreateFolder;RenameFolder;DeleteFolder;Thumbnail" delimiters=";">
 			<!--- check if connector is enabled --->
 			<cfif not REQUEST.CheckAuthentication()>
 				<cfthrow type="ckfinder" errorCode="#REQUEST.constants.CKFINDER_CONNECTOR_ERROR_CONNECTOR_DISABLED#" />
@@ -54,16 +54,14 @@
 		<!--- execute command that doesn't return XML --->
 		<cfcase value="DownloadFile;FileUpload;QuickUpload" delimiters=";">
 
+			<!--- check if connector is enabled --->
+			<cfif not REQUEST.CheckAuthentication()>
+				<cfreturn false />
+			</cfif>
+
+			<!--- execute command ---->
 			<cftry>
 				<cfset oObject=APPLICATION.CreateCFC("CommandHandler." & #command#)>
-
-				<!--- check if connector is enabled --->
-				<cfif not REQUEST.CheckAuthentication()>
-					<cfset oObject.throwError(REQUEST.constants.CKFINDER_CONNECTOR_ERROR_CONNECTOR_DISABLED)>
-					<cfreturn false />
-				</cfif>
-
-				<!--- execute command ---->
 				<cfset result=oObject.sendResponse()>
 
 				<!--- actually, errors should be catched inside command handlers and this never should happen --->

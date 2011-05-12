@@ -14,7 +14,7 @@ along with Mura CMS.  If not, see <http://www.gnu.org/licenses/>.
 
 Linking Mura CMS statically or dynamically with other modules constitutes
 the preparation of a derivative work based on Mura CMS. Thus, the terms and      
-conditions of the GNU General Public License version 2 (GPL) cover the entire combined work.
+conditions of the GNU General Public License version 2 (ÒGPLÓ) cover the entire combined work.
 
 However, as a special exception, the copyright holders of Mura CMS grant you permission
 to combine Mura CMS with programs or libraries that are released under the GNU Lesser General Public License version 2.1.
@@ -22,15 +22,15 @@ to combine Mura CMS with programs or libraries that are released under the GNU L
 In addition, as a special exception,  the copyright holders of Mura CMS grant you permission
 to combine Mura CMS  with independent software modules that communicate with Mura CMS solely
 through modules packaged as Mura CMS plugins and deployed through the Mura CMS plugin installation API,
-provided that these modules (a) may only modify the  /plugins/ directory through the Mura CMS
+provided that these modules (a) may only modify the  /trunk/www/plugins/ directory through the Mura CMS
 plugin installation API, (b) must not alter any default objects in the Mura CMS database
 and (c) must not alter any files in the following directories except in cases where the code contains
 a separately distributed license.
 
-/admin/
-/tasks/
-/config/
-/requirements/mura/
+/trunk/www/admin/
+/trunk/www/tasks/
+/trunk/www/config/
+/trunk/www/requirements/mura/
 
 You may copy and distribute such a combined work under the terms of GPL for Mura CMS, provided that you include
 the source code of that other code when and as the GNU GPL requires distribution of source code.
@@ -49,7 +49,7 @@ uses the query string as the key --->
 <cfparam name="attributes.scope" default="application">
 <cfparam name="attributes.nocache" default="0">
 <cfparam name="attributes.siteid" default="#request.siteid#">
-<cfparam name="attributes.cacheFactory" default="#application.settingsManager.getSite(attributes.siteid).getCacheFactory(name='output')#">
+<cfparam name="attributes.cacheFactory" default="#application.settingsManager.getSite(attributes.siteid).getCacheFactory()#">
 <cfparam name="request.forceCache" default="false">
 <cfparam name="request.cacheItem" default="true">
 <cfparam name="request.cacheItemTimeSpan" default="">
@@ -75,9 +75,9 @@ uses the query string as the key --->
                </cfif>
        <cfelse>        
 			  <cfif isDate(request.cacheItemTimeSpan)>
-				 <cfset cacheFactory.set( key=attributes.key, context=thisTag.generatedContent, obj=thisTag.generatedContent, timespan=request.cacheItemTimeSpan)>
+				 <cfset cacheFactory.set( attributes.key ,thisTag.generatedContent, true, request.cacheItemTimeSpan)>
 			  <cfelse>
-              	 <cfset cacheFactory.set( key=attributes.key, context=thisTag.generatedContent, obj=thisTag.generatedContent, timespan=attributes.timespan)>
+              	 <cfset cacheFactory.set( attributes.key ,thisTag.generatedContent, true, attributes.timespan)>
 			  </cfif>
        </cfif>
 </cfif>

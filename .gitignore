@@ -1,6 +1,5 @@
 /.project
 /.settings
-/.DS_Store
 /WEB-INF
 /config/settings.ini.cfm
 /config/version.cfm
@@ -15,10 +14,3 @@
 /.htaccess
 /CFIDE
 /bluedragon
-/unitTests
-/www
-/settings.xml
-/logs
-/crossdomain.xml
-/.rdsTempFiles
-/muracms.esproj

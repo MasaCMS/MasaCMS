@@ -2,22 +2,22 @@
  * CKFinder
  * ========
  * http://ckfinder.com
- * Copyright (C) 2007-2011, CKSource - Frederico Knabben. All rights reserved.
+ * Copyright (C) 2007-2010, CKSource - Frederico Knabben. All rights reserved.
  *
- * The software, this file, and its contents are subject to the CKFinder
+ * The software, this file and its contents are subject to the CKFinder
  * License. Please read the license.txt file before using, installing, copying,
- * modifying, or distributing this file or part of its contents. The contents of
+ * modifying or distribute this file or part of its contents. The contents of
  * this file is part of the Source Code of CKFinder.
  *
  */
 
 /**
- * @fileOverview Defines the {@link CKFinder.lang} object for the Russian
- *		language.
+ * @fileOverview Defines the {@link CKFinder.lang} object, for the Russian
+ *		language. This is the base file for all translations.
 */
 
 /**
- * Contains the dictionary of language entries.
+ * Constains the dictionary of language entries.
  * @namespace
  */
 CKFinder.lang['ru'] =
@@ -77,13 +77,13 @@ CKFinder.lang['ru'] =
 
 	// Files
 	FileRename		: 'Пожалуйста, введите новое имя файла: ',
-	FileRenameExt	: 'Вы уверены, что хотите изменить расширение файла? Файл может стать недоступным.',
+	FileRenameExt	: 'Вы уверены, что хотите изменить расширение файла? Файл может стать недоступным',
 	FileRenaming	: 'Переименовываю...',
 	FileDelete		: 'Вы уверены, что хотите удалить файл "%1"?',
 	FilesLoading	: 'Загрузка...',
 	FilesEmpty		: 'Пустая папка',
-	FilesMoved		: 'Файл %1 перемещен в %2:%3.',
-	FilesCopied		: 'Файл %1 скопирован в %2:%3.',
+	FilesMoved		: 'Файл %1 перемещен в %2:%3',
+	FilesCopied		: 'Файл %1 скопирован в %2:%3',
 
 	// Basket
 	BasketFolder		: 'Корзина',
@@ -142,23 +142,11 @@ CKFinder.lang['ru'] =
 	UploadBtn			: 'Загрузить выбранный файл',
 	UploadBtnCancel		: 'Отмена',
 
-	UploadNoFileMsg		: 'Пожалуйста, выберите файл на вашем компьютере.',
+	UploadNoFileMsg		: 'Пожалуйста, выберите файл на вашем компьютере',
 	UploadNoFolder		: 'Пожалуйста, выберите папку, в которую вы хотите закачать файл.',
 	UploadNoPerms		: 'Загрузка файлов запрещена.',
 	UploadUnknError		: 'Ошибка при передаче файла.',
 	UploadExtIncorrect	: 'В эту папку нельзя закачивать файлы с таким расширением.',
-
-	// Flash Uploads
-	UploadLabel			: 'Files to Upload', // MISSING
-	UploadTotalFiles	: 'Total Files:', // MISSING
-	UploadTotalSize		: 'Total Size:', // MISSING
-	UploadAddFiles		: 'Add Files', // MISSING
-	UploadClearFiles	: 'Clear Files', // MISSING
-	UploadCancel		: 'Cancel Upload', // MISSING
-	UploadRemove		: 'Remove', // MISSING
-	UploadRemoveTip		: 'Remove !f', // MISSING
-	UploadUploaded		: 'Uploaded !n%', // MISSING
-	UploadProcessing	: 'Processing...', // MISSING
 
 	// Settings Panel
 	SetTitle		: 'Установки',
@@ -200,13 +188,13 @@ CKFinder.lang['ru'] =
 	116 : 'Папка не найдена. Пожалуйста, обновите вид папок и попробуйте еще раз.',
 	117 : 'Файл не найден. Пожалуйста, обновите список файлов и попробуйте еще раз.',
 	118 : 'Исходное расположение файла совпадает с указанным.',
-	201 : 'Файл с таким именем уже существует. Загруженный файл был переименован в "%1".',
-	202 : 'Неверный файл.',
+	201 : 'Файл с таким именем уже существует. Загруженный файл был переименован в "%1"',
+	202 : 'Неверный файл',
 	203 : 'Неверный файл. Размер файла слишком большой.',
 	204 : 'Загруженный файл поврежден.',
 	205 : 'Недоступна временная папка для загрузки файлов на сервер.',
 	206 : 'Загрузка отменена из-за соображений безопасности. Файл содержит похожие на HTML данные.',
-	207 : 'Загруженный файл был переименован в "%1".',
+	207 : 'Загруженный файл был переименован в "%1"',
 	300 : 'Произошла ошибка при перемещении файла(ов).',
 	301 : 'Произошла ошибка при копировании файла(ов).',
 	500 : 'Браузер файлов отключен из-за соображений безопасности. Пожалуйста, сообщите вашему системному администратру и проверьте конфигурационный файл CKFinder.',
@@ -216,17 +204,14 @@ CKFinder.lang['ru'] =
 	// Other Error Messages.
 	ErrorMsg :
 	{
-		FileEmpty		: 'Имя файла не может быть пустым.',
-		FileExists		: 'Файл %s уже существует.',
-		FolderEmpty		: 'Имя папки не может быть пустым.',
+		FileEmpty		: 'Имя файла не может быть пустым',
+		FileExists		: 'Файл %s уже существует',
+		FolderEmpty		: 'Имя папки не может быть пустым',
 
 		FileInvChar		: 'Имя файла не может содержать любой из перечисленных символов: \n\\ / : * ? " < > |',
 		FolderInvChar	: 'Имя папки не может содержать любой из перечисленных символов: \n\\ / : * ? " < > |',
 
-		PopupBlockView	: 'Невозможно открыть файл в новом окне. Пожалуйста, проверьте настройки браузера и отключите все блокировки всплывающих окон для этого сайта.',
-		XmlError		: 'It was not possible to properly load the XML response from the web server.', // MISSING
-		XmlEmpty		: 'It was not possible to load the XML response from the web server. The server returned an empty response.', // MISSING
-		XmlRawResponse	: 'Raw response from the server: %s' // MISSING
+		PopupBlockView	: 'Невозможно открыть файл в новом окне. Пожалуйста, проверьте настройки браузера и отключите все блокировки всплывающих окон для этого сайта.'
 	},
 
 	// Imageresize plugin
@@ -247,10 +232,8 @@ CKFinder.lang['ru'] =
 		invalidName		: 'Неверное имя файла.',
 		newImage		: 'Сохранить как новый файл',
 		noExtensionChange : 'Не удалось поменять расширение файла.',
-		imageSmall		: 'Исходная картинка слишком маленькая.',
-		contextMenuName	: 'Изменить размер',
-		lockRatio		: 'Сохранять пропорции',
-		resetSize		: 'Вернуть обычные размеры'
+		imageSmall		: 'Исходная картинка слишком маленькая',
+		contextMenuName	: 'Изменить размер'
 	},
 
 	// Fileeditor plugin
@@ -261,11 +244,5 @@ CKFinder.lang['ru'] =
 		fileSaveSuccess	: 'Файл успешно сохранен.',
 		contextMenuName	: 'Редактировать',
 		loadingFile		: 'Файл загружается, пожалуйста подождите...'
-	},
-
-	Maximize :
-	{
-		maximize : 'Развернуть',
-		minimize : 'Свернуть'
 	}
 };

@@ -19,7 +19,7 @@ currentUser=application.usermanager.read(session.mura.userID);
 function CheckAuthentication()
 {
   
-  if (isDefined('session.siteid') and application.permUtility.getModulePerm("00000000000000000000000000000000000",session.siteid)) {
+  if (isDefined('session.siteID') and application.permUtility.getModulePerm("00000000000000000000000000000000000",session.siteid)) {
     return true;
   } else {
     return false;
@@ -27,7 +27,7 @@ function CheckAuthentication()
 }
 
 config.licenseName  = 'Mura CMS';
-config.licenseKey = 'VSYA-KXHX-KXVB-8XHA-2L6P-66LF-FDMT';
+config.licenseKey = '9EJW-TKDF-PFVT-Q3VW-NG6B-MKQF-3HVP';
 
 /* To make it easy to configure CKFinder, the config.baseUrl and config.baseDir can be used.
  * Those are helper variables used later in this config file.
@@ -43,6 +43,7 @@ config.licenseKey = 'VSYA-KXHX-KXVB-8XHA-2L6P-66LF-FDMT';
 //ATTENTION: The trailing slash is required.
 config.baseUrl = application.configBean.getAssetPath() & '/' & session.siteid & '/assets';
 config.baseDir = "#application.configBean.getAssetDir()##application.configBean.getFileDelim()##session.siteid##application.configBean.getFileDelim()#assets";
+
 /*
  * Thumbnails : thumbnails settings. All thumbnails will end up in the same
  * directory, no matter the resource type.
@@ -154,7 +155,7 @@ config.resourceType[1].name = 'Files';
 config.resourceType[1].url = config.baseUrl & '/File';
 config.resourceType[1].directory = config.baseDir & '/File';
 config.resourceType[1].maxSize = 0;
-config.resourceType[1].allowedExtensions = '7z,aiff,asf,avi,bmp,csv,doc,docx,fla,flv,gif,gz,gzip,jpeg,jpg,mid,mov,mp3,mp4,mpc,mpeg,mpg,ods,odt,pdf,png,ppt,pptx,pxd,qt,ram,rar,rm,rmi,rmvb,rtf,sdc,sitd,swf,sxc,sxw,tar,tgz,tif,tiff,txt,vsd,wav,wma,wmv,xls,xlsx,zip,m4v';
+config.resourceType[1].allowedExtensions = '7z,aiff,asf,avi,bmp,csv,doc,docx,fla,flv,gif,gz,gzip,jpeg,jpg,mid,mov,mp3,mp4,mpc,mpeg,mpg,ods,odt,pdf,png,ppt,pptx,pxd,qt,ram,rar,rm,rmi,rmvb,rtf,sdc,sitd,swf,sxc,sxw,tar,tgz,tif,tiff,txt,vsd,wav,wma,wmv,xls,xlsx,zip';
 config.resourceType[1].deniedExtensions = '';
 
 config.resourceType[2] = structNew();
@@ -173,8 +174,8 @@ config.resourceType[3].maxSize = 0;
 config.resourceType[3].allowedExtensions = 'swf,flv';
 config.resourceType[3].deniedExtensions = '';
 
-if (isdefined("url.type")){
-	if(currentUser.getS2() and application.configBean.getValue('fmShowApplicationRoot') neq 0){
+if (isdefined("url.type") and currentUser.getS2()){
+	if(application.configBean.getValue('fmShowApplicationRoot') neq 0){
 	  config.resourceType[4] = structNew();
 	  config.resourceType[4].name = 'Application_Root';
 	  config.resourceType[4].url =  application.configBean.getContext();
@@ -195,7 +196,7 @@ if (isdefined("url.type")){
 	    temp.directory ="#application.configBean.getAssetDir()##application.configBean.getFileDelim()##rsSites.siteID[i]##application.configBean.getFileDelim()#assets";
 	    temp.maxSize = 0;
 	    if(application.configBean.getValue('fmAllowedExtensions') neq ''){
-	      temp.allowedExtensions ='7z,aiff,asf,avi,bmp,csv,doc,docx,fla,flv,gif,gz,gzip,jpeg,jpg,mid,mov,mp3,mp4,mpc,mpeg,mpg,ods,odt,pdf,png,ppt,pptx,pxd,qt,ram,rar,rm,rmi,rmvb,rtf,sdc,sitd,swf,sxc,sxw,tar,tgz,tif,tiff,txt,vsd,wav,wma,wmv,xls,xlsx,zip,m4v';
+	      temp.allowedExtensions ='7z,aiff,asf,avi,bmp,csv,doc,docx,fla,flv,gif,gz,gzip,jpeg,jpg,mid,mov,mp3,mp4,mpc,mpeg,mpg,ods,odt,pdf,png,ppt,pptx,pxd,qt,ram,rar,rm,rmi,rmvb,rtf,sdc,sitd,swf,sxc,sxw,tar,tgz,tif,tiff,txt,vsd,wav,wma,wmv,xls,xlsx,zip';
 	    } else {
 	      temp.allowedExtensions ='';    
 	    }
@@ -297,14 +298,12 @@ config.tempDirectory = application.configBean.getTempDir();
  * Note: not needed on Windows-based servers.
  *
  */
-if (application.configBean.getValue("usefilemode") eq "" or yesNoFormat(application.configBean.getValue("usefilemode"))){
-	config.chmodFiles = 644;
-	config.chmodFolders = 755;
-} else {
-	config.chmodFiles = 0;
-	config.chmodFolders = 0;		
-}
-
+config.chmodFiles = 644;
+/*
+ * See comments above.
+ * Used when creating folders that does not exist.
+ */
+config.chmodFolders = 755;
 
 config.hooks = arrayNew(1);
 config.plugins = arrayNew(1);
@@ -315,8 +314,3 @@ if (APPLICATION.CFVersion gte 8 or StructKeyExists(SERVER,"bluedragon")) {
   // include("plugins/watermark/plugin.cfm");
 }
 </cfscript>
-
-<cfset $ = application.serviceFactory.getBean("MuraScope").init(session.siteid)>
-<cfif (fileExists(expandPath($.siteConfig("themeIncludePath") & '/js/finder/config.cfm') ) )>
-     <cfinclude template="#$.siteConfig('themeAssetPath')#/js/finder/config.cfm">
-</cfif>

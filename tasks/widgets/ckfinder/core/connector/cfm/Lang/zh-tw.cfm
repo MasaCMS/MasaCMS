@@ -1,10 +1,10 @@
 <cfsilent>
 <cfprocessingdirective pageencoding="utf-8">
 <!---
-Copyright (c) 2003-2011, CKSource - Frederico Knabben. All rights reserved.
+Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckfinder.com/license
 
- Defines the object for the Chinese (Taiwan) language.
+ Defines the object, for the Chinese (Taiwan) language. This is the base file for all translations.
 --->
 <cfscript>
 CKFLang = structNew();
@@ -23,13 +23,13 @@ CKFLang = structNew();
 	CKFLang.Errors[116] = '找不到目錄 ! 請先重新整理 , 然後再試一次 !';
 	CKFLang.Errors[117] = '找不到檔案 ! 請先重新整理 , 然後再試一次 !';
 	CKFLang.Errors[118] = 'Source and target paths are equal.';
-	CKFLang.Errors[201] = '伺服器上已有相同的檔案名稱 ! 您上傳的檔案名稱將會自動更改為 "%1".';
+	CKFLang.Errors[201] = '伺服器上已有相同的檔案名稱 ! 您上傳的檔案名稱將會自動更改為 "%1"';
 	CKFLang.Errors[202] = '不合法的檔案 !';
 	CKFLang.Errors[203] = '不合法的檔案 ! 檔案大小超過預設值 !';
 	CKFLang.Errors[204] = '您上傳的檔案已經損毀 !';
 	CKFLang.Errors[205] = '伺服器上沒有預設的暫存目錄 !';
 	CKFLang.Errors[206] = '檔案上傳程序因為安全因素已被系統自動取消 ! 可能是上傳的檔案內容包含 HTML 碼 !';
-	CKFLang.Errors[207] = '您上傳的檔案名稱將會自動更改為 "%1".';
+	CKFLang.Errors[207] = '您上傳的檔案名稱將會自動更改為 "%1"';
 	CKFLang.Errors[300] = 'Moving file(s) failed.';
 	CKFLang.Errors[301] = 'Copying file(s) failed.';
 	CKFLang.Errors[500] = '因為安全因素 , 檔案瀏覽器已被停用 ! 請聯絡您的系統管理者並檢查 CKFinder 的設定檔 config.php !';

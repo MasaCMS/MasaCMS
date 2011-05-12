@@ -1,0 +1,30 @@
+The following instructions are for installing Mura Standard on a dedicated server (not a shared environment).
+
+REQUIREMENTS
+- Must have Coldfusion or Railo installed
+- Access to a MySQL or Microsoft SQL database server and the ability to add a new database
+- Ability to add a Datasource to ColdFusion or Railo Administrator
+
+INSTALLATION
+1. Put the contents of your Mura Standard download into your webroot (the directory where your site will live). This includes the following directories and files: admin, config, default, plugins, requirements, tasks, Application.cfc, contentServer.cfm, index.cfm, MuraProxy.cfm.
+
+2. Create a database named "muradb" or whatever you prefer.
+
+3. Create a Datasource (DSN) named "muradb" (or whatever) connecting to the database (muradb) you created in the step above.
+
+4. Browse to the url where your Mura site is installed and complete the form using the information created above.
+
+5. Once you've successfully set up Mura, click the "Finish Set UP and Take Me to the Mura Admin" button. Keep in mind that once you do this, the Mura Set Up page will no longer be available for security reasons. If you need to change any settings in the future, they will need to be made directly in "/config/settings.ini.cfm".
+
+6. Login to the Mura admin using the default username of "admin" and default password of "admin". It is highly recommended you change this immediately by editing your profile upon login.
+
+7. Select "Edit Current Site" under the "Site Settings" menu located in the top right hand area of your window and enter the URL for your install. 
+
+8. If you would like to send scheduled emails or have scheduled content when caching is turned on you must change the "Ping" attribute in the \config\setting.ini.cfm to 1. On start up, Mura will attempt to create a scheduled task to check for event reminders, scheduled emails and to flush cache for scheduled content. THIS IS NOT RECOMMENDED FOR SHARED HOSTING ENVIRONMENTS.
+
+9. You're done installing Mura. Enjoy!
+
+TROUBLESHOOTING
+If you have any questions regarding installation, please visit our Support Forum at http://www.getmura.com/forum.
+
+If you would like to submit a bug, please visit https://github.com/blueriver/MuraCMS/issues.

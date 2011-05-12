@@ -1,12 +1,20 @@
+<cfparam name="request.favoriteaction" default="">
+<cfparam name="request.favoriteID" default="">
 <cfsilent>
-<cfset $.loadShadowBoxJS() />
+<cfparam name="request.userID" default="">
+<cfparam name="request.siteID" default="">
+<cfparam name="request.favoriteName" default="">
+<cfparam name="request.favorite" default="">
+<cfparam name="request.favoritetype" default="">
+<cfparam name="request.usertools" default="false">
+<cfset loadShadowBoxJS() />
 <cfset rbFactory=getSite().getRBFactory()/>
-<cfswitch expression="#$.getJsLib()#">
+<cfswitch expression="#getJsLib()#">
 	<cfcase value="jquery">
-		<cfset $.addToHTMLHeadQueue("favorites/htmlhead/favorites-jquery.cfm")>
+		<cfset addToHTMLHeadQueue("favorites/htmlhead/favorites-jquery.cfm")>
 	</cfcase>
 	<cfdefaultcase>
-		<cfset $.addToHTMLHeadQueue("favorites/htmlhead/favorites-prototype.cfm")>
+		<cfset addToHTMLHeadQueue("favorites/htmlhead/favorites-prototype.cfm")>
 	</cfdefaultcase>
 </cfswitch>
 
@@ -14,49 +22,49 @@
 </cfsilent>
 <cfoutput>
 <div id="svFavoritesList">
-	<#$.getHeaderTag('subHead1')#>#$.rbKey('favorites.favorites')#</#$.getHeaderTag('subHead1')#>
+	<#getHeaderTag('subHead1')#>#rbFactory.getKey('favorites.favorites')#</#getHeaderTag('subHead1')#>
 <cfif len(getPersonalizationID())>
 	<!--- list the favorites --->
-	<cfset rsFavorites = application.favoriteManager.getInternalContentFavorites(getPersonalizationID(), $.event('siteID')) />
+	<cfset rsFavorites = application.favoriteManager.getInternalContentFavorites(getPersonalizationID(), request.siteid) />
 	<ul id="favoriteList">
 	<cfif rsFavorites.recordCount>
-		<!---<#$.getHeaderTag('subHead1')#>Favorites</#$.getHeaderTag('subHead1')#>--->
+		<!---<#getHeaderTag('subHead1')#>Favorites</#getHeaderTag('subHead1')#>--->
 		<cfloop query="rsFavorites" startrow="1" endrow="5">
-			<cfif $.content('contentID') eq rsFavorites.contentid>
+			<cfif request.contentBean.getContentID() eq rsFavorites.contentid>
 				<cfset currentPageFavoriteID = favoriteID>
 			</cfif>
 			<cfset contentLink = "" />
 			<cfset lid = replace(rsFavorites.favoriteID, "-", "", "ALL") />
-			<cfset contentLink = createHref(rsFavorites.Type, rsFavorites.filename, $.event('siteID'), rsFavorites.contentID, rsFavorites.target,rsFavorites.targetParams, '', '#$.globalConfig('context')#', '#$.globalConfig('stub')#', '', 'false') />
+			<cfset contentLink = createHref(rsFavorites.Type, rsFavorites.filename, request.siteid, rsFavorites.contentID, rsFavorites.target,rsFavorites.targetParams, '', '#application.configBean.getContext()#', '#application.configBean.getStub()#', '', 'false') />
 			<cfset contentLink = "<a href='#contentLink#'>#HTMLEditFormat(rsFavorites.menutitle)#</a>" />
-			<li id="favorite#lid#"><a href="" onclick="return deleteFavorite('#favoriteID#', 'favorite#lid#');" title="#xmlformat($.rbKey('favorites.removefromfavorites'))#" class="remove">[-]</a> #contentLink#</li>
+			<li id="favorite#lid#"><a href="" onclick="return deleteFavorite('#favoriteID#', 'favorite#lid#');" title="#xmlformat(rbFactory.getKey('favorites.removefromfavorites'))#" class="remove">[-]</a> #contentLink#</li>
 		</cfloop>
 		<cfif rsFavorites.recordCount gt 5>
-			<li><a href="" onclick="return effectFunction();"><span>#$.rbKey('favorites.morefavorites')#</span></a>
+			<li><a href="" onclick="return effectFunction();"><span>#rbFactory.getKey('favorites.morefavorites')#</span></a>
 				<ul id="favoriteListMore" style="display:none">
 				<cfloop query="rsFavorites" startrow="6">
-					<cfif $.content('contentID') eq rsFavorites.contentid>
+					<cfif request.contentBean.getContentID() eq rsFavorites.contentid>
 						<cfset currentPageFavoriteID = favoriteID>
 					</cfif>
 					<cfset contentLink = "" />
 					<cfset lid = replace(rsFavorites.favoriteID, "-", "", "ALL") />
 				
-					<cfset contentLink = createHref(rsFavorites.Type, rsFavorites.filename, $.event('siteID'), rsFavorites.contentID, rsFavorites.target,rsFavorites.targetParams, '', '#$.globalConfig('context')#', '#$.globalConfig('stub')#', '', 'false') />
+					<cfset contentLink = createHref(rsFavorites.Type, rsFavorites.filename, request.siteid, rsFavorites.contentID, rsFavorites.target,rsFavorites.targetParams, '', '#application.configBean.getContext()#', '#application.configBean.getStub()#', '', 'false') />
 					<cfset contentLink = "<a href='#contentLink#'>#HTMLEditFormat(rsFavorites.menuTitle)#</a>" />
-					<li id="favorite#lid#"><a href="" onclick="return deleteFavorite('#rsFavorites.favoriteID#', 'favorite#lid#');" title="#xmlformat($.rbKey('favorites.removefromfavorites'))#" class="remove">[-]</a> #contentLink#</li>
+					<li id="favorite#lid#"><a href="" onclick="return deleteFavorite('#rsFavorites.favoriteID#', 'favorite#lid#');" title="#xmlformat(rbFactory.getKey('favorites.removefromfavorites'))#" class="remove">[-]</a> #contentLink#</li>
 				</cfloop>
 				</ul>
 			</li>
 		</cfif>
-		<li id="favoriteTip" class="defaultMsg" style="display:none;">#$.rbKey('favorites.nofavorites')#</li>
+		<li id="favoriteTip" class="defaultMsg" style="display:none;">#rbFactory.getKey('favorites.nofavorites')#</li>
 	<cfelse>
-		<li id="favoriteTip" class="defaultMsg">#$.rbKey('favorites.nofavorites')#</li>	</cfif>
+		<li id="favoriteTip" class="defaultMsg">#rbFactory.getKey('favorites.nofavorites')#</li>	</cfif>
 	</ul>
 	
 	<!--- add favorites --->
 	<cfset userID = getPersonalizationID() />
-	<cfset menuTitle = $.content('menuTitle') />
-	<cfset contentID = $.content('contentID') />
+	<cfset menuTitle = request.contentBean.getMenuTitle() />
+	<cfset contentID = request.contentBean.getContentID() />
 	<cfset favoriteType = 'internal_content' />
 	<cfset favoriteExists = application.favoriteManager.checkForFavorite(userID, contentID) />
 <!---	
@@ -70,12 +78,12 @@
 		currentPageFavoriteID = '#currentPageFavoriteID#';
 	</script>
 <cfelse>
-	<p class="loginMessage">#rbFactory.getResourceBundle().messageFormat($.rbKey('favorites.pleaselogin'),'#application.settingsManager.getSite($.event('siteID')).getLoginURL()#&returnURL=#getCurrentURL()#')#</p>
+	<p class="loginMessage">#rbFactory.getResourceBundle().messageFormat(rbFactory.getKey('favorites.pleaselogin'),'#application.settingsManager.getSite(request.siteid).getLoginURL()#&returnURL=#getCurrentURL()#')#</p>
 </cfif>
 </div>
 <cfif len(getPersonalizationID())>
 <div id="svPageTools">
-	<#$.getHeaderTag('subHead1')#>#$.rbKey('favorites.pagetools')#</#$.getHeaderTag('subHead1')#>
+	<#getHeaderTag('subHead1')#>#rbFactory.getKey('favorites.pagetools')#</#getHeaderTag('subHead1')#>
 	<cfif favoriteExists>
 		<cfset favoriteExistsStyle = "display:none;">
 		<cfset addFavoriteStyle = "display:none;">
@@ -88,9 +96,9 @@
 	</cfif>
 	<ul>
 		<li id="favoriteExists" style="#favoriteExistsStyle#"><a href="" onclick="return false;">Stored in favorites</a></li>
-		<li id="addFavorite" style="#addFavoriteStyle#"><a href="" onclick="return saveFavorite('#userID#', '#siteID#', '#JSStringFormat(menuTitle)#', '#contentID#', '#favoriteType#')">#$.rbKey('favorites.addtofavorites')#</a></li>
-		<li id="sendToFriend"><a rel="shadowbox;width=600;height=500" href="http://#application.settingsManager.getSite($.event('siteID')).getDomain()##application.configBean.getServerPort()##$.globalConfig('context')#/#getSite().getDisplayPoolID()#/includes/display_objects/sendtofriend/index.cfm?link=#URLEncodedFormat(getCurrentURL())#&siteid=#$.event('siteID')#">#rbFactory.getResourceBundle().messageFormat($.rbKey('favorites.emailthis'),$.rbKey('sitemanager.content.type.#$.content('type')#'))#</a> </li>
-		<li id="print"><a href="javascript:window.print();void(0);">#rbFactory.getResourceBundle().messageFormat($.rbKey('favorites.printthis'),$.rbKey('sitemanager.content.type.#$.content('type')#'))#</a></li>
+		<li id="addFavorite" style="#addFavoriteStyle#"><a href="" onclick="return saveFavorite('#userID#', '#siteID#', '#JSStringFormat(menuTitle)#', '#contentID#', '#favoriteType#')">#rbFactory.getKey('favorites.addtofavorites')#</a></li>
+		<li id="sendToFriend"><a rel="shadowbox;width=600;height=500" href="http://#application.settingsManager.getSite(request.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()#/#getSite().getDisplayPoolID()#/includes/display_objects/sendtofriend/index.cfm?link=#URLEncodedFormat(getCurrentURL())#&siteid=#request.siteid#">#rbFactory.getResourceBundle().messageFormat(rbFactory.getKey('favorites.emailthis'),rbFactory.getKey('sitemanager.content.type.#request.contentbean.getType()#'))#</a> </li>
+		<li id="print"><a href="javascript:window.print();void(0);">#rbFactory.getResourceBundle().messageFormat(rbFactory.getKey('favorites.printthis'),rbFactory.getKey('sitemanager.content.type.#request.contentbean.getType()#'))#</a></li>
 		<!---<li id="discuss"><a href="/forum">Discuss #contentTypeString#</a></li>--->
 	</ul>
 </div>

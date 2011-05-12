@@ -625,21 +625,19 @@
 			</cfif>
 			
 			<!--- moving the lock out so a second thread will wait for a constructed bean --->
-				
-			<!--- BEGIN CUSTOM --->
-			<cfif beanDef.isSingleton()>
-				<cflock name="bf_#variables.beanFactoryId#.bean_#resolvedName#" throwontimeout="true" timeout="60">
+			<cflock name="bf_#variables.beanFactoryId#.bean_#resolvedName#" throwontimeout="true" timeout="60">
+				<cfif beanDef.isSingleton()>
 					<cfif not beanDef.isConstructed()>
 						<!--- lazy-init happens here --->
 						<cfset constructBean(resolvedName)/>
 					</cfif>
 					<cfset bean =  beanDef.getInstance(returnFactory) />
-				</cflock>
-			<cfelse>
-				<cfset bean = constructBean(resolvedName,true)/>
-			</cfif>
-			<!--- END CUSTOM --->
-				
+				<cfelse>
+					<!--- return a new instance of this bean def --->
+					<cfset bean = constructBean(resolvedName,true)/>
+				</cfif>
+			</cflock>
+			
 			<cfreturn bean />
 			
 		<cfelseif isObject(variables.parent)> <!--- AND variables.parent.containsBean(arguments.beanName)> --->
@@ -648,7 +646,8 @@
 			<cfthrow type="coldspring.NoSuchBeanDefinitionException" detail="Bean definition for bean named: #resolvedName# could not be found."/>
 		</cfif>		
 		
-	</cffunction>	
+	</cffunction>
+	
 	
 	<cffunction name="processFactoryPostProcessors" access="private" output="false" returntype="void"
 				hint="constructs and calls postProcessBeanFactory(this) for all factory post processor beans">
@@ -754,19 +753,13 @@
 				
 				<!--- there are only two places where we check then create objects in the singletone cache, we need to 
 					  introduce a mutually exclusive lock around this --->
-				<!--- BEGIN CUSTOM --->
-				<cfif beanDef.isSingleton()>
-					<cflock name="bf_#variables.beanFactoryId#.bean_#beanDef.getBeanID()#" throwontimeout="true" timeout="10">
-						<cfif not(singletonCacheContainsBean(beanDef.getBeanID()))>
-							<cfset beanDef.getBeanFactory().addBeanToSingletonCache(beanDef.getBeanID(), beanDef.getBeanInstance() ) />
-						<cfelse>
-							<cfset localBeanCache[beanDef.getBeanID()] = beanDef.getBeanInstance() />
-						</cfif>
-					</cflock>
-				<cfelse>
-					<cfset localBeanCache[beanDef.getBeanID()] = beanDef.getBeanInstance() />
-				</cfif>
-				<!--- END CUSTOM --->
+				<cflock name="bf_#variables.beanFactoryId#.bean_#beanDef.getBeanID()#" throwontimeout="true" timeout="10">
+					<cfif beanDef.isSingleton() and not(singletonCacheContainsBean(beanDef.getBeanID()))>
+						<cfset beanDef.getBeanFactory().addBeanToSingletonCache(beanDef.getBeanID(), beanDef.getBeanInstance() ) />
+					<cfelse>
+						<cfset localBeanCache[beanDef.getBeanID()] = beanDef.getBeanInstance() />
+					</cfif>
+				</cflock>
 			</cfif>
 		</cfloop>
 	

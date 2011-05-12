@@ -1,8 +1,5 @@
-/* @override http://localhost:8500/muracms/default/css/mura.css */
-
 /* @override 
 	http://mura:8500/5.4/default/css/mura.css
-	http://localhost:8500/muracms/default/css/mura.css
 */
 
 /* This file is part of Mura CMS. 
@@ -19,37 +16,29 @@
 	You should have received a copy of the GNU General Public License 
 	along with Mura CMS.  If not, see <http://www.gnu.org/licenses/>. 
 
-Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on 
-Mura CMS. Thus, the terms and conditions of the GNU General Public License version 2 ("GPL") cover the entire combined work.
+	However, as a special exception, the copyright holders of Mura CMS grant you permission 
+	to combine Mura CMS with programs or libraries that are released under the GNU Lesser General Public License version 2.1. 
 
-However, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with programs
-or libraries that are released under the GNU Lesser General Public License version 2.1.
+	In addition, as a special exception,  the copyright holders of Mura CMS grant you permission 
+	to combine Mura CMS  with independent software modules that communicate with Mura CMS solely 
+	through modules packaged as Mura CMS plugins and deployed through the Mura CMS plugin installation API, 
+	provided that these modules (a) may only modify the  /trunk/www/plugins/ directory through the Mura CMS 
+	plugin installation API, (b) must not alter any default objects in the Mura CMS database 
+	and (c) must not alter any files in the following directories except in cases where the code contains 
+	a separately distributed license.
 
-In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with 
-independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without 
-Mura CMS under the license of your choice, provided that you follow these specific guidelines: 
+	/trunk/www/admin/ 
+	/trunk/www/tasks/ 
+	/trunk/www/config/ 
+	/trunk/www/requirements/mura/ 
 
-Your custom code 
+	You may copy and distribute such a combined work under the terms of GPL for Mura CMS, provided that you include  
+	the source code of that other code when and as the GNU GPL requires distribution of source code. 
 
-• Must not alter any default objects in the Mura CMS database and
-• May not alter the default display of the Mura CMS logo within Mura CMS and
-• Must not alter any files in the following directories.
-
- /admin/
- /tasks/
- /config/
- /requirements/mura/
- /Application.cfc
- /index.cfm
- /MuraProxy.cfc
-
-You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work 
-under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL 
-requires distribution of source code.
-
-For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your 
-modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
-version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS. */
+	For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception 
+	for your modified version; it is your choice whether to do so, or to make such modified version available under 
+	the GNU General Public License version 2  without this exception.  You may, if you choose, apply this exception 
+	to your own modified versions of Mura CMS. */
 
 /*	Some styles, ideas, and concepts derived from:
 
@@ -58,7 +47,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	YUI - http://developer.yahoo.com/yui/
 */
 
-/* @group HELPER CLASSES */
+/* @group HELPER CLASSES
+===================================== */
 
 .hide { display: none !important; }
 
@@ -76,10 +66,15 @@ p.center { text-align: center; }
 	background: url(../images/pointer_red.gif) no-repeat 0 50%;
 	}
 
+
+/* @group Helper Classes - Clearfix
+===================================== */
+
 /* Clearing floats without extra markup
 	http://perishablepress.com/press/2009/12/06/new-clearfix-hack/ */
 
-.clearfix:after, .svIndex dl:after, .svIndex li:after {
+
+.clearfix:after, .svIndex dl:after {
 	visibility: hidden;
 	display: block;
 	font-size: 0;
@@ -87,20 +82,22 @@ p.center { text-align: center; }
 	clear: both;
 	height: 0;
 	}
-
-.svIndex .moreResults li:after {
-	content: none;
-	}
-
-
 * html .clearfix, * html .svIndex dl { zoom: 1; } /* IE6 */
 *:first-child+html .clearfix, *:first-child+html .svIndex dl { zoom: 1; } /* IE7 */
 
-/* @end */
+/* @end Helper Classes - Clearfix
+-------------------------------- */
 
-/* @group NAVIGATION/UI */
+/* @end HELPER CLASSES
+-------------------------------- */
 
-/* @group Nav - Breadcrumb */
+
+
+/* @group NAVIGATION/UI
+===================================== */
+
+/* @group Nav - Breadcrumb
+===================================== */
 
 #crumbList {
 	margin: 0 0 1em;
@@ -116,9 +113,12 @@ p.center { text-align: center; }
 
 #crumbList a { text-decoration: none; }
 
-/* @end */
+/* @end Nav - Breadcrumb
+-------------------------------- */
 
-/* @group Sequential Nav & More Results */
+
+/* @group Nav - Sequential, More Results
+===================================== */
 
 .navSequential,
 .moreResults ul {
@@ -150,9 +150,12 @@ p.center { text-align: center; }
 	background: #e4e4e4;
 	}
 
-/* @end */
+/* @end Nav - Sequential, More Results
+-------------------------------- */
 
-/* @group Session Nav */
+
+/* @group Nav - Session
+===================================== */
 
 #navSession {
 	margin: 0;
@@ -177,17 +180,19 @@ p.center { text-align: center; }
 	padding-right: 0;
 	}
 
-/* @end */
+/* @end Nav - Session
+-------------------------------- */
+
+/* @end NAVIGATION/UI
+-------------------------------- */
 
 
 
-/* @end  */
+/* @group DISPLAY OBJECTS, SYSTEM COMPONENTS
+===================================== */
 
-
-
-/* @group DISPLAY OBJECTS, SYSTEM COMPONENTS */
-
-/* @group Add Comment Component */
+/* @group Add Comment Component
+===================================== */
 
 #svComments {
 	clear: both;
@@ -247,17 +252,21 @@ p.center { text-align: center; }
 	cursor: pointer;
 }
 
-/* @end */
+/* @end Add Comment Component
+-------------------------------- */
 
 
-/* @group Advertisements */
+/* @group Advertisements
+===================================== */
 
 div.svAd { margin: 0 0 2em; }
 
-/* @end */
+/* @end Advertisements
+-------------------------------- */
 
 
-/* @group Asset Detail */
+/* @group Asset Detail
+===================================== */
 
 #svAssetDetail {}
 
@@ -316,10 +325,12 @@ a#svAsset.zip { background-image: url(../images/file-icons/zip.gif); }
 	margin: 0;
 	}
 
-/* @end */
+/* @end Asset Detail
+-------------------------------- */
 
 
-/* @group Associated Image */
+/* @group Associated Image
+===================================== */
 
 /* This image gets output only if a specific image has been uploaded for a specific content type.
 It gets output between the h2 and the body content and launches the large image in shadowbox when clicked */
@@ -330,10 +341,12 @@ It gets output between the h2 and the body content and launches the large image 
 	margin-left: 1em;
 	}
 
-/* @end Associated Image */
+/* @end Associated Image
+-------------------------------- */
 
 
-/* @group Calendar */
+/* @group Calendar
+===================================== */
 
 .svCalendar { text-align: center; }
 
@@ -417,10 +430,12 @@ It gets output between the h2 and the body content and launches the large image 
 	text-decoration: underline;
 	}
 
-/* @end Calendar */
+/* @end Calendar
+-------------------------------- */
 
 
-/* @group Calendar Date Picker */
+/* @group Calendar Date Picker
+===================================== */
 
 #datePicker {
 	width: 190px;
@@ -498,11 +513,13 @@ It gets output between the h2 and the body content and launches the large image 
 	background: #f6f6f6;
 	}
 
-/* @end Calendar Date Selector */
+/* @end Calendar Date Selector
+-------------------------------- */
 
 
-/* @group Columns */
-/* For use with fckEditor Templates (2, 3, and 4 column templates) or anything you'd like to have a coumnar layout for */
+/* @group Columns
+===================================== */
+/* For use with fckEditor Templates (2, 3, and 4 column templates) */
 
 /* HTML example:
 <div class="columns3">
@@ -510,13 +527,6 @@ It gets output between the h2 and the body content and launches the large image 
 	<div class="col"></div>
 	<div class="col"></div>
 </div>
-
-<ul class="columns3">
-	<li class="col"></li>
-	<li class="col"></li>
-	<li class="col"></li>
-</ul>
-
 */
 
 .col {
@@ -533,10 +543,12 @@ It gets output between the h2 and the body content and launches the large image 
 .columns7 .col { width: 12%; }
 .columns8 .col { width: 10%; }
 
-/* @end Columns */
+/* @end Columns
+-------------------------------- */
 
 
-/* @group Flash Player */
+/* @group Flash Player
+===================================== */
 /* For FLV Player Plugin in FCK Editor */
 
 table.svFlvPlayer td {
@@ -544,10 +556,12 @@ table.svFlvPlayer td {
 	border: 0;
 	}
 
-/* @end Flash Player */
+/* @end Flash Player
+-------------------------------- */
 
 
-/* @group Galleries */
+/* @group Galleries
+===================================== */
 
 #svGallery ul {
 	margin: 0;
@@ -610,15 +624,16 @@ table.svFlvPlayer td {
 	background: url(../images/icon_comments.gif) no-repeat 0 50%;
 	}
 
-/* @end Galleries */
+/* @end Galleries
+-------------------------------- */
 
-/* @group All Indexes - Portals, Local Indexes, Remote Feeds, Related Content, Features */
+/* @group All Indexes - Portals, Local Indexes, Remote Feeds, Related Content, Features
+===================================== */
 .svIndex {
 	margin: 2em 0;
 	}
 
-.sidebar .svIndex,
-aside .svIndex {
+.sidebar .svIndex {
 	margin: 0 0 2em 0;
 }
 
@@ -632,69 +647,49 @@ aside .svIndex {
 	margin: 1.3em 0 1em;
 	}
 
-.svIndex>ul {
-	margin: 0 0 2em;
-	list-style: none;
-	position: relative;
-	}
-
-.svIndex>ul li {
-	position: relative;
-	margin: 1.3em 0 1em;
-	}
-
-.sidebar .svIndex dl.first,
-.sidebar .svIndex li.first,
-aside .svIndex dl.first,
-aside .svIndex li.first {
+.sidebar .svIndex dl.first {
 	margin-top: 0;
-	padding-top: 0;
 	}
 
-.svIndex dl.last,
-.svIndex li.last {
+.svIndex dl.last {
 	border: 0;
 	padding: 0;
 	}
 
-.svIndex dt, .svIndex li h3 {
-	font-size: 1.4em;
-	margin-bottom: 0.25em;
+.sidebar .svIndex dl.first {
+	padding-top: 0;
+	}
+
+.svIndex dt {
+	margin-bottom: .75em;
 }
 
-.sidebar .svIndex dt,
-aside .svIndex dt,
-.sidebar .svIndex li h3,
-aside .svIndex li h3 {
+.sidebar .svIndex dt {
 	margin: 0 0 .25em 0;
 	}
 
-.svIndex .releaseDate {
+.svIndex dt.releaseDate {
 	margin-bottom: .5em;
 	font-weight: normal;
 	color: #999;
 	}
 
-.summary .readMore, .readMore { font-size: .9em; }
+dd.summary span.readMore { font-size: .9em; }
 
-.credits,
-.comments,
-.tags,
-.rating {
+dd.credits,
+dd.comments,
+dd.tags,
+dd.rating {
 	float: left;
 	margin-bottom: 0;
 	padding: 0 .75em 0 0;
 	font-size: 1em;
 	}
 
-.sidebar .credits,
-.sidebar .comments,
-.sidebar .tags,
-.sidebar .rating,
-aside .credits,
-aside .comments,
-aside .tags,
-aside .rating {
+.sidebar dd.credits,
+.sidebar dd.comments,
+.sidebar dd.tags,
+.sidebar dd.rating {
 	float: none;
 	margin-bottom: .35em;
 	padding: 0;
@@ -712,62 +707,43 @@ aside .rating {
 	left: -9999px;
 	}
 	
-.svIndex .credits {
+.svIndex dd.credits {
 	color: #666;
 	}
 	
-.svIndex .comments {
+.svIndex dd.comments {
 	padding-left: 13px !important;
 	background: url(../images/icon_comments.png) no-repeat 0 50%;
 	}
 
-.hasImage .image { 
+dl.hasImage .image { 
 	position: absolute;
 	top: 0;
 	left: 0;
 	margin: 0 1em 0 0;
 	}
 	
-.sidebar .hasImage,
-aside .hasImage {
+.sidebar dl.hasImage {
 	min-height: 0;
 	padding-left: 0;
 }
 
+.sidebar dl.hasImage .image {
+	display: none;
+}
+
 /* @group Slideshow */
+
+.svSlides h3 {
+	
+}
 
 .svSlideshow .svSlides dl {
 	border: 0;
 }
 
-.svSlideshow .svSlides>ul {
-	list-style: none;
-	margin: 0 0 2em;
-}
-
-.svSlideshow {
-	clear: both;
-	position: relative;
-	margin: 0 0 2.2em;
-}
-
-.svSlides {
-	overflow: visible;
-	z-index: 1;}
-
-.svSlides h3 {
-	z-index: 10;
-}
-
-.svSlides dl, .svSlides ul>li {
-	z-index: 1;
-	margin: 0;
-	overflow: hidden;
-	position: relative;
-}
-
-.svSlides ul {
-	overflow: visible;
+.svSlides  dt {
+	
 }
 
 ol.svPager {
@@ -787,7 +763,7 @@ ol.svPager a {
 	display: inline-block;
 	padding: 2px 5px;
 	text-align: center;
-	line-height: 1.2;
+		line-height: 1.2;
 	}
 
 ol.svPager li.activeLI a,
@@ -803,10 +779,12 @@ a.rss {
 	background: url(../images/icon_rss.gif) no-repeat 0 50%;
 }
 
-/* @end Portals, Feeds */
+/* @end Portals, Feeds
+-------------------------------- */
 
 
-/* @group Portal Features */
+/* @group Portal Features
+===================================== */
 
 div.portalFeatures {
 	margin: 0 0 1em;
@@ -853,10 +831,12 @@ div.portalFeatures {
 
 .portalFeatures a { text-decoration: none; }
 
-/* @end Portal Features */
+/* @end Portal Features
+-------------------------------- */
 
 
-/* @group RSS Feed List */
+/* @group RSS Feed List
+===================================== */
 /* for the public feeds table display object */
 
 table#svRssFeedsList td {
@@ -868,10 +848,12 @@ table#svRssFeedsList img {
 	padding: 0;
 	}
 
-/* @end RSS Feed List */
+/* @end RSS Feed List
+-------------------------------- */
 
 
-/* @group Session Tools */
+/* @group Session Tools
+===================================== */
 
 #svSessionTools {
 	margin-bottom: 1em;
@@ -882,10 +864,12 @@ table#svRssFeedsList img {
 	font-size: 1.1em;
 	}
 	
-/* @end Session Tools */
+/* @end Session Tools
+-------------------------------- */
 
 
-/* @group Site Map */
+/* @group Site Map
+===================================== */
 
 ul#svSiteMap {
 	margin: 1em 0;
@@ -911,10 +895,12 @@ ul#svSiteMap {
 	font-weight: normal;
 	}
 
-/* @end Site Map */
+/* @end Site Map
+-------------------------------- */
 
 
-/* @group Tag Clouds */
+/* @group Tag Clouds
+===================================== */
 
 #svTagCloud ol { margin: 0 0 2em; }
 #svTagCloud li { display: inline; }
@@ -927,10 +913,12 @@ ul#svSiteMap {
 #svTagCloud .very-popular { font-size: 2.1em; }
 #svTagCloud .ultra-popular { font-size: 2.6em; }
 
-/* @end Tag Clouds */
+/* @end Tag Clouds
+-------------------------------- */
 
 
-/* @group User Tools */
+/* @group User Tools
+===================================== */
 
 #svPageTools {
 	margin: 0 0 2em;
@@ -960,10 +948,12 @@ ul#svSiteMap {
 
 #svPageTools li#discuss { background: url(../images/icon_discuss.gif) no-repeat; }
 
-/* @end User Tools */
+/* @end User Tools
+-------------------------------- */
 
 
-/* @group User Tools - Favorites */
+/* @group User Tools - Favorites
+===================================== */
 
 ul#favoriteList {
 	margin: 0 0 1em;
@@ -996,10 +986,12 @@ ul#favoriteList {
 	color: #666;
 	}
 
-/* @end User Tools - Favorites */
+/* @end User Tools - Favorites
+-------------------------------- */
 
 
-/* @group User Tools - Send to Friend Pop-Up */
+/* @group User Tools - Send to Friend Pop-Up
+===================================== */
 
 .sendToFriend input.text { width: 300px; }
 
@@ -1008,21 +1000,19 @@ ul#favoriteList {
 	height: 100px;
 	}
 
-/* @end User Tools - Send to Friend Pop-Up */
+/* @end User Tools - Send to Friend Pop-Up
+-------------------------------- */
 
-/* @end DISPLAY OBJECTS, SYSTEM COMPONENTS */
-
-
-
-/* @group SYSTEM FORMS */
-
-/* @group Forms Manager Output */
+/* @end DISPLAY OBJECTS, SYSTEM COMPONENTS
+-------------------------------- */
 
 
 
-/* @end Forms Manager Output */
+/* @group SYSTEM FORMS
+===================================== */
 
-/* @group System Forms - Login */
+/* @group System Forms - Login
+===================================== */
 
 #svLoginContainer {
 	width: 370px;  /*Why is this set in px?*/
@@ -1033,7 +1023,7 @@ form#login { margin-bottom: .5em; }
 
 form#sendLogin { margin-bottom: 2em; }
 
-.sidebar #login h3, aside #login h3 {
+.sidebar #login h3 {
 	padding-bottom: 0;
 	border-bottom: 0;
 	}
@@ -1062,31 +1052,32 @@ form#sendLogin { margin-bottom: 2em; }
 #notRegistered h3 {}
 #notRegistered a {}
 
-/* @end System Forms - Login */
+/* @end System Forms - Login
+-------------------------------- */
 
 
-/* @group System Forms - Mailing Lists */
+/* @group System Forms - Mailing Lists
+===================================== */
 
-.sidebar .svMailingList fieldset,
-aside .svMailingList fieldset {
+.sidebar .svMailingList fieldset {
 	padding: 0;
 	border: 0;
 	}
 
-.sidebar .svMailingList ol,
-aside .svMailingList ol {
+.sidebar .svMailingList ol {
 	padding: 0;
 	}
 
-.sidebar .svMailingList legend,
-aside .svMailingList legend { display: none; }
+.sidebar .svMailingList legend { display: none; }
 
 #svMasterEmail {}
 
-/* @end System Forms - Mailing Lists */
+/* @end System Forms - Mailing Lists
+-------------------------------- */
 
 
-/* @group System Forms - Search */
+/* @group System Forms - Search
+===================================== */
 
 #svSearchForm {
 	margin: 0 0 1em;
@@ -1105,6 +1096,38 @@ aside .svMailingList legend { display: none; }
 	width: auto;
 	margin: 0 .5em 0 0;
 	}
+
+/*#svSearchResults dl#svPortal {
+	margin: 0 0 1em;
+	padding: 0;
+	border: 0;
+	}
+
+#svSearchResults dt {
+	margin: 1em 0 .5em;
+	padding: 1em 0 0;
+	border-top: 1px dotted #ccc;
+	}
+
+#svSearchResults dl.first { border-top: 0; }
+
+#svSearchResults dd {
+	margin: 0 0 1em;
+	padding: 0;
+	}
+
+#svSearchResults dd.last {
+	margin: 0;
+	padding: 0 0 1em;
+	border-bottom: 0;
+	}
+
+#svSearchResults dd h3 {
+	margin: 0 0 .5em;
+	font-weight: normal;
+	}*/
+
+/*#svSearchResults dl img { display: none; }*/
 
 #svSearchResults .moreResults {
 	margin: .75em 0;
@@ -1131,10 +1154,12 @@ span.highlight {
 	background: yellow;
 	}
 
-/* @end System Forms - Search */
+/* @end System Forms - Search
+-------------------------------- */
 
 
-/* @group System Forms - Send to a Friend */
+/* @group System Forms - Send to a Friend
+===================================== */
 
 #svSendToFriend {
 	padding: 1em 2em 0;
@@ -1146,7 +1171,8 @@ span.highlight {
 	text-align: center;
 	}
 
-/* @end System Forms - Send to a Friend */
+/* @end System Forms - Send to a Friend
+-------------------------------- */
 
 /* @group System Forms - CK Editor */
 
@@ -1160,10 +1186,12 @@ form li .cke_skin_mura table {
 
 /* @end */
 
-/* @group System Forms - Responses */
+/* @group System Forms - Responses
+===================================== */
 
-.sidebar .responseMessage,
-aside .responseMessage { color: red; }
+.sidebar .responseMessage { color: red; }
+
+.sidebar .responseMessage em { font-style: normal; }
 
 #dsp_response.dataCollection .pollResults { list-style: none; }
 
@@ -1193,50 +1221,11 @@ aside .responseMessage { color: red; }
 .notice a { color: #514721; }
 .success a { color: #264409; }
 
-/* @end System Forms - Responses */
+/* @end System Forms - Responses
+-------------------------------- */
 
-/* @end SYSTEM FORMS */
+/* @end SYSTEM FORMS
+-------------------------------- */
 
 
-/* @group STACK TRACE */
-
-#mura-stacktrace {
-	width: 800px;
-	margin: 2em auto;
-	padding: 2em;
-	/*border: 2px dotted red;*/
-	background-color: #ddd;
-	color: #000;
-	-webkit-border-radius: 6px;
-	-moz-border-radius: 6px;
-	border-radius: 6px;
-}
-
-#mura-stacktrace h3 {
-	color: #333;
-	text-shadow: 0 1px 0 #ffffff;
-	margin-bottom: 1em;
-	padding: 0;
-	margin: 0 0 1em;
-}
-
-#mura-stacktrace ol {
-	margin: 0 4em 2em;
-	padding: 0;
-}
-
-#mura-stacktrace li {
-	text-shadow: 0 1px 0 #ffffff;
-}
-
-#mura-stacktrace .duration {
-	font-weight: bold;
-}
-
-#mura-stacktrace p {
-	font-size: 16px;
-	text-shadow: 0 1px 0 #ffffff;
-	margin: 0;
-}
-
-/* @end */
+/* EOF */

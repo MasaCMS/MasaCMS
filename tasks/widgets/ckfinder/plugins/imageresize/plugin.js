@@ -45,9 +45,7 @@
 			maxHeight = api.config.imagesMaxHeight,
 			aMatch  =  value.match( regexGetSize ),
 			width = imageDimension.width,
-			height = imageDimension.height,
-			newHeight,
-			newWidth;
+			height = imageDimension.height;
 
 		if ( aMatch )
 			value = aMatch[1];
@@ -209,8 +207,7 @@
 						if ( xml.checkError() )
 							return;
 						var width = xml.selectSingleNode( 'Connector/ImageInfo/@width' ),
-							height = xml.selectSingleNode( 'Connector/ImageInfo/@height' ),
-							result;
+							height = xml.selectSingleNode( 'Connector/ImageInfo/@height' );
 
 						if ( width && height )
 						{
@@ -526,8 +523,8 @@
 														}
 													},
 													html : '<div style="margin-top:4px">'+
-														'<a href="javascript:void(0)" tabindex="-1" title="' + api.lang.Imageresize.lockRatio + '" class="ckf_btn_locked ckf_btn_unlocked" id="btnLockSizes"></a>' +
-														'<a href="javascript:void(0)" tabindex="-1" title="' + api.lang.Imageresize.resetSize + '" class="ckf_btn_reset" id="btnResetSize"></a>'+
+														'<a href="javascript:void(0)" tabindex="-1" title="Lock ration" class="ckf_btn_locked ckf_btn_unlocked" id="btnLockSizes"></a>' +
+														'<a href="javascript:void(0)" tabindex="-1" title="Reset size" class="ckf_btn_reset" id="btnResetSize"></a>'+
 														'</div>'
 												}
 											]

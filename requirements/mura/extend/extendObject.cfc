@@ -1,11 +1,14 @@
-<cfcomponent extends="mura.bean.beanExtendable" output="false">
+<cfcomponent extends="mura.cfobject" output="false">
 
-<cfproperty name="type" type="string" default="" required="true" />
-<cfproperty name="subType" type="string" default="" required="true" />
-<cfproperty name="id" type="string" default="" required="true" />
-<cfproperty name="siteID" type="string" default="" required="true" />
-<cfproperty name="remoteID" type="string" default="" required="true" />
-
+<cfset variable.intsance.error=structNew()>
+<cfset variables.instance.Type = "Page" />
+<cfset variables.instance.subType = "Default" />
+<cfset variables.instance.dataTable = "tclassextenddata" />
+<cfset variables.instance.ID = "" />
+<cfset variables.instance.siteID="">
+<cfset variables.instance.extendData="">
+<cfset variables.instance.remoteID="">
+<cfset variables.instance.extendSetID="">
 <cfset variables.manager="">
 <cfset variables.configBean="">
 
@@ -16,21 +19,12 @@
 <cfargument name="manager" default="">
 <cfargument name="configBean" default="#application.configBean#">
 <cfargument name="ID" default="">
-	<cfset super.init(argumentCollection=arguments)>
-	
 	<cfset setType(arguments.type)>
 	<cfset setSubType(arguments.subType)>
 	<cfset setSiteID(arguments.siteID)>
 	<cfset setManager(arguments.manager)>
 	<cfset setConfigBean(arguments.configBean)>
 	<cfset setID(arguments.ID)>
-	
-	<cfset variables.instance.Type = "Page" />
-	<cfset variables.instance.subType = "Default" />
-	<cfset variables.instance.ID = "" />
-	<cfset variables.instance.siteID="">
-	<cfset variables.instance.remoteID="">
-	
 	<cfreturn this>
 </cffunction>
 
@@ -79,6 +73,20 @@
 	<cfreturn this>
 </cffunction>
 
+<cffunction name="getSiteID" returnType="string" output="false" access="public">
+    <cfreturn variables.instance.SiteID />
+</cffunction>
+
+<cffunction name="setRemoteID" output="false" access="public">
+   <cfargument name="remoteID">
+   <cfset variables.instance.remoteID=arguments.remoteID />
+	<cfreturn this>
+ </cffunction>
+
+<cffunction name="getRemoteID" output="false" access="public">
+	<cfreturn variables.instance.remoteID />
+</cffunction>
+
 <cffunction name="setType" output="false" access="public">
    <cfargument name="Type" type="string" required="true">
    <cfset arguments.Type=trim(arguments.Type)>
@@ -91,6 +99,10 @@
 	<cfreturn this>
 </cffunction>
 
+<cffunction name="getType" returnType="string" output="false" access="public">
+   <cfreturn variables.instance.Type />
+</cffunction>
+
  <cffunction name="setSubType" output="false" access="public">
    <cfargument name="SubType" type="string" required="true">
 	<cfset arguments.subType=trim(arguments.subType)>
@@ -101,10 +113,14 @@
 	<cfreturn this>
  </cffunction>
 
+ <cffunction name="getSubType" returnType="string" output="false" access="public">
+		<cfreturn variables.instance.subType />
+ </cffunction>
+
 <cffunction name="validate" access="public" output="false">
 		<cfset var extErrors=structNew() />
 	
-		<cfif len(variables.instance.siteID)>
+		<cfif len(getSiteID())>
 			<cfset extErrors=variables.configBean.getClassExtensionManager().validateExtendedData(getAllValues())>
 		</cfif>
 		
@@ -116,15 +132,108 @@
 		<cfreturn this>	
 </cffunction>
 
-<cffunction name="getExtendBaseID" output="false">
-	<cfreturn getID()>
+<cffunction name="getErrors" returntype="any" output="false">
+	<cfreturn variables.instance.errors>
+</cffunction>
+
+<cffunction name="getExtendedData" returntype="any" output="false" access="public">
+	<cfif not isObject(variables.instance.extendData)>
+	<cfset variables.instance.extendData=variables.configBean.getClassExtensionManager().getExtendedData(baseID:getID(), type:getType(), subType:getSubType(), siteID:getSiteID())/>
+	</cfif> 
+	<cfreturn variables.instance.extendData />
+</cffunction>
+
+<cffunction name="purgeExtendedData" output="false" access="public">
+	<cfset variables.instance.extendData=""/>
+	<cfreturn this>
+</cffunction>
+
+<cffunction name="getExtendedAttribute" returnType="string" output="false" access="public">
+ 	<cfargument name="key" type="string" required="true">
+	<cfargument name="useMuraDefault" type="boolean" required="true" default="false">
+	<cfargument name="format" required="true" default="">  
+	
+  	<cfreturn getExtendedData().getAttribute(arguments.key,arguments.useMuraDefault,arguments.format) />
+</cffunction>
+
+<cffunction name="getDataTable" returntype="String" access="public" output="false">
+	<cfreturn variables.instance.dataTable />
+</cffunction>
+
+<cffunction name="setDataTable" access="public" output="false">
+	<cfargument name="dataTable" type="String" />
+	<cfset variables.instance.dataTable = trim(arguments.dataTable) />
+	<cfreturn this>
+</cffunction>
+
+<cffunction name="setValue" returntype="any" access="public" output="false">
+	<cfargument name="property"  type="string" required="true">
+	<cfargument name="propertyValue" default="" >
+	
+	<cfset var extData =structNew() />
+	<cfset var i = "">	
+	
+	<cfif structKeyExists(this,"set#property#")>
+		<cfset evaluate("set#property#(arguments.propertyValue)") />
+	<cfelse>
+		<cfset extData=getExtendedData().getExtendSetDataByAttributeName(arguments.property)>
+		<cfif not structIsEmpty(extData)>
+			<cfset structAppend(variables.instance,extData.data,false)>	
+			<cfloop list="#extData.extendSetID#" index="i">
+				<cfif not listFind(variables.instance.extendSetID,i)>
+					<cfset variables.instance.extendSetID=listAppend(variables.instance.extendSetID,i)>
+				</cfif>
+			</cfloop>
+		</cfif>
+			
+		<cfset variables.instance["#arguments.property#"]=arguments.propertyValue />
+		
+	</cfif>
+	<cfreturn this>
+</cffunction>
+
+<cffunction name="getValue" returntype="any" access="public" output="false">
+	<cfargument name="property" type="string" required="true"> 
+	
+	<cfif structKeyExists(this,"get#property#")>
+		<cfreturn evaluate("get#property#()") />
+	<cfelseif structKeyExists(variables.instance,"#arguments.property#")>
+		<cfreturn variables.instance["#arguments.property#"] />
+	<cfelse>
+		<cfreturn getExtendedAttribute(key=arguments.property) />
+	</cfif>
+
+</cffunction>
+
+<cffunction name="setAllValues" returntype="any" access="public" output="false">
+	<cfargument name="instance">
+	<cfset variables.instance=arguments.instance/>
+	<cfreturn this>
+</cffunction>
+
+<cffunction name="getAllValues" access="public" returntype="struct" output="false">
+		<cfset var i="">
+		<cfset var extData=getExtendedData().getAllExtendSetData()>
+		
+		<cfif not structIsEmpty(extData)>
+			<cfset structAppend(variables.instance,extData.data,false)>	
+			<cfloop list="#extData.extendSetID#" index="i">
+				<cfif not listFind(variables.instance.extendSetID,i)>
+					<cfset variables.instance.extendSetID=listAppend(variables.instance.extendSetID,i)>
+				</cfif>
+			</cfloop>
+		</cfif>
+	
+		<cfset purgeExtendedData()>
+	
+		<cfreturn variables.instance />
 </cffunction>
 
 <cffunction name="save" output="false">
 	<cfif isObject(getManager())>
 		<cfset getManager().save(this)>
 	<cfelse>
-		<cfset getConfigBean().getClassExtensionManager().saveExtendedData(getID(),getAllValues(), variables.instance.extendDataTable)/>
+		<cfset getConfigBean().getClassExtensionManager().saveExtendedData(getID(),getAllValues(), getDataTable())/>
 	</cfif>
 	<cfset getBean("trashManager").takeOut(this)>
 	<cfreturn this>
@@ -135,9 +244,33 @@
 	<cfif isObject(getManager())>
 		<cfset getManager().delete(this)>
 	<cfelse>
-		<cfset getConfigBean().getClassExtensionManager().deleteExtendedData(getID(), variables.instance.extendDataTable)/>
+		<cfset getConfigBean().getClassExtensionManager().deleteExtendedData(getID(), getDataTable())/>
 	</cfif>
 	<cfreturn this>
+</cffunction>
+
+<cffunction name="OnMissingMethod" access="public" returntype="any" output="false" hint="Handles missing method exceptions.">
+<cfargument name="MissingMethodName" type="string" required="true" hint="The name of the missing method." />
+<cfargument name="MissingMethodArguments" type="struct" required="true" />
+<cfset var prop="">
+<cfset var prefix=left(arguments.MissingMethodName,3)>
+<cfset var bean="">
+
+<cfif len(arguments.MissingMethodName)>
+	<cfif listFindNoCase("set,get",prefix) and len(arguments.MissingMethodName) gt 3>
+		<cfset prop=right(arguments.MissingMethodName,len(arguments.MissingMethodName)-3)>	
+		<cfif prefix eq "get">
+			<cfreturn getValue(prop)>
+		<cfelseif prefix eq "set" and not structIsEmpty(MissingMethodArguments)>
+			<cfset setValue(prop,MissingMethodArguments[1])>	
+		</cfif>
+	<cfelse>
+		<cfthrow message="The method '#arguments.MissingMethodName#' is not defined">
+	</cfif>
+<cfelse>
+	<cfreturn "">
+</cfif>
+
 </cffunction>
 
 <cffunction name="loadBy" output="false">
@@ -158,12 +291,12 @@
 		<cfreturn this>
 	</cfif>
 	<cfif structKeyExists(arguments,"remoteID")>
-		<cfset variables.instance.remoteID=arguments.remoteID>
+		<cfset setRemoteID(arguments.remoteID)>
 		<cfset feed=getBean("extendObjectFeedBean")>
-		<cfset feed.setSiteID(variables.instance.siteID)>
-		<cfset feed.setType(variables.instance.type)>
-		<cfset feed.setSubType(variables.instance.subtype)>
-		<cfset feed.addAdvancedParam(field="#variables.instance.extendDataTable#.remoteID",criteria=arguments.remoteID)>
+		<cfset feed.setSiteID(getSiteID())>
+		<cfset feed.setType(getType())>
+		<cfset feed.setSubType(getSubType())>
+		<cfset feed.addAdvancedParam(field="#getDataTable()#.remoteID",criteria=arguments.remoteID)>
 		<cfset it=feed.getIterator()>
 		<cfif it.hasNext()>
 			<cfset setAllValues(it.next().getAllVAlues())>

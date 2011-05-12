@@ -1,22 +1,9 @@
 ﻿var HTMLMixedParser = Editor.Parser = (function() {
-
-  // tags that trigger seperate parsers
-  var triggers = {
-    "script": "JSParser",
-    "style":  "CSSParser"
-  };
-
-  function checkDependencies() {
-    var parsers = ['XMLParser'];
-    for (var p in triggers) parsers.push(triggers[p]);
-    for (var i in parsers) {
-      if (!window[parsers[i]]) throw new Error(parsers[i] + " parser must be loaded for HTML mixed mode to work.");
-    }
-    XMLParser.configure({useHTMLKludges: true});
-  }
+  if (!(CSSParser && JSParser && XMLParser))
+    throw new Error("CSS, JS, and XML parsers must be loaded for HTML mixed mode to work.");
+  XMLParser.configure({useHTMLKludges: true});
 
   function parseMixed(stream) {
-    checkDependencies();
     var htmlParser = XMLParser.make(stream), localParser = null, inTag = false;
     var iter = {next: top, copy: copy};
 
@@ -27,10 +14,10 @@
       else if (token.style == "xml-tagname" && inTag === true)
         inTag = token.content.toLowerCase();
       else if (token.content == ">") {
-        if (triggers[inTag]) {
-          var parser = window[triggers[inTag]];
-          iter.next = local(parser, "</" + inTag);
-        }
+        if (inTag == "script")
+          iter.next = local(JSParser, "</script");
+        else if (inTag == "style")
+          iter.next = local(CSSParser, "</style");
         inTag = false;
       }
       return token;
@@ -60,7 +47,7 @@
               return baseIndent;
             else
               return oldIndent(chars);
-          };
+          }
         }
 
         return token;
@@ -82,12 +69,6 @@
     return iter;
   }
 
-  return {
-    make: parseMixed,
-    electricChars: "{}/:",
-    configure: function(obj) {
-      if (obj.triggers) triggers = obj.triggers;
-    }
-  };
+  return {make: parseMixed, electricChars: "{}/:"};
 
 })();

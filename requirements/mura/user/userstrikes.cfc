@@ -20,7 +20,7 @@
 <cffunction name="getQuery" output="false" returntype="query">
 	<cfset var rs="">
 	
-	<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+	<cfquery name="rs" datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	select * from tuserstrikes where username=<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.username#">
 	</cfquery>
 	
@@ -29,7 +29,7 @@
 		insert into tuserstrikes (username,strikes,lastAttempt) values (
 		<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.username#">,
 		0,
-		<cfqueryparam cfsqltype="cf_sql_timestamp" value="#dateAdd("n",-1,now())#">
+		#createODBCDateTime(dateAdd("n",-1,now()))#
 		)
 		</cfquery>
 		
@@ -52,7 +52,7 @@
 		<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 		update tuserstrikes set 
 		strikes=0,
-		lastAttempt=<cfqueryparam cfsqltype="cf_sql_timestamp" value="#getLastAttempt()#">
+		lastAttempt=#createODBCDateTime(getLastAttempt())#
 		where username=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getUsername()#">
 	</cfquery>
 	</cfif>
@@ -91,7 +91,7 @@
 	<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 		update tuserstrikes set 
 		strikes=strikes + 1,
-		lastAttempt=<cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#">
+		lastAttempt=#createODBCDateTime(now())#
 		where username=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getUsername()#">
 	</cfquery>
 	
@@ -114,7 +114,7 @@
 	<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 		update tuserstrikes set 
 		strikes=0,
-		lastAttempt=<cfqueryparam cfsqltype="cf_sql_timestamp" value="#dateAdd("n",-1,now())#">
+		lastAttempt=#createODBCDateTime(dateAdd("n",-1,now()))#
 		where username=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getUsername()#">
 	</cfquery>
 	

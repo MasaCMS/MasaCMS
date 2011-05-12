@@ -6,46 +6,46 @@ the Free Software Foundation, Version 2 of the License.
 
 Mura CMS is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. �See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-along with Mura CMS. If not, see <http://www.gnu.org/licenses/>.
+along with Mura CMS. �If not, see <http://www.gnu.org/licenses/>.
 
 Linking Mura CMS statically or dynamically with other modules constitutes
 the preparation of a derivative work based on Mura CMS. Thus, the terms and
-conditions of the GNU General Public License version 2 (GPL) cover the entire combined work.
+conditions of the GNU General Public License version 2 (�GPL�) cover the entire combined work.
 
 However, as a special exception, the copyright holders of Mura CMS grant you permission
 to combine Mura CMS with programs or libraries that are released under the GNU Lesser General Public License version 2.1.
 
-In addition, as a special exception, the copyright holders of Mura CMS grant you permission
-to combine Mura CMS with independent software modules that communicate with Mura CMS solely
+In addition, as a special exception, �the copyright holders of Mura CMS grant you permission
+to combine Mura CMS �with independent software modules that communicate with Mura CMS solely
 through modules packaged as Mura CMS plugins and deployed through the Mura CMS plugin installation API,
-provided that these modules (a) may only modify the /plugins/ directory through the Mura CMS
+provided that these modules (a) may only modify the �/trunk/www/plugins/ directory through the Mura CMS
 plugin installation API, (b) must not alter any default objects in the Mura CMS database
 and (c) must not alter any files in the following directories except in cases where the code contains
 a separately distributed license.
 
-/admin/
-/tasks/
-/config/
-/requirements/mura/
+/trunk/www/admin/
+/trunk/www/tasks/
+/trunk/www/config/
+/trunk/www/requirements/mura/
 
 You may copy and distribute such a combined work under the terms of GPL for Mura CMS, provided that you include
 the source code of that other code when and as the GNU GPL requires distribution of source code.
 
 For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception
 for your modified version; it is your choice whether to do so, or to make such modified version available under
-the GNU General Public License version 2 without this exception. You may, if you choose, apply this exception
+the GNU General Public License version 2 �without this exception. �You may, if you choose, apply this exception
 to your own modified versions of Mura CMS.
 --->
 
-<cfif not listFind("Portal,Gallery",$.content('type'))>
-	<cfswitch expression="#$.getJsLib()#">
+<cfif not listFind("Portal,Gallery",request.contentBean.getType())>
+	<cfswitch expression="#getJsLib()#">
 		<cfcase value="jquery">
 			<cfset $.getContentRenderer().loadJSLib() />
-		 	<cfset $.addToHTMLHeadQueue("comments/htmlhead/comments-jquery.cfm")>
+		 	<cfset addToHTMLHeadQueue("comments/htmlhead/comments-jquery.cfm")>
 		</cfcase>
 		<cfdefaultcase>
 			<!--- no such luck, signed Grant --->
@@ -90,9 +90,9 @@ to your own modified versions of Mura CMS.
 			<cfset request.remember=cookie.remember>
 		</cfif>
 
-		
-		<cfset theContentID=$.content('contentID')>
-		<cfset request.isEditor=(listFind(session.mura.memberships,'S2IsPrivate;#application.settingsManager.getSite($.event('siteID')).getPrivateUserPoolID()#')
+		<cfset rbFactory=getSite().getRBFactory() />
+		<cfset theContentID=request.contentBean.getcontentID()>
+		<cfset request.isEditor=(listFind(session.mura.memberships,'S2IsPrivate;#application.settingsManager.getSite(request.siteid).getPrivateUserPoolID()#')
 				and application.permUtility.getnodePerm(request.crumbdata) neq 'none')
 				or listFind(session.mura.memberships,'S2')>
 		<cfparam name="request.commentid" default="">
@@ -109,8 +109,8 @@ to your own modified versions of Mura CMS.
 		<cfset errors=structNew()/>
 
 		<cfif structKeyExists(request,"commentUnsubscribe")>
-			<cfset application.contentManager.commentUnsubscribe($.content('contentID'),request.commentUnsubscribe,$.event('siteID'))>
-			<cfset errors["unsubscribe"]=$.rbKey('comments.youhaveunsubscribed')>
+			<cfset application.contentManager.commentUnsubscribe(request.contentBean.getContentID(),request.commentUnsubscribe,request.siteID)>
+			<cfset errors["unsubscribe"]=rbFactory.getKey('comments.youhaveunsubscribed')>
 		</cfif>
 
 		<cfif request.commentid neq '' and request.comments neq '' and request.name neq ''>
@@ -125,12 +125,12 @@ to your own modified versions of Mura CMS.
 			<cfif structKeyExists(myRequest, "useProtect")>
 				<cfset cffp = CreateObject("component","cfformprotect.cffpVerify").init() />
 
-				<cfif application.settingsManager.getSite($.event('siteID')).getContactEmail() neq "">
-					<cfset cffp.updateConfig('emailServer', application.settingsManager.getSite($.event('siteID')).getMailServerIP())>
-					<cfset cffp.updateConfig('emailUserName', application.settingsManager.getSite($.event('siteID')).getMailserverUsername(true))>
-					<cfset cffp.updateConfig('emailPassword', application.settingsManager.getSite($.event('siteID')).getMailserverPassword())>
-					<cfset cffp.updateConfig('emailFromAddress', application.settingsManager.getSite($.event('siteID')).getMailserverUsernameEmail())>
-					<cfset cffp.updateConfig('emailToAddress', application.settingsManager.getSite($.event('siteID')).getContactEmail())>
+				<cfif application.settingsManager.getSite(request.siteID).getContactEmail() neq "">
+					<cfset cffp.updateConfig('emailServer', application.settingsManager.getSite(request.siteID).getMailServerIP())>
+					<cfset cffp.updateConfig('emailUserName', application.settingsManager.getSite(request.siteID).getMailserverUsername(true))>
+					<cfset cffp.updateConfig('emailPassword', application.settingsManager.getSite(request.siteID).getMailserverPassword())>
+					<cfset cffp.updateConfig('emailFromAddress', application.settingsManager.getSite(request.siteID).getMailserverUsernameEmail())>
+					<cfset cffp.updateConfig('emailToAddress', application.settingsManager.getSite(request.siteID).getContactEmail())>
 					<cfset cffp.updateConfig('emailSubject', 'Spam form submission')>
 				</cfif>
 
@@ -139,13 +139,13 @@ to your own modified versions of Mura CMS.
 
 			<cfif (request.hkey eq '' or request.hKey eq hash(lcase(request.ukey))) and passedProtect>
 
-				<cfset submittedData=$.getBean('utility').filterArgs(request,application.badwords)/>
+				<cfset submittedData=application.utility.filterArgs(request,application.badwords)/>
 				<cfset submittedData.contentID=theContentID />
 				<cfif $.currentUser().isLoggedIn()>
 					<cfset request.userID=$.currentUser().getUserID()>
 				</cfif>
 		
-				<cfset submittedData.isApproved=application.settingsManager.getSite($.event('siteID')).getCommentApprovalDefault() />
+				<cfset submittedData.isApproved=application.settingsManager.getSite(request.siteid).getCommentApprovalDefault() />
 				
 				
 				
@@ -169,7 +169,7 @@ to your own modified versions of Mura CMS.
 					<cfset request.subscribe=0/>
 					<cfset request.remember=0/>
 				</cfif>
-				<cfif not application.settingsManager.getSite($.event('siteID')).getCommentApprovalDefault() eq 1>
+				<cfif not application.settingsManager.getSite(request.siteid).getCommentApprovalDefault() eq 1>
 					<cfset commentBean.sendNotification() />
 				</cfif>
 				<cfif isBoolean(request.remember) and request.remember>
@@ -195,9 +195,9 @@ to your own modified versions of Mura CMS.
 				</cfsavecontent>
 
 				<cfif passedProtect>
-					<cfset errors["SecurityCode"]=$.rbKey('captcha.error')>
+					<cfset errors["SecurityCode"]=rbFactory.getKey('captcha.error')>
 				<cfelse>
-					<cfset errors["Spam"] = $.rbKey("captcha.spam")>
+					<cfset errors["Spam"] = rbFactory.getKey("captcha.spam")>
 				</cfif>
 
 			</cfif>
@@ -211,7 +211,7 @@ to your own modified versions of Mura CMS.
 			<cfset application.contentManager.approveComment(request.approvedcommentid,event.getContentRenderer()) />
 		</cfif>
 		<cfset level=0>
-		<cfset rsComments=application.contentManager.readComments(thecontentID,$.event('siteID'),request.isEditor,"asc","",false ) />
+		<cfset rsComments=application.contentManager.readComments(thecontentID,request.siteid,request.isEditor,"asc","",false ) />
 		<cfset rsSubComments=StructNew() />
 	</cfsilent>
 
@@ -222,69 +222,69 @@ to your own modified versions of Mura CMS.
 
 	<div id="svComments">
 		<cfoutput>
-		<#$.getHeaderTag('subHead1')#>#$.rbKey('comments.comments')#</#$.getHeaderTag('subHead1')#>
-		#$.dspObject_Include(thefile='comments/dsp_comments.cfm')#</cfoutput>
+		<#getHeaderTag('subHead1')#>#rbFactory.getKey('comments.comments')#</#getHeaderTag('subHead1')#>
+		#dspObject_Include(thefile='comments/dsp_comments.cfm')#</cfoutput>
 		<cfif not structIsEmpty(errors) >
 			<cfoutput>
 				#errorJSTxt#
 				<a name="errors"></a>
 				<div id="editProfileMsg" class="required">
-					#$.getBean('utility').displayErrors(errors)#
+					#application.utility.displayErrors(errors)#
 				</div>
 		</cfoutput>
 
-		<cfelseif request.commentid neq '' and application.settingsManager.getSite($.event('siteID')).getCommentApprovalDefault() neq 1>
+		<cfelseif request.commentid neq '' and application.settingsManager.getSite(request.siteid).getCommentApprovalDefault() neq 1>
 			<div id="editProfileMsg" class="required">
-				<cfoutput>#$.rbKey('comments.postedsoon')#</cfoutput>
+				<cfoutput>#rbFactory.getKey('comments.postedsoon')#</cfoutput>
 			</div>
 		</cfif>
 		<dd id="postcomment-form">
-		<cfoutput><span id="postcomment-comment" style="display: none"><a href="##postcomment">#$.rbKey('comments.newcomment')#</a></span></cfoutput>
+		<cfoutput><span id="postcomment-comment" style="display: none"><a href="##postcomment">#rbFactory.getKey('comments.newcomment')#</a></span></cfoutput>
 		<form id="postcomment" method="post" name="addComment" action="?nocache=1#postcomment" onsubmit="return validate(this);" novalidate="novalidate">
 			<a name="postcomment"></a>
 			<fieldset>
-				<cfoutput><legend id="postacomment">#$.rbKey('comments.postacomment')#</legend>
-				<legend id="editcomment" style="display:none">#$.rbKey('comments.editcomment')#</legend>
-				<legend id="replytocomment" style="display:none">#$.rbKey('comments.replytocomment')#</legend>
+				<cfoutput><legend id="postacomment">#rbFactory.getKey('comments.postacomment')#</legend>
+				<legend id="editcomment" style="display:none">#rbFactory.getKey('comments.editcomment')#</legend>
+				<legend id="replytocomment" style="display:none">#rbFactory.getKey('comments.replytocomment')#</legend>
 				<ol>
 					<li class="req">
-						<label for="txtName">#$.rbKey('comments.name')#<ins> (#$.rbKey('comments.required')#)</ins></label>
-						<input id="txtName" name="name" type="text" size="38" class="text" maxlength="50" required="true" message="#htmlEditFormat($.rbKey('comments.namerequired'))#" value="#HTMLEditFormat(request.name)#" />
+						<label for="txtName">#rbFactory.getKey('comments.name')#<ins> (#rbFactory.getKey('comments.required')#)</ins></label>
+						<input id="txtName" name="name" type="text" size="38" class="text" maxlength="50" required="true" message="#htmlEditFormat(rbFactory.getKey('comments.namerequired'))#" value="#HTMLEditFormat(request.name)#" />
 					</li>
 					<li class="req">
-						<label for="txtEmail">#$.rbKey('comments.email')#</label>
-						<input id="txtEmail" name="email" type="text" size="38" class="text" maxlength="50" required="true" message="#htmlEditFormat($.rbKey('comments.emailvalidate'))#" value="#HTMLEditFormat(request.email)#" />
+						<label for="txtEmail">#rbFactory.getKey('comments.email')#</label>
+						<input id="txtEmail" name="email" type="text" size="38" class="text" maxlength="50" required="true" message="#htmlEditFormat(rbFactory.getKey('comments.emailvalidate'))#" value="#HTMLEditFormat(request.email)#" />
 					</li>
 					<li>
-						<label for="txtUrl">#$.rbKey('comments.url')#</label>
+						<label for="txtUrl">#rbFactory.getKey('comments.url')#</label>
 						<input id="txtUrl" name="url" type="text" size="38" class="text" maxlength="50" value="#HTMLEditFormat(request.url)#" />
 					</li>
 					<li class="req">
-						<label for="txtComment">#$.rbKey('comments.comment')#<ins> (#$.rbKey('comments.required')#)</ins></label>
-						<textarea id="txtComment" name="comments" message="#htmlEditFormat($.rbKey('comments.commentrequired'))#" cols="30" rows="20" required="true">#HTMLEditFormat(request.comments)#</textarea>
+						<label for="txtComment">#rbFactory.getKey('comments.comment')#<ins> (#rbFactory.getKey('comments.required')#)</ins></label>
+						<textarea id="txtComment" name="comments" message="#htmlEditFormat(rbFactory.getKey('comments.commentrequired'))#" cols="30" rows="20" required="true">#HTMLEditFormat(request.comments)#</textarea>
 					</li>
 					<li>
-						<label for="txtRemember">#$.rbKey('comments.rememberinfo')#</label>
+						<label for="txtRemember">#rbFactory.getKey('comments.rememberinfo')#</label>
 						<input type="checkbox" id="txtRemember" name="remember" value="1"<cfif isBoolean(cookie.remember) and cookie.remember> checked="checked"</cfif> />
 					</li>
 					<li>
-						<label for="txtSubscribe">#$.rbKey('comments.subscribe')#</label>
+						<label for="txtSubscribe">#rbFactory.getKey('comments.subscribe')#</label>
 						<input type="checkbox" id="txtSubscribe" name="subscribe" value="1"<cfif isBoolean(cookie.subscribe) and cookie.subscribe> checked="checked"</cfif> />
 					</li></cfoutput>
 					<li>
-						<cfoutput>#$.dspObject_Include(thefile='dsp_form_protect.cfm')#</cfoutput>
+						<cfoutput>#dspObject_Include(thefile='dsp_form_protect.cfm')#</cfoutput>
 					</li>
 				</ol>
 			</fieldset>
 			<div class="buttons">
 				<cfoutput>
-					<p class="required">#$.rbKey('comments.requiredfield')#</p>
-					<input type="hidden" name="returnURL" value="#HTMLEditFormat(getCurrentURL())#" />
+					<p class="required">#rbFactory.getKey('comments.requiredfield')#</p>
+					<input type="hidden" name="returnURL" value="#getCurrentURL()#" />
 					<input type="hidden" name="commentid" value="#createuuid()#" />
 					<input type="hidden" name="parentid" value="" />
 					<input type="hidden" name="commenteditmode" value="add" />
-					<input type="hidden" name="linkServID" value="#$.content('contentID')#" />
-					<input type="submit" class="submit" name="submit" value="#htmlEditFormat($.rbKey('comments.submit'))#" />
+					<input type="hidden" name="linkServID" value="#event.getContentBean().getContentID()#" />
+					<input type="submit" class="submit" name="submit" value="#htmlEditFormat(rbFactory.getKey('comments.submit'))#" />
 				</cfoutput>
 			</div>
 		</form>

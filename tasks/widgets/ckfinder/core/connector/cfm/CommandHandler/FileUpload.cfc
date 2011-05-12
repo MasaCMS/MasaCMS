@@ -3,7 +3,7 @@
  * CKFinder
  * ========
  * http://ckfinder.com
- * Copyright (C) 2007-2011, CKSource - Frederico Knabben. All rights reserved.
+ * Copyright (C) 2007-2010, CKSource - Frederico Knabben. All rights reserved.
  *
  * The software, this file and its contents are subject to the CKFinder
  * License. Please read the license.txt file before using, installing, copying,
@@ -20,13 +20,7 @@
 	<cfif not Len(errorMsg) and errorCode >
 		<cfset errorMsg = APPLICATION.CreateCFC("Utils.Misc").getErrorMessage(errorCode, fileName)>
 	</cfif>
-	<cfif isDefined('URL.response_type') and URL.response_type eq "txt">
-		<cfcontent reset="true" type="text/plain; charset=UTF-8">
-		<cfoutput>#fileName#|#errorMsg#</cfoutput>
-		<cfreturn true />
-	</cfif>
 	<cfif isDefined('URL.CKFinderFuncNum')>
-		<cfcontent reset="true" type="text/html; charset=UTF-8">
 		<cfif not Len(errorMsg) and errorCode >
 			<cfset errorMsg = APPLICATION.CreateCFC("Utils.Misc").getErrorMessage(errorCode, fileName)>
 		</cfif>
@@ -55,7 +49,6 @@
 	<cfset var unsafeFileName = "">
 	<cfset var fileFields = "">
 	<cfset var filePath = "">
-	<cfset var fileField = "">
 	<cfset var maxSize = "0">
 	<cfset var errorCode = "0">
 	<cfset var originalFileName = "">
@@ -100,17 +93,11 @@
 	<!--- upload file to temporary directory --->
 	<cftry>
 		<cfset THIS.checkRequest()>
-		<!--- Flash sends many fieldnames during upload, so we need to use "upload" name for file input to avoid errors --->
-		<cfif THIS.command eq "FileUpload" and isDefined("FORM.upload")>
-			<cfset fileField = "upload">
-		<cfelse>
-			<cfset fileFields = ListToArray(FORM.FIELDNAMES)>
-			<cfset fileField = "#fileFields[1]#">
-		</cfif>
+		<cfset fileFields = ListToArray(FORM.FIELDNAMES)>
 		<cfif isDefined( "REQUEST.Config.chmodFiles" ) and REQUEST.Config.chmodFiles>
-			<cffile action="UPLOAD" filefield="#fileField#" destination="#sTempDir#" nameconflict="MAKEUNIQUE" mode="#REQUEST.Config.chmodFiles#" />
+			<cffile action="UPLOAD" filefield="#fileFields[1]#" destination="#sTempDir#" nameconflict="MAKEUNIQUE" mode="#REQUEST.Config.chmodFiles#" />
 		<cfelse>
-			<cffile action="UPLOAD" filefield="#fileField#" destination="#sTempDir#" nameconflict="MAKEUNIQUE" />
+			<cffile action="UPLOAD" filefield="#fileFields[1]#" destination="#sTempDir#" nameconflict="MAKEUNIQUE" />
 		</cfif>
 		<cfcatch type="ckfinder">
 			<cfset THIS.throwError(CFCATCH.ErrorCode)>

@@ -6,56 +6,57 @@ the Free Software Foundation, Version 2 of the License.
 
 Mura CMS is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-along with Mura CMS. If not, see <http://www.gnu.org/licenses/>.
+along with Mura CMS.  If not, see <http://www.gnu.org/licenses/>.
 
-Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on 
-Mura CMS. Thus, the terms and conditions of the GNU General Public License version 2 ("GPL") cover the entire combined work.
+Linking Mura CMS statically or dynamically with other modules constitutes
+the preparation of a derivative work based on Mura CMS. Thus, the terms and 	
+conditions of the GNU General Public License version 2 (“GPL”) cover the entire combined work.
 
-However, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with programs
-or libraries that are released under the GNU Lesser General Public License version 2.1.
+However, as a special exception, the copyright holders of Mura CMS grant you permission
+to combine Mura CMS with programs or libraries that are released under the GNU Lesser General Public License version 2.1.
 
-In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with 
-independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without 
-Mura CMS under the license of your choice, provided that you follow these specific guidelines: 
+In addition, as a special exception,  the copyright holders of Mura CMS grant you permission
+to combine Mura CMS  with independent software modules that communicate with Mura CMS solely
+through modules packaged as Mura CMS plugins and deployed through the Mura CMS plugin installation API,
+provided that these modules (a) may only modify the  /trunk/www/plugins/ directory through the Mura CMS
+plugin installation API, (b) must not alter any default objects in the Mura CMS database
+and (c) must not alter any files in the following directories except in cases where the code contains
+a separately distributed license.
 
-Your custom code 
+/trunk/www/admin/
+/trunk/www/tasks/
+/trunk/www/config/
+/trunk/www/requirements/mura/
 
-â€¢ Must not alter any default objects in the Mura CMS database and
-â€¢ May not alter the default display of the Mura CMS logo within Mura CMS and
-â€¢ Must not alter any files in the following directories.
+You may copy and distribute such a combined work under the terms of GPL for Mura CMS, provided that you include
+the source code of that other code when and as the GNU GPL requires distribution of source code.
 
- /admin/
- /tasks/
- /config/
- /requirements/mura/
- /Application.cfc
- /index.cfm
- /MuraProxy.cfc
-
-You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work 
-under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL 
-requires distribution of source code.
-
-For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your 
-modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
-version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
+For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception
+for your modified version; it is your choice whether to do so, or to make such modified version available under
+the GNU General Public License version 2  without this exception.  You may, if you choose, apply this exception
+to your own modified versions of Mura CMS.
 --->
 <cfcomponent extends="mura.cfobject" output="false">
 
 <cffunction name="init" access="public" returntype="any" output="false">
 <cfargument name="configBean" type="any" required="yes"/>
 		<cfset variables.configBean=arguments.configBean />
+		<cfset variables.dsn=variables.configBean.getdatasource()/>
 <cfreturn this />
+</cffunction>
+
+<cffunction name="getBean" access="public" returntype="any">
+	<cfreturn createObject("component","mura.email.emailBean").init()>
 </cffunction>
 
 <cffunction name="create" returntype="void" access="public" output="false">
 <cfargument name="emailBean" type="any" />
  
- <cfquery  datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+ <cfquery  datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
         INSERT INTO temails  (EmailID, Subject,BodyText, BodyHtml,
 		  CreatedDate, LastUpdateBy, LastUpdateByID, GroupList, Status, DeliveryDate, siteid, replyto,format,fromLabel)
      VALUES(
@@ -65,12 +66,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		  <cfqueryparam cfsqltype="cf_sql_longvarchar" null="#iif(arguments.emailBean.getBodyText() neq '',de('no'),de('yes'))#" value="#arguments.emailBean.getBodyText()#">,
 		  <cfqueryparam cfsqltype="cf_sql_longvarchar" null="#iif(arguments.emailBean.getBodyHtml() neq '',de('no'),de('yes'))#" value="#arguments.emailBean.getBodyHtml()#">,
 		
-		<cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#">, 
+		#createodbcdatetime(now())#, 
 		 <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.emailBean.getLastUpdateBy() neq '',de('no'),de('yes'))#" value="#arguments.emailBean.getLastUpdateBy()#">,
 		  <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.emailBean.getLastUpdateByID() neq '',de('no'),de('yes'))#" value="#arguments.emailBean.getLastUpdateByID()#">,
 		 <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.emailBean.getGroupID() neq '',de('no'),de('yes'))#" value="#arguments.emailBean.getGroupID()#">,
 		0,
-		<cfif isdate(arguments.emailBean.getdeliverydate())><cfqueryparam cfsqltype="cf_sql_timestamp" value="#createDateTime(year(arguments.emailBean.getdeliverydate()),month(arguments.emailBean.getdeliverydate()),day(arguments.emailBean.getdeliverydate()),hour(arguments.emailBean.getdeliverydate()),minute(arguments.emailBean.getdeliverydate()),0)#"><cfelse>null</cfif>,
+		<cfif isdate(arguments.emailBean.getdeliverydate())>#createodbcdatetime(createDateTime(year(arguments.emailBean.getdeliverydate()),month(arguments.emailBean.getdeliverydate()),day(arguments.emailBean.getdeliverydate()),hour(arguments.emailBean.getdeliverydate()),minute(arguments.emailBean.getdeliverydate()),0))#<cfelse>null</cfif>,
 		 <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.emailBean.getSiteID() neq '',de('no'),de('yes'))#" value="#arguments.emailBean.getSiteID()#">,
 		 <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.emailBean.getReplyTo() neq '',de('no'),de('yes'))#" value="#arguments.emailBean.getReplyTo()#">,
 		 <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.emailBean.getFormat() neq '',de('no'),de('yes'))#" value="#arguments.emailBean.getFormat()#">,
@@ -84,10 +85,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="read" access="public" output="false" returntype="any" >
 	<cfargument name="emailID" type="string" />
-	<cfset var emailBean=getBean("email") />
+	<cfset var emailBean=getBean() />
 	<cfset var rs ="" />
 	
-	<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+	<cfquery name="rs" datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	Select * from temails where 
 	emailid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.emailID#" />
 	</cfquery>
@@ -102,19 +103,19 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="update" access="public" output="false" returntype="void" >
 	<cfargument name="emailBean" type="any" />
 	
- <cfquery  datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+ <cfquery  datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
         UPDATE temails set 
 		 subject =  <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.emailBean.getSubject() neq '',de('no'),de('yes'))#" value="#arguments.emailBean.getSubject()#">, 
 		
 		 bodytext =  <cfqueryparam cfsqltype="cf_sql_longvarchar" null="#iif(arguments.emailBean.getBodyText() neq '',de('no'),de('yes'))#" value="#arguments.emailBean.getBodyText()#">,
 		 bodyhtml = <cfqueryparam cfsqltype="cf_sql_longvarchar" null="#iif(arguments.emailBean.getBodyHtml() neq '',de('no'),de('yes'))#" value="#arguments.emailBean.getBodyHtml()#">,
 		
-		 createddate = <cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#">, 
+		 createddate = #createodbcdatetime(now())#, 
 		 lastupdateby = <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.emailBean.getLastUpdateBy() neq '',de('no'),de('yes'))#" value="#arguments.emailBean.getLastUpdateBy()#">,
 		 lastupdatebyid = <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.emailBean.getLastUpdateByID() neq '',de('no'),de('yes'))#" value="#arguments.emailBean.getLastUpdateByID()#">,
 		 grouplist =  <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.emailBean.getGroupID() neq '',de('no'),de('yes'))#" value="#arguments.emailBean.getGroupID()#">,
 		 status = 0,
-		 deliverydate = <cfif isdate(arguments.emailBean.getdeliverydate())><cfqueryparam cfsqltype="cf_sql_timestamp" value="#createDateTime(year(arguments.emailBean.getdeliverydate()),month(arguments.emailBean.getdeliverydate()),day(arguments.emailBean.getdeliverydate()),hour(arguments.emailBean.getdeliverydate()),minute(arguments.emailBean.getdeliverydate()),0)#"><cfelse>null</cfif>,
+		 deliverydate = <cfif isdate(arguments.emailBean.getdeliverydate())>#createodbcdatetime(createDateTime(year(arguments.emailBean.getdeliverydate()),month(arguments.emailBean.getdeliverydate()),day(arguments.emailBean.getdeliverydate()),hour(arguments.emailBean.getdeliverydate()),minute(arguments.emailBean.getdeliverydate()),0))#<cfelse>null</cfif>,
 		 siteid= <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.emailBean.getSiteID() neq '',de('no'),de('yes'))#" value="#arguments.emailBean.getSiteID()#">,
 		 replyto=  <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.emailBean.getReplyTo() neq '',de('no'),de('yes'))#" value="#arguments.emailBean.getReplyTo()#">,
 		 format= <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.emailBean.getFormat() neq '',de('no'),de('yes'))#" value="#arguments.emailBean.getFormat()#">,
@@ -128,7 +129,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="delete" access="public" output="false" returntype="void" >
 	<cfargument name="emailid" type="string" />
 	
-	<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#" >
+	<cfquery datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#" >
 	<!---DELETE FROM temails where emailid='#arguments.emailID#'  --->
 	UPDATE temails
 	SET isDeleted = 1
@@ -136,7 +137,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfquery>
 	
 	<!--- need to track emails, so don't delete from this log
-	<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#" >
+	<cfquery datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#" >
 	DELETE FROM temailstats where emailid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.emailID#" />
 	</cfquery>
 	--->

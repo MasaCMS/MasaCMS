@@ -112,34 +112,28 @@ var CSSParser = Editor.Parser = (function() {
   function parseCSS(source, basecolumn) {
     basecolumn = basecolumn || 0;
     var tokens = tokenizeCSS(source);
-    var inBraces = false, inRule = false, inDecl = false;;
+    var inBraces = false, inRule = false;
 
     var iter = {
       next: function() {
         var token = tokens.next(), style = token.style, content = token.content;
 
+        if (style == "css-identifier" && inRule)
+          token.style = "css-value";
         if (style == "css-hash")
-          style = token.style =  inRule ? "css-colorcode" : "css-identifier";
-        if (style == "css-identifier") {
-          if (inRule) token.style = "css-value";
-          else if (!inBraces && !inDecl) token.style = "css-selector";
-        }
+          token.style =  inRule ? "css-colorcode" : "css-identifier";
 
         if (content == "\n")
           token.indentation = indentCSS(inBraces, inRule, basecolumn);
 
-        if (content == "{" && inDecl == "@media")
-          inDecl = false;
-        else if (content == "{")
+        if (content == "{")
           inBraces = true;
         else if (content == "}")
-          inBraces = inRule = inDecl = false;
-        else if (content == ";")
-          inRule = inDecl = false;
+          inBraces = inRule = false;
+        else if (inBraces && content == ";")
+          inRule = false;
         else if (inBraces && style != "css-comment" && style != "whitespace")
           inRule = true;
-        else if (!inBraces && style == "css-at")
-          inDecl = content;
 
         return token;
       },

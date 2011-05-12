@@ -1,10 +1,10 @@
 <cfsilent>
 <cfprocessingdirective pageencoding="utf-8">
 <!---
-Copyright (c) 2003-2011, CKSource - Frederico Knabben. All rights reserved.
+Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckfinder.com/license
 
- Defines the object for the Norwegian Nynorsk language.
+
 --->
 <cfscript>
 CKFLang = structNew();
@@ -23,13 +23,13 @@ CKFLang = structNew();
 	CKFLang.Errors[116] = 'Kunne ikke finne mappen. Oppdater vinduet og prøv igjen.';
 	CKFLang.Errors[117] = 'Kunne ikke finne filen. Oppdater vinduet og prøv igjen.';
 	CKFLang.Errors[118] = 'Source and target paths are equal.';
-	CKFLang.Errors[201] = 'Det fantes allerede en fil med dette navnet. Den opplastede filens navn har blitt endret til "%1".';
-	CKFLang.Errors[202] = 'Ugyldig fil.';
+	CKFLang.Errors[201] = 'Det fantes allerede en fil med dette navnet. Den opplastede filens navn har blitt endret til "%1"';
+	CKFLang.Errors[202] = 'Ugyldig fil';
 	CKFLang.Errors[203] = 'Ugyldig fil. Filen er for stor.';
 	CKFLang.Errors[204] = 'Den opplastede filen er korrupt.';
 	CKFLang.Errors[205] = 'Det finnes ingen midlertidig mappe for filopplastinger.';
 	CKFLang.Errors[206] = 'Opplastingen ble avbrutt av sikkerhetshensyn. Filen inneholder HTML-aktig data.';
-	CKFLang.Errors[207] = 'Den opplastede filens navn har blitt endret til "%1".';
+	CKFLang.Errors[207] = 'Den opplastede filens navn har blitt endret til "%1"';
 	CKFLang.Errors[300] = 'Moving file(s) failed.';
 	CKFLang.Errors[301] = 'Copying file(s) failed.';
 	CKFLang.Errors[500] = 'Filvelgeren ikke tilgjengelig av sikkerhetshensyn. Kontakt systemansvarlig og be han sjekke CKFinder''s konfigurasjonsfil.';

@@ -2,22 +2,22 @@
  * CKFinder
  * ========
  * http://ckfinder.com
- * Copyright (C) 2007-2011, CKSource - Frederico Knabben. All rights reserved.
+ * Copyright (C) 2007-2010, CKSource - Frederico Knabben. All rights reserved.
  *
- * The software, this file, and its contents are subject to the CKFinder
+ * The software, this file and its contents are subject to the CKFinder
  * License. Please read the license.txt file before using, installing, copying,
- * modifying, or distributing this file or part of its contents. The contents of
+ * modifying or distribute this file or part of its contents. The contents of
  * this file is part of the Source Code of CKFinder.
  *
  */
 
 /**
- * @fileOverview Defines the {@link CKFinder.lang} object for the Danish
- *		language.
- */
+ * @fileOverview Defines the {@link CKFinder.lang} object, for the Danish
+ *		language. This is the base file for all translations.
+*/
 
 /**
- * Contains the dictionary of language entries.
+ * Constains the dictionary of language entries.
  * @namespace
  */
 CKFinder.lang['da'] =
@@ -71,7 +71,7 @@ CKFinder.lang['da'] =
 	FolderLoading	: 'Indlæser...',
 	FolderNew		: 'Skriv navnet på den nye mappe: ',
 	FolderRename	: 'Skriv det nye navn på mappen: ',
-	FolderDelete	: 'Er du sikker på, at du vil slette mappen "%1"?',
+	FolderDelete	: 'Er du sikker på, at du vil slette mappen "%1" ?',
 	FolderRenaming	: ' (Omdøber...)',
 	FolderDeleting	: ' (Sletter...)',
 
@@ -79,7 +79,7 @@ CKFinder.lang['da'] =
 	FileRename		: 'Skriv navnet på den nye fil: ',
 	FileRenameExt	: 'Er du sikker på, at du vil ændre filtypen? Filen kan muligvis ikke bruges bagefter.',
 	FileRenaming	: '(Omdøber...)',
-	FileDelete		: 'Er du sikker på, at du vil slette filen "%1"?',
+	FileDelete		: 'Er du sikker på, at du vil slette filen "%1" ?',
 	FilesLoading	: 'Indlæser...',
 	FilesEmpty		: 'Tom mappe',
 	FilesMoved		: 'Filen %1 flyttet til %2:%3',
@@ -142,23 +142,11 @@ CKFinder.lang['da'] =
 	UploadBtn			: 'Upload filen',
 	UploadBtnCancel		: 'Annuller',
 
-	UploadNoFileMsg		: 'Vælg en fil på din computer.',
+	UploadNoFileMsg		: 'Vælg en fil på din computer',
 	UploadNoFolder		: 'Venligst vælg en mappe før upload startes.',
 	UploadNoPerms		: 'Upload er ikke tilladt.',
 	UploadUnknError		: 'Fejl ved upload.',
 	UploadExtIncorrect	: 'Denne filtype er ikke tilladt i denne mappe.',
-
-	// Flash Uploads
-	UploadLabel			: 'Files to Upload', // MISSING
-	UploadTotalFiles	: 'Total Files:', // MISSING
-	UploadTotalSize		: 'Total Size:', // MISSING
-	UploadAddFiles		: 'Add Files', // MISSING
-	UploadClearFiles	: 'Clear Files', // MISSING
-	UploadCancel		: 'Cancel Upload', // MISSING
-	UploadRemove		: 'Remove', // MISSING
-	UploadRemoveTip		: 'Remove !f', // MISSING
-	UploadUploaded		: 'Uploaded !n%', // MISSING
-	UploadProcessing	: 'Processing...', // MISSING
 
 	// Settings Panel
 	SetTitle		: 'Indstillinger',
@@ -199,14 +187,14 @@ CKFinder.lang['da'] =
 	115 : 'En fil eller mappe med det samme navn eksisterer allerede.',
 	116 : 'Mappen blev ikke fundet. Opdatér listen eller prøv igen.',
 	117 : 'Filen blev ikke fundet. Opdatér listen eller prøv igen.',
-	118 : 'Originalplacering og destination er ens.',
-	201 : 'En fil med det samme filnavn eksisterer allerede. Den uploadede fil er blevet omdøbt til "%1".',
+	118 : 'Originalplacering og destination er ens',
+	201 : 'En fil med det samme filnavn eksisterer allerede. Den uploadede fil er blevet omdøbt til "%1"',
 	202 : 'Ugyldig fil.',
 	203 : 'Ugyldig fil. Filstørrelsen er for stor.',
 	204 : 'Den uploadede fil er korrupt.',
 	205 : 'Der er ikke en midlertidig mappe til upload til rådighed på serveren.',
 	206 : 'Upload annulleret af sikkerhedsmæssige årsager. Filen indeholder HTML-lignende data.',
-	207 : 'Den uploadede fil er blevet omdøbt til "%1".',
+	207 : 'Den uploadede fil er blevet omdøbt til "%1"',
 	300 : 'Flytning af fil(er) fejlede.',
 	301 : 'Kopiering af fil(er) fejlede.',
 	500 : 'Filbrowseren er deaktiveret af sikkerhedsmæssige årsager. Kontakt systemadministratoren eller kontrollér CKFinders konfigurationsfil.',
@@ -216,17 +204,14 @@ CKFinder.lang['da'] =
 	// Other Error Messages.
 	ErrorMsg :
 	{
-		FileEmpty		: 'Filnavnet må ikke være tomt.',
-		FileExists		: 'Fil %erne eksisterer allerede.',
-		FolderEmpty		: 'Mappenavnet må ikke være tomt.',
+		FileEmpty		: 'Filnavnet må ikke være tomt',
+		FileExists		: 'Fil %erne eksisterer allerede',
+		FolderEmpty		: 'Mappenavnet må ikke være tomt',
 
 		FileInvChar		: 'Filnavnet må ikke indeholde et af følgende tegn: \n\\ / : * ? " < > |',
 		FolderInvChar	: 'Mappenavnet må ikke indeholde et af følgende tegn: \n\\ / : * ? " < > |',
 
-		PopupBlockView	: 'Det var ikke muligt at åbne filen i et nyt vindue. Kontrollér konfigurationen i din browser, og deaktivér eventuelle popup-blokkere for denne hjemmeside.',
-		XmlError		: 'It was not possible to properly load the XML response from the web server.', // MISSING
-		XmlEmpty		: 'It was not possible to load the XML response from the web server. The server returned an empty response.', // MISSING
-		XmlRawResponse	: 'Raw response from the server: %s' // MISSING
+		PopupBlockView	: 'Det var ikke muligt at åbne filen i et nyt vindue. Kontrollér konfigurationen i din browser, og deaktivér eventuelle popup-blokkere for denne hjemmeside.'
 	},
 
 	// Imageresize plugin
@@ -247,10 +232,8 @@ CKFinder.lang['da'] =
 		invalidName		: 'Ugyldigt filenavn.',
 		newImage		: 'Opret nyt billede.',
 		noExtensionChange : 'Filtypen kan ikke ændres.',
-		imageSmall		: 'Originalfilen er for lille.',
-		contextMenuName	: 'Rediger størrelse',
-		lockRatio		: 'Lås størrelsesforhold',
-		resetSize		: 'Nulstil størrelse'
+		imageSmall		: 'Originalfilen er for lille',
+		contextMenuName	: 'Rediger størrelse'
 	},
 
 	// Fileeditor plugin
@@ -261,11 +244,5 @@ CKFinder.lang['da'] =
 		fileSaveSuccess	: 'Filen er nu gemt.',
 		contextMenuName	: 'Rediger',
 		loadingFile		: 'Henter fil, vent venligst...'
-	},
-
-	Maximize :
-	{
-		maximize : 'Maximér',
-		minimize : 'Minimize' // MISSING
 	}
 };

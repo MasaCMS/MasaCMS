@@ -2,22 +2,22 @@
  * CKFinder
  * ========
  * http://ckfinder.com
- * Copyright (C) 2007-2011, CKSource - Frederico Knabben. All rights reserved.
+ * Copyright (C) 2007-2010, CKSource - Frederico Knabben. All rights reserved.
  *
- * The software, this file, and its contents are subject to the CKFinder
+ * The software, this file and its contents are subject to the CKFinder
  * License. Please read the license.txt file before using, installing, copying,
- * modifying, or distributing this file or part of its contents. The contents of
+ * modifying or distribute this file or part of its contents. The contents of
  * this file is part of the Source Code of CKFinder.
  *
  */
 
 /**
- * @fileOverview Defines the {@link CKFinder.lang} object for the Polish
- *		language.
- */
+ * @fileOverview Defines the {@link CKFinder.lang} object, for the Polish
+ *		language. This is the base file for all translations.
+*/
 
 /**
- * Contains the dictionary of language entries.
+ * Constains the dictionary of language entries.
  * @namespace
  */
 CKFinder.lang['pl'] =
@@ -67,32 +67,32 @@ CKFinder.lang['pl'] =
 	DateAmPm : ['AM', 'PM'],
 
 	// Folders
-	FoldersTitle	: 'Foldery',
+	FoldersTitle	: 'Katalogi',
 	FolderLoading	: 'Ładowanie...',
-	FolderNew		: 'Podaj nazwę nowego folderu: ',
-	FolderRename	: 'Podaj nową nazwę folderu: ',
-	FolderDelete	: 'Czy na pewno chcesz usunąć folder "%1"?',
+	FolderNew		: 'Podaj nazwę nowego katalogu: ',
+	FolderRename	: 'Podaj nową nazwę katalogu: ',
+	FolderDelete	: 'Czy na pewno chcesz usunąć katalog "%1"?',
 	FolderRenaming	: ' (Zmieniam nazwę...)',
 	FolderDeleting	: ' (Kasowanie...)',
 
 	// Files
 	FileRename		: 'Podaj nową nazwę pliku: ',
-	FileRenameExt	: 'Czy na pewno chcesz zmienić rozszerzenie pliku? Może to spowodować problemy z otwieraniem pliku przez innych użytkowników.',
+	FileRenameExt	: 'Czy na pewno chcesz zmienić rozszerzenie pliku? Może to spowodować problemy z otwieraniem pliku przez innych użytkowników',
 	FileRenaming	: 'Zmieniam nazwę...',
 	FileDelete		: 'Czy na pewno chcesz usunąć plik "%1"?',
 	FilesLoading	: 'Ładowanie...',
-	FilesEmpty		: 'Folder jest pusty',
-	FilesMoved		: 'Plik %1 został przeniesiony do %2:%3.',
-	FilesCopied		: 'Plik %1 został skopiowany do %2:%3.',
+	FilesEmpty		: 'Katalog jest pusty',
+	FilesMoved		: 'Plik %1 został przeniesiony do %2:%3',
+	FilesCopied		: 'Plik %1 został skopiowany do %2:%3',
 
 	// Basket
 	BasketFolder		: 'Koszyk',
 	BasketClear			: 'Wyczyść koszyk',
 	BasketRemove		: 'Usuń z koszyka',
-	BasketOpenFolder	: 'Otwórz folder z plikiem',
+	BasketOpenFolder	: 'Otwórz katalog z plikiem',
 	BasketTruncateConfirm : 'Czy naprawdę chcesz usunąć wszystkie pliki z koszyka?',
 	BasketRemoveConfirm	: 'Czy naprawdę chcesz usunąć plik "%1" z koszyka?',
-	BasketEmpty			: 'Brak plików w koszyku. Aby dodać plik, przeciągnij i upuść (drag\'n\'drop) dowolny plik do koszyka.',
+	BasketEmpty			: 'Brak plików w koszyku, aby dodać plik, przeciągnij i upuść (drag\'n\'drop) dowolny plik do koszyka.',
 	BasketCopyFilesHere	: 'Skopiuj pliki z koszyka',
 	BasketMoveFilesHere	: 'Przenieś pliki z koszyka',
 
@@ -114,18 +114,18 @@ CKFinder.lang['pl'] =
 	View			: 'Zobacz',
 	Download		: 'Pobierz',
 
-	NewSubFolder	: 'Nowy podfolder',
+	NewSubFolder	: 'Nowy podkatalog',
 	Rename			: 'Zmień nazwę',
 	Delete			: 'Usuń',
 
-	CopyDragDrop	: 'Skopiuj plik tutaj',
-	MoveDragDrop	: 'Przenieś plik tutaj',
+	CopyDragDrop	: 'Skopiuj tutaj plik',
+	MoveDragDrop	: 'Przenieś tutaj plik',
 
 	// Dialogs
 	RenameDlgTitle		: 'Zmiana nazwy',
 	NewNameDlgTitle		: 'Nowa nazwa',
 	FileExistsDlgTitle	: 'Plik już istnieje',
-	SysErrorDlgTitle : 'Błąd systemu',
+	SysErrorDlgTitle : 'System error', // MISSING
 
 	FileOverwrite	: 'Nadpisz',
 	FileAutorename	: 'Zmień automatycznie nazwę',
@@ -142,23 +142,11 @@ CKFinder.lang['pl'] =
 	UploadBtn			: 'Wyślij wybrany plik',
 	UploadBtnCancel		: 'Anuluj',
 
-	UploadNoFileMsg		: 'Wybierz plik ze swojego komputera.',
-	UploadNoFolder		: 'Wybierz folder przed wysłaniem pliku.',
+	UploadNoFileMsg		: 'Wybierz plik ze swojego komputera',
+	UploadNoFolder		: 'Wybierz katalog przed wysłaniem pliku.',
 	UploadNoPerms		: 'Wysyłanie plików nie jest dozwolone.',
 	UploadUnknError		: 'Błąd podczas wysyłania pliku.',
-	UploadExtIncorrect	: 'Rozszerzenie pliku nie jest dozwolone w tym folderze.',
-
-	// Flash Uploads
-	UploadLabel			: 'Pliki do wysłania',
-	UploadTotalFiles	: 'Ilość razem:',
-	UploadTotalSize		: 'Rozmiar razem:',
-	UploadAddFiles		: 'Dodaj pliki',
-	UploadClearFiles	: 'Wyczyść wszystko',
-	UploadCancel		: 'Anuluj wysyłanie',
-	UploadRemove		: 'Usuń',
-	UploadRemoveTip		: 'Usuń !f',
-	UploadUploaded		: 'Wysłano: !n',
-	UploadProcessing	: 'Przetwarzanie...',
+	UploadExtIncorrect	: 'Rozszerzenie pliku nie jest dozwolone w tym katalogu.',
 
 	// Settings Panel
 	SetTitle		: 'Ustawienia',
@@ -175,7 +163,7 @@ CKFinder.lang['pl'] =
 	SetSortSize		: 'wg rozmiaru',
 
 	// Status Bar
-	FilesCountEmpty : '<Pusty folder>',
+	FilesCountEmpty : '<Pusty katalog>',
 	FilesCountOne	: '1 plik',
 	FilesCountMany	: 'Ilość plików: %1',
 
@@ -188,25 +176,25 @@ CKFinder.lang['pl'] =
 	Errors :
 	{
 	 10 : 'Nieprawidłowe polecenie (command).',
-	 11 : 'Brak wymaganego parametru: typ danych (resource type).',
-	 12 : 'Nieprawidłowy typ danych (resource type).',
-	102 : 'Nieprawidłowa nazwa pliku lub folderu.',
-	103 : 'Wykonanie operacji nie jest możliwe: brak uprawnień.',
+	 11 : 'Brak wymaganego parametru: źródło danych (type).',
+	 12 : 'Nieprawidłowe źródło danych (type).',
+	102 : 'Nieprawidłowa nazwa pliku lub katalogu.',
+	103 : 'Wykonanie operacji nie jest możliwe: brak autoryzacji.',
 	104 : 'Wykonanie operacji nie powiodło się z powodu niewystarczających uprawnień do systemu plików.',
 	105 : 'Nieprawidłowe rozszerzenie.',
-	109 : 'Nieprawiłowe żądanie.',
+	109 : 'Nieprawiłowe polecenie.',
 	110 : 'Niezidentyfikowany błąd.',
-	115 : 'Plik lub folder o podanej nazwie już istnieje.',
-	116 : 'Nie znaleziono folderu. Odśwież panel i spróbuj ponownie.',
+	115 : 'Plik lub katalog o podanej nazwie już istnieje.',
+	116 : 'Nie znaleziono ktalogu. Odśwież panel i spróbuj ponownie.',
 	117 : 'Nie znaleziono pliku. Odśwież listę plików i spróbuj ponownie.',
 	118 : 'Ścieżki źródłowa i docelowa są jednakowe.',
-	201 : 'Plik o podanej nazwie już istnieje. Nazwa przesłanego pliku została zmieniona na "%1".',
+	201 : 'Plik o podanej nazwie już istnieje. Nazwa przesłanego pliku została zmieniona na "%1"',
 	202 : 'Nieprawidłowy plik.',
-	203 : 'Nieprawidłowy plik. Plik przekracza dozwolony rozmiar.',
+	203 : 'Nieprawidłowy plik. Plik przekroczył dozwolony rozmiar.',
 	204 : 'Przesłany plik jest uszkodzony.',
 	205 : 'Brak folderu tymczasowego na serwerze do przesyłania plików.',
 	206 : 'Przesyłanie pliku zakończyło się niepowodzeniem z powodów bezpieczeństwa. Plik zawiera dane przypominające HTML.',
-	207 : 'Nazwa przesłanego pliku została zmieniona na "%1".',
+	207 : 'Nazwa przesłanego pliku została zmieniona na "%1"',
 	300 : 'Przenoszenie nie powiodło się.',
 	301 : 'Kopiowanie nie powiodo się.',
 	500 : 'Menedżer plików jest wyłączony z powodów bezpieczeństwa. Skontaktuj się z administratorem oraz sprawdź plik konfiguracyjny CKFindera.',
@@ -216,29 +204,26 @@ CKFinder.lang['pl'] =
 	// Other Error Messages.
 	ErrorMsg :
 	{
-		FileEmpty		: 'Nazwa pliku nie może być pusta.',
-		FileExists		: 'Plik %s już istnieje.',
-		FolderEmpty		: 'Nazwa folderu nie może być pusta.',
+		FileEmpty		: 'Nazwa pliku nie może być pusta',
+		FileExists		: 'Plik %s już istnieje',
+		FolderEmpty		: 'Nazwa katalogu nie może być pusta',
 
 		FileInvChar		: 'Nazwa pliku nie może zawierać żadnego z podanych znaków: \n\\ / : * ? " < > |',
-		FolderInvChar	: 'Nazwa folderu nie może zawierać żadnego z podanych znaków: \n\\ / : * ? " < > |',
+		FolderInvChar	: 'Nazwa katalogu nie może zawierać żadnego z podanych znaków: \n\\ / : * ? " < > |',
 
-		PopupBlockView	: 'Otwarcie pliku w nowym oknie nie powiodło się. Należy zmienić konfigurację przeglądarki i wyłączyć wszelkie blokady okienek popup dla tej strony.',
-		XmlError		: 'Nie można poprawnie załadować odpowiedzi XML z serwera WWW.',
-		XmlEmpty		: 'Nie można załadować odpowiedzi XML z serwera WWW. Serwer zwrócił pustą odpowiedź.',
-		XmlRawResponse	: 'Odpowiedź serwera: %s'
+		PopupBlockView	: 'Otwarcie pliku w nowym oknie nie powiodło się. Proszę zmienić konfigurację przeglądarki i wyłączyć wszelkie blokady okienek popup dla tej strony.'
 	},
 
 	// Imageresize plugin
 	Imageresize :
 	{
 		dialogTitle		: 'Zmiana rozmiaru %s',
-		sizeTooBig		: 'Nie możesz zmienić wysokości lub szerokości na wartość większą od oryginalnego rozmiaru (%size).',
+		sizeTooBig		: 'Nie możesz zmienić wysokości lub szerokości na wartośc wyższą niż oryginalny rozmiar (%size).',
 		resizeSuccess	: 'Obrazek został pomyślnie przeskalowany.',
 		thumbnailNew	: 'Utwórz nową miniaturkę',
-		thumbnailSmall	: 'Mała (%s)',
-		thumbnailMedium	: 'Średnia (%s)',
-		thumbnailLarge	: 'Duża (%s)',
+		thumbnailSmall	: 'Mały (%s)',
+		thumbnailMedium	: 'Średni (%s)',
+		thumbnailLarge	: 'Duży (%s)',
 		newSize			: 'Podaj nowe wymiary',
 		width			: 'Szerokość',
 		height			: 'Wysokość',
@@ -247,10 +232,8 @@ CKFinder.lang['pl'] =
 		invalidName		: 'Nieprawidłowa nazwa pliku.',
 		newImage		: 'Utwórz nowy obrazek',
 		noExtensionChange : 'Rozszerzenie pliku nie może zostac zmienione.',
-		imageSmall		: 'Plik źródłowy jest zbyt mały.',
-		contextMenuName	: 'Zmień rozmiar',
-		lockRatio		: 'Zablokuj proporcje',
-		resetSize		: 'Przywróć rozmiar'
+		imageSmall		: 'Plik źródłowy jest zbyt mały',
+		contextMenuName	: 'Zmień rozmiar'
 	},
 
 	// Fileeditor plugin
@@ -261,11 +244,5 @@ CKFinder.lang['pl'] =
 		fileSaveSuccess	: 'Plik został zapisany pomyślnie.',
 		contextMenuName	: 'Edytuj',
 		loadingFile		: 'Trwa ładowanie pliku, proszę czekać...'
-	},
-
-	Maximize :
-	{
-		maximize : 'Maksymalizuj',
-		minimize : 'Minimalizuj'
 	}
 };

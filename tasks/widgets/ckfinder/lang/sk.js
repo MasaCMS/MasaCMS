@@ -2,41 +2,41 @@
  * CKFinder
  * ========
  * http://ckfinder.com
- * Copyright (C) 2007-2011, CKSource - Frederico Knabben. All rights reserved.
+ * Copyright (C) 2007-2010, CKSource - Frederico Knabben. All rights reserved.
  *
- * The software, this file, and its contents are subject to the CKFinder
+ * The software, this file and its contents are subject to the CKFinder
  * License. Please read the license.txt file before using, installing, copying,
- * modifying, or distributing this file or part of its contents. The contents of
+ * modifying or distribute this file or part of its contents. The contents of
  * this file is part of the Source Code of CKFinder.
  *
  */
 
 /**
- * @fileOverview Defines the {@link CKFinder.lang} object for the Slovak
- *		language.
- */
+ * @fileOverview Defines the {@link CKFinder.lang} object, for the Slovak
+ *		language. This is the base file for all translations.
+*/
 
 /**
- * Contains the dictionary of language entries.
+ * Constains the dictionary of language entries.
  * @namespace
  */
 CKFinder.lang['sk'] =
 {
-	appTitle : 'CKFinder',
+	appTitle : 'CKFinder', // MISSING
 
 	// Common messages and labels.
 	common :
 	{
 		// Put the voice-only part of the label in the span.
 		unavailable		: '%1<span class="cke_accessibility">, unavailable</span>', // MISSING
-		confirmCancel	: 'Niektore možnosti boli zmenené. Naozaj chcete zavrieť okno?',
-		ok				: 'OK',
-		cancel			: 'Zrušiť',
+		confirmCancel	: 'Some of the options have been changed. Are you sure to close the dialog?', // MISSING
+		ok				: 'OK', // MISSING
+		cancel			: 'Cancel', // MISSING
 		confirmationTitle	: 'Confirmation', // MISSING
 		messageTitle	: 'Information', // MISSING
 		inputTitle		: 'Question', // MISSING
-		undo			: 'Späť',
-		redo			: 'Znovu',
+		undo			: 'Undo', // MISSING
+		redo			: 'Redo', // MISSING
 		skip			: 'Skip', // MISSING
 		skipAll			: 'Skip all', // MISSING
 		makeDecision	: 'What action should be taken?', // MISSING
@@ -44,7 +44,7 @@ CKFinder.lang['sk'] =
 	},
 
 
-	dir : 'ltr',
+	dir : 'ltr', // MISSING
 	HelpLang : 'en',
 	LangCode : 'sk',
 
@@ -71,7 +71,7 @@ CKFinder.lang['sk'] =
 	FolderLoading	: 'Nahrávam...',
 	FolderNew		: 'Zadajte prosím meno nového adresára: ',
 	FolderRename	: 'Zadajte prosím meno nového adresára: ',
-	FolderDelete	: 'Skutočne zmazať adresár "%1"?',
+	FolderDelete	: 'Skutočne zmazať adresár "%1" ?',
 	FolderRenaming	: ' (Prebieha premenovanie adresára...)',
 	FolderDeleting	: ' (Prebieha zmazanie adresára...)',
 
@@ -80,19 +80,19 @@ CKFinder.lang['sk'] =
 	FileRenameExt	: 'Skutočne chcete zmeniť príponu súboru? Upozornenie: zmenou prípony sa súbor môže stať nepoužiteľným, pokiaľ prípona nie je podporovaná.',
 	FileRenaming	: 'Prebieha premenovanie súboru...',
 	FileDelete		: 'Skutočne chcete odstrániť súbor "%1"?',
-	FilesLoading	: 'Nahrávam...',
-	FilesEmpty		: 'The folder is empty.', // MISSING
-	FilesMoved		: 'File %1 moved to %2:%3.', // MISSING
-	FilesCopied		: 'File %1 copied to %2:%3.', // MISSING
+	FilesLoading	: 'Loading...', // MISSING
+	FilesEmpty		: 'Empty folder', // MISSING
+	FilesMoved		: 'File %1 moved into %2:%3', // MISSING
+	FilesCopied		: 'File %1 copied into %2:%3', // MISSING
 
 	// Basket
 	BasketFolder		: 'Basket', // MISSING
 	BasketClear			: 'Clear Basket', // MISSING
-	BasketRemove		: 'Remove from Basket', // MISSING
-	BasketOpenFolder	: 'Open Parent Folder', // MISSING
+	BasketRemove		: 'Remove from basket', // MISSING
+	BasketOpenFolder	: 'Open parent folder', // MISSING
 	BasketTruncateConfirm : 'Do you really want to remove all files from the basket?', // MISSING
 	BasketRemoveConfirm	: 'Do you really want to remove the file "%1" from the basket?', // MISSING
-	BasketEmpty			: 'No files in the basket, drag and drop some.', // MISSING
+	BasketEmpty			: 'No files in the basket, drag\'n\'drop some.', // MISSING
 	BasketCopyFilesHere	: 'Copy Files from Basket', // MISSING
 	BasketMoveFilesHere	: 'Move Files from Basket', // MISSING
 
@@ -118,14 +118,14 @@ CKFinder.lang['sk'] =
 	Rename			: 'Premenovať',
 	Delete			: 'Zmazať',
 
-	CopyDragDrop	: 'Copy File Here', // MISSING
-	MoveDragDrop	: 'Move File Here', // MISSING
+	CopyDragDrop	: 'Copy file here', // MISSING
+	MoveDragDrop	: 'Move file here', // MISSING
 
 	// Dialogs
 	RenameDlgTitle		: 'Rename', // MISSING
-	NewNameDlgTitle		: 'New Name', // MISSING
-	FileExistsDlgTitle	: 'File Already Exists', // MISSING
-	SysErrorDlgTitle : 'System Error', // MISSING
+	NewNameDlgTitle		: 'New name', // MISSING
+	FileExistsDlgTitle	: 'File already exists', // MISSING
+	SysErrorDlgTitle : 'System error', // MISSING
 
 	FileOverwrite	: 'Overwrite', // MISSING
 	FileAutorename	: 'Auto-rename', // MISSING
@@ -140,25 +140,13 @@ CKFinder.lang['sk'] =
 	UploadSelectLbl		: 'Vyberte súbor, ktorý chcete prekopírovať na server',
 	UploadProgressLbl	: '(Prebieha kopírovanie, čakajte prosím...)',
 	UploadBtn			: 'Prekopírovať vybratý súbor',
-	UploadBtnCancel		: 'Zrušiť',
+	UploadBtnCancel		: 'Cancel', // MISSING
 
 	UploadNoFileMsg		: 'Vyberte prosím súbor na Vašom počítači!',
-	UploadNoFolder		: 'Please select a folder before uploading.', // MISSING
+	UploadNoFolder		: 'Please select folder before uploading.', // MISSING
 	UploadNoPerms		: 'File upload not allowed.', // MISSING
 	UploadUnknError		: 'Error sending the file.', // MISSING
 	UploadExtIncorrect	: 'File extension not allowed in this folder.', // MISSING
-
-	// Flash Uploads
-	UploadLabel			: 'Files to Upload', // MISSING
-	UploadTotalFiles	: 'Total Files:', // MISSING
-	UploadTotalSize		: 'Total Size:', // MISSING
-	UploadAddFiles		: 'Add Files', // MISSING
-	UploadClearFiles	: 'Clear Files', // MISSING
-	UploadCancel		: 'Cancel Upload', // MISSING
-	UploadRemove		: 'Remove', // MISSING
-	UploadRemoveTip		: 'Remove !f', // MISSING
-	UploadUploaded		: 'Uploaded !n%', // MISSING
-	UploadProcessing	: 'Processing...', // MISSING
 
 	// Settings Panel
 	SetTitle		: 'Nastavenia',
@@ -200,13 +188,13 @@ CKFinder.lang['sk'] =
 	116 : 'Adresár nebol nájdený. Aktualizujte obsah adresára (Znovunačítať) a skúste znovu.',
 	117 : 'Súbor nebol nájdený. Aktualizujte obsah adresára (Znovunačítať) a skúste znovu.',
 	118 : 'Source and target paths are equal.', // MISSING
-	201 : 'Súbor so zadaným názvom už existuje. Prekopírovaný súbor bol premenovaný na "%1".',
-	202 : 'Neplatný súbor.',
+	201 : 'Súbor so zadaným názvom už existuje. Prekopírovaný súbor bol premenovaný na "%1"',
+	202 : 'Neplatný súbor',
 	203 : 'Neplatný súbor - súbor presahuje maximálnu povolenú veľkosť.',
 	204 : 'Kopírovaný súbor je poškodený.',
 	205 : 'Server nemá špecifikovaný dočasný adresár pre kopírované súbory.',
 	206 : 'Kopírovanie prerušené kvôli nedostatočnému zabezpečeniu. Súbor obsahuje HTML data.',
-	207 : 'Prekopírovaný súbor bol premenovaný na "%1".',
+	207 : 'Prekopírovaný súbor bol premenovaný na "%1"',
 	300 : 'Moving file(s) failed.', // MISSING
 	301 : 'Copying file(s) failed.', // MISSING
 	500 : 'Prehliadanie súborov je zakázané kvôli bezpečnosti. Kontaktujte prosím administrátora a overte nastavenia v konfiguračnom súbore pre CKFinder.',
@@ -216,17 +204,14 @@ CKFinder.lang['sk'] =
 	// Other Error Messages.
 	ErrorMsg :
 	{
-		FileEmpty		: 'Názov súbor nesmie prázdny.',
-		FileExists		: 'File %s already exists.', // MISSING
-		FolderEmpty		: 'Názov adresára nesmie byť prázdny.',
+		FileEmpty		: 'Názov súbor nesmie prázdny',
+		FileExists		: 'File %s already exists', // MISSING
+		FolderEmpty		: 'Názov adresára nesmie byť prázdny',
 
 		FileInvChar		: 'Súbor nesmie obsahovať žiadny z nasledujúcich znakov: \n\\ / : * ? " < > |',
 		FolderInvChar	: 'Adresár nesmie obsahovať žiadny z nasledujúcich znakov: \n\\ / : * ? " < > |',
 
-		PopupBlockView	: 'Nebolo možné otvoriť súbor v novom okne. Overte nastavenia Vášho prehliadača a zakážte všetky blokovače popup okien pre túto webstránku.',
-		XmlError		: 'It was not possible to properly load the XML response from the web server.', // MISSING
-		XmlEmpty		: 'It was not possible to load the XML response from the web server. The server returned an empty response.', // MISSING
-		XmlRawResponse	: 'Raw response from the server: %s' // MISSING
+		PopupBlockView	: 'Nebolo možné otvoriť súbor v novom okne. Overte nastavenia Vášho prehliadača a zakážte všetky blokovače popup okien pre túto webstránku.'
 	},
 
 	// Imageresize plugin
@@ -235,37 +220,29 @@ CKFinder.lang['sk'] =
 		dialogTitle		: 'Resize %s', // MISSING
 		sizeTooBig		: 'Cannot set image height or width to a value bigger than the original size (%size).', // MISSING
 		resizeSuccess	: 'Image resized successfully.', // MISSING
-		thumbnailNew	: 'Create a new thumbnail', // MISSING
+		thumbnailNew	: 'Create new thumbnail', // MISSING
 		thumbnailSmall	: 'Small (%s)', // MISSING
 		thumbnailMedium	: 'Medium (%s)', // MISSING
 		thumbnailLarge	: 'Large (%s)', // MISSING
-		newSize			: 'Set a new size', // MISSING
-		width			: 'Šírka',
-		height			: 'Výška',
+		newSize			: 'Set new size', // MISSING
+		width			: 'Width', // MISSING
+		height			: 'Height', // MISSING
 		invalidHeight	: 'Invalid height.', // MISSING
 		invalidWidth	: 'Invalid width.', // MISSING
 		invalidName		: 'Invalid file name.', // MISSING
-		newImage		: 'Create a new image', // MISSING
-		noExtensionChange : 'File extension cannot be changed.', // MISSING
-		imageSmall		: 'Source image is too small.', // MISSING
-		contextMenuName	: 'Resize', // MISSING
-		lockRatio		: 'Zámok',
-		resetSize		: 'Pôvodná veľkosť'
+		newImage		: 'Create new image', // MISSING
+		noExtensionChange : 'The file extension cannot be changed.', // MISSING
+		imageSmall		: 'Source image is too small', // MISSING
+		contextMenuName	: 'Resize' // MISSING
 	},
 
 	// Fileeditor plugin
 	Fileeditor :
 	{
-		save			: 'Uložiť',
+		save			: 'Save', // MISSING
 		fileOpenError	: 'Unable to open file.', // MISSING
 		fileSaveSuccess	: 'File saved successfully.', // MISSING
 		contextMenuName	: 'Edit', // MISSING
 		loadingFile		: 'Loading file, please wait...' // MISSING
-	},
-
-	Maximize :
-	{
-		maximize : 'Maximalizovať',
-		minimize : 'Minimalizovať'
 	}
 };

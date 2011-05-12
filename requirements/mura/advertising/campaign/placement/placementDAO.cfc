@@ -6,43 +6,39 @@ the Free Software Foundation, Version 2 of the License.
 
 Mura CMS is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. �See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-along with Mura CMS. If not, see <http://www.gnu.org/licenses/>.
+along with Mura CMS. �If not, see <http://www.gnu.org/licenses/>.
 
-Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on 
-Mura CMS. Thus, the terms and conditions of the GNU General Public License version 2 ("GPL") cover the entire combined work.
+Linking Mura CMS statically or dynamically with other modules constitutes
+the preparation of a derivative work based on Mura CMS. Thus, the terms and 	
+conditions of the GNU General Public License version 2 (�GPL�) cover the entire combined work.
 
-However, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with programs
-or libraries that are released under the GNU Lesser General Public License version 2.1.
+However, as a special exception, the copyright holders of Mura CMS grant you permission
+to combine Mura CMS with programs or libraries that are released under the GNU Lesser General Public License version 2.1.
 
-In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with 
-independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without 
-Mura CMS under the license of your choice, provided that you follow these specific guidelines: 
+In addition, as a special exception, �the copyright holders of Mura CMS grant you permission
+to combine Mura CMS �with independent software modules that communicate with Mura CMS solely
+through modules packaged as Mura CMS plugins and deployed through the Mura CMS plugin installation API,
+provided that these modules (a) may only modify the �/trunk/www/plugins/ directory through the Mura CMS
+plugin installation API, (b) must not alter any default objects in the Mura CMS database
+and (c) must not alter any files in the following directories except in cases where the code contains
+a separately distributed license.
 
-Your custom code 
+/trunk/www/admin/
+/trunk/www/tasks/
+/trunk/www/config/
+/trunk/www/requirements/mura/
 
-• Must not alter any default objects in the Mura CMS database and
-• May not alter the default display of the Mura CMS logo within Mura CMS and
-• Must not alter any files in the following directories.
+You may copy and distribute such a combined work under the terms of GPL for Mura CMS, provided that you include
+the source code of that other code when and as the GNU GPL requires distribution of source code.
 
- /admin/
- /tasks/
- /config/
- /requirements/mura/
- /Application.cfc
- /index.cfm
- /MuraProxy.cfc
-
-You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work 
-under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL 
-requires distribution of source code.
-
-For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your 
-modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
-version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
+For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception
+for your modified version; it is your choice whether to do so, or to make such modified version available under
+the GNU General Public License version 2 �without this exception. �You may, if you choose, apply this exception
+to your own modified versions of Mura CMS.
 --->
 
 <cfcomponent extends="mura.cfobject" output="false">
@@ -51,6 +47,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfargument name="configBean" type="any" required="yes"/>
 	<cfset variables.instance.configBean=arguments.configBean />
 	<cfreturn this />
+</cffunction>
+
+<cffunction name="getBean" access="public" returntype="any">
+	<cfreturn createObject("component","#variables.instance.configBean.getMapDir()#.advertising.campaign.placement.placementBean").init()>
 </cffunction>
 
 <cffunction name="create" returntype="void" access="public" output="false">
@@ -69,11 +69,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	'#arguments.placementBean.getCampaignID()#',
 	'#arguments.placementBean.getAdZoneID()#',
 	'#arguments.placementBean.getCreativeID()#',
-	<cfqueryparam cfsqltype="cf_sql_timestamp" null="#iif(isDate(arguments.placementBean.getDateCreated()),de('no'),de('yes'))#" value="#arguments.placementBean.getDateCreated()#">,
-	<cfqueryparam cfsqltype="cf_sql_timestamp" null="#iif(isDate(arguments.placementBean.getLastUpdate()),de('no'),de('yes'))#" value="#arguments.placementBean.getLastUpdate()#">,
+	<cfif isDate(arguments.placementBean.getDateCreated()) >#createODBCDateTime(arguments.placementBean.getDateCreated())#<cfelse>null</cfif>,
+	<cfif isDate(arguments.placementBean.getLastUpdate()) >#createODBCDateTime(arguments.placementBean.getLastUpdate())#<cfelse>null</cfif>,
 	<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.placementBean.getLastUpdateBy() neq '',de('no'),de('yes'))#" value="#arguments.placementBean.getLastUpdateBy()#"> ,
-	<cfif isDate(arguments.placementBean.getStartDate()) ><cfqueryparam cfsqltype="cf_sql_timestamp" value="#LSDateFormat(arguments.placementBean.getStartDate(),'mm/dd/yyyy')#"><cfelse>null</cfif>,
-	<cfif isDate(arguments.placementBean.getEndDate()) ><cfqueryparam cfsqltype="cf_sql_timestamp" value="#LSDateFormat(arguments.placementBean.getEndDate(),'mm/dd/yyyy')#"><cfelse>null</cfif>,
+	<cfif isDate(arguments.placementBean.getStartDate()) >#createODBCDateTime(LSDateFormat(arguments.placementBean.getStartDate(),'mm/dd/yyyy'))#<cfelse>null</cfif>,
+	<cfif isDate(arguments.placementBean.getEndDate()) >#createODBCDateTime(LSDateFormat(arguments.placementBean.getEndDate(),'mm/dd/yyyy'))#<cfelse>null</cfif>,
 	#arguments.placementBean.getCostPerImp()#,
 	#arguments.placementBean.getCostPerClick()#,
 	#arguments.placementBean.getIsExclusive()#,
@@ -93,10 +93,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="read" access="public" output="false" returntype="any" >
 	<cfargument name="placementID" type="string" />
 
-	<cfset var placementBean=getBean("placement") />
+	<cfset var placementBean=getBean() />
 	<cfset var rs ="" />
 	
-	<cfquery name="rs" datasource="#variables.instance.configBean.getReadOnlyDatasource()#"  username="#variables.instance.configBean.getReadOnlyDbUsername()#" password="#variables.instance.configBean.getReadOnlyDbPassword()#">
+	<cfquery name="rs" datasource="#variables.instance.configBean.getDatasource()#"  username="#variables.instance.configBean.getDBUsername()#" password="#variables.instance.configBean.getDBPassword()#">
 	Select * from tadplacements where 
 	placementID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.placementID#" />
 	</cfquery>
@@ -123,10 +123,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	campaignID = '#arguments.placementBean.getCampaignID()#',
 	adZoneID = '#arguments.placementBean.getAdZoneID()#',
 	creativeID = '#arguments.placementBean.getCreativeID()#',
-	lastUpdate = <cfif isDate(arguments.placementBean.getLastUpdate()) ><cfqueryparam cfsqltype="cf_sql_timestamp" value="#arguments.placementBean.getLastUpdate()#"><cfelse>null</cfif>,
+	lastUpdate = <cfif isDate(arguments.placementBean.getLastUpdate()) >#createODBCDateTime(arguments.placementBean.getLastUpdate())#<cfelse>null</cfif>,
 	lastUpdateBy = <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.placementBean.getLastUpdateBy() neq '',de('no'),de('yes'))#" value="#arguments.placementBean.getLastUpdateBy()#">,
-	startDate = <cfif isDate(arguments.placementBean.getStartDate()) ><cfqueryparam cfsqltype="cf_sql_timestamp" value="#LSDateFormat(arguments.placementBean.getStartDate(),'mm/dd/yyyy')#"><cfelse>null</cfif>,
-	endDate = <cfif isDate(arguments.placementBean.getEndDate()) ><cfqueryparam cfsqltype="cf_sql_timestamp" value="#LSDateFormat(arguments.placementBean.getEndDate(),'mm/dd/yyyy')#"><cfelse>null</cfif>,
+	startDate = <cfif isDate(arguments.placementBean.getStartDate()) >#createODBCDateTime(LSDateFormat(arguments.placementBean.getStartDate(),'mm/dd/yyyy'))#<cfelse>null</cfif>,
+	endDate = <cfif isDate(arguments.placementBean.getEndDate()) >#createODBCDateTime(LSDateFormat(arguments.placementBean.getEndDate(),'mm/dd/yyyy'))#<cfelse>null</cfif>,
 	costPerImp = #arguments.placementBean.getCostPerImp()#,
 	costPerClick = #arguments.placementBean.getCostPerClick()#,
 	isExclusive = #arguments.placementBean.getIsExclusive()#,
@@ -196,7 +196,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var rsBillableClicks=""/>
 	<cfset var billable=0/>
 	
-	<cfquery name="rsBillableImps" datasource="#variables.instance.configBean.getReadOnlyDatasource()#"  username="#variables.instance.configBean.getReadOnlyDbUsername()#" password="#variables.instance.configBean.getReadOnlyDbPassword()#">
+	<cfquery name="rsBillableImps" datasource="#variables.instance.configBean.getDatasource()#"  username="#variables.instance.configBean.getDBUsername()#" password="#variables.instance.configBean.getDBPassword()#">
 	select sum(counter) as total
 	from tadstats
 	where placementID='#arguments.placementID#'
@@ -207,7 +207,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset billable=billable + (rsBillableImps.total * arguments.costPerImp) />
 	</cfif>
 	
-	<cfquery name="rsBillableClicks" datasource="#variables.instance.configBean.getReadOnlyDatasource()#"  username="#variables.instance.configBean.getReadOnlyDbUsername()#" password="#variables.instance.configBean.getReadOnlyDbPassword()#">
+	<cfquery name="rsBillableClicks" datasource="#variables.instance.configBean.getDatasource()#"  username="#variables.instance.configBean.getDBUsername()#" password="#variables.instance.configBean.getDBPassword()#">
 	select sum(counter) as Total
 	from tadstats
 	where placementID='#arguments.placementID#'
@@ -257,7 +257,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<cfset var rs=""/>
 	
-	<cfquery name="rs" datasource="#variables.instance.configBean.getReadOnlyDatasource()#"  username="#variables.instance.configBean.getReadOnlyDbUsername()#" password="#variables.instance.configBean.getReadOnlyDbPassword()#">
+	<cfquery name="rs" datasource="#variables.instance.configBean.getDatasource()#"  username="#variables.instance.configBean.getDBUsername()#" password="#variables.instance.configBean.getDBPassword()#">
 	select PlacementValue from tadplacementdetails
 	where placementID = '#arguments.placementID#'
 	and placementType='#arguments.placementType#'
@@ -292,7 +292,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	 <cfset var rs =""/>
 	 <cfset var ItemList =""/>
 	
-	<cfquery name="rs" datasource="#variables.instance.configBean.getReadOnlyDatasource()#"  username="#variables.instance.configBean.getReadOnlyDbUsername()#" password="#variables.instance.configBean.getReadOnlyDbPassword()#">
+	<cfquery name="rs" datasource="#variables.instance.configBean.getDatasource()#"  username="#variables.instance.configBean.getDBUsername()#" password="#variables.instance.configBean.getDBPassword()#">
 		select categoryID from tadplacementcategoryassign
 		where placementID=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.placementID#">
 	</cfquery>

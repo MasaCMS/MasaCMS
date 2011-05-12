@@ -6,43 +6,39 @@ the Free Software Foundation, Version 2 of the License.
 
 Mura CMS is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. �See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-along with Mura CMS. If not, see <http://www.gnu.org/licenses/>.
+along with Mura CMS. �If not, see <http://www.gnu.org/licenses/>.
 
-Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on 
-Mura CMS. Thus, the terms and conditions of the GNU General Public License version 2 ("GPL") cover the entire combined work.
+Linking Mura CMS statically or dynamically with other modules constitutes
+the preparation of a derivative work based on Mura CMS. Thus, the terms and 	
+conditions of the GNU General Public License version 2 (�GPL�) cover the entire combined work.
 
-However, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with programs
-or libraries that are released under the GNU Lesser General Public License version 2.1.
+However, as a special exception, the copyright holders of Mura CMS grant you permission
+to combine Mura CMS with programs or libraries that are released under the GNU Lesser General Public License version 2.1.
 
-In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with 
-independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without 
-Mura CMS under the license of your choice, provided that you follow these specific guidelines: 
+In addition, as a special exception, �the copyright holders of Mura CMS grant you permission
+to combine Mura CMS �with independent software modules that communicate with Mura CMS solely
+through modules packaged as Mura CMS plugins and deployed through the Mura CMS plugin installation API,
+provided that these modules (a) may only modify the �/trunk/www/plugins/ directory through the Mura CMS
+plugin installation API, (b) must not alter any default objects in the Mura CMS database
+and (c) must not alter any files in the following directories except in cases where the code contains
+a separately distributed license.
 
-Your custom code 
+/trunk/www/admin/
+/trunk/www/tasks/
+/trunk/www/config/
+/trunk/www/requirements/mura/
 
-• Must not alter any default objects in the Mura CMS database and
-• May not alter the default display of the Mura CMS logo within Mura CMS and
-• Must not alter any files in the following directories.
+You may copy and distribute such a combined work under the terms of GPL for Mura CMS, provided that you include
+the source code of that other code when and as the GNU GPL requires distribution of source code.
 
- /admin/
- /tasks/
- /config/
- /requirements/mura/
- /Application.cfc
- /index.cfm
- /MuraProxy.cfc
-
-You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work 
-under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL 
-requires distribution of source code.
-
-For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your 
-modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
-version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
+For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception
+for your modified version; it is your choice whether to do so, or to make such modified version available under
+the GNU General Public License version 2 �without this exception. �You may, if you choose, apply this exception
+to your own modified versions of Mura CMS.
 --->
 <cfcomponent extends="mura.cfobject" output="false">
 
@@ -55,34 +51,23 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfargument name="utility" type="any" required="yes"/>
 <cfargument name="settingsManager" type="any" required="yes"/>
 <cfargument name="trashManager" type="any" required="yes"/>
-	<cfset variables.configBean=arguments.configbean />
-	<cfset variables.mailinglistDAO=arguments.mailinglistDAO />
-	<cfset variables.mailinglistGateway=arguments.mailinglistGateway />
-	<cfset variables.mailinglistUtility=arguments.mailinglistUtility />
-	<cfset variables.memberManager=arguments.memberManager />
-	<cfset variables.utility=arguments.utility />
-	<cfset variables.settingsManager=arguments.settingsManager />
-	<cfset variables.trashManager=arguments.trashManager />
+		<cfset variables.configBean=arguments.configbean />
+		<cfset variables.mailinglistDAO=arguments.mailinglistDAO />
+		<cfset variables.mailinglistGateway=arguments.mailinglistGateway />
+		<cfset variables.mailinglistUtility=arguments.mailinglistUtility />
+		<cfset variables.memberManager=arguments.memberManager />
+		<cfset variables.utility=arguments.utility />
+		<cfset variables.settingsManager=arguments.settingsManager />
+		<cfset variables.trashManager=arguments.trashManager />
 	<cfreturn this />
+	
 </cffunction>
 
 <cffunction name="save" output="false">
 	<cfargument name="data">
 	<cfset var rs="">
 	
-		<cfif isObject(arguments.data)>
-		<cfif listLast(getMetaData(arguments.data).name,".") eq "mailinglistBean">
-			<cfset arguments.data=arguments.data.getAllValues()>
-		<cfelse>
-			<cfthrow type="custom" message="The attribute 'DATA' is not of type 'mura.mailinglist.mailinglistBean'">
-		</cfif>
-	</cfif>
-	
-	<cfif not structKeyExists(arguments.data,"mlid")>
-		<cfthrow type="custom" message="The attribute 'NLID' is required when saving a mailing list.">
-	</cfif>
-	
-	<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+	<cfquery name="rs" datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 		select * from tmailinglist where mlid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.data.mlid#">
 	</cfquery>
 
@@ -96,7 +81,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="update" access="public" output="false" returntype="void" >
 	<cfargument name="data" type="struct"  />
 	
-	<cfset var listBean=getBean("mailinglist") />
+	<cfset var listBean=application.serviceFactory.getBean("mailinglistBean") />
 	<cfset listBean.set(arguments.data) />
 	<cfset variables.utility.logEvent("MLID:#listBean.getMLID()# Name:#listBean.getName()# was created","mura-mailinglists","Information",true) />
 	<cfset variables.mailinglistDAO.update(listbean) />
@@ -112,7 +97,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="create" access="public" output="false" returntype="any" >
 	<cfargument name="data" type="struct"  />
 	
-	<cfset var listBean=getBean("mailinglist") />
+	<cfset var listBean=application.serviceFactory.getBean("mailinglistBean") />
 	<cfset listBean.set(arguments.data) />
 	<cfif not structKeyExists(arguments.data,"fromMuraTrash")>
 		<cfset listBean.setMLID(createuuid()) />
@@ -124,7 +109,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 	<cfset variables.settingsManager.getSite(arguments.data.siteid).purgeCache() />
 	<cfset variables.trashManager.takeOut(listBean)>
-	<cfset listbean.setIsNew(0)>
+	
 	<cfreturn listBean />
 </cffunction>
 
@@ -162,15 +147,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="read" access="public" output="false" returntype="any" >
-	<cfargument name="mlid" type="string" default=""/>
-	<cfargument name="siteid" type="string"/>
-	<cfargument name="name" required="true" default=""/>
+	<cfargument name="mlid" type="string" />
+	<cfargument name="siteid" type="string" />
 	
-	<cfif not len(arguments.mlid) and len(arguments.siteID) and len(arguments.name)>
-		<cfreturn variables.mailinglistDAO.readByName(arguments.name, arguments.siteID) />
-	</cfif>	
-		
-	<cfreturn variables.mailinglistDAO.read(arguments.mlid) />
+	<cfset var listBean = variables.mailinglistDAO.read(arguments.mlid,arguments.siteid) />
+	
+	<cfreturn listBean />
 	
 </cffunction>
 

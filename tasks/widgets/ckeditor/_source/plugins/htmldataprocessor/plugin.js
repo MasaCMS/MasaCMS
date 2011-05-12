@@ -44,14 +44,14 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			typeof extendEmptyBlock == 'function' && ( extendEmptyBlock( block ) === false ) ) )
 			return false;
 
-	// 1. For IE version >=8,  empty blocks are displayed correctly themself in wysiwiyg;
-	// 2. For the rest, at least table cell and list item need no filler space.
-	// (#6248)
-	if ( fromSource && CKEDITOR.env.ie &&
-		( document.documentMode > 7
-			|| block.name in CKEDITOR.dtd.tr
-			|| block.name in CKEDITOR.dtd.$listItem ) )
-		return false;
+        // 1. For IE version >=8,  empty blocks are displayed correctly themself in wysiwiyg;
+        // 2. For the rest, at least table cell and list item need no filler space.
+        // (#6248)
+        if ( fromSource && CKEDITOR.env.ie &&
+                ( document.documentMode > 7
+                || block.name in CKEDITOR.dtd.tr
+                || block.name in CKEDITOR.dtd.$listItem ) )
+            return false;
 
 		var lastChild = lastNoneSpaceChild( block );
 
@@ -95,7 +95,14 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 	delete blockLikeTags.pre;
 	var defaultDataFilterRules =
 	{
-		elements : {},
+		elements : {
+			a : function( element )
+			{
+				var attrs = element.attributes;
+				if ( attrs && attrs[ 'data-cke-saved-name' ] )
+					attrs[ 'class' ] = ( attrs[ 'class' ] ? attrs[ 'class' ] + ' ' : '' ) + 'cke_anchor';
+			}
+		},
 		attributeNames :
 		[
 			// Event attributes (onXYZ) must not be directly set. They can become
@@ -289,7 +296,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 	}
 
 	var protectElementRegex = /<(a|area|img|input)\b([^>]*)>/gi,
-		protectAttributeRegex = /\b(on\w+|href|src|name)\s*=\s*(?:(?:"[^"]*")|(?:'[^']*')|(?:[^ "'>]+))/gi;
+		protectAttributeRegex = /\b(href|src|name)\s*=\s*(?:(?:"[^"]*")|(?:'[^']*')|(?:[^ "'>]+))/gi;
 
 	var protectElementsRegex = /(?:<style(?=[ >])[^>]*>[\s\S]*<\/style>)|(?:<(:?link|meta|base)[^>]*>)/gi,
 		encodedElementsRegex = /<cke:encoded>([^<]*)<\/cke:encoded>/gi;
@@ -305,9 +312,8 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		{
 			return '<' +  tag + attributes.replace( protectAttributeRegex, function( fullAttr, attrName )
 			{
-				// Avoid corrupting the inline event attributes (#7243).
 				// We should not rewrite the existed protected attributes, e.g. clipboard content from editor. (#5218)
-				if ( !( /^on/ ).test( attrName ) && attributes.indexOf( 'data-cke-saved-' + attrName ) == -1 )
+				if ( attributes.indexOf( 'data-cke-saved-' + attrName ) == -1 )
 					return ' data-cke-saved-' + fullAttr + ' ' + fullAttr;
 
 				return fullAttr;

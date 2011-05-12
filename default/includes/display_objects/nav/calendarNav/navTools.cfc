@@ -1,19 +1,11 @@
 <cfcomponent output="false">
-
-<cffunction name="init" output="false">
-	<cfargument name="MuraScope">
-	<cfset $=arguments.MuraScope>
-	<cfset rbFactory=application.settingsManager.getSite(request.siteid).getRBFactory()>	
-	<cfscript>
-	weekdayShort=$.rbKey('calendar.weekdayshort');
-	weekdayLong=$.rbKey('calendar.weekdaylong');
-	monthShort=$.rbKey('calendar.monthshort');
-	monthLong=$.rbKey('calendar.monthlong');
-	</cfscript>
-	
-	<cfreturn this>
-</cffunction>
-
+<cfset rbFactory=application.settingsManager.getSite(request.siteid).getRBFactory()>	
+<cfscript>
+weekdayShort=rbFactory.getKey('calendar.weekdayshort');
+weekdayLong=rbFactory.getKey('calendar.weekdaylong');
+monthShort=rbFactory.getKey('calendar.monthshort');
+monthLong=rbFactory.getKey('calendar.monthlong');
+</cfscript>
 <cffunction name="getNavID"  output="false" returntype="numeric">
 		<cfset var I = 0 />
 
@@ -86,7 +78,7 @@ navID=arguments._navID;
 navPath=arguments._navPath;
 navType=arguments._navType;
 selectedMonth = createDate(navYear,navMonth,1);
-rsMonth=$.getBean('contentGateway').getKids('00000000000000000000000000000000000',$.event('siteID'),navID,navType,selectedMonth,0,'',0,"orderno","desc",$.event('categoryID'),request.relatedID);
+rsMonth=application.contentGateway.getKids('00000000000000000000000000000000000',request.siteid,navID,navType,selectedMonth,0,'',0,"orderno","desc",request.categoryID,request.relatedID);
 daysInMonth=daysInMonth(selectedMonth);
 firstDayOfWeek=dayOfWeek(selectedMonth)-1;
 previousMonth = navMonth-1;
@@ -100,14 +92,14 @@ dateShort = "#listGetAt(monthShort,navMonth,",")# #navYear#";
 </cfscript>
 <cfset qrystr="">
 <!---
-<cfif len(request.sortBy) or len($.event('categoryID')) or len(request.relatedID)>
+<cfif len(request.sortBy) or len(request.categoryID) or len(request.relatedID)>
 	<cfset qrystr="?">
 </cfif>
 <cfif len(request.sortBy)>
 	<cfset qrystr="&sortBy=#request.sortBy#&sortDirection=#request.sortDirection#"/>
 </cfif>
-<cfif len($.event('categoryID'))>
-	<cfset qrystr=qrystr & "&categoryID=#$.event('categoryID')#"/>
+<cfif len(request.categoryID)>
+	<cfset qrystr=qrystr & "&categoryID=#request.categoryID#"/>
 </cfif>
 <cfif len(request.relatedID)>
 	<cfset qrystr=qrystr & "&relatedID=#request.relatedID#"/>

@@ -1,61 +1,9 @@
-<!--- This file is part of Mura CMS.
-
-Mura CMS is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, Version 2 of the License.
-
-Mura CMS is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with Mura CMS. If not, see <http://www.gnu.org/licenses/>.
-
-Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on 
-Mura CMS. Thus, the terms and conditions of the GNU General Public License version 2 ("GPL") cover the entire combined work.
-
-However, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with programs
-or libraries that are released under the GNU Lesser General Public License version 2.1.
-
-In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with 
-independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without 
-Mura CMS under the license of your choice, provided that you follow these specific guidelines: 
-
-Your custom code 
-
-• Must not alter any default objects in the Mura CMS database and
-• May not alter the default display of the Mura CMS logo within Mura CMS and
-• Must not alter any files in the following directories.
-
- /admin/
- /tasks/
- /config/
- /requirements/mura/
- /Application.cfc
- /index.cfm
- /MuraProxy.cfc
-
-You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work 
-under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL 
-requires distribution of source code.
-
-For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your 
-modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
-version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
---->
 <cfcomponent extends="mura.cfobject">
 
 <cfset variables.instance=structNew()>
-<cfset variables.instance.content="">
+<cfset variables.instance.content=""/>
 <cfset variables.instance.struct=structNew()>
 <cfset variables.packageBy="active"/>
-
-<cffunction name="setContentManager">
-	<cfargument name="contentManager">
-	<cfset variables.contentManager=arguments.contentManager>
-	<cfreturn this>
-</cffunction>
 
 <cffunction name="OnMissingMethod" access="public" returntype="any" output="false" hint="Handles missing method exceptions.">
 <cfargument name="MissingMethodName" type="string" required="true" hint="The name of the missing method." />
@@ -67,29 +15,37 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfif len(arguments.MissingMethodName)>
 	<!--- forward normal getters to the default getValue method --->
-	<cfif listFindNoCase("set,get",prefix) and len(arguments.MissingMethodName) gt 3>
-		<cfset prop=right(arguments.MissingMethodName,len(arguments.MissingMethodName)-3)>	
-		<cfif prefix eq "get">
-			<cfreturn getValue(prop)>
-		<cfelseif prefix eq "set" and not structIsEmpty(MissingMethodArguments)>
-			<cfset setValue(prop,MissingMethodArguments[1])>	
-			<cfreturn this>
+	<cfif prefix eq "get" and len(arguments.MissingMethodName)gt 3>
+		<cfset prop=right(arguments.MissingMethodName,len(arguments.MissingMethodName)-3)>
+		<cfreturn getValue(prop)>
+	<!---
+	<cfelseif listfindNoCase("get,set",arguments.MissingMethodName) and not structIsEmpty(MissingMethodArguments)>
+		<cfif arguments.MissingMethodName eq "get">
+			<cfreturn getValue(argumentCollection=MissingMethodArguments)>
+		<cfelse>
+			<cfreturn setValue(argumentCollection=MissingMethodArguments)>
 		</cfif>
+	--->
 	</cfif>
 	
 	<!--- otherwise get the bean and if the method exsists forward request --->
 	<cfset bean=getContentBean()>
 	
-	<cfif not structIsEmpty(MissingMethodArguments)>
-		<cfinvoke component="#bean#" method="#MissingMethodName#" argumentcollection="#MissingMethodArguments#" returnvariable="theValue">
-	<cfelse>
-		<cfinvoke component="#bean#" method="#MissingMethodName#" returnvariable="theValue">
-	</cfif>
+	<cfif structKeyExists(bean,arguments.MissingMethodName)>
+		<cfif not structIsEmpty(MissingMethodArguments)>
+			<cfinvoke component="#bean#" method="#MissingMethodName#" argumentcollection="#MissingMethodArguments#" returnvariable="theValue">
+		<cfelse>
+			<cfinvoke component="#bean#" method="#MissingMethodName#" returnvariable="theValue">
+		</cfif>
 		
-	<cfif isDefined("theValue")>
-		<cfreturn theValue>
+		<cfif isDefined("theValue")>
+			<cfreturn theValue>
+		<cfelse>
+			<cfreturn "">
+		</cfif>
+		
 	<cfelse>
-		<cfreturn "">
+		<cfthrow message="The method '#arguments.MissingMethodName#' is not defined">
 	</cfif>
 
 <cfelse>
@@ -98,17 +54,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 </cffunction>
 		
-<cffunction name="set" access="public" returntype="any" output="false">
+<cffunction name="init" access="public" returntype="any" output="false">
 	<cfargument name="contentStruct">
+	<cfargument name="contentManager">
 	<cfargument name="packageBy" required="true" default="active">
 	
 	<cfset variables.instance.struct=arguments.contentStruct>
+	<cfset variables.contentManager=arguments.contentManager>
 	<cfset variables.packageBy=arguments.packageBy>
-	
-	<cfif isObject(variables.instance.content)>
-		<cfset variables.instance.content.setIsNew(1)>
-	</cfif>
-	
 	<cfreturn this>
 </cffunction>
 
@@ -135,20 +88,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="getContentBean" access="public" returntype="any" output="false">
-	<cfif NOT isObject(variables.instance.content)>
-		<cfset variables.instance.content=getBean("content")>
-		<cfset variables.instance.content.setIsNew(1)>
-		<cfset variables.instance.contentStructTemplate=structCopy(variables.instance.content.getAllValues(autocomplete=false))>
-	</cfif>
-	
-	<cfif NOT variables.instance.content.getIsNew() >
+	<cfif isObject(variables.instance.content) >
 		<cfreturn variables.instance.content>
 	<cfelse>
-		<cfset variables.instance.content.setAllValues( structCopy(variables.instance.contentStructTemplate) )>
 		<cfif variables.packageBy eq "version" and structKeyExists(variables.instance.struct,"contentHistID")>
-			<cfset variables.instance.content=variables.contentManager.getContentVersion(contentHistID=variables.instance.struct.contentHistID, siteID=variables.instance.struct.siteID, contentBean=variables.instance.content)>
+			<cfset variables.instance.content=variables.contentManager.getContentVersion(variables.instance.struct.contentHistID,variables.instance.struct.siteID)>
 		<cfelseif structKeyExists(variables.instance.struct,"contentID")>
-			<cfset variables.instance.content=variables.contentManager.getActiveContent(contentID=variables.instance.struct.contentID,siteID=variables.instance.struct.siteID, contentBean=variables.instance.content)>
+			<cfset variables.instance.content=variables.contentManager.getActiveContent(variables.instance.struct.contentID,variables.instance.struct.siteID)>
 		<cfelse>
 			<cfthrow message="The query you are iterating over does not contain either contentID or contentHistID">
 		</cfif>
@@ -165,7 +111,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfif cl>
 			<cfloop from="1" to="#cl#" index="i">
 				<cfif request.crumbdata[i].contentID eq getValue("contentID") >
-					<cfreturn getBean("contentNavBean").set(request.crumbData[i+1],"active") />
+					<cfreturn createObject("component","contentNavBean").init(request.crumbData[i+1], variables.contentManager,"active") />
 				</cfif>
 			</cfloop>
 		</cfif>
@@ -190,7 +136,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="liveOnly" required="true" default="true">
 	<cfargument name="aggregation" required="true" default="false">
 	<cfset var q=getKidsQuery(arguments.aggregation) />
-	<cfset var it=getBean("contentIterator").init(packageBy="active")>
+	<cfset var it=getServiceFactory().getBean("contentIterator").init(packageBy="active")>
 	
 	<cfif arguments.liveOnly>
 		<cfset q=getKidsQuery(arguments.aggregation) />

@@ -110,10 +110,6 @@
 <cfset variables.intClass = createobject("java", "java.lang.Integer").TYPE>
 <cfset variables.shortClass = createobject("java", "java.lang.Short").TYPE>
 
-<cffunction name="init">
-    <cfreturn this />
-</cffunction>
-
 <cffunction name="getImageInfo" access="public" output="true" returntype="struct" hint="Rotate an image (+/-)90, (+/-)180, or (+/-)270 degrees.">
 	<cfargument name="objImage" required="yes" type="Any">
 	<cfargument name="inputFile" required="yes" type="string">

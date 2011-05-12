@@ -6,43 +6,39 @@ the Free Software Foundation, Version 2 of the License.
 
 Mura CMS is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-along with Mura CMS. If not, see <http://www.gnu.org/licenses/>.
+along with Mura CMS.  If not, see <http://www.gnu.org/licenses/>.
 
-Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on 
-Mura CMS. Thus, the terms and conditions of the GNU General Public License version 2 ("GPL") cover the entire combined work.
+Linking Mura CMS statically or dynamically with other modules constitutes
+the preparation of a derivative work based on Mura CMS. Thus, the terms and 	
+conditions of the GNU General Public License version 2 (“GPL”) cover the entire combined work.
 
-However, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with programs
-or libraries that are released under the GNU Lesser General Public License version 2.1.
+However, as a special exception, the copyright holders of Mura CMS grant you permission
+to combine Mura CMS with programs or libraries that are released under the GNU Lesser General Public License version 2.1.
 
-In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with 
-independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without 
-Mura CMS under the license of your choice, provided that you follow these specific guidelines: 
+In addition, as a special exception,  the copyright holders of Mura CMS grant you permission
+to combine Mura CMS  with independent software modules that communicate with Mura CMS solely
+through modules packaged as Mura CMS plugins and deployed through the Mura CMS plugin installation API,
+provided that these modules (a) may only modify the  /trunk/www/plugins/ directory through the Mura CMS
+plugin installation API, (b) must not alter any default objects in the Mura CMS database
+and (c) must not alter any files in the following directories except in cases where the code contains
+a separately distributed license.
 
-Your custom code 
+/trunk/www/admin/
+/trunk/www/tasks/
+/trunk/www/config/
+/trunk/www/requirements/mura/
 
-â€¢ Must not alter any default objects in the Mura CMS database and
-â€¢ May not alter the default display of the Mura CMS logo within Mura CMS and
-â€¢ Must not alter any files in the following directories.
+You may copy and distribute such a combined work under the terms of GPL for Mura CMS, provided that you include
+the source code of that other code when and as the GNU GPL requires distribution of source code.
 
- /admin/
- /tasks/
- /config/
- /requirements/mura/
- /Application.cfc
- /index.cfm
- /MuraProxy.cfc
-
-You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work 
-under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL 
-requires distribution of source code.
-
-For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your 
-modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
-version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
+For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception
+for your modified version; it is your choice whether to do so, or to make such modified version available under
+the GNU General Public License version 2  without this exception.  You may, if you choose, apply this exception
+to your own modified versions of Mura CMS.
 --->
 <cfcomponent extends="mura.cfobject" output="false">
 <cffunction name="init" returntype="any" access="public" output="false">
@@ -51,7 +47,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfset variables.configBean=arguments.configBean />
 <cfset variables.settingsManager=arguments.settingsManager />
-
+<cfset variables.dsn=variables.configBean.getDatasource()/>
 <cfreturn this />
 </cffunction>
 
@@ -60,7 +56,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="siteID" type="string" default="">
 	
 	<cfset var rs = ""/>
-	<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+	<cfquery name="rs" datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	select  fname,lname,company,tsessiontracking.*, tcontent.menuTitle,tfiles.fileEXT,
 	tcontent.Type, tcontent.filename,tcontent.targetParams
 	from tsessiontracking 
@@ -92,7 +88,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var stop ="">
 	<cfset var dbType=variables.configBean.getDbType() />
 	
-	<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+	<cfquery name="rs" datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	<cfif dbType eq "oracle" and arguments.limit>select * from (</cfif>
 	select  <cfif dbType eq "mssql" and arguments.limit>Top #arguments.limit#</cfif> count(tsessiontracking.contentid) Hits, tsessiontracking.contentid,
 	tcontent.type,tcontent.moduleID,tcontent.ContentHistID,tcontent.siteID,tcontent.filename,
@@ -106,9 +102,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif lsIsDate(arguments.startDate)>
 		<cftry>
 		<cfset start=lsParseDateTime(arguments.startDate) />
-		and entered >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#createdatetime(year(start),month(start),day(start),0,0,0)#">
+		and entered >= #createodbcdatetime(createdatetime(year(start),month(start),day(start),0,0,0))#
 		<cfcatch>
-		and entered >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#createdatetime(year(arguments.startDate),month(arguments.startDate),day(arguments.startDate),0,0,0)#">
+		and entered >= #createodbcdatetime(createdatetime(year(arguments.startDate),month(arguments.startDate),day(arguments.startDate),0,0,0))#
 		</cfcatch>
 		</cftry>
 	</cfif>
@@ -116,9 +112,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif lsIsDate(arguments.stopDate)>
 		<cftry>
 		<cfset stop=lsParseDateTime(arguments.stopDate) />
-		and entered <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#createdatetime(year(stop),month(stop),day(stop),23,59,0)#">
+		and entered <= #createodbcdatetime(createdatetime(year(stop),month(stop),day(stop),23,59,0))#
 		<cfcatch>
-		and entered <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#createdatetime(year(arguments.stopDate),month(arguments.stopDate),day(arguments.stopDate),23,59,0)#">
+		and entered <= #createodbcdatetime(createdatetime(year(arguments.stopDate),month(arguments.stopDate),day(arguments.stopDate),23,59,0))#
 		</cfcatch>
 		</cftry>
 	</cfif>
@@ -157,11 +153,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="userID" type="string" required="true" default="">
 	
 	<cfset var rs = ""/>
-	<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+	<cfquery name="rs" datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	select count(userID) as isOnLine
     from tsessiontracking 
 	where 
-	entered >=  <cfqueryparam cfsqltype="cf_sql_timestamp" value="#dateAdd("n",-15,now())#">
+	entered >=  #createODBCDateTime(dateAdd("n",-15,now()))#
 	and userID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.userID#"/>
 	</cfquery>
 	
@@ -179,7 +175,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<cfset var rs = ""/>
 	
-	<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+	<cfquery name="rs" datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	select distinct fname,lname,company,urlToken,max(entered)
 	LastRequest,min(entered)
 	firstRequest, count(urlToken) as views,
@@ -188,7 +184,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	from tsessiontracking 
 	left join tusers on (tsessiontracking.userid = tusers.userid)
 	where
-	entered >=  <cfqueryparam cfsqltype="cf_sql_timestamp" value="#dateAdd(arguments.spanType,-arguments.span,now())#">
+	entered >=  #createODBCDateTime(dateAdd(arguments.spanType,-arguments.span,now()))#
 	<cfif arguments.siteID neq ''>
 	and tsessiontracking.siteID =<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
 	</cfif>
@@ -236,7 +232,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<cfset var rs = ""/>
 	
-	<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#" >
+	<cfquery name="rs" datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#" >
 	select count(distinct urlToken) as sessions 
 	from tsessiontracking 
 	<!---
@@ -245,7 +241,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							and tcontent.active=1)
 	--->
 	where 
-	entered >=  <cfqueryparam cfsqltype="cf_sql_timestamp" value="#dateAdd(arguments.spanType,-arguments.span,now())#">
+	entered >=  #createODBCDateTime(dateAdd(arguments.spanType,-arguments.span,now()))#
 	<cfif arguments.siteID neq ''>
 	and tsessiontracking.siteID = 
 		<!---
@@ -289,7 +285,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var stop ="">
 	<cfset var dbType=variables.configBean.getDbType() />
 	
-	<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+	<cfquery name="rs" datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	<cfif dbType eq "oracle" and arguments.limit>select * from (</cfif>
 	select  <cfif dbType eq "mssql" and arguments.limit>Top #arguments.limit#</cfif> count(tsessiontracking.keywords) keywordCount, tsessiontracking.keywords from tsessiontracking 
 	where tsessiontracking.siteid=<cfqueryparam  cfsqltype="cf_sql_varchar" value="#arguments.siteid#" />
@@ -297,9 +293,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif lsIsDate(arguments.startDate)>
 		<cftry>
 		<cfset start=lsParseDateTime(arguments.startDate) />
-		and entered >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#createdatetime(year(start),month(start),day(start),0,0,0)#">
+		and entered >= #createodbcdatetime(createdatetime(year(start),month(start),day(start),0,0,0))#
 		<cfcatch>
-		and entered >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#createdatetime(year(arguments.startDate),month(arguments.startDate),day(arguments.startDate),0,0,0)#">
+		and entered >= #createodbcdatetime(createdatetime(year(arguments.startDate),month(arguments.startDate),day(arguments.startDate),0,0,0))#
 		</cfcatch>
 		</cftry>
 	</cfif>
@@ -307,9 +303,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif lsIsDate(arguments.stopDate)>
 		<cftry>
 		<cfset stop=lsParseDateTime(arguments.stopDate) />
-		and entered <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#createdatetime(year(stop),month(stop),day(stop),23,59,0)#">
+		and entered <= #createodbcdatetime(createdatetime(year(stop),month(stop),day(stop),23,59,0))#
 		<cfcatch>
-		and entered <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#createdatetime(year(arguments.stopDate),month(arguments.stopDate),day(arguments.stopDate),23,59,0)#">
+		and entered <= #createodbcdatetime(createdatetime(year(arguments.stopDate),month(arguments.stopDate),day(arguments.stopDate),23,59,0))#
 		</cfcatch>
 		</cftry>
 	</cfif>
@@ -348,11 +344,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="stopDate" type="string" required="true" default="">
 	
 	<cfset var rs = ""/>
-	<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+	<cfquery name="rs" datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	select count(tsessiontracking.keywords) keywordCount from tsessiontracking 
 	where tsessiontracking.siteid=<cfqueryparam  cfsqltype="cf_sql_varchar" value="#arguments.siteid#" />
-	<cfif isdate(arguments.stopDate)>and entered <=  <cfqueryparam cfsqltype="cf_sql_timestamp" value="#createDateTime(year(arguments.stopDate),month(arguments.stopDate),day(arguments.stopDate),23,59,0)#"></cfif>
-	<cfif isdate(arguments.startDate)>and entered >=  <cfqueryparam cfsqltype="cf_sql_timestamp" value="#createDateTime(year(arguments.startDate),month(arguments.startDate),day(arguments.startDate),0,0,0)#"></cfif>
+	<cfif isdate(arguments.stopDate)>and entered <=  #createODBCDateTime(createDateTime(year(arguments.stopDate),month(arguments.stopDate),day(arguments.stopDate),23,59,0))#</cfif>
+	<cfif isdate(arguments.startDate)>and entered >=  #createODBCDateTime(createDateTime(year(arguments.startDate),month(arguments.startDate),day(arguments.startDate),0,0,0))#</cfif>
 
 	<cfif arguments.siteID neq ''>
 	and tsessiontracking.siteID =<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
@@ -386,7 +382,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var stop ="">
 	<cfset var dbType=variables.configBean.getDbType() />
 	
-	<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+	<cfquery name="rs" datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	<cfif dbType eq "oracle" and arguments.limit>select * from (</cfif>
 	select  <cfif dbType eq "mssql" and arguments.limit>Top #arguments.limit#</cfif> count(tsessiontracking.referer) referals, tsessiontracking.referer from tsessiontracking 
 	inner join tcontent on (tsessiontracking.contentid=tcontent.contentid and tsessiontracking.siteid=tcontent.siteid)
@@ -396,9 +392,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif lsIsDate(arguments.startDate)>
 		<cftry>
 		<cfset start=lsParseDateTime(arguments.startDate) />
-		and entered >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#createdatetime(year(start),month(start),day(start),0,0,0)#">
+		and entered >= #createodbcdatetime(createdatetime(year(start),month(start),day(start),0,0,0))#
 		<cfcatch>
-		and entered >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#createdatetime(year(arguments.startDate),month(arguments.startDate),day(arguments.startDate),0,0,0)#">
+		and entered >= #createodbcdatetime(createdatetime(year(arguments.startDate),month(arguments.startDate),day(arguments.startDate),0,0,0))#
 		</cfcatch>
 		</cftry>
 	</cfif>
@@ -406,9 +402,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif lsIsDate(arguments.stopDate)>
 		<cftry>
 		<cfset stop=lsParseDateTime(arguments.stopDate) />
-		and entered <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#createdatetime(year(stop),month(stop),day(stop),23,59,0)#">
+		and entered <= #createodbcdatetime(createdatetime(year(stop),month(stop),day(stop),23,59,0))#
 		<cfcatch>
-		and entered <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#createdatetime(year(arguments.stopDate),month(arguments.stopDate),day(arguments.stopDate),23,59,0)#">
+		and entered <= #createodbcdatetime(createdatetime(year(arguments.stopDate),month(arguments.stopDate),day(arguments.stopDate),23,59,0))#
 		</cfcatch>
 		</cftry>
 	</cfif>
@@ -437,16 +433,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var start ="">
 	<cfset var stop ="">
 	
-	<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+	<cfquery name="rs" datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	select  count(tsessiontracking.referer) referals from tsessiontracking 
 	where tsessiontracking.siteid=<cfqueryparam  cfsqltype="cf_sql_varchar" value="#arguments.siteid#" />
 	
 	<cfif lsIsDate(arguments.startDate)>
 		<cftry>
 		<cfset start=lsParseDateTime(arguments.startDate) />
-		and entered >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#createdatetime(year(start),month(start),day(start),0,0,0)#">
+		and entered >= #createodbcdatetime(createdatetime(year(start),month(start),day(start),0,0,0))#
 		<cfcatch>
-		and entered >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#createdatetime(year(arguments.startDate),month(arguments.startDate),day(arguments.startDate),0,0,0)#">
+		and entered >= #createodbcdatetime(createdatetime(year(arguments.startDate),month(arguments.startDate),day(arguments.startDate),0,0,0))#
 		</cfcatch>
 		</cftry>
 	</cfif>
@@ -454,9 +450,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif lsIsDate(arguments.stopDate)>
 		<cftry>
 		<cfset stop=lsParseDateTime(arguments.stopDate) />
-		and entered <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#createdatetime(year(stop),month(stop),day(stop),23,59,0)#">
+		and entered <= #createodbcdatetime(createdatetime(year(stop),month(stop),day(stop),23,59,0))#
 		<cfcatch>
-		and entered <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#createdatetime(year(arguments.stopDate),month(arguments.stopDate),day(arguments.stopDate),23,59,0)#">
+		and entered <= #createodbcdatetime(createdatetime(year(arguments.stopDate),month(arguments.stopDate),day(arguments.stopDate),23,59,0))#
 		</cfcatch>
 		</cftry>
 	</cfif>
@@ -482,7 +478,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var rs = ""/>
 	<cfset var start ="">
 	<cfset var stop ="">
-	<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+	<cfquery name="rs" datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	select count(*) hits from tsessiontracking 
 	inner join tcontent on (tsessiontracking.contentID=tcontent.contentID)
 	where tsessiontracking.siteid=<cfqueryparam  cfsqltype="cf_sql_varchar" value="#arguments.siteid#" />
@@ -491,9 +487,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif lsIsDate(arguments.startDate)>
 		<cftry>
 		<cfset start=lsParseDateTime(arguments.startDate) />
-		and entered >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#createdatetime(year(start),month(start),day(start),0,0,0)#">
+		and entered >= #createodbcdatetime(createdatetime(year(start),month(start),day(start),0,0,0))#
 		<cfcatch>
-		and entered >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#createdatetime(year(arguments.startDate),month(arguments.startDate),day(arguments.startDate),0,0,0)#">
+		and entered >= #createodbcdatetime(createdatetime(year(arguments.startDate),month(arguments.startDate),day(arguments.startDate),0,0,0))#
 		</cfcatch>
 		</cftry>
 	</cfif>
@@ -501,9 +497,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif lsIsDate(arguments.stopDate)>
 		<cftry>
 		<cfset stop=lsParseDateTime(arguments.stopDate) />
-		and entered <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#createdatetime(year(stop),month(stop),day(stop),23,59,0)#">
+		and entered <= #createodbcdatetime(createdatetime(year(stop),month(stop),day(stop),23,59,0))#
 		<cfcatch>
-		and entered <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#createdatetime(year(arguments.stopDate),month(arguments.stopDate),day(arguments.stopDate),23,59,0)#">
+		and entered <= #createodbcdatetime(createdatetime(year(arguments.stopDate),month(arguments.stopDate),day(arguments.stopDate),23,59,0))#
 		</cfcatch>
 		</cftry>
 	</cfif>
@@ -537,12 +533,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="stopDate" type="string" required="true" default="">
 	
 	<cfset var rs = ""/>
-	<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+	<cfquery name="rs" datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	select count(distinct urlToken) sessionCount	
 	from tsessiontracking  
 	where tsessiontracking.siteid=<cfqueryparam  cfsqltype="cf_sql_varchar" value="#arguments.siteid#" />
-	<cfif isdate(arguments.stopDate)>and entered <=  <cfqueryparam cfsqltype="cf_sql_timestamp" value="#createDateTime(year(arguments.stopDate),month(arguments.stopDate),day(arguments.stopDate),23,59,0)#"></cfif>
-	<cfif isdate(arguments.startDate)>and entered >=  <cfqueryparam cfsqltype="cf_sql_timestamp" value="#createDateTime(year(arguments.startDate),month(arguments.startDate),day(arguments.startDate),0,0,0)#"></cfif>
+	<cfif isdate(arguments.stopDate)>and entered <=  #createODBCDateTime(createDateTime(year(arguments.stopDate),month(arguments.stopDate),day(arguments.stopDate),23,59,0))#</cfif>
+	<cfif isdate(arguments.startDate)>and entered >=  #createODBCDateTime(createDateTime(year(arguments.startDate),month(arguments.startDate),day(arguments.startDate),0,0,0))#</cfif>
 
 	<cfif arguments.siteID neq ''>
 	and tsessiontracking.siteID =<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
@@ -617,7 +613,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfloop>
 	</cfif>
 	
-	<cfquery name="rs1" datasource="#variables.configBean.getReadOnlyDatasource()#" timeout="120" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+	<cfquery name="rs1" datasource="#variables.dsn#" timeout="120" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	<cfif not onlyMembers>
 	select '' as fname,'' as lname,'' as company,tsessiontracking.urlToken, max(entered) AS LastRequest,
 	 min(entered) AS FirstRequest,
@@ -638,9 +634,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif lsIsDate(arguments.startDate)>
 		<cftry>
 		<cfset start=lsParseDateTime(arguments.startDate) />
-		and entered >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#createdatetime(year(start),month(start),day(start),0,0,0)#">
+		and entered >= #createodbcdatetime(createdatetime(year(start),month(start),day(start),0,0,0))#
 		<cfcatch>
-		and entered >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#createdatetime(year(arguments.startDate),month(arguments.startDate),day(arguments.startDate),0,0,0)#">
+		and entered >= #createodbcdatetime(createdatetime(year(arguments.startDate),month(arguments.startDate),day(arguments.startDate),0,0,0))#
 		</cfcatch>
 		</cftry>
 	</cfif>
@@ -648,9 +644,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif lsIsDate(arguments.stopDate)>
 		<cftry>
 		<cfset stop=lsParseDateTime(arguments.stopDate) />
-		and entered <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#createdatetime(year(stop),month(stop),day(stop),23,59,0)#">
+		and entered <= #createodbcdatetime(createdatetime(year(stop),month(stop),day(stop),23,59,0))#
 		<cfcatch>
-		and entered <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#createdatetime(year(arguments.stopDate),month(arguments.stopDate),day(arguments.stopDate),23,59,0)#">
+		and entered <= #createodbcdatetime(createdatetime(year(arguments.stopDate),month(arguments.stopDate),day(arguments.stopDate),23,59,0))#
 		</cfcatch>
 		</cftry>
 	</cfif>
@@ -707,9 +703,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif lsIsDate(arguments.startDate)>
 		<cftry>
 		<cfset start=lsParseDateTime(arguments.startDate) />
-		and entered >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#createdatetime(year(start),month(start),day(start),0,0,0)#">
+		and entered >= #createodbcdatetime(createdatetime(year(start),month(start),day(start),0,0,0))#
 		<cfcatch>
-		and entered >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#createdatetime(year(arguments.startDate),month(arguments.startDate),day(arguments.startDate),0,0,0)#">
+		and entered >= #createodbcdatetime(createdatetime(year(arguments.startDate),month(arguments.startDate),day(arguments.startDate),0,0,0))#
 		</cfcatch>
 		</cftry>
 	</cfif>
@@ -717,9 +713,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif lsIsDate(arguments.stopDate)>
 		<cftry>
 		<cfset stop=lsParseDateTime(arguments.stopDate) />
-		and entered <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#createdatetime(year(stop),month(stop),day(stop),23,59,0)#">
+		and entered <= #createodbcdatetime(createdatetime(year(stop),month(stop),day(stop),23,59,0))#
 		<cfcatch>
-		and entered <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#createdatetime(year(arguments.stopDate),month(arguments.stopDate),day(arguments.stopDate),23,59,0)#">
+		and entered <= #createodbcdatetime(createdatetime(year(arguments.stopDate),month(arguments.stopDate),day(arguments.stopDate),23,59,0))#
 		</cfcatch>
 		</cftry>
 	</cfif>

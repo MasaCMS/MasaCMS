@@ -129,7 +129,7 @@ select * from tcontentcomments  where 0=1
 		  `lastAccessed` datetime NOT NULL,
 		  PRIMARY KEY  (`userID`),
 		  KEY `tuserremotesessions_authtoken` (`authToken`)
-		) ENGINE=#variables.instance.MYSQLEngine# DEFAULT CHARSET=utf8
+		) ENGINE=InnoDB DEFAULT CHARSET=utf8
 		</cfquery>
 		<cfcatch>
 			<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
@@ -281,7 +281,7 @@ cacheCapacity=0
 		  `strikes` int(10) default NULL,
 		  `lastAttempt` datetime NOT NULL,
 		  PRIMARY KEY  (`username`)
-		) ENGINE=#variables.instance.MYSQLEngine# DEFAULT CHARSET=utf8
+		) ENGINE=InnoDB DEFAULT CHARSET=utf8
 		</cfquery>
 		<cfcatch>
 			<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">

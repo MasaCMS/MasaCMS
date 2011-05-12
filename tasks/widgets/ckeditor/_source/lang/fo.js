@@ -14,7 +14,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 */
 
 /**
- * Contains the dictionary of language entries.
+ * Constains the dictionary of language entries.
  * @namespace
  */
 CKEDITOR.lang['fo'] =
@@ -34,8 +34,8 @@ CKEDITOR.lang['fo'] =
 	editorTitle : 'Rich text editor, %1, trýst ALT og 0 fyri vegleiðing.',
 
 	// ARIA descriptions.
-	toolbars	: 'Editor toolbars', // MISSING
-	editor		: 'Rich Text Editor',
+	toolbar	: 'Toolbar',
+	editor	: 'Rich Text Editor',
 
 	// Toolbar buttons without dialogs.
 	source			: 'Kelda',
@@ -121,10 +121,6 @@ CKEDITOR.lang['fo'] =
 		alignBottom		: 'Botnur',
 		invalidHeight	: 'Hædd má vera eitt tal.',
 		invalidWidth	: 'Breidd má vera eitt tal.',
-		invalidCssLength	: 'Value specified for the "%1" field must be a positive number with or without a valid CSS measurement unit (px, %, in, cm, mm, em, ex, pt, or pc).', // MISSING
-		invalidHtmlLength	: 'Value specified for the "%1" field must be a positive number with or without a valid HTML measurement unit (px or %).', // MISSING
-		invalidInlineStyle	: 'Value specified for the inline style must consist of one or more tuples with the format of "name : value", separated by semi-colons.', // MISSING
-		cssLengthTooltip	: 'Enter a number for a value in pixels or a number with a valid CSS unit (px, %, in, cm, mm, em, ex, pt, or pc).', // MISSING
 
 		// Put the voice-only part of the label in the span.
 		unavailable		: '%1<span class="cke_accessibility">, ikki tøkt</span>'
@@ -205,8 +201,7 @@ CKEDITOR.lang['fo'] =
 		menu		: 'Eginleikar fyri marknastein',
 		title		: 'Eginleikar fyri marknastein',
 		name		: 'Heiti marknasteinsins',
-		errorName	: 'Vinarliga rita marknasteinsins heiti',
-		remove		: 'Remove Anchor' // MISSING
+		errorName	: 'Vinarliga rita marknasteinsins heiti'
 	},
 
 	// List style dialog
@@ -242,7 +237,6 @@ CKEDITOR.lang['fo'] =
 		findWhat			: 'Finn:',
 		replaceWith			: 'Yvirskriva við:',
 		notFoundMsg			: 'Leititeksturin varð ikki funnin',
-		findOptions			: 'Find Options', // MISSING
 		matchCase			: 'Munur á stórum og smáum bókstavum',
 		matchWord			: 'Bert heil orð',
 		matchCyclic			: 'Match cyclic',
@@ -419,6 +413,7 @@ CKEDITOR.lang['fo'] =
 		upload		: 'Send',
 		alt			: 'Alternativur tekstur',
 		lockRatio	: 'Læs lutfallið',
+		unlockRatio	: 'Lutfallið ikki læst',
 		resetSize	: 'Upprunastødd',
 		border		: 'Bordi',
 		hSpace		: 'Høgri breddi',
@@ -720,8 +715,6 @@ CKEDITOR.lang['fo'] =
 	{
 		title		: 'Um CKEditor',
 		dlgTitle	: 'Um CKEditor',
-		help	: 'Check $1 for help.', // MISSING
-		userGuide : 'CKEditor User\'s Guide', // MISSING
 		moreInfo	: 'Licens upplýsingar finnast á heimasíðu okkara:',
 		copy		: 'Copyright &copy; $1. All rights reserved.'
 	},
@@ -752,64 +745,9 @@ CKEDITOR.lang['fo'] =
 	toolbarCollapse	: 'Lat Toolbar aftur',
 	toolbarExpand	: 'Vís Toolbar',
 
-	toolbarGroups :
-	{
-		document : 'Document', // MISSING
-		clipboard : 'Clipboard/Undo', // MISSING
-		editing : 'Editing', // MISSING
-		forms : 'Forms', // MISSING
-		basicstyles : 'Basic Styles', // MISSING
-		paragraph : 'Paragraph', // MISSING
-		links : 'Links', // MISSING
-		insert : 'Insert', // MISSING
-		styles : 'Styles', // MISSING
-		colors : 'Colors', // MISSING
-		tools : 'Tools' // MISSING
-	},
-
 	bidi :
 	{
 		ltr : 'Tekstkós frá vinstru til høgru',
 		rtl : 'Tekstkós frá høgru til vinstru'
-	},
-
-	docprops :
-	{
-		label : 'Eginleikar fyri dokument',
-		title : 'Eginleikar fyri dokument',
-		design : 'Design', // MISSING
-		meta : 'META-upplýsingar',
-		chooseColor : 'Vel',
-		other : '<annað>',
-		docTitle :	'Síðuheiti',
-		charset : 	'Teknsett koda',
-		charsetOther : 'Onnur teknsett koda',
-		charsetASCII : 'ASCII', // MISSING
-		charsetCE : 'Miðeuropa',
-		charsetCT : 'Kinesiskt traditionelt (Big5)',
-		charsetCR : 'Cyrilliskt',
-		charsetGR : 'Grikst',
-		charsetJP : 'Japanskt',
-		charsetKR : 'Koreanskt',
-		charsetTR : 'Turkiskt',
-		charsetUN : 'Unicode (UTF-8)', // MISSING
-		charsetWE : 'Vestureuropa',
-		docType : 'Dokumentslag yvirskrift',
-		docTypeOther : 'Annað dokumentslag yvirskrift',
-		xhtmlDec : 'Viðfest XHTML deklaratiónir',
-		bgColor : 'Bakgrundslitur',
-		bgImage : 'Leið til bakgrundsmynd (URL)',
-		bgFixed : 'Læst bakgrund (rullar ikki)',
-		txtColor : 'Tekstlitur',
-		margin : 'Síðubreddar',
-		marginTop : 'Ovast',
-		marginLeft : 'Vinstra',
-		marginRight : 'Høgra',
-		marginBottom : 'Niðast',
-		metaKeywords : 'Dokument index lyklaorð (sundurbýtt við komma)',
-		metaDescription : 'Dokumentlýsing',
-		metaAuthor : 'Høvundur',
-		metaCopyright : 'Upphavsrættindi',
-		previewHtml : '<p>This is some <strong>sample text</strong>. You are using <a href="javascript:void(0)">CKEditor</a>.</p>' // MISSING
 	}
 };

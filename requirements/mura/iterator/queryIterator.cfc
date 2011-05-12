@@ -40,25 +40,6 @@
 		<cfreturn variables.recordIndex />
 	</cffunction>
 	
-	<cffunction name="getFirstRecordOnPageIndex" access="public" output="false" returntype="numeric">
-		<cfset var first = ((variables.pageIndex-1) * variables.maxRecordsPerPage)>
-		
-		<cfif first gt getRecordCount()>
-			<cfreturn 1>
-		<cfelse>
-			<cfreturn first+1 />
-		</cfif>
-		
-	</cffunction>
-	
-	<cffunction name="getLastRecordOnPageIndex" access="public" output="false" returntype="numeric">
-		<cfset var last=(((variables.pageIndex-1) * variables.maxRecordsPerPage) + variables.maxRecordsPerPage)>
-		<cfif last gt variables.records.recordcount>
-			<cfset last=variables.records.recordcount>
-		</cfif>
-		<cfreturn last />
-	</cffunction>
-	
 	<cffunction name="getPageIndex" access="public" output="false" returntype="numeric">
 		<cfreturn variables.pageIndex />
 	</cffunction>
@@ -166,7 +147,7 @@
 
 		<cfset variables.records = arguments.rs />
 		
-		<cfif structKeyExists(arguments,"maxRecordsPerPage") and isNumeric(arguments.maxRecordsPerPage) and arguments.maxRecordsPerPage>
+		<cfif structKeyExists(arguments,"maxRecordsPerPage") and isNumeric(arguments.maxRecordsPerPage)>
 			<cfset variables.maxRecordsPerPage = arguments.maxRecordsPerPage />
 		<cfelse>
 			<cfset variables.maxRecordsPerPage = variables.records.recordcount />
@@ -216,33 +197,4 @@
 		<cfset variables.recordTranslator=arguments.recordTranslator/>
 		<cfreturn this>
 	</cffunction>
-	<!---
-	<cffunction name="each">
-		<cfargument name="action" hint="A function that will run per item in iterator.">
-		<cfargument name="$" hint="If not provides a MuraScope instance is created.">		
-		<cfset var test=false>
-		<cfset var item="">
-		
-		<cfif structKeyExists(arguments,"mura")>
-			<cfset arguments.$=arguments.mura>
-		</cfif>
-		
-		<cfif structKeyExists(arguments,"$")>
-			<cfset arguments.$.event("each:count",getRecordCount())>
-		</cfif>
-		
-		<cfloop condition="hasNext()">
-			<cfset item=next()>
-			<cfif not structKeyExists(arguments,"$")>
-				<cfset arguments.$=getBean("$").init(item.getValue("siteID"))>
-				<cfset arguments.$.event("each:count",getRecordCount())>
-			</cfif>
-			<cfset arguments.$.event("each:index",getRecordIndex())>
-			<cfset test=arguments.action(item=item, $=arguments.$, mura=arguments.$)>
-			<cfif isDefined("test") and isBoolean(test) and not test>
-				<cfbreak>	
-			</cfif>
-		</cfloop>
-	</cffunction>
-	--->
 </cfcomponent>

@@ -3,7 +3,7 @@
 <p class="notice">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.changesetnotenotify")#: "#currentChangeset.getName()#"</p>
 </cfif>
 <script>
-<cfif not currentChangeset.getIsNew() and not request.contentBean.getApproved()>
+<cfif not currentChangeset.getIsNew()>
 var currentChangesetSelection="#request.contentBean.getChangesetID()#";
 var currentChangesetID="#request.contentBean.getChangesetID()#";
 <cfelse>
@@ -11,7 +11,6 @@ var currentChangesetSelection="";
 var currentChangesetID="";
 </cfif>
 
-var publishitemfromchangeset="#JSStringFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.publishitemfromchangeset'))#"
 function removeChangesetPrompt(changesetID){
 	
 	if(currentChangesetID!="" && changesetID!=currentChangesetID){
@@ -42,16 +41,11 @@ function saveToChangeset(changesetid,siteid,keywords){
 			buttons: {
 				'#JSStringFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.save"))#': function() {
 					jQuery(this).dialog('close');
-					if (configuratorMode == 'backEnd') {
-						if(ckContent()){
-							jQuery("##changesetID").val(currentChangesetSelection);
-							jQuery("##removePreviousChangeset").val(document.getElementById("_removePreviousChangeset").checked);
-							submitForm(document.contentForm, 'add');
+					if(ckContent()){
+						document.getElementById('contentForm').changesetID.value=currentChangesetSelection;
+						document.getElementById('contentForm').removePreviousChangeset.value=document.getElementById("_removePreviousChangeset").checked;
+						submitForm(document.contentForm,'add');
 						}
-					} else {
-						saveConfiguratorToChangeset(currentChangesetSelection,document.getElementById("_removePreviousChangeset").checked);
-					}
-						
 						return false;
 					}
 			}

@@ -2,22 +2,21 @@
  * CKFinder
  * ========
  * http://ckfinder.com
- * Copyright (C) 2007-2011, CKSource - Frederico Knabben. All rights reserved.
+ * Copyright (C) 2007-2010, CKSource - Frederico Knabben. All rights reserved.
  *
- * The software, this file, and its contents are subject to the CKFinder
+ * The software, this file and its contents are subject to the CKFinder
  * License. Please read the license.txt file before using, installing, copying,
- * modifying, or distributing this file or part of its contents. The contents of
+ * modifying or distribute this file or part of its contents. The contents of
  * this file is part of the Source Code of CKFinder.
  *
  */
 
 /**
- * @fileOverview Defines the {@link CKFinder.lang} object for the Greek
- *		language.
- */
+* @fileOverview
+*/
 
 /**
- * Contains the dictionary of language entries.
+ * Constains the dictionary of language entries.
  * @namespace
  */
 CKFinder.lang['el'] =
@@ -29,14 +28,14 @@ CKFinder.lang['el'] =
 	{
 		// Put the voice-only part of the label in the span.
 		unavailable		: '%1<span class="cke_accessibility">, unavailable</span>', // MISSING
-		confirmCancel	: 'Some of the options were changed. Are you sure you want to close the dialog window?', // MISSING
-		ok				: 'OK',
-		cancel			: 'Ακύρωση',
+		confirmCancel	: 'Some of the options have been changed. Are you sure to close the dialog?', // MISSING
+		ok				: 'OK', // MISSING
+		cancel			: 'Cancel', // MISSING
 		confirmationTitle	: 'Confirmation', // MISSING
 		messageTitle	: 'Information', // MISSING
 		inputTitle		: 'Question', // MISSING
-		undo			: 'Αναίρεση',
-		redo			: 'Επαναφορά',
+		undo			: 'Undo', // MISSING
+		redo			: 'Redo', // MISSING
 		skip			: 'Skip', // MISSING
 		skipAll			: 'Skip all', // MISSING
 		makeDecision	: 'What action should be taken?', // MISSING
@@ -80,19 +79,19 @@ CKFinder.lang['el'] =
 	FileRenameExt	: 'Είστε σίγουροι ότι θέλετε να αλλάξετε την επέκταση του αρχείου; Μετά από αυτή την ενέργεια το αρχείο μπορεί να μην μπορεί να χρησιμοποιηθεί',
 	FileRenaming	: 'Μετονομασία...',
 	FileDelete		: 'Είστε σίγουροι ότι θέλετε να διαγράψετε το αρχείο "%1"?',
-	FilesLoading	: 'Φόρτωση...',
-	FilesEmpty		: 'The folder is empty.', // MISSING
-	FilesMoved		: 'File %1 moved to %2:%3.', // MISSING
-	FilesCopied		: 'File %1 copied to %2:%3.', // MISSING
+	FilesLoading	: 'Loading...', // MISSING
+	FilesEmpty		: 'Empty folder', // MISSING
+	FilesMoved		: 'File %1 moved into %2:%3', // MISSING
+	FilesCopied		: 'File %1 copied into %2:%3', // MISSING
 
 	// Basket
 	BasketFolder		: 'Basket', // MISSING
 	BasketClear			: 'Clear Basket', // MISSING
-	BasketRemove		: 'Remove from Basket', // MISSING
-	BasketOpenFolder	: 'Open Parent Folder', // MISSING
+	BasketRemove		: 'Remove from basket', // MISSING
+	BasketOpenFolder	: 'Open parent folder', // MISSING
 	BasketTruncateConfirm : 'Do you really want to remove all files from the basket?', // MISSING
 	BasketRemoveConfirm	: 'Do you really want to remove the file "%1" from the basket?', // MISSING
-	BasketEmpty			: 'No files in the basket, drag and drop some.', // MISSING
+	BasketEmpty			: 'No files in the basket, drag\'n\'drop some.', // MISSING
 	BasketCopyFilesHere	: 'Copy Files from Basket', // MISSING
 	BasketMoveFilesHere	: 'Move Files from Basket', // MISSING
 
@@ -118,14 +117,14 @@ CKFinder.lang['el'] =
 	Rename			: 'Μετονομασία',
 	Delete			: 'Διαγραφή',
 
-	CopyDragDrop	: 'Copy File Here', // MISSING
-	MoveDragDrop	: 'Move File Here', // MISSING
+	CopyDragDrop	: 'Copy file here', // MISSING
+	MoveDragDrop	: 'Move file here', // MISSING
 
 	// Dialogs
 	RenameDlgTitle		: 'Rename', // MISSING
-	NewNameDlgTitle		: 'New Name', // MISSING
-	FileExistsDlgTitle	: 'File Already Exists', // MISSING
-	SysErrorDlgTitle : 'System Error', // MISSING
+	NewNameDlgTitle		: 'New name', // MISSING
+	FileExistsDlgTitle	: 'File already exists', // MISSING
+	SysErrorDlgTitle : 'System error', // MISSING
 
 	FileOverwrite	: 'Overwrite', // MISSING
 	FileAutorename	: 'Auto-rename', // MISSING
@@ -140,25 +139,13 @@ CKFinder.lang['el'] =
 	UploadSelectLbl		: 'επιλέξτε το αρχείο που θέλετε να μεταφερθεί κάνοντας κλίκ στο κουμπί',
 	UploadProgressLbl	: '(Η μεταφόρτωση εκτελείται, παρακαλούμε περιμένετε...)',
 	UploadBtn			: 'Μεταφόρτωση Επιλεγμένου Αρχείου',
-	UploadBtnCancel		: 'Ακύρωση',
+	UploadBtnCancel		: 'Cancel', // MISSING
 
-	UploadNoFileMsg		: 'Παρακαλούμε επιλέξτε ένα αρχείο από τον υπολογιστή σας.',
-	UploadNoFolder		: 'Please select a folder before uploading.', // MISSING
+	UploadNoFileMsg		: 'Παρακαλούμε επιλέξτε ένα αρχείο από τον υπολογιστή σας',
+	UploadNoFolder		: 'Please select folder before uploading.', // MISSING
 	UploadNoPerms		: 'File upload not allowed.', // MISSING
 	UploadUnknError		: 'Error sending the file.', // MISSING
 	UploadExtIncorrect	: 'File extension not allowed in this folder.', // MISSING
-
-	// Flash Uploads
-	UploadLabel			: 'Files to Upload', // MISSING
-	UploadTotalFiles	: 'Total Files:', // MISSING
-	UploadTotalSize		: 'Total Size:', // MISSING
-	UploadAddFiles		: 'Add Files', // MISSING
-	UploadClearFiles	: 'Clear Files', // MISSING
-	UploadCancel		: 'Cancel Upload', // MISSING
-	UploadRemove		: 'Remove', // MISSING
-	UploadRemoveTip		: 'Remove !f', // MISSING
-	UploadUploaded		: 'Uploaded !n%', // MISSING
-	UploadProcessing	: 'Processing...', // MISSING
 
 	// Settings Panel
 	SetTitle		: 'Ρυθμίσεις',
@@ -200,13 +187,13 @@ CKFinder.lang['el'] =
 	116 : 'Ο φάκελος δεν βρέθηκε. Παρακαλούμε ανανεώστε τη σελίδα και προσπαθήστε ξανά.',
 	117 : 'Το αρχείο δεν βρέθηκε. Παρακαλούμε ανανεώστε τη σελίδα και προσπαθήστε ξανά.',
 	118 : 'Source and target paths are equal.', // MISSING
-	201 : 'Ένα αρχείο με την ίδια ονομασία υπάρχει ήδη. Το μεταφορτωμένο αρχείο μετονομάστηκε σε "%1".',
-	202 : 'Λανθασμένο Αρχείο.',
+	201 : 'Ένα αρχείο με την ίδια ονομασία υπάρχει ήδη. Το μεταφορτωμένο αρχείο μετονομάστηκε σε "%1"',
+	202 : 'Λανθασμένο Αρχείο',
 	203 : 'Λανθασμένο Αρχείο. Το μέγεθος του αρχείου είναι πολύ μεγάλο.',
 	204 : 'Το μεταφορτωμένο αρχείο είναι χαλασμένο.',
 	205 : 'Δεν υπάρχει προσωρινός φάκελος για να χρησιμοποιηθεί για τις μεταφορτώσεις των αρχείων.',
 	206 : 'Η μεταφόρτωση ακυρώθηκε για λόγους ασφαλείας. Το αρχείο περιέχει δεδομένα μορφής HTML.',
-	207 : 'Το μεταφορτωμένο αρχείο μετονομάστηκε σε "%1".',
+	207 : 'Το μεταφορτωμένο αρχείο μετονομάστηκε σε "%1"',
 	300 : 'Moving file(s) failed.', // MISSING
 	301 : 'Copying file(s) failed.', // MISSING
 	500 : 'Ο πλοηγός αρχείων έχει απενεργοποιηθεί για λόγους ασφαλείας. Παρακαλούμε επικοινωνήστε με τον διαχειριστή της ιστοσελίδας και ελέγξτε το αρχείο ρυθμίσεων του πλοηγού (CKFinder).',
@@ -216,17 +203,14 @@ CKFinder.lang['el'] =
 	// Other Error Messages.
 	ErrorMsg :
 	{
-		FileEmpty		: 'Η ονομασία του αρχείου δεν μπορεί να είναι κενή.',
-		FileExists		: 'File %s already exists.', // MISSING
-		FolderEmpty		: 'Η ονομασία του φακέλου δεν μπορεί να είναι κενή.',
+		FileEmpty		: 'Η ονομασία του αρχείου δεν μπορεί να είναι κενή',
+		FileExists		: 'File %s already exists', // MISSING
+		FolderEmpty		: 'Η ονομασία του φακέλου δεν μπορεί να είναι κενή',
 
 		FileInvChar		: 'Η ονομασία του αρχείου δεν μπορεί να περιέχει τους ακόλουθους χαρακτήρες: \n\\ / : * ? " < > |',
 		FolderInvChar	: 'Η ονομασία του φακέλου δεν μπορεί να περιέχει τους ακόλουθους χαρακτήρες: \n\\ / : * ? " < > |',
 
-		PopupBlockView	: 'Δεν ήταν εφικτό να ανοίξει το αρχείο σε νέο παράθυρο. Παρακαλώ, ελέγξτε τις ρυθμίσεις τους πλοηγού σας και απενεργοποιήστε όλους τους popup blockers για αυτή την ιστοσελίδα.',
-		XmlError		: 'It was not possible to properly load the XML response from the web server.', // MISSING
-		XmlEmpty		: 'It was not possible to load the XML response from the web server. The server returned an empty response.', // MISSING
-		XmlRawResponse	: 'Raw response from the server: %s' // MISSING
+		PopupBlockView	: 'Δεν ήταν εφικτό να ανοίξει το αρχείο σε νέο παράθυρο. Παρακαλώ, ελέγξτε τις ρυθμίσεις τους πλοηγού σας και απενεργοποιήστε όλους τους popup blockers για αυτή την ιστοσελίδα.'
 	},
 
 	// Imageresize plugin
@@ -235,37 +219,29 @@ CKFinder.lang['el'] =
 		dialogTitle		: 'Resize %s', // MISSING
 		sizeTooBig		: 'Cannot set image height or width to a value bigger than the original size (%size).', // MISSING
 		resizeSuccess	: 'Image resized successfully.', // MISSING
-		thumbnailNew	: 'Create a new thumbnail', // MISSING
+		thumbnailNew	: 'Create new thumbnail', // MISSING
 		thumbnailSmall	: 'Small (%s)', // MISSING
 		thumbnailMedium	: 'Medium (%s)', // MISSING
 		thumbnailLarge	: 'Large (%s)', // MISSING
-		newSize			: 'Set a new size', // MISSING
-		width			: 'Πλάτος',
-		height			: 'Ύψος',
+		newSize			: 'Set new size', // MISSING
+		width			: 'Width', // MISSING
+		height			: 'Height', // MISSING
 		invalidHeight	: 'Invalid height.', // MISSING
 		invalidWidth	: 'Invalid width.', // MISSING
 		invalidName		: 'Invalid file name.', // MISSING
-		newImage		: 'Create a new image', // MISSING
-		noExtensionChange : 'File extension cannot be changed.', // MISSING
-		imageSmall		: 'Source image is too small.', // MISSING
-		contextMenuName	: 'Resize', // MISSING
-		lockRatio		: 'Κλείδωμα Αναλογίας',
-		resetSize		: 'Επαναφορά Αρχικού Μεγέθους'
+		newImage		: 'Create new image', // MISSING
+		noExtensionChange : 'The file extension cannot be changed.', // MISSING
+		imageSmall		: 'Source image is too small', // MISSING
+		contextMenuName	: 'Resize' // MISSING
 	},
 
 	// Fileeditor plugin
 	Fileeditor :
 	{
-		save			: 'Αποθήκευση',
+		save			: 'Save', // MISSING
 		fileOpenError	: 'Unable to open file.', // MISSING
 		fileSaveSuccess	: 'File saved successfully.', // MISSING
 		contextMenuName	: 'Edit', // MISSING
 		loadingFile		: 'Loading file, please wait...' // MISSING
-	},
-
-	Maximize :
-	{
-		maximize : 'Maximize', // MISSING
-		minimize : 'Minimize' // MISSING
 	}
 };

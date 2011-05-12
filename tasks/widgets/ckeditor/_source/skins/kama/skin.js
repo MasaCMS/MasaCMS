@@ -10,7 +10,6 @@ CKEDITOR.skins.add( 'kama', (function()
 	return {
 		editor		: { css : [ 'editor.css' ] },
 		dialog		: { css : [ 'dialog.css' ] },
-		richcombo	: { canGroup: false },
 		templates	: { css : [ 'templates.css' ] },
 		margins		: [ 0, 0, 0, 0 ],
 		init : function( editor )

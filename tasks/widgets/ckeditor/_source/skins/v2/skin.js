@@ -8,7 +8,6 @@ CKEDITOR.skins.add( 'v2', (function()
 	return {
 		editor		: { css : [ 'editor.css' ] },
 		dialog		: { css : [ 'dialog.css' ] },
-		separator		: { canGroup: false },
 		templates	: { css : [ 'templates.css' ] },
 		margins		: [ 0, 14, 18, 14 ]
 	};

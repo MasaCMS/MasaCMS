@@ -1,38 +1,38 @@
 <cfsilent>
 <cfprocessingdirective pageencoding="utf-8">
 <!---
-Copyright (c) 2003-2011, CKSource - Frederico Knabben. All rights reserved.
+Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckfinder.com/license
 
  Defines the object, for the English language. This is the base file for all translations.
 --->
 <cfscript>
 CKFLang = structNew();
-	CKFLang.ErrorUnknown = 'לא היה ניתן להשלים את הבקשה. (שגיאה %1)';
+	CKFLang.ErrorUnknown = 'בקשה נכשלה. שגיאה. (Error %1)';
 	CKFLang.Errors = ArrayNew(1);
-	CKFLang.Errors[10] = 'הוראה לא תקינה.';
-	CKFLang.Errors[11] = 'סוג המשאב לא צויין בבקשה.';
-	CKFLang.Errors[12] = 'סוג המשאב המצויין לא תקין.';
-	CKFLang.Errors[102] = 'שם קובץ או תיקיה לא תקין.';
-	CKFLang.Errors[103] = 'לא היה ניתן להשלים את הבקשב בשל הרשאות מוגבלות.';
-	CKFLang.Errors[104] = 'לא היה ניתן להשלים את הבקשב בשל הרשאות מערכת קבצים מוגבלות.';
-	CKFLang.Errors[105] = 'סיומת קובץ לא תקינה.';
-	CKFLang.Errors[109] = 'בקשה לא תקינה.';
-	CKFLang.Errors[110] = 'שגיאה לא ידועה.';
-	CKFLang.Errors[115] = 'קובץ או תיקיה באותו שם כבר קיימ/ת.';
-	CKFLang.Errors[116] = 'התיקיה לא נמצאה. נא לרענן ולנסות שוב.';
-	CKFLang.Errors[117] = 'הקובץ לא נמצא. נא לרענן ולנסות שוב.';
-	CKFLang.Errors[118] = 'כתובות המקור והיעד זהות.';
-	CKFLang.Errors[201] = 'קובץ עם אותו השם כבר קיים. שם הקובץ שהועלה שונה ל "%1"';
-	CKFLang.Errors[202] = 'קובץ לא תקין';
-	CKFLang.Errors[203] = 'קובץ לא תקין. גודל הקובץ גדול מדי.';
-	CKFLang.Errors[204] = 'הקובץ המועלה לא תקין';
-	CKFLang.Errors[205] = 'תיקיה זמנית להעלאה לא קיימת בשרת.';
-	CKFLang.Errors[206] = 'העלאה בוטלה מסיבות אבטחה. הקובץ מכיל תוכן שדומה ל-HTML.';
-	CKFLang.Errors[207] = 'שם הקובץ שהועלה שונה ל "%1"';
-	CKFLang.Errors[300] = 'העברת הקבצים נכשלה.';
-	CKFLang.Errors[301] = 'העתקת הקבצים נכשלה.';
-	CKFLang.Errors[500] = 'דפדפן הקבצים מנוטרל מסיבות אבטחה. יש לפנות למנהל המערכת ולבדוק את קובץ התצורה של CKFinder.';
-	CKFLang.Errors[501] = 'התמיכה בתמונות מוקטנות מבוטלת.';
+	CKFLang.Errors[10] = 'Invalid command.';
+	CKFLang.Errors[11] = 'The resource type was not specified in the request.';
+	CKFLang.Errors[12] = 'The requested resource type is not valid.';
+	CKFLang.Errors[102] = 'Invalid file or folder name.';
+	CKFLang.Errors[103] = 'It was not possible to complete the request due to authorization restrictions.';
+	CKFLang.Errors[104] = 'It was not possible to complete the request due to file system permission restrictions.';
+	CKFLang.Errors[105] = 'Invalid file extension.';
+	CKFLang.Errors[109] = 'Invalid request.';
+	CKFLang.Errors[110] = 'Unknown error.';
+	CKFLang.Errors[115] = 'A file or folder with the same name already exists.';
+	CKFLang.Errors[116] = 'Folder not found. Please refresh and try again.';
+	CKFLang.Errors[117] = 'File not found. Please refresh the files list and try again.';
+	CKFLang.Errors[118] = 'Source and target paths are equal.';
+	CKFLang.Errors[201] = 'A file with the same name is already available. The uploaded file has been renamed to "%1"';
+	CKFLang.Errors[202] = 'Invalid file';
+	CKFLang.Errors[203] = 'Invalid file. The file size is too big.';
+	CKFLang.Errors[204] = 'The uploaded file is corrupt.';
+	CKFLang.Errors[205] = 'No temporary folder is available for upload in the server.';
+	CKFLang.Errors[206] = 'Upload cancelled for security reasons. The file contains HTML like data.';
+	CKFLang.Errors[207] = 'The uploaded file has been renamed to "%1"';
+	CKFLang.Errors[300] = 'Moving file(s) failed.';
+	CKFLang.Errors[301] = 'Copying file(s) failed.';
+	CKFLang.Errors[500] = 'The file browser is disabled for security reasons. Please contact your system administrator and check the CKFinder configuration file.';
+	CKFLang.Errors[501] = 'The thumbnails support is disabled.';
 </cfscript>
 </cfsilent>

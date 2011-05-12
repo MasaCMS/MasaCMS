@@ -105,9 +105,8 @@ CKEDITOR.plugins.add( 'contextmenu',
 							CKEDITOR.tools.setTimeout( function()
 								{
 									this.open( offsetParent, null, offsetX, offsetY );
-
-								// IE needs a short while to allow selection change before opening menu. (#7908)
-								}, CKEDITOR.env.ie? 200 : 0, this );
+								},
+								0, this );
 						},
 						this );
 
@@ -167,13 +166,12 @@ CKEDITOR.plugins.add( 'contextmenu',
 });
 
 /**
- * Whether to show the browser native context menu when the <em>Ctrl</em> or
- * <em>Meta</em> (Mac) key is pressed on opening the context menu with the
- * right mouse button click or the <em>Menu</em> key.
+ * Whether to show the browser native context menu when the CTRL or the
+ * META (Mac) key is pressed while opening the context menu.
  * @name CKEDITOR.config.browserContextMenuOnCtrl
  * @since 3.0.2
  * @type Boolean
- * @default <code>true</code>
+ * @default true
  * @example
  * config.browserContextMenuOnCtrl = false;
  */

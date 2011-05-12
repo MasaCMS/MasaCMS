@@ -1,4 +1,4 @@
-/* @override http://localhost:8500/muracms/tasks/widgets/ckeditor/skins/mura/dialog.css?t=A7HG4HT */
+/* @override http://mura:8500/5.2.1/tasks/widgets/ckeditor/skins/mura/dialog.css?t=A7HG4HT */
 
 /*
 Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
@@ -7,7 +7,6 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 body .cke_dialog {
 	visibility: visible;
-	font-family: "Helvetica Neue", Arial, Helvetica, Geneva, sans-serif !important;
 }
 
 .cke_skin_mura table.cke_dialog.cke_browser_gecko {
@@ -24,13 +23,7 @@ body .cke_dialog {
 	border-radius: 5px;
 	position: relative;
 	_position: static;
-	font-family: "Helvetica Neue", Arial, Helvetica, Geneva, sans-serif !important;
 }
-
-/*body .cke_dialog h3 {
-	
-	font-family: "Helvetica Neue", Arial, Helvetica, Geneva, sans-serif !important;
-}*/
 
 .cke_skin_mura .cke_dialog_tl,.cke_skin_mura .cke_dialog_tr,.cke_skin_mura .cke_dialog_tc,.cke_skin_mura .cke_dialog_bl,.cke_skin_mura .cke_dialog_br,.cke_skin_mura .cke_dialog_bc,.cke_skin_mura .cke_dialog_ml,.cke_skin_mura .cke_dialog_mr {
 	display: none;

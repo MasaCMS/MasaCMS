@@ -3,7 +3,7 @@
  * CKFinder
  * ========
  * http://ckfinder.com
- * Copyright (C) 2007-2011, CKSource - Frederico Knabben. All rights reserved.
+ * Copyright (C) 2007-2010, CKSource - Frederico Knabben. All rights reserved.
  *
  * The software, this file and its contents are subject to the CKFinder
  * License. Please read the license.txt file before using, installing, copying,
@@ -379,14 +379,9 @@ Returns false if file is invalid.
 
 	<cftry>
 		<cfif APPLICATION.CFVersion gte 8>
-			<cftry>
-				<!--- sometimes ColdFusion is unable to read image files properly with ImageRead --->
-				<cfset objImage = ImageRead(ARGUMENTS.filePath) >
-				<cfset imageInfo = ImageInfo(objImage)>
-				<cfcatch type="any">
-					<cfset imageInfo = APPLICATION.CreateCFC("ImageCFC.image").getImageInfo("", ARGUMENTS.filePath)>
-				</cfcatch>
-			</cftry>
+			<cfset objImage = ImageRead(ARGUMENTS.filePath) >
+			<cfset imageInfo = ImageInfo(objImage)>
+			<!--- <cfimage action="info" source="#ARGUMENTS.filePath#" structName="imageInfo" /> --->
 		<cfelse>
 			<cfset imageInfo = APPLICATION.CreateCFC("ImageCFC.image").getImageInfo("", ARGUMENTS.filePath)>
 		</cfif>

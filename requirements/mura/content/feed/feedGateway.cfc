@@ -6,43 +6,39 @@ the Free Software Foundation, Version 2 of the License.
 
 Mura CMS is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. �See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-along with Mura CMS. If not, see <http://www.gnu.org/licenses/>.
+along with Mura CMS. �If not, see <http://www.gnu.org/licenses/>.
 
-Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on 
-Mura CMS. Thus, the terms and conditions of the GNU General Public License version 2 ("GPL") cover the entire combined work.
+Linking Mura CMS statically or dynamically with other modules constitutes
+the preparation of a derivative work based on Mura CMS. Thus, the terms and 	
+conditions of the GNU General Public License version 2 (�GPL�) cover the entire combined work.
 
-However, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with programs
-or libraries that are released under the GNU Lesser General Public License version 2.1.
+However, as a special exception, the copyright holders of Mura CMS grant you permission
+to combine Mura CMS with programs or libraries that are released under the GNU Lesser General Public License version 2.1.
 
-In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with 
-independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without 
-Mura CMS under the license of your choice, provided that you follow these specific guidelines: 
+In addition, as a special exception, �the copyright holders of Mura CMS grant you permission
+to combine Mura CMS �with independent software modules that communicate with Mura CMS solely
+through modules packaged as Mura CMS plugins and deployed through the Mura CMS plugin installation API,
+provided that these modules (a) may only modify the �/trunk/www/plugins/ directory through the Mura CMS
+plugin installation API, (b) must not alter any default objects in the Mura CMS database
+and (c) must not alter any files in the following directories except in cases where the code contains
+a separately distributed license.
 
-Your custom code 
+/trunk/www/admin/
+/trunk/www/tasks/
+/trunk/www/config/
+/trunk/www/requirements/mura/
 
-• Must not alter any default objects in the Mura CMS database and
-• May not alter the default display of the Mura CMS logo within Mura CMS and
-• Must not alter any files in the following directories.
+You may copy and distribute such a combined work under the terms of GPL for Mura CMS, provided that you include
+the source code of that other code when and as the GNU GPL requires distribution of source code.
 
- /admin/
- /tasks/
- /config/
- /requirements/mura/
- /Application.cfc
- /index.cfm
- /MuraProxy.cfc
-
-You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work 
-under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL 
-requires distribution of source code.
-
-For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your 
-modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
-version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
+For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception
+for your modified version; it is your choice whether to do so, or to make such modified version available under
+the GNU General Public License version 2 �without this exception. �You may, if you choose, apply this exception
+to your own modified versions of Mura CMS.
 --->
 <cfcomponent extends="mura.cfobject" output="false">
 
@@ -50,6 +46,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="configBean" type="any" required="yes" />
 
 	<cfset variables.configBean=arguments.configBean />
+	<cfset variables.dsn=variables.configBean.getDatasource() />
 	<cfset variables.classExtensionManager=variables.configBean.getClassExtensionManager()>
 	<cfreturn this />
 </cffunction>
@@ -62,7 +59,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cfset var rs ="" />
 
-	<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+	<cfquery name="rs" datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	select * from tcontentfeeds
 	where siteID= <cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.siteID#">
 	and Type= <cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.type#">
@@ -84,7 +81,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<cfset var rs ="" />
 
-	<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+	<cfquery name="rs" datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	select * from tcontentfeeds
 	where siteID= <cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.siteID#">
 	and isDefault=1
@@ -116,7 +113,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var blockFactor=arguments.feedBean.getNextN()>
 	<cfset var jointables="" />
 	<cfset var jointable="">
-	<cfset var histtables="tcontenttags,tcontentcategoryassign,tcontentobjects,tcontentrelated,tcontentassignments">
+	<cfset var histtables="tcontenttags,tcontentcategorysassign,tcontentobjects,tcontentrelated">
 	<cfset var rsAttribute="">
 	<cfset var isListParam=false>
 	
@@ -156,7 +153,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfif>
 	</cfloop>
 	
-	<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#" blockfactor="#blockFactor#"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+	<cfquery name="rs" datasource="#variables.configBean.getDatasource()#" blockfactor="#blockFactor#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	<cfif dbType eq "oracle" and arguments.feedBean.getMaxItems()>select * from (</cfif>
 	select <cfif dbtype eq "mssql" and arguments.feedBean.getMaxItems()>top #arguments.feedBean.getMaxItems()#</cfif> 
 	tcontent.siteid, tcontent.title, tcontent.menutitle, tcontent.restricted, tcontent.restrictgroups, 
@@ -167,8 +164,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	tfiles.fileSize,tfiles.fileExt,tcontent.fileid,
 	tcontent.tags,tcontent.credits,tcontent.audience, tcontent.orderNo,
 	tcontentstats.rating,tcontentstats.totalVotes,tcontentstats.downVotes,tcontentstats.upVotes,
-	tcontentstats.comments, tparent.type parentType, <cfif doKids> qKids.kids<cfelse> null as kids</cfif>,
-	tcontent.path, tcontent.created, tcontent.nextn, tcontent.majorVersion, tcontent.minorVersion, tcontentstats.lockID, tcontent.expires
+	tcontentstats.comments, tparent.type parentType, <cfif doKids> qKids.kids<cfelse> null as kids</cfif>,tcontent.path, tcontent.created, tcontent.nextn
 	from tcontent
 	
 	<cfloop list="#jointables#" index="jointable">
@@ -223,9 +219,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							Inner Join tcontenttags on (tcontent.contentHistID=tcontenttags.contentHistID)
 							</cfif>
 						   where tcontent.siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.feedBean.getsiteid()#"/>
-						   		#renderActiveClause("tcontent",arguments.feedBean.getSiteID(),arguments.feedBean.getLiveOnly())#
-							    #renderActiveClause("TKids",arguments.feedBean.getSiteID(),arguments.feedBean.getLiveOnly())#
-							    <cfif not arguments.feedBean.getShowExcludeSearch()> AND TKids.searchExclude = 0</cfif>
+						   		#renderActiveClause("tcontent",arguments.feedBean.getSiteID())#
+							    #renderActiveClause("TKids",arguments.feedBean.getSiteID())#
+							    AND TKids.searchExclude = 0
 							    <cfif arguments.feedBean.getShowNavOnly()>AND TKids.isNav = 1</cfif>
 							 	AND tcontent.moduleid = '00000000000000000000000000000000000'
 							 
@@ -265,7 +261,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 									<cfset started = true />
 									<cfset isListParam=listFindNoCase("IN,NOT IN",param.getCondition())>			
 									<cfif  listLen(param.getField(),".") gt 1>
-										#param.getField()# #param.getCondition()# <cfif isListParam>(</cfif><cfqueryparam cfsqltype="cf_sql_#param.getDataType()#" value="#param.getCriteria()#" list="#iif(isListParam,de('true'),de('false'))#" null="#iif(param.getCriteria() eq 'null',de('true'),de('false'))#"><cfif isListParam>)</cfif>  	
+										#param.getField()# #param.getCondition()# <cfif isListParam>(</cfif><cfqueryparam cfsqltype="cf_sql_#param.getDataType()#" value="#param.getCriteria()#" list="#iif(isListParam,de('true'),de('false'))#"><cfif isListParam>)</cfif>  	
 									<cfelseif len(param.getField())>
 										tcontent.contentHistID IN (
 											select tclassextenddata.baseID from tclassextenddata
@@ -305,8 +301,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 								OR
 								
 								(	tcontent.isFeature = 2 
-									AND tcontent.FeatureStart <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#nowAdjusted#"> 
-									AND (tcontent.FeatureStop >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#nowAdjusted#"> or tcontent.FeatureStop is null)			 
+									AND tcontent.FeatureStart <= #createodbcdatetime(nowAdjusted)# 
+									AND (tcontent.FeatureStop >= #createodbcdatetime(nowAdjusted)# or tcontent.FeatureStop is null)			 
 								)				
 							) 
 							<cfif categoryLen> OR tcontent.contentHistID in (
@@ -324,8 +320,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 								OR
 									
 									(	tcontentcategoryassign.isFeature = 2 
-										AND tcontentcategoryassign.FeatureStart <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#nowAdjusted#"> 
-										AND (tcontentcategoryassign.FeatureStop >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#nowAdjusted#"> or tcontentcategoryassign.FeatureStop is null)			 
+										AND tcontentcategoryassign.FeatureStart <= #createodbcdatetime(nowAdjusted)# 
+										AND (tcontentcategoryassign.FeatureStop >= #createodbcdatetime(nowAdjusted)# or tcontentcategoryassign.FeatureStop is null)			 
 									)
 													
 								) 
@@ -341,8 +337,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						tcontent.parentid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#listGetAt(arguments.feedBean.getcontentID(),c)#" /> <cfif c lt contentLen> or </cfif> 
 						</cfloop>)
 						</cfif>
-						
-						<cfif arguments.feedBean.getLiveOnly()>	    
+							    
 						AND 
 						(
 							
@@ -353,8 +348,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 								AND 
 									(
 										(
-										tcontent.DisplayStart <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#nowAdjusted#"> 
-										AND (tcontent.DisplayStop >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#nowAdjusted#"> or tcontent.DisplayStop is null)			 
+										tcontent.DisplayStart <= #createodbcdatetime(nowAdjusted)# 
+										AND (tcontent.DisplayStop >= #createodbcdatetime(nowAdjusted)# or tcontent.DisplayStop is null)			 
 										)
 										OR
 										tcontent.parentID in (select contentID from tcontent 
@@ -378,8 +373,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 								AND 
 									(
 										(
-										TKids.DisplayStart <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#nowAdjusted#"> 
-										AND (TKids.DisplayStop >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#nowAdjusted#"> or TKids.DisplayStop is null)			 
+										TKids.DisplayStart <= #createodbcdatetime(nowAdjusted)# 
+										AND (TKids.DisplayStop >= #createodbcdatetime(nowAdjusted)# or TKids.DisplayStop is null)			 
 										)
 										OR
 										TKids.parentID in (select contentID from tcontent 
@@ -391,7 +386,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							)	
 					
 						) 
-						</cfif>
 												    
 											   group by tcontent.contentID
 											   ) qKids
@@ -402,8 +396,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	where
 	tcontent.siteid = <cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.feedBean.getsiteid()#">
-	#renderActiveClause("tcontent",arguments.feedBean.getSiteID(),arguments.feedBean.getLiveOnly())#
-	<cfif arguments.feedBean.getShowNavOnly()>
+	#renderActiveClause("tcontent",arguments.feedBean.getSiteID())#
+	<cfif arguments.feedBean.getType() eq "Local" and arguments.feedBean.getShowNavOnly()>
 	AND tcontent.isNav = 1
 	</cfif>
 	<cfif arguments.feedBean.getType() eq "Remote">
@@ -413,7 +407,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfelse>
 		AND tcontent.moduleid = '00000000000000000000000000000000000'
 	</cfif>
-	<cfif not arguments.feedBean.getShowExcludeSearch()> AND tcontent.searchExclude = 0</cfif>
+	AND tcontent.searchExclude = 0
 	AND tcontent.type !='Module'
 
 		<cfif rsParams.recordcount>
@@ -452,7 +446,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfset started = true />
 				<cfset isListParam=listFindNoCase("IN,NOT IN",param.getCondition())>	
 				<cfif  listLen(param.getField(),".") gt 1>						
-					#param.getField()# #param.getCondition()# <cfif isListParam>(</cfif><cfqueryparam cfsqltype="cf_sql_#param.getDataType()#" value="#param.getCriteria()#" list="#iif(isListParam,de('true'),de('false'))#" null="#iif(param.getCriteria() eq 'null',de('true'),de('false'))#"><cfif isListParam>)</cfif>  	
+					#param.getField()# #param.getCondition()# <cfif isListParam>(</cfif><cfqueryparam cfsqltype="cf_sql_#param.getDataType()#" value="#param.getCriteria()#" list="#iif(isListParam,de('true'),de('false'))#"><cfif isListParam>)</cfif>  	
 				<cfelseif len(param.getField())>
 					tcontent.contentHistID IN (
 						select tclassextenddata.baseID from tclassextenddata
@@ -495,8 +489,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			OR
 			
 			(	tcontent.isFeature = 2 
-				AND tcontent.FeatureStart <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#nowAdjusted#"> 
-				AND (tcontent.FeatureStop >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#nowAdjusted#"> or tcontent.FeatureStop is null)			 
+				AND tcontent.FeatureStart <= #createodbcdatetime(nowAdjusted)# 
+				AND (tcontent.FeatureStop >= #createodbcdatetime(nowAdjusted)# or tcontent.FeatureStop is null)			 
 			)				
 		) 
 		<cfif categoryLen> OR tcontent.contenthistID in (
@@ -514,8 +508,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			OR
 				
 				(	tcontentcategoryassign.isFeature = 2 
-					AND tcontentcategoryassign.FeatureStart <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#nowAdjusted#"> 
-					AND (tcontentcategoryassign.FeatureStop >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#nowAdjusted#"> or tcontentcategoryassign.FeatureStop is null)			 
+					AND tcontentcategoryassign.FeatureStart <= #createodbcdatetime(nowAdjusted)# 
+					AND (tcontentcategoryassign.FeatureStop >= #createodbcdatetime(nowAdjusted)# or tcontentcategoryassign.FeatureStop is null)			 
 				)
 								
 			) 
@@ -532,8 +526,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfqueryparam cfsqltype="cf_sql_varchar"  value="#listGetAt(arguments.feedBean.getcontentID(),c)#">, 
 	</cfloop>'')
 	</cfif>
-	
-	<cfif arguments.feedBean.getLiveOnly()>	    
+		    
 	AND 
 	(
 		
@@ -545,8 +538,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			AND
 			 (
 				(
-					tcontent.DisplayStart <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#nowAdjusted#"> 
-					AND (tcontent.DisplayStop >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#nowAdjusted#"> or tcontent.DisplayStop is null)
+					tcontent.DisplayStart <= #createodbcdatetime(nowAdjusted)# 
+					AND (tcontent.DisplayStop >= #createodbcdatetime(nowAdjusted)# or tcontent.DisplayStop is null)
 				)
 				OR tparent.type='Calendar'
 			  )			 
@@ -554,22 +547,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	
 	) 
-
-	and (tcontent.mobileExclude is null
-		OR 
-		<cfif request.muraMobileRequest>
-			tcontent.mobileExclude in (0,2)
-		<cfelse>
-			tcontent.mobileExclude in (0,1)
-		</cfif>
-	)
+	
+	<cfif request.muraMobileRequest>
+		and (tcontent.mobileExclude!=1 or tcontent.mobileExclude is null)
 	</cfif>
-						
+									
 	order by
 	
 	<cfswitch expression="#arguments.feedBean.getSortBy()#">
-	<cfcase value="menutitle,title,lastupdate,releasedate,orderno,displaystart,displaystop,created,credits,type,subtype">
-		<cfif dbType neq "oracle" or listFindNoCase("orderno,releaseDate,lastUpdate,created,displayStart,displayStop",arguments.feedBean.getSortBy())>
+	<cfcase value="menutitle,title,lastupdate,releasedate,orderno,displayStart,created,credits,type,subtype">
+		<cfif dbType neq "oracle" or listFindNoCase("orderno,releaseDate,lastUpdate,created",arguments.feedBean.getSortBy())>
 			tcontent.#arguments.feedBean.getSortBy()# #arguments.feedBean.getSortDirection()#
 		<cfelse>
 			lower(tcontent.#arguments.feedBean.getSortBy()#) #arguments.feedBean.getSortDirection()#
@@ -613,7 +600,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var theListLen =listLen(arguments.contentID) />
 	<cfset var I = 0 />
 
-	<cfquery name="rs" datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+	<cfquery name="rs" datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	select contentID, menutitle, type from tcontent where
 	active=1 and
 	<cfif theListLen>
@@ -621,7 +608,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	contentID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#listGetAt(arguments.contentID,I)#" /> 
 	<cfif I lt theListLen> or </cfif>
 	</cfloop>)
-	AND siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#" />
 	<cfelse>
 	0=1
 	</cfif>
@@ -636,7 +622,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<cfset var rs ="" />
 
-	<cfquery name="rs" datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+	<cfquery name="rs" datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 
 	SELECT name, channelLink, type
 	FROM tcontentfeeds 
@@ -661,7 +647,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<cfset var rs= ''/>
 	
-	<cfquery name="rs" datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+	<cfquery name="rs" datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	select count(*) as Total from tcontentfeeds
 	where isactive=1
 	<cfif arguments.siteID neq ''>
@@ -679,14 +665,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="renderActiveClause" output="true">
 <cfargument name="table" default="tcontent">
 <cfargument name="siteID">
-<cfargument name="liveOnly" default="1">
 	<cfset var previewData="">
 	<cfoutput>
 			<cfif request.muraChangesetPreview>
 				<cfset previewData=getCurrentUser().getValue("ChangesetPreviewData")>
 				and (
 						(#arguments.table#.active = 1
-						<cfif arguments.liveOnly>and #arguments.table#.Approved = 1</cfif>
+						and #arguments.table#.Approved = 1
 						and #arguments.table#.contentID not in (#previewData.contentIDList#)	
 						)
 						
@@ -699,7 +684,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					)	
 			<cfelse>
 				and #arguments.table#.active = 1
-				<cfif arguments.liveOnly>and #arguments.table#.Approved = 1</cfif>
+				and #arguments.table#.Approved = 1
 			</cfif>	
 	</cfoutput>
 </cffunction>

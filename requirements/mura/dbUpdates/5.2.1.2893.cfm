@@ -79,7 +79,7 @@ CREATE INDEX IX_ttrash_parentid ON ttrash (parentid)
 	  KEY IX_ttrash_siteid (`siteID`),
 	  KEY IX_ttrash_objecttype (`objectclass`),
 	  KEY IX_ttrash_parentid (`parentID`)
-	) ENGINE=#variables.instance.MYSQLEngine# DEFAULT CHARSET=utf8
+	) ENGINE=InnoDB DEFAULT CHARSET=utf8
 	</cfquery>
 	
 	<cfcatch>

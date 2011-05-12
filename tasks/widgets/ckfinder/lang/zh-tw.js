@@ -2,34 +2,34 @@
  * CKFinder
  * ========
  * http://ckfinder.com
- * Copyright (C) 2007-2011, CKSource - Frederico Knabben. All rights reserved.
+ * Copyright (C) 2007-2010, CKSource - Frederico Knabben. All rights reserved.
  *
- * The software, this file, and its contents are subject to the CKFinder
+ * The software, this file and its contents are subject to the CKFinder
  * License. Please read the license.txt file before using, installing, copying,
- * modifying, or distributing this file or part of its contents. The contents of
+ * modifying or distribute this file or part of its contents. The contents of
  * this file is part of the Source Code of CKFinder.
  *
  */
 
 /**
- * @fileOverview Defines the {@link CKFinder.lang} object for the Chinese (Taiwan)
- *		language.
- */
+ * @fileOverview Defines the {@link CKFinder.lang} object, for the Chinese (Taiwan)
+ *		language. This is the base file for all translations.
+*/
 
 /**
- * Contains the dictionary of language entries.
+ * Constains the dictionary of language entries.
  * @namespace
  */
 CKFinder.lang['zh-tw'] =
 {
-	appTitle : 'CKFinder',
+	appTitle : 'CKFinder', // MISSING
 
 	// Common messages and labels.
 	common :
 	{
 		// Put the voice-only part of the label in the span.
 		unavailable		: '%1<span class="cke_accessibility">, unavailable</span>', // MISSING
-		confirmCancel	: 'Some of the options were changed. Are you sure you want to close the dialog window?', // MISSING
+		confirmCancel	: 'Some of the options have been changed. Are you sure to close the dialog?', // MISSING
 		ok				: 'OK', // MISSING
 		cancel			: 'Cancel', // MISSING
 		confirmationTitle	: 'Confirmation', // MISSING
@@ -80,19 +80,19 @@ CKFinder.lang['zh-tw'] =
 	FileRenameExt	: '確定變更這個檔案的副檔名嗎? 變更後 , 此檔案可能會無法使用 !',
 	FileRenaming	: '修改檔案名稱...',
 	FileDelete		: '確定要刪除這個檔案 "%1"?',
-	FilesLoading	: '載入中...',
-	FilesEmpty		: 'The folder is empty.', // MISSING
-	FilesMoved		: 'File %1 moved to %2:%3.', // MISSING
-	FilesCopied		: 'File %1 copied to %2:%3.', // MISSING
+	FilesLoading	: 'Loading...', // MISSING
+	FilesEmpty		: 'Empty folder', // MISSING
+	FilesMoved		: 'File %1 moved into %2:%3', // MISSING
+	FilesCopied		: 'File %1 copied into %2:%3', // MISSING
 
 	// Basket
 	BasketFolder		: 'Basket', // MISSING
 	BasketClear			: 'Clear Basket', // MISSING
-	BasketRemove		: 'Remove from Basket', // MISSING
-	BasketOpenFolder	: 'Open Parent Folder', // MISSING
+	BasketRemove		: 'Remove from basket', // MISSING
+	BasketOpenFolder	: 'Open parent folder', // MISSING
 	BasketTruncateConfirm : 'Do you really want to remove all files from the basket?', // MISSING
 	BasketRemoveConfirm	: 'Do you really want to remove the file "%1" from the basket?', // MISSING
-	BasketEmpty			: 'No files in the basket, drag and drop some.', // MISSING
+	BasketEmpty			: 'No files in the basket, drag\'n\'drop some.', // MISSING
 	BasketCopyFilesHere	: 'Copy Files from Basket', // MISSING
 	BasketMoveFilesHere	: 'Move Files from Basket', // MISSING
 
@@ -118,14 +118,14 @@ CKFinder.lang['zh-tw'] =
 	Rename			: '重新命名',
 	Delete			: '刪除',
 
-	CopyDragDrop	: 'Copy File Here', // MISSING
-	MoveDragDrop	: 'Move File Here', // MISSING
+	CopyDragDrop	: 'Copy file here', // MISSING
+	MoveDragDrop	: 'Move file here', // MISSING
 
 	// Dialogs
 	RenameDlgTitle		: 'Rename', // MISSING
-	NewNameDlgTitle		: 'New Name', // MISSING
-	FileExistsDlgTitle	: 'File Already Exists', // MISSING
-	SysErrorDlgTitle : 'System Error', // MISSING
+	NewNameDlgTitle		: 'New name', // MISSING
+	FileExistsDlgTitle	: 'File already exists', // MISSING
+	SysErrorDlgTitle : 'System error', // MISSING
 
 	FileOverwrite	: 'Overwrite', // MISSING
 	FileAutorename	: 'Auto-rename', // MISSING
@@ -140,25 +140,13 @@ CKFinder.lang['zh-tw'] =
 	UploadSelectLbl		: '請選擇要上傳的檔案',
 	UploadProgressLbl	: '(檔案上傳中 , 請稍候...)',
 	UploadBtn			: '將檔案上傳到伺服器',
-	UploadBtnCancel		: '取消',
+	UploadBtnCancel		: 'Cancel', // MISSING
 
-	UploadNoFileMsg		: '請從你的電腦選擇一個檔案.',
-	UploadNoFolder		: 'Please select a folder before uploading.', // MISSING
+	UploadNoFileMsg		: '請從你的電腦選擇一個檔案',
+	UploadNoFolder		: 'Please select folder before uploading.', // MISSING
 	UploadNoPerms		: 'File upload not allowed.', // MISSING
 	UploadUnknError		: 'Error sending the file.', // MISSING
 	UploadExtIncorrect	: 'File extension not allowed in this folder.', // MISSING
-
-	// Flash Uploads
-	UploadLabel			: 'Files to Upload', // MISSING
-	UploadTotalFiles	: 'Total Files:', // MISSING
-	UploadTotalSize		: 'Total Size:', // MISSING
-	UploadAddFiles		: 'Add Files', // MISSING
-	UploadClearFiles	: 'Clear Files', // MISSING
-	UploadCancel		: 'Cancel Upload', // MISSING
-	UploadRemove		: 'Remove', // MISSING
-	UploadRemoveTip		: 'Remove !f', // MISSING
-	UploadUploaded		: 'Uploaded !n%', // MISSING
-	UploadProcessing	: 'Processing...', // MISSING
 
 	// Settings Panel
 	SetTitle		: '設定',
@@ -200,13 +188,13 @@ CKFinder.lang['zh-tw'] =
 	116 : '找不到目錄 ! 請先重新整理 , 然後再試一次 !',
 	117 : '找不到檔案 ! 請先重新整理 , 然後再試一次 !',
 	118 : 'Source and target paths are equal.', // MISSING
-	201 : '伺服器上已有相同的檔案名稱 ! 您上傳的檔案名稱將會自動更改為 "%1".',
+	201 : '伺服器上已有相同的檔案名稱 ! 您上傳的檔案名稱將會自動更改為 "%1"',
 	202 : '不合法的檔案 !',
 	203 : '不合法的檔案 ! 檔案大小超過預設值 !',
 	204 : '您上傳的檔案已經損毀 !',
 	205 : '伺服器上沒有預設的暫存目錄 !',
 	206 : '檔案上傳程序因為安全因素已被系統自動取消 ! 可能是上傳的檔案內容包含 HTML 碼 !',
-	207 : '您上傳的檔案名稱將會自動更改為 "%1".',
+	207 : '您上傳的檔案名稱將會自動更改為 "%1"',
 	300 : 'Moving file(s) failed.', // MISSING
 	301 : 'Copying file(s) failed.', // MISSING
 	500 : '因為安全因素 , 檔案瀏覽器已被停用 ! 請聯絡您的系統管理者並檢查 CKFinder 的設定檔 config.php !',
@@ -217,16 +205,13 @@ CKFinder.lang['zh-tw'] =
 	ErrorMsg :
 	{
 		FileEmpty		: '檔案名稱不能空白 !',
-		FileExists		: 'File %s already exists.', // MISSING
+		FileExists		: 'File %s already exists', // MISSING
 		FolderEmpty		: '目錄名稱不能空白 !',
 
 		FileInvChar		: '檔案名稱不能包含以下字元： \n\\ / : * ? " < > |',
 		FolderInvChar	: '目錄名稱不能包含以下字元： \n\\ / : * ? " < > |',
 
-		PopupBlockView	: '無法在新視窗開啟檔案 ! 請檢查瀏覽器的設定並且針對這個網站 關閉 <封鎖彈跳視窗> 這個功能 !',
-		XmlError		: 'It was not possible to properly load the XML response from the web server.', // MISSING
-		XmlEmpty		: 'It was not possible to load the XML response from the web server. The server returned an empty response.', // MISSING
-		XmlRawResponse	: 'Raw response from the server: %s' // MISSING
+		PopupBlockView	: '無法在新視窗開啟檔案 ! 請檢查瀏覽器的設定並且針對這個網站 關閉 <封鎖彈跳視窗> 這個功能 !'
 	},
 
 	// Imageresize plugin
@@ -235,22 +220,20 @@ CKFinder.lang['zh-tw'] =
 		dialogTitle		: 'Resize %s', // MISSING
 		sizeTooBig		: 'Cannot set image height or width to a value bigger than the original size (%size).', // MISSING
 		resizeSuccess	: 'Image resized successfully.', // MISSING
-		thumbnailNew	: 'Create a new thumbnail', // MISSING
+		thumbnailNew	: 'Create new thumbnail', // MISSING
 		thumbnailSmall	: 'Small (%s)', // MISSING
 		thumbnailMedium	: 'Medium (%s)', // MISSING
 		thumbnailLarge	: 'Large (%s)', // MISSING
-		newSize			: 'Set a new size', // MISSING
+		newSize			: 'Set new size', // MISSING
 		width			: 'Width', // MISSING
 		height			: 'Height', // MISSING
 		invalidHeight	: 'Invalid height.', // MISSING
 		invalidWidth	: 'Invalid width.', // MISSING
 		invalidName		: 'Invalid file name.', // MISSING
-		newImage		: 'Create a new image', // MISSING
-		noExtensionChange : 'File extension cannot be changed.', // MISSING
-		imageSmall		: 'Source image is too small.', // MISSING
-		contextMenuName	: 'Resize', // MISSING
-		lockRatio		: 'Lock ratio', // MISSING
-		resetSize		: 'Reset size' // MISSING
+		newImage		: 'Create new image', // MISSING
+		noExtensionChange : 'The file extension cannot be changed.', // MISSING
+		imageSmall		: 'Source image is too small', // MISSING
+		contextMenuName	: 'Resize' // MISSING
 	},
 
 	// Fileeditor plugin
@@ -261,11 +244,5 @@ CKFinder.lang['zh-tw'] =
 		fileSaveSuccess	: 'File saved successfully.', // MISSING
 		contextMenuName	: 'Edit', // MISSING
 		loadingFile		: 'Loading file, please wait...' // MISSING
-	},
-
-	Maximize :
-	{
-		maximize : 'Maximize', // MISSING
-		minimize : 'Minimize' // MISSING
 	}
 };

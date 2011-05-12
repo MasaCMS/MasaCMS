@@ -472,7 +472,7 @@ CREATE TABLE [dbo].[tsettings] (
 	[MaxNestLevel] [int] NULL ,
 	[PageLimit] [int] NULL ,
 	[Locking] [nvarchar] (50) NULL ,
-	[Domain] [nvarchar] (100) NULL ,
+	[Domain] [nvarchar] (50) NULL ,
 	[exportLocation] [nvarchar] (100) NULL ,
 	[FileDir] [nvarchar] (50) NULL ,
 	[Contact] [nvarchar] (50) NULL ,
@@ -601,7 +601,7 @@ CREATE TABLE [dbo].[tusers] (
 	[IMName] [nvarchar] (100) NULL ,
 	[IMService] [nvarchar] (50) NULL ,
 	[created] [datetime] NULL,
-	[remoteID] [nvarchar] (35) NULL,
+	[remoteID] [char] (35) NULL,
 	[tags] [nvarchar] (max) NULL 
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 GO

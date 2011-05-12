@@ -85,7 +85,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		for ( var i in all )
 		{
 			var one = all[ i ];
-			if ( one.mode == 'wysiwyg' && !one.readOnly )
+			if ( one.mode == 'wysiwyg' )
 			{
 				var body = one.document.getBody();
 				// Refresh 'contentEditable' otherwise
@@ -154,9 +154,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 			editor.addCommand( 'maximize',
 				{
-					// Disabled on iOS (#8307).
-					modes : { wysiwyg : !CKEDITOR.env.iOS, source : !CKEDITOR.env.iOS },
-					readOnly : 1,
+					modes : { wysiwyg : 1, source : 1 },
 					editorFocus : false,
 					exec : function()
 					{

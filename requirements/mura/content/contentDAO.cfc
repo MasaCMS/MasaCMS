@@ -6,43 +6,39 @@ the Free Software Foundation, Version 2 of the License.
 
 Mura CMS is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. �See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-along with Mura CMS. If not, see <http://www.gnu.org/licenses/>.
+along with Mura CMS. �If not, see <http://www.gnu.org/licenses/>.
 
-Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on 
-Mura CMS. Thus, the terms and conditions of the GNU General Public License version 2 ("GPL") cover the entire combined work.
+Linking Mura CMS statically or dynamically with other modules constitutes
+the preparation of a derivative work based on Mura CMS. Thus, the terms and 	
+conditions of the GNU General Public License version 2 (�GPL�) cover the entire combined work.
 
-However, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with programs
-or libraries that are released under the GNU Lesser General Public License version 2.1.
+However, as a special exception, the copyright holders of Mura CMS grant you permission
+to combine Mura CMS with programs or libraries that are released under the GNU Lesser General Public License version 2.1.
 
-In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with 
-independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without 
-Mura CMS under the license of your choice, provided that you follow these specific guidelines: 
+In addition, as a special exception, �the copyright holders of Mura CMS grant you permission
+to combine Mura CMS �with independent software modules that communicate with Mura CMS solely
+through modules packaged as Mura CMS plugins and deployed through the Mura CMS plugin installation API,
+provided that these modules (a) may only modify the �/trunk/www/plugins/ directory through the Mura CMS
+plugin installation API, (b) must not alter any default objects in the Mura CMS database
+and (c) must not alter any files in the following directories except in cases where the code contains
+a separately distributed license.
 
-Your custom code 
+/trunk/www/admin/
+/trunk/www/tasks/
+/trunk/www/config/
+/trunk/www/requirements/mura/
 
-• Must not alter any default objects in the Mura CMS database and
-• May not alter the default display of the Mura CMS logo within Mura CMS and
-• Must not alter any files in the following directories.
+You may copy and distribute such a combined work under the terms of GPL for Mura CMS, provided that you include
+the source code of that other code when and as the GNU GPL requires distribution of source code.
 
- /admin/
- /tasks/
- /config/
- /requirements/mura/
- /Application.cfc
- /index.cfm
- /MuraProxy.cfc
-
-You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work 
-under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL 
-requires distribution of source code.
-
-For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your 
-modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
-version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
+For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception
+for your modified version; it is your choice whether to do so, or to make such modified version available under
+the GNU General Public License version 2 �without this exception. �You may, if you choose, apply this exception
+to your own modified versions of Mura CMS.
 --->
 <cfcomponent extends="mura.cfobject" output="false">
 
@@ -56,14 +52,14 @@ tcontent.RemotePubDate,tcontent.RemoteSource,tcontent.RemoteSourceURL,tcontent.R
 tcontent.responseDisplayFields,tcontent.responseMessage,tcontent.responseSendTo,tcontent.Restricted,tcontent.RestrictGroups,
 tcontent.searchExclude,tcontent.SiteID,tcontent.sortBy,tcontent.sortDirection,tcontent.Summary,tcontent.Target,
 tcontent.TargetParams,tcontent.Template,tcontent.Title,tcontent.Type,tcontent.subType,tcontent.Path,tcontent.tags,
-tcontent.doCache,tcontent.created,tcontent.urltitle,tcontent.htmltitle,tcontent.mobileExclude,tcontent.changesetID,
-tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTemplate,tcontent.majorVersion,tcontent.minorVersion,tcontent.expires</cfoutput></cfsavecontent>
+tcontent.doCache,tcontent.created,tcontent.urltitle,tcontent.htmltitle,tcontent.mobileExclude,tcontent.changesetID</cfoutput></cfsavecontent>
 
 <cffunction name="init" access="public" returntype="any" output="false">
 <cfargument name="configBean" type="any" required="yes"/>
 <cfargument name="settingsManager" type="any" required="yes"/>
 		<cfset variables.configBean=arguments.configBean />
 		<cfset variables.settingsManager=arguments.settingsManager />
+		<cfset variables.dsn=variables.configBean.getDatasource() />
 <cfreturn this />
 </cffunction>
 
@@ -72,20 +68,19 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 	<cfset variables.contentManager=arguments.contentManager>
 </cffunction>
 
+<cffunction name="getBean" access="public" returntype="any">
+	<cfreturn application.serviceFactory.getBean("contentBean")>
+</cffunction>
+
 <cffunction name="readVersion" access="public" returntype="any" output="false">
 		<cfargument name="contentHistID" type="string" required="yes" />
 		<cfargument name="siteID" type="string" required="yes" />
 		<cfargument name="use404" type="boolean" required="yes" default="false"/>
-		<cfargument name="contentBean" required="true" default="">
 		<cfset var rsContent = queryNew('empty') />
-		<cfset var bean=arguments.contentBean />
-		
-		<cfif not isObject(bean)>
-			<cfset bean=getBean("content")>
-		</cfif>
+		<cfset var contentBean=getbean() />
 		
 		<cfif len(arguments.contentHistID)>	
-			<cfquery datasource="#variables.configBean.getReadOnlyDatasource()#" name="rsContent"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+			<cfquery datasource="#variables.dsn#" name="rsContent"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 				select #variables.fieldlist#, tfiles.fileSize, tfiles.contentType, tfiles.contentSubType, tfiles.fileExt from tcontent 
 				left join tfiles on (tcontent.fileid=tfiles.fileid)
 				where tcontent.contenthistid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentHistID#" /> and tcontent.siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#" />
@@ -93,47 +88,42 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 		</cfif>
 		
 		<cfif rsContent.recordCount>
-			<cfset bean.set(rsContent) />
-			<cfset bean.setIsNew(0) />
-			<cfset bean.setPreserveID(rsContent.contentHistID) />
+			<cfset contentBean.set(rsContent) />
+			<cfset contentBean.setIsNew(0) />
+			<cfset contentBean.setPreserveID(rsContent.contentHistID) />
 		<cfelseif arguments.use404>
-			<cfset bean.setType("Page") />
-			<cfset bean.setSubType("Default") />
-			<cfset bean.setIsNew(1) />
-			<cfset bean.setActive(1) />
-			<cfset bean.setBody('The requested version of this content could not be found.')/>
-			<cfset bean.setTitle('404')/>
-			<cfset bean.setMenuTitle('404')/>
-			<cfset bean.setFilename('404') />
-			<cfset bean.setParentID('00000000000000000000000000000000END') />
-			<cfset bean.setcontentID('00000000000000000000000000000000001') />
-			<cfset bean.setPath('00000000000000000000000000000000001') />
-			<cfset bean.setSiteID(arguments.siteID) />
-			<cfset bean.setDisplay(1) />
-			<cfset bean.setApproved(1) />
+			<cfset contentBean.setType("Page") />
+			<cfset contentBean.setSubType("Default") />
+			<cfset contentBean.setIsNew(1) />
+			<cfset contentBean.setActive(1) />
+			<cfset contentBean.setBody('The requested version of this content could not be found.')/>
+			<cfset contentBean.setTitle('404')/>
+			<cfset contentBean.setMenuTitle('404')/>
+			<cfset contentBean.setFilename('404') />
+			<cfset contentBean.setParentID('00000000000000000000000000000000END') />
+			<cfset contentBean.setcontentID('00000000000000000000000000000000001') />
+			<cfset contentBean.setPath('00000000000000000000000000000000001') />
+			<cfset contentBean.setSiteID(arguments.siteID) />
+			<cfset contentBean.setDisplay(1) />
+			<cfset contentBean.setApproved(1) />
 		<cfelse>
-			<cfset bean.setIsNew(1) />
-			<cfset bean.setActive(1) />
-			<cfset bean.setSiteID(arguments.siteid) />
+			<cfset contentBean.setIsNew(1) />
+			<cfset contentBean.setActive(1) />
+			<cfset contentBean.setSiteID(arguments.siteid) />
 		</cfif>
 		
-		<cfreturn bean />
+		<cfreturn contentBean />
 </cffunction>
 
 <cffunction name="readActive" access="public" returntype="any" output="false">
 		<cfargument name="contentID" type="string" required="yes" />
 		<cfargument name="siteID" type="string" required="yes" />
 		<cfargument name="use404" type="boolean" required="yes" default="false"/>
-		<cfargument name="contentBean" required="true" default="">
 		<cfset var rsContent = queryNew('empty') />
-		<cfset var bean=arguments.contentBean />
-		
-		<cfif not isObject(bean)>
-			<cfset bean=getBean("content")>
-		</cfif>
+		<cfset var contentBean=getbean()  />
 		
 		<cfif len(arguments.contentID)>
-			<cfquery datasource="#variables.configBean.getReadOnlyDatasource()#" name="rsContent"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+			<cfquery datasource="#variables.dsn#" name="rsContent"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 				select #variables.fieldlist#, tfiles.fileSize, tfiles.contentType, tfiles.contentSubType, tfiles.fileExt from tcontent 
 				left join tfiles on (tcontent.fileid=tfiles.fileid)
 				where tcontent.contentid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentID#" /> 
@@ -144,49 +134,44 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 		</cfif>
 		
 		<cfif rsContent.recordCount>
-			<cfset bean.set(rsContent) />
-			<cfset bean.setIsNew(0) />
-			<cfset bean.setPreserveID(rsContent.contentHistID) />
+			<cfset contentBean.set(rsContent) />
+			<cfset contentBean.setIsNew(0) />
+			<cfset contentBean.setPreserveID(rsContent.contentHistID) />
 		<cfelseif arguments.use404>
-			<cfset bean.setType("Page") />
-			<cfset bean.setSubType("Default") />
-			<cfset bean.setIsNew(1) />
-			<cfset bean.setActive(1) />
-			<cfset bean.setBody('The requested page could not be found.')/>
-			<cfset bean.setTitle('404')/>
-			<cfset bean.setMenuTitle('404')/>
-			<cfset bean.setFilename('404') />
-			<cfset bean.setParentID('00000000000000000000000000000000END') />
-			<cfset bean.setcontentID('00000000000000000000000000000000001') />
-			<cfset bean.setPath('00000000000000000000000000000000001') />
-			<cfset bean.setSiteID(arguments.siteID) />
-			<cfset bean.setDisplay(1) />
-			<cfset bean.setApproved(1) />
+			<cfset contentBean.setType("Page") />
+			<cfset contentBean.setSubType("Default") />
+			<cfset contentBean.setIsNew(1) />
+			<cfset contentBean.setActive(1) />
+			<cfset contentBean.setBody('The requested page could not be found.')/>
+			<cfset contentBean.setTitle('404')/>
+			<cfset contentBean.setMenuTitle('404')/>
+			<cfset contentBean.setFilename('404') />
+			<cfset contentBean.setParentID('00000000000000000000000000000000END') />
+			<cfset contentBean.setcontentID('00000000000000000000000000000000001') />
+			<cfset contentBean.setPath('00000000000000000000000000000000001') />
+			<cfset contentBean.setSiteID(arguments.siteID) />
+			<cfset contentBean.setDisplay(1) />
+			<cfset contentBean.setApproved(1) />
 		<cfelse>
-			<cfset bean.setIsNew(1) />
-			<cfset bean.setActive(1) />
-			<cfset bean.setSiteID(arguments.siteid) />
+			<cfset contentBean.setIsNew(1) />
+			<cfset contentBean.setActive(1) />
+			<cfset contentBean.setSiteID(arguments.siteid) />
 		</cfif>
 		
-		<cfreturn bean />
+		<cfreturn contentBean />
 </cffunction>
 
 <cffunction name="readActiveByRemoteID" access="public" returntype="any" output="false">
 		<cfargument name="remoteID" type="string" required="yes" />
 		<cfargument name="siteID" type="string" required="yes" />
 		<cfargument name="use404" type="boolean" required="yes" default="false"/>
-		<cfargument name="contentBean" required="true" default="">
 		<cfset var rsContent = queryNew('empty') />
+		<cfset var contentBean=getbean()  />
 		<cfset var beanArray=arrayNew(1)>
 		<cfset var utility="">
-		<cfset var bean=arguments.contentBean />
-		
-		<cfif not isObject(bean)>
-			<cfset bean=getBean("content")>
-		</cfif>
 		
 		<cfif len(arguments.remoteID)>		
-			<cfquery datasource="#variables.configBean.getReadOnlyDatasource()#" name="rsContent"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+			<cfquery datasource="#variables.dsn#" name="rsContent"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 				select #variables.fieldlist#, tfiles.fileSize, tfiles.contentType, tfiles.contentSubType, tfiles.fileExt from tcontent 
 				left join tfiles on (tcontent.fileid=tfiles.fileid)
 				where tcontent.remoteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.remoteID#" /> 
@@ -197,43 +182,38 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 		</cfif>
 		
 		<cfif rsContent.recordcount gt 1>
-				<cfset utility=getBean("utility")>
+				<cfset utility=getServiceFactory().getBean("utility")>
 				<cfloop query="rscontent">
-				<cfset bean=getBean("content").set(utility.queryRowToStruct(rsContent,rsContent.currentrow))>
-				<cfset bean.setIsNew(0)>
-				<cfset bean.setPreserveID(rsContent.contentHistID)>
-				<cfset arrayAppend(beanArray,bean)>				
+				<cfset contentBean=getbean().set(utility.queryRowToStruct(rsContent,rsContent.currentrow))>
+				<cfset contentBean.setIsNew(0)>
+				<cfset contentBean.setPreserveID(rsContent.contentHistID)>
+				<cfset arrayAppend(beanArray,contentBean)>				
 				</cfloop>
 				<cfreturn beanArray>
 		<cfelseif rsContent.recordCount>
-			<cfset bean.set(rsContent) />
-			<cfset bean.setIsNew(0) />
-			<cfset bean.setPreserveID(rsContent.contentHistID) />
+			<cfset contentBean.set(rsContent) />
+			<cfset contentBean.setIsNew(0) />
+			<cfset contentBean.setPreserveID(rsContent.contentHistID) />
 		<cfelse>
-			<cfset bean.setIsNew(1) />
-			<cfset bean.setActive(1) />
-			<cfset bean.setSiteID(arguments.siteid) />
+			<cfset contentBean.setIsNew(1) />
+			<cfset contentBean.setActive(1) />
+			<cfset contentBean.setSiteID(arguments.siteid) />
 		</cfif>
 		
-		<cfreturn bean />
+		<cfreturn contentBean />
 </cffunction>
 
 <cffunction name="readActiveByTitle" access="public" returntype="any" output="false">
 		<cfargument name="title" type="string" required="yes" />
 		<cfargument name="siteID" type="string" required="yes" />
 		<cfargument name="use404" type="boolean" required="yes" default="false"/>
-		<cfargument name="contentBean" required="true" default="">
 		<cfset var rsContent = queryNew('empty') />
+		<cfset var contentBean=getbean()  />
 		<cfset var beanArray=arrayNew(1)>
 		<cfset var utility="">
-		<cfset var bean=arguments.contentBean />
-		
-		<cfif not isObject(bean)>
-			<cfset bean=getBean("content")>
-		</cfif>
 		
 		<cfif len(arguments.title)>		
-			<cfquery datasource="#variables.configBean.getReadOnlyDatasource()#" name="rsContent"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+			<cfquery datasource="#variables.dsn#" name="rsContent"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 				select #variables.fieldlist#, tfiles.fileSize, tfiles.contentType, tfiles.contentSubType, tfiles.fileExt from tcontent 
 				left join tfiles on (tcontent.fileid=tfiles.fileid)
 				where tcontent.title=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.title#" /> 
@@ -244,89 +224,57 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 		</cfif>
 		
 		<cfif rsContent.recordcount gt 1>
-				<cfset utility=getBean("utility")>
+				<cfset utility=getServiceFactory().getBean("utility")>
 				<cfloop query="rscontent">
-				<cfset bean=getBean("content").set(utility.queryRowToStruct(rsContent,rsContent.currentrow))>
-				<cfset bean.setIsNew(0)>
-				<cfset bean.setPreserveID(rsContent.contentHistID)>
-				<cfset arrayAppend(beanArray,bean)>				
+				<cfset contentBean=getbean().set(utility.queryRowToStruct(rsContent,rsContent.currentrow))>
+				<cfset contentBean.setIsNew(0)>
+				<cfset contentBean.setPreserveID(rsContent.contentHistID)>
+				<cfset arrayAppend(beanArray,contentBean)>				
 				</cfloop>
 				<cfreturn beanArray>
 		<cfelseif rsContent.recordCount>
-			<cfset bean.set(rsContent) />
-			<cfset bean.setIsNew(0) />
-			<cfset bean.setPreserveID(rsContent.contentHistID) />
+			<cfset contentBean.set(rsContent) />
+			<cfset contentBean.setIsNew(0) />
+			<cfset contentBean.setPreserveID(rsContent.contentHistID) />
 		<cfelse>
-			<cfset bean.setIsNew(1) />
-			<cfset bean.setActive(1) />
-			<cfset bean.setSiteID(arguments.siteid) />
+			<cfset contentBean.setIsNew(1) />
+			<cfset contentBean.setActive(1) />
+			<cfset contentBean.setSiteID(arguments.siteid) />
 		</cfif>
 		
-		<cfreturn bean />
-</cffunction>
-
-<cffunction name="readActiveByURLTitle" access="public" returntype="any" output="false">
-		<cfargument name="urltitle" type="string" required="yes" />
-		<cfargument name="siteID" type="string" required="yes" />
-		<cfargument name="use404" type="boolean" required="yes" default="false"/>
-		<cfargument name="contentBean" required="true" default="">
-		<cfset var rsContent = queryNew('empty') />
-		<cfset var beanArray=arrayNew(1)>
-		<cfset var utility="">
-		<cfset var bean=arguments.contentBean />
-		
-		<cfif not isObject(bean)>
-			<cfset bean=getBean("content")>
-		</cfif>
-		
-		<cfif len(arguments.urltitle)>		
-			<cfquery datasource="#variables.configBean.getReadOnlyDatasource()#" name="rsContent"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
-				select #variables.fieldlist#, tfiles.fileSize, tfiles.contentType, tfiles.contentSubType, tfiles.fileExt from tcontent 
-				left join tfiles on (tcontent.fileid=tfiles.fileid)
-				where tcontent.urltitle=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.urltitle#" /> 
-				#renderActiveClause("tcontent",arguments.siteID)#
-				and tcontent.siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteid#" />
-				and type in ('Page','Portal','File','Calendar','Link','Gallery','Component','Form')
-			</cfquery>
-		</cfif>
-		
-		<cfif rsContent.recordcount gt 1>
-				<cfset utility=getBean("utility")>
-				<cfloop query="rscontent">
-				<cfset bean=getBean("content").set(utility.queryRowToStruct(rsContent,rsContent.currentrow))>
-				<cfset bean.setIsNew(0)>
-				<cfset bean.setPreserveID(rsContent.contentHistID)>
-				<cfset arrayAppend(beanArray,bean)>				
-				</cfloop>
-				<cfreturn beanArray>
-		<cfelseif rsContent.recordCount>
-			<cfset bean.set(rsContent) />
-			<cfset bean.setIsNew(0) />
-			<cfset bean.setPreserveID(rsContent.contentHistID) />
-		<cfelse>
-			<cfset bean.setIsNew(1) />
-			<cfset bean.setActive(1) />
-			<cfset bean.setSiteID(arguments.siteid) />
-		</cfif>
-		
-		<cfreturn bean />
+		<cfreturn contentBean />
 </cffunction>
 
 <cffunction name="readActiveByFilename" access="public" returntype="any" output="true">
 		<cfargument name="filename" type="string" required="yes" default="" />
 		<cfargument name="siteID" type="string" required="yes" default="" />
 		<cfargument name="use404" type="boolean" required="yes" default="false"/>
-		<cfargument name="contentBean" required="true" default="">
 		<cfset var rsContent = queryNew('empty') />
+		<cfset var contentBean=getbean()  />
 		<cfset var beanArray=arrayNew(1)>
 		<cfset var utility="">
-		<cfset var bean=arguments.contentBean />
 		
-		<cfif not isObject(bean)>
-			<cfset bean=getBean("content")>
+		<cfif arguments.filename eq "/">
+			<cfset arguments.filename="">
+		<cfelse>
+			<cfif left(arguments.filename,1) eq "/">
+				<cfif len(arguments.filename) gt 1>
+					<cfset arguments.filename=right(arguments.filename,len(arguments.filename)-1)>
+				<cfelse>
+					<cfset arguments.filename="">
+				</cfif>
+			</cfif>
+			
+			<cfif right(arguments.filename,1) eq "/">
+				<cfif len(arguments.filename) gt 1>
+					<cfset arguments.filename=left(arguments.filename,len(arguments.filename)-1)>
+				<cfelse>
+					<cfset arguments.filename="">
+				</cfif>
+			</cfif>
 		</cfif>
-		
-		<cfquery datasource="#variables.configBean.getReadOnlyDatasource()#" name="rsContent"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+			
+		<cfquery datasource="#variables.dsn#" name="rsContent"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 			select #variables.fieldlist#, tfiles.fileSize, tfiles.contentType, tfiles.contentSubType, tfiles.fileExt from tcontent 
 			left join tfiles on (tcontent.fileid=tfiles.fileid)
 			where 
@@ -343,44 +291,44 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 		</cfquery>
 
 		<cfif rsContent.recordcount gt 1>
-			<cfset utility=getBean("utility")>
+			<cfset utility=getServiceFactory().getBean("utility")>
 				<cfloop query="rscontent">
-				<cfset bean=getBean("content").set(utility.queryRowToStruct(rsContent,rsContent.currentrow))>
-				<cfset bean.setIsNew(0)>
-				<cfset bean.setPreserveID(rsContent.contentHistID)>
-				<cfset arrayAppend(beanArray,bean)>				
+				<cfset contentBean=getbean().set(utility.queryRowToStruct(rsContent,rsContent.currentrow))>
+				<cfset contentBean.setIsNew(0)>
+				<cfset contentBean.setPreserveID(rsContent.contentHistID)>
+				<cfset arrayAppend(beanArray,contentBean)>				
 				</cfloop>
 		<cfelseif rsContent.recordCount eq 1>
-			<cfset bean.set(rsContent) />
-			<cfset bean.setIsNew(0) />
-			<cfset bean.setPreserveID(rsContent.contentHistID) />
+			<cfset contentBean.set(rsContent) />
+			<cfset contentBean.setIsNew(0) />
+			<cfset contentBean.setPreserveID(rsContent.contentHistID) />
 		<cfelseif arguments.use404>
-			<cfset bean.setType("Page") />
-			<cfset bean.setSubType("Default") />
-			<cfset bean.setBody('The requested page could not be found.')/>
-			<cfset bean.setTitle('404')/>
-			<cfset bean.setMenuTitle('404')/>
-			<cfset bean.setIsNew(1) />
-			<cfset bean.setActive(1) />
-			<cfset bean.setFilename('404') />
-			<cfset bean.setParentID('00000000000000000000000000000000END') />
-			<cfset bean.setcontentID('00000000000000000000000000000000001') />
-			<cfset bean.setPath('00000000000000000000000000000000001') />
-			<cfset bean.setSiteID(arguments.siteID) />
-			<cfset bean.setDisplay(1) />
-			<cfset bean.setApproved(1) />
+			<cfset contentBean.setType("Page") />
+			<cfset contentBean.setSubType("Default") />
+			<cfset contentBean.setBody('The requested page could not be found.')/>
+			<cfset contentBean.setTitle('404')/>
+			<cfset contentBean.setMenuTitle('404')/>
+			<cfset contentBean.setIsNew(1) />
+			<cfset contentBean.setActive(1) />
+			<cfset contentBean.setFilename('404') />
+			<cfset contentBean.setParentID('00000000000000000000000000000000END') />
+			<cfset contentBean.setcontentID('00000000000000000000000000000000001') />
+			<cfset contentBean.setPath('00000000000000000000000000000000001') />
+			<cfset contentBean.setSiteID(arguments.siteID) />
+			<cfset contentBean.setDisplay(1) />
+			<cfset contentBean.setApproved(1) />
 		<cfelse>
-			<cfset bean.setIsNew(1) />
-			<cfset bean.setActive(1) />
-			<cfset bean.setSiteID(arguments.siteid) />
+			<cfset contentBean.setIsNew(1) />
+			<cfset contentBean.setActive(1) />
+			<cfset contentBean.setSiteID(arguments.siteid) />
 		</cfif>
-		<cfreturn bean />
+		<cfreturn contentBean />
 </cffunction>
 
 <cffunction name="create" access="public" returntype="void" output="false">
 		<cfargument name="contentBean" type="any" required="yes" />
 		
-		 <cfquery  DATASOURCE="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+		 <cfquery  DATASOURCE="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
       INSERT INTO tcontent (ContentHistID, ContentID, Active, OrderNo,  approved, DisplayStart,
 	   displaystop,
 	   <!--- clob fields --->
@@ -402,14 +350,7 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 	   urltitle,
 	   htmltitle,
 	   mobileExclude,
-	  changesetID,
-	  imageSize,
-	  imageHeight,
-	  imageWidth,
-	  childTemplate,
-	  majorVersion,
-	  minorVersion,
-	  expires)
+	  changesetID)
       VALUES (
 	  	 <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentBean.getContentHistID()#">, 
          <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentBean.getContentID()#">,
@@ -417,20 +358,20 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 		 #arguments.contentBean.getOrderNo()#,
 		#arguments.contentBean.getApproved()#,
 		<cfif arguments.contentBean.getDisplay() eq 2 and isdate(arguments.contentBean.getDisplayStart())> 
-			<cfqueryparam cfsqltype="cf_sql_timestamp" value="#createDateTime(year(arguments.contentBean.getDisplayStart()),
+			#createodbcdatetime(createDateTime(year(arguments.contentBean.getDisplayStart()),
 									month(arguments.contentBean.getDisplayStart()),
 									day(arguments.contentBean.getDisplayStart()),
 									hour(arguments.contentBean.getDisplayStart()),
-									minute(arguments.contentBean.getDisplayStart()),0)#">
+									minute(arguments.contentBean.getDisplayStart()),0))#
 		<cfelse>
 			null
 		</cfif>,
 		<cfif arguments.contentBean.getDisplay() eq 2 and isdate(arguments.contentBean.getDisplayStop())> 
-			<cfqueryparam cfsqltype="cf_sql_timestamp" value="#createDateTime(year(arguments.contentBean.getDisplayStop()),
+			#createodbcdatetime(createDateTime(year(arguments.contentBean.getDisplayStop()),
 									month(arguments.contentBean.getDisplayStop()),
 									day(arguments.contentBean.getDisplayStop()),
 									hour(arguments.contentBean.getDisplayStop()),
-									minute(arguments.contentBean.getDisplayStop()),0)#">
+									minute(arguments.contentBean.getDisplayStop()),0))#
 		<cfelse>
 			null
 		</cfif>,
@@ -445,7 +386,7 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 	    <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.contentBean.getTitle() neq '',de('no'),de('yes'))#" value="#trim(arguments.contentBean.getTitle())#">,
 		  <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.contentBean.getMenutitle() neq '',de('no'),de('yes'))#" value="#arguments.contentBean.getMenutitle()#">,
 		 <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.contentBean.getFilename() neq '',de('no'),de('yes'))#" value="#arguments.contentBean.getFilename()#"> ,  
-        <cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#">, 
+        #createodbcdatetime(now())#, 
          #arguments.contentBean.getDisplay()#, 
        <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.contentBean.getParentID() neq '',de('no'),de('yes'))#" value="#trim(arguments.contentBean.getParentID())#">, 
 		<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentBean.getType()#">,
@@ -466,12 +407,13 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 		 <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.contentBean.getInheritObjects() neq '',de('no'),de('yes'))#" value="#arguments.contentBean.getInheritObjects()#">,
 		#arguments.contentBean.getisfeature()#,
 		<cfif isdate(arguments.contentBean.getReleaseDate())>
-			 <cfqueryparam cfsqltype="cf_sql_timestamp" value="#createDateTime(year(arguments.contentBean.getReleaseDate()), 
+			 #createodbcdatetime(
+			 	createDateTime(year(arguments.contentBean.getReleaseDate()), 
 			 				month(arguments.contentBean.getReleaseDate()),
 							day(arguments.contentBean.getReleaseDate()), 
 							hour(arguments.contentBean.getReleaseDate()), 
 							minute(arguments.contentBean.getReleaseDate()), 
-							second(arguments.contentBean.getReleaseDate()))#">
+							second(arguments.contentBean.getReleaseDate())))#
 		<cfelse>
 			null
 		</cfif>,
@@ -481,20 +423,20 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 		<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.contentBean.getSortBy() neq '',de('no'),de('yes'))#" value="#arguments.contentBean.getSortBy()#">,
 		<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.contentBean.getSortDirection() neq '',de('no'),de('yes'))#" value="#arguments.contentBean.getSortDirection()#">,
 		<cfif arguments.contentBean.getIsFeature() eq 2 and isdate(arguments.contentBean.getFeatureStart())> 
-			<cfqueryparam cfsqltype="cf_sql_timestamp" value="#createDateTime(year(arguments.contentBean.getFeatureStart()),
+			#createodbcdatetime(createDateTime(year(arguments.contentBean.getFeatureStart()),
 											month(arguments.contentBean.getFeatureStart()),
 											day(arguments.contentBean.getFeatureStart()),
 											hour(arguments.contentBean.getFeatureStart()),
-											minute(arguments.contentBean.getFeatureStart()),0)#">
+											minute(arguments.contentBean.getFeatureStart()),0))#
 		<cfelse>
 			null
 		</cfif>,
 		<cfif arguments.contentBean.getIsFeature() eq 2 and isdate(arguments.contentBean.getFeatureStop())>
-			<cfqueryparam cfsqltype="cf_sql_timestamp" value="#createDateTime(year(arguments.contentBean.getFeatureStop()),
+			#createodbcdatetime(createDateTime(year(arguments.contentBean.getFeatureStop()),
 											month(arguments.contentBean.getFeatureStop()),
 											day(arguments.contentBean.getFeatureStop()),
 											hour(arguments.contentBean.getFeatureStop()),
-											minute(arguments.contentBean.getFeatureStop()),0)#">
+											minute(arguments.contentBean.getFeatureStop()),0))#
 		<cfelse>
 			null
 		</cfif>,
@@ -512,35 +454,20 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 		#arguments.contentBean.getDisplayTitle()#,
 		#arguments.contentBean.getDoCache()#,
 		<cfif isdate(arguments.contentBean.getCreated())>
-			 <cfqueryparam cfsqltype="cf_sql_timestamp" value="#createDateTime(year(arguments.contentBean.getCreated()), 
+			 #createodbcdatetime(
+			 	createDateTime(year(arguments.contentBean.getCreated()), 
 			 				month(arguments.contentBean.getCreated()),
 							day(arguments.contentBean.getCreated()), 
 							hour(arguments.contentBean.getCreated()), 
 							minute(arguments.contentBean.getCreated()), 
-							second(arguments.contentBean.getCreated()))#">
+							second(arguments.contentBean.getCreated())))#
 		<cfelse>
-			<cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#">
+			#createodbcdatetime(now())#
 		</cfif>,
 		<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.contentBean.getURLTitle() neq '',de('no'),de('yes'))#" value="#arguments.contentBean.getURLTitle()#">,
 		<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.contentBean.getHTMLTitle() neq '',de('no'),de('yes'))#" value="#arguments.contentBean.getHTMLTitle()#">,
 		#arguments.contentBean.getMobileExclude()#,
-		<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.contentBean.getChangesetID() neq '',de('no'),de('yes'))#" value="#arguments.contentBean.getChangesetID()#">,
-		<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.contentBean.getImageSize() neq '',de('no'),de('yes'))#" value="#arguments.contentBean.getImageSize()#">,
-		<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.contentBean.getImageHeight() neq '',de('no'),de('yes'))#" value="#arguments.contentBean.getImageHeight()#">,
-		<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.contentBean.getImageWidth() neq '',de('no'),de('yes'))#" value="#arguments.contentBean.getImageWidth()#">,
-		<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.contentBean.getChildTemplate() neq '',de('no'),de('yes'))#" value="#arguments.contentBean.getchildTemplate()#">,
-		#arguments.contentBean.getMajorVersion()#,
-		#arguments.contentBean.getMinorVersion()#,
-		<cfif isdate(arguments.contentBean.getExpires())>
-			 <cfqueryparam cfsqltype="cf_sql_timestamp" value="#createDateTime(year(arguments.contentBean.getExpires()), 
-			 				month(arguments.contentBean.getExpires()),
-							day(arguments.contentBean.getExpires()), 
-							hour(arguments.contentBean.getExpires()), 
-							minute(arguments.contentBean.getExpires()), 
-							second(arguments.contentBean.getExpires()))#">
-		<cfelse>
-			null
-		</cfif>
+		<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.contentBean.getChangesetID() neq '',de('no'),de('yes'))#" value="#arguments.contentBean.getChangesetID()#">
 		)
  </CFQUERY>
 
@@ -552,11 +479,11 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 	<cfset var rsdate= "">
 	<cfset var rslist= "">
 	
-	<cfquery datasource="#variables.configBean.getReadOnlyDatasource()#" name="rsdate"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+	<cfquery datasource="#variables.dsn#" name="rsdate"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	select lastupdate from tcontent where active = 1 and siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#" /> and contentid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentID#" />
 	</cfquery>
 	
-	<cfquery datasource="#variables.configBean.getReadOnlyDatasource()#" name="rslist"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+	<cfquery datasource="#variables.dsn#" name="rslist"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	select contenthistid from tcontent 
 	where siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#" /> 
 	and contentid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentID#" />
@@ -569,7 +496,7 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 	</cfquery>
 	
 	<cfif rslist.recordcount>
-		<cfquery datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+		<cfquery datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 		 Delete from tcontent where siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#" /> and contentid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentID#" />
 		 <!---and lastupdate < #createodbcdatetime(rsdate.lastupdate)#--->
 		 and (
@@ -579,7 +506,7 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 			)
 		</cfquery>
 		
-		<cfquery datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+		<cfquery datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 		delete from tcontentobjects where 
 		siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#" />
 		and contenthistid in (<cfloop query="rslist"><cfqueryparam cfsqltype="cf_sql_varchar" value="#rslist.contentHistID#" /><cfif rslist.currentrow lt rslist.recordcount>,</cfif></cfloop>)
@@ -589,19 +516,19 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 			<cfset variables.configBean.getClassExtensionManager().deleteExtendedData(rslist.contentHistID)/>
 		</cfloop>
 		
-		<cfquery datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+		<cfquery datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 		delete from tcontentcategoryassign where 
 		siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#" />
 		and contenthistid in (<cfloop query="rslist"><cfqueryparam cfsqltype="cf_sql_varchar" value="#rslist.contentHistID#" /><cfif rslist.currentrow lt rslist.recordcount>,</cfif></cfloop>)
 		</cfquery>
 		
-		<cfquery datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+		<cfquery datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 		delete from tcontentrelated where 
 		siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#" />
 		and contenthistid in (<cfloop query="rslist"><cfqueryparam cfsqltype="cf_sql_varchar" value="#rslist.contentHistID#" /> <cfif rslist.currentrow lt rslist.recordcount>,</cfif></cfloop>)
 		</cfquery>
 		
-		<cfquery datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+		<cfquery datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 		delete from tcontenttags where 
 		siteid='#arguments.siteid#'
 		and contenthistid in (<cfloop query="rslist"><cfqueryparam cfsqltype="cf_sql_varchar" value="#rslist.contentHistID#" /> <cfif rslist.currentrow lt rslist.recordcount>,</cfif></cfloop>)
@@ -615,7 +542,7 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 	<cfset var rslist= "">
 	<cfset var rsFiles= "">
 		
-	<cfquery datasource="#variables.configBean.getReadOnlyDatasource()#" name="rslist"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+	<cfquery datasource="#variables.dsn#" name="rslist"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	select contenthistid from tcontent 
 	where siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#" />
 	and contentid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentID#" />
@@ -623,7 +550,7 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 	</cfquery>
 	
 	<cfif rslist.recordcount>	
-		<cfquery datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+		<cfquery datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 		delete from tcontentobjects where 
 		siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#" />
 		and contenthistid in (<cfloop query="rslist"><cfqueryparam cfsqltype="cf_sql_varchar" value="#rslist.contentHistID#" /><cfif rslist.currentrow lt rslist.recordcount>,</cfif></cfloop>)
@@ -633,26 +560,26 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 			<cfset variables.configBean.getClassExtensionManager().deleteExtendedData(rslist.contentHistID)/>
 		</cfloop>
 		
-		<cfquery datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+		<cfquery datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 		delete from tcontentcategoryassign where 
 		siteid='#arguments.siteid#'
 		and contenthistid in (<cfloop query="rslist">'#rslist.contenthistid#'<cfif rslist.currentrow lt rslist.recordcount>,</cfif></cfloop>)
 		</cfquery>
 		
-		<cfquery datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+		<cfquery datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 		delete from tcontentrelated where 
 		siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#" />
 		and contenthistid in (<cfloop query="rslist">'#rslist.contenthistid#'<cfif rslist.currentrow lt rslist.recordcount>,</cfif></cfloop>)
 		</cfquery>
 		
-		<cfquery datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+		<cfquery datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 		delete from tcontenttags where 
 		siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#" />
 		and contenthistid in (<cfloop query="rslist"><cfqueryparam cfsqltype="cf_sql_varchar" value="#rslist.contentHistID#" /> <cfif rslist.currentrow lt rslist.recordcount>,</cfif></cfloop>)
 		</cfquery>
 	</cfif>
 	
-	<cfquery datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+	<cfquery datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	Delete from tcontent where siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#" />
 	and contentid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentID#" />
 	and approved=0 and changesetID is null
@@ -664,7 +591,7 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 <cfargument name="contentID" type="string" required="yes" />
 <cfargument name="siteID" type="string" required="yes" />
 	
-	<cfquery datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+	<cfquery datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 		update tcontent set active=0 where contentid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentID#" />
 		and active=1 
 		and siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#" />
@@ -689,7 +616,7 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 			<cfset objectList =#evaluate("arguments.data.objectlist#r#")# />
 			<cfloop list="#objectlist#" index="i" delimiters="^">
 				<cfset objectOrder=objectOrder+1>
-				<cfquery datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+				<cfquery datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 				insert into tcontentobjects (contentid,contenthistid,object,name,objectid,orderno,siteid,columnid,params)
 				values(
 					<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentBean.getcontentid()#" />,
@@ -710,7 +637,7 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 			
 			<cfloop query="rsOld">
 				<cfset objectOrder=objectOrder+1>
-				<cfquery datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+				<cfquery datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 				insert into tcontentobjects (contentid,contenthistid,object,name,objectid,orderno,siteid,columnid,params)
 				values(
 					<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentBean.getcontentid()#" />,
@@ -730,38 +657,6 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 	
 </cffunction>
 
-<cffunction name="updateContentObjectParams" output="false">
-	<cfargument name="contenthistID">
-	<cfargument name="regionID">
-	<cfargument name="orderno">
-	<cfargument name="params">
-	
-	<cfquery datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-		update tcontentobjects set
-		params= <cfqueryparam cfsqltype="cf_sql_longvarchar" value="#arguments.params#" />
-		where
-		contentHistID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentHistID#" />
-		and columnid=<cfqueryparam cfsqltype="cf_sql_numeric" value="#arguments.regionID#" />
-		and orderno=<cfqueryparam cfsqltype="cf_sql_numeric" value="#arguments.orderno#" />		
-	</cfquery>
-</cffunction>
-
-<cffunction name="readContentObject" output="false">
-	<cfargument name="contenthistID">
-	<cfargument name="regionID">
-	<cfargument name="orderno">
-	<cfset var rs="">
-	
-	<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
-		select * from tcontentobjects
-		where contentHistID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentHistID#" />
-		and columnid=<cfqueryparam cfsqltype="cf_sql_numeric" value="#arguments.regionID#" />
-		and orderno=<cfqueryparam cfsqltype="cf_sql_numeric" value="#arguments.orderno#" />		
-	</cfquery>
-	
-	<cfreturn rs>
-</cffunction>
-
 <cffunction name="createTags" access="public" returntype="void" output="false">
 	<cfargument name="contentBean" type="any" />
 	<cfset var taglist  = "" />
@@ -770,7 +665,7 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 			<cfset taglist = arguments.contentBean.getTags() />
 			<cfloop list="#taglist#" index="t">
 				<cfif len(trim(t))>
-					<cfquery datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+					<cfquery datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 					insert into tcontenttags (contentid,contenthistid,siteid,tag)
 					values(
 						<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentBean.getcontentid()#" />,
@@ -790,7 +685,7 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 	<cfargument name="regionID"  type="numeric" />
 	<cfset var rs = "">
 	
-	<cfquery datasource="#variables.configBean.getReadOnlyDatasource()#" name="rs"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+	<cfquery datasource="#variables.dsn#" name="rs"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	select contenthistid, contentid, objectid, siteid, object, name, columnid, orderno, params
 	from tcontentobjects 
 	where contenthistid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentHistID#"/>
@@ -805,7 +700,7 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 	<cfargument name="contentID"  type="string" />
 	<cfargument name="siteID"  type="string" />
 	
-	<cfquery datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+	<cfquery datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	delete from tcontentobjects where contentid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentID#"/>  and siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/> 
 	</cfquery>
 </cffunction>
@@ -814,7 +709,7 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 	<cfargument name="contentID"  type="string" />
 	<cfargument name="siteID"  type="string" />
 	
-	<cfquery datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+	<cfquery datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	delete from tcontenttags where contentid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentID#"/>  and siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/> 
 	</cfquery>
 </cffunction>
@@ -822,7 +717,7 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 <cffunction name="deleteObjectsHist" access="public" returntype="void" output="false">
 	<cfargument name="contentHistID"  type="string" />
 	<cfargument name="siteID"  type="string" />
-	<cfquery datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+	<cfquery datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	delete from tcontentobjects where contenthistid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contenthistID#"/> and siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/> 
 	</cfquery>
 </cffunction>
@@ -830,7 +725,7 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 <cffunction name="deleteTagHist" access="public" returntype="void" output="false">
 	<cfargument name="contentHistID"  type="string" />
 	<cfargument name="siteID"  type="string" />
-	<cfquery datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+	<cfquery datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	delete from tcontenttags where contenthistid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentHistID#"/>  and siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/> 
 	</cfquery>
 </cffunction>
@@ -841,7 +736,7 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 
 	<cfset variables.configBean.getClassExtensionManager().deleteExtendedData(arguments.contentHistID)/>
 	
-	<cfquery datasource="#variables.configBean.getDatasource()#"   username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+	<cfquery datasource="#variables.dsn#"   username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	DELETE FROM tcontent where  siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>  and ContentHistID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contenthistID#"/> 
 	</cfquery>
 </cffunction>
@@ -854,7 +749,7 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 <cffunction name="deleteCategoryHist" access="public" returntype="void" output="false">
 	<cfargument name="contentHistID"  type="string" />
 	<cfargument name="siteID"  type="string" />
-	<cfquery datasource="#variables.configBean.getDatasource()#"   username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+	<cfquery datasource="#variables.dsn#"   username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	DELETE FROM tcontentcategoryassign where siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/> and
 	contentHistID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentHistID#"/> 
 	</cfquery>
@@ -865,14 +760,14 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 	<cfset var rsList=""/>
 	<cfif arguments.contentBean.getContentID() neq '00000000000000000000000000000000001'>
 	
-	<cfquery datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+	<cfquery datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	update tcontent set parentID='#arguments.contentBean.getParentID()#' where 
 	siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentBean.getsiteid()#"/> and parentID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentBean.getcontentID()#"/>
 	</cfquery>
 	
 	
 	<!--- get Versions and delete extended data --->
-	<cfquery name="rslist" datasource="#variables.configBean.getReadOnlyDatasource()#"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+	<cfquery name="rslist" datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	select contentHistID FROM tcontent where siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentBean.getsiteid()#"/> and 
 	ContentID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentBean.getcontentid()#"/>
 	</cfquery>
@@ -882,41 +777,36 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 	</cfloop>
 	<!--- --->
 	
-	<cfquery datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+	<cfquery datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	DELETE FROM tcontent where siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentBean.getsiteid()#"/> and 
 	ContentID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentBean.getContentID()#"/>
 	</cfquery>
 	
-	<cfquery datasource="#variables.configBean.getDatasource()#"   username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-		DELETE FROM tcontentassignments where contentID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentBean.getcontentid()#"/>
-		AND siteID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentBean.getsiteid()#"/>
-	</cfquery>
-		
 	<cfif arguments.contentBean.gettype() neq 'Form'  and arguments.contentBean.gettype() neq 'Component'>
 	
-		<cfquery datasource="#variables.configBean.getDatasource()#"   username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+		<cfquery datasource="#variables.dsn#"   username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 		DELETE FROM tcontentobjects where contentID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentBean.getcontentid()#"/>
 		AND siteID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentBean.getsiteid()#"/>
 		</cfquery>
 		
-		<cfquery datasource="#variables.configBean.getDatasource()#"   username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+		<cfquery datasource="#variables.dsn#"   username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 		DELETE FROM tcontenttags where contentID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentBean.getcontentid()#"/>
 		AND siteID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentBean.getsiteid()#"/>
 		</cfquery>
 		
-		<cfquery datasource="#variables.configBean.getDatasource()#"   username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+		<cfquery datasource="#variables.dsn#"   username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 		DELETE FROM tcontentcategoryassign where contentID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentBean.getcontentid()#"/>
 		AND siteID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentBean.getsiteid()#"/>
 		</cfquery>
 		
-		<cfquery datasource="#variables.configBean.getDatasource()#"   username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+		<cfquery datasource="#variables.dsn#"   username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 		DELETE FROM tcontentrelated where (contentID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentBean.getcontentid()#"/> or relatedID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentBean.getcontentid()#"/>)
 		AND siteID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentBean.getsiteid()#"/>
 		</cfquery>
 	
 	<cfelse>
 	
-		<cfquery datasource="#variables.configBean.getDatasource()#"   username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+		<cfquery datasource="#variables.dsn#"   username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 		DELETE FROM tcontentobjects where objectID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentBean.getcontentid()#"/>
 		AND siteID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentBean.getsiteid()#"/>
 		</cfquery>
@@ -938,7 +828,7 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 	 <cfif isDefined('arguments.data.relatedContentID')>
 	 <cfloop list="#arguments.data.relatedContentID#" index="I">
 		<cftry>
-		<cfquery datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+		<cfquery datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 		insert into tcontentrelated (contentID,contentHistID,relatedID,siteid)
 		values (
 		<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentID#"/>,
@@ -955,7 +845,7 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 
 	 <cfloop list="#readRelatedItems(arguments.oldContentHistID,arguments.siteID)#" index="I">
 		<cftry>
-		<cfquery datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+		<cfquery datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 		insert into tcontentrelated (contentID,contentHistID,relatedID,siteid)
 		values (
 		<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentID#"/>,
@@ -975,7 +865,7 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 <cffunction name="deleteRelatedItems" access="public" output="false" returntype="void" >
 	<cfargument name="contentHistID" type="String" />
 	
-	<cfquery datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+	<cfquery datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	delete from tcontentrelated
 	where contentHIstID = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentHistID#"/>
 	</cfquery>
@@ -989,7 +879,7 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 	 <cfset var rs =""/>
 	 <cfset var ItemList =""/>
 	
-	<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+	<cfquery name="rs" datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 		select relatedID from tcontentrelated
 		where contentHistID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contenthistID#"/> and siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
 	</cfquery>
@@ -1001,20 +891,13 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 </cffunction> 
 
 <cffunction name="deleteContentAssignments" access="public" output="false" returntype="void" >
-	<cfargument name="id" type="String" />
+	<cfargument name="contentID" type="String" />
 	<cfargument name="siteID" type="String" />
-	<cfargument name="type" type="String" default="draft"/>
 	
-	<cfquery datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+	<cfquery datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	delete from tcontentassignments
-	where 
-	<cfif arguments.type eq "expire">
-	contentHistID = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.id#"/>
-	<cfelse>
-	contentID = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.id#"/>
+	where contentID = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentid#"/>
 	and siteID = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
-	</cfif>
-	and type = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.type#"/>
 	</cfquery>
 
 </cffunction>
@@ -1022,15 +905,13 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 <cffunction name="createContentAssignment" access="public" output="false" returntype="void" >
 	<cfargument name="contentBean" type="any" />
 	<cfargument name="userID" type="String" />
-	<cfargument name="type" type="String" default="draft"/>
 	
-	<cfquery datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-			insert into tcontentassignments (contentID,contentHistID,siteID,UserID,type) values(
+	<cfquery datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+			insert into tcontentassignments (contentID,contentHistID,siteID,UserID) values(
 			<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentBean.getcontentID()#" >,
 			<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentBean.getcontentHistID()#" >,
 			<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentBean.getSiteID()#" >,
-			<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.userID#" >,
-			<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.type#" >
+			<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.userID#" >
 			)
 	</cfquery>
 	
@@ -1045,7 +926,7 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 	<cfargument name="filterByParentID" type="boolean" required="true" default="true">
 	<cfset var rs= ''/>
 	
-	<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+	<cfquery name="rs" datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	select c.contentid, c.commentid, c.parentid, c.name, c.email, c.url, c.comments, c.entered, c.siteid, c.isApproved, c.subscribe, c.userID, c.path,
 	f.fileid, f.fileExt, k.kids
 	from tcontentcomments c 
@@ -1084,7 +965,7 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 	<cfset var rs= ''/>
 	<cfset var dbType=variables.configBean.getDbType() />
 	
-	<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+	<cfquery name="rs" datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	<cfif dbType eq "oracle" and arguments.size>select * from (</cfif>
 	select 
 	<cfif dbType eq "mssql" and arguments.size>Top #arguments.size#</cfif> 
@@ -1111,7 +992,7 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 	<cfargument name="isEditor" type="boolean" required="true" default="false">
 	<cfset var rs= ''/>
 	
-	<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+	<cfquery name="rs" datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	select count(*) TotalComments from tcontentcomments where contentid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentid#"/> and siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
 	<cfif not arguments.isEditor >
 	and isApproved=1
@@ -1126,7 +1007,7 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 	<cfargument name="siteID" type="string" required="true" default="">
 	<cfset var rs= ''/>
 	
-	<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+	<cfquery name="rs" datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	select distinct email from tcontentcomments 
 	where contentid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentid#"/> 
 	and siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
@@ -1163,16 +1044,5 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 				
 			</cfif>	
 	</cfoutput>
-</cffunction>
-
-<cffunction name="getExpireAssignments" output="false">
-<cfargument name="contenthistid">
-<cfset var rs="">
-<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
-    select userID from tcontentassignments 
-	where contenthistid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentHistID#">
-	and type='expire'
-</cfquery>
-<cfreturn rs>
 </cffunction>
 </cfcomponent>

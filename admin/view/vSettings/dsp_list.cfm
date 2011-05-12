@@ -6,43 +6,39 @@ the Free Software Foundation, Version 2 of the License.
 
 Mura CMS is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. �See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-along with Mura CMS. If not, see <http://www.gnu.org/licenses/>.
+along with Mura CMS. �If not, see <http://www.gnu.org/licenses/>.
 
-Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on 
-Mura CMS. Thus, the terms and conditions of the GNU General Public License version 2 ("GPL") cover the entire combined work.
+Linking Mura CMS statically or dynamically with other modules constitutes
+the preparation of a derivative work based on Mura CMS. Thus, the terms and 	
+conditions of the GNU General Public License version 2 (�GPL�) cover the entire combined work.
 
-However, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with programs
-or libraries that are released under the GNU Lesser General Public License version 2.1.
+However, as a special exception, the copyright holders of Mura CMS grant you permission
+to combine Mura CMS with programs or libraries that are released under the GNU Lesser General Public License version 2.1.
 
-In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with 
-independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without 
-Mura CMS under the license of your choice, provided that you follow these specific guidelines: 
+In addition, as a special exception, �the copyright holders of Mura CMS grant you permission
+to combine Mura CMS �with independent software modules that communicate with Mura CMS solely
+through modules packaged as Mura CMS plugins and deployed through the Mura CMS plugin installation API,
+provided that these modules (a) may only modify the �/trunk/www/plugins/ directory through the Mura CMS
+plugin installation API, (b) must not alter any default objects in the Mura CMS database
+and (c) must not alter any files in the following directories except in cases where the code contains
+a separately distributed license.
 
-Your custom code 
+/trunk/www/admin/
+/trunk/www/tasks/
+/trunk/www/config/
+/trunk/www/requirements/mura/
 
-• Must not alter any default objects in the Mura CMS database and
-• May not alter the default display of the Mura CMS logo within Mura CMS and
-• Must not alter any files in the following directories.
+You may copy and distribute such a combined work under the terms of GPL for Mura CMS, provided that you include
+the source code of that other code when and as the GNU GPL requires distribution of source code.
 
- /admin/
- /tasks/
- /config/
- /requirements/mura/
- /Application.cfc
- /index.cfm
- /MuraProxy.cfc
-
-You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work 
-under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL 
-requires distribution of source code.
-
-For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your 
-modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
-version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
+For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception
+for your modified version; it is your choice whether to do so, or to make such modified version available under
+the GNU General Public License version 2 �without this exception. �You may, if you choose, apply this exception
+to your own modified versions of Mura CMS.
 --->
 <cfparam name="attributes.action" default="">
 <cfparam name="attributes.siteSortBy" default="site">
@@ -82,8 +78,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfoutput>
 	</cfif>
 	<cfset application.userManager.getCurrentUser().setValue("errors","")>
-	<img class="loadProgress tabPreloader" src="images/progress_bar.gif">
-	<div class="tabs initActiveTab" style="display:none">
+	<div class="tabs initActiveTab">
 		<ul>
 			<li><a href="#tabCurrentsites" onclick="return false;"><span>Current Sites</span></a></li>
 			<li><a href="#tabPlugins" onclick="return false;"><span>Plugins</span></a></li>
@@ -108,7 +103,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				});
 			</script>
 			<form novalidate="novalidate" name="form1" id="form1" action="index.cfm?fuseaction=csettings.list" method="post">
-				<table class="mura-table-grid stripe">
+				<table class="stripe">
 					<tr>
 						<cfif attributes.siteUpdateSelect eq "true">
 							<th>
@@ -121,7 +116,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						</cfif>
 						<th class="varWidth">Site</th>
 						<th>Domain</th>
-						<th>Version</th>
 						<cfif application.configBean.getMode() eq 'staging'
 						and attributes.siteSortBy neq "orderno"
 						and attributes.siteUpdateSelect neq "true">
@@ -155,7 +149,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 								-
 							</cfif>
 						</td>
-						<td> #application.autoUpdater.getCurrentCompleteVersion(request.rsSites.siteid)#</td>
+						
 						<cfif application.configBean.getMode() eq 'staging'
 						and attributes.siteSortBy neq "orderno"
 						and attributes.siteUpdateSelect neq "true">
@@ -173,11 +167,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						<td class="administration"><ul <cfif application.configBean.getMode() eq 'Staging'>class="three"<cfelse>class="two"</cfif>>
 								<li class="edit"><a title="Edit" href="index.cfm?fuseaction=cSettings.editSite&siteid=#request.rsSites.siteid#">Edit</a></li>
 								<cfif application.configBean.getMode() eq 'Staging'>
-									<cfif application.configBean.getValue('deployMode') eq "bundle">
-										<li class="deploy"><a href="?fuseaction=cSettings.deploybundle&siteid=#request.rsSites.siteid#" onclick="return confirmDialog('Deploy #JSStringFormat(request.rsSites.site)# to production?',this.href);" title="Deploy">Deploy</a></li>
-									<cfelse>
-										<li class="deploy"><a href="?fuseaction=cSettings.list&action=deploy&siteid=#request.rsSites.siteid#" onclick="return confirmDialog('Deploy #JSStringFormat(request.rsSites.site)# to production?',this.href);" title="Deploy">Deploy</a></li>
-									</cfif>
+									<li class="deploy"><a href="?fuseaction=cSettings.list&action=deploy&siteid=#request.rsSites.siteid#" onclick="return confirmDialog('Deploy #JSStringFormat(request.rsSites.site)# to production?',this.href);" title="Deploy">Deploy</a></li>
 								</cfif>
 								<cfif request.rsSites.siteid neq 'default'>
 									<li class="delete"><a title="Delete" href="index.cfm?fuseaction=cSettings.updateSite&action=delete&siteid=#request.rsSites.siteid#" onclick="return confirmDialog('#JSStringFormat("WARNING: A deleted site and all of it''s files cannot be recovered. Are you sure that you want to delete the site named '#Ucase(request.rsSites.site)#'?")#',this.href);">Delete</a></li>
@@ -190,11 +180,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					</cfoutput>
 				</table>
 				<cfif attributes.siteSortBy eq "orderno">
-					<input type="button" class="submit" onclick="document.form1.submit();" value="Update Bind Order" />
+					<a class="submit" href="javascript:document.form1.submit();"><span>Update Bind Order</span></a>
 				</cfif>
 				<cfif  attributes.siteUpdateSelect eq "true">
 					<div class="clearfix" id="actionButtons">
-					<input type="button" class="submit" id="btnUpdateSites" value="Update Selected Sites to Latest Version" />
+					<a class="submit" id="btnUpdateSites" href="javascript:;"><span>Update Selected Sites to Latest Version</span></a>
 					</div>
 					<div id="actionIndicator" style="display: none;">
 						<cfoutput><img class="loadProgress" src="#application.configBean.getContext()#/admin/images/progress_bar.gif"></cfoutput>
@@ -203,7 +193,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfif application.configBean.getMode() eq 'staging'
 						and attributes.siteSortBy neq "orderno"
 						and attributes.siteUpdateSelect neq "true">
-					<input type="button" class="submit" onclick="document.form1.submit();" value="Update Auto Deploy Settings" />	
+					<a class="submit" href="javascript:document.form1.submit();"><span>Update Auto Deploy Settings</span></a>	
 				</cfif>
 				<cfoutput>
 					<input type="hidden" name="siteSortBy" value="#htmlEditFormat(attributes.siteSortBy)#" />
@@ -216,7 +206,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<input name="newPlugin" type="file" required="true" message="Please select a plugin file.">
 				<input type="submit" value="Deploy"/>
 			</form>
-			<table class="mura-table-grid stripe">
+			<table class="stripe">
 				<tr>
 					<th class="varWidth">Name</th>
 					<th>Directory</th>
@@ -263,7 +253,8 @@ initTabs(Array("Current Sites","Plugins"),#attributes.activeTab#,0,0);
 		<cfset updated=application.autoUpdater.update()>
 		<cfset files=updated.files>
 		<p>Your core files have been updated to version
-			<cfoutput>#application.autoUpdater.getCurrentCompleteVersion()#</cfoutput>.</p>
+			<cfoutput>#application.autoUpdater.getCurrentCompleteVersion()#</cfoutput>
+			.</p>
 		<p> <strong>Updated Files
 			<cfoutput>(#arrayLen(files)#)</cfoutput>
 			</strong><br/>

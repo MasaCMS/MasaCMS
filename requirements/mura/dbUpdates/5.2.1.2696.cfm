@@ -41,7 +41,7 @@ ALTER TABLE [dbo].[tadplacementcategoryassign] WITH NOCHECK ADD
 	  `placementID` char(35) NOT NULL,
 	  `categoryID` char(35) NOT NULL,
 	  PRIMARY KEY  (`placementID`,`categoryID`)
-	) ENGINE=#variables.instance.MYSQLEngine# AUTO_INCREMENT=16 DEFAULT CHARSET=utf8
+	) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8
 	</cfquery>
 	
 	

@@ -261,7 +261,8 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 									{
 										// Deal with component/short-hand form.
 										var values = margin.split( ' ' );
-										margin = CKEDITOR.tools.convertToPx( values[ 3 ] || values[ 1 ] || values [ 0 ] );
+										margin = plugin.utils.convertToPx( values[ 3 ] || values[ 1 ] || values [ 0 ] );
+										margin = parseInt( margin, 10 );
 
 										// Figure out the indent unit by checking the first time of incrementation.
 										if ( !listBaseIndent && previousListItemMargin !== null && margin > previousListItemMargin )
@@ -278,11 +279,8 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 										var listId = Number( val[ 0 ].match( /\d+/ ) ),
 											indent = Number( val[ 1 ].match( /\d+/ ) );
 
-										if ( indent == 1 )
-										{
-											listId !== previousListId && ( attrs[ 'cke:reset' ] = 1 );
-											previousListId = listId;
-										}
+										listId !== previousListId && ( attrs[ 'cke:reset' ] = 1 );
+										previousListId = listId;
 										attrs[ 'cke:indent' ] = indent;
 									} ]
 								] )( attrs.style, element ) || '';
@@ -308,6 +306,27 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 				return false;
 			},
+
+			// Convert various length units to 'px' in ignorance of DPI.
+			convertToPx : ( function ()
+			{
+				var calculator = CKEDITOR.dom.element.createFromHtml(
+								'<div style="position:absolute;left:-9999px;' +
+								'top:-9999px;margin:0px;padding:0px;border:0px;"' +
+								'></div>', CKEDITOR.document );
+				CKEDITOR.document.getBody().append( calculator );
+
+				return function( cssLength )
+				{
+					if ( cssLengthRelativeUnit.test( cssLength ) )
+					{
+						calculator.setStyle( 'width', cssLength );
+						return calculator.$.clientWidth + 'px';
+					}
+
+					return cssLength;
+				};
+			} )(),
 
 			// Providing a shorthand style then retrieve one or more style component values.
 			getStyleComponents : ( function()
@@ -338,21 +357,26 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				// E.g. <ul><li>level1<ol><li>level2</li></ol></li> =>
 				// <cke:li cke:listtype="ul" cke:indent="1">level1</cke:li>
 				// <cke:li cke:listtype="ol" cke:indent="2">level2</cke:li>
-				flattenList : function( element, level )
+				flattenList : function( element )
 				{
-					level = typeof level == 'number' ? level : 1;
-
 					var	attrs = element.attributes,
-						listStyleType;
+						parent = element.parent;
+
+					var listStyleType,
+						indentLevel = 1;
+
+					// Resolve how many level nested.
+					while ( parent )
+					{
+						parent.attributes && parent.attributes[ 'cke:list' ] && indentLevel++;
+						parent = parent.parent;
+					}
 
 					// All list items are of the same type.
 					switch ( attrs.type )
 					{
 						case 'a' :
 							listStyleType = 'lower-alpha';
-							break;
-						case '1' :
-							listStyleType = 'decimal';
 							break;
 						// TODO: Support more list style type from MS-Word.
 					}
@@ -363,22 +387,23 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 					for ( var i = 0; i < children.length; i++ )
 					{
 						child = children[ i ];
+						var attributes = child.attributes;
 
 						if ( child.name in CKEDITOR.dtd.$listItem )
 						{
-							var attributes = child.attributes,
-								listItemChildren = child.children,
+							var listItemChildren = child.children,
 								count = listItemChildren.length,
 								last = listItemChildren[ count - 1 ];
 
 							// Move out nested list.
 							if ( last.name in CKEDITOR.dtd.$list )
 							{
-								element.add( last, i + 1 );
+								children.splice( i + 1, 0, last );
+								last.parent = element;
 
 								// Remove the parent list item if it's just a holder.
 								if ( !--listItemChildren.length )
-									children.splice( i--, 1 );
+									children.splice( i, 1 );
 							}
 
 							child.name = 'cke:li';
@@ -388,33 +413,23 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 							plugin.filters.stylesFilter(
 								[
-									[ 'tab-stops', null, function( val )
+								    [ 'tab-stops', null, function( val )
 									{
 										var margin = val.split( ' ' )[ 1 ].match( cssLengthRelativeUnit );
-										margin && ( previousListItemMargin = CKEDITOR.tools.convertToPx( margin[ 0 ] ) );
+										margin && ( previousListItemMargin = parseInt( plugin.utils.convertToPx( margin[ 0 ] ), 10 ) );
 									} ],
-									( level == 1 ? [ 'mso-list', null, function( val )
+									[ 'mso-list', null, function( val )
 									{
 										val = val.split( ' ' );
 										var listId = Number( val[ 0 ].match( /\d+/ ) );
 										listId !== previousListId && ( attributes[ 'cke:reset' ] = 1 );
 										previousListId = listId;
-									 } ] : null )
+									} ]
 								] )( attributes.style );
 
-							attributes[ 'cke:indent' ] = level;
+							attributes[ 'cke:indent' ] = indentLevel;
 							attributes[ 'cke:listtype' ] = element.name;
 							attributes[ 'cke:list-style-type' ] = listStyleType;
-						}
-						// Flatten sub list.
-						else if ( child.name in CKEDITOR.dtd.$list )
-						{
-							// Absorb sub list children.
-							arguments.callee.apply( this, [ child, level + 1 ] );
-							children = children.slice( 0, i ).concat( child.children ).concat( children.slice( i + 1 ) );
-							element.children = [];
-							for ( var j = 0, num = children.length; j < num ; j++ )
-								element.add( children[ j ] );
 						}
 					}
 
@@ -756,11 +771,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				isListBulletIndicator = this.utils.isListBulletIndicator,
 				containsNothingButSpaces = this.utils.isContainingOnlySpaces,
 				resolveListItem = this.utils.resolveList,
-				convertToPx = function( value )
-					{
-						value = CKEDITOR.tools.convertToPx( value );
-						return isNaN( value ) ? value : value + 'px';
-					},
+				convertToPx = this.utils.convertToPx,
 				getStyleComponents = this.utils.getStyleComponents,
 				listDtdParents = this.utils.listDtdParents,
 				removeFontStyles = config.pasteFromWordRemoveFontStyles !== false,
@@ -1109,8 +1120,6 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 						var attrs = element.attributes;
 						if ( attrs && !attrs.href && attrs.name )
 							delete element.name;
-						else if ( CKEDITOR.env.webkit && attrs.href && attrs.href.match( /file:\/\/\/[\S]+#/i ) )
-							attrs.href = attrs.href.replace( /file:\/\/\/[^#]+/i,'' );
 					},
 					'cke:listbullet' : function( element )
 					{

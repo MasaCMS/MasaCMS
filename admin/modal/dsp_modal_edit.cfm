@@ -6,43 +6,39 @@ the Free Software Foundation, Version 2 of the License.
 
 Mura CMS is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. �See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-along with Mura CMS. If not, see <http://www.gnu.org/licenses/>.
+along with Mura CMS. �If not, see <http://www.gnu.org/licenses/>.
 
-Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on 
-Mura CMS. Thus, the terms and conditions of the GNU General Public License version 2 ("GPL") cover the entire combined work.
+Linking Mura CMS statically or dynamically with other modules constitutes
+the preparation of a derivative work based on Mura CMS. Thus, the terms and 	
+conditions of the GNU General Public License version 2 (�GPL�) cover the entire combined work.
 
-However, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with programs
-or libraries that are released under the GNU Lesser General Public License version 2.1.
+However, as a special exception, the copyright holders of Mura CMS grant you permission
+to combine Mura CMS with programs or libraries that are released under the GNU Lesser General Public License version 2.1.
 
-In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with 
-independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without 
-Mura CMS under the license of your choice, provided that you follow these specific guidelines: 
+In addition, as a special exception, �the copyright holders of Mura CMS grant you permission
+to combine Mura CMS �with independent software modules that communicate with Mura CMS solely
+through modules packaged as Mura CMS plugins and deployed through the Mura CMS plugin installation API,
+provided that these modules (a) may only modify the �/trunk/www/plugins/ directory through the Mura CMS
+plugin installation API, (b) must not alter any default objects in the Mura CMS database
+and (c) must not alter any files in the following directories except in cases where the code contains
+a separately distributed license.
 
-Your custom code 
+/trunk/www/admin/
+/trunk/www/tasks/
+/trunk/www/config/
+/trunk/www/requirements/mura/
 
-• Must not alter any default objects in the Mura CMS database and
-• May not alter the default display of the Mura CMS logo within Mura CMS and
-• Must not alter any files in the following directories.
+You may copy and distribute such a combined work under the terms of GPL for Mura CMS, provided that you include
+the source code of that other code when and as the GNU GPL requires distribution of source code.
 
- /admin/
- /tasks/
- /config/
- /requirements/mura/
- /Application.cfc
- /index.cfm
- /MuraProxy.cfc
-
-You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work 
-under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL 
-requires distribution of source code.
-
-For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your 
-modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
-version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
+For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception
+for your modified version; it is your choice whether to do so, or to make such modified version available under
+the GNU General Public License version 2 �without this exception. �You may, if you choose, apply this exception
+to your own modified versions of Mura CMS.
 --->
 <!---------------------------------------------->
 <!--- LET'S FIGURE OUT IF THE BROWSER IS IE6 --->
@@ -52,23 +48,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfif FindNoCase('Opera','#CGI.HTTP_USER_AGENT#') LESS THAN 1>
 <cfparam name="Cookie.fetDisplay" default="">
 <cfoutput>
-<link href="#application.configBean.getContext()#/admin/css/dialog.min.css?coreversion=#application.coreversion#" rel="stylesheet" type="text/css" />
-<script type="text/javascript" src="#application.configBean.getContext()#/admin/js/porthole/porthole.min.js?coreversion=#application.coreversion#"></script>
-<script type="text/javascript" src="#application.configBean.getContext()#/admin/js/dialog.js.cfm?siteid=#URLEncodedFormat($.event('siteid'))#&coreversion=#application.coreversion#"></script>
-<!---[if LT IE9]>
-
-   <style type="text/css">
-
-   ##frontEndToolsModalContainer {
-         background: transparent;
-          filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=##00000085,endColorstr=##00000085);
-          zoom: 1;
-       } 
-
-    </style>
-
-<![endif]--->
-
+<link href="#application.configBean.getContext()#/admin/css/dialog.css" rel="stylesheet" type="text/css" />
 <cfsilent>
 	<cfif len(application.configBean.getAdminDomain())>
 		<cfif application.configBean.getAdminSSL()>
@@ -79,8 +59,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfelse>
 		<cfset adminBase=""/>
 	</cfif>
-	
-	<cfset targetHook=generateEditableHook()>
 	
 	<cfset editLink = adminBase & "#application.configBean.getContext()#/admin/index.cfm?fuseaction=cArch.edit">
 	<cfif structKeyExists(request,"previewID") and len(request.previewID)>
@@ -130,7 +108,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset adminLink = adminLink & "&amp;ptype=" & request.contentBean.getType()>
 	<cfset adminLink = adminLink & "&amp;parentid=" & request.contentBean.getParentID()>
 	<cfset adminLink = adminLink & "&amp;moduleid=" & request.contentBean.getModuleID()>
-	<cfset adminLink = adminLink & "&amp;activeTab=0">
 	
 	<cfset deleteLink = adminBase & "#application.configBean.getContext()#/admin/index.cfm?fuseaction=cArch.update">
 	<cfset deleteLink = deleteLink & "&amp;siteid=" & request.contentBean.getSiteID()>
@@ -145,11 +122,124 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset deleteLink = deleteLink & "&amp;startrow=1">
 </cfsilent>
 
-<cfif variables.isIeSix>
+
+<script type="text/javascript">
+	addLoadEvent(checkToolbarDisplay);
+	
+	function checkToolbarDisplay () {
+		<cfif Cookie.fetDisplay eq "none">
+			<cfif getJsLib() eq "jquery">
+				$(".editableObject").each(
+					function(intIndex){
+						$(this).addClass('editableObjectHide');
+					}
+				);
+			<cfelse>
+				$$(".editableObject").each(
+					function(o){
+						o.addClassName('editableObjectHide');
+					}
+				);
+			</cfif>
+		</cfif>
+	}
+</script>
+
+<cfif not variables.isIeSix>
+<script type="text/javascript">
+	function toggleAdminToolbar(){
+		<cfif getJsLib() eq "jquery">
+			$("##frontEndTools").animate({opacity: "toggle"});
+			
+			$(".editableObject").each(
+				function(intIndex){
+					$(this).toggleClass('editableObjectHide');
+				}
+			);
+		<cfelse>
+			Effect.toggle("frontEndTools", "appear");
+			
+			$$(".editableObject").each(
+				function(o){
+					o.toggleClassName('editableObjectHide');
+				}
+			);
+		</cfif>
+	}
+	
+	jQuery(document).ready(
+		function($) {
+			$(".editableObjectContents").each(	
+				function(el){
+					var maxWidth=0;			
+					$(this).children().each(
+						function(el){
+							var elWidth=$(this).outerWidth();			
+							if(elWidth > maxWidth){
+								maxWidth=elWidth;
+							}									
+						}	
+					);
+					$(this).width(maxWidth).parent().width(maxWidth);
+				}
+			);
+		}
+	);
+</script>
+<cfelse>	
 <!--------------------------------------------------------------------------------------------------------------->
 <!--- IE6 COMPATIBILITY FOR FRONT END TOOLS ----------->
 <!--------------------------------------------------------------------------------------------------------------->
-<link href="#application.configBean.getContext()#/admin/css/dialogIE6.css" rel="stylesheet" type="text/css" />	
+<link href="#application.configBean.getContext()#/admin/css/dialogIE6.css" rel="stylesheet" type="text/css" />
+<script>
+	function toggleAdminToolbarIE6(){
+	<cfif getJsLib() eq "jquery">
+		$("##frontEndToolsIE6").animate({opacity: "toggle"});
+		
+		$(".editableObject").each(
+			function(intIndex){
+				$(this).toggleClass('editableObjectHide');
+			}
+		);
+		
+	<cfelse>
+		Effect.toggle("frontEndToolsIE6", "appear");
+		
+		$$(".editableObject").each(
+			function(o){
+				o.toggleClassName('editableObjectHide');
+			}
+		);
+	</cfif>
+	};
+					
+	function showSubMenuIE6(callerId,elementId){
+		var callerElement = document.getElementById(callerId);					
+		var xCoord = callerElement.offsetLeft;
+		var yCoord = callerElement.offsetTop + callerElement.offsetHeight + 0;		
+		var minWidth = callerElement.offsetWidth;
+		var subMenu = document.getElementById(elementId);
+							
+		if(subMenu){			
+			subMenu.style.position = 'absolute';
+			subMenu.style.left = xCoord + 'px';
+			subMenu.style.top = yCoord + 'px';					
+		};			
+		showObjIE6(elementId);					
+	};
+		
+	function showObjIE6(elementId){			
+		if(document.getElementById(elementId)){
+			document.getElementById(elementId).style.display = '';
+		};
+	};
+			
+	function hideObjIE6(elementId){			
+		if(document.getElementById(elementId)){
+			document.getElementById(elementId).style.display = 'none';
+		};
+	};
+</script>		
 </cfif>
 
 <cfif variables.isIeSix>
@@ -164,7 +254,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<ul>
 		<cfif not request.contentBean.getIsNew()>
 			<cfif ListFindNoCase('editor,author',request.r.perm) or listFind(session.mura.memberships,'S2')>
-			<li id="adminEditPage"><a href="#editLink#" #targetHook#>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.edit')#</a></li>
+			<li id="adminEditPage"><a href="#editLink#" rel="shadowbox;width=1100;">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.edit')#</a></li>
 				<cfif listFind("Page,Portal,Calendar,Gallery",request.contentBean.getType())>
 						<cfif variables.isIeSix>
 						<!--- USES JAVASCRIPT TO SHOW AND HIDE THE ADD MENU AS IT PLAYS NICE WITH IE6 --->
@@ -174,15 +264,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							
 						</cfif><ul id="addMenuDropDown">
 						<cfif request.contentBean.getType() neq 'Gallery'>
-						<li id="adminNewPage"><a href="#newLink#&amp;type=Page" #targetHook#>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.type.page')#</a></li>
-						<li id="adminNewLink"><a href="#newLink#&amp;type=Link" #targetHook# >#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.type.link')#</a></li>
-						<li id="adminNewFile"><a href="#newLink#&amp;type=File" #targetHook#>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.type.file')#</a></li>
-						<li id="adminNewPortal"><a href="#newLink#&amp;type=Portal" #targetHook#>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.type.portal')#</a></li>
-						<li id="adminNewCalendar"><a href="#newLink#&amp;type=Calendar" #targetHook# >#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.type.calendar')#</a></li>
-						<li id="adminNewGallery"><a href="#newLink#&amp;type=Gallery" #targetHook#>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.type.gallery')#</a></li>
+						<li id="adminNewPage"><a href="#newLink#&amp;type=Page" rel="shadowbox;width=1050;">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.type.page')#</a></li>
+						<li id="adminNewLink"><a href="#newLink#&amp;type=Link" rel="shadowbox;width=1050;" >#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.type.link')#</a></li>
+						<li id="adminNewFile"><a href="#newLink#&amp;type=File" rel="shadowbox;width=1050;">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.type.file')#</a></li>
+						<li id="adminNewPortal"><a href="#newLink#&amp;type=Portal" rel="shadowbox;width=1050;">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.type.portal')#</a></li>
+						<li id="adminNewCalendar"><a href="#newLink#&amp;type=Calendar" rel="shadowbox;width=1050;" >#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.type.calendar')#</a></li>
+						<li id="adminNewGallery"><a href="#newLink#&amp;type=Gallery" rel="shadowbox;width=1050;">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.type.gallery')#</a></li>
 						<cfelse>
-							<li id="adminNewGalleryItem"><a href="#newLink#&amp;type=File" #targetHook#>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.type.galleryitem')#</a></li>
-							<li id="adminNewGalleryItemMulti"><a href="#newMultiLink#&amp;type=File" #targetHook#>#application.rbFactory.getKeyValue(session.rb,'sitemanager.addmultiitems')#</a></li>
+							<li id="adminNewGalleryItem"><a href="#newLink#&amp;type=File" rel="shadowbox;width=1050;">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.type.galleryitem')#</a></li>
+							<li id="adminNewGalleryItemMulti"><a href="#newMultiLink#&amp;type=File" rel="shadowbox;width=1050;">#application.rbFactory.getKeyValue(session.rb,'sitemanager.addmultiitems')#</a></li>
 						</cfif>			
 						#application.pluginManager.renderScripts("onFEToolbarAddRender",request.contentBean.getSiteID())#
 						#application.pluginManager.renderScripts("onFEToolbar#request.contentBean.getType()#AddRender",request.contentBean.getSiteID())#
@@ -190,7 +280,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						</ul>
 					</li>
 				</cfif>
-				<li id="adminVersionHistory"><a href="#historyLink#" #targetHook#>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.versionhistory')#</a></li>
+				<li id="adminVersionHistory"><a href="#historyLink#" rel="shadowbox;width=1050;">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.versionhistory')#</a></li>
 			</cfif>
 			<cfif (request.r.perm eq 'editor' or listFind(session.mura.memberships,'S2')) and request.contentBean.getFilename() neq "" and not request.contentBean.getIslocked()>
 				<li id="adminDelete"><a href="#deleteLink#" onclick="return confirm('#jsStringFormat(application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.deletecontentrecursiveconfirm'),request.contentBean.getMenutitle()))#');">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.delete')#</a></li>
@@ -204,10 +294,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</ul>
 		
 	</div>
-	
-	<cfif getJSLib() eq "jquery">
-		<div id="frontEndToolsModalTarget"></div>
-	</cfif>
 </cfoutput>
 </cfif>
 

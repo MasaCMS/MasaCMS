@@ -6,110 +6,53 @@ the Free Software Foundation, Version 2 of the License.
 
 Mura CMS is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. ÔøΩSee the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-along with Mura CMS. If not, see <http://www.gnu.org/licenses/>.
+along with Mura CMS. ÔøΩIf not, see <http://www.gnu.org/licenses/>.
 
-Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on 
-Mura CMS. Thus, the terms and conditions of the GNU General Public License version 2 ("GPL") cover the entire combined work.
+Linking Mura CMS statically or dynamically with other modules constitutes
+the preparation of a derivative work based on Mura CMS. Thus, the terms and 	
+conditions of the GNU General Public License version 2 (ÔøΩGPLÔøΩ) cover the entire combined work.
 
-However, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with programs
-or libraries that are released under the GNU Lesser General Public License version 2.1.
+However, as a special exception, the copyright holders of Mura CMS grant you permission
+to combine Mura CMS with programs or libraries that are released under the GNU Lesser General Public License version 2.1.
 
-In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with 
-independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without 
-Mura CMS under the license of your choice, provided that you follow these specific guidelines: 
+In addition, as a special exception, ÔøΩthe copyright holders of Mura CMS grant you permission
+to combine Mura CMS ÔøΩwith independent software modules that communicate with Mura CMS solely
+through modules packaged as Mura CMS plugins and deployed through the Mura CMS plugin installation API,
+provided that these modules (a) may only modify the ÔøΩ/trunk/www/plugins/ directory through the Mura CMS
+plugin installation API, (b) must not alter any default objects in the Mura CMS database
+and (c) must not alter any files in the following directories except in cases where the code contains
+a separately distributed license.
 
-Your custom code 
+/trunk/www/admin/
+/trunk/www/tasks/
+/trunk/www/config/
+/trunk/www/requirements/mura/
 
-• Must not alter any default objects in the Mura CMS database and
-• May not alter the default display of the Mura CMS logo within Mura CMS and
-• Must not alter any files in the following directories.
+You may copy and distribute such a combined work under the terms of GPL for Mura CMS, provided that you include
+the source code of that other code when and as the GNU GPL requires distribution of source code.
 
- /admin/
- /tasks/
- /config/
- /requirements/mura/
- /Application.cfc
- /index.cfm
- /MuraProxy.cfc
-
-You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work 
-under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL 
-requires distribution of source code.
-
-For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your 
-modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
-version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
+For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception
+for your modified version; it is your choice whether to do so, or to make such modified version available under
+the GNU General Public License version 2 ÔøΩwithout this exception. ÔøΩYou may, if you choose, apply this exception
+to your own modified versions of Mura CMS.
 --->
 <cfcomponent output="false" extends="mura.cfobject">
 
 <cffunction name="purgeSiteCache" returntype="any" access="remote" output="false">
 	<cfargument name="siteid" required="true" default="">
-	<cfargument name="name" required="true" default="" hint="data, output or both">
 	<cfargument name="appreloadkey" required="true" default="">
 	<cfargument name="instanceID" required="true" default="">
 	<cfif arguments.instanceID neq application.instanceID 
 		and arguments.appreloadkey eq application.appreloadkey>
 		<cfif len(arguments.siteid)>
-			<cfset application.settingsManager.getSite(arguments.siteID).purgeCache(name=arguments.name,broadcast=false)>	
+			<cfset application.settingsManager.getSite(arguments.siteID).getCacheFactory().purgeAll()>	
 		<cfelse>
-			<cfset application.settingsManager.purgeAllCache(broadcast=false)>
+			<cfset application.settingsManager.purgeAllCache()>
 		</cfif>
-	</cfif>
-</cffunction>
-
-<cffunction name="purgeUserCache" returntype="any" access="remote" output="false">
-	<cfargument name="userID" required="true" default="">
-	<cfargument name="appreloadkey" required="true" default="">
-	<cfargument name="instanceID" required="true" default="">
-	<cfif arguments.instanceID neq application.instanceID 
-		and arguments.appreloadkey eq application.appreloadkey>
-		<cfset application.userManager.purgeUserCache(userid=arguments.userID,broadcast=false)>
-	</cfif>
-</cffunction>
-
-<cffunction name="purgeCategoryCache" returntype="any" access="remote" output="false">
-	<cfargument name="categoryID" required="true" default="">
-	<cfargument name="appreloadkey" required="true" default="">
-	<cfargument name="instanceID" required="true" default="">
-	<cfif arguments.instanceID neq application.instanceID 
-		and arguments.appreloadkey eq application.appreloadkey>
-		<cfset application.categoryManager.purgeCategoryCache(categoryID=arguments.categoryID,broadcast=false)>
-	</cfif>
-</cffunction>
-
-<cffunction name="purgeCategoryDescendentsCache" returntype="any" access="remote" output="false">
-	<cfargument name="categoryID" required="true" default="">
-	<cfargument name="appreloadkey" required="true" default="">
-	<cfargument name="instanceID" required="true" default="">
-	<cfif arguments.instanceID neq application.instanceID 
-		and arguments.appreloadkey eq application.appreloadkey>
-		<cfset application.categoryManager.purgeCategoryDescendentsCache(categoryID=arguments.categoryID,broadcast=false)>
-	</cfif>
-</cffunction>
-
-<cffunction name="purgeContentCache" returntype="any" access="remote" output="false">
-	<cfargument name="contentID" required="true" default="">
-	<cfargument name="siteID" required="true" default="">
-	<cfargument name="appreloadkey" required="true" default="">
-	<cfargument name="instanceID" required="true" default="">
-	<cfif arguments.instanceID neq application.instanceID 
-		and arguments.appreloadkey eq application.appreloadkey>
-		<cfset application.contentManager.purgeContentCache(contentID=arguments.contentID,siteID=arguments.siteID,broadcast=false)>
-	</cfif>
-</cffunction>
-
-<cffunction name="purgeContentDescendentsCache" returntype="any" access="remote" output="false">
-	<cfargument name="contentID" required="true" default="">
-	<cfargument name="siteID" required="true" default="">
-	<cfargument name="appreloadkey" required="true" default="">
-	<cfargument name="instanceID" required="true" default="">
-	<cfif arguments.instanceID neq application.instanceID 
-		and arguments.appreloadkey eq application.appreloadkey>
-		<cfset application.contentManager.purgeContentDescendentsCache(contentID=arguments.contentID,siteID=arguments.siteID,broadcast=false)>
 	</cfif>
 </cffunction>
 
@@ -147,7 +90,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfquery datasource="#application.configBean.getDatasource()#" username="#application.configBean.getDBUsername()#" password="#application.configBean.getDBPassword()#">
 					update tuserremotesessions set
 					data=<cfqueryparam cfsqltype="cf_sql_varchar" value="#sessionData#">,
-					lastAccessed=<cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#">
+					lastAccessed=#createODBCDateTime(now())#
 					where userID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#session.mura.userID#">
 				</cfquery>
 				
@@ -158,8 +101,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					update tuserremotesessions set
 					authToken=<cfqueryparam cfsqltype="cf_sql_varchar" value="#authToken#">,
 					data=<cfqueryparam cfsqltype="cf_sql_varchar" value="#sessionData#">,
-					created=<cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#">,
-					lastAccessed=<cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#">
+					created=#createODBCDateTime(now())#,
+					lastAccessed=#createODBCDateTime(now())#
 					where userID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#session.mura.userID#">
 				</cfquery>
 				
@@ -171,8 +114,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfqueryparam cfsqltype="cf_sql_varchar" value="#session.mura.userID#">,
 				<cfqueryparam cfsqltype="cf_sql_varchar" value="#authToken#">,
 				<cfqueryparam cfsqltype="cf_sql_varchar" value="#sessionData#">,
-				<cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#">,
-				<cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#">
+				#createODBCDateTime(now())#,
+				#createODBCDateTime(now())#
 				)
 			</cfquery>
 	
@@ -218,7 +161,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn application.proxyServices[arguments.serviceName]>
 </cffunction>
 
-<cffunction name="isValidSession" returntype="any" output="false" access="remote">
+<cffunction name="isValidSession" returntype="any" output="false">
 <cfargument name="authToken">
 	<cfset var rsSession="">
 	
@@ -247,7 +190,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<cfquery datasource="#application.configBean.getDatasource()#" username="#application.configBean.getDBUsername()#" password="#application.configBean.getDBPassword()#">
 		update tuserremotesessions
-		set lastAccessed=<cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#">
+		set lastAccessed=#createODBCDateTime(now())#
 		where authToken=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.authToken#">
 	</cfquery>
 	
@@ -257,10 +200,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="call" returntype="any" access="remote">
-<cfargument name="serviceName" type="string">
-<cfargument name="methodName" type="string">
-<cfargument name="authToken" type="string" default="">
-<cfargument name="args" default="#structNew()#" type="any">
+<cfargument name="serviceName">
+<cfargument name="methodName">
+<cfargument name="authToken" default="">
+<cfargument name="args" default="#structNew()#">
 
 <cfset var event="">
 <cfset var service="">	
@@ -269,8 +212,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset arguments.args=deserializeJSON(arguments.args)>
 <cfelseif isWddx(arguments.args)>
 	<cfwddx action="wddx2cfml" input="#arguments.args#" output="arguments.args">
-<cfelseif not isStruct(arguments.args)>
-	<cfset arguments.args=structNew()>
 </cfif>
 
 <cfif (isDefined("session.mura.isLoggedIn") and session.mura.isLoggedIn)

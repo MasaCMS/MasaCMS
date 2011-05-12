@@ -4,11 +4,6 @@
 <cfset variables.contentManager="">
 <cfset variables.trashManager="">
 
-<cffunction name="getBean" output="false">
-	<cfargument name="beanName" default="changeset">
-	<cfreturn super.getBean(arguments.beanName)>
-</cffunction>
-
 <cffunction name="setConfigBean" output="false">
 <cfargument name="configBean">
 <cfset variables.configBean=arguments.configBean>
@@ -57,15 +52,11 @@
 	<cfargument name="name" type="string" default=""/>
 	<cfargument name="siteID" type="string" default=""/>
 	<cfargument name="remoteID" type="string" default=""/>
-	<cfargument name="changesetBean"  default=""/>
+	
 	<cfset var rs="">
-	<cfset var bean=arguments.changesetBean>
+	<cfset var bean=getBean("changeset")>
 	
-	<cfif not isObject(bean)>
-		<cfset bean=getBean("changeset")>
-	</cfif>
-	
-	<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+	<cfquery name="rs" datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDbUsername()#" password="#variables.configBean.getDbPassword()#">
 	select changesetID, siteID, name, description, created, publishDate, published, lastupdate, lastUpdateBy, lastUpdateByID, remoteID, remotePubDate, remoteSourceURL
 	from tchangesets where
 	<cfif len(arguments.siteID)>
@@ -85,7 +76,7 @@
 	<cfif rs.recordcount>
 		<cfset bean.set(rs)>
 		<cfset bean.setIsNew(0)>
-	<cfelseif len(arguments.siteID)>
+	<cfelse>
 		<cfset bean.setSiteID(arguments.siteID)>
 	</cfif>
 	
@@ -98,7 +89,7 @@
 	
 	<cfset var rs="">
 	
-	<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+	<cfquery name="rs" datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDbUsername()#" password="#variables.configBean.getDbPassword()#">
 		select changesetID from tchangesets
 		where changesetID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.bean.getChangesetID()#"> 
 	</cfquery>
@@ -110,25 +101,25 @@
 		name=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.bean.getName()#">,
 		description=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.bean.getDescription()#">,
 		publishDate=<cfif isdate(arguments.bean.getpublishDate())> 
-						<cfqueryparam cfsqltype="cf_sql_timestamp" value="#createDateTime(year(arguments.bean.getpublishDate()),
+						#createodbcdatetime(createDateTime(year(arguments.bean.getpublishDate()),
 												month(arguments.bean.getpublishDate()),
 												day(arguments.bean.getpublishDate()),
 												hour(arguments.bean.getpublishDate()),
-												minute(arguments.bean.getpublishDate()),0)#">
+												minute(arguments.bean.getpublishDate()),0))#
 					<cfelse>
 						null
 					</cfif>,
 		published=<cfqueryparam cfsqltype="cf_sql_integer" value="#arguments.bean.getpublished()#">,
-		lastupdate=<cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#">,
+		lastupdate=#createODBCDateTime(now())#,
 		lastUpdateBy=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.bean.getLastUpdateBy()#">,
 		lastUpdateByID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.bean.getLastUpdateByID()#">,
 		remoteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.bean.getRemoteID()#">,
 		remotePubDate=<cfif isdate(arguments.bean.getRemotePubDate())> 
-						<cfqueryparam cfsqltype="cf_sql_timestamp" value="#createDateTime(year(arguments.bean.getRemotePubDate()),
+						#createodbcdatetime(createDateTime(year(arguments.bean.getRemotePubDate()),
 												month(arguments.bean.getRemotePubDate()),
 												day(arguments.bean.getRemotePubDate()),
 												hour(arguments.bean.getRemotePubDate()),
-												minute(arguments.bean.getRemotePubDate()),0)#">
+												minute(arguments.bean.getRemotePubDate()),0))#
 					<cfelse>
 						null
 					</cfif>,
@@ -146,27 +137,27 @@
 		<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.bean.getSiteID()#">,
 		<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.bean.getName()#">,
 		<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.bean.getDescription()#">,
-		<cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#">,
+		#createODBCDateTime(now())#,
 		<cfif isdate(arguments.bean.getpublishDate())> 
-						<cfqueryparam cfsqltype="cf_sql_timestamp" value="#createDateTime(year(arguments.bean.getpublishDate()),
+						#createodbcdatetime(createDateTime(year(arguments.bean.getpublishDate()),
 												month(arguments.bean.getpublishDate()),
 												day(arguments.bean.getpublishDate()),
 												hour(arguments.bean.getpublishDate()),
-												minute(arguments.bean.getpublishDate()),0)#">
+												minute(arguments.bean.getpublishDate()),0))#
 					<cfelse>
 						null
 					</cfif>,
 		<cfqueryparam cfsqltype="cf_sql_numeric" value="#arguments.bean.getpublished()#">,
-		<cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#">,
+		#createODBCDateTime(now())#,
 		<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.bean.getLastUpdateBy()#">,
 		<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.bean.getLastUpdateByID()#">,
 		<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.bean.getRemoteID()#">,
 		<cfif isdate(arguments.bean.getRemotePubDate())> 
-						<cfqueryparam cfsqltype="cf_sql_timestamp" value="#createDateTime(year(arguments.bean.getRemotePubDate()),
+						#createodbcdatetime(createDateTime(year(arguments.bean.getRemotePubDate()),
 												month(arguments.bean.getRemotePubDate()),
 												day(arguments.bean.getRemotePubDate()),
 												hour(arguments.bean.getRemotePubDate()),
-												minute(arguments.bean.getRemotePubDate()),0)#">
+												minute(arguments.bean.getRemotePubDate()),0))#
 					<cfelse>
 						null
 					</cfif>,
@@ -203,7 +194,7 @@
 <cfargument name="sortBy">
 
 	<cfset var rs="">
-	<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+	<cfquery name="rs" datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDbUsername()#" password="#variables.configBean.getDbPassword()#">
 	select changesetID, siteID, name, description, created, publishDate, published, lastupdate, lastUpdateBy, remoteID, remotePubDate, remoteSourceURL
 	from tchangesets
 	where siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#">
@@ -212,7 +203,7 @@
 	</cfif>
 	<cfif structKeyExists(arguments,"publishDate") and isDate(arguments.publishDate)>
 		and 
-		(publishDate > <cfqueryparam cfsqltype="cf_sql_timestamp" value="#arguments.publishDate#">
+		(publishDate > #createODBCDateTime(arguments.publishDate)#
 		<cfif structKeyExists(arguments,"publishDateOnly") and isBoolean(arguments.publishDateOnly) and not arguments.publishDateOnly>
 		or publishDate is null
 		</cfif>
@@ -242,7 +233,7 @@
 <cfargument name="contentID">
 <cfargument name="siteID">
 	<cfset var rs="">
-	<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+	<cfquery name="rs" datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDbUsername()#" password="#variables.configBean.getDbPassword()#">
 	select tchangesets.changesetID, tcontent.contentID, tcontent.contenthistid, tcontent.siteID, tchangesets.name changesetName
 	from tcontent
 	inner join tchangesets on tcontent.changesetID=tchangesets.changesetID
@@ -256,12 +247,12 @@
 <cffunction name="publishBySchedule" access="public" returntype="any" output="false">
 	<cfset var rs="">
 	
-	<cfquery name="rs" cachedwithin="#CreateTimeSpan(0, 0, 5, 0)#" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+	<cfquery name="rs" cachedwithin="#CreateTimeSpan(0, 0, 5, 0)#" datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDbUsername()#" password="#variables.configBean.getDbPassword()#">
 	select changesetID
 	from tchangesets
 	where tchangesets.published=0
 	and tchangesets.publishDate is not null
-	and tchangesets.publishDate <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#">
+	and tchangesets.publishDate <= #createODBCDateTime(now())#
 	order by tchangesets.publishDate asc
 	</cfquery>
 
@@ -282,12 +273,12 @@
 
 <cfif not local.changeset.getIsNew() and not local.changeset.getPublished()>
 	<cfif isDate(local.changeset.getPublishDate())>
-		<cfquery name="local.prereqs" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+		<cfquery name="local.prereqs" datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDbUsername()#" password="#variables.configBean.getDbPassword()#">
 		select changesetID,name,publishDate
 		from tchangesets
 		where tchangesets.published=0
 		and tchangesets.publishDate is not null
-		and tchangesets.publishDate <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#local.changeset.getPublishDate()#">
+		and tchangesets.publishDate <= #createODBCDateTime(local.changeset.getPublishDate())#
 		and tchangesets.changesetID != <cfqueryparam cfsqltype="cf_sql_varchar" value="#local.changeset.getChangesetID()#">
 		and tchangesets.siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#local.changeset.getSiteID()#">
 		order by tchangesets.publishDate asc
@@ -393,7 +384,7 @@
 <cfargument name="changesetID">
 <cfargument name="keywords" default="">
 	<cfset var rs="">
-	<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+	<cfquery name="rs" datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDbUsername()#" password="#variables.configBean.getDbPassword()#">
 	select menutitle, tcontent.siteid, tcontent.parentID, tcontent.path, tcontent.contentid, contenthistid, tcontent.fileID, type, tcontent.lastupdateby, active, approved, tcontent.lastupdate, 
 	display, displaystart, displaystop, tcontent.moduleid, isnav, notes,isfeature,inheritObjects,tcontent.filename,targetParams,releaseDate,
 	tcontent.changesetID, tfiles.fileExt
