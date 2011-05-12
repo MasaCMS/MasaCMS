@@ -174,7 +174,7 @@ to your own modified versions of Mura CMS.
 					var maxWidth=0;			
 					$(this).children().each(
 						function(el){
-							var elWidth=$(this).width();			
+							var elWidth=$(this).outerWidth();			
 							if(elWidth > maxWidth){
 								maxWidth=elWidth;
 							}									
