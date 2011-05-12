@@ -59,7 +59,7 @@ to your own modified versions of Mura CMS.
 <cfset variables.instance.MailServerUsername=""/>
 <cfset variables.instance.MailServerUsernameEmail=""/>
 <cfset variables.instance.MailServerPassword=""/>
-<cfset variables.instance.useDefaultSMTPServer=0/>
+<cfset variables.instance.useDefaultSMTPServer=1/>
 <cfset variables.instance.EmailBroadcaster=0/>
 <cfset variables.instance.EmailBroadcasterLimit=0/>
 <cfset variables.instance.Extranet=0/>
