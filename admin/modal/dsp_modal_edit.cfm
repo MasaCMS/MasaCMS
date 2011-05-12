@@ -166,6 +166,25 @@ to your own modified versions of Mura CMS.
 			);
 		</cfif>
 	}
+	
+	jQuery(document).ready(
+		function($) {
+			$(".editableObjectContents").each(	
+				function(el){
+					var maxWidth=0;			
+					$(this).children().each(
+						function(el){
+							var elWidth=$(this).width();			
+							if(elWidth > maxWidth){
+								maxWidth=elWidth;
+							}									
+						}	
+					);
+					$(this).width(maxWidth).parent().width(maxWidth);
+				}
+			);
+		}
+	);
 </script>
 <cfelse>	
 <!--------------------------------------------------------------------------------------------------------------->
