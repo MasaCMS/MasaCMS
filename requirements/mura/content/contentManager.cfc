@@ -188,21 +188,22 @@ to your own modified versions of Mura CMS.
 	<cfargument name="title" required="true" default="">
 	<cfargument name="siteID" required="true" default=""> 
 	<cfargument name="use404" required="true" default="false">
+	<cfargument name="contentBean" default="">
 
 	<cfif not len(arguments.siteID)>
 		<cfthrow message="A 'SITEID' is required in order to read content. ">
 	</cfif>
 	
 	<cfif len(arguments.contenthistid)>
-		<cfreturn getcontentVersion(arguments.contenthistid, arguments.siteid, arguments.use404)>
+		<cfreturn getcontentVersion(arguments.contenthistid, arguments.siteid, arguments.use404,arguments.contentBean)>
 	<cfelseif structKeyExists(arguments,"filename")>
-		<cfreturn getActiveContentByFilename(arguments.filename, arguments.siteid, arguments.use404)>
+		<cfreturn getActiveContentByFilename(arguments.filename, arguments.siteid, arguments.use404,arguments.contentBean)>
 	<cfelseif len(arguments.remoteid)>
-		<cfreturn getActiveByRemoteID(arguments.remoteid, arguments.siteid)>
+		<cfreturn getActiveByRemoteID(arguments.remoteid, arguments.siteid,arguments.contentBean)>
 	<cfelseif len(arguments.title)>
-		<cfreturn getActiveByTitle(arguments.title, arguments.siteid)>
+		<cfreturn getActiveByTitle(arguments.title, arguments.siteid,arguments.contentBean)>
 	<cfelse>	
-		<cfreturn getActiveContent(arguments.contentid, arguments.siteid, arguments.use404)>
+		<cfreturn getActiveContent(arguments.contentid, arguments.siteid, arguments.use404,arguments.contentBean)>
 	</cfif>
 	
 	</cffunction>
@@ -211,27 +212,32 @@ to your own modified versions of Mura CMS.
 		<cfargument name="contentHistID" type="string" required="yes" />
 		<cfargument name="siteID" type="string" required="yes" />
 		<cfargument name="use404" type="boolean" required="yes" default="false"/>
+		<cfargument name="contentBean" type="any" default=""/>
 		<cfset var key= "version" & arguments.siteid & arguments.contentHistID />
 		<cfset var site=variables.settingsManager.getSite(arguments.siteid)/>
 		<cfset var cacheFactory=site.getCacheFactory()>
-		<cfset var contentBean="">
+		<cfset var bean="">
 		
 		<cfif site.getCache()>
 			<!--- check to see if it is cached. if not then pass in the context --->
 			<!--- otherwise grab it from the cache --->
 			<cfif NOT cacheFactory.has( key )>
-				<cfset contentBean=variables.contentDAO.readVersion(arguments.contentHistID,arguments.siteid,arguments.use404) />
-				<cfif not contentBean.getIsNew()>
-					<cfset cacheFactory.get( key, structCopy(contentBean.getAllValues()) ) />
+				<cfset bean=variables.contentDAO.readVersion(arguments.contentHistID,arguments.siteid,arguments.use404,arguments.contentBean) />
+				<cfif not bean.getIsNew()>
+					<cfset cacheFactory.get( key, structCopy(bean.getAllValues()) ) />
 				</cfif>
-				<cfreturn contentBean/>
+				<cfreturn bean/>
 			<cfelse>
-				<cfset contentBean=variables.contentDAO.getBean()/>
-				<cfset contentBean.setAllValues( structCopy(cacheFactory.get( key )) )>
-				<cfreturn contentBean />
+				<cfif isObject(arguments.contentBean)>
+					<cfset bean=arguments.contentBean/>
+				<cfelse>
+					<cfset bean=variables.contentDAO.getBean()/>
+				</cfif>
+				<cfset bean.setAllValues( structCopy(cacheFactory.get( key )) )>
+				<cfreturn bean />
 			</cfif>
 		<cfelse>
-			<cfreturn variables.contentDAO.readVersion(arguments.contentHistID,arguments.siteid,arguments.use404) />
+			<cfreturn variables.contentDAO.readVersion(arguments.contentHistID,arguments.siteid,arguments.use404, arguments.contentBean) />
 		</cfif>
 	</cffunction>
 	
@@ -327,28 +333,33 @@ to your own modified versions of Mura CMS.
 		<cfargument name="contentID" type="string" required="yes" />
 		<cfargument name="siteID" type="string" required="yes" />
 		<cfargument name="use404" type="boolean" required="yes" default="false"/>
+		<cfargument name="contentBean" type="any" default=""/>
 		
 		<cfset var key="contentID" & arguments.siteid & arguments.contentID />
 		<cfset var site=variables.settingsManager.getSite(arguments.siteid)/>
 		<cfset var cacheFactory=site.getCacheFactory()/>
-		<cfset var contentBean=""/>
+		<cfset var bean=""/>
 		
 		<cfif site.getCache()>
 			<!--- check to see if it is cached. if not then pass in the context --->
 			<!--- otherwise grab it from the cache --->
 			<cfif NOT cacheFactory.has( key )>
-				<cfset contentBean=variables.contentDAO.readActive(arguments.contentID,arguments.siteid,arguments.use404)  />
-				<cfif not contentBean.getIsNew()>
-					<cfset cacheFactory.get( key, structCopy(contentBean.getAllValues()) ) />
+				<cfset bean=variables.contentDAO.readActive(arguments.contentID,arguments.siteid,arguments.use404,arguments.contentBean)  />
+				<cfif not bean.getIsNew()>
+					<cfset cacheFactory.get( key, structCopy(bean.getAllValues()) ) />
 				</cfif>
-				<cfreturn contentBean/>
+				<cfreturn bean/>
 			<cfelse>
-				<cfset contentBean=variables.contentDAO.getBean()/>
-				<cfset contentBean.setAllValues( structCopy(cacheFactory.get( key )) )>
-				<cfreturn contentBean />
+				<cfif isObject(arguments.contentBean)>
+					<cfset bean=arguments.contentBean>
+				<cfelse>
+					<cfset bean=variables.contentDAO.getBean()/>
+				</cfif>
+				<cfset bean.setAllValues( structCopy(cacheFactory.get( key )) )>
+				<cfreturn bean />
 			</cfif>
 		<cfelse>
-			<cfreturn variables.contentDAO.readActive(arguments.contentID,arguments.siteid,arguments.use404) />
+			<cfreturn variables.contentDAO.readActive(arguments.contentID,arguments.siteid,arguments.use404,arguments.contentBean) />
 		</cfif>
 	
 	</cffunction>

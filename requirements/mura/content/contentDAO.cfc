@@ -76,8 +76,15 @@ tcontent.doCache,tcontent.created,tcontent.urltitle,tcontent.htmltitle,tcontent.
 		<cfargument name="contentHistID" type="string" required="yes" />
 		<cfargument name="siteID" type="string" required="yes" />
 		<cfargument name="use404" type="boolean" required="yes" default="false"/>
+		<cfargument name="contentBean" type="any" default=""/>
 		<cfset var rsContent = queryNew('empty') />
-		<cfset var contentBean=getbean() />
+		<cfset var bean="" />
+		
+		<cfif isObject(arguments.contentBean)>
+			<cfset bean=arguments.contentBean>
+		<cfelse>
+			<cfset bean=getBean()>
+		</cfif>
 		
 		<cfif len(arguments.contentHistID)>	
 			<cfquery datasource="#variables.dsn#" name="rsContent"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
@@ -88,39 +95,46 @@ tcontent.doCache,tcontent.created,tcontent.urltitle,tcontent.htmltitle,tcontent.
 		</cfif>
 		
 		<cfif rsContent.recordCount>
-			<cfset contentBean.set(rsContent) />
-			<cfset contentBean.setIsNew(0) />
-			<cfset contentBean.setPreserveID(rsContent.contentHistID) />
+			<cfset bean.set(rsContent) />
+			<cfset bean.setIsNew(0) />
+			<cfset bean.setPreserveID(rsContent.contentHistID) />
 		<cfelseif arguments.use404>
-			<cfset contentBean.setType("Page") />
-			<cfset contentBean.setSubType("Default") />
-			<cfset contentBean.setIsNew(1) />
-			<cfset contentBean.setActive(1) />
-			<cfset contentBean.setBody('The requested version of this content could not be found.')/>
-			<cfset contentBean.setTitle('404')/>
-			<cfset contentBean.setMenuTitle('404')/>
-			<cfset contentBean.setFilename('404') />
-			<cfset contentBean.setParentID('00000000000000000000000000000000END') />
-			<cfset contentBean.setcontentID('00000000000000000000000000000000001') />
-			<cfset contentBean.setPath('00000000000000000000000000000000001') />
-			<cfset contentBean.setSiteID(arguments.siteID) />
-			<cfset contentBean.setDisplay(1) />
-			<cfset contentBean.setApproved(1) />
+			<cfset bean.setType("Page") />
+			<cfset bean.setSubType("Default") />
+			<cfset bean.setIsNew(1) />
+			<cfset bean.setActive(1) />
+			<cfset bean.setBody('The requested version of this content could not be found.')/>
+			<cfset bean.setTitle('404')/>
+			<cfset bean.setMenuTitle('404')/>
+			<cfset bean.setFilename('404') />
+			<cfset bean.setParentID('00000000000000000000000000000000END') />
+			<cfset bean.setcontentID('00000000000000000000000000000000001') />
+			<cfset bean.setPath('00000000000000000000000000000000001') />
+			<cfset bean.setSiteID(arguments.siteID) />
+			<cfset bean.setDisplay(1) />
+			<cfset bean.setApproved(1) />
 		<cfelse>
-			<cfset contentBean.setIsNew(1) />
-			<cfset contentBean.setActive(1) />
-			<cfset contentBean.setSiteID(arguments.siteid) />
+			<cfset bean.setIsNew(1) />
+			<cfset bean.setActive(1) />
+			<cfset bean.setSiteID(arguments.siteid) />
 		</cfif>
 		
-		<cfreturn contentBean />
+		<cfreturn bean />
 </cffunction>
 
 <cffunction name="readActive" access="public" returntype="any" output="false">
 		<cfargument name="contentID" type="string" required="yes" />
 		<cfargument name="siteID" type="string" required="yes" />
 		<cfargument name="use404" type="boolean" required="yes" default="false"/>
+		<cfargument name="contentBean" type="any" default=""/>
 		<cfset var rsContent = queryNew('empty') />
-		<cfset var contentBean=getbean()  />
+		<cfset var bean=""  />
+		
+		<cfif isObject(arguments.contentBean)>
+			<cfset bean=arguments.contentBean>
+		<cfelse>
+			<cfset bean=getBean()>
+		</cfif>
 		
 		<cfif len(arguments.contentID)>
 			<cfquery datasource="#variables.dsn#" name="rsContent"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
@@ -134,31 +148,31 @@ tcontent.doCache,tcontent.created,tcontent.urltitle,tcontent.htmltitle,tcontent.
 		</cfif>
 		
 		<cfif rsContent.recordCount>
-			<cfset contentBean.set(rsContent) />
-			<cfset contentBean.setIsNew(0) />
-			<cfset contentBean.setPreserveID(rsContent.contentHistID) />
+			<cfset bean.set(rsContent) />
+			<cfset bean.setIsNew(0) />
+			<cfset bean.setPreserveID(rsContent.contentHistID) />
 		<cfelseif arguments.use404>
-			<cfset contentBean.setType("Page") />
-			<cfset contentBean.setSubType("Default") />
-			<cfset contentBean.setIsNew(1) />
-			<cfset contentBean.setActive(1) />
-			<cfset contentBean.setBody('The requested page could not be found.')/>
-			<cfset contentBean.setTitle('404')/>
-			<cfset contentBean.setMenuTitle('404')/>
-			<cfset contentBean.setFilename('404') />
-			<cfset contentBean.setParentID('00000000000000000000000000000000END') />
-			<cfset contentBean.setcontentID('00000000000000000000000000000000001') />
-			<cfset contentBean.setPath('00000000000000000000000000000000001') />
-			<cfset contentBean.setSiteID(arguments.siteID) />
-			<cfset contentBean.setDisplay(1) />
-			<cfset contentBean.setApproved(1) />
+			<cfset bean.setType("Page") />
+			<cfset bean.setSubType("Default") />
+			<cfset bean.setIsNew(1) />
+			<cfset bean.setActive(1) />
+			<cfset bean.setBody('The requested page could not be found.')/>
+			<cfset bean.setTitle('404')/>
+			<cfset bean.setMenuTitle('404')/>
+			<cfset bean.setFilename('404') />
+			<cfset bean.setParentID('00000000000000000000000000000000END') />
+			<cfset bean.setcontentID('00000000000000000000000000000000001') />
+			<cfset bean.setPath('00000000000000000000000000000000001') />
+			<cfset bean.setSiteID(arguments.siteID) />
+			<cfset bean.setDisplay(1) />
+			<cfset bean.setApproved(1) />
 		<cfelse>
-			<cfset contentBean.setIsNew(1) />
-			<cfset contentBean.setActive(1) />
-			<cfset contentBean.setSiteID(arguments.siteid) />
+			<cfset bean.setIsNew(1) />
+			<cfset bean.setActive(1) />
+			<cfset bean.setSiteID(arguments.siteid) />
 		</cfif>
 		
-		<cfreturn contentBean />
+		<cfreturn bean />
 </cffunction>
 
 <cffunction name="readActiveByRemoteID" access="public" returntype="any" output="false">
