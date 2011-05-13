@@ -506,13 +506,13 @@ to your own modified versions of Mura CMS.
 			<constructor-arg name="configBean"><ref bean="configBean" /></constructor-arg>
 			<constructor-arg name="settingsManager"><ref bean="settingsManager" /></constructor-arg>
 			<constructor-arg name="utility"><ref bean="utility" /></constructor-arg>
-			<constructor-arg name="genericManager"><ref bean="genericManager" /></constructor-arg>
+			<constructor-arg name="standardEventsHandler"><ref bean="standardEventsHandler" /></constructor-arg>
 			<constructor-arg name="fileWriter"><ref bean="fileWriter" /></constructor-arg>
 		</bean>
 		<bean id="clusterManager" class="mura.cluster.clusterManager" singleton="true">
 			<constructor-arg name="configBean"><ref bean="configBean" /></constructor-arg>
 		</bean>
-		<bean id="genericManager" class="mura.generic.genericManager" singleton="true" />
+		<bean id="standardEventsHandler" class="mura.Handler.standardEventsHandler" singleton="true" />
 		<bean id="contentServer" class="mura.content.contentServer" singleton="true" />
 		<bean id="javaLoader" class="mura.javaloader.javaLoader" singleton="true">
 			<constructor-arg name="loadPaths">
