@@ -56,29 +56,35 @@ to your own modified versions of Mura CMS.
 		<description>#XMLFormat(feedBean.getDescription())#</description> 
 		<webMaster>#application.settingsManager.getSite(feedBean.getSiteID()).getContact()#</webMaster> 
 		<language>#feedBean.getLang()#</language>
-<cfloop query="rs"><cfsilent>
+<cfloop condition="feedIt.hasNext()"><cfsilent>
+<cfset item=feedIt.next()>
+<cfset itemdescription=item.getValue('summary')>
 <cfif feedBean.getallowhtml() eq 0>
-	<cfset itemdescription = renderer.stripHTML(renderer.setDynamicContent(rs.summary))>
+	<cfif not len(itemdescription)>
+		<cfset itemdescription=item.getValue('body')>
+	</cfif>	
+	<cfset itemdescription = renderer.stripHTML(renderer.setDynamicContent(itemdescription))>
+	<cfset itemdescription=left(itemdescription,200) & "...">
 <cfelse>
-	<cfset itemdescription = renderer.addCompletePath(renderer.setDynamicContent(rs.summary),feedBean.getSiteID())>
+	<cfset itemdescription = renderer.addCompletePath(renderer.setDynamicContent(itemdescription),feedBean.getSiteID())>
 </cfif>
-<cfif isDate(rs.releaseDate)>
-	<cfset thePubDate=dateFormat(rs.releaseDate,"yyyy-mm-dd") & "T" & timeFormat(rs.releaseDate,"HH:mm:ss") & utc>
+<cfif isDate(item.getValue('releaseDate'))>
+	<cfset thePubDate=dateFormat(item.getValue('releaseDate'),"yyyy-mm-dd") & "T" & timeFormat(item.getValue('releaseDate'),"HH:mm:ss") & utc>
 <cfelse>
-	<cfset thePubDate=dateFormat(rs.lastUpdate,"yyyy-mm-dd") & "T" & timeFormat(rs.lastUpdate,"HH:mm:ss") & utc>
+	<cfset thePubDate=dateFormat(item.getValue('releaseDate'),"yyyy-mm-dd") & "T" & timeFormat(item.getValue('releaseDate'),"HH:mm:ss") & utc>
 </cfif>
 
-<cfset rsCats=application.contentManager.getCategoriesByHistID(rs.contentHistID)>
+<cfset rsCats=application.contentManager.getCategoriesByHistID(item.getValue('contentHistID'))>
 
-<cfset theLink=xmlFormat(renderer.createHREFforRss(rs.type,rs.filename,rs.siteid,rs.contentid,rs.target,rs.targetparams,application.configBean.getContext(),application.configBean.getStub(),application.configBean.getIndexFile(),0,rs.fileEXT)) />
+<cfset theLink=XMLFormat(renderer.createHREFforRss(item.getValue('type'),item.getValue('filename'),item.getValue('siteID'),item.getValue('contentID'),item.getValue('target'),item.getValue('targetParams'),application.configBean.getContext(),application.configBean.getStub(),application.configBean.getIndexFile(),0,item.getValue('fileEXT'))) />
 </cfsilent>
 		<item>
-			<title>#XMLFormat(rs.menutitle)#</title>
+			<title>#XMLFormat(item.getMenuTitle())#</title>
 			<description><![CDATA[#itemdescription# ]]></description> 
 			<link>#theLink#</link>
 			<guid isPermaLink="true">#theLink#</guid>
 			<dc:date>#thePubDate#</dc:date>
-			<cfif rs.type eq "File"><cfset fileMeta=application.serviceFactory.getBean("fileManager").readMeta(rs.fileID)><enclosure url="#XMLFormat('http://#application.settingsManager.getSite(rs.siteID).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()#/tasks/render/file/?fileID=#rs.fileID#&fileEXT=.#rs.fileEXT#')#" length="#fileMeta.filesize#" type="#fileMeta.ContentType#/#fileMeta.ContentSubType#" /></cfif>
+			<cfif item.getValue('type') eq "File"><cfset fileMeta=application.serviceFactory.getBean("fileManager").readMeta(item.getValue('fileID'))><enclosure url="#XMLFormat('http://#application.settingsManager.getSite(item.getValue('siteID')).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()#/tasks/render/file/?fileID=#item.getValue('fileID')#&fileEXT=.#item.getValue('fileExt')#')#" length="#fileMeta.filesize#" type="#fileMeta.ContentType#/#fileMeta.ContentSubType#" /></cfif>
 		</item></cfloop>
 	</channel>
 </rss></cfoutput>
