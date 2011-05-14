@@ -133,11 +133,12 @@ to your own modified versions of Mura CMS.
         <input name="nextN" type="text" class="text short" value="#HTMLEditFormat(request.siteBean.getnextN())#" size="5" maxlength="5">
       </dd>
       <dt>Site Caching</dt>
-      <dd>
-        <input type="radio" name="cache" value="0" <cfif request.siteBean.getcache() neq 1> CHECKED</CFIF>>
+      <dd>		 
+       <input type="radio" name="cache" value="0" onchange="if(this.checked){jQuery('##cacheNotice').hide();}else{jQuery('##cacheNotice').show();}" <cfif request.siteBean.getcache() neq 1> CHECKED</CFIF>>
         Off&nbsp;&nbsp;
-        <input type="radio" name="cache" value="1" <cfif request.siteBean.getcache()  eq 1> CHECKED</CFIF>>
-        On</dd>
+       <input type="radio" name="cache" value="1" onchange="if(this.checked){jQuery('##cacheNotice').show();}else{jQuery('##cacheNotice').hide();}" <cfif request.siteBean.getcache() eq 1> CHECKED</CFIF>>
+        On
+		<p class="notice" id="cacheNotice"<cfif request.siteBean.getcache() neq 1> style="display:none;"</cfif>><strong>Important:</strong> When site caching is turned on it is important to exclude all Forms and Components that contain dynamic content from being cached.</p></dd>
 	  <dt>Cache Capacity <span>(0=Unlimited)</span></dt>
       <dd>
         <input name="cacheCapacity" type="text" class="text short" value="#HTMLEditFormat(request.siteBean.getCacheCapacity())#" size="15" maxlength="15">
