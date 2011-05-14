@@ -128,7 +128,7 @@ to your own modified versions of Mura CMS.
 		</cfloop>
 		
 		<cfquery datasource="#application.configBean.getDatasource()#" username="#application.configBean.getDBUsername()#" password="#application.configBean.getDBPassword()#">
-			update tsettings set lastDeployment = #createODBCDateTime(now())#
+			update tsettings set lastDeployment = <cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#">
 			where siteID = <cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#arguments.siteID#">
 		</cfquery>
 		

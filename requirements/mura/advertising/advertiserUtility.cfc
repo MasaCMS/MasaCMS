@@ -69,11 +69,11 @@ to your own modified versions of Mura CMS.
 	WHERE placementid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.PlacementBean.getPlacementID()#" />
 	<cfif lsisdate(arguments.data.date1)>
 		<cfset start=lsParseDateTime(arguments.data.date1)>
-		and statdate >=#createodbcdatetime(createdatetime(year(start),month(start),day(start),0,0,0))#
+		and statdate >=<cfqueryparam cfsqltype="cf_sql_timestamp" value="#createdatetime(year(start),month(start),day(start),0,0,0)#">
 	</cfif>
 	<cfif lsisdate(arguments.data.date2)>
 		<cfset stop=lsParseDateTime(arguments.data.date2)>
-		and statDate <= #createodbcdatetime(createdatetime(year(stop),month(stop),day(stop),23,59,9))#
+		and statDate <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#createdatetime(year(stop),month(stop),day(stop),23,59,9)#">
 	</cfif>
 	and ((Type)='Impression')
 	GROUP BY Year(statdate), Month(statdate), Type, stathour
@@ -86,11 +86,11 @@ to your own modified versions of Mura CMS.
 	WHERE placementid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.PlacementBean.getPlacementID()#" />
 	<cfif lsisdate(arguments.data.date1)>
 		<cfset start=lsParseDateTime(arguments.data.date1)>
-		and statdate >=#createodbcdatetime(createdatetime(year(start),month(start),day(start),0,0,0))#
+		and statdate >=<cfqueryparam cfsqltype="cf_sql_timestamp" value="#createdatetime(year(start),month(start),day(start),0,0,0)#">
 	</cfif>
 	<cfif lsisdate(arguments.data.date2)>
 		<cfset stop=lsParseDateTime(arguments.data.date2)>
-		and statDate <= #createodbcdatetime(createdatetime(year(stop),month(stop),day(stop),23,59,9))#
+		and statDate <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#createdatetime(year(stop),month(stop),day(stop),23,59,9)#">
 	</cfif>
 	and ((Type)='click')
 	GROUP BY Year(statdate), Month(statdate), Type,stathour
@@ -125,7 +125,7 @@ to your own modified versions of Mura CMS.
 		<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.type#" />,
 		<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.placementID#" />,
 		#stathour#,
-		#createODBCDatetime(statDate)#,
+		<cfqueryparam cfsqltype="cf_sql_timestamp" value="#statDate#">,
 		1)
 		</cfquery>
 			
@@ -150,13 +150,13 @@ to your own modified versions of Mura CMS.
 	
 	<cfquery name="rs" datasource="#variables.instance.configBean.getDatasource()#"  username="#variables.instance.configBean.getDBUsername()#" password="#variables.instance.configBean.getDBPassword()#">
 	select placementid,type,statdate,stathour,sum(counter) as Total from tadstats
-	where date=#createodbcdate(arguments.thedate)#
+	where date=<cfqueryparam cfsqltype="cf_sql_timestamp" value="#arguments.thedate#">
 	group by placementid,type,statdate,stathour
 	</cfquery>
 	
 	<cfquery datasource="#variables.instance.configBean.getDatasource()#"  username="#variables.instance.configBean.getDBUsername()#" password="#variables.instance.configBean.getDBPassword()#">
 	delete from tadstats
-	where date=#createodbcdate(arguments.thedate)#
+	where date=<cfqueryparam cfsqltype="cf_sql_timestamp" value="#arguments.thedate#">
 	</cfquery>
 	
 	<cfloop query="rs">
@@ -166,7 +166,7 @@ to your own modified versions of Mura CMS.
 		'#rs.type#',
 		'#rs.placementID#',
 		#rs.stathour#,
-		#createodbcdate(arguments.thedate)#,
+		<cfqueryparam cfsqltype="cf_sql_timestamp" value="#arguments.thedate#">,
 		#rs.total#)
 		</cfquery>
 	</cfloop>

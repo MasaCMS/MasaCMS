@@ -90,7 +90,7 @@ to your own modified versions of Mura CMS.
 				<cfquery datasource="#application.configBean.getDatasource()#" username="#application.configBean.getDBUsername()#" password="#application.configBean.getDBPassword()#">
 					update tuserremotesessions set
 					data=<cfqueryparam cfsqltype="cf_sql_varchar" value="#sessionData#">,
-					lastAccessed=#createODBCDateTime(now())#
+					lastAccessed=<cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#">
 					where userID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#session.mura.userID#">
 				</cfquery>
 				
@@ -101,8 +101,8 @@ to your own modified versions of Mura CMS.
 					update tuserremotesessions set
 					authToken=<cfqueryparam cfsqltype="cf_sql_varchar" value="#authToken#">,
 					data=<cfqueryparam cfsqltype="cf_sql_varchar" value="#sessionData#">,
-					created=#createODBCDateTime(now())#,
-					lastAccessed=#createODBCDateTime(now())#
+					created=<cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#">,
+					lastAccessed=<cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#">
 					where userID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#session.mura.userID#">
 				</cfquery>
 				
@@ -114,8 +114,8 @@ to your own modified versions of Mura CMS.
 				<cfqueryparam cfsqltype="cf_sql_varchar" value="#session.mura.userID#">,
 				<cfqueryparam cfsqltype="cf_sql_varchar" value="#authToken#">,
 				<cfqueryparam cfsqltype="cf_sql_varchar" value="#sessionData#">,
-				#createODBCDateTime(now())#,
-				#createODBCDateTime(now())#
+				<cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#">,
+				<cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#">
 				)
 			</cfquery>
 	
@@ -190,7 +190,7 @@ to your own modified versions of Mura CMS.
 	
 	<cfquery datasource="#application.configBean.getDatasource()#" username="#application.configBean.getDBUsername()#" password="#application.configBean.getDBPassword()#">
 		update tuserremotesessions
-		set lastAccessed=#createODBCDateTime(now())#
+		set lastAccessed=<cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#">
 		where authToken=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.authToken#">
 	</cfquery>
 	

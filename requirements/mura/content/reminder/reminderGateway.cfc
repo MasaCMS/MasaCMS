@@ -67,7 +67,7 @@ inner join tsettings on (tcontent.siteid=tsettings.siteid)
 where
 tcontent.display=2
 and tcontent.active=1
-and tcontenteventreminders.remindDate<=#createodbcdate(LSDateFormat(theTime,'mm/dd/yyyy'))#
+and tcontenteventreminders.remindDate<=<cfqueryparam cfsqltype="cf_sql_timestamp" value="#LSDateFormat(theTime,'mm/dd/yyyy')#">
 and tcontenteventreminders.remindHour<=#hour(theTime)#
 and tcontenteventreminders.remindMinute<=#minute(theTime)#
 and isSent=0

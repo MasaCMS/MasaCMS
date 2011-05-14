@@ -71,8 +71,8 @@ to your own modified versions of Mura CMS.
 	'#arguments.categoryBean.getCategoryID()#',
 	<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.categoryBean.getSiteID() neq '',de('no'),de('yes'))#" value="#arguments.categoryBean.getsiteID()#">,
 	<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.categoryBean.getParentID() neq '',de('no'),de('yes'))#" value="#arguments.categoryBean.getParentID()#">,
-	<cfif isDate(arguments.categoryBean.getDateCreated()) >#createODBCDateTime(arguments.categoryBean.getDateCreated())#<cfelse>null</cfif>,
-	<cfif isDate(arguments.categoryBean.getLastUpdate()) >#createODBCDateTime(arguments.categoryBean.getLastUpdate())#<cfelse>null</cfif>,
+	<cfif isDate(arguments.categoryBean.getDateCreated()) ><cfqueryparam cfsqltype="cf_sql_timestamp" value="#arguments.categoryBean.getDateCreated()#"><cfelse>null</cfif>,
+	<cfif isDate(arguments.categoryBean.getLastUpdate()) ><cfqueryparam cfsqltype="cf_sql_timestamp" value="#arguments.categoryBean.getLastUpdate()#"><cfelse>null</cfif>,
 	<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.categoryBean.getLastUpdateBy() neq '',de('no'),de('yes'))#" value="#arguments.categoryBean.getLastUpdateBy()#">,
 	<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.categoryBean.getName() neq '',de('no'),de('yes'))#" value="#arguments.categoryBean.getName()#">,
 	<cfqueryparam cfsqltype="cf_sql_longvarchar" null="#iif(arguments.categoryBean.getNotes() neq '',de('no'),de('yes'))#" value="#arguments.categoryBean.getNotes()#">,
@@ -263,8 +263,8 @@ to your own modified versions of Mura CMS.
 		<cfqueryparam cfsqltype="cf_sql_numeric" value="#arguments.isFeature#" />,
 		<cfqueryparam cfsqltype="cf_sql_numeric" value="#arguments.orderno#" />,
 		<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#" />,
-		<cfif arguments.isFeature eq 2 and isdate(arguments.featureStart)> #createodbcdatetime(arguments.featurestart)#<cfelse>null</cfif>,
-		<cfif arguments.isFeature eq 2 and isdate(arguments.featureStop)> #createodbcdatetime(arguments.featureStop)#<cfelse>null</cfif>)
+		<cfif arguments.isFeature eq 2 and isdate(arguments.featureStart)> <cfqueryparam cfsqltype="cf_sql_timestamp" value="#arguments.featurestart#"><cfelse>null</cfif>,
+		<cfif arguments.isFeature eq 2 and isdate(arguments.featureStop)> <cfqueryparam cfsqltype="cf_sql_timestamp" value="#arguments.featureStop#"><cfelse>null</cfif>)
 		</cfquery>
 	
 
@@ -275,7 +275,7 @@ to your own modified versions of Mura CMS.
 	
 	<cfquery datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	update tcontentcategories set
-	lastUpdate = <cfif isDate(arguments.categoryBean.getLastUpdate()) >#createODBCDateTime(arguments.categoryBean.getLastUpdate())#<cfelse>null</cfif>,
+	lastUpdate = <cfif isDate(arguments.categoryBean.getLastUpdate()) ><cfqueryparam cfsqltype="cf_sql_timestamp" value="#arguments.categoryBean.getLastUpdate()#"><cfelse>null</cfif>,
 	lastupdateBy = <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.categoryBean.getLastUpdateBy() neq '',de('no'),de('yes'))#" value="#arguments.categoryBean.getLastUpdateBy()#">,
 	name = <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.categoryBean.getName() neq '',de('no'),de('yes'))#" value="#arguments.categoryBean.getName()#">,
 	isActive = #arguments.categoryBean.getIsActive()#,

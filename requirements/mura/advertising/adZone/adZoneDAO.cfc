@@ -61,8 +61,8 @@ to your own modified versions of Mura CMS.
 	values (
 	'#arguments.adZoneBean.getAdZoneID()#',
 	<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.adZoneBean.getSiteID() neq '',de('no'),de('yes'))#" value="#arguments.adZoneBean.getsiteID()#">,
-	<cfif isDate(arguments.adZoneBean.getDateCreated()) >#createODBCDateTime(arguments.adZoneBean.getDateCreated())#<cfelse>null</cfif>,
-	<cfif isDate(arguments.adZoneBean.getLastUpdate()) >#createODBCDateTime(arguments.adZoneBean.getLastUpdate())#<cfelse>null</cfif>,
+	<cfqueryparam cfsqltype="cf_sql_timestamp" null="#iif(isDate(arguments.adZoneBean.getDateCreated()),de('no'),de('yes'))#" value="#arguments.adZoneBean.getDateCreated()#">,
+	<cfqueryparam cfsqltype="cf_sql_timestamp" null="#iif(isDate(arguments.adZoneBean.getLastUpdate()),de('no'),de('yes'))#" value="#arguments.adZoneBean.getLastUpdate()#">,
 	<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.adZoneBean.getLastUpdateBy() neq '',de('no'),de('yes'))#" value="#arguments.adZoneBean.getLastUpdateBy()#">,
 	<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.adZoneBean.getName() neq '',de('no'),de('yes'))#" value="#arguments.adZoneBean.getName()#">,
 	<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.adZoneBean.getCreativeType() neq '',de('no'),de('yes'))#" value="#arguments.adZoneBean.getCreativeType()#">,
@@ -98,8 +98,8 @@ to your own modified versions of Mura CMS.
 	
 	<cfquery datasource="#variables.instance.configBean.getDatasource()#"  username="#variables.instance.configBean.getDBUsername()#" password="#variables.instance.configBean.getDBPassword()#">
 	update tadzones set
-	lastUpdate = <cfif isDate(arguments.adZoneBean.getLastUpdate()) >#createODBCDateTime(arguments.adZoneBean.getLastUpdate())#<cfelse>null</cfif>,
-	lastupdateBy = <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.adZoneBean.getLastUpdateBy() neq '',de('no'),de('yes'))#" value="#arguments.adZoneBean.getLastUpdateBy()#">,
+	lastUpdate = <cfif isDate(arguments.adZoneBean.getLastUpdate()) ><cfqueryparam cfsqltype="cf_sql_timestamp" value="#arguments.adZoneBean.getLastUpdate()#"><cfelse>null</cfif>,
+	lastupdateBy = <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.adZoneBean.getLastUpdatBy() neq '',de('no'),de('yes'))#" value="#arguments.adZoneBean.getLastUpdateBy()#">,
 	name = <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.adZoneBean.getName() neq '',de('no'),de('yes'))#" value="#arguments.adZoneBean.getName()#">,
 	creativeType = <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.adZoneBean.getCreativeType() neq '',de('no'),de('yes'))#" value="#arguments.adZoneBean.getCreativeType()#">,
 	isActive = #arguments.adZoneBean.getIsActive()#,

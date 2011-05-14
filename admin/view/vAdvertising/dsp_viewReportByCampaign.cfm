@@ -136,15 +136,15 @@ to your own modified versions of Mura CMS.
 			   select sum(counter) as total from tadstats where 
 			   placementid='#rsPlacements.placementID#'
 			   and type='Click'
-			     <cfif LSisDate(theMonthBegin)>and statdate >= #createodbcdatetime(createdatetime(year(theMonthBegin),month(theMonthBegin),day(theMonthBegin),0,0,0))#</cfif>
-				<cfif LSisDate(theMonthEnd)>and statdate <= #createodbcdatetime(createdatetime(year(theMonthEnd),month(theMonthEnd),day(theMonthEnd),23,59,9))#</cfif>
+			     <cfif LSisDate(theMonthBegin)>and statdate >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#createdatetime(year(theMonthBegin),month(theMonthBegin),day(theMonthBegin),0,0,0)#"></cfif>
+				<cfif LSisDate(theMonthEnd)>and statdate <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#createdatetime(year(theMonthEnd),month(theMonthEnd),day(theMonthEnd),23,59,9)#"></cfif>
 	  		 </cfquery>
 	  		 <cfquery name="rsImps" datasource="#application.configBean.getDatasource()#" username="#application.configBean.getDBUsername()#" password="#application.configBean.getDBPassword()#">
 			   select sum(counter) as total from tadstats where 
 			   placementid='#rsPlacements.placementID#'
 			   and type='Impression'
-			    <cfif LSisDate(theMonthBegin)>and statdate >= #createodbcdatetime(createdatetime(year(theMonthBegin),month(theMonthBegin),day(theMonthBegin),0,0,0))#</cfif>
-				<cfif LSisDate(theMonthEnd)>and statdate <= #createodbcdatetime(createdatetime(year(theMonthEnd),month(theMonthEnd),day(theMonthEnd),23,59,9))#</cfif>
+			    <cfif LSisDate(theMonthBegin)>and statdate >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#createdatetime(year(theMonthBegin),month(theMonthBegin),day(theMonthBegin),0,0,0)#"></cfif>
+				<cfif LSisDate(theMonthEnd)>and statdate <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#createdatetime(year(theMonthEnd),month(theMonthEnd),day(theMonthEnd),23,59,9)#"></cfif>
 	  		 </cfquery>
 	  		 <cfset clicks=iif(rsClicks.total neq '',de('#rsClicks.total#'),de(0))>
 	  		 <cfset imps=iif(rsImps.total neq '',de('#rsImps.total#'),de(0))>

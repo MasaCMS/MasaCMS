@@ -368,10 +368,10 @@ to your own modified versions of Mura CMS.
 	tadzones.isActive=1
 	and tadplacements.isActive=1
 	and tadcampaigns.isActive=1
-	and tadplacements.startDate <= #createodbcdate(now())#
-	and tadplacements.endDate >= #createodbcdate(now())#
-	and tadcampaigns.startDate <= #createodbcdate(now())#
-	and tadcampaigns.endDate >= #createodbcdate(now())#
+	and tadplacements.startDate <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#">
+	and tadplacements.endDate >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#">
+	and tadcampaigns.startDate <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#">
+	and tadcampaigns.endDate >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#">
 	and tadcreatives.isActive=1
 	and tadplacements.adzoneid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.adzoneID#" />
 	and tdays.placementType='weekday'

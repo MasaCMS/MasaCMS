@@ -112,7 +112,7 @@ to your own modified versions of Mura CMS.
 			<cfqueryparam  cfsqltype="cf_sql_varchar" value="#left(arguments.referer,255)#" />,
 			<cfqueryparam  cfsqltype="cf_sql_varchar" null="#iif(arguments.keywords neq '',de('no'),de('yes'))#" value="#left(arguments.keywords,200)#"/>,
 			<cfqueryparam  cfsqltype="cf_sql_varchar" value="#left(arguments.user_agent,200)#"/>,
-			#createODBCDateTime(now())#,
+			<cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#">,
 			<cfqueryparam  cfsqltype="cf_sql_varchar" value="#left(arguments.originalURLToken,130)#" />
 		)	
 		</cfquery>
@@ -141,7 +141,7 @@ to your own modified versions of Mura CMS.
 	<cfif variables.configBean.getSessionHistory() gt 0>
 	<cfquery datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	delete from tsessiontracking 
-	where entered <  #createODBCDateTime(dateAdd('d',-variables.configBean.getSessionHistory(),now()))#
+	where entered <  <cfqueryparam cfsqltype="cf_sql_timestamp" value="#dateAdd('d',-variables.configBean.getSessionHistory(),now())#">
 	</cfquery>
 	</cfif>
 </cffunction>

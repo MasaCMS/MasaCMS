@@ -307,19 +307,19 @@ ExtendSetID in(<cfloop from="1" to="#setLen#" index="s">
 						<cftry>
 						<cfset theValue = lsparseDateTime(theValue) />
 						<cfqueryparam cfsqltype="cf_sql_longvarchar"  value="#theValue#">,
-						#createODBCDateTime(theValue)#,
+						<cfqueryparam cfsqltype="cf_sql_timestamp" value="#theValue#">,
 						null						
 						<cfcatch>
 							<cfset theValue = parseDateTime(theValue) />
 							<cfqueryparam cfsqltype="cf_sql_longvarchar"  value="#theValue#">,
-							#createODBCDateTime(theValue)#,
+							<cfqueryparam cfsqltype="cf_sql_timestamp" value="#theValue#">,
 							null
 						</cfcatch>
 						</cftry>
 					<cfelseif isDate(theValue)>	
 						<cfset theValue = parseDateTime(theValue) />
 						<cfqueryparam cfsqltype="cf_sql_longvarchar"  value="#theValue#">,
-						#createODBCDateTime(theValue)#,
+						<cfqueryparam cfsqltype="cf_sql_timestamp" value="#theValue#">,
 						null
 					<cfelse>
 						null,
@@ -498,7 +498,7 @@ and tclassextendattributes.extendSetID not in (<cfloop from="1" to="#setLen#" in
 			null
 		</cfif>,
 		<cfif len(rs.datetimevalue)>
-			#createODBCDateTime(rs.datetimevalue)#	
+			<cfqueryparam cfsqltype="cf_sql_timestamp" value="#rs.datetimevalue#">	
 		<cfelse>
 			null
 		</cfif>,
@@ -561,7 +561,7 @@ and tclassextendattributes.type!='File'
 						null
 						</cfif>,
 						<cfif len(rs.datetimevalue)>
-							#createODBCDateTime(rs.datetimevalue)#	
+							<cfqueryparam cfsqltype="cf_sql_timestamp" value="#rs.datetimevalue#">	
 						<cfelse>
 							null
 						</cfif>,

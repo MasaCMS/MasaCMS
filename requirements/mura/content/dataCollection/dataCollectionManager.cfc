@@ -146,7 +146,7 @@ to your own modified versions of Mura CMS.
 				<cfqueryparam cfsqltype="cf_sql_varchar" value="#responseID#"/>,
 				<cfqueryparam cfsqltype="cf_sql_varchar" value="#formID#"/>,
 				<cfqueryparam cfsqltype="cf_sql_varchar" value="#siteID#"/>,
-				#createodbcdatetime(entered)#,
+				<cfqueryparam cfsqltype="cf_sql_timestamp" value="#entered#">,
 				<cfqueryparam cfsqltype="cf_sql_longvarchar" value="#theXML#">,
 				<cfqueryparam cfsqltype="cf_sql_varchar" value="#info.fieldnames#">)
 			</cfquery>
@@ -233,12 +233,12 @@ and tformresponsequestions.formField= <cfqueryparam cfsqltype="cf_sql_varchar" v
 </cfif>
 <cfif isdefined('arguments.data.date1') and lsIsDate(arguments.data.date1)>
 <cfset start=lsParseDateTime(arguments.data.date1) />
-and entered >= #createodbcdatetime(createdatetime(year(start),month(start),day(start),arguments.data.hour1,arguments.data.minute1,0))#
+and entered >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#createdatetime(year(start),month(start),day(start),arguments.data.hour1,arguments.data.minute1,0)#">
 </cfif>
 
 <cfif isdefined('arguments.data.date2') and lsIsDate(arguments.data.date2)>
 <cfset stop=lsParseDateTime(arguments.data.date2) />
-and entered <= #createodbcdatetime(createdatetime(year(stop),month(stop),day(stop),arguments.data.hour2,arguments.data.minute2,59))#
+and entered <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#createdatetime(year(stop),month(stop),day(stop),arguments.data.hour2,arguments.data.minute2,59)#">
 </cfif>
 <cfif arguments.data.keywords neq ''>
 and tformresponsequestions.pollValue = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.data.keywords#">

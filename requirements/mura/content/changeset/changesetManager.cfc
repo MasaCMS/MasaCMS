@@ -101,25 +101,25 @@
 		name=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.bean.getName()#">,
 		description=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.bean.getDescription()#">,
 		publishDate=<cfif isdate(arguments.bean.getpublishDate())> 
-						#createodbcdatetime(createDateTime(year(arguments.bean.getpublishDate()),
+						<cfqueryparam cfsqltype="cf_sql_timestamp" value="#createDateTime(year(arguments.bean.getpublishDate()),
 												month(arguments.bean.getpublishDate()),
 												day(arguments.bean.getpublishDate()),
 												hour(arguments.bean.getpublishDate()),
-												minute(arguments.bean.getpublishDate()),0))#
+												minute(arguments.bean.getpublishDate()),0)#">
 					<cfelse>
 						null
 					</cfif>,
 		published=<cfqueryparam cfsqltype="cf_sql_integer" value="#arguments.bean.getpublished()#">,
-		lastupdate=#createODBCDateTime(now())#,
+		lastupdate=<cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#">,
 		lastUpdateBy=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.bean.getLastUpdateBy()#">,
 		lastUpdateByID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.bean.getLastUpdateByID()#">,
 		remoteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.bean.getRemoteID()#">,
 		remotePubDate=<cfif isdate(arguments.bean.getRemotePubDate())> 
-						#createodbcdatetime(createDateTime(year(arguments.bean.getRemotePubDate()),
+						<cfqueryparam cfsqltype="cf_sql_timestamp" value="#createDateTime(year(arguments.bean.getRemotePubDate()),
 												month(arguments.bean.getRemotePubDate()),
 												day(arguments.bean.getRemotePubDate()),
 												hour(arguments.bean.getRemotePubDate()),
-												minute(arguments.bean.getRemotePubDate()),0))#
+												minute(arguments.bean.getRemotePubDate()),0)#">
 					<cfelse>
 						null
 					</cfif>,
@@ -137,27 +137,27 @@
 		<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.bean.getSiteID()#">,
 		<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.bean.getName()#">,
 		<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.bean.getDescription()#">,
-		#createODBCDateTime(now())#,
+		<cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#">,
 		<cfif isdate(arguments.bean.getpublishDate())> 
-						#createodbcdatetime(createDateTime(year(arguments.bean.getpublishDate()),
+						<cfqueryparam cfsqltype="cf_sql_timestamp" value="#createDateTime(year(arguments.bean.getpublishDate()),
 												month(arguments.bean.getpublishDate()),
 												day(arguments.bean.getpublishDate()),
 												hour(arguments.bean.getpublishDate()),
-												minute(arguments.bean.getpublishDate()),0))#
+												minute(arguments.bean.getpublishDate()),0)#">
 					<cfelse>
 						null
 					</cfif>,
 		<cfqueryparam cfsqltype="cf_sql_numeric" value="#arguments.bean.getpublished()#">,
-		#createODBCDateTime(now())#,
+		<cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#">,
 		<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.bean.getLastUpdateBy()#">,
 		<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.bean.getLastUpdateByID()#">,
 		<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.bean.getRemoteID()#">,
 		<cfif isdate(arguments.bean.getRemotePubDate())> 
-						#createodbcdatetime(createDateTime(year(arguments.bean.getRemotePubDate()),
+						<cfqueryparam cfsqltype="cf_sql_timestamp" value="#createDateTime(year(arguments.bean.getRemotePubDate()),
 												month(arguments.bean.getRemotePubDate()),
 												day(arguments.bean.getRemotePubDate()),
 												hour(arguments.bean.getRemotePubDate()),
-												minute(arguments.bean.getRemotePubDate()),0))#
+												minute(arguments.bean.getRemotePubDate()),0)#">
 					<cfelse>
 						null
 					</cfif>,
@@ -203,7 +203,7 @@
 	</cfif>
 	<cfif structKeyExists(arguments,"publishDate") and isDate(arguments.publishDate)>
 		and 
-		(publishDate > #createODBCDateTime(arguments.publishDate)#
+		(publishDate > <cfqueryparam cfsqltype="cf_sql_timestamp" value="#arguments.publishDate#">
 		<cfif structKeyExists(arguments,"publishDateOnly") and isBoolean(arguments.publishDateOnly) and not arguments.publishDateOnly>
 		or publishDate is null
 		</cfif>
@@ -252,7 +252,7 @@
 	from tchangesets
 	where tchangesets.published=0
 	and tchangesets.publishDate is not null
-	and tchangesets.publishDate <= #createODBCDateTime(now())#
+	and tchangesets.publishDate <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#">
 	order by tchangesets.publishDate asc
 	</cfquery>
 
@@ -278,7 +278,7 @@
 		from tchangesets
 		where tchangesets.published=0
 		and tchangesets.publishDate is not null
-		and tchangesets.publishDate <= #createODBCDateTime(local.changeset.getPublishDate())#
+		and tchangesets.publishDate <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#local.changeset.getPublishDate()#">
 		and tchangesets.changesetID != <cfqueryparam cfsqltype="cf_sql_varchar" value="#local.changeset.getChangesetID()#">
 		and tchangesets.siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#local.changeset.getSiteID()#">
 		order by tchangesets.publishDate asc

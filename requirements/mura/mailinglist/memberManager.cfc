@@ -141,7 +141,7 @@ to your own modified versions of Mura CMS.
 <cfset var theString=""/>
 
 <cfquery name="rsReturnForm" datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-select filename from tcontent where siteid='#arguments.siteid#'  and active =1 and ((display=1) or (display=2  and tcontent.DisplayStart <= #createodbcdate(now())# AND tcontent.DisplayStop >= #createodbcdate(now())#)) 
+select filename from tcontent where siteid='#arguments.siteid#'  and active =1 and ((display=1) or (display=2  and tcontent.DisplayStart <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#"> AND tcontent.DisplayStop >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#">)) 
 and contenthistid in (select contenthistid from tcontentobjects where object='mailing_list_master')	
 </cfquery>
 

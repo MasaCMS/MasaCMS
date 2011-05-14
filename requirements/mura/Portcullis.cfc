@@ -246,7 +246,7 @@
 		<cfquery dbtype="query" name="variables.internal.iplog">
 		SELECT IP, Attempts, Blocked, DateBlocked
 		FROM variables.internal.iplog
-		WHERE DateBlocked > #createODBCDateTime(dateadd("s",cutoff,now()))#
+		WHERE DateBlocked > <cfqueryparam cfsqltype="cf_sql_timestamp" value="#dateadd("s",cutoff,now())#">
 		</cfquery>
 
 		<cfreturn true/>

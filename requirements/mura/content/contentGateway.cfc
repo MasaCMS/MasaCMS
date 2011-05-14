@@ -328,7 +328,7 @@ to your own modified versions of Mura CMS.
 					  and  (tcontent.isFeature=1
 	 						 or
 	 						tcontent.isFeature = 2 
-							and tcontent.FeatureStart <= #createodbcdatetime(nowAdjusted)# AND  (tcontent.FeatureStop >= #createodbcdatetime(nowAdjusted)# or tcontent.FeatureStop is null)
+							and tcontent.FeatureStart <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#nowAdjusted#"> AND  (tcontent.FeatureStop >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#nowAdjusted#"> or tcontent.FeatureStop is null)
 							)
 					  </cfif>
 					  <cfif arguments.keywords neq ''>
@@ -374,8 +374,8 @@ to your own modified versions of Mura CMS.
 		 
 									tcontentcategoryassign.isFeature = 2 
 		
-								and tcontentcategoryassign.FeatureStart <= #createodbcdatetime(nowAdjusted)# AND  					
-								(tcontentcategoryassign.FeatureStop >= #createodbcdatetime(nowAdjusted)# or 
+								and tcontentcategoryassign.FeatureStart <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#nowAdjusted#"> AND  					
+								(tcontentcategoryassign.FeatureStop >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#nowAdjusted#"> or 
 								tcontentcategoryassign.FeatureStop is null)
 								)
 							</cfif>
@@ -402,7 +402,7 @@ to your own modified versions of Mura CMS.
 					  and  (tcontent.isFeature=1
 	 						 or
 	 						tcontent.isFeature = 2 
-							and tcontent.FeatureStart <= #createodbcdatetime(nowAdjusted)# AND  (tcontent.FeatureStop >= #createodbcdatetime(nowAdjusted)# or tcontent.FeatureStop is null)
+							and tcontent.FeatureStart <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#nowAdjusted#"> AND  (tcontent.FeatureStop >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#nowAdjusted#"> or tcontent.FeatureStop is null)
 							)
 					  </cfif>
 					  
@@ -450,8 +450,8 @@ to your own modified versions of Mura CMS.
 		 
 									tcontentcategoryassign.isFeature = 2 
 		
-								and tcontentcategoryassign.FeatureStart <= #createodbcdatetime(nowAdjusted)# AND  					
-								(tcontentcategoryassign.FeatureStop >= #createodbcdatetime(nowAdjusted)# or 
+								and tcontentcategoryassign.FeatureStart <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#nowAdjusted#"> AND  					
+								(tcontentcategoryassign.FeatureStop >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#nowAdjusted#"> or 
 								tcontentcategoryassign.FeatureStop is null)
 								)
 							</cfif>
@@ -526,18 +526,18 @@ to your own modified versions of Mura CMS.
 					  (
 					  	(tcontent.Display = 2 
 					  <cfif arguments.menuType neq 'Calendar'>
-					  AND (tcontent.DisplayStart <= #createodbcdatetime(nowAdjusted)#) 
-					  AND (tcontent.DisplayStop >= #createodbcdatetime(nowAdjusted)# or tcontent.DisplayStop is null)
+					  AND (tcontent.DisplayStart <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#nowAdjusted#">) 
+					  AND (tcontent.DisplayStop >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#nowAdjusted#"> or tcontent.DisplayStop is null)
 					  	)
 					 <cfelse>
 					  AND (
 					  		(
-					  			tcontent.DisplayStart >= #createodbcdatetime(nowAdjusted)#
-					  			AND tcontent.DisplayStart < #createodbcdatetime(dateAdd('m',1,nowAdjusted))#
+					  			tcontent.DisplayStart >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#nowAdjusted#">
+					  			AND tcontent.DisplayStart < <cfqueryparam cfsqltype="cf_sql_timestamp" value="#dateAdd('m',1,nowAdjusted)#">
 					  		)
 					  	OR (
-					  			tcontent.DisplayStop >= #createodbcdatetime(nowAdjusted)#
-					  			AND tcontent.DisplayStop < #createodbcdatetime(dateAdd('m',1,nowAdjusted))#
+					  			tcontent.DisplayStop >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#nowAdjusted#">
+					  			AND tcontent.DisplayStop < <cfqueryparam cfsqltype="cf_sql_timestamp" value="#dateAdd('m',1,nowAdjusted)#">
 					  		)
 					  	   )
 					  	  )
@@ -656,8 +656,8 @@ to your own modified versions of Mura CMS.
 	 and isNav=1
 	 and (display=1
 	 	 or 
-	 	 (display=2 AND (DisplayStart <= #createodbcdatetime(now())#) 
-					  AND (DisplayStop >= #createodbcdatetime(now())# or tcontent.DisplayStop is null)
+	 	 (display=2 AND (DisplayStart <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#">) 
+					  AND (DisplayStop >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#"> or tcontent.DisplayStop is null)
 		)
 		)
 				
@@ -723,8 +723,8 @@ to your own modified versions of Mura CMS.
 	AND draft.lastUpdate>active.lastupdate 
 	and draft.changesetID is null
 	and tcontentassignments.userID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.userID#"/>
-	<cfif isdate(arguments.stopDate)>and active.lastUpdate <=  #createODBCDateTime(createDateTime(year(arguments.stopDate),month(arguments.stopDate),day(arguments.stopDate),23,59,0))#</cfif>
-	<cfif isdate(arguments.startDate)>and active.lastUpdate >=  #createODBCDateTime(createDateTime(year(arguments.startDate),month(arguments.startDate),day(arguments.startDate),0,0,0))#</cfif>
+	<cfif isdate(arguments.stopDate)>and active.lastUpdate <=  <cfqueryparam cfsqltype="cf_sql_timestamp" value="#createDateTime(year(arguments.stopDate),month(arguments.stopDate),day(arguments.stopDate),23,59,0)#"></cfif>
+	<cfif isdate(arguments.startDate)>and active.lastUpdate >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#createDateTime(year(arguments.startDate),month(arguments.startDate),day(arguments.startDate),0,0,0)#"></cfif>
 	GROUP BY tmodule.Title, active.ModuleID, active.SiteID, active.ParentID, active.Type, active.subType,
 	active.MenuTitle, active.Filename, active.ContentID, draft.IsNav, tmodule.SiteID, 
 	draft.SiteID, active.SiteID, active.targetparams, draft.lastUpdate,
@@ -746,8 +746,8 @@ to your own modified versions of Mura CMS.
 		and active.contentid is null
 		and draft.changesetID is null
 		and tcontentassignments.userID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.userID#"/>
-		<cfif isdate(arguments.stopDate)>and draft.lastUpdate <=  #createODBCDateTime(createDateTime(year(arguments.stopDate),month(arguments.stopDate),day(arguments.stopDate),23,59,0))#</cfif>
-		<cfif isdate(arguments.startDate)>and draft.lastUpdate >=  #createODBCDateTime(createDateTime(year(arguments.startDate),month(arguments.startDate),day(arguments.startDate),0,0,0))#</cfif>
+		<cfif isdate(arguments.stopDate)>and draft.lastUpdate <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#createDateTime(year(arguments.stopDate),month(arguments.stopDate),day(arguments.stopDate),23,59,0)#"></cfif>
+		<cfif isdate(arguments.startDate)>and draft.lastUpdate >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#createDateTime(year(arguments.startDate),month(arguments.startDate),day(arguments.startDate),0,0,0)#"></cfif>
 	GROUP BY tmodule.Title, draft.ModuleID, draft.SiteID, draft.ParentID, draft.Type, draft.subType,
 	draft.MenuTitle, draft.Filename, draft.ContentID, draft.IsNav, tmodule.SiteID, 
 	draft.SiteID, draft.SiteID, draft.targetparams, draft.lastUpdate,
@@ -768,8 +768,8 @@ to your own modified versions of Mura CMS.
 	AND draft.lastUpdate>active.lastupdate 
 	and draft.changesetID is null
 	and draft.lastUpdateByID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.userID#"/>
-	<cfif isdate(arguments.stopDate)>and active.lastUpdate <=  #createODBCDateTime(createDateTime(year(arguments.stopDate),month(arguments.stopDate),day(arguments.stopDate),23,59,0))#</cfif>
-	<cfif isdate(arguments.startDate)>and active.lastUpdate >=  #createODBCDateTime(createDateTime(year(arguments.startDate),month(arguments.startDate),day(arguments.startDate),0,0,0))#</cfif>
+	<cfif isdate(arguments.stopDate)>and active.lastUpdate <=  <cfqueryparam cfsqltype="cf_sql_timestamp" value="#createDateTime(year(arguments.stopDate),month(arguments.stopDate),day(arguments.stopDate),23,59,0)#"></cfif>
+	<cfif isdate(arguments.startDate)>and active.lastUpdate >=  <cfqueryparam cfsqltype="cf_sql_timestamp" value="#createDateTime(year(arguments.startDate),month(arguments.startDate),day(arguments.startDate),0,0,0)#"></cfif>
 	GROUP BY tmodule.Title, active.ModuleID, active.SiteID, active.ParentID, active.Type,active.subType, 
 	active.MenuTitle, active.Filename, active.ContentID, draft.IsNav, tmodule.SiteID, 
 	draft.SiteID, active.SiteID, active.targetparams, draft.lastUpdate,
@@ -790,8 +790,8 @@ to your own modified versions of Mura CMS.
 		and active.contentid is null
 		and draft.changesetID is null
 		and draft.lastUpdateByID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.userID#"/>
-		<cfif isdate(arguments.stopDate)>and draft.lastUpdate <=  #createODBCDateTime(createDateTime(year(arguments.stopDate),month(arguments.stopDate),day(arguments.stopDate),23,59,0))#</cfif>
-		<cfif isdate(arguments.startDate)>and draft.lastUpdate >=  #createODBCDateTime(createDateTime(year(arguments.startDate),month(arguments.startDate),day(arguments.startDate),0,0,0))#</cfif>
+		<cfif isdate(arguments.stopDate)>and draft.lastUpdate <=  <cfqueryparam cfsqltype="cf_sql_timestamp" value="#createDateTime(year(arguments.stopDate),month(arguments.stopDate),day(arguments.stopDate),23,59,0)#"></cfif>
+		<cfif isdate(arguments.startDate)>and draft.lastUpdate >=  <cfqueryparam cfsqltype="cf_sql_timestamp" value="#createDateTime(year(arguments.startDate),month(arguments.startDate),day(arguments.startDate),0,0,0)#"></cfif>
 	GROUP BY module.Title, draft.ModuleID, draft.SiteID, draft.ParentID, draft.Type,draft.subType, 
 	draft.MenuTitle, draft.Filename, draft.ContentID, draft.IsNav, module.SiteID, 
 	draft.SiteID, draft.SiteID, draft.targetparams, draft.lastUpdate,
@@ -1252,8 +1252,8 @@ to your own modified versions of Mura CMS.
 						  tcontent.Display = 2 
 							AND 
 							(
-								(tcontent.DisplayStart <= #createodbcdate(now())#
-								AND (tcontent.DisplayStop >= #createodbcdate(now())# or tcontent.DisplayStop is null)
+								(tcontent.DisplayStart <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#">
+								AND (tcontent.DisplayStop >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#"> or tcontent.DisplayStop is null)
 								)
 								OR  tparent.type='Calendar'
 							)
@@ -1349,8 +1349,8 @@ to your own modified versions of Mura CMS.
 						  tcontent.Display = 2 
 							AND 
 							(
-								(tcontent.DisplayStart <= #createodbcdate(now())#
-								AND (tcontent.DisplayStop >= #createodbcdate(now())# or tcontent.DisplayStop is null)
+								(tcontent.DisplayStart <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#">
+								AND (tcontent.DisplayStop >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#"> or tcontent.DisplayStop is null)
 								)
 								OR  tparent.type='Calendar'
 							)
@@ -1458,8 +1458,8 @@ to your own modified versions of Mura CMS.
 	
 	<cfif arguments.liveOnly>
 	  AND (
-		  (tcontent.DisplayStart <= #createodbcdatetime(arguments.today)# 
-			AND (tcontent.DisplayStop >= #createodbcdatetime(arguments.today)# or tcontent.DisplayStop is null)
+		  (tcontent.DisplayStart <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#arguments.today#"> 
+			AND (tcontent.DisplayStop >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#arguments.today#"> or tcontent.DisplayStop is null)
 			AND tcontent.Display = 2)
 			OR  (tcontent.Display = 1)
 		)
@@ -1538,8 +1538,8 @@ to your own modified versions of Mura CMS.
 	and siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
 	</cfif>
 
-	<cfif isdate(arguments.stopDate)>and lastUpdate <=  #createODBCDateTime(createDateTime(year(arguments.stopDate),month(arguments.stopDate),day(arguments.stopDate),23,59,0))#</cfif>
-	<cfif isdate(arguments.startDate)>and lastUpdate >=  #createODBCDateTime(createDateTime(year(arguments.startDate),month(arguments.startDate),day(arguments.startDate),0,0,0))#</cfif>
+	<cfif isdate(arguments.stopDate)>and lastUpdate <=  <cfqueryparam cfsqltype="cf_sql_timestamp" value="#createDateTime(year(arguments.stopDate),month(arguments.stopDate),day(arguments.stopDate),23,59,0)#"></cfif>
+	<cfif isdate(arguments.startDate)>and lastUpdate >=  <cfqueryparam cfsqltype="cf_sql_timestamp" value="#createDateTime(year(arguments.startDate),month(arguments.startDate),day(arguments.startDate),0,0,0)#"></cfif>
 	
 	order by lastupdate desc
 	
@@ -1628,8 +1628,8 @@ to your own modified versions of Mura CMS.
 				AND
 				 (
 					(
-						tcontent.DisplayStart <= #createodbcdatetime(now())# 
-						AND (tcontent.DisplayStop >= #createodbcdatetime(now())# or tcontent.DisplayStop is null)
+						tcontent.DisplayStart <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#"> 
+						AND (tcontent.DisplayStop >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#"> or tcontent.DisplayStop is null)
 					)
 					OR tparent.type='Calendar'
 				  )			 
@@ -1795,10 +1795,10 @@ to your own modified versions of Mura CMS.
 						tcontent.Display = 2 	 
 					 	AND 
 						  (
-						  	tcontent.DisplayStart < #createodbcdate(dateadd("D",1,arguments.menuDateTime))#
+						  	tcontent.DisplayStart < <cfqueryparam cfsqltype="cf_sql_timestamp" value="#dateadd("D",1,arguments.menuDateTime)#">
 						  	AND 
 						  		(
-						  			tcontent.DisplayStop >= #createodbcdate(arguments.menuDateTime)# or tcontent.DisplayStop is null
+						  			tcontent.DisplayStop >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#arguments.menuDateTime#"> or tcontent.DisplayStop is null
 						  		)
 						  	)  
 					</cfcase>
@@ -1806,8 +1806,8 @@ to your own modified versions of Mura CMS.
 					  	tcontent.Display = 2 	 
 					 	AND
 					  		(
-					  			tcontent.DisplayStart >= #createodbcdatetime(arguments.menuDateTime)# 
-					  			OR (tcontent.DisplayStart < #createodbcdatetime(arguments.menuDateTime)# AND tcontent.DisplayStop >= #createodbcdatetime(arguments.menuDateTime)#)
+					  			tcontent.DisplayStart >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#arguments.menuDateTime#"> 
+					  			OR (tcontent.DisplayStart < <cfqueryparam cfsqltype="cf_sql_timestamp" value="#arguments.menuDateTime#"> AND tcontent.DisplayStop >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#arguments.menuDateTime#">)
 					  		)
 					 </cfcase>
 					 <cfcase value="ReleaseDate">
@@ -1819,9 +1819,9 @@ to your own modified versions of Mura CMS.
 						   	tcontent.Display = 2 	 
 						 	 	AND 
 						 	 	(
-						 	 		tcontent.DisplayStart < #createodbcdate(dateadd("D",1,arguments.menuDateTime))#
+						 	 		tcontent.DisplayStart < <cfqueryparam cfsqltype="cf_sql_timestamp" value="#dateadd("D",1,arguments.menuDateTime)#">
 							  		AND (
-							  				tcontent.DisplayStop >= #createodbcdate(arguments.menuDateTime)# or tcontent.DisplayStop is null
+							  				tcontent.DisplayStop >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#arguments.menuDateTime#"> or tcontent.DisplayStop is null
 							  			)  
 								)
 							)
@@ -1831,14 +1831,14 @@ to your own modified versions of Mura CMS.
 						
 						(
 						  	(
-						  		tcontent.releaseDate < #createodbcdate(dateadd("D",1,arguments.menuDateTime))#
-						  		AND tcontent.releaseDate >= #createodbcdate(arguments.menuDateTime)#) 
+						  		tcontent.releaseDate < <cfqueryparam cfsqltype="cf_sql_timestamp" value="#dateadd("D",1,arguments.menuDateTime)#">
+						  		AND tcontent.releaseDate >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#arguments.menuDateTime#">) 
 						  		
 						  	OR 
 						  	 (
 						  	 	tcontent.releaseDate is Null
-						  		AND tcontent.lastUpdate < #createodbcdate(dateadd("D",1,arguments.menuDateTime))#
-						  		AND tcontent.lastUpdate >= #createodbcdate(arguments.menuDateTime)#
+						  		AND tcontent.lastUpdate < <cfqueryparam cfsqltype="cf_sql_timestamp" value="#dateadd("D",1,arguments.menuDateTime)#">
+						  		AND tcontent.lastUpdate >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#arguments.menuDateTime#">
 						  	)
 					  	)	
 					  	
@@ -1852,9 +1852,9 @@ to your own modified versions of Mura CMS.
 						   	tcontent.Display = 2 	 
 						 	 	AND 
 						 	 	(
-						 	 		tcontent.DisplayStart < #createodbcdate(dateadd("D",1,arguments.menuDateTime))#
+						 	 		tcontent.DisplayStart < <cfqueryparam cfsqltype="cf_sql_timestamp" value="#dateadd("D",1,arguments.menuDateTime)#">
 							  		AND (
-							  				tcontent.DisplayStop >= #createodbcdate(arguments.menuDateTime)# or tcontent.DisplayStop is null
+							  				tcontent.DisplayStop >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#arguments.menuDateTime#"> or tcontent.DisplayStop is null
 							  			)  
 								)
 							)
@@ -1863,14 +1863,14 @@ to your own modified versions of Mura CMS.
 						AND
 						(
 						  	(
-						  		tcontent.releaseDate < #createodbcdate(dateadd("D",1,createDate(year(arguments.menuDateTime),month(arguments.menuDateTime),daysInMonth(arguments.menuDateTime))))#
-						  		AND  tcontent.releaseDate >= #createodbcdate(createDate(year(arguments.menuDateTime),month(arguments.menuDateTime),1))#) 
+						  		tcontent.releaseDate < <cfqueryparam cfsqltype="cf_sql_timestamp" value="#dateadd("D",1,createDate(year(arguments.menuDateTime),month(arguments.menuDateTime),daysInMonth(arguments.menuDateTime)))#">
+						  		AND  tcontent.releaseDate >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#createDate(year(arguments.menuDateTime),month(arguments.menuDateTime),1)#">) 
 						  		
 						  	OR 
 					  		(
 					  			tcontent.releaseDate is Null
-					  			AND tcontent.lastUpdate < #createodbcdate(dateadd("D",1,createDate(year(arguments.menuDateTime),month(arguments.menuDateTime),daysInMonth(arguments.menuDateTime))))#
-					  			AND tcontent.lastUpdate >= #createodbcdate(createDate(year(arguments.menuDateTime),month(arguments.menuDateTime),1))#
+					  			AND tcontent.lastUpdate < <cfqueryparam cfsqltype="cf_sql_timestamp" value="#dateadd("D",1,createDate(year(arguments.menuDateTime),month(arguments.menuDateTime),daysInMonth(arguments.menuDateTime)))#">
+					  			AND tcontent.lastUpdate >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#createDate(year(arguments.menuDateTime),month(arguments.menuDateTime),1)#">
 					  		)  
 					  	)
 					   </cfcase>
@@ -1880,22 +1880,22 @@ to your own modified versions of Mura CMS.
 						AND
 						(
 						  	(
-						  		tcontent.displayStart < #createodbcdate(dateadd("D",1,createDate(year(arguments.menuDateTime),month(arguments.menuDateTime),daysInMonth(arguments.menuDateTime))))#
-						  		AND  tcontent.displayStart >= #createodbcdate(createDate(year(arguments.menuDateTime),month(arguments.menuDateTime),1))# 
+						  		tcontent.displayStart < <cfqueryparam cfsqltype="cf_sql_timestamp" value="#dateadd("D",1,createDate(year(arguments.menuDateTime),month(arguments.menuDateTime),daysInMonth(arguments.menuDateTime)))#">
+						  		AND  tcontent.displayStart >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#createDate(year(arguments.menuDateTime),month(arguments.menuDateTime),1)#"> 
 						  	)
 						  	
 						  	or 
 						  	
 						  	(
-						  		tcontent.displayStop < #createodbcdate(dateadd("D",1,createDate(year(arguments.menuDateTime),month(arguments.menuDateTime),daysInMonth(arguments.menuDateTime))))#
-						  		AND  tcontent.displayStop >= #createodbcdate(createDate(year(arguments.menuDateTime),month(arguments.menuDateTime),1))# 
+						  		tcontent.displayStop < <cfqueryparam cfsqltype="cf_sql_timestamp" value="#dateadd("D",1,createDate(year(arguments.menuDateTime),month(arguments.menuDateTime),daysInMonth(arguments.menuDateTime)))#">
+						  		AND  tcontent.displayStop >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#createDate(year(arguments.menuDateTime),month(arguments.menuDateTime),1)#"> 
 						  	)
 						  	
 						  	or 
 						  	
 						  	(
-						  		tcontent.displayStart < #createodbcdate(createDate(year(arguments.menuDateTime),month(arguments.menuDateTime),1))#
-						  		and tcontent.displayStop >= #createodbcdate(dateadd("D",1,createDate(year(arguments.menuDateTime),month(arguments.menuDateTime),daysInMonth(arguments.menuDateTime))))# 
+						  		tcontent.displayStart < <cfqueryparam cfsqltype="cf_sql_timestamp" value="#createDate(year(arguments.menuDateTime),month(arguments.menuDateTime),1)#">
+						  		and tcontent.displayStop >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#dateadd("D",1,createDate(year(arguments.menuDateTime),month(arguments.menuDateTime),daysInMonth(arguments.menuDateTime)))#"> 
 						  	)
 						 )
 					  </cfcase>
@@ -1908,8 +1908,8 @@ to your own modified versions of Mura CMS.
 							        (
 							            tcontent.Display = 2	
 							                AND (
-							                    tcontent.DisplayStart < #createodbcdate(dateadd("D",1,arguments.menuDateTime))# AND (
-							                        tcontent.DisplayStop >= #createodbcdate(arguments.menuDateTime)# or tcontent.DisplayStop is null
+							                    tcontent.DisplayStart < <cfqueryparam cfsqltype="cf_sql_timestamp" value="#dateadd("D",1,arguments.menuDateTime)#"> AND (
+							                        tcontent.DisplayStop >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#arguments.menuDateTime#"> or tcontent.DisplayStop is null
 							                    )
 							            )
 							    )
@@ -1917,10 +1917,10 @@ to your own modified versions of Mura CMS.
 							) AND (
 							
 							    (
-							        tcontent.releaseDate < #createodbcdate(dateadd("D",1,createDate(year(arguments.menuDateTime),12,31)))# AND tcontent.releaseDate >= #createodbcdate(createDate(year(arguments.menuDateTime),1,1))#)
+							        tcontent.releaseDate < <cfqueryparam cfsqltype="cf_sql_timestamp" value="#dateadd("D",1,createDate(year(arguments.menuDateTime),12,31))#"> AND tcontent.releaseDate >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#createDate(year(arguments.menuDateTime),1,1)#">)
 							    OR
 							        (
-							            tcontent.releaseDate is Null AND tcontent.lastUpdate < #createodbcdate(dateadd("D",1,createDate(year(arguments.menuDateTime),12,31)))# AND tcontent.lastUpdate >= #createodbcdate(createDate(year(arguments.menuDateTime),1,1))#			
+							            tcontent.releaseDate is Null AND tcontent.lastUpdate < <cfqueryparam cfsqltype="cf_sql_timestamp" value="#dateadd("D",1,createDate(year(arguments.menuDateTime),12,31))#"> AND tcontent.lastUpdate >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#createDate(year(arguments.menuDateTime),1,1)#">			
 							        )
 							    )
 					  </cfcase> 
@@ -1937,10 +1937,10 @@ to your own modified versions of Mura CMS.
 					  		tcontent.Display = 2 	 
 					 		AND 
 					 	 		(
-					 	 			tcontent.DisplayStart < #createodbcdatetime(arguments.menuDateTime)#
+					 	 			tcontent.DisplayStart < <cfqueryparam cfsqltype="cf_sql_timestamp" value="#arguments.menuDateTime#">
 						  			AND 
 						  				(
-						  					tcontent.DisplayStop >= #createodbcdatetime(arguments.menuDateTime)# or tcontent.DisplayStop is null
+						  					tcontent.DisplayStop >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#arguments.menuDateTime#"> or tcontent.DisplayStop is null
 						  				)  
 						  		)
 						)

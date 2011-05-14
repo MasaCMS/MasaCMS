@@ -410,7 +410,7 @@ to your own modified versions of Mura CMS.
 		insert into tredirects (redirectID,URL,created) values(
 		<cfqueryparam cfsqltype="cf_sql_varchar" value="#versionID#" >,
 		<cfqueryparam cfsqltype="cf_sql_varchar" value="#versionLink#" >,
-		#createODBCDateTime(now())#
+		<cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#">
 		)
 	</cfquery>
 	</cfif>
@@ -420,7 +420,7 @@ to your own modified versions of Mura CMS.
 		insert into tredirects (redirectID,URL,created) values(
 		<cfqueryparam cfsqltype="cf_sql_varchar" value="#historyID#" >,
 		<cfqueryparam cfsqltype="cf_sql_varchar" value="#historyLink#" >,
-		#createODBCDateTime(now())#
+		<cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#">
 		)
 	</cfquery>
 		

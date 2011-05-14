@@ -234,7 +234,7 @@ select * from tplugins order by #arguments.orderby#
 			null,
 			0,
 			null,
-			#createODBCDateTime(now())#,
+			<cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#">,
 			5
 			)
 			</cfquery>
@@ -326,7 +326,7 @@ select * from tplugins order by #arguments.orderby#
 	providerURL=<cfqueryparam cfsqltype="cf_sql_varchar" value="#pluginXML.plugin.providerURL.xmlText#">,
 	version=<cfqueryparam cfsqltype="cf_sql_varchar" value="#pluginXML.plugin.version.xmlText#">,
 	category=<cfqueryparam cfsqltype="cf_sql_varchar" value="#pluginXML.plugin.category.xmlText#">,
-	created=#createODBCDateTime(now())#
+	created=<cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#">
 	
 	<cfif not rsPlugin.deployed>,
 		name=<cfqueryparam cfsqltype="cf_sql_varchar" value="#pluginXML.plugin.name.xmlText#">,
