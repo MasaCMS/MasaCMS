@@ -82,19 +82,36 @@ function ckContent(draftremovalnotice){
 			
 	}
 	
-	 if(document.contentForm.type.value=='Link' && document.contentForm.filename.value == ''){
+	 if(document.contentForm.type.value=='Link' 
+		 	&& document.contentForm.filename.value == ''){
 
 		alertDialog("The form field 'Url' is required"); 
 		return false;
 	 }
 	
-	 if(document.contentForm.approved.value==1 && draftremovalnotice != "" && !confirm(draftremovalnotice)){
+	 if(document.contentForm.approved.value==1 
+			&& draftremovalnotice != "" 
+			&& !confirm(draftremovalnotice)){
 		 return false;
-	 }	
+	 }
+	 
+	 if(document.contentForm.approved.value==1
+			&& typeof(currentChangesetID) != 'undefined' 
+			&& currentChangesetID != ''){
+		 
+		 confirmDialog(publishitemfromchangeset, 
+				 					function() {
+			 						formSubmitted = true;
+			 						document.contentForm.submit(); 
+			 						});
+		 
+		 return false;
+		 
+	 }else {
+		 formSubmitted = true;
+		 return true;
+	 }
 	
-	
-	formSubmitted = true;
-	return true;
 }
 			
 

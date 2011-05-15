@@ -11,6 +11,7 @@ var currentChangesetSelection="";
 var currentChangesetID="";
 </cfif>
 
+var publishitemfromchangeset="#JSStringFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.publishitemfromchangeset'))#"
 function removeChangesetPrompt(changesetID){
 	
 	if(currentChangesetID!="" && changesetID!=currentChangesetID){
