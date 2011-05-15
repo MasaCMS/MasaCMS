@@ -91,12 +91,19 @@ to your own modified versions of Mura CMS.
 <cffunction name="readByUsername" access="public" returntype="any" output="false">
 		<cfargument name="username" type="string" required="yes" />
 		<cfargument name="siteid" type="string" required="yes" />
+		<cfargument name="userBean" default="">
 		<cfset var rsuser = 0 />
 		<cfset var rsmembs = "" />
 		<cfset var rsInterests = "" />
-		<cfset var userBean=application.serviceFactory.getBean("userBean") />
 		<cfset var beanArray=arrayNew(1)>
-		<cfset var utility="">	
+		<cfset var utility="">
+		<cfset var bean="" />
+		
+		<cfif isObject(arguments.userBean)>
+			<cfset bean=arguments.userBean>
+		<cfelse>
+			<cfset bean=getBean()>
+		</cfif>	
 			
 		<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#" name="rsUser">
 			select #variables.fieldList#
@@ -112,41 +119,48 @@ to your own modified versions of Mura CMS.
 		<cfif rsUser.recordcount gt 1>
 			<cfset utility=getServiceFactory().getBean("utility")>
 			<cfloop query="rsUser">
-				<cfset userBean=getbean().set(utility.queryRowToStruct(rsUser,rsUser.currentrow))>
-				<cfset userBean.setIsNew(0)>
-				<cfset rsmembs=readMembershipIDs(userBean.getUserId()) />
-				<cfset rsInterests=readInterestGroupIDs(userBean.getUserId()) />
-				<cfset userBean.setGroupId(valuelist(rsmembs.groupid))/>
-				<cfset userBean.setCategoryId(valuelist(rsInterests.categoryid))/>
+				<cfset bean=getbean().set(utility.queryRowToStruct(rsUser,rsUser.currentrow))>
+				<cfset bean.setIsNew(0)>
+				<cfset rsmembs=readMembershipIDs(bean.getUserId()) />
+				<cfset rsInterests=readInterestGroupIDs(bean.getUserId()) />
+				<cfset bean.setGroupId(valuelist(rsmembs.groupid))/>
+				<cfset bean.setCategoryId(valuelist(rsInterests.categoryid))/>
 				<!---<cfset userBean.setAddresses(getAddresses(userBean.getUserID()))/>--->	
-				<cfset arrayAppend(beanArray,userBean)>	
+				<cfset arrayAppend(beanArray,bean)>	
 			</cfloop>
 			<cfreturn beanArray>
 		<cfelseif rsUser.recordCount eq 1>
-			<cfset userBean.set(rsUser) />
-			<cfset rsmembs=readMembershipIDs(userBean.getUserId()) />
-			<cfset rsInterests=readInterestGroupIDs(userBean.getUserId()) />
-			<cfset userBean.setGroupId(valuelist(rsmembs.groupid))/>
-			<cfset userBean.setCategoryId(valuelist(rsInterests.categoryid))/>
+			<cfset bean.set(rsUser) />
+			<cfset rsmembs=readMembershipIDs(bean.getUserId()) />
+			<cfset rsInterests=readInterestGroupIDs(bean.getUserId()) />
+			<cfset bean.setGroupId(valuelist(rsmembs.groupid))/>
+			<cfset bean.setCategoryId(valuelist(rsInterests.categoryid))/>
 			<!--- <cfset userBean.setAddresses(getAddresses(userBean.getUserID()))/> --->
-			<cfset userBean.setIsNew(0)>
+			<cfset bean.setIsNew(0)>
 		<cfelse>
-			<cfset userBean.setIsNew(1)>
+			<cfset bean.setIsNew(1)>
 		</cfif>
 		
-		<cfreturn userBean />
+		<cfreturn bean />
 </cffunction>
 
 <cffunction name="readByGroupName" access="public" returntype="any" output="false">
 		<cfargument name="groupname" type="string" required="yes" />
 		<cfargument name="siteid" type="string" required="yes" />
 		<cfargument name="isPublic" type="string" required="yes" default="both"/>
+		<cfargument name="userBean" default="">
 		<cfset var rsuser = 0 />
 		<cfset var rsmembs = "" />
 		<cfset var rsInterests = "" />
-		<cfset var userBean=application.serviceFactory.getBean("userBean") />
 		<cfset var beanArray=arrayNew(1)>
-		<cfset var utility="">	
+		<cfset var utility="">
+		<cfset var bean="" />
+		
+		<cfif isObject(arguments.userBean)>
+			<cfset bean=arguments.userBean>
+		<cfelse>
+			<cfset bean=getBean()>
+		</cfif>		
 		
 		<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#" name="rsUser">
 			select #variables.fieldList#
@@ -177,40 +191,47 @@ to your own modified versions of Mura CMS.
 		<cfif rsUser.recordcount gt 1>
 			<cfset utility=getServiceFactory().getBean("utility")>
 			<cfloop query="rsUser">
-				<cfset userBean=getbean().set(utility.queryRowToStruct(rsUser,rsUser.currentrow))>
-				<cfset userBean.setIsNew(0)>
-				<cfset rsmembs=readMembershipIDs(userBean.getUserId()) />
-				<cfset rsInterests=readInterestGroupIDs(userBean.getUserId()) />
-				<cfset userBean.setGroupId(valuelist(rsmembs.groupid))/>
-				<cfset userBean.setCategoryId(valuelist(rsInterests.categoryid))/>
+				<cfset bean=getbean().set(utility.queryRowToStruct(rsUser,rsUser.currentrow))>
+				<cfset bean.setIsNew(0)>
+				<cfset rsmembs=readMembershipIDs(bean.getUserId()) />
+				<cfset rsInterests=readInterestGroupIDs(bean.getUserId()) />
+				<cfset bean.setGroupId(valuelist(rsmembs.groupid))/>
+				<cfset bean.setCategoryId(valuelist(rsInterests.categoryid))/>
 				<!--- <cfset userBean.setAddresses(getAddresses(userBean.getUserID()))/> --->
-				<cfset arrayAppend(beanArray,userBean)>		
+				<cfset arrayAppend(beanArray,bean)>		
 			</cfloop>
 			<cfreturn beanArray>
 		<cfelseif rsUser.recordCount eq 1>
-			<cfset userBean.set(rsUser) />
-			<cfset rsmembs=readMembershipIDs(userBean.getUserId()) />
-			<cfset rsInterests=readInterestGroupIDs(userBean.getUserId()) />
-			<cfset userBean.setGroupId(valuelist(rsmembs.groupid))/>
-			<cfset userBean.setCategoryId(valuelist(rsInterests.categoryid))/>
-			<!--- <cfset userBean.setAddresses(getAddresses(userBean.getUserID()))/> --->
-			<cfset userBean.setIsNew(0)>
+			<cfset bean.set(rsUser) />
+			<cfset rsmembs=readMembershipIDs(bean.getUserId()) />
+			<cfset rsInterests=readInterestGroupIDs(bean.getUserId()) />
+			<cfset bean.setGroupId(valuelist(rsmembs.groupid))/>
+			<cfset bean.setCategoryId(valuelist(rsInterests.categoryid))/>
+			<!--- <cfset userBean.setAddresses(getAddresses(bean.getUserID()))/> --->
+			<cfset bean.setIsNew(0)>
 		<cfelse>
-			<cfset userBean.setIsNew(1)>
+			<cfset bean.setIsNew(1)>
 		</cfif>
 		
-		<cfreturn userBean />
+		<cfreturn bean />
 </cffunction>
 
 <cffunction name="readByRemoteID" access="public" returntype="any" output="false">
 		<cfargument name="remoteid" type="string" required="yes" />
 		<cfargument name="siteid" type="string" required="yes" />
+		<cfargument name="userBean" default="">
 		<cfset var rsuser = 0 />
 		<cfset var rsmembs = "" />
 		<cfset var rsInterests = "" />
-		<cfset var userBean=application.serviceFactory.getBean("userBean") />
 		<cfset var beanArray=arrayNew(1)>
-		<cfset var utility="">	
+		<cfset var utility="">
+		<cfset var bean="" />
+		
+		<cfif isObject(arguments.userBean)>
+			<cfset bean=arguments.userBean>
+		<cfelse>
+			<cfset bean=getBean()>
+		</cfif>	
 		
 		<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#" name="rsUser">
 			select #variables.fieldList#
@@ -226,29 +247,29 @@ to your own modified versions of Mura CMS.
 		<cfif rsUser.recordcount gt 1>
 			<cfset utility=getServiceFactory().getBean("utility")>
 			<cfloop query="rsUser">
-				<cfset userBean=getbean().set(utility.queryRowToStruct(rsUser,rsUser.currentrow))>
-				<cfset userBean.setIsNew(0)>
-				<cfset rsmembs=readMembershipIDs(userBean.getUserId()) />
-				<cfset rsInterests=readInterestGroupIDs(userBean.getUserId()) />
-				<cfset userBean.setGroupId(valuelist(rsmembs.groupid))/>
-				<cfset userBean.setCategoryId(valuelist(rsInterests.categoryid))/>
-				<!--- <cfset userBean.setAddresses(getAddresses(userBean.getUserID()))/>		 --->
-				<cfset arrayAppend(beanArray,userBean)>
+				<cfset bean=getbean().set(utility.queryRowToStruct(rsUser,rsUser.currentrow))>
+				<cfset bean.setIsNew(0)>
+				<cfset rsmembs=readMembershipIDs(bean.getUserId()) />
+				<cfset rsInterests=readInterestGroupIDs(bean.getUserId()) />
+				<cfset bean.setGroupId(valuelist(rsmembs.groupid))/>
+				<cfset bean.setCategoryId(valuelist(rsInterests.categoryid))/>
+				<!--- <cfset userBean.setAddresses(getAddresses(bean.getUserID()))/>		 --->
+				<cfset arrayAppend(beanArray,bean)>
 			</cfloop>
 			<cfreturn beanArray>
 		<cfelseif rsUser.recordCount eq 1>
-			<cfset userBean.set(rsUser) />
-			<cfset rsmembs=readMembershipIDs(userBean.getUserId()) />
-			<cfset rsInterests=readInterestGroupIDs(userBean.getUserId()) />
-			<cfset userBean.setGroupId(valuelist(rsmembs.groupid))/>
-			<cfset userBean.setCategoryId(valuelist(rsInterests.categoryid))/>
-			<!--- <cfset userBean.setAddresses(getAddresses(userBean.getUserID()))/> --->
-			<cfset userBean.setIsNew(0)>
+			<cfset bean.set(rsUser) />
+			<cfset rsmembs=readMembershipIDs(bean.getUserId()) />
+			<cfset rsInterests=readInterestGroupIDs(bean.getUserId()) />
+			<cfset bean.setGroupId(valuelist(rsmembs.groupid))/>
+			<cfset bean.setCategoryId(valuelist(rsInterests.categoryid))/>
+			<!--- <cfset userBean.setAddresses(getAddresses(bean.getUserID()))/> --->
+			<cfset bean.setIsNew(0)>
 		<cfelse>
-			<cfset userBean.setIsNew(1)>
+			<cfset bean.setIsNew(1)>
 		</cfif>
 		
-		<cfreturn userBean />
+		<cfreturn bean />
 </cffunction>
 
 <cffunction name="create" returntype="void" access="public" output="false">

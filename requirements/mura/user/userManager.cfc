@@ -84,14 +84,15 @@ to your own modified versions of Mura CMS.
 	<cfargument name="siteID" type="string" default=""/>
 	<cfargument name="groupname" type="string" default=""/>
 	<cfargument name="isPublic" type="string" default="1"/>
+	<cfargument name="userBean" default=""/>
 	
 	<cfif len(arguments.siteID)>
 		<cfif len(arguments.username)>
-			<cfreturn readByUsername(arguments.username,arguments.siteid) />
+			<cfreturn readByUsername(arguments.username,arguments.siteid,arguments.userBean) />
 		<cfelseif len(arguments.groupname)>
-			<cfreturn readByGroupName(arguments.groupname,arguments.siteid,arguments.isPublic) />
+			<cfreturn readByGroupName(arguments.groupname,arguments.siteid,arguments.isPublic,arguments.userBean) />
 		<cfelseif len(arguments.remoteID)>
-			<cfreturn readByRemoteID(arguments.remoteID,arguments.siteid) />
+			<cfreturn readByRemoteID(arguments.remoteID,arguments.siteid,arguments.userBean) />
 		</cfif>
 	</cfif>
 					
@@ -106,22 +107,126 @@ to your own modified versions of Mura CMS.
 
 <cffunction name="readByUsername" access="public" returntype="any" output="false">
 	<cfargument name="username" type="string" default=""/>
-	<cfargument name="siteid" type="string" default=""/>		
-	<cfreturn variables.userDAO.readByUsername(arguments.username,arguments.siteid) />
+	<cfargument name="siteid" type="string" default=""/>
+	<cfargument name="userBean" default=""/>
+	<cfset var key= "user" & arguments.siteid & arguments.username />
+	<cfset var site=variables.settingsManager.getSite(arguments.siteid)/>
+	<cfset var cacheFactory=site.getCacheFactory()>
+	<cfset var bean="">	
+	
+	<cfif site.getCache()>
+		<!--- check to see if it is cached. if not then pass in the context --->
+		<!--- otherwise grab it from the cache --->
+		<cfif NOT cacheFactory.has( key )>
+			<cfset bean=variables.userDAO.readByUsername(arguments.username,arguments.siteid,arguments.userBean) />
+			<cfif not bean.getIsNew()>
+				<cfset cacheFactory.get( key, structCopy(bean.getAllValues()) ) />
+			</cfif>
+			<cfreturn bean/>
+		<cfelse>
+			<cfif isObject(arguments.userBean)>
+				<cfset bean=arguments.userBean/>
+			<cfelse>
+				<cfset bean=variables.userDAO.getBean()/>
+			</cfif>
+			<cfset bean.setAllValues( structCopy(cacheFactory.get( key )) )>
+			<cfreturn bean />
+		</cfif>
+	<cfelse>
+		<cfreturn variables.userDAO.readByUsername(arguments.username,arguments.siteid,arguments.userBean) />
+	</cfif>	
+
 </cffunction>
 
 <cffunction name="readByGroupName" access="public" returntype="any" output="false">
 	<cfargument name="groupname" type="string" default=""/>
 	<cfargument name="siteid" type="string" default=""/>
-	<cfargument name="isPublic" type="string" required="yes" default="both"/>		
-	<cfreturn variables.userDAO.readByGroupName(arguments.groupname,arguments.siteid,arguments.isPublic) />
+	<cfargument name="isPublic" type="string" required="yes" default="both"/>
+	<cfargument name="userBean" default=""/>
+	<cfset var key= "user" & arguments.siteid & arguments.groupname />
+	<cfset var site=variables.settingsManager.getSite(arguments.siteid)/>
+	<cfset var cacheFactory=site.getCacheFactory()>
+	<cfset var bean="">	
+	
+	<cfif site.getCache()>
+		<!--- check to see if it is cached. if not then pass in the context --->
+		<!--- otherwise grab it from the cache --->
+		<cfif NOT cacheFactory.has( key )>
+			<cfset bean=variables.userDAO.readByGroupName(arguments.groupname,arguments.siteid,arguments.isPublic,arguments.userbean)  />
+			<cfif not bean.getIsNew()>
+				<cfset cacheFactory.get( key, structCopy(bean.getAllValues()) ) />
+			</cfif>
+			<cfreturn bean/>
+		<cfelse>
+			<cfif isObject(arguments.userBean)>
+				<cfset bean=arguments.userBean/>
+			<cfelse>
+				<cfset bean=variables.userDAO.getBean()/>
+			</cfif>
+			<cfset bean.setAllValues( structCopy(cacheFactory.get( key )) )>
+			<cfreturn bean />
+		</cfif>
+	<cfelse>
+		<cfreturn variables.userDAO.readByGroupName(arguments.groupname,arguments.siteid,arguments.isPublic,arguments.userbean) />
+	</cfif>			
+	
 </cffunction>
 
 <cffunction name="readByRemoteID" access="public" returntype="any" output="false">
 	<cfargument name="remoteID" type="string" default=""/>
-	<cfargument name="siteid" type="string" default=""/>		
-	<cfreturn variables.userDAO.readByRemoteID(arguments.remoteID,arguments.siteid) />
+	<cfargument name="siteid" type="string" default=""/>
+	<cfargument name="userBean" default=""/>
+	<cfset var key= "user" & arguments.siteid & arguments.remoteID />
+	<cfset var site=variables.settingsManager.getSite(arguments.siteid)/>
+	<cfset var cacheFactory=site.getCacheFactory()>
+	<cfset var bean="">	
+	
+	<cfif site.getCache()>
+		<!--- check to see if it is cached. if not then pass in the context --->
+		<!--- otherwise grab it from the cache --->
+		<cfif NOT cacheFactory.has( key )>
+			<cfset bean=variables.userDAO.readByRemoteID(arguments.remoteID,arguments.siteid,arguments.userBean) />
+			<cfif not bean.getIsNew()>
+				<cfset cacheFactory.get( key, structCopy(bean.getAllValues()) ) />
+			</cfif>
+			<cfreturn bean/>
+		<cfelse>
+			<cfif isObject(arguments.userBean)>
+				<cfset bean=arguments.userBean/>
+			<cfelse>
+				<cfset bean=variables.userDAO.getBean()/>
+			</cfif>
+			<cfset bean.setAllValues( structCopy(cacheFactory.get( key )) )>
+			<cfreturn bean />
+		</cfif>
+	<cfelse>
+		<cfreturn variables.userDAO.readByRemoteID(arguments.remoteID,arguments.siteid,arguments.userBean) />
+	</cfif>			
+	
 </cffunction>
+
+<cffunction name="purgeUserCache" output="false">
+	<cfargument name="userID">
+	<cfargument name="userBean">
+	
+	<cfif not isDefined("arguments.userBean")>
+		<cfset arguments.userBean=read(userID=arguments.userID)>
+	</cfif>
+	<cfset cache=variables.settingsManager.getSite(userBean.getSiteID()).getCacheFactory()>
+	
+	<cfset cache.purge("user" & userBean.getSiteID() & userBean.getUserID())>
+	<cfif len(arguments.userBean.getRemoteID())>
+		<cfset cache.purge("user" & userBean.getSiteID() & userBean.getRemoteID())>
+	</cfif>
+	<cfif len(arguments.userBean.getUsername())>
+		<cfset cache.purge("user" & userBean.getSiteID() & userBean.getUsername())>
+	</cfif>
+	<cfif len(arguments.userBean.getGroupname())>
+		<cfset cache.purge("user" & userBean.getSiteID() & userBean.getGroupname())>
+	</cfif>
+	
+</cffunction>
+
 
 <cffunction name="save" access="public" returntype="any" output="false">
 	<cfargument name="data" type="any" default="#structnew()#"/>	
@@ -238,7 +343,7 @@ to your own modified versions of Mura CMS.
 		<cfset variables.globalUtility.logEvent("UserID:#userBean.getUserID()# Type:#userBean.getType()# User:#userBean.getFName()# #userBean.getFName()# Group:#userBean.getGroupName()# was updated","mura-users","Information",true) />
 		<cfset setLastUpdateInfo(userBean) />
 		<cfset variables.userDAO.update(userBean,arguments.updateGroups,arguments.updateInterests,arguments.OriginID) />
-		
+		<cfset purgeUserCache(userBean=userBean)>
 		<!--- Put in re-read the user to make sure that all extended attributes are cleaned. 
 		Not need due to extended attributes now not using ext[pluginID] based form field names.
 		<cfset userBean=read(userID=userBean.getUserID())>
@@ -341,6 +446,7 @@ to your own modified versions of Mura CMS.
 			<cfset variables.globalUtility.logEvent("UserID:#userBean.getUserID()# Type:#userBean.getType()# User:#userBean.getFName()# #userBean.getFName()# Group:#userBean.getGroupName()# was created","mura-users","Information",true) />
 			<cfset setLastUpdateInfo(userBean) />
 			<cfset variables.userDAO.create(userBean) />
+			<cfset purgeUserCache(userBean=userBean)>
 			<cfset variables.trashManager.takeOut(userBean)>
 			<cfif isObject(addressBean)>
 				<cfset variables.userDAO.createAddress(addressBean) />
@@ -412,6 +518,7 @@ to your own modified versions of Mura CMS.
 	</cfif>
 	
 	<cfset variables.userDAO.delete(arguments.userid,arguments.type) />
+	<cfset purgeUserCache(userBean=userBean)>
 	
 </cffunction>
 
@@ -470,12 +577,16 @@ to your own modified versions of Mura CMS.
 	<cfargument name="userid" type="string" default="" required="yes"/>		
 	<cfargument name="groupid" type="string" default="" required="yes"/>
 	<cfset variables.userDAO.createUserInGroup(arguments.userid,arguments.groupid) />
+	<cfset purgeUserCache(userID=arguments.userID)>
+	<cfset purgeUserCache(userID=arguments.groupID)>
 </cffunction>
 
 <cffunction name="deleteUserFromGroup" access="public" returntype="void" output="false">
 	<cfargument name="userid" type="string" default="" required="yes"/>		
 	<cfargument name="groupid" type="string" default="" required="yes"/>
 	<cfset variables.userDAO.deleteUserFromGroup(arguments.userid,arguments.groupid) />
+	<cfset purgeUserCache(userID=arguments.userID)>
+	<cfset purgeUserCache(userID=arguments.groupID)>
 </cffunction>
 
 <cffunction name="getSearch" access="public" returntype="query" output="false">
@@ -569,6 +680,7 @@ to your own modified versions of Mura CMS.
 		</cfif>
 	</cfif>
 	<cfset variables.trashManager.takeOut(addressBean)>
+	<cfset purgeUserCache(userBean=userBean)>
 	<cfreturn addressBean />
 </cffunction>
 
@@ -609,6 +721,8 @@ to your own modified versions of Mura CMS.
 		</cfif>
 	</cfif>
 	
+	<cfset purgeUserCache(userBean=userBean)>
+	
 	<cfreturn addressBean />
 </cffunction>
 
@@ -619,6 +733,7 @@ to your own modified versions of Mura CMS.
 		<cfset variables.trashManager.throwIn(addressBean)>
 		<cfset variables.userDAO.deleteAddress(arguments.addressid) />
 	</cfif>
+	<cfset purgeUserCache(userID=addressBean.getUserID())>
 	
 </cffunction>
 

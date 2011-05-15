@@ -186,6 +186,7 @@ to your own modified versions of Mura CMS.
 			</cfloop>
 		</cfif>
 		
+		<cfset purgeExtendedData()>
 		<cfreturn variables.instance />
 </cffunction>
 	
