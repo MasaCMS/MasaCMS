@@ -41,15 +41,21 @@ the GNU General Public License version 2  without this exception.  You may, if y
 to your own modified versions of Mura CMS.
 --->
 <cfcomponent extends="mura.iterator.queryIterator" output="false">
-	
+
+<cfset variables.userBean ="">
+
 <cffunction name="packageRecord" access="public" output="false" returntype="any">
-	<cfset var user =createObject("component","userBean").init(variables.configBean, variables.settingsManager, variables.userManager) />
-	<cfset user.set(queryRowToStruct(variables.records,currentIndex()))>
-	<cfif isObject(variables.recordTranslator)>
-		<cfset user.setTranslator(variables.recordTranslator)>
+	<cfif NOT isObject(variables.userBean)>
+		<cfset variables.userBean=createObject("component","userBean").init(variables.configBean, variables.settingsManager, variables.userManager) />
+		<cfset variables.userStructTemplate=variables.userBean.getAllValues()>
+	<cfelse>
+		<cfset variables.userBean.setAllValues( variables.userStructTemplate)>
 	</cfif>
+	
+	<cfset variables.userBean.set(queryRowToStruct(variables.records,currentIndex()))>
+	
 	<cfset variables.userManager.setUserBeanMetaData(user)/>
-	<cfreturn user>
+	<cfreturn variables.userBean>
 </cffunction>
 
 <cffunction name="setConfigBean" output="false" access="public">

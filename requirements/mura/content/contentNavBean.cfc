@@ -93,7 +93,7 @@
 
 <cffunction name="getContentBean" access="public" returntype="any" output="false">
 	
-	<cfif not isObject(variables.instance.content)>
+	<cfif NOT isObject(variables.instance.content)>
 		<cfset variables.instance.content=getBean("content")>
 		<cfset variables.instance.content.setIsNew(1)>
 		<cfset variables.instance.contentStructTemplate=variables.instance.content.getAllValues()>

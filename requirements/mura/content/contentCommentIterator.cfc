@@ -41,14 +41,21 @@ the GNU General Public License version 2  without this exception.  You may, if y
 to your own modified versions of Mura CMS.
 --->
 <cfcomponent extends="mura.iterator.queryIterator" output="false">
-	
+
+<cfset variables.commentBean="">
+
 <cffunction name="packageRecord" access="public" output="false" returntype="any">
 	<cfset var comment=variables.contentManager.getCommentBean() />
-	<cfset comment.set(queryRowToStruct(variables.records,currentIndex()))>
-	<cfif isObject(variables.recordTranslator)>
-		<cfset comment.setTranslator(variables.recordTranslator)>
+	
+	<cfif NOT isObject(variables.commentBean)>
+		<cfset variables.commentBean=variables.contentManager.getCommentBean() />
+		<cfset variables.commentStructTemplate=variables.commentBean.getAllValues()>
+	<cfelse>
+		<cfset variables.commentBean.setAllValues( variables.commentStructTemplate)>
 	</cfif>
-	<cfreturn comment>
+	
+	<cfset variables.commentBean.set(queryRowToStruct(variables.records,currentIndex()))>
+	<cfreturn variables.commentBean>
 </cffunction>
 
 <cffunction name="setContentManager" output="false" access="public">

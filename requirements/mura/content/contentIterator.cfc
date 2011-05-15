@@ -47,11 +47,11 @@ to your own modified versions of Mura CMS.
 
 <cffunction name="init" access="public" output="false" returntype="any">
 	<cfargument name="packageBy" required="true" default="active">
-		<cfset super.init(argumentCollection=arguments)>
-		<cfset variables.packageBy=arguments.packageBy>
-		<cfset variables.content=createObject("component","contentNavBean")>
-		<cfreturn this />
-	</cffunction>
+	<cfset super.init(argumentCollection=arguments)>
+	<cfset variables.packageBy=arguments.packageBy>
+	<cfset variables.content=createObject("component","contentNavBean")>
+	<cfreturn this />
+</cffunction>
 	
 <cffunction name="packageRecord" access="public" output="false" returntype="any">
 	<cfset var item="">
