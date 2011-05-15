@@ -220,6 +220,7 @@ to your own modified versions of Mura CMS.
 			<constructor-arg name="fileManager"><ref bean="fileManager" /></constructor-arg>
 			<constructor-arg name="pluginManager"><ref bean="pluginManager" /></constructor-arg>
 			<constructor-arg name="trashManager"><ref bean="trashManager" /></constructor-arg>
+			<constructor-arg name="settingsManager"><ref bean="settingsManager" /></constructor-arg>
 		</bean>
 		<bean id="userDAO" class="mura.user.userDAO" singleton="true">
 			<constructor-arg name="configBean"><ref bean="configBean" /></constructor-arg>

@@ -51,6 +51,7 @@ to your own modified versions of Mura CMS.
 <cfargument name="fileManager" type="any" required="yes"/>
 <cfargument name="pluginManager" type="any" required="yes"/>
 <cfargument name="trashManager" type="any" required="yes"/>
+<cfargument name="settingsManager" type="any" required="yes"/>
 
 	<cfset variables.configBean=arguments.configBean />
 	<cfset variables.userDAO=arguments.userDAO />
@@ -61,6 +62,7 @@ to your own modified versions of Mura CMS.
 	<cfset variables.fileManager=arguments.fileManager />
 	<cfset variables.pluginManager=arguments.pluginManager />
 	<cfset variables.trashManager=arguments.trashManager />
+	<cfset variables.settingsManager=arguments.settingsManager />
 	
 	<cfset variables.userDAO.setUserManager(this)>
 	
