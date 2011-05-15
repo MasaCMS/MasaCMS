@@ -263,6 +263,8 @@ to your own modified versions of Mura CMS.
 		
 		<cfset variables.trashManager.takeOut(categoryBean)>
 		<cfset categoryBean.setIsNew(0)>
+		<cfset purgeCategoryCache(categoryBean=categoryBean)>
+		
 		<cfset variables.pluginManager.announceEvent("onCategorySave",pluginEvent)>
 		<cfset variables.pluginManager.announceEvent("onCategoryCreate",pluginEvent)>
 		<cfset variables.pluginManager.announceEvent("onAfterCategorySave",pluginEvent)>
@@ -304,6 +306,11 @@ to your own modified versions of Mura CMS.
 	<cfargument name="remoteID" required="true" default=""/>
 	<cfargument name="filename" required="true" default=""/>
 	<cfargument name="siteID" required="true" default=""/>		
+	<cfargument name="categoryBean" default=""/>
+	<cfset var key= "" />
+	<cfset var site=""/>
+	<cfset var cacheFactory="">
+	<cfset var bean="">	
 	
 	<cfif not len(arguments.categoryID) and len(arguments.siteID)>
 		<cfif len(arguments.name)>
@@ -315,32 +322,153 @@ to your own modified versions of Mura CMS.
 		</cfif>
 	</cfif>
 	
-	<cfreturn variables.DAO.read(arguments.categoryID) />
+	<cfset key= "category" & arguments.siteid & arguments.categoryID />
+	<cfset site=variables.settingsManager.getSite(arguments.siteid)/>
+	<cfset cacheFactory=site.getCacheFactory()>			
+	
+	<cfif site.getCache()>
+		<!--- check to see if it is cached. if not then pass in the context --->
+		<!--- otherwise grab it from the cache --->
+		<cfif NOT cacheFactory.has( key )>
+			<cfset bean=variables.DAO.read(arguments.categoryID,arguments.categoryBean)>
+			<cfif not bean.getIsNew()>
+				<cfset cacheFactory.get( key, structCopy(bean.getAllValues()) ) />
+			</cfif>
+			<cfreturn bean/>
+		<cfelse>
+			<cfif isObject(arguments.categoryBean)>
+				<cfset bean=arguments.categoryBean/>
+			<cfelse>
+				<cfset bean=variables.userDAO.getBean()/>
+			</cfif>
+			<cfset bean.setAllValues( structCopy(cacheFactory.get( key )) )>
+			<cfreturn bean />
+		</cfif>
+	<cfelse>
+		<cfreturn variables.DAO.read(arguments.categoryID,arguments.categoryBean) />
+	</cfif>		
 	
 </cffunction>
 
 <cffunction name="readByName" access="public" returntype="any" output="false">
 	<cfargument name="name" type="String" />		
 	<cfargument name="siteid" type="string" />
+	<cfargument name="categoryBean" default=""/>
+	<cfset var key= "category" & arguments.siteid & arguments.name />
+	<cfset var site=variables.settingsManager.getSite(arguments.siteid)/>
+	<cfset var cacheFactory=site.getCacheFactory()>
+	<cfset var bean="">	
 	
-	<cfreturn variables.DAO.readByName(arguments.name,arguments.siteid) />
+	<cfif site.getCache()>
+		<!--- check to see if it is cached. if not then pass in the context --->
+		<!--- otherwise grab it from the cache --->
+		<cfif NOT cacheFactory.has( key )>
+			<cfset bean=variables.DAO.readByName(arguments.name,arguments.categoryBean) >
+			<cfif not bean.getIsNew()>
+				<cfset cacheFactory.get( key, structCopy(bean.getAllValues()) ) />
+			</cfif>
+			<cfreturn bean/>
+		<cfelse>
+			<cfif isObject(arguments.categoryBean)>
+				<cfset bean=arguments.categoryBean/>
+			<cfelse>
+				<cfset bean=variables.userDAO.getBean()/>
+			</cfif>
+			<cfset bean.setAllValues( structCopy(cacheFactory.get( key )) )>
+			<cfreturn bean />
+		</cfif>
+	<cfelse>
+		<cfreturn variables.DAO.readByName(arguments.name,arguments.categoryBean) />
+	</cfif>	
 
 </cffunction>
 
 <cffunction name="readByFilename" access="public" returntype="any" output="false">
 	<cfargument name="filename" type="String" />		
 	<cfargument name="siteid" type="string" />
+	<cfargument name="categoryBean" default=""/>
+	<cfset var key= "category" & arguments.siteid & arguments.filename />
+	<cfset var site=variables.settingsManager.getSite(arguments.siteid)/>
+	<cfset var cacheFactory=site.getCacheFactory()>
+	<cfset var bean="">	
 	
-	<cfreturn variables.DAO.readByFilename(arguments.filename,arguments.siteid) />
+	<cfif site.getCache()>
+		<!--- check to see if it is cached. if not then pass in the context --->
+		<!--- otherwise grab it from the cache --->
+		<cfif NOT cacheFactory.has( key )>
+			<cfset bean=variables.DAO.readByFilename(arguments.filename,arguments.categoryBean) >
+			<cfif not bean.getIsNew()>
+				<cfset cacheFactory.get( key, structCopy(bean.getAllValues()) ) />
+			</cfif>
+			<cfreturn bean/>
+		<cfelse>
+			<cfif isObject(arguments.categoryBean)>
+				<cfset bean=arguments.categoryBean/>
+			<cfelse>
+				<cfset bean=variables.userDAO.getBean()/>
+			</cfif>
+			<cfset bean.setAllValues( structCopy(cacheFactory.get( key )) )>
+			<cfreturn bean />
+		</cfif>
+	<cfelse>
+		<cfreturn variables.DAO.readByFilename(arguments.filename,arguments.categoryBean) />
+	</cfif>	
 
 </cffunction>
 
 <cffunction name="readByRemoteID" access="public" returntype="any" output="false">
 	<cfargument name="remoteID" type="String" />
 	<cfargument name="siteID" type="String" />		
+	<cfargument name="categoryBean" default=""/>
+	<cfset var key= "category" & arguments.siteid & arguments.filename />
+	<cfset var site=variables.settingsManager.getSite(arguments.siteid)/>
+	<cfset var cacheFactory=site.getCacheFactory()>
+	<cfset var bean="">	
 	
-	<cfreturn variables.DAO.readByRemoteID(arguments.remoteID, arguments.siteID) />
+	<cfif site.getCache()>
+		<!--- check to see if it is cached. if not then pass in the context --->
+		<!--- otherwise grab it from the cache --->
+		<cfif NOT cacheFactory.has( key )>
+			<cfset bean=variables.DAO.readByRemoteID(arguments.remoteID,arguments.categoryBean) >
+			<cfif not bean.getIsNew()>
+				<cfset cacheFactory.get( key, structCopy(bean.getAllValues()) ) />
+			</cfif>
+			<cfreturn bean/>
+		<cfelse>
+			<cfif isObject(arguments.categoryBean)>
+				<cfset bean=arguments.categoryBean/>
+			<cfelse>
+				<cfset bean=variables.userDAO.getBean()/>
+			</cfif>
+			<cfset bean.setAllValues( structCopy(cacheFactory.get( key )) )>
+			<cfreturn bean />
+		</cfif>
+	<cfelse>
+		<cfreturn variables.DAO.readByRemoteID(arguments.remoteID,arguments.categoryBean) />
+	</cfif>	
 
+</cffunction>
+
+<cffunction name="purgeCategoryCache" output="false">
+	<cfargument name="userID">
+	<cfargument name="categoryBean">
+	
+	<cfif not isDefined("arguments.categoryBean")>
+		<cfset arguments.userBean=read(categoryID=arguments.categoryID)>
+	</cfif>
+	<cfset cache=variables.settingsManager.getSite(arguments.categoryBean.getSiteID()).getCacheFactory()>
+	
+	<cfset cache.purge("category" & arguments.categoryBean.getSiteID() & arguments.categoryBean.getCategorID())>
+	<cfif len(arguments.userBean.getRemoteID())>
+		<cfset cache.purge("category" & arguments.categoryBean.getSiteID() & arguments.categoryBean.getRemoteID())>
+	</cfif>
+	<cfif len(arguments.userBean.getName())>
+		<cfset cache.purge("category" & arguments.categoryBean.getSiteID() & arguments.categoryBean.getName())>
+	</cfif>
+	<cfif len(arguments.userBean.getFilename())>
+		<cfset cache.purge("category" & arguments.categoryBean.getSiteID() & arguments.categoryBean.getFilename())>
+	</cfif>
+	
 </cffunction>
 
 <cffunction name="update" access="public" returntype="any" output="false">
@@ -400,7 +528,7 @@ to your own modified versions of Mura CMS.
 		<cfif isdefined('arguments.data.OrderID')>
 			<cfset setListOrder(categoryBean.getCategoryID(),arguments.data.OrderID,arguments.data.Orderno,arguments.data.siteID) />
 		</cfif>
-		
+		<cfset purgeCategoryCache(categoryBean=categoryBean)>
 		<cfset variables.pluginManager.announceEvent("onCategorySave",pluginEvent)>
 		<cfset variables.pluginManager.announceEvent("onCategoryUpdate",pluginEvent)>
 		<cfset variables.pluginManager.announceEvent("onAfterCategorySave",pluginEvent)>
@@ -437,6 +565,7 @@ to your own modified versions of Mura CMS.
 	<cfset variables.trashManager.throwIn(categoryBean)>
 	<cfset variables.utility.logEvent("CategoryID:#categoryBean.getCategoryID()# Name:#categoryBean.getName()# was deleted","mura-content","Information",true) />
 	<cfset variables.DAO.delete(arguments.categoryID) />
+	<cfset purgeCategoryCache(categoryBean=categoryBean)>
 
 	<cfset variables.pluginManager.announceEvent("onCategoryDelete",pluginEvent)>
 	<cfset variables.pluginManager.announceEvent("onAfterCategoryDelete",pluginEvent)>

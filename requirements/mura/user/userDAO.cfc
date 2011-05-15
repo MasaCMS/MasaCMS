@@ -65,10 +65,17 @@ to your own modified versions of Mura CMS.
 
 <cffunction name="read" access="public" returntype="any" output="false">
 		<cfargument name="userid" type="string" required="yes" />
+		<cfargument name="userBean" default="">
 		<cfset var rsuser = 0 />
 		<cfset var rsmembs = "" />
 		<cfset var rsInterests = "" />
-		<cfset var userBean=getBean() />
+		<cfset var bean="" />
+		
+		<cfif isObject(arguments.userBean)>
+			<cfset bean=arguments.userBean>
+		<cfelse>
+			<cfset bean=getBean()>
+		</cfif>	
 			
 		<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#" name="rsUser">
 			select #variables.fieldList#
@@ -78,14 +85,14 @@ to your own modified versions of Mura CMS.
 		</cfquery>
 	
 		<cfif rsUser.recordCount eq 1>
-			<cfset userBean.set(rsUser) />
-			<cfset setUserBeanMetaData(userBean)>
-			<cfset userBean.setIsNew(0)>
+			<cfset bean.set(rsUser) />
+			<cfset setUserBeanMetaData(bean)>
+			<cfset bean.setIsNew(0)>
 		<cfelse>
-			<cfset userBean.setIsNew(1)>
+			<cfset bean.setIsNew(1)>
 		</cfif>
 		
-		<cfreturn userBean />
+		<cfreturn bean />
 </cffunction>
 
 <cffunction name="readByUsername" access="public" returntype="any" output="false">

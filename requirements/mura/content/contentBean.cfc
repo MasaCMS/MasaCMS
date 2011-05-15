@@ -1627,4 +1627,7 @@ to your own modified versions of Mura CMS.
 	<cfreturn variables.contentManager.getImageURL(argumentCollection=arguments)>
 </cffunction>
 
+<cffunction name="clone" output="false">
+	<cfreturn getBean("content").setAllValues(structCopy(getAllValues()))>
+</cffunction>
 </cfcomponent>

@@ -1067,4 +1067,7 @@ to your own modified versions of Mura CMS.
 	
 </cffunction>
 
+<cffunction name="clone" output="false">
+	<cfreturn getBean("user").setAllValues(structCopy(getAllValues()))>
+</cffunction>
 </cfcomponent>

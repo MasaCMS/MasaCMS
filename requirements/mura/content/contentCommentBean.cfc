@@ -653,4 +653,7 @@ To Unsubscribe Click Here:
 
 </cffunction>
 
+<cffunction name="clone" output="false">
+	<cfreturn application.contentManager.getCommentBean().setAllValues(structCopy(getAllValues()))>
+</cffunction>
 </cfcomponent>
