@@ -201,7 +201,7 @@ to your own modified versions of Mura CMS.
 	<cfelseif len(arguments.remoteid)>
 		<cfreturn getActiveByRemoteID(arguments.remoteid, arguments.siteid,arguments.contentBean)>
 	<cfelseif len(arguments.title)>
-		<cfreturn getActiveByTitle(arguments.title, arguments.siteid,arguments.contentBean)>
+		<cfreturn getActiveByTitle(arguments.title, arguments.siteid,arguments.use404,arguments.contentBean)>
 	<cfelse>	
 		<cfreturn getActiveContent(arguments.contentid, arguments.siteid, arguments.use404,arguments.contentBean)>
 	</cfif>
