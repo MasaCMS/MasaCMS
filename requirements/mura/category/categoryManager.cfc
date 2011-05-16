@@ -314,11 +314,11 @@ to your own modified versions of Mura CMS.
 	
 	<cfif not len(arguments.categoryID) and len(arguments.siteID)>
 		<cfif len(arguments.name)>
-			<cfreturn variables.DAO.readByName(arguments.name, arguments.siteID) />
+			<cfreturn readByName(arguments.name, arguments.siteID, arguments.categoryBean) />
 		<cfelseif len(arguments.remoteID)>
-			<cfreturn variables.DAO.readByRemoteID(arguments.remoteID, arguments.siteID) />
+			<cfreturn readByRemoteID(arguments.remoteID, arguments.siteID, arguments.categoryBean) />
 		<cfelseif len(arguments.filename)>
-			<cfreturn variables.DAO.readByFilename(arguments.filename, arguments.siteID) />
+			<cfreturn readByFilename(arguments.filename, arguments.siteID, arguments.categoryBean) />
 		</cfif>
 	</cfif>
 	
