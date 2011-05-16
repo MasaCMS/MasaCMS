@@ -239,24 +239,28 @@ to your own modified versions of Mura CMS.
 <cffunction name="purgeUserCache" output="false">
 	<cfargument name="userID">
 	<cfargument name="userBean">
+	<cfset var cache="">
 	
 	<cfif not isDefined("arguments.userBean")>
 		<cfset arguments.userBean=read(userID=arguments.userID)>
 	</cfif>
-	<cfset cache=variables.settingsManager.getSite(arguments.userBean.getSiteID()).getCacheFactory()>
 	
-	<cfset cache.purge("user" & arguments.userBean.getSiteID() & arguments.userBean.getUserID())>
-	<cfif len(arguments.userBean.getRemoteID())>
-		<cfset cache.purge("user" & vuserBean.getSiteID() & arguments.userBean.getRemoteID())>
+	<cfif NOT arguments.userBean.getIsNew()>
+		<cfset cache=variables.settingsManager.getSite(arguments.userBean.getSiteID()).getCacheFactory()>
+		
+		<cfset cache.purge("user" & arguments.userBean.getSiteID() & arguments.userBean.getUserID())>
+		<cfif len(arguments.userBean.getRemoteID())>
+			<cfset cache.purge("user" & vuserBean.getSiteID() & arguments.userBean.getRemoteID())>
+		</cfif>
+		<cfif len(arguments.userBean.getUsername())>
+			<cfset cache.purge("user" & arguments.userBean.getSiteID() & arguments.userBean.getUsername())>
+		</cfif>
+		<cfif len(arguments.userBean.getGroupname())>
+			<cfset cache.purge("user" & arguments.userBean.getSiteID() & arguments.userBean.getGroupname())>
+		</cfif>
+		
+		<cfset variables.clusterManager.purgeUserCache(userID=arguments.userBean.getUserID())>
 	</cfif>
-	<cfif len(arguments.userBean.getUsername())>
-		<cfset cache.purge("user" & arguments.userBean.getSiteID() & arguments.userBean.getUsername())>
-	</cfif>
-	<cfif len(arguments.userBean.getGroupname())>
-		<cfset cache.purge("user" & arguments.userBean.getSiteID() & arguments.userBean.getGroupname())>
-	</cfif>
-	
-	<cfset variables.clusterManager.purgeUserCache(userID=arguments.userBean.getUserID())>
 </cffunction>
 
 <cffunction name="save" access="public" returntype="any" output="false">

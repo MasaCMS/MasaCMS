@@ -199,7 +199,7 @@ to your own modified versions of Mura CMS.
 	<cfelseif structKeyExists(arguments,"filename")>
 		<cfreturn getActiveContentByFilename(arguments.filename, arguments.siteid, arguments.use404,arguments.contentBean)>
 	<cfelseif len(arguments.remoteid)>
-		<cfreturn getActiveByRemoteID(arguments.remoteid, arguments.siteid,arguments.contentBean)>
+		<cfreturn getActiveByRemoteID(arguments.remoteid, arguments.siteid,arguments.use404,arguments.contentBean)>
 	<cfelseif len(arguments.title)>
 		<cfreturn getActiveByTitle(arguments.title, arguments.siteid,arguments.use404,arguments.contentBean)>
 	<cfelse>	
@@ -279,6 +279,7 @@ to your own modified versions of Mura CMS.
 	<cffunction name="getActiveByRemoteID" access="public" returntype="any" output="false">
 		<cfargument name="remoteID" type="string" required="yes" />
 		<cfargument name="siteID" type="string" required="yes" />
+		<cfargument name="use404" type="boolean" required="yes" default="false"/>
 		<cfargument name="contentBean" type="any" default=""/>
 		
 		<cfset var key="remoteID" & arguments.siteid & arguments.remoteID />
@@ -290,7 +291,7 @@ to your own modified versions of Mura CMS.
 			<!--- check to see if it is cached. if not then pass in the context --->
 			<!--- otherwise grab it from the cache --->
 			<cfif NOT cacheFactory.has( key )>
-				<cfset bean=variables.contentDAO.readActiveByRemoteID(arguments.remoteID,arguments.siteid,arguments.contentBean)  />
+				<cfset bean=variables.contentDAO.readActiveByRemoteID(arguments.remoteID,arguments.siteid,arguments.use404,arguments.contentBean)  />
 				<cfif not isArray(bean) and not bean.getIsNew()>
 					<cfset cacheFactory.get( key, structCopy(bean.getAllValues()) ) />
 				</cfif>
@@ -305,7 +306,7 @@ to your own modified versions of Mura CMS.
 				<cfreturn bean />
 			</cfif>
 		<cfelse>
-			<cfreturn variables.contentDAO.readActiveByRemoteID(arguments.remoteID,arguments.siteid,arguments.contentID,arguments.contentBean)/>
+			<cfreturn variables.contentDAO.readActiveByRemoteID(arguments.remoteID,arguments.siteid,arguments.use404,arguments.contentBean)/>
 		</cfif>
 		
 	</cffunction>

@@ -341,7 +341,7 @@ to your own modified versions of Mura CMS.
 			<cfif isObject(arguments.categoryBean)>
 				<cfset bean=arguments.categoryBean/>
 			<cfelse>
-				<cfset bean=variables.userDAO.getBean()/>
+				<cfset bean=variables.DAO.getBean()/>
 			</cfif>
 			<cfset bean.setAllValues( structCopy(cacheFactory.get( key )) )>
 			<cfreturn bean />
@@ -365,7 +365,7 @@ to your own modified versions of Mura CMS.
 		<!--- check to see if it is cached. if not then pass in the context --->
 		<!--- otherwise grab it from the cache --->
 		<cfif NOT cacheFactory.has( key )>
-			<cfset bean=variables.DAO.readByName(arguments.name,arguments.categoryBean) >
+			<cfset bean=variables.DAO.readByName(arguments.name,arguments.siteID,arguments.categoryBean) >
 			<cfif not bean.getIsNew()>
 				<cfset cacheFactory.get( key, structCopy(bean.getAllValues()) ) />
 			</cfif>
@@ -380,7 +380,7 @@ to your own modified versions of Mura CMS.
 			<cfreturn bean />
 		</cfif>
 	<cfelse>
-		<cfreturn variables.DAO.readByName(arguments.name,arguments.categoryBean) />
+		<cfreturn variables.DAO.readByName(arguments.name,arguments.siteID,arguments.categoryBean) />
 	</cfif>	
 
 </cffunction>
@@ -398,7 +398,7 @@ to your own modified versions of Mura CMS.
 		<!--- check to see if it is cached. if not then pass in the context --->
 		<!--- otherwise grab it from the cache --->
 		<cfif NOT cacheFactory.has( key )>
-			<cfset bean=variables.DAO.readByFilename(arguments.filename,arguments.categoryBean) >
+			<cfset bean=variables.DAO.readByFilename(arguments.filename,arguments.siteID,arguments.categoryBean) >
 			<cfif not bean.getIsNew()>
 				<cfset cacheFactory.get( key, structCopy(bean.getAllValues()) ) />
 			</cfif>
@@ -413,7 +413,7 @@ to your own modified versions of Mura CMS.
 			<cfreturn bean />
 		</cfif>
 	<cfelse>
-		<cfreturn variables.DAO.readByFilename(arguments.filename,arguments.categoryBean) />
+		<cfreturn variables.DAO.readByFilename(arguments.filename,arguments.siteID,arguments.categoryBean) />
 	</cfif>	
 
 </cffunction>
@@ -422,7 +422,7 @@ to your own modified versions of Mura CMS.
 	<cfargument name="remoteID" type="String" />
 	<cfargument name="siteID" type="String" />		
 	<cfargument name="categoryBean" default=""/>
-	<cfset var key= "category" & arguments.siteid & arguments.filename />
+	<cfset var key= "category" & arguments.siteid & arguments.remoteID />
 	<cfset var site=variables.settingsManager.getSite(arguments.siteid)/>
 	<cfset var cacheFactory=site.getCacheFactory()>
 	<cfset var bean="">	
@@ -431,7 +431,7 @@ to your own modified versions of Mura CMS.
 		<!--- check to see if it is cached. if not then pass in the context --->
 		<!--- otherwise grab it from the cache --->
 		<cfif NOT cacheFactory.has( key )>
-			<cfset bean=variables.DAO.readByRemoteID(arguments.remoteID,arguments.categoryBean) >
+			<cfset bean=variables.DAO.readByRemoteID(arguments.remoteID,arguments.siteID,arguments.categoryBean) >
 			<cfif not bean.getIsNew()>
 				<cfset cacheFactory.get( key, structCopy(bean.getAllValues()) ) />
 			</cfif>
@@ -446,7 +446,7 @@ to your own modified versions of Mura CMS.
 			<cfreturn bean />
 		</cfif>
 	<cfelse>
-		<cfreturn variables.DAO.readByRemoteID(arguments.remoteID,arguments.categoryBean) />
+		<cfreturn variables.DAO.readByRemoteID(arguments.remoteID,arguments.siteID,arguments.categoryBean) />
 	</cfif>	
 
 </cffunction>
@@ -455,25 +455,29 @@ to your own modified versions of Mura CMS.
 	<cfargument name="categoryID">
 	<cfargument name="categoryBean">
 	<cfargument name="broadcast" default="true">
-	<cfset var cache=variables.settingsManager.getSite(arguments.categoryBean.getSiteID()).getCacheFactory()>
+	<cfset var cache="">
 	
 	<cfif not isDefined("arguments.categoryBean")>
 		<cfset arguments.categoryBean=read(categoryID=arguments.categoryID)>
 	</cfif>
 	
-	<cfset cache.purge("category" & arguments.categoryBean.getSiteID() & arguments.categoryBean.getCategoryID())>
-	<cfif len(arguments.categoryBean.getRemoteID())>
-		<cfset cache.purge("category" & arguments.categoryBean.getSiteID() & arguments.categoryBean.getRemoteID())>
-	</cfif>
-	<cfif len(arguments.categoryBean.getName())>
-		<cfset cache.purge("category" & arguments.categoryBean.getSiteID() & arguments.categoryBean.getName())>
-	</cfif>
-	<cfif len(arguments.categoryBean.getFilename())>
-		<cfset cache.purge("category" & arguments.categoryBean.getSiteID() & arguments.categoryBean.getFilename())>
-	</cfif>
-	
-	<cfif arguments.broadcast>
-		<cfset variables.clusterManager.purgeCategoryCache(categoryID=arguments.categoryBean.getcategoryID())>
+	<cfif arguments.categoryBean.getIsNew()>
+		<cfset cache=variables.settingsManager.getSite(arguments.categoryBean.getSiteID()).getCacheFactory()>
+		
+		<cfset cache.purge("category" & arguments.categoryBean.getSiteID() & arguments.categoryBean.getCategoryID())>
+		<cfif len(arguments.categoryBean.getRemoteID())>
+			<cfset cache.purge("category" & arguments.categoryBean.getSiteID() & arguments.categoryBean.getRemoteID())>
+		</cfif>
+		<cfif len(arguments.categoryBean.getName())>
+			<cfset cache.purge("category" & arguments.categoryBean.getSiteID() & arguments.categoryBean.getName())>
+		</cfif>
+		<cfif len(arguments.categoryBean.getFilename())>
+			<cfset cache.purge("category" & arguments.categoryBean.getSiteID() & arguments.categoryBean.getFilename())>
+		</cfif>
+		
+		<cfif arguments.broadcast>
+			<cfset variables.clusterManager.purgeCategoryCache(categoryID=arguments.categoryBean.getcategoryID())>
+		</cfif>
 	</cfif>
 </cffunction>
 	
