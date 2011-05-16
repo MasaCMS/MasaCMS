@@ -104,8 +104,7 @@ function conditionalExit(msg){
 				}
 			}
 		});
-		
-		requestedURL="";
+	
 		return false;	
 		
 	} else {

@@ -661,30 +661,44 @@ function removeRelatedContent(contentID,confirmText){
 
 function form_is_modified(oForm)
 {
-	var el, opt, hasDefault, i = 0, j;
-	while (el = oForm.elements[i++]) {
-		switch (el.type) {
-			case 'text' :
-                   	case 'textarea' :
-                   	case 'hidden' :
-                         	if (!/^\s*$/.test(el.value) && el.value != el.defaultValue) return true;
-                         	break;
-                   	case 'checkbox' :
-                   	case 'radio' :
-                         	if (el.checked != el.defaultChecked) return true;
-                         	break;
-                   	case 'select-one' :
-                   	case 'select-multiple' :
-                         	j = 0, hasDefault = false;
-                         	while (opt = el.options[j++])
-                                	if (opt.defaultSelected) hasDefault = true;
-                         	j = hasDefault ? 0 : 1;
-                         	while (opt = el.options[j++]) 
-                                	if (opt.selected != opt.defaultSelected) return true;
-                         	break;
-		}
-		
-	}
+	for (var i = 0; i < oForm.elements.length; i++)
+    {
+        var element = oForm.elements[i];
+        var type = element.type;
+        if (type == "checkbox" || type == "radio")
+        {
+            if (element.checked != element.defaultChecked)
+            {
+            	//alert(type + ":" + element.name)
+                return true;
+            }
+        }
+        else if (type == "hidden" || type == "password" || type == "text" ||
+                 type == "textarea")
+        {
+            if (element.value != element.defaultValue)
+            {
+            	if(element.name !='sdContent'){
+            		//alert(type + ":" + element.name)
+            		return true;
+            	}
+            }
+        }
+        /*
+        else if (type == "select-one" || type == "select-multiple")
+        {
+            for (var j = 0; j < element.options.length; j++)
+            {
+                if (element.options[j].selected !=
+                    element.options[j].defaultSelected)
+                {
+                    return true;
+                } 
+            }
+        }
+        */
+    }
+	
 	if (typeof(FCKeditorAPI) != 'undefined'){
 		if (FCKeditorAPI.GetInstance('body') && FCKeditorAPI.GetInstance('body').IsDirty())
 			return true;
