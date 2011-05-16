@@ -452,15 +452,33 @@ to your own modified versions of Mura CMS.
 <cffunction name="purgeCategoryCache" output="false">
 	<cfargument name="userID">
 	<cfargument name="categoryBean">
-	<cfset var it="">
-	<cfset var rs="">
-	<cfset var item="">
+	<cfset var cache=variables.settingsManager.getSite(arguments.categoryBean.getSiteID()).getCacheFactory()>
 	
 	<cfif not isDefined("arguments.categoryBean")>
 		<cfset arguments.categoryBean=read(categoryID=arguments.categoryID)>
 	</cfif>
 	
-	<cfset cache=variables.settingsManager.getSite(arguments.categoryBean.getSiteID()).getCacheFactory()>
+	<cfset cache.purge("category" & arguments.categoryBean.getSiteID() & arguments.categoryBean.getCategoryID())>
+	<cfif len(arguments.categoryBean.getRemoteID())>
+		<cfset cache.purge("category" & arguments.categoryBean.getSiteID() & arguments.categoryBean.getRemoteID())>
+	</cfif>
+	<cfif len(arguments.categoryBean.getName())>
+		<cfset cache.purge("category" & arguments.categoryBean.getSiteID() & arguments.categoryBean.getName())>
+	</cfif>
+	<cfif len(arguments.categoryBean.getFilename())>
+		<cfset cache.purge("category" & arguments.categoryBean.getSiteID() & arguments.categoryBean.getFilename())>
+	</cfif>
+</cffunction>
+	
+<cffunction name="purgeDescendentsCache" output="false">
+	<cfargument name="userID">
+	<cfargument name="categoryBean">
+	<cfset var it="">
+	<cfset var rs="">
+	
+	<cfif not isDefined("arguments.categoryBean")>
+		<cfset arguments.categoryBean=read(categoryID=arguments.categoryID)>
+	</cfif>
 	
 	<cfquery name="rs" datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	select categoryID,siteID,dateCreated,lastUpdate,lastUpdateBy,
@@ -473,21 +491,9 @@ to your own modified versions of Mura CMS.
 	
 	<cfset it=getServiceFactory().getBean("categoryIterator").setQuery(rs)>
 
-	<cfloop condition="it.hasNExt()">
-		<cfset item=it.next()>
-		<cfset cache.purge("category" & item.getSiteID() & item.getCategoryID())>
-		<cfif len(item.getRemoteID())>
-			<cfset cache.purge("category" & item.getSiteID() & item.getRemoteID())>
-		</cfif>
-		<cfif len(item.getName())>
-			<cfset cache.purge("category" & item.getSiteID() & item.getName())>
-		</cfif>
-		<cfif len(item.getFilename())>
-			<cfset cache.purge("category" & item.getSiteID() & item.getFilename())>
-		</cfif>
+	<cfloop condition="it.hasNext()">
+		<cfset purgeCategoryCache(it.next())>
 	</cfloop>
-	
-	
 </cffunction>
 
 <cffunction name="update" access="public" returntype="any" output="false">
@@ -511,19 +517,21 @@ to your own modified versions of Mura CMS.
 	<cfset variables.pluginManager.announceEvent("onBeforeCategorySave",pluginEvent)>
 	<cfset variables.pluginManager.announceEvent("onBeforeCategoryUpdate",pluginEvent)>
 		
-	<cfif structIsEmpty(categoryBean.getErrors())>
-	
-		<cfif currentParentID neq categoryBean.getParentID()>
-			<cfset setMaterializedPath(categoryBean) />
-			<cfset updateMaterializedPath(categoryBean.getPath(),currentPath,categoryBean.getSiteID())>
-		</cfif>
-		
+	<cfif structIsEmpty(categoryBean.getErrors())>	
 		<cfif not len(categoryBean.getURLTitle())>
 			<cfset categoryBean.setURLTitle(categoryBean.getName())>
 		</cfif>
 	
-		<cfif currentURLTitle neq categoryBean.getURLTitle()>
+		<cfif currentURLTitle neq categoryBean.getURLTitle()
+			or currentParentID neq categoryBean.getParentID()>		
+			
+			<cfif currentParentID neq categoryBean.getParentID()>
+				<cfset setMaterializedPath(categoryBean) />
+				<cfset updateMaterializedPath(categoryBean.getPath(),currentPath,categoryBean.getSiteID())>
+			</cfif>
+		
 			<cfset parentBean=read(categoryBean.getParentID())>
+			
 			<cfif not parentBean.getIsNew()>
 				<cfif not len(parentBean.getFilename())>
 					<cfset parentBean.save()>
@@ -540,6 +548,8 @@ to your own modified versions of Mura CMS.
 			update tcontentcategories set filename=replace(filename,<cfqueryparam cfsqltype="cf_sql_varchar" value="#currentFilename#/"/>,<cfqueryparam cfsqltype="cf_sql_varchar" value="#categoryBean.getFilename()#/"/>) where siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#categoryBean.getSiteID()#"/>
 			and filename like <cfqueryparam cfsqltype="cf_sql_varchar" value="#currentFilename#/%"/>
 			</cfquery>
+			
+			<cfset purgeDescendentsCache(categoryBean=categoryBean)>
 		</cfif>
 		
 		<cfset categoryBean.setLastUpdateBy(left(session.mura.fname & " " & session.mura.lname,50)) />
@@ -585,7 +595,7 @@ to your own modified versions of Mura CMS.
 	<cfset variables.utility.logEvent("CategoryID:#categoryBean.getCategoryID()# Name:#categoryBean.getName()# was deleted","mura-content","Information",true) />
 	<cfset variables.DAO.delete(arguments.categoryID) />
 	<cfset purgeCategoryCache(categoryBean=categoryBean)>
-
+	<cfset purgeDescendentsCache(categoryBean=categoryBean)>
 	<cfset variables.pluginManager.announceEvent("onCategoryDelete",pluginEvent)>
 	<cfset variables.pluginManager.announceEvent("onAfterCategoryDelete",pluginEvent)>
 
