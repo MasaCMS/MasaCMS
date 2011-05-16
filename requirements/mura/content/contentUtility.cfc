@@ -546,14 +546,15 @@ http://#listFirst(cgi.http_host,":")##variables.configBean.getServerPort()##vari
 	
 	<cfset tempfile=arguments.contentBean.getFilename() />
 	
-			<cfloop condition="#doesFileExist(arguments.contentBean.getsiteid(),tempfile)#" >
-				<cfset pass=pass+1>
-				<cfset tempfile="#arguments.contentBean.getFilename()##pass#" />
-			</cfloop>
+	<cfloop condition="#doesFileExist(arguments.contentBean.getsiteid(),tempfile)#" >
+		<cfset pass=pass+1>
+		<cfset tempfile="#arguments.contentBean.getFilename()##pass#" />
+	</cfloop>
 								
-			<cfif pass>
-			<cfset arguments.contentBean.setFilename(tempfile) />
-			</cfif>
+	<cfif pass>
+		<cfset arguments.contentBean.setFilename(tempfile) />
+		<cfset arguments.contentBean.setURLTitle(listLast(tempfile,"/"))>
+	</cfif>
 </cffunction>	
 
 <cffunction name="isOnDisplay" returntype="numeric" output="false" access="public">
