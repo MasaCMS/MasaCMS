@@ -747,7 +747,7 @@ to your own modified versions of Mura CMS.
 		<!--- END CONTENT TYPE: ALL SITE TREE LEVEL CONTENT TYPES --->
 		
 		<!--- BEGIN CONTENT TYPE: PAGE, PORTAL, CALENDAR, GALLERY --->
-		<cfif newBean.gettype() eq 'Page' or newBean.gettype() eq 'Portal' or newBean.gettype() eq 'Calendar' or newBean.gettype() eq 'Gallery'>
+		<cfif listFindNoCase("Page,Portal,Calendar,Gallery",newBean.gettype())>
 			
 			<cfif not newBean.getIsNew()>	
 				<cfset newBean.setfilename(currentBean.getfilename())>
@@ -794,14 +794,14 @@ to your own modified versions of Mura CMS.
 			</cfif>		
 			
 			<cfif newBean.getIsNew()>
-			<cfset variables.contentDAO.createObjects(arguments.data,newBean,'') />
+				<cfset variables.contentDAO.createObjects(arguments.data,newBean,'') />
 			<cfelse>
-			<cfset variables.contentDAO.createObjects(arguments.data,newBean,currentBean.getcontentHistID()) />
+				<cfset variables.contentDAO.createObjects(arguments.data,newBean,currentBean.getcontentHistID()) />
 			</cfif>
 			
 			<cfif isDefined('arguments.data.deleteFile') and len(newBean.getFileID())>
-			<cfset variables.fileManager.deleteIfNotUsed(newBean.getFileID(),newBean.getContentHistID())>
-			<cfset newBean.setFileID('')>
+				<cfset variables.fileManager.deleteIfNotUsed(newBean.getFileID(),newBean.getContentHistID())>
+				<cfset newBean.setFileID('')>
 			</cfif>
 						
 		</cfif>

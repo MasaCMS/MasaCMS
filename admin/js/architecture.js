@@ -694,7 +694,7 @@ function form_is_modified(oForm)
 			return true;
 	} else if (typeof(CKEDITOR) != 'undefined' && typeof(CKEDITOR.instances["body"]) != 'undefined'){
 		var instance = CKEDITOR.instances["body"];
-		if(intance.checkDirty()){
+		if(instance.checkDirty()){
 			return true;
 		}
 		
