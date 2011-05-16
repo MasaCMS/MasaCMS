@@ -452,22 +452,41 @@ to your own modified versions of Mura CMS.
 <cffunction name="purgeCategoryCache" output="false">
 	<cfargument name="userID">
 	<cfargument name="categoryBean">
+	<cfset var it="">
+	<cfset var rs="">
+	<cfset var item="">
 	
 	<cfif not isDefined("arguments.categoryBean")>
-		<cfset arguments.userBean=read(categoryID=arguments.categoryID)>
+		<cfset arguments.categoryBean=read(categoryID=arguments.categoryID)>
 	</cfif>
+	
 	<cfset cache=variables.settingsManager.getSite(arguments.categoryBean.getSiteID()).getCacheFactory()>
 	
-	<cfset cache.purge("category" & arguments.categoryBean.getSiteID() & arguments.categoryBean.getCategorID())>
-	<cfif len(arguments.userBean.getRemoteID())>
-		<cfset cache.purge("category" & arguments.categoryBean.getSiteID() & arguments.categoryBean.getRemoteID())>
-	</cfif>
-	<cfif len(arguments.userBean.getName())>
-		<cfset cache.purge("category" & arguments.categoryBean.getSiteID() & arguments.categoryBean.getName())>
-	</cfif>
-	<cfif len(arguments.userBean.getFilename())>
-		<cfset cache.purge("category" & arguments.categoryBean.getSiteID() & arguments.categoryBean.getFilename())>
-	</cfif>
+	<cfquery name="rs" datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+	select categoryID,siteID,dateCreated,lastUpdate,lastUpdateBy,
+	name,isInterestGroup,parentID,isActive,isOpen,notes,sortBy,
+	sortDirection,restrictGroups,path,remoteID,remoteSourceURL,
+	remotePubDate,urlTitle,filename
+	from tcontentcategories where 
+	path like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#categoryBean.getCategoryID()#%">
+	</cfquery>
+	
+	<cfset it=getServiceFactory().getBean("categoryIterator").setQuery(rs)>
+
+	<cfloop condition="it.hasNExt()">
+		<cfset item=it.next()>
+		<cfset cache.purge("category" & item.getSiteID() & item.getCategoryID())>
+		<cfif len(item.getRemoteID())>
+			<cfset cache.purge("category" & item.getSiteID() & item.getRemoteID())>
+		</cfif>
+		<cfif len(item.getName())>
+			<cfset cache.purge("category" & item.getSiteID() & item.getName())>
+		</cfif>
+		<cfif len(item.getFilename())>
+			<cfset cache.purge("category" & item.getSiteID() & item.getFilename())>
+		</cfif>
+	</cfloop>
+	
 	
 </cffunction>
 

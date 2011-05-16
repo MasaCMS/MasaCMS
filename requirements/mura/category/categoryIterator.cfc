@@ -45,8 +45,8 @@ to your own modified versions of Mura CMS.
 <cfset variables.categoryBean="">
 
 <cffunction name="packageRecord" access="public" output="false" returntype="any">
-	<cfif NOT isObject(variables.userBean)>
-		<cfset variables.categoryBean==createObject("component","categoryBean").init(variables.categoryManager) />
+	<cfif NOT isObject(variables.categoryBean)>
+		<cfset variables.categoryBean=createObject("component","categoryBean").init(variables.categoryManager) />
 		<cfset variables.categoryStructTemplate=variables.categoryBean.getAllValues()>
 	<cfelse>
 		<cfset variables.categoryBean.setAllValues( variables.categoryStructTemplate)>
