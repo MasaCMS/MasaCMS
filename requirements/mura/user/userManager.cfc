@@ -52,6 +52,7 @@ to your own modified versions of Mura CMS.
 <cfargument name="pluginManager" type="any" required="yes"/>
 <cfargument name="trashManager" type="any" required="yes"/>
 <cfargument name="settingsManager" type="any" required="yes"/>
+<cfargument name="clusterManager" type="any" required="yes"/>
 
 	<cfset variables.configBean=arguments.configBean />
 	<cfset variables.userDAO=arguments.userDAO />
@@ -63,6 +64,7 @@ to your own modified versions of Mura CMS.
 	<cfset variables.pluginManager=arguments.pluginManager />
 	<cfset variables.trashManager=arguments.trashManager />
 	<cfset variables.settingsManager=arguments.settingsManager />
+	<cfset variables.clusterManager=arguments.clusterManager />
 	
 	<cfset variables.userDAO.setUserManager(this)>
 	
@@ -254,6 +256,7 @@ to your own modified versions of Mura CMS.
 		<cfset cache.purge("user" & arguments.userBean.getSiteID() & arguments.userBean.getGroupname())>
 	</cfif>
 	
+	<cfset variables.clusterManager.purgeUserCache(userID=arguments.userBean.getUserID())>
 </cffunction>
 
 <cffunction name="save" access="public" returntype="any" output="false">

@@ -56,6 +56,36 @@ to your own modified versions of Mura CMS.
 	</cfif>
 </cffunction>
 
+<cffunction name="purgeUserCache" returntype="any" access="remote" output="false">
+	<cfargument name="userID" required="true" default="">
+	<cfargument name="appreloadkey" required="true" default="">
+	<cfargument name="instanceID" required="true" default="">
+	<cfif arguments.instanceID neq application.instanceID 
+		and arguments.appreloadkey eq application.appreloadkey>
+		<cfset application.userManager.purgeUserCache(userid=arguments.userID)>
+	</cfif>
+</cffunction>
+
+<cffunction name="purgeCategoryCache" returntype="any" access="remote" output="false">
+	<cfargument name="categoryID" required="true" default="">
+	<cfargument name="appreloadkey" required="true" default="">
+	<cfargument name="instanceID" required="true" default="">
+	<cfif arguments.instanceID neq application.instanceID 
+		and arguments.appreloadkey eq application.appreloadkey>
+		<cfset application.categoryManager.purgeCategoryCache(categoryID=arguments.categoryID)>
+	</cfif>
+</cffunction>
+
+<cffunction name="purgeCategoryDescendentsCache" returntype="any" access="remote" output="false">
+	<cfargument name="categoryID" required="true" default="">
+	<cfargument name="appreloadkey" required="true" default="">
+	<cfargument name="instanceID" required="true" default="">
+	<cfif arguments.instanceID neq application.instanceID 
+		and arguments.appreloadkey eq application.appreloadkey>
+		<cfset application.categoryManager.purgeDescendentsCache(categoryID=arguments.categoryID)>
+	</cfif>
+</cffunction>
+
 <cffunction name="reload" returntype="any" access="remote" output="false">
 	<cfargument name="appreloadkey" required="true" default="">
 	<cfargument name="instanceID" required="true" default="">

@@ -21,6 +21,51 @@
 	
 </cffunction>
 
+<cffunction name="purgeUserCache" returntype="void" access="public" output="false">
+	<cfargument name="userID" required="true" default="">
+	<cfset var clusterList=getClusterList()>
+	<cfset var host="">
+	<cfset var remoteURL="">
+	
+	<cfif len(clusterList)>
+		<cfloop list="#clusterList#" index="host">
+			<cfset remoteURL="#formatHost(host)#/MuraProxy.cfc?method=purgeUserCache&userID=#URLEncodedFormat(arguments.userID)#&appreloadkey=#URLEncodedFormat(application.appreloadkey)#&instanceID=#application.instanceID#">
+			<cfset doRemoteCall(remoteURL)>
+		</cfloop>
+	</cfif>
+	
+</cffunction>
+
+<cffunction name="purgeCategoryCache" returntype="void" access="public" output="false">
+	<cfargument name="categoryID" required="true" default="">
+	<cfset var clusterList=getClusterList()>
+	<cfset var host="">
+	<cfset var remoteURL="">
+	
+	<cfif len(clusterList)>
+		<cfloop list="#clusterList#" index="host">
+			<cfset remoteURL="#formatHost(host)#/MuraProxy.cfc?method=purgeCategoryCache&categoryID=#URLEncodedFormat(arguments.categoryID)#&appreloadkey=#URLEncodedFormat(application.appreloadkey)#&instanceID=#application.instanceID#">
+			<cfset doRemoteCall(remoteURL)>
+		</cfloop>
+	</cfif>
+	
+</cffunction>
+
+<cffunction name="purgeCategoryDescendentsCache" returntype="void" access="public" output="false">
+	<cfargument name="categoryID" required="true" default="">
+	<cfset var clusterList=getClusterList()>
+	<cfset var host="">
+	<cfset var remoteURL="">
+	
+	<cfif len(clusterList)>
+		<cfloop list="#clusterList#" index="host">
+			<cfset remoteURL="#formatHost(host)#/MuraProxy.cfc?method=purgeCategoryDescendentsCache&categoryID=#URLEncodedFormat(arguments.categoryID)#&appreloadkey=#URLEncodedFormat(application.appreloadkey)#&instanceID=#application.instanceID#">
+			<cfset doRemoteCall(remoteURL)>
+		</cfloop>
+	</cfif>
+	
+</cffunction>
+
 <cffunction name="reload" output="false" returntype="void">	
 	<cfset var clusterList=getClusterList()>
 	<cfset var host="">

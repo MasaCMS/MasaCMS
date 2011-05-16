@@ -52,6 +52,7 @@ to your own modified versions of Mura CMS.
 <cfargument name="categoryUtility" type="any" required="yes"/>
 <cfargument name="pluginManager" type="any" required="yes"/>
 <cfargument name="trashManager" type="any" required="yes"/>
+<cfargument name="clusterManager" type="any" required="yes"/>
 
 	<cfset variables.configBean=arguments.configBean />
 	<cfset variables.gateway=arguments.categoryGateway />
@@ -62,6 +63,7 @@ to your own modified versions of Mura CMS.
 	<cfset variables.categoryUtility=arguments.categoryUtility />
 	<cfset variables.pluginManager=arguments.pluginManager />
 	<cfset variables.trashManager=arguments.trashManager />
+	<cfset variables.clusterManager=arguments.clusterManager />
 	
 	<cfreturn this />
 </cffunction>
@@ -450,8 +452,9 @@ to your own modified versions of Mura CMS.
 </cffunction>
 
 <cffunction name="purgeCategoryCache" output="false">
-	<cfargument name="userID">
+	<cfargument name="categoryID">
 	<cfargument name="categoryBean">
+	<cfargument name="broadcast" default="true">
 	<cfset var cache=variables.settingsManager.getSite(arguments.categoryBean.getSiteID()).getCacheFactory()>
 	
 	<cfif not isDefined("arguments.categoryBean")>
@@ -468,10 +471,14 @@ to your own modified versions of Mura CMS.
 	<cfif len(arguments.categoryBean.getFilename())>
 		<cfset cache.purge("category" & arguments.categoryBean.getSiteID() & arguments.categoryBean.getFilename())>
 	</cfif>
+	
+	<cfif arguments.broadcast>
+		<cfset variables.clusterManager.purgeCategoryCache(categoryID=arguments.categoryBean.getcategoryID())>
+	</cfif>
 </cffunction>
 	
-<cffunction name="purgeDescendentsCache" output="false">
-	<cfargument name="userID">
+<cffunction name="purgeCategoryDescendentsCache" output="false">
+	<cfargument name="categoryID">
 	<cfargument name="categoryBean">
 	<cfset var it="">
 	<cfset var rs="">
@@ -492,8 +499,10 @@ to your own modified versions of Mura CMS.
 	<cfset it=getServiceFactory().getBean("categoryIterator").setQuery(rs)>
 
 	<cfloop condition="it.hasNext()">
-		<cfset purgeCategoryCache(it.next())>
+		<cfset purgeCategoryCache(categoryBean=it.next(),broadcast=false)>
 	</cfloop>
+	
+	<cfset variables.clusterManager.purgeCategoryDescendentsCache(categoryID=arguments.categoryBean.getcategoryID())>
 </cffunction>
 
 <cffunction name="update" access="public" returntype="any" output="false">
@@ -549,7 +558,7 @@ to your own modified versions of Mura CMS.
 			and filename like <cfqueryparam cfsqltype="cf_sql_varchar" value="#currentFilename#/%"/>
 			</cfquery>
 			
-			<cfset purgeDescendentsCache(categoryBean=categoryBean)>
+			<cfset purgeCategoryDescendentsCache(categoryBean=categoryBean)>
 		</cfif>
 		
 		<cfset categoryBean.setLastUpdateBy(left(session.mura.fname & " " & session.mura.lname,50)) />
@@ -595,7 +604,7 @@ to your own modified versions of Mura CMS.
 	<cfset variables.utility.logEvent("CategoryID:#categoryBean.getCategoryID()# Name:#categoryBean.getName()# was deleted","mura-content","Information",true) />
 	<cfset variables.DAO.delete(arguments.categoryID) />
 	<cfset purgeCategoryCache(categoryBean=categoryBean)>
-	<cfset purgeDescendentsCache(categoryBean=categoryBean)>
+	<cfset purgeCategoryDescendentsCache(categoryBean=categoryBean)>
 	<cfset variables.pluginManager.announceEvent("onCategoryDelete",pluginEvent)>
 	<cfset variables.pluginManager.announceEvent("onAfterCategoryDelete",pluginEvent)>
 

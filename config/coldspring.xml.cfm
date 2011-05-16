@@ -169,6 +169,7 @@ to your own modified versions of Mura CMS.
 			<constructor-arg name="settingsManager"><ref bean="settingsManager" /></constructor-arg>
 			<constructor-arg name="pluginManager"><ref bean="pluginManager" /></constructor-arg>
 			<constructor-arg name="trashManager"><ref bean="trashManager" /></constructor-arg>
+			<constructor-arg name="clusterManager"><ref bean="clusterManager" /></constructor-arg>
 		</bean>
 		<bean id="categoryDAO" class="mura.category.categoryDAO" singleton="true" >
 			<constructor-arg name="configBean"><ref bean="configBean" /></constructor-arg>
@@ -221,6 +222,7 @@ to your own modified versions of Mura CMS.
 			<constructor-arg name="pluginManager"><ref bean="pluginManager" /></constructor-arg>
 			<constructor-arg name="trashManager"><ref bean="trashManager" /></constructor-arg>
 			<constructor-arg name="settingsManager"><ref bean="settingsManager" /></constructor-arg>
+			<constructor-arg name="clusterManager"><ref bean="clusterManager" /></constructor-arg>
 		</bean>
 		<bean id="userDAO" class="mura.user.userDAO" singleton="true">
 			<constructor-arg name="configBean"><ref bean="configBean" /></constructor-arg>
