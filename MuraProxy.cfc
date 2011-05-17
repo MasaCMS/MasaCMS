@@ -44,12 +44,13 @@ to your own modified versions of Mura CMS.
 
 <cffunction name="purgeSiteCache" returntype="any" access="remote" output="false">
 	<cfargument name="siteid" required="true" default="">
+	<cfargument name="type" required="true" default="" hint="data, output or both">
 	<cfargument name="appreloadkey" required="true" default="">
 	<cfargument name="instanceID" required="true" default="">
 	<cfif arguments.instanceID neq application.instanceID 
 		and arguments.appreloadkey eq application.appreloadkey>
 		<cfif len(arguments.siteid)>
-			<cfset application.settingsManager.getSite(arguments.siteID).getCacheFactory().purgeAll()>	
+			<cfset application.settingsManager.getSite(arguments.siteID).purgeCache(type=arguments.type)>	
 		<cfelse>
 			<cfset application.settingsManager.purgeAllCache()>
 		</cfif>
@@ -82,7 +83,29 @@ to your own modified versions of Mura CMS.
 	<cfargument name="instanceID" required="true" default="">
 	<cfif arguments.instanceID neq application.instanceID 
 		and arguments.appreloadkey eq application.appreloadkey>
-		<cfset application.categoryManager.purgeDescendentsCache(categoryID=arguments.categoryID)>
+		<cfset application.categoryManager.purgeCategoryDescendentsCache(categoryID=arguments.categoryID)>
+	</cfif>
+</cffunction>
+
+<cffunction name="purgeContentCache" returntype="any" access="remote" output="false">
+	<cfargument name="contentID" required="true" default="">
+	<cfargument name="siteID" required="true" default="">
+	<cfargument name="appreloadkey" required="true" default="">
+	<cfargument name="instanceID" required="true" default="">
+	<cfif arguments.instanceID neq application.instanceID 
+		and arguments.appreloadkey eq application.appreloadkey>
+		<cfset application.contentManager.purgeContentCache(contentID=arguments.contentID,siteID=arguments.siteID)>
+	</cfif>
+</cffunction>
+
+<cffunction name="purgeContentDescendentsCache" returntype="any" access="remote" output="false">
+	<cfargument name="contentID" required="true" default="">
+	<cfargument name="siteID" required="true" default="">
+	<cfargument name="appreloadkey" required="true" default="">
+	<cfargument name="instanceID" required="true" default="">
+	<cfif arguments.instanceID neq application.instanceID 
+		and arguments.appreloadkey eq application.appreloadkey>
+		<cfset application.contentManager.purgeContentDescendentsCache(contentID=arguments.contentID,siteID=arguments.siteID)>
 	</cfif>
 </cffunction>
 

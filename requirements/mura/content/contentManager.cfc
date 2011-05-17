@@ -215,7 +215,7 @@ to your own modified versions of Mura CMS.
 		<cfargument name="contentBean" type="any" default=""/>
 		<cfset var key= "version" & arguments.siteid & arguments.contentHistID />
 		<cfset var site=variables.settingsManager.getSite(arguments.siteid)/>
-		<cfset var cacheFactory=site.getCacheFactory()>
+		<cfset var cacheFactory=site.getCacheFactory(type="data")>
 		<cfset var bean="">
 		
 		<cfif site.getCache()>
@@ -249,7 +249,7 @@ to your own modified versions of Mura CMS.
 		
 		<cfset var key="filename" & arguments.siteid & arguments.filename />
 		<cfset var site=variables.settingsManager.getSite(arguments.siteid)/>
-		<cfset var cacheFactory=site.getCacheFactory()>
+		<cfset var cacheFactory=site.getCacheFactory(type="data")>
 		<cfset var bean="">
 		
 		<cfif site.getCache()>
@@ -284,7 +284,7 @@ to your own modified versions of Mura CMS.
 		
 		<cfset var key="remoteID" & arguments.siteid & arguments.remoteID />
 		<cfset var site=variables.settingsManager.getSite(arguments.siteid)/>
-		<cfset var cacheFactory=site.getCacheFactory()/>
+		<cfset var cacheFactory=site.getCacheFactory(type="data")/>
 		<cfset var bean=""/>
 		
 		<cfif site.getCache()>
@@ -318,7 +318,7 @@ to your own modified versions of Mura CMS.
 		
 		<cfset var key="title" & arguments.siteid & arguments.title />
 		<cfset var site=variables.settingsManager.getSite(arguments.siteid)/>
-		<cfset var cacheFactory=site.getCacheFactory()/>
+		<cfset var cacheFactory=site.getCacheFactory(type="data")/>
 		<cfset var bean=""/>
 		
 		<cfif site.getCache()>
@@ -353,7 +353,7 @@ to your own modified versions of Mura CMS.
 		
 		<cfset var key="contentID" & arguments.siteid & arguments.contentID />
 		<cfset var site=variables.settingsManager.getSite(arguments.siteid)/>
-		<cfset var cacheFactory=site.getCacheFactory()/>
+		<cfset var cacheFactory=site.getCacheFactory(type="data")/>
 		<cfset var bean=""/>
 		
 		<cfif site.getCache()>
@@ -790,6 +790,7 @@ to your own modified versions of Mura CMS.
 				<cfif not newBean.getIsNew() and newBean.getoldfilename() neq newBean.getfilename() and len(newBean.getoldfilename())>
 					<cfset variables.contentUtility.movelink(newBean.getSiteID(),newBean.getFilename(),currentBean.getFilename()) />	
 					<cfset variables.contentUtility.move(newBean.getsiteid(),newBean.getFilename(),newBean.getOldFilename())>
+					<cfset purgeContentDecendentsCache(contentBean=newbean)>
 				</cfif>
 					
 			</cfif>		
@@ -894,9 +895,11 @@ to your own modified versions of Mura CMS.
 		</cfif>
 			
 		<cfif newBean.getapproved()>
-			<cfset variables.settingsManager.getSite(arguments.data.siteid).purgeCache() />
+			<cfset variables.settingsManager.getSite(arguments.data.siteid).purgeCache(type="output") />
+			<cfif not newBean.getIsNew() >
+				<cfset purgeContentCache(contentBean=newbean)>
+			</cfif>
 		</cfif>
-			
 			
 		<!--- set the orderno if it is new content or has been moved--->	 
 		<cfif newBean.getIsNew() 
@@ -1070,8 +1073,11 @@ to your own modified versions of Mura CMS.
 	
 	</cflock>
 	
-	<cfset variables.settingsManager.getSite(arguments.data.siteid).purgeCache() />
-	
+	<cfif NOT currentBean.getIsNew()>
+		<cfset variables.settingsManager.getSite(currentBean.getSiteID()).purgeCache(type="output") />
+		<cfset purgeContentCache(contentBean=currentBean)>
+	</cfif>
+			
 	<cfif structKeyExists(data,"topID")>
 		<cfif data.topid eq currentBean.getcontentid()>
 		 	<cfreturn currentBean.getParentID() />
@@ -1130,6 +1136,10 @@ to your own modified versions of Mura CMS.
 			</cfif>			
 		</cfloop>
 		
+		<cfif NOT currentBean.getIsNew()>
+			<cfset purgeContentCache(contentBean=currentBean)>
+		</cfif>
+		
 		<cfset variables.utility.logEvent("ContentID:#currentBean.getcontentID()# MenuTitle:#currentBean.getMenuTitle()# Type:#currentBean.getType()# version history was deleted","mura-content","Information",true) />
 		<cfset variables.contentDAO.deletehistall(data.contentid,data.siteid) />
 		
@@ -1169,6 +1179,10 @@ to your own modified versions of Mura CMS.
 			<cfif not listFind(fileList,versionBean.getFileID(),"^")>
 				<cfset variables.filemanager.deleteVersion(versionBean.getFileID()) />
 			</cfif>
+		</cfif>
+		
+		<cfif NOT versionBean.getIsNew()>
+			<cfset purgeContentCache(contentBean=versionBean)>
 		</cfif>
 		
 		<cfset variables.utility.logEvent("ContentID:#versionBean.getcontentID()# ContentHistID:#versionBean.getcontentHistID()# MenuTitle:#versionBean.getMenuTitle()# Type:#versionBean.getType()#  version was deleted","mura-content","Information",true) />		
@@ -1708,4 +1722,69 @@ to your own modified versions of Mura CMS.
 		<cfreturn data />
 	</cffunction>
 	
+	<cffunction name="purgeContentCache" output="false">
+	<cfargument name="contentID">
+	<cfargument name="siteID">
+	<cfargument name="contentBean">
+	<cfargument name="broadcast" default="true">
+	<cfset var cache="">
+	<cfset var history="">
+	<cfset var version="">
+	
+	<cfif not isDefined("arguments.contentBean")>
+		<cfset arguments.contentBean=read(contentID=arguments.contentID,siteID=arguments.siteID)>
+	</cfif>
+	
+	<cfif arguments.contentBean.getIsNew()>
+		<cfset cache=variables.settingsManager.getSite(arguments.contentBean.getSiteID()).getCacheFactory(type="data")>
+		
+		<cfset cache.purge("contentID" & arguments.contentBean.getSiteID() & arguments.contentBean.getContentID())>
+		<cfif len(arguments.contentBean.getRemoteID())>
+			<cfset cache.purge("remoteID" & arguments.contentBean.getSiteID() & arguments.contentBean.getRemoteID())>
+		</cfif>
+		<cfif len(arguments.contentBean.getFilename())>
+			<cfset cache.purge("filename" & arguments.contentBean.getSiteID() & arguments.contentBean.getFilename())>
+		</cfif>
+		<cfset cache.purge("title" & arguments.contentBean.getSiteID() & arguments.contentBean.getTitle())>
+		
+		<cfset history=arguments.contentBean.getVersionHistoryIterator()>
+		<cfloop condition="history.hasNext()">
+			<cfset version=history.getNext()>
+			<cfset cache.purge("version" & arguments.contentBean.getSiteID() & arguments.contentBean.getContentHistID())>
+		</cfloop>
+		
+		<cfif arguments.broadcast>
+			<cfset variables.clusterManager.purgeContentCache(contentID=arguments.contentBean.getContentID(),siteID,arguments.contentBean.getSiteID())>
+		</cfif>
+	</cfif>
+</cffunction>
+	
+	<cffunction name="purgeContentDescendentsCache" output="false">
+	<cfargument name="contentID">
+	<cfargument name="siteID">
+	<cfargument name="contentBean">
+	<cfset var it="">
+	<cfset var rs="">
+	
+	<cfif not isDefined("arguments.contentBean")>
+		<cfset arguments.contentBean=read(contentID=arguments.contentID,siteID=arguments.siteID)>
+	</cfif>
+	
+	<cfquery name="rs" datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+	select contentID,siteID
+	from tcontent where 
+	site=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentBean.getSiteID()#">
+	and active=1
+	and path like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.contentBean.getContentID()#%">
+	</cfquery>
+	
+	<cfset it=getServiceFactory().getBean("contentIterator").setQuery(rs)>
+
+	<cfloop condition="it.hasNext()">
+		<cfset purgeContentCache(contentBean=it.next(),broadcast=false)>
+	</cfloop>
+	
+	<cfset variables.clusterManager.purgeContentDescendentsCache(contentID=arguments.contentBean.getContentID(),siteID=arguments.contentBean.getSiteID())>
+</cffunction>
+
 </cfcomponent>

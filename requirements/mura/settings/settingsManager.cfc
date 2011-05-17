@@ -297,10 +297,11 @@ to your own modified versions of Mura CMS.
 	<cfset var rs=getList()>
 	
 	<cfloop query="rs">
-		<cfset getSite(rs.siteid).getCacheFactory().purgeAll()/>
+		<cfset getSite(rs.siteid).getCacheFactory(type="data").purgeAll()/>
+		<cfset getSite(rs.siteid).getCacheFactory(type="output").purgeAll()/>
 	</cfloop>
 	
-	<cfset variables.clusterManager.purgeCache()>
+	<cfset variables.clusterManager.purgeCache(type="all")>
 </cffunction>
 
 <cffunction name="getUserSites" access="public" output="false" returntype="query">

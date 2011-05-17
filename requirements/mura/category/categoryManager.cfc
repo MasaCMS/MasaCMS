@@ -326,7 +326,7 @@ to your own modified versions of Mura CMS.
 	
 	<cfset key= "category" & arguments.siteid & arguments.categoryID />
 	<cfset site=variables.settingsManager.getSite(arguments.siteid)/>
-	<cfset cacheFactory=site.getCacheFactory()>			
+	<cfset cacheFactory=site.getCacheFactory(type="data")>			
 	
 	<cfif site.getCache()>
 		<!--- check to see if it is cached. if not then pass in the context --->
@@ -358,7 +358,7 @@ to your own modified versions of Mura CMS.
 	<cfargument name="categoryBean" default=""/>
 	<cfset var key= "category" & arguments.siteid & arguments.name />
 	<cfset var site=variables.settingsManager.getSite(arguments.siteid)/>
-	<cfset var cacheFactory=site.getCacheFactory()>
+	<cfset var cacheFactory=site.getCacheFactory(type="data")>
 	<cfset var bean="">	
 	
 	<cfif site.getCache()>
@@ -391,7 +391,7 @@ to your own modified versions of Mura CMS.
 	<cfargument name="categoryBean" default=""/>
 	<cfset var key= "category" & arguments.siteid & arguments.filename />
 	<cfset var site=variables.settingsManager.getSite(arguments.siteid)/>
-	<cfset var cacheFactory=site.getCacheFactory()>
+	<cfset var cacheFactory=site.getCacheFactory(type="data")>
 	<cfset var bean="">	
 	
 	<cfif site.getCache()>
@@ -424,7 +424,7 @@ to your own modified versions of Mura CMS.
 	<cfargument name="categoryBean" default=""/>
 	<cfset var key= "category" & arguments.siteid & arguments.remoteID />
 	<cfset var site=variables.settingsManager.getSite(arguments.siteid)/>
-	<cfset var cacheFactory=site.getCacheFactory()>
+	<cfset var cacheFactory=site.getCacheFactory(type="data")>
 	<cfset var bean="">	
 	
 	<cfif site.getCache()>
@@ -462,7 +462,7 @@ to your own modified versions of Mura CMS.
 	</cfif>
 	
 	<cfif arguments.categoryBean.getIsNew()>
-		<cfset cache=variables.settingsManager.getSite(arguments.categoryBean.getSiteID()).getCacheFactory()>
+		<cfset cache=variables.settingsManager.getSite(arguments.categoryBean.getSiteID()).getCacheFactory(type="data")>
 		
 		<cfset cache.purge("category" & arguments.categoryBean.getSiteID() & arguments.categoryBean.getCategoryID())>
 		<cfif len(arguments.categoryBean.getRemoteID())>
@@ -497,7 +497,7 @@ to your own modified versions of Mura CMS.
 	sortDirection,restrictGroups,path,remoteID,remoteSourceURL,
 	remotePubDate,urlTitle,filename
 	from tcontentcategories where 
-	path like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#categoryBean.getCategoryID()#%">
+	path like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.categoryBean.getCategoryID()#%">
 	</cfquery>
 	
 	<cfset it=getServiceFactory().getBean("categoryIterator").setQuery(rs)>

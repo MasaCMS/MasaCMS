@@ -8,13 +8,14 @@
 
 <cffunction name="purgeCache" returntype="void" access="public" output="false">
 	<cfargument name="siteid" required="true" default="">
+	<cfargument name="type" required="true" default="both" hint="data, output or both">
 	<cfset var clusterList=getClusterList()>
 	<cfset var host="">
 	<cfset var remoteURL="">
 	
 	<cfif len(clusterList)>
 		<cfloop list="#clusterList#" index="host">
-			<cfset remoteURL="#formatHost(host)#/MuraProxy.cfc?method=purgeSiteCache&siteID=#URLEncodedFormat(arguments.siteID)#&appreloadkey=#URLEncodedFormat(application.appreloadkey)#&instanceID=#application.instanceID#">
+			<cfset remoteURL="#formatHost(host)#/MuraProxy.cfc?method=purgeSiteCache&siteID=#URLEncodedFormat(arguments.siteID)#&type=#URLEncodedFormat(arguments.type)#&appreloadkey=#URLEncodedFormat(application.appreloadkey)#&instanceID=#application.instanceID#">
 			<cfset doRemoteCall(remoteURL)>
 		</cfloop>
 	</cfif>
@@ -60,6 +61,38 @@
 	<cfif len(clusterList)>
 		<cfloop list="#clusterList#" index="host">
 			<cfset remoteURL="#formatHost(host)#/MuraProxy.cfc?method=purgeCategoryDescendentsCache&categoryID=#URLEncodedFormat(arguments.categoryID)#&appreloadkey=#URLEncodedFormat(application.appreloadkey)#&instanceID=#application.instanceID#">
+			<cfset doRemoteCall(remoteURL)>
+		</cfloop>
+	</cfif>
+	
+</cffunction>
+
+<cffunction name="purgeContentCache" returntype="void" access="public" output="false">
+	<cfargument name="contentID" required="true" default="">
+	<cfargument name="siteID" required="true" default="">
+	<cfset var clusterList=getClusterList()>
+	<cfset var host="">
+	<cfset var remoteURL="">
+	
+	<cfif len(clusterList)>
+		<cfloop list="#clusterList#" index="host">
+			<cfset remoteURL="#formatHost(host)#/MuraProxy.cfc?method=purgeContentCache&contentID=#URLEncodedFormat(arguments.contentID)#&siteID=#URLEncodedFormat(arguments.siteID)#&appreloadkey=#URLEncodedFormat(application.appreloadkey)#&instanceID=#application.instanceID#">
+			<cfset doRemoteCall(remoteURL)>
+		</cfloop>
+	</cfif>
+	
+</cffunction>
+
+<cffunction name="purgeContentDescendentsCache" returntype="void" access="public" output="false">
+	<cfargument name="contentID" required="true" default="">
+	<cfargument name="siteID" required="true" default="">
+	<cfset var clusterList=getClusterList()>
+	<cfset var host="">
+	<cfset var remoteURL="">
+	
+	<cfif len(clusterList)>
+		<cfloop list="#clusterList#" index="host">
+			<cfset remoteURL="#formatHost(host)#/MuraProxy.cfc?method=purgeContentDescendentsCache&contentID=#URLEncodedFormat(arguments.contentID)#&siteID=#URLEncodedFormat(arguments.siteID)#&appreloadkey=#URLEncodedFormat(application.appreloadkey)#&instanceID=#application.instanceID#">
 			<cfset doRemoteCall(remoteURL)>
 		</cfloop>
 	</cfif>
