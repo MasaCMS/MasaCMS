@@ -66,7 +66,11 @@ to your own modified versions of Mura CMS.
 			<constructor-arg name="trashManager"><ref bean="trashManager" /></constructor-arg>
 			<constructor-arg name="changesetManager"><ref bean="changesetManager" /></constructor-arg>
 		</bean>
+		<cfif isDefined("server.coldfusion.productname") and server.coldfusion.productname eq "Railo">
+		<bean id="contentGateway" class="mura.content.contentGatewayRailo" singleton="true">
+		<cfelse>
 		<bean id="contentGateway" class="mura.content.contentGateway" singleton="true">
+		</cfif>
 			<constructor-arg name="configBean"><ref bean="configBean" /></constructor-arg>
 			<constructor-arg name="settingsManager"><ref bean="settingsManager" /></constructor-arg>
 		</bean>
