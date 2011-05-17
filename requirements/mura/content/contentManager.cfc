@@ -1754,7 +1754,7 @@ to your own modified versions of Mura CMS.
 		</cfloop>
 		
 		<cfif arguments.broadcast>
-			<cfset variables.clusterManager.purgeContentCache(contentID=arguments.contentBean.getContentID(),siteID,arguments.contentBean.getSiteID())>
+			<cfset variables.clusterManager.purgeContentCache(contentID=arguments.contentBean.getContentID(),siteID=arguments.contentBean.getSiteID())>
 		</cfif>
 	</cfif>
 </cffunction>
