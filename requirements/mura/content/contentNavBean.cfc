@@ -1,7 +1,7 @@
 <cfcomponent extends="mura.cfobject">
 
 <cfset variables.instance=structNew()>
-<cfset variables.instance.content=""/>
+<cfset variables.instance.content="">
 <cfset variables.instance.struct=structNew()>
 <cfset variables.packageBy="active"/>
 
@@ -62,6 +62,10 @@
 	<cfset variables.instance.struct=arguments.contentStruct>
 	<cfset variables.contentManager=arguments.contentManager>
 	<cfset variables.packageBy=arguments.packageBy>
+	
+	<cfif isObject(variables.instance.content)>
+		<cfset variables.instance.content.setIsNew(1)>
+	</cfif>
 	<cfreturn this>
 </cffunction>
 
@@ -88,13 +92,21 @@
 </cffunction>
 
 <cffunction name="getContentBean" access="public" returntype="any" output="false">
-	<cfif isObject(variables.instance.content) >
+	
+	<cfif NOT isObject(variables.instance.content)>
+		<cfset variables.instance.content=getBean("content")>
+		<cfset variables.instance.content.setIsNew(1)>
+		<cfset variables.instance.contentStructTemplate=variables.instance.content.getAllValues()>
+	</cfif>
+	
+	<cfif NOT variables.instance.content.getIsNew() >
 		<cfreturn variables.instance.content>
 	<cfelse>
+		<cfset variables.instance.content.setAllValues(variables.instance.contentStructTemplate)>
 		<cfif variables.packageBy eq "version" and structKeyExists(variables.instance.struct,"contentHistID")>
-			<cfset variables.instance.content=variables.contentManager.getContentVersion(variables.instance.struct.contentHistID,variables.instance.struct.siteID)>
+			<cfset variables.instance.content=variables.contentManager.getContentVersion(contentHistID=variables.instance.struct.contentHistID, siteID=variables.instance.struct.siteID, contentBean=variables.instance.content)>
 		<cfelseif structKeyExists(variables.instance.struct,"contentID")>
-			<cfset variables.instance.content=variables.contentManager.getActiveContent(variables.instance.struct.contentID,variables.instance.struct.siteID)>
+			<cfset variables.instance.content=variables.contentManager.getActiveContent(contentID=variables.instance.struct.contentID,siteID=variables.instance.struct.siteID, contentBean=variables.instance.content)>
 		<cfelse>
 			<cfthrow message="The query you are iterating over does not contain either contentID or contentHistID">
 		</cfif>

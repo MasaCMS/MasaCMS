@@ -44,7 +44,7 @@ to your own modified versions of Mura CMS.
 
 <cfset variables.configBean="">
 <cfset variables.settingsManager="">
-<cfset variables.genericManager="">
+<cfset variables.standardEventsHandlers="">
 <cfset variables.eventManagers=structNew()>
 <cfset variables.cacheFactories=structNew()>
 <cfset variables.siteListeners=structNew()>
@@ -56,13 +56,13 @@ to your own modified versions of Mura CMS.
 	<cfargument name="configBean">
 	<cfargument name="settingsManager">
 	<cfargument name="utility">
-	<cfargument name="genericManager">
+	<cfargument name="standardEventsHandler">
 	<cfargument name="fileWriter"/>
 	
 	<cfset setConfigBean(arguments.configBean)>
 	<cfset setSettingsManager(arguments.settingsManager)>
 	<cfset setUtility(arguments.utility)>
-	<cfset setGenericManager(arguments.genericManager)>
+	<cfset setstandardEventsHandler(arguments.standardEventsHandler)>
 	<cfset variables.fileWriter=arguments.fileWriter>
 	
 <cfreturn this />
@@ -81,9 +81,9 @@ to your own modified versions of Mura CMS.
 <cfset variables.settingsManager=arguments.settingsManager />
 </cffunction>
 
-<cffunction name="setGenericManager" returntype="void" access="public" output="false">
-<cfargument name="genericManager">
-<cfset variables.genericManager=arguments.genericManager />
+<cffunction name="setstandardEventsHandler" returntype="void" access="public" output="false">
+<cfargument name="standardEventsHandler">
+<cfset variables.standardEventsHandler=arguments.standardEventsHandler />
 </cffunction>
 
 <cffunction name="setUtility" returntype="void" access="public" output="false">
@@ -234,7 +234,7 @@ select * from tplugins order by #arguments.orderby#
 			null,
 			0,
 			null,
-			#createODBCDateTime(now())#,
+			<cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#">,
 			5
 			)
 			</cfquery>
@@ -326,7 +326,7 @@ select * from tplugins order by #arguments.orderby#
 	providerURL=<cfqueryparam cfsqltype="cf_sql_varchar" value="#pluginXML.plugin.providerURL.xmlText#">,
 	version=<cfqueryparam cfsqltype="cf_sql_varchar" value="#pluginXML.plugin.version.xmlText#">,
 	category=<cfqueryparam cfsqltype="cf_sql_varchar" value="#pluginXML.plugin.category.xmlText#">,
-	created=#createODBCDateTime(now())#
+	created=<cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#">
 	
 	<cfif not rsPlugin.deployed>,
 		name=<cfqueryparam cfsqltype="cf_sql_varchar" value="#pluginXML.plugin.name.xmlText#">,
@@ -1546,7 +1546,7 @@ select * from tplugins order by #arguments.orderby#
 
 
 	<cfif not structKeyExists(variables.eventManagers,arguments.siteid)>
-		<cfset variables.eventManagers[arguments.siteid]=createObject("component","pluginEventManager").init(arguments.siteID,variables.genericManager,this)>
+		<cfset variables.eventManagers[arguments.siteid]=createObject("component","pluginStandardEventManager").init(arguments.siteID,variables.standardEventsHandler,this)>
 	</cfif>
 	
 	<cfreturn variables.eventManagers[arguments.siteid]>

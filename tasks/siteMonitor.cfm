@@ -77,11 +77,11 @@ to your own modified versions of Mura CMS.
 	<cfquery name="rsChanges" datasource="#application.configBean.getDatasource()#" username="#application.configBean.getDBUsername()#" password="#application.configBean.getDBPassword()#">
 	select distinct tcontent.siteid from tcontent inner join tcontent tcontent2 on tcontent.parentid=tcontent2.contentid 
 	where tcontent.approved=1 and tcontent.active=1 and tcontent.display=2 and tcontent2.type <> 'Calendar'
-	and ((tcontent.displaystart >=#createodbcdatetime(application.lastmonitored)#
-	and tcontent.displaystart <=#createodbcdatetime(theTime)#)
+	and ((tcontent.displaystart >=<cfqueryparam cfsqltype="cf_sql_timestamp" value="#application.lastmonitored#">
+	and tcontent.displaystart <=<cfqueryparam cfsqltype="cf_sql_timestamp" value="#theTime#">)
 	or
-	(tcontent.displaystop >=#createodbcdatetime(application.lastmonitored)#
-	and tcontent.displaystop <=#createodbcdatetime(theTime)#))
+	(tcontent.displaystop >=<cfqueryparam cfsqltype="cf_sql_timestamp" value="#application.lastmonitored#">
+	and tcontent.displaystop <=<cfqueryparam cfsqltype="cf_sql_timestamp" value="#theTime#">))
 	group by tcontent.siteid
 	</cfquery>
 	

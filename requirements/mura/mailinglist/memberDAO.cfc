@@ -73,7 +73,7 @@ to your own modified versions of Mura CMS.
 					,<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.memberBean.getLName() neq '',de('no'),de('yes'))#" value="#arguments.memberBean.getLName()#">
 					,<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.memberBean.getCompany() neq '',de('no'),de('yes'))#" value="#arguments.memberBean.getCompany()#">
 					,<cfqueryparam cfsqltype="cf_sql_numeric" value="#arguments.memberBean.getIsVerified()#">,
-					#createODBCDateTime(now())#
+					<cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#">
 					)
 					</cfquery>
 					<cfcatch type="database"></cfcatch>

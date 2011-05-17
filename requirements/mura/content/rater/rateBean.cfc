@@ -150,7 +150,7 @@
 		<cfquery datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 		update tcontentratings set
 		rate=#getRate()#,
-		entered=#createODBCDateTime(getEntered())#
+		entered=<cfqueryparam cfsqltype="cf_sql_timestamp" value="#getEntered()#">
 		where contentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getcontentID()#">
 		and userID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getUserID()#">
 		and siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getSiteID()#">
@@ -165,7 +165,7 @@
 		<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(getUserID() neq '',de('no'),de('yes'))#" value="#getUserID()#">,
 		<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(getSiteID() neq '',de('no'),de('yes'))#" value="#getSiteID()#">,
 		#getRate()#,
-		#createODBCDateTime(getEntered())#
+		<cfqueryparam cfsqltype="cf_sql_timestamp" value="#getEntered()#">
 		)
 		</cfquery>
 		

@@ -332,7 +332,7 @@ to your own modified versions of Mura CMS.
 	from tsessiontracking 
 	where originalUrlToken=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.originalUrlToken#"/>
 	and urlToken != <cfqueryparam cfsqltype="cf_sql_varchar" value="#urlToken#"/>
-	and entered < #createODBCDateTime(LSDateFormat(arguments.beforeDate,'mm/dd/yyyy'))#
+	and entered < <cfqueryparam cfsqltype="cf_sql_timestamp" value="#LSDateFormat(arguments.beforeDate,'mm/dd/yyyy')#">
 	</cfquery>
 	
 	<cfif isDate(rs.lastRequest)>

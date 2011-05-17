@@ -197,9 +197,9 @@ to your own modified versions of Mura CMS.
 	<cfif lsIsDate(arguments.startDate)>
 		<cftry>
 		<cfset start=lsParseDateTime(arguments.startDate) />
-		and tcontentratings.entered >= #createodbcdatetime(createdatetime(year(start),month(start),day(start),0,0,0))#
+		and tcontentratings.entered >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#createdatetime(year(start),month(start),day(start),0,0,0)#">
 		<cfcatch>
-		and tcontentratings.entered >= #createodbcdatetime(createdatetime(year(arguments.startDate),month(arguments.startDate),day(arguments.startDate),0,0,0))#
+		and tcontentratings.entered >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#createdatetime(year(arguments.startDate),month(arguments.startDate),day(arguments.startDate),0,0,0)#">
 		</cfcatch>
 		</cftry>
 	</cfif>
@@ -207,9 +207,9 @@ to your own modified versions of Mura CMS.
 	<cfif lsIsDate(arguments.stopDate)>
 		<cftry>
 		<cfset stop=lsParseDateTime(arguments.stopDate) />
-		and tcontentratings.entered <= #createodbcdatetime(createdatetime(year(stop),month(stop),day(stop),23,59,0))#
+		and tcontentratings.entered <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#createdatetime(year(stop),month(stop),day(stop),23,59,0)#">
 		<cfcatch>
-		and tcontentratings.entered <= #createodbcdatetime(createdatetime(year(arguments.stopDate),month(arguments.stopDate),day(arguments.stopDate),23,59,0))#
+		and tcontentratings.entered <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#createdatetime(year(arguments.stopDate),month(arguments.stopDate),day(arguments.stopDate),23,59,0)#">
 		</cfcatch>
 		</cftry>
 	</cfif>	

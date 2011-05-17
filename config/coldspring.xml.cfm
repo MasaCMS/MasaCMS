@@ -65,8 +65,13 @@ to your own modified versions of Mura CMS.
 			<constructor-arg name="pluginManager"><ref bean="pluginManager" /></constructor-arg>
 			<constructor-arg name="trashManager"><ref bean="trashManager" /></constructor-arg>
 			<constructor-arg name="changesetManager"><ref bean="changesetManager" /></constructor-arg>
+			<constructor-arg name="clusterManager"><ref bean="clusterManager" /></constructor-arg>
 		</bean>
+		<cfif isDefined("server.coldfusion.productname") and server.coldfusion.productname eq "Railo">
+		<bean id="contentGateway" class="mura.content.contentGatewayRailo" singleton="true">
+		<cfelse>
 		<bean id="contentGateway" class="mura.content.contentGateway" singleton="true">
+		</cfif>
 			<constructor-arg name="configBean"><ref bean="configBean" /></constructor-arg>
 			<constructor-arg name="settingsManager"><ref bean="settingsManager" /></constructor-arg>
 		</bean>
@@ -169,6 +174,7 @@ to your own modified versions of Mura CMS.
 			<constructor-arg name="settingsManager"><ref bean="settingsManager" /></constructor-arg>
 			<constructor-arg name="pluginManager"><ref bean="pluginManager" /></constructor-arg>
 			<constructor-arg name="trashManager"><ref bean="trashManager" /></constructor-arg>
+			<constructor-arg name="clusterManager"><ref bean="clusterManager" /></constructor-arg>
 		</bean>
 		<bean id="categoryDAO" class="mura.category.categoryDAO" singleton="true" >
 			<constructor-arg name="configBean"><ref bean="configBean" /></constructor-arg>
@@ -220,6 +226,8 @@ to your own modified versions of Mura CMS.
 			<constructor-arg name="fileManager"><ref bean="fileManager" /></constructor-arg>
 			<constructor-arg name="pluginManager"><ref bean="pluginManager" /></constructor-arg>
 			<constructor-arg name="trashManager"><ref bean="trashManager" /></constructor-arg>
+			<constructor-arg name="settingsManager"><ref bean="settingsManager" /></constructor-arg>
+			<constructor-arg name="clusterManager"><ref bean="clusterManager" /></constructor-arg>
 		</bean>
 		<bean id="userDAO" class="mura.user.userDAO" singleton="true">
 			<constructor-arg name="configBean"><ref bean="configBean" /></constructor-arg>
@@ -506,13 +514,13 @@ to your own modified versions of Mura CMS.
 			<constructor-arg name="configBean"><ref bean="configBean" /></constructor-arg>
 			<constructor-arg name="settingsManager"><ref bean="settingsManager" /></constructor-arg>
 			<constructor-arg name="utility"><ref bean="utility" /></constructor-arg>
-			<constructor-arg name="genericManager"><ref bean="genericManager" /></constructor-arg>
+			<constructor-arg name="standardEventsHandler"><ref bean="standardEventsHandler" /></constructor-arg>
 			<constructor-arg name="fileWriter"><ref bean="fileWriter" /></constructor-arg>
 		</bean>
 		<bean id="clusterManager" class="mura.cluster.clusterManager" singleton="true">
 			<constructor-arg name="configBean"><ref bean="configBean" /></constructor-arg>
 		</bean>
-		<bean id="genericManager" class="mura.generic.genericManager" singleton="true" />
+		<bean id="standardEventsHandler" class="mura.Handler.standardEventsHandler" singleton="true" />
 		<bean id="contentServer" class="mura.content.contentServer" singleton="true" />
 		<bean id="javaLoader" class="mura.javaloader.javaLoader" singleton="true">
 			<constructor-arg name="loadPaths">

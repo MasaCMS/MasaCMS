@@ -29,7 +29,7 @@
 		insert into tuserstrikes (username,strikes,lastAttempt) values (
 		<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.username#">,
 		0,
-		#createODBCDateTime(dateAdd("n",-1,now()))#
+		<cfqueryparam cfsqltype="cf_sql_timestamp" value="#dateAdd("n",-1,now())#">
 		)
 		</cfquery>
 		
@@ -52,7 +52,7 @@
 		<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 		update tuserstrikes set 
 		strikes=0,
-		lastAttempt=#createODBCDateTime(getLastAttempt())#
+		lastAttempt=<cfqueryparam cfsqltype="cf_sql_timestamp" value="#getLastAttempt()#">
 		where username=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getUsername()#">
 	</cfquery>
 	</cfif>
@@ -91,7 +91,7 @@
 	<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 		update tuserstrikes set 
 		strikes=strikes + 1,
-		lastAttempt=#createODBCDateTime(now())#
+		lastAttempt=<cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#">
 		where username=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getUsername()#">
 	</cfquery>
 	
@@ -114,7 +114,7 @@
 	<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 		update tuserstrikes set 
 		strikes=0,
-		lastAttempt=#createODBCDateTime(dateAdd("n",-1,now()))#
+		lastAttempt=<cfqueryparam cfsqltype="cf_sql_timestamp" value="#dateAdd("n",-1,now())#">
 		where username=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getUsername()#">
 	</cfquery>
 	

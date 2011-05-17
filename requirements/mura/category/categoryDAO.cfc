@@ -71,8 +71,8 @@ to your own modified versions of Mura CMS.
 	'#arguments.categoryBean.getCategoryID()#',
 	<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.categoryBean.getSiteID() neq '',de('no'),de('yes'))#" value="#arguments.categoryBean.getsiteID()#">,
 	<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.categoryBean.getParentID() neq '',de('no'),de('yes'))#" value="#arguments.categoryBean.getParentID()#">,
-	<cfif isDate(arguments.categoryBean.getDateCreated()) >#createODBCDateTime(arguments.categoryBean.getDateCreated())#<cfelse>null</cfif>,
-	<cfif isDate(arguments.categoryBean.getLastUpdate()) >#createODBCDateTime(arguments.categoryBean.getLastUpdate())#<cfelse>null</cfif>,
+	<cfif isDate(arguments.categoryBean.getDateCreated()) ><cfqueryparam cfsqltype="cf_sql_timestamp" value="#arguments.categoryBean.getDateCreated()#"><cfelse>null</cfif>,
+	<cfif isDate(arguments.categoryBean.getLastUpdate()) ><cfqueryparam cfsqltype="cf_sql_timestamp" value="#arguments.categoryBean.getLastUpdate()#"><cfelse>null</cfif>,
 	<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.categoryBean.getLastUpdateBy() neq '',de('no'),de('yes'))#" value="#arguments.categoryBean.getLastUpdateBy()#">,
 	<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.categoryBean.getName() neq '',de('no'),de('yes'))#" value="#arguments.categoryBean.getName()#">,
 	<cfqueryparam cfsqltype="cf_sql_longvarchar" null="#iif(arguments.categoryBean.getNotes() neq '',de('no'),de('yes'))#" value="#arguments.categoryBean.getNotes()#">,
@@ -94,9 +94,15 @@ to your own modified versions of Mura CMS.
 
 <cffunction name="read" access="public" output="false" returntype="any" >
 	<cfargument name="categoryID" type="string" />
-
-	<cfset var categoryBean=getBean() />
+	<cfargument name="categoryBean" default="">
 	<cfset var rs ="" />
+	<cfset var bean="" />
+		
+	<cfif isObject(arguments.categoryBean)>
+		<cfset bean=arguments.categoryBean>
+	<cfelse>
+		<cfset bean=getBean()>
+	</cfif>	
 	
 	<cfquery name="rs" datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	Select 
@@ -106,21 +112,27 @@ to your own modified versions of Mura CMS.
 	</cfquery>
 	
 	<cfif rs.recordcount>
-	<cfset categoryBean.set(rs) />
-	<cfset categoryBean.setIsNew(0)>
+	<cfset bean.set(rs) />
+	<cfset bean.setIsNew(0)>
 	</cfif>
 	
-	<cfreturn categoryBean />
+	<cfreturn bean />
 </cffunction>
 
 <cffunction name="readByName" access="public" output="false" returntype="any" >
 	<cfargument name="name" type="string" />
 	<cfargument name="siteID" type="string" />
-
-	<cfset var categoryBean=getBean() />
+	<cfargument name="categoryBean" default="">
 	<cfset var rs ="" />
 	<cfset var beanArray=arrayNew(1)>
 	<cfset var utility="">
+	<cfset var bean="" />
+		
+	<cfif isObject(arguments.categoryBean)>
+		<cfset bean=arguments.categoryBean>
+	<cfelse>
+		<cfset bean=getBean()>
+	</cfif>
 	
 	<cfquery name="rs" datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	Select
@@ -133,46 +145,32 @@ to your own modified versions of Mura CMS.
 	<cfif rs.recordcount gt 1>
 		<cfset utility=getServiceFactory().getBean("utility")>
 		<cfloop query="rs">
-			<cfset categoryBean=getbean().set(utility.queryRowToStruct(rs,rs.currentrow))>
-			<cfset categoryBean.setIsNew(0)>
-			<cfset arrayAppend(beanArray,categoryBean)>		
+			<cfset bean=getbean().set(utility.queryRowToStruct(rs,rs.currentrow))>
+			<cfset bean.setIsNew(0)>
+			<cfset arrayAppend(beanArray,bean)>		
 		</cfloop>
 		<cfreturn beanArray>
 	<cfelseif rs.recordcount>
-		<cfset categoryBean.set(rs) />
-		<cfset categoryBean.setIsNew(0)>
+		<cfset bean.set(rs) />
+		<cfset bean.setIsNew(0)>
 	</cfif>
 	
-	<cfreturn categoryBean />
+	<cfreturn bean />
 </cffunction>
 
 <cffunction name="readByFilename" access="public" output="false" returntype="any" >
 	<cfargument name="filename" type="string" />
 	<cfargument name="siteID" type="string" />
-
-	<cfset var categoryBean=getBean() />
+	<cfargument name="categoryBean" default="">
 	<cfset var rs ="" />
 	<cfset var beanArray=arrayNew(1)>
 	<cfset var utility="">
-	
-	<cfif arguments.filename eq "/">
-		<cfset arguments.filename="">
+	<cfset var bean="" />
+		
+	<cfif isObject(arguments.categoryBean)>
+		<cfset bean=arguments.categoryBean>
 	<cfelse>
-		<cfif left(arguments.filename,1) eq "/">
-			<cfif len(arguments.filename) gt 1>
-				<cfset arguments.filename=right(arguments.filename,len(arguments.filename)-1)>
-			<cfelse>
-				<cfset arguments.filename="">
-			</cfif>
-		</cfif>
-			
-		<cfif right(arguments.filename,1) eq "/">
-			<cfif len(arguments.filename) gt 1>
-				<cfset arguments.filename=left(arguments.filename,len(arguments.filename)-1)>
-			<cfelse>
-				<cfset arguments.filename="">
-			</cfif>
-		</cfif>
+		<cfset bean=getBean()>
 	</cfif>
 	
 	<cfquery name="rs" datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
@@ -186,27 +184,33 @@ to your own modified versions of Mura CMS.
 	<cfif rs.recordcount gt 1>
 		<cfset utility=getServiceFactory().getBean("utility")>
 		<cfloop query="rs">
-			<cfset categoryBean=getbean().set(utility.queryRowToStruct(rs,rs.currentrow))>
-			<cfset categoryBean.setIsNew(0)>
-			<cfset arrayAppend(beanArray,categoryBean)>		
+			<cfset bean=getbean().set(utility.queryRowToStruct(rs,rs.currentrow))>
+			<cfset bean.setIsNew(0)>
+			<cfset arrayAppend(beanArray,bean)>		
 		</cfloop>
 		<cfreturn beanArray>
 	<cfelseif rs.recordcount>
-		<cfset categoryBean.set(rs) />
-		<cfset categoryBean.setIsNew(0)>
+		<cfset bean.set(rs) />
+		<cfset bean.setIsNew(0)>
 	</cfif>
 	
-	<cfreturn categoryBean />
+	<cfreturn bean />
 </cffunction>
 
 <cffunction name="readByRemoteID" access="public" output="false" returntype="any" >
 	<cfargument name="remoteID" type="string" />
 	<cfargument name="siteID" type="string" />
-
-	<cfset var categoryBean=getBean() />
+	<cfargument name="categoryBean" default="">
 	<cfset var rs ="" />
 	<cfset var beanArray=arrayNew(1)>
 	<cfset var utility="">
+	<cfset var bean="" />
+		
+	<cfif isObject(arguments.categoryBean)>
+		<cfset bean=arguments.categoryBean>
+	<cfelse>
+		<cfset bean=getBean()>
+	</cfif>
 	
 	<cfquery name="rs" datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	Select
@@ -219,17 +223,17 @@ to your own modified versions of Mura CMS.
 	<cfif rs.recordcount gt 1>
 		<cfset utility=getServiceFactory().getBean("utility")>
 		<cfloop query="rs">
-			<cfset categoryBean=getbean().set(utility.queryRowToStruct(rs,rs.currentrow))>
-			<cfset categoryBean.setIsNew(0)>
-			<cfset arrayAppend(beanArray,categoryBean)>		
+			<cfset bean=getbean().set(utility.queryRowToStruct(rs,rs.currentrow))>
+			<cfset bean.setIsNew(0)>
+			<cfset arrayAppend(beanArray,bean)>		
 		</cfloop>
 		<cfreturn beanArray>
 	<cfelseif rs.recordcount>
-		<cfset categoryBean.set(rs) />
-		<cfset categoryBean.setIsNew(0)>
+		<cfset bean.set(rs) />
+		<cfset bean.setIsNew(0)>
 	</cfif>
 	
-	<cfreturn categoryBean />
+	<cfreturn bean />
 </cffunction>
 
 <cffunction name="keepCategories" returntype="void" access="public" output="false">
@@ -263,8 +267,8 @@ to your own modified versions of Mura CMS.
 		<cfqueryparam cfsqltype="cf_sql_numeric" value="#arguments.isFeature#" />,
 		<cfqueryparam cfsqltype="cf_sql_numeric" value="#arguments.orderno#" />,
 		<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#" />,
-		<cfif arguments.isFeature eq 2 and isdate(arguments.featureStart)> #createodbcdatetime(arguments.featurestart)#<cfelse>null</cfif>,
-		<cfif arguments.isFeature eq 2 and isdate(arguments.featureStop)> #createodbcdatetime(arguments.featureStop)#<cfelse>null</cfif>)
+		<cfif arguments.isFeature eq 2 and isdate(arguments.featureStart)> <cfqueryparam cfsqltype="cf_sql_timestamp" value="#arguments.featurestart#"><cfelse>null</cfif>,
+		<cfif arguments.isFeature eq 2 and isdate(arguments.featureStop)> <cfqueryparam cfsqltype="cf_sql_timestamp" value="#arguments.featureStop#"><cfelse>null</cfif>)
 		</cfquery>
 	
 
@@ -275,7 +279,7 @@ to your own modified versions of Mura CMS.
 	
 	<cfquery datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	update tcontentcategories set
-	lastUpdate = <cfif isDate(arguments.categoryBean.getLastUpdate()) >#createODBCDateTime(arguments.categoryBean.getLastUpdate())#<cfelse>null</cfif>,
+	lastUpdate = <cfif isDate(arguments.categoryBean.getLastUpdate()) ><cfqueryparam cfsqltype="cf_sql_timestamp" value="#arguments.categoryBean.getLastUpdate()#"><cfelse>null</cfif>,
 	lastupdateBy = <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.categoryBean.getLastUpdateBy() neq '',de('no'),de('yes'))#" value="#arguments.categoryBean.getLastUpdateBy()#">,
 	name = <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.categoryBean.getName() neq '',de('no'),de('yes'))#" value="#arguments.categoryBean.getName()#">,
 	isActive = #arguments.categoryBean.getIsActive()#,

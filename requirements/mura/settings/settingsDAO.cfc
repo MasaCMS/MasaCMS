@@ -467,7 +467,7 @@ googleAPIKey,useDefaultSMTPServer,siteLocale, mailServerSMTPPort, mailServerPOPP
 	  1,
 	  'default.cfm',
 	  1,
-	  #createodbcdatetime(now())#,
+	  <cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#">,
 	  'System',
 	  0,
 	  0,
@@ -687,7 +687,7 @@ googleAPIKey,useDefaultSMTPServer,siteLocale, mailServerSMTPPort, mailServerPOPP
 	  values(
 	  '#createUUID()#',
 	  'Master Do Not Email List',
-	  #createodbcdatetime(now())#,
+	  <cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#">,
 	  '#arguments.bean.getsiteid()#',
 	  1,
 	  1
@@ -708,7 +708,7 @@ googleAPIKey,useDefaultSMTPServer,siteLocale, mailServerSMTPPort, mailServerPOPP
          1,
 		'Default',
         null,
-		 #createodbcdatetime(now())#,
+		 <cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#">,
 		'System',
 		 null,
 		0,

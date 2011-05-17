@@ -102,9 +102,9 @@ to your own modified versions of Mura CMS.
 	<cfif lsIsDate(arguments.startDate)>
 		<cftry>
 		<cfset start=lsParseDateTime(arguments.startDate) />
-		and entered >= #createodbcdatetime(createdatetime(year(start),month(start),day(start),0,0,0))#
+		and entered >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#createdatetime(year(start),month(start),day(start),0,0,0)#">
 		<cfcatch>
-		and entered >= #createodbcdatetime(createdatetime(year(arguments.startDate),month(arguments.startDate),day(arguments.startDate),0,0,0))#
+		and entered >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#createdatetime(year(arguments.startDate),month(arguments.startDate),day(arguments.startDate),0,0,0)#">
 		</cfcatch>
 		</cftry>
 	</cfif>
@@ -112,9 +112,9 @@ to your own modified versions of Mura CMS.
 	<cfif lsIsDate(arguments.stopDate)>
 		<cftry>
 		<cfset stop=lsParseDateTime(arguments.stopDate) />
-		and entered <= #createodbcdatetime(createdatetime(year(stop),month(stop),day(stop),23,59,0))#
+		and entered <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#createdatetime(year(stop),month(stop),day(stop),23,59,0)#">
 		<cfcatch>
-		and entered <= #createodbcdatetime(createdatetime(year(arguments.stopDate),month(arguments.stopDate),day(arguments.stopDate),23,59,0))#
+		and entered <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#createdatetime(year(arguments.stopDate),month(arguments.stopDate),day(arguments.stopDate),23,59,0)#">
 		</cfcatch>
 		</cftry>
 	</cfif>
@@ -157,7 +157,7 @@ to your own modified versions of Mura CMS.
 	select count(userID) as isOnLine
     from tsessiontracking 
 	where 
-	entered >=  #createODBCDateTime(dateAdd("n",-15,now()))#
+	entered >=  <cfqueryparam cfsqltype="cf_sql_timestamp" value="#dateAdd("n",-15,now())#">
 	and userID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.userID#"/>
 	</cfquery>
 	
@@ -184,7 +184,7 @@ to your own modified versions of Mura CMS.
 	from tsessiontracking 
 	left join tusers on (tsessiontracking.userid = tusers.userid)
 	where
-	entered >=  #createODBCDateTime(dateAdd(arguments.spanType,-arguments.span,now()))#
+	entered >=  <cfqueryparam cfsqltype="cf_sql_timestamp" value="#dateAdd(arguments.spanType,-arguments.span,now())#">
 	<cfif arguments.siteID neq ''>
 	and tsessiontracking.siteID =<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
 	</cfif>
@@ -241,7 +241,7 @@ to your own modified versions of Mura CMS.
 							and tcontent.active=1)
 	--->
 	where 
-	entered >=  #createODBCDateTime(dateAdd(arguments.spanType,-arguments.span,now()))#
+	entered >=  <cfqueryparam cfsqltype="cf_sql_timestamp" value="#dateAdd(arguments.spanType,-arguments.span,now())#">
 	<cfif arguments.siteID neq ''>
 	and tsessiontracking.siteID = 
 		<!---
@@ -293,9 +293,9 @@ to your own modified versions of Mura CMS.
 	<cfif lsIsDate(arguments.startDate)>
 		<cftry>
 		<cfset start=lsParseDateTime(arguments.startDate) />
-		and entered >= #createodbcdatetime(createdatetime(year(start),month(start),day(start),0,0,0))#
+		and entered >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#createdatetime(year(start),month(start),day(start),0,0,0)#">
 		<cfcatch>
-		and entered >= #createodbcdatetime(createdatetime(year(arguments.startDate),month(arguments.startDate),day(arguments.startDate),0,0,0))#
+		and entered >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#createdatetime(year(arguments.startDate),month(arguments.startDate),day(arguments.startDate),0,0,0)#">
 		</cfcatch>
 		</cftry>
 	</cfif>
@@ -303,9 +303,9 @@ to your own modified versions of Mura CMS.
 	<cfif lsIsDate(arguments.stopDate)>
 		<cftry>
 		<cfset stop=lsParseDateTime(arguments.stopDate) />
-		and entered <= #createodbcdatetime(createdatetime(year(stop),month(stop),day(stop),23,59,0))#
+		and entered <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#createdatetime(year(stop),month(stop),day(stop),23,59,0)#">
 		<cfcatch>
-		and entered <= #createodbcdatetime(createdatetime(year(arguments.stopDate),month(arguments.stopDate),day(arguments.stopDate),23,59,0))#
+		and entered <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#createdatetime(year(arguments.stopDate),month(arguments.stopDate),day(arguments.stopDate),23,59,0)#">
 		</cfcatch>
 		</cftry>
 	</cfif>
@@ -347,8 +347,8 @@ to your own modified versions of Mura CMS.
 	<cfquery name="rs" datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	select count(tsessiontracking.keywords) keywordCount from tsessiontracking 
 	where tsessiontracking.siteid=<cfqueryparam  cfsqltype="cf_sql_varchar" value="#arguments.siteid#" />
-	<cfif isdate(arguments.stopDate)>and entered <=  #createODBCDateTime(createDateTime(year(arguments.stopDate),month(arguments.stopDate),day(arguments.stopDate),23,59,0))#</cfif>
-	<cfif isdate(arguments.startDate)>and entered >=  #createODBCDateTime(createDateTime(year(arguments.startDate),month(arguments.startDate),day(arguments.startDate),0,0,0))#</cfif>
+	<cfif isdate(arguments.stopDate)>and entered <=  <cfqueryparam cfsqltype="cf_sql_timestamp" value="#createDateTime(year(arguments.stopDate),month(arguments.stopDate),day(arguments.stopDate),23,59,0)#"></cfif>
+	<cfif isdate(arguments.startDate)>and entered >=  <cfqueryparam cfsqltype="cf_sql_timestamp" value="#createDateTime(year(arguments.startDate),month(arguments.startDate),day(arguments.startDate),0,0,0)#"></cfif>
 
 	<cfif arguments.siteID neq ''>
 	and tsessiontracking.siteID =<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
@@ -392,9 +392,9 @@ to your own modified versions of Mura CMS.
 	<cfif lsIsDate(arguments.startDate)>
 		<cftry>
 		<cfset start=lsParseDateTime(arguments.startDate) />
-		and entered >= #createodbcdatetime(createdatetime(year(start),month(start),day(start),0,0,0))#
+		and entered >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#createdatetime(year(start),month(start),day(start),0,0,0)#">
 		<cfcatch>
-		and entered >= #createodbcdatetime(createdatetime(year(arguments.startDate),month(arguments.startDate),day(arguments.startDate),0,0,0))#
+		and entered >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#createdatetime(year(arguments.startDate),month(arguments.startDate),day(arguments.startDate),0,0,0)#">
 		</cfcatch>
 		</cftry>
 	</cfif>
@@ -402,9 +402,9 @@ to your own modified versions of Mura CMS.
 	<cfif lsIsDate(arguments.stopDate)>
 		<cftry>
 		<cfset stop=lsParseDateTime(arguments.stopDate) />
-		and entered <= #createodbcdatetime(createdatetime(year(stop),month(stop),day(stop),23,59,0))#
+		and entered <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#createdatetime(year(stop),month(stop),day(stop),23,59,0)#">
 		<cfcatch>
-		and entered <= #createodbcdatetime(createdatetime(year(arguments.stopDate),month(arguments.stopDate),day(arguments.stopDate),23,59,0))#
+		and entered <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#createdatetime(year(arguments.stopDate),month(arguments.stopDate),day(arguments.stopDate),23,59,0)#">
 		</cfcatch>
 		</cftry>
 	</cfif>
@@ -440,9 +440,9 @@ to your own modified versions of Mura CMS.
 	<cfif lsIsDate(arguments.startDate)>
 		<cftry>
 		<cfset start=lsParseDateTime(arguments.startDate) />
-		and entered >= #createodbcdatetime(createdatetime(year(start),month(start),day(start),0,0,0))#
+		and entered >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#createdatetime(year(start),month(start),day(start),0,0,0)#">
 		<cfcatch>
-		and entered >= #createodbcdatetime(createdatetime(year(arguments.startDate),month(arguments.startDate),day(arguments.startDate),0,0,0))#
+		and entered >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#createdatetime(year(arguments.startDate),month(arguments.startDate),day(arguments.startDate),0,0,0)#">
 		</cfcatch>
 		</cftry>
 	</cfif>
@@ -450,9 +450,9 @@ to your own modified versions of Mura CMS.
 	<cfif lsIsDate(arguments.stopDate)>
 		<cftry>
 		<cfset stop=lsParseDateTime(arguments.stopDate) />
-		and entered <= #createodbcdatetime(createdatetime(year(stop),month(stop),day(stop),23,59,0))#
+		and entered <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#createdatetime(year(stop),month(stop),day(stop),23,59,0)#">
 		<cfcatch>
-		and entered <= #createodbcdatetime(createdatetime(year(arguments.stopDate),month(arguments.stopDate),day(arguments.stopDate),23,59,0))#
+		and entered <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#createdatetime(year(arguments.stopDate),month(arguments.stopDate),day(arguments.stopDate),23,59,0)#">
 		</cfcatch>
 		</cftry>
 	</cfif>
@@ -487,9 +487,9 @@ to your own modified versions of Mura CMS.
 	<cfif lsIsDate(arguments.startDate)>
 		<cftry>
 		<cfset start=lsParseDateTime(arguments.startDate) />
-		and entered >= #createodbcdatetime(createdatetime(year(start),month(start),day(start),0,0,0))#
+		and entered >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#createdatetime(year(start),month(start),day(start),0,0,0)#">
 		<cfcatch>
-		and entered >= #createodbcdatetime(createdatetime(year(arguments.startDate),month(arguments.startDate),day(arguments.startDate),0,0,0))#
+		and entered >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#createdatetime(year(arguments.startDate),month(arguments.startDate),day(arguments.startDate),0,0,0)#">
 		</cfcatch>
 		</cftry>
 	</cfif>
@@ -497,9 +497,9 @@ to your own modified versions of Mura CMS.
 	<cfif lsIsDate(arguments.stopDate)>
 		<cftry>
 		<cfset stop=lsParseDateTime(arguments.stopDate) />
-		and entered <= #createodbcdatetime(createdatetime(year(stop),month(stop),day(stop),23,59,0))#
+		and entered <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#createdatetime(year(stop),month(stop),day(stop),23,59,0)#">
 		<cfcatch>
-		and entered <= #createodbcdatetime(createdatetime(year(arguments.stopDate),month(arguments.stopDate),day(arguments.stopDate),23,59,0))#
+		and entered <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#createdatetime(year(arguments.stopDate),month(arguments.stopDate),day(arguments.stopDate),23,59,0)#">
 		</cfcatch>
 		</cftry>
 	</cfif>
@@ -537,8 +537,8 @@ to your own modified versions of Mura CMS.
 	select count(distinct urlToken) sessionCount	
 	from tsessiontracking  
 	where tsessiontracking.siteid=<cfqueryparam  cfsqltype="cf_sql_varchar" value="#arguments.siteid#" />
-	<cfif isdate(arguments.stopDate)>and entered <=  #createODBCDateTime(createDateTime(year(arguments.stopDate),month(arguments.stopDate),day(arguments.stopDate),23,59,0))#</cfif>
-	<cfif isdate(arguments.startDate)>and entered >=  #createODBCDateTime(createDateTime(year(arguments.startDate),month(arguments.startDate),day(arguments.startDate),0,0,0))#</cfif>
+	<cfif isdate(arguments.stopDate)>and entered <=  <cfqueryparam cfsqltype="cf_sql_timestamp" value="#createDateTime(year(arguments.stopDate),month(arguments.stopDate),day(arguments.stopDate),23,59,0)#"></cfif>
+	<cfif isdate(arguments.startDate)>and entered >=  <cfqueryparam cfsqltype="cf_sql_timestamp" value="#createDateTime(year(arguments.startDate),month(arguments.startDate),day(arguments.startDate),0,0,0)#"></cfif>
 
 	<cfif arguments.siteID neq ''>
 	and tsessiontracking.siteID =<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
@@ -634,9 +634,9 @@ to your own modified versions of Mura CMS.
 	<cfif lsIsDate(arguments.startDate)>
 		<cftry>
 		<cfset start=lsParseDateTime(arguments.startDate) />
-		and entered >= #createodbcdatetime(createdatetime(year(start),month(start),day(start),0,0,0))#
+		and entered >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#createdatetime(year(start),month(start),day(start),0,0,0)#">
 		<cfcatch>
-		and entered >= #createodbcdatetime(createdatetime(year(arguments.startDate),month(arguments.startDate),day(arguments.startDate),0,0,0))#
+		and entered >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#createdatetime(year(arguments.startDate),month(arguments.startDate),day(arguments.startDate),0,0,0)#">
 		</cfcatch>
 		</cftry>
 	</cfif>
@@ -644,9 +644,9 @@ to your own modified versions of Mura CMS.
 	<cfif lsIsDate(arguments.stopDate)>
 		<cftry>
 		<cfset stop=lsParseDateTime(arguments.stopDate) />
-		and entered <= #createodbcdatetime(createdatetime(year(stop),month(stop),day(stop),23,59,0))#
+		and entered <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#createdatetime(year(stop),month(stop),day(stop),23,59,0)#">
 		<cfcatch>
-		and entered <= #createodbcdatetime(createdatetime(year(arguments.stopDate),month(arguments.stopDate),day(arguments.stopDate),23,59,0))#
+		and entered <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#createdatetime(year(arguments.stopDate),month(arguments.stopDate),day(arguments.stopDate),23,59,0)#">
 		</cfcatch>
 		</cftry>
 	</cfif>
@@ -703,9 +703,9 @@ to your own modified versions of Mura CMS.
 	<cfif lsIsDate(arguments.startDate)>
 		<cftry>
 		<cfset start=lsParseDateTime(arguments.startDate) />
-		and entered >= #createodbcdatetime(createdatetime(year(start),month(start),day(start),0,0,0))#
+		and entered >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#createdatetime(year(start),month(start),day(start),0,0,0)#">
 		<cfcatch>
-		and entered >= #createodbcdatetime(createdatetime(year(arguments.startDate),month(arguments.startDate),day(arguments.startDate),0,0,0))#
+		and entered >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#createdatetime(year(arguments.startDate),month(arguments.startDate),day(arguments.startDate),0,0,0)#">
 		</cfcatch>
 		</cftry>
 	</cfif>
@@ -713,9 +713,9 @@ to your own modified versions of Mura CMS.
 	<cfif lsIsDate(arguments.stopDate)>
 		<cftry>
 		<cfset stop=lsParseDateTime(arguments.stopDate) />
-		and entered <= #createodbcdatetime(createdatetime(year(stop),month(stop),day(stop),23,59,0))#
+		and entered <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#createdatetime(year(stop),month(stop),day(stop),23,59,0)#">
 		<cfcatch>
-		and entered <= #createodbcdatetime(createdatetime(year(arguments.stopDate),month(arguments.stopDate),day(arguments.stopDate),23,59,0))#
+		and entered <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#createdatetime(year(arguments.stopDate),month(arguments.stopDate),day(arguments.stopDate),23,59,0)#">
 		</cfcatch>
 		</cftry>
 	</cfif>

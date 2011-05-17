@@ -351,7 +351,7 @@
 			email=<cfif len(getEmail())><cfqueryparam cfsqltype="cf_sql_varchar" value="#getEmail()#"/><cfelse>null</cfif>,
 			url=<cfif len(getURL())><cfqueryparam cfsqltype="cf_sql_varchar" value="#getURL()#"/><cfelse>null</cfif>,
 			comments=<cfqueryparam cfsqltype="cf_sql_longvarchar" value="#getComments()#"/>,
-			entered=#createodbcdatetime(getEntered())#,
+			entered=<cfqueryparam cfsqltype="cf_sql_timestamp" value="#getEntered()#">,
 			siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getSiteID()#"/>,
 			isApproved=#getIsApproved()#,
 			subscribe=<cfqueryparam cfsqltype="cf_sql_numeric" value="#getSubscribe()#">,
@@ -376,7 +376,7 @@
 			<cfif len(getEmail())><cfqueryparam cfsqltype="cf_sql_varchar" value="#getEmail()#"/><cfelse>null</cfif>,
 			<cfif len(getURL())><cfqueryparam cfsqltype="cf_sql_varchar" value="#getURL()#"/><cfelse>null</cfif>,
 			<cfqueryparam cfsqltype="cf_sql_longvarchar" value="#getComments()#"/>,
-			#createodbcdatetime(getEntered())#,
+			<cfqueryparam cfsqltype="cf_sql_timestamp" value="#getEntered()#">,
 			<cfqueryparam cfsqltype="cf_sql_varchar" value="#getSiteID()#"/>,
 			#getIsApproved()#,
 			<cfqueryparam cfsqltype="cf_sql_numeric" value="#getSubscribe()#">,
@@ -653,4 +653,7 @@ To Unsubscribe Click Here:
 
 </cffunction>
 
+<cffunction name="clone" output="false">
+	<cfreturn application.contentManager.getCommentBean().setAllValues(structCopy(getAllValues()))>
+</cffunction>
 </cfcomponent>

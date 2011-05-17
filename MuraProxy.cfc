@@ -44,15 +44,68 @@ to your own modified versions of Mura CMS.
 
 <cffunction name="purgeSiteCache" returntype="any" access="remote" output="false">
 	<cfargument name="siteid" required="true" default="">
+	<cfargument name="type" required="true" default="" hint="data, output or both">
 	<cfargument name="appreloadkey" required="true" default="">
 	<cfargument name="instanceID" required="true" default="">
 	<cfif arguments.instanceID neq application.instanceID 
 		and arguments.appreloadkey eq application.appreloadkey>
 		<cfif len(arguments.siteid)>
-			<cfset application.settingsManager.getSite(arguments.siteID).getCacheFactory().purgeAll()>	
+			<cfset application.settingsManager.getSite(arguments.siteID).purgeCache(type=arguments.type)>	
 		<cfelse>
 			<cfset application.settingsManager.purgeAllCache()>
 		</cfif>
+	</cfif>
+</cffunction>
+
+<cffunction name="purgeUserCache" returntype="any" access="remote" output="false">
+	<cfargument name="userID" required="true" default="">
+	<cfargument name="appreloadkey" required="true" default="">
+	<cfargument name="instanceID" required="true" default="">
+	<cfif arguments.instanceID neq application.instanceID 
+		and arguments.appreloadkey eq application.appreloadkey>
+		<cfset application.userManager.purgeUserCache(userid=arguments.userID)>
+	</cfif>
+</cffunction>
+
+<cffunction name="purgeCategoryCache" returntype="any" access="remote" output="false">
+	<cfargument name="categoryID" required="true" default="">
+	<cfargument name="appreloadkey" required="true" default="">
+	<cfargument name="instanceID" required="true" default="">
+	<cfif arguments.instanceID neq application.instanceID 
+		and arguments.appreloadkey eq application.appreloadkey>
+		<cfset application.categoryManager.purgeCategoryCache(categoryID=arguments.categoryID)>
+	</cfif>
+</cffunction>
+
+<cffunction name="purgeCategoryDescendentsCache" returntype="any" access="remote" output="false">
+	<cfargument name="categoryID" required="true" default="">
+	<cfargument name="appreloadkey" required="true" default="">
+	<cfargument name="instanceID" required="true" default="">
+	<cfif arguments.instanceID neq application.instanceID 
+		and arguments.appreloadkey eq application.appreloadkey>
+		<cfset application.categoryManager.purgeCategoryDescendentsCache(categoryID=arguments.categoryID)>
+	</cfif>
+</cffunction>
+
+<cffunction name="purgeContentCache" returntype="any" access="remote" output="false">
+	<cfargument name="contentID" required="true" default="">
+	<cfargument name="siteID" required="true" default="">
+	<cfargument name="appreloadkey" required="true" default="">
+	<cfargument name="instanceID" required="true" default="">
+	<cfif arguments.instanceID neq application.instanceID 
+		and arguments.appreloadkey eq application.appreloadkey>
+		<cfset application.contentManager.purgeContentCache(contentID=arguments.contentID,siteID=arguments.siteID)>
+	</cfif>
+</cffunction>
+
+<cffunction name="purgeContentDescendentsCache" returntype="any" access="remote" output="false">
+	<cfargument name="contentID" required="true" default="">
+	<cfargument name="siteID" required="true" default="">
+	<cfargument name="appreloadkey" required="true" default="">
+	<cfargument name="instanceID" required="true" default="">
+	<cfif arguments.instanceID neq application.instanceID 
+		and arguments.appreloadkey eq application.appreloadkey>
+		<cfset application.contentManager.purgeContentDescendentsCache(contentID=arguments.contentID,siteID=arguments.siteID)>
 	</cfif>
 </cffunction>
 
@@ -90,7 +143,7 @@ to your own modified versions of Mura CMS.
 				<cfquery datasource="#application.configBean.getDatasource()#" username="#application.configBean.getDBUsername()#" password="#application.configBean.getDBPassword()#">
 					update tuserremotesessions set
 					data=<cfqueryparam cfsqltype="cf_sql_varchar" value="#sessionData#">,
-					lastAccessed=#createODBCDateTime(now())#
+					lastAccessed=<cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#">
 					where userID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#session.mura.userID#">
 				</cfquery>
 				
@@ -101,8 +154,8 @@ to your own modified versions of Mura CMS.
 					update tuserremotesessions set
 					authToken=<cfqueryparam cfsqltype="cf_sql_varchar" value="#authToken#">,
 					data=<cfqueryparam cfsqltype="cf_sql_varchar" value="#sessionData#">,
-					created=#createODBCDateTime(now())#,
-					lastAccessed=#createODBCDateTime(now())#
+					created=<cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#">,
+					lastAccessed=<cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#">
 					where userID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#session.mura.userID#">
 				</cfquery>
 				
@@ -114,8 +167,8 @@ to your own modified versions of Mura CMS.
 				<cfqueryparam cfsqltype="cf_sql_varchar" value="#session.mura.userID#">,
 				<cfqueryparam cfsqltype="cf_sql_varchar" value="#authToken#">,
 				<cfqueryparam cfsqltype="cf_sql_varchar" value="#sessionData#">,
-				#createODBCDateTime(now())#,
-				#createODBCDateTime(now())#
+				<cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#">,
+				<cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#">
 				)
 			</cfquery>
 	
@@ -190,7 +243,7 @@ to your own modified versions of Mura CMS.
 	
 	<cfquery datasource="#application.configBean.getDatasource()#" username="#application.configBean.getDBUsername()#" password="#application.configBean.getDBPassword()#">
 		update tuserremotesessions
-		set lastAccessed=#createODBCDateTime(now())#
+		set lastAccessed=<cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#">
 		where authToken=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.authToken#">
 	</cfquery>
 	

@@ -315,7 +315,7 @@ to your own modified versions of Mura CMS.
 					and (tcontent.active = 1 or (tcontent.changesetID is not null and tcontent.approved=0))
 					and type !='Module'
 					<cfif isDate(arguments.lastDeployment)>
-						and lastUpdate >= #createODBCDateTime(arguments.lastDeployment)#
+						and lastUpdate >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#arguments.lastDeployment#">
 					</cfif>
 				</cfquery>
 			<cfelse>
@@ -608,7 +608,7 @@ to your own modified versions of Mura CMS.
 				<cfquery datasource="#arguments.fromDSN#" name="rstcontentfeeds">
 					select * from tcontentfeeds where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.fromsiteid#"/>
 					<cfif isDate(arguments.lastDeployment)>
-						and lastUpdate >= #createODBCDateTime(arguments.lastDeployment)#
+						and lastUpdate >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#arguments.lastDeployment#">
 					</cfif>
 				</cfquery>
 			<cfelse>
@@ -814,7 +814,7 @@ to your own modified versions of Mura CMS.
 				<cfquery datasource="#arguments.fromDSN#" name="rstMailinglist">
 					select * from tmailinglist where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.fromsiteid#"/>
 					<cfif isDate(arguments.lastDeployment)>
-						 and lastUpdate >= #createODBCDateTime(arguments.lastDeployment)#
+						 and lastUpdate >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#arguments.lastDeployment#">
 					</cfif>
 				</cfquery>
 			<cfelse>
@@ -825,7 +825,7 @@ to your own modified versions of Mura CMS.
 				<cfif isDate(arguments.lastDeployment)>
 					<cfif rstMailinglist.recordcount or rsDeleted.recordcount>
 						and (
-							lastUpdate >= #createODBCDateTime(arguments.lastDeployment)#
+							lastUpdate >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#arguments.lastDeployment#">
 						<cfif rsDeleted.recordcount>
 							or
 							mlid in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#valueList(rsDeleted.objectID)#">)
@@ -883,7 +883,7 @@ to your own modified versions of Mura CMS.
 				<cfquery datasource="#arguments.fromDSN#" name="rstchangesets">
 					select * from tchangesets where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.fromsiteid#"/>
 					<cfif isDate(arguments.lastDeployment)>
-						and lastUpdate >= #createODBCDateTime(arguments.lastDeployment)#
+						and lastUpdate >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#arguments.lastDeployment#">
 					</cfif>
 				</cfquery>
 			<cfelse>
@@ -936,7 +936,7 @@ to your own modified versions of Mura CMS.
 				<cfquery datasource="#arguments.fromDSN#" name="rstcontentcategories">
 					select * from tcontentcategories where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.fromsiteid#"/>
 					<cfif isDate(arguments.lastDeployment)>
-						and lastUpdate >= #createODBCDateTime(arguments.lastDeployment)#
+						and lastUpdate >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#arguments.lastDeployment#">
 					</cfif>
 				</cfquery>
 			<cfelse>
@@ -1113,7 +1113,7 @@ to your own modified versions of Mura CMS.
 					select * from tfiles where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.fromsiteid#"/>
 					and moduleid  in (''<cfif len(arguments.moduleID)>,<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.moduleID#" list="true"></cfif><cfif arguments.usersMode neq "none">,'00000000000000000000000000000000008'</cfif><cfif arguments.contentMode neq "none">,'00000000000000000000000000000000000'</cfif><cfif arguments.formDataMode neq "none">,'00000000000000000000000000000000004'</cfif>)
 					<cfif isDate(arguments.lastDeployment)>
-						created >= #createODBCDateTime(arguments.lastDeployment)#
+						created >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#arguments.lastDeployment#">
 					</cfif>
 				</cfquery>
 			<cfelse>
@@ -1791,7 +1791,7 @@ to your own modified versions of Mura CMS.
 							siteid = '#application.settingsManager.getSite(rstSettings.advertiserUserPoolID).getPrivateUserPoolID()#' or
 							siteid = '#application.settingsManager.getSite(rstSettings.advertiserUserPoolID).getPublicUserPoolID()#')
 							<cfif isDate(arguments.lastDeployment)>
-								and lastUpdate >= #createODBCDateTime(arguments.lastDeployment)#
+								and lastUpdate >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#arguments.lastDeployment#">
 							</cfif>
 						</cfquery>
 					<cfelse>
@@ -1879,7 +1879,7 @@ to your own modified versions of Mura CMS.
 					<cfquery datasource="#arguments.fromDSN#" name="rstadzones">
 						select * from tadzones where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.fromsiteid#"/>
 						<cfif isDate(arguments.lastDeployment)>
-							and lastUpdate >= #createODBCDateTime(arguments.lastDeployment)#
+							and lastUpdate >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#arguments.lastDeployment#">
 						</cfif>
 					</cfquery>
 				<cfelse>

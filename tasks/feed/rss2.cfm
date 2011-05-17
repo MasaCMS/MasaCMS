@@ -59,38 +59,38 @@ to your own modified versions of Mura CMS.
 		<generator>http://www.getmura.com</generator>
 		<pubDate>#XMLformat(pubDate)#</pubDate> 
 		<language>#XMLFormat(feedBean.getLang())#</language>
-<cfloop query="rs"><cfsilent>
+<cfloop condition="feedIt.hasNext()"><cfsilent>
+<cfset item=feedIt.next()>
+<cfset itemdescription=item.getValue('summary')>
 <cfif feedBean.getallowhtml() eq 0>
-	<cfset itemdescription = renderer.stripHTML(renderer.setDynamicContent(rs.summary))>
+	<cfif not len(itemdescription)>
+		<cfset itemdescription=item.getValue('body')>
+	</cfif>	
+	<cfset itemdescription = renderer.stripHTML(renderer.setDynamicContent(itemdescription))>
+	<cfset itemdescription=left(itemdescription,200) & "...">
 <cfelse>
-	<cfset itemdescription = renderer.addCompletePath(renderer.setDynamicContent(rs.summary),feedBean.getSiteID())>
-	<!---
-	<cfif rs.type neq 'File' and rs.type neq 'Link'>
-		<cfset itemBody = renderer.addCompletePath(rs.body,feedBean.getSiteID())>
-	</cfif>
-	--->
+	<cfset itemdescription = renderer.addCompletePath(renderer.setDynamicContent(itemdescription),feedBean.getSiteID())>
 </cfif>
-<cfif isDate(rs.releaseDate)>
-	<cfset thePubDate=dateFormat(rs.releaseDate,"ddd, dd mmm yyyy") & " " & timeFormat(rs.releaseDate,"HH:mm:ss") & utc>
+<cfif isDate(item.getValue('releaseDate'))>
+	<cfset thePubDate=dateFormat(item.getValue('releaseDate'),"yyyy-mm-dd") & "T" & timeFormat(item.getValue('releaseDate'),"HH:mm:ss") & utc>
 <cfelse>
-	<cfset thePubDate=dateFormat(rs.lastUpdate,"ddd, dd mmm yyyy") & " " & timeFormat(rs.lastUpdate,"HH:mm:ss") & utc>
+	<cfset thePubDate=dateFormat(item.getValue('releaseDate'),"yyyy-mm-dd") & "T" & timeFormat(item.getValue('releaseDate'),"HH:mm:ss") & utc>
 </cfif>
+<cfset rsCats=application.contentManager.getCategoriesByHistID(item.getContentHistID())>
 
-<cfset rsCats=application.contentManager.getCategoriesByHistID(rs.contentHistID)>
-
-<cfset theLink=XMLFormat(renderer.createHREFforRss(rs.type,rs.filename,rs.siteid,rs.contentid,rs.target,rs.targetparams,application.configBean.getContext(),application.configBean.getStub(),application.configBean.getIndexFile(),0,rs.fileExt)) />
+<cfset theLink=XMLFormat(renderer.createHREFforRss(item.getValue('type'),item.getValue('filename'),item.getValue('siteID'),item.getValue('contentID'),item.getValue('target'),item.getValue('targetParams'),application.configBean.getContext(),application.configBean.getStub(),application.configBean.getIndexFile(),0,item.getValue('fileEXT'))) />
 </cfsilent>
 		<item>
-			<title>#XMLFormat(rs.menutitle)#</title>	
+			<title>#XMLFormat(item.getValue('menuTitle'))#</title>	
 			<link>#theLink#</link><cfif rs.type neq 'File' and rs.type neq 'Link'>
 			<comments>#theLink###comments</comments></cfif>
-			<guid isPermaLink="false">#rs.contentid#</guid>
+			<guid isPermaLink="false">#item.getValue('contentID')#</guid>
 			<pubDate>#XMLFormat(thePubDate)#</pubDate>
 			<description><![CDATA[#itemdescription# ]]></description>
 			<cfloop query="rsCats">
 			<category><![CDATA[#rsCats.name#]]></category>	
 			</cfloop>
-			<cfif rs.type eq "File"><cfset fileMeta=application.serviceFactory.getBean("fileManager").readMeta(rs.fileID)><enclosure url="#XMLFormat('http://#application.settingsManager.getSite(rs.siteID).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()#/tasks/render/file/?fileID=#rs.fileID#&fileEXT=.#rs.fileEXT#')#" length="#rs.filesize#" type="#fileMeta.ContentType#/#fileMeta.ContentSubType#" /></cfif>
+			<cfif rs.type eq "File"><cfset fileMeta=application.serviceFactory.getBean("fileManager").readMeta(item.getValue('fileID'))><enclosure url="#XMLFormat('http://#application.settingsManager.getSite(item.getValue('siteID')).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()#/tasks/render/file/?fileID=#item.getValue('fileID')#&fileEXT=.#item.getValue('fileEXT')#')#" length="#item.getValue('fileSize')#" type="#fileMeta.ContentType#/#fileMeta.ContentSubType#" /></cfif>
 		</item></cfloop>
 	</channel>
 </rss></cfoutput>

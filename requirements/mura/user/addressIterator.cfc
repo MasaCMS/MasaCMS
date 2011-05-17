@@ -41,14 +41,19 @@ the GNU General Public License version 2  without this exception.  You may, if y
 to your own modified versions of Mura CMS.
 --->
 <cfcomponent extends="mura.iterator.queryIterator" output="false">
-	
-<cffunction name="packageRecord" access="public" output="false" returntype="any">
-	<cfset var address=createObject("component","addressBean").init(variables.configBean, variables.settingsManager, variables.geoCoding, variables.userManager) />
-	<cfset address.set(queryRowToStruct(variables.records,currentIndex()))>
-	<cfif isObject(variables.recordTranslator)>
-		<cfset address.setTranslator(variables.recordTranslator)>
+
+<cfset variables.addressBean="">
+
+<cffunction name="packageRecord" access="public" output="false" returntype="any">	
+	<cfif NOT isObject(variables.addressBean)>
+		<cfset variables.addressBean=createObject("component","addressBean").init(variables.configBean, variables.settingsManager, variables.geoCoding, variables.userManager) />
+		<cfset variables.addressStructTemplate=variables.addressBean.getAllValues()>
+	<cfelse>
+		<cfset variables.addressBean.setAllValues( variables.addressStructTemplate)>
 	</cfif>
-	<cfreturn address>
+	
+	<cfset  variables.addressBean.set(queryRowToStruct(variables.records,currentIndex()))>
+	<cfreturn  variables.addressBean>
 </cffunction>
 
 <cffunction name="setConfigBean" output="false" access="public">

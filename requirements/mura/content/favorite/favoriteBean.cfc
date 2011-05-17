@@ -238,7 +238,7 @@
 		columnNumber=#getColumnNumber()#,
 		rowNumber=#getRowNumber()#,
 		maxRSSItems=#getMaxRssItems()#,
-		dateCreated=#createODBCDateTime(getDateCreated())#
+		dateCreated=<cfqueryparam cfsqltype="cf_sql_timestamp" value="#getDateCreated()#">
 		where favoriteID=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#getFavoriteID()#">
 		</cfquery>
 		
@@ -256,7 +256,7 @@
 		#getColumnNumber()#,
 		#getRowNumber()#,
 		#getMaxRssItems()#,
-		#createODBCDateTime(getDateCreated())#
+		<cfqueryparam cfsqltype="cf_sql_timestamp" value="#getDateCreated()#">
 		)
 		</cfquery>
 		
