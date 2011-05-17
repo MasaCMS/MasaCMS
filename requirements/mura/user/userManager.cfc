@@ -544,6 +544,9 @@ to your own modified versions of Mura CMS.
 		<cfset variables.fileManager.deleteVersion(userBean.getPhotoFileID()) />
 	</cfif>
 	
+	<cfset variables.userDAO.delete(arguments.userid,arguments.type) />
+	<cfset purgeUserCache(userBean=userBean)>
+	
 	<cfif  userBean.getType() eq 1>			
 		<cfset variables.pluginManager.announceEvent("onAfterGroupDelete",pluginEvent)>
 		<cfset variables.pluginManager.announceEvent("onAfterGroup#userBean.getSubType()#Delete",pluginEvent)>				
@@ -551,9 +554,6 @@ to your own modified versions of Mura CMS.
 		<cfset variables.pluginManager.announceEvent("onAfterUserDelete",pluginEvent)>
 		<cfset variables.pluginManager.announceEvent("onAfterUser#userBean.getSubType()#Delete",pluginEvent)>		
 	</cfif>
-	
-	<cfset variables.userDAO.delete(arguments.userid,arguments.type) />
-	<cfset purgeUserCache(userBean=userBean)>
 	
 </cffunction>
 
