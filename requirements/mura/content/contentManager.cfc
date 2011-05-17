@@ -57,6 +57,7 @@ to your own modified versions of Mura CMS.
 		<cfargument name="pluginManager" type="any" required="yes"/>
 		<cfargument name="trashManager" type="any" required="yes"/>
 		<cfargument name="changesetManager" type="any" required="yes"/>
+		<cfargument name="clusterManager" type="any" required="yes"/>
 		
 		<cfset variables.contentGateway=arguments.contentGateway />
 		<cfset variables.contentDAO=arguments.contentDAO />
@@ -71,6 +72,7 @@ to your own modified versions of Mura CMS.
 		<cfset variables.trashManager=arguments.trashManager />
 		<cfset variables.changesetManager=arguments.changesetManager />
 		<cfset variables.ClassExtensionManager=variables.configBean.getClassExtensionManager() />
+		<cfset variables.clusterManager=arguments.clusterManager />
 		
 		<cfset variables.contentDAO.setContentManager(this)/>
 		
@@ -247,10 +249,32 @@ to your own modified versions of Mura CMS.
 		<cfargument name="use404" type="boolean" required="yes" default="false"/>
 		<cfargument name="contentBean" type="any" default=""/>
 		
-		<cfset var key="filename" & arguments.siteid & arguments.filename />
+		<cfset var key="" />
 		<cfset var site=variables.settingsManager.getSite(arguments.siteid)/>
 		<cfset var cacheFactory=site.getCacheFactory(type="data")>
 		<cfset var bean="">
+		
+		<cfif arguments.filename eq "/">
+			<cfset arguments.filename="">
+		<cfelse>
+			<cfif left(arguments.filename,1) eq "/">
+				<cfif len(arguments.filename) gt 1>
+					<cfset arguments.filename=right(arguments.filename,len(arguments.filename)-1)>
+				<cfelse>
+					<cfset arguments.filename="">
+				</cfif>
+			</cfif>
+			
+			<cfif right(arguments.filename,1) eq "/">
+				<cfif len(arguments.filename) gt 1>
+					<cfset arguments.filename=left(arguments.filename,len(arguments.filename)-1)>
+				<cfelse>
+					<cfset arguments.filename="">
+				</cfif>
+			</cfif>
+		</cfif>
+		
+		<cfset key="filename" & arguments.siteid & arguments.filename />
 		
 		<cfif site.getCache()>
 			<!--- check to see if it is cached. if not then pass in the context --->
@@ -896,7 +920,7 @@ to your own modified versions of Mura CMS.
 			
 		<cfif newBean.getapproved()>
 			<cfset variables.settingsManager.getSite(arguments.data.siteid).purgeCache(type="output") />
-			<cfif not newBean.getIsNew() >
+			<cfif NOT newBean.getIsNew() >
 				<cfset purgeContentCache(contentBean=newbean)>
 			</cfif>
 		</cfif>
@@ -1735,21 +1759,21 @@ to your own modified versions of Mura CMS.
 		<cfset arguments.contentBean=read(contentID=arguments.contentID,siteID=arguments.siteID)>
 	</cfif>
 	
-	<cfif arguments.contentBean.getIsNew()>
+	<cfif NOT arguments.contentBean.getIsNew()>
 		<cfset cache=variables.settingsManager.getSite(arguments.contentBean.getSiteID()).getCacheFactory(type="data")>
 		
 		<cfset cache.purge("contentID" & arguments.contentBean.getSiteID() & arguments.contentBean.getContentID())>
 		<cfif len(arguments.contentBean.getRemoteID())>
 			<cfset cache.purge("remoteID" & arguments.contentBean.getSiteID() & arguments.contentBean.getRemoteID())>
 		</cfif>
-		<cfif len(arguments.contentBean.getFilename())>
-			<cfset cache.purge("filename" & arguments.contentBean.getSiteID() & arguments.contentBean.getFilename())>
+		<cfif len(arguments.contentBean.getFilename()) or arguments.contentBean.getContentID() eq "00000000000000000000000000000000001">
+			<cfset cache.purge("filename" & arguments.contentBean.getSiteID() & arguments.contentBean.getFilename())>	
 		</cfif>
 		<cfset cache.purge("title" & arguments.contentBean.getSiteID() & arguments.contentBean.getTitle())>
 		
 		<cfset history=arguments.contentBean.getVersionHistoryIterator()>
 		<cfloop condition="history.hasNext()">
-			<cfset version=history.getNext()>
+			<cfset version=history.next()>
 			<cfset cache.purge("version" & arguments.contentBean.getSiteID() & arguments.contentBean.getContentHistID())>
 		</cfloop>
 		

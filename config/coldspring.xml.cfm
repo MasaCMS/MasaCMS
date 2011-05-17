@@ -65,6 +65,7 @@ to your own modified versions of Mura CMS.
 			<constructor-arg name="pluginManager"><ref bean="pluginManager" /></constructor-arg>
 			<constructor-arg name="trashManager"><ref bean="trashManager" /></constructor-arg>
 			<constructor-arg name="changesetManager"><ref bean="changesetManager" /></constructor-arg>
+			<constructor-arg name="clusterManager"><ref bean="clusterManager" /></constructor-arg>
 		</bean>
 		<cfif isDefined("server.coldfusion.productname") and server.coldfusion.productname eq "Railo">
 		<bean id="contentGateway" class="mura.content.contentGatewayRailo" singleton="true">

@@ -389,10 +389,32 @@ to your own modified versions of Mura CMS.
 	<cfargument name="filename" type="String" />		
 	<cfargument name="siteid" type="string" />
 	<cfargument name="categoryBean" default=""/>
-	<cfset var key= "category" & arguments.siteid & arguments.filename />
+	<cfset var key= "" />
 	<cfset var site=variables.settingsManager.getSite(arguments.siteid)/>
 	<cfset var cacheFactory=site.getCacheFactory(type="data")>
 	<cfset var bean="">	
+	
+	<cfif arguments.filename eq "/">
+		<cfset arguments.filename="">
+	<cfelse>
+		<cfif left(arguments.filename,1) eq "/">
+			<cfif len(arguments.filename) gt 1>
+				<cfset arguments.filename=right(arguments.filename,len(arguments.filename)-1)>
+			<cfelse>
+				<cfset arguments.filename="">
+			</cfif>
+		</cfif>
+			
+		<cfif right(arguments.filename,1) eq "/">
+			<cfif len(arguments.filename) gt 1>
+				<cfset arguments.filename=left(arguments.filename,len(arguments.filename)-1)>
+			<cfelse>
+				<cfset arguments.filename="">
+			</cfif>
+		</cfif>
+	</cfif>
+	
+	<cfset key= "category" & arguments.siteid & arguments.filename />
 	
 	<cfif site.getCache()>
 		<!--- check to see if it is cached. if not then pass in the context --->
@@ -457,11 +479,11 @@ to your own modified versions of Mura CMS.
 	<cfargument name="broadcast" default="true">
 	<cfset var cache="">
 	
-	<cfif not isDefined("arguments.categoryBean")>
+	<cfif NOT isDefined("arguments.categoryBean")>
 		<cfset arguments.categoryBean=read(categoryID=arguments.categoryID)>
 	</cfif>
 	
-	<cfif arguments.categoryBean.getIsNew()>
+	<cfif NOT arguments.categoryBean.getIsNew()>
 		<cfset cache=variables.settingsManager.getSite(arguments.categoryBean.getSiteID()).getCacheFactory(type="data")>
 		
 		<cfset cache.purge("category" & arguments.categoryBean.getSiteID() & arguments.categoryBean.getCategoryID())>

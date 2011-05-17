@@ -288,26 +288,6 @@ tcontent.doCache,tcontent.created,tcontent.urltitle,tcontent.htmltitle,tcontent.
 		<cfelse>
 			<cfset bean=getBean()>
 		</cfif>
-		
-		<cfif arguments.filename eq "/">
-			<cfset arguments.filename="">
-		<cfelse>
-			<cfif left(arguments.filename,1) eq "/">
-				<cfif len(arguments.filename) gt 1>
-					<cfset arguments.filename=right(arguments.filename,len(arguments.filename)-1)>
-				<cfelse>
-					<cfset arguments.filename="">
-				</cfif>
-			</cfif>
-			
-			<cfif right(arguments.filename,1) eq "/">
-				<cfif len(arguments.filename) gt 1>
-					<cfset arguments.filename=left(arguments.filename,len(arguments.filename)-1)>
-				<cfelse>
-					<cfset arguments.filename="">
-				</cfif>
-			</cfif>
-		</cfif>
 			
 		<cfquery datasource="#variables.dsn#" name="rsContent"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 			select #variables.fieldlist#, tfiles.fileSize, tfiles.contentType, tfiles.contentSubType, tfiles.fileExt from tcontent 
