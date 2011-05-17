@@ -112,8 +112,8 @@ to your own modified versions of Mura CMS.
 		  OR
 		  (	tcontent.Display = 2
 			and (
-					(tcontent.DisplayStart <= #createodbcdatetime(now())# 
-					AND (tcontent.DisplayStop >= #createodbcdatetime(now())# or tcontent.DisplayStop is null))
+					(tcontent.DisplayStart <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#"> 
+					AND (tcontent.DisplayStop >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#"> or tcontent.DisplayStop is null))
 					
 					OR tparent.type='Calendar'
 				)

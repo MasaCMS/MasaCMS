@@ -73,8 +73,8 @@ to your own modified versions of Mura CMS.
 	values (
 	<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.feedBean.getfeedID()#">,
 	<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.feedBean.getSiteID() neq '',de('no'),de('yes'))#" value="#arguments.feedBean.getsiteID()#">,
-	<cfif isDate(arguments.feedBean.getDateCreated()) >#createODBCDateTime(arguments.feedBean.getDateCreated())#<cfelse>null</cfif>,
-	<cfif isDate(arguments.feedBean.getLastUpdate()) >#createODBCDateTime(arguments.feedBean.getLastUpdate())#<cfelse>null</cfif>,
+	<cfif isDate(arguments.feedBean.getDateCreated()) ><cfqueryparam cfsqltype="cf_sql_timestamp" value="#arguments.feedBean.getDateCreated()#"><cfelse>null</cfif>,
+	<cfif isDate(arguments.feedBean.getLastUpdate()) ><cfqueryparam cfsqltype="cf_sql_timestamp" value="#arguments.feedBean.getLastUpdate()#"><cfelse>null</cfif>,
 	<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.feedBean.getLastUpdateBy() neq '',de('no'),de('yes'))#" value="#arguments.feedBean.getLastUpdateBy()#">,
 	<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.feedBean.getName() neq '',de('no'),de('yes'))#" value="#arguments.feedBean.getName()#">,
 	<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.feedBean.getAltName() neq '',de('no'),de('yes'))#" value="#arguments.feedBean.getAltName()#">,
@@ -219,7 +219,7 @@ to your own modified versions of Mura CMS.
 	<cftransaction>
 	<cfquery datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	update tcontentfeeds set
-	lastUpdate = <cfif isDate(arguments.feedBean.getLastUpdate()) >#createODBCDateTime(arguments.feedBean.getLastUpdate())#<cfelse>null</cfif>,
+	lastUpdate = <cfif isDate(arguments.feedBean.getLastUpdate()) ><cfqueryparam cfsqltype="cf_sql_timestamp" value="#arguments.feedBean.getLastUpdate()#"><cfelse>null</cfif>,
 	lastupdateBy = <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.feedBean.getLastUpdateBy() neq '',de('no'),de('yes'))#" value="#arguments.feedBean.getLastUpdateBy()#">,
 	name = <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.feedBean.getName() neq '',de('no'),de('yes'))#" value="#arguments.feedBean.getName()#">,
 	altName = <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.feedBean.getAltName() neq '',de('no'),de('yes'))#" value="#arguments.feedBean.getAltName()#">,

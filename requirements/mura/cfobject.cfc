@@ -133,41 +133,6 @@ to your own modified versions of Mura CMS.
 	<cfreturn application.pluginManager.getConfig(arguments.ID, arguments.siteID, arguments.cache) />	
 </cffunction>
 
-<cffunction name="setTranslator" output="false" access="public">
-<cfargument name="translator">
-	<cfset variables.translator=arguments.translator/>
-	<cfset variables.translator.setBean(this)>
-	<cfreturn this>
-</cffunction>
-
-<cffunction name="translate" output="false" returntype="any" access="public">
-<cfargument name="event" required="true" default="">
-<cfargument name="translation" required="true" default="">
-	<cfset var translation1="">
-	<cfset var translation2="">
-	<cfif isObject(variables.translator) >
-		<cfif len(arguments.translation) and structKeyExists(variables.translator,arguments.translation)>
-			<cfsavecontent variable="translation1"><cfinvoke component="#variables.translator#" method="#arguments.translation#" returnVariable="translation2"><cfinvokeargument name="event" value="#arguments.event#"></cfinvoke></cfsavecontent>
-			<cfif isDefined("translation2")>
-				<cfreturn translation2>
-			<cfelse>
-				<cfreturn translation1>
-			</cfif>
-		<cfelseif structKeyExists(variables.translator,"translate")>
-			<cfsavecontent variable="translation1"><cfinvoke component="#variables.translator#" method="translate" returnVariable="translation2"><cfinvokeargument name="event" value="#arguments.event#"></cfinvoke></cfsavecontent>
-			<cfif isDefined("translation2")>
-				<cfreturn translation2>
-			<cfelse>
-				<cfreturn translation1>
-			</cfif>
-		<cfelse>
-			<cfreturn "translation not implemented">
-		</cfif>
-	<cfelse>
-		<cfreturn getValue(arguments.translation)/>
-	</cfif>
-</cffunction>
-
 <cffunction name="injectMethod" access="public" output="false">
 <cfargument name="toObjectMethod" type="string" required="true" />
 <cfargument name="fromObjectMethod" type="any" required="true" />

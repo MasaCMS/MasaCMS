@@ -131,7 +131,7 @@ to your own modified versions of Mura CMS.
 				insert into tredirects (redirectID,URL,created) values(
 				<cfqueryparam cfsqltype="cf_sql_varchar" value="#redirectID#" >,
 				<cfqueryparam cfsqltype="cf_sql_varchar" value="#reviewLink#" >,
-				#createODBCDateTime(now())#
+				<cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#">
 				)
 				</cfquery>
 				

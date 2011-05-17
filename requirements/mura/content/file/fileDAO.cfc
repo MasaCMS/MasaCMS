@@ -165,7 +165,7 @@ to your own modified versions of Mura CMS.
 		<cfqueryparam cfsqltype="cf_sql_integer"  value="#arguments.fileSize#">,
 		<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.moduleID#">,
 		<cfqueryparam cfsqltype="cf_sql_varchar"  null="#iif(arguments.fileExt eq '',de('yes'),de('no'))#" value="#arguments.fileExt#">,
-		#createODBCDateTime(now())#
+		<cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#">
 		<cfif variables.configBean.getFileStore() eq 'database'>,
 		<cfqueryparam cfsqltype="cf_sql_blob"  value="#arguments.fileObj#">,
 		<cfqueryparam cfsqltype="cf_sql_blob"  null="#iif(isBinary(arguments.fileObjSmall),de('no'),de('yes'))#" value="#arguments.fileObjSmall#">,

@@ -263,7 +263,7 @@
 						<cfqueryparam cfsqltype="cf_sql_varchar" value="#objectType#" />,
 						<cfqueryparam cfsqltype="cf_sql_varchar" value="#objectSubType#" />,
 						<cfqueryparam cfsqltype="cf_sql_longvarchar" value="#allValues#" />,
-						#createODBCDateTime(muraDeleteDateTime)#,
+						<cfqueryparam cfsqltype="cf_sql_timestamp" value="#muraDeleteDateTime#">,
 						<cfqueryparam cfsqltype="cf_sql_varchar" value="#left($.currentUser('fullname'),50)#" />
 					)			
 			</cfquery>
@@ -308,7 +308,7 @@
 		from ttrash where 
 		1=1
 		<cfif structKeyExists(arguments,"sinceDate")>
-		and deletedDate >= #createODBCDateTime(arguments.sinceDate)#
+		and deletedDate >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#arguments.sinceDate#">
 		</cfif>	
 		<cfif structKeyExists(arguments,"objectID")>
 		and objectID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.objectID#">
@@ -335,7 +335,7 @@
 		and objectClass=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.objectLabel#">
 		</cfif>
 		<cfif structKeyExists(arguments,"deletedDate") and isDate(arguments.deletedDate)>
-		and deletedDate=#createODBCDateTime(arguments.deletedDate)#
+		and deletedDate=<cfqueryparam cfsqltype="cf_sql_timestamp" value="#arguments.deletedDate#">
 		</cfif>		
 		
 		<cfif structKeyExists(arguments,"keywords") and len(arguments.keywords)>

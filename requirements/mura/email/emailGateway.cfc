@@ -267,8 +267,8 @@ to your own modified versions of Mura CMS.
 			FROM temails INNER JOIN
 			temailstats ON temails.EmailID = temailstats.EmailID
 			WHERE (temails.siteid = '#arguments.siteid#')
-			and temailstats.created <=  #createODBCDateTime(createDateTime(year(arguments.stopDate),month(arguments.stopDate),day(arguments.stopDate),23,59,0))#
-			and temailstats.created >=  #createODBCDateTime(createDateTime(year(arguments.startDate),month(arguments.startDate),day(arguments.startDate),0,0,0))#
+			and temailstats.created <=  <cfqueryparam cfsqltype="cf_sql_timestamp" value="#createDateTime(year(arguments.stopDate),month(arguments.stopDate),day(arguments.stopDate),23,59,0)#">
+			and temailstats.created >=  <cfqueryparam cfsqltype="cf_sql_timestamp" value="#createDateTime(year(arguments.startDate),month(arguments.startDate),day(arguments.startDate),0,0,0)#">
 		</cfquery>
 
 		<cfset returnVar = rs.emailCount>
@@ -312,9 +312,9 @@ to your own modified versions of Mura CMS.
 	<cfif lsIsDate(arguments.startDate)>
 		<cftry>
 		<cfset start=lsParseDateTime(arguments.startDate) />
-		and deliveryDate >= #createodbcdatetime(createdatetime(year(start),month(start),day(start),0,0,0))#
+		and deliveryDate >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#createdatetime(year(start),month(start),day(start),0,0,0)#">
 		<cfcatch>
-		and deliveryDate >= #createodbcdatetime(createdatetime(year(arguments.startDate),month(arguments.startDate),day(arguments.startDate),0,0,0))#
+		and deliveryDate >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#createdatetime(year(arguments.startDate),month(arguments.startDate),day(arguments.startDate),0,0,0)#">
 		</cfcatch>
 		</cftry>
 	</cfif>
@@ -322,9 +322,9 @@ to your own modified versions of Mura CMS.
 	<cfif lsIsDate(arguments.stopDate)>
 		<cftry>
 		<cfset stop=lsParseDateTime(arguments.stopDate) />
-		and deliveryDate <= #createodbcdatetime(createdatetime(year(stop),month(stop),day(stop),23,59,0))#
+		and deliveryDate <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#createdatetime(year(stop),month(stop),day(stop),23,59,0)#">
 		<cfcatch>
-		and deliveryDate <= #createodbcdatetime(createdatetime(year(arguments.stopDate),month(arguments.stopDate),day(arguments.stopDate),23,59,0))#
+		and deliveryDate <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#createdatetime(year(arguments.stopDate),month(arguments.stopDate),day(arguments.stopDate),23,59,0)#">
 		</cfcatch>
 		</cftry>
 	</cfif>

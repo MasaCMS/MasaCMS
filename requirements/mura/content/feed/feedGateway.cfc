@@ -301,8 +301,8 @@ to your own modified versions of Mura CMS.
 								OR
 								
 								(	tcontent.isFeature = 2 
-									AND tcontent.FeatureStart <= #createodbcdatetime(nowAdjusted)# 
-									AND (tcontent.FeatureStop >= #createodbcdatetime(nowAdjusted)# or tcontent.FeatureStop is null)			 
+									AND tcontent.FeatureStart <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#nowAdjusted#"> 
+									AND (tcontent.FeatureStop >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#nowAdjusted#"> or tcontent.FeatureStop is null)			 
 								)				
 							) 
 							<cfif categoryLen> OR tcontent.contentHistID in (
@@ -320,8 +320,8 @@ to your own modified versions of Mura CMS.
 								OR
 									
 									(	tcontentcategoryassign.isFeature = 2 
-										AND tcontentcategoryassign.FeatureStart <= #createodbcdatetime(nowAdjusted)# 
-										AND (tcontentcategoryassign.FeatureStop >= #createodbcdatetime(nowAdjusted)# or tcontentcategoryassign.FeatureStop is null)			 
+										AND tcontentcategoryassign.FeatureStart <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#nowAdjusted#"> 
+										AND (tcontentcategoryassign.FeatureStop >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#nowAdjusted#"> or tcontentcategoryassign.FeatureStop is null)			 
 									)
 													
 								) 
@@ -348,8 +348,8 @@ to your own modified versions of Mura CMS.
 								AND 
 									(
 										(
-										tcontent.DisplayStart <= #createodbcdatetime(nowAdjusted)# 
-										AND (tcontent.DisplayStop >= #createodbcdatetime(nowAdjusted)# or tcontent.DisplayStop is null)			 
+										tcontent.DisplayStart <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#nowAdjusted#"> 
+										AND (tcontent.DisplayStop >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#nowAdjusted#"> or tcontent.DisplayStop is null)			 
 										)
 										OR
 										tcontent.parentID in (select contentID from tcontent 
@@ -373,8 +373,8 @@ to your own modified versions of Mura CMS.
 								AND 
 									(
 										(
-										TKids.DisplayStart <= #createodbcdatetime(nowAdjusted)# 
-										AND (TKids.DisplayStop >= #createodbcdatetime(nowAdjusted)# or TKids.DisplayStop is null)			 
+										TKids.DisplayStart <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#nowAdjusted#"> 
+										AND (TKids.DisplayStop >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#nowAdjusted#"> or TKids.DisplayStop is null)			 
 										)
 										OR
 										TKids.parentID in (select contentID from tcontent 
@@ -489,8 +489,8 @@ to your own modified versions of Mura CMS.
 			OR
 			
 			(	tcontent.isFeature = 2 
-				AND tcontent.FeatureStart <= #createodbcdatetime(nowAdjusted)# 
-				AND (tcontent.FeatureStop >= #createodbcdatetime(nowAdjusted)# or tcontent.FeatureStop is null)			 
+				AND tcontent.FeatureStart <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#nowAdjusted#"> 
+				AND (tcontent.FeatureStop >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#nowAdjusted#"> or tcontent.FeatureStop is null)			 
 			)				
 		) 
 		<cfif categoryLen> OR tcontent.contenthistID in (
@@ -508,8 +508,8 @@ to your own modified versions of Mura CMS.
 			OR
 				
 				(	tcontentcategoryassign.isFeature = 2 
-					AND tcontentcategoryassign.FeatureStart <= #createodbcdatetime(nowAdjusted)# 
-					AND (tcontentcategoryassign.FeatureStop >= #createodbcdatetime(nowAdjusted)# or tcontentcategoryassign.FeatureStop is null)			 
+					AND tcontentcategoryassign.FeatureStart <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#nowAdjusted#"> 
+					AND (tcontentcategoryassign.FeatureStop >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#nowAdjusted#"> or tcontentcategoryassign.FeatureStop is null)			 
 				)
 								
 			) 
@@ -538,8 +538,8 @@ to your own modified versions of Mura CMS.
 			AND
 			 (
 				(
-					tcontent.DisplayStart <= #createodbcdatetime(nowAdjusted)# 
-					AND (tcontent.DisplayStop >= #createodbcdatetime(nowAdjusted)# or tcontent.DisplayStop is null)
+					tcontent.DisplayStart <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#nowAdjusted#"> 
+					AND (tcontent.DisplayStop >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#nowAdjusted#"> or tcontent.DisplayStop is null)
 				)
 				OR tparent.type='Calendar'
 			  )			 

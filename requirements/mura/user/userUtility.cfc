@@ -254,7 +254,7 @@ to your own modified versions of Mura CMS.
 				</cfif>
 				
 				<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-				UPDATE tusers SET LastLogin = #createodbcdatetime(now())#
+				UPDATE tusers SET LastLogin = <cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#">
 				WHERE tusers.UserID='#rsUser.UserID#'
 				</cfquery>
 				
@@ -427,7 +427,7 @@ to your own modified versions of Mura CMS.
 	insert into tredirects (redirectID,URL,created) values(
 	<cfqueryparam cfsqltype="cf_sql_varchar" value="#returnID#" >,
 	<cfqueryparam cfsqltype="cf_sql_varchar" value="#editProfileURL#" >,
-	#createODBCDateTime(now())#
+	<cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#">
 	)
 </cfquery>
 

@@ -65,10 +65,17 @@ to your own modified versions of Mura CMS.
 
 <cffunction name="read" access="public" returntype="any" output="false">
 		<cfargument name="userid" type="string" required="yes" />
+		<cfargument name="userBean" default="">
 		<cfset var rsuser = 0 />
 		<cfset var rsmembs = "" />
 		<cfset var rsInterests = "" />
-		<cfset var userBean=getBean() />
+		<cfset var bean="" />
+		
+		<cfif isObject(arguments.userBean)>
+			<cfset bean=arguments.userBean>
+		<cfelse>
+			<cfset bean=getBean()>
+		</cfif>	
 			
 		<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#" name="rsUser">
 			select #variables.fieldList#
@@ -78,25 +85,32 @@ to your own modified versions of Mura CMS.
 		</cfquery>
 	
 		<cfif rsUser.recordCount eq 1>
-			<cfset userBean.set(rsUser) />
-			<cfset setUserBeanMetaData(userBean)>
-			<cfset userBean.setIsNew(0)>
+			<cfset bean.set(rsUser) />
+			<cfset setUserBeanMetaData(bean)>
+			<cfset bean.setIsNew(0)>
 		<cfelse>
-			<cfset userBean.setIsNew(1)>
+			<cfset bean.setIsNew(1)>
 		</cfif>
 		
-		<cfreturn userBean />
+		<cfreturn bean />
 </cffunction>
 
 <cffunction name="readByUsername" access="public" returntype="any" output="false">
 		<cfargument name="username" type="string" required="yes" />
 		<cfargument name="siteid" type="string" required="yes" />
+		<cfargument name="userBean" default="">
 		<cfset var rsuser = 0 />
 		<cfset var rsmembs = "" />
 		<cfset var rsInterests = "" />
-		<cfset var userBean=application.serviceFactory.getBean("userBean") />
 		<cfset var beanArray=arrayNew(1)>
-		<cfset var utility="">	
+		<cfset var utility="">
+		<cfset var bean="" />
+		
+		<cfif isObject(arguments.userBean)>
+			<cfset bean=arguments.userBean>
+		<cfelse>
+			<cfset bean=getBean()>
+		</cfif>	
 			
 		<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#" name="rsUser">
 			select #variables.fieldList#
@@ -112,41 +126,48 @@ to your own modified versions of Mura CMS.
 		<cfif rsUser.recordcount gt 1>
 			<cfset utility=getServiceFactory().getBean("utility")>
 			<cfloop query="rsUser">
-				<cfset userBean=getbean().set(utility.queryRowToStruct(rsUser,rsUser.currentrow))>
-				<cfset userBean.setIsNew(0)>
-				<cfset rsmembs=readMembershipIDs(userBean.getUserId()) />
-				<cfset rsInterests=readInterestGroupIDs(userBean.getUserId()) />
-				<cfset userBean.setGroupId(valuelist(rsmembs.groupid))/>
-				<cfset userBean.setCategoryId(valuelist(rsInterests.categoryid))/>
+				<cfset bean=getbean().set(utility.queryRowToStruct(rsUser,rsUser.currentrow))>
+				<cfset bean.setIsNew(0)>
+				<cfset rsmembs=readMembershipIDs(bean.getUserId()) />
+				<cfset rsInterests=readInterestGroupIDs(bean.getUserId()) />
+				<cfset bean.setGroupId(valuelist(rsmembs.groupid))/>
+				<cfset bean.setCategoryId(valuelist(rsInterests.categoryid))/>
 				<!---<cfset userBean.setAddresses(getAddresses(userBean.getUserID()))/>--->	
-				<cfset arrayAppend(beanArray,userBean)>	
+				<cfset arrayAppend(beanArray,bean)>	
 			</cfloop>
 			<cfreturn beanArray>
 		<cfelseif rsUser.recordCount eq 1>
-			<cfset userBean.set(rsUser) />
-			<cfset rsmembs=readMembershipIDs(userBean.getUserId()) />
-			<cfset rsInterests=readInterestGroupIDs(userBean.getUserId()) />
-			<cfset userBean.setGroupId(valuelist(rsmembs.groupid))/>
-			<cfset userBean.setCategoryId(valuelist(rsInterests.categoryid))/>
+			<cfset bean.set(rsUser) />
+			<cfset rsmembs=readMembershipIDs(bean.getUserId()) />
+			<cfset rsInterests=readInterestGroupIDs(bean.getUserId()) />
+			<cfset bean.setGroupId(valuelist(rsmembs.groupid))/>
+			<cfset bean.setCategoryId(valuelist(rsInterests.categoryid))/>
 			<!--- <cfset userBean.setAddresses(getAddresses(userBean.getUserID()))/> --->
-			<cfset userBean.setIsNew(0)>
+			<cfset bean.setIsNew(0)>
 		<cfelse>
-			<cfset userBean.setIsNew(1)>
+			<cfset bean.setIsNew(1)>
 		</cfif>
 		
-		<cfreturn userBean />
+		<cfreturn bean />
 </cffunction>
 
 <cffunction name="readByGroupName" access="public" returntype="any" output="false">
 		<cfargument name="groupname" type="string" required="yes" />
 		<cfargument name="siteid" type="string" required="yes" />
 		<cfargument name="isPublic" type="string" required="yes" default="both"/>
+		<cfargument name="userBean" default="">
 		<cfset var rsuser = 0 />
 		<cfset var rsmembs = "" />
 		<cfset var rsInterests = "" />
-		<cfset var userBean=application.serviceFactory.getBean("userBean") />
 		<cfset var beanArray=arrayNew(1)>
-		<cfset var utility="">	
+		<cfset var utility="">
+		<cfset var bean="" />
+		
+		<cfif isObject(arguments.userBean)>
+			<cfset bean=arguments.userBean>
+		<cfelse>
+			<cfset bean=getBean()>
+		</cfif>		
 		
 		<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#" name="rsUser">
 			select #variables.fieldList#
@@ -177,40 +198,47 @@ to your own modified versions of Mura CMS.
 		<cfif rsUser.recordcount gt 1>
 			<cfset utility=getServiceFactory().getBean("utility")>
 			<cfloop query="rsUser">
-				<cfset userBean=getbean().set(utility.queryRowToStruct(rsUser,rsUser.currentrow))>
-				<cfset userBean.setIsNew(0)>
-				<cfset rsmembs=readMembershipIDs(userBean.getUserId()) />
-				<cfset rsInterests=readInterestGroupIDs(userBean.getUserId()) />
-				<cfset userBean.setGroupId(valuelist(rsmembs.groupid))/>
-				<cfset userBean.setCategoryId(valuelist(rsInterests.categoryid))/>
+				<cfset bean=getbean().set(utility.queryRowToStruct(rsUser,rsUser.currentrow))>
+				<cfset bean.setIsNew(0)>
+				<cfset rsmembs=readMembershipIDs(bean.getUserId()) />
+				<cfset rsInterests=readInterestGroupIDs(bean.getUserId()) />
+				<cfset bean.setGroupId(valuelist(rsmembs.groupid))/>
+				<cfset bean.setCategoryId(valuelist(rsInterests.categoryid))/>
 				<!--- <cfset userBean.setAddresses(getAddresses(userBean.getUserID()))/> --->
-				<cfset arrayAppend(beanArray,userBean)>		
+				<cfset arrayAppend(beanArray,bean)>		
 			</cfloop>
 			<cfreturn beanArray>
 		<cfelseif rsUser.recordCount eq 1>
-			<cfset userBean.set(rsUser) />
-			<cfset rsmembs=readMembershipIDs(userBean.getUserId()) />
-			<cfset rsInterests=readInterestGroupIDs(userBean.getUserId()) />
-			<cfset userBean.setGroupId(valuelist(rsmembs.groupid))/>
-			<cfset userBean.setCategoryId(valuelist(rsInterests.categoryid))/>
-			<!--- <cfset userBean.setAddresses(getAddresses(userBean.getUserID()))/> --->
-			<cfset userBean.setIsNew(0)>
+			<cfset bean.set(rsUser) />
+			<cfset rsmembs=readMembershipIDs(bean.getUserId()) />
+			<cfset rsInterests=readInterestGroupIDs(bean.getUserId()) />
+			<cfset bean.setGroupId(valuelist(rsmembs.groupid))/>
+			<cfset bean.setCategoryId(valuelist(rsInterests.categoryid))/>
+			<!--- <cfset userBean.setAddresses(getAddresses(bean.getUserID()))/> --->
+			<cfset bean.setIsNew(0)>
 		<cfelse>
-			<cfset userBean.setIsNew(1)>
+			<cfset bean.setIsNew(1)>
 		</cfif>
 		
-		<cfreturn userBean />
+		<cfreturn bean />
 </cffunction>
 
 <cffunction name="readByRemoteID" access="public" returntype="any" output="false">
 		<cfargument name="remoteid" type="string" required="yes" />
 		<cfargument name="siteid" type="string" required="yes" />
+		<cfargument name="userBean" default="">
 		<cfset var rsuser = 0 />
 		<cfset var rsmembs = "" />
 		<cfset var rsInterests = "" />
-		<cfset var userBean=application.serviceFactory.getBean("userBean") />
 		<cfset var beanArray=arrayNew(1)>
-		<cfset var utility="">	
+		<cfset var utility="">
+		<cfset var bean="" />
+		
+		<cfif isObject(arguments.userBean)>
+			<cfset bean=arguments.userBean>
+		<cfelse>
+			<cfset bean=getBean()>
+		</cfif>	
 		
 		<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#" name="rsUser">
 			select #variables.fieldList#
@@ -226,29 +254,29 @@ to your own modified versions of Mura CMS.
 		<cfif rsUser.recordcount gt 1>
 			<cfset utility=getServiceFactory().getBean("utility")>
 			<cfloop query="rsUser">
-				<cfset userBean=getbean().set(utility.queryRowToStruct(rsUser,rsUser.currentrow))>
-				<cfset userBean.setIsNew(0)>
-				<cfset rsmembs=readMembershipIDs(userBean.getUserId()) />
-				<cfset rsInterests=readInterestGroupIDs(userBean.getUserId()) />
-				<cfset userBean.setGroupId(valuelist(rsmembs.groupid))/>
-				<cfset userBean.setCategoryId(valuelist(rsInterests.categoryid))/>
-				<!--- <cfset userBean.setAddresses(getAddresses(userBean.getUserID()))/>		 --->
-				<cfset arrayAppend(beanArray,userBean)>
+				<cfset bean=getbean().set(utility.queryRowToStruct(rsUser,rsUser.currentrow))>
+				<cfset bean.setIsNew(0)>
+				<cfset rsmembs=readMembershipIDs(bean.getUserId()) />
+				<cfset rsInterests=readInterestGroupIDs(bean.getUserId()) />
+				<cfset bean.setGroupId(valuelist(rsmembs.groupid))/>
+				<cfset bean.setCategoryId(valuelist(rsInterests.categoryid))/>
+				<!--- <cfset userBean.setAddresses(getAddresses(bean.getUserID()))/>		 --->
+				<cfset arrayAppend(beanArray,bean)>
 			</cfloop>
 			<cfreturn beanArray>
 		<cfelseif rsUser.recordCount eq 1>
-			<cfset userBean.set(rsUser) />
-			<cfset rsmembs=readMembershipIDs(userBean.getUserId()) />
-			<cfset rsInterests=readInterestGroupIDs(userBean.getUserId()) />
-			<cfset userBean.setGroupId(valuelist(rsmembs.groupid))/>
-			<cfset userBean.setCategoryId(valuelist(rsInterests.categoryid))/>
-			<!--- <cfset userBean.setAddresses(getAddresses(userBean.getUserID()))/> --->
-			<cfset userBean.setIsNew(0)>
+			<cfset bean.set(rsUser) />
+			<cfset rsmembs=readMembershipIDs(bean.getUserId()) />
+			<cfset rsInterests=readInterestGroupIDs(bean.getUserId()) />
+			<cfset bean.setGroupId(valuelist(rsmembs.groupid))/>
+			<cfset bean.setCategoryId(valuelist(rsInterests.categoryid))/>
+			<!--- <cfset userBean.setAddresses(getAddresses(bean.getUserID()))/> --->
+			<cfset bean.setIsNew(0)>
 		<cfelse>
-			<cfset userBean.setIsNew(1)>
+			<cfset bean.setIsNew(1)>
 		</cfif>
 		
-		<cfreturn userBean />
+		<cfreturn bean />
 </cffunction>
 
 <cffunction name="create" returntype="void" access="public" output="false">
@@ -266,13 +294,13 @@ to your own modified versions of Mura CMS.
 		 <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.userBean.getFname() neq '',de('no'),de('yes'))#" value="#arguments.userBean.getFname()#">,
 		  <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.userBean.getLname() neq '',de('no'),de('yes'))#" value="#arguments.userBean.getLname()#">, 
          <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.userBean.getPassword() neq '',de('no'),de('yes'))#" value="#iif(variables.configBean.getEncryptPasswords(),de('#hash(arguments.userBean.getPassword())#'),de('#arguments.userBean.getPassword()#'))#">,
-		 #createODBCDateTime(now())#,
+		 <cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#">,
 		 <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.userBean.getEmail() neq '',de('no'),de('yes'))#" value="#arguments.userBean.getEmail()#">,
          <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.userBean.getGroupName() neq '',de('no'),de('yes'))#" value="#arguments.userBean.getGroupName()#">, 
          #arguments.userBean.getType()#,
 		 <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.userBean.getSubType() neq '',de('no'),de('yes'))#" value="#arguments.userBean.getSubType()#">, 
         <cfqueryparam cfsqltype="cf_sql_longvarchar" null="#iif(arguments.userBean.getContactForm() neq '',de('no'),de('yes'))#" value="#arguments.userBean.getContactForm()#">,
-		 #createodbcdatetime(now())#,
+		 <cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#">,
 		 <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.userBean.getLastUpdateBy() neq '',de('no'),de('yes'))#" value="#arguments.userBean.getLastUpdateBy()#">,
 		 <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.userBean.getLastUpdateById() neq '',de('no'),de('yes'))#" value="#arguments.userBean.getLastUpdateByID()#">,
 		 #arguments.userBean.getInActive()#,
@@ -292,7 +320,7 @@ to your own modified versions of Mura CMS.
 		#arguments.userBean.getKeepPrivate()#,
 		 <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.userBean.getIMName() neq '',de('no'),de('yes'))#" value="#arguments.userBean.getIMName()#">,
 		 <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.userBean.getIMService() neq '',de('no'),de('yes'))#" value="#arguments.userBean.getIMService()#">,
-		 #createODBCDAteTime(now())#,
+		 <cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#">,
 		 <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.userBean.getTags() neq '',de('no'),de('yes'))#" value="#arguments.userBean.getTags()#">,
 		 <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.userBean.getTablist() neq '',de('no'),de('yes'))#" value="#arguments.userBean.getTablist()#">
 		 )
@@ -365,13 +393,13 @@ to your own modified versions of Mura CMS.
          Email =  <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.userBean.getEmail() neq '',de('no'),de('yes'))#" value="#arguments.userBean.getEmail()#">,
         <cfif arguments.userBean.getPassword() neq ''>
 		 Password = <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.userBean.getPassword() neq '',de('no'),de('yes'))#" value="#iif(variables.configBean.getEncryptPasswords(),de('#hash(arguments.userBean.getPassword())#'),de('#arguments.userBean.getPassword()#'))#">,
-		 passwordCreated =#createODBCDateTime(now())#,
+		 passwordCreated =<cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#">,
 		 </cfif>
 		 s2 =#arguments.userBean.gets2()#,
          Type = #arguments.userBean.getType()#,
 		 subType = <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.userBean.getSubType() neq '',de('no'),de('yes'))#" value="#arguments.userBean.getSubType()#">, 
          ContactForm = <cfqueryparam cfsqltype="cf_sql_longvarchar" null="#iif(arguments.userBean.getContactForm() neq '',de('no'),de('yes'))#" value="#arguments.userBean.getContactForm()#">,
-		 LastUpdate = #createodbcdatetime(now())#,
+		 LastUpdate = <cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#">,
 		 LastUpdateBy =  <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.userBean.getLastUpdateBy() neq '',de('no'),de('yes'))#" value="#arguments.userBean.getLastUpdateBy()#">,
 		 LastUpdateByID = <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.userBean.getLastUpdateById() neq '',de('no'),de('yes'))#" value="#arguments.userBean.getLastUpdateById()#">,
 		<!---  phone1 =  <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.userBean.getPhone1() neq '',de('no'),de('yes'))#" value="#arguments.userBean.getPhone1()#">,
@@ -618,7 +646,7 @@ to your own modified versions of Mura CMS.
 	 <cfquery  datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
       UPDATE tusers SET
 	  	 password =  <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.password neq '',de('no'),de('yes'))#" value="#iif(variables.configBean.getEncryptPasswords(),de('#hash(arguments.password)#'),de('#arguments.password#'))#">,
-		 passwordCreated =#createODBCDateTime(now())#
+		 passwordCreated =<cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#">
        WHERE UserID =<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.userID#"> 
    </CFQUERY>
 </cffunction>

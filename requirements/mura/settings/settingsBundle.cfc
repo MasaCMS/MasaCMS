@@ -198,7 +198,7 @@ to your own modified versions of Mura CMS.
 				)	
 				
 				<cfif isDate(arguments.sinceDate)>
-					and created >= #createODBCDateTime(arguments.sinceDate)#
+					and created >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#arguments.sinceDate#">
 				</cfif>
 			</cfquery>
 			
@@ -496,7 +496,7 @@ to your own modified versions of Mura CMS.
 					and (active = 1 or (changesetID is not null and approved=0))
 				</cfif>
 				<cfif isDate(arguments.sinceDate)>
-					and lastUpdate >= #createODBCDateTime(arguments.sinceDate)#
+					and lastUpdate >=<cfqueryparam cfsqltype="cf_sql_timestamp" value="#arguments.sinceDate#">
 				</cfif>
 			</cfquery>
 
@@ -825,7 +825,7 @@ to your own modified versions of Mura CMS.
 			<cfquery datasource="#arguments.dsn#" name="rstcontentfeeds">
 				select * from tcontentfeeds where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
 				<cfif isDate(arguments.sinceDate)>
-				and lastUpdate >= #createODBCDateTime(arguments.sinceDate)#
+				and lastUpdate >=<cfqueryparam cfsqltype="cf_sql_timestamp" value="#arguments.sinceDate#">
 				</cfif>
 			</cfquery>
 	
@@ -894,7 +894,7 @@ to your own modified versions of Mura CMS.
 			<cfquery datasource="#arguments.dsn#" name="rstmailinglist">
 				select * from tmailinglist where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
 				<cfif isDate(arguments.sinceDate)>
-				and lastUpdate >= #createODBCDateTime(arguments.sinceDate)#
+				and lastUpdate >=<cfqueryparam cfsqltype="cf_sql_timestamp" value="#arguments.sinceDate#">
 				</cfif>
 			</cfquery>
 	
@@ -965,7 +965,7 @@ to your own modified versions of Mura CMS.
 					and (deleted is null or deleted != 1)
 				</cfif>
 				<cfif isDate(arguments.sinceDate)>
-				and created >= #createODBCDateTime(arguments.sinceDate)#
+				and created >=<cfqueryparam cfsqltype="cf_sql_timestamp" value="#arguments.sinceDate#">
 				</cfif>
 			</cfquery>
 			
@@ -993,7 +993,7 @@ to your own modified versions of Mura CMS.
 			<cfquery datasource="#arguments.dsn#" name="rstcontentcomments">
 				select * from tcontentcomments where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
 				<cfif isDate(arguments.sinceDate)>
-				and entered >= #createODBCDateTime(arguments.sinceDate)#
+				and entered >=<cfqueryparam cfsqltype="cf_sql_timestamp" value="#arguments.sinceDate#">
 				</cfif>
 				<cfif not arguments.includeTrash>
 				and contentID in (select distinct contentID from tcontent)
@@ -1005,7 +1005,7 @@ to your own modified versions of Mura CMS.
 			<cfquery datasource="#arguments.dsn#" name="rstcontentratings">
 				select * from tcontentratings where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
 				<cfif isDate(arguments.sinceDate)>
-				and entered >= #createODBCDateTime(arguments.sinceDate)#
+				and entered >=<cfqueryparam cfsqltype="cf_sql_timestamp" value="#arguments.sinceDate#">
 				</cfif>
 				<cfif not arguments.includeTrash>
 				and contentID in (select distinct contentID from tcontent)
@@ -1055,7 +1055,7 @@ to your own modified versions of Mura CMS.
 					and (tcontent.active = 1 or (tcontent.changesetID is not null and tcontent.approved=0))
 				</cfif>
 				<cfif isDate(arguments.sinceDate)>
-					and lastUpdate >= #createODBCDateTime(arguments.sinceDate)#
+					and lastUpdate >=<cfqueryparam cfsqltype="cf_sql_timestamp" value="#arguments.sinceDate#">
 				</cfif>
 			</cfquery>
 		
@@ -1074,7 +1074,7 @@ to your own modified versions of Mura CMS.
 			<cfquery datasource="#arguments.dsn#" name="rstcontentcategories">
 				select * from tcontentcategories where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
 				<cfif isDate(arguments.sinceDate)>
-					and lastUpdate >= #createODBCDateTime(arguments.sinceDate)#
+					and lastUpdate >=<cfqueryparam cfsqltype="cf_sql_timestamp" value="#arguments.sinceDate#">
 				</cfif>
 			</cfquery>
 	
@@ -1087,7 +1087,7 @@ to your own modified versions of Mura CMS.
 				and published=0
 				</cfif>
 				<cfif isDate(arguments.sinceDate)>
-					and lastUpdate >= #createODBCDateTime(arguments.sinceDate)#
+					and lastUpdate >=<cfqueryparam cfsqltype="cf_sql_timestamp" value="#arguments.sinceDate#">
 				</cfif>
 			</cfquery>
 	
@@ -1102,7 +1102,7 @@ to your own modified versions of Mura CMS.
 				and objectClass not in ('userBean','addressBean')
 				</cfif>
 				<cfif isDate(arguments.sinceDate)>
-					and deletedDate >= #createODBCDateTime(arguments.sinceDate)#
+					and deletedDate >=<cfqueryparam cfsqltype="cf_sql_timestamp" value="#arguments.sinceDate#">
 				</cfif>
 			</cfquery>
 			

@@ -59,7 +59,7 @@ to your own modified versions of Mura CMS.
 <cfset variables.instance.MailServerUsername=""/>
 <cfset variables.instance.MailServerUsernameEmail=""/>
 <cfset variables.instance.MailServerPassword=""/>
-<cfset variables.instance.useDefaultSMTPServer=0/>
+<cfset variables.instance.useDefaultSMTPServer=1/>
 <cfset variables.instance.EmailBroadcaster=0/>
 <cfset variables.instance.EmailBroadcasterLimit=0/>
 <cfset variables.instance.Extranet=0/>
@@ -111,7 +111,8 @@ to your own modified versions of Mura CMS.
 <cfset variables.instance.rbFactory=""/>    
 <cfset variables.instance.javaLocale=""/>
 <cfset variables.instance.jsDateKey=""/> 
-<cfset variables.instance.cacheFactory=""/> 
+<cfset variables.instance.dataCache=""/>
+<cfset variables.instance.outputCache=""/>  
 <cfset variables.instance.theme=""/> 
 <cfset variables.instance.contentRenderer=""/>
 <cfset variables.instance.themeRenderer="">
@@ -973,27 +974,34 @@ to your own modified versions of Mura CMS.
 </cffunction>
 
 <cffunction name="getCacheFactory" returntype="any" access="public" output="false">
-	
-	<cfif isObject(variables.instance.cacheFactory)>
-		<cfreturn variables.instance.cacheFactory />
+	<cfargument name="type" default="data" hint="data or output">
+	<cfif isObject(variables.instance["#arguments.type#cache"])>
+		<cfreturn variables.instance["#arguments.type#cache"] />
 	<cfelse>
 		<cfif not getCacheCapacity()>
-			<cfset variables.instance.cacheFactory=createObject("component","mura.cache.cacheFactory").init(freeMemoryThreshold=getCacheFreeMemoryThreshold())>
+			<cfset variables.instance["#arguments.type#cache"]=createObject("component","mura.cache.cacheFactory").init(freeMemoryThreshold=getCacheFreeMemoryThreshold())>
 		<cfelse>
-			<cfset variables.instance.cacheFactory=createObject("component","mura.cache.cacheFactoryLRU").init(capacity=getCacheCapacity(),freeMemoryThreshold=getCacheFreeMemoryThreshold())>
+			<cfset variables.instance["#arguments.type#cache"]=createObject("component","mura.cache.cacheFactoryLRU").init(capacity=getCacheCapacity(),freeMemoryThreshold=getCacheFreeMemoryThreshold())>
 		</cfif>
-		<cfreturn variables.instance.cacheFactory />
+		<cfreturn variables.instance["#arguments.type#cache"] />
 	</cfif>
 	
 </cffunction>
 
 <cffunction name="purgeCache" access="public" output="false">
+	<cfargument name="type" default="data" hint="data, output or both">
 	
-	<cfif isObject(variables.instance.cacheFactory)>
-		<cfset variables.instance.cacheFactory.purgeAll() />
+	<cfif arguments.type neq "data">
+		<cfif isObject(variables.instance.outputcache)>
+			<cfset variables.instance.outputcache.purgeAll() />
+		</cfif>
 	</cfif>
-	
-	<cfset variables.clusterManager.purgeCache(getSiteID())>
+	<cfif arguments.type neq "output">
+		<cfif isObject(variables.instance.datacache)>
+			<cfset variables.instance.datacache.purgeAll() />
+		</cfif>
+	</cfif>
+	<cfset variables.clusterManager.purgeCache(siteID=getSiteID(),type=arguments.type)>
 	<cfreturn this>
 </cffunction>
 

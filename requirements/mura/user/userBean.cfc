@@ -186,6 +186,7 @@ to your own modified versions of Mura CMS.
 			</cfloop>
 		</cfif>
 		
+		<cfset purgeExtendedData()>
 		<cfreturn variables.instance />
 </cffunction>
 	
@@ -1066,4 +1067,7 @@ to your own modified versions of Mura CMS.
 	
 </cffunction>
 
+<cffunction name="clone" output="false">
+	<cfreturn getBean("user").setAllValues(structCopy(getAllValues()))>
+</cffunction>
 </cfcomponent>

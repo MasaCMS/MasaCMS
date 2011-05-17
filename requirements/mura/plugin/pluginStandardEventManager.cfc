@@ -19,15 +19,30 @@
 	'http://www.getmura.com/exceptions.txt"
 
 	 --->
-<cfcomponent extends="Handler" output="false">
-	
-<cffunction name="handle" output="false" returnType="any">
-	<cfargument name="event" required="true">
-	
-	<cfif event.getValue('isOnDisplay') and event.getValue('r').restrict and not event.getValue('r').loggedIn and (event.getValue('display') neq 'login' and event.getValue('display') neq 'editProfile')>
-		<cflocation addtoken="no" url="#application.settingsManager.getSite(request.siteid).getLoginURL()#&returnURL=#URLEncodedFormat(event.getValue('contentRenderer').getCurrentURL())#">
-	</cfif>
+<cfcomponent extends="mura.cfobject" output="false">
 
+<cfset variables.instance=structNew()/>
+
+<cffunction name="init" output="false" returnType="any">
+<cfargument name="siteid">
+<cfargument name="standardEventsHandler">
+<cfargument name="pluginManager">	
+
+	<cfset variables.siteid=arguments.siteid>
+	<cfset variables.standardEventsHandler=arguments.standardEventsHandler>
+	<cfset variables.pluginManager=arguments.pluginManager>
+	
+	<cfreturn this>
+</cffunction>
+
+<cffunction name="getFactory" output="false" returnType="any">
+<cfargument name="class">
+
+	<cfif not structKeyExists(variables.instance,arguments.class)>
+		<cfset variables.instance[arguments.class]=createObject("component","pluginStandardEventFactory").init(arguments.class,variables.siteid,variables.standardEventsHandler,variables.pluginManager)>
+	</cfif>
+	
+	<cfreturn variables.instance[arguments.class]>
 </cffunction>
 
 </cfcomponent>

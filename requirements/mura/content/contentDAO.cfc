@@ -76,8 +76,15 @@ tcontent.doCache,tcontent.created,tcontent.urltitle,tcontent.htmltitle,tcontent.
 		<cfargument name="contentHistID" type="string" required="yes" />
 		<cfargument name="siteID" type="string" required="yes" />
 		<cfargument name="use404" type="boolean" required="yes" default="false"/>
+		<cfargument name="contentBean" type="any" default=""/>
 		<cfset var rsContent = queryNew('empty') />
-		<cfset var contentBean=getbean() />
+		<cfset var bean="" />
+		
+		<cfif isObject(arguments.contentBean)>
+			<cfset bean=arguments.contentBean>
+		<cfelse>
+			<cfset bean=getBean()>
+		</cfif>
 		
 		<cfif len(arguments.contentHistID)>	
 			<cfquery datasource="#variables.dsn#" name="rsContent"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
@@ -88,39 +95,46 @@ tcontent.doCache,tcontent.created,tcontent.urltitle,tcontent.htmltitle,tcontent.
 		</cfif>
 		
 		<cfif rsContent.recordCount>
-			<cfset contentBean.set(rsContent) />
-			<cfset contentBean.setIsNew(0) />
-			<cfset contentBean.setPreserveID(rsContent.contentHistID) />
+			<cfset bean.set(rsContent) />
+			<cfset bean.setIsNew(0) />
+			<cfset bean.setPreserveID(rsContent.contentHistID) />
 		<cfelseif arguments.use404>
-			<cfset contentBean.setType("Page") />
-			<cfset contentBean.setSubType("Default") />
-			<cfset contentBean.setIsNew(1) />
-			<cfset contentBean.setActive(1) />
-			<cfset contentBean.setBody('The requested version of this content could not be found.')/>
-			<cfset contentBean.setTitle('404')/>
-			<cfset contentBean.setMenuTitle('404')/>
-			<cfset contentBean.setFilename('404') />
-			<cfset contentBean.setParentID('00000000000000000000000000000000END') />
-			<cfset contentBean.setcontentID('00000000000000000000000000000000001') />
-			<cfset contentBean.setPath('00000000000000000000000000000000001') />
-			<cfset contentBean.setSiteID(arguments.siteID) />
-			<cfset contentBean.setDisplay(1) />
-			<cfset contentBean.setApproved(1) />
+			<cfset bean.setType("Page") />
+			<cfset bean.setSubType("Default") />
+			<cfset bean.setIsNew(1) />
+			<cfset bean.setActive(1) />
+			<cfset bean.setBody('The requested version of this content could not be found.')/>
+			<cfset bean.setTitle('404')/>
+			<cfset bean.setMenuTitle('404')/>
+			<cfset bean.setFilename('404') />
+			<cfset bean.setParentID('00000000000000000000000000000000END') />
+			<cfset bean.setcontentID('00000000000000000000000000000000001') />
+			<cfset bean.setPath('00000000000000000000000000000000001') />
+			<cfset bean.setSiteID(arguments.siteID) />
+			<cfset bean.setDisplay(1) />
+			<cfset bean.setApproved(1) />
 		<cfelse>
-			<cfset contentBean.setIsNew(1) />
-			<cfset contentBean.setActive(1) />
-			<cfset contentBean.setSiteID(arguments.siteid) />
+			<cfset bean.setIsNew(1) />
+			<cfset bean.setActive(1) />
+			<cfset bean.setSiteID(arguments.siteid) />
 		</cfif>
 		
-		<cfreturn contentBean />
+		<cfreturn bean />
 </cffunction>
 
 <cffunction name="readActive" access="public" returntype="any" output="false">
 		<cfargument name="contentID" type="string" required="yes" />
 		<cfargument name="siteID" type="string" required="yes" />
 		<cfargument name="use404" type="boolean" required="yes" default="false"/>
+		<cfargument name="contentBean" type="any" default=""/>
 		<cfset var rsContent = queryNew('empty') />
-		<cfset var contentBean=getbean()  />
+		<cfset var bean=""  />
+		
+		<cfif isObject(arguments.contentBean)>
+			<cfset bean=arguments.contentBean>
+		<cfelse>
+			<cfset bean=getBean()>
+		</cfif>
 		
 		<cfif len(arguments.contentID)>
 			<cfquery datasource="#variables.dsn#" name="rsContent"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
@@ -134,41 +148,48 @@ tcontent.doCache,tcontent.created,tcontent.urltitle,tcontent.htmltitle,tcontent.
 		</cfif>
 		
 		<cfif rsContent.recordCount>
-			<cfset contentBean.set(rsContent) />
-			<cfset contentBean.setIsNew(0) />
-			<cfset contentBean.setPreserveID(rsContent.contentHistID) />
+			<cfset bean.set(rsContent) />
+			<cfset bean.setIsNew(0) />
+			<cfset bean.setPreserveID(rsContent.contentHistID) />
 		<cfelseif arguments.use404>
-			<cfset contentBean.setType("Page") />
-			<cfset contentBean.setSubType("Default") />
-			<cfset contentBean.setIsNew(1) />
-			<cfset contentBean.setActive(1) />
-			<cfset contentBean.setBody('The requested page could not be found.')/>
-			<cfset contentBean.setTitle('404')/>
-			<cfset contentBean.setMenuTitle('404')/>
-			<cfset contentBean.setFilename('404') />
-			<cfset contentBean.setParentID('00000000000000000000000000000000END') />
-			<cfset contentBean.setcontentID('00000000000000000000000000000000001') />
-			<cfset contentBean.setPath('00000000000000000000000000000000001') />
-			<cfset contentBean.setSiteID(arguments.siteID) />
-			<cfset contentBean.setDisplay(1) />
-			<cfset contentBean.setApproved(1) />
+			<cfset bean.setType("Page") />
+			<cfset bean.setSubType("Default") />
+			<cfset bean.setIsNew(1) />
+			<cfset bean.setActive(1) />
+			<cfset bean.setBody('The requested page could not be found.')/>
+			<cfset bean.setTitle('404')/>
+			<cfset bean.setMenuTitle('404')/>
+			<cfset bean.setFilename('404') />
+			<cfset bean.setParentID('00000000000000000000000000000000END') />
+			<cfset bean.setcontentID('00000000000000000000000000000000001') />
+			<cfset bean.setPath('00000000000000000000000000000000001') />
+			<cfset bean.setSiteID(arguments.siteID) />
+			<cfset bean.setDisplay(1) />
+			<cfset bean.setApproved(1) />
 		<cfelse>
-			<cfset contentBean.setIsNew(1) />
-			<cfset contentBean.setActive(1) />
-			<cfset contentBean.setSiteID(arguments.siteid) />
+			<cfset bean.setIsNew(1) />
+			<cfset bean.setActive(1) />
+			<cfset bean.setSiteID(arguments.siteid) />
 		</cfif>
 		
-		<cfreturn contentBean />
+		<cfreturn bean />
 </cffunction>
 
 <cffunction name="readActiveByRemoteID" access="public" returntype="any" output="false">
 		<cfargument name="remoteID" type="string" required="yes" />
 		<cfargument name="siteID" type="string" required="yes" />
 		<cfargument name="use404" type="boolean" required="yes" default="false"/>
+		<cfargument name="contentBean" type="any" default=""/>
 		<cfset var rsContent = queryNew('empty') />
-		<cfset var contentBean=getbean()  />
+		<cfset var bean=""  />
 		<cfset var beanArray=arrayNew(1)>
 		<cfset var utility="">
+		
+		<cfif isObject(arguments.contentBean)>
+			<cfset bean=arguments.contentBean>
+		<cfelse>
+			<cfset bean=getBean()>
+		</cfif>
 		
 		<cfif len(arguments.remoteID)>		
 			<cfquery datasource="#variables.dsn#" name="rsContent"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
@@ -184,33 +205,40 @@ tcontent.doCache,tcontent.created,tcontent.urltitle,tcontent.htmltitle,tcontent.
 		<cfif rsContent.recordcount gt 1>
 				<cfset utility=getServiceFactory().getBean("utility")>
 				<cfloop query="rscontent">
-				<cfset contentBean=getbean().set(utility.queryRowToStruct(rsContent,rsContent.currentrow))>
-				<cfset contentBean.setIsNew(0)>
-				<cfset contentBean.setPreserveID(rsContent.contentHistID)>
-				<cfset arrayAppend(beanArray,contentBean)>				
+				<cfset bean=getbean().set(utility.queryRowToStruct(rsContent,rsContent.currentrow))>
+				<cfset bean.setIsNew(0)>
+				<cfset bean.setPreserveID(rsContent.contentHistID)>
+				<cfset arrayAppend(beanArray,bean)>				
 				</cfloop>
 				<cfreturn beanArray>
 		<cfelseif rsContent.recordCount>
-			<cfset contentBean.set(rsContent) />
-			<cfset contentBean.setIsNew(0) />
-			<cfset contentBean.setPreserveID(rsContent.contentHistID) />
+			<cfset bean.set(rsContent) />
+			<cfset bean.setIsNew(0) />
+			<cfset bean.setPreserveID(rsContent.contentHistID) />
 		<cfelse>
-			<cfset contentBean.setIsNew(1) />
-			<cfset contentBean.setActive(1) />
-			<cfset contentBean.setSiteID(arguments.siteid) />
+			<cfset bean.setIsNew(1) />
+			<cfset bean.setActive(1) />
+			<cfset bean.setSiteID(arguments.siteid) />
 		</cfif>
 		
-		<cfreturn contentBean />
+		<cfreturn bean />
 </cffunction>
 
 <cffunction name="readActiveByTitle" access="public" returntype="any" output="false">
 		<cfargument name="title" type="string" required="yes" />
 		<cfargument name="siteID" type="string" required="yes" />
 		<cfargument name="use404" type="boolean" required="yes" default="false"/>
+		<cfargument name="contentBean" type="any" default=""/>
 		<cfset var rsContent = queryNew('empty') />
-		<cfset var contentBean=getbean()  />
+		<cfset var bean=""  />
 		<cfset var beanArray=arrayNew(1)>
 		<cfset var utility="">
+		
+		<cfif isObject(arguments.contentBean)>
+			<cfset bean=arguments.contentBean>
+		<cfelse>
+			<cfset bean=getBean()>
+		</cfif>
 		
 		<cfif len(arguments.title)>		
 			<cfquery datasource="#variables.dsn#" name="rsContent"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
@@ -226,52 +254,39 @@ tcontent.doCache,tcontent.created,tcontent.urltitle,tcontent.htmltitle,tcontent.
 		<cfif rsContent.recordcount gt 1>
 				<cfset utility=getServiceFactory().getBean("utility")>
 				<cfloop query="rscontent">
-				<cfset contentBean=getbean().set(utility.queryRowToStruct(rsContent,rsContent.currentrow))>
-				<cfset contentBean.setIsNew(0)>
-				<cfset contentBean.setPreserveID(rsContent.contentHistID)>
-				<cfset arrayAppend(beanArray,contentBean)>				
+				<cfset bean=getbean().set(utility.queryRowToStruct(rsContent,rsContent.currentrow))>
+				<cfset bean.setIsNew(0)>
+				<cfset bean.setPreserveID(rsContent.contentHistID)>
+				<cfset arrayAppend(beanArray,bean)>				
 				</cfloop>
 				<cfreturn beanArray>
 		<cfelseif rsContent.recordCount>
-			<cfset contentBean.set(rsContent) />
-			<cfset contentBean.setIsNew(0) />
-			<cfset contentBean.setPreserveID(rsContent.contentHistID) />
+			<cfset bean.set(rsContent) />
+			<cfset bean.setIsNew(0) />
+			<cfset bean.setPreserveID(rsContent.contentHistID) />
 		<cfelse>
-			<cfset contentBean.setIsNew(1) />
-			<cfset contentBean.setActive(1) />
-			<cfset contentBean.setSiteID(arguments.siteid) />
+			<cfset bean.setIsNew(1) />
+			<cfset bean.setActive(1) />
+			<cfset bean.setSiteID(arguments.siteid) />
 		</cfif>
 		
-		<cfreturn contentBean />
+		<cfreturn bean />
 </cffunction>
 
 <cffunction name="readActiveByFilename" access="public" returntype="any" output="true">
 		<cfargument name="filename" type="string" required="yes" default="" />
 		<cfargument name="siteID" type="string" required="yes" default="" />
 		<cfargument name="use404" type="boolean" required="yes" default="false"/>
+		<cfargument name="contentBean" type="any" default=""/>
 		<cfset var rsContent = queryNew('empty') />
-		<cfset var contentBean=getbean()  />
+		<cfset var bean=""  />
 		<cfset var beanArray=arrayNew(1)>
 		<cfset var utility="">
 		
-		<cfif arguments.filename eq "/">
-			<cfset arguments.filename="">
+		<cfif isObject(arguments.contentBean)>
+			<cfset bean=arguments.contentBean>
 		<cfelse>
-			<cfif left(arguments.filename,1) eq "/">
-				<cfif len(arguments.filename) gt 1>
-					<cfset arguments.filename=right(arguments.filename,len(arguments.filename)-1)>
-				<cfelse>
-					<cfset arguments.filename="">
-				</cfif>
-			</cfif>
-			
-			<cfif right(arguments.filename,1) eq "/">
-				<cfif len(arguments.filename) gt 1>
-					<cfset arguments.filename=left(arguments.filename,len(arguments.filename)-1)>
-				<cfelse>
-					<cfset arguments.filename="">
-				</cfif>
-			</cfif>
+			<cfset bean=getBean()>
 		</cfif>
 			
 		<cfquery datasource="#variables.dsn#" name="rsContent"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
@@ -293,36 +308,36 @@ tcontent.doCache,tcontent.created,tcontent.urltitle,tcontent.htmltitle,tcontent.
 		<cfif rsContent.recordcount gt 1>
 			<cfset utility=getServiceFactory().getBean("utility")>
 				<cfloop query="rscontent">
-				<cfset contentBean=getbean().set(utility.queryRowToStruct(rsContent,rsContent.currentrow))>
-				<cfset contentBean.setIsNew(0)>
-				<cfset contentBean.setPreserveID(rsContent.contentHistID)>
-				<cfset arrayAppend(beanArray,contentBean)>				
+				<cfset bean=getbean().set(utility.queryRowToStruct(rsContent,rsContent.currentrow))>
+				<cfset bean.setIsNew(0)>
+				<cfset bean.setPreserveID(rsContent.contentHistID)>
+				<cfset arrayAppend(beanArray,bean)>				
 				</cfloop>
 		<cfelseif rsContent.recordCount eq 1>
-			<cfset contentBean.set(rsContent) />
-			<cfset contentBean.setIsNew(0) />
-			<cfset contentBean.setPreserveID(rsContent.contentHistID) />
+			<cfset bean.set(rsContent) />
+			<cfset bean.setIsNew(0) />
+			<cfset bean.setPreserveID(rsContent.contentHistID) />
 		<cfelseif arguments.use404>
-			<cfset contentBean.setType("Page") />
-			<cfset contentBean.setSubType("Default") />
-			<cfset contentBean.setBody('The requested page could not be found.')/>
-			<cfset contentBean.setTitle('404')/>
-			<cfset contentBean.setMenuTitle('404')/>
-			<cfset contentBean.setIsNew(1) />
-			<cfset contentBean.setActive(1) />
-			<cfset contentBean.setFilename('404') />
-			<cfset contentBean.setParentID('00000000000000000000000000000000END') />
-			<cfset contentBean.setcontentID('00000000000000000000000000000000001') />
-			<cfset contentBean.setPath('00000000000000000000000000000000001') />
-			<cfset contentBean.setSiteID(arguments.siteID) />
-			<cfset contentBean.setDisplay(1) />
-			<cfset contentBean.setApproved(1) />
+			<cfset bean.setType("Page") />
+			<cfset bean.setSubType("Default") />
+			<cfset bean.setBody('The requested page could not be found.')/>
+			<cfset bean.setTitle('404')/>
+			<cfset bean.setMenuTitle('404')/>
+			<cfset bean.setIsNew(1) />
+			<cfset bean.setActive(1) />
+			<cfset bean.setFilename('404') />
+			<cfset bean.setParentID('00000000000000000000000000000000END') />
+			<cfset bean.setcontentID('00000000000000000000000000000000001') />
+			<cfset bean.setPath('00000000000000000000000000000000001') />
+			<cfset bean.setSiteID(arguments.siteID) />
+			<cfset bean.setDisplay(1) />
+			<cfset bean.setApproved(1) />
 		<cfelse>
-			<cfset contentBean.setIsNew(1) />
-			<cfset contentBean.setActive(1) />
-			<cfset contentBean.setSiteID(arguments.siteid) />
+			<cfset bean.setIsNew(1) />
+			<cfset bean.setActive(1) />
+			<cfset bean.setSiteID(arguments.siteid) />
 		</cfif>
-		<cfreturn contentBean />
+		<cfreturn bean />
 </cffunction>
 
 <cffunction name="create" access="public" returntype="void" output="false">
@@ -358,20 +373,20 @@ tcontent.doCache,tcontent.created,tcontent.urltitle,tcontent.htmltitle,tcontent.
 		 #arguments.contentBean.getOrderNo()#,
 		#arguments.contentBean.getApproved()#,
 		<cfif arguments.contentBean.getDisplay() eq 2 and isdate(arguments.contentBean.getDisplayStart())> 
-			#createodbcdatetime(createDateTime(year(arguments.contentBean.getDisplayStart()),
+			<cfqueryparam cfsqltype="cf_sql_timestamp" value="#createDateTime(year(arguments.contentBean.getDisplayStart()),
 									month(arguments.contentBean.getDisplayStart()),
 									day(arguments.contentBean.getDisplayStart()),
 									hour(arguments.contentBean.getDisplayStart()),
-									minute(arguments.contentBean.getDisplayStart()),0))#
+									minute(arguments.contentBean.getDisplayStart()),0)#">
 		<cfelse>
 			null
 		</cfif>,
 		<cfif arguments.contentBean.getDisplay() eq 2 and isdate(arguments.contentBean.getDisplayStop())> 
-			#createodbcdatetime(createDateTime(year(arguments.contentBean.getDisplayStop()),
+			<cfqueryparam cfsqltype="cf_sql_timestamp" value="#createDateTime(year(arguments.contentBean.getDisplayStop()),
 									month(arguments.contentBean.getDisplayStop()),
 									day(arguments.contentBean.getDisplayStop()),
 									hour(arguments.contentBean.getDisplayStop()),
-									minute(arguments.contentBean.getDisplayStop()),0))#
+									minute(arguments.contentBean.getDisplayStop()),0)#">
 		<cfelse>
 			null
 		</cfif>,
@@ -386,7 +401,7 @@ tcontent.doCache,tcontent.created,tcontent.urltitle,tcontent.htmltitle,tcontent.
 	    <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.contentBean.getTitle() neq '',de('no'),de('yes'))#" value="#trim(arguments.contentBean.getTitle())#">,
 		  <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.contentBean.getMenutitle() neq '',de('no'),de('yes'))#" value="#arguments.contentBean.getMenutitle()#">,
 		 <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.contentBean.getFilename() neq '',de('no'),de('yes'))#" value="#arguments.contentBean.getFilename()#"> ,  
-        #createodbcdatetime(now())#, 
+        <cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#">, 
          #arguments.contentBean.getDisplay()#, 
        <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.contentBean.getParentID() neq '',de('no'),de('yes'))#" value="#trim(arguments.contentBean.getParentID())#">, 
 		<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentBean.getType()#">,
@@ -407,13 +422,12 @@ tcontent.doCache,tcontent.created,tcontent.urltitle,tcontent.htmltitle,tcontent.
 		 <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.contentBean.getInheritObjects() neq '',de('no'),de('yes'))#" value="#arguments.contentBean.getInheritObjects()#">,
 		#arguments.contentBean.getisfeature()#,
 		<cfif isdate(arguments.contentBean.getReleaseDate())>
-			 #createodbcdatetime(
-			 	createDateTime(year(arguments.contentBean.getReleaseDate()), 
+			 <cfqueryparam cfsqltype="cf_sql_timestamp" value="#createDateTime(year(arguments.contentBean.getReleaseDate()), 
 			 				month(arguments.contentBean.getReleaseDate()),
 							day(arguments.contentBean.getReleaseDate()), 
 							hour(arguments.contentBean.getReleaseDate()), 
 							minute(arguments.contentBean.getReleaseDate()), 
-							second(arguments.contentBean.getReleaseDate())))#
+							second(arguments.contentBean.getReleaseDate()))#">
 		<cfelse>
 			null
 		</cfif>,
@@ -423,20 +437,20 @@ tcontent.doCache,tcontent.created,tcontent.urltitle,tcontent.htmltitle,tcontent.
 		<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.contentBean.getSortBy() neq '',de('no'),de('yes'))#" value="#arguments.contentBean.getSortBy()#">,
 		<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.contentBean.getSortDirection() neq '',de('no'),de('yes'))#" value="#arguments.contentBean.getSortDirection()#">,
 		<cfif arguments.contentBean.getIsFeature() eq 2 and isdate(arguments.contentBean.getFeatureStart())> 
-			#createodbcdatetime(createDateTime(year(arguments.contentBean.getFeatureStart()),
+			<cfqueryparam cfsqltype="cf_sql_timestamp" value="#createDateTime(year(arguments.contentBean.getFeatureStart()),
 											month(arguments.contentBean.getFeatureStart()),
 											day(arguments.contentBean.getFeatureStart()),
 											hour(arguments.contentBean.getFeatureStart()),
-											minute(arguments.contentBean.getFeatureStart()),0))#
+											minute(arguments.contentBean.getFeatureStart()),0)#">
 		<cfelse>
 			null
 		</cfif>,
 		<cfif arguments.contentBean.getIsFeature() eq 2 and isdate(arguments.contentBean.getFeatureStop())>
-			#createodbcdatetime(createDateTime(year(arguments.contentBean.getFeatureStop()),
+			<cfqueryparam cfsqltype="cf_sql_timestamp" value="#createDateTime(year(arguments.contentBean.getFeatureStop()),
 											month(arguments.contentBean.getFeatureStop()),
 											day(arguments.contentBean.getFeatureStop()),
 											hour(arguments.contentBean.getFeatureStop()),
-											minute(arguments.contentBean.getFeatureStop()),0))#
+											minute(arguments.contentBean.getFeatureStop()),0)#">
 		<cfelse>
 			null
 		</cfif>,
@@ -454,15 +468,14 @@ tcontent.doCache,tcontent.created,tcontent.urltitle,tcontent.htmltitle,tcontent.
 		#arguments.contentBean.getDisplayTitle()#,
 		#arguments.contentBean.getDoCache()#,
 		<cfif isdate(arguments.contentBean.getCreated())>
-			 #createodbcdatetime(
-			 	createDateTime(year(arguments.contentBean.getCreated()), 
+			 <cfqueryparam cfsqltype="cf_sql_timestamp" value="#createDateTime(year(arguments.contentBean.getCreated()), 
 			 				month(arguments.contentBean.getCreated()),
 							day(arguments.contentBean.getCreated()), 
 							hour(arguments.contentBean.getCreated()), 
 							minute(arguments.contentBean.getCreated()), 
-							second(arguments.contentBean.getCreated())))#
+							second(arguments.contentBean.getCreated()))#">
 		<cfelse>
-			#createodbcdatetime(now())#
+			<cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#">
 		</cfif>,
 		<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.contentBean.getURLTitle() neq '',de('no'),de('yes'))#" value="#arguments.contentBean.getURLTitle()#">,
 		<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.contentBean.getHTMLTitle() neq '',de('no'),de('yes'))#" value="#arguments.contentBean.getHTMLTitle()#">,

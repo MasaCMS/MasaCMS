@@ -183,6 +183,7 @@ to your own modified versions of Mura CMS.
 		<cfset this.ormSettings.skipCFCwitherror=properties.getProperty("ormskipCFCwitherror","false") />
 		<cfset this.ormSettings.useDBforMapping=properties.getProperty("ormuseDBforMapping","true") />
 		<cfset this.ormSettings.autogenmap=properties.getProperty("ormautogenmap","true") />
+		<cfset this.ormSettings.logsql=properties.getProperty("ormlogsql","false") />
 	</cfif>
 	
 	<cfset request.muraFrontEndRequest=false>

@@ -69,10 +69,10 @@ to your own modified versions of Mura CMS.
 	where campaignID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.campaignID#" />
 	<cfif lsisdate(arguments.date1)>
 		<cfset start=lsParseDateTime(arguments.date1)>
-		and tadplacements.startdate >= #createodbcdatetime(createdatetime(year(start),month(start),day(start),0,0,0))#</cfif>
+		and tadplacements.startdate >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#createdatetime(year(start),month(start),day(start),0,0,0)#"></cfif>
 	<cfif isdate(arguments.date2)>
 		<cfset stop=lsParseDateTime(arguments.date2)>
-		and tadplacements.endDate <= #createodbcdatetime(createdatetime(year(stop),month(stop),day(stop),23,59,9))#</cfif> 
+		and tadplacements.endDate <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#createdatetime(year(stop),month(stop),day(stop),23,59,9)#"></cfif> 
 	GROUP BY tadplacements.startdate,tadplacements.enddate,tadplacements.costPerImp,
 	tadplacements.costPerClick,tadplacements.budget,tadplacements.isExclusive,tadplacements.isActive,tadplacements.placementid,tadplacements.creativeid,tadplacements.adZoneID, 
 	tadzones.name, tadcreatives.name

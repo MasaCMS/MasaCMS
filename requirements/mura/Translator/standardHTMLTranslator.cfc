@@ -19,7 +19,7 @@
 	'http://www.getmura.com/exceptions.txt"
 
 	 --->
-<cfcomponent extends="Translator" output="false">
+<cfcomponent extends="mura.cfobject" output="false">
 	
 <cffunction name="translate" output="false" returnType="any">
 	<cfargument name="event" required="true">

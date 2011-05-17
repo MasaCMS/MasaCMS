@@ -128,7 +128,7 @@ to your own modified versions of Mura CMS.
 		</cfloop>
 		
 		<cfquery datasource="#application.configBean.getDatasource()#" username="#application.configBean.getDBUsername()#" password="#application.configBean.getDBPassword()#">
-			update tsettings set lastDeployment = #createODBCDateTime(now())#
+			update tsettings set lastDeployment = <cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#">
 			where siteID = <cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#arguments.siteID#">
 		</cfquery>
 		
@@ -297,10 +297,11 @@ to your own modified versions of Mura CMS.
 	<cfset var rs=getList()>
 	
 	<cfloop query="rs">
-		<cfset getSite(rs.siteid).getCacheFactory().purgeAll()/>
+		<cfset getSite(rs.siteid).getCacheFactory(type="data").purgeAll()/>
+		<cfset getSite(rs.siteid).getCacheFactory(type="output").purgeAll()/>
 	</cfloop>
 	
-	<cfset variables.clusterManager.purgeCache()>
+	<cfset variables.clusterManager.purgeCache(type="all")>
 </cffunction>
 
 <cffunction name="getUserSites" access="public" output="false" returntype="query">

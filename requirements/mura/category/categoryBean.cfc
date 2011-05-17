@@ -482,6 +482,10 @@ to your own modified versions of Mura CMS.
 	<cffunction name="hasParent" output="false">
 	<cfreturn listLen(getPath()) gt 1>
 	</cffunction>
+	
+	<cffunction name="clone" output="false">
+	<cfreturn getBean("category").setAllValues(structCopy(getAllValues()))>
+	</cffunction>
 </cfcomponent>
 
 

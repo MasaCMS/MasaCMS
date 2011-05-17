@@ -357,10 +357,10 @@ to your own modified versions of Mura CMS.
 	and siteID = '#variables.settingsManager.getSite(arguments.siteid).getPublicUserPoolID()#'
 	<cfif lsisdate(arguments.stopDate)>
 		<cfset stop=lsParseDateTime(arguments.stopDate)/>
-		and created <=  #createODBCDateTime(createDateTime(year(stop),month(stop),day(stop),23,59,0))#</cfif>
+		and created <=  <cfqueryparam cfsqltype="cf_sql_timestamp" value="#createDateTime(year(stop),month(stop),day(stop),23,59,0)#"></cfif>
 	<cfif lsisdate(arguments.startDate)>
 		<cfset start=lsParseDateTime(arguments.startDate)/>
-		and created >=  #createODBCDateTime(createDateTime(year(start),month(start),day(start),0,0,0))#</cfif>
+		and created >=  <cfqueryparam cfsqltype="cf_sql_timestamp" value="#createDateTime(year(start),month(start),day(start),0,0,0)#"></cfif>
 	</cfquery>
 	<cfreturn rs.theCount />
 </cffunction>

@@ -63,8 +63,8 @@ to your own modified versions of Mura CMS.
 	values (
 	<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.creativeBean.getCreativeID()#" />,
 	<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.creativeBean.getUserID()#" />,
-	<cfif isDate(arguments.creativeBean.getDateCreated()) >#createODBCDateTime(arguments.creativeBean.getDateCreated())#<cfelse>null</cfif>,
-	<cfif isDate(arguments.creativeBean.getLastUpdate()) >#createODBCDateTime(arguments.creativeBean.getLastUpdate())#<cfelse>null</cfif>,
+	<cfif isDate(arguments.creativeBean.getDateCreated()) ><cfqueryparam cfsqltype="cf_sql_timestamp" value="#arguments.creativeBean.getDateCreated()#"><cfelse>null</cfif>,
+	<cfif isDate(arguments.creativeBean.getLastUpdate()) ><cfqueryparam cfsqltype="cf_sql_timestamp" value="#arguments.creativeBean.getLastUpdate()#"><cfelse>null</cfif>,
 	<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.creativeBean.getLastUpdateBy() neq '',de('no'),de('yes'))#" value="#arguments.creativeBean.getLastUpdateBy()#">,
 	<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.creativeBean.getName() neq '',de('no'),de('yes'))#" value="#arguments.creativeBean.getName()#">,
 	<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.creativeBean.getCreativeType() neq '',de('no'),de('yes'))#" value="#arguments.creativeBean.getCreativeType()#">,
@@ -118,7 +118,7 @@ to your own modified versions of Mura CMS.
 	<cfquery datasource="#variables.instance.configBean.getDatasource()#"  username="#variables.instance.configBean.getDBUsername()#" password="#variables.instance.configBean.getDBPassword()#">
 	update tadcreatives set
 	userid = '#arguments.creativeBean.getuserID()#',
-	lastupdate = <cfif isDate(arguments.creativeBean.getLastUpdate()) >#createODBCDateTime(arguments.creativeBean.getLastUpdate())#<cfelse>null</cfif>,
+	lastupdate = <cfif isDate(arguments.creativeBean.getLastUpdate()) ><cfqueryparam cfsqltype="cf_sql_timestamp" value="#arguments.creativeBean.getLastUpdate()#"><cfelse>null</cfif>,
 	lastUpdateBy = <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.creativeBean.getLastUpdateBy() neq '',de('no'),de('yes'))#" value="#arguments.creativeBean.getLastUpdateBy()#">,
 	name = <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.creativeBean.getName() neq '',de('no'),de('yes'))#" value="#arguments.creativeBean.getName()#">,
 	creativeType = <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.creativeBean.getCreativeType() neq '',de('no'),de('yes'))#" value="#arguments.creativeBean.getCreativeType()#">,

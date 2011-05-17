@@ -526,4 +526,8 @@ to your own modified versions of Mura CMS.
 <cffunction name="delete" output="false" access="public">
 	<cfset variables.userManager.deleteAddress(getAddressID())>
 </cffunction>
+
+<cffunction name="clone" output="false">
+	<cfreturn getBean("addressBean").setAllValues(structCopy(getAllValues()))>
+</cffunction>
 </cfcomponent>

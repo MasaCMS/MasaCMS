@@ -91,7 +91,7 @@ to your own modified versions of Mura CMS.
 
 <!--- <cftransaction> --->
 <cfquery name="rsEmailList" datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-Select EmailID from temails where deliverydate <=#createodbcdatetime(now())# and status = 0 and deliverydate is not null and isDeleted = 0
+Select EmailID from temails where deliverydate <=<cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#"> and status = 0 and deliverydate is not null and isDeleted = 0
 </cfquery>
 
 	<cfloop list="#valuelist(rsemaillist.emailid)#" index="email">
@@ -109,12 +109,12 @@ Select EmailID from temails where deliverydate <=#createodbcdatetime(now())# and
 	</cfquery>
 	
 	<cfquery name="rsReturnForm" datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-	select filename from tcontent where siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#rsEmail.siteID#" /> and active =1 and ((display=1) or (display=2  and tcontent.DisplayStart <= #createodbcdate(now())# AND tcontent.DisplayStop >= #createodbcdate(now())#)) 
+	select filename from tcontent where siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#rsEmail.siteID#" /> and active =1 and ((display=1) or (display=2  and tcontent.DisplayStart <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#"> AND tcontent.DisplayStop >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#">)) 
 	and contenthistid in (select contenthistid from tcontentobjects where object='mailing_list_master')	
 	</cfquery>
 	
 	<cfquery name="rsForwardForm" datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-	select filename from tcontent where siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#rsEmail.siteID#" /> and active =1 and ((display=1) or (display=2  and tcontent.DisplayStart <= #createodbcdate(now())# AND tcontent.DisplayStop >= #createodbcdate(now())#)) 
+	select filename from tcontent where siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#rsEmail.siteID#" /> and active =1 and ((display=1) or (display=2  and tcontent.DisplayStart <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#"> AND tcontent.DisplayStop >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#">)) 
 	and contenthistid in (select contenthistid from tcontentobjects where object='forward_email')	
 	</cfquery>		
 		
@@ -292,12 +292,12 @@ Select EmailID from temails where deliverydate <=#createodbcdatetime(now())# and
 	</cfquery>
 
 	<cfquery name="rsReturnForm" datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-	select filename from tcontent where siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#rsEmail.siteID#" /> and active =1 and ((display=1) or (display=2  and tcontent.DisplayStart <= #createodbcdate(now())# AND tcontent.DisplayStop >= #createodbcdate(now())#)) 
+	select filename from tcontent where siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#rsEmail.siteID#" /> and active =1 and ((display=1) or (display=2  and tcontent.DisplayStart <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#"> AND tcontent.DisplayStop >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#">)) 
 	and contenthistid in (select contenthistid from tcontentobjects where object='mailing_list_master')	
 	</cfquery>
 	
 	<cfquery name="rsForwardForm" datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-	select filename from tcontent where siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#rsEmail.siteID#" /> and active =1 and ((display=1) or (display=2  and tcontent.DisplayStart <= #createodbcdate(now())# AND tcontent.DisplayStop >= #createodbcdate(now())#)) 
+	select filename from tcontent where siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#rsEmail.siteID#" /> and active =1 and ((display=1) or (display=2  and tcontent.DisplayStart <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#"> AND tcontent.DisplayStop >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#">)) 
 	and contenthistid in (select contenthistid from tcontentobjects where object='forward_email')	
 	</cfquery>
 	
@@ -434,7 +434,7 @@ Select EmailID from temails where deliverydate <=#createodbcdatetime(now())# and
 			insert into temailreturnstats 
 			(emailid, email, url, created) 
 			VALUES
-			(<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.emailID#" />, <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.email#" />, <cfqueryparam cfsqltype="cf_sql_varchar" value="#returnURL#" />, #createodbcdatetime(now())#)
+			(<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.emailID#" />, <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.email#" />, <cfqueryparam cfsqltype="cf_sql_varchar" value="#returnURL#" />, <cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#">)
 		</cfquery>
 	</cfif>
 	
@@ -442,7 +442,7 @@ Select EmailID from temails where deliverydate <=#createodbcdatetime(now())# and
 		<!--- track a sent email --->
 		<cfquery datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 			Insert Into temailstats (emailid,email,created,#arguments.type#)
-			values(<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.emailID#" />,<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.email#" />,#createodbcdatetime(now())#,1)
+			values(<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.emailID#" />,<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.email#" />,<cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#">,1)
 		</cfquery>
 	</cfif>		
 </cffunction>

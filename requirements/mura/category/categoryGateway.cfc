@@ -202,7 +202,7 @@ to your own modified versions of Mura CMS.
 	 
 	tcontent.Display = 2 
 	
-	and tcontent.DisplayStart <= #createodbcdatetime(now())# AND  (tcontent.DisplayStop >= #createodbcdatetime(now())# or tcontent.DisplayStop is null)
+	and tcontent.DisplayStart <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#"> AND  (tcontent.DisplayStop >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#"> or tcontent.DisplayStop is null)
 	
 	)
 	
@@ -214,7 +214,7 @@ to your own modified versions of Mura CMS.
 	 
 	tcontentcategoryassign.isFeature = 2 
 	
-	and tcontentcategoryassign.FeatureStart <= #createodbcdatetime(now())# AND  (tcontentcategoryassign.FeatureStop >= #createodbcdatetime(now())# or tcontentcategoryassign.FeatureStop is null)
+	and tcontentcategoryassign.FeatureStart <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#"> AND  (tcontentcategoryassign.FeatureStop >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#"> or tcontentcategoryassign.FeatureStop is null)
 	
 	)
 			 

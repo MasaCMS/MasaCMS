@@ -410,7 +410,7 @@ to your own modified versions of Mura CMS.
 		insert into tredirects (redirectID,URL,created) values(
 		<cfqueryparam cfsqltype="cf_sql_varchar" value="#versionID#" >,
 		<cfqueryparam cfsqltype="cf_sql_varchar" value="#versionLink#" >,
-		#createODBCDateTime(now())#
+		<cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#">
 		)
 	</cfquery>
 	</cfif>
@@ -420,7 +420,7 @@ to your own modified versions of Mura CMS.
 		insert into tredirects (redirectID,URL,created) values(
 		<cfqueryparam cfsqltype="cf_sql_varchar" value="#historyID#" >,
 		<cfqueryparam cfsqltype="cf_sql_varchar" value="#historyLink#" >,
-		#createODBCDateTime(now())#
+		<cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#">
 		)
 	</cfquery>
 		
@@ -546,14 +546,15 @@ http://#listFirst(cgi.http_host,":")##variables.configBean.getServerPort()##vari
 	
 	<cfset tempfile=arguments.contentBean.getFilename() />
 	
-			<cfloop condition="#doesFileExist(arguments.contentBean.getsiteid(),tempfile)#" >
-				<cfset pass=pass+1>
-				<cfset tempfile="#arguments.contentBean.getFilename()##pass#" />
-			</cfloop>
+	<cfloop condition="#doesFileExist(arguments.contentBean.getsiteid(),tempfile)#" >
+		<cfset pass=pass+1>
+		<cfset tempfile="#arguments.contentBean.getFilename()##pass#" />
+	</cfloop>
 								
-			<cfif pass>
-			<cfset arguments.contentBean.setFilename(tempfile) />
-			</cfif>
+	<cfif pass>
+		<cfset arguments.contentBean.setFilename(tempfile) />
+		<cfset arguments.contentBean.setURLTitle(listLast(tempfile,"/"))>
+	</cfif>
 </cffunction>	
 
 <cffunction name="isOnDisplay" returntype="numeric" output="false" access="public">

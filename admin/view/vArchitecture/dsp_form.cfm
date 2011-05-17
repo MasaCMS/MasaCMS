@@ -80,6 +80,7 @@ onunload=function(){
 }
 
 function conditionalExit(msg){
+	if(form_is_modified(document.contentForm)){
 	if(msg==null){
 		<cfoutput>msg="#JSStringFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.saveasdraft"))#";</cfoutput>
 	}
@@ -103,8 +104,14 @@ function conditionalExit(msg){
 				}
 			}
 		});
+	
+		return false;	
+		
+	} else {
+		requestedURL="";
+		return true;	
+	}
 
-	return false;	
 }
 <cfoutput>
 function setRequestedURL(){
