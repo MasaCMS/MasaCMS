@@ -814,7 +814,7 @@ to your own modified versions of Mura CMS.
 				<cfif not newBean.getIsNew() and newBean.getoldfilename() neq newBean.getfilename() and len(newBean.getoldfilename())>
 					<cfset variables.contentUtility.movelink(newBean.getSiteID(),newBean.getFilename(),currentBean.getFilename()) />	
 					<cfset variables.contentUtility.move(newBean.getsiteid(),newBean.getFilename(),newBean.getOldFilename())>
-					<cfset purgeContentDecendentsCache(contentBean=newbean)>
+					<cfset purgeContentDescendentsCache(contentBean=newbean)>
 				</cfif>
 					
 			</cfif>		
