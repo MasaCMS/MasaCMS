@@ -974,9 +974,13 @@ to your own modified versions of Mura CMS.
 
 <cffunction name="getCacheFactory" returntype="any" access="public" output="false">
 	<cfargument name="name"default="output" hint="data or output">
-	
+		
 	<cfif not isDefined("arguments.name")>
 		<cfset arguments.name="output">
+	</cfif>
+	
+	<cfif not isDefined("variables.instance.cacheFactories")>
+		<cfset variables.instance.cacheFactories=structNew()>
 	</cfif>
 	
 	<cfif structKeyExists(variables.instance.cacheFactories,arguments.name)>
