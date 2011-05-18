@@ -1696,6 +1696,7 @@ to your own modified versions of Mura CMS.
 			</cfcatch>
 		</cftry>
 		<cfset finder=reFindNoCase(regex1,body,1,"true")>
+		<cfset request.cacheItem=false>
 	</cfloop>
 	
 	<cfreturn body />
