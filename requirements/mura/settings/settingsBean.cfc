@@ -65,6 +65,7 @@ to your own modified versions of Mura CMS.
 <cfset variables.instance.Extranet=0/>
 <cfset variables.instance.ExtranetSSL=0/>
 <cfset variables.instance.cache=0/>
+<cfset variables.instance.cacheFactories=structNew()/>
 <cfset variables.instance.cacheCapacity=0/>
 <cfset variables.instance.cacheFreeMemoryThreshold=40/>
 <cfset variables.instance.ViewDepth=1/>
@@ -110,9 +111,7 @@ to your own modified versions of Mura CMS.
 <cfset variables.instance.siteLocale=""/>
 <cfset variables.instance.rbFactory=""/>    
 <cfset variables.instance.javaLocale=""/>
-<cfset variables.instance.jsDateKey=""/> 
-<cfset variables.instance.dataCache=""/>
-<cfset variables.instance.outputCache=""/>  
+<cfset variables.instance.jsDateKey=""/>  
 <cfset variables.instance.theme=""/> 
 <cfset variables.instance.contentRenderer=""/>
 <cfset variables.instance.themeRenderer="">
@@ -980,17 +979,21 @@ to your own modified versions of Mura CMS.
 		<cfset arguments.name="output">
 	</cfif>
 	
-	<cfif isObject(variables.instance["#arguments.name#cache"])>
-		<cfreturn variables.instance["#arguments.name#cache"] />
+	<cfif structKeyExists(variables.instance.cacheFactories,arguments.name)>
+		<cfreturn variables.instance.cacheFactories["#arguments.name#"] />
 	<cfelse>
 		<cfif not getCacheCapacity()>
-			<cfset variables.instance["#arguments.name#cache"]=createObject("component","mura.cache.cacheFactory").init(freeMemoryThreshold=getCacheFreeMemoryThreshold())>
+			<cfset variables.instance.cacheFactories["#arguments.name#"]=createObject("component","mura.cache.cacheFactory").init(freeMemoryThreshold=getCacheFreeMemoryThreshold())>
 		<cfelse>
-			<cfset variables.instance["#arguments.name#cache"]=createObject("component","mura.cache.cacheFactoryLRU").init(capacity=getCacheCapacity(),freeMemoryThreshold=getCacheFreeMemoryThreshold())>
+			<cfset variables.instance.cacheFactories["#arguments.name#"]=createObject("component","mura.cache.cacheFactoryLRU").init(capacity=getCacheCapacity(),freeMemoryThreshold=getCacheFreeMemoryThreshold())>
 		</cfif>
-		<cfreturn variables.instance["#arguments.name#cache"] />
+		<cfreturn variables.instance.cacheFactories["#arguments.name#"] />
 	</cfif>
 	
+</cffunction>
+
+<cffunction name="getCacheFactories" returntype="any" access="public" output="false">
+	<cfreturn variables.instance.cacheFactories>
 </cffunction>
 
 <cffunction name="purgeCache" access="public" output="false">
