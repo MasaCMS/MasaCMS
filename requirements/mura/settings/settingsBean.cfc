@@ -974,7 +974,12 @@ to your own modified versions of Mura CMS.
 </cffunction>
 
 <cffunction name="getCacheFactory" returntype="any" access="public" output="false">
-	<cfargument name="type" default="data" hint="data or output">
+	<cfargument name="type"default="data" hint="data or output">
+	
+	<cfif not isDefined("arguments.type")>
+		<cfset arguments.type="data">
+	</cfif>
+	
 	<cfif isObject(variables.instance["#arguments.type#cache"])>
 		<cfreturn variables.instance["#arguments.type#cache"] />
 	<cfelse>
