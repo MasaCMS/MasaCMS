@@ -67,7 +67,7 @@ to your own modified versions of Mura CMS.
 <cfset variables.instance.cache=0/>
 <cfset variables.instance.cacheFactories=structNew()/>
 <cfset variables.instance.cacheCapacity=0/>
-<cfset variables.instance.cacheFreeMemoryThreshold=40/>
+<cfset variables.instance.cacheFreeMemoryThreshold=60/>
 <cfset variables.instance.ViewDepth=1/>
 <cfset variables.instance.nextN=20/>
 <cfset variables.instance.DataCollection=0/>
