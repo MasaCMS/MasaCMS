@@ -974,39 +974,39 @@ to your own modified versions of Mura CMS.
 </cffunction>
 
 <cffunction name="getCacheFactory" returntype="any" access="public" output="false">
-	<cfargument name="type"default="output" hint="data or output">
+	<cfargument name="name"default="output" hint="data or output">
 	
-	<cfif not isDefined("arguments.type")>
-		<cfset arguments.type="output">
+	<cfif not isDefined("arguments.name")>
+		<cfset arguments.name="output">
 	</cfif>
 	
-	<cfif isObject(variables.instance["#arguments.type#cache"])>
-		<cfreturn variables.instance["#arguments.type#cache"] />
+	<cfif isObject(variables.instance["#arguments.name#cache"])>
+		<cfreturn variables.instance["#arguments.name#cache"] />
 	<cfelse>
 		<cfif not getCacheCapacity()>
-			<cfset variables.instance["#arguments.type#cache"]=createObject("component","mura.cache.cacheFactory").init(freeMemoryThreshold=getCacheFreeMemoryThreshold())>
+			<cfset variables.instance["#arguments.name#cache"]=createObject("component","mura.cache.cacheFactory").init(freeMemoryThreshold=getCacheFreeMemoryThreshold())>
 		<cfelse>
-			<cfset variables.instance["#arguments.type#cache"]=createObject("component","mura.cache.cacheFactoryLRU").init(capacity=getCacheCapacity(),freeMemoryThreshold=getCacheFreeMemoryThreshold())>
+			<cfset variables.instance["#arguments.name#cache"]=createObject("component","mura.cache.cacheFactoryLRU").init(capacity=getCacheCapacity(),freeMemoryThreshold=getCacheFreeMemoryThreshold())>
 		</cfif>
-		<cfreturn variables.instance["#arguments.type#cache"] />
+		<cfreturn variables.instance["#arguments.name#cache"] />
 	</cfif>
 	
 </cffunction>
 
 <cffunction name="purgeCache" access="public" output="false">
-	<cfargument name="type" default="data" hint="data, output or both">
+	<cfargument name="name" default="data" hint="data, output or both">
 	
-	<cfif arguments.type neq "data">
+	<cfif arguments.name neq "data">
 		<cfif isObject(variables.instance.outputcache)>
 			<cfset variables.instance.outputcache.purgeAll() />
 		</cfif>
 	</cfif>
-	<cfif arguments.type neq "output">
+	<cfif arguments.name neq "output">
 		<cfif isObject(variables.instance.datacache)>
 			<cfset variables.instance.datacache.purgeAll() />
 		</cfif>
 	</cfif>
-	<cfset variables.clusterManager.purgeCache(siteID=getSiteID(),type=arguments.type)>
+	<cfset variables.clusterManager.purgeCache(siteID=getSiteID(),name=arguments.name)>
 	<cfreturn this>
 </cffunction>
 

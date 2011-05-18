@@ -106,7 +106,7 @@ to your own modified versions of Mura CMS.
 	
 	<cfset key= "user" & arguments.siteid & arguments.userID />
 	<cfset site=variables.settingsManager.getSite(arguments.siteid)/>
-	<cfset cacheFactory=site.getCacheFactory(type="data")>			
+	<cfset cacheFactory=site.getCacheFactory(name="data")>			
 	
 	<cfif site.getCache()>
 		<!--- check to see if it is cached. if not then pass in the context --->
@@ -142,7 +142,7 @@ to your own modified versions of Mura CMS.
 	<cfargument name="userBean" default=""/>
 	<cfset var key= "user" & arguments.siteid & arguments.username />
 	<cfset var site=variables.settingsManager.getSite(arguments.siteid)/>
-	<cfset var cacheFactory=site.getCacheFactory(type="data")>
+	<cfset var cacheFactory=site.getCacheFactory(name="data")>
 	<cfset var bean="">	
 	
 	<cfif site.getCache()>
@@ -176,7 +176,7 @@ to your own modified versions of Mura CMS.
 	<cfargument name="userBean" default=""/>
 	<cfset var key= "user" & arguments.siteid & arguments.groupname />
 	<cfset var site=variables.settingsManager.getSite(arguments.siteid)/>
-	<cfset var cacheFactory=site.getCacheFactory(type="data")>
+	<cfset var cacheFactory=site.getCacheFactory(name="data")>
 	<cfset var bean="">	
 	
 	<cfif site.getCache()>
@@ -209,7 +209,7 @@ to your own modified versions of Mura CMS.
 	<cfargument name="userBean" default=""/>
 	<cfset var key= "user" & arguments.siteid & arguments.remoteID />
 	<cfset var site=variables.settingsManager.getSite(arguments.siteid)/>
-	<cfset var cacheFactory=site.getCacheFactory(type="data")>
+	<cfset var cacheFactory=site.getCacheFactory(name="data")>
 	<cfset var bean="">	
 	
 	<cfif site.getCache()>
@@ -246,7 +246,7 @@ to your own modified versions of Mura CMS.
 	</cfif>
 	
 	<cfif NOT arguments.userBean.getIsNew()>
-		<cfset cache=variables.settingsManager.getSite(arguments.userBean.getSiteID()).getCacheFactory(type="data")>
+		<cfset cache=variables.settingsManager.getSite(arguments.userBean.getSiteID()).getCacheFactory(name="data")>
 		
 		<cfset cache.purge("user" & arguments.userBean.getSiteID() & arguments.userBean.getUserID())>
 		<cfif len(arguments.userBean.getRemoteID())>

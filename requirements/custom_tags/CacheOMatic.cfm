@@ -49,7 +49,7 @@ uses the query string as the key --->
 <cfparam name="attributes.scope" default="application">
 <cfparam name="attributes.nocache" default="0">
 <cfparam name="attributes.siteid" default="#request.siteid#">
-<cfparam name="attributes.cacheFactory" default="#application.settingsManager.getSite(attributes.siteid).getCacheFactory(type='output')#">
+<cfparam name="attributes.cacheFactory" default="#application.settingsManager.getSite(attributes.siteid).getCacheFactory(name='output')#">
 <cfparam name="request.forceCache" default="false">
 <cfparam name="request.cacheItem" default="true">
 <cfparam name="request.cacheItemTimeSpan" default="">

@@ -217,7 +217,7 @@ to your own modified versions of Mura CMS.
 		<cfargument name="contentBean" type="any" default=""/>
 		<cfset var key= "version" & arguments.siteid & arguments.contentHistID />
 		<cfset var site=variables.settingsManager.getSite(arguments.siteid)/>
-		<cfset var cacheFactory=site.getCacheFactory(type="data")>
+		<cfset var cacheFactory=site.getCacheFactory(name="data")>
 		<cfset var bean="">
 		
 		<cfif site.getCache()>
@@ -251,7 +251,7 @@ to your own modified versions of Mura CMS.
 		
 		<cfset var key="" />
 		<cfset var site=variables.settingsManager.getSite(arguments.siteid)/>
-		<cfset var cacheFactory=site.getCacheFactory(type="data")>
+		<cfset var cacheFactory=site.getCacheFactory(name="data")>
 		<cfset var bean="">
 		
 		<cfif arguments.filename eq "/">
@@ -308,7 +308,7 @@ to your own modified versions of Mura CMS.
 		
 		<cfset var key="remoteID" & arguments.siteid & arguments.remoteID />
 		<cfset var site=variables.settingsManager.getSite(arguments.siteid)/>
-		<cfset var cacheFactory=site.getCacheFactory(type="data")/>
+		<cfset var cacheFactory=site.getCacheFactory(name="data")/>
 		<cfset var bean=""/>
 		
 		<cfif site.getCache()>
@@ -342,7 +342,7 @@ to your own modified versions of Mura CMS.
 		
 		<cfset var key="title" & arguments.siteid & arguments.title />
 		<cfset var site=variables.settingsManager.getSite(arguments.siteid)/>
-		<cfset var cacheFactory=site.getCacheFactory(type="data")/>
+		<cfset var cacheFactory=site.getCacheFactory(name="data")/>
 		<cfset var bean=""/>
 		
 		<cfif site.getCache()>
@@ -377,7 +377,7 @@ to your own modified versions of Mura CMS.
 		
 		<cfset var key="contentID" & arguments.siteid & arguments.contentID />
 		<cfset var site=variables.settingsManager.getSite(arguments.siteid)/>
-		<cfset var cacheFactory=site.getCacheFactory(type="data")/>
+		<cfset var cacheFactory=site.getCacheFactory(name="data")/>
 		<cfset var bean=""/>
 		
 		<cfif site.getCache()>
@@ -1760,7 +1760,7 @@ to your own modified versions of Mura CMS.
 	</cfif>
 	
 	<cfif NOT arguments.contentBean.getIsNew()>
-		<cfset cache=variables.settingsManager.getSite(arguments.contentBean.getSiteID()).getCacheFactory(type="data")>
+		<cfset cache=variables.settingsManager.getSite(arguments.contentBean.getSiteID()).getCacheFactory(name="data")>
 		
 		<cfset cache.purge("contentID" & arguments.contentBean.getSiteID() & arguments.contentBean.getContentID())>
 		<cfif len(arguments.contentBean.getRemoteID())>
