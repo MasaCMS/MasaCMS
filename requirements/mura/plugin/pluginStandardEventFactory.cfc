@@ -98,7 +98,7 @@
 				<cfset wrappedClassInstance=wrapHandler(variables.standardEventsHandler,localKey)>
 				<cfset super.set( localKey, wrappedClassInstance )>
 			<cfelse>
-				<cfset wrappedClassInstance=wrapHandler(createObject("mura.#variables.class#.#localKey#").init(),localKey)>
+				<cfset wrappedClassInstance=wrapHandler(createObject("component","mura.#variables.class#.#localKey#").init(),localKey)>
 			</cfif>
 			<!---<cfif arguments.persist>
 				<cfset super.set( localKey, wrappedClassInstance )>
