@@ -58,7 +58,7 @@ to your own modified versions of Mura CMS.
 		
 		<cfset var key=arguments.type & arguments.groupID & arguments.ContentID & arguments.siteid />
 		<cfset var site=variables.settingsManager.getSite(arguments.siteid)/>
-		<cfset var cacheFactory=site.getCacheFactory()>
+		<cfset var cacheFactory=site.getCacheFactory(name="output")>
 			
 		<cfif site.getCache()>
 			<!--- check to see if it is cached. if not then pass in the context --->
@@ -125,7 +125,7 @@ to your own modified versions of Mura CMS.
 		<cfset var rsPermited="">
 		<cfset var key=arguments.type & arguments.ContentID & arguments.siteid />
 		<cfset var site=variables.settingsManager.getSite(arguments.siteid)/>
-		<cfset var cacheFactory=site.getCacheFactory()>
+		<cfset var cacheFactory=site.getCacheFactory(name="output")>
 		
 		<cfif site.getCache()>
 			<!--- check to see if it is cached. if not then pass in the context --->
@@ -257,7 +257,7 @@ to your own modified versions of Mura CMS.
 		<cfset var rsgroups="">
 		<cfset var key="perm" & arguments.moduleID & arguments.siteid  />
 		<cfset var site=variables.settingsManager.getSite(arguments.siteid)/>
-		<cfset var cacheFactory=site.getCacheFactory()>
+		<cfset var cacheFactory=site.getCacheFactory(name="output")>
 
 			<cfif listFind(session.mura.memberships,'Admin;#variables.settingsManager.getSite(arguments.siteid).getPrivateUserPoolID()#;0') or  listFind(session.mura.memberships,'S2') >
 				<cfset Verdict=1>
