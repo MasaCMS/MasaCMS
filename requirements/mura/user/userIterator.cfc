@@ -54,7 +54,7 @@ to your own modified versions of Mura CMS.
 	
 	<cfset variables.userBean.set(queryRowToStruct(variables.records,currentIndex()))>
 	
-	<cfset variables.userManager.setUserBeanMetaData(user)/>
+	<cfset variables.userManager.setUserBeanMetaData(variables.userBean)/>
 	<cfreturn variables.userBean>
 </cffunction>
 
