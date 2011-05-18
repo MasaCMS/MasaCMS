@@ -919,7 +919,7 @@ to your own modified versions of Mura CMS.
 		</cfif>
 			
 		<cfif newBean.getapproved()>
-			<cfset variables.settingsManager.getSite(arguments.data.siteid).purgeCache(type="output") />
+			<cfset variables.settingsManager.getSite(arguments.data.siteid).purgeCache(name="output") />
 			<cfif NOT newBean.getIsNew() >
 				<cfset purgeContentCache(contentBean=newbean)>
 			</cfif>
@@ -1098,7 +1098,7 @@ to your own modified versions of Mura CMS.
 	</cflock>
 	
 	<cfif NOT currentBean.getIsNew()>
-		<cfset variables.settingsManager.getSite(currentBean.getSiteID()).purgeCache(type="output") />
+		<cfset variables.settingsManager.getSite(currentBean.getSiteID()).purgeCache(name="output") />
 		<cfset purgeContentCache(contentBean=currentBean)>
 	</cfif>
 			
