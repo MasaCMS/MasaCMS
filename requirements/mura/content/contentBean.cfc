@@ -383,22 +383,27 @@ to your own modified versions of Mura CMS.
   </cffunction>
  
   <cffunction name="getAllValues" access="public" returntype="struct" output="false">
+		<cfargument name="autocomplete" required="true" default="true">
 		<cfset var i="">
-		<cfset var extData=getExtendedData().getAllExtendSetData()>
+		<cfset var extData="">
 		
-		<cfif not structIsEmpty(extData)>
-			<cfset structAppend(variables.instance,extData.data,false)>	
-			<cfloop list="#extData.extendSetID#" index="i">
-				<cfif not listFind(variables.instance.extendSetID,i)>
-					<cfset variables.instance.extendSetID=listAppend(variables.instance.extendSetID,i)>
-				</cfif>
-			</cfloop>
-		</cfif>
-		
-		<cfif not structIsEmpty(variables.displayRegions)>
-			<cfloop collection="#variables.displayRegions#" item="i">
-				<cfset variables.instance[i]=variables.contentManager.formatRegionObjectsString(variables.displayRegions[i])>
-			</cfloop>
+		<cfif arguments.autocomplete>
+			<cfset extData=getExtendedData().getAllExtendSetData()>
+			
+			<cfif not structIsEmpty(extData)>
+				<cfset structAppend(variables.instance,extData.data,false)>	
+				<cfloop list="#extData.extendSetID#" index="i">
+					<cfif not listFind(variables.instance.extendSetID,i)>
+						<cfset variables.instance.extendSetID=listAppend(variables.instance.extendSetID,i)>
+					</cfif>
+				</cfloop>
+			</cfif>
+			
+			<cfif not structIsEmpty(variables.displayRegions)>
+				<cfloop collection="#variables.displayRegions#" item="i">
+					<cfset variables.instance[i]=variables.contentManager.formatRegionObjectsString(variables.displayRegions[i])>
+				</cfloop>
+			</cfif>
 		</cfif>
 		
 		<cfset purgeExtendedData()>
