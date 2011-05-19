@@ -49,7 +49,7 @@ to your own modified versions of Mura CMS.
 		<cfset variables.categoryBean=createObject("component","categoryBean").init(variables.categoryManager) />
 		<cfset variables.categoryStructTemplate=variables.categoryBean.getAllValues()>
 	<cfelse>
-		<cfset variables.categoryBean.setAllValues( variables.categoryStructTemplate)>
+		<cfset variables.categoryBean.setAllValues( structCopy(variables.categoryStructTemplate) )>
 	</cfif>
 
 	<cfset variables.categoryBean.set(queryRowToStruct(variables.records,currentIndex()))>
