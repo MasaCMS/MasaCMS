@@ -47,7 +47,7 @@ to your own modified versions of Mura CMS.
 <cffunction name="packageRecord" access="public" output="false" returntype="any">
 	<cfif NOT isObject(variables.userBean)>
 		<cfset variables.userBean=createObject("component","userBean").init(variables.configBean, variables.settingsManager, variables.userManager) />
-		<cfset variables.userStructTemplate=variables.userBean.getAllValues()>
+		<cfset variables.userStructTemplate=variables.userBean.getAllValues(autocomplete=false)>
 	<cfelse>
 		<cfset variables.userBean.setAllValues( structCopy(variables.userStructTemplate) )>
 	</cfif>
