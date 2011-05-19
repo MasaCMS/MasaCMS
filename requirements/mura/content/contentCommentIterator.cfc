@@ -51,7 +51,7 @@ to your own modified versions of Mura CMS.
 		<cfset variables.commentBean=variables.contentManager.getCommentBean() />
 		<cfset variables.commentStructTemplate=variables.commentBean.getAllValues()>
 	<cfelse>
-		<cfset variables.commentBean.setAllValues( variables.commentStructTemplate)>
+		<cfset variables.commentBean.setAllValues( structCopy(variables.commentStructTemplate) )>
 	</cfif>
 	
 	<cfset variables.commentBean.set(queryRowToStruct(variables.records,currentIndex()))>
