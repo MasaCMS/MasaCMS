@@ -1437,12 +1437,15 @@ to your own modified versions of Mura CMS.
 				</cfif>
 				
 				<cfloop query="rstusersmemb">
+					<cftry>
 					<cfquery datasource="#arguments.toDSN#">
 						insert into tusersmemb (userID,groupID) values (
 						<cfqueryparam cfsqltype="cf_sql_varchar" value="#keys.get(rstusersmemb.userID)#">,
 						<cfqueryparam cfsqltype="cf_sql_varchar" value="#keys.get(rstusersmemb.groupID)#">
 						)
 					</cfquery>
+					<cfcatch></cfcatch>
+					</cftry>
 				</cfloop>
 				
 				<!--- TUSERSTAGS--->
