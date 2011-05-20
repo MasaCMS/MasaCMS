@@ -1437,12 +1437,15 @@ to your own modified versions of Mura CMS.
 				</cfif>
 				
 				<cfloop query="rstusersmemb">
+					<cftry>
 					<cfquery datasource="#arguments.toDSN#">
 						insert into tusersmemb (userID,groupID) values (
 						<cfqueryparam cfsqltype="cf_sql_varchar" value="#keys.get(rstusersmemb.userID)#">,
 						<cfqueryparam cfsqltype="cf_sql_varchar" value="#keys.get(rstusersmemb.groupID)#">
 						)
 					</cfquery>
+					<cfcatch></cfcatch>
+					</cftry>
 				</cfloop>
 				
 				<!--- TUSERSTAGS--->
@@ -2510,7 +2513,7 @@ to your own modified versions of Mura CMS.
 						and extendsetID=<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(rstclassextendattributes.extendSetID)#">
 						and name=<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#rstclassextendattributes.name#">
 					</cfquery>
-
+					
 					<cfif getAttributeID.recordcount>
 						<cfset keys.get(rstclassextendattributes.attributeID, getAttributeID.attributeID)>
 						<cfset existingAttributeList=listAppend(existingAttributeList,keys.get(attributeID))>
@@ -2533,8 +2536,7 @@ to your own modified versions of Mura CMS.
 							optionlabellist=<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstclassextendattributes.optionLabelList neq '',de('no'),de('yes'))#" value="#rstclassextendattributes.optionLabelList#">
 							where attributeID=<cfqueryparam cfsqltype="cf_sql_INTEGER" value="#keys.get(rstclassextendattributes.attributeID)#">
 						</cfquery>
-				
-						
+								
 					<cfelse>
 					
 						<cfquery datasource="#arguments.toDSN#">
@@ -2641,6 +2643,10 @@ to your own modified versions of Mura CMS.
 		
 				<cfloop query="rstclassextenddata">
 					<cftry>
+						<!--- Attributes that have not been imported will return as a uuid. 
+						This most likely is the result of orphaned data.
+						--->
+						<cfif isNumeric(keys.get(rstclassextenddata.attributeID))>
 						<cfquery datasource="#arguments.toDSN#">
 							insert into tclassextenddata (baseID,attributeID,attributeValue,stringvalue,siteID,numericvalue,datetimevalue,remoteID
 							)
@@ -2665,10 +2671,10 @@ to your own modified versions of Mura CMS.
 							
 							)
 						</cfquery>
+						</cfif>
 						<cfcatch>
 							<cfdump var="#rstclassextenddata.baseID#">
 							<cfdump var="#rstclassextenddata.attributeID#">
-							<cfdump var="#keys.get(rstclassextenddata.attributeID)#">
 							<cfdump var="#cfcatch#">
 							<cfabort>
 						</cfcatch>
@@ -2716,6 +2722,10 @@ to your own modified versions of Mura CMS.
 				</cfquery>
 				
 					<cfloop query="rstclassextenddatauseractivity">
+					<!--- Attributes that have not been imported will return as a uuid. 
+					This most likely is the result of orphaned data.
+					--->
+					<cfif isNumeric(keys.get(rstclassextenddatauseractivity.attributeID))>
 					<cftry>
 						<cfquery datasource="#arguments.toDSN#">
 							insert into tclassextenddatauseractivity (baseID,attributeID,attributeValue,stringvalue,siteID,numericvalue,datetimevalue,remoteID)
@@ -2742,11 +2752,13 @@ to your own modified versions of Mura CMS.
 						<cfcatch>
 							<cfdump var="#rstclassextenddatauseractivity.baseID#">
 							<cfdump var="#rstclassextenddatauseractivity.attributeID#">
+							<cfdump var="#keys.get(rstclassextenddatauseractivity.attributeID)#">
 							<cfdump var="#rstclassextenddatauseractivity.attributeValue#">
 							<cfdump var="#cfcatch#">
 							<cfabort>
 						</cfcatch>
 					</cftry>
+					</cfif>
 				</cfloop>
 			</cfif>
 		</cfif>
