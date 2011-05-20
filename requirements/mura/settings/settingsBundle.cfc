@@ -304,7 +304,12 @@ to your own modified versions of Mura CMS.
 				</cfif>
 				<cfif fileExists( getBundle() & "sitefiles.zip" )>
 					<cfset zipPath = getBundle() & "sitefiles.zip" />
-					<cfset variables.zipTool.Extract(zipFilePath="#zipPath#",extractPath=siteRoot, overwriteFiles=true, extractDirs="cache|assets")>
+					
+					<cfset destDir = variables.configBean.getValue('filedir') & variables.fileDelim & arguments.siteID />
+					<cfset variables.zipTool.Extract(zipFilePath="#zipPath#",extractPath=destDir, overwriteFiles=true, extractDirs="cache")>
+					
+					<cfset destDir = variables.configBean.getValue('assetdir') & variables.fileDelim & arguments.siteID />
+					<cfset variables.zipTool.Extract(zipFilePath="#zipPath#",extractPath=destDir, overwriteFiles=true, extractDirs="assets")>
 				</cfif>
 				<cfif fileExists( getBundle() & "assetfiles.zip" )>
 					<cfset zipPath = getBundle() & "assetfiles.zip" />
