@@ -450,4 +450,16 @@ to your own modified versions of Mura CMS.
 	<cfreturn rs.recordcount>
 </cffunction>	
 
+<cffunction name="createCacheFactory" output="false">
+	<cfargument name="capacity" required="true" default="0">
+	<cfargument name="freeMemoryThreshold" required="true" default="60">
+
+	<cfif not arguments.capacity>
+		<cfreturn createObject("component","mura.cache.cacheFactory").init(freeMemoryThreshold=arguments.freeMemoryThreshold)>
+	<cfelse>
+		<cfreturn createObject("component","mura.cache.cacheFactoryLRU").init(capacity=arguments.capacity, freeMemoryThreshold=arguments.freeMemoryThreshold)>
+	</cfif>
+	
+</cffunction>
+
 </cfcomponent>
