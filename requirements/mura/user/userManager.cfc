@@ -250,7 +250,7 @@ to your own modified versions of Mura CMS.
 		
 		<cfset cache.purge("user" & arguments.userBean.getSiteID() & arguments.userBean.getUserID())>
 		<cfif len(arguments.userBean.getRemoteID())>
-			<cfset cache.purge("user" & vuserBean.getSiteID() & arguments.userBean.getRemoteID())>
+			<cfset cache.purge("user" & userBean.getSiteID() & arguments.userBean.getRemoteID())>
 		</cfif>
 		<cfif len(arguments.userBean.getUsername())>
 			<cfset cache.purge("user" & arguments.userBean.getSiteID() & arguments.userBean.getUsername())>
