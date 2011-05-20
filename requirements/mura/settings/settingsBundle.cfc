@@ -1062,6 +1062,7 @@ to your own modified versions of Mura CMS.
 				<cfif isDate(arguments.sinceDate)>
 					and lastUpdate >=<cfqueryparam cfsqltype="cf_sql_timestamp" value="#arguments.sinceDate#">
 				</cfif>
+				and tclassextenddata.attributeID in (select attributeID from tclassextendattributes)
 			</cfquery>
 		
 			<cfset setValue("rstclassextenddata",rstclassextenddata)>
@@ -1070,6 +1071,7 @@ to your own modified versions of Mura CMS.
 				<cfquery datasource="#arguments.dsn#" name="rstclassextenddatauseractivity">
 					select * from tclassextenddatauseractivity
 					where siteID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
+					and attributeID in (select attributeID from tclassextendattributes)
 				</cfquery>
 		
 				<cfset setValue("rstclassextenddatauseractivity",rstclassextenddatauseractivity)>
