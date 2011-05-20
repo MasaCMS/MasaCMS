@@ -69,3 +69,4 @@ sourceimagescaleby=x
 fmshowsitefiles=1
 fmshowapplicationroot=1
 editablecomments=0
+scriptProtect=true
