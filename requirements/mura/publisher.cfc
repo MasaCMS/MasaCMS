@@ -1529,7 +1529,8 @@ to your own modified versions of Mura CMS.
 				
 				<cfloop query="rstusersfavorites">
 					<cfquery datasource="#arguments.toDSN#">
-						insert into tusersfavorites (userID,favoriteName,favorite,type,siteID,dateCreated,columnNumber,rowNumber,maxRssItems ) values (
+						insert into tusersfavorites (favoriteID,userID,favoriteName,favorite,type,siteID,dateCreated,columnNumber,rowNumber,maxRssItems ) values (
+						<cfqueryparam cfsqltype="cf_sql_varchar" value="#keys.get(rstusersfavorites.favoriteID)#">,
 						<cfqueryparam cfsqltype="cf_sql_varchar" value="#keys.get(rstusersfavorites.userID)#">,
 						<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(rstusersfavorites.favoriteName neq '',de('no'),de('yes'))#" value="#rstusersfavorites.favoriteName#">,
 						<cfif isValid("UUID",favorite)>
