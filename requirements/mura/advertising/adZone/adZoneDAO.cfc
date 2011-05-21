@@ -95,7 +95,7 @@ to your own modified versions of Mura CMS.
 
 <cffunction name="update" access="public" output="false" returntype="void" >
 	<cfargument name="adZoneBean" type="any" />
-	 b≥≥÷√v 
+	
 	<cfquery datasource="#variables.instance.configBean.getDatasource()#"  username="#variables.instance.configBean.getDBUsername()#" password="#variables.instance.configBean.getDBPassword()#">
 	update tadzones set
 	lastUpdate = <cfif isDate(arguments.adZoneBean.getLastUpdate()) ><cfqueryparam cfsqltype="cf_sql_timestamp" value="#arguments.adZoneBean.getLastUpdate()#"><cfelse>null</cfif>,
