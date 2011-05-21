@@ -99,7 +99,7 @@ to your own modified versions of Mura CMS.
 	<cfquery datasource="#variables.instance.configBean.getDatasource()#"  username="#variables.instance.configBean.getDBUsername()#" password="#variables.instance.configBean.getDBPassword()#">
 	update tadzones set
 	lastUpdate = <cfif isDate(arguments.adZoneBean.getLastUpdate()) ><cfqueryparam cfsqltype="cf_sql_timestamp" value="#arguments.adZoneBean.getLastUpdate()#"><cfelse>null</cfif>,
-	lastupdateBy = <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.adZoneBean.getLastUpdatBy() neq '',de('no'),de('yes'))#" value="#arguments.adZoneBean.getLastUpdateBy()#">,
+	lastupdateBy = <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.adZoneBean.getLastUpdateBy() neq '',de('no'),de('yes'))#" value="#arguments.adZoneBean.getLastUpdateBy()#">,
 	name = <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.adZoneBean.getName() neq '',de('no'),de('yes'))#" value="#arguments.adZoneBean.getName()#">,
 	creativeType = <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.adZoneBean.getCreativeType() neq '',de('no'),de('yes'))#" value="#arguments.adZoneBean.getCreativeType()#">,
 	isActive = #arguments.adZoneBean.getIsActive()#,
