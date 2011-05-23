@@ -253,10 +253,10 @@ to your own modified versions of Mura CMS.
 </cffunction>
 
 <cffunction name="call" returntype="any" access="remote">
-<cfargument name="serviceName">
-<cfargument name="methodName">
-<cfargument name="authToken" default="">
-<cfargument name="args" default="#structNew()#">
+<cfargument name="serviceName" type="string">
+<cfargument name="methodName" type="string">
+<cfargument name="authToken" type="string" default="">
+<cfargument name="args" default="#structNew()#" type="struct">
 
 <cfset var event="">
 <cfset var service="">	
