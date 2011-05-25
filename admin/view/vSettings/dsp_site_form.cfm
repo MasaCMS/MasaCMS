@@ -577,14 +577,34 @@ to your own modified versions of Mura CMS.
 	  </dd>
 --->
 	 
-	  <dt>Bundle File</dt>
-	  <dd><input type="file" name="bundleFile" accept=".zip"/></dd>
+	
 	  
-	  <dt><a class="tooltip">Site Bundle Location (Optional)<span>You can deploy a bundle that exists on the server by entering the complete server path to the Site Bundle here. This eliminates the need to upload the file via your web browser, avoiding some potential timeout issues.</span></a></dt>
+	  <dt><a class="tooltip">Select Bundle File From Server (Prefered)<span>You can deploy a bundle that exists on the server by entering the complete server path to the Site Bundle here. This eliminates the need to upload the file via your web browser, avoiding some potential timeout issues.</span></a></dt>
       <dd>
-        <input class="text" type="text" name="serverBundlePath" id="serverBundlePath">
+        <input class="text" type="text" name="serverBundlePath" id="serverBundlePath" value=""><input type="button" value="Browse Server" id="serverBundleBrowser"/>
+		<script>
+		jQuery(document).ready( function() {
+			var finder = new CKFinder();
+				finder.basePath = '#application.configBean.getContext()#/tasks/widgets/ckfinder/';
+				finder.selectActionFunction = setServerBundlePath;
+				finder.resourceType='Application_Root';
+				finder.defaultViewType_Files = 'list';
+			
+				 jQuery("##serverBundleBrowser").bind("click", function(){
+					 finder.popup();
+				 });		
+		});
+		
+		function setServerBundlePath(fileUrl) {
+			var check=fileUrl.split(".");
+			if(check[check.length-1].toLowerCase() == 'zip'){
+			jQuery('##serverBundlePath').val('#application.configBean.getWebRoot()##application.configBean.getFileDelim()#' + fileUrl);
+			}
+		}
+		</script>
       </dd>
-	  
+	   <dt><a class="tooltip">Upload Bundle File <span>Uploading large files via a web browser can produce inconsistent results.</span></a></dt>
+	  <dd><input type="file" name="bundleFile" accept=".zip"/></dd>
 	  </dl>
 	  </div>
 	

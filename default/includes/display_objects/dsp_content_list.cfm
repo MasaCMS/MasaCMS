@@ -189,7 +189,7 @@ to your own modified versions of Mura CMS.
 					<a href="#arguments.item.getURL()#" title="#HTMLEditFormat(arguments.item.getValue('title'))#"><img src="#arguments.item.getImageURL(argumentCollection=arguments.imageURLArgs)#"  alt="#htmlEditFormat(arguments.item.getValue('title'))#"/></a>
 				</dd>
 			</cfif>
-			<cfif arguments.hasSummary and len(arguments.item.getValue('summary'))>
+			<cfif arguments.hasSummary and len(arguments.item.getValue('summary')) and arguments.item.getValue('summary') neq "<p></p>">
 			 	<dd class="summary">#setDynamicContent(arguments.item.getValue('summary'))# <span class="readMore">#addlink(arguments.item.getValue('type'),arguments.item.getValue('filename'),variables.rbFactory.getKey('list.readmore'),arguments.item.getValue('target'),arguments.item.getValue('targetparams'),arguments.item.getValue('contentID'),arguments.item.getValue('siteID'),'',application.configBean.getContext(),application.configBean.getStub(),application.configBean.getIndexFile())#</span></dd>
 			</cfif>
 			<cfif arguments.hasCredits and len(arguments.item.getValue('credits'))>
