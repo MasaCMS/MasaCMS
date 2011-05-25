@@ -122,9 +122,15 @@ to your own modified versions of Mura CMS.
 </cfsilent>
 <dl class="oneColumn">
 
-<cfset licenseFile="#application.configBean.getPluginDir()##application.configBean.getFileDelim()##rsPlugin.directory##application.configBean.getFileDelim()#plugin#application.configBean.getFileDelim()#license.txt">
+<cfset licenseFile="#application.configBean.getPluginDir()##application.configBean.getFileDelim()##rsPlugin.directory##application.configBean.getFileDelim()#license.txt">
+
+<cfif not fileExists(licenseFile)>
+	<cfset licenseFile="#application.configBean.getPluginDir()##application.configBean.getFileDelim()##rsPlugin.directory##application.configBean.getFileDelim()#plugin#application.configBean.getFileDelim()#license.txt">
+</cfif>
+
 <cfset hasLicense= isNumeric(rsPlugin.deployed) and not rsPlugin.deployed eq 1
 and fileExists(licenseFile)>
+
 <cfif hasLicense>
 <cffile file="#licenseFile#" action="read" variable="license">
 <dt>End User License Agreement</dt>
