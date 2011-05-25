@@ -937,7 +937,7 @@ CREATE TABLE `tsettings` (
   `MaxNestLevel` int(10) default NULL,
   `PageLimit` int(10) default NULL,
   `Locking` varchar(50) character set utf8 default NULL,
-  `Domain` varchar(50) character set utf8 default NULL,
+  `Domain` varchar(100) character set utf8 default NULL,
   `exportLocation` varchar(100) character set utf8 default NULL,
   `FileDir` varchar(50) character set utf8 default NULL,
   `Contact` varchar(50) character set utf8 default NULL,

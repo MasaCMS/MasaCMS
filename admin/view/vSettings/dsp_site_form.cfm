@@ -95,7 +95,7 @@ to your own modified versions of Mura CMS.
       </dd>
       <dt>Domain <span>(Example: www.google.com)</span></dt>
       <dd>
-        <input name="domain" type="text" class="text" value="#HTMLEditFormat(request.siteBean.getdomain('production'))#" size="50" maxlength="50">
+        <input name="domain" type="text" class="text" value="#HTMLEditFormat(request.siteBean.getdomain('production'))#" size="50" maxlength="100">
       </dd>
 	 <dt>Domain Alias List <span>(Line Delimited)</span></dt>
       <dd>
