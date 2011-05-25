@@ -597,7 +597,7 @@ to your own modified versions of Mura CMS.
 		function setServerBundlePath(fileUrl) {
 			var check=fileUrl.split(".");
 			if(check[check.length-1].toLowerCase() == 'zip'){
-			jQuery('##serverBundlePath').val('#application.configBean.getWebRoot()##application.configBean.getFileDelim()#' + fileUrl);
+			jQuery('##serverBundlePath').val("#JSStringFormat('#application.configBean.getWebRoot()##application.configBean.getFileDelim()#')#" + fileUrl);
 			}
 		}
 		</script>
