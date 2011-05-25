@@ -588,7 +588,6 @@ to your own modified versions of Mura CMS.
 				finder.basePath = '#application.configBean.getContext()#/tasks/widgets/ckfinder/';
 				finder.selectActionFunction = setServerBundlePath;
 				finder.resourceType='Application_Root';
-				finder.defaultViewType_Files = 'list';
 			
 				 jQuery("##serverBundleBrowser").bind("click", function(){
 					 finder.popup();
