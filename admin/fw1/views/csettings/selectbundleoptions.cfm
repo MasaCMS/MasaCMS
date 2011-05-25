@@ -93,7 +93,8 @@ function checkAll (form) {
         </cfif>
       </dd>
       <dt class="divide"><a class="tooltip">Server Directory (Optional)<span>You can set the complete server path to the directory where you would like the bundle to be created.  If left blank the bundle file will immediately download from your browser after creation.</span></a></dt>
-      <dd>
+      <dd>Current Working Directory:#application.configBean.getWebRoot()##application.configBean.getFileDelim()#admin#application.configBean.getFileDelim()#temp <input type="button" onclick="jQuery('##saveFileDir').val('#application.configBean.getWebRoot()##application.configBean.getFileDelim()#admin#application.configBean.getFileDelim()#temp');" value="Select this Directory">
+	  <dd>
         <input class="text" type="text" name="saveFileDir" id="saveFileDir">
       </dd>
     </dl>
