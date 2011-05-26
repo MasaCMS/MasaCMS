@@ -283,14 +283,19 @@
 <cffunction name="standard404Handler" output="false" returnType="any">
 	<cfargument name="event" required="true">
 	
-	<cfset var a=""/>
-	
-	<cfif event.getValue('doaction') neq ''>
-		<cfloop list="#event.getValue('doaction')#" index="a">
-			<cfset doAction(a,event)>
-		</cfloop>
+	<cfif event.getValue("contentBean").getIsNew()>
+		<cfset getPluginManager().announceEvent("onSite404",arguments.event)>
 	</cfif>
 
+	<cfif event.getValue("contentBean").getIsNew()>
+		<cfset arguments.event.setValue('contentBean',application.contentManager.getActiveContentByFilename("404",arguments.event.getValue('siteid'),true)) />
+			
+		<cfif len(arguments.event.getValue('previewID'))>
+			<cfset arguments.event.getContentBean().setBody("The requested version of this content could not be found.")>
+		</cfif>
+		<cfheader statuscode="404" statustext="Content Not Found" /> 
+	</cfif>
+	
 </cffunction>
 
 <cffunction name="standardDoActionsHandler" output="false" returnType="any">
@@ -492,7 +497,7 @@
 
 <cffunction name="standard404Validator" output="false" returnType="any">
 	<cfargument name="event" required="true">
-	
+
 	<cfif event.getValue('contentBean').getIsNew() eq 1>
 		<cfset event.getHandler("standard404").handle(event)>
 	</cfif>
