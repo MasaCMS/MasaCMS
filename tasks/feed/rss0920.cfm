@@ -71,7 +71,7 @@ to your own modified versions of Mura CMS.
 <cfif isDate(item.getValue('releaseDate'))>
 	<cfset thePubDate=dateFormat(item.getValue('releaseDate'),"yyyy-mm-dd") & "T" & timeFormat(item.getValue('releaseDate'),"HH:mm:ss") & utc>
 <cfelse>
-	<cfset thePubDate=dateFormat(item.getValue('releaseDate'),"yyyy-mm-dd") & "T" & timeFormat(item.getValue('releaseDate'),"HH:mm:ss") & utc>
+	<cfset thePubDate=dateFormat(item.getValue('lastUpdate'),"yyyy-mm-dd") & "T" & timeFormat(item.getValue('lastUpdate'),"HH:mm:ss") & utc>
 </cfif>
 
 <cfset rsCats=application.contentManager.getCategoriesByHistID(item.getValue('contentHistID'))>
