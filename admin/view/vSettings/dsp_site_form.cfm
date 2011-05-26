@@ -83,7 +83,7 @@ to your own modified versions of Mura CMS.
     <dl class="oneColumn">
       <dt class="first">Site ID <span>(Warning: no punctuation, dots or file delimiters)</span></dt>
       <dd>
-        <cfif attributes.siteid eq ''><input name="siteid" type="text" class="text forceLC" value="#request.siteBean.getsiteid()#" size="25" maxlength="25" required="true"><cfelse>#request.siteBean.getsiteid()#<input name="siteid" type="hidden" value="#request.siteBean.getsiteid()#"></cfif>
+        <cfif attributes.siteid eq ''><input name="siteid" type="text" class="text" value="#request.siteBean.getsiteid()#" size="25" maxlength="25" required="true"><cfelse>#request.siteBean.getsiteid()#<input name="siteid" type="hidden" value="#request.siteBean.getsiteid()#"></cfif>
       <dd>
       <dt>Site</dt>
       <dd>
