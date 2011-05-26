@@ -196,10 +196,6 @@ input.textAlt, input.date, input.medium {
 	width: 260px;
 }
 
-input.forceLC {
-	text-transform: lowercase;
-}
-
 input.textLong, input.long {
 	vertical-align: middle;
 	background-color: #fff;
