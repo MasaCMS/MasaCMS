@@ -116,6 +116,7 @@ to your own modified versions of Mura CMS.
 						</cfif>
 						<th class="varWidth">Site</th>
 						<th>Domain</th>
+						<th>Version</th>
 						<cfif application.configBean.getMode() eq 'staging'
 						and attributes.siteSortBy neq "orderno"
 						and attributes.siteUpdateSelect neq "true">
@@ -149,7 +150,7 @@ to your own modified versions of Mura CMS.
 								-
 							</cfif>
 						</td>
-						
+						<td> #application.autoUpdater.getCurrentCompleteVersion(request.rsSites.siteid)#</td>
 						<cfif application.configBean.getMode() eq 'staging'
 						and attributes.siteSortBy neq "orderno"
 						and attributes.siteUpdateSelect neq "true">
