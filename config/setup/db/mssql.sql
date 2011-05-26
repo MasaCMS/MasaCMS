@@ -472,7 +472,7 @@ CREATE TABLE [dbo].[tsettings] (
 	[MaxNestLevel] [int] NULL ,
 	[PageLimit] [int] NULL ,
 	[Locking] [nvarchar] (50) NULL ,
-	[Domain] [nvarchar] (50) NULL ,
+	[Domain] [nvarchar] (100) NULL ,
 	[exportLocation] [nvarchar] (100) NULL ,
 	[FileDir] [nvarchar] (50) NULL ,
 	[Contact] [nvarchar] (50) NULL ,

@@ -580,7 +580,7 @@ CREATE TABLE `tsettings` (
   `MaxNestLevel` int(10) default NULL,
   `PageLimit` int(10) default NULL,
   `Locking` varchar(50) default NULL,
-  `Domain` varchar(50) default NULL,
+  `Domain` varchar(100) default NULL,
   `exportLocation` varchar(100) default NULL,
   `FileDir` varchar(50) default NULL,
   `Contact` varchar(50) default NULL,

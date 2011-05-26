@@ -150,7 +150,7 @@ to your own modified versions of Mura CMS.
 			</div>
 			</cfoutput>
 		<cfelse>
-			#dspObject("component","[placeholder] #variables.feeBean.getName()#", arguments.siteID)#
+			<cfoutput>#dspObject("component","[placeholder] #variables.feeBean.getName()#", arguments.siteID)#</cfoutput>
 			<!-- Empty Collection '<cfoutput>#feedBean.getName()#</cfoutput>'  -->
 		</cfif>
     <cfelse>
