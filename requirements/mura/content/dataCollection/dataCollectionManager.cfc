@@ -269,6 +269,7 @@ order by tformresponsepackets.entered asc
 <cfset var frm=""/>
 <cfset var finder=""/>
 <cfset var frmID="frm" & replace(arguments.formID,"-","","ALL") />
+<cfset var frmBM="b" & replace(arguments.formID,"-","","ALL") />
 <cfset var formHTML='<input type="hidden" name="siteid" value="#arguments.siteid#"><input type="hidden" name="formid" value="#arguments.formid#">'>
 <cfset var body=""/>
 
@@ -289,7 +290,7 @@ order by tformresponsepackets.entered asc
 </cfloop>
 
 <cfset body=rereplacenocase(arguments.preBody,'</form>','#formHTML#</form>')>
-<cfset body=rereplacenocase(body,'<form','<form data-role="fieldcontain" id="#frmID#" ')>
+<cfset body=rereplacenocase(body,'<form','<a name="#frmBM#"><form data-role="fieldcontain" id="#frmID#" ')>
 
 <cfsavecontent variable="frm"><cfoutput>
 #body#
@@ -307,9 +308,10 @@ order by tformresponsepackets.entered asc
 					for (p=0; p < poll.length; p++) {
 							if(poll[p].type =='radio'){polllist.push(escape(poll[p].value));}
 						}
-				if(polllist.length > 0) frm.action='?nocache=1&polllist='+ polllist.toString();
+				if(polllist.length > 0) {frm.action='?nocache=1&polllist='+ polllist.toString();}		
 			</cfif>
 		</cfif>
+		frm.action=frm.action + "###frmBM#";
 </script></cfoutput>
 </cfsavecontent>
 
