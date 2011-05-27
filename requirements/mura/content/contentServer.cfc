@@ -355,6 +355,9 @@ to your own modified versions of Mura CMS.
 	
 	<cfloop from="1" to="#listLen(currentFilename,'/')#" index="i">
 		<cfset currentItem=listGetAt(currentFilename,i,'/')>
+		<cfif currentItem eq "_">
+			<cfset currentItem="params">
+		</cfif>
 		<cfif listFindNoCase('date,category,params,tag,linkservid,showmeta',currentItem)>
 			<cfset currentArrayName="#currentItem#Array">
 		<cfelseif currentArrayName eq "paramsArray">
