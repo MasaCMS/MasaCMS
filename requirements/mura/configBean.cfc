@@ -119,6 +119,7 @@ to your own modified versions of Mura CMS.
 <cfset variables.instance.autoresetpasswords=true />
 <cfset variables.instance.encryptionKey=hash(getCurrentTemplatePath()) />
 <cfset variables.instance.uselegacysessions=true />
+<cfset variables.instance.customUrlVarDelimiters="_">
 
 <cffunction name="OnMissingMethod" access="public" returntype="any" output="false" hint="Handles missing method exceptions.">
 <cfargument name="MissingMethodName" type="string" required="true" hint="The name of the missing method." />
@@ -1165,6 +1166,15 @@ to your own modified versions of Mura CMS.
 	
 	<cfreturn returnStr>
 	
+</cffunction>
+
+<cffunction name="addCustomUrlVarDelimiter" output="false">
+<cfargument name="delim">
+	<cfset variables.instance.customUrlVarDelimiters=listAppend(variables.instance.customUrlVarDelimiters,arguments.delim)>
+</cffunction>
+
+<cffunction name="getCustomVarDelimiters" output="false">
+	<cfreturn variables.instance.customUrlVarDelimiters>
 </cffunction>
 
 </cfcomponent>
