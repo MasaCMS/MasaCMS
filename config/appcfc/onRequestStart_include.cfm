@@ -47,6 +47,10 @@ to your own modified versions of Mura CMS.
 
 <cfprocessingdirective pageencoding="utf-8"/>
 <cfsetting requestTimeout = "1000">
+
+<cfif not StructKeyExists(cookie, 'userid')>
+	  <cfcookie name="userid" expires="never" value="">
+</cfif>
 	
 <!--- Making sure that session is valid --->
 <cfif yesNoFormat(application.configBean.getValue("useLegacySessions")) and structKeyExists(session,"mura")>
@@ -55,20 +59,19 @@ to your own modified versions of Mura CMS.
 			or
 		(session.mura.isLoggedIn and not isValid("UUID",listFirst(getAuthUser(),"^")))	>
 		
-		<cfset application.loginManager.logout()>	
+		<cfset tempcookieuserID=cookie.userID>
+		<cfset application.loginManager.logout()>
+		<cfcookie name="userid" expires="never" value="#tempcookieuserID#">	
 	</cfif>
 </cfif>
 
 <cfset application.userManager.setUserStructDefaults()>
-	
+
 <!---settings.custom.vars.cfm reference is for backwards compatability --->
 <cfif fileExists(expandPath("/muraWRM/config/settings.custom.vars.cfm"))>
 	<cfinclude template="/muraWRM/config/settings.custom.vars.cfm">
 </cfif>
-<cfif not StructKeyExists(cookie, 'userid')>
-	  <cfcookie name="userid" expires="never" value="">
-</cfif>
-	
+
 <cfif not StructKeyExists(cookie, 'userHash')>
    <cfcookie name="userHash" expires="never" value="">
 </cfif>
@@ -77,22 +80,22 @@ to your own modified versions of Mura CMS.
 	<cfcookie name="CFID" value="#Session.CFID#">
 	<cfcookie name="CFTOKEN" value="#Session.CFTOKEN#">
 </cfif>
-	
+
 <cftry>
 	<cfif cookie.userid eq '' and structKeyExists(session,"rememberMe") and session.rememberMe eq 1 and session.mura.isLoggedIn>
 	<cfcookie name="userid" value="#session.mura.userID#" expires="never" />
 	<cfcookie name="userHash" value="#encrypt(application.userManager.readUserHash(session.mura.userID).userHash,application.configBean.getEncryptionKey(),'cfmx_compat','hex')#" expires="never" />
 	</cfif>
-	
+
 	<cfif cookie.userid neq '' and not session.mura.isLoggedIn>
 	<cfset application.loginManager.rememberMe(cookie.userid,decrypt(cookie.userHash,application.configBean.getEncryptionKey(),"cfmx_compat",'hex')) />
 	</cfif>
-	
+
 	<cfif cookie.userid neq '' and structKeyExists(session,"rememberMe") and session.rememberMe eq 0 and session.mura.isLoggedIn>
 	<cfcookie name="userid" value="" expires="never" />
 	<cfcookie name="userHash" value="" expires="never" />
 	</cfif>
-	
+
 	<cfif not structKeyExists(cookie,"originalURLToken")>
 	<cfparam name="session.trackingID" default="#application.utility.getUUID()#">
 	<cfcookie name="originalURLToken" value="#session.trackingID#" expires="never" />

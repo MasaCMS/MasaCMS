@@ -70,9 +70,13 @@ to your own modified versions of Mura CMS.
 	
 	<cfif isloggedin>
 		<cfcookie name="userid" expires="never" value="#session.mura.userID#" />
+		<cfcookie name="userHash" expires="never" value="#encrypt(arguments.userHash,application.configBean.getEncryptionKey(),'cfmx_compat','hex')#" />
+		<cfset session.rememberMe=1>
 		<cfreturn true />
 	<cfelse>
 		<cfcookie name="userid" expires="never" value="" />
+		<cfcookie name="userHash" expires="never" value="" />
+		<cfset session.rememberMe=0>
 		<cfreturn false />
 	</cfif>
 	
