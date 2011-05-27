@@ -45,7 +45,7 @@ function checkAll (form) {
     <li><a href="index.cfm?fuseaction=cSettings.editSite&siteID=#URLEncodedFormat(rc.siteID)#">Back to Site Settings</a></li>
   </ul>
   <p>A Bundle includes a Site's architecture &amp; content, all rendering files (display objects, themes, javascript, etc.) and any of the items you select below. </p>
-  <form id="pluginSelectFrm" name="pluginSelectFrm" action="./">
+  <form id="pluginSelectFrm" name="pluginSelectFrm" action="./index.cfm">
     <dl class="oneColumn ">
       <dt class="separate">Include in Site Bundle:</dt>
       <dd>

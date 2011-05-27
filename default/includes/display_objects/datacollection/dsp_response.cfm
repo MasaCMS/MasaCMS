@@ -77,6 +77,7 @@ to your own modified versions of Mura CMS.
 		<p class="error">#getSite().getRBFactory().getKey("captcha.spam")# <a href="javascript:history.back();">#getSite().getRBFactory().getKey("captcha.tryagain")#</a></p>
 	</cfif>
 <cfelse>
+		<a name='b#replace(rsform.contentID,"-","","ALL")#'>
 		<cfset customResponse=application.pluginManager.renderEvent("onFormSubmitResponseRender",event)>
 		<cfif len(customResponse)>
 		#customResponse#
