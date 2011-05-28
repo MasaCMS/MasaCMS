@@ -1170,7 +1170,7 @@ to your own modified versions of Mura CMS.
 
 <cffunction name="addCustomUrlVarDelimiter" output="false">
 <cfargument name="delim">
-	<cfset variables.instance.customUrlVarDelimiters=listAppend(variables.instance.customUrlVarDelimiters,arguments.delim)>
+	<cfset variables.instance.customUrlVarDelimiters=listAppend(variables.instance.customUrlVarDelimiters,arguments.delim,"^")>
 </cffunction>
 
 <cffunction name="getCustomVarDelimiters" output="false">
