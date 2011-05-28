@@ -355,7 +355,7 @@ to your own modified versions of Mura CMS.
 	
 	<cfloop from="1" to="#listLen(currentFilename,'/')#" index="i">
 		<cfset currentItem=listGetAt(currentFilename,i,'/')>
-		<cfif listFind(application.configBean.getCustomURLVarDelimiters(),currentItem)>
+		<cfif listFindNoCase(application.configBean.getCustomURLVarDelimiters(),currentItem,"^")>
 			<cfset currentItem="params">
 		</cfif>
 		<cfif listFindNoCase('date,category,params,tag,linkservid,showmeta',currentItem)>
