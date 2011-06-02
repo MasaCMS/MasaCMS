@@ -374,7 +374,7 @@ to your own modified versions of Mura CMS.
 			<cfif isObject(arguments.categoryBean)>
 				<cfset bean=arguments.categoryBean/>
 			<cfelse>
-				<cfset bean=variables.userDAO.getBean()/>
+				<cfset bean=variables.DAO.getBean()/>
 			</cfif>
 			<cfset bean.setAllValues( structCopy(cacheFactory.get( key )) )>
 			<cfreturn bean />
@@ -429,7 +429,7 @@ to your own modified versions of Mura CMS.
 			<cfif isObject(arguments.categoryBean)>
 				<cfset bean=arguments.categoryBean/>
 			<cfelse>
-				<cfset bean=variables.userDAO.getBean()/>
+				<cfset bean=variables.DAO.getBean()/>
 			</cfif>
 			<cfset bean.setAllValues( structCopy(cacheFactory.get( key )) )>
 			<cfreturn bean />
@@ -462,7 +462,7 @@ to your own modified versions of Mura CMS.
 			<cfif isObject(arguments.categoryBean)>
 				<cfset bean=arguments.categoryBean/>
 			<cfelse>
-				<cfset bean=variables.userDAO.getBean()/>
+				<cfset bean=variables.DAO.getBean()/>
 			</cfif>
 			<cfset bean.setAllValues( structCopy(cacheFactory.get( key )) )>
 			<cfreturn bean />
