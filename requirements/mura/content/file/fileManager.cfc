@@ -398,6 +398,7 @@ to your own modified versions of Mura CMS.
 	<cfset local.results=structNew()>
 	
 	<cfif not find("://",local.filePath) or  find("file://",local.filePath)>
+		<cfset local.isLocalFile=true>
 		<cfset local.filePath=replaceNoCase(local.filePath,"file:///","")>
 		<cfset local.filePath=replaceNoCase(local.filePath,"file://","")>
 		
@@ -412,8 +413,9 @@ to your own modified versions of Mura CMS.
 		<cfset local.results.contentSubType=listLast(local.connection.getContentType() ,"/")>
 		<!---<cfset local.results.charSet=local.connection.getContentEncoding()>--->
 		<cfset local.results.fileSize=local.connection.getContentLength()>
-		<cffile action="readBinary" file="#local.filePath#" variable="local.fileContent">
+		<!---<cffile action="readBinary" file="#local.filePath#" variable="local.fileContent">--->
 	<cfelse>
+		<cfset local.isLocalFile=false>
 		<cfif len(variables.configBean.getProxyServer())>
 			<cfhttp url="#local.filePath#" result="local.remoteGet" getasbinary="yes" 
 			proxyUser="#variables.configBean.getProxyUser()#" proxyPassword="#variables.configBean.getProxyPassword()#"
@@ -429,7 +431,7 @@ to your own modified versions of Mura CMS.
 		<cfset local.results.contentType=listFirst(local.remoteGet.mimeType ,"/")>
 		<cfset local.results.contentSubType=listLast(local.remoteGet.mimeType ,"/")>
 		<cfset local.results.fileSize=len(local.remoteGet.fileContent)>
-		<cfset local.fileContent=local.remoteGet.fileContent>
+		<!---<cfset local.fileContent=local.remoteGet.fileContent>--->
 			
 	</cfif>
 
@@ -449,7 +451,11 @@ to your own modified versions of Mura CMS.
 	<cfset local.filecreateattempt=1>
 	<cfloop condition="not local.fileuploaded">
 		<cfif not fileExists("#local.results.serverDirectory#/#local.results.serverFile#")>
-			<cffile action="write" file="#local.results.serverDirectory#/#local.results.serverFile#" output="#local.fileContent#" >
+			<cfif local.isLocalFile>
+				<cffile action="copy" destination="#local.results.serverDirectory#/#local.results.serverFile#" source="#local.filePath#" >
+			<cfelse>
+				<cffile action="write" file="#local.results.serverDirectory#/#local.results.serverFile#" output="#local.remoteGet.fileContent#" >
+			</cfif>
 			<cfset local.fileuploaded=true>
 		<cfelse>
 			<cfset local.results.serverFile=local.results.serverFileName & local.filecreateattempt & "." & local.results.serverFileExt>
