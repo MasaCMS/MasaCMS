@@ -254,16 +254,18 @@ to your own modified versions of Mura CMS.
 
 <cffunction name="setSites" access="public" output="false" returntype="void">
 	<cfset var rs="" />
+	<cfset var builtSites=structNew()>
 	<cfobjectcache action="clear"/>
 	<cfset rs=getList() />
-	<cfset variables.sites=structNew() />
 
 	<cfloop query="rs">
-		<cfset variables.sites['#rs.siteid#']=variables.DAO.read(rs.siteid) />
+		<cfset builtSites['#rs.siteid#']=variables.DAO.read(rs.siteid) />
 		<cfif variables.configBean.getCreateRequiredDirectories()>
 			<cfset variables.utility.createRequiredSiteDirectories(rs.siteid) />
 		</cfif>
  	</cfloop>
+
+	<cfset variables.sites=builtSites>
 	
 </cffunction>
 
@@ -272,7 +274,13 @@ to your own modified versions of Mura CMS.
 	<cftry>
 	<cfreturn variables.sites['#arguments.siteid#'] />
 	<cfcatch>
-			<cfset setSites() />
+			<cflock name="buildSites" timeout="200">
+				<cfif structKeyExists(variables.sites,'#arguments.siteid#')>
+					<cfreturn variables.sites['#arguments.siteid#'] />
+				<cfelse>
+					<cfset setSites() />
+				</cfif>
+			</cflock>
 			<cfif structKeyExists(variables.sites,'#arguments.siteid#')>
 				<cfreturn variables.sites['#arguments.siteid#'] />
 			<cfelse>
