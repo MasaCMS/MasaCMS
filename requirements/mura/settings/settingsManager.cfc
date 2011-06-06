@@ -463,7 +463,7 @@ to your own modified versions of Mura CMS.
 	<cfargument name="freeMemoryThreshold" required="true" default="60">
 	<cfset var suffix="">
 	
-	<cfif application.cfversion neq 7>
+	<cfif application.cfversion eq 7>
 		<cfset suffix="CF7">
 	</cfif>
 	
