@@ -177,7 +177,7 @@
 	<!--- *************************--->
 	<cffunction name="isSoftReference" access="private" returntype="boolean" output="false" >
 		<cfargument name="obj" type="any" required="true" />
-		<cfif isdefined("arguments.obj") and isObject( arguments.obj ) AND getMetaData( arguments.obj ).name EQ "java.lang.ref.SoftReference">
+		<cfif isdefined("arguments.obj") and isObject( arguments.obj ) AND isInstanceOf( arguments.obj, "java.lang.ref.SoftReference")>
 			<cfreturn true />
 		</cfif>
 		<cfreturn false />
