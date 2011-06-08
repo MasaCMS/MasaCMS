@@ -48,6 +48,7 @@ to your own modified versions of Mura CMS.
 <cfset variables.instance.description="" />
 <cfset variables.instance.isPurge=0 />
 <cfset variables.instance.isPublic=0 />
+<cfset variables.instance.isNew=1 />
 <cfset variables.instance.lastUpdate=Now() />
 <cfif session.mura.isLoggedIn>
 	<cfset variables.instance.LastUpdateBy = left(session.mura.fname & " " & session.mura.lname,50) />
@@ -56,7 +57,6 @@ to your own modified versions of Mura CMS.
 	<cfset variables.instance.LastUpdateBy = "" />
 	<cfset variables.instance.LastUpdateByID = "" />
 </cfif>
-
 
 <cffunction name="Init" access="public" returntype="any" output="false">
 	<cfreturn this />
@@ -191,8 +191,17 @@ to your own modified versions of Mura CMS.
     <cfreturn variables.instance.LastUpdateByID />
   </cffunction>
 
+ <cffunction name="setIsNew" output="false" access="public">
+    <cfargument name="IsNew" type="numeric" required="true">
+    <cfset variables.instance.IsNew = arguments.IsNew />
+  </cffunction>
+
+  <cffunction name="getIsNew" returnType="numeric" output="false" access="public">
+    <cfreturn variables.instance.IsNew />
+  </cffunction>
+
   <cffunction name="save" output="false">
-	<cfset getBean("mailinglistManager").save(getAllValues())>
+	<cfset setAllValues(getBean("mailinglistManager").save(this).getAllValues())>
 	<cfreturn this>
   </cffunction>
 
@@ -222,4 +231,23 @@ to your own modified versions of Mura CMS.
 	</cfif>
 
 </cffunction>
+
+<cffunction name="loadBy" returnType="any" output="false" access="public">
+	<cfset var response="">
+		
+	<cfif not structKeyExists(arguments,"siteID")>
+		<cfset arguments.siteID=getSiteID()>
+	</cfif>
+		
+	<cfset response=application.mailinglistManager.read(argumentCollection=arguments)>
+
+	<cfif isArray(response)>
+		<cfset setAllValues(response[1].getAllValues())>
+		<cfreturn response>
+	<cfelse>
+		<cfset setAllValues(response.getAllValues())>
+		<cfreturn this>
+	</cfif>
+</cffunction>
+
 </cfcomponent>

@@ -585,6 +585,7 @@ to your own modified versions of Mura CMS.
 		<alias name="changesetBean" alias="changeset"/>
 		<alias name="pluginManager" alias="eventManager"/>
 		<alias name="settingsBundle" alias="bundle"/>
+		<alias name="mailingListBean" alias="mailingList"/>
 		<!---coldspring.custom.xml.cfm reference is for backwards compatability --->
 		<cfif fileExists(expandPath("/muraWRM/config/coldspring.custom.xml.cfm"))><cfinclude template="/muraWRM/config/coldspring.custom.xml.cfm"></cfif>
 	</beans></cfoutput>
