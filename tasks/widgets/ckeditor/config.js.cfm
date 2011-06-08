@@ -62,8 +62,8 @@ config.format_tags = 'p;h1;h2;h3;h4;pre;address;div';
 	                                	['NumberedList','BulletedList','-','Outdent','Indent','Blockquote','CreateDiv'],
 	                                	['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock'],
 	                                	['Link','Unlink','Anchor'],
-	                                	['Image','Flash','Media','gmap','-','Table','HorizontalRule','SpecialChar','PageBreak'],
-	                                	['Selectlink','SelectComponent','Templates'<cfif application.configBean.getEnableMuraTag()>,'muratag'</cfif>,'-','Styles','Format','-','Maximize','ShowBlocks','-','About']	
+	                                	['Image','Flash','Media','gmap','-','Table','HorizontalRule','SpecialChar','PageBreak','-','Selectlink','SelectComponent','Templates'<cfif application.configBean.getEnableMuraTag()>,'muratag'</cfif>],
+										['Styles','Format','-','Maximize','ShowBlocks','About']
 	                                ] ;
 
 	config.toolbar_Summary = [
@@ -75,8 +75,8 @@ config.format_tags = 'p;h1;h2;h3;h4;pre;address;div';
 										['NumberedList','BulletedList','-','Outdent','Indent','Blockquote','CreateDiv'],
 										['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock'],
 										['Link','Unlink','Anchor'],
-										['Image','Flash','Media','gmap','-','Table','HorizontalRule','SpecialChar','PageBreak'],
-										['Selectlink','SelectComponent','Templates'<cfif application.configBean.getEnableMuraTag()>,'muratag'</cfif>,'-','Styles','Format','-','Maximize','ShowBlocks','-','About']	
+										['Image','Flash','Media','gmap','-','Table','HorizontalRule','SpecialChar','PageBreak','-','Selectlink','SelectComponent','Templates'<cfif application.configBean.getEnableMuraTag()>,'muratag'</cfif>],
+										['Styles','Format','-','Maximize','ShowBlocks','About']
 	                                ] ;
 
 	config.toolbar_Form = [
@@ -88,9 +88,9 @@ config.format_tags = 'p;h1;h2;h3;h4;pre;address;div';
 										['NumberedList','BulletedList','-','Outdent','Indent','Blockquote','CreateDiv'],
 										['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock'],
 										['Link','Unlink','Anchor'],
-										['Image','Flash','Media','gmap','-','Table','HorizontalRule','SpecialChar','PageBreak'],
+										['Image','Flash','Media','gmap','-','Table','HorizontalRule','SpecialChar','PageBreak','-','Selectlink','SelectComponent','Templates'<cfif application.configBean.getEnableMuraTag()>,'muratag'</cfif>],
 										['Form', 'Checkbox', 'Radio', 'TextField', 'Textarea', 'Select', 'Button', 'ImageButton', 'HiddenField'],
-										['Selectlink','SelectComponent','Templates'<cfif application.configBean.getEnableMuraTag()>,'muratag'</cfif>,'-','Styles','Format','-','Maximize','ShowBlocks','-','About']	
+										['Styles','Format','-','Maximize','ShowBlocks','About']
 	                                ] ;
 
 	config.toolbar_Basic = [
