@@ -1676,6 +1676,7 @@ to your own modified versions of Mura CMS.
 	<cfset var regex1="(\[sava\]|\[mura\]).+?(\[/sava\]|\[/mura\])">
 	<cfset var regex2="">
 	<cfset var finder=reFindNoCase(regex1,body,1,"true")>
+	<cfset var tempValue="">
 	
 	<!--- It the Mura tag is not enabled just return the submitted string --->
 	<cfif not this.enableMuraTag>
@@ -1685,7 +1686,13 @@ to your own modified versions of Mura CMS.
 	<!---  still looks for the Sava tag for backward compatibility --->
 	<cfloop condition="#finder.len[1]#">
 		<cftry>
-			<cfset body=replaceNoCase(body,mid(body, finder.pos[1], finder.len[1]),'#trim(evaluate("##" & mid(body, finder.pos[1]+6, finder.len[1]-13) & "##"))#')>
+			<cfset tempValue=evaluate("##" & mid(body, finder.pos[1]+6, finder.len[1]-13) & "##")>
+			
+			<cfif not isDefined("tempValue") or not isSimpleValue(tempValue)>
+				<cfset tempValue="">
+			</cfif>
+			
+			<cfset body=replaceNoCase(body,mid(body, finder.pos[1], finder.len[1]),'#trim(tempValue)#')>
 			<cfcatch>
 				<cfif application.configBean.getDebuggingEnabled()>
 					<cfsavecontent variable="errorStr"><cfdump var="#cfcatch#"></cfsavecontent>
