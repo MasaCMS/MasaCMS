@@ -8,7 +8,7 @@
 #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.selectfile')#
 </cfif>	
 </dt>
-<dd><input type="file" id="file" name="NewFile" class="text" <cfif attributes.ptype eq 'Gallery' or attributes.type neq 'File'>accept="image/jpeg" message="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.newimagevalidate')#"</cfif>></dd>
+<dd><input type="file" id="file" name="NewFile" class="text" <cfif attributes.ptype eq 'Gallery' or attributes.type neq 'File'>accept="image/jpeg,image/png" message="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.newimagevalidate')#"</cfif>></dd>
 <cfif request.contentBean.getcontentType() eq 'image' or attributes.type neq 'File'><dd>
 	<cfif len(request.contentBean.getFileID())>
 		<cfif attributes.type neq 'File'>

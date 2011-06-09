@@ -443,10 +443,10 @@ TYPE: #arguments.contentBean.getType()# / #arguments.contentBean.getSubType()#<c
 LOCATION: #crumbStr#</cfif>
 AUTHOR: #arguments.contentBean.getLastUpdateBy()#
 
-HISTORY LINK:
+VIEW VERSION HISTORY:
 http://#listFirst(cgi.http_host,":")##variables.configBean.getServerPort()##variables.configBean.getContext()##variables.settingsManager.getSite(arguments.contentBean.getSiteID()).getContentRenderer().getURLStem(arguments.contentBean.getSiteID(),historyID)#						
 <cfif sendVersionLink>
-VERSION LINK:
+VIEW EDITED VERSION:
 http://#listFirst(cgi.http_host,":")##variables.configBean.getServerPort()##variables.configBean.getContext()##variables.settingsManager.getSite(arguments.contentBean.getSiteID()).getContentRenderer().getURLStem(arguments.contentBean.getSiteID(),versionID)#
 </cfif></cfoutput></cfsavecontent>
 	

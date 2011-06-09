@@ -67,21 +67,50 @@ values (<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.listBean.getM
 
 <cffunction name="read" access="public" output="false" returntype="any" >
 	<cfargument name="MLID" type="string" />
-	<cfargument name="siteID" type="string" />
-	<cfset var listBean=getBean() />
+
+	<cfset var bean=getBean() />
 	<cfset var rs ="" />
 	
 	<cfquery name="rs" datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	Select * from tmailinglist where 
 	mlid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.MLID#">
-	and siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#">
 	</cfquery>
 	
 	<cfif rs.recordcount>
-	<cfset listBean.set(rs) />
+	<cfset bean.set(rs) />
+	<cfset bean.setIsNew(0)>
 	</cfif>
 	
-	<cfreturn listBean />
+	<cfreturn bean />
+</cffunction>
+
+<cffunction name="readByName" access="public" output="false" returntype="any" >
+	<cfargument name="name" type="string" />
+	<cfargument name="siteID" type="string" />
+	<cfset var bean=getBean() />
+	<cfset var rs ="" />
+	<cfset var beanArray=arrayNew(1)>
+	
+	<cfquery name="rs" datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+	Select * from tmailinglist where 
+	name=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.name#">
+	and siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#">
+	</cfquery>
+	
+	<cfif rs.recordcount gt 1>
+		<cfset utility=getServiceFactory().getBean("utility")>
+		<cfloop query="rs">
+			<cfset bean=getbean().set(utility.queryRowToStruct(rs,rs.currentrow))>
+			<cfset bean.setIsNew(0)>
+			<cfset arrayAppend(beanArray,bean)>		
+		</cfloop>
+		<cfreturn beanArray>
+	<cfelseif rs.recordcount>
+		<cfset bean.set(rs) />
+		<cfset bean.setIsNew(0)>
+	</cfif>
+	
+	<cfreturn bean />
 </cffunction>
 
 <cffunction name="update" access="public" output="false" returntype="void" >

@@ -1288,7 +1288,7 @@ to your own modified versions of Mura CMS.
 			<cfset arguments.bundleName=arguments.bundleName & "_#arguments.siteID#">
 		</cfif>
 		
-		<cfset arguments.bundleName="#arguments.bundleName#_#dateformat(now(),'dd_mm_yyyy')#_#timeformat(now(),'HH_mm')#.zip">
+		<cfset arguments.bundleName="#arguments.bundleName#_#dateformat(now(),'yyyy_mm_dd')#_#timeformat(now(),'HH_mm')#.zip">
 		
 		<cfif not arguments.saveFile>
 			<cfset getBean("fileManager").streamFile(

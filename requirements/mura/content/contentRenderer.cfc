@@ -322,18 +322,43 @@ to your own modified versions of Mura CMS.
 <cffunction name="dspZoom" returntype="string" output="false">
 		<cfargument name="crumbdata" required="yes" type="array">
 		<cfargument name="fileExt" type="string" default="">
+		<cfargument name="ajax" type="boolean" default="false">
 		<cfset var content = "">
 		<cfset var locked = "">
 		<cfset var lastlocked = "">
 		<cfset var crumbLen=arrayLen(arguments.crumbdata)>
 		<cfset var I = 0 />
+		<cfset var anchorString="">
+		
 		<cfsavecontent variable="content">
 		<cfoutput>
-		 <ul class="navZoom">
+			 <ul class="navZoom">
 		<cfloop from="#crumbLen#" to="2" index="I" step="-1">
+		<cfsilent>
 		<cfif arguments.crumbdata[i].restricted eq 1><cfset locked="Locked"></cfif>
-		<li class="#renderIcon(arguments.crumbdata[i].type,arguments.fileExt)##locked#"><a href="#application.configBean.getContext()#/admin/index.cfm?fuseaction=cArch.list&siteid=#arguments.crumbdata[I].siteid#&topid=#arguments.crumbdata[I].contentid#&moduleid=00000000000000000000000000000000000">#HTMLEditformat(arguments.crumbdata[I].menutitle)#</a> &raquo;</li>
-		</cfloop><cfif locked eq "Locked" or arguments.crumbdata[1].restricted eq 1><cfset lastlocked="Locked"></cfif><li class="#renderIcon(arguments.crumbdata[1].type,arguments.fileExt)##lastlocked#"><strong><cfif arguments.crumbdata[1].type eq 'Page' or arguments.crumbdata[1].type eq 'Portal' or arguments.crumbdata[1].type eq 'Calendar'><a href="#application.configBean.getContext()#/admin/index.cfm?fuseaction=cArch.list&siteid=#arguments.crumbdata[1].siteid#&topid=#arguments.crumbdata[1].contentid#&moduleid=00000000000000000000000000000000000">#HTMLEditformat(arguments.crumbdata[1].menutitle)#</a><cfelse><a href="#application.configBean.getContext()#/admin/index.cfm?fuseaction=cArch.list&siteid=#arguments.crumbdata[1].siteid#&topid=#arguments.crumbdata[1].parentid#&moduleid=00000000000000000000000000000000000">#HTMLEditformat(crumbdata[1].menutitle)#</a></cfif></strong></li></ul></cfoutput></cfsavecontent>
+		</cfsilent>
+		<li class="#renderIcon(arguments.crumbdata[i].type,arguments.fileExt)##locked#">
+		<a <cfif arguments.ajax> 
+			href="" onclick="return loadSiteManager('#arguments.crumbdata[I].siteid#','#arguments.crumbdata[I].contentid#','00000000000000000000000000000000000','','','#arguments.crumbdata[I].type#',1);"
+		<cfelse>
+			href="#application.configBean.getContext()#/admin/index.cfm?fuseaction=cArch.list&siteid=#arguments.crumbdata[I].siteid#&topid=#arguments.crumbdata[I].contentid#&moduleid=00000000000000000000000000000000000"
+		</cfif>>#HTMLEditformat(arguments.crumbdata[I].menutitle)#</a> &raquo;</li>
+		</cfloop>
+		<cfsilent>
+		<cfif locked eq "Locked" or arguments.crumbdata[1].restricted eq 1>
+			<cfset lastlocked="Locked">
+		</cfif>
+		</cfsilent>
+		<li class="#renderIcon(arguments.crumbdata[1].type,arguments.fileExt)##lastlocked#"><strong><cfif arguments.crumbdata[1].type eq 'Page' or arguments.crumbdata[1].type eq 'Portal' or arguments.crumbdata[1].type eq 'Calendar'>
+		<a <cfif arguments.ajax> 
+			href="" onclick="return loadSiteManager('#arguments.crumbdata[1].siteid#','#arguments.crumbdata[1].contentid#','00000000000000000000000000000000000','','','#arguments.crumbdata[1].type#',1);"
+		<cfelse>
+			href="#application.configBean.getContext()#/admin/index.cfm?fuseaction=cArch.list&siteid=#arguments.crumbdata[1].siteid#&topid=#arguments.crumbdata[1].contentid#&moduleid=00000000000000000000000000000000000"
+		</cfif>>#HTMLEditformat(arguments.crumbdata[1].menutitle)#</a><cfelse><a href="#application.configBean.getContext()#/admin/index.cfm?fuseaction=cArch.list&siteid=#arguments.crumbdata[1].siteid#&topid=#arguments.crumbdata[1].parentid#&moduleid=00000000000000000000000000000000000">#HTMLEditformat(crumbdata[1].menutitle)#</a></cfif></strong></li></ul>
+	
+		</cfoutput>
+		</cfsavecontent>
+		
 		<cfreturn content />
 </cffunction>
 
@@ -1676,6 +1701,7 @@ to your own modified versions of Mura CMS.
 	<cfset var regex1="(\[sava\]|\[mura\]).+?(\[/sava\]|\[/mura\])">
 	<cfset var regex2="">
 	<cfset var finder=reFindNoCase(regex1,body,1,"true")>
+	<cfset var tempValue="">
 	
 	<!--- It the Mura tag is not enabled just return the submitted string --->
 	<cfif not this.enableMuraTag>
@@ -1685,7 +1711,13 @@ to your own modified versions of Mura CMS.
 	<!---  still looks for the Sava tag for backward compatibility --->
 	<cfloop condition="#finder.len[1]#">
 		<cftry>
-			<cfset body=replaceNoCase(body,mid(body, finder.pos[1], finder.len[1]),'#trim(evaluate("##" & mid(body, finder.pos[1]+6, finder.len[1]-13) & "##"))#')>
+			<cfset tempValue=evaluate("##" & mid(body, finder.pos[1]+6, finder.len[1]-13) & "##")>
+			
+			<cfif not isDefined("tempValue") or not isSimpleValue(tempValue)>
+				<cfset tempValue="">
+			</cfif>
+			
+			<cfset body=replaceNoCase(body,mid(body, finder.pos[1], finder.len[1]),'#trim(tempValue)#')>
 			<cfcatch>
 				<cfif application.configBean.getDebuggingEnabled()>
 					<cfsavecontent variable="errorStr"><cfdump var="#cfcatch#"></cfsavecontent>

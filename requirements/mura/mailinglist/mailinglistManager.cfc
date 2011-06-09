@@ -67,6 +67,18 @@ to your own modified versions of Mura CMS.
 	<cfargument name="data">
 	<cfset var rs="">
 	
+		<cfif isObject(arguments.data)>
+		<cfif listLast(getMetaData(arguments.data).name,".") eq "mailinglistBean">
+			<cfset arguments.data=arguments.data.getAllValues()>
+		<cfelse>
+			<cfthrow type="custom" message="The attribute 'DATA' is not of type 'mura.mailinglist.mailinglistBean'">
+		</cfif>
+	</cfif>
+	
+	<cfif not structKeyExists(arguments.data,"mlid")>
+		<cfthrow type="custom" message="The attribute 'NLID' is required when saving a mailing list.">
+	</cfif>
+	
 	<cfquery name="rs" datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 		select * from tmailinglist where mlid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.data.mlid#">
 	</cfquery>
@@ -109,7 +121,7 @@ to your own modified versions of Mura CMS.
 	</cfif>
 	<cfset variables.settingsManager.getSite(arguments.data.siteid).purgeCache() />
 	<cfset variables.trashManager.takeOut(listBean)>
-	
+	<cfset listbean.setIsNew(0)>
 	<cfreturn listBean />
 </cffunction>
 
@@ -147,12 +159,15 @@ to your own modified versions of Mura CMS.
 </cffunction>
 
 <cffunction name="read" access="public" output="false" returntype="any" >
-	<cfargument name="mlid" type="string" />
-	<cfargument name="siteid" type="string" />
+	<cfargument name="mlid" type="string" default=""/>
+	<cfargument name="siteid" type="string"/>
+	<cfargument name="name" required="true" default=""/>
 	
-	<cfset var listBean = variables.mailinglistDAO.read(arguments.mlid,arguments.siteid) />
-	
-	<cfreturn listBean />
+	<cfif not len(arguments.mlid) and len(arguments.siteID) and len(arguments.name)>
+		<cfreturn variables.mailinglistDAO.readByName(arguments.name, arguments.siteID) />
+	</cfif>	
+		
+	<cfreturn variables.mailinglistDAO.read(arguments.mlid) />
 	
 </cffunction>
 

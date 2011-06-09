@@ -145,7 +145,7 @@ to your own modified versions of Mura CMS.
 						<td class="varWidth"><a title="Edit" href="index.cfm?fuseaction=cSettings.editSite&siteid=#request.rsSites.siteid#">#request.rsSites.site#</a></td>
 						<td>
 							<cfif len(request.rsSites.domain)>
-								#HTMLEditFormat(request.rsSites.domain)#
+								<a href="#HTMLEditFormat(request.rsSites.domain)#" target="_blank">#HTMLEditFormat(request.rsSites.domain)#</a>
 								<cfelse>
 								-
 							</cfif>

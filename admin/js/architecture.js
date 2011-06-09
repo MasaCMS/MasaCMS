@@ -206,7 +206,7 @@ document.getElementById('newGalleryItemMultiLink').style.display='none';
 //document.getElementById('newFileMulti').style.display='none';
 //document.getElementById('newFileMultiLink').style.display='none';
 
-document.getElementById('newZoomLink').href='index.cfm?fuseaction=cArch.list&topid=' + contentid + '&parentid=' + parentid + '&siteid=' + siteid + '&moduleid=00000000000000000000000000000000000&ptype=' + type;
+document.getElementById('newZoomLink').onclick=function(){loadSiteManager(siteid,contentid,'00000000000000000000000000000000000','','',type,1); document.getElementById(id).style.visibility="hidden"; return false};
 document.getElementById('newZoom').style.display='';
 document.getElementById('newZoomLink').style.display='';
 
@@ -739,7 +739,8 @@ function pasteThis(parentID){
 
 	jQuery.get(url + "?" + pars, 
 			function(data) {
-				reloadPage();
+				loadSiteManager(copySiteID,parentID,'00000000000000000000000000000000000','','','',1);
+				jQuery("#newContentMenu").hide();
 			}
 	);
 }
@@ -915,4 +916,54 @@ function loadCategoryFeatureStartStop(id,display,siteID){
 }
 
 
+
+
+function loadSiteManager(siteid,topid,moduleid,sortby,sortdirection,ptype,startrow)	{
+	var url = 'index.cfm';
+	var pars = 'fuseaction=cArch.loadSiteManager&siteid=' + siteid  + '&topid=' + topid  + '&moduleid=' + moduleid  + '&sortby=' + sortby  + '&sortdirection=' + sortdirection  + '&ptype=' + ptype  + '&startrow=' + startrow + '&cacheid=' + Math.random();
+	
+	//location.href=url + "?" + pars;
+	var d = jQuery('#gridContainer');
+		d.html('<img class="loadProgress" src="images/progress_bar.gif">').show();
+		jQuery.get(url + "?" + pars, 
+				function(data) {
+					var r=eval("(" + data + ")");
+					d.hide()
+					d.html(r.html);
+					stripe('stripe');
+					initDraftPrompt();	
+					if(r.perm.toLowerCase() == "editor" && r.sortby.toLowerCase() == 'orderno') {
+						jQuery("#sortableKids").sortable(
+							{
+				   				stop: function(event, ui) {
+				   					 stripe('stripe');setAsSorted();
+				   					  $(ui.item).removeClass('ui-draggable-dragging');
+				   				 },
+				   				start: function(event, ui) {
+				   					 $(ui.item).addClass('ui-draggable-dragging');
+				   				 }
+							}
+						);
+						jQuery("#sortableKids").disableSelection();
+					 }
+					
+					d.hide().animate({'opacity':'show'},1000);
+				
+					
+				}
+		);
+	return false;
+}
+
+
+function setAsSorted(){	
+		jQuery('#sorted').val('true');	
+		jQuery('#submitSort').pulse({
+                opacity: [.5,1]
+            }, {
+                times: 999999,
+                duration: 750
+            });
+        jQuery('#submitSort').addClass('pulse');
+}
 
