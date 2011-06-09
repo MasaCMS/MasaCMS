@@ -930,6 +930,7 @@ function loadSiteManager(siteid,topid,moduleid,sortby,sortdirection,ptype,startr
 					var r=eval("(" + data + ")");
 					d.hide()
 					d.html(r.html);
+					document.getElementById("newContentMenu").style.visibility="hidden";
 					stripe('stripe');
 					initDraftPrompt();	
 					if(r.perm.toLowerCase() == "editor" && r.sortby.toLowerCase() == 'orderno') {
