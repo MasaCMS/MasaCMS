@@ -20,7 +20,7 @@
 <cfset perm=application.permUtility.getnodePerm(crumbdata)>
 <cfset r=application.permUtility.setRestriction(crumbdata).restrict>
 <cfset rsNext=application.contentManager.getNest('#attributes.topid#',attributes.siteid,attributes.sortBy,attributes.sortDirection)>
-<cfinclude template="../dsp_nextn.cfm">
+<cfinclude template="dsp_nextn.cfm">
 <cfif  ((attributes.topid eq '00000000000000000000000000000000001' and application.settingsManager.getSite(attributes.siteid).getlocking() eq 'none') or (attributes.topid neq '00000000000000000000000000000000001')) and perm neq 'none' and application.settingsManager.getSite(attributes.siteid).getlocking() neq 'all'>
   <cfset newcontent=1>
   <cfelse>
@@ -44,7 +44,7 @@
 <cfsavecontent variable="data.html">
 <cfoutput>
 <cfif attributes.type neq 'Component' and attributes.type neq 'Creative'  and attributes.type neq 'Form'>
-    #application.contentRenderer.dspZoom(crumbdata)#
+    #application.contentRenderer.dspZoom(crumbdata=crumbdata,ajax=true)#
 </cfif>
   <cfset rsExtend=application.configBean.getClassExtensionManager().getExtendedAttributeList(attributes.siteid)>
   <form novalidate="novalidate" class="viewUpdate" name="viewUpdate" method="post">
