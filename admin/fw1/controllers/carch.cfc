@@ -95,6 +95,13 @@
 	<cfargument name="rc">
 
 	<cfset arguments.rc.rsTop=variables.contentManager.getlist(arguments.rc) />
+
+</cffunction>
+
+<cffunction name="loadsitemanager" output="false">
+	<cfargument name="rc">
+
+	<cfset arguments.rc.rsTop=variables.contentManager.getlist(arguments.rc) />
 	
 	<cfif arguments.rc.moduleid neq '00000000000000000000000000000000000'>
 		<cfset arguments.rc.nextN=variables.utility.getNextN(arguments.rc.rsTop,30,arguments.rc.startrow)/>

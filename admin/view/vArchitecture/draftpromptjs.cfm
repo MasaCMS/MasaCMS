@@ -1,17 +1,20 @@
 <cfoutput>
 <script type="text/javascript">
-jQuery(function($){
-	
-	$('a.draftprompt').click(function(e){
+jQuery(function(){
+	initDraftPrompt();	
+});
+
+function initDraftPrompt(){
+	jQuery('a.draftprompt').click(function(e){
 		e.preventDefault(); // stop the link's normal clicking behavior
-		var a = $(this);
-			$.ajax({
+		var a = jQuery(this);
+			jQuery.ajax({
 				  url: "./index.cfm?fuseaction=carch.draftpromptdata&contentid=" + a.attr('data-contentid') + "&siteid=" + a.attr('data-siteid'),
 				  context: this,
 				  success: function(resp){
-				
+		
 				   if (resp.showdialog !== undefined && resp.showdialog === "true"){
-						$('<div><p>#JSStringFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.draftprompt.dialog'))#</p></div>').dialog({
+						jQuery('<div><p>#JSStringFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.draftprompt.dialog'))#</p></div>').dialog({
 							title:"#JSStringFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.draftprompt.title'))#",
 							modal:true,
 							width:"400px",
@@ -36,6 +39,6 @@ jQuery(function($){
 		
 	});
 	
-});
+}
 </script>
 </cfoutput>
