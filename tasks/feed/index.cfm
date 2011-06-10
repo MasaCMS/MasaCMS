@@ -76,15 +76,11 @@ to your own modified versions of Mura CMS.
 <cfif isDefined("feedBean") and not is404>
 	<cfset rs=application.feedManager.getFeed(feedBean,url.tag) />
 </cfif>
-<cfset feedIt = application.serviceFactory.getBean("contentIterator").setQuery(rs)>
 </cfsilent>	
 <cfif is404>
 	<cfheader statuscode="404" statustext="Not Found">
 	<cfoutput>
-	<html>
-	<head><title>not found</title></head>
-	<body><h1>Not found</h1></body>
-	</html>
+	#application.contentServer.render404()#
 	</cfoutput>
 	<cfabort>
 </cfif>
@@ -93,6 +89,7 @@ to your own modified versions of Mura CMS.
 		This feed is restricted
 		<cfabort>
 	</cfif>
+	<cfset feedIt = application.serviceFactory.getBean("contentIterator").setQuery(rs)>
 	<cfset renderer = createObject("component","#application.configBean.getWebRootMap()#.#application.settingsManager.getSite(feedBean.getSiteID()).getDisplayPoolID()#.includes.contentRenderer").init() />
 	<cfswitch expression="#feedBean.getVersion()#">
 		<cfcase value="RSS 0.920">
