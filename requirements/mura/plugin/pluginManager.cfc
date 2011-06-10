@@ -981,7 +981,7 @@ select * from tplugins order by #arguments.orderby#
 <cfargument name="rsHandlers" required="true" default="" type="any">
 <cfargument name="moduleID" required="true" default="" type="any">
 	<cfset var siteID="">
-	<cfif getMetaData(arguments.currentEventObject).name eq "mura.MuraScope">
+	<cfif variables.utility.checkForInstanceOf(arguments.currentEventObject,"mura.MuraScope")>
 		<cfset siteID=arguments.currentEventObject.event('siteID')>
 	<cfelse>
 		<cfset siteID=arguments.currentEventObject.getValue('siteID')>
@@ -995,7 +995,7 @@ select * from tplugins order by #arguments.orderby#
 <cfargument name="rsHandlers" required="true" default="" type="any">
 <cfargument name="moduleID" required="true" default="" type="any">
 	<cfset var siteID="">
-	<cfif getMetaData(arguments.currentEventObject).name eq "mura.MuraScope">
+	<cfif variables.utility.checkForInstanceOf(arguments.currentEventObject,"mura.MuraScope")>
 		<cfset siteID=arguments.currentEventObject.event('siteID')>
 	<cfelse>
 		<cfset siteID=arguments.currentEventObject.getValue('siteID')>
@@ -1046,7 +1046,7 @@ select * from tplugins order by #arguments.orderby#
 			</cfif>
 		</cfif>
 		
-		<cfif getMetaData(arguments.event).name eq "mura.MuraScope">
+		<cfif variables.utility.checkForInstanceOf(arguments.event,"mura.MuraScope")>
 			<cfset muraScope=arguments.event>
 			<cfset arguments.event=arguments.event.event()>
 		<cfelse>
@@ -1194,7 +1194,7 @@ select * from tplugins order by #arguments.orderby#
 		</cfif>
 	</cfif>
 	
-	<cfif getMetaData(arguments.event).name eq "mura.MuraScope">
+	<cfif variables.utility.checkForInstanceOf(arguments.event,"mura.MuraScope")>
 		<cfset muraScope=arguments.event>
 		<cfset arguments.event=arguments.event.event()>
 	<cfelse>
@@ -1422,7 +1422,7 @@ select * from tplugins order by #arguments.orderby#
 	<cfset var rsOnError="">
 	<cfset var muraScope="">
 	
-	<cfif getMetaData(arguments.event).name eq "mura.MuraScope">
+	<cfif variables.utility.checkForInstanceOf(arguments.event,"mura.MuraScope")>
 		<cfset muraScope=arguments.event>
 		<cfset arguments.event=arguments.event.event()>
 	<cfelse>

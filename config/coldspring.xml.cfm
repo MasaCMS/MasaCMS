@@ -41,7 +41,7 @@ the GNU General Public License version 2 �without this exception. �You may, 
 to your own modified versions of Mura CMS.
 --->
 <cfsavecontent variable="servicesXML"><cfoutput><beans>
-		<bean id="utility" class="mura.utility" singleton="true" >
+		<bean id="utility" <cfif application.cfversion neq 7>class="mura.utility"<cfelse>class="mura.utilityCF7"</cfif> singleton="true" >
 			<constructor-arg name="configBean"><ref bean="configBean" /></constructor-arg>
 			<constructor-arg name="fileWriter"><ref bean="fileWriter" /></constructor-arg>
 		</bean>

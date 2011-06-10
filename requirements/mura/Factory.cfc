@@ -6,6 +6,7 @@
 	<cfset variables.collections = createObject( "java", "java.util.Collections" ) />
 	<cfset variables.collection = "" />
 	<cfset variables.map = createObject( "java", "java.util.HashMap" ).init() />
+	<cfset variables.utility=application.utility>
 	<!--- default variables --->
 
 	<cffunction name="init" access="public" returntype="mura.Factory" output="false">
@@ -177,7 +178,7 @@
 	<!--- *************************--->
 	<cffunction name="isSoftReference" access="private" returntype="boolean" output="false" >
 		<cfargument name="obj" type="any" required="true" />
-		<cfif isdefined("arguments.obj") and isObject( arguments.obj ) AND isInstanceOf( arguments.obj, "java.lang.ref.SoftReference")>
+		<cfif isdefined("arguments.obj") and isObject( arguments.obj ) AND variables.utility.checkForInstanceOf( arguments.obj, "java.lang.ref.SoftReference")>
 			<cfreturn true />
 		</cfif>
 		<cfreturn false />

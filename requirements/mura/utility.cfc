@@ -533,4 +533,10 @@ Blog:http://www.modernsignal.com/coldfusionhttponlycookie--->
     <cfheader name="Set-Cookie" value="#c#" />
 </cffunction>
 
+<cffunction name="checkForInstanceOf" output="false">
+	<cfargument name="obj">
+	<cfargument name="name">
+	<cfreturn isInstanceOf(arguments.obj, arguments.name)>
+</cffunction>
+
 </cfcomponent>

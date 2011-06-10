@@ -47,6 +47,8 @@ to your own modified versions of Mura CMS.
 <cfparam name="application.broadcastInit" default="false" />
 <cfparam name="application.sessionTrackingThrottle" default="true"/>
 <cfparam name="application.instanceID" default="#createUUID()#" />
+<cfparam name="application.CFVersion" default="#Left(SERVER.COLDFUSION.PRODUCTVERSION,Find(",",SERVER.COLDFUSION.PRODUCTVERSION)-1)#" />
+
 <cfprocessingdirective pageencoding="utf-8"/>
 <cfsetting requestTimeout = "1000"> 
 
@@ -214,7 +216,6 @@ to your own modified versions of Mura CMS.
 		</cfloop>	
 					
 		<cfset application.appInitialized=true/>
-		<cfset application.CFVersion = Left(SERVER.COLDFUSION.PRODUCTVERSION,Find(",",SERVER.COLDFUSION.PRODUCTVERSION)-1) />
 		<cfset application.appInitializedTime=now()>
 		<cfif application.broadcastInit>
 			<cfset application.clusterManager.reload()>
