@@ -921,7 +921,7 @@ function loadCategoryFeatureStartStop(id,display,siteID){
 function loadSiteManager(siteid,topid,moduleid,sortby,sortdirection,ptype,startrow)	{
 	var url = 'index.cfm';
 	var pars = 'fuseaction=cArch.loadSiteManager&siteid=' + siteid  + '&topid=' + topid  + '&moduleid=' + moduleid  + '&sortby=' + sortby  + '&sortdirection=' + sortdirection  + '&ptype=' + ptype  + '&startrow=' + startrow + '&cacheid=' + Math.random();
-	
+	document.getElementById("newContentMenu").style.visibility="hidden";
 	//location.href=url + "?" + pars;
 	var d = jQuery('#gridContainer');
 		d.html('<img class="loadProgress" src="images/progress_bar.gif">').show();
@@ -930,7 +930,7 @@ function loadSiteManager(siteid,topid,moduleid,sortby,sortdirection,ptype,startr
 					var r=eval("(" + data + ")");
 					d.hide()
 					d.html(r.html);
-					document.getElementById("newContentMenu").style.visibility="hidden";
+					
 					stripe('stripe');
 					initDraftPrompt();	
 					if(r.perm.toLowerCase() == "editor" && r.sortby.toLowerCase() == 'orderno') {
