@@ -43,8 +43,6 @@ config.licenseKey = '9EJW-TKDF-PFVT-Q3VW-NG6B-MKQF-3HVP';
 //ATTENTION: The trailing slash is required.
 config.baseUrl = application.configBean.getAssetPath() & '/' & session.siteid & '/assets';
 config.baseDir = "#application.configBean.getAssetDir()##application.configBean.getFileDelim()##session.siteid##application.configBean.getFileDelim()#assets";
-config.chmodFolders = yesNoFormat(application.configBean.getValue("usefilemode"));
-config.chmodFiles = yesNoFormat(application.configBean.getValue("usefilemode"));
 /*
  * Thumbnails : thumbnails settings. All thumbnails will end up in the same
  * directory, no matter the resource type.
@@ -299,12 +297,14 @@ config.tempDirectory = application.configBean.getTempDir();
  * Note: not needed on Windows-based servers.
  *
  */
-config.chmodFiles = 644;
-/*
- * See comments above.
- * Used when creating folders that does not exist.
- */
-config.chmodFolders = 755;
+if (application.configBean.getValue("usefilemode") eq "" or yesNoFormat(application.configBean.getValue("usefilemode"))){
+	config.chmodFiles = 644;
+	config.chmodFolders = 755;
+} else {
+	config.chmodFiles = 0;
+	config.chmodFolders = 0;		
+}
+
 
 config.hooks = arrayNew(1);
 config.plugins = arrayNew(1);
