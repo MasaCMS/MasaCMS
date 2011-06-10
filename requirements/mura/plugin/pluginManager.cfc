@@ -1041,7 +1041,7 @@ select * from tplugins order by #arguments.orderby#
 				<cfif structKeyExists(request,"servletEvent")>
 					<cfset arguments.event=request.servletEvent />
 				<cfelse>
-					<cfset arguments.event=createObject("component","mura.event")/>
+					<cfset arguments.event=createObject("component","mura.event").init()/>
 				</cfif>
 			</cfif>
 		</cfif>
@@ -1189,7 +1189,7 @@ select * from tplugins order by #arguments.orderby#
 			<cfif structKeyExists(request,"servletEvent")>
 				<cfset arguments.event=request.servletEvent />
 			<cfelse>
-				<cfset arguments.event=createObject("component","mura.event")/>
+				<cfset arguments.event=createObject("component","mura.event").init()/>
 			</cfif>
 		</cfif>
 	</cfif>
