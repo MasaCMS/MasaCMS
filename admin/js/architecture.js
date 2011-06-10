@@ -168,15 +168,7 @@ if (window.innerWidth)
 var xPos = findPosX(obj);
 var yPos = findPosY(obj);
 
-if(navigator.appName=="Microsoft Internet Explorer" && parseInt(navigator.appVersion) != 4){
-	xPos = xPos -14;
-	yPos = yPos -7;
-} else {
-	xPos = xPos +20;
-	//xPos = xPos +17;
-	//yPos = yPos -9;
-	
-}
+xPos = xPos +20;
 
 document.getElementById('newZoom').style.display='none';
 document.getElementById('newZoomLink').style.display='none';
