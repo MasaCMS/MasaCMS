@@ -921,32 +921,38 @@ function loadCategoryFeatureStartStop(id,display,siteID){
 function loadSiteManager(siteid,topid,moduleid,sortby,sortdirection,ptype,startrow)	{
 	var url = 'index.cfm';
 	var pars = 'fuseaction=cArch.loadSiteManager&siteid=' + siteid  + '&topid=' + topid  + '&moduleid=' + moduleid  + '&sortby=' + sortby  + '&sortdirection=' + sortdirection  + '&ptype=' + ptype  + '&startrow=' + startrow + '&cacheid=' + Math.random();
-	document.getElementById("newContentMenu").style.visibility="hidden";
+	
 	//location.href=url + "?" + pars;
 	var d = jQuery('#gridContainer');
 		d.html('<img class="loadProgress" src="images/progress_bar.gif">').show();
 		jQuery.get(url + "?" + pars, 
 				function(data) {
-					var r=eval("(" + data + ")");
-					d.hide()
-					d.html(r.html);
-					
-					stripe('stripe');
-					initDraftPrompt();	
-					if(r.perm.toLowerCase() == "editor" && r.sortby.toLowerCase() == 'orderno') {
-						jQuery("#sortableKids").sortable(
-							{
-				   				stop: function(event, ui) {
-				   					 stripe('stripe');setAsSorted();
-				   					  $(ui.item).removeClass('ui-draggable-dragging');
-				   				 },
-				   				start: function(event, ui) {
-				   					 $(ui.item).addClass('ui-draggable-dragging');
-				   				 }
-							}
-						);
-						jQuery("#sortableKids").disableSelection();
-					 }
+					try{
+						var r=eval("(" + data + ")");
+						d.hide()
+				
+						d.html(r.html);
+						document.getElementById("newContentMenu").style.visibility="hidden";
+						stripe('stripe');
+						initDraftPrompt();	
+						if(r.perm.toLowerCase() == "editor" && r.sortby.toLowerCase() == 'orderno') {
+							jQuery("#sortableKids").sortable(
+								{
+				   					stop: function(event, ui) {
+				   					 	stripe('stripe');setAsSorted();
+				   					  	$(ui.item).removeClass('ui-draggable-dragging');
+				   				 	},
+				   					start: function(event, ui) {
+				   					 	$(ui.item).addClass('ui-draggable-dragging');
+				   				 	}
+								}
+							);
+							jQuery("#sortableKids").disableSelection();
+					 	}
+					} catch(err){
+							d.html(data);
+						
+					}
 					
 					d.hide().animate({'opacity':'show'},1000);
 				
