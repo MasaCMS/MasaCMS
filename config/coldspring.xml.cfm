@@ -471,7 +471,7 @@ to your own modified versions of Mura CMS.
 			<constructor-arg name="sessionTrackingDAO"><ref bean="sessionTrackingDAO" /></constructor-arg>
 			<constructor-arg name="sessionTrackingGateway"><ref bean="sessionTrackingGateway" /></constructor-arg>
 		</bean>
-		<bean id="sessionTrackingDAO" class="mura.user.sessionTracking.sessionTrackingDAO" singleton="true">
+		<bean id="sessionTrackingDAO" <cfif application.cfversion eq 7>class="mura.user.sessionTracking.sessionTrackingDAOCF7"<cfelse>class="mura.user.sessionTracking.sessionTrackingDAO"</cfif> singleton="true">
 			<constructor-arg name="configBean"><ref bean="configBean" /></constructor-arg>
 			<constructor-arg name="settingsManager"><ref bean="settingsManager" /></constructor-arg>
 		</bean>
