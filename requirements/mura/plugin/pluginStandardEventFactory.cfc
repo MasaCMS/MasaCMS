@@ -89,9 +89,9 @@
 			</cfif>
 		</cfif>
 		
-		<cfif super.has( localKey )>
+		<cfif has( localKey )>
 			<!--- It's already in cache --->
-			<cfreturn super.get( localKey )>
+			<cfreturn variables.collection.get( getHashKey(localKey) ).object>
 		<cfelse>
 			<!--- return cached context --->
 			<cfif structKeyExists(variables.standardEventsHandler,localKey)>
@@ -113,6 +113,11 @@
 <cfargument name="handler">
 <cfargument name="eventName">
 <cfreturn createObject("component","mura.plugin.pluginStandardEventWrapper").init(arguments.handler,arguments.eventName)>
+</cffunction>
+
+<cffunction name="has" access="public" returntype="boolean" output="false">
+	<cfargument name="key" type="string" required="true" />
+	<cfreturn structKeyExists( variables.collection , getHashKey( arguments.key ) ) >
 </cffunction>
 
 </cfcomponent>

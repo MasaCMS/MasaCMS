@@ -65,7 +65,7 @@
 		<!--- check to make sure the key exists within the factory collection --->
 		<cfif has( arguments.key )>
 			<!--- if it's a soft reference then do a get against the soft reference --->
-			<cfset cacheData=variables.collection.get( getHashKey( arguments.key ) )>
+			<cfset cacheData=variables.collection.get( hashedKey )>
 			<cfif isSoftReference( cacheData.object )>
 				<!--- is it still a soft reference --->
 				<!--- if so then return it --->
