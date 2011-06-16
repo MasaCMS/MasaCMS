@@ -335,10 +335,8 @@
 	<cfset variables.dateKeyFormat="">
 	<cfset variables.datekeyExample="">
 	
-<!--- now we create a date so we can parse it and figure out the date format and then create a date validation key --->
+	<!--- now we create a date so we can parse it and figure out the date format and then create a date validation key --->
 
-	
-	
 	<cfif find(".",formatTest)>
 		<cfset dtCh=	"."/>
 	<cfelseif find("-",formatTest)>
@@ -367,17 +365,21 @@
 	</cfif>
 	
 	<cfset variables.datekeyExample=lsDateFormat(createDate(2018,11,10),datekeyFormat)/>
+	
+	<cfif not isdefined('session.locale')>
+		<cfset session.locale="en_US">
+	</cfif>
+	
+	<cfsavecontent variable="variables.jsDateKey">
+	<cfoutput><script type="text/javascript">
+	var dtExample="#variables.datekeyExample#";
+	var dtCh="#dtCh#";
+	var dtFormat =[#dtFormat#];
+	var dtLocale="#replace(session.locale,'_','-')#";
+	</script></cfoutput>
+	</cfsavecontent>
 
-<cfsavecontent variable="variables.jsDateKey">
-<cfoutput><script type="text/javascript">
-var dtExample="#variables.datekeyExample#";
-var dtCh="#dtCh#";
-var dtFormat =[#dtFormat#];
-var dtLocale="#replace(session.locale,'_','-')#";
-</script></cfoutput>
-</cfsavecontent>
-
-</cffunction>
+	</cffunction>
 
 	<cffunction name="getJSDateKey" output="false" returntype="any">
 	<cfreturn variables.JSDateKey>
