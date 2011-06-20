@@ -3,10 +3,15 @@
 <cffunction name="init" output="false" returntype="any">
 <cfargument name="useMode" required="true" default="true">
 <cfargument name="tempDir" required="true" default="#application.configBean.getTempDir()#">
-<cfif isBoolean(arguments.useMode)>
-<cfset variables.useMode=arguments.useMode>
+
+<cfif findNoCase(server.os.name,"Windows")>
+	<cfset variables.useMode=false>
 <cfelse>
-<cfset variables.useMode=true>
+	<cfif isBoolean(arguments.useMode)>
+	<cfset variables.useMode=arguments.useMode>
+	<cfelse>
+	<cfset variables.useMode=true>
+	</cfif>
 </cfif>
 
 <cfset variables.tempDir=arguments.tempDir >
@@ -223,6 +228,22 @@
 		<cfreturn space /1024 / 1024>
 	<cfelse>
 		<cfreturn space /1024 / 1024 / 1024>
+	</cfif>
+</cffunction>
+
+<cffunction name="chmod" output="false">
+	<cfargument name="path">
+	<cfargument name="mode" required="true" default="#variables.defaultFileMode#">
+	
+	<cfif variables.useMode>
+		<cftry>
+		<cfif directoryExists(arguments.path)>
+			<cfset createObject("java","java.lang.Runtime").getRuntime().exec("chmod -R #arguments.mode# #arguments.path#")>
+		<cfelse>
+			<cfset createObject("java","java.lang.Runtime").getRuntime().exec("chmod #arguments.mode# #arguments.path#")>
+		</cfif>
+		<cfcatch></cfcatch>
+		</cftry>
 	</cfif>
 </cffunction>
 
