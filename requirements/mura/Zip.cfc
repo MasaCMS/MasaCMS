@@ -466,7 +466,9 @@
 				/* Close the Zip file */
 				zipFile.close();
 
-				/* Return true */
+				application.serviceFactory.getBean("fileWriter").chmod(path=arguments.extractPath);
+				
+				/* Return true */				
 				return true;
 			}
 
@@ -475,6 +477,8 @@
 				/* Close the Zip file */
 				zipFile.close();
 
+				application.serviceFactory.getBean("fileWriter").chmod(path=arguments.extractPath);
+				
 				/* Return false */
 				return false;
 			}
