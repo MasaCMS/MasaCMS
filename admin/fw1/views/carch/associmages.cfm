@@ -65,20 +65,15 @@ to your own modified versions of Mura CMS.
 <table>
 <tr>
     <cfif request.rslist.recordcount>
-	
-	<!---
-	<cfoutput>  
-		 <li>(none)<input type="radio" name="fileid" value="#rc.fileid#" checked="checked"></li>
-	</cfoutput>
-	--->
      <cfoutput query="request.rslist" startrow="1" maxrows="100">
-		<cfif request.rslist.contentid neq rc.parentid and request.rslist.type neq 'File' and request.rslist.type neq 'Link'>
-		<cfset crumbdata=application.contentManager.getCrumbList(request.rslist.contentid, rc.siteid)/>
-        <cfset verdict=application.permUtility.getnodePerm(crumbdata)/>
+		<cfsilent>
+			<cfset crumbdata=application.contentManager.getCrumbList(request.rslist.contentid, rc.siteid)/>
+       		<cfset verdict=application.permUtility.getnodePerm(crumbdata)/>
+		</cfsilent>
 		<cfif verdict neq 'none'>
-		<cfset counter=counter+1/> 
-        <td><img src="#application.configBean.getContext()#/tasks/render/small/?fileID=#request.rslist.fileid#"><input type="radio" name="fileid" value="#request.rslist.fileid#"></td>
-	 	</cfif></cfif>
+			<cfset counter=counter+1/> 
+	        <td><img src="#application.configBean.getContext()#/tasks/render/small/?fileID=#request.rslist.fileid#"><input type="radio" name="fileid" value="#request.rslist.fileid#"></td>
+	 	</cfif>
       </cfoutput>
 	 </cfif>
 	 <cfif not counter>

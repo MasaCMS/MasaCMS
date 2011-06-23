@@ -601,7 +601,7 @@ CREATE TABLE [dbo].[tusers] (
 	[IMName] [nvarchar] (100) NULL ,
 	[IMService] [nvarchar] (50) NULL ,
 	[created] [datetime] NULL,
-	[remoteID] [char] (35) NULL,
+	[remoteID] [nvarchar] (35) NULL,
 	[tags] [nvarchar] (max) NULL 
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 GO
