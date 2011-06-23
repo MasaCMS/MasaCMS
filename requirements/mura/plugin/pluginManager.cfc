@@ -1325,22 +1325,29 @@ select * from tplugins order by #arguments.orderby#
 					<cfset testStr=renderScripts("onError",arguments.siteid,arguments.event,rsOnError)>
 					<cfif len(testStr) or yesNoFormat(arguments.event.getValue("errorIsHandled"))>
 						<cfset str=str & testStr>
-					<cfelse>
+					<cfelseif yesNoFormat(variables.configBean.getValue("debuggingenabled"))>
+						<cfsavecontent variable="local.theDisplay1">
+						<cfdump var="#cfcatch#">
+						</cfsavecontent>
+						<cfset str=str & local.theDisplay1>
+					<cfelse>	
 						<cfrethrow>
 					</cfif>
-				<cfelseif arguments.runat eq "onError">
-					<cfrethrow>
+				<cfelseif yesNoFormat(variables.configBean.getValue("debuggingenabled"))>
+					<cfsavecontent variable="local.theDisplay1">
+					<cfdump var="#cfcatch#">
+					</cfsavecontent>
+					<cfset str=str & local.theDisplay1>
 				<cfelse>
-				<cfsavecontent variable="local.theDisplay1">
-				<cfdump var="#cfcatch#">
-				</cfsavecontent>
-				<cfset str=str & local.theDisplay1>
+					<cfrethrow>
 				</cfif>
-			<cfelse>
-				<cfsavecontent variable="local.theDisplay1">
+			<cfelseif yesNoFormat(variables.configBean.getValue("debuggingenabled"))>
+                <cfsavecontent variable="local.theDisplay1">
 				<cfdump var="#cfcatch#">
 				</cfsavecontent>
 				<cfset str=str & local.theDisplay1>
+			<cfelse>
+				<cfrethrow />
 			</cfif>
 		</cfcatch>
 	</cftry>
