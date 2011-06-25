@@ -46,6 +46,8 @@
 		<cfset content=application.contentManager.getActiveContentByFilename(event.getValue("filename"),event.getValue("siteid"),event.getValue("use404"))>
 	<cfelseif len(event.getValue("remoteID"))>
 		<cfset content=application.contentManager.getActiveByRemoteID(event.getValue("remoteid"),event.getValue("siteid"))>
+	<cfelseif len(event.getValue("title"))>
+		<cfset content=application.contentManager.getActiveByTitle(event.getValue("title"),event.getValue("siteid"))>
 	<cfelse>
 		<cfset content=application.contentManager.getActiveContent(event.getValue("contentid"),event.getValue("siteid"),event.getValue("use404"))>
 	</cfif>
@@ -62,8 +64,6 @@
 	<cfset var perm=getPerm(event)>
 	
 	<cfif perm.level neq "deny">
-		<cfset content=content.getAllValues()>
-	
 		<cfset event.setValue("__response__", removeObjects(content.getAllValues()))>
 	<cfelse>
 		<cfset event.setValue("__response__", "access denied")>
