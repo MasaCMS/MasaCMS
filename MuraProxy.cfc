@@ -214,7 +214,7 @@ to your own modified versions of Mura CMS.
 	<cfreturn application.proxyServices[arguments.serviceName]>
 </cffunction>
 
-<cffunction name="isValidSession" returntype="any" output="false">
+<cffunction name="isValidSession" returntype="any" output="false" access="remote">
 <cfargument name="authToken">
 	<cfset var rsSession="">
 	
