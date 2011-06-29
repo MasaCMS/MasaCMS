@@ -269,11 +269,13 @@
 <cffunction name="copy" ouput="false">
 	<cfargument name="rc">
 	<cfset variables.contentManager.copy(arguments.rc.siteid,arguments.rc.contentID,arguments.rc.parentID,arguments.rc.copyAll, true, true)  />
+	<cfabort>
 </cffunction>
 
 <cffunction name="saveCopyInfo" ouput="false">
 	<cfargument name="rc">
 	<cfset variables.contentManager.saveCopyInfo(arguments.rc.siteid,arguments.rc.contentID,arguments.rc.copyAll)  />
+	<cfabort>
 </cffunction>
 
 <cffunction name="multiFileUpload" ouput="false">

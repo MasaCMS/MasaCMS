@@ -117,6 +117,11 @@
 		<cfreturn variables.map.size() />
 	</cffunction>
 	
+	<cffunction name="keyExists" access="public" returntype="boolean" output="false">
+		<cfargument name="key">
+		<cfreturn structKeyExists( variables.collection , arguments.key ) />
+	</cffunction>
+	
 	<cffunction name="has" access="public" returntype="boolean" output="false">
 		<cfargument name="key" type="string" required="true" />
 
@@ -126,7 +131,7 @@
 		<cfset refLocal.tmpObj=0 />
 		
 		<!--- Check for Object in Cache. --->
-		<cfif structKeyExists( variables.collection , hashLocal ) >
+		<cfif keyExists( hashLocal ) >
 			<cfset cacheData=variables.collection.get( hashLocal )>
 			<cfif cacheData.expires gt now()>
 				<cfif isSoftReference( cacheData.object ) >
@@ -182,6 +187,10 @@
 			<cfreturn true />
 		</cfif>
 		<cfreturn false />
+	</cffunction>
+	
+	<cffunction name="getCollection" output="false">
+		<cfreturn variables.collection/>
 	</cffunction>
 
 </cfcomponent>

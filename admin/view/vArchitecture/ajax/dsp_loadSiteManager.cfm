@@ -47,7 +47,7 @@
     #application.contentRenderer.dspZoom(crumbdata=crumbdata,ajax=true)#
 </cfif>
   <cfset rsExtend=application.configBean.getClassExtensionManager().getExtendedAttributeList(attributes.siteid)>
-  <form novalidate="novalidate" class="viewUpdate" name="viewUpdate" method="post">
+  <form novalidate="novalidate" class="viewUpdate" name="viewUpdate" method="post" action="./index.cfm?fuseaction=cArch.list&siteid=#urlEncodedFormat(attributes.siteID)#&moduleid=#urlEncodedFormat(attributes.moduleID)#&topid=#urlEncodedFormat(attributes.topID)#">
     <h3 class="alt">#application.rbFactory.getKeyValue(session.rb,"sitemanager.modifyview")#</h3>
     <dl id="mura-view-options" class="clearfix">
       <dt class="rows">#application.rbFactory.getKeyValue(session.rb,"sitemanager.rowsdisplayed")#</dt>

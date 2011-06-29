@@ -349,7 +349,7 @@ to your own modified versions of Mura CMS.
 			<cfset lastlocked="Locked">
 		</cfif>
 		</cfsilent>
-		<li class="#renderIcon(arguments.crumbdata[1].type,arguments.fileExt)##lastlocked#"><strong><cfif arguments.crumbdata[1].type eq 'Page' or arguments.crumbdata[1].type eq 'Portal' or arguments.crumbdata[1].type eq 'Calendar'>
+		<li class="#renderIcon(arguments.crumbdata[1].type,arguments.fileExt)##lastlocked#"><strong><cfif listFindNoCase("Portal,Page,Gallery,Calendar",arguments.crumbdata[1].type)>
 		<a <cfif arguments.ajax> 
 			href="" onclick="return loadSiteManager('#arguments.crumbdata[1].siteid#','#arguments.crumbdata[1].contentid#','00000000000000000000000000000000000','','','#arguments.crumbdata[1].type#',1);"
 		<cfelse>
