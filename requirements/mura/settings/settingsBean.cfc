@@ -987,9 +987,9 @@ to your own modified versions of Mura CMS.
 		<cfreturn variables.instance.cacheFactories["#arguments.name#"] />
 	<cfelse>
 		<cfif not getCacheCapacity()>
-			<cfset variables.instance.cacheFactories["#arguments.name#"]=getBean("settingsManager").createCacheFactory(freeMemoryThreshold=getCacheFreeMemoryThreshold())>
+			<cfset variables.instance.cacheFactories["#arguments.name#"]=getBean("settingsManager").createCacheFactory(freeMemoryThreshold=getCacheFreeMemoryThreshold(),name=arguments.name,siteID=getSiteID())>
 		<cfelse>
-			<cfset variables.instance.cacheFactories["#arguments.name#"]=getBean("settingsManager").createCacheFactory(capacity=getCacheCapacity(),freeMemoryThreshold=getCacheFreeMemoryThreshold())>
+			<cfset variables.instance.cacheFactories["#arguments.name#"]=getBean("settingsManager").createCacheFactory(capacity=getCacheCapacity(),freeMemoryThreshold=getCacheFreeMemoryThreshold(),name=arguments.name,siteID=getSiteID())>
 		</cfif>
 		<cfreturn variables.instance.cacheFactories["#arguments.name#"] />
 	</cfif>
