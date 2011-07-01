@@ -58,7 +58,12 @@
       <dd class="viewDepth">
         <input name="viewDepth" value="#session.viewDepth#" type="text" class="text" size="2" maxlength="4" />
       </dd>
-      <cfif attributes.topid neq '00000000000000000000000000000000001' and perm eq 'Editor'>
+      <cfif attributes.topid neq '00000000000000000000000000000000001' 
+	  	  and (
+	  	  		perm eq 'Editor' 
+					or 
+				(perm eq 'Author' and application.configBean.getSortPermission() eq "author") 
+			  )>
         <dt class="sort">#application.rbFactory.getKeyValue(session.rb,"sitemanager.sortnavigation")#</dt>
         <dd class="sort">
           <input type="hidden" name="saveSort" value="true">

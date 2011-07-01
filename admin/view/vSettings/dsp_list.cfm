@@ -116,7 +116,6 @@ to your own modified versions of Mura CMS.
 						</cfif>
 						<th class="varWidth">Site</th>
 						<th>Domain</th>
-						<th>Version</th>
 						<cfif application.configBean.getMode() eq 'staging'
 						and attributes.siteSortBy neq "orderno"
 						and attributes.siteUpdateSelect neq "true">
@@ -145,12 +144,12 @@ to your own modified versions of Mura CMS.
 						<td class="varWidth"><a title="Edit" href="index.cfm?fuseaction=cSettings.editSite&siteid=#request.rsSites.siteid#">#request.rsSites.site#</a></td>
 						<td>
 							<cfif len(request.rsSites.domain)>
-								<a href="#HTMLEditFormat(request.rsSites.domain)#" target="_blank">#HTMLEditFormat(request.rsSites.domain)#</a>
+								#HTMLEditFormat(request.rsSites.domain)#
 								<cfelse>
 								-
 							</cfif>
 						</td>
-						<td> #application.autoUpdater.getCurrentCompleteVersion(request.rsSites.siteid)#</td>
+						
 						<cfif application.configBean.getMode() eq 'staging'
 						and attributes.siteSortBy neq "orderno"
 						and attributes.siteUpdateSelect neq "true">
@@ -168,7 +167,11 @@ to your own modified versions of Mura CMS.
 						<td class="administration"><ul <cfif application.configBean.getMode() eq 'Staging'>class="three"<cfelse>class="two"</cfif>>
 								<li class="edit"><a title="Edit" href="index.cfm?fuseaction=cSettings.editSite&siteid=#request.rsSites.siteid#">Edit</a></li>
 								<cfif application.configBean.getMode() eq 'Staging'>
-									<li class="deploy"><a href="?fuseaction=cSettings.list&action=deploy&siteid=#request.rsSites.siteid#" onclick="return confirmDialog('Deploy #JSStringFormat(request.rsSites.site)# to production?',this.href);" title="Deploy">Deploy</a></li>
+									<cfif application.configBean.getValue('deployMode') eq "bundle">
+										<li class="deploy"><a href="?fuseaction=cSettings.deploybundle&siteid=#request.rsSites.siteid#" onclick="return confirmDialog('Deploy #JSStringFormat(request.rsSites.site)# to production?',this.href);" title="Deploy">Deploy</a></li>
+									<cfelse>
+										<li class="deploy"><a href="?fuseaction=cSettings.list&action=deploy&siteid=#request.rsSites.siteid#" onclick="return confirmDialog('Deploy #JSStringFormat(request.rsSites.site)# to production?',this.href);" title="Deploy">Deploy</a></li>
+									</cfif>
 								</cfif>
 								<cfif request.rsSites.siteid neq 'default'>
 									<li class="delete"><a title="Delete" href="index.cfm?fuseaction=cSettings.updateSite&action=delete&siteid=#request.rsSites.siteid#" onclick="return confirmDialog('#JSStringFormat("WARNING: A deleted site and all of it''s files cannot be recovered. Are you sure that you want to delete the site named '#Ucase(request.rsSites.site)#'?")#',this.href);">Delete</a></li>

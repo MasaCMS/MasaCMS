@@ -568,7 +568,14 @@ to your own modified versions of Mura CMS.
 			</property>
 		</bean>
 		<bean id="scriptProtectionFilter" class="mura.Portcullis" singleton="true" />
-		<bean id="MuraScope" class="mura.MuraScope" singleton="false"/>
+		<bean id="MuraScope" class="mura.MuraScope" singleton="false">
+			<property name="contentBean">
+				<value>dummy arg to prevent autowiring objects</value>
+			</property>
+			<property name="contentRenderer">
+				<value>dummy arg to prevent autowiring objects</value>
+			</property>
+		</bean>
 		<bean id="HTTPSession" class="mura.http.httpSession" singleton="false">
 			<constructor-arg name="configBean"><ref bean="configBean" /></constructor-arg>
 		</bean>

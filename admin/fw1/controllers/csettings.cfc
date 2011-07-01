@@ -35,10 +35,6 @@
 		<cfset variables.fw.redirect(action="cSettings.list",append="activeTab",path="")>
 	</cfif>
 	
-	<cfif arguments.rc.action eq 'deploy'>
-		<cfset variables.settingsManager.publishSite(arguments.rc.siteid)  />
-	</cfif>
-	
 	<cfset variables.settingsManager.saveOrder(arguments.rc.orderno,arguments.rc.orderID)  />
 	<cfset variables.settingsManager.saveDeploy(arguments.rc.deploy,arguments.rc.orderID) />
 	<cfset arguments.rc.rsSites=variables.settingsManager.getList(sortBy=arguments.rc.siteSortBy) />
