@@ -54,10 +54,10 @@ to your own modified versions of Mura CMS.
 <cfreturn this />
 </cffunction>
 
-<cffunction name="setUserManager" output="false" returntype="void" access="public">
+<!---<cffunction name="setUserManager" output="false" returntype="void" access="public">
 	<cfargument name="userManager">
 	<cfset variables.userManager=arguments.userManager>
-</cffunction>
+</cffunction>--->
 
 <cffunction name="getBean" access="public" returntype="any">
 	<cfreturn application.serviceFactory.getBean("userBean")>

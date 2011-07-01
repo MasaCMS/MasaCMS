@@ -40,7 +40,7 @@ for your modified version; it is your choice whether to do so, or to make such m
 the GNU General Public License version 2 �without this exception. �You may, if you choose, apply this exception
 to your own modified versions of Mura CMS.
 --->
-<cfsavecontent variable="servicesXML"><cfoutput><beans>
+<cfsavecontent variable="servicesXML"><cfoutput><beans default-autowire="byName">
 		<bean id="utility" <cfif application.cfversion neq 7>class="mura.utility"<cfelse>class="mura.utilityCF7"</cfif> singleton="true" >
 			<constructor-arg name="configBean"><ref bean="configBean" /></constructor-arg>
 			<constructor-arg name="fileWriter"><ref bean="fileWriter" /></constructor-arg>
@@ -67,6 +67,7 @@ to your own modified versions of Mura CMS.
 			<constructor-arg name="changesetManager"><ref bean="changesetManager" /></constructor-arg>
 			<constructor-arg name="clusterManager"><ref bean="clusterManager" /></constructor-arg>
 		</bean>
+		
 		<cfif isDefined("server.coldfusion.productname") and server.coldfusion.productname eq "Railo">
 		<bean id="contentGateway" class="mura.content.contentGatewayRailo" singleton="true">
 		<cfelse>
