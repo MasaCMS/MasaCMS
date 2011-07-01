@@ -193,7 +193,11 @@
             <li class="permissionsOff"><a>#application.rbFactory.getKeyValue(session.rb,"sitemanager.permissions")#</a></li>
             <li class="deleteOff"><a>#application.rbFactory.getKeyValue(session.rb,"sitemanager.delete")#</a></li>
           </cfif>
-#application.pluginManager.renderScripts("onContentList",attributes.siteid,pluginEvent)# #application.pluginManager.renderScripts("on#request.rstop.type#List",attributes.siteid,pluginEvent)# #application.pluginManager.renderScripts("on#request.rstop.type##request.rstop.subtype#List",attributes.siteid,pluginEvent)#
+		<cfset pluginEvent.setValue('type', request.rstop.type)>
+        <cfset pluginEvent.setValue('filename', request.rstop.filename)>
+        <cfset pluginEvent.setValue('contentid', request.rstop.contentid)>
+        <cfset pluginEvent.setValue('contenthistid', request.rstop.contenthistid)>
+		#application.pluginManager.renderScripts("onContentList",attributes.siteid,pluginEvent)# #application.pluginManager.renderScripts("on#request.rstop.type#List",attributes.siteid,pluginEvent)# #application.pluginManager.renderScripts("on#request.rstop.type##request.rstop.subtype#List",attributes.siteid,pluginEvent)#
         </ul></dd>
       </dl>
       
