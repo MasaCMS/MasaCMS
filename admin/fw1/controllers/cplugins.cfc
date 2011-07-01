@@ -17,6 +17,7 @@
 <cffunction name="list" output="false">
 	<cfargument name="rc">
 	<cfset arguments.rc.rslist=variables.pluginManager.getSitePlugins(arguments.rc.siteid) />
+	<cfset arguments.rc.plugingroups=variables.pluginManager.getSitePluginGroups(arguments.rc.rslist) />
 </cffunction>
 
 </cfcomponent>

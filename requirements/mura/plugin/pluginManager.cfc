@@ -930,6 +930,41 @@ select * from tplugins order by #arguments.orderby#
 	<cfreturn rs>
 </cffunction>
 
+<cffunction name="getSitePluginGroups" returntype="struct" output="false">
+<cfargument name="rsplugins" type="query">
+
+	<cfset var str=StructNew()>
+	<cfset var rs="">
+	<cfset var rssub="">
+
+	<cfset str['Application'] = querynew('null') />
+	<cfset str['Utility'] = querynew('null') />
+
+	<cfquery name="rs" dbtype="query">
+		select distinct category
+		from arguments.rsplugins
+	</cfquery>
+
+	<cfloop query="rs">
+		<cfif not StructKeyExists(str,rs.category)>
+			<cfset str[rs.category] = structNew() />
+		</cfif>
+		<cfquery name="rssub" dbtype="query">
+			select *
+			from arguments.rsplugins
+			where category = '#rs.category#'
+		</cfquery>
+		
+		<cfif rssub.recordcount>
+			<cfset str[rs.category] = rssub />
+		<cfelse>
+			<cfset str[rs.category] = querynew('null') />
+		</cfif>		
+	</cfloop>
+
+	<cfreturn str>
+</cffunction>
+
 <cffunction name="deletePlugin" returntype="void" output="false">
 <cfargument name="moduleID">
 
