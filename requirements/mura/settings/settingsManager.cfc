@@ -441,12 +441,19 @@ to your own modified versions of Mura CMS.
 	<cfset sArgs.lastDeployment = arguments.lastDeployment />
 	
 	<cftry>
-	<cfset publisher.getToWork( argumentCollection=sArgs )>
+		<cfset publisher.getToWork( argumentCollection=sArgs )>
+		
+		<cfif len(arguments.siteID)>
+			<cfset getSite(arguments.siteID).getCacheFactory(name="output").purgeAll()>
+			<cfif sArgs.contentMode neq "none">
+				<cfset getSite(arguments.siteID).getCacheFactory(name="data").purgeAll()>
+				<cfset getBean("contentUtility").updateGlobalMaterializedPath(siteID=arguments.siteID)>
+			</cfif>
+			<cfif sArgs.pluginMode neq "none">
+				<cfset getBean("pluginManager").loadPlugins()>
+			</cfif>	
+		</cfif>
 	
-	<cfif len(arguments.siteID)>
-		<cfset getSite(arguments.siteID).getCacheFactory().purgeAll()>
-		<cfset getBean("contentUtility").updateGlobalMaterializedPath(siteID=arguments.siteID)>
-	</cfif>
 	<cfcatch>
 		
 		<cfset errors.message="The bundle was not successfully imported:<br/>ERROR: " & cfcatch.message>
