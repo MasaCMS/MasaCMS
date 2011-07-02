@@ -1764,6 +1764,8 @@ select * from rs order by name
 			renderingMode="none",
 			pluginMode="all", 
 			moduleID="")>
+	<cfset loadPlugins()>
+	
 </cffunction>
 
 <cffunction name="createBundle" output="false" hint="I bundle a plugin and return it's filename">
