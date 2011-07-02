@@ -496,13 +496,14 @@ to your own modified versions of Mura CMS.
 	<cfdirectory action="list" name="rsDIR" directory="#filePath#">
 	
 	<cfloop query="rsDir">
-	
-		<cfquery name="rsCheck" dbType="query">
-		select * from rsDB where fileID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#left(rsDIR.name,35)#">
-		</cfquery>
-		
-		<cfif not rsCheck.recordcount>
-			<cffile action="delete" file="#filepath##rsDir.name#">
+		<cfif not find('.svn',#rsDir.name#)>
+			<cfquery name="rsCheck" dbType="query">
+			select * from rsDB where fileID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#left(rsDIR.name,35)#">
+			</cfquery>
+			
+			<cfif not rsCheck.recordcount>
+				<cffile action="delete" file="#filepath##rsDir.name#">
+			</cfif>
 		</cfif>
 	</cfloop>
 
