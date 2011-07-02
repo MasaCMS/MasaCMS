@@ -1751,4 +1751,38 @@ select * from rs order by name
 <cfargument name="siteID">
 <cfreturn "_" & rereplace(arguments.siteID,"[^a-zA-Z0-9]","","ALL")>
 </cffunction>
+
+<cffunction name="deployBundle" output="false">
+	<cfargument name="siteID" hint="List of siteIDs to assign the plugin">
+	<cfargument name="bundleFile" hint="Complete path to bundle file">
+	
+	<cfset application.serviceFactory.getBean("settingsManager").restoreBundle(
+			BundleFile=arguments.bundleFile,
+			siteID=arguments.siteID,
+			keyMode="publish",
+			contentMode="none", 
+			renderingMode="none",
+			pluginMode="all", 
+			moduleID="")>
+</cffunction>
+
+<cffunction name="createBundle" output="false" hint="I bundle a plugin and return it's filename">
+	<cfargument name="id" hint="ModuleID or pluginID or Package">
+	<cfargument name="directory" hint="Server directory to save the bundle">
+	<cfset var pluginConfig=getConfig(arguments.id)>
+	
+	<cfreturn getBean("Bundle").Bundle(
+			siteID="",
+			moduleID=pluginConfig.getModuleID(),
+			BundleName=getBean('contentUtility').formatFilename(pluginConfig.getName()), 
+			includeVersionHistory=false,
+			includeTrash=false,
+			includeMetaData=false,
+			includeMailingListMembers=false,
+			includeUsers=false,
+			includeFormData=false,
+			saveFile=true,
+			saveFileDir=arguments.directory) />
+</cffunction>
+
 </cfcomponent>

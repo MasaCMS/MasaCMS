@@ -2789,6 +2789,7 @@ to your own modified versions of Mura CMS.
 		<cfset var rstpluginsettings=""/>	
 		<cfset var newdirectory="">
 		<cfset var rsTemp="">
+		<cfset var s="">
 		
 			<cfif not StructKeyExists(arguments,"Bundle")>
 				<cfquery datasource="#arguments.fromDSN#" name="rstplugins">
@@ -2879,39 +2880,44 @@ to your own modified versions of Mura CMS.
 							where moduleID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#keys.get(rstplugins.moduleID)#">
 						</cfquery>
 						
-						<cfquery datasource="#arguments.toDSN#" name="rsCheck">
-							select * from tcontent 
-							where moduleID =<cfqueryparam cfsqltype="cf_sql_varchar" value="#keys.get(rstplugins.moduleID)#"/> and type='Plugin'
-							<!---and siteID =<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.toSiteID#"/>--->
-						</cfquery>
-						
-						<cfif rscheck.recordcount>
-							<cfquery datasource="#arguments.todsn#">
-							update tcontent set
-							title=<cfqueryparam cfsqltype="cf_sql_varchar" value="#rstplugins.name#">
-							where moduleID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#keys.get(rstplugins.moduleID)#">
-							<!---and siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.tositeID#">--->
-							</cfquery>
-						<cfelse>
-							<cfquery datasource="#arguments.todsn#">
-							insert into tcontent (siteID,moduleID,contentID,contentHistID,parentID,type,subType,title,
-							display,approved,isNav,active,forceSSL,searchExclude) values (
-							<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.tositeID#">,
-							<cfqueryparam cfsqltype="cf_sql_varchar" value="#keys.get(rstplugins.moduleID)#">,
-							<cfqueryparam cfsqltype="cf_sql_varchar" value="#keys.get(rstplugins.moduleID)#">,
-							<cfqueryparam cfsqltype="cf_sql_varchar" value="#keys.get(rstplugins.moduleID)#">,
-							<cfqueryparam cfsqltype="cf_sql_varchar" value="#keys.get(rstplugins.moduleID)#">,
-							'Plugin',
-							'Default',
-							<cfqueryparam cfsqltype="cf_sql_varchar" value="#rstplugins.name#">,
-							1,
-							1,
-							1,
-							1,
-							1,
-							1
-							)
-							</cfquery>
+						<cfif len(arguments.toSiteID)>
+							<cfloop list="#arguments.toSiteID#" index="s">
+								<cfquery datasource="#arguments.toDSN#" name="rsCheck">
+									select * from tcontent 
+									where moduleID =<cfqueryparam cfsqltype="cf_sql_varchar" value="#keys.get(rstplugins.moduleID)#"/> and type='Plugin'
+									and siteID =<cfqueryparam cfsqltype="cf_sql_varchar" value="#s#"/>
+								</cfquery>
+								
+								<cfif rscheck.recordcount>
+									<cfquery datasource="#arguments.todsn#">
+									update tcontent set
+									title=<cfqueryparam cfsqltype="cf_sql_varchar" value="#rstplugins.name#">
+									where moduleID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#keys.get(rstplugins.moduleID)#">
+									and siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#s#">
+									</cfquery>
+								<cfelse>
+									
+									<cfquery datasource="#arguments.todsn#">
+									insert into tcontent (siteID,moduleID,contentID,contentHistID,parentID,type,subType,title,
+									display,approved,isNav,active,forceSSL,searchExclude) values (
+									<cfqueryparam cfsqltype="cf_sql_varchar" value="#s#">,
+									<cfqueryparam cfsqltype="cf_sql_varchar" value="#keys.get(rstplugins.moduleID)#">,
+									<cfqueryparam cfsqltype="cf_sql_varchar" value="#keys.get(rstplugins.moduleID)#">,
+									<cfqueryparam cfsqltype="cf_sql_varchar" value="#keys.get(rstplugins.moduleID)#">,
+									<cfqueryparam cfsqltype="cf_sql_varchar" value="#keys.get(rstplugins.moduleID)#">,
+									'Plugin',
+									'Default',
+									<cfqueryparam cfsqltype="cf_sql_varchar" value="#rstplugins.name#">,
+									1,
+									1,
+									1,
+									1,
+									1,
+									1
+									)
+									</cfquery>
+								</cfif>
+							</cfloop>
 						</cfif>
 						
 						<cfif not StructKeyExists(arguments,"Bundle")>
