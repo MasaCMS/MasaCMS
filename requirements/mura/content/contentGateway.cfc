@@ -465,8 +465,8 @@ to your own modified versions of Mura CMS.
 					
 					
 				<cfswitch expression="#arguments.sortBy#">
-					<cfcase value="menutitle,title,lastupdate,releasedate,orderno,displayStart,created,credits,type,subtype">
-						<cfif dbType neq "oracle" or  listFindNoCase("orderno,lastUpdate,releaseDate,created",arguments.sortBy)>
+					<cfcase value="menutitle,title,lastupdate,releasedate,orderno,displaystart,displaystop,created,credits,type,subtype">
+						<cfif dbType neq "oracle" or  listFindNoCase("orderno,lastUpdate,releaseDate,created,displayStart,displayStop",arguments.sortBy)>
 						tcontent.#arguments.sortBy# #arguments.sortDirection#
 						<cfelse>
 						lower(tcontent.#arguments.sortBy#) #arguments.sortDirection#
