@@ -315,3 +315,8 @@ if (APPLICATION.CFVersion gte 8 or StructKeyExists(SERVER,"bluedragon")) {
   // include("plugins/watermark/plugin.cfm");
 }
 </cfscript>
+
+<cfset $ = application.serviceFactory.getBean("MuraScope").init(session.siteID)>
+<cfif (fileExists(expandPath($.siteConfig("themeIncludePath") & '/js/finder/config.cfm') ) )>
+     <cfinclude template="#$.siteConfig('themeAssetPath')#/js/finder/config.cfm">
+</cfif>
