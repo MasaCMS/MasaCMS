@@ -1752,11 +1752,11 @@ select * from rs order by name
 <cfreturn "_" & rereplace(arguments.siteID,"[^a-zA-Z0-9]","","ALL")>
 </cffunction>
 
-<cffunction name="deployBundle" output="false">
+<cffunction name="deployBundle" output="false" hint="I return a struct of any errors that occured.">
 	<cfargument name="siteID" hint="List of siteIDs to assign the plugin">
 	<cfargument name="bundleFile" hint="Complete path to bundle file">
 	
-	<cfset application.serviceFactory.getBean("settingsManager").restoreBundle(
+	<cfset var errors=application.serviceFactory.getBean("settingsManager").restoreBundle(
 			BundleFile=arguments.bundleFile,
 			siteID=arguments.siteID,
 			keyMode="publish",
@@ -1764,8 +1764,10 @@ select * from rs order by name
 			renderingMode="none",
 			pluginMode="all", 
 			moduleID="")>
+	
 	<cfset loadPlugins()>
 	
+	<cfreturn errors>
 </cffunction>
 
 <cffunction name="createBundle" output="false" hint="I bundle a plugin and return it's filename">
