@@ -279,7 +279,7 @@ to your own modified versions of Mura CMS.
 			<div class="buttons">
 				<cfoutput>
 					<p class="required">#rbFactory.getKey('comments.requiredfield')#</p>
-					<input type="hidden" name="returnURL" value="#getCurrentURL()#" />
+					<input type="hidden" name="returnURL" value="#HTMLEditFormat(getCurrentURL())#" />
 					<input type="hidden" name="commentid" value="#createuuid()#" />
 					<input type="hidden" name="parentid" value="" />
 					<input type="hidden" name="commenteditmode" value="add" />
