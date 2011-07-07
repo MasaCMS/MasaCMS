@@ -631,6 +631,8 @@ to your own modified versions of Mura CMS.
 		<cfset previousChangesetID=newBean.getChangesetID()>
 		<cfset newBean.set(arguments.data) />
 		<cfset pluginEvent.setValue("newBean",newBean)>	
+		<cfset pluginEvent.setValue("contentBean",newBean)>
+		
 		<cfif newBean.getIsNew()>
 			<cfset newBean.setActive(1) />
 			<cfset newBean.setCreated(now()) />

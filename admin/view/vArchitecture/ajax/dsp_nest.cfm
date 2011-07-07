@@ -198,6 +198,10 @@ to your own modified versions of Mura CMS.
 		<cfif  ListFindNoCase("Page,Portal,Calendar,Link,File,Gallery",attributes.rsNest.type)>
 		#application.pluginManager.renderScripts("onContentList",attributes.siteid,attributes.pluginEvent)#
 		</cfif>
+		<cfset attributes.pluginEvent.setValue('type', attributes.rsnest.type)>
+        <cfset attributes.pluginEvent.setValue('filename', attributes.rsnest.filename)>
+        <cfset attributes.pluginEvent.setValue('contentid', attributes.rsnest.contentid)>
+        <cfset attributes.pluginEvent.setValue('contenthistid', attributes.rsnest.contenthistid)>
 		#application.pluginManager.renderScripts("on#attributes.rsNest.type#List",attributes.siteid,attributes.pluginEvent)#
 		#application.pluginManager.renderScripts("on#attributes.rsNest.type##attributes.rsNest.subtype#List",attributes.siteid,attributes.pluginEvent)#
 	</ul>

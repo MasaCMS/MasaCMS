@@ -58,7 +58,12 @@
       <dd class="viewDepth">
         <input name="viewDepth" value="#session.viewDepth#" type="text" class="text" size="2" maxlength="4" />
       </dd>
-      <cfif attributes.topid neq '00000000000000000000000000000000001' and perm eq 'Editor'>
+      <cfif attributes.topid neq '00000000000000000000000000000000001' 
+	  	  and (
+	  	  		perm eq 'Editor' 
+					or 
+				(perm eq 'Author' and application.configBean.getSortPermission() eq "author") 
+			  )>
         <dt class="sort">#application.rbFactory.getKeyValue(session.rb,"sitemanager.sortnavigation")#</dt>
         <dd class="sort">
           <input type="hidden" name="saveSort" value="true">
@@ -193,7 +198,11 @@
             <li class="permissionsOff"><a>#application.rbFactory.getKeyValue(session.rb,"sitemanager.permissions")#</a></li>
             <li class="deleteOff"><a>#application.rbFactory.getKeyValue(session.rb,"sitemanager.delete")#</a></li>
           </cfif>
-#application.pluginManager.renderScripts("onContentList",attributes.siteid,pluginEvent)# #application.pluginManager.renderScripts("on#request.rstop.type#List",attributes.siteid,pluginEvent)# #application.pluginManager.renderScripts("on#request.rstop.type##request.rstop.subtype#List",attributes.siteid,pluginEvent)#
+		<cfset pluginEvent.setValue('type', request.rstop.type)>
+        <cfset pluginEvent.setValue('filename', request.rstop.filename)>
+        <cfset pluginEvent.setValue('contentid', request.rstop.contentid)>
+        <cfset pluginEvent.setValue('contenthistid', request.rstop.contenthistid)>
+		#application.pluginManager.renderScripts("onContentList",attributes.siteid,pluginEvent)# #application.pluginManager.renderScripts("on#request.rstop.type#List",attributes.siteid,pluginEvent)# #application.pluginManager.renderScripts("on#request.rstop.type##request.rstop.subtype#List",attributes.siteid,pluginEvent)#
         </ul></dd>
       </dl>
       

@@ -555,8 +555,8 @@ to your own modified versions of Mura CMS.
 	order by
 	
 	<cfswitch expression="#arguments.feedBean.getSortBy()#">
-	<cfcase value="menutitle,title,lastupdate,releasedate,orderno,displayStart,created,credits,type,subtype">
-		<cfif dbType neq "oracle" or listFindNoCase("orderno,releaseDate,lastUpdate,created",arguments.feedBean.getSortBy())>
+	<cfcase value="menutitle,title,lastupdate,releasedate,orderno,displaystart,displaystop,created,credits,type,subtype">
+		<cfif dbType neq "oracle" or listFindNoCase("orderno,releaseDate,lastUpdate,created,displayStart,displayStop",arguments.feedBean.getSortBy())>
 			tcontent.#arguments.feedBean.getSortBy()# #arguments.feedBean.getSortDirection()#
 		<cfelse>
 			lower(tcontent.#arguments.feedBean.getSortBy()#) #arguments.feedBean.getSortDirection()#

@@ -930,6 +930,41 @@ select * from tplugins order by #arguments.orderby#
 	<cfreturn rs>
 </cffunction>
 
+<cffunction name="getSitePluginGroups" returntype="struct" output="false">
+<cfargument name="rsplugins" type="query">
+
+	<cfset var str=StructNew()>
+	<cfset var rs="">
+	<cfset var rssub="">
+
+	<cfset str['Application'] = querynew('null') />
+	<cfset str['Utility'] = querynew('null') />
+
+	<cfquery name="rs" dbtype="query">
+		select distinct category
+		from arguments.rsplugins
+	</cfquery>
+
+	<cfloop query="rs">
+		<cfif not StructKeyExists(str,rs.category)>
+			<cfset str[rs.category] = structNew() />
+		</cfif>
+		<cfquery name="rssub" dbtype="query">
+			select *
+			from arguments.rsplugins
+			where category = '#rs.category#'
+		</cfquery>
+		
+		<cfif rssub.recordcount>
+			<cfset str[rs.category] = rssub />
+		<cfelse>
+			<cfset str[rs.category] = querynew('null') />
+		</cfif>		
+	</cfloop>
+
+	<cfreturn str>
+</cffunction>
+
 <cffunction name="deletePlugin" returntype="void" output="false">
 <cfargument name="moduleID">
 
@@ -1716,4 +1751,42 @@ select * from rs order by name
 <cfargument name="siteID">
 <cfreturn "_" & rereplace(arguments.siteID,"[^a-zA-Z0-9]","","ALL")>
 </cffunction>
+
+<cffunction name="deployBundle" output="false" hint="I return a struct of any errors that occured.">
+	<cfargument name="siteID" hint="List of siteIDs to assign the plugin">
+	<cfargument name="bundleFile" hint="Complete path to bundle file">
+	
+	<cfset var errors=application.serviceFactory.getBean("settingsManager").restoreBundle(
+			BundleFile=arguments.bundleFile,
+			siteID=arguments.siteID,
+			keyMode="publish",
+			contentMode="none", 
+			renderingMode="none",
+			pluginMode="all", 
+			moduleID="")>
+	
+	<cfset loadPlugins()>
+	
+	<cfreturn errors>
+</cffunction>
+
+<cffunction name="createBundle" output="false" hint="I bundle a plugin and return it's filename">
+	<cfargument name="id" hint="ModuleID or pluginID or Package">
+	<cfargument name="directory" hint="Server directory to save the bundle">
+	<cfset var pluginConfig=getConfig(arguments.id)>
+	
+	<cfreturn getBean("Bundle").Bundle(
+			siteID="",
+			moduleID=pluginConfig.getModuleID(),
+			BundleName=getBean('contentUtility').formatFilename(pluginConfig.getName()), 
+			includeVersionHistory=false,
+			includeTrash=false,
+			includeMetaData=false,
+			includeMailingListMembers=false,
+			includeUsers=false,
+			includeFormData=false,
+			saveFile=true,
+			saveFileDir=arguments.directory) />
+</cffunction>
+
 </cfcomponent>

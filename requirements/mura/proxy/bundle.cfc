@@ -10,6 +10,7 @@
 		<cftry>
 			<cffile action="upload" result="tempFile" filefield="bundleFile" nameconflict="makeunique" destination="#application.configBean.getTempDir()#">
 
+			<cfset application.pluginManager.announceEvent("onBeforeProxyBundleDeploy", event)>
 			<cfset application.settingsManager.restoreBundle(
 				"#tempfile.serverDirectory#/#tempfile.serverFilename#.#tempfile.serverFileExt#" , 
 				arguments.event.getValue('siteID'),
@@ -29,8 +30,10 @@
 		
 			<cfset event.setValue("__response__", "success")>
 			
+			<cfset application.pluginManager.announceEvent("onAfterProxyBundleDeploy", event)>
+			
 			<cfcatch>
-				<cfset event.setValue("__response__", cfcatch)>
+				<cfset event.setValue("__response__", cfcatch.Message)>
 			</cfcatch>
 		</cftry>
 	</cffunction>

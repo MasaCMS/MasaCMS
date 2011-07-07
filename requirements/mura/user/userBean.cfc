@@ -623,7 +623,8 @@ to your own modified versions of Mura CMS.
 
 <cffunction name="validate" access="public" output="false" >
 		<cfset var extErrors=structNew() />
-	
+		<cfset var passwordRegex="(?=^.{7,15}$)(?=.*\d)(?![.\n])(?=.*[a-zA-Z]).*$">
+		
 		<cfif len(getSiteID())>
 			<cfset extErrors=variables.configBean.getClassExtensionManager().validateExtendedData(getAllValues())>
 		</cfif>
@@ -635,6 +636,14 @@ to your own modified versions of Mura CMS.
 		</cfif>	
 		
 		<cfif trim(variables.instance.siteid) neq "">
+			
+			<cfif len(getPassword()) and yesNoFormat(variables.configBean.getValue("strongPasswords"))>
+
+				<cfif not reFind(variables.configBean.getValue("strongPasswordRegex"),getPassword()) or getUsername() eq getPassword()>
+					<cfset variables.instance.errors.username=variables.settingsManager.getSite(getSiteID()).getRBFactory().getKey("user.passwordstrengthvalidate") />
+				</cfif>
+				
+			</cfif>
 		
 			<cfif variables.instance.type eq 2 and (variables.instance.username eq "" or not checkUsername())>
 			<cfset variables.instance.errors.username=variables.settingsManager.getSite(getSiteID()).getRBFactory().getResourceBundle().messageFormat( variables.settingsManager.getSite(getSiteID()).getRBFactory().getKey("user.usernamevalidate") , getusername() ) />

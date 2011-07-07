@@ -66,7 +66,7 @@ to your own modified versions of Mura CMS.
 	<cfset variables.settingsManager=arguments.settingsManager />
 	<cfset variables.clusterManager=arguments.clusterManager />
 	
-	<cfset variables.userDAO.setUserManager(this)>
+	<!---<cfset variables.userDAO.setUserManager(this)>--->
 	
 	<cfreturn this />
 </cffunction>
