@@ -136,10 +136,18 @@ to your own modified versions of Mura CMS.
 							<cffile action="delete" file="#destination#">
 						</cfif>
 						<cfset destination=left(destination,len(destination)-len(listLast(destination,variables.fileDelim)))>		
-						<cfif not directoryExists(destination)>
-							<cfset variables.fileWriter.createDir(directory="#destination#")>
-						</cfif>
-						<cfset variables.fileWriter.moveFile(source="#currentDir##zipFileName##variables.fileDelim##rs.entry#",destination="#destination#")>
+						<cftry>
+							<cfif not directoryExists(destination)>
+								<cfset variables.fileWriter.createDir(directory="#destination#")>
+							</cfif>
+							<cfset variables.fileWriter.moveFile(source="#currentDir##zipFileName##variables.fileDelim##rs.entry#",destination="#destination#")>
+							<cfcatch>
+								<!--- patch to make sure autoupdates do not stop for mode errors --->
+								<cfif not findNoCase("change mode of file",cfcatch.message)>
+									<cfrethrow>
+								</cfif>
+							</cfcatch>
+						</cftry>
 						<cfset arrayAppend(updatedArray,"#destination##listLast(rs.entry,variables.fileDelim)#")>
 					</cfif>
 				</cfloop>
@@ -156,10 +164,18 @@ to your own modified versions of Mura CMS.
 							<cffile action="delete" file="#destination#">
 						</cfif>
 						<cfset destination=left(destination,len(destination)-len(listLast(destination,variables.fileDelim)))>		
-						<cfif not directoryExists(destination)>
-							<cfset variables.fileWriter.createDir(directory="#destination#")>
-						</cfif>
-						<cfset variables.fileWriter.moveFile(source="#currentDir##zipFileName##variables.fileDelim##rs.entry#",destination="#destination#")>
+						<cftry>
+							<cfif not directoryExists(destination)>
+								<cfset variables.fileWriter.createDir(directory="#destination#")>
+							</cfif>
+							<cfset variables.fileWriter.moveFile(source="#currentDir##zipFileName##variables.fileDelim##rs.entry#",destination="#destination#")>
+							<cfcatch>
+								<!--- patch to make sure autoupdates do not stop for mode errors --->
+								<cfif not findNoCase("change mode of file",cfcatch.message)>
+									<cfrethrow>
+								</cfif>
+							</cfcatch>
+						</cftry>
 						<cfset arrayAppend(updatedArray,"#destination##listLast(rs.entry,variables.fileDelim)#")>
 					</cfif>
 				</cfloop>
