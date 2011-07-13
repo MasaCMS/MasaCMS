@@ -164,8 +164,10 @@
 <cffunction name="standardRequireLoginHandler" output="false" returnType="any">
 	<cfargument name="event" required="true">
 	
+	<cfset var loginURL = "" />
+	
 	<cfif event.getValue('isOnDisplay') and event.getValue('r').restrict and not event.getValue('r').loggedIn and (event.getValue('display') neq 'login' and event.getValue('display') neq 'editProfile')>
-		<cfset var loginURL = application.settingsManager.getSite(request.siteid).getLoginURL() />
+		<cfset loginURL = application.settingsManager.getSite(request.siteid).getLoginURL() />
 		<cfif find('?', loginURL)>
 			<cfset loginURL &= "&returnURL=#URLEncodedFormat(event.getValue('contentRenderer').getCurrentURL())#" />
 		<cfelse>
