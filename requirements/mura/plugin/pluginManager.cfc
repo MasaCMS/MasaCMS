@@ -1576,11 +1576,14 @@ select * from tplugins order by #arguments.orderby#
 <cfargument name="pageTitle">
 <cfargument name="jsLib" required="true" default="prototype">
 <cfargument name="jsLibLoaded" required="true" default="false">
+<cfargument name="compactDisplay" required="false" default="false" />
+
 <cfset var fusebox=structNew()>
 <cfset var myFusebox=structNew()>
 <cfset var returnStr="">
 <cfset var moduleTitle=arguments.pageTitle>
 <cfset var attributes=structNew()>
+<cfset var layoutTemplate="template" />
 
 <cfset fusebox.layout =arguments.body>
 <cfset fusebox.ajax ="">
@@ -1589,8 +1592,13 @@ select * from tplugins order by #arguments.orderby#
 <cfset attributes.moduleID="">
 <cfset attributes.jsLib=arguments.jsLib>
 <cfset attributes.jsLibLoaded=arguments.jsLibLoaded>
+
+<cfif arguments.compactDisplay>
+	<cfset layoutTemplate = "compact" />
+</cfif>
+
 <cfsavecontent variable="returnStr">
-<cfinclude template="/#variables.configBean.getWebrootMap()#/admin/view/layouts/template.cfm">
+	<cfinclude template="/#variables.configBean.getWebrootMap()#/admin/view/layouts/#layoutTemplate#.cfm">
 </cfsavecontent>
 
 <cfreturn returnStr/>
