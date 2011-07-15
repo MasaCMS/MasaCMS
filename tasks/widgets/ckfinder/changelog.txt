@@ -1,7 +1,21 @@
 CKFinder ChangeLog
 ==================
 http://ckfinder.com
-Copyright (C) 2007-2010, CKSource - Frederico Knabben. All rights reserved.
+Copyright (C) 2007-2011, CKSource - Frederico Knabben. All rights reserved.
+
+### Version 2.0.2
+- Added a way to programmatically close a popup window: closePopup().
+- Added new translation: Finnish.
+- Updated syntax highlighting component used in the fileeditor plugin.
+- Fixed compatibility issues with IE9 RC.
+- Fixed: CKFinder does not scroll correctly to the uploaded file.
+- Fixed: Invalid height of the editing window in the File Editor dialog window.
+- Fixed: CKFinder.dom.element.getWindows method is not available.
+- Fixed: [Opera] Context menu does not work in the files pane.
+- Fixed: When CKFinder is opened in a popup window, after pressing the Cancel button CKFinder asks for confirmation in a wrong window.
+- Fixed: Download does not work in IE8 in a popup window.
+- Fixed: It is impossible to upload a file when CKFinder is running in a popup window.
+- Fixed: File editor does not work in a popup window.
 
 ### Version 2.0.1
 - Default view settings are now configurable.
@@ -11,14 +25,14 @@ Copyright (C) 2007-2010, CKSource - Frederico Knabben. All rights reserved.
 - Callback function can now be defined also in the configuration file.
 - CKFinder will now remember client settings in a cookie.
 - Files are now selected automatically after upload.
-- Fixed: Permission denied error in IE 8 when using CKfinder in a popup.
+- Fixed: Permission denied error in IE 8 when using CKFinder in a popup.
 - Fixed: Upload progress bar was broken in FF 3.5+.
 - Fixed: CKFinder does not work in a frameset.
 - Fixed: RTL support in the files pane.
 - Fixed: SSL support in IE6 and Firefox 3.0.
 - Fixed: application ID was not passed to the server connector.
 - Fixed: CKFinder.setupCKEditor was not working when null was passed as the first argument.
-- Fixed: dialogs in an iframe in IE8 quirks mode are renedered incorrectly.
+- Fixed: dialogs in an iframe in IE8 quirks mode are rendered incorrectly.
 - Fixed: dialogs in IE in quirks mode looked bad.
 - Fixed: right click triggered drag&drop in Safari.
 - Fixed: content was selected during resizing in Safari.

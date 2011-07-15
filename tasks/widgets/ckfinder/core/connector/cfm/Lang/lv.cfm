@@ -1,7 +1,7 @@
 <cfsilent>
 <cfprocessingdirective pageencoding="utf-8">
 <!---
-Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
+Copyright (c) 2003-2011, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckfinder.com/license
 
  Defines the object, for the Latvian language. This is the base file for all translations.

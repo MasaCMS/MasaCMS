@@ -2,7 +2,7 @@
  * CKFinder
  * ========
  * http://ckfinder.com
- * Copyright (C) 2007-2010, CKSource - Frederico Knabben. All rights reserved.
+ * Copyright (C) 2007-2011, CKSource - Frederico Knabben. All rights reserved.
  *
  * The software, this file and its contents are subject to the CKFinder
  * License. Please read the license.txt file before using, installing, copying,
@@ -185,7 +185,7 @@ CKFinder.lang['pl'] =
 	109 : 'Nieprawiłowe polecenie.',
 	110 : 'Niezidentyfikowany błąd.',
 	115 : 'Plik lub katalog o podanej nazwie już istnieje.',
-	116 : 'Nie znaleziono ktalogu. Odśwież panel i spróbuj ponownie.',
+	116 : 'Nie znaleziono katalogu. Odśwież panel i spróbuj ponownie.',
 	117 : 'Nie znaleziono pliku. Odśwież listę plików i spróbuj ponownie.',
 	118 : 'Ścieżki źródłowa i docelowa są jednakowe.',
 	201 : 'Plik o podanej nazwie już istnieje. Nazwa przesłanego pliku została zmieniona na "%1"',
