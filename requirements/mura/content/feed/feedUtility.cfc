@@ -105,9 +105,9 @@ to your own modified versions of Mura CMS.
 				<cfset feedItem.title=left(items[i].title.xmlText,255) />
 				<cfset feedItem.summary="" />
 				
-				<cfif isdefined("items[i].description.xmlText")>
+				<cfif structKeyExists(items[i],"description")>
 					<cfset feedItem.summary=items[i].description.xmlText />
-				<cfelseif isdefined("items[i].summary.xmlText")>
+				<cfelseif  structKeyExists(items[i],"summary")>
 					<cfset feedItem.summary=items[i].summary.xmlText />
 				</cfif>
 				
