@@ -105,9 +105,9 @@ to your own modified versions of Mura CMS.
 				<cfset feedItem.title=left(items[i].title.xmlText,255) />
 				<cfset feedItem.summary="" />
 				
-				<cfif isdefined("items[i].description.xmlText")>
+				<cfif structKeyExists(items[i],"description")>
 					<cfset feedItem.summary=items[i].description.xmlText />
-				<cfelseif isdefined("items[i].summary.xmlText")>
+				<cfelseif  structKeyExists(items[i],"summary")>
 					<cfset feedItem.summary=items[i].summary.xmlText />
 				</cfif>
 				
@@ -130,18 +130,18 @@ to your own modified versions of Mura CMS.
 					<cfif ArrayLen(content)>
 						<cfset feedItem.body = content[1].xmlText>   
 					<cfelse>     
-						<cfif isdefined("items[i].description.xmlText")>
-							<cfset feedItem.summary=items[i].description.xmlText />
-						<cfelseif isdefined("items[i].summary.xmlText")>
-							<cfset feedItem.summary=items[i].summary.xmlText />
+						<cfif structKeyExists(items[i],"description")>
+							<cfset feedItem.body=items[i].description.xmlText />
+						<cfelseif structKeyExists(items[i],"summary")>
+							<cfset feedItem.body=items[i].summary.xmlText />
 						</cfif>   
 					</cfif>
 					
 					<cfcatch>
-						<cfif isdefined("items[i].description.xmlText")>
-							<cfset feedItem.summary=items[i].description.xmlText />
-						<cfelseif isdefined("items[i].summary.xmlText")>
-							<cfset feedItem.summary=items[i].summary.xmlText />
+						<cfif structKeyExists(items[i],"description")>
+							<cfset feedItem.body=items[i].description.xmlText />
+						<cfelseif structKeyExists(items[i],"summary")>
+							<cfset feedItem.body=items[i].summary.xmlText />
 						</cfif> 
 					</cfcatch>
 				</cftry>
