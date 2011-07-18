@@ -513,12 +513,19 @@ to your own modified versions of Mura CMS.
 	<cfargument name="data" type="any" required="true" />
 	<cfset var str = "" />
 	<cfset var errorFile = "" />
+	<cfset var dir = "" />
 	
 	<cfif server.coldfusion.productname eq "BlueDragon">
 		<cfset errorFile = "#ExpandPath('.')#/config/setup/errors/#createUUID()#_error.html" />
 	<cfelse>
 		<cfset errorFile = "#getDirectoryFromPath( getCurrentTemplatePath() )#errors/#createUUID()#_error.html" />
 	</cfif>
+	
+	<!--- make sure the error directory exists --->
+	<cfset dir = getDirectoryFromPath(errorFile) />	
+	<cfif not directoryExists(dir)>
+		<cfdirectory action="create" directory="#dir#" />
+	</cfif>	
 	<!--- dump the error into a variable --->
 	<cfsavecontent variable="str">
 		<cfdump var="#arguments.data#">
