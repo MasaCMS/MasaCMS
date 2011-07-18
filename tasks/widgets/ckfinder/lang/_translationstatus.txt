@@ -1,4 +1,4 @@
-Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
+Copyright (c) 2003-2011, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 
 cs.js      Found: 81 Missing: 70
@@ -7,6 +7,7 @@ de.js      Found: 81 Missing: 70
 el.js      Found: 81 Missing: 70
 es-mx.js   Found: 151 Missing: 0
 es.js      Found: 151 Missing: 0
+fi.js      Found: 151 Missing: 0
 fr.js      Found: 150 Missing: 1
 he.js      Found: 151 Missing: 0
 hu.js      Found: 81 Missing: 70

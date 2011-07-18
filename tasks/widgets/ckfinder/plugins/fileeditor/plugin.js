@@ -1,7 +1,7 @@
 ﻿CKFinder.addPlugin( 'fileeditor', function( api ) {
 
 	var regexExt = /^(.*)\.([^\.]+)$/,
-		regexTextExt = /^(txt|css|html|htm|js|asp|cfm|cfc|ascx|php|inc|xml|xslt|xsl|properties)$/i,
+		regexTextExt = /^(txt|css|html|htm|js|asp|cfm|cfc|ascx|php|inc|xml|xslt|xsl)$/i,
 		regexCodeMirrorExt = /^(css|html|htm|js|xml|xsl|php|cfm|cfc)$/i,
 		codemirror,
 		file,
@@ -106,20 +106,20 @@
 				var cssHeight = parseInt( height, 10 ) * 0.7 - 20;
 
 				doc = dialog.getElement().getDocument();
+				var win = doc.getWindow();
 				doc.getById( 'fileArea' ).setHtml( '<div class="ckfinder_loader_32" style="margin: 100px auto 0 auto;text-align:center;"><p style="height:' + cssHeight + 'px;width:' + cssWidth + 'px;">' + api.lang.Fileeditor.loadingFile + '</p></div>' );
 
 				file = api.getSelectedFile();
 				var enableCodeMirror = regexCodeMirrorExt.test( file.ext );
 				this.setTitle( file.name );
 
-				if ( enableCodeMirror && typeof( window.CodeMirror ) == 'undefined' )
+				if ( enableCodeMirror && win.$.CodeMirror === undefined )
 				{
-					var head= window.document.getElementsByTagName( 'head' )[0];
-					var script= window.document.createElement( 'script' );
+					var head= doc.$.getElementsByTagName( 'head' )[0];
+					var script= doc.$.createElement( 'script' );
 					script.type= 'text/javascript';
 					script.src = CKFinder.getPluginPath( 'fileeditor' ) + 'codemirror/js/codemirror.js';
 					head.appendChild( script );
-					
 				}
 
 				// If CKFinder is runninng under a different domain than baseUrl, then the following call will fail:
@@ -128,47 +128,53 @@
 				var url = api.connector.composeUrl( 'DownloadFile', { FileName : file.name, format : 'text', t : new Date().getTime() },
 						file.folder.type, file.folder );
 
-				CKFinder.ajax.load( url, function( data ) {
-						if ( data === null || ( file.size > 0 && data === '' ) )
-						{
-							api.openMsgDialog( '', api.lang.Fileeditor.fileOpenError );
-							dialog.hide();
-							return;
-						}
-						else
-							fileLoaded = true;
-
-						var fileArea = doc.getById( 'fileArea' );
-
-						fileArea.setStyle('height', '100%');
-						fileArea.setHtml( '<textarea id="fileContent" style="height:' + cssHeight + 'px; width:' + cssWidth + 'px"></textarea>' );
-						doc.getById( 'fileContent' ).setText( data );
-
-						codemirror = null;
-						if ( enableCodeMirror && typeof( window.CodeMirror ) != 'undefined' )
-						{
-							codemirror = window.CodeMirror.fromTextArea( doc.getById('fileContent').$, {
-								height: "350px",
-								parserfile: codeMirrorParsers[ file.ext ],
-								stylesheet: codeMirrorCss[ file.ext ],
-								path : codemirrorPath + "js/"
-							});
-							// TODO get rid of ugly buttons and provide something better
-							var undoB = doc.createElement( "button", { attributes: { "label" : api.lang.common.undo } } );
-							undoB.on( 'click', function() {
-								codemirror.undo();
-							});
-							undoB.setHtml( api.lang.common.undo );
-							undoB.appendTo( doc.getById( 'fileArea' ) );
-							var redoB = doc.createElement( 'button', { attributes: { "label" : api.lang.common.redo } } );
-							redoB.on('click', function() {
-								codemirror.redo();
-							});
-							redoB.setHtml( api.lang.common.redo );
-							redoB.appendTo( doc.getById( 'fileArea' ) );
-						}
+				CKFinder.ajax.load( url, function( data )
+				{
+					if ( data === null || ( file.size > 0 && data === '' ) )
+					{
+						api.openMsgDialog( '', api.lang.Fileeditor.fileOpenError );
+						dialog.hide();
+						return;
 					}
-				);
+					else
+						fileLoaded = true;
+
+					var fileArea = doc.getById( 'fileArea' );
+
+					fileArea.setStyle('height', '100%');
+					fileArea.setHtml( '<textarea id="fileContent" style="height:' + cssHeight + 'px; width:' + cssWidth + 'px"></textarea>' );
+					doc.getById( 'fileContent' ).setText( data );
+
+					codemirror = null;
+					if ( enableCodeMirror && win.$.CodeMirror !== undefined )
+					{
+						codemirror = win.$.CodeMirror.fromTextArea( doc.getById( 'fileContent').$,
+							{
+								height : cssHeight + 'px',
+								parserfile : codeMirrorParsers[ file.ext.toLowerCase() ],
+								stylesheet : codeMirrorCss[ file.ext.toLowerCase() ],
+								path : codemirrorPath + "js/"
+							}
+						);
+
+						// TODO get rid of ugly buttons and provide something better
+						var undoB = doc.createElement( "button", { attributes: { "label" : api.lang.common.undo } } );
+						undoB.on( 'click', function()
+						{
+							codemirror.undo();
+						});
+						undoB.setHtml( api.lang.common.undo );
+						undoB.appendTo( doc.getById( 'fileArea' ) );
+
+						var redoB = doc.createElement( 'button', { attributes: { "label" : api.lang.common.redo } } );
+						redoB.on('click', function()
+						{
+							codemirror.redo();
+						});
+						redoB.setHtml( api.lang.common.redo );
+						redoB.appendTo( doc.getById( 'fileArea' ) );
+					}
+				});
 			},
 			contents : [
 				{

@@ -185,14 +185,14 @@ to your own modified versions of Mura CMS.
 		<cfset this.ormSettings.autogenmap=properties.getProperty("ormautogenmap","true") />
 		<cfset this.ormSettings.logsql=properties.getProperty("ormlogsql","false") />
 	</cfif>
-	
-	<cfset request.muraFrontEndRequest=false>
-	<cfset request.muraChangesetPreview=false>
-	<cfset request.muraExportHtml = false>
-	<cfset request.muraMobileRequest=false>
-	<cfset request.muraHandledEvents = structNew()>
-	<cfset request.altTHeme = "">	
-	<cfset request.customMuraScopeKeys = structNew()>	
+
+	<cfparam name="request.muraFrontEndRequest" default="false"/>
+	<cfparam name="request.muraChangesetPreview" default="false"/>
+	<cfparam name="request.muraExportHtml" default="false"/>
+	<cfparam name="request.muraMobileRequest" default="false"/>
+	<cfparam name="request.muraHandledEvents" default="#structNew()#"/>
+	<cfparam name="request.altTHeme" default=""/>
+	<cfparam name="request.customMuraScopeKeys" default="#structNew()#"/>
 	
 	<cftry>
 		<cfinclude template="/plugins/cfapplication.cfm">

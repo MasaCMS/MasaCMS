@@ -1,7 +1,7 @@
 CKFinder License
 ================
 http://ckfinder.com
-Copyright (C) 2007-2010, CKSource - Frederico Knabben. All rights reserved.
+Copyright (C) 2007-2011, CKSource - Frederico Knabben. All rights reserved.
 
 This license (the "License") is a legal agreement between you (either an
 individual or a single entity) and CKSource - Frederico Knabben ("CKSource")

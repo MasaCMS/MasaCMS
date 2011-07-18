@@ -2,7 +2,7 @@
 {
 	var copyP = document.createElement( 'p' ) ;
 	copyP.className = 'copyright' ;
-	copyP.innerHTML = '&copy; 2007-2010 <a href="http://cksource.com" target="_blank">CKSource</a> - Frederico Knabben . Wszystkie prawa zastrzeżone.<br /><br />' ;
+	copyP.innerHTML = '&copy; 2007-2011 <a href="http://cksource.com" target="_blank">CKSource</a> - Frederico Knabben . Wszystkie prawa zastrzeżone.<br /><br />' ;
 	document.body.appendChild( document.createElement( 'hr' ) ) ;
 	document.body.appendChild( copyP ) ;
 
