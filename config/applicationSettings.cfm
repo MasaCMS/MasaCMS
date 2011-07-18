@@ -91,14 +91,14 @@ to your own modified versions of Mura CMS.
 	<cfset this.mappings["/config"] = mapPrefix & baseDir & "/config">
 	
 	<cftry>
-		<cfinclude template="../config/mappings.cfm">
+		<cfinclude template="#properties.getProperty("context","")#/config/mappings.cfm">
 		<cfset hasMainMappings=true>
 		<cfcatch>
 			<cfset hasMainMappings=false>
 		</cfcatch>
 	</cftry>
 	<cftry>
-		<cfinclude template="../plugins/mappings.cfm">
+		<cfinclude template="#properties.getProperty("context","")#/plugins/mappings.cfm">
 		<cfset hasPluginMappings=true>
 		<cfcatch>
 			<cfset hasPluginMappings=false>
@@ -195,14 +195,14 @@ to your own modified versions of Mura CMS.
 	<cfparam name="request.customMuraScopeKeys" default="#structNew()#"/>
 	
 	<cftry>
-		<cfinclude template="../plugins/cfapplication.cfm">
+		<cfinclude template="#properties.getProperty("context","")#/plugins/cfapplication.cfm">
 		<cfset hasPluginCFApplication=true>
 		<cfcatch>
 			<cfset hasPluginCFApplication=false>
 		</cfcatch>
 	</cftry>
 	<cftry>
-		<cfinclude template="../config/cfapplication.cfm">
+		<cfinclude template="#properties.getProperty("context","")#/config/cfapplication.cfm">
 		<cfset request.hasCFApplicationCFM=true>
 		<cfcatch>
 			<cfset request.hasCFApplicationCFM=false>
