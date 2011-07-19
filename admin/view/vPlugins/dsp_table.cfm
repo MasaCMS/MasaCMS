@@ -42,7 +42,7 @@ to your own modified versions of Mura CMS.
 --->
 <cfoutput>
 <cfset started=false>
-<div id="tab#ucase(local.category)#">
+<div id="tab#ucase(replace(local.category,' ','','all'))#">
 <table class="stripe">
 <tr>
 <th class="varWidth">#application.rbFactory.getKeyValue(session.rb,"plugin.name")#</th>
