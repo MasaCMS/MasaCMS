@@ -920,13 +920,33 @@ select * from tplugins order by #arguments.orderby#
 <cffunction name="getSitePlugins" returntype="query" output="false">
 <cfargument name="siteID">
 <cfargument name="orderby" default="name" required="true">
+<cfargument name="applyPermFilter" default="false" required="true">
 	<cfset var rs="">
+	<cfset var moduleList="">
+	
 	<cfquery name="rs" datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	select tplugins.pluginID,tplugins.moduleID, tplugins.package, tplugins.directory, tplugins.name,tplugins.version,
 	tplugins.provider, tplugins.providerURL,tplugins.category,tplugins.created from tplugins inner join tcontent
 	on (tplugins.moduleID=tcontent.moduleID and tcontent.siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#">)
 	order by tplugins.#arguments.orderby#
 	</cfquery>
+	
+	<cfif arguments.applyPermFilter>
+		<cfloop query="rs">
+			<cfif application.permUtility.getModulePerm(rs.moduleID,session.siteid)>
+				<cfset moduleList=listAppend(moduleList,rs.moduleID)>
+			</cfif>	
+		</cfloop>	
+		<cfquery dbtype="query" name="rs">
+			select * from rs where
+			<cfif len(moduleList)>
+			moduleID in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#moduleList#">)
+			<cfelse>
+			0=1
+			</cfif>
+		</cfquery>
+	</cfif>
+	
 	<cfreturn rs>
 </cffunction>
 
