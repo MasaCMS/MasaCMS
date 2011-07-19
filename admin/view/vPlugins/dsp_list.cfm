@@ -42,8 +42,8 @@ to your own modified versions of Mura CMS.
 --->
 <cfoutput>
 <h2>#application.rbFactory.getKeyValue(session.rb,"plugin.siteplugins")#</h2>
+
 <cfset started=false>
-<cfif application.permUtility.getModulePerm(request.rslist.moduleID,session.siteid)>
 	<div class="tabs initActiveTab" style="display:none">
 		<ul>
 		<li><a href="##tab#ucase('Application')#" onclick="return false;"><span>Application</span></a></li>
@@ -67,5 +67,4 @@ to your own modified versions of Mura CMS.
 		</cfif>
 	</cfloop>
 	</div>
-</cfif>
 </cfoutput>
