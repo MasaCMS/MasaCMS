@@ -50,7 +50,7 @@ to your own modified versions of Mura CMS.
 		<li><a href="##tab#ucase('Utility')#" onclick="return false;"><span>Utility</span></a></li>
 		<cfloop collection="#rc.plugingroups#" item="local.category" >
 			<cfif not listFind("Application,Utility",local.category) and rc.plugingroups[local.category].recordCount>
-				<li><a href="##tab#ucase(local.category)#" onclick="return false;"><span>#local.category#</span></a></li>
+				<li><a href="##tab#ucase(replace(local.category,' ','','all'))#" onclick="return false;"><span>#local.category#</span></a></li>
 			</cfif>
 		</cfloop>
 		</ul>
