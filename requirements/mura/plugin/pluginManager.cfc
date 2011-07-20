@@ -51,6 +51,7 @@ to your own modified versions of Mura CMS.
 <cfset variables.globalListeners=structNew()>
 <cfset variables.pluginConfigs=structNew()>
 <cfset variables.eventHandlers=arrayNew(1)>
+<cfset variables.zipTool=createObject("component","mura.Zip")>
 
 <cffunction name="init" returntype="any" access="public" output="false">
 	<cfargument name="configBean">
@@ -165,7 +166,11 @@ select * from tplugins order by #arguments.orderby#
 
 <cffunction name="deploy" returntype="any" access="public" output="false">
 <cfargument name="moduleID" required="true" default="">
-
+<cfargument name="id" required="true" default="" hint="Either ModuleID, PluginID or Package. Can be used instead of moduleID argument.">
+<cfargument name="useDefaultSettings" required="true" default="false" hint="Deploy default config.xml settings values, not applicable for bundles">
+<cfargument name="siteID" default="" hint="List of siteIDs to assign the plugin. Only applicable when useDefaultSettings is set to true.">
+<cfargument name="pluginFile" required="true" default="">
+	
 <cfset var delim=variables.configBean.getFileDelim() />
 <cfset var location="">
 <cfset var modID=arguments.moduleID />
@@ -179,27 +184,44 @@ select * from tplugins order by #arguments.orderby#
 <cfset var script="" />
 <cfset var eventHandler=""/>
 <cfset var isNew=false />
-<cfset var zipTool=createObject("component","mura.Zip")>
 <cfset var errors=structNew()>
 <cfset var rsZipFiles="">
 <cfset var zipTrim="">
+<cfset var deployArgs=structNew()>
+<cfset var pluginXML="">
+<cfset var rsPlugin="">
+<cfset var settingsLen=0>
+<cfset var settingsBean="">
+<cfset var serverFile="">
+<cfset var cffileData=structNew()>
+<cfset var isPostedFile=false>
+
 
 <cflock name="addPlugin" timeout="200">
 	<!--- <cftry> --->
-
-	<cffile action="upload" filefield="NewPlugin" nameconflict="makeunique" destination="#variables.configBean.getTempDir()#">	
+	
+	<cfif not len(modID) and len(arguments.id)>
+		<cfset modID=getPlugin(id,'',false).moduleID>
+	</cfif>
+	
+	<cfif not len(arguments.pluginFile) and isDefined("form.NewPlugin") and getBean("fileManager").isPostedFile(form.NewPlugin)>
+		<cffile action="upload" result="cffileData" filefield="NewPlugin" nameconflict="makeunique" destination="#variables.configBean.getTempDir()#" >	
+		<cfset serverFile="#variables.configBean.getTempDir()##delim##cffileData.serverFile#">
+	<cfelse>
+		<cfset serverFile=arguments.pluginFile>
+	</cfif>
 	
 	<!--- Check to see if this is an Bundled plugin --->
-	<cfif variables.settingsManager.isBundle("#variables.configBean.getTempDir()##delim##cffile.serverfile#")>
+	<cfif variables.settingsManager.isBundle(serverfile)>
 		
 		<cfif len(modID)>
-			<cfset errors=variables.settingsManager.restoreBundle(BundleFile="#variables.configBean.getTempDir()##delim##cffile.serverfile#",siteID="",keyMode="publish",contentMode="none", renderingMode="none",pluginMode="all", moduleID=modID)>
+			<cfset errors=variables.settingsManager.restoreBundle(BundleFile=serverfile,siteID=arguments.siteID,keyMode="publish",contentMode="none", renderingMode="none",pluginMode="all", moduleID=modID)>
 			<cfif not structIsEmpty(errors)>
 				<cfset getCurrentUser().setValue("errors",errors)>
 				<cfreturn "">
 			</cfif>	
 		<cfelse>
-			<cfset errors=variables.settingsManager.restoreBundle(BundleFile="#variables.configBean.getTempDir()##delim##cffile.serverfile#",siteID="",keyMode="copy", contentMode="none", renderingMode="none",pluginMode="all", moduleID="")>
+			<cfset errors=variables.settingsManager.restoreBundle(BundleFile=serverfile,siteID=arguments.siteID,keyMode="copy", contentMode="none", renderingMode="none",pluginMode="all", moduleID="")>
 			<cfif not structIsEmpty(errors)>
 				<cfset getCurrentUser().setValue("errors",errors)>
 				<cfreturn "">
@@ -248,12 +270,12 @@ select * from tplugins order by #arguments.orderby#
 		
 		<!--- Set the directory to the newly installed pluginID--->
 		<cfif isNew>
-		<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-		update tplugins set
-		directory=<cfqueryparam cfsqltype="cf_sql_varchar" value="#rsPlugin.pluginID#">
-		where moduleID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#rsPlugin.moduleID#">			
-		</cfquery>
-		<cfset rsPlugin=getPlugin(modID,'',false) />
+			<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+			update tplugins set
+			directory=<cfqueryparam cfsqltype="cf_sql_varchar" value="#rsPlugin.pluginID#">
+			where moduleID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#rsPlugin.moduleID#">			
+			</cfquery>
+			<cfset rsPlugin=getPlugin(modID,'',false) />
 		</cfif>
 		
 		<cfset location=getLocation(rsPlugin.directory) />
@@ -265,38 +287,71 @@ select * from tplugins order by #arguments.orderby#
 		--->
 		
 		<cfif not directoryExists(location)>
-		<cfset variables.fileWriter.createDir(directory="#location#")>
+			<cfset variables.fileWriter.createDir(directory="#location#")>
 		</cfif>
 		
-		<cfset rsZipFiles=zipTool.list(zipFilePath="#variables.configBean.getTempDir()##delim##cffile.serverfile#")>
-		
-		<cfquery name="rsZipFiles" dbtype="query">
-		select * from rsZipFiles
-		where entry like '%#delim#plugin#delim#%'
-		or entry like 'plugin#delim#%'
-		</cfquery>
-		
-		
-		<cfloop list="#rsZipFiles.entry#" delimiters="#delim#" index="i">
-			<cfif i eq "plugin">
-				<cfbreak>
-			<cfelse>
-				<cfset zipTrim=listAppend(zipTrim,i,delim)>
-			</cfif>	
-		</cfloop>
+		<cfset zipTrim=getZipTrim(serverFile)>
 
 		<cfif len(zipTrim)>
-			<cfset zipTool.extract(zipFilePath="#variables.configBean.getTempDir()##delim##cffile.serverfile#",extractPath="#location#", overwriteFiles=true, extractDirs=zipTrim, extractDirsToTop=true)>
+			<cfset variables.zipTool.extract(zipFilePath=serverfile,extractPath=location, overwriteFiles=true, extractDirs=zipTrim, extractDirsToTop=true)>
 		<cfelse>
-			<cfset zipTool.extract(zipFilePath="#variables.configBean.getTempDir()##delim##cffile.serverfile#",extractPath="#location#", overwriteFiles=true)>
+			<cfset variables.zipTool.extract(zipFilePath=serverfile,extractPath=location, overwriteFiles=true)>
 		</cfif>
 		
-		<cffile action="delete" file="#variables.configBean.getTempDir()##delim##cffile.serverfile#">
+		<cfif not structIsEmpty(cffileData)>
+			<cffile action="delete" file="#serverfile#">
+		</cfif>
 		
-		<cfset savePluginXML(modID) />
+		<cfset savePluginXML(modID=modID) />
 		<cfset loadPlugins() />
-	
-		<cfreturn modID/>
+		
+		<cfif arguments.useDefaultSettings>
+
+			<cfset pluginXML=getPluginXML(modID)>
+			<cfset rsPlugin=getPlugin(modID)>
+			
+			<cfset deployArgs.location="global">
+			<cfset deployArgs.overwrite="false">
+			
+			<cfset deployArgs.siteAssignID=arguments.siteID>
+			
+			<cfif structKeyExists(pluginXML.plugin,"package") and len(pluginXML.plugin.package.xmlText)>
+				<cfset deployArgs.package=pluginXML.plugin.package.xmlText>
+			<cfelse>
+				<cfset deployArgs.package="">
+			</cfif>
+			
+			<cfif structKeyExists(pluginXML.plugin.settings,"setting")>
+				<cfset settingsLen=arraylen(pluginXML.plugin.settings.setting)/>
+			<cfelse>
+				<cfset settingsLen=0>
+			</cfif>
+			
+			<cfif structKeyExists(pluginXML.plugin,"scripts") and structKeyExists(pluginXML.plugin.scripts,"script")>
+				<cfset scriptsLen=arraylen(pluginXML.plugin.scripts.script)/>
+			<cfelse>
+				<cfset scriptsLen=0>
+			</cfif>
+			
+			<cfset deployArgs.pluginAlias=rsPlugin.name>
+			<cfset deployArgs.loadPriority= rsPlugin.loadPriority>
+			<cfset deployArgs.moduleID=modID>
+			
+			<cfloop from="1" to="#settingsLen#" index="i">
+				<cfset settingBean=application.pluginManager.getAttributeBean(pluginXML.plugin.settings.setting[i],modID)/>		
+				<cfif not len(settingBean.getSettingValue())
+						and not rsPlugin.deployed and structKeyExists(pluginXML.plugin.settings.setting[i],'defaultValue')>
+					<cfset settingBean.setSettingValue(pluginXML.plugin.settings.setting[i].defaultValue.xmlText)>
+				</cfif>
+				<cfset deployArgs["#settingBean.getname()#"]=application.contentRenderer.setDynamicContent(settingBean.getSettingValue())>
+			</cfloop>
+			
+			<cfset updateSettings(deployArgs)>
+
+		</cfif>
+		
+		<cfreturn modID/>	
+		
 	</cfif>
 	
 	</cflock>
@@ -613,13 +668,20 @@ select * from tplugins order by #arguments.orderby#
 
 <cffunction name="getPluginXML" returntype="xml" output="false">
 <cfargument name="moduleID">
+<cfargument name="pluginDir" default="">
 	<cfset var theXML="">
-	<cfset var rsPlugin=getPlugin(arguments.moduleID,'',false)>
+	<cfset var rsPlugin="">
 	<cfset var delim=variables.configBean.getFileDelim() />
-	<cfif fileExists("#getLocation(rsPlugin.directory)#plugin#delim#config.xml")>
-		<cffile action="read" file="#getLocation(rsPlugin.directory)#plugin#delim#config.xml" variable="theXML">
+	
+	<cfif not len(arguments.pluginDir)>
+		<cfset rsPlugin=getPlugin(arguments.moduleID,'',false)>	
+		<cfset arguments.pluginDir=rsPlugin.directory>
+	</cfif>
+	
+	<cfif fileExists("#getLocation(arguments.pluginDir)#plugin#delim#config.xml")>
+		<cffile action="read" file="#getLocation(arguments.pluginDir)#plugin#delim#config.xml" variable="theXML">
 	<cfelse>
-		<cfsavecontent variable="theXML"><cfoutput><cfinclude template="/plugins/#rsPlugin.directory#/plugin/config.xml.cfm"></cfoutput></cfsavecontent>
+		<cfsavecontent variable="theXML"><cfoutput><cfinclude template="/plugins/#arguments.pluginDir#/plugin/config.xml.cfm"></cfoutput></cfsavecontent>
 	</cfif>
 	<cfreturn xmlParse(theXML)/>
 </cffunction>
@@ -1798,6 +1860,41 @@ select * from rs order by name
 	<cfreturn errors>
 </cffunction>
 
+<cffunction name="deployPlugin" output="false" hint="I return a struct of any errors that occured.">
+	<cfargument name="siteID" hint="List of siteIDs to assign the plugin">
+	<cfargument name="pluginFile" hint="Complete path to bundle file">
+	
+	<cfset var zipTrim=getZipTrim(arguments.pluginFile)>
+	<cfset var errors=structNew()>
+	<cfset var tempDir=createUUID()>
+	<cfset var fileWriter=getBean("fileWriter")>
+	<cfset var id="">
+	<cfset var pluginXML="">
+	
+	<cfset fileWriter.createDir(directory=getLocation(tempDir))>
+
+	<cfif len(zipTrim)>
+		<cfset variables.zipTool.extract(zipFilePath=arguments.pluginFile,extractPath=getLocation(tempDir), overwriteFiles=true, extractDirs=zipTrim, extractDirsToTop=true)>
+	<cfelse>
+		<cfset variables.zipTool.extract(zipFilePath=arguments.pluginFile,extractPath=getLocation(tempDir), overwriteFiles=true)>
+	</cfif>
+	
+	<cfset pluginXml=getPluginXML(moduleID="",pluginDir=tempDir)>
+	
+	<cfset fileWriter.deleteDir(directory=getLocation(tempDir))>
+	
+	<cfif structKeyExists(pluginXML.plugin,"package") and len(pluginXML.plugin.package.xmlText)>
+			<cfset id=pluginXML.plugin.package.xmlText>
+	<cfelse>
+			<cfset id=pluginXML.plugin.name.xmlText>
+	</cfif>	
+	
+	<cfreturn deploy(id=id, pluginFile=arguments.pluginFile, useDefaultSettings=true, siteID=arguments.siteID)>
+
+</cffunction>
+
+
+
 <cffunction name="createBundle" output="false" hint="I bundle a plugin and return it's filename">
 	<cfargument name="id" hint="ModuleID or pluginID or Package">
 	<cfargument name="directory" hint="Server directory to save the bundle">
@@ -1815,6 +1912,31 @@ select * from rs order by name
 			includeFormData=false,
 			saveFile=true,
 			saveFileDir=arguments.directory) />
+</cffunction>
+
+<cffunction name="getZipTrim" output="false">
+	<cfargument name="pluginFile">
+	<cfset var i="">
+	<cfset var zipTrim="">
+	<cfset var delim=variables.configBean.getFileDelim() />
+	
+	<cfset var rsZipFiles=variables.zipTool.list(zipFilePath=arguments.pluginFile)>
+		
+	<cfquery name="rsZipFiles" dbtype="query">
+		select * from rsZipFiles
+		where entry like '%#delim#plugin#delim#%'
+		or entry like 'plugin#delim#%'
+	</cfquery>
+				
+	<cfloop list="#rsZipFiles.entry#" delimiters="#delim#" index="i">
+		<cfif i eq "plugin">
+			<cfbreak>
+		<cfelse>
+			<cfset zipTrim=listAppend(zipTrim,i,delim)>
+		</cfif>	
+	</cfloop>
+		
+	<cfreturn zipTrim>
 </cffunction>
 
 </cfcomponent>
