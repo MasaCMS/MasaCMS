@@ -1845,12 +1845,13 @@ select * from rs order by name
 <cffunction name="deployBundle" output="false" hint="I return a struct of any errors that occured.">
 	<cfargument name="siteID" hint="List of siteIDs to assign the plugin">
 	<cfargument name="bundleFile" hint="Complete path to bundle zip file">
+	<cfset var errors=structNew()>
 	
 	<cfif not variables.settingsManager.isBundle(arguments.bundleFile)>
 		<cfreturn deployBundle(siteID=arguments.siteID, pluginFile=arguments.bundleFile)>	
 	</cfif>
 	
-	<cfset var errors=application.serviceFactory.getBean("settingsManager").restoreBundle(
+	<cfset errors=application.serviceFactory.getBean("settingsManager").restoreBundle(
 			BundleFile=arguments.bundleFile,
 			siteID=arguments.siteID,
 			keyMode="publish",
