@@ -141,7 +141,9 @@
 	
 	<cfset event.setValue('forceSSL',event.getValue('contentBean').getForceSSL())/>
 	
-	<cfset event.setValue('crumbdata',application.contentGateway.getCrumbList(event.getValue('contentBean').getcontentid(),event.getContentBean().getSiteID(),true,event.getValue('contentBean').getPath())) />
+	<cfif not event.valueExists('crumbdata')>
+		<cfset event.setValue('crumbdata',application.contentGateway.getCrumbList(event.getValue('contentBean').getcontentid(),event.getContentBean().getSiteID(),true,event.getValue('contentBean').getPath())) />
+	</cfif>
 	
 	<cfset renderer.crumbdata=event.getValue("crumbdata")>
 	
