@@ -352,13 +352,15 @@ to your own modified versions of Mura CMS.
 	</cfif>
 	
 	<cfif structIsEmpty(userBean.getErrors())>
+		
+		<!--- Reset extended data internal ids --->
+		<cfset arguments.data=userBean.getAllValues()>
 	
 		<cfif isDefined('arguments.data.activationNotify') and userBean.getInActive() eq 0>	
 			<cfset variables.userUtility.sendActivationNotification(userBean) />
 		</cfif>
 		
 		<cfif structKeyExists(arguments.data,"extendSetID") and len(arguments.data.extendSetID)>
-			<cfset arguments.data.siteID=userBean.getSiteID() />
 			<cfset variables.ClassExtensionManager.saveExtendedData(userBean.getUserID(),arguments.data,'tclassextenddatauseractivity')/>
 		</cfif>
 		
@@ -468,8 +470,10 @@ to your own modified versions of Mura CMS.
 	
 	<cfif structIsEmpty(userBean.getErrors())>
 		
+		<!--- Reset extended data internal ids --->
+		<cfset arguments.data=userBean.getAllValues()>
+		
 		<cfif structKeyExists(arguments.data,"extendSetID") and len(arguments.data.extendSetID)>
-			<cfset arguments.data.siteID=userBean.getSiteID() />
 			<cfset variables.ClassExtensionManager.saveExtendedData(userBean.getUserID(),arguments.data,'tclassextenddatauseractivity')/>
 		</cfif>
 		
