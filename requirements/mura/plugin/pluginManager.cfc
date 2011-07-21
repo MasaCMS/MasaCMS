@@ -164,7 +164,7 @@ select * from tplugins order by #arguments.orderby#
 <cfreturn rs/>
 </cffunction>
 
-<cffunction name="deploy" returntype="any" access="public" output="false">
+<cffunction name="deploy" returntype="any" access="public" output="false" hint="This method is primarily used internally by Mura. See deployPlugin." >
 <cfargument name="moduleID" required="true" default="">
 <cfargument name="id" required="true" default="" hint="Either ModuleID, PluginID or Package. Can be used instead of moduleID argument.">
 <cfargument name="useDefaultSettings" required="true" default="false" hint="Deploy default config.xml settings values, not applicable for bundles">
@@ -1844,7 +1844,11 @@ select * from rs order by name
 
 <cffunction name="deployBundle" output="false" hint="I return a struct of any errors that occured.">
 	<cfargument name="siteID" hint="List of siteIDs to assign the plugin">
-	<cfargument name="bundleFile" hint="Complete path to bundle file">
+	<cfargument name="bundleFile" hint="Complete path to bundle zip file">
+	
+	<cfif not variables.settingsManager.isBundle(arguments.bundleFile)>
+		<cfreturn deployBundle(siteID=arguments.siteID, pluginFile=arguments.bundleFile)>	
+	</cfif>
 	
 	<cfset var errors=application.serviceFactory.getBean("settingsManager").restoreBundle(
 			BundleFile=arguments.bundleFile,
@@ -1862,7 +1866,7 @@ select * from rs order by name
 
 <cffunction name="deployPlugin" output="false" hint="I return a struct of any errors that occured.">
 	<cfargument name="siteID" hint="List of siteIDs to assign the plugin">
-	<cfargument name="pluginFile" hint="Complete path to bundle file">
+	<cfargument name="pluginFile" hint="Complete path to plugin zip file">
 	
 	<cfset var zipTrim=getZipTrim(arguments.pluginFile)>
 	<cfset var errors=structNew()>
@@ -1870,6 +1874,10 @@ select * from rs order by name
 	<cfset var fileWriter=getBean("fileWriter")>
 	<cfset var id="">
 	<cfset var pluginXML="">
+	
+	<cfif variables.settingsManager.isBundle(arguments.pluginFile)>
+		<cfreturn deployBundle(siteID=arguments.siteID, bundleFile=arguments.pluginFile)>	
+	</cfif>
 	
 	<cfset fileWriter.createDir(directory=getLocation(tempDir))>
 
@@ -1892,8 +1900,6 @@ select * from rs order by name
 	<cfreturn deploy(id=id, pluginFile=arguments.pluginFile, useDefaultSettings=true, siteID=arguments.siteID)>
 
 </cffunction>
-
-
 
 <cffunction name="createBundle" output="false" hint="I bundle a plugin and return it's filename">
 	<cfargument name="id" hint="ModuleID or pluginID or Package">

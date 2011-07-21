@@ -675,6 +675,9 @@ to your own modified versions of Mura CMS.
 		<cfset variables.pluginManager.announceEvent("onBefore#newBean.getType()#Save",pluginEvent)>
 		<cfset variables.pluginManager.announceEvent("onBefore#newBean.getType()##newBean.getSubType()#Save",pluginEvent)>	
 		
+		<!--- Reset extended data internal ids --->
+		<cfset arguments.data=newBean.getAllValues()>
+		
 		<cflock type="exclusive" name="editingContent#arguments.data.siteid#" timeout="600">
 		<cftransaction>
 		

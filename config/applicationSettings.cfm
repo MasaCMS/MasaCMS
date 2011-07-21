@@ -65,25 +65,26 @@ to your own modified versions of Mura CMS.
 	<!--- Used to help CF work with missing files and dir indexes --->
 	<cfset this.welcomeFileList = "">
 
-<!--- Preferred method for ColdFusion 8, allows you to skip administering these settings in the CF admin	
-	1. Place Mura requirements directory in your webroot
-	2. Place Mura Custom Tags directory into "requirements/custom_tags/"
-	2. Change basedir to point to your webroot
-	3. Uncomment the code below
-	--->
+	<cfset baseDir= left(this.configPath,len(this.configPath)-8) /><cfif not fileExists(baseDir & "/config/settings.ini.cfm")>
+		<cftry>
+		<cffile action="copy" source="#baseDir#/config/templates/settings.template.cfm" destination="#baseDir#/config/settings.ini.cfm" mode="777">
+		<cfcatch>
+			<cffile action="copy" source="#baseDir#/config/templates/settings.template.cfm" destination="#baseDir#/config/settings.ini.cfm">
+		</cfcatch>
+		</cftry>
+	</cfif>
 	
-	<!--- Define the location of your frameworks 
-		The default here is dynamically pointing at the webroot
-	--->
-	<cfset baseDir= left(this.configPath,len(this.configPath)-8) />
-			
+	<cfset properties = createObject( 'java', 'java.util.Properties' ).init()>
+	<cfset fileStream = createObject( 'java', 'java.io.FileInputStream').init( getDirectoryFromPath(getCurrentTemplatePath()) & "/settings.ini.cfm")>
+	<cfset properties.load( fileStream )>
+
+	<!--- define custom coldfusion mappings. Keys are mapping names, values are full paths  --->
 	<cfif StructKeyExists(SERVER,"bluedragon") and not findNoCase("Windows",server.os.name)>
 		<cfset mapPrefix="$" />
 	<cfelse>
 		<cfset mapPrefix="" />
 	</cfif>
-
-	<!--- define custom coldfusion mappings. Keys are mapping names, values are full paths  --->
+	
 	<cfset this.mappings = structNew()>
 	<cfset this.mappings["/plugins"] = mapPrefix & baseDir & "/plugins">
 	<cfset this.mappings["/muraWRM"] = mapPrefix & baseDir>
@@ -104,19 +105,6 @@ to your own modified versions of Mura CMS.
 			<cfset hasPluginMappings=false>
 		</cfcatch>
 	</cftry>
-	
-	<cfif not fileExists(baseDir & "/config/settings.ini.cfm")>
-		<cftry>
-		<cffile action="copy" source="#baseDir#/config/templates/settings.template.cfm" destination="#baseDir#/config/settings.ini.cfm" mode="777">
-		<cfcatch>
-			<cffile action="copy" source="#baseDir#/config/templates/settings.template.cfm" destination="#baseDir#/config/settings.ini.cfm">
-		</cfcatch>
-		</cftry>
-	</cfif>
-	
-	<cfset properties = createObject( 'java', 'java.util.Properties' ).init()>
-	<cfset fileStream = createObject( 'java', 'java.io.FileInputStream').init( getDirectoryFromPath(getCurrentTemplatePath()) & "/settings.ini.cfm")>
-	<cfset properties.load( fileStream )>
 	
 	<cfset request.userAgent = LCase( CGI.http_user_agent ) />
 	<!--- Should we even use sessions? --->
