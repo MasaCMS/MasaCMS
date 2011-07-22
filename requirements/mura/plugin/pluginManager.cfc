@@ -188,8 +188,6 @@ select * from tplugins order by #arguments.orderby#
 <cfset var rsZipFiles="">
 <cfset var zipTrim="">
 <cfset var deployArgs=structNew()>
-<cfset var pluginXML="">
-<cfset var rsPlugin="">
 <cfset var settingsLen=0>
 <cfset var settingsBean="">
 <cfset var serverFile="">
