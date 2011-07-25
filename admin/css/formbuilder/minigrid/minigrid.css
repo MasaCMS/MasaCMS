@@ -1,0 +1,126 @@
+.ui-minigrid {
+	margin: 0 0 5px 0;
+	position: relative;
+}
+.ui-minigrid div {
+}
+.ui-minigrid .ui-resizable-handle {
+	background: url('custom-theme/images/ui-bg_dots-small_30_ee3a23_2x2.png');
+	opacity: .50;
+	filter:Alpha(Opacity=50);
+	top: 0;
+	height: 10px;
+}
+.ui-minigrid ul {
+	margin: 0;
+	padding: 0;
+	width: auto;
+}
+.ui-minigrid .left {
+	float: left;
+}
+.ui-minigrid .right {
+	float: right;
+}
+.ui-minigrid li {
+	clear: none !important;	
+	margin: 0 !important;
+	padding: 0 !important;
+	overflow: hidden !important;
+	list-style: none !important;
+}
+.ui-minigrid li.even {
+	background-color: #f0f0f0;
+}
+.ui-minigrid li.even .text {
+	background-color: #f6f6f6;
+}
+
+.ui-minigrid .ui-minigrid-buttonbar {
+	padding: 1px 2px 3px 1px !important;
+	border: 0;
+	height: 20px;
+}
+.ui-minigrid .ui-minigrid-modal {
+	position: absolute;
+	top: 0;
+	left: 0;
+	height: 100%;
+	width: 100%;
+	background: url('images/modal.png'); 
+}
+.ui-minigrid .ui-minigrid-spinner {
+	height: 100%;
+	width: 100%;
+	background: url('images/spinner.gif') center center no-repeat; 
+}
+
+.ui-minigrid .ui-minigrid-boxed {
+/*	border: 1px solid #ccc; */
+	border: 0;
+	border-bottom: 0;
+}
+.ui-minigrid .ui-minigrid-header {
+}
+.ui-minigrid .ui-minigrid-header-list ul {
+	float: left;
+}
+.ui-minigrid .ui-minigrid-header span {
+	display: block;
+	padding: 2px 0 0 4px;
+}
+.ui-minigrid ul.column li {
+	list-style-type: none;
+	height: 19px !important;
+	float: left !important;
+	margin: 0 !important;
+	padding: 2px !important;
+	border-right: 1px solid #aaa !important;
+}
+.ui-minigrid .ui-minigrid-body {
+	padding: 0 !important;
+	position: relative !important;
+	overflow-x: hidden;
+	overflow-y: scroll;
+}
+.ui-minigrid .ui-minigrid-content li.row {
+	overflow-x: hidden;
+	display: block !important;
+	float: left !important;
+	padding: 0 !important;
+	margin: 0 !important;
+}
+.ui-minigrid .column li.col {
+}
+.ui-minigrid .column li.bit {
+	text-align: center !important;
+	width: 20px !important;
+}
+.ui-minigrid .column li.button {
+	width: 21px !important;
+	border: 0 !important;
+}
+.ui-minigrid .column li.sort {
+	width: 16px !important;
+	border: 0 !important;
+}
+.ui-minigrid span.handle {
+	display: block;
+	border: 0;
+}
+
+.ui-minigrid .column input.text {
+	border: 1px solid #aaa !important;
+	margin: 0 3px 0 1px !important;
+	height: 16px !important;
+	padding: 1px !important;
+}	
+.ui-minigrid .column input.checkbox {
+	bottom: 2px !important;
+	margin: 0 2px !important;
+	height: 20px !important;
+}
+.ui-minigrid .ui-minigrid-bordered {
+/*	border: 1px solid #ccc; */
+	border: 0;
+}

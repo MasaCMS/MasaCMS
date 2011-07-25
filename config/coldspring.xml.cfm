@@ -582,6 +582,8 @@ to your own modified versions of Mura CMS.
 		<bean id="httpSession" class="mura.client.httpSession" singleton="false">
 			<constructor-arg name="configBean"><ref bean="configBean" /></constructor-arg>
 		</bean>
+		<bean id="formBuilderManager" class="mura.formBuilder.formBuilderManager" singleton="true">
+		</bean>
 		<alias name="contentBean" alias="content"/>
 		<alias name="feedBean" alias="feed"/>
 		<alias name="userBean" alias="user"/>

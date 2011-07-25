@@ -213,8 +213,11 @@ select * from rsPluginScripts3 order by pluginID
 <cfif not currentChangeset.getIsNew()>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.changesetversionnotify")#: "#HTMLEditFormat(currentChangeset.getName())#"</cfif>
 </p>
 </cfif>
-
+<cfif attributes.type eq "Form">
+<form novalidate="novalidate" action="index.cfm" method="post" name="contentForm" onsubmit="return saveFormBuilder();" id="contentForm">
+<cfelse>
 <form novalidate="novalidate" action="index.cfm" method="post" enctype="multipart/form-data" name="contentForm" onsubmit="return ckContent(draftremovalnotice);" id="contentForm">
+</cfif>
 <cfif attributes.compactDisplay neq "true">
 	<cfif attributes.moduleid eq '00000000000000000000000000000000000'>#application.contentRenderer.dspZoom(request.crumbdata,fileExt)#</cfif>
 		<ul class="metadata">
@@ -365,7 +368,14 @@ select * from rsPluginScripts3 order by pluginID
 <cfset tabList="">
 <cfsavecontent variable="tabContent">
 
-<cfinclude template="form/dsp_tab_basic.cfm">	
+	<cfif attributes.type neq "Form">
+		<cfinclude template="form/dsp_tab_basic.cfm">	
+	<cfelse>
+		<cfif request.contentBean.getIsNew()>
+			<cfset request.contentBean.setBody( application.serviceFactory.getBean('formBuilderManager').createJSONForm( request.contentBean.getContentID() ) ) />
+		</cfif>
+		<cfinclude template="form/dsp_tab_formbuilder.cfm">
+	</cfif>
 	
 	<cfswitch expression="#attributes.type#">
 		<cfcase value="Page,Portal,Calendar,Gallery,File,Link">

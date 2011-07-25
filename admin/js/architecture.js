@@ -44,7 +44,10 @@ var copySiteID = "";
 var reloadURL = "";
 
 function ckContent(draftremovalnotice){
-		
+	
+	if(saveFormBuilder != undefined)
+		saveFormBuilder();
+	
 	if (document.contentForm.display.value=='2') {
 	var tempStart=document.contentForm.displayStart.value;
 	var tempStop=document.contentForm.displayStop.value;

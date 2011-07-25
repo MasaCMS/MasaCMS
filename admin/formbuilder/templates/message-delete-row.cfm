@@ -1,0 +1,1 @@
+<cfoutput><span>#mmRBF.key('dataset_row_delete_confirm','message')#</span></cfoutput>
