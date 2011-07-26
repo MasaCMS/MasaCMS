@@ -113,7 +113,7 @@ to your own modified versions of Mura CMS.
 	<cfset var blockFactor=arguments.feedBean.getNextN()>
 	<cfset var jointables="" />
 	<cfset var jointable="">
-	<cfset var histtables="tcontenttags,tcontentcategorysassign,tcontentobjects,tcontentrelated">
+	<cfset var histtables="tcontenttags,tcontentcategoryassign,tcontentobjects,tcontentrelated">
 	<cfset var rsAttribute="">
 	<cfset var isListParam=false>
 	
