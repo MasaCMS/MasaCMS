@@ -194,7 +194,6 @@ select * from tplugins order by #arguments.orderby#
 <cfset var cffileData=structNew()>
 <cfset var isPostedFile=false>
 
-
 <cflock name="addPlugin" timeout="200">
 	<!--- <cftry> --->
 	
@@ -1861,18 +1860,16 @@ select * from rs order by name
 	<cfreturn errors>
 </cffunction>
 
-<cffunction name="deployPlugin" output="false" hint="I return a struct of any errors that occured.">
+<cffunction name="deployPlugin" output="false">
 	<cfargument name="siteID" hint="List of siteIDs to assign the plugin">
 	<cfargument name="pluginFile" hint="Complete path to plugin zip file">
 	
 	<cfset var zipTrim=getZipTrim(arguments.pluginFile)>
 	<cfset var errors=structNew()>
 	<cfset var tempDir=createUUID()>
-	<cfset var id="">
 	<cfset var results="">
-	<cfset var id="">
 	<cfset var pluginXml="">
-	<cfset var id="">
+	<cfset var rsSites="">
 	
 	<cfif variables.settingsManager.isBundle(arguments.pluginFile)>
 		<cfreturn deployBundle(siteID=arguments.siteID, bundleFile=arguments.pluginFile)>	
@@ -1902,17 +1899,16 @@ select * from rs order by name
 
 </cffunction>
 
-<cffunction name="deployDirectory" output="false" hint="I return a struct of any errors that occured.">
-	<cfargument name="siteID" hint="List of siteIDs to assign the plugin">
+<cffunction name="deployDirectory" output="false">
+	<cfargument name="siteID" hint="List of siteIDs to assign the plugin. If not defined will defiend to existing assignment.">
 	<cfargument name="directory" hint="Complete path to external plugin directory">
 
 	<cfset var errors=structNew()>
 	<cfset var tempDir=createUUID()>
 	<cfset var id="">
 	<cfset var results="">
-	<cfset var id="">
 	<cfset var pluginXml="">
-	<cfset var id="">
+	<cfset var rsSites="">
 	
 	<cfset variables.fileWriter.createDir(directory=getLocation(tempDir))>
 	<cfset variables.fileWriter.copyDir(arguments.directory,getLocation(tempDir))>
@@ -1923,10 +1919,39 @@ select * from rs order by name
 	<cfelse>
 		<cfset id=pluginXML.plugin.name.xmlText>
 	</cfif>	
+
+	<cfif not structKeyExists(arguments,"siteID")>
+		<cfset rsSites=getConfig(id).getAssignedSites()>
+		<cfset arguments.siteID=valueList(rsSites.siteID)>
+	</cfif>
 	
 	<cfset result=deploy(id=id, pluginDir=tempDir, useDefaultSettings=true, siteID=arguments.siteID)>
 	
 	<cfset variables.fileWriter.deleteDir(directory=getLocation(tempDir))>
+	
+	<cfreturn result>
+
+</cffunction>
+
+<cffunction name="reDeploy" output="false">
+	<cfargument name="siteID" hint="List of siteIDs to assign the plugin. If not defined will defiend to existing assignment.">
+	<cfargument name="ID" hint="The moduleID, pluginID, package or name of plugin to redeploy">
+
+	<cfset var errors=structNew()>
+	<cfset var tempDir=createUUID()>
+	<cfset var rsSites="">
+	<cfset var pluginConfig=getConfig(arguments.id)>
+	
+	<cfif not len(pluginConfig.getDirectory())>
+		<cfthrow message="A plugin with the package, pluginID or moduleID with a value '#arguments.id#' does not exist.">	
+	</cfif>
+
+	<cfif not structKeyExists(arguments,"siteID")>
+		<cfset rsSites=pluginConfig.getAssignedSites()>
+		<cfset arguments.siteID=valueList(rsSites.siteID)>
+	</cfif>
+	
+	<cfset result=deploy(moduleid=pluginConfig.getModuleID(), pluginDir=pluginConfig.getDirectory(), useDefaultSettings=true, siteID=arguments.siteID)>
 	
 	<cfreturn result>
 
