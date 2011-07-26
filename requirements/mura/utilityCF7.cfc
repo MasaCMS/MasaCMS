@@ -199,7 +199,7 @@ to your own modified versions of Mura CMS.
 			WHERE 
 			directory NOT LIKE '%#variables.configBean.getFileDelim()#.svn%'
 			and directory NOT LIKE '%#variables.configBean.getFileDelim()#.git%'
-			AND name not in ('.svn','.git','.gitIgnore','.DS_Store')	
+			AND name not like '.%'
 			
 			<cfif len(arguments.excludeList)>
 				<cfloop list="#arguments.excludeList#" index="i">
