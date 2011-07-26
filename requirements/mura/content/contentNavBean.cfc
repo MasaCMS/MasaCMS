@@ -96,7 +96,7 @@
 	<cfif NOT isObject(variables.instance.content)>
 		<cfset variables.instance.content=getBean("content")>
 		<cfset variables.instance.content.setIsNew(1)>
-		<cfset variables.instance.contentStructTemplate=variables.instance.content.getAllValues(autocomplete=false)>
+		<cfset variables.instance.contentStructTemplate=structCopy(variables.instance.content.getAllValues(autocomplete=false))>
 	</cfif>
 	
 	<cfif NOT variables.instance.content.getIsNew() >
