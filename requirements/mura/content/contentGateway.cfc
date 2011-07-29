@@ -1443,14 +1443,15 @@ to your own modified versions of Mura CMS.
 	<cfset var rs ="" />
 
 	<cfquery name="rs" datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-	SELECT title, releasedate, menuTitle, lastupdate, summary, tcontent.filename, type, tcontent.contentid,
-	target,targetParams, restricted, restrictgroups, displaystart, displaystop, orderno,sortBy,sortDirection,
-	tcontent.fileid, credits, remoteSource, remoteSourceURL, remoteURL,
-	tfiles.fileSize,tfiles.fileExt,path, tcontent.siteid, tcontent.contenthistid
+	SELECT tcontent.title, tcontent.releasedate, tcontent.menuTitle, tcontent.lastupdate, tcontent.summary, tcontent.filename, tcontent.type, tcontent.contentid,
+	tcontent.target,tcontent.targetParams, tcontent.restricted, tcontent.restrictgroups, tcontent.displaystart, tcontent.displaystop, tcontent.orderno,tcontent.sortBy,tcontent.sortDirection,
+	tcontent.fileid, tcontent.credits, tcontent.remoteSource, tcontent.remoteSourceURL, tcontent.remoteURL,
+	tfiles.fileSize,tfiles.fileExt,tcontent.path, tcontent.siteid, tcontent.contenthistid
 	FROM  tcontent Left Join tfiles ON (tcontent.fileID=tfiles.fileID)
+	inner join tcontent parents ON (tcontent.parentID=parents.contentID)
 	WHERE
 	tcontent.siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
-	and active=1 and
+	and tcontent.active=1 and
 	
 	tcontent.contentID in (
 	select relatedID from tcontentrelated where contentHistID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentHistID#"/>
@@ -1458,10 +1459,28 @@ to your own modified versions of Mura CMS.
 	
 	<cfif arguments.liveOnly>
 	  AND (
-		  (tcontent.DisplayStart <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#arguments.today#"> 
-			AND (tcontent.DisplayStop >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#arguments.today#"> or tcontent.DisplayStop is null)
-			AND tcontent.Display = 2)
-			OR  (tcontent.Display = 1)
+			  (
+			  	tcontent.Display = 2
+			  	AND (
+				  		(
+				  			parents.type='Calendar'	
+				  			AND tcontent.DisplayStart >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#arguments.today#"> 
+						 )	
+					   OR 
+					   	(
+					   		tcontent.DisplayStart <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#arguments.today#"> 
+							AND 
+							(
+								tcontent.DisplayStop >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#arguments.today#"> 
+								or tcontent.DisplayStop is null
+							)
+					   )
+				)
+		   )
+		   OR 
+		   	(
+		   		tcontent.Display = 1
+		   	)
 		)
 	</cfif>
 	
