@@ -1,3 +1,5 @@
+/* @override http://localhost:8500/muracms/admin/css/admin.css?coreversion=1 */
+
 /* This file is part of Mura CMS. 
 
 	Mura CMS is free software: you can redistribute it and/or modify 
@@ -636,29 +638,30 @@ dd ul li {
 
 dd ul li ul {
 	list-style: none;
-	margin: 1em 0;
+	margin: .5em 0 0 2em !important;
 	padding: 0;
+	overflow: hidden;
 }
 
-dd ul.interestGroups ul, dd ul.categories ul, #emailGroupsLists dd ul {
+/*dd ul.interestGroups ul, dd ul.categories ul, #emailGroupsLists dd ul {
 	overflow: hidden;
 	margin: 1em 0 .5em 0;
-}
+}*/
 
 
-dd ul.interestGroups ul ul, dd ul.categories ul ul {
+/*dd ul.interestGroups ul ul, dd ul.categories ul ul {
 	overflow: hidden;
 	margin: .75em 0 0 1.8em;
-}
+}*/
 
-#emailGroupsLists dd ul {
+/*#emailGroupsLists dd ul {
 	overflow: hidden;
 	margin: .5em 0 0 0;
-}
+}*/
 
-#emailGroupsLists dd ul ul {
+/*#emailGroupsLists dd ul ul {
 	margin: .75em 0 0 1.8em;
-}
+}*/
 
 
 dd ul.interestGroups li, dd ul.categories li, #emailGroupsLists dt {
@@ -684,7 +687,7 @@ dd ul.interestGroups li li, dd ul.categories li li, #emailGroupsLists dd ul li {
 
 dd ul.interestGroups li li li, dd ul.categories li li li, #emailGroupsLists dd ul li li {
 	font-weight: normal;
-	width: 31% !important;
+	/*width: 31% !important;*/
 }
 
 dd ul.interestGroups li li li li, dd ul.categories li li li li, #emailGroupsLists dd ul li li {
@@ -713,7 +716,7 @@ dd ul.interestGroups li li li li, dd ul.categories li li li li, #emailGroupsList
 
 #tabInterests dd ul.interestGroups li li li, #tabChoosecontent dd ul.categories li li {
 	color: #636261;
-	width: 31%;
+	/*width: 31%;*/
 }
 
 .categoryAssignment {
