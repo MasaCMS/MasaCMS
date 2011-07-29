@@ -990,7 +990,7 @@ to your own modified versions of Mura CMS.
 				<cfcase value="standard_nav">#dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"nav/dsp_standard.cfm",cacheKeyContentId)#</cfcase>
 				<cfcase value="portal_nav">#dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"nav/dsp_portal.cfm",cacheKeyContentId)#</cfcase>
 				<cfcase value="multilevel_nav">#dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"nav/dsp_multilevel.cfm",cacheKeyContentId)#</cfcase>
-				<cfcase value="seq_nav">#dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"nav/dsp_sequential.cfm","#arguments.object##arguments.objectid##event.getValue('startRow')#")#</cfcase>
+				<cfcase value="seq_nav">#dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"nav/dsp_sequential.cfm",cacheKeyContentId & event.getValue('startRow'))#</cfcase>
 				<cfcase value="top_nav">#dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"nav/dsp_top.cfm",cacheKeyContentId)#</cfcase>
 				<cfcase value="contact">#dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"dsp_contact.cfm")#</cfcase>
 				<cfcase value="calendar_nav">#dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"nav/calendarNav/index.cfm")#</cfcase>
