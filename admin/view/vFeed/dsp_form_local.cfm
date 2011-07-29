@@ -82,7 +82,7 @@ to your own modified versions of Mura CMS.
 <cfset options[16][2]="Parent ID"/>
 <cfset options[17][1]="tcontent.path^varchar">
 <cfset options[17][2]="Path"/>
-<cfset options[17][1]="tcontentcategorysassign.categoryID^varchar">
+<cfset options[17][1]="tcontentcategoryassign.categoryID^varchar">
 <cfset options[17][2]="Category ID"/>
 
 <cfset rsExtend=application.configBean.getClassExtensionManager().getExtendedAttributeList(attributes.siteid,"tcontent")>

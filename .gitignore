@@ -19,3 +19,5 @@
 /www
 /settings.xml
 /logs
+/crossdomain.xml
+/.rdsTempFiles

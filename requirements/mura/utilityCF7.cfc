@@ -195,19 +195,21 @@ to your own modified versions of Mura CMS.
 		<cfdirectory directory="#arguments.baseDir#" name="rsAll" action="list" recurse="true" />
 		<!--- filter out Subversion hidden folders --->
 		<cfquery name="rsAll" dbtype="query">
-		SELECT * FROM rsAll
-		WHERE directory NOT LIKE '%#variables.configBean.getFileDelim()#.svn%'
-		<cfif len(arguments.excludeList)>
-		<cfloop list="#arguments.excludeList#" index="i">
-		and directory NOT LIKE '%#i#%'
-		</cfloop>
-		</cfif>
-		
-		<cfif isDate(arguments.sinceDate)>
-		and dateLastModified >= #createODBCDateTime(arguments.sinceDate)#
-		</cfif>
-		
-		AND name <> '.svn'
+			SELECT * FROM rsAll
+			WHERE 
+			directory NOT LIKE '%#variables.configBean.getFileDelim()#.svn%'
+			and directory NOT LIKE '%#variables.configBean.getFileDelim()#.git%'
+			AND name not like '.%'
+			
+			<cfif len(arguments.excludeList)>
+				<cfloop list="#arguments.excludeList#" index="i">
+					and directory NOT LIKE '%#i#%'
+				</cfloop>
+			</cfif>
+			
+			<cfif isDate(arguments.sinceDate)>
+				and dateLastModified >= #createODBCDateTime(arguments.sinceDate)#
+			</cfif>
 		</cfquery>
 
 		<cfset copyItem=arguments.destDir>
