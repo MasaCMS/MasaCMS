@@ -638,7 +638,7 @@ dd ul li {
 
 dd ul li ul {
 	list-style: none;
-	margin: .5em 0 0 2em !important;
+	margin: .75em 0 0 1.8em !important;
 	padding: 0;
 	overflow: hidden;
 }
@@ -3776,9 +3776,9 @@ ul.params li {
 	font-weight: bold;
 }
 
-#emailGroupsLists ul  li { 
+/*#emailGroupsLists ul  li { 
 	margin-bottom: .5em;
-}
+}*/
 
 #emailGroupsLists #tabView2 ul ul { 
 	margin: .5em 0 0 1em;
