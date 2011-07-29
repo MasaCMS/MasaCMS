@@ -608,6 +608,7 @@ to your own modified versions of Mura CMS.
 	contentID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#listGetAt(arguments.contentID,I)#" /> 
 	<cfif I lt theListLen> or </cfif>
 	</cfloop>)
+	AND siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#" />
 	<cfelse>
 	0=1
 	</cfif>
