@@ -4,15 +4,15 @@
 		<li></li>
 	</div>
 	<div id="element-button-delete">
-		<div class="ui-button noframe button-grid-row-delete" title="#mmRBF.key('delete')#"><span class="ui-icon ui-icon-trash"></span></div>
+		<div class="ui-button noframe button-grid-row-delete" title="#mmRBF.key('formbuilder.dataset.delete')#"><span class="ui-icon ui-icon-trash"></span></div>
 	</div>
 	<div id="element-labels">
-		<label id="label">#mmRBF.key('label')#</label>
-		<label id="rblabel">#mmRBF.key('rblabel')#</label>
-		<label id="price">#mmRBF.key('price')#</label>
-		<label id="weight">#mmRBF.key('weight')#</label>
-		<label id="customid">#mmRBF.key('customid')#</label>
-		<label id="value">#mmRBF.key('value')#</label>
+		<label id="label">#mmRBF.key('formbuilder.dataset.label')#</label>
+		<label id="rblabel">#mmRBF.key('formbuilder.dataset.rblabel')#</label>
+		<label id="price">#mmRBF.key('formbuilder.dataset.price')#</label>
+		<label id="weight">#mmRBF.key('formbuilder.dataset.weight')#</label>
+		<label id="customid">#mmRBF.key('formbuilder.dataset.customid')#</label>
+		<label id="value">#mmRBF.key('formbuilder.dataset.value')#</label>
 	</div>
 	<div id="element-cell">
 		<span class='meld-tb-cell'></span>

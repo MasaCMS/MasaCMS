@@ -1,1 +1,1 @@
-<cfoutput><span>#mmRBF.key('dataset_row_delete_confirm','message')#</span></cfoutput>
+<cfoutput><span>#mmRBF.key('formbuilder.dataset.rowdeleteconfirm','message')#</span></cfoutput>

@@ -1,12 +1,5 @@
 ﻿<cfcomponent extends="controller" output="false">
 
-	<cffunction name="setFormBuilderManager" access="public" returntype="string" output="false">
-		<cfargument name="rc" type="struct" required="false" default="#StructNew()#">
-		
-		<cfset rc.FormBuilderManager	= getBeanFactory().getBean('FormBuilderManager') />
-
-	</cffunction>
-
 	<cffunction name="setFormBuilderManager" output="false">
 		<cfargument name="formBuilderManager">
 		<cfset variables.formBuilderManager=arguments.formBuilderManager>

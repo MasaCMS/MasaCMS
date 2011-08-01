@@ -1,1 +1,1 @@
-<cfoutput><span>#mmRBF.key('dataset_reload_confirm')#</span></cfoutput>
+<cfoutput><span>#mmRBF.key('formbuilder.dataset.reloadconfirm')#</span></cfoutput>

@@ -213,11 +213,7 @@ select * from rsPluginScripts3 order by pluginID
 <cfif not currentChangeset.getIsNew()>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.changesetversionnotify")#: "#HTMLEditFormat(currentChangeset.getName())#"</cfif>
 </p>
 </cfif>
-<cfif attributes.type eq "Form">
-<form novalidate="novalidate" action="index.cfm" method="post" name="contentForm" onsubmit="return saveFormBuilder();" id="contentForm">
-<cfelse>
 <form novalidate="novalidate" action="index.cfm" method="post" enctype="multipart/form-data" name="contentForm" onsubmit="return ckContent(draftremovalnotice);" id="contentForm">
-</cfif>
 <cfif attributes.compactDisplay neq "true">
 	<cfif attributes.moduleid eq '00000000000000000000000000000000000'>#application.contentRenderer.dspZoom(request.crumbdata,fileExt)#</cfif>
 		<ul class="metadata">

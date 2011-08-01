@@ -45,7 +45,7 @@ var reloadURL = "";
 
 function ckContent(draftremovalnotice){
 	
-	if(saveFormBuilder != undefined)
+	if(typeof(saveFormBuilder) != "undefined")
 		saveFormBuilder();
 	
 	if (document.contentForm.display.value=='2') {
