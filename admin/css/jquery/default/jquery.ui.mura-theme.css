@@ -1,7 +1,5 @@
 /* @override 
-	http://mura:8500/5.4/admin/css/jquery/default/jquery.ui.mura-theme.css
-	http://mura:8500/admin/css/jquery/default/jquery.ui.mura-theme.css
-	http://cmsdemo.agcmass.org/admin/css/jquery/default/jquery.ui.mura-theme.css
+	http://localhost:8500/muracms/admin/css/jquery/default/jquery.ui.mura-theme.css
 */
 
 /*
@@ -1587,7 +1585,7 @@ button.ui-button::-moz-focus-inner {
 
 /* Nested Tabs */
 .ui-tabs .ui-tabs .ui-tabs-nav {
-	padding-bottom: .5em;
+	padding-bottom: 1em;
 	border-bottom: 1px dotted #ccc;
 }
 

@@ -39,7 +39,7 @@
 
 	<cfset arguments.rc.rsRestrictGroups=variables.contentUtility.getRestrictGroups(arguments.rc.siteid) />
 	<cfset arguments.rc.feedBean=variables.feedManager.read(arguments.rc.feedID) />
-	<cfset arguments.rc.rslist=variables.feedManager.getcontentItems(arguments.rc.feedID,arguments.rc.feedBean.getcontentID()) />
+	<cfset arguments.rc.rslist=variables.feedManager.getcontentItems(arguments.rc.siteID,arguments.rc.feedBean.getcontentID()) />
 </cffunction>
 
 <cffunction name="update" output="false">
