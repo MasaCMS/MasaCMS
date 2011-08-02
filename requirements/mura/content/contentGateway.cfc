@@ -473,7 +473,7 @@ to your own modified versions of Mura CMS.
 						</cfif>
 					</cfcase>
 					<cfcase value="rating">
-						tcontentstats.rating #arguments.sortDirection#, tcontentstats.totalVotes  #arguments.feedBean.getSortDirection()#
+						tcontentstats.rating #arguments.sortDirection#, tcontentstats.totalVotes  #arguments.sortDirection#
 					</cfcase>
 					<cfcase value="comments">
 						tcontentstats.comments #arguments.sortDirection#
@@ -1448,7 +1448,7 @@ to your own modified versions of Mura CMS.
 	tcontent.fileid, tcontent.credits, tcontent.remoteSource, tcontent.remoteSourceURL, tcontent.remoteURL,
 	tfiles.fileSize,tfiles.fileExt,tcontent.path, tcontent.siteid, tcontent.contenthistid
 	FROM  tcontent Left Join tfiles ON (tcontent.fileID=tfiles.fileID)
-	inner join tcontent parents ON (tcontent.parentID=parents.contentID)
+
 	WHERE
 	tcontent.siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
 	and tcontent.active=1 and
@@ -1463,8 +1463,12 @@ to your own modified versions of Mura CMS.
 			  	tcontent.Display = 2
 			  	AND (
 				  		(
-				  			parents.type='Calendar'	
-				  			AND tcontent.DisplayStart >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#arguments.today#"> 
+				  			tcontent.DisplayStart >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#arguments.today#">   
+							AND tcontent.parentID in (select contentID from tcontent 
+															where type='Calendar'
+															#renderActiveClause("tcontent",arguments.siteID)#
+															and siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#">
+														   ) 
 						 )	
 					   OR 
 					   	(
@@ -1493,8 +1497,7 @@ to your own modified versions of Mura CMS.
 	</cfquery>
 	
 	<cfreturn rs />
-	
-	
+
 </cffunction>
 
 <cffunction name="getUsage" access="public" output="false" returntype="query">
