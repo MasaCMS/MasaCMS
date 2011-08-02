@@ -200,7 +200,7 @@
 
 			jQuery('.ui-button',$_field).each(function() {
 				jQuery(this).click( function() {
-					alert('click');
+					//alert('click');
 					switch ( jQuery(this).attr('id') ) {
 						case 'button-trash': {
 							doDeleteField();

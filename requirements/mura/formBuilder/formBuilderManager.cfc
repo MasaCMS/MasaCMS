@@ -46,7 +46,7 @@
 
 		<cfset fieldTypeBean	= getFieldTypeBean( fieldType=fieldType,asJSON=arguments.asJSON ) />
 		<cfset fieldBean.setFieldType( fieldTypeBean ) />
-		<cfset fieldBean.setLabel( mmRBF.getKeyValue(session.rb,'formbuilder.newfield') ) />
+		<cfset fieldBean.setLabel( mmRBF.getKeyValue(session.rb,'formbuilder.new#listLast(arguments.fieldType,'-')#') ) />
 
 		<cfif arguments.asJSON>
 			<cfreturn fieldBean.getasJSON() />
