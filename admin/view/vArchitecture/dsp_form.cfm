@@ -370,7 +370,11 @@ select * from rsPluginScripts3 order by pluginID
 		<cfif request.contentBean.getIsNew()>
 			<cfset request.contentBean.setBody( application.serviceFactory.getBean('formBuilderManager').createJSONForm( request.contentBean.getContentID() ) ) />
 		</cfif>
-		<cfinclude template="form/dsp_tab_formbuilder.cfm">
+		<cfif isJSON(request.contentBean.getBody())>
+			<cfinclude template="form/dsp_tab_formbuilder.cfm">
+		<cfelse>
+			<cfinclude template="form/dsp_tab_basic.cfm">
+		</cfif>
 	</cfif>
 	
 	<cfswitch expression="#attributes.type#">
