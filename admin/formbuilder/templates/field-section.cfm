@@ -8,11 +8,11 @@
 			</div>
 			<ul class="template-form">
 				<li>
-					<label for="field.label">#mmRBF.getKeyValue(session.rb,'formbuilder.field.label')#</label>
+					<label for="label">#mmRBF.getKeyValue(session.rb,'formbuilder.field.label')#</label>
 					<input class="text medium tb-label" type="text" name="label" value="" data-label="true">
 				</li>
 				<li>
-					<label for="field.name">#mmRBF.getKeyValue(session.rb,'formbuilder.field.name')#</label>
+					<label for="name">#mmRBF.getKeyValue(session.rb,'formbuilder.field.name')#</label>
 					<input id="tb-name" class="text medium disabled" name="name" type="text" value="" maxlength="50" disabled="true" />
 				</li>
 			</ul>

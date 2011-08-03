@@ -10,20 +10,32 @@
 				<div class="col2 wide bordered">
 					<ul class="template-form">
 						<li>
-							<label for="field.label">#mmRBF.getKeyValue(session.rb,'formbuilder.field.label')#</label>
+							<label for="label">#mmRBF.getKeyValue(session.rb,'formbuilder.field.label')#</label>
 							<input class="text medium tb-label" type="text" name="label" value="" maxlength="50" data-required='true' data-label="true" />
 						</li>
 					</ul>
 				</div>
 				<div class="col3 right">
 					<ul class="template-form">
-						<li>
-							<label for="field.cssstyle">#mmRBF.getKeyValue(session.rb,'formbuilder.field.cssstyle')#</label>
+						<!---<li>
+						<label for="cssstyle">#mmRBF.getKeyValue(session.rb,'formbuilder.field.cssstyle')#</label>
 							<select class="select" name="cssstyle">
-								<option value="small">Small</option>
-								<option value="medium">Medium</option>
-								<option value="large">Large</option>
+							<option value="small">Small</option>
+							<option value="medium">Medium</option>
+							<option value="large">Large</option>
 							</select>
+						</li>--->
+						<li>
+							<label for="size">#mmRBF.getKeyValue(session.rb,'formbuilder.field.size')#</label>
+							<input class="text medium" type="text" name="size" value="" maxlength="50" data-required='false' />
+						</li>
+						<li>
+							<label for="cssid">#mmRBF.getKeyValue(session.rb,'formbuilder.field.cssid')#</label>
+							<input class="text medium" type="text" name="cssid" value="" maxlength="50" data-required='false' />
+						</li>
+						<li>
+							<label for="cssclass">#mmRBF.getKeyValue(session.rb,'formbuilder.field.cssclass')#</label>
+							<input class="text medium" type="text" name="cssclass" value="" maxlength="50" data-required='false' />
 						</li>
 					</ul>
 				</div>
@@ -32,11 +44,11 @@
 				<div class="col2 wide bordered">
 					<ul class="template-form">
 						<li>
-							<label for="field.validatemessage">#mmRBF.getKeyValue(session.rb,'formbuilder.field.validatemessage')#</label>
+							<label for="validatemessage">#mmRBF.getKeyValue(session.rb,'formbuilder.field.validatemessage')#</label>
 							<input class="text long" type="text" name="validatemessage" value="" maxlength="250" />
 						</li>
 						<li class="checkbox">
-							<label for="field.isrequired">
+							<label for="isrequired">
 							<input type="checkbox" type="text" name="isrequired" value="1">
 							#mmRBF.getKeyValue(session.rb,'formbuilder.field.isrequired')#</label>
 						</li>
@@ -45,11 +57,11 @@
 				<div class="col3 right">
 					<ul class="template-form">
 						<li>
-							<label for="field.name">#mmRBF.getKeyValue(session.rb,'formbuilder.field.name')#</label>
+							<label for="name">#mmRBF.getKeyValue(session.rb,'formbuilder.field.name')#</label>
 							<input id="tb-name" class="text medium disabled" name="name" type="text" value="" maxlength="50" disabled="true" />
 						</li>
 						<li>
-							<label for="field.tooltip">#mmRBF.getKeyValue(session.rb,'formbuilder.field.tooltip')#</label>
+							<label for="tooltip">#mmRBF.getKeyValue(session.rb,'formbuilder.field.tooltip')#</label>
 							<input class="text long" type="text" name="tooltip" value="" maxlength="250" />
 						</li>
 					</ul>
