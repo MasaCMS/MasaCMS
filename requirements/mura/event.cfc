@@ -48,6 +48,8 @@ to your own modified versions of Mura CMS.
 	<cfargument name="data"  type="any" default="#structNew()#">
 	
 	<cfset variables.event=arguments.data />
+	<cfset structAppend(variables.event,form,false)/>
+	<cfset structAppend(variables.event,url,false)/>
 	
 	<cfif len(getValue('siteid')) and application.settingsManager.siteExists(getValue('siteid'))>
 		<cfset loadSiteRelatedObjects()/>
