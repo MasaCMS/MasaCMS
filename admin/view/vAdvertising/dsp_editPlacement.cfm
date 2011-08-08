@@ -126,11 +126,11 @@ function uncheckAllHours() {
 
 </cfif>
 <dt>#application.rbFactory.getKeyValue(session.rb,'advertising.costper1000impressions')#</dt>
-<dd><input name="costPerM" class="text" required="true" validate="float" message="#application.rbFactory.getKeyValue(session.rb,'advertising.cpmvalidate')#" value="#request.placementBean.getCostPerM()#"></dd>
+<dd><input name="costPerM" class="text" required="true" validate="numeric" message="#application.rbFactory.getKeyValue(session.rb,'advertising.cpmvalidate')#" value="#request.placementBean.getCostPerM()#"></dd>
 <dt>#application.rbFactory.getKeyValue(session.rb,'advertising.costperclick')#</dt>
-<dd><input name="costPerClick" class="text" required="true" validate="float" message="#application.rbFactory.getKeyValue(session.rb,'advertising.cpcvalidate')#" value="#request.placementBean.getCostPerClick()#"></dd>
+<dd><input name="costPerClick" class="text" required="true" validate="numeric" message="#application.rbFactory.getKeyValue(session.rb,'advertising.cpcvalidate')#" value="#request.placementBean.getCostPerClick()#"></dd>
 <dt>#application.rbFactory.getKeyValue(session.rb,'advertising.budget')#</dt>
-<dd><input name="budget" class="text" required="true" validate="integer" message="#application.rbFactory.getKeyValue(session.rb,'advertising.budgetvalidate')#" value="#request.placementBean.getBudget()#"></dd>
+<dd><input name="budget" class="text" required="true" validate="numeric" message="#application.rbFactory.getKeyValue(session.rb,'advertising.budgetvalidate')#" value="#request.placementBean.getBudget()#"></dd>
 <dt>#application.rbFactory.getKeyValue(session.rb,'advertising.exclusive')#</dt>
 <dd>
 <input name="isExclusive" id="isExclusiveYes" type="radio" value="1" <cfif request.placementBean.getisExclusive()>checked</cfif>> <label for="isExclusiveYes">#application.rbFactory.getKeyValue(session.rb,'advertising.yes')#</label> 

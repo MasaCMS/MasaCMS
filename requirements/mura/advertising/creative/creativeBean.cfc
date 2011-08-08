@@ -41,92 +41,56 @@ the GNU General Public License version 2 �without this exception. �You may, 
 to your own modified versions of Mura CMS.
 --->
 
-<cfcomponent extends="mura.cfobject" output="false">
+<cfcomponent extends="mura.bean.bean" output="false">
 
-<cfset variables.instance.creativeID=""/>
-<cfset variables.instance.userID=""/>
-<cfset variables.instance.dateCreated="#now()#"/>
-<cfset variables.instance.lastUpdate="#now()#"/>
-<cfset variables.instance.lastUpdateBy=""/>
-<cfset variables.instance.name=""/>
-<cfset variables.instance.creativeType=""/>
-<cfset variables.instance.fileID=""/>
-<cfset variables.instance.mediaType=""/>
-<cfset variables.instance.redirectURL=""/>
-<cfset variables.instance.altText=""/>
-<cfset variables.instance.notes=""/>
-<cfset variables.instance.isActive=1/>
-<cfset variables.instance.height=0/>
-<cfset variables.instance.width=0/>
-<cfset variables.instance.textBody=""/>
-<cfset variables.instance.title=""/>
-<cfset variables.instance.linkTitle=""/>
-<cfset variables.instance.fileExt=""/>
-<cfset variables.instance.siteID=""/>
-<cfset variables.instance.target="_blank"/>
-<cfset variables.instance.errors=structnew() />
+<cfproperty name="creativeID" type="string" default="" required="true" />
+<cfproperty name="userID" type="string" default="" required="true" />
+<cfproperty name="dateCreated" type="date" default="" required="true" />
+<cfproperty name="lastUpdate" type="date" default="" required="true" />
+<cfproperty name="lastUpdateBy" type="string" default="" required="true" />
+<cfproperty name="name" type="string" default="" required="true" />
+<cfproperty name="creativeType" type="string" default="" required="true" />
+<cfproperty name="fileID" type="string" default="" required="true" />
+<cfproperty name="mediaType" type="string" default="" required="true" />
+<cfproperty name="redirectURL" type="string" default="" required="true" />
+<cfproperty name="altText" type="string" default="" required="true" />
+<cfproperty name="notes" type="string" default="" required="true" />
+<cfproperty name="isActive" type="numeric" default="1" required="true" />
+<cfproperty name="height" type="numeric" default="0" required="true" />
+<cfproperty name="width" type="numeric" default="0" required="true" />
+<cfproperty name="textBody" type="string" default="" required="true" />
+<cfproperty name="title" type="string" default="" required="true" />
+<cfproperty name="linkTitle" type="string" default="" required="true" />
+<cfproperty name="fileEXT" type="string" default="" required="true" />
+<cfproperty name="siteID" type="string" default="" required="true" />
+<cfproperty name="target" type="string" default="_blank" required="true" />
 
 <cffunction name="init" returntype="any" output="false" access="public">
+	<cfset super.init(argumentCollection=arguments)>
+	
+	<cfset variables.instance.creativeID=""/>
+	<cfset variables.instance.userID=""/>
+	<cfset variables.instance.dateCreated="#now()#"/>
+	<cfset variables.instance.lastUpdate="#now()#"/>
+	<cfset variables.instance.lastUpdateBy=""/>
+	<cfset variables.instance.name=""/>
+	<cfset variables.instance.creativeType=""/>
+	<cfset variables.instance.fileID=""/>
+	<cfset variables.instance.mediaType=""/>
+	<cfset variables.instance.redirectURL=""/>
+	<cfset variables.instance.altText=""/>
+	<cfset variables.instance.notes=""/>
+	<cfset variables.instance.isActive=1/>
+	<cfset variables.instance.height=0/>
+	<cfset variables.instance.width=0/>
+	<cfset variables.instance.textBody=""/>
+	<cfset variables.instance.title=""/>
+	<cfset variables.instance.linkTitle=""/>
+	<cfset variables.instance.fileExt=""/>
+	<cfset variables.instance.siteID=""/>
+	<cfset variables.instance.target="_blank"/>
+	
 	<cfreturn this />
-</cffunction>
-
-<cffunction name="set" returnType="void" output="false" access="public">
-		<cfargument name="creative" type="any" required="true">
-		
-		<cfset var prop = ""/>
-
-		<cfif isquery(arguments.creative)>
-		
-			<cfset setcreativeID(arguments.creative.creativeID) />
-			<cfset setuserID(arguments.creative.userID) />
-			<cfset setname(arguments.creative.name) />
-			<cfset setdateCreated(arguments.creative.dateCreated) />
-			<cfset setlastUpdate(arguments.creative.lastUpdate) />
-			<cfset setlastUpdateBy(arguments.creative.lastUpdateBy) />
-			<cfset setFileID(arguments.creative.fileID) />
-			<cfset setmediaType(arguments.creative.mediaType) />
-			<cfset setcreativeType(arguments.creative.creativeType) />
-			<cfset setredirectURL(arguments.creative.redirectURL) />
-			<cfset setaltText(arguments.creative.altText) />
-			<cfset setnotes(arguments.creative.notes) />
-			<cfset setisActive(arguments.creative.isActive) />
-			<cfset setheight(arguments.creative.height) />
-			<cfset setwidth(arguments.creative.width) />
-			<cfset setTextBody(arguments.creative.textBody) />
-			<cfset setTitle(arguments.creative.title) />
-			<cfset setLinkTitle(arguments.creative.linkTitle) />
-			<cfset setFileExt(arguments.creative.fileExt) />
-			<cfset setSiteID(arguments.creative.SiteID) />
-			<cfset setTarget(arguments.creative.target) />
-			
-		<cfelseif isStruct(arguments.creative)>
-		
-			<cfloop collection="#arguments.creative#" item="prop">
-				<cfset setValue(prop,arguments.creative[prop])>
-			</cfloop>
-			
-		</cfif>
-		
-		<cfset validate() />
-		
- </cffunction>
-
-<cffunction name="getAllValues" access="public" returntype="struct" output="false">
-	<cfreturn variables.instance />
-</cffunction>
-
-<cffunction name="setAllValues" returntype="any" access="public" output="false">
-	<cfargument name="instance">
-	<cfset variables.instance=arguments.instance/>
-	<cfreturn this>
-</cffunction>
- 
-<cffunction name="validate" access="public" output="false" returntype="void">
-	<cfset variables.instance.errors=structnew() />
-</cffunction>
-
-<cffunction name="getErrors" returnType="struct" output="false" access="public">
-	<cfreturn variables.instance.errors />
 </cffunction>
 
 <cffunction name="getCreativeID" returntype="String" access="public" output="false">
@@ -136,33 +100,11 @@ to your own modified versions of Mura CMS.
 	<cfreturn variables.instance.creativeID />
 </cffunction>
 
-<cffunction name="setCreativeID" access="public" output="false">
-	<cfargument name="creativeID" type="String" />
-	<cfset variables.instance.creativeID = trim(arguments.creativeID) />
-</cffunction>
-
-<cffunction name="getUserID" returntype="String" access="public" output="false">
-	<cfreturn variables.instance.userID />
-</cffunction>
-
-<cffunction name="setUserID" access="public" output="false">
-	<cfargument name="userID" type="String" />
-	<cfset variables.instance.userID = trim(arguments.userID) />
-</cffunction>
-
-<cffunction name="getDateCreated" returntype="String" access="public" output="false">
-	<cfreturn variables.instance.dateCreated />
-</cffunction>
-
 <cffunction name="setDateCreated" access="public" output="false">
 	<cfargument name="dateCreated" type="String" />
 	<cfif isDate(arguments.dateCreated)>
 	<cfset variables.instance.dateCreated = parseDateTime(arguments.dateCreated) />
 	</cfif>
-</cffunction>
-
-<cffunction name="getLastUpdate" returntype="String" access="public" output="false">
-	<cfreturn variables.instance.lastUpdate />
 </cffunction>
 
 <cffunction name="setLastUpdate" access="public" output="false">
@@ -172,153 +114,9 @@ to your own modified versions of Mura CMS.
 	</cfif>
 </cffunction>
 
-<cffunction name="getlastUpdateBy" returntype="String" access="public" output="false">
-	<cfreturn variables.instance.lastUpdateBy />
-</cffunction>
-
 <cffunction name="setlastUpdateBy" access="public" output="false">
 	<cfargument name="lastUpdateBy" type="String" />
 	<cfset variables.instance.lastUpdateBy = left(trim(arguments.lastUpdateBy),50) />
-</cffunction>
-
-<cffunction name="getName" returntype="String" access="public" output="false">
-	<cfreturn variables.instance.name />
-</cffunction>
-
-<cffunction name="setName" access="public" output="false">
-	<cfargument name="name" type="String" />
-	<cfset variables.instance.name = trim(arguments.name) />
-</cffunction>
-
-<cffunction name="getCreativeType" returntype="String" access="public" output="false">
-	<cfreturn variables.instance.creativeType />
-</cffunction>
-
-<cffunction name="setCreativeType" access="public" output="false">
-	<cfargument name="creativeType" type="String" />
-	<cfset variables.instance.creativeType = trim(arguments.creativeType) />
-</cffunction>
-
-<cffunction name="getMediaType" returntype="String" access="public" output="false">
-	<cfreturn variables.instance.mediaType />
-</cffunction>
-
-<cffunction name="setMediaType" access="public" output="false">
-	<cfargument name="mediaType" type="String" />
-	<cfset variables.instance.mediaType = trim(arguments.mediaType) />
-</cffunction>
-
-<cffunction name="getRedirectURL" returntype="String" access="public" output="false">
-	<cfreturn variables.instance.redirectURL />
-</cffunction>
-
-<cffunction name="setRedirectURL" access="public" output="false">
-	<cfargument name="redirectURL" type="String" />
-	<cfset variables.instance.redirectURL = trim(arguments.redirectURL) />
-</cffunction>
-
-<cffunction name="getFileID" returntype="string" access="public" output="false">
-	<cfreturn variables.instance.fileID />
-</cffunction>
-
-<cffunction name="setFileID" access="public" output="false">
-	<cfargument name="fileID" type="string" />
-	<cfset variables.instance.fileID = arguments.fileID />
-</cffunction>
-
-<cffunction name="getAltText" returntype="String" access="public" output="false">
-	<cfreturn variables.instance.altText />
-</cffunction>
-
-<cffunction name="setAltText" access="public" output="false">
-	<cfargument name="altText" type="String" />
-	<cfset variables.instance.altText = trim(arguments.altText) />
-</cffunction>
-
-<cffunction name="getNotes" returntype="String" access="public" output="false">
-	<cfreturn variables.instance.notes />
-</cffunction>
-
-<cffunction name="setNotes" access="public" output="false">
-	<cfargument name="notes" type="String" />
-	<cfset variables.instance.notes = trim(arguments.notes) />
-</cffunction>
-
-<cffunction name="getIsActive" returntype="numeric" access="public" output="false">
-	<cfreturn variables.instance.isActive />
-</cffunction>
-
-<cffunction name="setIsActive" access="public" output="false">
-	<cfargument name="isActive" type="numeric" />
-	<cfset variables.instance.isActive = arguments.isActive />
-</cffunction>
-
-<cffunction name="getHeight" returntype="numeric" access="public" output="false">
-	<cfreturn variables.instance.height />
-</cffunction>
-
-<cffunction name="setHeight" access="public" output="false">
-	<cfargument name="height" type="numeric" />
-	<cfset variables.instance.height = arguments.height />
-</cffunction>
-
-<cffunction name="getWidth" returntype="numeric" access="public" output="false">
-	<cfreturn variables.instance.width />
-</cffunction>
-
-<cffunction name="setWidth" access="public" output="false">
-	<cfargument name="width" type="numeric" />
-	<cfset variables.instance.width = arguments.width />
-</cffunction>
-
-<cffunction name="getTextBody" returntype="String" access="public" output="false">
-	<cfreturn variables.instance.textBody />
-</cffunction>
-
-<cffunction name="setTextBody" access="public" output="false">
-	<cfargument name="textBody" type="String" />
-	<cfset variables.instance.textBody = trim(arguments.textBody) />
-</cffunction>
-
-<cffunction name="getTitle" returntype="String" access="public" output="false">
-	<cfreturn variables.instance.title />
-</cffunction>
-
-<cffunction name="setTitle" access="public" output="false">
-	<cfargument name="title" type="String" />
-	<cfset variables.instance.title = trim(arguments.title) />
-</cffunction>
-
-<cffunction name="getLinkTitle" returntype="String" access="public" output="false">
-	<cfreturn variables.instance.linkTitle />
-</cffunction>
-
-<cffunction name="setLinkTitle" access="public" output="false">
-	<cfargument name="linkTitle" type="String" />
-	<cfset variables.instance.linkTitle = trim(arguments.linkTitle) />
-</cffunction>
-
-
-<cffunction name="getFileExt" returntype="String" access="public" output="false">
-	<cfreturn variables.instance.FileExt />
-</cffunction>
-
-<cffunction name="setFileExt" access="public" output="false">
-	<cfargument name="FileExt" type="String" />
-	<cfset variables.instance.FileExt = trim(arguments.FileExt) />
-</cffunction>
-
-<cffunction name="getSiteID" returntype="String" access="public" output="false">
-	<cfreturn variables.instance.SiteID />
-</cffunction>
-
-<cffunction name="setSiteID" access="public" output="false">
-	<cfargument name="SiteID" type="String" />
-	<cfset variables.instance.SiteID = trim(arguments.SiteID) />
-</cffunction> 
-
-<cffunction name="getTarget" returntype="String" access="public" output="false">
-	<cfreturn variables.instance.target />
 </cffunction>
 
 <cffunction name="setTarget" access="public" output="false">
@@ -326,31 +124,6 @@ to your own modified versions of Mura CMS.
 	<cfif len(arguments.target)>
 	<cfset variables.instance.target = trim(arguments.target) />
 	</cfif>
-</cffunction>
-
-<cffunction name="setValue" returntype="any" access="public" output="false">
-<cfargument name="property"  type="string" required="true">
-<cfargument name="propertyValue" default="" >
-		
-	<cfif isDefined("this.set#arguments.property#")>
-		<cfset evaluate("set#property#(arguments.propertyValue)") />
-	<cfelse>
-		<cfset variables.instance["#arguments.property#"]=arguments.propertyValue />
-	</cfif>
-	<cfreturn this>
-</cffunction>
-
-<cffunction name="getValue" returntype="any" access="public" output="false">
-<cfargument name="property"  type="string" required="true">
-	
-	<cfif structKeyExists(this,"get#property#")>
-		<cfreturn evaluate("get#property#()") />
-	<cfelseif structKeyExists(variables.instance,"#arguments.property#")>
-		<cfreturn variables.instance["#arguments.property#"] />
-	<cfelse>
-		<cfreturn "" />
-	</cfif>
-
 </cffunction>
 
 <cffunction name="save" output="false">

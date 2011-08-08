@@ -70,9 +70,9 @@ to your own modified versions of Mura CMS.
 </cfloop>
 </select></dd>
 <dt>#application.rbFactory.getKeyValue(session.rb,'advertising.height')#</dt>
-<dd><input name="height" validate="integer" class="text" required="true" message="#application.rbFactory.getKeyValue(session.rb,'advertising.heightvalidate')#" value="#request.adZoneBean.getHeight()#"></dd>
+<dd><input name="height" validate="numeric" class="text" required="true" message="#application.rbFactory.getKeyValue(session.rb,'advertising.heightvalidate')#" value="#request.adZoneBean.getHeight()#"></dd>
 <dt>#application.rbFactory.getKeyValue(session.rb,'advertising.width')#</dt>
-<dd><input name="width" validate="integer" class="text" required="true" message="#application.rbFactory.getKeyValue(session.rb,'advertising.widthvalidate')#" value="#request.adZoneBean.getWidth()#"></dd>
+<dd><input name="width" validate="numeric" class="text" required="true" message="#application.rbFactory.getKeyValue(session.rb,'advertising.widthvalidate')#" value="#request.adZoneBean.getWidth()#"></dd>
 <dt>#application.rbFactory.getKeyValue(session.rb,'advertising.isactive')#</dt>
 <dd>
 <input name="isActive" id="isActiveYes" type="radio" value="1" <cfif request.adZoneBean.getIsActive()>checked</cfif>> <label for="isActiveYes">#application.rbFactory.getKeyValue(session.rb,'advertising.yes')#</label> 

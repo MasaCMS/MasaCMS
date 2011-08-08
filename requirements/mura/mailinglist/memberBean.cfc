@@ -40,116 +40,30 @@ for your modified version; it is your choice whether to do so, or to make such m
 the GNU General Public License version 2 �without this exception. �You may, if you choose, apply this exception
 to your own modified versions of Mura CMS.
 --->
-<cfcomponent extends="mura.cfobject" output="false">
+<cfcomponent extends="mura.bean.bean" output="false">
 
-<cfset variables.instance=structnew() />
-<cfset variables.instance.MLID="" />
-<cfset variables.instance.SiteID="" />
-<cfset variables.instance.Email="" />
-<cfset variables.instance.fName="" />
-<cfset variables.instance.lName="" />
-<cfset variables.instance.Company="" />
-<cfset variables.instance.isVerified=0 />
-<cfset variables.instance.created="" />
+<cfproperty name="MLID" type="string" default="" required="true" />
+<cfproperty name="siteID" type="string" default="" required="true" />
+<cfproperty name="email" type="string" default="" required="true" />
+<cfproperty name="fname" type="string" default="" required="true" />
+<cfproperty name="lname" type="string" default="" required="true" />
+<cfproperty name="company" type="string" default="" required="true" />
+<cfproperty name="isVerified" type="numeric" default="0" required="true" />
+<cfproperty name="created" type="date" default="" required="true" />
 
-<cffunction name="Init" access="public" returntype="any" output="false">
+<cffunction name="init" access="public" returntype="any" output="false">
+	<cfset super.init(argumentCollection=arguments)>
+	
+	<cfset variables.instance.MLID="" />
+	<cfset variables.instance.SiteID="" />
+	<cfset variables.instance.Email="" />
+	<cfset variables.instance.fName="" />
+	<cfset variables.instance.lName="" />
+	<cfset variables.instance.Company="" />
+	<cfset variables.instance.isVerified=0 />
+	<cfset variables.instance.created="" />
+
 	<cfreturn this />
-</cffunction>
-
-<cffunction name="set" returnType="void" output="false" access="public">
-    <cfargument name="Member" type="any" required="true">
-
-	<cfset var prop="" />
-	
-	<cfif isQuery(arguments.Member)>
-	
-		<cfset setMLID(arguments.Member.mlid) />
-		<cfset setEmail(arguments.Member.email) />
-		<cfset setSiteID(arguments.Member.SiteID) />
-		<cfset setFName(arguments.Member.fName) />
-		<cfset setLName(arguments.Member.lName) />
-		<cfset setCompany(arguments.Member.company) />
-		<cfset setIsVerified(arguments.Member.isVerified) />
-		<cfset setCreated(arguments.Member.created) />
-
-	
-	<cfelseif isStruct(arguments.Member)>
-	
-		<cfloop collection="#arguments.Member#" item="prop">
-			<cfif isdefined("variables.instance.#prop#")>
-				<cfset evaluate("set#prop#(arguments.member[prop])") />
-			</cfif>
-		</cfloop>
-		
-	</cfif>
- </cffunction>
-
-<cffunction name="getAllValues" access="public" returntype="struct" output="false">
-	<cfreturn variables.instance />
-</cffunction>
-
-
-<cffunction name="getMLID" returntype="String" output="false" >
-	<cfreturn variables.instance.MLID />
-</cffunction>
-
-<cffunction name="setMLID" output="false" access="public">
-	<cfargument  name="MLID" type="String" />
-	<cfset variables.instance.MLID = arguments.MLID />
-</cffunction>
-
-<cffunction name="getSiteID" returntype="String" output="false" access="public" >
-	<cfreturn variables.instance.SiteID />
-</cffunction>
-
-<cffunction name="setSiteID">
-	<cfargument  name="SiteID" type="String"  />
-	<cfset variables.instance.SiteID = arguments.SiteID />
-</cffunction>
-  
-<cffunction name="getEmail" returntype="String" output="false" access="public" >
-	<cfreturn variables.instance.Email />
-</cffunction>
-
-<cffunction name="setEmail" output="false" access="public" >
-	<cfargument  name="Email" type="String" />
-	<cfset variables.instance.Email = arguments.Email />
-</cffunction>
-
-<cffunction name="getFName" returntype="String" output="false" access="public" >
-	<cfreturn variables.instance.fName />
-</cffunction>
-
-<cffunction name="setFName" output="false" access="public" >
-	<cfargument  name="fName" type="String" />
-	<cfset variables.instance.fName = arguments.fName />
-</cffunction>
-
-<cffunction name="getLName" returntype="String" output="false" access="public" >
-	<cfreturn variables.instance.lName />
-</cffunction>
-
-<cffunction name="setLName" output="false" access="public">
-	<cfargument  name="lName" type="String" />
-	<cfset variables.instance.lName = arguments.lName />
-</cffunction>
-
-<cffunction name="getCompany" returntype="String" output="false" access="public" >
-	<cfreturn variables.instance.Company />
-</cffunction>
-
-<cffunction name="setCompany" output="false" access="public" >
-	<cfargument  name="Company" type="String" />
-	<cfset variables.instance.Company = arguments.Company />
-</cffunction>
-
-<cffunction name="getIsVerified" returntype="boolean" output="false" access="public" >
-	<cfreturn variables.instance.isVerified />
-</cffunction>
-
-<cffunction name="setIsVerified" output="false" access="public" >
-	<cfargument name="isVerified" type="boolean" />
-	<cfset variables.instance.isVerified = arguments.isVerified />
 </cffunction>
 
 <cffunction name="setCreated" output="false" access="public">
@@ -165,10 +79,6 @@ to your own modified versions of Mura CMS.
 		<cfset variables.instance.created = ""/>
 	</cfif>
 	<cfreturn this>
-</cffunction>
-
-<cffunction name="getCreated" returnType="string" output="false" access="public">
-    <cfreturn variables.instance.created />
 </cffunction>
 
 </cfcomponent>

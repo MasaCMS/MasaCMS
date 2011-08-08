@@ -79,9 +79,9 @@ to your own modified versions of Mura CMS.
 <dd><input name="linkTitle" class="text"  value="#HTMLEditFormat(request.creativeBean.getLinkTitle())#" maxlength="100"></dd>
 </span>
 <dt>#application.rbFactory.getKeyValue(session.rb,'advertising.height')#</dt>
-<dd><input name="height" validate="integer" class="text" message="#application.rbFactory.getKeyValue(session.rb,'advertising.heightvalidate')#" value="#request.creativeBean.getHeight()#"></dd>
+<dd><input name="height" validate="numeric" class="text" message="#application.rbFactory.getKeyValue(session.rb,'advertising.heightvalidate')#" value="#request.creativeBean.getHeight()#"></dd>
 <dt>#application.rbFactory.getKeyValue(session.rb,'advertising.width')#</dt>
-<dd><input name="width" validate="integer" class="text" message="#application.rbFactory.getKeyValue(session.rb,'advertising.widthvalidate')#" value="#request.creativeBean.getWidth()#"></dd>
+<dd><input name="width" validate="numeric" class="text" message="#application.rbFactory.getKeyValue(session.rb,'advertising.widthvalidate')#" value="#request.creativeBean.getWidth()#"></dd>
 <dt>#application.rbFactory.getKeyValue(session.rb,'advertising.advertisementurl')#</dt>
 <dd><input name="redirectURL" class="text" value="#HTMLEditFormat(request.creativeBean.getRedirectURL())#" maxlength="200"></dd>
 <span id="newMediaContainer" <cfif request.creativeBean.getMediaType() eq 'Text'>style="display:none;"</cfif>>

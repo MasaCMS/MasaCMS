@@ -40,133 +40,110 @@ for your modified version; it is your choice whether to do so, or to make such m
 the GNU General Public License version 2 �without this exception. �You may, if you choose, apply this exception
 to your own modified versions of Mura CMS.
 --->
-<cfcomponent extends="mura.cfobject" output="false">
+<cfcomponent extends="mura.bean.bean" output="false">
 
-<cfset variables.instance.feedID=""/>
-<cfset variables.instance.siteID=""/>
-<cfset variables.instance.dateCreated="#now()#"/>
-<cfset variables.instance.lastUpdate="#now()#"/>
-<cfset variables.instance.lastUpdateBy=""/>
-<cfset variables.instance.name=""/>
-<cfset variables.instance.altName=""/>
-<cfset variables.instance.Lang="en-us"/>
-<cfset variables.instance.isActive=1 />
-<cfset variables.instance.showNavOnly=1 />
-<cfset variables.instance.isPublic=0 />
-<cfset variables.instance.isDefault=0 />
-<cfset variables.instance.description=""/>
-<cfset variables.instance.contentID=""/>
-<cfset variables.instance.categoryID=""/>
-<cfset variables.instance.MaxItems=20 />
-<cfset variables.instance.allowHTML=1 />
-<cfset variables.instance.isFeaturesOnly=0 />
-<cfset variables.instance.restricted=0 />
-<cfset variables.instance.restrictGroups="" />
-<cfset variables.instance.Version="RSS 2.0" />
-<cfset variables.instance.ChannelLink="" />
-<cfset variables.instance.type="local" />
-<cfset variables.instance.sortBy="lastUpdate" />
-<cfset variables.instance.sortDirection="desc" />
-<cfset variables.instance.parentID="" />
-<cfset variables.instance.nextN=20 />
-<cfset variables.instance.displayName=0 />
-<cfset variables.instance.displayRatings=0 />
-<cfset variables.instance.displayComments=0 />
-<cfset variables.instance.displayKids=0 />
-<cfset variables.instance.isNew=1 />
-<cfset variables.instance.advancedParams=queryNew("feedID,param,relationship,field,condition,criteria,dataType","varchar,integer,varchar,varchar,varchar,varchar,varchar" )  />
-<cfset variables.instance.errors=structnew() />
-<cfset variables.instance.remoteID = "" />
-<cfset variables.instance.remoteSourceURL = "" />
-<cfset variables.instance.remotePubDate = "">
+<cfproperty name="feedID" type="string" default="" required="true" />
+<cfproperty name="siteID" type="string" default="" required="true" />
+<cfproperty name="dateCreated" type="date" default="" required="true" />
+<cfproperty name="lastUpdate" type="date" default="" required="true" />
+<cfproperty name="lastUpdateBy" type="string" default="" required="true" />
+<cfproperty name="name" type="string" default="" required="true" />
+<cfproperty name="altName" type="string" default="" required="true" />
+<cfproperty name="lang" type="string" default="en-us" required="true" />
+<cfproperty name="isActive" type="numeric" default="1" required="true" />
+<cfproperty name="showNavOnly" type="numeric" default="1" required="true" />
+<cfproperty name="isPublic" type="numeric" default="0" required="true" />
+<cfproperty name="isDefault" type="numeric" default="0" required="true" />
+<cfproperty name="description" type="string" default="" required="true" />
+<cfproperty name="contentID" type="string" default="" required="true" />
+<cfproperty name="categoryID" type="string" default="" required="true" />
+<cfproperty name="maxItems" type="numeric" default="20" required="true" />
+<cfproperty name="allowHTML" type="numeric" default="1" required="true" />
+<cfproperty name="isFeaturesOnly" type="numeric" default="0" required="true" />
+<cfproperty name="restricted" type="numeric" default="0" required="true" />
+<cfproperty name="restrictGroups" type="string" default="" required="true" />
+<cfproperty name="version" type="string" default="RSS 2.0" required="true" />
+<cfproperty name="channelLink" type="string" default="" required="true" />
+<cfproperty name="type" type="string" default="local" required="true" />
+<cfproperty name="sortBy" type="string" default="lastUpdate" required="true" />
+<cfproperty name="sortDirection" type="string" default="desc" required="true" />
+<cfproperty name="parentID" type="string" default="" required="true" />
+<cfproperty name="nextN" type="numeric" default="20" required="true" />
+<cfproperty name="displayName" type="numeric" default="0" required="true" />
+<cfproperty name="displayRatings" type="numeric" default="0" required="true" />
+<cfproperty name="displayComments" type="numeric" default="0" required="true" />
+<cfproperty name="displayKids" type="numeric" default="0" required="true" />
+<cfproperty name="isNew" type="numeric" default="0" required="true" />
+<cfproperty name="advancedParams" type="query" default="" required="true" />
+<cfproperty name="remoteID" type="string" default="" required="true" />
+<cfproperty name="remoteSourceURL" type="string" default="" required="true" />
+<cfproperty name="remotePubDAte" type="string" default="" required="true" />
+
 <cfset variables.feedManager = "" />
 
 <cffunction name="init" returntype="any" output="false" access="public">
+	<cfset super.init(argumentCollection=arguments)>
+	
+	<cfset variables.instance.feedID=""/>
+	<cfset variables.instance.siteID=""/>
+	<cfset variables.instance.dateCreated="#now()#"/>
+	<cfset variables.instance.lastUpdate="#now()#"/>
+	<cfset variables.instance.lastUpdateBy=""/>
+	<cfset variables.instance.name=""/>
+	<cfset variables.instance.altName=""/>
+	<cfset variables.instance.Lang="en-us"/>
+	<cfset variables.instance.isActive=1 />
+	<cfset variables.instance.showNavOnly=1 />
+	<cfset variables.instance.isPublic=0 />
+	<cfset variables.instance.isDefault=0 />
+	<cfset variables.instance.description=""/>
+	<cfset variables.instance.contentID=""/>
+	<cfset variables.instance.categoryID=""/>
+	<cfset variables.instance.MaxItems=20 />
+	<cfset variables.instance.allowHTML=1 />
+	<cfset variables.instance.isFeaturesOnly=0 />
+	<cfset variables.instance.restricted=0 />
+	<cfset variables.instance.restrictGroups="" />
+	<cfset variables.instance.Version="RSS 2.0" />
+	<cfset variables.instance.ChannelLink="" />
+	<cfset variables.instance.type="local" />
+	<cfset variables.instance.sortBy="lastUpdate" />
+	<cfset variables.instance.sortDirection="desc" />
+	<cfset variables.instance.parentID="" />
+	<cfset variables.instance.nextN=20 />
+	<cfset variables.instance.displayName=0 />
+	<cfset variables.instance.displayRatings=0 />
+	<cfset variables.instance.displayComments=0 />
+	<cfset variables.instance.displayKids=0 />
+	<cfset variables.instance.isNew=1 />
+	<cfset variables.instance.advancedParams=queryNew("feedID,param,relationship,field,condition,criteria,dataType","varchar,integer,varchar,varchar,varchar,varchar,varchar" )  />
+	<cfset variables.instance.errors=structnew() />
+	<cfset variables.instance.remoteID = "" />
+	<cfset variables.instance.remoteSourceURL = "" />
+	<cfset variables.instance.remotePubDate = "">
+	
 	<cfreturn this />
 </cffunction>
 
 <cffunction name="set" returnType="any" output="false" access="public">
-		<cfargument name="feed" type="any" required="true">
-		<cfset var prop = "" />
+	<cfargument name="feed" type="any" required="true">
+	<cfset var prop=""/>
 		
-		<cfif isquery(arguments.feed)>
+	<cfif isQuery(arguments.feed) and arguments.feed.recordcount>
+		<cfloop list="#arguments.feed.columnlist#" index="prop">
+			<cfset setValue(prop,arguments.feed[prop][1]) />
+		</cfloop>
 		
-			<cfset setFeedID(arguments.feed.feedID) />
-			<cfset setsiteID(arguments.feed.siteID) />
-			<cfset setdateCreated(arguments.feed.dateCreated) />
-			<cfset setlastUpdate(arguments.feed.lastUpdate) />
-			<cfset setlastUpdateby(arguments.feed.lastUpdateBy) />
-			<cfset setname(arguments.feed.name) />
-			<cfset setAltName(arguments.feed.altName) />
-			<cfset setLang(arguments.feed.Lang) />
-			<cfset setisActive(arguments.feed.isActive)/>
-			<cfset setisPublic(arguments.feed.isPublic)/>
-			<cfset setisDefault(arguments.feed.isDefault)/>
-			<cfset setDescription(arguments.feed.description) />
-			<cfset setMaxItems(arguments.feed.maxItems) />
-			<cfset setAllowHTML(arguments.feed.allowHTML) />
-			<cfset setIsFeaturesOnly(arguments.feed.isFeaturesOnly) />
-			<cfset setRestricted(arguments.feed.Restricted) />
-			<cfset setRestrictGroups(arguments.feed.RestrictGroups) />
-			<cfset setVersion(arguments.feed.Version) />
-			<cfset setChannelLink(arguments.feed.ChannelLink) />
-			<cfset setType(arguments.feed.Type) />
-			<cfset setSortBy(arguments.feed.sortBy) />
-			<cfset setSortDirection(arguments.feed.sortDirection) />
-			<cfset setNextN(arguments.feed.nextN) />
-			<cfset setDisplayName(arguments.feed.displayName) />
-			<cfset setDisplayRatings(arguments.feed.displayRatings) />
-			<cfset setDisplayComments(arguments.feed.displayComments) />
-			<cfset setParentID(arguments.feed.parentID) />
-			<cfset setRemoteID(arguments.feed.remoteID) />
-			<cfset setRemoteSourceURL(arguments.feed.remoteSourceURL) />
-			<cfset setRemotePubDate(arguments.feed.remotePubDate) />
+	<cfelseif isStruct(arguments.feed)>
+		<cfloop collection="#arguments.feed#" item="prop">
+			<cfset setValue(prop,arguments.feed[prop]) />
+		</cfloop>
 		
-		<cfelseif isStruct(arguments.feed)>
-		
-			<cfloop collection="#arguments.feed#" item="prop">
-				<cfset setValue(prop,arguments.feed[prop])>
-			</cfloop>
-			
-			<cfset setAdvancedParams(arguments.feed) />
-			
-		</cfif>
-		
-		<cfset validate() />	
-		<cfreturn this />
-</cffunction>
+		<cfset setAdvancedParams(arguments.feed) />
+	</cfif>
 
-<cffunction name="validate" access="public" output="false">
-	<cfset variables.instance.errors=structnew() />
-	<cfreturn this>
-</cffunction>
-
-<cffunction name="getErrors" returnType="struct" output="false" access="public">
-    <cfreturn variables.instance.errors />
-</cffunction>
-
-<cffunction name="getFeedID" returntype="String" access="public" output="false">
-	<cfreturn variables.instance.feedID />
-</cffunction>
-
-<cffunction name="setFeedID" access="public" output="false">
-	<cfargument name="feedID" type="String" />
-	<cfset variables.instance.feedID = trim(arguments.feedID) />
-	<cfreturn this>
-</cffunction>
-
-<cffunction name="getSiteID" returntype="String" access="public" output="false">
-	<cfreturn variables.instance.siteID />
-</cffunction>
-
-<cffunction name="setSiteID" access="public" output="false">
-	<cfargument name="siteID" type="String" />
-	<cfset variables.instance.siteID = trim(arguments.siteID) />
-	<cfreturn this>
-</cffunction>
-
-<cffunction name="getDateCreated" returntype="String" access="public" output="false">
-	<cfreturn variables.instance.dateCreated />
+	<cfset validate() />	
+	<cfreturn this />
 </cffunction>
 
 <cffunction name="setDateCreated" access="public" output="false">
@@ -179,10 +156,6 @@ to your own modified versions of Mura CMS.
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="getLastUpdate" returntype="String" access="public" output="false">
-	<cfreturn variables.instance.lastUpdate />
-</cffunction>
-
 <cffunction name="setLastUpdate" access="public" output="false">
 	<cfargument name="lastUpdate" type="String" />
 	<cfif isDate(arguments.lastUpdate)>
@@ -191,90 +164,6 @@ to your own modified versions of Mura CMS.
 	<cfset variables.instance.lastUpdate = ""/>
 	</cfif>
 	<cfreturn this>
-</cffunction>
-
-<cffunction name="getlastUpdateBy" returntype="String" access="public" output="false">
-	<cfreturn variables.instance.lastUpdateBy />
-</cffunction>
-
-<cffunction name="setlastUpdateBy" access="public" output="false">
-	<cfargument name="lastUpdateBy" type="String" />
-	<cfset variables.instance.lastUpdateBy = left(trim(arguments.lastUpdateBy),50) />
-	<cfreturn this>
-</cffunction>
-
-<cffunction name="getName" returntype="String" access="public" output="false">
-	<cfreturn variables.instance.name />
-</cffunction>
-
-<cffunction name="setName" access="public" output="false">
-	<cfargument name="name" type="String" />
-	<cfset variables.instance.name = trim(arguments.name) />
-	<cfreturn this>
-</cffunction>
-
-<cffunction name="getAltName" returntype="String" access="public" output="false">	
-	<cfreturn variables.instance.altName />
-</cffunction>
-
-<cffunction name="setAltName" access="public" output="false">
-	<cfargument name="altName" type="String" />
-	<cfset variables.instance.altName = trim(arguments.altName) />
-	<cfreturn this>
-</cffunction>
-
-<cffunction name="getIsActive" returntype="numeric" access="public" output="false">
-	<cfreturn variables.instance.isActive />
-</cffunction>
-
-<cffunction name="setIsActive" access="public" output="false">
-	<cfargument name="isActive" type="numeric" />
-	<cfset variables.instance.isActive = arguments.isActive />
-	<cfreturn this>
-</cffunction>
-
-<cffunction name="getIsPublic" returntype="numeric" access="public" output="false">
-	<cfreturn variables.instance.isPublic />
-</cffunction>
-
-<cffunction name="setIsPublic" access="public" output="false">
-	<cfargument name="isPublic" type="numeric" />
-	<cfset variables.instance.isPublic = arguments.isPublic />
-	<cfreturn this>
-</cffunction>
-
-<cffunction name="getIsDefault" returntype="numeric" access="public" output="false">
-	<cfreturn variables.instance.isDefault />
-</cffunction>
-
-<cffunction name="setIsDefault" access="public" output="false">
-	<cfargument name="isDefault" type="numeric" />
-	<cfset variables.instance.isDefault = arguments.isDefault />
-	<cfreturn this>
-</cffunction>
-
-<cffunction name="getDescription" returntype="String" access="public" output="false">
-	<cfreturn variables.instance.Description />
-</cffunction>
-
-<cffunction name="setDescription" access="public" output="false">
-	<cfargument name="Description" type="String" />
-	<cfset variables.instance.Description = trim(arguments.Description) />
-	<cfreturn this>
-</cffunction>
-
-<cffunction name="getLang" returntype="String" access="public" output="false">
-	<cfreturn variables.instance.Lang />
-</cffunction>
-
-<cffunction name="setLang" access="public" output="false">
-	<cfargument name="Lang" type="String" />
-	<cfset variables.instance.Lang = trim(arguments.Lang) />
-	<cfreturn this>
-</cffunction>
-
-<cffunction name="getcontentID" returntype="String" access="public" output="false">
-	<cfreturn variables.instance.contentID />
 </cffunction>
 
 <cffunction name="setContentID" access="public" output="false">
@@ -294,10 +183,6 @@ to your own modified versions of Mura CMS.
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="getCategoryID" returntype="String" access="public" output="false">
-	<cfreturn variables.instance.categoryID />
-</cffunction>
-
 <cffunction name="setCategoryID" access="public" output="false">
 	<cfargument name="categoryID" type="String" />
 	<cfargument name="append" type="boolean" default="false" required="true" />
@@ -315,130 +200,12 @@ to your own modified versions of Mura CMS.
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="getMaxItems" returntype="numeric" access="public" output="false">
-	<cfreturn variables.instance.MaxItems />
-</cffunction>
-
-<cffunction name="setMaxItems" access="public" output="false">
-	<cfargument name="MaxItems" type="numeric" />
-	<cfset variables.instance.MaxItems = arguments.MaxItems />
-	<cfreturn this>
-</cffunction>
-
-<cffunction name="getAllowHTML" returntype="numeric" access="public" output="false">
-	<cfreturn variables.instance.AllowHTML />
-</cffunction>
-
-<cffunction name="setAllowHTML" access="public" output="false">
-	<cfargument name="AllowHTML" type="numeric" />
-	<cfset variables.instance.AllowHTML = arguments.AllowHTML />
-	<cfreturn this>
-</cffunction>
-
-<cffunction name="getIsFeaturesOnly" returntype="numeric" access="public" output="false">
-	<cfreturn variables.instance.IsFeaturesOnly />
-</cffunction>
-
-<cffunction name="setIsFeaturesOnly" access="public" output="false">
-	<cfargument name="IsFeaturesOnly" type="numeric" />
-	<cfset variables.instance.IsFeaturesOnly = arguments.IsFeaturesOnly />
-	<cfreturn this>
-</cffunction>
-
-<cffunction name="getRestricted" returntype="numeric" access="public" output="false">
-	<cfreturn variables.instance.Restricted />
-</cffunction>
-
-<cffunction name="setRestricted" access="public" output="false">
-	<cfargument name="Restricted" type="numeric" />
-	<cfset variables.instance.Restricted = arguments.Restricted />
-	<cfreturn this>
-</cffunction>
-
-<cffunction name="setRestrictGroups" access="public" output="false">
-	<cfargument name="RestrictGroups" type="string" />
-	<cfset variables.instance.RestrictGroups = trim(arguments.RestrictGroups) />
-	<cfreturn this>
-</cffunction>
-
-<cffunction name="getRestrictGroups" returntype="String" access="public" output="false">
-	<cfreturn variables.instance.RestrictGroups />
-</cffunction>
-
-<cffunction name="setVersion" access="public" output="false">
-	<cfargument name="Version" type="String" />
-	<cfset variables.instance.Version = trim(arguments.Version) />
-	<cfreturn this>
-</cffunction>
-
-<cffunction name="getVersion" access="public" output="false" returntype="String">
-	<cfreturn variables.instance.Version />
-</cffunction>
-
-<cffunction name="setChannelLink" access="public" output="false">
-	<cfargument name="ChannelLink" type="String" />
-	<cfset variables.instance.ChannelLink = trim(arguments.ChannelLink) />
-	<cfreturn this>
-</cffunction>
-
-<cffunction name="getChannelLink" access="public" output="false" returntype="String">
-	<cfreturn variables.instance.ChannelLink />
-</cffunction>
-
-<cffunction name="setType" access="public" output="false">
-	<cfargument name="Type" type="String" />
-	<cfset variables.instance.Type = trim(arguments.Type) />
-	<cfreturn this>
-</cffunction>
-
-<cffunction name="getType" access="public" output="false" returntype="String">
-	<cfreturn variables.instance.Type />
-</cffunction>
-
-<cffunction name="getParentID" returntype="String" access="public" output="false">
-	<cfreturn variables.instance.ParentID />
-</cffunction>
-
-<cffunction name="setParentID" access="public" output="false">
-	<cfargument name="ParentID" type="String" />
-	<cfset variables.instance.ParentID = trim(arguments.ParentID) />
-	<cfreturn this>
-</cffunction>
-
-<cffunction name="getSortBy" returntype="String" access="public" output="false">
-	<cfreturn variables.instance.sortBy />
-</cffunction>
-
-<cffunction name="setSortBy" access="public" output="false">
-	<cfargument name="sortBy" type="String" />
-	<cfset variables.instance.sortBy = trim(arguments.sortBy) />
-	<cfreturn this>
-</cffunction>
-
-<cffunction name="getSortDirection" returntype="String" access="public" output="false">
-	<cfreturn variables.instance.sortDirection />
-</cffunction>
-
-<cffunction name="setSortDirection" access="public" output="false">
-	<cfargument name="sortDirection" type="String" />
-	<cfset variables.instance.sortDirection = trim(arguments.sortDirection) />
-	<cfreturn this>
-</cffunction>
-
-<cffunction name="getNextN" returntype="numeric" access="public" output="false">
-	<cfreturn variables.instance.NextN />
-</cffunction>
-
 <cffunction name="setNextN" access="public" output="false">
 	<cfargument name="NextN" type="any" />
 	<cfif isNumeric(arguments.nextN)>
 	<cfset variables.instance.NextN = arguments.NextN />
 	</cfif>
 	<cfreturn this>
-</cffunction>
-
-<cffunction name="getDisplayName" returntype="numeric" access="public" output="false">
-	<cfreturn variables.instance.displayName />
 </cffunction>
 
 <cffunction name="setDisplayName" access="public" output="false">
@@ -449,20 +216,12 @@ to your own modified versions of Mura CMS.
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="getDisplayRatings" returntype="numeric" access="public" output="false">
-	<cfreturn variables.instance.displayRatings />
-</cffunction>
-
 <cffunction name="setDisplayRatings" access="public" output="false">
 	<cfargument name="DisplayRatings" type="any" />
 	<cfif isNumeric(arguments.DisplayRatings)>
 	<cfset variables.instance.DisplayRatings = arguments.DisplayRatings />
 	</cfif>
 	<cfreturn this>
-</cffunction>
-
-<cffunction name="getDisplayComments" returntype="numeric" access="public" output="false">
-	<cfreturn variables.instance.displayComments />
 </cffunction>
 
 <cffunction name="setDisplayComments" access="public" output="false">
@@ -473,20 +232,12 @@ to your own modified versions of Mura CMS.
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="getDisplayKids" returntype="numeric" access="public" output="false">
-	<cfreturn variables.instance.displayKids />
-</cffunction>
-
 <cffunction name="setDisplayKids" access="public" output="false">
 	<cfargument name="DisplayKids" type="any" />
 	<cfif isNumeric(arguments.DisplayKids)>
 	<cfset variables.instance.displayKids = arguments.DisplayKids />
 	</cfif>
 	<cfreturn this>
-</cffunction>
-
-<cffunction name="getShowNavOnly" returntype="numeric" access="public" output="false">
-	<cfreturn variables.instance.showNavOnly />
 </cffunction>
 
 <cffunction name="setShowNavOnly" access="public" output="false">
@@ -497,36 +248,32 @@ to your own modified versions of Mura CMS.
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="getAdvancedParams" returntype="query" access="public" output="false">
-	<cfreturn variables.instance.advancedParams />
-</cffunction>
-
 <cffunction name="setAdvancedParams" access="public" output="false">
 	<cfargument name="params" type="any" required="true">
 		
-		<cfset var rows=0/>
-		<cfset var I = 0 />
+	<cfset var rows=0/>
+	<cfset var I = 0 />
 		
-		<cfif isquery(arguments.params)>
+	<cfif isquery(arguments.params)>
 			
-			<cfset variables.instance.advancedParams=arguments.params />
+		<cfset variables.instance.advancedParams=arguments.params />
 			
-		<cfelseif isdefined('arguments.params.param')>
-		
-			<cfset clearAdvancedParams() />
-			<cfloop from="1" to="#listLen(arguments.params.param)#" index="i">
-				
-				<cfset addAdvancedParam(
-						listFirst(evaluate('arguments.params.paramField#i#'),'^'),
-						evaluate('arguments.params.paramRelationship#i#'),
-						evaluate('arguments.params.paramCriteria#i#'),
-						evaluate('arguments.params.paramCondition#i#'),
-						listLast(evaluate('arguments.params.paramField#i#'),'^')
-						) />
+	<cfelseif isdefined('arguments.params.param')>
 	
-			</cfloop>
+		<cfset clearAdvancedParams() />
+		<cfloop from="1" to="#listLen(arguments.params.param)#" index="i">
 			
-		</cfif>
+			<cfset addAdvancedParam(
+					listFirst(evaluate('arguments.params.paramField#i#'),'^'),
+					evaluate('arguments.params.paramRelationship#i#'),
+					evaluate('arguments.params.paramCriteria#i#'),
+					evaluate('arguments.params.paramCondition#i#'),
+					listLast(evaluate('arguments.params.paramField#i#'),'^')
+					) />
+		</cfloop>
+			
+	</cfif>
+	
 	<cfreturn this>
 </cffunction>
 
@@ -537,18 +284,19 @@ to your own modified versions of Mura CMS.
 	<cfargument name="criteria" type="string" required="true" default="">
 	<cfargument name="condition" type="string" default="EQUALS" required="true">
 	<cfargument name="datatype" type="string"  default="varchar" required="true">
-		<cfset var rows=1/>
+	
+	<cfset var rows=1/>
 		
-		<cfset queryAddRow(variables.instance.advancedParams,1)/>
-		<cfset rows = variables.instance.advancedParams.recordcount />
-		<cfset querysetcell(variables.instance.advancedParams,"feedid",getFeedID(),rows)/>
-		<cfset querysetcell(variables.instance.advancedParams,"param",rows,rows)/>
-		<cfset querysetcell(variables.instance.advancedParams,"field",arguments.field,rows)/>
-		<cfset querysetcell(variables.instance.advancedParams,"relationship",arguments.relationship,rows)/>
-		<cfset querysetcell(variables.instance.advancedParams,"criteria",arguments.criteria,rows)/>
-		<cfset querysetcell(variables.instance.advancedParams,"condition",arguments.condition,rows)/>
-		<cfset querysetcell(variables.instance.advancedParams,"dataType",arguments.datatype,rows)/>
-		<cfreturn this>
+	<cfset queryAddRow(variables.instance.advancedParams,1)/>
+	<cfset rows = variables.instance.advancedParams.recordcount />
+	<cfset querysetcell(variables.instance.advancedParams,"feedid",variables.instance.feedID,rows)/>
+	<cfset querysetcell(variables.instance.advancedParams,"param",rows,rows)/>
+	<cfset querysetcell(variables.instance.advancedParams,"field",arguments.field,rows)/>
+	<cfset querysetcell(variables.instance.advancedParams,"relationship",arguments.relationship,rows)/>
+	<cfset querysetcell(variables.instance.advancedParams,"criteria",arguments.criteria,rows)/>
+	<cfset querysetcell(variables.instance.advancedParams,"condition",arguments.condition,rows)/>
+	<cfset querysetcell(variables.instance.advancedParams,"dataType",arguments.datatype,rows)/>
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="addParam" access="public" output="false" hint="This is the same as addAdvancedParam.">
@@ -557,8 +305,8 @@ to your own modified versions of Mura CMS.
 	<cfargument name="criteria" type="string" required="true" default="">
 	<cfargument name="condition" type="string" default="EQUALS" required="true">
 	<cfargument name="datatype" type="string"  default="varchar" required="true">
-		<cfset addAdvancedParam(argumentcollection=arguments)>
-		<cfreturn this>
+	<cfset addAdvancedParam(argumentcollection=arguments)>
+	<cfreturn this>
 </cffunction>
 
 
@@ -600,22 +348,16 @@ to your own modified versions of Mura CMS.
 </cffunction>
 
 <cffunction name="delete" output="false" access="public">
-	<cfset variables.feedManager.delete(getFeedID()) />
-</cffunction>
-
-<cffunction name="setAllValues" returntype="any" access="public" output="false">
-	<cfargument name="instance">
-	<cfset variables.instance=arguments.instance/>
-	<cfreturn this>
-</cffunction>
-
-<cffunction name="getAllValues" returntype="any" access="public" output="false">
-	<cfreturn variables.instance/>
+	<cfset variables.feedManager.delete(variables.instance.feedID) />
 </cffunction>
 
 <cffunction name="setValue" returntype="any" access="public" output="false">
 <cfargument name="property"  type="string" required="true">
 <cfargument name="propertyValue" default="" >
+	
+	<cfif isSimpleValue(arguments.propertyValue)>
+		<cfset arguments.propertyValue=trim(arguments.propertyValue)>
+	</cfif>
 	
 	<cfif isDefined("this.set#arguments.property#")>
 		<cfset evaluate("set#property#(arguments.propertyValue)") />
@@ -642,7 +384,7 @@ to your own modified versions of Mura CMS.
 	<cfset var response="">
 	
 	<cfif not structKeyExists(arguments,"siteID")>
-		<cfset arguments.siteID=getSiteID()>
+		<cfset arguments.siteID=variables.instance.siteID>
 	</cfif>
 	
 	<cfset response=variables.feedManager.read(argumentCollection=arguments)>
@@ -654,36 +396,6 @@ to your own modified versions of Mura CMS.
 		<cfset setAllValues(response.getAllValues())>
 		<cfreturn this>
 	</cfif>
-</cffunction>
-
-<cffunction name="setIsNew" output="false" access="public">
-    <cfargument name="IsNew" type="numeric" required="true">
-    <cfset variables.instance.IsNew = arguments.IsNew />
-	<cfreturn this>
-</cffunction>
-
-<cffunction name="getIsNew" returnType="numeric" output="false" access="public">
-    <cfreturn variables.instance.IsNew />
-</cffunction>
-
-<cffunction name="setRemoteID" output="false" access="public">
-    <cfargument name="RemoteID" type="string" required="true">
-    <cfset variables.instance.RemoteID = trim(arguments.RemoteID) />
-	<cfreturn this>
-</cffunction>
-
-<cffunction name="getRemoteID" returnType="string" output="false" access="public">
-    <cfreturn variables.instance.RemoteID />
-</cffunction>
-  
-<cffunction name="setRemoteSourceURL" output="false" access="public">
-    <cfargument name="remoteSourceURL" type="string" required="true">
-    <cfset variables.instance.remoteSourceURL = trim(arguments.remoteSourceURL) />
-	<cfreturn this>
-</cffunction>
-
-<cffunction name="getRemoteSourceURL" returnType="string" output="false" access="public">
-    <cfreturn variables.instance.remoteSourceURL />
 </cffunction>
 
 <cffunction name="setRemotePubDate" output="false" access="public">
@@ -701,15 +413,11 @@ to your own modified versions of Mura CMS.
 	<cfreturn this>
   </cffunction>
 
-<cffunction name="getRemotePubDate" returnType="string" output="false" access="public">
-    <cfreturn variables.instance.RemotePubDate />
-</cffunction>
-
 <cffunction name="getEditUrl" access="public" returntype="string" output="false">
 	<cfargument name="compactDisplay" type="any" required="true" default="false"/>
 	<cfset var returnStr="">
 	
-	<cfset returnStr= "#variables.configBean.getContext()#/admin/?fuseaction=cFeed.edit&feedID=#getFeedID()#&siteid=#getSiteID()#&type=#getType()#&compactDisplay=#arguments.compactdisplay#" >
+	<cfset returnStr= "#variables.configBean.getContext()#/admin/?fuseaction=cFeed.edit&feedID=#variables.instance.feedID#&siteid=#variables.instance.siteID#&type=#variables.instance.type#&compactDisplay=#arguments.compactdisplay#" >
 	
 	<cfreturn returnStr>
 </cffunction> 

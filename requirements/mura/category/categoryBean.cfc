@@ -41,121 +41,62 @@ the GNU General Public License version 2 �without this exception. �You may, 
 to your own modified versions of Mura CMS.
 --->
 
-<cfcomponent extends="mura.cfobject" output="false">
+<cfcomponent extends="mura.bean.bean" output="false">
 
-<cfset variables.instance.categoryID=""/>
-<cfset variables.instance.siteID=""/>
-<cfset variables.instance.dateCreated="#now()#"/>
-<cfset variables.instance.lastUpdate="#now()#"/>
-<cfset variables.instance.lastUpdateBy=""/>
-<cfset variables.instance.name=""/>
-<cfset variables.instance.isInterestGroup=1 />
-<cfset variables.instance.parentID="" />
-<cfset variables.instance.isActive=1 />
-<cfset variables.instance.isOpen=1 />
-<cfset variables.instance.notes=""/>
-<cfset variables.instance.sortBy = "orderno" />
-<cfset variables.instance.sortDirection = "asc" />
-<cfset variables.instance.RestrictGroups = "" />
-<cfset variables.instance.Path = "" />
-<cfset variables.instance.remoteID = "" />
-<cfset variables.instance.remoteSourceURL = "" />
-<cfset variables.instance.remotePubDate = "">
-<cfset variables.instance.URLTitle = "">
-<cfset variables.instance.filename = "">
-<cfset variables.categoryManager = "" />
-<cfset variables.instance.isNew=1 />
-<cfset variables.instance.errors=structnew() />
+<cfproperty name="categoryID" type="string" default="" required="true" />
+<cfproperty name="siteID" type="string" default="" required="true" />
+<cfproperty name="dateCreated" type="date" default="" required="true" />
+<cfproperty name="lastUpdate" type="date" default="" required="true" />
+<cfproperty name="lastUpdateBy" type="string" default="" required="true" />
+<cfproperty name="name" type="string" default="" required="true" />
+<cfproperty name="isInterestGroup" type="numeric" default="1" required="true" />
+<cfproperty name="parentID" type="string" default="" required="true" />
+<cfproperty name="isActive" type="numeric" default="1" required="true" />
+<cfproperty name="isOpen" type="numeric" default="1" required="true" />
+<cfproperty name="note" type="string" default="" required="true" />
+<cfproperty name="sortBy" type="string" default="orderno" required="true" />
+<cfproperty name="sortDirection" type="string" default="asc" required="true" />
+<cfproperty name="restrictGroups" type="string" default="" required="true" />
+<cfproperty name="path" type="string" default="" required="true" />
+<cfproperty name="remoteID" type="string" default="" required="true" />
+<cfproperty name="remoteSourceURL" type="string" default="" required="true" />
+<cfproperty name="remotePubDate" type="date" default="" required="true" />
+<cfproperty name="URLtitle" type="string" default="" required="true" />
+<cfproperty name="filename" type="string" default="" required="true" />
+<cfproperty name="isNew" type="numeric" default="1" required="true" />
 
 <cfset variables.kids = arrayNew(1) />
 
 <cffunction name="init" returntype="any" output="false" access="public">
 	<cfargument name="categoryManager" type="any" required="yes"/>
-	<cfset variables.categoryManager=arguments.categoryManager>
-	<cfreturn this />
-</cffunction>
-
-<cffunction name="set" returnType="any" output="false" access="public">
-		<cfargument name="category" type="any" required="true">
-
-		<cfset var prop="" />
-		
-		<cfif isquery(arguments.category)>
-		
-			<cfset setcategoryID(arguments.category.categoryID) />
-			<cfset setsiteID(arguments.category.siteID) />
-			<cfset setdateCreated(arguments.category.dateCreated) />
-			<cfset setlastUpdate(arguments.category.lastUpdate) />
-			<cfset setlastUpdateby(arguments.category.lastUpdateBy) />
-			<cfset setname(arguments.category.name) />
-			<cfset setIsInterestGroup(arguments.category.isInterestGroup)/>
-			<cfset setParentID(arguments.category.parentID) />
-			<cfset setisActive(arguments.category.isActive)/>
-			<cfset setisOpen(arguments.category.isOpen)/>
-			<cfset setnotes(arguments.category.notes) />
-			<cfset setSortBy(arguments.category.sortBy) />
-			<cfset setSortDirection(arguments.category.sortDirection) />
-			<cfset setRestrictGroups(arguments.category.RestrictGroups) />
-			<cfset setPath(arguments.category.Path) />
-			<cfset setRemoteID(arguments.category.remoteID) />
-			<cfset setRemoteSourceURL(arguments.category.remoteSourceURL) />
-			<cfset setRemotePubDate(arguments.category.remotePubDate) />
-			<cfset setURLTitle(arguments.category.URLTitle) />
-			<cfset setFilename(arguments.category.filename) />
 	
-		<cfelseif isStruct(arguments.category)>
-		
-			<cfloop collection="#arguments.category#" item="prop">
-				<cfset setValue(prop,arguments.category[prop])>
-			</cfloop>
-			
-		</cfif>
-		
-		<cfset validate() />	
-		<cfreturn this />
-</cffunction>
- 
-<cffunction name="setAllValues" returntype="any" access="public" output="false">
-	<cfargument name="instance">
-	<cfset variables.instance=arguments.instance/>
-	<cfreturn this>
-</cffunction>
+	<cfset super.init(argumentCollection=arguments)>
+	
+	<cfset variables.categoryManager=arguments.categoryManager>
+	
+	<cfset variables.instance.categoryID=""/>
+	<cfset variables.instance.siteID=""/>
+	<cfset variables.instance.dateCreated="#now()#"/>
+	<cfset variables.instance.lastUpdate="#now()#"/>
+	<cfset variables.instance.lastUpdateBy=""/>
+	<cfset variables.instance.name=""/>
+	<cfset variables.instance.isInterestGroup=1 />
+	<cfset variables.instance.parentID="" />
+	<cfset variables.instance.isActive=1 />
+	<cfset variables.instance.isOpen=1 />
+	<cfset variables.instance.notes=""/>
+	<cfset variables.instance.sortBy = "orderno" />
+	<cfset variables.instance.sortDirection = "asc" />
+	<cfset variables.instance.RestrictGroups = "" />
+	<cfset variables.instance.Path = "" />
+	<cfset variables.instance.remoteID = "" />
+	<cfset variables.instance.remoteSourceURL = "" />
+	<cfset variables.instance.remotePubDate = "">
+	<cfset variables.instance.URLTitle = "">
+	<cfset variables.instance.filename = "">
+	<cfset variables.instance.isNew=1 />
 
-<cffunction name="getAllValues" access="public" output="false" returntype="struct">
-	<cfreturn variables.instance  />
-</cffunction>
-
-<cffunction name="validate" access="public" output="false">
-	<cfset variables.instance.errors=structnew() />
-	<cfreturn this>
-</cffunction>
-
-<cffunction name="getErrors" returnType="struct" output="false" access="public">
-    <cfreturn variables.instance.errors />
-</cffunction>
-
-<cffunction name="getCategoryID" returntype="String" access="public" output="false">
-	<cfreturn variables.instance.categoryID />
-</cffunction>
-
-<cffunction name="setCategoryID" access="public" output="false">
-	<cfargument name="categoryID" type="String" />
-	<cfset variables.instance.categoryID = trim(arguments.categoryID) />
-	<cfreturn this>
-</cffunction>
-
-<cffunction name="getSiteID" returntype="String" access="public" output="false">
-	<cfreturn variables.instance.siteID />
-</cffunction>
-
-<cffunction name="setSiteID" access="public" output="false">
-	<cfargument name="siteID" type="String" />
-	<cfset variables.instance.siteID = trim(arguments.siteID) />
-	<cfreturn this>
-</cffunction>
-
-<cffunction name="getDateCreated" returntype="String" access="public" output="false">
-	<cfreturn variables.instance.dateCreated />
+	<cfreturn this />
 </cffunction>
 
 <cffunction name="setDateCreated" access="public" output="false">
@@ -168,10 +109,6 @@ to your own modified versions of Mura CMS.
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="getLastUpdate" returntype="String" access="public" output="false">
-	<cfreturn variables.instance.lastUpdate />
-</cffunction>
-
 <cffunction name="setLastUpdate" access="public" output="false">
 	<cfargument name="lastUpdate" type="String" />
 	<cfif isDate(arguments.lastUpdate)>
@@ -182,117 +119,13 @@ to your own modified versions of Mura CMS.
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="getlastUpdateBy" returntype="String" access="public" output="false">
-	<cfreturn variables.instance.lastUpdateBy />
-</cffunction>
-
 <cffunction name="setlastUpdateBy" access="public" output="false">
 	<cfargument name="lastUpdateBy" type="String" />
 	<cfset variables.instance.lastUpdateBy = left(trim(arguments.lastUpdateBy),50) />
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="getName" returntype="String" access="public" output="false">
-	<cfreturn variables.instance.name />
-</cffunction>
-
-<cffunction name="setName" access="public" output="false">
-	<cfargument name="name" type="String" />
-	<cfset variables.instance.name = trim(arguments.name) />
-	<cfreturn this>
-</cffunction>
-
-<cffunction name="getIsInterestGroup" returntype="numeric" access="public" output="false">
-	<cfreturn variables.instance.isInterestGroup />
-</cffunction>
-
-<cffunction name="setIsInterestGroup" access="public" output="false">
-	<cfargument name="isInterestGroup" type="numeric" />
-	<cfset variables.instance.isInterestGroup = arguments.isInterestGroup />
-	<cfreturn this>
-</cffunction>
-
-<cffunction name="getParentID" returntype="String" access="public" output="false">
-	<cfreturn variables.instance.parentID />
-</cffunction>
-
-<cffunction name="setParentID" access="public" output="false">
-	<cfargument name="ParentID" type="String" />
-	<cfset variables.instance.ParentID = trim(arguments.ParentID) />
-	<cfreturn this>
-</cffunction>
-
-<cffunction name="getIsActive" returntype="numeric" access="public" output="false">
-	<cfreturn variables.instance.isActive />
-</cffunction>
-
-<cffunction name="setIsActive" access="public" output="false">
-	<cfargument name="isActive" type="numeric" />
-	<cfset variables.instance.isActive = arguments.isActive />
-	<cfreturn this>
-</cffunction>
-
-<cffunction name="getIsOpen" returntype="numeric" access="public" output="false">
-	<cfreturn variables.instance.isOpen />
-</cffunction>
-
-<cffunction name="setIsOpen" access="public" output="false">
-	<cfargument name="isOpen" type="numeric" />
-	<cfset variables.instance.isOpen = arguments.isOpen />
-	<cfreturn this>
-</cffunction>
-
-<cffunction name="getNotes" returntype="String" access="public" output="false">
-	<cfreturn variables.instance.Notes />
-</cffunction>
-
-<cffunction name="setNotes" access="public" output="false">
-	<cfargument name="Notes" type="String" />
-	<cfset variables.instance.Notes = trim(arguments.Notes) />
-	<cfreturn this>
-</cffunction>
-
- <cffunction name="setSortBy" output="false" access="public">
-    <cfargument name="SortBy" type="string" required="true">
-    <cfset variables.instance.SortBy = trim(arguments.SortBy) />
-	<cfreturn this>
-  </cffunction>
-
-  <cffunction name="getSortBy" returnType="string" output="false" access="public">
-    <cfreturn variables.instance.SortBy />
-  </cffunction>
-  
-   <cffunction name="setSortDirection" output="false" access="public">
-    <cfargument name="SortDirection" type="string" required="true">
-    <cfset variables.instance.SortDirection = trim(arguments.SortDirection) />
-	<cfreturn this>
-  </cffunction>
-
-  <cffunction name="getSortDirection" returnType="string" output="false" access="public">
-    <cfreturn variables.instance.SortDirection />
-  </cffunction>
-  
-    <cffunction name="setRestrictGroups" output="false" access="public">
-    <cfargument name="RestrictGroups" type="string" required="true">
-    <cfset variables.instance.RestrictGroups = trim(arguments.RestrictGroups) />
-	<cfreturn this>
-  </cffunction>
-
-  <cffunction name="getRestrictGroups" returnType="string" output="false" access="public">
-    <cfreturn variables.instance.RestrictGroups />
-  </cffunction>
-  
-    <cffunction name="setPath" output="false" access="public">
-    <cfargument name="Path" type="string" required="true">
-    <cfset variables.instance.Path = trim(arguments.Path) />
-	<cfreturn this>
-  </cffunction>
-
-  <cffunction name="getPath" returnType="string" output="false" access="public">
-    <cfreturn variables.instance.Path />
-  </cffunction>
-
-	<cffunction name="save" returnType="any" output="false" access="public">
+<cffunction name="save" returnType="any" output="false" access="public">
 	<cfset var kid="">
 	<cfset var i="">
 	<cfset setAllValues(variables.categoryManager.save(this).getAllValues())>
@@ -307,84 +140,55 @@ to your own modified versions of Mura CMS.
 	<cfset variables.kids=arrayNew(1)>
 	
 	<cfreturn this />
-	</cffunction>
+</cffunction>
 	
-	<cffunction name="addChild" output="false">
-		<cfargument name="child" hint="Instance of a categoryBean">
-		<cfset arguments.child.setSiteID(getSiteID())>
-		<cfset arguments.child.setParentID(getContentID())>
-		<cfset arrayAppend(variables.kids,arguments.child)>
+<cffunction name="addChild" output="false">
+	<cfargument name="child" hint="Instance of a categoryBean">
+	<cfset arguments.child.setSiteID(variables.instance.siteID)>
+	<cfset arguments.child.setParentID(variables.instance.categoryID)>
+	<cfset arrayAppend(variables.kids,arguments.child)>
+	<cfreturn this>
+</cffunction>
+	
+<cffunction name="delete" output="false" access="public">
+	<cfset variables.categoryManager.delete(variables.instance.categoryID) />
+</cffunction>
+	
+<cffunction name="getKidsQuery" returntype="any" output="false">
+	<cfargument name="activeOnly" type="boolean" required="true" default="true">
+	<cfargument name="InterestsOnly" type="boolean" required="true" default="false">
+		
+	<cfreturn variables.categoryManager.getCategories(variables.instance.siteID,variables.instance.categoryID,"", arguments.activeOnly, arguments.InterestsOnly) />
+</cffunction>
+	
+<cffunction name="getKidsIterator" returntype="any" output="false">
+	<cfargument name="activeOnly" type="boolean" required="true" default="true">
+	<cfargument name="InterestsOnly" type="boolean" required="true" default="false">
+	<cfset var it=getServiceFactory().getBean("categoryIterator").init()>
+	<cfset it.setQuery(getKidsQuery(arguments.activeOnly, arguments.InterestsOnly))>
+	<cfreturn it />
+</cffunction>
+
+<cffunction name="loadBy" returnType="any" output="false" access="public">
+	<cfset var response="">
+	
+	<cfif not structKeyExists(arguments,"siteID")>
+		<cfset arguments.siteID=variables.instance.siteID>
+	</cfif>
+	
+	<cfset response=variables.categoryManager.read(argumentCollection=arguments)>
+	<cfif isArray(response)>
+		<cfset setAllValues(response[1].getAllValues())>
+		<cfreturn response>
+	<cfelse>
+		<cfset setAllValues(response.getAllValues())>
 		<cfreturn this>
-	</cffunction>
+	</cfif>
+</cffunction>
 	
-	<cffunction name="delete" output="false" access="public">
-		<cfset variables.categoryManager.delete(getCategoryID()) />
-	</cffunction>
-	
-	<cffunction name="getKidsQuery" returntype="any" output="false">
-		<cfargument name="activeOnly" type="boolean" required="true" default="true">
-		<cfargument name="InterestsOnly" type="boolean" required="true" default="false">
-		
-		<cfreturn variables.categoryManager.getCategories(getSiteID(),getCategoryID(),"", arguments.activeOnly, arguments.InterestsOnly) />
-	</cffunction>
-	
-	<cffunction name="getKidsIterator" returntype="any" output="false">
-		<cfargument name="activeOnly" type="boolean" required="true" default="true">
-		<cfargument name="InterestsOnly" type="boolean" required="true" default="false">
-		<cfset var it=getServiceFactory().getBean("categoryIterator").init()>
-		<cfset it.setQuery(getKidsQuery(arguments.activeOnly, arguments.InterestsOnly))>
-		<cfreturn it />
-	</cffunction>
-
-	<cffunction name="loadBy" returnType="any" output="false" access="public">
-		<cfset var response="">
-		
-		<cfif not structKeyExists(arguments,"siteID")>
-			<cfset arguments.siteID=getSiteID()>
-		</cfif>
-		
-		<cfset response=variables.categoryManager.read(argumentCollection=arguments)>
-
-		<cfif isArray(response)>
-			<cfset setAllValues(response[1].getAllValues())>
-			<cfreturn response>
-		<cfelse>
-			<cfset setAllValues(response.getAllValues())>
-			<cfreturn this>
-		</cfif>
-	</cffunction>
-	
-   <cffunction name="setIsNew" output="false" access="public">
-    <cfargument name="IsNew" type="numeric" required="true">
-    <cfset variables.instance.IsNew = arguments.IsNew />
-  </cffunction>
-
-  <cffunction name="getIsNew" returnType="numeric" output="false" access="public">
-    <cfreturn variables.instance.IsNew />
-  </cffunction>
-
-	<cffunction name="setRemoteID" output="false" access="public">
-	    <cfargument name="RemoteID" type="string" required="true">
-	    <cfset variables.instance.RemoteID = trim(arguments.RemoteID) />
-	    <cfreturn this>
-	</cffunction>
-	
-	<cffunction name="getRemoteID" returnType="string" output="false" access="public">
-	    <cfreturn variables.instance.RemoteID />
-	</cffunction>
-	  
-	<cffunction name="setRemoteSourceURL" output="false" access="public">
-	    <cfargument name="remoteSourceURL" type="string" required="true">
-	    <cfset variables.instance.remoteSourceURL = trim(arguments.remoteSourceURL) />
-	    <cfreturn this>
-	</cffunction>
-	
-	<cffunction name="getRemoteSourceURL" returnType="string" output="false" access="public">
-	    <cfreturn variables.instance.remoteSourceURL />
-	 </cffunction>
-	 
-	<cffunction name="setRemotePubDate" output="false" access="public">
+<cffunction name="setRemotePubDate" output="false" access="public">
     <cfargument name="RemotePubDate" type="string" required="true">
+	
 	<cfif lsisDate(arguments.RemotePubDate)>
 		<cftry>
 		<cfset variables.instance.RemotePubDate = lsparseDateTime(arguments.RemotePubDate) />
@@ -396,85 +200,49 @@ to your own modified versions of Mura CMS.
 		<cfset variables.instance.RemotePubDate = ""/>
 	</cfif>
 	<cfreturn this>
-  </cffunction>
+</cffunction>
 
-  <cffunction name="getRemotePubDate" returnType="string" output="false" access="public">
-    <cfreturn variables.instance.RemotePubDate />
-  </cffunction>
-
-	<cffunction name="setURLTitle" output="false" access="public">
-	    <cfargument name="URLTitle" type="string" required="true">
-	    <cfif arguments.URLTitle neq variables.instance.URLTitle>
-	   		<cfset variables.instance.URLTitle = getBean("contentUtility").formatFilename(arguments.URLTitle) />
-	    </cfif>
-	    <cfreturn this>
-	</cffunction>
+<cffunction name="setURLTitle" output="false" access="public">
+	<cfargument name="URLTitle" type="string" required="true">
 	
-	<cffunction name="getURLTitle" returnType="string" output="false" access="public">
-	    <cfreturn variables.instance.URLTitle />
-	 </cffunction>
-	 
-	<cffunction name="setFilename" output="false" access="public">
-	    <cfargument name="filename" type="string" required="true">
-	    <cfset variables.instance.filename = left(trim(arguments.filename),255) />
-	    <cfreturn this>
-	</cffunction>
+	<cfif arguments.URLTitle neq variables.instance.URLTitle>
+  		<cfset variables.instance.URLTitle = getBean("contentUtility").formatFilename(arguments.URLTitle) />
+    </cfif>
+    <cfreturn this>
+</cffunction>
 	
-	<cffunction name="getFilename" returnType="string" output="false" access="public">
-	    <cfreturn variables.instance.filename />
-	 </cffunction>
-
-	<cffunction name="setValue" returntype="any" access="public" output="false">
-	<cfargument name="property"  type="string" required="true">
-	<cfargument name="propertyValue" default="" >
-		
-		<cfif isDefined("this.set#arguments.property#")>
-			<cfset evaluate("set#property#(arguments.propertyValue)") />
-		<cfelse>
-			<cfset variables.instance["#arguments.property#"]=arguments.propertyValue />
-		</cfif>
-		<cfreturn this>
-	</cffunction>
+<cffunction name="setFilename" output="false" access="public">
+    <cfargument name="filename" type="string" required="true">
+    <cfset variables.instance.filename = left(trim(arguments.filename),255) />
+    <cfreturn this>
+</cffunction>
 	
-	<cffunction name="getValue" returntype="any" access="public" output="false">
-	<cfargument name="property"  type="string" required="true">
-		
-		<cfif structKeyExists(this,"get#property#")>
-			<cfreturn evaluate("get#property#()") />
-		<cfelseif structKeyExists(variables.instance,"#arguments.property#")>
-			<cfreturn variables.instance["#arguments.property#"] />
-		<cfelse>
-			<cfreturn "" />
-		</cfif>
+<cffunction name="getParent" output="false" returntype="any">
+	<cfif len(getParentID())>
+		<cfreturn getBean('category').loadBy(categoryID=variables.instance.parentID, siteid=variables.instance.siteID )>
+	<cfelse>
+		<cfthrow message="Parent category does not exist.">
+	</cfif>
+</cffunction>
 	
-	</cffunction>
+<cffunction name="getCrumbQuery" output="false" returntype="any">
+	<cfargument name="sort" required="true" default="asc">
+	<cfreturn variables.categoryManager.getCrumbQuery( variables.instance.path, variables.instance.siteID, arguments.sort) >
+</cffunction>
 	
-	<cffunction name="getParent" output="false" returntype="any">
-		<cfif len(getParentID())>
-			<cfreturn getBean('category').loadBy(categoryID=getParentID(), siteid=getSiteID() )>
-		<cfelse>
-			<cfthrow message="Parent category does not exist.">
-		</cfif>
-	</cffunction>
+<cffunction name="getCrumbIterator" output="false" returntype="any">
+	<cfargument name="sort" required="true" default="asc">
+	<cfset var rs=getCrumbQuery(arguments.sort)>
+	<cfset var it=getBean("categoryIterator").init()>
+	<cfset it.setQuery(rs)>
+	<cfreturn it>
+</cffunction>
 	
-	<cffunction name="getCrumbQuery" output="false" returntype="any">
-		<cfargument name="sort" required="true" default="asc">
-		<cfreturn variables.categoryManager.getCrumbQuery( getPath(), getSiteID(), arguments.sort) >
-	</cffunction>
-	
-	<cffunction name="getCrumbIterator" output="false" returntype="any">
-		<cfargument name="sort" required="true" default="asc">
-		<cfset var rs=getCrumbQuery(arguments.sort)>
-		<cfset var it=getBean("categoryIterator").init()>
-		<cfset it.setQuery(rs)>
-		<cfreturn it>
-	</cffunction>
-	
-	<cffunction name="getEditUrl" access="public" returntype="string" output="false">
+<cffunction name="getEditUrl" access="public" returntype="string" output="false">
 	<cfargument name="compactDisplay" type="any" required="true" default="false"/>
 	<cfset var returnStr="">
 	
-	<cfset returnStr= "#variables.configBean.getContext()#/admin/?fuseaction=cCategory.edit&categoryID=#getCategoryID()#&parentID=#getParentID()#&siteid=#getSiteID()#&compactDisplay=#arguments.compactdisplay#" >
+	<cfset returnStr= "#variables.configBean.getContext()#/admin/?fuseaction=cCategory.edit&categoryID=#variables.instance.categoryID#&parentID=#variables.instance.parentID#&siteid=#variables.instance.siteID#&compactDisplay=#arguments.compactdisplay#" >
 	
 	<cfreturn returnStr>
 </cffunction> 

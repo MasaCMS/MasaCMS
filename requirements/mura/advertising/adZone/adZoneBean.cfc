@@ -41,94 +41,36 @@ the GNU General Public License version 2 �without this exception. �You may, 
 to your own modified versions of Mura CMS.
 --->
 
-<cfcomponent extends="mura.cfobject" output="false">
+<cfcomponent extends="mura.bean.bean" output="false">
 
-<cfset variables.instance.adZoneID=""/>
-<cfset variables.instance.siteID=""/>
-<cfset variables.instance.dateCreated="#now()#"/>
-<cfset variables.instance.lastUpdate="#now()#"/>
-<cfset variables.instance.lastUpdateBy=""/>
-<cfset variables.instance.name=""/>
-<cfset variables.instance.creativeType=""/>
-<cfset variables.instance.isActive=1 />
-<cfset variables.instance.notes=""/>
-<cfset variables.instance.height = 0 />
-<cfset variables.instance.width = 0 />
-<cfset variables.instance.errors=structnew() />
+<cfproperty name="adZoneID" type="string" default="" required="true" />
+<cfproperty name="siteID" type="string" default="" required="true" />
+<cfproperty name="dateCreated" type="date" default="" required="true" />
+<cfproperty name="lastUpdate" type="date" default="" required="true" />
+<cfproperty name="lastUpdateBy" type="string" default="" required="true" />
+<cfproperty name="name" type="string" default="" required="true" />
+<cfproperty name="creativeType" type="string" default="" required="true" />
+<cfproperty name="isActive" type="numeric" default="1" required="true" />
+<cfproperty name="notes" type="string" default="1" required="true" />
+<cfproperty name="height" type="numeric" default="0" required="true" />
+<cfproperty name="width" type="numeric" default="0" required="true" />
 
 <cffunction name="init" returntype="any" output="false" access="public">
-	<cfreturn this />
-</cffunction>
-
-<cffunction name="set" returnType="void" output="false" access="public">
-		<cfargument name="adZone" type="any" required="true">
-		
-		<cfset var prop = "" />
-
-		<cfif isquery(arguments.adZone)>
-		
-			<cfset setadZoneID(arguments.adZone.adZoneID) />
-			<cfset setsiteID(arguments.adZone.siteID) />
-			<cfset setdateCreated(arguments.adZone.dateCreated) />
-			<cfset setlastUpdate(arguments.adZone.lastUpdate) />
-			<cfset setlastUpdateby(arguments.adZone.lastUpdateBy) />
-			<cfset setname(arguments.adZone.name) />
-			<cfset setcreativeType(arguments.adZone.creativeType) />
-			<cfset setisActive(arguments.adZone.isActive)/>
-			<cfset setnotes(arguments.adZone.notes) />
-			<cfset setheight(arguments.adZone.height) />
-			<cfset setwidth( arguments.adZone.width) />
+	<cfset super.init(argumentCollection=arguments)>
 	
-			
-		<cfelseif isStruct(arguments.adZone)>
-		
-			<cfloop collection="#arguments.adZone#" item="prop">
-				<cfset setValue(prop,arguments.adzone[prop])>
-			</cfloop>
-			
-		</cfif>
-		
-		<cfset validate() />
-		
-</cffunction>
+	<cfset variables.instance.adZoneID=""/>
+	<cfset variables.instance.siteID=""/>
+	<cfset variables.instance.dateCreated="#now()#"/>
+	<cfset variables.instance.lastUpdate="#now()#"/>
+	<cfset variables.instance.lastUpdateBy=""/>
+	<cfset variables.instance.name=""/>
+	<cfset variables.instance.creativeType=""/>
+	<cfset variables.instance.isActive=1 />
+	<cfset variables.instance.notes=""/>
+	<cfset variables.instance.height = 0 />
+	<cfset variables.instance.width = 0 />
 
-<cffunction name="getAllValues" access="public" returntype="struct" output="false">
-	<cfreturn variables.instance />
-</cffunction>
-
-<cffunction name="setAllValues" access="public" returntype="struct" output="false">
-	<cfargument name="instance">
-	<cfset variables.instance=arguments.instance />
-</cffunction>
- 
-<cffunction name="validate" access="public" output="false" returntype="void">
-	<cfset variables.instance.errors=structnew() />
-</cffunction>
-
-<cffunction name="getErrors" returnType="struct" output="false" access="public">
-    <cfreturn variables.instance.errors />
-</cffunction>
-
-<cffunction name="getAdZoneID" returntype="String" access="public" output="false">
-	<cfreturn variables.instance.adZoneID />
-</cffunction>
-
-<cffunction name="setAdZoneID" access="public" output="false">
-	<cfargument name="adZoneID" type="String" />
-	<cfset variables.instance.adZoneID = trim(arguments.adZoneID) />
-</cffunction>
-
-<cffunction name="getSiteID" returntype="String" access="public" output="false">
-	<cfreturn variables.instance.siteID />
-</cffunction>
-
-<cffunction name="setSiteID" access="public" output="false">
-	<cfargument name="siteID" type="String" />
-	<cfset variables.instance.siteID = trim(arguments.siteID) />
-</cffunction>
-
-<cffunction name="getDateCreated" returntype="String" access="public" output="false">
-	<cfreturn variables.instance.dateCreated />
+	<cfreturn this />
 </cffunction>
 
 <cffunction name="setDateCreated" access="public" output="false">
@@ -140,10 +82,6 @@ to your own modified versions of Mura CMS.
 	</cfif>
 </cffunction>
 
-<cffunction name="getLastUpdate" returntype="String" access="public" output="false">
-	<cfreturn variables.instance.lastUpdate />
-</cffunction>
-
 <cffunction name="setLastUpdate" access="public" output="false">
 	<cfargument name="lastUpdate" type="String" />
 	<cfif isDate(arguments.lastUpdate)>
@@ -153,94 +91,9 @@ to your own modified versions of Mura CMS.
 	</cfif>
 </cffunction>
 
-<cffunction name="getlastUpdateBy" returntype="String" access="public" output="false">
-	<cfreturn variables.instance.lastUpdateBy />
-</cffunction>
-
 <cffunction name="setlastUpdateBy" access="public" output="false">
 	<cfargument name="lastUpdateBy" type="String" />
 	<cfset variables.instance.lastUpdateBy = left(trim(arguments.lastUpdateBy),50) />
-</cffunction>
-
-<cffunction name="getName" returntype="String" access="public" output="false">
-	<cfreturn variables.instance.name />
-</cffunction>
-
-<cffunction name="setName" access="public" output="false">
-	<cfargument name="name" type="String" />
-	<cfset variables.instance.name = trim(arguments.name) />
-</cffunction>
-
-<cffunction name="getCreativeType" returntype="String" access="public" output="false">
-	<cfreturn variables.instance.creativeType />
-</cffunction>
-
-<cffunction name="getIsActive" returntype="numeric" access="public" output="false">
-	<cfreturn variables.instance.isActive />
-</cffunction>
-
-<cffunction name="setIsActive" access="public" output="false">
-	<cfargument name="isActive" type="numeric" />
-	<cfset variables.instance.isActive = arguments.isActive />
-</cffunction>
-
-
-<cffunction name="setCreativeType" access="public" output="false">
-	<cfargument name="creativeType" type="String" />
-	<cfset variables.instance.creativeType = trim(arguments.creativeType) />
-</cffunction>
-
-
-<cffunction name="getNotes" returntype="String" access="public" output="false">
-	<cfreturn variables.instance.Notes />
-</cffunction>
-
-<cffunction name="setNotes" access="public" output="false">
-	<cfargument name="Notes" type="String" />
-	<cfset variables.instance.Notes = trim(arguments.Notes) />
-</cffunction>
-
-<cffunction name="getHeight" returntype="numeric" access="public" output="false">
-	<cfreturn variables.instance.height />
-</cffunction>
-
-<cffunction name="setHeight" access="public" output="false">
-	<cfargument name="height" type="numeric" />
-	<cfset variables.instance.height = arguments.height />
-</cffunction>
-
-<cffunction name="getWidth" returntype="numeric" access="public" output="false">
-	<cfreturn variables.instance.width />
-</cffunction>
-
-<cffunction name="setWidth" access="public" output="false">
-	<cfargument name="width" type="numeric" />
-	<cfset variables.instance.width = arguments.width />
-</cffunction>
-
-<cffunction name="setValue" returntype="any" access="public" output="false">
-<cfargument name="property"  type="string" required="true">
-<cfargument name="propertyValue" default="" >
-		
-	<cfif isDefined("this.set#arguments.property#")>
-		<cfset evaluate("set#property#(arguments.propertyValue)") />
-	<cfelse>
-		<cfset variables.instance["#arguments.property#"]=arguments.propertyValue />
-	</cfif>
-	<cfreturn this>
-</cffunction>
-
-<cffunction name="getValue" returntype="any" access="public" output="false">
-<cfargument name="property"  type="string" required="true">
-	
-	<cfif structKeyExists(this,"get#property#")>
-		<cfreturn evaluate("get#property#()") />
-	<cfelseif structKeyExists(variables.instance,"#arguments.property#")>
-		<cfreturn variables.instance["#arguments.property#"] />
-	<cfelse>
-		<cfreturn "" />
-	</cfif>
-
 </cffunction>
 
 <cffunction name="save" output="false">
