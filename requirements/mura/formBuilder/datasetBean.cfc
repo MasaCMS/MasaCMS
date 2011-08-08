@@ -6,9 +6,11 @@
 	<cfproperty name="SortDirection" type="string" default="asc" required="true" maxlength="4" />
 	<cfproperty name="SortType" type="string" default="" maxlength="10" />
 	<cfproperty name="IsGlobal" type="boolean" default="0" required="true" />
+	<cfproperty name="IsSorted" type="boolean" default="0" required="true" />
 	<cfproperty name="IsLocked" type="boolean" default="0" required="true" />
 	<cfproperty name="IsActive" type="boolean" default="1" required="true" />
-	<cfproperty name="SubType" type="string" default="" maxlength="50" />
+	<cfproperty name="SourceType" type="string" default="" maxlength="50" />
+	<cfproperty name="Source" type="string" default="" maxlength="250" />
 	<cfproperty name="SiteID" type="string" default="" required="true" maxlength="25" />
 	<cfproperty name="RemoteID" type="string" default="" maxlength="35" />
 	<cfproperty name="DateCreate" type="date" default="" required="true" />
@@ -33,9 +35,11 @@
 		<cfargument name="SortDirection" type="string" required="false" default="asc" />
 		<cfargument name="SortType" type="string" required="false" default="" />
 		<cfargument name="IsGlobal" type="boolean" required="false" default="0" />
+		<cfargument name="IsSorted" type="boolean" required="false" default="0" />
 		<cfargument name="IsLocked" type="boolean" required="false" default="0" />
 		<cfargument name="IsActive" type="boolean" required="false" default="1" />
-		<cfargument name="SubType" type="string" required="false" default="" />
+		<cfargument name="SourceType" type="string" required="false" default="" />
+		<cfargument name="Source" type="string" required="false" default="" />
 		<cfargument name="SiteID" type="string" required="false" default="" />
 		<cfargument name="RemoteID" type="string" required="false" default="" />
 		<cfargument name="DateCreate" type="string" required="false" default="" />
@@ -57,9 +61,11 @@
 		<cfset setSortDirection( arguments.SortDirection ) />
 		<cfset setSortType( arguments.SortType ) />
 		<cfset setIsGlobal( arguments.IsGlobal ) />
+		<cfset setIsSorted( arguments.IsLocked ) />
 		<cfset setIsLocked( arguments.IsLocked ) />
 		<cfset setIsActive( arguments.IsActive ) />
-		<cfset setSubType( arguments.SubType ) />
+		<cfset setSourceType( arguments.SourceType ) />
+		<cfset setSource( arguments.Source ) />
 		<cfset setSiteID( arguments.SiteID ) />
 		<cfset setRemoteID( arguments.RemoteID ) />
 		<cfset setDateCreate( arguments.DateCreate ) />
@@ -139,6 +145,14 @@
 		<cfreturn variables.instance.IsGlobal />
 	</cffunction>
 	
+	<cffunction name="setIsSorted" access="public" returntype="void" output="false">
+		<cfargument name="IsSorted" type="boolean" required="true" />
+		<cfset variables.instance['isSorted'] = arguments.IsSorted />
+	</cffunction>
+	<cffunction name="getIsSorted" access="public" returntype="boolean" output="false">
+		<cfreturn variables.instance.IsSorted />
+	</cffunction>
+	
 	<cffunction name="setIsLocked" access="public" returntype="void" output="false">
 		<cfargument name="IsLocked" type="boolean" required="true" />
 		<cfset variables.instance['islocked'] = arguments.IsLocked />
@@ -155,12 +169,20 @@
 		<cfreturn variables.instance.IsActive />
 	</cffunction>
 	
-	<cffunction name="setSubType" access="public" returntype="void" output="false">
-		<cfargument name="SubType" type="string" required="true" />
-		<cfset variables.instance['subtype'] = arguments.SubType />
+	<cffunction name="setSourceType" access="public" returntype="void" output="false">
+		<cfargument name="SourceType" type="string" required="true" />
+		<cfset variables.instance['sourcetype'] = arguments.SourceType />
 	</cffunction>
-	<cffunction name="getSubType" access="public" returntype="string" output="false">
-		<cfreturn variables.instance.SubType />
+	<cffunction name="getSourceType" access="public" returntype="string" output="false">
+		<cfreturn variables.instance.SourceType />
+	</cffunction>
+	
+	<cffunction name="setSource" access="public" returntype="void" output="false">
+		<cfargument name="Source" type="string" required="true" />
+		<cfset variables.instance['source'] = arguments.Source />
+	</cffunction>
+	<cffunction name="getSource" access="public" returntype="string" output="false">
+		<cfreturn variables.instance.Source />
 	</cffunction>
 	
 	<cffunction name="setSiteID" access="public" returntype="void" output="false">

@@ -46,12 +46,36 @@
 
 		<cfset fieldTypeBean	= getFieldTypeBean( fieldType=fieldType,asJSON=arguments.asJSON ) />
 		<cfset fieldBean.setFieldType( fieldTypeBean ) />
-		<cfset fieldBean.setLabel( mmRBF.getKeyValue(session.rb,'formbuilder.new#listLast(arguments.fieldType,'-')#') ) />
+		<cfset fieldBean.setLabel( mmRBF.getKeyValue(session.rb,'formbuilder.newfield') ) />
 
 		<cfif arguments.asJSON>
 			<cfreturn fieldBean.getasJSON() />
 		<cfelse>
 			<cfreturn fieldBean  />
+		</cfif>
+	</cffunction>
+
+	<cffunction name="getDatasetBean" access="public" output="false" returntype="any">
+		<cfargument name="datasetID" required="true" type="uuid" />
+		<cfargument name="fieldID" required="false" type="uuid" default="#createUUID()#" />
+		<cfargument name="asJSON" required="false" type="boolean" default="false" />
+		<cfargument name="modelBean" required="false" type="any" />
+
+		<cfset var datasetBean		= createObject('datasetBean').init(datasetID=arguments.datasetID,fieldID=arguments.fieldID) />
+		<cfset var modelBean		= "" />
+
+		<cfif not StructKeyExists( arguments,"modelBean" ) or isSimpleValue(arguments.modelBean)>
+			<cfset modelBean	= createObject('datarecordBean').init(datasetID=arguments.datasetID) />
+		<cfelse>
+			<cfset modelBean	= arguments.modelBean />
+		</cfif>
+
+		<cfset datasetBean.setModel( modelBean ) />
+
+		<cfif arguments.asJSON>
+			<cfreturn datasetBean.getasJSON() />
+		<cfelse>
+			<cfreturn datasetBean  />
 		</cfif>
 	</cffunction>
 
@@ -96,15 +120,41 @@
 			<cfset variables.fields[arguments.locale] = StructNew()>
 		</cfif>
 		
-		<cfif arguments.reload or not StructKeyExists( variables.fields[arguments.locale],arguments.fieldType)>
+		<cfif arguments.reload or not StructKeyExists( variables.fields[arguments.locale],fieldTemplate)>
 			<cfif not fileExists( filePath )>
-				<cfreturn mmRBF.key('missingfieldtemplatefile') />
+				<cfreturn mmRBF.getKeyValue('formbuilder.missingfieldtemplatefile') & ": " & fieldTemplate />
 			</cfif>
 			<cfsavecontent variable="strField"><cfinclude template="#templatePath#"></cfsavecontent>
 			<cfset variables.fields[arguments.locale][arguments.fieldType] = trim(strField) />
 		</cfif>
 	
 		<cfreturn variables.fields[arguments.locale][arguments.fieldType] />
+	</cffunction>
+
+	<cffunction name="getDialog" access="public" output="false" returntype="string">
+		<cfargument name="dialog" required="true" type="string" />
+		<cfargument name="locale" required="false" type="string" default="en" />
+		<cfargument name="reload" required="false" type="boolean" default="false" />
+
+		<cfset var dialogTemplate		= lcase( rereplace(arguments.dialog,"[^[:alnum:]|-]","","all") & ".cfm" ) />
+		<cfset var filePath				= "#variables.filePath#/#fieldTemplate#" />
+		<cfset var templatePath			= "#variables.templatePath#/#fieldTemplate#" />
+		<cfset var strField				= "" />
+		<cfset var mmRBF				= application.rbFactory />
+		
+		<cfif not StructKeyExists( variables.fields,arguments.locale)>
+			<cfset variables.fields[arguments.locale] = StructNew()>
+		</cfif>
+		
+		<cfif arguments.reload or not StructKeyExists( variables.fields[arguments.locale],dialogTemplate)>
+			<cfif not fileExists( filePath )>
+				<cfreturn mmRBF.getKeyValue('formbuilder.missingfieldtemplatefile') & ": " & dialogTemplate />
+			</cfif>
+			<cfsavecontent variable="strField"><cfinclude template="#templatePath#"></cfsavecontent>
+			<cfset variables.fields[arguments.locale][arguments.dialog] = trim(strField) />
+		</cfif>
+	
+		<cfreturn variables.fields[arguments.locale][arguments.dialog] />
 	</cffunction>
 
 
