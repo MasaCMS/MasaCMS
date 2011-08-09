@@ -62,15 +62,12 @@
 		<cfargument name="modelBean" required="false" type="any" />
 
 		<cfset var datasetBean		= createObject('datasetBean').init(datasetID=arguments.datasetID,fieldID=arguments.fieldID) />
-		<cfset var modelBean		= "" />
 
 		<cfif not StructKeyExists( arguments,"modelBean" ) or isSimpleValue(arguments.modelBean)>
-			<cfset modelBean	= createObject('datarecordBean').init(datasetID=arguments.datasetID) />
-		<cfelse>
-			<cfset modelBean	= arguments.modelBean />
+			<cfset arguments.modelBean	= createObject('datarecordBean').init(datasetID=arguments.datasetID) />
 		</cfif>
 
-		<cfset datasetBean.setModel( modelBean ) />
+		<cfset datasetBean.setModel( arguments.modelBean ) />
 
 		<cfif arguments.asJSON>
 			<cfreturn datasetBean.getasJSON() />
