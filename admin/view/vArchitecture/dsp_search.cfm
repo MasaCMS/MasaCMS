@@ -44,6 +44,7 @@ to your own modified versions of Mura CMS.
 <cfset request.perm=application.permUtility.getPerm(attributes.moduleid,attributes.siteid)>
 <cfparam name="session.copyContentID" default="">
 <cfparam name="session.copySiteID" default="">
+<cfparam name="session.copyAll" default="false">
 <cfoutput>
 <h2>Site Search</h2>
 
@@ -54,7 +55,7 @@ to your own modified versions of Mura CMS.
 </form>
 <script>
 copyContentID = '#session.copyContentID#';
-copySiteID = '#session.copySiteID#';
+copySiteID = '#session..mura.copySiteID#';
 </script>
 </cfoutput>
  <table class="stripe">

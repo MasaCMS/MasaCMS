@@ -41,16 +41,20 @@ the GNU General Public License version 2 †without this exception. †You may, 
 to your own modified versions of Mura CMS.
 --->
 <cfsilent>
+
 <cfset crumbdata=application.contentManager.getCrumbList(attributes.topid,attributes.siteid)>
+
 <cfif isdefined('attributes.viewDepth') and attributes.viewDepth gt 0>
-  <cfset session.viewDepth=attributes.viewDepth>
-  <cfset session.nextN=attributes.nextN>
+  <cfset session.mura.viewDepth=attributes.viewDepth>
+  <cfset session.mura.nextN=attributes.nextN>
   <cfset attributes.startrow=1>
 </cfif>
+
 <cfif not isDefined('attributes.saveSort')>
   <cfset attributes.sortBy=request.rstop.sortBy />
   <cfset attributes.sortDirection=request.rstop.sortDirection />
 </cfif>
+
 <cfparam name="attributes.sortBy" default="#request.rstop.sortBy#" />
 <cfparam name="attributes.sortDirection" default="#request.rstop.sortDirection#" />
 <cfparam name="attributes.sorted" default="false" />

@@ -2638,7 +2638,18 @@ table.cfdebug td a {
 	margin-left: -15px;
 }
 
-.mura-grid dt span.hasChildren {
+.mura-grid dt span.hasChildren-closed {
+	float: left;
+	display: block;
+	width: 12px;
+	height: 28px;
+	padding: 0;
+	margin-left: -11px;
+	background: url(../images/icons/right_on.gif) no-repeat 3px 50%;
+	cursor:pointer;
+}
+
+.mura-grid dt span.hasChildren, .mura-grid dt span.hasChildren-open {
 	float: left;
 	display: block;
 	width: 12px;

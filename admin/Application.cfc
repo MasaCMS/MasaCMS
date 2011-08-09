@@ -146,10 +146,14 @@
 			<cfif structKeyExists(siteCheck,request.context.siteID)>
 				<cfset session.siteid = request.context.siteid>
 				<cfset session.userFilesPath = "#application.configBean.getAssetPath()#/#request.context.siteid#/assets/">
+				<cfset session.topID="00000000000000000000000000000000001">
+				<cfset session.openSectionList="">
 			</cfif>
 		<cfelseif not len(session.siteID)>
 			<cfset session.siteID="default">
 			<cfset session.userFilesPath = "#application.configBean.getAssetPath()#/default/assets/">	
+			<cfset session.topID="00000000000000000000000000000000001">
+			<cfset session.openSectionList="">
 		</cfif>
 		
 		<cfset application.rbFactory.resetSessionLocale()>

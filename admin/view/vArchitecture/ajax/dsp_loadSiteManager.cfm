@@ -14,6 +14,8 @@
 <cfparam name="session.copyContentID" default="">
 <cfparam name="session.copySiteID" default="">
 <cfparam name="session.copyAll" default="false">
+<cfparam name="session.openSectionList" default="">
+
 <cfset request.rowNum=0>
 <cfset request.menulist=attributes.topid>
 <cfset crumbdata=application.contentManager.getCrumbList(attributes.topid,attributes.siteid)>
@@ -52,11 +54,11 @@
     <dl id="mura-view-options" class="clearfix">
       <dt class="rows">#application.rbFactory.getKeyValue(session.rb,"sitemanager.rowsdisplayed")#</dt>
       <dd class="rows">
-        <input name="nextN" value="#session.nextN#" type="text" class="text" size="2" maxlength="4" />
+        <input name="nextN" value="#session.mura.nextN#" type="text" class="text" size="2" maxlength="4" />
       </dd>
       <dt class="viewDepth">#application.rbFactory.getKeyValue(session.rb,"sitemanager.levelsdisplayed")#</dt>
       <dd class="viewDepth">
-        <input name="viewDepth" value="#session.viewDepth#" type="text" class="text" size="2" maxlength="4" />
+        <input name="viewDepth" value="#session.mura.viewDepth#" type="text" class="text" size="2" maxlength="4" />
       </dd>
       <cfif attributes.topid neq '00000000000000000000000000000000001' 
 	  	  and (
@@ -118,7 +120,9 @@
        
        <a  class="add" href="javascript:;" onmouseover="showMenu('newContentMenu',#newcontent#,this,'#request.rstop.contentid#','#attributes.topid#','#request.rstop.parentid#','#attributes.siteid#','#request.rstop.type#');">&nbsp;</a>
    
-       <cfif request.rstop.haskids><span class="hasChildren" onclick="return loadSiteManager('#JSStringFormat(attributes.siteID)#','#JSStringFormat(attributes.topid)#','#JSStringFormat(attributes.moduleid)#','#JSStringFormat(attributes.sortby)#','#JSStringFormat(attributes.sortdirection)#','#JSStringFormat(request.rstop.type)#',1);"></span></cfif>
+       <cfif request.rstop.haskids>
+	    	<span class="hasChildren-open" onclick="return loadSiteManager('#JSStringFormat(attributes.siteID)#','#JSStringFormat(attributes.topid)#','#JSStringFormat(attributes.moduleid)#','#JSStringFormat(attributes.sortby)#','#JSStringFormat(attributes.sortdirection)#','#JSStringFormat(request.rstop.type)#',1);"></span>
+		</cfif>
         <cfif perm neq 'none'>
           <a class="#icon# title draftprompt" data-siteid="#rc.siteid#" data-contentid="#request.rstop.contentid#" data-contenthistid="#request.rstop.contenthistid#" title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.edit")#" href="index.cfm?fuseaction=cArch.edit&contenthistid=#request.rstop.ContentHistID#&siteid=#URLEncodedFormat(attributes.siteid)#&contentid=#attributes.topid#&topid=#URLEncodedFormat(attributes.topid)#&type=#request.rstop.type#&parentid=#request.rstop.parentid#&moduleid=#attributes.moduleid#">
         <cfelse>
@@ -207,7 +211,7 @@
       </dl>
       
       <cfif request.rstop.hasKids>
-        <cf_dsp_nest topid="#attributes.topid#" parentid="#attributes.topid#"  rsnest="#rsNext#" locking="#application.settingsManager.getSite(attributes.siteid).getlocking()#" nestlevel="1" perm="#perm#" siteid="#attributes.siteid#" moduleid="#attributes.moduleid#" restricted="#r#" viewdepth="#session.viewDepth#" nextn="#session.nextN#" startrow="#attributes.startrow#" sortBy="#attributes.sortBy#" sortDirection="#attributes.sortDirection#" pluginEvent="#pluginEvent#">
+        <cf_dsp_nest topid="#attributes.topid#" parentid="#attributes.topid#"  rsnest="#rsNext#" locking="#application.settingsManager.getSite(attributes.siteid).getlocking()#" nestlevel="1" perm="#perm#" siteid="#attributes.siteid#" moduleid="#attributes.moduleid#" restricted="#r#" viewdepth="#session.mura.viewDepth#" nextn="#session.mura.nextN#" startrow="#attributes.startrow#" sortBy="#attributes.sortBy#" sortDirection="#attributes.sortDirection#" pluginEvent="#pluginEvent#">
       </cfif>
       </li>
       </ul>

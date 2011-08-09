@@ -44,24 +44,30 @@ to your own modified versions of Mura CMS.
 <cfsilent>
 <cfparam name="attributes.parentid" default="00000000000000000000000000000000001">
 <cfparam name="attributes.locking" default="none">
+<cfparam name="attributes.isSectionRequest" default="false">
 <cfparam name="rsNext.recordcount" default=0>
+<cfparam name="session.openSectionList" default="">
 
 <cfif attributes.nestlevel neq 1><cfset variables.startrow=1><cfelse><cfset variables.startrow=attributes.startrow></cfif>
-<cfset sortable=attributes.nestlevel eq  1 and attributes.sortby eq 'orderno'>
+<cfset sortable=not attributes.isSectionRequest and attributes.nestlevel eq  1 and attributes.sortby eq 'orderno'>
 <cfset currentPos=variables.startrow>
 <cfset endRow=iif((currentPos + attributes.nextn) gt attributes.rsnest.recordcount,attributes.rsnest.recordcount,currentPos + attributes.nextn)>
 </cfsilent>
 <!--- Start Level UL List--->
-<ul<cfif sortable> id='sortableKids'</cfif>>
+<ul<cfif sortable> id='sortableKids'</cfif> class="section">
 <cfoutput query="attributes.rsNest" startrow="#variables.startrow#" maxrows="#attributes.nextN#">
-<cfsilent><cfset request.menulist=listappend(request.menulist,attributes.rsnest.contentid)>
+<cfsilent>
+
+<cfset request.menulist=listappend(request.menulist,attributes.rsnest.contentid)>
+
 <cfif attributes.rsnest.hasKids> 
-<cfset rsNext=application.contentManager.getNest(attributes.rsNest.contentid,attributes.siteid,attributes.rsNest.sortBy,attributes.rsNest.sortDirection)>
-<cfset isMore=rsNext.recordcount gt attributes.nextN>
+	<cfset rsNext=application.contentManager.getNest(attributes.rsNest.contentid,attributes.siteid,attributes.rsNest.sortBy,attributes.rsNest.sortDirection)>
+	<cfset isMore=rsNext.recordcount gt attributes.nextN>
 <cfelse>
-<cfset isMore=false />
+	<cfset isMore=false />
 </cfif>
 
+<cfset isOpenSection=listFind(session.openSectionList,attributes.rsNest.contentid)>
 
 <cfset verdict=application.permUtility.getPerm(attributes.rsNest.contentid, attributes.siteid)>
 
@@ -113,20 +119,22 @@ to your own modified versions of Mura CMS.
 <li>
 <dl>
 <dt>
-<!---<cfif (attributes.rsNest.type eq 'Page') or  (attributes.rsNest.type eq 'Portal')  or  (attributes.rsNest.type eq 'Calendar') or (attributes.rsNest.type eq 'Gallery')>--->
-<a class="add" href="javascript:;" onmouseover="showMenu('newContentMenu',#newcontent#,this,'#attributes.rsNest.contentid#','#attributes.topid#','#attributes.rsNest.parentid#','#attributes.siteid#','#attributes.rsNest.type#');"></a>
+	<!---<cfif (attributes.rsNest.type eq 'Page') or  (attributes.rsNest.type eq 'Portal')  or  (attributes.rsNest.type eq 'Calendar') or (attributes.rsNest.type eq 'Gallery')>--->
+	<a class="add" href="javascript:;" onmouseover="showMenu('newContentMenu',#newcontent#,this,'#attributes.rsNest.contentid#','#attributes.topid#','#attributes.rsNest.parentid#','#attributes.siteid#','#attributes.rsNest.type#');"></a>
 	
-	<cfif attributes.rsNest.haskids><span class="hasChildren" onclick="return loadSiteManager('#JSStringFormat(attributes.rsNest.siteID)#','#JSStringFormat(attributes.rsNest.contentID)#','#JSStringFormat(attributes.moduleid)#','#JSStringFormat(attributes.rsNest.sortby)#','#JSStringFormat(attributes.rsNest.sortdirection)#','#JSStringFormat(attributes.rsNest.type)#',1);"></span></cfif>
-	
+	<cfif attributes.rsNest.haskids>
+		<span <cfif isOpenSection>class="hasChildren-open"<cfelse>class="hasChildren-closed"</cfif> onclick="return loadSiteSection(this,'#JSStringFormat(attributes.rsNest.siteID)#','#JSStringFormat(attributes.rsNest.contentID)#','#JSStringFormat(attributes.moduleid)#','#JSStringFormat(attributes.rsNest.sortby)#','#JSStringFormat(attributes.rsNest.sortdirection)#','#JSStringFormat(attributes.rsNest.type)#',1);"></span>
+	</cfif>
 	<cfif verdict neq 'none'>
 		<a class="#icon# title draftprompt" data-siteid="#attributes.siteid#" data-contentid="#attributes.rsNest.contentid#" data-contenthistid="#attributes.rsNest.contenthistid#" title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.edit")#" href="index.cfm?fuseaction=cArch.edit&contenthistid=#attributes.rsNest.ContentHistID#&contentid=#attributes.rsNest.ContentID#&type=#attributes.rsNest.type#&parentid=#attributes.rsNest.parentID#&topid=#URLEncodedFormat(attributes.topid)#&siteid=#URLEncodedFormat(attributes.siteid)#&moduleid=#attributes.moduleid#&startrow=#attributes.startrow#">
 	<cfelse>
 		<a class="#icon# title">
 	</cfif>
-		#HTMLEditFormat(left(attributes.rsNest.menutitle,70))#
-		<cfif len(attributes.rsNest.menutitle) gt 70>&hellip;</cfif>
-		<cfif isMore><span class="hasMore">&nbsp;(#application.rbFactory.getKeyValue(session.rb,"sitemanager.more")#)</span></cfif></a>
-		<div class="mura-title-fade"></div>
+	
+	#HTMLEditFormat(left(attributes.rsNest.menutitle,70))#
+	<cfif len(attributes.rsNest.menutitle) gt 70>&hellip;</cfif>
+	<cfif isMore><span class="hasMore">&nbsp;(#application.rbFactory.getKeyValue(session.rb,"sitemanager.more")#)</span></cfif></a>
+	<div class="mura-title-fade"></div>
 </dt>	
 
 <cfif attributes.locking neq 'all'>
@@ -207,7 +215,8 @@ to your own modified versions of Mura CMS.
 	</ul>
 	</dd>
 </dl>
-   <cfif attributes.rsNest.hasKids and attributes.nestlevel lt attributes.viewDepth>
+   <cfif (attributes.rsNest.hasKids and attributes.nestlevel lt attributes.viewDepth)
+   	 or isOpenSection>
    <cf_dsp_nest parentid="#attributes.rsNest.contentid#"  
    locking="#attributes.locking#" 
    nestlevel="#evaluate(attributes.nestlevel + 1)#" 

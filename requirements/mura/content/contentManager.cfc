@@ -1436,9 +1436,9 @@ to your own modified versions of Mura CMS.
 		<cfargument name="contentID" type="string" />
 		<cfargument name="copyAll" type="string" />
 		
-		<cfset session.copySiteID = arguments.siteID>
+		<cfset session..mura.copySiteID = arguments.siteID>
 		<cfset session.copyContentID = arguments.contentID>
-		<cfset session.copyAll = arguments.copyAll>
+		<cfset session..mura.copyAll = arguments.copyAll>
 	</cffunction>
 	
 	<cffunction name="deleteAllWithNestedContent">

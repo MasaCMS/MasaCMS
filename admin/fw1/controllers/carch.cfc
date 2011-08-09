@@ -72,11 +72,10 @@
 	<cfparam name="arguments.rc.lastupdate" default=""/>
 	<cfparam name="arguments.rc.siteid" default=""/>
 	<cfparam name="arguments.rc.title" default=""/>
-	<cfparam name="arguments.rc.topid" default="00000000000000000000000000000000001"/>
 	<cfparam name="arguments.rc.startrow" default="1"/>
 	<cfparam name="arguments.rc.lastupdate" default="#now()#"/>
-	<cfparam name="session.viewDepth" default="#variables.settingsManager.getSite(arguments.rc.siteid).getviewdepth()#"/>
-	<cfparam name="session.nextN" default="#variables.settingsManager.getSite(arguments.rc.siteid).getnextN()#"/>
+	<cfparam name="session.mura.viewDepth" default="#variables.settingsManager.getSite(arguments.rc.siteid).getviewdepth()#"/>
+	<cfparam name="session.mura.nextN" default="#variables.settingsManager.getSite(arguments.rc.siteid).getnextN()#"/>
 	<cfparam name="session.keywords" default=""/>
 	<cfparam name="arguments.rc.startrow" default="1"/>
 	<cfparam name="arguments.rc.date1" default=""/>
@@ -86,8 +85,13 @@
 	<cfparam name="arguments.rc.closeCompactDisplay" default=""/>
 	<cfparam name="arguments.rc.returnURL" default=""/>
 	<cfparam name="arguments.rc.locking" default="false"/>
-	
 
+	<cfif not isDefined("arguments.rc.topid")>
+		<cfparam name="session.topID" default="00000000000000000000000000000000001">
+		<cfset arguments.rc.topid=session.topID>
+	<cfelseif left(arguments.rc.topID,10) neq "0000000000" or arguments.rc.topID eq "00000000000000000000000000000000001">
+		<cfset session.topID=arguments.rc.topid>
+	</cfif>
 	
 </cffunction>
 

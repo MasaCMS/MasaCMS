@@ -907,9 +907,6 @@ function loadCategoryFeatureStartStop(id,display,siteID){
  }
 }
 
-
-
-
 function loadSiteManager(siteid,topid,moduleid,sortby,sortdirection,ptype,startrow)	{
 	var url = 'index.cfm';
 	var pars = 'fuseaction=cArch.loadSiteManager&siteid=' + siteid  + '&topid=' + topid  + '&moduleid=' + moduleid  + '&sortby=' + sortby  + '&sortdirection=' + sortdirection  + '&ptype=' + ptype  + '&startrow=' + startrow + '&cacheid=' + Math.random();
@@ -951,6 +948,63 @@ function loadSiteManager(siteid,topid,moduleid,sortby,sortdirection,ptype,startr
 					
 				}
 		);
+	return false;
+}
+
+var sectionLoading=false;
+
+function loadSiteSection(container,siteid,contentID,moduleid,sortby,sortdirection,ptype,startrow)	{
+	if (!sectionLoading) {
+		sectionLoading = true;
+		var url = 'index.cfm';
+		var pars = 'fuseaction=cArch.loadSiteSection&siteid=' + siteid + '&contentID=' + contentID + '&moduleid=' + moduleid + '&sortby=' + sortby + '&sortdirection=' + sortdirection + '&ptype=' + ptype + '&startrow=' + startrow + '&cacheid=' + Math.random();
+		
+		//location.href=url + "?" + pars;
+		var d = jQuery(container).parents('li:first');
+		var icon = d.find("span:first");
+		
+		if (icon.hasClass('hasChildren-closed')) {
+		
+			icon.removeClass('hasChildren-closed');
+			icon.addClass('hasChildren-open');
+			
+			//d.append('<img class="loadProgress" src="images/progress_bar.gif">');
+			//d.find(".loadProgress").show();
+			jQuery.get(url + "?" + pars, function(data){
+				try {
+					var r = eval("(" + data + ")");
+					
+					//d.find(".loadProgress").remove();
+					d.find('.section:first').remove();
+					d.append(r.html);
+					
+					document.getElementById("newContentMenu").style.visibility = "hidden";
+					stripe('stripe');
+					initDraftPrompt();
+					d.find('.section:first').slideDown(1000);
+					
+				} 
+				catch (err) {
+					d.append(data);
+				}
+				
+				sectionLoading = false;
+			});
+		}
+		else {
+		
+			icon.removeClass('hasChildren-open');
+			icon.addClass('hasChildren-closed');
+			
+			jQuery.get(url + "?" + pars);
+			d.find('.section:first').slideUp(1000);
+			d.find('.section:first').remove();
+			document.getElementById("newContentMenu").style.visibility = "hidden";
+			stripe('stripe');
+			sectionLoading = false;
+			
+		}
+	}
 	return false;
 }
 

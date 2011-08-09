@@ -1808,7 +1808,9 @@ to your own modified versions of Mura CMS.
 						
 			<!--- Add modal edit --->
 			<cfif getShowModal()>
-				<cfset loadShadowboxJS() />
+				<cfif getJSLib() eq "prototype">
+					<cfset loadShadowboxJS() />
+				</cfif>
 				<cfif this.showEditableObjects and not request.muraExportHTML>
 					<cfset addToHTMLHEADQueue('editableObjects.cfm')>
 				</cfif>
@@ -2005,6 +2007,14 @@ to your own modified versions of Mura CMS.
 <cfreturn str>
 </cffunction>
 
+<cffunction name="generateEditableHook" output="false">
+	<cfif getJSLib() eq "prototype">
+		<cfreturn 'rel="shadowbox;width=1050;"'>
+	<cfelse>
+		<cfreturn 'class="frontEndToolsModal"'>
+	</cfif>
+</cffunction>
+
 <cffunction name="generateEditableObjectControl" access="public" output="no" returntype="string">
 		<cfargument name="editLink" required="yes" default="">
 		<cfset var str = "">
@@ -2013,7 +2023,7 @@ to your own modified versions of Mura CMS.
 		<cfsavecontent variable="str">
 			<cfoutput>
 			<ul class="editableObjectControl">
-				<li class="edit"><a href="#arguments.editLink#" title="#htmlEditFormat('Edit')#" rel="shadowbox;width=1100;">#htmlEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.edit'))#</a></li>
+				<li class="edit"><a href="#arguments.editLink#" title="#htmlEditFormat('Edit')#" #generateEditableHook()#>#htmlEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.edit'))#</a></li>
 			</ul>
 			</cfoutput>
 		</cfsavecontent>

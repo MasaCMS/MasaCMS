@@ -14,6 +14,46 @@
 */
 
 /* @group Modal Dialog */
+
+#frontEndToolsModalContainer {
+  position:absolute;
+  display: block;
+  height: 100%;
+  width: 100%;
+  top: 0;
+  left: 0;
+  z-index: 99999;
+  text-align: center; /* centers in quirks and IE */
+  background-color: #000;
+  opacity: .85,
+  
+}	
+
+#frontEndToolsModalBody {
+  position: relative;
+  overflow: visible;
+  top: 50px;
+  margin: 0 auto;
+  padding: 0;
+  width: 950px;
+}
+
+#frontEndToolsModaliFrame {
+  overflow:hidden;
+}
+
+#frontEndToolsModalClose {
+	position: absolute;
+	display: block;
+	top: -1px;
+	right: -32px;
+	height: 33px;
+	width: 31px;
+	text-indent: -9999px;
+	background: transparent url('../images/btn_close_modal.png') no-repeat right center;
+}
+
+
 #shadowbox_container {
 	z-index: 499997;
 }
@@ -21,6 +61,7 @@
 #shadowbox_overlay {
 	z-index: 499996;
 }
+
 #dialog_overlay {
 	background-color: #000000;
 	display: none;

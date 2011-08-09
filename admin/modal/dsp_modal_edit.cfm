@@ -60,6 +60,8 @@ to your own modified versions of Mura CMS.
 		<cfset adminBase=""/>
 	</cfif>
 	
+	<cfset targetHook=generateEditableHook()>
+	
 	<cfset editLink = adminBase & "#application.configBean.getContext()#/admin/index.cfm?fuseaction=cArch.edit">
 	<cfif structKeyExists(request,"previewID") and len(request.previewID)>
 		<cfset editLink = editLink & "&amp;contenthistid=" & request.previewID>
@@ -125,6 +127,73 @@ to your own modified versions of Mura CMS.
 
 <script type="text/javascript">
 	addLoadEvent(checkToolbarDisplay);
+	
+	<cfif getJsLib() eq "jquery">
+	var frontEndModalHeight=0;
+	
+	function openFrontEndToolsModal(src){
+		closeFrontEndToolsModal();
+		jQuery("##fronEndToolsModalTarget").html('<div id="frontEndToolsModalContainer">' +
+		'<div id="frontEndToolsModalBody">' +
+		'<a id="frontEndToolsModalClose" style="display:none" href="javascript:closeFrontEndToolsModal();">Close</a>' +
+		'<iframe src="' + src + '" id="frontEndToolsModaliframe" scrolling="false" frameborder="0" style="overflow:hidden"></iframe>' +
+		'</div>' +
+		'</div>');
+		
+		frontEndModalHeight=0;
+		
+		resizeFrontEndToolsModal();
+		
+	}
+	
+	function resizeFrontEndToolsModal(){
+		if (document.getElementById("frontEndToolsModaliframe")) {
+			var frame = document.getElementById("frontEndToolsModaliframe");
+			var frameDoc = frame.contentWindow.document;
+			var frameContainer = document.getElementById("frontEndToolsModalContainer");
+		
+			if (frameDoc.body != null) {
+				var frameHeight = Math.max(frameDoc.body.scrollHeight, frameDoc.body.offsetHeight, frameDoc.documentElement.scrollHeight, frameDoc.documentElement.offsetHeight);
+				if (!window.jQuery) {
+					var windowHeight = Math.max(frameHeight, document.viewport.getHeight());
+				}
+				else {
+					var windowHeight = Math.max(frameHeight, jQuery(window).height());
+				}
+				frame.style.width = "950px";
+				frame.style.height = frameHeight + "px";
+				frameContainer.style.position = "absolute";
+				document.overflow = "auto"
+				
+				if(windowHeight > frontEndModalHeight){	
+					frontEndModalHeight=windowHeight;
+					jQuery(frameContainer).animate({height:windowHeight + 75 + "px"},
+					1000,
+					function(){
+						jQuery("##frontEndToolsModalClose").fadeIn();
+					});
+				}
+				
+			}
+			setTimeout(resizeFrontEndToolsModal, 500);
+		}
+		
+	}
+	
+	function closeFrontEndToolsModal(){
+		jQuery('##frontEndToolsModalContainer').remove();
+	}	
+	
+	jQuery(document).ready(function(){
+		jQuery(".frontEndToolsModal").each(
+			function(){
+				jQuery(this).click(function(event){
+					event.preventDefault();
+					openFrontEndToolsModal(this.href);
+				});
+		});
+	});	
+	</cfif>
 	
 	function checkToolbarDisplay () {
 		<cfif Cookie.fetDisplay eq "none">
@@ -254,7 +323,7 @@ to your own modified versions of Mura CMS.
 		<ul>
 		<cfif not request.contentBean.getIsNew()>
 			<cfif ListFindNoCase('editor,author',request.r.perm) or listFind(session.mura.memberships,'S2')>
-			<li id="adminEditPage"><a href="#editLink#" rel="shadowbox;width=1100;">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.edit')#</a></li>
+			<li id="adminEditPage"><a href="#editLink#" #targetHook#>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.edit')#</a></li>
 				<cfif listFind("Page,Portal,Calendar,Gallery",request.contentBean.getType())>
 						<cfif variables.isIeSix>
 						<!--- USES JAVASCRIPT TO SHOW AND HIDE THE ADD MENU AS IT PLAYS NICE WITH IE6 --->
@@ -264,15 +333,15 @@ to your own modified versions of Mura CMS.
 							
 						</cfif><ul id="addMenuDropDown">
 						<cfif request.contentBean.getType() neq 'Gallery'>
-						<li id="adminNewPage"><a href="#newLink#&amp;type=Page" rel="shadowbox;width=1050;">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.type.page')#</a></li>
-						<li id="adminNewLink"><a href="#newLink#&amp;type=Link" rel="shadowbox;width=1050;" >#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.type.link')#</a></li>
-						<li id="adminNewFile"><a href="#newLink#&amp;type=File" rel="shadowbox;width=1050;">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.type.file')#</a></li>
-						<li id="adminNewPortal"><a href="#newLink#&amp;type=Portal" rel="shadowbox;width=1050;">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.type.portal')#</a></li>
-						<li id="adminNewCalendar"><a href="#newLink#&amp;type=Calendar" rel="shadowbox;width=1050;" >#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.type.calendar')#</a></li>
-						<li id="adminNewGallery"><a href="#newLink#&amp;type=Gallery" rel="shadowbox;width=1050;">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.type.gallery')#</a></li>
+						<li id="adminNewPage"><a href="#newLink#&amp;type=Page" #targetHook#>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.type.page')#</a></li>
+						<li id="adminNewLink"><a href="#newLink#&amp;type=Link" #targetHook# >#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.type.link')#</a></li>
+						<li id="adminNewFile"><a href="#newLink#&amp;type=File" #targetHook#>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.type.file')#</a></li>
+						<li id="adminNewPortal"><a href="#newLink#&amp;type=Portal" #targetHook#>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.type.portal')#</a></li>
+						<li id="adminNewCalendar"><a href="#newLink#&amp;type=Calendar" #targetHook# >#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.type.calendar')#</a></li>
+						<li id="adminNewGallery"><a href="#newLink#&amp;type=Gallery" #targetHook#>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.type.gallery')#</a></li>
 						<cfelse>
-							<li id="adminNewGalleryItem"><a href="#newLink#&amp;type=File" rel="shadowbox;width=1050;">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.type.galleryitem')#</a></li>
-							<li id="adminNewGalleryItemMulti"><a href="#newMultiLink#&amp;type=File" rel="shadowbox;width=1050;">#application.rbFactory.getKeyValue(session.rb,'sitemanager.addmultiitems')#</a></li>
+							<li id="adminNewGalleryItem"><a href="#newLink#&amp;type=File" #targetHook#>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.type.galleryitem')#</a></li>
+							<li id="adminNewGalleryItemMulti"><a href="#newMultiLink#&amp;type=File" #targetHook#>#application.rbFactory.getKeyValue(session.rb,'sitemanager.addmultiitems')#</a></li>
 						</cfif>			
 						#application.pluginManager.renderScripts("onFEToolbarAddRender",request.contentBean.getSiteID())#
 						#application.pluginManager.renderScripts("onFEToolbar#request.contentBean.getType()#AddRender",request.contentBean.getSiteID())#
@@ -280,7 +349,7 @@ to your own modified versions of Mura CMS.
 						</ul>
 					</li>
 				</cfif>
-				<li id="adminVersionHistory"><a href="#historyLink#" rel="shadowbox;width=1050;">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.versionhistory')#</a></li>
+				<li id="adminVersionHistory"><a href="#historyLink#" #targetHook#>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.versionhistory')#</a></li>
 			</cfif>
 			<cfif (request.r.perm eq 'editor' or listFind(session.mura.memberships,'S2')) and request.contentBean.getFilename() neq "" and not request.contentBean.getIslocked()>
 				<li id="adminDelete"><a href="#deleteLink#" onclick="return confirm('#jsStringFormat(application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.deletecontentrecursiveconfirm'),request.contentBean.getMenutitle()))#');">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.delete')#</a></li>
@@ -294,6 +363,10 @@ to your own modified versions of Mura CMS.
 		</ul>
 		
 	</div>
+	
+	<cfif getJSLib() eq "jquery">
+		<div id="fronEndToolsModalTarget"></div>
+	</cfif>
 </cfoutput>
 </cfif>
 
