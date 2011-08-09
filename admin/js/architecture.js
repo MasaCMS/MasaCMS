@@ -997,11 +997,16 @@ function loadSiteSection(container,siteid,contentID,moduleid,sortby,sortdirectio
 			icon.addClass('hasChildren-closed');
 			
 			jQuery.get(url + "?" + pars);
-			d.find('.section:first').slideUp("fast",function(){d.find('.section:first').remove();});
+			d.find('.section:first').slideUp("fast",
+				function(){
+					d.find('.section:first').remove();
+				    stripe('stripe');
+					document.getElementById("newContentMenu").style.visibility = "hidden";
+					sectionLoading = false;
+				}
+			);
 			
-			document.getElementById("newContentMenu").style.visibility = "hidden";
-			stripe('stripe');
-			sectionLoading = false;
+			
 			
 		}
 	}
