@@ -981,7 +981,7 @@ function loadSiteSection(container,siteid,contentID,moduleid,sortby,sortdirectio
 					document.getElementById("newContentMenu").style.visibility = "hidden";
 					stripe('stripe');
 					initDraftPrompt();
-					d.find('.section:first').slideDown(1000);
+					d.find('.section:first').hide().slideDown("fast");
 					
 				} 
 				catch (err) {
@@ -997,8 +997,8 @@ function loadSiteSection(container,siteid,contentID,moduleid,sortby,sortdirectio
 			icon.addClass('hasChildren-closed');
 			
 			jQuery.get(url + "?" + pars);
-			d.find('.section:first').slideUp(1000);
-			d.find('.section:first').remove();
+			d.find('.section:first').slideUp("fast",function(){d.find('.section:first').remove();});
+			
 			document.getElementById("newContentMenu").style.visibility = "hidden";
 			stripe('stripe');
 			sectionLoading = false;
