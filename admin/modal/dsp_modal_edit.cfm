@@ -154,12 +154,12 @@ to your own modified versions of Mura CMS.
 		
 			if (frameDoc.body != null) {
 				var frameHeight = Math.max(frameDoc.body.scrollHeight, frameDoc.body.offsetHeight, frameDoc.documentElement.scrollHeight, frameDoc.documentElement.offsetHeight);
-				if (!window.jQuery) {
-					var windowHeight = Math.max(frameHeight, document.viewport.getHeight());
+				var windowHeight = Math.max(frameHeight, jQuery(window).height());
+		
+				if (frameHeight < jQuery(window).height()) {
+					frameHeight= jQuery(window).height() * .80;
 				}
-				else {
-					var windowHeight = Math.max(frameHeight, jQuery(window).height());
-				}
+				
 				frame.style.width = "950px";
 				frame.style.height = frameHeight + "px";
 				frameContainer.style.position = "absolute";
@@ -167,11 +167,11 @@ to your own modified versions of Mura CMS.
 				
 				if(windowHeight > frontEndModalHeight){	
 					frontEndModalHeight=windowHeight;
-					jQuery(frameContainer).animate({height:windowHeight + 75 + "px"},
-					1000,
-					function(){
-						jQuery("##frontEndToolsModalClose").fadeIn();
-					});
+					frameContainer.style.height=windowHeight + 75 + "px"
+					setTimeout(function(){
+						jQuery("##frontEndToolsModalClose").fadeIn("fast")
+					},1000);
+					
 				}
 				
 			}

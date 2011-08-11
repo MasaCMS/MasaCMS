@@ -293,7 +293,7 @@ to your own modified versions of Mura CMS.
 		<cfreturn id>
 </cffunction>
 
-<cffunction name="getTopVar" output="true" returntype="string">
+<cffunction name="getTopVar" output="false" returntype="string">
 	<cfargument name="topVar" required="true" default="" type="String">
 	<cfargument name="useNavOffset" required="true" type="boolean" default="false">
 		<cfset var theVar="">
