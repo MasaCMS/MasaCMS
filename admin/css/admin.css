@@ -1,4 +1,5 @@
-/* @override http://localhost:8500/muracms/admin/css/admin.css?coreversion=1 */
+/* @override
+	http://localhost:8500/muracms/admin/css/admin.css?coreversion=1 */
 
 /* This file is part of Mura CMS. 
 
@@ -236,7 +237,7 @@ input.submit {
 	width: auto;
 	border: 0 solid #fff;
 	color: #fff;
-	padding: .4em .6em;
+	padding: 4px .6em;
 	border-radius: 3px;
 	-webkit-border-radius: 3px;
 	-moz-border-radius: 3px;
@@ -852,6 +853,102 @@ label {
 	margin-right: .5em;
 }
 
+.mura-quickEdit {
+	background-color: #272727;
+	position: absolute;
+	bottom: 58px;
+	left: 50%;
+	margin-left: -90px;
+	width: 160px;
+	min-height: 70px;
+	z-index: 10;
+	display: block;
+	border-radius: 5px;
+	padding: 8px 10px;
+	box-shadow: 0 2px 4px #000000;
+	white-space: normal;
+	font-size: 11px;
+}
+
+.mura-quickEdit:after {
+	content: ' ';
+	position: absolute;
+	z-index: 11;
+	width: 24px;
+	height: 14px;
+	left: 80px;
+	bottom: -14px;
+	background: url('../images/quickedit-bottom.png') no-repeat center bottom;
+	/*border: 10px solid;*/
+	/*border-color:  rgb(39, 39, 39) transparent transparent  transparent;*/
+}
+
+.mura-quickEdit:hover {
+	cursor: default;
+}
+
+.mura-quickEdit h1 {
+	color: #fff;
+	font-size: 11px;
+	text-align: left;
+	margin-bottom: .25em;
+	font-weight: normal;
+}
+
+.mura-quickEdit img {
+	padding: 30px;
+}
+
+.mura-quickEdit.hasDraft {
+	background: #ccc;
+	text-align: left;
+	box-shadow: 0 2px 4px #666;
+	width: 180px;
+}
+
+.mura-quickEdit.hasDraft:after {
+	bottom: -14px;
+	background: url('../images/quickedit-bottom-hasdraft.png') no-repeat center bottom;
+	/*border: 10px solid;*/
+	/*border-color:  rgb(39, 39, 39) transparent transparent  transparent;*/
+}
+
+.mura-quickEdit.hasDraft h1 {
+	color: #000;
+	font-weight: bold;
+	background: url('../images/icons/unsubscribe_24x24.png') no-repeat left top;
+	height: 24px;
+	line-height: 26px;
+	padding-left: 28px;
+}
+
+.mura-quickEdit.hasDraft p {
+	font-size: 11px !important;
+}
+
+.mura-quickEdit.hasDraft a {
+	color: #000;
+	font-weight: bold;
+	border-bottom: 1px dotted #999;
+}
+
+span.hasDraft {
+	color: #777;
+}
+
+/*.mura-quickEdit input[type=submit], .mura-quickEdit input[type=text], .mura-quickEdit select {
+	font-size: 11px;
+}*/
+
+.mura-quickEdit select {
+	margin-bottom: .75em;
+	width: 160px;
+}
+
+.mura-quickEdit input.submit {
+	cursor: pointer;
+}
+
 /* @end */
 
 /* @group View Options */
@@ -975,7 +1072,7 @@ form .displayObjects .dropdown {
 	text-shadow: rgba(0,0,0,.30) 0px -1px 0px;
 }
 
-h1 {
+#header h1 {
 	text-indent: -999em;
 	background: url(../images/mura_logo.png) no-repeat;
 	height: 53px;
@@ -2607,6 +2704,7 @@ table.cfdebug td a {
 .mura-grid dd {
 	padding: 4px 5px;
 	height: 20px;
+	position: relative;
 }
 
 .mura-grid dt a {
