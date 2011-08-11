@@ -896,24 +896,24 @@ label {
 }
 
 .mura-quickEdit img {
-	padding: 30px;
+	padding: 20px;
 }
 
-.mura-quickEdit.hasDraft {
+.hasDraft .mura-quickEdit {
 	background: #ccc;
 	text-align: left;
 	box-shadow: 0 2px 4px #666;
 	width: 180px;
 }
 
-.mura-quickEdit.hasDraft:after {
+.hasDraft .mura-quickEdit:after {
 	bottom: -14px;
 	background: url('../images/quickedit-bottom-hasdraft.png') no-repeat center bottom;
 	/*border: 10px solid;*/
 	/*border-color:  rgb(39, 39, 39) transparent transparent  transparent;*/
 }
 
-.mura-quickEdit.hasDraft h1 {
+.hasDraft .mura-quickEdit h1 {
 	color: #000;
 	font-weight: bold;
 	background: url('../images/icons/unsubscribe_24x24.png') no-repeat left top;
@@ -922,18 +922,14 @@ label {
 	padding-left: 28px;
 }
 
-.mura-quickEdit.hasDraft p {
+.hasDraft .mura-quickEdit p {
 	font-size: 11px !important;
 }
 
-.mura-quickEdit.hasDraft a {
+.hasDraft .mura-quickEdit a {
 	color: #000;
 	font-weight: bold;
 	border-bottom: 1px dotted #999;
-}
-
-span.hasDraft {
-	color: #777;
 }
 
 /*.mura-quickEdit input[type=submit], .mura-quickEdit input[type=text], .mura-quickEdit select {
