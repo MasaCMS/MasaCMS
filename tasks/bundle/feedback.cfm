@@ -64,6 +64,7 @@
 			<cfelse>
 				<cfset emailBody = result>
 			</cfif>
+			<cfset mailer = application.configBean.getBean('mailer') />
 			<cfset mailer.sendHTML(emailBody,
 				application.configBean.getBundleDeployErrorEmail(),
 				'Mura CMS',

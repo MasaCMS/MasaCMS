@@ -231,8 +231,9 @@ to your own modified versions of Mura CMS.
 </cffunction>
 
 <cffunction name="getProductionVersion" output="false">
-	<cfif isNumeric(variables.configBean.getValue('productionVersion'))>
-		<cfreturn variables.configBean.getValue('productionVersion')>
+	<cfset var version=listLast(variables.configBean.getValue('productionVersion'),".")>
+	<cfif isNumeric(version)>
+		<cfreturn version>
 	<cfelse>
 		<cfif variables.configBean.getValue("autoupdatemode") eq "preview">
 			<cfreturn getProductionData().preview>

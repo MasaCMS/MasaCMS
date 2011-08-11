@@ -198,7 +198,7 @@ to your own modified versions of Mura CMS.
 				<cfset pluginManager.announceEvent("onBeforeFileRender",pluginEvent)>
 				<cfset delim=variables.configBean.getFileDelim() />
 				<cfset theFileLocation="#variables.configBean.getFileDir()##delim##rsFileData.siteid##delim#cache#delim#file#delim##arguments.fileID#.#rsFileData.fileExt#" />
-				<cfset streamFile(theFileLocation,rsfileData.filename,"#rsfileData.contentType#/#rsfileData.contentSubType#",arguments.method)>
+				<cfset streamFile(theFileLocation,rsfileData.filename,"#rsfileData.contentType#/#rsfileData.contentSubType#",arguments.method,rsFile.created)>
 				<cfset pluginManager.announceEvent("onAfterFileRender",pluginEvent)>
 			</cfcase>
 			<cfcase value="S3">	
@@ -252,7 +252,7 @@ to your own modified versions of Mura CMS.
 				</cfif>
 				<cfset delim=variables.configBean.getFileDelim() />
 				<cfset theFileLocation="#variables.configBean.getFileDir()##delim##rsFile.siteid##delim#cache#delim#file#delim##arguments.fileID#_small.#rsFile.fileExt#" />
-				<cfset streamFile(theFileLocation,rsFile.filename,"#rsFile.contentType#/#rsFile.contentSubType#",arguments.method)>
+				<cfset streamFile(theFileLocation,rsFile.filename,"#rsFile.contentType#/#rsFile.contentSubType#",arguments.method,rsFile.created)>
 			</cfcase>
 			<cfcase value="S3">
 				<cfset renderS3(fileid=arguments.fileid,method=arguments.method,size="_small") />
@@ -296,7 +296,7 @@ to your own modified versions of Mura CMS.
 				</cfif>
 				<cfset delim=variables.configBean.getFileDelim() />
 				<cfset theFileLocation="#variables.configBean.getFileDir()##delim##rsFile.siteid##delim#cache#delim#file#delim##arguments.fileID#_medium.#rsFile.fileExt#" />
-				<cfset streamFile(theFileLocation,rsFile.filename,"#rsFile.contentType#/#rsFile.contentSubType#",arguments.method)>
+				<cfset streamFile(theFileLocation,rsFile.filename,"#rsFile.contentType#/#rsFile.contentSubType#",arguments.method,rsFile.created)>
 			</cfcase>
 			<cfcase value="S3">
 				<cfset renderS3(fileid=arguments.fileid,method=arguments.method,size="_medium") />
@@ -574,6 +574,7 @@ to your own modified versions of Mura CMS.
 <cfargument name="filename">
 <cfargument name="mimetype">
 <cfargument name="method" type="string" required="true" default="inline">
+<cfargument name="lastModified" required="true" default="#now()#">
 <cfargument name="deleteFile" type="boolean" required="true" default="false">
 <cfset var local=structNew()>
 
@@ -582,8 +583,17 @@ to your own modified versions of Mura CMS.
 	</cfif>
 
 	<cfif application.CFVersion gt 7>
-    	    <cfset local.fileCheck = FileOpen(arguments.filepath, "readBinary")>
-    		<cfheader name="Content-Length" value="#listFirst(local.fileCheck.size,' ')#">
+		<cfif structkeyexists(cgi, "http_if_modified_since")>
+			<cfif parsedatetime(cgi.http_if_modified_since) gt arguments.lastModified>
+			 	 <cfheader statuscode=304 statustext="Not modified"/>
+			 	 <cfabort/>
+		 	</cfif>
+		</cfif>
+
+		<cfheader name="Last-Modified" value="#gethttptimestring(arguments.lastModified)#"/>
+		
+    	<cfset local.fileCheck = FileOpen(arguments.filepath, "readBinary")>
+    	<cfheader name="Content-Length" value="#listFirst(local.fileCheck.size,' ')#">		
     </cfif>
 
 	<cfheader name="Content-Disposition" value='#arguments.method#;filename="#arguments.filename#"'>

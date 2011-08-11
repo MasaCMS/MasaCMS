@@ -273,6 +273,55 @@ tcontent.doCache,tcontent.created,tcontent.urltitle,tcontent.htmltitle,tcontent.
 		<cfreturn bean />
 </cffunction>
 
+<cffunction name="readActiveByURLTitle" access="public" returntype="any" output="false">
+		<cfargument name="urltitle" type="string" required="yes" />
+		<cfargument name="siteID" type="string" required="yes" />
+		<cfargument name="use404" type="boolean" required="yes" default="false"/>
+		<cfargument name="contentBean" type="any" default=""/>
+		<cfset var rsContent = queryNew('empty') />
+		<cfset var bean=""  />
+		<cfset var beanArray=arrayNew(1)>
+		<cfset var utility="">
+		
+		<cfif isObject(arguments.contentBean)>
+			<cfset bean=arguments.contentBean>
+		<cfelse>
+			<cfset bean=getBean()>
+		</cfif>
+		
+		<cfif len(arguments.title)>		
+			<cfquery datasource="#variables.dsn#" name="rsContent"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+				select #variables.fieldlist#, tfiles.fileSize, tfiles.contentType, tfiles.contentSubType, tfiles.fileExt from tcontent 
+				left join tfiles on (tcontent.fileid=tfiles.fileid)
+				where tcontent.urltitle=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.utltitle#" /> 
+				#renderActiveClause("tcontent",arguments.siteID)#
+				and tcontent.siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteid#" />
+				and type in ('Page','Portal','File','Calendar','Link','Gallery','Component','Form')
+			</cfquery>
+		</cfif>
+		
+		<cfif rsContent.recordcount gt 1>
+				<cfset utility=getServiceFactory().getBean("utility")>
+				<cfloop query="rscontent">
+				<cfset bean=getbean().set(utility.queryRowToStruct(rsContent,rsContent.currentrow))>
+				<cfset bean.setIsNew(0)>
+				<cfset bean.setPreserveID(rsContent.contentHistID)>
+				<cfset arrayAppend(beanArray,bean)>				
+				</cfloop>
+				<cfreturn beanArray>
+		<cfelseif rsContent.recordCount>
+			<cfset bean.set(rsContent) />
+			<cfset bean.setIsNew(0) />
+			<cfset bean.setPreserveID(rsContent.contentHistID) />
+		<cfelse>
+			<cfset bean.setIsNew(1) />
+			<cfset bean.setActive(1) />
+			<cfset bean.setSiteID(arguments.siteid) />
+		</cfif>
+		
+		<cfreturn bean />
+</cffunction>
+
 <cffunction name="readActiveByFilename" access="public" returntype="any" output="true">
 		<cfargument name="filename" type="string" required="yes" default="" />
 		<cfargument name="siteID" type="string" required="yes" default="" />

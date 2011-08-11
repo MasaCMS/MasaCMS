@@ -84,6 +84,6 @@ to your own modified versions of Mura CMS.
 </ul>
  
 <cfelse>
-<em>There are currently no available extension sets.</em>
+<em>There are currently no available attribute sets.</em>
 </cfif>
 </p>
