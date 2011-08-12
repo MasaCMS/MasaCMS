@@ -66,7 +66,7 @@ to your own modified versions of Mura CMS.
 <div>
 <cfoutput><form action="index.cfm" method="get" name="calendarForm"><select name="MONTH" class="dropdown"><cfset i=0><cfloop condition="i lt 12"><cfset i=i+1>
 <option value="#i#"  <cfif month(now()) eq i>selected</cfif>>#i#</option></cfloop></select> <select name="YEAR" class="dropdown">		  <cfloop from="#year(now())#" to="#evaluate("#year(now())#+5")#" index="i"><option value="#i#"  <cfif  year(now()) eq i>selected</cfif> >#i#</option></cfloop></select> 
-<a class="submit" href="javascript:document.calendarForm.submit();"><span>View</span></a>
+<input type="button" class="submit" href="javascript:document.calendarForm.submit();" value="View" />
 <input type="hidden" name="form" value="#htmlEditFormat(url.form)#"><input type="hidden" name="field" value="#htmlEditFormat(url.field)#"><input type="hidden" name="format" value="#htmlEditFormat(url.format)#"></form><table border="0" cellpadding="0" cellspacing="1" id="calendar" align="center">
 <tr>
 <th title="#HTMLEditFormat(dateLong)#"><a href="index.cfm?format=#URLEncodedFormat(URL.format)#&form=#URLEncodedFormat(URL.form)#&field=#URLEncodedFormat(URL.field)#&month=#URLEncodedFormat(previousmonth)#&year=#URLEncodedFormat(previousyear)#">&laquo;</a></th>

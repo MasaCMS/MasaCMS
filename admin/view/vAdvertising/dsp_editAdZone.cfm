@@ -82,9 +82,9 @@ to your own modified versions of Mura CMS.
 <dd><textarea name="notes" class="textArea">#HTMLEditFormat(request.adZoneBean.getNotes())#</textarea></dd>
 </dl>
 <cfif attributes.adZoneid eq ''>
-<a class="submit" href="javascript:;" onclick="return submitForm(document.forms.form1,'add');"><span>#application.rbFactory.getKeyValue(session.rb,'advertising.add')#</span></a><input type=hidden name="adZoneID" value="">
-<cfelse><a class="submit" href="javascript:;" onclick="return submitForm(document.forms.form1,'delete','#jsStringformat(application.rbFactory.getKeyValue(session.rb,'advertising.deleteadzoneconfirm'))#');"><span>#application.rbFactory.getKeyValue(session.rb,'advertising.delete')#</span></a>
-<a class="submit" href="javascript:;" onclick="return submitForm(document.forms.form1,'update');"><span>#application.rbFactory.getKeyValue(session.rb,'advertising.update')#</span></a>
+<input type="button" class="submit" onclick="submitForm(document.forms.form1,'add');" value="#application.rbFactory.getKeyValue(session.rb,'advertising.add')#" /><input type=hidden name="adZoneID" value="">
+<cfelse><input type="button" class="submit" onclick="submitForm(document.forms.form1,'delete','#jsStringformat(application.rbFactory.getKeyValue(session.rb,'advertising.deleteadzoneconfirm'))#');" value="#application.rbFactory.getKeyValue(session.rb,'advertising.delete')#" />
+<input type="button" class="submit" onclick="submitForm(document.forms.form1,'update');" value="#application.rbFactory.getKeyValue(session.rb,'advertising.update')#" />
 <input type=hidden name="adZoneID" value="#request.adZoneBean.getAdZoneID()#"></cfif><input type="hidden" name="action" value="add"></form>
 </p></cfoutput>
 <cfif attributes.adZoneID neq ''>

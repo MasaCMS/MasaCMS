@@ -3,7 +3,7 @@
 <cfset counter=0 />
 <cfoutput>
 <h3 class="alt">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.searchforcontent')#</h3>
-	<input id="parentSearch" name="parentSearch" value="#HTMLEditFormat(attributes.keywords)#" type="text" class="text" maxlength="50"/><a class="submit" href="javascript:;" onclick="loadRelatedContent('#attributes.siteid#',document.getElementById('parentSearch').value,0);return false;"><span>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.search')#</span></a>
+	<input id="parentSearch" name="parentSearch" value="#HTMLEditFormat(attributes.keywords)#" type="text" class="text" maxlength="50"/><input type="button" class="submit" onclick="loadRelatedContent('#attributes.siteid#',document.getElementById('parentSearch').value,0);return false;" value="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.search')#" />
 </cfoutput>
 <br/><br/><cfif not attributes.isNew>
 <cfset request.rsList=application.contentManager.getPrivateSearch(attributes.siteid,attributes.keywords)/>

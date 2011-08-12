@@ -112,7 +112,7 @@ to your own modified versions of Mura CMS.
 		</cfif>
 		</table>
 	
-		 <a class="submit" href="javascript:document.form1.submit();"><span>#application.rbFactory.getKeyValue(session.rb,'permissions.update')#</span></a>
+		 <input type="button" class="submit" onclick="javascript:document.form1.submit();" value="#application.rbFactory.getKeyValue(session.rb,'permissions.update')#" />
                     <input type="hidden" name="router" value="#cgi.HTTP_REFERER#">
 					<input type="hidden" name="siteid" value="#HTMLEditFormat(attributes.siteid)#">
 					<input type="hidden" name="startrow" value="#attributes.startrow#">

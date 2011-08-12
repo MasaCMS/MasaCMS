@@ -76,7 +76,7 @@ to your own modified versions of Mura CMS.
 </dd>
 </dl>
 <p class="rememberMe"><input type="checkbox" id="rememberMe" name="rememberMe" value="1" /> <label for="rememberMe">#application.rbFactory.getKeyValue(session.rb,'login.rememberme')#</label></p>
-<a class="submit" href="javascript:document.frmLogin.submit();"><span>#application.rbFactory.getKeyValue(session.rb,'login.login')#</span></a>
+<input type="button" class="submit" onclick="document.frmLogin.submit();" value="#application.rbFactory.getKeyValue(session.rb,'login.login')#" />
 	<input name="returnUrl" type="hidden" value="#HTMLEditFormat(attributes.returnURL)#">
 <input type="hidden" name="fuseaction" value="cLogin.login">
 <input type="hidden" name="isAdminLogin" value="true">
@@ -97,7 +97,7 @@ to your own modified versions of Mura CMS.
 	#application.rbFactory.getKeyValue(session.rb,'login.enteremail')#
 	</cfif></dd>
         <dd><input id="email" name="email" type="text" class="text" align="absmiddle" onKeyPress="checkKeyPressed(event, 'sendLogin')"/>
- 		<a class="submit" href="javascript:document.sendLogin.submit();"><span>#application.rbFactory.getKeyValue(session.rb,'login.submit')#</span></a>
+ 		<input type="button" class="submit" onclick="document.sendLogin.submit();" value="#application.rbFactory.getKeyValue(session.rb,'login.submit')#" />
 		<input type="hidden" name="status" value="sendlogin" />
 		<input name="returnURL" type="hidden" value="#HTMLEditFormat(attributes.returnURL)#"></dd>
 		</dl>

@@ -50,7 +50,7 @@ to your own modified versions of Mura CMS.
 
 <form novalidate="novalidate" id="changesetSearch" name="changesetSearch" method="get">
 	<input name="keywords" value="#HTMLEditFormat(rc.keywords)#" type="text" class="text" maxlength="50" />
-	<a class="submit" href="javascript:;" onclick="return submitForm(document.forms.changesetSearch);"><span>Search</span></a>
+	<input type="button" class="submit" onclick="submitForm(document.forms.changesetSearch);" value="Search" />
 	<input type="hidden" name="fuseaction" value="cChangesets.list">
 	<input type="hidden" name="siteid" value="#HTMLEditFormat(rc.siteid)#">
 </form>

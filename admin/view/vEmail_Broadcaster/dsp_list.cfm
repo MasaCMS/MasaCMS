@@ -116,7 +116,7 @@ to your own modified versions of Mura CMS.
  <dd><input type="text"  name="subject" value="#session.emaillist.subject#" class="textbox"></dd>
 </dl>
 <input type="hidden" name="doSearch" value="true"/>			  
-<a class="submit" href="javascript:;" onclick="return submitForm(document.forms.form1);"><span>#application.rbFactory.getKeyValue(session.rb,'email.filter')#</span></a>
+<input type="button" class="submit" onclick="submitForm(document.forms.form1);" value="#application.rbFactory.getKeyValue(session.rb,'email.filter')#" />
 </form>
 </div>
 </cfoutput>

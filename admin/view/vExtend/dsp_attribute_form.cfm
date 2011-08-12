@@ -97,12 +97,12 @@ to your own modified versions of Mura CMS.
 </dl>
 
 <cfif attributes.action eq "add">
-<a class="submit" href="javascript:;" onclick="return submitForm(document.forms.#HTMLEditFormat(attributes.formName)#,'add');"><span>Add</span></a>
-<a class="submit" href="javascript:;" onclick="jQuery('###HTMLEditFormat(attributes.formName)#container').slideUp();jQuery('###HTMLEditFormat(attributes.formName)#close').hide();jQuery('###HTMLEditFormat(attributes.formName)#open').show();return false;"><span>Cancel</span></a>
+<input type="button" class="submit" onclick="submitForm(document.forms.#HTMLEditFormat(attributes.formName)#,'add');" value="Add" />
+<input type="button" class="submit" onclick="jQuery('###HTMLEditFormat(attributes.formName)#container').slideUp();jQuery('###HTMLEditFormat(attributes.formName)#close').hide();jQuery('###HTMLEditFormat(attributes.formName)#open').show();" value="Cancel" />
 <cfelse>
-<a class="submit" href="javascript:;" onclick="return submitForm(document.forms.#HTMLEditFormat(attributes.formName)#,'update');"><span>Update</span></a>
-<a class="submit" href="javascript:;" onclick="return submitForm(document.forms.#HTMLEditFormat(attributes.formName)#,'delete','Delete Attribute?');"><span>Delete</span></a>
-<a class="submit" href="javascript:;" onclick="jQuery('###HTMLEditFormat(attributes.formName)#container'));jQuery('###HTMLEditFormat(attributes.formName)#close').hide();jQuery('###HTMLEditFormat(attributes.formName)#open').show();return false;"><span>Cancel</span></a>
+<input type="button" class="submit" onclick="submitForm(document.forms.#HTMLEditFormat(attributes.formName)#,'update'); value="Update" />
+<input type="button" class="submit" onclick="submitForm(document.forms.#HTMLEditFormat(attributes.formName)#,'delete','Delete Attribute?');" value="Delete" />
+<input type="button" class="submit" onclick="jQuery('###HTMLEditFormat(attributes.formName)#container'));jQuery('###HTMLEditFormat(attributes.formName)#close').hide();jQuery('###HTMLEditFormat(attributes.formName)#open').show();" value="Cancel" />
 </cfif>
 
 <input name="orderno" type="hidden" value="#attributes.attributeBean.getOrderno()#"/>

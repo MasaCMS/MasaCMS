@@ -88,7 +88,7 @@
           </select>
         </dd>
       </cfif>
-      <dd <cfif attributes.topid neq '00000000000000000000000000000000001' and perm eq 'Editor'>class="button"</cfif>><a class="submit" href="javascript:;" id="submitSort" onclick="return submitForm(document.forms.viewUpdate);"><span>#application.rbFactory.getKeyValue(session.rb,"sitemanager.update")#</span></a></dd>
+      <dd <cfif attributes.topid neq '00000000000000000000000000000000001' and perm eq 'Editor'>class="button"</cfif>><input type="button" class="submit" id="submitSort" onclick="submitForm(document.forms.viewUpdate);" value="#application.rbFactory.getKeyValue(session.rb,"sitemanager.update")#" /></dd>
     </dl>
     <input type="hidden" name="startrow" value="#attributes.startrow#">
     <input type="hidden" name="orderperm" value="#perm#">

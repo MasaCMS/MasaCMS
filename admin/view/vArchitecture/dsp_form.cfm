@@ -473,14 +473,14 @@ select * from rsPluginScripts3 order by pluginID
 
 <div class="clearfix" id="actionButtons">
 	<cfif assignChangesets>
-	<a class="submit"  href="javascript:;" onclick="saveToChangeset('#request.contentBean.getChangesetID()#','#HTMLEditFormat(attributes.siteID)#','');return false;"><span>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.savetochangeset")#</span></a>	
+	<input type="button" class="submit" onclick="saveToChangeset('#request.contentBean.getChangesetID()#','#HTMLEditFormat(attributes.siteID)#','');return false;" value="#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.savetochangeset")#" />	
 	</cfif>
-	 <a class="submit" href="javascript:;" onclick="javascript:if(ckContent(draftremovalnotice)){submitForm(document.contentForm,'add');}return false;"><span>#jsStringFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.savedraft"))#</span></a>
+	 <input type="button" class="submit" onclick="if(ckContent(draftremovalnotice)){submitForm(document.contentForm,'add');}" value="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.savedraft"))#" />
 	<cfif listFindNoCase("Page,Portal,Calendar,Gallery",attributes.type)>
-	<a class="submit"  href="javascript:;" onclick="javascript:document.contentForm.preview.value=1;if(ckContent(draftremovalnotice)){submitForm(document.contentForm,'add');}return false;"><span>#jsStringFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.preview"))#</span></a>
+	<input type="button" class="submit" onclick="document.contentForm.preview.value=1;if(ckContent(draftremovalnotice)){submitForm(document.contentForm,'add');}" value="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.preview"))#" />
 	</cfif>
 	<cfif request.perm eq 'editor'>
-	<a class="submit" href="javascript:;" onclick="document.contentForm.approved.value=1;if(ckContent(draftremovalnotice)){submitForm(document.contentForm,'add');}return false;"><span>#jsStringFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.publish"))#</span></a>
+	<input type="button" class="submit" onclick="document.contentForm.approved.value=1;if(ckContent(draftremovalnotice)){submitForm(document.contentForm,'add');}" value="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.publish"))#" />
 	</cfif> 
 </div>
 <div id="actionIndicator" style="display: none;">

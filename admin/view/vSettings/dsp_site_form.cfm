@@ -611,12 +611,12 @@ to your own modified versions of Mura CMS.
     <input type="hidden" name="action" value="update">
     <div id="actionButtons">
 	<cfif request.siteBean.getsiteid() eq ''> 
-      <a class="submit" href="javascript:;" onclick="return submitForm(document.forms.form1,'add');"><span>Add</span></a>
+      <input type="button" class="submit" onclick="submitForm(document.forms.form1,'add');" value="Add" />
     <cfelse>
 		<cfif request.siteBean.getsiteid() neq 'default'>
-		<a class="submit" href="index.cfm?fuseaction=cSettings.updateSite&action=delete&siteid=#request.siteBean.getSiteID()#" onclick="return confirmDialog('#JSStringFormat("WARNING: A deleted site and all of it''s files cannot be recovered. Are you sure that you want to continue?")#',this.href);"><span>Delete</span></a>
+		<input type="button" class="submit" onclick="return confirmDialog('#JSStringFormat("WARNING: A deleted site and all of it''s files cannot be recovered. Are you sure that you want to continue?")#','index.cfm?fuseaction=cSettings.updateSite&action=delete&siteid=#request.siteBean.getSiteID()#');" value="Delete" />
 		</cfif>
-      	<a class="submit" href="javascript:;" onclick="return submitForm(document.forms.form1,'update');"><span>Update</span></a>
+      	<input type="button" class="submit" onclick="submitForm(document.forms.form1,'update');" value="Update" />
      </cfif>
 	 </div>
 	 <div id="actionIndicator" style="display: none;">

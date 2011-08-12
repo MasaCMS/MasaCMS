@@ -90,7 +90,7 @@ to your own modified versions of Mura CMS.
 			<cfoutput><p>#application.rbFactory.getKeyValue(session.rb,'collections.formatnosupported')#</p></cfoutput>
 		</cfcase>
 	</cfswitch>
-	<cfoutput><a class="submit" href="javascript:;" onclick="return confirmImport();"><span>#application.rbFactory.getKeyValue(session.rb,'collections.import')#</span></a></cfoutput>
+	<cfoutput><input type="button" class="submit" onclick="confirmImport();" value="#application.rbFactory.getKeyValue(session.rb,'collections.import')#" /></cfoutput>
 	<input type="hidden" name="action" value="import" />
 </form>
 	

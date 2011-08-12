@@ -70,7 +70,13 @@ to your own modified versions of Mura CMS.
 <dd><textarea name="notes" class="textArea">#HTMLEditFormat(request.campaignBean.getNotes())#</textarea></dd>
 </dl>
 <cfif attributes.campaignid eq ''>
-<a class="submit" href="javascript:;" onclick="return submitForm(document.forms.form1,'add');"><span>#application.rbFactory.getKeyValue(session.rb,'advertising.add')#</span></a><input type=hidden name="campaignID" value=""><cfelse><a class="submit" href="javascript:;" onclick="return submitForm(document.forms.form1,'delete','#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'advertising.deletecampaignconfirm'))#');"><span>#application.rbFactory.getKeyValue(session.rb,'advertising.delete')#</span></a><a class="submit" href="javascript:;" onclick="return submitForm(document.forms.form1,'update');"><span>#application.rbFactory.getKeyValue(session.rb,'advertising.update')#</span></a><input type=hidden name="campaignID" value="#request.campaignBean.getCampaignID()#"></cfif>
+	<input type="button" class="submit" onclick="submitForm(document.forms.form1,'add');" value="#application.rbFactory.getKeyValue(session.rb,'advertising.add')#" />
+	<input type=hidden name="campaignID" value="">
+<cfelse>
+	<input type="button" class="submit" onclick=submitForm(document.forms.form1,'delete','#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'advertising.deletecampaignconfirm'))#');" value="#application.rbFactory.getKeyValue(session.rb,'advertising.delete')#" />
+	<input type="button" class="submit" onclick="submitForm(document.forms.form1,'update');" value="#application.rbFactory.getKeyValue(session.rb,'advertising.update')#" />
+	<input type=hidden name="campaignID" value="#request.campaignBean.getCampaignID()#">
+	</cfif>
 <input type="hidden" name="action" value="">
 <input type="hidden" name="userID" value="#HTMLEditFormat(attributes.userid)#">
 </form>

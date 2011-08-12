@@ -51,7 +51,7 @@ to your own modified versions of Mura CMS.
 <input id="search" name="search" value="#attributes.search#" type="text" class="text">
 <input type="hidden" name="fuseaction" value="cPublicUsers.Search" />
 <input type="hidden" name="siteid" value="#HTMLEditFormat(attributes.siteid)#">
- <a class="submit" href="javascript:;" onclick="return submitForm(document.forms.form1);"><span>#application.rbFactory.getKeyValue(session.rb,'user.search')#</span></a></form>
+ <input type="button" class="submit" onclick="submitForm(document.forms.form1);" value="#application.rbFactory.getKeyValue(session.rb,'user.search')#" /></form>
 
 
         <table class="stripe">

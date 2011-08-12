@@ -149,14 +149,14 @@ to your own modified versions of Mura CMS.
 #tabContent#
 </div>
 <cfif attributes.feedID eq ''>
-	<a class="submit" href="javascript:;" onclick="return submitForm(document.forms.form1,'add');"><span>#application.rbFactory.getKeyValue(session.rb,'collections.add')#</span></a>
+	<input type="button" class="submit" onclick="submitForm(document.forms.form1,'add');" value="#application.rbFactory.getKeyValue(session.rb,'collections.add')#" />
 	<input type=hidden name="feedID" value="">
 	<input type="hidden" name="action" value="add">
 <cfelse>
 	<cfif attributes.compactDisplay neq "true">
-		<a class="submit" href="javascript:;" onclick="return submitForm(document.forms.form1,'delete','#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'collections.deleteremoteconfirm'))#');"><span>#application.rbFactory.getKeyValue(session.rb,'collections.delete')#</span></a> 
+		<input type="button" class="submit" onclick="submitForm(document.forms.form1,'delete','#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'collections.deleteremoteconfirm'))#');" value="#application.rbFactory.getKeyValue(session.rb,'collections.delete')#" /> 
 	</cfif>
-	<a class="submit" href="javascript:;" onclick="return submitForm(document.forms.form1,'update');"><span>#application.rbFactory.getKeyValue(session.rb,'collections.update')#</span></a>
+	<input type="button" class="submit" onclick="submitForm(document.forms.form1,'update');" value="#application.rbFactory.getKeyValue(session.rb,'collections.update')#" />
 	<cfif attributes.compactDisplay eq "true">
 		<input type="hidden" name="closeCompactDisplay" value="true" />
 		<input type="hidden" name="homeID" value="#attributes.homeID#" />

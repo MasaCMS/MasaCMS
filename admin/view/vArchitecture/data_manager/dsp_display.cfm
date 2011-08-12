@@ -126,7 +126,7 @@ document.getElementById('responseDisplayFields').value=document.getElementById('
           <option value="desc" <cfif request.contentBean.getSortDirection() eq 'desc'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.descending')#</option>
         </select></dd>
   </dl>
-  <a class="submit" href="javascript:;" onclick="return submitForm(document.forms.frmDisplayFields,'setDisplay');"><span>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.update')#</span></a>
+  <input type="button" class="submit" onclick="submitForm(document.forms.frmDisplayFields,'setDisplay');" value="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.update')#" />
 <input type="hidden" value="setDisplay" name="action">
 <input type="hidden" name="fuseaction" value="cArch.datamanager" />
 <input type="hidden" name="contentid" value="#HTMLEditFormat(attributes.contentid)#" />

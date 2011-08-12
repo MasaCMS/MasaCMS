@@ -62,7 +62,7 @@ to your own modified versions of Mura CMS.
 <dd><input name="subType" value="#HTMLEditFormat(subType.getSubType())#" required="true" maxlength="25"/></dd>
 </dl>
 <cfif not len(attributes.subTypeID)>
-<a class="submit" href="javascript:;" onclick="return submitForm(document.forms.subTypeFrm,'add');"><span>Add</span></a><input type=hidden name="subTypeID" value="#createuuid()#"><cfelse> <a class="submit" href="javascript:;" onclick="return submitForm(document.forms.subTypeFrm,'delete','Delete Class Extension?');"><span>Delete</span></a> <a class="submit" href="javascript:;" onclick="return submitForm(document.forms.subTypeFrm,'update');"><span>Update</span></a>
+<input type="button" class="submit" onclick="submitForm(document.forms.subTypeFrm,'add');" value="Add" /><input type=hidden name="subTypeID" value="#createuuid()#"><cfelse> <input type="button" class="submit" onclick="submitForm(document.forms.subTypeFrm,'delete','Delete Class Extension?');" value="Delete" /> <input type="button" class="submit" onclick="submitForm(document.forms.subTypeFrm,'update');" value="Update" />
 
 <input type=hidden name="subTypeID" value="#subType.getsubtypeID()#"></cfif><input type="hidden" name="action" value="">
 <input name="fuseaction" value="cExtend.updateSubType" type="hidden">

@@ -66,5 +66,6 @@ to your own modified versions of Mura CMS.
 		</select>
 	</dd>
 </dl>
-<a class="submit" href="javascript:;" onclick="return submitForm(document.forms.form2);"><span>#application.rbFactory.getKeyValue(session.rb,'user.search')#</span></a></form>
+<input type="button" class="submit" onclick="submitForm(document.forms.form2);" value="#application.rbFactory.getKeyValue(session.rb,'user.search')#" />
+</form>
 </cfoutput>

@@ -48,7 +48,9 @@ to your own modified versions of Mura CMS.
 <cfoutput>
 <h2>Site Search</h2>
 
-<h3>Keyword Search</h3><form novalidate="novalidate" id="siteSearch" name="siteSearch" method="get"><input name="keywords" value="#session.keywords#" type="text" class="text" maxlength="50" /><a class="submit" href="javascript:;" onclick="return submitForm(document.forms.siteSearch);"><span>Search</span></a>
+<h3>Keyword Search</h3>
+<form novalidate="novalidate" id="siteSearch" name="siteSearch" method="get">
+	<input name="keywords" value="#session.keywords#" type="text" class="text" maxlength="50" /><input type="button" class="submit" onclick="submitForm(document.forms.siteSearch);" value="Search" />
 	<input type="hidden" name="fuseaction" value="cArch.search">
 	<input type="hidden" name="siteid" value="#HTMLEditFormat(attributes.siteid)#">
 	<input type="hidden" name="moduleid" value="#attributes.moduleid#">

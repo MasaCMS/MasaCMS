@@ -82,7 +82,7 @@ to your own modified versions of Mura CMS.
   <form novalidate="novalidate" id="filterByTitle" action="index.cfm" method="get">
 	  <h4>#application.rbFactory.getKeyValue(session.rb,'sitemanager.filterviewdesc')#</h4>
 	  <input type="text" name="searchString" value="#HTMLEditFormat(attributes.searchString)#" class="text">
-	  <a class="submit" href="javascript:;" onclick="document.getElementById('filterByTitle').submit();"><span>#application.rbFactory.getKeyValue(session.rb,'sitemanager.filter')#</span></a>
+	  <input type="button" class="submit" onclick="document.getElementById('filterByTitle').submit();" value="#application.rbFactory.getKeyValue(session.rb,'sitemanager.filter')#" />
 	  <input type="hidden" name="siteid" value="#HTMLEditFormat(attributes.siteid)#" />
 	  <input type="hidden" name="topid" value="#attributes.topID#" />
 	  <input type="hidden" name="parentid" value="#attributes.parentID#" />

@@ -125,7 +125,7 @@ copyAll = 'false';
 <form novalidate="novalidate" id="siteSearch" name="siteSearch" method="get">
     <h3>#application.rbFactory.getKeyValue(session.rb,"sitemanager.contentsearch")#</h3>
     <input name="keywords" value="#HTMLEditFormat(session.keywords)#" type="text" class="text" align="absmiddle" />
-    <a class="submit" href="javascript:;" onclick="return submitForm(document.forms.siteSearch);"><span>#application.rbFactory.getKeyValue(session.rb,"sitemanager.search")#</span></a>
+    <input type="button" class="submit" onclick="submitForm(document.forms.siteSearch);" value="#application.rbFactory.getKeyValue(session.rb,"sitemanager.search")#" />
     <input type="hidden" name="fuseaction" value="cArch.search">
     <input type="hidden" name="siteid" value="#HTMLEditFormat(attributes.siteid)#">
     <input type="hidden" name="moduleid" value="#attributes.moduleid#">

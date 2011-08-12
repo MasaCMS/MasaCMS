@@ -139,7 +139,7 @@ to your own modified versions of Mura CMS.
 <dl>
 <dt>#application.rbFactory.getKeyValue(session.rb,"dashboard.searchtext")#:</dt>
 <dd><form novalidate="novalidate" id="siteSearch" name="siteSearch" method="get"><input name="keywords" value="#HTMLEditFormat(session.keywords)#" type="text" class="text" align="absmiddle" />  
-	<a class="submit" href="javascript:;" onclick="return submitForm(document.forms.siteSearch);"><span>Search</span></a>
+	<input type="button" class="submit" onclick="submitForm(document.forms.siteSearch);" value="Search" />
 	<input type="hidden" name="fuseaction" value="cArch.search">
 	<input type="hidden" name="siteid" value="#HTMLEditFormat(attributes.siteid)#">
 	<input type="hidden" name="moduleid" value="00000000000000000000000000000000000">

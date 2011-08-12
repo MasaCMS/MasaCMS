@@ -58,7 +58,7 @@ to your own modified versions of Mura CMS.
 <p>#application.rbFactory.getKeyValue(session.rb,'changesets.filterviewnotice')#</p>
 <form novalidate="novalidate" id="assignmentSearch" name="assignmentSearch" method="get">
 	<input name="keywords" value="#HTMLEditFormat(rc.keywords)#" type="text" class="text" maxlength="50" />
-	<a class="submit" href="javascript:;" onclick="return submitForm(document.forms.assignmentSearch);"><span>Search</span></a>
+	<input type="button" class="submit" onclick="return submitForm(document.forms.assignmentSearch);" value="Search" />
 	<input type="hidden" name="fuseaction" value="cChangesets.assignments">
 	<input type="hidden" name="siteid" value="#HTMLEditFormat(rc.siteid)#">
 	<input type="hidden" name="changesetID" value="#HTMLEditFormat(rc.changesetID)#">

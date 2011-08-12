@@ -25,7 +25,7 @@
 
 <cfif not listFindNoCase("Page,Portal,File,Link,Gallery,Calender",rc.trashItem.getObjectType())>
 <div class="clearfix" id="actionButtons">
-<a class="submit" href="?fuseaction=cTrash.restore&objectID=#rc.trashItem.getObjectID()#&siteid=#rc.trashItem.getSiteID()#" onclick="return confirmDialog('Restore Item From Trash?',this.href);">Restore Item</a>
+<input type="button" class="submit" onclick="return confirmDialog('Restore Item From Trash?','?fuseaction=cTrash.restore&objectID=#rc.trashItem.getObjectID()#&siteid=#rc.trashItem.getSiteID()#');" value="Restore Item" />
 </div>
 <cfelse>
 <cfset parentBean=application.serviceFactory.getBean("content").loadBy(contentID=rc.trashItem.getParentID(),siteID=rc.trashItem.getSiteID())>
@@ -37,7 +37,7 @@
 	</span>
 </div>
 <div class="clearfix" id="actionButtons">
-<a class="submit" href="" onclick="restoreContent(); return false;"><span>Restore Item</span></a>
+<input type="button" class="submit" onclick="restoreContent();" value="Restore Item" />
 </div>
 
 <script>

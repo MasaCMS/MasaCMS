@@ -276,10 +276,10 @@ to your own modified versions of Mura CMS.
           </cfif>
         </cfif>
         </cfsilent>
-        <a class="submit" href="javascript:;" onClick="validateEmailForm('#formAction#', '#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'email.saveconfirm'))#');return false;"><span>#application.rbFactory.getKeyValue(session.rb,'email.save')#</span></a> <a class="submit" href="javascript:;" onClick="document.forms.form1.sendNow.value='true'; validateEmailForm('#formAction#', '#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'email.sendnowconfirm'))#');return false;"><span>#application.rbFactory.getKeyValue(session.rb,'email.sendnow')#</span></a> <a class="submit" href="javascript:;" onClick="openScheduler();"><span>#application.rbFactory.getKeyValue(session.rb,'email.schedule')#</span></a>
+        <input type="button" class="submit" onClick="validateEmailForm('#formAction#', '#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'email.saveconfirm'))#')" value="#application.rbFactory.getKeyValue(session.rb,'email.save')#" /> <input type="button" class="submit" onClick="document.forms.form1.sendNow.value='true'; validateEmailForm('#formAction#', '#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'email.sendnowconfirm'))#');" value="#application.rbFactory.getKeyValue(session.rb,'email.sendnow')#" /> <input type="button" class="submit" onClick="openScheduler(); value="#application.rbFactory.getKeyValue(session.rb,'email.schedule')#" />
           <input type="hidden" name="emailid" value="#currentEmailid#">
           <cfif showDelete>
-            <a class="submit" href="javascript:;" onClick="validateEmailForm('delete', '#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'email.deleteconfirm'))#');return false;" value="Delete"><span>#application.rbFactory.getKeyValue(session.rb,'email.delete')#</span></a>
+            <input type="button" class="submit" onClick="validateEmailForm('delete', '#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'email.deleteconfirm'))#');" value="#application.rbFactory.getKeyValue(session.rb,'email.delete')#" />
           </cfif>
        </div>
         <div style="display:none" id="scheduler"> #application.rbFactory.getKeyValue(session.rb,'email.deliverydate')#<br />
@@ -326,7 +326,7 @@ to your own modified versions of Mura CMS.
             <option value="AM" <cfif timepart eq 'AM'>selected</cfif>>AM</option>
             <option value="PM" <cfif timepart eq 'PM'>selected</cfif>>PM</option>
           </select>
-          <a class="submit" href="javascript:;" onClick="validateScheduler('#formAction#', '#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'email.pleaseenterdate'))#', 'deliveryDate');return false;"><span>#application.rbFactory.getKeyValue(session.rb,'email.save')#</span></a> <a class="submit" href="javascript:;" onClick="closeScheduler();return false;"><span>#application.rbFactory.getKeyValue(session.rb,'email.cancel')#</span></a> </div>
+          <input type="button" class="submit" onClick="validateScheduler('#formAction#', '#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'email.pleaseenterdate'))#', 'deliveryDate');return false;"><span>#application.rbFactory.getKeyValue(session.rb,'email.save')#</span></a> <input type="button" class="submit" onClick="closeScheduler()" value="#application.rbFactory.getKeyValue(session.rb,'email.cancel')#" /> </div>
         <input type="hidden" name="action" value="">
         <input type="hidden" name="sendNow" value="">
       </div>

@@ -11,7 +11,7 @@
 <form novalidate="novalidate" id="siteSearch" name="siteSearch" method="get">
    <h3>Keyword Search</h3>
     <input name="keywords" value="#HTMLEditFormat(rc.keywords)#" type="text" class="text" align="absmiddle" />
-    <a class="submit" href="javascript:;" onclick="return submitForm(document.forms.siteSearch);"><span>Search</span></a>
+    <input type="button" class="submit" onclick="submitForm(document.forms.siteSearch);" value="Search" />
     <input type="hidden" name="fuseaction" value="cTrash.list">
     <input type="hidden" name="siteid" value="#HTMLEditFormat(rc.siteid)#">
  </form>

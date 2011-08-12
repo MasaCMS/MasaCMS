@@ -50,6 +50,6 @@ to your own modified versions of Mura CMS.
 <dd><em>#application.rbFactory.getKeyValue(session.rb,'advertising.iplistnote')#</em></dd>
 <dd><textarea name="IPWhiteList" class="alt"><cfloop query="request.rslist">#request.rslist.ip##newLine#</cfloop></textarea></dd>
 </dl>
-<a class="submit" href="javascript:document.form1.submit();"><span>#application.rbFactory.getKeyValue(session.rb,'advertising.update')#</span></a>
+<input type="button" class="submit" onclick="document.form1.submit();" value="#application.rbFactory.getKeyValue(session.rb,'advertising.update')#" />
 </form>
 </cfoutput>

@@ -185,11 +185,11 @@ to your own modified versions of Mura CMS.
 					</cfoutput>
 				</table>
 				<cfif attributes.siteSortBy eq "orderno">
-					<a class="submit" href="javascript:document.form1.submit();"><span>Update Bind Order</span></a>
+					<input type="button" class="submit" onclick="document.form1.submit();" value="Update Bind Order" />
 				</cfif>
 				<cfif  attributes.siteUpdateSelect eq "true">
 					<div class="clearfix" id="actionButtons">
-					<a class="submit" id="btnUpdateSites" href="javascript:;"><span>Update Selected Sites to Latest Version</span></a>
+					<input type="button" class="submit" id="btnUpdateSites" value="Update Selected Sites to Latest Version" />
 					</div>
 					<div id="actionIndicator" style="display: none;">
 						<cfoutput><img class="loadProgress" src="#application.configBean.getContext()#/admin/images/progress_bar.gif"></cfoutput>
@@ -198,7 +198,7 @@ to your own modified versions of Mura CMS.
 				<cfif application.configBean.getMode() eq 'staging'
 						and attributes.siteSortBy neq "orderno"
 						and attributes.siteUpdateSelect neq "true">
-					<a class="submit" href="javascript:document.form1.submit();"><span>Update Auto Deploy Settings</span></a>	
+					<input type="button" class="submit" onclick="document.form1.submit();" value="Update Auto Deploy Settings" />	
 				</cfif>
 				<cfoutput>
 					<input type="hidden" name="siteSortBy" value="#htmlEditFormat(attributes.siteSortBy)#" />

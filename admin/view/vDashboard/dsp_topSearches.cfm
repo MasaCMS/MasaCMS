@@ -67,7 +67,7 @@ to your own modified versions of Mura CMS.
 		</cfloop>
 	</select>
 </dd>
-<dd><a class="submit" href="javascript:;" onclick="return submitForm(document.forms.searchFrm);"><span>#application.rbFactory.getKeyValue(session.rb,"params.search")#</span></a></dd>
+<dd><input type="button" class="submit" onclick="submitForm(document.forms.searchFrm);" value="#application.rbFactory.getKeyValue(session.rb,"params.search")#" /></dd>
 </dl>
 <input type="hidden" value="#HTMLEditFormat(attributes.siteid)#" name="siteID"/>
 <input type="hidden" value="cDashboard.topSearches" name="fuseaction"/>

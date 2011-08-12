@@ -99,8 +99,13 @@ to your own modified versions of Mura CMS.
 <dd><textarea name="notes" class="textArea">#HTMLEditFormat(request.creativeBean.getNotes())#</textarea></dd>
 </dl>
 <cfif attributes.creativeid eq ''>
-<a class="submit" href="javascript:;" onclick="return submitForm(document.forms.form1,'add');"><span>#application.rbFactory.getKeyValue(session.rb,'advertising.add')#</span></a><input type=hidden name="creativeID" value=""><cfelse> <a class="submit" href="javascript:;" onclick="return submitForm(document.forms.form1,'delete','#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'advertising.deletecreativeconfirm'))#');"><span>#application.rbFactory.getKeyValue(session.rb,'advertising.delete')#</span></a> <a class="submit" href="javascript:;" onclick="return submitForm(document.forms.form1,'update');"><span>#application.rbFactory.getKeyValue(session.rb,'advertising.update')#</span></a>
-<input type=hidden name="creativeid" value="#request.creativeBean.getCreativeID()#"></cfif><input type="hidden" name="action" value=""></form>
+	<input type="button" class="submit" onclick="submitForm(document.forms.form1,'add');" value="#application.rbFactory.getKeyValue(session.rb,'advertising.add')#" />
+	<input type=hidden name="creativeID" value="">
+<cfelse> 
+	<input type="button" class="submit" onclick="submitForm(document.forms.form1,'delete','#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'advertising.deletecreativeconfirm'))#');" value="#application.rbFactory.getKeyValue(session.rb,'advertising.delete')#" />
+	<input type="button" class="submit" onclick="submitForm(document.forms.form1,'update');" value="#application.rbFactory.getKeyValue(session.rb,'advertising.update')#" />
+	<input type=hidden name="creativeid" value="#request.creativeBean.getCreativeID()#">
+</cfif><input type="hidden" name="action" value=""></form>
 
 <cfif attributes.creativeid neq ''>
 <h3 class="divide">#application.rbFactory.getKeyValue(session.rb,'advertising.currentasset')#</h3>

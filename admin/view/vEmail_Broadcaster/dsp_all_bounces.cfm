@@ -54,7 +54,7 @@ to your own modified versions of Mura CMS.
 			</cfloop>
 	  </select>
 </dt>
-<dd><a class="submit" href="javascript:;" onclick="return submitForm(document.forms.form1);"><span>#application.rbFactory.getKeyValue(session.rb,"email.filter")#</span></a></dd>
+<dd><input type="button" class="submit" onclick="submitForm(document.forms.form1);" value="#application.rbFactory.getKeyValue(session.rb,"email.filter")#" /></dd>
 </dl>
 
 <cfoutput>			  
@@ -79,7 +79,7 @@ to your own modified versions of Mura CMS.
 		<cfoutput>
 		<input type="hidden" value="#bouncedEmailList#" name="bouncedEmail" />
 		<input type="hidden" name="siteID" value="#attributes.siteid#">
-		<a class="submit" href="javascript:;" onclick="return submitForm(document.forms.form2,'delete','Delete bounced emails from mailing lists?');"><span>#application.rbFactory.getKeyValue(session.rb,"email.delete")#</span></a>
+		<input type="button" class="submit" onclick="submitForm(document.forms.form2,'delete','Delete bounced emails from mailing lists?');" value="#application.rbFactory.getKeyValue(session.rb,"email.delete")#" />
 		</cfoutput>
 	</form>
 </cfif>

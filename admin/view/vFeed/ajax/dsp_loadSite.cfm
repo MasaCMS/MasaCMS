@@ -47,7 +47,7 @@ to your own modified versions of Mura CMS.
 <cfoutput>
 <div id="contentSearch">
 <h3>#application.rbFactory.getKeyValue(session.rb,'collections.contentsearch')#</h3>
-	<input id="parentSearch" name="parentSearch" value="#HTMLEditFormat(attributes.keywords)#" type="text" class="text" maxlength="50"/><a class="submit" href="javascript:;" onclick="loadSiteFilters('#attributes.siteid#',document.getElementById('parentSearch').value,0);return false;"><span>#application.rbFactory.getKeyValue(session.rb,'collections.search')#</span></a>
+	<input id="parentSearch" name="parentSearch" value="#HTMLEditFormat(attributes.keywords)#" type="text" class="text" maxlength="50"/><input type="button" class="submit" onclick="loadSiteFilters('#attributes.siteid#',document.getElementById('parentSearch').value,0);" value="#application.rbFactory.getKeyValue(session.rb,'collections.search')#" />
 	</div>
 </cfoutput>
 <cfif not attributes.isNew>

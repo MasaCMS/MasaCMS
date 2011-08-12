@@ -60,7 +60,7 @@ to your own modified versions of Mura CMS.
 <dd><input type=text name="company" class="text" /></dd>
 <dt><input type="radio" name="action" id="a" value="add" checked> <label id="a">#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.subscribe')#</label> <input type="radio" id="d" name="action" value="delete"> <label for="d">#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.unsubscribe')#</label></dt>
 </dl>
-<a class="submit" href="javascript:;" onclick="return submitForm(document.forms.form1);"><span>#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.submit')#</span></a>
+<input type="button" class="submit" onclick="submitForm(document.forms.form1);" value="#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.submit')#" />
 <input type=hidden name="mlid" value="#attributes.mlid#">
 <input type=hidden name="siteid" value="#HTMLEditFormat(attributes.siteid)#">
 <input type=hidden name="isVerified" value="1">

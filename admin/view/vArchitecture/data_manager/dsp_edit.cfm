@@ -59,7 +59,7 @@ to your own modified versions of Mura CMS.
 	</cfif>
 </cfloop>
 </dl>
-<a class="submit" href="javascript:;" onclick="return submitForm(document.forms.form1,'update');"><span>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.update')#</span></a><a class="submit" href="javascript:;" onclick="return submitForm(document.forms.form1,'delete','This');"><span>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.deleteresponse')#</span></a>
+<input type="button" class="submit" onclick="submitForm(document.forms.form1,'update');" value="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.update')#" /><input type="button" class="submit" onclick="submitForm(document.forms.form1,'delete','This');" value="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.deleteresponse')#" />
 <input type="hidden" name="formid" value="#HTMLEditFormat(attributes.contentid)#">
 <input type="hidden" name="contentid" value="#HTMLEditFormat(attributes.contentid)#">
 <input type="hidden" name="siteid" value="#HTMLEditFormat(attributes.siteid)#">

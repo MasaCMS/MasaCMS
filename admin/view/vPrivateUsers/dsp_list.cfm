@@ -45,7 +45,7 @@ to your own modified versions of Mura CMS.
 
 		  <form novalidate="novalidate" action="index.cfm?fuseaction=cPrivateUsers.search&siteid=#URLEncodedFormat(attributes.siteid)#" method="post" name="form1" id="siteSearch">
 		 <h3>#application.rbFactory.getKeyValue(session.rb,'user.searchforadminuser')#</h3>
- 		 <input id="search" name="search" type="text" class="text"> <a class="submit" href="javascript:;" onclick="return submitForm(document.forms.form1);"><span>Search</span></a><!--- <a class="submit" href="javascript:;" onclick="window.location='index.cfm?fuseaction=cPrivateUsers.advancedSearchForm&siteid=#URLEncodedFormat(attributes.siteid)#'"><span>Advanced</span></a> --->
+ 		 <input id="search" name="search" type="text" class="text"> <input type="button" class="submit" onclick="submitForm(document.forms.form1);" value="Search" /><!--- <input type="button" class="submit" onclick="window.location='index.cfm?fuseaction=cPrivateUsers.advancedSearchForm&siteid=#URLEncodedFormat(attributes.siteid)#'"><span>Advanced</span></a> --->
 		  </form>
 		  <h3>#application.rbFactory.getKeyValue(session.rb,'user.adminusergroups')#</h3>
 
