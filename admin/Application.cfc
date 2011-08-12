@@ -249,6 +249,8 @@
 		
 		<cfset application.rbFactory.setAdminLocale()>
 		
+		<cfset application.pluginManager.announceEvent("onAdminRequestStart",request.event)/>
+		
 	</cffunction>
 	
 	<cffunction name="setupSession" output="false">
@@ -317,6 +319,7 @@
 	<cffunction name="onRequestEnd"  returnType="void"  output="true">
 	   <cfargument name="targetPage" required="true">
 	  	<cfset var local = structNew() />
+		<cfset application.pluginManager.announceEvent("onAdminRequestEnd",request.event)/>
 		<cfinclude template="../config/appcfc/onRequestEnd_include.cfm">
 	</cffunction>
 	
