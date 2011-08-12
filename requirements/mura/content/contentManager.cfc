@@ -188,6 +188,7 @@ to your own modified versions of Mura CMS.
 	<cfargument name="filename">
 	<cfargument name="remoteID" required="true" default="">
 	<cfargument name="title" required="true" default="">
+	<cfargument name="urltitle" required="true" default="">
 	<cfargument name="siteID" required="true" default=""> 
 	<cfargument name="use404" required="true" default="false">
 	<cfargument name="contentBean" default="">
@@ -204,6 +205,8 @@ to your own modified versions of Mura CMS.
 		<cfreturn getActiveByRemoteID(arguments.remoteid, arguments.siteid,arguments.use404,arguments.contentBean)>
 	<cfelseif len(arguments.title)>
 		<cfreturn getActiveByTitle(arguments.title, arguments.siteid,arguments.use404,arguments.contentBean)>
+	<cfelseif len(arguments.urltitle)>
+		<cfreturn getActiveByURLTitle(arguments.urltitle, arguments.siteid,arguments.use404,arguments.contentBean)>
 	<cfelse>	
 		<cfreturn getActiveContent(arguments.contentid, arguments.siteid, arguments.use404,arguments.contentBean)>
 	</cfif>
@@ -365,6 +368,40 @@ to your own modified versions of Mura CMS.
 			</cfif>
 		<cfelse>
 			<cfreturn variables.contentDAO.readActiveByTitle(arguments.title,arguments.siteid,arguments.contentBean)/>
+		</cfif>
+		
+	</cffunction>
+	
+	<cffunction name="getActiveByURLTitle" access="public" returntype="any" output="false">
+		<cfargument name="URLTitle" type="string" required="yes" />
+		<cfargument name="siteID" type="string" required="yes" />
+		<cfargument name="contentBean" type="any" default=""/>
+		
+		<cfset var key="urltitle" & arguments.siteid & arguments.title />
+		<cfset var site=variables.settingsManager.getSite(arguments.siteid)/>
+		<cfset var cacheFactory=site.getCacheFactory(name="data")/>
+		<cfset var bean=""/>
+		
+		<cfif site.getCache()>
+			<!--- check to see if it is cached. if not then pass in the context --->
+			<!--- otherwise grab it from the cache --->
+			<cfif NOT cacheFactory.has( key )>
+				<cfset bean=variables.contentDAO.readActiveByURLTitle(arguments.URLTitle,arguments.siteid,arguments.contentBean)  />
+				<cfif not isArray(bean) and not bean.getIsNew()>
+					<cfset cacheFactory.get( key, structCopy(bean.getAllValues()) ) />
+				</cfif>
+				<cfreturn bean/>
+			<cfelse>
+				<cfif isObject(arguments.contentBean)>
+					<cfset bean=arguments.contentBean/>
+				<cfelse>
+					<cfset bean=variables.contentDAO.getBean()/>
+				</cfif>
+				<cfset bean.setAllValues( structCopy(cacheFactory.get( key )) )>
+				<cfreturn bean />
+			</cfif>
+		<cfelse>
+			<cfreturn variables.contentDAO.readActiveByURLTitle(arguments.URLTitle,arguments.siteid,arguments.contentBean)/>
 		</cfif>
 		
 	</cffunction>
@@ -1775,6 +1812,7 @@ to your own modified versions of Mura CMS.
 			<cfset cache.purge("filename" & arguments.contentBean.getSiteID() & arguments.contentBean.getFilename())>	
 		</cfif>
 		<cfset cache.purge("title" & arguments.contentBean.getSiteID() & arguments.contentBean.getTitle())>
+		<cfset cache.purge("urltitle" & arguments.contentBean.getSiteID() & arguments.contentBean.getURLTitle())>
 		
 		<cfset history=arguments.contentBean.getVersionHistoryIterator()>
 		<cfloop condition="history.hasNext()">
