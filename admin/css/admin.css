@@ -2782,8 +2782,13 @@ table.cfdebug td a {
 	width: 50px;
 }
 
-.mura-grid .display, .mura-grid .feature {
+.mura-grid .display, .mura-grid .feature, .mura-grid .template {
 	width: 60px;
+}
+
+.mura-grid .template img {
+	height: 20px;
+	width: auto;
 }
 
 .mura-grid #mura-nodes .scheduled a,
