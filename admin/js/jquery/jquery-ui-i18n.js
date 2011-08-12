@@ -360,7 +360,7 @@ jQuery(function($) {
 		yearSuffix: ''};
 	$.datepicker.setDefaults($.datepicker.regional['fa']);
 });/* Finnish initialisation for the jQuery UI date picker plugin. */
-/* Written by Harri Kilpi� (harrikilpio@gmail.com). */
+/* Written by Harri Kilpi (harrikilpio@gmail.com). */
 jQuery(function($){
     $.datepicker.regional['fi'] = {
 		closeText: 'Sulje',

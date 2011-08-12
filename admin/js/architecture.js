@@ -1025,3 +1025,11 @@ function setAsSorted(){
         jQuery('#submitSort').addClass('pulse');
 }
 
+
+var quickEditTmpl = '<div class="mura-quickEdit">';
+	quickEditTmpl += '<img src="images/ajax-loader-big.gif" />';
+	quickEditTmpl += '</div>';      		
+	     
+
+
+

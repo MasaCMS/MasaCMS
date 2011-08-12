@@ -58,7 +58,7 @@ CKEDITOR.lang['sr-latn'] =
 	pagebreak		: 'Insert Page Break for Printing', // MISSING
 	pagebreakAlt		: 'Page Break', // MISSING
 	unlink			: 'Ukloni link',
-	undo			: 'Poni�ti akciju',
+	undo			: 'Poniti akciju',
 	redo			: 'Ponovi akciju',
 
 	// Common messages and labels.
