@@ -583,12 +583,17 @@ to your own modified versions of Mura CMS.
 	</cfif>
 
 	<cfif application.CFVersion gt 7>
-		<cfif structkeyexists(cgi, "http_if_modified_since")>
-			<cfif parsedatetime(cgi.http_if_modified_since) gt arguments.lastModified>
-			 	 <cfheader statuscode=304 statustext="Not modified"/>
-			 	 <cfabort/>
-		 	</cfif>
-		</cfif>
+		<cftry>
+			<cfif structkeyexists(cgi, "http_if_modified_since")>
+				<cfif parsedatetime(cgi.http_if_modified_since) gt arguments.lastModified>
+				 	 <cfheader statuscode=304 statustext="Not modified"/>
+				 	 <cfabort/>
+			 	</cfif>
+			</cfif>
+			
+			<cfheader name="Last-Modified" value="#gethttptimestring(arguments.lastModified)#"/>
+		<cfcatch></cfcatch>
+		</cftry>
 
 		<cfheader name="Last-Modified" value="#gethttptimestring(arguments.lastModified)#"/>
 		

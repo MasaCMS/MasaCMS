@@ -191,8 +191,8 @@ to your own modified versions of Mura CMS.
 	<cfset bydate=iif(request.contentBean.getdisplay() EQ 2 or (attributes.ptype eq 'Calendar' and attributes.contentid eq ''),de('true'),de('false'))>
 	<dt><a href="##" class="tooltip">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.display')#<span>#application.rbFactory.getKeyValue(session.rb,"tooltip.displayContent")#</span></a></dt>
 	<dd><select name="display" class="dropdown" onchange="javascript: this.selectedIndex==2?toggleDisplay2('editDates',true):toggleDisplay2('editDates',false);">
-					<option value="1"  <cfif  request.contentBean.getdisplay() EQ 1> selected</CFIF>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.yes')#</option>
-					<option value="0"  <cfif  request.contentBean.getdisplay() EQ 0> selected</CFIF>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.no')#</option>
+					<option value="1"  <cfif  request.contentBean.getdisplay() EQ 1> selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.yes')#</option>
+					<option value="0"  <cfif  request.contentBean.getdisplay() EQ 0> selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.no')#</option>
 					<option value="2"  <cfif  bydate> selected</CFIF>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.perstopstart')#</option>
 					</select>
 	<dd>

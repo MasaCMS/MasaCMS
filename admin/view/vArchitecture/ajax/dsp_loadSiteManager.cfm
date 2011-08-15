@@ -1,3 +1,45 @@
+<!--- This file is part of Mura CMS.
+
+Mura CMS is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, Version 2 of the License.
+
+Mura CMS is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with Mura CMS. If not, see <http://www.gnu.org/licenses/>.
+
+Linking Mura CMS statically or dynamically with other modules constitutes
+the preparation of a derivative work based on Mura CMS. Thus, the terms and 	
+conditions of the GNU General Public License version 2 (GPL) cover the entire combined work.
+
+However, as a special exception, the copyright holders of Mura CMS grant you permission
+to combine Mura CMS with programs or libraries that are released under the GNU Lesser General Public License version 2.1.
+
+In addition, as a special exception, the copyright holders of Mura CMS grant you permission
+to combine Mura CMS with independent software modules that communicate with Mura CMS solely
+through modules packaged as Mura CMS plugins and deployed through the Mura CMS plugin installation API,
+provided that these modules (a) may only modify the /trunk/www/plugins/ directory through the Mura CMS
+plugin installation API, (b) must not alter any default objects in the Mura CMS database
+and (c) must not alter any files in the following directories except in cases where the code contains
+a separately distributed license.
+
+/trunk/www/admin/
+/trunk/www/tasks/
+/trunk/www/config/
+/trunk/www/requirements/mura/
+
+You may copy and distribute such a combined work under the terms of GPL for Mura CMS, provided that you include
+the source code of that other code when and as the GNU GPL requires distribution of source code.
+
+For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception
+for your modified version; it is your choice whether to do so, or to make such modified version available under
+the GNU General Public License version 2 without this exception. You may, if you choose, apply this exception
+to your own modified versions of Mura CMS.
+--->
 <cfsilent>
 <cfset data=structNew()>
 
@@ -106,7 +148,7 @@
 		--->
         <dd class="objects"><a href="##" class="tooltip">#application.rbFactory.getKeyValue(session.rb,"sitemanager.objects")#<span>#application.rbFactory.getKeyValue(session.rb,"tooltip.managerObjects")#</span></a></dd>
         <dd class="display"><a href="##" class="tooltip">#application.rbFactory.getKeyValue(session.rb,"sitemanager.display")#<span>#application.rbFactory.getKeyValue(session.rb,"tooltip.managerDisplay")#</span></a></dd>
-        <dd class="feature"><a href="##" class="tooltip">#application.rbFactory.getKeyValue(session.rb,"sitemanager.feature")#<span>#application.rbFactory.getKeyValue(session.rb,"tooltip.managerFeature")#</span></a></dd>
+        <dd class="template"><a href="##" class="tooltip">#application.rbFactory.getKeyValue(session.rb,"sitemanager.template")#<span>#application.rbFactory.getKeyValue(session.rb,"tooltip.managerTemplate")#</span></a></dd>
       </cfif>
       <dd class="nav"><a href="##" class="tooltip">#application.rbFactory.getKeyValue(session.rb,"sitemanager.nav")#<span>#application.rbFactory.getKeyValue(session.rb,"tooltip.managerNav")#</span></a></dd>
       <dd class="updated"><a href="##" class="tooltip">#application.rbFactory.getKeyValue(session.rb,"sitemanager.updated")#<span>#application.rbFactory.getKeyValue(session.rb,"tooltip.managerUpdated")#</span></a></dd>
@@ -115,13 +157,13 @@
     <ul id="mura-nodes">
     <!-- Begin List of Nodes -->
     <li>
-      <dl id="top-node">
+      <dl id="top-node" data-contentid="#request.rstop.contentid#">
       <dt>
        
        <a  class="add" href="javascript:;" onmouseover="showMenu('newContentMenu',#newcontent#,this,'#request.rstop.contentid#','#attributes.topid#','#request.rstop.parentid#','#attributes.siteid#','#request.rstop.type#');">&nbsp;</a>
    
        <cfif request.rstop.haskids>
-	    	<span class="hasChildren-open" onclick="return loadSiteManager('#JSStringFormat(attributes.siteID)#','#JSStringFormat(attributes.topid)#','#JSStringFormat(attributes.moduleid)#','#JSStringFormat(attributes.sortby)#','#JSStringFormat(attributes.sortdirection)#','#JSStringFormat(request.rstop.type)#',1);"></span>
+	    	<span class="hasChildren-open" onclick="loadSiteManager('#JSStringFormat(attributes.siteID)#','#JSStringFormat(attributes.topid)#','#JSStringFormat(attributes.moduleid)#','#JSStringFormat(attributes.sortby)#','#JSStringFormat(attributes.sortdirection)#','#JSStringFormat(request.rstop.type)#',1);"></span>
 		</cfif>
         <cfif perm neq 'none'>
           <a class="#icon# title draftprompt" data-siteid="#rc.siteid#" data-contentid="#request.rstop.contentid#" data-contenthistid="#request.rstop.contenthistid#" title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.edit")#" href="index.cfm?fuseaction=cArch.edit&contenthistid=#request.rstop.ContentHistID#&siteid=#URLEncodedFormat(attributes.siteid)#&contentid=#attributes.topid#&topid=#URLEncodedFormat(attributes.topid)#&type=#request.rstop.type#&parentid=#request.rstop.parentid#&moduleid=#attributes.moduleid#">
@@ -139,8 +181,12 @@
           <dd class="order">&nbsp;</dd>
         </cfif>
 		--->
-        <dd class="objects">#application.rbFactory.getKeyValue(session.rb,"sitemanager.#lcase(request.rstop.inheritObjects)#")#</dd>
-        <dd class="display<cfif request.rstop.Display eq 2 and request.rstop.approved>scheduled</cfif>">
+        <dd class="objects">
+        	<cfif perm eq 'editor'><a class="mura-quickEditItem" data-attribute="inheritObjects"></cfif>
+        	#application.rbFactory.getKeyValue(session.rb,"sitemanager.#lcase(request.rstop.inheritObjects)#")#</dd>
+       		<cfif perm eq 'editor'></a></cfif>
+	    <dd class="display<cfif request.rstop.Display eq 2 and request.rstop.approved>scheduled</cfif>">
+			<cfif perm eq 'editor'><a class="mura-quickEditItem" data-attribute="display"></cfif>
 			<cfif request.rstop.Display eq 1 and request.rstop.approved >
             	#application.rbFactory.getKeyValue(session.rb,"sitemanager.true")#
             <cfelseif request.rstop.Display eq 2 and request.rstop.approved>
@@ -148,18 +194,23 @@
             <cfelse>
            		 #application.rbFactory.getKeyValue(session.rb,"sitemanager.false")#
          	</cfif>
+			<cfif perm eq 'editor'></a></cfif>
 		</dd>
-        <dd class="feature<cfif request.rstop.isfeature eq 2> scheduled</cfif>">
-			<cfif request.rstop.isfeature eq 1>
-            	#application.rbFactory.getKeyValue(session.rb,"sitemanager.true")#
-            <cfelseif request.rstop.isfeature eq 2>
-           	 	<a href="##" class="tooltip"><span>#LSDateFormat(request.rstop.featurestart,"short")#&nbsp;-&nbsp;#LSDateFormat(request.rstop.featurestop,"short")#</span></a>
-            <cfelse>
-           		#application.rbFactory.getKeyValue(session.rb,"sitemanager.false")#
+       <dd class="template">
+	  		<cfif perm eq 'editor'><a class="mura-quickEditItem" data-attribute="template"></cfif>
+			<cfif len(request.rstop.template)>
+				 <img src="images/icons/template_24x24.png" /> 
+			<cfelse>
+           		#application.rbFactory.getKeyValue(session.rb,"sitemanager.inherit")#
          	 </cfif>
+			<cfif perm eq 'editor'></a></cfif>
 		</dd>
      </cfif>
-      <dd class="nav">#application.rbFactory.getKeyValue(session.rb,"sitemanager.#yesnoformat(request.rstop.isnav)#")#</dd>
+      <dd class="nav">
+	  	<cfif perm eq 'editor'><a class="mura-quickEditItem" data-attribute="isnav"></cfif>
+		#application.rbFactory.getKeyValue(session.rb,"sitemanager.#yesnoformat(request.rstop.isnav)#")#
+	  	<cfif perm eq 'editor'></a></cfif>
+	  </dd>
       <dd class="updated">#LSDateFormat(request.rstop.lastupdate,session.dateKeyFormat)# #LSTimeFormat(request.rstop.lastupdate,"medium")#</dd>
       <dd class="admin">
       	<ul>
