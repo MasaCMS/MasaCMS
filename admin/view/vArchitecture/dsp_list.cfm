@@ -110,6 +110,7 @@ to your own modified versions of Mura CMS.
 
 <cfoutput>
 <script>	
+siteID='#session.siteID#';
 <cfif session.copySiteID eq attributes.siteID>
 copyContentID = '#session.copyContentID#';
 copySiteID = '#session.copySiteID#';

@@ -1047,9 +1047,12 @@ function initQuickEdits(){
 			function(event){
 				event.preventDefault();
 				if (!activeQuickEdit) {
+					
+					var attribute=jQuery(this).attr("data-attribute");
 					var node = jQuery(this).parents("dl:first");
 					var url = 'index.cfm';
-					var pars = 'fuseaction=cArch.loadQuickEdit&siteid=' + siteid + '&contentID=' + node.attr("data-contentid") + '&attribute=' + jQuery(this).parent().attr("data-attribute") + '&cacheid=' + Math.random();
+					var pars = 'fuseaction=cArch.loadQuickEdit&siteid=' + siteid + '&contentID=' + node.attr("data-contentid") + '&attribute=' + attribute + '&cacheid=' + Math.random();
+					
 					jQuery("#mura-quickEditor").remove();
 					jQuery(this).parent().prepend(quickEditTmpl);
 					jQuery.get(url + "?" + pars, function(data){
@@ -1062,15 +1065,32 @@ function initQuickEdits(){
 
 function saveQuickEdit(){
 	activeQuickEdit=true;
-	var attribute=jQuery("#mura-quickEditor").parent().attr("data-attribute");
+	var attribute=jQuery("#mura-quickEditor").parent().find(".mura-quickEditItem:first").attr("data-attribute");
 	var node=jQuery("#mura-quickEditor").parents("dl:first");
 	var url = 'index.cfm';
-	var pars = {
+	
+	var basePars = {
 		'fuseaction':'cArch.saveQuickEdit',
-		'siteID' : siteid,
+		'siteID' : siteID,
 		'contentID':  node.attr("data-contentid"),
 		'attribute': attribute	
 	}
+	
+	if (attribute == 'isnav') {
+		var attributeParams = {
+			'isnav': jQuery("#mura-quickEdit-isnav").val()
+			}
+	} else if (attribute == 'inheritObjects') {
+		var attributeParams = {
+		'inheritObjects': jQuery("#mura-quickEdit-inheritobjects").val()
+		}
+	} else if (attribute == 'template') {
+		var attributeParams = {
+		'template': jQuery("#mura-quickEdit-template").val()
+		}
+	}
+	
+	var pars=jQuery.extend({},basePars,attributeParams);
 
 	jQuery("#mura-quickEditor").html('<img src="images/ajax-loader-big.gif" />');
 	
