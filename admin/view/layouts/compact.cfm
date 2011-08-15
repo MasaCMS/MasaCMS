@@ -70,6 +70,7 @@ var htmlEditorType='#application.configBean.getValue("htmlEditorType")#';
 var context='#application.configBean.getContext()#';
 var themepath='#application.settingsManager.getSite(attributes.siteID).getThemeAssetPath()#';
 var rb='#lcase(session.rb)#';
+var siteid='#session.siteid#';
 </script>
 #session.dateKey#
 <script type="text/javascript">

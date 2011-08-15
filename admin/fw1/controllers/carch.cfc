@@ -124,6 +124,23 @@
 	
 </cffunction>
 
+<cffunction name="saveQuickEdit" output="false">
+	<cfargument name="rc">
+	
+	<cfset var local=structNew()>
+	
+	<cfset local.contentBean=getBean("content").loadBy(contentID=arguments.rc.contentID, siteID= arguments.rc.siteid)> 
+	<cfset local.crumbdata=variables.contentManager.getCrumbList(arguments.rc.contentID,arguments.rc.siteid)/>
+	<cfset local.perm=variables.permUtility.getNodePerm(local.crumbData) />  
+	
+	<cfif local.local.perm eq "Editor" and not local.contentBean.hasDrafts()>
+		<cfset local.contentBean.set(arguments.rc)>
+		<cfset local.contentBean.save()>
+	</cfif>
+	<cfabort>
+	
+</cffunction>
+
 <cffunction name="edit" output="false">
 	<cfargument name="rc">
 
