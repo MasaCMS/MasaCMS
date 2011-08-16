@@ -842,9 +842,9 @@ label {
 .mura-quickEdit {
 	background-color: #272727;
 	position: absolute;
-	bottom: 58px;
+	bottom: 36px;
 	left: 50%;
-	margin-left: -90px;
+	margin-left: -92px;
 	width: 160px;
 	min-height: 70px;
 	z-index: 10;
@@ -879,11 +879,40 @@ label {
 	text-align: left;
 	margin-bottom: .25em;
 	font-weight: normal;
+	padding-right: 20px;
+}
+
+.mura-quickEdit .cancel {
+	position: absolute;
+	top: 4px;
+	right: 4px;
+	width: 14px;
+	height: 14px;
+	display: block;
+	text-indent: -9999px;
+	background: url('../images/btn_close_quick-edit.png') no-repeat right top;
+	cursor: pointer;
 }
 
 .mura-quickEdit img {
 	padding: 20px;
 }
+
+.mura-quickEditItem {
+	color: #000;
+	display: inline-block;
+	width: 100%;
+	cursor: pointer;
+}
+
+/*.mura-quickEditItem:hover {
+	background: #666;
+	cursor: pointer;
+	text-decoration: none !important;
+	border: 0;
+	color: #fff !;
+}*/
+
 
 .hasDraft .mura-quickEdit {
 	background: #ccc;
@@ -912,10 +941,8 @@ label {
 	font-size: 11px !important;
 }
 
-.hasDraft .mura-quickEdit a {
-	color: #000;
-	font-weight: bold;
-	border-bottom: 1px dotted #999;
+.hasDraft .mura-quickEdit a.mura-quickEditItem {
+	border-bottom: 0;
 }
 
 /*.mura-quickEdit input[type=submit], .mura-quickEdit input[type=text], .mura-quickEdit select {
@@ -2011,6 +2038,11 @@ h5 {
 	margin: 0 4px 3px 0;
 	width: 125px;
 	display: inline;
+}
+
+#contentSecondary dd input.submit {
+	margin: 0 4px 3px 0;
+	width: auto;
 }
 
 #contentSecondary dd a.submit {
