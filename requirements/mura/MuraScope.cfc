@@ -217,18 +217,9 @@
 	
 		<cfif structKeyExists(arguments,"property")>
 			<cfif structKeyExists(arguments,"propertyValue")>
-				<cfif structKeyExists(site,"set#arguments.property#")>
-					<cfinvoke component="#site#" method="set#arguments.property#">
-						<cfinvokeargument name="#arguments.property#" value="#arguments.propertyValue#">
-					</cfinvoke>
-				<cfelse>
-					<cfthrow message="'#arguments.property#' is not a valid site property.">
-				</cfif>
+				<cfset site.setValue(arguments.property,arguments.propertyValue)>
 			</cfif>
-			<cfif structKeyExists(site,"get#arguments.property#")>
-				<cfinvoke component="#site#" method="get#arguments.property#" returnvariable="theValue">
-			</cfif>
-			<cfreturn theValue>
+			<cfreturn site.getValue(arguments.property)>
 		<cfelse>
 			<cfreturn site>
 		</cfif>

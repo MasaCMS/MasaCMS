@@ -40,113 +40,106 @@ for your modified version; it is your choice whether to do so, or to make such m
 the GNU General Public License version 2 without this exception. You may, if you choose, apply this exception
 to your own modified versions of Mura CMS.
 --->
-<cfcomponent extends="mura.cfobject" output="false">
-
-<cfset variables.instance=structNew() />
-<cfset variables.instance.SiteID=""/>
-<cfset variables.instance.Site=""/>
-<cfset variables.instance.TagLine=""/>
-<cfset variables.instance.pageLimit=1000/>
-<cfset variables.instance.Locking="None"/>
-<cfset variables.instance.Domain=""/>
-<cfset variables.instance.DomainAlias="">
-<cfset variables.instance.Contact=""/>
-<cfset variables.instance.MailServerIP=""/>
-<cfset variables.instance.MailServerSMTPPort="25"/>
-<cfset variables.instance.MailServerPOPPort="110"/>
-<cfset variables.instance.MailServerTLS="false"/>
-<cfset variables.instance.MailServerSSL="false" />
-<cfset variables.instance.MailServerUsername=""/>
-<cfset variables.instance.MailServerUsernameEmail=""/>
-<cfset variables.instance.MailServerPassword=""/>
-<cfset variables.instance.useDefaultSMTPServer=1/>
-<cfset variables.instance.EmailBroadcaster=0/>
-<cfset variables.instance.EmailBroadcasterLimit=0/>
-<cfset variables.instance.Extranet=0/>
-<cfset variables.instance.ExtranetSSL=0/>
-<cfset variables.instance.cache=0/>
-<cfset variables.instance.cacheFactories=structNew()/>
-<cfset variables.instance.cacheCapacity=0/>
-<cfset variables.instance.cacheFreeMemoryThreshold=60/>
-<cfset variables.instance.ViewDepth=1/>
-<cfset variables.instance.nextN=20/>
-<cfset variables.instance.DataCollection=0/>
-<cfset variables.instance.ColumnCount=3/>
-<cfset variables.instance.ColumnNames="Left Column^Main Content^Right Column"/>
-<cfset variables.instance.ExtranetPublicReg=0/>
-<cfset variables.instance.PrimaryColumn=2/>
-<cfset variables.instance.PublicSubmission=0/>
-<cfset variables.instance.adManager=0/>
-<cfset variables.instance.ContactName=""/>
-<cfset variables.instance.ContactAddress=""/>
-<cfset variables.instance.ContactCity=""/>
-<cfset variables.instance.ContactState=""/>
-<cfset variables.instance.ContactZip=""/>
-<cfset variables.instance.ContactEmail=""/>
-<cfset variables.instance.ContactPhone=""/>
-<cfset variables.instance.PublicUserPoolID=""/>
-<cfset variables.instance.PrivateUserPoolID=""/>
-<cfset variables.instance.AdvertiserUserPoolID=""/>
-<cfset variables.instance.DisplayPoolID=""/>
-<cfset variables.instance.hasfeedManager=0/>
-<cfset variables.instance.galleryMainScaleBy="y"/>
-<cfset variables.instance.galleryMainScale=600/>
-<cfset variables.instance.gallerySmallScaleBy="s"/>
-<cfset variables.instance.gallerySmallScale=80/>
-<cfset variables.instance.galleryMediumScaleBy="s"/>
-<cfset variables.instance.galleryMediumScale=180/>
-<cfset variables.instance.sendLoginScript=""/>
-<cfset variables.instance.mailingListConfirmScript=""/>
-<cfset variables.instance.publicSubmissionApprovalScript=""/>
-<cfset variables.instance.reminderScript=""/>
-<cfset variables.instance.ExtranetPublicRegNotify=""/>
-<cfset variables.instance.exportLocation=""/>
-<cfset variables.instance.loginURL=""/>
-<cfset variables.instance.editProfileURL=""/>
-<cfset variables.instance.commentApprovalDefault=1/>  
-<cfset variables.instance.deploy=1/>  
-<cfset variables.instance.lastDeployment=""/>
-<cfset variables.instance.accountActivationScript=""/>
-<cfset variables.instance.googleAPIKey=""/>
-<cfset variables.instance.siteLocale=""/>
-<cfset variables.instance.rbFactory=""/>    
-<cfset variables.instance.javaLocale=""/>
-<cfset variables.instance.jsDateKey=""/>  
-<cfset variables.instance.theme=""/> 
-<cfset variables.instance.contentRenderer=""/>
-<cfset variables.instance.themeRenderer="">
-<cfset variables.instance.hasChangesets=0>
+<cfcomponent extends="mura.bean.bean" output="false">
 
 <cffunction name="init" returntype="any" output="false" access="public">
 <cfargument name="configBean" type="any" required="yes"/>
 <cfargument name="clusterManager" type="any" required="yes"/>
+	<cfset super.init(argumentCollection=arguments)>
+	
+	<cfset variables.instance.SiteID=""/>
+	<cfset variables.instance.Site=""/>
+	<cfset variables.instance.TagLine=""/>
+	<cfset variables.instance.pageLimit=1000/>
+	<cfset variables.instance.Locking="None"/>
+	<cfset variables.instance.Domain=""/>
+	<cfset variables.instance.DomainAlias="">
+	<cfset variables.instance.Contact=""/>
+	<cfset variables.instance.MailServerIP=""/>
+	<cfset variables.instance.MailServerSMTPPort="25"/>
+	<cfset variables.instance.MailServerPOPPort="110"/>
+	<cfset variables.instance.MailServerTLS="false"/>
+	<cfset variables.instance.MailServerSSL="false" />
+	<cfset variables.instance.MailServerUsername=""/>
+	<cfset variables.instance.MailServerUsernameEmail=""/>
+	<cfset variables.instance.MailServerPassword=""/>
+	<cfset variables.instance.useDefaultSMTPServer=1/>
+	<cfset variables.instance.EmailBroadcaster=0/>
+	<cfset variables.instance.EmailBroadcasterLimit=0/>
+	<cfset variables.instance.Extranet=0/>
+	<cfset variables.instance.ExtranetSSL=0/>
+	<cfset variables.instance.cache=0/>
+	<cfset variables.instance.cacheFactories=structNew()/>
+	<cfset variables.instance.cacheCapacity=0/>
+	<cfset variables.instance.cacheFreeMemoryThreshold=60/>
+	<cfset variables.instance.ViewDepth=1/>
+	<cfset variables.instance.nextN=20/>
+	<cfset variables.instance.DataCollection=0/>
+	<cfset variables.instance.ColumnCount=3/>
+	<cfset variables.instance.ColumnNames="Left Column^Main Content^Right Column"/>
+	<cfset variables.instance.ExtranetPublicReg=0/>
+	<cfset variables.instance.PrimaryColumn=2/>
+	<cfset variables.instance.PublicSubmission=0/>
+	<cfset variables.instance.adManager=0/>
+	<cfset variables.instance.ContactName=""/>
+	<cfset variables.instance.ContactAddress=""/>
+	<cfset variables.instance.ContactCity=""/>
+	<cfset variables.instance.ContactState=""/>
+	<cfset variables.instance.ContactZip=""/>
+	<cfset variables.instance.ContactEmail=""/>
+	<cfset variables.instance.ContactPhone=""/>
+	<cfset variables.instance.PublicUserPoolID=""/>
+	<cfset variables.instance.PrivateUserPoolID=""/>
+	<cfset variables.instance.AdvertiserUserPoolID=""/>
+	<cfset variables.instance.DisplayPoolID=""/>
+	<cfset variables.instance.hasfeedManager=0/>
+	<cfset variables.instance.galleryMainScaleBy="y"/>
+	<cfset variables.instance.galleryMainScale=600/>
+	<cfset variables.instance.gallerySmallScaleBy="s"/>
+	<cfset variables.instance.gallerySmallScale=80/>
+	<cfset variables.instance.galleryMediumScaleBy="s"/>
+	<cfset variables.instance.galleryMediumScale=180/>
+	<cfset variables.instance.sendLoginScript=""/>
+	<cfset variables.instance.mailingListConfirmScript=""/>
+	<cfset variables.instance.publicSubmissionApprovalScript=""/>
+	<cfset variables.instance.reminderScript=""/>
+	<cfset variables.instance.ExtranetPublicRegNotify=""/>
+	<cfset variables.instance.exportLocation=""/>
+	<cfset variables.instance.loginURL=""/>
+	<cfset variables.instance.editProfileURL=""/>
+	<cfset variables.instance.commentApprovalDefault=1/>  
+	<cfset variables.instance.deploy=1/>  
+	<cfset variables.instance.lastDeployment=""/>
+	<cfset variables.instance.accountActivationScript=""/>
+	<cfset variables.instance.googleAPIKey=""/>
+	<cfset variables.instance.siteLocale=""/>
+	<cfset variables.instance.rbFactory=""/>    
+	<cfset variables.instance.javaLocale=""/>
+	<cfset variables.instance.jsDateKey=""/>  
+	<cfset variables.instance.theme=""/> 
+	<cfset variables.instance.contentRenderer=""/>
+	<cfset variables.instance.themeRenderer="">
+	<cfset variables.instance.hasChangesets=0>
 
 	<cfset variables.configBean=arguments.configBean />
 	<cfset variables.clusterManager=arguments.clusterManager />
+	
 	<cfreturn this />
-</cffunction>
-
-<cffunction name="getErrors" returnType="struct" output="false" access="public">
-	<cfreturn variables.instance.errors />
-</cffunction>
-
-<cffunction name="getAllValues" access="public" returntype="struct" output="false">
-	<cfreturn variables.instance />
 </cffunction>
 
 <cffunction name="validate" access="public" output="false">
 	<cfset variables.instance.errors=structnew() />
 	
-	<cfif getSiteID() eq "">
+	<cfif variables.instance.siteID eq "">
 		<cfset variables.instance.errors.siteid="The 'SiteID' variable is required." />
 	</cfif>
 	
-	<cfif getSiteID() eq "admin" or getSiteID() eq "tasks">
+	<cfif variables.instance.siteID eq "admin" or variables.instance.siteID eq "tasks">
 		<cfset variables.instance.errors.siteid="The 'SiteID' variable is invalid." />
 	</cfif>
 	
 	<!---
-	<cfif not getBean('utility').isValidCFVariableName(getSiteID())>
+	<cfif not getBean('utility').isValidCFVariableName(variables.instance.siteID)>
 		<cfset variables.instance.errors.siteid="The 'SiteID' variable is invalid." />
 	</cfif>
 	--->
@@ -154,158 +147,40 @@ to your own modified versions of Mura CMS.
 </cffunction>
 
 <cffunction name="set" output="false" access="public">
-		<cfargument name="data" type="any" required="true">
-
-		<cfset var prop="" />
+	<cfargument name="data" type="any" required="true">
 		
-		<cfif isquery(arguments.data)>
+	<cfif isQuery(arguments.data) and arguments.data.recordcount>
+		<cfloop list="#arguments.data.columnlist#" index="prop">
+			<cfset setValue(prop,arguments.data[prop][1]) />
+		</cfloop>
+			
+	<cfelseif isStruct(arguments.data)>
+		<cfloop collection="#arguments.data#" item="prop">
+			<cfset setValue(prop,arguments.data[prop]) />
+		</cfloop>
+				
+	</cfif>
 		
-			<cfset setSiteID(arguments.data.SiteID) />
-			<cfset setSite(arguments.data.Site) />
-			<cfset setpageLimit(arguments.data.pageLimit) />
-			<cfset setLocking(arguments.data.Locking) />
-			<cfset setDomain(arguments.data.Domain) />
-			<cfset setDomainAlias(arguments.data.DomainAlias) />
-			<cfset setExportLocation(arguments.data.ExportLocation) /> 
-			<cfset setContact(arguments.data.Contact) />
-			<cfset setUseDefaultSMTPServer(arguments.data.useDefaultSMTPServer) />
-			<cfset setMailServerIP(arguments.data.MailServerIP) />
-			<cfset setMailServerUsername(arguments.data.MailServerUsername) />
-			<cfset setMailServerPassword(arguments.data.MailServerPassword) />
-			<cfset setEmailBroadcaster(arguments.data.EmailBroadcaster) />
-			<cfset setEmailBroadcasterLimit(arguments.data.EmailBroadcasterLimit) />
-			<cfset setExtranet(arguments.data.Extranet) />
-			<cfset setExtranetPublicReg(arguments.data.ExtranetPublicReg) />
-			<cfset setExtranetSSL(arguments.data.ExtranetSSL) />
-			<cfset setcache(arguments.data.cache) />
-			<cfset setCacheCapacity(arguments.data.cacheCapacity) />
-			<cfset setCacheFreeMemoryThreshold(arguments.data.cacheFreeMemoryThreshold) />
-			<cfset setViewDepth(arguments.data.ViewDepth) />
-			<cfset setnextN(arguments.data.nextN) />
-			<cfset setDataCollection(arguments.data.DataCollection) />
-			<cfset setColumnCount(arguments.data.ColumnCount) />
-			<cfset setColumnNames(arguments.data.ColumnNames) />
-			<cfset setPrimaryColumn(arguments.data.PrimaryColumn) />
-			<cfset setPublicSubmission(arguments.data.PublicSubmission) />
-			<cfset setadManager(arguments.data.adManager) />
-			<cfset setContactName(arguments.data.ContactName) />
-			<cfset setContactAddress(arguments.data.ContactAddress) />
-			<cfset setContactCity(arguments.data.ContactCity) />
-			<cfset setContactState(arguments.data.ContactState) />
-			<cfset setContactZip(arguments.data.ContactZip) />
-			<cfset setContactEmail(arguments.data.ContactEmail) />
-			<cfset setContactPhone(arguments.data.ContactPhone) />
-			<cfset setPublicUserPoolID(arguments.data.PublicUserPoolID) />
-			<cfset setPrivateUserPoolID(arguments.data.PrivateUserPoolID) />
-			<cfset setAdvertiserUserPoolID(arguments.data.AdvertiserUserPoolID) />
-			<cfset setDisplayPoolID(arguments.data.DisplayPoolID) />
-			<cfset setHasfeedManager(arguments.data.feedManager) />
-			<cfset setGalleryMainScaleBy(arguments.data.GalleryMainScaleBy) />
-			<cfset setGalleryMainScale(arguments.data.GalleryMainScale) />
-			<cfset setGallerySmallScaleBy(arguments.data.GallerySmallScaleBy) />
-			<cfset setGallerySmallScale(arguments.data.GallerySmallScale) />
-			<cfset setGalleryMediumScaleBy(arguments.data.GalleryMediumScaleBy) />
-			<cfset setGalleryMediumScale(arguments.data.GalleryMediumScale) />
-			<cfset setSendLoginScript(arguments.data.sendLoginScript) />
-			<cfset setMailingListConfirmScript(arguments.data.mailingListConfirmScript) />
-			<cfset setPublicSubmissionApprovalScript(arguments.data.publicSubmissionApprovalScript) />
-			<cfset setReminderScript(arguments.data.ReminderScript) />
-			<cfset setExtranetPublicRegNotify(arguments.data.ExtranetPublicRegNotify) />
-			<cfset setLoginURL(arguments.data.loginURL) />
-			<cfset setEditProfileURL(arguments.data.EditProfileURL) />
-			<cfset setCommentApprovalDefault(arguments.data.commentApprovalDefault) />
-			<cfset setDeploy(arguments.data.deploy) />
-			<cfset setLastDeployment(arguments.data.lastDeployment) />
-			<cfset setAccountActivationScript(arguments.data.accountActivationScript) />
-			<cfset setGoogleAPIKey(arguments.data.googleAPIKey) />
-			<cfset setSiteLocale(arguments.data.siteLocale) />
-			<cfset setMailServerSMTPPort(arguments.data.mailserverSMTPPort) />
-			<cfset setMailServerPOPPort(arguments.data.mailserverPOPPort) />
-			<cfset setMailServerTLS(arguments.data.mailserverTLS) />
-			<cfset setMailServerSSL(arguments.data.mailserverSSL) />
-			<cfset setTheme(arguments.data.theme) />
-			<cfset setTagline(arguments.data.tagline) />
-			<cfset setHasChangesets(arguments.data.hasChangesets) />
+	<cfif variables.instance.privateUserPoolID eq ''>
+		<cfset variables.instance.privateUserPoolID=variables.instance.siteID />
+	</cfif>
 			
-		<cfelseif isStruct(arguments.data)>
+	<cfif variables.instance.publicUserPoolID eq ''>
+		<cfset variables.instance.publicUserPoolID=variables.instance.siteID />
+	</cfif>
+			
+	<cfif variables.instance.advertiserUserPoolID eq ''>
+		<cfset variables.instance.advertiserUserPoolID=variables.instance.siteID />
+	</cfif>
+			
+	<cfif variables.instance.displayPoolID eq ''>
+		<cfset variables.instance.displayPoolID=variables.instance.siteID />
+	</cfif>
+	
+	<cfset validate() />
 		
-			<cfloop collection="#arguments.data#" item="prop">
-			<cfif isdefined("this.set#prop#")>
-				<cfset evaluate("set#prop#(arguments.data[prop])") />
-			</cfif>
-			</cfloop>
-			
-		</cfif>
-		
-			<cfif getPrivateUserPoolID() eq ''>
-			<cfset setPrivateUserPoolID(getSiteID()) />
-			</cfif>
-			
-			<cfif getPublicUserPoolID() eq ''>
-			<cfset setPublicUserPoolID(getSiteID()) />
-			</cfif>
-			
-			<cfif getAdvertiserUserPoolID() eq ''>
-			<cfset setAdvertiserUserPoolID(getSiteID()) />
-			</cfif>
-			
-			<cfif getDisplayPoolID() eq ''>
-			<cfset setDisplayPoolID(getSiteID()) />
-			</cfif>
-		
-		<cfset validate() />
-		<cfreturn this>
+	<cfreturn this>
  </cffunction>
-
-<cffunction name="getSiteID" returntype="String" access="public" output="false">
-	<cfreturn variables.instance.SiteID />
-</cffunction>
-
-<cffunction name="setSiteID" access="public" output="false">
-	<cfargument name="SiteID" type="String" />
-	<cfset variables.instance.SiteID = arguments.SiteID />
-	<cfreturn this>
-</cffunction>
-
-<cffunction name="getSite" returntype="String" access="public" output="false">
-	<cfreturn variables.instance.Site />
-</cffunction>
-
-<cffunction name="setSite" access="public" output="false">
-	<cfargument name="Site" type="String" />
-	<cfset variables.instance.Site = arguments.Site />
-	<cfreturn this>
-</cffunction>
-
-<cffunction name="getTagline" returntype="String" access="public" output="false">
-	<cfreturn variables.instance.Tagline />
-</cffunction>
-
-<cffunction name="setTagline" access="public" output="false">
-	<cfargument name="Tagline" type="String" />
-	<cfset variables.instance.Tagline = arguments.Tagline />
-	<cfreturn this>
-</cffunction>
-
-<cffunction name="getPageLimit" returntype="Numeric" access="public" output="false">
-	<cfreturn variables.instance.PageLimit />
-</cffunction>
-
-<cffunction name="setPageLimit" access="public" output="false">
-	<cfargument name="PageLimit" type="Numeric" />
-	<cfset variables.instance.PageLimit = arguments.PageLimit />
-	<cfreturn this>
-</cffunction>
-
-<cffunction name="getLocking" returntype="String" access="public" output="false">
-	<cfreturn variables.instance.Locking />
-</cffunction>
-
-<cffunction name="setLocking" access="public" output="false">
-	<cfargument name="Locking" type="String" />
-	<cfset variables.instance.Locking = arguments.Locking />
-	<cfreturn this>
-</cffunction>
 
 <cffunction name="getDomain" returntype="String" access="public" output="false">
 	<cfargument name="mode" type="String" required="true" default="#application.configBean.getMode()#" />
@@ -321,51 +196,11 @@ to your own modified versions of Mura CMS.
 	</cfif>
 </cffunction>
 
-<cffunction name="setDomain" access="public" output="false">
-	<cfargument name="Domain" type="String" />
-	<cfset variables.instance.Domain = trim(arguments.Domain) />
-	<cfreturn this>
-</cffunction>
-
-<cffunction name="getDomainAlias" returntype="String" access="public" output="false">
-	<cfreturn variables.instance.domainAlias />
-</cffunction>
-
-<cffunction name="setDomainAlias" access="public" output="false">
-	<cfargument name="domainAlias" type="String" />
-	<cfset variables.instance.domainAlias = reReplace(arguments.domainAlias,"(#chr(10)##chr(13)#)|\n|(\r\n)",chr(13)&chr(10),"all") />
-	<cfreturn this>
-</cffunction>
-
-<cffunction name="getExportLocation" returntype="String" access="public" output="false">
-	<cfreturn variables.instance.ExportLocation />
-</cffunction>
-
 <cffunction name="setExportLocation" access="public" output="false">
 	<cfargument name="ExportLocation" type="String" />
 	<cfif arguments.ExportLocation neq "export1">
 	<cfset variables.instance.ExportLocation = arguments.ExportLocation />
 	</cfif>
-	<cfreturn this>
-</cffunction>
-
-<cffunction name="getContact" returntype="String" access="public" output="false">
-	<cfreturn variables.instance.Contact />
-</cffunction>
-
-<cffunction name="setContact" access="public" output="false">
-	<cfargument name="Contact" type="String" />
-	<cfset variables.instance.Contact = arguments.Contact />
-	<cfreturn this>
-</cffunction>
-
-<cffunction name="getMailServerIP" returntype="String" access="public" output="false">
-	<cfreturn variables.instance.MailServerIP />
-</cffunction>
-
-<cffunction name="setMailServerIP" access="public" output="false">
-	<cfargument name="MailServerIP" type="String" />
-	<cfset variables.instance.MailServerIP = arguments.MailServerIP />
 	<cfreturn this>
 </cffunction>
 
@@ -384,10 +219,6 @@ to your own modified versions of Mura CMS.
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="getMailServerUsernameEmail" returntype="String" access="public" output="false">
-		<cfreturn variables.instance.mailServerUsernameEmail />	
-</cffunction>
-
 <cffunction name="getMailServerUsername" returntype="String" access="public" output="false">
 	<cfargument name="forLogin" default="false" required="true">
 	<cfif not arguments.forLogin or len(getMailServerPassword())>
@@ -404,90 +235,12 @@ to your own modified versions of Mura CMS.
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="getMailServerPassword" returntype="String" access="public" output="false">
-	<cfreturn variables.instance.MailServerPassword />
-</cffunction>
-
-<cffunction name="setMailServerPassword" access="public" output="false">
-	<cfargument name="MailServerPassword" type="String" />
-	<cfset variables.instance.MailServerPassword = arguments.MailServerPassword />
-	<cfreturn this>
-</cffunction>
-
-<cffunction name="getEmailBroadcaster" returntype="Numeric" access="public" output="false">
-	<cfreturn variables.instance.EmailBroadcaster />
-</cffunction>
-
-<cffunction name="setEmailBroadcaster" access="public" output="false">
-	<cfargument name="EmailBroadcaster" type="Numeric" />
-	<cfset variables.instance.EmailBroadcaster = arguments.EmailBroadcaster />
-	<cfreturn this>
-</cffunction>
-
-<cffunction name="getEmailBroadcasterLimit" returntype="Numeric" access="public" output="false">
-	<cfreturn variables.instance.EmailBroadcasterLimit />
-</cffunction>
-
-<cffunction name="setEmailBroadcasterLimit" access="public" output="false">
-	<cfargument name="EmailBroadcasterLimit" type="Numeric" />
-	<cfset variables.instance.EmailBroadcasterLimit = arguments.EmailBroadcasterLimit />
-	<cfreturn this>
-</cffunction>
-
-<cffunction name="getExtranet" returntype="Numeric" access="public" output="false">
-	<cfreturn variables.instance.Extranet />
-</cffunction>
-
-<cffunction name="setExtranet" access="public" output="false">
-	<cfargument name="Extranet" type="Numeric" />
-	<cfset variables.instance.Extranet = arguments.Extranet />
-	<cfreturn this>
-</cffunction>
-
-<cffunction name="getExtranetPublicReg" returntype="Numeric" access="public" output="false">
-	<cfreturn variables.instance.ExtranetPublicReg />
-</cffunction>
-
-<cffunction name="setExtranetPublicReg" access="public" output="false">
-	<cfargument name="ExtranetPublicReg" type="Numeric" />
-	<cfset variables.instance.ExtranetPublicReg = arguments.ExtranetPublicReg />
-	<cfreturn this>
-</cffunction>
-
-<cffunction name="getExtranetSSL" returntype="Numeric" access="public" output="false">
-	<cfreturn variables.instance.ExtranetSSL />
-</cffunction>
-
-<cffunction name="setExtranetSSL" access="public" output="false">
-	<cfargument name="ExtranetSSL" type="Numeric" />
-	<cfset variables.instance.ExtranetSSL = arguments.ExtranetSSL />
-	<cfreturn this>
-</cffunction>
-
-<cffunction name="getCache" returntype="Numeric" access="public" output="false">
-	<cfreturn variables.instance.Cache />
-</cffunction>
-
-<cffunction name="setCache" access="public" output="false">
-	<cfargument name="Cache" type="Numeric" />
-	<cfset variables.instance.Cache = arguments.Cache />
-	<cfreturn this>
-</cffunction>
-
-<cffunction name="getCacheCapacity" returntype="Numeric" access="public" output="false">
-	<cfreturn variables.instance.cacheCapacity />
-</cffunction>
-
 <cffunction name="setCacheCapacity" access="public" output="false">
 	<cfargument name="cacheCapacity" />
 	<cfif isNumeric(arguments.cacheCapacity)>
 	<cfset variables.instance.cacheCapacity = arguments.cacheCapacity />
 	</cfif>
 	<cfreturn this>
-</cffunction>
-
-<cffunction name="getCacheFreeMemoryThreshold" returntype="Numeric" access="public" output="false">
-	<cfreturn variables.instance.cacheFreeMemoryThreshold />
 </cffunction>
 
 <cffunction name="setCacheFreeMemoryThreshold" access="public" output="false">
@@ -498,241 +251,12 @@ to your own modified versions of Mura CMS.
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="getViewDepth" returntype="Numeric" access="public" output="false">
-	<cfreturn variables.instance.ViewDepth />
-</cffunction>
-
-<cffunction name="setViewDepth" access="public" output="false">
-	<cfargument name="ViewDepth" type="Numeric" />
-	<cfset variables.instance.ViewDepth = arguments.ViewDepth />
-	<cfreturn this>
-</cffunction>
-
-<cffunction name="getNextN" returntype="Numeric" access="public" output="false">
-	<cfreturn variables.instance.NextN />
-</cffunction>
-
-<cffunction name="setNextN" access="public" output="false">
-	<cfargument name="NextN" type="Numeric" />
-	<cfset variables.instance.NextN = arguments.NextN />
-	<cfreturn this>
-</cffunction>
-
-<cffunction name="getDataCollection" returntype="Numeric" access="public" output="false">
-	<cfreturn variables.instance.DataCollection />
-</cffunction>
-
-<cffunction name="setDataCollection" access="public" output="false">
-	<cfargument name="DataCollection" type="Numeric" />
-	<cfset variables.instance.DataCollection = arguments.DataCollection />
-	<cfreturn this>
-</cffunction>
-
-<cffunction name="getColumnCount" returntype="Numeric" access="public" output="false">
-	<cfreturn variables.instance.ColumnCount />
-</cffunction>
-
-<cffunction name="setColumnCount" access="public" output="false">
-	<cfargument name="ColumnCount" type="Numeric" />
-	<cfset variables.instance.ColumnCount = arguments.ColumnCount />
-	<cfreturn this>
-</cffunction>
-
-<cffunction name="getColumnNames" returntype="String" access="public" output="false">
-	<cfreturn variables.instance.ColumnNames />
-</cffunction>
-
-<cffunction name="setColumnNames" access="public" output="false">
-	<cfargument name="ColumnNames" type="String" />
-	<cfset variables.instance.ColumnNames = arguments.ColumnNames />
-	<cfreturn this>
-</cffunction>
-
-<cffunction name="getPrimaryColumn" returntype="Numeric" access="public" output="false">
-	<cfreturn variables.instance.PrimaryColumn />
-</cffunction>
-
-<cffunction name="setPrimaryColumn" access="public" output="false">
-	<cfargument name="PrimaryColumn" type="Numeric" />
-	<cfset variables.instance.PrimaryColumn = arguments.PrimaryColumn />
-	<cfreturn this>
-</cffunction>
-
-<cffunction name="getPublicSubmission" returntype="Numeric" access="public" output="false">
-	<cfreturn variables.instance.PublicSubmission />
-</cffunction>
-
-<cffunction name="setPublicSubmission" access="public" output="false">
-	<cfargument name="PublicSubmission" type="Numeric" />
-	<cfset variables.instance.PublicSubmission = arguments.PublicSubmission />
-	<cfreturn this>
-</cffunction>
-
-<cffunction name="getAdManager" returntype="Numeric" access="public" output="false">
-	<cfreturn variables.instance.AdManager />
-</cffunction>
-
-<cffunction name="setAdManager" access="public" output="false">
-	<cfargument name="AdManager" type="Numeric" />
-	<cfset variables.instance.AdManager = arguments.AdManager />
-	<cfreturn this>
-</cffunction>
-
-<cffunction name="getContactName" returntype="String" access="public" output="false">
-	<cfreturn variables.instance.ContactName />
-</cffunction>
-
-<cffunction name="setContactName" access="public" output="false">
-	<cfargument name="ContactName" type="String" />
-	<cfset variables.instance.ContactName = arguments.ContactName />
-	<cfreturn this>
-</cffunction>
-
-<cffunction name="getContactAddress" returntype="String" access="public" output="false">
-	<cfreturn variables.instance.ContactAddress />
-</cffunction>
-
-<cffunction name="setContactAddress" access="public" output="false">
-	<cfargument name="ContactAddress" type="String" />
-	<cfset variables.instance.ContactAddress = arguments.ContactAddress />
-	<cfreturn this>
-</cffunction>
-
-<cffunction name="getContactCity" returntype="String" access="public" output="false">
-	<cfreturn variables.instance.ContactCity />
-</cffunction>
-
-<cffunction name="setContactCity" access="public" output="false">
-	<cfargument name="ContactCity" type="String" />
-	<cfset variables.instance.ContactCity = arguments.ContactCity />
-	<cfreturn this>
-</cffunction>
-
-<cffunction name="getContactState" returntype="String" access="public" output="false">
-	<cfreturn variables.instance.ContactState />
-</cffunction>
-
-<cffunction name="setContactState" access="public" output="false">
-	<cfargument name="ContactState" type="String" />
-	<cfset variables.instance.ContactState = arguments.ContactState />
-	<cfreturn this>
-</cffunction>
-
-<cffunction name="getContactZip" returntype="String" access="public" output="false">
-	<cfreturn variables.instance.ContactZip />
-</cffunction>
-
-<cffunction name="setContactZip" access="public" output="false">
-	<cfargument name="ContactZip" type="String" />
-	<cfset variables.instance.ContactZip = arguments.ContactZip />
-	<cfreturn this>
-</cffunction>
-
-<cffunction name="getContactEmail" returntype="String" access="public" output="false">
-	<cfreturn variables.instance.ContactEmail />
-</cffunction>
-
-<cffunction name="setContactEmail" access="public" output="false">
-	<cfargument name="ContactEmail" type="String" />
-	<cfset variables.instance.ContactEmail = arguments.ContactEmail />
-	<cfreturn this>
-</cffunction>
-
-<cffunction name="getContactPhone" returntype="String" access="public" output="false">
-	<cfreturn variables.instance.ContactPhone />
-</cffunction>
-
-<cffunction name="setContactPhone" access="public" output="false">
-	<cfargument name="ContactPhone" type="String" />
-	<cfset variables.instance.ContactPhone = arguments.ContactPhone />
-	<cfreturn this>
-</cffunction>
-
-<cffunction name="getPublicUserPoolID" returntype="String" access="public" output="false">
-	<cfreturn variables.instance.PublicUserPoolID />
-</cffunction>
-
-<cffunction name="setPublicUserPoolID" access="public" output="false">
-	<cfargument name="PublicUserPoolID" type="String" />
-	<cfset variables.instance.PublicUserPoolID = arguments.PublicUserPoolID />
-	<cfreturn this>
-</cffunction>
-
-<cffunction name="getPrivateUserPoolID" returntype="String" access="public" output="false">
-	<cfreturn variables.instance.PrivateUserPoolID />
-</cffunction>
-
-<cffunction name="setPrivateUserPoolID" access="public" output="false">
-	<cfargument name="PrivateUserPoolID" type="String" />
-	<cfset variables.instance.PrivateUserPoolID = arguments.PrivateUserPoolID />
-	<cfreturn this>
-</cffunction>
-
-<cffunction name="getAdvertiserUserPoolID" returntype="String" access="public" output="false">
-	<cfreturn variables.instance.AdvertiserUserPoolID />
-</cffunction>
-
-<cffunction name="setAdvertiserUserPoolID" access="public" output="false">
-	<cfargument name="AdvertiserUserPoolID" type="String" />
-	<cfset variables.instance.AdvertiserUserPoolID = arguments.AdvertiserUserPoolID />
-	<cfreturn this>
-</cffunction>
-
-
-<cffunction name="getHasfeedManager" returntype="Numeric" access="public" output="false">
-	<cfreturn variables.instance.hasfeedManager />
-</cffunction>
-
-<cffunction name="setHasfeedManager" access="public" output="true">
-	<cfargument name="hasfeedManager" type="any" required="yes" default="0" />
-	<cfset variables.instance.hasfeedManager = arguments.hasfeedManager />
-	<cfreturn this>
-</cffunction>
-
-<cffunction name="getDisplayPoolID" returntype="String" access="public" output="false">
-	<cfreturn variables.instance.DisplayPoolID />
-</cffunction>
-
-<cffunction name="setDisplayPoolID" access="public" output="false">
-	<cfargument name="DisplayPoolID" type="String" />
-	<cfset variables.instance.DisplayPoolID = arguments.DisplayPoolID />
-	<cfreturn this>
-</cffunction>
-
-<cffunction name="getGalleryMainScaleBy" returntype="String" access="public" output="false">
-	<cfreturn variables.instance.GalleryMainScaleBy />
-</cffunction>
-
-<cffunction name="setGalleryMainScaleBy" access="public" output="false">
-	<cfargument name="GalleryMainScaleBy" type="String" />
-	<cfset variables.instance.GalleryMainScaleBy = arguments.GalleryMainScaleBy />
-	<cfreturn this>
-</cffunction>
-
-<cffunction name="getGalleryMainScale" returntype="numeric" access="public" output="false">
-	<cfreturn variables.instance.GalleryMainScale />
-</cffunction>
-
 <cffunction name="setGalleryMainScale" access="public" output="true">
 	<cfargument name="GalleryMainScale" type="any" required="yes" default="0" />
 	<cfif isNumeric(arguments.GalleryMainScale)>
 		<cfset variables.instance.GalleryMainScale = arguments.GalleryMainScale />
 	</cfif>
 	<cfreturn this>
-</cffunction>
-
-<cffunction name="getGallerySmallScaleBy" returntype="String" access="public" output="false">
-	<cfreturn variables.instance.GallerySmallScaleBy />
-</cffunction>
-
-<cffunction name="setGallerySmallScaleBy" access="public" output="false">
-	<cfargument name="GallerySmallScaleBy" type="String" />
-	<cfset variables.instance.GallerySmallScaleBy = arguments.GallerySmallScaleBy />
-	<cfreturn this>
-</cffunction>
-
-<cffunction name="getGallerySmallScale" returntype="numeric" access="public" output="false">
-	<cfreturn variables.instance.GallerySmallScale />
 </cffunction>
 
 <cffunction name="setGallerySmallScale" access="public" output="true">
@@ -743,75 +267,11 @@ to your own modified versions of Mura CMS.
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="getGalleryMediumScaleBy" returntype="String" access="public" output="false">
-	<cfreturn variables.instance.GalleryMediumScaleBy />
-</cffunction>
-
-<cffunction name="setGalleryMediumScaleBy" access="public" output="false">
-	<cfargument name="GalleryMediumScaleBy" type="String" />
-	<cfset variables.instance.GalleryMediumScaleBy = arguments.GalleryMediumScaleBy />
-	<cfreturn this>
-</cffunction>
-
-<cffunction name="getGalleryMediumScale" returntype="numeric" access="public" output="false">
-	<cfreturn variables.instance.GalleryMediumScale />
-</cffunction>
-
 <cffunction name="setGalleryMediumScale" access="public" output="true">
 	<cfargument name="GalleryMediumScale" type="any" required="yes" default="0" />
 	<cfif isNumeric(arguments.GalleryMediumScale)>
 		<cfset variables.instance.GalleryMediumScale = arguments.GalleryMediumScale />
 	</cfif>
-	<cfreturn this>
-</cffunction>
-
-<cffunction name="getSendLoginScript" returntype="String" access="public" output="false">
-	<cfreturn variables.instance.SendLoginScript />
-</cffunction>
-
-<cffunction name="setSendLoginScript" access="public" output="false">
-	<cfargument name="SendLoginScript" type="String" />
-	<cfset variables.instance.SendLoginScript = trim(arguments.SendLoginScript) />
-	<cfreturn this>
-</cffunction>
-
-<cffunction name="getMailingListConfirmScript" returntype="String" access="public" output="false">
-	<cfreturn variables.instance.MailingListConfirmScript />
-</cffunction>
-
-<cffunction name="setMailingListConfirmScript" access="public" output="false">
-	<cfargument name="MailingListConfirmScript" type="String" />
-	<cfset variables.instance.MailingListConfirmScript = trim(arguments.MailingListConfirmScript) />
-	<cfreturn this>
-</cffunction>
-
-<cffunction name="getPublicSubmissionApprovalScript" returntype="String" access="public" output="false">
-	<cfreturn variables.instance.PublicSubmissionApprovalScript />
-</cffunction>
-
-<cffunction name="setPublicSubmissionApprovalScript" access="public" output="false">
-	<cfargument name="PublicSubmissionApprovalScript" type="String" />
-	<cfset variables.instance.PublicSubmissionApprovalScript = trim(arguments.PublicSubmissionApprovalScript) />
-	<cfreturn this>
-</cffunction>
-
-<cffunction name="getReminderScript" returntype="String" access="public" output="false">
-	<cfreturn variables.instance.ReminderScript />
-</cffunction>
-
-<cffunction name="setReminderScript" access="public" output="false">
-	<cfargument name="ReminderScript" type="String" />
-	<cfset variables.instance.ReminderScript = trim(arguments.ReminderScript) />
-	<cfreturn this>
-</cffunction>
-
-<cffunction name="getExtranetPublicRegNotify" returntype="String" access="public" output="false">
-	<cfreturn variables.instance.ExtranetPublicRegNotify />
-</cffunction>
-
-<cffunction name="setExtranetPublicRegNotify" access="public" output="false">
-	<cfargument name="ExtranetPublicRegNotify" type="String" />
-	<cfset variables.instance.ExtranetPublicRegNotify = trim(arguments.ExtranetPublicRegNotify) />
 	<cfreturn this>
 </cffunction>
 
@@ -823,12 +283,6 @@ to your own modified versions of Mura CMS.
 	</cfif>
 </cffunction>
 
-<cffunction name="setLoginURL" access="public" output="false">
-	<cfargument name="LoginURL" type="String" />
-	<cfset variables.instance.LoginURL = trim(arguments.LoginURL) />
-	<cfreturn this>
-</cffunction>
-
 <cffunction name="getEditProfileURL" returntype="String" access="public" output="false">
 	<cfif variables.instance.EditProfileURL neq ''>
 	<cfreturn variables.instance.EditProfileURL />
@@ -837,95 +291,18 @@ to your own modified versions of Mura CMS.
 	</cfif>
 </cffunction>
 
-<cffunction name="setEditProfileURL" access="public" output="false">
-	<cfargument name="EditProfileURL" type="String" />
-	<cfset variables.instance.EditProfileURL = trim(arguments.EditProfileURL) />
-	<cfreturn this>
-</cffunction>
-
-<cffunction name="getCommentApprovalDefault" returntype="Numeric" access="public" output="false">
-	<cfreturn variables.instance.CommentApprovalDefault />
-</cffunction>
-
-<cffunction name="setCommentApprovalDefault" access="public" output="false">
-	<cfargument name="CommentApprovalDefault" type="Numeric" />
-	<cfset variables.instance.CommentApprovalDefault = arguments.CommentApprovalDefault />
-	<cfreturn this>
-</cffunction>
-
-<cffunction name="getDeploy" returntype="Numeric" access="public" output="false">
-	<cfreturn variables.instance.deploy />
-</cffunction>
-
-<cffunction name="setDeploy" access="public" output="false">
-	<cfargument name="deploy" type="Numeric" />
-	<cfset variables.instance.deploy = arguments.deploy />
-	<cfreturn this>
-</cffunction>
-
-<cffunction name="getLastDeployment" returntype="String" access="public" output="false">
-
-	<cfreturn variables.instance.LastDeployment />
-	
-</cffunction>
-
 <cffunction name="setLastDeployment" access="public" output="false">
 	<cfargument name="LastDeployment" type="String" />
-	<cfif isDate(arguments.LastDeployment)>
-	<cfset variables.instance.LastDeployment = parseDateTime(arguments.LastDeployment) />
-	<cfelse>
-	<cfset variables.instance.LastDeployment = ""/>
-	</cfif>
-	<cfreturn this>
-</cffunction>
-
-<cffunction name="getAccountActivationScript" returntype="String" access="public" output="false">
-
-	<cfreturn variables.instance.accountActivationScript />
-	
-</cffunction>
-
-<cffunction name="setAccountActivationScript" access="public" output="false">
-	<cfargument name="accountActivationScript" type="String" />
-	<cfset variables.instance.accountActivationScript = trim(arguments.accountActivationScript) />
-	<cfreturn this>
-</cffunction>
-
-<cffunction name="getGoogleAPIKey" returntype="String" access="public" output="false">
-	<cfreturn variables.instance.GoogleAPIKey />
-</cffunction>
-
-<cffunction name="setGoogleAPIKey" access="public" output="false">
-	<cfargument name="GoogleAPIKey" type="String" />
-	<cfset variables.instance.GoogleAPIKey = arguments.GoogleAPIKey />
+	<cfset variables.instance.LastDeployment = parseDateArg(arguments.LastDeployment)/>
 	<cfreturn this>
 </cffunction>
 
 <cffunction name="setUseDefaultSMTPServer" access="public" output="false">
 	<cfargument name="UseDefaultSMTPServer"  />
-	
 	<cfif isNumeric(arguments.UseDefaultSMTPServer)>
 		<cfset variables.instance.UseDefaultSMTPServer = arguments.UseDefaultSMTPServer />
 	</cfif>
 	<cfreturn this>
-</cffunction>
-
-<cffunction name="getUseDefaultSMTPServer" returntype="numeric" access="public" output="false">
-	<cfreturn variables.instance.UseDefaultSMTPServer />
-</cffunction>
-
-<cffunction name="getSiteLocale" returntype="String" access="public" output="false">
-	<cfreturn variables.instance.siteLocale />
-</cffunction>
-
-<cffunction name="setSiteLocale" access="public" output="false">
-	<cfargument name="siteLocale" type="String" />
-	<cfset variables.instance.siteLocale = arguments.siteLocale />
-	<cfreturn this>
-</cffunction>
-
-<cffunction name="getMailServerSMTPPort" returntype="String" access="public" output="false">
-	<cfreturn variables.instance.mailServerSMTPPort />
 </cffunction>
 
 <cffunction name="setMailServerSMTPPort" access="public" output="false">
@@ -936,10 +313,6 @@ to your own modified versions of Mura CMS.
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="getMailServerPOPPort" returntype="String" access="public" output="false">
-	<cfreturn variables.instance.mailServerPOPPort />
-</cffunction>
-
 <cffunction name="setMailServerPOPPort" access="public" output="false">
 	<cfargument name="mailServerPort" type="String" />
 	<cfif isNumeric(arguments.mailServerPort)>
@@ -948,20 +321,12 @@ to your own modified versions of Mura CMS.
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="getMailServerTLS" returntype="String" access="public" output="false">
-	<cfreturn variables.instance.mailServerTLS />
-</cffunction>
-
 <cffunction name="setMailServerTLS" access="public" output="false">
 	<cfargument name="mailServerTLS" type="String" />
 	<cfif isBoolean(arguments.mailServerTLS)>
 	<cfset variables.instance.mailServerTLS = arguments.mailServerTLS />
 	</cfif>
 	<cfreturn this>
-</cffunction>
-
-<cffunction name="getMailServerSSL" returntype="String" access="public" output="false">
-	<cfreturn variables.instance.mailServerSSL />
 </cffunction>
 
 <cffunction name="setMailServerSSL" access="public" output="false">
@@ -986,31 +351,26 @@ to your own modified versions of Mura CMS.
 	<cfif structKeyExists(variables.instance.cacheFactories,arguments.name)>
 		<cfreturn variables.instance.cacheFactories["#arguments.name#"] />
 	<cfelse>
-		<cfif not getCacheCapacity()>
-			<cfset variables.instance.cacheFactories["#arguments.name#"]=getBean("settingsManager").createCacheFactory(freeMemoryThreshold=getCacheFreeMemoryThreshold(),name=arguments.name,siteID=getSiteID())>
+		<cfif not variables.instance.cacheCapacity>
+			<cfset variables.instance.cacheFactories["#arguments.name#"]=getBean("settingsManager").createCacheFactory(freeMemoryThreshold=variables.instance.cacheFreeMemoryThreshold,name=arguments.name,siteID=variables.instance.siteID)>
 		<cfelse>
-			<cfset variables.instance.cacheFactories["#arguments.name#"]=getBean("settingsManager").createCacheFactory(capacity=getCacheCapacity(),freeMemoryThreshold=getCacheFreeMemoryThreshold(),name=arguments.name,siteID=getSiteID())>
+			<cfset variables.instance.cacheFactories["#arguments.name#"]=getBean("settingsManager").createCacheFactory(capacity=variables.instance.cacheCapacity,freeMemoryThreshold=variables.instance.cacheFreeMemoryThreshold,name=arguments.name,siteID=variables.instance.siteID)>
 		</cfif>
 		<cfreturn variables.instance.cacheFactories["#arguments.name#"] />
 	</cfif>
 	
 </cffunction>
 
-<cffunction name="getCacheFactories" returntype="any" access="public" output="false">
-	<cfreturn variables.instance.cacheFactories>
-</cffunction>
-
 <cffunction name="purgeCache" access="public" output="false">
 	<cfargument name="name" default="data" hint="data, output or both">
-	
 	<cfset getCacheFactory(name=arguments.name).purgeAll()>
-	<cfset variables.clusterManager.purgeCache(siteID=getSiteID(),name=arguments.name)>
+	<cfset variables.clusterManager.purgeCache(siteID=variables.instance.siteID,name=arguments.name)>
 	<cfreturn this>
 </cffunction>
 
 <cffunction name="getJavaLocale" returntype="String" access="public" output="false">
-	<cfif len(getSiteLocale())>
-		<cfset variables.instance.javaLocale=application.rbFactory.CF2Java(getSiteLocale())>
+	<cfif len(variables.instance.siteLocale)>
+		<cfset variables.instance.javaLocale=application.rbFactory.CF2Java(variables.instance.siteLocale)>
 	<cfelse>
 		<cfset variables.instance.javaLocale=application.rbFactory.CF2Java(variables.configBean.getDefaultLocale())>
 	</cfif>
@@ -1021,7 +381,7 @@ to your own modified versions of Mura CMS.
 	<cfset var tmpFactory="">
 	<cfset var themeRBDir="">
 	<cfif not isObject(variables.instance.rbFactory)>
-		<cfset tmpFactory=createObject("component","mura.resourceBundle.resourceBundleFactory").init(application.rbFactory,"#expandPath('/#variables.configBean.getWebRootMap()#')#/#getDisplayPoolID()#/includes/resourceBundles/",getJavaLocale())>
+		<cfset tmpFactory=createObject("component","mura.resourceBundle.resourceBundleFactory").init(application.rbFactory,"#expandPath('/#variables.configBean.getWebRootMap()#')#/#variables.instance.displayPoolID#/includes/resourceBundles/",getJavaLocale())>
 		<cfset themeRBDir=expandPath(getThemeIncludePath()) & "/resourceBundles/">
 		<cfif directoryExists(themeRBDir)>
 			<cfset variables.instance.rbFactory=createObject("component","mura.resourceBundle.resourceBundleFactory").init(tmpFactory,themeRBDir,getJavaLocale()) />
@@ -1039,6 +399,7 @@ to your own modified versions of Mura CMS.
 	</cfif>
 	<cfreturn this />
 </cffunction>
+
 <cffunction name="getJSDateKey" returntype="String" access="public" output="false">
 	<cfif not len(variables.instance.jsDateKey)>
 		<cfset variables.instance.jsDateKey=getLocaleUtils().getJSDateKey()>
@@ -1049,27 +410,17 @@ to your own modified versions of Mura CMS.
 <cffunction name="getLocaleUtils" returntype="any" access="public" output="false">
 	<cfreturn getRBFactory().getUtils() />
 </cffunction>
-
-<cffunction name="setTheme" access="public" output="false">
-	<cfargument name="Theme" type="any" />
-	<cfset variables.instance.Theme = trim(arguments.theme) />
-	<cfreturn this>
-</cffunction>
-
-<cffunction name="getTheme" returntype="any" access="public" output="false">
-	<cfreturn variables.instance.theme />
-</cffunction>
-
+s
 <cffunction name="getAssetPath" returntype="any" access="public" output="false">
-	<cfreturn "#variables.configBean.getContext()#/#getDisplayPoolID()#" />
+	<cfreturn "#variables.configBean.getContext()#/#variables.instance.displayPoolID#" />
 </cffunction>
 
 <cffunction name="getIncludePath" returntype="any" access="public" output="false">
-	<cfreturn "/#variables.configBean.getWebRootMap()#/#getDisplayPoolID()#" />
+	<cfreturn "/#variables.configBean.getWebRootMap()#/#variables.instance.displayPoolID#" />
 </cffunction>
 
 <cffunction name="getAssetMap" returntype="any" access="public" output="false">
-	<cfreturn "#variables.configBean.getWebRootMap()#.#getDisplayPoolID()#" />
+	<cfreturn "#variables.configBean.getWebRootMap()#.#variables.instance.displayPoolID#" />
 </cffunction>
 
 <cffunction name="getThemeAssetPath" returntype="any" access="public" output="false">
@@ -1077,8 +428,8 @@ to your own modified versions of Mura CMS.
 	
 	<cfif len(arguments.theme) and directoryExists(getTemplateIncludeDir(arguments.theme))>
 		<cfreturn "#getAssetPath()#/includes/themes/#arguments.theme#" />
-	<cfelseif len(getTheme())>
-		<cfreturn "#getAssetPath()#/includes/themes/#getTheme()#" />
+	<cfelseif len(variables.instance.theme)>
+		<cfreturn "#getAssetPath()#/includes/themes/#variables.instance.theme#" />
 	<cfelse>
 		<cfreturn getAssetPath() />
 	</cfif>
@@ -1089,8 +440,8 @@ to your own modified versions of Mura CMS.
 	
 	<cfif len(arguments.theme) and directoryExists(getTemplateIncludeDir(arguments.theme))>
 		<cfreturn "#getIncludePath()#/includes/themes/#theme#" />
-	<cfelseif len(getTheme())>
-		<cfreturn "#getIncludePath()#/includes/themes/#getTheme()#" />
+	<cfelseif len(variables.instance.theme)>
+		<cfreturn "#getIncludePath()#/includes/themes/#variables.instance.theme#" />
 	<cfelse>
 		<cfreturn getIncludePath() />
 	</cfif>
@@ -1101,8 +452,8 @@ to your own modified versions of Mura CMS.
 	
 	<cfif len(arguments.theme) and directoryExists(getTemplateIncludeDir(arguments.theme))>
 		<cfreturn "#getAssetMap()#.includes.themes.#arguments.theme#" />
-	<cfelseif len(getTheme())>
-		<cfreturn "#getAssetMap()#.includes.themes.#getTheme()#" />
+	<cfelseif len(variables.instance.theme)>
+		<cfreturn "#getAssetMap()#.includes.themes.#variables.instance.theme#" />
 	<cfelse>
 		<cfreturn getAssetMap() />
 	</cfif>
@@ -1113,8 +464,8 @@ to your own modified versions of Mura CMS.
 	
 	<cfif len(arguments.theme) and directoryExists(getTemplateIncludeDir(arguments.theme))>
 		<cfreturn "#getIncludePath()#/includes/themes/#arguments.theme#/templates" />
-	<cfelseif len(getTheme())>
-		<cfreturn "#getIncludePath()#/includes/themes/#getTheme()#/templates" />
+	<cfelseif len(variables.instance.theme)>
+		<cfreturn "#getIncludePath()#/includes/themes/#variables.instance.theme#/templates" />
 	<cfelse>
 		<cfreturn "#getIncludePath()#/includes/templates" />
 	</cfif>
@@ -1128,11 +479,11 @@ to your own modified versions of Mura CMS.
 	<cfargument name="theme" default="#request.altTheme#">
 	
 	<cfif len(arguments.theme)>
-		<cfreturn "#expandPath('/#variables.configBean.getWebRootMap()#')#/#getDisplayPoolID()#/includes/themes/#arguments.theme#/templates">
-	<cfelseif len(getTheme())>
-		<cfreturn "#expandPath('/#variables.configBean.getWebRootMap()#')#/#getDisplayPoolID()#/includes/themes/#getTheme()#/templates">
+		<cfreturn "#expandPath('/#variables.configBean.getWebRootMap()#')#/#variables.instance.displayPoolID#/includes/themes/#arguments.theme#/templates">
+	<cfelseif len(variables.instance.theme)>
+		<cfreturn "#expandPath('/#variables.configBean.getWebRootMap()#')#/#variables.instance.displayPoolID#/includes/themes/#variables.instance.theme#/templates">
 	<cfelse>
-		<cfreturn "#expandPath('/#variables.configBean.getWebRootMap()#')#/#getDisplayPoolID()#/includes/templates">
+		<cfreturn "#expandPath('/#variables.configBean.getWebRootMap()#')#/#variables.instance.displayPoolID#/includes/templates">
 	</cfif>
 </cffunction>
 
@@ -1140,8 +491,8 @@ to your own modified versions of Mura CMS.
 	<cfset var rs = "">
 	<cfset var themeDir="">
 	
-	<cfif len(getDisplayPoolID())>
-		<cfset themeDir="#expandPath('/#variables.configBean.getWebRootMap()#')#/#getDisplayPoolID()#/includes/themes">
+	<cfif len(variables.instance.displayPoolID)>
+		<cfset themeDir="#expandPath('/#variables.configBean.getWebRootMap()#')#/#variables.instance.displayPoolID#/includes/themes">
 	<cfelse>
 		<cfset themeDir="#expandPath('/#variables.configBean.getWebRootMap()#')#/default/includes/themes">
 	</cfif>
@@ -1195,8 +546,8 @@ to your own modified versions of Mura CMS.
 	<cfif arguments.mode neq "partial">
 		<cfif arguments.domain eq getDomain()>
 			<cfreturn true>
-		<cfelseif len(getDomainAlias())>
-			<cfloop list="#getDomainAlias()#" delimiters="#lineBreak#" index="i">
+		<cfelseif len(variables.instance.domainAlias)>
+			<cfloop list="#variables.instance.domainAlias#" delimiters="#lineBreak#" index="i">
 				<cfif arguments.domain eq i>
 					<cfreturn true>
 				</cfif>
@@ -1207,8 +558,8 @@ to your own modified versions of Mura CMS.
 	<cfif arguments.mode neq "complete">
 		<cfif find(arguments.domain,getDomain())>
 			<cfreturn true>
-		<cfelseif len(getDomainAlias())>
-			<cfloop list="#getDomainAlias()#" delimiters="#lineBreak#" index="i">
+		<cfelseif len(variables.instance.domainAlias)>
+			<cfloop list="#variables.instance.domainAlias#" delimiters="#lineBreak#" index="i">
 				<cfif find(arguments.domain,i)>
 					<cfreturn true>
 				</cfif>
@@ -1227,32 +578,22 @@ to your own modified versions of Mura CMS.
 </cffunction>
 
 <cffunction name="getThemeRenderer" output="false">
-<cfif not isObject(variables.instance.themeRenderer)>
-	<cfif fileExists(expandPath(getThemeIncludePath()) & "/contentRenderer.cfc")>
-		<cfset variables.instance.themeRenderer=createObject("component","#getThemeAssetMap()#.contentRenderer")>
-	<cfelse>
-		<cfset variables.instance.themeRenderer=createObject("component","mura.cfobject").init()>
+	<cfif not isObject(variables.instance.themeRenderer)>
+		<cfif fileExists(expandPath(getThemeIncludePath()) & "/contentRenderer.cfc")>
+			<cfset variables.instance.themeRenderer=createObject("component","#getThemeAssetMap()#.contentRenderer")>
+		<cfelse>
+			<cfset variables.instance.themeRenderer=createObject("component","mura.cfobject").init()>
+		</cfif>
 	</cfif>
-</cfif>
-<cfreturn variables.instance.themeRenderer>
-</cffunction>
-
-<cffunction name="getHasChangesets" returntype="Numeric" access="public" output="false">
-	<cfreturn variables.instance.hasChangesets />
-</cffunction>
-
-<cffunction name="setHasChangesets" access="public" output="false">
-	<cfargument name="hasChangesets" type="Numeric" />
-	<cfset variables.instance.hasChangesets = arguments.hasChangesets />
-	<cfreturn this>
+	<cfreturn variables.instance.themeRenderer>
 </cffunction>
 
 <cffunction name="exportHTML" output="false">
 	<cfargument name="exportDir">
 	<cfif isDefined("arguments.exportDir")>
-		<cfset getBean("HTMLExporter").export(getSiteID(),arguments.exportDir)>
+		<cfset getBean("HTMLExporter").export(variables.instance.siteID,arguments.exportDir)>
 	<cfelse>
-		<cfset getBean("HTMLExporter").export(getSiteID(),getExportLocation())>
+		<cfset getBean("HTMLExporter").export(variables.instance.siteID,variables.instance.exportLocation)>
 	</cfif>
 </cffunction>
 

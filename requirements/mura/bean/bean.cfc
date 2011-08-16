@@ -91,8 +91,8 @@
 <cfargument name="property"  type="string" required="true">
 <cfargument name="defaultValue">
 	
-	<cfif structKeyExists(this,"get#property#")>
-		<cfset evaluate("get#property#()") />
+	<cfif structKeyExists(this,"get#arguments.property#")>
+		<cfreturn evaluate("get#arguments.property#()") />
 	<cfelseif structKeyExists(variables.instance,"#arguments.property#")>
 		<cfreturn variables.instance["#arguments.property#"] />
 	<cfelseif structKeyExists(arguments,"defaultValue")>
