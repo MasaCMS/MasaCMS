@@ -965,15 +965,14 @@ function loadSiteManager(siteid,topid,moduleid,sortby,sortdirection,ptype,startr
 
 var sectionLoading=false;
 
-function loadSiteSection(container,siteid,contentID,moduleid,sortby,sortdirection,ptype,startrow)	{
+function loadSiteSection(node, startrow)	{
 	if (!sectionLoading) {
 		sectionLoading = true;
 		var url = 'index.cfm';
-		var pars = 'fuseaction=cArch.loadSiteSection&siteid=' + siteid + '&contentID=' + contentID + '&moduleid=' + moduleid + '&sortby=' + sortby + '&sortdirection=' + sortdirection + '&ptype=' + ptype + '&startrow=' + startrow + '&cacheid=' + Math.random();
+		var pars = 'fuseaction=cArch.loadSiteSection&siteid=' + node.attr("data-siteid") + '&contentID=' + node.attr("data-contentid") + '&moduleid=' + node.attr("data-moduleid") + '&sortby=' + node.attr("data-sortby") + '&sortdirection=' + node.attr("data-sortdirection") + '&ptype=' + node.attr("data-type") + '&startrow=' + startrow + '&toggle=true&cacheid=' + Math.random();
 		
 		//location.href=url + "?" + pars;
-		var d = jQuery(container).parents('li:first');
-		var icon = d.find("span:first");
+		var icon = node.find("span:first");
 		
 		if (icon.hasClass('hasChildren-closed')) {
 		
@@ -987,18 +986,18 @@ function loadSiteSection(container,siteid,contentID,moduleid,sortby,sortdirectio
 					var r = eval("(" + data + ")");
 					
 					//d.find(".loadProgress").remove();
-					d.find('.section:first').remove();
-					d.append(r.html);
+					node.find('.section:first').remove();
+					node.append(r.html);
 					
 					document.getElementById("newContentMenu").style.visibility = "hidden";
 					stripe('stripe');
 					initDraftPrompt();
 					initQuickEdits();
-					d.find('.section:first').hide().slideDown("fast");
+					node.find('.section:first').hide().slideDown("fast");
 					
 				} 
 				catch (err) {
-					d.append(data);
+					node.append(data);
 				}
 				
 				sectionLoading = false;
@@ -1010,22 +1009,49 @@ function loadSiteSection(container,siteid,contentID,moduleid,sortby,sortdirectio
 			icon.addClass('hasChildren-closed');
 			
 			jQuery.get(url + "?" + pars);
-			d.find('.section:first').slideUp("fast",
+			node.find('.section:first').slideUp("fast",
 				function(){
-					d.find('.section:first').remove();
+					node.find('.section:first').remove();
 				    stripe('stripe');
 					document.getElementById("newContentMenu").style.visibility = "hidden";
 					sectionLoading = false;
 				}
-			);
-			
-			
-			
+			);	
 		}
 	}
 	return false;
 }
 
+function refreshSiteSection(node, startrow)	{
+	if (!sectionLoading) {
+		sectionLoading = true;
+		var url = 'index.cfm';
+		var pars = 'fuseaction=cArch.loadSiteSection&siteid=' + node.attr("data-siteid") + '&contentID=' + node.attr("data-contentid") + '&moduleid=' + node.attr("data-moduleid") + '&sortby=' + node.attr("data-sortby") + '&sortdirection=' + node.attr("data-sortdirection") + '&ptype=' + node.attr("data-type") + '&startrow=' + startrow + '&toggle=false&cacheid=' + Math.random();
+	
+		jQuery.get(url + "?" + pars, function(data){
+			try {
+				var r = eval("(" + data + ")");
+				
+				//d.find(".loadProgress").remove();
+				node.find('.section:first').remove();
+				node.append(r.html);
+				
+				document.getElementById("newContentMenu").style.visibility = "hidden";
+				stripe('stripe');
+				initDraftPrompt();
+				initQuickEdits();	
+			} 
+			catch (err) {
+				node.append(data);
+			}
+			
+			activeQuickEdit = false;
+			sectionLoading = false;
+		});
+		
+	}
+	return false;
+}
 function setAsSorted(){	
 		jQuery('#sorted').val('true');	
 		jQuery('#submitSort').pulse({
@@ -1049,7 +1075,7 @@ function initQuickEdits(){
 				if (!activeQuickEdit) {
 					
 					var attribute=jQuery(this).attr("data-attribute");
-					var node = jQuery(this).parents("dl:first");
+					var node = jQuery(this).parents("li:first");
 					var url = 'index.cfm';
 					var pars = 'fuseaction=cArch.loadQuickEdit&siteid=' + siteid + '&contentID=' + node.attr("data-contentid") + '&attribute=' + attribute + '&cacheid=' + Math.random();
 					
@@ -1069,7 +1095,7 @@ function initQuickEdits(){
 function saveQuickEdit(){
 	activeQuickEdit=true;
 	var attribute=jQuery("#mura-quickEditor").parent().find(".mura-quickEditItem:first").attr("data-attribute");
-	var node=jQuery("#mura-quickEditor").parents("dl:first");
+	var node=jQuery("#mura-quickEditor").parents("li:first");
 	var url = 'index.cfm';
 	
 	var basePars = {
@@ -1112,7 +1138,12 @@ function saveQuickEdit(){
 	
 	jQuery.post('index.cfm',pars,
 		function(data){
-			jQuery("#top-node").find("span:first").trigger("click");
+			var parentNode=node.parents("li:first");
+			if (!parentNode.length) {
+				jQuery("#top-node").find("span:first").trigger("click");
+			} else {
+				refreshSiteSection(parentNode,1)
+			}
 	});	
 	
 }

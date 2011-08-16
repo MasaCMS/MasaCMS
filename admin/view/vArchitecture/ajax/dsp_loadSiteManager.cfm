@@ -53,6 +53,7 @@ to your own modified versions of Mura CMS.
 
 <cfparam name="attributes.sortDirection" default="#request.rstop.sortDirection#" />
 <cfparam name="attributes.sorted" default="false" />
+<cfparam name="attributes.toggle" default="true" />
 <cfparam name="session.copyContentID" default="">
 <cfparam name="session.copySiteID" default="">
 <cfparam name="session.copyAll" default="false">
@@ -156,8 +157,8 @@ to your own modified versions of Mura CMS.
     </dl>
     <ul id="mura-nodes">
     <!-- Begin List of Nodes -->
-    <li>
-      <dl id="top-node" data-contentid="#request.rstop.contentid#">
+    <li data-top="true" data-siteid="#rc.siteid#" data-contentid="#request.rstop.contentid#" data-contenthistid="#request.rstop.contenthistid#" data-sortby="#request.rstop.sortby#" data-sortdirection="#request.rstop.sortdirection#">
+      <dl id="top-node">
       <dt>
        
        <a  class="add" href="javascript:;" onmouseover="showMenu('newContentMenu',#newcontent#,this,'#request.rstop.contentid#','#attributes.topid#','#request.rstop.parentid#','#attributes.siteid#','#request.rstop.type#');">&nbsp;</a>
@@ -166,7 +167,7 @@ to your own modified versions of Mura CMS.
 	    	<span class="hasChildren-open" onclick="loadSiteManager('#JSStringFormat(attributes.siteID)#','#JSStringFormat(attributes.topid)#','#JSStringFormat(attributes.moduleid)#','#JSStringFormat(attributes.sortby)#','#JSStringFormat(attributes.sortdirection)#','#JSStringFormat(request.rstop.type)#',1);"></span>
 		</cfif>
         <cfif perm neq 'none'>
-          <a class="#icon# title draftprompt" data-siteid="#rc.siteid#" data-contentid="#request.rstop.contentid#" data-contenthistid="#request.rstop.contenthistid#" title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.edit")#" href="index.cfm?fuseaction=cArch.edit&contenthistid=#request.rstop.ContentHistID#&siteid=#URLEncodedFormat(attributes.siteid)#&contentid=#attributes.topid#&topid=#URLEncodedFormat(attributes.topid)#&type=#request.rstop.type#&parentid=#request.rstop.parentid#&moduleid=#attributes.moduleid#">
+          <a class="#icon# title draftprompt" title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.edit")#" href="index.cfm?fuseaction=cArch.edit&contenthistid=#request.rstop.ContentHistID#&siteid=#URLEncodedFormat(attributes.siteid)#&contentid=#attributes.topid#&topid=#URLEncodedFormat(attributes.topid)#&type=#request.rstop.type#&parentid=#request.rstop.parentid#&moduleid=#attributes.moduleid#">
         <cfelse>
 		  <a class="#icon# title">
 		</cfif>

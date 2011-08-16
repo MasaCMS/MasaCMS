@@ -44,8 +44,10 @@ to your own modified versions of Mura CMS.
 <cfparam name="session.copySiteID" default="">
 <cfparam name="session.copyAll" default="false">
 <cfparam name="session.openSectionList" default="">
+<cfparam name="attributes.sorted" default="false" />
+<cfparam name="attributes.toggle" default="true" />
 
-<cfset sectionFound=listFind(session.openSectionList,attributes.contentID)>
+<cfset sectionFound=listFind(session.openSectionList,attributes.contentID) and attributes.toggle>
 
 <cfif not sectionFound>
 
@@ -58,7 +60,6 @@ to your own modified versions of Mura CMS.
 <cfif not isDefined("attributes.sortdirection") or attributes.sortdirection eq "">
 	<cfset attributes.sortdirection=request.rstop.sortdirection>
 </cfif>
-<cfparam name="attributes.sorted" default="false" />
 
 <cfset variables.pluginEvent=createObject("component","mura.event").init(event.getAllValues())/>	
 <cfset request.rowNum=0>
@@ -68,7 +69,9 @@ to your own modified versions of Mura CMS.
 <cfset r=application.permUtility.setRestriction(crumbdata).restrict>
 <cfset rsNext=application.contentManager.getNest(attributes.contentID,attributes.siteid,attributes.sortBy,attributes.sortDirection)>
 
-<cfset session.openSectionList=listAppend(session.openSectionList,attributes.contentID)>
+<cfif attributes.toggle>
+	<cfset session.openSectionList=listAppend(session.openSectionList,attributes.contentID)>
+</cfif>
 
 <cfsavecontent variable="data.html">
 <cf_dsp_nest topid="#attributes.contentID#" parentid="#attributes.contentID#"  rsnest="#rsNext#" locking="#application.settingsManager.getSite(attributes.siteid).getlocking()#" nestlevel="1" perm="#perm#" siteid="#attributes.siteid#" moduleid="#attributes.moduleid#" restricted="#r#" viewdepth="1" nextn="#session.mura.nextN#" startrow="#attributes.startrow#" sortBy="#attributes.sortBy#" sortDirection="#attributes.sortDirection#" pluginEvent="#pluginEvent#" isSectionRequest="true">
