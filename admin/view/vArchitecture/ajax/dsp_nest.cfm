@@ -116,17 +116,17 @@ to your own modified versions of Mura CMS.
 <cfset request.rowNum=request.rowNum+1>
 </cfsilent>
 <!--- Start LI for content Item --->
-<li>
-<dl data-contentid="#attributes.rsNest.contentid#">
+<li data-top="false" data-siteid="#attributes.siteid#" data-contentid="#attributes.rsNest.contentid#" data-contenthistid="#attributes.rsNest.contenthistid#" data-sortby="#attributes.rsNest.sortby#" data-sortdirection="#attributes.rsNest.sortdirection#" data-moduleid="#attributes.moduleid#" data-type="#attributes.rsNest.type#">
+<dl>
 <dt>
 	<!---<cfif (attributes.rsNest.type eq 'Page') or  (attributes.rsNest.type eq 'Portal')  or  (attributes.rsNest.type eq 'Calendar') or (attributes.rsNest.type eq 'Gallery')>--->
 	<a class="add" href="javascript:;" onmouseover="showMenu('newContentMenu',#newcontent#,this,'#attributes.rsNest.contentid#','#attributes.topid#','#attributes.rsNest.parentid#','#attributes.siteid#','#attributes.rsNest.type#');"></a>
 	
 	<cfif attributes.rsNest.haskids>
-		<span <cfif isOpenSection>class="hasChildren-open"<cfelse>class="hasChildren-closed"</cfif> onclick="return loadSiteSection(this,'#JSStringFormat(attributes.rsNest.siteID)#','#JSStringFormat(attributes.rsNest.contentID)#','#JSStringFormat(attributes.moduleid)#','#JSStringFormat(attributes.rsNest.sortby)#','#JSStringFormat(attributes.rsNest.sortdirection)#','#JSStringFormat(attributes.rsNest.type)#',1);"></span>
+		<span <cfif isOpenSection>class="hasChildren-open"<cfelse>class="hasChildren-closed"</cfif> onclick="return loadSiteSection( jQuery(this).parents('li:first') , 1 , true);"></span>
 	</cfif>
 	<cfif verdict neq 'none'>
-		<a class="#icon# title draftprompt" data-siteid="#attributes.siteid#" data-contentid="#attributes.rsNest.contentid#" data-contenthistid="#attributes.rsNest.contenthistid#" title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.edit")#" href="index.cfm?fuseaction=cArch.edit&contenthistid=#attributes.rsNest.ContentHistID#&contentid=#attributes.rsNest.ContentID#&type=#attributes.rsNest.type#&parentid=#attributes.rsNest.parentID#&topid=#URLEncodedFormat(attributes.topid)#&siteid=#URLEncodedFormat(attributes.siteid)#&moduleid=#attributes.moduleid#&startrow=#attributes.startrow#">
+		<a class="#icon# title draftprompt" title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.edit")#" href="index.cfm?fuseaction=cArch.edit&contenthistid=#attributes.rsNest.ContentHistID#&contentid=#attributes.rsNest.ContentID#&type=#attributes.rsNest.type#&parentid=#attributes.rsNest.parentID#&topid=#URLEncodedFormat(attributes.topid)#&siteid=#URLEncodedFormat(attributes.siteid)#&moduleid=#attributes.moduleid#&startrow=#attributes.startrow#">
 	<cfelse>
 		<a class="#icon# title">
 	</cfif>
@@ -156,14 +156,14 @@ to your own modified versions of Mura CMS.
 		</cfif>
 		<cfif verdict eq 'editor'></a></cfif>
 	</dd>
-	  <dd class="template">
-	  		<cfif verdict eq 'editor'><a class="mura-quickEditItem" data-attribute="template"></cfif>
-			<cfif len(attributes.rsnest.template)>
-				 <img src="images/icons/template_24x24.png" /> 
-			<cfelse>
-           		#application.rbFactory.getKeyValue(session.rb,"sitemanager.inherit")#
-         	 </cfif>
-			<cfif verdict eq 'editor'></a></cfif>
+	<dd class="template">
+	  	<cfif verdict eq 'editor'><a class="mura-quickEditItem" data-attribute="template"></cfif>
+		<cfif len(attributes.rsnest.template)>
+			 <img src="images/icons/template_24x24.png" /> 
+		<cfelse>
+           	#application.rbFactory.getKeyValue(session.rb,"sitemanager.inherit")#
+          </cfif>
+		<cfif verdict eq 'editor'></a></cfif>
 	</dd>
 </cfif>
 	<dd class="nav">
