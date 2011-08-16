@@ -1138,12 +1138,13 @@ function saveQuickEdit(){
 	jQuery("#mura-quickEditor").html('<img src="images/ajax-loader-big.gif" />');
 	
 	jQuery.post('index.cfm',pars,
-		function(data){
+		function(data){		
 			var parentNode=node.parents("li:first");
-			if (!parentNode.length) {
-				jQuery("#top-node").find("span:first").trigger("click");
-			} else {
+			if (parentNode.length) {
 				refreshSiteSection(parentNode,1)
+			} else {
+				var topNode=jQuery("#top-node").parents("li:first");
+				loadSiteManager(topNode.attr("data-siteid"),topNode.attr("data-contentid"),topNode.attr("data-moduleid"),topNode.attr("data-sortby"),topNode.attr("data-sortdirection"),topNode.attr("data-type"),1);
 			}
 	});	
 	
