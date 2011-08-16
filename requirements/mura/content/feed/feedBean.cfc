@@ -148,21 +148,13 @@ to your own modified versions of Mura CMS.
 
 <cffunction name="setDateCreated" access="public" output="false">
 	<cfargument name="dateCreated" type="String" />
-	<cfif isDate(arguments.dateCreated)>
-	<cfset variables.instance.dateCreated = parseDateTime(arguments.dateCreated) />
-	<cfelse>
-	<cfset variables.instance.dateCreated = ""/>
-	</cfif>
+	<cfset variables.instance.dateCreated = parseDateArg(arguments.dateCreated) />
 	<cfreturn this>
 </cffunction>
 
 <cffunction name="setLastUpdate" access="public" output="false">
 	<cfargument name="lastUpdate" type="String" />
-	<cfif isDate(arguments.lastUpdate)>
-	<cfset variables.instance.lastUpdate = parseDateTime(arguments.lastUpdate) />
-	<cfelse>
-	<cfset variables.instance.lastUpdate = ""/>
-	</cfif>
+	<cfset variables.instance.lastUpdate = parseDateArg(arguments.lastUpdate) />
 	<cfreturn this>
 </cffunction>
 

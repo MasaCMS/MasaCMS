@@ -103,41 +103,23 @@
 </cffunction>
 
 <cffunction name="setCreated" output="false" access="public">
-<cfargument name="created" type="string" required="true">
-<cfif lsisDate(arguments.created)>
-	<cftry>
-	<cfset variables.instance.created = lsparseDateTime(arguments.created) />
-	<cfcatch>
-		<cfset variables.instance.created = arguments.created />
-	</cfcatch>
-	</cftry>
-	<cfelse>
-	<cfset variables.instance.created = ""/>
-</cfif>
-<cfreturn this>
+	<cfargument name="created" type="string" required="true">
+	<cfset variables.instance.created = parseDateArg(arguments.created) />
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="setPublishDate" output="false" access="public">
-<cfargument name="publishDate" type="string" required="true">
-<cfif lsisDate(arguments.publishDate)>
-	<cftry>
-	<cfset variables.instance.publishDate = lsparseDateTime(arguments.publishDate) />
-	<cfcatch>
-		<cfset variables.instance.publishDate = arguments.publishDate />
-	</cfcatch>
-	</cftry>
-	<cfelse>
-	<cfset variables.instance.publishDate = ""/>
-</cfif>
-<cfreturn this>
+	<cfargument name="publishDate" type="string" required="true">
+	<cfset variables.instance.publishDate = parseDateArg(arguments.publishDate) />
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="setPublished" output="false">
-<cfargument name="published">
-<cfif isNumeric(arguments.published)>
-<cfset variables.instance.published=arguments.published>
-</cfif>
-<cfreturn this>
+	<cfargument name="published">
+	<cfif isNumeric(arguments.published)>
+	<cfset variables.instance.published=arguments.published>
+	</cfif>
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="getIsNew" returnType="numeric" output="false" access="public">
@@ -146,11 +128,7 @@
 
 <cffunction name="setLastUpdate" access="public" output="false">
 	<cfargument name="lastUpdate" type="String" />
-	<cfif isDate(arguments.lastUpdate)>
-	<cfset variables.instance.lastUpdate = parseDateTime(arguments.lastUpdate) />
-	<cfelse>
-	<cfset variables.instance.lastUpdate = ""/>
-	</cfif>
+	<cfset variables.instance.lastUpdate = parseDateArg(arguments.lastUpdate) />
 	<cfreturn this>
 </cffunction>
 
@@ -161,17 +139,8 @@
 </cffunction>
 
 <cffunction name="setRemotePubDate" output="false" access="public">
-<cfargument name="RemotePubDate" type="string" required="true">
-	<cfif lsisDate(arguments.RemotePubDate)>
-	<cftry>
-		<cfset variables.instance.RemotePubDate = lsparseDateTime(arguments.RemotePubDate) />
-		<cfcatch>
-			<cfset variables.instance.RemotePubDate = arguments.RemotePubDate />
-		</cfcatch>
-		</cftry>
-		<cfelse>
-		<cfset variables.instance.RemotePubDate = ""/>
-	</cfif>
+	<cfargument name="RemotePubDate" type="string" required="true">
+	<cfset variables.instance.RemotePubDate = parseDateArg(arguments.RemotePubDate) />
 	<cfreturn this>
 </cffunction>
 

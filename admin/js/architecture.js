@@ -1094,9 +1094,16 @@ function saveQuickEdit(){
 	} else if (attribute == 'display') {
 		var attributeParams = {
 		'display': jQuery("#mura-quickEdit-display").val(),
-		'displaystop': jQuery("#mura-quickEdit-displaystart").val(),
-		'displaystart': jQuery("#mura-quickEdit-displaystop").val(),
+		'displayStop': jQuery("#mura-quickEdit-displayStop").val(),
+		'stopHour': jQuery("#mura-quickEdit-stopHour").val(),
+		'stopMinute': jQuery("#mura-quickEdit-stopMinute").val(),
+		'stopDayPart': jQuery("#mura-quickEdit-stopDayPart").val(),
+		'displayStart': jQuery("#mura-quickEdit-displayStart").val(),
+		'startHour': jQuery("#mura-quickEdit-startHour").val(),
+		'startMinute': jQuery("#mura-quickEdit-startMinute").val(),
+		'startDayPart': jQuery("#mura-quickEdit-startDayPart").val()
 		}
+	
 	}
 	
 	var pars=jQuery.extend({},basePars,attributeParams);

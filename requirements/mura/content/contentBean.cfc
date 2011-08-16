@@ -378,7 +378,7 @@ to your own modified versions of Mura CMS.
 	<cfset variables.instance.errors=structnew() />
 		
 	<cfif not structIsEmpty(extErrors)>
-			<cfset structAppend(variables.instance.errors,extErrors)>
+		<cfset structAppend(variables.instance.errors,extErrors)>
 	</cfif>
 	<cfreturn this>	
 </cffunction>
@@ -429,46 +429,19 @@ to your own modified versions of Mura CMS.
   
 <cffunction name="setDisplayStart" output="false" access="public">
     <cfargument name="DisplayStart" type="string" required="true">
-	<cfif lsisDate(arguments.displayStart)>
-		<cftry>
-		<cfset variables.instance.displayStart = lsparseDateTime(arguments.displayStart) />
-		<cfcatch>
-			<cfset variables.instance.displayStart = arguments.displayStart />
-		</cfcatch>
-		</cftry>
-		<cfelse>
-		<cfset variables.instance.displayStart = ""/>
-	</cfif>
+	<cfset variables.instance.displayStart = parseDateArg(arguments.displayStart) />
 	<cfreturn this>
 </cffunction>
 
 <cffunction name="setDisplaystop" output="false" access="public">
     <cfargument name="Displaystop" type="string" required="true">
-	<cfif lsisDate(arguments.displayStop)>
-		<cftry>
-		<cfset variables.instance.displayStop = lsparseDateTime(arguments.displayStop) />
-		<cfcatch>
-			<cfset variables.instance.displayStop = arguments.displayStop />
-		</cfcatch>
-		</cftry>
-		<cfelse>
-		<cfset variables.instance.displayStop = ""/>
-	</cfif>
+	<cfset variables.instance.Displaystop = parseDateArg(arguments.Displaystop) />
 	<cfreturn this>
 </cffunction>
 
 <cffunction name="setLastUpdate" output="false" access="public">
     <cfargument name="LastUpdate" type="string" required="true">
-	<cfif lsisDate(arguments.LastUpdate)>
-		<cftry>
-		<cfset variables.instance.LastUpdate = lsparseDateTime(arguments.LastUpdate) />
-		<cfcatch>
-			<cfset variables.instance.LastUpdate = arguments.LastUpdate />
-		</cfcatch>
-		</cftry>
-		<cfelse>
-		<cfset variables.instance.LastUpdate = ""/>
-	</cfif>
+	<cfset variables.instance.LastUpdate = parseDateArg(arguments.LastUpdate) />
 	<cfreturn this>
 </cffunction>
   
@@ -499,16 +472,7 @@ to your own modified versions of Mura CMS.
 
 <cffunction name="setReleaseDate" output="false" access="public">
     <cfargument name="releaseDate" type="string" required="true">
-	<cfif lsisDate(arguments.releaseDate)>
-		<cftry>
-		<cfset variables.instance.releaseDate = lsparseDateTime(arguments.releaseDate) />
-		<cfcatch>
-			<cfset variables.instance.releaseDate = arguments.releaseDate />
-		</cfcatch>
-		</cftry>
-		<cfelse>
-		<cfset variables.instance.releaseDate = ""/>
-	</cfif>
+	<cfset variables.instance.releaseDate = parseDateArg(arguments.releaseDate) />
 	<cfreturn this>
 </cffunction>
   
@@ -522,46 +486,19 @@ to your own modified versions of Mura CMS.
   
 <cffunction name="setFeatureStop" output="false" access="public">
     <cfargument name="FeatureStop" type="string" required="true">
-    	<cfif lsisDate(arguments.FeatureStop)>
-		<cftry>
-		<cfset variables.instance.FeatureStop = lsparseDateTime(arguments.FeatureStop) />
-		<cfcatch>
-			<cfset variables.instance.FeatureStop = arguments.FeatureStop />
-		</cfcatch>
-		</cftry>
-		<cfelse>
-		<cfset variables.instance.FeatureStop = ""/>
-	</cfif>
+    <cfset variables.instance.FeatureStop = parseDateArg(arguments.FeatureStop) />
 	<cfreturn this>
 </cffunction>
 
 <cffunction name="setFeatureStart" output="false" access="public">
     <cfargument name="FeatureStart" type="string" required="true">
-	<cfif lsisDate(arguments.FeatureStart)>
-		<cftry>
-		<cfset variables.instance.FeatureStart = lsparseDateTime(arguments.FeatureStart) />
-		<cfcatch>
-			<cfset variables.instance.FeatureStart = arguments.FeatureStart />
-		</cfcatch>
-		</cftry>
-		<cfelse>
-		<cfset variables.instance.FeatureStart = ""/>
-	</cfif>
+	<cfset variables.instance.FeatureStart = parseDateArg(arguments.FeatureStart) />
 	<cfreturn this>
 </cffunction>
   
 <cffunction name="setRemotePubDate" output="false" access="public">
     <cfargument name="RemotePubDate" type="string" required="true">
-	<cfif lsisDate(arguments.RemotePubDate)>
-		<cftry>
-		<cfset variables.instance.RemotePubDate = lsparseDateTime(arguments.RemotePubDate) />
-		<cfcatch>
-			<cfset variables.instance.RemotePubDate = arguments.RemotePubDate />
-		</cfcatch>
-		</cftry>
-	<cfelse>
-		<cfset variables.instance.RemotePubDate = arguments.RemotePubDate/>
-	</cfif>
+	<cfset variables.instance.RemotePubDate = parseDateArg(arguments.RemotePubDate) />
 	<cfreturn this>
 </cffunction>
 
@@ -591,16 +528,7 @@ to your own modified versions of Mura CMS.
 
 <cffunction name="setCreated" output="false" access="public">
     <cfargument name="Created" type="string" required="true">
-	<cfif lsisDate(arguments.created)>
-		<cftry>
-		<cfset variables.instance.created = lsparseDateTime(arguments.created) />
-		<cfcatch>
-			<cfset variables.instance.created = arguments.created />
-		</cfcatch>
-		</cftry>
-		<cfelse>
-		<cfset variables.instance.created = ""/>
-	</cfif>
+	<cfset variables.instance.Created = parseDateArg(arguments.Created) />
 	<cfreturn this>
 </cffunction>
 

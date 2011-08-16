@@ -32,7 +32,22 @@
 <cfelse>
 	<cfreturn "">
 </cfif>
+</cffunction>
 
+<cffunction name="parseDateArg" output="false" access="public">
+    <cfargument name="arg" type="string" required="true">
+	<cfif lsisDate(arguments.arg)>
+		<cftry>
+		<cfreturn lsparseDateTime(arguments.arg) />
+		<cfcatch>
+			<cfreturn arguments.arg />
+		</cfcatch>
+		</cftry>
+	<cfelseif isDate(arguments.arg)>
+		<cfreturn arguments.arg />
+	<cfelse>
+		<cfreturn "" />
+	</cfif>
 </cffunction>
 
 <cffunction name="set" output="false" access="public">

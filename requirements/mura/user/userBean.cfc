@@ -229,16 +229,7 @@ to your own modified versions of Mura CMS.
   
 <cffunction name="setLastUpdate" output="false" access="public">  
     <cfargument name="LastUpdate" type="string" required="true">
-	<cfif lsisDate(arguments.LastUpdate)>
-		<cftry>
-		<cfset variables.instance.LastUpdate = lsparseDateTime(arguments.LastUpdate) />
-		<cfcatch>
-			<cfset variables.instance.LastUpdate = arguments.LastUpdate />
-		</cfcatch>
-		</cftry>
-		<cfelse>
-		<cfset variables.instance.LastUpdate = ""/>
-	</cfif>
+	<cfset variables.instance.LastUpdate = parseDateArg(arguments.LastUpdate) />
 	<cfreturn this>
 </cffunction>
   
