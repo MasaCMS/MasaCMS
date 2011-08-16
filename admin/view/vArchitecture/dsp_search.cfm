@@ -57,7 +57,7 @@ to your own modified versions of Mura CMS.
 </form>
 <script>
 copyContentID = '#session.copyContentID#';
-copySiteID = '#session..mura.copySiteID#';
+copySiteID = '#session.copySiteID#';
 </script>
 </cfoutput>
  <table class="stripe">
