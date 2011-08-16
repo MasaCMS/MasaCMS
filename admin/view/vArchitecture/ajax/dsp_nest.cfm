@@ -146,11 +146,11 @@ to your own modified versions of Mura CMS.
 		<cfif verdict eq 'editor'></a></cfif>
 	</dd> 
 	<dd class="display<cfif attributes.rsNest.Display eq 2 and attributes.rsNest.approved> scheduled</cfif>">
-		<cfif verdict eq 'editor'><a class="mura-quickEditItem" data-attribute="display"></cfif>
+		<cfif verdict eq 'editor'><a class="mura-quickEditItem<cfif attributes.rsNest.Display eq 2 and attributes.rsNest.approved> tooltip</cfif>" data-attribute="display"></cfif>
 		<cfif attributes.rsNest.Display eq 1 and attributes.rsNest.approved>
 			#application.rbFactory.getKeyValue(session.rb,"sitemanager.yes")#
 		<cfelseif attributes.rsNest.Display eq 2 and attributes.rsNest.approved>
-			<a href="##" class="tooltip"><span>#LSDateFormat(attributes.rsNest.displaystart,"short")#&nbsp;-&nbsp;#LSDateFormat(attributes.rsNest.displaystop,"short")#</span></a>
+			<cfif verdict neq 'editor'><a href="##" class="tooltip"></cfif><span>#LSDateFormat(attributes.rsNest.displaystart,"short")#&nbsp;-&nbsp;#LSDateFormat(attributes.rsNest.displaystop,"short")#</span><cfif verdict neq 'editor'></a></cfif>
 		<cfelse>
 			#application.rbFactory.getKeyValue(session.rb,"sitemanager.no")#
 		</cfif>

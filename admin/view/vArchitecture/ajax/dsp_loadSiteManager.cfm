@@ -182,15 +182,15 @@ to your own modified versions of Mura CMS.
         </cfif>
 		--->
         <dd class="objects">
-        	<cfif perm eq 'editor'><a class="mura-quickEditItem" data-attribute="inheritObjects"></cfif>
+        	<cfif perm eq 'editor'><a class="mura-quickEditItem<cfif request.rstop.Display eq 2 and request.rstop.approved> scheduled</cfif>" data-attribute="inheritObjects"></cfif>
         	#application.rbFactory.getKeyValue(session.rb,"sitemanager.#lcase(request.rstop.inheritObjects)#")#</dd>
        		<cfif perm eq 'editor'></a></cfif>
-	    <dd class="display<cfif request.rstop.Display eq 2 and request.rstop.approved>scheduled</cfif>">
-			<cfif perm eq 'editor'><a class="mura-quickEditItem" data-attribute="display"></cfif>
+	    <dd class="display<cfif request.rstop.Display eq 2 and request.rstop.approved> scheduled</cfif>">
+			<cfif perm eq 'editor'><a class="mura-quickEditItem<cfif request.rstop.Display eq 2 and request.rstop.approved> tooltip</cfif>" data-attribute="display"></cfif>
 			<cfif request.rstop.Display eq 1 and request.rstop.approved >
             	#application.rbFactory.getKeyValue(session.rb,"sitemanager.true")#
             <cfelseif request.rstop.Display eq 2 and request.rstop.approved>
-           	 	<a href="##" class="tooltip"><span>#LSDateFormat(request.rstop.displaystart,"short")#&nbsp;-&nbsp;#LSDateFormat(request.rstop.displaystop,"short")#</span></a>
+           	 	<cfif perm neq 'editor'><a href="##" class="tooltip"></cfif><span>#LSDateFormat(request.rstop.displaystart,"short")#&nbsp;-&nbsp;#LSDateFormat(request.rstop.displaystop,"short")#</span><cfif perm neq 'editor'></a></cfif>
             <cfelse>
            		 #application.rbFactory.getKeyValue(session.rb,"sitemanager.false")#
          	</cfif>
