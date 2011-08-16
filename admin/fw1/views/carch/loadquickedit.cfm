@@ -101,7 +101,7 @@ to your own modified versions of Mura CMS.
 	<cfoutput>
 	<h1>#application.rbFactory.getKeyValue(session.rb,'sitemanager.quickedit.hasdraftstitle')# </h1>
 	<span class="cancel" onclick="jQuery('.mura-quickEdit').remove();">[#application.rbFactory.getKeyValue(session.rb,'sitemanager.quickedit.cancel')#]</span>
-		<p>#application.rbFactory.getKeyValue(session.rb,'sitemanager.quickedit.hasdraftsmessage')#</p>
+		<p id="hasDraftsMessage">#application.rbFactory.getKeyValue(session.rb,'sitemanager.quickedit.hasdraftsmessage')#</p>
 	</cfoutput>
 </cfif>
 

@@ -1086,7 +1086,10 @@ function initQuickEdits(){
 					jQuery(this).parent().prepend(quickEditTmpl);
 					jQuery.get(url + "?" + pars, function(data){
 						jQuery("#mura-quickEditor").html(data);
-						setDatePickers(".mura-quickEdit-datepicker",dtLocale,dtCh)
+						setDatePickers(".mura-quickEdit-datepicker",dtLocale,dtCh);	
+						if(jQuery("#hasDraftsMessage").length){
+						   jQuery("#mura-quickEditor").parents("dd:first").addClass("hasDrafts");
+						}
 					});
 				}			
 			}
