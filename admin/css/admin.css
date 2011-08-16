@@ -839,6 +839,9 @@ label {
 	margin-right: .5em;
 }
 
+
+/* @group Quick Edit */
+
 .mura-quickEditItem {
 	color: #000;
 	display: inline-block;
@@ -846,10 +849,14 @@ label {
 	cursor: pointer;
 }
 
-/* @group Quick Edit */
+#selected .mura-quickEditItem {
+	font-weight: bold;
+	font-style: italic;
+}
 
 .mura-quickEdit {
 	background-color: #272727;
+	opacity: .95;
 	position: absolute;
 	bottom: 34px;
 	left: 50%;
@@ -863,6 +870,7 @@ label {
 	box-shadow: 0 2px 4px #000000;
 	white-space: normal;
 	font-size: 11px;
+	text-align: left;
 }
 
 .mura-quickEdit:after {
@@ -874,12 +882,11 @@ label {
 	left: 80px;
 	bottom: -14px;
 	background: url('../images/quickedit-bottom.png') no-repeat center bottom;
-	/*border: 10px solid;*/
-	/*border-color:  rgb(39, 39, 39) transparent transparent  transparent;*/
+	opacity: .95;
 }
 
 .mura-quickEdit:hover {
-	cursor: pointer;
+	cursor: default;
 }
 
 .mura-quickEdit h1 {
@@ -907,6 +914,19 @@ label {
 	padding: 20px;
 }
 
+.mura-quickEdit input.datepicker {
+	width: 151px;
+}
+
+
+.mura-quickEdit select {
+	margin-bottom: .75em;
+	width: 158px;
+}
+
+.mura-quickEdit input.submit {
+	cursor: pointer;
+}
 .mura-quickEdit li {
 	text-align: left;
 	margin: 0;
@@ -928,9 +948,7 @@ label {
 }
 
 .mura-quickEdit li input.datepicker {
-	width: 92%;
-	float: none;
-	clear: right;
+	width: 151px;
 	font-size: 11px;
 	color: #000;
 	margin: 0 2px 3px 0;
@@ -940,15 +958,6 @@ label {
 .mura-quickEdit li img {
 	padding: 0;
 }
-
-/*.mura-quickEditItem:hover {
-	background: #666;
-	cursor: pointer;
-	text-decoration: none !important;
-	border: 0;
-	color: #fff !;
-}*/
-
 
 .hasDraft .mura-quickEdit {
 	background: #ccc;
@@ -960,8 +969,6 @@ label {
 .hasDraft .mura-quickEdit:after {
 	bottom: -14px;
 	background: url('../images/quickedit-bottom-hasdraft.png') no-repeat center bottom;
-	/*border: 10px solid;*/
-	/*border-color:  rgb(39, 39, 39) transparent transparent  transparent;*/
 }
 
 .hasDraft .mura-quickEdit h1 {
@@ -979,19 +986,6 @@ label {
 
 .hasDraft .mura-quickEdit a.mura-quickEditItem {
 	border-bottom: 0;
-}
-
-/*.mura-quickEdit input[type=submit], .mura-quickEdit input[type=text], .mura-quickEdit select {
-	font-size: 11px;
-}*/
-
-.mura-quickEdit select {
-	margin-bottom: .75em;
-	width: 160px;
-}
-
-.mura-quickEdit input.submit {
-	cursor: pointer;
 }
 
 /* @end */
