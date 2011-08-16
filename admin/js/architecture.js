@@ -1084,6 +1084,8 @@ function initQuickEdits(){
 					
 					jQuery("#mura-quickEditor").remove();
 					jQuery(this).parent().prepend(quickEditTmpl);
+					jQuery('.mura-quickEdit').parents("dd:first").attr("id","selected");
+					
 					jQuery.get(url + "?" + pars, function(data){
 						jQuery("#mura-quickEditor").html(data);
 						setDatePickers(".mura-quickEdit-datepicker",dtLocale,dtCh);	
@@ -1151,5 +1153,10 @@ function saveQuickEdit(){
 			}
 	});	
 	
+}
+
+function closeQuickEdit(){
+	jQuery('.mura-quickEdit').parents("dd:first").attr("id","");
+	jQuery('.mura-quickEdit').remove();
 }
 

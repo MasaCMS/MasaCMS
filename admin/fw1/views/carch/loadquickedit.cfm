@@ -46,7 +46,7 @@ to your own modified versions of Mura CMS.
 <cfif not content.hasDrafts()>
 	<cfoutput>
 	<h1>#application.rbFactory.getKeyValue(session.rb,'sitemanager.quickedit.edit#rc.attribute#')#</h1>
-	<span class="cancel" onclick="jQuery('.mura-quickEdit').remove();">[#application.rbFactory.getKeyValue(session.rb,'sitemanager.quickedit.cancel')#]</span>
+	<span class="cancel" onclick="closeQuickEdit();">[#application.rbFactory.getKeyValue(session.rb,'sitemanager.quickedit.cancel')#]</span>
 	
 	<cfif rc.attribute eq "isnav">
 		<select id="mura-quickEdit-isnav">
@@ -97,7 +97,7 @@ to your own modified versions of Mura CMS.
 <cfelse>
 	<cfoutput>
 	<h1>#application.rbFactory.getKeyValue(session.rb,'sitemanager.quickedit.hasdraftstitle')# </h1>
-	<span class="cancel" onclick="jQuery('.mura-quickEdit').remove();">[#application.rbFactory.getKeyValue(session.rb,'sitemanager.quickedit.cancel')#]</span>
+	<span class="cancel" onclick="closeQuickEdit();">[#application.rbFactory.getKeyValue(session.rb,'sitemanager.quickedit.cancel')#]</span>
 		<p id="hasDraftsMessage">#application.rbFactory.getKeyValue(session.rb,'sitemanager.quickedit.hasdraftsmessage')#</p>
 	</cfoutput>
 </cfif>
