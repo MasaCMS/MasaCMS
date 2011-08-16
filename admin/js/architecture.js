@@ -966,10 +966,11 @@ function loadSiteManager(siteid,topid,moduleid,sortby,sortdirection,ptype,startr
 var sectionLoading=false;
 
 function loadSiteSection(node, startrow)	{
+	
 	if (!sectionLoading) {
 		sectionLoading = true;
 		var url = 'index.cfm';
-		var pars = 'fuseaction=cArch.loadSiteSection&siteid=' + node.attr("data-siteid") + '&contentID=' + node.attr("data-contentid") + '&moduleid=' + node.attr("data-moduleid") + '&sortby=' + node.attr("data-sortby") + '&sortdirection=' + node.attr("data-sortdirection") + '&ptype=' + node.attr("data-type") + '&startrow=' + startrow + '&toggle=true&cacheid=' + Math.random();
+		var pars = 'fuseaction=cArch.loadSiteSection&siteid=' + node.attr("data-siteid") + '&contentID=' + node.attr("data-contentid") + '&moduleid=' + node.attr("data-moduleid") + '&sortby=' + node.attr("data-sortby") + '&sortdirection=' + node.attr("data-sortdirection") + '&ptype=' + node.attr("data-type") + '&startrow=' + startrow + '&cacheid=' + Math.random();
 		
 		//location.href=url + "?" + pars;
 		var icon = node.find("span:first");
@@ -1026,7 +1027,7 @@ function refreshSiteSection(node, startrow)	{
 	if (!sectionLoading) {
 		sectionLoading = true;
 		var url = 'index.cfm';
-		var pars = 'fuseaction=cArch.loadSiteSection&siteid=' + node.attr("data-siteid") + '&contentID=' + node.attr("data-contentid") + '&moduleid=' + node.attr("data-moduleid") + '&sortby=' + node.attr("data-sortby") + '&sortdirection=' + node.attr("data-sortdirection") + '&ptype=' + node.attr("data-type") + '&startrow=' + startrow + '&toggle=false&cacheid=' + Math.random();
+		var pars = 'fuseaction=cArch.refreshSiteSection&siteid=' + node.attr("data-siteid") + '&contentID=' + node.attr("data-contentid") + '&moduleid=' + node.attr("data-moduleid") + '&sortby=' + node.attr("data-sortby") + '&sortdirection=' + node.attr("data-sortdirection") + '&ptype=' + node.attr("data-type") + '&startrow=' + startrow + '&cacheid=' + Math.random();
 	
 		jQuery.get(url + "?" + pars, function(data){
 			try {
