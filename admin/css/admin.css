@@ -849,7 +849,7 @@ label {
 	cursor: pointer;
 }
 
-.mura-quickEditItem.selected {
+#selected .mura-quickEditItem {
 	font-weight: bold;
 	font-style: italic;
 }
