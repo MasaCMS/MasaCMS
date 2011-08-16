@@ -839,10 +839,19 @@ label {
 	margin-right: .5em;
 }
 
+.mura-quickEditItem {
+	color: #000;
+	display: inline-block;
+	width: 100%;
+	cursor: pointer;
+}
+
+/* @group Quick Edit */
+
 .mura-quickEdit {
 	background-color: #272727;
 	position: absolute;
-	bottom: 36px;
+	bottom: 34px;
 	left: 50%;
 	margin-left: -92px;
 	width: 160px;
@@ -870,7 +879,7 @@ label {
 }
 
 .mura-quickEdit:hover {
-	cursor: default;
+	cursor: pointer;
 }
 
 .mura-quickEdit h1 {
@@ -898,11 +907,38 @@ label {
 	padding: 20px;
 }
 
-.mura-quickEditItem {
+.mura-quickEdit li {
+	text-align: left;
+	margin: 0;
+	padding: 0;
+}
+
+.mura-quickEdit li label {
+	width: 160px;
+	display: block;
+	color: #fff;
+	font-size: 11px;
+	clear: right;
+	text-align: left;
+}
+
+.mura-quickEdit li select {
+	width: 50px;
+	float: none;
+}
+
+.mura-quickEdit li input.datepicker {
+	width: 92%;
+	float: none;
+	clear: right;
+	font-size: 11px;
 	color: #000;
-	display: inline-block;
-	width: 100%;
-	cursor: pointer;
+	margin: 0 2px 3px 0;
+	padding: 2px;
+}
+
+.mura-quickEdit li img {
+	padding: 0;
 }
 
 /*.mura-quickEditItem:hover {
@@ -957,6 +993,8 @@ label {
 .mura-quickEdit input.submit {
 	cursor: pointer;
 }
+
+/* @end */
 
 /* @end */
 
