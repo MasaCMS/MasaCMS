@@ -1083,6 +1083,7 @@ function initQuickEdits(){
 					//location.href='?' + pars;
 					
 					jQuery("#mura-quickEditor").remove();
+					jQuery("#selected").attr("id","");
 					jQuery(this).parent().prepend(quickEditTmpl);
 					jQuery('.mura-quickEdit').parents("dd:first").attr("id","selected");
 					
@@ -1156,7 +1157,7 @@ function saveQuickEdit(){
 }
 
 function closeQuickEdit(){
-	jQuery('.mura-quickEdit').parents("dd:first").attr("id","");
+	jQuery('#selected').attr("id","");
 	jQuery('.mura-quickEdit').remove();
 }
 
