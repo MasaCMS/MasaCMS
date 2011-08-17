@@ -994,7 +994,9 @@ function loadSiteSection(node, startrow)	{
 					stripe('stripe');
 					initDraftPrompt();
 					initQuickEdits();
-					node.find('.section:first').hide().slideDown("fast");
+					if (!jQuery.browser.webkit) {
+						node.find('.section:first').hide().slideDown("fast");
+					}
 					
 				} 
 				catch (err) {
@@ -1010,14 +1012,22 @@ function loadSiteSection(node, startrow)	{
 			icon.addClass('hasChildren-closed');
 			
 			jQuery.get(url + "?" + pars);
-			node.find('.section:first').slideUp("fast",
-				function(){
-					node.find('.section:first').remove();
-				    stripe('stripe');
-					document.getElementById("newContentMenu").style.visibility = "hidden";
-					sectionLoading = false;
-				}
-			);	
+			
+			if (!jQuery.browser.webkit) {
+				node.find('.section:first').slideUp("fast",
+					function(){
+						node.find('.section:first').remove();
+					    stripe('stripe');
+						document.getElementById("newContentMenu").style.visibility = "hidden";
+						sectionLoading = false;
+					}
+				);	
+			} else {
+				node.find('.section:first').remove();
+				stripe('stripe');
+				document.getElementById("newContentMenu").style.visibility = "hidden";
+				sectionLoading = false;
+			}
 		}
 	}
 	return false;
