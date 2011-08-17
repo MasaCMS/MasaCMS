@@ -354,5 +354,9 @@ dd.categoryAssignment input.textAlt {
 	bottom: 24px;
 }
 
+.template .mura-quickEdit {
+	bottom: 28px;
+}
+
 
 /* @end */

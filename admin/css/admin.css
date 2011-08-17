@@ -877,6 +877,10 @@ label {
 	text-align: left;
 }
 
+.template .mura-quickEdit {
+	bottom: 36px;
+}
+
 .mura-quickEdit:after {
 	content: ' ';
 	position: absolute;
