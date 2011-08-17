@@ -1,3 +1,6 @@
+/* @override 
+	http://localhost:8500/muracms/admin/css/dialog.css */
+
 /*This file is part of Mura CMS.
 
     Mura CMS is free software: you can redistribute it and/or modify
@@ -24,10 +27,16 @@
   left: 0;
   z-index: 99999;
   text-align: center; /* centers in quirks and IE */
-  background-color: #000;
-  opacity: .85,
-  
-}	
+  /*background: rgb(0, 0, 0);*/ /* The Fallback */
+  /*background: rgba(0, 0, 0, 0.85);*/
+  background: transparent url('../images/dialog/bg.png');
+}
+
+/*#frontEndToolsModalContainer {
+       background:transparent;
+       filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#00000085,endColorstr=#00000085);
+       zoom: 1;
+    } */
 
 #frontEndToolsModalBody {
   position: relative;

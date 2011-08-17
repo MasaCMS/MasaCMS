@@ -49,6 +49,21 @@ to your own modified versions of Mura CMS.
 <cfparam name="Cookie.fetDisplay" default="">
 <cfoutput>
 <link href="#application.configBean.getContext()#/admin/css/dialog.css" rel="stylesheet" type="text/css" />
+
+<!---[if LT IE9]>
+
+   <style type="text/css">
+
+   ##frontEndToolsModalContainer {
+         background: transparent;
+          filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=##00000085,endColorstr=##00000085);
+          zoom: 1;
+       } 
+
+    </style>
+
+<![endif]--->
+
 <cfsilent>
 	<cfif len(application.configBean.getAdminDomain())>
 		<cfif application.configBean.getAdminSSL()>
