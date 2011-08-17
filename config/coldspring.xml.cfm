@@ -584,6 +584,7 @@ to your own modified versions of Mura CMS.
 		</bean>
 		<alias name="contentBean" alias="content"/>
 		<alias name="feedBean" alias="feed"/>
+		<alias name="settingsBean" alias="site"/>
 		<alias name="userBean" alias="user"/>
 		<alias name="userBean" alias="group"/>
 		<alias name="addressBean" alias="address"/>

@@ -42,10 +42,10 @@ to your own modified versions of Mura CMS.
 --->
 <cfoutput>
 <h2>#application.rbFactory.getKeyValue(session.rb,"dashboard.comments")#</h2>
-<cfparam name="attribute.page" default="1">
+<cfparam name="attributes.page" default="1">
 <cfset comments=application.contentManager.getRecentCommentsIterator(attributes.siteID,100,false) />
 <cfset comments.setNextN(20)>
-<cfset comments.setStartRow(attributes.page)>
+<cfset comments.setPage(attributes.page)>
 
 <h3 class="alt">#application.rbFactory.getKeyValue(session.rb,"dashboard.comments.last100")#</h3>
 <table>
