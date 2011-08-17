@@ -139,7 +139,7 @@
 	<cfset var pluginEvent=createObject("component","mura.event")>
 	<cfset var eventArgs=structNew()>
 	
-	<cfset eventArgs.siteID=getSiteID()>
+	<cfset eventArgs.siteID=variables.instance.siteID>
 	<cfset eventArgs.commentBean=this>
 	<cfset pluginEvent.init(eventArgs)>
 	
@@ -154,7 +154,7 @@
 	
 	<cfset pluginManager.announceEvent("onAfterCommentDelete",pluginEvent)>
 	
-	<cfset variables.contentManager.setCommentStat(getContentID(),getSiteID()) />
+	<cfset variables.contentManager.setCommentStat(getContentID(),variables.instance.siteID) />
 </cffunction>
 
 <cffunction name="save" access="public" output="false">
@@ -169,14 +169,14 @@
 	<cfset var pluginEvent=createObject("component","mura.event")>
 	<cfset var eventArgs=structNew()>
 	
-	<cfset eventArgs.siteID=getSiteID()>
+	<cfset eventArgs.siteID=variables.instance.siteID>
 	<cfset eventArgs.commentBean=this>
 	<cfset structAppend(eventArgs, arguments)>
 	
 	<cfset pluginEvent.init(eventArgs)>
 	
-	<cfif len(getParentID())>
-		<cfset path=variables.contentManager.getCommentBean().setCommentID(getParentID()).load().getPath()>
+	<cfif len(variables.instance.parentID)>
+		<cfset path=variables.contentManager.getCommentBean().setCommentID(variables.instance.parentID).load().getPath()>
 	</cfif>
 	
 	<cfset path=listAppend(path, getCommentID())>
@@ -317,7 +317,7 @@ http://#listFirst(cgi.http_host,":")##variables.configBean.getServerPort()##vari
 <cfargument name="script" required="true" default="">
 <cfargument name="subject" required="true" default="">
 <cfargument name="notifyAdmin" required="true" default="true">
-<cfset var site=variables.settingsManager.getSite(getSiteID())>
+<cfset var site=variables.settingsManager.getSite(variables.instance.siteID)>
 <cfset var rsContent="">
 <cfset var notifyText="">
 <cfset var notifysubject=arguments.subject>

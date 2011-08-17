@@ -606,9 +606,9 @@ to your own modified versions of Mura CMS.
 	<cfif arguments.liveOnly>
 		<cfset q=getKidsQuery(aggregation=arguments.aggregation) />
 	<cfelse>
-		<cfset q=variables.contentManager.getNest( parentID:getContentID(), siteID:variables.instance.siteID, sortBy:getSortBy(), sortDirection:getSortDirection()) />
+		<cfset q=variables.contentManager.getNest( parentID:getContentID(), siteID:variables.instance.siteID, sortBy:variables.instance.sortby, sortDirection:variables.instance.sortdirection) />
 	</cfif>
-	<cfset it.setQuery(q,getNextN())>
+	<cfset it.setQuery(q,variables.instance.nextn)>
 	
 	<cfreturn it>
 </cffunction>
@@ -673,7 +673,7 @@ to your own modified versions of Mura CMS.
 	<cfargument name="child" hint="Instance of a contentBean">
 	<cfset arguments.child.setSiteID(variables.instance.siteID)>
 	<cfset arguments.child.setParentID(getContentID())>
-	<cfset arguments.child.setModuleID(getModuleID())>
+	<cfset arguments.child.setModuleID(variables.instance.moduleID)>
 	<cfset arrayAppend(variables.kids,arguments.child)>	
 	<cfreturn this>
 </cffunction>

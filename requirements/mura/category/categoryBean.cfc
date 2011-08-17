@@ -240,7 +240,7 @@ to your own modified versions of Mura CMS.
 </cffunction> 
 
 	<cffunction name="hasParent" output="false">
-	<cfreturn listLen(getPath()) gt 1>
+	<cfreturn listLen(variables.instance.path) gt 1>
 	</cffunction>
 	
 	<cffunction name="clone" output="false">
