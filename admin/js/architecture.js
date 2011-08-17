@@ -994,11 +994,7 @@ function loadSiteSection(node, startrow)	{
 					stripe('stripe');
 					initDraftPrompt();
 					initQuickEdits();
-					if (jQuery.browser.webkit) {
-						node.find('.section:first').hide().fadeIn("fast");
-					} else {
-						node.find('.section:first').hide().slideDown("fast");
-					}
+					node.find('.section:first').hide().fadeIn("slow");
 					
 				} 
 				catch (err) {
@@ -1015,25 +1011,15 @@ function loadSiteSection(node, startrow)	{
 			
 			jQuery.get(url + "?" + pars);
 			
-			if (jQuery.browser.webkit) {
-				node.find('.section:first').fadeOut("fast",
-					function(){
-						node.find('.section:first').remove();
-					    stripe('stripe');
-						document.getElementById("newContentMenu").style.visibility = "hidden";
-						sectionLoading = false;
-					}
-				);	
-			} else {
-				node.find('.section:first').slideUp("fast",
-					function(){
-						node.find('.section:first').remove();
-					    stripe('stripe');
-						document.getElementById("newContentMenu").style.visibility = "hidden";
-						sectionLoading = false;
-					}
-				);	
-			}
+			node.find('.section:first').fadeOut("fast",
+				function(){
+					node.find('.section:first').remove();
+				    stripe('stripe');
+					document.getElementById("newContentMenu").style.visibility = "hidden";
+					sectionLoading = false;
+				}
+			);	
+			
 		}
 	}
 	return false;
