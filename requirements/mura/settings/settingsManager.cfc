@@ -494,4 +494,35 @@ to your own modified versions of Mura CMS.
 	
 </cffunction>
 
+<cffunction name="save" access="public" returntype="any" output="false">
+	<cfargument name="data" type="any" default="#structnew()#"/>	
+	
+	<cfset var siteID="">
+	<cfset var rs="">
+	
+	<cfif isObject(arguments.data)>
+		<cfif listLast(getMetaData(arguments.data).name,".") eq "settingsBean">
+			<cfset arguments.data=arguments.data.getAllValues()>
+		<cfelse>
+			<cfthrow type="custom" message="The attribute 'DATA' is not of type 'mura.settings.settingsBean'">
+		</cfif>
+	</cfif>
+	
+	<cfif not structKeyExists(arguments.data,"siteID")>
+		<cfthrow type="custom" message="The attribute 'SITEID' is required when saving a site settingsBean.">
+	</cfif>
+	
+	<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#" name="rs">
+	select siteID from tsettings where siteID=<cfqueryparam value="#arguments.data.siteID#">
+	</cfquery>
+	
+	<cfif rs.recordcount>
+		<cfreturn update(arguments.data)>	
+	<cfelse>
+		<cfreturn create(arguments.data)>
+	</cfif>
+
+</cffunction>
+
+
 </cfcomponent>

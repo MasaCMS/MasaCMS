@@ -607,4 +607,33 @@ s
 	</cfif>
 </cffunction>
 
+<cffunction name="save" returnType="any" output="false" access="public">
+	<cfset setAllValues(getBean("settingsManager").save(this).getAllValues())>
+	<cfreturn this />
+</cffunction>
+
+<!---
+	Not sure I want to expose this.
+<cffunction name="delete" output="false" access="public">
+	<cfset getBean("settingsManager").delete(variables.instance.siteID) />
+</cffunction>
+--->
+
+<cffunction name="loadBy" returnType="any" output="false" access="public">
+	<cfset var response="">
+	
+	<cfif not structKeyExists(arguments,"siteID")>
+		<cfset arguments.siteID=variables.instance.siteID>
+	</cfif>
+	
+	<cfset response=getBean("siteManager").read(argumentCollection=arguments)>
+	<cfif isArray(response)>
+		<cfset setAllValues(response[1].getAllValues())>
+		<cfreturn response>
+	<cfelse>
+		<cfset setAllValues(response.getAllValues())>
+		<cfreturn this>
+	</cfif>
+</cffunction>
+
 </cfcomponent>
