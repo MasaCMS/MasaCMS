@@ -2851,7 +2851,6 @@ table.cfdebug td a {
 
 .mura-grid .order {
 	width: 40px;
-	/*display: none;*/
 }
 
 .mura-grid .objects {
@@ -2863,16 +2862,16 @@ table.cfdebug td a {
 }
 
 .mura-grid .template img.icon {
-	height: 24px;
-	position: relative;
-	top: -2px;
+	height: 30px;
 	width: auto;
+	position: relative;
+	top: -5px;
 }
 
 .mura-grid #mura-nodes .scheduled a,
 td.scheduled a {
-position: relative;
-top: -2px;
+	position: relative;
+	top: -2px;
 	display: inline-block;
 	height: 24px;
 	width: 24px;
