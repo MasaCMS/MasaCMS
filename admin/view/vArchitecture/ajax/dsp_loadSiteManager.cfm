@@ -157,7 +157,7 @@ to your own modified versions of Mura CMS.
     </dl>
     <ul id="mura-nodes">
     <!-- Begin List of Nodes -->
-    <li data-siteid="#rc.siteid#" data-contentid="#request.rstop.contentid#" data-contenthistid="#request.rstop.contenthistid#" data-sortby="#request.rstop.sortby#" data-sortdirection="#request.rstop.sortdirection#">
+    <li data-siteid="#rc.siteid#" data-contentid="#request.rstop.contentid#" data-contenthistid="#request.rstop.contenthistid#" data-moduleid="#HTMLEditFormat(attributes.moduleid)#" data-sortby="#request.rstop.sortby#" data-sortdirection="#request.rstop.sortdirection#">
       <dl id="top-node">
       <dt>
        
