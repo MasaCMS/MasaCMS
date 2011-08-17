@@ -2863,7 +2863,9 @@ table.cfdebug td a {
 }
 
 .mura-grid .template img.icon {
-	height: 20px;
+	height: 24px;
+	position: relative;
+	top: -2px;
 	width: auto;
 }
 
