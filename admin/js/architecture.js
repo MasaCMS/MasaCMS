@@ -1081,18 +1081,32 @@ function initQuickEdits(){
 					var pars = 'fuseaction=cArch.loadQuickEdit&siteid=' + siteid + '&contentID=' + node.attr("data-contentid") + '&attribute=' + attribute + '&cacheid=' + Math.random();
 					
 					//location.href='?' + pars;
+					//images/icons/template_24x24.png
 					
 					jQuery("#mura-quickEditor").remove();
 					jQuery("#selected").attr("id","");
+					jQuery('#selectedIcon').attr("id","").attr("src","images/icons/template_24x24.png");
 					jQuery(this).parent().prepend(quickEditTmpl);
-					jQuery('.mura-quickEdit').parents("dd:first").attr("id","selected");
+					
+					var qe = jQuery("#mura-quickEditor")
+					var dd = qe.parents("dd:first");
+					
+					dd.attr("id","selected");
 					
 					jQuery.get(url + "?" + pars, function(data){
 						jQuery("#mura-quickEditor").html(data);
 						setDatePickers(".mura-quickEdit-datepicker",dtLocale,dtCh);	
 						if(jQuery("#hasDraftsMessage").length){
-						   jQuery("#mura-quickEditor").parents("dd:first").addClass("hasDraft");
+						   dd.addClass("hasDraft");
 						}
+						
+						if(attribute == 'template'){
+							var img= dd.find("img:first");
+							if(img.length){
+								img.attr("id","selectedIcon").attr("src","images/icons/template_24x24-on.png")
+							}
+						}
+						
 					});
 				}			
 			}
@@ -1158,6 +1172,8 @@ function saveQuickEdit(){
 
 function closeQuickEdit(){
 	jQuery('#selected').attr("id","");
+	jQuery('#selectedIcon').attr("id","").attr("src","images/icons/template_24x24.png");
 	jQuery('.mura-quickEdit').remove();
 }
+
 

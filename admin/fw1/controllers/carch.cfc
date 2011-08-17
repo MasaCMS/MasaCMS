@@ -246,7 +246,12 @@
 	 </cfif>
 	 
 	  <cfif arguments.rc.allowAction and arguments.rc.action eq 'add' and arguments.rc.contentID neq '00000000000000000000000000000000001'>
-	      <cfset arguments.rc.topid=rc.contentBean.getParentID() />	
+	      <cfif not (
+		  		listFindNoCase(session.openSectionList,rc.contentBean.getParentID())
+		  		and listFindNoCase(rc.contentBean.getPath(),session.topID)
+		  )>
+	     	 <cfset arguments.rc.topid=rc.contentBean.getParentID() />	
+		  </cfif>
 	  </cfif>
 	 
 	<cfif arguments.rc.closeCompactDisplay neq 'true' and arguments.rc.action neq 'multiFileUpload'>

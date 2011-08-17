@@ -92,7 +92,7 @@ to your own modified versions of Mura CMS.
 	<cfset variables.instance.PrivateUserPoolID=""/>
 	<cfset variables.instance.AdvertiserUserPoolID=""/>
 	<cfset variables.instance.DisplayPoolID=""/>
-	<cfset variables.instance.hasfeedManager=0/>
+	<cfset variables.instance.feedManager=0/>
 	<cfset variables.instance.galleryMainScaleBy="y"/>
 	<cfset variables.instance.galleryMainScale=600/>
 	<cfset variables.instance.gallerySmallScaleBy="s"/>
@@ -194,6 +194,16 @@ to your own modified versions of Mura CMS.
 	<cfelse>
 		<cfreturn variables.instance.Domain />
 	</cfif>
+</cffunction>
+
+<cffunction name="setHasFeedManager" output="false">
+	<cfargument name="feedManager" />
+	<cfset variables.instance.feedManager=arguments.feedManager>
+	<cfreturn this>
+</cffunction>
+
+<cffunction name="getHasFeedManager" output="false">
+	<cfreturn variables.instance.feedManager>
 </cffunction>
 
 <cffunction name="setExportLocation" access="public" output="false">
