@@ -172,21 +172,15 @@ to your own modified versions of Mura CMS.
 			$(".editableObjectContents").each(	
 				function(el){
 					var maxWidth=0;
-					var maxHeight=0;			
 					$(this).children().each(
 						function(el){
 							var elWidth=$(this).outerWidth();			
 							if(elWidth > maxWidth){
 								maxWidth=elWidth;
-							}
-							var elHeight=$(this).outerHeight();			
-							if(elHeight > maxHeight){
-								maxHeight=elHeight;
-							}										
+							}									
 						}	
 					);
 					$(this).width(maxWidth).parent().width(maxWidth);
-					$(this).height(maxHeight).parent().height(maxHeight);
 				}
 			);
 		}
