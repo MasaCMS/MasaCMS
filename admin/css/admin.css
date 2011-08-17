@@ -2871,10 +2871,16 @@ table.cfdebug td a {
 
 .mura-grid #mura-nodes .scheduled a,
 td.scheduled a {
+position: relative;
+top: -2px;
 	display: inline-block;
-	height: 20px;
-	width: 20px;
+	height: 24px;
+	width: 24px;
 	background: url(../images/icons/cal.png) no-repeat 50% 50%;
+}
+
+.mura-grid #mura-nodes #selected.scheduled a {
+	background: url(../images/icons/cal-on.png) no-repeat 50% 50%;
 }
 
 .mura-grid #mura-nodes .scheduled a span,

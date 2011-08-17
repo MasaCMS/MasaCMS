@@ -27,16 +27,8 @@
   left: 0;
   z-index: 99999;
   text-align: center; /* centers in quirks and IE */
-  /*background: rgb(0, 0, 0);*/ /* The Fallback */
-  /*background: rgba(0, 0, 0, 0.85);*/
   background: transparent url('../images/dialog/bg.png');
 }
-
-/*#frontEndToolsModalContainer {
-       background:transparent;
-       filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#00000085,endColorstr=#00000085);
-       zoom: 1;
-    } */
 
 #frontEndToolsModalBody {
   position: relative;
@@ -187,6 +179,7 @@ a#editFormCloseLink {
 	text-decoration: none !important;font-weight: normal !important;
 	font-family: "Lucida Grande", Arial, Helvetica, sans-serif !important;
 	font-style: normal !important;
+	outline: 0 !important;
 }
 
 #frontEndTools ul li a:hover {
@@ -315,6 +308,11 @@ a#editFormCloseLink {
 	margin: 1px 0 !important;
 	line-height: 2.25 !important;
 	color: #fff !important;
+}
+
+#frontEndTools a:active, #frontEndTools a:selected,  #frontEndTools a:visited { 
+    border: none !important;
+    outline: none !important;
 }
 
 #frontEndTools li li a:hover {
