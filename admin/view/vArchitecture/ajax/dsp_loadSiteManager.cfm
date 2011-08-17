@@ -262,7 +262,7 @@ to your own modified versions of Mura CMS.
         </ul></dd>
       </dl>
       
-      <cfif request.rstop.hasKids>
+      <cfif request.rstop.hasKids and rsNext.recordcount>
         <cf_dsp_nest topid="#attributes.topid#" parentid="#attributes.topid#"  rsnest="#rsNext#" locking="#application.settingsManager.getSite(attributes.siteid).getlocking()#" nestlevel="1" perm="#perm#" siteid="#attributes.siteid#" moduleid="#attributes.moduleid#" restricted="#r#" viewdepth="#session.mura.viewDepth#" nextn="#session.mura.nextN#" startrow="#attributes.startrow#" sortBy="#attributes.sortBy#" sortDirection="#attributes.sortDirection#" pluginEvent="#pluginEvent#">
       </cfif>
       </li>

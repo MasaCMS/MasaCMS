@@ -57,7 +57,6 @@ to your own modified versions of Mura CMS.
 <ul<cfif sortable> id='sortableKids'</cfif> class="section">
 <cfoutput query="attributes.rsNest" startrow="#variables.startrow#" maxrows="#attributes.nextN#">
 <cfsilent>
-
 <cfset request.menulist=listappend(request.menulist,attributes.rsnest.contentid)>
 
 <cfif attributes.rsnest.hasKids> 
@@ -159,7 +158,7 @@ to your own modified versions of Mura CMS.
 	<dd class="template">
 	  	<cfif verdict eq 'editor'><a class="mura-quickEditItem" data-attribute="template"></cfif>
 		<cfif len(attributes.rsnest.template)>
-			 <img class="icon" src="images/icons/template_24x24.png" /> 
+			 <img src="images/icons/template_24x24.png" /> 
 		<cfelse>
            	#application.rbFactory.getKeyValue(session.rb,"sitemanager.inherit")#
           </cfif>
@@ -227,8 +226,8 @@ to your own modified versions of Mura CMS.
 	</ul>
 	</dd>
 </dl>
-   <cfif (attributes.rsNest.hasKids and attributes.nestlevel lt attributes.viewDepth)
-   	 or isOpenSection>
+   <cfif ((attributes.rsNest.hasKids and attributes.nestlevel lt attributes.viewDepth)
+   	 or isOpenSection) and rsNext.recordcount>
    <cf_dsp_nest parentid="#attributes.rsNest.contentid#"  
    locking="#attributes.locking#" 
    nestlevel="#evaluate(attributes.nestlevel + 1)#" 
