@@ -1066,7 +1066,7 @@ function setAsSorted(){
 
 
 var quickEditTmpl = '<div class="mura-quickEdit" id="mura-quickEditor">';
-	quickEditTmpl += '<img src="images/ajax-loader-big.gif" />';
+	quickEditTmpl += '<img class="loader" src="images/ajax-loader-big.gif" />';
 	quickEditTmpl += '</div>';      		
 	     
 function initQuickEdits(){
@@ -1141,7 +1141,7 @@ function saveQuickEdit(){
 	
 	var pars=jQuery.extend({},basePars,attributeParams);
 
-	jQuery("#mura-quickEditor").html('<img src="images/ajax-loader-big.gif" />');
+	jQuery("#mura-quickEditor").html('<img class="loader" src="images/ajax-loader-big.gif" />');
 	
 	jQuery.post('index.cfm',pars,
 		function(data){		

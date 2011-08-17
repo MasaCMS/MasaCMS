@@ -843,7 +843,7 @@ label {
 /* @group Quick Edit */
 
 .mura-quickEditItem {
-	color: #000;
+	color: #333232;
 	display: inline-block;
 	width: 100%;
 	cursor: pointer;
@@ -851,7 +851,11 @@ label {
 
 #selected .mura-quickEditItem {
 	font-weight: bold;
-	font-style: italic;
+	color: #ff3a00;
+}
+
+#selected.template .mura-quickEditItem {
+	
 }
 
 .mura-quickEdit {
@@ -867,7 +871,7 @@ label {
 	display: block;
 	border-radius: 5px;
 	padding: 8px 10px;
-	box-shadow: 0 2px 4px #000000;
+	box-shadow: 0 2px 4px #333232;
 	white-space: normal;
 	font-size: 11px;
 	text-align: left;
@@ -910,22 +914,32 @@ label {
 	cursor: pointer;
 }
 
-.mura-quickEdit img {
-	padding: 20px;
+.mura-quickEdit img.loader {
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	margin-left: -16px;
+	margin-top: -16px;
+	width: 24px !important;
+	height: 24px !important;
 }
 
 .mura-quickEdit input.datepicker {
 	width: 151px;
 }
 
-
 .mura-quickEdit select {
 	margin-bottom: .75em;
 	width: 158px;
 }
 
+.mura-quickEdit .buttons {
+	text-align: center;
+}
+
 .mura-quickEdit input.submit {
 	cursor: pointer;
+	margin: 0 auto;
 }
 .mura-quickEdit li {
 	text-align: left;
@@ -950,7 +964,7 @@ label {
 .mura-quickEdit li input.datepicker {
 	width: 151px;
 	font-size: 11px;
-	color: #000;
+	color: #333232;
 	margin: 0 2px 3px 0;
 	padding: 2px;
 }
@@ -972,7 +986,7 @@ label {
 }
 
 .hasDraft .mura-quickEdit h1 {
-	color: #000;
+	color: #333232;
 	font-weight: bold;
 	background: url('../images/icons/unsubscribe_24x24.png') no-repeat left top;
 	height: 24px;
@@ -2737,6 +2751,14 @@ table.cfdebug td a {
 	margin: 0 !important;
 }
 
+.mura-grid dd  {
+	color: #666;
+}
+
+.mura-grid dd.updated  {
+	color: #333232;
+}
+
 .mura-grid dt {
 	width: 380px;
 	text-align: left;
@@ -2836,7 +2858,7 @@ table.cfdebug td a {
 	width: 60px;
 }
 
-.mura-grid .template img {
+.mura-grid .template img.icon {
 	height: 20px;
 	width: auto;
 }
