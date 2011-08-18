@@ -231,7 +231,7 @@ to your own modified versions of Mura CMS.
 
 <cffunction name="getMailServerUsername" returntype="String" access="public" output="false">
 	<cfargument name="forLogin" default="false" required="true">
-	<cfif not arguments.forLogin or len(getMailServerPassword())>
+	<cfif not arguments.forLogin or len(variables.instance.mailServerPassword)>
 		<cfreturn variables.instance.mailServerUsername />
 	<cfelse>
 		<cfreturn ""/>

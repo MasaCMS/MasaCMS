@@ -87,34 +87,31 @@ to your own modified versions of Mura CMS.
 		<cfset variables.instance.EmailID = createUUID() />
 	</cfif>
 	<cfreturn variables.instance.EmailID />
+	<cfreturn this>
 </cffunction>
 
-<cffunction name="setCreatedDate" returnType="void" output="false" access="public">
+<cffunction name="setCreatedDate" output="false" access="public">
     <cfargument name="CreatedDate" type="string" required="true">
-	<cfif isDate(arguments.CreatedDate)>
-    <cfset variables.instance.CreatedDate = parseDateTime(arguments.CreatedDate) />
-	<cfelse>
-	<cfset variables.instance.CreatedDate = ""/>
-	</cfif>
+	<cfset variables.instance.CreatedDate = parseDateArg(arguments.CreatedDate)/>
+	<cfreturn this>
 </cffunction>
 
-<cffunction name="setDeliveryDate" returnType="void" output="false" access="public">
+<cffunction name="setDeliveryDate" output="false" access="public">
     <cfargument name="DeliveryDate" type="string" required="true">
-	<cfif lsisDate(arguments.DeliveryDate)>
-		<cftry>
-		<cfset variables.instance.DeliveryDate = lsparseDateTime(arguments.DeliveryDate) />
-		<cfcatch>
-			<cfset variables.instance.DeliveryDate = arguments.DeliveryDate />
-		</cfcatch>
-		</cftry>
-		<cfelse>
-		<cfset variables.instance.DeliveryDate = ""/>
-	</cfif>
+	<cfset variables.instance.DeliveryDate = parseDateArg(arguments.DeliveryDate)/>
+	<cfreturn this>
 </cffunction>
 
-<cffunction name="setLastUpdateBy" returnType="void" output="false" access="public">
+<cffunction name="setLastUpdateBy" output="false" access="public">
     <cfargument name="LastUpdateBy" type="string" required="true">
     <cfset variables.instance.LastUpdateBy = left(trim(arguments.LastUpdateBy),50) />
+	<cfreturn this>
+</cffunction>
+
+<cffunction name="setGroupList" output="false" access="public">
+    <cfargument name="groupList" type="string" required="true">
+    <cfset variables.instance.groupID = arguments.groupList />
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="save" output="false">
