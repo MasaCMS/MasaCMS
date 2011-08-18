@@ -289,11 +289,11 @@ tcontent.doCache,tcontent.created,tcontent.urltitle,tcontent.htmltitle,tcontent.
 			<cfset bean=getBean()>
 		</cfif>
 		
-		<cfif len(arguments.title)>		
+		<cfif len(arguments.urltitle)>		
 			<cfquery datasource="#variables.dsn#" name="rsContent"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 				select #variables.fieldlist#, tfiles.fileSize, tfiles.contentType, tfiles.contentSubType, tfiles.fileExt from tcontent 
 				left join tfiles on (tcontent.fileid=tfiles.fileid)
-				where tcontent.urltitle=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.utltitle#" /> 
+				where tcontent.urltitle=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.urltitle#" /> 
 				#renderActiveClause("tcontent",arguments.siteID)#
 				and tcontent.siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteid#" />
 				and type in ('Page','Portal','File','Calendar','Link','Gallery','Component','Form')
