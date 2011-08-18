@@ -51,7 +51,7 @@
 						</li>
 						<li class="meld-tb-dsi meld-tb-grp-source" style="display: none">
 							<label for="dataset">#mmRBF.getKeyValue(session.rb,'formbuilder.source')#</label>
-							<input class="text tb-source" id="meld-tb-dataset-source" type="text" name="source" value="" maxlength="250" data-required='true' />
+							<input class="text tb-source" id="meld-tb-dataset-source" type="text" name="source" value="" maxlength="250" />
 						</li>
 					</ul>
 				</div>

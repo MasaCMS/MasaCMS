@@ -43,10 +43,11 @@
 		<cfset var fieldBean		= createObject('fieldBean').init(formID=arguments.formID,fieldID=arguments.fieldID,isdirty=1) />
 		<cfset var fieldTypeBean	= "" />
 		<cfset var mmRBF			= application.rbFactory />
+		<cfset var fieldTypeName	= rereplace(arguments.fieldType,".[^\-]*-","") />
 
 		<cfset fieldTypeBean	= getFieldTypeBean( fieldType=fieldType,asJSON=arguments.asJSON ) />
 		<cfset fieldBean.setFieldType( fieldTypeBean ) />
-		<cfset fieldBean.setLabel( mmRBF.getKeyValue(session.rb,'formbuilder.new#listLast(arguments.fieldType,'-')#') ) />
+		<cfset fieldBean.setLabel( mmRBF.getKeyValue(session.rb,'formbuilder.new') & " " & mmRBF.getKeyValue(session.rb,'formbuilder.field.#fieldTypeName#') ) />
 
 		<cfif arguments.asJSON>
 			<cfreturn fieldBean.getasJSON() />
@@ -62,12 +63,15 @@
 		<cfargument name="modelBean" required="false" type="any" />
 
 		<cfset var datasetBean		= createObject('datasetBean').init(datasetID=arguments.datasetID,fieldID=arguments.fieldID) />
+		<cfset var modelBean		= "" />
 
 		<cfif not StructKeyExists( arguments,"modelBean" ) or isSimpleValue(arguments.modelBean)>
-			<cfset arguments.modelBean	= createObject('datarecordBean').init(datasetID=arguments.datasetID) />
+			<cfset modelBean	= createObject('datarecordBean').init(datasetID=arguments.datasetID) />
+		<cfelse>
+			<cfset modelBean	= arguments.modelBean />
 		</cfif>
 
-		<cfset datasetBean.setModel( arguments.modelBean ) />
+		<cfset datasetBean.setModel( modelBean ) />
 
 		<cfif arguments.asJSON>
 			<cfreturn datasetBean.getasJSON() />
@@ -134,8 +138,8 @@
 		<cfargument name="reload" required="false" type="boolean" default="false" />
 
 		<cfset var dialogTemplate		= lcase( rereplace(arguments.dialog,"[^[:alnum:]|-]","","all") & ".cfm" ) />
-		<cfset var filePath				= "#variables.filePath#/#fieldTemplate#" />
-		<cfset var templatePath			= "#variables.templatePath#/#fieldTemplate#" />
+		<cfset var filePath				= "#variables.filePath#/#dialogTemplate#" />
+		<cfset var templatePath			= "#variables.templatePath#/#dialogTemplate#" />
 		<cfset var strField				= "" />
 		<cfset var mmRBF				= application.rbFactory />
 		

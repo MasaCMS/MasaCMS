@@ -1,1 +1,1 @@
-<cfoutput><span>#mmRBF.key('formbuilder.dataset.rowdeleteconfirm','message')#</span></cfoutput>
+<cfoutput><span>#mmRBF.getKeyValue(session.rb,'formbuilder.dataset.rowdeleteconfirm')#</span></cfoutput>

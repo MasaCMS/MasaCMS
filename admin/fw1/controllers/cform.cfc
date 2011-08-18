@@ -8,14 +8,7 @@
 	<cffunction name="getDialog" access="public" returntype="string" output="false">
 		<cfargument name="rc" type="struct" required="false" default="#StructNew()#">
 		
-		<cfset var formBean	= "" />
-
-		<cfif not StructKeyExists( rc,"formID" )>
-			<cfset formID = createUUID() />
-		</cfif>
-		
-		<cfset formBean	= variables.formBuilderManager.getFormBean( formID=formID ) />
-		<cfset rc.return = formBean.getAsJSON() />
+		<cfset rc.return	= variables.formBuilderManager.getDialog( dialog=rc.dialog ) />
 	</cffunction>
 
 	<cffunction name="getForm" access="public" returntype="string" output="false">

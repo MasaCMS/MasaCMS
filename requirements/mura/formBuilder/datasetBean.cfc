@@ -61,7 +61,7 @@
 		<cfset setSortDirection( arguments.SortDirection ) />
 		<cfset setSortType( arguments.SortType ) />
 		<cfset setIsGlobal( arguments.IsGlobal ) />
-		<cfset setIsSorted( arguments.IsLocked ) />
+		<cfset setIsSorted( arguments.IsSorted ) />
 		<cfset setIsLocked( arguments.IsLocked ) />
 		<cfset setIsActive( arguments.IsActive ) />
 		<cfset setSourceType( arguments.SourceType ) />
@@ -147,7 +147,7 @@
 	
 	<cffunction name="setIsSorted" access="public" returntype="void" output="false">
 		<cfargument name="IsSorted" type="boolean" required="true" />
-		<cfset variables.instance['isSorted'] = arguments.IsSorted />
+		<cfset variables.instance['issorted'] = arguments.IsSorted />
 	</cffunction>
 	<cffunction name="getIsSorted" access="public" returntype="boolean" output="false">
 		<cfreturn variables.instance.IsSorted />

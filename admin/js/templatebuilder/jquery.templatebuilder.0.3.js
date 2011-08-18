@@ -156,12 +156,6 @@
 			}
 
 			if(fieldData.fieldtype.isdata == 1) {
-				/*
-				if( fieldData.datasetid.length && _dataSets[fieldData.datasetid] == false ) {
-					goLoadDataset(fieldData.datasetid);
-				}
-				else
-				*/
 				if (fieldData.datasetid.length) {
 					doDataset();
 				}
@@ -209,7 +203,6 @@
 
 			jQuery('.ui-button',$_field).each(function() {
 				jQuery(this).click( function() {
-					alert('click');
 					switch ( jQuery(this).attr('id') ) {
 						case 'button-trash': {
 							doDeleteField();
@@ -247,15 +240,11 @@
 			$_grid.hide();
 
 			if(_currentDataset.sourcetype == "") {
-				alert('no source');
 				doDatasetForm();
 				return;
 			}
-			else {
-				alert("current: " + _currentDataset.sourcetype);
-			}
 
-			if (_currentDataset.sourcetype == 'manual') {
+			if (_currentDataset.sourcetype == 'entered') {
 				if (_templates['dataset-grid'] == undefined) 
 					goLoadTemplate('dataset-grid', doRenderDataset);
 				else {
@@ -264,18 +253,28 @@
 			}
 			else {
 				if (_templates['dataset-sourced'] == undefined) 
-					goLoadTemplate('dataset-sourced', doSourced);
+					goLoadTemplate('dataset-sourced', doRenderSourced);
 				else {
-					doSourced();
+					doRenderSourced();
 				}
 			}
 		}
 
-		function doSourced() {
+		function doRenderSourced() {
 			$_dataset.hide();
 			$_grid.hide();
 	
+			jQuery('.ui-button',$_grid).unbind();
 			$_grid.html(_templates['dataset-sourced']);
+
+			jQuery('.ui-button',$_grid).click(function() {
+				switch (jQuery(this).attr('id')) {
+					case 'button-grid-edit':{
+						doDatasetForm();
+					}
+					break;
+				}
+			});
 
 			jQuery('#tb-source').val( _currentDataset.source );
 
@@ -292,11 +291,9 @@
 			$_grid.hide();
 
 			if (_templates['dataset-form'] == undefined) { 
-				alert('go a');
 				goLoadTemplate('dataset-form',doRenderDatasetForm);
 			}
 			else {
-				alert('go b');
 				doShowDatasetForm();
 			}
 		}
@@ -309,8 +306,8 @@
 
 			jQuery('.meld-tb-dsi').hide();
 			switch( _currentDataset.sourcetype ) {
-				case "manual": {
-					jQuery('.meld-tb-grp-manual').show();						
+				case "entered": {
+					jQuery('.meld-tb-grp-entered').show();						
 				}
 				break;
 				case "dsp":
@@ -320,12 +317,20 @@
 				}
 				break;
 				default: {
-					jQuery('.meld-tb-grp-manual').show();						
+					jQuery('.meld-tb-grp-entered').show();						
 				}
 				break;
 			}
 
+			if(jQuery('#meld-tb-dataset-issorted').val() == 1) {
+				jQuery('.meld-tb-grp-sorted').show();			
+			}
+			else {
+				jQuery('.meld-tb-grp-sorted').hide();
+			}
+
 			jQuery('#meld-tb-dataset-sourcetype').val( _currentDataset.sourcetype );
+			jQuery('#meld-tb-dataset-issorted').val( _currentDataset.issorted );
 			jQuery('#meld-tb-dataset-sorttype').val( _currentDataset.sorttype );
 			jQuery('#meld-tb-dataset-sortcolumn').val( _currentDataset.sortcolumn );
 			jQuery('#meld-tb-dataset-sortdirection').val( _currentDataset.sortcolumn );
@@ -348,27 +353,44 @@
 				
 				_currentDataset.sourcetype = jQuery(this).val();
 				
-				switch( _currentDataset.sourcetype ) {
-					case "manual": {
-						jQuery('.meld-tb-grp-manual').show();						
+				if( _currentDataset.sourcetype == "entered") {
+					jQuery('.meld-tb-grp-entered').show();						
+
+					if(jQuery('#meld-tb-dataset-issorted').val() == 1) {
+						jQuery('.meld-tb-grp-sorted').show();			
 					}
-					break;
-					case "remote": {
-						jQuery('.meld-tb-grp-source').show();						
+					else {
+						jQuery('.meld-tb-grp-sorted').hide();
 					}
-					break;
+				}
+				else {
+					jQuery('.meld-tb-grp-source').show();						
+				}
+			});
+
+			jQuery('#meld-tb-dataset-issorted').change( function() {
+				jQuery('.meld-tb-grp-sorted').hide();
+				
+				_currentDataset.issorted = jQuery(this).val();
+				
+				if(_currentDataset.issorted == 1) {
+					jQuery('.meld-tb-grp-sorted').show();			
+				}
+				else {
+					jQuery('.meld-tb-grp-sorted').hide();
 				}
 			});
 
 			jQuery('#meld-tb-save-dataset').click( function() {
 				
 				_currentDataset.sourcetype = jQuery('#meld-tb-dataset-sourcetype').val();
+				_currentDataset.issorted = jQuery('#meld-tb-dataset-issorted').val();
 				_currentDataset.sorttype = jQuery('#meld-tb-dataset-sorttype').val();
 				_currentDataset.sortcolumn = jQuery('#meld-tb-dataset-sortcolumn').val();
 				_currentDataset.sortdirection = jQuery('#meld-tb-dataset-sortdirection').val();
 				_currentDataset.source = jQuery('#meld-tb-dataset-source').val();
 				
-				if(_currentDataset.sourcetype == 'remote' && !_currentDataset.source.length ) {
+				if(_currentDataset.sourcetype != 'entered' && !_currentDataset.source.length ) {
 					doDisplayDialog( 'message-dataset-sourcerequired' );
 					return;
 				}
@@ -384,6 +406,7 @@
 			var fieldData	= _formData.fields[_currentFieldID];
 			var datasetID	= fieldData.datasetid; 
 			var data		= _dataSets[datasetID];
+
 
 			jQuery('.ui-button',$_grid).unbind();
 			$_grid.html( _templates['dataset-grid'] );
@@ -405,15 +428,6 @@
 					break;
 					case 'button-grid-add': {
 						doRenderRow();
-					}
-					break;
-					case 'button-grid-reload': {
-						if( data.isdirty || data.issortchanged )
-							doDisplayDialog( 'message-reload-dataset',goLoadDataset );
-					}
-					break;
-					case 'button-grid-edit': {
-						
 					}
 					break;
 				}
@@ -449,7 +463,7 @@
 			$_gridtable.html('');
 			$_gridhead.html('');
 			
-			if (data.sorttype == 'manual') {
+			if (data.issorted != 1) {
 				$_gridtable.sortable({
 					axis: 'y',
 					opacity: 0.6,
@@ -526,13 +540,10 @@
 
 			for( var i = 0;i < settings.dataColumns.length;i++) {
 				colName		= settings.dataColumns[i];
-				isColUsed	= data["is"+colName];
 				$cell = jQuery(cell);
 				$cell.addClass('meld-tb-cell-input');
-				if (isColUsed) {
-					$cell.html( jQuery('#element-labels #'+colName,$rowHTML).html() );
-					$row.append($cell);
-				}
+				$cell.html( jQuery('#element-labels #'+colName,$rowHTML).html() );
+				$row.append($cell);
 			}
 
 			$_gridhead.append($row);
@@ -644,30 +655,19 @@
 			
 			for( var i = 0;i < settings.dataColumns.length;i++) {
 				colName		= settings.dataColumns[i];
-				isColUsed	= data["is"+colName];
 				$cell = jQuery(cell);
 
 				$cell.addClass('meld-tb-cell-input');
-				if (isColUsed && editMode) {
-					$input = jQuery(input);
-					$input.attr('data-id', record.datarecordid);
-					$input.attr('name', colName);
-					$input.val(record[colName]);
-					$cell.append($input);
-					$row.append($cell);
-				}
-				else if (isColUsed) {
-					$display = jQuery(display);
-					$display.attr('name', colName);
-					$display.html(record[colName]);
-					$cell.append($display);
-					$row.append($cell);
-				}
+
+				$input = jQuery(input);
+				$input.attr('data-id', record.datarecordid);
+				$input.attr('name', colName);
+				$input.val(record[colName]);
+				$cell.append($input);
+				$row.append($cell);
 			}
 			
-			if(data.sorttype == 'manual') {
-//				$handle = jQuery(handle);
-//				$row.append($handle);
+			if(data.issorted != 1) {
 				$row.css('border-right','15px solid #435f8b');
 			}
 
@@ -741,7 +741,7 @@
 			};
 						
 			if (!_templates[template]) {
-				goLoadDialog( template,onYes,args );
+				goLoadDialog( template,isMsg,onYes,args,lblYes,lblNo );
 			}
 			else {
 				jQuery("<div id='closable' style='display: none'>" + _templates[template] + "</div>").dialog({
@@ -813,12 +813,12 @@
 				}
 			});		
 		}
-		
-		function goLoadDialog( template,isMsg,fn,args,lblYes,lblNo ) {
+							   
+		function goLoadDialog( template,isMsg,onYes,args,lblYes,lblNo ) {
 			var data = {};
 			var iefix 		= Math.floor(Math.random()*9999999);
 
-			data.fieldType = template;
+			data.dialog = template;
 
 			jQuery.ajax({
 				url: settings.url + "?fuseaction=cform.getdialog&i=" + iefix,
@@ -827,7 +827,7 @@
 				cache: false,
 				success: function( response ) {
 					_templates[template] = response;
-					doDisplayDialog( template,isMsg,fn,args,lblYes,lblNo );
+					doDisplayDialog( template,isMsg,onYes,args,lblYes,lblNo );
 				},
 				error: function(){
 					alert('fail: load dialog');
@@ -850,16 +850,9 @@
 				cache: false,
 				success: function( response ) {
 					if ( data.datasetID.length == 0 ) {
-						alert('short!');
-						alert( response.datasetid );
-						alert( myDump( response ,"","  ",0,30) );
 						_dataSets[response.datasetid] = response;
 						fieldData.datasetid = response.datasetid;
 						doDatasetForm();
-					}
-					else {
-						alert('long!');
-						doDataset();
 					}
 				},
 				error: function(){
@@ -898,7 +891,7 @@
 		url:			'',
 		formid:			'',
 		mode:	 		'create',
-		dataColumns:	[],
+		dataColumns:	['value'],
 		lbl:			{'yes':'Yes','no':'Cancel','cancel':'Cancel'}
 	};
 

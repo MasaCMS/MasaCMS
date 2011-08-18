@@ -1,1 +1,1 @@
-<cfoutput><span>#mmRBF.key('formbuilder.dataset.reloadconfirm')#</span></cfoutput>
+<cfoutput><span>#mmRBF.getKeyValue(session.rb,'formbuilder.dataset.sourcerequired')#</span></cfoutput>
