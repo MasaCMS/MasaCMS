@@ -182,7 +182,7 @@ to your own modified versions of Mura CMS.
 				
 				if(windowHeight > frontEndModalHeight){	
 					frontEndModalHeight=windowHeight;
-					frameContainer.style.height=windowHeight + 75 + "px"
+					frameContainer.style.height=windowHeight + 100 + "px"
 					setTimeout(function(){
 						jQuery("##frontEndToolsModalClose").fadeIn("fast")
 					},1000);
