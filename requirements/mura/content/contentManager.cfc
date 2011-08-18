@@ -377,7 +377,7 @@ to your own modified versions of Mura CMS.
 		<cfargument name="siteID" type="string" required="yes" />
 		<cfargument name="contentBean" type="any" default=""/>
 		
-		<cfset var key="urltitle" & arguments.siteid & arguments.title />
+		<cfset var key="urltitle" & arguments.siteid & arguments.urltitle />
 		<cfset var site=variables.settingsManager.getSite(arguments.siteid)/>
 		<cfset var cacheFactory=site.getCacheFactory(name="data")/>
 		<cfset var bean=""/>
