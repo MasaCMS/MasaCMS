@@ -60,6 +60,9 @@ to your own modified versions of Mura CMS.
 <cfelseif request.filterBy eq "releaseMonth">
 	<cfset menuType="releaseMonth">
 	<cfset menuDate=createDate(request.year,request.month,1)>
+<cfelseif request.filterBy eq "releaseYear">
+	<cfset menuType="releaseYear">
+	<cfset menuDate=createDate(request.year,request.month,1)>
 <cfelse>
 	<cfset menuDate=now()>
 	<cfset menuType="default">
