@@ -13,7 +13,7 @@
 		<cfargument name="formID" required="false" type="uuid" default="#createUUID()#" />
 
 		<cfset var formStruct	= StructNew() />
-		<cfset var formBean		= createObject('formBean').init(formID=formID) />
+		<cfset var formBean		= createObject('component','formBean').init(formID=formID) />
 
 		<cfset formStruct['datasets']	= StructNew() />
 		<cfset formStruct['form']		= formBean.getAsStruct() />
@@ -25,13 +25,14 @@
 		<cfargument name="formID" required="false" type="uuid" default="#createUUID()#" />
 		<cfargument name="asJSON" required="false" type="boolean" default="false" />
 
-		<cfset var formBean		= createObject('formBean').init(formID=arguments.formID) />
+		<cfset var formBean		= createObject('component','formBean').init(formID=arguments.formID) />
 
 		<cfif arguments.asJSON>
 			<cfreturn formBean.getasJSON() />
 		<cfelse>
 			<cfreturn formBean  />
 		</cfif>
+		
 	</cffunction>
 
 	<cffunction name="getFieldBean" access="public" output="false" returntype="any">
@@ -40,7 +41,7 @@
 		<cfargument name="fieldType" required="false" type="string" default="field-textfield" />
 		<cfargument name="asJSON" required="false" type="boolean" default="false" />
 
-		<cfset var fieldBean		= createObject('fieldBean').init(formID=arguments.formID,fieldID=arguments.fieldID,isdirty=1) />
+		<cfset var fieldBean		= createObject('component','fieldBean').init(formID=arguments.formID,fieldID=arguments.fieldID,isdirty=1) />
 		<cfset var fieldTypeBean	= "" />
 		<cfset var mmRBF			= application.rbFactory />
 		<cfset var fieldTypeName	= rereplace(arguments.fieldType,".[^\-]*-","") />
@@ -62,11 +63,11 @@
 		<cfargument name="asJSON" required="false" type="boolean" default="false" />
 		<cfargument name="modelBean" required="false" type="any" />
 
-		<cfset var datasetBean		= createObject('datasetBean').init(datasetID=arguments.datasetID,fieldID=arguments.fieldID) />
-		<cfset var modelBean		= "" />
+		<cfset var datasetBean		= createObject('component','datasetBean').init(datasetID=arguments.datasetID,fieldID=arguments.fieldID) />
+		<cfset var mBean			= "" />
 
 		<cfif not StructKeyExists( arguments,"modelBean" ) or isSimpleValue(arguments.modelBean)>
-			<cfset mBean	= createObject('datarecordBean').init(datasetID=arguments.datasetID) />
+			<cfset mBean	= createObject('component','datarecordBean').init(datasetID=arguments.datasetID) />
 		<cfelse>
 			<cfset mBean	= arguments.modelBean />
 		</cfif>
@@ -88,7 +89,7 @@
 		<cfset var aFieldTemplate		= ListToArray(rereplace(arguments.fieldType,"[^[:alnum:]|-]","","all"),"-") />
 		<cfset var displayName			= lcase( aFieldTemplate[1] ) />
 		<cfset var typeName				= lcase( aFieldTemplate[2] ) />
-		<cfset var fieldTypeBean		= createObject('fieldTypeBean').init(fieldTypeID=arguments.fieldTypeID,fieldtype=typeName,displayType=displayName) />
+		<cfset var fieldTypeBean		= createObject('component','fieldTypeBean').init(fieldTypeID=arguments.fieldTypeID,fieldtype=typeName,displayType=displayName) />
 
 		<cfswitch expression="#fieldTypeBean.getFieldType()#">
 			<cfcase value="dropdown,checkbox,radio" >
