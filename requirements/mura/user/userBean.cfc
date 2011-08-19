@@ -180,7 +180,6 @@ to your own modified versions of Mura CMS.
 		</cfif>
 	</cfif>
 
-	<cfset validate() />
 	<cfreturn this />
 </cffunction>
 
@@ -337,7 +336,9 @@ to your own modified versions of Mura CMS.
 <cffunction name="validate" access="public" output="false" >
 	<cfset var extErrors=structNew() />
 	<cfset var passwordRegex="(?=^.{7,15}$)(?=.*\d)(?![.\n])(?=.*[a-zA-Z]).*$">
-		
+
+	<cfset variables.instance.errors=structNew()>
+	
 	<cfif len(variables.instance.siteID)>
 		<cfset extErrors=variables.configBean.getClassExtensionManager().validateExtendedData(getAllValues())>
 	</cfif>

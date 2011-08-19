@@ -7,8 +7,7 @@
 
 <cffunction name="init" output="false">
 	<cfset super.init(argumentCollection=arguments)>
-	
-	<cfset variables.instance.errors=structNew()>
+
 	<cfset variables.instance.fromMuraCache = false />
 </cffunction>
 
@@ -127,6 +126,14 @@
 	 <cfset variables.instance.errors = arguments.errors />
 	</cfif> 
 	<cfreturn this>
+</cffunction>
+
+<cffunction name="getErrors" output="false" access="public">
+  <cfargument name="errors"> 
+	<cfif not structKeyExists(variables.instance,"errors")>
+		<cfset validate()>
+	</cfif>
+	<cfreturn variables.instance.errors>
 </cffunction>
 
 <cffunction name="setlastUpdateBy" access="public" output="false">
