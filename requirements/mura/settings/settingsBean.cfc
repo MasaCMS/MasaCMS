@@ -107,7 +107,7 @@ to your own modified versions of Mura CMS.
 <cfproperty name="hasChangesets" type="numeric" default="0" required="true" />
 <cfproperty name="theme" type="string" default="" required="true" />
 <cfproperty name="javaLocale" type="string" default="" required="true" /> 
-s
+
 <cffunction name="init" returntype="any" output="false" access="public">
 <cfargument name="configBean" type="any" required="yes"/>
 <cfargument name="clusterManager" type="any" required="yes"/>
