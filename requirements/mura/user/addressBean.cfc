@@ -474,19 +474,21 @@ to your own modified versions of Mura CMS.
 	<cfset var extData =structNew() />
 	<cfset var i = "">	
 	
-	<cfif structKeyExists(this,"set#property#")>
-		<cfset evaluate("set#property#(arguments.propertyValue)") />
+	<cfif structKeyExists(this,"set#arguments.property#")>
+		<cfset evaluate("set#arguments.property#(arguments.propertyValue)") />
 	<cfelseif structKeyExists(variables.instance,arguments.property)>
 		<cfset variables.instance["#arguments.property#"]=arguments.propertyValue />
 	<cfelse>
-		<cfset extData=getExtendedData().getExtendSetDataByAttributeName(arguments.property)>
-		<cfif not structIsEmpty(extData)>
-			<cfset structAppend(variables.instance,extData.data,false)>	
-			<cfloop list="#extData.extendSetID#" index="i">
-				<cfif not listFind(variables.instance.extendSetID,i)>
-					<cfset variables.instance.extendSetID=listAppend(variables.instance.extendSetID,i)>
-				</cfif>
-			</cfloop>
+		<cfif not structKeyExists(variables.intsance,arguments.property)>
+			<cfset extData=getExtendedData().getExtendSetDataByAttributeName(arguments.property)>
+			<cfif not structIsEmpty(extData)>
+				<cfset structAppend(variables.instance,extData.data,false)>	
+				<cfloop list="#extData.extendSetID#" index="i">
+					<cfif not listFind(variables.instance.extendSetID,i)>
+						<cfset variables.instance.extendSetID=listAppend(variables.instance.extendSetID,i)>
+					</cfif>
+				</cfloop>
+			</cfif>
 		</cfif>
 			
 		<cfset variables.instance["#arguments.property#"]=arguments.propertyValue />
