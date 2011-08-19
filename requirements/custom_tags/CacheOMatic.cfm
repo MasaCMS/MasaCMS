@@ -75,9 +75,9 @@ uses the query string as the key --->
                </cfif>
        <cfelse>        
 			  <cfif isDate(request.cacheItemTimeSpan)>
-				 <cfset cacheFactory.set( attributes.key ,thisTag.generatedContent, true, request.cacheItemTimeSpan)>
+				 <cfset cacheFactory.set( key=attributes.key, context=thisTag.generatedContent, timespan=request.cacheItemTimeSpan)>
 			  <cfelse>
-              	 <cfset cacheFactory.set( attributes.key ,thisTag.generatedContent, true, attributes.timespan)>
+              	 <cfset cacheFactory.set( key=attributes.key, context=thisTag.generatedContent, timespan=attributes.timespan)>
 			  </cfif>
        </cfif>
 </cfif>

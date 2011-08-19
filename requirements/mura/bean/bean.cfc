@@ -1,6 +1,7 @@
 ﻿<cfcomponent extends="mura.cfobject" output="false">
 
 <cfproperty name="errors" type="struct" default="{}" required="true" />
+<cfproperty name="fromMuraCache" type="boolean" default="false" required="true" />
 
 <cfset variables.instance=structNew()>
 
@@ -8,6 +9,7 @@
 	<cfset super.init(argumentCollection=arguments)>
 	
 	<cfset variables.instance.errors=structNew()>
+	<cfset variables.instance.fromMuraCache = false />
 </cffunction>
 
 <cffunction name="OnMissingMethod" access="public" returntype="any" output="false" hint="Handles missing method exceptions.">

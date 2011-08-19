@@ -124,6 +124,7 @@ to your own modified versions of Mura CMS.
 				<cfset bean=variables.userDAO.getBean()/>
 			</cfif>
 			<cfset bean.setAllValues( structCopy(cacheFactory.get( key )) )>
+			<cfset bean.setValue("extendAutoComplete",false)>
 			<cfreturn bean />
 		</cfif>
 	<cfelse>
@@ -161,6 +162,7 @@ to your own modified versions of Mura CMS.
 				<cfset bean=variables.userDAO.getBean()/>
 			</cfif>
 			<cfset bean.setAllValues( structCopy(cacheFactory.get( key )) )>
+			<cfset bean.setValue("extendAutoComplete",false)>
 			<cfreturn bean />
 		</cfif>
 	<cfelse>
@@ -195,6 +197,7 @@ to your own modified versions of Mura CMS.
 				<cfset bean=variables.userDAO.getBean()/>
 			</cfif>
 			<cfset bean.setAllValues( structCopy(cacheFactory.get( key )) )>
+			<cfset bean.setValue("extendAutoComplete",false)>
 			<cfreturn bean />
 		</cfif>
 	<cfelse>
@@ -228,6 +231,7 @@ to your own modified versions of Mura CMS.
 				<cfset bean=variables.userDAO.getBean()/>
 			</cfif>
 			<cfset bean.setAllValues( structCopy(cacheFactory.get( key )) )>
+			<cfset bean.setValue("extendAutoComplete",false)>
 			<cfreturn bean />
 		</cfif>
 	<cfelse>

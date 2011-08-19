@@ -202,6 +202,7 @@ to your own modified versions of Mura CMS.
 	<cfset variables.instance.created = now() />
 	<cfset variables.instance.mobileExclude = 0 />
 	<cfset variables.instance.changesetID = "" />
+	<cfset variables.instance.tcontent_id = 0 />
 	<cfset variables.instance.errors=structnew() />
 	
 	<cfreturn this />
@@ -364,13 +365,12 @@ to your own modified versions of Mura CMS.
 		
 	</cfif>
 	
-	<cfset validate()/>
 	<cfreturn this />
 </cffunction>
 
 <cffunction name="validate" access="public" output="false">
 	<cfset var extErrors=structNew() />
-	
+	<cfdump var="validate"><cfabort>
 	<cfif len(variables.instance.siteID)>
 		<cfset extErrors=variables.configBean.getClassExtensionManager().validateExtendedData(getAllValues())>
 	</cfif>
@@ -384,13 +384,12 @@ to your own modified versions of Mura CMS.
 </cffunction>
  
 <cffunction name="getAllValues" access="public" returntype="struct" output="false">
-	<cfargument name="autocomplete" required="true" default="true">
+	<cfargument name="autocomplete" required="true" default="#variables.instance.extendAutoComplete#">
 	<cfset var i="">
 	<cfset var extData="">
 		
 	<cfif arguments.autocomplete>
 		<cfset extData=getExtendedData().getAllExtendSetData()>
-			
 		<cfif not structIsEmpty(extData)>
 			<cfset structAppend(variables.instance,extData.data,false)>	
 			<cfloop list="#extData.extendSetID#" index="i">

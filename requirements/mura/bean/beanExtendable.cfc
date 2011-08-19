@@ -6,15 +6,18 @@
 <cfproperty name="type" type="string" default="Custom" required="true" />
 <cfproperty name="subType" type="string" default="Default" required="true" />
 <cfproperty name="siteID" type="string" default="" required="true" />
+<cfproperty name="extendAutoComplete" type="boolean" default="false" required="true" />
 
 <cffunction name="init" output="false">
 	<cfset super.init(argumentCollection=arguments)>
 	<cfset variables.instance.extendData="" />
 	<cfset variables.instance.extendSetID="" />
 	<cfset variables.instance.extendDataTable="tclassextenddata" />
+	<cfset variables.instance.extendAutoComplete = true />
 	<cfset variables.instance.type = "Custom" />
 	<cfset variables.instance.subType = "Default" />
 	<cfset variables.instance.siteiD = "" />
+	
 </cffunction>
 
 <!--- This needs to be overriden--->
@@ -62,6 +65,7 @@
 
 <cffunction name="purgeExtendedData" output="false" access="public">
 	<cfset variables.instance.extendData=""/>
+	<cfset variables.instance.extendAutoComplete = true />
 	<cfreturn this>
 </cffunction>
  
@@ -83,19 +87,21 @@
 		<cfset arguments.propertyValue=trim(arguments.propertyValue)>
 	</cfif>
 	
-	<cfif structKeyExists(this,"set#property#")>
-		<cfset evaluate("set#property#(arguments.propertyValue)") />
+	<cfif structKeyExists(this,"set#arguments.property#")>
+		<cfset evaluate("set#arguments.property#(arguments.propertyValue)") />
 	<cfelse>
-		<cfset extData=getExtendedData().getExtendSetDataByAttributeName(arguments.property)>
-		<cfif not structIsEmpty(extData)>
-			<cfset structAppend(variables.instance,extData.data,false)>	
-			<cfloop list="#extData.extendSetID#" index="i">
-				<cfif not listFind(variables.instance.extendSetID,i)>
-					<cfset variables.instance.extendSetID=listAppend(variables.instance.extendSetID,i)>
-				</cfif>
-			</cfloop>
+		<cfif not structKeyExists(variables.instance,arguments.property)>
+			<cfset extData=getExtendedData().getExtendSetDataByAttributeName(arguments.property)>
+			<cfif not structIsEmpty(extData)>
+				<cfset structAppend(variables.instance,extData.data,false)>	
+				<cfloop list="#extData.extendSetID#" index="i">
+					<cfif not listFind(variables.instance.extendSetID,i)>
+						<cfset variables.instance.extendSetID=listAppend(variables.instance.extendSetID,i)>
+					</cfif>
+				</cfloop>
+			</cfif>
 		</cfif>
-			
+		
 		<cfset variables.instance["#arguments.property#"]=arguments.propertyValue />
 		
 	</cfif>
@@ -116,7 +122,7 @@
 </cffunction>
 
 <cffunction name="getAllValues" access="public" returntype="struct" output="false">
-	<cfargument name="autocomplete" required="true" default="true">
+	<cfargument name="autocomplete" required="true" default="#variables.instance.extendAutoComplete#">
 	<cfset var i="">
 	<cfset var extData="">
 		
