@@ -505,6 +505,7 @@ select * from tplugins order by #arguments.orderby#
 	<cfset var p="">
 	<cfset var currentPath="">
 	
+	<cflock name="createAppCFCIncludes" type="exclusive" timeout="200">
 	<cfif StructKeyExists(SERVER,"bluedragon") and not findNoCase("Windows",server.os.name)>
 		<cfset mapPrefix="$" />
 	</cfif>
@@ -592,6 +593,7 @@ select * from tplugins order by #arguments.orderby#
 			</cftry>
 		</cfif>
 	</cfloop>
+	</cflock>
 </cffunction>
 
 <cffunction name="hasPlugin" returntype="any" output="false">

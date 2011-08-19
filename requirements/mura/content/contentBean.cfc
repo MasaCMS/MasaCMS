@@ -123,9 +123,9 @@ to your own modified versions of Mura CMS.
 <cfset variables.instance.created = now() />
 <cfset variables.instance.mobileExclude = 0 />
 <cfset variables.instance.changesetID = "" />
-<cfset variables.instance.errors=structnew() />
 <cfset variables.kids = arrayNew(1) />
 <cfset variables.displayRegions = structNew()>
+<cfset variables.instance.extendAutoComplete=true>
 
 <cffunction name="init" access="public" returntype="any" output="false">
 	<cfargument name="configBean" required="true" default=""/>
@@ -359,7 +359,6 @@ to your own modified versions of Mura CMS.
 		
 	</cfif>
 	
-	<cfset validate()/>
 	<cfreturn this />
   </cffunction>
 
@@ -379,11 +378,14 @@ to your own modified versions of Mura CMS.
   </cffunction>
 
   <cffunction name="getErrors" returntype="any" output="false">
+  	<cfif not structKeyExists(variables.instance,"errors")>
+		<cfset validate()>  	
+	</cfif>
 	<cfreturn variables.instance.errors>
   </cffunction>
  
   <cffunction name="getAllValues" access="public" returntype="struct" output="false">
-		<cfargument name="autocomplete" required="true" default="true">
+		<cfargument name="autocomplete" required="true" default="#variables.instance.extendAutoComplete#">
 		<cfset var i="">
 		<cfset var extData="">
 		
@@ -1207,6 +1209,7 @@ to your own modified versions of Mura CMS.
 
  <cffunction name="purgeExtendedData" output="false" access="public">
 	<cfset variables.instance.extendData=""/>
+	<cfset variables.instance.extendAutoComplete=true>
 	<cfreturn this>
  </cffunction>
  
@@ -1224,19 +1227,20 @@ to your own modified versions of Mura CMS.
 	<cfset var extData =structNew() />
 	<cfset var i = "">	
 	
-	<cfif structKeyExists(this,"set#property#")>
-		<cfset evaluate("set#property#(arguments.propertyValue)") />
+	<cfif structKeyExists(this,"set#arguments.property#")>
+		<cfset evaluate("set#arguments.property#(arguments.propertyValue)") />
 	<cfelse>
-		<cfset extData=getExtendedData().getExtendSetDataByAttributeName(arguments.property)>
-		<cfif not structIsEmpty(extData)>
-			<cfset structAppend(variables.instance,extData.data,false)>	
-			<cfloop list="#extData.extendSetID#" index="i">
-				<cfif not listFind(variables.instance.extendSetID,i)>
-					<cfset variables.instance.extendSetID=listAppend(variables.instance.extendSetID,i)>
-				</cfif>
-			</cfloop>
+		<cfif not structKeyExists(variables.instance,arguments.property)>
+			<cfset extData=getExtendedData().getExtendSetDataByAttributeName(arguments.property)>
+			<cfif not structIsEmpty(extData)>
+				<cfset structAppend(variables.instance,extData.data,false)>	
+				<cfloop list="#extData.extendSetID#" index="i">
+					<cfif not listFind(variables.instance.extendSetID,i)>
+						<cfset variables.instance.extendSetID=listAppend(variables.instance.extendSetID,i)>
+					</cfif>
+				</cfloop>
+			</cfif>
 		</cfif>
-			
 		<cfset variables.instance["#arguments.property#"]=arguments.propertyValue />
 		
 	</cfif>
