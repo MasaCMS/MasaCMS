@@ -1,6 +1,6 @@
 <cfcomponent extends="mura.cfobject" output="false">
 
-<cfset variable.intsance.error=structNew()>
+<cfset variable.instance.error=structNew()>
 <cfset variables.instance.Type = "Page" />
 <cfset variables.instance.subType = "Default" />
 <cfset variables.instance.dataTable = "tclassextenddata" />

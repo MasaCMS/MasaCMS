@@ -87,11 +87,11 @@ to your own modified versions of Mura CMS.
 	<cfset variables.instance.passedProtect=true />
 	<cfset variables.instance.extendData="" />
 	<cfset variables.instance.extendSetID="" />
-    <cfset variables.instance.errors=structnew() />
 	<cfset variables.instance.isNew=1 />
 	<cfset variables.instance.tablist="" />
 	<cfset variables.instance.newFile="" />
 	<cfset variables.newAddresses = arrayNew(1) />
+	<cfset variables.instance.extendAutoComplete=true />
 	
 	<cffunction name="init" returntype="any" output="false" access="public">
 	<cfargument name="configBean" type="any" required="yes"/>
@@ -170,12 +170,11 @@ to your own modified versions of Mura CMS.
 			</cfif>
 		</cfif>
 
-		<cfset validate() />
 		<cfreturn this />
   </cffunction>
 
 <cffunction name="getAllValues" access="public" returntype="struct" output="false">
-	<cfargument name="autocomplete" required="true" default="true">
+	<cfargument name="autocomplete" required="true" default="#variables.instance.extendAutoComplete#">
 		<cfset var i="">
 		<cfset var extData="">
 		
@@ -574,9 +573,12 @@ to your own modified versions of Mura CMS.
 	<cfreturn it />
   </cffunction>
 
- <cffunction name="getErrors" returnType="struct" output="false" access="public">
-    <cfreturn variables.instance.errors />
- </cffunction>
+  <cffunction name="getErrors" returntype="any" output="false">
+  	<cfif not structKeyExists(variables.instance,"errors")>
+		<cfset validate()>  	
+	</cfif>
+	<cfreturn variables.instance.errors>
+  </cffunction>
   
  <cffunction name="setErrors" output="false" access="public">
   <cfargument name="errors"> 
@@ -808,6 +810,7 @@ to your own modified versions of Mura CMS.
 
  <cffunction name="purgeExtendedData" output="false" access="public">
 	<cfset variables.instance.extendData=""/>
+	<cfset variables.instance.extendAutoComplete=true/>
 	<cfreturn this>
  </cffunction>
 
@@ -868,19 +871,21 @@ to your own modified versions of Mura CMS.
 	<cfset var extData =structNew() />
 	<cfset var i = "">	
 	
-	<cfif structKeyExists(this,"set#property#")>
-		<cfset evaluate("set#property#(arguments.propertyValue)") />
+	<cfif structKeyExists(this,"set#arguments.property#")>
+		<cfset evaluate("set#arguments.property#(arguments.propertyValue)") />
 	<cfelseif structKeyExists(variables.instance,arguments.property)>
 		<cfset variables.instance["#arguments.property#"]=arguments.propertyValue />
 	<cfelse>
-		<cfset extData=getExtendedData().getExtendSetDataByAttributeName(arguments.property)>
-		<cfif not structIsEmpty(extData)>
-			<cfset structAppend(variables.instance,extData.data,false)>	
-			<cfloop list="#extData.extendSetID#" index="i">
-				<cfif not listFind(variables.instance.extendSetID,i)>
-					<cfset variables.instance.extendSetID=listAppend(variables.instance.extendSetID,i)>
-				</cfif>
-			</cfloop>
+		<cfif not structKeyExists(variables.instance,arguments.property)>
+			<cfset extData=getExtendedData().getExtendSetDataByAttributeName(arguments.property)>
+			<cfif not structIsEmpty(extData)>
+				<cfset structAppend(variables.instance,extData.data,false)>	
+				<cfloop list="#extData.extendSetID#" index="i">
+					<cfif not listFind(variables.instance.extendSetID,i)>
+						<cfset variables.instance.extendSetID=listAppend(variables.instance.extendSetID,i)>
+					</cfif>
+				</cfloop>
+			</cfif>
 		</cfif>
 			
 		<cfset variables.instance["#arguments.property#"]=arguments.propertyValue />
