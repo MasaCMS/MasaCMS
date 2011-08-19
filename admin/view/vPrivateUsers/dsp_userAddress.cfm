@@ -138,7 +138,7 @@ initTabs(Array("#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'us
 				<input type="button" class="submit" onclick="submitForm(document.forms.form1,'add');" value="#application.rbFactory.getKeyValue(session.rb,'user.add')#" />
            <cfelse>
             	<input type="button" class="submit" onclick="submitForm(document.forms.form1,'update');" value="#application.rbFactory.getKeyValue(session.rb,'user.update')#" />
-				<input type="button" class="submit" onclick="submitForm(document.forms.form1,'delete','#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'user.deleteaddressconfirm'))#');" value="#application.rbFactory.getKeyValue(session.rb,'user.deleteaddressconfirm')#" />
+				<input type="button" class="submit" onclick="submitForm(document.forms.form1,'delete','#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'user.deleteaddressconfirm'))#');" value="#application.rbFactory.getKeyValue(session.rb,'user.delete')#" />
            </cfif>
 
 		<input type="hidden" name="action" value="">
