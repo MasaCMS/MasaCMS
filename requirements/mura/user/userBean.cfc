@@ -876,7 +876,7 @@ to your own modified versions of Mura CMS.
 	<cfelseif structKeyExists(variables.instance,arguments.property)>
 		<cfset variables.instance["#arguments.property#"]=arguments.propertyValue />
 	<cfelse>
-		<cfif not structKeyExists(variables.intsance,arguments.property)>
+		<cfif not structKeyExists(variables.instance,arguments.property)>
 			<cfset extData=getExtendedData().getExtendSetDataByAttributeName(arguments.property)>
 			<cfif not structIsEmpty(extData)>
 				<cfset structAppend(variables.instance,extData.data,false)>	
