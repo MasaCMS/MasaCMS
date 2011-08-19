@@ -54,6 +54,16 @@ to your own modified versions of Mura CMS.
 			return this;
 		</cfscript>
 	</cffunction>
+	
+	<cffunction name="set" access="public" returntype="any" output="false">
+		<cfargument name="key" type="string" required="true" />
+		<cfargument name="context" type="any" required="false" />
+		<cfargument name="isSoft" type="boolean" required="false" default="#variables.isSoft#">
+		<cfargument name="timespan" required="false" default="">
+		
+		<cfset super.set(arguments.key,arguments.context,arguments.isSoft,arguments.timespan)>
+		
+	</cffunction>
 
 	<cffunction name="get" access="public" returntype="any" output="false">
 		<cfargument name="key" type="string" required="true" />
