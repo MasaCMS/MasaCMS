@@ -71,15 +71,20 @@ to your own modified versions of Mura CMS.
 	<cfreturn this />
 </cffunction>
 
+<cffunction name="getBean" output="false">
+	<cfargument name="beanName" default="user">
+	<cfreturn super.getBean(arguments.beanName)>
+</cffunction>
+
 <cffunction name="getUserGroups" access="public" returntype="query" output="false">
-		<cfargument name="siteid" type="string" default=""/>
-		<cfargument name="isPublic" type="numeric" default="0"/>
-		<cfset var rs ="" />
+	<cfargument name="siteid" type="string" default=""/>
+	<cfargument name="isPublic" type="numeric" default="0"/>
+	<cfset var rs ="" />
 		
-		<cfset rs=variables.userGateway.getUserGroups(arguments.siteid,arguments.isPublic) />
+	<cfset rs=variables.userGateway.getUserGroups(arguments.siteid,arguments.isPublic) />
 		
-		<cfreturn rs />
-	</cffunction>
+	<cfreturn rs />
+</cffunction>
 	
 <cffunction name="read" access="public" returntype="any" output="false">
 	<cfargument name="userid" type="string" default=""/>

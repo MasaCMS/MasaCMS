@@ -50,6 +50,11 @@ to your own modified versions of Mura CMS.
 		<cfset variables.dsn=variables.configBean.getDatasource()/>
 		<cfreturn this>
 	</cffunction>
+	
+	<cffunction name="getBean" output="false">
+		<cfargument name="beanName" default="favorite">
+		<cfreturn super.getBean(arguments.beanName)>
+	</cffunction>
 		
 	<cffunction name="getFavorites" access="public" returntype="any">
 		<cfargument name="userID" type="string" required="yes">

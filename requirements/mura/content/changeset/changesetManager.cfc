@@ -4,6 +4,11 @@
 <cfset variables.contentManager="">
 <cfset variables.trashManager="">
 
+<cffunction name="getBean" output="false">
+	<cfargument name="beanName" default="changeset">
+	<cfreturn super.getBean(arguments.beanName)>
+</cffunction>
+
 <cffunction name="setConfigBean" output="false">
 <cfargument name="configBean">
 <cfset variables.configBean=arguments.configBean>

@@ -57,6 +57,11 @@ to your own modified versions of Mura CMS.
 <cfreturn this />
 </cffunction>
 
+<cffunction name="getBean" output="false">
+	<cfargument name="beanName" default="site">
+	<cfreturn super.getBean(arguments.beanName)>
+</cffunction>
+
 <cffunction name="getList" access="public" output="false" returntype="query">
 	<cfargument name="sortBy" default="orderno">
 	<cfargument name="sortDirection" default="asc">

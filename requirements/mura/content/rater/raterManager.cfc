@@ -45,6 +45,11 @@ to your own modified versions of Mura CMS.
 		<cfreturn this>
 </cffunction>
 
+<cffunction name="getBean" output="false">
+	<cfargument name="beanName" default="rate">
+	<cfreturn super.getBean(arguments.beanName)>
+</cffunction>
+
 <cffunction name="getStarText" access="public" output="false" returntype="string">
 <cfargument name="avg" type="any" default="" required="yes"/>
 

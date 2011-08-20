@@ -64,6 +64,11 @@ to your own modified versions of Mura CMS.
 	<cfreturn this />
 </cffunction>
 
+<cffunction name="getBean" output="false">
+	<cfargument name="beanName" default="feed">
+	<cfreturn super.getBean(arguments.beanName)>
+</cffunction>
+
 <cffunction name="getFeeds" returntype="query" access="public" output="false">
 	<cfargument name="siteID"  type="string" />
 	<cfargument name="type"  type="string" />

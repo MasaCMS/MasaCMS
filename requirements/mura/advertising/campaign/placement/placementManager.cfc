@@ -58,6 +58,11 @@ to your own modified versions of Mura CMS.
 	<cfreturn this />
 </cffunction>
 
+<cffunction name="getBean" output="false">
+	<cfargument name="beanName" default="placement">
+	<cfreturn super.getBean(arguments.beanName)>
+</cffunction>
+
 <cffunction name="getPlacementsByCampaign" access="public" output="false" returntype="query">
 	<cfargument name="campaignID" type="String">
 	<cfargument name="date1" type="string" required="true" default="" />

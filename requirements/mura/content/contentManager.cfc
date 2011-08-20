@@ -79,6 +79,11 @@ to your own modified versions of Mura CMS.
 		<cfreturn this />
 	</cffunction>
 	
+	<cffunction name="getBean" output="false">
+		<cfargument name="beanName" default="content">
+		<cfreturn super.getBean(arguments.beanName)>
+	</cffunction>
+	
 	<cffunction name="getList" access="public" returntype="query" output="false">
 		<cfargument name="args" type="struct"/>
 		<cfset var rs ="" />

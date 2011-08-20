@@ -57,6 +57,11 @@ to your own modified versions of Mura CMS.
 	<cfreturn this />
 </cffunction>
 
+<cffunction name="getBean" output="false">
+	<cfargument name="beanName" default="adzone">
+	<cfreturn super.getBean(arguments.beanName)>
+</cffunction>
+
 <cffunction name="getadzonesBySiteID" returntype="query" access="public" output="false">
 	<cfargument name="siteID"  type="string" />
 	<cfargument name="keywords"  type="string" required="true" default=""/>
