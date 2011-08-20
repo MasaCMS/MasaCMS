@@ -497,11 +497,7 @@ to your own modified versions of Mura CMS.
 			</property>
 		</bean>
 		<bean id="changesetBean" class="mura.content.changeset.changesetBean" singleton="false"/>
-		<bean id="changesetIterator" class="mura.content.changeset.changesetIterator" singleton="false">
-			<property name="changesetManager">
-			    <ref bean="changesetManager"/>
-			</property>
-		</bean>
+		<bean id="changesetIterator" class="mura.content.changeset.changesetIterator" singleton="false"/>
 		<bean id="scriptProtectionFilter" class="mura.Portcullis" singleton="true" />
 		<bean id="MuraScope" class="mura.MuraScope" singleton="false">
 			<property name="contentBean">
