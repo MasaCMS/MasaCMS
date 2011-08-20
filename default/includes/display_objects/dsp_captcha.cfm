@@ -42,13 +42,13 @@ to your own modified versions of Mura CMS.
 --->
 <cfset rbFactory=getSite().getRBFactory() />
 <cfset request.cacheItem=false>
-<cfset captchaStr=application.serviceFactory.getBean('userUtility').getRandomPassword(length=5)>
+<cfset captchaStr=$.getBean('userUtility').getRandomPassword(length=5)>
 <cfoutput>
 <li id="svCaptcha">
 <cfimage action="captcha" height="75" width="363" text="#captchaStr#" difficulty="medium" fonts="verdana,arial,times new roman,courier" fontsize="28" />
 </li>
 <li>
-<label for="uKey">#rbFactory.getKey('captcha.securitycode')# <span>(#rbFactory.getKey('captcha.instructions')#)</span></label>
+<label for="uKey">#$.rbKey('captcha.securitycode')# <span>(#$.rbKey('captcha.instructions')#)</span></label>
 <input type="text" class="text" message="#application.settingsManager.getSite(request.siteID).getRBFactory().getKey('captcha.required')#" required="true" name="uKey" size="20">
 <input type="hidden" name="hkey" value="#hash(lcase(captchaStr))#">
 </li>

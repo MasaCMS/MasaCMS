@@ -14,7 +14,7 @@
 				<input type="submit" class="submit" value="Go" />
 			</fieldset>
 		</form>
-		<cf_CacheOMatic key="dspPrimaryNav#request.contentBean.getcontentID()#">
+		<cf_CacheOMatic key="dspPrimaryNav#$.content('contentID')#">
 			#$.dspPrimaryNav(
 				viewDepth="1",
 				id="navPrimary",

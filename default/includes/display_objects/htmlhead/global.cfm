@@ -44,9 +44,9 @@ to your own modified versions of Mura CMS.
 <cfset loginURL=application.settingsManager.getSite(request.siteid).getLoginURL()>
 <!---
 <cfif find("?",loginURL)>
-<cfset loginURL=LoginURL & "&LinkServID=" & event.getContentBean().getContentID()>
+<cfset loginURL=LoginURL & "&LinkServID=" & $.content('contentID')>
 <cfelse>
-<cfset loginURL=LoginURL & "?LinkServID=" & event.getContentBean().getContentID()>
+<cfset loginURL=LoginURL & "?LinkServID=" & $.content('contentID')>
 </cfif>--->
 </cfsilent>
 <cfoutput>

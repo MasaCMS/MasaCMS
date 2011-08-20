@@ -45,7 +45,7 @@ to your own modified versions of Mura CMS.
 	<cfquery datasource="#application.configBean.getDatasource()#" username="#application.configBean.getDBUsername()#" password="#application.configBean.getDBPassword()#" name="rsSection">select contentid,filename,menutitle,target,restricted,restrictgroups,type,sortBy,sortDirection from tcontent where siteid='#request.siteid#' and contentid='#arguments.objectid#' and approved=1 and active=1 and display=1</cfquery>
 	<cfif variables.rsSection.recordcount>
 	<cfset variables.menutype=iif(variables.rsSection.type eq 'Portal',de('default'),de('calendar_features'))/>
-	<cfset rsPreFeatures=application.contentGateway.getkids('00000000000000000000000000000000000','#request.siteid#','#arguments.objectid#',variables.menutype,now(),0,"",0,iif(variables.rsSection.type eq 'Portal',de('#variables.rsSection.sortBy#'),de('displaystart')),iif(variables.rsSection.type eq 'Portal',de('#variables.rsSection.sortDirection#'),de('desc')),'','#request.contentBean.getcontentID()#')>
+	<cfset rsPreFeatures=application.contentGateway.getkids('00000000000000000000000000000000000','#request.siteid#','#arguments.objectid#',variables.menutype,now(),0,"",0,iif(variables.rsSection.type eq 'Portal',de('#variables.rsSection.sortBy#'),de('displaystart')),iif(variables.rsSection.type eq 'Portal',de('#variables.rsSection.sortDirection#'),de('desc')),'','#$.content('contentID')#')>
 		<cfif getSite().getExtranet() eq 1 and request.r.restrict eq 1>
 			<cfset variables.rsFeatures=queryPermFilter(variables.rsPreFeatures)/>
 		<cfelse>
@@ -72,7 +72,7 @@ to your own modified versions of Mura CMS.
 	</cfif>
 	--->
 	
-	<cfset variables.cssID=createCSSID(variables.rsSection.menuTitle)>
+	<cfset variables.cssID=$.createCSSid(variables.rsSection.menuTitle)>
 </cfsilent>
 <div id="#variables.cssID#" class="svRelSecContent svIndex">
 	<#getHeaderTag('subHead1')#>#rsSection.menutitle#</#getHeaderTag('subHead1')#>

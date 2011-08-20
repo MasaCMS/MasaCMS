@@ -41,34 +41,34 @@ the GNU General Public License version 2 without this exception. You may, if you
 to your own modified versions of Mura CMS.
 --->
 <cfsilent>
-<cfset loadShadowBoxJS() />
+<cfset $.loadShadowBoxJS() />
 <cfset rbFactory=getSite().getRBFactory()/>
 </cfsilent>
 <cfif request.display neq 'login'>
 <cfif not len(getPersonalizationID())>
 <cfoutput>
 	<div id="login" class="clearfix">
-		<#getHeaderTag('subHead1')#>#rbFactory.getKey('user.signin')#</#getHeaderTag('subHead1')#>
+		<#getHeaderTag('subHead1')#>#$.rbKey('user.signin')#</#getHeaderTag('subHead1')#>
 		<form action="<cfoutput>?nocache=1</cfoutput>" name="loginForm" method="post">
 			<ol>
 				<li>
-					<label for="txtUserName">#rbFactory.getKey('user.username')#</label>
+					<label for="txtUserName">#$.rbKey('user.username')#</label>
 					<input type="text" id="txtUserName" class="text" name="username" />
 				</li>
 				<li>
-					<label for="txtPassword">#rbFactory.getKey('user.password')#</label>
+					<label for="txtPassword">#$.rbKey('user.password')#</label>
 					<input type="password" id="txtPassword" class="text" name="password" />
 				</li>
 				<li>
 					<input type="checkbox" id="cbRemember" class="checkbox first" name="rememberMe" value="1" />
-					<label for="cbRemember">#rbFactory.getKey('user.rememberme')#</label>
+					<label for="cbRemember">#$.rbKey('user.rememberme')#</label>
 				</li>
 			</ol>
 			<div class="buttons">
 				<input type="hidden" name="doaction" value="login" />
-				<button type="submit" class="submit">#rbFactory.getKey('user.signin')#</button>
+				<button type="submit" class="submit">#$.rbKey('user.signin')#</button>
 			</div>
-			<cfif application.settingsManager.getSite(request.siteid).getExtranetPublicReg()><p>#rbFactory.getKey('user.notregistered')# <a href="#application.settingsManager.getSite(request.siteid).getEditProfileURL()#&returnURL=#urlEncodedFormat(application.contentRenderer.getCurrentURL())#">#rbFactory.getKey('user.signup')#</a></p></cfif>
+			<cfif application.settingsManager.getSite(request.siteid).getExtranetPublicReg()><p>#$.rbKey('user.notregistered')# <a href="#application.settingsManager.getSite(request.siteid).getEditProfileURL()#&returnURL=#urlEncodedFormat(application.contentRenderer.getCurrentURL())#">#$.rbKey('user.signup')#</a></p></cfif>
 		</form>
 	</div>
 </cfoutput>
@@ -76,10 +76,10 @@ to your own modified versions of Mura CMS.
 <cfoutput>
 <cfif session.mura.isLoggedIn>	
 <div id="svSessionTools" class="clearfix">
-	<p id="welcome">#rbFactory.getKey('user.welcome')#, #HTMLEditFormat("#session.mura.fname# #session.mura.lname#")#</p>
+	<p id="welcome">#$.rbKey('user.welcome')#, #HTMLEditFormat("#session.mura.fname# #session.mura.lname#")#</p>
  	<ul id="navSession">
-		<li id="navEditProfile"><a href="#application.settingsManager.getSite(request.siteid).getEditProfileURL()#&nocache=1&returnURL=#urlEncodedFormat(application.contentRenderer.getCurrentURL())#">#rbFactory.getKey('user.editprofile')#</a></li>
-		<li id="navLogout"><a href="?doaction=logout">#rbFactory.getKey('user.logout')#</a></li>
+		<li id="navEditProfile"><a href="#application.settingsManager.getSite(request.siteid).getEditProfileURL()#&nocache=1&returnURL=#urlEncodedFormat(application.contentRenderer.getCurrentURL())#">#$.rbKey('user.editprofile')#</a></li>
+		<li id="navLogout"><a href="?doaction=logout">#$.rbKey('user.logout')#</a></li>
 	</ul>
 </div>
 </cfif>

@@ -41,7 +41,7 @@ the GNU General Public License version 2 without this exception. You may, if you
 to your own modified versions of Mura CMS.
 --->
 <cfsilent>
-<cfset rsPre=application.contentGateway.getKids('00000000000000000000000000000000000',request.siteid,request.contentBean.getcontentid(),'default',now(),100,request.keywords,0,request.contentBean.getsortBy(),request.contentBean.getsortDirection(),request.categoryID,request.relatedID,request.tag)>
+<cfset rsPre=application.contentGateway.getKids('00000000000000000000000000000000000',request.siteid,$.content('contentID'),'default',now(),100,request.keywords,0,$.content('sortBy'),$.content('sortDirection'),request.categoryID,request.relatedID,request.tag)>
 <cfif getSite().getExtranet() eq 1 and request.r.restrict eq 1>
 	<cfset rs=queryPermFilter(rsPre)/>
 <cfelse>

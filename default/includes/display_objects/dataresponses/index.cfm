@@ -45,7 +45,7 @@ to your own modified versions of Mura CMS.
 <cfquery datasource="#application.configBean.getDatasource()#" username="#application.configBean.getDBUsername()#" password="#application.configBean.getDBPassword()#" name="rssite">
 select siteid from tcontent where contentid='#arguments.objectid#' and active=1
 </cfquery>
-<cfset request.contentBean=application.contentManager.getActiveContent(arguments.objectid,rssite.siteid)/>
+<cfset $.event('contentBean', $.getBean("content").loadBy(contentID=arguments.objectID) )/>
 
 <cfswitch expression="#request.fuseaction#">
 <cfcase value="list">

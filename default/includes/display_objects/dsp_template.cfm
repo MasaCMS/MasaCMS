@@ -49,7 +49,7 @@ to your own modified versions of Mura CMS.
 	
 	<cfset variables.rsTemplate=bean.getAllValues()>
 	
-	<cfset variables._component=event.getValue("component")>
+	<cfset variables._component=$.event("component")>
 	
 	<cfif isStruct(variables._component)>
 		<cfset structAppend(variables._component,variables.rsTemplate,true)>
@@ -72,8 +72,8 @@ to your own modified versions of Mura CMS.
 	<cfset editableControl.innerHTML = "">
 
 	<cfif not bean.getIsNew() and this.showEditableObjects  and objectPerm eq 'editor'>
-		<cfset loadShadowBoxJS()>
-		<cfset addToHTMLHeadQueue('editableObjects.cfm')>
+		<cfset $.loadShadowBoxJS()>
+		<cfset $.addToHTMLHeadQueue('editableObjects.cfm')>
 		<cfif len(application.configBean.getAdminDomain())>
 			<cfif application.configBean.getAdminSSL()>
 				<cfset variables.adminBase="https://#application.configBean.getAdminDomain()#"/>
@@ -98,7 +98,7 @@ to your own modified versions of Mura CMS.
 		<cfset editableControl.editLink = editableControl.editLink & "&amp;parentid=" & bean.getParentID()>
 		<cfset editableControl.editLink = editableControl.editLink & "&amp;moduleid=" & bean.getModuleID()>
 		<cfset editableControl.editLink = editableControl.editLink & "&amp;compactDisplay=true">
-		<cfset editableControl.editLink = editableControl.editLink & "&amp;homeid=" & event.getContentBean().getContentID()>
+		<cfset editableControl.editLink = editableControl.editLink & "&amp;homeid=" & $.content('contentID')>
 		<!---
 		<cfset editableControl.historyLink = adminBase & "#application.configBean.getContext()#/admin/index.cfm?fuseaction=cArch.hist">
 		<cfset editableControl.historyLink = editableControl.historyLink & "&amp;siteid=" & bean.getSiteID()>
@@ -116,7 +116,7 @@ to your own modified versions of Mura CMS.
 
 
 <cfif editableControl.innerHTML neq "">
-	<cfoutput>#renderEditableObjectHeader("editableComponent")#</cfoutput>
+	<cfoutput>#$.renderEditableObjectHeader("editableComponent")#</cfoutput>
 </cfif>
 <cfif variables.rsTemplate.isOnDisplay>
 	<cfset variables.componentOutput=application.pluginManager.renderEvent("onComponent#bean.getSubType()#BodyRender",event)>
@@ -127,7 +127,7 @@ to your own modified versions of Mura CMS.
 			<cfset variables.componentBody=variables.rsTemplate.body>
 			<cfinclude template="#getSite().getTemplateIncludePath()#/components/#variables.rsTemplate.template#">
 		<cfelse>
-			<cfoutput>#setDynamicContent(variables.rsTemplate.body)#</cfoutput>
+			<cfoutput>#$.setDynamicContent(variables.rsTemplate.body)#</cfoutput>
 		</cfif>
 	</cfif>
 </cfif>

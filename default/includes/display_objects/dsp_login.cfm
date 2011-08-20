@@ -43,19 +43,19 @@ to your own modified versions of Mura CMS.
 <cfparam name="request.status" default="">
 <cfparam name="request.linkServID" default="">
 <cfparam name="request.isBlocked" default="false">
-<cfset variables.rbFactory=getSite().getRBFactory() />
+
 <cfoutput>
-<#getHeaderTag('headline')#>#request.contentBean.getTitle()#</#getHeaderTag('headline')#>
+<#getHeaderTag('headline')#>#$.content('title')#</#getHeaderTag('headline')#>
 <div id="svLoginContainer">
 
-	#request.contentBean.getSummary()# <!--- The page summary can be used to show some content before the user has logged in. Outputs only if there is content in the summary field. --->
-	<#getHeaderTag('subhead1')#>#rbFactory.getKey('user.pleaselogin')#</#getHeaderTag('subhead1')#>
+	#$.content('summary')# <!--- The page summary can be used to show some content before the user has logged in. Outputs only if there is content in the summary field. --->
+	<#getHeaderTag('subhead1')#>#$.rbKey('user.pleaselogin')#</#getHeaderTag('subhead1')#>
 	<cfif request.status eq 'failed'>
 		<cfif isDate(session.blockLoginUntil) and session.blockLoginUntil gt now()>
 		<cfset request.isBlocked=true />
-		<p id="loginMsg" class="error">#variables.rbFactory.getKey('user.loginblocked')#</p>
+		<p id="loginMsg" class="error">#$.rbKey('user.loginblocked')#</p>
 		<cfelse>
-		<p id="loginMsg" class="error">#variables.rbFactory.getKey('user.loginfailed')#</p>
+		<p id="loginMsg" class="error">#$.rbKey('user.loginfailed')#</p>
 		</cfif>
 	</cfif>
 	<cfif not request.isBlocked>
@@ -63,27 +63,27 @@ to your own modified versions of Mura CMS.
 		<fieldset>
 			<ol>
 				<li class="req">
-					<label for="txtUsername">#variables.rbFactory.getKey('user.username')#<ins> (#htmlEditFormat(variables.rbFactory.getKey('user.required'))#)</ins></label>
-					<input type="text" id="txtUsername" class="text" name="username" required="true" message="#htmlEditFormat(rbFactory.getKey('user.usernamerequired'))#" />
+					<label for="txtUsername">#$.rbKey('user.username')#<ins> (#htmlEditFormat($.rbKey('user.required'))#)</ins></label>
+					<input type="text" id="txtUsername" class="text" name="username" required="true" message="#htmlEditFormat($.rbKey('user.usernamerequired'))#" />
 				</li>
 				<li class="req">
-					<label for="txtPassword">#variables.rbFactory.getKey('user.password')#<ins> (#htmlEditFormat(variables.rbFactory.getKey('user.required'))#)</ins></label>
-					<input type="password" id="txtPassword" class="text" name="password" required="true" message="#htmlEditFormat(variables.rbFactory.getKey('user.passwordrequired'))#" />
+					<label for="txtPassword">#$.rbKey('user.password')#<ins> (#htmlEditFormat($.rbKey('user.required'))#)</ins></label>
+					<input type="password" id="txtPassword" class="text" name="password" required="true" message="#htmlEditFormat($.rbKey('user.passwordrequired'))#" />
 				</li>
 				<li>
 					<input type="checkbox" id="cbRememberMe" class="checkbox first" name="rememberMe" value="1" />
-					<label for="cbRememberMe">#htmlEditFormat(variables.rbFactory.getKey('user.rememberme'))#</label>
+					<label for="cbRememberMe">#htmlEditFormat($.rbKey('user.rememberme'))#</label>
 				</li>
 			</ol>
 			<div class="buttons">
 				<input type="hidden" name="doaction" value="login" />
 				<input type="hidden" name="linkServID" value="#HTMLEditFormat(request.linkServID)#" />
 				<input type="hidden" name="returnURL" value="#HTMLEditFormat(request.returnURL)#" />
-				<input type="submit" value="#htmlEditFormat(variables.rbFactory.getKey('user.login'))#" />
+				<input type="submit" value="#htmlEditFormat($.rbKey('user.login'))#" />
 			</div>
 		</fieldset>
 	</form>
-	<p class="required">#rbFactory.getKey('user.requiredfields')#</p>
+	<p class="required">#$.rbKey('user.requiredfields')#</p>
 	
 	
 	<cfif request.doaction eq 'sendlogin'>
@@ -92,30 +92,30 @@ to your own modified versions of Mura CMS.
 	
 	<form name="form2" method="post" action="?nocache=1" id="sendLogin" onsubmit="return validate(this);" novalidate="novalidate">
 		<fieldset>
-			<legend>#variables.rbFactory.getKey('user.forgetusernameorpassword')#</legend>
-			<p>#variables.rbFactory.getKey('user.forgotloginmessage')#</p>
+			<legend>#$.rbKey('user.forgetusernameorpassword')#</legend>
+			<p>#$.rbKey('user.forgotloginmessage')#</p>
 			<ol>
 				<li>
-					<label for="txtEmail">#variables.rbFactory.getKey('user.email')#</label>
-					<input id="email" name="email" type="text" class="text" validate="email" required="true" message="#htmlEditFormat(variables.rbFactory.getKey('user.emailvalidate'))#" />
+					<label for="txtEmail">#$.rbKey('user.email')#</label>
+					<input id="email" name="email" type="text" class="text" validate="email" required="true" message="#htmlEditFormat($.rbKey('user.emailvalidate'))#" />
 				</li>
 			</ol>
 		</fieldset>
 		<cfif isdefined('msg2')>
-		<cfif FindNoCase('is not a valid',msg2)><div class="error">#HTMLEditFormat(variables.rbFactory.getResourceBundle().messageFormat(rbFactory.getKey('user.forgotnotvalid'),request.email))#<cfelseif FindNoCase('no account',msg2)><div class="error">#HTMLEditFormat(variables.rbFactory.getResourceBundle().messageFormat(rbFactory.getKey('user.forgotnotfound'),request.email))#<cfelse><div class="notice">#variables.rbFactory.getKey('user.forgotsuccess')#</cfif></div>
+		<cfif FindNoCase('is not a valid',msg2)><div class="error">#HTMLEditFormat(variables.rbFactory.getResourceBundle().messageFormat($.rbKey('user.forgotnotvalid'),request.email))#<cfelseif FindNoCase('no account',msg2)><div class="error">#HTMLEditFormat(variables.rbFactory.getResourceBundle().messageFormat($.rbKey('user.forgotnotfound'),request.email))#<cfelse><div class="notice">#$.rbKey('user.forgotsuccess')#</cfif></div>
 		</cfif>
 		<div class="buttons">
 			<input type="hidden" name="doaction" value="sendlogin" />
 			<input type="hidden" name="linkServID" value="#HTMLEditFormat(request.linkServID)#" />
 			<input type="hidden" name="display" value="login" />
 			<input type="hidden" name="returnURL" value="#HTMLEditFormat(request.returnURL)#" />
-			<input type="submit" value="#HTMLEditFormat(variables.rbFactory.getKey('user.getpassword'))#" class="submit" />
+			<input type="submit" value="#HTMLEditFormat($.rbKey('user.getpassword'))#" class="submit" />
 		</div>
 	</form>
 
 	<cfif application.settingsManager.getSite(request.siteid).getExtranetPublicReg()>
 	<div id="notRegistered">
-		<#getHeaderTag('subHead1')#>#variables.rbFactory.getKey('user.notregistered')# <a class="callToAction" href="#application.settingsManager.getSite(request.siteid).getEditProfileURL()#&returnURL=#urlencodedformat(request.returnURL)#">#rbFactory.getKey('user.signup')#.</a></#getHeaderTag('subHead1')#>
+		<#getHeaderTag('subHead1')#>#$.rbKey('user.notregistered')# <a class="callToAction" href="#application.settingsManager.getSite(request.siteid).getEditProfileURL()#&returnURL=#urlencodedformat(request.returnURL)#">#$.rbKey('user.signup')#.</a></#getHeaderTag('subHead1')#>
 	</div>
 	</cfif>
 	

@@ -52,7 +52,7 @@ to your own modified versions of Mura CMS.
 
 <cfoutput>
 <div id="svTagCloud">
-<#getHeaderTag('subHead1')#>#rbFactory.getKey('tagcloud.tagcloud')#</#getHeaderTag('subHead1')#>
+<#getHeaderTag('subHead1')#>#$.rbKey('tagcloud.tagcloud')#</#getHeaderTag('subHead1')#>
 <cfif tags.recordcount>
 <ol>
 <cfloop query="tags"><cfsilent>
@@ -69,11 +69,11 @@ to your own modified versions of Mura CMS.
 	</cfif>
 	<cfset args = ArrayNew(1)>
     <cfset args[1] = tags.tagcount>
-</cfsilent><li class="#class#"><span><cfif tags.tagcount gt 1> #rbFactory.getResourceBundle().messageFormat(rbFactory.getKey('tagcloud.itemsare'), args)#<cfelse>#rbFactory.getResourceBundle().messageFormat(rbFactory.getKey('tagcloud.itemis'), args)#</cfif> tagged with </span><a href="#$.createHREF(filename='#$.event('currentFilenameAdjusted')#/tag/#urlEncodedFormat(tags.tag)#')#" class="tag">#tags.tag#</a></li>
+</cfsilent><li class="#class#"><span><cfif tags.tagcount gt 1> #rbFactory.getResourceBundle().messageFormat($.rbKey('tagcloud.itemsare'), args)#<cfelse>#rbFactory.getResourceBundle().messageFormat($.rbKey('tagcloud.itemis'), args)#</cfif> tagged with </span><a href="#$.createHREF(filename='#$.event('currentFilenameAdjusted')#/tag/#urlEncodedFormat(tags.tag)#')#" class="tag">#tags.tag#</a></li>
 </cfloop>
 </ol>
 <cfelse>
-<p>#rbFactory.getKey('tagcloud.notags')#</p>
+<p>#$.rbKey('tagcloud.notags')#</p>
 </cfif>
 </div>
 </cfoutput>

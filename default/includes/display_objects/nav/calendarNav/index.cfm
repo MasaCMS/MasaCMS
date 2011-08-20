@@ -4,9 +4,9 @@
 <cfparam name="request.sortDirection" default=""/>
 <cfparam name="request.day" default="#day(now())#"/>
 
-<cfset addToHTMLHeadQueue('nav/calendarNav/htmlhead/htmlhead.cfm')>
+<cfset $.addToHTMLHeadQueue('nav/calendarNav/htmlhead/htmlhead.cfm')>
 </cfsilent>
-<cf_CacheOMatic key="#arguments.object##event.getValue('siteid')##arguments.objectid##event.getValue('month')##event.getvalue('year')#" nocache="#event.getValue('nocache')#">
+<cf_CacheOMatic key="#arguments.object##$.event('siteid')##arguments.objectid##$.event('month')##$.event('year')#" nocache="#$.event('nocache')#">
 <cfsilent>
 <cfset navTools=createObject("component","navTools")>
 <cfset navID=arguments.objectID>	

@@ -42,8 +42,8 @@ to your own modified versions of Mura CMS.
 --->
 <cfsilent>
 	<!--- the js is not loaded in contentRenderer.dspBody() to prevent caching --->
-	<cfset hasComments=application.contentGateway.getHasComments(request.siteid,request.contentBean.getContentHistID()) />
-	<cfset hasRatings=application.contentGateway.getHasRatings(request.siteid,request.contentBean.getContentHistID()) />
+	<cfset hasComments=application.contentGateway.getHasComments(request.siteid,$.content('contentHistID')) />
+	<cfset hasRatings=application.contentGateway.getHasRatings(request.siteid,$.content('contentHistID')) />
 	
 	<cfparam name="request.day" default="0">
 	<cfparam name="request.filterBy" default="">
@@ -68,7 +68,7 @@ to your own modified versions of Mura CMS.
 		<cfset menuType="default">
 	</cfif>
 	
-	<cfset rsPreSection=application.contentGateway.getKids('00000000000000000000000000000000000',request.siteid,request.contentBean.getcontentid(),menutype,menuDate,0,request.keywords,0,request.contentBean.getsortBy(),request.contentBean.getsortDirection(),request.categoryID,request.relatedID,request.tag)>
+	<cfset rsPreSection=application.contentGateway.getKids('00000000000000000000000000000000000',request.siteid,$.content('contentID'),menutype,menuDate,0,request.keywords,0,$.content('sortBy'),$.content('sortDirection'),request.categoryID,request.relatedID,request.tag)>
 	<cfif getSite().getExtranet() eq 1 and request.r.restrict eq 1>
 		<cfset rssection=queryPermFilter(rsPreSection)/>
 	<cfelse>
@@ -76,17 +76,17 @@ to your own modified versions of Mura CMS.
 	</cfif>
 	
 	<cfset rbFactory=getSite().getRBFactory() />
-	<cfset iterator=application.serviceFactory.getBean("contentIterator")>
+	<cfset iterator=$.getBean("contentIterator")>
 	<cfset iterator.setQuery(rsSection,event.getContentBean().getNextN())>
 	
-	<cfset event.setValue("currentNextNID",event.getContentBean().getContentID())>
+	<cfset event.setValue("currentNextNID",$.content('contentID'))>
 	
-	<cfif not len(event.getValue("nextNID")) or event.getValue("nextNID") eq event.getValue("currentNextNID")>
+	<cfif not len($.event("nextNID")) or $.event("nextNID") eq $.event("currentNextNID")>
 		<cfif event.getContentBean().getNextN() gt 1>
-			<cfset currentNextNIndex=event.getValue("startRow")>
+			<cfset currentNextNIndex=$.event("startRow")>
 			<cfset iterator.setStartRow(currentNextNIndex)>
 		<cfelse>
-			<cfset currentNextNIndex=event.getValue("pageNum")>
+			<cfset currentNextNIndex=$.event("pageNum")>
 			<cfset iterator.setPage(currentNextNIndex)>
 		</cfif>
 	<cfelse>	
@@ -127,17 +127,17 @@ to your own modified versions of Mura CMS.
 		 	</dd>
 		 	</cfif>	 	
 		 	<cfif item.getValue('credits') neq "">
-		 	<dd class="credits">#rbFactory.getKey('list.by')# #HTMLEditFormat(item.getValue('credits'))#</dd>
+		 	<dd class="credits">#$.rbKey('list.by')# #HTMLEditFormat(item.getValue('credits'))#</dd>
 		 	</cfif>
 		 	<cfif hasComments>
-		 	<dd class="comments"><a href="?linkServID=#item.getValue('contentid')#&categoryID=#HTMLEditFormat(request.categoryID)#&relatedID=#HTMLEditFormat(request.relatedID)#" title="#HTMLEditFormat(item.getValue('title'))#">#rbFactory.getKey('list.comments')# (#application.contentGateway.getCommentCount(request.siteid,item.getValue('contentid'))#)</a></dd>
+		 	<dd class="comments"><a href="?linkServID=#item.getValue('contentid')#&categoryID=#HTMLEditFormat(request.categoryID)#&relatedID=#HTMLEditFormat(request.relatedID)#" title="#HTMLEditFormat(item.getValue('title'))#">#$.rbKey('list.comments')# (#application.contentGateway.getCommentCount(request.siteid,item.getValue('contentid'))#)</a></dd>
 		 	</cfif>
 		 	<cfif item.getValue('tags') neq "">
-		 	<dd class="tags"><cfmodule template="#getSite(event.getValue('siteid')).getIncludePath()#/includes/display_objects/nav/dsp_tag_line.cfm" tags="#item.getValue('tags')#"></dd>
+		 	<dd class="tags"><cfmodule template="#getSite($.event('siteid')).getIncludePath()#/includes/display_objects/nav/dsp_tag_line.cfm" tags="#item.getValue('tags')#"></dd>
 		 	</cfif>
 		 	<cfif hasRatings>
 			<!--- rating#replace(rateBean.getRate(),".","")# --->
-		 	<dd class="ratings stars">#rbFactory.getKey('list.rating')#: <img class="ratestars" src="#$.siteConfig('themeAssetPath')#/images/rater/star_#application.raterManager.getStarText(item.getValue('rating'))#.png" alt="<cfif isNumeric(item.getValue('rating'))>#item.getValue('rating')# star<cfif item.getValue('rating') gt 1>s</cfif></cfif>" border="0"></dd>
+		 	<dd class="ratings stars">#$.rbKey('list.rating')#: <img class="ratestars" src="#$.siteConfig('themeAssetPath')#/images/rater/star_#application.raterManager.getStarText(item.getValue('rating'))#.png" alt="<cfif isNumeric(item.getValue('rating'))>#item.getValue('rating')# star<cfif item.getValue('rating') gt 1>s</cfif></cfif>" border="0"></dd>
 		 	</cfif>
 		 	</dl>
 			</li>
@@ -151,11 +151,11 @@ to your own modified versions of Mura CMS.
 	<cfelse>
 	 <cfoutput>
 	 <cfif request.filterBy eq "releaseMonth">
-		<p>#rbFactory.getKey('list.nocontentmonth')#</p>		
+		<p>#$.rbKey('list.nocontentmonth')#</p>		
 	 <cfelseif request.filterBy eq "releaseDate">
-		<p>#rbFactory.getKey('list.nocontentday')#</p>	
+		<p>#$.rbKey('list.nocontentday')#</p>	
 	<cfelse>
-		<p>#rbFactory.getKey('list.galleryisempty')#</p>
+		<p>#$.rbKey('list.galleryisempty')#</p>
 	</cfif>
 	</cfoutput>
 	</cfif>

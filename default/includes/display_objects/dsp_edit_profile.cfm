@@ -46,15 +46,15 @@ to your own modified versions of Mura CMS.
 <cfset request.userBean=application.userManager.read(session.mura.userID) />
 </cfif>
 <cfset rbFactory=getSite().getRBFactory() />
-<cfparam name="msg" default="#rbFactory.getKey('user.message')#">
+<cfparam name="msg" default="#$.rbKey('user.message')#">
 <cfparam name="request.categoryID" default="">
 <cfset loadJSLib()>
-<cfset addToHTMLHeadQueue("htmlEditor.cfm")>
+<cfset $.addToHTMLHeadQueue("htmlEditor.cfm")>
 </cfsilent>
 <cfoutput>
 
-<#getHeaderTag('headline')#><cfif not session.mura.isLoggedIn>#rbFactory.getKey('user.createprofile')#<cfelse>
-#rbFactory.getKey('user.editprofile')#</cfif></#getHeaderTag('headline')#>
+<#getHeaderTag('headline')#><cfif not session.mura.isLoggedIn>#$.rbKey('user.createprofile')#<cfelse>
+#$.rbKey('user.editprofile')#</cfif></#getHeaderTag('headline')#>
 <div id="svEditProfile">
 <cfif not(structIsEmpty(request.userBean.getErrors()) and request.doaction eq 'createprofile')>
 
@@ -66,60 +66,60 @@ to your own modified versions of Mura CMS.
 	<!--- <a id="editSubscriptions" href="##">Edit Email Subscriptions</a> --->
 	<form name="profile" id="profile" action="?nocache=1" method="post" onsubmit="return validate(this);"  enctype="multipart/form-data" novalidate="novalidate">
 	<fieldset>
-	<legend>#rbFactory.getKey('user.contactinformation')#</legend>
+	<legend>#$.rbKey('user.contactinformation')#</legend>
 	<ul>
 	<li>
-	<label for="firstName">#rbFactory.getKey('user.fname')#<span class="required">*</span></label>
-	<input type="text" id="firstName" class="text" name="fname" value="#HTMLEditFormat(request.userBean.getfname())#" required="true" message="#htmlEditFormat(rbFactory.getKey('user.fnamerequired'))#" maxlength="50"/>
+	<label for="firstName">#$.rbKey('user.fname')#<span class="required">*</span></label>
+	<input type="text" id="firstName" class="text" name="fname" value="#HTMLEditFormat(request.userBean.getfname())#" required="true" message="#htmlEditFormat($.rbKey('user.fnamerequired'))#" maxlength="50"/>
 	</li>
 	<li>
-	<label for="lastName">#rbFactory.getKey('user.lname')#<span class="required">*</span></label>
-	<input type="text" id="lastName" class="text" name="lname" value="#HTMLEditFormat(request.userBean.getlname())#" required="true" message="#htmlEditFormat(rbFactory.getKey('user.lnamerequired'))#" maxlength="50"/>
+	<label for="lastName">#$.rbKey('user.lname')#<span class="required">*</span></label>
+	<input type="text" id="lastName" class="text" name="lname" value="#HTMLEditFormat(request.userBean.getlname())#" required="true" message="#htmlEditFormat($.rbKey('user.lnamerequired'))#" maxlength="50"/>
 	</li>
 	<li>
-	<label for="usernametxt">#rbFactory.getKey('user.username')#<span class="required">*</span></label>
-	<input name="username" id="usernametxt" type="text" value="#HTMLEditFormat(request.userBean.getusername())#" class="text"  required="yes" message="#htmlEditFormat(rbFactory.getKey('user.usernamerequired'))#" maxlength="50">
+	<label for="usernametxt">#$.rbKey('user.username')#<span class="required">*</span></label>
+	<input name="username" id="usernametxt" type="text" value="#HTMLEditFormat(request.userBean.getusername())#" class="text"  required="yes" message="#htmlEditFormat($.rbKey('user.usernamerequired'))#" maxlength="50">
 	</li>	
 	
 	<li>
-	<label for="companytxt">#rbFactory.getKey('user.organization')#</label>
+	<label for="companytxt">#$.rbKey('user.organization')#</label>
 	<input name="company" id="companytxt" type="text" value="#htmlEditFormat(request.userBean.getCompany())#" class="text" maxlength="50"/>
 	</li>
 
        
 <cfif not session.mura.isloggedin>
 	<li>
-	<label for="emailtxt">#rbFactory.getKey('user.email')#<span class="required">*</span></label>
-	<input name="email" id="emailtxt" validate="email" type="text" value="#request.userBean.getEmail()#" class="text"  required="true" message="#HTMLEditFormat(rbFactory.getKey('user.emailvalidate'))#" maxlength="50">
+	<label for="emailtxt">#$.rbKey('user.email')#<span class="required">*</span></label>
+	<input name="email" id="emailtxt" validate="email" type="text" value="#request.userBean.getEmail()#" class="text"  required="true" message="#HTMLEditFormat($.rbKey('user.emailvalidate'))#" maxlength="50">
 	</li>
 	<li>
-	<label for="email2xt">#rbFactory.getKey('user.emailconfirm')#<span class="required">*</span></label>
-	<input name="email2" id="email2txt" type="text" value="" class="text" validate="match" matchfield="email" required="true" message="#HTMLEditFormat(rbFactory.getKey('user.emailconfirmvalidate'))#" maxlength="50">
+	<label for="email2xt">#$.rbKey('user.emailconfirm')#<span class="required">*</span></label>
+	<input name="email2" id="email2txt" type="text" value="" class="text" validate="match" matchfield="email" required="true" message="#HTMLEditFormat($.rbKey('user.emailconfirmvalidate'))#" maxlength="50">
 	
 	<!--- Comment out the following two password fields to automatically create a random password for the user instead of letting them pick one themselves --->
 	<li>
-	<label for="passwordtxt">#rbFactory.getKey('user.password')#<span class="required">*</span></label>
-	<input name="passwordNoCache" validate="match" matchfield="password2" type="password" value="" class="text"  message="#HTMLEditFormat(rbFactory.getKey('user.passwordvalidate'))#" maxlength="50">
+	<label for="passwordtxt">#$.rbKey('user.password')#<span class="required">*</span></label>
+	<input name="passwordNoCache" validate="match" matchfield="password2" type="password" value="" class="text"  message="#HTMLEditFormat($.rbKey('user.passwordvalidate'))#" maxlength="50">
 	</li>
 	<li>
-	<label for="password2txt">#rbFactory.getKey('user.passwordconfirm')#<span class="required">*</span></label>
-	<input  name="password2" id="password2txt" type="password" value="" required="true" class="text"  message="#HTMLEditFormat(rbFactory.getKey('user.passwordconfirmrequired'))#" maxlength="50">
+	<label for="password2txt">#$.rbKey('user.passwordconfirm')#<span class="required">*</span></label>
+	<input  name="password2" id="password2txt" type="password" value="" required="true" class="text"  message="#HTMLEditFormat($.rbKey('user.passwordconfirmrequired'))#" maxlength="50">
 	</li>
 	<!--- <cfinclude template="dsp_captcha.cfm" > --->
 	<cfinclude template="dsp_form_protect.cfm" >
 <cfelse>
  	 <li>
-	<label for="emailtxt">#rbFactory.getKey('user.email')#<span class="required">*</span></label>
-	<input name="email" id="emailtxt" validate="email" type="text" value="#htmlEditFormat(request.userBean.getEmail())#" class="text"  required="true" message="#HTMLEditFormat(rbFactory.getKey('user.emailvalidate'))#" maxlength="50">
+	<label for="emailtxt">#$.rbKey('user.email')#<span class="required">*</span></label>
+	<input name="email" id="emailtxt" validate="email" type="text" value="#htmlEditFormat(request.userBean.getEmail())#" class="text"  required="true" message="#HTMLEditFormat($.rbKey('user.emailvalidate'))#" maxlength="50">
 	</li>
 
 	<li>
-	<label for="passwordtxt">#rbFactory.getKey('user.password')#</label>
-	<input name="passwordNoCache" validate="match" matchfield="password2" type="password" value="" class="text"  message="#HTMLEditFormat(rbFactory.getKey('user.passwordvalidate'))#" maxlength="50">
+	<label for="passwordtxt">#$.rbKey('user.password')#</label>
+	<input name="passwordNoCache" validate="match" matchfield="password2" type="password" value="" class="text"  message="#HTMLEditFormat($.rbKey('user.passwordvalidate'))#" maxlength="50">
 	</li>
 	<li>
-	<label for="password2txt">#rbFactory.getKey('user.passwordconfirm')#</label>
-	<input  name="password2" id="password2txt" type="password" value="" required="false" class="text"  message="#HTMLEditFormat(rbFactory.getKey('user.passwordconfirmrequired'))#" maxlength="50">
+	<label for="password2txt">#$.rbKey('user.passwordconfirm')#</label>
+	<input  name="password2" id="password2txt" type="password" value="" required="false" class="text"  message="#HTMLEditFormat($.rbKey('user.passwordconfirmrequired'))#" maxlength="50">
 	</li>
 
 </cfif>
@@ -129,7 +129,7 @@ to your own modified versions of Mura CMS.
 
 <cfif application.categoryManager.getCategoryCount(request.siteid)>
 <fieldset>
-	<legend>#rbFactory.getKey('user.interests')#:</legend>		
+	<legend>#$.rbKey('user.interests')#:</legend>		
 			<cf_dsp_categories_nest siteid="#request.siteid#">
 </fieldset>
 </cfif>
@@ -154,7 +154,7 @@ to your own modified versions of Mura CMS.
 <!--- extended attributes as defined in the class extension manager --->
 <cfsilent>
 <cfif request.userBean.getIsNew()>
-	<cfset request.userBean.setSiteID(event.getValue("siteid"))>
+	<cfset request.userBean.setSiteID($.event("siteid"))>
 </cfif>
 <cfif request.userBean.getIsPublic()>
 <cfset userPoolID=application.settingsManager.getSite(request.userBean.getSiteID()).getPublicUserPoolID()>
@@ -219,14 +219,14 @@ to your own modified versions of Mura CMS.
 
 <div class="buttons">
 	<cfif session.mura.isLoggedIn>
-		<input name="submit" type="submit"  value="#HTMLEditFormat(rbFactory.getKey('user.updateprofile'))#" />
+		<input name="submit" type="submit"  value="#HTMLEditFormat($.rbKey('user.updateprofile'))#" />
 		<input type="hidden" name="userid" value="#session.mura.userID#"/>
 		<input type="hidden" name="doaction" value="updateprofile">
 	<cfelse>
 		<input type="hidden" name="userid" value=""/>
 		<input type="hidden" name="isPublic" value="1"/>
 		<input type="hidden" name="inactive" value="0"/> <!--- Set the value to "1" to require admin approval of new accounts --->
-		<input name="submit" type="submit"  value="#HTMLEditFormat(rbFactory.getKey('user.createprofile'))#"/>
+		<input name="submit" type="submit"  value="#HTMLEditFormat($.rbKey('user.createprofile'))#"/>
 		<input type="hidden" name="doaction" value="createprofile">
 		<!--- <input type="hidden" name="groupID" value="[userid from Group Detail page url]"> Add users to a specific group --->
 	</cfif> 
@@ -249,12 +249,12 @@ setHTMLEditors(200,"70%");
 A new registration has been submitted to #getSite().getSite()#
 
 Date/Time: #now()#
-#rbFactory.getKey('user.email')#: #request.userBean.getEmail()#
-#rbFactory.getKey('user.username')#: #request.userBean.getUserName()#
-#rbFactory.getKey('user.fname')#: #request.userBean.getFname()#
-#rbFactory.getKey('user.lname')#: #request.userBean.getLname()#
+#$.rbKey('user.email')#: #request.userBean.getEmail()#
+#$.rbKey('user.username')#: #request.userBean.getUserName()#
+#$.rbKey('user.fname')#: #request.userBean.getFname()#
+#$.rbKey('user.lname')#: #request.userBean.getLname()#
 </cfoutput></cfsavecontent>
-<cfset email=application.serviceFactory.getBean('mailer') />
+<cfset email=$.getBean('mailer') />
 <cfset email.sendText(notifyText,
 				getSite().getExtranetPublicRegNotify(),
 				getSite().getSite(),
@@ -266,10 +266,10 @@ Date/Time: #now()#
 
 <cfif request.userBean.getInActive()>
 <div id="editProfileMsg" class="required">
-<p class="success">#rbFactory.getKey('user.thankyouinactive')#</p>
+<p class="success">#$.rbKey('user.thankyouinactive')#</p>
 </div>
 <cfelse>
-<div id="editProfileMsg" class="required"><p class="notice">#rbFactory.getKey('user.thankyouactive')#</p></div>
+<div id="editProfileMsg" class="required"><p class="notice">#$.rbKey('user.thankyouactive')#</p></div>
 </cfif>
 </cfif>
 </cfoutput>

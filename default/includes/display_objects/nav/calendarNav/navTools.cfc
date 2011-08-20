@@ -1,10 +1,10 @@
 <cfcomponent output="false">
 <cfset rbFactory=application.settingsManager.getSite(request.siteid).getRBFactory()>	
 <cfscript>
-weekdayShort=rbFactory.getKey('calendar.weekdayshort');
-weekdayLong=rbFactory.getKey('calendar.weekdaylong');
-monthShort=rbFactory.getKey('calendar.monthshort');
-monthLong=rbFactory.getKey('calendar.monthlong');
+weekdayShort=$.rbKey('calendar.weekdayshort');
+weekdayLong=$.rbKey('calendar.weekdaylong');
+monthShort=$.rbKey('calendar.monthshort');
+monthLong=$.rbKey('calendar.monthlong');
 </cfscript>
 <cffunction name="getNavID"  output="false" returntype="numeric">
 		<cfset var I = 0 />

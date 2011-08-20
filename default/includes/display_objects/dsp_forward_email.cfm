@@ -40,33 +40,33 @@ for your modified version; it is your choice whether to do so, or to make such m
 the GNU General Public License version 2 without this exception. You may, if you choose, apply this exception
 to your own modified versions of Mura CMS.
 --->
-<cfset variables.rbFactory=getSite().getRBFactory() />
+
 <cfparam name="request.emailid" default=""/>
 <cfoutput>
 <div id="svForwardEmail">
 	<cfif request.emailid eq ''>
-	<em>#variables.rbFactory.getKey('email.emailiderror')#</em>
+	<em>#$.rbKey('email.emailiderror')#</em>
 	<cfelse>
 	<#getHeaderTag('subHead1')#>#application.emailManager.read(request.emailid).getSubject()#</#getHeaderTag('subHead1')#>
 	<cfif listfind(request.doaction,"forwardEmail")>
-	<p>#variables.rbFactory.getKey('email.forwarded')#</p>
+	<p>#$.rbKey('email.forwarded')#</p>
 	</cfif>
 	<form name="forwardFrm" action="?nocache=1" method="post" format="html" onsubmit="return validate(this);" novalidate="novalidate" data-role="fieldcontain">
 	<fieldset>
-	<legend>#variables.rbFactory.getKey('email.uptofive')#<legend>
+	<legend>#$.rbKey('email.uptofive')#<legend>
 	<ul>
-	<li><input name="to1" message="#htmlEditFormat(variables.rbFactory.getKey('email.emailrequired'))#" validate="email" required="true"></li>
-	<li><input name="to2" message="#htmlEditFormat(variables.rbFactory.getKey('email.emailvalidate'))#" validate="email" required="no"></li>
-	<li><input name="to3" message="#htmlEditFormat(variables.rbFactory.getKey('email.emailvalidate'))#" validate="email" required="no"></li>
-	<li><input name="to4" message="#htmlEditFormat(variables.rbFactory.getKey('email.emailvalidate'))#" validate="email" required="no"></li>
-	<li><input name="to5" message="#htmlEditFormat(variables.rbFactory.getKey('email.emailvalidate'))#" validate="email" required="no"></li>
+	<li><input name="to1" message="#htmlEditFormat($.rbKey('email.emailrequired'))#" validate="email" required="true"></li>
+	<li><input name="to2" message="#htmlEditFormat($.rbKey('email.emailvalidate'))#" validate="email" required="no"></li>
+	<li><input name="to3" message="#htmlEditFormat($.rbKey('email.emailvalidate'))#" validate="email" required="no"></li>
+	<li><input name="to4" message="#htmlEditFormat($.rbKey('email.emailvalidate'))#" validate="email" required="no"></li>
+	<li><input name="to5" message="#htmlEditFormat($.rbKey('email.emailvalidate'))#" validate="email" required="no"></li>
 	</ul>
 	<input name="doaction" value="forwardEmail" type="hidden"/>
 	<input name="emailid" value="#HTMLEditFormat(request.emailid)#" type="hidden"/>
 	<input name="from" value="#HTMLEditFormat(request.from)#" type="hidden"/>
 	<input name="origin" value="#HTMLEditFormat(request.origin)#" type="hidden"/>
 	<fieldset>
-	<input class="submit" type="submit" value="#HTMLEditFormat(variables.rbFactory.getKey('email.submit'))#"/>
+	<input class="submit" type="submit" value="#HTMLEditFormat($.rbKey('email.submit'))#"/>
 	<cfinclude template="dsp_form_protect.cfm" />
 	</form>
 	</cfif>

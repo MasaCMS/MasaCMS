@@ -50,15 +50,15 @@ to your own modified versions of Mura CMS.
   </cfif>
 
   <cfif variables.feedBean.getIsActive()>
-	<cfset variables.cssID=createCSSid(feedBean.renderName())>
+	<cfset variables.cssID=$.createCSSid(feedBean.renderName())>
     
 	<cfset editableControl.editLink = "">
 	<cfset editableControl.innerHTML = "">
 	
 	<cfif not variables.feedBean.getIsNew() and this.showEditableObjects and arguments.objectPerm eq 'editor'>
 		<cfset bean = feedBean>
-		<cfset loadShadowBoxJS()>
-		<cfset addToHTMLHeadQueue('editableObjects.cfm')>
+		<cfset $.loadShadowBoxJS()>
+		<cfset $.addToHTMLHeadQueue('editableObjects.cfm')>
 		<cfif len(application.configBean.getAdminDomain())>
 			<cfif application.configBean.getAdminSSL()>
 				<cfset variables.adminBase="https://#application.configBean.getAdminDomain()#"/>
@@ -73,13 +73,13 @@ to your own modified versions of Mura CMS.
 		<cfset editableControl.editLink = editableControl.editLink & "&amp;siteid=" & bean.getSiteID()>
 		<cfset editableControl.editLink = editableControl.editLink & "&amp;feedid=" & bean.getFeedID()>
 		<cfset editableControl.editLink = editableControl.editLink & "&amp;type=" & bean.getType()>
-		<cfset editableControl.editLink = editableControl.editLink & "&amp;homeID=" & request.contentBean.getContentID()>
+		<cfset editableControl.editLink = editableControl.editLink & "&amp;homeID=" & $.content('contentID')>
 		<cfset editableControl.editLink = editableControl.editLink & "&amp;compactDisplay=true">
 		
 		<cfset editableControl.innerHTML = generateEditableObjectControl(editableControl.editLink)>
 	</cfif>
 	<cfif editableControl.innerHTML neq "">
-		<cfoutput>#renderEditableObjectHeader("editableFeed")#</cfoutput>
+		<cfoutput>#$.renderEditableObjectHeader("editableFeed")#</cfoutput>
 	</cfif>
 	
 	<cfif variables.feedBean.getType() eq 'local'>
@@ -91,19 +91,19 @@ to your own modified versions of Mura CMS.
 			<cfset variables.rs=rsPreFeed />
 		</cfif>
 		
-		<cfset variables.iterator=application.serviceFactory.getBean("contentIterator")>
+		<cfset variables.iterator=$.getBean("contentIterator")>
 		<cfset variables.iterator.setQuery(rs,feedBean.getNextN())>
-		<cfset variables.rbFactory=getSite().getRBFactory() />
+		
 		<cfset variables.checkMeta=feedBean.getDisplayRatings() or feedBean.getDisplayComments()>
 		<cfset variables.doMeta=0 />
 		<cfset event.setValue("currentNextNID",feedBean.getFeedID())>
 
-		<cfif not len(event.getValue("nextNID")) or event.getValue("nextNID") eq event.getValue("currentNextNID")>
+		<cfif not len($.event("nextNID")) or $.event("nextNID") eq $.event("currentNextNID")>
 			<cfif event.getContentBean().getNextN() gt 1>
-				<cfset variables.currentNextNIndex=event.getValue("startRow")>
+				<cfset variables.currentNextNIndex=$.event("startRow")>
 				<cfset variables.iterator.setStartRow(currentNextNIndex)>
 			<cfelse>
-				<cfset variables.currentNextNIndex=event.getValue("pageNum")>
+				<cfset variables.currentNextNIndex=$.event("pageNum")>
 				<cfset variables.iterator.setPage(currentNextNIndex)>
 			</cfif>
 		<cfelse>	
@@ -130,7 +130,7 @@ to your own modified versions of Mura CMS.
 	  </cfsilent>
 
 		<cfif variables.iterator.getRecordCount()>
-			<cfset addToHTMLHeadQueue("listImageStyles.cfm")>
+			<cfset $.addToHTMLHeadQueue("listImageStyles.cfm")>
 			<cfoutput>
 			<div class="svSyndLocal svFeed svIndex clearfix" id="#variables.cssID#">
 	        <cfif variables.feedBean.getDisplayName()>
@@ -170,13 +170,13 @@ to your own modified versions of Mura CMS.
 								<cfif structKeyExists(variables.feedData.itemArray[i],"pubDate")>
 									<cftry>
 									<cfset variables.itemDate=parseDateTime(variables.feedData.itemArray[i].pubDate.xmlText)>
-									<dt class="releaseDate"><cfif isDate(variables.itemDate)>#LSDateFormat(variables.itemDate,getLongDateFormat())#<cfelse>#variables.feedData.itemArray[i].pubDate.xmlText#</cfif></dt>
+									<dt class="releaseDate"><cfif isDate(variables.itemDate)>#LSDateFormat(variables.itemDate,$.getLongDateFormat())#<cfelse>#variables.feedData.itemArray[i].pubDate.xmlText#</cfif></dt>
 									<cfcatch></cfcatch>
 									</cftry>
 								<cfelseif structKeyExists(variables.feedData.itemArray[i],"dc:date")>
 									<cftry>
 									<cfset itemDate=parseDateTime(variables.feedData.itemArray[i]["dc:date"].xmlText)>
-									<dt class="releaseDate"><cfif isDate(variables.itemDate)>#LSDateFormat(variables.itemDate,getLongDateFormat())#<cfelse>#variables.feedData.itemArray[i]["dc:date"].xmlText#</cfif></dt>
+									<dt class="releaseDate"><cfif isDate(variables.itemDate)>#LSDateFormat(variables.itemDate,$.getLongDateFormat())#<cfelse>#variables.feedData.itemArray[i]["dc:date"].xmlText#</cfif></dt>
 									<cfcatch></cfcatch>
 									</cftry>
 								</cfif>
@@ -191,7 +191,7 @@ to your own modified versions of Mura CMS.
 								<cfif structKeyExists(variables.feedData.itemArray[i],"updated")>
 									<cftry>
 									<cfset variables.itemDate=parseDateTime(variables.feedData.itemArray[i].updated.xmlText)>
-									<dt class="releaseDate"><cfif isDate(variables.itemDate)>#LSDateFormat(variables.itemDate,getLongDateFormat())#<cfelse>#variables.feedData.itemArray[i].updated.xmlText#</cfif></dt>
+									<dt class="releaseDate"><cfif isDate(variables.itemDate)>#LSDateFormat(variables.itemDate,$.getLongDateFormat())#<cfelse>#variables.feedData.itemArray[i].updated.xmlText#</cfif></dt>
 									<cfcatch></cfcatch>
 									</cftry>
 								</cfif>

@@ -43,7 +43,7 @@ to your own modified versions of Mura CMS.
 
 <cfoutput>
 <cfsilent>
-	<cfset variables.rbFactory=getSite().getRBFactory() />
+	
 	<cfset variables.iterator=$.content().getRelatedContentIterator(liveOnly=true)>
 	
 	<cfset variables.contentListType="Related">
@@ -59,7 +59,7 @@ to your own modified versions of Mura CMS.
 </cfsilent>
 <cfif variables.iterator.getRecordCount()>
 	<div class="svRelContent svIndex">
-	<#getHeaderTag('subHead1')#>#variables.rbFactory.getKey('list.relatedcontent')#</#getHeaderTag('subHead1')#>
+	<#getHeaderTag('subHead1')#>#$.rbKey('list.relatedcontent')#</#getHeaderTag('subHead1')#>
 	#dspObject_Include(
 			thefile='dsp_content_list.cfm',
 			fields=variables.contentListFields,

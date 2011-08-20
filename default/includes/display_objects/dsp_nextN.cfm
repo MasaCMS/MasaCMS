@@ -55,7 +55,7 @@ to your own modified versions of Mura CMS.
 <cfset variables.paginationKey="pageNum">
 </cfif>
 <cfset variables.qrystr="" />
-<cfset variables.rbFactory=getSite().getRBFactory() />
+
 <cfif len(request.sortBy)>
 	<cfset variables.qrystr="&sortBy=#request.sortBy#&sortDirection=#request.sortDirection#"/>
 </cfif>
@@ -80,18 +80,18 @@ to your own modified versions of Mura CMS.
 </cfsilent>
 <cfoutput>
 <dl class="moreResults">
-	<cfif variables.nextN.recordsPerPage gt 1><dt>#variables.rbFactory.getKey('list.moreresults')#:</dt></cfif>
+	<cfif variables.nextN.recordsPerPage gt 1><dt>#$.rbKey('list.moreresults')#:</dt></cfif>
 	<dd>
 		<ul>
 		<cfif variables.nextN.currentpagenumber gt 1>
 		<cfif request.muraExportHtml>
 			<cfif variables.nextN.currentpagenumber eq 2>
-			<li class="navPrev"><a href="index.html">&laquo;&nbsp;#variables.rbFactory.getKey('list.previous')#</a></li>
+			<li class="navPrev"><a href="index.html">&laquo;&nbsp;#$.rbKey('list.previous')#</a></li>
 			<cfelse>
-			<li class="navPrev"><a href="index#evaluate('#variables.nextn.currentpagenumber#-1')#.html">&laquo;&nbsp;#variables.rbFactory.getKey('list.previous')#</a></li>
+			<li class="navPrev"><a href="index#evaluate('#variables.nextn.currentpagenumber#-1')#.html">&laquo;&nbsp;#$.rbKey('list.previous')#</a></li>
 			</cfif>
 		<cfelse>
-			<li class="navPrev"><a href="#xmlFormat('?#paginationKey#=#variables.nextN.previous##qrystr#')#">&laquo;&nbsp;#rbFactory.getKey('list.previous')#</a></li>
+			<li class="navPrev"><a href="#xmlFormat('?#paginationKey#=#variables.nextN.previous##qrystr#')#">&laquo;&nbsp;#$.rbKey('list.previous')#</a></li>
 		</cfif>
 		</cfif>
 		<cfloop from="#variables.nextN.firstPage#"  to="#variables.nextN.lastPage#" index="i">
@@ -111,9 +111,9 @@ to your own modified versions of Mura CMS.
 		</cfloop>
 		<cfif variables.nextN.currentpagenumber lt variables.nextN.NumberOfPages>
 			<cfif request.muraExportHtml>
-				<li class="navNext"><a href="index#evaluate('#variables.nextn.currentpagenumber#+1')#.html">#rbFactory.getKey('list.next')#&nbsp;&raquo;</a></li>
+				<li class="navNext"><a href="index#evaluate('#variables.nextn.currentpagenumber#+1')#.html">#$.rbKey('list.next')#&nbsp;&raquo;</a></li>
 			<cfelse>
-				<li class="navNext"><a href="#xmlFormat('?#paginationKey#=#variables.nextN.next##variables.qrystr#')#">#rbFactory.getKey('list.next')#&nbsp;&raquo;</a></li>
+				<li class="navNext"><a href="#xmlFormat('?#paginationKey#=#variables.nextN.next##variables.qrystr#')#">#$.rbKey('list.next')#&nbsp;&raquo;</a></li>
 			</cfif>
 		</cfif>
 		</ul>

@@ -48,7 +48,7 @@ Lazarus contentServer Sitemap
 	<cfset menuDate=createDate(request.year,request.month,1)>
 </cfif>
 
-<cfset rsPreSection=application.contentGateway.getKids('00000000000000000000000000000000000',request.siteid,request.contentBean.getcontentid(),menuType,menuDate,100,request.keywords,0,"displayStart","asc",request.categoryID,request.relatedID,request.tag)>
+<cfset rsPreSection=application.contentGateway.getKids('00000000000000000000000000000000000',request.siteid,$.content('contentID'),menuType,menuDate,100,request.keywords,0,"displayStart","asc",request.categoryID,request.relatedID,request.tag)>
 <cfif getSite().getExtranet() eq 1 and request.r.restrict eq 1>
 	<cfset rssection=queryPermFilter(rsPreSection)/>
 <cfelse>

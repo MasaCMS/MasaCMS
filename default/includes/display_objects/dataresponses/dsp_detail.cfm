@@ -43,16 +43,16 @@ to your own modified versions of Mura CMS.
 
 <cfsilent>
 <cfset rsData=application.dataCollectionManager.read(request.responseid)/>
-<cfif request.contentBean.getResponseDisplayFields() neq ''>
-<cfset fieldnames=replace(listLast(request.contentBean.getResponseDisplayFields(),"~"),"^",",","ALL")/>
+<cfif $.content('ResponseDisplayFields') neq ''>
+<cfset fieldnames=replace(listLast($.content('ResponseDisplayFields'),"~"),"^",",","ALL")/>
 <cfelse>
-<cfset fieldnames=application.dataCollectionManager.getCurrentFieldList(request.contentBean.getcontentId())/>
+<cfset fieldnames=application.dataCollectionManager.getCurrentFieldList($.content('contentID'))/>
 </cfif>
 <cfwddx action="wddx2cfml" input="#rsdata.data#" output="info">
 </cfsilent>
 <cfoutput>
 <div id="dsp_detail" class="dataResponses">
-<#getHeaderTag('subHead1')#>#request.contentBean.getTitle()#</#getHeaderTag('subHead1')#>
+<#getHeaderTag('subHead1')#>#$.content('title')#</#getHeaderTag('subHead1')#>
 <a class="actionItem" href="##" onclick="history.go(-1)">Return to List</a>
 <dl>
 <cfloop list="#fieldnames#" index="f">

@@ -55,7 +55,7 @@ to your own modified versions of Mura CMS.
 
 <cfset contentLink = renderer.createHref(contentBean.getType(), contentBean.getFilename(), url.siteid, favorite.getfavorite(), '', '', '', '#application.configBean.getContext()#', '#application.configBean.getStub()#', '', 'false') />
 <cfset contentLink = "<a href='#contentLink#'>#favoriteName#</a>" />
-<cfset contentLink = "<a href="""" onClick=""return deleteFavorite('#favorite.getfavoriteID()#', 'favorite#lid#');"" title=""#xmlformat(rbFactory.getKey('favorites.removefromfavorites'))#"" class=""remove"">[-]</a> " & contentLink />
+<cfset contentLink = "<a href="""" onClick=""return deleteFavorite('#favorite.getfavoriteID()#', 'favorite#lid#');"" title=""#xmlformat($.rbKey('favorites.removefromfavorites'))#"" class=""remove"">[-]</a> " & contentLink />
 <cfset favoriteStruct = structNew() />
 <cfset favoriteStruct.lid = lid />
 <cfset favoriteStruct.link = contentLink />

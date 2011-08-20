@@ -60,11 +60,11 @@ to your own modified versions of Mura CMS.
 <cfsavecontent variable="notifyText"><cfoutput>
 <cfif form.comments neq ''>
 #form.comments##newline##newline#</cfif>
-#rbFactory.getResourceBundle().messageFormat(rbFactory.getKey('stf.sentence1'),'#form.fname# #form.lname#')#
+#rbFactory.getResourceBundle().messageFormat($.rbKey('stf.sentence1'),'#form.fname# #form.lname#')#
 
 #link#
 
-#rbFactory.getKey('stf.sentence2')#
+#$.rbKey('stf.sentence2')#
 </cfoutput></cfsavecontent>
 <cfset email=application.serviceFactory.getBean('mailer') />
 <cfset email.sendText(notifyText,
@@ -83,15 +83,15 @@ to your own modified versions of Mura CMS.
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
-<title>#application.settingsManager.getSite(request.siteID).getSite()# - #rbFactory.getKey('stf.sendtoafriend')#</title>
+<title>#application.settingsManager.getSite(request.siteID).getSite()# - #$.rbKey('stf.sendtoafriend')#</title>
 <link rel="stylesheet" href="#application.settingsManager.getSite(request.siteid).getAssetPath()#/css/style.css" type="text/css" media="all" />
 </head>
 
 <body id="svSendToFriend">
 <cfif success>
-<h1 class="success">#rbFactory.getKey('stf.yourlinkhasbeensent')#</h1>   
+<h1 class="success">#$.rbKey('stf.yourlinkhasbeensent')#</h1>   
 <cfelse>
-<h1 class="error">#rbFactory.getKey('stf.error')#</h1>  
+<h1 class="error">#$.rbKey('stf.error')#</h1>  
 </cfif>
 </body>
 </html>

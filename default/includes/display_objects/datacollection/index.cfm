@@ -63,8 +63,8 @@ to your own modified versions of Mura CMS.
 	<cfset editableControl.innerHTML = "">
 	
 	<cfif this.showEditableObjects and objectPerm eq 'editor'>
-		<cfset loadShadowBoxJS()>
-		<cfset addToHTMLHeadQueue('editableObjects.cfm')>
+		<cfset $.loadShadowBoxJS()>
+		<cfset $.addToHTMLHeadQueue('editableObjects.cfm')>
 		<cfif isValid("UUID",arguments.objectID)>
 			<cfset bean = $.getBean("content").loadBy(contentID=arguments.objectID)>
 		<cfelse>
@@ -94,7 +94,7 @@ to your own modified versions of Mura CMS.
 		<cfset editableControl.editLink = editableControl.editLink & "&amp;parentid=" & bean.getParentID()>
 		<cfset editableControl.editLink = editableControl.editLink & "&amp;moduleid=" & bean.getModuleID()>
 		<cfset editableControl.editLink = editableControl.editLink & "&amp;compactDisplay=true">
-		<cfset editableControl.editLink = editableControl.editLink & "&amp;homeid=" & event.getContentBean().getContentID()>
+		<cfset editableControl.editLink = editableControl.editLink & "&amp;homeid=" & $.content('contentID')>
 		<!---
 		<cfset editableControl.historyLink = adminBase & "#application.configBean.getContext()#/admin/index.cfm?fuseaction=cArch.hist">
 		<cfset editableControl.historyLink = editableControl.historyLink & "&amp;siteid=" & bean.getSiteID()>
@@ -111,7 +111,7 @@ to your own modified versions of Mura CMS.
 </cfsilent>
 <cfoutput>
 <cfif editableControl.innerHTML neq "">
-	#renderEditableObjectHeader("editableForm")#
+	#$.renderEditableObjectHeader("editableForm")#
 </cfif>	
 <cfif rsForm.isOnDisplay>
 	<cfif rsForm.displayTitle neq 0><#getHeaderTag('subHead1')#>#rsForm.title#</#getHeaderTag('subHead1')#></cfif>
@@ -120,8 +120,8 @@ to your own modified versions of Mura CMS.
 	<cfinclude template="act_add.cfm">
 	<cfinclude template="dsp_response.cfm">
 	<cfelse>
-	<cfset addToHTMLHeadQueue("htmlEditor.cfm")>
-	#setDynamicContent(application.dataCollectionManager.renderForm(rsForm.contentid,request.siteid,rsForm.body,rsForm.responseChart, $.content('contentID')))#
+	<cfset $.addToHTMLHeadQueue("htmlEditor.cfm")>
+	#$.setDynamicContent(application.dataCollectionManager.renderForm(rsForm.contentid,request.siteid,rsForm.body,rsForm.responseChart, $.content('contentID')))#
 	<script type="text/javascript">
 	setHTMLEditors(200,500);
 	</script>

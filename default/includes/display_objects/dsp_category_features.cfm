@@ -42,7 +42,7 @@ to your own modified versions of Mura CMS.
 --->
 
 <cfsilent>
-<!---<cfset loadShadowBoxJS() />--->	
+<!---<cfset $.loadShadowBoxJS() />--->	
 <cfset categoryBean=application.categoryManager.read(arguments.objectid) />
 <cfif categoryBean.getIsActive()>
 <cfset rsPreFeatures=application.categoryManager.getLiveCategoryFeatures(arguments.objectid)>
@@ -57,13 +57,13 @@ to your own modified versions of Mura CMS.
 <cfoutput>
 <cfif rsFeatures.recordcount and categoryBean.getIsActive()>
 <cfparam name="hasSummary" default="true"/>
-<cfset cssID=createCSSid(categoryBean.getName())>
+<cfset cssID=$.createCSSid(categoryBean.getName())>
 <div class="svCatFeatures svIndex" id="#cssID#">
 <#getHeaderTag('subHead1')#>#categoryBean.getName()#</#getHeaderTag('subHead1')#>
 <cfloop query="rsFeatures">
 		<cfsilent>
 			<cfset class=iif(rsFeatures.currentrow eq 1,de('first'),de(iif(rsFeatures.currentrow eq rsFeatures.recordcount,de('last'),de(''))))>
-			<cfset link=addlink('#rsFeatures.type#','#rsFeatures.filename#','#rsFeatures.menutitle#','#rsFeatures.target#','#rsFeatures.targetParams#','#rsFeatures.contentid#','#request.siteid#','','#application.configBean.getContext()#','#application.configBean.getStub()#','')>
+			<cfset link=$.addLink('#rsFeatures.type#','#rsFeatures.filename#','#rsFeatures.menutitle#','#rsFeatures.target#','#rsFeatures.targetParams#','#rsFeatures.contentid#','#request.siteid#','','#application.configBean.getContext()#','#application.configBean.getStub()#','')>
 				
 			<cfset hasImage=len(rsFeatures.fileID) and showImageInList(rsFeatures.fileExt) />
 
@@ -73,7 +73,7 @@ to your own modified versions of Mura CMS.
 		</cfsilent> 
 		 <dl<cfif class neq ''> class="#class#"</cfif>>
 		 <cfif isDate(rsFeatures.releasedate)>
-		 <dt class="releaseDate">#LSDateFormat(rsFeatures.releasedate,getLongDateFormat())#</dt>
+		 <dt class="releaseDate">#LSDateFormat(rsFeatures.releasedate,$.getLongDateFormat())#</dt>
 		</cfif>
 		<dt>#link#</dt>
 		<cfif hasImage>
@@ -81,7 +81,7 @@ to your own modified versions of Mura CMS.
 				<!---<a href="#application.configBean.getContext()#/tasks/render/file/index.cfm?fileID=#rsFeatures.FileID#&ext=.#rsFeatures.fileExt#" title="#HTMLEditFormat(rsFeatures.title)#" rel="shadowbox[#cssID#]">---><img src="#createHREFForImage(rsFeatures.siteID,rsFeatures.fileID,rsFeatures.fileExt,'small')#"/><!---</a>--->
 			</dd>
 		</cfif>
-		<cfif hasSummary><dd>#setDynamicContent(rsFeatures.summary)#</dd></cfif></dl></cfloop>
+		<cfif hasSummary><dd>#$.setDynamicContent(rsFeatures.summary)#</dd></cfif></dl></cfloop>
 </div>
 <cfelse>
 <!-- Empty Category Features '#categoryBean.getName()#' -->

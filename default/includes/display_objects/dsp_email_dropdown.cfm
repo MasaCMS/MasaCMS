@@ -58,16 +58,16 @@ SELECT userid, fname, lname, email, type FROM tusers WHERE type=2 and Email>'' A
 <cfoutput><input name="sendto" value="#rsemail2.email#" type="hidden" /></cfoutput>
 <cfelse>
 <li class="req">
-	<label for="sendto">#rbFactory.getKey('email.sendto')#<ins> (#rbFactory.getKey('email.required')#)</ins></label>
-	<select id="sendto" name="sendto" class="dropdown" required="true" message="#htmlEditFormat(rbFactory.getKey('email.sendtorequired'))#">
-		<option value="">#rbFactory.getKey('email.pleaseselect')#</option>
+	<label for="sendto">#$.rbKey('email.sendto')#<ins> (#$.rbKey('email.required')#)</ins></label>
+	<select id="sendto" name="sendto" class="dropdown" required="true" message="#htmlEditFormat($.rbKey('email.sendtorequired'))#">
+		<option value="">#$.rbKey('email.pleaseselect')#</option>
 		<cfif rsEmail1.recordcount>
-		<optgroup label="#htmlEditFormat(rbFactory.getKey('email.group'))#">
+		<optgroup label="#htmlEditFormat($.rbKey('email.group'))#">
 			<cfoutput query="rsEmail1"><option value="#Email#">#groupname#</option></cfoutput>
 		</optgroup>
 		</cfif>
 		<cfif rsEmail2.recordcount><!--- <cfif rsemail1.recordcount and rsemail2.recordcount><option>---------------------</option></cfif> --->
-		<optgroup label="#htmlEditFormat(rbFactory.getKey('email.person'))#">
+		<optgroup label="#htmlEditFormat($.rbKey('email.person'))#">
 			<cfoutput query="rsEmail2"><option value="#Email#">#fname# #lname#</option></cfoutput>
 		</optgroup>
 		</cfif>

@@ -40,46 +40,46 @@ for your modified version; it is your choice whether to do so, or to make such m
 the GNU General Public License version 2 without this exception. You may, if you choose, apply this exception
 to your own modified versions of Mura CMS.
 --->
-<cfif not listFind("Portal,Gallery",request.contentBean.getType())>
+<cfif not listFind("Portal,Gallery",$.content('type'))>
 <cfsilent>
 <cfset loadJSLib() />
 <cfswitch expression="#getJsLib()#">
 	<cfcase value="jquery">
-	 	<cfset addToHTMLHeadQueue("rater/htmlhead/rater-jquery.cfm")>
+	 	<cfset $.addToHTMLHeadQueue("rater/htmlhead/rater-jquery.cfm")>
 	</cfcase>
 	<cfdefaultcase>
-		<cfset addToHTMLHeadQueue("rater/htmlhead/rater-prototype.cfm")>
+		<cfset $.addToHTMLHeadQueue("rater/htmlhead/rater-prototype.cfm")>
 	</cfdefaultcase>
 	</cfswitch>
-<cfset addToHTMLHeadQueue("rater/htmlhead/rater.cfm")>
+<cfset $.addToHTMLHeadQueue("rater/htmlhead/rater.cfm")>
 <cfset rbFactory=getSite().getRBFactory() />
 <cfparam name="request.rate" default="0" />
 <cfset request.raterID=getPersonalizationID() />
 <cfif listFind(request.doaction,"saveRate") and request.raterID neq '' and isNumeric(request.rate)>
 <cfset myRate=application.raterManager.saveRate(
-request.contentBean.getcontentID(),
+$.content('contentID'),
 request.siteID,
 request.raterID,
 request.rate) />
 <cfelse>
 <cfset myRate = application.raterManager.readRate(
-request.contentBean.getcontentID(),
-request.contentBean.getSiteID(),
+$.content('contentID'),
+$.content('siteID'),
 request.raterID) />
 </cfif>
-<cfset rsRating=application.raterManager.getAvgRating(request.contentBean.getcontentID(),request.contentBean.getSiteID()) />
+<cfset rsRating=application.raterManager.getAvgRating($.content('contentID'),$.content('siteID')) />
 
 </cfsilent>
 <cfoutput>
 <div id="svRatings" class="clearfix">	
 	<div id="rateIt">
-	<#getHeaderTag('subHead1')#>#rbFactory.getKey('rater.ratethis')#</#getHeaderTag('subHead1')#>				
+	<#getHeaderTag('subHead1')#>#$.rbKey('rater.ratethis')#</#getHeaderTag('subHead1')#>				
 		<form name="rater1" id="rater1" method="post" action="">
 			<input type="hidden" id="rate" name="rate" value="##">
 			<input type="hidden" id="userID" name="userID" value="#request.raterID#">
 			<input type="hidden" id="loginURL" name="loginURL" value="#application.settingsManager.getSite(request.siteid).getLoginURL()#&returnURL=#URLencodedFormat(getCurrentURL(true,'doaction=saveRate&rate='))#">
 			<input type="hidden" id="siteID" name="siteID" value="#request.siteid#">
-			<input type="hidden" id="contentID" name="contentID" value="#request.contentBean.getcontentID()#">
+			<input type="hidden" id="contentID" name="contentID" value="#$.content('contentID')#">
 			<input type="hidden" id="formID" name="formID" value="rater1">
 			<fieldset>
 				<label for="rater1_rater_input0radio1"><input type="radio" name="rater1_rater_input0" id="rater1_rater_input0radio1" value="1" class="stars" <cfif myRate.getRate() eq 1>checked</cfif> >Not at All</label>
@@ -94,7 +94,7 @@ request.raterID) />
 	
 	<div id="avgrating">
 		<cfif rsRating.theCount gt 0>
-			<#getHeaderTag('subHead1')#>#rbFactory.getKey('rater.avgrating')# (<span id="numvotes">#rsRating.theCount# <cfif rsRating.theCount neq 1>#rbFactory.getKey('rater.votes')#<cfelse>#rbFactory.getKey('rater.vote')#</cfif></span>)</#getHeaderTag('subHead1')#>
+			<#getHeaderTag('subHead1')#>#$.rbKey('rater.avgrating')# (<span id="numvotes">#rsRating.theCount# <cfif rsRating.theCount neq 1>#$.rbKey('rater.votes')#<cfelse>#$.rbKey('rater.vote')#</cfif></span>)</#getHeaderTag('subHead1')#>
 			<div id="avgratingstars" class="ratestars #application.raterManager.getStarText(rsRating.theAvg)#<!--- #replace(rsRating.theAvg(),".","")# --->">
 			<cfif isNumeric(rsRating.theAvg)>#rsRating.theAvg#<cfelse>0</cfif>
 			<!--- <img id="ratestars" src="#event.getSite().getAssetPath()#/images/rater/star_#application.raterManager.getStarText(rsRating.theAvg)#.gif" alt="<cfif isNumeric(rsRating.theAvg)>#rsRating.theAvg# star<cfif rsRating.theAvg gt 1>s</cfif></cfif>" border="0"> ---></div>

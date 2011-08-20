@@ -42,13 +42,13 @@ to your own modified versions of Mura CMS.
 --->
 <cfsilent>
 <cfset loadJSLib() />
-<cfset addToHTMLHeadQueue("dragablefeeds/htmlhead/dragablefeeds.cfm")>	
+<cfset $.addToHTMLHeadQueue("dragablefeeds/htmlhead/dragablefeeds.cfm")>	
 <cfswitch expression="#getJsLib()#">
 	<cfcase value="jquery">
-		<cfset addToHTMLHeadQueue("dragablefeeds/htmlhead/dragablefeeds-jquery.cfm")>
+		<cfset $.addToHTMLHeadQueue("dragablefeeds/htmlhead/dragablefeeds-jquery.cfm")>
 	</cfcase>
 	<cfdefaultcase>
-		<cfset addToHTMLHeadQueue("dragablefeeds/htmlhead/dragablefeeds-prototype.cfm")>
+		<cfset $.addToHTMLHeadQueue("dragablefeeds/htmlhead/dragablefeeds-prototype.cfm")>
 	</cfdefaultcase>
 </cfswitch>
 
@@ -65,40 +65,40 @@ to your own modified versions of Mura CMS.
 </cfsilent>
 <cfoutput>
 <div id="svRSSFeeds">
-<#getHeaderTag('subHead1')#>#rbFactory.getKey('dragablefeeds.title')#</#getHeaderTag('subHead1')#>
-<cfif not len(getPersonalizationID()) and application.settingsManager.getSite(request.siteID).getExtranetPublicReg() eq 1><p class="rssBlurb"><a href="#application.settingsManager.getSite(request.siteid).getLoginURL()#&returnURL=#URLEncodedFormat(application.contentRenderer.getCurrentURL())#">#rbFactory.getKey('dragablefeeds.createaccount')#</a></p></cfif>
+<#getHeaderTag('subHead1')#>#$.rbKey('dragablefeeds.title')#</#getHeaderTag('subHead1')#>
+<cfif not len(getPersonalizationID()) and application.settingsManager.getSite(request.siteID).getExtranetPublicReg() eq 1><p class="rssBlurb"><a href="#application.settingsManager.getSite(request.siteid).getLoginURL()#&returnURL=#URLEncodedFormat(application.contentRenderer.getCurrentURL())#">#$.rbKey('dragablefeeds.createaccount')#</a></p></cfif>
 </div>
 
 
-<#getHeaderTag('subHead2')# class="addFeeds">#rbFactory.getKey('dragablefeeds.wantmore')#</#getHeaderTag('subHead2')#>
+<#getHeaderTag('subHead2')# class="addFeeds">#$.rbKey('dragablefeeds.wantmore')#</#getHeaderTag('subHead2')#>
 <div id="svAddNewFeed" class="clearfix">
 	<form method="post" action="##">
 		<dl id="rssInternal">
-			<dt>#rbFactory.getKey('dragablefeeds.selectafeed')#</dt>
+			<dt>#$.rbKey('dragablefeeds.selectafeed')#</dt>
 			<dd>
 			<select name="rssURL">
-				<option value="">#rbFactory.getKey('dragablefeeds.selectafeed')#</option>
+				<option value="">#$.rbKey('dragablefeeds.selectafeed')#</option>
 				<cfoutput>
 				<optgroup label="Our Favorites">
 				<cfloop query="remoteFeeds">
 					<cfset feedLink = "#channelLink#">
 					<option value="#feedLink#">#name#</option>
 				</cfloop>
-				<optgroup label="#rbFactory.getResourceBundle().messageFormat(rbFactory.getKey('dragablefeeds.sitefeeds'),getSite().getSite())#">
+				<optgroup label="#rbFactory.getResourceBundle().messageFormat($.rbKey('dragablefeeds.sitefeeds'),getSite().getSite())#">
 				<cfloop query="localFeeds">
 					<cfset feedLink = "http://#application.settingsManager.getSite(request.siteID).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()#/tasks/feed/?feedID=#feedID#">
 					<option value="#feedLink#">#name#</option>
 				</cfloop>
 				</cfoutput>
 			</select>
-			<button class="submit" type="button" onclick="createFeed(this.form)" value="Create">#rbFactory.getKey('dragablefeeds.addfeed')#</button>
+			<button class="submit" type="button" onclick="createFeed(this.form)" value="Create">#$.rbKey('dragablefeeds.addfeed')#</button>
 			</dd>
 		</dl>
 		<dl id="rssExternal">
-			<dt>#rbFactory.getKey('dragablefeeds.addyourown')#</dt>
+			<dt>#$.rbKey('dragablefeeds.addyourown')#</dt>
 			<dd class="textField">
 			<input type="text" name="rssURLtext" size="30" value="" maxlength="255">
-			<button class="submit" type="button" onclick="createFeed(this.form)" value="Create">#rbFactory.getKey('dragablefeeds.addfeed')#</button>
+			<button class="submit" type="button" onclick="createFeed(this.form)" value="Create">#$.rbKey('dragablefeeds.addfeed')#</button>
 			</dd>
 		</dl>
 	</form>

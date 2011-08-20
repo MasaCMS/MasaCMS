@@ -42,10 +42,10 @@ to your own modified versions of Mura CMS.
 --->
 
 <cfsilent>
-<cfset data.sortby=request.contentBean.getSortBy()/>
-<cfset data.sortDirection=request.contentBean.getSortDirection()/>
-<cfset data.siteid=request.contentBean.getsiteId()/>
-<cfset data.contentid=request.contentBean.getcontentId()/>
+<cfset data.sortby=$.content('sortBy')/>
+<cfset data.sortDirection=$.content('sortDirection')/>
+<cfset data.siteid=$.content('siteID')/>
+<cfset data.contentid=$.content('contentID')/>
 <cfset data.keywords=request.keywords />
 <cfset data.fieldnames=application.dataCollectionManager.getCurrentFieldList(data.contentid)/>
 <cfset rsData=application.dataCollectionManager.getData(data)/>
@@ -53,13 +53,13 @@ to your own modified versions of Mura CMS.
 <div id="dsp_list" class="dataResponses">
 <cfif rsData.recordcount>
 <cfsilent>
-<cfset nextN=application.utility.getNextN(rsData,request.contentBean.getNextN(),request.StartRow)>
+<cfset nextN=application.utility.getNextN(rsData,$.content('nextN'),request.StartRow)>
 			
-<cfif request.contentBean.getResponseDisplayFields() neq ''>
-<cfset data.fieldnames=replace(listFirst(request.contentBean.getResponseDisplayFields(),"~"),"^",",","ALL")/>
+<cfif $.content('ResponseDisplayFields') neq ''>
+<cfset data.fieldnames=replace(listFirst($.content('ResponseDisplayFields'),"~"),"^",",","ALL")/>
 </cfif>
 </cfsilent>
-<cfoutput><#getHeaderTag('subHead1')#>#request.contentBean.getTitle()#</#getHeaderTag('subHead1')#></cfoutput>
+<cfoutput><#getHeaderTag('subHead1')#>#$.content('title')#</#getHeaderTag('subHead1')#></cfoutput>
 <table class="stripe">
 <tr>
 <cfloop list="#data.fieldnames#" index="f">

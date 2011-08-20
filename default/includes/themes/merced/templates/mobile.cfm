@@ -60,7 +60,7 @@
 		<h1>More</h1>
 		</div>
 --->
-		<cf_CacheOMatic key="dspMobilePrimaryNav#request.contentBean.getcontentID()#">
+		<cf_CacheOMatic key="dspMobilePrimaryNav#$.content('contentID')#">
 			#$.dspPrimaryNav(
 				viewDepth="0",
 				id="navPrimary",

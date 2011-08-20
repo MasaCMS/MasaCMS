@@ -70,25 +70,25 @@ to your own modified versions of Mura CMS.
 	<cfset maxPortalItems=100>
 </cfif>
 
-<cfset variables.rsPreSection=application.contentGateway.getKids('00000000000000000000000000000000000',request.siteid,request.contentBean.getcontentid(),menuType,menuDate,maxPortalItems,request.keywords,0,request.contentBean.getsortBy(),request.contentBean.getsortDirection(),request.categoryID,request.relatedID,request.tag)>
+<cfset variables.rsPreSection=application.contentGateway.getKids('00000000000000000000000000000000000',request.siteid,$.content('contentID'),menuType,menuDate,maxPortalItems,request.keywords,0,$.content('sortBy'),$.content('sortDirection'),request.categoryID,request.relatedID,request.tag)>
 
 <cfif getSite().getExtranet() eq 1 and request.r.restrict eq 1>
 	<cfset variables.rssection=queryPermFilter(variables.rsPreSection)/>
 <cfelse>
 	<cfset variables.rssection=variables.rsPreSection/>
 </cfif>
-<cfset variables.rbFactory=getSite().getRBFactory() />	
-<cfset variables.iterator=application.serviceFactory.getBean("contentIterator")>
-<cfset variables.iterator.setQuery(rsSection,request.contentBean.getNextN())>
+	
+<cfset variables.iterator=$.getBean("contentIterator")>
+<cfset variables.iterator.setQuery(rsSection,$.content('nextN'))>
 
-<cfset event.setValue("currentNextNID",event.getContentBean().getContentID())>
+<cfset event.setValue("currentNextNID",$.content('contentID'))>
 
-<cfif not len(event.getValue("nextNID")) or event.getValue("nextNID") eq event.getValue("currentNextNID")>
+<cfif not len($.event("nextNID")) or $.event("nextNID") eq $.event("currentNextNID")>
 	<cfif event.getContentBean().getNextN() gt 1>
-		<cfset variables.currentNextNIndex=event.getValue("startRow")>
+		<cfset variables.currentNextNIndex=$.event("startRow")>
 		<cfset variables.iterator.setStartRow(variables.currentNextNIndex)>
 	<cfelse>
-		<cfset variables.currentNextNIndex=event.getValue("pageNum")>
+		<cfset variables.currentNextNIndex=$.event("pageNum")>
 		<cfset variables.iterator.setPage(variables.currentNextNIndex)>
 	</cfif>
 <cfelse>	
@@ -96,16 +96,16 @@ to your own modified versions of Mura CMS.
 	<cfset variables.iterator.setPage(1)>
 </cfif>
 
-<cfset variables.nextN=application.utility.getNextN(rsSection,request.contentBean.getNextN(),variables.currentNextNIndex)>
+<cfset variables.nextN=application.utility.getNextN(rsSection,$.content('nextN'),variables.currentNextNIndex)>
 
 <cfset variables.contentListType="Portal">
 <cfset variables.contentListFields="Title,Summary,Date,Image,Tags,Credits">
 
-<cfif application.contentGateway.getHasComments(event.getValue('siteid'),event.getContentBean().getContentID())>
+<cfif application.contentGateway.getHasComments($.event('siteid'),$.content('contentID'))>
 	<cfset variables.contentListFields=listAppend(contentListFields,"Comments")>
 </cfif>
 
-<cfif application.contentGateway.getHasRatings(event.getValue('siteid'),event.getContentBean().getContentID())>
+<cfif application.contentGateway.getHasRatings($.event('siteid'),$.content('contentID'))>
 	<cfset variables.contentListFields=listAppend(contentListFields,"Rating")>
 </cfif>
 
@@ -132,16 +132,16 @@ to your own modified versions of Mura CMS.
      <cfif request.filterBy eq "releaseMonth">
      <div id="svPortal">
 	     <br>
-	     <p>#rbFactory.getKey('list.nocontentmonth')#</p>    
+	     <p>#$.rbKey('list.nocontentmonth')#</p>    
      </div>
      <cfelseif request.filterBy eq "releaseDate">
      <div id="svPortal">
 	     <br>
-	     <p>#rbFactory.getKey('list.nocontentday')#</p>
+	     <p>#$.rbKey('list.nocontentday')#</p>
      </div>
      <cfelse>
      <div id="svPortal">
-         <p>#rbFactory.getKey('list.nocontent')#</p>   
+         <p>#$.rbKey('list.nocontent')#</p>   
      </div>
      </cfif>
      </cfoutput>

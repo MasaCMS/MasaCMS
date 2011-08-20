@@ -82,7 +82,7 @@ to your own modified versions of Mura CMS.
 		<cfif len(customResponse)>
 		#customResponse#
 		<cfelse>
-		#setDynamicContent('<p class="success">' & rsform.responseMessage & '</p>')#
+		#$.setDynamicContent('<p class="success">' & rsform.responseMessage & '</p>')#
 		</cfif>
 	
 		<cfif isdefined("request.redirect_url")>

@@ -42,7 +42,7 @@ to your own modified versions of Mura CMS.
 --->
 
 <cfsilent>
-<!---<cfset loadShadowBoxJS() />--->
+<!---<cfset $.loadShadowBoxJS() />--->
 	
 <cfset categoryBean=application.categoryManager.read(listfirst(arguments.objectid)) />
 <cfquery datasource="#application.configBean.getDatasource()#" username="#application.configBean.getDBUsername()#" password="#application.configBean.getDBPassword()#" name="rsSection">select contentid,filename,menutitle,target,restricted,restrictgroups,type,sortBy,sortDirection from tcontent where siteid='#request.siteid#' and contentid='#listLast(arguments.objectid)#' and approved=1 and active=1 and display=1
@@ -91,9 +91,9 @@ to your own modified versions of Mura CMS.
 				</cfsilent>
 				<dl<cfif class neq ''> class="#class#"</cfif>>
 				<cfif menutype eq  "calendar_features" and isDate(rsFeatures.displaystart)>
-					<dt class="releaseDate"><cfif LSDateFormat(rsFeatures.displaystart,"short") lt LSDateFormat(rsFeatures.displaystop,"short")>#LSDateFormat(rsFeatures.displaystart,getShortDateFormat())# - #LSDateFormat(rsFeatures.displaystop,getShortDateFormat())#<cfelse>#LSDateFormat(rsFeatures.displaystart,getLongDateFormat())#</cfif></dt>
+					<dt class="releaseDate"><cfif LSDateFormat(rsFeatures.displaystart,"short") lt LSDateFormat(rsFeatures.displaystop,"short")>#LSDateFormat(rsFeatures.displaystart,$.getShortDateFormat())# - #LSDateFormat(rsFeatures.displaystop,$.getShortDateFormat())#<cfelse>#LSDateFormat(rsFeatures.displaystart,$.getLongDateFormat())#</cfif></dt>
 				<cfelseif LSisDate(rsFeatures.releasedate)>
-					<dt class="releaseDate">#LSDateFormat(rsFeatures.releasedate,getLongDateFormat())#</dt>
+					<dt class="releaseDate">#LSDateFormat(rsFeatures.releasedate,$.getLongDateFormat())#</dt>
 				</cfif>
 					<dt><a href="#theLink#">#rsFeatures.MenuTitle#</a></dt>
 				<cfif hasImage>
@@ -102,26 +102,26 @@ to your own modified versions of Mura CMS.
 					</dd>
 				</cfif>
 				<cfif hasSummary and len(rsFeatures.summary)>
-					<dd>#setDynamicContent(rsFeatures.summary)#
-						<span class="readMore">#addlink(rsFeatures.type,rsFeatures.filename,rbFactory.getKey('list.readmore'),rsFeatures.target,rsFeatures.targetParams,rsFeatures.contentid,request.siteid,'',application.configBean.getContext(),application.configBean.getStub(),application.configBean.getIndexFile())#</span>
+					<dd>#$.setDynamicContent(rsFeatures.summary)#
+						<span class="readMore">#$.addLink(rsFeatures.type,rsFeatures.filename,$.rbKey('list.readmore'),rsFeatures.target,rsFeatures.targetParams,rsFeatures.contentid,request.siteid,'',application.configBean.getContext(),application.configBean.getStub(),application.configBean.getIndexFile())#</span>
 					</dd>
 				</cfif>
 				<cfif len(rsFeatures.credits)>
-					<dd class="credits">#rbFactory.getKey('list.by')# #rsFeatures.credits#</dd>
+					<dd class="credits">#$.rbKey('list.by')# #rsFeatures.credits#</dd>
 				</cfif>
 				<cfif doMeta and hasComments>
-					<dd class="comments"><cfif isNumeric(rsFeatures.comments)>#rsFeatures.comments#<cfelse>0</cfif> <cfif rsFeatures.comments neq 1>#rbFactory.getKey('list.comments')#<cfelse>#rbFactory.getKey('list.comment')#</cfif></dd>
+					<dd class="comments"><cfif isNumeric(rsFeatures.comments)>#rsFeatures.comments#<cfelse>0</cfif> <cfif rsFeatures.comments neq 1>#$.rbKey('list.comments')#<cfelse>#$.rbKey('list.comment')#</cfif></dd>
 				</cfif>
 				<cfif len(rsFeatures.tags)>
 					<dd class="tags"><cfmodule template="nav/dsp_tag_line.cfm" tags="#rsFeatures.tags#"></dd>
 				</cfif>
 				<cfif doMeta and hasRatings>
-					<dd class="rating #application.raterManager.getStarText(rsFeatures.rating)#"><dd class="rating #application.raterManager.getStarText(rsFeatures.rating)#">#rbFactory.getKey('list.rating')#: <span><cfif isNumeric(rsFeatures.rating)>#rsFeatures.rating# star<cfif rsFeatures.rating gt 1>s</cfif><cfelse>Zero stars</cfif></span></dd>
+					<dd class="rating #application.raterManager.getStarText(rsFeatures.rating)#"><dd class="rating #application.raterManager.getStarText(rsFeatures.rating)#">#$.rbKey('list.rating')#: <span><cfif isNumeric(rsFeatures.rating)>#rsFeatures.rating# star<cfif rsFeatures.rating gt 1>s</cfif><cfelse>Zero stars</cfif></span></dd>
 				</cfif>
 				</dl>
 	</cfloop>
 		<dl class="moreResults">
-		<dt>&raquo; <a href="#application.configBean.getServerPort()##application.configBean.getContext()##application.contentRenderer.getURLStem(request.siteid,rssection.filename)#?categoryid=#categoryBean.getCategoryID()#">#rbFactory.getKey('list.viewall')#<!--- #rsSection.menutitle# ---></a></dt></dl>
+		<dt>&raquo; <a href="#application.configBean.getServerPort()##application.configBean.getContext()##application.contentRenderer.getURLStem(request.siteid,rssection.filename)#?categoryid=#categoryBean.getCategoryID()#">#$.rbKey('list.viewall')#<!--- #rsSection.menutitle# ---></a></dt></dl>
 </div>
 <cfelse>
 	<!-- Empty or Inactive Section Features '#rsSection.MenuTitle# - #categoryBean.getName()#' -->

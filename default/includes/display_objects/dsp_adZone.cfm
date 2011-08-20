@@ -40,7 +40,7 @@ for your modified version; it is your choice whether to do so, or to make such m
 the GNU General Public License version 2 without this exception. You may, if you choose, apply this exception
 to your own modified versions of Mura CMS.
 --->
-<cfset addToHTMLHeadQueue("swfobject.cfm") />
+<cfset $.addToHTMLHeadQueue("swfobject.cfm") />
 <cfset loadJSLib() />
 <cfset r="#replace('#rand()#','.','')#"/>
 <cfswitch expression="#getJSLib()#">
@@ -50,7 +50,7 @@ to your own modified versions of Mura CMS.
 <script type="text/javascript">
 function renderAdZone#r#(){			
 $.getJSON("#application.configBean.getContext()#/tasks/ads/renderAdZone.cfm", 
-		{AdZoneID: "#arguments.objectid#", siteID: "#request.siteid#",track:"#request.track#",cacheid:Math.random(), contentHistID: "#request.contentBean.getContentHistID()#"},
+		{AdZoneID: "#arguments.objectid#", siteID: "#request.siteid#",track:"#request.track#",cacheid:Math.random(), contentHistID: "#$.content('contentHistID')#"},
 		function(r){
 			if(typeof(r).mediatype  != 'undefined'){
 				if(r.mediatype.indexOf('lash') > -1){
@@ -88,7 +88,7 @@ new renderAdZone#r#();
 function renderAdZone#r#(){
 new Ajax.Request( '#application.configBean.getContext()#/tasks/ads/renderAdZone.cfm',
 	{method: 'get',
-	parameters: 'AdZoneID=#arguments.objectid#&siteid=#request.siteid#&track=#request.track#&contentHistID=#request.contentBean.getContentHistID()#&cacheid=' + Math.random(),
+	parameters: 'AdZoneID=#arguments.objectid#&siteid=#request.siteid#&track=#request.track#&contentHistID=#$.content('contentHistID')#&cacheid=' + Math.random(),
 	onSuccess: function(transport){
 			var r=eval("(" + transport.responseText + ")");
 			if(typeof(r).mediatype  != 'undefined'){

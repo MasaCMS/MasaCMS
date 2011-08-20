@@ -52,34 +52,34 @@ to your own modified versions of Mura CMS.
 <cfoutput>
 <div id="svMasterEmail">
 	<cfif request.doaction eq 'masterSubscribe'>
-		<cfif event.getValue("passedProtect")>
-			<p class="response success">#rbFactory.getKey('mailinglist.selectionssaved')#</p>
+		<cfif $.event("passedProtect")>
+			<p class="response success">#$.rbKey('mailinglist.selectionssaved')#</p>
 		<cfelse>
-			<p class="error">#rbFactory.getKey('captcha.spam')#</p>
+			<p class="error">#$.rbKey('captcha.spam')#</p>
 		</cfif>
 	<cfelseif request.doaction eq 'validateMember'>
 		<cfset application.mailinglistManager.validateMember(request)/>
-		<p class="response success">#rbFactory.getKey('mailinglist.hasbeenvalidated')#</p>
+		<p class="response success">#$.rbKey('mailinglist.hasbeenvalidated')#</p>
 	<cfelse>
 		<form id="frmEmailMaster" name="frmEmailMaster" action="?nocache=1" method="post" onsubmit="return validate(this);" novalidate="novalidate" data-role="fieldcontain">
 			<fieldset>
-				<legend>#rbFactory.getKey('mailinglist.mydetails')#</legend>
+				<legend>#$.rbKey('mailinglist.mydetails')#</legend>
 				<ol>
 					<li class="req">
-						<label for="txtNameFirst">#rbFactory.getKey('mailinglist.fname')#<ins> (#rbFactory.getKey('mailinglist.required')#)</ins></label>
-						<input id="txtNameFirst" class="text" type="text" name="fname" maxlength="50" required="true" message="#HTMLEditFormat(rbFactory.getKey('mailinglist.fnamerequired'))#" />
+						<label for="txtNameFirst">#$.rbKey('mailinglist.fname')#<ins> (#$.rbKey('mailinglist.required')#)</ins></label>
+						<input id="txtNameFirst" class="text" type="text" name="fname" maxlength="50" required="true" message="#HTMLEditFormat($.rbKey('mailinglist.fnamerequired'))#" />
 					</li>
 					<li class="req">
-						<label for="txtNameLast">#rbFactory.getKey('mailinglist.lname')#<ins> (#rbFactory.getKey('mailinglist.required')#)</ins></label>
-						<input id="txtNameLast" class="text" type="text" name="lname" maxlength="50" required="true" message="#HTMLEditFormat(rbFactory.getKey('mailinglist.lnamerequired'))#" />
+						<label for="txtNameLast">#$.rbKey('mailinglist.lname')#<ins> (#$.rbKey('mailinglist.required')#)</ins></label>
+						<input id="txtNameLast" class="text" type="text" name="lname" maxlength="50" required="true" message="#HTMLEditFormat($.rbKey('mailinglist.lnamerequired'))#" />
 					</li>
 					<li>
-						<label for="txtCompany">#rbFactory.getKey('mailinglist.company')#</label>
+						<label for="txtCompany">#$.rbKey('mailinglist.company')#</label>
 						<input id="txtCompany" class="text" type="text" maxlength="50" name="company" />
 					</li>
 					<li class="req">
-						<label for="txtEmail">#rbFactory.getKey('mailinglist.email')#<ins> (#rbFactory.getKey('mailinglist.required')#)</ins></label>
-						<input id="txtEmail" class="text" type="text" name="email" maxlength="50" required="true" validate="email" message="#HTMLEditFormat(rbFactory.getKey('mailinglist.emailvalidate'))#" />
+						<label for="txtEmail">#$.rbKey('mailinglist.email')#<ins> (#$.rbKey('mailinglist.required')#)</ins></label>
+						<input id="txtEmail" class="text" type="text" name="email" maxlength="50" required="true" validate="email" message="#HTMLEditFormat($.rbKey('mailinglist.emailvalidate'))#" />
 					</li>
 				</ol>
 			</fieldset>
@@ -96,8 +96,8 @@ to your own modified versions of Mura CMS.
 			<div class="buttons">
 				<input type="hidden" name="siteid" value="#request.siteid#" />
 				<input type="hidden" name="doaction" value="masterSubscribe" />
-				<input type="hidden" name="linkServID" value="#event.getContentBean().getContentID()#" />
-				<input type="submit" class="submit" value="#HTMLEditFormat(rbFactory.getKey('mailinglist.submit'))#" />
+				<input type="hidden" name="linkServID" value="#$.content('contentID')#" />
+				<input type="submit" class="submit" value="#HTMLEditFormat($.rbKey('mailinglist.submit'))#" />
 			</div>
 				<cfoutput>#dspObject_Include(thefile='dsp_form_protect.cfm')#</cfoutput>
 		</form>

@@ -131,7 +131,7 @@ to your own modified versions of Mura CMS.
 	<cfset info=application.dataCollectionManager.update(structCopy(request))/>
 	<cfset application.pluginManager.announceEvent("onAfterFormSubmitSave",event)>
 	
-	<cfset mailer=application.serviceFactory.getBean('mailer')/>
+	<cfset mailer=$.getBean('mailer')/>
 	
 	<cfif request.copyEmail eq 'true' and mailer.isValidEmailFormat(request.email)>
 		<cfset request.sendto=listappend(request.sendto,request.email) />
@@ -146,7 +146,7 @@ to your own modified versions of Mura CMS.
 	<cfparam name="request.subject" default="#rsForm.title#">
 			
 	<cfif not StructIsEmpty(info) and variables.sendto neq ''> 
-		<cfset mailer=application.serviceFactory.getBean('mailer')/>
+		<cfset mailer=$.getBean('mailer')/>
 		<cfif mailer.isValidEmailFormat(request.email)>
 			<cfset mailer.send(info,'#variables.sendto#','#rsForm.title#','#request.subject#','#request.siteid#','#request.email#')>
 		<cfelse>

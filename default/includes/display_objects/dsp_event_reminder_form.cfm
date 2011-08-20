@@ -41,42 +41,42 @@ the GNU General Public License version 2 without this exception. You may, if you
 to your own modified versions of Mura CMS.
 --->
 <cfset rbFactory=getSite().getRBFactory() />
-<cfif arrayLen(request.crumbdata) gt 1 and request.crumbdata[2].type eq 'Calendar' and request.contentBean.getdisplay() eq 2 and request.contentBean.getdisplaystart() gt now()>
+<cfif arrayLen(request.crumbdata) gt 1 and request.crumbdata[2].type eq 'Calendar' and $.content('display') eq 2 and $.content('displayStart') gt now()>
 <cfoutput>
 <div id="svEventReminder">
-	<#getHeaderTag('subHead1')#>#rbFactory.getKey('event.setreminder')#</#getHeaderTag('subHead1')#>
+	<#getHeaderTag('subHead1')#>#$.rbKey('event.setreminder')#</#getHeaderTag('subHead1')#>
 	<cfif listfind(request.doaction,"setReminder")>
-	<em>#rbFactory.getKey('event.setreminder')#</em><br/><br/>
+	<em>#$.rbKey('event.setreminder')#</em><br/><br/>
 	</cfif>
 	<form name="reminderFrm" action="?nocache=1" method="post" onsubmit="return validate(this);" novalidate="novalidate" data-role="fieldcontain">
 	<fieldset>
 	<ol>
-	<li><label for="email">#rbFactory.getKey('event.email')#*</label>
-	<input id="email" name="email" required="true" validate="email" message="#htmlEditFormat(rbFactory.getKey('event.emailvalidate'))#"></li>
-	<li><label for="interval">#rbFactory.getKey('event.sendmeareminder')#</label>
+	<li><label for="email">#$.rbKey('event.email')#*</label>
+	<input id="email" name="email" required="true" validate="email" message="#htmlEditFormat($.rbKey('event.emailvalidate'))#"></li>
+	<li><label for="interval">#$.rbKey('event.sendmeareminder')#</label>
 	<select id="interval" name="interval">
-	<option value="0">0 #rbFactory.getKey('event.minutes')#</option>
-	<option value="5">5 #rbFactory.getKey('event.minutes')#</option>
-	<option value="15">15 #rbFactory.getKey('event.minutes')#</option>
-	<option value="30">30 #rbFactory.getKey('event.minutes')#</option>
-	<option value="60">1 #rbFactory.getKey('event.hour')#</option>
-	<option value="120">2 #rbFactory.getKey('event.hours')#</option>
-	<option value="240">3 #rbFactory.getKey('event.hours')#</option>
-	<option value="300">4 #rbFactory.getKey('event.hours')#</option>
-	<option value="360">5 #rbFactory.getKey('event.hours')#</option>
-	<option value="420">6 #rbFactory.getKey('event.hours')#</option>
-	<option value="480">7 #rbFactory.getKey('event.hours')#</option>
-	<option value="540">8 #rbFactory.getKey('event.hours')#</option>
-	<option value="1440">1 #rbFactory.getKey('event.day')#</option>
-	<option value="2880">2 #rbFactory.getKey('event.days')#</option>
-	<option value="3320">3 #rbFactory.getKey('event.days')#</option>
-	<option value="10040">1 #rbFactory.getKey('event.week')#</option>
+	<option value="0">0 #$.rbKey('event.minutes')#</option>
+	<option value="5">5 #$.rbKey('event.minutes')#</option>
+	<option value="15">15 #$.rbKey('event.minutes')#</option>
+	<option value="30">30 #$.rbKey('event.minutes')#</option>
+	<option value="60">1 #$.rbKey('event.hour')#</option>
+	<option value="120">2 #$.rbKey('event.hours')#</option>
+	<option value="240">3 #$.rbKey('event.hours')#</option>
+	<option value="300">4 #$.rbKey('event.hours')#</option>
+	<option value="360">5 #$.rbKey('event.hours')#</option>
+	<option value="420">6 #$.rbKey('event.hours')#</option>
+	<option value="480">7 #$.rbKey('event.hours')#</option>
+	<option value="540">8 #$.rbKey('event.hours')#</option>
+	<option value="1440">1 #$.rbKey('event.day')#</option>
+	<option value="2880">2 #$.rbKey('event.days')#</option>
+	<option value="3320">3 #$.rbKey('event.days')#</option>
+	<option value="10040">1 #$.rbKey('event.week')#</option>
 	</select> 
-	#rbFactory.getKey('event.beforethisevent')#</li>
+	#$.rbKey('event.beforethisevent')#</li>
 	</ol>
 	</fieldset>
 	<input name="doaction" value="setReminder" type="hidden"/>
-	<input type="submit" value="#htmlEditFormat(rbFactory.getKey('event.submit'))#"/>
+	<input type="submit" value="#htmlEditFormat($.rbKey('event.submit'))#"/>
 	</form>
 </div>
 </cfoutput>

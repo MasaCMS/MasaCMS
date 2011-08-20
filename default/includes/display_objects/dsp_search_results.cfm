@@ -41,9 +41,9 @@ the GNU General Public License version 2 without this exception. You may, if you
 to your own modified versions of Mura CMS.
 --->
 <cfsilent>
-<cfset variables.rbFactory=getSite().getRBFactory() />
+
 </cfsilent>
-<cfoutput><#getHeaderTag('headline')#>#variables.rbFactory.getKey('search.searchresults')#</#getHeaderTag('headline')#></cfoutput>
+<cfoutput><#getHeaderTag('headline')#>#$.rbKey('search.searchresults')#</#getHeaderTag('headline')#></cfoutput>
 <div id="svSearchResults">
 <cfsilent>
 <cfparam name="variables.rsnewsearch" default="#queryNew('empty')#"/>
@@ -72,9 +72,9 @@ to your own modified versions of Mura CMS.
 <cfset variables.previous=evaluate((request.startrow-recordsperpage))	>
 <cfset variables.through=iif(variables.totalRecords lt variables.next,totalrecords,variables.next-1)> 
 
-<cfset variables.iterator=application.serviceFactory.getBean("contentIterator")>
+<cfset variables.iterator=$.getBean("contentIterator")>
 <cfset variables.iterator.setQuery(session.rsSearch,RecordsPerPage)>
-<cfset variables.iterator.setStartRow(event.getValue("startrow"))>
+<cfset variables.iterator.setStartRow($.event("startrow"))>
 
 <cfif len(request.searchSectionID)>
 <cfset variables.sectionBean=application.contentManager.getActiveContent(request.searchSectionID,request.siteid) />
@@ -83,7 +83,7 @@ to your own modified versions of Mura CMS.
 <cfset variables.contentListType="Search">
 <cfset variables.contentListFields="Title,Summary,Tags,Credits">
 
-<cfset addToHTMLHeadQueue("listImageStyles.cfm")>
+<cfset $.addToHTMLHeadQueue("listImageStyles.cfm")>
 </cfsilent>
 
 <cfoutput>
@@ -93,17 +93,17 @@ to your own modified versions of Mura CMS.
 		<cfset variables.args[2]=htmlEditFormat(request.tag)>
 		<cfif len(request.searchSectionID)>
 			<cfset variables.args[3]=htmlEditFormat(variables.sectionBean.getTitle())>
-			<p>#variables.rbFactory.getResourceBundle().messageFormat(variables.rbFactory.getKey('search.searchtagsection'),variables.args)#</p>
+			<p>#variables.rbFactory.getResourceBundle().messageFormat($.rbKey('search.searchtagsection'),variables.args)#</p>
 		<cfelse>
-			<p>#variables.rbFactory.getResourceBundle().messageFormat(rbFactory.getKey('search.searchtag'),variables.args)#</p>
+			<p>#variables.rbFactory.getResourceBundle().messageFormat($.rbKey('search.searchtag'),variables.args)#</p>
 		</cfif>
 	<cfelse>
 		<cfset variables.args[2]=htmlEditFormat(request.keywords)>
 		<cfif len(request.searchSectionID)>
 			<cfset variables.args[3]=htmlEditFormat(variables.sectionBean.getTitle())>
-	 		<p>#variables.rbFactory.getResourceBundle().messageFormat(variables.rbFactory.getKey('search.searchkeywordsection'),variables.args)#</p>
+	 		<p>#variables.rbFactory.getResourceBundle().messageFormat($.rbKey('search.searchkeywordsection'),variables.args)#</p>
 		<cfelse>
-			<p>#variables.rbFactory.getResourceBundle().messageFormat(variables.rbFactory.getKey('search.searchkeyword'),variables.args)#</p>
+			<p>#variables.rbFactory.getResourceBundle().messageFormat($.rbKey('search.searchkeyword'),variables.args)#</p>
 		</cfif>
 	</cfif>
 </cfoutput>
@@ -111,12 +111,12 @@ to your own modified versions of Mura CMS.
 <cfoutput>
 	<div class="moreResults top">
 		<ul>
-		<li class="resultsFound">#variables.rbFactory.getKey('search.displaying')#: #request.startrow# - #variables.through# #rbFactory.getKey('search.of')# #session.rsSearch.recordcount#</li>
+		<li class="resultsFound">#$.rbKey('search.displaying')#: #request.startrow# - #variables.through# #$.rbKey('search.of')# #session.rsSearch.recordcount#</li>
 		<cfif previous gte 1>
-		<li class="navPrev"><a href="?startrow=#previous#&display=search&keywords=#HTMLEditFormat(request.keywords)#&searchSectionID=#HTMLEditFormat(request.searchSectionID)#&tag=#HTMLEditFormat(request.tag)#">&laquo;#variables.rbFactory.getKey('search.prev')#</a></li>
+		<li class="navPrev"><a href="?startrow=#previous#&display=search&keywords=#HTMLEditFormat(request.keywords)#&searchSectionID=#HTMLEditFormat(request.searchSectionID)#&tag=#HTMLEditFormat(request.tag)#">&laquo;#$.rbKey('search.prev')#</a></li>
 		</cfif>
 		<cfif session.rsSearch.recordcount gt 0 and  variables.through lt session.rsSearch.recordcount>
-		<li class="navNext"><a href="?startrow=#next#&display=search&keywords=#HTMLEditFormat(request.keywords)#&searchSectionID=#HTMLEditFormat(request.searchSectionID)#&tag=#HTMLEditFormat(request.tag)#">#variables.rbFactory.getKey('search.next')#&raquo;</a></li>
+		<li class="navNext"><a href="?startrow=#next#&display=search&keywords=#HTMLEditFormat(request.keywords)#&searchSectionID=#HTMLEditFormat(request.searchSectionID)#&tag=#HTMLEditFormat(request.tag)#">#$.rbKey('search.next')#&raquo;</a></li>
 		</cfif>
 		</ul>
 	</div>
@@ -132,12 +132,12 @@ to your own modified versions of Mura CMS.
 		
 	<div class="moreResults bottom">
 		<ul>
-		<li class="resultsFound">#variables.rbFactory.getKey('search.displaying')#: #request.startrow# - #variables.through# #rbFactory.getKey('search.of')# #session.rsSearch.recordcount#</li>
+		<li class="resultsFound">#$.rbKey('search.displaying')#: #request.startrow# - #variables.through# #$.rbKey('search.of')# #session.rsSearch.recordcount#</li>
 		<cfif previous gte 1>
-		<li class="navPrev"><a href="?startrow=#previous#&display=search&keywords=#HTMLEditFormat(request.keywords)#&searchSectionID=#HTMLEditFormat(request.searchSectionID)#&tag=#HTMLEditFormat(request.tag)#">&laquo;#variables.rbFactory.getKey('search.prev')#</a></li>
+		<li class="navPrev"><a href="?startrow=#previous#&display=search&keywords=#HTMLEditFormat(request.keywords)#&searchSectionID=#HTMLEditFormat(request.searchSectionID)#&tag=#HTMLEditFormat(request.tag)#">&laquo;#$.rbKey('search.prev')#</a></li>
 		</cfif>
 		<cfif session.rsSearch.recordcount gt 0 and  through lt session.rsSearch.recordcount>
-		<li class="navNext"><a href="?startrow=#next#&display=search&keywords=#HTMLEditFormat(request.keywords)#&searchSectionID=#HTMLEditFormat(request.searchSectionID)#&tag=#HTMLEditFormat(request.tag)#">#variables.rbFactory.getKey('search.next')#&raquo;</a></li>
+		<li class="navNext"><a href="?startrow=#next#&display=search&keywords=#HTMLEditFormat(request.keywords)#&searchSectionID=#HTMLEditFormat(request.searchSectionID)#&tag=#HTMLEditFormat(request.tag)#">#$.rbKey('search.next')#&raquo;</a></li>
 		</cfif></ul>
 	</div>
 	</cfoutput>
@@ -145,8 +145,8 @@ to your own modified versions of Mura CMS.
 	
 <cfoutput>
 	<form id="svSearchAgain" name="searchFrm" action="" method="get">
-		<p>#rbFactory.getKey('search.didnotfind')#</p>
-		#rbFactory.getKey('search.search')#: <input type="text" name="keywords" value="#HTMLEditFormat(request.keywords)#" /><input name="newSearch" value="true" type="hidden"/><input name="nocache" value="1" type="hidden"/><input name="searchSectionID" value="#HTMLEditFormat(request.searchSectionID)#" type="hidden"/>  <input name="display" value="search" type="hidden"/><input type="submit" class="submit" value="#htmlEditFormat(rbFactory.getKey('search.go'))#" alt="submit" />
+		<p>#$.rbKey('search.didnotfind')#</p>
+		#$.rbKey('search.search')#: <input type="text" name="keywords" value="#HTMLEditFormat(request.keywords)#" /><input name="newSearch" value="true" type="hidden"/><input name="nocache" value="1" type="hidden"/><input name="searchSectionID" value="#HTMLEditFormat(request.searchSectionID)#" type="hidden"/>  <input name="display" value="search" type="hidden"/><input type="submit" class="submit" value="#htmlEditFormat($.rbKey('search.go'))#" alt="submit" />
 	</form>
 </cfoutput>
 </div>

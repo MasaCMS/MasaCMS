@@ -80,8 +80,8 @@ to your own modified versions of Mura CMS.
 		</cfif>
 	</cfif>
 	
-	<cfset variables.rbFactory=getSite().getRBFactory()>
-	<cfset addToHTMLHeadQueue("listImageStyles.cfm")>
+	
+	<cfset $.addToHTMLHeadQueue("listImageStyles.cfm")>
 </cfsilent>
 <cfif getListFormat() eq "ul">
 	<ul>
@@ -99,10 +99,10 @@ to your own modified versions of Mura CMS.
 			<cfset arguments.class=listAppend(arguments.class,"last"," ")/> 
 		</cfif>
 			
-		<cfset arguments.link=addlink(arguments.item.getValue('type'),arguments.item.getValue('filename'),arguments.item.getValue('menutitle'),arguments.item.getValue('target'),arguments.item.getValue('targetparams'),arguments.item.getValue('contentID'),arguments.item.getValue('siteID'),'',application.configBean.getContext(),application.configBean.getStub(),application.configBean.getIndexFile())>
+		<cfset arguments.link=$.addLink(arguments.item.getValue('type'),arguments.item.getValue('filename'),arguments.item.getValue('menutitle'),arguments.item.getValue('target'),arguments.item.getValue('targetparams'),arguments.item.getValue('contentID'),arguments.item.getValue('siteID'),'',application.configBean.getContext(),application.configBean.getStub(),application.configBean.getIndexFile())>
 			
 		<cfif arguments.hasComments and (arguments.item.getValue('type') eq 'Page' or showItemMeta(arguments.item.getValue('type')) or (len(arguments.item.getValue('fileID')) and showItemMeta(arguments.item.getValue('fileEXT')))) >
-			<cfset arguments.commentsLink=addlink(arguments.item.getValue('type'),arguments.item.getValue('filename'),'#variables.rbFactory.getKey("list.comments")#(#application.contentGateway.getCommentCount(request.siteid,arguments.item.getValue('contentID'))#)',arguments.item.getValue('target'),arguments.item.getValue('targetparams'),arguments.item.getValue('contentID'),request.siteid,'##comments',application.configBean.getContext(),application.configBean.getStub(),application.configBean.getIndexFile())>
+			<cfset arguments.commentsLink=$.addLink(arguments.item.getValue('type'),arguments.item.getValue('filename'),'#$.rbKey("list.comments")#(#application.contentGateway.getCommentCount(request.siteid,arguments.item.getValue('contentID'))#)',arguments.item.getValue('target'),arguments.item.getValue('targetparams'),arguments.item.getValue('contentID'),request.siteid,'##comments',application.configBean.getContext(),application.configBean.getStub(),application.configBean.getIndexFile())>
 		<cfelse>
 			<cfset arguments.commentsLink="">
 		</cfif>
@@ -114,7 +114,7 @@ to your own modified versions of Mura CMS.
 		</cfif>
 	</cfsilent>
 	<cfoutput>
-	<cfif getListFormat() eq "ul">
+	<cfif $.getListFormat() eq "ul">
 		<li>
 			<cfif arguments.hasImage>
 				<cfif cookie.mobileFormat>
@@ -125,13 +125,13 @@ to your own modified versions of Mura CMS.
 			</cfif>
 			<cfif arguments.hasDate>
 				<cfif arguments.type eq "Portal" and isDate(arguments.item.getValue('releaseDate'))>
-				<p class="releaseDate">#LSDateFormat(arguments.item.getValue('releaseDate'),getLongDateFormat())#</dt>
+				<p class="releaseDate">#LSDateFormat(arguments.item.getValue('releaseDate'),$.getLongDateFormat())#</dt>
 				<cfelseif listFind("Search,Feed,Related",arguments.type) and arguments.item.getValue('parentType') eq 'Calendar' and isDate(arguments.item.getValue('displayStart'))>
-				<p class="releaseDate"><cfif LSDateFormat(arguments.item.getValue('displayStart'),"short") lt LSDateFormat(arguments.item.getValue('displayStop'),"short")>#LSDateFormat(arguments.item.getValue('displayStart'),getShortDateFormat())# - #LSDateFormat(arguments.item.getValue('displayStop'),getShortDateFormat())#<cfelse>#LSDateFormat(arguments.item.getValue('displayStart'),getLongDateFormat())#</cfif></p>
+				<p class="releaseDate"><cfif LSDateFormat(arguments.item.getValue('displayStart'),"short") lt LSDateFormat(arguments.item.getValue('displayStop'),"short")>#LSDateFormat(arguments.item.getValue('displayStart'),$.getShortDateFormat())# - #LSDateFormat(arguments.item.getValue('displayStop'),$.getShortDateFormat())#<cfelse>#LSDateFormat(arguments.item.getValue('displayStart'),$.getLongDateFormat())#</cfif></p>
 				<cfelseif arguments.type eq "Calendar">
-				<p class="releaseDate"><cfif LSDateFormat(arguments.item.getValue('displayStart'),"short") lt LSDateFormat(arguments.item.getValue('displayStop'),"short")>#LSDateFormat(arguments.item.getValue('displayStart'),getShortDateFormat())# - #LSDateFormat(arguments.item.getValue('displayStop'),getShortDateFormat())#<cfelse>#LSDateFormat(arguments.item.getValue('displayStart'),getLongDateFormat())#</cfif></p>
+				<p class="releaseDate"><cfif LSDateFormat(arguments.item.getValue('displayStart'),"short") lt LSDateFormat(arguments.item.getValue('displayStop'),"short")>#LSDateFormat(arguments.item.getValue('displayStart'),$.getShortDateFormat())# - #LSDateFormat(arguments.item.getValue('displayStop'),$.getShortDateFormat())#<cfelse>#LSDateFormat(arguments.item.getValue('displayStart'),$.getLongDateFormat())#</cfif></p>
 				<cfelseif LSisDate(arguments.item.getValue('releaseDate'))>
-				<p class="releaseDate">#LSDateFormat(arguments.item.getValue('releaseDate'),getLongDateFormat())#</p>		
+				<p class="releaseDate">#LSDateFormat(arguments.item.getValue('releaseDate'),$.getLongDateFormat())#</p>		
 				</cfif>
 			</cfif>
 			<cfif arguments.hasTitle>
@@ -139,10 +139,10 @@ to your own modified versions of Mura CMS.
 			</cfif>
 			
 			<cfif arguments.hasSummary and len(arguments.item.getValue('summary')) and arguments.item.getValue('summary') neq "<p></p>">
-				#setDynamicContent(arguments.item.getValue('summary'))#
+				#$.setDynamicContent(arguments.item.getValue('summary'))#
 			</cfif>
 			<cfif arguments.hasCredits and len(arguments.item.getValue('credits'))>
-				<p class="credits">#variables.rbFactory.getKey('list.by')# #HTMLEditFormat(arguments.item.getValue('credits'))#</p>
+				<p class="credits">#$.rbKey('list.by')# #HTMLEditFormat(arguments.item.getValue('credits'))#</p>
 			</cfif>
 			<cfif not cookie.mobileFormat and len(arguments.commentsLink)>
 			 	<p class="comments">#arguments.commentsLink#</p>
@@ -150,7 +150,7 @@ to your own modified versions of Mura CMS.
 			<cfif arguments.hasTags and len(arguments.item.getValue('tags'))>
 				<cfset arguments.tagLen=listLen(arguments.item.getValue('tags')) />
 				<p class="tags">
-					#variables.rbFactory.getKey('tagcloud.tags')#: 
+					#$.rbKey('tagcloud.tags')#: 
 					<cfif cookie.mobileFormat>
 					<cfloop from="1" to="#arguments.tagLen#" index="arguments.t">
 						<cfset arguments.tag=#trim(listgetAt(arguments.item.getValue('tags'),arguments.t))#>
@@ -165,20 +165,20 @@ to your own modified versions of Mura CMS.
 				</p>
 			</cfif>
 			<cfif arguments.hasRatings and (arguments.item.getValue('type') eq 'Page' or showItemMeta(arguments.item.getValue('type')) or (len(arguments.item.getValue('fileID')) and showItemMeta(arguments.item.getValue('fileEXT'))))>
-				<p class="rating #application.raterManager.getStarText(arguments.item.getValue('rating'))#">#variables.rbFactory.getKey('list.rating')#: <span><cfif isNumeric(arguments.item.getValue('rating'))>#arguments.item.getValue('rating')# star<cfif arguments.item.getValue('rating') gt 1>s</cfif> <cfelse>Zero stars</cfif></span></p>	 	
+				<p class="rating #application.raterManager.getStarText(arguments.item.getValue('rating'))#">#$.rbKey('list.rating')#: <span><cfif isNumeric(arguments.item.getValue('rating'))>#arguments.item.getValue('rating')# star<cfif arguments.item.getValue('rating') gt 1>s</cfif> <cfelse>Zero stars</cfif></span></p>	 	
 			</cfif>
 		</li>
 	<cfelse>
 		<dl class="clearfix<cfif arguments.class neq ''> #arguments.class#</cfif>">
 			<cfif arguments.hasDate>
 				<cfif arguments.type eq "Portal" and isDate(arguments.item.getValue('releaseDate'))>
-				<dt class="releaseDate">#LSDateFormat(arguments.item.getValue('releaseDate'),getLongDateFormat())#</dt>
+				<dt class="releaseDate">#LSDateFormat(arguments.item.getValue('releaseDate'),$.getLongDateFormat())#</dt>
 				<cfelseif listFind("Search,Feed,Related",arguments.type) and arguments.item.getValue('parentType') eq 'Calendar' and isDate(arguments.item.getValue('displayStart'))>
-				<dt class="releaseDate"><cfif LSDateFormat(arguments.item.getValue('displayStart'),"short") lt LSDateFormat(arguments.item.getValue('displayStop'),"short")>#LSDateFormat(arguments.item.getValue('displayStart'),getShortDateFormat())# - #LSDateFormat(arguments.item.getValue('displayStop'),getShortDateFormat())#<cfelse>#LSDateFormat(arguments.item.getValue('displayStart'),getLongDateFormat())#</cfif></dt>
+				<dt class="releaseDate"><cfif LSDateFormat(arguments.item.getValue('displayStart'),"short") lt LSDateFormat(arguments.item.getValue('displayStop'),"short")>#LSDateFormat(arguments.item.getValue('displayStart'),$.getShortDateFormat())# - #LSDateFormat(arguments.item.getValue('displayStop'),$.getShortDateFormat())#<cfelse>#LSDateFormat(arguments.item.getValue('displayStart'),$.getLongDateFormat())#</cfif></dt>
 				<cfelseif arguments.type eq "Calendar">
-				<dt class="releaseDate"><cfif LSDateFormat(arguments.item.getValue('displayStart'),"short") lt LSDateFormat(arguments.item.getValue('displayStop'),"short")>#LSDateFormat(arguments.item.getValue('displayStart'),getShortDateFormat())# - #LSDateFormat(arguments.item.getValue('displayStop'),getShortDateFormat())#<cfelse>#LSDateFormat(arguments.item.getValue('displayStart'),getLongDateFormat())#</cfif></dt>
+				<dt class="releaseDate"><cfif LSDateFormat(arguments.item.getValue('displayStart'),"short") lt LSDateFormat(arguments.item.getValue('displayStop'),"short")>#LSDateFormat(arguments.item.getValue('displayStart'),$.getShortDateFormat())# - #LSDateFormat(arguments.item.getValue('displayStop'),$.getShortDateFormat())#<cfelse>#LSDateFormat(arguments.item.getValue('displayStart'),$.getLongDateFormat())#</cfif></dt>
 				<cfelseif LSisDate(arguments.item.getValue('releaseDate'))>
-				<dt class="releaseDate">#LSDateFormat(arguments.item.getValue('releaseDate'),getLongDateFormat())#</dt>		
+				<dt class="releaseDate">#LSDateFormat(arguments.item.getValue('releaseDate'),$.getLongDateFormat())#</dt>		
 				</cfif>
 			</cfif>
 			<cfif arguments.hasTitle>
@@ -190,10 +190,10 @@ to your own modified versions of Mura CMS.
 				</dd>
 			</cfif>
 			<cfif arguments.hasSummary and len(arguments.item.getValue('summary')) and arguments.item.getValue('summary') neq "<p></p>">
-			 	<dd class="summary">#setDynamicContent(arguments.item.getValue('summary'))# <span class="readMore">#addlink(arguments.item.getValue('type'),arguments.item.getValue('filename'),variables.rbFactory.getKey('list.readmore'),arguments.item.getValue('target'),arguments.item.getValue('targetparams'),arguments.item.getValue('contentID'),arguments.item.getValue('siteID'),'',application.configBean.getContext(),application.configBean.getStub(),application.configBean.getIndexFile())#</span></dd>
+			 	<dd class="summary">#$.setDynamicContent(arguments.item.getValue('summary'))# <span class="readMore">#$.addLink(arguments.item.getValue('type'),arguments.item.getValue('filename'),$.rbKey('list.readmore'),arguments.item.getValue('target'),arguments.item.getValue('targetparams'),arguments.item.getValue('contentID'),arguments.item.getValue('siteID'),'',application.configBean.getContext(),application.configBean.getStub(),application.configBean.getIndexFile())#</span></dd>
 			</cfif>
 			<cfif arguments.hasCredits and len(arguments.item.getValue('credits'))>
-			 	<dd class="credits">#variables.rbFactory.getKey('list.by')# #HTMLEditFormat(arguments.item.getValue('credits'))#</dd>
+			 	<dd class="credits">#$.rbKey('list.by')# #HTMLEditFormat(arguments.item.getValue('credits'))#</dd>
 			</cfif>
 			<cfif len(arguments.commentsLink)>
 			 	<dd class="comments">#arguments.commentsLink#</dd>
@@ -201,7 +201,7 @@ to your own modified versions of Mura CMS.
 			<cfif arguments.hasTags and len(arguments.item.getValue('tags'))>
 				<cfset arguments.tagLen=listLen(arguments.item.getValue('tags')) />
 				<dd class="tags">
-					#variables.rbFactory.getKey('tagcloud.tags')#: 
+					#$.rbKey('tagcloud.tags')#: 
 					<cfloop from="1" to="#arguments.tagLen#" index="t">
 					<cfset arguments.tag=#trim(listgetAt(arguments.item.getValue('tags'),t))#>
 					<a href="#$.createHREF(filename='#$.event('currentFilenameAdjusted')#/tag/#urlEncodedFormat(arguments.tag)#')#">#arguments.tag#</a><cfif arguments.tagLen gt t>, </cfif>
@@ -209,7 +209,7 @@ to your own modified versions of Mura CMS.
 				</dd>
 			</cfif>
 			<cfif arguments.hasRatings and (arguments.item.getValue('type') eq 'Page' or showItemMeta(arguments.item.getValue('type')) or (len(arguments.item.getValue('fileID')) and showItemMeta(arguments.item.getValue('fileEXT'))))>
-			 	<dd class="rating #application.raterManager.getStarText(arguments.item.getValue('rating'))#">#variables.rbFactory.getKey('list.rating')#: <span><cfif isNumeric(arguments.item.getValue('rating'))>#arguments.item.getValue('rating')# star<cfif arguments.item.getValue('rating') gt 1>s</cfif> <cfelse>Zero stars</cfif></span></dd>	 	
+			 	<dd class="rating #application.raterManager.getStarText(arguments.item.getValue('rating'))#">#$.rbKey('list.rating')#: <span><cfif isNumeric(arguments.item.getValue('rating'))>#arguments.item.getValue('rating')# star<cfif arguments.item.getValue('rating') gt 1>s</cfif> <cfelse>Zero stars</cfif></span></dd>	 	
 			</cfif>
 		</dl>
 	</cfif>	

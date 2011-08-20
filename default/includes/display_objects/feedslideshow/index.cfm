@@ -44,8 +44,8 @@ to your own modified versions of Mura CMS.
 <cfswitch expression="#getJsLib()#">
 	<cfcase value="jquery">
 	<cfset loadJSLib() />
-	<cfset addToHTMLHeadQueue("feedslideshow/htmlhead/slideshow.jquery.cfm")>
-	<cf_CacheOMatic key="#arguments.object##arguments.objectid#" nocache="#event.getValue('nocache')#">
+	<cfset $.addToHTMLHeadQueue("feedslideshow/htmlhead/slideshow.jquery.cfm")>
+	<cf_CacheOMatic key="#arguments.object##arguments.objectid#" nocache="#$.event('nocache')#">
 	<cfsilent>
 	<cfparam name="hasSummary" default="true"/>
 	<cfset feedBean=application.feedManager.read(arguments.objectID) />
@@ -58,8 +58,8 @@ to your own modified versions of Mura CMS.
 		
 		<cfif this.showEditableObjects and objectPerm eq 'editor'>
 			<cfset bean = feedBean>
-			<cfset loadShadowBoxJS()>
-			<cfset addToHTMLHeadQueue('editableObjects.cfm')>
+			<cfset $.loadShadowBoxJS()>
+			<cfset $.addToHTMLHeadQueue('editableObjects.cfm')>
 			<cfset request.cacheItem=false>
 			
 			<cfif len(application.configBean.getAdminDomain())>
@@ -76,19 +76,19 @@ to your own modified versions of Mura CMS.
 			<cfset editableControl.editLink = editableControl.editLink & "&amp;siteid=" & bean.getSiteID()>
 			<cfset editableControl.editLink = editableControl.editLink & "&amp;feedid=" & bean.getFeedID()>
 			<cfset editableControl.editLink = editableControl.editLink & "&amp;type=" & bean.getType()>
-			<cfset editableControl.editLink = editableControl.editLink & "&amp;homeID=" & request.contentBean.getContentID()>
+			<cfset editableControl.editLink = editableControl.editLink & "&amp;homeID=" & $.content('contentID')>
 			<cfset editableControl.editLink = editableControl.editLink & "&amp;compactDisplay=true">
 			
 			<cfset editableControl.innerHTML = generateEditableObjectControl(editableControl.editLink)>
 		</cfif>
 	</cfsilent>
 	<cfif editableControl.innerHTML neq "">
-		<cfoutput>#renderEditableObjectHeader("editableFeed editableSlideShow")#</cfoutput>
+		<cfoutput>#$.renderEditableObjectHeader("editableFeed editableSlideShow")#</cfoutput>
 	</cfif>
 	  <cfif feedBean.getIsActive()>
-		<cfset cssID=createCSSid(feedBean.renderName())>
+		<cfset cssID=$.createCSSid(feedBean.renderName())>
 	      <cfsilent>
-			<!---<cfset loadShadowBoxJS() />--->
+			<!---<cfset $.loadShadowBoxJS() />--->
 			<cfset rsPreFeed=application.feedManager.getFeed(feedBean,request.tag) />
 			<cfif getSite().getExtranet() eq 1 and request.r.restrict eq 1>
 				<cfset rs=queryPermFilter(rsPreFeed)/>
@@ -96,7 +96,7 @@ to your own modified versions of Mura CMS.
 				<cfset rs=rsPreFeed />
 			</cfif>
 			
-			<cfset iterator=application.serviceFactory.getBean("contentIterator")>
+			<cfset iterator=$.getBean("contentIterator")>
 			<cfset iterator.setQuery(rs,feedBean.getNextN())>
 		
 			<cfset rbFactory=getSite().getRBFactory() />
@@ -133,9 +133,9 @@ to your own modified versions of Mura CMS.
 				<cfoutput>
 					<dl<cfif class neq ''> class="#class#"</cfif>>
 				<cfif item.getValue('parentType') eq 'Calendar' and isDate(item.getValue('displayStart'))>
-					<dt class="releaseDate"><cfif LSDateFormat(item.getValue('displayStart'),"short") lt LSDateFormat(item.getValue('displayStop'),"short")>#LSDateFormat(item.getValue('displayStart'),getShortDateFormat())# - #LSDateFormat(item.getValue('displayStop'),getShortDateFormat())#<cfelse>#LSDateFormat(item.getValue('displayStart'),getLongDateFormat())#</cfif></dt>
+					<dt class="releaseDate"><cfif LSDateFormat(item.getValue('displayStart'),"short") lt LSDateFormat(item.getValue('displayStop'),"short")>#LSDateFormat(item.getValue('displayStart'),$.getShortDateFormat())# - #LSDateFormat(item.getValue('displayStop'),$.getShortDateFormat())#<cfelse>#LSDateFormat(item.getValue('displayStart'),$.getLongDateFormat())#</cfif></dt>
 				<cfelseif LSisDate(item.getValue('releaseDate'))>
-					<dt class="releaseDate">#LSDateFormat(item.getValue('releaseDate'),getLongDateFormat())#</dt>
+					<dt class="releaseDate">#LSDateFormat(item.getValue('releaseDate'),$.getLongDateFormat())#</dt>
 				</cfif>
 				<dt><a href="#theLink#">#HTMLEditFormat(item.getValue('menuTitle'))#</a></dt>
 				<cfif hasImage>
@@ -144,21 +144,21 @@ to your own modified versions of Mura CMS.
 					</dd>
 				</cfif>
 				<cfif hasSummary and len(item.getValue('summary'))>
-					<dd class="summary">#setDynamicContent(item.getValue('summary'))#
-						<span class="readMore">#addlink(item.getValue('type'),item.getValue('filename'),rbFactory.getKey('list.readmore'),item.getValue('target'),item.getValue('targetparams'),item.getValue('contentID'),item.getValue('siteID'),'',application.configBean.getContext(),application.configBean.getStub(),application.configBean.getIndexFile())#</span>
+					<dd class="summary">#$.setDynamicContent(item.getValue('summary'))#
+						<span class="readMore">#$.addLink(item.getValue('type'),item.getValue('filename'),$.rbKey('list.readmore'),item.getValue('target'),item.getValue('targetparams'),item.getValue('contentID'),item.getValue('siteID'),'',application.configBean.getContext(),application.configBean.getStub(),application.configBean.getIndexFile())#</span>
 					</dd>
 				</cfif>
 				<cfif len(item.getValue('credits'))>
-					<dd class="credits">#rbFactory.getKey('list.by')# #HTMLEditFormat(item.getValue('credits'))#</dd>
+					<dd class="credits">#$.rbKey('list.by')# #HTMLEditFormat(item.getValue('credits'))#</dd>
 				</cfif>
 				<cfif doMeta and feedBean.getDisplayComments()>
-					<dd class="comments"><cfif isNumeric(item.getValue('comments'))>#item.getValue('comments')#<cfelse>0</cfif> <cfif item.getValue('comments') neq 1>#rbFactory.getKey('list.comments')#<cfelse>#rbFactory.getKey('list.comment')#</cfif></dd>
+					<dd class="comments"><cfif isNumeric(item.getValue('comments'))>#item.getValue('comments')#<cfelse>0</cfif> <cfif item.getValue('comments') neq 1>#$.rbKey('list.comments')#<cfelse>#$.rbKey('list.comment')#</cfif></dd>
 				</cfif>
 				<cfif len(item.getValue('tags'))>
 					<dd class="tags"><cfmodule template="../nav/dsp_tag_line.cfm" tags="#item.getValue('tags')#"></dd>
 				</cfif>
 				<cfif doMeta and feedBean.getDisplayRatings()>
-					<dd class="rating #application.raterManager.getStarText(item.getValue('rating'))#">#rbFactory.getKey('list.rating')#: <span><cfif isNumeric(item.getValue('rating'))>#item.getValue('rating')# star<cfif item.getValue('rating') gt 1>s</cfif><cfelse>Zero stars</cfif></span></dd>
+					<dd class="rating #application.raterManager.getStarText(item.getValue('rating'))#">#$.rbKey('list.rating')#: <span><cfif isNumeric(item.getValue('rating'))>#item.getValue('rating')# star<cfif item.getValue('rating') gt 1>s</cfif><cfelse>Zero stars</cfif></span></dd>
 				</cfif>	
 				</dl>
 				</cfoutput>

@@ -44,9 +44,9 @@ to your own modified versions of Mura CMS.
 <cfoutput>
 <script src="#event.getSite().getAssetPath()#/includes/display_objects/dragablefeeds/js/dragablefeeds.js" type="text/javascript"></script>
 <script>
-var feeditems='#JSStringFormat(rbFactory.getKey("dragablefeeds.items"))#';
-var feedsource='#JSStringFormat(rbFactory.getKey("dragablefeeds.source"))#';
-var feedsave='#JSStringFormat(rbFactory.getKey("dragablefeeds.save"))#';
+var feeditems='#JSStringFormat($.rbKey("dragablefeeds.items"))#';
+var feedsource='#JSStringFormat($.rbKey("dragablefeeds.source"))#';
+var feedsave='#JSStringFormat($.rbKey("dragablefeeds.save"))#';
 </script>
 <link rel="stylesheet" href="#event.getSite().getAssetPath()#/includes/display_objects/dragablefeeds/css/dragablefeeds.css" type="text/css" media="all" />
 <!--[if lt IE 7]><link rel="stylesheet" href="#event.getSite().getAssetPath()#/includes/display_objects/dragablefeeds/css/dragablefeeds-ie.css" type="text/css" media="all" /><![endif]-->

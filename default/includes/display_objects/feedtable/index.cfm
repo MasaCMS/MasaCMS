@@ -46,7 +46,7 @@ to your own modified versions of Mura CMS.
 <table name="svRssFeedsList" id="svRssFeedsList">
 	<thead>
 		<tr>
-			<cfoutput><th colspan="5">#rbFactory.getKey('feedtable.rssfeeds')#</th></cfoutput>
+			<cfoutput><th colspan="5">#$.rbKey('feedtable.rssfeeds')#</th></cfoutput>
 		</tr>
 	</thead>
 	<tbody>
@@ -62,7 +62,7 @@ to your own modified versions of Mura CMS.
 		</cfoutput>
 		<cfelse>
 		<tr>
-			<cfoutput><td colspan="4">#rbFactory.getKey('feedtable.nofeeds')#</td></cfoutput>
+			<cfoutput><td colspan="4">#$.rbKey('feedtable.nofeeds')#</td></cfoutput>
 		</tr>
 		</cfif>
 	</tbody>

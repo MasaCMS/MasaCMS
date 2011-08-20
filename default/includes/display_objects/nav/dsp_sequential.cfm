@@ -41,6 +41,6 @@ the GNU General Public License version 2 without this exception. You may, if you
 to your own modified versions of Mura CMS.
 --->
 <!--- Outputs nav of portal and calendar child content in sequence in the form of "Previous 1 2 3 4 5 Next" --->
-<cfif not listFind("Portal,Gallery",request.contentBean.getType())>
+<cfif not listFind("Portal,Gallery",$.content('type'))>
 <cfoutput>#dspSequentialNav()#</cfoutput>
 </cfif>

@@ -61,60 +61,60 @@ to your own modified versions of Mura CMS.
 	<#getHeaderTag('subHead1')#>#rslist.name#</#getHeaderTag('subHead1')#>
 	
 	<cfif request.doaction eq 'unsubscribe'>
-		<cfif event.getValue("passedProtect")>
-			<p class="success">#rbFactory.getKey('mailinglist.youhaveunsubscribed')#</p>
+		<cfif $.event("passedProtect")>
+			<p class="success">#$.rbKey('mailinglist.youhaveunsubscribed')#</p>
 		<cfelse>
-			<p class="error">#rbFactory.getKey('captcha.spam')#</p>
+			<p class="error">#$.rbKey('captcha.spam')#</p>
 		</cfif>
 	<cfelseif request.doaction eq 'subscribe' and rslist.isPurge neq 1>
-		<cfif event.getValue("passedProtect")>
-			<p class="success">#rbFactory.getKey('mailinglist.youhavesubscribed')#</p>
+		<cfif $.event("passedProtect")>
+			<p class="success">#$.rbKey('mailinglist.youhavesubscribed')#</p>
 		<cfelse>
-			<p class="error">#rbFactory.getKey('captcha.spam')#</p>
+			<p class="error">#$.rbKey('captcha.spam')#</p>
 		</cfif>
 	<cfelseif request.doaction eq 'subscribe' and rslist.isPurge eq 1>
-		<cfif event.getValue("passedProtect")>
-			<p class="success">#rbFactory.getKey('mailinglist.emailremoved')#</p>
+		<cfif $.event("passedProtect")>
+			<p class="success">#$.rbKey('mailinglist.emailremoved')#</p>
 		<cfelse>
-			<p class="error">#rbFactory.getKey('captcha.spam')#</p>
+			<p class="error">#$.rbKey('captcha.spam')#</p>
 		</cfif>	
 	<cfelse>
 	<cfif #rslist.description# neq ''><p class="description">#rslist.description#</p></cfif>
 	<form name="frmMailingList" action="?nocache=1" method="post" onsubmit="return validate(this);" class="clearfix" novalidate="novalidate" data-role="fieldcontain">
 		<fieldset>
-			<legend>#rbFactory.getKey('mailinglist.yourinfo')#</legend>
+			<legend>#$.rbKey('mailinglist.yourinfo')#</legend>
 			<ol>
 			<cfif rslist.isPurge neq 1>
 				<li class="req">
-					<label for="txtNameFirst">#rbFactory.getKey('mailinglist.fname')#<ins> (required)</ins></label>
-					<input type="text" id="txtNameFirst" class="text" name="fname" maxlength="50" required="true" message="#HTMLEditFormat(rbFactory.getKey('mailinglist.fnamerequired'))#"/>
+					<label for="txtNameFirst">#$.rbKey('mailinglist.fname')#<ins> (required)</ins></label>
+					<input type="text" id="txtNameFirst" class="text" name="fname" maxlength="50" required="true" message="#HTMLEditFormat($.rbKey('mailinglist.fnamerequired'))#"/>
 				</li>
 				<li class="req">
-					<label for="txtNameLast">#rbFactory.getKey('mailinglist.lname')#<ins> (#rbFactory.getKey('mailinglist.required')#)</ins></label>
-					<input type="text" id="txtNameLast" class="text" name="lname" maxlength="50" required="true" message="#HTMLEditFormat(rbFactory.getKey('mailinglist.lnamerequired'))#"/>
+					<label for="txtNameLast">#$.rbKey('mailinglist.lname')#<ins> (#$.rbKey('mailinglist.required')#)</ins></label>
+					<input type="text" id="txtNameLast" class="text" name="lname" maxlength="50" required="true" message="#HTMLEditFormat($.rbKey('mailinglist.lnamerequired'))#"/>
 				</li>
 				<li>
-					<label for="txtCompany">#rbFactory.getKey('mailinglist.company')#</label>
+					<label for="txtCompany">#$.rbKey('mailinglist.company')#</label>
 					<input type="text" id="txtCompany" class="text" maxlength="50" name="company" />
 				</li>
 			</cfif>
 				<li class="req">
-					<label for="txtEmail">#rbFactory.getKey('mailinglist.email')#<ins> (#rbFactory.getKey('mailinglist.required')#)</ins></label>
-					<input type="text" id="txtEmail" class="text" name="email" maxlength="50" required="true" validate="email" message="#HTMLEditFormat(rbFactory.getKey('mailinglist.emailvalidate'))#"/>
+					<label for="txtEmail">#$.rbKey('mailinglist.email')#<ins> (#$.rbKey('mailinglist.required')#)</ins></label>
+					<input type="text" id="txtEmail" class="text" name="email" maxlength="50" required="true" validate="email" message="#HTMLEditFormat($.rbKey('mailinglist.emailvalidate'))#"/>
 				</li>
 			</ol>
 		</fieldset>
 		<div class="buttons">
-			<input type="hidden" name="linkServID" value="#event.getContentBean().getContentID()#" />
+			<input type="hidden" name="linkServID" value="#$.content('contentID')#" />
 			<input type="hidden" name="mlid" value="#rslist.mlid#"><input type="hidden" name="siteid" value="#request.siteid#" />
 			<cfif rslist.isPurge eq 0>
 			<input type="hidden" name="doaction" value="subscribe" checked="checked" />
 			<input type="hidden" name="isVerified" value="1" />
-			<input type="submit" class="submit" value="#HTMLEditFormat(rbFactory.getKey('mailinglist.subscribe'))#" />
+			<input type="submit" class="submit" value="#HTMLEditFormat($.rbKey('mailinglist.subscribe'))#" />
 			<cfelse>
 			<input type="hidden" name="doaction" value="subscribe"  />
 			<input type="hidden" name="isVerified" value="1"  />
-			<input type="submit" class="submit" value="#HTMLEditFormat(rbFactory.getKey('mailinglist.unsubscribe'))#" />
+			<input type="submit" class="submit" value="#HTMLEditFormat($.rbKey('mailinglist.unsubscribe'))#" />
 			</cfif>
 				#dspObject_Include(thefile='dsp_form_protect.cfm')#
 		</div>

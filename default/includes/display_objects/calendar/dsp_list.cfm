@@ -42,17 +42,17 @@ to your own modified versions of Mura CMS.
 --->
 
 <cfsilent>
-<cfset variables.iterator=application.serviceFactory.getBean("contentIterator")>
-<cfset variables.iterator.setQuery(variables.rsSection,request.contentBean.getNextN())>
+<cfset variables.iterator=$.getBean("contentIterator")>
+<cfset variables.iterator.setQuery(variables.rsSection,$.content('nextN'))>
 
-<cfset event.setValue("currentNextNID",event.getContentBean().getContentID())>
+<cfset event.setValue("currentNextNID",$.content('contentID'))>
 
-<cfif not len(event.getValue("nextNID")) or event.getValue("nextNID") eq event.getValue("currentNextNID")>
+<cfif not len($.event("nextNID")) or $.event("nextNID") eq $.event("currentNextNID")>
 	<cfif event.getContentBean().getNextN() gt 1>
-		<cfset variables.currentNextNIndex=event.getValue("startRow")>
+		<cfset variables.currentNextNIndex=$.event("startRow")>
 		<cfset variables.iterator.setStartRow(variables.currentNextNIndex)>
 	<cfelse>
-		<cfset variables.currentNextNIndex=event.getValue("pageNum")>
+		<cfset variables.currentNextNIndex=$.event("pageNum")>
 		<cfset variables.iterator.setPage(variables.currentNextNIndex)>
 	</cfif>
 <cfelse>	
@@ -65,11 +65,11 @@ to your own modified versions of Mura CMS.
 <cfset variables.contentListType="Calendar">
 <cfset variables.contentListFields="Title,Summary,Date,Image,Tags,Credits">
 
-<cfif application.contentGateway.getHasComments(event.getValue('siteid'),event.getContentBean().getContentID())>
+<cfif application.contentGateway.getHasComments($.event('siteid'),$.content('contentID'))>
 	<cfset variables.contentListFields=listAppend(variables.contentListFields,"Comments")>
 </cfif>
 
-<cfif application.contentGateway.getHasRatings(event.getValue('siteid'),event.getContentBean().getContentID())>
+<cfif application.contentGateway.getHasRatings($.event('siteid'),$.content('contentID'))>
 	<cfset variables.contentListFields=listAppend(variables.contentListFields,"Rating")>
 </cfif>
 
@@ -98,16 +98,16 @@ to your own modified versions of Mura CMS.
      <cfif request.filterBy eq "releaseMonth">
      <div id="svPortal">
 	     <br>
-	     <p>#rbFactory.getKey('list.nocontentmonth')#</p>    
+	     <p>#$.rbKey('list.nocontentmonth')#</p>    
      </div>
      <cfelseif request.filterBy eq "releaseDate">
      <div id="svPortal">
 	     <br>
-	     <p>#rbFactory.getKey('list.nocontentday')#</p>
+	     <p>#$.rbKey('list.nocontentday')#</p>
      </div>
      <cfelse>
      <div id="svPortal">
-         <p>#rbFactory.getKey('list.nocontent')#</p>   
+         <p>#$.rbKey('list.nocontent')#</p>   
      </div>
      </cfif>
      </cfoutput>

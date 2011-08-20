@@ -61,7 +61,7 @@ to your own modified versions of Mura CMS.
 <cfset rbFactory=getSite().getRBFactory() />
 <cfoutput>
 <div class="svCatSummary svIndex">
-<#getHeaderTag('subHead1')#>#rbFactory.getKey('list.categories')#</#getHeaderTag('subHead1')#>
+<#getHeaderTag('subHead1')#>#$.rbKey('list.categories')#</#getHeaderTag('subHead1')#>
 <ul class="navSecondary"><cfloop query="rs">
 	<cfsilent>
 	<cfif len(rs.filename)>
