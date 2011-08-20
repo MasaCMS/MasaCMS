@@ -51,16 +51,15 @@ to your own modified versions of Mura CMS.
 <cfargument name="utility" type="any" required="yes"/>
 <cfargument name="settingsManager" type="any" required="yes"/>
 <cfargument name="trashManager" type="any" required="yes"/>
-		<cfset variables.configBean=arguments.configbean />
-		<cfset variables.mailinglistDAO=arguments.mailinglistDAO />
-		<cfset variables.mailinglistGateway=arguments.mailinglistGateway />
-		<cfset variables.mailinglistUtility=arguments.mailinglistUtility />
-		<cfset variables.memberManager=arguments.memberManager />
-		<cfset variables.utility=arguments.utility />
-		<cfset variables.settingsManager=arguments.settingsManager />
-		<cfset variables.trashManager=arguments.trashManager />
+	<cfset variables.configBean=arguments.configbean />
+	<cfset variables.mailinglistDAO=arguments.mailinglistDAO />
+	<cfset variables.mailinglistGateway=arguments.mailinglistGateway />
+	<cfset variables.mailinglistUtility=arguments.mailinglistUtility />
+	<cfset variables.memberManager=arguments.memberManager />
+	<cfset variables.utility=arguments.utility />
+	<cfset variables.settingsManager=arguments.settingsManager />
+	<cfset variables.trashManager=arguments.trashManager />
 	<cfreturn this />
-	
 </cffunction>
 
 <cffunction name="save" output="false">
@@ -93,7 +92,7 @@ to your own modified versions of Mura CMS.
 <cffunction name="update" access="public" output="false" returntype="void" >
 	<cfargument name="data" type="struct"  />
 	
-	<cfset var listBean=application.serviceFactory.getBean("mailinglistBean") />
+	<cfset var listBean=getBean("mailinglistBean") />
 	<cfset listBean.set(arguments.data) />
 	<cfset variables.utility.logEvent("MLID:#listBean.getMLID()# Name:#listBean.getName()# was created","mura-mailinglists","Information",true) />
 	<cfset variables.mailinglistDAO.update(listbean) />
@@ -109,7 +108,7 @@ to your own modified versions of Mura CMS.
 <cffunction name="create" access="public" output="false" returntype="any" >
 	<cfargument name="data" type="struct"  />
 	
-	<cfset var listBean=application.serviceFactory.getBean("mailinglistBean") />
+	<cfset var listBean=getBean("mailinglistBean") />
 	<cfset listBean.set(arguments.data) />
 	<cfif not structKeyExists(arguments.data,"fromMuraTrash")>
 		<cfset listBean.setMLID(createuuid()) />

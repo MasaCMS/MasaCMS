@@ -49,10 +49,6 @@ to your own modified versions of Mura CMS.
 		<cfreturn this />
 </cffunction>
 
-<cffunction name="getBean" access="public" returntype="any">
-	<cfreturn createObject("component","mura.mailinglist.mailinglistBean").init()>
-</cffunction>
-
 <cffunction name="create" returntype="void" access="public" output="false">
 <cfargument name="listBean" type="any" />
  
@@ -68,7 +64,7 @@ values (<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.listBean.getM
 <cffunction name="read" access="public" output="false" returntype="any" >
 	<cfargument name="MLID" type="string" />
 
-	<cfset var bean=getBean() />
+	<cfset var bean=getBean("member") />
 	<cfset var rs ="" />
 	
 	<cfquery name="rs" datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
@@ -87,7 +83,7 @@ values (<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.listBean.getM
 <cffunction name="readByName" access="public" output="false" returntype="any" >
 	<cfargument name="name" type="string" />
 	<cfargument name="siteID" type="string" />
-	<cfset var bean=getBean() />
+	<cfset var bean=getBean("mailingList") />
 	<cfset var rs ="" />
 	<cfset var beanArray=arrayNew(1)>
 	
@@ -98,9 +94,9 @@ values (<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.listBean.getM
 	</cfquery>
 	
 	<cfif rs.recordcount gt 1>
-		<cfset utility=getServiceFactory().getBean("utility")>
+		<cfset utility=getBean("utility")>
 		<cfloop query="rs">
-			<cfset bean=getbean().set(utility.queryRowToStruct(rs,rs.currentrow))>
+			<cfset bean=getBean("mailingList").set(utility.queryRowToStruct(rs,rs.currentrow))>
 			<cfset bean.setIsNew(0)>
 			<cfset arrayAppend(beanArray,bean)>		
 		</cfloop>

@@ -51,12 +51,6 @@ to your own modified versions of Mura CMS.
 	<cfreturn this />
 </cffunction>
 
-<cffunction name="getBean" access="public" returntype="any">
-	<cfset var feedBean=createObject("component","mura.content.feed.feedBean").init()>
-	<cfset feedBean.setFeedManager(variables.feedManager)>
-	<cfreturn feedBean>
-</cffunction>
-
 <cffunction name="setFeedManager" access="public" output="false">
 	<cfargument name="feedManager" type="any" />
 	<cfset variables.feedManager = arguments.feedManager />
@@ -114,7 +108,7 @@ to your own modified versions of Mura CMS.
 <cffunction name="read" access="public" output="false" returntype="any" >
 	<cfargument name="feedID" type="string" />
 
-	<cfset var feedBean=getBean() />
+	<cfset var feedBean=getBean("feed") />
 	<cfset var rs ="" />
 	
 	<cfquery name="rs" datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
@@ -139,7 +133,7 @@ to your own modified versions of Mura CMS.
 	<cfargument name="name" type="string" />
 	<cfargument name="siteid" type="string" />
 
-	<cfset var feedBean=getBean() />
+	<cfset var feedBean=getBean("feed") />
 	<cfset var rs ="" />
 	<cfset var beanArray=arrayNew(1)>
 	<cfset var utility="">
@@ -153,9 +147,9 @@ to your own modified versions of Mura CMS.
 	</cfquery>
 	
 	<cfif rs.recordcount gt 1>
-		<cfset utility=getServiceFactory().getBean("utility")>
+		<cfset utility=getBean("utility")>
 		<cfloop query="rs">
-			<cfset feedBean=getbean().set(utility.queryRowToStruct(rs,rs.currentrow))>
+			<cfset feedBean=getBean("feed").set(utility.queryRowToStruct(rs,rs.currentrow))>
 			<cfset feedBean.setcontentID(readItems(rs.feedID,"contentID")) />
 			<cfset feedBean.setCategoryID(readItems(rs.feedID,"categoryID")) />
 			<cfset feedBean.setAdvancedParams(readAdvancedParams(rs.feedID)) />
@@ -178,7 +172,7 @@ to your own modified versions of Mura CMS.
 	<cfargument name="remoteID" type="string" />
 	<cfargument name="siteid" type="string" />
 
-	<cfset var feedBean=getBean() />
+	<cfset var feedBean=getBean("feed") />
 	<cfset var rs ="" />
 	<cfset var beanArray=arrayNew(1)>
 	<cfset var utility="">
@@ -192,9 +186,9 @@ to your own modified versions of Mura CMS.
 	</cfquery>
 	
 	<cfif rs.recordcount gt 1>
-		<cfset utility=getServiceFactory().getBean("utility")>
+		<cfset utility=getBean("utility")>
 		<cfloop query="rs">
-			<cfset feedBean=getbean().set(utility.queryRowToStruct(rs,rs.currentrow))>
+			<cfset feedBean=getBean("feed").set(utility.queryRowToStruct(rs,rs.currentrow))>
 			<cfset feedBean.setcontentID(readItems(rs.feedID,"contentID")) />
 			<cfset feedBean.setCategoryID(readItems(rs.feedID,"categoryID")) />
 			<cfset feedBean.setAdvancedParams(readAdvancedParams(rs.feedID)) />

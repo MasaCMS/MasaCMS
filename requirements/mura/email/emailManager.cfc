@@ -153,7 +153,7 @@ to your own modified versions of Mura CMS.
 			<cfset data.deliveryDate = now()>
 		</cfif>
 		
-		<cfset emailBean=application.serviceFactory.getBean("emailBean") />
+		<cfset emailBean=getBean("emailBean") />
 		<cfset emailBean.set(data) />
 		<cfset emailBean.setLastUpdateBy(left(session.mura.fname & " " & session.mura.lname,50)) />
 		<cfset emailBean.setLastUpdateByID(session.mura.userID) />
@@ -194,7 +194,7 @@ to your own modified versions of Mura CMS.
 			<cfset data.deliveryDate = now()>
 		</cfif>
 		
-		<cfset emailBean=application.serviceFactory.getBean("emailBean") />
+		<cfset emailBean=getBean("emailBean") />
 		<cfset emailBean.set(data) />
 		<cfset emailBean.setLastUpdateBy(left(session.mura.fname & " " & session.mura.lname,50)) />
 		<cfset emailBean.setLastUpdateByID(session.mura.userID) />

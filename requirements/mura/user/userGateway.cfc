@@ -139,7 +139,7 @@ to your own modified versions of Mura CMS.
 	<cfset var isListParam=false>
 
 	<cfif not isObject(arguments.data)>
-		<cfset params=getServiceFactory().getBean("userFeedBean")>
+		<cfset params=getBean("userFeedBean")>
 		<cfset params.setParams(data)>
 	<cfelse>
 		<cfset params=arguments.data>

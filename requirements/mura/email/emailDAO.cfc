@@ -49,10 +49,6 @@ to your own modified versions of Mura CMS.
 <cfreturn this />
 </cffunction>
 
-<cffunction name="getBean" access="public" returntype="any">
-	<cfreturn createObject("component","mura.email.emailBean").init()>
-</cffunction>
-
 <cffunction name="create" returntype="void" access="public" output="false">
 <cfargument name="emailBean" type="any" />
  
@@ -85,7 +81,7 @@ to your own modified versions of Mura CMS.
 
 <cffunction name="read" access="public" output="false" returntype="any" >
 	<cfargument name="emailID" type="string" />
-	<cfset var emailBean=getBean() />
+	<cfset var emailBean=getBean("email") />
 	<cfset var rs ="" />
 	
 	<cfquery name="rs" datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">

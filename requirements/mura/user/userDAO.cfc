@@ -54,13 +54,8 @@ to your own modified versions of Mura CMS.
 <cfreturn this />
 </cffunction>
 
-<!---<cffunction name="setUserManager" output="false" returntype="void" access="public">
-	<cfargument name="userManager">
-	<cfset variables.userManager=arguments.userManager>
-</cffunction>--->
-
 <cffunction name="getBean" access="public" returntype="any">
-	<cfreturn application.serviceFactory.getBean("userBean")>
+	<cfreturn super.getBean("user")>
 </cffunction>
 
 <cffunction name="read" access="public" returntype="any" output="false">
@@ -74,7 +69,7 @@ to your own modified versions of Mura CMS.
 		<cfif isObject(arguments.userBean)>
 			<cfset bean=arguments.userBean>
 		<cfelse>
-			<cfset bean=getBean()>
+			<cfset bean=getBean("email")>
 		</cfif>	
 			
 		<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#" name="rsUser">
@@ -109,7 +104,7 @@ to your own modified versions of Mura CMS.
 		<cfif isObject(arguments.userBean)>
 			<cfset bean=arguments.userBean>
 		<cfelse>
-			<cfset bean=getBean()>
+			<cfset bean=getBean("email")>
 		</cfif>	
 			
 		<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#" name="rsUser">
@@ -124,9 +119,9 @@ to your own modified versions of Mura CMS.
 		</cfquery>
 		
 		<cfif rsUser.recordcount gt 1>
-			<cfset utility=getServiceFactory().getBean("utility")>
+			<cfset utility=getBean("utility")>
 			<cfloop query="rsUser">
-				<cfset bean=getbean().set(utility.queryRowToStruct(rsUser,rsUser.currentrow))>
+				<cfset bean=getBean("email").set(utility.queryRowToStruct(rsUser,rsUser.currentrow))>
 				<cfset bean.setIsNew(0)>
 				<cfset rsmembs=readMembershipIDs(bean.getUserId()) />
 				<cfset rsInterests=readInterestGroupIDs(bean.getUserId()) />
@@ -166,7 +161,7 @@ to your own modified versions of Mura CMS.
 		<cfif isObject(arguments.userBean)>
 			<cfset bean=arguments.userBean>
 		<cfelse>
-			<cfset bean=getBean()>
+			<cfset bean=getBean("email")>
 		</cfif>		
 		
 		<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#" name="rsUser">
@@ -196,9 +191,9 @@ to your own modified versions of Mura CMS.
 		</cfquery>
 		
 		<cfif rsUser.recordcount gt 1>
-			<cfset utility=getServiceFactory().getBean("utility")>
+			<cfset utility=getBean("utility")>
 			<cfloop query="rsUser">
-				<cfset bean=getbean().set(utility.queryRowToStruct(rsUser,rsUser.currentrow))>
+				<cfset bean=getBean("email").set(utility.queryRowToStruct(rsUser,rsUser.currentrow))>
 				<cfset bean.setIsNew(0)>
 				<cfset rsmembs=readMembershipIDs(bean.getUserId()) />
 				<cfset rsInterests=readInterestGroupIDs(bean.getUserId()) />
@@ -237,7 +232,7 @@ to your own modified versions of Mura CMS.
 		<cfif isObject(arguments.userBean)>
 			<cfset bean=arguments.userBean>
 		<cfelse>
-			<cfset bean=getBean()>
+			<cfset bean=getBean("email")>
 		</cfif>	
 		
 		<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#" name="rsUser">
@@ -252,9 +247,9 @@ to your own modified versions of Mura CMS.
 		</cfquery>
 		
 		<cfif rsUser.recordcount gt 1>
-			<cfset utility=getServiceFactory().getBean("utility")>
+			<cfset utility=getBean("utility")>
 			<cfloop query="rsUser">
-				<cfset bean=getbean().set(utility.queryRowToStruct(rsUser,rsUser.currentrow))>
+				<cfset bean=getBean("email").set(utility.queryRowToStruct(rsUser,rsUser.currentrow))>
 				<cfset bean.setIsNew(0)>
 				<cfset rsmembs=readMembershipIDs(bean.getUserId()) />
 				<cfset rsInterests=readInterestGroupIDs(bean.getUserId()) />
@@ -669,8 +664,8 @@ to your own modified versions of Mura CMS.
 <cffunction name="readAddress" access="public" returntype="any" output="false">
 		<cfargument name="addressid" type="string" required="yes" />
 		<cfset var rs = getAddressByID(arguments.addressID) />
-		<cfset var addressBean=application.serviceFactory.getBean("addressBean") />
-	s
+		<cfset var addressBean=super.getBean("address") />
+
 		<cfif rs.recordCount eq 1>
 			<cfset addressBean.set(rs) />
 		</cfif>

@@ -87,7 +87,7 @@ to your own modified versions of Mura CMS.
 	<cfargument name="aggregation"  required="true" default="false" />
 
 	<cfset var rs =  variables.feedgateway.getFeed(arguments.feedBean,arguments.tag,arguments.aggregation) />
-	<cfset var it = getServiceFactory().getBean("contentIterator")>
+	<cfset var it = getBean("contentIterator")>
 	<cfset it.setQuery(rs)>
 	<cfreturn it/>	
 </cffunction>
@@ -102,7 +102,7 @@ to your own modified versions of Mura CMS.
 <cffunction name="create" access="public" returntype="any" output="false">
 	<cfargument name="data" type="struct" default="#structnew()#"/>		
 	
-	<cfset var feedBean=application.serviceFactory.getBean("feedBean") />
+	<cfset var feedBean=getBean("feed") />
 	<cfset var pluginEvent = createObject("component","mura.event").init(arguments.data) />
 	<cfset feedBean.set(arguments.data) />
 	
@@ -358,7 +358,4 @@ to your own modified versions of Mura CMS.
 	<cfreturn response />
 </cffunction>
 
-<cffunction name="getBean" returntype="any" output="false">
-	<cfreturn variables.feedDAO.getBean()>
-</cffunction>
 </cfcomponent>

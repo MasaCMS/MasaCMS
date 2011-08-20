@@ -376,7 +376,7 @@ to your own modified versions of Mura CMS.
 </cffunction>
 
 <cffunction name="delete" access="public">
-<cfset var fileManager=application.serviceFactory.getBean("fileManager") />	
+<cfset var fileManager=getBean("fileManager") />	
 <cfset var rs =""/>
 	
 	<cftransaction>

@@ -42,17 +42,7 @@ to your own modified versions of Mura CMS.
 --->
 <cfcomponent extends="mura.cfobject" output="false">
 <cffunction name="init" access="public" returntype="any">
-		<cfargument name="configBean" type="any" required="yes">
-		<cfargument name="settingsManager" type="any" required="yes">
-		
-		<cfset variables.configBean=arguments.configBean>
-		<cfset variables.settingsManager=arguments.settingsManager>
-		<cfset variables.dsn=variables.configBean.getDatasource()/>
 		<cfreturn this>
-</cffunction>
-
-<cffunction name="getBean" access="public" returntype="any">
-	<cfreturn createObject("component","rateBean").init(variables.configBean)>
 </cffunction>
 
 <cffunction name="getStarText" access="public" output="false" returntype="string">
@@ -87,8 +77,8 @@ to your own modified versions of Mura CMS.
 	<cfargument name="userID" type="string" default="" required="yes"/>
 	<cfargument name="rate" type="numeric" default="0" required="yes"/>
 	
-	<cfset var rating = getBean() />
-	<cfset var stats = application.contentManager.getStatsBean() />
+	<cfset var rating = getBean("rate") />
+	<cfset var stats = getBean("contentManager").getStatsBean() />
 	<cfset var rsRating = "" />
 	<cfset var ln="l" &replace(arguments.contentID,"-","","all") />
 		<cfset rating.setcontentID(arguments.contentID) />
@@ -125,7 +115,7 @@ to your own modified versions of Mura CMS.
 	<cfargument name="siteID" type="string" default="" required="yes"/>
 	<cfargument name="userID" type="string" default="" required="yes"/>
 	
-	<cfset var rating = getBean() />
+	<cfset var rating = getBean("rate") />
 	
 		<cfset rating.setcontentID(arguments.contentID) />
 		<cfset rating.setSiteID(arguments.siteID) />
@@ -141,7 +131,7 @@ to your own modified versions of Mura CMS.
 	
 	<cfset var rs=""/>
 	
-	<cfquery name="rs" datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+	<cfquery name="rs" datasource="#getBean("configBean").getDatasource()#"  username="#getBean("configBean").getDBUsername()#" password="#getBean("configBean").getDBPassword()#">
 	select avg(tcontentratings.rate) as theAvg, count(tcontentratings.contentID) as theCount, (count(tcontentratings.contentID)-downVotes) as upVotes, downVotes from tcontentratings
 	left join (select count(rate) as downVotes, contentID,siteID from tcontentratings
 				where siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
@@ -168,8 +158,8 @@ to your own modified versions of Mura CMS.
 	<cfset var rs=""/>
 	<cfset var stop=""/>
 	<cfset var start=""/>
-	<cfset var dbType=variables.configBean.getDbType() />
-	<cfquery name="rs" datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+	<cfset var dbType=getBean("configBean").getDbType() />
+	<cfquery name="rs" datasource="#getBean("configBean").getDatasource()#"  username="#getBean("configBean").getDBUsername()#" password="#getBean("configBean").getDBPassword()#">
 	    <cfif dbType eq "oracle" and arguments.limit>select * from (</cfif>
 	    SELECT <cfif dbType eq "mssql" and arguments.limit>Top #arguments.limit#</cfif> tcontent.ContentHistID, tcontent.ContentID, tcontent.Approved, tcontent.filename, tcontent.Active,
 	    tcontent.Type, tcontent.OrderNo, tcontent.ParentID, tcontent.siteID,  tcontent.moduleID,

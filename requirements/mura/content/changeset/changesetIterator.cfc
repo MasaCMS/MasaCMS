@@ -43,18 +43,7 @@ to your own modified versions of Mura CMS.
 <cfcomponent extends="mura.iterator.queryIterator" output="false">
 	
 <cffunction name="packageRecord" access="public" output="false" returntype="any">
-	<cfset var changeset=createObject("component","changesetBean").init(variables.changesetManager) />
-	<cfset changeset.set(queryRowToStruct(variables.records,currentIndex()))>
-	<cfif isObject(variables.recordTranslator)>
-		<cfset changeset.setTranslator(variables.recordTranslator)>
-	</cfif>
-	<cfreturn changeset>
-</cffunction>
-
-<cffunction name="setChangesetManager" output="false" access="public">
-	<cfargument name="changesetManager">
-	<cfset variables.changesetManager=arguments.changesetManager>
-	<cfreturn this>
+	<cfreturn getBean("changeset").set(queryRowToStruct(variables.records,currentIndex())) />
 </cffunction>
 
 </cfcomponent>

@@ -113,7 +113,7 @@ to your own modified versions of Mura CMS.
 	<cfargument name="activeOnly" type="boolean" required="true" default="true">
 	<cfargument name="InterestsOnly" type="boolean" required="true" default="false">
 	
-	<cfset var it=getServiceFactory().getBean("categoryIterator").init()>
+	<cfset var it=getBean("categoryIterator").init()>
 	<cfset it.setQuery(getCategories(arguments.siteid,arguments.parentID,arguments.keywords,arguments.activeOnly,arguments.InterestsOnly))>
 	<cfreturn it />
 </cffunction>
@@ -225,8 +225,8 @@ to your own modified versions of Mura CMS.
 <cffunction name="create" access="public" returntype="any" output="false">
 	<cfargument name="data" type="struct" default="#structnew()#"/>		
 	
-	<cfset var categoryBean=application.serviceFactory.getBean("categoryBean") />
-	<cfset var pluginEvent = createObject("component","mura.event").init(arguments.data) />
+	<cfset var categoryBean=getBean("categoryBean") />
+	<cfset var pluginEvent = getBean("category").set(arguments.data) />
 	<cfset var parentBean="">
 	<cfset categoryBean.set(arguments.data) />
 	
@@ -341,7 +341,7 @@ to your own modified versions of Mura CMS.
 			<cfif isObject(arguments.categoryBean)>
 				<cfset bean=arguments.categoryBean/>
 			<cfelse>
-				<cfset bean=variables.DAO.getBean()/>
+				<cfset bean=variables.DAO.getBean("category")/>
 			</cfif>
 			<cfset bean.setAllValues( structCopy(cacheFactory.get( key )) )>
 			<cfreturn bean />
@@ -374,7 +374,7 @@ to your own modified versions of Mura CMS.
 			<cfif isObject(arguments.categoryBean)>
 				<cfset bean=arguments.categoryBean/>
 			<cfelse>
-				<cfset bean=variables.DAO.getBean()/>
+				<cfset bean=variables.DAO.getBean("category")/>
 			</cfif>
 			<cfset bean.setAllValues( structCopy(cacheFactory.get( key )) )>
 			<cfreturn bean />
@@ -429,7 +429,7 @@ to your own modified versions of Mura CMS.
 			<cfif isObject(arguments.categoryBean)>
 				<cfset bean=arguments.categoryBean/>
 			<cfelse>
-				<cfset bean=variables.DAO.getBean()/>
+				<cfset bean=variables.DAO.getBean("category")/>
 			</cfif>
 			<cfset bean.setAllValues( structCopy(cacheFactory.get( key )) )>
 			<cfreturn bean />
@@ -462,7 +462,7 @@ to your own modified versions of Mura CMS.
 			<cfif isObject(arguments.categoryBean)>
 				<cfset bean=arguments.categoryBean/>
 			<cfelse>
-				<cfset bean=variables.DAO.getBean()/>
+				<cfset bean=variables.DAO.getBean("category")/>
 			</cfif>
 			<cfset bean.setAllValues( structCopy(cacheFactory.get( key )) )>
 			<cfreturn bean />
@@ -522,7 +522,7 @@ to your own modified versions of Mura CMS.
 	path like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.categoryBean.getCategoryID()#%">
 	</cfquery>
 	
-	<cfset it=getServiceFactory().getBean("categoryIterator").setQuery(rs)>
+	<cfset it=getBean("categoryIterator").setQuery(rs)>
 
 	<cfloop condition="it.hasNext()">
 		<cfset purgeCategoryCache(categoryBean=it.next(),broadcast=false)>
@@ -721,10 +721,6 @@ to your own modified versions of Mura CMS.
 		
 		<cfset variables.DAO.keepCategories(arguments.contentHistID,arguments.rsKeepers) />
 
-</cffunction>
-
-<cffunction name="getBean" returntype="any" output="false">
-	<cfreturn variables.DAO.getBean()>
 </cffunction>
 
 <cffunction name="getCrumbQuery" output="false" returntype="any">

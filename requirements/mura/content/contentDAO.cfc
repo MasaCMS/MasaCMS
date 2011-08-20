@@ -68,10 +68,6 @@ tcontent.doCache,tcontent.created,tcontent.urltitle,tcontent.htmltitle,tcontent.
 	<cfset variables.contentManager=arguments.contentManager>
 </cffunction>
 
-<cffunction name="getBean" access="public" returntype="any">
-	<cfreturn application.serviceFactory.getBean("contentBean")>
-</cffunction>
-
 <cffunction name="readVersion" access="public" returntype="any" output="false">
 		<cfargument name="contentHistID" type="string" required="yes" />
 		<cfargument name="siteID" type="string" required="yes" />
@@ -83,7 +79,7 @@ tcontent.doCache,tcontent.created,tcontent.urltitle,tcontent.htmltitle,tcontent.
 		<cfif isObject(arguments.contentBean)>
 			<cfset bean=arguments.contentBean>
 		<cfelse>
-			<cfset bean=getBean()>
+			<cfset bean=getBean("content")>
 		</cfif>
 		
 		<cfif len(arguments.contentHistID)>	
@@ -133,7 +129,7 @@ tcontent.doCache,tcontent.created,tcontent.urltitle,tcontent.htmltitle,tcontent.
 		<cfif isObject(arguments.contentBean)>
 			<cfset bean=arguments.contentBean>
 		<cfelse>
-			<cfset bean=getBean()>
+			<cfset bean=getBean("content")>
 		</cfif>
 		
 		<cfif len(arguments.contentID)>
@@ -188,7 +184,7 @@ tcontent.doCache,tcontent.created,tcontent.urltitle,tcontent.htmltitle,tcontent.
 		<cfif isObject(arguments.contentBean)>
 			<cfset bean=arguments.contentBean>
 		<cfelse>
-			<cfset bean=getBean()>
+			<cfset bean=getBean("content")>
 		</cfif>
 		
 		<cfif len(arguments.remoteID)>		
@@ -203,9 +199,9 @@ tcontent.doCache,tcontent.created,tcontent.urltitle,tcontent.htmltitle,tcontent.
 		</cfif>
 		
 		<cfif rsContent.recordcount gt 1>
-				<cfset utility=getServiceFactory().getBean("utility")>
+				<cfset utility=getBean("utility")>
 				<cfloop query="rscontent">
-				<cfset bean=getbean().set(utility.queryRowToStruct(rsContent,rsContent.currentrow))>
+				<cfset bean=getBean("content").set(utility.queryRowToStruct(rsContent,rsContent.currentrow))>
 				<cfset bean.setIsNew(0)>
 				<cfset bean.setPreserveID(rsContent.contentHistID)>
 				<cfset arrayAppend(beanArray,bean)>				
@@ -237,7 +233,7 @@ tcontent.doCache,tcontent.created,tcontent.urltitle,tcontent.htmltitle,tcontent.
 		<cfif isObject(arguments.contentBean)>
 			<cfset bean=arguments.contentBean>
 		<cfelse>
-			<cfset bean=getBean()>
+			<cfset bean=getBean("content")>
 		</cfif>
 		
 		<cfif len(arguments.title)>		
@@ -252,9 +248,9 @@ tcontent.doCache,tcontent.created,tcontent.urltitle,tcontent.htmltitle,tcontent.
 		</cfif>
 		
 		<cfif rsContent.recordcount gt 1>
-				<cfset utility=getServiceFactory().getBean("utility")>
+				<cfset utility=getBean("utility")>
 				<cfloop query="rscontent">
-				<cfset bean=getbean().set(utility.queryRowToStruct(rsContent,rsContent.currentrow))>
+				<cfset bean=getBean("content").set(utility.queryRowToStruct(rsContent,rsContent.currentrow))>
 				<cfset bean.setIsNew(0)>
 				<cfset bean.setPreserveID(rsContent.contentHistID)>
 				<cfset arrayAppend(beanArray,bean)>				
@@ -286,7 +282,7 @@ tcontent.doCache,tcontent.created,tcontent.urltitle,tcontent.htmltitle,tcontent.
 		<cfif isObject(arguments.contentBean)>
 			<cfset bean=arguments.contentBean>
 		<cfelse>
-			<cfset bean=getBean()>
+			<cfset bean=getBean("content")>
 		</cfif>
 		
 		<cfif len(arguments.urltitle)>		
@@ -301,9 +297,9 @@ tcontent.doCache,tcontent.created,tcontent.urltitle,tcontent.htmltitle,tcontent.
 		</cfif>
 		
 		<cfif rsContent.recordcount gt 1>
-				<cfset utility=getServiceFactory().getBean("utility")>
+				<cfset utility=getBean("utility")>
 				<cfloop query="rscontent">
-				<cfset bean=getbean().set(utility.queryRowToStruct(rsContent,rsContent.currentrow))>
+				<cfset bean=getBean("content").set(utility.queryRowToStruct(rsContent,rsContent.currentrow))>
 				<cfset bean.setIsNew(0)>
 				<cfset bean.setPreserveID(rsContent.contentHistID)>
 				<cfset arrayAppend(beanArray,bean)>				
@@ -335,7 +331,7 @@ tcontent.doCache,tcontent.created,tcontent.urltitle,tcontent.htmltitle,tcontent.
 		<cfif isObject(arguments.contentBean)>
 			<cfset bean=arguments.contentBean>
 		<cfelse>
-			<cfset bean=getBean()>
+			<cfset bean=getBean("content")>
 		</cfif>
 			
 		<cfquery datasource="#variables.dsn#" name="rsContent"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
@@ -355,9 +351,9 @@ tcontent.doCache,tcontent.created,tcontent.urltitle,tcontent.htmltitle,tcontent.
 		</cfquery>
 
 		<cfif rsContent.recordcount gt 1>
-			<cfset utility=getServiceFactory().getBean("utility")>
+			<cfset utility=getBean("utility")>
 				<cfloop query="rscontent">
-				<cfset bean=getbean().set(utility.queryRowToStruct(rsContent,rsContent.currentrow))>
+				<cfset bean=getBean("content").set(utility.queryRowToStruct(rsContent,rsContent.currentrow))>
 				<cfset bean.setIsNew(0)>
 				<cfset bean.setPreserveID(rsContent.contentHistID)>
 				<cfset arrayAppend(beanArray,bean)>				

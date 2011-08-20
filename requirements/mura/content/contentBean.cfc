@@ -112,17 +112,9 @@ to your own modified versions of Mura CMS.
 <cfproperty name="mobileExclude" type="numeric" default="0" required="true" />
 <cfproperty name="changesetID" type="string" default="" required="true" />
 
-<cfset variables.kids = arrayNew(1) />
-<cfset variables.displayRegions = structNew()>
-
 <cffunction name="init" access="public" returntype="any" output="false">
-	<cfargument name="configBean" required="true" default=""/>
-	<cfargument name="contentManager" required="true" default=""/>
 	
 	<cfset super.init(argumentCollection=arguments)>
-	
-	<cfset variables.configBean=arguments.configBean />
-	<cfset variables.contentManager=arguments.contentManager />
 	
 	<cfset variables.instance.ContentHistID = "" />
 	<cfset variables.instance.Contentid = "" />
@@ -204,6 +196,9 @@ to your own modified versions of Mura CMS.
 	<cfset variables.instance.changesetID = "" />
 	<cfset variables.instance.tcontent_id = 0 />
 	<cfset variables.instance.errors=structnew() />
+	
+	<cfset variables.kids = arrayNew(1) />
+	<cfset variables.displayRegions = structNew()>
 	
 	<cfreturn this />
 </cffunction>
@@ -372,7 +367,7 @@ to your own modified versions of Mura CMS.
 	<cfset var extErrors=structNew() />
 	<cfdump var="validate"><cfabort>
 	<cfif len(variables.instance.siteID)>
-		<cfset extErrors=variables.configBean.getClassExtensionManager().validateExtendedData(getAllValues())>
+		<cfset extErrors=getBean("configBean").getClassExtensionManager().validateExtendedData(getAllValues())>
 	</cfif>
 		
 	<cfset variables.instance.errors=structnew() />
@@ -401,7 +396,7 @@ to your own modified versions of Mura CMS.
 			
 		<cfif not structIsEmpty(variables.displayRegions)>
 			<cfloop collection="#variables.displayRegions#" item="i">
-				<cfset variables.instance[i]=variables.contentManager.formatRegionObjectsString(variables.displayRegions[i])>
+				<cfset variables.instance[i]=getBean("contentManager").formatRegionObjectsString(variables.displayRegions[i])>
 			</cfloop>
 		</cfif>
 	</cfif>
@@ -593,19 +588,19 @@ to your own modified versions of Mura CMS.
   
 <cffunction name="getKidsQuery" returnType="query" output="false" access="public">
 	<cfargument name="aggregation" required="true" default="false">
-	<cfreturn variables.contentManager.getKidsQuery(siteID:variables.instance.siteID, parentID:getContentID(), sortBy:getSortBy(), sortDirection:getSortDirection(), aggregation=arguments.aggregation) />
+	<cfreturn getBean("contentManager").getKidsQuery(siteID:variables.instance.siteID, parentID:getContentID(), sortBy:getSortBy(), sortDirection:getSortDirection(), aggregation=arguments.aggregation) />
 </cffunction>
 
 <cffunction name="getKidsIterator" returnType="any" output="false" access="public">
 	<cfargument name="liveOnly" required="true" default="true">
 	<cfargument name="aggregation" required="true" default="false">
 	<cfset var q="" />
-	<cfset var it=getServiceFactory().getBean("contentIterator").init(packageBy="active")>
+	<cfset var it=getBean("contentIterator").setPackageBy("active")>
 	
 	<cfif arguments.liveOnly>
 		<cfset q=getKidsQuery(aggregation=arguments.aggregation) />
 	<cfelse>
-		<cfset q=variables.contentManager.getNest( parentID:getContentID(), siteID:variables.instance.siteID, sortBy:variables.instance.sortby, sortDirection:variables.instance.sortdirection) />
+		<cfset q=getBean("contentManager").getNest( parentID:getContentID(), siteID:variables.instance.siteID, sortBy:variables.instance.sortby, sortDirection:variables.instance.sortdirection) />
 	</cfif>
 	<cfset it.setQuery(q,variables.instance.nextn)>
 	
@@ -613,23 +608,23 @@ to your own modified versions of Mura CMS.
 </cffunction>
 
 <cffunction name="getVersionHistoryQuery" returnType="query" output="false" access="public">
-	<cfreturn variables.contentManager.getHist(getContentID(), variables.instance.siteID) />
+	<cfreturn getBean("contentManager").getHist(getContentID(), variables.instance.siteID) />
 </cffunction>
 
 <cffunction name="getVersionHistoryIterator" returnType="any" output="false" access="public">
 	<cfset var q=getVersionHistoryQuery() />
-	<cfset var it=getServiceFactory().getBean("contentIterator").init(packageBy="version")>
+	<cfset var it=getBean("contentIterator").setPackageBy("version")>
 	<cfset it.setQuery(q)>
 	<cfreturn it>
 </cffunction>
 
 <cffunction name="getCategoriesQuery" returnType="query" output="false" access="public">
-	<cfreturn variables.contentManager.getCategoriesByHistID(getContentHistID()) />
+	<cfreturn getBean("contentManager").getCategoriesByHistID(getContentHistID()) />
 </cffunction>
 
 <cffunction name="getCategoriesIterator" returnType="any" output="false" access="public">
 	<cfset var q=getCategoriesQuery() />
-	<cfset var it=getServiceFactory().getBean("categoryIterator").init()>
+	<cfset var it=getBean("categoryIterator").init()>
 	<cfset it.setQuery(q)>
 	<cfreturn it>
 </cffunction>
@@ -638,7 +633,7 @@ to your own modified versions of Mura CMS.
 	<cfargument name="liveOnly" type="boolean" required="yes" default="false" />
 	<cfargument name="today" type="date" required="yes" default="#now()#" />
 	
-	<cfreturn variables.contentManager.getRelatedContent(variables.instance.siteID, getContentHistID(), arguments.liveOnly, arguments.today) />
+	<cfreturn getBean("contentManager").getRelatedContent(variables.instance.siteID, getContentHistID(), arguments.liveOnly, arguments.today) />
 </cffunction>
 
 <cffunction name="getRelatedContentIterator" returnType="any" output="false" access="public">
@@ -646,7 +641,7 @@ to your own modified versions of Mura CMS.
 	<cfargument name="today" type="date" required="yes" default="#now()#" />
 	
 	<cfset var q=getRelatedContentQuery(arguments.liveOnly, arguments.today) />
-	<cfset var it=getServiceFactory().getBean("contentIterator").init(packageBy="active")>
+	<cfset var it=getBean("contentIterator").setPackageBy("active")>
 	<cfset it.setQuery(q)>
 	<cfreturn it>
 </cffunction>
@@ -654,7 +649,7 @@ to your own modified versions of Mura CMS.
 <cffunction name="save" returnType="any" output="false" access="public">
 	<cfset var kid="">
 	<cfset var i="">
-	<cfset setAllValues(variables.contentManager.save(this).getAllValues())>
+	<cfset setAllValues(getBean("contentManager").save(this).getAllValues())>
 	
 	<cfif arrayLen(variables.kids)>
 		<cfloop from="1" to="#arrayLen(variables.kids)#" index="i">
@@ -734,7 +729,7 @@ to your own modified versions of Mura CMS.
 	<cfargument name="regionID">
 	<cfset var rs="">
 	<cfif not structKeyExists(variables.displayRegions,"objectlist#arguments.regionID#")>
-		<cfset variables.displayRegions["objectlist#arguments.regionID#"]=variables.contentManager.getRegionObjects(getContentHistID(), variables.instance.siteID, arguments.regionID)>
+		<cfset variables.displayRegions["objectlist#arguments.regionID#"]=getBean("contentManager").getRegionObjects(getContentHistID(), variables.instance.siteID, arguments.regionID)>
 	</cfif>
 	
 	<cfreturn variables.displayRegions["objectlist#arguments.regionID#"]>	
@@ -742,7 +737,7 @@ to your own modified versions of Mura CMS.
 
 <cffunction name="deleteVersion" returnType="any" output="false" access="public">
 	<cfif not getActive()>
-		<cfset variables.contentManager.delete(getAllValues()) />
+		<cfset getBean("contentManager").delete(getAllValues()) />
 		<cfreturn true>
 	<cfelse>
 		<cfreturn false>
@@ -750,11 +745,11 @@ to your own modified versions of Mura CMS.
 </cffunction>
 
 <cffunction name="deleteVersionHistory" output="false" access="public">
-	<cfset variables.contentManager.deleteHistAll(getAllValues()) />
+	<cfset getBean("contentManager").deleteHistAll(getAllValues()) />
 </cffunction>
 
 <cffunction name="delete" output="false" access="public">
-	<cfset variables.contentManager.deleteAll(getAllValues()) />
+	<cfset getBean("contentManager").deleteAll(getAllValues()) />
 </cffunction>
 
 <cffunction name="loadBy" returnType="any" output="false" access="public">
@@ -764,7 +759,7 @@ to your own modified versions of Mura CMS.
 		<cfset arguments.siteID=variables.instance.siteID>
 	</cfif>
 	
-	<cfset response=variables.contentManager.read(argumentCollection=arguments)>
+	<cfset response=getBean("contentManager").read(argumentCollection=arguments)>
 
 	<cfif isArray(response)>
 		<cfset setAllValues(response[1].getAllValues())>
@@ -776,7 +771,7 @@ to your own modified versions of Mura CMS.
 </cffunction>
 
 <cffunction name="getStats" returnType="any" output="false" access="public">
-	<cfset var statsBean=variables.contentManager.getStatsBean() />
+	<cfset var statsBean=getBean("contentManager").getStatsBean() />
 	<cfset statsBean.setSiteID(variables.instance.siteID)>
 	<cfset statsBean.setContentID(getContentID())>
 	<cfset statsBean.load()>
@@ -787,7 +782,7 @@ to your own modified versions of Mura CMS.
 	<cfargument name="isEditor" type="boolean" required="true" default="false">
 	<cfargument name="sortOrder" type="string" required="true" default="asc">
 	<cfargument name="parentID" type="string" required="true" default="">
-	<cfreturn variables.contentManager.readComments(getContentID(), variables.instance.siteID, arguments.isEditor, arguments.sortOrder, arguments.parentID) />
+	<cfreturn getBean("contentManager").readComments(getContentID(), variables.instance.siteID, arguments.isEditor, arguments.sortOrder, arguments.parentID) />
 </cffunction>
 
 <cffunction name="getCommentsIterator" returnType="any" output="false" access="public">
@@ -795,14 +790,14 @@ to your own modified versions of Mura CMS.
 	<cfargument name="sortOrder" type="string" required="true" default="asc">
 	<cfargument name="parentID" type="string" required="true" default="">
 	<cfset var q=getCommentsQuery(arguments.isEditor, arguments.sortOrder, arguments.parentID) />
-	<cfset var it=getBean("contentCommentIterator").init()>
+	<cfset var it=getBean("contentCommentIterator")>
 	<cfset it.setQuery(q)>
 	<cfreturn it />
 </cffunction>
 
 <cffunction name="getParent" output="false" returntype="any">
 	<cfif getContentID() neq '00000000000000000000000000000000001'>
-		<cfreturn variables.contentManager.read(contentID=variables.instance.parentID,siteID=variables.instance.siteID)>
+		<cfreturn getBean("contentManager").read(contentID=variables.instance.parentID,siteID=variables.instance.siteID)>
 	<cfelse>
 		<cfthrow message="Parent content does not exist.">
 	</cfif>
@@ -811,27 +806,27 @@ to your own modified versions of Mura CMS.
 <cffunction name="getCrumbArray" output="false" returntype="any">
 	<cfargument name="sort" required="true" default="asc">
 	<cfargument name="setInheritance" required="true" type="boolean" default="false">
-	<cfreturn variables.contentManager.getCrumbList(contentID=getContentID(), siteID=variables.instance.siteID, setInheritance=arguments.setInheritance, path=variables.instance.path, sort=arguments.sort)>
+	<cfreturn getBean("contentManager").getCrumbList(contentID=getContentID(), siteID=variables.instance.siteID, setInheritance=arguments.setInheritance, path=variables.instance.path, sort=arguments.sort)>
 </cffunction>
 
 <cffunction name="getCrumbIterator" output="false" returntype="any">
 	<cfargument name="sort" required="true" default="asc">
 	<cfargument name="setInheritance" required="true" type="boolean" default="false">
 	<cfset var a=getCrumbArray(setInheritance=arguments.setInheritance,sort=arguments.sort)>
-	<cfset var it=getBean("contentIterator").init()>
+	<cfset var it=getBean("contentIterator")>
 	<cfset it.setArray(a)>
 	<cfreturn it>
 </cffunction>
 
 <cffunction name="hasDrafts" returntype="any" access="public" output="false">
-	<cfreturn variables.contentManager.getHasDrafts(getContentID(),variables.instance.siteID) />
+	<cfreturn getBean("contentManager").getHasDrafts(getContentID(),variables.instance.siteID) />
 </cffunction>
 
 <cffunction name="getURL" output="false">
 	<cfargument name="querystring" required="true" default="">
 	<cfargument name="complete" type="boolean" required="true" default="false">
 	<cfargument name="showMeta" type="string" required="true" default="0">
-	 <cfreturn variables.contentManager.getURL(this, arguments.queryString,arguments.complete, arguments.showMeta)>
+	 <cfreturn getBean("contentManager").getURL(this, arguments.queryString,arguments.complete, arguments.showMeta)>
 </cffunction>		
 
 <cffunction name="getEditUrl" access="public" returntype="string" output="false">
@@ -843,7 +838,7 @@ to your own modified versions of Mura CMS.
 		<cfset topID=variables.instance.moduleID>
 	</cfif>
 	
-	<cfset returnStr= "#variables.configBean.getContext()#/admin/?fuseaction=cArch.edit&contentHistId=#getContentHistId()#&contentId=#getContentId()#&Type=#variables.instance.type#&siteId=#variables.instance.siteID#&topId=#topID#&parentId=#variables.instance.parentID#&moduleId=#variables.instance.moduleID#&compactDisplay=#arguments.compactdisplay#" >
+	<cfset returnStr= "#getBean("configBean").getContext()#/admin/?fuseaction=cArch.edit&contentHistId=#getContentHistId()#&contentId=#getContentId()#&Type=#variables.instance.type#&siteId=#variables.instance.siteID#&topId=#topID#&parentId=#variables.instance.parentID#&moduleId=#variables.instance.moduleID#&compactDisplay=#arguments.compactdisplay#" >
 	
 	<cfreturn returnStr>
 </cffunction> 
@@ -868,7 +863,7 @@ to your own modified versions of Mura CMS.
 	<cfargument name="height" default=""/>
 	<cfargument name="width" default=""/>
 	<cfset arguments.bean=this>
-	<cfreturn variables.contentManager.getImageURL(argumentCollection=arguments)>
+	<cfreturn getBean("contentManager").getImageURL(argumentCollection=arguments)>
 </cffunction>
 
 <cffunction name="clone" output="false">

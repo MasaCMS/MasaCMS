@@ -132,7 +132,7 @@
 
 <cffunction name="getIterator" returntype="any" output="false">
 	<cfset var rs=getQuery()>
-	<cfset var it=getServiceFactory().getBean("extendObjectIterator")>
+	<cfset var it=getBean("extendObjectIterator")>
 	<cfset it.setQuery(rs)>
 	<cfreturn it>
 </cffunction>

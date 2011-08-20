@@ -42,38 +42,10 @@ to your own modified versions of Mura CMS.
 --->
 <cfcomponent extends="mura.iterator.queryIterator" output="false">
 
-<cfset variables.userBean ="">
-
 <cffunction name="packageRecord" access="public" output="false" returntype="any">
-	<cfif NOT isObject(variables.userBean)>
-		<cfset variables.userBean=createObject("component","userBean").init(variables.configBean, variables.settingsManager, variables.userManager) />
-		<cfset variables.userStructTemplate= structCopy(variables.userBean.getAllValues(autocomplete=false))>
-	<cfelse>
-		<cfset variables.userBean.setAllValues( structCopy(variables.userStructTemplate) )>
-	</cfif>
-	
-	<cfset variables.userBean.set(queryRowToStruct(variables.records,currentIndex()))>
-	
-	<cfset variables.userManager.setUserBeanMetaData(variables.userBean)/>
-	<cfreturn variables.userBean>
-</cffunction>
-
-<cffunction name="setConfigBean" output="false" access="public">
-	<cfargument name="configBean">
-	<cfset variables.configBean=arguments.configBean>
-	<cfreturn this>
-</cffunction>
-
-<cffunction name="setUserManager" output="false" access="public">
-	<cfargument name="userManager">
-	<cfset variables.userManager=arguments.userManager>
-	<cfreturn this>
-</cffunction>
-
-<cffunction name="setSettingsManager" output="false" access="public">
-	<cfargument name="settingsManager">
-	<cfset variables.settingsManager=arguments.settingsManager>
-	<cfreturn this>
+	<cfset var user=getBean("user").set(queryRowToStruct(variables.records,currentIndex()))>
+	<cfset getBean("userManager").setUserBeanMetaData(user)/>
+	<cfreturn user>
 </cffunction>
 
 <cffunction name="buildQueryFromList" output="false" access="public">

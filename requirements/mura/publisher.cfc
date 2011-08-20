@@ -129,9 +129,9 @@ to your own modified versions of Mura CMS.
 			<cfset getToWorkSite(argumentCollection=arguments)>
 			
 			<cfif arguments.keyMode eq "copy">
-				<cfset application.serviceFactory.getBean("contentUtility").updateGlobalMaterializedPath(siteid=arguments.toSiteID,datasource=arguments.toDSN) />
-				<cfset application.serviceFactory.getBean("contentUtility").updateGlobalCommentsMaterializedPath(siteid=arguments.toSiteID,datasource=arguments.toDSN) />
-				<cfset application.serviceFactory.getBean("categoryUtility").updateGlobalMaterializedPath(siteid=arguments.toSiteID,datasource=arguments.toDSN) />
+				<cfset getBean("contentUtility").updateGlobalMaterializedPath(siteid=arguments.toSiteID,datasource=arguments.toDSN) />
+				<cfset getBean("contentUtility").updateGlobalCommentsMaterializedPath(siteid=arguments.toSiteID,datasource=arguments.toDSN) />
+				<cfset getBean("categoryUtility").updateGlobalMaterializedPath(siteid=arguments.toSiteID,datasource=arguments.toDSN) />
 		 	</cfif>
 		 	
 			<cfif arguments.contentMode eq "all" and arguments.keyMode eq "publish" and not StructKeyExists(arguments,"Bundle")>
@@ -3034,7 +3034,7 @@ to your own modified versions of Mura CMS.
 		<cfset var rsPlugins=application.pluginManager.getSitePlugins(arguments.siteid)>
 		<cfset var pluginEvent = createObject("component","mura.event").init(arguments) />
 		<cfset var keys=createObject("component","mura.publisherKeys").init('publish',application.utility)>
-		<cfset var fileWriter=application.serviceFactory.getBean("fileWriter")>
+		<cfset var fileWriter=getBean("fileWriter")>
 		<cfset var errors=arrayNew(1)>
 		<cfset var itemErrors=arrayNew(1)>
 		<cfset var publishercontentPushMode="Full">
@@ -3194,9 +3194,9 @@ to your own modified versions of Mura CMS.
 			</cfif>
 		<!---</cfthread>--->
 		
-		<cfset application.serviceFactory.getBean("contentUtility").updateGlobalMaterializedPath(siteid=arguments.toSiteID,datasource=arguments.toDSN) />
-		<cfset application.serviceFactory.getBean("contentUtility").updateGlobalCommentsMaterializedPath(siteid=arguments.toSiteID,datasource=arguments.toDSN) />
-		<cfset application.serviceFactory.getBean("categoryUtility").updateGlobalMaterializedPath(siteid=arguments.toSiteID,datasource=arguments.toDSN) />
+		<cfset getBean("contentUtility").updateGlobalMaterializedPath(siteid=arguments.toSiteID,datasource=arguments.toDSN) />
+		<cfset getBean("contentUtility").updateGlobalCommentsMaterializedPath(siteid=arguments.toSiteID,datasource=arguments.toDSN) />
+		<cfset getBean("categoryUtility").updateGlobalMaterializedPath(siteid=arguments.toSiteID,datasource=arguments.toDSN) />
 		
 	</cffunction>
 	
@@ -3231,7 +3231,7 @@ to your own modified versions of Mura CMS.
 		<cfset var newFile="">
 		<cfset var newDir="">
 		<cfset var fileDelim=application.configBean.getFileDelim()>
-		<cfset var fileWriter=application.serviceFactory.getBean("fileWriter")>
+		<cfset var fileWriter=getBean("fileWriter")>
 		<cfdirectory directory="#arguments.baseDir#" name="rs" action="list" recurse="true" />
 		<!--- filter out Subversion hidden folders --->
 		<cfquery name="rs" dbtype="query">

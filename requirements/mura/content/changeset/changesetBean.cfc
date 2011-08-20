@@ -15,11 +15,8 @@
 <cfproperty name="isNew" type="numeric" default="1" required="true" />
 
 <cffunction name="init" output="false">
-	<cfargument name="changesetManager">
 	
 	<cfset super.init(argumentCollection=arguments)>
-	
-	<cfset variables.changesetManager=arguments.changesetManager>
 
 	<cfset variables.instance.changesetID="">
 	<cfset variables.instance.siteID="">
@@ -91,6 +88,8 @@
 			
 		</cfif>
 		
+		<cfset structDelete(variables.instance,"errors")>
+		
 		<cfreturn this />
   </cffunction>
 
@@ -150,7 +149,7 @@
 		<cfset arguments.siteID=variables.instance.siteID>
 	</cfif>
 	
-	<cfset response=variables.changesetManager.read(argumentCollection=arguments)>
+	<cfset response=getBean("changesetManager").read(argumentCollection=arguments)>
 
 	<cfif isArray(response)>
 		<cfset setAllValues(response[1].getAllValues())>
@@ -162,12 +161,12 @@
 </cffunction>
 
 <cffunction name="save" output="false" access="public">
-	<cfset setAllValues(variables.changesetManager.save(this).getAllValues())>
+	<cfset setAllValues(getBean("changesetManager").save(this).getAllValues())>
 	<cfreturn this>
 </cffunction>
 
 <cffunction name="delete" output="false" access="public">
-	<cfset variables.changesetManager.delete(getChangesetID()) />
+	<cfset getBean("changesetManager").delete(getChangesetID()) />
 </cffunction>
 
 </cfcomponent>

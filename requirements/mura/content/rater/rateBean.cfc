@@ -7,12 +7,8 @@
 <cfproperty name="rate" type="numeric" default="0" required="true" />
 	
 <cffunction name="init" returntype="any" output="false" access="public">
-	<cfargument name="configBean">
 	
 	<cfset super.init(argumentCollection=arguments)>
-	
-	<cfset variables.configBean=arguments.configBean />
-	<cfset variables.dsn=variables.configBean.getDatasource()/>
 	
 	<cfset variables.instance.contentID="" />
 	<cfset variables.instance.userID=""/>
@@ -46,7 +42,7 @@
 
 <cffunction name="getQuery"  access="public" output="false" returntype="query">
 	<cfset var rs=""/>
-	<cfquery name="rs" datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+	<cfquery name="rs" datasource="#getBean("configBean").getDatasource()#" username="#getBean("configBean").getDBUsername()#" password="#getBean("configBean").getDBPassword()#">
 	select * from tcontentratings where 
 	contentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.contentID#">
 	and userID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.userID#">
@@ -57,7 +53,7 @@
 </cffunction>
 
 <cffunction name="delete" access="public" returntype="void">
-	<cfquery datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+	<cfquery datasource="#getBean("configBean").getDatasource()#" username="#getBean("configBean").getDBUsername()#" password="#getBean("configBean").getDBPassword()#">
 	delete from tcontentratings
 	where contentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.contentID#">
 	and userID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.userID#">
@@ -70,7 +66,7 @@
 	
 	<cfif getQuery().recordcount>
 		
-		<cfquery datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+		<cfquery datasource="#getBean("configBean").getDatasource()#" username="#getBean("configBean").getDBUsername()#" password="#getBean("configBean").getDBPassword()#">
 		update tcontentratings set
 		rate=#variables.instance.rate#,
 		entered=<cfqueryparam cfsqltype="cf_sql_timestamp" value="#variables.instance.entered#">
@@ -81,7 +77,7 @@
 		
 	<cfelse>
 	
-		<cfquery datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+		<cfquery datasource="#getBean("configBean").getDatasource()#" username="#getBean("configBean").getDBUsername()#" password="#getBean("configBean").getDBPassword()#">
 		insert into tcontentratings (contentID,userID,siteID,rate,entered)
 		values(
 		<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(variables.instance.contentID neq '',de('no'),de('yes'))#" value="#variables.instance.contentID#">,

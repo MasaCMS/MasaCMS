@@ -48,7 +48,7 @@ to your own modified versions of Mura CMS.
 		<cfargument name="freeMemoryThreshold" type="numeric" required="true" default="0"/>
 		
 		<!--- set the java loader --->
-		<cfset setJavaLoader( getServiceFactory().getBean("javaloader") ) />
+		<cfset setJavaLoader( getBean("javaloader") ) />
 		<!--- set CAPACITY --->
 		<cfset variables.CAPACITY = arguments.capacity />
 		<!--- override the map and create the LRU version --->

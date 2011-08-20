@@ -232,7 +232,7 @@ to your own modified versions of Mura CMS.
 			<cfargument name="aggregation" type="boolean" required="yes" default="false" >
 			
 			<cfset var rs = getKids(arguments.moduleID, arguments.siteid, arguments.parentID, arguments.type, arguments.today, arguments.size, arguments.keywords, arguments.hasFeatures, arguments.sortBy, arguments.sortDirection, arguments.categoryID, arguments.relatedID, arguments.tag, arguments.aggregation)>
-			<cfset var it = getServiceFactory().getBean("contentIterator")>
+			<cfset var it = getBean("contentIterator")>
 			<cfset it.setQuery(rs)>
 			<cfreturn it/>	
 </cffunction>

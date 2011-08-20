@@ -109,8 +109,7 @@ to your own modified versions of Mura CMS.
 <cfproperty name="javaLocale" type="string" default="" required="true" /> 
 
 <cffunction name="init" returntype="any" output="false" access="public">
-<cfargument name="configBean" type="any" required="yes"/>
-<cfargument name="clusterManager" type="any" required="yes"/>
+	
 	<cfset super.init(argumentCollection=arguments)>
 	
 	<cfset variables.instance.SiteID=""/>
@@ -186,9 +185,6 @@ to your own modified versions of Mura CMS.
 	<cfset variables.instance.contentRenderer=""/>
 	<cfset variables.instance.themeRenderer="">
 	<cfset variables.instance.hasChangesets=0>
-
-	<cfset variables.configBean=arguments.configBean />
-	<cfset variables.clusterManager=arguments.clusterManager />
 	
 	<cfreturn this />
 </cffunction>
@@ -243,7 +239,7 @@ to your own modified versions of Mura CMS.
 		<cfset variables.instance.displayPoolID=variables.instance.siteID />
 	</cfif>
 	
-	<cfset validate() />
+	<cfset structDelete(variables.instance,"errors")>
 		
 	<cfreturn this>
  </cffunction>
@@ -440,7 +436,7 @@ to your own modified versions of Mura CMS.
 <cffunction name="purgeCache" access="public" output="false">
 	<cfargument name="name" default="data" hint="data, output or both">
 	<cfset getCacheFactory(name=arguments.name).purgeAll()>
-	<cfset variables.clusterManager.purgeCache(siteID=variables.instance.siteID,name=arguments.name)>
+	<cfset getBean("clusterManager").purgeCache(siteID=variables.instance.siteID,name=arguments.name)>
 	<cfreturn this>
 </cffunction>
 
@@ -448,7 +444,7 @@ to your own modified versions of Mura CMS.
 	<cfif len(variables.instance.siteLocale)>
 		<cfset variables.instance.javaLocale=application.rbFactory.CF2Java(variables.instance.siteLocale)>
 	<cfelse>
-		<cfset variables.instance.javaLocale=application.rbFactory.CF2Java(variables.configBean.getDefaultLocale())>
+		<cfset variables.instance.javaLocale=application.rbFactory.CF2Java(getBean("configBean").getDefaultLocale())>
 	</cfif>
 	<cfreturn variables.instance.javaLocale />
 </cffunction>
@@ -457,7 +453,7 @@ to your own modified versions of Mura CMS.
 	<cfset var tmpFactory="">
 	<cfset var themeRBDir="">
 	<cfif not isObject(variables.instance.rbFactory)>
-		<cfset tmpFactory=createObject("component","mura.resourceBundle.resourceBundleFactory").init(application.rbFactory,"#expandPath('/#variables.configBean.getWebRootMap()#')#/#variables.instance.displayPoolID#/includes/resourceBundles/",getJavaLocale())>
+		<cfset tmpFactory=createObject("component","mura.resourceBundle.resourceBundleFactory").init(application.rbFactory,"#expandPath('/#getBean("configBean").getWebRootMap()#')#/#variables.instance.displayPoolID#/includes/resourceBundles/",getJavaLocale())>
 		<cfset themeRBDir=expandPath(getThemeIncludePath()) & "/resourceBundles/">
 		<cfif directoryExists(themeRBDir)>
 			<cfset variables.instance.rbFactory=createObject("component","mura.resourceBundle.resourceBundleFactory").init(tmpFactory,themeRBDir,getJavaLocale()) />
@@ -488,15 +484,15 @@ to your own modified versions of Mura CMS.
 </cffunction>
 s
 <cffunction name="getAssetPath" returntype="any" access="public" output="false">
-	<cfreturn "#variables.configBean.getContext()#/#variables.instance.displayPoolID#" />
+	<cfreturn "#getBean("configBean").getContext()#/#variables.instance.displayPoolID#" />
 </cffunction>
 
 <cffunction name="getIncludePath" returntype="any" access="public" output="false">
-	<cfreturn "/#variables.configBean.getWebRootMap()#/#variables.instance.displayPoolID#" />
+	<cfreturn "/#getBean("configBean").getWebRootMap()#/#variables.instance.displayPoolID#" />
 </cffunction>
 
 <cffunction name="getAssetMap" returntype="any" access="public" output="false">
-	<cfreturn "#variables.configBean.getWebRootMap()#.#variables.instance.displayPoolID#" />
+	<cfreturn "#getBean("configBean").getWebRootMap()#.#variables.instance.displayPoolID#" />
 </cffunction>
 
 <cffunction name="getThemeAssetPath" returntype="any" access="public" output="false">
@@ -555,11 +551,11 @@ s
 	<cfargument name="theme" default="#request.altTheme#">
 	
 	<cfif len(arguments.theme)>
-		<cfreturn "#expandPath('/#variables.configBean.getWebRootMap()#')#/#variables.instance.displayPoolID#/includes/themes/#arguments.theme#/templates">
+		<cfreturn "#expandPath('/#getBean("configBean").getWebRootMap()#')#/#variables.instance.displayPoolID#/includes/themes/#arguments.theme#/templates">
 	<cfelseif len(variables.instance.theme)>
-		<cfreturn "#expandPath('/#variables.configBean.getWebRootMap()#')#/#variables.instance.displayPoolID#/includes/themes/#variables.instance.theme#/templates">
+		<cfreturn "#expandPath('/#getBean("configBean").getWebRootMap()#')#/#variables.instance.displayPoolID#/includes/themes/#variables.instance.theme#/templates">
 	<cfelse>
-		<cfreturn "#expandPath('/#variables.configBean.getWebRootMap()#')#/#variables.instance.displayPoolID#/includes/templates">
+		<cfreturn "#expandPath('/#getBean("configBean").getWebRootMap()#')#/#variables.instance.displayPoolID#/includes/templates">
 	</cfif>
 </cffunction>
 
@@ -568,9 +564,9 @@ s
 	<cfset var themeDir="">
 	
 	<cfif len(variables.instance.displayPoolID)>
-		<cfset themeDir="#expandPath('/#variables.configBean.getWebRootMap()#')#/#variables.instance.displayPoolID#/includes/themes">
+		<cfset themeDir="#expandPath('/#getBean("configBean").getWebRootMap()#')#/#variables.instance.displayPoolID#/includes/themes">
 	<cfelse>
-		<cfset themeDir="#expandPath('/#variables.configBean.getWebRootMap()#')#/default/includes/themes">
+		<cfset themeDir="#expandPath('/#getBean("configBean").getWebRootMap()#')#/default/includes/themes">
 	</cfif>
 	
 	<cfdirectory action="list" directory="#themeDir#" name="rs">

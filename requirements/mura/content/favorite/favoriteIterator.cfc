@@ -44,13 +44,8 @@ to your own modified versions of Mura CMS.
 
 <cffunction name="packageRecord" access="public" output="false" returntype="any">
 	<cfset var favorite=getBean("favoriteBean")>
-
 	<cfset favorite.set(queryRowToStruct(variables.records,currentIndex()))>
 	<cfset favorite.setIsNew(0)>
-	
-	<cfif isObject(variables.recordTranslator)>
-		<cfset favorite.setTranslator(variables.recordTranslator)>
-	</cfif>
 	<cfreturn favorite>
 </cffunction>
 	

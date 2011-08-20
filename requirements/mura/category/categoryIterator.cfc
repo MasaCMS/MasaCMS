@@ -42,24 +42,8 @@ to your own modified versions of Mura CMS.
 --->
 <cfcomponent extends="mura.iterator.queryIterator" output="false">
 
-<cfset variables.categoryBean="">
-
 <cffunction name="packageRecord" access="public" output="false" returntype="any">
-	<cfif NOT isObject(variables.categoryBean)>
-		<cfset variables.categoryBean=createObject("component","categoryBean").init(variables.categoryManager) />
-		<cfset variables.categoryStructTemplate=structCopy(variables.categoryBean.getAllValues())>
-	<cfelse>
-		<cfset variables.categoryBean.setAllValues( structCopy(variables.categoryStructTemplate) )>
-	</cfif>
-
-	<cfset variables.categoryBean.set(queryRowToStruct(variables.records,currentIndex()))>
-	<cfreturn variables.categoryBean>
-</cffunction>
-
-<cffunction name="setCategoryManager" output="false" access="public">
-	<cfargument name="categoryManager">
-	<cfset variables.categoryManager=arguments.categoryManager>
-	<cfreturn this>
+	<cfreturn getBean("category").set(queryRowToStruct(variables.records,currentIndex()))>
 </cffunction>
 
 </cfcomponent>

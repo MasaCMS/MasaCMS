@@ -87,16 +87,9 @@ to your own modified versions of Mura CMS.
 <cfproperty name="newFile" type="string" default="" required="true" />
 	
 <cffunction name="init" returntype="any" output="false" access="public">
-	<cfargument name="configBean" type="any" required="yes"/>
-	<cfargument name="settingsManager" type="any" required="yes"/>
-	<cfargument name="userManager" type="any" required="yes"/>
 	
 	<cfset super.init(argumentCollection=arguments)>
 	
-	<cfset variables.configBean=arguments.configBean />
-	<cfset variables.settingsManager=arguments.settingsManager />
-	<cfset variables.userManager=arguments.userManager />
-		
 	<cfset variables.instance.userid="" />
 	<cfset variables.instance.remoteID="" />
 	<cfset variables.instance.groupname="" />
@@ -168,15 +161,15 @@ to your own modified versions of Mura CMS.
 		
 	<cfif isdefined('arguments.user.siteid') and trim(arguments.user.siteid) neq ''>
 		<cfif isdefined('arguments.user.switchToPublic') and trim(arguments.user.switchToPublic) eq '1'>
-			<cfset variables.instance.siteID=variables.settingsManager.getSite(arguments.user.siteid).getPublicUserPoolID() />
+			<cfset variables.instance.siteID=getBean("settingsManager").getSite(arguments.user.siteid).getPublicUserPoolID() />
 			<cfset variables.instance.ispublic=1 />
 		<cfelseif isdefined('arguments.user.switchToPrivate') and trim(arguments.user.switchToPrivate) eq '1'>
-			<cfset variables.instance.siteID=variables.settingsManager.getSite(arguments.user.siteid).getPrivateUserPoolID() />
+			<cfset variables.instance.siteID=getBean("settingsManager").getSite(arguments.user.siteid).getPrivateUserPoolID() />
 			<cfset variables.instance.ispublic=0 />
 		<cfelseif variables.instance.ispublic eq 0>
-			<cfset setSiteID(variables.settingsManager.getSite(arguments.user.siteid).getPrivateUserPoolID()) />
+			<cfset setSiteID(getBean("settingsManager").getSite(arguments.user.siteid).getPrivateUserPoolID()) />
 		<cfelse>
-			<cfset setSiteID(variables.settingsManager.getSite(arguments.user.siteid).getPublicUserPoolID()) />
+			<cfset setSiteID(getBean("settingsManager").getSite(arguments.user.siteid).getPublicUserPoolID()) />
 		</cfif>
 	</cfif>
 	
@@ -293,18 +286,18 @@ to your own modified versions of Mura CMS.
 </cffunction>
 	
 <cffunction name="getAddressesQuery" returnType="query" output="false" access="public">
-   <cfreturn variables.userManager.getAddresses(getUserID()) />
+   <cfreturn getBean("userManager").getAddresses(getUserID()) />
 </cffunction>
 
 <cffunction name="getAddressesIterator" returnType="any" output="false" access="public">
-   	<cfset var it=getServiceFactory().getBean("addressIterator").init()>
+   	<cfset var it=getBean("addressIterator").init()>
 	<cfset it.setQuery(getAddressesQuery())>
 	<cfreturn it />
 </cffunction>
 
 <cffunction name="checkUsername" returntype="boolean" output="false" access="public">
 	<cfset var rsCheck=""/>
-	<cfquery name="rsCheck" datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+	<cfquery name="rsCheck" datasource="#getBean("configBean").getDatasource()#" username="#getBean("configBean").getDBUsername()#" password="#getBean("configBean").getDBPassword()#">
 		select username from tusers where type=2 and username=<cfqueryparam cfsqltype="cf_sql_varchar" value="#trim(variables.instance.username)#"> and UserID <> <cfqueryparam cfsqltype="cf_sql_varchar" value="#trim(variables.instance.userID)#"> 
 	</cfquery>
 		
@@ -318,11 +311,11 @@ to your own modified versions of Mura CMS.
 	
 <cffunction name="checkEmail" returntype="boolean" output="false" access="public">	
 	<cfset var rsCheck=""/>
-	<cfquery name="rsCheck" datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+	<cfquery name="rsCheck" datasource="#getBean("configBean").getDatasource()#" username="#getBean("configBean").getDBUsername()#" password="#getBean("configBean").getDBPassword()#">
 		select username from tusers where type=2 and email=<cfqueryparam cfsqltype="cf_sql_varchar" value="#trim(variables.instance.email)#"> and UserID <> <cfqueryparam cfsqltype="cf_sql_varchar" value="#trim(getUserID())#">  
-		and (siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.settingsManager.getSite(variables.instance.siteid).getPrivateUserPoolID()#">
+		and (siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getBean("settingsManager").getSite(variables.instance.siteid).getPrivateUserPoolID()#">
 			or 
-			siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.settingsManager.getSite(variables.instance.siteid).getPublicUserPoolID()#">
+			siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getBean("settingsManager").getSite(variables.instance.siteid).getPublicUserPoolID()#">
 			) 
 	</cfquery>
 		
@@ -342,7 +335,7 @@ to your own modified versions of Mura CMS.
 	<cfset variables.instance.errors=structNew()>
 	
 	<cfif len(variables.instance.siteID)>
-		<cfset extErrors=variables.configBean.getClassExtensionManager().validateExtendedData(getAllValues())>
+		<cfset extErrors=getBean("configBean").getClassExtensionManager().validateExtendedData(getAllValues())>
 	</cfif>
 		
 	<cfset variables.instance.errors=structnew() />
@@ -353,30 +346,30 @@ to your own modified versions of Mura CMS.
 		
 	<cfif trim(variables.instance.siteid) neq "">
 			
-		<cfif len(variables.instance.password) and yesNoFormat(variables.configBean.getValue("strongPasswords"))>
+		<cfif len(variables.instance.password) and yesNoFormat(getBean("configBean").getValue("strongPasswords"))>
 
-			<cfif not reFind(variables.configBean.getValue("strongPasswordRegex"),variables.instance.password) or variables.instance.username eq variables.instance.password>
-				<cfset variables.instance.errors.username=variables.settingsManager.getSite(variables.instance.siteID).getRBFactory().getKey("user.passwordstrengthvalidate") />
+			<cfif not reFind(getBean("configBean").getValue("strongPasswordRegex"),variables.instance.password) or variables.instance.username eq variables.instance.password>
+				<cfset variables.instance.errors.username=getBean("settingsManager").getSite(variables.instance.siteID).getRBFactory().getKey("user.passwordstrengthvalidate") />
 			</cfif>
 				
 		</cfif>
 		
 		<cfif variables.instance.type eq 2 and (variables.instance.username eq "" or not checkUsername())>
-			<cfset variables.instance.errors.username=variables.settingsManager.getSite(variables.instance.siteID).getRBFactory().getResourceBundle().messageFormat( variables.settingsManager.getSite(variables.instance.siteID).getRBFactory().getKey("user.usernamevalidate") , variables.instance.username ) />
+			<cfset variables.instance.errors.username=getBean("settingsManager").getSite(variables.instance.siteID).getRBFactory().getResourceBundle().messageFormat( getBean("settingsManager").getSite(variables.instance.siteID).getRBFactory().getKey("user.usernamevalidate") , variables.instance.username ) />
 		</cfif>
 			
 		<cfif variables.instance.type eq 2 and variables.instance.email eq "" >
-			<cfset variables.instance.errors.email=variables.settingsManager.getSite(variables.instance.siteID).getRBFactory().getKey("user.emailrequired") />
+			<cfset variables.instance.errors.email=getBean("settingsManager").getSite(variables.instance.siteID).getRBFactory().getKey("user.emailrequired") />
 		</cfif>
 			
 		<!--- If captcha data has been submitted validate it --->
 		<cfif not (not len(variables.instance.hKey) or variables.instance.hKey eq hash(variables.instance.uKey))>
-		<cfset variables.instance.errors.SecurityCode=variables.settingsManager.getSite(variables.instance.siteID).getRBFactory().getKey("captcha.error")/>
+		<cfset variables.instance.errors.SecurityCode=getBean("settingsManager").getSite(variables.instance.siteID).getRBFactory().getKey("captcha.error")/>
 		</cfif>
 		
 		<!--- If cfformprotect has been submitted validate it --->
 		<cfif not variables.instance.passedProtect>
-		<cfset variables.instance.errors.Spam=variables.settingsManager.getSite(variables.instance.siteID).getRBFactory().getKey("captcha.spam")/>
+		<cfset variables.instance.errors.Spam=getBean("settingsManager").getSite(variables.instance.siteID).getRBFactory().getKey("captcha.spam")/>
 		</cfif>
 	
 	<cfelse>
@@ -387,12 +380,12 @@ to your own modified versions of Mura CMS.
  
 <cffunction name="getAddressByID" returnType="query" output="false" access="public">
 	<cfargument name="addressID" type="string" required="true">
-	<cfreturn variables.userManager.getAddressByID(arguments.addressID) />
+	<cfreturn getBean("userManager").getAddressByID(arguments.addressID) />
 </cffunction>
 
 <cffunction name="getAddressBeanByID" returnType="any" output="false" access="public">
 	<cfargument name="addressID" type="string" required="true">
-	<cfset var addressBean=application.serviceFactory.getBean("addressBean") />
+	<cfset var addressBean=getBean("addressBean") />
 	
 	<cfset addressBean.set(getAddressByID(arguments.addressID))>
 	<cfset addressBean.setAddressID(arguments.addressID)>
@@ -429,7 +422,7 @@ to your own modified versions of Mura CMS.
 <cffunction name="save" output="false" access="public">
 	<cfset var i="">
 	<cfset var address="">
-	<cfset setAllValues(variables.userManager.save(this).getAllValues())>
+	<cfset setAllValues(getBean("userManager").save(this).getAllValues())>
 	
 	<cfif arrayLen(variables.newAddresses)>
 		<cfloop from="1" to="#arrayLen(variables.newAddresses)#" index="i">
@@ -443,35 +436,35 @@ to your own modified versions of Mura CMS.
 </cffunction>
 
 <cffunction name="delete" output="false" access="public">
-	<cfset variables.userManager.delete(getUserID(),variables.instance.type)>
+	<cfset getBean("userManager").delete(getUserID(),variables.instance.type)>
 </cffunction>
 
 <cffunction name="getMembersQuery" returnType="query" output="false" access="public">
-   <cfreturn variables.userManager.readGroupMemberships(getUserID()) />
+   <cfreturn getBean("userManager").readGroupMemberships(getUserID()) />
 </cffunction>
 
 <cffunction name="getMembersIterator" returnType="any" output="false" access="public">
-   	<cfset var it=getServiceFactory().getBean("userIterator").init()>
+   	<cfset var it=getBean("userIterator").init()>
 	<cfset it.setQuery(getMembersQuery())>
 	<cfreturn it />
 </cffunction>
 
 <cffunction name="getMembershipsQuery" returnType="query" output="false" access="public">
-   <cfreturn variables.userManager.readMemberships(getUserID()) />
+   <cfreturn getBean("userManager").readMemberships(getUserID()) />
 </cffunction>
 
 <cffunction name="getMembershipsIterator" returnType="any" output="false" access="public">
-   	<cfset var it=getServiceFactory().getBean("userIterator").init()>
+   	<cfset var it=getBean("userIterator").init()>
 	<cfset it.setQuery(getMembershipsQuery())>
 	<cfreturn it />
 </cffunction>
 
 <cffunction name="getInterestGroupsQuery" returnType="query" output="false" access="public">
-   <cfreturn variables.userManager.readInterestGroups(getUserID()) />
+   <cfreturn getBean("userManager").readInterestGroups(getUserID()) />
 </cffunction>
 
 <cffunction name="getInterestGroupsIterator" returnType="any" output="false" access="public">
-   	<cfset var it=getServiceFactory().getBean("categoryIterator").init()>
+   	<cfset var it=getBean("categoryIterator").init()>
 	<cfset it.setQuery(getInterestGroupsQuery())>
 	<cfreturn it />
 </cffunction>
@@ -486,7 +479,7 @@ to your own modified versions of Mura CMS.
 		<cfset arguments.isPublic="both">
 	</cfif>
 	
-	<cfset response=variables.userManager.read(argumentCollection=arguments)>
+	<cfset response=getBean("userManager").read(argumentCollection=arguments)>
 
 	<cfif isArray(response)>
 		<cfset setAllValues(response[1].getAllValues())>

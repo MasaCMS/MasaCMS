@@ -94,7 +94,19 @@ to your own modified versions of Mura CMS.
 	<cfargument name="siteID" required="false" default="">
 	<cfset var bean="">
 	
-	<cfset bean=application.serviceFactory.getBean(arguments.beanName) />
+	<!--- Code to help avoid object creation for beans --->
+	<cfif arguments.beanName eq "configBean">
+		<cfreturn application.configBean>
+	<cfelseif listFindNoCase("feed,content,user,group,category,mailingList,member,creative,placement,adzone,campaign,changeset",arguments.beanName)
+		or findNoCase("iterator",arguments.beanName)
+		or findNoCase("bean",arguments.beanName)>
+		<cfif not structKeyExists(application.transients,arguments.beanName)>
+			<cfset application.transients["#arguments.beanName#"]=getServiceFactory().getBean(arguments.beanName)>
+		</cfif>	
+		<cfreturn duplicate(application.transients["#arguments.beanName#"])>
+	<cfelse>
+		<cfset bean=getServiceFactory().getBean(arguments.beanName) />
+	</cfif>
 	
 	<cfif structKeyExists(bean,"setSiteID")>		
 		<cfif structKeyExists(arguments,"siteID") and len(arguments.siteID)>
