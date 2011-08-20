@@ -72,11 +72,6 @@ to your own modified versions of Mura CMS.
 		</cfquery>
 		<cfreturn rs />
 	</cffunction>
-	
-	
-<cffunction name="getBean" access="public" returntype="any">
-	<cfreturn createObject("component","favoriteBean").init(variables.configBean)>
-</cffunction>
 
 <cffunction name="getInternalContentFavorites" access="public" output="false" returntype="query">
 	<cfargument name="userID" type="string" required="yes">
@@ -131,7 +126,7 @@ to your own modified versions of Mura CMS.
 	<cffunction name="readFavorite" access="public" returntype="any">
 		<cfargument name="favoriteID" type="string" required="yes">
 	
-		<cfset var favorite = getBean() />
+		<cfset var favorite = getBean("favorite") />
 		<cfset favorite.setFavoriteID(arguments.favoriteID) />
 		<cfset favorite.load(argumentcollection=arguments) />
 		 
@@ -174,7 +169,7 @@ to your own modified versions of Mura CMS.
 		<cfargument name="rowNumber" type="string" required="yes" default="">
 		<cfargument name="maxRssItems" type="string" required="yes" default="">
 	
-		<cfset var favorite = getBean() />
+		<cfset var favorite = getBean("favorite") />
 		<cfif arguments.favoriteID neq ''>
 			<cfset favorite.setFavoriteID(arguments.favoriteID) />
 		<cfelse>
@@ -199,11 +194,9 @@ to your own modified versions of Mura CMS.
 	
 	<cffunction name="deleteFavorite" access="public" returntype="void">
 		<cfargument name="favoriteID" type="string" required="yes">
-		
-	
-		<cfset var favorite = getBean() />
+
+		<cfset var favorite = getBean("favorite") />
 		<cfset favorite.setFavoriteID(arguments.favoriteID) />
-		
 		
 		<cfset favorite.delete() />
 			

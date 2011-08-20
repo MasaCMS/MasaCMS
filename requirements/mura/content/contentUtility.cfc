@@ -372,7 +372,7 @@ to your own modified versions of Mura CMS.
 	<cfset var historyLink="">
 	
 	<cfif listFind("Portal,Page,Calendar,Gallery,Link,File",arguments.contentBean.getType()) and arguments.contentBean.getContentID() neq '00000000000000000000000000000000001'>
-		<cfset crumbData=getServiceFactory().getBean('contentGateway').getCrumblist(arguments.contentBean.getParentID(),arguments.contentBean.getSiteID())>
+		<cfset crumbData=getBean('contentGateway').getCrumblist(arguments.contentBean.getParentID(),arguments.contentBean.getSiteID())>
 		<cfset crumbStr=crumbData[arrayLen(crumbData)].menutitle />
 		<cfif arrayLen(crumbData) gt 1>
 			<cfloop from="#evaluate(arrayLen(crumbData)-1)#" to="1" index="c" step="-1">
@@ -819,7 +819,7 @@ Sincerely,
 			<cfset sortDirection="asc">
 		</cfif>
 		
-		<cfset rsKids=getServiceFactory().getBean("contentGateway").getNest(parentID=arguments.contentID, siteID=arguments.siteID, sortBy=contentBean.getSortBy(), sortDirection=sortDirection)>
+		<cfset rsKids=getBean("contentGateway").getNest(parentID=arguments.contentID, siteID=arguments.siteID, sortBy=contentBean.getSortBy(), sortDirection=sortDirection)>
 			
 		<cfloop query="rsKids">
 			<cfset copy(arguments.siteID, rsKids.contentID, newContentID, rsKids.hasKids, true, contentBean.getPath(), arguments.setNotOnDisplay)>

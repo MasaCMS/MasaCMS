@@ -49,10 +49,6 @@ to your own modified versions of Mura CMS.
 	<cfreturn this />
 </cffunction>
 
-<cffunction name="getBean" access="public" returntype="any">
-	<cfreturn createObject("component","mura.mailinglist.memberBean").init()>
-</cffunction>
-
 <cffunction name="create" access="public" output="false" returntype="void" >
 	<cfargument name="memberBean" type="any" />
 	<cfset var L=""/>
@@ -87,7 +83,7 @@ to your own modified versions of Mura CMS.
 <cffunction name="read" access="public" output="false" returntype="any" >
 	<cfargument name="email" type="string" />
 	<cfargument name="siteID" type="string" />
-	<cfset var memberBean=getBean() />
+	<cfset var memberBean=getBean("mailingListMemberBean") />
 	<cfset var rs ="" />
 	<cfset var data =structNew() />
 	

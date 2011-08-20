@@ -130,7 +130,7 @@
 
 <cffunction name="getIterator" returntype="any" output="false">
 	<cfset var rs=getQuery()>
-	<cfset var it=getServiceFactory().getBean("userIterator")>
+	<cfset var it=getBean("userIterator")>
 	<cfset it.setQuery(rs)>
 	<cfreturn it>
 </cffunction>

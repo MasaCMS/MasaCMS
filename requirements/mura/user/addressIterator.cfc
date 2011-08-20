@@ -41,42 +41,9 @@ the GNU General Public License version 2 without this exception. You may, if you
 to your own modified versions of Mura CMS.
 --->
 <cfcomponent extends="mura.iterator.queryIterator" output="false">
-
-<cfset variables.addressBean="">
-
-<cffunction name="packageRecord" access="public" output="false" returntype="any">	
-	<cfif NOT isObject(variables.addressBean)>
-		<cfset variables.addressBean=createObject("component","addressBean").init(variables.configBean, variables.settingsManager, variables.geoCoding, variables.userManager) />
-		<cfset variables.addressStructTemplate=structCopy(variables.addressBean.getAllValues())>
-	<cfelse>
-		<cfset variables.addressBean.setAllValues( variables.addressStructTemplate)>
-	</cfif>
 	
-	<cfset  variables.addressBean.set(queryRowToStruct(variables.records,currentIndex()))>
-	<cfreturn  variables.addressBean>
+<cffunction name="packageRecord" access="public" output="false" returntype="any">	
+	<cfreturn getBean("address").set(queryRowToStruct(variables.records,currentIndex()))>
 </cffunction>
 
-<cffunction name="setConfigBean" output="false" access="public">
-	<cfargument name="configBean">
-	<cfset variables.configBean=arguments.configBean>
-	<cfreturn this>
-</cffunction>
-
-<cffunction name="setUserManager" output="false" access="public">
-	<cfargument name="userManager">
-	<cfset variables.userManager=arguments.userManager>
-	<cfreturn this>
-</cffunction>
-
-<cffunction name="setSettingsManager" output="false" access="public">
-	<cfargument name="settingsManager">
-	<cfset variables.settingsManager=arguments.settingsManager>
-	<cfreturn this>
-</cffunction>
-
-<cffunction name="setGeoCoding" output="false" access="public">
-	<cfargument name="geoCoding">
-	<cfset variables.geoCoding=arguments.geoCoding>
-	<cfreturn this>
-</cffunction>
 </cfcomponent>

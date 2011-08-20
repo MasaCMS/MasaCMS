@@ -73,7 +73,7 @@ values (
  <cfargument name="email" type="string">
  
  <cfset var rs=""/>
- <cfset var reminderBean=application.serviceFactory.getBean("reminderBean") />
+ <cfset var reminderBean=getBean("reminderBean") />
  
 	<cfquery datasource="#variables.instance.configBean.getDatasource()#" name="rs"  username="#variables.instance.configBean.getDBUsername()#" password="#variables.instance.configBean.getDBPassword()#">
 	select * from tcontenteventreminders 

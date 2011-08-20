@@ -17,7 +17,7 @@
 	<cfset variables.instance.type = "Custom" />
 	<cfset variables.instance.subType = "Default" />
 	<cfset variables.instance.siteiD = "" />
-	
+	<cfreturn this>
 </cffunction>
 
 <!--- This needs to be overriden--->
@@ -58,7 +58,7 @@
 
 <cffunction name="getExtendedData" returntype="any" output="false" access="public">
 	<cfif not isObject(variables.instance.extendData)>
-	<cfset variables.instance.extendData=variables.configBean.getClassExtensionManager().getExtendedData(baseID:getExtendBaseID(), type:variables.instance.type, subType:variables.instance.subtype, siteID:variables.instance.siteID, dataTable=variables.instance.extendDataTable)/>
+	<cfset variables.instance.extendData=getBean("configBean").getClassExtensionManager().getExtendedData(baseID:getExtendBaseID(), type:variables.instance.type, subType:variables.instance.subtype, siteID:variables.instance.siteID, dataTable=variables.instance.extendDataTable)/>
 	</cfif> 
 	<cfreturn variables.instance.extendData />
 </cffunction>

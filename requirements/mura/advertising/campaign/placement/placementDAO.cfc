@@ -49,10 +49,6 @@ to your own modified versions of Mura CMS.
 	<cfreturn this />
 </cffunction>
 
-<cffunction name="getBean" access="public" returntype="any">
-	<cfreturn createObject("component","#variables.instance.configBean.getMapDir()#.advertising.campaign.placement.placementBean").init()>
-</cffunction>
-
 <cffunction name="create" returntype="void" access="public" output="false">
 <cfargument name="placementBean" type="any" />
 	
@@ -93,7 +89,7 @@ to your own modified versions of Mura CMS.
 <cffunction name="read" access="public" output="false" returntype="any" >
 	<cfargument name="placementID" type="string" />
 
-	<cfset var placementBean=getBean() />
+	<cfset var placementBean=getBean("placement") />
 	<cfset var rs ="" />
 	
 	<cfquery name="rs" datasource="#variables.instance.configBean.getDatasource()#"  username="#variables.instance.configBean.getDBUsername()#" password="#variables.instance.configBean.getDBPassword()#">

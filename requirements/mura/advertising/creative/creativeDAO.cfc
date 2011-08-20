@@ -49,10 +49,6 @@ to your own modified versions of Mura CMS.
 	<cfreturn this />
 </cffunction>
 
-<cffunction name="getBean" access="public" returntype="any">
-	<cfreturn createObject("component","#variables.instance.configBean.getMapDir()#.advertising.creative.creativeBean").init()>
-</cffunction>
-
 <cffunction name="create" returntype="void" access="public" output="false">
 	<cfargument name="creativeBean" type="any" />
 	 
@@ -89,7 +85,7 @@ to your own modified versions of Mura CMS.
 <cffunction name="read" access="public" output="false" returntype="any" >
 	<cfargument name="creativeID" type="string" />
 
-	<cfset var creativeBean=getBean() />
+	<cfset var creativeBean=getBean("creative") />
 	<cfset var rs ="" />
 	
 	

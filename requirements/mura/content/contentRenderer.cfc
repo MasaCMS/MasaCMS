@@ -1584,17 +1584,17 @@ to your own modified versions of Mura CMS.
 <cffunction name="renderFile" output="true" access="public">
 <cfargument name="fileID" type="string">
 <cfargument name="method" type="string" required="true" default="inline">
-	<cfset application.serviceFactory.getBean('fileManager').renderFile(arguments.fileid,arguments.method) />
+	<cfset getBean('fileManager').renderFile(arguments.fileid,arguments.method) />
 </cffunction>
 
 <cffunction name="renderSmall" output="true" access="public">
 <cfargument name="fileID" type="string">
-	<cfset application.serviceFactory.getBean('fileManager').renderSmall(arguments.fileid) />
+	<cfset getBean('fileManager').renderSmall(arguments.fileid) />
 </cffunction>
 
 <cffunction name="renderMedium" output="true" access="public">
 <cfargument name="fileID" type="string">
-	<cfset application.serviceFactory.getBean('fileManager').renderMedium(arguments.fileid) />
+	<cfset getBean('fileManager').renderMedium(arguments.fileid) />
 </cffunction>
 
 <cffunction name="jsonencode" access="public" output="false" returntype="string">

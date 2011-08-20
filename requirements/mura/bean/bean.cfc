@@ -7,8 +7,8 @@
 
 <cffunction name="init" output="false">
 	<cfset super.init(argumentCollection=arguments)>
-
 	<cfset variables.instance.fromMuraCache = false />
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="OnMissingMethod" access="public" returntype="any" output="false" hint="Handles missing method exceptions.">

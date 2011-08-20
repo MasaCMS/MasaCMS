@@ -72,10 +72,10 @@ to your own modified versions of Mura CMS.
 	<cfset var authToken = "">
 	<cfset var i = "">
 	<cfset var serverArgs = structNew()>
-	<cfset var rsPlugins = application.serviceFactory.getBean("pluginManager").getSitePlugins(arguments.siteID)>
+	<cfset var rsPlugins = getBean("pluginManager").getSitePlugins(arguments.siteID)>
 	
 	<cfif variables.configBean.getValue('deployMode') eq "bundle">
-		<cfset bundleFileName = application.serviceFactory.getBean("Bundle").Bundle(
+		<cfset bundleFileName = getBean("Bundle").Bundle(
 			siteID=arguments.siteID,
 			moduleID=ValueList(rsPlugins.moduleID),
 			BundleName='deployBundle', 
@@ -99,7 +99,7 @@ to your own modified versions of Mura CMS.
 		
 		<cfset fileDelete(bundleFileName)>
 	<cfelse>
-		<cfset application.serviceFactory.getBean("publisher").start(arguments.siteid) />
+		<cfset getBean("publisher").start(arguments.siteid) />
 	</cfif>
 	<cfset variables.clusterManager.reload() />
 	
@@ -237,7 +237,7 @@ to your own modified versions of Mura CMS.
 <cffunction name="create" access="public" output="false" returntype="any">
 	<cfargument name="data" type="struct" />
 	<cfset var rs=""/>
-	<cfset var bean=application.serviceFactory.getBean("settingsBean") />
+	<cfset var bean=getBean("settingsBean") />
 	
 	<cfset bean.set(arguments.data) />
 	
@@ -417,8 +417,8 @@ to your own modified versions of Mura CMS.
 
     <cfset var sArgs			= structNew()>
 	<cfset var config 			= application.configBean />
-	<cfset var Bundle			= application.serviceFactory.getBean("bundle") />
-	<cfset var publisher 		= application.serviceFactory.getBean("publisher") />
+	<cfset var Bundle			= getBean("bundle") />
+	<cfset var publisher 		= getBean("publisher") />
 	<cfset var keyFactory		= createObject("component","mura.publisherKeys").init(arguments.keyMode,application.utility)>
 	
 	<cfset Bundle.restore( arguments.BundleFile)>

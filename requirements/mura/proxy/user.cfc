@@ -36,7 +36,7 @@
 <cffunction name="getAddressBean" output="false">
 	<cfargument name="event">
 	
-	<cfset var address=application.serviceFactory.getBean("userDAO").readAddress(event.getValue("addressID"))>
+	<cfset var address=getBean("userDAO").readAddress(event.getValue("addressID"))>
 	<cfreturn address>
 	
 </cffunction>

@@ -65,14 +65,9 @@ to your own modified versions of Mura CMS.
 <cfproperty name="filename" type="string" default="" required="true" />
 <cfproperty name="isNew" type="numeric" default="1" required="true" />
 
-<cfset variables.kids = arrayNew(1) />
-
 <cffunction name="init" returntype="any" output="false" access="public">
-	<cfargument name="categoryManager" type="any" required="yes"/>
 	
 	<cfset super.init(argumentCollection=arguments)>
-	
-	<cfset variables.categoryManager=arguments.categoryManager>
 	
 	<cfset variables.instance.categoryID=""/>
 	<cfset variables.instance.siteID=""/>
@@ -95,6 +90,8 @@ to your own modified versions of Mura CMS.
 	<cfset variables.instance.URLTitle = "">
 	<cfset variables.instance.filename = "">
 	<cfset variables.instance.isNew=1 />
+	
+	<cfset variables.kids = arrayNew(1) />
 
 	<cfreturn this />
 </cffunction>
@@ -120,7 +117,7 @@ to your own modified versions of Mura CMS.
 <cffunction name="save" returnType="any" output="false" access="public">
 	<cfset var kid="">
 	<cfset var i="">
-	<cfset setAllValues(variables.categoryManager.save(this).getAllValues())>
+	<cfset setAllValues(getBean("categoryManager").save(this).getAllValues())>
 		
 	<cfif arrayLen(variables.kids)>
 		<cfloop from="1" to="#arrayLen(variables.kids)#" index="i">
@@ -143,20 +140,20 @@ to your own modified versions of Mura CMS.
 </cffunction>
 	
 <cffunction name="delete" output="false" access="public">
-	<cfset variables.categoryManager.delete(variables.instance.categoryID) />
+	<cfset getBean("categoryManager").delete(variables.instance.categoryID) />
 </cffunction>
 	
 <cffunction name="getKidsQuery" returntype="any" output="false">
 	<cfargument name="activeOnly" type="boolean" required="true" default="true">
 	<cfargument name="InterestsOnly" type="boolean" required="true" default="false">
 		
-	<cfreturn variables.categoryManager.getCategories(variables.instance.siteID,variables.instance.categoryID,"", arguments.activeOnly, arguments.InterestsOnly) />
+	<cfreturn getBean("categoryManager").getCategories(variables.instance.siteID,variables.instance.categoryID,"", arguments.activeOnly, arguments.InterestsOnly) />
 </cffunction>
 	
 <cffunction name="getKidsIterator" returntype="any" output="false">
 	<cfargument name="activeOnly" type="boolean" required="true" default="true">
 	<cfargument name="InterestsOnly" type="boolean" required="true" default="false">
-	<cfset var it=getServiceFactory().getBean("categoryIterator").init()>
+	<cfset var it=getBean("categoryIterator").init()>
 	<cfset it.setQuery(getKidsQuery(arguments.activeOnly, arguments.InterestsOnly))>
 	<cfreturn it />
 </cffunction>
@@ -168,7 +165,7 @@ to your own modified versions of Mura CMS.
 		<cfset arguments.siteID=variables.instance.siteID>
 	</cfif>
 	
-	<cfset response=variables.categoryManager.read(argumentCollection=arguments)>
+	<cfset response=getBean("categoryManager").read(argumentCollection=arguments)>
 	<cfif isArray(response)>
 		<cfset setAllValues(response[1].getAllValues())>
 		<cfreturn response>
@@ -219,7 +216,7 @@ to your own modified versions of Mura CMS.
 	
 <cffunction name="getCrumbQuery" output="false" returntype="any">
 	<cfargument name="sort" required="true" default="asc">
-	<cfreturn variables.categoryManager.getCrumbQuery( variables.instance.path, variables.instance.siteID, arguments.sort) >
+	<cfreturn getBean("categoryManager").getCrumbQuery( variables.instance.path, variables.instance.siteID, arguments.sort) >
 </cffunction>
 	
 <cffunction name="getCrumbIterator" output="false" returntype="any">

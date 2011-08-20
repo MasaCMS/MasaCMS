@@ -55,7 +55,7 @@
 <cffunction name="standardSetPermissionsHandler" output="false" returnType="any">
 	<cfargument name="event" required="true">
 	
-	<cfset application.serviceFactory.getBean("userUtility").returnLoginCheck(arguments.event.getValue("MuraScope"))>
+	<cfset getBean("userUtility").returnLoginCheck(arguments.event.getValue("MuraScope"))>
 	
 	<cfset event.setValue('r',application.permUtility.setRestriction(event.getValue('crumbdata')))>
 	<cfif event.getValue('r').restrict>
@@ -386,7 +386,7 @@
 			
 			<cfcase value="contactsend">
 				<cfparam name="request.company" default="">
-				<cfset application.serviceFactory.getBean("mailer").send(event.getAllValues(),event.getValue('sendTo'),'#iif(event.getValue('fname') eq '' and event.getValue('lname') eq '',de('#event.getValue('company')#'),de('#event.getValue('fname')# #event.getValue('lname')#'))#',event.getValue('subject'),event.getValue('siteID'),event.getValue('email'))>
+				<cfset getBean("mailer").send(event.getAllValues(),event.getValue('sendTo'),'#iif(event.getValue('fname') eq '' and event.getValue('lname') eq '',de('#event.getValue('company')#'),de('#event.getValue('fname')# #event.getValue('lname')#'))#',event.getValue('subject'),event.getValue('siteID'),event.getValue('email'))>
 			</cfcase>
 			
 			<cfcase value="subscribe">

@@ -66,7 +66,7 @@ to your own modified versions of Mura CMS.
 <cffunction name="delete" access="public" output="false" returntype="void" >
 	<cfargument name="data" type="struct" />
 	
-	<cfset var memberBean=application.serviceFactory.getBean("memberBean") />
+	<cfset var memberBean=getBean("memberBean") />
 	<cfset memberBean.set(arguments.data) />
 	
 	<cfset variables.memberDAO.delete(memberBean) />
@@ -76,7 +76,7 @@ to your own modified versions of Mura CMS.
 <cffunction name="deleteAll" access="public" output="false" returntype="void" >
 	<cfargument name="data" type="struct" />
 	
-	<cfset var memberBean=application.serviceFactory.getBean("memberBean") />
+	<cfset var memberBean=getBean("memberBean") />
 	<cfset memberBean.set(arguments.data) />
 	
 	<cfset variables.memberDAO.deleteAll(memberBean) />

@@ -79,8 +79,6 @@ to your own modified versions of Mura CMS.
 <cfproperty name="remoteSourceURL" type="string" default="" required="true" />
 <cfproperty name="remotePubDAte" type="string" default="" required="true" />
 
-<cfset variables.feedManager = "" />
-
 <cffunction name="init" returntype="any" output="false" access="public">
 	<cfset super.init(argumentCollection=arguments)>
 	
@@ -316,32 +314,26 @@ to your own modified versions of Mura CMS.
 	</cfif>
 </cffunction>
 
-<cffunction name="setFeedManager" access="public" output="false">
-	<cfargument name="feedManager" type="any" />
-	<cfset variables.feedManager = arguments.feedManager />
-	<cfreturn this>
-</cffunction>
-
 <cffunction name="getQuery" returnType="query" output="false" access="public">
 	<cfargument name="aggregation" required="true" default="false">
-	<cfreturn variables.feedManager.getFeed(this,"",arguments.aggregation) />
+	<cfreturn getBean("feedManager").getFeed(this,"",arguments.aggregation) />
 </cffunction>
 
 <cffunction name="getIterator" returnType="any" output="false" access="public">
 	<cfargument name="aggregation" required="true" default="false">
 	<cfset var q=getQuery(aggregation=arguments.aggregation) />
-	<cfset var it=getServiceFactory().getBean("contentIterator")>
+	<cfset var it=getBean("contentIterator")>
 	<cfset it.setQuery(q,variables.instance.nextn)>
 	<cfreturn it>
 </cffunction>
 
 <cffunction name="save" returnType="any" output="false" access="public">
-	<cfset setAllValues(variables.feedManager.save(this).getAllValues())>
+	<cfset setAllValues(getBean("feedManager").save(this).getAllValues())>
 	<cfreturn this />
 </cffunction>
 
 <cffunction name="delete" output="false" access="public">
-	<cfset variables.feedManager.delete(variables.instance.feedID) />
+	<cfset getBean("feedManager").delete(variables.instance.feedID) />
 </cffunction>
 
 <cffunction name="loadBy" returnType="any" output="false" access="public">
@@ -351,7 +343,7 @@ to your own modified versions of Mura CMS.
 		<cfset arguments.siteID=variables.instance.siteID>
 	</cfif>
 	
-	<cfset response=variables.feedManager.read(argumentCollection=arguments)>
+	<cfset response=getBean("feedManager").read(argumentCollection=arguments)>
 
 	<cfif isArray(response)>
 		<cfset setAllValues(response[1].getAllValues())>

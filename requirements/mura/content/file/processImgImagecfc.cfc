@@ -131,7 +131,7 @@ to your own modified versions of Mura CMS.
 				</cfif>
 	
 				
-				<cfset imageCFC=application.serviceFactory.getBean('image')/>
+				<cfset imageCFC=getBean('image')/>
 				<cfset imageData = imageCFC.getImageInfo("", "#serverDirectory##serverFilename#.#arguments.file.serverFileExt#")>
 				
 			

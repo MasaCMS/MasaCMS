@@ -1848,7 +1848,7 @@ select * from rs order by name
 		<cfreturn deployBundle(siteID=arguments.siteID, pluginFile=arguments.bundleFile)>	
 	</cfif>
 	
-	<cfset errors=application.serviceFactory.getBean("settingsManager").restoreBundle(
+	<cfset errors=getBean("settingsManager").restoreBundle(
 			BundleFile=arguments.bundleFile,
 			siteID=arguments.siteID,
 			keyMode="publish",

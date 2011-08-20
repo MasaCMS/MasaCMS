@@ -65,17 +65,8 @@ to your own modified versions of Mura CMS.
 <cfproperty name="isNew" type="numeric" default="0" required="true" />
 
 <cffunction name="init" returntype="any" output="false" access="public">
-	<cfargument name="configBean" type="any" required="yes"/>
-	<cfargument name="settingsManager" type="any" required="yes"/>
-	<cfargument name="geoCoding" type="any" required="yes"/>
-	<cfargument name="userManager" type="any" required="yes"/>
 	
 	<cfset super.init(argumentCollection=arguments)>
-	
-	<cfset variables.configBean=arguments.configBean />
-	<cfset variables.settingsManager=arguments.settingsManager />
-	<cfset variables.geoCoding=arguments.geoCoding />
-	<cfset variables.userManager=arguments.userManager />
 	
 	<cfset variables.instance.addressid="" />
 	<cfset variables.instance.userid="" />
@@ -125,9 +116,9 @@ to your own modified versions of Mura CMS.
 	<cfif isdefined('arguments.args.siteid') and trim(arguments.args.siteid) neq ''
 		and isdefined('arguments.args.isPublic') and trim(arguments.args.isPublic) neq ''>
 		<cfif arguments.args.isPublic eq 0>
-			<cfset setSiteID(variables.settingsManager.getSite(arguments.args.siteid).getPrivateUserPoolID()) />
+			<cfset setSiteID(getBean("settingsManager").getSite(arguments.args.siteid).getPrivateUserPoolID()) />
 		<cfelse>
-			<cfset setSiteID(variables.settingsManager.getSite(arguments.args.siteid).getPublicUserPoolID()) />
+			<cfset setSiteID(getBean("settingsManager").getSite(arguments.args.siteid).getPublicUserPoolID()) />
 		</cfif>
 	</cfif>
 	
@@ -142,7 +133,7 @@ to your own modified versions of Mura CMS.
 	<cfset var googleAPIKey="" />
 	
 	<cfif len(variables.instance.siteID)>
-		<cfset googleAPIKey=variables.settingsManager.getSite(variables.instance.siteID).getGoogleAPIKey() />
+		<cfset googleAPIKey=getBean("settingsManager").getSite(variables.instance.siteID).getGoogleAPIKey() />
 		<cfif len(googleAPIKey)>
 		
 			<cfif len(variables.instance.address1)>
@@ -165,7 +156,7 @@ to your own modified versions of Mura CMS.
 				<cfset address=listAppend(address,variables.instance.zip) />
 			</cfif>				
 				
-			<cfset result = variables.geoCoding.geocode(googleAPIKey,trim(address))>
+			<cfset result = getBean("geoCoding").geocode(googleAPIKey,trim(address))>
 			
 			<cfif structKeyExists(result, "latitude") and structKeyExists(result, "longitude")>
 				<cfset variables.instance.longitude=result.longitude />
@@ -198,7 +189,7 @@ to your own modified versions of Mura CMS.
 	<cfset var extErrors=structNew() />
 	
 	<cfif len(variables.instance.siteID)>
-		<cfset extErrors=variables.configBean.getClassExtensionManager().validateExtendedData(getAllValues())>
+		<cfset extErrors=getBean("configBean").getClassExtensionManager().validateExtendedData(getAllValues())>
 	</cfif>
 	
 	<cfset variables.instance.errors=structnew() />
@@ -235,21 +226,21 @@ to your own modified versions of Mura CMS.
 
 <cffunction name="save" output="false" access="public" returntype="any">
 	<cfset var rs="">
-	<cfquery name="rs" datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDbUsername()#" password="#variables.configBean.getDbPassword()#">
+	<cfquery name="rs" datasource="#getBean("configBean").getDatasource()#" username="#getBean("configBean").getDbUsername()#" password="#getBean("configBean").getDbPassword()#">
 	select addressID from tuseraddresses where addressID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getAddressID()#">
 	</cfquery>
 	
 	<cfif rs.recordcount>
-		<cfset variables.userManager.updateAddress(this)>
+		<cfset getBean("userManager").updateAddress(this)>
 	<cfelse>
-		<cfset variables.userManager.createAddress(this)>
+		<cfset getBean("userManager").createAddress(this)>
 	</cfif>
 	
 	<cfreturn this>
 </cffunction>
 
 <cffunction name="delete" output="false" access="public">
-	<cfset variables.userManager.deleteAddress(getAddressID())>
+	<cfset getBean("userManager").deleteAddress(getAddressID())>
 </cffunction>
 
 <cffunction name="clone" output="false">

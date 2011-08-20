@@ -83,7 +83,7 @@ to your own modified versions of Mura CMS.
 <cffunction name="create" access="public" returntype="any" output="false">
 	<cfargument name="data" type="struct" default="#structnew()#"/>		
 	
-	<cfset var campaignBean=application.serviceFactory.getBean("campaignBean") />
+	<cfset var campaignBean=getBean("campaignBean") />
 	<cfset campaignBean.set(arguments.data) />
 	
 	<cfif structIsEmpty(campaignBean.getErrors())>

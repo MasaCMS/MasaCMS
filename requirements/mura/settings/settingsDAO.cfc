@@ -59,14 +59,10 @@ googleAPIKey,useDefaultSMTPServer,siteLocale, mailServerSMTPPort, mailServerPOPP
 	<cfreturn this />
 </cffunction>
 
-<cffunction name="getBean" access="public" returntype="any">
-	<cfreturn createObject("component","mura.settings.settingsBean").init(variables.configBean,variables.clusterManager)>
-</cffunction>
-
 <cffunction name="read" access="public" output="false" returntype="any">
 <cfargument name="siteid" type="string" />
 
-	<cfset var bean=getBean() />
+	<cfset var bean=getBean("site") />
 	<cfset var rs ="" />
 
 	<cfquery name="rs" datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">

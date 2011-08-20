@@ -238,7 +238,7 @@ ExtendSetID in(<cfloop from="1" to="#setLen#" index="s">
 
 <cfset var setLen=0/>
 <cfset var key=""/>
-<cfset var fileManager=application.serviceFactory.getBean("fileManager") />
+<cfset var fileManager=getBean("fileManager") />
 <cfset var fileID = ""/>
 <cfset var fileStruct = ""/>
 <cfset var formField = ""/>
@@ -749,7 +749,7 @@ and tclassextendattributes.type='File'
 <cfargument name="baseid">
 <cfargument name="dataTable" required="true" default="tclassextenddata">
 <cfset var rsFiles="">
-<cfset var fileManager=application.serviceFactory.getBean("fileManager") />
+<cfset var fileManager=getBean("fileManager") />
 
 	<cfquery name="rsFiles" datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 		select attributeValue from #arguments.dataTable#

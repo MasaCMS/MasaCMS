@@ -20,10 +20,6 @@
 	<cfreturn this />
 </cffunction>
 
-<cffunction name="getBean" access="public" returntype="any">
-	<cfreturn createObject("component","#variables.instance.configBean.getMapDir()#.advertising.campaign.campaignBean").init()>
-</cffunction>
-
 <cffunction name="create" returntype="void" access="public" output="false">
 	<cfargument name="campaignBean" type="any" />
  
@@ -48,7 +44,7 @@
 <cffunction name="read" access="public" output="false" returntype="any" >
 	<cfargument name="campaignID" type="string" />
 
-	<cfset var campaignBean=getBean() />
+	<cfset var campaignBean=getBean("campaign") />
 	<cfset var rs ="" />
 	
 	<cfquery name="rs" datasource="#application.configBean.getDatasource()#"  username="#variables.instance.configBean.getDBUsername()#" password="#variables.instance.configBean.getDBPassword()#">

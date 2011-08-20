@@ -18,6 +18,8 @@
 <cffunction name="before" output="false">
 	<cfargument name="rc">
 	
+	<cfparam name="session.openSectionList" default=""/>
+	
 	<cfif not variables.permUtility.getModulePerm('00000000000000000000000000000000000',arguments.rc.siteid)>
 		<cfset secure(arguments.rc)>
 	</cfif>

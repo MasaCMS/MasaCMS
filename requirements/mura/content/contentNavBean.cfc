@@ -54,18 +54,13 @@
 
 </cffunction>
 		
-<cffunction name="init" access="public" returntype="any" output="false">
+<cffunction name="set" access="public" returntype="any" output="false">
 	<cfargument name="contentStruct">
-	<cfargument name="contentManager">
 	<cfargument name="packageBy" required="true" default="active">
 	
 	<cfset variables.instance.struct=arguments.contentStruct>
-	<cfset variables.contentManager=arguments.contentManager>
 	<cfset variables.packageBy=arguments.packageBy>
 	
-	<cfif isObject(variables.instance.content)>
-		<cfset variables.instance.content.setIsNew(1)>
-	</cfif>
 	<cfreturn this>
 </cffunction>
 
@@ -93,20 +88,13 @@
 
 <cffunction name="getContentBean" access="public" returntype="any" output="false">
 	
-	<cfif NOT isObject(variables.instance.content)>
-		<cfset variables.instance.content=getBean("content")>
-		<cfset variables.instance.content.setIsNew(1)>
-		<cfset variables.instance.contentStructTemplate=structCopy(variables.instance.content.getAllValues(autocomplete=false))>
-	</cfif>
-	
-	<cfif NOT variables.instance.content.getIsNew() >
+	<cfif isObject("variables.instance.content") >
 		<cfreturn variables.instance.content>
 	<cfelse>
-		<cfset variables.instance.content.setAllValues( structCopy(variables.instance.contentStructTemplate) )>
 		<cfif variables.packageBy eq "version" and structKeyExists(variables.instance.struct,"contentHistID")>
-			<cfset variables.instance.content=variables.contentManager.getContentVersion(contentHistID=variables.instance.struct.contentHistID, siteID=variables.instance.struct.siteID, contentBean=variables.instance.content)>
+			<cfset variables.instance.content=getBean("contentManager").getContentVersion(contentHistID=variables.instance.struct.contentHistID, siteID=variables.instance.struct.siteID)>
 		<cfelseif structKeyExists(variables.instance.struct,"contentID")>
-			<cfset variables.instance.content=variables.contentManager.getActiveContent(contentID=variables.instance.struct.contentID,siteID=variables.instance.struct.siteID, contentBean=variables.instance.content)>
+			<cfset variables.instance.content=getBean("contentManager").getActiveContent(contentID=variables.instance.struct.contentID,siteID=variables.instance.struct.siteID)>
 		<cfelse>
 			<cfthrow message="The query you are iterating over does not contain either contentID or contentHistID">
 		</cfif>
@@ -123,7 +111,7 @@
 		<cfif cl>
 			<cfloop from="1" to="#cl#" index="i">
 				<cfif request.crumbdata[i].contentID eq getValue("contentID") >
-					<cfreturn createObject("component","contentNavBean").init(request.crumbData[i+1], variables.contentManager,"active") />
+					<cfreturn createObject("component","contentNavBean").init(request.crumbData[i+1], getBean("contentManager"),"active") />
 				</cfif>
 			</cfloop>
 		</cfif>
@@ -140,7 +128,7 @@
 		<!--- There are no kids so no need to query --->
 		<cfreturn queryNew("contentid,contenthistid,siteid,type,filename,title,menutitle,summary,kids")>
 	<cfelse>
-		<cfreturn variables.contentManager.getKidsQuery(siteID:getValue("siteID"), parentID:getValue("contentID"), sortBy:getValue("sortBy"), sortDirection:getValue("sortDirection"), aggregation=arguments.aggregation) />
+		<cfreturn getBean("contentManager").getKidsQuery(siteID:getValue("siteID"), parentID:getValue("contentID"), sortBy:getValue("sortBy"), sortDirection:getValue("sortDirection"), aggregation=arguments.aggregation) />
 	</cfif>
 </cffunction>
 
@@ -148,12 +136,12 @@
 	<cfargument name="liveOnly" required="true" default="true">
 	<cfargument name="aggregation" required="true" default="false">
 	<cfset var q=getKidsQuery(arguments.aggregation) />
-	<cfset var it=getServiceFactory().getBean("contentIterator").init(packageBy="active")>
+	<cfset var it=getBean("contentIterator").init(packageBy="active")>
 	
 	<cfif arguments.liveOnly>
 		<cfset q=getKidsQuery(arguments.aggregation) />
 	<cfelse>
-		<cfset q=variables.contentManager.getNest( parentID:getValue("parentID"), siteID:getValue("siteID"), sortBy:getValue("sortBy"), sortDirection:getValue("sortDirection")) />
+		<cfset q=getBean("contentManager").getNest( parentID:getValue("parentID"), siteID:getValue("siteID"), sortBy:getValue("sortBy"), sortDirection:getValue("sortDirection")) />
 	</cfif>
 	<cfset it.setQuery(q,getValue("nextn"))>
 	
@@ -163,7 +151,7 @@
 <cffunction name="getCrumbArray" output="false" returntype="any">
 	<cfargument name="sort" required="true" default="asc">
 	<cfargument name="setInheritance" required="true" type="boolean" default="false">
-	<cfreturn variables.contentManager.getCrumbList(contentID=getValue("contentID"), siteID=getValue("siteID"), setInheritance=arguments.setInheritance, path=getValue("path"), sort=arguments.sort)>
+	<cfreturn getBean("contentManager").getCrumbList(contentID=getValue("contentID"), siteID=getValue("siteID"), setInheritance=arguments.setInheritance, path=getValue("path"), sort=arguments.sort)>
 </cffunction>
 
 <cffunction name="getCrumbIterator" output="false" returntype="any">
@@ -179,7 +167,7 @@
 	<cfargument name="querystring" required="true" default="">
 	<cfargument name="complete" type="boolean" required="true" default="false">
 	<cfargument name="showMeta" type="string" required="true" default="0">
-	<cfreturn variables.contentManager.getURL(this, arguments.queryString, arguments.complete, arguments.showMeta)>
+	<cfreturn getBean("contentManager").getURL(this, arguments.queryString, arguments.complete, arguments.showMeta)>
 </cffunction>			
 
 <cffunction name="getImageURL" output="false">
@@ -189,7 +177,7 @@
 	<cfargument name="height" default=""/>
 	<cfargument name="width" default=""/>
 	<cfset arguments.bean=this>
-	<cfreturn variables.contentManager.getImageURL(argumentCollection=arguments)>
+	<cfreturn getBean("contentManager").getImageURL(argumentCollection=arguments)>
 </cffunction>
 
 </cfcomponent>

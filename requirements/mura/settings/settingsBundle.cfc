@@ -51,7 +51,7 @@ to your own modified versions of Mura CMS.
 		<cfset variables.data		= StructNew() />
 		<cfset variables.Bundle	= "" />
 		<cfset variables.zipTool	= createObject("component","mura.Zip") />
-		<cfset variables.fileWriter	= application.serviceFactory.getBean("fileWriter")>
+		<cfset variables.fileWriter	= getBean("fileWriter")>
 		<cfset variables.utility	= application.utility.getBean("utility")>
 		<cfset variables.fileDelim	= application.configBean.getFileDelim()>
 		<cfset variables.dirName	= "Bundle_#createUUID()#" />

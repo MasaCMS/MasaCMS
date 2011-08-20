@@ -91,27 +91,11 @@ to your own modified versions of Mura CMS.
 			    <ref bean="mailer"/>
 			</property>
 		</bean>
-		<bean id="contentBean" class="mura.content.contentBean" singleton="false" >
-			<constructor-arg name="configBean"><ref bean="configBean" /></constructor-arg>
-			<constructor-arg name="contentManager"><ref bean="contentManager" /></constructor-arg>
-		</bean>
-		<bean id="contentIterator" class="mura.content.contentIterator" singleton="false">
-			<property name="contentManager">
-			    <ref bean="contentManager"/>
-			</property>
-		</bean>
-		<bean id="contentCommentIterator" class="mura.content.contentCommentIterator" singleton="false">
-			<property name="contentManager">
-			    <ref bean="contentManager"/>
-			</property>
-		</bean>
-		<bean id="contentCommentBean" class="mura.content.contentCommentBean" singleton="true" >
-			<constructor-arg name="configBean"><ref bean="configBean" /></constructor-arg>
-			<constructor-arg name="settingsManager"><ref bean="settingsManager" /></constructor-arg>
-			<constructor-arg name="utility"><ref bean="utility" /></constructor-arg>
-			<constructor-arg name="contentDAO"><ref bean="contentDAO" /></constructor-arg>
-			<constructor-arg name="contentManager"><ref bean="contentManager" /></constructor-arg>
-		</bean>
+		<bean id="contentBean" class="mura.content.contentBean" singleton="false"/>
+		<bean id="contentNavBean" class="mura.content.contentNavBean" singleton="false"/>
+		<bean id="contentIterator" class="mura.content.contentIterator" singleton="false"/>
+		<bean id="contentCommentIterator" class="mura.content.contentCommentIterator" singleton="false"/>
+		<bean id="contentCommentBean" class="mura.content.contentCommentBean" singleton="false"/>
 		<bean id="HTMLExporter" class="mura.content.contentHTMLExporter" singleton="true">
 			<constructor-arg name="configBean"><ref bean="configBean" /></constructor-arg>
 			<constructor-arg name="settingsManager"><ref bean="settingsManager" /></constructor-arg>
@@ -180,11 +164,7 @@ to your own modified versions of Mura CMS.
 		<bean id="categoryDAO" class="mura.category.categoryDAO" singleton="true" >
 			<constructor-arg name="configBean"><ref bean="configBean" /></constructor-arg>
 		</bean>
-		<bean id="categoryIterator" class="mura.category.categoryIterator" singleton="false">
-			<property name="categoryManager">
-			    <ref bean="categoryManager"/>
-			</property>
-		</bean>
+		<bean id="categoryIterator" class="mura.category.categoryIterator" singleton="false"/>
 		<bean id="categoryGateway" class="mura.category.categoryGateway" singleton="true">
 			<constructor-arg name="configBean"><ref bean="configBean" /></constructor-arg>
 			<constructor-arg name="settingsManager"><ref bean="settingsManager" /></constructor-arg>
@@ -194,9 +174,7 @@ to your own modified versions of Mura CMS.
 			<constructor-arg name="settingsManager"><ref bean="settingsManager" /></constructor-arg>
 			<constructor-arg name="configBean"><ref bean="configBean" /></constructor-arg>
 		</bean>
-		<bean id="categoryBean" class="mura.category.categoryBean"  singleton="false">
-			<constructor-arg name="categoryManager"><ref bean="categoryManager" /></constructor-arg>
-		</bean>
+		<bean id="categoryBean" class="mura.category.categoryBean"  singleton="false"/>
 		<bean id="settingsManager" class="mura.settings.settingsManager" singleton="true">
 			<constructor-arg name="settingsGateway"><ref bean="settingsGateway" /></constructor-arg>
 			<constructor-arg name="settingsDAO"><ref bean="settingsDAO" /></constructor-arg>
@@ -211,10 +189,7 @@ to your own modified versions of Mura CMS.
 			<constructor-arg name="configBean"><ref bean="configBean" /></constructor-arg>
 			<constructor-arg name="clusterManager"><ref bean="clusterManager" /></constructor-arg>
 		</bean>
-		<bean id="settingsBean" class="mura.settings.settingsBean" singleton="false">
-			<constructor-arg name="configBean"><ref bean="configBean" /></constructor-arg>
-			<constructor-arg name="clusterManager"><ref bean="clusterManager" /></constructor-arg>
-		</bean>
+		<bean id="settingsBean" class="mura.settings.settingsBean" singleton="false"/>
 		<bean id="settingsBundle" class="mura.settings.settingsBundle" singleton="false">
             <constructor-arg name="configBean"><ref bean="configBean" /></constructor-arg>
         </bean>
@@ -234,36 +209,9 @@ to your own modified versions of Mura CMS.
 			<constructor-arg name="configBean"><ref bean="configBean" /></constructor-arg>
 			<constructor-arg name="settingsManager"><ref bean="settingsManager" /></constructor-arg>
 		</bean>
-		<bean id="userIterator" class="mura.user.userIterator" singleton="false">
-			<property name="userManager">
-			    <ref bean="userManager"/>
-			</property>
-			<property name="configBean">
-			    <ref bean="configBean"/>
-			</property>
-			<property name="settingsManager">
-			    <ref bean="settingsManager"/>
-			</property>
-		</bean>
-		<bean id="userFeedBean" class="mura.user.userFeedBean" singleton="false">
-			<property name="userManager">
-			    <ref bean="userManager"/>
-			</property>
-		</bean>
-		<bean id="addressIterator" class="mura.user.addressIterator" singleton="false">
-			<property name="userManager">
-			    <ref bean="userManager"/>
-			</property>
-			<property name="configBean">
-			    <ref bean="configBean"/>
-			</property>
-			<property name="geoCoding">
-			    <ref bean="geoCoding"/>
-			</property>
-			<property name="settingsManager">
-			    <ref bean="settingsManager"/>
-			</property>
-		</bean>
+		<bean id="userIterator" class="mura.user.userIterator" singleton="false"/>
+		<bean id="userFeedBean" class="mura.user.userFeedBean" singleton="false"/>
+		<bean id="addressIterator" class="mura.user.addressIterator" singleton="false"/>
 		<bean id="userUtility" class="mura.user.userUtility" singleton="true">
 			<constructor-arg name="configBean"><ref bean="configBean" /></constructor-arg>
 			<constructor-arg name="utility"><ref bean="utility" /></constructor-arg>
@@ -278,18 +226,8 @@ to your own modified versions of Mura CMS.
 			<constructor-arg name="configBean"><ref bean="configBean" /></constructor-arg>
 			<constructor-arg name="settingsManager"><ref bean="settingsManager" /></constructor-arg>
 		</bean>
-		<bean id="userBean" class="mura.user.userBean"  singleton="false">
-			<constructor-arg name="configBean"><ref bean="configBean" /></constructor-arg>
-			<constructor-arg name="settingsManager"><ref bean="settingsManager" /></constructor-arg>
-			<constructor-arg name="geoCoding"><ref bean="geoCoding" /></constructor-arg>
-			<constructor-arg name="userManager"><ref bean="userManager" /></constructor-arg>
-		</bean>
-		<bean id="addressBean" class="mura.user.addressBean"  singleton="false">
-			<constructor-arg name="configBean"><ref bean="configBean" /></constructor-arg>
-			<constructor-arg name="settingsManager"><ref bean="settingsManager" /></constructor-arg>
-			<constructor-arg name="geoCoding"><ref bean="geoCoding" /></constructor-arg>
-			<constructor-arg name="userManager"><ref bean="userManager" /></constructor-arg>
-		</bean>
+		<bean id="userBean" class="mura.user.userBean"  singleton="false"/>
+		<bean id="addressBean" class="mura.user.addressBean"  singleton="false"/>
 		<bean id="loginManager" class="mura.login.loginManager" singleton="true" >
 			<constructor-arg name="userUtility"><ref bean="userUtility" /></constructor-arg>
 			<constructor-arg name="userDAO"><ref bean="userDAO" /></constructor-arg>
@@ -484,13 +422,12 @@ to your own modified versions of Mura CMS.
 			<constructor-arg name="configBean"><ref bean="configBean" /></constructor-arg>
 			<constructor-arg name="settingsManager"><ref bean="settingsManager" /></constructor-arg>
 		</bean>
-		<bean id="favoriteBean" class="mura.content.favorite.favoriteManager" singleton="true">
-			<constructor-arg name="configBean"><ref bean="configBean" /></constructor-arg>
-		</bean>
+		<bean id="favoriteBean" class="mura.content.favorite.favoriteManager" singleton="false"/>
 		<bean id="raterManager" class="mura.content.rater.raterManager" singleton="true">
 			<constructor-arg name="configBean"><ref bean="configBean" /></constructor-arg>
 			<constructor-arg name="settingsManager"><ref bean="settingsManager" /></constructor-arg>
 		</bean>
+		<bean id="rateBean" class="mura.content.rater.rateBean" singleton="false"/>
 		<bean id="dashboardManager" class="mura.dashboard.dashboardManager" singleton="true">
 			<constructor-arg name="configBean"><ref bean="configBean" /></constructor-arg>
 			<constructor-arg name="advertiserGateway"><ref bean="advertiserGateway" /></constructor-arg>
@@ -559,9 +496,7 @@ to your own modified versions of Mura CMS.
 			    <ref bean="trashManager"/>
 			</property>
 		</bean>
-		<bean id="changesetBean" class="mura.content.changeset.changesetBean" singleton="false">
-			<constructor-arg name="changesetManager"><ref bean="changesetManager" /></constructor-arg>
-		</bean>
+		<bean id="changesetBean" class="mura.content.changeset.changesetBean" singleton="false"/>
 		<bean id="changesetIterator" class="mura.content.changeset.changesetIterator" singleton="false">
 			<property name="changesetManager">
 			    <ref bean="changesetManager"/>
@@ -595,6 +530,12 @@ to your own modified versions of Mura CMS.
 		<alias name="pluginManager" alias="eventManager"/>
 		<alias name="settingsBundle" alias="bundle"/>
 		<alias name="mailingListBean" alias="mailingList"/>
+		<alias name="userDAO" alias="groupDAO"/>
+		<alias name="placementBean" alias="placement"/>
+		<alias name="creativeBean" alias="creative"/>
+		<alias name="rateBean" alias="rate"/>
+		<alias name="favoriteBean" alias="favorite"/>
+		<alias name="campaignBean" alias="campaign"/>
 		<!---coldspring.custom.xml.cfm reference is for backwards compatability --->
 		<cfif fileExists(expandPath("/muraWRM/config/coldspring.custom.xml.cfm"))><cfinclude template="/muraWRM/config/coldspring.custom.xml.cfm"></cfif>
 	</beans></cfoutput>

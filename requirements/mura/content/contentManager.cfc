@@ -236,7 +236,7 @@ to your own modified versions of Mura CMS.
 				<cfif isObject(arguments.contentBean)>
 					<cfset bean=arguments.contentBean/>
 				<cfelse>
-					<cfset bean=variables.contentDAO.getBean()/>
+					<cfset bean=getBean("content")/>
 				</cfif>
 				<cfset bean.setAllValues( structCopy(cacheFactory.get( key )) )>
 				<cfset bean.setValue("extendAutoComplete",false)>
@@ -293,7 +293,7 @@ to your own modified versions of Mura CMS.
 				<cfif isObject(arguments.contentBean)>
 					<cfset bean=arguments.contentBean/>
 				<cfelse>
-					<cfset bean=variables.contentDAO.getBean()/>
+					<cfset bean=getBean("content")/>
 				</cfif>
 				<cfset bean.setAllValues( structCopy(cacheFactory.get( key )) )>
 				<cfset bean.setValue("extendAutoComplete",false)>
@@ -329,7 +329,7 @@ to your own modified versions of Mura CMS.
 				<cfif isObject(arguments.contentBean)>
 					<cfset bean=arguments.contentBean/>
 				<cfelse>
-					<cfset bean=variables.contentDAO.getBean()/>
+					<cfset bean=getBean("content")/>
 				</cfif>
 				<cfset bean.setAllValues( structCopy(cacheFactory.get( key )) )>
 				<cfset bean.setValue("extendAutoComplete",false)>
@@ -364,7 +364,7 @@ to your own modified versions of Mura CMS.
 				<cfif isObject(arguments.contentBean)>
 					<cfset bean=arguments.contentBean/>
 				<cfelse>
-					<cfset bean=variables.contentDAO.getBean()/>
+					<cfset bean=getBean("content")/>
 				</cfif>
 				<cfset bean.setAllValues( structCopy(cacheFactory.get( key )) )>
 				<cfset bean.setValue("extendAutoComplete",false)>
@@ -399,7 +399,7 @@ to your own modified versions of Mura CMS.
 				<cfif isObject(arguments.contentBean)>
 					<cfset bean=arguments.contentBean/>
 				<cfelse>
-					<cfset bean=variables.contentDAO.getBean()/>
+					<cfset bean=getBean("content")/>
 				</cfif>
 				<cfset bean.setAllValues( structCopy(cacheFactory.get( key )) )>
 				<cfset bean.setValue("extendAutoComplete",false)>
@@ -435,7 +435,7 @@ to your own modified versions of Mura CMS.
 				<cfif isObject(arguments.contentBean)>
 					<cfset bean=arguments.contentBean>
 				<cfelse>
-					<cfset bean=variables.contentDAO.getBean()/>
+					<cfset bean=getBean("content")/>
 				</cfif>
 				<cfset bean.setAllValues( structCopy(cacheFactory.get( key )) )>
 				<cfset bean.setValue("extendAutoComplete",false)>
@@ -1172,7 +1172,7 @@ to your own modified versions of Mura CMS.
 		<cfset var fileList=""/>
 		<cfset var currentBean=getActiveContent(arguments.data.contentid,arguments.data.siteid)/>
 		<cfset var pluginEvent = createObject("component","mura.event").init(arguments.data) />
-		<cfset var historyIterator=application.serviceFactory.getBean("contentIterator")>
+		<cfset var historyIterator=getBean("contentIterator")>
 		<cfset var rsPendingChangesets=""/>
 		
 		<cfset pluginEvent.setValue("contentBean",currentBean)/>
@@ -1333,7 +1333,7 @@ to your own modified versions of Mura CMS.
 		<cfargument name="searchType" type="string" required="true" default="default" hint="Can be default or image">
 		
 		<cfset var rs=getPrivateSearch(arguments.siteid,arguments.keywords,arguments.tag,arguments.sectionID, arguments.searchType) />
-		<cfset var it = getServiceFactory().getBean("contentIterator")>
+		<cfset var it = getBean("contentIterator")>
 		<cfset it.setQuery(rs)>
 		<cfreturn it/>	
 		
@@ -1362,7 +1362,7 @@ to your own modified versions of Mura CMS.
 		<cfargument name="categoryID" required="true" default=""/>
 		
 		<cfset var rs=getPublicSearch(arguments.siteid,arguments.keywords,arguments.tag,arguments.sectionID,arguments.categoryID) />
-		<cfset var it = getServiceFactory().getBean("contentIterator")>
+		<cfset var it = getBean("contentIterator")>
 		<cfset it.setQuery(rs)>
 		<cfreturn it/>	
 	</cffunction>
@@ -1416,7 +1416,7 @@ to your own modified versions of Mura CMS.
 			
 			<cfif rs.type eq "file">
 				<cfset contentBean=application.contentManager.getActiveContent(rs.contentID,arguments.siteid) />
-				<cfset rsFile=application.serviceFactory.getBean('fileManager').read(contentBean.getfileid()) />
+				<cfset rsFile=getBean('fileManager').read(contentBean.getfileid()) />
 				<cfset fileOutput = rsFile.image>
 				<cfset filePath = "#basepath#\#replace(contentBean.getcontentID(), '-', '', 'ALL')#.#rsfile.fileExt#">
 			<cfelse>
@@ -1459,7 +1459,7 @@ to your own modified versions of Mura CMS.
 		<cfargument name="today" type="date" required="yes" default="#now()#" />
 	
 		<cfset var rs=getRelatedContent(arguments.siteID,arguments.contentHistID,arguments.liveOnly,arguments.today) />
-		<cfset var it = getServiceFactory().getBean("contentIterator")>
+		<cfset var it = getBean("contentIterator")>
 		<cfset it.setQuery(rs)>
 		<cfreturn it/>
 	</cffunction>
@@ -1519,7 +1519,7 @@ to your own modified versions of Mura CMS.
 	</cffunction>
 	
 	<cffunction name="getCommentBean" access="public" returntype="any">
-	<cfreturn createObject("component","contentCommentBean").init(variables.configBean,variables.settingsManager,variables.utility,variables.contentDAO, this)>
+		<cfreturn getBean("comment")>
 	</cffunction>
 	
 	<cffunction name="readComments" access="public" output="false" returntype="query">
@@ -1548,7 +1548,7 @@ to your own modified versions of Mura CMS.
 	<cfargument name="approvedOnly" type="boolean" required="true" default="true">
 	
 		<cfset var rs=getRecentCommentsQuery(argumentCollection=arguments)>
-		<cfset var it=getServiceFactory().getBean("contentCommentIterator").init()>
+		<cfset var it=getBean("contentCommentIterator")>
 		<cfset it.setQuery(rs)>	
 	
 		<cfreturn it>
@@ -1739,11 +1739,7 @@ to your own modified versions of Mura CMS.
 	</cffunction>
 	
 	<cffunction name="getIterator" returntype="any" output="false">
-		<cfreturn getServiceFactory().getBean("contentIterator").init()>
-	</cffunction>
-	
-	<cffunction name="getBean" returntype="any" output="false">
-		<cfreturn variables.contentDAO.getBean()>
+		<cfreturn getBean("contentIterator").init()>
 	</cffunction>
 	
 	<cffunction name="getURL" output="false">
@@ -1769,7 +1765,7 @@ to your own modified versions of Mura CMS.
 		<cfargument name="siteid" type="string" required="true" />
 		
 		<cfset var data = structNew() />
-		<cfset var cb = getBean().loadby(contentid=arguments.contentid,siteid=arguments.siteid) />   
+		<cfset var cb = getBean("content").loadby(contentid=arguments.contentid,siteid=arguments.siteid) />   
 		<cfset var showdialog = false />
 		<cfset var historyID = cb.getContentHistID() />
 		<cfset var newDraft = "" />
@@ -1853,7 +1849,7 @@ to your own modified versions of Mura CMS.
 	and path like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.contentBean.getContentID()#%">
 	</cfquery>
 	
-	<cfset it=getServiceFactory().getBean("contentIterator").setQuery(rs)>
+	<cfset it=getBean("contentIterator").setQuery(rs)>
 
 	<cfloop condition="it.hasNext()">
 		<cfset purgeContentCache(contentBean=it.next(),broadcast=false)>

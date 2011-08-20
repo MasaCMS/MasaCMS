@@ -65,7 +65,7 @@ to your own modified versions of Mura CMS.
 		<cfswitch expression="#arguments.type#">
 				<cfcase value="Link,File">
 					<cfset contentBean=application.contentManager.getActiveContent(arguments.contentID,arguments.siteid) />
-					<cfset rsFile=application.serviceFactory.getBean('fileManager').read(contentBean.getfileid()) />
+					<cfset rsFile=getBean('fileManager').read(contentBean.getfileid()) />
 					<cfset href="/#application.settingsManager.getSite(arguments.siteid).getExportLocation()#/#replace(arguments.contentid, '-', '', 'ALL')#.#rsfile.fileExt#"/>
 				</cfcase>
 				<cfdefaultcase>
