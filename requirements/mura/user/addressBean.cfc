@@ -130,8 +130,9 @@ to your own modified versions of Mura CMS.
 			<cfset setSiteID(variables.settingsManager.getSite(arguments.args.siteid).getPublicUserPoolID()) />
 		</cfif>
 	</cfif>
+	
+	<cfset structDelete(variables.instance,"errors")>
 
-	<cfset validate() />
 	<cfreturn this />
 </cffunction>
 

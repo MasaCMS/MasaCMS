@@ -125,8 +125,8 @@ to your own modified versions of Mura CMS.
 			</cfif>
 
 		</cfif>
-
-		<cfset validate() />
+		
+		<cfset structDelete(variables.instance,"errors")>
 		
   </cffunction>
 

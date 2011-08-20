@@ -68,7 +68,8 @@
 				
 		</cfif>
 		
-		<cfset validate() />
+		<cfset structDelete(variables.instance,"errors")>
+		
 		<cfreturn this>
 </cffunction>
 

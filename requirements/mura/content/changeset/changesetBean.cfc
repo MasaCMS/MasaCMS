@@ -91,7 +91,6 @@
 			
 		</cfif>
 		
-		<cfset validate() />
 		<cfreturn this />
   </cffunction>
 

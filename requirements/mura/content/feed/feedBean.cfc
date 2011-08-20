@@ -142,7 +142,8 @@ to your own modified versions of Mura CMS.
 		<cfset setAdvancedParams(arguments.feed) />
 	</cfif>
 
-	<cfset validate() />	
+	<cfset structDelete(variables.instance,"errors")>
+		
 	<cfreturn this />
 </cffunction>
 
@@ -341,35 +342,6 @@ to your own modified versions of Mura CMS.
 
 <cffunction name="delete" output="false" access="public">
 	<cfset variables.feedManager.delete(variables.instance.feedID) />
-</cffunction>
-
-<cffunction name="setValue" returntype="any" access="public" output="false">
-<cfargument name="property"  type="string" required="true">
-<cfargument name="propertyValue" default="" >
-	
-	<cfif isSimpleValue(arguments.propertyValue)>
-		<cfset arguments.propertyValue=trim(arguments.propertyValue)>
-	</cfif>
-	
-	<cfif isDefined("this.set#arguments.property#")>
-		<cfset evaluate("set#property#(arguments.propertyValue)") />
-	<cfelse>
-		<cfset variables.instance["#arguments.property#"]=arguments.propertyValue />
-	</cfif>
-	<cfreturn this>
-</cffunction>
-
-<cffunction name="getValue" returntype="any" access="public" output="false">
-<cfargument name="property"  type="string" required="true">
-	
-	<cfif structKeyExists(this,"get#property#")>
-		<cfreturn evaluate("get#property#()") />
-	<cfelseif structKeyExists(variables.instance,"#arguments.property#")>
-		<cfreturn variables.instance["#arguments.property#"] />
-	<cfelse>
-		<cfreturn "" />
-	</cfif>
-
 </cffunction>
 
 <cffunction name="loadBy" returnType="any" output="false" access="public">
