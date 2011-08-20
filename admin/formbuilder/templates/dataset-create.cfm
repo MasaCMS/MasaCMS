@@ -1,5 +1,5 @@
 <cfoutput><span>
-		<div class="meld-template-form">
+		<div id="dataset-create" class="meld-template-form">
 			<h3>#mmRBF.getKeyValue(session.rb,'formbuilder.dataset.form')#: <span id="meld-template-form-label"></span></h3>
 			<div class="columns">
 				<div class="col2 wide bordered">

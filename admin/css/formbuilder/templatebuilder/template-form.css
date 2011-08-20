@@ -1,3 +1,5 @@
+/* @override 
+	http://localhost:8500/muracms/admin/css/formbuilder/templatebuilder/template-form.css */
 /*
 <!---
 ||PACKAGENAMELICENSE||
@@ -6,12 +8,14 @@
 /* @start meld-tb-form
 ============================================================================================= */
 .meld-tb-form {
+float: right;
+width: 100%;
 }
 .meld-tb-form .meld-tb-header {
 	padding: 2px 0 2px 10px;
 	background-color: #ccc;
 	height: 20px;
-	margin: 0 0 7px 0;
+	margin: 0;
 	border-top-right-radius: 4px;
 	-moz-border-radius-topright: 4px;
 	-webkit-border-top-right-radius: 4px;
@@ -112,15 +116,23 @@ input.disabled {
 	background-color: #eee;
 }
 .ui-icon-formfield {
-	background-image: url(images/ui-icons_e15500-form.png) !important;
+	background-image: url(images/ui-icons-form-basic.png) !important;
+	background-repeat: no-repeat;
+	width: 24px;
+	height: 20px;
 }
-.ui-icon-formfield-checkbox { background-position: 0 0; }
-.ui-icon-formfield-textfield { background-position: -16px 0; }
-.ui-icon-formfield-textarea { background-position: -32px 0; }
-.ui-icon-formfield-radiobox { background-position: -48px 0; }
-.ui-icon-formfield-select { background-position: -64px 0; }
-.ui-icon-formfield-hidden { background-position: -80px 0; }
-.ui-icon-formfield-form { background-position: -96px 0; }
+
+
+/*.ui-icon-formfield-field { background-position: 0 0; }*/
+.ui-icon-formfield-section { background-image: none !important; width: auto; }
+.ui-icon-formfield-textfield { background-position: 0 0; }
+.ui-icon-formfield-textarea { background-position: -34px 0; }
+.ui-icon-formfield-radiobox { background-position: -162px 0; }
+.ui-icon-formfield-checkbox { background-position: -131px 0; }
+.ui-icon-formfield-select { background-position: -66px 0; }
+
+/*.ui-icon-formfield-hidden { background-position: -233px 0; }*/
+/*.ui-icon-formfield-form { background-position: -96px 0; }*/
 
 
 /* @end meld-tb-form

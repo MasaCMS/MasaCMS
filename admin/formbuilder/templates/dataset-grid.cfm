@@ -1,5 +1,5 @@
 <cfoutput><span>
-	<div class="meld-tb-form">
+	<div id="dataset-grid" class="meld-tb-form">
 		<div class="meld-tb-header">
 			<ul class="right">
 				<li><div class="ui-button" id="button-grid-dump" title="#mmRBF.getKeyValue(session.rb,'formbuilder.dataset.dump')#"><span class="ui-icon ui-icon-comment"></span></div></li>

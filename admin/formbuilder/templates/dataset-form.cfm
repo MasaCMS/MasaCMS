@@ -1,6 +1,6 @@
 <cfoutput>
 		<div id="meld-tb-dataset" class="meld-tb-form">
-			<div class="meld-tb-header">
+			<div id="dataset-form" class="meld-tb-header">
 			<h3>#mmRBF.getKeyValue(session.rb,'formbuilder.dataset.form')#: <span id="meld-template-form-label"></span></h3>	
 			</div>
 			<div class="columns">
