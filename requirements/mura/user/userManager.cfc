@@ -880,10 +880,6 @@ to your own modified versions of Mura CMS.
 	<cfreturn getBean("userIterator").init()>
 </cffunction>
 
-<cffunction name="getBean" returntype="any" output="false">
-	<cfreturn getBean("user")>
-</cffunction>
-
 <cffunction name="getUserFeedBean" returntype="any" output="false">
 	<cfset var userFeedBean=createObject("component","mura.user.userFeedBean").init()>
 	<cfset userFeedBean.setUserManager(this)>
