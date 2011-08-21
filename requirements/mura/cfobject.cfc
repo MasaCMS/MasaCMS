@@ -103,7 +103,8 @@ to your own modified versions of Mura CMS.
 		<cfif not structKeyExists(application.transients,arguments.beanName)>
 			<cfset application.transients["#arguments.beanName#"]=getServiceFactory().getBean(arguments.beanName)>
 		</cfif>	
-		<cfreturn duplicate(application.transients["#arguments.beanName#"])>
+		<cfset bean=duplicate(application.transients["#arguments.beanName#"])>
+		<cfset bean.init()>
 	<cfelse>
 		<cfset bean=getServiceFactory().getBean(arguments.beanName) />
 	</cfif>
