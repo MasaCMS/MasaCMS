@@ -289,7 +289,7 @@
 	<cfset var parent="">
 	
 	<cfif structKeyExists(request,"crumbdata") and arrayLen(request.crumbdata) gt 1>
-		<cfreturn createObject("component","mura.content.contentNavBean").init(request.crumbdata[2], getBean("contentManager"),"active") />
+		<cfreturn getBean("contentNavBean").set(request.crumbdata[2],"active") />
 	<cfelseif isObject(getContentBean())>
 		<cfreturn getContentBean().getParent()>
 	<cfelse>

@@ -111,7 +111,7 @@
 		<cfif cl>
 			<cfloop from="1" to="#cl#" index="i">
 				<cfif request.crumbdata[i].contentID eq getValue("contentID") >
-					<cfreturn createObject("component","contentNavBean").init(request.crumbData[i+1], getBean("contentManager"),"active") />
+					<cfreturn getBean("contentNavBean").set(request.crumbData[i+1],"active") />
 				</cfif>
 			</cfloop>
 		</cfif>
