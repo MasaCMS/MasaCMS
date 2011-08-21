@@ -3,8 +3,8 @@
 			<div id="dataset-form" class="meld-tb-header">
 			<h3>#mmRBF.getKeyValue(session.rb,'formbuilder.dataset.form')#: <span id="meld-template-form-label"></span></h3>	
 			</div>
-			<div class="columns">
-				<div class="col2 wide bordered">
+			<!---<div class="columns">
+				<div class="col2 wide bordered">--->
 					<ul class="template-form">
 						<li>
 							<label for="dataset">#mmRBF.getKeyValue(session.rb,'formbuilder.dataset.sourcetype')#</label>
@@ -49,14 +49,14 @@
 							<input class="text tb-source" id="meld-tb-dataset-source" type="text" name="source" value="" maxlength="250" />
 						</li>
 					</ul>
-				</div>
-				<div class="col3">
+				<!---</div>
+				<div class="col3">--->
 					<ul class="template-form">
 						<li>
 							<input type="button" class="button" name="save-dataset" id="meld-tb-save-dataset" value="#mmRBF.getKeyValue(session.rb,'formbuilder.dataset.update')#" />
 						</li>
 					</ul>
-				</div>
-			</div>
+				<!---</div>
+			</div>--->
 		</div>
 </cfoutput>

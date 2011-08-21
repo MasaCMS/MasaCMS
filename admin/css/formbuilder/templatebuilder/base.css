@@ -29,8 +29,8 @@
 .meld-tb-menu {
 	border-bottom: 1px solid #a6a6a6;
 	background: url('images/ui-toolbar-bg.jpg') repeat-x;
-	padding: 6px;
-	height: 30px; /*
+	padding: 4px;
+	height: 34px; /*
 	border-radius: 4px;
 	-moz-border-radius: 4px;
 	-webkit-border-radius: 4px;*/
@@ -54,8 +54,8 @@
 }
 .ui-button {
 	display: block;
-	padding: 5px;
-	border: 1px solid #c2c2c2;
+	padding: /*5px*/;
+	border: 1px solid #dcdcdc;
 	background-color: #eee;
 	border-radius: 4px;
 	-moz-border-radius: 4px;
@@ -98,17 +98,12 @@
 }
 #meld-tb-fields {
 	list-style: none;
-	/*width: 200px;*/
-	/*height: 400px;*/
-	/*border: 1px solid #c2c2c2;
-	background-color: #f9f9f9;*/
-	/*padding: 1px;*/
-	/*border-radius: 4px;
-	-moz-border-radius: 4px;
-	-webkit-border-radius: 4px;*/
 	overflow-y: auto;
 	margin: 0;
 }
+
+
+
 #meld-tb-fields li div.field {
 	margin: 0 0 5px 0;
 	padding: 10px 10px 10px 44px;
@@ -119,6 +114,12 @@
 	border-radius: 4px;
 	-moz-border-radius: 4px;
 	-webkit-border-radius: 4px;
+	cursor: move;
+}
+
+#meld-tb-fields li div#selected.field {
+	background-color: #FFEBEB;
+	border: 1px dotted #FF4747;
 }
 
 #meld-tb-fields li.field-textfield div {
@@ -148,7 +149,7 @@
 }
 #meld-tb-field,#meld-tb-dataset,#meld-tb-grid {
 	float: right;
-	min-height: 350px;
+	/*min-height: 350px;*/
 	width: 46%;
 	background-color: #f9f9f9;
 	padding: 2%;
@@ -156,7 +157,9 @@
 	overflow: hidden;
 }
 
-
+#meld-tb-dataset {
+	padding-top: 0;
+}
 
 .columns {
 	margin: 0 10px;

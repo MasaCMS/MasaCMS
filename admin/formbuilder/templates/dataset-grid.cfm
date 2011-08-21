@@ -1,4 +1,5 @@
-<cfoutput><span>
+<cfoutput>
+<span>
 	<div id="dataset-grid" class="meld-tb-form">
 		<div class="meld-tb-header">
 			<ul class="right">
