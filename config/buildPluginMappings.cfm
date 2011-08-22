@@ -113,12 +113,14 @@ to your own modified versions of Mura CMS.
 						<cfset p="">
 					</cfif>
 				</cfif>
-				<cfset currentPath=currentDir & "/" & p>
-				<cfif len(p) and directoryExists(currentPath)>
-					<cfif canWriteMode>
-						<cffile action="append" file="#baseDir#/plugins/mappings.cfm" output='<cfset this.mappings["/#currentConfig.plugin.mappings.mapping[m].xmlAttributes.name#"] = mapPrefix & BaseDir & "/plugins/#rsRequirements.name#/#p#">' mode="775">
-					<cfelseif canWriteMappings>
-						<cffile action="append" file="#baseDir#/plugins/mappings.cfm" output='<cfset this.mappings["/#currentConfig.plugin.mappings.mapping[m].xmlAttributes.name#"] = mapPrefix & BaseDir & "/plugins/#rsRequirements.name#/#p#">'>		
+				<cfif len(p) and not directoryExists(expandPath("/" & p))>
+					<cfset currentPath=currentDir & "/" & p>
+					<cfif directoryExists(currentPath)>
+						<cfif canWriteMode>
+							<cffile action="append" file="#baseDir#/plugins/mappings.cfm" output='<cfset this.mappings["/#currentConfig.plugin.mappings.mapping[m].xmlAttributes.name#"] = mapPrefix & BaseDir & "/plugins/#rsRequirements.name#/#p#">' mode="775">
+						<cfelseif canWriteMappings>
+							<cffile action="append" file="#baseDir#/plugins/mappings.cfm" output='<cfset this.mappings["/#currentConfig.plugin.mappings.mapping[m].xmlAttributes.name#"] = mapPrefix & BaseDir & "/plugins/#rsRequirements.name#/#p#">'>		
+						</cfif>
 					</cfif>
 				</cfif>
 			</cfif>
