@@ -551,11 +551,9 @@ select * from tplugins order by #arguments.orderby#
 							<cfset p="">
 						</cfif>
 					</cfif>
-					<cfif len(p) and not directoryExists(expandPath("/" & p))>
-						<cfset currentPath=currentDir & "/" & p>
-						<cfif directoryExists(currentPath)>
-							<cfset variables.fileWriter.appendFile(file="#baseDir#/mappings.cfm", output='<cfset this.mappings["/#currentConfig.plugin.mappings.mapping[m].xmlAttributes.name#"] = mapPrefix & BaseDir & "/plugins/#rsRequirements.name#/#p#">')>
-						</cfif>
+					<cfset currentPath=currentDir & "/" & p>
+					<cfif len(p) and directoryExists(currentPath)>
+						<cfset variables.fileWriter.appendFile(file="#baseDir#/mappings.cfm", output='<cfset this.mappings["/#currentConfig.plugin.mappings.mapping[m].xmlAttributes.name#"] = mapPrefix & BaseDir & "/plugins/#rsRequirements.name#/#p#">')>
 					</cfif>
 				</cfif>
 				</cfloop>
