@@ -196,7 +196,6 @@
 					jQuery(_selected).addClass('selected');
 				}
 				else if (values.kind == 'update') {
-					alert(event.field);
 					fieldData.isdirty = 1;
 					_formData.isdirty = 1;
 					
