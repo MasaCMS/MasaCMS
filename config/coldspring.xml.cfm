@@ -93,6 +93,7 @@ to your own modified versions of Mura CMS.
 		</bean>
 		<bean id="contentBean" class="mura.content.contentBean" singleton="false"/>
 		<bean id="contentNavBean" class="mura.content.contentNavBean" singleton="false"/>
+		<bean id="contentStatsBean" class="mura.content.contentStatsBean" singleton="false"/>
 		<bean id="contentIterator" class="mura.content.contentIterator" singleton="false"/>
 		<bean id="contentCommentIterator" class="mura.content.contentCommentIterator" singleton="false"/>
 		<bean id="contentCommentBean" class="mura.content.contentCommentBean" singleton="false"/>
@@ -522,6 +523,7 @@ to your own modified versions of Mura CMS.
 		<alias name="categoryBean" alias="category"/>
 		<alias name="userFeedBean" alias="userFeed"/>
 		<alias name="contentCommentBean" alias="comment"/>
+		<alias name="contentStatsBean" alias="stats"/>
 		<alias name="changesetBean" alias="changeset"/>
 		<alias name="pluginManager" alias="eventManager"/>
 		<alias name="settingsBundle" alias="bundle"/>

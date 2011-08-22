@@ -1520,7 +1520,7 @@ to your own modified versions of Mura CMS.
 	</cffunction>
 	
 	<cffunction name="getStatsBean" access="public" returntype="any">
-	<cfreturn createObject("component","contentStatsBean").init(variables.configBean)>
+		<cfreturn getBean("stats")>
 	</cffunction>
 	
 	<cffunction name="getCommentBean" access="public" returntype="any">

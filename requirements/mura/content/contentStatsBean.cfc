@@ -1,84 +1,26 @@
-<cfcomponent extends="mura.cfobject" output="false">
+<cfcomponent extends="mura.bean.bean" output="false">
 
-<cfset variables.instance.contentID="" />
-<cfset variables.instance.siteID=""/>
-<cfset variables.instance.views=0/>
-<cfset variables.instance.rating=0/>
-<cfset variables.instance.totalVotes=0/>
-<cfset variables.instance.upVotes=0/>
-<cfset variables.instance.downVotes=0/>
-<cfset variables.instance.comments=0/>
-<cfset variables.instance.errors=structnew() />
+<cfproperty name="contenID" type="string" default="" required="true" />
+<cfproperty name="siteID" type="string" default="" required="true" />
+<cfproperty name="views" type="numeric" default="0" required="true" />
+<cfproperty name="rating" type="numeric" default="0" required="true" />
+<cfproperty name="totalVotes" type="numeric" default="0" required="true" />
+<cfproperty name="upVotes" type="numeric" default="0" required="true" />
+<cfproperty name="downVotes" type="numeric" default="0" required="true" />
+<cfproperty name="comments" type="numeric" default="0" required="true" />
 
 <cffunction name="init" returntype="any" output="false" access="public">
-	<cfargument name="configBean">
 	
-	<cfset variables.configBean=arguments.configBean />
-	<cfset variables.dsn=variables.configBean.getDatasource()/>
+	<cfset variables.instance.contentID="" />
+	<cfset variables.instance.siteID=""/>
+	<cfset variables.instance.views=0/>
+	<cfset variables.instance.rating=0/>
+	<cfset variables.instance.totalVotes=0/>
+	<cfset variables.instance.upVotes=0/>
+	<cfset variables.instance.downVotes=0/>
+	<cfset variables.instance.comments=0/>
+	
 	<cfreturn this />
-</cffunction>
-
-<cffunction name="set" returnType="void" output="false" access="public">
-		<cfargument name="data" type="any" required="true">
-
-		<cfset var prop=""/>
-		
-		<cfif isquery(arguments.data)>
-		
-			<cfif arguments.data.recordcount>
-				<cfset setContentID(arguments.data.ContentID) />
-				<cfset setSiteID(arguments.data.siteID) />
-				<cfset setViews(arguments.data.views) />
-				<cfset setRating(arguments.data.rating) />
-				<cfset setTotalVotes(arguments.data.totalVotes) />
-				<cfset setUpVotes(arguments.data.upVotes) />
-				<cfset setDownVotes(arguments.data.downVotes) />
-				<cfset setComments(arguments.data.comments) />
-			</cfif>
-			
-		<cfelseif isStruct(arguments.data)>
-		
-			<cfloop collection="#arguments.data#" item="prop">
-				<cfif isdefined("variables.instance.#prop#")>
-					<cfset evaluate("set#prop#(arguments.data[prop])") />
-				</cfif>
-			</cfloop>
-	
-			
-		</cfif>
-		
-		<cfset validate() />
-		
-</cffunction>
-  
-<cffunction name="validate" access="public" output="false" returntype="void">
-	<cfset variables.instance.errors=structnew() />
-</cffunction>
-
-<cffunction name="getErrors" returnType="struct" output="false" access="public">
-    <cfreturn variables.instance.errors />
-</cffunction>
-
-<cffunction name="getContentID" returntype="String" access="public" output="false">
-	<cfreturn variables.instance.contentID />
-</cffunction>
-
-<cffunction name="setContentID" access="public" output="false">
-	<cfargument name="ContentID" type="String" />
-	<cfset variables.instance.ContentID = trim(arguments.ContentID) />
-</cffunction>
-
-<cffunction name="getSiteID" returntype="String" access="public" output="false">
-	<cfreturn variables.instance.SiteID />
-</cffunction>
-
-<cffunction name="setSiteID" access="public" output="false">
-	<cfargument name="SiteID" type="String" />
-	<cfset variables.instance.SiteID = trim(arguments.SiteID) />
-</cffunction>
-
-<cffunction name="getViews" returntype="numeric" access="public" output="false">
-	<cfreturn variables.instance.views />
 </cffunction>
 
 <cffunction name="setViews" access="public" output="false">
@@ -99,19 +41,11 @@
 	</cfif>
 </cffunction>
 
-<cffunction name="getTotalVotes" returntype="numeric" access="public" output="false">
-	<cfreturn variables.instance.TotalVotes />
-</cffunction>
-
 <cffunction name="setTotalVotes" access="public" output="false">
 	<cfargument name="TotalVotes" />
 	<cfif isNumeric(arguments.TotalVotes)>
 	<cfset variables.instance.TotalVotes = arguments.TotalVotes />
 	</cfif>
-</cffunction>
-
-<cffunction name="getUpVotes" returntype="numeric" access="public" output="false">
-	<cfreturn variables.instance.UpVotes />
 </cffunction>
 
 <cffunction name="setUpVotes" access="public" output="false">
@@ -121,19 +55,11 @@
 	</cfif>
 </cffunction>
 
-<cffunction name="getDownVotes" returntype="numeric" access="public" output="false">
-	<cfreturn variables.instance.DownVotes />
-</cffunction>
-
 <cffunction name="setDownVotes" access="public" output="false">
 	<cfargument name="DownVotes" />
 	<cfif isNumeric(arguments.DownVotes)>
 	<cfset variables.instance.DownVotes = arguments.DownVotes />
 	</cfif>
-</cffunction>
-
-<cffunction name="getComments" returntype="numeric" access="public" output="false">
-	<cfreturn variables.instance.Comments />
 </cffunction>
 
 <cffunction name="setComments" access="public" output="false">
@@ -152,20 +78,20 @@
 
 <cffunction name="getQuery"  access="public" output="false" returntype="query">
 	<cfset var rs=""/>
-	<cfquery name="rs" datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+	<cfquery name="rs" datasource="#getBean('configBean').getDatasource()#" username="#getBean('configBean').getDBUsername()#" password="#getBean('configBean').getDBPassword()#">
 	select * from tcontentstats 
-	where contentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getContentID()#">
-	and siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getSiteID()#">
+	where contentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.contentID#">
+	and siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.siteID#">
 	</cfquery>
 	
 	<cfreturn rs/>
 </cffunction>
 
 <cffunction name="delete" access="public" returntype="void">
-	<cfquery datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+	<cfquery datasource="#getBean('configBean').getDatasource()#" username="#getBean('configBean').getDBUsername()#" password="#getBean('configBean').getDBPassword()#">
 	delete from tcontentstats
-	where contentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getContentID()#">
-	and siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getSiteID()#">
+	where contentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.contentID#">
+	and siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.siteID#">
 	</cfquery>
 </cffunction>
 
@@ -175,31 +101,31 @@
 	
 	<cfif getQuery().recordcount>
 		
-		<cfquery datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+		<cfquery datasource="#getBean('configBean').getDatasource()#" username="#getBean('configBean').getDBUsername()#" password="#getBean('configBean').getDBPassword()#">
 		update tcontentstats set
-		rating=<cfqueryparam cfsqltype="cf_sql_float" value="#getRating()#">,
-		views=#getViews()#,
-		totalVotes=#getTotalVotes()#,
-		upVotes=#getUpVotes()#,
-		downVotes=#getDownVotes()#,
-		comments=#getComments()#
-		where contentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getContentID()#">
-		and siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getSiteID()#">
+		rating=<cfqueryparam cfsqltype="cf_sql_float" value="#variables.instance.rating#">,
+		views=#variables.instance.views#,
+		totalVotes=#variables.instance.totalVotes#,
+		upVotes=#variables.instance.upVotes#,
+		downVotes=#variables.instance.downVotes#,
+		comments=#variables.instance.comments#
+		where contentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.contentID#">
+		and siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.siteID#">
 		</cfquery>
 		
 	<cfelse>
 	
-		<cfquery datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+		<cfquery datasource="#getBean('configBean').getDatasource()#" username="#getBean('configBean').getDBUsername()#" password="#getBean('configBean').getDBPassword()#">
 		insert into tcontentstats (contentID,siteID,rating,views,totalVotes,upVotes,downVotes,comments)
 		values(
-		<cfqueryparam cfsqltype="cf_sql_varchar" value="#getContentID()#">,
-		<cfqueryparam cfsqltype="cf_sql_varchar" value="#getSiteID()#">,
-		<cfqueryparam cfsqltype="cf_sql_float" value="#getRating()#">,
-		#getViews()#,
-		#getTotalVotes()#,
-		#getUpVotes()#,
-		#getDownVotes()#,
-		#getComments()#
+		<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.contentID#">,
+		<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.siteID#">,
+		<cfqueryparam cfsqltype="cf_sql_float" value="#variables.instance.rating#">,
+		#variables.instance.views#,
+		#variables.instance.totalVotes#,
+		#variables.instance.upVotes#,
+		#variables.instance.downVotes#,
+		#variables.instance.comments#
 		)
 		</cfquery>
 		

@@ -771,7 +771,7 @@ to your own modified versions of Mura CMS.
 </cffunction>
 
 <cffunction name="getStats" returnType="any" output="false" access="public">
-	<cfset var statsBean=getBean("contentManager").getStatsBean() />
+	<cfset var statsBean=getBean("stats") />
 	<cfset statsBean.setSiteID(variables.instance.siteID)>
 	<cfset statsBean.setContentID(getContentID())>
 	<cfset statsBean.load()>
