@@ -87,11 +87,11 @@ width: 100%;
 	line-height: 27px !important;
 }
 .meld-tb-form input.long {
-	width: 70%;
+	width: 69%;
 }
-.meld-tb-form .textarea {
-	width: 80%;
-	font-size: 9pt;
+.meld-tb-form textarea {
+	width: 69%;
+	/*font-size: 9pt;*/
 }
 #meld-plugin .columns div.col2.wide input.long {
 	width: 300px;

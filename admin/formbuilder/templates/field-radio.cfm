@@ -9,11 +9,14 @@
 				</ul>
 			</div>
 			
+		<div class="ui-tabs">
+		
 			<ul class="ui-tabs-nav">
 				<li class="ui-state-default ui-corner-top"><a href="##meld-tb-form-tab-basic"><span>Basic</span></a></li>
 				<li class="ui-state-default ui-corner-top"><a href="##meld-tb-form-tab-advanced"><span>Advanced</span></a></li>
 				<li class="ui-state-default ui-corner-top"><a href="##meld-tb-form-tab-validation"><span>Validation</span></a></li>
 			</ul>
+			
 			<div class="ui-tabs-panel" id="meld-tb-form-tab-basic">
 					<ul class="template-form">
 						<li>
@@ -26,6 +29,7 @@
 						</li>
 					</ul>
 				</div>
+				
 				<div class="ui-tabs-panel" id="meld-tb-form-tab-advanced">
 					<ul class="template-form">
 						<li>
@@ -42,11 +46,11 @@
 						</li>
 						<li>
 							<label for="tooltip">#mmRBF.getKeyValue(session.rb,'formbuilder.field.tooltip')#</label>
-							<textarea class="long" name="tooltip" value="" maxlength="250" ></textarea>
+							<textarea name="tooltip" value="" maxlength="250" ></textarea>
 						</li>
 					</ul>
+				</div>
 			</div>
-			
 		</div>
 	</span>
 </cfoutput>
