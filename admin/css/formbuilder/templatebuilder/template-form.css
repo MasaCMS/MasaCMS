@@ -135,7 +135,10 @@ input.disabled {
 	-moz-border-radius: 4px;
 	-webkit-border-radius: 4px;
 }
-
+.ui-button-text {
+	height: 20px;
+	padding: 9px 5px 1px 5px;
+}
 
 /*.ui-icon-formfield-field { background-position: 0 0; }*/
 .ui-icon-formfield-section { background-image: none !important; width: auto; }
