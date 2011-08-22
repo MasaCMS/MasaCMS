@@ -3,6 +3,7 @@
 	var _formData		= {};
 	var _dataSets		= {};
 	var _formStatus		= {};
+	var _selected		= "";
 
 	var _list			= {};
 
@@ -146,8 +147,13 @@
 			$_dataset.hide();
 			$_grid.hide();
 
+			if(_currentFieldBtn != undefined)
+				jQuery(_currentFieldBtn).removeClass('selected');
+
 			_currentFieldBtn = $btn;
 			_currentFieldID = data.fieldID;
+								
+			jQuery(_currentFieldBtn).addClass('selected');
 
 			if (_templates[templateName] == undefined) 
 				goLoadTemplate(templateName);
@@ -182,9 +188,18 @@
 			jQuery('#meld-tb-form').jsonForm({source: fieldData,createOnNull: true,createOnDataNull: true,bindBy: 'name',baseObject: 'field'});
 
 			jQuery('#meld-tb-form').bind('jsonformField', function( event,values ) {
-				if (values.kind == 'update') {
+				if (values.kind == 'selected') {
+					if(_selected != undefined)
+						jQuery(_selected).removeClass('selected');
+										
+					_selected = values.object;
+					jQuery(_selected).addClass('selected');
+				}
+				else if (values.kind == 'update') {
+					alert(event.field);
 					fieldData.isdirty = 1;
 					_formData.isdirty = 1;
+					
 				}
 			});
 

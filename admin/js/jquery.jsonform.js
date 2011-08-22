@@ -9,6 +9,7 @@
 		// I define the type of ways in which a store can be
 		// changed in a mutation event.
 		self.jsonFormEventKind = {
+			SELECT: "selected",
 			LOADED: "loaded",
 			UPDATE: "update"
 		}; 
@@ -28,6 +29,19 @@
 				$fieldArray,
 				function( index ) {
 					$field = jQuery($fieldArray[index]);
+
+					$field.bind('focus.jsonform',function(){
+						trigger({
+							type: "jsonformField",
+							kind: self.jsonFormEventKind.SELECT,
+							form: self,
+							field: $field,
+							object: this,
+							data: self.source,
+							value: jQuery(this).val()
+						});
+					});
+
 
 					if( settings.bindTo == 'all' || $field.attr(settings.bindTo) ) {
 						var item = $field.attr(settings.bindBy);
@@ -51,6 +65,7 @@
 									field: $field,
 									data: self.source,
 									item: item,
+									object: this,
 									value: jQuery(this).val()
 								});
 								if (settings.autoChange) {
@@ -78,6 +93,7 @@
 									field: $field,
 									data: self.source,
 									item: item,
+									object: this,
 									value: jQuery(this).val()
 								});
 								if (settings.autoChange) {
@@ -105,6 +121,7 @@
 									field: $field,
 									data: self.source,
 									item: item,
+									object: this,
 									value: jQuery(this).val()
 								});
 								if(settings.autoChange) {
@@ -127,6 +144,7 @@
 									field: $field,
 									data: self.source,
 									item: item,
+									object: this,
 									value: jQuery(this).val()
 								});
 								if (settings.autoChange) {
@@ -154,6 +172,7 @@
 									field: $field,
 									data: self.source,
 									item: item,
+									object: this,
 									value: jQuery(this).val()
 								});
 								if(settings.autoChange) {
