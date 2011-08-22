@@ -9,7 +9,7 @@
 				</ul>
 			</div>
 			
-		<div class="ui-tabs">
+		<div class="ui-tabs" id="ui-tabs">
 		
 			<ul class="ui-tabs-nav">
 				<li class="ui-state-default ui-corner-top"><a href="##meld-tb-form-tab-basic"><span>Basic</span></a></li>

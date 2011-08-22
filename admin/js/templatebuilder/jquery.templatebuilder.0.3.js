@@ -211,6 +211,9 @@
 					}
 				});
 			});
+			
+			jQuery("#ui-tabs").tabs();
+			jQuery("#ui-tabs").tabs('select',0);
 
 		}
 
