@@ -575,7 +575,7 @@
 			var datasetID	= fieldData.datasetid; 
 			var data		= _dataSets[datasetID];
 
-			var newID 			= ++_rowCounter;
+			var newID 			= uuid();
 			var newDataRecord	= jQuery.extend({},data.model);
 
 			data.isdirty = 1;
@@ -643,32 +643,14 @@
 			
 			// label
 			$cell = jQuery(cell);
-			$cell.addClass('meld-tb-cell-input');
-			if (editMode) {
-				$input = jQuery(input);
-				$input.attr('data-id', record.datarecordid);
-				$input.attr('name', 'label');
-				$input.val(record.label);
-				$cell.append($input);
-				$row.append($cell);
-			}
-			else {
-				$display = jQuery(display);
-				$display.attr('title', record.label);
-				$display.html(record.label);
-				$cell.append($display);
-				$row.append($cell);
-			}
-/*
-			$cell = jQuery(cell);
+
 			$cell.addClass('meld-tb-cell-input');
 			$input = jQuery(input);
-			$input.attr('data-id',record.datarecordid);
-			$input.attr('name','rblabel');
-			$input.val(record.rblabel);
+			$input.attr('data-id', record.datarecordid);
+			$input.attr('name', 'label');
+			$input.val(record.label);
 			$cell.append($input);
 			$row.append($cell);
-*/
 			
 			for( var i = 0;i < settings.dataColumns.length;i++) {
 				colName		= settings.dataColumns[i];
@@ -913,6 +895,13 @@
 	};
 
 	jQuery.templatebuilder.clear = function( $container ) {
+	}
+
+	uuid = function(){
+		return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+    		var r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);
+	    	return v.toString(16);
+		});
 	}
 
 	myDump = function(obj, name, indent, depth, maxdepth) {
