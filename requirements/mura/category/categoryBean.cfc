@@ -111,7 +111,8 @@ to your own modified versions of Mura CMS.
 			
 		</cfif>
 		
-		<cfset validate() />	
+		<cfset structDelete(variables.instance,"errors")>
+			
 		<cfreturn this />
 </cffunction>
  
@@ -130,8 +131,11 @@ to your own modified versions of Mura CMS.
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="getErrors" returnType="struct" output="false" access="public">
-    <cfreturn variables.instance.errors />
+<cffunction name="getErrors" returntype="any" output="false">
+  	<cfif not structKeyExists(variables.instance,"errors")>
+		<cfset validate()>  	
+	</cfif>
+	<cfreturn variables.instance.errors>
 </cffunction>
 
 <cffunction name="getCategoryID" returntype="String" access="public" output="false">
