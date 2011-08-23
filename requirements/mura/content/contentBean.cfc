@@ -360,14 +360,12 @@ to your own modified versions of Mura CMS.
 		
 	</cfif>
 	
-	<cfset structDelete(variables.instance,"errors")>
-	
 	<cfreturn this />
 </cffunction>
 
 <cffunction name="validate" access="public" output="false">
 	<cfset var extErrors=structNew() />
-	<cfdump var="validate"><cfabort>
+	
 	<cfif len(variables.instance.siteID)>
 		<cfset extErrors=getBean("configBean").getClassExtensionManager().validateExtendedData(getAllValues())>
 	</cfif>

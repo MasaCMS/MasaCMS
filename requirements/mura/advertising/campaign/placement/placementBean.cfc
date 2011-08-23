@@ -125,10 +125,8 @@ to your own modified versions of Mura CMS.
 			</cfif>
 
 		</cfif>
-		
-		<cfset structDelete(variables.instance,"errors")>
-		
-  </cffunction>
+
+</cffunction>
 
 <cffunction name="setCategoryID" access="public" output="false">
 	<cfargument name="categoryID" type="String" />

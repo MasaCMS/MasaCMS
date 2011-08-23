@@ -82,7 +82,6 @@ to your own modified versions of Mura CMS.
 			
 		</cfif>
 		
-		<cfset validate() />
 	 </cffunction>
 	
 	<cffunction name="getAllValues" access="public" returntype="struct" output="false">
@@ -170,7 +169,7 @@ to your own modified versions of Mura CMS.
     <cfreturn variables.instance.IsNew />
   </cffunction>
   
-  	     <cffunction name="setRemindInterval" returnType="void" output="false" access="public">
+  <cffunction name="setRemindInterval" returnType="void" output="false" access="public">
     <cfargument name="RemindInterval" type="numeric" required="true">
     <cfset variables.instance.RemindInterval = arguments.RemindInterval />
   </cffunction>

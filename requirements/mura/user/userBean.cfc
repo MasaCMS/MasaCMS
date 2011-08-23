@@ -172,8 +172,6 @@ to your own modified versions of Mura CMS.
 			<cfset setSiteID(getBean("settingsManager").getSite(arguments.user.siteid).getPublicUserPoolID()) />
 		</cfif>
 	</cfif>
-	
-	<cfset structDelete(variables.instance,"errors")>
 
 	<cfreturn this />
 </cffunction>

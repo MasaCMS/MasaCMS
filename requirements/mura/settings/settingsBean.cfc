@@ -238,8 +238,6 @@ to your own modified versions of Mura CMS.
 	<cfif variables.instance.displayPoolID eq ''>
 		<cfset variables.instance.displayPoolID=variables.instance.siteID />
 	</cfif>
-	
-	<cfset structDelete(variables.instance,"errors")>
 		
 	<cfreturn this>
  </cffunction>

@@ -68,8 +68,6 @@
 				
 		</cfif>
 		
-		<cfset structDelete(variables.instance,"errors")>
-		
 		<cfreturn this>
 </cffunction>
 
@@ -130,10 +128,7 @@
 </cffunction>
 
 <cffunction name="getErrors" output="false" access="public">
-  <cfargument name="errors"> 
-	<cfif not structKeyExists(variables.instance,"errors")>
-		<cfset validate()>
-	</cfif>
+	<cfset validate()>
 	<cfreturn variables.instance.errors>
 </cffunction>
 

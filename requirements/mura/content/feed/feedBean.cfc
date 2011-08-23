@@ -139,8 +139,6 @@ to your own modified versions of Mura CMS.
 		
 		<cfset setAdvancedParams(arguments.feed) />
 	</cfif>
-
-	<cfset structDelete(variables.instance,"errors")>
 		
 	<cfreturn this />
 </cffunction>
