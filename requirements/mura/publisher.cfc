@@ -1092,7 +1092,7 @@ to your own modified versions of Mura CMS.
 				
 				<cfquery datasource="#arguments.toDSN#">
 				delete from tfiles where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.tositeid#"/>
-				and moduleid  in (''<cfif len(arguments.moduleID)>,<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.moduleID#" list="true"></cfif><cfif arguments.usersMode neq "none">,'00000000000000000000000000000000008'</cfif><cfif arguments.contentMode neq "none">,'00000000000000000000000000000000000'</cfif><cfif arguments.formDataMode neq "none">,'00000000000000000000000000000000004'</cfif>)
+				and moduleid  in (''<cfif len(arguments.moduleID)>,<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.moduleID#" list="true"></cfif><cfif arguments.usersMode neq "none">,'00000000000000000000000000000000008'</cfif><cfif arguments.contentMode neq "none">,'00000000000000000000000000000000000','00000000000000000000000000000000003'</cfif><cfif arguments.formDataMode neq "none">,'00000000000000000000000000000000004'</cfif>)
 				<cfif rsttrashfiles.recordcount>
 					and fileID in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#valuesList(rsttrashfiles.fileID)#">)
 				<cfelse>
@@ -1104,14 +1104,14 @@ to your own modified versions of Mura CMS.
 			<cfif not isDate(arguments.lastDeployment)>
 				<cfquery datasource="#arguments.toDSN#">
 					delete from tfiles where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.tositeid#"/>
-					and moduleid  in (''<cfif len(arguments.moduleID)>,<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.moduleID#" list="true"></cfif><cfif arguments.usersMode neq "none">,'00000000000000000000000000000000008'</cfif><cfif arguments.contentMode neq "none">,'00000000000000000000000000000000000'</cfif><cfif arguments.formDataMode neq "none">,'00000000000000000000000000000000004'</cfif>)
+					and moduleid  in (''<cfif len(arguments.moduleID)>,<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.moduleID#" list="true"></cfif><cfif arguments.usersMode neq "none">,'00000000000000000000000000000000008'</cfif><cfif arguments.contentMode neq "none">,'00000000000000000000000000000000000','00000000000000000000000000000000003'</cfif><cfif arguments.formDataMode neq "none">,'00000000000000000000000000000000004'</cfif>)
 				</cfquery>
 			</cfif>
 			
 			<cfif not StructKeyExists(arguments,"Bundle")>
 				<cfquery datasource="#arguments.fromDSN#" name="rstFiles">
 					select * from tfiles where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.fromsiteid#"/>
-					and moduleid  in (''<cfif len(arguments.moduleID)>,<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.moduleID#" list="true"></cfif><cfif arguments.usersMode neq "none">,'00000000000000000000000000000000008'</cfif><cfif arguments.contentMode neq "none">,'00000000000000000000000000000000000'</cfif><cfif arguments.formDataMode neq "none">,'00000000000000000000000000000000004'</cfif>)
+					and moduleid  in (''<cfif len(arguments.moduleID)>,<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.moduleID#" list="true"></cfif><cfif arguments.usersMode neq "none">,'00000000000000000000000000000000008'</cfif><cfif arguments.contentMode neq "none">,'00000000000000000000000000000000000','00000000000000000000000000000000003'</cfif><cfif arguments.formDataMode neq "none">,'00000000000000000000000000000000004'</cfif>)
 					<cfif isDate(arguments.lastDeployment)>
 						created >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#arguments.lastDeployment#">
 					</cfif>
@@ -1120,7 +1120,7 @@ to your own modified versions of Mura CMS.
 				<cfset rstFiles = arguments.Bundle.getValue("rstfiles")>
 				<cfquery name="rstfiles" dbtype="query">
 					select * from rstfiles where
-					moduleid  in (''<cfif len(arguments.moduleID)>,<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.moduleID#" list="true"></cfif><cfif arguments.usersMode neq "none">,'00000000000000000000000000000000008'</cfif><cfif arguments.contentMode neq "none">,'00000000000000000000000000000000000'</cfif><cfif arguments.formDataMode neq "none">,'00000000000000000000000000000000004'</cfif>)
+					moduleid  in (''<cfif len(arguments.moduleID)>,<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.moduleID#" list="true"></cfif><cfif arguments.usersMode neq "none">,'00000000000000000000000000000000008'</cfif><cfif arguments.contentMode neq "none">,'00000000000000000000000000000000000','00000000000000000000000000000000003'</cfif><cfif arguments.formDataMode neq "none">,'00000000000000000000000000000000004'</cfif>)
 				</cfquery>
 			</cfif>
 			
