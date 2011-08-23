@@ -14,35 +14,61 @@
 	width: 100%;
 	color: #666;
 	background: #666;
+	overflow: hidden;
 }
 #meld-tb-grid-table {
 	width: 100%;
-	max-height: 530px;
-	overflow-y: scroll;
+	max-height: 600px;
+	overflow-y: auto;
 }
 #meld-tb-grid-table-header li {
 	list-style: none;
-	padding-top: 5px;
-	margin: 2px;
+	padding: 0 15px;
+	margin: 0;
 	text-align: left;
+	overflow: hidden;
 }
 #meld-tb-grid-table li {
 	list-style: none;
-	height: 20px;
-	background-color: #e1e8f0;
-	margin: 3px;
-	border: 1px solid #435f8b;
-	padding: 3px;
+	overflow: hidden;
+	background-color: #f9f9f9;
+	margin: 0;
+	padding: 0;
+	text-align: left;
 }
-#meld-tb-grid-table li span,#meld-tb-grid-table-header li span {
+#meld-tb-grid-table li span, #meld-tb-grid-table-header li span {
 	display: block;
 	float: left;
 	margin: 0 2px;
+	color: #fff;
 }
-#meld-tb-grid li .meld-tb-cell-small {
-	width: 15px;
+#meld-tb-grid li .meld-tb-cell {
+	width: 150px;
 	padding: 3px 0;
 }
+
+/*#meld-tb-grid li .meld-tb-cell-small {
+	width: 15px !important;
+}*/
+
+#meld-tb-grid .btnDelete {
+	display: block;
+	text-indent: -9999px;
+	width: 14px !important;
+	height: 28px;
+	margin-right: 6px;
+	padding: 0 !important;
+	background: transparent url('images/data-delete.png') no-repeat center center;
+	float: right;
+}
+
+#meld-tb-grid li span.handle {
+	width: 10px !important;
+	height: 28px;
+	padding: 0 !important;
+	background: transparent url('images/data-handle.png') no-repeat center center;
+}
+
 #meld-tb-grid .meld-tb-grid-display {
 	padding: 2px 0px 0 4px;
 	overflow: hidden;
@@ -56,10 +82,10 @@
 	background-color: #fff9f2;
 }
 #meld-tb-grid-table li span input {
-	width: 45%;
-	background-color: #f5f8fa;
-	border: 1px solid #aaa;
-	font-size: 8pt;
+	width: 90%;
+	/*margin: 3px 5px !important;*/
+	/*background-color: #f5f8fa;*/
+	/*border: 1px solid #aaa;*/
 }
 #meld-tb-grid-table .button {
 	float: right;
@@ -67,11 +93,12 @@
 }
 #meld-tb-grid-table .meld-tb-grid-handle {
 	border: 0;
-	background-color: #435f8b;
+	background: red !important;
 	float: left;	
-	width: 13px;
+	width: 16px;
 	height: 27px;
 	margin: -3px;
+	display: none;
 }
 #meld-tb-grid-table li.alt {
 	background-color: #ffffff;

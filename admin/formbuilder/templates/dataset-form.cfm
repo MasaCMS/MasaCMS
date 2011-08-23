@@ -1,8 +1,18 @@
 <cfoutput>
-		<div id="meld-tb-dataset" class="meld-tb-form">
-			<div id="dataset-form" class="meld-tb-header">
+			<!---<div id="dataset-form" class="meld-tb-header">
 			<h3>#mmRBF.getKeyValue(session.rb,'formbuilder.dataset.form')#: <span id="meld-template-form-label"></span></h3>	
-			</div>
+			</div>--->
+			
+			<div class="ui-tabs" id="ui-tabs">
+			
+				<ul class="ui-tabs-nav">
+					<li class="ui-state-default ui-corner-top ui-tabs-selected"><a href="##meld-tb-form-tab-source"><span>Source</span></a></li>
+					<li class="ui-state-default ui-corner-top"><a href="##meld-tb-form-tab-advanced"><span>List</span></a></li>
+				</ul>
+				
+				<div class="ui-tabs-panel" id="meld-tb-form-tab-source">
+		<div id="meld-tb-dataset" class="meld-tb-form">
+			
 					<ul class="template-form">
 						<li>
 							<label for="dataset">#mmRBF.getKeyValue(session.rb,'formbuilder.dataset.sourcetype')#</label>
@@ -13,6 +23,7 @@
 								<option value="remote">#mmRBF.getKeyValue(session.rb,'formbuilder.dataset.sourcetype.remote')#</option>
 							</select>
 						</li>
+					
 						<li class="meld-tb-dsi meld-tb-grp-entered" style="display: none">
 							<label for="dataset">#mmRBF.getKeyValue(session.rb,'formbuilder.dataset.issorted')#</label>
 							<select class="select" name="issorted" id="meld-tb-dataset-issorted">
@@ -47,6 +58,8 @@
 							<input class="text tb-source" id="meld-tb-dataset-source" type="text" name="source" value="" maxlength="250" />
 						</li>
 					</ul>
+				</div>
+				</div>
 							<div class="btn-wrap">
 								<input type="button" class="button" name="save-dataset" id="meld-tb-save-dataset" value="#mmRBF.getKeyValue(session.rb,'formbuilder.dataset.update')#" />
 							</div>

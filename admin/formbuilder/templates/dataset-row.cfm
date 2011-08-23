@@ -4,7 +4,7 @@
 		<li></li>
 	</div>
 	<div id="element-button-delete">
-		<div class="ui-button noframe button-grid-row-delete" title="#mmRBF.getKeyValue(session.rb,'formbuilder.dataset.delete')#"><span class="ui-icon ui-icon-trash"></span></div>
+		<div class="ui-button noframe button-grid-row-delete" title="#mmRBF.getKeyValue(session.rb,'formbuilder.dataset.delete')#"></div>
 	</div>
 	<div id="element-labels">
 		<label id="label">#mmRBF.getKeyValue(session.rb,'formbuilder.dataset.label')#</label>
