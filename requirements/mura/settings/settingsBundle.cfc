@@ -186,7 +186,7 @@ to your own modified versions of Mura CMS.
 				where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/> 
 				and (
 					
-					moduleid in ('00000000000000000000000000000000000'<cfif len(arguments.moduleID)>,<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.moduleID#" list="true"></cfif><cfif arguments.includeUsers>,'00000000000000000000000000000000008'</cfif>)
+					moduleid in ('00000000000000000000000000000000000','00000000000000000000000000000000003'<cfif len(arguments.moduleID)>,<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.moduleID#" list="true"></cfif><cfif arguments.includeUsers>,'00000000000000000000000000000000008'</cfif>)
 							
 					<cfif not arguments.includeVersionHistory>
 						or fileID not in (<cfqueryparam cfsqltype="cf_sql_varchar" value="#valueList(rstfiles.fileID)#" list="true">)				
@@ -917,7 +917,7 @@ to your own modified versions of Mura CMS.
 			<!--- tfiles --->
 			<cfquery datasource="#arguments.dsn#" name="rstfiles">
 				select * from tfiles where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
-				and moduleid in ('00000000000000000000000000000000000'<cfif len(arguments.moduleID)>,<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.moduleID#" list="true"></cfif><cfif arguments.includeUsers>,'00000000000000000000000000000000008'</cfif><cfif arguments.includeFormData>,'00000000000000000000000000000000004'</cfif>)
+				and moduleid in ('00000000000000000000000000000000000','00000000000000000000000000000000003'<cfif len(arguments.moduleID)>,<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.moduleID#" list="true"></cfif><cfif arguments.includeUsers>,'00000000000000000000000000000000008'</cfif><cfif arguments.includeFormData>,'00000000000000000000000000000000004'</cfif>)
 				<cfif not arguments.includeVersionHistory>
 				and 
 				(
@@ -1119,7 +1119,7 @@ to your own modified versions of Mura CMS.
 			<cfif isDate(arguments.sinceDate)>
 			<cfquery datasource="#arguments.dsn#" name="rsttrashfiles">
 				select * from tfiles where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
-				and moduleid in ('00000000000000000000000000000000000'<cfif len(arguments.moduleID)>,<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.moduleID#" list="true"></cfif><cfif arguments.includeUsers>,'00000000000000000000000000000000008'</cfif><cfif arguments.includeFormData>,'00000000000000000000000000000000004'</cfif>)
+				and moduleid in ('00000000000000000000000000000000000','00000000000000000000000000000000003'<cfif len(arguments.moduleID)>,<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.moduleID#" list="true"></cfif><cfif arguments.includeUsers>,'00000000000000000000000000000000008'</cfif><cfif arguments.includeFormData>,'00000000000000000000000000000000004'</cfif>)
 				and deleted=1
 			</cfquery>
 	
