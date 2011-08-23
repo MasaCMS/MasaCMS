@@ -1,8 +1,7 @@
-<cfoutput><span>
+<cfoutput>
+<span>
 		<div id="dataset-create" class="meld-template-form">
 			<h3>#mmRBF.getKeyValue(session.rb,'formbuilder.dataset.form')#: <span id="meld-template-form-label"></span></h3>
-			<div class="columns">
-				<div class="col2 wide bordered">
 					<ul class="template-form">
 						<li>
 							<label for="dataset">#mmRBF.getKeyValue(session.rb,'formbuilder.dataset')#</label>
@@ -19,16 +18,9 @@
 							<input type="button" class="button ui-icon ui-icon-check" name="set-filter" value="" />
 						</li>
 					</ul>
-				</div>
-				<div class="col3">
-					<ul class="template-form">
-						<li>
-							<!--- <button name="new-datasource">#mmRBF.getKeyValue(session.rb,'formbuilder.dataset.createnew')#</button> --->
-							<input type="button" class="button" name="new-datasource" value="#mmRBF.getKeyValue(session.rb,'formbuilder.dataset.createnew')#" />
-						</li>
-					</ul>
-				</div>
-			</div>
+					<div class="btn-wrap">
+					<input type="button" class="button" name="new-datasource" value="#mmRBF.getKeyValue(session.rb,'formbuilder.dataset.createnew')#" />
+					</div>
 		</div>
 	</span>
 </cfoutput>

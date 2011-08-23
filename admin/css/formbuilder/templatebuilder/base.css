@@ -4,7 +4,7 @@
 @import "grid.css";
 
 #meld-formdata {
-	/*display: none;*/
+	display: none;
 }
 
 #meld-templatebuilder {
@@ -73,15 +73,27 @@
 	background-color: #ddd;
 }
 
-.meld-tb-form .ui-tabs-nav {
-	height: 22px !important;
-	padding-bottom: 0 !important;
-	border-bottom: 0!important;
+.meld-tb-form #ui-tabs {
 	background: transparent;
+}
+
+.meld-tb-form .ui-tabs-nav {
+	/*height: 26px !important;*/
+	padding-bottom: 0 !important;
+	border-bottom: 0 !important;
+	background: transparent !important;
 }
 
 .meld-tb-form .ui-tabs-nav li {
 	margin-left: 0 !important;
+}
+
+.meld-tb-form .ui-tabs-nav li a {
+	background-color: #ccc;
+}
+
+.meld-tb-form .ui-tabs-nav li.ui-tabs-selected a {
+	background-color: #e7e7e7;
 }
 
 .meld-tb-form .ui-tabs-panel {
@@ -92,9 +104,14 @@
 .meld-tb-header li div {
 	padding: 1px;
 }
+
 .meld-tb-menu .right {
 	float: right;
 }
+
+/*#button-trash .ui-icon {
+	background: url('../../../images/icons/delete_on.png') no-repeat;
+}*/
 
 #meld-tb-form {
 	border-top: 1px solid #d1d1d1;
@@ -102,7 +119,6 @@
 }
 #meld-tb-form-fields {
 	width: 46%;
-	min-height: 400px;
 	padding: 2%;
 	float: left;
 	background-color: #f9f9f9;
@@ -110,9 +126,7 @@
 .meld-tb-data-form {
 	margin: 0 !important;
 	padding: 0 !important;
-	/*width: 45%;*/
-	/*float: right;*/
-	/*overflow: hidden;*/
+	width: 100%;
 }
 #meld-tb-fields {
 	list-style: none;
@@ -127,6 +141,7 @@
 	background-position: 10px center;
 	background-color: #f2f2f2;
 	border-radius: 4px;
+	/*border: 1px solid #f9f9f9;*/
 	-moz-border-radius: 4px;
 	-webkit-border-radius: 4px;
 	cursor: move;
@@ -134,7 +149,7 @@
 
 #meld-tb-fields li div#selected.field {
 	background-color: #FFEBEB;
-	border: 1px dotted #FF4747;
+	/*border: 1px dotted #FF4747;*/
 }
 
 #meld-tb-fields li.field-textfield div {
@@ -163,18 +178,12 @@
 	-webkit-border-radius: 3px;
 }
 #meld-tb-field,#meld-tb-dataset,#meld-tb-grid {
-	float: right;
-	/*min-height: 350px;*/
-	width: 46%;
-	background-color: #f9f9f9;
-	padding: 2%;
-	margin: 0;
-	overflow: hidden;
+	
 }
 
 #meld-tb-dataset {
 	padding-top: 0;
-	float: right;
+	/*float: right;*/
 	clear: left;
 }
 

@@ -8,8 +8,8 @@
 /* @start meld-tb-form
 ============================================================================================= */
 .meld-tb-form {
-float: right;
-width: 100%;
+/*float: right;
+width: 100%;*/
 }
 .meld-tb-form .meld-tb-header {
 	padding: 0;
@@ -34,13 +34,11 @@ width: 100%;
 	font-size: 15px;
 	font-weight: bold;
 }
-.meld-tb-form input {
-	/*font-size: 9pt;
-	border: 1px solid #aaa;	
-	float: left;
-	margin: 0;
-	padding: 1px 2px;*/
+
+.meld-tb-form .btn-wrap {
+	text-align: center;
 }
+
 .meld-tb-form input.button,.meld-tb-form input.submit {
 	/*margin: 1px 3px;
 	border-radius: 4px;
@@ -72,6 +70,19 @@ width: 100%;
 	-moz-border-radius: 4px;
 	-webkit-border-radius: 4px;
 }
+
+#ui-tabs .template-form {
+	-webkit-border-top-left-radius: 0;
+	-moz-border-radius-topleft: 0;
+	border-top-left-radius: 0;
+}
+
+#meld-tb-fields-settings {
+	float: right;
+	width: 46%;
+	padding: 2%;
+}
+
 .template-form li {
 	line-height: 27px;
 	overflow: hidden;
@@ -103,16 +114,16 @@ width: 100%;
 	width: 100px;
 }
 .meld-tb-form li.checkbox input {
-	height: 18px;
+	/*height: 18px;
 	margin: 5px 5px 5px 60px;
-	float: left;
+	float: left;*/
 }
-.meld-tb-form li.checkbox label {
+/*.meld-tb-form li.checkbox label {
 	margin: 0;
 	padding: 0;
 	width: auto;
 	font-weight: bold;
-}
+}*/
 #datasource-new {
 	border-top: 1px solid #aaa;
 }
@@ -135,9 +146,10 @@ input.disabled {
 	-moz-border-radius: 4px;
 	-webkit-border-radius: 4px;
 }
-.ui-button-text {
-	height: 20px;
-	padding: 9px 5px 1px 5px;
+#meld-templatebuilder .ui-button-text {
+	height: 32px;
+	line-height: 32px;
+	padding: 0 10px;
 }
 
 /*.ui-icon-formfield-field { background-position: 0 0; }*/
@@ -149,7 +161,8 @@ input.disabled {
 .ui-icon-formfield-select { background-position: -61px 5px; }
 
 #meld-tb-fields .selected {
-	background-color: pink !important;
+	background-color: #ffebeb !important;
+	/*border: 1px dotted #ff4747 !important;*/
 }
 #meld-tb-field .selected {
 	border: 1px solid orange !important;
