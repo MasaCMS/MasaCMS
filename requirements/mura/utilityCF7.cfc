@@ -54,17 +54,15 @@ to your own modified versions of Mura CMS.
 
 <cffunction name="displayErrors" access="public" output="true" returntype="string">
 <cfargument name="error" type="struct" required="yes" default="#structnew()#"/>
-<cfargument name="ignoreList" type="string" required="yes" default="siteID"/>
 <cfset var err=""/>
-<cfif not structIsEmpty(arguments.error)>
-<cfoutput>
+<cfset var started=false>
 <cfloop collection="#arguments.error#" item="err">
-<cfif not len(arguments.ignoreList) or not listFindNoCase(arguments.ignoreList,err)>
-<strong>#structfind(arguments.error,err)#</strong><br/>
+<cfif err neq "siteID">
+<cfset started=true>
+<cfoutput><strong>#structfind(arguments.error,err)#</strong><br/></cfoutput>
 </cfif>
-</cfloop><br/>
-</cfoutput>
-</cfif>
+</cfloop>
+<cfif started></br></cfif>
 <cfreturn/>
 </cffunction>
 
