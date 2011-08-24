@@ -168,28 +168,57 @@ to your own modified versions of Mura CMS.
 		<cfargument name="siteid" type="string" required="true">
 		<cfargument name="filename" type="string" required="true">
 		<cfset var rs = "">
-		<!--- <cfif variables.configBean.getStub() eq ''>
-			<cfif directoryExists("#variables.configBean.getWebRoot()##variables.filedelim##arguments.siteid##variables.filedelim##arguments.filename#")>
-				<cfreturn true />
-			<cfelse>
-				<cfreturn false />
-			</cfif>
 		
-		<cfelse> --->
-		
-			<cfquery name="rs" datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+		<cfquery name="rs" datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 			Select contentid from tcontent  where 
 			siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/> and filename = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.filename#"/> and active=1 and type in ('Portal','Page','Calendar','Gallery')
-			</cfquery>
+		</cfquery>
+		
+		<cfif rs.recordcount>
+			<cfreturn true />
+		<cfelse>
+			<cfreturn false />
+		</cfif>	
+</cffunction>
+
+<cffunction name="doesLoadKeyExist" returntype="boolean" access="public" output="false">
+		<cfargument name="contentBean">
+		<cfargument name="field">
+		<cfargument name="fieldValue">
+		<cfset var rs = "">
+		
+		<cfquery name="rs" datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+			Select contentid from tcontent  where 
+			siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentBean.getSiteID()#"/> 
+
+			<cfswitch expression="#arguments.field#">
+			<cfcase value="filename">
+				and filename = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.fieldValue#"/> 
+				and type in ('Portal','Page','Calendar','Gallery')
+			</cfcase>
+			<cfcase value="title">
+				and title = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.fieldValue#"/> 
+				and type in ('Portal','Page','Calendar','Gallery','File','Link','Component','Form')
+			</cfcase>
+			<cfcase value="urltitle">
+				and urltitle = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.fieldValue#"/> 
+				and type in ('Portal','Page','Calendar','Gallery','File','Link')
+			</cfcase>
+			<cfcase value="remoteID">
+				and remoteID = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.fieldValue#"/> 
+				and type in ('Portal','Page','Calendar','Gallery','File','Link','Component','Form')
+			</cfcase>
+			</cfswitch>
 			
-			<cfif rs.recordcount>
-				<cfreturn true />
-			<cfelse>
-				<cfreturn false />
-			</cfif>
-		
-	<!--- 	</cfif> --->
-		
+			and active=1 
+			and contentID != <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentBean.getContentID()#"/> 
+		</cfquery>
+	
+		<cfif rs.recordcount>
+			<cfreturn true />
+		<cfelse>
+			<cfreturn false />
+		</cfif>	
 </cffunction>
 
 <cffunction name="deleteFile" returntype="void" access="public" output="false">
@@ -260,12 +289,10 @@ to your own modified versions of Mura CMS.
 					
 					</cfif>
 				</cfloop>
-				
-			
-			
-			
+					
 		<cfcatch></cfcatch>
-		</cftry>
+	</cftry>
+	
 	<cfif listlen(arguments.contentBean.getfilename(),"/") gt 1>
 	<cfset oldlen=len(arguments.contentBean.getfilename())>
 	<cfset trimer=len(listlast(arguments.contentBean.getfilename(),"/"))+1>
@@ -555,7 +582,41 @@ http://#listFirst(cgi.http_host,":")##variables.configBean.getServerPort()##vari
 		<cfset arguments.contentBean.setFilename(tempfile) />
 		<cfset arguments.contentBean.setURLTitle(listLast(tempfile,"/"))>
 	</cfif>
-</cffunction>	
+</cffunction>
+
+<cffunction name="setUniqueURLTitle" returntype="void" output="false" access="public">
+	<cfargument name="contentBean" type="any" />
+	<cfset var pass =0 />
+	<cfset var tempValue = "">
+	
+	<cfset tempValue=arguments.contentBean.getURLTitle() />
+	
+	<cfloop condition="#doesLoadKeyExist(arguments.contentBean,'urlTitle',tempValue)#" >
+		<cfset pass=pass+1>
+		<cfset tempValue="#arguments.contentBean.getURLTitle()##pass#" />
+	</cfloop>
+								
+	<cfif pass>
+		<cfset arguments.contentBean.setURLTitle(tempValue)>
+	</cfif>
+</cffunction>
+
+<cffunction name="setUniqueTitle" returntype="void" output="false" access="public">
+	<cfargument name="contentBean" type="any" />
+	<cfset var pass =0 />
+	<cfset var tempValue = "">
+	
+	<cfset tempValue=arguments.contentBean.getTitle() />
+	
+	<cfloop condition="#doesLoadKeyExist(arguments.contentBean,'title',tempValue)#" >
+		<cfset pass=pass+1>
+		<cfset tempValue="#arguments.contentBean.getTitle()##pass#" />
+	</cfloop>
+								
+	<cfif pass>
+		<cfset arguments.contentBean.setTitle(tempValue)>
+	</cfif>
+</cffunction>
 
 <cffunction name="isOnDisplay" returntype="numeric" output="false" access="public">
 			<cfargument name="display"  type="numeric">

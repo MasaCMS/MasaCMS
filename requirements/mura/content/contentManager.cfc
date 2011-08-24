@@ -864,7 +864,6 @@ to your own modified versions of Mura CMS.
 				and not (not newBean.getIsNew() and newBean.getIsLocked())>
 							
 				<cfset variables.contentUtility.setUniqueFilename(newBean) />
-				<!---<cfset variables.contentUtility.createFile(newBean) />--->
 									
 				<cfif not newBean.getIsNew() and newBean.getoldfilename() neq newBean.getfilename() and len(newBean.getoldfilename())>
 					<cfset variables.contentUtility.movelink(newBean.getSiteID(),newBean.getFilename(),currentBean.getFilename()) />	
@@ -888,7 +887,23 @@ to your own modified versions of Mura CMS.
 		</cfif>
 		<!--- END CONTENT TYPE: PAGE, PORTAL, CALENDAR, GALLERY --->
 		
-	
+		<cfif newBean.getapproved() or newBean.getIsNew()>
+		<!--- BEGIN CONTENT TYPE: FILE, LINK --->	
+		<cfif listFindNoCase("Link,File",newBean.getType())>
+			<cfset variables.contentUtility.setUniqueURLTitle(newBean) />
+		</cfif>
+		<!--- END CONTENT TYPE: FILE, LINK --->
+			
+		<!--- BEGIN CONTENT TYPE: COMPONENT, FORM --->	
+		<cfif listFindNoCase("Component,Form",newBean.getType())>
+			<cfset variables.contentUtility.setUniqueTitle(newBean) />
+			<cfset newBean.setMenuTitle(newBean.getTitle())>
+			<cfset newBean.setHTMLTitle(newBean.getTitle())>
+			<cfset newBean.setURLTitle(newBean.getTitle())>
+		</cfif>
+		<!--- END CONTENT TYPE: COMPONENT, FORM --->
+		</cfif>
+		
 		<!--- BEGIN CONTENT TYPE: FILE --->	
 		<!---<cfif newBean.gettype() eq 'File'>--->
 				
