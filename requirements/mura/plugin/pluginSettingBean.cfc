@@ -40,55 +40,58 @@ for your modified version; it is your choice whether to do so, or to make such m
 the GNU General Public License version 2 without this exception. You may, if you choose, apply this exception
 to your own modified versions of Mura CMS.
 --->
-<cfcomponent extends="mura.cfobject" output="false">
-	
-<cfset variables.instance.name=""/>
-<cfset variables.instance.hint=""/>
-<cfset variables.instance.type="TextBox"/>
-<cfset variables.instance.required="false"/>
-<cfset variables.instance.validation=""/>
-<cfset variables.instance.regex=""/>
-<cfset variables.instance.message=""/>
-<cfset variables.instance.label=""/>
-<cfset variables.instance.settingValue=""/>
-<cfset variables.instance.optionList=""/>
-<cfset variables.instance.optionLabelList=""/>
-<cfset variables.instance.errors=structnew() />
+<cfcomponent extends="mura.bean.bean" output="false">
+
+<cfproperty name="name" type="string" default="" required="true" />
+<cfproperty name="hint" type="string" default="" required="true" />
+<cfproperty name="type" type="string" default="TextBox" required="true" />
+<cfproperty name="required" type="string" default="false" required="true" />
+<cfproperty name="validation" type="string" default="" required="true" />
+<cfproperty name="regex" type="string" default="" required="true" />
+<cfproperty name="message" type="string" default="" required="true" />
+<cfproperty name="label" type="string" default="" required="true" />
+<cfproperty name="settingValue" type="string" default="" required="true" />
+<cfproperty name="optionList" type="string" default="" required="true" />
+<cfproperty name="optionListLabel" type="string" default="" required="true" />
 
 <cffunction name="init" returntype="any" output="false" access="public">
-	<cfargument name="configBean">
+	<cfset super.init(argumentCollection=arguments)>
 	
-	<cfset variables.configBean=arguments.configBean />
-	<cfset variables.dsn=variables.configBean.getDatasource()/>
+	<cfset variables.instance.name=""/>
+	<cfset variables.instance.hint=""/>
+	<cfset variables.instance.type="TextBox"/>
+	<cfset variables.instance.required="false"/>
+	<cfset variables.instance.validation=""/>
+	<cfset variables.instance.regex=""/>
+	<cfset variables.instance.message=""/>
+	<cfset variables.instance.label=""/>
+	<cfset variables.instance.settingValue=""/>
+	<cfset variables.instance.optionList=""/>
+	<cfset variables.instance.optionLabelList=""/>
+	
 	<cfreturn this />
 </cffunction>
 
-<cffunction name="set"  access="public" output="false" returntype="void">
-<cfargument name="theXML">
-<cfargument name="moduleID">
+<cffunction name="set"  access="public" output="false" returntype="any">
+	<cfargument name="theXML">
+	<cfargument name="moduleID">
+	
+	<cfset setName(arguments.theXML.name.xmlText)/>
+	<cfset setType(arguments.theXML.type.xmlText)/>
+	<cfset setHint(arguments.theXML.hint.xmlText)/>
+	<cfset setRequired(arguments.theXML.required.xmlText)/>
+	<cfset setValidation(arguments.theXML.validation.xmlText)/>
+	<cfset setRegex(arguments.theXML.regex.xmlText)/>
+	<cfset setMessage(arguments.theXML.message.xmlText)/>
+	<cfset setLabel(arguments.theXML.label.xmlText)/>
+	<cfset setSettingValue(arguments.theXML.defaultvalue.xmlText)/>
+	<cfset setOptionList(arguments.theXML.optionlist.xmlText)/>
+	<cfset setOptionLabelList(arguments.theXML.optionlabellist.xmlText)/>
+	<cfset setModuleID(arguments.moduleID)/>
+	<cfset loadSettingValue()/>
+	
+	<cfreturn this>
 
-<cfset setName(arguments.theXML.name.xmlText)/>
-<cfset setType(arguments.theXML.type.xmlText)/>
-<cfset setHint(arguments.theXML.hint.xmlText)/>
-<cfset setRequired(arguments.theXML.required.xmlText)/>
-<cfset setValidation(arguments.theXML.validation.xmlText)/>
-<cfset setRegex(arguments.theXML.regex.xmlText)/>
-<cfset setMessage(arguments.theXML.message.xmlText)/>
-<cfset setLabel(arguments.theXML.label.xmlText)/>
-<cfset setSettingValue(arguments.theXML.defaultvalue.xmlText)/>
-<cfset setOptionList(arguments.theXML.optionlist.xmlText)/>
-<cfset setOptionLabelList(arguments.theXML.optionlabellist.xmlText)/>
-<cfset setModuleID(arguments.moduleID)/>
-<cfset loadSettingValue()/>
-
-</cffunction>
-  
-<cffunction name="validate" access="public" output="false" returntype="void">
-	<cfset variables.instance.errors=structnew() />
-</cffunction>
-
-<cffunction name="getErrors" returnType="struct" output="false" access="public">
-    <cfreturn variables.instance.errors />
 </cffunction>
 
 <cffunction name="getName" returntype="String" access="public" output="false">
@@ -233,7 +236,7 @@ to your own modified versions of Mura CMS.
 
 <cffunction name="loadSettingValue"  access="public" output="false" returntype="void">
 <cfset var rs=""/>
-	<cfquery name="rs" datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+	<cfquery name="rs" datasource="#getBean('configBean').getDatasource()#" username="#getBean('configBean').getDBUsername()#" password="#getBean('configBean').getDBPassword()#">
 	select * from tpluginsettings 
 	where name=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getName()#">
 	and moduleID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getModuleID()#">
@@ -241,80 +244,5 @@ to your own modified versions of Mura CMS.
 	
 	<cfset setSettingValue(rs.settingValue) />
 </cffunction>
-<!--- 
-<cffunction name="getOptions" access="public" returntype="query">
-	<cfset var rs = "" />
-
-	<cfif not isQuery(variables.instance.options)>
-		<cfquery name="rs" datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-		select * from TClassExtendAttributeOptions
-		where attributeID=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#getAttributeID()#">
-		order by orderno 
-		</cfquery>
-		
-		<cfset variables.instance.options=rs />
-	</cfif>
-
-	<cfreturn variables.instance.options />
-
-</cffunction>
-
-<cffunction name="setOptions" access="public" returntype="void">
-<cfargument name="options">
-<cfset var o=1/>
-
-<cfif isQuery(arguments.options)>
-	<cfset variables.instance.options=arguments.options />
-<cfelse>
-	<cfset variables.instance.options=queryNew("optionID,attributeID,siteID,optionValue,label,orderno","cf_sql_varchar,cf_sql_varchar,cf_sql_varchar,cf_sql_varchar,cf_sql_varchar,cf_sql_varchar") />
-
-	<cfloop condition="structkeyExist(arguments.options,'options#o#')">
-	
-		<cfif len(arguments.options["label#o#"])
-			or len(arguments.options["optionValue#o#"])>
-			
-			<cfset querySetCell(variables.instance.options,"optionID",createUUID(),o) />
-			<cfset querySetCell(variables.instance.options,"attributeID",getAttributeID(),o) />
-			<cfset querySetCell(variables.instance.options,"siteID",getSiteID(),o) />
-			<cfset querySetCell(variables.instance.options,"orderno",o,o) />
-			<cfset querySetCell(variables.instance.options,"label",arguments.options["label#o#"],o) />
-			<cfset querySetCell(variables.instance.options,"optionValue",arguments.options["optionValue#o#"],o) />
-
-		</cfif>
-	<cfset o=o+1/>
-	</cfloop>
-</cfif>
-
-</cffunction>
-
-<cffunction name="deleteOptions" returntype="void">
-	<cfquery datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-		delete from TExtendAttributeOptions
-		where attributeID=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#getAttributeID()#">
-	</cfquery>
-</cffunction>
-
-<cffunction name="saveOptions" access="public" returntype="void">
-	<cfif isQuery(variables.instance.options)>
-		<cfset deleteOptions() />
-		
-		<cfloop query="variables.instance.options">
-			<cfquery datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-			insert into TClassExtendAttributeOptions
-			(optionID,attributeID,siteID,optionValue,label,orderno)
-			values(
-				<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.options.optionID#">,
-				<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.options.attributeID#">,
-				<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.options.siteID#">,
-				<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(variables.instance.options.optionValue neq '',de('no'),de('yes'))#" value="#variables.instance.options.optionValue#">,
-				<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(variables.instance.options.label neq '',de('no'),de('yes'))#" value="#variables.instance.options.label#">,
-				variables.instance.options.orderno
-			)
-			</cfquery>
-		</cfloop>
-
-	</cfif>
-	
-</cffunction> --->
 
 </cfcomponent>

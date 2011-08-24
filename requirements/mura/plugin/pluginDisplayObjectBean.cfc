@@ -40,64 +40,28 @@ for your modified version; it is your choice whether to do so, or to make such m
 the GNU General Public License version 2 without this exception. You may, if you choose, apply this exception
 to your own modified versions of Mura CMS.
 --->
-<cfcomponent extends="mura.cfobject" output="false">
+<cfcomponent extends="mura.bean.bean" output="false">
 
-<cfset variables.instance.objectID="" />
-<cfset variables.instance.moduleID=""/>
-<cfset variables.instance.name=""/>
-<cfset variables.instance.location="global"/>
-<cfset variables.instance.displayMethod=""/>
-<cfset variables.instance.displayObjectFile=""/>
-<cfset variables.instance.docache="false"/>
+<cfproperty name="objectID" type="string" default="" required="true" />
+<cfproperty name="moduleID" type="string" default="" required="true" />
+<cfproperty name="name" type="string" default="" required="true" />
+<cfproperty name="location" type="string" default="" required="true" />
+<cfproperty name="displayMethod" type="string" default="" required="true" />
+<cfproperty name="displayMethodFile" type="string" default="" required="true" />
+<cfproperty name="doCache" type="string" default="false" required="true" />
 
 <cffunction name="init" returntype="any" output="false" access="public">
-	<cfargument name="configBean">
-	<cfargument name="pluginManager">
+	<cfset super.init(argumentCollection=arguments)>
 	
-	<cfset variables.configBean=arguments.configBean />
-	<cfset variables.dsn=variables.configBean.getDatasource()/>
-	<cfset variables.pluginManager=arguments.pluginManager />
+	<cfset variables.instance.objectID="" />
+	<cfset variables.instance.moduleID=""/>
+	<cfset variables.instance.name=""/>
+	<cfset variables.instance.location="global"/>
+	<cfset variables.instance.displayMethod=""/>
+	<cfset variables.instance.displayObjectFile=""/>
+	<cfset variables.instance.docache="false"/>
+	
 	<cfreturn this />
-</cffunction>
-
-<cffunction name="set" returnType="void" output="false" access="public">
-		<cfargument name="data" type="any" required="true">
-
-		<cfset var prop=""/>
-		
-		<cfif isquery(arguments.data)>
-			
-			<cfif arguments.data.recordcount>
-				<cfset setObjectID(arguments.data.objectID) />
-				<cfset setName(arguments.data.name) />
-				<cfset setLocation(arguments.data.location) />
-				<cfset setDisplayObjectFile(arguments.data.displayObjectFile) />
-				<cfset setDisplayMethod(arguments.data.displayMethod) />
-				<cfset setModuleID(arguments.data.moduleID) />
-				<cfset setDoCache(arguments.data.docache) />
-			</cfif>
-			
-		<cfelseif isStruct(arguments.data)>
-		
-			<cfloop collection="#arguments.data#" item="prop">
-				<cfif isdefined("variables.instance.#prop#")>
-					<cfset evaluate("set#prop#(arguments.data[prop])") />
-				</cfif>
-			</cfloop>
-	
-			
-		</cfif>
-		
-		<cfset validate() />
-		
-</cffunction>
-  
-<cffunction name="validate" access="public" output="false" returntype="void">
-	<cfset variables.instance.errors=structnew() />
-</cffunction>
-
-<cffunction name="getErrors" returnType="struct" output="false" access="public">
-    <cfreturn variables.instance.errors />
 </cffunction>
 
 <cffunction name="getObjectID" returntype="String" access="public" output="false">
@@ -176,7 +140,7 @@ to your own modified versions of Mura CMS.
 
 <cffunction name="loadByName"  access="public" output="false" returntype="void">
 	<cfset var rs=""/>
-	<cfquery name="rs" datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+	<cfquery name="rs" datasource="#getBean('configBean').getDatasource()#" username="#getBean('configBean').getDBUsername()#" password="#getBean('configBean').getDBPassword()#">
 	select objectID,moduleID,name,location,displayobjectfile,displaymethod, docache
 	from tplugindisplayobjects 
 	where moduleID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getModuleID()#">
@@ -188,7 +152,7 @@ to your own modified versions of Mura CMS.
 
 <cffunction name="getQuery"  access="public" output="false" returntype="query">
 	<cfset var rs=""/>
-	<cfquery name="rs" datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+	<cfquery name="rs" datasource="#getBean('configBean').getDatasource()#" username="#getBean('configBean').getDBUsername()#" password="#getBean('configBean').getDBPassword()#">
 	select objectID,moduleID,name,location,displayobjectfile,displaymethod, docache
 	from tplugindisplayobjects 
 	where objectID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getObjectID()#">
@@ -198,7 +162,7 @@ to your own modified versions of Mura CMS.
 </cffunction>
 
 <cffunction name="delete" access="public" returntype="void">
-	<cfquery datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+	<cfquery datasource="#getBean('configBean').getDatasource()#" username="#getBean('configBean').getDBUsername()#" password="#getBean('configBean').getDBPassword()#">
 	delete from tplugindisplayobjects
 	where objectID=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#getObjectID()#">
 	</cfquery>
@@ -210,7 +174,7 @@ to your own modified versions of Mura CMS.
 <cfset var pluginXML=""/>
 
 	<cfif not len(getLocation())>
-		<cfquery name="rsLocation" datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+		<cfquery name="rsLocation" datasource="#getBean('configBean').getDatasource()#" username="#getBean('configBean').getDBUsername()#" password="#getBean('configBean').getDBPassword()#">
 		select location from tplugindisplayobjects
 		where moduleID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getModuleID()#">
 		</cfquery>
@@ -218,7 +182,7 @@ to your own modified versions of Mura CMS.
 		<cfif len(rsLocation.location)>
 			<cfset setLocation(rsLocation.location)>
 		<cfelse>
-			<cfset pluginXML=variables.pluginManager.getPluginXML(getModuleID())/>
+			<cfset pluginXML=getBean('pluginManager').getPluginXML(getModuleID())/>
 			<cfif structKeyExists(pluginXML.plugin.displayobjects.xmlAttributes,"location")>
 				<cfset setLocation(pluginXML.plugin.displayobjects.xmlAttributes.location) />
 			<cfelse>
@@ -229,7 +193,7 @@ to your own modified versions of Mura CMS.
 	
 	<cfif getQuery().recordcount>
 		
-		<cfquery datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+		<cfquery datasource="#getBean('configBean').getDatasource()#" username="#getBean('configBean').getDBUsername()#" password="#getBean('configBean').getDBPassword()#">
 		update tplugindisplayobjects set
 			moduleID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getModuleID()#">,
 			name=<cfqueryparam cfsqltype="cf_sql_varchar" value="#left(getName(),50)#">,
@@ -242,7 +206,7 @@ to your own modified versions of Mura CMS.
 		
 	<cfelse>
 	
-		<cfquery datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+		<cfquery datasource="#getBean('configBean').getDatasource()#" username="#getBean('configBean').getDBUsername()#" password="#getBean('configBean').getDBPassword()#">
 			insert into tplugindisplayobjects (objectID,moduleID,name,location,displayobjectfile,displaymethod,docache) values (
 			<cfqueryparam cfsqltype="cf_sql_varchar" value="#getObjectID()#">,
 			<cfqueryparam cfsqltype="cf_sql_varchar" value="#getModuleID()#">,

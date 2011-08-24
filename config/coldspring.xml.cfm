@@ -441,11 +441,6 @@ to your own modified versions of Mura CMS.
 			<constructor-arg name="feedGateway"><ref bean="feedGateway" /></constructor-arg>
 		</bean>
 		<bean id="publisher" <cfif (server.coldfusion.productname eq "ColdFusion Server" and listFirst(server.coldfusion.productversion) lt 8) or (server.coldfusion.productname eq "Railo" and listFirst(server.railo.version,".") lt 3)>class="mura.publisherLimited"<cfelse>class="mura.publisher"</cfif> singleton="true"/>
-		<bean id="projectManager" class="mura.workspace.project.projectManager" singleton="true">
-			<constructor-arg name="configBean"><ref bean="configBean" /></constructor-arg>
-			<constructor-arg name="settingsManager"><ref bean="settingsManager" /></constructor-arg>
-			<constructor-arg name="fileManager"><ref bean="fileManager" /></constructor-arg>
-		</bean>
 		<bean id="servlet" class="mura.servlet" singleton="false" />
 		<bean id="geoCoding" class="mura.geoCoding.googleGeoCode" singleton="true" />
 		<bean id="resourceBundleFactory" class="mura.resourceBundle.resourceBundleFactory" singleton="true" />
@@ -456,6 +451,9 @@ to your own modified versions of Mura CMS.
 			<constructor-arg name="standardEventsHandler"><ref bean="standardEventsHandler" /></constructor-arg>
 			<constructor-arg name="fileWriter"><ref bean="fileWriter" /></constructor-arg>
 		</bean>
+		<bean id="pluginScriptBean" class="mura.plugin.pluginScriptBean" singleton="false"/>
+		<bean id="pluginDisplayObjectBean" class="mura.plugin.pluginDisplayObjectBean" singleton="false"/>
+		<bean id="pluginSettingBean" class="mura.plugin.pluginSettingBean" singleton="false"/>
 		<bean id="clusterManager" class="mura.cluster.clusterManager" singleton="true">
 			<constructor-arg name="configBean"><ref bean="configBean" /></constructor-arg>
 		</bean>

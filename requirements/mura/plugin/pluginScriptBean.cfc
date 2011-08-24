@@ -40,102 +40,32 @@ for your modified version; it is your choice whether to do so, or to make such m
 the GNU General Public License version 2 without this exception. You may, if you choose, apply this exception
 to your own modified versions of Mura CMS.
 --->
-<cfcomponent extends="mura.cfobject" output="false">
+<cfcomponent extends="mura.bean.bean" output="false">
 
-<cfset variables.instance.scriptID="" />
-<cfset variables.instance.moduleID=""/>
-<cfset variables.instance.runat=""/>
-<cfset variables.instance.scriptfile=""/>
-<cfset variables.instance.docache="false"/>
+<cfproperty name="scriptID" type="string" default="" required="true" />
+<cfproperty name="moduleID" type="string" default="" required="true" />
+<cfproperty name="runAt" type="string" default="" required="true" />
+<cfproperty name="scriptFile" type="string" default="" required="true" />
+<cfproperty name="doCache" type="boolean" default="false" required="true" />
 
 <cffunction name="init" returntype="any" output="false" access="public">
-	<cfargument name="configBean">
+	<cfset super.init(argumentCollection=arguments)>
 	
-	<cfset variables.configBean=arguments.configBean />
-	<cfset variables.dsn=variables.configBean.getDatasource()/>
+	<cfset variables.instance.scriptID="" />
+	<cfset variables.instance.moduleID=""/>
+	<cfset variables.instance.runat=""/>
+	<cfset variables.instance.scriptfile=""/>
+	<cfset variables.instance.docache="false"/>
+	
 	<cfreturn this />
 </cffunction>
-
-<cffunction name="set" returnType="void" output="false" access="public">
-		<cfargument name="data" type="any" required="true">
-
-		<cfset var prop=""/>
-		
-		<cfif isquery(arguments.data)>
-			
-			<cfif arguments.data.recordcount>
-				<cfset setScriptID(arguments.data.scriptID) />
-				<cfset setRunAt(arguments.data.runAt) />
-				<cfset setScriptFile(arguments.data.scriptFile) />
-				<cfset setModuleID(arguments.data.moduleID) />
-				<cfset setDoCache(arguments.data.docache) />
-			</cfif>
-			
-		<cfelseif isStruct(arguments.data)>
-		
-			<cfloop collection="#arguments.data#" item="prop">
-				<cfif isdefined("variables.instance.#prop#")>
-					<cfset evaluate("set#prop#(arguments.data[prop])") />
-				</cfif>
-			</cfloop>
-	
-			
-		</cfif>
-		
-		<cfset validate() />
-		
-</cffunction>
   
-<cffunction name="validate" access="public" output="false" returntype="void">
-	<cfset variables.instance.errors=structnew() />
-</cffunction>
-
-<cffunction name="getErrors" returnType="struct" output="false" access="public">
-    <cfreturn variables.instance.errors />
-</cffunction>
 
 <cffunction name="getScriptID" returntype="String" access="public" output="false">
 	<cfif not len(variables.instance.scriptID)>
 		<cfset variables.instance.scriptID = createUUID() />
 	</cfif>
 	<cfreturn variables.instance.scriptID />
-</cffunction>
-
-<cffunction name="setScriptID" access="public" output="false">
-	<cfargument name="scriptID" type="String" />
-	<cfset variables.instance.scriptID = trim(arguments.scriptID) />
-</cffunction>
-
-
-<cffunction name="getModuleID" returntype="String" access="public" output="false">
-	<cfreturn variables.instance.moduleID />
-</cffunction>
-
-<cffunction name="setModuleID" access="public" output="false">
-	<cfargument name="moduleID" type="String" />
-	<cfset variables.instance.moduleID = trim(arguments.moduleID) />
-</cffunction>
-
-<cffunction name="getRunAt" returntype="String" access="public" output="false">
-	<cfreturn variables.instance.runAt />
-</cffunction>
-
-<cffunction name="setRunAt" access="public" output="false">
-	<cfargument name="runAt" type="String" />
-	<cfset variables.instance.runAt = trim(arguments.runAt) />
-</cffunction>
-
-<cffunction name="getScriptFile" returntype="String" access="public" output="false">
-	<cfreturn variables.instance.scriptFile />
-</cffunction>
-
-<cffunction name="setScriptFile" access="public" output="false">
-	<cfargument name="scriptFile" type="String" />
-	<cfset variables.instance.scriptFile = trim(arguments.scriptFile) />
-</cffunction>
-
-<cffunction name="getDoCache" returntype="String" access="public" output="false">
-	<cfreturn variables.instance.docache />
 </cffunction>
 
 <cffunction name="setDoCache" access="public" output="false">
@@ -151,7 +81,7 @@ to your own modified versions of Mura CMS.
 
 <cffunction name="getQuery"  access="public" output="false" returntype="query">
 	<cfset var rs=""/>
-	<cfquery name="rs" datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+	<cfquery name="rs" datasource="#getBean('configBean').getDatasource()#" username="#getBean('configBean').getDBUsername()#" password="#getBean('configBean').getDBPassword()#">
 	select scriptID, moduleID, scriptfile, runat, docache from tpluginscripts where scriptID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getScriptID()#">
 	</cfquery>
 	
@@ -159,7 +89,7 @@ to your own modified versions of Mura CMS.
 </cffunction>
 
 <cffunction name="delete" access="public" returntype="void">
-	<cfquery datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+	<cfquery datasource="#getBean('configBean').getDatasource()#" username="#getBean('configBean').getDBUsername()#" password="#getBean('configBean').getDBPassword()#">
 	delete from tpluginscripts
 	where scriptID=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#getScriptID()#">
 	</cfquery>
@@ -172,24 +102,24 @@ to your own modified versions of Mura CMS.
 	
 	<cfif getQuery().recordcount>
 		
-		<cfquery datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+		<cfquery datasource="#getBean('configBean').getDatasource()#" username="#getBean('configBean').getDBUsername()#" password="#getBean('configBean').getDBPassword()#">
 		update tpluginscripts set
-			moduleID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getModuleID()#">,
-			runat=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getRunAt()#">,
-			scriptFile=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getScriptFile()#">,
-			docache=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getDoCache()#">
+			moduleID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.moduleID#">,
+			runat=<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.runAt#">,
+			scriptFile=<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.scriptFile#">,
+			docache=<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.doCache#">
 		where scriptID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getScriptID()#">
 		</cfquery>
 		
 	<cfelse>
 	
-		<cfquery datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+		<cfquery datasource="#getBean('configBean').getDatasource()#" username="#getBean('configBean').getDBUsername()#" password="#getBean('configBean').getDBPassword()#">
 			insert into tpluginscripts (scriptID,moduleID,runat,scriptfile,docache) values (
 			<cfqueryparam cfsqltype="cf_sql_varchar" value="#getScriptID()#">,
-			<cfqueryparam cfsqltype="cf_sql_varchar" value="#getModuleID()#">,
-			<cfqueryparam cfsqltype="cf_sql_varchar" value="#getRunAt()#">,
-			<cfqueryparam cfsqltype="cf_sql_varchar" value="#getScriptFile()#">,
-			<cfqueryparam cfsqltype="cf_sql_varchar" value="#getDoCache()#">
+			<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.moduleID#">,
+			<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.runAt#">,
+			<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.scriptFile#">,
+			<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.doCache#">
 			)
 		</cfquery>
 		

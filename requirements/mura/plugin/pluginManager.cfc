@@ -686,7 +686,7 @@ select * from tplugins order by #arguments.orderby#
 <cffunction name="getAttributeBean" returntype="any" output="false">
 <cfargument name="theXML">
 <cfargument name="moduleID">
-	<cfset var bean=createObject("component","mura.plugin.pluginSettingBean").init(variables.configBean)>
+	<cfset var bean=createObject("component","mura.plugin.pluginSettingBean").init()>
 	<cfset bean.set(arguments.theXML,arguments.moduleID)/>
 	
 	<cfreturn bean/>
@@ -1651,11 +1651,11 @@ select * from tplugins order by #arguments.orderby#
 </cffunction>
 
 <cffunction name="getDisplayObjectBean" returntype="any" output="false">
-<cfreturn createObject("component","pluginDisplayObjectBean").init(variables.configBean,this) />
+<cfreturn createObject("component","pluginDisplayObjectBean").init() />
 </cffunction>
 
 <cffunction name="getScriptBean" returntype="any" output="false">
-<cfreturn createObject("component","pluginScriptBean").init(variables.configBean) />
+<cfreturn createObject("component","pluginScriptBean").init() />
 </cffunction>
 
 <cffunction name="purgeEventManagers" returntype="any" output="false">
