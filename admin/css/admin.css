@@ -2914,8 +2914,8 @@ td.scheduled a span {
 	float: left;
 }
 
-.mura-grid a:link {
-	color: #000;
+.mura-grid a:link, .mura-grid-hdr a:link {
+	color: #000 !important;
 	text-decoration: none;
 }
 
