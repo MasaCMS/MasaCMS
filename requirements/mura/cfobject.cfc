@@ -160,4 +160,49 @@ to your own modified versions of Mura CMS.
 <cfset structKeyDelete(variables,arguments.methodName)>
 </cffunction>
 
+	<cffunction name="getAsJSON" access="public" output="false" returntype="String" >
+		<cfset var data = getAsStruct() />
+		
+		<cfreturn serializeJSON( data ) />
+	</cffunction>
+
+	<cffunction name="getAsStruct" access="public" output="false" returntype="struct">
+		<cfset var data			= "">
+		<cfset var iiX			= "">
+		<cfset var subBeans		= StructNew()>
+		<cfset var subData		= StructNew()>
+		<cfset var subItem		= "">
+		<cfset var iiY			= "">
+
+		<cfif not StructKeyExists(this,"getAllValues")>
+			<cfreturn "" />
+		</cfif>
+
+		<cfset data = getAllValues() />
+
+		<cfloop collection="#data#" item="iiX">
+			<cfif isInstanceOf(data[iiX],"cfobject")>
+				<cfset data[iiX] = data[iiX].getAsStruct() />
+			<cfelseif isStruct( data[iiX] ) and StructCount( data[iiX] )>
+				<cfset subBeans = data[iiX] />
+				<cfset subData	= StructNew()>
+
+				<cfloop collection="#subBeans#" item="iiY">
+					<cfset subItem = subBeans[iiY] />
+					<cfif isInstanceOf(subItem,"cfobject")>
+						<cfset subData[iiY] = subItem.getAsStruct() />
+					<cfelseif isStruct(subItem)>
+						<cfset subData[iiY] = subItem />
+					</cfif>
+				</cfloop>
+				<cfif structCount( subData )>
+					<cfset data[iiX] = subData />
+				</cfif>
+			<cfelseif isJSON(data[iiX])>
+				<cfset data[iiX] = deserializeJSON( data[iiX] ) />
+			</cfif> 
+		</cfloop>
+		
+		<cfreturn data />
+	</cffunction>
 </cfcomponent>

@@ -1,0 +1,176 @@
+/* @override 
+	http://localhost:8500/muracms/admin/css/formbuilder/templatebuilder/template-form.css */
+/*
+<!---
+||PACKAGENAMELICENSE||
+--->
+*/
+/* @start meld-tb-form
+============================================================================================= */
+.meld-tb-form {
+/*float: right;
+width: 100%;*/
+}
+.meld-tb-form .meld-tb-header {
+	padding: 0;
+	/*background-color: #ccc;*/
+	height: 20px;
+	margin: 0 0 10px;
+	border-top-right-radius: 4px;
+	-moz-border-radius-topright: 4px;
+	-webkit-border-top-right-radius: 4px;
+	border-top-left-radius: 4px;
+	-moz-border-radius-topleft: 4px;
+	-webkit-border-top-left-radius: 4px;
+}
+.meld-tb-form .meld-tb-header h3 {
+	font-size: 15px;
+	color: #666;
+	float: left;
+	margin: 2px 0 0 0;
+}
+
+.meld-tb-form .meld-tb-header h3 span {
+	font-size: 15px;
+	font-weight: bold;
+}
+
+.meld-tb-form .btn-wrap {
+	text-align: center;
+}
+
+.meld-tb-form input.button,.meld-tb-form input.submit {
+	/*margin: 1px 3px;
+	border-radius: 4px;
+	-moz-border-radius: 4px;
+	-webkit-border-radius: 4px;
+	-moz-box-shadow: 1px 1px 1px #aaa;
+	-webkit-box-shadow: 1px 1px 1px #aaa;*/
+}
+.meld-tb-form input:active.button,.meld-tb-form input:active.submit {
+	-moz-box-shadow: none;
+	-webkit-box-shadow: none;
+}
+.meld-tb-form input.ui-icon {
+	width: 18px;
+	height: 18px;
+}
+.meld-tb-form select {
+	/*border: 1px solid #aaa;*/
+	margin: 0;
+	padding: 1px;
+	float: left;
+}
+.template-form {
+	list-style: none;
+	padding: 10px;
+	margin-bottom: 4px;
+	background: #e7e7e7;
+	border-radius: 4px;
+	-moz-border-radius: 4px;
+	-webkit-border-radius: 4px;
+}
+#meld-tb-fields-settings .ui-tabs .ui-tabs-nav {
+	background: none;
+	border: 0;
+}
+
+
+#meld-tb-fields-settings {
+	float: right;
+	width: 46%;
+	padding: 2%;
+}
+
+.template-form li {
+	line-height: 27px;
+	overflow: hidden;
+	clear: both;
+}
+.meld-tb-form label {
+	display: block;
+	margin: 0 1em 0 0;
+	clear: none;
+	float: left;
+	width: 25%;
+	text-align: right;
+	line-height: 27px !important;
+}
+.meld-tb-form input.long {
+	width: 69%;
+}
+.meld-tb-form textarea {
+	width: 69%;
+	/*font-size: 9pt;*/
+}
+#meld-plugin .columns div.col2.wide input.long {
+	width: 300px;
+}
+.meld-tb-form .col2 input.long {
+	width: 200px;
+}
+.meld-tb-form .col3 input.long {
+	width: 100px;
+}
+.meld-tb-form li.checkbox input {
+	/*height: 18px;
+	margin: 5px 5px 5px 60px;
+	float: left;*/
+}
+/*.meld-tb-form li.checkbox label {
+	margin: 0;
+	padding: 0;
+	width: auto;
+	font-weight: bold;
+}*/
+#datasource-new {
+	border-top: 1px solid #aaa;
+}
+input.disabled {
+	border: 0;
+	background-color: #eee;
+}
+
+.ui-button {
+	border: 1px solid #c2c2c2 !important;	
+}
+.ui-icon-formfield {
+	background-image: url(images/ui-icons-form-basic.png) !important;
+	background-repeat: no-repeat;
+	width: 24px;
+	height: 20px;
+	border: 1px solid #f2f2f2 !important;
+	padding: 5px;
+	border-radius: 4px;
+	-moz-border-radius: 4px;
+	-webkit-border-radius: 4px;
+}
+#meld-templatebuilder .ui-button-text {
+	height: 32px;
+	line-height: 32px;
+	padding: 0 10px;
+}
+
+/*.ui-icon-formfield-field { background-position: 0 0; }*/
+.ui-icon-formfield-section { background-image: none !important; width: auto; }
+.ui-icon-formfield-textfield { background-position: 5px 5px; }
+.ui-icon-formfield-textarea { background-position: -28px 5px; }
+.ui-icon-formfield-radiobox { background-position: -157px 5px; }
+.ui-icon-formfield-checkbox { background-position: -126px 5px; }
+.ui-icon-formfield-select { background-position: -61px 5px; }
+
+#meld-tb-fields .selected {
+	background-color: #ffebeb !important;
+	/*border: 1px dotted #ff4747 !important;*/
+}
+#meld-tb-field .selected {
+	border: 1px solid orange !important;
+}
+
+
+/*.ui-icon-formfield-hidden { background-position: -233px 0; }*/
+/*.ui-icon-formfield-form { background-position: -96px 0; }*/
+
+
+/* @end meld-tb-form
+=================== */

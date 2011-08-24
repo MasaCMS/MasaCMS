@@ -1,0 +1,112 @@
+/* @override 
+	http://localhost:8500/muracms/admin/css/formbuilder/templatebuilder/grid.css */
+
+#meld-tb-grid-padding {
+	margin: 0 7px;
+	background-color: #ddd;
+}
+#meld-tb-grid-table-header {
+	padding: 0;
+	height: 21px;
+	font-size: 11px;
+	font-weight: bold;
+	clear: both;
+	width: 100%;
+	color: #666;
+	background: #666;
+	overflow: hidden;
+}
+#meld-tb-grid-table {
+	width: 100%;
+	max-height: 600px;
+	overflow-y: auto;
+}
+#meld-tb-grid-table-header li {
+	list-style: none;
+	padding: 0 15px;
+	margin: 0;
+	text-align: left;
+	overflow: hidden;
+}
+#meld-tb-grid-table li {
+	list-style: none;
+	overflow: hidden;
+	background-color: #f9f9f9;
+	margin: 0;
+	padding: 0;
+	text-align: left;
+}
+#meld-tb-grid-table li span, #meld-tb-grid-table-header li span {
+	display: block;
+	float: left;
+	margin: 0 2px;
+	color: #fff;
+}
+#meld-tb-grid li .meld-tb-cell {
+	width: 150px;
+	padding: 3px 0;
+}
+
+/*#meld-tb-grid li .meld-tb-cell-small {
+	width: 15px !important;
+}*/
+
+#meld-tb-grid .btnDelete {
+	display: block;
+	text-indent: -9999px;
+	width: 14px !important;
+	height: 28px;
+	margin-right: 6px;
+	padding: 0 !important;
+	background: transparent url('images/data-delete.png') no-repeat center center;
+	float: right;
+}
+
+#meld-tb-grid li span.handle {
+	width: 10px !important;
+	height: 28px;
+	padding: 0 !important;
+	background: transparent url('images/data-handle.png') no-repeat center center;
+}
+
+#meld-tb-grid .meld-tb-grid-display {
+	padding: 2px 0px 0 4px;
+	overflow: hidden;
+	height: 18px;
+	background-color: #c7d7e2;
+}
+#meld-tb-grid-message {
+	margin: 0 10px;
+	padding: 3px 10px;
+	border: 1px solid #ffc488;
+	background-color: #fff9f2;
+}
+#meld-tb-grid-table li span input {
+	width: 90%;
+	/*margin: 3px 5px !important;*/
+	/*background-color: #f5f8fa;*/
+	/*border: 1px solid #aaa;*/
+}
+#meld-tb-grid-table .button {
+	float: right;
+	margin-right: 5px;
+}
+#meld-tb-grid-table .meld-tb-grid-handle {
+	border: 0;
+	background: red !important;
+	float: left;	
+	width: 16px;
+	height: 27px;
+	margin: -3px;
+	display: none;
+}
+#meld-tb-grid-table li.alt {
+	background-color: #ffffff;
+}
+#meld-tb-grid-table li.alt span input {
+	background-color: #fafafa;
+}
+#meld-tb-grid-table li.alt .meld-tb-grid-display {
+	background-color: #eee;
+}
+

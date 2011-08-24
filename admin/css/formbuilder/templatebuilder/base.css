@@ -1,0 +1,220 @@
+/* @override 
+	http://localhost:8500/muracms/admin/css/formbuilder/templatebuilder/base.css */
+
+@import "grid.css";
+
+#meld-formdata {
+	display: none;
+}
+
+#meld-templatebuilder {
+	/*height: 500px;*/
+	border: 1px solid #c2c2c2;
+	background-color: #f9f9f9;
+	-webkit-border-top-left-radius: 5px;
+	-webkit-border-top-right-radius: 5px;
+	-moz-border-radius-topleft: 5px;
+	-moz-border-radius-topright: 5px;
+	border-top-left-radius: 5px;
+	border-top-right-radius: 5px;
+}
+
+#meld-tb {
+	border: 1px solid #c2c2c2;
+	padding: 5px;
+	border-radius: 8px;
+	-moz-border-radius: 8px;
+	-webkit-border-radius: 8px;
+}
+.meld-tb-menu {
+	border-bottom: 1px solid #a6a6a6;
+	background: url('images/ui-toolbar-bg.jpg') repeat-x;
+	padding: 4px;
+	height: 34px; /*
+	border-radius: 4px;
+	-moz-border-radius: 4px;
+	-webkit-border-radius: 4px;*/
+}
+.meld-tb-menu ul.right,.meld-tb-header ul.right {
+	margin: 0;
+	padding: 0;
+	float: right;
+}
+.meld-tb-menu li,.meld-tb-header li {
+	list-style: none;
+	float: left;
+	margin: 0 1px 0 1px;
+}
+.meld-tb-menu li.spacer,.meld-tb-header li.spacer {
+	display: block;
+	height: 28px;
+	padding: 2px 3px;
+	margin-left: 4px;
+	border-left: 1px dotted #aaa;
+}
+.ui-button {
+	display: block;
+	padding: /*5px*/;
+	border: 1px solid #dcdcdc;
+	background-color: #eee;
+	border-radius: 4px;
+	-moz-border-radius: 4px;
+	-webkit-border-radius: 4px;
+}
+.ui-button.noframe {
+	border: 0;
+	padding: 0;
+	margin: -3px 0 0 -3px;
+}
+.ui-button:hover {
+	background-color: #fff;
+}
+.ui-button:active {
+	background-color: #ddd;
+}
+
+.meld-tb-form #ui-tabs {
+	background: transparent;
+}
+
+.meld-tb-form .ui-tabs-nav {
+	/*height: 26px !important;*/
+	padding-bottom: 0 !important;
+	border-bottom: 0 !important;
+	background: transparent !important;
+}
+
+.meld-tb-form .ui-tabs-nav li {
+	margin-left: 0 !important;
+}
+
+.ui-tabs-nav li a,.ui-tabs .ui-tabs-nav li a {
+	background-color: #ccc;
+	padding: 0.25em 1em;
+}
+
+.ui-tabs-nav li.ui-tabs-selected a {
+	background-color: #e7e7e7;
+}
+
+.meld-tb-form .ui-tabs-panel {
+	padding-top: 0;
+	border-top: 0;
+}
+
+.meld-tb-header li div {
+	padding: 1px;
+}
+
+.meld-tb-menu .right {
+	float: right;
+}
+
+/*#button-trash .ui-icon {
+	background: url('../../../images/icons/delete_on.png') no-repeat;
+}*/
+
+#meld-tb-form {
+	border-top: 1px solid #d1d1d1;
+	background: url('images/bg-divider.png') repeat-y top center; 
+}
+#meld-tb-form-fields {
+	width: 46%;
+	padding: 2%;
+	float: left;
+	background-color: #f9f9f9;
+}
+.meld-tb-data-form {
+	margin: 0 0 12px !important;
+	padding: 0 !important;
+	width: 100%;
+}
+#meld-tb-fields {
+	list-style: none;
+	overflow-y: auto;
+	margin: 0;
+}
+
+#meld-tb-fields li div.field {
+	margin: 0 0 5px 0;
+	padding: 10px 10px 10px 44px;
+	background-repeat: no-repeat;
+	background-position: 10px center;
+	background-color: #f2f2f2;
+	border-radius: 4px;
+	/*border: 1px solid #f9f9f9;*/
+	-moz-border-radius: 4px;
+	-webkit-border-radius: 4px;
+	cursor: move;
+}
+
+#meld-tb-fields li div#selected.field {
+	background-color: #FFEBEB;
+	/*border: 1px dotted #FF4747;*/
+}
+
+#meld-tb-fields li.field-textfield div {
+	background-image: url('images/frm_textfield.png');
+}
+#meld-tb-fields li.field-textarea div {
+	background-image: url('images/frm_textarea.png');
+}
+#meld-tb-fields li.field-dropdown div {
+	background-image: url('images/frm_dropdown.png');
+}
+#meld-tb-fields li.field-radio div {
+	background-image: url('images/frm_radio.png');
+}
+#meld-tb-fields li.field-checkbox div {
+	background-image: url('images/frm_checkbox.png');
+}
+
+#meld-tb-fields li div.section {
+	/*border: 1px solid #aaa;*/
+	background-color: #ccc;
+	margin: 0 0 5px 0;
+	padding: 5px;
+	border-radius: 3px;
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+}
+#meld-tb-field,#meld-tb-dataset,#meld-tb-grid {
+	
+}
+
+#meld-tb-dataset {
+	padding-top: 0;
+	/*float: right;*/
+	clear: left;
+}
+
+.columns {
+	margin: 0 10px;
+}
+.columns.topbordered {
+	border-top: 1px solid #aaa;
+	margin-top: 10px;
+	padding-top: 10px;
+}
+.columns .bordered {
+	border-right: 1px solid #aaa;
+}
+.columns div.col2 {
+	width: 49%;
+	float: left;
+	display: block;
+	margin: 0 5px 0 0;
+}
+.columns div.col2.wide {
+	width: 65%;
+}	
+.columns div.col2.right {
+	width: 49%;
+	display: block;
+	margin: 0 0 0 5px;
+}
+.columns div.col3 {
+	width: 31%;
+	margin-left: 5px;
+	float: left;
+}

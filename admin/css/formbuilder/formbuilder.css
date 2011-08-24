@@ -1,0 +1,57 @@
+#meld-formbuilder {
+	border: 1px solid #e6efe2;
+	padding: 5px;
+	border-radius: 8px;
+	-moz-border-radius: 8px;
+	-webkit-border-radius: 8px;
+}
+#meld-formbuilder-masthead {
+	border: 1px solid #e6efe2;
+	background-color: #eef4ec;
+	padding: 5px;
+	height: 25px;
+	border-radius: 4px;
+	-moz-border-radius: 4px;
+	-webkit-border-radius: 4px;
+}
+#meld-formbuilder-form {
+	margin: 5px 0;
+}
+#meld-formbuilder-fields {
+	float: left;
+	width: 150px;
+	min-height: 300px;
+	border: 1px solid #e6efe2;
+	background-color: #eef4ec;
+	padding: 5px;
+	height: 30px;
+	border-radius: 4px;
+	-moz-border-radius: 4px;
+	-webkit-border-radius: 4px;
+	overflow-y: scroll;
+}
+#meld-formbuilder-field-list {
+	list-style: none;
+}
+#meld-formbuilder-field-list li div.field {
+	border: 1px solid #aaa;
+	background-color: #d6bcad;
+	margin: 5px 0;
+	padding: 5px;
+	min-height: 40px;
+	border-radius: 3px;
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+}
+#meld-formbuilder-field {
+	float: right;
+	width: 635px;
+	min-height: 200px;
+	border: 1px solid #eee;
+	background-color: #fafafa;
+	padding: 5px;
+	height: 30px;
+	border-radius: 4px;
+	-moz-border-radius: 4px;
+	-webkit-border-radius: 4px;
+}

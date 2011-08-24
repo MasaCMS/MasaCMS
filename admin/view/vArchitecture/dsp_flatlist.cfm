@@ -76,7 +76,14 @@ to your own modified versions of Mura CMS.
 <h2>#application.rbFactory.getKeyValue(session.rb,'sitemanager.componentmanager')#</h2>	
 </cfif>
 
-<ul id="navTask"><cfif attributes.moduleid eq '00000000000000000000000000000000003'><li><a href="index.cfm?fuseaction=cArch.edit&type=Component&contentid=&topid=#URLEncodedFormat(attributes.topid)#&parentid=#attributes.topid#&siteid=#URLEncodedFormat(attributes.siteid)#&moduleid=#attributes.moduleid#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.addcomponent')#</a></li><cfelse><li><a href="index.cfm?fuseaction=cArch.edit&type=Form&contentid=&topid=#URLEncodedFormat(attributes.topid)#&parentid=#attributes.topid#&siteid=#URLEncodedFormat(attributes.siteid)#&moduleid=#attributes.moduleid#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.addform')#</a></li></cfif></ul>
+<ul id="navTask">
+	<cfif attributes.moduleid eq '00000000000000000000000000000000003'>
+	<li><a href="index.cfm?fuseaction=cArch.edit&type=Component&contentid=&topid=#URLEncodedFormat(attributes.topid)#&parentid=#attributes.topid#&siteid=#URLEncodedFormat(attributes.siteid)#&moduleid=#attributes.moduleid#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.addcomponent')#</a></li>
+	<cfelse>
+	<li><a href="index.cfm?fuseaction=cArch.edit&type=Form&contentid=&topid=#URLEncodedFormat(attributes.topid)#&parentid=#attributes.topid#&siteid=#URLEncodedFormat(attributes.siteid)#&moduleid=#attributes.moduleid#&formType=builder">#application.rbFactory.getKeyValue(session.rb,'sitemanager.addformwithbuilder')#</a></li>
+	<li><a href="index.cfm?fuseaction=cArch.edit&type=Form&contentid=&topid=#URLEncodedFormat(attributes.topid)#&parentid=#attributes.topid#&siteid=#URLEncodedFormat(attributes.siteid)#&moduleid=#attributes.moduleid#&formType=legacy">#application.rbFactory.getKeyValue(session.rb,'sitemanager.addformwitheditor')#</a></li>
+	</cfif>
+</ul>
 
   <h3 class="alt">#application.rbFactory.getKeyValue(session.rb,'sitemanager.filterview')#:</h3>
   <form novalidate="novalidate" id="filterByTitle" action="index.cfm" method="get">
