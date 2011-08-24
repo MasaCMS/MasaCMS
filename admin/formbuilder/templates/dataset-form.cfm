@@ -1,17 +1,11 @@
 <cfoutput>
-			<!---<div id="dataset-form" class="meld-tb-header">
-			<h3>#mmRBF.getKeyValue(session.rb,'formbuilder.dataset.form')#: <span id="meld-template-form-label"></span></h3>	
-			</div>--->
-			
-			<div class="ui-tabs" id="ui-tabs">
-			
-				<ul class="ui-tabs-nav">
-					<li class="ui-state-default ui-corner-top ui-tabs-selected"><a href="##meld-tb-form-tab-source"><span>Source</span></a></li>
-					<li class="ui-state-default ui-corner-top"><a href="##meld-tb-form-tab-advanced"><span>List</span></a></li>
-				</ul>
-				
-				<div class="ui-tabs-panel" id="meld-tb-form-tab-source">
-		<div id="meld-tb-dataset" class="meld-tb-form">
+	<div class="ui-tabs">
+		<ul class="ui-tabs-nav">
+			<li title="#mmRBF.getKeyValue(session.rb,'formbuilder.dataset.edit')#" class="ui-state-active ui-corner-top ui-tabs-selected"><a href="javascript:void(null);"><span>Source</span></a></li>
+			<li id="button-grid-grid" class="ui-state-default ui-corner-top"><a href="javascript:void(null);"><span>List</span></a></li>
+		</ul>
+			<div class="ui-tabs-panel" id="meld-tb-form-tab-source">
+			<div id="meld-tb-dataset" class="meld-tb-form">
 			
 					<ul class="template-form">
 						<li>

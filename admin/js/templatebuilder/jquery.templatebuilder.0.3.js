@@ -107,27 +107,7 @@
 			jQuery("#meld-templatebuilder .meld-tb-menu div").each( function(){
 				var $btn = jQuery(this);
 				$btn.click( function() {
-					switch ( jQuery(this).attr('id') ) {
-						case 'button-save': {
-							goSaveForm();
-						}
-						break;
-						case 'button-form': {
-							goLoadForm();
-						}
-						break;
-						case 'button-show': {
-							alert( myDump( _formData ,"","  ",0,30) );
-						}
-						break;
-						case 'button-grid-edit': {
-							
-						}
-						break;
-						default:
-							goLoadField( jQuery(this).attr('data-object'),_formData.formid );
-						break;
-					}
+					goLoadField( jQuery(this).attr('data-object'),_formData.formid );
 				});
 			});
 			jQuery("#meld-tb-fields li div").live( 'click', function() {
@@ -346,6 +326,17 @@
 				jQuery('.meld-tb-grp-sorted').hide();
 			}
 
+			if(_currentDataset.sourcetype.length == 0) {
+				jQuery('#button-grid-grid',$_dataset).unbind();
+				jQuery('#button-grid-grid',$_dataset).hide();	
+			}
+			else {
+				jQuery('#button-grid-grid',$_dataset).show();
+				jQuery('#button-grid-grid',$_dataset).click(function() {
+					doDataset();
+				});
+			}
+
 			jQuery('#meld-tb-dataset-sourcetype').val( _currentDataset.sourcetype );
 			jQuery('#meld-tb-dataset-issorted').val( _currentDataset.issorted );
 			jQuery('#meld-tb-dataset-sorttype').val( _currentDataset.sorttype );
@@ -369,6 +360,8 @@
 				jQuery('.meld-tb-dsi').hide();
 				
 				_currentDataset.sourcetype = jQuery(this).val();
+				jQuery('#button-grid-grid',$_dataset).unbind();
+				jQuery('#button-grid-grid',$_dataset).hide();	
 				
 				if( _currentDataset.sourcetype == "entered") {
 					jQuery('.meld-tb-grp-entered').show();						
@@ -425,7 +418,8 @@
 			var data		= _dataSets[datasetID];
 
 
-			jQuery('.ui-button',$_grid).unbind();
+			jQuery('.ui-tabs-nav li',$_grid).unbind();
+
 			$_grid.html( _templates['dataset-grid'] );
 
 			$_gridtable	= jQuery('#meld-tb-grid-table');
@@ -433,16 +427,21 @@
 
 			setDataMode('edit');
 
-			jQuery('.ui-button',$_grid).click(function() {
-				switch ( jQuery(this).attr('id') ) {
-					case 'button-grid-dump': {
-						alert( myDump( data ,"","  ",0,30) );
-					}
-					break;
-					case 'button-grid-edit': {
+			$_grid.html(_templates['dataset-sourced']);
+
+			jQuery('.ui-tabs-nav li',$_grid).click(function() {
+				switch (jQuery(this).attr('id')) {
+					case 'button-grid-edit':{
 						doDatasetForm();
 					}
 					break;
+				}
+			});
+
+
+
+			jQuery('.ui-button',$_grid).click(function() {
+				switch ( jQuery(this).attr('id') ) {
 					case 'button-grid-add': {
 						doRenderRow();
 					}

@@ -70,12 +70,11 @@ width: 100%;*/
 	-moz-border-radius: 4px;
 	-webkit-border-radius: 4px;
 }
-
-#ui-tabs .template-form {
-	-webkit-border-top-left-radius: 0;
-	-moz-border-radius-topleft: 0;
-	border-top-left-radius: 0;
+#meld-tb-fields-settings .ui-tabs .ui-tabs-nav {
+	background: none;
+	border: 0;
 }
+
 
 #meld-tb-fields-settings {
 	float: right;

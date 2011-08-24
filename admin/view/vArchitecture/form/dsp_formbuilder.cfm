@@ -70,8 +70,6 @@
 					</div>
 				</div>
 				<div id="meld-tb-dataset-form" class="meld-tb-data-form">
-					<div id="meld-tb-dataset">
-					</div>
 				</div>
 				<div id="meld-tb-grid">
 				</div>

@@ -88,11 +88,12 @@
 	margin-left: 0 !important;
 }
 
-.meld-tb-form .ui-tabs-nav li a {
+.ui-tabs-nav li a,.ui-tabs .ui-tabs-nav li a {
 	background-color: #ccc;
+	padding: 0.25em 1em;
 }
 
-.meld-tb-form .ui-tabs-nav li.ui-tabs-selected a {
+.ui-tabs-nav li.ui-tabs-selected a {
 	background-color: #e7e7e7;
 }
 
