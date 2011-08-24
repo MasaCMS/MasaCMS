@@ -97,7 +97,7 @@ to your own modified versions of Mura CMS.
 	<!--- Code to help avoid object creation for beans --->
 	<cfif arguments.beanName eq "configBean">
 		<cfreturn application.configBean>
-	<cfelseif listFindNoCase("feed,content,user,group,category,mailingList,member,creative,placement,adzone,campaign,changeset,stats",arguments.beanName)
+	<cfelseif application.configBean.getValue("duplicateTransients") and listFindNoCase("feed,content,user,group,category,mailingList,member,creative,placement,adzone,campaign,changeset,stats",arguments.beanName)
 		or findNoCase("iterator",arguments.beanName)
 		or findNoCase("bean",arguments.beanName)>
 		<cfif not structKeyExists(application.transients,arguments.beanName)>

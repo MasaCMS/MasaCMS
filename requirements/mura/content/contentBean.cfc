@@ -137,6 +137,7 @@ to your own modified versions of Mura CMS.
 	<cfset variables.instance.Display = 1 />
 	<cfset variables.instance.ParentID = "" />
 	<cfset variables.instance.newFile = "" />
+	<cfset variables.instance.type = "Page" />
 	<cfset variables.instance.subType = "Default" />
 	
 	<cfif isDefined("session.mura") and session.mura.isLoggedIn>
