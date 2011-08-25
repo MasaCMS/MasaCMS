@@ -164,7 +164,7 @@ input.disabled {
 	/*border: 1px dotted #ff4747 !important;*/
 }
 #meld-tb-field .selected {
-	border: 1px solid orange !important;
+	border: 1px dotted #ff4747 !important;
 }
 
 

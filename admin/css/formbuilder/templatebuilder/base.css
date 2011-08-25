@@ -76,6 +76,10 @@
 .meld-tb-form #ui-tabs {
 	background: transparent;
 }
+.ui-tabs .ui-tabs .ui-tabs-nav li {
+	border: 1px solid transparent !important;
+	margin-left: 2px !important;
+}
 
 .meld-tb-form .ui-tabs-nav {
 	/*height: 26px !important;*/

@@ -6,15 +6,17 @@
 	background-color: #ddd;
 }
 #meld-tb-grid-table-header {
+	background: url('images/ui-toolbar-bg.jpg') repeat-x scroll 0 0 transparent;
 	padding: 0;
-	height: 21px;
 	font-size: 11px;
 	font-weight: bold;
 	clear: both;
 	width: 100%;
-	color: #666;
-	background: #666;
 	overflow: hidden;
+	
+}
+#meld-tb-grid-table-header .nohandle {
+	margin-left: -15px;
 }
 #meld-tb-grid-table {
 	width: 100%;
@@ -35,31 +37,43 @@
 	margin: 0;
 	padding: 0;
 	text-align: left;
+	border-bottom: 1px solid #eee;
 }
 #meld-tb-grid-table li span, #meld-tb-grid-table-header li span {
 	display: block;
 	float: left;
 	margin: 0 2px;
-	color: #fff;
+	color: #000;
+	line-height: 18px !important;
 }
 #meld-tb-grid li .meld-tb-cell {
 	width: 150px;
 	padding: 3px 0;
 }
 
-/*#meld-tb-grid li .meld-tb-cell-small {
+#meld-tb-grid li .meld-tb-cell-small {
 	width: 15px !important;
-}*/
+}
 
-#meld-tb-grid .btnDelete {
+.meld-tb-cell .button-grid-row-delete {
 	display: block;
 	text-indent: -9999px;
 	width: 14px !important;
-	height: 28px;
+	height: 22px;
+	border: 0 !important;
 	margin-right: 6px;
 	padding: 0 !important;
 	background: transparent url('images/data-delete.png') no-repeat center center;
 	float: right;
+}
+#button-grid-add {
+	width: 65px !important;
+	height: 22px;
+	border: 0 !important;
+	padding: 5px 0 0 20px;
+	text-align: left;
+	margin: 5px 8px;
+	background: #ccc url('images/data-add.png') no-repeat 5px center;
 }
 
 #meld-tb-grid li span.handle {
@@ -84,27 +98,27 @@
 #meld-tb-grid-table li span input {
 	width: 90%;
 	/*margin: 3px 5px !important;*/
-	/*background-color: #f5f8fa;*/
-	/*border: 1px solid #aaa;*/
+	padding: 2px;
+	background-color: #fcfcfc;
+	border: 1px solid #ddd;
 }
 #meld-tb-grid-table .button {
 	float: right;
 	margin-right: 5px;
 }
-#meld-tb-grid-table .meld-tb-grid-handle {
-	border: 0;
-	background: red !important;
+.meld-tb-grid-handle {
+	background: transparent url('images/data-handle.png') no-repeat center 5px;
 	float: left;	
-	width: 16px;
-	height: 27px;
-	margin: -3px;
+	width: 8px;
+	height: 20px;
+	margin: 15px 2px;
 	display: none;
 }
 #meld-tb-grid-table li.alt {
-	background-color: #ffffff;
+/*	background-color: #ffffff; */
 }
 #meld-tb-grid-table li.alt span input {
-	background-color: #fafafa;
+	background-color: #fff;
 }
 #meld-tb-grid-table li.alt .meld-tb-grid-display {
 	background-color: #eee;

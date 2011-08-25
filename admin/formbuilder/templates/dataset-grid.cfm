@@ -18,7 +18,7 @@
 					</ul>
 					</div>
 				</div>
-				||<div id="button-grid-add" title="#mmRBF.getKeyValue(session.rb,'formbuilder.dataset.add')#"></div>||
+			<div class="ui-button" id="button-grid-add" title="#mmRBF.getKeyValue(session.rb,'formbuilder.dataset.add')#">#mmRBF.getKeyValue(session.rb,'formbuilder.dataset.add')#</div>
 		</div>
 		</div>
 	</div>

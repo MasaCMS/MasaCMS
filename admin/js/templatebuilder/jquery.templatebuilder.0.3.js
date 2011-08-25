@@ -545,12 +545,9 @@
 			var $row		= jQuery(row);
 
 			
-			//isInSet
-			$cell = jQuery(cell);
-			$cell.addClass('meld-tb-cell-small');
-			$row.append($cell);
 			$cell = jQuery(cell);
 			$cell.addClass('meld-tb-cell-input');
+			$cell.addClass('meld-tb-cell-label');
 			$cell.html( jQuery('#element-labels #label',$rowHTML).html() );
 			$row.append($cell);
 
@@ -565,7 +562,7 @@
 			$_gridhead.append($row);
 
 			jQuery(".meld-tb-cell-input",$row).each( function() {
-				jQuery(this).width( (550/(settings.dataColumns.length+2)) );
+				jQuery(this).width( (480/(settings.dataColumns.length+2)) );
 			});
 		}
 		
@@ -628,18 +625,6 @@
 			$row = jQuery(row);
 			$row.attr('id',record.datarecordid);
 
-			{
-				// isInSet
-				$cell = jQuery(cell);
-				$cell.addClass('meld-tb-cell-small');
-				$checkbox = jQuery(checkbox);
-				$checkbox.attr('data-id', record.datarecordid);
-				$checkbox.attr('name', 'isinset');
-				$checkbox.attr('checked', record.isinset == 1);
-				$cell.append($checkbox);
-				$row.append($cell);
-			}
-			
 			// label
 			$cell = jQuery(cell);
 
@@ -648,6 +633,14 @@
 			$input.attr('data-id', record.datarecordid);
 			$input.attr('name', 'label');
 			$input.val(record.label);
+			if(data.issorted != 1) {
+				jQuery("#meld-tb-grid-table-header li").removeClass('nohandle');
+				$row.append(handle);
+			}
+			else {
+				jQuery("#meld-tb-grid-table-header li").addClass('nohandle');
+			}
+
 			$cell.append($input);
 			$row.append($cell);
 			
@@ -665,23 +658,17 @@
 				$row.append($cell);
 			}
 			
-			if(data.issorted != 1) {
-				$row.css('border-right','15px solid #435f8b');
-			}
-
-			if (editMode || record.config.isphantom == 1) {
-				// delete
-				$cell = jQuery(cell);
-				$cell.addClass('meld-tb-cell-small button');
-				$bt_delete = jQuery(bt_delete);
-				$bt_delete.attr('data-id', record.datarecordid);
-				$cell.append($bt_delete);
-				$row.append($cell);
-			}
-
 			jQuery(".meld-tb-cell-input",$row).each( function() {
-				jQuery(this).width( (550/(settings.dataColumns.length+2)) );
+				jQuery(this).width( (480/(settings.dataColumns.length+2)) );
 			});
+
+			// delete
+			$cell = jQuery(cell);
+			$cell.addClass('meld-tb-cell-small button');
+			$bt_delete = jQuery(bt_delete);
+			$bt_delete.attr('data-id', record.datarecordid);
+			$cell.append($bt_delete);
+			$row.append($cell);
 
 			$_gridtable.append($row);
 
