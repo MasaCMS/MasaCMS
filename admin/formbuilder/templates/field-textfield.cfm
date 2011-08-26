@@ -77,7 +77,7 @@
 						<li class="checkbox">
 							<label for="isrequired">
 							#mmRBF.getKeyValue(session.rb,'formbuilder.field.isrequired')#</label>
-							<input type="checkbox" type="text" name="isrequired" value="1">
+							<input type="checkbox" name="isrequired" value="1">
 						</li>
 					</ul>
 				</div>

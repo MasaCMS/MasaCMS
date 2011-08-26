@@ -108,7 +108,7 @@
 							if( self.source[item] == 1)
 								$field.attr("CHECKED", "CHECKED");
 							else
-								$field.attr("checked", "");							
+								$field.removeAttr("checked");							
 
 							if(settings.createOnDataNull || self.source[item] != undefined)
 								self.source[item] = jQuery(this).is(':checked') ? jQuery(this).val() : 0;
@@ -159,7 +159,7 @@
 							if( $field.val() == self.source[item])
 								$field.attr("CHECKED","CHECKED");
 							else
-								$field.attr("CHECKED", "");							
+								$field.removeAttr("checked");							
 
 							if(settings.createOnDataNull || self.source[item] != undefined)
 								self.source[item] = jQuery(this).val();

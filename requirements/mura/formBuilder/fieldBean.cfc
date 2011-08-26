@@ -8,7 +8,7 @@
 	<cfproperty name="Label" type="string" default="" maxlength="50" />
 	<cfproperty name="Rblabel" type="string" default="" maxlength="100" />
 	<cfproperty name="Cssstyle" type="string" default="" maxlength="50" />
-	<cfproperty name="TextTip" type="string" default="" maxlength="250" />
+	<cfproperty name="ToolTip" type="string" default="" maxlength="250" />
 	<cfproperty name="OrderNo" type="numeric" default="0" required="true" />
 	<cfproperty name="IsLocked" type="boolean" default="0" required="true" />
 	<cfproperty name="IsActive" type="boolean" default="0" required="true" />
@@ -42,7 +42,7 @@
 		<cfargument name="Label" type="string" required="false" default="" />
 		<cfargument name="Rblabel" type="string" required="false" default="" />
 		<cfargument name="Cssstyle" type="string" required="false" default="" />
-		<cfargument name="TextTip" type="string" required="false" default="" />
+		<cfargument name="ToolTip" type="string" required="false" default="" />
 		<cfargument name="OrderNo" type="numeric" required="false" default="0" />
 		<cfargument name="IsLocked" type="boolean" required="false" default="0" />
 		<cfargument name="IsActive" type="boolean" required="false" default="1" />
@@ -76,7 +76,7 @@
 		<cfset setLabel( arguments.Label ) />
 		<cfset setRblabel( arguments.Rblabel ) />
 		<cfset setCssstyle( arguments.Cssstyle ) />
-		<cfset setTextTip( arguments.TextTip ) />
+		<cfset setToolTip( arguments.ToolTip ) />
 		<cfset setOrderNo( arguments.OrderNo ) />
 		<cfset setIsLocked( arguments.IsLocked ) />
 		<cfset setIsActive( arguments.IsActive ) />
@@ -174,12 +174,12 @@
 		<cfreturn variables.instance.Cssstyle />
 	</cffunction>
 	
-	<cffunction name="setTextTip" access="public" returntype="void" output="false">
-		<cfargument name="TextTip" type="string" required="true" />
-		<cfset variables.instance['texttip'] = arguments.TextTip />
+	<cffunction name="setToolTip" access="public" returntype="void" output="false">
+		<cfargument name="ToolTip" type="string" required="true" />
+		<cfset variables.instance['tooltip'] = arguments.ToolTip />
 	</cffunction>
-	<cffunction name="getTextTip" access="public" returntype="string" output="false">
-		<cfreturn variables.instance.TextTip />
+	<cffunction name="getToolTip" access="public" returntype="string" output="false">
+		<cfreturn variables.instance.ToolTip />
 	</cffunction>
 	
 	<cffunction name="setOrderNo" access="public" returntype="void" output="false">
@@ -216,7 +216,7 @@
 	
 	<cffunction name="setIsRequired" access="public" returntype="void" output="false">
 		<cfargument name="IsRequired" type="boolean" required="true" />
-		<cfset variables.instance['IsRequired'] = arguments.IsRequired />
+		<cfset variables.instance['isrequired'] = arguments.IsRequired />
 	</cffunction>
 	<cffunction name="getIsRequired" access="public" returntype="boolean" output="false">
 		<cfreturn variables.instance.IsRequired />

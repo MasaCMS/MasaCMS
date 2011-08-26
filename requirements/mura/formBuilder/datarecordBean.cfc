@@ -4,8 +4,8 @@
 	<cfproperty name="DatasetID" type="uuid" default="" required="true" maxlength="35" />
 	<cfproperty name="Label" type="string" default="" required="true" maxlength="150" />
 	<cfproperty name="Value" type="string" default="" maxlength="35" />
-	<cfproperty name="IsDefault" type="boolean" default="0" required="true" />
 	<cfproperty name="OrderNo" type="numeric" default="0" required="true" />
+	<cfproperty name="IsSelected" type="numeric" default="0" required="true" />
 	<cfproperty name="RemoteID" type="string" default="" maxlength="35" />
 	<cfproperty name="DateCreate" type="date" default="" required="true" />
 	<cfproperty name="DateLastUpdate" type="date" default="" required="true" />
@@ -19,8 +19,8 @@
 		<cfargument name="DatasetID" type="string" required="false" default="" />
 		<cfargument name="Label" type="string" required="false" default="" />
 		<cfargument name="Value" type="string" required="false" default="" />
-		<cfargument name="IsDefault" type="boolean" required="false" default="0" />
 		<cfargument name="OrderNo" type="numeric" required="false" default="0" />
+		<cfargument name="IsSelected" type="numeric" required="false" default="0" />
 		<cfargument name="RemoteID" type="string" required="false" default="" />
 		<cfargument name="DateCreate" type="string" required="false" default="" />
 		<cfargument name="DateLastUpdate" type="string" required="false" default="" />	
@@ -32,11 +32,11 @@
 		<cfset setDatasetID( arguments.DatasetID ) />
 		<cfset setLabel( arguments.Label ) />
 		<cfset setValue( arguments.Value ) />
-		<cfset setIsDefault( arguments.IsDefault ) />
 		<cfset setOrderNo( arguments.OrderNo ) />
 		<cfset setRemoteID( arguments.RemoteID ) />
 		<cfset setDateCreate( arguments.DateCreate ) />
 		<cfset setDateLastUpdate( arguments.DateLastUpdate ) />
+		<cfset setIsSelected( arguments.IsSelected ) />
 		
 		<cfreturn this />
 	</cffunction>
@@ -82,20 +82,20 @@
 		<cfreturn variables.instance.Value />
 	</cffunction>
 	
-	<cffunction name="setIsDefault" access="public" returntype="void" output="false">
-		<cfargument name="IsDefault" type="boolean" required="true" />
-		<cfset variables.instance['isdefault'] = arguments.IsDefault />
-	</cffunction>
-	<cffunction name="getIsDefault" access="public" returntype="boolean" output="false">
-		<cfreturn variables.instance.IsDefault />
-	</cffunction>
-	
 	<cffunction name="setOrderNo" access="public" returntype="void" output="false">
 		<cfargument name="OrderNo" type="numeric" required="true" />
 		<cfset variables.instance['orderno'] = arguments.OrderNo />
 	</cffunction>
 	<cffunction name="getOrderNo" access="public" returntype="numeric" output="false">
 		<cfreturn variables.instance.OrderNo />
+	</cffunction>
+	
+	<cffunction name="setIsSelected" access="public" returntype="void" output="false">
+		<cfargument name="IsSelected" type="numeric" required="true" />
+		<cfset variables.instance['isselected'] = arguments.IsSelected />
+	</cffunction>
+	<cffunction name="getIsSelected" access="public" returntype="numeric" output="false">
+		<cfreturn variables.instance.IsSelected />
 	</cffunction>
 	
 	<cffunction name="setRemoteID" access="public" returntype="void" output="false">

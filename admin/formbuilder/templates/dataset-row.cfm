@@ -19,6 +19,12 @@
 	<div id="element-input">
 		<input type="text" class="meld-tb-grid-input" />
 	</div>
+	<div id="element-checkbox">
+		<input type="checkbox" title="#mmRBF.getKeyValue(session.rb,'formbuilder.isselected')#" class="checkbox meld-tb-grid-checkbox" data-id="" value="1" /></span>
+	</div>
+	<div id="element-radio">
+		<input type="radio" name="isdefault" title="#mmRBF.getKeyValue(session.rb,'formbuilder.isdefault')#" class="radio meld-tb-grid-radio" data-id="" /></span>
+	</div>
 	<div id="element-handle">
 		<span class="meld-tb-grid-handle"></span> 
 	</div>

@@ -438,8 +438,6 @@
 				}
 			});
 
-
-
 			jQuery('.ui-button',$_grid).click(function() {
 				switch ( jQuery(this).attr('id') ) {
 					case 'button-grid-add': {
@@ -447,6 +445,11 @@
 					}
 					break;
 				}
+			});
+			
+			jQuery(".meld-tb-grid-radio",$_grid).live('click',function() {
+				id = jQuery(this).attr('data-id');
+				_currentDataset.defaultid = id;
 			});
 
 			$_grid.show();
@@ -478,7 +481,7 @@
 			var $row 		= "";
 			$_gridtable.html('');
 			$_gridhead.html('');
-			
+						
 			if (data.issorted != 1) {
 				$_gridtable.sortable({
 					axis: 'y',
@@ -605,8 +608,8 @@
 			var cell		= jQuery('#element-cell',$rowHTML).html();
 			var display		= jQuery('#element-display',$rowHTML).html();
 			var input		= jQuery('#element-input',$rowHTML).html();
-			var checkbox	= jQuery('#element-checkbox',$rowHTML).html();
 			var radio		= jQuery('#element-radio',$rowHTML).html();
+			var checkbox	= jQuery('#element-checkbox',$rowHTML).html();
 			var row			= jQuery('#element-row',$rowHTML).html();
 			var handle		= jQuery('#element-handle',$rowHTML).html();
 			var bt_delete	= jQuery('#element-button-delete',$rowHTML).html();
@@ -615,6 +618,7 @@
 			var $display	= "";
 			var $input		= "";
 			var $row		= "";
+			var $radio		= "";
 			var $checkbox	= "";
 			var $row		= "";
 			var $handle		= "";
@@ -624,6 +628,30 @@
 
 			$row = jQuery(row);
 			$row.attr('id',record.datarecordid);
+
+			if(fieldData.fieldtype.fieldtype != 'checkbox')
+			{
+				$cell = jQuery(cell);
+				$cell.addClass('meld-tb-cell-small');
+				$radio = jQuery(radio);
+				$radio.attr('data-id', record.datarecordid);
+				$radio.attr('name', 'isdefault');
+				if( data.defaultid == record.datarecordid )
+					$radio.attr('CHECKED','CHECKED');
+				$cell.append($radio);
+				$row.append($cell);
+			}
+			else {
+				$cell = jQuery(cell);
+				$cell.addClass('meld-tb-cell-small');
+				$checkbox = jQuery(checkbox);
+				$checkbox.attr('data-id', record.datarecordid);
+				$checkbox.attr('name', 'isselected');
+				if( record.isselected == 1 )
+					$checkbox.attr('CHECKED','CHECKED');
+				$cell.append($checkbox);
+				$row.append($cell);
+			}
 
 			// label
 			$cell = jQuery(cell);
