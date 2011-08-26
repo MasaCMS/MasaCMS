@@ -589,7 +589,7 @@ to your own modified versions of Mura CMS.
   
 <cffunction name="getKidsQuery" returnType="query" output="false" access="public">
 	<cfargument name="aggregation" required="true" default="false">
-	<cfreturn getBean("contentManager").getKidsQuery(siteID:variables.instance.siteID, parentID:getContentID(), sortBy:getSortBy(), sortDirection:getSortDirection(), aggregation=arguments.aggregation) />
+	<cfreturn getBean("contentManager").getKidsQuery(siteID:variables.instance.siteID, parentID:getContentID(), sortBy:variables.instance.sortBy, sortDirection:variables.instance.sortDirection, aggregation=arguments.aggregation) />
 </cffunction>
 
 <cffunction name="getKidsIterator" returnType="any" output="false" access="public">
