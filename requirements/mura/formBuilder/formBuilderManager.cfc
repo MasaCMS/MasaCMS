@@ -124,7 +124,7 @@
 		
 		<cfif arguments.reload or not StructKeyExists( variables.fields[arguments.locale],fieldTemplate)>
 			<cfif not fileExists( filePath )>
-				<cfreturn mmRBF.getKeyValue('formbuilder.missingfieldtemplatefile') & ": " & fieldTemplate />
+				<cfreturn mmRBF.getKeyValue(session.rb,'formbuilder.missingfieldtemplatefile') & ": " & fieldTemplate />
 			</cfif>
 			<cfsavecontent variable="strField"><cfinclude template="#templatePath#"></cfsavecontent>
 			<cfset variables.fields[arguments.locale][arguments.fieldType] = trim(strField) />
@@ -150,7 +150,7 @@
 		
 		<cfif arguments.reload or not StructKeyExists( variables.fields[arguments.locale],dialogTemplate)>
 			<cfif not fileExists( filePath )>
-				<cfreturn mmRBF.getKeyValue('formbuilder.missingfieldtemplatefile') & ": " & dialogTemplate />
+				<cfreturn mmRBF.getKeyValue(session.rb,'formbuilder.missingfieldtemplatefile') & ": " & dialogTemplate />
 			</cfif>
 			<cfsavecontent variable="strField"><cfinclude template="#templatePath#"></cfsavecontent>
 			<cfset variables.fields[arguments.locale][arguments.dialog] = trim(strField) />
@@ -159,5 +159,23 @@
 		<cfreturn variables.fields[arguments.locale][arguments.dialog] />
 	</cffunction>
 
+	<cffunction name="renderFormJSON" access="public" output="false" returntype="struct">
+		<cfargument name="formJSON" required="true" type="string" />
+
+		<cfset var formStruct		= StructNew() />
+		<cfset var dataStruct		= StructNew() />
+		<cfset var return			= StructNew() />
+		<cfset var formBean			= "" />
+		<cfset var fieldBean		= "" />
+		<cfset var mmRBF			= application.rbFactory />
+
+		<cfif not isJSON( arguments.formJSON )>
+			<cfthrow message="#mmRBF.getKeyValue(session.rb,"formbuilder.mustbejson")#" >
+		</cfif>
+
+		<cfset formStruct = deserializeJSON(arguments.formJSON) />
+
+		<cfreturn formStruct />
+	</cffunction>
 
 </cfcomponent>

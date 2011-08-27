@@ -141,7 +141,7 @@
 
 #meld-tb-fields li div.field {
 	margin: 0 0 5px 0;
-	padding: 10px 10px 10px 44px;
+	padding: 10px 10px 10px 50px;
 	background-repeat: no-repeat;
 	background-position: 10px center;
 	background-color: #f2f2f2;
@@ -150,6 +150,7 @@
 	-moz-border-radius: 4px;
 	-webkit-border-radius: 4px;
 	cursor: move;
+	min-height: 20px;
 }
 
 #meld-tb-fields li div#selected.field {
@@ -158,19 +159,19 @@
 }
 
 #meld-tb-fields li.field-textfield div {
-	background-image: url('images/frm_textfield.png');
+	background-image: url('images/frm_textfield_big.png');
 }
 #meld-tb-fields li.field-textarea div {
-	background-image: url('images/frm_textarea.png');
+	background-image: url('images/frm_textarea_big.png');
 }
 #meld-tb-fields li.field-dropdown div {
-	background-image: url('images/frm_dropdown.png');
+	background-image: url('images/frm_dropdown_big.png');
 }
 #meld-tb-fields li.field-radio div {
-	background-image: url('images/frm_radio.png');
+	background-image: url('images/frm_radio_big.png');
 }
 #meld-tb-fields li.field-checkbox div {
-	background-image: url('images/frm_checkbox.png');
+	background-image: url('images/frm_checkbox_big.png');
 }
 
 #meld-tb-fields li div.section {

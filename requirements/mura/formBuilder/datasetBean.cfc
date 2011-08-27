@@ -11,6 +11,7 @@
 	<cfproperty name="IsActive" type="boolean" default="1" required="true" />
 	<cfproperty name="SourceType" type="string" default="" maxlength="50" />
 	<cfproperty name="Source" type="string" default="" maxlength="250" />
+	<cfproperty name="DefaultID" type="string" default="" required="false" maxlength="35" />
 	<cfproperty name="SiteID" type="string" default="" required="true" maxlength="25" />
 	<cfproperty name="RemoteID" type="string" default="" maxlength="35" />
 	<cfproperty name="DateCreate" type="date" default="" required="true" />
@@ -40,6 +41,7 @@
 		<cfargument name="IsActive" type="boolean" required="false" default="1" />
 		<cfargument name="SourceType" type="string" required="false" default="" />
 		<cfargument name="Source" type="string" required="false" default="" />
+		<cfargument name="DefaultID" type="string" required="false" default="" />
 		<cfargument name="SiteID" type="string" required="false" default="" />
 		<cfargument name="RemoteID" type="string" required="false" default="" />
 		<cfargument name="DateCreate" type="string" required="false" default="" />
@@ -183,6 +185,14 @@
 	</cffunction>
 	<cffunction name="getSource" access="public" returntype="string" output="false">
 		<cfreturn variables.instance.Source />
+	</cffunction>
+
+	<cffunction name="setDefaultID" access="public" returntype="void" output="false">
+		<cfargument name="DefaultID" type="string" required="true" />
+		<cfset variables.instance['defaultid'] = arguments.DefaultID />
+	</cffunction>
+	<cffunction name="getDefaultID" access="public" returntype="string" output="false">
+		<cfreturn variables.instance.DefaultID />
 	</cffunction>
 	
 	<cffunction name="setSiteID" access="public" returntype="void" output="false">
