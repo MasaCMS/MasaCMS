@@ -129,7 +129,7 @@ to your own modified versions of Mura CMS.
 		<cfinclude template="/muraWRM/config/coldspring.xml.cfm" />
 		
 		<!--- load the core services.xml --->
-		<cfset variables.serviceFactory=createObject("component","mura.bean.beanFactory").init(defaultProperties=variables.iniProperties) />
+		<cfset variables.serviceFactory=createObject("component","mura.bean.bean.factory.coldspring1").init(defaultProperties=variables.iniProperties) />
 		<cfset variables.serviceFactory.loadBeansFromXMLRaw(servicesXML,true) />
 		
 		<!--- If coldspring.custom.xml.cfm exists read it in an check it it is valid xml--->
