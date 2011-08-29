@@ -19,13 +19,12 @@
 			<cfelse>
 				<cfset variables.transients["#arguments.beanName#"]=getMetaData(bean).fullname>
 			</cfif>
+		</cfif>
+		<cfif application.configBean.getValue("duplicateTransients")>
+			<cfset bean=duplicate(variables.transients["#arguments.beanName#"])>
 		<cfelse>
-			<cfif application.configBean.getValue("duplicateTransients")>
-				<cfset bean=duplicate(variables.transients["#arguments.beanName#"])>
-			<cfelse>
-				<cfset bean=createObject("component",variables.transients["#arguments.beanName#"]).init()>
-			</cfif>
-		</cfif>	
+			<cfset bean=createObject("component",variables.transients["#arguments.beanName#"]).init()>
+		</cfif>
 	<cfelse>
 		<cfset bean=super.getBean(arguments.beanName) />
 	</cfif>
