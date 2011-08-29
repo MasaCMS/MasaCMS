@@ -4551,10 +4551,6 @@ ul .checkboxTree li {
 	list-style:none;
 }
 
-.checkboxTree ul.hide {
-	display:none;
-}
-
 .checkboxTree span {
 	color:#999;
 	font-family:"Courier New", Courier, monospace;

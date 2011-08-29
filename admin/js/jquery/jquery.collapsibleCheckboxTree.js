@@ -30,7 +30,7 @@
 			//$(this).before('<div id="buttons"><button id="expand">Expand All</button><button id="collapse">Collapse All</button><button id="default">Default</button></div>');
 
 			// Hide all except top level
-			$("ul", $(this)).addClass('hide');
+			$("ul", $(this)).hide();
 			// Check parents if necessary
 			if (defaults.checkParents) {
 				$("input:checked").parents("li").find("input[type='checkbox']:first").attr('checked', true);
@@ -40,11 +40,11 @@
 				$("input:checked").parent("li").find("input[type='checkbox']").attr('checked', true);
 			}
 			// Show checked and immediate children of checked
-			$("li:has(input:checked) > ul", $(this)).removeClass('hide');
+			$("li:has(input:checked) > ul", $(this)).show();
 			// Add tree links
 			$("li", $(this)).prepend('<span>&nbsp;</span>');
-			$("li:has(> ul:not(.hide)) > span", $(this)).addClass('expanded').html('-');
-			$("li:has(> ul.hide) > span", $(this)).addClass('collapsed').html('+');
+			$("li:has(> ul:not(:hidden)) > span", $(this)).addClass('expanded').html('-');
+			$("li:has(> ul:hidden) > span", $(this)).addClass('collapsed').html('+');
 			
 			// Checkbox function
 			$("input[type='checkbox']", $(this)).click(function(){
@@ -53,7 +53,7 @@
 				if ($(this).is(":checked")) {
 					
 					// Show immediate children  of checked
-					$("> ul", $(this).parent("li")).removeClass('hide');
+					$("> ul", $(this).parent("li")).fadeIn('fast');
 					// Update the tree
 					$("> span.collapsed", $(this).parent("li")).removeClass("collapsed").addClass("expanded").html('-');
 					
@@ -66,7 +66,7 @@
 					if (defaults.checkChildren) {
 						$(this).parent("li").find("input[type='checkbox']").attr('checked', true);
 						// Show all children of checked
-						$("ul", $(this).parent("li")).removeClass('hide');
+						$("ul", $(this).parent("li")).fadeIn('fast');
 						// Update the tree
 						$("span.collapsed", $(this).parent("li")).removeClass("collapsed").addClass("expanded").html('-');
 					}
@@ -79,7 +79,7 @@
 					if (defaults.uncheckChildren) {
 						$(this).parent("li").find("input[type='checkbox']").attr('checked', false);
 						// Hide all children
-						$("ul", $(this).parent("li")).addClass('hide');
+						$("ul", $(this).parent("li")).fadeOut('fast');
 						// Update the tree
 						$("span.expanded", $(this).parent("li")).removeClass("expanded").addClass("collapsed").html('+');
 					}
@@ -94,7 +94,7 @@
 				if ($(this).is(".collapsed")) {
 					
 					// ... then expand
-					$("> ul", $(this).parent("li")).removeClass('hide');
+					$("> ul", $(this).parent("li")).show();
 					// ... and update the html
 					$(this).removeClass("collapsed").addClass("expanded").html('-');
 				
@@ -102,7 +102,7 @@
 				} else if ($(this).is(".expanded")) {
 					
 					// ... then collapse
-					$("> ul", $(this).parent("li")).addClass('hide');
+					$("> ul", $(this).parent("li")).hide();
 					// and update the html
 					$(this).removeClass("expanded").addClass("collapsed").html('+');
 				}
@@ -110,32 +110,30 @@
 			});
 			
 			// Button functions
-			
-			// Expand all
 			$("#expand").click(function () {
 				// Show all children			 
-				$("ul", $root).removeClass('hide');
+				$("ul", $root).fadeIn('fast');
 				// and update the html
 				$("li:has(> ul) > span", $root).removeClass("collapsed").addClass("expanded").html('-');
 				return false;
 			});
-			// Collapse all
+	
 			$("#collapse").click(function () {
 				// Hide all children				   
-				$("ul", $root).addClass('hide');
+				$("ul", $root).fadeOut('fast');
 				// and update the html
 				$("li:has(> ul) > span", $root).removeClass("expanded").addClass("collapsed").html('+');
 				return false;
 			});
-			// Wrap around checked boxes
+			
 			$("#default").click(function () {
 				// Hide all except top level  
-				$("ul", $root).addClass('hide');
+				$("ul", $root).fadeOut('fast');
 				// Show checked and immediate children of checked
-				$("li:has(input:checked) > ul", $root).removeClass('hide');
+				$("li:has(input:checked) > ul", $root).fadeIn('fast');
 				// and update the html
-				$("li:has(> ul:not(.hide)) > span", $root).removeClass('collapsed').addClass('expanded').html('-');
-				$("li:has(> ul.hide) > span", $root).removeClass('expanded').addClass('collapsed').html('+');
+				$("li:has(> ul:not(:hidden)) > span", $root).removeClass('collapsed').addClass('expanded').html('-');
+				$("li:has(> ul:hidden) > span", $root).removeClass('expanded').addClass('collapsed').html('+');
 				return false;
 			});
 			
@@ -147,6 +145,7 @@
 					$("#collapse").trigger('click');
 					break;
 			}
+			
 			
 		});
 		
