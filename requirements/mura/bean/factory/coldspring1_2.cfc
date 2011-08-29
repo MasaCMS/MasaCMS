@@ -23,9 +23,8 @@
 			<cfif application.configBean.getValue("duplicateTransients")>
 				<cfset bean=duplicate(variables.transients["#arguments.beanName#"])>
 			<cfelse>
-				<cfset bean=createObject("component",variables.transients["#arguments.beanName#"])>
+				<cfset bean=createObject("component",variables.transients["#arguments.beanName#"]).init()>
 			</cfif>
-			<cfset bean.init()>
 		</cfif>	
 	<cfelse>
 		<cfset bean=super.getBean(arguments.beanName) />
