@@ -129,7 +129,7 @@ to your own modified versions of Mura CMS.
 		<cfinclude template="/muraWRM/config/coldspring.xml.cfm" />
 		
 		<!--- load the core services.xml --->
-		<cfset variables.serviceFactory=createObject("component","coldspring.beans.DefaultXmlBeanFactory").init(defaultProperties=variables.iniProperties) />
+		<cfset variables.serviceFactory=createObject("component","mura.bean.beanFactory").init(defaultProperties=variables.iniProperties) />
 		<cfset variables.serviceFactory.loadBeansFromXMLRaw(servicesXML,true) />
 		
 		<!--- If coldspring.custom.xml.cfm exists read it in an check it it is valid xml--->
@@ -189,7 +189,6 @@ to your own modified versions of Mura CMS.
 		<cfset application.changesetManager=application.serviceFactory.getBean("changesetManager") />
 		<cfset application.autoUpdater=application.serviceFactory.getBean("autoUpdater") />
 		<cfset application.scriptProtectionFilter=application.serviceFactory.getBean("scriptProtectionFilter") >
-		<cfset application.transients=structNew()>
 		
 		<!---settings.custom.managers.cfm reference is for backwards compatibility --->
 		<cfif fileExists(ExpandPath("/muraWRM/config/settings.custom.managers.cfm"))>

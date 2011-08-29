@@ -94,21 +94,8 @@ to your own modified versions of Mura CMS.
 	<cfargument name="siteID" required="false" default="">
 	<cfset var bean="">
 	
-	<!--- Code to help avoid object creation for beans --->
-	<cfif arguments.beanName eq "configBean">
-		<cfreturn application.configBean>
-	<cfelseif application.configBean.getValue("duplicateTransients") and listFindNoCase("feed,content,user,group,category,mailingList,member,creative,placement,adzone,campaign,changeset,stats",arguments.beanName)
-		or findNoCase("iterator",arguments.beanName)
-		or findNoCase("bean",arguments.beanName)>
-		<cfif not structKeyExists(application.transients,arguments.beanName)>
-			<cfset application.transients["#arguments.beanName#"]=getServiceFactory().getBean(arguments.beanName)>
-		</cfif>	
-		<cfset bean=duplicate(application.transients["#arguments.beanName#"])>
-		<cfset bean.init()>
-	<cfelse>
-		<cfset bean=getServiceFactory().getBean(arguments.beanName) />
-	</cfif>
-	
+	<cfset bean=getServiceFactory().getBean(arguments.beanName) />
+
 	<cfif structKeyExists(bean,"setSiteID")>		
 		<cfif structKeyExists(arguments,"siteID") and len(arguments.siteID)>
 			<cfset bean.setSiteID(arguments.siteID)>			
@@ -147,62 +134,61 @@ to your own modified versions of Mura CMS.
 </cffunction>
 
 <cffunction name="injectMethod" access="public" output="false">
-<cfargument name="toObjectMethod" type="string" required="true" />
-<cfargument name="fromObjectMethod" type="any" required="true" />
-<cfset this[ arguments.toObjectMethod ] =  arguments.fromObjectMethod  />
-<cfset variables[ arguments.toObjectMethod ] =  arguments.fromObjectMethod />
-<cfreturn this>
+	<cfargument name="toObjectMethod" type="string" required="true" />
+	<cfargument name="fromObjectMethod" type="any" required="true" />
+	<cfset this[ arguments.toObjectMethod ] =  arguments.fromObjectMethod  />
+	<cfset variables[ arguments.toObjectMethod ] =  arguments.fromObjectMethod />
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="deleteMethod" access="public" output="false">
-<cfargument name="methodName" type="any" required="true" />
-<cfset structKeyDelete(this,arguments.methodName)>
-<cfset structKeyDelete(variables,arguments.methodName)>
+	<cfargument name="methodName" type="any" required="true" />
+	<cfset structKeyDelete(this,arguments.methodName)>
+	<cfset structKeyDelete(variables,arguments.methodName)>
 </cffunction>
 
-	<cffunction name="getAsJSON" access="public" output="false" returntype="String" >
-		<cfset var data = getAsStruct() />
-		
-		<cfreturn serializeJSON( data ) />
-	</cffunction>
+<cffunction name="getAsJSON" access="public" output="false" returntype="String" >
+	<cfset var data = getAsStruct() />
+	<cfreturn serializeJSON( data ) />
+</cffunction>
 
-	<cffunction name="getAsStruct" access="public" output="false" returntype="struct">
-		<cfset var data			= "">
-		<cfset var iiX			= "">
-		<cfset var subBeans		= StructNew()>
-		<cfset var subData		= StructNew()>
-		<cfset var subItem		= "">
-		<cfset var iiY			= "">
+<cffunction name="getAsStruct" access="public" output="false" returntype="struct">
+	<cfset var data			= "">
+	<cfset var iiX			= "">
+	<cfset var subBeans		= StructNew()>
+	<cfset var subData		= StructNew()>
+	<cfset var subItem		= "">
+	<cfset var iiY			= "">
 
-		<cfif not StructKeyExists(this,"getAllValues")>
-			<cfreturn "" />
-		</cfif>
+	<cfif not StructKeyExists(this,"getAllValues")>
+		<cfreturn "" />
+	</cfif>
+	
+	<cfset data = getAllValues() />
 
-		<cfset data = getAllValues() />
-
-		<cfloop collection="#data#" item="iiX">
-			<cfif isInstanceOf(data[iiX],"cfobject")>
-				<cfset data[iiX] = data[iiX].getAsStruct() />
-			<cfelseif isStruct( data[iiX] ) and StructCount( data[iiX] )>
-				<cfset subBeans = data[iiX] />
-				<cfset subData	= StructNew()>
-
-				<cfloop collection="#subBeans#" item="iiY">
-					<cfset subItem = subBeans[iiY] />
-					<cfif isInstanceOf(subItem,"cfobject")>
-						<cfset subData[iiY] = subItem.getAsStruct() />
-					<cfelseif isStruct(subItem)>
-						<cfset subData[iiY] = subItem />
-					</cfif>
-				</cfloop>
-				<cfif structCount( subData )>
-					<cfset data[iiX] = subData />
+	<cfloop collection="#data#" item="iiX">
+		<cfif isInstanceOf(data[iiX],"cfobject")>
+			<cfset data[iiX] = data[iiX].getAsStruct() />
+		<cfelseif isStruct( data[iiX] ) and StructCount( data[iiX] )>
+			<cfset subBeans = data[iiX] />
+			<cfset subData	= StructNew()>
+			<cfloop collection="#subBeans#" item="iiY">
+				<cfset subItem = subBeans[iiY] />
+				<cfif isInstanceOf(subItem,"cfobject")>
+					<cfset subData[iiY] = subItem.getAsStruct() />
+				<cfelseif isStruct(subItem)>
+					<cfset subData[iiY] = subItem />
 				</cfif>
-			<cfelseif isJSON(data[iiX])>
-				<cfset data[iiX] = deserializeJSON( data[iiX] ) />
-			</cfif> 
-		</cfloop>
+ 			</cfloop>
+			<cfif structCount( subData )>
+				<cfset data[iiX] = subData />
+			</cfif>
+		<cfelseif isJSON(data[iiX])>
+			<cfset data[iiX] = deserializeJSON( data[iiX] ) />
+		</cfif> 
+	</cfloop>
 		
-		<cfreturn data />
-	</cffunction>
+	<cfreturn data />
+</cffunction>
+
 </cfcomponent>
