@@ -4539,3 +4539,30 @@ margin: .5em 0; }
 .success a { color: #264409; }
 
 /* @end */
+
+/* @Collapsible Checkbox Tree */
+
+.checkboxTree ul {
+	margin:0!important;
+	padding:0 0 0 20px!important;
+}
+
+ul .checkboxTree li {
+	list-style:none;
+}
+
+.checkboxTree ul.hide {
+	display:none;
+}
+
+.checkboxTree span {
+	color:#999;
+	font-family:"Courier New", Courier, monospace;
+	cursor:default;
+}
+
+.checkboxTree span.expanded, .checkboxTree span.collapsed {
+	cursor:pointer;
+}
+
+/* @end */

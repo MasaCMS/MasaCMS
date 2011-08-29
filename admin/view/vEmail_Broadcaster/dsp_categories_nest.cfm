@@ -48,7 +48,7 @@ to your own modified versions of Mura CMS.
 <cfset rslist=application.categoryManager.getCategories(attributes.siteID,attributes.ParentID,"",true,true) />
 </cfsilent>
 <cfif rslist.recordcount><cfset request.hasCats=true>
-<ul>
+<ul<cfif not attributes.nestLevel> class="checkboxTree"</cfif>>
 <cfoutput query="rslist">
 <li>
 <input type="checkbox" name="groupID" class="checkbox" <cfif listfind(attributes.groupID,rslist.categoryID)>checked</cfif> value="#rslist.categoryID#"> #rslist.name#

@@ -802,6 +802,18 @@ function setAccordions(target,activepanel){
 	);
 }	
 
+function setCheckboxTrees(){
+	jQuery('.checkboxTree').each(
+		function(){
+			jQuery(this).collapsibleCheckboxTree({
+			checkParents : true, 
+			checkChildren : false, 
+			uncheckChildren : true, 
+			initialState : 'default'
+			}
+		);
+	});
+}
 
 function alertDialog(message) {
 jQuery("#alertDialogMessage").html(message);

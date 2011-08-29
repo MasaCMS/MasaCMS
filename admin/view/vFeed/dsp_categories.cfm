@@ -43,5 +43,7 @@ to your own modified versions of Mura CMS.
 
 <cfif application.categoryManager.getCategoryCount(attributes.siteid)>
 <dt>Category Assignments</dt>
-<dd><cf_dsp_categories_import_nest siteID="#attributes.siteID#" parentID="" nestLevel="0" ></dd>
+<dd>
+	<cf_dsp_categories_import_nest siteID="#attributes.siteID#" parentID="" nestLevel="0" >
+</dd>
 </cfif>

@@ -48,7 +48,7 @@ to your own modified versions of Mura CMS.
 <cfset rslist=application.categoryManager.getPublicInterestGroups(attributes.siteID,attributes.ParentID) />
 </cfsilent>
 <cfif rslist.recordcount>
-<ul>
+<ul<cfif not attributes.nestLevel> class="checkboxTree"</cfif>>
 <cfoutput query="rslist">
 <li><cfif rslist.isOpen eq 1><input type="checkbox" name="categoryID" class="checkbox" <cfif listfind(request.userBean.getCategoryID(),rslist.categoryID) or listfind(attributes.categoryID,rslist.CategoryID)>checked</cfif> value="#rslist.categoryID#" onclick="checkExtendSetTargeting();"> </cfif>#rslist.name#
 <cf_dsp_categories_nest siteID="#attributes.siteID#" parentID="#rslist.categoryID#" categoryID="#attributes.categoryID#" nestLevel="#evaluate(attributes.nestLevel +1)#" ></li>

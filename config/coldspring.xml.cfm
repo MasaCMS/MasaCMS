@@ -534,6 +534,7 @@ to your own modified versions of Mura CMS.
 		<alias name="rateBean" alias="rate"/>
 		<alias name="favoriteBean" alias="favorite"/>
 		<alias name="campaignBean" alias="campaign"/>
+		<alias name="emailBean" alias="email"/>
 		<!---coldspring.custom.xml.cfm reference is for backwards compatability --->
 		<cfif fileExists(expandPath("/muraWRM/config/coldspring.custom.xml.cfm"))><cfinclude template="/muraWRM/config/coldspring.custom.xml.cfm"></cfif>
 	</beans></cfoutput>

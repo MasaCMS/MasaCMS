@@ -113,31 +113,7 @@ to your own modified versions of Mura CMS.
 
 <cfoutput><h2>#application.rbFactory.getKeyValue(session.rb,'collections.editlocalindex')#</h2>
 #application.utility.displayErrors(request.feedBean.getErrors())#
-<!--- <cfif attributes.feedID neq ''>
-<ul id="navTask">
-<li><a title="View" href="http://#application.settingsManager.getSite(attributes.siteid).getDomain()##application.configBean.getContext()#/tasks/feed/?feedID=#attributes.feedID#" target="_blank">View Index</a></li>
-</ul></cfif> --->
 
-<!--- <script language="javascript">
-function previewFeed(){
-	var contentID='';
-	var contentFilters= document.getElementById("feedFrm").contentID;
-	if(contentFilters != 'undefined'){
-	alert(typeof(contentFilters));	
-	}else{
-	alert("false");	
-	}
-	/*
-	if(typeof($("feedFrm").contentID) != 'undefined'){
-		for(var i=0;i<$("feedFrm").contentID.length;i++){
-		
-		}
-	
-	}
-	*/
-	
-}
-</script>  --->
 <cfif attributes.compactDisplay eq "true">
 <p class="notice">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.globallyappliednotice")#</p>
 </cfif>

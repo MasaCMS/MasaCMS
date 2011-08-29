@@ -41,6 +41,7 @@ the GNU General Public License version 2 without this exception. You may, if you
 to your own modified versions of Mura CMS.
 --->
 <cfoutput>
+<script src="js/jquery/jquery.collapsibleCheckboxTree.js?coreversion=#application.coreversion#" type="text/javascript" language="Javascript" ></script>
 <script src="js/feed.js?coreversion=#application.coreversion#" type="text/javascript" language="javascript1.2" ></script>
 <script src="js/searchParams.js?coreversion=#application.coreversion#" type="text/javascript" language="Javascript" ></script>
 </cfoutput>
