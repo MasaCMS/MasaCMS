@@ -1,4 +1,4 @@
-<!--- This file is part of Mura CMS.
+﻿<!--- This file is part of Mura CMS.
 
 Mura CMS is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -40,48 +40,22 @@ for your modified version; it is your choice whether to do so, or to make such m
 the GNU General Public License version 2 without this exception. You may, if you choose, apply this exception
 to your own modified versions of Mura CMS.
 --->
-<cfparam name="attributes.contentid" default="">
-<cfparam name="attributes.parentid" default="">
-
-<cfswitch expression="#attributes.classid#">
-	<cfcase value="component">
-		<cfinclude template="objectclass/dsp_components.cfm">
-	</cfcase>
-	<cfcase value="mailingList">
-		<cfinclude template="objectclass/dsp_mailinglists.cfm">
-	</cfcase>
-	<cfcase value="system">
-		<cfinclude template="objectclass/dsp_system.cfm">
-	</cfcase>
-	<cfcase value="form">
-		<cfinclude template="objectclass/dsp_forms.cfm">
-	</cfcase>
-	<cfcase value="adzone">
-		<cfinclude template="objectclass/dsp_adzones.cfm">
-	</cfcase>
-	<cfcase value="portal">
-		<cfinclude template="objectclass/dsp_portals.cfm">
-	</cfcase>
-	<cfcase value="calendar">
-		<cfinclude template="objectclass/dsp_calendars.cfm">
-	</cfcase>
-	<cfcase value="gallery">
-		<cfinclude template="objectclass/dsp_galleries.cfm">
-	</cfcase>
-	<cfcase value="localFeed">
-		<cfinclude template="objectclass/dsp_localfeeds.cfm">
-	</cfcase>
-	<cfcase value="slideshow">
-		<cfinclude template="objectclass/dsp_slideshows.cfm">
-	</cfcase>
-	<cfcase value="remoteFeed">
-		<cfinclude template="objectclass/dsp_remotefeeds.cfm">
-	</cfcase>
-	<cfcase value="plugins">
-		<cfinclude template="objectclass/dsp_plugins.cfm">
-	</cfcase>
-</cfswitch>
-
-<cfif fileExists("#application.configBean.getWebRoot()##application.configBean.getFileDelim()##attributes.siteid##application.configBean.getFileDelim()#includes#application.configBean.getFileDelim()#display_objects#application.configBean.getFileDelim()#custom#application.configBean.getFileDelim()#admin#application.configBean.getFileDelim()#dsp_objectClass.cfm")>
-	<cfinclude template="/#application.configBean.getWebRootMap()#/#attributes.siteID#/includes/display_objects/custom/admin/dsp_objectClass.cfm">
-</cfif>
+<cfoutput>
+	<select name="availableObjects" id="availableObjects" class="multiSelect" 
+	        size="#evaluate((application.settingsManager.getSite(attributes.siteid).getcolumnCount() * 6)-4)#" 
+	        style="width:310px;">
+		<cfset request.rslist = application.feedManager.getFeeds(attributes.siteid, 'Remote')/>
+		<cfloop query="request.rslist">
+			<option value="feed~#request.rslist.name# - #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.remotefeedsummaries')#~#request.rslist.feedID#">
+				#request.rslist.name# 
+				- 
+				#application.rbFactory.getKeyValue(session.rb, 'sitemanager.content.fields.remotefeedsummaries')#
+			</option>
+			<option value="feed_no_summary~#request.rslist.name# #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.remotefeed')#~#request.rslist.feedID#">
+				#request.rslist.name# 
+				- 
+				#application.rbFactory.getKeyValue(session.rb, 'sitemanager.content.fields.remotefeed')#
+			</option>
+		</cfloop>
+	</select>
+</cfoutput>
