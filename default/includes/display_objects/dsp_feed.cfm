@@ -146,9 +146,9 @@ to your own modified versions of Mura CMS.
 				fields=variables.contentListFields,
 				type=variables.contentListType, 
 				iterator= variables.iterator,
-				imageSize=variables.feed.getImageSize(),
-				imageHeight=variables.feed.getImageHeight(),
-				imageWidth=variables.feed.getImageWidth()
+				imageSize=variables.feedBean.getImageSize(),
+				imageHeight=variables.feedBean.getImageHeight(),
+				imageWidth=variables.feedBean.getImageWidth()
 				)#
 
 			<cfif variables.nextN.numberofpages gt 1>
