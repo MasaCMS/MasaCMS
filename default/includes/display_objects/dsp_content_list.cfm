@@ -78,11 +78,11 @@ to your own modified versions of Mura CMS.
 				<cfelse>
 					<cfset arguments.imageURLArgs.height="auto">
 				</cfif>
-			</cfif>
-			<cfif arguments.imageURLArgs.height eq "auto" 
-			and arguments.imageURLArgs.width eq "auto">
-				<cfset arguments.imageURLArgs=structNew()>
-				<cfset arguments.imageURLArgs.size="small">
+				<cfif arguments.imageURLArgs.height eq "auto" 
+					and arguments.imageURLArgs.width eq "auto">
+					<cfset arguments.imageURLArgs=structNew()>
+					<cfset arguments.imageURLArgs.size="small">
+				</cfif>
 			</cfif>
 		</cfif>
 	</cfif>
