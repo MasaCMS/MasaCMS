@@ -278,7 +278,7 @@ to your own modified versions of Mura CMS.
 <dt><input type="checkbox" name="dspNotify"  id="dspnotify" onclick="loadNotify('#attributes.siteid#','#attributes.contentid#','#attributes.parentid#');"  class="checkbox"> <label for="dspnotify"><a href="##" class="tooltip">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.notifyforreview')#<span>#application.rbFactory.getKeyValue(session.rb,"tooltip.notifyReview")#</span></a></label></dt>
 <dd id="selectNotify" style="display: none;"></dd>
 
-<dt>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.addnotes')# <a href="##" id="editNoteLink" onclick="javascript: toggleDisplay('editNote','#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.expand')#','#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.close')#'); document.getElementById('page_tabView').height = '800px';return false">[#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.expand')#]</a></dt>
+<dt>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.addnotes')# <a href="" id="editNoteLink" onclick="toggleDisplay('editNote','#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.expand')#','#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.close')#');return false;">[#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.expand')#]</a></dt>
 <dd id="editNote" style="display: none;">
 <textarea name="notes" rows="8" class="alt" id="abstract"></textarea>	
 </dd>
