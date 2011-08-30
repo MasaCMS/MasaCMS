@@ -41,6 +41,8 @@ the GNU General Public License version 2 without this exception. You may, if you
 to your own modified versions of Mura CMS.
 --->
 <cfsilent>
+	<cfset $.addToHTMLHeadQueue("listImageStyles.cfm")>
+	
 	<cfif not structKeyExists(arguments,"type")>
 		<cfset arguments.type="Feed">
 	</cfif>

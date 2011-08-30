@@ -47,7 +47,6 @@ to your own modified versions of Mura CMS.
 <cfset criterias=arrayNew(2) />
 <cfset rsParams=request.feedBean.getAdvancedParams()/>
 
-
 <cfset options[1][1]="tcontent.lastupdate^date">
 <cfset options[1][2]=application.rbFactory.getKeyValue(session.rb,'params.lastupdate')>
 <cfset options[2][1]="tcontent.releaseDate^date">
@@ -232,7 +231,22 @@ to your own modified versions of Mura CMS.
 
 <div id="tabDisplay">
 <dl class="oneColumn">
-<dt class="first">#application.rbFactory.getKeyValue(session.rb,'collections.altname')#</dt>
+<dt class="first">#application.rbFactory.getKeyValue(session.rb,'collections.imagesize')#</dt>
+	<dd><select name="imageSize" class="dropdown" onchange="if(this.value=='Custom'){jQuery('##feedCustomImageOptions').fadeIn('fast')}else{jQuery('##feedCustomImageOptions').hide()}">
+		<cfloop list="Small,Medium,Large,Custom" index="i">
+		<option value="#i#"<cfif i eq request.feedBean.getImageSize()> selected</cfif>>#I#</option>
+		</cfloop>
+	</select>
+	</dd>
+	<dd id="feedCustomImageOptions"<cfif request.feedBean.getImageSize() neq "Custom"> style="display:none"</cfif>>
+	<dl>
+	<dt>#application.rbFactory.getKeyValue(session.rb,'collections.imageheight')#</dt>
+	<dd><input name="imageHeight" class="text" value="#request.feedBean.getImageHeight()#" /></dd>
+	<dt>#application.rbFactory.getKeyValue(session.rb,'collections.imagewidth')#</dt>
+	<dd><input name="imageWidth" class="text" value="#request.feedBean.getImageWidth()#" /></dd>
+	</dl>
+</dd>
+<dt>#application.rbFactory.getKeyValue(session.rb,'collections.altname')#</dt>
 <dd><input name="altName" class="text" value="#HTMLEditFormat(request.feedBean.getAltName())#" maxlength="50"></dd>
 <dt>#application.rbFactory.getKeyValue(session.rb,'collections.itemsperpage')#</dt>
 <dd><select name="nextN" class="dropdown">

@@ -66,6 +66,7 @@ to your own modified versions of Mura CMS.
 <script type="text/javascript" src="#application.configBean.getContext()#/tasks/widgets/ckeditor/adapters/jquery.js"></script>
 <script type="text/javascript" src="#application.configBean.getContext()#/tasks/widgets/ckfinder/ckfinder.js"></script>
 </cfif>
+<script src="#application.configBean.getContext()#/admin/js/json2.js" type="text/javascript" language="Javascript"></script>
 <script type="text/javascript">
 var htmlEditorType='#application.configBean.getValue("htmlEditorType")#';
 var context='#application.configBean.getContext()#';

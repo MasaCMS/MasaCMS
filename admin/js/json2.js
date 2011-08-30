@@ -1,3 +1,10 @@
+if(window.Prototype) {
+    delete Object.prototype.toJSON;
+    delete Array.prototype.toJSON;
+    delete Hash.prototype.toJSON;
+    delete String.prototype.toJSON;
+}
+
 if(!this.JSON){JSON=function(){function f(n){return n<10?'0'+n:n;}
 Date.prototype.toJSON=function(key){return this.getUTCFullYear()+'-'+
 f(this.getUTCMonth()+1)+'-'+

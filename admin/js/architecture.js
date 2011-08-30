@@ -345,22 +345,28 @@ function addDisplayObject(objectToAdd,regionID){
 			return false;
 		}
 		
-		if(document.getElementById(objectToAdd).tagName.toLowerCase() == "select"){
+		if (document.getElementById(objectToAdd).tagName.toLowerCase() == "select") {
 		
-			if(document.getElementById(objectToAdd).selectedIndex ==-1){
+			if (document.getElementById(objectToAdd).selectedIndex == -1) {
 				alertDialog("Please select a display object.");
 				
 				return false;
 			}
-				//alert("Please select a display object."); return false;}
-		 
-			var addIndex = document.getElementById(objectToAdd).selectedIndex;
-		  
-			if(addIndex < 0)return;
-		   
-			var addoption =document.getElementById(objectToAdd).options[addIndex];
+			//alert("Please select a display object."); return false;}
 			
-			tmpText=addoption.text;
+			var addIndex = document.getElementById(objectToAdd).selectedIndex;
+			
+			if (addIndex < 0) 
+				return;
+			
+			var addoption = document.getElementById(objectToAdd).options[addIndex];
+			
+			tmpText = addoption.text;
+			tmpValue = addoption.value;
+			
+		} else if(document.getElementById(objectToAdd).tagName.toLowerCase() == "input"){
+		  
+			var addoption =document.getElementById(objectToAdd);
 			tmpValue=addoption.value;
 
 		} else {
@@ -382,8 +388,8 @@ function addDisplayObject(objectToAdd,regionID){
 		tmpObject=objectToAdd;
 	}
 	
-	
 	//if the tmpValue evaluated into a js object pull out it's values
+	
 	if(typeof(tmpObject) == "object"){
 		//object^name^objectID^params
 		tmpValue=tmpObject.object;
@@ -393,7 +399,7 @@ function addDisplayObject(objectToAdd,regionID){
 		if(typeof(tmpObject.params) == "string"){
 			tmpValue   = tmpValue + "~" + tmpObject.params;
 		} else if (typeof(tmpObject.params) == "object"){
-			tmpValue   = tmpValue + "~" + tmpObject.params.toSource();
+			tmpValue   = tmpValue + "~" + JSON.stringify( tmpObject.params );
 		}
 		
 		tmpText=tmpObject.name;	
@@ -549,6 +555,9 @@ function loadAssocImages(siteid,fileid,contentid,keywords,isNew)	{
 		);
 }
 
+var availableObjectTemplate="";
+var availalbeObjectParams={};
+
 function loadObjectClass(siteid,classid,subclassid,contentid,parentid)	{
 	var url = 'index.cfm';
 	var pars = 'fuseaction=cArch.loadclass&compactDisplay=true&siteid=' + siteid +'&classid=' + classid  +'&subclassid=' + subclassid + '&contentid=' + contentid + '&parentid=' + parentid + '&cacheid=' + Math.random();
@@ -557,9 +566,42 @@ function loadObjectClass(siteid,classid,subclassid,contentid,parentid)	{
 	jQuery.get(url + "?" + pars, 
 		function(data) {
 		jQuery('#classList').html(data);
+		availableObjectTemplate="";
 		}
 	);
 	return false;
+}
+
+function resetFeedParams(type){
+	if(availableObjectTemplate==""){
+		availableObjectTemplate=eval( "(" + jQuery("#availableObjects").val() + ")");
+	}
+	
+	jQuery("#availableObjectParams").find(":input").bind(
+		"change",
+		function(){
+			availableObjectParams={};
+			jQuery("#availableObjectParams").find(":input").each(
+				function(){
+					var item=jQuery(this);
+					if (item.attr("type") != "radio" || (item.attr("type") =="radio" && item.is(':checked'))) {
+						availableObjectParams[item.attr("data-displayobjectparam")] = item.val();
+					}
+				}
+			)
+			var availableObject=jQuery.extend({},availableObjectTemplate);
+			availableObject.params=availableObjectParams;
+			
+			jQuery("#availableObjects").val(JSON.stringify(availableObject));
+			//alert(jQuery("#availableObjects").val());
+		}
+	);
+	
+	if (jQuery("#availableObjectParams").is(":visible")) {
+		jQuery("#availableObjectParams").fadeOut("fast");
+	}else{
+		jQuery("#availableObjectParams").fadeIn("fast");
+	}
 }
 
 function loadNotify(siteid,contentid,parentid)	{

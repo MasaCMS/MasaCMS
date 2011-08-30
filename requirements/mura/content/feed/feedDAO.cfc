@@ -63,7 +63,8 @@ to your own modified versions of Mura CMS.
 	<cfquery datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	insert into tcontentfeeds (feedID,siteid,dateCreated,lastupdate,lastupdateBy,name, altName, description,
 	isActive,isPublic,isDefault,lang,maxItems,allowHTML,isFeaturesOnly,restricted,restrictGroups,version,
-	ChannelLink,type,ParentID,sortBy,sortDirection,nextN,displayName,displayRatings,displayComments,remoteID,remoteSourceURL, remotePubDate)
+	ChannelLink,type,ParentID,sortBy,sortDirection,nextN,displayName,displayRatings,displayComments,remoteID,remoteSourceURL, remotePubDate,
+	imageSize,imageHeight,imageWidth)
 	values (
 	<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.feedBean.getfeedID()#">,
 	<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.feedBean.getSiteID() neq '',de('no'),de('yes'))#" value="#arguments.feedBean.getsiteID()#">,
@@ -94,7 +95,10 @@ to your own modified versions of Mura CMS.
 	#arguments.feedBean.getDisplayComments()#,
 	<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.feedBean.getRemoteID() neq '',de('no'),de('yes'))#" value="#arguments.feedBean.getRemoteID()#">,
 	<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.feedBean.getRemoteSourceURL() neq '',de('no'),de('yes'))#" value="#arguments.feedBean.getRemoteSourceURL()#">,
-	<cfqueryparam cfsqltype="cf_sql_timestamp" null="#iif(arguments.feedBean.getRemotePubDate() neq '',de('no'),de('yes'))#" value="#arguments.feedBean.getRemotePubDate()#">
+	<cfqueryparam cfsqltype="cf_sql_timestamp" null="#iif(arguments.feedBean.getRemotePubDate() neq '',de('no'),de('yes'))#" value="#arguments.feedBean.getRemotePubDate()#">,
+	<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.feedBean.getImageSize() neq '',de('no'),de('yes'))#" value="#arguments.feedBean.getImageSize()#">,
+	<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.feedBean.getImageHeight() neq '',de('no'),de('yes'))#" value="#arguments.feedBean.getImageHeight()#">,
+	<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.feedBean.getImageWidth() neq '',de('no'),de('yes'))#" value="#arguments.feedBean.getImageWidth()#">
 	)
 	</cfquery>
 	
@@ -239,7 +243,10 @@ to your own modified versions of Mura CMS.
 	displayComments = #arguments.feedBean.getDisplayComments()#,
 	remoteID= <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.feedBean.getRemoteID() neq '',de('no'),de('yes'))#" value="#arguments.feedBean.getRemoteID()#">,
 	remoteSourceURL= <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.feedBean.getRemoteSourceURL() neq '',de('no'),de('yes'))#" value="#arguments.feedBean.getRemoteSourceURL()#">,
-	remotePubDate= <cfqueryparam cfsqltype="cf_sql_timestamp" null="#iif(arguments.feedBean.getRemotePubDate() neq '',de('no'),de('yes'))#" value="#arguments.feedBean.getRemotePubDate()#">
+	remotePubDate= <cfqueryparam cfsqltype="cf_sql_timestamp" null="#iif(arguments.feedBean.getRemotePubDate() neq '',de('no'),de('yes'))#" value="#arguments.feedBean.getRemotePubDate()#">,
+	imageSize=<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.feedBean.getImageSize() neq '',de('no'),de('yes'))#" value="#arguments.feedBean.getImageSize()#">,
+	imageHeight=<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.feedBean.getImageHeight() neq '',de('no'),de('yes'))#" value="#arguments.feedBean.getImageHeight()#">,
+	imageWidth=<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.feedBean.getImageWidth() neq '',de('no'),de('yes'))#" value="#arguments.feedBean.getImageWidth()#">
 	where feedID =<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.feedBean.getfeedID()#">
 	</cfquery>
 	

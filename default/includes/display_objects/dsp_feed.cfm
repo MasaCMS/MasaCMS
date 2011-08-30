@@ -48,6 +48,10 @@ to your own modified versions of Mura CMS.
   <cfelse>
 	<cfset variables.feedBean = $.getBean("feed").loadBy(name=arguments.objectID,siteID=arguments.siteID)>
   </cfif>
+  
+  <cfif isJson(params)>
+  		<cfset variables.feedBean.set(deserializeJSON(params))>
+  </cfif>
 
   <cfif variables.feedBean.getIsActive()>
 	<cfset variables.cssID=$.createCSSid(feedBean.renderName())>
@@ -141,7 +145,10 @@ to your own modified versions of Mura CMS.
 				thefile='dsp_content_list.cfm',
 				fields=variables.contentListFields,
 				type=variables.contentListType, 
-				iterator= variables.iterator
+				iterator= variables.iterator,
+				imageSize=variables.feed.getImageSize(),
+				imageHeight=variables.feed.getImageHeight(),
+				imageWidth=variables.feed.getImageWidth()
 				)#
 
 			<cfif variables.nextN.numberofpages gt 1>

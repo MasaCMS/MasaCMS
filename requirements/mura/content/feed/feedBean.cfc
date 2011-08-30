@@ -78,6 +78,9 @@ to your own modified versions of Mura CMS.
 <cfproperty name="remoteID" type="string" default="" required="true" />
 <cfproperty name="remoteSourceURL" type="string" default="" required="true" />
 <cfproperty name="remotePubDAte" type="string" default="" required="true" />
+<cfproperty name="imageSize" type="string" default="small" required="true" />
+<cfproperty name="imageHeight" type="string" default="AUTO" required="true" />
+<cfproperty name="imageWidth" type="string" default="AUTO" required="true" />
 
 <cffunction name="init" returntype="any" output="false" access="public">
 	<cfset super.init(argumentCollection=arguments)>
@@ -119,6 +122,9 @@ to your own modified versions of Mura CMS.
 	<cfset variables.instance.remoteID = "" />
 	<cfset variables.instance.remoteSourceURL = "" />
 	<cfset variables.instance.remotePubDate = "">
+	<cfset variables.instance.imageSize="small" />
+	<cfset variables.instance.imageHeight="AUTO" />
+	<cfset variables.instance.imageWidth="AUTO" />
 	
 	<cfreturn this />
 </cffunction>
@@ -233,6 +239,22 @@ to your own modified versions of Mura CMS.
 	<cfargument name="showNavOnly" type="any" />
 	<cfif isBoolean(arguments.showNavOnly)>
 	<cfset variables.instance.showNavOnly = arguments.showNavOnly />
+	</cfif>
+	<cfreturn this>
+</cffunction>
+
+<cffunction name="setImageHeight" access="public" output="false">
+	<cfargument name="imageHeight" type="any" />
+	<cfif isNumeric(arguments.imageHeight)>
+	<cfset variables.instance.imageHeight = arguments.imageHeight />
+	</cfif>
+	<cfreturn this>
+</cffunction>
+
+<cffunction name="setImageWidth" access="public" output="false">
+	<cfargument name="imageWidth" type="any" />
+	<cfif isNumeric(arguments.imageWidth)>
+	<cfset variables.instance.imageWidth = arguments.imageWidth />
 	</cfif>
 	<cfreturn this>
 </cffunction>
