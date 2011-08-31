@@ -154,6 +154,7 @@
 	
 	<cfelseif arguments.rc.attribute eq "template">
 		<cfset local.args.template=arguments.rc.template>
+		<cfset local.args.altCascadeTemplate=arguments.rc.altCascadeTemplate>
 	<cfelseif arguments.rc.attribute eq "inheritObjects">
 		<cfset local.args.inheritObjects=arguments.rc.inheritObjects>
 	<cfelse>
