@@ -73,7 +73,7 @@ to your own modified versions of Mura CMS.
 <cfproperty name="target" type="string" default="_self" required="true" />
 <cfproperty name="restrictGroups" type="string" default="" required="true" />
 <cfproperty name="template" type="string" default="" required="true" />
-<cfproperty name="altCascadeTemplate" type="string" default="" required="true" />
+<cfproperty name="childTemplate" type="string" default="" required="true" />
 <cfproperty name="responseMessage" type="string" default="" required="true" />
 <cfproperty name="responseChart" type="numeric" default="0" required="true" />
 <cfproperty name="responseSendTo" type="string" default="" required="true" />
@@ -160,7 +160,7 @@ to your own modified versions of Mura CMS.
 	<cfset variables.instance.Target = "_self" />
 	<cfset variables.instance.RestrictGroups = "" />
 	<cfset variables.instance.Template = "" />
-	<cfset variables.instance.altCascadeTemplate=""/>
+	<cfset variables.instance.childTemplate=""/>
 	<cfset variables.instance.ResponseMessage = "" />
 	<cfset variables.instance.ResponseChart = 0 />
 	<cfset variables.instance.ResponseSendTo = "" />

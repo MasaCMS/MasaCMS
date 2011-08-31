@@ -73,13 +73,13 @@ to your own modified versions of Mura CMS.
 			</cfif>
 			</cfloop>
 		</select>
-		<h1>#application.rbFactory.getKeyValue(session.rb,'sitemanager.quickedit.edit.altcascadetemplate')#</h1>
-		<select id="mura-quickEdit-altcascadetemplate">
+		<h1>#application.rbFactory.getKeyValue(session.rb,'sitemanager.quickedit.edit.childtemplate')#</h1>
+		<select id="mura-quickEdit-childtemplate">
 			<option value="">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.none')#</option>
 			<cfloop query="rsTemplates">
 			<cfif right(rsTemplates.name,4) eq ".cfm">
 				<cfoutput>
-				<option value="#rsTemplates.name#" <cfif content.getAltCascadeTemplate() eq rsTemplates.name>selected</cfif>>#rsTemplates.name#</option>
+				<option value="#rsTemplates.name#" <cfif content.getchildTemplate() eq rsTemplates.name>selected</cfif>>#rsTemplates.name#</option>
 				</cfoutput>
 			</cfif>
 			</cfloop>

@@ -70,13 +70,13 @@ to your own modified versions of Mura CMS.
 	</cfloop>
 	</select>
 	</dd>
-	<dt><cfoutput><a href="##" class="tooltip">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.altcascadetemplate')#<span>#application.rbFactory.getKeyValue(session.rb,"tooltip.altCascadeTemplate")#</span></a></cfoutput></dt>
-	<dd><select name="altcascadetemplate" class="dropdown">
+	<dt><cfoutput><a href="##" class="tooltip">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.childtemplate')#<span>#application.rbFactory.getKeyValue(session.rb,"tooltip.childTemplate")#</span></a></cfoutput></dt>
+	<dd><select name="childTemplate" class="dropdown">
 	<option value="">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.none')#</option>
 	<cfloop query="request.rsTemplates">
 	<cfif right(request.rsTemplates.name,4) eq ".cfm">
 		<cfoutput>
-		<option value="#request.rsTemplates.name#" <cfif request.contentBean.getAltCascadeTemplate() eq request.rsTemplates.name>selected</cfif>>#request.rsTemplates.name#</option>
+		<option value="#request.rsTemplates.name#" <cfif request.contentBean.getchildTemplate() eq request.rsTemplates.name>selected</cfif>>#request.rsTemplates.name#</option>
 		</cfoutput>
 	</cfif>
 	</cfloop>
