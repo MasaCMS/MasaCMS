@@ -111,7 +111,9 @@ to your own modified versions of Mura CMS.
 <cfproperty name="created" type="date" default="" required="true" />
 <cfproperty name="mobileExclude" type="numeric" default="0" required="true" />
 <cfproperty name="changesetID" type="string" default="" required="true" />
-
+<cfproperty name="imageSize" type="string" default="small" required="true" />
+<cfproperty name="imageHeight" type="string" default="AUTO" required="true" />
+<cfproperty name="imageWidth" type="string" default="AUTO" required="true" />
 <cffunction name="init" access="public" returntype="any" output="false">
 	
 	<cfset super.init(argumentCollection=arguments)>
@@ -196,6 +198,9 @@ to your own modified versions of Mura CMS.
 	<cfset variables.instance.mobileExclude = 0 />
 	<cfset variables.instance.changesetID = "" />
 	<cfset variables.instance.tcontent_id = 0 />
+	<cfset variables.instance.imageSize = "small" />
+	<cfset variables.instance.imageHeight = "AUTO" />
+	<cfset variables.instance.imageWidth = "AUTO" />
 	<cfset variables.instance.errors=structnew() />
 	
 	<cfset variables.kids = arrayNew(1) />
@@ -524,6 +529,22 @@ to your own modified versions of Mura CMS.
 <cffunction name="setCreated" output="false" access="public">
     <cfargument name="Created" type="string" required="true">
 	<cfset variables.instance.Created = parseDateArg(arguments.Created) />
+	<cfreturn this>
+</cffunction>
+
+<cffunction name="setImageHeight" output="false" access="public">
+    <cfargument name="ImageHeight" required="true">
+	<cfif isNumeric(arguments.ImageHeight)>
+  	  <cfset variables.instance.ImageHeight = arguments.ImageHeight />
+	</cfif>
+	<cfreturn this>
+</cffunction>
+
+<cffunction name="setImageWidth" output="false" access="public">
+    <cfargument name="ImageWidth" required="true">
+	<cfif isNumeric(arguments.ImageWidth)>
+  	  <cfset variables.instance.ImageWidth = arguments.ImageWidth />
+	</cfif>
 	<cfreturn this>
 </cffunction>
 

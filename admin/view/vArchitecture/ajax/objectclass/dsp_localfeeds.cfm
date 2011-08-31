@@ -70,12 +70,14 @@ to your own modified versions of Mura CMS.
 		<!---<cfset rsExtend=$.getBean("configBean").getClassExtensionManager().getExtendedAttributeList(attributes.siteid,"tcontent")>--->
 		
 		<div id="feedConfigurator">
+			<!---
 			<select onchange="resetFeedParams(this.value);" class="dropdown">
 				<option value="default">#application.rbFactory.getKeyValue(session.rb,'collections.selectdisplayoptions.default')#</option>
 				<option value="custom">#application.rbFactory.getKeyValue(session.rb,'collections.selectdisplayoptions.custom')#</option>
 			</select>
-			<div id="availableObjectParams" style="display:none;">
-				<h4>#application.rbFactory.getKeyValue(session.rb,'collections.customdisplayoptions')#</h4>
+			--->
+			<div id="availableObjectParams"<!--- style="display:none;"--->>
+				<h4>#application.rbFactory.getKeyValue(session.rb,'collections.displayoptions')#</h4>
 				<dl class="oneColumn">
 					<dt class="first">#application.rbFactory.getKeyValue(session.rb,'collections.imagesize')#</dt>
 					<dd><select data-displayobjectparam="imageSize" class="dropdown" onchange="if(this.value=='Custom'){jQuery('##feedCustomImageOptions').fadeIn('fast')}else{jQuery('##feedCustomImageOptions').hide()}">

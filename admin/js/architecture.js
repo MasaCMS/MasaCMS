@@ -565,14 +565,17 @@ function loadObjectClass(siteid,classid,subclassid,contentid,parentid)	{
 	d.html('<img class="loadProgress" src="images/progress_bar.gif">');
 	jQuery.get(url + "?" + pars, 
 		function(data) {
-		jQuery('#classList').html(data);
-		availableObjectTemplate="";
+			jQuery('#classList').html(data);
+			availableObjectTemplate="";
+			if (jQuery("#feedConfigurator").length) {
+				initFeedConfigurator();
+			}
 		}
 	);
 	return false;
 }
 
-function resetFeedParams(type){
+function initFeedConfigurator(){
 	if(availableObjectTemplate==""){
 		availableObjectTemplate=eval( "(" + jQuery("#availableObjects").val() + ")");
 	}
@@ -596,12 +599,13 @@ function resetFeedParams(type){
 			//alert(jQuery("#availableObjects").val());
 		}
 	);
-	
+	/*
 	if (jQuery("#availableObjectParams").is(":visible")) {
 		jQuery("#availableObjectParams").fadeOut("fast");
 	}else{
 		jQuery("#availableObjectParams").fadeIn("fast");
 	}
+	*/
 }
 
 function loadNotify(siteid,contentid,parentid)	{

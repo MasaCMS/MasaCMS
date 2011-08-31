@@ -129,7 +129,7 @@ to your own modified versions of Mura CMS.
 <dd><input name="name" class="text" required="true" message="#application.rbFactory.getKeyValue(session.rb,'collections.namerequired')#" value="#HTMLEditFormat(request.feedBean.getName())#" maxlength="50"></dd>
 </dl>
 </cfoutput>
-<cfset tabLabellist="#application.rbFactory.getKeyValue(session.rb,'collections.choosecontent')#,#application.rbFactory.getKeyValue(session.rb,'collections.advancedfilters')#,#application.rbFactory.getKeyValue(session.rb,'collections.display')#,#application.rbFactory.getKeyValue(session.rb,'collections.rss')#">
+<cfset tabLabellist="#application.rbFactory.getKeyValue(session.rb,'collections.choosecontent')#,#application.rbFactory.getKeyValue(session.rb,'collections.advancedfilters')#,#application.rbFactory.getKeyValue(session.rb,'collections.displaydefaults')#,#application.rbFactory.getKeyValue(session.rb,'collections.rss')#">
 <cfset tablist="tabChoosecontent,tabAdvancedfilters,tabDisplay,tabRss">
 <!-- Content Filters -->
 <cfsavecontent variable="tabContent">
