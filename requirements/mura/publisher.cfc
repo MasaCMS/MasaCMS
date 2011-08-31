@@ -344,7 +344,14 @@ to your own modified versions of Mura CMS.
 			
 			<cfloop query="rstContent">
 				<cfquery datasource="#arguments.toDSN#">
-					insert into tcontent (Active,Approved,audience,Body,ContentHistID,ContentID,Credits,Display,DisplayStart,DisplayStop,featureStart,featureStop,FileID,Filename,forceSSL,inheritObjects,isFeature,IsLocked,IsNav,keyPoints,lastUpdate,lastUpdateBy,lastUpdateByID,MenuTitle,MetaDesc,MetaKeyWords,moduleAssign,ModuleID,nextN,Notes,OrderNo,ParentID,displayTitle,ReleaseDate,RemoteID,RemotePubDate,RemoteSource,RemoteSourceURL,RemoteURL,responseChart,responseDisplayFields,responseMessage,responseSendTo,Restricted,RestrictGroups,searchExclude,SiteID,sortBy,sortDirection,Summary,Target,TargetParams,Template,Title,Type,subType,Path,tags,doCache,created,urltitle,htmltitle,mobileExclude,changesetID)
+					insert into tcontent (Active,Approved,audience,Body,ContentHistID,ContentID,Credits,Display,DisplayStart,DisplayStop,featureStart,featureStop,FileID,Filename,forceSSL,inheritObjects,isFeature,IsLocked,IsNav,keyPoints,
+					lastUpdate,lastUpdateBy,lastUpdateByID,MenuTitle,MetaDesc,MetaKeyWords,moduleAssign,ModuleID,nextN,Notes,OrderNo,ParentID,displayTitle,ReleaseDate,RemoteID,RemotePubDate,RemoteSource,RemoteSourceURL,RemoteURL,responseChart,
+					responseDisplayFields,responseMessage,responseSendTo,Restricted,RestrictGroups,searchExclude,SiteID,sortBy,sortDirection,Summary,Target,TargetParams,Template,Title,Type,subType,Path,tags,doCache,created,urltitle,htmltitle,mobileExclude,changesetID
+					<!--- Check for new fields added in 5.5 --->
+					<cfif isdefined("rstContent.imageSize")>
+					,imageSize,imageHeight,imageWidth,altCascadeTemplate
+					</cfif>
+					)
 					values
 					(
 					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(rstContent.Active),de(rstContent.Active),de(0))#">,
@@ -415,6 +422,14 @@ to your own modified versions of Mura CMS.
 					<cfqueryparam cfsqltype="cf_sql_LONGVARCHAR" null="#iif(rstContent.htmltitle neq '',de('no'),de('yes'))#" value="#rstContent.htmltitle#">,
 					<cfqueryparam cfsqltype="cf_sql_TINYINT" null="no" value="#iif(isNumeric(rstContent.mobileExclude),de(rstContent.mobileExclude),de(0))#">,
 					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstContent.changesetID neq '',de('no'),de('yes'))#" value="#rstContent.changesetID#">
+					<!--- Check for new fields added in 5.5 --->
+					<cfif isdefined("rstContent.imageSize")>
+					,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstContent.imageSize neq '',de('no'),de('yes'))#" value="#rstContent.imageSize#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstContent.imageHeight neq '',de('no'),de('yes'))#" value="#rstContent.imageHeight#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstContent.imageWidth neq '',de('no'),de('yes'))#" value="#rstContent.imageWidth#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstContent.altCascadeTemplate neq '',de('no'),de('yes'))#" value="#rstContent.altCascadeTemplate#">
+					</cfif>
 					)
 				</cfquery>
 			</cfloop>
@@ -634,7 +649,13 @@ to your own modified versions of Mura CMS.
 			</cfquery>
 			<cfloop query="rstcontentfeeds">
 				<cfquery datasource="#arguments.toDSN#">
-					insert into tcontentfeeds (allowHTML,channelLink,dateCreated,description,feedID,isActive,isDefault,isFeaturesOnly,isPublic,lang,lastUpdate,lastUpdateBy,maxItems,name,parentID,restricted,restrictGroups,siteID,Type,version,sortBy,sortDirection,nextN,displayName,displayRatings,displayComments,altname,remoteID,remoteSourceURL,remotePubDate)
+					insert into tcontentfeeds (allowHTML,channelLink,dateCreated,description,feedID,isActive,isDefault,isFeaturesOnly,isPublic,lang,lastUpdate,lastUpdateBy,maxItems,name,parentID,
+					restricted,restrictGroups,siteID,Type,version,sortBy,sortDirection,nextN,displayName,displayRatings,displayComments,altname,remoteID,remoteSourceURL,remotePubDate
+					<!--- Check for new fields added in 5.5 --->
+					<cfif isdefined("rstcontentfeeds.imageSize")>
+					,imageSize,imageHeight,imageWidth,displaySummaries
+					</cfif>
+					)
 					values
 					(
 					<cfqueryparam cfsqltype="cf_sql_TINYINT" null="no" value="#iif(isNumeric(rstcontentfeeds.allowHTML),de(rstcontentfeeds.allowHTML),de(0))#">,
@@ -667,6 +688,15 @@ to your own modified versions of Mura CMS.
 					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstcontentfeeds.remoteid neq '',de('no'),de('yes'))#" value="#rstcontentfeeds.remoteid#">,
 					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstcontentfeeds.remoteSourceURL neq '',de('no'),de('yes'))#" value="#rstcontentfeeds.remoteSourceURL#">,
 					<cfqueryparam cfsqltype="cf_sql_TIMESTAMP" null="#iif(rstcontentfeeds.remotePubDate neq '',de('no'),de('yes'))#" value="#rstcontentfeeds.remotePubDate#">
+					<!--- Check for new fields added in 5.5 --->
+					<cfif isdefined("rstcontentfeeds.imageSize")>
+					,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstcontentfeeds.imageSize neq '',de('no'),de('yes'))#" value="#rstcontentfeeds.imageSize#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstcontentfeeds.imageHeight neq '',de('no'),de('yes'))#" value="#rstcontentfeeds.imageHeight#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstcontentfeeds.imageWidth neq '',de('no'),de('yes'))#" value="#rstcontentfeeds.imageWidth#">,
+					<cfqueryparam cfsqltype="cf_sql_NUMERIC" null="#iif(rstcontentfeeds.displaySummaries neq '',de('no'),de('yes'))#" value="#rstcontentfeeds.displaySummaries#">
+					</cfif>
+					
 					)
 				</cfquery>
 			</cfloop>
