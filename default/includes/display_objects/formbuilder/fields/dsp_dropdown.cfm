@@ -14,7 +14,7 @@
 	#strField#>
 	<cfloop from="1" to="#ArrayLen(dataset.datarecordorder)#" index="iiy">
 		<cfset record = dataset.datarecords[dataset.datarecordorder[iiy]] />
-		<option<cfif len(record.value)> value="#record.value#"</cfif><cfif record.datarecordid eq dataset.defaultid> SELECTED</cfif>>#record.label#</option>
+		<option<cfif not len(record.value)> value="#record.value#"</cfif><cfif record.datarecordid eq dataset.defaultid> SELECTED</cfif>>#record.label#</option>
 	</cfloop>
 	</select>
 	</cfoutput>
