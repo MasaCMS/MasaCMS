@@ -153,3 +153,23 @@ select * from tcontent where 0=1
 </cfcase>
 </cfswitch>
 </cfif>
+
+<cfif not listFindNoCase(rsCheck.columnlist,"altCascadeTemplate")>
+<cfswitch expression="#getDbType()#">
+<cfcase value="mssql">
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	ALTER TABLE tcontent ADD altCascadeTemplate [nvarchar](50) default NULL
+	</cfquery>
+</cfcase>
+<cfcase value="mysql">
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	ALTER TABLE tcontent ADD COLUMN altCascadeTemplate varchar(50) default NULL
+	</cfquery>
+</cfcase>
+<cfcase value="oracle">
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	ALTER TABLE tcontent ADD altCascadeTemplate varchar2(50)
+	</cfquery>
+</cfcase>
+</cfswitch>
+</cfif>

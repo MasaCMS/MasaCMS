@@ -70,6 +70,18 @@ to your own modified versions of Mura CMS.
 	</cfloop>
 	</select>
 	</dd>
+	<dt><cfoutput><a href="##" class="tooltip">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.altcascadetemplate')#<span>#application.rbFactory.getKeyValue(session.rb,"tooltip.altCascadeTemplate")#</span></a></cfoutput></dt>
+	<dd><select name="altcascadetemplate" class="dropdown">
+	<option value="">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.none')#</option>
+	<cfloop query="request.rsTemplates">
+	<cfif right(request.rsTemplates.name,4) eq ".cfm">
+		<cfoutput>
+		<option value="#request.rsTemplates.name#" <cfif request.contentBean.getAltCascadeTemplate() eq request.rsTemplates.name>selected</cfif>>#request.rsTemplates.name#</option>
+		</cfoutput>
+	</cfif>
+	</cfloop>
+	</select>
+	</dd>
 	<dt><input name="forceSSL" id="forceSSL" type="CHECKBOX" value="1" <cfif request.contentBean.getForceSSL() eq "">checked <cfelseif request.contentBean.getForceSSL() eq 1>checked</cfif> class="checkbox"> <label for="forceSSL"><a href="##" class="tooltip">#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.forcessltext'),application.rbFactory.getKeyValue(session.rb,'sitemanager.content.type.#attributes.type#'))#<span>#application.rbFactory.getKeyValue(session.rb,"tooltip.makePageSecure")#</span></a></label></dt>
 	<dt><input name="searchExclude" id="searchExclude" type="CHECKBOX" value="1" <cfif request.contentBean.getSearchExclude() eq "">checked <cfelseif request.contentBean.getSearchExclude() eq 1>checked</cfif> class="checkbox"> <label for="searchExclude">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.searchexclude')#</label></dt>
 	<dt><input name="mobileExclude" id="mobileExclude" type="CHECKBOX" value="1" <cfif request.contentBean.getMobileExclude() eq "">checked <cfelseif request.contentBean.getMobileExclude() eq 1>checked</cfif> class="checkbox"> <label for="mobileExclude">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.mobileexclude')#</label></dt>

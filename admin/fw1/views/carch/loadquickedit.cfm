@@ -73,6 +73,17 @@ to your own modified versions of Mura CMS.
 			</cfif>
 			</cfloop>
 		</select>
+		<h1>#application.rbFactory.getKeyValue(session.rb,'sitemanager.quickedit.edit.altcascadetemplate')#</h1>
+		<select id="mura-quickEdit-altcascadetemplate">
+			<option value="">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.none')#</option>
+			<cfloop query="rsTemplates">
+			<cfif right(rsTemplates.name,4) eq ".cfm">
+				<cfoutput>
+				<option value="#rsTemplates.name#" <cfif content.getAltCascadeTemplate() eq rsTemplates.name>selected</cfif>>#rsTemplates.name#</option>
+				</cfoutput>
+			</cfif>
+			</cfloop>
+		</select>
 	<cfelseif rc.attribute eq "display">
 		<select id="mura-quickEdit-display" onchange="this.selectedIndex==2?toggleDisplay2('mura-quickEdit-displayDates',true):toggleDisplay2('mura-quickEdit-displayDates',false);">
 			<option value="1"  <cfif content.getdisplay() EQ 1> selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.yes')#</option>

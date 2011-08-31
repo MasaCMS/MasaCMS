@@ -1187,7 +1187,8 @@ function saveQuickEdit(){
 		}
 	} else if (attribute == 'template') {
 		var attributeParams = {
-		'template': jQuery("#mura-quickEdit-template").val()
+		'template': jQuery("#mura-quickEdit-template").val(),
+		'altcascadetemplate': jQuery("#mura-quickEdit-altcascadetemplate").val()
 		}
 	} else if (attribute == 'display') {
 		var attributeParams = {

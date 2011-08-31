@@ -157,7 +157,7 @@ to your own modified versions of Mura CMS.
 	</dd>
 	<dd class="template">
 	  	<cfif verdict eq 'editor'><a class="mura-quickEditItem" data-attribute="template"></cfif>
-		<cfif len(attributes.rsnest.template)>
+		<cfif len(attributes.rsnest.template) or len(attributes.rsnest.template)>
 			 <img class="icon" src="images/icons/template_24x24.png" /> 
 		<cfelse>
            	#application.rbFactory.getKeyValue(session.rb,"sitemanager.inherit")#
