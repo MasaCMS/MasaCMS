@@ -86,9 +86,6 @@ to your own modified versions of Mura CMS.
 			</cfif>
 		</cfif>
 	</cfif>
-	
-	
-	<cfset $.addToHTMLHeadQueue("listImageStyles.cfm")>
 </cfsilent>
 <cfif getListFormat() eq "ul">
 	<ul>

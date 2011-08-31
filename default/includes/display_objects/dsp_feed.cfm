@@ -120,7 +120,7 @@ to your own modified versions of Mura CMS.
 		<cfset variables.contentListType="Feed">
 		<cfset variables.contentListFields="Title,Date,Image,Tags,Credits">
 		
-		<cfif arguments.hasSummary and request.feedBean.getDisplaySummaries()>
+		<cfif arguments.hasSummary and variables.feedBean.getDisplaySummaries()>
 			<cfset variables.contentListFields=listAppend(variables.contentListFields,"Summary")>
 		</cfif>
 		
@@ -134,11 +134,10 @@ to your own modified versions of Mura CMS.
 	  </cfsilent>
 
 		<cfif variables.iterator.getRecordCount()>
-			<cfset $.addToHTMLHeadQueue("listImageStyles.cfm")>
 			<cfoutput>
 			<div class="svSyndLocal svFeed svIndex clearfix" id="#variables.cssID#">
 	        <cfif variables.feedBean.getDisplayName()>
-		       <#getHeaderTag('subHead1')#>#HTMLEditFormat(feedBean.renderName())#</#getHeaderTag('subHead1')#>
+		       <#getHeaderTag('subHead1')#>#HTMLEditFormat(variables.feedBean.renderName())#</#getHeaderTag('subHead1')#>
 			</cfif>
 			
 			#dspObject_Include(

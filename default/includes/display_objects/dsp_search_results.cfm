@@ -83,7 +83,6 @@ to your own modified versions of Mura CMS.
 <cfset variables.contentListType="Search">
 <cfset variables.contentListFields="Title,Summary,Tags,Credits">
 
-<cfset $.addToHTMLHeadQueue("listImageStyles.cfm")>
 </cfsilent>
 
 <cfoutput>
