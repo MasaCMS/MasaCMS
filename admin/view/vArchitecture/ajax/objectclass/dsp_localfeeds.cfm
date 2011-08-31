@@ -67,7 +67,8 @@ to your own modified versions of Mura CMS.
 	<cfif attributes.subclassid neq ''>
 		<cfset $=application.serviceFactory.getBean("muraScope").init(attributes.siteID)>
 		<cfset feed=$.getBean("feed").loadBy(feedID=attributes.subclassid)>
-		<cfset rsExtend=$.getBean("configBean").getClassExtensionManager().getExtendedAttributeList(attributes.siteid,"tcontent")>
+		<!---<cfset rsExtend=$.getBean("configBean").getClassExtensionManager().getExtendedAttributeList(attributes.siteid,"tcontent")>--->
+		
 		<div id="feedConfigurator">
 			<select onchange="resetFeedParams(this.value);" class="dropdown">
 				<option value="default">#application.rbFactory.getKeyValue(session.rb,'collections.selectdisplayoptions.default')#</option>
@@ -91,11 +92,33 @@ to your own modified versions of Mura CMS.
 							<dd><input data-displayobjectparam="imageWidth" class="text" value="#feed.getImageWidth()#" /></dd>
 						</dl>
 					</dd>
-					<dt>#application.rbFactory.getKeyValue(session.rb,'collections.altname')#</dt>
-					<dd><input data-displayobjectparam="altName" class="text" value="#HTMLEditFormat(feed.getAltName())#" maxlength="50"></dd>
-					<dt>#application.rbFactory.getKeyValue(session.rb,'collections.itemsperpage')#</dt>
-					<dd><select data-displayobjectparam="nextN" class="dropdown">
-						<cfloop list="1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,25,50,100" index="r">
+				<dt>#application.rbFactory.getKeyValue(session.rb,'collections.displaysummaries')#</dt>
+				<dd>
+				<input name="feedDisplaySummaries" data-displayobjectparam="displaySummaries" type="radio" value="1" class="radio" checked>#application.rbFactory.getKeyValue(session.rb,'collections.yes')# 
+				<input name="feedDisplaySummaries" data-displayobjectparam="displaySummaries" type="radio" value="0" class="radio">#application.rbFactory.getKeyValue(session.rb,'collections.no')# 
+				</dd>
+				<dt>#application.rbFactory.getKeyValue(session.rb,'collections.displayname')#</dt>
+				<dd>
+				<input name="feedDisplayName" data-displayobjectparam="displayName" type="radio" value="1" class="radio" onchange="jQuery('##altNameContainer').toggle();"<cfif feed.getDisplayName()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.yes')# 
+				<input name="feedDisplayName" data-displayobjectparam="displayName" type="radio" value="0" class="radio" onchange="jQuery('##altNameContainer').toggle();" <cfif not feed.getDisplayName()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.no')# 
+				</dd>
+				<span id="altNameContainer"<cfif NOT feed.getDisplayName()> style="display:none;"</cfif>>
+				<dt>#application.rbFactory.getKeyValue(session.rb,'collections.altname')#</dt>
+				<dd><input data-displayobjectparam="altName" class="text" value="#HTMLEditFormat(feed.getAltName())#" maxlength="50"></dd>
+				</span>
+				<dt>#application.rbFactory.getKeyValue(session.rb,'collections.displaycomments')#</dt>
+				<dd>
+				<input name="feedDisplayComments" data-displayobjectparam="displayComments" type="radio" value="1" class="radio" <cfif feed.getDisplayComments()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.yes')# 
+				<input name="feedDisplayComments" data-displayobjectparam="displayComments" type="radio" value="0" class="radio" <cfif not feed.getDisplayComments()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.no')# 
+				</dd>
+				<dt>#application.rbFactory.getKeyValue(session.rb,'collections.displayrating')#</dt>
+				<dd>
+				<input name="feedDisplayRatings" data-displayobjectparam="displayRatings" type="radio" value="1" class="radio" <cfif feed.getDisplayRatings()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.yes')# 
+				<input name="feedDisplayRatings" data-displayobjectparam="displayRatings" type="radio" value="0" class="radio" <cfif not feed.getDisplayRatings()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.no')# 
+				</dd>
+				<dt>#application.rbFactory.getKeyValue(session.rb,'collections.itemsperpage')#</dt>
+				<dd><select data-displayobjectparam="nextN" class="dropdown">
+					<cfloop list="1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,25,50,100" index="r">
 					<option value="#r#" <cfif r eq feed.getNextN()>selected</cfif>>#r#</option>
 					</cfloop>
 					<option value="100000" <cfif feed.getNextN() eq 100000>selected</cfif>>ALL</option>
@@ -109,6 +132,7 @@ to your own modified versions of Mura CMS.
 				<option value="100000" <cfif feed.getMaxItems() eq 100000>selected</cfif>>ALL</option>
 				</select>
 				</dd>
+				<!---
 				<dt>#application.rbFactory.getKeyValue(session.rb,'collections.sortby')#</dt>
 				<dd><select data-displayobjectparam="sortBy" class="dropdown">
 						<option value="lastUpdate" <cfif feed.getsortBy() eq 'lastUpdate'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'params.lastupdate')#</option>
@@ -131,22 +155,7 @@ to your own modified versions of Mura CMS.
 						<option value="asc" <cfif feed.getsortDirection() eq 'asc'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.ascending')#</option>
 						<option value="desc" <cfif feed.getsortDirection() eq 'desc'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.descending')#</option>
 					</select>
-				</dd>
-				<dt>#application.rbFactory.getKeyValue(session.rb,'collections.displayname')#</dt>
-				<dd>
-				<input name="feedDisplayName" data-displayobjectparam="displayName" type="radio" value="1" class="radio" <cfif feed.getDisplayName()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.yes')# 
-				<input name="feedDisplayName" data-displayobjectparam="displayName" type="radio" value="0" class="radio" <cfif not feed.getDisplayName()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.no')# 
-				</dd>
-				<dt>#application.rbFactory.getKeyValue(session.rb,'collections.displaycomments')#</dt>
-				<dd>
-				<input name="feedDisplayComments" data-displayobjectparam="displayComments" type="radio" value="1" class="radio" <cfif feed.getDisplayComments()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.yes')# 
-				<input name="feedDisplayComments" data-displayobjectparam="displayComments" type="radio" value="0" class="radio" <cfif not feed.getDisplayComments()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.no')# 
-				</dd>
-				<dt>#application.rbFactory.getKeyValue(session.rb,'collections.displayrating')#</dt>
-				<dd>
-				<input name="feedDisplayRatings" data-displayobjectparam="displayRatings" type="radio" value="1" class="radio" <cfif feed.getDisplayRatings()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.yes')# 
-				<input name="feedDisplayRatings" data-displayobjectparam="displayRatings" type="radio" value="0" class="radio" <cfif not feed.getDisplayRatings()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.no')# 
-				</dd>
+				</dd>--->
 				</dl>
 			</div>
 		</div>

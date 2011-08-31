@@ -72,6 +72,7 @@ to your own modified versions of Mura CMS.
 <cfproperty name="displayName" type="numeric" default="0" required="true" />
 <cfproperty name="displayRatings" type="numeric" default="0" required="true" />
 <cfproperty name="displayComments" type="numeric" default="0" required="true" />
+<cfproperty name="displaySummaries" type="numeric" default="1" required="true" />
 <cfproperty name="displayKids" type="numeric" default="0" required="true" />
 <cfproperty name="isNew" type="numeric" default="0" required="true" />
 <cfproperty name="advancedParams" type="query" default="" required="true" />
@@ -115,6 +116,7 @@ to your own modified versions of Mura CMS.
 	<cfset variables.instance.displayName=0 />
 	<cfset variables.instance.displayRatings=0 />
 	<cfset variables.instance.displayComments=0 />
+	<cfset variables.instance.displaySummaries=1 />
 	<cfset variables.instance.displayKids=0 />
 	<cfset variables.instance.isNew=1 />
 	<cfset variables.instance.advancedParams=queryNew("feedID,param,relationship,field,condition,criteria,dataType","varchar,integer,varchar,varchar,varchar,varchar,varchar" )  />
@@ -223,6 +225,14 @@ to your own modified versions of Mura CMS.
 	<cfargument name="DisplayComments" type="any" />
 	<cfif isNumeric(arguments.DisplayComments)>
 	<cfset variables.instance.DisplayComments = arguments.DisplayComments />
+	</cfif>
+	<cfreturn this>
+</cffunction>
+
+<cffunction name="setDisplaySummaries" access="public" output="false">
+	<cfargument name="DisplaySummaries" type="any" />
+	<cfif isNumeric(arguments.DisplaySummaries)>
+	<cfset variables.instance.DisplaySummaries = arguments.DisplaySummaries />
 	</cfif>
 	<cfreturn this>
 </cffunction>

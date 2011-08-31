@@ -164,7 +164,31 @@ to your own modified versions of Mura CMS.
 <cf_dsp_categories_nest siteID="#attributes.siteID#" parentID="" nestLevel="0" feedID="#attributes.feedID#">
 <dd>
 
-</cfif><dt>#application.rbFactory.getKeyValue(session.rb,'collections.includefeaturesonly')#</dt>
+</cfif>
+<dt>#application.rbFactory.getKeyValue(session.rb,'collections.sortby')#</dt>
+<dd><select name="sortBy" class="dropdown">
+		<option value="lastUpdate" <cfif request.feedBean.getsortBy() eq 'lastUpdate'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'params.lastupdate')#</option>
+		<option value="releaseDate" <cfif request.feedBean.getsortBy() eq 'releaseDate'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'params.releasedate')#</option>
+		<option value="displayStart" <cfif request.feedBean.getsortBy() eq 'displayStart'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.startdatetime')#</option>
+		<option value="menuTitle" <cfif request.feedBean.getsortBy() eq 'menuTitle'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'params.menutitle')#</option>
+		<option value="title" <cfif request.feedBean.getsortBy() eq 'title'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'params.longtitle')#</option>
+		<option value="rating" <cfif request.feedBean.getsortBy() eq 'rating'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'params.rating')#</option>
+		<option value="comments" <cfif request.feedBean.getsortBy() eq 'comments'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'params.comments')#</option>
+		<option value="created" <cfif request.feedBean.getsortBy() eq 'created'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'params.created')#</option>
+		<option value="orderno" <cfif request.feedBean.getsortBy() eq 'orderno'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'params.orderno')#</option>
+		<option value="random" <cfif request.feedBean.getsortBy() eq 'random'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'params.random')#</option>
+		<cfloop query="rsExtend"><option value="#HTMLEditFormat(rsExtend.attribute)#" <cfif request.feedBean.getsortBy() eq rsExtend.attribute>selected</cfif>>#rsExtend.Type#/#rsExtend.subType# - #rsExtend.attribute#</option>
+		</cfloop>
+	</select>
+	</dd>
+	<dt>#application.rbFactory.getKeyValue(session.rb,'collections.sortdirection')#</dt>
+	<dd>
+	<select name="sortDirection" class="dropdown">
+		<option value="asc" <cfif request.feedBean.getsortDirection() eq 'asc'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.ascending')#</option>
+		<option value="desc" <cfif request.feedBean.getsortDirection() eq 'desc'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.descending')#</option>
+	</select>
+</dd>
+<dt>#application.rbFactory.getKeyValue(session.rb,'collections.includefeaturesonly')#</dt>
 <dd>
 <input name="isFeaturesOnly" type="radio" value="1" class="radio" <cfif request.feedBean.getIsFeaturesOnly()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.yes')# 
 <input name="isFeaturesOnly" type="radio" value="0" class="radio" <cfif not request.feedBean.getIsFeaturesOnly()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.no')# 
@@ -246,8 +270,30 @@ to your own modified versions of Mura CMS.
 	<dd><input name="imageWidth" class="text" value="#request.feedBean.getImageWidth()#" /></dd>
 	</dl>
 </dd>
+<dt>#application.rbFactory.getKeyValue(session.rb,'collections.displaysummaries')#</dt>
+<dd>
+<input name="displaySummaries" type="radio" value="1" class="radio" <cfif request.feedBean.getDisplaySummaries()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.yes')# 
+<input name="displaySummaries" type="radio" value="0" class="radio" <cfif not request.feedBean.getDisplaySummaries()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.no')# 
+</dd>
+<dt>#application.rbFactory.getKeyValue(session.rb,'collections.displayname')#</dt>
+<dd>
+<input name="displayName" type="radio" value="1" class="radio" onchange="jQuery('##altNameContainer').toggle();" <cfif request.feedBean.getDisplayName()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.yes')# 
+<input name="displayName" type="radio" value="0" class="radio" onchange="jQuery('##altNameContainer').toggle();" <cfif not request.feedBean.getDisplayName()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.no')# 
+</dd>
+<span id="altNameContainer"<cfif NOT request.feedBean.getDisplayName()> style="display:none;"</cfif>>
 <dt>#application.rbFactory.getKeyValue(session.rb,'collections.altname')#</dt>
 <dd><input name="altName" class="text" value="#HTMLEditFormat(request.feedBean.getAltName())#" maxlength="50"></dd>
+</span>
+<dt>#application.rbFactory.getKeyValue(session.rb,'collections.displaycomments')#</dt>
+<dd>
+<input name="displayComments" type="radio" value="1" class="radio" <cfif request.feedBean.getDisplayComments()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.yes')# 
+<input name="displayComments" type="radio" value="0" class="radio" <cfif not request.feedBean.getDisplayComments()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.no')# 
+</dd>
+<dt>#application.rbFactory.getKeyValue(session.rb,'collections.displayrating')#</dt>
+<dd>
+<input name="displayRatings" type="radio" value="1" class="radio" <cfif request.feedBean.getDisplayRatings()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.yes')# 
+<input name="displayRatings" type="radio" value="0" class="radio" <cfif not request.feedBean.getDisplayRatings()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.no')# 
+</dd>
 <dt>#application.rbFactory.getKeyValue(session.rb,'collections.itemsperpage')#</dt>
 <dd><select name="nextN" class="dropdown">
 	<cfloop list="1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,25,50,100" index="r">
@@ -263,44 +309,6 @@ to your own modified versions of Mura CMS.
 </cfloop>
 <option value="100000" <cfif request.feedBean.getMaxItems() eq 100000>selected</cfif>>ALL</option>
 </select>
-</dd>
-<dt>#application.rbFactory.getKeyValue(session.rb,'collections.sortby')#</dt>
-<dd><select name="sortBy" class="dropdown">
-		<option value="lastUpdate" <cfif request.feedBean.getsortBy() eq 'lastUpdate'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'params.lastupdate')#</option>
-		<option value="releaseDate" <cfif request.feedBean.getsortBy() eq 'releaseDate'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'params.releasedate')#</option>
-		<option value="displayStart" <cfif request.feedBean.getsortBy() eq 'displayStart'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.startdatetime')#</option>
-		<option value="menuTitle" <cfif request.feedBean.getsortBy() eq 'menuTitle'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'params.menutitle')#</option>
-		<option value="title" <cfif request.feedBean.getsortBy() eq 'title'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'params.longtitle')#</option>
-		<option value="rating" <cfif request.feedBean.getsortBy() eq 'rating'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'params.rating')#</option>
-		<option value="comments" <cfif request.feedBean.getsortBy() eq 'comments'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'params.comments')#</option>
-		<option value="created" <cfif request.feedBean.getsortBy() eq 'created'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'params.created')#</option>
-		<option value="orderno" <cfif request.feedBean.getsortBy() eq 'orderno'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'params.orderno')#</option>
-		<option value="random" <cfif request.feedBean.getsortBy() eq 'random'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'params.random')#</option>
-		<cfloop query="rsExtend"><option value="#HTMLEditFormat(rsExtend.attribute)#" <cfif request.feedBean.getsortBy() eq rsExtend.attribute>selected</cfif>>#rsExtend.Type#/#rsExtend.subType# - #rsExtend.attribute#</option>
-		</cfloop>
-	</select>
-	</dd>
-	<dt>#application.rbFactory.getKeyValue(session.rb,'collections.sortdirection')#</dt>
-	<dd>
-	<select name="sortDirection" class="dropdown">
-		<option value="asc" <cfif request.feedBean.getsortDirection() eq 'asc'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.ascending')#</option>
-		<option value="desc" <cfif request.feedBean.getsortDirection() eq 'desc'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.descending')#</option>
-	</select>
-</dd>
-<dt>#application.rbFactory.getKeyValue(session.rb,'collections.displayname')#</dt>
-<dd>
-<input name="displayName" type="radio" value="1" class="radio" <cfif request.feedBean.getDisplayName()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.yes')# 
-<input name="displayName" type="radio" value="0" class="radio" <cfif not request.feedBean.getDisplayName()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.no')# 
-</dd>
-<dt>#application.rbFactory.getKeyValue(session.rb,'collections.displaycomments')#</dt>
-<dd>
-<input name="displayComments" type="radio" value="1" class="radio" <cfif request.feedBean.getDisplayComments()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.yes')# 
-<input name="displayComments" type="radio" value="0" class="radio" <cfif not request.feedBean.getDisplayComments()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.no')# 
-</dd>
-<dt>#application.rbFactory.getKeyValue(session.rb,'collections.displayrating')#</dt>
-<dd>
-<input name="displayRatings" type="radio" value="1" class="radio" <cfif request.feedBean.getDisplayRatings()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.yes')# 
-<input name="displayRatings" type="radio" value="0" class="radio" <cfif not request.feedBean.getDisplayRatings()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.no')# 
 </dd>
 </dl>
 </div>
