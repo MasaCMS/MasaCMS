@@ -83,7 +83,10 @@ to your own modified versions of Mura CMS.
 			thefile='dsp_content_list.cfm',
 			fields=variables.contentListFields,
 			type=variables.contentListType, 
-			iterator= variables.iterator
+			iterator= variables.iterator,
+			imageSize=$.content("ImageSize"),
+			imageHeight=$.content("ImageHeight"),
+			imageWidth=$.content("ImageWidth")
 			)#
 		 
 		<cfif variables.nextn.numberofpages gt 1>

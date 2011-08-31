@@ -851,7 +851,7 @@ to your own modified versions of Mura CMS.
 	</cfif>
 	
 	<cfif arguments.direct and application.configBean.getFileStore() eq "fileDir">
-		<cfif not len(arguments.width) and not len(arguments.height)>
+		<cfif arguments.imageSize neq "Custom" and not len(arguments.width) and not len(arguments.height)>
 			<cfif imgSuffix eq "large">
 				<cfset imgSuffix="">
 			<cfelse>

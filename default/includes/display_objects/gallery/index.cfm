@@ -79,6 +79,15 @@ to your own modified versions of Mura CMS.
 	<cfset iterator=$.getBean("contentIterator")>
 	<cfset iterator.setQuery(rsSection,event.getContentBean().getNextN())>
 	
+	<cfset imageArgs=structNew()/>
+	
+	<cfif $.content("imageSize") neq "Custom">
+		<cfset imageArgs.size=$.content("imageSize")>
+	<cfelse>
+		<cfset imageArgs.height=$.content("imageHeight")>
+		<cfset imageArgs.width=$.content("imageWidth")>
+	</cfif>
+	
 	<cfset event.setValue("currentNextNID",$.content('contentID'))>
 	
 	<cfif not len($.event("nextNID")) or $.event("nextNID") eq $.event("currentNextNID")>
@@ -112,7 +121,7 @@ to your own modified versions of Mura CMS.
 			</cfsilent>
 			<cfoutput>
 			<li class="#class#">
-			<a href="#createHREFForImage(item.getValue('siteid'),item.getValue('fileid'),item.getValue('fileext'),'large',false)#" title="#HTMLEditFormat(item.getValue('title'))#" rel="shadowbox[gallery]" class="gallery"><img src="#createHREFForImage(item.getValue('siteid'),item.getValue('fileid'),item.getValue('fileext'),'small')#" alt="#HTMLEditFormat(item.getValue('title'))#"/></a>	 
+			<a href="#item.getImageURL(size='large')#" title="#HTMLEditFormat(item.getValue('title'))#" rel="shadowbox[gallery]" class="gallery"><img src="#item.getImageURL(argumentCollection=imageArgs)#" alt="#HTMLEditFormat(item.getValue('title'))#"/></a>	 
 		 	<dl>
 		 	<dt>
 		 	<cfif hasComments>
