@@ -48,8 +48,25 @@ to your own modified versions of Mura CMS.
 	<cf_CacheOMatic key="#arguments.object##arguments.objectid#" nocache="#$.event('nocache')#">
 	<cfsilent>
 	<cfparam name="hasSummary" default="true"/>
-	<cfset feedBean=application.feedManager.read(arguments.objectID) />
+	<cfif isValid("UUID",arguments.objectID)>	
+		<cfset variables.feedBean = $.getBean("feed").loadBy(feedID=arguments.objectID,siteID=arguments.siteID)>
+  	<cfelse>
+		<cfset variables.feedBean = $.getBean("feed").loadBy(name=arguments.objectID,siteID=arguments.siteID)>
+  	</cfif>
 	
+	 <cfif isJson(params)>
+  		<cfset variables.feedBean.set(deserializeJSON(params))>
+  	</cfif>
+  	
+  	 <cfset imageArgs=structNew()/>
+	
+	<cfif variables.feedBean.getImageSize() neq "Custom">
+		<cfset imageArgs.size=variables.feedBean.getImageSize() >
+	<cfelse>
+		<cfset imageArgs.height=variables.feedBean.getImageHeight() >
+		<cfset imageArgs.width=variables.feedBean.getImageWidth() >
+	</cfif>
+  	
 	<cfset editableControl.editLink = "">
 		<!---
 		<cfset editableControl.historyLink = "">
@@ -96,6 +113,8 @@ to your own modified versions of Mura CMS.
 				<cfset rs=rsPreFeed />
 			</cfif>
 			
+			<cfset hasSummary = hasSummary and variables.feedBean.getDisplaySummaries()>
+			
 			<cfset iterator=$.getBean("contentIterator")>
 			<cfset iterator.setQuery(rs,feedBean.getNextN())>
 		
@@ -140,7 +159,7 @@ to your own modified versions of Mura CMS.
 				<dt><a href="#theLink#">#HTMLEditFormat(item.getValue('menuTitle'))#</a></dt>
 				<cfif hasImage>
 					<dd class="image">
-						<a href="#theLink#" title="#HTMLEditFormat(item.getValue('title'))#"><img src="#createHREFForImage(item.getValue('siteID'),item.getValue('fileID'),item.getValue('fileEXT'),'medium')#" alt="#htmlEditFormat(item.getValue('title'))#"/></a>
+						<a href="#theLink#" title="#HTMLEditFormat(item.getValue('title'))#"><img src="#item.getImageURL(argumentCollection=imageArgs)#" alt="#htmlEditFormat(item.getValue('title'))#"/></a>
 					</dd>
 				</cfif>
 				<cfif hasSummary and len(item.getValue('summary'))>
