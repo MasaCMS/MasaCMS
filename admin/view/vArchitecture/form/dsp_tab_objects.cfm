@@ -130,13 +130,7 @@ to your own modified versions of Mura CMS.
 			
 	</table>
 </dd>	  
-</dl></div>	
-<style>
-	##availableListSort, ##displayListSort { list-style-type: none; margin: 0; padding: 0; float: left; margin-right: 10px; }
-	##availableListSort li, ##displayListSort li { margin: 0 5px 5px 5px; padding: 5px; font-size: 1.2em; width: 120px; }
-	##configuratorContainer dt, ##configuratorContainer dd{clear:both;}
-</style>
-				
+</dl></div>				
 <script>
 var remoteFeedConfiguratorTitle='#application.rbFactory.getKeyValue(session.rb,"sitemanager.configurator.remotefeedtitle")#';
 var localIndexConfiguratorTitle='#application.rbFactory.getKeyValue(session.rb,"sitemanager.configurator.localindextitle")#';		
