@@ -4562,3 +4562,11 @@ ul .checkboxTree li {
 }
 
 /* @end */
+
+/* Draggagle listing field sorting */
+
+#availableListSort, #displayListSort { list-style-type: none; margin: 0; padding: 0; float: left; margin-right: 10px; }
+#availableListSort li, #displayListSort li { margin: 0 5px 5px 5px; padding: 5px; font-size: 1.2em; width: 120px; }
+#configuratorContainer dt, #configuratorContainer dd {clear:both;}
+
+/* @end */
