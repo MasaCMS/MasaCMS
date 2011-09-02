@@ -1758,6 +1758,19 @@ to your own modified versions of Mura CMS.
 	
 	<cfreturn trim(str) />
 </cffunction>
+
+<cffunction name="dspThemeInclude" returntype="string" access="public">
+	<cfargument name="template" default="" required="true">
+	<cfset var str='' />
+	
+	<cfif arguments.template neq ''>
+		<cfsavecontent variable="str">
+			<cfinclude template="#$.siteConfig('themeIncludePath')#/#arguments.template#">
+		</cfsavecontent>
+	</cfif>
+	
+	<cfreturn trim(str) />
+</cffunction>
  
 <cffunction name="sendToFriendLink" output="false" returnType="String">
 <cfreturn "javascript:sendtofriend=window.open('#event.getSite().getAssetPath()#/utilities/sendtofriend.cfm?link=#urlEncodedFormat(getCurrentURL())#&siteID=#event.getValue('siteID')#', 'sendtofriend', 'scrollbars=yes,resizable=yes,screenX=0,screenY=0,width=570,height=390');sendtofriend.focus();void(0);"/>
