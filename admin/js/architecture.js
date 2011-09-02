@@ -1212,6 +1212,12 @@ function addDisplayObject(objectToAdd,regionID,configure){
 			initCategorySummaryConfigurator(tmpObject)
 			return false;
 		}
+	
+		if (configure &&  (tmpObject.object == 'related_content' || tmpObject.object == 'related_section_content')) {
+			tmpObject.regionID=regionID;
+			initRelatedContentConfigurator(tmpObject);
+			return false;
+		}
 		
 		tmpValue=tmpObject.object;
 		tmpValue=tmpValue + "~" + tmpObject.name;	

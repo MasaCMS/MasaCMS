@@ -334,8 +334,86 @@ to your own modified versions of Mura CMS.
 			data, 
 			function(data) {
 				
-				jQuery("##ui-dialog-title-configuratorContainer").html("Configure Slide Show");
+				jQuery("##ui-dialog-title-configuratorContainer").html("Configure Slide Show");	
+				jQuery("##configurator").html(data);
 				
+				if(availableObjectTemplate==""){
+					availableObjectTemplate=eval( "(" + jQuery("##displayObjectTemplate").val() + ")");
+					availableObject=jQuery.extend({},availableObjectTemplate);
+				}
+				
+				jQuery( "##availableListSort, ##displayListSort" ).sortable({
+					connectWith: ".displayListSortOptions",
+					update: function(event){
+						event.stopPropagation();
+						jQuery("##displayList").val("");
+						jQuery("##displayListSort > li").each(function(){
+							var current = jQuery("##displayList").val();
+							
+							if (current != '') {
+								jQuery("##displayList").val(current + "," + jQuery(this).html());
+							}
+							else {
+								jQuery("##displayList").val(jQuery(this).html());
+							}
+							
+						});
+						updateAvailableObject();
+					}
+				}).disableSelection();
+				
+				initConfiguratorParams();
+		
+			}
+		);
+		
+		return true;
+	}
+	
+	function initRelatedContentConfigurator(data){
+
+		resetAvailableObject();
+		resetConfiguratorContainer();
+		
+		if (typeof(data.object) != 'undefined') {
+			if (data.object != 'related_content' && data.object != 'related_section_content') {
+				return false;
+			}
+		} else{
+			return false;
+		}
+
+		var url = 'index.cfm';
+		var pars = 'fuseaction=cArch.loadclassconfigurator&compactDisplay=true&siteid=#JSStringFormat(attributes.siteID)#&classid=' + data.object + '&contentid=#JSStringFormat(attributes.contentID)#&parentid=#JSStringFormat(attributes.parentID)#&contenthistid=#JSStringFormat(attributes.contentHistID)#&regionid=' + data.regionID  + '&objectid=' +  data.objectid + '&cacheid=' + Math.random();
+		var regionID=data.regionID;
+		
+		//location.href=url + "?" + pars;
+		
+		jQuery("##configuratorContainer").dialog({
+					resizable: true,
+					modal: false,
+					width: 400,
+					buttons: {
+						Save: function() {
+							addDisplayObject(availableObject,regionID,false);
+							jQuery( this ).dialog( "close" );
+							
+						},
+						Cancel: function() {
+							jQuery( this ).dialog( "close" );
+						}
+					},
+					close: function(){
+						jQuery(this).dialog("destroy");
+					}
+					
+				});
+		
+		jQuery.post(url + "?" + pars,
+			data, 
+			function(data) {
+				
+				jQuery("##ui-dialog-title-configuratorContainer").html("Configure Related Content");		
 				jQuery("##configurator").html(data);
 				
 				if(availableObjectTemplate==""){
@@ -431,6 +509,8 @@ to your own modified versions of Mura CMS.
 					initSlideShowConfigurator(data);
 				} else if (data.object == 'category_summary') {
 					initCategorySummaryConfigurator(data);
+				} else if (data.object == 'related_content' || data.object == 'related_section_content') {
+					initRelatedContentConfigurator(data);
 				} else{
 					initGenericConfigurator(data);
 				}

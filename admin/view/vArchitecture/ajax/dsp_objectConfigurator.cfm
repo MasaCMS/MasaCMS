@@ -51,6 +51,9 @@ to your own modified versions of Mura CMS.
 	<cfcase value="category_summary">
 		<cfinclude template="objectclass/dsp_category_summary_configurator.cfm">
 	</cfcase>
+	<cfcase value="related_content,related_section_content">
+		<cfinclude template="objectclass/dsp_related_content_configurator.cfm">
+	</cfcase>
 	<cfdefaultcase>
 		<cfoutput>#attributes.classid#</cfoutput>
 	</cfdefaultcase>

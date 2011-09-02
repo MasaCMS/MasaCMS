@@ -60,21 +60,16 @@ to your own modified versions of Mura CMS.
 		        style="width:310px;">
 			<cfloop query="request.rsSections">
 				<cfif request.rsSections.contentID eq attributes.subclassid>
-					<option value="{'object':'category_summary','name':'#HTMLEditFormat(request.rsSections.menutitle)# - #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.categorysummary')#','objectid':'#request.rsSections.contentid#'}">
+					<option value="{'object':'category_summary','name':'#JSStringFormat(request.rsSections.menutitle)# - #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.categorysummary')#','objectid':'#request.rsSections.contentid#'}">
 						#HTMLEditFormat(request.rsSections.menutitle)# 
 						- 
 						#application.rbFactory.getKeyValue(session.rb, 'sitemanager.content.fields.categorysummary')#
 					</option>
-					<option value="related_section_content~#HTMLEditFormat(request.rsSections.menutitle)# - #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.relatedcontentsummaries')#~#request.rsSections.contentid#">
+					<option value="{'object':'related_section_content','name':'#JSStringFormat(request.rsSections.menutitle)# - #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.relatedcontent')#','objectid':'#request.rsSections.contentid#'}">
 						#HTMLEditFormat(request.rsSections.menutitle)# 
 						- 
 						#application.rbFactory.getKeyValue(session.rb, 
-					                                    'sitemanager.content.fields.relatedcontentsummaries')#
-					</option>
-					<option value="related_section_content_no_summary~#HTMLEditFormat(request.rsSections.menutitle)# - #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.relatedcontent')#~#request.rsSections.contentid#">
-						#HTMLEditFormat(request.rsSections.menutitle)# 
-						- 
-						#application.rbFactory.getKeyValue(session.rb, 'sitemanager.content.fields.relatedcontent')#
+					                                    'sitemanager.content.fields.relatedcontent')#
 					</option>
 					<option value="calendar_nav~#HTMLEditFormat(request.rsSections.menutitle)# - #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.calendarnavigation')#~#request.rsSections.contentid#">
 						#HTMLEditFormat(request.rsSections.menutitle)# 
