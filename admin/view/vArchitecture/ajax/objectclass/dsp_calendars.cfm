@@ -43,7 +43,7 @@ to your own modified versions of Mura CMS.
 <cfset request.rsSections = application.contentManager.getSections(attributes.siteid, 'Calendar')/>
 <cfoutput>
 	<select name="subClassSelector" 
-	        onchange="loadObjectClass('#attributes.siteid#','calendar',this.value,'#attributes.contentid#','#attributes.parentid#');" 
+	        onchange="loadObjectClass('#attributes.siteid#','calendar',this.value,'#attributes.contentid#','#attributes.parentid#','#attributes.contenthistid#',0,0);" 
 	        class="dropdown">
 		<option value="">
 			#application.rbFactory.getKeyValue(session.rb, 'sitemanager.content.fields.selectcalendar')#
@@ -60,37 +60,16 @@ to your own modified versions of Mura CMS.
 		        style="width:310px;">
 			<cfloop query="request.rsSections">
 				<cfif request.rsSections.contentID eq attributes.subclassid>
-					<option value="features~#HTMLEditFormat(request.rsSections.menutitle)# - #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.featuredcontentsummaries')#~#request.rsSections.contentid#">
-						#HTMLEditFormat(request.rsSections.menutitle)# 
-						- 
-						#application.rbFactory.getKeyValue(session.rb, 
-					                                    'sitemanager.content.fields.featuredcontentsummaries')#
-					</option>
-					<option value="features_no_summary~#HTMLEditFormat(request.rsSections.menutitle)# #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.featuredcontent')#~#request.rsSections.contentid#">
-						#HTMLEditFormat(request.rsSections.menutitle)# 
-						- 
-						#application.rbFactory.getKeyValue(session.rb, 'sitemanager.content.fields.featuredcontent')#
-					</option>
-					<option value="category_summary~#HTMLEditFormat(request.rsSections.menutitle)# - #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.categorysummary')#~#request.rsSections.contentid#">
+					<option value="{'object':'category_summary','name':'#HTMLEditFormat(request.rsSections.menutitle)# - #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.categorysummary')#','objectid':'#request.rsSections.contentid#'}">
 						#HTMLEditFormat(request.rsSections.menutitle)# 
 						- 
 						#application.rbFactory.getKeyValue(session.rb, 'sitemanager.content.fields.categorysummary')#
 					</option>
-					<option value="category_summary_rss~#HTMLEditFormat(request.rsSections.menutitle)# - #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.categorysummaryrss')#~#request.rsSections.contentid#">
-						#HTMLEditFormat(request.rsSections.menutitle)# 
-						- 
-						#application.rbFactory.getKeyValue(session.rb, 'sitemanager.content.fields.categorysummaryrss')#
-					</option>
-					<option value="related_section_content~#HTMLEditFormat(request.rsSections.menutitle)# - #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.relatedcontentsummaries')#~#request.rsSections.contentid#">
+					<option value="{'object':'related_section_content','name':'#JSStringFormat(request.rsSections.menutitle)# - #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.relatedcontent')#','objectid':'#request.rsSections.contentid#'}">
 						#HTMLEditFormat(request.rsSections.menutitle)# 
 						- 
 						#application.rbFactory.getKeyValue(session.rb, 
-					                                    'sitemanager.content.fields.relatedcontentsummaries')#
-					</option>
-					<option value="related_section_content_no_summary~#HTMLEditFormat(request.rsSections.menutitle)# #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.relatedcontent')#~#request.rsSections.contentid#">
-						#HTMLEditFormat(request.rsSections.menutitle)# 
-						- 
-						#application.rbFactory.getKeyValue(session.rb, 'sitemanager.content.fields.relatedcontent')#
+					                                    'sitemanager.content.fields.relatedcontent')#
 					</option>
 					<option value="calendar_nav~#HTMLEditFormat(request.rsSections.menutitle)# - #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.calendarnavigation')#~#request.rsSections.contentid#">
 						#HTMLEditFormat(request.rsSections.menutitle)# 

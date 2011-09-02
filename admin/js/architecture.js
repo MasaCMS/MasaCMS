@@ -329,112 +329,6 @@ document.getElementById(id).style.visibility="hidden";
 }
 
 
-function addDisplayObject(objectToAdd,regionID){
-	var tmpObject="";
-	var tmpValue="";
-	var tmpText="";
-	
-	//If it's not a js object then it must be an id of a form input or select
-	if(typeof(objectToAdd)=="string"){
-	
-		// return error if the id does not exist.
-		if(document.getElementById(objectToAdd)==null){
-			
-			alertDialog("Please select a display object."); 
-			
-			return false;
-		}
-		
-		if (document.getElementById(objectToAdd).tagName.toLowerCase() == "select") {
-		
-			if (document.getElementById(objectToAdd).selectedIndex == -1) {
-				alertDialog("Please select a display object.");
-				
-				return false;
-			}
-			//alert("Please select a display object."); return false;}
-			
-			var addIndex = document.getElementById(objectToAdd).selectedIndex;
-			
-			if (addIndex < 0) 
-				return;
-			
-			var addoption = document.getElementById(objectToAdd).options[addIndex];
-			
-			tmpText = addoption.text;
-			tmpValue = addoption.value;
-			
-		} else if(document.getElementById(objectToAdd).tagName.toLowerCase() == "input"){
-		  
-			var addoption =document.getElementById(objectToAdd);
-			tmpValue=addoption.value;
-
-		} else {
-			//If it's not a select box then the value must be json object.
-			addoption=document.getElementById(objectToAdd);		
-		}
-		
-		try
-		  {
-			tmpObject=eval('(' + addoption.value + ')');
-		  }
-		catch(err)
-		  {
-			tmpObject=addoption.value
-		  }
-	
-	} else {
-		//If it's not a select box then the value must be json object.
-		tmpObject=objectToAdd;
-	}
-	
-	//if the tmpValue evaluated into a js object pull out it's values
-	
-	if(typeof(tmpObject) == "object"){
-		//object^name^objectID^params
-		tmpValue=tmpObject.object;
-		tmpValue=tmpValue + "~" + tmpObject.name;	
-		tmpValue=tmpValue + "~" + tmpObject.objectid;
-		
-		if(typeof(tmpObject.params) == "string"){
-			tmpValue   = tmpValue + "~" + tmpObject.params;
-		} else if (typeof(tmpObject.params) == "object"){
-			tmpValue   = tmpValue + "~" + JSON.stringify( tmpObject.params );
-		}
-		
-		tmpText=tmpObject.name;	
-		
-	} 
-
-	if(tmpValue == ""){
-			
-			alertDialog("Please select a display object."); 
-			
-			return false;
-	}
-	
-	//get reference to the select where it will go.
-	var selectedObjects =document.getElementById("selectedObjects" + regionID);
-	
-	//double check that it's not already there
-	if(selectedObjects.options.length){	
-		for (var i=0;i < selectedObjects.options.length;i++){ 
-			if(selectedObjects.options[i].value==tmpValue) {
-			selectedObjects.selectedIndex=i;
-			return;
-			}
-		}
-	}
-	// add it.
-	var myoption = document.createElement("option");
-	selectedObjects.appendChild(myoption);
-	myoption.text= tmpText;
-	myoption.value=tmpValue;
-	myoption.selected = "selected"
-	
-	updateDisplayObjectList(regionID);
-	
-}
 
 function deleteDisplayObject(regionID){
    var selectedObjects =document.getElementById("selectedObjects" + regionID);
@@ -465,6 +359,8 @@ function updateDisplayObjectList(regionID){
 			objectList.value = selectedObjects.options[i].value; 
 		}
 	}
+	
+	initDisplayObjectConfigurators();
 
 }
 
@@ -555,57 +451,33 @@ function loadAssocImages(siteid,fileid,contentid,keywords,isNew)	{
 		);
 }
 
-var availableObjectTemplate="";
-var availalbeObjectParams={};
-
-function loadObjectClass(siteid,classid,subclassid,contentid,parentid)	{
+function loadObjectClass(siteid,classid,subclassid,contentid,parentid,contenthistid)	{
 	var url = 'index.cfm';
-	var pars = 'fuseaction=cArch.loadclass&compactDisplay=true&siteid=' + siteid +'&classid=' + classid  +'&subclassid=' + subclassid + '&contentid=' + contentid + '&parentid=' + parentid + '&cacheid=' + Math.random();
+	var pars = 'fuseaction=cArch.loadclass&compactDisplay=true&siteid=' + siteid +'&classid=' + classid  +'&subclassid=' + subclassid + '&contentid=' + contentid + '&parentid=' + parentid  +'&cacheid=' + Math.random();
 	var d=jQuery('#classList');
+
 	d.html('<img class="loadProgress" src="images/progress_bar.gif">');
 	jQuery.get(url + "?" + pars, 
 		function(data) {
 			jQuery('#classList').html(data);
 			availableObjectTemplate="";
-			if (jQuery("#feedConfigurator").length) {
-				initFeedConfigurator();
-			}
+			availalbeObjectParams={};
+			availableObject={};
 		}
 	);
 	return false;
 }
 
-function initFeedConfigurator(){
-	if(availableObjectTemplate==""){
-		availableObjectTemplate=eval( "(" + jQuery("#availableObjects").val() + ")");
-	}
-	
-	jQuery("#availableObjectParams").find(":input").bind(
-		"change",
-		function(){
-			availableObjectParams={};
-			jQuery("#availableObjectParams").find(":input").each(
-				function(){
-					var item=jQuery(this);
-					if (item.attr("type") != "radio" || (item.attr("type") =="radio" && item.is(':checked'))) {
-						availableObjectParams[item.attr("data-displayobjectparam")] = item.val();
-					}
-				}
-			)
-			var availableObject=jQuery.extend({},availableObjectTemplate);
-			availableObject.params=availableObjectParams;
-			
-			jQuery("#availableObjects").val(JSON.stringify(availableObject));
-			//alert(jQuery("#availableObjects").val());
-		}
-	);
-	/*
-	if (jQuery("#availableObjectParams").is(":visible")) {
-		jQuery("#availableObjectParams").fadeOut("fast");
-	}else{
-		jQuery("#availableObjectParams").fadeIn("fast");
-	}
-	*/
+function getDisplayObjectClass(regionID){
+	var str=jQuery('#selectedObjects' + regionID).val().toString();
+	var a=str.split("~");
+	return a[0];
+}
+
+function getDisplayObjectID(regionID){
+	var str=jQuery('#selectedObjects' + regionID).val().toString();
+	var a=str.split("~");
+	return a[2];
 }
 
 function loadNotify(siteid,contentid,parentid)	{
@@ -1228,4 +1100,591 @@ function closeQuickEdit(){
 	jQuery('.mura-quickEdit').remove();
 }
 
+var availableObjectTemplate="";
+var availalbeObjectParams={};
+var availableObject={};
+	
+function getDisplayObjectConfig(regionID){
+		var selectedObjects=jQuery('#selectedObjects' + regionID);
+		var str=selectedObjects.val().toString();
+		var a=str.split("~");
+		var data={};
+		
+		data.object=a[0];
+		data.name=a[1];
+		data.objectid=a[2];
+		
+		if(a.length > 3){
+			data.params=a[3];
+		}
+		
+		data.regionID=regionID;
+		return data;
+}
+		
+
+function addDisplayObject(objectToAdd,regionID,configure){
+	var tmpObject="";
+	var tmpValue="";
+	var tmpText="";
+	var isUpdate=false;
+	//If it's not a js object then it must be an id of a form input or select
+	if(typeof(objectToAdd)=="string"){
+	
+		// return error if the id does not exist.
+		if(document.getElementById(objectToAdd)==null){
+			
+			alertDialog("Please select a display object."); 
+			
+			return false;
+		}
+		
+		if (document.getElementById(objectToAdd).tagName.toLowerCase() == "select") {
+		
+			if (document.getElementById(objectToAdd).selectedIndex == -1) {
+				alertDialog("Please select a display object.");
+				
+				return false;
+			}
+			//alert("Please select a display object."); return false;}
+			
+			var addIndex = document.getElementById(objectToAdd).selectedIndex;
+			
+			if (addIndex < 0) 
+				return false;
+			
+			var addoption = document.getElementById(objectToAdd).options[addIndex];
+			
+			tmpText = addoption.text;
+			tmpValue = addoption.value;
+			
+		} else if(document.getElementById(objectToAdd).tagName.toLowerCase() == "input"){
+		  
+			var addoption =document.getElementById(objectToAdd);
+			tmpValue=addoption.value;
+
+		} else {
+			//If it's not a select box then the value must be json object.
+			addoption=document.getElementById(objectToAdd);		
+		}
+		
+		try
+		  {
+			tmpObject=eval('(' + addoption.value + ')');
+		  }
+		catch(err)
+		  {
+			tmpObject=addoption.value
+		  }
+	
+	} else {
+		//If it's not a select box then the value must be json object.
+		tmpObject=objectToAdd;
+	}
+
+	//if the tmpValue evaluated into a js object pull out it's values
+	
+	if(typeof(tmpObject) == "object"){
+		//object^name^objectID^params
+		
+		if (configure && tmpObject.object=='feed') {
+			tmpObject.regionID=regionID;
+			if (initFeedConfigurator(tmpObject)
+			) {
+				return false;
+			}
+		}
+		
+		if (configure && tmpObject.object=='feed_slideshow') {
+			tmpObject.regionID=regionID;
+			initSlideShowConfigurator(tmpObject)
+			return false;
+		}
+		
+		if (configure && tmpObject.object=='feed_slideshow') {
+			tmpObject.regionID=regionID;
+			initSlideShowConfigurator(tmpObject)
+			return false;
+		}
+		
+		if (configure && tmpObject.object=='category_summary') {
+			tmpObject.regionID=regionID;
+			initCategorySummaryConfigurator(tmpObject)
+			return false;
+		}
+	
+		if (configure &&  (tmpObject.object == 'related_content' || tmpObject.object == 'related_section_content')) {
+			tmpObject.regionID=regionID;
+			initRelatedContentConfigurator(tmpObject);
+			return false;
+		}
+		
+		tmpValue=tmpObject.object;
+		tmpValue=tmpValue + "~" + tmpObject.name;	
+		tmpValue=tmpValue + "~" + tmpObject.objectid;
+		
+		if(typeof(tmpObject.params) == "string"){
+			tmpValue   = tmpValue + "~" + tmpObject.params;
+		} else if (typeof(tmpObject.params) == "object"){
+			tmpValue   = tmpValue + "~" + JSON.stringify( tmpObject.params );
+		}
+		
+		if(tmpObject.object=='feed' && document.getElementById('selectedObjects' + regionID).selectedIndex != -1){
+			var currentSelection=getDisplayObjectConfig(regionID);
+		
+			if(currentSelection){
+				if(currentSelection.objectid==tmpObject.objectid){
+					isUpdate=true
+				}
+			}
+			
+		}
+		
+		
+		tmpText=tmpObject.name;	
+		
+	} 
+
+	if(tmpValue == ""){
+			
+			alertDialog("Please select a display object."); 
+			
+			return false;
+	}
+	
+	//get reference to the select where it will go.
+	var selectedObjects =document.getElementById("selectedObjects" + regionID);
+	
+	//double check that it's not already there
+	if(selectedObjects.options.length){	
+		for (var i=0;i < selectedObjects.options.length;i++){ 
+			if(selectedObjects.options[i].value==tmpValue) {
+			selectedObjects.selectedIndex=i;
+			return false;
+			}
+		}
+	}
+	
+
+	// add it.
+
+	
+	if (isUpdate) {
+		myoption=selectedObjects.options[document.getElementById("selectedObjects" + regionID).selectedIndex];
+		myoption.text= tmpText;
+		myoption.value=tmpValue;
+	}else{
+		var myoption = document.createElement("option");
+		selectedObjects.appendChild(myoption);
+		myoption.text= tmpText;
+		myoption.value=tmpValue;
+		myoption.selected = "selected"
+		
+	}
+	
+	updateDisplayObjectList(regionID);
+	
+	return true
+	
+}
+
+	function initCategorySummaryConfigurator(data){
+		
+		resetAvailableObject();
+		resetConfiguratorContainer();
+		
+		if(typeof(data.object) !='undefined'){	
+			if(data.object !='category_summary'){
+				return false;
+			}
+		}
+
+		var url = 'index.cfm';
+		var pars = 'fuseaction=cArch.loadclassconfigurator&compactDisplay=true&siteid=' + siteid + '&classid=category_summary&contentid=' + contentid + '&parentid=' + parentid + '&contenthistid=' + contenthistid + '&regionid=' + data.regionID  + '&objectid=' +  data.objectid + '&cacheid=' + Math.random();
+		var regionID=data.regionID;
+		
+		//location.href=url + "?" + pars;
+		
+		jQuery("#configuratorContainer").dialog({
+			resizable: true,
+			modal: false,
+			width: 400,
+			buttons: {
+				Save: function() {
+					addDisplayObject(availableObject,regionID,false);
+					jQuery( this ).dialog( "close" );
+							
+				},
+				Cancel: function() {
+					jQuery( this ).dialog( "close" );
+				}
+			},
+			close: function(){
+				jQuery(this).dialog("destroy");
+			}	
+		});
+				
+		jQuery.post(url + "?" + pars, 
+			data,
+			function(data) {
+	
+				jQuery("#configurator").html(data);
+				jQuery("#ui-dialog-title-configuratorContainer").html(categorySummaryConfiguratorTitle);	
+				
+				if(availableObjectTemplate==""){
+					availableObjectTemplate=eval( "(" + jQuery("#displayObjectTemplate").val() + ")");
+					availableObject=jQuery.extend({},availableObjectTemplate);
+				}
+				
+				initConfiguratorParams();
+		
+			}
+		);
+		
+		return true;
+	}
+	
+	function initFeedConfigurator(data){
+		var feedID="";
+		
+		resetAvailableObject();
+		resetConfiguratorContainer();
+		
+		if(typeof(data.object) !='undefined'){	
+			if(data.object !='feed'){
+				return false;
+			}
+			var feedID= data.objectid;
+		}
+		
+		if(feedID ==''){
+			return false;
+		}
+
+		var url = 'index.cfm';
+		var pars = 'fuseaction=cArch.loadclassconfigurator&compactDisplay=true&siteid=' + siteid + '&classid=feed&contentid=' + contentid + '&parentid=' + parentid + '&contenthistid=' + contenthistid + '&regionid=' + data.regionID  + '&feedid=' +  feedID + '&cacheid=' + Math.random();
+		var regionID=data.regionID;
+		
+		//location.href=url + "?" + pars;
+		
+		jQuery("#configuratorContainer").dialog({
+					resizable: true,
+					modal: false,
+					width: 400,
+					buttons: {
+						Save: function() {
+							addDisplayObject(availableObject,regionID,false);
+							jQuery( this ).dialog( "close" );
+							
+						},
+						Cancel: function() {
+							jQuery( this ).dialog( "close" );
+						}
+					},
+					close: function(){
+						jQuery(this).dialog("destroy");
+					}	
+				});
+		//location.href=url + "?" + pars;
+		
+		jQuery.post(url + "?" + pars, 
+			data,
+			function(resp) {
+				
+				data=eval('(' + resp + ')');
+				
+				jQuery("#configurator").html(data.html);
+				
+				if(data.type.toLowerCase()=='remote'){
+					jQuery("#ui-dialog-title-configuratorContainer").html(remoteFeedConfiguratorTitle);
+				} else {
+					jQuery("#ui-dialog-title-configuratorContainer").html(localIndexConfiguratorTitle);
+				}
+				
+				if(availableObjectTemplate==""){
+					availableObjectTemplate=eval( "(" + jQuery("#displayObjectTemplate").val() + ")");
+					availableObject=jQuery.extend({},availableObjectTemplate);
+				}
+				
+				if (jQuery("#availableListSort").length) {
+					jQuery("#availableListSort, #displayListSort").sortable({
+						connectWith: ".displayListSortOptions",
+						update: function(event){
+							event.stopPropagation();
+							jQuery("#displayList").val("");
+							jQuery("#displayListSort > li").each(function(){
+								var current = jQuery("#displayList").val();
+								
+								if (current != '') {
+									jQuery("#displayList").val(current + "," + jQuery(this).html());
+								}
+								else {
+									jQuery("#displayList").val(jQuery(this).html());
+								}
+								
+							});
+							
+							updateAvailableObject();
+						}
+					}).disableSelection();
+				}
+				
+				initConfiguratorParams();
+		
+			}
+		);
+		
+		return true;
+	}
+	
+	function initSlideShowConfigurator(data){
+		var feedID="";
+		
+		resetAvailableObject();
+		resetConfiguratorContainer();
+		
+		if(typeof(data.object) !='undefined'){	
+			if(data.object !='feed_slideshow'){
+				return false;
+			}
+			var feedID= data.objectid;
+		}
+		
+		if(feedID ==''){
+			return false;
+		}
+
+		var url = 'index.cfm';
+		var pars = 'fuseaction=cArch.loadclassconfigurator&compactDisplay=true&siteid=' + siteid + '&classid=feed_slideshow&contentid=' + contentid + '&parentid=' + parentid + '&contenthistid=' + contenthistid + '&regionid=' + data.regionID  + '&feedid=' +  feedID + '&cacheid=' + Math.random();
+		var regionID=data.regionID;
+		
+		//location.href=url + "?" + pars;
+		
+		jQuery("#configuratorContainer").dialog({
+					resizable: true,
+					modal: false,
+					width: 400,
+					buttons: {
+						Save: function() {
+							addDisplayObject(availableObject,regionID,false);
+							jQuery( this ).dialog( "close" );
+							
+						},
+						Cancel: function() {
+							jQuery( this ).dialog( "close" );
+						}
+					},
+					close: function(){
+						jQuery(this).dialog("destroy");
+					}
+					
+				});
+		
+		jQuery.post(url + "?" + pars,
+			data, 
+			function(data) {
+				
+				jQuery("#ui-dialog-title-configuratorContainer").html(slideShowConfiguratorTitle);	
+				jQuery("#configurator").html(data);
+				
+				if(availableObjectTemplate==""){
+					availableObjectTemplate=eval( "(" + jQuery("#displayObjectTemplate").val() + ")");
+					availableObject=jQuery.extend({},availableObjectTemplate);
+				}
+				
+				jQuery( "#availableListSort, #displayListSort" ).sortable({
+					connectWith: ".displayListSortOptions",
+					update: function(event){
+						event.stopPropagation();
+						jQuery("#displayList").val("");
+						jQuery("#displayListSort > li").each(function(){
+							var current = jQuery("#displayList").val();
+							
+							if (current != '') {
+								jQuery("#displayList").val(current + "," + jQuery(this).html());
+							}
+							else {
+								jQuery("#displayList").val(jQuery(this).html());
+							}
+							
+						});
+						updateAvailableObject();
+					}
+				}).disableSelection();
+				
+				initConfiguratorParams();
+		
+			}
+		);
+		
+		return true;
+	}
+	
+	function initRelatedContentConfigurator(data){
+
+		resetAvailableObject();
+		resetConfiguratorContainer();
+		
+		if (typeof(data.object) != 'undefined') {
+			if (data.object != 'related_content' && data.object != 'related_section_content') {
+				return false;
+			}
+		} else{
+			return false;
+		}
+
+		var url = 'index.cfm';
+		var pars = 'fuseaction=cArch.loadclassconfigurator&compactDisplay=true&siteid=' + siteid + '&classid=' + data.object + '&contentid=' + contentid + '&parentid=' + parentid + '&contenthistid=' + contenthistid + '&regionid=' + data.regionID  + '&objectid=' +  data.objectid + '&cacheid=' + Math.random();
+		var regionID=data.regionID;
+		
+		//location.href=url + "?" + pars;
+		
+		jQuery("#configuratorContainer").dialog({
+					resizable: true,
+					modal: false,
+					width: 400,
+					buttons: {
+						Save: function() {
+							addDisplayObject(availableObject,regionID,false);
+							jQuery( this ).dialog( "close" );
+							
+						},
+						Cancel: function() {
+							jQuery( this ).dialog( "close" );
+						}
+					},
+					close: function(){
+						jQuery(this).dialog("destroy");
+					}
+					
+				});
+		
+		jQuery.post(url + "?" + pars,
+			data, 
+			function(data) {
+				
+				jQuery("#ui-dialog-title-configuratorContainer").html(relatedContentConfiguratorTitle);		
+				jQuery("#configurator").html(data);
+				
+				if(availableObjectTemplate==""){
+					availableObjectTemplate=eval( "(" + jQuery("#displayObjectTemplate").val() + ")");
+					availableObject=jQuery.extend({},availableObjectTemplate);
+				}
+				
+				jQuery( "#availableListSort, #displayListSort" ).sortable({
+					connectWith: ".displayListSortOptions",
+					update: function(event){
+						event.stopPropagation();
+						jQuery("#displayList").val("");
+						jQuery("#displayListSort > li").each(function(){
+							var current = jQuery("#displayList").val();
+							
+							if (current != '') {
+								jQuery("#displayList").val(current + "," + jQuery(this).html());
+							}
+							else {
+								jQuery("#displayList").val(jQuery(this).html());
+							}
+							
+						});
+						updateAvailableObject();
+					}
+				}).disableSelection();
+				
+				initConfiguratorParams();
+		
+			}
+		);
+		
+		return true;
+	}
+	
+	function initGenericConfigurator(data){
+		resetAvailableObject();
+		resetConfiguratorContainer();
+		//location.href=url + "?" + pars;
+		
+		jQuery("#configuratorContainer").dialog({
+				resizable: true,
+				modal: false,
+				width: 400,
+				buttons: {
+					Cancel: function() {
+							jQuery( this ).dialog( "close" );
+					}
+				},
+				open: function(){		
+					jQuery("#ui-dialog-title-configuratorContainer").html(genericConfiguratorTitle);
+					jQuery("#configurator").html("<p>" + genericConfiguratorMessage +"</p>");
+				},
+				close: function(){
+					jQuery(this).dialog("destroy");
+				}
+					
+		});
+		
+		return true;
+	}
+	
+	jQuery(document).ready(
+		function(){
+			initDisplayObjectConfigurators()
+		}
+	);
+	
+	function updateAvailableObject(){
+		availableObjectParams={};
+							
+		jQuery("#availableObjectParams").find(":input").each(
+			function(){
+				var item=jQuery(this);
+				if (item.attr("type") != "radio" || (item.attr("type") =="radio" && item.is(':checked'))) {
+					availableObjectParams[item.attr("data-displayobjectparam")] = item.val();
+				}
+			}
+		)
+		availableObject=jQuery.extend({},availableObjectTemplate);
+		availableObject.params=availableObjectParams;	
+	}
+		
+	function initDisplayObjectConfigurators(){
+		jQuery(".displayRegions").find("option").dblclick(
+			function(){
+				var regionID=jQuery(this).parents("select:first").attr("data-regionid");
+				var data=getDisplayObjectConfig(regionID);
+					
+				if (data.object == 'feed') {
+					initFeedConfigurator(data);
+				} else if (data.object == 'feed_slideshow') {
+					initSlideShowConfigurator(data);
+				} else if (data.object == 'category_summary') {
+					initCategorySummaryConfigurator(data);
+				} else if (data.object == 'related_content' || data.object == 'related_section_content') {
+					initRelatedContentConfigurator(data);
+				} else{
+					initGenericConfigurator(data);
+				}
+			}
+		);
+	}
+	
+	function resetAvailableObject(){
+		availableObjectTemplate="";
+		availalbeObjectParams={};
+		availableObject={};
+	}
+	
+	function resetConfiguratorContainer(){
+		//jQuery(instance).dialog("destroy");
+		jQuery("#configuratorContainer").remove();
+		jQuery("body").append('<div id="configuratorContainer" title="Loading..." style="display:none"><div id="configurator"><img src="images/progress_bar.gif"></div></div>');
+	}
+	
+	function initConfiguratorParams(){
+		jQuery("#availableObjectParams").find(":input").bind(
+			"change",
+			function(){
+				updateAvailableObject();
+		});
+	}
 

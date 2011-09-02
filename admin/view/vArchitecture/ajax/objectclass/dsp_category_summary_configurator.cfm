@@ -41,25 +41,28 @@ the GNU General Public License version 2 without this exception. You may, if you
 to your own modified versions of Mura CMS.
 --->
 
-<cfoutput>
-	<select name="availableObjects" 
-			id="availableObjects" 
-	        class="multiSelect" 
-		        size="#evaluate((application.settingsManager.getSite(attributes.siteid).getcolumnCount() * 6)-4)#" 
-		        style="width:310px;">
-		<cfset request.rslist = application.feedManager.getFeeds(attributes.siteid, 'Local')/>
-		<option 
-		value="{'object':'feed_table','name':'#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.localindexlistingtable')#','objectid':'none'}">
-		    #application.rbFactory.getKeyValue(session.rb, 
-		                                    'sitemanager.content.fields.localindexlistingtable')#
-		</option>
-		<cfloop query="request.rslist">
-			<option value="{'object':'feed','objectid':'#request.rslist.feedID#','name':'#request.rslist.name# #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.localindex')#'}">
-				#request.rslist.name# 
-				- 
-				#application.rbFactory.getKeyValue(session.rb, 'sitemanager.content.fields.localindex')#
-			</option>
-		</cfloop>
-	</select>
+<cfset $=application.serviceFactory.getBean("muraScope").init(attributes.siteID)>
+<cfset content=$.getBean("content").loadBy(contentID=attributes.objectid)>
+
+<cfif isDefined("form.params") and isJSON(form.params)>
+	<cfset params=deserializeJSON(form.params)>
+	<cfset displayRSS=isDefined("params.displayRSS") and yesNoFormat(params.displayRSS)>	
 	
+<cfelse>
+	<cfset displayRSS=false>	
+</cfif>
+
+<cfoutput>
+
+	<div id="availableObjectParams"<!--- style="display:none;"--->>
+		<dl class="oneColumn">
+			<dt class="first">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayrss')#</dt>
+			<dd>
+			<input name="displayRSS" data-displayobjectparam="displayRSS" type="radio" value="1" class="radio" <cfif displayRSS>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.yes')# 
+			<input name="displayRSS" data-displayobjectparam="displayRSS" type="radio" value="0" class="radio" <cfif not displayRSS>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.no')# 
+			</dd>
+		</dl>
+	</div>
+	<input type="hidden" name="displayObjectTemplate" id="displayObjectTemplate" value="{'object':'category_summary','name':'#JSStringFormat('#content.getMenuTitle()# - #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.categorysummary')#')#','objectid':'#content.getContentID()#'}"/>
 </cfoutput>
+

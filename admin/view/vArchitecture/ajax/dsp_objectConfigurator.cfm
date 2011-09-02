@@ -1,4 +1,4 @@
-﻿<!--- This file is part of Mura CMS.
+<!--- This file is part of Mura CMS.
 
 Mura CMS is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -41,25 +41,20 @@ the GNU General Public License version 2 without this exception. You may, if you
 to your own modified versions of Mura CMS.
 --->
 
-<cfoutput>
-	<select name="availableObjects" 
-			id="availableObjects" 
-	        class="multiSelect" 
-		        size="#evaluate((application.settingsManager.getSite(attributes.siteid).getcolumnCount() * 6)-4)#" 
-		        style="width:310px;">
-		<cfset request.rslist = application.feedManager.getFeeds(attributes.siteid, 'Local')/>
-		<option 
-		value="{'object':'feed_table','name':'#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.localindexlistingtable')#','objectid':'none'}">
-		    #application.rbFactory.getKeyValue(session.rb, 
-		                                    'sitemanager.content.fields.localindexlistingtable')#
-		</option>
-		<cfloop query="request.rslist">
-			<option value="{'object':'feed','objectid':'#request.rslist.feedID#','name':'#request.rslist.name# #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.localindex')#'}">
-				#request.rslist.name# 
-				- 
-				#application.rbFactory.getKeyValue(session.rb, 'sitemanager.content.fields.localindex')#
-			</option>
-		</cfloop>
-	</select>
-	
-</cfoutput>
+<cfswitch expression="#attributes.classid#">	
+	<cfcase value="feed">
+		<cfinclude template="objectclass/dsp_feed_configurator.cfm">
+	</cfcase>
+	<cfcase value="feed_slideshow">
+		<cfinclude template="objectclass/dsp_slideshow_configurator.cfm">
+	</cfcase>
+	<cfcase value="category_summary">
+		<cfinclude template="objectclass/dsp_category_summary_configurator.cfm">
+	</cfcase>
+	<cfcase value="related_content,related_section_content">
+		<cfinclude template="objectclass/dsp_related_content_configurator.cfm">
+	</cfcase>
+	<cfdefaultcase>
+		<cfoutput>#attributes.classid#</cfoutput>
+	</cfdefaultcase>
+</cfswitch>

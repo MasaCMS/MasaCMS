@@ -67,7 +67,7 @@ to your own modified versions of Mura CMS.
 	<table class="displayObjects">		
 			 <tr>
 				<td  class="nested" rowspan="#application.settingsManager.getSite(attributes.siteid).getcolumnCount()#" valign="top">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.availablecontentobjects')#<br />
-				<select name="classSelector" onchange="loadObjectClass('#attributes.siteid#',this.value,'','#request.contentBean.getContentID()#','#attributes.parentID#');" class="dropdown" id="dragme">
+				<select name="classSelector" onchange="loadObjectClass('#attributes.siteid#',this.value,'','#request.contentBean.getContentID()#','#attributes.parentID#','#request.contentBean.getContentHistID()#',0);" class="dropdown" id="dragme">
 				<option value="">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.selectobjecttype')#</option>
 				<option value="system">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.system')#</option>
 				<cfif application.settingsManager.getSite(attributes.siteid).getemailbroadcaster()>
@@ -102,15 +102,15 @@ to your own modified versions of Mura CMS.
 							<table>
 							<tr>
 							<td class="nested">
-							<input type="button" value=">>" onclick="addDisplayObject('availableObjects',#r#);" class="objectNav"><br />
+							<input type="button" value=">>" onclick="addDisplayObject('availableObjects',#r#,true);" class="objectNav"><br />
 							<input type="button" value="<<" onclick="deleteDisplayObject(#r#);" class="objectNav">
 							</td>
 							<td class="nested">
 							<cfif listlen(application.settingsManager.getSite(attributes.siteid).getcolumnNames(),"^") gte r><strong>#listgetat(application.settingsManager.getSite(attributes.siteid).getcolumnNames(),r,"^")#</strong> <cfelse><strong>Region #r#</strong></cfif> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.contentobjects')#<br />
 							<cfset variables["objectlist#r#"]="">
-							<select name="selectedObjects#r#" id="selectedObjects#r#" class="multiSelect" multiple size="4">
+							<select name="selectedObjects#r#" id="selectedObjects#r#" class="multiSelect displayRegions" multiple size="4" data-regionid="#r#">
 							<cfloop query="request.rsContentObjects#r#">
-							<option value="#request["rsContentObjects#r#"].object#~#HTMLEditFormat(request["rsContentObjects#r#"].name)#~#request["rsContentObjects#r#"].objectid#~#HTMLEditFormat(request["rsContentObjects#r#"].params)#">#request["rsContentObjects#r#"].name#</option>
+							<option  value="#request["rsContentObjects#r#"].object#~#HTMLEditFormat(request["rsContentObjects#r#"].name)#~#request["rsContentObjects#r#"].objectid#~#HTMLEditFormat(request["rsContentObjects#r#"].params)#">#request["rsContentObjects#r#"].name#</option>
 							<cfset variables["objectlist#r#"]=listappend(variables["objectlist#r#"],"#request["rsContentObjects#r#"].object#~#HTMLEditFormat(request["rsContentObjects#r#"].name)#~#request["rsContentObjects#r#"].objectid#~#HTMLEditFormat(request["rsContentObjects#r#"].params)#","^")>
 							</cfloop>
 							</select>
@@ -119,6 +119,7 @@ to your own modified versions of Mura CMS.
 							</td>
 							<td  class="nested"><input type="button" value="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.up')#" onclick="moveDisplayObjectUp(#r#);" class="objectNav"><br />
 							<input type="button" value="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.down')#" onclick="moveDisplayObjectDown(#r#);" class="objectNav">
+							
 							</td>
 							</tr>
 							</table>
@@ -129,11 +130,17 @@ to your own modified versions of Mura CMS.
 			
 	</table>
 </dd>	  
-</dl></div>	
-</cfoutput>
-<!---<script>
-  dndMgr.registerDraggable( new Rico.Draggable('test-rico-dnd','dragme') );
-  dndMgr.registerDropZone( new Rico.Dropzone('selectedObjects1') );
-  dndMgr.registerDropZone( new Rico.Dropzone('selectedObjects2') );
+</dl></div>				
+<script>
+var remoteFeedConfiguratorTitle='#application.rbFactory.getKeyValue(session.rb,"sitemanager.configurator.remotefeedtitle")#';
+var localIndexConfiguratorTitle='#application.rbFactory.getKeyValue(session.rb,"sitemanager.configurator.localindextitle")#';		
+var categorySummaryConfiguratorTitle='#application.rbFactory.getKeyValue(session.rb,"sitemanager.configurator.categorysummarytitle")#';	
+var slideShowConfiguratorTitle='#application.rbFactory.getKeyValue(session.rb,"sitemanager.configurator.slideshowtitle")#';	
+var relatedContentConfiguratorTitle='#application.rbFactory.getKeyValue(session.rb,"sitemanager.configurator.relatedcontenttitle")#';		
+var genericConfiguratorTitle='#application.rbFactory.getKeyValue(session.rb,"sitemanager.configurator.generictitle")#';	
+var genericConfiguratorMessage='#application.rbFactory.getKeyValue(session.rb,"sitemanager.configurator.genericmessage")#';
+var contentid='#attributes.contentid#';
+var parentid='#attributes.parentid#';
+var contenthistid='#request.contentBean.getContentHistID()#';
 </script>
---->
+</cfoutput>

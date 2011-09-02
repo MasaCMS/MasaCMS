@@ -120,10 +120,6 @@ to your own modified versions of Mura CMS.
 		<cfset variables.contentListType="Feed">
 		<cfset variables.contentListFields="Title,Date,Image,Tags,Credits">
 		
-		<cfif arguments.hasSummary and variables.feedBean.getDisplaySummaries()>
-			<cfset variables.contentListFields=listAppend(variables.contentListFields,"Summary")>
-		</cfif>
-		
 		<cfif variables.feedBean.getDisplayComments()>
 			<cfset variables.contentListFields=listAppend(variables.contentListFields,"Comments")>
 		</cfif>

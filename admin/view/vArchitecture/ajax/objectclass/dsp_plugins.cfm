@@ -48,7 +48,7 @@ to your own modified versions of Mura CMS.
                                                                               modulesOnly=true)/>
 <cfoutput>
 	<select name="subClassSelector" 
-	        onchange="loadObjectClass('#attributes.siteid#','plugins',this.value,'#attributes.contentid#','#attributes.parentid#');" 
+	        onchange="loadObjectClass('#attributes.siteid#','plugins',this.value,'#attributes.contentid#','#attributes.parentid#','#attributes.contenthistid#',0,0);" 
 	        class="dropdown">
 		<option value="">
 			#application.rbFactory.getKeyValue(session.rb, 'sitemanager.content.fields.selectplugin')#
@@ -110,7 +110,7 @@ to your own modified versions of Mura CMS.
 		</cfquery>
 		<cfoutput>
 			<select name="customObjectSelector" 
-			        onchange="loadObjectClass('#attributes.siteid#','plugins',this.value,'#attributes.contentid#','#attributes.parentid#');" 
+			        onchange="loadObjectClass('#attributes.siteid#','plugins',this.value,'#attributes.contentid#','#attributes.parentid#','#attributes.contenthistid#',0,0);" 
 			        class="dropdown">
 				<option value="">
 					#application.rbFactory.getKeyValue(session.rb, 

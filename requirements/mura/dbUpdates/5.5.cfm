@@ -62,29 +62,35 @@ select * from tcontentfeeds where 0=1
 </cfswitch>
 </cfif>
 
-<cfif not listFindNoCase(rsCheck.columnlist,"displaySummaries")>
+<cfif not listFindNoCase(rsCheck.columnlist,"displayList")>
+	
 <cfswitch expression="#getDbType()#">
 <cfcase value="mssql">
+	
+<cfquery name="MSSQLversion" datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	EXEC sp_MSgetversion
+</cfquery>
+	
+<cfset MSSQLversion=left(MSSQLversion.CHARACTER_VALUE,1)>
+
+<cfif MSSQLversion neq 8>
+	<cfset MSSQLlob="[nvarchar](max) NULL">
+<cfelse>
+	<cfset MSSQLlob="[ntext]">
+</cfif>
+
 <cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
-ALTER TABLE tcontentfeeds ADD displaySummaries tinyint 
+ALTER TABLE tcontentfeeds ADD displayList MSSQLlob 
 </cfquery>
 </cfcase>
 <cfcase value="mysql">
-	<cftry>
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
-	ALTER TABLE tcontentfeeds ADD COLUMN displaySummaries tinyint(3) 
+	ALTER TABLE tcontentfeeds ADD COLUMN displayList longtext 
 	</cfquery>
-	<cfcatch>
-			<!--- H2 --->
-			<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
-			ALTER TABLE tcontentfeeds ADD displaySummaries tinyint(3)
-			</cfquery>
-		</cfcatch>
-	</cftry>
 </cfcase>
 <cfcase value="oracle">
 <cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
-ALTER TABLE tcontentfeeds ADD displaySummaries NUMBER(3,0)
+ALTER TABLE tcontentfeeds ADD displayList clob
 </cfquery>
 </cfcase>
 </cfswitch>
