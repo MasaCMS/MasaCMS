@@ -1288,4 +1288,403 @@ function addDisplayObject(objectToAdd,regionID,configure){
 	
 }
 
+	function initCategorySummaryConfigurator(data){
+		
+		resetAvailableObject();
+		resetConfiguratorContainer();
+		
+		if(typeof(data.object) !='undefined'){	
+			if(data.object !='category_summary'){
+				return false;
+			}
+		}
+
+		var url = 'index.cfm';
+		var pars = 'fuseaction=cArch.loadclassconfigurator&compactDisplay=true&siteid=' + siteid + '&classid=category_summary&contentid=' + contentid + '&parentid=' + parentid + '&contenthistid=' + contenthistid + '&regionid=' + data.regionID  + '&objectid=' +  data.objectid + '&cacheid=' + Math.random();
+		var regionID=data.regionID;
+		
+		//location.href=url + "?" + pars;
+		
+		jQuery("#configuratorContainer").dialog({
+			resizable: true,
+			modal: false,
+			width: 400,
+			buttons: {
+				Save: function() {
+					addDisplayObject(availableObject,regionID,false);
+					jQuery( this ).dialog( "close" );
+							
+				},
+				Cancel: function() {
+					jQuery( this ).dialog( "close" );
+				}
+			},
+			close: function(){
+				jQuery(this).dialog("destroy");
+			}	
+		});
+				
+		jQuery.post(url + "?" + pars, 
+			data,
+			function(data) {
+	
+				jQuery("#configurator").html(data);
+				jQuery("#ui-dialog-title-configuratorContainer").html(categorySummaryConfiguratorTitle);	
+				
+				if(availableObjectTemplate==""){
+					availableObjectTemplate=eval( "(" + jQuery("#displayObjectTemplate").val() + ")");
+					availableObject=jQuery.extend({},availableObjectTemplate);
+				}
+				
+				initConfiguratorParams();
+		
+			}
+		);
+		
+		return true;
+	}
+	
+	function initFeedConfigurator(data){
+		var feedID="";
+		
+		resetAvailableObject();
+		resetConfiguratorContainer();
+		
+		if(typeof(data.object) !='undefined'){	
+			if(data.object !='feed'){
+				return false;
+			}
+			var feedID= data.objectid;
+		}
+		
+		if(feedID ==''){
+			return false;
+		}
+
+		var url = 'index.cfm';
+		var pars = 'fuseaction=cArch.loadclassconfigurator&compactDisplay=true&siteid=' + siteid + '&classid=feed&contentid=' + contentid + '&parentid=' + parentid + '&contenthistid=' + contenthistid + '&regionid=' + data.regionID  + '&feedid=' +  feedID + '&cacheid=' + Math.random();
+		var regionID=data.regionID;
+		
+		//location.href=url + "?" + pars;
+		
+		jQuery("#configuratorContainer").dialog({
+					resizable: true,
+					modal: false,
+					width: 400,
+					buttons: {
+						Save: function() {
+							addDisplayObject(availableObject,regionID,false);
+							jQuery( this ).dialog( "close" );
+							
+						},
+						Cancel: function() {
+							jQuery( this ).dialog( "close" );
+						}
+					},
+					close: function(){
+						jQuery(this).dialog("destroy");
+					}	
+				});
+		//location.href=url + "?" + pars;
+		
+		jQuery.post(url + "?" + pars, 
+			data,
+			function(resp) {
+				
+				data=eval('(' + resp + ')');
+				
+				jQuery("#configurator").html(data.html);
+				
+				if(data.type.toLowerCase()=='remote'){
+					jQuery("#ui-dialog-title-configuratorContainer").html(remoteFeedConfiguratorTitle);
+				} else {
+					jQuery("#ui-dialog-title-configuratorContainer").html(localIndexConfiguratorTitle);
+				}
+				
+				if(availableObjectTemplate==""){
+					availableObjectTemplate=eval( "(" + jQuery("#displayObjectTemplate").val() + ")");
+					availableObject=jQuery.extend({},availableObjectTemplate);
+				}
+				
+				if (jQuery("#availableListSort").length) {
+					jQuery("#availableListSort, #displayListSort").sortable({
+						connectWith: ".displayListSortOptions",
+						update: function(event){
+							event.stopPropagation();
+							jQuery("#displayList").val("");
+							jQuery("#displayListSort > li").each(function(){
+								var current = jQuery("#displayList").val();
+								
+								if (current != '') {
+									jQuery("#displayList").val(current + "," + jQuery(this).html());
+								}
+								else {
+									jQuery("#displayList").val(jQuery(this).html());
+								}
+								
+							});
+							
+							updateAvailableObject();
+						}
+					}).disableSelection();
+				}
+				
+				initConfiguratorParams();
+		
+			}
+		);
+		
+		return true;
+	}
+	
+	function initSlideShowConfigurator(data){
+		var feedID="";
+		
+		resetAvailableObject();
+		resetConfiguratorContainer();
+		
+		if(typeof(data.object) !='undefined'){	
+			if(data.object !='feed_slideshow'){
+				return false;
+			}
+			var feedID= data.objectid;
+		}
+		
+		if(feedID ==''){
+			return false;
+		}
+
+		var url = 'index.cfm';
+		var pars = 'fuseaction=cArch.loadclassconfigurator&compactDisplay=true&siteid=' + siteid + '&classid=feed_slideshow&contentid=' + contentid + '&parentid=' + parentid + '&contenthistid=' + contenthistid + '&regionid=' + data.regionID  + '&feedid=' +  feedID + '&cacheid=' + Math.random();
+		var regionID=data.regionID;
+		
+		//location.href=url + "?" + pars;
+		
+		jQuery("#configuratorContainer").dialog({
+					resizable: true,
+					modal: false,
+					width: 400,
+					buttons: {
+						Save: function() {
+							addDisplayObject(availableObject,regionID,false);
+							jQuery( this ).dialog( "close" );
+							
+						},
+						Cancel: function() {
+							jQuery( this ).dialog( "close" );
+						}
+					},
+					close: function(){
+						jQuery(this).dialog("destroy");
+					}
+					
+				});
+		
+		jQuery.post(url + "?" + pars,
+			data, 
+			function(data) {
+				
+				jQuery("#ui-dialog-title-configuratorContainer").html(slideShowConfiguratorTitle);	
+				jQuery("#configurator").html(data);
+				
+				if(availableObjectTemplate==""){
+					availableObjectTemplate=eval( "(" + jQuery("#displayObjectTemplate").val() + ")");
+					availableObject=jQuery.extend({},availableObjectTemplate);
+				}
+				
+				jQuery( "#availableListSort, #displayListSort" ).sortable({
+					connectWith: ".displayListSortOptions",
+					update: function(event){
+						event.stopPropagation();
+						jQuery("#displayList").val("");
+						jQuery("#displayListSort > li").each(function(){
+							var current = jQuery("#displayList").val();
+							
+							if (current != '') {
+								jQuery("#displayList").val(current + "," + jQuery(this).html());
+							}
+							else {
+								jQuery("#displayList").val(jQuery(this).html());
+							}
+							
+						});
+						updateAvailableObject();
+					}
+				}).disableSelection();
+				
+				initConfiguratorParams();
+		
+			}
+		);
+		
+		return true;
+	}
+	
+	function initRelatedContentConfigurator(data){
+
+		resetAvailableObject();
+		resetConfiguratorContainer();
+		
+		if (typeof(data.object) != 'undefined') {
+			if (data.object != 'related_content' && data.object != 'related_section_content') {
+				return false;
+			}
+		} else{
+			return false;
+		}
+
+		var url = 'index.cfm';
+		var pars = 'fuseaction=cArch.loadclassconfigurator&compactDisplay=true&siteid=' + siteid + '&classid=' + data.object + '&contentid=' + contentid + '&parentid=' + parentid + '&contenthistid=' + contenthistid + '&regionid=' + data.regionID  + '&objectid=' +  data.objectid + '&cacheid=' + Math.random();
+		var regionID=data.regionID;
+		
+		//location.href=url + "?" + pars;
+		
+		jQuery("#configuratorContainer").dialog({
+					resizable: true,
+					modal: false,
+					width: 400,
+					buttons: {
+						Save: function() {
+							addDisplayObject(availableObject,regionID,false);
+							jQuery( this ).dialog( "close" );
+							
+						},
+						Cancel: function() {
+							jQuery( this ).dialog( "close" );
+						}
+					},
+					close: function(){
+						jQuery(this).dialog("destroy");
+					}
+					
+				});
+		
+		jQuery.post(url + "?" + pars,
+			data, 
+			function(data) {
+				
+				jQuery("#ui-dialog-title-configuratorContainer").html(relatedContentConfiguratorTitle);		
+				jQuery("#configurator").html(data);
+				
+				if(availableObjectTemplate==""){
+					availableObjectTemplate=eval( "(" + jQuery("#displayObjectTemplate").val() + ")");
+					availableObject=jQuery.extend({},availableObjectTemplate);
+				}
+				
+				jQuery( "#availableListSort, #displayListSort" ).sortable({
+					connectWith: ".displayListSortOptions",
+					update: function(event){
+						event.stopPropagation();
+						jQuery("#displayList").val("");
+						jQuery("#displayListSort > li").each(function(){
+							var current = jQuery("#displayList").val();
+							
+							if (current != '') {
+								jQuery("#displayList").val(current + "," + jQuery(this).html());
+							}
+							else {
+								jQuery("#displayList").val(jQuery(this).html());
+							}
+							
+						});
+						updateAvailableObject();
+					}
+				}).disableSelection();
+				
+				initConfiguratorParams();
+		
+			}
+		);
+		
+		return true;
+	}
+	
+	function initGenericConfigurator(data){
+		resetAvailableObject();
+		resetConfiguratorContainer();
+		//location.href=url + "?" + pars;
+		
+		jQuery("#configuratorContainer").dialog({
+				resizable: true,
+				modal: false,
+				width: 400,
+				buttons: {
+					Cancel: function() {
+							jQuery( this ).dialog( "close" );
+					}
+				},
+				open: function(){		
+					jQuery("#ui-dialog-title-configuratorContainer").html(genericConfiguratorTitle);
+					jQuery("#configurator").html("<p>" + genericConfiguratorMessage +"</p>");
+				},
+				close: function(){
+					jQuery(this).dialog("destroy");
+				}
+					
+		});
+		
+		return true;
+	}
+	
+	jQuery(document).ready(
+		function(){
+			initDisplayObjectConfigurators()
+		}
+	);
+	
+	function updateAvailableObject(){
+		availableObjectParams={};
+							
+		jQuery("#availableObjectParams").find(":input").each(
+			function(){
+				var item=jQuery(this);
+				if (item.attr("type") != "radio" || (item.attr("type") =="radio" && item.is(':checked'))) {
+					availableObjectParams[item.attr("data-displayobjectparam")] = item.val();
+				}
+			}
+		)
+		availableObject=jQuery.extend({},availableObjectTemplate);
+		availableObject.params=availableObjectParams;	
+	}
+		
+	function initDisplayObjectConfigurators(){
+		jQuery(".displayRegions").find("option").dblclick(
+			function(){
+				var regionID=jQuery(this).parents("select:first").attr("data-regionid");
+				var data=getDisplayObjectConfig(regionID);
+					
+				if (data.object == 'feed') {
+					initFeedConfigurator(data);
+				} else if (data.object == 'feed_slideshow') {
+					initSlideShowConfigurator(data);
+				} else if (data.object == 'category_summary') {
+					initCategorySummaryConfigurator(data);
+				} else if (data.object == 'related_content' || data.object == 'related_section_content') {
+					initRelatedContentConfigurator(data);
+				} else{
+					initGenericConfigurator(data);
+				}
+			}
+		);
+	}
+	
+	function resetAvailableObject(){
+		availableObjectTemplate="";
+		availalbeObjectParams={};
+		availableObject={};
+	}
+	
+	function resetConfiguratorContainer(){
+		//jQuery(instance).dialog("destroy");
+		jQuery("#configuratorContainer").remove();
+		jQuery("body").append('<div id="configuratorContainer" title="Loading..." style="display:none"><div id="configurator"><img src="images/progress_bar.gif"></div></div>');
+	}
+	
+	function initConfiguratorParams(){
+		jQuery("#availableObjectParams").find(":input").bind(
+			"change",
+			function(){
+				updateAvailableObject();
+		});
+	}
 
