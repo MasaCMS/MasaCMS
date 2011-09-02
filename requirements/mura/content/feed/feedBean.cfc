@@ -72,7 +72,6 @@ to your own modified versions of Mura CMS.
 <cfproperty name="displayName" type="numeric" default="0" required="true" />
 <cfproperty name="displayRatings" type="numeric" default="0" required="true" />
 <cfproperty name="displayComments" type="numeric" default="0" required="true" />
-<cfproperty name="displaySummaries" type="numeric" default="1" required="true" />
 <cfproperty name="displayKids" type="numeric" default="0" required="true" />
 <cfproperty name="isNew" type="numeric" default="0" required="true" />
 <cfproperty name="advancedParams" type="query" default="" required="true" />
@@ -82,6 +81,7 @@ to your own modified versions of Mura CMS.
 <cfproperty name="imageSize" type="string" default="small" required="true" />
 <cfproperty name="imageHeight" type="string" default="AUTO" required="true" />
 <cfproperty name="imageWidth" type="string" default="AUTO" required="true" />
+<cfproperty name="displayList" type="string" default="Title,Date,Image,Summary,Tags,Credits" required="true" />
 
 <cffunction name="init" returntype="any" output="false" access="public">
 	<cfset super.init(argumentCollection=arguments)>
@@ -127,7 +127,8 @@ to your own modified versions of Mura CMS.
 	<cfset variables.instance.imageSize="small" />
 	<cfset variables.instance.imageHeight="AUTO" />
 	<cfset variables.instance.imageWidth="AUTO" />
-	
+	<cfset variables.instance.displayList="Title,Date,Image,Summary,Tags,Credits" />
+		
 	<cfreturn this />
 </cffunction>
 
@@ -225,14 +226,6 @@ to your own modified versions of Mura CMS.
 	<cfargument name="DisplayComments" type="any" />
 	<cfif isNumeric(arguments.DisplayComments)>
 	<cfset variables.instance.DisplayComments = arguments.DisplayComments />
-	</cfif>
-	<cfreturn this>
-</cffunction>
-
-<cffunction name="setDisplaySummaries" access="public" output="false">
-	<cfargument name="DisplaySummaries" type="any" />
-	<cfif isNumeric(arguments.DisplaySummaries)>
-	<cfset variables.instance.DisplaySummaries = arguments.DisplaySummaries />
 	</cfif>
 	<cfreturn this>
 </cffunction>
@@ -408,4 +401,41 @@ to your own modified versions of Mura CMS.
 	<cfreturn returnStr>
 </cffunction> 
 
+<cffunction name="getDisplayList" output="false">
+	<cfset var hasRating=false>
+	<cfset var hasComments=false>
+	
+	<cfif not len(variables.instance.displayList)>
+		<cfset hasRating=listFindNoCase(variables.instance.displayList,"Rating")>
+		<cfset hasComments=listFindNoCase(variables.instance.displayList,"Comments")>
+		
+		<cfif variables.instance.displayComments and not hasComments>
+			<cfset variables.instance.displayList=listAppend(variables.instance.displayList,"Comments")>
+		<cfelseif not variables.instance.displayComments and hasComments>
+			<cfset variables.instance.displayList=listDeleteAt(variables.instance.displayList,hasComments)>
+		</cfif>
+		
+		<cfif variables.instance.displayRatings and not hasRating>
+			<cfset variables.instance.displayList=listAppend(variables.instance.displayList,"Rating")>
+		<cfelseif not variables.instance.displayRatings and hasRating>
+			<cfset variables.instance.displayList=listDeleteAt(variables.instance.displayList,hasRating)>
+		</cfif>
+	</cfif>
+		
+	<cfreturn variables.instance.displayList>
+</cffunction>
+
+<cffunction name="getAvailableList" output="false">
+	<cfset var returnList="Title,Date,Image,Summary,Tags,Credits,Rating,Comments">
+	<cfset var i=0>
+	<cfset var finder=0>
+	<cfloop list="#variables.instance.displayList#" index="i">
+		<cfset finder=listFindNoCase(returnList,i)>
+		<cfif finder>
+			<cfset returnList=listDeleteAt(returnList,finder)>
+		</cfif>
+	</cfloop>
+	<cfreturn returnList>
+</cffunction>
+	
 </cfcomponent>

@@ -46,12 +46,7 @@ to your own modified versions of Mura CMS.
 	        style="width:310px;">
 		<cfset request.rslist = application.feedManager.getFeeds(attributes.siteid, 'Remote')/>
 		<cfloop query="request.rslist">
-			<option value="feed~#request.rslist.name# - #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.remotefeedsummaries')#~#request.rslist.feedID#">
-				#request.rslist.name# 
-				- 
-				#application.rbFactory.getKeyValue(session.rb, 'sitemanager.content.fields.remotefeedsummaries')#
-			</option>
-			<option value="feed_no_summary~#request.rslist.name# #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.remotefeed')#~#request.rslist.feedID#">
+			<option value="{'object':'feed','name':'#request.rslist.name# - #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.remotefeed')#','objectid':'#request.rslist.feedID#'}">
 				#request.rslist.name# 
 				- 
 				#application.rbFactory.getKeyValue(session.rb, 'sitemanager.content.fields.remotefeed')#

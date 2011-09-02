@@ -329,11 +329,11 @@ document.getElementById(id).style.visibility="hidden";
 }
 
 
-function addDisplayObject(objectToAdd,regionID){
+function addDisplayObject(objectToAdd,regionID,configure){
 	var tmpObject="";
 	var tmpValue="";
 	var tmpText="";
-	
+	var isUpdate=false;
 	//If it's not a js object then it must be an id of a form input or select
 	if(typeof(objectToAdd)=="string"){
 	
@@ -357,7 +357,7 @@ function addDisplayObject(objectToAdd,regionID){
 			var addIndex = document.getElementById(objectToAdd).selectedIndex;
 			
 			if (addIndex < 0) 
-				return;
+				return false;
 			
 			var addoption = document.getElementById(objectToAdd).options[addIndex];
 			
@@ -387,11 +387,32 @@ function addDisplayObject(objectToAdd,regionID){
 		//If it's not a select box then the value must be json object.
 		tmpObject=objectToAdd;
 	}
-	
+
 	//if the tmpValue evaluated into a js object pull out it's values
 	
 	if(typeof(tmpObject) == "object"){
 		//object^name^objectID^params
+		
+		if (configure && tmpObject.object=='feed') {
+			tmpObject.regionID=regionID;
+			if (initFeedConfigurator(tmpObject)
+			) {
+				return false;
+			}
+		}
+		
+		if (configure && tmpObject.object=='feed_slideshow') {
+			tmpObject.regionID=regionID;
+			initSlideShowConfigurator(tmpObject)
+			return false;
+		}
+		
+		if (configure && tmpObject.object=='feed_slideshow') {
+			tmpObject.regionID=regionID;
+			initSlideShowConfigurator(tmpObject)
+			return false;
+		}
+		
 		tmpValue=tmpObject.object;
 		tmpValue=tmpValue + "~" + tmpObject.name;	
 		tmpValue=tmpValue + "~" + tmpObject.objectid;
@@ -401,6 +422,18 @@ function addDisplayObject(objectToAdd,regionID){
 		} else if (typeof(tmpObject.params) == "object"){
 			tmpValue   = tmpValue + "~" + JSON.stringify( tmpObject.params );
 		}
+		
+		if(tmpObject.object=='feed' && document.getElementById('selectedObjects' + regionID).selectedIndex != -1){
+			var currentSelection=getDisplayObjectConfig(regionID);
+		
+			if(currentSelection){
+				if(currentSelection.objectid==tmpObject.objectid){
+					isUpdate=true
+				}
+			}
+			
+		}
+		
 		
 		tmpText=tmpObject.name;	
 		
@@ -421,18 +454,31 @@ function addDisplayObject(objectToAdd,regionID){
 		for (var i=0;i < selectedObjects.options.length;i++){ 
 			if(selectedObjects.options[i].value==tmpValue) {
 			selectedObjects.selectedIndex=i;
-			return;
+			return false;
 			}
 		}
 	}
+	
+
 	// add it.
-	var myoption = document.createElement("option");
-	selectedObjects.appendChild(myoption);
-	myoption.text= tmpText;
-	myoption.value=tmpValue;
-	myoption.selected = "selected"
+
+	
+	if (isUpdate) {
+		myoption=selectedObjects.options[document.getElementById("selectedObjects" + regionID).selectedIndex];
+		myoption.text= tmpText;
+		myoption.value=tmpValue;
+	}else{
+		var myoption = document.createElement("option");
+		selectedObjects.appendChild(myoption);
+		myoption.text= tmpText;
+		myoption.value=tmpValue;
+		myoption.selected = "selected"
+		
+	}
 	
 	updateDisplayObjectList(regionID);
+	
+	return true
 	
 }
 
@@ -465,6 +511,8 @@ function updateDisplayObjectList(regionID){
 			objectList.value = selectedObjects.options[i].value; 
 		}
 	}
+	
+	initDisplayObjectConfigurators();
 
 }
 
@@ -555,57 +603,33 @@ function loadAssocImages(siteid,fileid,contentid,keywords,isNew)	{
 		);
 }
 
-var availableObjectTemplate="";
-var availalbeObjectParams={};
-
-function loadObjectClass(siteid,classid,subclassid,contentid,parentid)	{
+function loadObjectClass(siteid,classid,subclassid,contentid,parentid,contenthistid)	{
 	var url = 'index.cfm';
-	var pars = 'fuseaction=cArch.loadclass&compactDisplay=true&siteid=' + siteid +'&classid=' + classid  +'&subclassid=' + subclassid + '&contentid=' + contentid + '&parentid=' + parentid + '&cacheid=' + Math.random();
+	var pars = 'fuseaction=cArch.loadclass&compactDisplay=true&siteid=' + siteid +'&classid=' + classid  +'&subclassid=' + subclassid + '&contentid=' + contentid + '&parentid=' + parentid  +'&cacheid=' + Math.random();
 	var d=jQuery('#classList');
+
 	d.html('<img class="loadProgress" src="images/progress_bar.gif">');
 	jQuery.get(url + "?" + pars, 
 		function(data) {
 			jQuery('#classList').html(data);
 			availableObjectTemplate="";
-			if (jQuery("#feedConfigurator").length) {
-				initFeedConfigurator();
-			}
+			availalbeObjectParams={};
+			availableObject={};
 		}
 	);
 	return false;
 }
 
-function initFeedConfigurator(){
-	if(availableObjectTemplate==""){
-		availableObjectTemplate=eval( "(" + jQuery("#availableObjects").val() + ")");
-	}
-	
-	jQuery("#availableObjectParams").find(":input").bind(
-		"change",
-		function(){
-			availableObjectParams={};
-			jQuery("#availableObjectParams").find(":input").each(
-				function(){
-					var item=jQuery(this);
-					if (item.attr("type") != "radio" || (item.attr("type") =="radio" && item.is(':checked'))) {
-						availableObjectParams[item.attr("data-displayobjectparam")] = item.val();
-					}
-				}
-			)
-			var availableObject=jQuery.extend({},availableObjectTemplate);
-			availableObject.params=availableObjectParams;
-			
-			jQuery("#availableObjects").val(JSON.stringify(availableObject));
-			//alert(jQuery("#availableObjects").val());
-		}
-	);
-	/*
-	if (jQuery("#availableObjectParams").is(":visible")) {
-		jQuery("#availableObjectParams").fadeOut("fast");
-	}else{
-		jQuery("#availableObjectParams").fadeIn("fast");
-	}
-	*/
+function getDisplayObjectClass(regionID){
+	var str=jQuery('#selectedObjects' + regionID).val().toString();
+	var a=str.split("~");
+	return a[0];
+}
+
+function getDisplayObjectID(regionID){
+	var str=jQuery('#selectedObjects' + regionID).val().toString();
+	var a=str.split("~");
+	return a[2];
 }
 
 function loadNotify(siteid,contentid,parentid)	{
@@ -1228,4 +1252,28 @@ function closeQuickEdit(){
 	jQuery('.mura-quickEdit').remove();
 }
 
+var availableObjectTemplate="";
+var availalbeObjectParams={};
+var availableObject={};
+	
+function getDisplayObjectConfig(regionID){
+		var selectedObjects=jQuery('#selectedObjects' + regionID);
+		var str=selectedObjects.val().toString();
+		var a=str.split("~");
+		var data={};
+		
+		data.object=a[0];
+		data.name=a[1];
+		data.objectid=a[2];
+		
+		if(a.length > 3){
+			data.params=a[3];
+		}
+		
+		data.regionID=regionID;
+		return data;
+}
+		
+
+	
 

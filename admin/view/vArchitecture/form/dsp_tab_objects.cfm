@@ -67,7 +67,7 @@ to your own modified versions of Mura CMS.
 	<table class="displayObjects">		
 			 <tr>
 				<td  class="nested" rowspan="#application.settingsManager.getSite(attributes.siteid).getcolumnCount()#" valign="top">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.availablecontentobjects')#<br />
-				<select name="classSelector" onchange="loadObjectClass('#attributes.siteid#',this.value,'','#request.contentBean.getContentID()#','#attributes.parentID#');" class="dropdown" id="dragme">
+				<select name="classSelector" onchange="loadObjectClass('#attributes.siteid#',this.value,'','#request.contentBean.getContentID()#','#attributes.parentID#','#request.contentBean.getContentHistID()#',0);" class="dropdown" id="dragme">
 				<option value="">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.selectobjecttype')#</option>
 				<option value="system">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.system')#</option>
 				<cfif application.settingsManager.getSite(attributes.siteid).getemailbroadcaster()>
@@ -102,15 +102,15 @@ to your own modified versions of Mura CMS.
 							<table>
 							<tr>
 							<td class="nested">
-							<input type="button" value=">>" onclick="addDisplayObject('availableObjects',#r#);" class="objectNav"><br />
+							<input type="button" value=">>" onclick="addDisplayObject('availableObjects',#r#,true);" class="objectNav"><br />
 							<input type="button" value="<<" onclick="deleteDisplayObject(#r#);" class="objectNav">
 							</td>
 							<td class="nested">
 							<cfif listlen(application.settingsManager.getSite(attributes.siteid).getcolumnNames(),"^") gte r><strong>#listgetat(application.settingsManager.getSite(attributes.siteid).getcolumnNames(),r,"^")#</strong> <cfelse><strong>Region #r#</strong></cfif> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.contentobjects')#<br />
 							<cfset variables["objectlist#r#"]="">
-							<select name="selectedObjects#r#" id="selectedObjects#r#" class="multiSelect" multiple size="4">
+							<select name="selectedObjects#r#" id="selectedObjects#r#" class="multiSelect displayRegions" multiple size="4" data-regionid="#r#">
 							<cfloop query="request.rsContentObjects#r#">
-							<option value="#request["rsContentObjects#r#"].object#~#HTMLEditFormat(request["rsContentObjects#r#"].name)#~#request["rsContentObjects#r#"].objectid#~#HTMLEditFormat(request["rsContentObjects#r#"].params)#">#request["rsContentObjects#r#"].name#</option>
+							<option  value="#request["rsContentObjects#r#"].object#~#HTMLEditFormat(request["rsContentObjects#r#"].name)#~#request["rsContentObjects#r#"].objectid#~#HTMLEditFormat(request["rsContentObjects#r#"].params)#">#request["rsContentObjects#r#"].name#</option>
 							<cfset variables["objectlist#r#"]=listappend(variables["objectlist#r#"],"#request["rsContentObjects#r#"].object#~#HTMLEditFormat(request["rsContentObjects#r#"].name)#~#request["rsContentObjects#r#"].objectid#~#HTMLEditFormat(request["rsContentObjects#r#"].params)#","^")>
 							</cfloop>
 							</select>
@@ -119,6 +119,7 @@ to your own modified versions of Mura CMS.
 							</td>
 							<td  class="nested"><input type="button" value="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.up')#" onclick="moveDisplayObjectUp(#r#);" class="objectNav"><br />
 							<input type="button" value="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.down')#" onclick="moveDisplayObjectDown(#r#);" class="objectNav">
+							
 							</td>
 							</tr>
 							</table>
@@ -130,10 +131,275 @@ to your own modified versions of Mura CMS.
 	</table>
 </dd>	  
 </dl></div>	
-</cfoutput>
-<!---<script>
-  dndMgr.registerDraggable( new Rico.Draggable('test-rico-dnd','dragme') );
-  dndMgr.registerDropZone( new Rico.Dropzone('selectedObjects1') );
-  dndMgr.registerDropZone( new Rico.Dropzone('selectedObjects2') );
+<style>
+	##availableListSort, ##displayListSort { list-style-type: none; margin: 0; padding: 0; float: left; margin-right: 10px; }
+	##availableListSort li, ##displayListSort li { margin: 0 5px 5px 5px; padding: 5px; font-size: 1.2em; width: 120px; }
+	##configuratorContainer dt, ##configuratorContainer dd{clear:both;}
+</style>
+				
+<script>
+
+	function initFeedConfigurator(data){
+		var feedID="";
+		
+		resetAvailableObject();
+		resetConfiguratorContainer();
+		
+		if(typeof(data.object) !='undefined'){	
+			if(data.object !='feed'){
+				return false;
+			}
+			var feedID= data.objectid;
+		}
+		
+		if(feedID ==''){
+			return false;
+		}
+
+		var url = 'index.cfm';
+		var pars = 'fuseaction=cArch.loadclassconfigurator&compactDisplay=true&siteid=#JSStringFormat(attributes.siteID)#&classid=feed&contentid=#JSStringFormat(attributes.contentID)#&parentid=#JSStringFormat(attributes.parentID)#&contenthistid=#JSStringFormat(attributes.contentHistID)#&regionid=' + data.regionID  + '&feedid=' +  feedID + '&cacheid=' + Math.random();
+		var regionID=data.regionID;
+		
+		//location.href=url + "?" + pars;
+		
+		jQuery("##configuratorContainer").dialog({
+					resizable: true,
+					modal: false,
+					width: 400,
+					buttons: {
+						Save: function() {
+							addDisplayObject(availableObject,regionID,false);
+							jQuery( this ).dialog( "close" );
+							
+						},
+						Cancel: function() {
+							jQuery( this ).dialog( "close" );
+						}
+					},
+					close: function(){
+						jQuery(this).dialog("destroy");
+					}	
+				});
+		//location.href=url + "?" + pars;
+		
+		jQuery.post(url + "?" + pars, 
+			data,
+			function(resp) {
+				
+				data=eval('(' + resp + ')');
+				
+				jQuery("##configurator").html(data.html);
+				
+				if(data.type.toLowerCase()=='remote'){
+					jQuery("##ui-dialog-title-configuratorContainer").html("Configure Remote Feed");
+				} else {
+					jQuery("##ui-dialog-title-configuratorContainer").html("Configure Local Index");
+				}
+				
+				if(availableObjectTemplate==""){
+					availableObjectTemplate=eval( "(" + jQuery("##displayObjectTemplate").val() + ")");
+					availableObject=jQuery.extend({},availableObjectTemplate);
+				}
+				
+				if (jQuery("##availableListSort").length) {
+					jQuery("##availableListSort, ##displayListSort").sortable({
+						connectWith: ".displayListSortOptions",
+						update: function(event){
+							event.stopPropagation();
+							jQuery("##displayList").val("");
+							jQuery("##displayListSort > li").each(function(){
+								var current = jQuery("##displayList").val();
+								
+								if (current != '') {
+									jQuery("##displayList").val(current + "," + jQuery(this).html());
+								}
+								else {
+									jQuery("##displayList").val(jQuery(this).html());
+								}
+								
+							});
+							
+							updateAvailableObject();
+						}
+					}).disableSelection();
+				}
+				
+				initCongituratorParams();
+		
+			}
+		);
+		
+		return true;
+	}
+	
+	function initSlideShowConfigurator(data){
+		var feedID="";
+		
+		resetAvailableObject();
+		resetConfiguratorContainer();
+		
+		if(typeof(data.object) !='undefined'){	
+			if(data.object !='feed_slideshow'){
+				return false;
+			}
+			var feedID= data.objectid;
+		}
+		
+		if(feedID ==''){
+			return false;
+		}
+
+		var url = 'index.cfm';
+		var pars = 'fuseaction=cArch.loadclassconfigurator&compactDisplay=true&siteid=#JSStringFormat(attributes.siteID)#&classid=feed_slideshow&contentid=#JSStringFormat(attributes.contentID)#&parentid=#JSStringFormat(attributes.parentID)#&contenthistid=#JSStringFormat(attributes.contentHistID)#&regionid=' + data.regionID  + '&feedid=' +  feedID + '&cacheid=' + Math.random();
+		var regionID=data.regionID;
+		
+		//location.href=url + "?" + pars;
+		
+		jQuery("##configuratorContainer").dialog({
+					resizable: true,
+					modal: false,
+					width: 400,
+					buttons: {
+						Save: function() {
+							addDisplayObject(availableObject,regionID,false);
+							jQuery( this ).dialog( "close" );
+							
+						},
+						Cancel: function() {
+							jQuery( this ).dialog( "close" );
+						}
+					},
+					close: function(){
+						jQuery(this).dialog("destroy");
+					}
+					
+				});
+		
+		jQuery.post(url + "?" + pars,
+			data, 
+			function(data) {
+				
+				jQuery("##ui-dialog-title-configuratorContainer").html("Configure Slide Show");
+				
+				jQuery("##configurator").html(data);
+				
+				if(availableObjectTemplate==""){
+					availableObjectTemplate=eval( "(" + jQuery("##displayObjectTemplate").val() + ")");
+					availableObject=jQuery.extend({},availableObjectTemplate);
+				}
+				
+				jQuery( "##availableListSort, ##displayListSort" ).sortable({
+					connectWith: ".displayListSortOptions",
+					update: function(event){
+						event.stopPropagation();
+						jQuery("##displayList").val("");
+						jQuery("##displayListSort > li").each(function(){
+							var current = jQuery("##displayList").val();
+							
+							if (current != '') {
+								jQuery("##displayList").val(current + "," + jQuery(this).html());
+							}
+							else {
+								jQuery("##displayList").val(jQuery(this).html());
+							}
+							
+						});
+						updateAvailableObject();
+					}
+				}).disableSelection();
+				
+				initCongituratorParams();
+		
+			}
+		);
+		
+		return true;
+	}
+	
+	function initGenericConfigurator(data){
+		resetAvailableObject();
+		resetConfiguratorContainer();
+		//location.href=url + "?" + pars;
+		
+		jQuery("##configuratorContainer").dialog({
+				resizable: true,
+				modal: false,
+				width: 400,
+				buttons: {
+					Cancel: function() {
+							jQuery( this ).dialog( "close" );
+					}
+				},
+				open: function(){		
+					jQuery("##ui-dialog-title-configuratorContainer").html("Not Available");
+					jQuery("##configurator").html("<p>This display object does not have any configurable options.</p>");
+				},
+				close: function(){
+					jQuery(this).dialog("destroy");
+				}
+					
+		});
+		
+		return true;
+	}
+	
+	jQuery(document).ready(
+		function(){
+			initDisplayObjectConfigurators()
+		}
+	);
+	
+	function updateAvailableObject(){
+		availableObjectParams={};
+							
+		jQuery("##availableObjectParams").find(":input").each(
+			function(){
+				var item=jQuery(this);
+				if (item.attr("type") != "radio" || (item.attr("type") =="radio" && item.is(':checked'))) {
+					availableObjectParams[item.attr("data-displayobjectparam")] = item.val();
+				}
+			}
+		)
+		availableObject=jQuery.extend({},availableObjectTemplate);
+		availableObject.params=availableObjectParams;	
+	}
+		
+	function initDisplayObjectConfigurators(){
+		jQuery(".displayRegions").find("option").dblclick(
+			function(){
+				var regionID=jQuery(this).parents("select:first").attr("data-regionid");
+				var data=getDisplayObjectConfig(regionID);
+					
+				if (data.object == 'feed') {
+					initFeedConfigurator(data);
+				} else if (data.object == 'feed_slideshow') {
+					initSlideShowConfigurator(data);
+				} else{
+					initGenericConfigurator(data);
+				}
+			}
+		);
+	}
+	
+	function resetAvailableObject(){
+		availableObjectTemplate="";
+		availalbeObjectParams={};
+		availableObject={};
+	}
+	
+	function resetConfiguratorContainer(){
+		//jQuery(instance).dialog("destroy");
+		jQuery("##configuratorContainer").remove();
+		jQuery("body").append('<div id="configuratorContainer" title="Loading..." style="display:none"><div id="configurator"><img src="images/progress_bar.gif"></div></div>');
+	}
+	
+	function initCongituratorParams(){
+		jQuery("##availableObjectParams").find(":input").bind(
+			"change",
+			function(){
+				updateAvailableObject();
+		});
+	}
 </script>
---->
+
+</cfoutput>

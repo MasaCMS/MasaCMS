@@ -43,7 +43,7 @@ to your own modified versions of Mura CMS.
 <cfset request.rsSections = application.contentManager.getSections(attributes.siteid, 'Calendar')/>
 <cfoutput>
 	<select name="subClassSelector" 
-	        onchange="loadObjectClass('#attributes.siteid#','calendar',this.value,'#attributes.contentid#','#attributes.parentid#');" 
+	        onchange="loadObjectClass('#attributes.siteid#','calendar',this.value,'#attributes.contentid#','#attributes.parentid#','#attributes.contenthistid#',0,0);" 
 	        class="dropdown">
 		<option value="">
 			#application.rbFactory.getKeyValue(session.rb, 'sitemanager.content.fields.selectcalendar')#

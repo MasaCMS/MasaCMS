@@ -42,7 +42,7 @@ to your own modified versions of Mura CMS.
 --->
 <cfparam name="attributes.contentid" default="">
 <cfparam name="attributes.parentid" default="">
-
+<cfparam name="attributes.contenthistid" default="">
 <cfswitch expression="#attributes.classid#">
 	<cfcase value="component">
 		<cfinclude template="objectclass/dsp_components.cfm">
