@@ -138,7 +138,62 @@ to your own modified versions of Mura CMS.
 </style>
 				
 <script>
+	function initCategorySummaryConfigurator(data){
+		
+		resetAvailableObject();
+		resetConfiguratorContainer();
+		
+		if(typeof(data.object) !='undefined'){	
+			if(data.object !='category_summary'){
+				return false;
+			}
+		}
 
+		var url = 'index.cfm';
+		var pars = 'fuseaction=cArch.loadclassconfigurator&compactDisplay=true&siteid=#JSStringFormat(attributes.siteID)#&classid=category_summary&contentid=#JSStringFormat(attributes.contentID)#&parentid=#JSStringFormat(attributes.parentID)#&contenthistid=#JSStringFormat(attributes.contentHistID)#&regionid=' + data.regionID  + '&objectid=' +  data.objectid + '&cacheid=' + Math.random();
+		var regionID=data.regionID;
+		
+		//location.href=url + "?" + pars;
+		
+		jQuery("##configuratorContainer").dialog({
+			resizable: true,
+			modal: false,
+			width: 400,
+			buttons: {
+				Save: function() {
+					addDisplayObject(availableObject,regionID,false);
+					jQuery( this ).dialog( "close" );
+							
+				},
+				Cancel: function() {
+					jQuery( this ).dialog( "close" );
+				}
+			},
+			close: function(){
+				jQuery(this).dialog("destroy");
+			}	
+		});
+				
+		jQuery.post(url + "?" + pars, 
+			data,
+			function(data) {
+	
+				jQuery("##configurator").html(data);
+				jQuery("##ui-dialog-title-configuratorContainer").html("Configure Category Summary");	
+				
+				if(availableObjectTemplate==""){
+					availableObjectTemplate=eval( "(" + jQuery("##displayObjectTemplate").val() + ")");
+					availableObject=jQuery.extend({},availableObjectTemplate);
+				}
+				
+				initConfiguratorParams();
+		
+			}
+		);
+		
+		return true;
+	}
+	
 	function initFeedConfigurator(data){
 		var feedID="";
 		
@@ -224,7 +279,7 @@ to your own modified versions of Mura CMS.
 					}).disableSelection();
 				}
 				
-				initCongituratorParams();
+				initConfiguratorParams();
 		
 			}
 		);
@@ -308,7 +363,7 @@ to your own modified versions of Mura CMS.
 					}
 				}).disableSelection();
 				
-				initCongituratorParams();
+				initConfiguratorParams();
 		
 			}
 		);
@@ -374,6 +429,8 @@ to your own modified versions of Mura CMS.
 					initFeedConfigurator(data);
 				} else if (data.object == 'feed_slideshow') {
 					initSlideShowConfigurator(data);
+				} else if (data.object == 'category_summary') {
+					initCategorySummaryConfigurator(data);
 				} else{
 					initGenericConfigurator(data);
 				}
@@ -393,7 +450,7 @@ to your own modified versions of Mura CMS.
 		jQuery("body").append('<div id="configuratorContainer" title="Loading..." style="display:none"><div id="configurator"><img src="images/progress_bar.gif"></div></div>');
 	}
 	
-	function initCongituratorParams(){
+	function initConfiguratorParams(){
 		jQuery("##availableObjectParams").find(":input").bind(
 			"change",
 			function(){

@@ -1,4 +1,4 @@
-<!--- This file is part of Mura CMS.
+﻿<!--- This file is part of Mura CMS.
 
 Mura CMS is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -41,17 +41,28 @@ the GNU General Public License version 2 without this exception. You may, if you
 to your own modified versions of Mura CMS.
 --->
 
-<cfswitch expression="#attributes.classid#">	
-	<cfcase value="feed">
-		<cfinclude template="objectclass/dsp_feed_configurator.cfm">
-	</cfcase>
-	<cfcase value="feed_slideshow">
-		<cfinclude template="objectclass/dsp_slideshow_configurator.cfm">
-	</cfcase>
-	<cfcase value="category_summary">
-		<cfinclude template="objectclass/dsp_category_summary_configurator.cfm">
-	</cfcase>
-	<cfdefaultcase>
-		<cfoutput>#attributes.classid#</cfoutput>
-	</cfdefaultcase>
-</cfswitch>
+<cfset $=application.serviceFactory.getBean("muraScope").init(attributes.siteID)>
+<cfset content=$.getBean("content").loadBy(contentID=attributes.objectid)>
+
+<cfif isDefined("form.params") and isJSON(form.params)>
+	<cfset params=deserializeJSON(form.params)>
+	<cfset displayRSS=isDefined("params.displayRSS") and yesNoFormat(params.displayRSS)>	
+	
+<cfelse>
+	<cfset displayRSS=false>	
+</cfif>
+
+<cfoutput>
+
+	<div id="availableObjectParams"<!--- style="display:none;"--->>
+		<dl class="oneColumn">
+			<dt class="first">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayrss')#</dt>
+			<dd>
+			<input name="displayRSS" data-displayobjectparam="displayRSS" type="radio" value="1" class="radio" <cfif displayRSS>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.yes')# 
+			<input name="displayRSS" data-displayobjectparam="displayRSS" type="radio" value="0" class="radio" <cfif not displayRSS>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.no')# 
+			</dd>
+		</dl>
+	</div>
+	<input type="hidden" name="displayObjectTemplate" id="displayObjectTemplate" value="{'object':'category_summary','name':'#JSStringFormat('#content.getMenuTitle()# - #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.categorysummary')#')#','objectid':'#content.getContentID()#'}"/>
+</cfoutput>
+

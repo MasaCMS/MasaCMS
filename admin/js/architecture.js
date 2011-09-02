@@ -329,158 +329,6 @@ document.getElementById(id).style.visibility="hidden";
 }
 
 
-function addDisplayObject(objectToAdd,regionID,configure){
-	var tmpObject="";
-	var tmpValue="";
-	var tmpText="";
-	var isUpdate=false;
-	//If it's not a js object then it must be an id of a form input or select
-	if(typeof(objectToAdd)=="string"){
-	
-		// return error if the id does not exist.
-		if(document.getElementById(objectToAdd)==null){
-			
-			alertDialog("Please select a display object."); 
-			
-			return false;
-		}
-		
-		if (document.getElementById(objectToAdd).tagName.toLowerCase() == "select") {
-		
-			if (document.getElementById(objectToAdd).selectedIndex == -1) {
-				alertDialog("Please select a display object.");
-				
-				return false;
-			}
-			//alert("Please select a display object."); return false;}
-			
-			var addIndex = document.getElementById(objectToAdd).selectedIndex;
-			
-			if (addIndex < 0) 
-				return false;
-			
-			var addoption = document.getElementById(objectToAdd).options[addIndex];
-			
-			tmpText = addoption.text;
-			tmpValue = addoption.value;
-			
-		} else if(document.getElementById(objectToAdd).tagName.toLowerCase() == "input"){
-		  
-			var addoption =document.getElementById(objectToAdd);
-			tmpValue=addoption.value;
-
-		} else {
-			//If it's not a select box then the value must be json object.
-			addoption=document.getElementById(objectToAdd);		
-		}
-		
-		try
-		  {
-			tmpObject=eval('(' + addoption.value + ')');
-		  }
-		catch(err)
-		  {
-			tmpObject=addoption.value
-		  }
-	
-	} else {
-		//If it's not a select box then the value must be json object.
-		tmpObject=objectToAdd;
-	}
-
-	//if the tmpValue evaluated into a js object pull out it's values
-	
-	if(typeof(tmpObject) == "object"){
-		//object^name^objectID^params
-		
-		if (configure && tmpObject.object=='feed') {
-			tmpObject.regionID=regionID;
-			if (initFeedConfigurator(tmpObject)
-			) {
-				return false;
-			}
-		}
-		
-		if (configure && tmpObject.object=='feed_slideshow') {
-			tmpObject.regionID=regionID;
-			initSlideShowConfigurator(tmpObject)
-			return false;
-		}
-		
-		if (configure && tmpObject.object=='feed_slideshow') {
-			tmpObject.regionID=regionID;
-			initSlideShowConfigurator(tmpObject)
-			return false;
-		}
-		
-		tmpValue=tmpObject.object;
-		tmpValue=tmpValue + "~" + tmpObject.name;	
-		tmpValue=tmpValue + "~" + tmpObject.objectid;
-		
-		if(typeof(tmpObject.params) == "string"){
-			tmpValue   = tmpValue + "~" + tmpObject.params;
-		} else if (typeof(tmpObject.params) == "object"){
-			tmpValue   = tmpValue + "~" + JSON.stringify( tmpObject.params );
-		}
-		
-		if(tmpObject.object=='feed' && document.getElementById('selectedObjects' + regionID).selectedIndex != -1){
-			var currentSelection=getDisplayObjectConfig(regionID);
-		
-			if(currentSelection){
-				if(currentSelection.objectid==tmpObject.objectid){
-					isUpdate=true
-				}
-			}
-			
-		}
-		
-		
-		tmpText=tmpObject.name;	
-		
-	} 
-
-	if(tmpValue == ""){
-			
-			alertDialog("Please select a display object."); 
-			
-			return false;
-	}
-	
-	//get reference to the select where it will go.
-	var selectedObjects =document.getElementById("selectedObjects" + regionID);
-	
-	//double check that it's not already there
-	if(selectedObjects.options.length){	
-		for (var i=0;i < selectedObjects.options.length;i++){ 
-			if(selectedObjects.options[i].value==tmpValue) {
-			selectedObjects.selectedIndex=i;
-			return false;
-			}
-		}
-	}
-	
-
-	// add it.
-
-	
-	if (isUpdate) {
-		myoption=selectedObjects.options[document.getElementById("selectedObjects" + regionID).selectedIndex];
-		myoption.text= tmpText;
-		myoption.value=tmpValue;
-	}else{
-		var myoption = document.createElement("option");
-		selectedObjects.appendChild(myoption);
-		myoption.text= tmpText;
-		myoption.value=tmpValue;
-		myoption.selected = "selected"
-		
-	}
-	
-	updateDisplayObjectList(regionID);
-	
-	return true
-	
-}
 
 function deleteDisplayObject(regionID){
    var selectedObjects =document.getElementById("selectedObjects" + regionID);
@@ -1275,5 +1123,163 @@ function getDisplayObjectConfig(regionID){
 }
 		
 
+function addDisplayObject(objectToAdd,regionID,configure){
+	var tmpObject="";
+	var tmpValue="";
+	var tmpText="";
+	var isUpdate=false;
+	//If it's not a js object then it must be an id of a form input or select
+	if(typeof(objectToAdd)=="string"){
 	
+		// return error if the id does not exist.
+		if(document.getElementById(objectToAdd)==null){
+			
+			alertDialog("Please select a display object."); 
+			
+			return false;
+		}
+		
+		if (document.getElementById(objectToAdd).tagName.toLowerCase() == "select") {
+		
+			if (document.getElementById(objectToAdd).selectedIndex == -1) {
+				alertDialog("Please select a display object.");
+				
+				return false;
+			}
+			//alert("Please select a display object."); return false;}
+			
+			var addIndex = document.getElementById(objectToAdd).selectedIndex;
+			
+			if (addIndex < 0) 
+				return false;
+			
+			var addoption = document.getElementById(objectToAdd).options[addIndex];
+			
+			tmpText = addoption.text;
+			tmpValue = addoption.value;
+			
+		} else if(document.getElementById(objectToAdd).tagName.toLowerCase() == "input"){
+		  
+			var addoption =document.getElementById(objectToAdd);
+			tmpValue=addoption.value;
+
+		} else {
+			//If it's not a select box then the value must be json object.
+			addoption=document.getElementById(objectToAdd);		
+		}
+		
+		try
+		  {
+			tmpObject=eval('(' + addoption.value + ')');
+		  }
+		catch(err)
+		  {
+			tmpObject=addoption.value
+		  }
+	
+	} else {
+		//If it's not a select box then the value must be json object.
+		tmpObject=objectToAdd;
+	}
+
+	//if the tmpValue evaluated into a js object pull out it's values
+	
+	if(typeof(tmpObject) == "object"){
+		//object^name^objectID^params
+		
+		if (configure && tmpObject.object=='feed') {
+			tmpObject.regionID=regionID;
+			if (initFeedConfigurator(tmpObject)
+			) {
+				return false;
+			}
+		}
+		
+		if (configure && tmpObject.object=='feed_slideshow') {
+			tmpObject.regionID=regionID;
+			initSlideShowConfigurator(tmpObject)
+			return false;
+		}
+		
+		if (configure && tmpObject.object=='feed_slideshow') {
+			tmpObject.regionID=regionID;
+			initSlideShowConfigurator(tmpObject)
+			return false;
+		}
+		
+		if (configure && tmpObject.object=='category_summary') {
+			tmpObject.regionID=regionID;
+			initCategorySummaryConfigurator(tmpObject)
+			return false;
+		}
+		
+		tmpValue=tmpObject.object;
+		tmpValue=tmpValue + "~" + tmpObject.name;	
+		tmpValue=tmpValue + "~" + tmpObject.objectid;
+		
+		if(typeof(tmpObject.params) == "string"){
+			tmpValue   = tmpValue + "~" + tmpObject.params;
+		} else if (typeof(tmpObject.params) == "object"){
+			tmpValue   = tmpValue + "~" + JSON.stringify( tmpObject.params );
+		}
+		
+		if(tmpObject.object=='feed' && document.getElementById('selectedObjects' + regionID).selectedIndex != -1){
+			var currentSelection=getDisplayObjectConfig(regionID);
+		
+			if(currentSelection){
+				if(currentSelection.objectid==tmpObject.objectid){
+					isUpdate=true
+				}
+			}
+			
+		}
+		
+		
+		tmpText=tmpObject.name;	
+		
+	} 
+
+	if(tmpValue == ""){
+			
+			alertDialog("Please select a display object."); 
+			
+			return false;
+	}
+	
+	//get reference to the select where it will go.
+	var selectedObjects =document.getElementById("selectedObjects" + regionID);
+	
+	//double check that it's not already there
+	if(selectedObjects.options.length){	
+		for (var i=0;i < selectedObjects.options.length;i++){ 
+			if(selectedObjects.options[i].value==tmpValue) {
+			selectedObjects.selectedIndex=i;
+			return false;
+			}
+		}
+	}
+	
+
+	// add it.
+
+	
+	if (isUpdate) {
+		myoption=selectedObjects.options[document.getElementById("selectedObjects" + regionID).selectedIndex];
+		myoption.text= tmpText;
+		myoption.value=tmpValue;
+	}else{
+		var myoption = document.createElement("option");
+		selectedObjects.appendChild(myoption);
+		myoption.text= tmpText;
+		myoption.value=tmpValue;
+		myoption.selected = "selected"
+		
+	}
+	
+	updateDisplayObjectList(regionID);
+	
+	return true
+	
+}
+
 
