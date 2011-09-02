@@ -76,28 +76,29 @@
 .meld-tb-form #ui-tabs {
 	background: transparent;
 }
-.ui-tabs .ui-tabs .ui-tabs-nav li {
+.meld-tb-form #ui-tabs .ui-tabs-nav li {
 	border: 1px solid transparent !important;
-	margin-left: 2px !important;
+	margin-right: 2px !important;
 }
 
-.meld-tb-form .ui-tabs-nav {
+.meld-tb-form #ui-tabs  .ui-tabs-nav {
 	/*height: 26px !important;*/
 	padding-bottom: 0 !important;
 	border-bottom: 0 !important;
 	background: transparent !important;
 }
 
-.meld-tb-form .ui-tabs-nav li {
+.meld-tb-form #ui-tabs .ui-tabs-nav li {
 	margin-left: 0 !important;
 }
 
-.ui-tabs-nav li a,.ui-tabs .ui-tabs-nav li a {
+.meld-tb-form #ui-tabs .ui-tabs-nav li a,.meld-tb-form #ui-tabs .ui-tabs .ui-tabs-nav li a {
 	background-color: #ccc;
-	padding: 0.25em 1em;
+	padding: 0.5em 1em;
+	margin-left: 0 !important;
 }
 
-.ui-tabs-nav li.ui-tabs-selected a {
+.meld-tb-form #ui-tabs .ui-tabs-nav li.ui-tabs-selected a {
 	background-color: #e7e7e7;
 }
 
@@ -120,10 +121,10 @@
 
 #meld-tb-form {
 	border-top: 1px solid #d1d1d1;
-	background: url('images/bg-divider.png') repeat-y top center; 
+	background: url('images/bg-divider.png') repeat-y 276px 0; 
 }
 #meld-tb-form-fields {
-	width: 46%;
+	width: 26%;
 	padding: 2%;
 	float: left;
 	background-color: #f9f9f9;
