@@ -522,7 +522,7 @@
 
 <cffunction name="standardLinkTranslator" output="false" returnType="any">
 	<cfargument name="event" required="true">
-	<cflocation addtoken="no" url="#event.getValue('contentRenderer').setDynamicContent(event.getValue('contentBean').getFilename())#">
+	<cflocation addtoken="no" statuscode="301" url="#event.getValue('contentRenderer').setDynamicContent(event.getValue('contentBean').getFilename())#">
 </cffunction>
 
 </cfcomponent>
