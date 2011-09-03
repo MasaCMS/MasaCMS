@@ -1688,7 +1688,7 @@ function addDisplayObject(objectToAdd,regionID,configure){
 	
 	function getConfiguratorPosition(){
 		if(top.location != self.location) {
-			return ["center", 50];
+			return ["center", jQuery(window.parent.document).scrollTop() + 50];
 		} else{
 			return "center";
 		}
