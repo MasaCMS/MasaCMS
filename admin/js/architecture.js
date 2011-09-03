@@ -1321,6 +1321,9 @@ function addDisplayObject(objectToAdd,regionID,configure){
 			},
 			close: function(){
 				jQuery(this).dialog("destroy");
+			},
+			resize:function(){
+				jQuery(this).dialog("option","position","center");
 			}	
 		});
 				
@@ -1330,6 +1333,7 @@ function addDisplayObject(objectToAdd,regionID,configure){
 	
 				jQuery("#configurator").html(data);
 				jQuery("#ui-dialog-title-configuratorContainer").html(categorySummaryConfiguratorTitle);	
+				jQuery("#configuratorContainer").dialog("option","position","center");
 				
 				if(availableObjectTemplate==""){
 					availableObjectTemplate=eval( "(" + jQuery("#displayObjectTemplate").val() + ")");
@@ -1383,6 +1387,9 @@ function addDisplayObject(objectToAdd,regionID,configure){
 					},
 					close: function(){
 						jQuery(this).dialog("destroy");
+					},
+					resize: function(){
+						jQuery(this).dialog("option","position","center");
 					}	
 				});
 		//location.href=url + "?" + pars;
@@ -1394,6 +1401,7 @@ function addDisplayObject(objectToAdd,regionID,configure){
 				data=eval('(' + resp + ')');
 				
 				jQuery("#configurator").html(data.html);
+				jQuery("#configuratorContainer").dialog("option","position","center");
 				
 				if(data.type.toLowerCase()=='remote'){
 					jQuery("#ui-dialog-title-configuratorContainer").html(remoteFeedConfiguratorTitle);
@@ -1476,6 +1484,9 @@ function addDisplayObject(objectToAdd,regionID,configure){
 					},
 					close: function(){
 						jQuery(this).dialog("destroy");
+					},
+					resize: function(){
+						jQuery(this).dialog("option","position","center");
 					}
 					
 				});
@@ -1486,6 +1497,7 @@ function addDisplayObject(objectToAdd,regionID,configure){
 				
 				jQuery("#ui-dialog-title-configuratorContainer").html(slideShowConfiguratorTitle);	
 				jQuery("#configurator").html(data);
+				jQuery("#configuratorContainer").dialog("option","position","center");
 				
 				if(availableObjectTemplate==""){
 					availableObjectTemplate=eval( "(" + jQuery("#displayObjectTemplate").val() + ")");
@@ -1555,6 +1567,9 @@ function addDisplayObject(objectToAdd,regionID,configure){
 					},
 					close: function(){
 						jQuery(this).dialog("destroy");
+					},
+					resize: function(){
+						jQuery(this).dialog("option","position","center");
 					}
 					
 				});
@@ -1565,6 +1580,7 @@ function addDisplayObject(objectToAdd,regionID,configure){
 				
 				jQuery("#ui-dialog-title-configuratorContainer").html(relatedContentConfiguratorTitle);		
 				jQuery("#configurator").html(data);
+				jQuery("#configuratorContainer").dialog("option","position","center");
 				
 				if(availableObjectTemplate==""){
 					availableObjectTemplate=eval( "(" + jQuery("#displayObjectTemplate").val() + ")");
@@ -1619,6 +1635,9 @@ function addDisplayObject(objectToAdd,regionID,configure){
 				},
 				close: function(){
 					jQuery(this).dialog("destroy");
+				},
+				resize: function(){
+					jQuery(this).dialog("option","position","center");
 				}
 					
 		});
