@@ -97,7 +97,7 @@
 		}
 
 		function doAddField( obj ) {
-			var $fieldBlock = jQuery('<li><div class="'+obj.fieldtype.displaytype+'" data-field=\'{"fieldType":"field-'+obj.fieldtype.fieldtype+'","fieldID":"'+obj.fieldid+'"}\'><span>'+obj.label+'</span></div></li>');
+			var $fieldBlock = jQuery('<li class="'+obj.fieldtype.displaytype+'"><div class="'+obj.fieldtype.displaytype+'" data-field=\'{"fieldType":"field-'+obj.fieldtype.fieldtype+'","fieldID":"'+obj.fieldid+'"}\'><span>'+obj.label+'</span></div></li>');
 			$fieldBlock.attr('id',obj.fieldid);
 			$fieldBlock.attr('class','field-'+obj.fieldtype.fieldtype);
 			jQuery('#meld-tb-fields').append( $fieldBlock );

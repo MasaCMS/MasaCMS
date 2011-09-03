@@ -141,18 +141,51 @@
 }
 
 #meld-tb-fields li div.field {
-	margin: 0 0 5px 0;
-	padding: 10px 10px 10px 50px;
+	/*margin: 0 0 5px 0;*/
+	padding: 10px 10px 10px 40px;
 	background-repeat: no-repeat;
-	background-position: 10px center;
-	background-color: #f2f2f2;
+	background-position: 0px center;
+	/*background-color: #f2f2f2;*/
 	border-radius: 4px;
 	/*border: 1px solid #f9f9f9;*/
 	-moz-border-radius: 4px;
 	-webkit-border-radius: 4px;
 	cursor: move;
-	min-height: 20px;
+	/*min-height: 20px;*/
 }
+
+#meld-tb-fields li  {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 14px;
+	color: #303030;
+	padding: 2px 10px;
+	background: -moz-linear-gradient(
+		top,
+		#ffffff 0%,
+		#ebebeb 30%,
+		#dbdbdb 50%,
+		#b5b5b5);
+	background: -webkit-gradient(
+		linear, left top, left bottom, 
+		from(#ffffff),
+		color-stop(0.30, #ebebeb),
+		color-stop(0.50, #dbdbdb),
+		to(#b5b5b5));
+	border-radius: 4px;
+	-moz-border-radius: 4px;
+	-webkit-border-radius: 4px;
+	border: 1px solid #c2c2c2;
+	-moz-box-shadow:
+		0px 1px 1px rgba(000,000,000,0.1),
+		inset 0px 0px 2px rgba(255,255,255,0.5);
+	-webkit-box-shadow:
+		0px 1px 1px rgba(000,000,000,0.1),
+		inset 0px 0px 2px rgba(255,255,255,0.5);
+	text-shadow:
+		0px -1px 0px rgba(000,000,000,0.2),
+		0px 1px 0px rgba(255,255,255,1);
+}
+
 
 #meld-tb-fields li div#selected.field {
 	background-color: #FFEBEB;
@@ -175,17 +208,18 @@
 	background-image: url('images/frm_checkbox_big.png');
 }
 
-#meld-tb-fields li div.section {
-	/*border: 1px solid #aaa;*/
-	background-color: #ccc;
+#meld-tb-fields li.field-section {
+	background: transparent;
 	margin: 0 0 5px 0;
 	padding: 5px;
-	border-radius: 3px;
-	-moz-border-radius: 3px;
-	-webkit-border-radius: 3px;
-}
-#meld-tb-field,#meld-tb-dataset,#meld-tb-grid {
-	
+	border: 0;
+	border-radius: 0;
+	-moz-border-radius: 0;
+	-webkit-border-radius: 0;
+	-moz-box-shadow: none;
+	-webkit-box-shadow: none;
+	text-shadow: 0;
+	text-transform: uppercase;
 }
 
 #meld-tb-dataset {
