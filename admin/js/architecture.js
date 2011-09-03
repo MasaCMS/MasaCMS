@@ -1688,7 +1688,12 @@ function addDisplayObject(objectToAdd,regionID,configure){
 	
 	function getConfiguratorPosition(){
 		if(top.location != self.location) {
-			return ["center", jQuery(window.parent.document).scrollTop() + 50];
+			var windowHeight =jQuery(window.parent).height();
+		    var dialogHeight = jQuery("#configuratorContainer").height();
+			var scrollTop = jQuery(window.parent).scrollTop();
+			var editorTop = jQuery("#frontEndToolsModalBody",window.parent.document).position().top;
+			var t = Math.floor((windowHeight - dialogHeight) / 2) + scrollTop - editorTop ;
+			return ["center", t];
 		} else{
 			return "center";
 		}
