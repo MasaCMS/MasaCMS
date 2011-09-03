@@ -1321,6 +1321,9 @@ function addDisplayObject(objectToAdd,regionID,configure){
 			},
 			close: function(){
 				jQuery(this).dialog("destroy");
+			},
+			resize:function(){
+				jQuery(this).dialog("option","position","center");
 			}	
 		});
 				
@@ -1384,6 +1387,9 @@ function addDisplayObject(objectToAdd,regionID,configure){
 					},
 					close: function(){
 						jQuery(this).dialog("destroy");
+					},
+					resize: function(){
+						jQuery(this).dialog("option","position","center");
 					}	
 				});
 		//location.href=url + "?" + pars;
@@ -1478,6 +1484,9 @@ function addDisplayObject(objectToAdd,regionID,configure){
 					},
 					close: function(){
 						jQuery(this).dialog("destroy");
+					},
+					resize: function(){
+						jQuery(this).dialog("option","position","center");
 					}
 					
 				});
@@ -1558,6 +1567,9 @@ function addDisplayObject(objectToAdd,regionID,configure){
 					},
 					close: function(){
 						jQuery(this).dialog("destroy");
+					},
+					resize: function(){
+						jQuery(this).dialog("option","position","center");
 					}
 					
 				});
@@ -1623,6 +1635,9 @@ function addDisplayObject(objectToAdd,regionID,configure){
 				},
 				close: function(){
 					jQuery(this).dialog("destroy");
+				},
+				resize: function(){
+					jQuery(this).dialog("option","position","center");
 				}
 					
 		});
