@@ -440,14 +440,13 @@
 
 <cfset serverpath = "http://#listFirst(cgi.http_host,':')##variables.configBean.getServerPort()##variables.configBean.getContext()#/">
 
-<cfif application.configBean.getSiteIDInURLS()>
+<cfif variables.configBean.getSiteIDInURLS()>
     <cfset serverpath &= '#getSiteID()#/'>
 </cfif>
 
-<cfif application.configBean.getIndexFileInURLS()>
+<cfif variables.configBean.getIndexFileInURLS()>
     <cfset serverpath &= 'index.cfm/'>
 </cfif>
-
 
 <cfsavecontent variable="notifyText"><cfoutput>
 A comment has been posted to "#rscontent.title#" by #getName()#.
