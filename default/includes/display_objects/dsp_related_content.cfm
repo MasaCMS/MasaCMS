@@ -42,30 +42,31 @@ to your own modified versions of Mura CMS.
 --->
 
 <cfoutput>
-<cfsilent>
-	
-	<cfset variables.iterator=$.content().getRelatedContentIterator(liveOnly=true)>
-	
-	<cfset variables.contentListType="Related">
-	<cfset variables.contentListFields="Title">
-	<!--- Other available fields to output 
-	<cfset variables.contentListFields="Title,Date,Image,Tags,Credits"> --->
-	
-	<!--- Omitting summaries
-	<cfif arguments.hasSummary >
-		<cfset variables.contentListFields=listAppend(contentListFields,"Summary")>
-	</cfif>
-	--->
-</cfsilent>
 <cfif variables.iterator.getRecordCount()>
 	<div class="svRelContent svIndex">
 	<#getHeaderTag('subHead1')#>#$.rbKey('list.relatedcontent')#</#getHeaderTag('subHead1')#>
-	#dspObject_Include(
-			thefile='dsp_content_list.cfm',
-			fields=variables.contentListFields,
-			type=variables.contentListType, 
-			iterator= variables.iterator
-			)#
+	<cfif isJson(params)>
+		<cfset params=deserializeJSON(params)>
+		#dspObject_Include(
+				thefile='dsp_content_list.cfm',
+				fields=params.displayList,
+				type='Related', 
+				iterator=$.content().getRelatedContentIterator(liveOnly=true),
+				imageSize=params.imageSize,
+				imageHeight=params.imageHeight,
+				imageWidth=params.imageWidth
+				)#
+	<cfelse>
+		#dspObject_Include(
+				thefile='dsp_content_list.cfm',
+				fields='Title',
+				type='Related', 
+				iterator= $.content().getRelatedContentIterator(liveOnly=true),
+				imageSize=variables.feedBean.getImageSize(),
+				imageHeight=variables.feedBean.getImageHeight(),
+				imageWidth=variables.feedBean.getImageWidth()
+				)#
+	</cfif>
 	</div>
 <cfelse>
 	<!-- Empty Related Content -->

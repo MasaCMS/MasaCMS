@@ -899,4 +899,14 @@ to your own modified versions of Mura CMS.
 	<cfreturn getContentHistID()>
 </cffunction>
 
+<cffunction name="setDisplayList" output="false">
+	<cfargument name="displayList">
+	<cfset variables.instance.responseDisplayFields>	
+</cffunction>
+
+<cffunction name="getDisplayList" output="false">
+	<cfset variables.instance.responseDisplayFields>	
+</cffunction>
+
+
 </cfcomponent>

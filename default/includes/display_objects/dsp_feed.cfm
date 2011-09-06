@@ -49,7 +49,7 @@ to your own modified versions of Mura CMS.
 	<cfset variables.feedBean = $.getBean("feed").loadBy(name=arguments.objectID,siteID=arguments.siteID)>
   </cfif>
   
-  <cfif isJson(params)>
+  <cfif isDefined("params") and isJson(params)>
   		<cfset variables.feedBean.set(deserializeJSON(params))>
   </cfif>
 
@@ -116,19 +116,8 @@ to your own modified versions of Mura CMS.
 		</cfif>
 		
 		<cfset variables.nextN=application.utility.getNextN(variables.rs,variables.feedBean.getNextN(),variables.currentNextNIndex)>
-		
-		<cfset variables.contentListType="Feed">
-		<cfset variables.contentListFields="Title,Date,Image,Tags,Credits">
-		
-		<cfif variables.feedBean.getDisplayComments()>
-			<cfset variables.contentListFields=listAppend(variables.contentListFields,"Comments")>
-		</cfif>
-		
-		<cfif variables.feedBean.getDisplayRatings()>
-			<cfset variables.contentListFields=listAppend(variables.contentListFields,"Rating")>
-		</cfif>
 	  </cfsilent>
-
+	  
 		<cfif variables.iterator.getRecordCount()>
 			<cfoutput>
 			<div class="svSyndLocal svFeed svIndex clearfix" id="#variables.cssID#">
@@ -138,8 +127,8 @@ to your own modified versions of Mura CMS.
 			
 			#dspObject_Include(
 				thefile='dsp_content_list.cfm',
-				fields=variables.contentListFields,
-				type=variables.contentListType, 
+				fields=variables.feedBean.getDisplayList(),
+				type="Feed", 
 				iterator= variables.iterator,
 				imageSize=variables.feedBean.getImageSize(),
 				imageHeight=variables.feedBean.getImageHeight(),

@@ -58,29 +58,37 @@ to your own modified versions of Mura CMS.
 <cfsilent>
 	<cfset variables.iterator=$.getBean("contentIterator")>
 	<cfset variables.iterator.setQuery(rsFeatures)>
-	
-	<cfset variables.contentListType="Related">
-	<cfset variables.contentListFields="Title">
-	
-	<cfif application.contentGateway.getHasComments(request.siteid,arguments.objectid) >
-		<cfset variables.contentListFields=listAppend(variables.contentListFields,"Comments")>
-	</cfif>
-	
-	<!--- Omitting Summaries
-	<cfif arguments.hasSummary >
-		<cfset variables.contentListFields=listAppend(variables.contentListFields,"Summary")>
-	</cfif>
-	--->
-	
 	<cfset variables.cssID=$.createCSSid(variables.rsSection.menuTitle)>
 </cfsilent>
 <div id="#variables.cssID#" class="svRelSecContent svIndex">
 	<#getHeaderTag('subHead1')#>#rsSection.menutitle#</#getHeaderTag('subHead1')#>
-	#dspObject_Include(thefile='dsp_content_list.cfm',
-			fields=variables.contentListFields,
-			type=variables.contentListType, 
+	<cfif isDefined("params") and isJSON(params)>
+		<cfset params=deserializeJSON(params)>
+		#dspObject_Include(
+				thefile='dsp_content_list.cfm',
+				fields=params.displayList,
+				type='Related', 
+				iterator=variables.iterator,
+				imageSize=params.imageSize,
+				imageHeight=params.imageHeight,
+				imageWidth=params.imageWidth
+				)#
+	<cfelse>
+		<cfsilent>
+		<cfset variables.contentListFields="Title">
+		
+		<cfif application.contentGateway.getHasComments(request.siteid,arguments.objectid) >
+			<cfset variables.contentListFields=listAppend(variables.contentListFields,"Comments")>
+		</cfif>
+		</cfsilent>
+		#dspObject_Include(
+			thefile='dsp_content_list.cfm',
+			fields='Title',
+			type=variables.contentListFields, 
 			iterator= variables.iterator
 			)#
+	</cfif>
+	
 	<dl class="moreResults">
 		<dt><a href="#application.configBean.getServerPort()##application.configBean.getContext()##application.contentRenderer.getURLStem(request.siteid,variables.rsSection.filename)#">View All</a></dt>
 	</dl>

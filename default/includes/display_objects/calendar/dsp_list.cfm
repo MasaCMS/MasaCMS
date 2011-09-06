@@ -62,33 +62,33 @@ to your own modified versions of Mura CMS.
 
 <cfset variables.nextN=application.utility.getNextN(rsSection,event.getContentBean().getNextN(),currentNextNIndex)>
 
-<cfset variables.contentListType="Calendar">
-<cfset variables.contentListFields="Title,Summary,Date,Image,Tags,Credits">
-
-<cfif application.contentGateway.getHasComments($.event('siteid'),$.content('contentID'))>
-	<cfset variables.contentListFields=listAppend(variables.contentListFields,"Comments")>
-</cfif>
-
-<cfif application.contentGateway.getHasRatings($.event('siteid'),$.content('contentID'))>
-	<cfset variables.contentListFields=listAppend(variables.contentListFields,"Rating")>
-</cfif>
-
 </cfsilent>
 
 <cfif variables.iterator.getRecordcount()>
 	<cfoutput>
 	<div id="svPortal" class="svIndex">
-			
-		#dspObject_Include(
-			thefile='dsp_content_list.cfm',
-			fields=variables.contentListFields,
-			type=variables.contentListType, 
+		<cfsilent>
+			<cfif NOT len($.content("displayList"))>
+				<cfset variables.contentListFields="Title,Summary,Date,Image,Tags,Credits">
+					
+				<cfif application.contentGateway.getHasComments($.event('siteid'),$.content('contentID'))>
+					<cfset variables.contentListFields=listAppend(contentListFields,"Comments")>
+				</cfif>
+				
+				<cfif application.contentGateway.getHasRatings($.event('siteid'),$.content('contentID'))>
+					<cfset variables.contentListFields=listAppend(contentListFields,"Rating")>
+				</cfif>
+				<cfset $.content("displayList",variables.contentListFields)>
+			</cfif>
+		</cfsilent>
+		#dspObject_Include(thefile='dsp_content_list.cfm',
+			fields=$.content("displayList"),
+			type="Portal", 
 			iterator= variables.iterator,
 			imageSize=$.content("ImageSize"),
 			imageHeight=$.content("ImageHeight"),
 			imageWidth=$.content("ImageWidth")
 			)#
-		 
 		<cfif variables.nextn.numberofpages gt 1>
 			#dspObject_Include(thefile='dsp_nextN.cfm')#
 		</cfif>	

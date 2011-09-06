@@ -46,6 +46,8 @@ to your own modified versions of Mura CMS.
 
 <cfif isDefined("form.params") and isJSON(form.params)>
 	<cfset feed.set(deserializeJSON(form.params))>
+<cfelse>
+	<cfset feed.setDisplayList("Title")>
 </cfif>
 
 <cfoutput>
