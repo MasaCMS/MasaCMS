@@ -252,11 +252,15 @@
 <cfset var notifyText="">
 <cfset var email="">
 <cfset var contactEmail="">
+<cfset var serverpath="">
+<cfset var configBean=getBean("configBean")>
+<cfset var settingsManager=getBean("settingsManager")>
+<cfset var utility=getBean("utility")>
 
-<cfif len(getBean("settingsManager").getSite(variables.instance.siteID).getContactEmail())>
-	<cfset contactEmail=getBean("settingsManager").getSite(variables.instance.siteID).getContactEmail()>
+<cfif len(settingsManager.getSite(variables.instance.siteID).getContactEmail())>
+	<cfset contactEmail=settingsManager.getSite(variables.instance.siteID).getContactEmail()>
 <cfelse>
-	<cfset contactEmail=getBean("settingsManager").getSite(variables.instance.siteID).getContact()>
+	<cfset contactEmail=settingsManager.getSite(variables.instance.siteID).getContact()>
 </cfif>
 
 <cfif not len(arguments.script)>
@@ -268,6 +272,17 @@
 	and active=1
 </cfquery>
 
+<cfset serverpath = "http://#listFirst(cgi.http_host,':')##configBean.getServerPort()##configBean.getContext()#/">
+
+<cfif configBean.getSiteIDInURLS()>
+    <cfset serverpath &= '#getSiteID()#/'>
+</cfif>
+
+<cfif configBean.getIndexFileInURLS()>
+    <cfset serverpath &= 'index.cfm/'>
+</cfif>
+
+
 <cfsavecontent variable="notifyText"><cfoutput>
 A comment has been posted to "#rscontent.title#" by #gvariables.instance.name#.
 
@@ -275,13 +290,13 @@ COMMENT:
 #getComments()#
 
 Approve
-http://#listFirst(cgi.http_host,":")##getBean("configBean").getServerPort()##getBean("configBean").getContext()#/#variables.instance.siteID#/index.cfm/#getBean("utility").createRedirectID(arguments.contentRenderer.getCurrentURL(true,"approvedcommentID=#getCommentID()#"))#
+#serverpath##utility.createRedirectID(arguments.contentRenderer.getCurrentURL(true,"approvedcommentID=#getCommentID()#"))#
 
 Delete
-http://#listFirst(cgi.http_host,":")##getBean("configBean").getServerPort()##getBean("configBean").getContext()#/#variables.instance.siteID#/index.cfm/#getBean("utility").createRedirectID(arguments.contentRenderer.getCurrentURL(true,"deletecommentID=#getCommentID()#"))#
+#serverpath##utility.createRedirectID(arguments.contentRenderer.getCurrentURL(true,"deletecommentID=#getCommentID()#"))#
 
-View 
-http://#listFirst(cgi.http_host,":")##getBean("configBean").getServerPort()##getBean("configBean").getContext()#/#variables.instance.siteID#/index.cfm/#getBean("utility").createRedirectID(arguments.contentRenderer.getCurrentURL())#
+View
+#serverpath##utility.createRedirectID(arguments.contentRenderer.getCurrentURL())#
 </cfoutput></cfsavecontent>
 
 <cfelse>
