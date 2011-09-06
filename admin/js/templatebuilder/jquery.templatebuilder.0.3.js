@@ -128,12 +128,12 @@
 			$_grid.hide();
 
 			if(_currentFieldBtn != undefined)
-				jQuery(_currentFieldBtn).removeClass('selected');
+				jQuery(_currentFieldBtn).parent().removeClass('selected');
 
 			_currentFieldBtn = $btn;
 			_currentFieldID = data.fieldID;
 								
-			jQuery(_currentFieldBtn).addClass('selected');
+			jQuery(_currentFieldBtn).parent().addClass('selected');
 
 			if (_templates[templateName] == undefined) 
 				goLoadTemplate(templateName);
