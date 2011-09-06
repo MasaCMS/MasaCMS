@@ -1882,7 +1882,7 @@ to your own modified versions of Mura CMS.
 	<cfset variables.clusterManager.purgeContentDescendentsCache(contentID=arguments.contentBean.getContentID(),siteID=arguments.contentBean.getSiteID())>
 </cffunction>
 
-<cffunction name="trimArchiveHistory" output="fales">
+<cffunction name="trimArchiveHistory" output="false">
 	<cfargument name="contentID">
 	<cfargument name="siteID">
 	<cfargument name="limit" default="#variables.configBean.getMaxArchivedVersions()#">
