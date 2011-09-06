@@ -122,6 +122,7 @@ to your own modified versions of Mura CMS.
 <cfset variables.instance.customUrlVarDelimiters="_">
 <cfset variables.instance.strongPasswordRegex="(?=^.{7,15}$)(?=.*\d)(?![.\n])(?=.*[a-zA-Z]).*$">
 <cfset variables.instance.duplicateTransients=true>
+<cfset variables.instance.maxArchivedVersions=0 />
 
 <cffunction name="OnMissingMethod" access="public" returntype="any" output="false" hint="Handles missing method exceptions.">
 <cfargument name="MissingMethodName" type="string" required="true" hint="The name of the missing method." />
@@ -1121,6 +1122,18 @@ to your own modified versions of Mura CMS.
 <cffunction name="getEncryptionKey" returntype="any" access="public" output="false">
 	<cfreturn variables.instance.encryptionKey />
 </cffunction> 
+
+<cffunction name="setMaxArchivedVersions" access="public" output="false">
+	<cfargument name="maxArchivedVersions" />
+	<cfif isNumeric(arguments.maxArchivedVersions)>
+		<cfset variables.instance.maxArchivedVersions = arguments.maxArchivedVersions />
+	</cfif>
+</cffunction>
+
+<cffunction name="getMaxArchivedVersions" returntype="any" access="public" output="false">
+	<cfreturn variables.instance.maxArchivedVersions />
+	<cfreturn this>
+</cffunction>
 
 <cffunction name="getAllValues" returntype="any" access="public" output="false">
 	<cfreturn variables.instance />

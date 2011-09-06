@@ -969,6 +969,7 @@ to your own modified versions of Mura CMS.
 	
 						
 					</cfloop>
+				
 			</cfif>
 		
 		<!---</cfif>--->
@@ -984,6 +985,9 @@ to your own modified versions of Mura CMS.
 			<cfset variables.contentDAO.archiveActive(newbean.getcontentID(),arguments.data.siteid)/>
 			<cfif variables.configBean.getPurgeDrafts()>
 				<cfset variables.contentDAO.deleteDraftHistAll(newbean.getcontentID(),arguments.data.siteid)/>
+			</cfif>
+			<cfif variables.configBean.getMaxArchivedVersions()>	
+				<cfset trimArchiveHistory(newBean.getContentID(),newBean.getSiteID())>
 			</cfif>
 			<cfset variables.contentDAO.deleteContentAssignments(newbean.getcontentID(),arguments.data.siteid)/>
 		</cfif>
@@ -1876,6 +1880,29 @@ to your own modified versions of Mura CMS.
 	</cfloop>
 	
 	<cfset variables.clusterManager.purgeContentDescendentsCache(contentID=arguments.contentBean.getContentID(),siteID=arguments.contentBean.getSiteID())>
+</cffunction>
+
+<cffunction name="trimArchiveHistory" output="fales">
+	<cfargument name="contentID">
+	<cfargument name="siteID">
+	<cfargument name="limit" default="#variables.configBean.getMaxArchivedVersions()#">
+	<cfset var rsHist=getHist(arguments.contentID, arguments.siteID) >
+	<cfset var i=0>
+	<cfset var trim=arguments.limit+1>
+	<cfset var args=structNew()>
+
+	<cfquery name="rsHist" dbtype="query">
+		select * from rsHist where approved=1 and active!=1
+	</cfquery>
+		
+	<cfif rsHist.recordcount gt arguments.limit>
+		<cfloop index="i" from="#trimThreshhold#" to="#rsHist.recordcount#">
+			<cfset args.siteID=arguments.siteID>
+			<cfset args.contenthistID=rsHist.contenthistid[i]>
+			<cfset delete(args)>
+		</cfloop>
+	</cfif>
+	
 </cffunction>
 
 </cfcomponent>
