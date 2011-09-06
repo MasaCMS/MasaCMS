@@ -174,7 +174,7 @@ to your own modified versions of Mura CMS.
 					</cfcase>
 					<cfdefaultcase>
 						<cfif len(arguments.item.getValue(arguments.field))>
-						 	<p class="#larguments.field#">#HTMLEditFormat(arguments.item.getValue(arguments.field))#</p>	 	
+						 	<p class="#lcase(arguments.field)#">#HTMLEditFormat(arguments.item.getValue(arguments.field))#</p>	 	
 						</cfif>
 					</cfdefaultcase>
 				</cfswitch>
@@ -240,7 +240,7 @@ to your own modified versions of Mura CMS.
 					</cfcase>
 					<cfdefaultcase>
 						<cfif len(arguments.item.getValue(arguments.field))>
-						 	<dd class="#arguments.field#">#HTMLEditFormat(arguments.item.getValue(arguments.field))#</dd>	 	
+						 	<dd class="#lcase(arguments.field)#">#HTMLEditFormat(arguments.item.getValue(arguments.field))#</dd>	 	
 						</cfif>
 					</cfdefaultcase>
 				</cfswitch>
