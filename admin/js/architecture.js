@@ -1309,7 +1309,7 @@ function addDisplayObject(objectToAdd,regionID,configure){
 			resizable: true,
 			modal: false,
 			width: 400,
-			position: getConfiguratorPosition(),
+			position: getDialogPosition(),
 			buttons: {
 				Save: function() {
 					addDisplayObject(availableObject,regionID,false);
@@ -1331,7 +1331,7 @@ function addDisplayObject(objectToAdd,regionID,configure){
 	
 				jQuery("#configurator").html(data);
 				jQuery("#ui-dialog-title-configuratorContainer").html(categorySummaryConfiguratorTitle);	
-				jQuery("#configuratorContainer").dialog("option","position",getConfiguratorPosition());
+				jQuery("#configuratorContainer").dialog("option","position",getDialogPosition());
 				
 				if(availableObjectTemplate==""){
 					availableObjectTemplate=eval( "(" + jQuery("#displayObjectTemplate").val() + ")");
@@ -1373,7 +1373,7 @@ function addDisplayObject(objectToAdd,regionID,configure){
 					resizable: true,
 					modal: false,
 					width: 400,
-					position: getConfiguratorPosition(),
+					position: getDialogPosition(),
 					buttons: {
 						Save: function() {
 							addDisplayObject(availableObject,regionID,false);
@@ -1397,7 +1397,7 @@ function addDisplayObject(objectToAdd,regionID,configure){
 				data=eval('(' + resp + ')');
 				
 				jQuery("#configurator").html(data.html);
-				jQuery("#configuratorContainer").dialog("option","position",getConfiguratorPosition());
+				jQuery("#configuratorContainer").dialog("option","position",getDialogPosition());
 				
 				if(data.type.toLowerCase()=='remote'){
 					jQuery("#ui-dialog-title-configuratorContainer").html(remoteFeedConfiguratorTitle);
@@ -1468,7 +1468,7 @@ function addDisplayObject(objectToAdd,regionID,configure){
 					resizable: true,
 					modal: false,
 					width: 400,
-					position: getConfiguratorPosition(),
+					position: getDialogPosition(),
 					buttons: {
 						Save: function() {
 							addDisplayObject(availableObject,regionID,false);
@@ -1490,7 +1490,7 @@ function addDisplayObject(objectToAdd,regionID,configure){
 				
 				jQuery("#ui-dialog-title-configuratorContainer").html(slideShowConfiguratorTitle);	
 				jQuery("#configurator").html(data);
-				jQuery("#configuratorContainer").dialog("option","position",getConfiguratorPosition());
+				jQuery("#configuratorContainer").dialog("option","position",getDialogPosition());
 				
 				if(availableObjectTemplate==""){
 					availableObjectTemplate=eval( "(" + jQuery("#displayObjectTemplate").val() + ")");
@@ -1548,7 +1548,7 @@ function addDisplayObject(objectToAdd,regionID,configure){
 					resizable: true,
 					modal: false,
 					width: 400,
-					position: getConfiguratorPosition(),
+					position: getDialogPosition(),
 					buttons: {
 						Save: function() {
 							addDisplayObject(availableObject,regionID,false);
@@ -1570,7 +1570,7 @@ function addDisplayObject(objectToAdd,regionID,configure){
 				
 				jQuery("#ui-dialog-title-configuratorContainer").html(relatedContentConfiguratorTitle);		
 				jQuery("#configurator").html(data);
-				jQuery("#configuratorContainer").dialog("option","position",getConfiguratorPosition());
+				jQuery("#configuratorContainer").dialog("option","position",getDialogPosition());
 				
 				if(availableObjectTemplate==""){
 					availableObjectTemplate=eval( "(" + jQuery("#displayObjectTemplate").val() + ")");
@@ -1614,7 +1614,7 @@ function addDisplayObject(objectToAdd,regionID,configure){
 				resizable: true,
 				modal: false,
 				width: 400,
-				position: getConfiguratorPosition(),
+				position: getDialogPosition(),
 				buttons: {
 					Cancel: function() {
 							jQuery( this ).dialog( "close" );
@@ -1684,19 +1684,6 @@ function addDisplayObject(objectToAdd,regionID,configure){
 		//jQuery(instance).dialog("destroy");
 		jQuery("#configuratorContainer").remove();
 		jQuery("body").append('<div id="configuratorContainer" title="Loading..." style="display:none"><div id="configurator"><img src="images/progress_bar.gif"></div></div>');
-	}
-	
-	function getConfiguratorPosition(){
-		if(top.location != self.location) {
-			var windowHeight =jQuery(window.parent).height();
-		    var dialogHeight = jQuery("#configuratorContainer").height();
-			var scrollTop = jQuery(window.parent).scrollTop();
-			var editorTop = jQuery("#frontEndToolsModalBody",window.parent.document).position().top;
-			var t = Math.floor((windowHeight - dialogHeight) / 2) + scrollTop - editorTop ;
-			return ["center", t];
-		} else{
-			return "center";
-		}
 	}
 	
 	function initConfiguratorParams(){

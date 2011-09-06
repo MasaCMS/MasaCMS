@@ -508,6 +508,7 @@ function validateForm(theForm) {
 			jQuery("#alertDialog").dialog({
 				resizable: false,
 				modal: true,
+				position: getDialogPosition(),
 				buttons: {
 					Ok: function() {
 						jQuery(this).dialog('close');
@@ -552,6 +553,7 @@ function submitForm(frm,action,msg){
 			jQuery("#alertDialogMessage").html(message);
 			jQuery("#alertDialog").dialog({
 					modal: true,
+					position: getDialogPosition(),
 					buttons: {
 						'YES': function() {
 							jQuery(this).dialog('close');
@@ -820,6 +822,7 @@ jQuery("#alertDialogMessage").html(message);
 jQuery("#alertDialog").dialog({
 	resizable: false,
 	modal: true,
+	position: getDialogPosition(),
 	buttons: {
 		Ok: function() {
 			jQuery(this).dialog('close');
@@ -837,6 +840,7 @@ function confirmDialog(message,action){
 	jQuery("#alertDialog").dialog({
 			resizable: false,
 			modal: true,
+			position: getDialogPosition(),
 			buttons: {
 				'YES': function() {
 					jQuery(this).dialog('close');
@@ -909,4 +913,17 @@ function loadjscssfile(filename, filetype){
 	}
 	if (typeof fileref!="undefined")
 		document.getElementsByTagName("head")[0].appendChild(fileref)
+}
+
+function getDialogPosition(){
+	if(top.location != self.location) {
+		var windowHeight =jQuery(window.parent).height();
+		var dialogHeight = jQuery("#configuratorContainer").height();
+		var scrollTop = jQuery(window.parent).scrollTop();
+		var editorTop = jQuery("#frontEndToolsModalBody",window.parent.document).position().top;
+		var t = Math.floor((windowHeight - dialogHeight) / 2) + scrollTop - editorTop ;
+		return ["center", t];
+	} else{
+		return "center";
+	}
 }
