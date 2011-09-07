@@ -47,6 +47,8 @@ to your own modified versions of Mura CMS.
 
 <cfif isDefined("form.params") and isJSON(form.params)>
 	<cfset feed.set(deserializeJSON(form.params))>
+<cfelse>
+	<cfset feed.setImageSize("medium")>
 </cfif>
 			<div id="availableObjectParams"<!--- style="display:none;"--->>
 		
@@ -54,7 +56,7 @@ to your own modified versions of Mura CMS.
 					<dt class="first">#application.rbFactory.getKeyValue(session.rb,'collections.imagesize')#</dt>
 					<dd><select data-displayobjectparam="imageSize" class="dropdown" onchange="if(this.value=='Custom'){jQuery('##feedCustomImageOptions').fadeIn('fast')}else{jQuery('##feedCustomImageOptions').hide()}">
 						<cfloop list="Small,Medium,Large,Custom" index="i">
-							<option value="#i#"<cfif i eq feed.getImageSize()> selected</cfif>>#I#</option>
+							<option value="#lcase(i)#"<cfif i eq feed.getImageSize()> selected</cfif>>#I#</option>
 						</cfloop>
 						</select>
 					</dd>
@@ -97,16 +99,6 @@ to your own modified versions of Mura CMS.
 					<input type="hidden" id="displayList" value="#displayList#" data-displayobjectparam="displayList"/>
 					</div>	
 				</dd>
-				<!---
-				<dt>#application.rbFactory.getKeyValue(session.rb,'collections.itemsperpage')#</dt>
-				<dd><select data-displayobjectparam="nextN" class="dropdown">
-					<cfloop list="1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,25,50,100" index="r">
-					<option value="#r#" <cfif r eq feed.getNextN()>selected</cfif>>#r#</option>
-					</cfloop>
-					<option value="100000" <cfif feed.getNextN() eq 100000>selected</cfif>>ALL</option>
-					</select>
-				</dd>
-				--->
 				<dt>#application.rbFactory.getKeyValue(session.rb,'collections.maxitems')#</dt>
 				<dd><select data-displayobjectparam="maxItems" class="dropdown">
 				<cfloop list="1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,25,50,100" index="m">

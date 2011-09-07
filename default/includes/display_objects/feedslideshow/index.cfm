@@ -42,7 +42,7 @@ to your own modified versions of Mura CMS.
 --->
 
 <cfswitch expression="#getJsLib()#">
-	<cfcase value="jquery">
+<cfcase value="jquery">
 	<cfset loadJSLib() />
 	<cfset $.addToHTMLHeadQueue("feedslideshow/htmlhead/slideshow.jquery.cfm")>
 	<cf_CacheOMatic key="#arguments.object##arguments.objectid#" nocache="#$.event('nocache')#">
@@ -56,56 +56,46 @@ to your own modified versions of Mura CMS.
 	
 	 <cfif isJson(params)>
   		<cfset variables.feedBean.set(deserializeJSON(params))>
-  	</cfif>
+	  <cfelse>
+	  	 <cfset variables.feedBean.setImageSize("medium")>
+  	  </cfif>
   	
-  	 <cfset imageArgs=structNew()/>
-	
-	<cfif variables.feedBean.getImageSize() neq "Custom">
-		<cfset imageArgs.size=variables.feedBean.getImageSize() >
-	<cfelse>
-		<cfset imageArgs.height=variables.feedBean.getImageHeight() >
-		<cfset imageArgs.width=variables.feedBean.getImageWidth() >
-	</cfif>
   	
 	<cfset editableControl.editLink = "">
-		<!---
-		<cfset editableControl.historyLink = "">
-		--->
-		<cfset editableControl.innerHTML = "">
+	<cfset editableControl.innerHTML = "">
 		
-		<cfif this.showEditableObjects and objectPerm eq 'editor'>
-			<cfset bean = feedBean>
-			<cfset $.loadShadowBoxJS()>
-			<cfset $.addToHTMLHeadQueue('editableObjects.cfm')>
-			<cfset request.cacheItem=false>
+	<cfif this.showEditableObjects and objectPerm eq 'editor'>
+		<cfset bean = feedBean>
+		<cfset $.loadShadowBoxJS()>
+		<cfset $.addToHTMLHeadQueue('editableObjects.cfm')>
+		<cfset request.cacheItem=false>
 			
-			<cfif len(application.configBean.getAdminDomain())>
-				<cfif application.configBean.getAdminSSL()>
-					<cfset adminBase="https://#application.configBean.getAdminDomain()#"/>
-				<cfelse>
-					<cfset adminBase="http://#application.configBean.getAdminDomain()#"/>
-				</cfif>
+		<cfif len(application.configBean.getAdminDomain())>
+			<cfif application.configBean.getAdminSSL()>
+				<cfset adminBase="https://#application.configBean.getAdminDomain()#"/>
 			<cfelse>
-				<cfset adminBase=""/>
+				<cfset adminBase="http://#application.configBean.getAdminDomain()#"/>
 			</cfif>
-			
-			<cfset editableControl.editLink = adminBase & "#application.configBean.getContext()#/admin/index.cfm?fuseaction=cFeed.edit">
-			<cfset editableControl.editLink = editableControl.editLink & "&amp;siteid=" & bean.getSiteID()>
-			<cfset editableControl.editLink = editableControl.editLink & "&amp;feedid=" & bean.getFeedID()>
-			<cfset editableControl.editLink = editableControl.editLink & "&amp;type=" & bean.getType()>
-			<cfset editableControl.editLink = editableControl.editLink & "&amp;homeID=" & $.content('contentID')>
-			<cfset editableControl.editLink = editableControl.editLink & "&amp;compactDisplay=true">
-			
-			<cfset editableControl.innerHTML = generateEditableObjectControl(editableControl.editLink)>
+		<cfelse>
+			<cfset adminBase=""/>
 		</cfif>
-	</cfsilent>
-	<cfif editableControl.innerHTML neq "">
-		<cfoutput>#$.renderEditableObjectHeader("editableFeed editableSlideShow")#</cfoutput>
+			
+		<cfset editableControl.editLink = adminBase & "#application.configBean.getContext()#/admin/index.cfm?fuseaction=cFeed.edit">
+		<cfset editableControl.editLink = editableControl.editLink & "&amp;siteid=" & bean.getSiteID()>
+		<cfset editableControl.editLink = editableControl.editLink & "&amp;feedid=" & bean.getFeedID()>
+		<cfset editableControl.editLink = editableControl.editLink & "&amp;type=" & bean.getType()>
+		<cfset editableControl.editLink = editableControl.editLink & "&amp;homeID=" & $.content('contentID')>
+		<cfset editableControl.editLink = editableControl.editLink & "&amp;compactDisplay=true">
+			
+		<cfset editableControl.innerHTML = generateEditableObjectControl(editableControl.editLink)>
 	</cfif>
-	  <cfif feedBean.getIsActive()>
+</cfsilent>
+<cfif editableControl.innerHTML neq "">
+	<cfoutput>#$.renderEditableObjectHeader("editableFeed editableSlideShow")#</cfoutput>
+</cfif>	
+	<cfif feedBean.getIsActive()>
 		<cfset cssID=$.createCSSid(feedBean.renderName())>
-	      <cfsilent>
-			<!---<cfset $.loadShadowBoxJS() />--->
+      	<cfsilent>	
 			<cfset rsPreFeed=application.feedManager.getFeed(feedBean,request.tag) />
 			<cfif getSite().getExtranet() eq 1 and request.r.restrict eq 1>
 				<cfset rs=queryPermFilter(rsPreFeed)/>
@@ -115,76 +105,35 @@ to your own modified versions of Mura CMS.
 			
 			<cfset hasSummary = hasSummary and variables.feedBean.getDisplaySummaries()>
 			
-			<cfset iterator=$.getBean("contentIterator")>
-			<cfset iterator.setQuery(rs,feedBean.getNextN())>
+			<cfset variables.iterator=$.getBean("contentIterator")>
+			<cfset variables.iterator.setQuery(rs,feedBean.getNextN())>
 		
 			<cfset rbFactory=getSite().getRBFactory() />
 			<cfset nextN=application.utility.getNextN(rs,feedBean.getNextN(),request.StartRow)>
 			<cfset checkMeta=feedBean.getDisplayRatings() or feedBean.getDisplayComments()>
 			<cfset doMeta=0 />
 		  </cfsilent>
-	  	<cfif rs.recordcount>
-	  	<!--- <div class="svSlideshow svSyndLocal svFeed svIndex clearfix" id="<cfoutput>#cssID#</cfoutput>"> --->
-	  	<div class="svSlideshow clearfix" id="<cfoutput>#cssID#</cfoutput>">
-	  		<cfif feedBean.getDisplayName()><cfoutput><#getHeaderTag('subHead1')#>#feedBean.renderName()#</#getHeaderTag('subHead1')#></cfoutput></cfif>
-			<cfoutput><div class="svSlides"></cfoutput>
-	         <cfloop condition="iterator.hasNext()">
-	            <cfsilent>
-				<cfset item=iterator.next()>
-				 <cfset theLink=createHREF(item.getValue('type'),item.getValue('filename'),item.getValue('siteID'),item.getValue('contentID'),item.getValue('target'),item.getValue('targetparams'),"",application.configBean.getContext(),application.configBean.getStub(),application.configBean.getIndexFile()) />
-				<cfset class=""/>
-				<cfif not iterator.hasPrevious()> 
-					<cfset class=listAppend(class,"first"," ")/> 
-				</cfif>
-				<cfif not iterator.hasNext()> 
-					<cfset class=listAppend(class,"last"," ")/> 
-				</cfif>
-				
-				<cfset hasImage=len(item.getValue('fileID')) and showImageInList(item.getValue('fileExt')) />
+	  	<cfif  variables.iterator.hasNext()>
+	  	<cfoutput>
+	  	<div class="svSlideshow clearfix" id="#cssID#">
+	  		<div class="svSlides">
+		 	<cfif variables.feedBean.getDisplayName()>
+		       <#getHeaderTag('subHead1')#>#HTMLEditFormat(variables.feedBean.renderName())#</#getHeaderTag('subHead1')#>
+			</cfif>
+			
+			#dspObject_Include(
+				thefile='dsp_content_list.cfm',
+				fields=variables.feedBean.getDisplayList(),
+				type="Feed", 
+				iterator= variables.iterator,
+				imageSize=variables.feedBean.getImageSize(),
+				imageHeight=variables.feedBean.getImageHeight(),
+				imageWidth=variables.feedBean.getImageWidth()
+				)#
 
-				<cfif hasImage>
-					<cfset class=listAppend(class,"hasImage"," ")>
-				</cfif>
-				<cfif checkMeta> 
-				<cfset doMeta=item.getValue('type') eq 'Page' or showItemMeta(item.getValue('type')) or (len(item.getValue('fileID')) and showItemMeta(item.getValue('fileEXT')))>
-				</cfif>
-				</cfsilent>
-				<cfoutput>
-					<dl<cfif class neq ''> class="#class#"</cfif>>
-				<cfif item.getValue('parentType') eq 'Calendar' and isDate(item.getValue('displayStart'))>
-					<dt class="releaseDate"><cfif LSDateFormat(item.getValue('displayStart'),"short") lt LSDateFormat(item.getValue('displayStop'),"short")>#LSDateFormat(item.getValue('displayStart'),$.getShortDateFormat())# - #LSDateFormat(item.getValue('displayStop'),$.getShortDateFormat())#<cfelse>#LSDateFormat(item.getValue('displayStart'),$.getLongDateFormat())#</cfif></dt>
-				<cfelseif LSisDate(item.getValue('releaseDate'))>
-					<dt class="releaseDate">#LSDateFormat(item.getValue('releaseDate'),$.getLongDateFormat())#</dt>
-				</cfif>
-				<dt><a href="#theLink#">#HTMLEditFormat(item.getValue('menuTitle'))#</a></dt>
-				<cfif hasImage>
-					<dd class="image">
-						<a href="#theLink#" title="#HTMLEditFormat(item.getValue('title'))#"><img src="#item.getImageURL(argumentCollection=imageArgs)#" alt="#htmlEditFormat(item.getValue('title'))#"/></a>
-					</dd>
-				</cfif>
-				<cfif hasSummary and len(item.getValue('summary'))>
-					<dd class="summary">#$.setDynamicContent(item.getValue('summary'))#
-						<span class="readMore">#$.addLink(item.getValue('type'),item.getValue('filename'),$.rbKey('list.readmore'),item.getValue('target'),item.getValue('targetparams'),item.getValue('contentID'),item.getValue('siteID'),'',application.configBean.getContext(),application.configBean.getStub(),application.configBean.getIndexFile())#</span>
-					</dd>
-				</cfif>
-				<cfif len(item.getValue('credits'))>
-					<dd class="credits">#$.rbKey('list.by')# #HTMLEditFormat(item.getValue('credits'))#</dd>
-				</cfif>
-				<cfif doMeta and feedBean.getDisplayComments()>
-					<dd class="comments"><cfif isNumeric(item.getValue('comments'))>#item.getValue('comments')#<cfelse>0</cfif> <cfif item.getValue('comments') neq 1>#$.rbKey('list.comments')#<cfelse>#$.rbKey('list.comment')#</cfif></dd>
-				</cfif>
-				<cfif len(item.getValue('tags'))>
-					<dd class="tags"><cfmodule template="../nav/dsp_tag_line.cfm" tags="#item.getValue('tags')#"></dd>
-				</cfif>
-				<cfif doMeta and feedBean.getDisplayRatings()>
-					<dd class="rating #application.raterManager.getStarText(item.getValue('rating'))#">#$.rbKey('list.rating')#: <span><cfif isNumeric(item.getValue('rating'))>#item.getValue('rating')# star<cfif item.getValue('rating') gt 1>s</cfif><cfelse>Zero stars</cfif></span></dd>
-				</cfif>	
-				</dl>
-				</cfoutput>
-			</cfloop>
 			</div>
 		</div>
-		
+		</cfoutput>
 		<cfelse>
 			<!-- Empty Collection '<cfoutput>#feedBean.getName()#</cfoutput>'  -->
 		</cfif>
@@ -196,7 +145,7 @@ to your own modified versions of Mura CMS.
 	  	<cfoutput>#renderEditableObjectFooter(editableControl.innerHTML)#</cfoutput>
 	 </cfif>
 	</cf_CacheOMatic>
-	 </cfcase>
+ </cfcase>
 <cfdefaultcase>
 		 <!-- The Prototype js library is not currently support for the slide show functionality  -->
 </cfdefaultcase>

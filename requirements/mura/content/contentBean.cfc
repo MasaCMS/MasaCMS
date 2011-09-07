@@ -901,12 +901,20 @@ to your own modified versions of Mura CMS.
 
 <cffunction name="setDisplayList" output="false">
 	<cfargument name="displayList">
-	<cfset variables.instance.responseDisplayFields>	
+	<cfset variables.instance.responseDisplayFields>
+	<cfreturn this>	
 </cffunction>
 
 <cffunction name="getDisplayList" output="false">
 	<cfset variables.instance.responseDisplayFields>	
 </cffunction>
 
+<cffunction name="setImageSize" output="false">
+	<cfargument name="imageSize">
+	<cfif len(arguments.imageSize)>
+		<cfset variables.instance.imageSize>
+	</cfif>	
+	<cfreturn this>
+</cffunction>
 
 </cfcomponent>

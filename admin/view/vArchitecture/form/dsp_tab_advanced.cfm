@@ -149,7 +149,7 @@ to your own modified versions of Mura CMS.
 	<dt>#application.rbFactory.getKeyValue(session.rb,'collections.imagesize')#</dt>
 	<dd><select name="imageSize" class="dropdown" onchange="if(this.value=='Custom'){jQuery('##CustomImageOptions').fadeIn('fast')}else{jQuery('##CustomImageOptions').hide()}">
 		<cfloop list="Small,Medium,Large,Custom" index="i">
-		<option value="#i#"<cfif i eq request.contentBean.getImageSize()> selected</cfif>>#I#</option>
+		<option value="#lcase(i)#"<cfif i eq request.contentBean.getImageSize()> selected</cfif>>#I#</option>
 		</cfloop>
 	</select>
 	</dd>
