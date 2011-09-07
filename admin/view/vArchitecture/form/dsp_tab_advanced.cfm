@@ -161,13 +161,43 @@ to your own modified versions of Mura CMS.
 	<dd><input name="imageWidth" class="text" value="#request.contentBean.getImageWidth()#" /></dd>
 	</dl>
 </dd>
-	<dt>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.recordsperpage')#</dt>
-	<dd><select name="nextN" class="dropdown">
-		<cfloop list="1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,25,50,100" index="r">
-			<option value="#r#" <cfif r eq request.contentBean.getNextN()>selected</cfif>>#r#</option>
-		</cfloop>
-		</select>
-	</dd>
+
+<dt>Fields to Output</dt>
+<dd>
+	<div class="sortableFields">
+		<cfset displayList=request.contentBean.getDisplayList()>
+		<cfset availableList=request.contentBean.getAvailableDisplayList()>
+					
+		<ul id="contentAvailableListSort" class="contentDisplayListSortOptions">
+			<cfloop list="#availableList#" index="i">
+				<li class="ui-state-default">#i#</li>
+			</cfloop>
+		</ul>
+					
+		<ul id="contentDisplayListSort" class="contentDisplayListSortOptions">
+			<cfloop list="#displayList#" index="i">
+				<li class="ui-state-highlight">#i#</li>
+			</cfloop>
+		</ul>
+					
+		<input type="hidden" id="contentDisplayList" value="#displayList#" name="displayList"/>
+		
+		<script>
+			jQuery(document).ready(
+				function(){
+					setContentDisplayListSort();
+				}
+			);	
+		</script>
+	</div>	
+</dd>
+<dt>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.recordsperpage')#</dt>
+<dd><select name="nextN" class="dropdown">
+	<cfloop list="1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,25,50,100" index="r">
+		<option value="#r#" <cfif r eq request.contentBean.getNextN()>selected</cfif>>#r#</option>
+	</cfloop>
+	</select>
+</dd>
 </cfif>
 
 <cfif (attributes.type neq 'Component' and attributes.type neq 'Form') and request.contentBean.getcontentID() neq '00000000000000000000000000000000001'>

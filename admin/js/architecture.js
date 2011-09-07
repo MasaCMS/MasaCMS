@@ -1693,4 +1693,25 @@ function addDisplayObject(objectToAdd,regionID,configure){
 				updateAvailableObject();
 		});
 	}
+	
+function setContentDisplayListSort(){
+	jQuery( "#contentAvailableListSort, #contentDisplayListSort" ).sortable({
+		connectWith: ".contentDisplayListSortOptions",
+		update: function(event){
+				event.stopPropagation();
+				jQuery("#contentDisplayList").val("");
+				jQuery("#contentDisplayListSort > li").each(function(){
+					var current = jQuery("#contentDisplayList").val();
+					
+					if (current != '') {
+						jQuery("#contentDisplayList").val(current + "," + jQuery(this).html());
+					}
+					else {
+						jQuery("#contentDisplayList").val(jQuery(this).html());
+					}
+							
+				});
+			}
+		}).disableSelection();
+}
 

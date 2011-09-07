@@ -425,7 +425,7 @@ to your own modified versions of Mura CMS.
 	<cfreturn variables.instance.displayList>
 </cffunction>
 
-<cffunction name="getAvailableList" output="false">
+<cffunction name="getAvailableDisplayList" output="false">
 	<cfset var returnList="Title,Date,Image,Summary,Tags,Credits,Rating,Comments">
 	<cfset var i=0>
 	<cfset var finder=0>

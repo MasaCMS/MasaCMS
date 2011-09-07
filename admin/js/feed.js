@@ -128,3 +128,24 @@ function confirmImport(){
 
 	return false;	
 }
+
+function setDisplayListSort(){
+	jQuery( "#availableListSort, #displayListSort" ).sortable({
+		connectWith: ".displayListSortOptions",
+		update: function(event){
+				event.stopPropagation();
+				jQuery("#displayList").val("");
+				jQuery("#displayListSort > li").each(function(){
+					var current = jQuery("#displayList").val();
+					
+					if (current != '') {
+						jQuery("#displayList").val(current + "," + jQuery(this).html());
+					}
+					else {
+						jQuery("#displayList").val(jQuery(this).html());
+					}
+							
+				});
+			}
+		}).disableSelection();
+}

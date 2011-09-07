@@ -74,7 +74,7 @@ to your own modified versions of Mura CMS.
 					<div>
 		
 					<cfset displayList=feed.getDisplayList()>
-					<cfset availableList=feed.getAvailableList()>
+					<cfset availableList=feed.getAvailableDisplayList()>
 					
 					<ul id="availableListSort" class="displayListSortOptions">
 						<cfloop list="#availableList#" index="i">

@@ -270,29 +270,33 @@ to your own modified versions of Mura CMS.
 	<dd><input name="imageWidth" class="text" value="#request.feedBean.getImageWidth()#" /></dd>
 	</dl>
 </dd>
-<dt>#application.rbFactory.getKeyValue(session.rb,'collections.displaysummaries')#</dt>
+<dt>Fields to Output</dt>
 <dd>
-<input name="displaySummaries" type="radio" value="1" class="radio" <cfif request.feedBean.getDisplaySummaries()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.yes')# 
-<input name="displaySummaries" type="radio" value="0" class="radio" <cfif not request.feedBean.getDisplaySummaries()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.no')# 
-</dd>
-<dt>#application.rbFactory.getKeyValue(session.rb,'collections.displayname')#</dt>
-<dd>
-<input name="displayName" type="radio" value="1" class="radio" onchange="jQuery('##altNameContainer').toggle();" <cfif request.feedBean.getDisplayName()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.yes')# 
-<input name="displayName" type="radio" value="0" class="radio" onchange="jQuery('##altNameContainer').toggle();" <cfif not request.feedBean.getDisplayName()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.no')# 
-</dd>
-<span id="altNameContainer"<cfif NOT request.feedBean.getDisplayName()> style="display:none;"</cfif>>
-<dt>#application.rbFactory.getKeyValue(session.rb,'collections.altname')#</dt>
-<dd><input name="altName" class="text" value="#HTMLEditFormat(request.feedBean.getAltName())#" maxlength="50"></dd>
-</span>
-<dt>#application.rbFactory.getKeyValue(session.rb,'collections.displaycomments')#</dt>
-<dd>
-<input name="displayComments" type="radio" value="1" class="radio" <cfif request.feedBean.getDisplayComments()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.yes')# 
-<input name="displayComments" type="radio" value="0" class="radio" <cfif not request.feedBean.getDisplayComments()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.no')# 
-</dd>
-<dt>#application.rbFactory.getKeyValue(session.rb,'collections.displayrating')#</dt>
-<dd>
-<input name="displayRatings" type="radio" value="1" class="radio" <cfif request.feedBean.getDisplayRatings()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.yes')# 
-<input name="displayRatings" type="radio" value="0" class="radio" <cfif not request.feedBean.getDisplayRatings()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.no')# 
+	<div class="sortableFields">
+		
+	<cfset displayList=request.feedBean.getDisplayList()>
+	<cfset availableList=request.feedBean.getAvailableDisplayList()>
+					
+	<ul id="availableListSort" class="displayListSortOptions">
+		<cfloop list="#availableList#" index="i">
+			<li class="ui-state-default">#i#</li>
+		</cfloop>
+	</ul>
+					
+	<ul id="displayListSort" class="displayListSortOptions">
+		<cfloop list="#displayList#" index="i">
+			<li class="ui-state-highlight">#i#</li>
+		</cfloop>
+	</ul>
+	<input type="hidden" id="displayList" value="#displayList#" name="displayList"/>
+	</div>	
+	<script>
+		jQuery(document).ready(
+			function(){
+				setDisplayListSort();
+			}
+		);	
+	</script>
 </dd>
 <dt>#application.rbFactory.getKeyValue(session.rb,'collections.itemsperpage')#</dt>
 <dd><select name="nextN" class="dropdown">

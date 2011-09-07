@@ -470,6 +470,7 @@ to your own modified versions of Mura CMS.
 <cffunction name="setFilename" output="false">
 	<cfargument name="filename">
 	<cfset variables.instance.filename=left(arguments.filename,255)>
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="setLastUpdateBy" access="public" output="false">
@@ -571,7 +572,20 @@ to your own modified versions of Mura CMS.
 </cffunction>
 
 <cffunction name="getDisplayList" output="false">
-	<cfset variables.instance.responseDisplayFields>	
+	<cfreturn variables.instance.responseDisplayFields>
+</cffunction>
+
+<cffunction name="getAvailableDisplayList" output="false">
+	<cfset var returnList="Title,Date,Image,Summary,Tags,Credits,Rating,Comments">
+	<cfset var i=0>
+	<cfset var finder=0>
+	<cfloop list="#variables.instance.responseDisplayFields#" index="i">
+		<cfset finder=listFindNoCase(returnList,i)>
+		<cfif finder>
+			<cfset returnList=listDeleteAt(returnList,finder)>
+		</cfif>
+	</cfloop>
+	<cfreturn returnList>
 </cffunction>
 
 <cffunction name="setCategory" returntype="any" access="public" output="false">
