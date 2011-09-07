@@ -125,7 +125,13 @@ to your own modified versions of Mura CMS.
 </cfif>
 
 <cfif not isdefined("cookie.mobileFormat")>
-	<cfif findNoCase("Mobile",CGI.HTTP_USER_AGENT) GT 0>
+	<cfif 
+		findNoCase("iphone",CGI.HTTP_USER_AGENT)
+		or
+			(
+				findNoCase("mobile",CGI.HTTP_USER_AGENT)
+				and not reFindNoCase("tablet|ipad|xoom",CGI.HTTP_USER_AGENT)
+			)>
 		<cfcookie name="mobileFormat" value="true" />
 	<cfelse>	
 		<cfcookie name="mobileFormat" value="false" />
