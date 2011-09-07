@@ -167,7 +167,12 @@ to your own modified versions of Mura CMS.
 	<div class="sortableFields">
 		<cfset displayList=request.contentBean.getDisplayList()>
 		<cfset availableList=request.contentBean.getAvailableDisplayList()>
-					
+		<cfif attributes.type eq "Gallery">
+			<cfset finder=listFindNoCase(availableList,"Image")>
+			<cfif finder>
+				<cfset availableList=listDeleteAt(availableList,finder)>
+			</cfif>
+		</cfif>			
 		<ul id="contentAvailableListSort" class="contentDisplayListSortOptions">
 			<cfloop list="#availableList#" index="i">
 				<li class="ui-state-default">#i#</li>

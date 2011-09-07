@@ -576,9 +576,16 @@ to your own modified versions of Mura CMS.
 </cffunction>
 
 <cffunction name="getAvailableDisplayList" output="false">
-	<cfset var returnList="Title,Date,Image,Summary,Tags,Credits,Rating,Comments">
+	<cfset var returnList="">
 	<cfset var i=0>
 	<cfset var finder=0>
+	
+	<cfif variables.instance.type eq "Gallery">
+		<cfset returnList="Title,Date,Image,Summary,Tags,Credits,Rating,Comments">
+	<cfelse>
+		<cfset returnList="Title,Date,Summary,Tags,Credits,Rating,Comments">
+	</cfif>
+	
 	<cfloop list="#variables.instance.responseDisplayFields#" index="i">
 		<cfset finder=listFindNoCase(returnList,i)>
 		<cfif finder>

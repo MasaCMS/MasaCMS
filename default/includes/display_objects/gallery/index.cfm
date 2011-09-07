@@ -104,6 +104,19 @@ to your own modified versions of Mura CMS.
 	</cfif>
 	
 	<cfset variables.nextN=application.utility.getNextN(rsSection,event.getContentBean().getNextN(),currentNextNIndex)>
+
+	<cfif NOT len($.content("displayList"))>
+		<cfset variables.contentListFields="Title,Summary,Date,Image,Tags,Credits">
+				
+		<cfif application.contentGateway.getHasComments($.event('siteid'),$.content('contentID'))>
+			<cfset variables.contentListFields=listAppend(contentListFields,"Comments")>
+		</cfif>
+			
+		<cfif application.contentGateway.getHasRatings($.event('siteid'),$.content('contentID'))>
+			<cfset variables.contentListFields=listAppend(contentListFields,"Rating")>
+		</cfif>
+		<cfset $.content("displayList",variables.contentListFields)>
+	</cfif>
 </cfsilent>
 	<cfif iterator.getRecordCount()>
 	<div id="svGallery"> 
@@ -121,34 +134,50 @@ to your own modified versions of Mura CMS.
 			</cfsilent>
 			<cfoutput>
 			<li class="#class#">
-			<a href="#item.getImageURL(size='large')#" title="#HTMLEditFormat(item.getValue('title'))#" rel="shadowbox[gallery]" class="gallery"><img src="#item.getImageURL(argumentCollection=imageArgs)#" alt="#HTMLEditFormat(item.getValue('title'))#"/></a>	 
-		 	<dl>
-		 	<dt>
-		 	<cfif hasComments>
-		 	<a href="?linkServID=#item.getValue('contentid')#&categoryID=#HTMLEditFormat(request.categoryID)#&relatedID=#HTMLEditFormat(request.relatedID)#" title="#HTMLEditFormat(item.getValue('title'))#">#HTMLEditFormat(item.getValue('menutitle'))#</a>
-		 	<cfelse>
-		 	#HTMLEditFormat(item.getValue('menutitle'))#
-		 	</cfif>
-		 	</dt>
-		 	<cfif item.getValue('summary') neq "">
-		 	<dd class="summary">
-		 	#item.getValue('summary')#
-		 	</dd>
-		 	</cfif>	 	
-		 	<cfif item.getValue('credits') neq "">
-		 	<dd class="credits">#$.rbKey('list.by')# #HTMLEditFormat(item.getValue('credits'))#</dd>
-		 	</cfif>
-		 	<cfif hasComments>
-		 	<dd class="comments"><a href="?linkServID=#item.getValue('contentid')#&categoryID=#HTMLEditFormat(request.categoryID)#&relatedID=#HTMLEditFormat(request.relatedID)#" title="#HTMLEditFormat(item.getValue('title'))#">#$.rbKey('list.comments')# (#application.contentGateway.getCommentCount(request.siteid,item.getValue('contentid'))#)</a></dd>
-		 	</cfif>
-		 	<cfif item.getValue('tags') neq "">
-		 	<dd class="tags"><cfmodule template="#getSite($.event('siteid')).getIncludePath()#/includes/display_objects/nav/dsp_tag_line.cfm" tags="#item.getValue('tags')#"></dd>
-		 	</cfif>
-		 	<cfif hasRatings>
-			<!--- rating#replace(rateBean.getRate(),".","")# --->
-		 	<dd class="ratings stars">#$.rbKey('list.rating')#: <img class="ratestars" src="#$.siteConfig('themeAssetPath')#/images/rater/star_#application.raterManager.getStarText(item.getValue('rating'))#.png" alt="<cfif isNumeric(item.getValue('rating'))>#item.getValue('rating')# star<cfif item.getValue('rating') gt 1>s</cfif></cfif>" border="0"></dd>
-		 	</cfif>
-		 	</dl>
+				<a href="#item.getImageURL(size='large')#" title="#HTMLEditFormat(item.getValue('title'))#" rel="shadowbox[gallery]" class="gallery"><img src="#item.getImageURL(argumentCollection=imageArgs)#" alt="#HTMLEditFormat(item.getValue('title'))#"/></a>	 
+			 	<dl>
+			 	<cfloop list="#$.content("displayList")#" index="field">
+					<cfswitch expression="#field#">
+						<cfcase value="Title">
+							<dt>
+							 	<cfif listFindNoCase($.content("displayList"),"comments")>
+							 		<a href="?linkServID=#item.getValue('contentid')#&categoryID=#HTMLEditFormat(request.categoryID)#&relatedID=#HTMLEditFormat(request.relatedID)#" title="#HTMLEditFormat(item.getValue('title'))#">#HTMLEditFormat(item.getValue('menutitle'))#</a>
+							 	<cfelse>
+							 		#HTMLEditFormat(item.getValue('menutitle'))#
+							 	</cfif>
+							</dt>
+						</cfcase>
+						<cfcase value="Summary">
+						 	<cfif item.getValue('summary') neq "" and item.getValue('summary') neq "<p></p>">
+							 	<dd class="summary">
+							 	#item.getValue('summary')#
+							 	</dd>
+						 	</cfif>
+						</cfcase>
+						<cfcase value="Credits">	 	
+						 	<cfif item.getValue('credits') neq "">
+						 		<dd class="credits">#$.rbKey('list.by')# #HTMLEditFormat(item.getValue('credits'))#</dd>
+						 	</cfif>
+						</cfcase>
+						<cfcase value="Comments">
+					 		<dd class="comments"><a href="?linkServID=#item.getValue('contentid')#&categoryID=#HTMLEditFormat(request.categoryID)#&relatedID=#HTMLEditFormat(request.relatedID)#" title="#HTMLEditFormat(item.getValue('title'))#">#$.rbKey('list.comments')# (#application.contentGateway.getCommentCount(request.siteid,item.getValue('contentid'))#)</a></dd>
+					 	 </cfcase>
+						<cfcase value="Tags">
+						 	<cfif item.getValue('tags') neq "">
+						 		<dd class="tags"><cfmodule template="#getSite($.event('siteid')).getIncludePath()#/includes/display_objects/nav/dsp_tag_line.cfm" tags="#item.getValue('tags')#"></dd>
+						 	</cfif>
+					 	</cfcase>
+						<cfcase value="Rating">
+					 		<dd class="ratings stars">#$.rbKey('list.rating')#: <img class="ratestars" src="#$.siteConfig('themeAssetPath')#/images/rater/star_#application.raterManager.getStarText(item.getValue('rating'))#.png" alt="<cfif isNumeric(item.getValue('rating'))>#item.getValue('rating')# star<cfif item.getValue('rating') gt 1>s</cfif></cfif>" border="0"></dd>
+					 	</cfcase>
+					 	<cfdefaultcase>
+							<cfif len(arguments.item.getValue(field))>
+							 	<dd class="#lcase(field)#">#HTMLEditFormat(item.getValue(arguments.field))#</dd>	 	
+							</cfif>
+						</cfdefaultcase>
+					</cfswitch>
+				 	</dl>
+				 </cfloop>
 			</li>
 			</cfoutput>
 			</cfloop>
