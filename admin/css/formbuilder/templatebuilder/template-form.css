@@ -61,19 +61,18 @@ width: 100%;*/
 	padding: 1px;
 	float: left;
 }
-.template-form {
+
+ul.template-form {
 	list-style: none;
 	padding: 10px;
 	margin-bottom: 4px;
-	background: #e7e7e7;
-	border-radius: 4px;
-	-moz-border-radius: 4px;
-	-webkit-border-radius: 4px;
 }
 
-#meld-tb-fields-settings .ui-tabs .ui-tabs-nav {
+#meld-tb-form .ui-tabs .ui-tabs-nav {
 	background: none;
 	border: 0;
+	margin-bottom: 1px;
+	overflow: hidden;
 }
 
 
@@ -84,19 +83,37 @@ width: 100%;*/
 }
 
 .template-form li {
-	line-height: 27px;
+	line-height: 1;
+	padding: 8px;
 	overflow: hidden;
 	clear: both;
+	background: #eee;
+	border-radius: 4px;
+	-moz-border-radius: 4px;
+	-webkit-border-radius: 4px;
 }
+
+.template-form li:last-child {
+	margin-bottom: 0;
+}
+
 .meld-tb-form label {
 	display: block;
 	margin: 0 1em 0 0;
+	padding: 5px 0;
 	clear: none;
 	float: left;
 	width: 25%;
 	text-align: right;
-	line-height: 27px !important;
+	line-height: 1;
+	font-size: 12px;
 }
+
+.meld-tb-form input {
+	font-size: 12px;
+	padding: 4px;
+}
+
 .meld-tb-form input.long {
 	width: 69%;
 }
@@ -133,15 +150,23 @@ input.disabled {
 }
 
 .ui-button {
-	border: 1px solid #c2c2c2 !important;	
+	border: 1px solid #c2c2c2 !important;
+	background: -moz-linear-gradient(
+		top,
+		#ffffff 0%,
+		#cdcdcd);
+	background: -webkit-gradient(
+		linear, left top, left bottom, 
+		from(#ffffff),
+		to(#cdcdcd));	
 }
 .ui-icon-formfield {
 	background-image: url(images/ui-icons-form-basic.png) !important;
 	background-repeat: no-repeat;
 	width: 24px;
 	height: 20px;
-	border: 1px solid #f2f2f2 !important;
-	padding: 5px;
+	/*border: 1px solid #f2f2f2 !important;*/
+	padding: 6px;
 	border-radius: 4px;
 	-moz-border-radius: 4px;
 	-webkit-border-radius: 4px;
