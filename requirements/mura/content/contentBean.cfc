@@ -467,6 +467,11 @@ to your own modified versions of Mura CMS.
 	<cfreturn this>
 </cffunction>
 
+<cffunction name="setFilename" output="false">
+	<cfargument name="filename">
+	<cfset variables.instance.filename=left(arguments.filename,255)>
+</cffunction>
+
 <cffunction name="setLastUpdateBy" access="public" output="false">
 	<cfargument name="lastUpdateBy" type="String" />
 	<cfset variables.instance.lastUpdateBy = left(trim(arguments.lastUpdateBy),50) />
@@ -535,6 +540,14 @@ to your own modified versions of Mura CMS.
 	<cfreturn this>
 </cffunction>
 
+<cffunction name="setImageSize" output="false">
+	<cfargument name="imageSize">
+	<cfif len(arguments.imageSize)>
+		<cfset variables.instance.imageSize>
+	</cfif>	
+	<cfreturn this>
+</cffunction>
+
 <cffunction name="setImageHeight" output="false" access="public">
     <cfargument name="ImageHeight" required="true">
 	<cfif isNumeric(arguments.ImageHeight)>
@@ -549,6 +562,16 @@ to your own modified versions of Mura CMS.
   	  <cfset variables.instance.ImageWidth = arguments.ImageWidth />
 	</cfif>
 	<cfreturn this>
+</cffunction>
+
+<cffunction name="setDisplayList" output="false">
+	<cfargument name="displayList">
+	<cfset variables.instance.responseDisplayFields>
+	<cfreturn this>	
+</cffunction>
+
+<cffunction name="getDisplayList" output="false">
+	<cfset variables.instance.responseDisplayFields>	
 </cffunction>
 
 <cffunction name="setCategory" returntype="any" access="public" output="false">
@@ -897,24 +920,6 @@ to your own modified versions of Mura CMS.
 
 <cffunction name="getExtendBaseID" output="false">
 	<cfreturn getContentHistID()>
-</cffunction>
-
-<cffunction name="setDisplayList" output="false">
-	<cfargument name="displayList">
-	<cfset variables.instance.responseDisplayFields>
-	<cfreturn this>	
-</cffunction>
-
-<cffunction name="getDisplayList" output="false">
-	<cfset variables.instance.responseDisplayFields>	
-</cffunction>
-
-<cffunction name="setImageSize" output="false">
-	<cfargument name="imageSize">
-	<cfif len(arguments.imageSize)>
-		<cfset variables.instance.imageSize>
-	</cfif>	
-	<cfreturn this>
 </cffunction>
 
 </cfcomponent>
