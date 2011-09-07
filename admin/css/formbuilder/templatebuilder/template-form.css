@@ -160,13 +160,6 @@ input.disabled {
 .ui-icon-formfield-checkbox { background-position: -126px 5px; }
 .ui-icon-formfield-select { background-position: -61px 5px; }
 
-#meld-tb-fields .selected {
-	background-color: #ffebeb !important;
-	/*border: 1px dotted #ff4747 !important;*/
-}
-#meld-tb-field .selected {
-	border: 1px dotted #ff4747 !important;
-}
 
 
 /*.ui-icon-formfield-hidden { background-position: -233px 0; }*/

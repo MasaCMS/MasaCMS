@@ -120,14 +120,16 @@
 }*/
 
 #meld-tb-form {
-	border-top: 1px solid #d1d1d1;
-	background: url('images/bg-divider.png') repeat-y 276px 0; 
+	/*border-top: 1px solid #d1d1d1;*/
+	background: url('images/bg-shadows.png') repeat-y 274px 0;
+	background-color: #d7d7d6;
 }
 #meld-tb-form-fields {
 	width: 26%;
-	padding: 2%;
+	padding: 2% 2% 2% 2%;
 	float: left;
-	background-color: #f9f9f9;
+	background: #f9f9f9;
+	/*background: #f9f9f9 url('images/bg-divider-shadow.png') repeat-y right 0;*/
 }
 .meld-tb-data-form {
 	margin: 0 0 12px !important;
@@ -142,7 +144,7 @@
 
 #meld-tb-fields li div.field {
 	/*margin: 0 0 5px 0;*/
-	padding: 10px 10px 10px 40px;
+	padding: 10px 10px 10px 38px;
 	background-repeat: no-repeat;
 	background-position: 0px center;
 	/*background-color: #f2f2f2;*/
@@ -156,40 +158,83 @@
 
 #meld-tb-fields li  {
 	font-family: Arial, Helvetica, sans-serif;
-	font-size: 14px;
-	color: #303030;
-	padding: 2px 10px;
+	font-size: 12px;
+	color: #333333;
+	padding: 6px 10px;
 	background: -moz-linear-gradient(
 		top,
-		#ffffff 0%,
-		#ebebeb 30%,
-		#dbdbdb 50%,
-		#b5b5b5);
+		#f7f7f7 0%,
+		#dbdad8);
 	background: -webkit-gradient(
 		linear, left top, left bottom, 
-		from(#ffffff),
-		color-stop(0.30, #ebebeb),
-		color-stop(0.50, #dbdbdb),
-		to(#b5b5b5));
-	border-radius: 4px;
-	-moz-border-radius: 4px;
-	-webkit-border-radius: 4px;
-	border: 1px solid #c2c2c2;
+		from(#f7f7f7),
+		to(#dbdad8));
+	border-radius: 3px;
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+	border: 1px solid #dedede;
 	-moz-box-shadow:
-		0px 1px 1px rgba(000,000,000,0.1),
-		inset 0px 0px 2px rgba(255,255,255,0.5);
+		1px 1px 3px rgba(000,000,000,0),
+		inset 0px 0px 2px rgba(255,255,255,.5);
 	-webkit-box-shadow:
-		0px 1px 1px rgba(000,000,000,0.1),
-		inset 0px 0px 2px rgba(255,255,255,0.5);
+		1px 1px 3px rgba(000,000,000,0),
+		inset 0px 0px 2px rgba(255,255,255,.5);
 	text-shadow:
-		0px -1px 0px rgba(000,000,000,0.2),
-		0px 1px 0px rgba(255,255,255,1);
+		1px 1px 0px rgba(255,255,255,0.4),
+		0px 1px 0px rgba(255,255,255,0.5);
 }
 
+/*#meld-tb-fields .selected {
+	background: -moz-linear-gradient(
+		top,
+		#dbdad8 0%,
+		#f7f7f7);
+	background: -webkit-gradient(
+		linear, left top, left bottom, 
+		from(#dbdad8),
+		to(#f7f7f7));
+	-moz-box-shadow:
+		0px 1px 1px rgba(000,000,000,0.1),
+		inset 0px 0px 0px rgba(255,255,255,0.5);
+	-webkit-box-shadow:
+		0px 0px 0px rgba(000,000,000,0),
+		inset 1px 1px 4px rgba(000,000,000,0.5);
+}*/
+
+#meld-tb-fields .selected {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	color: #000000;
+	padding: 6px 10px;
+	background: -moz-linear-gradient(
+		top,
+		#d4d4d4 0%,
+		#dbdad8);
+	background: -webkit-gradient(
+		linear, left top, left bottom, 
+		from(#d4d4d4),
+		to(#dbdad8));
+	border-radius: 3px;
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+	border: 1px solid #dedede;
+	-moz-box-shadow:
+		1px 1px 2px rgba(000,000,000,0),
+		inset 1px 1px 2px rgba(000,000,000,0.4);
+	-webkit-box-shadow:
+		1px 1px 2px rgba(000,000,000,0),
+		inset 1px 1px 2px rgba(000,000,000,0.4);
+	text-shadow:
+		1px 1px 0px rgba(255,255,255,0.4),
+		0px 1px 0px rgba(255,255,255,0.5);
+}
+
+#meld-tb-fields .selected:after {
+	
+}
 
 #meld-tb-fields li div#selected.field {
 	background-color: #FFEBEB;
-	/*border: 1px dotted #FF4747;*/
 }
 
 #meld-tb-fields li.field-textfield div {
@@ -219,7 +264,12 @@
 	-moz-box-shadow: none;
 	-webkit-box-shadow: none;
 	text-shadow: 0;
-	text-transform: uppercase;
+	text-transform: ;
+	font-size: 16px;
+	color: #666;
+	font-weight: bold;
+	/*text-shadow:
+		0px 2px 2px rgba(255,255,255,1);*/
 }
 
 #meld-tb-dataset {
