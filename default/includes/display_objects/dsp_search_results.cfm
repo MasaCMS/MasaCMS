@@ -92,17 +92,17 @@ to your own modified versions of Mura CMS.
 		<cfset variables.args[2]=htmlEditFormat(request.tag)>
 		<cfif len(request.searchSectionID)>
 			<cfset variables.args[3]=htmlEditFormat(variables.sectionBean.getTitle())>
-			<p>#variables.rbFactory.getResourceBundle().messageFormat($.rbKey('search.searchtagsection'),variables.args)#</p>
+			<p>#$.siteConfig("rbFactory").getResourceBundle().messageFormat($.rbKey('search.searchtagsection'),variables.args)#</p>
 		<cfelse>
-			<p>#variables.rbFactory.getResourceBundle().messageFormat($.rbKey('search.searchtag'),variables.args)#</p>
+			<p>#$.siteConfig("rbFactory").getResourceBundle().messageFormat($.rbKey('search.searchtag'),variables.args)#</p>
 		</cfif>
 	<cfelse>
 		<cfset variables.args[2]=htmlEditFormat(request.keywords)>
 		<cfif len(request.searchSectionID)>
 			<cfset variables.args[3]=htmlEditFormat(variables.sectionBean.getTitle())>
-	 		<p>#variables.rbFactory.getResourceBundle().messageFormat($.rbKey('search.searchkeywordsection'),variables.args)#</p>
+	 		<p>#$.siteConfig("rbFactory").getResourceBundle().messageFormat($.rbKey('search.searchkeywordsection'),variables.args)#</p>
 		<cfelse>
-			<p>#variables.rbFactory.getResourceBundle().messageFormat($.rbKey('search.searchkeyword'),variables.args)#</p>
+			<p>#$.siteConfig("rbFactory").getResourceBundle().messageFormat($.rbKey('search.searchkeyword'),variables.args)#</p>
 		</cfif>
 	</cfif>
 </cfoutput>

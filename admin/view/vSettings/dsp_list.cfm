@@ -258,8 +258,7 @@ initTabs(Array("Current Sites","Plugins"),#attributes.activeTab#,0,0);
 		<cfset updated=application.autoUpdater.update()>
 		<cfset files=updated.files>
 		<p>Your core files have been updated to version
-			<cfoutput>#application.autoUpdater.getCurrentCompleteVersion()#</cfoutput>
-			.</p>
+			<cfoutput>#application.autoUpdater.getCurrentCompleteVersion()#</cfoutput>.</p>
 		<p> <strong>Updated Files
 			<cfoutput>(#arrayLen(files)#)</cfoutput>
 			</strong><br/>

@@ -102,7 +102,7 @@ to your own modified versions of Mura CMS.
 			</ol>
 		</fieldset>
 		<cfif isdefined('msg2')>
-		<cfif FindNoCase('is not a valid',msg2)><div class="error">#HTMLEditFormat(variables.rbFactory.getResourceBundle().messageFormat($.rbKey('user.forgotnotvalid'),request.email))#<cfelseif FindNoCase('no account',msg2)><div class="error">#HTMLEditFormat(variables.rbFactory.getResourceBundle().messageFormat($.rbKey('user.forgotnotfound'),request.email))#<cfelse><div class="notice">#$.rbKey('user.forgotsuccess')#</cfif></div>
+		<cfif FindNoCase('is not a valid',msg2)><div class="error">#HTMLEditFormat($.siteConfig("rbFactory").getResourceBundle().messageFormat($.rbKey('user.forgotnotvalid'),request.email))#<cfelseif FindNoCase('no account',msg2)><div class="error">#HTMLEditFormat($.siteConfig("rbFactory").getResourceBundle().messageFormat($.rbKey('user.forgotnotfound'),request.email))#<cfelse><div class="notice">#$.rbKey('user.forgotsuccess')#</cfif></div>
 		</cfif>
 		<div class="buttons">
 			<input type="hidden" name="doaction" value="sendlogin" />
