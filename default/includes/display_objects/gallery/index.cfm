@@ -163,16 +163,23 @@ to your own modified versions of Mura CMS.
 					 		<dd class="comments"><a href="?linkServID=#item.getValue('contentid')#&categoryID=#HTMLEditFormat(request.categoryID)#&relatedID=#HTMLEditFormat(request.relatedID)#" title="#HTMLEditFormat(item.getValue('title'))#">#$.rbKey('list.comments')# (#application.contentGateway.getCommentCount(request.siteid,item.getValue('contentid'))#)</a></dd>
 					 	 </cfcase>
 						<cfcase value="Tags">
-						 	<cfif item.getValue('tags') neq "">
-						 		<dd class="tags"><cfmodule template="#getSite($.event('siteid')).getIncludePath()#/includes/display_objects/nav/dsp_tag_line.cfm" tags="#item.getValue('tags')#"></dd>
-						 	</cfif>
+						 	<cfif len(item.getValue('tags'))>
+								<cfset tagLen=listLen(item.getValue('tags')) />
+								<dd class="tags">
+									#$.rbKey('tagcloud.tags')#: 
+									<cfloop from="1" to="#tagLen#" index="t">
+									<cfset tag=#trim(listgetAt(item.getValue('tags'),t))#>
+									<a href="#$.createHREF(filename='#$.event('currentFilenameAdjusted')#/tag/#urlEncodedFormat(tag)#')#">#tag#</a><cfif tagLen gt t>, </cfif>
+									</cfloop>
+								</dd>
+							</cfif>
 					 	</cfcase>
 						<cfcase value="Rating">
 					 		<dd class="ratings stars">#$.rbKey('list.rating')#: <img class="ratestars" src="#$.siteConfig('themeAssetPath')#/images/rater/star_#application.raterManager.getStarText(item.getValue('rating'))#.png" alt="<cfif isNumeric(item.getValue('rating'))>#item.getValue('rating')# star<cfif item.getValue('rating') gt 1>s</cfif></cfif>" border="0"></dd>
 					 	</cfcase>
 					 	<cfdefaultcase>
-							<cfif len(arguments.item.getValue(field))>
-							 	<dd class="#lcase(field)#">#HTMLEditFormat(item.getValue(arguments.field))#</dd>	 	
+							<cfif len(item.getValue(field))>
+							 	<dd class="#lcase(field)#">#HTMLEditFormat(item.getValue(field))#</dd>	 	
 							</cfif>
 						</cfdefaultcase>
 					</cfswitch>
