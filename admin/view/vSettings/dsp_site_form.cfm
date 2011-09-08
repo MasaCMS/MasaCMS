@@ -124,10 +124,10 @@ to your own modified versions of Mura CMS.
       <dd>
         <input name="pagelimit" type="text" class="text short" value="#HTMLEditFormat(request.siteBean.getpagelimit())#" size="5" maxlength="6">
       </dd>
-      <dt>Default View Depth <span>(in Site Manager)</span></dt>
+    <!---  <dt>Default View Depth <span>(in Site Manager)</span></dt>
       <dd>
         <input name="viewDepth" type="text" class="text short" value="#HTMLEditFormat(request.siteBean.getviewDepth())#" size="5" maxlength="5">
-      </dd>
+      </dd>--->
       <dt>Default  Rows <span>(in Site Manager)</span></dt>
       <dd>
         <input name="nextN" type="text" class="text short" value="#HTMLEditFormat(request.siteBean.getnextN())#" size="5" maxlength="5">

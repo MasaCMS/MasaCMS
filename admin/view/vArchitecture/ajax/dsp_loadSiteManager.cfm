@@ -99,10 +99,10 @@ to your own modified versions of Mura CMS.
       <dd class="rows">
         <input name="nextN" value="#session.mura.nextN#" type="text" class="text" size="2" maxlength="4" />
       </dd>
-      <dt class="viewDepth">#application.rbFactory.getKeyValue(session.rb,"sitemanager.levelsdisplayed")#</dt>
+    <!---  <dt class="viewDepth">#application.rbFactory.getKeyValue(session.rb,"sitemanager.levelsdisplayed")#</dt>
       <dd class="viewDepth">
         <input name="viewDepth" value="#session.mura.viewDepth#" type="text" class="text" size="2" maxlength="4" />
-      </dd>
+      </dd>--->
       <cfif attributes.topid neq '00000000000000000000000000000000001' 
 	  	  and (
 	  	  		perm eq 'Editor' 
@@ -263,7 +263,7 @@ to your own modified versions of Mura CMS.
       </dl>
       
       <cfif request.rstop.hasKids and rsNext.recordcount>
-        <cf_dsp_nest topid="#attributes.topid#" parentid="#attributes.topid#"  rsnest="#rsNext#" locking="#application.settingsManager.getSite(attributes.siteid).getlocking()#" nestlevel="1" perm="#perm#" siteid="#attributes.siteid#" moduleid="#attributes.moduleid#" restricted="#r#" viewdepth="#session.mura.viewDepth#" nextn="#session.mura.nextN#" startrow="#attributes.startrow#" sortBy="#attributes.sortBy#" sortDirection="#attributes.sortDirection#" pluginEvent="#pluginEvent#">
+        <cf_dsp_nest topid="#attributes.topid#" parentid="#attributes.topid#"  rsnest="#rsNext#" locking="#application.settingsManager.getSite(attributes.siteid).getlocking()#" nestlevel="1" perm="#perm#" siteid="#attributes.siteid#" moduleid="#attributes.moduleid#" restricted="#r#" viewdepth="1" nextn="#session.mura.nextN#" startrow="#attributes.startrow#" sortBy="#attributes.sortBy#" sortDirection="#attributes.sortDirection#" pluginEvent="#pluginEvent#">
       </cfif>
       </li>
       </ul>
