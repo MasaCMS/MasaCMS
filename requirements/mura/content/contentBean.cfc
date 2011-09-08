@@ -571,7 +571,7 @@ to your own modified versions of Mura CMS.
 
   <cffunction name="setFilename" output="false" access="public">
     <cfargument name="Filename" type="string" required="true">
-    <cfset variables.instance.Filename = trim(arguments.Filename) />
+     <cfset variables.instance.Filename = left(trim(arguments.Filename),255) />
 	<cfreturn this>
   </cffunction>
 

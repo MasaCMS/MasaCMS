@@ -421,6 +421,7 @@
 <cfset var notifyText="">
 <cfset var email="">
 <cfset var contactEmail="">
+<cfset var serverpath = "">
 
 <cfif len(variables.settingsManager.getSite(getSiteID()).getContactEmail())>
 	<cfset contactEmail=variables.settingsManager.getSite(getSiteID()).getContactEmail()>
@@ -437,6 +438,16 @@
 	and active=1
 </cfquery>
 
+<cfset serverpath = "http://#listFirst(cgi.http_host,':')##variables.configBean.getServerPort()##variables.configBean.getContext()#/">
+
+<cfif variables.configBean.getSiteIDInURLS()>
+    <cfset serverpath &= '#getSiteID()#/'>
+</cfif>
+
+<cfif variables.configBean.getIndexFileInURLS()>
+    <cfset serverpath &= 'index.cfm/'>
+</cfif>
+
 <cfsavecontent variable="notifyText"><cfoutput>
 A comment has been posted to "#rscontent.title#" by #getName()#.
 
@@ -444,13 +455,13 @@ COMMENT:
 #getComments()#
 
 Approve
-http://#listFirst(cgi.http_host,":")##variables.configBean.getServerPort()##variables.configBean.getContext()#/#getSiteID()#/index.cfm/#variables.utility.createRedirectID(arguments.contentRenderer.getCurrentURL(true,"approvedcommentID=#getCommentID()#"))#
+#serverpath##variables.utility.createRedirectID(arguments.contentRenderer.getCurrentURL(true,"approvedcommentID=#getCommentID()#"))#
 
 Delete
-http://#listFirst(cgi.http_host,":")##variables.configBean.getServerPort()##variables.configBean.getContext()#/#getSiteID()#/index.cfm/#variables.utility.createRedirectID(arguments.contentRenderer.getCurrentURL(true,"deletecommentID=#getCommentID()#"))#
+#serverpath##variables.utility.createRedirectID(arguments.contentRenderer.getCurrentURL(true,"deletecommentID=#getCommentID()#"))#
 
-View 
-http://#listFirst(cgi.http_host,":")##variables.configBean.getServerPort()##variables.configBean.getContext()#/#getSiteID()#/index.cfm/#variables.utility.createRedirectID(arguments.contentRenderer.getCurrentURL())#
+View
+#serverpath##variables.utility.createRedirectID(arguments.contentRenderer.getCurrentURL())#
 </cfoutput></cfsavecontent>
 
 <cfelse>
