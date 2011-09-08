@@ -73,45 +73,51 @@
 	background-color: #ddd;
 }
 
-.meld-tb-form #ui-tabs {
+#meld-tb-form .ui-tabs {
 	background: transparent;
-}
-.meld-tb-form #ui-tabs .ui-tabs-nav li {
-	border: 1px solid transparent !important;
-	margin-right: 2px !important;
+	margin-bottom: 2em;
 }
 
-.meld-tb-form #ui-tabs .ui-tabs-nav {
+#meld-tb-form .ui-tabs .ui-tabs-nav {
 	/*height: 26px !important;*/
 	padding-bottom: 0 !important;
 	border-bottom: 0 !important;
 	background: transparent !important;
+	z-index: 0;
 }
-
-.meld-tb-form #ui-tabs .ui-tabs-nav li {
+#meld-tb-form .ui-tabs .ui-tabs-nav li {
+	border: 1px solid #eee !important;
+	margin-right: 2px !important;
 	margin-left: 0 !important;
 }
+#meld-tb-form .ui-tabs .ui-tabs-nav li.ui-tabs-selected {
+	border: 1px solid #ccc !important;
+	background: #ccc;
+}
 
-.meld-tb-form #ui-tabs .ui-tabs-nav li a,.meld-tb-form #ui-tabs .ui-tabs .ui-tabs-nav li a {
-	background-color: #ccc;
+#meld-tb-form #ui-tabs .ui-tabs-nav li a,#meld-tb-form #ui-tabs .ui-tabs .ui-tabs-nav li a {
+	background-color: #eee;
 	padding: 0.5em 1em;
 	margin-left: 0 !important;
+	font-size: 12px;
 }
 
-.meld-tb-form #ui-tabs .ui-tabs-nav li.ui-tabs-selected a {
-	background-color: #e7e7e7;
+#meld-tb-form #ui-tabs .ui-tabs-nav li.ui-tabs-selected a {
+	background-color: #ccc;
 }
 
-.meld-tb-form .ui-tabs-panel {
+#meld-tb-form .ui-tabs-panel {
 	padding-top: 0;
 	border-top: 0;
+	background: #ccc;
+	z-index: 10;
 }
 
-.meld-tb-header li div {
+#meld-tb-header li div {
 	padding: 1px;
 }
 
-.meld-tb-menu .right {
+#meld-tb-menu .right {
 	float: right;
 }
 
@@ -131,7 +137,7 @@
 	background: #f9f9f9;
 	/*background: #f9f9f9 url('images/bg-divider-shadow.png') repeat-y right 0;*/
 }
-.meld-tb-data-form {
+#meld-tb-data-form {
 	margin: 0 0 12px !important;
 	padding: 0 !important;
 	width: 100%;
@@ -276,6 +282,10 @@
 	padding-top: 0;
 	/*float: right;*/
 	clear: left;
+}
+
+#meld-tb-form .btn-wrap {
+	text-align: center;
 }
 
 .columns {
