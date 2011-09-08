@@ -567,7 +567,7 @@ to your own modified versions of Mura CMS.
 
 <cffunction name="setDisplayList" output="false">
 	<cfargument name="displayList">
-	<cfset variables.instance.responseDisplayFields>
+	<cfset variables.instance.responseDisplayFields=arguments.displayList>
 	<cfreturn this>	
 </cffunction>
 
