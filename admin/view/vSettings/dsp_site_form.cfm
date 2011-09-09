@@ -579,7 +579,7 @@ to your own modified versions of Mura CMS.
 	 
 	
 	  
-	  <dt><a class="tooltip">Select Bundle File From Server (Preferred)<span>You can deploy a bundle that exists on the server by entering the complete server path to the Site Bundle here. This eliminates the need to upload the file via your web browser, avoiding some potential timeout issues.</span></a></dt>
+	  <dt><a class="tooltip">Select Bundle File From Server<cfif application.configBean.getPostBundles()> (Preferred)</cfif><span>You can deploy a bundle that exists on the server by entering the complete server path to the Site Bundle here. This eliminates the need to upload the file via your web browser, avoiding some potential timeout issues.</span></a></dt>
       <dd>
         <input class="text" type="text" name="serverBundlePath" id="serverBundlePath" value=""><input type="button" value="Browse Server" id="serverBundleBrowser"/>
 		<script>
@@ -602,8 +602,12 @@ to your own modified versions of Mura CMS.
 		}
 		</script>
       </dd>
-	   <dt><a class="tooltip">Upload Bundle File <span>Uploading large files via a web browser can produce inconsistent results.</span></a></dt>
-	  <dd><input type="file" name="bundleFile" accept=".zip"/></dd>
+	  <cfif application.configBean.getPostBundles()>
+	  	<dt><a class="tooltip">Upload Bundle File <span>Uploading large files via a web browser can produce inconsistent results.</span></a></dt>
+	  	<dd><input type="file" name="bundleFile" accept=".zip"/></dd>
+	  <cfelse>
+	  	<input type="hidden" name="bundleFile" value=""/>
+	  </cfif>
 	  </dl>
 	  </div>
 	
