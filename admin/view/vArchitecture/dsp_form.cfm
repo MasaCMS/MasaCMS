@@ -368,7 +368,7 @@ select * from rsPluginScripts3 order by pluginID
 	<cfif attributes.type neq "Form">
 		<cfinclude template="form/dsp_tab_basic.cfm">	
 	<cfelse>
-		<cfif request.contentBean.getIsNew() and not (isdefined("url.formType") and url.formType eq "legacy")>		
+		<cfif request.contentBean.getIsNew() and not (isdefined("url.formType") and url.formType eq "editor")>		
 			<cfset request.contentBean.setBody( application.serviceFactory.getBean('formBuilderManager').createJSONForm( request.contentBean.getContentID() ) ) />
 		</cfif>
 		<cfif isJSON(request.contentBean.getBody())>

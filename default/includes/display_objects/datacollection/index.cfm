@@ -120,22 +120,31 @@ to your own modified versions of Mura CMS.
 	<cfinclude template="act_add.cfm">
 	<cfinclude template="dsp_response.cfm">
 	<cfelse>
-	<cfset $.addToHTMLHeadQueue("htmlEditor.cfm")>
-	<cfif isJSON(rsForm.body)>
-		#$.setDynamicContent(
-				dspObject_Include(
-					thefile='formbuilder/dsp_form.cfm',
-					formid=rsForm.contentid,
-					siteid=rsForm.siteid,
-					formJSON=rsForm.body
-				)
-		)#
-	<cfelse>
-	#$.setDynamicContent(application.dataCollectionManager.renderForm(rsForm.contentid,request.siteid,rsForm.body,rsForm.responseChart, $.content('contentID')))#		
-	</cfif>
-	<script type="text/javascript">
-	setHTMLEditors(200,500);
-	</script>
+	<cfsilent>
+		<cfset $.addToHTMLHeadQueue("htmlEditor.cfm")>
+		<cfif isJSON(rsForm.body)>
+			<cfset renderedForm=$.setDynamicContent(
+					dspObject_Include(
+						thefile='formbuilder/dsp_form.cfm',
+						formid=rsForm.contentid,
+						siteid=rsForm.siteid,
+						formJSON=rsForm.body
+					)
+				)>
+		<cfelse>
+			<cfset renderedForm=$.setDynamicContent(rsForm.body)>
+		</cfif>
+		</cfsilent>
+		#application.dataCollectionManager.renderForm(
+			rsForm.contentid,
+			$.event('siteID'),
+			renderedForm,
+			rsForm.responseChart, 
+			$.content('contentID')
+		)#	
+		<script type="text/javascript">
+		setHTMLEditors(200,500);
+		</script>
 	</cfif>
 </cfif>
 <cfif editableControl.innerHTML neq "">
