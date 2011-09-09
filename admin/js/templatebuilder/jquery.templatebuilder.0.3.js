@@ -632,7 +632,15 @@
 
 			$row = jQuery(row);
 			$row.attr('id',record.datarecordid);
-
+			
+			if(data.issorted != 1) {
+				jQuery("#meld-tb-grid-table-header li").removeClass('nohandle');
+				$row.append(handle);
+			}
+			else {
+				jQuery("#meld-tb-grid-table-header li").addClass('nohandle');
+			}
+			
 			if(fieldData.fieldtype.fieldtype != 'checkbox')
 			{
 				$cell = jQuery(cell);
@@ -665,13 +673,7 @@
 			$input.attr('data-id', record.datarecordid);
 			$input.attr('name', 'label');
 			$input.val(record.label);
-			if(data.issorted != 1) {
-				jQuery("#meld-tb-grid-table-header li").removeClass('nohandle');
-				$row.append(handle);
-			}
-			else {
-				jQuery("#meld-tb-grid-table-header li").addClass('nohandle');
-			}
+			
 
 			$cell.append($input);
 			$row.append($cell);
@@ -690,13 +692,13 @@
 				$row.append($cell);
 			}
 			
-			jQuery(".meld-tb-cell-input",$row).each( function() {
+			/*jQuery(".meld-tb-cell-input",$row).each( function() {
 				jQuery(this).width( (480/(settings.dataColumns.length+2)) );
-			});
+			});*/
 
 			// delete
 			$cell = jQuery(cell);
-			$cell.addClass('meld-tb-cell-small button');
+			$cell.addClass('meld-tb-cell-delete');
 			$bt_delete = jQuery(bt_delete);
 			$bt_delete.attr('data-id', record.datarecordid);
 			$cell.append($bt_delete);

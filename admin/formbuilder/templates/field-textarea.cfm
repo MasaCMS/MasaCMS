@@ -42,8 +42,8 @@ to your own modified versions of Mura CMS.
 --->
 <cfoutput><span>
 		<div class="meld-tb-form">
-			<div class="meld-tb-header">
-				<h3>#mmRBF.getKeyValue(session.rb,'formbuilder.field.textarea')#: <span id="meld-tb-form-label"></span></h3>
+			<div class="meld-tb-header textarea">
+				<h3><!---#mmRBF.getKeyValue(session.rb,'formbuilder.field.textarea')#:---> <span id="meld-tb-form-label"></span></h3>
 				<ul class="right">
 					<li><div class="ui-button" id="button-trash" title="#mmRBF.getKeyValue(session.rb,'formbuilder.delete')#"><span class="ui-icon ui-icon-closethick"></span></div></li>
 				</ul>
@@ -62,11 +62,11 @@ to your own modified versions of Mura CMS.
 					<ul class="template-form">
 						<li>
 							<label for="label">#mmRBF.getKeyValue(session.rb,'formbuilder.field.label')#</label>
-							<input class="text medium tb-label" type="text" name="label" value="" maxlength="50" data-required='true' />
+							<input class="text  tb-label" type="text" name="label" value="" maxlength="50" data-required='true' />
 						</li>
 						<li>
 							<label for="name">#mmRBF.getKeyValue(session.rb,'formbuilder.field.name')#</label>
-							<input id="tb-name" class="text medium disabled" name="name" type="text" value="" maxlength="50" disabled="true" />
+							<input id="tb-name" class="text  disabled" name="name" type="text" value="" maxlength="50" disabled="true" />
 						</li>
 						<li>
 							<label for="value">#mmRBF.getKeyValue(session.rb,'formbuilder.field.value')#</label>
@@ -78,15 +78,15 @@ to your own modified versions of Mura CMS.
 					<ul class="template-form">
 						<li>
 							<label for="size">#mmRBF.getKeyValue(session.rb,'formbuilder.field.size')#</label>
-							<input class="text medium" type="text" name="size" value="" maxlength="50" data-required='false' />
+							<input class="text " type="text" name="size" value="" maxlength="50" data-required='false' />
 						</li>
 						<li>
 							<label for="cssid">#mmRBF.getKeyValue(session.rb,'formbuilder.field.cssid')#</label>
-							<input class="text medium" type="text" name="cssid" value="" maxlength="50" data-required='false' />
+							<input class="text " type="text" name="cssid" value="" maxlength="50" data-required='false' />
 						</li>
 						<li>
 							<label for="cssclass">#mmRBF.getKeyValue(session.rb,'formbuilder.field.cssclass')#</label>
-							<input class="text medium" type="text" name="cssclass" value="" maxlength="50" data-required='false' />
+							<input class="text " type="text" name="cssclass" value="" maxlength="50" data-required='false' />
 						</li>
 						<li>
 							<label for="tooltip">#mmRBF.getKeyValue(session.rb,'formbuilder.field.tooltip')#</label>

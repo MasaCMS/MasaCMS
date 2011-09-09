@@ -46,7 +46,7 @@ to your own modified versions of Mura CMS.
 		<li></li>
 	</div>
 	<div id="element-button-delete">
-		<div class="ui-button noframe button-grid-row-delete" title="#mmRBF.getKeyValue(session.rb,'formbuilder.dataset.delete')#"></div>
+		<div class="button-grid-row-delete" title="#mmRBF.getKeyValue(session.rb,'formbuilder.dataset.delete')#"></div>
 	</div>
 	<div id="element-labels">
 		<label id="label">#mmRBF.getKeyValue(session.rb,'formbuilder.dataset.label')#</label>
@@ -62,10 +62,10 @@ to your own modified versions of Mura CMS.
 		<input type="text" class="meld-tb-grid-input" />
 	</div>
 	<div id="element-checkbox">
-		<input type="checkbox" title="#mmRBF.getKeyValue(session.rb,'formbuilder.isselected')#" class="checkbox meld-tb-grid-checkbox" data-id="" value="1" /></span>
+		<input type="checkbox" title="#mmRBF.getKeyValue(session.rb,'formbuilder.isselected')#" class="checkbox meld-tb-grid-checkbox" data-id="" value="1" />
 	</div>
 	<div id="element-radio">
-		<input type="radio" name="isdefault" title="#mmRBF.getKeyValue(session.rb,'formbuilder.isdefault')#" class="radio meld-tb-grid-radio" data-id="" /></span>
+		<input type="radio" name="isdefault" title="#mmRBF.getKeyValue(session.rb,'formbuilder.isdefault')#" class="radio meld-tb-grid-radio" data-id="" />
 	</div>
 	<div id="element-handle">
 		<span class="meld-tb-grid-handle"></span> 

@@ -42,8 +42,8 @@ to your own modified versions of Mura CMS.
 --->
 <cfoutput><span>
 		<div class="meld-tb-form">
-			<div class="meld-tb-header">
-				<h3>#mmRBF.getKeyValue(session.rb,'formbuilder.field.textfield')#: <span id="meld-tb-form-label">bob</span></h3>
+			<div class="meld-tb-header textfield">
+				<h3><!---#mmRBF.getKeyValue(session.rb,'formbuilder.field.textfield')#:---> <span id="meld-tb-form-label">bob</span></h3>
 				<ul class="right">
 					<li><div class="ui-button" id="button-trash" title="#mmRBF.getKeyValue(session.rb,'formbuilder.delete')#"><span class="ui-icon ui-icon-close"></span></div></li>
 				</ul>
@@ -79,15 +79,15 @@ to your own modified versions of Mura CMS.
 					<ul class="template-form">
 						<li>
 							<label for="size">#mmRBF.getKeyValue(session.rb,'formbuilder.field.size')#</label>
-							<input class="text medium" type="text" name="size" value="" maxlength="50" data-required='false' />
+							<input class="text " type="text" name="size" value="" maxlength="50" data-required='false' />
 						</li>
 						<li>
 							<label for="cssid">#mmRBF.getKeyValue(session.rb,'formbuilder.field.cssid')#</label>
-							<input class="text medium" type="text" name="cssid" value="" maxlength="50" data-required='false' />
+							<input class="text " type="text" name="cssid" value="" maxlength="50" data-required='false' />
 						</li>
 						<li>
 							<label for="cssclass">#mmRBF.getKeyValue(session.rb,'formbuilder.field.cssclass')#</label>
-							<input class="text medium" type="text" name="cssclass" value="" maxlength="50" data-required='false' />
+							<input class="text " type="text" name="cssclass" value="" maxlength="50" data-required='false' />
 						</li>
 						<li>
 							<label for="tooltip">#mmRBF.getKeyValue(session.rb,'formbuilder.field.tooltip')#</label>

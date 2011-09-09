@@ -95,14 +95,14 @@
 	background: #ccc;
 }
 
-#meld-tb-form #ui-tabs .ui-tabs-nav li a,#meld-tb-form #ui-tabs .ui-tabs .ui-tabs-nav li a {
+#meld-tb-form .ui-tabs .ui-tabs-nav li a,#meld-tb-form .ui-tabs .ui-tabs-nav li a {
 	background-color: #eee;
 	padding: 0.5em 1em;
 	margin-left: 0 !important;
 	font-size: 12px;
 }
 
-#meld-tb-form #ui-tabs .ui-tabs-nav li.ui-tabs-selected a {
+#meld-tb-form .ui-tabs .ui-tabs-nav li.ui-tabs-selected a {
 	background-color: #ccc;
 }
 
@@ -183,22 +183,22 @@
 		1px 1px 3px rgba(000,000,000,0),
 		inset 0px 0px 2px rgba(255,255,255,.5);
 	text-shadow:
-		1px 1px 0px rgba(255,255,255,0.4),
-		0px 1px 0px rgba(255,255,255,0.5);
+		1px 1px 0px rgba(255,255,255,1.0);
 }
 
 #meld-tb-fields .selected {
-	color: #000;
+	color: #eee;
 	font-weight: bold;
 	background: -moz-linear-gradient(
 		top,
-		#d4d4d4 0%,
-		#dbdad8);
+		#777 0%,
+		#999);
 	background: -webkit-gradient(
 		linear, left top, left bottom, 
-		from(#d4d4d4),
-		to(#dbdad8));
+		from(#777),
+		to(#999));
 	border: 1px solid #dedede;
+	/*border-right: 5px solid #CA1212;*/
 	-moz-box-shadow:
 		1px 1px 2px rgba(000,000,000,0),
 		inset 1px 1px 2px rgba(000,000,000,0.4);
@@ -206,8 +206,14 @@
 		1px 1px 2px rgba(000,000,000,0),
 		inset 1px 1px 2px rgba(000,000,000,0.4);
 	text-shadow:
-		1px 1px 0px rgba(255,255,255,0.4),
-		0px 1px 0px rgba(255,255,255,0.5);
+		-1px -1px 0px rgba(0,0,0,0.4);
+}
+
+#meld-tb-fields .pointer {
+	background: red;
+	display: none;
+	height: 20px;
+	width: 20px;
 }
 
 #meld-tb-fields li div#selected.field {
