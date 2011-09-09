@@ -135,7 +135,9 @@
 	padding: 2% 2% 2% 2%;
 	float: left;
 	background: #f9f9f9;
-	/*background: #f9f9f9 url('images/bg-divider-shadow.png') repeat-y right 0;*/
+	height: 450px;
+	overflow-y: auto;
+	overflow-x: hidden;
 }
 #meld-tb-data-form {
 	margin: 0 0 12px !important;
@@ -149,24 +151,19 @@
 }
 
 #meld-tb-fields li div.field {
-	/*margin: 0 0 5px 0;*/
-	padding: 10px 10px 10px 38px;
+	padding: 9px 0 9px 38px;
 	background-repeat: no-repeat;
 	background-position: 0px center;
-	/*background-color: #f2f2f2;*/
 	border-radius: 4px;
-	/*border: 1px solid #f9f9f9;*/
 	-moz-border-radius: 4px;
 	-webkit-border-radius: 4px;
 	cursor: move;
-	/*min-height: 20px;*/
+	line-height: 1;
 }
 
 #meld-tb-fields li  {
-	font-family: Arial, Helvetica, sans-serif;
-	font-size: 12px;
-	color: #333333;
-	padding: 6px 10px;
+	color: #333;
+	padding: 4px 6px;
 	background: -moz-linear-gradient(
 		top,
 		#f7f7f7 0%,
@@ -190,28 +187,9 @@
 		0px 1px 0px rgba(255,255,255,0.5);
 }
 
-/*#meld-tb-fields .selected {
-	background: -moz-linear-gradient(
-		top,
-		#dbdad8 0%,
-		#f7f7f7);
-	background: -webkit-gradient(
-		linear, left top, left bottom, 
-		from(#dbdad8),
-		to(#f7f7f7));
-	-moz-box-shadow:
-		0px 1px 1px rgba(000,000,000,0.1),
-		inset 0px 0px 0px rgba(255,255,255,0.5);
-	-webkit-box-shadow:
-		0px 0px 0px rgba(000,000,000,0),
-		inset 1px 1px 4px rgba(000,000,000,0.5);
-}*/
-
 #meld-tb-fields .selected {
-	font-family: Arial, Helvetica, sans-serif;
-	font-size: 12px;
-	color: #000000;
-	padding: 6px 10px;
+	color: #000;
+	font-weight: bold;
 	background: -moz-linear-gradient(
 		top,
 		#d4d4d4 0%,
@@ -220,9 +198,6 @@
 		linear, left top, left bottom, 
 		from(#d4d4d4),
 		to(#dbdad8));
-	border-radius: 3px;
-	-moz-border-radius: 3px;
-	-webkit-border-radius: 3px;
 	border: 1px solid #dedede;
 	-moz-box-shadow:
 		1px 1px 2px rgba(000,000,000,0),
@@ -235,12 +210,9 @@
 		0px 1px 0px rgba(255,255,255,0.5);
 }
 
-#meld-tb-fields .selected:after {
-	
-}
-
 #meld-tb-fields li div#selected.field {
 	background-color: #FFEBEB;
+	background-position-y: 0px;
 }
 
 #meld-tb-fields li.field-textfield div {
@@ -274,8 +246,6 @@
 	font-size: 16px;
 	color: #666;
 	font-weight: bold;
-	/*text-shadow:
-		0px 2px 2px rgba(255,255,255,1);*/
 }
 
 #meld-tb-dataset {
@@ -286,6 +256,7 @@
 
 #meld-tb-form .btn-wrap {
 	text-align: center;
+	padding-bottom: 6px;
 }
 
 .columns {

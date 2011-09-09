@@ -94,10 +94,11 @@ to your own modified versions of Mura CMS.
 							<input class="text tb-source" id="meld-tb-dataset-source" type="text" name="source" value="" maxlength="250" />
 						</li>
 					</ul>
-				</div>
-				</div>
-							<div class="btn-wrap">
+					<div class="btn-wrap">
 								<input type="button" class="button" name="save-dataset" id="meld-tb-save-dataset" value="#mmRBF.getKeyValue(session.rb,'formbuilder.dataset.update')#" />
 							</div>
+				</div>
+				</div>
+							
 		</div>
 </cfoutput>

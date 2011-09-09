@@ -49,16 +49,13 @@ to your own modified versions of Mura CMS.
 			</ul>
 			
 			<div class="ui-tabs-panel" id="meld-tb-form-tab-list">
-	<div id="dataset-grid" class="meld-tb-form template-form">		
-		
+				<div id="dataset-grid" class="meld-tb-form template-form">
 				<div id="meld-tb-grid-message" style="display: none">#mmRBF.getKeyValue(session.rb,'formbuilder.dataset.mastermode')#</div>
 				<div id="meld-tb-grid">
-					<div id="meld-tb-grid-padding">
 					<ul id="meld-tb-grid-table-header">
 					</ul>
 					<ul id="meld-tb-grid-table">
 					</ul>
-					</div>
 				</div>
 			<div class="ui-button" id="button-grid-add" title="#mmRBF.getKeyValue(session.rb,'formbuilder.dataset.add')#">#mmRBF.getKeyValue(session.rb,'formbuilder.dataset.add')#</div>
 		</div>

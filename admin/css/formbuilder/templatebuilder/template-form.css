@@ -65,7 +65,11 @@ width: 100%;*/
 ul.template-form {
 	list-style: none;
 	padding: 10px;
-	margin-bottom: 4px;
+	margin-bottom: 0;
+}
+
+#meld-tb-dataset ul.template-form {
+	padding-bottom: 0;
 }
 
 #meld-tb-form .ui-tabs .ui-tabs-nav {
@@ -74,11 +78,13 @@ ul.template-form {
 	overflow: hidden;
 }
 
-
 #meld-tb-fields-settings {
 	float: right;
 	width: 66%;
 	padding: 2%;
+	height: 450px;
+	overflow-x: hidden;
+	overflow-y: auto;
 }
 
 .template-form li {
@@ -86,14 +92,14 @@ ul.template-form {
 	padding: 8px;
 	overflow: hidden;
 	clear: both;
-	background: #eee;
+	background: #ddd;
 	border-radius: 4px;
 	-moz-border-radius: 4px;
 	-webkit-border-radius: 4px;
 }
 
 .template-form li:last-child {
-	margin-bottom: 0;
+	margin-bottom: 0 !important;
 }
 
 .meld-tb-form label {
@@ -129,17 +135,11 @@ ul.template-form {
 .meld-tb-form .col3 input.long {
 	width: 100px;
 }
-.meld-tb-form li.checkbox input {
-	/*height: 18px;
-	margin: 5px 5px 5px 60px;
-	float: left;*/
+
+#dataset-grid {
+	padding: 10px;
 }
-/*.meld-tb-form li.checkbox label {
-	margin: 0;
-	padding: 0;
-	width: auto;
-	font-weight: bold;
-}*/
+
 #datasource-new {
 	border-top: 1px solid #aaa;
 }
