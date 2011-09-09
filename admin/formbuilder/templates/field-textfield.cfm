@@ -62,11 +62,11 @@ to your own modified versions of Mura CMS.
 					<ul class="template-form">
 						<li>
 							<label for="label">#mmRBF.getKeyValue(session.rb,'formbuilder.field.label')#</label>
-							<input class="text medium tb-label" type="text" name="label" value="" maxlength="50" data-required='true' />
+							<input class="text tb-label" type="text" name="label" value="" maxlength="250" data-required='true' />
 						</li>
 						<li>
 							<label for="name">#mmRBF.getKeyValue(session.rb,'formbuilder.field.name')#</label>
-							<input id="tb-name" class="text medium disabled" name="name" type="text" value="" maxlength="50" disabled="true" />
+							<input id="tb-name" class="text disabled" name="name" type="text" value="" maxlength="250" disabled="true" />
 						</li>
 						<li>
 							<label for="value">#mmRBF.getKeyValue(session.rb,'formbuilder.field.value')#</label>

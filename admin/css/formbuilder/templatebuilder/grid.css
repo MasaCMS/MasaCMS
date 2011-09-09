@@ -1,10 +1,11 @@
 /* @override 
 	http://localhost:8500/muracms/admin/css/formbuilder/templatebuilder/grid.css */
 
-#meld-tb-grid-padding {
+/*#meld-tb-grid-padding {
 	margin: 0 7px;
 	background-color: #ddd;
-}
+}*/
+
 #meld-tb-grid-table-header {
 	background: url('images/ui-toolbar-bg.jpg') repeat-x scroll 0 0 transparent;
 	padding: 0;
@@ -25,7 +26,7 @@
 }
 #meld-tb-grid-table-header li {
 	list-style: none;
-	padding: 0 30px;
+	padding: 0 24px;
 	margin: 0;
 	text-align: left;
 	overflow: hidden;
@@ -38,6 +39,9 @@
 	padding: 0;
 	text-align: left;
 	border-bottom: 1px solid #eee;
+	-webkit-border-radius: 0;
+	-moz-border-radius: 0;
+	border-radius: 0;
 }
 #meld-tb-grid-table li span, #meld-tb-grid-table-header li span {
 	display: block;
@@ -46,13 +50,21 @@
 	color: #000;
 	line-height: 18px !important;
 }
+
+#meld-tb-grid-table-header li span {
+	width: 50% !important;
+}
+
 #meld-tb-grid li .meld-tb-cell {
-	width: 150px;
 	padding: 3px 0;
+	width: 44% !important;
 }
 
 #meld-tb-grid li .meld-tb-cell-small {
 	width: 15px !important;
+	display: block;
+	height: 12px;
+	padding-top: 8px;
 }
 
 #meld-tb-grid li .meld-tb-cell-small input.radio {
@@ -100,7 +112,7 @@
 	background-color: #fff9f2;
 }
 #meld-tb-grid-table li span input {
-	width: 90%;
+	width: 100%;
 	/*margin: 3px 5px !important;*/
 	padding: 2px;
 	background-color: #fcfcfc;
@@ -117,6 +129,7 @@
 	height: 20px;
 	margin: 15px 2px;
 	display: none;
+	cursor: move;
 }
 #meld-tb-grid-table li.alt {
 /*	background-color: #ffffff; */
