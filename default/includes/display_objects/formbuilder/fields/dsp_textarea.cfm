@@ -1,19 +1,12 @@
 ﻿<cfset strField = "" />
-<cfinclude template="dsp_label.cfm">
 <cfsilent>
 <cfsavecontent variable="strField">
 	<cfoutput>
+	#dspObject_Include(thefile='/formbuilder/fields/dsp_label.cfm',field=arguments.field,dataset=arguments.dataset)#</label>
 	<textarea name="#field.name#"
-	</cfoutput>
-</cfsavecontent>
-<cfinclude template="dsp_common.cfm" />
-<!---<cfinclude template="dsp_data_common.cfm" />--->
-</cfsilent>
-<cfsavecontent variable="strField">
-	<cfoutput>
+	#dspObject_Include(thefile='/formbuilder/fields/dsp_common.cfm',field=arguments.field,dataset=arguments.dataset)#
 	#strField#>#field.value#</textarea>
 	</cfoutput>
 </cfsavecontent>
-<cfoutput>
-#strField#
-</cfoutput>
+</cfsilent>
+<cfoutput>#strField#</cfoutput>

@@ -1,11 +1,10 @@
-﻿<cfset strField = "" />
-<cfinclude template="dsp_label.cfm">
-<cfsilent>
+﻿<cfsilent>
+<cfset strField = "" />	
 <cfsavecontent variable="strField">
-	<cfoutput></label><input type="text" name="#field.name#" value="#field.value#"</cfoutput>
+	<cfoutput>
+	#dspObject_Include(thefile='/formbuilder/fields/dsp_label.cfm',field=arguments.field,dataset=arguments.dataset)#
+	</label><input type="text" name="#field.name#" value="#field.value#"#dspObject_Include(thefile='/formbuilder/fields/dsp_common.cfm',field=arguments.field,dataset=arguments.dataset)#</cfoutput>
 </cfsavecontent>
-<cfinclude template="dsp_common.cfm" />
-<cfinclude template="dsp_single_common.cfm" />
 </cfsilent>
 <cfoutput>
 #strField# />
