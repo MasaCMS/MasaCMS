@@ -1,12 +1,12 @@
 <cfset strField = "" />
 <cfsilent>
-<!---<cfinclude template="dsp_data_common.cfm" />--->
 </cfsilent>
 <cfsavecontent variable="strField">
 	<cfoutput>
+	#dspObject_Include(thefile='/formbuilder/fields/dsp_label.cfm',field=arguments.field,dataset=arguments.dataset)#</label>
 	<cfloop from="1" to="#ArrayLen(dataset.datarecordorder)#" index="iiy">
 		<cfset record = dataset.datarecords[dataset.datarecordorder[iiy]] />
-		<div><label for="record.datarecordid"><input name="#field.name#" type="radio"<cfif record.isselected eq 1> CHECKED</cfif> value="#record.value#">#record.label#</label></div>
+		<div><input name="#field.name#" type="radio"<cfif record.isselected eq 1> CHECKED</cfif> value="#record.value#">#record.label#</div>
 	</cfloop>
 	</select>
 	</cfoutput>

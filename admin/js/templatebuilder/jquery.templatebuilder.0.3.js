@@ -122,18 +122,22 @@
 			var data			= jQuery.parseJSON( jsonData );
 			var fieldData		= _formData.fields[data.fieldID];
 			var templateName	= "field-" + fieldData.fieldtype.fieldtype;
+			var $pointer		= jQuery('<div class="pointer"></div>');
 
 			$_field.hide();
 			$_dataset.hide();
 			$_grid.hide();
 
-			if(_currentFieldBtn != undefined)
+			if (_currentFieldBtn != undefined) {
 				jQuery(_currentFieldBtn).parent().removeClass('selected');
+				jQuery('.pointer').remove();
+			}
 
 			_currentFieldBtn = $btn;
 			_currentFieldID = data.fieldID;
 								
 			jQuery(_currentFieldBtn).parent().addClass('selected');
+			jQuery(_currentFieldBtn).parent().append($pointer);
 
 			if (_templates[templateName] == undefined) 
 				goLoadTemplate(templateName);
