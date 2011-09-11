@@ -41,7 +41,7 @@ the GNU General Public License version 2 without this exception. You may, if you
 to your own modified versions of Mura CMS.
 --->
 
-<cfswitch expression="#getJsLib()#">
+<cfswitch expression="#$.getJsLib()#">
 <cfcase value="jquery">
 	<cfset loadJSLib() />
 	<cfset $.addToHTMLHeadQueue("feedslideshow/htmlhead/slideshow.jquery.cfm")>
@@ -54,8 +54,8 @@ to your own modified versions of Mura CMS.
 		<cfset variables.feedBean = $.getBean("feed").loadBy(name=arguments.objectID,siteID=arguments.siteID)>
   	</cfif>
 	
-	 <cfif isJson(params)>
-  		<cfset variables.feedBean.set(deserializeJSON(params))>
+	 <cfif isJson(arguments.params)>
+  		<cfset variables.feedBean.set(deserializeJSON(arguments.params))>
 	  <cfelse>
 	  	 <cfset variables.feedBean.setImageSize("medium")>
   	  </cfif>
@@ -80,7 +80,7 @@ to your own modified versions of Mura CMS.
 			<cfset adminBase=""/>
 		</cfif>
 			
-		<cfset editableControl.editLink = adminBase & "#application.configBean.getContext()#/admin/index.cfm?fuseaction=cFeed.edit">
+		<cfset editableControl.editLink = adminBase & "#$.globalConfig('context')#/admin/index.cfm?fuseaction=cFeed.edit">
 		<cfset editableControl.editLink = editableControl.editLink & "&amp;siteid=" & bean.getSiteID()>
 		<cfset editableControl.editLink = editableControl.editLink & "&amp;feedid=" & bean.getFeedID()>
 		<cfset editableControl.editLink = editableControl.editLink & "&amp;type=" & bean.getType()>
@@ -97,8 +97,8 @@ to your own modified versions of Mura CMS.
 		<cfset cssID=$.createCSSid(feedBean.renderName())>
       	<cfsilent>	
 			<cfset rsPreFeed=application.feedManager.getFeed(feedBean,request.tag) />
-			<cfif getSite().getExtranet() eq 1 and request.r.restrict eq 1>
-				<cfset rs=queryPermFilter(rsPreFeed)/>
+			<cfif $.siteConfig('Extranet') eq 1 and $.event('r').restrict eq 1>
+				<cfset rs=$.queryPermFilter(rsPreFeed)/>
 			<cfelse>
 				<cfset rs=rsPreFeed />
 			</cfif>
@@ -108,8 +108,8 @@ to your own modified versions of Mura CMS.
 			<cfset variables.iterator=$.getBean("contentIterator")>
 			<cfset variables.iterator.setQuery(rs,feedBean.getNextN())>
 		
-			<cfset rbFactory=getSite().getRBFactory() />
-			<cfset nextN=application.utility.getNextN(rs,feedBean.getNextN(),request.StartRow)>
+			
+			<cfset nextN=$.getBean('utility').getNextN(rs,feedBean.getNextN(),request.StartRow)>
 			<cfset checkMeta=feedBean.getDisplayRatings() or feedBean.getDisplayComments()>
 			<cfset doMeta=0 />
 		  </cfsilent>
@@ -118,10 +118,10 @@ to your own modified versions of Mura CMS.
 	  	<div class="svSlideshow clearfix" id="#cssID#">
 	  		<div class="svSlides">
 		 	<cfif variables.feedBean.getDisplayName()>
-		       <#getHeaderTag('subHead1')#>#HTMLEditFormat(variables.feedBean.renderName())#</#getHeaderTag('subHead1')#>
+		       <#$.getHeaderTag('subHead1')#>#HTMLEditFormat(variables.feedBean.renderName())#</#$.getHeaderTag('subHead1')#>
 			</cfif>
 			
-			#dspObject_Include(
+			#$.dspObject_Include(
 				thefile='dsp_content_list.cfm',
 				fields=variables.feedBean.getDisplayList(),
 				type="Feed", 

@@ -1,1 +1,1 @@
-<cfoutput><script type="text/javascript" src="#application.configBean.getContext()#/wysiwyg/fckeditor.js"></script></cfoutput>
+<cfoutput><script type="text/javascript" src="#$.globalConfig('context')#/wysiwyg/fckeditor.js"></script></cfoutput>

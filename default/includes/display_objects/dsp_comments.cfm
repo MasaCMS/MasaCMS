@@ -41,4 +41,4 @@ the GNU General Public License version 2 without this exception. You may, if you
 to your own modified versions of Mura CMS.
 --->
 
-<cfoutput>#dspObject_include(thefile='comments/index.cfm')#</cfoutput>
+<cfoutput>#$.dspObject_Include(thefile='comments/index.cfm')#</cfoutput>

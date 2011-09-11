@@ -42,13 +42,12 @@ to your own modified versions of Mura CMS.
 --->
 <cfsilent>
 <cfset $.loadShadowBoxJS() />
-<cfset rbFactory=getSite().getRBFactory()/>
 </cfsilent>
-<cfif request.display neq 'login'>
+<cfif $.event('display') neq 'login'>
 <cfif not len(getPersonalizationID())>
 <cfoutput>
 	<div id="login" class="clearfix">
-		<#getHeaderTag('subHead1')#>#$.rbKey('user.signin')#</#getHeaderTag('subHead1')#>
+		<#$.getHeaderTag('subHead1')#>#$.rbKey('user.signin')#</#$.getHeaderTag('subHead1')#>
 		<form action="<cfoutput>?nocache=1</cfoutput>" name="loginForm" method="post">
 			<ol>
 				<li>
@@ -68,7 +67,7 @@ to your own modified versions of Mura CMS.
 				<input type="hidden" name="doaction" value="login" />
 				<button type="submit" class="submit">#$.rbKey('user.signin')#</button>
 			</div>
-			<cfif application.settingsManager.getSite(request.siteid).getExtranetPublicReg()><p>#$.rbKey('user.notregistered')# <a href="#application.settingsManager.getSite(request.siteid).getEditProfileURL()#&returnURL=#urlEncodedFormat(application.contentRenderer.getCurrentURL())#">#$.rbKey('user.signup')#</a></p></cfif>
+			<cfif application.settingsManager.getSite($.event('siteID')).getExtranetPublicReg()><p>#$.rbKey('user.notregistered')# <a href="#application.settingsManager.getSite($.event('siteID')).getEditProfileURL()#&returnURL=#urlEncodedFormat(application.contentRenderer.getCurrentURL())#">#$.rbKey('user.signup')#</a></p></cfif>
 		</form>
 	</div>
 </cfoutput>
@@ -78,13 +77,13 @@ to your own modified versions of Mura CMS.
 <div id="svSessionTools" class="clearfix">
 	<p id="welcome">#$.rbKey('user.welcome')#, #HTMLEditFormat("#session.mura.fname# #session.mura.lname#")#</p>
  	<ul id="navSession">
-		<li id="navEditProfile"><a href="#application.settingsManager.getSite(request.siteid).getEditProfileURL()#&nocache=1&returnURL=#urlEncodedFormat(application.contentRenderer.getCurrentURL())#">#$.rbKey('user.editprofile')#</a></li>
+		<li id="navEditProfile"><a href="#application.settingsManager.getSite($.event('siteID')).getEditProfileURL()#&nocache=1&returnURL=#urlEncodedFormat(application.contentRenderer.getCurrentURL())#">#$.rbKey('user.editprofile')#</a></li>
 		<li id="navLogout"><a href="?doaction=logout">#$.rbKey('user.logout')#</a></li>
 	</ul>
 </div>
 </cfif>
 
-#dspObject('favorites','','#request.siteid#')#
+#dspObject('favorites','',$.event('siteID'))#
 </cfoutput>
 </cfif>
 </cfif>

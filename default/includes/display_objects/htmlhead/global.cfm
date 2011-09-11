@@ -41,7 +41,7 @@ the GNU General Public License version 2 without this exception. You may, if you
 to your own modified versions of Mura CMS.
 --->
 <cfsilent>
-<cfset loginURL=application.settingsManager.getSite(request.siteid).getLoginURL()>
+<cfset loginURL=application.settingsManager.getSite($.event('siteID')).getLoginURL()>
 <!---
 <cfif find("?",loginURL)>
 <cfset loginURL=LoginURL & "&LinkServID=" & $.content('contentID')>
@@ -54,10 +54,10 @@ to your own modified versions of Mura CMS.
 <script type="text/javascript" src="#event.getSite().getAssetPath()#/js/global.js"></script>
 <script type="text/javascript">
 var loginURL="#loginURL#";
-var siteid="#request.siteid#"; 
-var siteID="#request.siteid#"; 
+var siteid="#$.event('siteID')#"; 
+var siteID="#$.event('siteID')#"; 
 var context="#$.globalConfig('context')#"; 
-var jslib="#getJsLib()#";
+var jslib="#$.getJsLib()#";
 var assetpath="#$.siteConfig('assetPath')#";
 var themepath="#$.siteConfig('themeAssetPath')#";
 var htmlEditorType="#$.globalConfig('htmlEditorType')#";

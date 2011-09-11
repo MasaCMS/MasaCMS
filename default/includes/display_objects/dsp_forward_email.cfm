@@ -40,15 +40,13 @@ for your modified version; it is your choice whether to do so, or to make such m
 the GNU General Public License version 2 without this exception. You may, if you choose, apply this exception
 to your own modified versions of Mura CMS.
 --->
-
-<cfparam name="request.emailid" default=""/>
 <cfoutput>
 <div id="svForwardEmail">
-	<cfif request.emailid eq ''>
+	<cfif $.event('emailID') eq ''>
 	<em>#$.rbKey('email.emailiderror')#</em>
 	<cfelse>
-	<#getHeaderTag('subHead1')#>#application.emailManager.read(request.emailid).getSubject()#</#getHeaderTag('subHead1')#>
-	<cfif listfind(request.doaction,"forwardEmail")>
+	<#$.getHeaderTag('subHead1')#>#application.emailManager.read($.event('emailID')).getSubject()#</#$.getHeaderTag('subHead1')#>
+	<cfif listfind($.event('doaction'),"forwardEmail")>
 	<p>#$.rbKey('email.forwarded')#</p>
 	</cfif>
 	<form name="forwardFrm" action="?nocache=1" method="post" format="html" onsubmit="return validate(this);" novalidate="novalidate" data-role="fieldcontain">
@@ -62,9 +60,9 @@ to your own modified versions of Mura CMS.
 	<li><input name="to5" message="#htmlEditFormat($.rbKey('email.emailvalidate'))#" validate="email" required="no"></li>
 	</ul>
 	<input name="doaction" value="forwardEmail" type="hidden"/>
-	<input name="emailid" value="#HTMLEditFormat(request.emailid)#" type="hidden"/>
-	<input name="from" value="#HTMLEditFormat(request.from)#" type="hidden"/>
-	<input name="origin" value="#HTMLEditFormat(request.origin)#" type="hidden"/>
+	<input name="emailid" value="#HTMLEditFormat($.event('emailID'))#" type="hidden"/>
+	<input name="from" value="#HTMLEditFormat($.event('from'))#" type="hidden"/>
+	<input name="origin" value="#HTMLEditFormat($.event('origin'))#" type="hidden"/>
 	<fieldset>
 	<input class="submit" type="submit" value="#HTMLEditFormat($.rbKey('email.submit'))#"/>
 	<cfinclude template="dsp_form_protect.cfm" />

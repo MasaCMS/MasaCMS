@@ -60,7 +60,7 @@ to your own modified versions of Mura CMS.
 	<cfset variables.iterator.setPage(1)>
 </cfif>
 
-<cfset variables.nextN=application.utility.getNextN(rsSection,event.getContentBean().getNextN(),currentNextNIndex)>
+<cfset variables.nextN=$.getBean('utility').getNextN(rsSection,event.getContentBean().getNextN(),currentNextNIndex)>
 
 </cfsilent>
 
@@ -71,17 +71,17 @@ to your own modified versions of Mura CMS.
 			<cfif NOT len($.content("displayList"))>
 				<cfset variables.contentListFields="Title,Summary,Date,Image,Tags,Credits">
 					
-				<cfif application.contentGateway.getHasComments($.event('siteid'),$.content('contentID'))>
+				<cfif $.getBean('contentGateway').getHasComments($.event('siteid'),$.content('contentID'))>
 					<cfset variables.contentListFields=listAppend(contentListFields,"Comments")>
 				</cfif>
 				
-				<cfif application.contentGateway.getHasRatings($.event('siteid'),$.content('contentID'))>
-					<cfset variables.contentListFields=listAppend(contentListFields,"Rating")>
+				<cfif $.getBean('contentGateway').getHasRatings($.event('siteid'),$.content('contentID'))>
+					<cfset variables.contentListFields=listAppend(variables.contentListFields,"Rating")>
 				</cfif>
 				<cfset $.content("displayList",variables.contentListFields)>
 			</cfif>
 		</cfsilent>
-		#dspObject_Include(thefile='dsp_content_list.cfm',
+		#$.dspObject_Include(thefile='dsp_content_list.cfm',
 			fields=$.content("displayList"),
 			type="Portal", 
 			iterator= variables.iterator,
@@ -90,7 +90,7 @@ to your own modified versions of Mura CMS.
 			imageWidth=$.content("ImageWidth")
 			)#
 		<cfif variables.nextn.numberofpages gt 1>
-			#dspObject_Include(thefile='dsp_nextN.cfm')#
+			#$.dspObject_Include(thefile='dsp_nextN.cfm')#
 		</cfif>	
 	</div>
 	</cfoutput>
@@ -98,12 +98,12 @@ to your own modified versions of Mura CMS.
 
 <cfif not variables.iterator.getRecordCount()>
      <cfoutput>
-     <cfif request.filterBy eq "releaseMonth">
+     <cfif $.event('filterBy') eq "releaseMonth">
      <div id="svPortal">
 	     <br>
 	     <p>#$.rbKey('list.nocontentmonth')#</p>    
      </div>
-     <cfelseif request.filterBy eq "releaseDate">
+     <cfelseif $.event('filterBy') eq "releaseDate">
      <div id="svPortal">
 	     <br>
 	     <p>#$.rbKey('list.nocontentday')#</p>

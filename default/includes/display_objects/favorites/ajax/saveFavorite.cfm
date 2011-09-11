@@ -45,19 +45,16 @@ to your own modified versions of Mura CMS.
 <cfparam name="url.columnNumber" default="">
 <cfparam name="url.rowNumber" default="">
 <cfparam name="url.maxRssItems" default="">
-
-<cfset rbFactory=application.settingsManager.getSite(url.siteid).getRBFactory()/>
+<cfset $=application.serviceFactory.getBean("MuraScopr").init(url.siteID)>
 <cfset favorite = application.favoriteManager.saveFavorite('', url.userID, url.siteid, url.favoriteName, url.favoriteLocation, url.favoritetype, url.columnNumber, url.rowNumber, url.maxRssItems) />
 <cfset contentLink = "" />
-<cfset renderer = createObject("component","#application.settingsManager.getSite(url.siteID).getAssetMap()#.includes.contentRenderer").init(url) />
 <cfset lid = replace(favorite.getFavoriteID(), "-", "", "ALL") />
-<cfset contentBean = application.contentManager.getActiveContent(favorite.getFavorite(), url.siteid) />
-
-<cfset contentLink = renderer.createHref(contentBean.getType(), contentBean.getFilename(), url.siteid, favorite.getfavorite(), '', '', '', '#application.configBean.getContext()#', '#application.configBean.getStub()#', '', 'false') />
+<cfset contentBean = $.getBean("content").loadBy(contentID=favorite.getFavorite()) />
+<cfset contentLink = $.createHref(contentBean.getType(), contentBean.getFilename(), url.siteid, favorite.getfavorite(), '', '', '', '#$.globalConfig('context')#', '#$.globalConfig('stub')#', '', 'false') />
 <cfset contentLink = "<a href='#contentLink#'>#favoriteName#</a>" />
 <cfset contentLink = "<a href="""" onClick=""return deleteFavorite('#favorite.getfavoriteID()#', 'favorite#lid#');"" title=""#xmlformat($.rbKey('favorites.removefromfavorites'))#"" class=""remove"">[-]</a> " & contentLink />
 <cfset favoriteStruct = structNew() />
 <cfset favoriteStruct.lid = lid />
 <cfset favoriteStruct.link = contentLink />
 <cfset favoriteStruct.favoriteID = favorite.getFavoriteID() />
-<cfoutput>#application.contentRenderer.jsonencode(favoriteStruct)#</cfoutput>
+<cfoutput>#$.jsonencode(favoriteStruct)#</cfoutput>

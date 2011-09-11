@@ -48,13 +48,13 @@ to your own modified versions of Mura CMS.
 	StructAppend(request, url, "no");
 	StructAppend(request, form, "no");
 </cfscript>
-<cfset rbFactory=application.settingsManager.getSite(request.siteid).getRBFactory() />
+<cfset $=application.serviceFactory.getBean('MuraScope').init(request.siteID)>
+<cfset rbFactory=$.siteConfig('RBFactory') />
 <cfparam name="form.ccself" default=0>
 <cfif form.sendto2 neq ''><cfset form.sendto1=listappend(form.sendto1,form.sendto2)></cfif>
 <cfif form.sendto3 neq ''><cfset form.sendto1=listappend(form.sendto1,form.sendto3)></cfif>
 <cfif form.ccself><cfset form.sendto1=listappend(form.sendto1,form.email)></cfif>
 <cfset newline=Chr(13) & Chr(10)>
-<cfset site = application.settingsManager.getSite(request.siteID) />
 <cfset success=true/>
 <cftry>
 <cfsavecontent variable="notifyText"><cfoutput>
@@ -70,8 +70,8 @@ to your own modified versions of Mura CMS.
 <cfset email.sendText(notifyText,
 				form.sendto1,
 				form.email,
-				site.getSite(),
-				request.siteid,
+				$.siteConfig('site'),
+				$.event('siteID'),
 				form.email) />
 <cfcatch>
 <cfset success=false/>
@@ -83,8 +83,8 @@ to your own modified versions of Mura CMS.
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
-<title>#application.settingsManager.getSite(request.siteID).getSite()# - #$.rbKey('stf.sendtoafriend')#</title>
-<link rel="stylesheet" href="#application.settingsManager.getSite(request.siteid).getAssetPath()#/css/style.css" type="text/css" media="all" />
+<title>#$siteConfig('site')# - #$.rbKey('stf.sendtoafriend')#</title>
+<link rel="stylesheet" href="#$.globalConfig('assetPath')#/css/style.css" type="text/css" media="all" />
 </head>
 
 <body id="svSendToFriend">

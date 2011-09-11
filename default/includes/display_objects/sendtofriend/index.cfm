@@ -47,7 +47,7 @@ to your own modified versions of Mura CMS.
 	StructAppend(request, url, "no");
 	StructAppend(request, form, "no");
 </cfscript>
-<cfset $=application.serviceFactory.getBean("MuraScope").init(request.siteID)>
+<cfset $=application.serviceFactory.getBean("MuraScope").init($.event('siteID'))>
 </cfsilent>
 <cfoutput>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
@@ -55,9 +55,9 @@ to your own modified versions of Mura CMS.
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
 
-<title>#application.settingsManager.getSite(request.siteID).getSite()# - #$.rbKey('stf.sendtoafriend')#</title>
+<title>#$.siteConfig('sitei')# - #$.rbKey('stf.sendtoafriend')#</title>
 
-<link rel="stylesheet" href="#application.settingsManager.getSite(request.siteid).getAssetPath()#/css/style.css" type="text/css" media="all" />
+<link rel="stylesheet" href="#$.globalConfig('assetPath')#/css/style.css" type="text/css" media="all" />
 </head>
 
 <body id="svSendToFriend">
@@ -80,7 +80,7 @@ to your own modified versions of Mura CMS.
 </li>
 <li><label>#$.rbKey('stf.message')#</label><textarea rows="3" name="comments" cols="35"></textarea></li>
 </ol>
-<input type="hidden" name="siteID" value="#HTMLEditFormat(request.siteID)#"/>
+<input type="hidden" name="siteID" value="#HTMLEditFormat($.event('siteID'))#"/>
 </fieldset>
 <div class="buttons"><input type="submit" name="btn_submit" value="#htmlEditFormat($.rbKey('stf.send'))#" alt="send" class="submit"></div>
 </cfform>

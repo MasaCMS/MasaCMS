@@ -42,38 +42,35 @@ to your own modified versions of Mura CMS.
 --->
 
 <cfsilent>
-<cfparam name="request.day" default="0">
-<cfparam name="request.filterBy" default="">
-
-<cfif not isNumeric(request.month)>
-	<cfset request.month=month(now())>
+<cfif not isNumeric($.event('month'))>
+	<cfset $.event('month',month(now()))>
 </cfif>
 
-<cfif not isNumeric(request.year)>
-	<cfset request.year=year(now())>
+<cfif not isNumeric($.event('year'))>
+	<cfset $.event('year',year(now()))>
 </cfif>
 
-<cfif isNumeric(request.day) and request.day
-	and request.filterBy eq "releaseDate">
+<cfif isNumeric($.event('day')) and $.event('day')
+	and $.event('filterBy') eq "releaseDate">
 	<cfset menuType="releaseDate">
-	<cfset menuDate=createDate(request.year,request.month,request.day)>
-<cfelseif request.filterBy eq "releaseMonth">
+	<cfset menuDate=createDate($.event('year'),$.event('month'),$.event('day'))>
+<cfelseif $.event('filterBy') eq "releaseMonth">
 	<cfset menuType="releaseMonth">
-	<cfset menuDate=createDate(request.year,request.month,1)>
+	<cfset menuDate=createDate($.event('year'),$.event('month'),1)>
 <cfelse>
 	<cfset menuDate=now()>
 	<cfset menuType="default">
 </cfif>
 
-<cfset maxPortalItems=application.configBean.getValue("maxPortalItems")>
+<cfset maxPortalItems=$.globalConfig("maxPortalItems")>
 <cfif not isNumeric(maxPortalItems)>
 	<cfset maxPortalItems=100>
 </cfif>
 
-<cfset variables.rsPreSection=application.contentGateway.getKids('00000000000000000000000000000000000',request.siteid,$.content('contentID'),menuType,menuDate,maxPortalItems,request.keywords,0,$.content('sortBy'),$.content('sortDirection'),request.categoryID,request.relatedID,request.tag)>
+<cfset variables.rsPreSection=$.getBean('contentGateway').getKids('00000000000000000000000000000000000',$.event('siteID'),$.content('contentID'),menuType,menuDate,maxPortalItems,$.event('keywords'),0,$.content('sortBy'),$.content('sortDirection'),$.event('categoryID'),$.event('relatedID'),$.event('tag'))>
 
-<cfif getSite().getExtranet() eq 1 and request.r.restrict eq 1>
-	<cfset variables.rssection=queryPermFilter(variables.rsPreSection)/>
+<cfif $.siteConfig('extranet') eq 1 and $.event('r').restrict eq 1>
+	<cfset variables.rssection=$.queryPermFIlter(variables.rsPreSection)/>
 <cfelse>
 	<cfset variables.rssection=variables.rsPreSection/>
 </cfif>
@@ -96,7 +93,7 @@ to your own modified versions of Mura CMS.
 	<cfset variables.iterator.setPage(1)>
 </cfif>
 
-<cfset variables.nextN=application.utility.getNextN(rsSection,$.content('nextN'),variables.currentNextNIndex)>
+<cfset variables.nextN=$.getBean('utility').getNextN(rsSection,$.content('nextN'),variables.currentNextNIndex)>
 
 </cfsilent>
 
@@ -107,17 +104,17 @@ to your own modified versions of Mura CMS.
 			<cfif NOT len($.content("displayList"))>
 				<cfset variables.contentListFields="Title,Summary,Date,Image,Tags,Credits">
 				
-				<cfif application.contentGateway.getHasComments($.event('siteid'),$.content('contentID'))>
+				<cfif $.getBean('contentGateway').getHasComments($.event('siteid'),$.content('contentID'))>
 					<cfset variables.contentListFields=listAppend(contentListFields,"Comments")>
 				</cfif>
 				
-				<cfif application.contentGateway.getHasRatings($.event('siteid'),$.content('contentID'))>
-					<cfset variables.contentListFields=listAppend(contentListFields,"Rating")>
+				<cfif $.getBean('contentGateway').getHasRatings($.event('siteid'),$.content('contentID'))>
+					<cfset variables.contentListFields=listAppend(variables.contentListFields,"Rating")>
 				</cfif>
 				<cfset $.content("displayList",variables.contentListFields)>
 			</cfif>
 		</cfsilent>
-		#dspObject_Include(thefile='dsp_content_list.cfm',
+		#$.dspObject_Include(thefile='dsp_content_list.cfm',
 			fields=$.content("displayList"),
 			type="Portal", 
 			iterator= variables.iterator,
@@ -126,7 +123,7 @@ to your own modified versions of Mura CMS.
 			imageWidth=$.content("ImageWidth")
 			)#
 		<cfif variables.nextn.numberofpages gt 1>
-			#dspObject_Include(thefile='dsp_nextN.cfm')#
+			#$.dspObject_Include(thefile='dsp_nextN.cfm')#
 		</cfif>	
 	</div>
 	</cfoutput>
@@ -134,12 +131,12 @@ to your own modified versions of Mura CMS.
 
 <cfif not variables.iterator.getRecordCount()>
      <cfoutput>
-     <cfif request.filterBy eq "releaseMonth">
+     <cfif $.event('filterBy') eq "releaseMonth">
      <div id="svPortal">
 	     <br>
 	     <p>#$.rbKey('list.nocontentmonth')#</p>    
      </div>
-     <cfelseif request.filterBy eq "releaseDate">
+     <cfelseif $.event('filterBy') eq "releaseDate">
      <div id="svPortal">
 	     <br>
 	     <p>#$.rbKey('list.nocontentday')#</p>

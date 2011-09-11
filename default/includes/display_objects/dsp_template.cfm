@@ -84,9 +84,9 @@ to your own modified versions of Mura CMS.
 			<cfset variables.adminBase=""/>
 		</cfif>
 		
-		<cfset editableControl.editLink = variables.adminBase & "#application.configBean.getContext()#/admin/index.cfm?fuseaction=cArch.edit">
-		<cfif structKeyExists(request,"previewID") and len(request.previewID)>
-			<cfset editableControl.editLink = editableControl.editLink & "&amp;contenthistid=" & request.previewID>
+		<cfset editableControl.editLink = variables.adminBase & "#$.globalConfig('context')#/admin/index.cfm?fuseaction=cArch.edit">
+		<cfif len($.event('previewID'))>
+			<cfset editableControl.editLink = editableControl.editLink & "&amp;contenthistid=" & $.event('previewID')>
 		<cfelse>
 			<cfset editableControl.editLink = editableControl.editLink & "&amp;contenthistid=" & bean.getContentHistID()>
 		</cfif>
@@ -100,7 +100,7 @@ to your own modified versions of Mura CMS.
 		<cfset editableControl.editLink = editableControl.editLink & "&amp;compactDisplay=true">
 		<cfset editableControl.editLink = editableControl.editLink & "&amp;homeid=" & $.content('contentID')>
 		<!---
-		<cfset editableControl.historyLink = adminBase & "#application.configBean.getContext()#/admin/index.cfm?fuseaction=cArch.hist">
+		<cfset editableControl.historyLink = adminBase & "#$.globalConfig('context')#/admin/index.cfm?fuseaction=cArch.hist">
 		<cfset editableControl.historyLink = editableControl.historyLink & "&amp;siteid=" & bean.getSiteID()>
 		<cfset editableControl.historyLink = editableControl.historyLink & "&amp;contentid=" & bean.getContentID()>
 		<cfset editableControl.historyLink = editableControl.historyLink & "&amp;topid=00000000000000000000000000000000001">

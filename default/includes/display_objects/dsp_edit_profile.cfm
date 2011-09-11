@@ -45,21 +45,21 @@ to your own modified versions of Mura CMS.
 <cfif not isdefined('request.userBean')>
 <cfset request.userBean=application.userManager.read(session.mura.userID) />
 </cfif>
-<cfset rbFactory=getSite().getRBFactory() />
+
 <cfparam name="msg" default="#$.rbKey('user.message')#">
-<cfparam name="request.categoryID" default="">
-<cfset loadJSLib()>
+<cfparam name="$.event('categoryID')" default="">
+<cfset $.loadJSLib()>
 <cfset $.addToHTMLHeadQueue("htmlEditor.cfm")>
 </cfsilent>
 <cfoutput>
 
-<#getHeaderTag('headline')#><cfif not session.mura.isLoggedIn>#$.rbKey('user.createprofile')#<cfelse>
-#$.rbKey('user.editprofile')#</cfif></#getHeaderTag('headline')#>
+<#$.getHeaderTag('headline')#><cfif not session.mura.isLoggedIn>#$.rbKey('user.createprofile')#<cfelse>
+#$.rbKey('user.editprofile')#</cfif></#$.getHeaderTag('headline')#>
 <div id="svEditProfile">
 <cfif not(structIsEmpty(request.userBean.getErrors()) and request.doaction eq 'createprofile')>
 
 <cfif not structIsEmpty(request.userBean.getErrors()) >
- <div id="editProfileMsg" class="required">#application.utility.displayErrors(request.userBean.getErrors())#</div>
+ <div id="editProfileMsg" class="required">#$.getBean('utility').displayErrors(request.userBean.getErrors())#</div>
 <cfelse>
   <div id="editProfileMsg" class="required">#msg#</div>
 </cfif>
@@ -127,10 +127,10 @@ to your own modified versions of Mura CMS.
 </ul>
 </fieldset>
 
-<cfif application.categoryManager.getCategoryCount(request.siteid)>
+<cfif application.categoryManager.getCategoryCount($.event('siteID'))>
 <fieldset>
 	<legend>#$.rbKey('user.interests')#:</legend>		
-			<cf_dsp_categories_nest siteid="#request.siteid#">
+			<cf_dsp_categories_nest siteid="#$.event('siteID')#">
 </fieldset>
 </cfif>
 <!--- This *should* work if you want to allow an avatar, but it hasn't been fully tested. If you need help with it, hit us up in the Mura forum.
@@ -143,7 +143,7 @@ to your own modified versions of Mura CMS.
 			</li>
 			<li class="col">
 				<cfif len(request.userBean.getPhotoFileID())>
-							<img src="#application.configBean.getContext()#/tasks/render/small/?fileid=#request.userBean.getPhotoFileID()#" alt="your photo" />
+							<img src="#$.globalConfig('context')#/tasks/render/small/?fileid=#request.userBean.getPhotoFileID()#" alt="your photo" />
 			<input type="checkbox" name="removePhotoFile" value="true"> Remove current logo 
 			</cfif>
 			</li>
@@ -198,7 +198,7 @@ to your own modified versions of Mura CMS.
 					</cfif>
 					<cfif attributeBean.getType() eq "File" and len(attributeValue) and attributeValue neq 'useMuraDefault'>
 						<div class="inputBox rightCol">
-							<a href="#application.configBean.getContext()#/tasks/render/file/?fileID=#attributeValue#" target="_blank">[Download]</a> 
+							<a href="#$.globalConfig('context')#/tasks/render/file/?fileID=#attributeValue#" target="_blank">[Download]</a> 
 							<br/><input type="checkbox" name="extDelete#attributeBean.getAttributeID()#" value="true"/> 
 							Delete
 						</div>
@@ -231,7 +231,7 @@ to your own modified versions of Mura CMS.
 		<!--- <input type="hidden" name="groupID" value="[userid from Group Detail page url]"> Add users to a specific group --->
 	</cfif> 
 
-	<input type="hidden" name="siteid" value="#HTMLEditFormat(request.siteid)#" />
+	<input type="hidden" name="siteid" value="#HTMLEditFormat($.event('siteID'))#" />
 	<input type="hidden" name="returnURL" value="#HTMLEditFormat(request.returnURL)#" />
 	<input type="hidden" name="display" value="editprofile" />
 </div>
@@ -259,7 +259,7 @@ Date/Time: #now()#
 				getSite().getExtranetPublicRegNotify(),
 				getSite().getSite(),
 				'#getSite().getSite()# Public Registration',
-				request.siteid) />
+				$.event('siteID')) />
 
 </cfif>
 </cfsilent>

@@ -41,16 +41,16 @@ the GNU General Public License version 2 without this exception. You may, if you
 to your own modified versions of Mura CMS.
 --->
 <cfsilent>
-<cfset rsPre=application.contentGateway.getKids('00000000000000000000000000000000000',request.siteid,$.content('contentID'),'default',now(),100,request.keywords,0,$.content('sortBy'),$.content('sortDirection'),request.categoryID,request.relatedID,request.tag)>
-<cfif getSite().getExtranet() eq 1 and request.r.restrict eq 1>
-	<cfset rs=queryPermFilter(rsPre)/>
+<cfset rsPre=$.getBean('contentGateway').getKids('00000000000000000000000000000000000',$.event('siteID'),$.content('contentID'),'default',now(),100,$.event('keywords'),0,$.content('sortBy'),$.content('sortDirection'),$.event('categoryID'),$.event('relatedID'),$.event('tag'))>
+<cfif $.siteConfig('extranet') eq 1 and $.event('r').restrict eq 1>
+	<cfset rs=$.queryPermFilter(rsPre)/>
 <cfelse>
 	<cfset rs=rsPre/>
 </cfif>
 
 <cfif rs.recordcount>	
-	<cfset redirect=createHREF(rs.type,rs.filename,rs.siteid,rs.contentid,"","","",application.configBean.getContext(),application.configBean.getStub(),application.configBean.getIndexFile())>	
-	<cfset application.contentRenderer.redirect(redirect) />
+	<cfset redirect=$.createHREF(rs.type,rs.filename,rs.siteid,rs.contentid,"","","",$.globalConfig('context'),$.globalConfig('stub'),$.globalConfig('indexFile'))>	
+	<cfset $.redirect(redirect) />
 </cfif>
 </cfsilent>
 

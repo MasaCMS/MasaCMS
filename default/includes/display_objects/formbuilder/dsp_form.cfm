@@ -20,7 +20,7 @@
 			<cfset dataset = frmData[field.datasetid] /> 
 		</cfif>
 		<li>
-		#dspObject_Include(thefile='/formbuilder/fields/dsp_#field.fieldtype.fieldtype#.cfm',
+		#$.dspObject_Include(thefile='/formbuilder/fields/dsp_#field.fieldtype.fieldtype#.cfm',
 			field=field,
 			dataset=dataset
 			)#			

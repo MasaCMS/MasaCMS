@@ -40,25 +40,26 @@ for your modified version; it is your choice whether to do so, or to make such m
 the GNU General Public License version 2 without this exception. You may, if you choose, apply this exception
 to your own modified versions of Mura CMS.
 --->
-<cfparam name="request.status" default="">
-<cfparam name="request.linkServID" default="">
-<cfparam name="request.isBlocked" default="false">
+
+<cfif not isBoolean($.event('isBlocked'))>
+	<cfset $.event('isBlocked',false)>
+</cfif>
 
 <cfoutput>
-<#getHeaderTag('headline')#>#$.content('title')#</#getHeaderTag('headline')#>
+<#$.getHeaderTag('headline')#>#$.content('title')#</#$.getHeaderTag('headline')#>
 <div id="svLoginContainer">
 
 	#$.content('summary')# <!--- The page summary can be used to show some content before the user has logged in. Outputs only if there is content in the summary field. --->
-	<#getHeaderTag('subhead1')#>#$.rbKey('user.pleaselogin')#</#getHeaderTag('subhead1')#>
-	<cfif request.status eq 'failed'>
+	<#$.getHeaderTag('subhead1')#>#$.rbKey('user.pleaselogin')#</#$.getHeaderTag('subhead1')#>
+	<cfif $.event('status') eq 'failed'>
 		<cfif isDate(session.blockLoginUntil) and session.blockLoginUntil gt now()>
-		<cfset request.isBlocked=true />
+		<cfset $.event('isBlocked',true) />
 		<p id="loginMsg" class="error">#$.rbKey('user.loginblocked')#</p>
 		<cfelse>
 		<p id="loginMsg" class="error">#$.rbKey('user.loginfailed')#</p>
 		</cfif>
 	</cfif>
-	<cfif not request.isBlocked>
+	<cfif not $.event('isBlocked')>
 	<form id="login" name="frmLogin" method="post" action="?nocache=1" onsubmit="return validate(this);" novalidate="novalidate" data-role="fieldcontain">
 		<fieldset>
 			<ol>
@@ -77,8 +78,8 @@ to your own modified versions of Mura CMS.
 			</ol>
 			<div class="buttons">
 				<input type="hidden" name="doaction" value="login" />
-				<input type="hidden" name="linkServID" value="#HTMLEditFormat(request.linkServID)#" />
-				<input type="hidden" name="returnURL" value="#HTMLEditFormat(request.returnURL)#" />
+				<input type="hidden" name="linkServID" value="#HTMLEditFormat($.event('linkServID'))#" />
+				<input type="hidden" name="returnURL" value="#HTMLEditFormat($.event('returnURL'))#" />
 				<input type="submit" value="#htmlEditFormat($.rbKey('user.login'))#" />
 			</div>
 		</fieldset>
@@ -86,8 +87,8 @@ to your own modified versions of Mura CMS.
 	<p class="required">#$.rbKey('user.requiredfields')#</p>
 	
 	
-	<cfif request.doaction eq 'sendlogin'>
-			<cfset msg2=application.userManager.sendLoginByEmail('#request.email#', '#request.siteid#','#urlencodedformat("#request.returnURL#")#')>
+	<cfif $.event('doaction') eq 'sendlogin'>
+			<cfset msg2=application.userManager.sendLoginByEmail($.event('email'), $.event('siteID'),'#urlencodedformat($.event('returnURL'))#')>
 	</cfif>
 	
 	<form name="form2" method="post" action="?nocache=1" id="sendLogin" onsubmit="return validate(this);" novalidate="novalidate">
@@ -102,20 +103,20 @@ to your own modified versions of Mura CMS.
 			</ol>
 		</fieldset>
 		<cfif isdefined('msg2')>
-		<cfif FindNoCase('is not a valid',msg2)><div class="error">#HTMLEditFormat($.siteConfig("rbFactory").getResourceBundle().messageFormat($.rbKey('user.forgotnotvalid'),request.email))#<cfelseif FindNoCase('no account',msg2)><div class="error">#HTMLEditFormat($.siteConfig("rbFactory").getResourceBundle().messageFormat($.rbKey('user.forgotnotfound'),request.email))#<cfelse><div class="notice">#$.rbKey('user.forgotsuccess')#</cfif></div>
+		<cfif FindNoCase('is not a valid',msg2)><div class="error">#HTMLEditFormat($.siteConfig("rbFactory").getResourceBundle().messageFormat($.rbKey('user.forgotnotvalid'),$.event('email')))#<cfelseif FindNoCase('no account',msg2)><div class="error">#HTMLEditFormat($.siteConfig("rbFactory").getResourceBundle().messageFormat($.rbKey('user.forgotnotfound'),$.event('email')))#<cfelse><div class="notice">#$.rbKey('user.forgotsuccess')#</cfif></div>
 		</cfif>
 		<div class="buttons">
 			<input type="hidden" name="doaction" value="sendlogin" />
-			<input type="hidden" name="linkServID" value="#HTMLEditFormat(request.linkServID)#" />
+			<input type="hidden" name="linkServID" value="#HTMLEditFormat($.event('linkServID'))#" />
 			<input type="hidden" name="display" value="login" />
-			<input type="hidden" name="returnURL" value="#HTMLEditFormat(request.returnURL)#" />
+			<input type="hidden" name="returnURL" value="#HTMLEditFormat($.event('returnURL'))#" />
 			<input type="submit" value="#HTMLEditFormat($.rbKey('user.getpassword'))#" class="submit" />
 		</div>
 	</form>
 
-	<cfif application.settingsManager.getSite(request.siteid).getExtranetPublicReg()>
+	<cfif $.siteConfig('ExtranetPublicReg')>
 	<div id="notRegistered">
-		<#getHeaderTag('subHead1')#>#$.rbKey('user.notregistered')# <a class="callToAction" href="#application.settingsManager.getSite(request.siteid).getEditProfileURL()#&returnURL=#urlencodedformat(request.returnURL)#">#$.rbKey('user.signup')#.</a></#getHeaderTag('subHead1')#>
+		<#$.getHeaderTag('subHead1')#>#$.rbKey('user.notregistered')# <a class="callToAction" href="#$.siteConfig('editProfileURL')#&returnURL=#urlencodedformat($.event('returnURL'))#">#$.rbKey('user.signup')#.</a></#$.getHeaderTag('subHead1')#>
 	</div>
 	</cfif>
 	

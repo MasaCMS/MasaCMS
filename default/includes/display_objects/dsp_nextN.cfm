@@ -59,8 +59,8 @@ to your own modified versions of Mura CMS.
 <cfif len(request.sortBy)>
 	<cfset variables.qrystr="&sortBy=#request.sortBy#&sortDirection=#request.sortDirection#"/>
 </cfif>
-<cfif len(request.categoryID)>
-	<cfset variables.variables.qrystr=variables.qrystr & "&categoryID=#request.categoryID#"/>
+<cfif len($.event('categoryID'))>
+	<cfset variables.variables.qrystr=variables.qrystr & "&categoryID=#$.event('categoryID')#"/>
 </cfif>
 <cfif len(request.relatedID)>
 	<cfset variables.qrystr=variables.qrystr & "&relatedID=#request.relatedID#"/>

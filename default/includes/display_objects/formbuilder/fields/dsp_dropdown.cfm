@@ -2,7 +2,7 @@
 <cfsilent>
 <cfsavecontent variable="strField">
 	<cfoutput>
-	#dspObject_Include(thefile='/formbuilder/fields/dsp_label.cfm',field=arguments.field,dataset=arguments.dataset)#
+	#$.dspObject_Include(thefile='/formbuilder/fields/dsp_label.cfm',field=arguments.field,dataset=arguments.dataset)#
 	<select name="#field.name#"
 	</cfoutput>
 </cfsavecontent>

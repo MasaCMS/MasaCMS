@@ -1,5 +1,5 @@
 <cfcomponent output="false">
-<cfset rbFactory=application.settingsManager.getSite(request.siteid).getRBFactory()>	
+<cfset rbFactory=application.settingsManager.getSite($.event('siteID')).getRBFactory()>	
 <cfscript>
 weekdayShort=$.rbKey('calendar.weekdayshort');
 weekdayLong=$.rbKey('calendar.weekdaylong');
@@ -78,7 +78,7 @@ navID=arguments._navID;
 navPath=arguments._navPath;
 navType=arguments._navType;
 selectedMonth = createDate(navYear,navMonth,1);
-rsMonth=application.contentGateway.getKids('00000000000000000000000000000000000',request.siteid,navID,navType,selectedMonth,0,'',0,"orderno","desc",request.categoryID,request.relatedID);
+rsMonth=$.getBean('contentGateway').getKids('00000000000000000000000000000000000',$.event('siteID'),navID,navType,selectedMonth,0,'',0,"orderno","desc",$.event('categoryID'),request.relatedID);
 daysInMonth=daysInMonth(selectedMonth);
 firstDayOfWeek=dayOfWeek(selectedMonth)-1;
 previousMonth = navMonth-1;
@@ -92,14 +92,14 @@ dateShort = "#listGetAt(monthShort,navMonth,",")# #navYear#";
 </cfscript>
 <cfset qrystr="">
 <!---
-<cfif len(request.sortBy) or len(request.categoryID) or len(request.relatedID)>
+<cfif len(request.sortBy) or len($.event('categoryID')) or len(request.relatedID)>
 	<cfset qrystr="?">
 </cfif>
 <cfif len(request.sortBy)>
 	<cfset qrystr="&sortBy=#request.sortBy#&sortDirection=#request.sortDirection#"/>
 </cfif>
-<cfif len(request.categoryID)>
-	<cfset qrystr=qrystr & "&categoryID=#request.categoryID#"/>
+<cfif len($.event('categoryID'))>
+	<cfset qrystr=qrystr & "&categoryID=#$.event('categoryID')#"/>
 </cfif>
 <cfif len(request.relatedID)>
 	<cfset qrystr=qrystr & "&relatedID=#request.relatedID#"/>

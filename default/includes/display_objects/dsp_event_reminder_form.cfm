@@ -40,12 +40,12 @@ for your modified version; it is your choice whether to do so, or to make such m
 the GNU General Public License version 2 without this exception. You may, if you choose, apply this exception
 to your own modified versions of Mura CMS.
 --->
-<cfset rbFactory=getSite().getRBFactory() />
-<cfif arrayLen(request.crumbdata) gt 1 and request.crumbdata[2].type eq 'Calendar' and $.content('display') eq 2 and $.content('displayStart') gt now()>
+<cfset crumbs=$.event('crumbData')>
+<cfif arrayLen(crumbs) gt 1 and crumbs[2].type eq 'Calendar' and $.content('display') eq 2 and $.content('displayStart') gt now()>
 <cfoutput>
 <div id="svEventReminder">
-	<#getHeaderTag('subHead1')#>#$.rbKey('event.setreminder')#</#getHeaderTag('subHead1')#>
-	<cfif listfind(request.doaction,"setReminder")>
+	<#$.getHeaderTag('subHead1')#>#$.rbKey('event.setreminder')#</#$.getHeaderTag('subHead1')#>
+	<cfif listfind($.event('doaction'),"setReminder")>
 	<em>#$.rbKey('event.setreminder')#</em><br/><br/>
 	</cfif>
 	<form name="reminderFrm" action="?nocache=1" method="post" onsubmit="return validate(this);" novalidate="novalidate" data-role="fieldcontain">

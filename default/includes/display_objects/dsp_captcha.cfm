@@ -40,7 +40,7 @@ for your modified version; it is your choice whether to do so, or to make such m
 the GNU General Public License version 2 without this exception. You may, if you choose, apply this exception
 to your own modified versions of Mura CMS.
 --->
-<cfset rbFactory=getSite().getRBFactory() />
+
 <cfset request.cacheItem=false>
 <cfset captchaStr=$.getBean('userUtility').getRandomPassword(length=5)>
 <cfoutput>
@@ -49,7 +49,7 @@ to your own modified versions of Mura CMS.
 </li>
 <li>
 <label for="uKey">#$.rbKey('captcha.securitycode')# <span>(#$.rbKey('captcha.instructions')#)</span></label>
-<input type="text" class="text" message="#application.settingsManager.getSite(request.siteID).getRBFactory().getKey('captcha.required')#" required="true" name="uKey" size="20">
+<input type="text" class="text" message="#application.settingsManager.getSite($.event('siteID')).getRBFactory().getKey('captcha.required')#" required="true" name="uKey" size="20">
 <input type="hidden" name="hkey" value="#hash(lcase(captchaStr))#">
 </li>
 </cfoutput>

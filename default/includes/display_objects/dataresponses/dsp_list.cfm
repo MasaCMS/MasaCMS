@@ -53,13 +53,13 @@ to your own modified versions of Mura CMS.
 <div id="dsp_list" class="dataResponses">
 <cfif rsData.recordcount>
 <cfsilent>
-<cfset nextN=application.utility.getNextN(rsData,$.content('nextN'),request.StartRow)>
+<cfset nextN=$.getBean('utility').getNextN(rsData,$.content('nextN'),request.StartRow)>
 			
 <cfif $.content('ResponseDisplayFields') neq ''>
 <cfset data.fieldnames=replace(listFirst($.content('ResponseDisplayFields'),"~"),"^",",","ALL")/>
 </cfif>
 </cfsilent>
-<cfoutput><#getHeaderTag('subHead1')#>#$.content('title')#</#getHeaderTag('subHead1')#></cfoutput>
+<cfoutput><#$.getHeaderTag('subHead1')#>#$.content('title')#</#$.getHeaderTag('subHead1')#></cfoutput>
 <table class="stripe">
 <tr>
 <cfloop list="#data.fieldnames#" index="f">
@@ -79,16 +79,16 @@ to your own modified versions of Mura CMS.
 </cfoutput>
 </table>
 <cfif nextN.numberofpages gt 1>
-			<cfoutput><div class="moreResults"><#getHeaderTag('subHead2')#>More Results:</#getHeaderTag('subHead2')#> 
+			<cfoutput><div class="moreResults"><#$.getHeaderTag('subHead2')#>More Results:</#$.getHeaderTag('subHead2')#> 
 			<ul>
 			<cfif nextN.currentpagenumber gt 1>
-				<li><a href="?startrow=#nextN.previous#&categoryID=#request.categoryID#&relatedID=#request.relatedID#">&laquo;&nbsp;Prev</a></li>
+				<li><a href="?startrow=#nextN.previous#&categoryID=#$.event('categoryID')#&relatedID=#request.relatedID#">&laquo;&nbsp;Prev</a></li>
 			</cfif>
 			<cfloop from="#nextn.firstPage#"  to="#nextn.lastPage#" index="i">
-			<cfif nextn.currentpagenumber eq i><li class="current">#i#</li><cfelse><li><a href="?startrow=#evaluate('(#i#*#nextn.recordsperpage#)-#nextn.recordsperpage#+1')#&categoryID=#request.categoryID#&relatedID=#request.relatedID#">#i#</a></li></cfif>
+			<cfif nextn.currentpagenumber eq i><li class="current">#i#</li><cfelse><li><a href="?startrow=#evaluate('(#i#*#nextn.recordsperpage#)-#nextn.recordsperpage#+1')#&categoryID=#$.event('categoryID')#&relatedID=#request.relatedID#">#i#</a></li></cfif>
 			</cfloop>
 			<cfif nextN.currentpagenumber lt nextN.NumberOfPages>
-				<li><a href="?startrow=#nextN.next#&categoryID=#request.categoryID#&relatedID=#request.relatedID#">Next&nbsp;&raquo;</a></li>
+				<li><a href="?startrow=#nextN.next#&categoryID=#$.event('categoryID')#&relatedID=#request.relatedID#">Next&nbsp;&raquo;</a></li>
 			</cfif>
 			</ul></cfoutput>
 			</div>

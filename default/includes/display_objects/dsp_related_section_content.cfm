@@ -42,12 +42,12 @@ to your own modified versions of Mura CMS.
 --->
 
 <cfsilent>
-	<cfquery datasource="#application.configBean.getDatasource()#" username="#application.configBean.getDBUsername()#" password="#application.configBean.getDBPassword()#" name="rsSection">select contentid,filename,menutitle,target,restricted,restrictgroups,type,sortBy,sortDirection from tcontent where siteid='#request.siteid#' and contentid='#arguments.objectid#' and approved=1 and active=1 and display=1</cfquery>
+	<cfquery datasource="#application.configBean.getDatasource()#" username="#application.configBean.getDBUsername()#" password="#application.configBean.getDBPassword()#" name="rsSection">select contentid,filename,menutitle,target,restricted,restrictgroups,type,sortBy,sortDirection from tcontent where siteid='#$.event('siteID')#' and contentid='#arguments.objectid#' and approved=1 and active=1 and display=1</cfquery>
 	<cfif variables.rsSection.recordcount>
 	<cfset variables.menutype=iif(variables.rsSection.type eq 'Portal',de('default'),de('calendar_features'))/>
-	<cfset rsPreFeatures=application.contentGateway.getkids('00000000000000000000000000000000000','#request.siteid#','#arguments.objectid#',variables.menutype,now(),0,"",0,iif(variables.rsSection.type eq 'Portal',de('#variables.rsSection.sortBy#'),de('displaystart')),iif(variables.rsSection.type eq 'Portal',de('#variables.rsSection.sortDirection#'),de('desc')),'','#$.content('contentID')#')>
-		<cfif getSite().getExtranet() eq 1 and request.r.restrict eq 1>
-			<cfset variables.rsFeatures=queryPermFilter(variables.rsPreFeatures)/>
+	<cfset rsPreFeatures=$.getBean('contentGateway').getkids('00000000000000000000000000000000000','#$.event('siteID')#','#arguments.objectid#',variables.menutype,now(),0,"",0,iif(variables.rsSection.type eq 'Portal',de('#variables.rsSection.sortBy#'),de('displaystart')),iif(variables.rsSection.type eq 'Portal',de('#variables.rsSection.sortDirection#'),de('desc')),'','#$.content('contentID')#')>
+		<cfif $.siteConfig('extranet') eq 1 and $.event('r').restrict eq 1>
+			<cfset variables.rsFeatures=$.queryPermFIlter(variables.rsPreFeatures)/>
 		<cfelse>
 			<cfset variables.rsFeatures=rsPreFeatures/>
 		</cfif>
@@ -61,10 +61,10 @@ to your own modified versions of Mura CMS.
 	<cfset variables.cssID=$.createCSSid(variables.rsSection.menuTitle)>
 </cfsilent>
 <div id="#variables.cssID#" class="svRelSecContent svIndex">
-	<#getHeaderTag('subHead1')#>#rsSection.menutitle#</#getHeaderTag('subHead1')#>
-	<cfif isDefined("params") and isJSON(params)>
-		<cfset params=deserializeJSON(params)>
-		#dspObject_Include(
+	<#$.getHeaderTag('subHead1')#>#rsSection.menutitle#</#$.getHeaderTag('subHead1')#>
+	<cfif isDefined("params") and isJson(arguments.params)>
+		<cfset params=deserializeJSON(arguments.params)>
+		#$.dspObject_Include(
 				thefile='dsp_content_list.cfm',
 				fields=params.displayList,
 				type='Related', 
@@ -77,11 +77,11 @@ to your own modified versions of Mura CMS.
 		<cfsilent>
 		<cfset variables.contentListFields="Title">
 		
-		<cfif application.contentGateway.getHasComments(request.siteid,arguments.objectid) >
+		<cfif $.getBean('contentGateway').getHasComments($.event('siteID'),arguments.objectid) >
 			<cfset variables.contentListFields=listAppend(variables.contentListFields,"Comments")>
 		</cfif>
 		</cfsilent>
-		#dspObject_Include(
+		#$.dspObject_Include(
 			thefile='dsp_content_list.cfm',
 			fields='Title',
 			type=variables.contentListFields, 
@@ -90,7 +90,7 @@ to your own modified versions of Mura CMS.
 	</cfif>
 	
 	<dl class="moreResults">
-		<dt><a href="#application.configBean.getServerPort()##application.configBean.getContext()##application.contentRenderer.getURLStem(request.siteid,variables.rsSection.filename)#">View All</a></dt>
+		<dt><a href="#application.configBean.getServerPort()##$.globalConfig('context')##application.contentRenderer.getURLStem($.event('siteID'),variables.rsSection.filename)#">View All</a></dt>
 	</dl>
 </div>
 <cfelse>

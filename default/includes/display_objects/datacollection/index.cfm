@@ -80,7 +80,7 @@ to your own modified versions of Mura CMS.
 			<cfset adminBase=""/>
 		</cfif>
 		
-		<cfset editableControl.editLink = adminBase & "#application.configBean.getContext()#/admin/index.cfm?fuseaction=cArch.edit">
+		<cfset editableControl.editLink = adminBase & "#$.globalConfig('context')#/admin/index.cfm?fuseaction=cArch.edit">
 		<cfif structKeyExists(request,"previewID") and len(request.previewID)>
 			<cfset editableControl.editLink = editableControl.editLink & "&amp;contenthistid=" & request.previewID>
 		<cfelse>
@@ -96,7 +96,7 @@ to your own modified versions of Mura CMS.
 		<cfset editableControl.editLink = editableControl.editLink & "&amp;compactDisplay=true">
 		<cfset editableControl.editLink = editableControl.editLink & "&amp;homeid=" & $.content('contentID')>
 		<!---
-		<cfset editableControl.historyLink = adminBase & "#application.configBean.getContext()#/admin/index.cfm?fuseaction=cArch.hist">
+		<cfset editableControl.historyLink = adminBase & "#$.globalConfig('context')#/admin/index.cfm?fuseaction=cArch.hist">
 		<cfset editableControl.historyLink = editableControl.historyLink & "&amp;siteid=" & bean.getSiteID()>
 		<cfset editableControl.historyLink = editableControl.historyLink & "&amp;contentid=" & bean.getContentID()>
 		<cfset editableControl.historyLink = editableControl.historyLink & "&amp;topid=00000000000000000000000000000000001">
@@ -114,7 +114,7 @@ to your own modified versions of Mura CMS.
 	#$.renderEditableObjectHeader("editableForm")#
 </cfif>	
 <cfif rsForm.isOnDisplay>
-	<cfif rsForm.displayTitle neq 0><#getHeaderTag('subHead1')#>#rsForm.title#</#getHeaderTag('subHead1')#></cfif>
+	<cfif rsForm.displayTitle neq 0><#$.getHeaderTag('subHead1')#>#rsForm.title#</#$.getHeaderTag('subHead1')#></cfif>
 	<cfif isdefined('request.formid') and request.formid eq rsform.contentid>
 	<cfset acceptdata=1> 
 	<cfinclude template="act_add.cfm">

@@ -42,7 +42,7 @@ to your own modified versions of Mura CMS.
 --->
 
 <cfif not listFind("Portal,Gallery",$.content('type'))>
-	<cfswitch expression="#getJsLib()#">
+	<cfswitch expression="#$.getJsLib()#">
 		<cfcase value="jquery">
 			<cfset $.getContentRenderer().loadJSLib() />
 		 	<cfset $.addToHTMLHeadQueue("comments/htmlhead/comments-jquery.cfm")>
@@ -90,9 +90,9 @@ to your own modified versions of Mura CMS.
 			<cfset request.remember=cookie.remember>
 		</cfif>
 
-		<cfset rbFactory=getSite().getRBFactory() />
+		
 		<cfset theContentID=$.content('contentID')>
-		<cfset request.isEditor=(listFind(session.mura.memberships,'S2IsPrivate;#application.settingsManager.getSite(request.siteid).getPrivateUserPoolID()#')
+		<cfset request.isEditor=(listFind(session.mura.memberships,'S2IsPrivate;#application.settingsManager.getSite($.event('siteID')).getPrivateUserPoolID()#')
 				and application.permUtility.getnodePerm(request.crumbdata) neq 'none')
 				or listFind(session.mura.memberships,'S2')>
 		<cfparam name="request.commentid" default="">
@@ -109,7 +109,7 @@ to your own modified versions of Mura CMS.
 		<cfset errors=structNew()/>
 
 		<cfif structKeyExists(request,"commentUnsubscribe")>
-			<cfset application.contentManager.commentUnsubscribe($.content('contentID'),request.commentUnsubscribe,request.siteID)>
+			<cfset application.contentManager.commentUnsubscribe($.content('contentID'),request.commentUnsubscribe,$.event('siteID'))>
 			<cfset errors["unsubscribe"]=$.rbKey('comments.youhaveunsubscribed')>
 		</cfif>
 
@@ -125,12 +125,12 @@ to your own modified versions of Mura CMS.
 			<cfif structKeyExists(myRequest, "useProtect")>
 				<cfset cffp = CreateObject("component","cfformprotect.cffpVerify").init() />
 
-				<cfif application.settingsManager.getSite(request.siteID).getContactEmail() neq "">
-					<cfset cffp.updateConfig('emailServer', application.settingsManager.getSite(request.siteID).getMailServerIP())>
-					<cfset cffp.updateConfig('emailUserName', application.settingsManager.getSite(request.siteID).getMailserverUsername(true))>
-					<cfset cffp.updateConfig('emailPassword', application.settingsManager.getSite(request.siteID).getMailserverPassword())>
-					<cfset cffp.updateConfig('emailFromAddress', application.settingsManager.getSite(request.siteID).getMailserverUsernameEmail())>
-					<cfset cffp.updateConfig('emailToAddress', application.settingsManager.getSite(request.siteID).getContactEmail())>
+				<cfif application.settingsManager.getSite($.event('siteID')).getContactEmail() neq "">
+					<cfset cffp.updateConfig('emailServer', application.settingsManager.getSite($.event('siteID')).getMailServerIP())>
+					<cfset cffp.updateConfig('emailUserName', application.settingsManager.getSite($.event('siteID')).getMailserverUsername(true))>
+					<cfset cffp.updateConfig('emailPassword', application.settingsManager.getSite($.event('siteID')).getMailserverPassword())>
+					<cfset cffp.updateConfig('emailFromAddress', application.settingsManager.getSite($.event('siteID')).getMailserverUsernameEmail())>
+					<cfset cffp.updateConfig('emailToAddress', application.settingsManager.getSite($.event('siteID')).getContactEmail())>
 					<cfset cffp.updateConfig('emailSubject', 'Spam form submission')>
 				</cfif>
 
@@ -139,13 +139,13 @@ to your own modified versions of Mura CMS.
 
 			<cfif (request.hkey eq '' or request.hKey eq hash(lcase(request.ukey))) and passedProtect>
 
-				<cfset submittedData=application.utility.filterArgs(request,application.badwords)/>
+				<cfset submittedData=$.getBean('utility').filterArgs(request,application.badwords)/>
 				<cfset submittedData.contentID=theContentID />
 				<cfif $.currentUser().isLoggedIn()>
 					<cfset request.userID=$.currentUser().getUserID()>
 				</cfif>
 		
-				<cfset submittedData.isApproved=application.settingsManager.getSite(request.siteid).getCommentApprovalDefault() />
+				<cfset submittedData.isApproved=application.settingsManager.getSite($.event('siteID')).getCommentApprovalDefault() />
 				
 				
 				
@@ -169,7 +169,7 @@ to your own modified versions of Mura CMS.
 					<cfset request.subscribe=0/>
 					<cfset request.remember=0/>
 				</cfif>
-				<cfif not application.settingsManager.getSite(request.siteid).getCommentApprovalDefault() eq 1>
+				<cfif not application.settingsManager.getSite($.event('siteID')).getCommentApprovalDefault() eq 1>
 					<cfset commentBean.sendNotification() />
 				</cfif>
 				<cfif isBoolean(request.remember) and request.remember>
@@ -211,7 +211,7 @@ to your own modified versions of Mura CMS.
 			<cfset application.contentManager.approveComment(request.approvedcommentid,event.getContentRenderer()) />
 		</cfif>
 		<cfset level=0>
-		<cfset rsComments=application.contentManager.readComments(thecontentID,request.siteid,request.isEditor,"asc","",false ) />
+		<cfset rsComments=application.contentManager.readComments(thecontentID,$.event('siteID'),request.isEditor,"asc","",false ) />
 		<cfset rsSubComments=StructNew() />
 	</cfsilent>
 
@@ -222,18 +222,18 @@ to your own modified versions of Mura CMS.
 
 	<div id="svComments">
 		<cfoutput>
-		<#getHeaderTag('subHead1')#>#$.rbKey('comments.comments')#</#getHeaderTag('subHead1')#>
-		#dspObject_Include(thefile='comments/dsp_comments.cfm')#</cfoutput>
+		<#$.getHeaderTag('subHead1')#>#$.rbKey('comments.comments')#</#$.getHeaderTag('subHead1')#>
+		#$.dspObject_Include(thefile='comments/dsp_comments.cfm')#</cfoutput>
 		<cfif not structIsEmpty(errors) >
 			<cfoutput>
 				#errorJSTxt#
 				<a name="errors"></a>
 				<div id="editProfileMsg" class="required">
-					#application.utility.displayErrors(errors)#
+					#$.getBean('utility').displayErrors(errors)#
 				</div>
 		</cfoutput>
 
-		<cfelseif request.commentid neq '' and application.settingsManager.getSite(request.siteid).getCommentApprovalDefault() neq 1>
+		<cfelseif request.commentid neq '' and application.settingsManager.getSite($.event('siteID')).getCommentApprovalDefault() neq 1>
 			<div id="editProfileMsg" class="required">
 				<cfoutput>#$.rbKey('comments.postedsoon')#</cfoutput>
 			</div>
@@ -272,7 +272,7 @@ to your own modified versions of Mura CMS.
 						<input type="checkbox" id="txtSubscribe" name="subscribe" value="1"<cfif isBoolean(cookie.subscribe) and cookie.subscribe> checked="checked"</cfif> />
 					</li></cfoutput>
 					<li>
-						<cfoutput>#dspObject_Include(thefile='dsp_form_protect.cfm')#</cfoutput>
+						<cfoutput>#$.dspObject_Include(thefile='dsp_form_protect.cfm')#</cfoutput>
 					</li>
 				</ol>
 			</fieldset>

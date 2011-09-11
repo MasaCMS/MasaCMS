@@ -21,10 +21,10 @@
 		<cfif level>
 			<cfset class = class & iif(level lt 10,de(" indent-#level#"),de(" indent-10")) />
 		</cfif>
-		#dspObject_Include(thefile='comments/dsp_comment.cfm')#
+		#$.dspObject_Include(thefile='comments/dsp_comment.cfm')#
 		<cfif request['rsSubComments#level#'].kids neq ''>
 			<cfset level = level+1 />
-			#dspObject_Include(thefile='comments/dsp_comments.cfm')#
+			#$.dspObject_Include(thefile='comments/dsp_comments.cfm')#
 			<cfset level = level-1 />
 		</cfif>
 	</cfoutput>

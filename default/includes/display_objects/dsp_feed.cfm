@@ -40,121 +40,122 @@ for your modified version; it is your choice whether to do so, or to make such m
 the GNU General Public License version 2 without this exception. You may, if you choose, apply this exception
 to your own modified versions of Mura CMS.
 --->
-
-
 <!--- <cftry> --->
-  <cfif isValid("UUID",arguments.objectID)>	
-	<cfset variables.feedBean = $.getBean("feed").loadBy(feedID=arguments.objectID,siteID=arguments.siteID)>
-  <cfelse>
-	<cfset variables.feedBean = $.getBean("feed").loadBy(name=arguments.objectID,siteID=arguments.siteID)>
-  </cfif>
-  
-  <cfif isDefined("params") and isJson(params)>
-  		<cfset variables.feedBean.set(deserializeJSON(params))>
-  </cfif>
-
-  <cfif variables.feedBean.getIsActive()>
-	<cfset variables.cssID=$.createCSSid(feedBean.renderName())>
-    
-	<cfset editableControl.editLink = "">
-	<cfset editableControl.innerHTML = "">
-	
-	<cfif not variables.feedBean.getIsNew() and this.showEditableObjects and arguments.objectPerm eq 'editor'>
-		<cfset bean = feedBean>
-		<cfset $.loadShadowBoxJS()>
-		<cfset $.addToHTMLHeadQueue('editableObjects.cfm')>
-		<cfif len(application.configBean.getAdminDomain())>
-			<cfif application.configBean.getAdminSSL()>
-				<cfset variables.adminBase="https://#application.configBean.getAdminDomain()#"/>
-			<cfelse>
-				<cfset variables.adminBase="http://#application.configBean.getAdminDomain()#"/>
-			</cfif>
-		<cfelse>
-			<cfset variables.adminBase=""/>
-		</cfif>
-		
-		<cfset editableControl.editLink = adminBase & "#application.configBean.getContext()#/admin/index.cfm?fuseaction=cFeed.edit">
-		<cfset editableControl.editLink = editableControl.editLink & "&amp;siteid=" & bean.getSiteID()>
-		<cfset editableControl.editLink = editableControl.editLink & "&amp;feedid=" & bean.getFeedID()>
-		<cfset editableControl.editLink = editableControl.editLink & "&amp;type=" & bean.getType()>
-		<cfset editableControl.editLink = editableControl.editLink & "&amp;homeID=" & $.content('contentID')>
-		<cfset editableControl.editLink = editableControl.editLink & "&amp;compactDisplay=true">
-		
-		<cfset editableControl.innerHTML = generateEditableObjectControl(editableControl.editLink)>
+<cfsilent>
+	<cfif isValid("UUID", arguments.objectID)>
+		<cfset variables.feedBean = $.getBean("feed").loadBy(feedID=arguments.objectID, 
+		                                                     siteID=arguments.siteID)>
+	<cfelse>
+		<cfset variables.feedBean = $.getBean("feed").loadBy(name=arguments.objectID, 
+		                                                     siteID=arguments.siteID)>
 	</cfif>
+	<cfif isDefined("arguments.params") and isJson(arguments.params)>
+		<cfset variables.feedBean.set(deserializeJSON(arguments.params))>
+	</cfif>
+</cfsilent>
+<cfif variables.feedBean.getIsActive()>
+	<cfsilent>
+		<cfset variables.cssID = $.createCSSid(feedBean.renderName())>
+	
+		<cfset editableControl.editLink = "">
+		<cfset editableControl.innerHTML = "">
+	
+		<cfif not variables.feedBean.getIsNew() and this.showEditableObjects and arguments.objectPerm eq 'editor'>
+			<cfset bean = feedBean>
+			<cfset $.loadShadowBoxJS()>
+			<cfset $.addToHTMLHeadQueue('editableObjects.cfm')>
+			<cfif len(application.configBean.getAdminDomain())>
+				<cfif application.configBean.getAdminSSL()>
+					<cfset variables.adminBase = "https://#application.configBean.getAdminDomain()#"/>
+				<cfelse>
+					<cfset variables.adminBase = "http://#application.configBean.getAdminDomain()#"/>
+				</cfif>
+			<cfelse>
+				<cfset variables.adminBase = ""/>
+			</cfif>
+			<cfset editableControl.editLink = adminBase & "#$.globalConfig('context')#/admin/index.cfm?fuseaction=cFeed.edit">
+			<cfset editableControl.editLink = editableControl.editLink & "&amp;siteid=" & bean.getSiteID()>
+			<cfset editableControl.editLink = editableControl.editLink & "&amp;feedid=" & bean.getFeedID()>
+			<cfset editableControl.editLink = editableControl.editLink & "&amp;type=" & bean.getType()>
+			<cfset editableControl.editLink = editableControl.editLink & "&amp;homeID=" & $.content('contentID')>
+			<cfset editableControl.editLink = editableControl.editLink & "&amp;compactDisplay=true">
+		
+			<cfset editableControl.innerHTML = $.generateEditableObjectControl(editableControl.editLink)>
+		</cfif>
+	</cfsilent>
 	<cfif editableControl.innerHTML neq "">
 		<cfoutput>#$.renderEditableObjectHeader("editableFeed")#</cfoutput>
 	</cfif>
-	
 	<cfif variables.feedBean.getType() eq 'local'>
-      <cfsilent>
-		<cfset variables.rsPreFeed=application.feedManager.getFeed(feedBean) />
-		<cfif getSite().getExtranet() eq 1 and request.r.restrict eq 1>
-			<cfset variables.rs=queryPermFilter(rsPreFeed)/>
-		<cfelse>
-			<cfset variables.rs=rsPreFeed />
-		</cfif>
-		
-		<cfset variables.iterator=$.getBean("contentIterator")>
-		<cfset variables.iterator.setQuery(rs,feedBean.getNextN())>
-		
-		<cfset variables.checkMeta=feedBean.getDisplayRatings() or feedBean.getDisplayComments()>
-		<cfset variables.doMeta=0 />
-		<cfset event.setValue("currentNextNID",feedBean.getFeedID())>
-
-		<cfif not len($.event("nextNID")) or $.event("nextNID") eq $.event("currentNextNID")>
-			<cfif event.getContentBean().getNextN() gt 1>
-				<cfset variables.currentNextNIndex=$.event("startRow")>
-				<cfset variables.iterator.setStartRow(currentNextNIndex)>
+		<cfsilent>
+			<cfset variables.rsPreFeed = application.feedManager.getFeed(feedBean)/>
+			<cfif $.siteConfig('extranet') eq 1 and $.event('r').restrict eq 1>
+				<cfset variables.rs = $.queryPermFilter(rsPreFeed)/>
 			<cfelse>
-				<cfset variables.currentNextNIndex=$.event("pageNum")>
-				<cfset variables.iterator.setPage(currentNextNIndex)>
+				<cfset variables.rs = rsPreFeed/>
 			</cfif>
-		<cfelse>	
-			<cfset variables.currentNextNIndex=1>
-			<cfset variables.iterator.setPage(1)>
-		</cfif>
+			<cfset variables.iterator = $.getBean("contentIterator")>
+			<cfset variables.iterator.setQuery(rs, feedBean.getNextN())>
 		
-		<cfset variables.nextN=application.utility.getNextN(variables.rs,variables.feedBean.getNextN(),variables.currentNextNIndex)>
-	  </cfsilent>
-	  
+			<cfset variables.checkMeta = feedBean.getDisplayRatings() or feedBean.getDisplayComments()>
+			<cfset variables.doMeta = 0/>
+			<cfset event.setValue("currentNextNID", feedBean.getFeedID())>
+		
+			<cfif not len($.event("nextNID")) or $.event("nextNID") eq $.event("currentNextNID")>
+				<cfif event.getContentBean().getNextN() gt 1>
+					<cfset variables.currentNextNIndex = $.event("startRow")>
+					<cfset variables.iterator.setStartRow(currentNextNIndex)>
+				<cfelse>
+					<cfset variables.currentNextNIndex = $.event("pageNum")>
+					<cfset variables.iterator.setPage(currentNextNIndex)>
+				</cfif>
+			<cfelse>
+				<cfset variables.currentNextNIndex = 1>
+				<cfset variables.iterator.setPage(1)>
+			</cfif>
+			<cfset variables.nextN = $.getBean('utility').getNextN(variables.rs, 
+			                                                      variables.feedBean.getNextN(),
+			                                                      variables.currentNextNIndex)>
+		</cfsilent>
+	
 		<cfif variables.iterator.getRecordCount()>
 			<cfoutput>
-			<div class="svSyndLocal svFeed svIndex clearfix" id="#variables.cssID#">
-	        <cfif variables.feedBean.getDisplayName()>
-		       <#getHeaderTag('subHead1')#>#HTMLEditFormat(variables.feedBean.renderName())#</#getHeaderTag('subHead1')#>
-			</cfif>
-			
-			#dspObject_Include(
-				thefile='dsp_content_list.cfm',
-				fields=variables.feedBean.getDisplayList(),
-				type="Feed", 
-				iterator= variables.iterator,
-				imageSize=variables.feedBean.getImageSize(),
-				imageHeight=variables.feedBean.getImageHeight(),
-				imageWidth=variables.feedBean.getImageWidth()
-				)#
-
-			<cfif variables.nextN.numberofpages gt 1>
-			#dspObject_Include(thefile='dsp_nextN.cfm')#
-			</cfif>
-			</div>
+				<div class="svSyndLocal svFeed svIndex clearfix" id="#variables.cssID#">
+					<cfif variables.feedBean.getDisplayName()>
+						<#$.getHeaderTag('subHead1')#>#HTMLEditFormat(variables.feedBean.renderName())#</#$.getHeaderTag('subHead1')#>
+					</cfif>
+					#$.dspObject_Include(
+									thefile='dsp_content_list.cfm', 
+									fields=variables.feedBean.getDisplayList(), 
+				                    type="Feed",
+									iterator=variables.iterator, 
+				                    imageSize=variables.feedBean.getImageSize(),
+				                    imageHeight=variables.feedBean.getImageHeight(),
+				                    imageWidth=variables.feedBean.getImageWidth()
+								)#
+					<cfif variables.nextN.numberofpages gt 1>
+						#$.dspObject_Include(thefile='dsp_nextN.cfm')#
+					</cfif>
+				</div>
 			</cfoutput>
 		<cfelse>
-			<cfoutput>#dspObject("component","[placeholder] #variables.feedBean.getName()#", arguments.siteID)#</cfoutput>
-			<!-- Empty Collection '<cfoutput>#feedBean.getName()#</cfoutput>'  -->
+			<cfoutput>#dspObject("component", "[placeholder] #variables.feedBean.getName()#", arguments.siteID)#</cfoutput>
+			<!-- Empty Collection '
+			<cfoutput>#feedBean.getName()#</cfoutput>
+			' -->
 		</cfif>
-    <cfelse>
-    <!---<cftry> --->
-	<cfsilent>
-		<cfset request.cacheItemTimespan=createTimeSpan(0,0,5,0)>
-      	<cfset variables.feedData=application.feedManager.getRemoteFeedData(variables.feedBean.getChannelLink(),variables.feedBean.getMaxItems())/>
-	</cfsilent>
-	  	<cfoutput>
-		 	<cfif isDefined("variables.feedData.maxItems") and variables.feedData.maxItems>
+	<cfelse>
+		<!---<cftry> --->
+		<cfsilent>
+			<cfset request.cacheItemTimespan = createTimeSpan(0, 0, 5, 0)>
+			<cfset variables.feedData = application.feedManager.getRemoteFeedData(variables.feedBean.getChannelLink(), 
+			                                                                      variables.feedBean.getMaxItems())/>
+		</cfsilent>
+		<cfoutput>
+			<cfif isDefined("variables.feedData.maxItems") and variables.feedData.maxItems>
 				<div class="svSyndRemote svIndex svFeed clearfix" id="#variables.cssID#">
-			        <#getHeaderTag('subHead1')#>#HTMLEditFormat(variables.feedBean.getName())#</#getHeaderTag('subHead1')#>
-			        <cfif variables.feedData.type neq "atom">
+					<#$.getHeaderTag('subHead1')#>#HTMLEditFormat(variables.feedBean.getName())#</#$.getHeaderTag('subHead1')#>
+					<cfif variables.feedData.type neq "atom">
 						<cfloop from="1" to="#variables.feedData.maxItems#" index="i">
 							<dl<cfif (i EQ 1)> class="first"<cfelseif (i EQ variables.feedData.maxItems)> class="last"</cfif>>
 								<!--- Date stuff--->
@@ -193,20 +194,24 @@ to your own modified versions of Mura CMS.
 					</cfif>
 				</div>
 			<cfelse>
-				#dspObject("component","[placeholder] #variables.feedBean.getName()#", arguments.siteID)#
-				<!-- Empty Feed <cfoutput>'#feedBean.getName()#'</cfoutput> -->
+				#dspObject("component", "[placeholder] #variables.feedBean.getName()#", arguments.siteID)#
+				<!-- Empty Feed 
+				<cfoutput>'#feedBean.getName()#'</cfoutput>
+				-->
 			</cfif>
 		</cfoutput>
-	<!---
-	<cfcatch><!-- Error getting Feed <cfoutput>'#feedBean.getName()#'</cfoutput> --></cfcatch>
-	</cftry>---->
-    </cfif>
-  <cfelse>
-		<!-- Inactive Feed '<cfoutput>#feedBean.getName()#</cfoutput>' -->
-  </cfif>
-  <cfif editableControl.innerHTML neq "">
-  	<cfoutput>#renderEditableObjectFooter(editableControl.innerHTML)#</cfoutput>
-  </cfif>
+		<!---
+		<cfcatch><!-- Error getting Feed <cfoutput>'#feedBean.getName()#'</cfoutput> --></cfcatch>
+		</cftry>---->
+	</cfif>
+<cfelse>
+	<!-- Inactive Feed '
+	<cfoutput>#feedBean.getName()#</cfoutput>
+	' -->
+</cfif>
+<cfif editableControl.innerHTML neq "">
+	<cfoutput>#renderEditableObjectFooter(editableControl.innerHTML)#</cfoutput>
+</cfif>
 <!---   <cfcatch>
   </cfcatch>
 </cftry> --->

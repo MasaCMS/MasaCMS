@@ -44,7 +44,6 @@ to your own modified versions of Mura CMS.
 <cfparam name="request.month" default="#month(now())#">
 <cfparam name="request.year" default="#year(now())#">
 <cfparam name="request.day" default="#day(now())#">
-<cfset rbFactory=getSite().getRBFactory()>
 <cfscript>
 currentDate=now();
 selectedMonth = createDate(request.year,request.month,1);
