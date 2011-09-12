@@ -44,9 +44,11 @@ to your own modified versions of Mura CMS.
 		<div class="meld-tb-form">
 			<div class="meld-tb-header">
 				<h3>#mmRBF.getKeyValue(session.rb,'formbuilder.field.textfield')#: <span id="meld-tb-form-label">bob</span></h3>
+				<!---
 				<ul class="right">
 					<li><div class="ui-button" id="button-trash" title="#mmRBF.getKeyValue(session.rb,'formbuilder.delete')#"><span class="ui-icon ui-icon-close"></span></div></li>
 				</ul>
+				--->
 			</div>
 			
 			<div class="ui-tabs" id="ui-tabs">
