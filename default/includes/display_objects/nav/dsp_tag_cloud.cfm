@@ -41,7 +41,7 @@ the GNU General Public License version 2 without this exception. You may, if you
 to your own modified versions of Mura CMS.
 --->
 <cfsilent>
-<cfset tags=application.contentGateway.getTagCloud(request.siteID,arguments.parentID,arguments.categoryID,arguments.rsContent) />
+<cfset tags=$.getBean('contentGateway').getTagCloud($.event('siteID'),arguments.parentID,arguments.categoryID,arguments.rsContent) />
 <cfset tagValueArray = ListToArray(ValueList(tags.tagCount))>
 <cfset max = ArrayMax(tagValueArray)>
 <cfset min = ArrayMin(tagValueArray)>
@@ -52,7 +52,7 @@ to your own modified versions of Mura CMS.
 
 <cfoutput>
 <div id="svTagCloud">
-<#getHeaderTag('subHead1')#>#$.rbKey('tagcloud.tagcloud')#</#getHeaderTag('subHead1')#>
+<#$.getHeaderTag('subHead1')#>#$.rbKey('tagcloud.tagcloud')#</#$.getHeaderTag('subHead1')#>
 <cfif tags.recordcount>
 <ol>
 <cfloop query="tags"><cfsilent>

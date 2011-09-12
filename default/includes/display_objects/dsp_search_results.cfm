@@ -43,7 +43,7 @@ to your own modified versions of Mura CMS.
 <cfsilent>
 
 </cfsilent>
-<cfoutput><#getHeaderTag('headline')#>#$.rbKey('search.searchresults')#</#getHeaderTag('headline')#></cfoutput>
+<cfoutput><#$.getHeaderTag('headline')#>#$.rbKey('search.searchresults')#</#$.getHeaderTag('headline')#></cfoutput>
 <div id="svSearchResults">
 <cfsilent>
 <cfparam name="variables.rsnewsearch" default="#queryNew('empty')#"/>
@@ -52,10 +52,10 @@ to your own modified versions of Mura CMS.
 <cfparam name="session.rsSearch" default="#queryNew('empty')#">
 <cfif (len(request.keywords) or len(request.tag) ) and isdefined('request.newSearch')>
 <cfset session.aggregation=request.aggregation />
-<cfset variables.rsNewSearch=application.contentManager.getPublicSearch(request.siteid,request.keywords,request.tag,request.searchSectionID) /> 
+<cfset variables.rsNewSearch=application.contentManager.getPublicSearch($.event('siteID'),request.keywords,request.tag,request.searchSectionID) /> 
 
 <cfif getSite().getExtranet() eq 1>
-	<cfset session.rsSearch=queryPermFilter(variables.rsnewsearch)/>
+	<cfset session.rsSearch=$.queryPermFIlter(variables.rsnewsearch)/>
 <cfelse>
 	<cfset session.rsSearch=variables.rsnewsearch/>
 </cfif>
@@ -77,7 +77,7 @@ to your own modified versions of Mura CMS.
 <cfset variables.iterator.setStartRow($.event("startrow"))>
 
 <cfif len(request.searchSectionID)>
-<cfset variables.sectionBean=application.contentManager.getActiveContent(request.searchSectionID,request.siteid) />
+<cfset variables.sectionBean=application.contentManager.getActiveContent(request.searchSectionID,$.event('siteID')) />
 </cfif>
 
 <cfset variables.contentListType="Search">
@@ -121,7 +121,7 @@ to your own modified versions of Mura CMS.
 	</div>
 	
 	<div id="svPortal" class="svIndex">
-		#dspObject_Include(
+		#$.dspObject_Include(
 			thefile='dsp_content_list.cfm',
 			fields=variables.contentListFields,
 			type=variables.contentListType, 

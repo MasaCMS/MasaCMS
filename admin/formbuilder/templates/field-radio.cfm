@@ -49,6 +49,7 @@ to your own modified versions of Mura CMS.
 				<ul class="right">
 					<li><div class="ui-button" id="button-trash" title="#mmRBF.getKeyValue(session.rb,'formbuilder.delete')#"><span class="ui-icon ui-icon-closethick"></span></div></li>
 				</ul>
+				--->
 			</div>
 			
 		<div class="ui-tabs" id="ui-tabs">

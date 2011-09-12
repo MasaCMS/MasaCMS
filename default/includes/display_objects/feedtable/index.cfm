@@ -40,8 +40,8 @@ for your modified version; it is your choice whether to do so, or to make such m
 the GNU General Public License version 2 without this exception. You may, if you choose, apply this exception
 to your own modified versions of Mura CMS.
 --->
-<cfset rbFactory=getSite().getRBFactory() />
-<cfset rs=application.feedManager.getFeeds(request.siteID,'Local',true,true)/>
+
+<cfset rs=application.feedManager.getFeeds($.event('siteID'),'Local',true,true)/>
 <cfset port=application.configBean.getServerPort() />
 <table name="svRssFeedsList" id="svRssFeedsList">
 	<thead>
@@ -54,10 +54,10 @@ to your own modified versions of Mura CMS.
 		<cfoutput query="rs">
 		<tr>
 			<td>#rs.name#</td>
-			<td><a href="http://#listFirst(cgi.http_host,":")##port#/tasks/feed/?feedID=#rs.feedID#"><img alt="" src="#application.configBean.getContext()#/#request.siteid#/includes/display_objects/feedtable/images/feed-icon-12x12.gif" /></a></td>
-			<td><a href="http://add.my.yahoo.com/rss?url=#URLEncodedFormat('http://#listFirst(cgi.http_host,":")##port##application.configBean.getContext()#/tasks/feed/?feedID=#rs.feedID#')#"><img alt="" src="#application.configBean.getContext()#/#request.siteid#/includes/display_objects/feedtable/images/add_myyahoo.gif" /></a></td>
-			<td><a href="http://fusion.google.com/add?feedurl=#URLEncodedFormat('http://#listFirst(cgi.http_host,":")##port##application.configBean.getContext()#/tasks/feed/?feedID=#rs.feedID#')#"><img alt="" src="#application.configBean.getContext()#/#request.siteid#/includes/display_objects/feedtable/images/add_google.gif" /></a></td>
-			<td><a href="http://feeds.my.aol.com/add.jsp?url=#URLEncodedFormat('http://#listFirst(cgi.http_host,":")##port##application.configBean.getContext()#/tasks/feed/?feedID=#rs.feedID#')#"><img alt="" src="#application.configBean.getContext()#/#request.siteid#/includes/display_objects/feedtable/images/add_myaol.gif" /></a></td>
+			<td><a href="http://#listFirst(cgi.http_host,":")##port#/tasks/feed/?feedID=#rs.feedID#"><img alt="" src="#$.globalConfig('context')#/#$.event('siteID')#/includes/display_objects/feedtable/images/feed-icon-12x12.gif" /></a></td>
+			<td><a href="http://add.my.yahoo.com/rss?url=#URLEncodedFormat('http://#listFirst(cgi.http_host,":")##port##$.globalConfig('context')#/tasks/feed/?feedID=#rs.feedID#')#"><img alt="" src="#$.globalConfig('context')#/#$.event('siteID')#/includes/display_objects/feedtable/images/add_myyahoo.gif" /></a></td>
+			<td><a href="http://fusion.google.com/add?feedurl=#URLEncodedFormat('http://#listFirst(cgi.http_host,":")##port##$.globalConfig('context')#/tasks/feed/?feedID=#rs.feedID#')#"><img alt="" src="#$.globalConfig('context')#/#$.event('siteID')#/includes/display_objects/feedtable/images/add_google.gif" /></a></td>
+			<td><a href="http://feeds.my.aol.com/add.jsp?url=#URLEncodedFormat('http://#listFirst(cgi.http_host,":")##port##$.globalConfig('context')#/tasks/feed/?feedID=#rs.feedID#')#"><img alt="" src="#$.globalConfig('context')#/#$.event('siteID')#/includes/display_objects/feedtable/images/add_myaol.gif" /></a></td>
 		</tr>
 		</cfoutput>
 		<cfelse>

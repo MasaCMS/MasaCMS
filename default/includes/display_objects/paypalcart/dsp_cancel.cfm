@@ -41,5 +41,5 @@ the GNU General Public License version 2 without this exception. You may, if you
 to your own modified versions of Mura CMS.
 --->
 
-<cfoutput><#getHeaderTag('subHead1')#>Order Cancelled</#getHeaderTag('subHead1')#></cfoutput>
+<cfoutput><#$.getHeaderTag('subHead1')#>Order Cancelled</#$.getHeaderTag('subHead1')#></cfoutput>
 <p>Your transaction has been cancelled</p>

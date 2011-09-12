@@ -28,12 +28,11 @@
 		}
 		
 		var settings		= jQuery.extend({},jQuery.fn.templatebuilder.defaults,settings);
-
 		var _formInitData = jQuery.parseJSON( jQuery("#meld-formdata").val() ); 
-
 		var _templates	= {};
 
 		var _currentFieldBtn= '';
+		var _currentFieldLIBtn = '';
 		var _currentFieldID	= '';
 		var _currentDataset	= '';
 		var $_field		= jQuery('#meld-tb-field');
@@ -97,9 +96,29 @@
 		}
 
 		function doAddField( obj ) {
-			var $fieldBlock = jQuery('<li class="'+obj.fieldtype.displaytype+'"><div class="'+obj.fieldtype.displaytype+'" data-field=\'{"fieldType":"field-'+obj.fieldtype.fieldtype+'","fieldID":"'+obj.fieldid+'"}\'><span>'+obj.label+'</span></div></li>');
+			if (_templates['field-block'] == undefined) 
+				goLoadTemplate('field-block',doRenderFieldBlock,obj);
+			else {
+				doRenderFieldBlock('field-block',obj);
+			}
+		}
+
+		function doRenderFieldBlock( template,obj ) {
+			jQuery("#meld-tb-fields-empty").hide();
+
+			var $fieldBlock = jQuery(_templates['field-block']); 
+			var mdata = {};
+			mdata.fieldType = 'field-'+obj.fieldtype.fieldtype;
+			mdata.fieldID = obj.fieldid;
+
+			jQuery("ul",$fieldBlock).hide();
+
 			$fieldBlock.attr('id',obj.fieldid);
-			$fieldBlock.attr('class','field-'+obj.fieldtype.fieldtype);
+			jQuery(".meld-tb-block",$fieldBlock).attr('data-field',JSON.stringify(mdata));
+			jQuery(".meld-tb-block",$fieldBlock).addClass(obj.fieldtype.displaytype);
+			$fieldBlock.addClass("field-" +obj.fieldtype.fieldtype);
+			jQuery("span",$fieldBlock).html(obj.label);
+
 			jQuery('#meld-tb-fields').append( $fieldBlock );
 		}
 	
@@ -117,6 +136,7 @@
 
 		function doField( fieldBtn ) {
 			var $btn		= jQuery( fieldBtn );
+			var $libtn		= $btn.parent();
 
 			var jsonData		= $btn.attr('data-field');
 			var data			= jQuery.parseJSON( jsonData );
@@ -124,20 +144,40 @@
 			var templateName	= "field-" + fieldData.fieldtype.fieldtype;
 			var $pointer		= jQuery('<div class="pointer"></div>');
 
+
+			jQuery("#meld-tb-field-empty").hide();
 			$_field.hide();
 			$_dataset.hide();
 			$_grid.hide();
 
-			if (_currentFieldBtn != undefined) {
-				jQuery(_currentFieldBtn).parent().removeClass('selected');
+			if (_currentFieldLIBtn != '') {
+				jQuery('.ui-button',_currentFieldLIBtn).each(function() {
+					jQuery(this).unbind();	
+				});
+				jQuery('ul',_currentFieldLIBtn).hide();
+
+				_currentFieldLIBtn.removeClass('selected');
 				jQuery('.pointer').remove();
 			}
 
 			_currentFieldBtn = $btn;
+			_currentFieldLIBtn = $libtn;
 			_currentFieldID = data.fieldID;
 								
-			jQuery(_currentFieldBtn).parent().addClass('selected');
-			jQuery(_currentFieldBtn).parent().append($pointer);
+			jQuery('ul',_currentFieldLIBtn).show();
+			_currentFieldLIBtn.addClass('selected');
+			_currentFieldLIBtn.append($pointer);
+
+			jQuery('.ui-button',_currentFieldLIBtn).each(function() {
+				jQuery(this).click( function() {
+					switch ( jQuery(this).attr('id') ) {
+						case 'button-trash': {
+							doDeleteField();
+						}
+						break;
+					}
+				});
+			});
 
 			if (_templates[templateName] == undefined) 
 				goLoadTemplate(templateName);
@@ -160,10 +200,6 @@
 			var templateName	= "field-" + fieldData.fieldtype.fieldtype;
 
 			jQuery(".tb-label").unbind();
-			jQuery('.ui-button',$_field).each(function() {
-				jQuery(this).unbind();	
-			});
-			
 
 			jQuery('#meld-tb-field-form').unbind();
 			$_field.html(_templates[templateName]);
@@ -198,17 +234,6 @@
 				jQuery("span",_currentFieldBtn).html( val );				
 				jQuery("#meld-tb-form-label").html( val );
 			});
-
-			jQuery('.ui-button',$_field).each(function() {
-				jQuery(this).click( function() {
-					switch ( jQuery(this).attr('id') ) {
-						case 'button-trash': {
-							doDeleteField();
-						}
-						break;
-					}
-				});
-			});
 			
 			jQuery("#ui-tabs").tabs();
 			jQuery("#ui-tabs").tabs('select',0);
@@ -220,6 +245,7 @@
 			var $fieldButton	= jQuery("#" + _currentFieldID);
 
 			delete _formData.fields[_currentFieldID]; 			
+			jQuery("#meld-tb-field-empty").show();
 
 			$fieldButton.remove();
 			$_field.hide();
@@ -228,6 +254,10 @@
 			_formData.fieldorder = jQuery('#meld-tb-fields').sortable('toArray');
 			if( fieldData.datasetid.length ) {
 				delete _dataSets[fieldData.datasetid];
+			}
+
+			if(!_formData.fieldorder.length) {
+				jQuery("#meld-tb-fields-empty").show();
 			}
 		}
 
@@ -809,7 +839,7 @@
 			});		
 		}
 		
-		function goLoadTemplate( template,fn1 ) {
+		function goLoadTemplate( template,fn1,args ) {
 			var data = {};
 			var iefix 		= Math.floor(Math.random()*9999999);
 
@@ -823,7 +853,7 @@
 				success: function( response ) {
 					_templates[template] = response;
 					if(fn1)
-						fn1(template);
+						fn1(template,args);
 					else
 						doRenderField();
 				},

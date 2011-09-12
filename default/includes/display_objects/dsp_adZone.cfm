@@ -43,19 +43,19 @@ to your own modified versions of Mura CMS.
 <cfset $.addToHTMLHeadQueue("swfobject.cfm") />
 <cfset loadJSLib() />
 <cfset r="#replace('#rand()#','.','')#"/>
-<cfswitch expression="#getJSLib()#">
+<cfswitch expression="#$.getJsLib()#">
 <cfcase value="jquery">
 <cfoutput>
 <div id="svAd#r#" class="svAd"></div>
 <script type="text/javascript">
 function renderAdZone#r#(){			
-$.getJSON("#application.configBean.getContext()#/tasks/ads/renderAdZone.cfm", 
-		{AdZoneID: "#arguments.objectid#", siteID: "#request.siteid#",track:"#request.track#",cacheid:Math.random(), contentHistID: "#$.content('contentHistID')#"},
+$.getJSON("#$.globalConfig('context')#/tasks/ads/renderAdZone.cfm", 
+		{AdZoneID: "#arguments.objectid#", siteID: "#$.event('siteID')#",track:"#$.event('track')#",cacheid:Math.random(), contentHistID: "#$.content('contentHistID')#"},
 		function(r){
 			if(typeof(r).mediatype  != 'undefined'){
 				if(r.mediatype.indexOf('lash') > -1){
 					var so = new SWFObject(r.mediaurl, "svAd#r#swf", r.width, r.height, r.version);
-				    so.addVariable("adUrl", "#application.configBean.getContext()#/tasks/ads/track.cfm?adUrl=" + escape(r.redirecturl) + "&placementid=" + r.placementid + "track=#request.track#&siteID=#request.siteid#");
+				    so.addVariable("adUrl", "#$.globalConfig('context')#/tasks/ads/track.cfm?adUrl=" + escape(r.redirecturl) + "&placementid=" + r.placementid + "track=#$.event('track')#&siteID=#$.event('siteID')#");
 				    so.addParam("wmode", "transparent");
 				    so.write("svAd#r#");
 				} else if(r.mediatype.indexOf('Text') > -1) {			
@@ -86,15 +86,15 @@ new renderAdZone#r#();
 <div id="svAd#r#" class="svAd"></div>
 <script type="text/javascript">
 function renderAdZone#r#(){
-new Ajax.Request( '#application.configBean.getContext()#/tasks/ads/renderAdZone.cfm',
+new Ajax.Request( '#$.globalConfig('context')#/tasks/ads/renderAdZone.cfm',
 	{method: 'get',
-	parameters: 'AdZoneID=#arguments.objectid#&siteid=#request.siteid#&track=#request.track#&contentHistID=#$.content('contentHistID')#&cacheid=' + Math.random(),
+	parameters: 'AdZoneID=#arguments.objectid#&siteid=#$.event('siteID')#&track=#$.event('track')#&contentHistID=#$.content('contentHistID')#&cacheid=' + Math.random(),
 	onSuccess: function(transport){
 			var r=eval("(" + transport.responseText + ")");
 			if(typeof(r).mediatype  != 'undefined'){
 				if(r.mediatype.indexOf('lash') > -1){
 					var so = new SWFObject(r.mediaurl, "svAd#r#swf", r.width, r.height, r.version);
-				    so.addVariable("adUrl", "#application.configBean.getContext()#/tasks/ads/track.cfm?adUrl=" + escape(r.redirecturl) + "&placementid=" + r.placementid + "track=#request.track#&siteID=#request.siteid#");
+				    so.addVariable("adUrl", "#$.globalConfig('context')#/tasks/ads/track.cfm?adUrl=" + escape(r.redirecturl) + "&placementid=" + r.placementid + "track=#$.event('track')#&siteID=#$.event('siteID')#");
 				    so.addParam("wmode", "transparent");
 				    so.write("svAd#r#");
 				} else {

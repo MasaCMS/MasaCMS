@@ -197,7 +197,7 @@ to your own modified versions of Mura CMS.
 						</cfif>
 					</cfcase>
 					<cfcase value="Title">
-						<dt><cfif arguments.type eq "Search">#arguments.iterator.getRecordIndex()#. </cfif>#$.addLink(arguments.item.getValue('type'),arguments.item.getValue('filename'),arguments.item.getValue('menutitle'),arguments.item.getValue('target'),arguments.item.getValue('targetparams'),arguments.item.getValue('contentID'),arguments.item.getValue('siteID'),'',application.configBean.getContext(),application.configBean.getStub(),application.configBean.getIndexFile())#</dt>
+						<dt><cfif arguments.type eq "Search">#arguments.iterator.getRecordIndex()#. </cfif>#$.addLink(arguments.item.getValue('type'),arguments.item.getValue('filename'),arguments.item.getValue('menutitle'),arguments.item.getValue('target'),arguments.item.getValue('targetparams'),arguments.item.getValue('contentID'),arguments.item.getValue('siteID'),'',$.globalConfig('context'),$.globalConfig('stub'),$.globalConfig('indexFile'))#</dt>
 					</cfcase>
 					<cfcase value="Image">
 						<cfif arguments.hasImage>
@@ -208,7 +208,7 @@ to your own modified versions of Mura CMS.
 					</cfcase>
 					<cfcase value="Summary">
 						<cfif len(arguments.item.getValue('summary')) and arguments.item.getValue('summary') neq "<p></p>">
-						 	<dd class="summary">#$.setDynamicContent(arguments.item.getValue('summary'))# <span class="readMore">#$.addLink(arguments.item.getValue('type'),arguments.item.getValue('filename'),$.rbKey('list.readmore'),arguments.item.getValue('target'),arguments.item.getValue('targetparams'),arguments.item.getValue('contentID'),arguments.item.getValue('siteID'),'',application.configBean.getContext(),application.configBean.getStub(),application.configBean.getIndexFile())#</span></dd>
+						 	<dd class="summary">#$.setDynamicContent(arguments.item.getValue('summary'))# <span class="readMore">#$.addLink(arguments.item.getValue('type'),arguments.item.getValue('filename'),$.rbKey('list.readmore'),arguments.item.getValue('target'),arguments.item.getValue('targetparams'),arguments.item.getValue('contentID'),arguments.item.getValue('siteID'),'',$.globalConfig('context'),$.globalConfig('stub'),$.globalConfig('indexFile'))#</span></dd>
 						</cfif>
 					</cfcase>
 					<cfcase value="Credits">
@@ -218,7 +218,7 @@ to your own modified versions of Mura CMS.
 					</cfcase>
 					<cfcase value="Comments">
 						<cfif (arguments.item.getValue('type') eq 'Page' or showItemMeta(arguments.item.getValue('type')) or (len(arguments.item.getValue('fileID')) and showItemMeta(arguments.item.getValue('fileEXT')))) >
-						 	<dd class="comments">#$.addLink(arguments.item.getValue('type'),arguments.item.getValue('filename'),'#$.rbKey("list.comments")#(#application.contentGateway.getCommentCount(request.siteid,arguments.item.getValue('contentID'))#)',arguments.item.getValue('target'),arguments.item.getValue('targetparams'),arguments.item.getValue('contentID'),request.siteid,'##comments',application.configBean.getContext(),application.configBean.getStub(),application.configBean.getIndexFile())#</dd>
+						 	<dd class="comments">#$.addLink(arguments.item.getValue('type'),arguments.item.getValue('filename'),'#$.rbKey("list.comments")#(#$.getBean('contentGateway').getCommentCount($.event('siteID'),arguments.item.getValue('contentID'))#)',arguments.item.getValue('target'),arguments.item.getValue('targetparams'),arguments.item.getValue('contentID'),$.event('siteID'),'##comments',$.globalConfig('context'),$.globalConfig('stub'),$.globalConfig('indexFile'))#</dd>
 						</cfif>
 					</cfcase>
 					<cfcase value="Tags">

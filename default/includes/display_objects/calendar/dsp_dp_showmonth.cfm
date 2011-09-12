@@ -45,9 +45,9 @@ to your own modified versions of Mura CMS.
 <cfoutput>
 <table>
 <tr>
-<th title="#HTMLEditFormat(dateLong)#" id="previousMonth"><a href="?month=#previousmonth#&year=#previousyear#&categoryID=#URLEncodedFormat(request.categoryID)#&relatedID=#URLEncodedFormat(request.relatedID)#">&laquo;</a></th>
+<th title="#HTMLEditFormat(dateLong)#" id="previousMonth"><a href="?month=#previousmonth#&year=#previousyear#&categoryID=#URLEncodedFormat($.event('categoryID'))#&relatedID=#URLEncodedFormat(request.relatedID)#">&laquo;</a></th>
 <th colspan="5">#dateLong#</th>
-<th id="nextMonth"><a href="?month=#nextmonth#&year=#nextyear#&categoryID=#URLEncodedFormat(request.categoryID)#&relatedID=#URLEncodedFormat(request.relatedID)#">&raquo;</a></th>
+<th id="nextMonth"><a href="?month=#nextmonth#&year=#nextyear#&categoryID=#URLEncodedFormat($.event('categoryID'))#&relatedID=#URLEncodedFormat(request.relatedID)#">&raquo;</a></th>
 </tr>
 	<tr class="dayofweek">
 	<cfloop index="id" from="1" to="#listLen(weekdayShort)#">
@@ -78,7 +78,7 @@ to your own modified versions of Mura CMS.
 		order by DisplayStart
 	</cfquery>
 	</cfsilent>
-	<td><span class="date">#id#</span>#dspNestedNav('#$.content('contentID')#',1,1,'calendar',calendarDay,'','?month=#request.month#&year=#request.year#&categoryID=#request.categoryID#&relatedID=#request.relatedID#','displaystart, orderno','','#application.configBean.getContext()#','#application.configBean.getStub()#','#request.categoryID#','#request.relatedID#',rsDay)#</td>
+	<td><span class="date">#id#</span>#dspNestedNav('#$.content('contentID')#',1,1,'calendar',calendarDay,'','?month=#request.month#&year=#request.year#&categoryID=#$.event('categoryID')#&relatedID=#request.relatedID#','displaystart, orderno','','#$.globalConfig('context')#','#$.globalConfig('stub')#','#$.event('categoryID')#','#request.relatedID#',rsDay)#</td>
 	<cfset posn=posn+1>
 	</cfloop>
 	<cfif posn lt 8>

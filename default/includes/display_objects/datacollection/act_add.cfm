@@ -58,10 +58,10 @@ to your own modified versions of Mura CMS.
 <cfif structKeyExists(myRequest, "useProtect")>
 	<cfset cffp = CreateObject("component","cfformprotect.cffpVerify").init() />
 	<cfif len(rsForm.responseSendTo)>
-		<cfset cffp.updateConfig('emailServer', application.settingsManager.getSite(request.siteID).getMailServerIP())>
-		<cfset cffp.updateConfig('emailUserName', application.settingsManager.getSite(request.siteID).getMailserverUsername(true))>
-		<cfset cffp.updateConfig('emailPassword', application.settingsManager.getSite(request.siteID).getMailserverPassword())>
-		<cfset cffp.updateConfig('emailFromAddress', application.settingsManager.getSite(request.siteID).getMailserverUsernameEmail())>
+		<cfset cffp.updateConfig('emailServer', application.settingsManager.getSite($.event('siteID')).getMailServerIP())>
+		<cfset cffp.updateConfig('emailUserName', application.settingsManager.getSite($.event('siteID')).getMailserverUsername(true))>
+		<cfset cffp.updateConfig('emailPassword', application.settingsManager.getSite($.event('siteID')).getMailserverPassword())>
+		<cfset cffp.updateConfig('emailFromAddress', application.settingsManager.getSite($.event('siteID')).getMailserverUsernameEmail())>
 		<cfset cffp.updateConfig('emailToAddress', rsForm.responseSendTo)>
 		<cfset cffp.updateConfig('emailSubject', 'Spam form submission')>
 	</cfif>
@@ -148,9 +148,9 @@ to your own modified versions of Mura CMS.
 	<cfif not StructIsEmpty(info) and variables.sendto neq ''> 
 		<cfset mailer=$.getBean('mailer')/>
 		<cfif mailer.isValidEmailFormat(request.email)>
-			<cfset mailer.send(info,'#variables.sendto#','#rsForm.title#','#request.subject#','#request.siteid#','#request.email#')>
+			<cfset mailer.send(info,'#variables.sendto#','#rsForm.title#','#request.subject#','#$.event('siteID')#','#request.email#')>
 		<cfelse>
-			<cfset mailer.send(info,'#variables.sendto#','#rsForm.title#','#request.subject#','#request.siteid#','')>
+			<cfset mailer.send(info,'#variables.sendto#','#rsForm.title#','#request.subject#','#$.event('siteID')#','')>
 		</cfif>
 	</cfif>
 			

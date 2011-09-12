@@ -41,4 +41,4 @@ the GNU General Public License version 2 without this exception. You may, if you
 to your own modified versions of Mura CMS.
 --->
 
-<cfoutput><ul id="svSiteMap"><li class="home"><a href="#application.configBean.getContext()##application.contentRenderer.getURLStem(request.siteid,"")#">Home</a>#dspNestedNav('00000000000000000000000000000000001',10)#</li></ul></cfoutput>
+<cfoutput><ul id="svSiteMap"><li class="home"><a href="#$.globalConfig('context')##application.contentRenderer.getURLStem($.event('siteID'),"")#">Home</a>#dspNestedNav('00000000000000000000000000000000001',10)#</li></ul></cfoutput>

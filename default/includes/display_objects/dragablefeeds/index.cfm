@@ -43,7 +43,7 @@ to your own modified versions of Mura CMS.
 <cfsilent>
 <cfset loadJSLib() />
 <cfset $.addToHTMLHeadQueue("dragablefeeds/htmlhead/dragablefeeds.cfm")>	
-<cfswitch expression="#getJsLib()#">
+<cfswitch expression="#$.getJsLib()#">
 	<cfcase value="jquery">
 		<cfset $.addToHTMLHeadQueue("dragablefeeds/htmlhead/dragablefeeds-jquery.cfm")>
 	</cfcase>
@@ -52,10 +52,10 @@ to your own modified versions of Mura CMS.
 	</cfdefaultcase>
 </cfswitch>
 
-<cfset rbFactory=getSite().getRBFactory() />
-<cfset defaultFeeds = application.feedManager.getDefaultFeeds(request.siteid) />
-<cfset remoteFeeds = application.feedManager.getFeeds(request.siteid, "remote",true) />
-<cfset localFeeds = application.feedManager.getFeeds(request.siteid, "local",true) />
+
+<cfset defaultFeeds = application.feedManager.getDefaultFeeds($.event('siteID')) />
+<cfset remoteFeeds = application.feedManager.getFeeds($.event('siteID'), "remote",true) />
+<cfset localFeeds = application.feedManager.getFeeds($.event('siteID'), "local",true) />
 
 <cfquery dbtype="query" name="reorderedDefaultFeeds">
 	select * from defaultFeeds
@@ -65,12 +65,12 @@ to your own modified versions of Mura CMS.
 </cfsilent>
 <cfoutput>
 <div id="svRSSFeeds">
-<#getHeaderTag('subHead1')#>#$.rbKey('dragablefeeds.title')#</#getHeaderTag('subHead1')#>
-<cfif not len(getPersonalizationID()) and application.settingsManager.getSite(request.siteID).getExtranetPublicReg() eq 1><p class="rssBlurb"><a href="#application.settingsManager.getSite(request.siteid).getLoginURL()#&returnURL=#URLEncodedFormat(application.contentRenderer.getCurrentURL())#">#$.rbKey('dragablefeeds.createaccount')#</a></p></cfif>
+<#$.getHeaderTag('subHead1')#>#$.rbKey('dragablefeeds.title')#</#$.getHeaderTag('subHead1')#>
+<cfif not len(getPersonalizationID()) and application.settingsManager.getSite($.event('siteID')).getExtranetPublicReg() eq 1><p class="rssBlurb"><a href="#application.settingsManager.getSite($.event('siteID')).getLoginURL()#&returnURL=#URLEncodedFormat(application.contentRenderer.getCurrentURL())#">#$.rbKey('dragablefeeds.createaccount')#</a></p></cfif>
 </div>
 
 
-<#getHeaderTag('subHead2')# class="addFeeds">#$.rbKey('dragablefeeds.wantmore')#</#getHeaderTag('subHead2')#>
+<#$.getHeaderTag('subHead2')# class="addFeeds">#$.rbKey('dragablefeeds.wantmore')#</#$.getHeaderTag('subHead2')#>
 <div id="svAddNewFeed" class="clearfix">
 	<form method="post" action="##">
 		<dl id="rssInternal">
@@ -86,7 +86,7 @@ to your own modified versions of Mura CMS.
 				</cfloop>
 				<optgroup label="#rbFactory.getResourceBundle().messageFormat($.rbKey('dragablefeeds.sitefeeds'),getSite().getSite())#">
 				<cfloop query="localFeeds">
-					<cfset feedLink = "http://#application.settingsManager.getSite(request.siteID).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()#/tasks/feed/?feedID=#feedID#">
+					<cfset feedLink = "http://#application.settingsManager.getSite($.event('siteID')).getDomain()##application.configBean.getServerPort()##$.globalConfig('context')#/tasks/feed/?feedID=#feedID#">
 					<option value="#feedLink#">#name#</option>
 				</cfloop>
 				</cfoutput>
@@ -108,14 +108,14 @@ to your own modified versions of Mura CMS.
 	
 <cfoutput>
 <script type="text/javascript">
-	var siteID="#request.siteid#";
-	var appContext="#application.configBean.getContext()#";
+	var siteID="#$.event('siteID')#";
+	var appContext="#$.globalConfig('context')#";
 	addLoadEvent(initDragableBoxesScript);
 	
 	<cfif len(getPersonalizationID())>
-		<cfset userFeeds = application.favoriteManager.getFavorites(getPersonalizationID(), "RSS", request.siteid)>
+		<cfset userFeeds = application.favoriteManager.getFavorites(getPersonalizationID(), "RSS", $.event('siteID'))>
 		userID = "#getPersonalizationID()#";
-		siteID = "#request.siteid#";
+		siteID = "#$.event('siteID')#";
 		<cfif userFeeds.recordCount gt 0 >
 			function createBoxes(){
 			<cfloop query="userFeeds">
@@ -134,7 +134,7 @@ to your own modified versions of Mura CMS.
 					<cfset columnNumber = 2>
 				</cfif>
 				<cfif type eq "Local">
-					<cfset feedLink = "http://#application.settingsManager.getSite(request.siteID).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()#/tasks/feed/?feedID=#feedID#">
+					<cfset feedLink = "http://#application.settingsManager.getSite($.event('siteID')).getDomain()##application.configBean.getServerPort()##$.globalConfig('context')#/tasks/feed/?feedID=#feedID#">
 				<cfelse>
 					<cfset feedLink = "#channelLink#">
 				</cfif>
@@ -156,7 +156,7 @@ to your own modified versions of Mura CMS.
 				<cfset columnNumber = 2>
 			</cfif>
 			<cfif type eq "Local">
-				<cfset feedLink = "http://#application.settingsManager.getSite(request.siteID).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()#/tasks/feed/?feedID=#feedID#">
+				<cfset feedLink = "http://#application.settingsManager.getSite($.event('siteID')).getDomain()##application.configBean.getServerPort()##$.globalConfig('context')#/tasks/feed/?feedID=#feedID#">
 			<cfelse>
 				<cfset feedLink = "#channelLink#">
 			</cfif>

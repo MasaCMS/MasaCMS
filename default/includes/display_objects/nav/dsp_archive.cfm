@@ -41,7 +41,7 @@ the GNU General Public License version 2 without this exception. You may, if you
 to your own modified versions of Mura CMS.
 --->
 <cfsilent>
-<cfset rsArchive=application.contentGateway.getReleaseCountByMonth($.event('siteID'),arguments.objectID)>
+<cfset rsArchive=$.getBean('contentGateway').getReleaseCountByMonth($.event('siteID'),arguments.objectID)>
 <cfset hasArchiveFilter=listFindNoCase("releaseMonth,releaseDate,releaseYear",$.event("filterBy"))>
 <cfif arguments.objectID eq $.content("contentID")>
 	<cfset archive=$.content()>
@@ -50,7 +50,7 @@ to your own modified versions of Mura CMS.
 </cfif>
 </cfsilent>
 <cfoutput>
-<#getHeaderTag('subHead1')#>#$.rbKey('list.archive')#</#getHeaderTag('subHead1')#>
+<#$.getHeaderTag('subHead1')#>#$.rbKey('list.archive')#</#$.getHeaderTag('subHead1')#>
 <div class="navArchive">
 <ul class="navSecondary">
 	<cfloop query="rsArchive">

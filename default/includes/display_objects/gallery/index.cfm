@@ -42,40 +42,36 @@ to your own modified versions of Mura CMS.
 --->
 <cfsilent>
 	<!--- the js is not loaded in contentRenderer.dspBody() to prevent caching --->
-	<cfset hasComments=application.contentGateway.getHasComments(request.siteid,$.content('contentHistID')) />
-	<cfset hasRatings=application.contentGateway.getHasRatings(request.siteid,$.content('contentHistID')) />
+	<cfset hasComments=$.getBean('contentGateway').getHasComments($.event('siteID'),$.content('contentHistID')) />
+	<cfset hasRatings=$.getBean('contentGateway').getHasRatings($.event('siteID'),$.content('contentHistID')) />
 	
-	<cfparam name="request.day" default="0">
-	<cfparam name="request.filterBy" default="">
-	
-	<cfif not isNumeric(request.month)>
-		<cfset request.month=month(now())>
+	<cfif not isNumeric($.event('month'))>
+		<cfset $.event('month',month(now()))>
 	</cfif>
 	
-	<cfif not isNumeric(request.year)>
-		<cfset request.year=year(now())>
+	<cfif not isNumeric($.event('year'))>
+		<cfset $.event('year',year(now()))>
 	</cfif>
 	
-	<cfif isNumeric(request.day) and request.day
-		and request.filterBy eq "releaseDate">
+	<cfif isNumeric($.event('day')) and $.event('day')
+		and $.event('filterBy') eq "releaseDate">
 		<cfset menuType="releaseDate">
-		<cfset menuDate=createDate(request.year,request.month,request.day)>
-	<cfelseif request.filterBy eq "releaseMonth">
+		<cfset menuDate=createDate($.event('year'),$.event('month'),$.event('day'))>
+	<cfelseif $.event('filter') eq "releaseMonth">
 		<cfset menuType="releaseMonth">
-		<cfset menuDate=createDate(request.year,request.month,1)>
+		<cfset menuDate=createDate($.event('year'),$.event('month'),1)>
 	<cfelse>
 		<cfset menuDate=now()>
 		<cfset menuType="default">
 	</cfif>
 	
-	<cfset rsPreSection=application.contentGateway.getKids('00000000000000000000000000000000000',request.siteid,$.content('contentID'),menutype,menuDate,0,request.keywords,0,$.content('sortBy'),$.content('sortDirection'),request.categoryID,request.relatedID,request.tag)>
-	<cfif getSite().getExtranet() eq 1 and request.r.restrict eq 1>
-		<cfset rssection=queryPermFilter(rsPreSection)/>
+	<cfset rsPreSection=$.getBean('contentGateway').getKids('00000000000000000000000000000000000',$.event('siteID'),$.content('contentID'),menutype,menuDate,0,$.event('keywords'),0,$.content('sortBy'),$.content('sortDirection'),$.event('categoryID'),$.event('relatedID'),$.event('tag'))>
+	<cfif $.siteConfig('extranet') eq 1 and $.event('r').restrict eq 1>
+		<cfset rssection=$.queryPermFilter(rsPreSection)/>
 	<cfelse>
 		<cfset rssection=rsPreSection/>
 	</cfif>
 	
-	<cfset rbFactory=getSite().getRBFactory() />
 	<cfset iterator=$.getBean("contentIterator")>
 	<cfset iterator.setQuery(rsSection,event.getContentBean().getNextN())>
 	
@@ -103,17 +99,17 @@ to your own modified versions of Mura CMS.
 		<cfset iterator.setPage(1)>
 	</cfif>
 	
-	<cfset variables.nextN=application.utility.getNextN(rsSection,event.getContentBean().getNextN(),currentNextNIndex)>
+	<cfset variables.nextN=$.getBean('utility').getNextN(rsSection,event.getContentBean().getNextN(),currentNextNIndex)>
 
 	<cfif NOT len($.content("displayList"))>
 		<cfset variables.contentListFields="Title,Summary,Date,Image,Tags,Credits">
 				
-		<cfif application.contentGateway.getHasComments($.event('siteid'),$.content('contentID'))>
-			<cfset variables.contentListFields=listAppend(contentListFields,"Comments")>
+		<cfif $.getBean('contentGateway').getHasComments($.event('siteid'),$.content('contentID'))>
+			<cfset variables.contentListFields=listAppend(variables.contentListFields,"Comments")>
 		</cfif>
 			
-		<cfif application.contentGateway.getHasRatings($.event('siteid'),$.content('contentID'))>
-			<cfset variables.contentListFields=listAppend(contentListFields,"Rating")>
+		<cfif $.getBean('contentGateway').getHasRatings($.event('siteid'),$.content('contentID'))>
+			<cfset variables.contentListFields=listAppend(variables.contentListFields,"Rating")>
 		</cfif>
 		<cfset $.content("displayList",variables.contentListFields)>
 	</cfif>
@@ -141,7 +137,7 @@ to your own modified versions of Mura CMS.
 						<cfcase value="Title">
 							<dt>
 							 	<cfif listFindNoCase($.content("displayList"),"comments")>
-							 		<a href="?linkServID=#item.getValue('contentid')#&categoryID=#HTMLEditFormat(request.categoryID)#&relatedID=#HTMLEditFormat(request.relatedID)#" title="#HTMLEditFormat(item.getValue('title'))#">#HTMLEditFormat(item.getValue('menutitle'))#</a>
+							 		<a href="?linkServID=#item.getValue('contentid')#&categoryID=#HTMLEditFormat($.event('categoryID'))#&relatedID=#HTMLEditFormat(request.relatedID)#" title="#HTMLEditFormat(item.getValue('title'))#">#HTMLEditFormat(item.getValue('menutitle'))#</a>
 							 	<cfelse>
 							 		#HTMLEditFormat(item.getValue('menutitle'))#
 							 	</cfif>
@@ -160,7 +156,7 @@ to your own modified versions of Mura CMS.
 						 	</cfif>
 						</cfcase>
 						<cfcase value="Comments">
-					 		<dd class="comments"><a href="?linkServID=#item.getValue('contentid')#&categoryID=#HTMLEditFormat(request.categoryID)#&relatedID=#HTMLEditFormat(request.relatedID)#" title="#HTMLEditFormat(item.getValue('title'))#">#$.rbKey('list.comments')# (#application.contentGateway.getCommentCount(request.siteid,item.getValue('contentid'))#)</a></dd>
+					 		<dd class="comments"><a href="?linkServID=#item.getValue('contentid')#&categoryID=#HTMLEditFormat($.event('categoryID'))#&relatedID=#HTMLEditFormat(request.relatedID)#" title="#HTMLEditFormat(item.getValue('title'))#">#$.rbKey('list.comments')# (#$.getBean('contentGateway').getCommentCount($.event('siteID'),item.getValue('contentid'))#)</a></dd>
 					 	 </cfcase>
 						<cfcase value="Tags">
 						 	<cfif len(item.getValue('tags'))>
@@ -191,13 +187,13 @@ to your own modified versions of Mura CMS.
 		</ul>		
 	</div>
 	<cfif variables.nextN.numberofpages gt 1>
-			<cfoutput>#dspObject_Include(thefile='dsp_nextN.cfm')#</cfoutput>
+			<cfoutput>#$.dspObject_Include(thefile='dsp_nextN.cfm')#</cfoutput>
 		</cfif>	
 	<cfelse>
 	 <cfoutput>
-	 <cfif request.filterBy eq "releaseMonth">
+	 <cfif $.event('filterBy') eq "releaseMonth">
 		<p>#$.rbKey('list.nocontentmonth')#</p>		
-	 <cfelseif request.filterBy eq "releaseDate">
+	 <cfelseif $.event('filterBy') eq "releaseDate">
 		<p>#$.rbKey('list.nocontentday')#</p>	
 	<cfelse>
 		<p>#$.rbKey('list.galleryisempty')#</p>

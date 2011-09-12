@@ -1135,10 +1135,14 @@ select * from tplugins order by #arguments.orderby#
 	<cfset var eventHandler="">
 	<cfset var listenerArray="">
 	<cfset var isGlobalEvent=left(arguments.runat,8) eq "onGlobal">
-	<cfset var isValidEvent=variables.utility.isValidCFVariableName(arguments.runat)>
+	<cfset var isValidEvent=false>
 	<cfset var siteIDadjusted=adjustSiteID(arguments.siteID)>
 	<cfset var muraScope="">
 	<cfset var currentModuleID="">
+	
+	<cfset arguments.runat=replace(arguments.runat," ", "","ALL")>
+	
+	<cfset isValidEvent=variables.utility.isValidCFVariableName(arguments.runat)>
 	
 	<cfif not left(arguments.runat,2) eq "on" or left(arguments.runat,7) eq "standard">
 		<cfset arguments.runat="on" & arguments.runat>
@@ -1287,10 +1291,14 @@ select * from tplugins order by #arguments.orderby#
 	<cfset var eventHandler="">
 	<cfset var listenerArray="">
 	<cfset var isGlobalEvent=left(arguments.runat,8) eq "onGlobal">
-	<cfset var isValidEvent=variables.utility.isValidCFVariableName(arguments.runat)>
+	<cfset var isValidEvent=false>
 	<cfset var siteIDadjusted=adjustSiteID(arguments.siteID)>
 	<cfset var muraScope="">
 	<cfset var currentModuleID="">
+	
+	<cfset arguments.runat=replace(arguments.runat," ", "","ALL")>
+	
+	<cfset isValidEvent=variables.utility.isValidCFVariableName(arguments.runat)>
 	
 	<cfif not left(arguments.runat,2) eq "on" or left(arguments.runat,7) eq "standard">
 		<cfset arguments.runat="on" & arguments.runat>

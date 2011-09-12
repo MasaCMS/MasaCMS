@@ -45,7 +45,7 @@ to your own modified versions of Mura CMS.
 	<cfquery datasource="#application.configBean.getDatasource()#" username="#application.configBean.getDBUsername()#" password="#application.configBean.getDBPassword()#" name="rslist">
 	select mlid, name, ispurge, description 
 	from tmailinglist 
-	where siteid='#request.siteid#' 
+	where siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#$.event('siteID')#">
 	and 
 	<cfif isValid('UUID',arguments.objectID)>
 	mlid
@@ -54,25 +54,24 @@ to your own modified versions of Mura CMS.
 	</cfif>
 	=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.objectid#">
 	</cfquery>
-	<cfset rbFactory=getSite().getRBFactory() />
 </cfsilent>
 <cfoutput>
 <div class="svMailingList" id="#createCSSID(rsList.name)#">
-	<#getHeaderTag('subHead1')#>#rslist.name#</#getHeaderTag('subHead1')#>
+	<#$.getHeaderTag('subHead1')#>#rslist.name#</#$.getHeaderTag('subHead1')#>
 	
-	<cfif request.doaction eq 'unsubscribe'>
+	<cfif $.event('doaction') eq 'unsubscribe'>
 		<cfif $.event("passedProtect")>
 			<p class="success">#$.rbKey('mailinglist.youhaveunsubscribed')#</p>
 		<cfelse>
 			<p class="error">#$.rbKey('captcha.spam')#</p>
 		</cfif>
-	<cfelseif request.doaction eq 'subscribe' and rslist.isPurge neq 1>
+	<cfelseif $.event('doaction') eq 'subscribe' and rslist.isPurge neq 1>
 		<cfif $.event("passedProtect")>
 			<p class="success">#$.rbKey('mailinglist.youhavesubscribed')#</p>
 		<cfelse>
 			<p class="error">#$.rbKey('captcha.spam')#</p>
 		</cfif>
-	<cfelseif request.doaction eq 'subscribe' and rslist.isPurge eq 1>
+	<cfelseif $.event('doaction') eq 'subscribe' and rslist.isPurge eq 1>
 		<cfif $.event("passedProtect")>
 			<p class="success">#$.rbKey('mailinglist.emailremoved')#</p>
 		<cfelse>
@@ -106,7 +105,7 @@ to your own modified versions of Mura CMS.
 		</fieldset>
 		<div class="buttons">
 			<input type="hidden" name="linkServID" value="#$.content('contentID')#" />
-			<input type="hidden" name="mlid" value="#rslist.mlid#"><input type="hidden" name="siteid" value="#request.siteid#" />
+			<input type="hidden" name="mlid" value="#rslist.mlid#"><input type="hidden" name="siteid" value="#$.event('siteID')#" />
 			<cfif rslist.isPurge eq 0>
 			<input type="hidden" name="doaction" value="subscribe" checked="checked" />
 			<input type="hidden" name="isVerified" value="1" />
@@ -116,7 +115,7 @@ to your own modified versions of Mura CMS.
 			<input type="hidden" name="isVerified" value="1"  />
 			<input type="submit" class="submit" value="#HTMLEditFormat($.rbKey('mailinglist.unsubscribe'))#" />
 			</cfif>
-				#dspObject_Include(thefile='dsp_form_protect.cfm')#
+				#$.dspObject_Include(thefile='dsp_form_protect.cfm')#
 		</div>
 	</form>
 	</cfif>

@@ -43,22 +43,20 @@ to your own modified versions of Mura CMS.
 
 <cfsilent>
 	<cfquery datasource="#application.configBean.getDatasource()#" username="#application.configBean.getDBUsername()#" password="#application.configBean.getDBPassword()#" name="rslist">
-	select mlid, name, description from tmailinglist where siteid='#request.siteid#' and isPublic=1 order by isPurge, name 
+	select mlid, name, description from tmailinglist where siteid='#$.event('siteID')#' and isPublic=1 order by isPurge, name 
 	</cfquery>
-	<cfparam name="request.email" default="">
-	<cfset rbFactory=getSite().getRBFactory() />
 </cfsilent>
 
 <cfoutput>
 <div id="svMasterEmail">
-	<cfif request.doaction eq 'masterSubscribe'>
+	<cfif $.event('doaction') eq 'masterSubscribe'>
 		<cfif $.event("passedProtect")>
 			<p class="response success">#$.rbKey('mailinglist.selectionssaved')#</p>
 		<cfelse>
 			<p class="error">#$.rbKey('captcha.spam')#</p>
 		</cfif>
-	<cfelseif request.doaction eq 'validateMember'>
-		<cfset application.mailinglistManager.validateMember(request)/>
+	<cfelseif $.event('doaction') eq 'validateMember'>
+		<cfset application.mailinglistManager.validateMember($.event().getAllValues())/>
 		<p class="response success">#$.rbKey('mailinglist.hasbeenvalidated')#</p>
 	<cfelse>
 		<form id="frmEmailMaster" name="frmEmailMaster" action="?nocache=1" method="post" onsubmit="return validate(this);" novalidate="novalidate" data-role="fieldcontain">
@@ -87,19 +85,19 @@ to your own modified versions of Mura CMS.
 				<legend>Subscription Settings</legend>
 				<ol id="subSettings" class="stack"><cfset loopcount = 1><cfloop query="rslist">
 					<li>
-						<input id="mlid#loopcount#" class="checkbox" type="checkbox" name="mlid" value="#rslist.mlid#" <cfif listfind(request.mlid,rslist.mlid)>checked="checked"</cfif> />
+						<input id="mlid#loopcount#" class="checkbox" type="checkbox" name="mlid" value="#rslist.mlid#" <cfif listfind($.event('mlid'),rslist.mlid)>checked="checked"</cfif> />
 						<label for="mlid#loopcount#">#rslist.name#</label>
 						<cfif #rslist.description# neq ''><p class="inputNote">#rslist.description#</p></cfif>
 					</li>
 				<cfset loopcount = loopcount + 1></cfloop></ol>
 			</fieldset>
 			<div class="buttons">
-				<input type="hidden" name="siteid" value="#request.siteid#" />
+				<input type="hidden" name="siteid" value="#$.event('siteID')#" />
 				<input type="hidden" name="doaction" value="masterSubscribe" />
 				<input type="hidden" name="linkServID" value="#$.content('contentID')#" />
 				<input type="submit" class="submit" value="#HTMLEditFormat($.rbKey('mailinglist.submit'))#" />
 			</div>
-				<cfoutput>#dspObject_Include(thefile='dsp_form_protect.cfm')#</cfoutput>
+				<cfoutput>#$.dspObject_Include(thefile='dsp_form_protect.cfm')#</cfoutput>
 		</form>
 	</cfif>
 </div>

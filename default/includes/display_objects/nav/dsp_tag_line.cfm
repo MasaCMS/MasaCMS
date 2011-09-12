@@ -40,7 +40,7 @@ for your modified version; it is your choice whether to do so, or to make such m
 the GNU General Public License version 2 without this exception. You may, if you choose, apply this exception
 to your own modified versions of Mura CMS.
 --->
-<cfset rbFactory=application.settingsManager.getSite(request.siteid).getRBFactory()/>
+<cfset rbFactory=application.settingsManager.getSite($.event('siteID')).getRBFactory()/>
 <cfparam name="attributes.tags" default="">
 <cfset tagLen=listLen(attributes.tags) />
 <cfif len(tagLen)><cfoutput>#$.rbKey('tagcloud.tags')#: <cfloop from="1" to="#tagLen#" index="t"><cfset tag=trim(listgetAt(attributes.tags,t))><a href="#request.contentRenderer.createHREF(filename='#request.currentFilenameAdjusted#/tag/#urlEncodedFormat(tag)#')#">#tag#</a><cfif tagLen gt t>, </cfif></cfloop></cfoutput></cfif>

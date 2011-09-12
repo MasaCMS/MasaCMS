@@ -52,7 +52,7 @@ to your own modified versions of Mura CMS.
 </cfsilent>
 <cfoutput>
 <div id="dsp_detail" class="dataResponses">
-<#getHeaderTag('subHead1')#>#$.content('title')#</#getHeaderTag('subHead1')#>
+<#$.getHeaderTag('subHead1')#>#$.content('title')#</#$.getHeaderTag('subHead1')#>
 <a class="actionItem" href="##" onclick="history.go(-1)">Return to List</a>
 <dl>
 <cfloop list="#fieldnames#" index="f">

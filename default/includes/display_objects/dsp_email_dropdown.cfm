@@ -42,13 +42,13 @@ to your own modified versions of Mura CMS.
 --->
 
 <cfsilent>
-<cfset rbFactory=getSite().getRBFactory() />
+
 <cfquery name="rsEmail1" datasource="#application.configBean.getDatasource()#" username="#application.configBean.getDBUsername()#" password="#application.configBean.getDBPassword()#">
-SELECT userid, groupname, email, type FROM tusers WHERE type=1 and Email>'' and contactform like '%#request.siteid#%'
+SELECT userid, groupname, email, type FROM tusers WHERE type=1 and Email>'' and contactform like '%#$.event('siteID')#%'
 order by groupname
 </cfquery>
 <cfquery name="rsEmail2" datasource="#application.configBean.getDatasource()#" username="#application.configBean.getDBUsername()#" password="#application.configBean.getDBPassword()#">
-SELECT userid, fname, lname, email, type FROM tusers WHERE type=2 and Email>'' AND contactform like '%#request.siteid#%' order by lname
+SELECT userid, fname, lname, email, type FROM tusers WHERE type=2 and Email>'' AND contactform like '%#$.event('siteID')#%' order by lname
 </cfquery>
 </cfsilent>
 <cfif rsemail1.recordcount eq 1 and rsemail2.recordcount eq 0 >

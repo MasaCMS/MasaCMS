@@ -44,10 +44,10 @@ to your own modified versions of Mura CMS.
 <cfoutput>
 <cfif variables.iterator.getRecordCount()>
 	<div class="svRelContent svIndex">
-	<#getHeaderTag('subHead1')#>#$.rbKey('list.relatedcontent')#</#getHeaderTag('subHead1')#>
-	<cfif isJson(params)>
-		<cfset params=deserializeJSON(params)>
-		#dspObject_Include(
+	<#$.getHeaderTag('subHead1')#>#$.rbKey('list.relatedcontent')#</#$.getHeaderTag('subHead1')#>
+	<cfif isJson(arguments.params)>
+		<cfset params=deserializeJSON(arguments.params)>
+		#$.dspObject_Include(
 				thefile='dsp_content_list.cfm',
 				fields=params.displayList,
 				type='Related', 
@@ -57,7 +57,7 @@ to your own modified versions of Mura CMS.
 				imageWidth=params.imageWidth
 				)#
 	<cfelse>
-		#dspObject_Include(
+		#$.dspObject_Include(
 				thefile='dsp_content_list.cfm',
 				fields='Title',
 				type='Related', 

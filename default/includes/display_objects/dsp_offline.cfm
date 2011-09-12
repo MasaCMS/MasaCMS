@@ -42,6 +42,6 @@ to your own modified versions of Mura CMS.
 --->
 
 <cfoutput>
-<#getHeaderTag('headline')#>#$.rbKey('sitemanager.offline')#</#getHeaderTag('headline')#>
+<#$.getHeaderTag('headline')#>#$.rbKey('sitemanager.offline')#</#$.getHeaderTag('headline')#>
 <p>#$.rbKey('sitemanager.offlineinstructions')#</p>
 </cfoutput>

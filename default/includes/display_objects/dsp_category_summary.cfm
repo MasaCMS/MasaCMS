@@ -42,44 +42,44 @@ to your own modified versions of Mura CMS.
 --->
 
 <cfparam name="useRss" default="false">
-<cfquery datasource="#application.configBean.getDatasource()#" username="#application.configBean.getDBUsername()#" password="#application.configBean.getDBPassword()#" name="rsSection">select contentid,filename,menutitle,target,restricted,restrictgroups,type,sortBy,sortDirection from tcontent where siteid='#request.siteid#' and contentid='#arguments.objectid#' and approved=1 and active=1 and display=1</cfquery>
+<cfquery datasource="#application.configBean.getDatasource()#" username="#application.configBean.getDBUsername()#" password="#application.configBean.getDBPassword()#" name="rsSection">select contentid,filename,menutitle,target,restricted,restrictgroups,type,sortBy,sortDirection from tcontent where siteid='#$.event('siteID')#' and contentid='#arguments.objectid#' and approved=1 and active=1 and display=1</cfquery>
 <cfif rsSection.recordcount>
 <cfsilent>
 <cfif rsSection.type neq "Calendar">
 <cfset today=now() />
 <cfelse>
-<cfset today=createDate(request.year,request.month,1) />
+<cfset today=createDate($.event('year'),$.event('month'),1) />
 </cfif>
-<cfset rs=application.contentGateway.getKidsCategorySummary(request.siteid,arguments.objectid,request.relatedID,today,rsSection.type)>
+<cfset rs=$.getBean('contentGateway').getKidsCategorySummary($.event('siteID'),arguments.objectid,$.event('relatedID'),today,rsSection.type)>
 
-<cfset viewAllURL="#application.configBean.getContext()##getURLStem(request.siteid,rsSection.filename)#">
-<cfif len(request.relatedID)>
-	<cfset viewAllURL=viewAllURL & "?relatedID=#HTMLEditFormat(request.relatedID)#">
+<cfset viewAllURL="#$.globalConfig('context')##getURLStem($.event('siteID'),rsSection.filename)#">
+<cfif len($.event('relatedID'))>
+	<cfset viewAllURL=viewAllURL & "?relatedID=#HTMLEditFormat($.event('relatedID'))#">
 </cfif>
 </cfsilent>
 <cfif rs.recordcount>
-<cfset rbFactory=getSite().getRBFactory() />
+
 <cfoutput>
 <div class="svCatSummary svIndex">
-<#getHeaderTag('subHead1')#>#$.rbKey('list.categories')#</#getHeaderTag('subHead1')#>
+<#$.getHeaderTag('subHead1')#>#$.rbKey('list.categories')#</#$.getHeaderTag('subHead1')#>
 <ul class="navSecondary"><cfloop query="rs">
 	<cfsilent>
 	<cfif len(rs.filename)>
-		<cfset categoryURL="#application.configBean.getContext()##getURLStem(request.siteid,rsSection.filename & '/category/' & rs.filename)#">
-		<cfif len(request.relatedID)>
-			<cfset categoryURL=categoryURL & "?relatedID=#HTMLEditFormat(request.relatedID)#">
+		<cfset categoryURL="#$.globalConfig('context')##getURLStem($.event('siteID'),rsSection.filename & '/category/' & rs.filename)#">
+		<cfif len($.event('relatedID'))>
+			<cfset categoryURL=categoryURL & "?relatedID=#HTMLEditFormat($.event('relatedID'))#">
 		</cfif>
 	<cfelse>
-		<cfset categoryURL="#application.configBean.getContext()##getURLStem(request.siteid,rsSection.filename)#?categoryID=#rs.categoryID#">
-		<cfif len(request.relatedID)>
-			<cfset categoryURL=categoryURL & "&relatedID=#HTMLEditFormat(request.relatedID)#">
+		<cfset categoryURL="#$.globalConfig('context')##getURLStem($.event('siteID'),rsSection.filename)#?categoryID=#rs.categoryID#">
+		<cfif len($.event('relatedID'))>
+			<cfset categoryURL=categoryURL & "&relatedID=#HTMLEditFormat($.event('relatedID'))#">
 		</cfif>
 	</cfif>
 	</cfsilent>
 	<cfset class=iif(rs.currentrow eq 1,de('first'),de(''))>
-		<li class="#class#<cfif listFind(request.categoryID,rs.categoryID)> current</cfif>"><a href="#categoryURL#">#rs.name# (#rs.count#)</a><cfif useRss><a class="rss" href="#application.configBean.getContext()#/tasks/feed/index.cfm?siteid=#request.siteid#&contentID=#rsSection.contentid#&categoryID=#rs.categoryID#" <cfif listFind(request.categoryID,rs.categoryID)>class="current"</cfif>>RSS</a></cfif></li>
+		<li class="#class#<cfif listFind($.event('categoryID'),rs.categoryID)> current</cfif>"><a href="#categoryURL#">#rs.name# (#rs.count#)</a><cfif useRss><a class="rss" href="#$.globalConfig('context')#/tasks/feed/index.cfm?siteid=#$.event('siteID')#&contentID=#rsSection.contentid#&categoryID=#rs.categoryID#" <cfif listFind($.event('categoryID'),rs.categoryID)>class="current"</cfif>>RSS</a></cfif></li>
 	</cfloop>
-	<li class="last"><a href="#viewAllURL#">View All</a><cfif useRss><a class="rss" href="#application.configBean.getContext()#/tasks/feed/index.cfm?siteid=#request.siteid#&contentID=#rsSection.contentid#">RSS</a></cfif></li>
+	<li class="last"><a href="#viewAllURL#">View All</a><cfif useRss><a class="rss" href="#$.globalConfig('context')#/tasks/feed/index.cfm?siteid=#$.event('siteID')#&contentID=#rsSection.contentid#">RSS</a></cfif></li>
 </ul>
 </div>
 </cfoutput>
