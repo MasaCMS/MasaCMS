@@ -43,9 +43,9 @@ to your own modified versions of Mura CMS.
 <cfoutput><span>
 		<div class="meld-tb-form">
 			<div class="meld-tb-header textfield">
-				<h3><!---#mmRBF.getKeyValue(session.rb,'formbuilder.field.textfield')#:---> <span id="meld-tb-form-label">bob</span></h3>
-				<ul class="right">
-					<li><div class="ui-button" id="button-trash" title="#mmRBF.getKeyValue(session.rb,'formbuilder.delete')#"><span class="ui-icon ui-icon-close"></span></div></li>
+				<h3><!---#mmRBF.getKeyValue(session.rb,'formbuilder.field.textfield')#:---><span id="meld-tb-form-label"></span></h3>
+				<ul class="meld-tb-nav-utility">
+					<li><div class="ui-button" id="button-trash" title="#mmRBF.getKeyValue(session.rb,'formbuilder.delete')#"></div></li>
 				</ul>
 			</div>
 			

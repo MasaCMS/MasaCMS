@@ -42,8 +42,8 @@ to your own modified versions of Mura CMS.
 --->
 <cfoutput>
 		<li>
-			<ul class="right">
-				<li><div class="ui-button" id="button-trash" title="#mmRBF.getKeyValue(session.rb,'formbuilder.delete')#"><span class="ui-icon ui-icon-close"></span></div></li>
+			<ul class="meld-tb-nav-utility">
+				<li><div class="ui-button" id="button-trash" title="#mmRBF.getKeyValue(session.rb,'formbuilder.delete')#"></div></li>
 			</ul>
 			<div class="meld-tb-block">
 				<span></span>

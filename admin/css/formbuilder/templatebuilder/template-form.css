@@ -27,7 +27,7 @@ width: 100%;*/
 	background-repeat: no-repeat;
 	background-position: left top;
 	padding-left: 36px;
-	padding-right: 14px;
+	/*padding-right: 14px;*/
 	line-height: 1.1;
 }
 
@@ -180,8 +180,8 @@ input.disabled {
 	background-color: #eee;
 }
 
-.ui-button {
-	border: 1px solid #c2c2c2 !important;
+#meld-tb-fields .ui-button {
+	border: 1px solid #c2c2c2;
 	background: -moz-linear-gradient(
 		top,
 		#ffffff 0%,

@@ -162,6 +162,7 @@
 }
 
 #meld-tb-fields li  {
+	position: relative;
 	color: #333;
 	padding: 4px 6px;
 	background: -moz-linear-gradient(
@@ -216,9 +217,8 @@
 	width: 20px;
 }
 
-#meld-tb-fields li div#selected.field {
-	background-color: #FFEBEB;
-	background-position-y: 0px;
+#meld-tb-form #meld-tb-fields li.selected .field {
+	padding-right: 18px;
 }
 
 #meld-tb-fields li.field-textfield div {
@@ -237,7 +237,7 @@
 	background-image: url('images/frm_checkbox_big.png');
 }
 
-#meld-tb-fields li.field-section {
+#meld-tb-form #meld-tb-fields li.field-section {
 	background: transparent;
 	margin: 0 0 5px 0;
 	padding: 5px;
@@ -245,24 +245,59 @@
 	border-radius: 0;
 	-moz-border-radius: 0;
 	-webkit-border-radius: 0;
-	-moz-box-shadow: none;
-	-webkit-box-shadow: none;
-	text-shadow: 0;
-	text-transform: ;
+	-moz-box-shadow: none !important;
+	-webkit-box-shadow: none !important;
+	text-shadow: none !important;
 	font-size: 16px;
 	color: #666;
 	font-weight: bold;
 }
 
+.meld-tb-block {
+	cursor: move;
+}
+
 #meld-tb-dataset {
 	padding-top: 0;
-	/*float: right;*/
 	clear: left;
 }
 
 #meld-tb-form .btn-wrap {
 	text-align: center;
 	padding-bottom: 6px;
+}
+
+#meld-tb-form #meld-tb-fields .meld-tb-nav-utility {
+	display: block;
+	position: absolute;
+	top: 50%;
+	right: 4px;
+	background: transparent !important;
+	border: 0 !important;
+	padding: 0 !important;
+	margin: -8px 0 0 0 !important;
+}
+
+#meld-tb-form #meld-tb-fields .meld-tb-nav-utility li {
+	display: block;
+	position: relative;
+	width: 16px;
+	height: 16px;
+	padding: 0;
+	margin: 0;
+	background: transparent;
+	border: 0;
+	box-shadow: 0px 0px 0px;
+}
+
+#meld-tb-form #meld-tb-fields .meld-tb-nav-utility #button-trash {
+	display: block;
+	padding: 0;
+	margin: 0;
+	width: 16px;
+	height: 16px;
+	background: transparent url('images/data-delete.png') no-repeat center center !important;
+	border: 0 !important;
 }
 
 .columns {
