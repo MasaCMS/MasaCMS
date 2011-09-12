@@ -319,8 +319,10 @@
 	<cffunction name="onRequestEnd"  returnType="void"  output="true">
 	   <cfargument name="targetPage" required="true">
 	  	<cfset var local = structNew() />
-		<cfset application.pluginManager.announceEvent("onAdminRequestEnd",request.event)/>
-		<cfinclude template="../config/appcfc/onRequestEnd_include.cfm">
+		 <cfif isdefined("request.event")>
+			<cfset application.pluginManager.announceEvent("onAdminRequestEnd",request.event)/>
+			<cfinclude template="../config/appcfc/onRequestEnd_include.cfm">
+		 </cfif>
 	</cffunction>
 	
 </cfcomponent>
