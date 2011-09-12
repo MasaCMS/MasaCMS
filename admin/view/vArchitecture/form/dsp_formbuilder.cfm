@@ -61,11 +61,13 @@
 		</div>
 		<div id="meld-tb-form" class="clearfix">
 			<div id="meld-tb-form-fields">
+				<div id="meld-tb-fields-empty">#application.rbFactory.getKeyValue(session.rb,'formbuilder.fields.empty')#</div>
 				<ul id="meld-tb-fields">
 				</ul>
 			</div>
 			<div id="meld-tb-fields-settings">	
 				<div id="meld-tb-field-form" class="meld-tb-data-form">
+					<div id="meld-tb-field-empty">#application.rbFactory.getKeyValue(session.rb,'formbuilder.field.empty')#</div>
 					<div id="meld-tb-field">
 					</div>
 				</div>
