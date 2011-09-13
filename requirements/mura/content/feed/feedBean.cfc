@@ -429,6 +429,12 @@ to your own modified versions of Mura CMS.
 	<cfset var returnList="Title,Date,Image,Summary,Tags,Credits,Rating,Comments">
 	<cfset var i=0>
 	<cfset var finder=0>
+	<cfset var rsExtend=getBean('configBean').getClassExtensionManager().getExtendedAttributeList(variables.instance.siteid,"tcontent")>
+	
+	<cfif rsExtend.recordcount>
+		<cfset returnList=returnList & "," & valueList(rsExtend.attribute)>
+	</cfif>
+	
 	<cfloop list="#variables.instance.displayList#" index="i">
 		<cfset finder=listFindNoCase(returnList,i)>
 		<cfif finder>

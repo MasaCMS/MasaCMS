@@ -579,11 +579,16 @@ to your own modified versions of Mura CMS.
 	<cfset var returnList="">
 	<cfset var i=0>
 	<cfset var finder=0>
+	<cfset var rsExtend=getBean('configBean').getClassExtensionManager().getExtendedAttributeList(variables.instance.siteID,"tcontent")>
 	
 	<cfif variables.instance.type eq "Gallery">
 		<cfset returnList="Title,Date,Image,Summary,Tags,Credits,Rating,Comments">
 	<cfelse>
 		<cfset returnList="Title,Date,Summary,Tags,Credits,Rating,Comments">
+	</cfif>
+
+	<cfif rsExtend.recordcount>
+		<cfset returnList=returnList & "," & valueList(rsExtend.attribute)>
 	</cfif>
 	
 	<cfloop list="#variables.instance.responseDisplayFields#" index="i">
