@@ -527,6 +527,13 @@ It gets output between the h2 and the body content and launches the large image 
 	<div class="col"></div>
 	<div class="col"></div>
 </div>
+
+<ul class="columns3">
+	<li class="col"></li>
+	<li class="col"></li>
+	<li class="col"></li>
+</ul>
+
 */
 
 .col {
@@ -1096,38 +1103,6 @@ form#sendLogin { margin-bottom: 2em; }
 	width: auto;
 	margin: 0 .5em 0 0;
 	}
-
-/*#svSearchResults dl#svPortal {
-	margin: 0 0 1em;
-	padding: 0;
-	border: 0;
-	}
-
-#svSearchResults dt {
-	margin: 1em 0 .5em;
-	padding: 1em 0 0;
-	border-top: 1px dotted #ccc;
-	}
-
-#svSearchResults dl.first { border-top: 0; }
-
-#svSearchResults dd {
-	margin: 0 0 1em;
-	padding: 0;
-	}
-
-#svSearchResults dd.last {
-	margin: 0;
-	padding: 0 0 1em;
-	border-bottom: 0;
-	}
-
-#svSearchResults dd h3 {
-	margin: 0 0 .5em;
-	font-weight: normal;
-	}*/
-
-/*#svSearchResults dl img { display: none; }*/
 
 #svSearchResults .moreResults {
 	margin: .75em 0;
