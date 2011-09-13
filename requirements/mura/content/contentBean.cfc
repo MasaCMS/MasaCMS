@@ -588,6 +588,9 @@ to your own modified versions of Mura CMS.
 	</cfif>
 
 	<cfif rsExtend.recordcount>
+		<cfquery name="rsExtend" dbType="query">
+			select * from rsExtend order by attribute
+		</cfquery>
 		<cfset returnList=returnList & "," & valueList(rsExtend.attribute)>
 	</cfif>
 	

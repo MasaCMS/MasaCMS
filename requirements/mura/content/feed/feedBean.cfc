@@ -432,6 +432,9 @@ to your own modified versions of Mura CMS.
 	<cfset var rsExtend=getBean('configBean').getClassExtensionManager().getExtendedAttributeList(variables.instance.siteid,"tcontent")>
 	
 	<cfif rsExtend.recordcount>
+		<cfquery name="rsExtend" dbType="query">
+			select * from rsExtend order by attribute
+		</cfquery>
 		<cfset returnList=returnList & "," & valueList(rsExtend.attribute)>
 	</cfif>
 	
