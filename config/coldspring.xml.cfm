@@ -528,6 +528,7 @@ to your own modified versions of Mura CMS.
 		<alias name="pluginManager" alias="eventManager"/>
 		<alias name="settingsBundle" alias="bundle"/>
 		<alias name="mailingListBean" alias="mailingList"/>
+		<alias name="memberBean" alias="mailingListMember"/>
 		<alias name="userDAO" alias="groupDAO"/>
 		<alias name="placementBean" alias="placement"/>
 		<alias name="creativeBean" alias="creative"/>

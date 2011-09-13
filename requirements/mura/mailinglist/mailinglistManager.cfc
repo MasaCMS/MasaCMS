@@ -92,7 +92,7 @@ to your own modified versions of Mura CMS.
 <cffunction name="update" access="public" output="false" returntype="void" >
 	<cfargument name="data" type="struct"  />
 	
-	<cfset var listBean=getBean("mailinglistBean") />
+	<cfset var listBean=getBean("mailinglist") />
 	<cfset listBean.set(arguments.data) />
 	<cfset variables.utility.logEvent("MLID:#listBean.getMLID()# Name:#listBean.getName()# was created","mura-mailinglists","Information",true) />
 	<cfset variables.mailinglistDAO.update(listbean) />
@@ -108,7 +108,7 @@ to your own modified versions of Mura CMS.
 <cffunction name="create" access="public" output="false" returntype="any" >
 	<cfargument name="data" type="struct"  />
 	
-	<cfset var listBean=getBean("mailinglistBean") />
+	<cfset var listBean=getBean("mailinglist") />
 	<cfset listBean.set(arguments.data) />
 	<cfif not structKeyExists(arguments.data,"fromMuraTrash")>
 		<cfset listBean.setMLID(createuuid()) />

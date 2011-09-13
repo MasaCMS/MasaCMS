@@ -83,7 +83,7 @@ to your own modified versions of Mura CMS.
 <cffunction name="read" access="public" output="false" returntype="any" >
 	<cfargument name="email" type="string" />
 	<cfargument name="siteID" type="string" />
-	<cfset var memberBean=getBean("mailingListMemberBean") />
+	<cfset var memberBean=getBean("mailingListMember") />
 	<cfset var rs ="" />
 	<cfset var data =structNew() />
 	
@@ -104,7 +104,7 @@ to your own modified versions of Mura CMS.
 	<cfif rs.recordcount>
 		<cfset memberBean.set(data) />
 	<cfelse>
-		<cfset bean.setSiteID(arguments.siteID) />
+		<cfset memberBean.setSiteID(arguments.siteID) />
 	</cfif>
 	
 	<cfreturn memberBean />
