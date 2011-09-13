@@ -22,15 +22,15 @@ to combine Mura CMS with programs or libraries that are released under the GNU L
 In addition, as a special exception, the copyright holders of Mura CMS grant you permission
 to combine Mura CMS with independent software modules that communicate with Mura CMS solely
 through modules packaged as Mura CMS plugins and deployed through the Mura CMS plugin installation API,
-provided that these modules (a) may only modify the /trunk/www/plugins/ directory through the Mura CMS
+provided that these modules (a) may only modify the /plugins/ directory through the Mura CMS
 plugin installation API, (b) must not alter any default objects in the Mura CMS database
 and (c) must not alter any files in the following directories except in cases where the code contains
 a separately distributed license.
 
-/trunk/www/admin/
-/trunk/www/tasks/
-/trunk/www/config/
-/trunk/www/requirements/mura/
+/admin/
+/tasks/
+/config/
+/requirements/mura/
 
 You may copy and distribute such a combined work under the terms of GPL for Mura CMS, provided that you include
 the source code of that other code when and as the GNU GPL requires distribution of source code.
