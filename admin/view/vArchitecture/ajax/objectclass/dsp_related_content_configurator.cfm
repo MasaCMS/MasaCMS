@@ -42,8 +42,8 @@ to your own modified versions of Mura CMS.
 --->
 
 <cfset $=application.serviceFactory.getBean("muraScope").init(attributes.siteID)>
-<cfset feed=$.getBean("feed").loadBy(feedID="")>
-
+<cfset feed=$.getBean("feed").loadBy(name=createUUID())>
+<cfdump var="#$.getBean("feed").getSiteID()#">
 <cfif isDefined("form.params") and isJSON(form.params)>
 	<cfset feed.set(deserializeJSON(form.params))>
 <cfelse>

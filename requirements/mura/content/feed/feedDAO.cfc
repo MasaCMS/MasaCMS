@@ -168,6 +168,8 @@ to your own modified versions of Mura CMS.
 		<cfset feedBean.setCategoryID(readItems(rs.feedID,"categoryID")) />
 		<cfset feedBean.setAdvancedParams(readAdvancedParams(rs.feedID)) />
 		<cfset feedBean.setIsNew(0)>
+	<cfelse>
+		<cfset feedBean.setSiteID(arguments.siteID)>
 	</cfif>
 	
 	<cfreturn feedBean />
@@ -207,6 +209,8 @@ to your own modified versions of Mura CMS.
 		<cfset feedBean.setCategoryID(readItems(rs.feedID,"categoryID")) />
 		<cfset feedBean.setAdvancedParams(readAdvancedParams(rs.feedID)) />
 		<cfset feedBean.setIsNew(0)>
+	<cfelse>
+		<cfset feedBean.setSiteID(arguments.siteID)>
 	</cfif>
 	
 	<cfreturn feedBean />

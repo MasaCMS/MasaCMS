@@ -299,9 +299,9 @@
 
 <cffunction name="getBean" returntype="any" access="public" output="false">
 	<cfargument name="beanName">
-	<cfargument name="siteID" required="false">
+	<cfargument name="siteID" default="">
 	
-	<cfif structKeyExists(arguments,"siteid")>
+	<cfif len(arguments.siteID)>
 		<cfreturn super.getBean(arguments.beanName,arguments.siteID)>
 	<cfelse>
 		<cfreturn super.getBean(arguments.beanName,event('siteid'))>

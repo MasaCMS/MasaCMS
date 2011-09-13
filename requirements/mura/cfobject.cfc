@@ -91,13 +91,13 @@ to your own modified versions of Mura CMS.
 
 <cffunction name="getBean" returntype="any" access="public" output="false">
 	<cfargument name="beanName">
-	<cfargument name="siteID" required="false" default="">
+	<cfargument name="siteID" default="">
 	<cfset var bean="">
 	
 	<cfset bean=getServiceFactory().getBean(arguments.beanName) />
 
 	<cfif structKeyExists(bean,"setSiteID")>		
-		<cfif structKeyExists(arguments,"siteID") and len(arguments.siteID)>
+		<cfif len(arguments.siteID)>
 			<cfset bean.setSiteID(arguments.siteID)>			
 		<cfelseif isDefined("getSiteID")>
 			<cfset bean.setSiteID(getSiteID())>

@@ -102,7 +102,9 @@ to your own modified versions of Mura CMS.
 	<cfset data.isVerified=rs.isVerified>
 	
 	<cfif rs.recordcount>
-	<cfset memberBean.set(data) />
+		<cfset memberBean.set(data) />
+	<cfelse>
+		<cfset bean.setSiteID(arguments.siteID) />
 	</cfif>
 	
 	<cfreturn memberBean />

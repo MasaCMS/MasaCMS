@@ -1,12 +1,13 @@
 ﻿<cfcomponent extends="mura.cfobject" output="false">
 
 <cfproperty name="errors" type="struct" default="{}" required="true" />
+<cfproperty name="siteID" type="String" default="" required="true" />
 <cfproperty name="fromMuraCache" type="boolean" default="false" required="true" />
-
-<cfset variables.instance=structNew()>
 
 <cffunction name="init" output="false">
 	<cfset super.init(argumentCollection=arguments)>
+	<cfset variables.instance=structNew()>
+	<cfset variables.instance.siteID=""/>
 	<cfset variables.instance.fromMuraCache = false />
 	<cfreturn this>
 </cffunction>
@@ -49,6 +50,12 @@
 	<cfelse>
 		<cfreturn "" />
 	</cfif>
+</cffunction>
+
+<cffunction name="setSiteID" output="false" access="public">
+    <cfargument name="siteID" type="string" required="true">
+    <cfset variables.instance.siteID=arguments.siteID>
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="set" output="false" access="public">

@@ -149,6 +149,8 @@ to your own modified versions of Mura CMS.
 	<cfelseif rs.recordcount>
 		<cfset bean.set(rs) />
 		<cfset bean.setIsNew(0)>
+	<cfelse>
+		<cfset bean.setSiteID(arguments.siteID)>
 	</cfif>
 	
 	<cfreturn bean />
@@ -188,6 +190,8 @@ to your own modified versions of Mura CMS.
 	<cfelseif rs.recordcount>
 		<cfset bean.set(rs) />
 		<cfset bean.setIsNew(0)>
+	<cfelse>
+		<cfset bean.setSiteID(arguments.siteID)>
 	</cfif>
 	
 	<cfreturn bean />
@@ -227,6 +231,8 @@ to your own modified versions of Mura CMS.
 	<cfelseif rs.recordcount>
 		<cfset bean.set(rs) />
 		<cfset bean.setIsNew(0)>
+	<cfelse>
+		<cfset bean.setSiteID(arguments.siteID)>
 	</cfif>
 	
 	<cfreturn bean />

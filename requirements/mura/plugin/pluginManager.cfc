@@ -1482,7 +1482,7 @@ select * from tplugins order by #arguments.orderby#
 <cfargument name="eventToHandle">
 <cfargument name="siteID" required="true" default="">
 <cfargument name="moduleID" required="true" default="">
-	<cfreturn getScripts(arguments.eventToHandle,argument.siteID,arguments.moduleID)>
+	<cfreturn getScripts(arguments.eventToHandle,arguments.siteID,arguments.moduleID)>
 </cffunction>
 
 <cffunction name="getScripts" output="false" returntype="query">

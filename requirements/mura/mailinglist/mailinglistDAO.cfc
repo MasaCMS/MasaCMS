@@ -73,8 +73,8 @@ values (<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.listBean.getM
 	</cfquery>
 	
 	<cfif rs.recordcount>
-	<cfset bean.set(rs) />
-	<cfset bean.setIsNew(0)>
+		<cfset bean.set(rs) />
+		<cfset bean.setIsNew(0)>
 	</cfif>
 	
 	<cfreturn bean />
@@ -104,6 +104,8 @@ values (<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.listBean.getM
 	<cfelseif rs.recordcount>
 		<cfset bean.set(rs) />
 		<cfset bean.setIsNew(0)>
+	<cfelse>
+		<cfset bean.setSiteID(arguments.siteID) />
 	</cfif>
 	
 	<cfreturn bean />

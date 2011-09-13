@@ -81,7 +81,7 @@
 	<cfif rs.recordcount>
 		<cfset bean.set(rs)>
 		<cfset bean.setIsNew(0)>
-	<cfelse>
+	<cfelseif len(arguments.siteID)>
 		<cfset bean.setSiteID(arguments.siteID)>
 	</cfif>
 	
