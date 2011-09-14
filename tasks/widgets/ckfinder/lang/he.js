@@ -4,9 +4,9 @@
  * http://ckfinder.com
  * Copyright (C) 2007-2011, CKSource - Frederico Knabben. All rights reserved.
  *
- * The software, this file and its contents are subject to the CKFinder
+ * The software, this file, and its contents are subject to the CKFinder
  * License. Please read the license.txt file before using, installing, copying,
- * modifying or distribute this file or part of its contents. The contents of
+ * modifying, or distributing this file or part of its contents. The contents of
  * this file is part of the Source Code of CKFinder.
  *
  */
@@ -17,7 +17,7 @@
  */
 
 /**
- * Constains the dictionary of language entries.
+ * Contains the dictionary of language entries.
  * @namespace
  */
 CKFinder.lang['he'] =
@@ -28,12 +28,12 @@ CKFinder.lang['he'] =
 	common :
 	{
 		// Put the voice-only part of the label in the span.
-		unavailable		: '%1<span class="cke_accessibility">, לא נגיש</span>',
-		confirmCancel	: 'חקל ממאפיינים שונו. ברצונך לסגור חלון?',
+		unavailable		: '%1<span class="cke_accessibility">, לא זמין</span>',
+		confirmCancel	: 'חלק מהאפשרויות שונו. האם לסגור את החלון?',
 		ok				: 'אישור',
 		cancel			: 'ביטול',
 		confirmationTitle	: 'אישור',
-		messageTitle	: 'מידע',
+		messageTitle	: 'הודעה',
 		inputTitle		: 'שאלה',
 		undo			: 'לבטל',
 		redo			: 'לעשות שוב',
@@ -69,66 +69,66 @@ CKFinder.lang['he'] =
 	// Folders
 	FoldersTitle	: 'תיקיות',
 	FolderLoading	: 'טוען...',
-	FolderNew		: 'הקלד שם חדש לתיקיה: ',
-	FolderRename	: 'הקלד שם חדש לתיקיה: ',
-	FolderDelete	: 'האם ברצונך למחוק תיקיה "%1" ?',
+	FolderNew		: 'יש להקליד שם חדש לתיקיה: ',
+	FolderRename	: 'יש להקליד שם חדש לתיקיה: ',
+	FolderDelete	: 'האם למחוק את התיקיה "%1" ?',
 	FolderRenaming	: ' (משנה שם...)',
 	FolderDeleting	: ' (מוחק...)',
 
 	// Files
-	FileRename		: 'הקלש שם חדש לקובץ: ',
-	FileRenameExt	: 'האם ברוצונך לשנות טיפוס של הקובץ',
+	FileRename		: 'יש להקליד שם חדש לקובץ: ',
+	FileRenameExt	: 'האם לשנות את הסיומת של הקובץ?',
 	FileRenaming	: 'משנה שם...',
-	FileDelete		: 'האם ברצונך למחוק קובץ "%1"?',
+	FileDelete		: 'האם למחוק את הקובץ "%1"?',
 	FilesLoading	: 'טוען...',
 	FilesEmpty		: 'תיקיה ריקה',
 	FilesMoved		: 'קובץ %1 הוזז ל- %2:%3',
 	FilesCopied		: 'קובץ %1 הועתק ל- %2:%3',
 
 	// Basket
-	BasketFolder		: 'סל',
-	BasketClear			: 'נקה סל',
-	BasketRemove		: 'הורד מסל',
-	BasketOpenFolder	: 'פתח תיקיית אב',
-	BasketTruncateConfirm : 'האם ברוצונך למחוק את כל הקבצים מסל?',
-	BasketRemoveConfirm	: 'האם ברוצונך למחוק את קובץ "%1" מסל?',
-	BasketEmpty			: 'אין קבצים בסל, גרור ושחרר משהוא.',
-	BasketCopyFilesHere	: 'העתק קבצים מסל',
-	BasketMoveFilesHere	: 'הזז קבצים מסל',
+	BasketFolder		: 'סל קבצים',
+	BasketClear			: 'ניקוי סל הקבצים',
+	BasketRemove		: 'מחיקה מסל הקבצים',
+	BasketOpenFolder	: 'פתיחת תיקיית אב',
+	BasketTruncateConfirm : 'האם למחוק את כל הקבצים מסל הקבצים?',
+	BasketRemoveConfirm	: 'האם למחוק את הקובץ "%1" מסל הקבצים?',
+	BasketEmpty			: 'אין קבצים בסל הקבצים, יש לגרור לכאן קובץ.',
+	BasketCopyFilesHere	: 'העתקת קבצים מסל הקבצים',
+	BasketMoveFilesHere	: 'הזזת קבצים מסל הקבצים',
 
-	BasketPasteErrorOther	: 'קובץ %s שגיאה: %e',
-	BasketPasteMoveSuccess	: 'קבצים הבאים הוזזו: %s',
-	BasketPasteCopySuccess	: 'קבצים הבאים הועתקו: %s',
+	BasketPasteErrorOther	: 'שגיאה %e בקובץ %s',
+	BasketPasteMoveSuccess	: 'הקבצים הבאים הוזזו: %s',
+	BasketPasteCopySuccess	: 'הקבצים הבאים הועתקו: %s',
 
 	// Toolbar Buttons (some used elsewhere)
 	Upload		: 'העלאה',
-	UploadTip	: 'לעלות קובץ חדש',
-	Refresh		: 'רענון',
+	UploadTip	: 'העלאת קובץ חדש',
+	Refresh		: 'ריענון',
 	Settings	: 'הגדרות',
 	Help		: 'עזרה',
 	HelpTip		: 'עזרה',
 
 	// Context Menus
-	Select			: 'בחר',
-	SelectThumbnail : 'בחר תמונה קטנה',
-	View			: 'צפה',
-	Download		: 'הורד',
+	Select			: 'בחירה',
+	SelectThumbnail : 'בחירת תמונה מוקטנת',
+	View			: 'צפיה',
+	Download		: 'הורדה',
 
 	NewSubFolder	: 'תת-תיקיה חדשה',
-	Rename			: 'שנה שם',
-	Delete			: 'מחק',
+	Rename			: 'שינוי שם',
+	Delete			: 'מחיקה',
 
-	CopyDragDrop	: 'העתק קבצים לכאן',
-	MoveDragDrop	: 'הזז קבצים לכאן',
+	CopyDragDrop	: 'העתקת קבצים לכאן',
+	MoveDragDrop	: 'הזזת קבצים לכאן',
 
 	// Dialogs
-	RenameDlgTitle		: 'שנה שם',
+	RenameDlgTitle		: 'שינוי שם',
 	NewNameDlgTitle		: 'שם חדש',
-	FileExistsDlgTitle	: 'קובץ כבר קיים',
-	SysErrorDlgTitle : 'שגיעת מערכת',
+	FileExistsDlgTitle	: 'קובץ זה כבר קיים',
+	SysErrorDlgTitle : 'שגיאת מערכת',
 
-	FileOverwrite	: 'החלף',
-	FileAutorename	: 'אוטומטית לשנות שם',
+	FileOverwrite	: 'החלפה',
+	FileAutorename	: 'שינוי שם אוטומטי',
 
 	// Generic
 	OkBtn		: 'אישור',
@@ -137,21 +137,33 @@ CKFinder.lang['he'] =
 
 	// Upload Panel
 	UploadTitle			: 'העלאת קובץ חדש',
-	UploadSelectLbl		: 'בחר קובץ להעלאה',
-	UploadProgressLbl	: '(העלאה בתהליך, אנא המתן...)',
-	UploadBtn			: 'לעלות קובץ',
+	UploadSelectLbl		: 'בחירת קובץ להעלאה',
+	UploadProgressLbl	: '(העלאה מתבצעת, נא להמתין...)',
+	UploadBtn			: 'העלאת קובץ',
 	UploadBtnCancel		: 'ביטול',
 
-	UploadNoFileMsg		: 'נא לבחור קובץ מהמחשב שלך',
-	UploadNoFolder		: 'נא לבחור תיקיה לפני העלאה.',
+	UploadNoFileMsg		: 'יש לבחור קובץ מהמחשב',
+	UploadNoFolder		: 'יש לבחור תיקיה לפני ההעלאה.',
 	UploadNoPerms		: 'העלאת קובץ אסורה.',
-	UploadUnknError		: 'שגיעה בשליחת קובץ.',
+	UploadUnknError		: 'שגיאה בשליחת הקובץ.',
 	UploadExtIncorrect	: 'סוג קובץ זה לא מאושר בתיקיה זאת.',
+
+	// Flash Uploads
+	UploadLabel			: 'להעלאה קבצים',
+	UploadTotalFiles	: ':קבצים כמות',
+	UploadTotalSize		: ':סופי גודל',
+	UploadAddFiles		: 'קבצים הוספת',
+	UploadClearFiles	: 'קבצים ניקוי',
+	UploadCancel		: 'העלאה ביטול',
+	UploadRemove		: 'מחיקה',
+	UploadRemoveTip		: '!f הקובץ מחיקת',
+	UploadUploaded		: 'הועלו !n%',
+	UploadProcessing	: 'מעבד...',
 
 	// Settings Panel
 	SetTitle		: 'הגדרות',
-	SetView			: 'צפה:',
-	SetViewThumb	: 'תמונות קטנות',
+	SetView			: 'צפיה:',
+	SetViewThumb	: 'תמונות מוקטנות',
 	SetViewList		: 'רשימה',
 	SetDisplay		: 'תצוגה:',
 	SetDisplayName	: 'שם קובץ',
@@ -172,77 +184,88 @@ CKFinder.lang['he'] =
 	KbPerSecond		: '%1 kB/s',
 
 	// Connector Error Messages.
-	ErrorUnknown	: 'בקשה נכשלה. שגיאה. (Error %1)',
+	ErrorUnknown	: 'לא היה ניתן להשלים את הבקשה. (שגיאה %1)',
 	Errors :
 	{
-	 10 : 'Invalid command.',
-	 11 : 'The resource type was not specified in the request.',
-	 12 : 'The requested resource type is not valid.',
-	102 : 'Invalid file or folder name.',
-	103 : 'It was not possible to complete the request due to authorization restrictions.',
-	104 : 'It was not possible to complete the request due to file system permission restrictions.',
-	105 : 'Invalid file extension.',
-	109 : 'Invalid request.',
-	110 : 'Unknown error.',
-	115 : 'A file or folder with the same name already exists.',
-	116 : 'Folder not found. Please refresh and try again.',
-	117 : 'File not found. Please refresh the files list and try again.',
-	118 : 'Source and target paths are equal.',
-	201 : 'A file with the same name is already available. The uploaded file has been renamed to "%1"',
-	202 : 'Invalid file',
-	203 : 'Invalid file. The file size is too big.',
-	204 : 'The uploaded file is corrupt.',
-	205 : 'No temporary folder is available for upload in the server.',
-	206 : 'Upload cancelled for security reasons. The file contains HTML like data.',
-	207 : 'The uploaded file has been renamed to "%1"',
-	300 : 'Moving file(s) failed.',
-	301 : 'Copying file(s) failed.',
-	500 : 'The file browser is disabled for security reasons. Please contact your system administrator and check the CKFinder configuration file.',
-	501 : 'The thumbnails support is disabled.'
+	 10 : 'הוראה לא תקינה.',
+	 11 : 'סוג המשאב לא צויין בבקשה.',
+	 12 : 'סוג המשאב המצויין לא תקין.',
+	102 : 'שם קובץ או תיקיה לא תקין.',
+	103 : 'לא היה ניתן להשלים את הבקשב בשל הרשאות מוגבלות.',
+	104 : 'לא היה ניתן להשלים את הבקשב בשל הרשאות מערכת קבצים מוגבלות.',
+	105 : 'סיומת קובץ לא תקינה.',
+	109 : 'בקשה לא תקינה.',
+	110 : 'שגיאה לא ידועה.',
+	115 : 'קובץ או תיקיה באותו שם כבר קיימ/ת.',
+	116 : 'התיקיה לא נמצאה. נא לרענן ולנסות שוב.',
+	117 : 'הקובץ לא נמצא. נא לרענן ולנסות שוב.',
+	118 : 'כתובות המקור והיעד זהות.',
+	201 : 'קובץ עם אותו השם כבר קיים. שם הקובץ שהועלה שונה ל "%1"',
+	202 : 'קובץ לא תקין',
+	203 : 'קובץ לא תקין. גודל הקובץ גדול מדי.',
+	204 : 'הקובץ המועלה לא תקין',
+	205 : 'תיקיה זמנית להעלאה לא קיימת בשרת.',
+	206 : 'העלאה בוטלה מסיבות אבטחה. הקובץ מכיל תוכן שדומה ל-HTML.',
+	207 : 'שם הקובץ שהועלה שונה ל "%1"',
+	300 : 'העברת הקבצים נכשלה.',
+	301 : 'העתקת הקבצים נכשלה.',
+	500 : 'דפדפן הקבצים מנוטרל מסיבות אבטחה. יש לפנות למנהל המערכת ולבדוק את קובץ התצורה של CKFinder.',
+	501 : 'התמיכה בתמונות מוקטנות מבוטלת.'
 	},
 
 	// Other Error Messages.
 	ErrorMsg :
 	{
-		FileEmpty		: 'שם קובץ לא יכול להיות ריק',
-		FileExists		: 'קובץ %s already exists',
-		FolderEmpty		: 'שם תיקיה לא יכול להיות ריק',
+		FileEmpty		: 'שם הקובץ לא יכול להיות ריק',
+		FileExists		: 'הקובץ %s כבר קיים',
+		FolderEmpty		: 'שם התיקיה לא יכול להיות ריק',
 
 		FileInvChar		: 'שם הקובץ לא יכול לכלול תווים הבאים: \n\\ / : * ? " < > |',
 		FolderInvChar	: 'שם התיקיה לא יכול לכלול תווים הבאים: \n\\ / : * ? " < > |',
 
-		PopupBlockView	: 'בלתי אפשרי לפתוח קובץ בחלון חדש. נא לבדוק הגדרות דפדפן ולבטל כל החוסמים חלונות קופצות.'
+		PopupBlockView	: 'לא היה ניתן לפתוח קובץ בחלון חדש. נא לבדוק את הגדרות הדפדפן ולבטל את חוסמי החלונות הקובצים.',
+		XmlError		: 'לא היה ניתן לטעון מהשרת כהלכה את קובץ ה-XML.',
+		XmlEmpty		: 'לא היה ניתן לטעון מהשרת את קובץ ה-XML. השרת החזיר תגובה ריקה.',
+		XmlRawResponse	: 'תגובה גולמית מהשרת: %s'
 	},
 
 	// Imageresize plugin
 	Imageresize :
 	{
-		dialogTitle		: 'שנה גודל %s',
-		sizeTooBig		: 'לא יכול לקבוע גובה ורוחב של תמונה יותר גדול מדודל מקורי (%size).',
-		resizeSuccess	: 'גודל שונה שהצלחה.',
-		thumbnailNew	: 'ליצור תמונה קטנה)טומבנייל(',
-		thumbnailSmall	: 'קטן (%s)',
-		thumbnailMedium	: 'בינוני (%s)',
-		thumbnailLarge	: 'גדול (%s)',
-		newSize			: 'קבע גודל חדש',
+		dialogTitle		: 'שינוי גודל התמונה %s',
+		sizeTooBig		: 'גובה ורוחב התמונה לא יכולים להיות גדולים מהגודל המקורי שלה (%size).',
+		resizeSuccess	: 'גודל התמונה שונה שהצלחה.',
+		thumbnailNew	: 'יצירת תמונה מוקטנת (Thumbnail)',
+		thumbnailSmall	: 'קטנה (%s)',
+		thumbnailMedium	: 'בינונית (%s)',
+		thumbnailLarge	: 'גדולה (%s)',
+		newSize			: 'קביעת גודל חדש',
 		width			: 'רוחב',
 		height			: 'גובה',
 		invalidHeight	: 'גובה לא חוקי.',
 		invalidWidth	: 'רוחב לא חוקי.',
-		invalidName		: 'שם קובץ לא חוקי.',
-		newImage		: 'ליצור תמונה חדשה',
-		noExtensionChange : 'לא ניתן לשנות סוג קובץ.',
-		imageSmall		: 'מקור תמונה קטן מדי',
-		contextMenuName	: 'שנה גודל'
+		invalidName		: 'שם הקובץ לא חוקי.',
+		newImage		: 'יצירת תמונה חדשה',
+		noExtensionChange : 'לא ניתן לשנות את סוג הקובץ.',
+		imageSmall		: 'התמונה המקורית קטנה מדי',
+		contextMenuName	: 'שינוי גודל',
+		lockRatio		: 'נעילת היחס',
+		resetSize		: 'איפוס הגודל'
 	},
 
 	// Fileeditor plugin
 	Fileeditor :
 	{
-		save			: 'שמור',
-		fileOpenError	: 'לא מצליח לפתוח קובץ.',
-		fileSaveSuccess	: 'קובץ משמר בהצלחה.',
+		save			: 'שמירה',
+		fileOpenError	: 'לא היה ניתן לפתוח את הקובץ.',
+		fileSaveSuccess	: 'הקובץ נשמר בהצלחה.',
 		contextMenuName	: 'עריכה',
-		loadingFile		: 'טוען קובץ, אנא המתן...'
+		loadingFile		: 'טוען קובץ, נא להמתין...'
+	},
+
+	Maximize :
+	{
+		maximize : 'הגדלה למקסימום',
+		minimize : 'הקטנה למינימום'
 	}
 };

@@ -1313,7 +1313,7 @@ function addDisplayObject(objectToAdd,regionID,configure){
 		
 		jQuery("#configuratorContainer").dialog({
 			resizable: true,
-			modal: false,
+			modal: true,
 			width: 400,
 			position: getDialogPosition(),
 			buttons: {
@@ -1377,7 +1377,7 @@ function addDisplayObject(objectToAdd,regionID,configure){
 		
 		jQuery("#configuratorContainer").dialog({
 					resizable: true,
-					modal: false,
+					modal: true,
 					width: 400,
 					position: getDialogPosition(),
 					buttons: {
@@ -1472,7 +1472,7 @@ function addDisplayObject(objectToAdd,regionID,configure){
 		
 		jQuery("#configuratorContainer").dialog({
 					resizable: true,
-					modal: false,
+					modal: true,
 					width: 400,
 					position: getDialogPosition(),
 					buttons: {
@@ -1552,7 +1552,7 @@ function addDisplayObject(objectToAdd,regionID,configure){
 		
 		jQuery("#configuratorContainer").dialog({
 					resizable: true,
-					modal: false,
+					modal: true,
 					width: 400,
 					position: getDialogPosition(),
 					buttons: {
@@ -1618,7 +1618,7 @@ function addDisplayObject(objectToAdd,regionID,configure){
 		
 		jQuery("#configuratorContainer").dialog({
 				resizable: true,
-				modal: false,
+				modal: true,
 				width: 400,
 				position: getDialogPosition(),
 				buttons: {

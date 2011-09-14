@@ -76,11 +76,11 @@ to your own modified versions of Mura CMS.
    <cfcookie name="userHash" expires="never" value="">
 </cfif>
 	
-<cfif not IsDefined("Cookie.CFID") AND IsDefined("Session.CFID")>
+<!---<cfif not IsDefined("Cookie.CFID") AND IsDefined("Session.CFID")>
 	<cfcookie name="CFID" value="#Session.CFID#">
 	<cfcookie name="CFTOKEN" value="#Session.CFTOKEN#">
 </cfif>
-
+--->
 <cftry>
 	<cfif cookie.userid eq '' and structKeyExists(session,"rememberMe") and session.rememberMe eq 1 and session.mura.isLoggedIn>
 	<cfcookie name="userid" value="#session.mura.userID#" expires="never" />

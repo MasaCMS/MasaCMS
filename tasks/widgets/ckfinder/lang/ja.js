@@ -4,20 +4,20 @@
  * http://ckfinder.com
  * Copyright (C) 2007-2011, CKSource - Frederico Knabben. All rights reserved.
  *
- * The software, this file and its contents are subject to the CKFinder
+ * The software, this file, and its contents are subject to the CKFinder
  * License. Please read the license.txt file before using, installing, copying,
- * modifying or distribute this file or part of its contents. The contents of
+ * modifying, or distributing this file or part of its contents. The contents of
  * this file is part of the Source Code of CKFinder.
  *
  */
 
 /**
- * @fileOverview Defines the {@link CKFinder.lang} object, for the English
- *		language. This is the base file for all translations.
+ * @fileOverview Defines the {@link CKFinder.lang} object for the Japanese
+ *		language.
  */
 
 /**
- * Constains the dictionary of language entries.
+ * Contains the dictionary of language entries.
  * @namespace
  */
 CKFinder.lang['ja'] =
@@ -148,6 +148,18 @@ CKFinder.lang['ja'] =
 	UploadUnknError		: 'ファイルの送信に失敗しました。',
 	UploadExtIncorrect	: '選択されたファイルの拡張子は許可されていません。',
 
+	// Flash Uploads
+	UploadLabel			: 'Files to Upload', // MISSING
+	UploadTotalFiles	: 'Total Files:', // MISSING
+	UploadTotalSize		: 'Total Size:', // MISSING
+	UploadAddFiles		: 'Add Files', // MISSING
+	UploadClearFiles	: 'Clear Files', // MISSING
+	UploadCancel		: 'Cancel Upload', // MISSING
+	UploadRemove		: 'Remove', // MISSING
+	UploadRemoveTip		: 'Remove !f', // MISSING
+	UploadUploaded		: 'Uploaded !n%', // MISSING
+	UploadProcessing	: 'Processing...', // MISSING
+
 	// Settings Panel
 	SetTitle		: '表示のカスタマイズ',
 	SetView			: '表示方法:',
@@ -211,7 +223,10 @@ CKFinder.lang['ja'] =
 		FileInvChar		: 'ファイルに以下の文字は使えません: \n\\ / : * ? " < > |',
 		FolderInvChar	: 'フォルダに以下の文字は使えません: \n\\ / : * ? " < > |',
 
-		PopupBlockView	: 'ファイルを新しいウィンドウで開くことに失敗しました。 お使いのブラウザの設定でポップアップをブロックする設定を解除してください。'
+		PopupBlockView	: 'ファイルを新しいウィンドウで開くことに失敗しました。 お使いのブラウザの設定でポップアップをブロックする設定を解除してください。',
+		XmlError		: 'It was not possible to properly load the XML response from the web server.', // MISSING
+		XmlEmpty		: 'It was not possible to load the XML response from the web server. The server returned an empty response.', // MISSING
+		XmlRawResponse	: 'Raw response from the server: %s' // MISSING
 	},
 
 	// Imageresize plugin
@@ -233,7 +248,9 @@ CKFinder.lang['ja'] =
 		newImage		: '新しい画像を作成',
 		noExtensionChange : '拡張子は変更できません。',
 		imageSmall		: '元画像が小さすぎます。',
-		contextMenuName	: 'リサイズ'
+		contextMenuName	: 'リサイズ',
+		lockRatio		: 'ロック比率',
+		resetSize		: 'サイズリセット'
 	},
 
 	// Fileeditor plugin
@@ -244,5 +261,11 @@ CKFinder.lang['ja'] =
 		fileSaveSuccess	: 'ファイルの保存が完了しました。',
 		contextMenuName	: '編集',
 		loadingFile		: 'ファイルの読み込み中...'
+	},
+
+	Maximize :
+	{
+		maximize : '最大化',
+		minimize : '最小化'
 	}
 };

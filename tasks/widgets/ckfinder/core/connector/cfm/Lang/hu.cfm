@@ -4,7 +4,7 @@
 Copyright (c) 2003-2011, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckfinder.com/license
 
-
+ Defines the object for the Hungarian language.
 --->
 <cfscript>
 CKFLang = structNew();
@@ -23,13 +23,13 @@ CKFLang = structNew();
 	CKFLang.Errors[116] = 'Mappa nem található. Kérjük frissítsen és próbálja újra.';
 	CKFLang.Errors[117] = 'Fájl nem található. Kérjük frissítsen és próbálja újra.';
 	CKFLang.Errors[118] = 'Source and target paths are equal.';
-	CKFLang.Errors[201] = 'Ilyen nevű fájl már létezett. A feltöltött fájl a következőre lett átnevezve: "%1"';
-	CKFLang.Errors[202] = 'Érvénytelen fájl';
+	CKFLang.Errors[201] = 'Ilyen nevű fájl már létezett. A feltöltött fájl a következőre lett átnevezve: "%1".';
+	CKFLang.Errors[202] = 'Érvénytelen fájl.';
 	CKFLang.Errors[203] = 'Érvénytelen fájl. A fájl mérete túl nagy.';
 	CKFLang.Errors[204] = 'A feltöltött fájl hibás.';
 	CKFLang.Errors[205] = 'A szerveren nem található a feltöltéshez ideiglenes mappa.';
-	CKFLang.Errors[206] = 'A feltöltés biztonsági okok miatt meg lett szakítva. The file contains HTML like data.';
-	CKFLang.Errors[207] = 'El fichero subido ha sido renombrado como "%1"';
+	CKFLang.Errors[206] = 'Upload cancelled due to security reasons. The file contains HTML-like data.';
+	CKFLang.Errors[207] = 'El fichero subido ha sido renombrado como "%1".';
 	CKFLang.Errors[300] = 'Moving file(s) failed.';
 	CKFLang.Errors[301] = 'Copying file(s) failed.';
 	CKFLang.Errors[500] = 'A fájl-tallózó biztonsági okok miatt nincs engedélyezve. Kérjük vegye fel a kapcsolatot a rendszer üzemeltetőjével és ellenőrizze a CKFinder konfigurációs fájlt.';
