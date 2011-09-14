@@ -1183,40 +1183,46 @@ function addDisplayObject(objectToAdd,regionID,configure){
 	}
 
 	//if the tmpValue evaluated into a js object pull out it's values
+	var checkSelection=false;
 	
 	if(typeof(tmpObject) == "object"){
 		//object^name^objectID^params
+			
+		if (tmpObject.object=='feed') {
+			if (configure) {
+				tmpObject.regionID=regionID;
+				if (initFeedConfigurator(tmpObject)){
+					return false;
+				}
+			}
+			checkSelection=true;
+		}
 		
-		if (configure && tmpObject.object=='feed') {
-			tmpObject.regionID=regionID;
-			if (initFeedConfigurator(tmpObject)
-			) {
+		if (tmpObject.object=='feed_slideshow') {
+			if (configure) {
+				tmpObject.regionID = regionID;
+				initSlideShowConfigurator(tmpObject)
 				return false;
 			}
+			checkSelection=true;
 		}
 		
-		if (configure && tmpObject.object=='feed_slideshow') {
-			tmpObject.regionID=regionID;
-			initSlideShowConfigurator(tmpObject)
-			return false;
-		}
-		
-		if (configure && tmpObject.object=='feed_slideshow') {
-			tmpObject.regionID=regionID;
-			initSlideShowConfigurator(tmpObject)
-			return false;
-		}
-		
-		if (configure && tmpObject.object=='category_summary') {
-			tmpObject.regionID=regionID;
-			initCategorySummaryConfigurator(tmpObject)
-			return false;
+		if (tmpObject.object=='category_summary') {
+			if (configure) {
+				tmpObject.regionID=regionID;
+				initCategorySummaryConfigurator(tmpObject)
+				return false;
+			}
+			checkSelection=true;
 		}
 	
-		if (configure &&  (tmpObject.object == 'related_content' || tmpObject.object == 'related_section_content')) {
-			tmpObject.regionID=regionID;
-			initRelatedContentConfigurator(tmpObject);
-			return false;
+		if ((tmpObject.object == 'related_content' || tmpObject.object == 'related_section_content')) {
+			if (configure) {
+				tmpObject.regionID=regionID;
+				initRelatedContentConfigurator(tmpObject);
+				return false;
+			}
+			checkSelection=true;
 		}
 		
 		tmpValue=tmpObject.object;
@@ -1229,9 +1235,9 @@ function addDisplayObject(objectToAdd,regionID,configure){
 			tmpValue   = tmpValue + "~" + JSON.stringify( tmpObject.params );
 		}
 		
-		if(tmpObject.object=='feed' && document.getElementById('selectedObjects' + regionID).selectedIndex != -1){
+		if(checkSelection && document.getElementById('selectedObjects' + regionID).selectedIndex != -1){
 			var currentSelection=getDisplayObjectConfig(regionID);
-		
+			
 			if(currentSelection){
 				if(currentSelection.objectid==tmpObject.objectid){
 					isUpdate=true

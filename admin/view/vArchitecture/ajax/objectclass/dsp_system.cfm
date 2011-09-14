@@ -46,7 +46,7 @@ to your own modified versions of Mura CMS.
 	        style="width:310px;">
 		<cfset request.rsObjects = application.contentManager.getSystemObjects(attributes.siteid)/>
 		<cfloop query="request.rsObjects">
-			<option value='{"object":"#JSStringFormat(request.rsobjects.object)#","name":"#JSStringFormat(request.rsObjects.name)#","objectid":"none"}'>
+			<option value='{"object":"#JSStringFormat(request.rsobjects.object)#","name":"#JSStringFormat(request.rsObjects.name)#","objectid":"#createUUID()#"}'>
 				#request.rsObjects.name#
 			</option>
 		</cfloop>

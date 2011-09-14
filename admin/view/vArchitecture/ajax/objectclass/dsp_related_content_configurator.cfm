@@ -93,10 +93,10 @@ to your own modified versions of Mura CMS.
 				</dl>
 			</div>
 			<cfif attributes.classid eq "related_content">
-				<input type="hidden" name="displayObjectTemplate" id="displayObjectTemplate" value="{'object':'#attributes.classid#','name':'Related Content','objectid':'#attributes.objectID#'}"/>
+				<input type="hidden" name="displayObjectTemplate" id="displayObjectTemplate" value="{'object':'#attributes.classid#','name':'#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.relatedcontent')#','objectid':'#attributes.objectID#'}"/>
 			<cfelse>
 				<cfset menutitle=$.getBean("content").loadBy(contentID=attributes.contentID).getMenuTitle()>
-				<input type="hidden" name="displayObjectTemplate" id="displayObjectTemplate" value="{'object':'#attributes.classid#','name':'#JSStringFormat(menutitle)# - #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.categorysummary')#','objectid':'#attributes.objectID#'}"/>
+				<input type="hidden" name="displayObjectTemplate" id="displayObjectTemplate" value="{'object':'#attributes.classid#','name':'#JSStringFormat(menutitle)# - #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.relatedcontent')#','objectid':'#attributes.objectID#'}"/>
 			</cfif>
 </cfoutput>
 
