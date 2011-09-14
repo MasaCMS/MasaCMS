@@ -4,7 +4,7 @@
 Copyright (c) 2003-2011, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckfinder.com/license
 
- Defines the object, for the Swedish language. This is the base file for all translations.
+ Defines the object for the Swedish language.
 --->
 <cfscript>
 CKFLang = structNew();
@@ -23,13 +23,13 @@ CKFLang = structNew();
 	CKFLang.Errors[116] = 'Mappen kunde inte hittas. Var god uppdatera sidan och försök igen.';
 	CKFLang.Errors[117] = 'Filen kunde inte hittas. Var god uppdatera sidan och försök igen.';
 	CKFLang.Errors[118] = 'Source and target paths are equal.';
-	CKFLang.Errors[201] = 'En fil med aktuellt namn fanns redan. Den uppladdade filen har döpts om till "%1"';
-	CKFLang.Errors[202] = 'Ogiltig fil';
+	CKFLang.Errors[201] = 'En fil med aktuellt namn fanns redan. Den uppladdade filen har döpts om till "%1".';
+	CKFLang.Errors[202] = 'Ogiltig fil.';
 	CKFLang.Errors[203] = 'Ogiltig fil. Filen var för stor.';
 	CKFLang.Errors[204] = 'Den uppladdade filen var korrupt.';
 	CKFLang.Errors[205] = 'En tillfällig mapp för uppladdning är inte tillgänglig på servern.';
 	CKFLang.Errors[206] = 'Uppladdningen stoppades av säkerhetsskäl. Filen innehåller HTML-liknande data.';
-	CKFLang.Errors[207] = 'Den uppladdade filen har döpts om till "%1"';
+	CKFLang.Errors[207] = 'Den uppladdade filen har döpts om till "%1".';
 	CKFLang.Errors[300] = 'Moving file(s) failed.';
 	CKFLang.Errors[301] = 'Copying file(s) failed.';
 	CKFLang.Errors[500] = 'Filhanteraren har stoppats av säkerhetsskäl. Var god kontakta administratören för att kontrollera konfigurationsfilen för CKFinder.';

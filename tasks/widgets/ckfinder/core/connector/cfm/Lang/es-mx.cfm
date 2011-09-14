@@ -4,7 +4,7 @@
 Copyright (c) 2003-2011, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckfinder.com/license
 
- Defines the object, for the Latin American Spanish language. This is the base file for all translations.
+ Defines the object for the Latin American Spanish language.
 --->
 <cfscript>
 CKFLang = structNew();
@@ -23,13 +23,13 @@ CKFLang = structNew();
 	CKFLang.Errors[116] = 'No se ha encontrado la carpeta. Por favor, actualice y pruebe de nuevo.';
 	CKFLang.Errors[117] = 'No se ha encontrado el archivo. Por favor, actualice la lista de archivos y pruebe de nuevo.';
 	CKFLang.Errors[118] = 'Las rutas origen y destino son iguales.';
-	CKFLang.Errors[201] = 'Ya existía un archivo con ese nombre. El archivo subido ha sido renombrado como "%1"';
-	CKFLang.Errors[202] = 'Archivo inválido';
+	CKFLang.Errors[201] = 'Ya existía un archivo con ese nombre. El archivo subido ha sido renombrado como "%1".';
+	CKFLang.Errors[202] = 'Archivo inválido.';
 	CKFLang.Errors[203] = 'Archivo inválido. El tamaño es demasiado grande.';
 	CKFLang.Errors[204] = 'El archivo subido está corrupto.';
 	CKFLang.Errors[205] = 'La carpeta temporal no está disponible en el servidor para las subidas.';
 	CKFLang.Errors[206] = 'La subida se ha cancelado por razones de seguridad. El archivo contenía código HTML.';
-	CKFLang.Errors[207] = 'El archivo subido ha sido renombrado como "%1"';
+	CKFLang.Errors[207] = 'El archivo subido ha sido renombrado como "%1".';
 	CKFLang.Errors[300] = 'Ha fallado el mover el(los) archivo(s).';
 	CKFLang.Errors[301] = 'Ha fallado el copiar el(los) archivo(s).';
 	CKFLang.Errors[500] = 'El navegador de archivos está deshabilitado por razones de seguridad. Por favor, contacte con el administrador de su sistema y compruebe el archivo de configuración de CKFinder.';

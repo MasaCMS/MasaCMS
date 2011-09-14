@@ -4,46 +4,47 @@
  * http://ckfinder.com
  * Copyright (C) 2007-2011, CKSource - Frederico Knabben. All rights reserved.
  *
- * The software, this file and its contents are subject to the CKFinder
+ * The software, this file, and its contents are subject to the CKFinder
  * License. Please read the license.txt file before using, installing, copying,
- * modifying or distribute this file or part of its contents. The contents of
+ * modifying, or distributing this file or part of its contents. The contents of
  * this file is part of the Source Code of CKFinder.
  *
  */
 
 /**
-* @fileOverview
-*/
+ * @fileOverview Defines the {@link CKFinder.lang} object for the Dutch
+ *		language.
+ */
 
 /**
- * Constains the dictionary of language entries.
+ * Contains the dictionary of language entries.
  * @namespace
  */
 CKFinder.lang['nl'] =
 {
-	appTitle : 'CKFinder', // MISSING
+	appTitle : 'CKFinder',
 
 	// Common messages and labels.
 	common :
 	{
 		// Put the voice-only part of the label in the span.
-		unavailable		: '%1<span class="cke_accessibility">, unavailable</span>', // MISSING
-		confirmCancel	: 'Some of the options have been changed. Are you sure to close the dialog?', // MISSING
-		ok				: 'OK', // MISSING
-		cancel			: 'Cancel', // MISSING
-		confirmationTitle	: 'Confirmation', // MISSING
-		messageTitle	: 'Information', // MISSING
-		inputTitle		: 'Question', // MISSING
-		undo			: 'Undo', // MISSING
-		redo			: 'Redo', // MISSING
-		skip			: 'Skip', // MISSING
-		skipAll			: 'Skip all', // MISSING
-		makeDecision	: 'What action should be taken?', // MISSING
-		rememberDecision: 'Remember my decision' // MISSING
+		unavailable		: '%1<span class="cke_accessibility">, niet beschikbaar</span>',
+		confirmCancel	: 'Enkele opties zijn gewijzigd. Weet u zeker dat u dit dialoogvenster wilt sluiten?',
+		ok				: 'OK',
+		cancel			: 'Annuleren',
+		confirmationTitle	: 'Bevestigen',
+		messageTitle	: 'Informatie',
+		inputTitle		: 'Vraag',
+		undo			: 'Ongedaan maken',
+		redo			: 'Opnieuw uitvoeren',
+		skip			: 'Overslaan',
+		skipAll			: 'Alles overslaan',
+		makeDecision	: 'Welke actie moet uitgevoerd worden?',
+		rememberDecision: 'Onthoud mijn keuze'
 	},
 
 
-	dir : 'ltr', // MISSING
+	dir : 'ltr',
 	HelpLang : 'en',
 	LangCode : 'nl',
 
@@ -62,7 +63,7 @@ CKFinder.lang['nl'] =
 	//		MM   : Minute (padding zero)
 	//		a    : Firt char of AM/PM
 	//		aa   : AM/PM
-	DateTime : 'm/d/yyyy h:MM aa',
+	DateTime : 'd-m-yyyy H:MM',
 	DateAmPm : ['AM', 'PM'],
 
 	// Folders
@@ -76,28 +77,28 @@ CKFinder.lang['nl'] =
 
 	// Files
 	FileRename		: 'Vul de nieuwe bestandsnaam in: ',
-	FileRenameExt	: 'Weet je zeker dat je de extensie wilt veranderen? Het bestand kan onbruikbaar worden.',
+	FileRenameExt	: 'Weet je zeker dat je de extensie wilt wijzigen? Het bestand kan onbruikbaar worden.',
 	FileRenaming	: 'Aanpassen...',
 	FileDelete		: 'Weet je zeker dat je het bestand "%1" wilt verwijderen?',
-	FilesLoading	: 'Loading...', // MISSING
-	FilesEmpty		: 'Empty folder', // MISSING
-	FilesMoved		: 'File %1 moved into %2:%3', // MISSING
-	FilesCopied		: 'File %1 copied into %2:%3', // MISSING
+	FilesLoading	: 'Laden...',
+	FilesEmpty		: 'De map is leeg.',
+	FilesMoved		: 'Bestand %1 is verplaatst naar %2:%3.',
+	FilesCopied		: 'Bestand %1 is gekopieerd naar %2:%3.',
 
 	// Basket
-	BasketFolder		: 'Basket', // MISSING
-	BasketClear			: 'Clear Basket', // MISSING
-	BasketRemove		: 'Remove from basket', // MISSING
-	BasketOpenFolder	: 'Open parent folder', // MISSING
-	BasketTruncateConfirm : 'Do you really want to remove all files from the basket?', // MISSING
-	BasketRemoveConfirm	: 'Do you really want to remove the file "%1" from the basket?', // MISSING
-	BasketEmpty			: 'No files in the basket, drag\'n\'drop some.', // MISSING
-	BasketCopyFilesHere	: 'Copy Files from Basket', // MISSING
-	BasketMoveFilesHere	: 'Move Files from Basket', // MISSING
+	BasketFolder		: 'Mandje',
+	BasketClear			: 'Mandje legen',
+	BasketRemove		: 'Verwijder uit het mandje',
+	BasketOpenFolder	: 'Bovenliggende map openen',
+	BasketTruncateConfirm : 'Weet je zeker dat je alle bestand uit het mandje wilt verwijderen?',
+	BasketRemoveConfirm	: 'Weet je zeker dat je het bestand "%1" uit het mandje wilt verwijderen?',
+	BasketEmpty			: 'Geen bestanden in het mandje, sleep bestanden hierheen.',
+	BasketCopyFilesHere	: 'Bestanden kopiëren uit het mandje',
+	BasketMoveFilesHere	: 'Bestanden verplaatsen uit het mandje',
 
-	BasketPasteErrorOther	: 'File %s error: %e', // MISSING
-	BasketPasteMoveSuccess	: 'The following files were moved: %s', // MISSING
-	BasketPasteCopySuccess	: 'The following files were copied: %s', // MISSING
+	BasketPasteErrorOther	: 'Bestand %s foutmelding: %e',
+	BasketPasteMoveSuccess	: 'De volgende bestanden zijn verplaatst: %s',
+	BasketPasteCopySuccess	: 'De volgende bestanden zijn gekopieerd: %s',
 
 	// Toolbar Buttons (some used elsewhere)
 	Upload		: 'Uploaden',
@@ -109,25 +110,25 @@ CKFinder.lang['nl'] =
 
 	// Context Menus
 	Select			: 'Selecteer',
-	SelectThumbnail : 'Selecteer miniatuur afbeelding',
-	View			: 'Weergave',
+	SelectThumbnail : 'Selecteer miniatuurafbeelding',
+	View			: 'Bekijken',
 	Download		: 'Downloaden',
 
-	NewSubFolder	: 'Nieuwe subfolder',
-	Rename			: 'Hernoemen',
+	NewSubFolder	: 'Nieuwe onderliggende map',
+	Rename			: 'Naam wijzigen',
 	Delete			: 'Verwijderen',
 
-	CopyDragDrop	: 'Copy file here', // MISSING
-	MoveDragDrop	: 'Move file here', // MISSING
+	CopyDragDrop	: 'Bestand hierheen kopiëren',
+	MoveDragDrop	: 'Bestand hierheen verplaatsen',
 
 	// Dialogs
-	RenameDlgTitle		: 'Rename', // MISSING
-	NewNameDlgTitle		: 'New name', // MISSING
-	FileExistsDlgTitle	: 'File already exists', // MISSING
-	SysErrorDlgTitle : 'System error', // MISSING
+	RenameDlgTitle		: 'Naam wijzigen',
+	NewNameDlgTitle		: 'Nieuwe naam',
+	FileExistsDlgTitle	: 'Bestand bestaat al',
+	SysErrorDlgTitle : 'Systeemfout',
 
-	FileOverwrite	: 'Overwrite', // MISSING
-	FileAutorename	: 'Auto-rename', // MISSING
+	FileOverwrite	: 'Overschrijven',
+	FileAutorename	: 'Automatisch hernoemen',
 
 	// Generic
 	OkBtn		: 'OK',
@@ -137,22 +138,34 @@ CKFinder.lang['nl'] =
 	// Upload Panel
 	UploadTitle			: 'Nieuw bestand uploaden',
 	UploadSelectLbl		: 'Selecteer het bestand om te uploaden',
-	UploadProgressLbl	: '(Bezig met uploaden, even geduld...)',
+	UploadProgressLbl	: '(Bezig met uploaden, even geduld a.u.b...)',
 	UploadBtn			: 'Upload geselecteerde bestand',
-	UploadBtnCancel		: 'Cancel', // MISSING
+	UploadBtnCancel		: 'Annuleren',
 
 	UploadNoFileMsg		: 'Kies een bestand van je computer.',
-	UploadNoFolder		: 'Please select folder before uploading.', // MISSING
-	UploadNoPerms		: 'File upload not allowed.', // MISSING
-	UploadUnknError		: 'Error sending the file.', // MISSING
-	UploadExtIncorrect	: 'File extension not allowed in this folder.', // MISSING
+	UploadNoFolder		: 'Selecteer a.u.b. een map voordat je gaat uploaden.',
+	UploadNoPerms		: 'Uploaden bestand niet toegestaan.',
+	UploadUnknError		: 'Fout bij het versturen van het bestand.',
+	UploadExtIncorrect	: 'Bestandsextensie is niet toegestaan in deze map.',
+
+	// Flash Uploads
+	UploadLabel			: 'Te uploaden bestanden',
+	UploadTotalFiles	: 'Totaal aantal bestanden:',
+	UploadTotalSize		: 'Totale grootte:',
+	UploadAddFiles		: 'Bestanden toevoegen',
+	UploadClearFiles	: 'Bestanden wissen',
+	UploadCancel		: 'Upload annuleren',
+	UploadRemove		: 'Verwijderen',
+	UploadRemoveTip		: 'Verwijder !f',
+	UploadUploaded		: '!n% geüpload',
+	UploadProcessing	: 'Verwerken...',
 
 	// Settings Panel
 	SetTitle		: 'Instellingen',
 	SetView			: 'Bekijken:',
-	SetViewThumb	: 'Miniatuur afbeelding',
+	SetViewThumb	: 'Miniatuurafbeelding',
 	SetViewList		: 'Lijst',
-	SetDisplay		: 'Weergeef:',
+	SetDisplay		: 'Weergave:',
 	SetDisplayName	: 'Bestandsnaam',
 	SetDisplayDate	: 'Datum',
 	SetDisplaySize	: 'Bestandsgrootte',
@@ -174,74 +187,85 @@ CKFinder.lang['nl'] =
 	ErrorUnknown	: 'Het was niet mogelijk om deze actie uit te voeren. (Fout %1)',
 	Errors :
 	{
-	 10 : 'Ongeldige commando.',
-	 11 : 'De bestandstype komt niet voor in de aanvraag.',
-	 12 : 'De gevraagde brontype is niet geldig.',
-	102 : 'Ongeldig bestands- of mapnaam.',
+	 10 : 'Ongeldig commando.',
+	 11 : 'Het bestandstype komt niet voor in de aanvraag.',
+	 12 : 'Het gevraagde brontype is niet geldig.',
+	102 : 'Ongeldige bestands- of mapnaam.',
 	103 : 'Het verzoek kon niet worden voltooid vanwege autorisatie beperkingen.',
-	104 : 'Het verzoek kon niet worden voltooid door beperkingen in de permissies van het bestandssysteem.',
+	104 : 'Het verzoek kon niet worden voltooid door beperkingen in de rechten op het bestandssysteem.',
 	105 : 'Ongeldige bestandsextensie.',
 	109 : 'Ongeldige aanvraag.',
 	110 : 'Onbekende fout.',
 	115 : 'Er bestaat al een bestand of map met deze naam.',
 	116 : 'Map niet gevonden, vernieuw de mappenlijst of kies een andere map.',
-	117 : 'Bestand niet gevonden, vernieuw de mappenlijst of kies een andere folder.',
-	118 : 'Source and target paths are equal.', // MISSING
-	201 : 'Er bestaat al een bestand met dezelfde naam. Het geüploade bestand is hernoemd naar: "%1"',
-	202 : 'Ongeldige bestand',
+	117 : 'Bestand niet gevonden, vernieuw de mappenlijst of kies een andere map.',
+	118 : 'Bron- en doelmap zijn gelijk.',
+	201 : 'Er bestaat al een bestand met dezelfde naam. Het geüploade bestand is hernoemd naar: "%1".',
+	202 : 'Ongeldige bestand.',
 	203 : 'Ongeldige bestand. Het bestand is te groot.',
 	204 : 'De geüploade file is kapot.',
 	205 : 'Er is geen hoofdmap gevonden.',
-	206 : 'Het uploaden van het bestand is om veiligheidsredenen afgebroken. Er is HTML in het bestand aangetroffen.',
-	207 : 'Het geuploade bestand is hernoemd naar: "%1"',
-	300 : 'Moving file(s) failed.', // MISSING
-	301 : 'Copying file(s) failed.', // MISSING
-	500 : 'Het uploaden van een bestand is momenteel niet mogelijk. Contacteer de beheerder en controleer het CKFinder configuratiebestand..',
-	501 : 'De ondersteuning voor miniatuur afbeeldingen is uitgeschakeld.'
+	206 : 'Het uploaden van het bestand is om veiligheidsredenen afgebroken. Er is HTML code in het bestand aangetroffen.',
+	207 : 'Het geüploade bestand is hernoemd naar: "%1".',
+	300 : 'Bestand(en) verplaatsen is mislukt.',
+	301 : 'Bestand(en) kopiëren is mislukt.',
+	500 : 'Het uploaden van een bestand is momenteel niet mogelijk. Contacteer de beheerder en controleer het CKFinder configuratiebestand.',
+	501 : 'De ondersteuning voor miniatuurafbeeldingen is uitgeschakeld.'
 	},
 
 	// Other Error Messages.
 	ErrorMsg :
 	{
 		FileEmpty		: 'De bestandsnaam mag niet leeg zijn.',
-		FileExists		: 'File %s already exists', // MISSING
+		FileExists		: 'Bestand %s bestaat al.',
 		FolderEmpty		: 'De mapnaam mag niet leeg zijn.',
 
-		FileInvChar		: 'De bestandsnaam mag niet de volgende tekens bevatten: \n\\ / : * ? " < > |',
-		FolderInvChar	: 'De folder mag niet de volgende tekens bevatten: \n\\ / : * ? " < > |',
+		FileInvChar		: 'De bestandsnaam mag de volgende tekens niet bevatten: \n\\ / : * ? " < > |',
+		FolderInvChar	: 'De mapnaam mag de volgende tekens niet bevatten: \n\\ / : * ? " < > |',
 
-		PopupBlockView	: 'Het was niet mogelijk om dit bestand in een nieuw venster te openen. Configureer de browser zo dat het de popups van deze website niet blokkeert.'
+		PopupBlockView	: 'Het was niet mogelijk om dit bestand in een nieuw venster te openen. Configureer de browser zodat het de popups van deze website niet blokkeert.',
+		XmlError		: 'Het is niet gelukt om de XML van de webserver te laden.',
+		XmlEmpty		: 'Het is niet gelukt om de XML van de webserver te laden. De server gaf een leeg resultaat terug.',
+		XmlRawResponse	: 'Origineel resultaat van de server: %s'
 	},
 
 	// Imageresize plugin
 	Imageresize :
 	{
-		dialogTitle		: 'Resize %s', // MISSING
-		sizeTooBig		: 'Cannot set image height or width to a value bigger than the original size (%size).', // MISSING
-		resizeSuccess	: 'Image resized successfully.', // MISSING
-		thumbnailNew	: 'Create new thumbnail', // MISSING
-		thumbnailSmall	: 'Small (%s)', // MISSING
-		thumbnailMedium	: 'Medium (%s)', // MISSING
-		thumbnailLarge	: 'Large (%s)', // MISSING
-		newSize			: 'Set new size', // MISSING
-		width			: 'Width', // MISSING
-		height			: 'Height', // MISSING
-		invalidHeight	: 'Invalid height.', // MISSING
-		invalidWidth	: 'Invalid width.', // MISSING
-		invalidName		: 'Invalid file name.', // MISSING
-		newImage		: 'Create new image', // MISSING
-		noExtensionChange : 'The file extension cannot be changed.', // MISSING
-		imageSmall		: 'Source image is too small', // MISSING
-		contextMenuName	: 'Resize' // MISSING
+		dialogTitle		: '%s herschalen',
+		sizeTooBig		: 'Het is niet mogelijk om een breedte of hoogte in te stellen die groter is dan de originele afmetingen (%size).',
+		resizeSuccess	: 'De afbeelding is met succes herschaald.',
+		thumbnailNew	: 'Miniatuurafbeelding maken',
+		thumbnailSmall	: 'Klein (%s)',
+		thumbnailMedium	: 'Medium (%s)',
+		thumbnailLarge	: 'Groot (%s)',
+		newSize			: 'Nieuwe afmetingen instellen',
+		width			: 'Breedte',
+		height			: 'Hoogte',
+		invalidHeight	: 'Ongeldige hoogte.',
+		invalidWidth	: 'Ongeldige breedte.',
+		invalidName		: 'Ongeldige bestandsnaam.',
+		newImage		: 'Nieuwe afbeelding maken',
+		noExtensionChange : 'De bestandsextensie kan niet worden gewijzigd.',
+		imageSmall		: 'Bronafbeelding is te klein.',
+		contextMenuName	: 'Herschalen',
+		lockRatio		: 'Afmetingen vergrendelen',
+		resetSize		: 'Afmetingen resetten'
 	},
 
 	// Fileeditor plugin
 	Fileeditor :
 	{
-		save			: 'Save', // MISSING
-		fileOpenError	: 'Unable to open file.', // MISSING
-		fileSaveSuccess	: 'File saved successfully.', // MISSING
-		contextMenuName	: 'Edit', // MISSING
-		loadingFile		: 'Loading file, please wait...' // MISSING
+		save			: 'Opslaan',
+		fileOpenError	: 'Kan het bestand niet openen.',
+		fileSaveSuccess	: 'Bestand is succesvol opgeslagen.',
+		contextMenuName	: 'Wijzigen',
+		loadingFile		: 'Bestand laden, even geduld a.u.b...'
+	},
+
+	Maximize :
+	{
+		maximize : 'Maximaliseren',
+		minimize : 'Minimaliseren'
 	}
 };

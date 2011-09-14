@@ -59,6 +59,27 @@ to your own modified versions of Mura CMS.
 <cfparam name="session.loginAttempts" type="numeric" default="0" />
 <cfparam name="session.blockLoginUntil" type="string" default="" />
 <cfset request.doMuraGlobalSessionStart=true>
+
+<!--- This following is from CKFinder--->
+<cfset local.requestData = GetHTTPRequestData()>
+
+<cfif LCase(local.requestData.method) eq "post">
+	<cfif isDefined('URL.CFID')>
+		<cfcookie name="CFID" value="#URL.CFID#" />
+	</cfif>
+	<cfif isDefined('URL.CFTOKEN')>
+		<cfcookie name="CFTOKEN" value="#URL.CFTOKEN#" />
+	</cfif>
+	<cfif isDefined('URL.JSESSIONID')>
+		<cfcookie name="JSESSIONID" value="#URL.JSESSIONID#" />
+	</cfif>
+	<cflog file="test" application="no"
+    text="triggered #cgi.query_string#">
+
+</cfif>
+
+<cflog file="test" application="no"
+    text="#cgi.query_string#">
 	
 	
 	
