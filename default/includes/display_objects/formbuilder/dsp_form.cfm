@@ -12,8 +12,8 @@
 <form data-role="fieldcontain" id="#frmID#" method="post">
 <input type="hidden" name="siteid" value="#arguments.siteid#">
 <input type="hidden" name="formid" value="#arguments.formid#">
-	<fieldset id="set-default">
-	<ul>
+	<fieldset id="set-default" data-role="controlgroup">
+	<ol>
 <cfloop from="1" to="#ArrayLen(aFieldOrder)#" index="iiX">
 	<cfif StructKeyExists(frmFields,aFieldOrder[iiX])>
 		<cfset field = frmFields[aFieldOrder[iiX]] />
@@ -21,7 +21,7 @@
 			<cfset dataset = frmData[field.datasetid] /> 
 		</cfif>
 		<cfif field.fieldtype.fieldtype neq "section">
-		<li id="fld-#field.name#">
+		<li id="fld-#field.name#" class="controlgroup">
 		#$.dspObject_Include(thefile='/formbuilder/fields/dsp_#field.fieldtype.fieldtype#.cfm',
 			field=field,
 			dataset=dataset
@@ -38,8 +38,8 @@
 		<!---<cfthrow message="ERROR 9000: Field Missing: #aFieldOrder[iiX]#">--->
 	</cfif>
 </cfloop> 
-	<li><input type="Submit"></li>
-	</ul>	
+	</ol>	
 	</fieldset>
+	<div class="buttons"><input type="submit" class="submit" value="Submit"></div>
 </form>
 </cfoutput>

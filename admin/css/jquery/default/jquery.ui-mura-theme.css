@@ -50,7 +50,7 @@
  *
  * http://docs.jquery.com/UI/Theming/API
  *
- * To view and modify this theme, visit http://jqueryui.com/themeroller/?ffDefault=&fwDefault=bold&fsDefault=&cornerRadius=4px&bgColorHeader=f5f5f5&bgTextureHeader=03_highlight_soft.png&bgImgOpacityHeader=75&borderColorHeader=dbdbdb&fcHeader=000000&iconColorHeader=222222&bgColorContent=ffffff&bgTextureContent=01_flat.png&bgImgOpacityContent=75&borderColorContent=dbdbdb&fcContent=000000&iconColorContent=222222&bgColorDefault=f5f5f5&bgTextureDefault=04_highlight_hard.png&bgImgOpacityDefault=90&borderColorDefault=dbdbdb&fcDefault=636261&iconColorDefault=666666&bgColorHover=dadada&bgTextureHover=04_highlight_hard.png&bgImgOpacityHover=90&borderColorHover=dbdbdb&fcHover=000000&iconColorHover=ff3300&bgColorActive=ffffff&bgTextureActive=04_highlight_hard.png&bgImgOpacityActive=90&borderColorActive=dbdbdb&fcActive=000000&iconColorActive=000000&bgColorHighlight=fff6bf&bgTextureHighlight=02_glass.png&bgImgOpacityHighlight=0&borderColorHighlight=ffd324&fcHighlight=000000&iconColorHighlight=ffd324&bgColorError=fbe3e4&bgTextureError=05_inset_soft.png&bgImgOpacityError=0&borderColorError=fbc2c4&fcError=8a1f11&iconColorError=8a1f11&bgColorOverlay=333&bgTextureOverlay=01_flat.png&bgImgOpacityOverlay=100&opacityOverlay=95&bgColorShadow=aaaaaa&bgTextureShadow=01_flat.png&bgImgOpacityShadow=0&opacityShadow=30&thicknessShadow=8px&offsetTopShadow=-8px&offsetLeftShadow=-8px&cornerRadiusShadow=8px
+ * To view and modify this theme, visit http://jqueryui.com/themeroller/?ffDefault=&fwDefault=bold&fsDefault=&cornerRadius=4px&bgColorHeader=f5f5f5&bgTextureHeader=03_highlight_soft.png&bgImgOpacityHeader=75&borderColorHeader=dbdbdb&fcHeader=000000&iconColorHeader=222222&bgColorContent=ffffff&bgTextureContent=01_flat.png&bgImgOpacityContent=75&borderColorContent=dbdbdb&fcContent=000000&iconColorContent=222222&bgColorDefault=f5f5f5&bgTextureDefault=04_highlight_hard.png&bgImgOpacityDefault=90&borderColorDefault=dbdbdb&fcDefault=636261&iconColorDefault=666666&bgColorHover=dadada&bgTextureHover=04_highlight_hard.png&bgImgOpacityHover=90&borderColorHover=dbdbdb&fcHover=000000&iconColorHover=000000&bgColorActive=ffffff&bgTextureActive=04_highlight_hard.png&bgImgOpacityActive=90&borderColorActive=dbdbdb&fcActive=000000&iconColorActive=000000&bgColorHighlight=fff6bf&bgTextureHighlight=02_glass.png&bgImgOpacityHighlight=0&borderColorHighlight=ffd324&fcHighlight=000000&iconColorHighlight=ffd324&bgColorError=fbe3e4&bgTextureError=05_inset_soft.png&bgImgOpacityError=0&borderColorError=fbc2c4&fcError=8a1f11&iconColorError=8a1f11&bgColorOverlay=333333&bgTextureOverlay=01_flat.png&bgImgOpacityOverlay=100&opacityOverlay=95&bgColorShadow=aaaaaa&bgTextureShadow=01_flat.png&bgImgOpacityShadow=0&opacityShadow=30&thicknessShadow=8px&offsetTopShadow=-8px&offsetLeftShadow=-8px&cornerRadiusShadow=8px
  */
 
 
@@ -93,7 +93,7 @@
 .ui-widget-content .ui-icon {background-image: url(images/ui-icons_222222_256x240.png); }
 .ui-widget-header .ui-icon {background-image: url(images/ui-icons_222222_256x240.png); }
 .ui-state-default .ui-icon { background-image: url(images/ui-icons_666666_256x240.png); }
-.ui-state-hover .ui-icon, .ui-state-focus .ui-icon {background-image: url(images/ui-icons_ff3300_256x240.png); }
+.ui-state-hover .ui-icon, .ui-state-focus .ui-icon {background-image: url(images/ui-icons_000000_256x240.png); }
 .ui-state-active .ui-icon {background-image: url(images/ui-icons_000000_256x240.png); }
 .ui-state-highlight .ui-icon {background-image: url(images/ui-icons_ffd324_256x240.png); }
 .ui-state-error .ui-icon, .ui-state-error-text .ui-icon {background-image: url(images/ui-icons_8a1f11_256x240.png); }
@@ -286,7 +286,7 @@
 .ui-corner-all, .ui-corner-bottom, .ui-corner-right, .ui-corner-br { -moz-border-radius-bottomright: 4px; -webkit-border-bottom-right-radius: 4px; -khtml-border-bottom-right-radius: 4px; border-bottom-right-radius: 4px; }
 
 /* Overlays */
-.ui-widget-overlay { background: #333 url(images/ui-bg_flat_100_333_40x100.png) 50% 50% repeat-x; opacity: .95;filter:Alpha(Opacity=95); }
+.ui-widget-overlay { background: #333333 url(images/ui-bg_flat_100_333333_40x100.png) 50% 50% repeat-x; opacity: .95;filter:Alpha(Opacity=95); }
 .ui-widget-shadow { margin: -8px 0 0 -8px; padding: 8px; background: #aaaaaa url(images/ui-bg_flat_0_aaaaaa_40x100.png) 50% 50% repeat-x; opacity: .30;filter:Alpha(Opacity=30); -moz-border-radius: 8px; -khtml-border-radius: 8px; -webkit-border-radius: 8px; border-radius: 8px; }/*
  * jQuery UI Resizable 1.8.16
  *

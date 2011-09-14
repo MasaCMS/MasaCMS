@@ -1,13 +1,7 @@
-/* @override 
-	http://mura:8500/5.4/merced/includes/themes/merced/css/merced-mobile.css
-	http://mura:8500/5.4/default/includes/themes/merced/css/merced-mobile.css
-*/
-
 /*
 Theme:  Merced
 Author: Blue River Interactive Group
 */
-
 
 h1#site-title {
 	text-align: center;
@@ -88,24 +82,24 @@ dl.hasImage dd.image img {
 	display: block;
 }
 
-form ol {
+form ol, form ul {
 	list-style: none;
 	margin: 0 0 2em;
 	padding: 0;
 }
 
-form ol li {
+form li {
 	margin: 0 0 6px;
 	padding: 0;
 }
 
-form ol li.controlgroup {
+form li.controlgroup {
 	margin-bottom: 0;
 }
 
-form input[type=checkbox] {
+/*form input[type=checkbox] {
 	display: none;
-}
+}*/
 
 #svGallery li {
 	min-height: 0 !important;

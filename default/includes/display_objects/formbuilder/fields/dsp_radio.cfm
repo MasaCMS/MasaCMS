@@ -8,7 +8,6 @@
 		<cfset record = dataset.datarecords[dataset.datarecordorder[iiy]] />
 		<div><input name="#field.name#" type="radio"<cfif record.isselected eq 1> CHECKED</cfif> value="#record.value#">#record.label#</div>
 	</cfloop>
-	</select>
 	</cfoutput>
 </cfsavecontent>
 <cfoutput>

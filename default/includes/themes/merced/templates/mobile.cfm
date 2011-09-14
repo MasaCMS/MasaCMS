@@ -15,7 +15,7 @@
 	
 	<link rel="stylesheet" href="#$.siteConfig('assetPath')#/css/mura.css" />
 	<link rel="stylesheet" href="#$.siteConfig('assetPath')#/mobile/jquery.mobile.min.css" />
-	<link rel="stylesheet" href="#$.siteConfig('themeAssetPath')#/css/merced-mobile.css" />
+	<link rel="stylesheet" href="#$.siteConfig('themeAssetPath')#/css/mobile.css" />
 	
 	<script src="#$.siteConfig('assetPath')#/js/jquery/jquery.js"></script>
 	
