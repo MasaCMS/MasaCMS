@@ -129,7 +129,7 @@ to your own modified versions of Mura CMS.
 						</cfif>
 					</cfcase>
 					<cfcase value="Title">
-						<h3><cfif arguments.type eq "Search">#arguments.iterator.getRecordIndex()#. </cfif>#arguments.link#</h3>
+						<h3><cfif arguments.type eq "Search">#arguments.iterator.getRecordIndex()#. </cfif>#addlink(arguments.item.getValue('type'),arguments.item.getValue('filename'),arguments.item.getValue('menutitle'),arguments.item.getValue('target'),arguments.item.getValue('targetparams'),arguments.item.getValue('contentID'),arguments.item.getValue('siteID'))#</h3>
 					</cfcase>
 					<cfcase value="Summary">
 						<cfif len(arguments.item.getValue('summary')) and arguments.item.getValue('summary') neq "<p></p>">
@@ -143,8 +143,8 @@ to your own modified versions of Mura CMS.
 					</cfcase>
 					<cfcase value="Comments">
 						<cfif (arguments.item.getValue('type') eq 'Page' or showItemMeta(arguments.item.getValue('type')) or (len(arguments.item.getValue('fileID')) and showItemMeta(arguments.item.getValue('fileEXT')))) >
-							<cfif not cookie.mobileFormat and len(arguments.commentsLink)>
-							 	<p class="comments">#arguments.commentsLink#</p>
+							<cfif not cookie.mobileFormat>
+							 	<p class="comments">#$.addLink(arguments.item.getValue('type'),arguments.item.getValue('filename'),'#$.rbKey("list.comments")#(#$.getBean('contentGateway').getCommentCount($.event('siteID'),arguments.item.getValue('contentID'))#)',arguments.item.getValue('target'),arguments.item.getValue('targetparams'),arguments.item.getValue('contentID'),$.event('siteID'),'##comments')#</p>
 							</cfif>
 						</cfif>
 					</cfcase>
@@ -218,7 +218,7 @@ to your own modified versions of Mura CMS.
 					</cfcase>
 					<cfcase value="Comments">
 						<cfif (arguments.item.getValue('type') eq 'Page' or showItemMeta(arguments.item.getValue('type')) or (len(arguments.item.getValue('fileID')) and showItemMeta(arguments.item.getValue('fileEXT')))) >
-						 	<dd class="comments">#$.addLink(arguments.item.getValue('type'),arguments.item.getValue('filename'),'#$.rbKey("list.comments")#(#$.getBean('contentGateway').getCommentCount($.event('siteID'),arguments.item.getValue('contentID'))#)',arguments.item.getValue('target'),arguments.item.getValue('targetparams'),arguments.item.getValue('contentID'),$.event('siteID'),'##comments',$.globalConfig('context'),$.globalConfig('stub'),$.globalConfig('indexFile'))#</dd>
+						 	<dd class="comments">#$.addLink(arguments.item.getValue('type'),arguments.item.getValue('filename'),'#$.rbKey("list.comments")#(#$.getBean('contentGateway').getCommentCount($.event('siteID'),arguments.item.getValue('contentID'))#)',arguments.item.getValue('target'),arguments.item.getValue('targetparams'),arguments.item.getValue('contentID'),$.event('siteID'),'##comments')#</dd>
 						</cfif>
 					</cfcase>
 					<cfcase value="Tags">
