@@ -256,13 +256,13 @@ to your own modified versions of Mura CMS.
 <div id="tabDisplay">
 <dl class="oneColumn">
 <dt class="first">#application.rbFactory.getKeyValue(session.rb,'collections.imagesize')#</dt>
-	<dd><select name="imageSize" class="dropdown" onchange="if(this.value=='Custom'){jQuery('##feedCustomImageOptions').fadeIn('fast')}else{jQuery('##feedCustomImageOptions').hide()}">
+	<dd><select name="imageSize" class="dropdown" onchange="if(this.value=='custom'){jQuery('##feedCustomImageOptions').fadeIn('fast')}else{jQuery('##feedCustomImageOptions').hide()}">
 		<cfloop list="Small,Medium,Large,Custom" index="i">
 		<option value="#lcase(i)#"<cfif i eq request.feedBean.getImageSize()> selected</cfif>>#I#</option>
 		</cfloop>
 	</select>
 	</dd>
-	<dd id="feedCustomImageOptions"<cfif request.feedBean.getImageSize() neq "Custom"> style="display:none"</cfif>>
+	<dd id="feedCustomImageOptions"<cfif request.feedBean.getImageSize() neq "custom"> style="display:none"</cfif>>
 	<dl>
 	<dt>#application.rbFactory.getKeyValue(session.rb,'collections.imageheight')#</dt>
 	<dd><input name="imageHeight" class="text" value="#request.feedBean.getImageHeight()#" /></dd>

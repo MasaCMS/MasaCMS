@@ -147,13 +147,13 @@ to your own modified versions of Mura CMS.
 
 <cfif attributes.type eq 'Portal' or attributes.type eq 'Calendar' or attributes.type eq 'Gallery'>
 	<dt>#application.rbFactory.getKeyValue(session.rb,'collections.imagesize')#</dt>
-	<dd><select name="imageSize" class="dropdown" onchange="if(this.value=='Custom'){jQuery('##CustomImageOptions').fadeIn('fast')}else{jQuery('##CustomImageOptions').hide()}">
+	<dd><select name="imageSize" class="dropdown" onchange="if(this.value=='custom'){jQuery('##CustomImageOptions').fadeIn('fast')}else{jQuery('##CustomImageOptions').hide()}">
 		<cfloop list="Small,Medium,Large,Custom" index="i">
 		<option value="#lcase(i)#"<cfif i eq request.contentBean.getImageSize()> selected</cfif>>#I#</option>
 		</cfloop>
 	</select>
 	</dd>
-	<dd id="CustomImageOptions"<cfif request.contentBean.getImageSize() neq "Custom"> style="display:none"</cfif>>
+	<dd id="CustomImageOptions"<cfif request.contentBean.getImageSize() neq "custom"> style="display:none"</cfif>>
 	<dl>
 	<dt>#application.rbFactory.getKeyValue(session.rb,'collections.imageheight')#</dt>
 	<dd><input name="imageHeight" class="text" value="#request.contentBean.getImageHeight()#" /></dd>
