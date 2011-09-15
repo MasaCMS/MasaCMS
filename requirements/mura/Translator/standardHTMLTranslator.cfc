@@ -43,8 +43,10 @@
 	<cfsavecontent variable="page">
 		<cfif fileExists(expandPath("#$.siteConfig('templateIncludePath')#/#renderer.getTemplate()#") )>
 		<cfinclude template="#event.getSite().getTemplateIncludePath()#/#renderer.getTemplate()#">
+		<cfset application.utility.addTracePoint("#event.getSite().getTemplateIncludePath()#/#renderer.getTemplate()#")>
 		<cfelse>
 		<cfinclude template="#event.getSite().getTemplateIncludePath()#/default.cfm">
+		<cfset application.utility.addTracePoint("#event.getSite().getTemplateIncludePath()#/default.cfm")>
 		</cfif>
 	</cfsavecontent>
 	
