@@ -269,7 +269,6 @@ to your own modified versions of Mura CMS.
 			<cfset application.serviceFactory.getBean("fileWriter").copyFile(source="#baseDir#/config/templates/robots.template.cfm", destination="#baseDir#/robots.txt")>
 		</cfif>
 		
-		<cfset request.muraTraceLastTickCount=getTickCount()>
 		<cfset pluginEvent=createObject("component","mura.event").init()>			
 		<cfset application.pluginManager.executeScripts(runat='onApplicationLoad',event= pluginEvent)>
 				
