@@ -61,11 +61,11 @@ to your own modified versions of Mura CMS.
 		<cfoutput>
 			<div id="mura-stacktrace">
 			<h3>Stack Trace</h3>
-			<ul>
+			<ol>
 				<cfloop from="1" to="#arrayLen(request.muraTraceRoute)#" index="i">
 					<li>#HTMLEditFormat(request.muraTraceRoute[i])#</li>
 				</cfloop>
-			</ul>
+			</ol>
 			</div>
 		</cfoutput>
 	</cfsavecontent>
