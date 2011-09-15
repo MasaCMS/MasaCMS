@@ -59,7 +59,7 @@ to your own modified versions of Mura CMS.
 	<cfset var i=0>
 	<cfsavecontent variable="trace">
 		<cfoutput>
-			<div align=center>
+			<div id="mura-stacktrace">
 			<h3>Mura Stack Trace</h3>
 			<ul>
 				<cfloop from="1" to="#arrayLen(request.muraTraceRoute)#" index="i">
