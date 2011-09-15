@@ -1180,6 +1180,7 @@ select * from tplugins order by #arguments.orderby#
 						<cfinvokeargument name="$" value="#muraScope#">
 						<cfinvokeargument name="mura" value="#muraScope#">
 					</cfinvoke>
+					<cfset application.utility.addTracePoint("#localHandler._objectName#.#arguments.runat#")>
 					<cfset request.muraHandledEvents["#arguments.runat#"]=true>	
 				</cfif>
 			</cfif>
@@ -1199,6 +1200,7 @@ select * from tplugins order by #arguments.orderby#
 								<cfinvokeargument name="$" value="#muraScope#">
 								<cfinvokeargument name="mura" value="#muraScope#">
 							</cfinvoke>
+							<cfset application.utility.addTracePoint("#eventHandler._objectName#.#arguments.runat#")>
 							<cfset request.muraHandledEvents["#arguments.runat#"]=true>	
 						</cfloop>
 					</cfif>
@@ -1218,6 +1220,7 @@ select * from tplugins order by #arguments.orderby#
 								<cfinvokeargument name="$" value="#muraScope#">
 								<cfinvokeargument name="mura" value="#muraScope#">
 							</cfinvoke>	
+							<cfset application.utility.addTracePoint("#eventHandler._objectName#.#arguments.runat#")>
 							<cfset request.muraHandledEvents["#arguments.runat#"]=true>
 						</cfloop>
 					</cfif>
@@ -1242,7 +1245,9 @@ select * from tplugins order by #arguments.orderby#
 					<cfinvokeargument name="$" value="#muraScope#">
 					<cfinvokeargument name="mura" value="#muraScope#">
 				</cfinvoke>	
+				<cfset application.utility.addTracePoint("#componentPath#.#arguments.runat#")>
 			<cfelse>
+				<cfset application.utility.addTracePoint("/plugins/#rs.directory#/#rs.scriptfile#")>
 				<cfset getExecutor().executeScript(event=event,scriptfile="/plugins/#rs.directory#/#rs.scriptfile#",pluginConfig=getConfig(rs.pluginID), $=muraScope, mura=muraScope)>
 			</cfif>
 			<cfset request.muraHandledEvents["#arguments.runat#"]=true>
@@ -1342,6 +1347,7 @@ select * from tplugins order by #arguments.orderby#
 					<cfelse>
 						<cfset str=str & local.theDisplay1>
 					</cfif>
+					<cfset application.utility.addTracePoint("#localHandler._objectName#.#arguments.runat#")>
 					<cfset request.muraHandledEvents["#arguments.runat#"]=true>
 				</cfif>
 			</cfif>
@@ -1368,6 +1374,7 @@ select * from tplugins order by #arguments.orderby#
 							<cfelse>
 								<cfset str=str & local.theDisplay1>
 							</cfif>
+							<cfset application.utility.addTracePoint("#eventHandler._objectName#.#arguments.runat#")>
 							<cfset request.muraHandledEvents["#arguments.runat#"]=true>
 						</cfloop>
 					</cfif>
@@ -1393,6 +1400,7 @@ select * from tplugins order by #arguments.orderby#
 							<cfelse>
 								<cfset str=str & local.theDisplay1>
 							</cfif>
+							<cfset application.utility.addTracePoint("#eventHandler._objectName#.#arguments.runat#")>
 							<cfset request.muraHandledEvents["#arguments.runat#"]=true>
 						</cfloop>
 					</cfif>
@@ -1418,7 +1426,8 @@ select * from tplugins order by #arguments.orderby#
 						<cfinvokeargument name="event" value="#arguments.event#">
 						<cfinvokeargument name="$" value="#muraScope#">
 						<cfinvokeargument name="mura" value="#muraScope#">
-					</cfinvoke>	
+					</cfinvoke>
+					<cfset application.utility.addTracePoint("#componentPath#.#arguments.runat#")>	
 					</cfsavecontent>
 				
 					<cfif isDefined("local.theDisplay2")>
@@ -1432,6 +1441,7 @@ select * from tplugins order by #arguments.orderby#
 					<cfoutput>#getExecutor().renderScript(event=event,scriptfile="/plugins/#rs.directory#/#rs.scriptfile#",pluginConfig=getConfig(rs.pluginID), $=muraScope, mura=muraScope)#</cfoutput>
 					</cfsavecontent>
 					<cfset str=str & local.theDisplay1>
+					<cfset application.utility.addTracePoint("/plugins/#rs.directory#/#rs.scriptfile#")>
 				</cfif>
 				<cfset request.muraHandledEvents["#arguments.runat#"]=true>	
 			</cfloop>
@@ -1592,6 +1602,7 @@ select * from tplugins order by #arguments.orderby#
 				<cfinvokeargument name="mura" value="#muraScope#">
 			</cfinvoke>
 			</cfsavecontent>
+			<cfset application.utility.addTracePoint("#getMetaData(eventHandler).name#.#rs.displaymethod#")>
 			<cfif isdefined("theDisplay2")>
 				<cfreturn trim(theDisplay2)>
 			<cfelse>
@@ -1795,6 +1806,8 @@ select * from rs order by name
 			<cfset arrayAppend(variables.eventHandlers,arguments.component)>
 		</cfif>
 	</cfif>
+	
+	<cfset eventhandler._objectName=getMetaData(eventhandler).name>
 		
 	<cfloop collection="#eventhandler#" item="i">
 		<cfif left(i,2) eq "on" or left(i,8) eq "standard">

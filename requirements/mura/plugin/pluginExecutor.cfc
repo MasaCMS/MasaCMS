@@ -39,12 +39,14 @@
 	<cfsavecontent variable="str">
 	<cfinclude template="/plugins/#pluginConfig.getDirectory()#/#arguments.rsDisplayObject.displayObjectFile#">
 	</cfsavecontent>
+	<cfset application.utility.addTracePoint("/plugins/#pluginConfig.getDirectory()#/#arguments.rsDisplayObject.displayObjectFile#")>
 	<cfelse>
 	
 	<cfset pluginConfig.setSetting("pluginPath","#variables.configBean.getContext()#/#variables.settingsManager.getSite(event.getValue('siteID')).getDisplayPoolID()#/includes/plugins/#pluginConfig.getDirectory()#/")/>
 	<cfsavecontent variable="str">
 	<cfinclude template="/#variables.configBean.getWebRootMap()#/#variables.settingsManager.getSite(event.getValue('siteID')).getDisplayPoolID()#/includes/plugins/#pluginConfig.getDirectory()#/#arguments.rsDisplayObject.displayObjectFile#">
 	</cfsavecontent>
+	<cfset application.utility.addTracePoint("/#variables.configBean.getWebRootMap()#/#variables.settingsManager.getSite(event.getValue('siteID')).getDisplayPoolID()#/includes/plugins/#pluginConfig.getDirectory()#/#arguments.rsDisplayObject.displayObjectFile#")>
 	</cfif>
 	
 	<cfset structDelete(request,"pluginConfig")>

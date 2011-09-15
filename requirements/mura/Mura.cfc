@@ -47,8 +47,8 @@ to your own modified versions of Mura CMS.
 	<cfset var response=""/>
 	<cfset var servlet = "" />
 	<cfset var localHandler=""/>
-	<cfset var previewData="">
-	
+	<cfset var previewData=""/>
+	<cfset var trace=""/>
 	<cfif fileExists(expandPath("/#application.configBean.getWebRootMap()#/#event.getValue('siteid')#/includes/servlet.cfc"))>
 		<cfset servlet=createObject("component","#application.configBean.getWebRootMap()#.#event.getValue('siteid')#.includes.servlet").init(event)>
 	<cfelse>
@@ -70,6 +70,7 @@ to your own modified versions of Mura CMS.
 	
 	<cfif fileExists(expandPath("/#application.configBean.getWebRootMap()#") & "/#event.getValue('siteid')#/includes/eventHandler.cfc")>
 		<cfset localHandler=createObject("component","#application.configBean.getWebRootMap()#.#event.getValue('siteid')#.includes.eventHandler").init()>
+		<cfset localHandler._objectName=getMetaData(localHandler).name>
 	</cfif>
 
 	<cfset event.setValue("localHandler",localHandler)/>
@@ -79,7 +80,9 @@ to your own modified versions of Mura CMS.
 	<cfset response=servlet.doRequest()>
 	<cfset servlet.onRequestEnd() />
 	<cfset application.pluginManager.announceEvent('onSiteRequestEnd',event)/>
-	
+	<cfif isDefined("session.mura.showTrace") and session.mura.showTrace and listFindNoCase(session.mura.memberships,"S2IsPrivate")>
+		<cfset response=replaceNoCase(response,"</html>","#application.utility.dumpTrace()#</html>")>
+	</cfif>
 	<cfreturn response>
 </cffunction>
 

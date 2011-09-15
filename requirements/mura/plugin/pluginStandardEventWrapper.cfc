@@ -23,6 +23,7 @@
 	
 <cfset variables.eventHandler="">
 <cfset variables.eventName="">
+<cfset variables.objectName="">
 
 <cffunction name="init" output="false" returntype="any">
 <cfargument name="eventHandler">
@@ -30,6 +31,7 @@
 
 <cfset variables.eventHandler=arguments.eventHandler>
 <cfset variables.eventName=arguments.eventName>
+<cfset variables.objectName=getMetaData(variables.eventHandler).name>
 
 <cfreturn this>
 </cffunction>
@@ -52,8 +54,10 @@
 <cfargument name="context">
 	<cfset var contexts=splitContexts(arguments.context)>	
 	<cfif structKeyExists(variables.eventHandler,variables.eventName)>
+		<cfset application.utility.addTracePoint("#variables.objectName#.#variables.eventName#")>
 		<cfset evaluate("variables.eventHandler.#variables.eventName#(event=contexts.event, mura=contexts.muraScope, $=contexts.muraScope)")>
 	<cfelse>
+		<cfset application.utility.addTracePoint("#variables.objectName#.handle")>
 		<cfset variables.eventHandler.handle(event=contexts.event, mura=contexts.muraScope, $=contexts.muraScope)>
 	</cfif>
 	<cfset request.muraHandledEvents["#variables.eventName#"]=true>
@@ -64,8 +68,10 @@
 	<cfset var contexts=splitContexts(arguments.context)>
 	<cfset var verdict="">
 	<cfif structKeyExists(variables.eventHandler,variables.eventName)>
+		<cfset application.utility.addTracePoint("#variables.objectName#.#variables.eventName#")>
 		<cfset verdict=evaluate("variables.eventHandler.#variables.eventName#(event=contexts.event, mura=contexts.muraScope, $=contexts.muraScope)")>
 	<cfelse>
+		<cfset application.utility.addTracePoint("#variables.objectName#.validate")>
 		<cfset verdict=variables.eventHandler.validate(event=contexts.event, mura=contexts.muraScope, $=contexts.muraScope)>
 	</cfif>
 	<cfset request.muraHandledEvents["#variables.eventName#"]=true>
@@ -78,8 +84,10 @@
 <cfargument name="context">
 	<cfset var contexts=splitContexts(arguments.context)>
 	<cfif structKeyExists(variables.eventHandler,variables.eventName)>
+		<cfset application.utility.addTracePoint("#variables.objectName#.#variables.eventName#")>
 		<cfset evaluate("variables.eventHandler.#variables.eventName#(event=contexts.event, mura=contexts.muraScope, $=contexts.muraScope)")>
 	<cfelse>
+		<cfset application.utility.addTracePoint("#variables.objectName#.translate")>
 		<cfset variables.eventHandler.translate(event=contexts.event, mura=contexts.muraScope, $=contexts.muraScope)>
 	</cfif>
 	<cfset request.muraHandledEvents["#variables.eventName#"]=true>
