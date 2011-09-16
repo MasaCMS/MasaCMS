@@ -228,6 +228,7 @@ to your own modified versions of Mura CMS.
 <cffunction name="purgeUserCache" output="false">
 	<cfargument name="userID">
 	<cfargument name="userBean">
+	<cfargument name="broadcast" default="true">
 	<cfset var cache="">
 	
 	<cfif not isDefined("arguments.userBean")>
@@ -248,7 +249,9 @@ to your own modified versions of Mura CMS.
 			<cfset cache.purge("user" & arguments.userBean.getSiteID() & arguments.userBean.getGroupname())>
 		</cfif>
 		
-		<cfset variables.clusterManager.purgeUserCache(userID=arguments.userBean.getUserID())>
+		<cfif arguments.broadcast>
+			<cfset variables.clusterManager.purgeUserCache(userID=arguments.userBean.getUserID())>
+		</cfif>
 	</cfif>
 </cffunction>
 

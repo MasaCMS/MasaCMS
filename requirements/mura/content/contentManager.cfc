@@ -1816,12 +1816,13 @@ to your own modified versions of Mura CMS.
 			<cfset variables.clusterManager.purgeContentCache(contentID=arguments.contentBean.getContentID(),siteID=arguments.contentBean.getSiteID())>
 		</cfif>
 	</cfif>
-</cffunction>
+	</cffunction>
 	
 	<cffunction name="purgeContentDescendentsCache" output="false">
 	<cfargument name="contentID">
 	<cfargument name="siteID">
 	<cfargument name="contentBean">
+	<cfargument name="broadcast" default="true">
 	<cfset var it="">
 	<cfset var rs="">
 	
@@ -1843,10 +1844,12 @@ to your own modified versions of Mura CMS.
 		<cfset purgeContentCache(contentBean=it.next(),broadcast=false)>
 	</cfloop>
 	
-	<cfset variables.clusterManager.purgeContentDescendentsCache(contentID=arguments.contentBean.getContentID(),siteID=arguments.contentBean.getSiteID())>
-</cffunction>
+	<cfif arguments.broadcast>
+		<cfset variables.clusterManager.purgeContentDescendentsCache(contentID=arguments.contentBean.getContentID(),siteID=arguments.contentBean.getSiteID())>
+	</cfif>
+	</cffunction>
 
-<cffunction name="trimArchiveHistory" output="false">
+	<cffunction name="trimArchiveHistory" output="false">
 	<cfargument name="contentID">
 	<cfargument name="siteID">
 	<cfargument name="limit" default="#variables.configBean.getMaxArchivedVersions()#">
@@ -1867,6 +1870,6 @@ to your own modified versions of Mura CMS.
 		</cfloop>
 	</cfif>
 	
-</cffunction>
+	</cffunction>
 
 </cfcomponent>

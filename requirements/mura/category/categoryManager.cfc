@@ -486,6 +486,7 @@ to your own modified versions of Mura CMS.
 <cffunction name="purgeCategoryDescendentsCache" output="false">
 	<cfargument name="categoryID">
 	<cfargument name="categoryBean">
+	<cfargument name="broadcast" default="true">
 	<cfset var it="">
 	<cfset var rs="">
 	
@@ -508,7 +509,9 @@ to your own modified versions of Mura CMS.
 		<cfset purgeCategoryCache(categoryBean=it.next(),broadcast=false)>
 	</cfloop>
 	
-	<cfset variables.clusterManager.purgeCategoryDescendentsCache(categoryID=arguments.categoryBean.getcategoryID())>
+	<cfif arguments.broadcast>
+		<cfset variables.clusterManager.purgeCategoryDescendentsCache(categoryID=arguments.categoryBean.getcategoryID())>
+	</cfif>
 </cffunction>
 
 <cffunction name="update" access="public" returntype="any" output="false">
