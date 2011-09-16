@@ -42,7 +42,7 @@ to your own modified versions of Mura CMS.
 --->
 <cfcomponent extends="mura.cfobject" output="false">
 
-<cfset variables.fieldList="feedID,siteID,dateCreated,lastUpdate,lastUpdateBy,name,altName,lang,maxitems,isActive,isPublic,isDefault,description,allowHTML,isFeaturesOnly,restricted,restrictGroups,version,channelLink,type,sortBy,sortDirection,nextn,displayName,displayRatings,displayComments,parentID,remoteID,remoteSourceURL,remotePubDate">
+<cfset variables.fieldList="feedID,siteID,dateCreated,lastUpdate,lastUpdateBy,name,altName,lang,maxitems,isActive,isPublic,isDefault,description,allowHTML,isFeaturesOnly,restricted,restrictGroups,version,channelLink,type,sortBy,sortDirection,nextn,displayName,displayRatings,displayComments,parentID,remoteID,remoteSourceURL,remotePubDate,imageSize,imageHeight,imageWidth,displayList">
 
 <cffunction name="init" returntype="any" output="false" access="public">
 <cfargument name="configBean" type="any" required="yes"/>
@@ -252,7 +252,7 @@ to your own modified versions of Mura CMS.
 	imageSize=<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.feedBean.getImageSize() neq '',de('no'),de('yes'))#" value="#arguments.feedBean.getImageSize()#">,
 	imageHeight=<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.feedBean.getImageHeight() neq '',de('no'),de('yes'))#" value="#arguments.feedBean.getImageHeight()#">,
 	imageWidth=<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.feedBean.getImageWidth() neq '',de('no'),de('yes'))#" value="#arguments.feedBean.getImageWidth()#">,
-	displaySummaries=#arguments.feedBean.getDisplaySummaries()#
+	displayList=<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.feedBean.getDisplayList() neq '',de('no'),de('yes'))#" value="#arguments.feedBean.getDisplayList()#">
 	where feedID =<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.feedBean.getfeedID()#">
 	</cfquery>
 	
