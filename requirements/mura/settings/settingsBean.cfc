@@ -1002,9 +1002,12 @@ to your own modified versions of Mura CMS.
 
 <cffunction name="purgeCache" access="public" output="false">
 	<cfargument name="name" default="data" hint="data, output or both">
+	<cfargument name="broadcast" default="true">
 	
 	<cfset getCacheFactory(name=arguments.name).purgeAll()>
-	<cfset variables.clusterManager.purgeCache(siteID=getSiteID(),name=arguments.name)>
+	<cfif arguments.broadcast>
+		<cfset variables.clusterManager.purgeCache(siteID=getSiteID(),name=arguments.name)>
+	</cfif>
 	<cfreturn this>
 </cffunction>
 

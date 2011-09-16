@@ -50,9 +50,9 @@ to your own modified versions of Mura CMS.
 	<cfif arguments.instanceID neq application.instanceID 
 		and arguments.appreloadkey eq application.appreloadkey>
 		<cfif len(arguments.siteid)>
-			<cfset application.settingsManager.getSite(arguments.siteID).purgeCache(name=arguments.name)>	
+			<cfset application.settingsManager.getSite(arguments.siteID).purgeCache(name=arguments.name,broadcast=false)>	
 		<cfelse>
-			<cfset application.settingsManager.purgeAllCache()>
+			<cfset application.settingsManager.purgeAllCache(broadcast=false)>
 		</cfif>
 	</cfif>
 </cffunction>
@@ -63,7 +63,7 @@ to your own modified versions of Mura CMS.
 	<cfargument name="instanceID" required="true" default="">
 	<cfif arguments.instanceID neq application.instanceID 
 		and arguments.appreloadkey eq application.appreloadkey>
-		<cfset application.userManager.purgeUserCache(userid=arguments.userID)>
+		<cfset application.userManager.purgeUserCache(userid=arguments.userID,broadcast=false)>
 	</cfif>
 </cffunction>
 
@@ -73,7 +73,7 @@ to your own modified versions of Mura CMS.
 	<cfargument name="instanceID" required="true" default="">
 	<cfif arguments.instanceID neq application.instanceID 
 		and arguments.appreloadkey eq application.appreloadkey>
-		<cfset application.categoryManager.purgeCategoryCache(categoryID=arguments.categoryID)>
+		<cfset application.categoryManager.purgeCategoryCache(categoryID=arguments.categoryID,broadcast=false)>
 	</cfif>
 </cffunction>
 
@@ -83,7 +83,7 @@ to your own modified versions of Mura CMS.
 	<cfargument name="instanceID" required="true" default="">
 	<cfif arguments.instanceID neq application.instanceID 
 		and arguments.appreloadkey eq application.appreloadkey>
-		<cfset application.categoryManager.purgeCategoryDescendentsCache(categoryID=arguments.categoryID)>
+		<cfset application.categoryManager.purgeCategoryDescendentsCache(categoryID=arguments.categoryID,broadcast=false)>
 	</cfif>
 </cffunction>
 
@@ -94,7 +94,7 @@ to your own modified versions of Mura CMS.
 	<cfargument name="instanceID" required="true" default="">
 	<cfif arguments.instanceID neq application.instanceID 
 		and arguments.appreloadkey eq application.appreloadkey>
-		<cfset application.contentManager.purgeContentCache(contentID=arguments.contentID,siteID=arguments.siteID)>
+		<cfset application.contentManager.purgeContentCache(contentID=arguments.contentID,siteID=arguments.siteID,broadcast=false)>
 	</cfif>
 </cffunction>
 
@@ -105,7 +105,7 @@ to your own modified versions of Mura CMS.
 	<cfargument name="instanceID" required="true" default="">
 	<cfif arguments.instanceID neq application.instanceID 
 		and arguments.appreloadkey eq application.appreloadkey>
-		<cfset application.contentManager.purgeContentDescendentsCache(contentID=arguments.contentID,siteID=arguments.siteID)>
+		<cfset application.contentManager.purgeContentDescendentsCache(contentID=arguments.contentID,siteID=arguments.siteID,broadcast=false)>
 	</cfif>
 </cffunction>
 

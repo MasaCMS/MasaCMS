@@ -1836,6 +1836,7 @@ to your own modified versions of Mura CMS.
 	<cfargument name="contentID">
 	<cfargument name="siteID">
 	<cfargument name="contentBean">
+	<cfargument name="broadcast" default="true">
 	<cfset var it="">
 	<cfset var rs="">
 	
@@ -1857,7 +1858,9 @@ to your own modified versions of Mura CMS.
 		<cfset purgeContentCache(contentBean=it.next(),broadcast=false)>
 	</cfloop>
 	
-	<cfset variables.clusterManager.purgeContentDescendentsCache(contentID=arguments.contentBean.getContentID(),siteID=arguments.contentBean.getSiteID())>
+	<cfif arguments.broadcast>
+		<cfset variables.clusterManager.purgeContentDescendentsCache(contentID=arguments.contentBean.getContentID(),siteID=arguments.contentBean.getSiteID())>
+	</cfif>
 </cffunction>
 
 </cfcomponent>
