@@ -194,7 +194,7 @@ to your own modified versions of Mura CMS.
 <cffunction name="initTracePoint" output="false">
 	<cfargument name="detail">
 	<cfset var tracePoint=structNew()>
-	<cfif not isDefined("session.mura.showTrace") or not session.mura.showTrace>
+	<cfif not request.muraShowTrace>
 		<cfreturn 0>
 	</cfif>
 	<cfset tracePoint.detail=arguments.detail>

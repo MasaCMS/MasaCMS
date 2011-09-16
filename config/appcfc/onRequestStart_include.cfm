@@ -147,6 +147,8 @@ to your own modified versions of Mura CMS.
 	<cfset session.mura.showTrace=url.showTrace>
 </cfif>
 
+<cfset request.muraShowTrace=session.mura.showTrace>
+
 <cfif not request.hasCFApplicationCFM and not fileExists("#expandPath('/muraWRM/config')#/cfapplication.cfm")>
 	<cfset application.serviceFactory.getBean("fileWriter").writeFile(file="#expandPath('/muraWRM/config')#/cfapplication.cfm", output='<!--- Add Custom Application.cfc Vars Here --->')>	
 </cfif>

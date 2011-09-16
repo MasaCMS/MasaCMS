@@ -183,6 +183,7 @@ to your own modified versions of Mura CMS.
 	<cfset request.customMuraScopeKeys=structNew()/>
 	<cfset request.muraTraceRoute=arrayNew(1)/>
 	<cfset request.muraRequestStart=getTickCount()/>
+	<cfset request.muraShowTrace=false/>
 	
 	<cftry>
 		<cfinclude template="#properties.getProperty("context","")#/plugins/cfapplication.cfm">
