@@ -1,26 +1,31 @@
 /* @override 
-	http://localhost:8500/muracms/admin/css/jquery/default/jquery.ui.overrides.css?coreversion=1 */
-	
+	http://localhost:8500/muracms/admin/css/jquery/default/jquery.ui.overrides.css */
+
+.ui-widget {
+	padding: .75em;
+}
+
 .ui-widget-header {
 	background: #fff;
 	color: #000000;
 	font-weight: bold;
 	border: 0;
+	border-bottom: 1px solid #dbdbdb;
+	-webkit-border-radius: 0;
+	-moz-border-radius: 0;
+	border-radius: 0;
 }
 
 .ui-dialog .ui-dialog-titlebar {
-	padding: .5em 1em 0;
+	padding: 0 28px .5em 0;
 	position: relative;
 }
 
 .ui-dialog .ui-dialog-title {
 	float: left;
 	margin: .1em 16px .2em 0;
-	font-size: 20px;
+	font-size: 16px;
 }
-
-
-
 
 /* Tabs
 ----------------------------------*/
@@ -210,9 +215,7 @@
 
 .ui-dialog-content {
 	height: auto !important;
-}
-
-.ui-dialog-content {
+	padding: 0 !important;
 	font-size: 13px;
 	margin-bottom: 0;
 	color: #666;

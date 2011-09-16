@@ -465,6 +465,45 @@ body.compact #content {
 
 /* @end */
 
+/* @group Configurator */
+
+
+
+#availableObjectParams dl {
+	font-size: 11px;
+}
+
+#availableObjectParams dd ul.ui-sortable {
+	width: 50%;
+	margin: .5em 0;
+	padding: 0;
+}
+
+#availableObjectParams dd li {
+	font-size: 11px;
+	width: 92%;
+	margin: 0 0 3px 0;
+	padding: 3%;
+	cursor: move;
+}
+
+#availableFields span {
+	display: block;
+	float: left;
+	width: 50%;
+}
+
+#availableListSort {
+}
+
+#displayListSort {
+	
+}
+
+#feedCustomImageOptions dt {
+	margin: .5em 0;
+}
+
 /* @group Forms */
 
 form {
@@ -1007,6 +1046,11 @@ label {
 }
 
 /* @end */
+
+
+
+/* @end */
+
 
 /* @end */
 

@@ -78,7 +78,7 @@ to your own modified versions of Mura CMS.
 				<dt>#application.rbFactory.getKeyValue(session.rb,'collections.altname')#</dt>
 				<dd><input data-displayobjectparam="altName" class="text" value="#HTMLEditFormat(feed.getAltName())#" maxlength="50"></dd>
 				</span>
-				<dt>Fields to Output</dt>
+				<dt id="availableFields"><span>Available Fields</span> <span>Selected Fields</span></dt>
 				<dd>
 					<div>
 		

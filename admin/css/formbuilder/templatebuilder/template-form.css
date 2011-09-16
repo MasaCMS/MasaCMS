@@ -32,21 +32,21 @@ width: 100%;*/
 }
 
 .meld-tb-header.textfield h3 {
-	background-image: url('images/frm_textfield_big.png');
+	background-image: url('../../../images/formbuilder/frm_textfield_big.png');
 }
 .meld-tb-header.textarea h3 {
-	background-image: url('images/frm_textarea_big.png');
+	background-image: url('../../../images/formbuilder/frm_textarea_big.png');
 	/*background-position: left center;*/
 }
 .meld-tb-header.dropdown h3 {
-	background-image: url('images/frm_dropdown_big.png');
+	background-image: url('../../../images/formbuilder/frm_dropdown_big.png');
 }
 .meld-tb-header.radio h3 {
-	background-image: url('images/frm_radio_big.png');
+	background-image: url('../../../images/formbuilder/frm_radio_big.png');
 	padding-top: 4px;
 }
 .meld-tb-header.checkbox h3 {
-	background-image: url('images/frm_checkbox_big.png');
+	background-image: url('../../../images/formbuilder/frm_checkbox_big.png');
 	padding-top: 4px;
 }
 
@@ -192,7 +192,7 @@ input.disabled {
 		to(#cdcdcd));	
 }
 .ui-icon-formfield {
-	background-image: url(images/ui-icons-form-basic.png) !important;
+	background-image: url(../../../images/formbuilder/ui-icons-form-basic.png) !important;
 	background-repeat: no-repeat;
 	width: 24px;
 	height: 20px;

@@ -13,7 +13,6 @@
 <input type="hidden" name="siteid" value="#arguments.siteid#">
 <input type="hidden" name="formid" value="#arguments.formid#">
 	<fieldset id="set-default" data-role="controlgroup">
-	<ol>
 <cfloop from="1" to="#ArrayLen(aFieldOrder)#" index="iiX">
 	<cfif StructKeyExists(frmFields,aFieldOrder[iiX])>
 		<cfset field = frmFields[aFieldOrder[iiX]] />
@@ -37,8 +36,7 @@
 	<cfelse>
 		<!---<cfthrow message="ERROR 9000: Field Missing: #aFieldOrder[iiX]#">--->
 	</cfif>
-</cfloop> 
-	</ol>	
+</cfloop>	
 	</fieldset>
 	<div class="buttons"><input type="submit" class="submit" value="Submit"></div>
 </form>

@@ -270,7 +270,7 @@ to your own modified versions of Mura CMS.
 	<dd><input name="imageWidth" class="text" value="#request.feedBean.getImageWidth()#" /></dd>
 	</dl>
 </dd>
-<dt>Fields to Output</dt>
+<dt id="availableFields"><span>Available Fields</span> <span>Selected Fields</span></dt>
 <dd>
 	<div class="sortableFields">
 		
@@ -396,6 +396,7 @@ to your own modified versions of Mura CMS.
 #tabContent#
 </div>
 
+<!--- Button Begins --->
 <cfif attributes.feedID eq ''>
 	<input type="button" class="submit" onclick="submitForm(document.forms.form1,'add');" value="#application.rbFactory.getKeyValue(session.rb,'collections.add')#" />
 	<input type="hidden" name="feedID" value="">

@@ -1,5 +1,5 @@
 /* @override 
-	http://localhost:8500/muracms/admin/css/formbuilder/templatebuilder/grid.css */
+	http://localhost:8500/muracms/admin/css/formbuilder//templatebuilder/grid.css */
 
 /*#meld-tb-grid-padding {
 	margin: 0 7px;
@@ -8,7 +8,7 @@
 
 #meld-tb-grid-table-header {
 	/*border-bottom: 1px solid #a6a6a6;*/
-	background: url('images/ui-toolbar-bg.jpg') repeat-x left bottom;
+	background: url('../../../images/formbuilder/ui-toolbar-bg.jpg') repeat-x left bottom;
 	padding: 0;
 	font-size: 11px;
 	font-weight: bold;
@@ -89,7 +89,7 @@
 	border: 0 !important;
 	margin: 0 4px 0 0;
 	padding: 0 !important;
-	background: transparent url('images/data-delete.png') no-repeat center center;
+	background: transparent url('../../../images/formbuilder/data-delete.png') no-repeat center center;
 	float: right;
 }
 #button-grid-add {
@@ -99,7 +99,7 @@
 	padding: 2px 6px 2px 20px;
 	text-align: left;
 	margin: 5px 8px 5px 0;
-	background: #999 url('images/data-add.png') no-repeat 5px center;
+	background: #999 url('../../../images/formbuilder/data-add.png') no-repeat 5px center;
 	color: #fff;
 	-webkit-border-radius: 12px;
 	-moz-border-radius: 12px;
@@ -111,7 +111,7 @@
 	height: 28px;
 	margin-right: 0;
 	padding: 0 !important;
-	background: transparent url('images/data-handle.png') no-repeat center center;
+	background: transparent url('../../../images/formbuilder/data-handle.png') no-repeat center center;
 }*/
 
 #meld-tb-grid .meld-tb-grid-display {
@@ -137,7 +137,7 @@
 	margin-right: 5px;
 }
 #meld-tb-grid-table .meld-tb-grid-handle {
-	background: transparent url('images/data-handle.png') no-repeat center right;
+	background: transparent url('../../../images/formbuilder/data-handle.png') no-repeat center right;
 	float: left;	
 	width: 14px !important;
 	height: 26px;

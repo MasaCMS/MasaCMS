@@ -1018,6 +1018,12 @@ ul#favoriteList {
 /* @group SYSTEM FORMS
 ===================================== */
 
+/* @group Forms Manager Output */
+
+
+
+/* @end Forms Manager Output */
+
 /* @group System Forms - Login
 ===================================== */
 
@@ -1204,3 +1210,5 @@ form li .cke_skin_mura table {
 
 
 /* EOF */
+
+/* @end */
