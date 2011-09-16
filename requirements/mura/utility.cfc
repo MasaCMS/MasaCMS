@@ -63,6 +63,7 @@ to your own modified versions of Mura CMS.
 					<li>#HTMLEditFormat(tracePoint.detail)# <span class="duration">#tracePoint.duration#</span></li>
 				</cfloop>
 			</ol>
+			<p>Total: #evaluate((getTickCount()-request.muraRequestStart))# milliseconds</p>
 			</div>
 		</cfoutput>
 	</cfsavecontent>
