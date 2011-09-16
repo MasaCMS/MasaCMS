@@ -49,21 +49,18 @@ to your own modified versions of Mura CMS.
 	<cfreturn isInstanceOf(arguments.obj, arguments.name)>
 </cffunction>
 
-<cffunction name="addTracePoint" output="false">
-<cfargument name="detail">
-	<cfset arrayAppend(request.muraTraceRoute,arguments.detail)> 
-</cffunction>
-
 <cffunction name="dumpTrace" output="false">
 	<cfset var trace="">
 	<cfset var i=0>
+	<cfset var tracePoint="">
 	<cfsavecontent variable="trace">
 		<cfoutput>
 			<div id="mura-stacktrace">
 			<h3>Stack Trace</h3>
 			<ol>
 				<cfloop from="1" to="#arrayLen(request.muraTraceRoute)#" index="i">
-					<li>#HTMLEditFormat(request.muraTraceRoute[i])#</li>
+					<cfset tracePoint=request.muraTraceRoute[i]>
+					<li>#HTMLEditFormat(tracePoint.detail)# <span class="duration">#tracePoint.duration#</span></li>
 				</cfloop>
 			</ol>
 			</div>

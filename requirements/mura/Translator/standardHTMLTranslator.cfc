@@ -31,6 +31,7 @@
 	<cfset var siteRenderer=arguments.event.getContentRenderer()>
 	<cfset var themeRenderer=arguments.event.getThemeRenderer()>
 	<cfset var modal="">
+	<cfset var tracePoint=0>
 	
 	<cfif isObject(themeRenderer) and structKeyExists(themeRenderer,"renderHTMLHeadQueue")>
 		<cfset renderer=themeRenderer>
@@ -42,11 +43,13 @@
 	
 	<cfsavecontent variable="page">
 		<cfif fileExists(expandPath("#$.siteConfig('templateIncludePath')#/#renderer.getTemplate()#") )>
+		<cfset tracePoint=initTracePoint("#event.getSite().getTemplateIncludePath()#/#renderer.getTemplate()#")>
 		<cfinclude template="#event.getSite().getTemplateIncludePath()#/#renderer.getTemplate()#">
-		<cfset application.utility.addTracePoint("#event.getSite().getTemplateIncludePath()#/#renderer.getTemplate()#")>
+		<cfset commitTracePoint(tracePoint)>
 		<cfelse>
+		<cfset tracePoint=initTracePoint("#event.getSite().getTemplateIncludePath()#/default.cfm")>
 		<cfinclude template="#event.getSite().getTemplateIncludePath()#/default.cfm">
-		<cfset application.utility.addTracePoint("#event.getSite().getTemplateIncludePath()#/default.cfm")>
+		<cfset commitTracePoint(tracePoint)>
 		</cfif>
 	</cfsavecontent>
 	

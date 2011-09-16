@@ -80,7 +80,7 @@ to your own modified versions of Mura CMS.
 	<cfset response=servlet.doRequest()>
 	<cfset servlet.onRequestEnd() />
 	<cfset application.pluginManager.announceEvent('onSiteRequestEnd',event)/>
-	<cfif isDefined("session.mura.showTrace") and session.mura.showTrace and listFindNoCase(session.mura.memberships,"S2IsPrivate")>
+	<cfif session.mura.showTrace and listFindNoCase(session.mura.memberships,"S2IsPrivate")>
 		<cfset response=replaceNoCase(response,"</html>","#application.utility.dumpTrace()#</html>")>
 	</cfif>
 	<cfreturn response>

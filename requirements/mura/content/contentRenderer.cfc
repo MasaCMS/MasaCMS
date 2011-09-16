@@ -961,17 +961,21 @@ to your own modified versions of Mura CMS.
 	<cfset var editableControl = structNew()>
 	<cfset var expandedDisplayObjectPath=expandPath(displayObjectPath)>
 	<cfset var expandedThemeObjectPath=expandPath(themeObjectPath)>
+	<cfset var tracePoint=0>
 	
 	<cfsavecontent variable="theContent">
 	<cfif fileExists(expandedThemeObjectPath & fileDelim & arguments.theFile)>
-		<cfinclude  template="#themeObjectPath#/#arguments.theFile#" />
-		<cfset application.utility.addTracePoint("#themeObjectPath#/#arguments.theFile#")>
+		<cfset tracePoint=initTracePoint("#themeObjectPath#/#arguments.theFile#")>
+		<cfinclude template="#themeObjectPath#/#arguments.theFile#" />
+		<cfset commitTracePoint(tracePoint)>
 	<cfelseif fileExists(expandedDisplayObjectPath & fileDelim & "custom" & fileDelim & arguments.theFile)>
-		<cfinclude  template="#displayObjectPath#/custom/#arguments.theFile#" />
-		<cfset application.utility.addTracePoint("#displayObjectPath#/custom/#arguments.theFile#")>
+		<cfset tracePoint=initTracePoint("#displayObjectPath#/custom/#arguments.theFile#")>
+		<cfinclude template="#displayObjectPath#/custom/#arguments.theFile#" />
+		<cfset commitTracePoint(tracePoint)>
 	<cfelse>
-		<cfinclude  template="#displayObjectPath#/#arguments.theFile#" />
-		<cfset application.utility.addTracePoint("#displayObjectPath#/#arguments.theFile#")>
+		<cfset tracePoint=initTracePoint("#displayObjectPath#/#arguments.theFile#")>
+		<cfinclude template="#displayObjectPath#/#arguments.theFile#" />
+		<cfset commitTracePoint(tracePoint)>
 	</cfif>
 	</cfsavecontent>
 	<cfreturn theContent />
@@ -1756,12 +1760,13 @@ to your own modified versions of Mura CMS.
 	<cfargument name="template" default="" required="true">
 	<cfargument name="baseDir" default="#event.getSite().getIncludePath()#/includes" required="true">
 	<cfset var str='' />
-	
+	<cfset var tracePoint=0>
 	<cfif arguments.template neq ''>
+		<cfset tracePoint=initTracePoint("#arguments.baseDir#/#arguments.template#")>
 		<cfsavecontent variable="str">
 			<cfinclude template="#arguments.baseDir#/#arguments.template#">
 		</cfsavecontent>
-		<cfset application.utility.addTracePoint("#arguments.baseDir#/#arguments.template#")>
+		<cfset commitTracePoint(tracePoint)>
 	</cfif>
 	
 	<cfreturn trim(str) />
@@ -1770,12 +1775,13 @@ to your own modified versions of Mura CMS.
 <cffunction name="dspThemeInclude" returntype="string" access="public">
 	<cfargument name="template" default="" required="true">
 	<cfset var str='' />
-	
+	<cfset var tracePoint=0>
 	<cfif arguments.template neq ''>
+		<cfset tracePoint=initTracePoint("#$.siteConfig('themeIncludePath')#/#arguments.template#")>
 		<cfsavecontent variable="str">
 			<cfinclude template="#$.siteConfig('themeIncludePath')#/#arguments.template#">
 		</cfsavecontent>
-		<cfset application.utility.addTracePoint("#$.siteConfig('themeIncludePath')#/#arguments.template#")>
+		<cfset commitTracePoint(tracePoint)>
 	</cfif>
 	
 	<cfreturn trim(str) />
@@ -1817,18 +1823,20 @@ to your own modified versions of Mura CMS.
 	<cfset var pluginConfig="" />
 	<cfset var displayPoolID=application.settingsmanager.getSite(event.getValue('siteID')).getDisplayPoolID()>
 	<cfset var theme=application.settingsmanager.getSite(event.getValue('siteID')).getTheme()>
-
+	<cfset var tracePoint=0>
+	
 	<cfif getRenderHTMLQueues()>
 		
 		<cfif arguments.queueType eq "HEAD">
 			<!--- ensure that the js lb is always there --->
 			<cfset loadJSLib() />
 			<!--- Add global.js --->
+			<cfset tracePoint=initTracePoint("/#application.configBean.getWebRootMap()#/#application.settingsmanager.getSite(event.getValue('siteID')).getDisplayPoolID()#/includes/display_objects/htmlhead/global.cfm")>
 			<cfsavecontent variable="headerStr">
 					<cfinclude  template="/#application.configBean.getWebRootMap()#/#application.settingsmanager.getSite(event.getValue('siteID')).getDisplayPoolID()#/includes/display_objects/htmlhead/global.cfm">
-					<cfset application.utility.addTracePoint("/#application.configBean.getWebRootMap()#/#application.settingsmanager.getSite(event.getValue('siteID')).getDisplayPoolID()#/includes/display_objects/htmlhead/global.cfm")>
 			</cfsavecontent>
-						
+			<cfset commitTracePoint(tracePoint)>
+					
 			<!--- Add modal edit --->
 			<cfif getShowModal()>
 				<cfif getJSLib() eq "prototype">
@@ -1842,12 +1850,14 @@ to your own modified versions of Mura CMS.
 				<cfif (getShowModal() or event.getValue("muraChangesetPreview")) and not request.muraExportHTML>
 					<cfsavecontent variable="headerStr">
 						<cfif getShowModal()>
+							<cfset tracePoint=initTracePoint("/#application.configBean.getWebRootMap()#/admin/modal/dsp_modal_edit.cfm")>
 							<cfinclude template="/#application.configBean.getWebRootMap()#/admin/modal/dsp_modal_edit.cfm">
-							<cfset application.utility.addTracePoint("/#application.configBean.getWebRootMap()#/admin/modal/dsp_modal_edit.cfm")>
+							<cfset commitTracePoint(tracePoint)>
 						</cfif>	
 						<cfif event.getValue("muraChangesetPreview")>
+							<cfset tracePoint=initTracePoint("/#application.configBean.getWebRootMap()#/admin/modal/dsp_modal_changeset.cfm")>
 							<cfinclude template="/#application.configBean.getWebRootMap()#/admin/modal/dsp_modal_changeset.cfm">
-							<cfset application.utility.addTracePoint("/#application.configBean.getWebRootMap()#/admin/modal/dsp_modal_changeset.cfm")>
+							<cfset commitTracePoint(tracePoint)>
 						</cfif>
 					</cfsavecontent>
 				</cfif>
@@ -1864,8 +1874,9 @@ to your own modified versions of Mura CMS.
 				<cfset pluginBasePath="/#displayPoolID#/includes/themes/#theme#/display_objects/htmlhead/">
 				<cfif fileExists(expandPath("/#application.configBean.getWebRootMap()##pluginbasePath##i#"))>
 					<cfset pluginPath= application.configBean.getContext() & pluginBasePath >
-					<cfinclude  template="/#application.configBean.getWebRootMap()##pluginbasePath##i#">
-					<cfset application.utility.addTracePoint("/#application.configBean.getWebRootMap()##pluginbasePath##i#")>
+					<cfset tracePoint=initTracePoint("/#application.configBean.getWebRootMap()##pluginbasePath##i#")>
+					<cfinclude template="/#application.configBean.getWebRootMap()##pluginbasePath##i#">
+					<cfset commitTracePoint(tracePoint)>
 					<cfset headerFound=true />
 				</cfif>
 				
@@ -1873,8 +1884,9 @@ to your own modified versions of Mura CMS.
 					<cfset pluginBasePath="/#displayPoolID#/includes/display_objects/htmlhead/">
 					<cfif fileExists(expandPath("/#application.configBean.getWebRootMap()##pluginbasePath##i#"))>
 						<cfset pluginPath= application.configBean.getContext() & pluginBasePath >
-						<cfinclude  template="/#application.configBean.getWebRootMap()##pluginbasePath##i#">
-						<cfset application.utility.addTracePoint("/#application.configBean.getWebRootMap()##pluginbasePath##i#")>
+						<cfset tracePoint=initTracePoint("/#application.configBean.getWebRootMap()##pluginbasePath##i#")>
+						<cfinclude template="/#application.configBean.getWebRootMap()##pluginbasePath##i#">
+						<cfset commitTracePoint(tracePoint)>
 						<cfset headerFound=true />
 					</cfif>
 				</cfif>
@@ -1885,8 +1897,9 @@ to your own modified versions of Mura CMS.
 				<cfset pluginBasePath="/#displayPoolID#/includes/themes/#theme#/display_objects/">
 				<cfif fileExists(expandPath("/#application.configBean.getWebRootMap()##pluginbasePath##i#"))>
 					<cfset pluginPath= application.configBean.getContext() & pluginBasePath >	
-					<cfinclude  template="/#application.configBean.getWebRootMap()##pluginBasePath##i#">
-					<cfset application.utility.addTracePoint("/#application.configBean.getWebRootMap()##pluginbasePath##i#")>
+					<cfset tracePoint=initTracePoint("/#application.configBean.getWebRootMap()##pluginbasePath##i#")>
+					<cfinclude template="/#application.configBean.getWebRootMap()##pluginBasePath##i#">
+					<cfset commitTracePoint(tracePoint)>
 					<cfset headerFound=true />
 				</cfif>
 
@@ -1901,8 +1914,9 @@ to your own modified versions of Mura CMS.
 					<cfset pluginBasePath="/#displayPoolID#/includes/display_objects/">
 					<cfif fileExists(expandPath("/#application.configBean.getWebRootMap()##pluginbasePath##i#"))>
 						<cfset pluginPath= application.configBean.getContext() & pluginBasePath >	
-						<cfinclude  template="/#application.configBean.getWebRootMap()##pluginBasePath##i#">
-						<cfset application.utility.addTracePoint("/#application.configBean.getWebRootMap()##pluginbasePath##i#")>
+						<cfset tracePoint=initTracePoint("/#application.configBean.getWebRootMap()##pluginbasePath##i#")>
+						<cfinclude template="/#application.configBean.getWebRootMap()##pluginBasePath##i#">
+						<cfset commitTracePoint(tracePoint)>
 						<cfset headerFound=true />
 					</cfif>
 				</cfif>
@@ -1923,8 +1937,9 @@ to your own modified versions of Mura CMS.
 					<cfset pluginBasePath="/#displayPoolID#/includes/">
 					<cfif fileExists(expandPath("/#application.configBean.getWebRootMap()##pluginbasePath##i#"))>
 						<cfset pluginPath= application.configBean.getContext() & pluginBasePath >	
+						<cfset tracePoint=initTracePoint("/#application.configBean.getWebRootMap()##pluginbasePath##i#")>
 						<cfinclude  template="/#application.configBean.getWebRootMap()##pluginBasePath##i#">
-						<cfset application.utility.addTracePoint("/#application.configBean.getWebRootMap()##pluginbasePath##i#")>
+						<cfset commitTracePoint(tracePoint)>
 						<cfset headerFound=true />
 					</cfif>
 				</cfif>
@@ -1938,8 +1953,9 @@ to your own modified versions of Mura CMS.
 						<cfset pluginConfig=event.getValue('pluginConfig')>
 						<cfset pluginPath= application.configBean.getContext() & pluginBasePath & pluginConfig.getDirectory() & "/" >		
 						<cfset event.setValue('pluginPath',pluginPath)>		
+						<cfset tracePoint=initTracePoint("/#application.configBean.getWebRootMap()##pluginbasePath##i#")>
 						<cfinclude  template="/#application.configBean.getWebRootMap()##pluginBasePath##i#">
-						<cfset application.utility.addTracePoint("/#application.configBean.getWebRootMap()##pluginbasePath##i#")>
+						<cfset commitTracePoint(tracePoint)>
 						<cfset headerFound=true />
 						<cfset event.removeValue("pluginPath")>
 						<cfset event.removeValue("pluginConfig")>
@@ -1955,8 +1971,9 @@ to your own modified versions of Mura CMS.
 						<cfset pluginConfig=event.getValue('pluginConfig')>
 						<cfset pluginPath= application.configBean.getContext() & pluginBasePath & pluginConfig.getDirectory() & "/" >		
 						<cfset event.setValue('pluginPath',pluginPath)>
+						<cfset tracePoint=initTracePoint("#pluginbasePath##i#")>
 						<cfinclude  template="#pluginBasePath##i#">
-						<cfset application.utility.addTracePoint("#pluginbasePath##i#")>
+						<cfset commitTracePoint(tracePoint)>
 						<cfset headerFound=true />
 						<cfset event.removeValue("pluginPath")>
 						<cfset event.removeValue("pluginConfig")>

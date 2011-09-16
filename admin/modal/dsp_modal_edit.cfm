@@ -172,7 +172,7 @@ to your own modified versions of Mura CMS.
 				var windowHeight = Math.max(frameHeight, jQuery(window).height());
 		
 				if (frameHeight < jQuery(window).height()) {
-					frameHeight= jQuery(window).height() * .80;
+					frameHeight= Math.max(jQuery(window).height() * .80,frameHeight);
 				}
 				
 				frame.style.width = "950px";

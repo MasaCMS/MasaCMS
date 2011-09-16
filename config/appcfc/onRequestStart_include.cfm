@@ -140,6 +140,9 @@ to your own modified versions of Mura CMS.
 
 <cfset request.muraMobileRequest=cookie.mobileFormat>
 
+<cfif not isDefined("session.mura.showTrace")>
+	<cfset session.mura.showTrace=false>
+</cfif>
 <cfif isDefined("url.showTrace") and isBoolean(url.showTrace)>
 	<cfset session.mura.showTrace=url.showTrace>
 </cfif>

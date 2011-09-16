@@ -639,6 +639,7 @@ Thanks for using #contactName#</cfoutput>
 	<cfset session.mura.email="">
 	<cfset session.mura.remoteID="">
 	<cfset session.mura.memberships="">
+	<cfset session.mura.showTrace=false>
 </cfif>
 </cffunction>
 

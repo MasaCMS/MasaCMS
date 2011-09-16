@@ -1139,6 +1139,7 @@ select * from tplugins order by #arguments.orderby#
 	<cfset var siteIDadjusted=adjustSiteID(arguments.siteID)>
 	<cfset var muraScope="">
 	<cfset var currentModuleID="">
+	<cfset var tracePoint=0>
 	
 	<cfset arguments.runat=replace(arguments.runat," ", "","ALL")>
 	
@@ -1175,12 +1176,13 @@ select * from tplugins order by #arguments.orderby#
 			<cfif isObject(event.getValue("localHandler"))>
 				<cfset localHandler=event.getValue("localHandler")>
 				<cfif structKeyExists(localHandler,runat)>
+					<cfset tracePoint=initTracePoint("#localHandler._objectName#.#arguments.runat#")>
 					<cfinvoke component="#localHandler#" method="#arguments.runat#">
 						<cfinvokeargument name="event" value="#arguments.event#">
 						<cfinvokeargument name="$" value="#muraScope#">
 						<cfinvokeargument name="mura" value="#muraScope#">
 					</cfinvoke>
-					<cfset application.utility.addTracePoint("#localHandler._objectName#.#arguments.runat#")>
+					<cfset commitTracePoint(tracePoint)>
 					<cfset request.muraHandledEvents["#arguments.runat#"]=true>	
 				</cfif>
 			</cfif>
@@ -1195,12 +1197,13 @@ select * from tplugins order by #arguments.orderby#
 							<cfif not isObject(eventHandler)>
 								<cfset eventHandler=getEventHandlerFromPath(eventHandler)>
 							</cfif>
+							<cfset tracePoint=initTracePoint("#eventHandler._objectName#.#arguments.runat#")>
 							<cfinvoke component="#eventHandler#" method="#arguments.runat#">
 								<cfinvokeargument name="event" value="#arguments.event#">
 								<cfinvokeargument name="$" value="#muraScope#">
 								<cfinvokeargument name="mura" value="#muraScope#">
 							</cfinvoke>
-							<cfset application.utility.addTracePoint("#eventHandler._objectName#.#arguments.runat#")>
+							<cfset commitTracePoint(tracePoint)>
 							<cfset request.muraHandledEvents["#arguments.runat#"]=true>	
 						</cfloop>
 					</cfif>
@@ -1215,12 +1218,13 @@ select * from tplugins order by #arguments.orderby#
 							<cfif not isObject(eventHandler)>
 								<cfset eventHandler=getEventHandlerFromPath(eventHandler)>
 							</cfif>
+							<cfset tracePoint=initTracePoint("#eventHandler._objectName#.#arguments.runat#")>
 							<cfinvoke component="#eventHandler#" method="#arguments.runat#">
 								<cfinvokeargument name="event" value="#arguments.event#">
 								<cfinvokeargument name="$" value="#muraScope#">
 								<cfinvokeargument name="mura" value="#muraScope#">
 							</cfinvoke>	
-							<cfset application.utility.addTracePoint("#eventHandler._objectName#.#arguments.runat#")>
+							<cfset commitTracePoint(tracePoint)>
 							<cfset request.muraHandledEvents["#arguments.runat#"]=true>
 						</cfloop>
 					</cfif>
@@ -1240,14 +1244,14 @@ select * from tplugins order by #arguments.orderby#
 			<cfif listLast(rs.scriptfile,".") neq "cfm">
 				<cfset componentPath="plugins.#rs.directory#.#rs.scriptfile#">
 				<cfset eventHandler=getComponent(componentPath, rs.pluginID, arguments.siteID, rs.docache)>
+				<cfset tracePoint=initTracePoint("#componentPath#.#arguments.runat#")>
 				<cfinvoke component="#eventHandler#" method="#arguments.runat#">
 					<cfinvokeargument name="event" value="#arguments.event#">
 					<cfinvokeargument name="$" value="#muraScope#">
 					<cfinvokeargument name="mura" value="#muraScope#">
-				</cfinvoke>	
-				<cfset application.utility.addTracePoint("#componentPath#.#arguments.runat#")>
+				</cfinvoke>
+				<cfset commitTracePoint(tracePoint)>	
 			<cfelse>
-				<cfset application.utility.addTracePoint("/plugins/#rs.directory#/#rs.scriptfile#")>
 				<cfset getExecutor().executeScript(event=event,scriptfile="/plugins/#rs.directory#/#rs.scriptfile#",pluginConfig=getConfig(rs.pluginID), $=muraScope, mura=muraScope)>
 			</cfif>
 			<cfset request.muraHandledEvents["#arguments.runat#"]=true>
@@ -1300,6 +1304,7 @@ select * from tplugins order by #arguments.orderby#
 	<cfset var siteIDadjusted=adjustSiteID(arguments.siteID)>
 	<cfset var muraScope="">
 	<cfset var currentModuleID="">
+	<cfset var tracePoint=0>
 	
 	<cfset arguments.runat=replace(arguments.runat," ", "","ALL")>
 	
@@ -1335,6 +1340,7 @@ select * from tplugins order by #arguments.orderby#
 			<cfif isObject(event.getValue("localHandler"))>
 				<cfset localHandler=event.getValue("localHandler")>
 				<cfif structKeyExists(localHandler,runat)>
+					<cfset tracePoint=initTracePoint("#localHandler._objectName#.#arguments.runat#")>
 					<cfsavecontent variable="local.theDisplay1">
 					<cfinvoke component="#localHandler#" method="#arguments.runat#" returnVariable="local.theDisplay2">
 						<cfinvokeargument name="event" value="#arguments.event#">
@@ -1347,7 +1353,7 @@ select * from tplugins order by #arguments.orderby#
 					<cfelse>
 						<cfset str=str & local.theDisplay1>
 					</cfif>
-					<cfset application.utility.addTracePoint("#localHandler._objectName#.#arguments.runat#")>
+					<cfset commitTracePoint(tracePoint)>
 					<cfset request.muraHandledEvents["#arguments.runat#"]=true>
 				</cfif>
 			</cfif>
@@ -1362,6 +1368,7 @@ select * from tplugins order by #arguments.orderby#
 							<cfif not isObject(eventHandler)>
 								<cfset eventHandler=getEventHandlerFromPath(eventHandler)>
 							</cfif>
+							<cfset tracePoint=initTracePoint("#eventHandler._objectName#.#arguments.runat#")>
 							<cfsavecontent variable="local.theDisplay1">
 							<cfinvoke component="#eventHandler#"method="#arguments.runat#" returnVariable="local.theDisplay2">
 								<cfinvokeargument name="event" value="#arguments.event#">
@@ -1374,7 +1381,7 @@ select * from tplugins order by #arguments.orderby#
 							<cfelse>
 								<cfset str=str & local.theDisplay1>
 							</cfif>
-							<cfset application.utility.addTracePoint("#eventHandler._objectName#.#arguments.runat#")>
+							<cfset commitTracePoint(tracePoint)>
 							<cfset request.muraHandledEvents["#arguments.runat#"]=true>
 						</cfloop>
 					</cfif>
@@ -1388,6 +1395,7 @@ select * from tplugins order by #arguments.orderby#
 							<cfif not isObject(eventHandler)>
 								<cfset eventHandler=getEventHandlerFromPath(eventHandler)>
 							</cfif>
+							<cfset tracePoint=initTracePoint("#eventHandler._objectName#.#arguments.runat#")>
 							<cfsavecontent variable="local.theDisplay1">
 							<cfinvoke component="#eventHandler#"method="#arguments.runat#" returnVariable="local.theDisplay2">
 								<cfinvokeargument name="event" value="#arguments.event#">
@@ -1400,7 +1408,7 @@ select * from tplugins order by #arguments.orderby#
 							<cfelse>
 								<cfset str=str & local.theDisplay1>
 							</cfif>
-							<cfset application.utility.addTracePoint("#eventHandler._objectName#.#arguments.runat#")>
+							<cfset commitTracePoint(tracePoint)>
 							<cfset request.muraHandledEvents["#arguments.runat#"]=true>
 						</cfloop>
 					</cfif>
@@ -1421,13 +1429,13 @@ select * from tplugins order by #arguments.orderby#
 				<cfif listLast(rs.scriptfile,".") neq "cfm">			
 					<cfset componentPath="plugins.#rs.directory#.#rs.scriptfile#">
 					<cfset eventHandler=getComponent(componentPath, rs.pluginID, arguments.siteID, rs.docache)>
+					<cfset tracePoint=initTracePoint("#componentPath#.#arguments.runat#")>	
 					<cfsavecontent variable="local.theDisplay1">
 					<cfinvoke component="#eventHandler#" method="#arguments.runat#" returnVariable="local.theDisplay2">
 						<cfinvokeargument name="event" value="#arguments.event#">
 						<cfinvokeargument name="$" value="#muraScope#">
 						<cfinvokeargument name="mura" value="#muraScope#">
 					</cfinvoke>
-					<cfset application.utility.addTracePoint("#componentPath#.#arguments.runat#")>	
 					</cfsavecontent>
 				
 					<cfif isDefined("local.theDisplay2")>
@@ -1437,12 +1445,13 @@ select * from tplugins order by #arguments.orderby#
 					</cfif>
 					
 				<cfelse>
+					<cfset tracePoint=initTracePoint("/plugins/#rs.directory#/#rs.scriptfile#")>
 					<cfsavecontent variable="local.theDisplay1">
 					<cfoutput>#getExecutor().renderScript(event=event,scriptfile="/plugins/#rs.directory#/#rs.scriptfile#",pluginConfig=getConfig(rs.pluginID), $=muraScope, mura=muraScope)#</cfoutput>
 					</cfsavecontent>
 					<cfset str=str & local.theDisplay1>
-					<cfset application.utility.addTracePoint("/plugins/#rs.directory#/#rs.scriptfile#")>
 				</cfif>
+				<cfset commitTracePoint(tracePoint)>
 				<cfset request.muraHandledEvents["#arguments.runat#"]=true>	
 			</cfloop>
 		</cfif>
@@ -1560,6 +1569,7 @@ select * from tplugins order by #arguments.orderby#
 	<cfset var theDisplay2="">
 	<cfset var rsOnError="">
 	<cfset var muraScope="">
+	<cfset var tracePoint=0>
 	
 	<cfif variables.utility.checkForInstanceOf(arguments.event,"mura.MuraScope")>
 		<cfset muraScope=arguments.event>
@@ -1595,6 +1605,7 @@ select * from tplugins order by #arguments.orderby#
 				<cfset componentPath="#variables.configBean.getWebRootMap()#.#event.getSite().getDisplayPoolID()#.includes.plugins.#rs.directory#.#rs.displayobjectfile#">
 			</cfif>
 			<cfset eventHandler=getComponent(componentPath, rs.pluginID, event.getValue('siteID'),rs.docache)>
+			<cfset tracePoint=initTracePoint("#getMetaData(eventHandler).name#.#rs.displaymethod#")>
 			<cfsavecontent variable="theDisplay1">
 			<cfinvoke component="#eventHandler#" method="#rs.displaymethod#" returnvariable="theDisplay2">
 				<cfinvokeargument name="event" value="#arguments.event#">
@@ -1602,12 +1613,12 @@ select * from tplugins order by #arguments.orderby#
 				<cfinvokeargument name="mura" value="#muraScope#">
 			</cfinvoke>
 			</cfsavecontent>
-			<cfset application.utility.addTracePoint("#getMetaData(eventHandler).name#.#rs.displaymethod#")>
 			<cfif isdefined("theDisplay2")>
 				<cfreturn trim(theDisplay2)>
 			<cfelse>
 				<cfreturn trim(theDisplay1)>
-			</cfif>			
+			</cfif>	
+			<cfset commitTracePoint(tracePoint)>		
 		<cfelse>
 			<cfreturn getExecutor().displayObject(objectID=rs.objectID, event=arguments.event, rsDisplayObject=rs, $=muraScope, mura=muraScope) />
 		</cfif>

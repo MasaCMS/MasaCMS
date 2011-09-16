@@ -191,4 +191,26 @@ to your own modified versions of Mura CMS.
 	<cfreturn data />
 </cffunction>
 
+<cffunction name="initTracePoint" output="false">
+	<cfargument name="detail">
+	<cfset var tracePoint=structNew()>
+	<cfif not isDefined("session.mura.showTrace") or not session.mura.showTrace>
+		<cfreturn 0>
+	</cfif>
+	<cfset tracePoint.detail=arguments.detail>
+	<cfset tracePoint.start=getTickCount()>
+	<cfset arrayAppend(request.muraTraceRoute,tracePoint)> 
+	<cfreturn arrayLen(request.muraTraceRoute)>
+</cffunction>
+
+<cffunction name="commitTracePoint" output="false">
+	<cfargument name="tracePointID">
+	<cfset var tracePoint="">
+	<cfif arguments.tracePointID>
+		<cfset tracePoint=request.muraTraceRoute[arguments.tracePointID]>
+		<cfset tracePoint.stop=getTickCount()>
+		<cfset tracePoint.duration=tracePoint.stop-tracePoint.start>
+	</cfif>	
+</cffunction>
+
 </cfcomponent>
