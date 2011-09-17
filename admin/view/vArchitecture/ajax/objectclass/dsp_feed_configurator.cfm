@@ -81,10 +81,29 @@ to your own modified versions of Mura CMS.
 				<dt>#application.rbFactory.getKeyValue(session.rb,'collections.altname')#</dt>
 				<dd><input data-displayobjectparam="altName" class="text" value="#HTMLEditFormat(feed.getAltName())#" maxlength="50"></dd>
 				</span>
-				<dt>Fields to Output</dt>
+				
+				
+				<dt>#application.rbFactory.getKeyValue(session.rb,'collections.maxitems')#</dt>
+				<dd><select data-displayobjectparam="maxItems" class="dropdown">
+				<cfloop list="1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,25,50,100" index="m">
+				<option value="#m#" <cfif feed.getMaxItems() eq m>selected</cfif>>#m#</option>
+				</cfloop>
+				<option value="100000" <cfif feed.getMaxItems() eq 100000>selected</cfif>>ALL</option>
+				</select>
+				</dd>
+
+				<dt>#application.rbFactory.getKeyValue(session.rb,'collections.itemsperpage')#</dt>
+				<dd><select data-displayobjectparam="nextN" class="dropdown">
+					<cfloop list="1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,25,50,100" index="r">
+					<option value="#r#" <cfif r eq feed.getNextN()>selected</cfif>>#r#</option>
+					</cfloop>
+					<option value="100000" <cfif feed.getNextN() eq 100000>selected</cfif>>ALL</option>
+					</select>
+				</dd>
+				<dt id="availableFields"><span>Available Fields</span> <span>Selected Fields</span></dt>
 				<dd>
-					<div>
-		
+					<div class="sortableFields">
+					<p class="dragMsg"><span class="dragFrom">Drag Fields from Here&hellip;</span><span>&hellip;and Drop Them Here.</span></p>
 					<cfset displayList=feed.getDisplayList()>
 					<cfset availableList=feed.getAvailableDisplayList()>
 					
@@ -102,23 +121,7 @@ to your own modified versions of Mura CMS.
 					<input type="hidden" id="displayList" value="#displayList#" data-displayobjectparam="displayList"/>
 					</div>	
 				</dd>
-				<dt>#application.rbFactory.getKeyValue(session.rb,'collections.itemsperpage')#</dt>
-				<dd><select data-displayobjectparam="nextN" class="dropdown">
-					<cfloop list="1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,25,50,100" index="r">
-					<option value="#r#" <cfif r eq feed.getNextN()>selected</cfif>>#r#</option>
-					</cfloop>
-					<option value="100000" <cfif feed.getNextN() eq 100000>selected</cfif>>ALL</option>
-					</select>
-				</dd>
-				<dt>#application.rbFactory.getKeyValue(session.rb,'collections.maxitems')#</dt>
-				<dd><select data-displayobjectparam="maxItems" class="dropdown">
-				<cfloop list="1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,25,50,100" index="m">
-				<option value="#m#" <cfif feed.getMaxItems() eq m>selected</cfif>>#m#</option>
-				</cfloop>
-				<option value="100000" <cfif feed.getMaxItems() eq 100000>selected</cfif>>ALL</option>
-				</select>
-				</dd>
-				</dl>
+								</dl>
 			</div>
 				<input type="hidden" name="displayObjectTemplate" id="displayObjectTemplate" value="{'object':'feed','name':'#JSStringFormat('#feed.getName()# - #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.localindex')#')#','objectid':'#feed.getFeedID()#'}"/>
 			<cfelse>

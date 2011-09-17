@@ -28,7 +28,7 @@
 }
 .meld-tb-menu {
 	border-bottom: 1px solid #a6a6a6;
-	background: url('images/ui-toolbar-bg.jpg') repeat-x;
+	background: url('../../../images/formbuilder/ui-toolbar-bg.jpg') repeat-x;
 	padding: 4px;
 	height: 34px; /*
 	border-radius: 4px;
@@ -121,13 +121,9 @@
 	float: right;
 }
 
-/*#button-trash .ui-icon {
-	background: url('../../../images/icons/delete_on.png') no-repeat;
-}*/
-
 #meld-tb-form {
 	/*border-top: 1px solid #d1d1d1;*/
-	background: url('images/bg-shadows.png') repeat-y 274px 0;
+	background: url('../../../images/formbuilder/bg-shadows.png') repeat-y 274px 0;
 	background-color: #d7d7d6;
 }
 #meld-tb-form-fields {
@@ -222,19 +218,19 @@
 }
 
 #meld-tb-fields li.field-textfield div {
-	background-image: url('images/frm_textfield_big.png');
+	background-image: url('../../../images/formbuilder/frm_textfield_big.png');
 }
 #meld-tb-fields li.field-textarea div {
-	background-image: url('images/frm_textarea_big.png');
+	background-image: url('../../../images/formbuilder/frm_textarea_big.png');
 }
 #meld-tb-fields li.field-dropdown div {
-	background-image: url('images/frm_dropdown_big.png');
+	background-image: url('../../../images/formbuilder/frm_dropdown_big.png');
 }
 #meld-tb-fields li.field-radio div {
-	background-image: url('images/frm_radio_big.png');
+	background-image: url('../../../images/formbuilder/frm_radio_big.png');
 }
 #meld-tb-fields li.field-checkbox div {
-	background-image: url('images/frm_checkbox_big.png');
+	background-image: url('../../../images/formbuilder/frm_checkbox_big.png');
 }
 
 #meld-tb-form #meld-tb-fields li.field-section {
@@ -296,7 +292,7 @@
 	margin: 0;
 	width: 16px;
 	height: 16px;
-	background: transparent url('images/data-delete.png') no-repeat center center !important;
+	background: transparent url('../../../images/formbuilder/data-delete.png') no-repeat center center !important;
 	border: 0 !important;
 }
 

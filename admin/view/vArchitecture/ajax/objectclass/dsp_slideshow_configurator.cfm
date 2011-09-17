@@ -52,7 +52,7 @@ to your own modified versions of Mura CMS.
 </cfif>
 			<div id="availableObjectParams"<!--- style="display:none;"--->>
 		
-				<dl class="oneColumn">
+				<dl class="oneColumn" id="configurator">
 					<dt class="first">#application.rbFactory.getKeyValue(session.rb,'collections.imagesize')#</dt>
 					<dd><select data-displayobjectparam="imageSize" class="dropdown" onchange="if(this.value=='custom'){jQuery('##feedCustomImageOptions').fadeIn('fast')}else{jQuery('##feedCustomImageOptions').hide()}">
 						<cfloop list="Small,Medium,Large,Custom" index="i">
@@ -78,10 +78,18 @@ to your own modified versions of Mura CMS.
 				<dt>#application.rbFactory.getKeyValue(session.rb,'collections.altname')#</dt>
 				<dd><input data-displayobjectparam="altName" class="text" value="#HTMLEditFormat(feed.getAltName())#" maxlength="50"></dd>
 				</span>
-				<dt>Fields to Output</dt>
+				<dt>#application.rbFactory.getKeyValue(session.rb,'collections.maxitems')#</dt>
+				<dd><select data-displayobjectparam="maxItems" class="dropdown">
+				<cfloop list="1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,25,50,100" index="m">
+				<option value="#m#" <cfif feed.getMaxItems() eq m>selected</cfif>>#m#</option>
+				</cfloop>
+				<option value="100000" <cfif feed.getMaxItems() eq 100000>selected</cfif>>ALL</option>
+				</select>
+				</dd>
+				<dt id="availableFields"><span>Available Fields</span> <span>Selected Fields</span></dt>
 				<dd>
-					<div>
-		
+					<div class="sortableFields">
+					<p class="dragMsg"><span class="dragFrom">Drag Fields from Here&hellip;</span><span>&hellip;and Drop Them Here.</span></p>
 					<cfset displayList=feed.getDisplayList()>
 					<cfset availableList=feed.getAvailableDisplayList()>
 					
@@ -98,14 +106,6 @@ to your own modified versions of Mura CMS.
 					</ul>
 					<input type="hidden" id="displayList" value="#displayList#" data-displayobjectparam="displayList"/>
 					</div>	
-				</dd>
-				<dt>#application.rbFactory.getKeyValue(session.rb,'collections.maxitems')#</dt>
-				<dd><select data-displayobjectparam="maxItems" class="dropdown">
-				<cfloop list="1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,25,50,100" index="m">
-				<option value="#m#" <cfif feed.getMaxItems() eq m>selected</cfif>>#m#</option>
-				</cfloop>
-				<option value="100000" <cfif feed.getMaxItems() eq 100000>selected</cfif>>ALL</option>
-				</select>
 				</dd>
 				</dl>
 			</div>
