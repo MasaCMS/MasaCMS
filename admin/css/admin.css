@@ -465,39 +465,87 @@ body.compact #content {
 
 /* @end */
 
-/* @group Configurator */
+/* @group Configurators */
 
-
-
-#availableObjectParams dl {
+#configurator,
+#configuratorTab {
 	font-size: 11px;
 }
 
-#availableObjectParams dd ul.ui-sortable {
-	width: 50%;
-	margin: .5em 0;
+#configurator .sortableFields,
+#configuratorTab .sortableFields {
+	overflow: hidden;
+	width: 100%;
+	/*max-width: 420px;*/
+}
+
+#configurator dt,
+#configuratorTab dt {
+	overflow: hidden;
+}
+
+dt#availableFields {
+	margin-bottom: 0;
+}
+
+#availableFields span, .dragMsg span {
+	display: block;
+	float: left;
+	width: 193px;
+	/*max-width: 210px;*/
+}
+
+.sortableFields .dragMsg {
+	font-style: italic;
+	font-size: 11px !important;
+	color: #ccc;
+	overflow: hidden;
+	margin: 0;
+}
+
+#availableListSort,
+#displayListSort,
+#contentAvailableListSort,
+#contentDisplayListSort  {
+	width: 183px;
+	margin: .5em 10px .5em 0!important;
+	padding: 1em !important;
+	list-style-type: none;
+	margin: 0;
 	padding: 0;
+	float: left;
 }
 
-#availableObjectParams dd li {
+#availableListSort,
+#contentAvailableListSort {
+	padding: 0 !important;
+}
+
+#displayListSort,
+#contentDisplayListSort
+ {
+	outline: 1px dotted red;
+	margin-right: 0 !important;
+}
+
+#availableListSort li,
+#displayListSort li,
+#contentAvailableListSort li,
+#contentDisplayListSort li  {
 	font-size: 11px;
-	width: 92%;
+	width: 94%;
 	margin: 0 0 3px 0;
 	padding: 3%;
 	cursor: move;
 }
 
-#availableFields span {
-	display: block;
-	float: left;
-	width: 50%;
-}
-
-#availableListSort {
-}
-
-#displayListSort {
-	
+#configuratorContainer dt,
+#configuratorContainer dd,
+#tabDisplay dt,
+#tabDisplay dd,
+#tabAdvanced dt,
+#tabAdvanced dd { 
+	clear:both;
 }
 
 #feedCustomImageOptions dt {
@@ -4607,13 +4655,3 @@ ul .checkboxTree li {
 
 /* @end */
 
-/* Draggagle listing field sorting */
-
-#availableListSort, #displayListSort, #contentAvailableListSort, #contentDisplayListSort { list-style-type: none; margin: 0; padding: 0; float: left; margin-right: 10px; }
-#availableListSort li, #displayListSort li, #contentAvailableListSort li, #contentDisplayListSort li { margin: 0 5px 5px 5px; padding: 5px; font-size: 1.2em; width: 120px; }
-#configuratorContainer dt, #configuratorContainer dd, #tabDisplay dt, #tabDisplay dd, #tabAdvanced dt, #tabAdvanced dd {clear:both;}
-
-
-
-
-/* @end */

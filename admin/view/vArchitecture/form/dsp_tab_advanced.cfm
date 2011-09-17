@@ -45,7 +45,7 @@ to your own modified versions of Mura CMS.
 <cfset tabList=listAppend(tabList,"tabAdvanced")>
 <cfoutput>
 <div id="tabAdvanced">
-<dl class="oneColumn">
+<dl class="oneColumn" id="configuratorTab">
 <dt class="first">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.contentid')#</dt>
 <dd><cfif len(attributes.contentID) and len(request.contentBean.getcontentID())>#request.contentBean.getcontentID()#<cfelse>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.notavailable')#</cfif></dd>
 
@@ -162,9 +162,11 @@ to your own modified versions of Mura CMS.
 	</dl>
 </dd>
 
-<dt>Fields to Output</dt>
+<dt id="availableFields"><span>Available Fields</span> <span>Selected Fields</span></dt>
 <dd>
 	<div class="sortableFields">
+	<p class="dragMsg"><span class="dragFrom">Drag Fields from Here&hellip;</span><span>&hellip;and Drop Them Here.</span></p>
+	
 		<cfset displayList=request.contentBean.getDisplayList()>
 		<cfset availableList=request.contentBean.getAvailableDisplayList()>
 		<cfif attributes.type eq "Gallery">

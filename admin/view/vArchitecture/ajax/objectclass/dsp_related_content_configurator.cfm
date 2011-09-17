@@ -69,10 +69,11 @@ to your own modified versions of Mura CMS.
 							<dd><input data-displayobjectparam="imageWidth" class="text" value="#feed.getImageWidth()#" /></dd>
 						</dl>
 					</dd>
-				<dt>Fields to Output</dt>
+				<dt id="availableFields"><span>Available Fields</span> <span>Selected Fields</span></dt>
 				<dd>
-					<div>
-		
+					<div class="sortableFields">
+					<p class="dragMsg"><span class="dragFrom">Drag Fields from Here&hellip;</span><span>&hellip;and Drop Them Here.</span></p>
+						
 					<cfset displayList=feed.getDisplayList()>
 					<cfset availableList=feed.getAvailableDisplayList()>
 					

@@ -254,7 +254,7 @@ to your own modified versions of Mura CMS.
 </div>
 
 <div id="tabDisplay">
-<dl class="oneColumn">
+<dl class="oneColumn" id="configuratorTab">
 <dt class="first">#application.rbFactory.getKeyValue(session.rb,'collections.imagesize')#</dt>
 	<dd><select name="imageSize" class="dropdown" onchange="if(this.value=='custom'){jQuery('##feedCustomImageOptions').fadeIn('fast')}else{jQuery('##feedCustomImageOptions').hide()}">
 		<cfloop list="Small,Medium,Large,Custom" index="i">
@@ -268,12 +268,28 @@ to your own modified versions of Mura CMS.
 	<dd><input name="imageHeight" class="text" value="#request.feedBean.getImageHeight()#" /></dd>
 	<dt>#application.rbFactory.getKeyValue(session.rb,'collections.imagewidth')#</dt>
 	<dd><input name="imageWidth" class="text" value="#request.feedBean.getImageWidth()#" /></dd>
-	</dl>
+</dd>
+
+<dt>#application.rbFactory.getKeyValue(session.rb,'collections.itemsperpage')#</dt>
+<dd><select name="nextN" class="dropdown">
+	<cfloop list="1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,25,50,100" index="r">
+	<option value="#r#" <cfif r eq request.feedBean.getNextN()>selected</cfif>>#r#</option>
+	</cfloop>
+	<option value="100000" <cfif request.feedBean.getNextN() eq 100000>selected</cfif>>ALL</option>
+	</select>
+</dd>
+<dt>#application.rbFactory.getKeyValue(session.rb,'collections.maxitems')#</dt>
+<dd><select name="maxItems" class="dropdown">
+<cfloop list="1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,25,50,100" index="m">
+<option value="#m#" <cfif request.feedBean.getMaxItems() eq m>selected</cfif>>#m#</option>
+</cfloop>
+<option value="100000" <cfif request.feedBean.getMaxItems() eq 100000>selected</cfif>>ALL</option>
+</select>
 </dd>
 <dt id="availableFields"><span>Available Fields</span> <span>Selected Fields</span></dt>
 <dd>
 	<div class="sortableFields">
-		
+	<p class="dragMsg"><span class="dragFrom">Drag Fields from Here&hellip;</span><span>&hellip;and Drop Them Here.</span></p>	
 	<cfset displayList=request.feedBean.getDisplayList()>
 	<cfset availableList=request.feedBean.getAvailableDisplayList()>
 					
@@ -297,22 +313,6 @@ to your own modified versions of Mura CMS.
 			}
 		);	
 	</script>
-</dd>
-<dt>#application.rbFactory.getKeyValue(session.rb,'collections.itemsperpage')#</dt>
-<dd><select name="nextN" class="dropdown">
-	<cfloop list="1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,25,50,100" index="r">
-	<option value="#r#" <cfif r eq request.feedBean.getNextN()>selected</cfif>>#r#</option>
-	</cfloop>
-	<option value="100000" <cfif request.feedBean.getNextN() eq 100000>selected</cfif>>ALL</option>
-	</select>
-</dd>
-<dt>#application.rbFactory.getKeyValue(session.rb,'collections.maxitems')#</dt>
-<dd><select name="maxItems" class="dropdown">
-<cfloop list="1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,25,50,100" index="m">
-<option value="#m#" <cfif request.feedBean.getMaxItems() eq m>selected</cfif>>#m#</option>
-</cfloop>
-<option value="100000" <cfif request.feedBean.getMaxItems() eq 100000>selected</cfif>>ALL</option>
-</select>
 </dd>
 </dl>
 </div>
@@ -397,6 +397,7 @@ to your own modified versions of Mura CMS.
 </div>
 
 <!--- Button Begins --->
+<div id="actionButtons" class="clearfix">
 <cfif attributes.feedID eq ''>
 	<input type="button" class="submit" onclick="submitForm(document.forms.form1,'add');" value="#application.rbFactory.getKeyValue(session.rb,'collections.add')#" />
 	<input type="hidden" name="feedID" value="">
@@ -413,7 +414,9 @@ to your own modified versions of Mura CMS.
 	<input type=hidden name="feedID" value="#request.feedBean.getfeedID()#">
 	<input type="hidden" name="action" value="update">
 </cfif>
-<input type="hidden" name="type" value="Local"><input name="isActive" type="hidden" value="1" /></form>
+<input type="hidden" name="type" value="Local"><input name="isActive" type="hidden" value="1" />
+</div>
+</form>
 <!---
 <cfhtmlhead text='<link rel="stylesheet" href="css/tab-view.css" type="text/css" media="screen">'>
 <cfhtmlhead text='<script type="text/javascript" src="js/tab-view.js"></script>'>
