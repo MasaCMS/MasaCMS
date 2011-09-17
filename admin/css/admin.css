@@ -492,7 +492,6 @@ dt#availableFields {
 	display: block;
 	float: left;
 	width: 193px;
-	/*max-width: 210px;*/
 }
 
 .sortableFields .dragMsg {
@@ -525,6 +524,7 @@ dt#availableFields {
 #contentDisplayListSort
  {
 	outline: 1px dotted red;
+	min-height: 36px;
 	margin-right: 0 !important;
 }
 
