@@ -280,7 +280,10 @@ to your own modified versions of Mura CMS.
 				<cfif structKeyExists(localHandler,"onApplicationLoad")>		
 						<cfset pluginEvent.setValue("siteID",rsSites.siteID)>
 						<cfset pluginEvent.loadSiteRelatedObjects()>
+						<cfset localHandler._objectName="#application.configBean.getWebRootMap()#.#rsSites.siteID#.includes.eventHandler">
+						<cfset tracePoint=application.pluginManager.initTracePoint("#localHandler._objectName#.onApplicationLoad")>
 						<cfset localHandler.onApplicationLoad(event=pluginEvent,$=pluginEvent.getValue("muraScope"),mura=pluginEvent.getValue("muraScope"))>
+						<cfset application.pluginManager.commitTracePoint(tracePoint)>
 				</cfif>
 			</cfif>
 			<cfset siteBean=application.settingsManager.getSite(rsSites.siteid)>
@@ -290,7 +293,10 @@ to your own modified versions of Mura CMS.
 				<cfif structKeyExists(themeHandler,"onApplicationLoad")>		
 						<cfset pluginEvent.setValue("siteID",rsSites.siteID)>
 						<cfset pluginEvent.loadSiteRelatedObjects()>
+						<cfset themeHandler._objectName="#siteBean.getThemeAssetMap()#.eventHandler">
+						<cfset tracePoint=application.pluginManager.initTracePoint("#themeHandler._objectName#.onApplicationLoad")>
 						<cfset themeHandler.onApplicationLoad(event=pluginEvent,$=pluginEvent.getValue("muraScope"),mura=pluginEvent.getValue("muraScope"))>
+						<cfset application.pluginManager.commitTracePoint(tracePoint)>
 				</cfif>
 				<cfset application.pluginManager.addEventHandler(themeHandler,rsSites.siteID)>
 			</cfif>	

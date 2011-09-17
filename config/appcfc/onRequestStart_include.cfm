@@ -41,6 +41,16 @@ the GNU General Public License version 2 without this exception. You may, if you
 to your own modified versions of Mura CMS.
 --->
 <cfparam name="local" default="#structNew()#">
+
+<cfif not isDefined("session.mura.showTrace")>
+	<cfset session.mura.showTrace=false>
+</cfif>
+<cfif isDefined("url.showTrace") and isBoolean(url.showTrace)>
+	<cfset session.mura.showTrace=url.showTrace>
+</cfif>
+
+<cfset request.muraShowTrace=session.mura.showTrace>
+
 <cfif ( NOT structKeyExists( application, "setupComplete" ) or not application.appInitialized or structKeyExists(url,application.appReloadKey)) and isDefined("onApplicationStart")>
 	<cfset onApplicationStart()>
 </cfif>
@@ -139,15 +149,6 @@ to your own modified versions of Mura CMS.
 </cfif>
 
 <cfset request.muraMobileRequest=cookie.mobileFormat>
-
-<cfif not isDefined("session.mura.showTrace")>
-	<cfset session.mura.showTrace=false>
-</cfif>
-<cfif isDefined("url.showTrace") and isBoolean(url.showTrace)>
-	<cfset session.mura.showTrace=url.showTrace>
-</cfif>
-
-<cfset request.muraShowTrace=session.mura.showTrace>
 
 <cfif not request.hasCFApplicationCFM and not fileExists("#expandPath('/muraWRM/config')#/cfapplication.cfm")>
 	<cfset application.serviceFactory.getBean("fileWriter").writeFile(file="#expandPath('/muraWRM/config')#/cfapplication.cfm", output='<!--- Add Custom Application.cfc Vars Here --->')>	
