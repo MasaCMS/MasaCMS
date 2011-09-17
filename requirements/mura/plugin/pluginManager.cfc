@@ -1613,12 +1613,12 @@ select * from tplugins order by #arguments.orderby#
 				<cfinvokeargument name="mura" value="#muraScope#">
 			</cfinvoke>
 			</cfsavecontent>
+			<cfset commitTracePoint(tracePoint)>
 			<cfif isdefined("theDisplay2")>
 				<cfreturn trim(theDisplay2)>
 			<cfelse>
 				<cfreturn trim(theDisplay1)>
-			</cfif>	
-			<cfset commitTracePoint(tracePoint)>		
+			</cfif>			
 		<cfelse>
 			<cfreturn getExecutor().displayObject(objectID=rs.objectID, event=arguments.event, rsDisplayObject=rs, $=muraScope, mura=muraScope) />
 		</cfif>

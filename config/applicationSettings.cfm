@@ -174,16 +174,16 @@ to your own modified versions of Mura CMS.
 		<cfset this.ormSettings.logsql=properties.getProperty("ormlogsql","false") />
 	</cfif>
 
-	<cfset request.muraFrontEndRequest=false/>
-	<cfset request.muraChangesetPreview=false/>
-	<cfset request.muraExportHtml=false/>
-	<cfset request.muraMobileRequest=false/>
-	<cfset request.muraHandledEvents=structNew()/>
-	<cfset request.altTHeme=""/>
-	<cfset request.customMuraScopeKeys=structNew()/>
-	<cfset request.muraTraceRoute=arrayNew(1)/>
-	<cfset request.muraRequestStart=getTickCount()/>
-	<cfset request.muraShowTrace=false/>
+	<cfparam name="request.muraFrontEndRequest" default="false"/>
+	<cfparam name="request.muraChangesetPreview" default="false"/>
+	<cfparam name="request.muraExportHtml" default="false"/>
+	<cfparam name="request.muraMobileRequest" default="false"/>
+	<cfparam name="request.muraHandledEvents" default="#structNew()#"/>
+	<cfparam name="request.altTHeme" default=""/>
+	<cfparam name="request.customMuraScopeKeys" default="#structNew()#"/>
+	<cfparam name="request.muraTraceRoute" default="#arrayNew(1)#"/>
+	<cfparam name="request.muraRequestStart" default="#getTickCount()#"/>
+	<cfparam name="request.muraShowTrace" default="false"/>
 	
 	<cftry>
 		<cfinclude template="#properties.getProperty("context","")#/plugins/cfapplication.cfm">
