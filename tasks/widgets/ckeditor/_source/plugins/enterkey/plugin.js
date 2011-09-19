@@ -48,18 +48,47 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				path = new CKEDITOR.dom.elementPath( range.startContainer ),
 				block = path.block;
 
-			// Exit the list when we're inside an empty list item block. (#5376)
 			if ( atBlockStart && atBlockEnd )
 			{
+				// Exit the list when we're inside an empty list item block. (#5376)
 				if ( block && ( block.is( 'li' ) || block.getParent().is( 'li' ) ) )
 				{
 					editor.execCommand( 'outdent' );
 					return;
 				}
+
+				if ( block && block.getParent().is( 'blockquote' ) )
+				{
+					block.breakParent( block.getParent() );
+
+					// If we were at the start of <blockquote>, there will be an empty element before it now.
+					if ( !block.getPrevious().getFirst( CKEDITOR.dom.walker.invisible(1) ) )
+						block.getPrevious().remove();
+
+					// If we were at the end of <blockquote>, there will be an empty element after it now.
+					if ( !block.getNext().getFirst( CKEDITOR.dom.walker.invisible(1) ) )
+						block.getNext().remove();
+
+					range.moveToElementEditStart( block );
+					range.select();
+					return;
+				}
 			}
 			// Don't split <pre> if we're in the middle of it, act as shift enter key.
-			else if ( !atBlockEnd && block && block.is( 'pre' ) )
+			else if ( block && block.is( 'pre' ) )
+			{
+				if ( !atBlockEnd )
+				{
+					enterBr( editor, mode, range, forceMode );
+					return;
+				}
+			}
+			// Don't split caption blocks. (#7944)
+			else if ( block && CKEDITOR.dtd.$captionBlock[ block.getName() ] )
+			{
 				enterBr( editor, mode, range, forceMode );
+				return;
+			}
 
 			// Determine the block element to be used.
 			var blockTag = ( mode == CKEDITOR.ENTER_DIV ? 'div' : 'p' );
@@ -129,8 +158,6 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 					{
 						// Otherwise, duplicate the previous block.
 						newBlock = previousBlock.clone();
-						// Value attribute of list item should not be duplicated (#7330).
-						newBlock.is( 'li' ) && newBlock.removeAttribute( 'value' );
 					}
 				}
 				else if ( nextBlock )
@@ -179,6 +206,10 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 				if ( !newBlock.getParent() )
 					range.insertNode( newBlock );
+
+				// list item start number should not be duplicated (#7330), but we need
+				// to remove the attribute after it's onto the DOM tree because of old IEs (#7581).
+				newBlock.is( 'li' ) && newBlock.removeAttribute( 'value' );
 
 				// This is tricky, but to make the new block visible correctly
 				// we must select it.
@@ -372,10 +403,13 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		setTimeout( function()
 			{
 				editor.fire( 'saveSnapshot' );	// Save undo step.
+
 				if ( mode == CKEDITOR.ENTER_BR )
 					enterBr( editor, mode, null, forceMode );
 				else
 					enterBlock( editor, mode, null, forceMode );
+
+				editor.fire( 'saveSnapshot' );
 
 			}, 0 );
 

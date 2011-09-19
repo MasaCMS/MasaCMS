@@ -719,20 +719,31 @@ CKEDITOR.tools.extend( CKEDITOR.dom.element.prototype,
 			return false;
 		},
 
-		isEditable : function()
+		/**
+		 * Decide whether one element is able to receive cursor.
+		 * @param {Boolean} [textCursor=true] Only consider element that could receive text child.
+		 */
+		isEditable : function( textCursor )
 		{
-			if ( this.isReadOnly() )
-				return false;
-
-			// Get the element name.
 			var name = this.getName();
 
-			// Get the element DTD (defaults to span for unknown elements).
-			var dtd = !CKEDITOR.dtd.$nonEditable[ name ]
-						&& ( CKEDITOR.dtd[ name ] || CKEDITOR.dtd.span );
+			if ( this.isReadOnly()
+					|| this.getComputedStyle( 'display' ) == 'none'
+					|| this.getComputedStyle( 'visibility' ) == 'hidden'
+					|| CKEDITOR.dtd.$nonEditable[ name ] )
+			{
+				return false;
+			}
 
-			// In the DTD # == text node.
-			return ( dtd && dtd['#'] );
+			if ( textCursor !== false )
+			{
+				// Get the element DTD (defaults to span for unknown elements).
+				var dtd = CKEDITOR.dtd[ name ] || CKEDITOR.dtd.span;
+				// In the DTD # == text node.
+				return ( dtd && dtd[ '#'] );
+			}
+
+			return true;
 		},
 
 		isIdentical : function( otherElement )
@@ -781,7 +792,7 @@ CKEDITOR.tools.extend( CKEDITOR.dom.element.prototype,
 		 */
 		isVisible : function()
 		{
-			var isVisible = !!this.$.offsetHeight && this.getComputedStyle( 'visibility' ) != 'hidden',
+			var isVisible = ( this.$.offsetHeight || this.$.offsetWidth ) && this.getComputedStyle( 'visibility' ) != 'hidden',
 				elementWindow,
 				elementWindowFrame;
 
@@ -798,7 +809,7 @@ CKEDITOR.tools.extend( CKEDITOR.dom.element.prototype,
 				}
 			}
 
-			return isVisible;
+			return !!isVisible;
 		},
 
 		/**
@@ -1062,6 +1073,18 @@ CKEDITOR.tools.extend( CKEDITOR.dom.element.prototype,
 					return this;
 				};
 			}
+			else if ( CKEDITOR.env.ie8Compat && CKEDITOR.env.secure )
+			{
+				return function( name, value )
+				{
+					// IE8 throws error when setting src attribute to non-ssl value. (#7847)
+					if ( name == 'src' && value.match( /^http:\/\// ) )
+						try { standard.apply( this, arguments ); } catch( e ){}
+					else
+						standard.apply( this, arguments );
+					return this;
+				};
+			}
 			else
 				return standard;
 		})(),
@@ -1276,10 +1299,9 @@ CKEDITOR.tools.extend( CKEDITOR.dom.element.prototype,
 		getDocumentPosition : function( refDocument )
 		{
 			var x = 0, y = 0,
-				body = this.getDocument().getBody(),
-				quirks = this.getDocument().$.compatMode == 'BackCompat';
-
-			var doc = this.getDocument();
+				doc = this.getDocument(),
+				body = doc.getBody(),
+				quirks = doc.$.compatMode == 'BackCompat';
 
 			if ( document.documentElement[ "getBoundingClientRect" ] )
 			{
@@ -1583,7 +1605,13 @@ CKEDITOR.tools.extend( CKEDITOR.dom.element.prototype,
 		 */
 		getDirection : function( useComputed )
 		{
-			return useComputed ? this.getComputedStyle( 'direction' ) : this.getStyle( 'direction' ) || this.getAttribute( 'dir' );
+			return useComputed ?
+				this.getComputedStyle( 'direction' )
+					// Webkit: offline element returns empty direction (#8053).
+					|| this.getDirection()
+					|| this.getDocument().$.dir
+					|| this.getDocument().getBody().getDirection( 1 )
+				: this.getStyle( 'direction' ) || this.getAttribute( 'dir' );
 		},
 
 		/**
