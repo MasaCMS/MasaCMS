@@ -1,5 +1,6 @@
 /* @override 
 	http://mura:8500/5.4/default/css/mura.css
+	http://localhost:8500/muracms/default/css/mura.css
 */
 
 /* This file is part of Mura CMS. 
@@ -1209,6 +1210,43 @@ form li .cke_skin_mura table {
 -------------------------------- */
 
 
-/* EOF */
-
 /* @end */
+
+#mura-stacktrace {
+	width: 800px;
+	margin: 2em auto;
+	padding: 2em;
+	/*border: 2px dotted red;*/
+	background-color: #ddd;
+	color: #000;
+	-webkit-border-radius: 6px;
+	-moz-border-radius: 6px;
+	border-radius: 6px;
+}
+
+#mura-stacktrace h3 {
+	color: #333;
+	text-shadow: 0 1px 0 #ffffff;
+	margin-bottom: 1em;
+	padding: 0;
+	margin: 0 0 1em;
+}
+
+#mura-stacktrace ol {
+	margin: 0 3em 2em;
+	padding: 0;
+}
+
+#mura-stacktrace li {
+	text-shadow: 0 1px 0 #ffffff;
+}
+
+#mura-stacktrace .duration {
+	font-weight: bold;
+}
+
+#mura-stacktrace p {
+	font-size: 16px;
+	text-shadow: 0 1px 0 #ffffff;
+	margin: 0 0 0 2em;
+}
