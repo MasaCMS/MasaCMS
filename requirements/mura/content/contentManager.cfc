@@ -609,6 +609,7 @@ to your own modified versions of Mura CMS.
 		<cfset var previousChangesetID="">
 		<cfset var changesetData="">
 		<cfset var rsPendingChangesets="">
+		<cfset var doPurgeContentCache=false>
 		
 		<!---IF THE DATA WAS SUBMITTED AS AN OBJECT UNPACK THE VALUES --->
 		<cfif isObject(arguments.data)>
@@ -969,7 +970,7 @@ to your own modified versions of Mura CMS.
 		<cfif newBean.getapproved()>
 			<cfset variables.settingsManager.getSite(arguments.data.siteid).purgeCache(name="output") />
 			<cfif NOT newBean.getIsNew() >
-				<cfset purgeContentCache(contentBean=newbean)>
+				<cfset doPurgeContentCache=true>
 			</cfif>
 		</cfif>
 			
@@ -1035,6 +1036,10 @@ to your own modified versions of Mura CMS.
 		</cfif>
 		--->
 		</cftransaction>
+		
+		<cfif doPurgeContentCache>
+			<cfset purgeContentCache(contentBean=newbean)>
+		</cfif>
 		
 		<!--- Make sure preview data is in sync --->	
 		<cfset changesetData=getCurrentUser().getValue("ChangesetPreviewData")>
