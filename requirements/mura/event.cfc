@@ -177,6 +177,7 @@ to your own modified versions of Mura CMS.
 </cffunction>
 
 <cffunction name="loadSiteRelatedObjects" returntype="any" access="public" output="false">
+	<cfset var localHandler="">
 	<cfif not valueExists("ValidatorFactory")>
 		<cfset setValue('ValidatorFactory',application.pluginManager.getEventManager(getValue('siteid')).getFactory("Validator"))>
 	</cfif>
@@ -193,7 +194,9 @@ to your own modified versions of Mura CMS.
 		<cfset setValue("themeRenderer",createObject("component","#getSite().getThemeAssetMap()#.contentRenderer").init(event=this,$=getValue('MuraScope'),mura=getValue('MuraScope')))>
 	</cfif>	
 	<cfif not valueExists("localHandler") and fileExists(expandPath("/#application.configBean.getWebRootMap()#") & "/#getValue('siteid')#/includes/eventHandler.cfc")>
-		<cfset setValue("localHandler",createObject("component","#application.configBean.getWebRootMap()#.#getValue('siteid')#.includes.eventHandler").init())>
+		<cfset localHandler=createObject("component","#application.configBean.getWebRootMap()#.#getValue('siteid')#.includes.eventHandler").init()>
+		<cfset localHandler._objectName="#application.configBean.getWebRootMap()#.#getValue('siteid')#.includes.eventHandler">
+		<cfset setValue("localHandler",localHandler)>
 	</cfif>
 	
 	<cfreturn this>
