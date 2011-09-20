@@ -39,6 +39,8 @@ config.licenseKey = '9EJW-TKDF-PFVT-Q3VW-NG6B-MKQF-3HVP';
  *   config.baseUrl = 'http://example.com/ckfinder/files/';
  *   config.baseUrl = '/userfiles/';
  */
+ 
+ config.skin = 'mura,/skins/mura/';
 
 //ATTENTION: The trailing slash is required.
 config.baseUrl = application.configBean.getAssetPath() & '/' & session.siteid & '/assets';
@@ -61,9 +63,9 @@ config.thumbnails.quality = 80;
  * if uploaded image is larger, it gets scaled down
  * Set to 0 to disable this feature
  */
-config.images.maxWidth = 1600;
-config.images.maxHeight = 1200;
-config.images.quality = 80;
+config.images.maxWidth = 3000;
+config.images.maxHeight = 3000;
+config.images.quality = 90;
 
 /*
  * config.roleSessionVar : the session variable name that CKFinder must use to retrieve
