@@ -140,7 +140,8 @@ to your own modified versions of Mura CMS.
 </cfoutput>
 </cfsavecontent>
 <cfoutput>
-<div class="tabs initActiveTab">
+<img class="loadProgress tabPreloader" src="images/progress_bar.gif">
+<div class="tabs initActiveTab" style="display:none">
 <ul>
 <cfloop from="1" to="#listlen(tabList)#" index="t">
 <li><a href="###listGetAt(tabList,t)#" onclick="return false;"><span>#listGetAt(tabLabelList,t)#</span></a></li>

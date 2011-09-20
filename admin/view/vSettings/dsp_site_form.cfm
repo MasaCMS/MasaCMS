@@ -72,6 +72,7 @@ to your own modified versions of Mura CMS.
  --->
 <cfset tabLabelList='Basic,Contact Info,Shared Resources,Modules,Email,Images,Extranet,Display Regions,Deploy Bundle'>
 <cfset tabList='tabBasic,tabContactinfo,tabSharedresources,tabModules,tabEmail,tabImages,tabExtranet,tabDisplayregions,tabBundles'>
+ <img class="loadProgress tabPreloader" src="images/progress_bar.gif">
  <div class="tabs initActiveTab" style="display:none">
   <ul>
 	<cfloop from="1" to="#listlen(tabList)#" index="t">

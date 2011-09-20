@@ -78,7 +78,8 @@ to your own modified versions of Mura CMS.
 		</cfoutput>
 	</cfif>
 	<cfset application.userManager.getCurrentUser().setValue("errors","")>
-	<div class="tabs initActiveTab">
+	<img class="loadProgress tabPreloader" src="images/progress_bar.gif">
+	<div class="tabs initActiveTab" style="display:none">
 		<ul>
 			<li><a href="#tabCurrentsites" onclick="return false;"><span>Current Sites</span></a></li>
 			<li><a href="#tabPlugins" onclick="return false;"><span>Plugins</span></a></li>
