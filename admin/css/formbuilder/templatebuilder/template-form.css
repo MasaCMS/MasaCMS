@@ -200,7 +200,15 @@ input.disabled {
 	background: -webkit-gradient(
 		linear, left top, left bottom, 
 		from(#ffffff),
-		to(#cdcdcd));	
+		to(#cdcdcd));
+	background: -webkit-linear-gradient(
+			linear, left top, left bottom, 
+			from(#ffffff),
+			to(#cdcdcd));
+	background: -ms-linear-gradient(
+			linear, left top, left bottom, 
+			from(#ffffff),
+			to(#cdcdcd));	
 }
 .ui-icon-formfield {
 	background-image: url(../../../images/formbuilder/ui-icons-form-basic.png) !important;
