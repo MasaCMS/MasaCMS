@@ -475,7 +475,7 @@ CKEDITOR.dialog.add( 'docProps', function( editor )
 									{
 										type : 'hbox',
 										widths : [ '60%', '40%' ],
-										padding : 0,
+										padding : 1,
 										children : [
 											{
 												type : 'text',
@@ -511,7 +511,7 @@ CKEDITOR.dialog.add( 'docProps', function( editor )
 												label : langCommon.browseServer,
 												style : 'display:inline-block;margin-top:10px;',
 												hidden : true,
-												filebrowser : 'bg:bgImage'
+												filebrowser : 'design:bgImage'
 											}
 										]
 									},
@@ -545,17 +545,14 @@ CKEDITOR.dialog.add( 'docProps', function( editor )
 										type : 'text',
 										id : 'marginTop',
 										label : lang.marginTop,
-										style : 'width: 80px; text-align: center; margin: 0px auto',
-										controlStyle : 'text-align: center',
+										style : 'width: 80px; text-align: center',
+										align : 'center',
+										inputStyle : 'text-align: center',
 										setup : function( doc, html, head, body )
 										{
 											this.setValue( body.getStyle( 'margin-top' ) || body.getAttribute( 'margintop' ) || '' );
 										},
-										commit : commitMargin( 'top' ),
-										onLoad : function()
-										{
-											this.getElement().getParent().setStyle( 'text-align', 'center' );
-										}
+										commit : commitMargin( 'top' )
 									},
 									{
 										type : 'hbox',
@@ -564,33 +561,27 @@ CKEDITOR.dialog.add( 'docProps', function( editor )
 												type : 'text',
 												id : 'marginLeft',
 												label : lang.marginLeft,
-												style : 'width: 80px; text-align: center; margin: 0px auto',
-												controlStyle : 'text-align: center',
+												style : 'width: 80px; text-align: center',
+												align : 'center',
+												inputStyle : 'text-align: center',
 												setup : function( doc, html, head, body )
 												{
 													this.setValue( body.getStyle( 'margin-left' ) || body.getAttribute( 'marginleft' ) || '' );
 												},
-												commit : commitMargin( 'left' ),
-												onLoad : function()
-												{
-													this.getElement().getParent().setStyle( 'text-align', 'center' );
-												}
+												commit : commitMargin( 'left' )
 											},
 											{
 												type : 'text',
 												id : 'marginRight',
 												label : lang.marginRight,
-												style : 'width: 80px; text-align: center; margin: 0px auto',
-												controlStyle : 'text-align: center',
+												style : 'width: 80px; text-align: center',
+												align : 'center',
+												inputStyle : 'text-align: center',
 												setup : function( doc, html, head, body )
 												{
 													this.setValue( body.getStyle( 'margin-right' ) || body.getAttribute( 'marginright' ) || '' );
 												},
-												commit : commitMargin( 'right' ),
-												onLoad : function()
-												{
-													this.getElement().getParent().setStyle( 'text-align', 'center' );
-												}
+												commit : commitMargin( 'right' )
 											}
 										]
 									},
@@ -598,17 +589,14 @@ CKEDITOR.dialog.add( 'docProps', function( editor )
 										type : 'text',
 										id : 'marginBottom',
 										label : lang.marginBottom,
-										style : 'width: 80px; text-align: center; margin: 0px auto',
-										controlStyle : 'text-align: center',
+										style : 'width: 80px; text-align: center',
+										align : 'center',
+										inputStyle : 'text-align: center',
 										setup : function( doc, html, head, body )
 										{
 											this.setValue( body.getStyle( 'margin-bottom' ) || body.getAttribute( 'marginbottom' ) || '' );
 										},
-										commit : commitMargin( 'bottom' ),
-										onLoad : function()
-										{
-											this.getElement().getParent().setStyle( 'text-align', 'center' );
-										}
+										commit : commitMargin( 'bottom' )
 									}
 								]
 							}

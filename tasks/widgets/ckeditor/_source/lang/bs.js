@@ -14,7 +14,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 */
 
 /**
- * Constains the dictionary of language entries.
+ * Contains the dictionary of language entries.
  * @namespace
  */
 CKEDITOR.lang['bs'] =
@@ -121,6 +121,10 @@ CKEDITOR.lang['bs'] =
 		alignBottom		: 'Dno',
 		invalidHeight	: 'Height must be a number.', // MISSING
 		invalidWidth	: 'Width must be a number.', // MISSING
+		invalidCssLength	: 'Value specified for the "%1" field must be a positive number with or without a valid CSS measurement unit (px, %, in, cm, mm, em, ex, pt, or pc).', // MISSING
+		invalidHtmlLength	: 'Value specified for the "%1" field must be a positive number with or without a valid HTML measurement unit (px or %).', // MISSING
+		invalidInlineStyle	: 'Value specified for the inline style must consist of one or more tuples with the format of "name : value", separated by semi-colons.', // MISSING
+		cssLengthTooltip	: 'Enter a number for a value in pixels or a number with a valid CSS unit (px, %, in, cm, mm, em, ex, pt, or pc).', // MISSING
 
 		// Put the voice-only part of the label in the span.
 		unavailable		: '%1<span class="cke_accessibility">, unavailable</span>' // MISSING
@@ -201,7 +205,8 @@ CKEDITOR.lang['bs'] =
 		menu		: 'Edit Anchor', // MISSING
 		title		: 'Anchor Properties', // MISSING
 		name		: 'Anchor Name', // MISSING
-		errorName	: 'Please type the anchor name' // MISSING
+		errorName	: 'Please type the anchor name', // MISSING
+		remove		: 'Remove Anchor' // MISSING
 	},
 
 	// List style dialog
@@ -237,6 +242,7 @@ CKEDITOR.lang['bs'] =
 		findWhat			: 'Naði šta:',
 		replaceWith			: 'Zamjeni sa:',
 		notFoundMsg			: 'Traženi tekst nije pronaðen.',
+		findOptions			: 'Find Options', // MISSING
 		matchCase			: 'Uporeðuj velika/mala slova',
 		matchWord			: 'Uporeðuj samo cijelu rijeè',
 		matchCyclic			: 'Match cyclic', // MISSING
@@ -271,8 +277,8 @@ CKEDITOR.lang['bs'] =
 		invalidBorder	: 'Border size must be a number.', // MISSING
 		invalidWidth	: 'Table width must be a number.', // MISSING
 		invalidHeight	: 'Table height must be a number.', // MISSING
-		invalidCellSpacing	: 'Cell spacing must be a number.', // MISSING
-		invalidCellPadding	: 'Cell padding must be a number.', // MISSING
+		invalidCellSpacing	: 'Cell spacing must be a positive number.', // MISSING
+		invalidCellPadding	: 'Cell padding must be a positive number.', // MISSING
 
 		cell :
 		{
@@ -413,7 +419,6 @@ CKEDITOR.lang['bs'] =
 		upload		: 'Šalji',
 		alt			: 'Tekst na slici',
 		lockRatio	: 'Zakljuèaj odnos',
-		unlockRatio	: 'Unlock Ratio', // MISSING
 		resetSize	: 'Resetuj dimenzije',
 		border		: 'Okvir',
 		hSpace		: 'HSpace',

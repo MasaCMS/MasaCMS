@@ -163,6 +163,8 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			if ( mode == this.mode )
 				return;
 
+			this._.previousMode = this.mode;
+
 			this.fire( 'beforeModeUnload' );
 
 			var currentMode = this.getMode();
@@ -187,7 +189,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				});
 		}
 
-		modeEditor.load( holderElement, ( typeof data ) != 'string'  ? this.getData() : data);
+		modeEditor.load( holderElement, ( typeof data ) != 'string'  ? this.getData() : data );
 	};
 
 	/**
@@ -255,15 +257,22 @@ CKEDITOR.config.editingBlock = true;
  */
 
 /**
- * Fired before changing the editing mode.
+ * Fired before changing the editing mode. See also CKEDITOR.editor#beforeSetMode and CKEDITOR.editor#mode
  * @name CKEDITOR.editor#beforeModeUnload
  * @event
  */
 
  /**
- * Fired before the editor mode is set.
+ * Fired before the editor mode is set. See also CKEDITOR.editor#mode and CKEDITOR.editor#beforeModeUnload
  * @name CKEDITOR.editor#beforeSetMode
  * @event
  * @since 3.5.3
  * @param {String} newMode The name of the mode which is about to be set.
+ */
+
+/**
+ * Fired after setting the editing mode. See also CKEDITOR.editor#beforeSetMode and CKEDITOR.editor#beforeModeUnload
+ * @name CKEDITOR.editor#mode
+ * @event
+ * @param {String} previousMode The previous mode of the editor.
  */
