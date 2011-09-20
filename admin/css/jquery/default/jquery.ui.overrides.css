@@ -159,7 +159,7 @@
 
 .ui-tabs .ui-tabs-nav li a {
 	float: left;
-	padding: .35em 1em;
+	padding: .5em 1em;
 	text-decoration: none;
 }
 
@@ -222,3 +222,4 @@
 }
 
 /* @end */
+

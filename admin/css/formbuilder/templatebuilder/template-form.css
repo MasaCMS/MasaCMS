@@ -140,7 +140,7 @@ ul.template-form {
 	font-size: 12px;
 }
 
-.meld-tb-form input {
+.meld-tb-form input[type=text], .meld-tb-form input.text {
 	font-size: 12px;
 	padding: 4px;
 }
@@ -172,7 +172,18 @@ ul.template-form {
 
 #meld-tb-grid .meld-tb-grid-checkbox {
 	margin: 0 4px 0 0;
-	width: auto;	
+	width: auto !important;
+	padding: 0 !important;
+	border: 0 !important;
+	background: transparent !important;
+}
+
+#meld-tb-grid .meld-tb-grid-radio {
+	margin: 0 4px 0 0;
+	width: auto !important;
+	padding: 0 !important;
+	border: 0 !important;
+	background: transparent !important;
 }
 
 input.disabled {

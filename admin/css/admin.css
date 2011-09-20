@@ -51,7 +51,8 @@ body,ul,ol,li,h1,h2,h3,h4,h5,h6,form,dl,dt,dd,p,div,address,blockquote,pre,field
 }
 
 body {
-	font: 11px "Lucida Grande", Arial, Helvetica, sans-serif;
+	font-size: 11px; 
+	font-family:"Lucida Grande", Helvetica, Arial, sans-serif !important;
 	background: url(../images/bg_sidebar_nav_grey.png) repeat-y left top;
 }
 
@@ -60,7 +61,8 @@ body#clogin, body#cSetUp {
 }
 
 body.compact {
-	font: 11px "Lucida Grande", Arial, Helvetica, sans-serif;
+	font-size: 11px; 
+	font-family:"Lucida Grande", Helvetica, Arial, sans-serif;
 	background: #fff;
 }
 
@@ -523,7 +525,7 @@ dt#availableFields {
 #displayListSort,
 #contentDisplayListSort
  {
-	outline: 1px dotted red;
+	border: 1px dotted red;
 	min-height: 36px;
 	margin-right: 0 !important;
 }
@@ -1420,10 +1422,11 @@ form .displayObjects .dropdown {
 	-webkit-border-bottom-left-radius: 5px;
 	-moz-border-radius-bottomright: 5px;
 	-webkit-border-bottom-right-radius: 5px;
-	-webkit-box-shadow: 2px 2px 5px #666;
-	-moz-box-shadow: 3px 3px 5px #555;
-	box-shadow: 3px 3px 3px #555 !important;
+	-webkit-box-shadow: 1px 2px 5px rgba(0,0,0,.7);
+	-moz-box-shadow: 1px 2px 5px rgba(0,0,0,.7);
+	box-shadow: 1px 2px 5px rgba(0,0,0,.7) !important;
 	color:#fff !important;
+	
 }
 
 #navUtility li#navHelp ul {
@@ -1480,6 +1483,7 @@ form .displayObjects .dropdown {
 #navUtility li:hover ul, #navUtility li.sfhover ul {
 	left: auto !important;
 	z-index: 2 !important;
+	margin-left: -8px !important;
 }
 
 #navUtility li li:last-child {
@@ -1792,8 +1796,8 @@ div.menu {
 	border-bottom: 1px dotted #D4D4D4;
 }
 
-.addNew li.last, .addNew li:last-child {
-	border-bottom: 0;
+.addNew ul li:last-child, .addNew #newGallery {
+	border-bottom: 0 !important;
 }
 
 .addNew a {
