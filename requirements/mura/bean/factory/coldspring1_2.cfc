@@ -85,10 +85,10 @@ to your own modified versions of Mura CMS.
 					<cfset bean =  beanDef.getInstance(returnFactory) />
 				</cflock>
 			<cfelse>
-				<cfif isDefined("application.configBean") and application.configBean.getValue("duplicateTransients") and NOT isSingleton(arguments.beanName)>
+				<cfif isDefined("application.configBean") and application.configBean.getValue("duplicateTransients")>
 					<cfif not structKeyExists(variables.transients,resolvedName)>
-							<cfset bean=constructBean(resolvedName,true)>
-							<cfset variables.transients["#resolvedName#"]=bean>
+						<cfset bean=constructBean(resolvedName,true)>
+						<cfset variables.transients["#resolvedName#"]=bean>
 					</cfif>
 					<cfset bean=duplicate(variables.transients["#resolvedName#"])>
 				<cfelse>
