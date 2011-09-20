@@ -121,7 +121,7 @@ to your own modified versions of Mura CMS.
 <cfset variables.instance.uselegacysessions=true />
 <cfset variables.instance.customUrlVarDelimiters="_">
 <cfset variables.instance.strongPasswordRegex="(?=^.{7,15}$)(?=.*\d)(?![.\n])(?=.*[a-zA-Z]).*$">
-<cfset variables.instance.duplicateTransients=true>
+<cfset variables.instance.duplicateTransients=false>
 <cfset variables.instance.maxArchivedVersions=0 />
 <cfset variables.instance.postBundles=true />
 
@@ -719,6 +719,123 @@ to your own modified versions of Mura CMS.
 		<cfinclude template="dbUpdates/#rsUpdates.name#">
 	</cfloop>
 	<cfreturn this>
+</cffunction>
+
+<cffunction name="dbCreateIndex" access="private">
+	<cfargument name="table">
+	<cfargument name="column" default="">
+	
+	<cfset var rsCheck="">
+	 
+	<cfdbinfo 
+		name="rsCheck"
+		datasource="#getDatasource()#"
+		username="#getDbUsername()#"
+		password="#getDbPassword()#"
+		table="#arguments.table#"
+		type="index">
+	
+	<cfquery name="rsCheck" dbtype="query">
+		select * from rsCheck where lower(rsCheck.column_name) = '#arguments.column#'
+	</cfquery>
+	
+	<cfif not rsCheck.recordcount>
+	<cfswitch expression="#getDbType()#">
+	<cfcase value="mssql">
+		<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+		CREATE INDEX IX_#arguments.table#_#arguments.column# ON #arguments.table# (#arguments.column#)
+		</cfquery>
+	</cfcase>
+	<cfcase value="mysql">
+		<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+		CREATE INDEX IX_#arguments.table#_#arguments.column# ON #arguments.table# (#arguments.column#)
+		</cfquery>
+	</cfcase>
+	<cfcase value="oracle">
+		<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+		CREATE INDEX IX_#arguments.table#_#arguments.column# ON #arguments.table# (#arguments.column#)
+		</cfquery>
+	</cfcase>
+	</cfswitch>	
+	</cfif>
+</cffunction>
+
+<cffunction name="dbDropIndex" access="private">
+	<cfargument name="table">
+	<cfargument name="column" default="">
+	
+	<cfset var rsCheck="">
+	 
+	<cfdbinfo 
+		name="rsCheck"
+		datasource="#getDatasource()#"
+		username="#getDbUsername()#"
+		password="#getDbPassword()#"
+		table="#arguments.table#"
+		type="index">
+	
+	<cfquery name="rsCheck" dbtype="query">
+		select * from rsCheck where lower(rsCheck.column_name) = '#arguments.column#'
+	</cfquery>
+	
+	<cfif not rsCheck.recordcount>
+	<cfswitch expression="#getDbType()#">
+	<cfcase value="mssql">
+		<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+		DROP INDEX IX_#arguments.table#_#arguments.column# on #arguments.table#
+		</cfquery>
+	</cfcase>
+	<cfcase value="mysql">
+		<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+		DROP INDEX IX_#arguments.table#_#arguments.column# on #arguments.table#
+		</cfquery>
+	</cfcase>
+	<cfcase value="oracle">
+		<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+		DROP INDEX IX_#arguments.table#_#arguments.column#
+		</cfquery>
+	</cfcase>
+	</cfswitch>	
+	</cfif>
+</cffunction>
+
+<cffunction name="dbDropColumn" access="private">
+	<cfargument name="table">
+	<cfargument name="column" default="">
+	
+	<cfset var rsCheck="">
+	 
+	<cfdbinfo 
+		name="rsCheck"
+		datasource="#getDatasource()#"
+		username="#getDbUsername()#"
+		password="#getDbPassword()#"
+		table="#arguments.table#"
+		type="index">
+	
+	<cfquery name="rsCheck" dbtype="query">
+		select * from rsCheck where lower(rsCheck.column_name) = '#arguments.column#'
+	</cfquery>
+	
+	<cfif not rsCheck.recordcount>
+	<cfswitch expression="#getDbType()#">
+	<cfcase value="mssql">
+		<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+		ALTER TABLE #arguments.table# DROP COLUMN #arguments.column#
+		</cfquery>
+	</cfcase>
+	<cfcase value="mysql">
+		<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+		ALTER TABLE #arguments.table# DROP COLUMN #arguments.column#
+		</cfquery>
+	</cfcase>
+	<cfcase value="oracle">
+		<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+		ALTER TABLE #arguments.table# DROP COLUMN #arguments.column#
+		</cfquery>
+	</cfcase>
+	</cfswitch>	
+	</cfif>
 </cffunction>
 
 <cffunction name="getClassExtensionManager" returntype="any" access="public" output="false">

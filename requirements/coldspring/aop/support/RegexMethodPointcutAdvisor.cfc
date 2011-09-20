@@ -18,7 +18,7 @@
  $Id: RegexMethodPointcutAdvisor.cfc,v 1.1 2006/07/07 02:24:40 scottc Exp $
  $Log: RegexMethodPointcutAdvisor.cfc,v $
  Revision 1.1  2006/07/07 02:24:40  scottc
- CSP-65: First commit for RegexMethodPointcut/Advisor. I'm gonna play with it and do a little catching of bat patters, but then again, the exception passes through good enough right now and is readable.
+ CSP-65: First commit for RegexMethodPointcut/Advisor. I'm gonna play with it and do a little catching of bat patters, but then again, the exception passes through good enough right now and is readable.Ê
 
  Revision 1.6  2005/11/16 16:16:11  rossd
  updates to license in all framework code
