@@ -161,6 +161,7 @@
 	position: relative;
 	color: #333;
 	padding: 4px 6px;
+	background: #eaeae9;
 	background: -moz-linear-gradient(
 		top,
 		#f7f7f7 0%,
@@ -169,6 +170,7 @@
 		linear, left top, left bottom, 
 		from(#f7f7f7),
 		to(#dbdad8));
+	/*filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f7f7f7', endColorstr='#dbdad8');*/
 	border-radius: 3px;
 	-moz-border-radius: 3px;
 	-webkit-border-radius: 3px;
@@ -186,14 +188,16 @@
 #meld-tb-fields .selected {
 	color: #eee;
 	font-weight: bold;
+	background: #818181;
 	background: -moz-linear-gradient(
 		top,
-		#777 0%,
-		#999);
+		#777777 0%,
+		#999999);
 	background: -webkit-gradient(
 		linear, left top, left bottom, 
-		from(#777),
-		to(#999));
+		from(#777777),
+		to(#999999));
+	/*filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#777777', endColorstr='#999999');*/
 	border: 1px solid #dedede;
 	/*border-right: 5px solid #CA1212;*/
 	-moz-box-shadow:
@@ -206,12 +210,12 @@
 		-1px -1px 0px rgba(0,0,0,0.4);
 }
 
-#meld-tb-fields .pointer {
+/*#meld-tb-fields .pointer {
 	background: red;
 	display: none;
 	height: 20px;
 	width: 20px;
-}
+}*/
 
 #meld-tb-form #meld-tb-fields li.selected .field {
 	padding-right: 18px;
@@ -235,6 +239,7 @@
 
 #meld-tb-form #meld-tb-fields li.field-section {
 	background: transparent;
+	filter: none;
 	margin: 0 0 5px 0;
 	padding: 5px;
 	border: 0;
@@ -271,7 +276,7 @@
 	background: transparent !important;
 	border: 0 !important;
 	padding: 0 !important;
-	margin: -8px 0 0 0 !important;
+	margin: -8px 0 0 !important;
 }
 
 #meld-tb-form #meld-tb-fields .meld-tb-nav-utility li {
@@ -281,48 +286,18 @@
 	height: 16px;
 	padding: 0;
 	margin: 0;
-	background: transparent;
-	border: 0;
-	box-shadow: 0px 0px 0px;
+	background: transparent !important;
+	border: 0 !important;
+	box-shadow: 0 0 0;
 }
 
 #meld-tb-form #meld-tb-fields .meld-tb-nav-utility #button-trash {
 	display: block;
 	padding: 0;
 	margin: 0;
+	border-radius: 0;
 	width: 16px;
 	height: 16px;
 	background: transparent url('../../../images/formbuilder/data-delete.png') no-repeat center center !important;
 	border: 0 !important;
-}
-
-.columns {
-	margin: 0 10px;
-}
-.columns.topbordered {
-	border-top: 1px solid #aaa;
-	margin-top: 10px;
-	padding-top: 10px;
-}
-.columns .bordered {
-	border-right: 1px solid #aaa;
-}
-.columns div.col2 {
-	width: 49%;
-	float: left;
-	display: block;
-	margin: 0 5px 0 0;
-}
-.columns div.col2.wide {
-	width: 65%;
-}	
-.columns div.col2.right {
-	width: 49%;
-	display: block;
-	margin: 0 0 0 5px;
-}
-.columns div.col3 {
-	width: 31%;
-	margin-left: 5px;
-	float: left;
 }

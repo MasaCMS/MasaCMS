@@ -104,7 +104,7 @@ to your own modified versions of Mura CMS.
     </div>
     <cfelse>
     <div id="header">
-	  <a id="blueRiverLink" href="http://blueriver.com" target="_blank" title="mura by blueRiver"></a>
+	  <a id="blueRiverLink" href="http://www.blueriver.com" target="_blank" title="Mura CMS by Blue River"></a>
       <h1>#application.configBean.getTitle()#</h1>
 	  <div id="siteSelectWrapper"></div>
     </div>

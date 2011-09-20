@@ -60,10 +60,10 @@ to your own modified versions of Mura CMS.
 			<ol>
 				<cfloop from="1" to="#arrayLen(request.muraTraceRoute)#" index="i">
 					<cfset tracePoint=request.muraTraceRoute[i]>
-					<li>#HTMLEditFormat(tracePoint.detail)# <span class="duration">#tracePoint.duration#</span></li>
+					<li>#HTMLEditFormat(tracePoint.detail)# <span class="duration">(#tracePoint.duration#)</span></li>
 				</cfloop>
 			</ol>
-			<p>Total: #evaluate((getTickCount()-request.muraRequestStart))# milliseconds</p>
+			<p>Total: <strong>#evaluate((getTickCount()-request.muraRequestStart))# milliseconds</strong></p>
 			</div>
 		</cfoutput>
 	</cfsavecontent>

@@ -121,7 +121,6 @@ form.sessionHistory a.submit {
 }
 
 /* @group Nested Offsets */
-/*#mura-nodes li .title { background: red; zoom: 1; }*/
 
 #mura-nodes li .title { width: 297px; }
 #mura-nodes li li .title { width: 281px; }
@@ -363,3 +362,10 @@ dd.categoryAssignment input.textAlt {
 }
 
 /* @end */
+
+#meld-tb-grid .meld-tb-grid-checkbox {
+	margin: 0 4px 0 0;
+	width: auto;
+	padding: 0;
+	border: 0;
+}
