@@ -73,8 +73,13 @@ imageSize,imageHeight,imageWidth,childTemplate</cfoutput></cfsavecontent>
 		<cfargument name="contentHistID" type="string" required="yes" />
 		<cfargument name="siteID" type="string" required="yes" />
 		<cfargument name="use404" type="boolean" required="yes" default="false"/>
+		<cfargument name="contentBean" required="true" default="">
 		<cfset var rsContent = queryNew('empty') />
-		<cfset var bean=getBean("content") />
+		<cfset var bean=arguments.contentBean />
+		
+		<cfif not isObject(bean)>
+			<cfset bean=getBean("content")>
+		</cfif>
 		
 		<cfif len(arguments.contentHistID)>	
 			<cfquery datasource="#variables.dsn#" name="rsContent"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
@@ -116,8 +121,13 @@ imageSize,imageHeight,imageWidth,childTemplate</cfoutput></cfsavecontent>
 		<cfargument name="contentID" type="string" required="yes" />
 		<cfargument name="siteID" type="string" required="yes" />
 		<cfargument name="use404" type="boolean" required="yes" default="false"/>
+		<cfargument name="contentBean" required="true" default="">
 		<cfset var rsContent = queryNew('empty') />
-		<cfset var bean=getBean("content") />
+		<cfset var bean=arguments.contentBean />
+		
+		<cfif not isObject(bean)>
+			<cfset bean=getBean("content")>
+		</cfif>
 		
 		<cfif len(arguments.contentID)>
 			<cfquery datasource="#variables.dsn#" name="rsContent"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
@@ -162,10 +172,15 @@ imageSize,imageHeight,imageWidth,childTemplate</cfoutput></cfsavecontent>
 		<cfargument name="remoteID" type="string" required="yes" />
 		<cfargument name="siteID" type="string" required="yes" />
 		<cfargument name="use404" type="boolean" required="yes" default="false"/>
+		<cfargument name="contentBean" required="true" default="">
 		<cfset var rsContent = queryNew('empty') />
-		<cfset var bean=getBean("content") />>
 		<cfset var beanArray=arrayNew(1)>
 		<cfset var utility="">
+		<cfset var bean=arguments.contentBean />
+		
+		<cfif not isObject(bean)>
+			<cfset bean=getBean("content")>
+		</cfif>
 		
 		<cfif len(arguments.remoteID)>		
 			<cfquery datasource="#variables.dsn#" name="rsContent"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
@@ -204,10 +219,15 @@ imageSize,imageHeight,imageWidth,childTemplate</cfoutput></cfsavecontent>
 		<cfargument name="title" type="string" required="yes" />
 		<cfargument name="siteID" type="string" required="yes" />
 		<cfargument name="use404" type="boolean" required="yes" default="false"/>
+		<cfargument name="contentBean" required="true" default="">
 		<cfset var rsContent = queryNew('empty') />
-		<cfset var bean=getBean("content") />
 		<cfset var beanArray=arrayNew(1)>
 		<cfset var utility="">
+		<cfset var bean=arguments.contentBean />
+		
+		<cfif not isObject(bean)>
+			<cfset bean=getBean("content")>
+		</cfif>
 		
 		<cfif len(arguments.title)>		
 			<cfquery datasource="#variables.dsn#" name="rsContent"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
@@ -246,10 +266,15 @@ imageSize,imageHeight,imageWidth,childTemplate</cfoutput></cfsavecontent>
 		<cfargument name="urltitle" type="string" required="yes" />
 		<cfargument name="siteID" type="string" required="yes" />
 		<cfargument name="use404" type="boolean" required="yes" default="false"/>
+		<cfargument name="contentBean" required="true" default="">
 		<cfset var rsContent = queryNew('empty') />
-		<cfset var bean=getBean("content") />
 		<cfset var beanArray=arrayNew(1)>
 		<cfset var utility="">
+		<cfset var bean=arguments.contentBean />
+		
+		<cfif not isObject(bean)>
+			<cfset bean=getBean("content")>
+		</cfif>
 		
 		<cfif len(arguments.urltitle)>		
 			<cfquery datasource="#variables.dsn#" name="rsContent"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
@@ -288,10 +313,15 @@ imageSize,imageHeight,imageWidth,childTemplate</cfoutput></cfsavecontent>
 		<cfargument name="filename" type="string" required="yes" default="" />
 		<cfargument name="siteID" type="string" required="yes" default="" />
 		<cfargument name="use404" type="boolean" required="yes" default="false"/>
+		<cfargument name="contentBean" required="true" default="">
 		<cfset var rsContent = queryNew('empty') />
-		<cfset var bean=getBean("content") />
 		<cfset var beanArray=arrayNew(1)>
 		<cfset var utility="">
+		<cfset var bean=arguments.contentBean />
+		
+		<cfif not isObject(bean)>
+			<cfset bean=getBean("content")>
+		</cfif>
 		
 		<cfquery datasource="#variables.dsn#" name="rsContent"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 			select #variables.fieldlist#, tfiles.fileSize, tfiles.contentType, tfiles.contentSubType, tfiles.fileExt from tcontent 

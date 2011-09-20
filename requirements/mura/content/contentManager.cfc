@@ -196,23 +196,24 @@ to your own modified versions of Mura CMS.
 	<cfargument name="urltitle" required="true" default="">
 	<cfargument name="siteID" required="true" default=""> 
 	<cfargument name="use404" required="true" default="false">
+	<cfargument name="contentBean" required="true" default="">
 
 	<cfif not len(arguments.siteID)>
 		<cfthrow message="A 'SITEID' is required in order to read content. ">
 	</cfif>
 	
 	<cfif len(arguments.contenthistid)>
-		<cfreturn getcontentVersion(arguments.contenthistid, arguments.siteid, arguments.use404)>
+		<cfreturn getcontentVersion(arguments.contenthistid, arguments.siteid, arguments.use404, arguments.contentBean)>
 	<cfelseif structKeyExists(arguments,"filename")>
-		<cfreturn getActiveContentByFilename(arguments.filename, arguments.siteid, arguments.use404)>
+		<cfreturn getActiveContentByFilename(arguments.filename, arguments.siteid, arguments.use404, arguments.contentBean)>
 	<cfelseif len(arguments.remoteid)>
-		<cfreturn getActiveByRemoteID(arguments.remoteid, arguments.siteid,arguments.use404)>
+		<cfreturn getActiveByRemoteID(arguments.remoteid, arguments.siteid, arguments.use404, arguments.contentBean)>
 	<cfelseif len(arguments.title)>
-		<cfreturn getActiveByTitle(arguments.title, arguments.siteid,arguments.use404)>
+		<cfreturn getActiveByTitle(arguments.title, arguments.siteid, arguments.use404, arguments.contentBean)>
 	<cfelseif len(arguments.urltitle)>
-		<cfreturn getActiveByURLTitle(arguments.urltitle, arguments.siteid,arguments.use404)>
+		<cfreturn getActiveByURLTitle(arguments.urltitle, arguments.siteid, arguments.use404, arguments.contentBean)>
 	<cfelse>	
-		<cfreturn getActiveContent(arguments.contentid, arguments.siteid, arguments.use404)>
+		<cfreturn getActiveContent(arguments.contentid, arguments.siteid, arguments.use404, arguments.contentBean)>
 	</cfif>
 	
 	</cffunction>
@@ -221,28 +222,31 @@ to your own modified versions of Mura CMS.
 		<cfargument name="contentHistID" type="string" required="yes" />
 		<cfargument name="siteID" type="string" required="yes" />
 		<cfargument name="use404" type="boolean" required="yes" default="false"/>
+		<cfargument name="contentbean" required="true" default="">
 		<cfset var key= "version" & arguments.siteid & arguments.contentHistID />
 		<cfset var site=variables.settingsManager.getSite(arguments.siteid)/>
 		<cfset var cacheFactory=site.getCacheFactory(name="data")>
-		<cfset var bean="">
+		<cfset var bean=arguments.contentBean/>
 		
 		<cfif site.getCache()>
 			<!--- check to see if it is cached. if not then pass in the context --->
 			<!--- otherwise grab it from the cache --->
 			<cfif NOT cacheFactory.has( key )>
-				<cfset bean=variables.contentDAO.readVersion(arguments.contentHistID,arguments.siteid,arguments.use404) />
+				<cfset bean=variables.contentDAO.readVersion(arguments.contentHistID,arguments.siteid,arguments.use404,bean) />
 				<cfif not bean.getIsNew()>
 					<cfset cacheFactory.get( key, structCopy(bean.getAllValues()) ) />
 				</cfif>
 				<cfreturn bean/>
 			<cfelse>
-				<cfset bean=getBean("content")/>
+				<cfif not isObject(bean)>
+					<cfset bean=getBean("content")/>
+				</cfif>
 				<cfset bean.setAllValues( structCopy(cacheFactory.get( key )) )>
 				<cfset bean.setValue("extendAutoComplete",false)>
 				<cfreturn bean />
 			</cfif>
 		<cfelse>
-			<cfreturn variables.contentDAO.readVersion(arguments.contentHistID,arguments.siteid,arguments.use404) />
+			<cfreturn variables.contentDAO.readVersion(arguments.contentHistID,arguments.siteid,arguments.use404,bean) />
 		</cfif>
 	</cffunction>
 	
@@ -250,10 +254,11 @@ to your own modified versions of Mura CMS.
 		<cfargument name="filename" type="string" required="yes" />
 		<cfargument name="siteID" type="string" required="yes" />
 		<cfargument name="use404" type="boolean" required="yes" default="false"/>
+		<cfargument name="contentBean" required="true" default="">
 		<cfset var key="" />
 		<cfset var site=variables.settingsManager.getSite(arguments.siteid)/>
 		<cfset var cacheFactory=site.getCacheFactory(name="data")>
-		<cfset var bean="">
+		<cfset var bean=arguments.contentBean/>
 		
 		<cfif arguments.filename eq "/">
 			<cfset arguments.filename="">
@@ -281,19 +286,21 @@ to your own modified versions of Mura CMS.
 			<!--- check to see if it is cached. if not then pass in the context --->
 			<!--- otherwise grab it from the cache --->
 			<cfif NOT cacheFactory.has( key )>
-				<cfset bean=variables.contentDAO.readActiveByFilename(arguments.filename,arguments.siteid,arguments.use404) />
+				<cfset bean=variables.contentDAO.readActiveByFilename(arguments.filename,arguments.siteid,arguments.use404,bean) />
 				<cfif not isArray(bean) and not bean.getIsNew()>
 					<cfset cacheFactory.get( key, structCopy(bean.getAllValues()) ) />
 				</cfif>
 				<cfreturn bean/>
 			<cfelse>
-				<cfset bean=getBean("content")/>
+				<cfif not isObject(bean)>
+					<cfset bean=getBean("content")/>
+				</cfif>
 				<cfset bean.setAllValues( structCopy(cacheFactory.get( key )) )>
 				<cfset bean.setValue("extendAutoComplete",false)>
 				<cfreturn bean />
 			</cfif>
 		<cfelse>
-			<cfreturn variables.contentDAO.readActiveByFilename(arguments.filename,arguments.siteid,arguments.use404)/>
+			<cfreturn variables.contentDAO.readActiveByFilename(arguments.filename,arguments.siteid,arguments.use404,bean)/>
 		</cfif>
 	
 	</cffunction>
@@ -302,28 +309,31 @@ to your own modified versions of Mura CMS.
 		<cfargument name="remoteID" type="string" required="yes" />
 		<cfargument name="siteID" type="string" required="yes" />
 		<cfargument name="use404" type="boolean" required="yes" default="false"/>
+		<cfargument name="contentBean" required="true" default="">
 		<cfset var key="remoteID" & arguments.siteid & arguments.remoteID />
 		<cfset var site=variables.settingsManager.getSite(arguments.siteid)/>
 		<cfset var cacheFactory=site.getCacheFactory(name="data")/>
-		<cfset var bean=""/>
+		<cfset var bean=arguments.contentBean/>
 		
 		<cfif site.getCache()>
 			<!--- check to see if it is cached. if not then pass in the context --->
 			<!--- otherwise grab it from the cache --->
 			<cfif NOT cacheFactory.has( key )>
-				<cfset bean=variables.contentDAO.readActiveByRemoteID(arguments.remoteID,arguments.siteid,arguments.use404)  />
+				<cfset bean=variables.contentDAO.readActiveByRemoteID(arguments.remoteID,arguments.siteid,arguments.use404,bean)  />
 				<cfif not isArray(bean) and not bean.getIsNew()>
 					<cfset cacheFactory.get( key, structCopy(bean.getAllValues()) ) />
 				</cfif>
 				<cfreturn bean/>
 			<cfelse>
-				<cfset bean=getBean("content")/>
+				<cfif not isObject(bean)>
+					<cfset bean=getBean("content")/>
+				</cfif>
 				<cfset bean.setAllValues( structCopy(cacheFactory.get( key )) )>
 				<cfset bean.setValue("extendAutoComplete",false)>
 				<cfreturn bean />
 			</cfif>
 		<cfelse>
-			<cfreturn variables.contentDAO.readActiveByRemoteID(arguments.remoteID,arguments.siteid,arguments.use404)/>
+			<cfreturn variables.contentDAO.readActiveByRemoteID(arguments.remoteID,arguments.siteid,arguments.use404,bean)/>
 		</cfif>
 		
 	</cffunction>
@@ -331,28 +341,31 @@ to your own modified versions of Mura CMS.
 	<cffunction name="getActiveByTitle" access="public" returntype="any" output="false">
 		<cfargument name="title" type="string" required="yes" />
 		<cfargument name="siteID" type="string" required="yes" />
+		<cfargument name="contentBean" required="true" default="">
 		<cfset var key="title" & arguments.siteid & arguments.title />
 		<cfset var site=variables.settingsManager.getSite(arguments.siteid)/>
 		<cfset var cacheFactory=site.getCacheFactory(name="data")/>
-		<cfset var bean=""/>
+		<cfset var bean=arguments.contentBean/>
 		
 		<cfif site.getCache()>
 			<!--- check to see if it is cached. if not then pass in the context --->
 			<!--- otherwise grab it from the cache --->
 			<cfif NOT cacheFactory.has( key )>
-				<cfset bean=variables.contentDAO.readActiveByTitle(arguments.title,arguments.siteid)  />
+				<cfset bean=variables.contentDAO.readActiveByTitle(arguments.title,arguments.siteid,bean)  />
 				<cfif not isArray(bean) and not bean.getIsNew()>
 					<cfset cacheFactory.get( key, structCopy(bean.getAllValues()) ) />
 				</cfif>
 				<cfreturn bean/>
 			<cfelse>
-				<cfset bean=getBean("content")/>
+				<cfif not isObject(bean)>
+					<cfset bean=getBean("content")/>
+				</cfif>
 				<cfset bean.setAllValues( structCopy(cacheFactory.get( key )) )>
 				<cfset bean.setValue("extendAutoComplete",false)>
 				<cfreturn bean />
 			</cfif>
 		<cfelse>
-			<cfreturn variables.contentDAO.readActiveByTitle(arguments.title,arguments.siteid)/>
+			<cfreturn variables.contentDAO.readActiveByTitle(arguments.title,arguments.siteid,bean)/>
 		</cfif>
 		
 	</cffunction>
@@ -360,28 +373,31 @@ to your own modified versions of Mura CMS.
 	<cffunction name="getActiveByURLTitle" access="public" returntype="any" output="false">
 		<cfargument name="URLTitle" type="string" required="yes" />
 		<cfargument name="siteID" type="string" required="yes" />
+		<cfargument name="contentBean" required="true" default="">
 		<cfset var key="urltitle" & arguments.siteid & arguments.urltitle />
 		<cfset var site=variables.settingsManager.getSite(arguments.siteid)/>
 		<cfset var cacheFactory=site.getCacheFactory(name="data")/>
-		<cfset var bean=""/>
+		<cfset var bean=arguments.contentBean/>
 		
 		<cfif site.getCache()>
 			<!--- check to see if it is cached. if not then pass in the context --->
 			<!--- otherwise grab it from the cache --->
 			<cfif NOT cacheFactory.has( key )>
-				<cfset bean=variables.contentDAO.readActiveByURLTitle(arguments.URLTitle,arguments.siteid)  />
+				<cfset bean=variables.contentDAO.readActiveByURLTitle(arguments.URLTitle,arguments.siteid,bean)  />
 				<cfif not isArray(bean) and not bean.getIsNew()>
 					<cfset cacheFactory.get( key, structCopy(bean.getAllValues()) ) />
 				</cfif>
 				<cfreturn bean/>
 			<cfelse>
-				<cfset bean=getBean("content")/>
+				<cfif not isObject(bean)>
+					<cfset bean=getBean("content")/>
+				</cfif>
 				<cfset bean.setAllValues( structCopy(cacheFactory.get( key )) )>
 				<cfset bean.setValue("extendAutoComplete",false)>
 				<cfreturn bean />
 			</cfif>
 		<cfelse>
-			<cfreturn variables.contentDAO.readActiveByURLTitle(arguments.URLTitle,arguments.siteid)/>
+			<cfreturn variables.contentDAO.readActiveByURLTitle(arguments.URLTitle,arguments.siteid,bean)/>
 		</cfif>
 		
 	</cffunction>
@@ -390,28 +406,31 @@ to your own modified versions of Mura CMS.
 		<cfargument name="contentID" type="string" required="yes" />
 		<cfargument name="siteID" type="string" required="yes" />
 		<cfargument name="use404" type="boolean" required="yes" default="false"/>
+		<cfargument name="contentBean" required="true" default="">
 		<cfset var key="contentID" & arguments.siteid & arguments.contentID />
 		<cfset var site=variables.settingsManager.getSite(arguments.siteid)/>
 		<cfset var cacheFactory=site.getCacheFactory(name="data")/>
-		<cfset var bean=""/>
+		<cfset var bean=arguments.contentBean/>
 		
 		<cfif site.getCache()>
 			<!--- check to see if it is cached. if not then pass in the context --->
 			<!--- otherwise grab it from the cache --->
 			<cfif NOT cacheFactory.has( key )>
-				<cfset bean=variables.contentDAO.readActive(arguments.contentID,arguments.siteid,arguments.use404)  />
+				<cfset bean=variables.contentDAO.readActive(arguments.contentID,arguments.siteid,arguments.use404,bean)  />
 				<cfif not bean.getIsNew()>
 					<cfset cacheFactory.get( key, structCopy(bean.getAllValues()) ) />
 				</cfif>
 				<cfreturn bean/>
 			<cfelse>
-				<cfset bean=getBean("content")/>
+				<cfif not isObject(bean)>
+					<cfset bean=getBean("content")/>
+				</cfif>
 				<cfset bean.setAllValues( structCopy(cacheFactory.get( key )) )>
 				<cfset bean.setValue("extendAutoComplete",false)>
 				<cfreturn bean />
 			</cfif>
 		<cfelse>
-			<cfreturn variables.contentDAO.readActive(arguments.contentID,arguments.siteid,arguments.use404) />
+			<cfreturn variables.contentDAO.readActive(arguments.contentID,arguments.siteid,arguments.use404,bean) />
 		</cfif>
 	
 	</cffunction>

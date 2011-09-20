@@ -87,14 +87,20 @@
 </cffunction>
 
 <cffunction name="getContentBean" access="public" returntype="any" output="false">
+	<cfif NOT isObject(variables.instance.content)>
+		<cfset variables.instance.content=getBean("content")>
+		<cfset variables.instance.content.setIsNew(1)>
+		<cfset variables.instance.contentStructTemplate=structCopy(variables.instance.content.getAllValues())>
+	</cfif>
 	
-	<cfif isObject("variables.instance.content") >
+	<cfif NOT variables.instance.content.getIsNew() >
 		<cfreturn variables.instance.content>
 	<cfelse>
+		<cfset variables.instance.content.setAllValues(variables.instance.contentStructTemplate)>
 		<cfif variables.packageBy eq "version" and structKeyExists(variables.instance.struct,"contentHistID")>
-			<cfset variables.instance.content=getBean("contentManager").getContentVersion(contentHistID=variables.instance.struct.contentHistID, siteID=variables.instance.struct.siteID)>
+			<cfset variables.instance.content=variables.contentManager.getContentVersion(contentHistID=variables.instance.struct.contentHistID, siteID=variables.instance.struct.siteID, contentBean=variables.instance.content)>
 		<cfelseif structKeyExists(variables.instance.struct,"contentID")>
-			<cfset variables.instance.content=getBean("contentManager").getActiveContent(contentID=variables.instance.struct.contentID,siteID=variables.instance.struct.siteID)>
+			<cfset variables.instance.content=getBean('contentManager').getActiveContent(contentID=variables.instance.struct.contentID,siteID=variables.instance.struct.siteID, contentBean=variables.instance.content)>
 		<cfelse>
 			<cfthrow message="The query you are iterating over does not contain either contentID or contentHistID">
 		</cfif>

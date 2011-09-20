@@ -93,18 +93,19 @@ to your own modified versions of Mura CMS.
 	<cfargument name="siteID" type="string" default=""/>
 	<cfargument name="groupname" type="string" default=""/>
 	<cfargument name="isPublic" type="string" default="1"/>
+	<cfargument name="userBean" type="any" default=""/>
 	<cfset var key= "" />
 	<cfset var site=""/>
 	<cfset var cacheFactory="">
-	<cfset var bean="">	
+	<cfset var bean=arguments.userBean>
 	
 	<cfif len(arguments.siteID)>
 		<cfif len(arguments.username)>
-			<cfreturn readByUsername(arguments.username,arguments.siteid) />
+			<cfreturn readByUsername(arguments.username,arguments.siteid,bean) />
 		<cfelseif len(arguments.groupname)>
-			<cfreturn readByGroupName(arguments.groupname,arguments.siteid,arguments.isPublic) />
+			<cfreturn readByGroupName(arguments.groupname,arguments.siteid,arguments.isPublic,bean) />
 		<cfelseif len(arguments.remoteID)>
-			<cfreturn readByRemoteID(arguments.remoteID,arguments.siteid) />
+			<cfreturn readByRemoteID(arguments.remoteID,arguments.siteid,bean) />
 		</cfif>
 	</cfif>
 	
@@ -116,19 +117,21 @@ to your own modified versions of Mura CMS.
 		<!--- check to see if it is cached. if not then pass in the context --->
 		<!--- otherwise grab it from the cache --->
 		<cfif NOT cacheFactory.has( key )>
-			<cfset bean=variables.userDAO.read(arguments.userid)>
+			<cfset bean=variables.userDAO.read(arguments.userid,bean)>
 			<cfif not bean.getIsNew()>
 				<cfset cacheFactory.get( key, structCopy(bean.getAllValues()) ) />
 			</cfif>
 			<cfreturn bean/>
 		<cfelse>
-			<cfset bean=getBean("user")/>
+			<cfif not isObject(bean)>
+				<cfset bean=getBean("user")/>
+			</cfif>
 			<cfset bean.setAllValues( structCopy(cacheFactory.get( key )) )>
 			<cfset bean.setValue("extendAutoComplete",false)>
 			<cfreturn bean />
 		</cfif>
 	<cfelse>
-		<cfreturn variables.userDAO.read(arguments.userid) />
+		<cfreturn variables.userDAO.read(arguments.userid,bean) />
 	</cfif>		
 </cffunction>
 
@@ -140,28 +143,31 @@ to your own modified versions of Mura CMS.
 <cffunction name="readByUsername" access="public" returntype="any" output="false">
 	<cfargument name="username" type="string" default=""/>
 	<cfargument name="siteid" type="string" default=""/>
+	<cfargument name="userBean" type="any" default=""/>
 	<cfset var key= "user" & arguments.siteid & arguments.username />
 	<cfset var site=variables.settingsManager.getSite(arguments.siteid)/>
 	<cfset var cacheFactory=site.getCacheFactory(name="data")>
-	<cfset var bean="">	
+	<cfset var bean=arguments.userBean>
 	
 	<cfif site.getCache()>
 		<!--- check to see if it is cached. if not then pass in the context --->
 		<!--- otherwise grab it from the cache --->
 		<cfif NOT cacheFactory.has( key )>
-			<cfset bean=variables.userDAO.readByUsername(arguments.username,arguments.siteid) />
+			<cfset bean=variables.userDAO.readByUsername(arguments.username,arguments.siteid,bean) />
 			<cfif not bean.getIsNew()>
 				<cfset cacheFactory.get( key, structCopy(bean.getAllValues()) ) />
 			</cfif>
 			<cfreturn bean/>
 		<cfelse>
-			<cfset bean=getBean("user")/>
+			<cfif not isObject(bean)>
+				<cfset bean=getBean("user")/>
+			</cfif>
 			<cfset bean.setAllValues( structCopy(cacheFactory.get( key )) )>
 			<cfset bean.setValue("extendAutoComplete",false)>
 			<cfreturn bean />
 		</cfif>
 	<cfelse>
-		<cfreturn variables.userDAO.readByUsername(arguments.username,arguments.siteid) />
+		<cfreturn variables.userDAO.readByUsername(arguments.username,arguments.siteid,bean) />
 	</cfif>	
 
 </cffunction>
@@ -170,28 +176,31 @@ to your own modified versions of Mura CMS.
 	<cfargument name="groupname" type="string" default=""/>
 	<cfargument name="siteid" type="string" default=""/>
 	<cfargument name="isPublic" type="string" required="yes" default="both"/>
+	<cfargument name="userBean" type="any" default=""/>
 	<cfset var key= "user" & arguments.siteid & arguments.groupname />
 	<cfset var site=variables.settingsManager.getSite(arguments.siteid)/>
 	<cfset var cacheFactory=site.getCacheFactory(name="data")>
-	<cfset var bean="">	
+	<cfset var bean=arguments.userBean>
 	
 	<cfif site.getCache()>
 		<!--- check to see if it is cached. if not then pass in the context --->
 		<!--- otherwise grab it from the cache --->
 		<cfif NOT cacheFactory.has( key )>
-			<cfset bean=variables.userDAO.readByGroupName(arguments.groupname,arguments.siteid,arguments.isPublic)  />
+			<cfset bean=variables.userDAO.readByGroupName(arguments.groupname,arguments.siteid,arguments.isPublic,bean)  />
 			<cfif not bean.getIsNew()>
 				<cfset cacheFactory.get( key, structCopy(bean.getAllValues()) ) />
 			</cfif>
 			<cfreturn bean/>
 		<cfelse>
-			<cfset bean=getBean("user")/>
+			<cfif not isObject(bean)>
+				<cfset bean=getBean("user")/>
+			</cfif>
 			<cfset bean.setAllValues( structCopy(cacheFactory.get( key )) )>
 			<cfset bean.setValue("extendAutoComplete",false)>
 			<cfreturn bean />
 		</cfif>
 	<cfelse>
-		<cfreturn variables.userDAO.readByGroupName(arguments.groupname,arguments.siteid,arguments.isPublic) />
+		<cfreturn variables.userDAO.readByGroupName(arguments.groupname,arguments.siteid,arguments.isPublic,bean) />
 	</cfif>			
 	
 </cffunction>
@@ -199,28 +208,31 @@ to your own modified versions of Mura CMS.
 <cffunction name="readByRemoteID" access="public" returntype="any" output="false">
 	<cfargument name="remoteID" type="string" default=""/>
 	<cfargument name="siteid" type="string" default=""/>
+	<cfargument name="userBean" type="any" default=""/>
 	<cfset var key= "user" & arguments.siteid & arguments.remoteID />
 	<cfset var site=variables.settingsManager.getSite(arguments.siteid)/>
 	<cfset var cacheFactory=site.getCacheFactory(name="data")>
-	<cfset var bean="">	
+	<cfset var bean=arguments.userBean>	
 	
 	<cfif site.getCache()>
 		<!--- check to see if it is cached. if not then pass in the context --->
 		<!--- otherwise grab it from the cache --->
 		<cfif NOT cacheFactory.has( key )>
-			<cfset bean=variables.userDAO.readByRemoteID(arguments.remoteID,arguments.siteid) />
+			<cfset bean=variables.userDAO.readByRemoteID(arguments.remoteID,arguments.siteid,bean) />
 			<cfif not bean.getIsNew()>
 				<cfset cacheFactory.get( key, structCopy(bean.getAllValues()) ) />
 			</cfif>
 			<cfreturn bean/>
 		<cfelse>
-			<cfset bean=getBean("user")/>
+			<cfif not isObject(bean)>
+				<cfset bean=getBean("user")/>
+			</cfif>
 			<cfset bean.setAllValues( structCopy(cacheFactory.get( key )) )>
 			<cfset bean.setValue("extendAutoComplete",false)>
 			<cfreturn bean />
 		</cfif>
 	<cfelse>
-		<cfreturn variables.userDAO.readByRemoteID(arguments.remoteID,arguments.siteid) />
+		<cfreturn variables.userDAO.readByRemoteID(arguments.remoteID,arguments.siteid,bean) />
 	</cfif>			
 	
 </cffunction>

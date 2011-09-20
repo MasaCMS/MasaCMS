@@ -42,10 +42,21 @@ to your own modified versions of Mura CMS.
 --->
 <cfcomponent extends="mura.iterator.queryIterator" output="false">
 
+<cfset variables.userBean ="">
+
 <cffunction name="packageRecord" access="public" output="false" returntype="any">
-	<cfset var user=getBean("user").set(queryRowToStruct(variables.records,currentIndex()))>
-	<cfset getBean("userManager").setUserBeanMetaData(user)/>
-	<cfreturn user>
+	<cfif NOT isObject(variables.userBean)>
+		<cfset variables.userBean=getBean("user") />
+		<cfset variables.userStructTemplate= structCopy(variables.userBean.getAllValues(autocomplete=false))>
+	<cfelse>
+		<cfset variables.userBean.setAllValues( structCopy(variables.userStructTemplate) )>
+	</cfif>
+		
+	<cfset variables.userBean.set(queryRowToStruct(variables.records,currentIndex()))>
+	
+	<cfset getBean("userManager").setUserBeanMetaData(variables.userBean)/>
+	
+	<cfreturn variables.userBean>
 </cffunction>
 
 <cffunction name="buildQueryFromList" output="false" access="public">

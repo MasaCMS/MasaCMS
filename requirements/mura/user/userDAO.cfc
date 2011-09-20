@@ -60,10 +60,15 @@ to your own modified versions of Mura CMS.
 
 <cffunction name="read" access="public" returntype="any" output="false">
 		<cfargument name="userid" type="string" required="yes" />
+		<cfargument name="userBean" type="any" default=""/>
 		<cfset var rsuser = 0 />
 		<cfset var rsmembs = "" />
 		<cfset var rsInterests = "" />
-		<cfset var bean=getBean("user")/>
+		<cfset var bean=arguments.userBean/>
+
+		<cfif not isObject(bean)>
+			<cfset bean=getBean("user")>	
+		</cfif>
 		
 		<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#" name="rsUser">
 			select #variables.fieldList#
@@ -86,12 +91,17 @@ to your own modified versions of Mura CMS.
 <cffunction name="readByUsername" access="public" returntype="any" output="false">
 		<cfargument name="username" type="string" required="yes" />
 		<cfargument name="siteid" type="string" required="yes" />
+		<cfargument name="userBean" type="any" default=""/>
 		<cfset var rsuser = 0 />
 		<cfset var rsmembs = "" />
 		<cfset var rsInterests = "" />
 		<cfset var beanArray=arrayNew(1)>
 		<cfset var utility="">
-		<cfset var bean=getBean("user")/>
+		<cfset var bean=arguments.userBean/>
+
+		<cfif not isObject(bean)>
+			<cfset bean=getBean("user")>	
+		</cfif>
 			
 		<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#" name="rsUser">
 			select #variables.fieldList#
@@ -136,12 +146,17 @@ to your own modified versions of Mura CMS.
 		<cfargument name="groupname" type="string" required="yes" />
 		<cfargument name="siteid" type="string" required="yes" />
 		<cfargument name="isPublic" type="string" required="yes" default="both"/>
+		<cfargument name="userBean" type="any" default=""/>
 		<cfset var rsuser = 0 />
 		<cfset var rsmembs = "" />
 		<cfset var rsInterests = "" />
 		<cfset var beanArray=arrayNew(1)>
 		<cfset var utility="">
-		<cfset var bean=getBean("user")/>	
+		<cfset var bean=arguments.userBean/>
+
+		<cfif not isObject(bean)>
+			<cfset bean=getBean("user")>	
+		</cfif>
 		
 		<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#" name="rsUser">
 			select #variables.fieldList#
@@ -200,13 +215,18 @@ to your own modified versions of Mura CMS.
 <cffunction name="readByRemoteID" access="public" returntype="any" output="false">
 		<cfargument name="remoteid" type="string" required="yes" />
 		<cfargument name="siteid" type="string" required="yes" />
+		<cfargument name="userBean" type="any" default=""/>
 		<cfset var rsuser = 0 />
 		<cfset var rsmembs = "" />
 		<cfset var rsInterests = "" />
 		<cfset var beanArray=arrayNew(1)>
 		<cfset var utility="">
-		<cfset var bean=getBean("user")/>
-		
+		<cfset var bean=arguments.userBean/>
+
+		<cfif not isObject(bean)>
+			<cfset bean=getBean("user")>	
+		</cfif>
+				
 		<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#" name="rsUser">
 			select #variables.fieldList#
 			from tusers 

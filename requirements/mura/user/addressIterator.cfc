@@ -42,8 +42,18 @@ to your own modified versions of Mura CMS.
 --->
 <cfcomponent extends="mura.iterator.queryIterator" output="false">
 	
+<cfset variables.addressBean="">
+
 <cffunction name="packageRecord" access="public" output="false" returntype="any">	
-	<cfreturn getBean("address").set(queryRowToStruct(variables.records,currentIndex()))>
+	<cfif NOT isObject(variables.addressBean)>
+		<cfset variables.addressBean=getBean("address") />
+		<cfset variables.addressStructTemplate=structCopy(variables.addressBean.getAllValues())>
+	<cfelse>
+		<cfset variables.addressBean.setAllValues( variables.addressStructTemplate)>
+	</cfif>
+	
+	<cfset  variables.addressBean.set(queryRowToStruct(variables.records,currentIndex()))>
+	<cfreturn variables.addressBean>
 </cffunction>
 
 </cfcomponent>

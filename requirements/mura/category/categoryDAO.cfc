@@ -90,9 +90,13 @@ to your own modified versions of Mura CMS.
 
 <cffunction name="read" access="public" output="false" returntype="any" >
 	<cfargument name="categoryID" type="string" />
+	<cfargument name="categoryBean" required="true" default=""/>
 	<cfset var rs ="" />
-	<cfset var bean="" />
-	<cfset var bean=getBean("category")>
+	<cfset var bean=arguments.categoryBean />
+	
+	<cfif not isObject(bean)>
+		<cfset bean=getBean("category")>
+	</cfif>
 	
 	<cfquery name="rs" datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	Select 
@@ -112,10 +116,15 @@ to your own modified versions of Mura CMS.
 <cffunction name="readByName" access="public" output="false" returntype="any" >
 	<cfargument name="name" type="string" />
 	<cfargument name="siteID" type="string" />
+	<cfargument name="categoryBean" required="true" default=""/>
 	<cfset var rs ="" />
 	<cfset var beanArray=arrayNew(1)>
 	<cfset var utility="">
-	<cfset var bean=getBean("category") />
+	<cfset var bean=arguments.categoryBean />
+	
+	<cfif not isObject(bean)>
+		<cfset bean=getBean("category")>
+	</cfif>
 	
 	<cfquery name="rs" datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	Select
@@ -146,10 +155,15 @@ to your own modified versions of Mura CMS.
 <cffunction name="readByFilename" access="public" output="false" returntype="any" >
 	<cfargument name="filename" type="string" />
 	<cfargument name="siteID" type="string" />
+	<cfargument name="categoryBean" required="true" default=""/>
 	<cfset var rs ="" />
 	<cfset var beanArray=arrayNew(1)>
 	<cfset var utility="">
-	<cfset var bean=getBean("category") />
+	<cfset var bean=arguments.categoryBean />
+	
+	<cfif not isObject(bean)>
+		<cfset bean=getBean("category")>
+	</cfif>
 
 	<cfquery name="rs" datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	Select
@@ -180,10 +194,15 @@ to your own modified versions of Mura CMS.
 <cffunction name="readByRemoteID" access="public" output="false" returntype="any" >
 	<cfargument name="remoteID" type="string" />
 	<cfargument name="siteID" type="string" />
+	<cfargument name="categoryBean" required="true" default=""/>
 	<cfset var rs ="" />
 	<cfset var beanArray=arrayNew(1)>
 	<cfset var utility="">
-	<cfset var bean=getBean("category") />
+	<cfset var bean=arguments.categoryBean />
+	
+	<cfif not isObject(bean)>
+		<cfset bean=getBean("category")>
+	</cfif>
 	
 	<cfquery name="rs" datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	Select

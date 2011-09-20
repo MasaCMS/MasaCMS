@@ -43,10 +43,13 @@ to your own modified versions of Mura CMS.
 <cfcomponent extends="mura.iterator.queryIterator" output="false">
 
 <cfset variables.packageBy="active">
+<cfset variables.content="">
 
 <cffunction name="init" access="public" output="false" returntype="any">
 	<cfargument name="packageBy" required="true" default="active">
 	<cfset super.init(argumentCollection=arguments)>
+	<cfset variables.packageBy=arguments.packageBy>
+	<cfset variables.content=getBean("contentNavBean")>
 	<cfreturn this />
 </cffunction>
 	
@@ -61,7 +64,9 @@ to your own modified versions of Mura CMS.
 		<cfthrow message="The records have not been set.">
 	</cfif>
 		
-	<cfreturn getBean("contentNavBean").set(item,variables.packageBy)>
+	<cfset variables.content.set(item,variables.packageBy) />
+	
+	<cfreturn variables.content>
 </cffunction>
 
 <cffunction name="setPackageBy" output="false" access="public">
