@@ -121,7 +121,7 @@ to your own modified versions of Mura CMS.
 <cfset variables.instance.uselegacysessions=true />
 <cfset variables.instance.customUrlVarDelimiters="_">
 <cfset variables.instance.strongPasswordRegex="(?=^.{7,15}$)(?=.*\d)(?![.\n])(?=.*[a-zA-Z]).*$">
-<cfset variables.instance.duplicateTransients=true>
+<cfset variables.instance.duplicateTransients=false>
 <cfset variables.instance.maxArchivedVersions=0 />
 <cfset variables.instance.postBundles=true />
 
