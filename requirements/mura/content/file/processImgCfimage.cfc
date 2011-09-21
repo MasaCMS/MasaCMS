@@ -121,18 +121,24 @@ to your own modified versions of Mura CMS.
 		<cfset ThisImage=imageRead(OriginalImageFile)>
 
 		<cfif arguments.Width eq "AUTO">
-			<cfset ImageResize(ThisImage,'',arguments.height,variables.instance.imageInterpolation)>
-			<cfset ImageWrite(ThisImage,NewImageSource,1)>
+			<cfif ThisImage.height gt arguments.height>
+				<cfset ImageResize(ThisImage,'',arguments.height,variables.instance.imageInterpolation)>
+				<cfset ImageWrite(ThisImage,NewImageSource,1)>
+			</cfif>
 		<cfelseif arguments.Height eq "AUTO">
-			<cfset ImageResize(ThisImage,arguments.width,'',variables.instance.imageInterpolation)>
-			<cfset ImageWrite(ThisImage,NewImageSource,1)>
+			<cfif ThisImage.width gt arguments.width>
+				<cfset ImageResize(ThisImage,arguments.width,'',variables.instance.imageInterpolation)>
+				<cfset ImageWrite(ThisImage,NewImageSource,1)>
+			</cfif>
 		<cfelse>
 			<cfset ImageAspectRatio = ThisImage.Width / ThisImage.height />
 			<cfset NewAspectRatio = arguments.Width / arguments.height />
 				
 			<cfif ImageAspectRatio eq NewAspectRatio>
-				<cfset ImageResize(ThisImage,arguments.width,'',variables.instance.imageInterpolation)>
-				<cfset ImageWrite(ThisImage,NewImageSource,1)>
+				<cfif ThisImage.width gt arguments.width>
+					<cfset ImageResize(ThisImage,arguments.width,'',variables.instance.imageInterpolation)>
+					<cfset ImageWrite(ThisImage,NewImageSource,1)>
+				</cfif>
 			<cfelseif ImageAspectRatio lt NewAspectRatio>
 				<cfset ImageResize(ThisImage,arguments.width,'',variables.instance.imageInterpolation)>
 				<cfset CropY = (ThisImage.height - arguments.height)/2 />
@@ -144,6 +150,10 @@ to your own modified versions of Mura CMS.
 				<cfset ImageCrop(ThisImage, CropX, 0, arguments.width, arguments.height) />
 				<cfset ImageWrite(ThisImage,NewImageSource,1)>
 			</cfif>
+		</cfif>
+		
+		<cfif not fileExists(NewImageSource)>
+			<cfset getBean("fileWriter").copyFile(source=OriginalImageFile,destination=NewImageSource)>
 		</cfif>
 	</cfif>
 	
@@ -160,60 +170,76 @@ to your own modified versions of Mura CMS.
 		<cfset var img = "">
 		<cfset var fromX = "">
 		<cfset var fromY = "">
-		<cfset var tempFile = "">
+		<cfset var isTempSource=false> 
+		<cfset var isResized = false>
+		<cfset var sourceFile="">
 		
 		<cfif arguments.source eq arguments.target>
-			<cfset tempFile= "#serverDirectory##createUUID()#.#listLast(source,'.')#"/>
-			<cffile action="copy" source="#arguments.source#" destination="#tempFile#"/>
-			<cfset img=imageRead(tempFile)>
+			<cfset sourceFile= "#serverDirectory##createUUID()#.#listLast(source,'.')#"/>
+			<cfset isTempSource=true/>
+			<cffile action="copy" source="#arguments.source#" destination="#sourceFile#"/>
+			<cfset img=imageRead(sourceFile)>
 		<cfelse>
+			<cfset sourceFile=arguments.source>
 			<cfset img=imageRead(arguments.source)>		
 		</cfif>
-		
-
+	
 		<cfswitch expression="#arguments.scaleBy#">
 			<cfcase value="square,s">
 				<cfif img.height GT img.width>
-					<cfset ImageResize(img,arguments.scale,'',variables.instance.imageInterpolation)>
-						
+					<cfif img.width gt arguments.scale>
+						<cfset ImageResize(img,arguments.scale,'',variables.instance.imageInterpolation)>
+						<cfset isResized=true>
+					</cfif>	
+					
 					<cfset fromX = img.Height / 2 - ceiling(arguments.scale/2)>
 					
 					<cfif fromX gt 0>		
 						<cfset ImageCrop(img,0,fromX,arguments.scale,arguments.scale)>
+						<cfset isResized=true>
 					</cfif>
 				<cfelseif img.width GT img.height>
-										
-					<cfset ImageResize(img,'',arguments.scale,variables.instance.imageInterpolation)>
+					<cfif img.height gt arguments.scale>					
+						<cfset ImageResize(img,'',arguments.scale,variables.instance.imageInterpolation)>
+						<cfset isResized=true>
+					</cfif>
 							
 					<cfset fromY = img.Width / 2 - ceiling(arguments.scale/2)>
 					
 					<cfif fromY gt 0>		
 						<cfset ImageCrop(img,fromY,0,arguments.scale,arguments.scale)>
+						<cfset isResized=true>
 					</cfif>				
 				<cfelse>
-							
-					<cfset ImageResize(img,'',arguments.scale,variables.instance.imageInterpolation)>
-							
-					<cfset ImageCrop(img,0,0,arguments.scale,arguments.scale)>
-						
+					<cfif img.height gt arguments.scale>			
+						<cfset ImageResize(img,'',arguments.scale,variables.instance.imageInterpolation)>
+						<cfset ImageCrop(img,0,0,arguments.scale,arguments.scale)>
+						<cfset isResized=true>
+					</cfif>	
 				</cfif> 
 			</cfcase>
 			<cfcase value="width,x">
 				<cfif img.width gt arguments.scale>
 					<cfset ImageResize(img,arguments.scale,'',variables.instance.imageInterpolation)>
+					<cfset isResized=true>
 				</cfif>
 			</cfcase>
 			<cfcase value="height,y">
 				<cfif img.height gt arguments.scale>
 					<cfset ImageResize(img,'',arguments.scale,variables.instance.imageInterpolation)>
+					<cfset isResized=true>
 				</cfif>
 			</cfcase>
 		</cfswitch>
-			
-		<cfset ImageWrite(img,arguments.target,1)>
+		
+		<cfif isResized>
+			<cfset ImageWrite(img,arguments.target,1)>
+		<cfelseif arguments.source neq arguments.target>
+			<cfset getBean("fileWriter").copyFile(source=arguments.source,destination=arguments.target)>
+		</cfif>
 
-		<cfif len(tempFile)>
-			<cftry><cffile action="delete" file="#tempFile#"><cfcatch></cfcatch></cftry>
+		<cfif isTempSource and len(sourceFile)>
+			<cftry><cffile action="delete" file="#sourceFile#"><cfcatch></cfcatch></cftry>
 		</cfif>		
 						
 	</cffunction>
