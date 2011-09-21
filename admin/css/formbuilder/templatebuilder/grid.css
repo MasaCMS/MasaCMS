@@ -1,5 +1,5 @@
-/* @override 
-	http://localhost:8500/muracms/admin/css/formbuilder//templatebuilder/grid.css */
+/* @override
+	http://localhost:8500/muracms/admin/css/formbuilder/templatebuilder/grid.css */
 
 /*#meld-tb-grid-padding {
 	margin: 0 7px;
@@ -78,7 +78,7 @@
 }
 
 #meld-tb-grid li .meld-tb-cell-small input.radio {
-	margin-top: 2px;
+	margin-top: 0;
 }
 
 #meld-tb-grid-table .meld-tb-cell .button-grid-row-delete {
