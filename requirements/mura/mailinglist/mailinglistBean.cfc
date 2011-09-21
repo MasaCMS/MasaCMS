@@ -105,21 +105,13 @@ to your own modified versions of Mura CMS.
 </cffunction>
 
 <cffunction name="loadBy" returnType="any" output="false" access="public">
-	<cfset var response="">
-		
 	<cfif not structKeyExists(arguments,"siteID")>
 		<cfset arguments.siteID=getSiteID()>
 	</cfif>
+	
+	<cfset arguments.mailinglistBean=this>
 		
-	<cfset response=application.mailinglistManager.read(argumentCollection=arguments)>
-
-	<cfif isArray(response)>
-		<cfset setAllValues(response[1].getAllValues())>
-		<cfreturn response>
-	<cfelse>
-		<cfset setAllValues(response.getAllValues())>
-		<cfreturn this>
-	</cfif>
+	<cfreturn application.mailinglistManager.read(arguments)>
 </cffunction>
 
 </cfcomponent>

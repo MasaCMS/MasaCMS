@@ -57,9 +57,13 @@
 	<cfargument name="name" type="string" default=""/>
 	<cfargument name="siteID" type="string" default=""/>
 	<cfargument name="remoteID" type="string" default=""/>
-	
+	<cfargument name="changesetBean"  default=""/>
 	<cfset var rs="">
-	<cfset var bean=getBean("changeset")>
+	<cfset var bean=arguments.changesetBean>
+	
+	<cfif not isObject(bean)>
+		<cfset bean=getBean("changeset")>
+	</cfif>
 	
 	<cfquery name="rs" datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDbUsername()#" password="#variables.configBean.getDbPassword()#">
 	select changesetID, siteID, name, description, created, publishDate, published, lastupdate, lastUpdateBy, lastUpdateByID, remoteID, remotePubDate, remoteSourceURL

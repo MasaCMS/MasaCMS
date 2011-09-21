@@ -141,21 +141,13 @@
 </cffunction>
 
 <cffunction name="loadBy" returnType="any" output="false" access="public">
-	<cfset var response="">
-	
 	<cfif not structKeyExists(arguments,"siteID")>
 		<cfset arguments.siteID=variables.instance.siteID>
 	</cfif>
 	
-	<cfset response=getBean("changesetManager").read(argumentCollection=arguments)>
-
-	<cfif isArray(response)>
-		<cfset setAllValues(response[1].getAllValues())>
-		<cfreturn response>
-	<cfelse>
-		<cfset setAllValues(response.getAllValues())>
-		<cfreturn this>
-	</cfif>
+	<cfset arguments.changesetBean=this>
+	
+	<cfreturn getBean("changesetManager").read(argumentCollection=arguments)>
 </cffunction>
 
 <cffunction name="save" output="false" access="public">

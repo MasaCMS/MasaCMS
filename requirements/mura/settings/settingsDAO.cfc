@@ -61,9 +61,13 @@ googleAPIKey,useDefaultSMTPServer,siteLocale, mailServerSMTPPort, mailServerPOPP
 
 <cffunction name="read" access="public" output="false" returntype="any">
 <cfargument name="siteid" type="string" />
-
-	<cfset var bean=getBean("site") />
+<cfargument name="settingsBean" default="" />
 	<cfset var rs ="" />
+	<cfset var bean=arguments.settingsBean />
+	
+	<cfif not isObject(bean)>
+		<cfset bean=getBean("site")>
+	</cfif>s
 
 	<cfquery name="rs" datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	select #variables.fieldlist#, lastdeployment from tsettings where siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#" />

@@ -63,9 +63,13 @@ values (<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.listBean.getM
 
 <cffunction name="read" access="public" output="false" returntype="any" >
 	<cfargument name="MLID" type="string" />
-
-	<cfset var bean=getBean("mailingListMember") />
+	<cfargument name="mailingListBean" default="" />
 	<cfset var rs ="" />
+	<cfset var bean=arguments.mailinglistBean />
+	
+	<cfif not isObject(bean)>
+		<cfset bean=getBean("mailingList")>
+	</cfif>
 	
 	<cfquery name="rs" datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	Select * from tmailinglist where 
@@ -82,10 +86,14 @@ values (<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.listBean.getM
 
 <cffunction name="readByName" access="public" output="false" returntype="any" >
 	<cfargument name="name" type="string" />
-	<cfargument name="siteID" type="string" />
-	<cfset var bean=getBean("mailingList") />
+	<cfargument name="mailingListBean" default="" />
 	<cfset var rs ="" />
 	<cfset var beanArray=arrayNew(1)>
+	<cfset var bean=arguments.mailinglistBean />
+	
+	<cfif not isObject(bean)>
+		<cfset bean=getBean("mailingList")>
+	</cfif>
 	
 	<cfquery name="rs" datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	Select * from tmailinglist where 
@@ -114,7 +122,6 @@ values (<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.listBean.getM
 <cffunction name="update" access="public" output="false" returntype="void" >
 	<cfargument name="listBean" type="any" />
 	
-
 	<cfquery datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	update tmailinglist set name=<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.listBean.getName() neq '',de('no'),de('yes'))#" value="#arguments.listBean.getName()#">,
 	lastupdate=<cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#">, 
@@ -123,8 +130,6 @@ values (<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.listBean.getM
 	where mlid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.listBean.getMLID()#"> and
 	siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.listBean.getSiteID()#">
 	</cfquery>
-
-   
 
 </cffunction>
 

@@ -196,8 +196,8 @@ to your own modified versions of Mura CMS.
 
 <cffunction name="read" access="public" output="false" returntype="any">
 <cfargument name="siteid" type="string" />
-
-	<cfreturn variables.DAO.read(arguments.siteid) />
+<cfargument name="settingsBean" default=""> />
+	<cfreturn variables.DAO.read(arguments.siteid,arguments.settingsBean) />
 	
 </cffunction>
 

@@ -139,32 +139,35 @@ to your own modified versions of Mura CMS.
 	<cfargument name="name" required="true" default=""/>
 	<cfargument name="remoteID" required="true" default=""/>
 	<cfargument name="siteID" required="true" default=""/>
+	<cfargument name="feedBean" required="true" default=""/>
 	
 	<cfif not len(arguments.feedID) and len(arguments.siteid)>
 		<cfif len(arguments.name)>
-			<cfreturn variables.feedDAO.readByName(arguments.name,arguments.siteid) />
+			<cfreturn variables.feedDAO.readByName(arguments.name,arguments.siteid,arguments.feedBean) />
 		<cfelseif len(arguments.remoteID)>
-			<cfreturn variables.feedDAO.readByRemoteID(arguments.remoteID,arguments.siteid) />
+			<cfreturn variables.feedDAO.readByRemoteID(arguments.remoteID,arguments.siteid,arguments.feedBean) />
 		</cfif>
 	</cfif>
 	
-	<cfreturn variables.feedDAO.read(arguments.feedID) />
+	<cfreturn variables.feedDAO.read(arguments.feedID,arguments.feedBean) />
 	
 </cffunction>
 
 <cffunction name="readByName" access="public" returntype="any" output="false">
 	<cfargument name="name" type="String" />
-	<cfargument name="siteid" type="String" />		
+	<cfargument name="siteid" type="String" />
+	<cfargument name="feedBean" required="true" default=""/>		
 	
-	<cfreturn variables.feedDAO.readByName(arguments.name,arguments.siteid) />
+	<cfreturn variables.feedDAO.readByName(arguments.name,arguments.siteid,arguments.feedBean) />
 
 </cffunction>
 
 <cffunction name="readByRemoteID" access="public" returntype="any" output="false">
 	<cfargument name="remoteID" type="String" />
-	<cfargument name="siteid" type="String" />		
+	<cfargument name="siteid" type="String" />
+	<cfargument name="feedBean" required="true" default=""/>		
 	
-	<cfreturn variables.feedDAO.readByRemoteID(arguments.remoteID,arguments.siteid) />
+	<cfreturn variables.feedDAO.readByRemoteID(arguments.remoteID,arguments.siteid,arguments.feedBean) />
 
 </cffunction>
 

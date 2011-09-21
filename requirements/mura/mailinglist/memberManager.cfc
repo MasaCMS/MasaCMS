@@ -109,7 +109,11 @@ to your own modified versions of Mura CMS.
 <cffunction name="read" access="public" output="false" returntype="any" >
 	<cfargument name="data" type="struct" />
 	
-	<cfset var memberBean = variables.memberDAO.read(arguments.data.email,arguments.data.siteid) />
+	<cfif not structKeyExists(arguments.data,"mailinglistBean")>
+		<cfset arguments.data.mailinglistBean="">	
+	</cfif>
+	
+	<cfset var memberBean = variables.memberDAO.read(arguments.data.email,arguments.data.siteid,arguments.data.mailinglistBean) />
 	
 	<cfreturn memberBean />
 	

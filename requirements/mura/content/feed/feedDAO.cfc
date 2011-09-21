@@ -112,9 +112,13 @@ to your own modified versions of Mura CMS.
 
 <cffunction name="read" access="public" output="false" returntype="any" >
 	<cfargument name="feedID" type="string" />
-
-	<cfset var feedBean=getBean("feed") />
+	<cfargument name="feedBean" default="" />
 	<cfset var rs ="" />
+	<cfset var bean=arguments.feedBean />
+	
+	<cfif not isObject(bean)>
+		<cfset bean=getBean("feed") />
+	</cfif>
 	
 	<cfquery name="rs" datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	Select
@@ -124,24 +128,28 @@ to your own modified versions of Mura CMS.
 	</cfquery>
 	
 	<cfif rs.recordcount>
-	<cfset feedBean.set(rs) />
-	<cfset feedBean.setcontentID(readItems(rs.feedID,"contentID")) />
-	<cfset feedBean.setCategoryID(readItems(rs.feedID,"categoryID")) />
-	<cfset feedBean.setAdvancedParams(readAdvancedParams(rs.feedID)) />
-	<cfset feedBean.setIsNew(0)>
+	<cfset bean.set(rs) />
+	<cfset bean.setcontentID(readItems(rs.feedID,"contentID")) />
+	<cfset bean.setCategoryID(readItems(rs.feedID,"categoryID")) />
+	<cfset bean.setAdvancedParams(readAdvancedParams(rs.feedID)) />
+	<cfset bean.setIsNew(0)>
 	</cfif>
 	
-	<cfreturn feedBean />
+	<cfreturn bean />
 </cffunction>
 
 <cffunction name="readByName" access="public" output="false" returntype="any" >
 	<cfargument name="name" type="string" />
 	<cfargument name="siteid" type="string" />
-
-	<cfset var feedBean=getBean("feed") />
+	<cfargument name="feedBean" default="" />
 	<cfset var rs ="" />
 	<cfset var beanArray=arrayNew(1)>
 	<cfset var utility="">
+	<cfset var bean=arguments.feedBean />
+	
+	<cfif not isObject(bean)>
+		<cfset bean=getBean("feed") />
+	</cfif>
 	
 	<cfquery name="rs" datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	Select 
@@ -154,35 +162,39 @@ to your own modified versions of Mura CMS.
 	<cfif rs.recordcount gt 1>
 		<cfset utility=getBean("utility")>
 		<cfloop query="rs">
-			<cfset feedBean=getBean("feed").set(utility.queryRowToStruct(rs,rs.currentrow))>
-			<cfset feedBean.setcontentID(readItems(rs.feedID,"contentID")) />
-			<cfset feedBean.setCategoryID(readItems(rs.feedID,"categoryID")) />
-			<cfset feedBean.setAdvancedParams(readAdvancedParams(rs.feedID)) />
-			<cfset feedBean.setIsNew(0)>
+			<cfset bean=getBean("feed").set(utility.queryRowToStruct(rs,rs.currentrow))>
+			<cfset bean.setcontentID(readItems(rs.feedID,"contentID")) />
+			<cfset bean.setCategoryID(readItems(rs.feedID,"categoryID")) />
+			<cfset bean.setAdvancedParams(readAdvancedParams(rs.feedID)) />
+			<cfset bean.setIsNew(0)>
 			<cfset arrayAppend(beanArray,feedBean)>	
 		</cfloop>
 		<cfreturn beanArray>
 	<cfelseif rs.recordcount>
-		<cfset feedBean.set(rs) />
-		<cfset feedBean.setcontentID(readItems(rs.feedID,"contentID")) />
-		<cfset feedBean.setCategoryID(readItems(rs.feedID,"categoryID")) />
-		<cfset feedBean.setAdvancedParams(readAdvancedParams(rs.feedID)) />
-		<cfset feedBean.setIsNew(0)>
+		<cfset bean.set(rs) />
+		<cfset bean.setcontentID(readItems(rs.feedID,"contentID")) />
+		<cfset bean.setCategoryID(readItems(rs.feedID,"categoryID")) />
+		<cfset bean.setAdvancedParams(readAdvancedParams(rs.feedID)) />
+		<cfset bean.setIsNew(0)>
 	<cfelse>
-		<cfset feedBean.setSiteID(arguments.siteID)>
+		<cfset bean.setSiteID(arguments.siteID)>
 	</cfif>
 	
-	<cfreturn feedBean />
+	<cfreturn bean />
 </cffunction>
 
 <cffunction name="readByRemoteID" access="public" output="false" returntype="any" >
 	<cfargument name="remoteID" type="string" />
 	<cfargument name="siteid" type="string" />
-
-	<cfset var feedBean=getBean("feed") />
+	<cfargument name="feedBean" default="" />
 	<cfset var rs ="" />
 	<cfset var beanArray=arrayNew(1)>
 	<cfset var utility="">
+	<cfset var bean=arguments.feedBean />
+	
+	<cfif not isObject(bean)>
+		<cfset bean=getBean("feed") />
+	</cfif>
 		
 	<cfquery name="rs" datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	Select 
@@ -195,25 +207,25 @@ to your own modified versions of Mura CMS.
 	<cfif rs.recordcount gt 1>
 		<cfset utility=getBean("utility")>
 		<cfloop query="rs">
-			<cfset feedBean=getBean("feed").set(utility.queryRowToStruct(rs,rs.currentrow))>
-			<cfset feedBean.setcontentID(readItems(rs.feedID,"contentID")) />
-			<cfset feedBean.setCategoryID(readItems(rs.feedID,"categoryID")) />
-			<cfset feedBean.setAdvancedParams(readAdvancedParams(rs.feedID)) />
-			<cfset feedBean.setIsNew(0)>
-			<cfset arrayAppend(beanArray,feedBean)>		
+			<cfset bean=getBean("feed").set(utility.queryRowToStruct(rs,rs.currentrow))>
+			<cfset bean.setcontentID(readItems(rs.feedID,"contentID")) />
+			<cfset bean.setCategoryID(readItems(rs.feedID,"categoryID")) />
+			<cfset bean.setAdvancedParams(readAdvancedParams(rs.feedID)) />
+			<cfset bean.setIsNew(0)>
+			<cfset arrayAppend(beanArray,bean)>		
 		</cfloop>
 		<cfreturn beanArray>
 	<cfelseif rs.recordcount>
-		<cfset feedBean.set(rs) />
-		<cfset feedBean.setcontentID(readItems(rs.feedID,"contentID")) />
-		<cfset feedBean.setCategoryID(readItems(rs.feedID,"categoryID")) />
-		<cfset feedBean.setAdvancedParams(readAdvancedParams(rs.feedID)) />
-		<cfset feedBean.setIsNew(0)>
+		<cfset bean.set(rs) />
+		<cfset bean.setcontentID(readItems(rs.feedID,"contentID")) />
+		<cfset bean.setCategoryID(readItems(rs.feedID,"categoryID")) />
+		<cfset bean.setAdvancedParams(readAdvancedParams(rs.feedID)) />
+		<cfset bean.setIsNew(0)>
 	<cfelse>
-		<cfset feedBean.setSiteID(arguments.siteID)>
+		<cfset bean.setSiteID(arguments.siteID)>
 	</cfif>
 	
-	<cfreturn feedBean />
+	<cfreturn bean />
 </cffunction>
 
 <cffunction name="update" access="public" output="false" returntype="void" >
