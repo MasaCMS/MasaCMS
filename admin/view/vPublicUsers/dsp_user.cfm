@@ -211,16 +211,16 @@ select * from rsSubTypes where subType <> 'Default'
 		<dl class="oneColumn">
 		<dd class="first">
 			<cfif application.categoryManager.getCategoryCount(attributes.siteid)>
-			<ul class="interestGroups">
+			<!---<ul class="interestGroups">--->
 				<cfloop collection="#application.settingsManager.getSites()#" item="site">
 					<cfif application.settingsManager.getSite(site).getPrivateUserPoolID() eq attributes.siteid>
-						<li>
-							<cfoutput>#application.settingsManager.getSite(site).getSite()#</cfoutput>
+						<!---<li>--->
+							<cfoutput><h4>#application.settingsManager.getSite(site).getSite()#</h4></cfoutput>
 							<cf_dsp_categories_nest siteID="#attributes.siteID#" parentID="" categoryID="#attributes.categoryID#" nestLevel="0" >
-						</li>
+						<!---</li>--->
 					</cfif>
 				</cfloop>
-			</ul>
+			<!---</ul>--->
 			<cfelse>
 			<em>#application.rbFactory.getKeyValue(session.rb,'user.nointerestcategories')#</em>
 			</cfif> 
