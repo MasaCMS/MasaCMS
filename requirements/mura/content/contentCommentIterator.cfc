@@ -45,8 +45,6 @@ to your own modified versions of Mura CMS.
 <cfset variables.commentBean="">
 
 <cffunction name="packageRecord" access="public" output="false" returntype="any">
-	<cfset var comment=variables.contentManager.getCommentBean() />
-	
 	<cfif NOT isObject(variables.commentBean)>
 		<cfset variables.commentBean=getBean('comment') />
 		<cfset variables.commentStructTemplate=structCopy(variables.commentBean.getAllValues())>
