@@ -179,7 +179,8 @@ to your own modified versions of Mura CMS.
 						<cfset arrayAppend(updatedArray,"#destination##listLast(rs.entry,variables.fileDelim)#")>
 					</cfif>
 				</cfloop>
-				<cfset application.appInitialized=false />
+				<cfset application.appInitialized=false>
+				<cfset application.appAutoUpdated=true>
 				<cfset application.coreversion=updateVersion>
 			</cfif>
 			<cfdirectory action="delete" directory="#currentDir##zipFileName#" recurse="true">

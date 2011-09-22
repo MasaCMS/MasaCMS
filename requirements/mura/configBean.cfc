@@ -124,6 +124,7 @@ to your own modified versions of Mura CMS.
 <cfset variables.instance.duplicateTransients=false>
 <cfset variables.instance.maxArchivedVersions=0 />
 <cfset variables.instance.postBundles=true />
+<cfset variables.instance.applyDBUpdates=true />
 
 <cffunction name="OnMissingMethod" access="public" returntype="any" output="false" hint="Handles missing method exceptions.">
 <cfargument name="MissingMethodName" type="string" required="true" hint="The name of the missing method." />
