@@ -47,7 +47,7 @@ to your own modified versions of Mura CMS.
 <p>#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"permissions.moduletext"),request.rscontent.title)#</p>
   <form novalidate="novalidate"  method="post" name="form1" action="?fuseaction=cPerm.updatemodule&contentid=#URLEncodedFormat(attributes.contentid)#">
         <h3>#application.rbFactory.getKeyValue(session.rb,'user.adminusergroups')#</h3>
-		<table class="stripe">
+		<table class="mura-table-grid stripe">
           <tr> 
             <th>#application.rbFactory.getKeyValue(session.rb,'permissions.allow')#</th>
             <th class="varWidth">#application.rbFactory.getKeyValue(session.rb,'permissions.group')#</th>
@@ -71,7 +71,7 @@ to your own modified versions of Mura CMS.
 		<cfset request.rslist=request.groups.publicGroups />
 		 <h3>#application.rbFactory.getKeyValue(session.rb,'user.membergroups')#</h3>
 		 <p>#application.rbFactory.getKeyValue(session.rb,'permissions.memberpermscript')#</p>
-		 <table class="stripe">
+		 <table class="mura-table-grid stripe">
           <tr> 
             <th>#application.rbFactory.getKeyValue(session.rb,'permissions.allow')#</th>
             <th class="varWidth">#application.rbFactory.getKeyValue(session.rb,'permissions.group')#</th>

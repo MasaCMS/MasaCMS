@@ -52,7 +52,7 @@ to your own modified versions of Mura CMS.
 </cfoutput>
 <cfif not attributes.isNew>
 <cfset request.rsList=application.contentManager.getPrivateSearch(attributes.siteid,attributes.keywords)/>
- <table class="stripe">
+ <table class="mura-table-grid stripe">
     <tr> 
       <th class="varWidth"><cfoutput>#application.rbFactory.getKeyValue(session.rb,'collections.selectnewsection')#</cfoutput></th>
 	  <th class="administration">&nbsp;</th>

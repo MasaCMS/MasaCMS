@@ -89,7 +89,7 @@ to your own modified versions of Mura CMS.
 	<li><a href="index.cfm?fuseaction=cAdvertising.editPlacement&campaignid=#URLEncodedFormat(attributes.campaignid)#&placementid=&siteid=#URLEncodedFormat(attributes.siteid)#&userid=#URLEncodedFormat(attributes.userid)#">#application.rbFactory.getKeyValue(session.rb,'advertising.addplacement')#</a></li>
 	</ul>
 	
-	<table class="stripe">
+	<table class="mura-table-grid stripe">
 	<tr>
 		<th class="varWidth">#application.rbFactory.getKeyValue(session.rb,'advertising.adzone')#</th>
 		<th>#application.rbFactory.getKeyValue(session.rb,'advertising.creativeasset')#</th>

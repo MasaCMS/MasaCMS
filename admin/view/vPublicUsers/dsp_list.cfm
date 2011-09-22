@@ -54,7 +54,7 @@ to your own modified versions of Mura CMS.
 <h3>#application.rbFactory.getKeyValue(session.rb,'user.usergroups')#</h3>
 
 
-        <table class="stripe">
+        <table class="mura-table-grid stripe">
                   <tr> 
                     <th class="varWidth">#application.rbFactory.getKeyValue(session.rb,'user.name')# (<em>#application.rbFactory.getKeyValue(session.rb,'user.members')#</em>)</th>
                     <th>#application.rbFactory.getKeyValue(session.rb,'user.email')#</th>

@@ -50,7 +50,7 @@ to your own modified versions of Mura CMS.
 	
   <form novalidate="novalidate" method="post" name="form1" action="index.cfm?fuseaction=cPerm.update&contentid=#URLEncodedFormat(attributes.contentid)#&parentid=#URLEncodedFormat(attributes.parentid)#">
            <h3>#application.rbFactory.getKeyValue(session.rb,'user.adminusergroups')#</h3>
-			<table class="stripe">
+			<table class="mura-table-grid stripe">
 			<tr> 
             <th>#application.rbFactory.getKeyValue(session.rb,'permissions.editor')#</th>
             <th>#application.rbFactory.getKeyValue(session.rb,'permissions.author')#</th>
@@ -83,7 +83,7 @@ to your own modified versions of Mura CMS.
 		<h3>#application.rbFactory.getKeyValue(session.rb,'user.membergroups')#</h3>
 		<p>#application.rbFactory.getKeyValue(session.rb,'permissions.memberpermscript')#
 		  #application.rbFactory.getKeyValue(session.rb,'permissions.memberpermnodescript')#</p>
-		<table class="stripe">
+		<table class="mura-table-grid stripe">
 			<tr> 
             <th>#application.rbFactory.getKeyValue(session.rb,'permissions.editor')#</th>
             <th>#application.rbFactory.getKeyValue(session.rb,'permissions.author')#</th>

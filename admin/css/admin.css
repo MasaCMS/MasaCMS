@@ -2605,7 +2605,7 @@ table th a {
 }
 
 
-table td {
+table.mura-table-grid td {
 	color: #333232;
 	padding: 4px 5px 4px 5px;
 	border-left: 1px solid #DBDBDB;

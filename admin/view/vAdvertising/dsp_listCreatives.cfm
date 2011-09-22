@@ -49,7 +49,7 @@ to your own modified versions of Mura CMS.
 	<input type="hidden" name="siteid" value="#HTMLEditFormat(attributes.siteid)#">
 </form>
 
-<table class="stripe">
+<table class="mura-table-grid stripe">
 <tr>
 	<th class="varWidth">#application.rbFactory.getKeyValue(session.rb,'advertising.name')#</th>
 	<th>#application.rbFactory.getKeyValue(session.rb,'advertising.advertiser')#</th>

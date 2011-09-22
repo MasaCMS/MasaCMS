@@ -67,7 +67,7 @@ to your own modified versions of Mura CMS.
 </form>
 <h3>#request.listBean.getname()#</h3>
 
-<table id="metadata" class="stripe">
+<table id="metadata" class="mura-table-grid stripe">
 <tr>
 	<th class="varWidth">#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.emails')# (#request.rslist.recordcount#)</th>
 	<th>#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.name')#</th>

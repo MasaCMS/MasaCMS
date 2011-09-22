@@ -57,7 +57,7 @@ to your own modified versions of Mura CMS.
 </tr>
 </table>
 <cfif application.settingsManager.getSite(attributes.siteID).getExtranet() eq 1>
-<table class="stripe" id="memberActivity">
+<table class="mura-table-grid stripe" id="memberActivity">
 <tr>
 	<th colspan="2">#application.rbFactory.getKeyValue(session.rb,"dashboard.memberactivity")#</th>
 </tr>

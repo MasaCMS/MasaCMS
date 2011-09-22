@@ -74,7 +74,7 @@ to your own modified versions of Mura CMS.
 </form>
 
 <h3 class="alt">#application.rbFactory.getKeyValue(session.rb,"dashboard.session.totalsearches")#: <strong>#rstotal.keywordCount#</strong></h3>
-<table class="stripe">
+<table class="mura-table-grid stripe">
 <tr>
 <th>#application.rbFactory.getKeyValue(session.rb,"dashboard.session.keywords")#</th>
 <th>#application.rbFactory.getKeyValue(session.rb,"dashboard.session.count")#</th>

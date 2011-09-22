@@ -138,7 +138,7 @@ to your own modified versions of Mura CMS.
 <dl class="oneColumn">
 <dt class="first">#application.rbFactory.getKeyValue(session.rb,'collections.choosecontentfromsection')#: <span id="selectFilter"><a href="javascript:;" onclick="javascript: loadSiteFilters('#attributes.siteid#','',1);return false;">[#application.rbFactory.getKeyValue(session.rb,'collections.selectnewsection')#]</a></span>
 </dt>
-<table id="contentFilters" class="stripe"> 
+<table id="contentFilters" class="mura-table-grid stripe"> 
 <tr>
 <th class="varWidth">#application.rbFactory.getKeyValue(session.rb,'collections.section')#</th>
 <th>#application.rbFactory.getKeyValue(session.rb,'collections.type')#</th>

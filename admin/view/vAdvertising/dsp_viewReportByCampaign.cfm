@@ -111,7 +111,7 @@ to your own modified versions of Mura CMS.
 	</cfsilent>
 	
 	<cfoutput><h4>#month(theMonth)#/#year(theMonth)#</h4>
-	<table class="stripe">
+	<table class="mura-table-grid stripe">
 	<tr>
 	<th class="varWidth">#application.rbFactory.getKeyValue(session.rb,'advertising.adzone')#</th>
 		<th>#application.rbFactory.getKeyValue(session.rb,'advertising.creative')#</th>
@@ -202,7 +202,7 @@ to your own modified versions of Mura CMS.
 <cfoutput>
 	<h3>#application.rbFactory.getKeyValue(session.rb,'advertising.total')#</h3>
 
-	<table id="metadata" class="stripe">
+	<table id="metadata" class="mura-table-grid stripe">
 	<tr>
 		<th>#application.rbFactory.getKeyValue(session.rb,'advertising.totalm')#</th>
 		<th>#application.rbFactory.getKeyValue(session.rb,'advertising.cpmtotal')#</th>

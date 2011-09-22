@@ -44,7 +44,7 @@ to your own modified versions of Mura CMS.
 
 <cfset listed=0><cfoutput>
 	<h2>#application.rbFactory.getKeyValue(session.rb,'sitemanager.drafts')#</h2>
-	<table class="stripe">
+	<table class="mura-table-grid stripe">
     <tr> 
       <th class="varWidth">#application.rbFactory.getKeyValue(session.rb,'sitemanager.drafts.title')#</th>
 	  <th>#application.rbFactory.getKeyValue(session.rb,'sitemanager.drafts.contenttype')#</th>

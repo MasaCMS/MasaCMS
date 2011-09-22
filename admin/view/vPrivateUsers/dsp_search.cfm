@@ -43,7 +43,7 @@ to your own modified versions of Mura CMS.
 <cfoutput>
 <h2>#application.rbFactory.getKeyValue(session.rb,'user.adminusersearchresults')#</h2>
 
-        <table class="stripe">
+        <table class="mura-table-grid stripe">
           <tr> 
             <th class="varWidth">Name</th>
             <th>#application.rbFactory.getKeyValue(session.rb,'user.email')#</th>

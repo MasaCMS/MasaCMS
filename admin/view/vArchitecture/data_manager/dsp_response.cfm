@@ -114,7 +114,7 @@ to your own modified versions of Mura CMS.
 <cfset rsData=application.dataCollectionManager.getData(attributes)/>
 </cfsilent>
 <cfif rsData.recordcount>
-<table class="stripe">
+<table class="mura-table-grid stripe">
 <tr>
 <th>&nbsp;</th>
 <th><cfoutput>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.datetimeentered')#</cfoutput></th>

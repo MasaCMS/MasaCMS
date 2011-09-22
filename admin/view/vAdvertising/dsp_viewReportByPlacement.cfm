@@ -97,7 +97,7 @@ to your own modified versions of Mura CMS.
 <h3>#application.rbFactory.getKeyValue(session.rb,'advertising.month')#</h3>
 
 	<h4>#request.rsdataImps.reportMonth#/#request.rsdataImps.reportYear#</h4>
-	 <table class="stripe">
+	 <table class="mura-table-grid stripe">
 	 	<tr>
 			  	<th>#application.rbFactory.getKeyValue(session.rb,'advertising.hour')#</th>
 				<th>#application.rbFactory.getKeyValue(session.rb,'advertising.impressions')#</th>
@@ -161,7 +161,7 @@ to your own modified versions of Mura CMS.
    </cfsilent>
 	<h3>#application.rbFactory.getKeyValue(session.rb,'advertising.total')#</h3>
 	
-	 <table border="0" cellpadding="3" cellspacing="0" id="metadata" class="stripe">
+	 <table border="0" cellpadding="3" cellspacing="0" id="metadata" class="mura-table-grid stripe">
 			<tr>
 			  	<th>&nbsp;</th>
 				<th>#application.rbFactory.getKeyValue(session.rb,'advertising.impressions')#</th>

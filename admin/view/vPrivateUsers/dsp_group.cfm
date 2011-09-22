@@ -138,7 +138,7 @@ loadExtendedAttributes('#request.userbean.getUserID()#','1','#request.userbean.g
 
 
       <cfif attributes.userid neq ''><cfoutput><h4 class="separate">#application.rbFactory.getKeyValue(session.rb,'user.groupmembers')#</h4> 
-        <table class="stripe">
+        <table class="mura-table-grid stripe">
             <tr> 
               <th class="varWidth">#application.rbFactory.getKeyValue(session.rb,'user.name')#</th>
               <th>#application.rbFactory.getKeyValue(session.rb,'user.email')#</th>

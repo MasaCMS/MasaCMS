@@ -104,7 +104,7 @@ to your own modified versions of Mura CMS.
 				});
 			</script>
 			<form novalidate="novalidate" name="form1" id="form1" action="index.cfm?fuseaction=csettings.list" method="post">
-				<table class="stripe">
+				<table class="mura-table-grid stripe">
 					<tr>
 						<cfif attributes.siteUpdateSelect eq "true">
 							<th>
@@ -212,7 +212,7 @@ to your own modified versions of Mura CMS.
 				<input name="newPlugin" type="file" required="true" message="Please select a plugin file.">
 				<input type="submit" value="Deploy"/>
 			</form>
-			<table class="stripe">
+			<table class="mura-table-grid stripe">
 				<tr>
 					<th class="varWidth">Name</th>
 					<th>Directory</th>

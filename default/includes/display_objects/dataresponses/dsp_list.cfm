@@ -60,7 +60,7 @@ to your own modified versions of Mura CMS.
 </cfif>
 </cfsilent>
 <cfoutput><#$.getHeaderTag('subHead1')#>#$.content('title')#</#$.getHeaderTag('subHead1')#></cfoutput>
-<table class="stripe">
+<table class="mura-table-grid stripe">
 <tr>
 <cfloop list="#data.fieldnames#" index="f">
 <th><cfoutput>#f#</cfoutput></th>

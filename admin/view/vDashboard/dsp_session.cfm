@@ -54,7 +54,7 @@ to your own modified versions of Mura CMS.
 </ul>
 
 
-<table class="stripe"> 
+<table class="mura-table-grid stripe"> 
 <tr>
 <th>#application.rbFactory.getKeyValue(session.rb,"dashboard.session.user")#</th>
 <th class="varWidth">#application.rbFactory.getKeyValue(session.rb,"dashboard.session.content")#</th>

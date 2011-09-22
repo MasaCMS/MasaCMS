@@ -54,7 +54,7 @@ to your own modified versions of Mura CMS.
  <input type="button" class="submit" onclick="submitForm(document.forms.form1);" value="#application.rbFactory.getKeyValue(session.rb,'user.search')#" /></form>
 
 
-        <table class="stripe">
+        <table class="mura-table-grid stripe">
           <tr> 
             <th class="varWidth">#application.rbFactory.getKeyValue(session.rb,'user.name')#</th>
             <th>#application.rbFactory.getKeyValue(session.rb,'user.email')#</th>

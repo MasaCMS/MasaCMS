@@ -78,7 +78,7 @@ to your own modified versions of Mura CMS.
 <input type="hidden" value="#HTMLEditFormat(attributes.siteid)#" name="siteID"/>
 <input type="hidden" value="cDashboard.topRated" name="fuseaction"/>
 </form>
-<table class="stripe">
+<table class="mura-table-grid stripe">
 <tr>
 <th class="varWidth">Content</th>
 <th>#application.rbFactory.getKeyValue(session.rb,"dashboard.session.averagerating")#</th>

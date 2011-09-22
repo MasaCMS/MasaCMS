@@ -89,7 +89,7 @@ to your own modified versions of Mura CMS.
 </ul>
 </cfoutput>
 <cfoutput>
-<table class="stripe">
+<table class="mura-table-grid stripe">
   <tr><th nowrap class="varWidth">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.title')#</th>
 <th>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.notes')#</th>
 <cfif hasChangesets><th>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.changeset')#</th></cfif> 

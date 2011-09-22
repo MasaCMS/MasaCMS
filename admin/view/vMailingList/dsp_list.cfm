@@ -43,7 +43,7 @@ to your own modified versions of Mura CMS.
 <cfoutput>
 <h2>#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager')#</h2>
 <cfoutput><ul id="navTask"><li><a title="Add Mailing List" href="index.cfm?fuseaction=cMailingList.edit&siteid=#URLEncodedFormat(attributes.siteid)#&mlid=">#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.addmailinglist')#</a></li></ul></cfoutput>
-<table class="stripe">
+<table class="mura-table-grid stripe">
 <tr>
 	<th class="varWidth">#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.currentmailinglists')#</th>
 	<th>#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.type')#</th>

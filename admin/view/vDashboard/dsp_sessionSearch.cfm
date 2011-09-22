@@ -282,7 +282,7 @@ to your own modified versions of Mura CMS.
 	<cfoutput>
 	<h3>#application.rbFactory.getKeyValue(session.rb,"dashboard.session.totalsessions")# (#request.rslist.recordcount#)</h3>
 	
-<table class="stripe"> 
+<table class="mura-table-grid stripe"> 
 <tr>
 <th>#application.rbFactory.getKeyValue(session.rb,"dashboard.session.user")#</th>
 <th>#application.rbFactory.getKeyValue(session.rb,"dashboard.session.locale")#</th>

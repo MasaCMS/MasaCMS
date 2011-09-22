@@ -120,7 +120,7 @@ to your own modified versions of Mura CMS.
 </form>
 </div>
 </cfoutput>
-	  <table id="metadata" class="stripe">
+	  <table id="metadata" class="mura-table-grid stripe">
         <tr> 
 		  <cfset subjectDirection = "asc">
 		  <cfset createdDateDirection = "desc">

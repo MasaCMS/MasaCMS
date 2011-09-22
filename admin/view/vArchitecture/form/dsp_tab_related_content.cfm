@@ -46,7 +46,7 @@ to your own modified versions of Mura CMS.
 <div id="tabRelatedcontent">
 <dl class="oneColumn">
 <dt class="first">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.relatedcontent')#: <span id="selectRelatedContent"> <a href="javascript:;" onclick="javascript: loadRelatedContent('#HTMLEditFormat(attributes.siteid)#','',1);return false;">[#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.addrelatedcontent')#]</a></span></dt>
-<table id="relatedContent" class="stripe"> 
+<table id="relatedContent" class="mura-table-grid stripe"> 
 <tr>
 <th class="varWidth">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.contenttitle')#</th>
 <th>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.type')#</th>
