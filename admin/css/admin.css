@@ -374,6 +374,14 @@ img.tabPreloader {
 	background: url(../images/rule_dotted_big.gif) repeat-x;
 }
 
+#actionIndicator {
+	clear: both;
+	margin: 2em auto;
+	padding: 26px 0 0 0;
+	background: url(../images/rule_dotted_big.gif) repeat-x;
+}
+
+
 .separateAlt {
 	clear: both;
 	margin: 0 0 16px 0;
