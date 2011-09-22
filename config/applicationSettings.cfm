@@ -77,6 +77,7 @@ to your own modified versions of Mura CMS.
 	<cfset properties = createObject( 'java', 'java.util.Properties' ).init()>
 	<cfset fileStream = createObject( 'java', 'java.io.FileInputStream').init( getDirectoryFromPath(getCurrentTemplatePath()) & "/settings.ini.cfm")>
 	<cfset properties.load( fileStream )>
+	<cfset fileStream.close()>
 
 	<!--- define custom coldfusion mappings. Keys are mapping names, values are full paths  --->
 	<cfif StructKeyExists(SERVER,"bluedragon") and not findNoCase("Windows",server.os.name)>
