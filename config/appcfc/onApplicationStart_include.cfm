@@ -45,6 +45,7 @@ to your own modified versions of Mura CMS.
 <cfparam name="application.appInitialized" default="false" />
 <cfparam name="application.appReloadKey" default="appreload" />
 <cfparam name="application.broadcastInit" default="false" />
+<cfparam name="application.appAutoUpdated" default="false" />
 <cfparam name="application.sessionTrackingThrottle" default="true"/>
 <cfparam name="application.instanceID" default="#createUUID()#" />
 <cfparam name="application.CFVersion" default="#Left(SERVER.COLDFUSION.PRODUCTVERSION,Find(",",SERVER.COLDFUSION.PRODUCTVERSION)-1)#" />
@@ -156,7 +157,11 @@ to your own modified versions of Mura CMS.
 			<cfinclude template="/muraWRM/config/onGlobalConfig.cfm">
 		</cfif>
 		
-		<cfset application.configBean.applyDbUpdates() />
+		<cfif application.configBean.getValue("applyDBUpdates") or application.appAutoUpdated>
+			<cfset application.configBean.applyDbUpdates() />
+		</cfif>
+		
+		<cfset application.appAutoUpdated=false>
 		
 		<cfset application.settingsManager=application.serviceFactory.getBean("settingsManager") />
 		<cfset application.pluginManager=application.serviceFactory.getBean("pluginManager") />
