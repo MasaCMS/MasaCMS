@@ -173,20 +173,15 @@ function isEmail(cur){
 }
 
 function stripe(theclass) {
- var tables=document.body.getElementsByTagName('table');
-	
-   for (var t = 0; t < tables.length; t++){
-			if (tables[t].className==theclass) {
-				for (var r = 0; r < tables[t].rows.length; r++) {
-					if(r % 2){
-						tables[t].rows[r].className = 'alt';
-						} else {
-						tables[t].rows[r].className = '';
-					}
-				}
+  jQuery('table.' + theclass + ' tr').each(
+		function(index) {
+			if(index % 2){
+				jQuery(this).addClass('alt');	
+			} else {
+				jQuery(this).removeClass('alt');
 			}
 		}
-   if(typeof(jQuery) != "undefined"){
+	);
    jQuery('div.mura-grid.' + theclass + ' dl').each(
 		function(index) {
 			if(index % 2){
@@ -196,7 +191,6 @@ function stripe(theclass) {
 			}
 		}
 	);
-   }
 }
 
 
