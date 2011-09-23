@@ -54,7 +54,7 @@ to your own modified versions of Mura CMS.
 <li><a href="index.cfm?fuseaction=cPublicUsers.editUser&userid=&siteid=#URLEncodedFormat(attributes.siteid)#&groupid=#application.advertiserManager.getGroupID(attributes.siteid)#&routeid=adManager">Add Advertiser</li>
 </ul> --->
 
-<table class="stripe">
+<table class="mura-table-grid stripe">
 <tr>
 	<th class="varWidth">#application.rbFactory.getKeyValue(session.rb,'advertising.advertiser')#</th>
 	<th>#application.rbFactory.getKeyValue(session.rb,'advertising.contact')#</th>

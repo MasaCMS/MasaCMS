@@ -44,7 +44,7 @@ to your own modified versions of Mura CMS.
 <cfset currentChangeset=application.changesetManager.read(rc.changesetID)>
 <cfset changesets=application.changesetManager.getIterator(siteID=rc.siteID,published=0,publishdate=now(),publishDateOnly=false)>
 <cfoutput>
-<table class="stripe">
+<table class="mura-table-grid stripe">
 <tr>
 <th>&nbsp;</th>
 <th class="varWidth">#application.rbFactory.getKeyValue(session.rb,"changesets.name")#</th>

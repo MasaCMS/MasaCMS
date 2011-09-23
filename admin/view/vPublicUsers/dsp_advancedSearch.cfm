@@ -214,7 +214,7 @@ to your own modified versions of Mura CMS.
 <cfset request.nextN=application.utility.getNextN(request.rsList,15,attributes.startrow)/>
 
 </cfsilent><cfoutput>
-        <table class="stripe">
+        <table class="mura-table-grid stripe">
           <tr> 
             <th class="varWidth">#application.rbFactory.getKeyValue(session.rb,"user.name")#</th>
             <th>#application.rbFactory.getKeyValue(session.rb,"user.email")#</th>

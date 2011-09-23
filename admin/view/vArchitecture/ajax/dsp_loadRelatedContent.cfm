@@ -49,7 +49,7 @@ to your own modified versions of Mura CMS.
 </cfoutput>
 <br/><br/><cfif not attributes.isNew>
 <cfset request.rsList=application.contentManager.getPrivateSearch(attributes.siteid,attributes.keywords)/>
- <table class="stripe">
+ <table class="mura-table-grid stripe">
     <tr> 
       <th class="varWidth"><cfoutput><a href="##" class="tooltip">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.addrelatedcontent')#<span>#application.rbFactory.getKeyValue(session.rb,'tooltip.addRelatedContent')#</span></a></cfoutput></th>
 	  <th class="administration">&nbsp;</th>

@@ -65,7 +65,7 @@ to your own modified versions of Mura CMS.
 <h4>#application.contentRenderer.dspZoom(crumbdata)#</h4>
 </cfif>
 
-<table class="stripe"> 
+<table class="mura-table-grid stripe"> 
 <tr>
 <th>#application.rbFactory.getKeyValue(session.rb,"dashboard.session.user")#</th>
 <th>#application.rbFactory.getKeyValue(session.rb,"dashboard.session.locale")#</th>

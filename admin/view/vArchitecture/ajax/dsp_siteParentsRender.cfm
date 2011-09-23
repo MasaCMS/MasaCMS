@@ -54,7 +54,7 @@ to your own modified versions of Mura CMS.
 <cfif not parentBean.getIsNew()>
 <cfset parentCrumb=application.contentManager.getCrumbList(attributes.parentid, attributes.siteid)/>
 </cfif>
- <table class="stripe">
+ <table class="mura-table-grid stripe">
     <cfif not parentBean.getIsNew()>
 	<tr> 
       <th class="varWidth"><cfoutput>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.selectnewcontentparent')#</cfoutput></th>

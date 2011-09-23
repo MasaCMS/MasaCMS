@@ -43,7 +43,7 @@ to your own modified versions of Mura CMS.
 
 <cfoutput><h2>#application.rbFactory.getKeyValue(session.rb,"categorymanager")#</h2>
 <ul id="navTask"><li><a  title="#application.rbFactory.getKeyValue(session.rb,"categorymanager.addnewcategory")#" href="index.cfm?fuseaction=cCategory.edit&categoryID=&parentID=&siteid=#URLEncodedFormat(attributes.siteid)#">#application.rbFactory.getKeyValue(session.rb,"categorymanager.addnewcategory")#</a></li></ul>
-<table class="stripe"> 
+<table class="mura-table-grid stripe"> 
 <tr>
 <th class="add">&nbsp;</td>
 <th class="varWidth">#application.rbFactory.getKeyValue(session.rb,"categorymanager.category")#</th>

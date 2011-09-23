@@ -46,7 +46,7 @@ StructAppend(attributes, form, "no");
 <form name="frmLinks" method="post" onSubmit="return false;">
 <cfif attributes.keywords neq ''>
 <div style="overflow:auto;width:549px;height:300px; ">
- <table id="metadata" class="stripe" style="margin-bottom: 2px;">
+ <table id="metadata" class="mura-table-grid stripe" style="margin-bottom: 2px;">
     <tr> 
       <th class="varWidth">Title</th>
 	  <th class="administration">&nbsp;</th>

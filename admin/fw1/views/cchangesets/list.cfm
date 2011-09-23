@@ -55,7 +55,7 @@ to your own modified versions of Mura CMS.
 	<input type="hidden" name="siteid" value="#HTMLEditFormat(rc.siteid)#">
 </form>
 
-<table class="stripe"> 
+<table class="mura-table-grid stripe"> 
 <tr>
 <th class="varWidth">#application.rbFactory.getKeyValue(session.rb,'changesets.name')#</th>
 <th>#application.rbFactory.getKeyValue(session.rb,'changesets.datetopublish')#</th>

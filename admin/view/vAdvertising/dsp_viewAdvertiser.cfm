@@ -59,7 +59,7 @@ to your own modified versions of Mura CMS.
 <li><a href="index.cfm?fuseaction=cAdvertising.editCampaign&campaignid=&siteid=#URLEncodedFormat(attributes.siteid)#&userid=#URLEncodedFormat(attributes.userid)#">#application.rbFactory.getKeyValue(session.rb,'advertising.addnewcampaign')#</a></li>
 </ul>
 
-<table class="stripe">
+<table class="mura-table-grid stripe">
 <tr>
 	<th class="varWidth">#application.rbFactory.getKeyValue(session.rb,'advertising.name')#</th>
 	<th>#application.rbFactory.getKeyValue(session.rb,'advertising.startdate')#</th>
@@ -93,7 +93,7 @@ to your own modified versions of Mura CMS.
 <li><a href="index.cfm?fuseaction=cAdvertising.editCreative&creativeid=&siteid=#URLEncodedFormat(attributes.siteid)#&userid=#URLEncodedFormat(attributes.userid)#">#application.rbFactory.getKeyValue(session.rb,'advertising.addnewcreative')#</a></li>
 </ul>
 
-<table class="stripe">
+<table class="mura-table-grid stripe">
 <tr>
 	<th class="title">#application.rbFactory.getKeyValue(session.rb,'advertising.name')#</th>
 	<th>#application.rbFactory.getKeyValue(session.rb,'advertising.assettype')#</th>

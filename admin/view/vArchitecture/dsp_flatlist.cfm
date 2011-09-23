@@ -100,7 +100,7 @@ to your own modified versions of Mura CMS.
   </form>
   
   </cfoutput>
-  <table class="stripe">
+  <table class="mura-table-grid stripe">
     
 	<cfoutput>
 	<tr> 

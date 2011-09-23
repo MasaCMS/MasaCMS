@@ -2494,7 +2494,7 @@ a.removeCriteria {
 
 /* @group Tables */
 
-table {
+table.mura-table-grid {
 	margin: 0 0 16px 0;
 	border-collapse: collapse;
 	border: 1px solid #DBDBDB;
@@ -2556,7 +2556,7 @@ table + .divide {
 	margin-top: 0;
 }
 
-th {
+.mura-table-grid th {
 	margin: 0 !important;
 	background: #FFFEFE url(../images/bg_th.jpg) repeat-x left bottom;
 	font-style: normal;
@@ -2567,7 +2567,7 @@ th {
 	text-align: center;
 }
 
-th.alt {
+.mura-table-grid th.alt {
 	text-align: left;
 	background-image: none;
 	background-color: #EAF4FE;
@@ -2579,7 +2579,7 @@ th.alt {
 	text-align: left;
 }
 
-th span {
+.mura-table-grid th span {
 	font-weight: normal;
 }
 
@@ -2587,7 +2587,7 @@ th span {
 	color: #666;
 }
 
-table th a {
+.mura-table-grid table th a {
 	color: #000;
 }
 
@@ -2605,7 +2605,7 @@ table th a {
 }
 
 
-table td {
+.mura-table-grid td {
 	color: #333232;
 	padding: 4px 5px 4px 5px;
 	border-left: 1px solid #DBDBDB;
@@ -2634,44 +2634,44 @@ table td table td {
 	width: auto;
 }*/
 
-.alt td {
+.mura-table-grid .alt td {
 	/*border: 1px solid #DBDBDB;*/
 	background-color: #fcfeff;
 }
 
-table td.email {
+.mura-table-grid  td.email {
 	text-transform: lowercase;
 }
 
-table th.url, table td.url {
+.mura-table-grid  th.url, table td.url {
 	text-align: left;
 }
 
-table tr.alt th, table tr.alt td, .alt dl {
+.mura-table-grid  tr.alt th, .mura-table-grid  tr.alt td, .alt dl {
 	background-color: #FCFEFF;
 }
 
-table .varWidth {
+.mura-table-grid .varWidth {
 	width: 95%;
 	text-align: left;
 	white-space: normal;
 }
 
-table td a {
+.mura-table-grid td a {
 	color: #000;
 	text-decoration: none;
 }
 
-table td a:hover {
+.mura-table-grid td a:hover {
 	color: #000;
 	text-decoration: underline;
 }
 
-table td.add {
+.mura-table-grid td.add {
 	padding: 5px 4px 0;
 }
 
-table td.add a, .mura-grid a.add {
+.mura-table-grid td.add a, .mura-grid a.add {
 	display: block;
 	background: url(../images/icons/add_32.png) no-repeat center center;
 	width: 12px;

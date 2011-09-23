@@ -60,7 +60,7 @@ copyContentID = '#session.copyContentID#';
 copySiteID = '#session.copySiteID#';
 </script>
 </cfoutput>
- <table class="stripe">
+ <table class="mura-table-grid stripe">
     <tr> 
 	  <th>&nbsp;</th>
       <th class="varWidth">Title</th>

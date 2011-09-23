@@ -44,7 +44,7 @@ to your own modified versions of Mura CMS.
 <cfoutput><h2>#application.rbFactory.getKeyValue(session.rb,'collections')#</h2>
 <h3>#application.rbFactory.getKeyValue(session.rb,'collections.localcontentindexes')#</h3>
 <ul id="navTask"><li><a  title="#application.rbFactory.getKeyValue(session.rb,'collections.addocalindex')#" href="index.cfm?fuseaction=cFeed.edit&feedID=&siteid=#URLEncodedFormat(attributes.siteid)#&type=Local">#application.rbFactory.getKeyValue(session.rb,'collections.addlocalindex')#</a></li></ul>
-<table class="stripe"> 
+<table class="mura-table-grid stripe"> 
 <tr>
 <th class="varWidth">#application.rbFactory.getKeyValue(session.rb,'collections.index')#</th>
 <th>#application.rbFactory.getKeyValue(session.rb,'collections.language')#</th>
@@ -74,7 +74,7 @@ to your own modified versions of Mura CMS.
 
 <h3 class="divide">#application.rbFactory.getKeyValue(session.rb,'collections.remotecontentfeeds')#</h3>
 <ul id="navTask"><li><a  title="#application.rbFactory.getKeyValue(session.rb,'collections.addremotefeed')#" href="index.cfm?fuseaction=cFeed.edit&feedID=&siteid=#URLEncodedFormat(attributes.siteid)#&type=Remote">#application.rbFactory.getKeyValue(session.rb,'collections.addremotefeed')#</a></li></ul>
-<table class="stripe"> 
+<table class="mura-table-grid stripe"> 
 <tr>
 <th class="varWidth">#application.rbFactory.getKeyValue(session.rb,'collections.feed')#</th>
 <th class="url">#application.rbFactory.getKeyValue(session.rb,'collections.url')#</th>

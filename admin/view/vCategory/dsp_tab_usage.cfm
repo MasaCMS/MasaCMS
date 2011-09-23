@@ -47,7 +47,7 @@ to your own modified versions of Mura CMS.
 <div class="page_aTab">
 <dl class="oneColumn">
 <dt class="first">#application.rbFactory.getKeyValue(session.rb,'categorymanager.usagetext')#:</dt>
- <table class="stripe">
+ <table class="mura-table-grid stripe">
     <tr> 
       <th class="varWidth">#application.rbFactory.getKeyValue(session.rb,'categorymanager.title')#</th>
       <th>#application.rbFactory.getKeyValue(session.rb,'categorymanager.display')#</th>

@@ -52,7 +52,7 @@ to your own modified versions of Mura CMS.
 </ul>
 
 </cfoutput>
-<table class="stripe">
+<table class="mura-table-grid stripe">
 <tr>
 	<th class="varWidth">Class Extension</th>
 	<th class="administration">&nbsp;</th>

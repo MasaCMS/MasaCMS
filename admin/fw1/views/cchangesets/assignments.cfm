@@ -66,7 +66,7 @@ to your own modified versions of Mura CMS.
 
 <h4>Preview Link</h4>
 <p><a title="Preview" href="javascript:preview('#JSStringFormat(rc.previewLink)#','');">#HTMLEditFormat(rc.previewLink)#</a></p>
- <table class="stripe">
+ <table class="mura-table-grid stripe">
     <tr> 
       <th class="varWidth">Title</th>
       <th class="administration">&nbsp;</th>

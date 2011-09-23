@@ -50,7 +50,7 @@ to your own modified versions of Mura CMS.
 <div id="tabUsagereport">
 <dl class="oneColumn">
 <dt class="first">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.usagedescription')#:</dt>
- <table class="stripe">
+ <table class="mura-table-grid stripe">
     <tr> 
       <th class="varWidth">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.title')#</th>
       <th>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.display')#</th>

@@ -133,7 +133,7 @@ to your own modified versions of Mura CMS.
 <h3>Featured Content</h3>
 
 
- <table id="metadata" class="stripe">
+ <table id="metadata" class="mura-table-grid stripe">
     <tr> 
       <th class="varWidth">Title</th>
 	  <cfif request.categoryBean.getSortBy() eq 'orderno'><th>Order</th></cfif>

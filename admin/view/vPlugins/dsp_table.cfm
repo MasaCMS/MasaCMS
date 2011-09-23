@@ -43,7 +43,7 @@ to your own modified versions of Mura CMS.
 <cfoutput>
 <cfset started=false>
 <div id="tab#ucase(replace(local.category,' ','','all'))#">
-<table class="stripe">
+<table class="mura-table-grid stripe">
 <tr>
 <th class="varWidth">#application.rbFactory.getKeyValue(session.rb,"plugin.name")#</th>
 <th>#application.rbFactory.getKeyValue(session.rb,"plugin.directory")#</th>
