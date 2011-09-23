@@ -45,7 +45,7 @@ to your own modified versions of Mura CMS.
 <cfparam name="url.columnNumber" default="">
 <cfparam name="url.rowNumber" default="">
 <cfparam name="url.maxRssItems" default="">
-<cfset $=application.serviceFactory.getBean("MuraScopr").init(url.siteID)>
+<cfset $=application.serviceFactory.getBean("MuraScope").init(url.siteID)>
 <cfset favorite = application.favoriteManager.saveFavorite('', url.userID, url.siteid, url.favoriteName, url.favoriteLocation, url.favoritetype, url.columnNumber, url.rowNumber, url.maxRssItems) />
 <cfset contentLink = "" />
 <cfset lid = replace(favorite.getFavoriteID(), "-", "", "ALL") />
