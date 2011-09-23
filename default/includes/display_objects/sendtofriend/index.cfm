@@ -41,13 +41,7 @@ the GNU General Public License version 2 without this exception. You may, if you
 to your own modified versions of Mura CMS.
 --->
 <cfsilent>
-<cfscript>
-	if (NOT IsDefined("request"))
-	 request=structNew();
-	StructAppend(request, url, "no");
-	StructAppend(request, form, "no");
-</cfscript>
-<cfset $=application.serviceFactory.getBean("MuraScope").init($.event('siteID'))>
+<cfset $=application.serviceFactory.getBean("MuraScope").init(url.siteID)>
 </cfsilent>
 <cfoutput>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">

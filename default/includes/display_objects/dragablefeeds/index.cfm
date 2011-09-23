@@ -41,6 +41,7 @@ the GNU General Public License version 2 without this exception. You may, if you
 to your own modified versions of Mura CMS.
 --->
 <cfsilent>
+<cfset rbFactory=$.siteConfig("rbFactory")>
 <cfset loadJSLib() />
 <cfset $.addToHTMLHeadQueue("dragablefeeds/htmlhead/dragablefeeds.cfm")>	
 <cfswitch expression="#$.getJsLib()#">

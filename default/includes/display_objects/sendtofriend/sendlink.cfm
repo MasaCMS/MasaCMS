@@ -42,13 +42,7 @@ to your own modified versions of Mura CMS.
 --->
 
 <cfsilent>
-<cfscript>
-	if (NOT IsDefined("request"))
-	 request=structNew();
-	StructAppend(request, url, "no");
-	StructAppend(request, form, "no");
-</cfscript>
-<cfset $=application.serviceFactory.getBean('MuraScope').init(request.siteID)>
+<cfset $=application.serviceFactory.getBean('MuraScope').init(form.siteID)>
 <cfset rbFactory=$.siteConfig('RBFactory') />
 <cfparam name="form.ccself" default=0>
 <cfif form.sendto2 neq ''><cfset form.sendto1=listappend(form.sendto1,form.sendto2)></cfif>
