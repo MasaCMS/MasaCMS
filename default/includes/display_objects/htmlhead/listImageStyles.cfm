@@ -7,7 +7,7 @@
 
 <cfoutput>
 <style>						
-##primary .svIndex dl.hasImage {
+.svIndex dl.hasImage {
 <!--- Conditional styles for images constrained by width --->
 <cfif $.siteConfig('gallerySmallScaleBy') eq 'x'>
 padding-left: #totalPadding#px;
