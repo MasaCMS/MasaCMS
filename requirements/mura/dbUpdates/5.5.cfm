@@ -3,7 +3,7 @@
 	datasource="#application.configBean.getDatasource()#"
 	username="#application.configBean.getDbUsername()#"
 	password="#application.configBean.getDbPassword()#"
-	table="tcontent"
+	table="tcontentfeeds"
 	type="columns">
 
 <cfquery name="rsCheck" dbtype="query">
@@ -24,7 +24,7 @@
 </cfcase>
 <cfcase value="oracle">
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
-	ALTER TABLE "TCONTENTFEEDS" ADD "imageSize" varchar2(15)
+	ALTER TABLE tcontentfeeds ADD imageSize varchar2(15)
 	</cfquery>
 </cfcase>
 </cfswitch>
@@ -56,7 +56,7 @@
 </cfcase>
 <cfcase value="oracle">
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
-	ALTER TABLE "TCONTENTFEEDS" ADD "IMAGEHEIGHT" varchar2(15)
+	ALTER TABLE tcontentfeeds ADD imageHeight varchar2(15)
 	</cfquery>
 </cfcase>
 </cfswitch>
@@ -88,7 +88,7 @@
 </cfcase>
 <cfcase value="oracle">
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
-	ALTER TABLE "TCONTENTFEEDS" ADD "IMAGEWIDTH" varchar2(15)
+	ALTER TABLE tcontentfeeds ADD imageWidth varchar2(15)
 	</cfquery>
 </cfcase>
 </cfswitch>
@@ -124,7 +124,7 @@
 </cfif>
 
 <cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
-ALTER TABLE tcontentfeeds ADD displayList MSSQLlob 
+ALTER TABLE tcontentfeeds ADD displayList #MSSQLlob# 
 </cfquery>
 </cfcase>
 <cfcase value="mysql">
@@ -166,7 +166,7 @@ ALTER TABLE tcontentfeeds ADD displayList clob
 </cfcase>
 <cfcase value="oracle">
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
-	ALTER TABLE "TCONTENT" ADD "imageSize" varchar2(15)
+	ALTER TABLE tcontent ADD imageSize varchar2(15)
 	</cfquery>
 </cfcase>
 </cfswitch>
@@ -198,7 +198,7 @@ ALTER TABLE tcontentfeeds ADD displayList clob
 </cfcase>
 <cfcase value="oracle">
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
-	ALTER TABLE "TCONTENT" ADD "IMAGEHEIGHT" varchar2(15)
+	ALTER TABLE tcontent ADD imageHeight varchar2(15)
 	</cfquery>
 </cfcase>
 </cfswitch>
@@ -230,7 +230,7 @@ ALTER TABLE tcontentfeeds ADD displayList clob
 </cfcase>
 <cfcase value="oracle">
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
-	ALTER TABLE "TCONTENT" ADD "IMAGEWIDTH" varchar2(15)
+	ALTER TABLE tcontent ADD imageWidth varchar2(15)
 	</cfquery>
 </cfcase>
 </cfswitch>
@@ -294,7 +294,7 @@ ALTER TABLE tcontentfeeds ADD displayList clob
 </cfcase>
 <cfcase value="oracle">
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
-	ALTER TABLE table tcontent rename column urltitle to urltitle2
+	ALTER TABLE tcontent rename column urltitle to urltitle2
 	</cfquery>
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 	ALTER TABLE tcontent ADD urltitle varchar2(255)
@@ -303,7 +303,7 @@ ALTER TABLE tcontentfeeds ADD displayList clob
 	UPDATE tcontent set urltitle=urltitle2
 	</cfquery>
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
-	ALTER TABLE table tcontent drop column urltitle2
+	ALTER TABLE tcontent drop column urltitle2
 	</cfquery>
 </cfcase>
 </cfswitch>	
@@ -335,7 +335,7 @@ ALTER TABLE tcontentfeeds ADD displayList clob
 </cfcase>
 <cfcase value="oracle">
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
-	ALTER TABLE table tcontent rename column htmltitle to htmltitle2
+	ALTER TABLE tcontent rename column htmltitle to htmltitle2
 	</cfquery>
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 	ALTER TABLE tcontent ADD htmltitle varchar2(255)
@@ -344,7 +344,7 @@ ALTER TABLE tcontentfeeds ADD displayList clob
 	UPDATE tcontent set htmltitle=htmltitle2
 	</cfquery>
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
-	ALTER TABLE table tcontent drop column htmltitle2
+	ALTER TABLE tcontent drop column htmltitle2
 	</cfquery>
 </cfcase>
 </cfswitch>	

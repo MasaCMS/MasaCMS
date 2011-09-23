@@ -735,7 +735,7 @@ to your own modified versions of Mura CMS.
 		password="#getDbPassword()#"
 		table="#arguments.table#"
 		type="index">
-	
+
 	<cfquery name="rsCheck" dbtype="query">
 		select * from rsCheck where lower(rsCheck.column_name) = '#arguments.column#'
 	</cfquery>
@@ -754,7 +754,7 @@ to your own modified versions of Mura CMS.
 	</cfcase>
 	<cfcase value="oracle">
 		<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
-		CREATE INDEX IX_#arguments.table#_#arguments.column# ON #arguments.table# (#arguments.column#)
+		CREATE INDEX #right("IX_#arguments.table#_#arguments.column#",30)# ON #arguments.table# (#arguments.column#)
 		</cfquery>
 	</cfcase>
 	</cfswitch>	
