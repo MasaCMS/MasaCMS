@@ -42,7 +42,7 @@ to your own modified versions of Mura CMS.
 --->
 <cfinclude template="../act_defaults.cfm">
 <cfoutput>
-<table id="recentActivity">
+<table class="mura-table-grid stripe" id="recentActivity">
 <tr>
 	<th colspan="2">#application.rbFactory.getKeyValue(session.rb,"dashboard.recentactivity")#</th>
 </tr>

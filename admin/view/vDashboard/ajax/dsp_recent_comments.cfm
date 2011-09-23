@@ -43,7 +43,7 @@ to your own modified versions of Mura CMS.
 
 <cfinclude template="../act_defaults.cfm">
 <cfset comments=application.contentManager.getRecentCommentsIterator(attributes.siteID,5,false) />
-<cfoutput><table>
+<cfoutput><table class="mura-table-grid stripe">
 <tr>
 	<th class="varWidth">#application.rbFactory.getKeyValue(session.rb,"dashboard.comments")#</th>
 	<th class="dateTime">#application.rbFactory.getKeyValue(session.rb,"dashboard.comments.posted")#</th>

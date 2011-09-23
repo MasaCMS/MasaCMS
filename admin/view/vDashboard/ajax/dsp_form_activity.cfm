@@ -43,7 +43,7 @@ to your own modified versions of Mura CMS.
 
 <cfinclude template="../act_defaults.cfm">
 <cfset rsList=application.dashboardManager.getRecentFormActivity(attributes.siteID,5) />
-<cfoutput><table>
+<cfoutput><table class="mura-table-grid stripe">
 <tr><th class="title">#application.rbFactory.getKeyValue(session.rb,"dashboard.title")#</th><th class="dateTime">#application.rbFactory.getKeyValue(session.rb,"dashboard.lastresponse")#</th><th class="total">#application.rbFactory.getKeyValue(session.rb,"dashboard.totalresponses")#</th></tr>
 	<cfif rslist.recordcount>
 	<cfloop query="rslist">

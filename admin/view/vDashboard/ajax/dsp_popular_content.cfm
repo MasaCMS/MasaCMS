@@ -44,7 +44,7 @@ to your own modified versions of Mura CMS.
 <cfinclude template="../act_defaults.cfm">
 <cfoutput><cfset rsList=application.dashboardManager.getTopContent(attributes.siteID,3,false,"All",attributes.startDate,attributes.stopDate,true) />
 <cfset count=rsList.recordcount>
-<table id="topPages">
+<table class="mura-table-grid stripe" id="topPages">
 <tr>
 <th>#application.rbFactory.getKeyValue(session.rb,"dashboard.pages")# <a href="index.cfm?fuseaction=cDashboard.topContent&siteid=#URLEncodedFormat(attributes.siteid)#&startDate=#URLEncodedFormat(attributes.startDate)#&stopDate=#URLEncodedFormat(attributes.stopDate)#">(#application.rbFactory.getKeyValue(session.rb,"dashboard.viewreport")#)</a></th>
 </tr>
