@@ -130,7 +130,11 @@ to your own modified versions of Mura CMS.
 </cffunction>
 
 <cffunction name="getCondition">
-	<cfreturn variables.condition />
+	<cfif variables.criteria eq "null" and variables.condition eq "=">
+		<cfreturn "is">
+	<cfelse> 
+		<cfreturn variables.condition />
+	</cfif>
 </cffunction>
 
 <cffunction name="setCriteria">

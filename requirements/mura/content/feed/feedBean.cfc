@@ -397,6 +397,7 @@ to your own modified versions of Mura CMS.
 	<cfset var hasComments=false>
 	
 	<cfif not len(variables.instance.displayList)>
+		<cfset variables.instance.displayList="Title,Date,Image,Summary,Tags,Credits" />
 		<cfset hasRating=listFindNoCase(variables.instance.displayList,"Rating")>
 		<cfset hasComments=listFindNoCase(variables.instance.displayList,"Comments")>
 		
