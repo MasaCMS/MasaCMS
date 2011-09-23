@@ -3,6 +3,8 @@
 <cffunction name="init" returntype="any" access="public" output="false">
 <cfargument name="configBean" type="any" required="yes"/>
 <cfset variables.configBean=arguments.configBean />
+<cfset variables.broadcastCachePurges=variables.configBean.getValue("broadcastCachePurges")>
+<cfset variables.broadcastAppreloads=variables.configBean.getValue("broadcastAppreloads")>
 <cfreturn this />
 </cffunction>
 
@@ -13,7 +15,7 @@
 	<cfset var host="">
 	<cfset var remoteURL="">
 	
-	<cfif len(clusterList)>
+	<cfif variables.broadcastCachePurges and len(clusterList)>
 		<cfloop list="#clusterList#" index="host">
 			<cfset remoteURL="#formatHost(host)#/MuraProxy.cfc?method=purgeSiteCache&siteID=#URLEncodedFormat(arguments.siteID)#&name=#URLEncodedFormat(arguments.name)#&appreloadkey=#URLEncodedFormat(application.appreloadkey)#&instanceID=#application.instanceID#">
 			<cfset doRemoteCall(remoteURL)>
@@ -28,7 +30,7 @@
 	<cfset var host="">
 	<cfset var remoteURL="">
 	
-	<cfif len(clusterList)>
+	<cfif variables.broadcastCachePurges and len(clusterList)>
 		<cfloop list="#clusterList#" index="host">
 			<cfset remoteURL="#formatHost(host)#/MuraProxy.cfc?method=purgeUserCache&userID=#URLEncodedFormat(arguments.userID)#&appreloadkey=#URLEncodedFormat(application.appreloadkey)#&instanceID=#application.instanceID#">
 			<cfset doRemoteCall(remoteURL)>
@@ -43,7 +45,7 @@
 	<cfset var host="">
 	<cfset var remoteURL="">
 	
-	<cfif len(clusterList)>
+	<cfif variables.broadcastCachePurges and len(clusterList)>
 		<cfloop list="#clusterList#" index="host">
 			<cfset remoteURL="#formatHost(host)#/MuraProxy.cfc?method=purgeCategoryCache&categoryID=#URLEncodedFormat(arguments.categoryID)#&appreloadkey=#URLEncodedFormat(application.appreloadkey)#&instanceID=#application.instanceID#">
 			<cfset doRemoteCall(remoteURL)>
@@ -58,7 +60,7 @@
 	<cfset var host="">
 	<cfset var remoteURL="">
 	
-	<cfif len(clusterList)>
+	<cfif variables.broadcastCachePurges and len(clusterList)>
 		<cfloop list="#clusterList#" index="host">
 			<cfset remoteURL="#formatHost(host)#/MuraProxy.cfc?method=purgeCategoryDescendentsCache&categoryID=#URLEncodedFormat(arguments.categoryID)#&appreloadkey=#URLEncodedFormat(application.appreloadkey)#&instanceID=#application.instanceID#">
 			<cfset doRemoteCall(remoteURL)>
@@ -74,7 +76,7 @@
 	<cfset var host="">
 	<cfset var remoteURL="">
 	
-	<cfif len(clusterList)>
+	<cfif variables.broadcastCachePurges and len(clusterList)>
 		<cfloop list="#clusterList#" index="host">
 			<cfset remoteURL="#formatHost(host)#/MuraProxy.cfc?method=purgeContentCache&contentID=#URLEncodedFormat(arguments.contentID)#&siteID=#URLEncodedFormat(arguments.siteID)#&appreloadkey=#URLEncodedFormat(application.appreloadkey)#&instanceID=#application.instanceID#">
 			<cfset doRemoteCall(remoteURL)>
@@ -90,7 +92,7 @@
 	<cfset var host="">
 	<cfset var remoteURL="">
 	
-	<cfif len(clusterList)>
+	<cfif variables.broadcastCachePurges and len(clusterList)>
 		<cfloop list="#clusterList#" index="host">
 			<cfset remoteURL="#formatHost(host)#/MuraProxy.cfc?method=purgeContentDescendentsCache&contentID=#URLEncodedFormat(arguments.contentID)#&siteID=#URLEncodedFormat(arguments.siteID)#&appreloadkey=#URLEncodedFormat(application.appreloadkey)#&instanceID=#application.instanceID#">
 			<cfset doRemoteCall(remoteURL)>
@@ -103,7 +105,7 @@
 	<cfset var clusterList=getClusterList()>
 	<cfset var host="">
 	<cfset var remoteURL="">
-	<cfif len(clusterList)>
+	<cfif variables.broadcastAppreloads and len(clusterList)>
 		<cfloop list="#clusterList#" index="host">
 			<cfset remoteURL="#formatHost(host)#/MuraProxy.cfc?method=reload&&appreloadkey=#URLEncodedFormat(application.appreloadkey)#&instanceID=#application.instanceID#">
 			<cfset doRemoteCall(remoteURL)>
