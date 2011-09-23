@@ -7,7 +7,7 @@
 	<meta name="keywords" content="#HTMLEditFormat($.getMetaKeywords())#" />
 	<cfif len($.content('credits'))><meta name="author" content="#HTMLEditFormat($.content('credits'))#" /></cfif>
 	<meta name="generator" content="Mura CMS #$.globalConfig('version')#" />
-	
+	<meta name="robots" content="noindex, follow" />
 	<title>#HTMLEditFormat($.content('HTMLTitle'))# - #HTMLEditFormat($.siteConfig('site'))#</title>
 
 	<link rel="icon" href="#$.siteConfig('assetPath')#/images/favicon.ico" type="image/x-icon" />
