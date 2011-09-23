@@ -48,17 +48,16 @@ Lazarus contentServer Sitemap
 	<cfset menuDate=createDate($.event('year'),$.event('month'),1)>
 </cfif>
 
-<cfset rsPreSection=$.getBean('contentGateway').getKids('00000000000000000000000000000000000',$.event('event'),$.content('contentID'),menuType,menuDate,100,$.event('keywords'),0,"displayStart","asc",$.event('categoryID'),$.event('relatedID'),$.event('tag'))>
+<cfset rsPreSection=$.getBean('contentGateway').getKids('00000000000000000000000000000000000',$.event('siteID'),$.content('contentID'),menuType,menuDate,100,$.event('keywords'),0,"displayStart","asc",$.event('categoryID'),$.event('relatedID'),$.event('tag'))>
 <cfif $.siteConfig('extranet') eq 1 and $.event('r').restrict eq 1>
 	<cfset rssection=$.queryPermFilter(rsPreSection)/>
 <cfelse>
 	<cfset rssection=rsPreSection/>
 </cfif>
 </cfsilent>				
-
 <cfoutput>
 <cfinclude template="myglobals.cfm">
-<cfif request.filterBy eq "">
+<cfif $.event("filterBy") eq "">
 <!---<a href="index.cfm?month=#htmlEditFormat($.event('month'))#&year=#htmlEditFormat($.event('year'))#&categoryID=#htmlEditFormat($.event('categoryID'))#&relatedID=#htmlEditFormat($.event('relatedID'))#&filterBy=releaseMonth">View in List Format</a>--->
 <cfinclude template="dsp_dp_showmonth.cfm">
 <cfelse>

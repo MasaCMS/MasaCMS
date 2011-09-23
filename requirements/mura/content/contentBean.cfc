@@ -283,7 +283,7 @@ to your own modified versions of Mura CMS.
 				</cfif>
 			</cfif>
 			
-			<cfset setDisplayStop(createDateTime(year(variables.instance.displayStop), month(getDisplayStop()), day(variables.instance.displayStop),stophour, arguments.content.StopMinute, "0"))>
+			<cfset setDisplayStop(createDateTime(year(variables.instance.displayStop), month(variables.instance.displayStop), day(variables.instance.displayStop),stophour, arguments.content.StopMinute, "0"))>
 			
 			</cfif>
 		</cfif>
