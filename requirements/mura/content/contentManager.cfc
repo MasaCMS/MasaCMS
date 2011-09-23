@@ -611,6 +611,7 @@ to your own modified versions of Mura CMS.
 		<cfset var rsPendingChangesets="">
 		<cfset var doPurgeContentCache=false>
 		<cfset var doPurgeOutputCache=false>
+		<cfset var doPurgeContentDescendentsCache=false>
 		
 		<!---IF THE DATA WAS SUBMITTED AS AN OBJECT UNPACK THE VALUES --->
 		<cfif isObject(arguments.data)>
@@ -864,7 +865,7 @@ to your own modified versions of Mura CMS.
 				<cfif not newBean.getIsNew() and newBean.getoldfilename() neq newBean.getfilename() and len(newBean.getoldfilename())>
 					<cfset variables.contentUtility.movelink(newBean.getSiteID(),newBean.getFilename(),currentBean.getFilename()) />	
 					<cfset variables.contentUtility.move(newBean.getsiteid(),newBean.getFilename(),newBean.getOldFilename())>
-					<cfset purgeContentDescendentsCache(contentBean=newbean)>
+					<cfset doPurgeContentDescendentsCache=true>
 				</cfif>
 					
 			</cfif>		
@@ -1043,6 +1044,9 @@ to your own modified versions of Mura CMS.
 		</cfif>
 		<cfif doPurgeContentCache>
 			<cfset purgeContentCache(contentBean=newbean)>
+		</cfif>
+		<cfif doPurgeContentDescendentsCache>
+			<cfset purgeContentDescendentsCache(contentBean=newbean)>
 		</cfif>
 		
 		<!--- Make sure preview data is in sync --->	
