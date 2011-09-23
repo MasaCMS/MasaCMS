@@ -1,11 +1,9 @@
-/* @override 
-	http://mura:8500/5.4/merced/includes/themes/merced/css/merced.css
-	http://mura:8500/5.4/default/includes/themes/merced/css/merced.css
+/* @override
 	http://mura:8500/5.4/default/includes/themes/merced-html5/css/merced.css
 */
 
 /*
-Theme:  Merced
+Theme:  Merced (HTML 5)
 Author: Blue River Interactive Group
 */
 
@@ -44,11 +42,19 @@ p.intro {
 	margin-bottom: 1.25em;
 	}
 
+/* @group Globals - HTML 5 Elements
+===================================== */
+
+article, aside, canvas, figcaption, figure, footer, header, hgroup, menu, nav, section, summary { display: block; }
+
+/* @end Globals - HTML 5 Elements
+-------------------------------- */
+
 
 /* @group Globals - Tables
 ===================================== */
 
-.article table {
+.content table {
 	width: 100%;
 	margin-top: 30px;
 	}
@@ -74,31 +80,31 @@ tr.alt td { background: #eee; }  /*Move*/
 /* @group Globals - Forms
 ===================================== */
 
-#primary form {
+article form {
 	padding: 2em;
 	background: #e9f3f7;
 	overflow: hidden;
-	max-width: 504px; /*width of #primary in three column layout*/
+	max-width: 504px; /*width of article in three column layout*/
 	}
 
-#primary #svSearchResults form {
+article #svSearchResults form {
 	max-width: 100%;
 }
 
-#primary fieldset {
+article fieldset {
 	border: none;
 	padding: 0;
 	}
 
 
-#primary legend {
+article legend {
 	font-size: 1.4em;
 	font-weight: bold;
 	margin: 0;
 	padding: 0;
 	}
 
-#primary label {
+article label {
 	padding-top: .5em;
 	line-height: 1;
 	color: #0c2846;
@@ -183,7 +189,7 @@ tr.alt td { background: #eee; }  /*Move*/
 /* @end Globals - Forms - Login
 -------------------------------- */
 
-.aside #login {
+aside #login {
 	padding: 0;
 	}
 
@@ -248,30 +254,30 @@ tr.alt td { background: #eee; }  /*Move*/
 	margin-top: 0;
 	}
 
-#primary {
+article {
 	float: left;
 	width: 100%;
 	color: #232323;
 	}
-.home #primary {
+.home article {
 	width: 687px;
 	}
-.twoColSL #primary {
+.twoColSL article {
 	float: right;
 	width: 707px;
 	}
 
-.twoColSR #primary {
+.twoColSR article {
 	float: left;
 	width: 707px;
 	}
 
-.threeCol #primary {
+.threeCol article {
 	width: 504px;
 	}
 
-.article,
-.aside {
+.content,
+aside {
 	min-height: 100px; /*Fixes odd no-content disappearing bug.*/
 	}
 
@@ -304,15 +310,15 @@ tr.alt td { background: #eee; }  /*Move*/
 	width: 167px;
 	}
 
-.aside {}
-#left.aside {}
-#right.aside {}
+aside {}
+#leftaside {}
+#rightaside {}
 
 
 /* @group Layout - Header
 ===================================== */
 
-#header {
+header {
 	position: relative;
 	padding-top: 39px;
 	}
@@ -326,7 +332,7 @@ h1 a {
 	background: url(../images/logo.gif) no-repeat;
 	}
 
-#header .navUtility {
+header .navUtility {
 	position: absolute;
 	top: 32%;
 	right: 225px;
@@ -350,14 +356,14 @@ h1 a {
 /* @group Layout - Footer
 ===================================== */
 
-#footer {
+footer {
 	clear: both;
 	margin-top: 40px;
 	padding-top: 17px;
 	border-top: 1px solid #ededed;
 	}
 
-#footer p {
+footer p {
 	float: right;
 	font-size: .9em;
 	color: #999;
@@ -667,6 +673,10 @@ h1 a {
 /* @group MODULES
 ===================================== */
 
+a#svAsset {
+	font-size: 1.4em;
+}
+
 /* @group Galleries
 ===================================== */
 
@@ -833,7 +843,7 @@ a.boxItemHeader { /* Link of items inside dragable boxes */
 /* @group Home Feeds
 ===================================== */
 
-.home .aside .svIndex h3 {
+.home aside .svIndex h3 {
 	display: block;
 	padding: 0 1em;
 	margin-bottom: 1em;
@@ -844,18 +854,18 @@ a.boxItemHeader { /* Link of items inside dragable boxes */
 	background: #ff3405;
 	}
 
-.home .aside .svIndex dl {
+.home aside .svIndex dl {
 	margin: 0 1.5em 1em;
 	padding: 0 0 .5em;
 	border-bottom: 1px solid #d6d6d6;
 	}
 
-.home .aside .svIndex dl.last, .home .aside .svIndex dl:last-child {
+.home aside .svIndex dl.last, .home aside .svIndex dl:last-child {
 	border-bottom: 0;
 	padding-bottom: 0;
 	}
 
-.home .aside .svIndex dt {
+.home aside .svIndex dt {
 	margin: 0 0 .5em;
 	padding: 0;
 	font-size: 1.3em;
@@ -863,46 +873,46 @@ a.boxItemHeader { /* Link of items inside dragable boxes */
 	line-height: 1.3;
 	}
 
-.home .aside .svIndex dt.releaseDate {
+.home aside .svIndex dt.releaseDate {
 	margin: 0 0 3px;
 	font-size: 1em;
 	text-transform: uppercase;
 	color: #979797;
 	}
 
-.home .aside .svIndex dd {
-	margin: 0 1em 0.25em 0;
+.home aside .svIndex dd {
+	margin: 0 0 .25em;
 	padding: 0;
 	font-size: 1.1em;
 	color: #434343;
 	}
 
-.home .aside .svIndex dd.summary {
+.home aside .svIndex dd.summary {
 	margin: 0 0 .5em;
 	}
 
-/*.home .aside .credits,
-.home .aside .tags,
-.home .aside .ratings,
-.home .aside .credits {
+/*.home aside .credits,
+.home aside .tags,
+.home aside .ratings,
+.home aside .credits {
 	color: #999 !important;
 	}*/
 
-.home .aside .svIndex dl.hasImage .image {
+.home aside .svIndex dl.hasImage .image {
 	margin: 0 .5em 0em 0;
 	}
 
-.home .aside .svIndex dl.hasImage .image img {
+.home aside .svIndex dl.hasImage .image img {
 	width: 50px;
 	}
 
-.home .aside .svIndex dd p {
+.home aside .svIndex dd p {
 	margin: 0;
 	padding: 0;
 	line-height: inherit;
 	}
 
-.home .aside .svIndex span.readMore a {
+.home aside .svIndex span.readMore a {
 	display: none;
 	}
 
@@ -911,16 +921,13 @@ a.boxItemHeader { /* Link of items inside dragable boxes */
 
 /* @group Indexes
 ===================================== */
-.aside .svIndex {
-	margin-top: 0;
-}
 
 .svIndex dl {
 	padding-bottom: 1em;
 	border-bottom: 1px dotted #ccc;
 	}
 
-.aside .svIndex dl {
+aside .svIndex dl {
 	margin: .5em 0;
 	padding: .5em 0 .5em;
 	}
@@ -931,7 +938,7 @@ a.boxItemHeader { /* Link of items inside dragable boxes */
 		position: relative;
 		}
 
-.aside .svIndex dl.hasImage {
+aside .svIndex dl.hasImage {
 	min-height: 0;
 	padding-left: 0;
 	}
@@ -940,15 +947,15 @@ a.boxItemHeader { /* Link of items inside dragable boxes */
 		float: none;
 		}
 
-.aside .svIndex dl.hasImage .image {
+aside .svIndex dl.hasImage .image {
 	display: none;
 	}
 
-.article .svIndex {
+.content .svIndex {
 	margin-top: 2em;
 	}
 
-.article .svIndex dt {
+.content .svIndex dt {
 	font-size: 1.6em;
 	margin-bottom: .5em;
 	}
@@ -964,10 +971,6 @@ a.boxItemHeader { /* Link of items inside dragable boxes */
 	line-height: 1.2;
 	}
 
-.aside .svIndex dd {
-	margin: 0 1em .25em 0;
-	}
-	
 .svIndex dd.image {
 	position: absolute;
 	top: 0;
@@ -976,10 +979,10 @@ a.boxItemHeader { /* Link of items inside dragable boxes */
 
 /* @group Ratings */
 
-.article .svIndex dd.credits,
-.article .svIndex  dd.comments,
-.article .svIndex  dd.tags,
-.article .svIndex  dd.rating {
+.content .svIndex dd.credits,
+.content .svIndex  dd.comments,
+.content .svIndex  dd.tags,
+.content .svIndex  dd.rating {
 	line-height: 20px; /* acommodate height of stars */
 	}
 

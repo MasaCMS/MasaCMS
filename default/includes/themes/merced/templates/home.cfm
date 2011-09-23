@@ -3,14 +3,14 @@
 <body id="#$.getTopID()#" class="home">
 <div id="container" class="#$.createCSSid($.content('menuTitle'))#">
 	<cfinclude template="inc/header.cfm" />
-	<div id="content" class="clearfix">
-		<div id="primary" class="article">
-			#$.dspBody(body=$.content('body'),pageTitle='',crumbList=0,showMetaImage=0)#
+		<div id="content" class="clearfix">
+		<article>
+			#$.dspBody(body=$.content('body'),pageTitle=$.content(''),crumbList=0,showMetaImage=0)#
 			#$.dspObjects(2)#
-		</div>
-		<div id="right" class="aside">
-		#$.dspObjects(3)#
-		</div>
+		</article>
+		<aside id="right">
+			#$.dspObjects(3)#
+		</aside>
 	</div>
 	<cfinclude template="inc/footer.cfm" />
 </div>

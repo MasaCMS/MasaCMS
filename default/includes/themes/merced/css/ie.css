@@ -9,7 +9,7 @@
 	}
 
 * html .content,
-* html .sidebar {
+* html aside {
 	height: 100px; /* equivalent to min-height */
 	display: inline; /* double-margin fix */
 	}
@@ -79,7 +79,7 @@
 	list-style: none;
 	}
 
-* html .sidebar .svIndex .rating {
+* html aside .svIndex .rating {
 	background-position: 35px -1px;
 	}
 /* @end IE6 Fixes
@@ -89,7 +89,7 @@
 ===================================== */
 hr { margin: -8px auto 11px; } /* IE 6/7 has problems with setting proper <hr> margins. */
 
-#content {
+article {
 	z-index: 1;
 }
 
@@ -99,11 +99,6 @@ hr { margin: -8px auto 11px; } /* IE 6/7 has problems with setting proper <hr> m
 	z-index: 2;
 	margin: 0; 
 }
-/*
-For design consistency. Uncomment this if you want Local Index or Remote Feed Headers to start the same place it does on *good* browsers on the homepage
-.home #navPrimary { width: 687px; }
-.home #right { margin: -40px 0 0; }  
-*/
 
 /* Fixes wrong line-height on sup/sub in IE 6/7. */
 sup { vertical-align: text-top; }

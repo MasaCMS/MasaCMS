@@ -18,15 +18,15 @@
 	In addition, as a special exception,  the copyright holders of Mura CMS grant you permission 
 	to combine Mura CMS  with independent software modules that communicate with Mura CMS solely 
 	through modules packaged as Mura CMS plugins and deployed through the Mura CMS plugin installation API, 
-	provided that these modules (a) may only modify the  /plugins/ directory through the Mura CMS 
+	provided that these modules (a) may only modify the  /trunk/www/plugins/ directory through the Mura CMS 
 	plugin installation API, (b) must not alter any default objects in the Mura CMS database 
 	and (c) must not alter any files in the following directories except in cases where the code contains 
 	a separately distributed license.
 
-	/admin/ 
-	/tasks/ 
-	/config/ 
-	/requirements/mura/ 
+	/trunk/www/admin/ 
+	/trunk/www/tasks/ 
+	/trunk/www/config/ 
+	/trunk/www/requirements/mura/ 
 
 	You may copy and distribute such a combined work under the terms of GPL for Mura CMS, provided that you include  
 	the source code of that other code when and as the GNU GPL requires distribution of source code. 
@@ -134,16 +134,16 @@ h5 { font-size: 14pt !important; }
 h6 { font-size: 12pt !important; }
 
 
-#header {
+header {
 	height: auto !important;
 	margin: 0 !important;
 	padding: 0;
 	border-bottom: 1px solid #999 !important
 	}
-#header * {
+header * {
 	display: none !important;
 	}
-#header h1 {
+header h1 {
 	position: relative;
 	display: block !important;
 	width: 100% !important;
@@ -153,7 +153,7 @@ h6 { font-size: 12pt !important; }
 	padding: 0;
 	text-indent: 0 !important;
 	}
-#header h1 a {
+header h1 a {
 	display: block !important;
 	width: 100% !important;
 	font-size: 24pt !important;
@@ -162,7 +162,7 @@ h6 { font-size: 12pt !important; }
 	}
 
 
-#content {
+article {
 	margin: 0;
 	padding: 0;
 	width: 100%;
@@ -186,10 +186,10 @@ thead { display: table-header-group;}
 tr { page-break-inside: avoid;} 
 
 
-.sidebar,
+aside,
 #navPrimary,
 #navSecondary,
-#footer {
+footer {
 	display: none;
 	}
 

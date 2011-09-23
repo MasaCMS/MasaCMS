@@ -1,7 +1,10 @@
+/* @override http://mura:8500/5.4/default/includes/themes/merced/css/merced-mobile.css */
+
 /*
-Theme:  Merced
+Theme:  Merced-Mobile
 Author: Blue River Interactive Group
 */
+
 
 h1#site-title {
 	text-align: center;
@@ -9,20 +12,7 @@ h1#site-title {
 	padding: 15px 15px 0;
 }
 
-#navHeader {
-	width: 100%;
-	padding-left: 15px;
-	padding-right: 15px;
-	margin: 1em -15px 15px;
-}
-
-#navPrimary {
-	margin-top: 2em;
-}
-
-
 #navSub ul {
-	margin-top: 2em;
 	padding-left: 0;
 }
 
@@ -57,49 +47,41 @@ dt a {
 	text-decoration: none;
 }
 
-dd {
-	margin-left: 0;
-}
-
 dd.summary {
 	margin-left: 0;
+	font-size: .75em;
 }
 
 dd.summary p {
 	margin: .5em 0;
 }
 
-dd.credits, dd.tags, dd.comments {
-	font-size: .8em;
-}
-
 dl.hasImage dd.image {
 	position: relative;
-	margin-left: 0;
 }
 
 dl.hasImage dd.image img {
 	display: block;
 }
 
-form ol, form ul {
+form ol {
 	list-style: none;
 	margin: 0 0 2em;
 	padding: 0;
 }
 
-form li {
+form ol li {
 	margin: 0 0 6px;
 	padding: 0;
 }
 
-form li.controlgroup {
+form ol li.controlgroup {
 	margin-bottom: 0;
 }
 
-/*form input[type=checkbox] {
+form input[type=checkbox] {
 	display: none;
-}*/
+}
 
 #svGallery li {
 	min-height: 0 !important;
@@ -119,38 +101,8 @@ form li.controlgroup {
 	margin-top: 0;
 }
 
-li.ui-li-has-thumb p.releaseDate {
-	margin: 0 0 -.45em;
-}
-
-.svIndex .ui-listview .credits,
-.svIndex .ui-listview .comments,
-.svIndex .ui-listview .tags,
-.svIndex .ui-listview .rating {
-	float: left;
-	margin-right: 1em;
-}
-
-/* @end */
-
-/* @group Home Page */
-
-#features dl {
-	overflow: hidden;
-	padding-bottom: 1em;
-}
-
-#features dd.image {
-	float: left;
-	margin-right: 1em;
-}
-
-/* @end */
-
 /* @group Globals - Forms
 ===================================== */
-
-
 .required {
 	margin: 0 0 .5em .25em;
 	font-weight: normal;

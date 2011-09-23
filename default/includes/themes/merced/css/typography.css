@@ -95,6 +95,12 @@ h2 {
 	margin: 0 0 .5em;
 	font-size: 3em;
 	}
+	
+h2.tagline {
+	font-weight: normal;
+	font-size: 13px;
+	color: #999;	
+}
 
 .threeColumn h2.pageTitle {
 	font-size: 3em;
@@ -105,7 +111,7 @@ h3 {
 	font-size: 2.2em;
 	}
 
-.sidebar h3 {
+aside h3 {
 	margin-bottom: .5em;
 	font-size: 1.4em;
 	color: #0c2846;
@@ -116,7 +122,7 @@ h4 {
 	font-size: 1.8em;
 	}
 
-.sidebar h4 {
+aside h4 {
 	font-size: 1.4em;
 	}
 
@@ -124,7 +130,7 @@ h5 {
 	font-size: 1.4em;
 	}
 
-.sidebar h5 {
+aside h5 {
 	font-size: 1.2em;
 	}
 
@@ -132,7 +138,7 @@ h6 {
 	font-size: 1.2em;
 	}
 
-.sidebar h6 {
+aside h6 {
 	font-size: 1.1em;
 	}
 
