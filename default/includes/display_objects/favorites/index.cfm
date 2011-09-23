@@ -1,12 +1,4 @@
-<cfparam name="request.favoriteaction" default="">
-<cfparam name="request.favoriteID" default="">
 <cfsilent>
-<cfparam name="request.userID" default="">
-<cfparam name="$.event('siteID')" default="">
-<cfparam name="request.favoriteName" default="">
-<cfparam name="request.favorite" default="">
-<cfparam name="request.favoritetype" default="">
-<cfparam name="request.usertools" default="false">
 <cfset $.loadShadowBoxJS() />
 <cfset rbFactory=getSite().getRBFactory()/>
 <cfswitch expression="#$.getJsLib()#">

@@ -1,11 +1,19 @@
 <cfcomponent output="false">
-<cfset rbFactory=application.settingsManager.getSite($.event('siteID')).getRBFactory()>	
-<cfscript>
-weekdayShort=$.rbKey('calendar.weekdayshort');
-weekdayLong=$.rbKey('calendar.weekdaylong');
-monthShort=$.rbKey('calendar.monthshort');
-monthLong=$.rbKey('calendar.monthlong');
-</cfscript>
+
+<cffunction name="init" output="false">
+	<cfargument name="$">
+	<cfset $=arguments.MuraScope>
+	<cfset rbFactory=application.settingsManager.getSite(request.siteid).getRBFactory()>	
+	<cfscript>
+	weekdayShort=$.rbKey('calendar.weekdayshort');
+	weekdayLong=$.rbKey('calendar.weekdaylong');
+	monthShort=$.rbKey('calendar.monthshort');
+	monthLong=$.rbKey('calendar.monthlong');
+	</cfscript>
+	
+	<cfreturn this>
+</cffunction>
+
 <cffunction name="getNavID"  output="false" returntype="numeric">
 		<cfset var I = 0 />
 

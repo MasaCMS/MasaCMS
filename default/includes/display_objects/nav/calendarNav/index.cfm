@@ -8,7 +8,7 @@
 </cfsilent>
 <cf_CacheOMatic key="#arguments.object##$.event('siteid')##arguments.objectid##$.event('month')##$.event('year')#" nocache="#$.event('nocache')#">
 <cfsilent>
-<cfset navTools=createObject("component","navTools")>
+<cfset navTools=createObject("component","navTools").init($)>
 <cfset navID=arguments.objectID>	
 <cfquery datasource="#application.configBean.getDatasource()#" 
 		username="#application.configBean.getDBUsername()#" 

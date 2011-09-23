@@ -83,7 +83,7 @@ to your own modified versions of Mura CMS.
 </div>
 </cfif>
 
-#dspObject('favorites','',$.event('siteID'))#
+#dspObject('favorites')#
 </cfoutput>
 </cfif>
 </cfif>
