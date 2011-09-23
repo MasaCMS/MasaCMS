@@ -261,7 +261,7 @@ to your own modified versions of Mura CMS.
 									<cfset started = true />
 									<cfset isListParam=listFindNoCase("IN,NOT IN",param.getCondition())>			
 									<cfif  listLen(param.getField(),".") gt 1>
-										#param.getField()# #param.getCondition()# <cfif isListParam>(</cfif><cfqueryparam cfsqltype="cf_sql_#param.getDataType()#" value="#param.getCriteria()#" list="#iif(isListParam,de('true'),de('false'))#"><cfif isListParam>)</cfif>  	
+										#param.getField()# #param.getCondition()# <cfif isListParam>(</cfif><cfqueryparam cfsqltype="cf_sql_#param.getDataType()#" value="#param.getCriteria()#" list="#iif(isListParam,de('true'),de('false'))#" null="#iif(param.getCriteria() eq 'null',de('true'),de('false'))#"><cfif isListParam>)</cfif>  	
 									<cfelseif len(param.getField())>
 										tcontent.contentHistID IN (
 											select tclassextenddata.baseID from tclassextenddata
@@ -446,7 +446,7 @@ to your own modified versions of Mura CMS.
 				<cfset started = true />
 				<cfset isListParam=listFindNoCase("IN,NOT IN",param.getCondition())>	
 				<cfif  listLen(param.getField(),".") gt 1>						
-					#param.getField()# #param.getCondition()# <cfif isListParam>(</cfif><cfqueryparam cfsqltype="cf_sql_#param.getDataType()#" value="#param.getCriteria()#" list="#iif(isListParam,de('true'),de('false'))#"><cfif isListParam>)</cfif>  	
+					#param.getField()# #param.getCondition()# <cfif isListParam>(</cfif><cfqueryparam cfsqltype="cf_sql_#param.getDataType()#" value="#param.getCriteria()#" list="#iif(isListParam,de('true'),de('false'))#" null="#iif(param.getCriteria() eq 'null',de('true'),de('false'))#"><cfif isListParam>)</cfif>  	
 				<cfelseif len(param.getField())>
 					tcontent.contentHistID IN (
 						select tclassextenddata.baseID from tclassextenddata
