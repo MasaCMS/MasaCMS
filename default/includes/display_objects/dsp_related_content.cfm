@@ -42,6 +42,7 @@ to your own modified versions of Mura CMS.
 --->
 
 <cfoutput>
+<cfset variables.iterator=$.content().getRelatedContentIterator(liveOnly=true)>
 <cfif variables.iterator.getRecordCount()>
 	<div class="svRelContent svIndex">
 	<#$.getHeaderTag('subHead1')#>#$.rbKey('list.relatedcontent')#</#$.getHeaderTag('subHead1')#>
@@ -61,10 +62,7 @@ to your own modified versions of Mura CMS.
 				thefile='dsp_content_list.cfm',
 				fields='Title',
 				type='Related', 
-				iterator= $.content().getRelatedContentIterator(liveOnly=true),
-				imageSize=variables.feedBean.getImageSize(),
-				imageHeight=variables.feedBean.getImageHeight(),
-				imageWidth=variables.feedBean.getImageWidth()
+				iterator=  variables.iterator
 				)#
 	</cfif>
 	</div>

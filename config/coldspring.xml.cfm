@@ -423,7 +423,7 @@ to your own modified versions of Mura CMS.
 			<constructor-arg name="configBean"><ref bean="configBean" /></constructor-arg>
 			<constructor-arg name="settingsManager"><ref bean="settingsManager" /></constructor-arg>
 		</bean>
-		<bean id="favoriteBean" class="mura.content.favorite.favoriteManager" singleton="false"/>
+		<bean id="favoriteBean" class="mura.content.favorite.favoriteBean" singleton="false"/>
 		<bean id="raterManager" class="mura.content.rater.raterManager" singleton="true">
 			<constructor-arg name="configBean"><ref bean="configBean" /></constructor-arg>
 			<constructor-arg name="settingsManager"><ref bean="settingsManager" /></constructor-arg>

@@ -1,7 +1,7 @@
 <cfcomponent output="false">
 
 <cffunction name="init" output="false">
-	<cfargument name="$">
+	<cfargument name="MuraScope">
 	<cfset $=arguments.MuraScope>
 	<cfset rbFactory=application.settingsManager.getSite(request.siteid).getRBFactory()>	
 	<cfscript>
