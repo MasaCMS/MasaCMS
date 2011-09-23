@@ -1,0 +1,41 @@
+#svCalendarNav { text-align: center; }
+
+#svCalendarNav table { 
+	border-collapse: collapse;
+	border-spacing: 0;
+	margin-bottom: 1em;
+	}
+
+#svCalendarNav th {
+	padding: 0;
+	border: 1px solid #666;
+	text-align: center;
+	color: #fff;
+	background: #666;
+	font-size: small;
+	}
+
+#svCalendarNav td {
+	text-align: center;
+	padding: .5em;
+	}
+	
+#svCalendarNav a {
+	display: block;
+	text-align: center;
+}
+
+#svCalendarNav .dayofweek td {
+	font-weight: bold;
+	text-align: center;
+	background: #ccc;
+	border: 1px solid #e1e1e1;
+	}
+
+#svCalendarNav td {
+	border: 1px solid #ccc;
+	font-size: x-small;
+	line-height: 1em;
+	text-align: left;
+	vertical-align: top;
+	}

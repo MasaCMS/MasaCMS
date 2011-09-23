@@ -1,0 +1,118 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="description" content="" />
+<meta name="keywords" content="" />
+<meta name="generator" content="Mura CMS 5.1" />
+<title>Merced Theme - Mura CMS</title>
+<link rel="icon" href="../images/favicon.ico" type="image/x-icon" />
+<link rel="shortcut icon" href="../images/favicon.ico" type="image/x-icon" />
+<link rel="stylesheet" href="../../../../css/default.css" type="text/css" media="all" />
+<link rel="stylesheet" href="../css/typography.css" type="text/css" media="all" />
+<link rel="stylesheet" href="../css/site.css" type="text/css" media="all" />
+<link rel="stylesheet" href="../css/print.css" type="text/css" media="print" />
+<!--[if lte IE 7]>
+		<link rel="stylesheet" href="../includes/themes/merced/css/ie.css" type="text/css" media="all" />
+		<script src="../includes/themes/merced/js/DD_roundies.js"></script>
+		<script>
+		  DD_roundies.addRule('.submit, .buttons input, dd.textField .submit', '10px');
+		  /* string argument can be any CSS selector */
+		</script>
+	<![endif]-->
+<!--[if lte IE 6]>
+		<script src="../js/DD_belatedPNG.js"></script>
+		<script>
+		  DD_belatedPNG.fix('dd.rating');
+		  /* string argument can be any CSS selector */
+		</script>
+	<![endif]-->
+<script src="../../../../js/jquery/jquery.js" type="text/javascript"></script>
+</head>
+<body id="about" class="threeCol">
+<div id="container" class="sysContact">
+  <div id="header" class="clearfix">
+    <h1><a href="">Mura CMS</a></h1>
+    <ul class="navUtility">
+      <li><a href="">About Us</a></li>
+      <li class="last"><a href="">Contact</a></li>
+    </ul>
+    <form action="index.cfm" id="searchForm">
+      <fieldset>
+        <input type="text" name="Keywords" id="txtKeywords" class="text" value="Search" onfocus="this.value=(this.value=='Search') ? '' : this.value;" onblur="this.value=(this.value=='') ? 'Search' : this.value;" />
+        <input type="hidden" name="display" value="search" />
+        <input type="hidden" name="newSearch" value="true" />
+        <input type="hidden" name="noCache" value="1" />
+        <input type="submit" class="submit" value="Go" />
+      </fieldset>
+    </form>
+    <ul id="navPrimary">
+      <li class="first" id="navHome"><a href="home.html">Home</a></li>
+      <li id="navContent"><a href="content.html">Content</a></li>
+      <li class="last current" id="navContact"><a href="contact.html" >Contact</a></li>
+    </ul>
+  </div>
+  <div id="content" class="clearfix">
+    <div id="left" class="sidebar"> </div>
+    <div id="primary" class="content">
+      <ul id="crumbList">
+        <li class="first"> <a href="" >Home</a></li>
+        <li class="last"> &nbsp;&raquo;&nbsp;<a href="" >Contact</a> </li>
+      </ul>
+      <h2 class="pageTitle">Contact</h2>
+      <h3>Contact Form</h3>
+      <form name="contactFrm" method="post" class="twoColumn">
+        <fieldset>
+          <legend>Your Information</legend>
+          <ol>
+            <li>
+              <label for="txtNameFirst">First Name<span class="required">*</span></label>
+              <input required="true" name="FirstName" class="text" id="txtNameFirst" message="The First Name field is required." value="" />
+            </li>
+            <li>
+              <label for="txtNameLast">Last Name<span class="required">*</span></label>
+              <input value="" message="The Last Name field is required." id="txtNameLast" class="text" name="LastName" required="true" />
+            </li>
+            <li>
+              <label for="txtOrg">Organization</label>
+              <input value="" id="txtOrg" class="text" name="Organization" />
+            </li>
+            <li>
+              <label for="txtTel">Phone Number</label>
+              <input value="" id="txtTel" class="text" name="Phone" />
+            </li>
+            <li class="last">
+              <label for="txtEmail">Email Address<span class="required">*</span></label>
+              <input id="txtEmail" class="text" name="Email" value="" />
+            </li>
+          </ol>
+        </fieldset>
+        <fieldset>
+          <legend>Your Message</legend>
+          <ol>
+            <li>
+              <label for="txtMessage">Message<span class="required">*</span></label>
+              <textarea name="Question" cols="50" id="txtMessage"></textarea>
+            </li>
+          </ol>
+        </fieldset>
+        <p class="required">Required Fields</p>
+        <div class="buttons">
+          <input type="submit" value="Submit" name="Submit" class="submit" />
+        </div>
+      </form>
+    </div>
+  </div>
+  <div id="footer">
+    <div class="wrap clearfix">
+      <ul class="navUtility">
+        <li><a href="">Home</a></li>
+        <li><a href="content.html">Content</a></li>
+        <li class="last"><a href="contact.html">Contact</a></li>
+      </ul>
+      <p>&copy;2009 Blue River Interactive Group</p>
+    </div>
+  </div>
+</div>
+</body>
+</html>

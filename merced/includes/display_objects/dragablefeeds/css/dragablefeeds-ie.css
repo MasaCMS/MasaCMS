@@ -1,0 +1,63 @@
+/*.dragableBoxHeader {  Header inside RSS box 
+	color: #333;
+	font-size: 11px;
+	font-weight: bold;
+	height: 20px;
+	position: relative;
+	border-bottom: 1px solid #c8c8c8;
+	line-height:  20px;
+	margin: 0 0 10px 0 !important;
+	background: url(../images/bg_hdr.jpg) repeat-x;
+	padding: 0 6px !important;
+}*/
+
+#svRSSFeeds {
+	margin: 0;
+	padding: 0;
+	height: 1%;
+}
+
+#svRSSFeeds p.rssBlurb {
+	margin: 0 0 0 0;
+}
+
+.dragableBoxHeader { /* Header inside RSS box */
+	height: 20px;
+	line-height:  20px;
+	padding: 0 6px !important;
+}
+
+.RSSbuttonClose {
+	position: absolute;
+	top: -1px;
+	right: 2px;
+	width: 16px;
+	height: 16px;
+	background: url(../images/delete.gif) no-repeat center center;
+	text-indent: -999em;
+	margin: 0;
+	padding: 0;
+}
+
+* html .RSSbuttonClose { top: 2px; }
+
+.RSSbuttonEdit {
+	position: absolute;
+	top: -1px;
+	right: 20px;
+	width: 16px;
+	height: 16px;
+	background: url(../images/info.gif) no-repeat center center;
+	text-indent: -999em;
+	margin: 0;
+	padding: 0;
+}
+
+* html .RSSbuttonEdit { top: 2px; }
+
+.boxItemHeader { /* Title of items inside dragable boxes */
+	color: #000;
+	text-decoration: none;
+	overflow: hidden;
+	background: url(../images/arrow_red.gif) no-repeat left 5px;
+}

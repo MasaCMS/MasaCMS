@@ -1,0 +1,1252 @@
+/* @override 
+	http://mura:8500/5.4/default/css/mura.css
+	http://localhost:8500/muracms/default/css/mura.css
+*/
+
+/* This file is part of Mura CMS. 
+
+	Mura CMS is free software: you can redistribute it and/or modify 
+	it under the terms of the GNU General Public License as published by 
+	the Free Software Foundation, Version 2 of the License. 
+
+	Mura CMS is distributed in the hope that it will be useful, 
+	but WITHOUT ANY WARRANTY; without even the implied warranty of 
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the 
+	GNU General Public License for more details. 
+
+	You should have received a copy of the GNU General Public License 
+	along with Mura CMS.  If not, see <http://www.gnu.org/licenses/>. 
+
+	However, as a special exception, the copyright holders of Mura CMS grant you permission 
+	to combine Mura CMS with programs or libraries that are released under the GNU Lesser General Public License version 2.1. 
+
+	In addition, as a special exception,  the copyright holders of Mura CMS grant you permission 
+	to combine Mura CMS  with independent software modules that communicate with Mura CMS solely 
+	through modules packaged as Mura CMS plugins and deployed through the Mura CMS plugin installation API, 
+	provided that these modules (a) may only modify the  /plugins/ directory through the Mura CMS 
+	plugin installation API, (b) must not alter any default objects in the Mura CMS database 
+	and (c) must not alter any files in the following directories except in cases where the code contains 
+	a separately distributed license.
+
+	/admin/ 
+	/tasks/ 
+	/config/ 
+	/requirements/mura/ 
+
+	You may copy and distribute such a combined work under the terms of GPL for Mura CMS, provided that you include  
+	the source code of that other code when and as the GNU GPL requires distribution of source code. 
+
+	For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception 
+	for your modified version; it is your choice whether to do so, or to make such modified version available under 
+	the GNU General Public License version 2  without this exception.  You may, if you choose, apply this exception 
+	to your own modified versions of Mura CMS. */
+
+/*	Some styles, ideas, and concepts derived from:
+
+	Eric Meyer Reset - http://meyerweb.com/eric/tools/css/reset/index.html
+	BlueprintCSS - http://code.google.com/p/blueprintcss/
+	YUI - http://developer.yahoo.com/yui/
+*/
+
+/* @group HELPER CLASSES
+===================================== */
+
+.hide { display: none !important; }
+
+.left { float: left; }
+.right { float: right; }
+
+img.left { margin: 0 1em 1em 0; }
+img.right { margin: 0 0 1em 1em; }
+img.center { display: block; margin: 1em auto; }
+
+p.center { text-align: center; }
+
+.callToAction {
+	padding-left: 10px;
+	background: url(../images/pointer_red.gif) no-repeat 0 50%;
+	}
+
+
+/* @group Helper Classes - Clearfix
+===================================== */
+
+/* Clearing floats without extra markup
+	http://perishablepress.com/press/2009/12/06/new-clearfix-hack/ */
+
+
+.clearfix:after, .svIndex dl:after {
+	visibility: hidden;
+	display: block;
+	font-size: 0;
+	content: " ";
+	clear: both;
+	height: 0;
+	}
+* html .clearfix, * html .svIndex dl { zoom: 1; } /* IE6 */
+*:first-child+html .clearfix, *:first-child+html .svIndex dl { zoom: 1; } /* IE7 */
+
+/* @end Helper Classes - Clearfix
+-------------------------------- */
+
+/* @end HELPER CLASSES
+-------------------------------- */
+
+
+
+/* @group NAVIGATION/UI
+===================================== */
+
+/* @group Nav - Breadcrumb
+===================================== */
+
+#crumbList {
+	margin: 0 0 1em;
+	padding: 0;
+	list-style: none;
+	}
+
+#crumbList li {
+	display: inline;
+	margin: 0;
+	font-size: 1em;
+	}
+
+#crumbList a { text-decoration: none; }
+
+/* @end Nav - Breadcrumb
+-------------------------------- */
+
+
+/* @group Nav - Sequential, More Results
+===================================== */
+
+.navSequential,
+.moreResults ul {
+	margin: 0 !important;
+	padding: 0;
+	list-style: none;
+	}
+
+.navSequential li,
+.moreResults li {
+	display: inline;
+	margin: 0 !important;
+	padding: 0;
+	text-align: center;
+	}
+
+.navSequential a,
+.moreResults a {
+	padding: .1em .2em;
+	text-decoration: none;
+	}
+
+.navSequential .current a {
+	border: 1px solid #e4e4e4;
+	color: #000;
+	}
+
+.navSequential a:hover {
+	background: #e4e4e4;
+	}
+
+/* @end Nav - Sequential, More Results
+-------------------------------- */
+
+
+/* @group Nav - Session
+===================================== */
+
+#navSession {
+	margin: 0;
+	list-style: none;
+	}
+
+#navSession li {
+	display: inline;
+	margin: 0;
+	padding: 0 .25em;
+	}
+
+#navSession a { text-decoration: none; }
+
+#navSession li#navEditProfile {
+	border-right: 1px solid #ccc;
+	padding-right: .5em;
+	padding-left: 0;
+	}
+
+#navSession li#navLogout {
+	padding-right: 0;
+	}
+
+/* @end Nav - Session
+-------------------------------- */
+
+/* @end NAVIGATION/UI
+-------------------------------- */
+
+
+
+/* @group DISPLAY OBJECTS, SYSTEM COMPONENTS
+===================================== */
+
+/* @group Add Comment Component
+===================================== */
+
+#svComments {
+	clear: both;
+}
+
+#svComments dl {
+	margin-bottom: 1em;
+	padding-bottom: 1em;
+	border: 0;
+	border-bottom: 1px dotted #ccc;
+	line-height: 1.2;
+	overflow: hidden; /* clear floats */
+	}
+#svComments dl.last {
+	margin-bottom: 2em;
+	border-bottom: 0;
+	}
+	
+#svComments dl.indent-1 {
+	padding-left: 30px;
+}
+#svComments dl.indent-2 {
+	padding-left: 60px;
+}
+#svComments dl.indent-3 {
+	padding-left: 90px;
+}
+#svComments dl.indent-4 {
+	padding-left: 120px;
+}
+
+#svComments .indent-5,#svComments .indent-6,#svComments .indent-7,#svComments .indent-8,#svComments .indent-9 {
+	border-left: 120px solid #fff;
+}
+
+#svComments dt { margin-bottom: .5em; }
+#svComments dd { margin-bottom: .25em; }
+#svComments dd.comment p { margin-top: .5em; }
+#svComments dd.comment p:first-child { margin-top: 0; }
+
+#svComments dd.dateTime {
+	font-size: 1em;
+	color: #666;
+	margin-bottom: .5em;
+	}
+
+#svComments dd.gravatar {
+	float: left;
+	margin-right: 1em;
+}
+
+#svComments dd.reply {
+	font-size: 1em;
+}
+
+#svComments a.editcomment {
+	cursor: pointer;
+}
+
+/* @end Add Comment Component
+-------------------------------- */
+
+
+/* @group Advertisements
+===================================== */
+
+div.svAd { margin: 0 0 2em; }
+
+/* @end Advertisements
+-------------------------------- */
+
+
+/* @group Asset Detail
+===================================== */
+
+#svAssetDetail {}
+
+a#svAsset {
+	display: block;
+	margin: 2em 0;
+	padding-left: 20px;
+	line-height: 2;
+	background-position: 0 50%;
+	background-repeat: no-repeat;
+	}
+
+a#svAsset img {
+	float: right;
+	}
+
+.image a#svAsset {
+	padding-left: 0;
+	line-height: 1.5;
+	background: transparent;
+	}
+
+a#svAsset.file { background-image: url(../images/file-icons/generic.gif); }
+
+a#svAsset.ai { background-image: url(../images/file-icons/ai.gif); }
+a#svAsset.css { background-image: url(../images/file-icons/css.gif); }
+a#svAsset.doc { background-image: url(../images/file-icons/doc.gif); }
+a#svAsset.gif { background-image: url(../images/file-icons/gif.gif); }
+a#svAsset.html, a#svAsset.htm { background-image: url(../images/file-icons/generic.gif); }
+a#svAsset.graffle { background-image: url(../images/file-icons/graffle.gif); }
+a#svAsset.jpg { background-image: url(../images/file-icons/jpg.gif); }
+a#svAsset.mdb { background-image: url(../images/file-icons/mdb.gif); }
+a#svAsset.mp3 { background-image: url(../images/file-icons/mp3.gif); }
+a#svAsset.mpp { background-image: url(../images/file-icons/mpp.gif); }
+a#svAsset.ndd { background-image: url(../images/file-icons/ndd.gif); }
+a#svAsset.oo3 { background-image: url(../images/file-icons/oo3.gif); }
+a#svAsset.pdf { background-image: url(../images/file-icons/pdf.gif); }
+a#svAsset.png { background-image: url(../images/file-icons/png.gif); }
+a#svAsset.ppt { background-image: url(../images/file-icons/ppt.gif); }
+a#svAsset.psd { background-image: url(../images/file-icons/psd.gif); }
+a#svAsset.txt { background-image: url(../images/file-icons/txt.gif); }
+a#svAsset.url { background-image: url(../images/file-icons/url.gif); }
+a#svAsset.vsd { background-image: url(../images/file-icons/vsd.gif); }
+a#svAsset.xls { background-image: url(../images/file-icons/xls.gif); }
+a#svAsset.zip { background-image: url(../images/file-icons/zip.gif); }
+
+
+#svAssetDetail.image #svAsset {
+	float: left;
+	margin: .25em 1.5em .5em 0;
+	}
+
+#svAssetDetail.image #svAsset img {
+	float: none;
+	display: block;
+	margin: 0;
+	}
+
+/* @end Asset Detail
+-------------------------------- */
+
+
+/* @group Associated Image
+===================================== */
+
+/* This image gets output only if a specific image has been uploaded for a specific content type.
+It gets output between the h2 and the body content and launches the large image in shadowbox when clicked */
+
+.content#primary .imgMed {
+	float: right;
+	margin-bottom: 1em;
+	margin-left: 1em;
+	}
+
+/* @end Associated Image
+-------------------------------- */
+
+
+/* @group Calendar
+===================================== */
+
+.svCalendar { text-align: center; }
+
+.svCalendar table { width: 100%; }
+
+.svCalendar th {
+	padding: 0;
+	border: 1px solid; 
+	font-style: normal;
+	font-weight: bold;
+	text-align: center;
+	font-size: 1em;
+	line-height: 2.2;
+	}
+
+#svCalendarNav th {
+	line-height: 1.2;
+	font-size: .9em;
+}
+
+.svCalendar th a {
+	display: block;
+	padding: .25em;
+	text-align: center;
+	}
+
+.svCalendar th a:hover {
+	
+	}
+	
+.svCalendar td {
+		width: 14%;
+		height: 60px;
+		padding: .5em;
+		border: 1px solid;
+		font-size: 9px;
+		line-height: 1;
+		text-align: left;
+		vertical-align: top;
+		}
+		
+.svCalendar .dayofweek td {
+	height: auto;
+	padding: .5em;
+	line-height: 1.6;
+	font-style: normal;
+	font-weight: bold;
+	text-align: center;
+	}
+	
+#svCalendarNav .dayofweek td {
+	line-height: 1.1;
+}
+
+.svCalendar .dayofweek td a {}
+
+#svCalendarNav td {
+	height: auto;
+	text-align: center;
+	}
+
+.svCalendar td .date { }
+
+.content .svCalendar td ul {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	}
+
+.svCalendar td li a {
+	display: block;
+	margin: 2px 0;
+	padding: 0 0 2px;
+	border: 0;
+	text-align: left;
+	text-decoration: none;
+	}
+
+.svCalendar td li a:hover,
+.svCalendar td li a#today {
+	text-decoration: underline;
+	}
+
+/* @end Calendar
+-------------------------------- */
+
+
+/* @group Calendar Date Picker
+===================================== */
+
+#datePicker {
+	width: 190px;
+	text-align: center;
+	background: #fff;
+	}
+
+#datePickerContainer {
+	width: 178px;
+	margin: 6px auto;
+	padding: 0;
+	text-align: center;
+	}
+
+#datePicker form {}
+
+#datePicker select.dropdown {
+	margin: 0;
+	font-size: 11px;
+	vertical-align: middle;
+	}
+
+#datePicker input.submit { vertical-align: middle; }
+
+#datePicker #calendarDates {
+	margin: 6px auto;
+	padding: 0;
+	background: #fff;
+	}
+
+#datePicker #calendarDates th {
+	font-size: 1em;
+	font-style: normal;
+	font-weight: normal;
+	text-align: center;
+	color: #fff;
+	background: #333;
+	}
+
+#datePicker #calendarDates th a { color: #fff; }
+
+#datePicker #calendarDates .dayofweek td {
+	padding: .5em;
+	font-size: 1em;
+	font-style: normal;
+	font-weight: bold;
+	text-align: center;
+	color: #333;
+	background: #EAE7E7;
+	}
+
+#datePicker #calendarDates td {
+	border: 1px solid #EAE7E7;
+	font-size: 1em;
+	font-style: normal;
+	font-weight: normal;
+	text-align: center;
+	color: #333;
+	background: #f6f6f6;
+	}
+
+#datePicker #calendarDates a {
+	display: block;
+	padding: .5em;
+	text-decoration: none;
+	color: #333;
+	}
+
+#datePicker #calendarDates a:hover,
+#calendar a#today {
+	display: block;
+	padding: .5em;
+	text-decoration: none;
+	color: #fff;
+	background: #f6f6f6;
+	}
+
+/* @end Calendar Date Selector
+-------------------------------- */
+
+
+/* @group Columns
+===================================== */
+/* For use with fckEditor Templates (2, 3, and 4 column templates) or anything you'd like to have a coumnar layout for */
+
+/* HTML example:
+<div class="columns3">
+	<div class="col"></div>
+	<div class="col"></div>
+	<div class="col"></div>
+</div>
+
+<ul class="columns3">
+	<li class="col"></li>
+	<li class="col"></li>
+	<li class="col"></li>
+</ul>
+
+*/
+
+.col {
+	float: left;
+	margin-right: 1.5%;
+	display: inline; /* ie6 double-margin float fix */
+	}
+
+.columns2 .col { width: 48%; }
+.columns3 .col { width: 31%; }
+.columns4 .col { width: 23%; }
+.columns5 .col { width: 18%; }
+.columns6 .col { width: 14%; }
+.columns7 .col { width: 12%; }
+.columns8 .col { width: 10%; }
+
+/* @end Columns
+-------------------------------- */
+
+
+/* @group Flash Player
+===================================== */
+/* For FLV Player Plugin in FCK Editor */
+
+table.svFlvPlayer td {
+	padding: 0;
+	border: 0;
+	}
+
+/* @end Flash Player
+-------------------------------- */
+
+
+/* @group Galleries
+===================================== */
+
+#svGallery ul {
+	margin: 0;
+	list-style: none;
+	}
+	
+#svGallery li {
+	/* width : auto; Width is set dynamically in /includes/display_objects/gallery/htmlhead/gallery.cfm */
+	/* Height is being set by jQuery based on the rendered height of the <li> to avoid float issues. */
+	float: left;
+	margin: 0 2% 0 0;
+	padding: 0 0 1.5em;
+	list-style: none;
+	font-size: 1.1em;
+	text-align: center;
+	display: -moz-inline-stack; /* FF 2 */
+	display: inline-block;
+    zoom: 1; /* Trigger hasLayout for IE */
+    *display: inline; /* IE 7 & lower */
+    _height: 1%; /* IE 6 & lower */
+    overflow: hidden;
+	}
+
+#svGallery li a { 
+	display: block;
+	margin: 0 auto .75em;
+}
+
+#svGallery li img { 
+	margin: 0 auto;
+	display: block;
+	 }
+
+#svGallery li p {
+	margin: 0;
+	font-size: .9em;
+	text-align: center;
+	}
+
+#svGallery dl {
+	margin: 0 auto;
+	padding: 0;
+	}
+
+#svGallery dt {
+	margin: 0 0 .25em;
+	padding: 0;
+	}
+
+#svGallery dd {
+	float: none;
+	margin: 0;
+	padding: 0;
+	line-height: 1.25;
+	background: transparent;
+	}
+
+#svGallery .comments a {
+	padding-left: 13px;
+	background: url(../images/icon_comments.gif) no-repeat 0 50%;
+	}
+
+/* @end Galleries
+-------------------------------- */
+
+/* @group All Indexes - Portals, Local Indexes, Remote Feeds, Related Content, Features
+===================================== */
+.svIndex {
+	margin: 2em 0;
+	}
+
+.sidebar .svIndex {
+	margin: 0 0 2em 0;
+}
+
+.content .svIndex {
+	padding-top: 1em;
+	border-top: 1px solid #ccc;
+}
+
+.svIndex dl {
+	position: relative;
+	margin: 1.3em 0 1em;
+	}
+
+.sidebar .svIndex dl.first {
+	margin-top: 0;
+	}
+
+.svIndex dl.last {
+	border: 0;
+	padding: 0;
+	}
+
+.sidebar .svIndex dl.first {
+	padding-top: 0;
+	}
+
+.svIndex dt {
+	margin-bottom: .75em;
+}
+
+.sidebar .svIndex dt {
+	margin: 0 0 .25em 0;
+	}
+
+.svIndex dt.releaseDate {
+	margin-bottom: .5em;
+	font-weight: normal;
+	color: #999;
+	}
+
+dd.summary span.readMore { font-size: .9em; }
+
+dd.credits,
+dd.comments,
+dd.tags,
+dd.rating {
+	float: left;
+	margin-bottom: 0;
+	padding: 0 .75em 0 0;
+	font-size: 1em;
+	}
+
+.sidebar dd.credits,
+.sidebar dd.comments,
+.sidebar dd.tags,
+.sidebar dd.rating {
+	float: none;
+	margin-bottom: .35em;
+	padding: 0;
+	}
+	
+.rating {	
+		position: relative;
+		width: 110px;
+		background-repeat: no-repeat;
+		background-position: 3.5em 50%;
+		}
+
+.rating span {
+	position: absolute;
+	left: -9999px;
+	}
+	
+.svIndex dd.credits {
+	color: #666;
+	}
+	
+.svIndex dd.comments {
+	padding-left: 13px !important;
+	background: url(../images/icon_comments.png) no-repeat 0 50%;
+	}
+
+dl.hasImage .image { 
+	position: absolute;
+	top: 0;
+	left: 0;
+	margin: 0 1em 0 0;
+	}
+	
+.sidebar dl.hasImage {
+	min-height: 0;
+	padding-left: 0;
+}
+
+.sidebar dl.hasImage .image {
+	display: none;
+}
+
+/* @group Slideshow */
+
+.svSlides h3 {
+	
+}
+
+.svSlideshow .svSlides dl {
+	border: 0;
+}
+
+.svSlides  dt {
+	
+}
+
+ol.svPager {
+	position: relative;
+	z-index: 2;
+	margin: 0;
+	padding: 0;
+	}
+
+ol.svPager li {
+	margin: 0 .25em;
+	display: inline;
+	}
+
+ol.svPager a {
+	display: -moz-inline-block;
+	display: inline-block;
+	padding: 2px 5px;
+	text-align: center;
+		line-height: 1.2;
+	}
+
+ol.svPager li.activeLI a,
+ol.svPager a:hover {
+	
+	}
+
+
+/* @end */
+
+a.rss {
+	padding: 4px 0 4px 14px;
+	background: url(../images/icon_rss.gif) no-repeat 0 50%;
+}
+
+/* @end Portals, Feeds
+-------------------------------- */
+
+
+/* @group Portal Features
+===================================== */
+
+div.portalFeatures {
+	margin: 0 0 1em;
+	padding: 0 0 1em;
+	border-bottom: 1px dotted #ccc;
+	font-weight: bold;
+	}
+
+.portalFeatures dl {
+	margin: 6px 0 0;
+	list-style: none;
+	}
+
+.portalFeatures dt {
+	clear: both;
+	margin: 0 0 .5em;
+	padding: 0;
+	font-weight: bold;
+	}
+
+.portalFeatures dt.releaseDate {
+	margin: 0 0 2px;
+	font-size: 1em;
+	font-weight: normal !important;
+	color: #666;
+	}
+
+.portalFeatures dd {
+	clear: both;
+	margin: 0 0 1em;
+	padding: 0;
+	font-weight: normal;
+	}
+.portalFeatures dd p {
+	margin: 0 0 .5em;
+	padding: 0;
+	font-weight: normal;
+	}
+.portalFeatures dd img {
+	margin: 0 .5em .5em 0;
+	padding: 0;
+	float: left;
+	}
+
+.portalFeatures a { text-decoration: none; }
+
+/* @end Portal Features
+-------------------------------- */
+
+
+/* @group RSS Feed List
+===================================== */
+/* for the public feeds table display object */
+
+table#svRssFeedsList td {
+	vertical-align: middle;
+	}
+	
+table#svRssFeedsList img {
+	border: 0;
+	padding: 0;
+	}
+
+/* @end RSS Feed List
+-------------------------------- */
+
+
+/* @group Session Tools
+===================================== */
+
+#svSessionTools {
+	margin-bottom: 1em;
+	}
+
+#svSessionTools p#welcome {
+	margin-bottom: .5em;
+	font-size: 1.1em;
+	}
+	
+/* @end Session Tools
+-------------------------------- */
+
+
+/* @group Site Map
+===================================== */
+
+ul#svSiteMap {
+	margin: 1em 0;
+	list-style: none;
+	}
+
+#svSiteMap ul {
+	margin: 0;
+	list-style: none;
+	}
+
+#svSiteMap li {
+	margin-left: 0;
+	font-weight: normal;
+	}
+
+#svSiteMap li li {
+	margin: 1em 2em;
+	font-weight: bold;
+	}
+
+#svSiteMap li li li {
+	font-weight: normal;
+	}
+
+/* @end Site Map
+-------------------------------- */
+
+
+/* @group Tag Clouds
+===================================== */
+
+#svTagCloud ol { margin: 0 0 2em; }
+#svTagCloud li { display: inline; }
+#svTagCloud span { position: absolute; left: -9999px; width: 990px; }
+
+#svTagCloud .not-popular { font-size: .9em; }
+#svTagCloud .not-very-popular { font-size: 1.2em; }
+#svTagCloud .somewhat-popular { font-size: 1.6em; }
+#svTagCloud .popular { font-size: 1.9em; }
+#svTagCloud .very-popular { font-size: 2.1em; }
+#svTagCloud .ultra-popular { font-size: 2.6em; }
+
+/* @end Tag Clouds
+-------------------------------- */
+
+
+/* @group User Tools
+===================================== */
+
+#svPageTools {
+	margin: 0 0 2em;
+	padding: 0;
+	}
+
+#svPageTools ul {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	}
+
+#svPageTools li {
+	margin: 0;
+	padding: 0 0 0 20px;
+	font-size: 11px;
+	line-height: 1.5;
+	}
+
+#svPageTools li a { line-height: 20px; }
+
+#svPageTools li#addFavorite { background: url(../images/icon_addfavorite.gif) no-repeat; }
+
+#svPageTools li#sendToFriend { background: url(../images/icon_emailarticle.gif) no-repeat; }
+
+#svPageTools li#print { background: url(../images/icon_print.gif) no-repeat; }
+
+#svPageTools li#discuss { background: url(../images/icon_discuss.gif) no-repeat; }
+
+/* @end User Tools
+-------------------------------- */
+
+
+/* @group User Tools - Favorites
+===================================== */
+
+ul#favoriteList {
+	margin: 0 0 1em;
+	list-style: none;
+	font-size: 11px;
+	}
+
+#favoriteList li {
+	margin: 0 0 .65em !important;
+	padding: 0;
+	border: none;
+	font-size: 11px;
+	line-height: 1.1;
+	}
+
+#favoriteList li.defaultMsg {
+	margin: 0;
+	list-style: none !important;
+	font-size: 1em;
+	line-height: 1.2;
+	color: #666;
+	}
+
+#favoriteList li a {
+	margin: 0 0 0 1em;
+	padding: 0;
+	}
+	
+#favoriteList li a.remove {
+	color: #666;
+	}
+
+/* @end User Tools - Favorites
+-------------------------------- */
+
+
+/* @group User Tools - Send to Friend Pop-Up
+===================================== */
+
+.sendToFriend input.text { width: 300px; }
+
+.sendToFriend textarea {
+	width: 300px;
+	height: 100px;
+	}
+
+/* @end User Tools - Send to Friend Pop-Up
+-------------------------------- */
+
+/* @end DISPLAY OBJECTS, SYSTEM COMPONENTS
+-------------------------------- */
+
+
+
+/* @group SYSTEM FORMS
+===================================== */
+
+/* @group Forms Manager Output */
+
+
+
+/* @end Forms Manager Output */
+
+/* @group System Forms - Login
+===================================== */
+
+#svLoginContainer {
+	width: 370px;  /*Why is this set in px?*/
+	margin: 0 auto;
+	}
+
+form#login { margin-bottom: .5em; }
+
+form#sendLogin { margin-bottom: 2em; }
+
+.sidebar #login h3 {
+	padding-bottom: 0;
+	border-bottom: 0;
+	}
+
+#login fieldset { margin-bottom: 0; }
+
+#svLoginContainer p.required {
+	margin: .5em 0 2em;
+	}
+
+#login label,
+#sendLogin label {
+	float: none;
+	width: auto;
+	text-align: left;
+	}
+
+#loginContainer input.text,
+#sendLogin input.text {
+	width: 240px; /*Why is this set in px?*/
+	}
+
+#sendLogin p { margin: 1em 0 0; }
+
+#notRegistered {}
+#notRegistered h3 {}
+#notRegistered a {}
+
+/* @end System Forms - Login
+-------------------------------- */
+
+
+/* @group System Forms - Mailing Lists
+===================================== */
+
+.sidebar .svMailingList fieldset {
+	padding: 0;
+	border: 0;
+	}
+
+.sidebar .svMailingList ol {
+	padding: 0;
+	}
+
+.sidebar .svMailingList legend { display: none; }
+
+#svMasterEmail {}
+
+/* @end System Forms - Mailing Lists
+-------------------------------- */
+
+
+/* @group System Forms - Search
+===================================== */
+
+#svSearchForm {
+	margin: 0 0 1em;
+	padding: 0 0 1em;
+	border-bottom: 1px dotted #ccc;
+	}
+
+#svSearchForm input.text {
+	width: 100px;
+	margin: 0 .5em 0 0;
+	}
+
+#svSearchForm input.submit {
+	float: none;
+	clear: none;
+	width: auto;
+	margin: 0 .5em 0 0;
+	}
+
+#svSearchResults .moreResults {
+	margin: .75em 0;
+	padding: .75em;
+	background: #f2f2f2;
+	}
+
+#svSearchResults .bottom {
+	margin-bottom: 2em;
+	}
+
+#svSearchAgain p {
+	margin-bottom: .5em;
+	font-weight: bold;
+	}
+
+#svSearchResults form {}
+
+#svSearchResults .submit { float: none; }
+
+span.keywords,
+span.highlight {
+	padding: .2em;
+	background: yellow;
+	}
+
+/* @end System Forms - Search
+-------------------------------- */
+
+
+/* @group System Forms - Send to a Friend
+===================================== */
+
+#svSendToFriend {
+	padding: 1em 2em 0;
+	background: #fff;
+	}
+
+#svSendToFriend h1 {
+	font-size: 1.5em;
+	text-align: center;
+	}
+
+/* @end System Forms - Send to a Friend
+-------------------------------- */
+
+/* @group System Forms - CK Editor */
+
+form li .cke_skin_mura {
+	margin-left: 28%;
+}
+
+form li .cke_skin_mura table {
+	margin-top: 0;
+}
+
+/* @end */
+
+/* @group System Forms - Responses
+===================================== */
+
+.sidebar .responseMessage { color: red; }
+
+.sidebar .responseMessage em { font-style: normal; }
+
+#dsp_response.dataCollection .pollResults { list-style: none; }
+
+#dsp_list.dataResponses {}
+
+#dsp_detail.dataResponses {}
+
+.pollResults li {
+	margin: 0 0 2px;
+	padding: 0;
+	list-style: none;
+	}
+
+.pollValue {}
+
+.pollPercent { font-style: italic; }
+
+.pollQty { display: none; }
+
+
+.error, .notice, .success { padding: .8em; margin-bottom: 1em; border: 2px solid #ddd; }
+
+.error { background: #FBE3E4; color: #8a1f11; border-color: #FBC2C4; }
+.notice { background: #FFF6BF; color: #514721; border-color: #FFD324; }
+.success { background: #E6EFC2; color: #264409; border-color: #C6D880; }
+.error a { color: #8a1f11; }
+.notice a { color: #514721; }
+.success a { color: #264409; }
+
+/* @end System Forms - Responses
+-------------------------------- */
+
+/* @end SYSTEM FORMS
+-------------------------------- */
+
+
+/* @end */
+
+#mura-stacktrace {
+	width: 800px;
+	margin: 2em auto;
+	padding: 2em;
+	/*border: 2px dotted red;*/
+	background-color: #ddd;
+	color: #000;
+	-webkit-border-radius: 6px;
+	-moz-border-radius: 6px;
+	border-radius: 6px;
+}
+
+#mura-stacktrace h3 {
+	color: #333;
+	text-shadow: 0 1px 0 #ffffff;
+	margin-bottom: 1em;
+	padding: 0;
+	margin: 0 0 1em;
+}
+
+#mura-stacktrace ol {
+	margin: 0 4em 2em;
+	padding: 0;
+}
+
+#mura-stacktrace li {
+	text-shadow: 0 1px 0 #ffffff;
+}
+
+#mura-stacktrace .duration {
+	font-weight: bold;
+}
+
+#mura-stacktrace p {
+	font-size: 16px;
+	text-shadow: 0 1px 0 #ffffff;
+	margin: 0;
+}
