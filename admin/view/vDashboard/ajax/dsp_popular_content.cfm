@@ -86,7 +86,7 @@ to your own modified versions of Mura CMS.
 --->
 <cfset rsList=application.dashboardManager.getTopKeywords(attributes.siteID,3,false,"All",attributes.startDate,attributes.stopDate) />
 <cfset count=rsList.recordcount>
-<table id="topSearches">
+<table class="mura-table-grid stripe" id="topSearches">
 <tr>
 	<th>#application.rbFactory.getKeyValue(session.rb,"dashboard.topsearches")# <a href="index.cfm?fuseaction=cDashboard.topSearches&siteid=#URLEncodedFormat(attributes.siteid)#&startDate=#URLEncodedFormat(attributes.startDate)#&stopDate=#URLEncodedFormat(attributes.stopDate)#">(View Report)</a></th>
 </tr>
