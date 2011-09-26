@@ -44,7 +44,7 @@ to your own modified versions of Mura CMS.
 <cfsilent>
 <cfset returnsets=structNew()>
 <cfset userBean=application.userManager.read(attributes.baseID)/>
-<cfset extendSets=application.classExtensionManager.getSubTypeByName(attributes.type,attributes.subtype,attributes.siteid).getExtendSets(inherit=true,container="Default") />
+<cfset extendSets=application.classExtensionManager.getSubTypeByName(attributes.type,attributes.subtype,attributes.siteid).getExtendSets(inherit=true,container="Default",activeOnly=true) />
 <!---
 <cfif userBean.getType() eq 2>
 	<cfset started=false />
@@ -95,7 +95,7 @@ to your own modified versions of Mura CMS.
 <dd><br/><em>There are currently no extended attributes available.</em></dd></dl></cfoutput>
 </cfsavecontent>
 <cfsilent>
-<cfset extendSets=application.classExtensionManager.getSubTypeByName(attributes.type,attributes.subtype,attributes.siteid).getExtendSets(inherit=true,container="Basic") />
+<cfset extendSets=application.classExtensionManager.getSubTypeByName(attributes.type,attributes.subtype,attributes.siteid).getExtendSets(inherit=true,container="Basic",activeOnly=true) />
 <cfif userBean.getType() eq 2>
 	<cfset started=false />
 <cfelse>

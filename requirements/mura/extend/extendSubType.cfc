@@ -222,6 +222,7 @@ to your own modified versions of Mura CMS.
 <cfargument name="doFilter" required="true" default="false"/>
 <cfargument name="filter" required="true" default=""/>
 <cfargument name="container" required="true" default=""/>
+<cfargument name="activeOnly" required="true" default="false"/>
 <cfset var rs=""/>
 <cfset var tempArray=""/>
 <cfset var extendSet=""/>
@@ -230,7 +231,7 @@ to your own modified versions of Mura CMS.
 <cfset var extendSetBean=""/>
 <cfset var s=0/>
 
-	<cfset rsSets=getSetsQuery(arguments.inherit,arguments.doFilter,arguments.filter,arguments.container)/>
+	<cfset rsSets=getSetsQuery(arguments.inherit,arguments.doFilter,arguments.filter,arguments.container,arguments.activeOnly)/>
 	
 	<cfif rsSets.recordcount>
 		<cfset tempArray=createObject("component","mura.queryTool").init(rsSets).toArray() />
@@ -433,6 +434,7 @@ to your own modified versions of Mura CMS.
 <cfargument name="doFilter" required="true" default="false"/>
 <cfargument name="filter" required="true" default=""/>
 <cfargument name="container" required="true" default=""/>
+<cfargument name="activeOnly" required="true" default="false"/>
 <cfset var rs=""/>
 <cfset var rsFinal=""/>
 <cfset var f=""/>
@@ -440,17 +442,22 @@ to your own modified versions of Mura CMS.
 <cfset var fLen=listLen(arguments.filter)/>
 
 		<cfquery name="rs" datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-		select ExtendSetID,subTypeID,name,orderno,isActive,siteID,categoryID,orderno,0 as setlevel from tclassextendsets 
-		where subTypeID=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#getsubtypeID()#">
-		and siteID=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#getSiteID()#">
+		select tclassextendsets.ExtendSetID,tclassextendsets.subTypeID,tclassextendsets.name,tclassextendsets.orderno,tclassextendsets.isActive,tclassextendsets.siteID,tclassextendsets.categoryID,tclassextendsets.orderno,0 as setlevel 
+		from tclassextendsets
+		inner join tclassextend on (tclassextendsets.subtypeid=tclassextend.subtypeID) 
+		where tclassextendsets.subTypeID=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#getsubtypeID()#">
+		and tclassextendsets.siteID=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#getSiteID()#">
+		<cfif arguments.activeOnly>
+			and tclassextend.isActive=1
+		</cfif>
 		<cfif arguments.doFilter and fLen>
 		and (
 		<cfloop from="1" to="#fLen#" index="f">
-		categoryID like '%#listGetAt(arguments.filter,f)#%' <cfif f lt fLen>or</cfif> 
+		tclassextendsets.categoryID like '%#listGetAt(arguments.filter,f)#%' <cfif f lt fLen>or</cfif> 
 		</cfloop>
 		)
 		<cfelseif arguments.doFilter>
-		and categoryID is null
+		and tclassextendsets.categoryID is null
 		</cfif>
 		
 		<cfif len(arguments.container)>

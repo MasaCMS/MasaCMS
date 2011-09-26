@@ -42,7 +42,7 @@ to your own modified versions of Mura CMS.
 --->
 <cfhtmlhead text="#session.dateKey#">
 <cfset userPoolID=application.settingsManager.getSite(attributes.siteID).getPublicUserPoolID()>
-<cfset rsSubTypes=application.classExtensionManager.getSubTypesByType(1,userPoolID) />
+<cfset rsSubTypes=application.classExtensionManager.getSubTypesByType(type=1,siteID=userPoolID,activeOnly=true) />
 <cfquery name="rsNonDefault" dbtype="query">
 select * from rsSubTypes where subType <> 'Default'
 </cfquery>

@@ -43,7 +43,7 @@ to your own modified versions of Mura CMS.
 <cfset returnsets=structNew()>
 <cfset contentBean=application.contentManager.getcontentVersion(attributes.contentHistID,attributes.siteID)/>
 <cfsavecontent variable="returnsets.extended">
-<cfset extendSets=application.classExtensionManager.getSubTypeByName(attributes.type,attributes.subtype,attributes.siteid).getExtendSets(inherit=true,container="Default") />
+<cfset extendSets=application.classExtensionManager.getSubTypeByName(attributes.type,attributes.subtype,attributes.siteid).getExtendSets(inherit=true,container="Default",activeOnly=true) />
 <cfset started=false />
 <cfoutput>
 <cfif arrayLen(extendSets)>
@@ -83,7 +83,7 @@ to your own modified versions of Mura CMS.
 </cfoutput>
 </cfsavecontent>
 <cfsavecontent variable="returnsets.basic">
-<cfset extendSets=application.classExtensionManager.getSubTypeByName(attributes.type,attributes.subtype,attributes.siteid).getExtendSets(inherit=true,container="Basic") />
+<cfset extendSets=application.classExtensionManager.getSubTypeByName(attributes.type,attributes.subtype,attributes.siteid).getExtendSets(inherit=true,container="Basic",activeOnly=true) />
 <cfset started=false />
 <cfoutput>
 <cfif arrayLen(extendSets)>

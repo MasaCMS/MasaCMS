@@ -60,6 +60,8 @@ to your own modified versions of Mura CMS.
 	<input name="type" value="#HTMLEditFormat(subType.getType())#" required="true"/> ---></dd>
 <dt>Sub Type</dt>
 <dd><input name="subType" value="#HTMLEditFormat(subType.getSubType())#" required="true" maxlength="25"/></dd>
+<dt>Active</dt>
+<dd><ul class="radioGroup"><li><input name="isActive" type="radio" class="radio" value="1"<cfif subType.getIsActive() eq 1 >Checked</cfif>>Yes</li><li><input name="isActive" type="radio" class="radio" value="0"<cfif subType.getIsActive() eq 0 >Checked</cfif>>No</li></ul></dd>
 </dl>
 <cfif not len(attributes.subTypeID)>
 <input type="button" class="submit" onclick="submitForm(document.forms.subTypeFrm,'add');" value="Add" /><input type=hidden name="subTypeID" value="#createuuid()#"><cfelse> <input type="button" class="submit" onclick="submitForm(document.forms.subTypeFrm,'delete','Delete Class Extension?');" value="Delete" /> <input type="button" class="submit" onclick="submitForm(document.forms.subTypeFrm,'update');" value="Update" />

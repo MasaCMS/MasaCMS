@@ -43,7 +43,7 @@ to your own modified versions of Mura CMS.
 
 <cfset rsAddress=request.userBean.getAddressById(attributes.addressID)>
 <cfset addressBean=request.userBean.getAddressBeanById(attributes.addressID)>
-<cfset extendSets=application.classExtensionManager.getSubTypeByName("Address",request.userBean.getsubtype(),request.userBean.getSiteID()).getExtendSets(true) />
+<cfset extendSets=application.classExtensionManager.getSubTypeByName("Address",request.userBean.getsubtype(),request.userBean.getSiteID()).getExtendSets(inherit=true,activeOnly=true) />
 <cfoutput><form novalidate="novalidate" action="index.cfm?fuseaction=cPrivateUsers.updateAddress&userid=#URLEncodedFormat(attributes.userid)#&routeid=#attributes.routeid#&siteid=#URLEncodedFormat(attributes.siteid)#" method="post" enctype="multipart/form-data" name="form1" onsubmit="return validate(this);"  autocomplete="off" >
 	<h2>#application.rbFactory.getKeyValue(session.rb,'user.adminuseraddressform')#</h2>
 	
