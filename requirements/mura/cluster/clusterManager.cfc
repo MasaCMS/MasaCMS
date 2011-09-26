@@ -5,6 +5,7 @@
 <cfset variables.configBean=arguments.configBean />
 <cfset variables.broadcastCachePurges=variables.configBean.getValue("broadcastCachePurges")>
 <cfset variables.broadcastAppreloads=variables.configBean.getValue("broadcastAppreloads")>
+<cfset variables.broadcastWithProxy=variables.configBean.getValue("broadcastWithProxy")>
 <cfreturn this />
 </cffunction>
 
@@ -126,12 +127,12 @@
 <cffunction name="doRemoteCall" output="false">
 <cfargument name="remoteURL">
 	<cftry>
-	<cfif len(variables.configBean.getProxyServer())>
-		<cfhttp url="#remoteURL#" 
+	<cfif variables.broadcastWithProxy and len(variables.configBean.getProxyServer())>
+		<cfhttp url="#remoteURL#" timeout="100"
 				proxyUser="#variables.configBean.getProxyUser()#" proxyPassword="#variables.configBean.getProxyPassword()#"
 				proxyServer="#variables.configBean.getProxyServer()#" proxyPort="#variables.configBean.getProxyPort()#">
 	<cfelse>
-		<cfhttp url="#remoteURL#">
+		<cfhttp url="#remoteURL#" timeout="100">
 	</cfif>
 	<cfcatch></cfcatch>
 	</cftry>
