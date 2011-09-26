@@ -128,11 +128,11 @@
 <cfargument name="remoteURL">
 	<cftry>
 	<cfif variables.broadcastWithProxy and len(variables.configBean.getProxyServer())>
-		<cfhttp url="#remoteURL#" timeout="10"
+		<cfhttp url="#remoteURL#" timeout="100"
 				proxyUser="#variables.configBean.getProxyUser()#" proxyPassword="#variables.configBean.getProxyPassword()#"
 				proxyServer="#variables.configBean.getProxyServer()#" proxyPort="#variables.configBean.getProxyPort()#">
 	<cfelse>
-		<cfhttp url="#remoteURL#" timeout="10">
+		<cfhttp url="#remoteURL#" timeout="100">
 	</cfif>
 	<cfcatch></cfcatch>
 	</cftry>
