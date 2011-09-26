@@ -53,13 +53,15 @@
 		<cfelse>
 			#$.dspBody(body=$.content('body'),pageTitle='',crumbList=0,showMetaImage=0)#
 		</cfif>
+		
 		#$.dspObjects($.siteConfig('primaryColumn'))#
 		<cfif $.content('contentID') eq "00000000000000000000000000000000001">
 		<!---
-<div id="navHeader" class="header-fullscreen" data-role="header" data-nobackbtn="true" data-theme="a">
+		<div id="navHeader" class="header-fullscreen" data-role="header" data-nobackbtn="true" data-theme="a">
 		<h1>More</h1>
 		</div>
---->
+		--->
+		
 		<cf_CacheOMatic key="dspMobilePrimaryNav#$.content('contentID')#">
 			#$.dspPrimaryNav(
 				viewDepth="0",
@@ -71,10 +73,10 @@
 		</cf_cacheomatic>
 		<cfelseif not listFindNoCase('Gallery,Portal',$.content('type'))>
 		<!---
-<div id="navHeader" class="header-fullscreen" data-role="header" data-nobackbtn="true" data-theme="a">
+		<div id="navHeader" class="header-fullscreen" data-role="header" data-nobackbtn="true" data-theme="a">
 		<h1>More</h1>
 		</div>
---->
+		--->
 		<div id="navSub">#$.dspSubNav()#</div>
 		</cfif>
 	</div><!-- /content -->

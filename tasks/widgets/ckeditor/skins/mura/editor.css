@@ -1,4 +1,4 @@
-/* @override http://mura:8500/5.2.1/tasks/widgets/ckeditor/skins/mura/editor.css?t=A7HG4HT */
+/* @override http://localhost:8500/muracms/tasks/widgets/ckeditor/skins/mura/editor.css */
 
 /*
 Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
@@ -1334,3 +1334,4 @@ html .cke_skin_mura {
 html.cke_skin_mura_container {
 	visibility: visible;
 }
+

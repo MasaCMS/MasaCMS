@@ -1,5 +1,6 @@
 /* @override
 	http://mura:8500/5.4/default/includes/themes/merced-html5/css/merced.css
+	http://localhost:8500/muracms/default/includes/themes/merced/css/merced.css
 */
 
 /*
@@ -302,7 +303,7 @@ aside {
 
 .home #right {
 	width: 213px;
-	margin: -40px 0 0;
+	margin: -40px 0 0 !important;
 	padding: 0;
 	}
 
@@ -310,9 +311,6 @@ aside {
 	width: 167px;
 	}
 
-aside {}
-#leftaside {}
-#rightaside {}
 
 
 /* @group Layout - Header
@@ -842,6 +840,9 @@ a.boxItemHeader { /* Link of items inside dragable boxes */
 
 /* @group Home Feeds
 ===================================== */
+.home aside .svIndex {
+	margin: 0;
+}
 
 .home aside .svIndex h3 {
 	display: block;
