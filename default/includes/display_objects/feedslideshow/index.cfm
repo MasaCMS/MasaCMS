@@ -103,8 +103,6 @@ to your own modified versions of Mura CMS.
 				<cfset rs=rsPreFeed />
 			</cfif>
 			
-			<cfset hasSummary = hasSummary and variables.feedBean.getDisplaySummaries()>
-			
 			<cfset variables.iterator=$.getBean("contentIterator")>
 			<cfset variables.iterator.setQuery(rs,feedBean.getNextN())>
 		
