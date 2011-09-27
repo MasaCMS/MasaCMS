@@ -77,7 +77,7 @@
 <cfargument name="mura">
 	<cfset var rs=""/>
 	<cfset var str=""/>
-	
+	<cfset var attributes=structNew()>
 	<cfset request.pluginConfig=arguments.pluginConfig/>
 	<cfset request.pluginConfig.setSetting("pluginMode","object")/>
 	<cfset request.scriptEvent=arguments.event />
