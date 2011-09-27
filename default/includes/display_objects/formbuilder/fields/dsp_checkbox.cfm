@@ -13,15 +13,3 @@
 <cfoutput>
 #strField#
 </cfoutput>
-
-<!--- THIS IS THE MARKUP I NEED --->
-<!---I'm using jQuery to add the attributes to the dom in mobile.cfm --->
-<!---
-<ul>
- 	<li>
- 		<p>Radio Group Title</p>
-		<input type="checkbox" name="checkbox-1" id="checkbox-1" />
-		<label for="checkbox-1">I agree</label>
-    </li>
-</ul>
---->
