@@ -1,3 +1,6 @@
+/* @override 
+	http://localhost:8500/muracms/default/css/reset.css */
+
 /* This file is part of Mura CMS. 
 
 	Mura CMS is free software: you can redistribute it and/or modify 
@@ -322,6 +325,21 @@ input[type='submit'] { cursor: pointer; }
 
 /* prevent Fx <= 3.5 from showing hidden inputs when some properties are set. See: Bugzilla id# 436046 & 501959 */
 input[type='hidden'] { display: none !important; }
+
+form li.mura-form-radio p, form li.mura-form-checkbox p {
+	float: left;
+	text-align: right;
+	width: 25%;
+	margin-right: 2%;
+	padding-right: 7px;
+	font-weight: bold;
+}
+
+form li.mura-form-radio label, form li.mura-form-checkbox label {
+	float: none;
+	font-weight: normal;
+	text-align: left;
+}
 
 .sidebar form {
 	float: left;
