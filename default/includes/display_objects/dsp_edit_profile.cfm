@@ -47,7 +47,6 @@ to your own modified versions of Mura CMS.
 </cfif>
 
 <cfparam name="msg" default="#$.rbKey('user.message')#">
-<cfparam name="$.event('categoryID')" default="">
 <cfset $.loadJSLib()>
 <cfset $.addToHTMLHeadQueue("htmlEditor.cfm")>
 </cfsilent>
