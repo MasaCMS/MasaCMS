@@ -2657,7 +2657,7 @@ table td table td {
 	white-space: normal;
 }
 
-.mura-table-grid td a {
+.mura-table-grid th a, .mura-table-grid td a {
 	color: #000;
 	text-decoration: none;
 }
