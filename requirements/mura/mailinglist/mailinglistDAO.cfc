@@ -90,7 +90,7 @@ values (<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.listBean.getM
 	<cfset var rs ="" />
 	<cfset var beanArray=arrayNew(1)>
 	<cfset var bean=arguments.mailinglistBean />
-	
+	<cfset var utility=""/>
 	<cfif not isObject(bean)>
 		<cfset bean=getBean("mailingList")>
 	</cfif>

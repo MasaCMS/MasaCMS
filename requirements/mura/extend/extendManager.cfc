@@ -1159,6 +1159,7 @@ and tclassextendattributes.type='File'
 <cfset var destAttribute="">
 <cfset var s="">
 <cfset var a="">
+<cfset var attributes="">
 
 <cfif len(arguments.type)>
 	<cfquery name="rsSubTypes" dbtype="query">	

@@ -84,6 +84,7 @@
 	<cfset var rs=""/>
 	<cfset var str=""/>
 	<cfset var tracePoint=0>
+	<cfset var attributes=structNew()>
 	
 	<cfset request.pluginConfig=arguments.pluginConfig/>
 	<cfset request.pluginConfig.setSetting("pluginMode","object")/>

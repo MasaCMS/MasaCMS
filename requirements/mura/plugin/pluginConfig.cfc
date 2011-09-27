@@ -376,6 +376,7 @@ to your own modified versions of Mura CMS.
 </cffunction>
 
 <cffunction name="createCustomSettingsDir" output="false">
+	<cfset var appcfcStr="">
 	<cftry>
 	<cfif not directoryExists(getFullPath() & "/plugin/customSettings/")>
 		<cfdirectory action="create" directory="#getFullPath()#/plugin/customSettings/">
