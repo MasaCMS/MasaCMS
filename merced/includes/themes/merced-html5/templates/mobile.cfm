@@ -28,7 +28,7 @@
 		<h1>#HTMLEditFormat($.content('title'))#</h1>
 		<!---
 <form action="" id="searchForm" class="ui-btn-right">
-			<fieldset data-role="fieldcontain">
+			<fieldset >
 				<input type="search" name="Keywords" id="search" class="text" value="Search" onfocus="this.value=(this.value=='Search') ? '' : this.value;" onblur="this.value=(this.value=='') ? 'Search' : this.value;" />
 				<input type="hidden" name="display" value="search" />
 				<input type="hidden" name="newSearch" value="true" />

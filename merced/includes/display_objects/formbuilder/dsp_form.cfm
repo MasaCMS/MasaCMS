@@ -9,7 +9,7 @@
 
 <cfset aFieldOrder = frmForm.fieldorder />
 <cfoutput>
-<form data-role="fieldcontain" id="#frmID#" method="post">
+<form  id="#frmID#" method="post">
 <input type="hidden" name="siteid" value="#arguments.siteid#">
 <input type="hidden" name="formid" value="#arguments.formid#">
 	<fieldset id="set-default" data-role="controlgroup">

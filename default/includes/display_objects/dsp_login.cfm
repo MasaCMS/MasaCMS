@@ -60,7 +60,7 @@ to your own modified versions of Mura CMS.
 		</cfif>
 	</cfif>
 	<cfif not $.event('isBlocked')>
-	<form id="login" name="frmLogin" method="post" action="?nocache=1" onsubmit="return validate(this);" novalidate="novalidate" data-role="fieldcontain">
+	<form id="login" name="frmLogin" method="post" action="?nocache=1" onsubmit="return validate(this);" novalidate="novalidate" >
 		<fieldset>
 			<ol>
 				<li class="req">

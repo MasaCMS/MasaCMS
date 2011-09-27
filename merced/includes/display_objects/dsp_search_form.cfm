@@ -41,7 +41,7 @@ the GNU General Public License version 2 without this exception. You may, if you
 to your own modified versions of Mura CMS.
 --->
 
-<cfoutput><form name="searchFrm" id="svSearchForm"  method="get" data-role="fieldcontain">
+<cfoutput><form name="searchFrm" id="svSearchForm"  method="get" >
 <#$.getHeaderTag('subHead1')#><label for="search">Search</label></#$.getHeaderTag('subHead1')#>
 <input id="search" class="text" name="keywords" type="text" value="#HTMLEditFormat(request.keywords)#" alt="search"/><input name="newSearch" value="true" type="hidden"/><input type="hidden" name="display" value="search"/><input type="hidden" name="nocache" value="1"/><input type="submit" value="Go" class="submit"/>
 </form>

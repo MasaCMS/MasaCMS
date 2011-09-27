@@ -59,7 +59,7 @@ to your own modified versions of Mura CMS.
 		<cfset application.mailinglistManager.validateMember($.event().getAllValues())/>
 		<p class="response success">#$.rbKey('mailinglist.hasbeenvalidated')#</p>
 	<cfelse>
-		<form id="frmEmailMaster" name="frmEmailMaster" action="?nocache=1" method="post" onsubmit="return validate(this);" novalidate="novalidate" data-role="fieldcontain">
+		<form id="frmEmailMaster" name="frmEmailMaster" action="?nocache=1" method="post" onsubmit="return validate(this);" novalidate="novalidate" >
 			<fieldset>
 				<legend>#$.rbKey('mailinglist.mydetails')#</legend>
 				<ol>

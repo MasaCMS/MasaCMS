@@ -49,7 +49,7 @@ to your own modified versions of Mura CMS.
 	<cfif listfind($.event('doaction'),"forwardEmail")>
 	<p>#$.rbKey('email.forwarded')#</p>
 	</cfif>
-	<form name="forwardFrm" action="?nocache=1" method="post" format="html" onsubmit="return validate(this);" novalidate="novalidate" data-role="fieldcontain">
+	<form name="forwardFrm" action="?nocache=1" method="post" format="html" onsubmit="return validate(this);" novalidate="novalidate" >
 	<fieldset>
 	<legend>#$.rbKey('email.uptofive')#<legend>
 	<ul>

@@ -79,7 +79,7 @@ to your own modified versions of Mura CMS.
 		</cfif>	
 	<cfelse>
 	<cfif #rslist.description# neq ''><p class="description">#rslist.description#</p></cfif>
-	<form name="frmMailingList" action="?nocache=1" method="post" onsubmit="return validate(this);" class="clearfix" novalidate="novalidate" data-role="fieldcontain">
+	<form name="frmMailingList" action="?nocache=1" method="post" onsubmit="return validate(this);" class="clearfix" novalidate="novalidate" >
 		<fieldset>
 			<legend>#$.rbKey('mailinglist.yourinfo')#</legend>
 			<ol>

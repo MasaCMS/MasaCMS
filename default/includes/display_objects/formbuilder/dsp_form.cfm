@@ -50,7 +50,7 @@
 <!---jQuery Mobile Example Output--->
 
 <!---Radio Buttons--->
-<!---<ol data-role="fieldcontain">
+<!---<ol >
     <li data-role="controlgroup">
     	<p>Choose a pet:</p>
          	<input type="radio" name="radio-choice-1" id="radio-choice-1" value="choice-1" checked="checked" />
@@ -68,7 +68,7 @@
 </ol>--->
 
 <!---Checkboxes--->
-<!---<ul data-role="fieldcontain">
+<!---<ul >
  	<li data-role="controlgroup">
 		<p>Agree to the terms:</p>
 		<input type="checkbox" name="checkbox-1" id="checkbox-1" class="custom" />

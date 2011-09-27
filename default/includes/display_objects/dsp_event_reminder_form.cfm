@@ -48,7 +48,7 @@ to your own modified versions of Mura CMS.
 	<cfif listfind($.event('doaction'),"setReminder")>
 	<em>#$.rbKey('event.setreminder')#</em><br/><br/>
 	</cfif>
-	<form name="reminderFrm" action="?nocache=1" method="post" onsubmit="return validate(this);" novalidate="novalidate" data-role="fieldcontain">
+	<form name="reminderFrm" action="?nocache=1" method="post" onsubmit="return validate(this);" novalidate="novalidate" >
 	<fieldset>
 	<ol>
 	<li><label for="email">#$.rbKey('event.email')#*</label>
