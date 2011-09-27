@@ -21,7 +21,9 @@
 			<cfset dataset = frmData[field.datasetid] /> 
 		</cfif>
 		<cfif field.fieldtype.fieldtype neq "section">
-		<li>
+		<li<cfif field.fieldtype.fieldtype eq "radio"> class="mura-form-radio"
+		<cfelseif field.fieldtype.fieldtype eq "checkbox"> class="mura-form-checkbox"
+		</cfif>>
 		#$.dspObject_Include(thefile='/formbuilder/fields/dsp_#field.fieldtype.fieldtype#.cfm',
 			field=field,
 			dataset=dataset
