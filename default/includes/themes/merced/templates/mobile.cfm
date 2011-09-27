@@ -54,9 +54,8 @@
 			#$.dspBody(body=$.content('body'),pageTitle='',crumbList=0,showMetaImage=0)#
 		</cfif>
 		
-		
-		
 		#$.dspObjects($.siteConfig('primaryColumn'))#
+		
 		<cfif $.content('contentID') eq "00000000000000000000000000000000001">
 		<!---
 		<div id="navHeader" class="header-fullscreen" data-role="header" data-nobackbtn="true" data-theme="a">
@@ -82,25 +81,7 @@
 		<div id="navSub">#$.dspSubNav()#</div>
 		</cfif>
 		
-		<h3>jQuery Mobile</h3>
-		<form id="TEST">
-			<ul data-role="fieldcontain">
-			    <li data-role="controlgroup">
-			    	<p>Choose a pet:</p>
-			         	<input type="radio" name="radio-choice-1" id="radio-choice-1" value="choice-1" checked="checked" />
-			         	<label for="radio-choice-1">Cat</label>
-			
-			         	<input type="radio" name="radio-choice-1" id="radio-choice-2" value="choice-2"  />
-			         	<label for="radio-choice-2">Dog</label>
-			
-			         	<input type="radio" name="radio-choice-1" id="radio-choice-3" value="choice-3"  />
-			         	<label for="radio-choice-3">Hamster</label>
-			
-			         	<input type="radio" name="radio-choice-1" id="radio-choice-4" value="choice-4"  />
-			         	<label for="radio-choice-4">Lizard</label>
-			    </li>
-			</ul>		
-		<form>
+		
 	</div><!-- /content -->
 
 		<div data-role="footer"  data-theme="a" class="ui-bar">

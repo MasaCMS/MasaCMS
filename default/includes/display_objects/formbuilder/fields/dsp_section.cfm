@@ -2,11 +2,11 @@
 <cfsilent>
 <cfsavecontent variable="strField">
 	<cfoutput>
-	</ul>
+	</ol>
 </fieldset>
 <fieldset id="set-#field.name#">
 	<legend>#field.label#</legend>
-	<ul>
+	<ol>
 	</cfoutput>
 </cfsavecontent>
 </cfsilent>

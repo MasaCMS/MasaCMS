@@ -12,7 +12,8 @@
 <form id="#frmID#" method="post">
 <input type="hidden" name="siteid" value="#arguments.siteid#">
 <input type="hidden" name="formid" value="#arguments.formid#">
-	<fieldset id="set-default">
+<fieldset id="set-default">
+<ol>
 <cfloop from="1" to="#ArrayLen(aFieldOrder)#" index="iiX">
 	<cfif StructKeyExists(frmFields,aFieldOrder[iiX])>
 		<cfset field = frmFields[aFieldOrder[iiX]] />
@@ -32,13 +33,14 @@
 			field=field,
 			dataset=dataset
 			)#
-		</cfif>
-		</li>		
+		</li>
+		</cfif>		
 		<!---#$.dspObject_Include('formbuilder/fields/dsp_#field.fieldtype.fieldtype#.cfm')#--->
 	<cfelse>
 		<!---<cfthrow message="ERROR 9000: Field Missing: #aFieldOrder[iiX]#">--->
 	</cfif>
-</cfloop>	
+</cfloop>
+</ol>	
 	</fieldset>
 	<div class="buttons"><input type="submit" class="submit" value="Submit"></div>
 </form>
@@ -48,7 +50,7 @@
 <!---jQuery Mobile Example Output--->
 
 <!---Radio Buttons--->
-<!---<ul data-role="fieldcontain">
+<!---<ol data-role="fieldcontain">
     <li data-role="controlgroup">
     	<p>Choose a pet:</p>
          	<input type="radio" name="radio-choice-1" id="radio-choice-1" value="choice-1" checked="checked" />
@@ -63,7 +65,7 @@
          	<input type="radio" name="radio-choice-1" id="radio-choice-4" value="choice-4"  />
          	<label for="radio-choice-4">Lizard</label>
     </li>
-</ul>--->
+</ol>--->
 
 <!---Checkboxes--->
 <!---<ul data-role="fieldcontain">
