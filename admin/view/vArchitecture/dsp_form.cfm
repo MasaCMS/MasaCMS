@@ -129,7 +129,7 @@ function setRequestedURL(){
 <cfset fileExt=''/>
 </cfif>
 <cfif listFindNoCase(extendedList,attributes.type)>
-	<cfset rsSubTypes=application.classExtensionManager.getSubTypes(attributes.siteID) />
+	<cfset rsSubTypes=application.classExtensionManager.getSubTypes(siteID=attributes.siteID,activeOnly=true) />
 	<cfif attributes.compactDisplay neq "true" and listFindNoCase("#pageLevelList#",attributes.type)>
 		<cfquery name="rsSubTypes" dbtype="query">
 		select * from rsSubTypes
@@ -432,7 +432,7 @@ select * from rsPluginScripts3 order by pluginID
 	<cfcase value="Page,Portal,Calendar,Gallery,Link,File,Component">
 	<cfif isExtended>
 		<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Extended Attributes')>
-		<cfset extendSets=application.classExtensionManager.getSubTypeByName(attributes.type,request.contentBean.getSubType(),attributes.siteid).getExtendSets() />
+		<cfset extendSets=application.classExtensionManager.getSubTypeByName(attributes.type,request.contentBean.getSubType(),attributes.siteid).getExtendSets(activeOnly=true) />
 		<cfinclude template="form/dsp_tab_extended_attributes.cfm">
 		</cfif>
 		<cfoutput>

@@ -41,7 +41,7 @@ the GNU General Public License version 2 without this exception. You may, if you
 to your own modified versions of Mura CMS.
 --->
 
-<cfset rslist=application.classExtensionManager.getSubTypes(attributes.siteID) />
+<cfset rslist=application.classExtensionManager.getSubTypes(siteID=attributes.siteID,activeOnly=false) />
 <h2>Class Extension Attribute Sets</h2>
 
 <cfoutput>

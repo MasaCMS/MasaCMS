@@ -161,7 +161,7 @@ to your own modified versions of Mura CMS.
 <cfelse>
 <cfset userPoolID=application.settingsManager.getSite(request.userBean.getSiteID()).getPrivateUserPoolID()>
 </cfif>
-<cfset extendSets=application.classExtensionManager.getSubTypeByName(request.userBean.gettype(),request.userBean.getsubtype(),userPoolID).getExtendSets(true) />
+<cfset extendSets=application.classExtensionManager.getSubTypeByName(request.userBean.gettype(),request.userBean.getsubtype(),userPoolID).getExtendSets(inherit=true,activeOnly=true) />
 </cfsilent>
 <cfif arrayLen(extendSets)>
 <cfloop from="1" to="#arrayLen(extendSets)#" index="s">	

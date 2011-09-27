@@ -656,11 +656,15 @@ and tclassextendattributes.type='File'
 
 <cffunction name="getSubTypes" returntype="query">
 <cfargument name="siteid">
+<cfargument name="activeOnly" default="false">
 <cfset var rs = ""/>
 <cfquery name="rs" datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	select * from tclassextend 
 	where 
 	siteid=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.siteid#">
+	<cfif arguments.activeOnly>
+		and isActive=1
+	</cfif>
 	order by type,subtype
 	</cfquery>
 
@@ -670,12 +674,16 @@ and tclassextendattributes.type='File'
 <cffunction name="getSubTypesByType" returntype="query">
 <cfargument name="type">
 <cfargument name="siteid">
+<cfargument name="activeOnly" default="false">
 <cfset var rs = ""/>
 <cfquery name="rs" datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	select * from tclassextend 
 	where 
 	siteid=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.siteid#">
 	and	type=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.type#">
+	<cfif arguments.activeOnly>
+		and isActive=1
+	</cfif>
 	order by type,subtype
 	</cfquery>
 
@@ -774,6 +782,7 @@ and tclassextendattributes.type='File'
 <cffunction name="getExtendedAttributeList" output="false" returntype="query">
 <cfargument name="siteID">
 <cfargument name="baseTable" required="true" default="tcontent">
+<cfargument name="activeOnly" requierd="true" default="false">
 	<cfset var rs="">
 	
 	<cfquery name="rs" datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
@@ -783,6 +792,9 @@ and tclassextendattributes.type='File'
 		inner join tclassextend on (tclassextendsets.subTypeID=tclassextend.subTypeID)
 		where tclassextend.siteID = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteid#">
 		and tclassextend.baseTable= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.baseTable#">
+		<cfif arguments.activeOnly>
+			and tclassextend.isActive=1
+		</cfif>
 		order by tclassextend.type, tclassextend.subType, tclassextendattributes.name
 	</cfquery>
 	
@@ -1168,7 +1180,7 @@ and tclassextendattributes.type='File'
 	
 	<cfset destSubType.save()>
 	
-	<cfset extendSets=sourceSubType.getExtendSets()>
+	<cfset extendSets=sourceSubType.getExtendSets(activeOnly=false)>
 	
 	<cfif arrayLen(extendSets)>
 		<cfloop from="1" to="#arrayLen(extendSets)#" index="s">

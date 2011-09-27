@@ -41,7 +41,7 @@ the GNU General Public License version 2 without this exception. You may, if you
 to your own modified versions of Mura CMS.
 --->
 
-<cfset rslist=application.classExtensionManager.getSubTypes(attributes.siteID) />
+<cfset rslist=application.classExtensionManager.getSubTypes(siteID=attributes.siteID,activeOnly=false) />
 <h2>Class Extensions</h2>
 
 <cfoutput>
@@ -55,12 +55,14 @@ to your own modified versions of Mura CMS.
 <table class="mura-table-grid stripe">
 <tr>
 	<th class="varWidth">Class Extension</th>
+	<th class="varWidth">Active</th>
 	<th class="administration">&nbsp;</th>
 </tr>
 <cfif rslist.recordcount>
 <cfoutput query="rslist">
 	<tr>
 		<td class="varWidth"><a title="Edit" href="index.cfm?fuseaction=cExtend.listSets&subTypeID=#rslist.subTypeID#&siteid=#URLEncodedFormat(attributes.siteid)#">#application.classExtensionManager.getTypeAsString(rslist.type)# / #rslist.subtype#</a></td>
+		<td class="varWidth">#yesNoFormat(rslist.isactive)#</td>
 		<td class="administration"><ul class="two">
 		<li class="edit"><a title="Edit" href="index.cfm?fuseaction=cExtend.listSets&subTypeID=#rslist.subTypeID#&siteid=#URLEncodedFormat(attributes.siteid)#">View Sets</a></li>
 		</ul>

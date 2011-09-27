@@ -80,7 +80,7 @@ to your own modified versions of Mura CMS.
 <cfset options[15][1]="tusers.tags^varchar">
 <cfset options[15][2]= application.rbFactory.getKeyValue(session.rb,'user.tag')>
 
-<cfset rsExtend=application.configBean.getClassExtensionManager().getExtendedAttributeList(attributes.siteid,"tusers")>
+<cfset rsExtend=application.configBean.getClassExtensionManager().getExtendedAttributeList(siteID=attributes.siteid,baseTable="tusers",activeOnly=true)>
 <cfloop query="rsExtend">
 <cfset options[rsExtend.currentRow + 15][1]="#rsExtend.attributeID#^varchar">
 <cfset options[rsExtend.currentRow + 15][2]="#iif(rsExtend.Type eq 1,de('Group'),de('User'))#/#rsExtend.subType# - #rsExtend.attribute#"/>
