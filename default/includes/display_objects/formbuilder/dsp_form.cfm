@@ -9,10 +9,10 @@
 
 <cfset aFieldOrder = frmForm.fieldorder />
 <cfoutput>
-<form data-role="fieldcontain" id="#frmID#" method="post">
+<form id="#frmID#" method="post">
 <input type="hidden" name="siteid" value="#arguments.siteid#">
 <input type="hidden" name="formid" value="#arguments.formid#">
-	<fieldset id="set-default" data-role="controlgroup">
+	<fieldset id="set-default">
 <cfloop from="1" to="#ArrayLen(aFieldOrder)#" index="iiX">
 	<cfif StructKeyExists(frmFields,aFieldOrder[iiX])>
 		<cfset field = frmFields[aFieldOrder[iiX]] />
@@ -20,18 +20,20 @@
 			<cfset dataset = frmData[field.datasetid] /> 
 		</cfif>
 		<cfif field.fieldtype.fieldtype neq "section">
-		<li id="fld-#field.name#" data-role="controlgroup">
+		<li>
 		#$.dspObject_Include(thefile='/formbuilder/fields/dsp_#field.fieldtype.fieldtype#.cfm',
 			field=field,
 			dataset=dataset
 			)#			
 		</li>
 		<cfelse>
+		<li>
 		#$.dspObject_Include(thefile='/formbuilder/fields/dsp_#field.fieldtype.fieldtype#.cfm',
 			field=field,
 			dataset=dataset
 			)#
-		</cfif>			
+		</cfif>
+		</li>		
 		<!---#$.dspObject_Include('formbuilder/fields/dsp_#field.fieldtype.fieldtype#.cfm')#--->
 	<cfelse>
 		<!---<cfthrow message="ERROR 9000: Field Missing: #aFieldOrder[iiX]#">--->
@@ -48,7 +50,7 @@
 <!---Radio Buttons--->
 <!---<ul data-role="fieldcontain">
     <li data-role="controlgroup">
-    	<legend>Choose a pet:</legend>
+    	<p>Choose a pet:</p>
          	<input type="radio" name="radio-choice-1" id="radio-choice-1" value="choice-1" checked="checked" />
          	<label for="radio-choice-1">Cat</label>
 
@@ -66,7 +68,7 @@
 <!---Checkboxes--->
 <!---<ul data-role="fieldcontain">
  	<li data-role="controlgroup">
-		<legend>Agree to the terms:</legend>
+		<p>Agree to the terms:</p>
 		<input type="checkbox" name="checkbox-1" id="checkbox-1" class="custom" />
 		<label for="checkbox-1">I agree</label>
     </li>
