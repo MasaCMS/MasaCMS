@@ -747,23 +747,26 @@ to your own modified versions of Mura CMS.
 	</cfquery>
 	
 	<cfif not rsCheck.recordcount>
-	<cfswitch expression="#getDbType()#">
-	<cfcase value="mssql">
-		<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
-		CREATE INDEX IX_#arguments.table#_#arguments.column# ON #arguments.table# (#arguments.column#)
-		</cfquery>
-	</cfcase>
-	<cfcase value="mysql">
-		<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
-		CREATE INDEX IX_#arguments.table#_#arguments.column# ON #arguments.table# (#arguments.column#)
-		</cfquery>
-	</cfcase>
-	<cfcase value="oracle">
-		<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
-		CREATE INDEX #right("IX_#arguments.table#_#arguments.column#",30)# ON #arguments.table# (#arguments.column#)
-		</cfquery>
-	</cfcase>
-	</cfswitch>	
+	<cftry>
+		<cfswitch expression="#getDbType()#">
+		<cfcase value="mssql">
+			<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+			CREATE INDEX IX_#arguments.table#_#arguments.column# ON #arguments.table# (#arguments.column#)
+			</cfquery>
+		</cfcase>
+		<cfcase value="mysql">
+			<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+			CREATE INDEX IX_#arguments.table#_#arguments.column# ON #arguments.table# (#arguments.column#)
+			</cfquery>
+		</cfcase>
+		<cfcase value="oracle">
+			<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+			CREATE INDEX #right("IX_#arguments.table#_#arguments.column#",30)# ON #arguments.table# (#arguments.column#)
+			</cfquery>
+		</cfcase>
+		</cfswitch>	
+	<cfcatch></cfcatch>
+	</cftry>
 	</cfif>
 </cffunction>
 
