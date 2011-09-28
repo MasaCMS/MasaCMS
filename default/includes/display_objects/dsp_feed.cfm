@@ -160,6 +160,10 @@ to your own modified versions of Mura CMS.
 			<cfset request.cacheItemTimespan = createTimeSpan(0, 0, 5, 0)>
 			<cfset variables.feedData = application.feedManager.getRemoteFeedData(variables.feedBean.getChannelLink(), 
 			                                                                      variables.feedBean.getMaxItems())/>
+			                                                                      
+			<cfif isJSON(arguments.params)>
+				<cfset arguments.hasSummary=deserializeJSON(arguments.params).displaySummaries>	
+			</cfif>
 		</cfsilent>
 		<cfoutput>
 			<cfif isDefined("variables.feedData.maxItems") and variables.feedData.maxItems>
