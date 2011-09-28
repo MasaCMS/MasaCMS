@@ -220,4 +220,43 @@ to your own modified versions of Mura CMS.
 		<cfreturn formStruct />
 	</cffunction>
 
+	<cffunction name="processDataset" access="public" output="false" returntype="struct">
+		<cfargument name="$" required="true" type="any" />
+		<cfargument name="dataset" required="true" type="struct" />
+
+		<cfset var return			= StructNew() />
+		<cfset var srcData			= "" />
+		<cfset var mmRBF			= application.rbFactory />
+		<cfset var dataArray		= ArrayNew(1) />
+		<cfset var x				= "" />
+		
+		<cfset var dataOrder		= ArrayNew(1) />
+		<cfset var dataRecords		= StructNew() />
+
+		<cfif not StructKeyExists( arguments.dataset,"datasetID" )>			
+			<cfthrow message="#mmRBF.getKeyValue(session.rb,"formbuilder.invaliddataset")#" >
+		</cfif>
+
+		<cfswitch expression="#arguments.dataset.sourcetype#">
+			<cfcase value="manual,entered">
+				<cfreturn arguments.dataset />
+			</cfcase>
+			<cfcase value="object">
+				<cfset arguments.dataset = createObject('component',$.siteConfig().getAssetMap() & "." & dataset.source).getData($,arguments.dataset) />
+				<cfreturn arguments.dataset />
+			</cfcase>
+			<cfcase value="dsp">
+				<cfinclude template="#$.siteConfig().getIncludePath()##dataset.source#">
+				<cfreturn arguments.dataset />
+			</cfcase>
+			<cfdefaultcase>
+				<cfdump var="#dataset#"><cfabort>
+				<cfreturn arguments.dataset />
+			</cfdefaultcase>
+
+		</cfswitch>
+	
+	</cffunction>
+
+
 </cfcomponent>

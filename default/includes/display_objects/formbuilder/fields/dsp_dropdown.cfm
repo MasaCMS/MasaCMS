@@ -1,5 +1,6 @@
-﻿<cfset strField = "" />
-<cfsilent>
+﻿<cfsilent>
+<cfset strField = "" />
+<cfparam name="dataset.defaultid" default="" />
 <cfsavecontent variable="strField">
 	<cfoutput>
 	#$.dspObject_Include(thefile='/formbuilder/fields/dsp_label.cfm',field=arguments.field,dataset=arguments.dataset)#

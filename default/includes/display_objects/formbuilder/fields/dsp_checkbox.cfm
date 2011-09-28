@@ -1,5 +1,5 @@
-﻿<cfset strField = "" />
-<cfsilent>
+﻿<cfsilent>
+<cfset strField = "" />
 <!---<cfinclude template="dsp_data_common.cfm" />--->
 </cfsilent>
 <cfsavecontent variable="strField">

@@ -319,14 +319,14 @@ ALTER TABLE tcontentfeeds ADD displayList clob
 	table="tcontent"
 	type="columns">
 
-	<cfloop list="targetparams,restrictgroups,moduleassign,htmltitle,remoteurl,remotesourceurl,remotesource" index="i">
+	<cfloop list="targetparams,restrictgroups,moduleassign,htmltitle,remoteurl,remotesourceurl,remotesource,audience,tags,responsesendto,responsedisplayfields,notes,path,keypoints,metakeywords,metadesc" index="i">
 		<cfquery name="rsSubCheck" dbtype="query">
 			select * from rsCheck where lower(rsCheck.column_name) = '#i#'
 		</cfquery>
 		
-		<cfif rsSubCheck.type_name neq "longtext">
+		<cfif rsSubCheck.type_name neq "text">
 			<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
-			ALTER TABLE tcontent MODIFY column #i# longtext
+			ALTER TABLE tcontent MODIFY column #i# text
 			</cfquery>
 		</cfif>
 	</cfloop>
