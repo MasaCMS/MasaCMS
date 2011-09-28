@@ -287,7 +287,7 @@ to your own modified versions of Mura CMS.
 <cfargument name="siteid" default="">
 <cfset var rs="">
 	
-<cflock type="exclusive" name="purgingDeletedFile" scope="application" timeout="1000">
+<cflock type="exclusive" name="purgingDeletedFile#application.instanceID#" timeout="1000">
 	<cfquery name="rs" datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	select fileID from tfiles where deleted=1 
 	<cfif len(arguments.siteID)>

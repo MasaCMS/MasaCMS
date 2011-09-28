@@ -88,7 +88,7 @@ to your own modified versions of Mura CMS.
 </cfif>	
 
 <cfif (not application.appInitialized or structKeyExists(url,application.appReloadKey))>
-	<cflock name="appInitBlock" type="exclusive" scope="application" timeout="200">	
+	<cflock name="appInitBlock#application.instanceID#" type="exclusive" timeout="200">	
 		
 		<cfset variables.iniPath = "#baseDir#/config/settings.ini.cfm" />
 		

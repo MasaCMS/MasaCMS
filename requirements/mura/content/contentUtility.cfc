@@ -237,7 +237,7 @@ to your own modified versions of Mura CMS.
 
 <cfif arguments.contentBean.gettype() eq 'File'>
 <cftry>
-		<cflock name="#arguments.contentBean.getfilename()#" type="exclusive" scope="application" timeout="500">
+		<cflock name="#arguments.contentBean.getfilename()##application.instanceID#" type="exclusive" timeout="500">
 		<cfset variables.fileManager.deleteAll(arguments.contentBean.getcontentID(),arguments.contentBean.getFileID()) />
 		</cflock>
 	<cfcatch></cfcatch>
