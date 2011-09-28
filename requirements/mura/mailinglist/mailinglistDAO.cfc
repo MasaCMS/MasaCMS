@@ -90,7 +90,7 @@ values (<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.listBean.getM
 	<cfset var bean=getBean() />
 	<cfset var rs ="" />
 	<cfset var beanArray=arrayNew(1)>
-	
+	<cfset var utility=""/>
 	<cfquery name="rs" datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	Select * from tmailinglist where 
 	name=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.name#">

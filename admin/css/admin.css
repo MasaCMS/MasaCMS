@@ -3215,7 +3215,7 @@ ul.seven { /* 7 Icons */
 	text-indent: -999em;
 }
 
-.mura-grid .admin li.versionHistoryOff, table td.administration li.versionHstoryOff {
+.mura-grid .admin li.versionHistoryOff, table td.administration li.versionHistoryOff {
 	background: url(../images/icons/hist_24_off.png) no-repeat;
 	text-indent: -999em;
 }

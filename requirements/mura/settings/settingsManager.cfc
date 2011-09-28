@@ -73,7 +73,7 @@ to your own modified versions of Mura CMS.
 	<cfset var i = "">
 	<cfset var serverArgs = structNew()>
 	<cfset var rsPlugins = application.serviceFactory.getBean("pluginManager").getSitePlugins(arguments.siteID)>
-	
+	<cfset var result="">
 	<cfif variables.configBean.getValue('deployMode') eq "bundle">
 		<cfset bundleFileName = application.serviceFactory.getBean("Bundle").Bundle(
 			siteID=arguments.siteID,
@@ -111,6 +111,7 @@ to your own modified versions of Mura CMS.
 	<cfargument name="serverArgs" required="yes">
 	<cfset var bundleArgs = structNew()>
 	<cfset var result = "">
+	<cfset var authToken="">
 	
 	<cfinvoke webservice="#serverArgs.serverURL#?wsdl"
 		method="login"
@@ -459,20 +460,20 @@ to your own modified versions of Mura CMS.
 	
 	<cfcatch>
 		
-		<cfset errors.message="The bundle was not successfully imported:<br/>ERROR: " & cfcatch.message>
-		<cfif findNoCase("duplicate",errors.message)>
-			<cfset errors.message=errors.message & "<br/>HINT: This error is most often caused by 'Maintaining Keys' when the bundle data already exists within another site in the current Mura instance.">
+		<cfset arguments.errors.message="The bundle was not successfully imported:<br/>ERROR: " & cfcatch.message>
+		<cfif findNoCase("duplicate", arguments.errors.message)>
+			<cfset  arguments.errors.message= arguments.errors.message & "<br/>HINT: This error is most often caused by 'Maintaining Keys' when the bundle data already exists within another site in the current Mura instance.">
 		</cfif>
 		<cfif isDefined("cfcatch.sql") and len(cfcatch.sql)>
-			<cfset errors.message=errors.message & "<br/>SQL: " & cfcatch.sql>
+			<cfset  arguments.errors.message= arguments.errors.message & "<br/>SQL: " & cfcatch.sql>
 		</cfif>
 		
 		<cfif isDefined("cfcatch.detail") and len(cfcatch.detail)>
-			<cfset errors.message=errors.message & "<br/>DETAIL: " & cfcatch.detail>
+			<cfset  arguments.errors.message= arguments.errors.message & "<br/>DETAIL: " & cfcatch.detail>
 		</cfif>
 	</cfcatch>
 	</cftry>
-	<cfreturn errors>
+	<cfreturn  arguments.errors>
 </cffunction>
 
 <cffunction name="isBundle" output="false">
