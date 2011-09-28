@@ -72,7 +72,7 @@ to your own modified versions of Mura CMS.
 
 <cfif listFind(session.mura.memberships,'S2')>
 	<cfif updateVersion gt currentVersion>
-		<cflock type="exclusive" name="autoUpdate#arguments.siteid#" timeout="600">
+		<cflock type="exclusive" name="autoUpdate#arguments.siteid##application.instanceID#" timeout="600">
 		<cfif len(arguments.siteID) >
 			<cfset baseDir=baseDir & "#variables.fileDelim##arguments.siteid#">
 			<cfset versionDir=versionDir & "/#arguments.siteid#">

@@ -1,5 +1,5 @@
-<cfset strField = "" />
 <cfsilent>
+<cfset strField = "" />
 </cfsilent>
 <cfsavecontent variable="strField">
 	<cfoutput>

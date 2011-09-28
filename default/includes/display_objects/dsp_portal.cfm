@@ -102,11 +102,13 @@ to your own modified versions of Mura CMS.
 	<div id="svPortal" class="svIndex">
 		<cfsilent>
 			<cfif NOT len($.content("displayList"))>
-				<cfset variables.contentListFields="Title,Summary,Date,Image,Tags,Credits">
+				<cfset variables.contentListFields="Date,Title,Image,Summary,Credits">
 				
 				<cfif $.getBean('contentGateway').getHasComments($.event('siteid'),$.content('contentID'))>
 					<cfset variables.contentListFields=listAppend(contentListFields,"Comments")>
 				</cfif>
+				
+				<cfset variables.contentListFields=listAppend(variables.contentListFields,"Tags")>
 				
 				<cfif $.getBean('contentGateway').getHasRatings($.event('siteid'),$.content('contentID'))>
 					<cfset variables.contentListFields=listAppend(variables.contentListFields,"Rating")>

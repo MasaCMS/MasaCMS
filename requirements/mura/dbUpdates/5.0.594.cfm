@@ -139,7 +139,7 @@ ALTER TABLE [dbo].[tpluginsettings] WITH NOCHECK ADD
 	  `version` varchar(50) default NULL,
 	  `deployed` tinyint(3) default NULL,
 	  PRIMARY KEY  (`pluginID`)
-	) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8
+	) ENGINE=#variables.instance.MYSQLEngine# AUTO_INCREMENT=16 DEFAULT CHARSET=utf8
 	</cfquery>
 	
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
@@ -150,7 +150,7 @@ ALTER TABLE [dbo].[tpluginsettings] WITH NOCHECK ADD
 	  `location` varchar(50) default NULL,
 	  `displayObjectFile` varchar(200) default NULL,
 	  PRIMARY KEY  (`objectID`)
-	) ENGINE=InnoDB DEFAULT CHARSET=utf8
+	) ENGINE=#variables.instance.MYSQLEngine# DEFAULT CHARSET=utf8
 	</cfquery>
 	
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
@@ -160,7 +160,7 @@ ALTER TABLE [dbo].[tpluginsettings] WITH NOCHECK ADD
 	  `runat` varchar(50) default NULL,
 	  `scriptfile` varchar(200) default NULL,
 	  PRIMARY KEY  (`scriptID`)
-	) ENGINE=InnoDB DEFAULT CHARSET=utf8
+	) ENGINE=#variables.instance.MYSQLEngine# DEFAULT CHARSET=utf8
 	</cfquery>
 	
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
@@ -169,7 +169,7 @@ ALTER TABLE [dbo].[tpluginsettings] WITH NOCHECK ADD
 	  `name` varchar(100) NOT NULL default '',
 	  `settingValue` longtext,
 	  PRIMARY KEY  (`moduleID`,`name`)
-	) ENGINE=InnoDB DEFAULT CHARSET=utf8
+	) ENGINE=#variables.instance.MYSQLEngine# DEFAULT CHARSET=utf8
 	</cfquery>
 	</cftransaction>
 	<cfcatch>

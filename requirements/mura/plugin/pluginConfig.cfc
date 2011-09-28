@@ -244,7 +244,7 @@ to your own modified versions of Mura CMS.
 <cfargument name="purge" default="false">
 		
 		<cfif not structKeyExists(application,"plugins")>
-			<cflock name="settingPluginStruct" timeout="100">
+			<cflock name="settingPluginStruct#application.instanceID#" timeout="100">
 				<cfif not structKeyExists(application,"plugins")>
 					<cfset application.plugins=structNew()>
 				</cfif>
@@ -376,6 +376,7 @@ to your own modified versions of Mura CMS.
 </cffunction>
 
 <cffunction name="createCustomSettingsDir" output="false">
+	<cfset var appcfcStr="">
 	<cftry>
 	<cfif not directoryExists(getFullPath() & "/plugin/customSettings/")>
 		<cfdirectory action="create" directory="#getFullPath()#/plugin/customSettings/">

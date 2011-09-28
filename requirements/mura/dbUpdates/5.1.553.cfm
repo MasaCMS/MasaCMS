@@ -26,7 +26,7 @@ select urltitle from tcontent  where 0=1
 	ALTER TABLE tcontent ADD COLUMN urltitle varchar(255)
 	</cfquery>
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
-	ALTER TABLE tcontent ADD COLUMN htmltitle varchar(255)
+	ALTER TABLE tcontent ADD COLUMN htmltitle longtext
 	</cfquery>
 </cfcase>
 <cfcase value="oracle">

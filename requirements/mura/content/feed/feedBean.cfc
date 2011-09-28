@@ -127,7 +127,7 @@ to your own modified versions of Mura CMS.
 	<cfset variables.instance.imageSize="small" />
 	<cfset variables.instance.imageHeight="AUTO" />
 	<cfset variables.instance.imageWidth="AUTO" />
-	<cfset variables.instance.displayList="Title,Date,Image,Summary,Tags,Credits" />
+	<cfset variables.instance.displayList="Date,Title,Image,Summary,Credits,Tags" />
 		
 	<cfreturn this />
 </cffunction>
@@ -397,7 +397,7 @@ to your own modified versions of Mura CMS.
 	<cfset var hasComments=false>
 	
 	<cfif not len(variables.instance.displayList)>
-		<cfset variables.instance.displayList="Title,Date,Image,Summary,Tags,Credits" />
+		<cfset variables.instance.displayList="Title,Date,Image,Summary,Credits" />
 		<cfset hasRating=listFindNoCase(variables.instance.displayList,"Rating")>
 		<cfset hasComments=listFindNoCase(variables.instance.displayList,"Comments")>
 		
@@ -407,18 +407,20 @@ to your own modified versions of Mura CMS.
 			<cfset variables.instance.displayList=listDeleteAt(variables.instance.displayList,hasComments)>
 		</cfif>
 		
+		<cfset variables.instance.displayList=listAppend(variables.instance.displayList,"Tags")>
+		
 		<cfif variables.instance.displayRatings and not hasRating>
 			<cfset variables.instance.displayList=listAppend(variables.instance.displayList,"Rating")>
 		<cfelseif not variables.instance.displayRatings and hasRating>
 			<cfset variables.instance.displayList=listDeleteAt(variables.instance.displayList,hasRating)>
-		</cfif>
+		</cfif>		
 	</cfif>
 		
 	<cfreturn variables.instance.displayList>
 </cffunction>
 
 <cffunction name="getAvailableDisplayList" output="false">
-	<cfset var returnList="Title,Date,Image,Summary,Tags,Credits,Rating,Comments">
+	<cfset var returnList="Date,Title,Image,Summary,Credits,Comments,Tags,Rating">
 	<cfset var i=0>
 	<cfset var finder=0>
 	<cfset var rsExtend=getBean('configBean').getClassExtensionManager().getExtendedAttributeList(variables.instance.siteid,"tcontent")>

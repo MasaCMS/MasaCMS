@@ -128,6 +128,7 @@ to your own modified versions of Mura CMS.
 <cfset variables.instance.broadcastCachePurges=true />
 <cfset variables.instance.broadcastAppreloads=true />
 <cfset variables.instance.broadcastWithProxy=true />
+<cfset variables.instance.MYSQLEngine="InnoDB" />
 
 <cffunction name="OnMissingMethod" access="public" returntype="any" output="false" hint="Handles missing method exceptions.">
 <cfargument name="MissingMethodName" type="string" required="true" hint="The name of the missing method." />
@@ -715,8 +716,10 @@ to your own modified versions of Mura CMS.
 <cffunction name="applyDbUpdates" returntype="any" access="public" output="false">
 
 	<cfset var rsCheck ="" />
+	<cfset var rsSubCheck ="" />
 	<cfset var rsUpdates ="" />
-
+	<cfset var i ="" />
+	
 	<cfdirectory action="list" directory="#getDirectoryFromPath(getCurrentTemplatePath())#dbUpdates" name="rsUpdates" filter="*.cfm" sort="name asc">
 
 	<cfloop query="rsUpdates">
@@ -744,23 +747,26 @@ to your own modified versions of Mura CMS.
 	</cfquery>
 	
 	<cfif not rsCheck.recordcount>
-	<cfswitch expression="#getDbType()#">
-	<cfcase value="mssql">
-		<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
-		CREATE INDEX IX_#arguments.table#_#arguments.column# ON #arguments.table# (#arguments.column#)
-		</cfquery>
-	</cfcase>
-	<cfcase value="mysql">
-		<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
-		CREATE INDEX IX_#arguments.table#_#arguments.column# ON #arguments.table# (#arguments.column#)
-		</cfquery>
-	</cfcase>
-	<cfcase value="oracle">
-		<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
-		CREATE INDEX #right("IX_#arguments.table#_#arguments.column#",30)# ON #arguments.table# (#arguments.column#)
-		</cfquery>
-	</cfcase>
-	</cfswitch>	
+	<cftry>
+		<cfswitch expression="#getDbType()#">
+		<cfcase value="mssql">
+			<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+			CREATE INDEX IX_#arguments.table#_#arguments.column# ON #arguments.table# (#arguments.column#)
+			</cfquery>
+		</cfcase>
+		<cfcase value="mysql">
+			<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+			CREATE INDEX IX_#arguments.table#_#arguments.column# ON #arguments.table# (#arguments.column#)
+			</cfquery>
+		</cfcase>
+		<cfcase value="oracle">
+			<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+			CREATE INDEX #right("IX_#arguments.table#_#arguments.column#",30)# ON #arguments.table# (#arguments.column#)
+			</cfquery>
+		</cfcase>
+		</cfswitch>	
+	<cfcatch></cfcatch>
+	</cftry>
 	</cfif>
 </cffunction>
 

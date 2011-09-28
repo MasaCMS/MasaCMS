@@ -237,7 +237,7 @@ to your own modified versions of Mura CMS.
 
 <cfif arguments.contentBean.gettype() eq 'File'>
 <cftry>
-		<cflock name="#arguments.contentBean.getfilename()#" type="exclusive" timeout="500">
+		<cflock name="#arguments.contentBean.getfilename()##application.instanceID#" type="exclusive" timeout="500">
 		<cfset variables.fileManager.deleteAll(arguments.contentBean.getcontentID(),arguments.contentBean.getFileID()) />
 		</cflock>
 	<cfcatch></cfcatch>
@@ -558,7 +558,7 @@ http://#listFirst(cgi.http_host,":")##variables.configBean.getServerPort()##vari
 	<cfset var parentBean=variables.contentDAO.readActive(arguments.contentBean.getParentID(),arguments.contentBean.getSiteID()) />
 	<cfset var pass =0 />
 	<cfset var tempfile = "">
-	
+	<cfset var parentFilename="">
 	<cfset arguments.contentBean.setFilename(formatFilename(arguments.contentBean.getURLTitle()))>
 	
 	<cfif not len(arguments.contentBean.getfilename()) and arguments.contentBean.getContentID() neq  '00000000000000000000000000000000001'>

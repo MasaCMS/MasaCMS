@@ -329,6 +329,7 @@ to your own modified versions of Mura CMS.
 </cffunction>
 
 <cffunction name="render404" output="true" access="public">
+	<cfset var fileoutput="">
 	<cfset request.siteid = bindToDomain()>
 	<cfset request.currentFilename = "404">
 	<cfset request.currentFilenameAdjusted=request.currentFilename>

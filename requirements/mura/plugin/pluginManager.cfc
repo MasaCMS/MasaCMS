@@ -193,8 +193,8 @@ select * from tplugins order by #arguments.orderby#
 <cfset var serverFile="">
 <cfset var cffileData=structNew()>
 <cfset var isPostedFile=false>
-
-<cflock name="addPlugin" timeout="200">
+<cfset var settingBean="">
+<cflock name="addPlugin#application.instanceID#" timeout="200">
 	<!--- <cftry> --->
 	
 	<cfif not len(modID) and len(arguments.id)>
@@ -505,7 +505,7 @@ select * from tplugins order by #arguments.orderby#
 	<cfset var p="">
 	<cfset var currentPath="">
 	
-	<cflock name="createAppCFCIncludes" type="exclusive" timeout="200">
+	<cflock name="createAppCFCIncludes#application.instanceID#" type="exclusive" timeout="200">
 	<cfif StructKeyExists(SERVER,"bluedragon") and not findNoCase("Windows",server.os.name)>
 		<cfset mapPrefix="$" />
 	</cfif>
@@ -1901,9 +1901,10 @@ select * from rs order by name
 	<cfset var zipTrim=getZipTrim(arguments.pluginFile)>
 	<cfset var errors=structNew()>
 	<cfset var tempDir=createUUID()>
-	<cfset var results="">
+	<cfset var result="">
 	<cfset var pluginXml="">
 	<cfset var rsSites="">
+	<cfset var id="">
 	
 	<cfif variables.settingsManager.isBundle(arguments.pluginFile)>
 		<cfreturn deployBundle(siteID=arguments.siteID, bundleFile=arguments.pluginFile)>	
@@ -1940,7 +1941,7 @@ select * from rs order by name
 	<cfset var errors=structNew()>
 	<cfset var tempDir=createUUID()>
 	<cfset var id="">
-	<cfset var results="">
+	<cfset var result="">
 	<cfset var pluginXml="">
 	<cfset var rsSites="">
 	
@@ -1975,6 +1976,7 @@ select * from rs order by name
 	<cfset var tempDir=createUUID()>
 	<cfset var rsSites="">
 	<cfset var pluginConfig=getConfig(arguments.id)>
+	<cfset var result="">
 	
 	<cfif not len(pluginConfig.getDirectory())>
 		<cfthrow message="A plugin with the package, pluginID or moduleID with a value '#arguments.id#' does not exist.">	

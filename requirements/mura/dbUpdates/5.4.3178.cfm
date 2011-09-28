@@ -112,7 +112,7 @@
 					  key `IX_tchangesets_siteID` (`siteID`),
 					  key `IX_tchangesets_publishDate` (`publishDate`),
 					  key `IX_tchangesets_remoteID` (`remoteID`)
-					) ENGINE=InnoDB DEFAULT CHARSET=utf8
+					) ENGINE=#variables.instance.MYSQLEngine# DEFAULT CHARSET=utf8
 					</cfquery>
 					
 					<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
