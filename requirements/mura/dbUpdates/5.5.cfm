@@ -309,7 +309,9 @@ ALTER TABLE tcontentfeeds ADD displayList clob
 </cfswitch>	
 </cfif>
 
-<cfdbinfo 
+
+<cfif getDbType() eq "mysql">
+	<cfdbinfo 
 	name="rsCheck"
 	datasource="#application.configBean.getDatasource()#"
 	username="#application.configBean.getDbUsername()#"
@@ -317,37 +319,17 @@ ALTER TABLE tcontentfeeds ADD displayList clob
 	table="tcontent"
 	type="columns">
 
-<cfquery name="rsCheck" dbtype="query">
-	select * from rsCheck where lower(rsCheck.column_name) = 'htmltitle'
-</cfquery>
-
-<cfif not listFindNoCase("varchar,nvarchar,varchar2",rsCheck.type_name)>
-<cfswitch expression="#getDbType()#">
-<cfcase value="mssql">
-	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
-	ALTER TABLE tcontent ALTER COLUMN htmltitle nvarchar(255) 
-	</cfquery>
-</cfcase>
-<cfcase value="mysql">
-	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
-	ALTER TABLE tcontent MODIFY column htmltitle varchar(255)
-	</cfquery>
-</cfcase>
-<cfcase value="oracle">
-	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
-	ALTER TABLE tcontent rename column htmltitle to htmltitle2
-	</cfquery>
-	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
-	ALTER TABLE tcontent ADD htmltitle varchar2(255)
-	</cfquery>
-	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
-	UPDATE tcontent set htmltitle=htmltitle2
-	</cfquery>
-	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
-	ALTER TABLE tcontent drop column htmltitle2
-	</cfquery>
-</cfcase>
-</cfswitch>	
+	<cfloop list="targetparams,restrictgroups,moduleassign,htmltitle,remoteurl,remotesourceurl,remotesource" index="i">
+		<cfquery name="rsSubCheck" dbtype="query">
+			select * from rsCheck where lower(rsCheck.column_name) = '#i#'
+		</cfquery>
+		
+		<cfif rsSubCheck.type_name neq "longtext">
+			<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+			ALTER TABLE tcontent MODIFY column #i# longtext
+			</cfquery>
+		</cfif>
+	</cfloop>
 </cfif>
 
 <cfset dbCreateIndex(table="tcontent",column="urltitle")>
