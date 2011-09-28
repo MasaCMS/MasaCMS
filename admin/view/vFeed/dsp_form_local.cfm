@@ -254,7 +254,9 @@ to your own modified versions of Mura CMS.
 </div>
 
 <div id="tabDisplay">
-<p class="notice">Editing the display options here only contrils the "default" display options for a specific feed. If you'd like to edit a specific that has been placed on a page go to "Edit > Content Objects Tab" and double-click the feed in the display region to view its specific display options.</p>
+<cfif attributes.compactDisplay>
+<p class="notice">#application.rbFactory.getKeyValue(session.rb,'collections.displaydefaultsnoticelocal')#</p>
+</cfif>
 <dl class="oneColumn" id="configuratorTab">
 <dt class="first">#application.rbFactory.getKeyValue(session.rb,'collections.imagesize')#</dt>
 	<dd><select name="imageSize" class="dropdown" onchange="if(this.value=='custom'){jQuery('##feedCustomImageOptions').fadeIn('fast')}else{jQuery('##feedCustomImageOptions').hide()}">

@@ -71,6 +71,9 @@ to your own modified versions of Mura CMS.
 <cfsavecontent variable='tabContent'>
 <cfoutput>
 <div id="tabBasic">
+	<cfif attributes.compactDisplay>
+	<p class="notice">#application.rbFactory.getKeyValue(session.rb,'collections.displaydefaultsnoticeremote')#</p>
+	</cfif>
 	<dl class="oneColumn">
 	<!--- <dt>Description</dt>
 	<dd><textarea name="Description" class="alt">#request.feedBean.getDescription()#</textarea></dd> --->
