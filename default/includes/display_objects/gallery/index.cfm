@@ -102,12 +102,14 @@ to your own modified versions of Mura CMS.
 	<cfset variables.nextN=$.getBean('utility').getNextN(rsSection,event.getContentBean().getNextN(),currentNextNIndex)>
 
 	<cfif NOT len($.content("displayList"))>
-		<cfset variables.contentListFields="Title,Summary,Date,Image,Tags,Credits">
-				
+		<cfset variables.contentListFields="Title,Summary,Credits">
+		
 		<cfif $.getBean('contentGateway').getHasComments($.event('siteid'),$.content('contentID'))>
-			<cfset variables.contentListFields=listAppend(variables.contentListFields,"Comments")>
+			<cfset variables.contentListFields=listAppend(contentListFields,"Comments")>
 		</cfif>
 			
+		<cfset variables.contentListFields=listAppend(variables.contentListFields,"Tags")>
+				
 		<cfif $.getBean('contentGateway').getHasRatings($.event('siteid'),$.content('contentID'))>
 			<cfset variables.contentListFields=listAppend(variables.contentListFields,"Rating")>
 		</cfif>
