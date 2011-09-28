@@ -193,7 +193,7 @@ select * from tplugins order by #arguments.orderby#
 <cfset var serverFile="">
 <cfset var cffileData=structNew()>
 <cfset var isPostedFile=false>
-
+<cfset var settingBean="">
 <cflock name="addPlugin" timeout="200">
 	<!--- <cftry> --->
 	
@@ -1869,9 +1869,10 @@ select * from rs order by name
 	<cfset var zipTrim=getZipTrim(arguments.pluginFile)>
 	<cfset var errors=structNew()>
 	<cfset var tempDir=createUUID()>
-	<cfset var results="">
+	<cfset var result="">
 	<cfset var pluginXml="">
 	<cfset var rsSites="">
+	<cfset var id="">
 	
 	<cfif variables.settingsManager.isBundle(arguments.pluginFile)>
 		<cfreturn deployBundle(siteID=arguments.siteID, bundleFile=arguments.pluginFile)>	
@@ -1908,9 +1909,10 @@ select * from rs order by name
 	<cfset var errors=structNew()>
 	<cfset var tempDir=createUUID()>
 	<cfset var id="">
-	<cfset var results="">
+	<cfset var result="">
 	<cfset var pluginXml="">
 	<cfset var rsSites="">
+	<cfset var id="">
 	
 	<cfset variables.fileWriter.createDir(directory=getLocation(tempDir))>
 	<cfset variables.fileWriter.copyDir(arguments.directory,getLocation(tempDir))>
@@ -1943,6 +1945,7 @@ select * from rs order by name
 	<cfset var tempDir=createUUID()>
 	<cfset var rsSites="">
 	<cfset var pluginConfig=getConfig(arguments.id)>
+	<cfset var result="">
 	
 	<cfif not len(pluginConfig.getDirectory())>
 		<cfthrow message="A plugin with the package, pluginID or moduleID with a value '#arguments.id#' does not exist.">	
