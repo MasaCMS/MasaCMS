@@ -116,6 +116,16 @@ to your own modified versions of Mura CMS.
 			<cfset variables.nextN = $.getBean('utility').getNextN(variables.rs, 
 			                                                      variables.feedBean.getNextN(),
 			                                                      variables.currentNextNIndex)>
+			  
+			 <cfset variables.contentList=variables.feedBean.getDisplayList()>
+			                                                     
+			 <cfif not arguments.hasSummary>
+			 	 <cfset	arguments.hasSummary=listFindNoCase(variables.contentList,"Summary")>
+				 <cfif arguments.hasSummary>
+					<cfset  variables.contentList=listDeleteAt(variables.contentList,arguments.hasSummary)>
+			 	</cfif>  
+				<cfset arguments.hasSummmary=false>  
+			 </cfif>
 		</cfsilent>
 	
 		<cfif variables.iterator.getRecordCount()>
@@ -126,7 +136,7 @@ to your own modified versions of Mura CMS.
 					</cfif>
 					#$.dspObject_Include(
 									thefile='dsp_content_list.cfm', 
-									fields=variables.feedBean.getDisplayList(), 
+									fields=variables.contentList, 
 				                    type="Feed",
 									iterator=variables.iterator, 
 				                    imageSize=variables.feedBean.getImageSize(),

@@ -83,8 +83,8 @@ to your own modified versions of Mura CMS.
 		</cfsilent>
 		#$.dspObject_Include(
 			thefile='dsp_content_list.cfm',
-			fields='Title',
-			type=variables.contentListFields, 
+			fields=variables.contentListFields,
+			type='Related', 
 			iterator= variables.iterator
 			)#
 	</cfif>
