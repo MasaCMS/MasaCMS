@@ -244,7 +244,7 @@ to your own modified versions of Mura CMS.
 <cfargument name="purge" default="false">
 		
 		<cfif not structKeyExists(application,"plugins")>
-			<cflock name="settingPluginStruct" timeout="100">
+			<cflock name="settingPluginStruct" scope="application" timeout="100">
 				<cfif not structKeyExists(application,"plugins")>
 					<cfset application.plugins=structNew()>
 				</cfif>

@@ -194,7 +194,7 @@ select * from tplugins order by #arguments.orderby#
 <cfset var cffileData=structNew()>
 <cfset var isPostedFile=false>
 <cfset var settingBean="">
-<cflock name="addPlugin" timeout="200">
+<cflock name="addPlugin" scope="application" timeout="200">
 	<!--- <cftry> --->
 	
 	<cfif not len(modID) and len(arguments.id)>
@@ -505,7 +505,7 @@ select * from tplugins order by #arguments.orderby#
 	<cfset var p="">
 	<cfset var currentPath="">
 	
-	<cflock name="createAppCFCIncludes" type="exclusive" timeout="200">
+	<cflock name="createAppCFCIncludes" scope="application" type="exclusive" timeout="200">
 	<cfif StructKeyExists(SERVER,"bluedragon") and not findNoCase("Windows",server.os.name)>
 		<cfset mapPrefix="$" />
 	</cfif>

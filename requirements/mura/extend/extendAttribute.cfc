@@ -337,7 +337,7 @@ to your own modified versions of Mura CMS.
 		
 	<cfelse>
 	
-		<cflock name="addingAttribute" timeout="100">
+		<cflock name="addingAttribute" scope="application" timeout="100">
 			
 			<cfquery datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 			Insert into tclassextendattributes (ExtendSetID,siteID,name,hint,type,isActive,orderno,required,validation,regex,message,label,defaultValue,optionList,optionLabelList) 

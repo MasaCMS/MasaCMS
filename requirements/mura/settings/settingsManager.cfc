@@ -296,7 +296,7 @@ to your own modified versions of Mura CMS.
 	<cftry>
 	<cfreturn variables.sites['#arguments.siteid#'] />
 	<cfcatch>
-			<cflock name="buildSites" timeout="200">
+			<cflock name="buildSites" scope="application" timeout="200">
 				<cfif structKeyExists(variables.sites,'#arguments.siteid#')>
 					<cfreturn variables.sites['#arguments.siteid#'] />
 				<cfelse>

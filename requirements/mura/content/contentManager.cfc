@@ -714,7 +714,7 @@ to your own modified versions of Mura CMS.
 		<!--- Reset extended data internal ids --->
 		<cfset arguments.data=newBean.getAllValues()>
 
-		<cflock type="exclusive" name="editingContent#arguments.data.siteid#" timeout="600">
+		<cflock type="exclusive" name="editingContent#arguments.data.siteid#" scope="application" timeout="600">
 		<cftransaction>
 		
 		<!--- BEGIN CONTENT TYPE: ALL EXTENDABLE CONTENT TYPES --->
@@ -945,7 +945,7 @@ to your own modified versions of Mura CMS.
 					<cfloop list="#draftList#" index="d">
 						<cfif newBean.getFileID() neq d and not listFind(preserveFileList,d,"^") and not listFind(deleteFileList,d,"^")>
 							<cftry>
-							<cflock name="#d#" type="exclusive" timeout="500">
+							<cflock name="#d#" type="exclusive" scope="application" timeout="500">
 							<cfset variables.fileManager.deleteVersion(d) />
 							</cflock>
 							<cfcatch></cfcatch>
