@@ -601,7 +601,8 @@ table.svFlvPlayer td {
 	margin: 2em 0;
 	}
 
-.sidebar .svIndex {
+.sidebar .svIndex,
+aside .svIndex {
 	margin: 0 0 2em 0;
 }
 
@@ -615,7 +616,8 @@ table.svFlvPlayer td {
 	margin: 1.3em 0 1em;
 	}
 
-.sidebar .svIndex dl.first {
+.sidebar .svIndex dl.first,
+aside .svIndex dl.first {
 	margin-top: 0;
 	}
 
@@ -624,7 +626,8 @@ table.svFlvPlayer td {
 	padding: 0;
 	}
 
-.sidebar .svIndex dl.first {
+.sidebar .svIndex dl.first,
+aside .svIndex dl.first {
 	padding-top: 0;
 	}
 
@@ -632,7 +635,8 @@ table.svFlvPlayer td {
 	margin-bottom: .75em;
 }
 
-.sidebar .svIndex dt {
+.sidebar .svIndex dt,
+aside .svIndex dt {
 	margin: 0 0 .25em 0;
 	}
 
@@ -657,7 +661,11 @@ dd.rating {
 .sidebar dd.credits,
 .sidebar dd.comments,
 .sidebar dd.tags,
-.sidebar dd.rating {
+.sidebar dd.rating,
+aside dd.credits,
+aside dd.comments,
+aside dd.tags,
+aside dd.rating {
 	float: none;
 	margin-bottom: .35em;
 	padding: 0;
@@ -691,13 +699,15 @@ dl.hasImage .image {
 	margin: 0 1em 0 0;
 	}
 	
-.sidebar dl.hasImage {
+.sidebar dl.hasImage,
+aside dl.hasImage {
 	min-height: 0;
 	padding-left: 0;
 }
 
-.sidebar dl.hasImage .image {
-	display: none;
+.sidebar dl.hasImage .image,
+aside dl.hasImage .image {
+	/*display: none;*/
 }
 
 /* @group Slideshow */
@@ -977,7 +987,7 @@ form#login { margin-bottom: .5em; }
 
 form#sendLogin { margin-bottom: 2em; }
 
-.sidebar #login h3 {
+.sidebar #login h3, aside #login h3 {
 	padding-bottom: 0;
 	border-bottom: 0;
 	}
@@ -1011,16 +1021,19 @@ form#sendLogin { margin-bottom: 2em; }
 
 /* @group System Forms - Mailing Lists */
 
-.sidebar .svMailingList fieldset {
+.sidebar .svMailingList fieldset,
+aside .svMailingList fieldset {
 	padding: 0;
 	border: 0;
 	}
 
-.sidebar .svMailingList ol {
+.sidebar .svMailingList ol,
+aside .svMailingList ol {
 	padding: 0;
 	}
 
-.sidebar .svMailingList legend { display: none; }
+.sidebar .svMailingList legend,
+aside .svMailingList legend { display: none; }
 
 #svMasterEmail {}
 
@@ -1103,9 +1116,8 @@ form li .cke_skin_mura table {
 
 /* @group System Forms - Responses */
 
-.sidebar .responseMessage { color: red; }
-
-.sidebar .responseMessage em { font-style: normal; }
+.sidebar .responseMessage,
+aside .responseMessage { color: red; }
 
 #dsp_response.dataCollection .pollResults { list-style: none; }
 
