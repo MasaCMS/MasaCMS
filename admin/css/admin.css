@@ -4353,7 +4353,7 @@ a.expand span {
 }
 
 #ctrash .mura-table-grid td.administration ul {
-	width: 14px;
+	width: 14px; /* IE7 collapses the UL */
 }
 
 /* @end */
