@@ -99,6 +99,7 @@ to your own modified versions of Mura CMS.
 <cfif editableControl.innerHTML neq "">
 	<cfoutput>#$.renderEditableObjectHeader("editableFeed editableSlideShow")#</cfoutput>
 </cfif>	
+
 	<cfif feedBean.getIsActive()>
 		<cfset cssID=$.createCSSid(feedBean.renderName())>
       	<cfsilent>	
@@ -124,7 +125,7 @@ to your own modified versions of Mura CMS.
 		 	<cfif variables.feedBean.getDisplayName()>
 		       <#$.getHeaderTag('subHead1')#>#HTMLEditFormat(variables.feedBean.renderName())#</#$.getHeaderTag('subHead1')#>
 			</cfif>
-			
+		
 			#$.dspObject_Include(
 				thefile='dsp_content_list.cfm',
 				fields=variables.feedBean.getDisplayList(),

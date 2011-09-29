@@ -48,7 +48,7 @@ to your own modified versions of Mura CMS.
 	</cfif>
 	
 	<cfif not structKeyExists(arguments,"fields")>
-		<cfset arguments.fields="Title,Summary,Date,Image,Tags,Credits">
+		<cfset arguments.fields="Date,Title,Image,Summary,Credits,Tags">
 	</cfif>
 	
 	<cfset arguments.hasImages=listFindNoCase(arguments.fields,"Image")>
@@ -59,8 +59,12 @@ to your own modified versions of Mura CMS.
 		
 		<cfif structKeyExists(arguments,"imageSize")>
 			<cfset arguments.imageURLArgs.size=arguments.imageSize>
-		<cfelse>
-			<cfif structKeyExists(arguments,"imageWidth") or structKeyExists(arguments,"imageHeight")>
+		</cfif>
+		<cfif arguments.imageURLArgs.size eq "custom" 
+			and (
+				structKeyExists(arguments,"imageWidth") 
+				or structKeyExists(arguments,"imageHeight")
+				)>
 				<cfif structKeyExists(arguments,"imageWidth")>
 					<cfset arguments.imageURLArgs.width=arguments.imageWidth>
 				<cfelse>
@@ -76,7 +80,6 @@ to your own modified versions of Mura CMS.
 					<cfset arguments.imageURLArgs=structNew()>
 					<cfset arguments.imageURLArgs.size="small">
 				</cfif>
-			</cfif>
 		</cfif>
 	</cfif>
 </cfsilent>
