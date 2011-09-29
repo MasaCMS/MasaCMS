@@ -110,6 +110,16 @@ to your own modified versions of Mura CMS.
 			<cfset nextN=$.getBean('utility').getNextN(rs,feedBean.getNextN(),request.StartRow)>
 			<cfset checkMeta=feedBean.getDisplayRatings() or feedBean.getDisplayComments()>
 			<cfset doMeta=0 />
+			
+			<cfset variables.contentListFields=variables.feedBean.getDisplayList()>
+			                                                     
+			<cfif not arguments.hasSummary>
+			 	<cfset	arguments.hasSummary=listFindNoCase(variables.contentListFields,"Summary")>
+				<cfif arguments.hasSummary>
+					<cfset  variables.contentListFields=listDeleteAt(variables.contentListFields,arguments.hasSummary)>
+			 	</cfif>  
+				<cfset arguments.hasSummmary=false>  
+			</cfif>
 		  </cfsilent>
 	  	<cfif  variables.iterator.hasNext()>
 	  	<cfoutput>
@@ -121,7 +131,7 @@ to your own modified versions of Mura CMS.
 			
 			#$.dspObject_Include(
 				thefile='dsp_content_list.cfm',
-				fields=variables.feedBean.getDisplayList(),
+				fields=variables.contentListFields,
 				type="Feed", 
 				iterator= variables.iterator,
 				imageSize=variables.feedBean.getImageSize(),

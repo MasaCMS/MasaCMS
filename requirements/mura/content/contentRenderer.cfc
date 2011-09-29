@@ -950,7 +950,10 @@ to your own modified versions of Mura CMS.
 	<cfargument name="RSS" type="boolean" required="true" default="false" />
 	<cfargument name="objectPerm" type="string" required="true" default="none" />
 	<cfargument name="params" type="string" required="true" default="" />
-
+	<cfargument name="assignmentID" type="string" required="true" default="">
+	<cfargument name="regionID" required="true" default="0">
+	<cfargument name="orderno" required="true" default="0">
+	
 	<cfset var fileDelim = application.configBean.getFileDelim() />
 	<cfset var displayObjectPath = $.siteConfig('IncludePath') & fileDelim & "includes"  & fileDelim & "display_objects"/>
 	<cfset var themeObjectPath = $.siteConfig('ThemeIncludePath') & fileDelim & "display_objects"/>
@@ -987,6 +990,10 @@ to your own modified versions of Mura CMS.
 <cfargument name="objectid" type="string" required="true" default="">
 <cfargument name="siteid" type="string" required="true" default="#event.getValue('siteID')#">
 <cfargument name="params" type="string" required="true" default="">
+<cfargument name="assignmentID" type="string" required="true" default="">
+<cfargument name="regionID" required="true" default="0">
+<cfargument name="orderno" required="true" default="0">
+
 	<cfset var theObject = "" />
 	<cfset var cacheKeyContentId = arguments.object & event.getValue('contentBean').getcontentID() />
 	<cfset var cacheKeyObjectId = arguments.object & arguments.objectid />
@@ -1019,14 +1026,14 @@ to your own modified versions of Mura CMS.
 				<cfcase value="adzone">#dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"dsp_adZone.cfm")#</cfcase>
 				<cfcase value="feed">
 					<cfset addToHTMLHeadQueue("listImageStyles.cfm")>
-					#dspObject_Render(siteID=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="dsp_feed.cfm",cacheKey=cacheKeyObjectId & "startrow#request.startrow#",params=arguments.params)#
+					#dspObject_Render(siteID=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="dsp_feed.cfm",cacheKey=cacheKeyObjectId & "startrow#request.startrow#",params=arguments.params,assignmentID=arguments.assignmentID,regionID=arguments.regionID,orderno=arguments.orderno)#
 				</cfcase>	
 				<cfcase value="feed_slideshow">
 					<cfif not cookie.mobileFormat>
-						#dspObject_Render(siteID=arguments.siteid,object=arguments.object,objectID=arguments.objectid,filename="feedslideshow/index.cfm",params=arguments.params)#
+						#dspObject_Render(siteID=arguments.siteid,object=arguments.object,objectID=arguments.objectid,filename="feedslideshow/index.cfm",params=arguments.params,assignmentID=arguments.assignmentID,regionID=arguments.regionID,orderno=arguments.orderno)#
 					<cfelse>
 						<cfset addToHTMLHeadQueue("listImageStyles.cfm")>
-						#dspObject_Render(siteID=arguments.siteid,object=arguments.object,objectID=arguments.objectid,filename="dsp_feed.cfm",params=arguments.params)#
+						#dspObject_Render(siteID=arguments.siteid,object=arguments.object,objectID=arguments.objectid,filename="dsp_feed.cfm",params=arguments.params,assignmentID=arguments.assignmentID,regionID=arguments.regionID,orderno=arguments.orderno)#
 					</cfif>
 				</cfcase>
 				<cfcase value="feed_table">#dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"feedtable/index.cfm",arguments.object,false)#</cfcase>
@@ -1052,14 +1059,14 @@ to your own modified versions of Mura CMS.
 				<cfcase value="category_summary_rss">#dspObject_Render(siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,fileName="dsp_category_summary.cfm",cacheKey=cacheKeyObjectId & event.getValue('categoryID'),useRss=true)#</cfcase>
 				<cfcase value="feed_no_summary">
 					<cfset addToHTMLHeadQueue("listImageStyles.cfm")>
-					#dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"dsp_feed.cfm",cacheKeyObjectId & "startrow#request.startrow#",false)#
+					#dspObject_Render(siteID=arguments.siteid,object=arguments.object,objectID=arguments.objectid,fileName="dsp_feed.cfm",cacheKey=cacheKeyObjectId & "startrow#request.startrow#",hasSummary=false,assignmentID=arguments.assignmentID,regionID=arguments.regionID,orderno=arguments.orderno)#
 				</cfcase>
 				<cfcase value="feed_slideshow_no_summary">
 					<cfif not cookie.mobileFormat>
-						#dspObject_Render(siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,fileName="feedslideshow/index.cfm",hasSummary=false)#
+						#dspObject_Render(siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,fileName="feedslideshow/index.cfm",hasSummary=false,assignmentID=arguments.assignmentID,regionID=arguments.regionID,orderno=arguments.orderno)#
 					<cfelse>
 						<cfset addToHTMLHeadQueue("listImageStyles.cfm")>
-						#dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"dsp_feed.cfm",cacheKeyObjectId & "startrow#request.startrow#",false)#
+						#dspObject_Render(siteID=arguments.siteid,object=arguments.object,objectID=arguments.objectid,fileName="dsp_feed.cfm",cacheKey=cacheKeyObjectId & "startrow#request.startrow#",hasSummary=false,assignmentID=arguments.assignmentID,regionID=arguments.regionID,orderno=arguments.orderno)#
 					</cfif>
 				</cfcase>
 				<cfcase value="related_section_content_no_summary">
@@ -1102,13 +1109,13 @@ to your own modified versions of Mura CMS.
 		and event.getValue('contentBean').getcontenthistid() eq arguments.contentHistID>
 			<cfset rsObjects=application.contentGateway.getObjectInheritance(arguments.columnID,event.getValue('inheritedObjects'),event.getValue('siteID'))>	
 			<cfloop query="rsObjects">
-				<cfset theRegion = theRegion & dspObject(rsObjects.object,rsObjects.objectid,event.getValue('siteID'), rsObjects.params) />
+				<cfset theRegion = theRegion & dspObject(rsObjects.object,rsObjects.objectid,event.getValue('siteID'), rsObjects.params, event.getValue('inheritedObjects'), arguments.columnID) />
 			</cfloop>	
 	</cfif>
 
 	<cfset rsObjects=application.contentGateway.getObjects(arguments.columnID,arguments.contentHistID,event.getValue('siteID'))>	
 	<cfloop query="rsObjects">
-		<cfset theRegion = theRegion & dspObject(rsObjects.object,rsObjects.objectid,event.getValue('siteID'), rsObjects.params) />
+		<cfset theRegion = theRegion & dspObject(rsObjects.object,rsObjects.objectid,event.getValue('siteID'), rsObjects.params, arguments.contentHistID, arguments.columnID) />
 	</cfloop>
 </cfif>
 

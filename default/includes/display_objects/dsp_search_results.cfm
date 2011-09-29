@@ -80,7 +80,7 @@ to your own modified versions of Mura CMS.
 <cfset variables.sectionBean=application.contentManager.getActiveContent(request.searchSectionID,$.event('siteID')) />
 </cfif>
 
-<cfset variables.contentListType="Search">
+<cfset variables.contentListFieldsType="Search">
 <cfset variables.contentListFields="Title,Summary,Tags,Credits">
 
 </cfsilent>
@@ -124,7 +124,7 @@ to your own modified versions of Mura CMS.
 		#$.dspObject_Include(
 			thefile='dsp_content_list.cfm',
 			fields=variables.contentListFields,
-			type=variables.contentListType, 
+			type=variables.contentListFieldsType, 
 			iterator= variables.iterator
 			)#
 	</div>
