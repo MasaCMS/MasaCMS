@@ -1062,14 +1062,14 @@ to your own modified versions of Mura CMS.
 				<cfcase value="category_summary_rss">#dspObject_Render(siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,fileName="dsp_category_summary.cfm",cacheKey=cacheKeyObjectId & event.getValue('categoryID'),useRss=true)#</cfcase>
 				<cfcase value="feed_no_summary">
 					<cfset addToHTMLHeadQueue("listImageStyles.cfm")>
-					#dspObject_Render(siteID=arguments.siteid,object=arguments.object,objectID=arguments.objectid,fileName="dsp_feed.cfm",cacheKey=cacheKeyObjectId & "startrow#request.startrow#",hasSummary=false,assignmentID=arguments.assignmentID,regionID=arguments.regionID,orderno=arguments.orderno)#
+					#dspObject_Render(siteID=arguments.siteid,object=arguments.object,objectID=arguments.objectid,fileName="dsp_feed.cfm",cacheKey=cacheKeyObjectId & "startrow#request.startrow#",hasSummary=false,assignmentID=arguments.assignmentID,regionID=arguments.regionID,orderno=arguments.orderno,params=arguments.params)#
 				</cfcase>
 				<cfcase value="feed_slideshow_no_summary">
 					<cfif not cookie.mobileFormat>
-						#dspObject_Render(siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,fileName="feedslideshow/index.cfm",hasSummary=false,assignmentID=arguments.assignmentID,regionID=arguments.regionID,orderno=arguments.orderno)#
+						#dspObject_Render(siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,fileName="feedslideshow/index.cfm",hasSummary=false,assignmentID=arguments.assignmentID,regionID=arguments.regionID,orderno=arguments.orderno,params=arguments.params)#
 					<cfelse>
 						<cfset addToHTMLHeadQueue("listImageStyles.cfm")>
-						#dspObject_Render(siteID=arguments.siteid,object=arguments.object,objectID=arguments.objectid,fileName="dsp_feed.cfm",cacheKey=cacheKeyObjectId & "startrow#request.startrow#",hasSummary=false,assignmentID=arguments.assignmentID,regionID=arguments.regionID,orderno=arguments.orderno)#
+						#dspObject_Render(siteID=arguments.siteid,object=arguments.object,objectID=arguments.objectid,fileName="dsp_feed.cfm",cacheKey=cacheKeyObjectId & "startrow#request.startrow#",hasSummary=false,assignmentID=arguments.assignmentID,regionID=arguments.regionID,orderno=arguments.orderno,params=arguments.params)#
 					</cfif>
 				</cfcase>
 				<cfcase value="related_section_content_no_summary">

@@ -57,6 +57,7 @@ to your own modified versions of Mura CMS.
 	</cfif>
 	
 </cfsilent>
+
 <cfif variables.feedBean.getIsActive()>
 	<cfsilent>
 	
