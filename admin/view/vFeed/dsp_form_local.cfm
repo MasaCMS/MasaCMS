@@ -118,7 +118,13 @@ to your own modified versions of Mura CMS.
 		<cfif variables.hasSummary>
 			<cfset  variables.contentListFields=listDeleteAt(variables.contentListFields,arguments.hasSummary)>
 		 </cfif>
-			 
+		
+		<cfif listFindNoCase("feed_slideshow_no_summary,feed_slideshow",rsDisplayObject.object)>
+			<cfset request.feedBean.setImageSize("medium")>
+			<cfset request.feedBean.setImageHeight("AUTO")>	
+			<cfset request.feedBean.setImageWidth("AUTO")>		
+		</cfif>
+		
 		<cfset request.feedBean.setDisplayList(variables.contentListFields)>
 	<cfelse>
 		<cfset request.feedBean.set(deserializeJSON(rsDisplayObject.params))>
