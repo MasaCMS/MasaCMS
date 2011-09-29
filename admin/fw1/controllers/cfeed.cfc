@@ -92,10 +92,11 @@ to your own modified versions of Mura CMS.
 	<cfargument name="rc">
 	
 	<cfif arguments.rc.action eq 'update'>
-		<cfset arguments.rc.feedBean=variables.feedManager.update(arguments.rc)>
-		
 		<cfif len(arguments.rc.assignmentID) and isJSON(arguments.rc.instanceParams)>
 			<cfset getBean("contentManager").updateContentObjectParams(arguments.rc.assignmentID,arguments.rc.regionID,arguments.rc.orderno,arguments.rc.instanceParams)>
+			<cfset arguments.rc.feedBean=variables.feedManager.read(feedID=arguments.rc.feedID)>
+		<cfelse>
+			<cfset arguments.rc.feedBean=variables.feedManager.update(arguments.rc)>
 		</cfif>
 	</cfif>
 

@@ -147,7 +147,7 @@ to your own modified versions of Mura CMS.
 <cfoutput><h2>#application.rbFactory.getKeyValue(session.rb,'collections.editlocalindex')#</h2>
 #application.utility.displayErrors(request.feedBean.getErrors())#
 
-<cfif attributes.compactDisplay eq "true">
+<cfif attributes.compactDisplay eq "true" and not isObjectInstance>
 <p class="notice">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.globallyappliednotice")#</p>
 </cfif>
 
@@ -157,15 +157,35 @@ to your own modified versions of Mura CMS.
 </span>
 
 <form novalidate="novalidate" action="index.cfm?fuseaction=cFeed.update&siteid=#URLEncodedFormat(attributes.siteid)#" method="post" name="form1" id="feedFrm" onsubmit="return validate(this);">
-
-<dl class="oneColumn">
-<dt class="first">#application.rbFactory.getKeyValue(session.rb,'collections.name')#</dt>
-<dd><input name="name" class="text" required="true" message="#application.rbFactory.getKeyValue(session.rb,'collections.namerequired')#" value="#HTMLEditFormat(request.feedBean.getName())#" maxlength="50"></dd>
-</dl>
+<cfif not isObjectInstance>
+	<cfif attributes.compactDisplay eq "true">
+		<ul id="navTask">
+		<li><a onclick="history.go(-1);">Back to Instance Display Settings</a></li>
+	</ul>
+	</cfif>
+	<dl class="oneColumn">
+	<dt class="first">#application.rbFactory.getKeyValue(session.rb,'collections.name')#</dt>
+	<dd><input name="name" class="text" required="true" message="#application.rbFactory.getKeyValue(session.rb,'collections.namerequired')#" value="#HTMLEditFormat(request.feedBean.getName())#" maxlength="50"></dd>
+	</dl>
+<cfelse>
+	<h3>#HTMLEditFormat(request.feedBean.getName())#</h3>
+	<cfsilent>
+		<cfset editlink = "?fuseaction=cFeed.edit">
+		<cfset editlink = editlink & "&amp;siteid=" & request.feedBean.getSiteID()>
+		<cfset editlink = editlink & "&amp;feedid=" & request.feedBean.getFeedID()>
+		<cfset editlink = editlink & "&amp;type=" & request.feedBean.getType()>
+		<cfset editlink = editlink & "&amp;homeID=" & attributes.homeID>
+		<cfset editlink = editlink & "&amp;compactDisplay=true">
+	</cfsilent>
+	<ul id="navTask">
+		<li><a href="#editlink#">Edit Base Local Index</a></li>
+	</ul>
+</cfif>
 </cfoutput>
 <!-- Content Filters -->
 <cfsavecontent variable="tabContent">
 <cfoutput>
+<cfif not isObjectInstance>
 <div id="tabChoosecontent">
 <dl class="oneColumn">
 <dt class="first">#application.rbFactory.getKeyValue(session.rb,'collections.choosecontentfromsection')#: <span id="selectFilter"><a href="javascript:;" onclick="javascript: loadSiteFilters('#attributes.siteid#','',1);return false;">[#application.rbFactory.getKeyValue(session.rb,'collections.selectnewsection')#]</a></span>
@@ -284,7 +304,7 @@ to your own modified versions of Mura CMS.
 	</dd>
 </dl>
 </div>
-
+</cfif>
 <div id="tabDisplay">
 <dl class="oneColumn" id="configuratorTab">
 <dt class="first">#application.rbFactory.getKeyValue(session.rb,'collections.imagesize')#</dt>
@@ -352,7 +372,6 @@ to your own modified versions of Mura CMS.
 	<input type="hidden" id="displayList" value="#displayList#" name="#displaNamePrefix#displayList"  data-displayobjectparam="displayList"/>
 	</div>	
 	<script>
-		<cfif isObjectInstance>isObjectInstance=true;</cfif>
 		jQuery(document).ready(
 			function(){
 				setDisplayListSort();
@@ -362,86 +381,92 @@ to your own modified versions of Mura CMS.
 </dd>
 </dl>
 </div>
-
-<div id="tabRss">
-<dl class="oneColumn">
-<cfif attributes.feedID neq ''>
-<dt class="first">#application.rbFactory.getKeyValue(session.rb,'collections.url')#</dt>
-<dd><a title="#application.rbFactory.getKeyValue(session.rb,'collections.view')#" href="http://#application.settingsManager.getSite(attributes.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()#/tasks/feed/?feedID=#attributes.feedID#" target="_blank">http://#application.settingsManager.getSite(attributes.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()#/tasks/feed/?feedID=#attributes.feedID#</a></dd>
-</cfif>
-<dt<cfif attributes.feedID eq ''> class="first"</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.description')#</dt>
-<dd><input name="description" class="text" value="#HTMLEditFormat(request.feedBean.getDescription())#"/></dd> 
-<dt>#application.rbFactory.getKeyValue(session.rb,'collections.makedefault')#</dt>
-<dd>
-<input name="isDefault" type="radio" value="1" <cfif request.feedBean.getIsDefault()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.yes')# 
-<input name="isDefault" type="radio" value="0" <cfif not request.feedBean.getIsDefault()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.no')# 
-</dd>
-<dt>#application.rbFactory.getKeyValue(session.rb,'collections.isPublic')#</dt>
-<dd>
-<input name="isPublic" type="radio" value="1" <cfif request.feedBean.getIsPublic()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.yes')# 
-<input name="isPublic" type="radio" value="0" <cfif not request.feedBean.getIsPublic()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.no')# 
-</dd>
-<dt>#application.rbFactory.getKeyValue(session.rb,'collections.allowhtml')#</dt>
-<dd>
-<input name="allowHTML" type="radio" value="1" <cfif request.feedBean.getAllowHTML()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.yes')# 
-<input name="allowHTML" type="radio" value="0" <cfif not request.feedBean.getAllowHTML()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.no')# 
-</dd>
-<dt>#application.rbFactory.getKeyValue(session.rb,'collections.version')#</dt>
-<dd><select name="version" class="dropdown">
-<cfloop list="RSS 2.0,RSS 0.920" index="v">
-<option value="#v#" <cfif request.feedBean.getVersion() eq v>selected</cfif>>#v#</option>
-</cfloop>
-</select>
-</dd>
-<dt>#application.rbFactory.getKeyValue(session.rb,'collections.language')#</dt>
-<dd><input name="lang" class="text" value="#htmlEditFormat(request.feedBean.getlang())#" maxlength="50">
-</dd>
-<cfif application.settingsManager.getSite(attributes.siteid).getextranet()>
-
-<dt><input name="restricted" type="CHECKBOX" value="1"   onclick="javascript: this.checked?toggleDisplay2('rg',true):toggleDisplay2('rg',false);" <cfif request.feedBean.getrestricted() eq 1>checked </cfif> class="checkbox">
-	#application.rbFactory.getKeyValue(session.rb,'collections.restrictaccess')#
-	<div id="rg"  <cfif request.feedBean.getrestricted() NEQ 1>style="display:none;"</cfif>>
-	<select name="restrictgroups" size="8" multiple="multiple" class="multiSelect" id="restrictGroups">
-	<optgroup label="#htmlEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.globalsettings'))#">
-	<option value="RestrictAll" <cfif request.feedBean.getrestrictgroups() eq 'RestrictAll'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.restrictall')#</option>
-	<option value="" <cfif request.feedBean.getrestrictgroups() eq ''>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.allowall')#</option>
-	</optgroup>
-	<cfquery dbtype="query" name="rsGroups">select * from request.rsrestrictgroups where isPublic=1</cfquery>	
-	<cfif rsGroups.recordcount>
-	<optgroup label="#htmlEditFormat(application.rbFactory.getKeyValue(session.rb,'user.membergroups'))#">
-	<cfloop query="rsGroups">
-	<option value="#rsGroups.userID#" <cfif listfind(request.feedBean.getrestrictgroups(),rsGroups.userID)>Selected</cfif>>#rsGroups.groupname#</option>
-	</cfloop>
-	</optgroup>
+<cfif not isObjectInstance>
+	<div id="tabRss">
+	<dl class="oneColumn">
+	<cfif attributes.feedID neq ''>
+	<dt class="first">#application.rbFactory.getKeyValue(session.rb,'collections.url')#</dt>
+	<dd><a title="#application.rbFactory.getKeyValue(session.rb,'collections.view')#" href="http://#application.settingsManager.getSite(attributes.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()#/tasks/feed/?feedID=#attributes.feedID#" target="_blank">http://#application.settingsManager.getSite(attributes.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()#/tasks/feed/?feedID=#attributes.feedID#</a></dd>
 	</cfif>
-	<cfquery dbtype="query" name="rsGroups">select * from request.rsrestrictgroups where isPublic=0</cfquery>	
-	<cfif rsGroups.recordcount>
-	<optgroup label="#htmlEditFormat(application.rbFactory.getKeyValue(session.rb,'user.adminusergroups'))#">
-	<cfloop query="rsGroups">
-	<option value="#rsGroups.userID#" <cfif listfind(request.feedBean.getrestrictgroups(),rsGroups.userID)>Selected</cfif>>#rsGroups.groupname#</option>
+	<dt<cfif attributes.feedID eq ''> class="first"</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.description')#</dt>
+	<dd><input name="description" class="text" value="#HTMLEditFormat(request.feedBean.getDescription())#"/></dd> 
+	<dt>#application.rbFactory.getKeyValue(session.rb,'collections.makedefault')#</dt>
+	<dd>
+	<input name="isDefault" type="radio" value="1" <cfif request.feedBean.getIsDefault()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.yes')# 
+	<input name="isDefault" type="radio" value="0" <cfif not request.feedBean.getIsDefault()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.no')# 
+	</dd>
+	<dt>#application.rbFactory.getKeyValue(session.rb,'collections.isPublic')#</dt>
+	<dd>
+	<input name="isPublic" type="radio" value="1" <cfif request.feedBean.getIsPublic()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.yes')# 
+	<input name="isPublic" type="radio" value="0" <cfif not request.feedBean.getIsPublic()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.no')# 
+	</dd>
+	<dt>#application.rbFactory.getKeyValue(session.rb,'collections.allowhtml')#</dt>
+	<dd>
+	<input name="allowHTML" type="radio" value="1" <cfif request.feedBean.getAllowHTML()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.yes')# 
+	<input name="allowHTML" type="radio" value="0" <cfif not request.feedBean.getAllowHTML()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.no')# 
+	</dd>
+	<dt>#application.rbFactory.getKeyValue(session.rb,'collections.version')#</dt>
+	<dd><select name="version" class="dropdown">
+	<cfloop list="RSS 2.0,RSS 0.920" index="v">
+	<option value="#v#" <cfif request.feedBean.getVersion() eq v>selected</cfif>>#v#</option>
 	</cfloop>
-	</optgroup>
-	</cfif>
 	</select>
-
-</div>
-</dt></cfif>
-</dl>
-</div>
-<cfif attributes.feedID neq ''>
-<cfinclude template="dsp_tab_usage.cfm">
-</cfif></cfoutput>
+	</dd>
+	<dt>#application.rbFactory.getKeyValue(session.rb,'collections.language')#</dt>
+	<dd><input name="lang" class="text" value="#htmlEditFormat(request.feedBean.getlang())#" maxlength="50">
+	</dd>
+	<cfif application.settingsManager.getSite(attributes.siteid).getextranet()>
+	
+	<dt><input name="restricted" type="CHECKBOX" value="1"   onclick="javascript: this.checked?toggleDisplay2('rg',true):toggleDisplay2('rg',false);" <cfif request.feedBean.getrestricted() eq 1>checked </cfif> class="checkbox">
+		#application.rbFactory.getKeyValue(session.rb,'collections.restrictaccess')#
+		<div id="rg"  <cfif request.feedBean.getrestricted() NEQ 1>style="display:none;"</cfif>>
+		<select name="restrictgroups" size="8" multiple="multiple" class="multiSelect" id="restrictGroups">
+		<optgroup label="#htmlEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.globalsettings'))#">
+		<option value="RestrictAll" <cfif request.feedBean.getrestrictgroups() eq 'RestrictAll'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.restrictall')#</option>
+		<option value="" <cfif request.feedBean.getrestrictgroups() eq ''>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.allowall')#</option>
+		</optgroup>
+		<cfquery dbtype="query" name="rsGroups">select * from request.rsrestrictgroups where isPublic=1</cfquery>	
+		<cfif rsGroups.recordcount>
+		<optgroup label="#htmlEditFormat(application.rbFactory.getKeyValue(session.rb,'user.membergroups'))#">
+		<cfloop query="rsGroups">
+		<option value="#rsGroups.userID#" <cfif listfind(request.feedBean.getrestrictgroups(),rsGroups.userID)>Selected</cfif>>#rsGroups.groupname#</option>
+		</cfloop>
+		</optgroup>
+		</cfif>
+		<cfquery dbtype="query" name="rsGroups">select * from request.rsrestrictgroups where isPublic=0</cfquery>	
+		<cfif rsGroups.recordcount>
+		<optgroup label="#htmlEditFormat(application.rbFactory.getKeyValue(session.rb,'user.adminusergroups'))#">
+		<cfloop query="rsGroups">
+		<option value="#rsGroups.userID#" <cfif listfind(request.feedBean.getrestrictgroups(),rsGroups.userID)>Selected</cfif>>#rsGroups.groupname#</option>
+		</cfloop>
+		</optgroup>
+		</cfif>
+		</select>
+	
+	</div>
+	</dt></cfif>
+	</dl>
+	</div>
+	<cfif attributes.feedID neq ''>
+	<cfinclude template="dsp_tab_usage.cfm">
+	</cfif>
+</cfif>
+</cfoutput>
 </cfsavecontent>
 <cfoutput>
-<img class="loadProgress tabPreloader" src="images/progress_bar.gif">
-<div class="tabs initActiveTab" style="display:none">
-<ul>
-<cfloop from="1" to="#listlen(tabList)#" index="t">
-<li><a href="###listGetAt(tabList,t)#" onclick="return false;"><span>#listGetAt(tabLabelList,t)#</span></a></li>
-</cfloop>
-</ul>
-#tabContent#
-</div>
+<cfif not isObjectInstance>
+	<img class="loadProgress tabPreloader" src="images/progress_bar.gif">
+	<div class="tabs initActiveTab" style="display:none">
+	<ul>
+	<cfloop from="1" to="#listlen(tabList)#" index="t">
+	<li><a href="###listGetAt(tabList,t)#" onclick="return false;"><span>#listGetAt(tabLabelList,t)#</span></a></li>
+	</cfloop>
+	</ul>
+	#tabContent#
+	</div>
+<cfelse>
+	#tabCOntent#
+</cfif>
 
 <input type="hidden" id="instanceParams" value='#request.feedBean.getInstanceParams()#' name="instanceParams" />		
 <input type="hidden" name="assignmentID" value="#HTMLEditFormat(attributes.assignmentID)#" />
@@ -457,7 +482,7 @@ to your own modified versions of Mura CMS.
 	<cfif attributes.compactDisplay neq "true">
 		<input type="button" class="submit" onclick="submitForm(document.forms.form1,'delete','#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'collections.deletelocalconfirm'))#');" value="#application.rbFactory.getKeyValue(session.rb,'collections.delete')#" /> 
 	</cfif>
-	<input type="button" class="submit" onclick="submitForm(document.forms.form1,'update');" value="#application.rbFactory.getKeyValue(session.rb,'collections.update')#" />
+	<input type="button" class="submit" onclick="<cfif isObjectInstance>updateInstanceObject();</cfif>submitForm(document.forms.form1,'update');" value="#application.rbFactory.getKeyValue(session.rb,'collections.update')#" />
 	<cfif attributes.compactDisplay eq "true">
 		<input type="hidden" name="closeCompactDisplay" value="true" />
 		<input type="hidden" name="homeID" value="#attributes.homeID#" />

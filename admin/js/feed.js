@@ -129,8 +129,6 @@ function confirmImport(){
 	return false;	
 }
 
-var isObjectInstance=false;
-
 function setDisplayListSort(){
 	jQuery( "#availableListSort, #displayListSort" ).sortable({
 		connectWith: ".displayListSortOptions",
@@ -148,10 +146,6 @@ function setDisplayListSort(){
 					}
 							
 				});
-				
-				if(isObjectInstance){
-					updateInstanceObject();
-				}
 			}
 		}).disableSelection();
 }

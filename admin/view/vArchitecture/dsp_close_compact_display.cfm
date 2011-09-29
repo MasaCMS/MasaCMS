@@ -66,7 +66,9 @@ to your own modified versions of Mura CMS.
 		<script>
 			var editForm = window.parent.document.getElementById('editForm');
 			window.parent.location = '#href#';
-			editForm.hide();
+			if (typeof(editForm) != "undefined") {
+				editForm.hide();
+			}
 		</script>
 	</cfoutput>
 <cfelseif attributes.action eq "add" and request.contentBean.getType() neq "File" and request.contentBean.getType() neq "Link">
@@ -78,7 +80,9 @@ to your own modified versions of Mura CMS.
 		<cfelse>
 		window.parent.location = '#href#';
 		</cfif>
-		editForm.hide();
+		if (typeof(editForm) != "undefined") {
+			editForm.hide();
+		}
 	</script>
 <cfelseif attributes.action eq "add" and (request.contentBean.getType() eq "File" or request.contentBean.getType() eq "Link")>	
 	<cfset parentBean = application.contentManager.getActiveContent(currentBean.getParentID(), currentBean.getSiteID())>
@@ -90,7 +94,9 @@ to your own modified versions of Mura CMS.
 		<cfelse>
 		window.parent.location = '#href#';
 		</cfif>
-		editForm.hide();
+		if (typeof(editForm) != "undefined") {
+			editForm.hide();
+		}
 	</script>
 <cfelseif attributes.action eq "multiFileUpload">
 	<cfset parentBean = application.contentManager.getActiveContent(attributes.parentID, attributes.siteID)>
@@ -100,7 +106,9 @@ to your own modified versions of Mura CMS.
 	
 		window.parent.location = '#href#';
 	
-		editForm.hide();
+		if (typeof(editForm) != "undefined") {
+			editForm.hide();
+		}
 	</script>
 <cfelse>
 	<cfset request.contentBean = application.contentManager.getActiveContent(attributes.parentid, attributes.siteid)>
