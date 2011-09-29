@@ -1,3 +1,5 @@
+/* @override http://localhost:8500/muracms/admin/css/dialog.css */
+
 /* @override 
 	http://localhost:8500/muracms/admin/css/dialog.css */
 
@@ -286,11 +288,10 @@ a#editFormCloseLink {
 	-webkit-border-bottom-left-radius: 5px;
 	-moz-border-radius-bottomright: 5px;
 	-webkit-border-bottom-right-radius: 5px;
-	-webkit-box-shadow: 3px 3px 5px #555 !important;
-	-moz-box-shadow: 3px 3px 5px #555 !important;
-	filter: progid:DXImageTransform.Microsoft.dropShadow( offX=5, offY=5, positive=true);
-	box-shadow: 3px 3px 3px #555 !important;
-	/*z-index: 4999 !important;*/
+	-webkit-box-shadow: 1px 2px 5px rgba(0,0,0,.7);
+	-moz-box-shadow: 1px 2px 5px rgba(0,0,0,.7);
+	box-shadow: 1px 2px 5px rgba(0,0,0,.7) !important;
+	color:#fff !important;
 }
 
 #frontEndTools li li { /* all list items */
