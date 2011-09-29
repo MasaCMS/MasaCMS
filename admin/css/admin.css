@@ -3426,6 +3426,7 @@ ul.seven { /* 7 Icons */
 	float: left;
 	clear: none;
 	text-indent: -999em;
+
 }
 
 .mura-grid .admin .add, .mura-grid .admin .select, table td.administration li.add, table td.administration .select {
@@ -4349,6 +4350,10 @@ a.expand span {
 #ctrash #selectNewParent h3 {
 	font-size: 11px;
 	margin-bottom: .5em;
+}
+
+#ctrash .mura-table-grid td.administration ul {
+	width: 14px;
 }
 
 /* @end */
