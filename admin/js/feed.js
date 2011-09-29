@@ -129,6 +129,8 @@ function confirmImport(){
 	return false;	
 }
 
+var isObjectInstance=false;
+
 function setDisplayListSort(){
 	jQuery( "#availableListSort, #displayListSort" ).sortable({
 		connectWith: ".displayListSortOptions",
@@ -146,6 +148,23 @@ function setDisplayListSort(){
 					}
 							
 				});
+				
+				if(isObjectInstance){
+					updateInstanceObject();
+				}
 			}
 		}).disableSelection();
 }
+
+function updateInstanceObject(){
+		var availableObjectParams={};
+		jQuery("#tabDisplay").find(":input").each(
+			function(){
+				var item=jQuery(this);
+				if (item.attr("type") != "radio" || (item.attr("type") =="radio" && item.is(':checked'))) {
+					availableObjectParams[item.attr("data-displayobjectparam")] = item.val();
+				}
+			}
+		)
+		jQuery("#instanceParams").val(JSON.stringify( availableObjectParams));
+	}

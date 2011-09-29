@@ -107,8 +107,36 @@ to your own modified versions of Mura CMS.
 <cfset criterias[8][1]="Contains">
 <cfset criterias[8][2]=application.rbFactory.getKeyValue(session.rb,'params.contains')>
 
-</cfsilent>
+<cfif len(attributes.assignmentID)>
+	<cfset rsDisplayObject=application.contentManager.readContentObject(attributes.assignmentID,attributes.regionID,attributes.orderno)>
+	<cfset request.feedBean.setInstanceParams(rsDisplayObject.params)>
+	
+	<cfif not isJson(rsDisplayObject.params)>
+		<cfset variables.contentListFields=request.feedBean.getDisplayList()>
+			  
+		<cfset variables.hasSummary=listFindNoCase("feed_slideshow_no_summary,feed_no_summary",rsDisplayObject.object) and listFindNoCase(variables.contentListFields,"Summary")>
+		<cfif variables.hasSummary>
+			<cfset  variables.contentListFields=listDeleteAt(variables.contentListFields,arguments.hasSummary)>
+		 </cfif>
+			 
+		<cfset request.feedBean.setDisplayList(variables.contentListFields)>
+	<cfelse>
+		<cfset request.feedBean.set(deserializeJSON(rsDisplayObject.params))>
+	</cfif>
+	<cfset displaNamePrefix="instance">
+	<cfset isObjectInstance=true>
+<cfelse>
+	<cfset displaNamePrefix="">
+	<cfset isObjectInstance=false>
+</cfif>
 
+<cfset tablist="tabChoosecontent,tabAdvancedfilters,tabDisplay,tabRss">
+<cfif isObjectInstance>
+	<cfset tabLabellist="#application.rbFactory.getKeyValue(session.rb,'collections.choosecontent')#,#application.rbFactory.getKeyValue(session.rb,'collections.advancedfilters')#,#application.rbFactory.getKeyValue(session.rb,'collections.displayinstance')#,#application.rbFactory.getKeyValue(session.rb,'collections.rss')#">
+<cfelse>
+	<cfset tabLabellist="#application.rbFactory.getKeyValue(session.rb,'collections.choosecontent')#,#application.rbFactory.getKeyValue(session.rb,'collections.advancedfilters')#,#application.rbFactory.getKeyValue(session.rb,'collections.displaydefaults')#,#application.rbFactory.getKeyValue(session.rb,'collections.rss')#">
+</cfif>
+</cfsilent>
 
 <cfoutput><h2>#application.rbFactory.getKeyValue(session.rb,'collections.editlocalindex')#</h2>
 #application.utility.displayErrors(request.feedBean.getErrors())#
@@ -129,8 +157,6 @@ to your own modified versions of Mura CMS.
 <dd><input name="name" class="text" required="true" message="#application.rbFactory.getKeyValue(session.rb,'collections.namerequired')#" value="#HTMLEditFormat(request.feedBean.getName())#" maxlength="50"></dd>
 </dl>
 </cfoutput>
-<cfset tabLabellist="#application.rbFactory.getKeyValue(session.rb,'collections.choosecontent')#,#application.rbFactory.getKeyValue(session.rb,'collections.advancedfilters')#,#application.rbFactory.getKeyValue(session.rb,'collections.displaydefaults')#,#application.rbFactory.getKeyValue(session.rb,'collections.rss')#">
-<cfset tablist="tabChoosecontent,tabAdvancedfilters,tabDisplay,tabRss">
 <!-- Content Filters -->
 <cfsavecontent variable="tabContent">
 <cfoutput>
@@ -254,41 +280,51 @@ to your own modified versions of Mura CMS.
 </div>
 
 <div id="tabDisplay">
-<cfif attributes.compactDisplay>
-<p class="notice">#application.rbFactory.getKeyValue(session.rb,'collections.displaydefaultsnoticelocal')#</p>
-</cfif>
 <dl class="oneColumn" id="configuratorTab">
 <dt class="first">#application.rbFactory.getKeyValue(session.rb,'collections.imagesize')#</dt>
-	<dd><select name="imageSize" class="dropdown" onchange="if(this.value=='custom'){jQuery('##feedCustomImageOptions').fadeIn('fast')}else{jQuery('##feedCustomImageOptions').hide()}">
+	<dd><select name="#displaNamePrefix#imageSize" data-displayobjectparam="imageSize" class="dropdown" onchange="if(this.value=='custom'){jQuery('##feedCustomImageOptions').fadeIn('fast')}else{jQuery('##feedCustomImageOptions').hide()}">
 		<cfloop list="Small,Medium,Large,Custom" index="i">
 		<option value="#lcase(i)#"<cfif i eq request.feedBean.getImageSize()> selected</cfif>>#I#</option>
 		</cfloop>
 	</select>
 	</dd>
-	<dd id="feedCustomImageOptions"<cfif request.feedBean.getImageSize() neq "custom"> style="display:none"</cfif>>
+<dd id="feedCustomImageOptions"<cfif request.feedBean.getImageSize() neq "custom"> style="display:none"</cfif>>
 	<dl>
 	<dt>#application.rbFactory.getKeyValue(session.rb,'collections.imageheight')#</dt>
-	<dd><input name="imageHeight" class="text" value="#request.feedBean.getImageHeight()#" /></dd>
+	<dd><input name="#displaNamePrefix#imageHeight" data-displayobjectparam="imageHeight" class="text" value="#request.feedBean.getImageHeight()#" /></dd>
 	<dt>#application.rbFactory.getKeyValue(session.rb,'collections.imagewidth')#</dt>
-	<dd><input name="imageWidth" class="text" value="#request.feedBean.getImageWidth()#" /></dd>
+	<dd><input name="#displaNamePrefix#imageWidth" data-displayobjectparam="imageWidth" class="text" value="#request.feedBean.getImageWidth()#" /></dd>
+	</dl>
 </dd>
 
-<dt>#application.rbFactory.getKeyValue(session.rb,'collections.itemsperpage')#</dt>
-<dd><select name="nextN" class="dropdown">
-	<cfloop list="1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,25,50,100" index="r">
-	<option value="#r#" <cfif r eq request.feedBean.getNextN()>selected</cfif>>#r#</option>
-	</cfloop>
-	<option value="100000" <cfif request.feedBean.getNextN() eq 100000>selected</cfif>>ALL</option>
-	</select>
+<dt>#application.rbFactory.getKeyValue(session.rb,'collections.displayname')#</dt>
+<dd>
+<input name="#displaNamePrefix#displayName" data-displayobjectparam="displayName" type="radio" value="1" class="radio" onchange="jQuery('##altNameContainer').toggle();"<cfif request.feedBean.getDisplayName()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.yes')# 
+<input name="#displaNamePrefix#displayName" data-displayobjectparam="displayName" type="radio" value="0" class="radio" onchange="jQuery('##altNameContainer').toggle();" <cfif not request.feedBean.getDisplayName()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.no')# 
 </dd>
+<span id="altNameContainer"<cfif NOT request.feedBean.getDisplayName()> style="display:none;"</cfif>>
+<dt>#application.rbFactory.getKeyValue(session.rb,'collections.altname')#</dt>
+<dd><input name="#displaNamePrefix#altName" data-displayobjectparam="altName" class="text" value="#HTMLEditFormat(request.feedBean.getAltName())#" maxlength="50"></dd>
+</span>
+
 <dt>#application.rbFactory.getKeyValue(session.rb,'collections.maxitems')#</dt>
-<dd><select name="maxItems" class="dropdown">
+<dd><select name="#displaNamePrefix#maxItems" data-displayobjectparam="maxItems" class="dropdown">
 <cfloop list="1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,25,50,100" index="m">
 <option value="#m#" <cfif request.feedBean.getMaxItems() eq m>selected</cfif>>#m#</option>
 </cfloop>
 <option value="100000" <cfif request.feedBean.getMaxItems() eq 100000>selected</cfif>>ALL</option>
 </select>
 </dd>
+
+<dt>#application.rbFactory.getKeyValue(session.rb,'collections.itemsperpage')#</dt>
+<dd><select name="#displaNamePrefix#nextN" data-displayobjectparam="nextN" class="dropdown">
+	<cfloop list="1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,25,50,100" index="r">
+	<option value="#r#" <cfif r eq request.feedBean.getNextN()>selected</cfif>>#r#</option>
+	</cfloop>
+	<option value="100000" <cfif request.feedBean.getNextN() eq 100000>selected</cfif>>ALL</option>
+	</select>
+</dd>
+
 <dt id="availableFields"><span>Available Fields</span> <span>Selected Fields</span></dt>
 <dd>
 	<div class="sortableFields">
@@ -307,9 +343,10 @@ to your own modified versions of Mura CMS.
 			<li class="ui-state-highlight">#i#</li>
 		</cfloop>
 	</ul>
-	<input type="hidden" id="displayList" value="#displayList#" name="displayList"/>
+	<input type="hidden" id="displayList" value="#displayList#" name="#displaNamePrefix#displayList"  data-displayobjectparam="displayList"/>
 	</div>	
 	<script>
+		<cfif isObjectInstance>isObjectInstance=true;</cfif>
 		jQuery(document).ready(
 			function(){
 				setDisplayListSort();
@@ -400,6 +437,10 @@ to your own modified versions of Mura CMS.
 #tabContent#
 </div>
 
+<input type="hidden" id="instanceParams" value='#request.feedBean.getInstanceParams()#' name="instanceParams" />		
+<input type="hidden" name="assignmentID" value="#HTMLEditFormat(attributes.assignmentID)#" />
+<input type="hidden" name="orderno" value="#HTMLEditFormat(attributes.orderno)#" />
+<input type="hidden" name="regionid" value="#HTMLEditFormat(attributes.regionID)#" />
 <!--- Button Begins --->
 <div id="actionButtons" class="clearfix">
 <cfif attributes.feedID eq ''>

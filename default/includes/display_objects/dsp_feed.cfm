@@ -51,10 +51,15 @@ to your own modified versions of Mura CMS.
 	</cfif>
 	<cfif isDefined("arguments.params") and isJson(arguments.params)>
 		<cfset variables.feedBean.set(deserializeJSON(arguments.params))>
+	<cfelseif variables.feedBean.getType() eq "Local" and not arguments.hasSummary>
+		<cfset variables.contentListFields=listDeleteAt(variables.feedBean.getDisplayList(),listFindNoCase(variables.feedBean.getDisplayList(),"Summary"))>
+		<cfset variables.feedBean.setDisplayList(variables.contentListFields)>
 	</cfif>
+	
 </cfsilent>
 <cfif variables.feedBean.getIsActive()>
 	<cfsilent>
+	
 		<cfset variables.cssID = $.createCSSid(feedBean.renderName())>
 	
 		<cfset editableControl.editLink = "">
@@ -79,7 +84,9 @@ to your own modified versions of Mura CMS.
 			<cfset editableControl.editLink = editableControl.editLink & "&amp;type=" & bean.getType()>
 			<cfset editableControl.editLink = editableControl.editLink & "&amp;homeID=" & $.content('contentID')>
 			<cfset editableControl.editLink = editableControl.editLink & "&amp;compactDisplay=true">
-		
+			<cfset editableControl.editLink = editableControl.editLink & "&amp;assignmentID=" & arguments.assignmentID>
+			<cfset editableControl.editLink = editableControl.editLink & "&amp;regionID=" & arguments.regionID>
+			<cfset editableControl.editLink = editableControl.editLink & "&amp;orderno=" & arguments.orderno>
 			<cfset editableControl.innerHTML = $.generateEditableObjectControl(editableControl.editLink)>
 		</cfif>
 	</cfsilent>
@@ -117,15 +124,6 @@ to your own modified versions of Mura CMS.
 			                                                      variables.feedBean.getNextN(),
 			                                                      variables.currentNextNIndex)>
 			  
-			 <cfset variables.contentListFields=variables.feedBean.getDisplayList()>
-			                                                     
-			 <cfif not arguments.hasSummary>
-			 	 <cfset	arguments.hasSummary=listFindNoCase(variables.contentListFields,"Summary")>
-				 <cfif arguments.hasSummary>
-					<cfset  variables.contentListFields=listDeleteAt(variables.contentListFields,arguments.hasSummary)>
-			 	</cfif>  
-				<cfset arguments.hasSummmary=false>  
-			 </cfif>
 		</cfsilent>
 	
 		<cfif variables.iterator.getRecordCount()>
@@ -136,7 +134,7 @@ to your own modified versions of Mura CMS.
 					</cfif>
 					#$.dspObject_Include(
 									thefile='dsp_content_list.cfm', 
-									fields=variables.contentListFields, 
+									fields=variables.feedBean.getDisplayList(), 
 				                    type="Feed",
 									iterator=variables.iterator, 
 				                    imageSize=variables.feedBean.getImageSize(),

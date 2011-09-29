@@ -68,6 +68,10 @@ to your own modified versions of Mura CMS.
 	<cfparam name="arguments.rc.compactDisplay" default="" />
 	<cfparam name="arguments.rc.homeID" default="" />
 	<cfparam name="arguments.rc.action" default="" />
+	<cfparam name="arguments.rc.assignmentID" default="" />
+	<cfparam name="arguments.rc.regionID" default="0" />
+	<cfparam name="arguments.rc.orderno" default="0" />
+	<cfparam name="arguments.rc.instanceParams" default="" />
 </cffunction>
 
 <cffunction name="list" output="false">
@@ -78,7 +82,7 @@ to your own modified versions of Mura CMS.
 
 <cffunction name="edit" output="false">
 	<cfargument name="rc">
-
+	
 	<cfset arguments.rc.rsRestrictGroups=variables.contentUtility.getRestrictGroups(arguments.rc.siteid) />
 	<cfset arguments.rc.feedBean=variables.feedManager.read(arguments.rc.feedID) />
 	<cfset arguments.rc.rslist=variables.feedManager.getcontentItems(arguments.rc.siteID,arguments.rc.feedBean.getcontentID()) />
@@ -89,6 +93,10 @@ to your own modified versions of Mura CMS.
 	
 	<cfif arguments.rc.action eq 'update'>
 		<cfset arguments.rc.feedBean=variables.feedManager.update(arguments.rc)>
+		
+		<cfif len(arguments.rc.assignmentID) and isJSON(arguments.rc.instanceParams)>
+			<cfset getBean("contentManager").updateContentObjectParams(arguments.rc.assignmentID,arguments.rc.regionID,arguments.rc.orderno,arguments.rc.instanceParams)>
+		</cfif>
 	</cfif>
 
 	<cfif arguments.rc.action eq 'delete'>

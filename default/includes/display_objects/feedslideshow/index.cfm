@@ -54,12 +54,15 @@ to your own modified versions of Mura CMS.
 		<cfset variables.feedBean = $.getBean("feed").loadBy(name=arguments.objectID,siteID=arguments.siteID)>
   	</cfif>
 	
-	 <cfif isJson(arguments.params)>
-  		<cfset variables.feedBean.set(deserializeJSON(arguments.params))>
-	  <cfelse>
-	  	 <cfset variables.feedBean.setImageSize("medium")>
-  	  </cfif>
-  	
+	<cfif isDefined("arguments.params") and isJson(arguments.params)>
+		<cfset variables.feedBean.set(deserializeJSON(arguments.params))>
+	<cfelse>
+		<cfset variables.feedBean.setImageSize("medium")>
+		<cfif not arguments.hasSummary>
+			<cfset variables.contentListFields=listDeleteAt(variables.feedBean.getDisplayList(),listFindNoCase(variables.feedBean.getDisplayList(),"Summary"))>
+			<cfset variables.feedBean.setDisplayList(variables.contentListFields)>
+		</cfif>
+	</cfif>
   	
 	<cfset editableControl.editLink = "">
 	<cfset editableControl.innerHTML = "">
@@ -110,16 +113,6 @@ to your own modified versions of Mura CMS.
 			<cfset nextN=$.getBean('utility').getNextN(rs,feedBean.getNextN(),request.StartRow)>
 			<cfset checkMeta=feedBean.getDisplayRatings() or feedBean.getDisplayComments()>
 			<cfset doMeta=0 />
-			
-			<cfset variables.contentListFields=variables.feedBean.getDisplayList()>
-			                                                     
-			<cfif not arguments.hasSummary>
-			 	<cfset	arguments.hasSummary=listFindNoCase(variables.contentListFields,"Summary")>
-				<cfif arguments.hasSummary>
-					<cfset  variables.contentListFields=listDeleteAt(variables.contentListFields,arguments.hasSummary)>
-			 	</cfif>  
-				<cfset arguments.hasSummmary=false>  
-			</cfif>
 		  </cfsilent>
 	  	<cfif  variables.iterator.hasNext()>
 	  	<cfoutput>
@@ -131,7 +124,7 @@ to your own modified versions of Mura CMS.
 			
 			#$.dspObject_Include(
 				thefile='dsp_content_list.cfm',
-				fields=variables.contentListFields,
+				fields=variables.feedBean.getDisplayList(),
 				type="Feed", 
 				iterator= variables.iterator,
 				imageSize=variables.feedBean.getImageSize(),

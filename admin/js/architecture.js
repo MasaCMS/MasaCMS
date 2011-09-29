@@ -1628,7 +1628,7 @@ function addDisplayObject(objectToAdd,regionID,configure){
 				},
 				open: function(){		
 					jQuery("#ui-dialog-title-configuratorContainer").html(genericConfiguratorTitle);
-					jQuery("#configurator").html("<p>" + genericConfiguratorMessage +"</p>");
+					jQuery("#configurator").html('<div class="ui-dialog-content ui-widget-content">' + genericConfiguratorMessage +'</div>');
 				},
 				close: function(){
 					jQuery(this).dialog("destroy");

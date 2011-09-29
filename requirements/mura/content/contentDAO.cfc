@@ -712,6 +712,38 @@ imageSize,imageHeight,imageWidth,childTemplate</cfoutput></cfsavecontent>
 	
 </cffunction>
 
+<cffunction name="updateContentObjectParams" output="false">
+	<cfargument name="contenthistID">
+	<cfargument name="regionID">
+	<cfargument name="orderno">
+	<cfargument name="params">
+	
+	<cfquery datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+		update tcontentobjects set
+		params= <cfqueryparam cfsqltype="cf_sql_longvarchar" value="#arguments.params#" />
+		where
+		contentHistID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentHistID#" />
+		and columnid=<cfqueryparam cfsqltype="cf_sql_numeric" value="#arguments.regionID#" />
+		and orderno=<cfqueryparam cfsqltype="cf_sql_numeric" value="#arguments.orderno#" />		
+	</cfquery>
+</cffunction>
+
+<cffunction name="readContentObject" output="false">
+	<cfargument name="contenthistID">
+	<cfargument name="regionID">
+	<cfargument name="orderno">
+	<cfset var rs="">
+	
+	<cfquery name="rs" datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+		select * from tcontentobjects
+		where contentHistID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentHistID#" />
+		and columnid=<cfqueryparam cfsqltype="cf_sql_numeric" value="#arguments.regionID#" />
+		and orderno=<cfqueryparam cfsqltype="cf_sql_numeric" value="#arguments.orderno#" />		
+	</cfquery>
+	
+	<cfreturn rs>
+</cffunction>
+
 <cffunction name="createTags" access="public" returntype="void" output="false">
 	<cfargument name="contentBean" type="any" />
 	<cfset var taglist  = "" />

@@ -1904,4 +1904,20 @@ to your own modified versions of Mura CMS.
 	
 	</cffunction>
 
+	<cffunction name="updateContentObjectParams" output="false">
+		<cfargument name="contenthistID">
+		<cfargument name="regionID">
+		<cfargument name="orderno">
+		<cfargument name="params">
+		
+		<cfset variables.contentDAO.updateContentObjectParams(argumentCollection=arguments)>
+	</cffunction>
+	
+	<cffunction name="readContentObject" output="false">
+		<cfargument name="contenthistID">
+		<cfargument name="regionID">
+		<cfargument name="orderno">
+		
+		<cfreturn variables.contentDAO.readContentObject(argumentCollection=arguments)>
+	</cffunction>
 </cfcomponent>

@@ -920,6 +920,9 @@ to your own modified versions of Mura CMS.
 	<cfargument name="hasSummary" type="boolean" required="false" default="true" />
 	<cfargument name="useRss" type="boolean" required="false" default="false" />
 	<cfargument name="params" type="string" required="false" default="" />
+	<cfargument name="assignmentID" type="string" required="true" default="">
+	<cfargument name="regionID" required="true" default="0">
+	<cfargument name="orderno" required="true" default="0">
 
 	<cfset var theContent=""/>
 	<cfset var objectPerm="none">
@@ -931,11 +934,11 @@ to your own modified versions of Mura CMS.
 	<cfif StructKeyExists(arguments,"cacheKey") and objectPerm neq "editor">
 		<cfsavecontent variable="theContent">
 		<cf_CacheOMatic key="#arguments.cacheKey#" nocache="#event.getValue('nocache')#">
-			<cfoutput>#dspObject_Include(arguments.siteid,arguments.object,arguments.objectid,arguments.fileName,arguments.hasSummary,arguments.useRss,"none",arguments.params)#</cfoutput>
+			<cfoutput>#dspObject_Include(arguments.siteid,arguments.object,arguments.objectid,arguments.fileName,arguments.hasSummary,arguments.useRss,"none",arguments.params,arguments.assignmentID,arguments.regionID,arguments.orderno)#</cfoutput>
 		</cf_cacheomatic>
 		</cfsavecontent>
 	<cfelse>
-		<cfset theContent = dspObject_Include(arguments.siteid,arguments.object,arguments.objectid,arguments.fileName,arguments.hasSummary,arguments.useRss,objectPerm,arguments.params) />
+		<cfset theContent = dspObject_Include(arguments.siteid,arguments.object,arguments.objectid,arguments.fileName,arguments.hasSummary,arguments.useRss,objectPerm,arguments.params,arguments.assignmentID,arguments.regionID,arguments.orderno) />
 	</cfif>
 	<cfreturn theContent />
 
@@ -1109,13 +1112,13 @@ to your own modified versions of Mura CMS.
 		and event.getValue('contentBean').getcontenthistid() eq arguments.contentHistID>
 			<cfset rsObjects=application.contentGateway.getObjectInheritance(arguments.columnID,event.getValue('inheritedObjects'),event.getValue('siteID'))>	
 			<cfloop query="rsObjects">
-				<cfset theRegion = theRegion & dspObject(rsObjects.object,rsObjects.objectid,event.getValue('siteID'), rsObjects.params, event.getValue('inheritedObjects'), arguments.columnID) />
+				<cfset theRegion = theRegion & dspObject(rsObjects.object,rsObjects.objectid,event.getValue('siteID'), rsObjects.params, event.getValue('inheritedObjects'), arguments.columnID, rsObjects.orderno) />
 			</cfloop>	
 	</cfif>
 
 	<cfset rsObjects=application.contentGateway.getObjects(arguments.columnID,arguments.contentHistID,event.getValue('siteID'))>	
 	<cfloop query="rsObjects">
-		<cfset theRegion = theRegion & dspObject(rsObjects.object,rsObjects.objectid,event.getValue('siteID'), rsObjects.params, arguments.contentHistID, arguments.columnID) />
+		<cfset theRegion = theRegion & dspObject(rsObjects.object,rsObjects.objectid,event.getValue('siteID'), rsObjects.params, arguments.contentHistID, arguments.columnID, rsObjects.orderno) />
 	</cfloop>
 </cfif>
 
