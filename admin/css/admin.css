@@ -482,6 +482,10 @@ body.compact #content {
 	font-size: 11px;
 }
 
+#configurator p.no-options {
+	margin: 2em 0;
+}
+
 #configurator .sortableFields,
 #configuratorTab .sortableFields {
 	overflow: hidden;

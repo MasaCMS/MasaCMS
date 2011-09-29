@@ -213,9 +213,10 @@
 	width: 16px;
 }
 
-.ui-dialog-content {
+.ui-dialog .ui-dialog-content {
 	height: auto !important;
-	padding: 0 !important;
+	padding-left: 0;
+	padding-right: 0;
 	font-size: 13px;
 	margin-bottom: 0;
 	color: #666;

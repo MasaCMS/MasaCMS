@@ -413,21 +413,20 @@ footer p {
 	font-size: 1em !important;
 	}
 
-#footer .navUtility {
+footer .navUtility {
 	float: left;
 	}
 
-#footer .navUtility li {
+footer .navUtility li {
 	padding: 0 5px;
 	border-left: 1px solid #cfcfcf;
 	}
 
-#header .navUtility li {
+header .navUtility li {
 	border-left: 1px solid #959595;
 	}
 
-#footer .navUtility li a {
-	font-size: .9em !important;
+footer .navUtility li a {
 	color: #999;
 	}
 
@@ -882,7 +881,7 @@ a.boxItemHeader { /* Link of items inside dragable boxes */
 	}
 
 .home aside .svIndex dd {
-	margin: 0 0 .25em;
+	margin: 0 1em .25em 0;
 	padding: 0;
 	font-size: 1.1em;
 	color: #434343;
