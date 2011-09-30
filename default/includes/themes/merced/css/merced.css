@@ -935,7 +935,7 @@ aside .svIndex dl {
 .svIndex dl.hasImage {
 		/*padding-left: 90px;
 		min-height: 90px; Both set dynamically in dsp_feed.cfm & dsp_portal.cfm*/
-		position: relative;
+		position: relative !important;
 		}
 
 aside .svIndex dl.hasImage {
@@ -1007,10 +1007,34 @@ div.stars a {
 
 /* @group Slideshow
 ===================================== */
-.svSlides dl {
-	border: 0;
+.svSlideshow {
+	clear: both;
+	overflow: hidden;
+	margin-bottom: 2em;
+}
+
+.svSlides {
+	overflow: hidden;
+	z-index: 1;
+}
+
+.svSlides h3 {
+	z-index: 10;
+}
+
+.svSlides dl {
+	z-index: 1;
+	border: 1px solid red !important;
 	margin: 0;
+	overflow: hidden;
+}
+/*.svSlides dt, .svSlides dd {
+	z-index: 10;
 	}
+	
+.svSlides dt, .svSlides dd.image {
+		z-index: 1;
+	}*/
 	
 .svSlides dl.hasImage { /* padding-left & min-height set dynamically in /display_ojects/feedslideshow/htmlhead/slideshow.jquery.cfm */	position: relative;
 	}
@@ -1125,12 +1149,12 @@ div.stars a {
 .svPager {
 	text-align: center;
 	line-height: 2;
+	z-index: 200;
 	}
 
 .home ol.svPager { /* width set dynamically in /display_ojects/feedslideshow/htmlhead/slideshow.jquery.cfm */
 	/* width: #pagerWidth#; */
 	position: relative;
-	z-index: 2;
 	text-align: center;
 	margin: 10px 0;
 	padding: 0;
@@ -1153,7 +1177,7 @@ ol.svPager a {
 ol.svPager li.activeLI a,
 ol.svPager a:hover {
 	background: #ff3405;
-		text-decoration: none;
+	text-decoration: none;
 	}
 
 
