@@ -195,7 +195,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset crumb.siteid=rscontent.siteid />
 			<cfset crumb.restricted=rscontent.restricted />
 			<cfset crumb.restrictGroups=rscontent.restrictgroups />
-			<cfset crumb.template=rscontent.template />
+			<cfif len(rscontent.childtemplate)>
+				<cfset crumb.template=rscontent.childtemplate />
+			<cfelse>
+				<cfset crumb.template=rscontent.template />
+			</cfif>
 			<cfset crumb.contenthistid=rscontent.contenthistid />
 			<cfset crumb.targetPrams=rscontent.targetParams />
 			<cfset crumb.metadesc=rscontent.metadesc />

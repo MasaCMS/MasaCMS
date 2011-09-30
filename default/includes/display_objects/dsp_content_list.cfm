@@ -61,30 +61,66 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset arguments.imageURLArgs=structNew()>
 		<cfset arguments.imageURLArgs.size="small">
 		
+		<cfif not structKeyExists(arguments,"imagePadding")>
+			<cfset arguments.imagePadding=10>
+		</cfif>
+		
 		<cfif structKeyExists(arguments,"imageSize")>
 			<cfset arguments.imageURLArgs.size=arguments.imageSize>
 		</cfif>
-		<cfif arguments.imageURLArgs.size eq "custom" 
-			and (
+		
+		<cfif arguments.imageSize eq "Custom"
+			and not (
 				structKeyExists(arguments,"imageWidth") 
 				or structKeyExists(arguments,"imageHeight")
-				)>
-				<cfif structKeyExists(arguments,"imageWidth")>
-					<cfset arguments.imageURLArgs.width=arguments.imageWidth>
-				<cfelse>
-					<cfset arguments.imageURLArgs.width="auto">
-				</cfif>
-				<cfif structKeyExists(arguments,"imageHeight")>
-					<cfset arguments.imageURLArgs.height=arguments.imageHeight>
-				<cfelse>
-					<cfset arguments.imageURLArgs.height="auto">
-				</cfif>
-				<cfif arguments.imageURLArgs.height eq "auto" 
-					and arguments.imageURLArgs.width eq "auto">
-					<cfset arguments.imageURLArgs=structNew()>
-					<cfset arguments.imageURLArgs.size="small">
-				</cfif>
+				)
+			and not (
+				structKeyExists(arguments,"imageWidth") 
+				and  structKeyExists(arguments,"imageHeight")
+				and arguments.imageWidth eq "auto"
+				and arguments.imageHeight eq "auto"
+			)>
+			<cfset arguments.imageSize="small">
 		</cfif>
+		
+		<cfif arguments.imageSize neq "custom">
+			<cfif $.siteConfig('gallery#arguments.imageSize#ScaleBy') eq 'x'>
+				<cfset arguments.imageStyles.paddingLeft=$.siteConfig('gallery#arguments.imageSize#Scale') + arguments.imagePadding>
+				<cfset arguments.imageStyles.minHeight="auto">
+			<!--- Conditional styles for images constrained by height --->
+			<cfelseif $.siteConfig('gallery#arguments.imageSize#ScaleBy') eq 'y'>
+				<cfset arguments.imageStyles.paddingLeft="auto">
+				<cfset arguments.imageStyles.minHeight=$.siteConfig('gallery#arguments.imageSize#Scale') + arguments.imagePadding>
+			<cfelse>
+			<!--- Styles for images cropped to square --->
+				<cfset arguments.imageStyles.paddingLeft=$.siteConfig('gallery#arguments.imageSize#Scale') + arguments.imagePadding>
+				<cfset arguments.imageStyles.minHeight=$.siteConfig('gallery#arguments.imageSize#Scale') + arguments.imagePadding>
+			</cfif>
+		<cfelse>
+			<cfif structKeyExists(arguments,"imageWidth")>
+				<cfset arguments.imageURLArgs.width=arguments.imageWidth>
+				<cfset arguments.imageStyles.paddingLeft=arguments.imageWidth + arguments.imagePadding>
+			<cfelse>
+				<cfset arguments.imageURLArgs.width="auto">
+				<cfset arguments.imageStyles.paddingLeft="auto">
+			</cfif>
+			<cfif structKeyExists(arguments,"imageHeight")>
+				<cfset arguments.imageURLArgs.height=arguments.imageHeight>
+				<cfset arguments.imageStyles.minHeight=arguments.imageHeight + arguments.imagePadding>
+			<cfelse>
+				<cfset arguments.imageURLArgs.height="auto">
+				<cfset arguments.imageStyles.minHeight="auto">
+			</cfif>
+		</cfif>
+		
+		<cfif arguments.imageStyles.minHeight neq "auto">
+			<cfset arguments.imageStyles.minHeight="#arguments.imageStyles.minHeight#px">
+		</cfif>
+		<cfif arguments.imageStyles.paddingLeft neq "auto">
+			<cfset arguments.imageStyles.paddingLeft="#arguments.imageStyles.paddingLeft#px">
+		</cfif>
+		
+		<cfset arguments.imageStyles.markup='style="min-height:#arguments.imageStyles.minHeight#;padding-left:#arguments.imageStyles.paddingLeft#;"'>
 	</cfif>
 </cfsilent>
 <cfif getListFormat() eq "ul">
@@ -189,7 +225,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</li>
 	<cfelse>
 	<!---  DL MARKUP -------------------------------------------------------------------------- --->
-		<dl class="clearfix<cfif arguments.class neq ''> #arguments.class#</cfif>">
+		<dl class="clearfix<cfif arguments.class neq ''> #arguments.class#</cfif>"<cfif arguments.hasImage> #arguments.imageStyles.markup#</cfif>>
 			<cfloop list="#arguments.fields#" index="arguments.field">
 				<cfswitch expression="#arguments.field#">
 					<cfcase value="Date">
