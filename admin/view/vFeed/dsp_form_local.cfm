@@ -144,7 +144,7 @@ to your own modified versions of Mura CMS.
 </cfif>
 </cfsilent>
 
-<cfoutput><h2>#application.rbFactory.getKeyValue(session.rb,'collections.editlocalindex')#</h2>
+<cfoutput><h2><cfif len(attributes.assignmentID)>#application.rbFactory.getKeyValue(session.rb,'collections.editlocalindexinstance')#<cfelse>#application.rbFactory.getKeyValue(session.rb,'collections.editlocalindex')#</cfif></h2>
 #application.utility.displayErrors(request.feedBean.getErrors())#
 
 <cfif attributes.compactDisplay eq "true" and not isObjectInstance>
@@ -160,7 +160,7 @@ to your own modified versions of Mura CMS.
 <cfif not isObjectInstance>
 	<cfif attributes.compactDisplay eq "true">
 		<ul id="navTask">
-		<li><a onclick="history.go(-1);">Back to Instance Display Settings</a></li>
+		<li><a onclick="history.go(-1);">#application.rbFactory.getKeyValue(session.rb,'collections.back')#</a></li>
 	</ul>
 	</cfif>
 	<dl class="oneColumn">
@@ -178,7 +178,7 @@ to your own modified versions of Mura CMS.
 		<cfset editlink = editlink & "&amp;compactDisplay=true">
 	</cfsilent>
 	<ul id="navTask">
-		<li><a href="#editlink#">Edit Base Local Index</a></li>
+		<li><a href="#editlink#">#application.rbFactory.getKeyValue(session.rb,'collections.editdefaultsettings')#</a></li>
 	</ul>
 </cfif>
 </cfoutput>
