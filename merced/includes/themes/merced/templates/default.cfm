@@ -1,1 +1,0 @@
-<cfinclude template="two_column_SL.cfm" />
