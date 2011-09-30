@@ -51,7 +51,7 @@ to your own modified versions of Mura CMS.
 	<cfset feed.setImageSize("medium")>
 </cfif>
 			<div id="availableObjectParams"<!--- style="display:none;"--->>
-		
+				<h4>#HTMLEditFormat(feed.getName())#</h4>
 				<dl class="oneColumn" id="configurator">
 					<dt class="first">#application.rbFactory.getKeyValue(session.rb,'collections.imagesize')#</dt>
 					<dd><select data-displayobjectparam="imageSize" class="dropdown" onchange="if(this.value=='custom'){jQuery('##feedCustomImageOptions').fadeIn('fast')}else{jQuery('##feedCustomImageOptions').hide()}">

@@ -151,8 +151,10 @@ to your own modified versions of Mura CMS.
 		var src=a.href;
 		var width=jQuery(a).attr("data-iframe-width");
 		
-		if(width!=''){
+		if(width!=undefined){
 			frontEndModalWidth=width;
+		} else {
+			frontEndModalWidth=950;
 		}
 		closeFrontEndToolsModal();
 		jQuery("##fronEndToolsModalTarget").html('<div id="frontEndToolsModalContainer">' +

@@ -168,7 +168,7 @@ to your own modified versions of Mura CMS.
 	<dd><input name="name" class="text" required="true" message="#application.rbFactory.getKeyValue(session.rb,'collections.namerequired')#" value="#HTMLEditFormat(request.feedBean.getName())#" maxlength="50"></dd>
 	</dl>
 <cfelse>
-	<h3>#HTMLEditFormat(request.feedBean.getName())#</h3>
+	<!---<h3>#HTMLEditFormat(request.feedBean.getName())#</h3>--->
 	<cfsilent>
 		<cfset editlink = "?fuseaction=cFeed.edit">
 		<cfset editlink = editlink & "&amp;siteid=" & request.feedBean.getSiteID()>
@@ -307,7 +307,8 @@ to your own modified versions of Mura CMS.
 </cfif>
 <div id="tabDisplay">
 <dl class="oneColumn" id="configuratorTab">
-<dt class="first">#application.rbFactory.getKeyValue(session.rb,'collections.imagesize')#</dt>
+<cfif isObjectInstance><h4>#HTMLEditFormat(request.feedBean.getName())#</h4></cfif>
+	<dt class="first">#application.rbFactory.getKeyValue(session.rb,'collections.imagesize')#</dt>
 	<dd><select name="#displaNamePrefix#imageSize" data-displayobjectparam="imageSize" class="dropdown" onchange="if(this.value=='custom'){jQuery('##feedCustomImageOptions').fadeIn('fast')}else{jQuery('##feedCustomImageOptions').hide()}">
 		<cfloop list="Small,Medium,Large,Custom" index="i">
 		<option value="#lcase(i)#"<cfif i eq request.feedBean.getImageSize()> selected</cfif>>#I#</option>

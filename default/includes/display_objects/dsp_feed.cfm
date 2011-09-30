@@ -88,7 +88,11 @@ to your own modified versions of Mura CMS.
 			<cfset editableControl.editLink = editableControl.editLink & "&amp;assignmentID=" & arguments.assignmentID>
 			<cfset editableControl.editLink = editableControl.editLink & "&amp;regionID=" & arguments.regionID>
 			<cfset editableControl.editLink = editableControl.editLink & "&amp;orderno=" & arguments.orderno>
-			<cfset editableControl.innerHTML = $.generateEditableObjectControl(editableControl.editLink,500)>
+			<cfif variables.feedBean.getType() eq "Local">
+				<cfset editableControl.innerHTML = $.generateEditableObjectControl(editableControl.editLink,500)>
+			<cfelse>
+				<cfset editableControl.innerHTML = $.generateEditableObjectControl(editableControl.editLink,950)>
+			</cfif>
 		</cfif>
 	</cfsilent>
 	<cfif editableControl.innerHTML neq "">

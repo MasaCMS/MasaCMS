@@ -53,7 +53,7 @@ to your own modified versions of Mura CMS.
 <cfoutput>
 
 			<div id="availableObjectParams"<!--- style="display:none;"--->>
-		
+			<h4>#HTMLEditFormat(feed.getName())#</h4>
 			<cfif feed.getType() eq "local">		
 				<dl class="oneColumn" id="configurator">
 					<dt class="first">#application.rbFactory.getKeyValue(session.rb,'collections.imagesize')#</dt>
