@@ -935,7 +935,7 @@ aside .svIndex dl {
 .svIndex dl.hasImage {
 		/*padding-left: 90px;
 		min-height: 90px; Both set dynamically in dsp_feed.cfm & dsp_portal.cfm*/
-		position: relative !important;
+		position: relative;
 		}
 
 aside .svIndex dl.hasImage {
@@ -1024,7 +1024,6 @@ div.stars a {
 
 .svSlides dl {
 	z-index: 1;
-	border: 1px solid red !important;
 	margin: 0;
 	overflow: hidden;
 }
