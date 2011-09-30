@@ -61,20 +61,20 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <style>
 	
 	.svSlides dl.hasImage {
-	padding-left: #slideMargin#px !important;
-	min-height: #minHeight#px !important;
+	padding-left: #slideMargin#px;
+	min-height: #minHeight#px;
 	}
 	
 	ol.svPager { <!--- Center the pager beneath the image  --->
-	width: #pagerWidth#px !important;
+	width: #pagerWidth#px;
 	}
 	
 	<!--- Not sure if this is needed --->
 	<cfif $.content('contentID') EQ "00000000000000000000000000000000001">	
-	.home .svSlides { min-height: #minHeight#px !important; }
-	* html .home .svSlides { height: #minHeight#px !important; } <!-- ie6 -->
+	.home .svSlides { min-height: #minHeight#px; }
+	* html .home .svSlides { height: #minHeight#px; } <!-- ie6 -->
 
-	.home .svSlides dl { height: #slideMargin#px !important; }
+	.home .svSlides dl { height: #slideMargin#px; }
 	</cfif>
 </style>
 

@@ -53,16 +53,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfoutput>
 <style>						
-.svIndex dl.hasImage {
+dl.hasImage {
 <!--- Conditional styles for images constrained by width --->
 <cfif $.siteConfig('gallerySmallScaleBy') eq 'x'>
 padding-left: #totalPadding#px;
-
 <!--- Conditional styles for images constrained by height --->
 <cfelseif $.siteConfig('gallerySmallScaleBy') eq 'y'>
 min-height: #minHeight#px;
 <cfelse>
-
 <!--- Styles for images cropped to square --->
 min-height: #minHeight#px;
 padding-left: #totalPadding#px;
