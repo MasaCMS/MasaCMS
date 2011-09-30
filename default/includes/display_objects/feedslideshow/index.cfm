@@ -121,10 +121,10 @@ to your own modified versions of Mura CMS.
 	  	<cfif  variables.iterator.hasNext()>
 	  	<cfoutput>
 	  	<div class="svSlideshow clearfix" id="#cssID#">
-	  		<div class="svSlides">
 		 	<cfif variables.feedBean.getDisplayName()>
 		       <#$.getHeaderTag('subHead1')#>#HTMLEditFormat(variables.feedBean.renderName())#</#$.getHeaderTag('subHead1')#>
 			</cfif>
+	  		<div class="svSlides">
 		
 			#$.dspObject_Include(
 				thefile='dsp_content_list.cfm',
