@@ -509,6 +509,7 @@ if (top.location != self.location) {
 	parent.resizeFrontEndToolsModal();
 }
 </script>
+<style type="text/css"> html { overflow:hidden; } </style>
 </cfoutput>
 </cfsavecontent>	
 <cfhtmlhead text="#headerStr#">	

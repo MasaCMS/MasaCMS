@@ -157,7 +157,7 @@ to your own modified versions of Mura CMS.
 		closeFrontEndToolsModal();
 		jQuery("##fronEndToolsModalTarget").html('<div id="frontEndToolsModalContainer">' +
 		'<div id="frontEndToolsModalBody">' +
-		'<a id="frontEndToolsModalClose" style="display:none" href="javascript:closeFrontEndToolsModal();">Close</a>' +
+		'<a id="frontEndToolsModalClose" style="display:none;" href="javascript:closeFrontEndToolsModal();">Close</a>' +
 		'<iframe src="' + src + '" id="frontEndToolsModaliframe" scrolling="false" frameborder="0" style="overflow:hidden"></iframe>' +
 		'</div>' +
 		'</div>');
