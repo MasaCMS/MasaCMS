@@ -1,1 +1,0 @@
-<cfoutput><script type="text/javascript" src="#$.globalConfig('context')#/wysiwyg/fckeditor.js"></script></cfoutput>
