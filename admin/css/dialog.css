@@ -84,17 +84,16 @@
   width: 950px;
 }
 
+.modal-configurator #frontEndToolsModaliframe {
+  width: 430px !important;
+}
+
 .modal-configurator #frontEndToolsModalBody {
   width: 430px;
 }
 
-.modal-configurator #frontEndToolsModalBody #content {
-  width: 410px;
-  min-width: 410px;
-}
-
-#frontEndToolsModaliFrame {
-  overflow:hidden;
+.modal-configurator #frontEndToolsModaliframe form {
+  width: 410px !important;
 }
 
 #frontEndToolsModalClose {
@@ -107,7 +106,6 @@
 	text-indent: -9999px;
 	background: transparent url('../images/btn_close_modal.png') no-repeat right center;
 }
-
 
 #shadowbox_container {
 	z-index: 499997;

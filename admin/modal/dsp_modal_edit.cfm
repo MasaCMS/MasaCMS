@@ -161,10 +161,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			frontEndModalWidth=950;
 		}
 		closeFrontEndToolsModal();
-		jQuery("##fronEndToolsModalTarget").html('<div id="frontEndToolsModalContainer">' +
+		jQuery("##fronEndToolsModalTarget").html('<div id="frontEndToolsModalContainer" class="modal-configurator">' +
 		'<div id="frontEndToolsModalBody">' +
 		'<a id="frontEndToolsModalClose" style="display:none;" href="javascript:closeFrontEndToolsModal();">Close</a>' +
-		'<iframe src="' + src + '" id="frontEndToolsModaliframe" scrolling="false" frameborder="0" style="overflow:hidden" class="modal-configurator"></iframe>' +
+		'<iframe src="' + src + '" id="frontEndToolsModaliframe" scrolling="false" frameborder="0" style="overflow:hidden"></iframe>' +
 		'</div>' +
 		'</div>');
 		
