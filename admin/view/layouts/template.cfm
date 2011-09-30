@@ -171,8 +171,8 @@ var sessionTimeout=<cfif isNumeric(application.configBean.getValue('sessionTimeo
 <cfif myfusebox.originalcircuit neq "cLogin">
 <script language="JavaScript">
 if (top.location != self.location) {
-    top.location.replace(self.location)
-}
+    	top.location.replace(self.location)
+	}
 </script>
 
 </cfif>

@@ -145,8 +145,15 @@ to your own modified versions of Mura CMS.
 	
 	<cfif getJsLib() eq "jquery">
 	var frontEndModalHeight=0;
+	var frontEndModalWidth=950;
 	
-	function openFrontEndToolsModal(src){
+	function openFrontEndToolsModal(a){
+		var src=a.href;
+		var width=jQuery(a).attr("data-iframe-width");
+		
+		if(width!=''){
+			frontEndModalWidth=width;
+		}
 		closeFrontEndToolsModal();
 		jQuery("##fronEndToolsModalTarget").html('<div id="frontEndToolsModalContainer">' +
 		'<div id="frontEndToolsModalBody">' +
@@ -175,7 +182,7 @@ to your own modified versions of Mura CMS.
 					frameHeight= Math.max(jQuery(window).height() * .80,frameHeight);
 				}
 				
-				frame.style.width = "950px";
+				frame.style.width = frontEndModalWidth + "px";
 				frame.style.height = frameHeight + "px";
 				frameContainer.style.position = "absolute";
 				document.overflow = "auto"
@@ -204,7 +211,7 @@ to your own modified versions of Mura CMS.
 			function(){
 				jQuery(this).click(function(event){
 					event.preventDefault();
-					openFrontEndToolsModal(this.href);
+					openFrontEndToolsModal(this);
 				});
 		});
 	});	
