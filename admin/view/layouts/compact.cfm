@@ -74,6 +74,7 @@ var themepath='#application.settingsManager.getSite(attributes.siteID).getThemeA
 var rb='#lcase(session.rb)#';
 var siteid='#session.siteid#';
 </script>
+<style type="text/css"> html { overflow:hidden; } </style>
 #session.dateKey#
 <script type="text/javascript">
 	jQuery(document).ready(function(){setDatePickers(".datepicker",dtLocale);setTabs(".tabs",#attributes.activeTab#);setHTMLEditors();setAccordions(".accordion",#attributes.activePanel#);setCheckboxTrees();});
