@@ -56,8 +56,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset aFieldOrder = frmForm.fieldorder />
 <cfoutput>
 <form id="#frmID#" method="post">
-<input type="hidden" name="siteid" value="#arguments.siteid#">
-<input type="hidden" name="formid" value="#arguments.formid#">
+<!---<input type="hidden" name="siteid" value="#arguments.siteid#">
+<input type="hidden" name="formid" value="#arguments.formid#">--->
 <fieldset id="set-default">
 <ol>
 <cfloop from="1" to="#ArrayLen(aFieldOrder)#" index="iiX">

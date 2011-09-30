@@ -289,7 +289,7 @@ if(lastid!="" && lastid !=id){
 
 hideMenu(lastid);
 }
-navTimer = setTimeout('hideMenu(lastid);',6000);
+navTimer = setTimeout('hideMenu(lastid);',10000);
 lastid=id;
 }
 
@@ -327,7 +327,7 @@ function findPosY(obj)
 
 
 function keepMenu(id) {
-navTimer = setTimeout('hideMenu(lastid);',6000);
+navTimer = setTimeout('hideMenu(lastid);',10000);
 document.getElementById(id).style.visibility="visible";
 }
 

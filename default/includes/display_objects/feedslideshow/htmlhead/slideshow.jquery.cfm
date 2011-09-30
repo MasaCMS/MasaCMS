@@ -57,21 +57,25 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset addToPager = 10> <!--- Total of top and bottom margin on each slide (dl) --->
 <cfset pagerWidth = #$.siteConfig('galleryMediumScale')# + addToPager>
 
-<!--- Need conditional logic for x and y constrain --->
-<style>	
-	.home .svSlides { min-height: #minHeight#px !important; }
-	* html .home .svSlides { height: #minHeight#px !important; } <!-- ie6 -->
-
-	.home .svSlides dl { height: #slideMargin#px !important; }
+<!--- These are only applicable for square images. Images constrained by x or y in site settings must be accounted for directly in CSS --->
+<style>
 	
 	.svSlides dl.hasImage {
 	padding-left: #slideMargin#px !important;
 	min-height: #minHeight#px !important;
 	}
 	
-	.home ol.svPager { <!--- Center the pager beneath the image  --->
+	ol.svPager { <!--- Center the pager beneath the image  --->
 	width: #pagerWidth#px !important;
 	}
+	
+	<!--- Not sure if this is needed --->
+	<cfif $.content('contentID') EQ "00000000000000000000000000000000001">	
+	.home .svSlides { min-height: #minHeight#px !important; }
+	* html .home .svSlides { height: #minHeight#px !important; } <!-- ie6 -->
+
+	.home .svSlides dl { height: #slideMargin#px !important; }
+	</cfif>
 </style>
 
 </cfoutput>
