@@ -1,3 +1,6 @@
+/* @override 
+	http://localhost:8500/muracms/admin/css/dialog.css */
+
 /* This file is part of Mura CMS. 
 
 	Mura CMS is free software: you can redistribute it and/or modify 
@@ -78,7 +81,16 @@
   top: 50px;
   margin: 0 auto;
   padding: 0;
-  width: 950px;
+  width: 500px;
+}
+
+.modal-configurator #frontEndToolsModalBody {
+  width: 430px;
+}
+
+.modal-configurator #frontEndToolsModalBody #content {
+  width: 410px;
+  min-width: 410px;
 }
 
 #frontEndToolsModaliFrame {
