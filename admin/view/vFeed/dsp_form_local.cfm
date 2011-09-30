@@ -499,10 +499,16 @@ to your own modified versions of Mura CMS.
 --->
 <script type="text/javascript">
 setSearchButtons();
+</script>
+</cfoutput>
 
+<cfsavecontent variable="headerStr">
+<cfoutput><script type="text/javascript">
 if (top.location != self.location) {
 	parent.frontEndModalWidth=<cfif len(attributes.assignmentID)>500<cfelse>950</cfif>;
+	parent.resizeFrontEndToolsModal();
 }
-
-</script>		
+</script>
 </cfoutput>
+</cfsavecontent>	
+<cfhtmlhead text="#headerStr#">	
