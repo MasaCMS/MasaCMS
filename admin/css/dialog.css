@@ -85,16 +85,19 @@
 }
 
 .modal-configurator #frontEndToolsModaliframe {
-  width: 430px !important;
+  width: 410px !important;
+  border-left: 10px solid #fff;
+  border-right: 10px solid #fff;
 }
 
 .modal-configurator #frontEndToolsModalBody {
   width: 430px;
 }
 
-.modal-configurator #frontEndToolsModaliframe form {
+/*This doesn't work so I'm adding a border on the iframe above to fake it*/
+/*.modal-configurator #frontEndToolsModalBody form {
   width: 410px !important;
-}
+}*/
 
 #frontEndToolsModalClose {
 	position: absolute;
