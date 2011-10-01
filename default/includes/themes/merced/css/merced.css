@@ -922,67 +922,46 @@ a.boxItemHeader { /* Link of items inside dragable boxes */
 /* @group Indexes
 ===================================== */
 
-.svIndex dl {
+.svIndex dl, .svIndex>ul li {
 	padding-bottom: 1em;
 	border-bottom: 1px dotted #ccc;
 	}
 
-aside .svIndex dl {
+aside .svIndex dl, .svIndex>ul li {
 	margin: .5em 0;
 	padding: .5em 0 .5em;
 	}
 
-.svIndex dl.hasImage {
-		/*padding-left: 90px;
-		min-height: 90px; Both set dynamically in dsp_feed.cfm & dsp_portal.cfm*/
-		position: relative;
-		}
-
-aside .svIndex dl.hasImage {
-	min-height: 0;
-	padding-left: 0;
-	}
-
-.svIndex dl.hasImage .image {
+.svIndex dl.hasImage .image, .svIndex>ul li.hasImage .image {
 		float: none;
 		}
-
-aside .svIndex dl.hasImage .image {
-	display: none;
-	}
 
 .content .svIndex {
 	margin-top: 2em;
 	}
 
-.content .svIndex dt {
+.content .svIndex dt, .content .svIndex>ul li h3 {
 	font-size: 1.6em;
 	margin-bottom: .5em;
 	}
 
-.svIndex dt.releaseDate {
+.svIndex .releaseDate {
 	text-transform: uppercase;
 	color: #777;
 	margin-bottom: .5em;
 	font-size: 1em !important;
 	}
 
-.svIndex dd {
+.svIndex dd, .svIndex .summary {
 	line-height: 1.2;
-	}
-
-.svIndex dd.image {
-	position: absolute;
-	top: 0;
-	left: 0;
 	}
 
 /* @group Ratings */
 
-.content .svIndex dd.credits,
-.content .svIndex  dd.comments,
-.content .svIndex  dd.tags,
-.content .svIndex  dd.rating {
+.content .svIndex .credits,
+.content .svIndex .comments,
+.content .svIndex .tags,
+.content .svIndex .rating {
 	line-height: 20px; /* acommodate height of stars */
 	}
 
@@ -1008,35 +987,23 @@ div.stars a {
 /* @group Slideshow
 ===================================== */
 .svSlideshow {
-	clear: both;
-	overflow: hidden;
-	margin-bottom: 2em;
+	
 }
 
 .svSlides {
-	overflow: hidden;
-	z-index: 1;
+	height: 200px;
 }
 
 .svSlides h3 {
-	z-index: 10;
 }
 
-.svSlides dl {
-	z-index: 1;
-	margin: 0;
-	overflow: hidden;
+.svSlides dl, .svSlides ul>li {
+
 }
-/*.svSlides dt, .svSlides dd {
-	z-index: 10;
-	}
-	
-.svSlides dt, .svSlides dd.image {
-		z-index: 1;
-	}*/
-	
-.svSlides dl.hasImage { /* padding-left & min-height set dynamically in /display_ojects/feedslideshow/htmlhead/slideshow.jquery.cfm */	position: relative;
-	}
+
+.svSlides ul {
+
+}
 	
 .home .svSlideshow {
 	position: relative;
@@ -1055,12 +1022,9 @@ div.stars a {
 	z-index: 1;
 	padding: 0;
 	margin: 0 !important;
-	/* min-height set dynamically in /display_ojects/feedslideshow/htmlhead/slideshow.jquery.cfm */
 	}
 
-.home .svSlides dl {
-	/* Height set dynamically in /display_ojects/feedslideshow/htmlhead/slideshow.jquery.cfm */
-	/*position is set by jquery.slidshow plugin */
+.home .svSlides dl, .home .svSlides>ul li {
 	width: auto !important;
 	padding-bottom: 0;
 	margin-right: 0;
@@ -1069,7 +1033,7 @@ div.stars a {
 	background: transparent !important; /*for IE 6/7*/
 	}
 
-.home .svSlides dt {
+.home .svSlides dt, .home .svSlides>ul li h3 {
 	margin-bottom: .35em !important;
 	font-size: 2.6em !important;
 	font-weight: bold;
@@ -1078,18 +1042,18 @@ div.stars a {
 	color: #fff;
 	}
 
-.home .svSlides dt.releaseDate {
+.home .svSlides .releaseDate {
 	color: #abdffa;
 	font-size: 11px !important;
 	font-weight: normal;
 	margin-bottom: .5em !important;
 	}
 
-.home .svSlides dt a {
+.home .svSlides dt a, .home .svSlides>ul li h3 a {
 	color: #fff;
 	}
 
-.home .svSlides dd {
+.home .svSlides dd, .home .svSlides>ul li  {
 	margin-bottom: 1.1em;
 	letter-spacing: -0.025em;
 	font-size: 12px !important;
@@ -1097,7 +1061,7 @@ div.stars a {
 	padding: 0;
 	}
 
-.home .svSlides dd.image { 
+.home .svSlides .image { 
 	position: absolute;
 	top: 0;
 	left: 0;
@@ -1107,7 +1071,7 @@ div.stars a {
 	border: 3px solid #1c5981;
 	}
 
-.home .svSlides dd.image img {
+.home .svSlides .image img {
 	display: block;
 	}
 	

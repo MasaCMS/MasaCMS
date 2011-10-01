@@ -128,7 +128,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		 	<cfif variables.feedBean.getDisplayName()>
 		       <#$.getHeaderTag('subHead1')#>#HTMLEditFormat(variables.feedBean.renderName())#</#$.getHeaderTag('subHead1')#>
 			</cfif>
-	  		<div class="svSlides">
+	  		<div class="svSlides" <!---<cfif arguments.hasImage>#arguments.imageStyles.markup#</cfif>--->>
 		
 			#$.dspObject_Include(
 				thefile='dsp_content_list.cfm',

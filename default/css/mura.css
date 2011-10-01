@@ -77,7 +77,7 @@ p.center { text-align: center; }
 /* Clearing floats without extra markup
 	http://perishablepress.com/press/2009/12/06/new-clearfix-hack/ */
 
-.clearfix:after, .svIndex dl:after {
+.clearfix:after, .svIndex dl:after, .svIndex li:after {
 	visibility: hidden;
 	display: block;
 	font-size: 0;
@@ -624,56 +624,69 @@ aside .svIndex {
 	margin: 1.3em 0 1em;
 	}
 
-.sidebar .svIndex dl.first,
-aside .svIndex dl.first {
-	margin-top: 0;
+.svIndex>ul {
+	margin: 0 0 2em;
+	list-style: none;
+	position: relative;
 	}
 
-.svIndex dl.last {
+.svIndex>ul li {
+	position: relative;
+	margin: 1.3em 0 1em;
+	}
+
+.sidebar .svIndex dl.first,
+.sidebar .svIndex li.first,
+aside .svIndex dl.first,
+aside .svIndex li.first {
+	margin-top: 0;
+	padding-top: 0;
+	}
+
+.svIndex dl.last,
+.svIndex li.last {
 	border: 0;
 	padding: 0;
 	}
 
-.sidebar .svIndex dl.first,
-aside .svIndex dl.first {
-	padding-top: 0;
-	}
-
-.svIndex dt {
+.svIndex dt, .svIndex li h3 {
+	font-size: 1em;
 	margin-bottom: .75em;
 }
 
 .sidebar .svIndex dt,
-aside .svIndex dt {
+aside .svIndex dt,
+.sidebar .svIndex li h3,
+aside .svIndex li h3 {
 	margin: 0 0 .25em 0;
 	}
 
-.svIndex dt.releaseDate {
+.svIndex .releaseDate {
 	margin-bottom: .5em;
 	font-weight: normal;
 	color: #999;
 	}
 
-dd.summary span.readMore { font-size: .9em; }
+.summary span.readMore { font-size: .9em; }
 
-dd.credits,
-dd.comments,
-dd.tags,
-dd.rating {
+.credits,
+.comments,
+.tags,
+.rating {
 	float: left;
 	margin-bottom: 0;
 	padding: 0 .75em 0 0;
 	font-size: 1em;
 	}
 
-.sidebar dd.credits,
-.sidebar dd.comments,
-.sidebar dd.tags,
-.sidebar dd.rating,
-aside dd.credits,
-aside dd.comments,
-aside dd.tags,
-aside dd.rating {
+.sidebar .credits,
+.sidebar .comments,
+.sidebar .tags,
+.sidebar .rating,
+aside .credits,
+aside .comments,
+aside .tags,
+aside .rating {
 	float: none;
 	margin-bottom: .35em;
 	padding: 0;
@@ -691,45 +704,64 @@ aside dd.rating {
 	left: -9999px;
 	}
 	
-.svIndex dd.credits {
+.svIndex .credits {
 	color: #666;
 	}
 	
-.svIndex dd.comments {
+.svIndex .comments {
 	padding-left: 13px !important;
 	background: url(../images/icon_comments.png) no-repeat 0 50%;
 	}
 
-dl.hasImage .image { 
+.hasImage .image { 
 	position: absolute;
 	top: 0;
 	left: 0;
 	margin: 0 1em 0 0;
 	}
 	
-.sidebar dl.hasImage,
-aside dl.hasImage {
+.sidebar .hasImage,
+aside .hasImage {
 	min-height: 0;
 	padding-left: 0;
 }
 
-.sidebar dl.hasImage .image,
-aside dl.hasImage .image {
-	/*display: none;*/
-}
-
 /* @group Slideshow */
-
-.svSlides h3 {
-	
-}
 
 .svSlideshow .svSlides dl {
 	border: 0;
 }
 
-.svSlides  dt {
-	
+.svSlideshow .svSlides>ul {
+	list-style: none;
+	margin: 0 0 2em;
+}
+
+.svSlideshow {
+	clear: both;
+	position: relative;
+	margin: 0 0 2.2em;
+}
+
+.svSlides {
+	overflow: visible;
+	z-index: 1;
+	height: 200px;
+}
+
+.svSlides h3 {
+	z-index: 10;
+}
+
+.svSlides dl, .svSlides ul>li {
+	z-index: 1;
+	margin: 0;
+	overflow: hidden;
+	position: relative;
+}
+
+.svSlides ul {
+	overflow: visible;
 }
 
 ol.svPager {
@@ -749,7 +781,7 @@ ol.svPager a {
 	display: inline-block;
 	padding: 2px 5px;
 	text-align: center;
-		line-height: 1.2;
+	line-height: 1.2;
 	}
 
 ol.svPager li.activeLI a,

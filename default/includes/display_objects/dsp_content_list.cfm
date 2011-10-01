@@ -148,15 +148,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfoutput>
 	<!---  UL MARKUP -------------------------------------------------------------------------- --->
 	<cfif $.getListFormat() eq "ul">
-		<li>
+		<li class="clearfix<cfif arguments.class neq ''> #arguments.class#</cfif>"<cfif arguments.hasImage> #arguments.imageStyles.markup#</cfif>>
 			<cfloop list="#arguments.fields#" index="arguments.field">
 				<cfswitch expression="#arguments.field#">
 					<cfcase value="Image">
 						<cfif arguments.hasImage>
 							<cfif cookie.mobileFormat>
-							<img src="#arguments.item.getImageURL(argumentCollection=arguments.imageURLArgs)#"  alt="#htmlEditFormat(arguments.item.getValue('title'))#"/>	
+							<div class="image"><img src="#arguments.item.getImageURL(argumentCollection=arguments.imageURLArgs)#"  alt="#htmlEditFormat(arguments.item.getValue('title'))#"/></div>
 							<cfelse>
-							<a href="#arguments.item.getURL()#" title="#HTMLEditFormat(arguments.item.getValue('title'))#"><img src="#arguments.item.getImageURL(argumentCollection=arguments.imageURLArgs)#"  alt="#htmlEditFormat(arguments.item.getValue('title'))#"/></a>	
+							<a class="image" href="#arguments.item.getURL()#" title="#HTMLEditFormat(arguments.item.getValue('title'))#"><img src="#arguments.item.getImageURL(argumentCollection=arguments.imageURLArgs)#"  alt="#htmlEditFormat(arguments.item.getValue('title'))#"/></a>	
 							</cfif>
 						</cfif>
 					</cfcase>
@@ -176,7 +176,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					</cfcase>
 					<cfcase value="Summary">
 						<cfif len(arguments.item.getValue('summary')) and arguments.item.getValue('summary') neq "<p></p>">
-							#$.setDynamicContent(arguments.item.getValue('summary'))#
+							<div class="summary">#$.setDynamicContent(arguments.item.getValue('summary'))#</div>
 						</cfif>
 					</cfcase>
 					<cfcase value="Credits">
