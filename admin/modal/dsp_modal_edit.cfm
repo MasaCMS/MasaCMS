@@ -154,17 +154,19 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	function openFrontEndToolsModal(a){
 		var src=a.href;
 		var isModal=jQuery(a).attr("data-configurator");
+		var modalClass="";
 		
-		if (isModal != undefined) {
+		if (isModal == undefined) {
 			frontEndModalIsConfigurator = false;
 		} else if (isModal == "true") {
 			frontEndModalIsConfigurator = true;
+			modalClass="modal-configurator";
 		} else {
 			frontEndModalIsConfigurator = false;
 		}
 		
 		closeFrontEndToolsModal();
-		jQuery("##fronEndToolsModalTarget").html('<div id="frontEndToolsModalContainer">' +
+		jQuery("##fronEndToolsModalTarget").html('<div id="frontEndToolsModalContainer" class="' + modalClass + '">' +
 		'<div id="frontEndToolsModalBody">' +
 		'<a id="frontEndToolsModalClose" style="display:none;" href="javascript:closeFrontEndToolsModal();">Close</a>' +
 		'<iframe src="' + src + '" id="frontEndToolsModaliframe" scrolling="false" frameborder="0" style="overflow:hidden"></iframe>' +
