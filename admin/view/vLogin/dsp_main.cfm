@@ -110,3 +110,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<input type="hidden" name="compactDisplay" value="#HTMLEditFormat(attributes.compactDisplay)#">
     </form>
 </cfif></cfoutput>
+
+<cfsavecontent variable="headerStr">
+<cfoutput><script type="text/javascript">
+if (top.location != self.location) {
+	parent.frontEndModalIsConfigurator=false;
+	parent.resizeFrontEndToolsModal();
+}
+</script>
+</cfoutput>
+</cfsavecontent>	
+<cfhtmlhead text="#headerStr#">	
