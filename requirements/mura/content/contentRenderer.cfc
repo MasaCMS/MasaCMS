@@ -2134,6 +2134,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="padding" default="10">
 	
 	<cfset var imageStyles=structNew()>
+	<cfset imageStyles.markup="">
 	
 	<cfif arguments.size eq "Custom"
 		and arguments.width eq "auto"
@@ -2168,13 +2169,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfif>
 		
 		<cfif imageStyles.minHeight neq "auto">
-			<cfset imageStyles.minHeight="#imageStyles.minHeight#px">
+			<cfset imageStyles.markup="#imageStyles.markup#min-height:#imageStyles.minHeight#px;">
 		</cfif>
 		<cfif imageStyles.paddingLeft neq "auto">
-			<cfset imageStyles.paddingLeft="#imageStyles.paddingLeft#px">
+			<cfset imageStyles.markup="#imageStyles.markup#padding-left:#imageStyles.paddingLeft#px;">
 		</cfif>
 		
-		<cfreturn'min-height:#imageStyles.minHeight#;padding-left:#imageStyles.paddingLeft#;'>
+		<cfreturn imageStyles.markup>
 
 </cffunction>
 </cfcomponent>
