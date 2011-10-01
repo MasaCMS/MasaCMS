@@ -90,8 +90,6 @@
 
 .modal-configurator #frontEndToolsModaliframe {
   width: 410px !important;
-  border-left: 10px solid #fff;
-  border-right: 10px solid #fff;
 }
 
 .modal-configurator #frontEndToolsModalBody {

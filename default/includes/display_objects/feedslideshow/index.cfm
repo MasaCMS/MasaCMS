@@ -97,7 +97,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset editableControl.editLink = editableControl.editLink & "&amp;regionID=" & arguments.regionID>
 			<cfset editableControl.editLink = editableControl.editLink & "&amp;orderno=" & arguments.orderno>
 			
-		<cfset editableControl.innerHTML = generateEditableObjectControl(editableControl.editLink,500)>
+		<cfset editableControl.innerHTML = generateEditableObjectControl(editableControl.editLink,true)>
 	</cfif>
 </cfsilent>
 <cfif editableControl.innerHTML neq "">
