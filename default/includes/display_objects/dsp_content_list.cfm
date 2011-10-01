@@ -54,29 +54,21 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 	
 	<cfset arguments.hasImages=listFindNoCase(arguments.fields,"Image")>
-</cfsilent>	
+	
 	<cfif arguments.hasImages>
-		<cfset arguments.imageArgs=structNew()>
-			<cfif not structKeyExists(arguments,"imageSize")>
-				<cfset arguments.imageSize="small">
-			</cfif>
-			<cfif arguments.imageSize eq "Custom">
-			<cfif not structKeyExists(arguments,"imageHeight")>
-				<cfset arguments.imageHeight="auto">
-			</cfif>
-			<cfif not structKeyExists(arguments,"imageWidth")>
-				<cfset arguments.imageWidth="auto">
-			</cfif>
-			
-			<cfset arguments.imageArgs.size=arguments.imageSize>
-			<cfset arguments.imageArgs.width=arguments.imageWidth>
-			<cfset arguments.imageArgs.height=arguments.imageHeight>
-		<cfelse>
-			<cfset arguments.imageArgs.size=arguments.imageSize>	
+		<cfif not structKeyExists(arguments,"imageSize")>
+			<cfset arguments.imageSize="small">
 		</cfif>
-		
-		<cfset arguments.imageStyles='style="#$.generateListImageSyles(argumentCollection=arguments.imageArgs)#"'>
+		<cfif not structKeyExists(arguments,"imageHeight")>
+			<cfset arguments.imageHeight="auto">
+		</cfif>
+		<cfif not structKeyExists(arguments,"imageWidth")>
+			<cfset arguments.imageWidth="auto">
+		</cfif>
+
+		<cfset arguments.imageStyles='style="#$.generateListImageSyles(size=arguments.imageSize,width=arguments.imageWidth,height=arguments.imageHeight)#"'>
 	</cfif>
+</cfsilent>	
 
 <cfif getListFormat() eq "ul">
 	<ul>
@@ -109,9 +101,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfcase value="Image">
 						<cfif arguments.hasImage>
 							<cfif cookie.mobileFormat>
-							<div class="image"><img src="#arguments.item.getImageURL(argumentCollection=arguments.imageArgs)#"  alt="#htmlEditFormat(arguments.item.getValue('title'))#"/></div>
+							<div class="image"><img src="#arguments.item.getImageURL(size=arguments.imageSize,width=arguments.imageWidth,height=arguments.imageHeight)#"  alt="#htmlEditFormat(arguments.item.getValue('title'))#"/></div>
 							<cfelse>
-							<a class="image" href="#arguments.item.getURL()#" title="#HTMLEditFormat(arguments.item.getValue('title'))#"><img src="#arguments.item.getImageURL(argumentCollection=arguments.imageArgs)#"  alt="#htmlEditFormat(arguments.item.getValue('title'))#"/></a>	
+							<a class="image" href="#arguments.item.getURL()#" title="#HTMLEditFormat(arguments.item.getValue('title'))#"><img src="#arguments.item.getImageURL(size=arguments.imageSize,width=arguments.imageWidth,height=arguments.imageHeight)#"  alt="#htmlEditFormat(arguments.item.getValue('title'))#"/></a>	
 							</cfif>
 						</cfif>
 					</cfcase>
@@ -200,7 +192,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfcase value="Image">
 						<cfif arguments.hasImage>
 						<dd class="image">
-							<a href="#arguments.item.getURL()#" title="#HTMLEditFormat(arguments.item.getValue('title'))#"><img src="#arguments.item.getImageURL(argumentCollection=arguments.imageArgs)#"  alt="#htmlEditFormat(arguments.item.getValue('title'))#"/></a>
+							<a href="#arguments.item.getURL()#" title="#HTMLEditFormat(arguments.item.getValue('title'))#"><img src="#arguments.item.getImageURL(size=arguments.imageSize,width=arguments.imageWidth,height=arguments.imageHeight)#"  alt="#htmlEditFormat(arguments.item.getValue('title'))#"/></a>
 						</dd>
 						</cfif>
 					</cfcase>

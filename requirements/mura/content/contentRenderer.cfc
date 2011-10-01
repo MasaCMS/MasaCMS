@@ -839,7 +839,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var imgSuffix=arguments.size>
 	<cfset var returnURL="">
 	<cfset var begin="">
-	
+
 	<cfif not structKeyExists(arguments,"fileEXT")>
 		<cfset arguments.fileEXT=getBean("fileManager").readMeta(arguments.fileID).fileEXT>
 	</cfif>
@@ -855,7 +855,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 	
 	<cfif arguments.direct and application.configBean.getFileStore() eq "fileDir">
-		<cfif arguments.size neq "Custom" and not len(arguments.width) and not len(arguments.height)>
+		<cfif arguments.size neq "Custom">
 			<cfif imgSuffix eq "large">
 				<cfset imgSuffix="">
 			<cfelse>
