@@ -75,7 +75,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset arguments.imageArgs.size=arguments.imageSize>	
 		</cfif>
 		
-		<cfset arguments.imageStyles='styles="#$.generateListImageSyles(argumentCollection=arguments.imageArgs)#"'>
+		<cfset arguments.imageStyles='style="#$.generateListImageSyles(argumentCollection=arguments.imageArgs)#"'>
 	</cfif>
 
 <cfif getListFormat() eq "ul">
