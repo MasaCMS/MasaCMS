@@ -102,6 +102,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfparam name="arguments.data.contentid" default="" />
 <cfparam name="arguments.data.linkServID" default="" />
 <cfparam name="arguments.data.isAdminLogin" default="false" />
+<cfparam name="arguments.data.compactDisplay" default="false" />
 
 <cfif arguments.data.isAdminLogin>
 	<cfset indexFile="./index.cfm">
@@ -167,7 +168,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfif>
 	<cfelse>
 		<cfif arguments.data.isAdminLogin>
-			<cflocation url="./index.cfm?fuseaction=cLogin.main&display=login&status=failed&rememberMe=#arguments.data.rememberMe#&contentid=#arguments.data.contentid#&LinkServID=#arguments.data.linkServID#&returnURL=#urlEncodedFormat(arguments.data.returnUrl)#" addtoken="false">
+			<cflocation url="./index.cfm?fuseaction=cLogin.main&display=login&status=failed&rememberMe=#arguments.data.rememberMe#&contentid=#arguments.data.contentid#&LinkServID=#arguments.data.linkServID#&returnURL=#urlEncodedFormat(arguments.data.returnUrl)#&compactDisplay=#urlEncodedFormat(arguments.data.compactDisplay)#" addtoken="false">
 		<cfelse>
 			<cfset loginURL = application.settingsManager.getSite(request.siteid).getLoginURL() />
 			<cfif find('?', loginURL)>

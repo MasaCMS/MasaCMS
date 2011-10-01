@@ -81,9 +81,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </dl>
 <p class="rememberMe"><input type="checkbox" id="rememberMe" name="rememberMe" value="1" /> <label for="rememberMe">#application.rbFactory.getKeyValue(session.rb,'login.rememberme')#</label></p>
 <input type="button" class="submit" onclick="document.frmLogin.submit();" value="#application.rbFactory.getKeyValue(session.rb,'login.login')#" />
-	<input name="returnUrl" type="hidden" value="#HTMLEditFormat(attributes.returnURL)#">
+<input name="returnUrl" type="hidden" value="#HTMLEditFormat(attributes.returnURL)#">
 <input type="hidden" name="fuseaction" value="cLogin.login">
 <input type="hidden" name="isAdminLogin" value="true">
+<input type="hidden" name="compactDisplay" value="#HTMLEditFormat(attributes.compactDisplay)#">
  </form>
 </div>
 	<form novalidate="novalidate" id="sendLogin" name="sendLogin" method="post" action="index.cfm?fuseaction=cLogin.main" onsubmit="javascript:if(document.sendLogin.email.value !=''){return true;}else{return false;}">
@@ -106,5 +107,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<input name="returnURL" type="hidden" value="#HTMLEditFormat(attributes.returnURL)#"></dd>
 		</dl>
 		<input type="hidden" name="isAdminLogin" value="true">
+		<input type="hidden" name="compactDisplay" value="#HTMLEditFormat(attributes.compactDisplay)#">
     </form>
 </cfif></cfoutput>
