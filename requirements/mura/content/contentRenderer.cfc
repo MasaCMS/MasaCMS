@@ -2125,4 +2125,56 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		
 		<cfreturn str>
 </cffunction>
+
+
+<cffunction name="generateListImageSyles" output="false">
+	<cfargument name="size" default="small">
+	<cfargument name="height" default="auto">
+	<cfargument name="width" default="auto">
+	<cfargument name="padding" default="10">
+	
+	<cfset var imageStyles=structNew()>
+	
+	<cfif arguments.size eq "Custom"
+		and arguments.width eq "auto"
+		and arguments.height eq "auto">
+		<cfset arguments.size="small">
+	</cfif>
+		
+	<cfif arguments.size neq "custom">
+		<cfif $.siteConfig('gallery#arguments.size#ScaleBy') eq 'x'>
+			<cfset imageStyles.paddingLeft=$.siteConfig('gallery#arguments.size#Scale') + arguments.padding>
+			<cfset imageStyles.minHeight="auto">
+		<!--- Conditional styles for images constrained by height --->
+		<cfelseif $.siteConfig('gallery#arguments.size#ScaleBy') eq 'y'>
+				<cfset imageStyles.paddingLeft="auto">
+				<cfset imageStyles.minHeight=$.siteConfig('gallery#arguments.size#Scale') + arguments.padding>
+			<cfelse>
+			<!--- Styles for images cropped to square --->
+				<cfset imageStyles.paddingLeft=$.siteConfig('gallery#arguments.size#Scale') + arguments.padding>
+				<cfset imageStyles.minHeight=$.siteConfig('gallery#arguments.size#Scale') + arguments.padding>
+			</cfif>
+		<cfelse>
+			<cfif isNumeric(arguments.width)>
+				<cfset imageStyles.paddingLeft=arguments.width + arguments.padding>
+			<cfelse>
+				<cfset imageStyles.paddingLeft="auto">
+			</cfif>
+			<cfif isNumeric(arguments.height)>
+				<cfset imageStyles.minHeight=arguments.height + arguments.padding>
+			<cfelse>
+				<cfset imageStyles.minHeight="auto">
+			</cfif>
+		</cfif>
+		
+		<cfif imageStyles.minHeight neq "auto">
+			<cfset imageStyles.minHeight="#imageStyles.minHeight#px">
+		</cfif>
+		<cfif imageStyles.paddingLeft neq "auto">
+			<cfset imageStyles.paddingLeft="#imageStyles.paddingLeft#px">
+		</cfif>
+		
+		<cfreturn'min-height:#imageStyles.minHeight#;padding-left:#imageStyles.paddingLeft#;'>
+
+</cffunction>
 </cfcomponent>

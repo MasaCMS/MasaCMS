@@ -45,8 +45,6 @@ modified version; it is your choice whether to do so, or to make such modified v
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cfsilent>
-	<cfset $.addToHTMLHeadQueue("listImageStyles.cfm")>
-	
 	<cfif not structKeyExists(arguments,"type")>
 		<cfset arguments.type="Feed">
 	</cfif>
@@ -56,73 +54,30 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 	
 	<cfset arguments.hasImages=listFindNoCase(arguments.fields,"Image")>
-	
+</cfsilent>	
 	<cfif arguments.hasImages>
-		<cfset arguments.imageURLArgs=structNew()>
-		<cfset arguments.imageURLArgs.size="small">
-		
-		<cfif not structKeyExists(arguments,"imagePadding")>
-			<cfset arguments.imagePadding=10>
-		</cfif>
-		
-		<cfif structKeyExists(arguments,"imageSize")>
-			<cfset arguments.imageURLArgs.size=arguments.imageSize>
-		</cfif>
-		
-		<cfif arguments.imageSize eq "Custom"
-			and not (
-				structKeyExists(arguments,"imageWidth") 
-				or structKeyExists(arguments,"imageHeight")
-				)
-			and not (
-				structKeyExists(arguments,"imageWidth") 
-				and  structKeyExists(arguments,"imageHeight")
-				and arguments.imageWidth eq "auto"
-				and arguments.imageHeight eq "auto"
-			)>
-			<cfset arguments.imageSize="small">
-		</cfif>
-		
-		<cfif arguments.imageSize neq "custom">
-			<cfif $.siteConfig('gallery#arguments.imageSize#ScaleBy') eq 'x'>
-				<cfset arguments.imageStyles.paddingLeft=$.siteConfig('gallery#arguments.imageSize#Scale') + arguments.imagePadding>
-				<cfset arguments.imageStyles.minHeight="auto">
-			<!--- Conditional styles for images constrained by height --->
-			<cfelseif $.siteConfig('gallery#arguments.imageSize#ScaleBy') eq 'y'>
-				<cfset arguments.imageStyles.paddingLeft="auto">
-				<cfset arguments.imageStyles.minHeight=$.siteConfig('gallery#arguments.imageSize#Scale') + arguments.imagePadding>
-			<cfelse>
-			<!--- Styles for images cropped to square --->
-				<cfset arguments.imageStyles.paddingLeft=$.siteConfig('gallery#arguments.imageSize#Scale') + arguments.imagePadding>
-				<cfset arguments.imageStyles.minHeight=$.siteConfig('gallery#arguments.imageSize#Scale') + arguments.imagePadding>
+		<cfset arguments.imageArgs=structNew()>
+			<cfif not structKeyExists(arguments,"imageSize")>
+				<cfset arguments.imageSize="small">
 			</cfif>
+			<cfif arguments.imageSize eq "Custom">
+			<cfif not structKeyExists(arguments,"imageHeight")>
+				<cfset arguments.imageHeight="auto">
+			</cfif>
+			<cfif not structKeyExists(arguments,"imageWidth")>
+				<cfset arguments.imageWidth="auto">
+			</cfif>
+			
+			<cfset arguments.imageArgs.size=arguments.imageSize>
+			<cfset arguments.imageArgs.width=arguments.imageWidth>
+			<cfset arguments.imageArgs.height=arguments.imageHeight>
 		<cfelse>
-			<cfif structKeyExists(arguments,"imageWidth")>
-				<cfset arguments.imageURLArgs.width=arguments.imageWidth>
-				<cfset arguments.imageStyles.paddingLeft=arguments.imageWidth + arguments.imagePadding>
-			<cfelse>
-				<cfset arguments.imageURLArgs.width="auto">
-				<cfset arguments.imageStyles.paddingLeft="auto">
-			</cfif>
-			<cfif structKeyExists(arguments,"imageHeight")>
-				<cfset arguments.imageURLArgs.height=arguments.imageHeight>
-				<cfset arguments.imageStyles.minHeight=arguments.imageHeight + arguments.imagePadding>
-			<cfelse>
-				<cfset arguments.imageURLArgs.height="auto">
-				<cfset arguments.imageStyles.minHeight="auto">
-			</cfif>
+			<cfset arguments.imageArgs.size=arguments.imageSize>	
 		</cfif>
 		
-		<cfif arguments.imageStyles.minHeight neq "auto">
-			<cfset arguments.imageStyles.minHeight="#arguments.imageStyles.minHeight#px">
-		</cfif>
-		<cfif arguments.imageStyles.paddingLeft neq "auto">
-			<cfset arguments.imageStyles.paddingLeft="#arguments.imageStyles.paddingLeft#px">
-		</cfif>
-		
-		<cfset arguments.imageStyles.markup='style="min-height:#arguments.imageStyles.minHeight#;padding-left:#arguments.imageStyles.paddingLeft#;"'>
+		<cfset arguments.imageStyles='styles="#$.generateListImageSyles(argumentCollection=arguments.imageArgs)#"'>
 	</cfif>
-</cfsilent>
+
 <cfif getListFormat() eq "ul">
 	<ul>
 </cfif>
@@ -154,9 +109,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfcase value="Image">
 						<cfif arguments.hasImage>
 							<cfif cookie.mobileFormat>
-							<div class="image"><img src="#arguments.item.getImageURL(argumentCollection=arguments.imageURLArgs)#"  alt="#htmlEditFormat(arguments.item.getValue('title'))#"/></div>
+							<div class="image"><img src="#arguments.item.getImageURL(argumentCollection=arguments.imageArgs)#"  alt="#htmlEditFormat(arguments.item.getValue('title'))#"/></div>
 							<cfelse>
-							<a class="image" href="#arguments.item.getURL()#" title="#HTMLEditFormat(arguments.item.getValue('title'))#"><img src="#arguments.item.getImageURL(argumentCollection=arguments.imageURLArgs)#"  alt="#htmlEditFormat(arguments.item.getValue('title'))#"/></a>	
+							<a class="image" href="#arguments.item.getURL()#" title="#HTMLEditFormat(arguments.item.getValue('title'))#"><img src="#arguments.item.getImageURL(argumentCollection=arguments.imageArgs)#"  alt="#htmlEditFormat(arguments.item.getValue('title'))#"/></a>	
 							</cfif>
 						</cfif>
 					</cfcase>
@@ -225,7 +180,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</li>
 	<cfelse>
 	<!---  DL MARKUP -------------------------------------------------------------------------- --->
-		<dl class="clearfix<cfif arguments.class neq ''> #arguments.class#</cfif>"<cfif arguments.hasImage> #arguments.imageStyles.markup#</cfif>>
+		<dl class="clearfix<cfif arguments.class neq ''> #arguments.class#</cfif>"<cfif arguments.hasImage> #arguments.imageStyles#</cfif>>
 			<cfloop list="#arguments.fields#" index="arguments.field">
 				<cfswitch expression="#arguments.field#">
 					<cfcase value="Date">
@@ -245,7 +200,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfcase value="Image">
 						<cfif arguments.hasImage>
 						<dd class="image">
-							<a href="#arguments.item.getURL()#" title="#HTMLEditFormat(arguments.item.getValue('title'))#"><img src="#arguments.item.getImageURL(argumentCollection=arguments.imageURLArgs)#"  alt="#htmlEditFormat(arguments.item.getValue('title'))#"/></a>
+							<a href="#arguments.item.getURL()#" title="#HTMLEditFormat(arguments.item.getValue('title'))#"><img src="#arguments.item.getImageURL(argumentCollection=arguments.imageArgs)#"  alt="#htmlEditFormat(arguments.item.getValue('title'))#"/></a>
 						</dd>
 						</cfif>
 					</cfcase>
