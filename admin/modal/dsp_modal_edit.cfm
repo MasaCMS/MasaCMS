@@ -149,19 +149,22 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<cfif getJsLib() eq "jquery">
 	var frontEndModalHeight=0;
-	var frontEndModalWidth=950;
+	var frontEndModalIsConfigurator=false;
 	
 	function openFrontEndToolsModal(a){
 		var src=a.href;
-		var width=jQuery(a).attr("data-iframe-width");
+		var isModal=jQuery(a).attr("data-configurator");
 		
-		if(width!=undefined){
-			frontEndModalWidth=width;
+		if (isModal != undefined) {
+			frontEndModalIsConfigurator = false;
+		} else if (isModal == "true") {
+			frontEndModalIsConfigurator = true;
 		} else {
-			frontEndModalWidth=950;
+			frontEndModalIsConfigurator = false;
 		}
+		
 		closeFrontEndToolsModal();
-		jQuery("##fronEndToolsModalTarget").html('<div id="frontEndToolsModalContainer" class="modal-configurator">' +
+		jQuery("##fronEndToolsModalTarget").html('<div id="frontEndToolsModalContainer">' +
 		'<div id="frontEndToolsModalBody">' +
 		'<a id="frontEndToolsModalClose" style="display:none;" href="javascript:closeFrontEndToolsModal();">Close</a>' +
 		'<iframe src="' + src + '" id="frontEndToolsModaliframe" scrolling="false" frameborder="0" style="overflow:hidden"></iframe>' +
@@ -188,10 +191,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					frameHeight= Math.max(jQuery(window).height() * .80,frameHeight);
 				}
 				
-				frame.style.width = frontEndModalWidth + "px";
+				//frame.style.width = frontEndModalWidth + "px";
 				frame.style.height = frameHeight + "px";
 				frameContainer.style.position = "absolute";
 				document.overflow = "auto"
+				
+				if(frontEndModalIsConfigurator){
+					jQuery("##frontEndToolsModalContainer").addClass("modal-configurator");
+				} else {
+					jQuery("##frontEndToolsModalContainer").removeClass("modal-configurator");
+				}
 				
 				if(windowHeight > frontEndModalHeight){	
 					frontEndModalHeight=windowHeight;

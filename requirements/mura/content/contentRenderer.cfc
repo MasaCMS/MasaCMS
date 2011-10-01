@@ -2080,14 +2080,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="generateEditableObjectControl" access="public" output="no" returntype="string">
 		<cfargument name="editLink" required="yes" default="">
-		<cfargument name="width" default="950">
+		<cfargument name="isConfigurator" default="false">
 		<cfset var str = "">
 		
 		<cfif this.showEditableObjects>		
 		<cfsavecontent variable="str">
 			<cfoutput>
 			<ul class="editableObjectControl">
-				<li class="edit"><a href="#arguments.editLink#"  data-iframe-width="#arguments.width#" title="#htmlEditFormat('Edit')#" #generateEditableHook()#>#htmlEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.edit'))#</a></li>
+				<li class="edit"><a href="#arguments.editLink#"  data-configurator="#arguments.isConfigurator#" title="#htmlEditFormat('Edit')#" #generateEditableHook()#>#htmlEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.edit'))#</a></li>
 			</ul>
 			</cfoutput>
 		</cfsavecontent>

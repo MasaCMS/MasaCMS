@@ -84,6 +84,10 @@
   width: 950px;
 }
 
+#frontEndToolsModaliframe {
+  width: 950px !important;
+}
+
 .modal-configurator #frontEndToolsModaliframe {
   width: 410px !important;
   border-left: 10px solid #fff;

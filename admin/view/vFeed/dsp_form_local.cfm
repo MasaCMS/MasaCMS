@@ -510,7 +510,7 @@ setSearchButtons();
 <cfsavecontent variable="headerStr">
 <cfoutput><script type="text/javascript">
 if (top.location != self.location) {
-	parent.frontEndModalWidth=<cfif len(attributes.assignmentID)>500<cfelse>950</cfif>;
+	parent.frontEndModalIsConfigurator=<cfif len(attributes.assignmentID)>true<cfelse>false</cfif>;
 	parent.resizeFrontEndToolsModal();
 }
 </script>
