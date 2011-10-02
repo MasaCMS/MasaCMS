@@ -661,7 +661,7 @@ function pasteThis(parentID){
 	jQuery.get(url + "?" + pars, 
 			function(data) {
 				loadSiteManager(copySiteID,parentID,'00000000000000000000000000000000000','','','',1);
-				jQuery("#newContentMenu").hide();
+				document.getElementById("newContentMenu").style.visibility="hidden"
 			}
 	);
 }
