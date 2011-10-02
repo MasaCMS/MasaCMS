@@ -511,6 +511,7 @@ setSearchButtons();
 <cfoutput><script type="text/javascript">
 if (top.location != self.location) {
 	parent.frontEndModalIsConfigurator=<cfif len(attributes.assignmentID)>true<cfelse>false</cfif>;
+	parent.styleFrontEndToolsModal(parent.frontEndModalIsConfigurator);
 	parent.resizeFrontEndToolsModal();
 }
 </script>
