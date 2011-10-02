@@ -64,7 +64,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif StructKeyExists(frmFields,aFieldOrder[iiX])>
 		<cfset field = frmFields[aFieldOrder[iiX]] />
 		<cfif field.fieldtype.isdata eq 1 and len(field.datasetid)>
-			<cfset dataset = frmData[field.datasetid] /> 
+			<cfset dataset = fbManager.processDataset( $,frmData[field.datasetid] ) />  
 		</cfif>
 		<cfif field.fieldtype.fieldtype neq "section">
 		<li<cfif field.fieldtype.fieldtype eq "radio"> class="mura-form-radio"
