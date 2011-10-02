@@ -89,7 +89,10 @@
 }
 
 .modal-configurator #frontEndToolsModaliframe {
-  width: 430px !important;
+  width: 410px !important;
+  border-left: 10px solid #fff;
+  border-right: 10px solid #fff;
+  background-color: #fff;
 }
 
 .modal-configurator #frontEndToolsModalBody {
