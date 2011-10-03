@@ -105,7 +105,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfcase value="Image">
 						<cfif arguments.hasImage>
 							<cfif cookie.mobileFormat>
-							<div class="image"><img src="#arguments.item.getImageURL(size=arguments.imageSize,width=arguments.imageWidth,height=arguments.imageHeight)#"  alt="#htmlEditFormat(arguments.item.getValue('title'))#"/></div>
+							<!---<div class="image">---><img src="#arguments.item.getImageURL(size=arguments.imageSize,width=arguments.imageWidth,height=arguments.imageHeight)#"  alt="#htmlEditFormat(arguments.item.getValue('title'))#"/><!---</div>--->
 							<cfelse>
 							<a class="image" href="#arguments.item.getURL()#" title="#HTMLEditFormat(arguments.item.getValue('title'))#"><img src="#arguments.item.getImageURL(size=arguments.imageSize,width=arguments.imageWidth,height=arguments.imageHeight)#"  alt="#htmlEditFormat(arguments.item.getValue('title'))#"/></a>	
 							</cfif>
@@ -127,7 +127,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					</cfcase>
 					<cfcase value="Summary">
 						<cfif len(arguments.item.getValue('summary')) and arguments.item.getValue('summary') neq "<p></p>">
-							<div class="summary">#$.setDynamicContent(arguments.item.getValue('summary'))#</div>
+							<!---<div class="summary">--->#$.setDynamicContent(arguments.item.getValue('summary'))#<!---</div>--->
 						</cfif>
 					</cfcase>
 					<cfcase value="Credits">

@@ -657,7 +657,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					restricted,restrictGroups,siteID,Type,version,sortBy,sortDirection,nextN,displayName,displayRatings,displayComments,altname,remoteID,remoteSourceURL,remotePubDate
 					<!--- Check for new fields added in 5.5 --->
 					<cfif isdefined("rstcontentfeeds.imageSize")>
-					,imageSize,imageHeight,imageWidth,displaySummaries
+					,imageSize,imageHeight,imageWidth
 					</cfif>
 					)
 					values
@@ -697,13 +697,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					,
 					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstcontentfeeds.imageSize neq '',de('no'),de('yes'))#" value="#rstcontentfeeds.imageSize#">,
 					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstcontentfeeds.imageHeight neq '',de('no'),de('yes'))#" value="#rstcontentfeeds.imageHeight#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstcontentfeeds.imageWidth neq '',de('no'),de('yes'))#" value="#rstcontentfeeds.imageWidth#">,
-					<cfqueryparam cfsqltype="cf_sql_NUMERIC" null="#iif(rstcontentfeeds.displaySummaries neq '',de('no'),de('yes'))#" value="#rstcontentfeeds.displaySummaries#">
-					</cfif>
-					
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstcontentfeeds.imageWidth neq '',de('no'),de('yes'))#" value="#rstcontentfeeds.imageWidth#">
+					</cfif>		
 					)
 				</cfquery>
 			</cfloop>
+			
 			<!--- tcontentfeeditems --->
 			<cfquery datasource="#arguments.toDSN#">
 				delete from tcontentfeeditems where feedID in (select feedID from tcontentfeeds where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.tositeid#"/>)
