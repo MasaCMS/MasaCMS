@@ -56,13 +56,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfheader name="cache-control" value="no-cache, no-store, must-revalidate">
 <cfheader name="expires" value="06 Nov 1994 08:37:34 GMT">
 <meta http-equiv="cache control" content="no-cache, no-store, must-revalidate" />
-<script src="js/admin.js" type="text/javascript" language="Javascript"></script>
+<script src="#application.configBean.getContext()#/admin/js/admin.js" type="text/javascript" language="Javascript"></script>
 <script src="#application.configBean.getContext()#/admin/js/jquery/jquery.js?coreversion=#application.coreversion#" type="text/javascript"></script>
 <script src="#application.configBean.getContext()#/admin/js/jquery/jquery.collapsibleCheckboxTree.js?coreversion=#application.coreversion#" type="text/javascript"></script>
 <script src="#application.configBean.getContext()#/admin/js/jquery/jquery-ui.js?coreversion=#application.coreversion#" type="text/javascript"></script>
 <script src="#application.configBean.getContext()#/admin/js/jquery/jquery-ui-i18n.js?coreversion=#application.coreversion#" type="text/javascript"></script>
 <link href="#application.configBean.getContext()#/admin/css/jquery/default/jquery.ui.all.css?coreversion=#application.coreversion#" rel="stylesheet" type="text/css" />
-<script src="js/prototype.js" type="text/javascript" language="Javascript"></script>
+<script src="#application.configBean.getContext()#/admin/js/prototype.js" type="text/javascript" language="Javascript"></script>
 <cfif application.configBean.getValue("htmlEditorType") eq "fckeditor">
 <script type="text/javascript" src="#application.configBean.getContext()#/wysiwyg/fckeditor.js"></script>
 <cfelse>
