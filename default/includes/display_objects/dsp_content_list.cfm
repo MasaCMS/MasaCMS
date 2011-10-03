@@ -56,7 +56,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset arguments.hasImages=listFindNoCase(arguments.fields,"Image")>
 	
 	<cfif arguments.hasImages>
-		<cfif not structKeyExists(arguments,"imageSize")>
+		<cfif not structKeyExists(arguments,"imageSize") or $.event("muraMobileRequest")>
 			<cfset arguments.imageSize="small">
 		</cfif>
 		<cfif not structKeyExists(arguments,"imageHeight")>
@@ -95,7 +95,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfoutput>
 	<!---  UL MARKUP -------------------------------------------------------------------------- --->
 	<cfif $.getListFormat() eq "ul">
-		<li class="clearfix<cfif arguments.class neq ''> #arguments.class#</cfif>"<cfif arguments.hasImage and not $.event("muraMobileRequest")> #arguments.imageStyles.markup#</cfif>>
+		<li <cfif not $.event("muraMobileRequest")>class="clearfix<cfif arguments.class neq ''> #arguments.class#</cfif> style="#arguments.imageStyles.markup#</cfif>>
 			<cfloop list="#arguments.fields#" index="arguments.field">
 				<cfswitch expression="#arguments.field#">
 					<cfcase value="Image">
