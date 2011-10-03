@@ -1,4 +1,4 @@
-/* @override http://mura:8500/5.4/default/includes/themes/merced/css/merced-mobile.css */
+/* @override http://localjost:8500/muracms/default/includes/themes/merced/css/mobile.css */
 
 /*
 Theme:  Merced-Mobile
@@ -99,6 +99,26 @@ form input[type=checkbox] {
 
 .svIndex {
 	margin-top: 0;
+}
+
+.svIndex>ul li {
+	margin: 0;
+}
+
+.svIndex .releaseDate  {
+	margin: 0;
+}
+
+.svIndex ul li h3  {
+	margin: 0 0 .5em;
+}
+
+.svIndex .credits {
+	margin-bottom: 0;
+}
+
+dd.image {
+	margin-left: 0;
 }
 
 /* @group Globals - Forms
