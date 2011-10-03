@@ -160,7 +160,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 #application.pluginManager.renderEvent("onFeedEditMessageRender",event)#
 </span>
 
-<form novalidate="novalidate" action="index.cfm?fuseaction=cFeed.update&siteid=#URLEncodedFormat(attributes.siteid)#" method="post" name="form1" id="feedFrm" onsubmit="return validate(this);">
+<form novalidate="novalidate" action="index.cfm?fuseaction=cFeed.update&siteid=#URLEncodedFormat(attributes.siteid)#" method="post" name="form1" id="feedFrm" onsubmit="return validate(this);"<cfif len(attributes.assignmentID)> style="width: 412px"</cfif>>
 <cfif not isObjectInstance>
 	<cfif attributes.compactDisplay eq "true">
 		<ul id="navTask">
@@ -511,7 +511,6 @@ setSearchButtons();
 <cfoutput><script type="text/javascript">
 if (top.location != self.location) {
 	parent.frontEndModalIsConfigurator=<cfif len(attributes.assignmentID)>true<cfelse>false</cfif>;
-	parent.styleFrontEndToolsModal(parent.frontEndModalIsConfigurator);
 	parent.resizeFrontEndToolsModal();
 }
 </script>

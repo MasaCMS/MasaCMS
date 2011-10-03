@@ -175,7 +175,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		'</div>');
 		
 		frontEndModalHeight=0;
-		styleFrontEndToolsModal(false);
 		resizeFrontEndToolsModal();
 		
 	}
@@ -217,36 +216,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			setTimeout(resizeFrontEndToolsModal, 250);
 		}
 		
-	}
-	
-	function styleFrontEndToolsModal(isConfigurator){
-		
-		if (frontEndModalIsConfigurator) {
-			if (isConfigurator) {
-				jQuery('##frontEndToolsModaliframe').css({
-					'width': '410px !important',
-					'border-left': '10px solid ##fff',
-					'border-right': '10px solid ##fff',
-					'background-color': '##fff'
-				});
-			}
-			else {
-				jQuery('##frontEndToolsModaliframe').css({
-					'width': '430px !important',
-					'border-left': '',
-					'border-right': '',
-					'background-color': ''
-				});
-			}
-		} else {
-			jQuery('##frontEndToolsModaliframe').css({
-					'width': '',
-					'border-left': '',
-					'border-right': '',
-					'background-color': ''
-					});
-		}
-	
 	}
 	
 	function closeFrontEndToolsModal(){
