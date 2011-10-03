@@ -1,3 +1,5 @@
+/* @override http://localhost:8500/muracms/default/css/mura.css */
+
 /* @override 
 	http://mura:8500/5.4/default/css/mura.css
 	http://localhost:8500/muracms/default/css/mura.css
@@ -745,9 +747,7 @@ aside .hasImage {
 
 .svSlides {
 	overflow: visible;
-	z-index: 1;
-	height: 200px;
-}
+	z-index: 1;}
 
 .svSlides h3 {
 	z-index: 10;

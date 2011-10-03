@@ -843,6 +843,10 @@ a.boxItemHeader { /* Link of items inside dragable boxes */
 	margin: 0;
 }
 
+.home aside .svIndex li {
+	padding: 0 1em;
+}
+
 .home aside .svIndex h3 {
 	display: block;
 	padding: 0 1em;
@@ -853,6 +857,13 @@ a.boxItemHeader { /* Link of items inside dragable boxes */
 	color: #fff;
 	background: #ff3405;
 	}
+	
+.home aside .svIndex li h3 {
+	background: none;
+	line-height: 1.1;
+	padding: 0;
+	margin-bottom: .75em;
+}
 
 .home aside .svIndex dl {
 	margin: 0 1.5em 1em;
@@ -873,14 +884,14 @@ a.boxItemHeader { /* Link of items inside dragable boxes */
 	line-height: 1.3;
 	}
 
-.home aside .svIndex dt.releaseDate {
+.home aside .svIndex .releaseDate {
 	margin: 0 0 3px;
 	font-size: 1em;
 	text-transform: uppercase;
 	color: #979797;
 	}
 
-.home aside .svIndex dd {
+.home aside .svIndex dd, .home aside .svIndex p {
 	margin: 0 1em .25em 0;
 	padding: 0;
 	font-size: 1.1em;
@@ -991,7 +1002,7 @@ div.stars a {
 }
 
 .svSlides {
-	height: 200px;
+	
 }
 
 .svSlides h3 {
