@@ -105,7 +105,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <input type="hidden" name="moduleid" value="#attributes.moduleid#" />
 <input type="hidden" name="newSearch" value="1" />
 <div class="clearfix" id="actionButtons">
-	<input type="button" class="submit" onclick="submitForm(document.forms.download);"><span>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.viewdata')#</span></a>
+	<input type="button" class="submit" onclick="submitForm(document.forms.download);" value="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.viewdata')#"/></a>
 	<input type="button" class="submit" onclick="location.href='index.cfm?fuseaction=cArch.downloaddata&siteid=#URLEncodedFormat(attributes.siteid)#&contentid=#URLEncodedFormat(attributes.contentid)#&date1=' + document.download.date1.value + '&hour1=' +document.download.hour1.value + '&minute1=' +document.download.minute1.value + '&date2=' + document.download.date2.value + '&hour2=' + document.download.hour2.value + '&minute2=' + document.download.minute2.value + '&sortBy=' +  document.download.sortBy.value + '&sortDirection=' +  document.download.sortDirection.value + '&filterBy='  + document.download.filterBy.value + '&keywords=' + document.download.keywords.value + '&columns=#attributes.columns#';" value="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.download')#">
 </div>
 <div id="actionIndicator" style="display: none;">
