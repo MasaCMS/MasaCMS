@@ -403,7 +403,7 @@ to your own modified versions of Mura CMS.
         <input type="radio" name="gallerySmallScaleBy" value="y" <cfif request.siteBean.getgallerySmallScaleBy() eq 'y'> CHECKED</CFIF>>
         Height
 		 <input type="radio" name="gallerySmallScaleBy" value="s" <cfif request.siteBean.getgallerySmallScaleBy() neq 'x' and request.siteBean.getgallerySmallScaleBy() neq 'y'> CHECKED</CFIF>>
-        Square</dd>
+        Square <span>(Recommended)</span></dd>
 <dt>Medium Image Size</dt>
       <dd>
         <input name="galleryMediumScale" type="text" class="text short" value="#request.siteBean.getGalleryMediumScale()#" size="5" maxlength="5">px
@@ -415,7 +415,7 @@ to your own modified versions of Mura CMS.
         <input type="radio" name="galleryMediumScaleBy" value="y" <cfif request.siteBean.getgalleryMediumScaleBy() neq 's' and request.siteBean.getgalleryMediumScaleBy() neq 'x'> CHECKED</CFIF>>
         Height
 		 <input type="radio" name="galleryMediumScaleBy" value="s" <cfif request.siteBean.getgalleryMediumScaleBy() eq 's' > CHECKED</CFIF>>
-        Square</dd>
+        Square <span>(Recommended)</span></dd>
          <dt>Large (Full) Image Size</dt>
       <dd>
         <input name="galleryMainScale" type="text" class="text short" value="#request.siteBean.getgalleryMainScale()#" size="5" maxlength="5">px

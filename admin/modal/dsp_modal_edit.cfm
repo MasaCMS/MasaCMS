@@ -194,7 +194,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					frameHeight= Math.max(jQuery(window).height() * .80,frameHeight);
 				}
 				
-				//frame.style.width = frontEndModalWidth + "px";
 				frame.style.height = frameHeight + "px";
 				frameContainer.style.position = "absolute";
 				document.overflow = "auto"
