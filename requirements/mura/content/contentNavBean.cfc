@@ -144,7 +144,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfelse>
 		<cfset variables.instance.content.setAllValues(variables.instance.contentStructTemplate)>
 		<cfif variables.packageBy eq "version" and structKeyExists(variables.instance.struct,"contentHistID")>
-			<cfset variables.instance.content=variables.contentManager.getContentVersion(contentHistID=variables.instance.struct.contentHistID, siteID=variables.instance.struct.siteID, contentBean=variables.instance.content)>
+			<cfset variables.instance.content=getBean('contentManager').getContentVersion(contentHistID=variables.instance.struct.contentHistID, siteID=variables.instance.struct.siteID, contentBean=variables.instance.content)>
 		<cfelseif structKeyExists(variables.instance.struct,"contentID")>
 			<cfset variables.instance.content=getBean('contentManager').getActiveContent(contentID=variables.instance.struct.contentID,siteID=variables.instance.struct.siteID, contentBean=variables.instance.content)>
 		<cfelse>
