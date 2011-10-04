@@ -3,7 +3,7 @@
 <p class="notice">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.changesetnotenotify")#: "#currentChangeset.getName()#"</p>
 </cfif>
 <script>
-<cfif not currentChangeset.getIsNew() and not currentChangeset.getApproved()>
+<cfif not currentChangeset.getIsNew() and not request.contentBean.getApproved()>
 var currentChangesetSelection="#request.contentBean.getChangesetID()#";
 var currentChangesetID="#request.contentBean.getChangesetID()#";
 <cfelse>
