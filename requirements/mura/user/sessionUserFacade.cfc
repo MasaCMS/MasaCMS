@@ -13,9 +13,14 @@
 <cfif len(arguments.MissingMethodName)>
 
 	<!--- forward normal getters to the default getValue method --->
-	<cfif prefix eq "get" and len(arguments.MissingMethodName)gt 3>
-		<cfset prop=right(arguments.MissingMethodName,len(arguments.MissingMethodName)-3)>
-		<cfreturn getValue(prop)>
+	<cfif listFindNoCase("set,get",prefix) and len(arguments.MissingMethodName) gt 3>
+		<cfset prop=right(arguments.MissingMethodName,len(arguments.MissingMethodName)-3)>	
+		<cfif prefix eq "get">
+			<cfreturn getValue(prop)>
+		<cfelseif prefix eq "set" and not structIsEmpty(MissingMethodArguments)>
+			<cfset setValue(prop,MissingMethodArguments[1])>	
+			<cfreturn this>
+		</cfif>
 	</cfif>
 	
 	<!--- otherwise get the bean and if the method exsists forward request --->
