@@ -66,7 +66,7 @@
 		<cftry>
 			<cfadmin
 			    action="updateDatasource"
-			    type="server"
+			    type="web"
 			    password="#Arguments.GWPassword#"
 			    classname="org.h2.Driver"
 			    dsn="#sDSN#"
