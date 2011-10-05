@@ -35,7 +35,7 @@
 				<cfset sDSN= sDSNServer & "information_schema" & sDSNPara>
 				<cfadmin
 				    action="updateDatasource"
-				    type="server"
+				    type="web"
 				    password="#Arguments.GWPassword#"
 				    classname="#sClass#"
 				    dsn="#sDSN#"
@@ -53,7 +53,7 @@
 				<!--- delete intermediate datasource connection (bsoylu 12/18/2010) --->
 				<cfadmin
 				    action="removeDatasource"
-				    type="server"
+				    type="web"
 				    password="#Arguments.GWPassword#"
 				    name="MuraIntermediateDatasource"
 				    >
@@ -63,7 +63,7 @@
 					<cfset sDSN= sDSNServer & "#Arguments.DatabaseName#" & sDSNPara>
 					<cfadmin
 					    action="updateDatasource"
-					    type="server"
+					    type="web"
 					    password="#Arguments.GWPassword#"
 					    classname="#sClass#"
 					    dsn="#sDSN#"
@@ -79,7 +79,7 @@
 				<!--- no creation of database just the datasource (bsoylu 12/13/2010) --->
 				<cfadmin
 				    action="updateDatasource"
-				    type="server"
+				    type="web"
 				    password="#Arguments.GWPassword#"
 				    classname="#sClass#"
 				    dsn="#sDSN#"
