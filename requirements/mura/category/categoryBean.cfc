@@ -100,6 +100,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this />
 </cffunction>
 
+<cffunction name="setConfigBean">
+	<cfargument name="configBean">
+	<cfset variables.configBean=arguments.configBean>
+	<cfreturn this>
+</cffunction>
+
 <cffunction name="setCategoryManager">
 	<cfargument name="categoryManager">
 	<cfset variables.categoryManager=arguments.categoryManager>

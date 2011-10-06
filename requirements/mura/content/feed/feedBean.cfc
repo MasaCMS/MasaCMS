@@ -142,6 +142,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
+<cffunction name="setConfigBean">
+	<cfargument name="configBean">
+	<cfset variables.configBean=arguments.configBean>
+	<cfreturn this>
+</cffunction>
+
 <cffunction name="set" returnType="any" output="false" access="public">
 	<cfargument name="feed" type="any" required="true">
 	<cfset var prop=""/>

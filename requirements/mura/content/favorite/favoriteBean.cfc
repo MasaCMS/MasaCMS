@@ -76,6 +76,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this />
 </cffunction>
 
+<cffunction name="setConfigBean">
+	<cfargument name="configBean">
+	<cfset variables.configBean=arguments.configBean>
+	<cfreturn this>
+</cffunction>
+
 <cffunction name="getFavoriteID" returntype="String" access="public" output="false">
 	<cfif not len(variables.instance.favoriteID)>
 		<cfset variables.instance.favoriteID = createUUID() />

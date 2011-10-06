@@ -19,6 +19,12 @@
 	<cfreturn this />
 </cffunction>
 
+<cffunction name="setConfigBean">
+	<cfargument name="configBean">
+	<cfset variables.configBean=arguments.configBean>
+	<cfreturn this>
+</cffunction>
+
 <cffunction name="setRate" access="public" output="false">
 	<cfargument name="rate" />
 	<cfif isNumeric(arguments.rate)>

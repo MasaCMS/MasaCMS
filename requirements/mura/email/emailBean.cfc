@@ -86,6 +86,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this />
 </cffunction>
 
+<cffunction name="setEmailManager">
+	<cfargument name="emailManager">
+	<cfset variables.emailManager=arguments.emailManager>
+	<cfreturn this>
+</cffunction>
+
+<cffunction name="setConfigBean">
+	<cfargument name="configBean">
+	<cfset variables.configBean=arguments.configBean>
+	<cfreturn this>
+</cffunction>
+
 <cffunction name="getEmailID" returnType="string" output="false" access="public">
     <cfif not len(variables.instance.EmailID)>
 		<cfset variables.instance.EmailID = createUUID() />
@@ -119,11 +131,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="save" output="false">
-<cfset setAllValues(getBean("emailManager").save(this).getAllValues())>
+<cfset setAllValues(variables.emailManager.save(this).getAllValues())>
 <cfreturn this>
 </cffunction>
 
 <cffunction name="delete" output="false">
-<cfset getBean("emailManager").delete(getEmailID())>
+<cfset variables.emailManager.delete(getEmailID())>
 </cffunction>
 </cfcomponent>
