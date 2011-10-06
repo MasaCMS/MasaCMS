@@ -78,6 +78,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this />
 </cffunction>
 
+<cffunction name="setMailingListManager">
+	<cfargument name="mailingListManager">
+	<cfset variables.mailingListManager=arguments.mailingListManager>
+	<cfreturn this>
+</cffunction>
+
 <cffunction name="setLastUpdate" returnType="void" output="false" access="public">
     <cfargument name="LastUpdate" type="string" required="true">
 	<cfif isDate(arguments.LastUpdate)>
@@ -100,12 +106,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="save" output="false">
-	<cfset setAllValues(getBean("mailinglistManager").save(this).getAllValues())>
+	<cfset setAllValues(variables.mailinglistManager.save(this).getAllValues())>
 	<cfreturn this>
 </cffunction>
 
 <cffunction name="delete" output="false">
-	<cfset getBean("mailinglistManager").delete(getMLID(),getSiteID())>
+	<cfset variables.mailinglistManager.delete(getMLID(),getSiteID())>
 </cffunction>
 
 <cffunction name="loadBy" returnType="any" output="false" access="public">
@@ -115,7 +121,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<cfset arguments.mailinglistBean=this>
 		
-	<cfreturn application.mailinglistManager.read(arguments)>
+	<cfreturn variables.mailinglistManager.read(arguments)>
 </cffunction>
 
 </cfcomponent>

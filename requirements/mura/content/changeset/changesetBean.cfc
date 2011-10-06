@@ -44,6 +44,12 @@
 	<cfreturn this>
 </cffunction>
 
+<cffunction name="setChangsetManager">
+	<cfargument name="changesetManager">
+	<cfset variables.changesetManager=arguments.changesetManager>
+	<cfreturn this>
+</cffunction>
+
 <cffunction name="set" returnType="any" output="false" access="public">
 		<cfargument name="data" type="any" required="true">
 
@@ -147,16 +153,16 @@
 	
 	<cfset arguments.changesetBean=this>
 	
-	<cfreturn getBean("changesetManager").read(argumentCollection=arguments)>
+	<cfreturn variables.changesetManager.read(argumentCollection=arguments)>
 </cffunction>
 
 <cffunction name="save" output="false" access="public">
-	<cfset setAllValues(getBean("changesetManager").save(this).getAllValues())>
+	<cfset setAllValues(variables.changesetManager.save(this).getAllValues())>
 	<cfreturn this>
 </cffunction>
 
 <cffunction name="delete" output="false" access="public">
-	<cfset getBean("changesetManager").delete(getChangesetID()) />
+	<cfset variables.changesetManager.delete(getChangesetID()) />
 </cffunction>
 
 </cfcomponent>

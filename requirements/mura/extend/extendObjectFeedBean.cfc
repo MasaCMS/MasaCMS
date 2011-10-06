@@ -11,15 +11,6 @@
 <cfset variables.instance.dataTable="tclassextenddata">
 <cfset variables.instance.params=queryNew("param,relationship,field,condition,criteria,dataType","integer,varchar,varchar,varchar,varchar,varchar" )  />
 
-
-<cffunction name="init" returntype="any" output="false">
-<cfargument name="configBean" default="">
-<cfif isObject(arguments.configBean)>
-<cfset setConfigBean(arguments.configBean)>
-</cfif>
-<cfreturn this>
-</cffunction>
-
 <cffunction name="setConfigBean" returntype="any" output="false">
 <cfargument name="configBean">
 <cfset variables.configBean=arguments.configBean>

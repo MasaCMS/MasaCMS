@@ -97,6 +97,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this />
 </cffunction>
 
+<cffunction name="setAdvertiserManager">
+	<cfargument name="advertiserManager">
+	<cfset variables.advertiserManager=arguments.advertiserManager>
+	<cfreturn this>
+</cffunction>
+
 <cffunction name="getCreativeID" returntype="String" access="public" output="false">
 	<cfif not len(variables.instance.creativeID)>
 		<cfset variables.instance.creativeID = createUUID() />
@@ -131,11 +137,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="save" output="false">
-<cfset setAllValues(getBean("advertiserManager").saveCreative(this).getAllValues())>
+<cfset setAllValues(variables.advertiserManager.saveCreative(this).getAllValues())>
 <cfreturn this>
 </cffunction>
 
 <cffunction name="delete" output="false">
-<cfset getBean("advertiserManager").deleteCreative(getCreativeID())>
+<cfset variables.advertiserManager.deleteCreative(getCreativeID())>
 </cffunction>
 </cfcomponent>

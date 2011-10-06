@@ -147,6 +147,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this />
 </cffunction>
 
+<cffunction name="setUserManager">
+	<cfargument name="userManager">
+	<cfset variables.userManager=arguments.userManager>
+	<cfreturn this>
+</cffunction>
+
+<cffunction name="setSettingsManager">
+	<cfargument name="settingsManager">
+	<cfset variables.settingsManager=arguments.settingsManager>
+	<cfreturn this>
+</cffunction>
+
 <cffunction name="set" returnType="any" output="false" access="public">
 	<cfargument name="user" type="any" required="true">
 
@@ -165,15 +177,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		
 	<cfif isdefined('arguments.user.siteid') and trim(arguments.user.siteid) neq ''>
 		<cfif isdefined('arguments.user.switchToPublic') and trim(arguments.user.switchToPublic) eq '1'>
-			<cfset variables.instance.siteID=getBean("settingsManager").getSite(arguments.user.siteid).getPublicUserPoolID() />
+			<cfset variables.instance.siteID=variables.settingsManager.getSite(arguments.user.siteid).getPublicUserPoolID() />
 			<cfset variables.instance.ispublic=1 />
 		<cfelseif isdefined('arguments.user.switchToPrivate') and trim(arguments.user.switchToPrivate) eq '1'>
-			<cfset variables.instance.siteID=getBean("settingsManager").getSite(arguments.user.siteid).getPrivateUserPoolID() />
+			<cfset variables.instance.siteID=variables.settingsManager.getSite(arguments.user.siteid).getPrivateUserPoolID() />
 			<cfset variables.instance.ispublic=0 />
 		<cfelseif variables.instance.ispublic eq 0>
-			<cfset setSiteID(getBean("settingsManager").getSite(arguments.user.siteid).getPrivateUserPoolID()) />
+			<cfset setSiteID(variables.settingsManager.getSite(arguments.user.siteid).getPrivateUserPoolID()) />
 		<cfelse>
-			<cfset setSiteID(getBean("settingsManager").getSite(arguments.user.siteid).getPublicUserPoolID()) />
+			<cfset setSiteID(variables.settingsManager.getSite(arguments.user.siteid).getPublicUserPoolID()) />
 		</cfif>
 	</cfif>
 
@@ -288,7 +300,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 	
 <cffunction name="getAddressesQuery" returnType="query" output="false" access="public">
-   <cfreturn getBean("userManager").getAddresses(getUserID()) />
+   <cfreturn variables.userManager.getAddresses(getUserID()) />
 </cffunction>
 
 <cffunction name="getAddressesIterator" returnType="any" output="false" access="public">
@@ -315,9 +327,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var rsCheck=""/>
 	<cfquery name="rsCheck" datasource="#getBean("configBean").getDatasource()#" username="#getBean("configBean").getDBUsername()#" password="#getBean("configBean").getDBPassword()#">
 		select username from tusers where type=2 and email=<cfqueryparam cfsqltype="cf_sql_varchar" value="#trim(variables.instance.email)#"> and UserID <> <cfqueryparam cfsqltype="cf_sql_varchar" value="#trim(getUserID())#">  
-		and (siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getBean("settingsManager").getSite(variables.instance.siteid).getPrivateUserPoolID()#">
+		and (siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.settingsManager.getSite(variables.instance.siteid).getPrivateUserPoolID()#">
 			or 
-			siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getBean("settingsManager").getSite(variables.instance.siteid).getPublicUserPoolID()#">
+			siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.settingsManager.getSite(variables.instance.siteid).getPublicUserPoolID()#">
 			) 
 	</cfquery>
 		
@@ -351,27 +363,27 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfif len(variables.instance.password) and yesNoFormat(getBean("configBean").getValue("strongPasswords"))>
 
 			<cfif not reFind(getBean("configBean").getValue("strongPasswordRegex"),variables.instance.password) or variables.instance.username eq variables.instance.password>
-				<cfset variables.instance.errors.username=getBean("settingsManager").getSite(variables.instance.siteID).getRBFactory().getKey("user.passwordstrengthvalidate") />
+				<cfset variables.instance.errors.username=variables.settingsManager.getSite(variables.instance.siteID).getRBFactory().getKey("user.passwordstrengthvalidate") />
 			</cfif>
 				
 		</cfif>
 		
 		<cfif variables.instance.type eq 2 and (variables.instance.username eq "" or not checkUsername())>
-			<cfset variables.instance.errors.username=getBean("settingsManager").getSite(variables.instance.siteID).getRBFactory().getResourceBundle().messageFormat( getBean("settingsManager").getSite(variables.instance.siteID).getRBFactory().getKey("user.usernamevalidate") , variables.instance.username ) />
+			<cfset variables.instance.errors.username=variables.settingsManager.getSite(variables.instance.siteID).getRBFactory().getResourceBundle().messageFormat( variables.settingsManager.getSite(variables.instance.siteID).getRBFactory().getKey("user.usernamevalidate") , variables.instance.username ) />
 		</cfif>
 			
 		<cfif variables.instance.type eq 2 and variables.instance.email eq "" >
-			<cfset variables.instance.errors.email=getBean("settingsManager").getSite(variables.instance.siteID).getRBFactory().getKey("user.emailrequired") />
+			<cfset variables.instance.errors.email=variables.settingsManager.getSite(variables.instance.siteID).getRBFactory().getKey("user.emailrequired") />
 		</cfif>
 			
 		<!--- If captcha data has been submitted validate it --->
 		<cfif not (not len(variables.instance.hKey) or variables.instance.hKey eq hash(variables.instance.uKey))>
-		<cfset variables.instance.errors.SecurityCode=getBean("settingsManager").getSite(variables.instance.siteID).getRBFactory().getKey("captcha.error")/>
+		<cfset variables.instance.errors.SecurityCode=variables.settingsManager.getSite(variables.instance.siteID).getRBFactory().getKey("captcha.error")/>
 		</cfif>
 		
 		<!--- If cfformprotect has been submitted validate it --->
 		<cfif not variables.instance.passedProtect>
-		<cfset variables.instance.errors.Spam=getBean("settingsManager").getSite(variables.instance.siteID).getRBFactory().getKey("captcha.spam")/>
+		<cfset variables.instance.errors.Spam=variables.settingsManager.getSite(variables.instance.siteID).getRBFactory().getKey("captcha.spam")/>
 		</cfif>
 	
 	<cfelse>
@@ -382,7 +394,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
  
 <cffunction name="getAddressByID" returnType="query" output="false" access="public">
 	<cfargument name="addressID" type="string" required="true">
-	<cfreturn getBean("userManager").getAddressByID(arguments.addressID) />
+	<cfreturn variables.userManager.getAddressByID(arguments.addressID) />
 </cffunction>
 
 <cffunction name="getAddressBeanByID" returnType="any" output="false" access="public">
@@ -424,7 +436,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="save" output="false" access="public">
 	<cfset var i="">
 	<cfset var address="">
-	<cfset setAllValues(getBean("userManager").save(this).getAllValues())>
+	<cfset setAllValues(variables.userManager.save(this).getAllValues())>
 	
 	<cfif arrayLen(variables.newAddresses)>
 		<cfloop from="1" to="#arrayLen(variables.newAddresses)#" index="i">
@@ -438,11 +450,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="delete" output="false" access="public">
-	<cfset getBean("userManager").delete(getUserID(),variables.instance.type)>
+	<cfset variables.userManager.delete(getUserID(),variables.instance.type)>
 </cffunction>
 
 <cffunction name="getMembersQuery" returnType="query" output="false" access="public">
-   <cfreturn getBean("userManager").readGroupMemberships(getUserID()) />
+   <cfreturn variables.userManager.readGroupMemberships(getUserID()) />
 </cffunction>
 
 <cffunction name="getMembersIterator" returnType="any" output="false" access="public">
@@ -452,7 +464,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="getMembershipsQuery" returnType="query" output="false" access="public">
-   <cfreturn getBean("userManager").readMemberships(getUserID()) />
+   <cfreturn variables.userManager.readMemberships(getUserID()) />
 </cffunction>
 
 <cffunction name="getMembershipsIterator" returnType="any" output="false" access="public">
@@ -462,7 +474,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="getInterestGroupsQuery" returnType="query" output="false" access="public">
-   <cfreturn getBean("userManager").readInterestGroups(getUserID()) />
+   <cfreturn variables.userManager.readInterestGroups(getUserID()) />
 </cffunction>
 
 <cffunction name="getInterestGroupsIterator" returnType="any" output="false" access="public">
@@ -481,7 +493,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<cfset arguments.userBean=this>
 	
-	<cfreturn getBean("userManager").read(argumentCollection=arguments)>
+	<cfreturn variables.userManager.read(argumentCollection=arguments)>
 </cffunction>
 
 <cffunction name="addAddress" output="false" >

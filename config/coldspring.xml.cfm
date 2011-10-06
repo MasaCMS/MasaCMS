@@ -55,7 +55,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
        			<value>#XMLFormat(variables.iniProperties.useFileMode)#</value>
  			</constructor-arg>  
 		</bean>
-		<bean id="contentRenderer" class="mura.content.contentRenderer"  singleton="false" />
 		<bean id="contentManager" class="mura.content.contentManager" singleton="true">
 			<constructor-arg name="configBean"><ref bean="configBean" /></constructor-arg>
 			<constructor-arg name="contentGateway"><ref bean="contentGateway" /></constructor-arg>
@@ -80,6 +79,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<constructor-arg name="configBean"><ref bean="configBean" /></constructor-arg>
 			<constructor-arg name="settingsManager"><ref bean="settingsManager" /></constructor-arg>
 		</bean>
+		<bean id="contentRenderer" class="mura.content.contentRenderer" singleton="true"/>
 		<bean id="contentDAO" class="mura.content.contentDAO" singleton="true">
 			<constructor-arg name="configBean"><ref bean="configBean" /></constructor-arg>
 			<constructor-arg name="settingsManager"><ref bean="settingsManager" /></constructor-arg>
@@ -95,12 +95,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			    <ref bean="mailer"/>
 			</property>
 		</bean>
-		<bean id="contentBean" class="mura.content.contentBean" singleton="false"/>
-		<bean id="contentNavBean" class="mura.content.contentNavBean" singleton="false"/>
-		<bean id="contentStatsBean" class="mura.content.contentStatsBean" singleton="false"/>
-		<bean id="contentIterator" class="mura.content.contentIterator" singleton="false"/>
-		<bean id="contentCommentIterator" class="mura.content.contentCommentIterator" singleton="false"/>
-		<bean id="contentCommentBean" class="mura.content.contentCommentBean" singleton="false"/>
 		<bean id="HTMLExporter" class="mura.content.contentHTMLExporter" singleton="true">
 			<constructor-arg name="configBean"><ref bean="configBean" /></constructor-arg>
 			<constructor-arg name="settingsManager"><ref bean="settingsManager" /></constructor-arg>
@@ -119,7 +113,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<constructor-arg name="pluginManager"><ref bean="pluginManager" /></constructor-arg>
 			<constructor-arg name="fileWriter"><ref bean="fileWriter" /></constructor-arg>
 		</bean>
-		<bean id="image" class="mura.content.file.imagecfc.image" singleton="false" />
+		
 		<bean id="reminderManager" class="mura.content.reminder.reminderManager" singleton="true">
 			<constructor-arg name="reminderGateway"><ref bean="reminderGateway" /></constructor-arg>
 			<constructor-arg name="reminderDAO"><ref bean="reminderDAO" /></constructor-arg>
@@ -140,7 +134,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<ref bean="mailer"/>
 			</property>
 		</bean>
-		<bean id="reminderBean" class="mura.content.reminder.reminderBean" singleton="false" />
 		<bean id="permUtility" class="mura.permission" singleton="true">
 			<constructor-arg name="configBean"><ref bean="configBean" /></constructor-arg>
 			<constructor-arg name="settingsManager"><ref bean="settingsManager" /></constructor-arg>
@@ -169,7 +162,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<bean id="categoryDAO" class="mura.category.categoryDAO" singleton="true" >
 			<constructor-arg name="configBean"><ref bean="configBean" /></constructor-arg>
 		</bean>
-		<bean id="categoryIterator" class="mura.category.categoryIterator" singleton="false"/>
 		<bean id="categoryGateway" class="mura.category.categoryGateway" singleton="true">
 			<constructor-arg name="configBean"><ref bean="configBean" /></constructor-arg>
 			<constructor-arg name="settingsManager"><ref bean="settingsManager" /></constructor-arg>
@@ -179,7 +171,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<constructor-arg name="settingsManager"><ref bean="settingsManager" /></constructor-arg>
 			<constructor-arg name="configBean"><ref bean="configBean" /></constructor-arg>
 		</bean>
-		<bean id="categoryBean" class="mura.category.categoryBean"  singleton="false"/>
 		<bean id="settingsManager" class="mura.settings.settingsManager" singleton="true">
 			<constructor-arg name="settingsGateway"><ref bean="settingsGateway" /></constructor-arg>
 			<constructor-arg name="settingsDAO"><ref bean="settingsDAO" /></constructor-arg>
@@ -194,10 +185,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<constructor-arg name="configBean"><ref bean="configBean" /></constructor-arg>
 			<constructor-arg name="clusterManager"><ref bean="clusterManager" /></constructor-arg>
 		</bean>
-		<bean id="settingsBean" class="mura.settings.settingsBean" singleton="false"/>
-		<bean id="settingsBundle" class="mura.settings.settingsBundle" singleton="false">
-            <constructor-arg name="configBean"><ref bean="configBean" /></constructor-arg>
-        </bean>
 		<bean id="userManager" class="mura.user.userManager" singleton="true">
 			<constructor-arg name="configBean"><ref bean="configBean" /></constructor-arg>
 			<constructor-arg name="userDAO"><ref bean="userDAO" /></constructor-arg>
@@ -214,9 +201,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<constructor-arg name="configBean"><ref bean="configBean" /></constructor-arg>
 			<constructor-arg name="settingsManager"><ref bean="settingsManager" /></constructor-arg>
 		</bean>
-		<bean id="userIterator" class="mura.user.userIterator" singleton="false"/>
-		<bean id="userFeedBean" class="mura.user.userFeedBean" singleton="false"/>
-		<bean id="addressIterator" class="mura.user.addressIterator" singleton="false"/>
 		<bean id="userUtility" class="mura.user.userUtility" singleton="true">
 			<constructor-arg name="configBean"><ref bean="configBean" /></constructor-arg>
 			<constructor-arg name="utility"><ref bean="utility" /></constructor-arg>
@@ -231,8 +215,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<constructor-arg name="configBean"><ref bean="configBean" /></constructor-arg>
 			<constructor-arg name="settingsManager"><ref bean="settingsManager" /></constructor-arg>
 		</bean>
-		<bean id="userBean" class="mura.user.userBean"  singleton="false"/>
-		<bean id="addressBean" class="mura.user.addressBean"  singleton="false"/>
 		<bean id="loginManager" class="mura.login.loginManager" singleton="true" >
 			<constructor-arg name="userUtility"><ref bean="userUtility" /></constructor-arg>
 			<constructor-arg name="userDAO"><ref bean="userDAO" /></constructor-arg>
@@ -251,8 +233,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<constructor-arg name="settingsManager"><ref bean="settingsManager" /></constructor-arg>
 			<constructor-arg name="trashManager"><ref bean="trashManager" /></constructor-arg>
 		</bean>
-		<bean id="mailinglistBean" class="mura.mailinglist.mailinglistBean" singleton="false" />
-		<bean id="memberBean" class="mura.mailinglist.memberBean" singleton="false" />
 		<bean id="mailinglistDAO" class="mura.mailinglist.mailinglistDAO" singleton="true">
 			<constructor-arg name="configBean"><ref bean="configBean" /></constructor-arg>
 		</bean>
@@ -300,7 +280,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<ref bean="mailer"/> 			
 			</property>
 		</bean>
-		<bean id="emailBean" class="mura.email.emailBean" singleton="false" />
 		<bean id="advertiserManager" class="mura.advertising.advertiserManager" singleton="true">
 			<constructor-arg name="configBean"><ref bean="configBean" /></constructor-arg>
 			<constructor-arg name="advertiserGateway"><ref bean="advertiserGateway" /></constructor-arg>
@@ -338,7 +317,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<bean id="campaignDAO" class="mura.advertising.campaign.campaignDAO" singleton="true">
 			<constructor-arg name="configBean"><ref bean="configBean" /></constructor-arg>
 		</bean>
-		<bean id="campaignBean" class="mura.advertising.campaign.campaignBean" singleton="false" />
 		<bean id="placementManager" class="mura.advertising.campaign.placement.placementManager" singleton="true">
 			<constructor-arg name="configBean"><ref bean="configBean" /></constructor-arg>
 			<constructor-arg name="placementGateway"><ref bean="placementGateway" /></constructor-arg>
@@ -352,7 +330,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<bean id="placementDAO" class="mura.advertising.campaign.placement.placementDAO" singleton="true">
 			<constructor-arg name="configBean"><ref bean="configBean" /></constructor-arg>
 		</bean>
-		<bean id="placementBean" class="mura.advertising.campaign.placement.placementBean" singleton="false" />
 		<bean id="adZoneManager" class="mura.advertising.adZone.adZoneManager" singleton="true">
 			<constructor-arg name="configBean"><ref bean="configBean" /></constructor-arg>
 			<constructor-arg name="adZoneGateway"><ref bean="adZoneGateway" /></constructor-arg>
@@ -367,7 +344,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<bean id="adZoneDAO" class="mura.advertising.adZone.adZoneDAO" singleton="true">
 			<constructor-arg name="configBean"><ref bean="configBean" /></constructor-arg>
 		</bean>
-		<bean id="adZoneBean" class="mura.advertising.adZone.adZoneBean" singleton="false" />
 		<bean id="creativeManager" class="mura.advertising.creative.creativeManager" singleton="true">
 			<constructor-arg name="configBean"><ref bean="configBean" /></constructor-arg>
 			<constructor-arg name="creativeGateway"><ref bean="creativeGateway" /></constructor-arg>
@@ -382,7 +358,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<bean id="creativeDAO" class="mura.advertising.creative.creativeDAO" singleton="true">
 			<constructor-arg name="configBean"><ref bean="configBean" /></constructor-arg>
 		</bean>
-		<bean id="creativeBean" class="mura.advertising.creative.creativeBean" singleton="false" />
 		<bean id="feedManager" class="mura.content.feed.feedManager" singleton="true">
 			<constructor-arg name="configBean"><ref bean="configBean" /></constructor-arg>
 			<constructor-arg name="feedGateway"><ref bean="feedGateway" /></constructor-arg>
@@ -404,11 +379,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<constructor-arg name="utility"><ref bean="utility" /></constructor-arg>
 			<constructor-arg name="contentManager"><ref bean="contentManager" /></constructor-arg>
 		</bean>
-		<bean id="feedBean" class="mura.content.feed.feedBean" singleton="false">
-			<property name="feedManager"> 			   
-				<ref bean="feedManager"/> 		
-			</property>
-		</bean>
 		<bean id="sessionTrackingManager" class="mura.user.sessionTracking.sessionTrackingManager" singleton="true">
 			<constructor-arg name="configBean"><ref bean="configBean" /></constructor-arg>
 			<constructor-arg name="settingsManager"><ref bean="settingsManager" /></constructor-arg>
@@ -427,12 +397,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<constructor-arg name="configBean"><ref bean="configBean" /></constructor-arg>
 			<constructor-arg name="settingsManager"><ref bean="settingsManager" /></constructor-arg>
 		</bean>
-		<bean id="favoriteBean" class="mura.content.favorite.favoriteBean" singleton="false"/>
 		<bean id="raterManager" class="mura.content.rater.raterManager" singleton="true">
 			<constructor-arg name="configBean"><ref bean="configBean" /></constructor-arg>
 			<constructor-arg name="settingsManager"><ref bean="settingsManager" /></constructor-arg>
 		</bean>
-		<bean id="rateBean" class="mura.content.rater.rateBean" singleton="false"/>
 		<bean id="dashboardManager" class="mura.dashboard.dashboardManager" singleton="true">
 			<constructor-arg name="configBean"><ref bean="configBean" /></constructor-arg>
 			<constructor-arg name="advertiserGateway"><ref bean="advertiserGateway" /></constructor-arg>
@@ -445,7 +413,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<constructor-arg name="feedGateway"><ref bean="feedGateway" /></constructor-arg>
 		</bean>
 		<bean id="publisher" <cfif (server.coldfusion.productname eq "ColdFusion Server" and listFirst(server.coldfusion.productversion) lt 8) or (server.coldfusion.productname eq "Railo" and listFirst(server.railo.version,".") lt 3)>class="mura.publisherLimited"<cfelse>class="mura.publisher"</cfif> singleton="true"/>
-		<bean id="servlet" class="mura.servlet" singleton="false" />
 		<bean id="geoCoding" class="mura.geoCoding.googleGeoCode" singleton="true" />
 		<bean id="resourceBundleFactory" class="mura.resourceBundle.resourceBundleFactory" singleton="true" />
 		<bean id="pluginManager" class="mura.plugin.pluginManager" singleton="true">
@@ -455,9 +422,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<constructor-arg name="standardEventsHandler"><ref bean="standardEventsHandler" /></constructor-arg>
 			<constructor-arg name="fileWriter"><ref bean="fileWriter" /></constructor-arg>
 		</bean>
-		<bean id="pluginScriptBean" class="mura.plugin.pluginScriptBean" singleton="false"/>
-		<bean id="pluginDisplayObjectBean" class="mura.plugin.pluginDisplayObjectBean" singleton="false"/>
-		<bean id="pluginSettingBean" class="mura.plugin.pluginSettingBean" singleton="false"/>
+		
 		<bean id="clusterManager" class="mura.cluster.clusterManager" singleton="true">
 			<constructor-arg name="configBean"><ref bean="configBean" /></constructor-arg>
 		</bean>
@@ -474,16 +439,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<constructor-arg name="configBean"><ref bean="configBean" /></constructor-arg>
 			<constructor-arg name="fileWriter"><ref bean="fileWriter" /></constructor-arg>
 		</bean>
-		<bean id="extendObjectIterator" class="mura.extend.extendObjectIterator" singleton="false">
-			<constructor-arg name="configBean"><ref bean="configBean" /></constructor-arg>
-		</bean>
-		<bean id="extendObject" class="mura.extend.extendObject" singleton="false">
-			<constructor-arg name="configBean"><ref bean="configBean" /></constructor-arg>
-		</bean>
-		<bean id="extendObjectFeedBean" class="mura.extend.extendObjectFeedBean" singleton="false">
-			<constructor-arg name="configBean"><ref bean="configBean" /></constructor-arg>
-		</bean>
-		<bean id="trashManager" class="mura.trash.trashManager" singleton="false">
+		<bean id="trashManager" class="mura.trash.trashManager" singleton="true">
 			<property name="configBean">
 			    <ref bean="configBean"/>
 			</property>
@@ -498,49 +454,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<property name="trashManager">
 			    <ref bean="trashManager"/>
 			</property>
-		</bean>
-		<bean id="changesetBean" class="mura.content.changeset.changesetBean" singleton="false"/>
-		<bean id="changesetIterator" class="mura.content.changeset.changesetIterator" singleton="false"/>
+		</bean>	
 		<bean id="scriptProtectionFilter" class="mura.Portcullis" singleton="true" />
-		<bean id="MuraScope" class="mura.MuraScope" singleton="false">
-			<property name="contentBean">
-				<value>dummy arg to prevent autowiring objects</value>
-			</property>
-			<property name="contentRenderer">
-				<value>dummy arg to prevent autowiring objects</value>
-			</property>
-		</bean>
-		<bean id="HTTPSession" class="mura.http.httpSession" singleton="false">
-			<constructor-arg name="configBean"><ref bean="configBean" /></constructor-arg>
-		</bean>
-		<bean id="httpSession" class="mura.client.httpSession" singleton="false">
-			<constructor-arg name="configBean"><ref bean="configBean" /></constructor-arg>
-		</bean>
-		<bean id="formBuilderManager" class="mura.formBuilder.formBuilderManager" singleton="true">
-		</bean>
-		<alias name="contentBean" alias="content"/>
-		<alias name="feedBean" alias="feed"/>
-		<alias name="settingsBean" alias="site"/>
-		<alias name="userBean" alias="user"/>
-		<alias name="userBean" alias="group"/>
-		<alias name="addressBean" alias="address"/>
-		<alias name="categoryBean" alias="category"/>
-		<alias name="userFeedBean" alias="userFeed"/>
-		<alias name="contentCommentBean" alias="comment"/>
-		<alias name="contentStatsBean" alias="stats"/>
-		<alias name="changesetBean" alias="changeset"/>
+		<bean id="formBuilderManager" class="mura.formBuilder.formBuilderManager" singleton="true"/>
 		<alias name="pluginManager" alias="eventManager"/>
-		<alias name="settingsBundle" alias="bundle"/>
-		<alias name="mailingListBean" alias="mailingList"/>
-		<alias name="memberBean" alias="mailingListMember"/>
-		<alias name="userDAO" alias="groupDAO"/>
-		<alias name="placementBean" alias="placement"/>
-		<alias name="creativeBean" alias="creative"/>
-		<alias name="rateBean" alias="rate"/>
-		<alias name="favoriteBean" alias="favorite"/>
-		<alias name="campaignBean" alias="campaign"/>
-		<alias name="emailBean" alias="email"/>
+		<bean id="beanInjector" class="mura.bean.beanInjector" />
 		<!---coldspring.custom.xml.cfm reference is for backwards compatability --->
 		<cfif fileExists(expandPath("/muraWRM/config/coldspring.custom.xml.cfm"))><cfinclude template="/muraWRM/config/coldspring.custom.xml.cfm"></cfif>
 	</beans></cfoutput>
-	</cfsavecontent>
+</cfsavecontent>

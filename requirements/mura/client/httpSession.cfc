@@ -58,7 +58,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset variables.throwOnError="yes">
 <cfset variables.userAgent=CGI.http_user_agent>
 
-<cffunction name="init" returntype="any" output="false" access="public">
+<cffunction name="setConfigBean" returntype="any" output="false" access="public">
 	<cfargument name="configBean">
 	<cfset variables.configBean=arguments.configBean>	
 	<cfreturn this />

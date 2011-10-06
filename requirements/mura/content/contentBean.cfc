@@ -216,6 +216,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this />
 </cffunction>
 
+<cffunction name="setContentManager">
+	<cfargument name="contentManager">
+	<cfset variables.contentManager=arguments.contentManager>
+	<cfreturn this>
+</cffunction>
+
 <cffunction name="set" returnType="any" output="false" access="public">
     <cfargument name="content" type="any" required="true">
 	
@@ -380,7 +386,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var extErrors=structNew() />
 	
 	<cfif len(variables.instance.siteID)>
-		<cfset extErrors=getBean("configBean").getClassExtensionManager().validateExtendedData(getAllValues())>
+		<cfset extErrors=variables.configBean.getClassExtensionManager().validateExtendedData(getAllValues())>
 	</cfif>
 		
 	<cfset variables.instance.errors=structnew() />
@@ -409,7 +415,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			
 		<cfif not structIsEmpty(variables.displayRegions)>
 			<cfloop collection="#variables.displayRegions#" item="i">
-				<cfset variables.instance[i]=getBean("contentManager").formatRegionObjectsString(variables.displayRegions[i])>
+				<cfset variables.instance[i]=variables.contentManager.formatRegionObjectsString(variables.displayRegions[i])>
 			</cfloop>
 		</cfif>
 	</cfif>
@@ -583,7 +589,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var returnList="">
 	<cfset var i=0>
 	<cfset var finder=0>
-	<cfset var rsExtend=getBean('configBean').getClassExtensionManager().getExtendedAttributeList(variables.instance.siteID,"tcontent")>
+	<cfset var rsExtend=variables.configBean.getClassExtensionManager().getExtendedAttributeList(variables.instance.siteID,"tcontent")>
 	
 	<cfif variables.instance.type neq "Gallery">
 		<cfset returnList="Date,Title,Image,Summary,Credits,Comments,Tags,Rating">
@@ -669,7 +675,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
   
 <cffunction name="getKidsQuery" returnType="query" output="false" access="public">
 	<cfargument name="aggregation" required="true" default="false">
-	<cfreturn getBean("contentManager").getKidsQuery(siteID:variables.instance.siteID, parentID:getContentID(), sortBy:variables.instance.sortBy, sortDirection:variables.instance.sortDirection, aggregation=arguments.aggregation) />
+	<cfreturn variables.contentManager.getKidsQuery(siteID:variables.instance.siteID, parentID:getContentID(), sortBy:variables.instance.sortBy, sortDirection:variables.instance.sortDirection, aggregation=arguments.aggregation) />
 </cffunction>
 
 <cffunction name="getKidsIterator" returnType="any" output="false" access="public">
@@ -681,7 +687,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif arguments.liveOnly>
 		<cfset q=getKidsQuery(aggregation=arguments.aggregation) />
 	<cfelse>
-		<cfset q=getBean("contentManager").getNest( parentID:getContentID(), siteID:variables.instance.siteID, sortBy:variables.instance.sortby, sortDirection:variables.instance.sortdirection) />
+		<cfset q=variables.contentManager.getNest( parentID:getContentID(), siteID:variables.instance.siteID, sortBy:variables.instance.sortby, sortDirection:variables.instance.sortdirection) />
 	</cfif>
 	<cfset it.setQuery(q,variables.instance.nextn)>
 	
@@ -689,7 +695,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="getVersionHistoryQuery" returnType="query" output="false" access="public">
-	<cfreturn getBean("contentManager").getHist(getContentID(), variables.instance.siteID) />
+	<cfreturn variables.contentManager.getHist(getContentID(), variables.instance.siteID) />
 </cffunction>
 
 <cffunction name="getVersionHistoryIterator" returnType="any" output="false" access="public">
@@ -700,7 +706,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="getCategoriesQuery" returnType="query" output="false" access="public">
-	<cfreturn getBean("contentManager").getCategoriesByHistID(getContentHistID()) />
+	<cfreturn variables.contentManager.getCategoriesByHistID(getContentHistID()) />
 </cffunction>
 
 <cffunction name="getCategoriesIterator" returnType="any" output="false" access="public">
@@ -714,7 +720,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="liveOnly" type="boolean" required="yes" default="false" />
 	<cfargument name="today" type="date" required="yes" default="#now()#" />
 	
-	<cfreturn getBean("contentManager").getRelatedContent(variables.instance.siteID, getContentHistID(), arguments.liveOnly, arguments.today) />
+	<cfreturn variables.contentManager.getRelatedContent(variables.instance.siteID, getContentHistID(), arguments.liveOnly, arguments.today) />
 </cffunction>
 
 <cffunction name="getRelatedContentIterator" returnType="any" output="false" access="public">
@@ -730,7 +736,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="save" returnType="any" output="false" access="public">
 	<cfset var kid="">
 	<cfset var i="">
-	<cfset setAllValues(getBean("contentManager").save(this).getAllValues())>
+	<cfset setAllValues(variables.contentManager.save(this).getAllValues())>
 	
 	<cfif arrayLen(variables.kids)>
 		<cfloop from="1" to="#arrayLen(variables.kids)#" index="i">
@@ -810,7 +816,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="regionID">
 	<cfset var rs="">
 	<cfif not structKeyExists(variables.displayRegions,"objectlist#arguments.regionID#")>
-		<cfset variables.displayRegions["objectlist#arguments.regionID#"]=getBean("contentManager").getRegionObjects(getContentHistID(), variables.instance.siteID, arguments.regionID)>
+		<cfset variables.displayRegions["objectlist#arguments.regionID#"]=variables.contentManager.getRegionObjects(getContentHistID(), variables.instance.siteID, arguments.regionID)>
 	</cfif>
 	
 	<cfreturn variables.displayRegions["objectlist#arguments.regionID#"]>	
@@ -818,7 +824,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="deleteVersion" returnType="any" output="false" access="public">
 	<cfif not getActive()>
-		<cfset getBean("contentManager").delete(getAllValues()) />
+		<cfset variables.contentManager.delete(getAllValues()) />
 		<cfreturn true>
 	<cfelse>
 		<cfreturn false>
@@ -826,11 +832,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="deleteVersionHistory" output="false" access="public">
-	<cfset getBean("contentManager").deleteHistAll(getAllValues()) />
+	<cfset variables.contentManager.deleteHistAll(getAllValues()) />
 </cffunction>
 
 <cffunction name="delete" output="false" access="public">
-	<cfset getBean("contentManager").deleteAll(getAllValues()) />
+	<cfset variables.contentManager.deleteAll(getAllValues()) />
 </cffunction>
 
 <cffunction name="loadBy" returnType="any" output="false" access="public">
@@ -840,7 +846,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<cfset arguments.contentBean=this>
 	
-	<cfreturn getBean("contentManager").read(argumentCollection=arguments)>
+	<cfreturn variables.contentManager.read(argumentCollection=arguments)>
 </cffunction>
 
 <cffunction name="getStats" returnType="any" output="false" access="public">
@@ -855,7 +861,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="isEditor" type="boolean" required="true" default="false">
 	<cfargument name="sortOrder" type="string" required="true" default="asc">
 	<cfargument name="parentID" type="string" required="true" default="">
-	<cfreturn getBean("contentManager").readComments(getContentID(), variables.instance.siteID, arguments.isEditor, arguments.sortOrder, arguments.parentID) />
+	<cfreturn variables.contentManager.readComments(getContentID(), variables.instance.siteID, arguments.isEditor, arguments.sortOrder, arguments.parentID) />
 </cffunction>
 
 <cffunction name="getCommentsIterator" returnType="any" output="false" access="public">
@@ -870,7 +876,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="getParent" output="false" returntype="any">
 	<cfif getContentID() neq '00000000000000000000000000000000001'>
-		<cfreturn getBean("contentManager").read(contentID=variables.instance.parentID,siteID=variables.instance.siteID)>
+		<cfreturn variables.contentManager.read(contentID=variables.instance.parentID,siteID=variables.instance.siteID)>
 	<cfelse>
 		<cfthrow message="Parent content does not exist.">
 	</cfif>
@@ -879,7 +885,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="getCrumbArray" output="false" returntype="any">
 	<cfargument name="sort" required="true" default="asc">
 	<cfargument name="setInheritance" required="true" type="boolean" default="false">
-	<cfreturn getBean("contentManager").getCrumbList(contentID=getContentID(), siteID=variables.instance.siteID, setInheritance=arguments.setInheritance, path=variables.instance.path, sort=arguments.sort)>
+	<cfreturn variables.contentManager.getCrumbList(contentID=getContentID(), siteID=variables.instance.siteID, setInheritance=arguments.setInheritance, path=variables.instance.path, sort=arguments.sort)>
 </cffunction>
 
 <cffunction name="getCrumbIterator" output="false" returntype="any">
@@ -892,14 +898,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="hasDrafts" returntype="any" access="public" output="false">
-	<cfreturn getBean("contentManager").getHasDrafts(getContentID(),variables.instance.siteID) />
+	<cfreturn variables.contentManager.getHasDrafts(getContentID(),variables.instance.siteID) />
 </cffunction>
 
 <cffunction name="getURL" output="false">
 	<cfargument name="querystring" required="true" default="">
 	<cfargument name="complete" type="boolean" required="true" default="false">
 	<cfargument name="showMeta" type="string" required="true" default="0">
-	 <cfreturn getBean("contentManager").getURL(this, arguments.queryString,arguments.complete, arguments.showMeta)>
+	 <cfreturn variables.contentManager.getURL(this, arguments.queryString,arguments.complete, arguments.showMeta)>
 </cffunction>		
 
 <cffunction name="getEditUrl" access="public" returntype="string" output="false">
@@ -911,7 +917,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset topID=variables.instance.moduleID>
 	</cfif>
 	
-	<cfset returnStr= "#getBean("configBean").getContext()#/admin/?fuseaction=cArch.edit&contentHistId=#getContentHistId()#&contentId=#getContentId()#&Type=#variables.instance.type#&siteId=#variables.instance.siteID#&topId=#topID#&parentId=#variables.instance.parentID#&moduleId=#variables.instance.moduleID#&compactDisplay=#arguments.compactdisplay#" >
+	<cfset returnStr= "#variables.configBean.getContext()#/admin/?fuseaction=cArch.edit&contentHistId=#getContentHistId()#&contentId=#getContentId()#&Type=#variables.instance.type#&siteId=#variables.instance.siteID#&topId=#topID#&parentId=#variables.instance.parentID#&moduleId=#variables.instance.moduleID#&compactDisplay=#arguments.compactdisplay#" >
 	
 	<cfreturn returnStr>
 </cffunction> 
@@ -936,7 +942,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="height" default=""/>
 	<cfargument name="width" default=""/>
 	<cfset arguments.bean=this>
-	<cfreturn getBean("contentManager").getImageURL(argumentCollection=arguments)>
+	<cfreturn variables.contentManager.getImageURL(argumentCollection=arguments)>
 </cffunction>
 
 <cffunction name="clone" output="false">

@@ -101,6 +101,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this />
 </cffunction>
 
+<cffunction name="setUserManager">
+	<cfargument name="userManager">
+	<cfset variables.userManager=arguments.userManager>
+	<cfreturn this>
+</cffunction>
+
+<cffunction name="setSettingsManager">
+	<cfargument name="settingsManager">
+	<cfset variables.settingsManager=arguments.settingsManager>
+	<cfreturn this>
+</cffunction>
+
 <cffunction name="set" returnType="any" output="false" access="public">
 	<cfargument name="args" type="any" required="true">
 
@@ -120,9 +132,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif isdefined('arguments.args.siteid') and trim(arguments.args.siteid) neq ''
 		and isdefined('arguments.args.isPublic') and trim(arguments.args.isPublic) neq ''>
 		<cfif arguments.args.isPublic eq 0>
-			<cfset setSiteID(getBean("settingsManager").getSite(arguments.args.siteid).getPrivateUserPoolID()) />
+			<cfset setSiteID(variables.settingsManager.getSite(arguments.args.siteid).getPrivateUserPoolID()) />
 		<cfelse>
-			<cfset setSiteID(getBean("settingsManager").getSite(arguments.args.siteid).getPublicUserPoolID()) />
+			<cfset setSiteID(variables.settingsManager.getSite(arguments.args.siteid).getPublicUserPoolID()) />
 		</cfif>
 	</cfif>
 
@@ -135,7 +147,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var googleAPIKey="" />
 	
 	<cfif len(variables.instance.siteID)>
-		<cfset googleAPIKey=getBean("settingsManager").getSite(variables.instance.siteID).getGoogleAPIKey() />
+		<cfset googleAPIKey=variables.settingsManager.getSite(variables.instance.siteID).getGoogleAPIKey() />
 		<cfif len(googleAPIKey)>
 		
 			<cfif len(variables.instance.address1)>
@@ -191,7 +203,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var extErrors=structNew() />
 	
 	<cfif len(variables.instance.siteID)>
-		<cfset extErrors=getBean("configBean").getClassExtensionManager().validateExtendedData(getAllValues())>
+		<cfset extErrors=variables.configBean.getClassExtensionManager().validateExtendedData(getAllValues())>
 	</cfif>
 	
 	<cfset variables.instance.errors=structnew() />
@@ -228,21 +240,21 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="save" output="false" access="public" returntype="any">
 	<cfset var rs="">
-	<cfquery name="rs" datasource="#getBean("configBean").getDatasource()#" username="#getBean("configBean").getDbUsername()#" password="#getBean("configBean").getDbPassword()#">
+	<cfquery name="rs" datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDbUsername()#" password="#variables.configBean.getDbPassword()#">
 	select addressID from tuseraddresses where addressID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getAddressID()#">
 	</cfquery>
 	
 	<cfif rs.recordcount>
-		<cfset getBean("userManager").updateAddress(this)>
+		<cfset variables.userManager.updateAddress(this)>
 	<cfelse>
-		<cfset getBean("userManager").createAddress(this)>
+		<cfset variables.userManager.createAddress(this)>
 	</cfif>
 	
 	<cfreturn this>
 </cffunction>
 
 <cffunction name="delete" output="false" access="public">
-	<cfset getBean("userManager").deleteAddress(getAddressID())>
+	<cfset variables.userManager.deleteAddress(getAddressID())>
 </cffunction>
 
 <cffunction name="clone" output="false">

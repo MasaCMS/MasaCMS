@@ -86,6 +86,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this />
 </cffunction>
 
+<cffunction name="setContentManager">
+	<cfargument name="contentManager">
+	<cfset variables.contentManager=arguments.contentManager>
+	<cfreturn this>
+</cffunction>
+
+<cffunction name="setSettingsManager">
+	<cfargument name="settingsManager">
+	<cfset variables.settingsManager=arguments.settingsManager>
+	<cfreturn this>
+</cffunction>
+
 <cffunction name="getCommentID" returntype="String" access="public" output="false">
 	<cfif not len(variables.instance.commentID)>
 	<cfset variables.instance.commentID=createUUID() />
@@ -153,7 +165,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="getQuery"  access="public" output="false" returntype="query">
 	<cfset var rs=""/>
-	<cfquery name="rs" datasource="#getBean("configBean").getDatasource()#" username="#getBean("configBean").getDBUsername()#" password="#getBean("configBean").getDBPassword()#">
+	<cfquery name="rs" datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	select c.contentid,c.commentid,c.parentid,c.name,c.email,c.url,c.comments,c.entered,c.siteid,c.isApproved,c.subscribe, c.userID, c.path, k.kids, f.fileid, f.fileExt 
 	from tcontentcomments c left join (select count(*) kids, parentID 
 										from tcontentcomments where commentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getCommentID()#"> 
@@ -181,14 +193,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<cfset pluginManager.announceEvent("onBeforeCommentDelete",pluginEvent)>
 	
-	<cfquery datasource="#getBean("configBean").getDatasource()#" username="#getBean("configBean").getDBUsername()#" password="#getBean("configBean").getDBPassword()#">
+	<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	delete from tcontentcomments
 	where path like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#getCommentID()#%">
 	</cfquery>
 	
 	<cfset pluginManager.announceEvent("onAfterCommentDelete",pluginEvent)>
 	
-	<cfset getBean("contentManager").setCommentStat(getContentID(),variables.instance.siteID) />
+	<cfset variables.contentManager.setCommentStat(getContentID(),variables.instance.siteID) />
 </cffunction>
 
 <cffunction name="save" access="public" output="false">
@@ -210,7 +222,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset pluginEvent.init(eventArgs)>
 	
 	<cfif len(variables.instance.parentID)>
-		<cfset path=getBean("contentManager").getCommentBean().setCommentID(variables.instance.parentID).load().getPath()>
+		<cfset path=variables.contentManager.getCommentBean().setCommentID(variables.instance.parentID).load().getPath()>
 	</cfif>
 	
 	<cfset path=listAppend(path, getCommentID())>
@@ -221,7 +233,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		
 		<cfset pluginManager.announceEvent("onBeforeCommentUpdate",pluginEvent)>
 		
-		<cfquery datasource="#getBean("configBean").getDatasource()#" username="#getBean("configBean").getDBUsername()#" password="#getBean("configBean").getDBPassword()#">
+		<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 		update tcontentcomments set
 			contentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.contentID#"/>,
 			name=<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.name#"/>,
@@ -276,12 +288,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfif>
 	</cfif>
 	
-	<cfset getBean("contentManager").setCommentStat(variables.instance.contentID,variables.instance.siteID) />
+	<cfset variables.contentManager.setCommentStat(variables.instance.contentID,variables.instance.siteID) />
 	<cfreturn this>
 </cffunction>
 
 <cffunction name="saveSubscription" access="public" output="false">		
-	<cfquery datasource="#getBean("configBean").getDatasource()#" username="#getBean("configBean").getDBUsername()#" password="#getBean("configBean").getDBPassword()#">
+	<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 			update tcontentcomments set subscribe=<cfqueryparam cfsqltype="cf_sql_numeric" value="#variables.instance.subscribe#">
 			where contentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.contentID#">
 			and siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.siteID#">
@@ -299,8 +311,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset var email="">
 <cfset var contactEmail="">
 <cfset var serverpath="">
-<cfset var configBean=getBean("configBean")>
-<cfset var settingsManager=getBean("settingsManager")>
+<cfset var configBean=variables.configBean>
+<cfset var settingsManager=variables.settingsManager>
 <cfset var utility=getBean("utility")>
 
 <cfif len(settingsManager.getSite(variables.instance.siteID).getContactEmail())>
@@ -311,7 +323,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfif not len(arguments.script)>
 
-<cfquery name="rsContent" datasource="#getBean("configBean").getDatasource()#" username="#getBean("configBean").getDBUsername()#" password="#getBean("configBean").getDBPassword()#">
+<cfquery name="rsContent" datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	select title from tcontent 
 	where contentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.contentID#">
 	and siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.siteID#">
@@ -366,14 +378,14 @@ View
 <cfargument name="script" required="true" default="">
 <cfargument name="subject" required="true" default="">
 <cfargument name="notifyAdmin" required="true" default="true">
-<cfset var site=getBean("settingsManager").getSite(variables.instance.siteID)>
+<cfset var site=variables.settingsManager.getSite(variables.instance.siteID)>
 <cfset var rsContent="">
 <cfset var notifyText="">
 <cfset var notifysubject=arguments.subject>
 <cfset var email="">
 <cfset var rsSubscribers=getBean("contentDAO").getCommentSubscribers(variables.instance.contentID,variables.instance.siteID)>
 
-<cfquery name="rsContent" datasource="#getBean("configBean").getDatasource()#" username="#getBean("configBean").getDBUsername()#" password="#getBean("configBean").getDBPassword()#">
+<cfquery name="rsContent" datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	select title from tcontent 
 	where contentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.contentID#">
 	and siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.siteID#">
@@ -429,7 +441,7 @@ To Unsubscribe Click Here:
 	<cfargument name="isEditor" type="boolean" required="true" default="false">
 	<cfargument name="sortOrder" type="string" required="true" default="asc">
 	<cfif getKids()>
-		<cfreturn getBean("contentManager").readComments(variables.instance.contentID, variables.instance.siteID, arguments.isEditor, arguments.sortOrder, getCommentID() ) />
+		<cfreturn variables.contentManager.readComments(variables.instance.contentID, variables.instance.siteID, arguments.isEditor, arguments.sortOrder, getCommentID() ) />
 	<cfelse>
 		<cfreturn queryNew("contentid,commentid,parentid,name,email,url,comments,entered,siteid,isApproved,subscribe,userID,path,kids,fileid,fileExt")>
 	</cfif>
@@ -469,10 +481,10 @@ To Unsubscribe Click Here:
 	<cfargument name="sort" required="true" default="asc">
 	<cfset var rs="">
 	
-	<cfquery name="rs" datasource="#getBean("configBean").getDatasource()#"  username="#getBean("configBean").getDBUsername()#" password="#getBean("configBean").getDBPassword()#">
+	<cfquery name="rs" datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 		select c.contentid,c.commentid,c.parentid,c.name,c.email,c.url,c.comments,c.entered,c.siteid,
 		c.isApproved,c.subscribe,c.userID,c.path, 
-		<cfif getBean("configBean").getDBType() eq "MSSQL">
+		<cfif variables.configBean.getDBType() eq "MSSQL">
 		len(Cast(c.path as varchar(1000))) depth
 		<cfelse>
 		length(c.path) depth

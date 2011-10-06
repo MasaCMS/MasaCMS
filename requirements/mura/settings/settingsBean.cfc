@@ -693,7 +693,7 @@ s
 	
 	<cfset arguments.settingsBean=this>
 	
-	<cfreturn getBean("siteManager").read(argumentCollection=arguments)>
+	<cfreturn getBean("settingsManager").read(argumentCollection=arguments)>
 </cffunction>
 
 </cfcomponent>

@@ -96,6 +96,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this />
 </cffunction>
 
+<cffunction name="setAdvertiserManager">
+	<cfargument name="advertiserManager">
+	<cfset variables.advertiserManager=arguments.advertiserManager>
+	<cfreturn this>
+</cffunction>
+
 <cffunction name="set" returnType="void" output="false" access="public">
 		<cfargument name="data" type="any" required="true">
 
@@ -201,12 +207,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="save" output="false">
-<cfset setAllValues(getBean("advertiserManager").savePlacement(this).getAllValues())>
+<cfset setAllValues(variables.advertiserManager.savePlacement(this).getAllValues())>
 <cfreturn this>
 </cffunction>
 
 <cffunction name="delete" output="false">
-<cfset getBean("advertiserManager").deletePlacement(getPlacementID())>
+<cfset variables.advertiserManager.deletePlacement(getPlacementID())>
 </cffunction>
 
 </cfcomponent>

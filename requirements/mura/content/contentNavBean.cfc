@@ -51,6 +51,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset variables.instance.struct=structNew()>
 <cfset variables.packageBy="active"/>
 
+<cffunction name="setContentManager">
+	<cfargument name="contentManager">
+	<cfset variables.contentManager=arguments.contentManager>
+	<cfreturn this>
+</cffunction>
+
 <cffunction name="OnMissingMethod" access="public" returntype="any" output="false" hint="Handles missing method exceptions.">
 <cfargument name="MissingMethodName" type="string" required="true" hint="The name of the missing method." />
 <cfargument name="MissingMethodArguments" type="struct" required="true" />
@@ -136,9 +142,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfelse>
 		<cfset variables.instance.content.setAllValues(variables.instance.contentStructTemplate)>
 		<cfif variables.packageBy eq "version" and structKeyExists(variables.instance.struct,"contentHistID")>
-			<cfset variables.instance.content=getBean('contentManager').getContentVersion(contentHistID=variables.instance.struct.contentHistID, siteID=variables.instance.struct.siteID, contentBean=variables.instance.content)>
+			<cfset variables.instance.content=variables.contentManager.getContentVersion(contentHistID=variables.instance.struct.contentHistID, siteID=variables.instance.struct.siteID, contentBean=variables.instance.content)>
 		<cfelseif structKeyExists(variables.instance.struct,"contentID")>
-			<cfset variables.instance.content=getBean('contentManager').getActiveContent(contentID=variables.instance.struct.contentID,siteID=variables.instance.struct.siteID, contentBean=variables.instance.content)>
+			<cfset variables.instance.content=variables.contentManager.getActiveContent(contentID=variables.instance.struct.contentID,siteID=variables.instance.struct.siteID, contentBean=variables.instance.content)>
 		<cfelse>
 			<cfthrow message="The query you are iterating over does not contain either contentID or contentHistID">
 		</cfif>
@@ -172,7 +178,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<!--- There are no kids so no need to query --->
 		<cfreturn queryNew("contentid,contenthistid,siteid,type,filename,title,menutitle,summary,kids")>
 	<cfelse>
-		<cfreturn getBean("contentManager").getKidsQuery(siteID:getValue("siteID"), parentID:getValue("contentID"), sortBy:getValue("sortBy"), sortDirection:getValue("sortDirection"), aggregation=arguments.aggregation) />
+		<cfreturn variables.contentManager.getKidsQuery(siteID:getValue("siteID"), parentID:getValue("contentID"), sortBy:getValue("sortBy"), sortDirection:getValue("sortDirection"), aggregation=arguments.aggregation) />
 	</cfif>
 </cffunction>
 
@@ -185,7 +191,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif arguments.liveOnly>
 		<cfset q=getKidsQuery(arguments.aggregation) />
 	<cfelse>
-		<cfset q=getBean("contentManager").getNest( parentID:getValue("parentID"), siteID:getValue("siteID"), sortBy:getValue("sortBy"), sortDirection:getValue("sortDirection")) />
+		<cfset q=variables.contentManager.getNest( parentID:getValue("parentID"), siteID:getValue("siteID"), sortBy:getValue("sortBy"), sortDirection:getValue("sortDirection")) />
 	</cfif>
 	<cfset it.setQuery(q,getValue("nextn"))>
 	
@@ -195,7 +201,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="getCrumbArray" output="false" returntype="any">
 	<cfargument name="sort" required="true" default="asc">
 	<cfargument name="setInheritance" required="true" type="boolean" default="false">
-	<cfreturn getBean("contentManager").getCrumbList(contentID=getValue("contentID"), siteID=getValue("siteID"), setInheritance=arguments.setInheritance, path=getValue("path"), sort=arguments.sort)>
+	<cfreturn variables.contentManager.getCrumbList(contentID=getValue("contentID"), siteID=getValue("siteID"), setInheritance=arguments.setInheritance, path=getValue("path"), sort=arguments.sort)>
 </cffunction>
 
 <cffunction name="getCrumbIterator" output="false" returntype="any">
@@ -211,7 +217,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="querystring" required="true" default="">
 	<cfargument name="complete" type="boolean" required="true" default="false">
 	<cfargument name="showMeta" type="string" required="true" default="0">
-	<cfreturn getBean("contentManager").getURL(this, arguments.queryString, arguments.complete, arguments.showMeta)>
+	<cfreturn variables.contentManager.getURL(this, arguments.queryString, arguments.complete, arguments.showMeta)>
 </cffunction>			
 
 <cffunction name="getImageURL" output="false">
@@ -221,7 +227,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="height" default=""/>
 	<cfargument name="width" default=""/>
 	<cfset arguments.bean=this>
-	<cfreturn getBean("contentManager").getImageURL(argumentCollection=arguments)>
+	<cfreturn variables.contentManager.getImageURL(argumentCollection=arguments)>
 </cffunction>
 
 </cfcomponent>

@@ -136,6 +136,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this />
 </cffunction>
 
+<cffunction name="setFeedManager">
+	<cfargument name="feedManager">
+	<cfset variables.feedManager=arguments.feedManager>
+	<cfreturn this>
+</cffunction>
+
 <cffunction name="set" returnType="any" output="false" access="public">
 	<cfargument name="feed" type="any" required="true">
 	<cfset var prop=""/>
@@ -343,7 +349,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="getQuery" returnType="query" output="false" access="public">
 	<cfargument name="aggregation" required="true" default="false">
-	<cfreturn getBean("feedManager").getFeed(this,"",arguments.aggregation) />
+	<cfreturn variables.feedManager.getFeed(this,"",arguments.aggregation) />
 </cffunction>
 
 <cffunction name="getIterator" returnType="any" output="false" access="public">
@@ -355,12 +361,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="save" returnType="any" output="false" access="public">
-	<cfset setAllValues(getBean("feedManager").save(this).getAllValues())>
+	<cfset setAllValues(variables.feedManager.save(this).getAllValues())>
 	<cfreturn this />
 </cffunction>
 
 <cffunction name="delete" output="false" access="public">
-	<cfset getBean("feedManager").delete(variables.instance.feedID) />
+	<cfset variables.feedManager.delete(variables.instance.feedID) />
 </cffunction>
 
 <cffunction name="loadBy" returnType="any" output="false" access="public">
@@ -369,7 +375,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 	<cfset arguments.feedBean=this>
 	
-	<cfreturn getBean("feedManager").read(argumentCollection=arguments)>
+	<cfreturn variables.feedManager.read(argumentCollection=arguments)>
 </cffunction>
 
 <cffunction name="setRemotePubDate" output="false" access="public">
@@ -427,7 +433,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var returnList="Date,Title,Image,Summary,Credits,Comments,Tags,Rating">
 	<cfset var i=0>
 	<cfset var finder=0>
-	<cfset var rsExtend=getBean('configBean').getClassExtensionManager().getExtendedAttributeList(variables.instance.siteid,"tcontent")>
+	<cfset var rsExtend=variables.configBean.getClassExtensionManager().getExtendedAttributeList(variables.instance.siteid,"tcontent")>
 	
 	<cfif rsExtend.recordcount>
 		<cfquery name="rsExtend" dbType="query">

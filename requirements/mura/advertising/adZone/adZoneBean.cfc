@@ -77,6 +77,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this />
 </cffunction>
 
+<cffunction name="setAdvertiserManager">
+	<cfargument name="advertiserManager">
+	<cfset variables.advertiserManager=arguments.advertiserManager>
+	<cfreturn this>
+</cffunction>
+
 <cffunction name="setDateCreated" access="public" output="false">
 	<cfargument name="dateCreated" type="String" />
 	<cfif isDate(arguments.dateCreated)>
@@ -101,12 +107,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="save" output="false">
-<cfset setAllValues(getBean("advertiserManager").saveAdZone(this).getAllValues())>
+<cfset setAllValues(variables.advertiserManager.saveAdZone(this).getAllValues())>
 <cfreturn this>
 </cffunction>
 
 <cffunction name="delete" output="false">
-<cfset getBean("advertiserManager").deleteAdZone(getAdZoneID())>
+<cfset variables.advertiserManager.deleteAdZone(getAdZoneID())>
 </cffunction>
 
 </cfcomponent>
