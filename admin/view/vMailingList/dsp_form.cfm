@@ -96,7 +96,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <dd><input type="radio" name="direction" id="dp" value="replace"> <label for="dp">#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.replaceemaillistwithnewfile')#</label></dd>
 
 <dt>#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.uploademailaddressfile')#</dt>
-<dd><input type="file" name="listfile" accept="text/html,test/plain" ></dd>
+<dd><input type="file" name="listfile" accept="text/plain" ></dd>
 <cfif attributes.mlid neq ''>
 <dt><input type="checkbox" id="cm" name="clearMembers" value="1" /> <label for="cm">#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.clearoutexistingmembers')#</label></dt>
 </cfif></dl>      
