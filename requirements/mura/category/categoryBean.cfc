@@ -100,6 +100,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this />
 </cffunction>
 
+<cffunction name="setCategoryManager">
+	<cfargument name="categoryManager">
+	<cfset variables.categoryManager=arguments.categoryManager>
+	<cfreturn this>
+</cffunction>
+
+<cffunction name="setContentUtility">
+	<cfargument name="contentUtility">
+	<cfset variables.contentUtility=arguments.contentUtility>
+	<cfreturn this>
+</cffunction>
+
 <cffunction name="setDateCreated" access="public" output="false">
 	<cfargument name="dateCreated" type="String" />
 	<cfset variables.instance.dateCreated = parseDateArg(arguments.dateCreated) />
@@ -121,7 +133,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="save" returnType="any" output="false" access="public">
 	<cfset var kid="">
 	<cfset var i="">
-	<cfset setAllValues(getBean("categoryManager").save(this).getAllValues())>
+	<cfset setAllValues(variables.categoryManager.save(this).getAllValues())>
 		
 	<cfif arrayLen(variables.kids)>
 		<cfloop from="1" to="#arrayLen(variables.kids)#" index="i">
@@ -144,14 +156,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 	
 <cffunction name="delete" output="false" access="public">
-	<cfset getBean("categoryManager").delete(variables.instance.categoryID) />
+	<cfset variables.categoryManager.delete(variables.instance.categoryID) />
 </cffunction>
 	
 <cffunction name="getKidsQuery" returntype="any" output="false">
 	<cfargument name="activeOnly" type="boolean" required="true" default="true">
 	<cfargument name="InterestsOnly" type="boolean" required="true" default="false">
 		
-	<cfreturn getBean("categoryManager").getCategories(variables.instance.siteID,variables.instance.categoryID,"", arguments.activeOnly, arguments.InterestsOnly) />
+	<cfreturn variables.categoryManager.getCategories(variables.instance.siteID,variables.instance.categoryID,"", arguments.activeOnly, arguments.InterestsOnly) />
 </cffunction>
 	
 <cffunction name="getKidsIterator" returntype="any" output="false">
@@ -169,7 +181,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<cfset arguments.categoryBean=this>
 	
-	<cfreturn getBean("categoryManager").read(argumentCollection=arguments)>
+	<cfreturn variables.categoryManager.read(argumentCollection=arguments)>
 </cffunction>
 	
 <cffunction name="setRemotePubDate" output="false" access="public">
@@ -192,7 +204,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="URLTitle" type="string" required="true">
 	
 	<cfif arguments.URLTitle neq variables.instance.URLTitle>
-  		<cfset variables.instance.URLTitle = getBean("contentUtility").formatFilename(arguments.URLTitle) />
+  		<cfset variables.instance.URLTitle = variables.contentUtility.formatFilename(arguments.URLTitle) />
     </cfif>
     <cfreturn this>
 </cffunction>
@@ -213,7 +225,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 <cffunction name="getCrumbQuery" output="false" returntype="any">
 	<cfargument name="sort" required="true" default="asc">
-	<cfreturn getBean("categoryManager").getCrumbQuery( variables.instance.path, variables.instance.siteID, arguments.sort) >
+	<cfreturn variables.categoryManager.getCrumbQuery( variables.instance.path, variables.instance.siteID, arguments.sort) >
 </cffunction>
 	
 <cffunction name="getCrumbIterator" output="false" returntype="any">
