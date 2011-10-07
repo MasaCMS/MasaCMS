@@ -50,16 +50,20 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>Close</title>
-</head>
-<body onload="">
 <cfset contentRenderer=application.settingsManager.getSite(event.getValue("siteID")).getContentRenderer()>
 <cfset homeBean = application.contentManager.getActiveContent(event.getValue('homeID'), event.getValue('siteID'))>
 <cfset href = contentRenderer.createHREF(homeBean.getType(), homeBean.getFilename(), homeBean.getSiteId(), homeBean.getcontentId())>
 <cfoutput>
-	<script>
-		window.parent.location = '#href#';
-	</script>
+<script src="#application.configBean.getContext()#/admin/js/porthole/porthole.min.js?coreversion=#application.coreversion#" type="text/javascript"></script>
+<script>
+	function reloadParent(){
+		frontEndProxy = new Porthole.WindowProxy("#session.frontEndProxyLoc##application.configBean.getContext()#/admin/js/porthole/proxy.html");
+		frontEndProxy.postMessage("cmd=setLocation&location=#jsStringFormat(href)#")
+	}
+</script>
 </cfoutput>
+</head>
+<body onload="reloadParent()">
 </body>
 </html>
   

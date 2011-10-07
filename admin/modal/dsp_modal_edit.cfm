@@ -53,6 +53,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfparam name="Cookie.fetDisplay" default="">
 <cfoutput>
 <link href="#application.configBean.getContext()#/admin/css/dialog.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="#application.configBean.getContext()#/admin/js/porthole/porthole.min.js"></script>
 
 <!---[if LT IE9]>
 
@@ -147,12 +148,45 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <script type="text/javascript">
 	addLoadEvent(checkToolbarDisplay);
 	
+	var adminProxy;
+	var adminDomain=<cfif len($.globalConfig('admindomain'))>"#$.globalConfig('admindomain')#"<cfelse>location.hostname</cfif>;
+	var adminProtocal=<cfif application.configBean.getAdminSSL()>"https://";<cfelse>"http://"</cfif>;
+	var adminProxyLoc=adminProtocal + adminDomain + "#$.globalConfig('serverPort')##$.globalConfig('context')#/admin/js/porthole/proxy.html";
+	var fronEndProxyLoc= location.protocol + "//" + location.hostname + location.port;
+	
+	function onAdminMessage(messageEvent){
+		if (messageEvent.origin == adminProtocal + adminDomain) {
+			var parameters = Porthole.WindowProxy.splitMessageParameters(messageEvent.data);
+			if (parameters["cmd"] == "setWindowMode") {
+				if (parameters["mode"] == "configurator") {
+					frontEndModalIsConfigurator = true;
+				}
+				else {
+					frontEndModalIsConfigurator = false;
+				}
+				resizeFrontEndToolsModal();	
+			} else if(parameters["cmd"] == "setLocation"){
+				window.location=parameters["location"];
+			}
+		}			
+	}
+
+	var adminProxy;
+	
+	function initAdminProxy(){
+			adminProxy = new Porthole.WindowProxy(adminProxyLoc, 'frontEndToolsModaliframe');
+			adminProxy.addEventListener(onAdminMessage);
+	}
+	
+	addLoadEvent(initAdminProxy);
+	
+	
 	<cfif getJsLib() eq "jquery">
 	var frontEndModalHeight=0;
 	var frontEndModalIsConfigurator=false;
 	
 	function openFrontEndToolsModal(a){
-		var src=a.href;
+		var src=a.href + "&frontEndProxyLoc=" + fronEndProxyLoc;
 		var isModal=jQuery(a).attr("data-configurator");
 		var modalClass="";
 		
@@ -221,6 +255,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	function closeFrontEndToolsModal(){
 		jQuery('##frontEndToolsModalContainer').remove();
 	}	
+	
+
 	
 	jQuery(document).ready(function(){
 		jQuery(".frontEndToolsModal").each(

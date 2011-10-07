@@ -44,9 +44,17 @@ For clarity, if you create a modified version of Mura CMS, you are not obligated
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
+<cfsilent>
 <cfparam name="attributes.activetab" default="0">
 <cfparam name="attributes.activepanel" default="0">
 <cfparam name="attributes.siteid" default="#session.siteID#">
+<cfparam name="attributes.frontEndProxyLoc" default="">
+<cfparam name="session.frontEndProxyLoc" default="#attributes.frontEndProxyLoc#">
+
+<cfif len(attributes.frontEndProxyLoc)>
+	<cfset session.frontEndProxyLoc=attributes.frontEndProxyLoc>
+</cfif>
+</cfsilent>
 <cfoutput>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -71,6 +79,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <script type="text/javascript" src="#application.configBean.getContext()#/tasks/widgets/ckfinder/ckfinder.js"></script>
 </cfif>
 <script src="#application.configBean.getContext()#/admin/js/json2.js" type="text/javascript" language="Javascript"></script>
+<script src="#application.configBean.getContext()#/admin/js/porthole/porthole.min.js?coreversion=#application.coreversion#" type="text/javascript"></script>
 <script type="text/javascript">
 var htmlEditorType='#application.configBean.getValue("htmlEditorType")#';
 var context='#application.configBean.getContext()#';
@@ -81,7 +90,20 @@ var siteid='#session.siteid#';
 <style type="text/css"> html { overflow:hidden; } </style>
 #session.dateKey#
 <script type="text/javascript">
-	jQuery(document).ready(function(){setDatePickers(".datepicker",dtLocale);setTabs(".tabs",#attributes.activeTab#);setHTMLEditors();setAccordions(".accordion",#attributes.activePanel#);setCheckboxTrees();});
+	var frontEndProxy;
+	
+	jQuery(document).ready(
+		function(){
+			setDatePickers(".datepicker",dtLocale);
+			setTabs(".tabs",#attributes.activeTab#);
+			setHTMLEditors();
+			setAccordions(".accordion",#attributes.activePanel#);
+			setCheckboxTrees();
+			if (top.location != self.location) {
+				frontEndProxy = new Porthole.WindowProxy("#session.frontEndProxyLoc##application.configBean.getContext()#/admin/js/porthole/proxy.html");
+			}
+		}
+	);
 </script>
 	#fusebox.ajax#
 	<link href="#application.configBean.getContext()#/admin/css/admin.css?coreversion=#application.coreversion#" rel="stylesheet" type="text/css" />

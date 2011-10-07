@@ -508,11 +508,13 @@ setSearchButtons();
 </cfoutput>
 
 <cfsavecontent variable="headerStr">
-<cfoutput><script type="text/javascript">
-if (top.location != self.location) {
-	parent.frontEndModalIsConfigurator=<cfif len(attributes.assignmentID)>true<cfelse>false</cfif>;
-	parent.resizeFrontEndToolsModal();
-}
+<cfoutput>
+<script type="text/javascript">
+jQuery(document).ready(function(){
+	if (top.location != self.location) {
+		<cfif len(attributes.assignmentID)>frontEndProxy.postMessage("cmd=setWindowMode&mode=configurator");<cfelse>frontEndProxy.postMessage("cmd=setWindowMode&mode=standard");</cfif>
+	}
+});
 </script>
 </cfoutput>
 </cfsavecontent>	
