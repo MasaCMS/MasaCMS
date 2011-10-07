@@ -87,7 +87,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		     }
 	     	jQuery('##summary').ckeditor(
 	     		{ toolbar:'Summary',
-	     		  customConfig : 'config.js.cfm'},
+	     		  customConfig : 'config.js.cfm?siteid=#JSStringFormat(session.siteID)#'},
 	     		htmlEditorOnComplete
 	     	);
     		summaryLoaded=true;

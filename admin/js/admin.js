@@ -691,7 +691,7 @@ function setHTMLEditors() {
 					jQuery(document.getElementById(allPageTags[i].id)).val("<p></p>")
 				}
 				
-				jQuery(document.getElementById(allPageTags[i].id)).ckeditor( { toolbar: 'Default',customConfig : 'config.js.cfm' },htmlEditorOnComplete);
+				jQuery(document.getElementById(allPageTags[i].id)).ckeditor( { toolbar: 'Default',customConfig : 'config.js.cfm?siteid=' + siteid },htmlEditorOnComplete);
 				
 			}
 		}
@@ -709,7 +709,7 @@ function htmlEditorOnComplete( editorInstance ) {
 		var instance=jQuery(editorInstance).ckeditorGet();
 		instance.resetDirty();
 		var totalIntances=CKEDITOR.instances;
-		CKFinder.setupCKEditor( instance, { basePath : context + '/tasks/widgets/ckfinder/', rememberLastFolder : false } ) ;
+		CKFinder.setupCKEditor( instance, { basePath : context + '/tasks/widgets/ckfinder/', customConfig : context + '/tasks/widgets/ckfinder/config.cfm?siteid=' + siteid, rememberLastFolder : false, siteid: siteid } ) ;
 	}
 	
 	HTMLEditorLoadCount++;
