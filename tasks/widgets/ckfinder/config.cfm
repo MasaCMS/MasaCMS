@@ -14,15 +14,12 @@
 <cfscript>
 config = structNew();
 currentUser=application.usermanager.read(session.mura.userID);
-if(not structKeyExists(url,"siteid")){
-	url.siteid=session.siteid;	
-}
 // This function must check the user session to be sure that he/she is
 // authorized to upload and access files in the File Browser. '
 function CheckAuthentication()
 {
   
-  if (isDefined('url.siteid') and application.permUtility.getModulePerm("00000000000000000000000000000000000",url.siteid)) {
+  if (isDefined('session.siteid') and application.permUtility.getModulePerm("00000000000000000000000000000000000",session.siteid)) {
     return true;
   } else {
     return false;
@@ -44,8 +41,8 @@ config.licenseKey = '9EJW-TKDF-PFVT-Q3VW-NG6B-MKQF-3HVP';
  */
 
 //ATTENTION: The trailing slash is required.
-config.baseUrl = application.configBean.getAssetPath() & '/' & url.siteid & '/assets';
-config.baseDir = "#application.configBean.getAssetDir()##application.configBean.getFileDelim()##url.siteid##application.configBean.getFileDelim()#assets";
+config.baseUrl = application.configBean.getAssetPath() & '/' & session.siteid & '/assets';
+config.baseDir = "#application.configBean.getAssetDir()##application.configBean.getFileDelim()##session.siteid##application.configBean.getFileDelim()#assets";
 /*
  * Thumbnails : thumbnails settings. All thumbnails will end up in the same
  * directory, no matter the resource type.
@@ -319,7 +316,7 @@ if (APPLICATION.CFVersion gte 8 or StructKeyExists(SERVER,"bluedragon")) {
 }
 </cfscript>
 
-<cfset $ = application.serviceFactory.getBean("MuraScope").init(url.siteid)>
+<cfset $ = application.serviceFactory.getBean("MuraScope").init(session.siteid)>
 <cfif (fileExists(expandPath($.siteConfig("themeIncludePath") & '/js/finder/config.cfm') ) )>
      <cfinclude template="#$.siteConfig('themeAssetPath')#/js/finder/config.cfm">
 </cfif>

@@ -4,8 +4,7 @@ Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
 <cfsetting showdebugoutput="no">
-<cfparam name="url.siteid" default="#session.siteid#">
-<cfset $=application.serviceFactory.getBean("MuraScope").init(url.siteID)>
+<cfset $=application.serviceFactory.getBean("MuraScope").init(session.siteID)>
 <cfset renderer=$.getContentRenderer()>
 CKEDITOR.editorConfig = function( config )
 {
