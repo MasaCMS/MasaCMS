@@ -1233,10 +1233,10 @@ function addDisplayObject(objectToAdd,regionID,configure){
 			checkSelection=true;
 		}
 		
-		if (tmpObject.object == 'plugin' && typeof(initPluginConfigurator) != 'undefined') {
+		if (tmpObject.object == 'plugin' && typeof(tmpObject.params.configurator)  == 'function') {
 			if (configure) {
 				tmpObject.regionID=regionID;
-				initPluginConfigurator(tmpObject);
+				tmpObject.params.configurator(tmpObject);
 				return false;
 			}
 			checkSelection=true;
@@ -1517,8 +1517,8 @@ function addDisplayObject(objectToAdd,regionID,configure){
 					initCategorySummaryConfigurator(data);
 				} else if (data.object == 'related_content' || data.object == 'related_section_content') {
 					initRelatedContentConfigurator(data);
-				} else if (data.object == 'plugin' && typeof(initPluginConfigurator) != 'undefined'){
-					initPluginConfigurator(data);
+				} else if (data.object == 'plugin' && typeof(data.params.configurator)  == 'function'){
+					data.params.configurator(data);
 				} else{
 					initGenericConfigurator(data);
 				}
