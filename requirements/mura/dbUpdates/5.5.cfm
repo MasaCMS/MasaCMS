@@ -332,6 +332,43 @@ ALTER TABLE tcontentfeeds ADD displayList clob
 	</cfloop>
 </cfif>
 
+<cfdbinfo 
+	name="rsCheck"
+	datasource="#application.configBean.getDatasource()#"
+	username="#application.configBean.getDbUsername()#"
+	password="#application.configBean.getDbPassword()#"
+	table="tcontentfeeds"
+	type="columns">
+
+<cfquery name="rsCheck" dbtype="query">
+	select * from rsCheck where lower(rsCheck.column_name) = 'shownavonly'
+</cfquery>
+
+<cfif not rsCheck.recordcount>
+<cfswitch expression="#getDbType()#">
+<cfcase value="mssql">
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	ALTER TABLE tcontentfeeds ADD showNavOnly tinyint default NULL
+	</cfquery>
+</cfcase>
+<cfcase value="mysql">
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	ALTER TABLE tcontentfeeds ADD COLUMN showNavOnly tinyint(3) NULL
+	</cfquery>
+</cfcase>
+<cfcase value="oracle">
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	ALTER TABLE tcontentfeeds ADD showNavOnly NUMBER(3,0)
+	</cfquery>
+</cfcase>
+</cfswitch>
+
+<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	update tcontentfeeds set showNavOnly=1
+</cfquery>
+	
+</cfif>
+
 <cfset dbCreateIndex(table="tcontent",column="urltitle")>
 <cfset dbCreateIndex(table="tcontent",column="displaystart")>
 <cfset dbCreateIndex(table="tcontent",column="displaystop")>

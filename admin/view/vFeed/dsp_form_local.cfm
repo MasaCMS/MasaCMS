@@ -249,6 +249,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <input name="isFeaturesOnly" type="radio" value="1" class="radio" <cfif request.feedBean.getIsFeaturesOnly()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.yes')# 
 <input name="isFeaturesOnly" type="radio" value="0" class="radio" <cfif not request.feedBean.getIsFeaturesOnly()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.no')# 
 </dd>
+<dt>#application.rbFactory.getKeyValue(session.rb,'collections.shownavonly')#</dt>
+<dd>
+<input name="showNavOnly" type="radio" value="1" class="radio" <cfif request.feedBean.getShowNavOnly()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.yes')# 
+<input name="showNavOnly" type="radio" value="0" class="radio" <cfif not request.feedBean.getShowNavOnly()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.no')# 
+</dd>
 <!---<dt><button onclick="previewFeed();" type="button">Preview Index</button></dt>--->
 </dl>
 </div>

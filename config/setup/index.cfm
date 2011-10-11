@@ -318,8 +318,7 @@ to your own modified versions of Mura CMS.
 									</cfif>
 								</cfloop>
 							</cfcase>
-							<!--- we are treating h2 and mysql the same way during DB creation (bsoylu 12/4/2010) --->
-							<cfcase value="mysql,h2" delimiters=",">
+							<cfcase value="mysql2" delimiters=",">
 								<cfset aSql = ListToArray(sql, ';')>
 								<!--- loop over items --->
 								<cfloop index="x" from="1" to="#arrayLen(aSql) - 1#">
@@ -607,7 +606,6 @@ if (server.ColdFusion.ProductName CONTAINS "Railo"){
 		<option value="mysql" <cfif FORM.production_dbtype IS "mysql">selected</cfif>>MySQL</option>
 		<option value="mssql" <cfif FORM.production_dbtype IS "mssql">selected</cfif>>MSSQL</option>
 		<option value="oracle" <cfif FORM.production_dbtype IS "oracle">selected</cfif>>Oracle</option>
-		<option value="h2" <cfif FORM.production_dbtype IS "h2">selected</cfif>>H2</option>
 	</select>
 	</dd>
 

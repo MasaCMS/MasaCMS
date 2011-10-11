@@ -256,7 +256,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="setShowNavOnly" access="public" output="false">
 	<cfargument name="showNavOnly" type="any" />
-	<cfif isBoolean(arguments.showNavOnly)>
+	<cfif isNumeric(arguments.showNavOnly)>
 	<cfset variables.instance.showNavOnly = arguments.showNavOnly />
 	</cfif>
 	<cfreturn this>
