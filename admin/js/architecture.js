@@ -1233,6 +1233,15 @@ function addDisplayObject(objectToAdd,regionID,configure){
 			checkSelection=true;
 		}
 		
+		if (tmpObject.object == 'plugin' && typeof(initPluginConfigurator) != 'undefined') {
+			if (configure) {
+				tmpObject.regionID=regionID;
+				initPluginConfigurator(tmpObject);
+				return false;
+			}
+			checkSelection=true;
+		}
+		
 		tmpValue=tmpObject.object;
 		tmpValue=tmpValue + "~" + tmpObject.name;	
 		tmpValue=tmpValue + "~" + tmpObject.objectid;
@@ -1304,127 +1313,45 @@ function addDisplayObject(objectToAdd,regionID,configure){
 
 	function initCategorySummaryConfigurator(data){
 		
-		resetAvailableObject();
-		resetConfiguratorContainer();
-		
 		if(typeof(data.object) !='undefined'){	
 			if(data.object !='category_summary'){
 				return false;
 			}
 		}
 
-		var url = 'index.cfm';
-		var pars = 'fuseaction=cArch.loadclassconfigurator&compactDisplay=true&siteid=' + siteid + '&classid=category_summary&contentid=' + contentid + '&parentid=' + parentid + '&contenthistid=' + contenthistid + '&regionid=' + data.regionID  + '&objectid=' +  data.objectid + '&cacheid=' + Math.random();
-		var regionID=data.regionID;
-		
-		//location.href=url + "?" + pars;
-		
-		jQuery("#configuratorContainer").dialog({
-			resizable: true,
-			modal: true,
-			width: 400,
-			position: getDialogPosition(),
-			buttons: {
-				Save: function() {
-					addDisplayObject(availableObject,regionID,false);
-					jQuery( this ).dialog( "close" );
-							
-				},
-				Cancel: function() {
-					jQuery( this ).dialog( "close" );
-				}
-			},
-			close: function(){
-				jQuery(this).dialog("destroy");
-			}	
-		});
-				
-		jQuery.post(url + "?" + pars, 
-			data,
-			function(data) {
-	
-				jQuery("#configurator").html(data);
-				jQuery("#ui-dialog-title-configuratorContainer").html(categorySummaryConfiguratorTitle);	
-				jQuery("#configuratorContainer").dialog("option","position",getDialogPosition());
-				
-				if(availableObjectTemplate==""){
-					availableObjectTemplate=eval( "(" + jQuery("#displayObjectTemplate").val() + ")");
-					availableObject=jQuery.extend({},availableObjectTemplate);
-				}
-				
-				initConfiguratorParams();
-		
-			}
+		initConfigurator(data,
+		{
+			url:'index.cfm',
+			pars:'fuseaction=cArch.loadclassconfigurator&compactDisplay=true&siteid=' + siteid + '&classid=category_summary&contentid=' + contentid + '&parentid=' + parentid + '&contenthistid=' + contenthistid + '&regionid=' + data.regionID  + '&objectid=' +  data.objectid + '&cacheid=' + Math.random(),
+			title: categorySummaryConfiguratorTitle
+		}
 		);
-		
+			
 		return true;
 	}
 	
 	function initFeedConfigurator(data){
-		var feedID="";
-		
-		resetAvailableObject();
-		resetConfiguratorContainer();
 		
 		if(typeof(data.object) !='undefined'){	
 			if(data.object !='feed'){
 				return false;
 			}
-			var feedID= data.objectid;
 		}
 		
-		if(feedID ==''){
-			return false;
-		}
-
-		var url = 'index.cfm';
-		var pars = 'fuseaction=cArch.loadclassconfigurator&compactDisplay=true&siteid=' + siteid + '&classid=feed&contentid=' + contentid + '&parentid=' + parentid + '&contenthistid=' + contenthistid + '&regionid=' + data.regionID  + '&feedid=' +  feedID + '&cacheid=' + Math.random();
-		var regionID=data.regionID;
-		
-		//location.href=url + "?" + pars;
-		
-		jQuery("#configuratorContainer").dialog({
-					resizable: true,
-					modal: true,
-					width: 400,
-					position: getDialogPosition(),
-					buttons: {
-						Save: function() {
-							addDisplayObject(availableObject,regionID,false);
-							jQuery( this ).dialog( "close" );
-							
-						},
-						Cancel: function() {
-							jQuery( this ).dialog( "close" );
-						}
-					},
-					close: function(){
-						jQuery(this).dialog("destroy");
-					}	
-				});
-		//location.href=url + "?" + pars;
-		
-		jQuery.post(url + "?" + pars, 
-			data,
-			function(resp) {
-				
-				data=eval('(' + resp + ')');
-				
-				jQuery("#configurator").html(data.html);
-				jQuery("#configuratorContainer").dialog("option","position",getDialogPosition());
-				
-				if(data.type.toLowerCase()=='remote'){
-					jQuery("#ui-dialog-title-configuratorContainer").html(remoteFeedConfiguratorTitle);
-				} else {
-					jQuery("#ui-dialog-title-configuratorContainer").html(localIndexConfiguratorTitle);
-				}
-				
-				if(availableObjectTemplate==""){
-					availableObjectTemplate=eval( "(" + jQuery("#displayObjectTemplate").val() + ")");
-					availableObject=jQuery.extend({},availableObjectTemplate);
-				}
-				
-				if (jQuery("#availableListSort").length) {
+		initConfigurator(data,
+		{
+			url: 'index.cfm',
+			pars: 'fuseaction=cArch.loadclassconfigurator&compactDisplay=true&siteid=' + siteid + '&classid=feed&contentid=' + contentid + '&parentid=' + parentid + '&contenthistid=' + contenthistid + '&regionid=' + data.regionID  + '&feedid=' +  data.objectid + '&cacheid=' + Math.random(),
+			title: 'Loading...',
+			init: function(data,config){
+					//alert(JSON.stringify(data));
+					if(data.type.toLowerCase()=='remote'){
+						jQuery("#ui-dialog-title-configuratorContainer").html(remoteFeedConfiguratorTitle);
+					} else {
+						jQuery("#ui-dialog-title-configuratorContainer").html(localIndexConfiguratorTitle);
+					}
+					
+					if (jQuery("#availableListSort").length) {
 					jQuery("#availableListSort, #displayListSort").sortable({
 						connectWith: ".displayListSortOptions",
 						update: function(event){
@@ -1446,93 +1373,48 @@ function addDisplayObject(objectToAdd,regionID,configure){
 						}
 					}).disableSelection();
 				}
-				
-				initConfiguratorParams();
-		
-			}
+				}
+		}
 		);
-		
+		//location.href=url + "?" + pars;
+	
 		return true;
 	}
 	
 	function initSlideShowConfigurator(data){
-		var feedID="";
-		
-		resetAvailableObject();
-		resetConfiguratorContainer();
 		
 		if(typeof(data.object) !='undefined'){	
 			if(data.object !='feed_slideshow'){
 				return false;
 			}
-			var feedID= data.objectid;
-		}
-		
-		if(feedID ==''){
-			return false;
 		}
 
-		var url = 'index.cfm';
-		var pars = 'fuseaction=cArch.loadclassconfigurator&compactDisplay=true&siteid=' + siteid + '&classid=feed_slideshow&contentid=' + contentid + '&parentid=' + parentid + '&contenthistid=' + contenthistid + '&regionid=' + data.regionID  + '&feedid=' +  feedID + '&cacheid=' + Math.random();
-		var regionID=data.regionID;
-		
-		//location.href=url + "?" + pars;
-		
-		jQuery("#configuratorContainer").dialog({
-					resizable: true,
-					modal: true,
-					width: 400,
-					position: getDialogPosition(),
-					buttons: {
-						Save: function() {
-							addDisplayObject(availableObject,regionID,false);
-							jQuery( this ).dialog( "close" );
-							
-						},
-						Cancel: function() {
-							jQuery( this ).dialog( "close" );
+		initConfigurator(data,
+		{
+			url: 'index.cfm',
+			pars: 'fuseaction=cArch.loadclassconfigurator&compactDisplay=true&siteid=' + siteid + '&classid=feed_slideshow&contentid=' + contentid + '&parentid=' + parentid + '&contenthistid=' + contenthistid + '&regionid=' + data.regionID  + '&feedid=' +  data.objectID + '&cacheid=' + Math.random(),
+			title: slideShowConfiguratorTitle,
+			init: function(data,config){
+					jQuery( "#availableListSort, #displayListSort" ).sortable({
+						connectWith: ".displayListSortOptions",
+						update: function(event){
+							event.stopPropagation();
+							jQuery("#displayList").val("");
+							jQuery("#displayListSort > li").each(function(){
+								var current = jQuery("#displayList").val();
+								
+								if (current != '') {
+									jQuery("#displayList").val(current + "," + jQuery(this).html());
+								}
+								else {
+									jQuery("#displayList").val(jQuery(this).html());
+								}
+								
+							});
+							updateAvailableObject();
 						}
-					},
-					close: function(){
-						jQuery(this).dialog("destroy");
-					}
-				});
-		
-		jQuery.post(url + "?" + pars,
-			data, 
-			function(data) {
-				
-				jQuery("#ui-dialog-title-configuratorContainer").html(slideShowConfiguratorTitle);	
-				jQuery("#configurator").html(data);
-				jQuery("#configuratorContainer").dialog("option","position",getDialogPosition());
-				
-				if(availableObjectTemplate==""){
-					availableObjectTemplate=eval( "(" + jQuery("#displayObjectTemplate").val() + ")");
-					availableObject=jQuery.extend({},availableObjectTemplate);
+					}).disableSelection();
 				}
-				
-				jQuery( "#availableListSort, #displayListSort" ).sortable({
-					connectWith: ".displayListSortOptions",
-					update: function(event){
-						event.stopPropagation();
-						jQuery("#displayList").val("");
-						jQuery("#displayListSort > li").each(function(){
-							var current = jQuery("#displayList").val();
-							
-							if (current != '') {
-								jQuery("#displayList").val(current + "," + jQuery(this).html());
-							}
-							else {
-								jQuery("#displayList").val(jQuery(this).html());
-							}
-							
-						});
-						updateAvailableObject();
-					}
-				}).disableSelection();
-				
-				initConfiguratorParams();
-		
 			}
 		);
 		
@@ -1541,81 +1423,35 @@ function addDisplayObject(objectToAdd,regionID,configure){
 	
 	function initRelatedContentConfigurator(data){
 
-		resetAvailableObject();
-		resetConfiguratorContainer();
-		
-		if (typeof(data.object) != 'undefined') {
-			if (data.object != 'related_content' && data.object != 'related_section_content') {
-				return false;
-			}
-		} else{
-			return false;
-		}
-
-		var url = 'index.cfm';
-		var pars = 'fuseaction=cArch.loadclassconfigurator&compactDisplay=true&siteid=' + siteid + '&classid=' + data.object + '&contentid=' + contentid + '&parentid=' + parentid + '&contenthistid=' + contenthistid + '&regionid=' + data.regionID  + '&objectid=' +  data.objectid + '&cacheid=' + Math.random();
-		var regionID=data.regionID;
-		
-		//location.href=url + "?" + pars;
-		
-		jQuery("#configuratorContainer").dialog({
-					resizable: true,
-					modal: true,
-					width: 400,
-					position: getDialogPosition(),
-					buttons: {
-						Save: function() {
-							addDisplayObject(availableObject,regionID,false);
-							jQuery( this ).dialog( "close" );
-							
-						},
-						Cancel: function() {
-							jQuery( this ).dialog( "close" );
+		initConfigurator(
+		data,
+		{
+			url: 'index.cfm',
+			pars: 'fuseaction=cArch.loadclassconfigurator&compactDisplay=true&siteid=' + siteid + '&classid=' + data.object + '&contentid=' + contentid + '&parentid=' + parentid + '&contenthistid=' + contenthistid + '&regionid=' + data.regionID  + '&objectid=' +  data.objectid + '&cacheid=' + Math.random(),
+			title: relatedContentConfiguratorTitle,
+			init: function(data,config){
+					jQuery( "#availableListSort, #displayListSort" ).sortable({
+						connectWith: ".displayListSortOptions",
+						update: function(event){
+							event.stopPropagation();
+							jQuery("#displayList").val("");
+							jQuery("#displayListSort > li").each(function(){
+								var current = jQuery("#displayList").val();
+								
+								if (current != '') {
+									jQuery("#displayList").val(current + "," + jQuery(this).html());
+								}
+								else {
+									jQuery("#displayList").val(jQuery(this).html());
+								}
+								
+							});
+							updateAvailableObject();
 						}
-					},
-					close: function(){
-						jQuery(this).dialog("destroy");
-					}
-				});
-		
-		jQuery.post(url + "?" + pars,
-			data, 
-			function(data) {
-				
-				jQuery("#ui-dialog-title-configuratorContainer").html(relatedContentConfiguratorTitle);		
-				jQuery("#configurator").html(data);
-				jQuery("#configuratorContainer").dialog("option","position",getDialogPosition());
-				
-				if(availableObjectTemplate==""){
-					availableObjectTemplate=eval( "(" + jQuery("#displayObjectTemplate").val() + ")");
-					availableObject=jQuery.extend({},availableObjectTemplate);
-				}
-				
-				jQuery( "#availableListSort, #displayListSort" ).sortable({
-					connectWith: ".displayListSortOptions",
-					update: function(event){
-						event.stopPropagation();
-						jQuery("#displayList").val("");
-						jQuery("#displayListSort > li").each(function(){
-							var current = jQuery("#displayList").val();
-							
-							if (current != '') {
-								jQuery("#displayList").val(current + "," + jQuery(this).html());
-							}
-							else {
-								jQuery("#displayList").val(jQuery(this).html());
-							}
-							
-						});
-						updateAvailableObject();
-					}
-				}).disableSelection();
-				
-				initConfiguratorParams();
-		
+					}).disableSelection();	
 			}
+		}
 		);
-		
 		return true;
 	}
 	
@@ -1681,6 +1517,8 @@ function addDisplayObject(objectToAdd,regionID,configure){
 					initCategorySummaryConfigurator(data);
 				} else if (data.object == 'related_content' || data.object == 'related_section_content') {
 					initRelatedContentConfigurator(data);
+				} else if (data.object == 'plugin' && typeof(initPluginConfigurator) != 'undefined'){
+					initPluginConfigurator(data);
 				} else{
 					initGenericConfigurator(data);
 				}
@@ -1708,24 +1546,97 @@ function addDisplayObject(objectToAdd,regionID,configure){
 		});
 	}
 	
-function setContentDisplayListSort(){
-	jQuery( "#contentAvailableListSort, #contentDisplayListSort" ).sortable({
-		connectWith: ".contentDisplayListSortOptions",
-		update: function(event){
-				event.stopPropagation();
-				jQuery("#contentDisplayList").val("");
-				jQuery("#contentDisplayListSort > li").each(function(){
-					var current = jQuery("#contentDisplayList").val();
-					
-					if (current != '') {
-						jQuery("#contentDisplayList").val(current + "," + jQuery(this).html());
-					}
-					else {
-						jQuery("#contentDisplayList").val(jQuery(this).html());
-					}
+	function setContentDisplayListSort(){
+		jQuery( "#contentAvailableListSort, #contentDisplayListSort" ).sortable({
+			connectWith: ".contentDisplayListSortOptions",
+			update: function(event){
+					event.stopPropagation();
+					jQuery("#contentDisplayList").val("");
+					jQuery("#contentDisplayListSort > li").each(function(){
+						var current = jQuery("#contentDisplayList").val();
+						
+						if (current != '') {
+							jQuery("#contentDisplayList").val(current + "," + jQuery(this).html());
+						}
+						else {
+							jQuery("#contentDisplayList").val(jQuery(this).html());
+						}
+								
+					});
+				}
+			}).disableSelection();
+	}
+
+	//CONFIG: URL,PARS,TITLE,INIT
+	function initConfigurator(data,config){
+		resetAvailableObject();
+		resetConfiguratorContainer();
+		
+		if(typeof(data.object) =='undefined'){	
+			return false;
+		}
+		
+		//location.href=url + "?" + pars;
+		
+		jQuery("#configuratorContainer").dialog({
+			resizable: true,
+			modal: true,
+			width: 400,
+			position: getDialogPosition(),
+			buttons: {
+				Save: function() {
+					addDisplayObject(availableObject,data.regionID,false);
+					jQuery( this ).dialog( "close" );
 							
-				});
+				},
+				Cancel: function() {
+					jQuery( this ).dialog( "close" );
+				}
+			},
+			close: function(){
+				jQuery(this).dialog("destroy");
+			}	
+		});
+				
+		jQuery.post(config.url + "?" + config.pars, 
+			data,
+			function(_resp) {
+				
+				try {
+					resp = eval('(' + _resp + ')');
+				} catch(err){
+					resp=_resp;
+				}
+				
+				if(typeof(resp)=='object'){
+					jQuery("#configurator").html(resp.html);	
+				} else {
+					jQuery("#configurator").html(resp);
+				}
+				
+				jQuery("#ui-dialog-title-configuratorContainer").html(config.title);	
+				jQuery("#configuratorContainer").dialog("option","position",getDialogPosition());
+				
+				if(availableObjectTemplate==""){
+					availableObjectTemplate=eval( "(" + jQuery("#displayObjectTemplate").val() + ")");
+					availableObject=jQuery.extend({},availableObjectTemplate);
+				}
+	
+				if(typeof(config.init) !='undefined'){
+					
+					if(typeof(resp)=='object'){
+						data=jQuery.extend(data,resp);
+					}	
+					config.init(data,config);
+				}
+				
+				initConfiguratorParams();
+		
 			}
-		}).disableSelection();
-}
+		);
+		
+		return true;
+	}
+
+
 
