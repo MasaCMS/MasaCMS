@@ -84,11 +84,17 @@ body#popUp {
 	width: 100%;
 	max-width: 100%;
 	float: none;
+	overflow: hidden;
 }
 #clogin #content {
 	width: 100%;
 	max-width: 100%;
 	padding: 0;
+}
+
+#clogin.compact #content {
+	padding: 2em 0;
+	background: #fff; /* In case the login form gets displayed in a modal dialog */
 }
 
 #login, #login form {
@@ -118,7 +124,7 @@ body#popUp {
 }
 
 #sendLogin input.text {
-	width: 290px;
+	width: 80%;
 }
 
 #cSetUp input.submit {
