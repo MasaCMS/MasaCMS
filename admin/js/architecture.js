@@ -1233,13 +1233,16 @@ function addDisplayObject(objectToAdd,regionid,configure){
 			checkSelection=true;
 		}
 		
-		if (tmpObject.object == 'plugin' && typeof(tmpObject.params.configurator)  == 'function') {
-			if (configure) {
-				tmpObject.regionid=regionid;
-				tmpObject.params.configurator(tmpObject);
-				return false;
+		if (tmpObject.object == 'plugin'){
+			var configurator=getPluginConfigurator(tmpObject.objectid);
+			if (configurator != '') {
+				if (configure) {
+					tmpObject.regionid = regionid;
+					window[configurator](tmpObject);
+					return false;
+				}
+				checkSelection = true;
 			}
-			checkSelection=true;
 		}
 		
 		tmpValue=tmpObject.object;
@@ -1262,8 +1265,7 @@ function addDisplayObject(objectToAdd,regionid,configure){
 			}
 			
 		}
-		
-		
+			
 		tmpText=tmpObject.name;	
 		
 	} 
@@ -1517,8 +1519,11 @@ function addDisplayObject(objectToAdd,regionid,configure){
 					initCategorySummaryConfigurator(data);
 				} else if (data.object == 'related_content' || data.object == 'related_section_content') {
 					initRelatedContentConfigurator(data);
-				} else if (data.object == 'plugin' && typeof(data.params.configurator)  == 'function'){
-					data.params.configurator(data);
+				} else if (data.object == 'plugin'){
+					var configurator=getPluginConfigurator(data.objectid);
+					if (configurator != '') {
+						window[configurator](data);
+					}
 				} else{
 					initGenericConfigurator(data);
 				}
@@ -1643,5 +1648,13 @@ function addDisplayObject(objectToAdd,regionid,configure){
 		return true;
 	}
 
-
+	function getPluginConfigurator(objectid){
+		for(var i=0;i< pluginConfigurators.length;i++){
+			if(pluginConfigurators[i].objectid==objectid){
+				return pluginConfigurators[i].configurator;
+			}
+		}
+		
+		return "";
+	}
 

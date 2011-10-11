@@ -48,7 +48,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset attributes.objectid = listLast(attributes.subclassid)>
 	<cfset attributes.subclassid = listFirst(attributes.subclassid)>
 </cfif>
-<cfset request.rsPlugins = application.pluginManager.getDisplayObjectBySiteID(siteID=attributes.siteid, 
+<cfset request.rsPlugins = application.pluginManager.getDisplayObjectsBySiteID(siteID=attributes.siteid, 
                                                                               modulesOnly=true)/>
 <cfoutput>
 	<select name="subClassSelector" 
@@ -68,7 +68,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfif len(attributes.subclassid)>
 
-	<cfset prelist = application.pluginManager.getDisplayObjectBySiteID(siteID=attributes.siteid, 
+	<cfset prelist = application.pluginManager.getDisplayObjectsBySiteID(siteID=attributes.siteid, 
 	                                                                    moduleID=attributes.subclassid)/>
 	<cfset customOutputList = "">
 	<cfset customOutput = "">

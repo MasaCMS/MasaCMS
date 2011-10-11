@@ -146,5 +146,10 @@ var genericConfiguratorMessage='#application.rbFactory.getKeyValue(session.rb,"s
 var contentid='#attributes.contentid#';
 var parentid='#attributes.parentid#';
 var contenthistid='#request.contentBean.getContentHistID()#';
+<cfset rsPluginDisplayObjects=application.pluginManager.getDisplayObjectsBySiteID(siteID=session.siteID,configuratorsOnly=true)>
+var pluginConfigurators=new Array();
+<cfloop query="rsPluginDisplayObjects">
+pluginConfigurators.push({'objectid':'#rsPluginDisplayObjects.objectid#','configurator':'#rsPluginDisplayObjects.configurator#'});
+</cfloop>
 </script>
 </cfoutput>

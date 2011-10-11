@@ -53,6 +53,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfproperty name="displayMethod" type="string" default="" required="true" />
 <cfproperty name="displayMethodFile" type="string" default="" required="true" />
 <cfproperty name="doCache" type="string" default="false" required="true" />
+<cfproperty name="configurator" type="string" default="false" required="true" />
 
 <cffunction name="init" returntype="any" output="false" access="public">
 	<cfset super.init(argumentCollection=arguments)>
@@ -64,6 +65,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.instance.displayMethod=""/>
 	<cfset variables.instance.displayObjectFile=""/>
 	<cfset variables.instance.docache="false"/>
+	<cfset variables.instance.configurator=""/>
 	
 	<cfreturn this />
 </cffunction>
@@ -138,6 +140,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 </cffunction>
 
+<cffunction name="getConfigurator" returntype="String" access="public" output="false">
+	<cfreturn variables.instance.configurator />
+</cffunction>
+
+<cffunction name="setConfigurator" access="public" output="false">
+	<cfargument name="configurator" type="String" />
+	<cfset variables.instance.configurator = trim(arguments.configurator) />
+</cffunction>
+
 <cffunction name="load"  access="public" output="false" returntype="void">
 	<cfset set(getQuery()) />
 </cffunction>
@@ -145,7 +156,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="loadByName"  access="public" output="false" returntype="void">
 	<cfset var rs=""/>
 	<cfquery name="rs" datasource="#getBean('configBean').getDatasource()#" username="#getBean('configBean').getDBUsername()#" password="#getBean('configBean').getDBPassword()#">
-	select objectID,moduleID,name,location,displayobjectfile,displaymethod, docache
+	select objectID,moduleID,name,location,displayobjectfile,displaymethod, docache, configurator
 	from tplugindisplayobjects 
 	where moduleID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getModuleID()#">
 	and name=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getName()#">
@@ -157,7 +168,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="getQuery"  access="public" output="false" returntype="query">
 	<cfset var rs=""/>
 	<cfquery name="rs" datasource="#getBean('configBean').getDatasource()#" username="#getBean('configBean').getDBUsername()#" password="#getBean('configBean').getDBPassword()#">
-	select objectID,moduleID,name,location,displayobjectfile,displaymethod, docache
+	select objectID,moduleID,name,location,displayobjectfile,displaymethod, docache, configurator
 	from tplugindisplayobjects 
 	where objectID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getObjectID()#">
 	</cfquery>
@@ -204,21 +215,23 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			location=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getLocation()#">,
 			displayObjectFile=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getDisplayObjectFile()#">,
 			displayMethod=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getDisplayMethod()#">,
-			docache=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getDoCache()#">
+			docache=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getDoCache()#">,
+			configurator=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getConfigurator()#">
 		where objectID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getObjectID()#">
 		</cfquery>
 		
 	<cfelse>
 	
 		<cfquery datasource="#getBean('configBean').getDatasource()#" username="#getBean('configBean').getDBUsername()#" password="#getBean('configBean').getDBPassword()#">
-			insert into tplugindisplayobjects (objectID,moduleID,name,location,displayobjectfile,displaymethod,docache) values (
+			insert into tplugindisplayobjects (objectID,moduleID,name,location,displayobjectfile,displaymethod,docache,configurator) values (
 			<cfqueryparam cfsqltype="cf_sql_varchar" value="#getObjectID()#">,
 			<cfqueryparam cfsqltype="cf_sql_varchar" value="#getModuleID()#">,
 			<cfqueryparam cfsqltype="cf_sql_varchar" value="#left(getName(),50)#">,
 			<cfqueryparam cfsqltype="cf_sql_varchar" value="#getLocation()#">,
 			<cfqueryparam cfsqltype="cf_sql_varchar" value="#getDisplayObjectFile()#">,
 			<cfqueryparam cfsqltype="cf_sql_varchar" value="#getDisplayMethod()#">,
-			<cfqueryparam cfsqltype="cf_sql_varchar" value="#getDoCache()#">
+			<cfqueryparam cfsqltype="cf_sql_varchar" value="#getDoCache()#">,
+			<cfqueryparam cfsqltype="cf_sql_varchar" value="#getConfigurator()#">
 			)
 		</cfquery>
 		
