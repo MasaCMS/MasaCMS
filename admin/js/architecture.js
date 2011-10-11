@@ -338,14 +338,14 @@ document.getElementById(id).style.visibility="hidden";
 
 
 
-function deleteDisplayObject(regionID){
-   var selectedObjects =document.getElementById("selectedObjects" + regionID);
+function deleteDisplayObject(regionid){
+   var selectedObjects =document.getElementById("selectedObjects" + regionid);
    var deleteIndex =selectedObjects.selectedIndex;
    var len = (selectedObjects.options.length > 1)?selectedObjects.options.length-1:0;
    if(deleteIndex < 0) return;
 	
 	selectedObjects.options[deleteIndex]=null; 
-	updateDisplayObjectList(regionID);
+	updateDisplayObjectList(regionid);
 	
 	if(selectedObjects.options.length){
 		selectedObjects.options[selectedObjects.options.length-1].selected=true;
@@ -353,9 +353,9 @@ function deleteDisplayObject(regionID){
 	 
 }
 
-function updateDisplayObjectList(regionID){
-	var selectedObjects =document.getElementById("selectedObjects" + regionID);
-	var objectList=document.getElementById("objectList" + regionID)
+function updateDisplayObjectList(regionid){
+	var selectedObjects =document.getElementById("selectedObjects" + regionid);
+	var objectList=document.getElementById("objectList" + regionid)
 	objectList.value=""; 
 	
 	for (var i=0;i<selectedObjects.options.length;i++){ 
@@ -372,8 +372,8 @@ function updateDisplayObjectList(regionID){
 
 }
 
-function moveDisplayObjectUp(regionID){
-var selectedObjects=document.getElementById("selectedObjects" + regionID);
+function moveDisplayObjectUp(regionid){
+var selectedObjects=document.getElementById("selectedObjects" + regionid);
 var moverIndex=selectedObjects.selectedIndex;
 if(moverIndex<1)return;
 
@@ -390,11 +390,11 @@ movedoption.value = selectedObjects.options[moverIndex-1].value;
 selectedObjects[moverIndex-1]=moveroption;
 selectedObjects[moverIndex]=movedoption;
 
-updateDisplayObjectList(regionID);
+updateDisplayObjectList(regionid);
 }
 
-function moveDisplayObjectDown(regionID){
-var selectedObjects=document.getElementById("selectedObjects" + regionID);
+function moveDisplayObjectDown(regionid){
+var selectedObjects=document.getElementById("selectedObjects" + regionid);
 var moverIndex=selectedObjects.selectedIndex;
 if(moverIndex ==selectedObjects.length-1)return;
 
@@ -412,7 +412,7 @@ movedoption.value = selectedObjects.options[moverIndex+1].value;
 selectedObjects.options[moverIndex+1]=moveroption;
 selectedObjects.options[moverIndex]=movedoption;
 
-updateDisplayObjectList(regionID);
+updateDisplayObjectList(regionid);
 
 }
 
@@ -476,14 +476,14 @@ function loadObjectClass(siteid,classid,subclassid,contentid,parentid,contenthis
 	return false;
 }
 
-function getDisplayObjectClass(regionID){
-	var str=jQuery('#selectedObjects' + regionID).val().toString();
+function getDisplayObjectClass(regionid){
+	var str=jQuery('#selectedObjects' + regionid).val().toString();
 	var a=str.split("~");
 	return a[0];
 }
 
-function getDisplayObjectID(regionID){
-	var str=jQuery('#selectedObjects' + regionID).val().toString();
+function getDisplayObjectID(regionid){
+	var str=jQuery('#selectedObjects' + regionid).val().toString();
 	var a=str.split("~");
 	return a[2];
 }
@@ -1112,8 +1112,8 @@ var availableObjectTemplate="";
 var availalbeObjectParams={};
 var availableObject={};
 	
-function getDisplayObjectConfig(regionID){
-		var selectedObjects=jQuery('#selectedObjects' + regionID);
+function getDisplayObjectConfig(regionid){
+		var selectedObjects=jQuery('#selectedObjects' + regionid);
 		var str=selectedObjects.val().toString();
 		var a=str.split("~");
 		var data={};
@@ -1126,12 +1126,12 @@ function getDisplayObjectConfig(regionID){
 			data.params=a[3];
 		}
 		
-		data.regionID=regionID;
+		data.regionid=regionid;
 		return data;
 }
 		
 
-function addDisplayObject(objectToAdd,regionID,configure){
+function addDisplayObject(objectToAdd,regionid,configure){
 	var tmpObject="";
 	var tmpValue="";
 	var tmpText="";
@@ -1198,7 +1198,7 @@ function addDisplayObject(objectToAdd,regionID,configure){
 			
 		if (tmpObject.object=='feed') {
 			if (configure) {
-				tmpObject.regionID=regionID;
+				tmpObject.regionid=regionid;
 				if (initFeedConfigurator(tmpObject)){
 					return false;
 				}
@@ -1208,7 +1208,7 @@ function addDisplayObject(objectToAdd,regionID,configure){
 		
 		if (tmpObject.object=='feed_slideshow') {
 			if (configure) {
-				tmpObject.regionID = regionID;
+				tmpObject.regionid = regionid;
 				initSlideShowConfigurator(tmpObject)
 				return false;
 			}
@@ -1217,7 +1217,7 @@ function addDisplayObject(objectToAdd,regionID,configure){
 		
 		if (tmpObject.object=='category_summary') {
 			if (configure) {
-				tmpObject.regionID=regionID;
+				tmpObject.regionid=regionid;
 				initCategorySummaryConfigurator(tmpObject)
 				return false;
 			}
@@ -1226,7 +1226,7 @@ function addDisplayObject(objectToAdd,regionID,configure){
 	
 		if ((tmpObject.object == 'related_content' || tmpObject.object == 'related_section_content')) {
 			if (configure) {
-				tmpObject.regionID=regionID;
+				tmpObject.regionid=regionid;
 				initRelatedContentConfigurator(tmpObject);
 				return false;
 			}
@@ -1235,7 +1235,7 @@ function addDisplayObject(objectToAdd,regionID,configure){
 		
 		if (tmpObject.object == 'plugin' && typeof(tmpObject.params.configurator)  == 'function') {
 			if (configure) {
-				tmpObject.regionID=regionID;
+				tmpObject.regionid=regionid;
 				tmpObject.params.configurator(tmpObject);
 				return false;
 			}
@@ -1252,8 +1252,8 @@ function addDisplayObject(objectToAdd,regionID,configure){
 			tmpValue   = tmpValue + "~" + JSON.stringify( tmpObject.params );
 		}
 		
-		if(checkSelection && document.getElementById('selectedObjects' + regionID).selectedIndex != -1){
-			var currentSelection=getDisplayObjectConfig(regionID);
+		if(checkSelection && document.getElementById('selectedObjects' + regionid).selectedIndex != -1){
+			var currentSelection=getDisplayObjectConfig(regionid);
 			
 			if(currentSelection){
 				if(currentSelection.objectid==tmpObject.objectid){
@@ -1276,7 +1276,7 @@ function addDisplayObject(objectToAdd,regionID,configure){
 	}
 	
 	//get reference to the select where it will go.
-	var selectedObjects =document.getElementById("selectedObjects" + regionID);
+	var selectedObjects =document.getElementById("selectedObjects" + regionid);
 	
 	//double check that it's not already there
 	if(selectedObjects.options.length){	
@@ -1293,7 +1293,7 @@ function addDisplayObject(objectToAdd,regionID,configure){
 
 	
 	if (isUpdate) {
-		myoption=selectedObjects.options[document.getElementById("selectedObjects" + regionID).selectedIndex];
+		myoption=selectedObjects.options[document.getElementById("selectedObjects" + regionid).selectedIndex];
 		myoption.text= tmpText;
 		myoption.value=tmpValue;
 	}else{
@@ -1305,7 +1305,7 @@ function addDisplayObject(objectToAdd,regionID,configure){
 		
 	}
 	
-	updateDisplayObjectList(regionID);
+	updateDisplayObjectList(regionid);
 	
 	return true
 	
@@ -1322,7 +1322,7 @@ function addDisplayObject(objectToAdd,regionID,configure){
 		initConfigurator(data,
 		{
 			url:'index.cfm',
-			pars:'fuseaction=cArch.loadclassconfigurator&compactDisplay=true&siteid=' + siteid + '&classid=category_summary&contentid=' + contentid + '&parentid=' + parentid + '&contenthistid=' + contenthistid + '&regionid=' + data.regionID  + '&objectid=' +  data.objectid + '&cacheid=' + Math.random(),
+			pars:'fuseaction=cArch.loadclassconfigurator&compactDisplay=true&siteid=' + siteid + '&classid=category_summary&contentid=' + contentid + '&parentid=' + parentid + '&contenthistid=' + contenthistid + '&regionid=' + data.regionid  + '&objectid=' +  data.objectid + '&cacheid=' + Math.random(),
 			title: categorySummaryConfiguratorTitle
 		}
 		);
@@ -1341,7 +1341,7 @@ function addDisplayObject(objectToAdd,regionID,configure){
 		initConfigurator(data,
 		{
 			url: 'index.cfm',
-			pars: 'fuseaction=cArch.loadclassconfigurator&compactDisplay=true&siteid=' + siteid + '&classid=feed&contentid=' + contentid + '&parentid=' + parentid + '&contenthistid=' + contenthistid + '&regionid=' + data.regionID  + '&feedid=' +  data.objectid + '&cacheid=' + Math.random(),
+			pars: 'fuseaction=cArch.loadclassconfigurator&compactDisplay=true&siteid=' + siteid + '&classid=feed&contentid=' + contentid + '&parentid=' + parentid + '&contenthistid=' + contenthistid + '&regionid=' + data.regionid  + '&feedid=' +  data.objectid + '&cacheid=' + Math.random(),
 			title: 'Loading...',
 			init: function(data,config){
 					//alert(JSON.stringify(data));
@@ -1392,7 +1392,7 @@ function addDisplayObject(objectToAdd,regionID,configure){
 		initConfigurator(data,
 		{
 			url: 'index.cfm',
-			pars: 'fuseaction=cArch.loadclassconfigurator&compactDisplay=true&siteid=' + siteid + '&classid=feed_slideshow&contentid=' + contentid + '&parentid=' + parentid + '&contenthistid=' + contenthistid + '&regionid=' + data.regionID  + '&feedid=' +  data.objectid + '&cacheid=' + Math.random(),
+			pars: 'fuseaction=cArch.loadclassconfigurator&compactDisplay=true&siteid=' + siteid + '&classid=feed_slideshow&contentid=' + contentid + '&parentid=' + parentid + '&contenthistid=' + contenthistid + '&regionid=' + data.regionid  + '&feedid=' +  data.objectid + '&cacheid=' + Math.random(),
 			title: slideShowConfiguratorTitle,
 			init: function(data,config){
 					jQuery( "#availableListSort, #displayListSort" ).sortable({
@@ -1427,7 +1427,7 @@ function addDisplayObject(objectToAdd,regionID,configure){
 		data,
 		{
 			url: 'index.cfm',
-			pars: 'fuseaction=cArch.loadclassconfigurator&compactDisplay=true&siteid=' + siteid + '&classid=' + data.object + '&contentid=' + contentid + '&parentid=' + parentid + '&contenthistid=' + contenthistid + '&regionid=' + data.regionID  + '&objectid=' +  data.objectid + '&cacheid=' + Math.random(),
+			pars: 'fuseaction=cArch.loadclassconfigurator&compactDisplay=true&siteid=' + siteid + '&classid=' + data.object + '&contentid=' + contentid + '&parentid=' + parentid + '&contenthistid=' + contenthistid + '&regionid=' + data.regionid  + '&objectid=' +  data.objectid + '&cacheid=' + Math.random(),
 			title: relatedContentConfiguratorTitle,
 			init: function(data,config){
 					jQuery( "#availableListSort, #displayListSort" ).sortable({
@@ -1506,8 +1506,8 @@ function addDisplayObject(objectToAdd,regionID,configure){
 	function initDisplayObjectConfigurators(){
 		jQuery(".displayRegions").find("option").dblclick(
 			function(){
-				var regionID=jQuery(this).parents("select:first").attr("data-regionid");
-				var data=getDisplayObjectConfig(regionID);
+				var regionid=jQuery(this).parents("select:first").attr("data-regionid");
+				var data=getDisplayObjectConfig(regionid);
 					
 				if (data.object == 'feed') {
 					initFeedConfigurator(data);
@@ -1585,7 +1585,7 @@ function addDisplayObject(objectToAdd,regionID,configure){
 			position: getDialogPosition(),
 			buttons: {
 				Save: function() {
-					addDisplayObject(availableObject,data.regionID,false);
+					addDisplayObject(availableObject,data.regionid,false);
 					jQuery( this ).dialog( "close" );
 							
 				},
