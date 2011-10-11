@@ -1392,7 +1392,7 @@ function addDisplayObject(objectToAdd,regionID,configure){
 		initConfigurator(data,
 		{
 			url: 'index.cfm',
-			pars: 'fuseaction=cArch.loadclassconfigurator&compactDisplay=true&siteid=' + siteid + '&classid=feed_slideshow&contentid=' + contentid + '&parentid=' + parentid + '&contenthistid=' + contenthistid + '&regionid=' + data.regionID  + '&feedid=' +  data.objectID + '&cacheid=' + Math.random(),
+			pars: 'fuseaction=cArch.loadclassconfigurator&compactDisplay=true&siteid=' + siteid + '&classid=feed_slideshow&contentid=' + contentid + '&parentid=' + parentid + '&contenthistid=' + contenthistid + '&regionid=' + data.regionID  + '&feedid=' +  data.objectid + '&cacheid=' + Math.random(),
 			title: slideShowConfiguratorTitle,
 			init: function(data,config){
 					jQuery( "#availableListSort, #displayListSort" ).sortable({
@@ -1618,7 +1618,12 @@ function addDisplayObject(objectToAdd,regionID,configure){
 				jQuery("#configuratorContainer").dialog("option","position",getDialogPosition());
 				
 				if(availableObjectTemplate==""){
-					availableObjectTemplate=eval( "(" + jQuery("#displayObjectTemplate").val() + ")");
+					var availableObjectContainer=jQuery("#availableObjectParams");
+					availableObjectTemplate={
+												object:availableObjectContainer.attr("data-object"),
+												objectid:availableObjectContainer.attr("data-objectid"),
+												name:availableObjectContainer.attr("data-name")
+											};
 					availableObject=jQuery.extend({},availableObjectTemplate);
 				}
 	

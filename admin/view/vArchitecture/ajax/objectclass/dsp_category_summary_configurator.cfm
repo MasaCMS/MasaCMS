@@ -58,7 +58,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfoutput>
 
-	<div id="availableObjectParams"<!--- style="display:none;"--->>
+	<div id="availableObjectParams" 
+	data-object="category_summary" 
+	data-name="#HTMLEditFormat('#content.getMenuTitle()# - #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.categorysummary')#')#" 
+	data-objectid="#content.getContentID()#">
 		<dl class="oneColumn">
 			<dt class="first">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayrss')#</dt>
 			<dd>
@@ -67,6 +70,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</dd>
 		</dl>
 	</div>
-	<input type="hidden" name="displayObjectTemplate" id="displayObjectTemplate" value="{'object':'category_summary','name':'#JSStringFormat('#content.getMenuTitle()# - #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.categorysummary')#')#','objectid':'#content.getContentID()#'}"/>
+
 </cfoutput>
 

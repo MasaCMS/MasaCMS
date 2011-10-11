@@ -55,8 +55,19 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset data=structNew()>
 <cfsavecontent variable="data.html">
 <cfoutput>
-
-			<div id="availableObjectParams"<!--- style="display:none;"--->>
+	
+	<cfif feed.getType() eq "local">
+	<div id="availableObjectParams"
+	data-object="feed" 
+	data-name="#HTMLEditFormat('#feed.getName()# - #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.localindex')#')#" 
+	data-objectid="#feed.getFeedID()#">
+	<cfelse>
+	<div id="availableObjectParams"
+	data-object="feed" 
+	data-name="#HTMLEditFormat('#feed.getName()# - #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.remotefeed')#')#" 
+	data-objectid="#feed.getFeedID()#">	
+	</cfif>
+	
 			<h4>#HTMLEditFormat(feed.getName())#</h4>
 			<cfif feed.getType() eq "local">		
 				<dl class="oneColumn" id="configurator">
@@ -125,9 +136,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<input type="hidden" id="displayList" value="#displayList#" data-displayobjectparam="displayList"/>
 					</div>	
 				</dd>
-								</dl>
+				</dl>
 			</div>
-				<input type="hidden" name="displayObjectTemplate" id="displayObjectTemplate" value="{'object':'feed','name':'#JSStringFormat('#feed.getName()# - #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.localindex')#')#','objectid':'#feed.getFeedID()#'}"/>
+				
 			<cfelse>
 				<cfset displaySummaries=yesNoFormat(feed.getValue("displaySummaries"))>
 				<dl class="oneColumn">
@@ -139,7 +150,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</dd>
 				</dl>
 			</div>
-				<input type="hidden" name="displayObjectTemplate" id="displayObjectTemplate" value="{'object':'feed','name':'#JSStringFormat('#feed.getName()# - #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.remotefeed')#')#','objectid':'#feed.getFeedID()#'}"/>
 			</cfif>
 </cfoutput>
 </cfsavecontent>

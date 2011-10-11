@@ -54,7 +54,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfelse>
 	<cfset feed.setImageSize("medium")>
 </cfif>
-			<div id="availableObjectParams"<!--- style="display:none;"--->>
+	<div id="availableObjectParams"
+	data-object="feed_slideshow" 
+	data-name="#HTMLEditFormat('#feed.getName()# - #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.localindexslideshow')#')#" 
+	data-objectid="#feed.getFeedID()#">
 				<h4>#HTMLEditFormat(feed.getName())#</h4>
 				<dl class="oneColumn" id="configurator">
 					<dt class="first">#application.rbFactory.getKeyValue(session.rb,'collections.imagesize')#</dt>
@@ -112,6 +115,5 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					</div>	
 				</dd>
 				</dl>
-			</div>
-		<input type="hidden" name="displayObjectTemplate" id="displayObjectTemplate" value="{'object':'feed_slideshow','name':'#JSStringFormat('#feed.getName()# - #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.localindexslideshow')#')#','objectid':'#feed.getFeedID()#'}"/>
+		</div>
 </cfoutput>

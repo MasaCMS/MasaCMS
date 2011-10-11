@@ -54,7 +54,19 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfif>
 
 <cfoutput>
-<div id="availableObjectParams"<!--- style="display:none;"--->>
+	<cfif attributes.classid eq "related_content">
+		<div id="availableObjectParams"	
+		data-object="#attributes.classid#" 
+		data-name="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.relatedcontent'))#" 
+		data-objectid="#attributes.objectID#">
+	<cfelse>
+		<cfset menutitle=$.getBean("content").loadBy(contentID=attributes.contentID).getMenuTitle()>
+		<div id="availableObjectParams"	
+		data-object="#attributes.classid#" 
+		data-name="#HTMLEditFormat('#menutitle# - #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.relatedcontent')#')#" 
+		data-objectid="#feed.getFeedID()#">
+	</cfif>
+	
 	
 				<dl class="oneColumn" id="configurator">
 					<dt class="first">#application.rbFactory.getKeyValue(session.rb,'collections.imagesize')#</dt>
@@ -95,12 +107,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					</div>	
 				</dd>
 				</dl>
-			</div>
-			<cfif attributes.classid eq "related_content">
-				<input type="hidden" name="displayObjectTemplate" id="displayObjectTemplate" value="{'object':'#attributes.classid#','name':'#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.relatedcontent')#','objectid':'#attributes.objectID#'}"/>
-			<cfelse>
-				<cfset menutitle=$.getBean("content").loadBy(contentID=attributes.contentID).getMenuTitle()>
-				<input type="hidden" name="displayObjectTemplate" id="displayObjectTemplate" value="{'object':'#attributes.classid#','name':'#JSStringFormat(menutitle)# - #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.relatedcontent')#','objectid':'#attributes.objectID#'}"/>
-			</cfif>
+		</div>	
 </cfoutput>
 
