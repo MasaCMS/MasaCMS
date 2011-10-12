@@ -14,7 +14,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 */
 
 /**
- * Constains the dictionary of language entries.
+ * Contains the dictionary of language entries.
  * @namespace
  */
 CKEDITOR.lang['fr'] =
@@ -121,6 +121,10 @@ CKEDITOR.lang['fr'] =
 		alignBottom		: 'Bas',
 		invalidHeight	: 'La hauteur doit être un nombre.',
 		invalidWidth	: 'La largeur doit être un nombre.',
+		invalidCssLength	: 'Value specified for the "%1" field must be a positive number with or without a valid CSS measurement unit (px, %, in, cm, mm, em, ex, pt, or pc).', // MISSING
+		invalidHtmlLength	: 'Value specified for the "%1" field must be a positive number with or without a valid HTML measurement unit (px or %).', // MISSING
+		invalidInlineStyle	: 'Value specified for the inline style must consist of one or more tuples with the format of "name : value", separated by semi-colons.', // MISSING
+		cssLengthTooltip	: 'Enter a number for a value in pixels or a number with a valid CSS unit (px, %, in, cm, mm, em, ex, pt, or pc).', // MISSING
 
 		// Put the voice-only part of the label in the span.
 		unavailable		: '%1<span class="cke_accessibility">, Indisponible</span>'
@@ -201,7 +205,8 @@ CKEDITOR.lang['fr'] =
 		menu		: 'Editer l\'ancre',
 		title		: 'Propriétés de l\'ancre',
 		name		: 'Nom de l\'ancre',
-		errorName	: 'Veuillez entrer le nom de l\'ancre.'
+		errorName	: 'Veuillez entrer le nom de l\'ancre.',
+		remove		: 'Remove Anchor' // MISSING
 	},
 
 	// List style dialog
@@ -237,6 +242,7 @@ CKEDITOR.lang['fr'] =
 		findWhat			: 'Expression à trouver: ',
 		replaceWith			: 'Remplacer par: ',
 		notFoundMsg			: 'Le texte spécifié ne peut être trouvé.',
+		findOptions			: 'Find Options', // MISSING
 		matchCase			: 'Respecter la casse',
 		matchWord			: 'Mot entier uniquement',
 		matchCyclic			: 'Boucler',
@@ -271,8 +277,8 @@ CKEDITOR.lang['fr'] =
 		invalidBorder	: 'La taille de la bordure doit être un nombre.',
 		invalidWidth	: 'La largeur du tableau doit être un nombre.',
 		invalidHeight	: 'La hauteur du tableau doit être un nombre.',
-		invalidCellSpacing	: 'L\'espacement des cellules doit être un nombre.',
-		invalidCellPadding	: 'La marge intérieure des cellules doit être un nombre.',
+		invalidCellSpacing	: 'L\'espacement des cellules doit être un nombre positif.',
+		invalidCellPadding	: 'La marge intérieure des cellules doit être un nombre positif.',
 
 		cell :
 		{
@@ -413,7 +419,6 @@ CKEDITOR.lang['fr'] =
 		upload		: 'Envoyer',
 		alt			: 'Texte de remplacement',
 		lockRatio	: 'Conserver les proportions',
-		unlockRatio	: 'Ne pas conserver les proportions',
 		resetSize	: 'Taille d\'origine',
 		border		: 'Bordure',
 		hSpace		: 'Espacement horizontal',
@@ -770,40 +775,40 @@ CKEDITOR.lang['fr'] =
 
 	docprops :
 	{
-		label : 'Document Properties', // MISSING
-		title : 'Document Properties', // MISSING
+		label : 'Propriétés du document',
+		title : 'Propriétés du document',
 		design : 'Design', // MISSING
-		meta : 'Meta Tags', // MISSING
-		chooseColor : 'Choose', // MISSING
-		other : 'Other...', // MISSING
-		docTitle :	'Page Title', // MISSING
-		charset : 	'Character Set Encoding', // MISSING
-		charsetOther : 'Other Character Set Encoding', // MISSING
+		meta : 'Métadonnées',
+		chooseColor : 'Choisissez',
+		other : '<autre>',
+		docTitle :	'Titre de la page',
+		charset : 	'Encodage de caractère',
+		charsetOther : 'Autre encodage de caractère',
 		charsetASCII : 'ASCII', // MISSING
-		charsetCE : 'Central European', // MISSING
-		charsetCT : 'Chinese Traditional (Big5)', // MISSING
-		charsetCR : 'Cyrillic', // MISSING
-		charsetGR : 'Greek', // MISSING
-		charsetJP : 'Japanese', // MISSING
-		charsetKR : 'Korean', // MISSING
-		charsetTR : 'Turkish', // MISSING
+		charsetCE : 'Europe Centrale',
+		charsetCT : 'Chinois Traditionnel (Big5)',
+		charsetCR : 'Cyrillique',
+		charsetGR : 'Grec',
+		charsetJP : 'Japonais',
+		charsetKR : 'Coréen',
+		charsetTR : 'Turc',
 		charsetUN : 'Unicode (UTF-8)', // MISSING
-		charsetWE : 'Western European', // MISSING
-		docType : 'Document Type Heading', // MISSING
-		docTypeOther : 'Other Document Type Heading', // MISSING
-		xhtmlDec : 'Include XHTML Declarations', // MISSING
-		bgColor : 'Background Color', // MISSING
-		bgImage : 'Background Image URL', // MISSING
-		bgFixed : 'Non-scrolling (Fixed) Background', // MISSING
-		txtColor : 'Text Color', // MISSING
-		margin : 'Page Margins', // MISSING
-		marginTop : 'Top', // MISSING
-		marginLeft : 'Left', // MISSING
-		marginRight : 'Right', // MISSING
-		marginBottom : 'Bottom', // MISSING
-		metaKeywords : 'Document Indexing Keywords (comma separated)', // MISSING
-		metaDescription : 'Document Description', // MISSING
-		metaAuthor : 'Author', // MISSING
+		charsetWE : 'Occidental',
+		docType : 'Type de document',
+		docTypeOther : 'Autre type de document',
+		xhtmlDec : 'Inclure les déclarations XHTML',
+		bgColor : 'Couleur de fond',
+		bgImage : 'Image de fond',
+		bgFixed : 'Image fixe sans défilement',
+		txtColor : 'Couleur de texte',
+		margin : 'Marges',
+		marginTop : 'Haut',
+		marginLeft : 'Gauche',
+		marginRight : 'Droite',
+		marginBottom : 'Bas',
+		metaKeywords : 'Mots-clés (séparés par des virgules)',
+		metaDescription : 'Description',
+		metaAuthor : 'Auteur',
 		metaCopyright : 'Copyright', // MISSING
 		previewHtml : '<p>This is some <strong>sample text</strong>. You are using <a href="javascript:void(0)">CKEditor</a>.</p>' // MISSING
 	}

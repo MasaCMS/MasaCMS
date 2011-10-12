@@ -22,10 +22,9 @@
 	<cfscript>
 	THIS.mappings["/CKFinder_Connector"] = mapPrefix & BaseDir & "/tasks/widgets/ckfinder/core/connector/cfm/";
 	</cfscript>
-
+	
 	<!--- Include the CFC creation proxy. --->
 	<cfinclude template="createcfc.udf.cfm" />
-
 
 	<cffunction name="OnRequestStart" access="public" returntype="boolean" output="false" hint="Pre-page processing for the page request.">
 		<!---
@@ -34,8 +33,25 @@
 		--->
 		<cfset APPLICATION.CreateCFC = THIS.CreateCFC />
 		<cfset APPLICATION.CFVersion = Left(SERVER.COLDFUSION.PRODUCTVERSION,Find(",",SERVER.COLDFUSION.PRODUCTVERSION)-1) />
-		<cfinclude template="../../../../../../config/appcfc/onRequestStart_include.cfm">
+		
 		<cfreturn true />
 	</cffunction>
-
+	
+	<!--- Required by flash uloader --->
+	<cffunction name="onSessionStart" access="public" returntype="void" output="false" hint="I initialize the session.">
+		<cfset var requestData = GetHTTPRequestData()>
+		<cfif LCase(requestData.method) eq "post">
+			<!--- ColdFusion 9 does not use CFID/CFTOKEN passed in the URL, so we need to do it manually. --->
+			<cfif isDefined('URL.CFID')>
+				<cfcookie name="CFID" value="#URL.CFID#" />
+			</cfif>
+			<cfif isDefined('URL.CFTOKEN')>
+				<cfcookie name="CFTOKEN" value="#URL.CFTOKEN#" />
+			</cfif>
+			<cfif isDefined('URL.JSESSIONID')>
+				<cfcookie name="JSESSIONID" value="#URL.JSESSIONID#" />
+			</cfif>
+		</cfif>
+		<cfreturn />
+	</cffunction>
 </cfcomponent>

@@ -1,63 +1,64 @@
-<cfset renderer.setRenderHTMLHead(false)/>
-<!--- <cfheader name="Expires" value="#GetHttpTimeString(Now())#">
+<cfset $.getContentRenderer().setRenderHTMLHead(false)/>
+<!--- <cfheader name="Expires" value="#GetHttpTimeString(Now'))#">
 <cfheader name="Pragma" value="no-cache">
 <cfheader name="Cache-Control" value="no-cache, no-store, must-revalidate"> --->
 <!--- This file is an example of alternate outputs --->
 <cfcontent reset="true" type="text/xml; charset=UTF-8">
-<cfif request.isOnDisplay and ((not request.r.restrict) or (request.r.restrict and request.r.allow))><cfoutput><?xml version="1.0" ?>
+<cfset r=$.event('r')>
+<cfif $.event('isOnDisplay') and ((not r.restrict) or (r.restrict and r.allow))><cfoutput><?xml version="1.0" ?>
 <content>
-<title>#xmlFormat(request.contentBean.getTitle())#</title>
-<menutitle>#xmlFormat(request.contentBean.getMenuTitle())#</menutitle>
-<type>#xmlFormat(request.contentBean.getType())#</type>
-<subtype>#xmlFormat(request.contentBean.getSubType())#</subtype>
-<display>#xmlFormat(request.contentBean.getDisplay())#</display>
-<displaystart>#xmlFormat(request.contentBean.getDisplayStart())#</displaystart>
-<displaystop>#xmlFormat(request.contentBean.getDisplayStop())#</displaystop>
-<filename>#xmlFormat(request.contentBean.getFilename())#</filename>
-<credits>#xmlFormat(request.contentBean.getCredits())#</credits>
-<siteid>#xmlFormat(request.contentBean.getSiteID())#</siteid>
-<contentid>#xmlFormat(request.contentBean.getContentId())#</contentid>
-<contenthistid>#xmlFormat(request.contentBean.getContentHistId())#</contenthistid>
-<parentid>#xmlFormat(request.contentBean.getParentId())#</parentid>
-<lastupdate>#xmlFormat(request.contentBean.getLastUpdate())#</lastupdate>
-<lastupdateby>#xmlFormat(request.contentBean.getLastUpdateBy())#</lastupdateby>
-<lastupdatebyid>#xmlFormat(request.contentBean.getLastUpdateById())#</lastupdatebyid>
-<tags>#xmlFormat(request.contentBean.getTags())#</tags>
-<releasedate>#xmlFormat(request.contentBean.getReleaseDate())#</releasedate>
-<fileid>#xmlFormat(request.contentBean.getFileId())#</fileid>
-<fileext>#xmlFormat(request.contentBean.getFileExt())#</fileext>
-<contenttype>#xmlFormat(request.contentBean.getContentType())#</contenttype>
-<contentsubtype>#xmlFormat(request.contentBean.getcontentsubtype())#</contentsubtype>
-<filesize>#xmlFormat(request.contentBean.getFileSize())#</filesize>
-<metadesc><![CDATA[#request.contentBean.getMetaDesc()#]]></metadesc>
-<metakeywords><![CDATA[#request.contentBean.getMetaKeyWords()#]]></metakeywords>
-<summary><![CDATA[#request.contentBean.getSummary()#]]></summary>
-<body><![CDATA[#renderer.dspBody(request.contentBean.getBody(),'',0,'',0)#]]></body>
+<title>#xmlFormat($.content('Title'))#</title>
+<menutitle>#xmlFormat($.content('MenuTitle'))#</menutitle>
+<type>#xmlFormat($.content('Type'))#</type>
+<subtype>#xmlFormat($.content('SubType'))#</subtype>
+<display>#xmlFormat($.content('Display'))#</display>
+<displaystart>#xmlFormat($.content('DisplayStart'))#</displaystart>
+<displaystop>#xmlFormat($.content('DisplayStop'))#</displaystop>
+<filename>#xmlFormat($.content('Filename'))#</filename>
+<credits>#xmlFormat($.content('Credits'))#</credits>
+<siteid>#xmlFormat($.content('SiteID'))#</siteid>
+<contentid>#xmlFormat($.content('ContentId'))#</contentid>
+<contenthistid>#xmlFormat($.content('ContentHistId'))#</contenthistid>
+<parentid>#xmlFormat($.content('ParentId'))#</parentid>
+<lastupdate>#xmlFormat($.content('LastUpdate'))#</lastupdate>
+<lastupdateby>#xmlFormat($.content('LastUpdateBy'))#</lastupdateby>
+<lastupdatebyid>#xmlFormat($.content('LastUpdateById'))#</lastupdatebyid>
+<tags>#xmlFormat($.content('Tags'))#</tags>
+<releasedate>#xmlFormat($.content('ReleaseDate'))#</releasedate>
+<fileid>#xmlFormat($.content('FileId'))#</fileid>
+<fileext>#xmlFormat($.content('FileExt'))#</fileext>
+<contenttype>#xmlFormat($.content('ContentType'))#</contenttype>
+<contentsubtype>#xmlFormat($.content('contentsubtype'))#</contentsubtype>
+<filesize>#xmlFormat($.content('FileSize'))#</filesize>
+<metadesc><![CDATA[#$.content('MetaDesc')#]]></metadesc>
+<metakeywords><![CDATA[#$.content('MetaKeyWords')#]]></metakeywords>
+<summary><![CDATA[#$.content('Summary')#]]></summary>
+<body><![CDATA[#$.dspBody($.content('Body'),'',0,'',0)#]]></body>
 </content></cfoutput>
 <cfelse><cfoutput><?xml version="1.0" ?>
 <content>
 <title>Restricted Content</title>
 <menutitle>Restricted Content</menutitle>
-<type>#xmlFormat(request.contentBean.getType())#</type>
-<subtype>#xmlFormat(request.contentBean.getSubType())#</subtype>
-<display>#xmlFormat(request.contentBean.getDisplay())#</display>
-<displaystart>#xmlFormat(request.contentBean.getDisplayStart())#</displaystart>
-<displaystop>#xmlFormat(request.contentBean.getDisplayStop())#</displaystop>
-<filename>#xmlFormat(request.contentBean.getFilename())#</filename>
+<type>#xmlFormat($.content('Type'))#</type>
+<subtype>#xmlFormat($.content('SubType'))#</subtype>
+<display>#xmlFormat($.content('Display'))#</display>
+<displaystart>#xmlFormat($.content('DisplayStart'))#</displaystart>
+<displaystop>#xmlFormat($.content('DisplayStop'))#</displaystop>
+<filename>#xmlFormat($.content('Filename'))#</filename>
 <credits></credits>
-<siteid>#xmlFormat(request.contentBean.getSiteID())#</siteid>
-<contentid>#xmlFormat(request.contentBean.getContentId())#</contentid>
-<contenthistid>#xmlFormat(request.contentBean.getContentHistId())#</contenthistid>
-<parentid>#xmlFormat(request.contentBean.getParentId())#</parentid>
-<lastupdate>#xmlFormat(request.contentBean.getLastUpdate())#</lastupdate>
-<lastupdateby>#xmlFormat(request.contentBean.getLastUpdateBy())#</lastupdateby>
-<lastupdatebyid>#xmlFormat(request.contentBean.getLastUpdateById())#</lastupdatebyid>
+<siteid>#xmlFormat($.content('SiteID'))#</siteid>
+<contentid>#xmlFormat($.content('ContentId'))#</contentid>
+<contenthistid>#xmlFormat($.content('ContentHistId'))#</contenthistid>
+<parentid>#xmlFormat($.content('ParentId'))#</parentid>
+<lastupdate>#xmlFormat($.content('LastUpdate'))#</lastupdate>
+<lastupdateby>#xmlFormat($.content('LastUpdateBy'))#</lastupdateby>
+<lastupdatebyid>#xmlFormat($.content('LastUpdateById'))#</lastupdatebyid>
 <tags></tags>
-<releasedate>#xmlFormat(request.contentBean.getReleaseDate())#</releasedate>
+<releasedate>#xmlFormat($.content('ReleaseDate'))#</releasedate>
 <fileid></fileid>
 <fileext></fileext>
-<contenttype>#xmlFormat(request.contentBean.getContentType())#</contenttype>
-<contentsubtype>#xmlFormat(request.contentBean.getcontentsubtype())#</contentsubtype>
+<contenttype>#xmlFormat($.content('ContentType'))#</contenttype>
+<contentsubtype>#xmlFormat($.content('contentsubtype'))#</contentsubtype>
 <filesize></filesize>
 <metadesc></metadesc>
 <metakeywords></metakeywords>

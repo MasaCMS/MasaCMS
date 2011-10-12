@@ -18,6 +18,7 @@
 	<cfargument name="errorMsg" type="String" required="false" default="">
 	<cfargument name="fileName" type="String" required="false" default="">
 	<cfset var funcNum = 0>
+	<cfcontent reset="true" type="text/html; charset=UTF-8">
 	<cfif not isDefined('URL.CKEditor')>
 		<cfif ARGUMENTS.errorCode eq REQUEST.constants.CKFINDER_CONNECTOR_ERROR_UPLOADED_FILE_RENAMED or
 		ARGUMENTS.errorCode eq REQUEST.constants.CKFINDER_CONNECTOR_ERROR_NONE>

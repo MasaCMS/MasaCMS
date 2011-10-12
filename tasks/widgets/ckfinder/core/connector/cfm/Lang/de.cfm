@@ -4,7 +4,7 @@
 Copyright (c) 2003-2011, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckfinder.com/license
 
- Defines the object, for the German language. This is the base file for all translations.
+ Defines the object for the German language.
 --->
 <cfscript>
 CKFLang = structNew();
@@ -24,7 +24,7 @@ CKFLang = structNew();
 	CKFLang.Errors[117] = 'Datei nicht gefunden. Bitte aktualisieren Sie die Dateiliste und versuchen es noch einmal.';
 	CKFLang.Errors[118] = 'Source and target paths are equal.';
 	CKFLang.Errors[201] = 'Es existiert bereits eine Datei unter gleichem Namen. Die hochgeladene Datei wurde unter "%1" gespeichert.';
-	CKFLang.Errors[202] = 'Ungültige Datei';
+	CKFLang.Errors[202] = 'Ungültige Datei.';
 	CKFLang.Errors[203] = 'ungültige Datei. Die Dateigröße ist zu groß.';
 	CKFLang.Errors[204] = 'Die hochgeladene Datei ist korrupt.';
 	CKFLang.Errors[205] = 'Es existiert kein temp. Ordner für das Hochladen auf den Server.';

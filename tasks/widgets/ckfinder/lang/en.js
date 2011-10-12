@@ -4,20 +4,20 @@
  * http://ckfinder.com
  * Copyright (C) 2007-2011, CKSource - Frederico Knabben. All rights reserved.
  *
- * The software, this file and its contents are subject to the CKFinder
+ * The software, this file, and its contents are subject to the CKFinder
  * License. Please read the license.txt file before using, installing, copying,
- * modifying or distribute this file or part of its contents. The contents of
+ * modifying, or distributing this file or part of its contents. The contents of
  * this file is part of the Source Code of CKFinder.
  *
  */
 
 /**
- * @fileOverview Defines the {@link CKFinder.lang} object, for the English
+ * @fileOverview Defines the {@link CKFinder.lang} object for the English
  *		language. This is the base file for all translations.
  */
 
 /**
- * Constains the dictionary of language entries.
+ * Contains the dictionary of language entries.
  * @namespace
  */
 CKFinder.lang['en'] =
@@ -29,7 +29,7 @@ CKFinder.lang['en'] =
 	{
 		// Put the voice-only part of the label in the span.
 		unavailable		: '%1<span class="cke_accessibility">, unavailable</span>',
-		confirmCancel	: 'Some of the options have been changed. Are you sure to close the dialog?',
+		confirmCancel	: 'Some of the options were changed. Are you sure you want to close the dialog window?',
 		ok				: 'OK',
 		cancel			: 'Cancel',
 		confirmationTitle	: 'Confirmation',
@@ -77,22 +77,22 @@ CKFinder.lang['en'] =
 
 	// Files
 	FileRename		: 'Please type the new file name: ',
-	FileRenameExt	: 'Are you sure you want to change the file name extension? The file may become unusable',
+	FileRenameExt	: 'Are you sure you want to change the file extension? The file may become unusable.',
 	FileRenaming	: 'Renaming...',
 	FileDelete		: 'Are you sure you want to delete the file "%1"?',
 	FilesLoading	: 'Loading...',
-	FilesEmpty		: 'Empty folder',
-	FilesMoved		: 'File %1 moved into %2:%3',
-	FilesCopied		: 'File %1 copied into %2:%3',
+	FilesEmpty		: 'The folder is empty.',
+	FilesMoved		: 'File %1 moved to %2:%3.',
+	FilesCopied		: 'File %1 copied to %2:%3.',
 
 	// Basket
 	BasketFolder		: 'Basket',
 	BasketClear			: 'Clear Basket',
-	BasketRemove		: 'Remove from basket',
-	BasketOpenFolder	: 'Open parent folder',
+	BasketRemove		: 'Remove from Basket',
+	BasketOpenFolder	: 'Open Parent Folder',
 	BasketTruncateConfirm : 'Do you really want to remove all files from the basket?',
 	BasketRemoveConfirm	: 'Do you really want to remove the file "%1" from the basket?',
-	BasketEmpty			: 'No files in the basket, drag\'n\'drop some.',
+	BasketEmpty			: 'No files in the basket, drag and drop some.',
 	BasketCopyFilesHere	: 'Copy Files from Basket',
 	BasketMoveFilesHere	: 'Move Files from Basket',
 
@@ -118,14 +118,14 @@ CKFinder.lang['en'] =
 	Rename			: 'Rename',
 	Delete			: 'Delete',
 
-	CopyDragDrop	: 'Copy file here',
-	MoveDragDrop	: 'Move file here',
+	CopyDragDrop	: 'Copy File Here',
+	MoveDragDrop	: 'Move File Here',
 
 	// Dialogs
 	RenameDlgTitle		: 'Rename',
-	NewNameDlgTitle		: 'New name',
-	FileExistsDlgTitle	: 'File already exists',
-	SysErrorDlgTitle : 'System error',
+	NewNameDlgTitle		: 'New Name',
+	FileExistsDlgTitle	: 'File Already Exists',
+	SysErrorDlgTitle : 'System Error',
 
 	FileOverwrite	: 'Overwrite',
 	FileAutorename	: 'Auto-rename',
@@ -137,16 +137,28 @@ CKFinder.lang['en'] =
 
 	// Upload Panel
 	UploadTitle			: 'Upload New File',
-	UploadSelectLbl		: 'Select the file to upload',
+	UploadSelectLbl		: 'Select a file to upload',
 	UploadProgressLbl	: '(Upload in progress, please wait...)',
 	UploadBtn			: 'Upload Selected File',
 	UploadBtnCancel		: 'Cancel',
 
-	UploadNoFileMsg		: 'Please select a file from your computer',
-	UploadNoFolder		: 'Please select folder before uploading.',
+	UploadNoFileMsg		: 'Please select a file from your computer.',
+	UploadNoFolder		: 'Please select a folder before uploading.',
 	UploadNoPerms		: 'File upload not allowed.',
 	UploadUnknError		: 'Error sending the file.',
 	UploadExtIncorrect	: 'File extension not allowed in this folder.',
+
+	// Flash Uploads
+	UploadLabel			: 'Files to Upload',
+	UploadTotalFiles	: 'Total Files:',
+	UploadTotalSize		: 'Total Size:',
+	UploadAddFiles		: 'Add Files',
+	UploadClearFiles	: 'Clear Files',
+	UploadCancel		: 'Cancel Upload',
+	UploadRemove		: 'Remove',
+	UploadRemoveTip		: 'Remove !f',
+	UploadUploaded		: 'Uploaded !n%',
+	UploadProcessing	: 'Processing...',
 
 	// Settings Panel
 	SetTitle		: 'Settings',
@@ -188,13 +200,13 @@ CKFinder.lang['en'] =
 	116 : 'Folder not found. Please refresh and try again.',
 	117 : 'File not found. Please refresh the files list and try again.',
 	118 : 'Source and target paths are equal.',
-	201 : 'A file with the same name is already available. The uploaded file has been renamed to "%1"',
-	202 : 'Invalid file',
+	201 : 'A file with the same name is already available. The uploaded file was renamed to "%1".',
+	202 : 'Invalid file.',
 	203 : 'Invalid file. The file size is too big.',
 	204 : 'The uploaded file is corrupt.',
 	205 : 'No temporary folder is available for upload in the server.',
-	206 : 'Upload cancelled for security reasons. The file contains HTML like data.',
-	207 : 'The uploaded file has been renamed to "%1"',
+	206 : 'Upload cancelled due to security reasons. The file contains HTML-like data.',
+	207 : 'The uploaded file was renamed to "%1".',
 	300 : 'Moving file(s) failed.',
 	301 : 'Copying file(s) failed.',
 	500 : 'The file browser is disabled for security reasons. Please contact your system administrator and check the CKFinder configuration file.',
@@ -204,14 +216,17 @@ CKFinder.lang['en'] =
 	// Other Error Messages.
 	ErrorMsg :
 	{
-		FileEmpty		: 'The file name cannot be empty',
-		FileExists		: 'File %s already exists',
-		FolderEmpty		: 'The folder name cannot be empty',
+		FileEmpty		: 'The file name cannot be empty.',
+		FileExists		: 'File %s already exists.',
+		FolderEmpty		: 'The folder name cannot be empty.',
 
 		FileInvChar		: 'The file name cannot contain any of the following characters: \n\\ / : * ? " < > |',
 		FolderInvChar	: 'The folder name cannot contain any of the following characters: \n\\ / : * ? " < > |',
 
-		PopupBlockView	: 'It was not possible to open the file in a new window. Please configure your browser and disable all popup blockers for this site.'
+		PopupBlockView	: 'It was not possible to open the file in a new window. Please configure your browser and disable all popup blockers for this site.',
+		XmlError		: 'It was not possible to properly load the XML response from the web server.',
+		XmlEmpty		: 'It was not possible to load the XML response from the web server. The server returned an empty response.',
+		XmlRawResponse	: 'Raw response from the server: %s'
 	},
 
 	// Imageresize plugin
@@ -220,20 +235,22 @@ CKFinder.lang['en'] =
 		dialogTitle		: 'Resize %s',
 		sizeTooBig		: 'Cannot set image height or width to a value bigger than the original size (%size).',
 		resizeSuccess	: 'Image resized successfully.',
-		thumbnailNew	: 'Create new thumbnail',
+		thumbnailNew	: 'Create a new thumbnail',
 		thumbnailSmall	: 'Small (%s)',
 		thumbnailMedium	: 'Medium (%s)',
 		thumbnailLarge	: 'Large (%s)',
-		newSize			: 'Set new size',
+		newSize			: 'Set a new size',
 		width			: 'Width',
 		height			: 'Height',
 		invalidHeight	: 'Invalid height.',
 		invalidWidth	: 'Invalid width.',
 		invalidName		: 'Invalid file name.',
-		newImage		: 'Create new image',
-		noExtensionChange : 'The file extension cannot be changed.',
-		imageSmall		: 'Source image is too small',
-		contextMenuName	: 'Resize'
+		newImage		: 'Create a new image',
+		noExtensionChange : 'File extension cannot be changed.',
+		imageSmall		: 'Source image is too small.',
+		contextMenuName	: 'Resize',
+		lockRatio		: 'Lock ratio',
+		resetSize		: 'Reset size'
 	},
 
 	// Fileeditor plugin
@@ -244,5 +261,11 @@ CKFinder.lang['en'] =
 		fileSaveSuccess	: 'File saved successfully.',
 		contextMenuName	: 'Edit',
 		loadingFile		: 'Loading file, please wait...'
+	},
+
+	Maximize :
+	{
+		maximize : 'Maximize',
+		minimize : 'Minimize'
 	}
 };

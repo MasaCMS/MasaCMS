@@ -4,11 +4,11 @@
 <div id="container" class="#$.createCSSid($.content('menuTitle'))#">
 	<cfinclude template="inc/header.cfm" />
 	<div id="content" class="clearfix">
-		<div id="primary" class="article">
-			#$.dspCrumbListLinks("crumbList","&nbsp;&raquo;&nbsp;")#
+		<article>
+			<nav>#$.dspCrumbListLinks("crumbList","&nbsp;&raquo;&nbsp;")#</nav>
 			#$.dspBody(body=$.content('body'),pageTitle=$.content('title'),crumbList=0,showMetaImage=1)#
 			#$.dspObjects(2)#
-		</div>
+		</article>
 	</div>
 	<cfinclude template="inc/footer.cfm" />
 </div>

@@ -12,29 +12,37 @@
 	You should have received a copy of the GNU General Public License 
 	along with Mura CMS.  If not, see <http://www.gnu.org/licenses/>. 
 
-	However, as a special exception, the copyright holders of Mura CMS grant you permission 
-	to combine Mura CMS with programs or libraries that are released under the GNU Lesser General Public License version 2.1. 
-
-	In addition, as a special exception,  the copyright holders of Mura CMS grant you permission 
-	to combine Mura CMS  with independent software modules that communicate with Mura CMS solely 
-	through modules packaged as Mura CMS plugins and deployed through the Mura CMS plugin installation API, 
-	provided that these modules (a) may only modify the  /trunk/www/plugins/ directory through the Mura CMS 
-	plugin installation API, (b) must not alter any default objects in the Mura CMS database 
-	and (c) must not alter any files in the following directories except in cases where the code contains 
-	a separately distributed license.
-
-	/trunk/www/admin/ 
-	/trunk/www/tasks/ 
-	/trunk/www/config/ 
-	/trunk/www/requirements/mura/ 
-
-	You may copy and distribute such a combined work under the terms of GPL for Mura CMS, provided that you include  
-	the source code of that other code when and as the GNU GPL requires distribution of source code. 
-
-	For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception 
-	for your modified version; it is your choice whether to do so, or to make such modified version available under 
-	the GNU General Public License version 2  without this exception.  You may, if you choose, apply this exception 
-	to your own modified versions of Mura CMS. */
+	Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on 
+	Mura CMS. Thus, the terms and conditions of the GNU General Public License version 2 ("GPL") cover the entire combined work.
+	
+	However, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with programs
+	or libraries that are released under the GNU Lesser General Public License version 2.1.
+	
+	In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with 
+	independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without 
+	Mura CMS under the license of your choice, provided that you follow these specific guidelines: 
+	
+	Your custom code 
+	
+	• Must not alter any default objects in the Mura CMS database and
+	• May not alter the default display of the Mura CMS logo within Mura CMS and
+	• Must not alter any files in the following directories.
+	
+	 /admin/
+	 /tasks/
+	 /config/
+	 /requirements/mura/
+	 /Application.cfc
+	 /index.cfm
+	 /MuraProxy.cfc
+	
+	You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work 
+	under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL 
+	requires distribution of source code.
+	
+	For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your 
+	modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
+	version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS. */
 
 var formSubmitted = false;
 var dirtyRelatedContent = false;
@@ -44,7 +52,10 @@ var copySiteID = "";
 var reloadURL = "";
 
 function ckContent(draftremovalnotice){
-		
+	
+	if(typeof(saveFormBuilder) != "undefined")
+		saveFormBuilder();
+	
 	if (document.contentForm.display.value=='2') {
 	var tempStart=document.contentForm.displayStart.value;
 	var tempStop=document.contentForm.displayStop.value;
@@ -278,7 +289,7 @@ if(lastid!="" && lastid !=id){
 
 hideMenu(lastid);
 }
-navTimer = setTimeout('hideMenu(lastid);',6000);
+navTimer = setTimeout('hideMenu(lastid);',10000);
 lastid=id;
 }
 
@@ -316,7 +327,7 @@ function findPosY(obj)
 
 
 function keepMenu(id) {
-navTimer = setTimeout('hideMenu(lastid);',6000);
+navTimer = setTimeout('hideMenu(lastid);',10000);
 document.getElementById(id).style.visibility="visible";
 }
 
@@ -326,115 +337,15 @@ document.getElementById(id).style.visibility="hidden";
 }
 
 
-function addDisplayObject(objectToAdd,regionID){
-	var tmpObject="";
-	var tmpValue="";
-	var tmpText="";
-	
-	//If it's not a js object then it must be an id of a form input or select
-	if(typeof(objectToAdd)=="string"){
-	
-		// return error if the id does not exist.
-		if(document.getElementById(objectToAdd)==null){
-			
-			alertDialog("Please select a display object."); 
-			
-			return false;
-		}
-		
-		if(document.getElementById(objectToAdd).tagName.toLowerCase() == "select"){
-		
-			if(document.getElementById(objectToAdd).selectedIndex ==-1){
-				alertDialog("Please select a display object.");
-				
-				return false;
-			}
-				//alert("Please select a display object."); return false;}
-		 
-			var addIndex = document.getElementById(objectToAdd).selectedIndex;
-		  
-			if(addIndex < 0)return;
-		   
-			var addoption =document.getElementById(objectToAdd).options[addIndex];
-			
-			tmpText=addoption.text;
-			tmpValue=addoption.value;
 
-		} else {
-			//If it's not a select box then the value must be json object.
-			addoption=document.getElementById(objectToAdd);		
-		}
-		
-		try
-		  {
-			tmpObject=eval('(' + addoption.value + ')');
-		  }
-		catch(err)
-		  {
-			tmpObject=addoption.value
-		  }
-	
-	} else {
-		//If it's not a select box then the value must be json object.
-		tmpObject=objectToAdd;
-	}
-	
-	
-	//if the tmpValue evaluated into a js object pull out it's values
-	if(typeof(tmpObject) == "object"){
-		//object^name^objectID^params
-		tmpValue=tmpObject.object;
-		tmpValue=tmpValue + "~" + tmpObject.name;	
-		tmpValue=tmpValue + "~" + tmpObject.objectid;
-		
-		if(typeof(tmpObject.params) == "string"){
-			tmpValue   = tmpValue + "~" + tmpObject.params;
-		} else if (typeof(tmpObject.params) == "object"){
-			tmpValue   = tmpValue + "~" + tmpObject.params.toSource();
-		}
-		
-		tmpText=tmpObject.name;	
-		
-	} 
-
-	if(tmpValue == ""){
-			
-			alertDialog("Please select a display object."); 
-			
-			return false;
-	}
-	
-	//get reference to the select where it will go.
-	var selectedObjects =document.getElementById("selectedObjects" + regionID);
-	
-	//double check that it's not already there
-	if(selectedObjects.options.length){	
-		for (var i=0;i < selectedObjects.options.length;i++){ 
-			if(selectedObjects.options[i].value==tmpValue) {
-			selectedObjects.selectedIndex=i;
-			return;
-			}
-		}
-	}
-	// add it.
-	var myoption = document.createElement("option");
-	selectedObjects.appendChild(myoption);
-	myoption.text= tmpText;
-	myoption.value=tmpValue;
-	myoption.selected = "selected"
-	
-	updateDisplayObjectList(regionID);
-	
-}
-
-function deleteDisplayObject(regionID){
-   var selectedObjects =document.getElementById("selectedObjects" + regionID);
+function deleteDisplayObject(regionid){
+   var selectedObjects =document.getElementById("selectedObjects" + regionid);
    var deleteIndex =selectedObjects.selectedIndex;
    var len = (selectedObjects.options.length > 1)?selectedObjects.options.length-1:0;
    if(deleteIndex < 0) return;
 	
 	selectedObjects.options[deleteIndex]=null; 
-	updateDisplayObjectList(regionID);
+	updateDisplayObjectList(regionid);
 	
 	if(selectedObjects.options.length){
 		selectedObjects.options[selectedObjects.options.length-1].selected=true;
@@ -442,9 +353,9 @@ function deleteDisplayObject(regionID){
 	 
 }
 
-function updateDisplayObjectList(regionID){
-	var selectedObjects =document.getElementById("selectedObjects" + regionID);
-	var objectList=document.getElementById("objectList" + regionID)
+function updateDisplayObjectList(regionid){
+	var selectedObjects =document.getElementById("selectedObjects" + regionid);
+	var objectList=document.getElementById("objectList" + regionid)
 	objectList.value=""; 
 	
 	for (var i=0;i<selectedObjects.options.length;i++){ 
@@ -456,11 +367,13 @@ function updateDisplayObjectList(regionID){
 			objectList.value = selectedObjects.options[i].value; 
 		}
 	}
+	
+	initDisplayObjectConfigurators();
 
 }
 
-function moveDisplayObjectUp(regionID){
-var selectedObjects=document.getElementById("selectedObjects" + regionID);
+function moveDisplayObjectUp(regionid){
+var selectedObjects=document.getElementById("selectedObjects" + regionid);
 var moverIndex=selectedObjects.selectedIndex;
 if(moverIndex<1)return;
 
@@ -477,11 +390,11 @@ movedoption.value = selectedObjects.options[moverIndex-1].value;
 selectedObjects[moverIndex-1]=moveroption;
 selectedObjects[moverIndex]=movedoption;
 
-updateDisplayObjectList(regionID);
+updateDisplayObjectList(regionid);
 }
 
-function moveDisplayObjectDown(regionID){
-var selectedObjects=document.getElementById("selectedObjects" + regionID);
+function moveDisplayObjectDown(regionid){
+var selectedObjects=document.getElementById("selectedObjects" + regionid);
 var moverIndex=selectedObjects.selectedIndex;
 if(moverIndex ==selectedObjects.length-1)return;
 
@@ -499,7 +412,7 @@ movedoption.value = selectedObjects.options[moverIndex+1].value;
 selectedObjects.options[moverIndex+1]=moveroption;
 selectedObjects.options[moverIndex]=movedoption;
 
-updateDisplayObjectList(regionID);
+updateDisplayObjectList(regionid);
 
 }
 
@@ -546,17 +459,33 @@ function loadAssocImages(siteid,fileid,contentid,keywords,isNew)	{
 		);
 }
 
-function loadObjectClass(siteid,classid,subclassid,contentid,parentid)	{
+function loadObjectClass(siteid,classid,subclassid,contentid,parentid,contenthistid)	{
 	var url = 'index.cfm';
-	var pars = 'fuseaction=cArch.loadclass&compactDisplay=true&siteid=' + siteid +'&classid=' + classid  +'&subclassid=' + subclassid + '&contentid=' + contentid + '&parentid=' + parentid + '&cacheid=' + Math.random();
+	var pars = 'fuseaction=cArch.loadclass&compactDisplay=true&siteid=' + siteid +'&classid=' + classid  +'&subclassid=' + subclassid + '&contentid=' + contentid + '&parentid=' + parentid  +'&cacheid=' + Math.random();
 	var d=jQuery('#classList');
+
 	d.html('<img class="loadProgress" src="images/progress_bar.gif">');
 	jQuery.get(url + "?" + pars, 
 		function(data) {
-		jQuery('#classList').html(data);
+			jQuery('#classList').html(data);
+			availableObjectTemplate="";
+			availalbeObjectParams={};
+			availableObject={};
 		}
 	);
 	return false;
+}
+
+function getDisplayObjectClass(regionid){
+	var str=jQuery('#selectedObjects' + regionid).val().toString();
+	var a=str.split("~");
+	return a[0];
+}
+
+function getDisplayObjectID(regionid){
+	var str=jQuery('#selectedObjects' + regionid).val().toString();
+	var a=str.split("~");
+	return a[2];
 }
 
 function loadNotify(siteid,contentid,parentid)	{
@@ -732,7 +661,7 @@ function pasteThis(parentID){
 	jQuery.get(url + "?" + pars, 
 			function(data) {
 				loadSiteManager(copySiteID,parentID,'00000000000000000000000000000000000','','','',1);
-				jQuery("#newContentMenu").hide();
+				document.getElementById("newContentMenu").style.visibility="hidden"
 			}
 	);
 }
@@ -907,25 +836,28 @@ function loadCategoryFeatureStartStop(id,display,siteID){
  }
 }
 
-
-
+activeQuickEdit=false;
 
 function loadSiteManager(siteid,topid,moduleid,sortby,sortdirection,ptype,startrow)	{
 	var url = 'index.cfm';
 	var pars = 'fuseaction=cArch.loadSiteManager&siteid=' + siteid  + '&topid=' + topid  + '&moduleid=' + moduleid  + '&sortby=' + sortby  + '&sortdirection=' + sortdirection  + '&ptype=' + ptype  + '&startrow=' + startrow + '&cacheid=' + Math.random();
-	
+
 	//location.href=url + "?" + pars;
 	var d = jQuery('#gridContainer');
-		d.html('<img class="loadProgress" src="images/progress_bar.gif">').show();
+		if (!activeQuickEdit) {
+			d.html('<img class="loadProgress" src="images/progress_bar.gif">').show();
+		}
 		jQuery.get(url + "?" + pars, 
 				function(data) {
 					try{
 						var r=eval("(" + data + ")");
-						d.hide()
-				
+						if (!activeQuickEdit) {
+							d.hide()
+						}
 						d.html(r.html);
 						document.getElementById("newContentMenu").style.visibility="hidden";
 						stripe('stripe');
+						initQuickEdits();
 						initDraftPrompt();	
 						if(r.perm.toLowerCase() == "editor" && r.sortby.toLowerCase() == 'orderno') {
 							jQuery("#sortableKids").sortable(
@@ -946,15 +878,112 @@ function loadSiteManager(siteid,topid,moduleid,sortby,sortdirection,ptype,startr
 						
 					}
 					
-					d.hide().animate({'opacity':'show'},1000);
-				
-					
+					if (!activeQuickEdit) {
+						d.hide().animate({
+							'opacity': 'show'
+						}, 1000);
+					}
+					activeQuickEdit=false;				
 				}
 		);
+		
+	
+	
 	return false;
 }
 
+var sectionLoading=false;
 
+function loadSiteSection(node, startrow)	{
+	
+	if (!sectionLoading) {
+		sectionLoading = true;
+		var url = 'index.cfm';
+		var pars = 'fuseaction=cArch.loadSiteSection&siteid=' + node.attr("data-siteid") + '&contentID=' + node.attr("data-contentid") + '&moduleid=' + node.attr("data-moduleid") + '&sortby=' + node.attr("data-sortby") + '&sortdirection=' + node.attr("data-sortdirection") + '&ptype=' + node.attr("data-type") + '&startrow=' + startrow + '&cacheid=' + Math.random();
+		
+		//location.href=url + "?" + pars;
+		var icon = node.find("span:first");
+		
+		if (icon.hasClass('hasChildren-closed')) {
+		
+			icon.removeClass('hasChildren-closed');
+			icon.addClass('hasChildren-open');
+				
+			//d.append('<img class="loadProgress" src="images/progress_bar.gif">');
+			//d.find(".loadProgress").show();
+			jQuery.get(url + "?" + pars, function(data){
+				try {
+					var r = eval("(" + data + ")");
+					
+					//d.find(".loadProgress").remove();
+					node.find('.section:first').remove();
+					node.append(r.html);
+					
+					document.getElementById("newContentMenu").style.visibility = "hidden";
+					stripe('stripe');
+					initDraftPrompt();
+					initQuickEdits();
+					node.find('.section:first').hide().fadeIn("slow");
+					
+				} 
+				catch (err) {
+					node.append(data);
+				}
+				
+				sectionLoading = false;
+			});
+		}
+		else {
+		
+			icon.removeClass('hasChildren-open');
+			icon.addClass('hasChildren-closed');
+			
+			jQuery.get(url + "?" + pars);
+			
+			node.find('.section:first').fadeOut("fast",
+				function(){
+					node.find('.section:first').remove();
+				    stripe('stripe');
+					document.getElementById("newContentMenu").style.visibility = "hidden";
+					sectionLoading = false;
+				}
+			);	
+			
+		}
+	}
+	return false;
+}
+
+function refreshSiteSection(node, startrow)	{
+	if (!sectionLoading) {
+		sectionLoading = true;
+		var url = 'index.cfm';
+		var pars = 'fuseaction=cArch.refreshSiteSection&siteid=' + node.attr("data-siteid") + '&contentID=' + node.attr("data-contentid") + '&moduleid=' + node.attr("data-moduleid") + '&sortby=' + node.attr("data-sortby") + '&sortdirection=' + node.attr("data-sortdirection") + '&ptype=' + node.attr("data-type") + '&startrow=' + startrow + '&cacheid=' + Math.random();
+	
+		jQuery.get(url + "?" + pars, function(data){
+			try {
+				var r = eval("(" + data + ")");
+				
+				//d.find(".loadProgress").remove();
+				node.find('.section:first').remove();
+				node.append(r.html);
+				
+				document.getElementById("newContentMenu").style.visibility = "hidden";
+				stripe('stripe');
+				initDraftPrompt();
+				initQuickEdits();	
+			} 
+			catch (err) {
+				node.append(data);
+			}
+			
+			activeQuickEdit = false;
+			sectionLoading = false;
+		});
+		
+	}
+	return false;
+}
 function setAsSorted(){	
 		jQuery('#sorted').val('true');	
 		jQuery('#submitSort').pulse({
@@ -965,4 +994,680 @@ function setAsSorted(){
             });
         jQuery('#submitSort').addClass('pulse');
 }
+
+
+var quickEditTmpl = '<div class="mura-quickEdit" id="mura-quickEditor">';
+	quickEditTmpl += '<img class="loader" src="images/ajax-loader-big.gif" />';
+	quickEditTmpl += '</div>';      		
+	     
+function initQuickEdits(){
+	jQuery(".mura-quickEditItem").click(
+			function(event){
+				event.preventDefault();
+				if (!activeQuickEdit) {
+					
+					var attribute=jQuery(this).attr("data-attribute");
+					var node = jQuery(this).parents("li:first");
+					var url = 'index.cfm';
+					var pars = 'fuseaction=cArch.loadQuickEdit&siteid=' + siteid + '&contentID=' + node.attr("data-contentid") + '&attribute=' + attribute + '&cacheid=' + Math.random();
+					
+					//location.href='?' + pars;
+					//images/icons/template_24x24.png
+					
+					jQuery("#mura-quickEditor").remove();
+					jQuery("#selected").attr("id","");
+					jQuery('#selectedIcon').attr("id","").attr("src","images/icons/template_24x24.png");
+					jQuery(this).parent().prepend(quickEditTmpl);
+					
+					var qe = jQuery("#mura-quickEditor")
+					var dd = qe.parents("dd:first");
+					
+					dd.attr("id","selected");
+					
+					jQuery.get(url + "?" + pars, function(data){
+						jQuery("#mura-quickEditor").html(data);
+						setDatePickers(".mura-quickEdit-datepicker",dtLocale,dtCh);	
+						if(jQuery("#hasDraftsMessage").length){
+						   dd.addClass("hasDraft");
+						}
+						
+						if(attribute == 'template'){
+							var img= dd.find("img:first");
+							if(img.length){
+								img.attr("id","selectedIcon").attr("src","images/icons/template_24x24-on.png")
+							}
+						}
+						
+					});
+				}			
+			}
+		);
+}
+
+function saveQuickEdit(){
+	activeQuickEdit=true;
+	var attribute=jQuery("#mura-quickEditor").parent().find(".mura-quickEditItem:first").attr("data-attribute");
+	var node=jQuery("#mura-quickEditor").parents("li:first");
+	var url = 'index.cfm';
+	
+	var basePars = {
+		'fuseaction':'cArch.saveQuickEdit',
+		'siteID' : siteID,
+		'contentID':  node.attr("data-contentid"),
+		'attribute': attribute	
+	}
+	
+	if (attribute == 'isnav') {
+		var attributeParams = {
+			'isnav': jQuery("#mura-quickEdit-isnav").val()
+			}
+	} else if (attribute == 'inheritObjects') {
+		var attributeParams = {
+		'inheritObjects': jQuery("#mura-quickEdit-inheritobjects").val()
+		}
+	} else if (attribute == 'template') {
+		var attributeParams = {
+		'template': jQuery("#mura-quickEdit-template").val(),
+		'childTemplate': jQuery("#mura-quickEdit-childtemplate").val()
+		}
+	} else if (attribute == 'display') {
+		var attributeParams = {
+		'display': jQuery("#mura-quickEdit-display").val(),
+		'displayStop': jQuery("#mura-quickEdit-displayStop").val(),
+		'stopHour': jQuery("#mura-quickEdit-stopHour").val(),
+		'stopMinute': jQuery("#mura-quickEdit-stopMinute").val(),
+		'stopDayPart': jQuery("#mura-quickEdit-stopDayPart").val(),
+		'displayStart': jQuery("#mura-quickEdit-displayStart").val(),
+		'startHour': jQuery("#mura-quickEdit-startHour").val(),
+		'startMinute': jQuery("#mura-quickEdit-startMinute").val(),
+		'startDayPart': jQuery("#mura-quickEdit-startDayPart").val()
+		}
+	
+	}
+	
+	var pars=jQuery.extend({},basePars,attributeParams);
+
+	jQuery("#mura-quickEditor").html('<img class="loader" src="images/ajax-loader-big.gif" />');
+	
+	jQuery.post('index.cfm',pars,
+		function(data){		
+			var parentNode=node.parents("li:first");
+			if (parentNode.length) {
+				refreshSiteSection(parentNode,1)
+			} else {
+				var topNode=jQuery("#top-node").parents("li:first");
+				loadSiteManager(topNode.attr("data-siteid"),topNode.attr("data-contentid"),topNode.attr("data-moduleid"),topNode.attr("data-sortby"),topNode.attr("data-sortdirection"),topNode.attr("data-type"),1);
+			}
+	});	
+	
+}
+
+function closeQuickEdit(){
+	jQuery('#selected').attr("id","");
+	jQuery('#selectedIcon').attr("id","").attr("src","images/icons/template_24x24.png");
+	jQuery('.mura-quickEdit').remove();
+}
+
+var availableObjectTemplate="";
+var availalbeObjectParams={};
+var availableObject={};
+	
+function getDisplayObjectConfig(regionid){
+		var selectedObjects=jQuery('#selectedObjects' + regionid);
+		var str=selectedObjects.val().toString();
+		var a=str.split("~");
+		var data={};
+		
+		data.object=a[0];
+		data.name=a[1];
+		data.objectid=a[2];
+		
+		if (a.length > 3) {
+			data.params =  a[3] ;
+		}
+		
+		data.regionid=regionid;
+		data.context=context;
+		
+		return data;
+}
+		
+
+function addDisplayObject(objectToAdd,regionid,configure){
+	var tmpObject="";
+	var tmpValue="";
+	var tmpText="";
+	var isUpdate=false;
+	//If it's not a js object then it must be an id of a form input or select
+	if(typeof(objectToAdd)=="string"){
+	
+		// return error if the id does not exist.
+		if(document.getElementById(objectToAdd)==null){
+			
+			alertDialog("Please select a display object."); 
+			
+			return false;
+		}
+		
+		if (document.getElementById(objectToAdd).tagName.toLowerCase() == "select") {
+		
+			if (document.getElementById(objectToAdd).selectedIndex == -1) {
+				alertDialog("Please select a display object.");
+				
+				return false;
+			}
+			//alert("Please select a display object."); return false;}
+			
+			var addIndex = document.getElementById(objectToAdd).selectedIndex;
+			
+			if (addIndex < 0) 
+				return false;
+			
+			var addoption = document.getElementById(objectToAdd).options[addIndex];
+			
+			tmpText = addoption.text;
+			tmpValue = addoption.value;
+			
+		} else if(document.getElementById(objectToAdd).tagName.toLowerCase() == "input"){
+		  
+			var addoption =document.getElementById(objectToAdd);
+			tmpValue=addoption.value;
+
+		} else {
+			//If it's not a select box then the value must be json object.
+			addoption=document.getElementById(objectToAdd);		
+		}
+		
+		try
+		  {
+			tmpObject=eval('(' + addoption.value + ')');
+		  }
+		catch(err)
+		  {
+			tmpObject=addoption.value
+		  }
+	
+	} else {
+		//If it's not a select box then the value must be json object.
+		tmpObject=objectToAdd;
+	}
+
+	//if the tmpValue evaluated into a js object pull out it's values
+	var checkSelection=false;
+	
+	if(typeof(tmpObject) == "object"){
+		//object^name^objectID^params
+			
+		if (tmpObject.object=='feed') {
+			if (configure) {
+				tmpObject.regionid=regionid;
+				if (initFeedConfigurator(tmpObject)){
+					return false;
+				}
+			}
+			checkSelection=true;
+		}
+		
+		if (tmpObject.object=='feed_slideshow') {
+			if (configure) {
+				tmpObject.regionid = regionid;
+				initSlideShowConfigurator(tmpObject)
+				return false;
+			}
+			checkSelection=true;
+		}
+		
+		if (tmpObject.object=='category_summary') {
+			if (configure) {
+				tmpObject.regionid=regionid;
+				initCategorySummaryConfigurator(tmpObject)
+				return false;
+			}
+			checkSelection=true;
+		}
+	
+		if ((tmpObject.object == 'related_content' || tmpObject.object == 'related_section_content')) {
+			if (configure) {
+				tmpObject.regionid=regionid;
+				initRelatedContentConfigurator(tmpObject);
+				return false;
+			}
+			checkSelection=true;
+		}
+		
+		if (tmpObject.object == 'plugin'){
+			var configurator=getPluginConfigurator(tmpObject.objectid);
+			
+			if (configurator != '') {
+				if (configure) {
+					tmpObject.regionid = regionid;
+					tmpObject.context = context;
+					window[configurator](tmpObject);
+					return false;
+				}
+				checkSelection = true;
+			}
+		}
+		
+		tmpValue=tmpObject.object;
+		tmpValue=tmpValue + "~" + tmpObject.name;	
+		tmpValue=tmpValue + "~" + tmpObject.objectid;
+		
+		if(typeof(tmpObject.params) == "string"){
+			tmpValue   = tmpValue + "~" + tmpObject.params;
+		} else if (typeof(tmpObject.params) == "object"){
+			tmpValue   = tmpValue + "~" + JSON.stringify( tmpObject.params );
+		}
+		
+		if(checkSelection && document.getElementById('selectedObjects' + regionid).selectedIndex != -1){
+			var currentSelection=getDisplayObjectConfig(regionid);
+			
+			if(currentSelection){
+				if(currentSelection.objectid==tmpObject.objectid){
+					isUpdate=true
+				}
+			}
+			
+		}
+			
+		tmpText=tmpObject.name;	
+		
+	} 
+
+	if(tmpValue == ""){
+			
+			alertDialog("Please select a display object."); 
+			
+			return false;
+	}
+	
+	//get reference to the select where it will go.
+	var selectedObjects =document.getElementById("selectedObjects" + regionid);
+	
+	//double check that it's not already there
+	if(selectedObjects.options.length){	
+		for (var i=0;i < selectedObjects.options.length;i++){ 
+			if(selectedObjects.options[i].value==tmpValue) {
+			selectedObjects.selectedIndex=i;
+			return false;
+			}
+		}
+	}
+	
+
+	// add it.
+
+	
+	if (isUpdate) {
+		myoption=selectedObjects.options[document.getElementById("selectedObjects" + regionid).selectedIndex];
+		myoption.text= tmpText;
+		myoption.value=tmpValue;
+	}else{
+		var myoption = document.createElement("option");
+		selectedObjects.appendChild(myoption);
+		myoption.text= tmpText;
+		myoption.value=tmpValue;
+		myoption.selected = "selected"
+		
+	}
+	
+	updateDisplayObjectList(regionid);
+	
+	return true
+	
+}
+
+	function initCategorySummaryConfigurator(data){
+		
+		if(typeof(data.object) !='undefined'){	
+			if(data.object !='category_summary'){
+				return false;
+			}
+		}
+
+		initConfigurator(data,
+		{
+			url:'index.cfm',
+			pars:'fuseaction=cArch.loadclassconfigurator&compactDisplay=true&siteid=' + siteid + '&classid=category_summary&contentid=' + contentid + '&parentid=' + parentid + '&contenthistid=' + contenthistid + '&regionid=' + data.regionid  + '&objectid=' +  data.objectid + '&cacheid=' + Math.random(),
+			title: categorySummaryConfiguratorTitle
+		}
+		);
+			
+		return true;
+	}
+	
+	function initFeedConfigurator(data){
+		
+		if(typeof(data.object) !='undefined'){	
+			if(data.object !='feed'){
+				return false;
+			}
+		}
+		
+		initConfigurator(data,
+		{
+			url: 'index.cfm',
+			pars: 'fuseaction=cArch.loadclassconfigurator&compactDisplay=true&siteid=' + siteid + '&classid=feed&contentid=' + contentid + '&parentid=' + parentid + '&contenthistid=' + contenthistid + '&regionid=' + data.regionid  + '&feedid=' +  data.objectid + '&cacheid=' + Math.random(),
+			title: 'Loading...',
+			init: function(data,config){
+					//alert(JSON.stringify(data));
+					if(data.type.toLowerCase()=='remote'){
+						jQuery("#ui-dialog-title-configuratorContainer").html(remoteFeedConfiguratorTitle);
+					} else {
+						jQuery("#ui-dialog-title-configuratorContainer").html(localIndexConfiguratorTitle);
+					}
+					
+					if (jQuery("#availableListSort").length) {
+					jQuery("#availableListSort, #displayListSort").sortable({
+						connectWith: ".displayListSortOptions",
+						update: function(event){
+							event.stopPropagation();
+							jQuery("#displayList").val("");
+							jQuery("#displayListSort > li").each(function(){
+								var current = jQuery("#displayList").val();
+								
+								if (current != '') {
+									jQuery("#displayList").val(current + "," + jQuery(this).html());
+								}
+								else {
+									jQuery("#displayList").val(jQuery(this).html());
+								}
+								
+							});
+							
+							updateAvailableObject();
+						}
+					}).disableSelection();
+				}
+				}
+		}
+		);
+		//location.href=url + "?" + pars;
+	
+		return true;
+	}
+	
+	function initSlideShowConfigurator(data){
+		
+		if(typeof(data.object) !='undefined'){	
+			if(data.object !='feed_slideshow'){
+				return false;
+			}
+		}
+
+		initConfigurator(data,
+		{
+			url: 'index.cfm',
+			pars: 'fuseaction=cArch.loadclassconfigurator&compactDisplay=true&siteid=' + siteid + '&classid=feed_slideshow&contentid=' + contentid + '&parentid=' + parentid + '&contenthistid=' + contenthistid + '&regionid=' + data.regionid  + '&feedid=' +  data.objectid + '&cacheid=' + Math.random(),
+			title: slideShowConfiguratorTitle,
+			init: function(data,config){
+					jQuery( "#availableListSort, #displayListSort" ).sortable({
+						connectWith: ".displayListSortOptions",
+						update: function(event){
+							event.stopPropagation();
+							jQuery("#displayList").val("");
+							jQuery("#displayListSort > li").each(function(){
+								var current = jQuery("#displayList").val();
+								
+								if (current != '') {
+									jQuery("#displayList").val(current + "," + jQuery(this).html());
+								}
+								else {
+									jQuery("#displayList").val(jQuery(this).html());
+								}
+								
+							});
+							updateAvailableObject();
+						}
+					}).disableSelection();
+				}
+			}
+		);
+		
+		return true;
+	}
+	
+	function initRelatedContentConfigurator(data){
+
+		initConfigurator(
+		data,
+		{
+			url: 'index.cfm',
+			pars: 'fuseaction=cArch.loadclassconfigurator&compactDisplay=true&siteid=' + siteid + '&classid=' + data.object + '&contentid=' + contentid + '&parentid=' + parentid + '&contenthistid=' + contenthistid + '&regionid=' + data.regionid  + '&objectid=' +  data.objectid + '&cacheid=' + Math.random(),
+			title: relatedContentConfiguratorTitle,
+			init: function(data,config){
+					jQuery( "#availableListSort, #displayListSort" ).sortable({
+						connectWith: ".displayListSortOptions",
+						update: function(event){
+							event.stopPropagation();
+							jQuery("#displayList").val("");
+							jQuery("#displayListSort > li").each(function(){
+								var current = jQuery("#displayList").val();
+								
+								if (current != '') {
+									jQuery("#displayList").val(current + "," + jQuery(this).html());
+								}
+								else {
+									jQuery("#displayList").val(jQuery(this).html());
+								}
+								
+							});
+							updateAvailableObject();
+						}
+					}).disableSelection();	
+			}
+		}
+		);
+		return true;
+	}
+	
+	function initGenericConfigurator(data){
+		resetAvailableObject();
+		resetConfiguratorContainer();
+		//location.href=url + "?" + pars;
+		
+		jQuery("#configuratorContainer").dialog({
+				resizable: true,
+				modal: true,
+				width: 400,
+				position: getDialogPosition(),
+				buttons: {
+					Cancel: function() {
+							jQuery( this ).dialog( "close" );
+					}
+				},
+				open: function(){		
+					jQuery("#ui-dialog-title-configuratorContainer").html(genericConfiguratorTitle);
+					jQuery("#configurator").html('<div class="ui-dialog-content ui-widget-content">' + genericConfiguratorMessage +'</div>');
+				},
+				close: function(){
+					jQuery(this).dialog("destroy");
+				}	
+		});
+		
+		return true;
+	}
+	
+	jQuery(document).ready(
+		function(){
+			initDisplayObjectConfigurators()
+		}
+	);
+	
+	function updateAvailableObject(){
+		availableObjectParams={};
+							
+		jQuery("#availableObjectParams").find(":input").each(
+			function(){
+				var item=jQuery(this);
+				if (item.attr("type") != "radio" || (item.attr("type") =="radio" && item.is(':checked'))) {
+					availableObjectParams[item.attr("data-displayobjectparam")] = item.val();
+				}
+			}
+		)
+		availableObject=jQuery.extend({},availableObjectTemplate);
+		availableObject.params=availableObjectParams;	
+	}
+		
+	function initDisplayObjectConfigurators(){
+		jQuery(".displayRegions").find("option").dblclick(
+			function(){
+				var regionid=jQuery(this).parents("select:first").attr("data-regionid");
+				var data=getDisplayObjectConfig(regionid);
+					
+				if (data.object == 'feed') {
+					initFeedConfigurator(data);
+				} else if (data.object == 'feed_slideshow') {
+					initSlideShowConfigurator(data);
+				} else if (data.object == 'category_summary') {
+					initCategorySummaryConfigurator(data);
+				} else if (data.object == 'related_content' || data.object == 'related_section_content') {
+					initRelatedContentConfigurator(data);
+				} else if (data.object == 'plugin'){
+					var configurator=getPluginConfigurator(data.objectid);
+					if (configurator != '') {
+						window[configurator](data);
+					}
+				} else{
+					initGenericConfigurator(data);
+				}
+			}
+		);
+	}
+	
+	function resetAvailableObject(){
+		availableObjectTemplate="";
+		availalbeObjectParams={};
+		availableObject={};
+	}
+	
+	function resetConfiguratorContainer(){
+		//jQuery(instance).dialog("destroy");
+		jQuery("#configuratorContainer").remove();
+		jQuery("body").append('<div id="configuratorContainer" title="Loading..." style="display:none"><div id="configurator"><img src="images/progress_bar.gif"></div></div>');
+	}
+	
+	function initConfiguratorParams(){
+		jQuery("#availableObjectParams").find(":input").bind(
+			"change",
+			function(){
+				updateAvailableObject();
+		});
+	}
+	
+	function setContentDisplayListSort(){
+		jQuery( "#contentAvailableListSort, #contentDisplayListSort" ).sortable({
+			connectWith: ".contentDisplayListSortOptions",
+			update: function(event){
+					event.stopPropagation();
+					jQuery("#contentDisplayList").val("");
+					jQuery("#contentDisplayListSort > li").each(function(){
+						var current = jQuery("#contentDisplayList").val();
+						
+						if (current != '') {
+							jQuery("#contentDisplayList").val(current + "," + jQuery(this).html());
+						}
+						else {
+							jQuery("#contentDisplayList").val(jQuery(this).html());
+						}
+								
+					});
+				}
+			}).disableSelection();
+	}
+
+	//CONFIG: URL,PARS,TITLE,INIT
+	function initConfigurator(data,config){
+		resetAvailableObject();
+		resetConfiguratorContainer();
+		
+		if(typeof(data.object) =='undefined'){	
+			return false;
+		}
+	
+		jQuery("#configuratorContainer").dialog({
+			resizable: true,
+			modal: true,
+			width: 400,
+			position: getDialogPosition(),
+			buttons: {
+				Save: function() {
+					addDisplayObject(availableObject,data.regionid,false);
+					jQuery( this ).dialog( "close" );
+							
+				},
+				Cancel: function() {
+					jQuery( this ).dialog( "close" );
+					
+					if(typeof(config.destroy) !='undefined'){
+						config.destroy(data,config);
+					}
+				}
+			},
+			close: function(){
+				jQuery(this).dialog("destroy");
+				
+				if(typeof(config.destroy) !='undefined'){
+					config.destroy(data,config);
+				}
+			}	
+		});
+				
+		jQuery.post(config.url + "?" + config.pars, 
+			data,
+			function(_resp) {
+				try {
+					resp = eval('(' + _resp + ')');
+				} catch(err){
+					resp=_resp;
+				}
+				
+				if (typeof(resp) == 'object') {
+					jQuery("#configurator").html(resp.html);
+				} else if(typeof(resp) == 'xml'){
+					jQuery("#configurator").html(resp.toString());
+				} else {
+					jQuery("#configurator").html(resp);
+				}
+				
+				
+				jQuery("#ui-dialog-title-configuratorContainer").html(config.title);	
+					
+				if(availableObjectTemplate==""){
+					var availableObjectContainer=jQuery("#availableObjectParams");
+					availableObjectTemplate={
+												object:availableObjectContainer.attr("data-object"),
+												objectid:availableObjectContainer.attr("data-objectid"),
+												name:availableObjectContainer.attr("data-name")
+											};
+					availableObject=jQuery.extend({},availableObjectTemplate);
+				}
+	
+				if(typeof(config.init) !='undefined'){
+					
+					if(typeof(resp)=='object'){
+						data=jQuery.extend(data,resp);
+					}	
+					config.init(data,config);
+				}
+				
+				jQuery("#configuratorContainer").dialog("option","position",getDialogPosition());
+				
+				initConfiguratorParams();
+		
+			}
+		);
+		
+		return true;
+	}
+
+	function getPluginConfigurator(objectid){
+		for(var i=0;i< pluginConfigurators.length;i++){
+			if(pluginConfigurators[i].objectid==objectid){
+				return pluginConfigurators[i].init;
+			}
+		}
+		
+		return "";
+	}
 

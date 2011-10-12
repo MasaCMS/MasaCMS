@@ -43,7 +43,9 @@
 --->
 
 <cfcomponent displayname = "Zip Component"
-             hint        = "A collections of functions that supports the Zip and GZip functionality by using the Java Zip file API.">
+             hint        = "A collections of functions that supports the Zip and GZip functionality by using the Java Zip file API."
+			 output		 = "false"
+			 extends	 = "mura.cfobject">
 
 	<cfscript>
 
@@ -466,7 +468,7 @@
 				/* Close the Zip file */
 				zipFile.close();
 
-				application.serviceFactory.getBean("fileWriter").chmod(path=arguments.extractPath);
+				getBean("fileWriter").chmod(path=arguments.extractPath);
 				
 				/* Return true */				
 				return true;
@@ -477,7 +479,7 @@
 				/* Close the Zip file */
 				zipFile.close();
 
-				application.serviceFactory.getBean("fileWriter").chmod(path=arguments.extractPath);
+				getBean("fileWriter").chmod(path=arguments.extractPath);
 				
 				/* Return false */
 				return false;

@@ -33,6 +33,7 @@ CKFinder.addPlugin( 'dummy', {
 						}
 						else {
 							alert( "You have entered: " + value );
+							return true;
 						}
 					},
 					contents : [

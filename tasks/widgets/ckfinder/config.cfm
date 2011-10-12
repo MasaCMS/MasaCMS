@@ -19,7 +19,7 @@ currentUser=application.usermanager.read(session.mura.userID);
 function CheckAuthentication()
 {
   
-  if (isDefined('session.siteID') and application.permUtility.getModulePerm("00000000000000000000000000000000000",session.siteid)) {
+  if (isDefined('session.siteid') and application.permUtility.getModulePerm("00000000000000000000000000000000000",session.siteid)) {
     return true;
   } else {
     return false;
@@ -316,7 +316,7 @@ if (APPLICATION.CFVersion gte 8 or StructKeyExists(SERVER,"bluedragon")) {
 }
 </cfscript>
 
-<cfset $ = application.serviceFactory.getBean("MuraScope").init(session.siteID)>
+<cfset $ = application.serviceFactory.getBean("MuraScope").init(session.siteid)>
 <cfif (fileExists(expandPath($.siteConfig("themeIncludePath") & '/js/finder/config.cfm') ) )>
      <cfinclude template="#$.siteConfig('themeAssetPath')#/js/finder/config.cfm">
 </cfif>

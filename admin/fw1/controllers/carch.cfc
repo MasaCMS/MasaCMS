@@ -18,6 +18,8 @@
 <cffunction name="before" output="false">
 	<cfargument name="rc">
 	
+	<cfparam name="session.openSectionList" default=""/>
+	
 	<cfif not variables.permUtility.getModulePerm('00000000000000000000000000000000000',arguments.rc.siteid)>
 		<cfset secure(arguments.rc)>
 	</cfif>
@@ -72,11 +74,10 @@
 	<cfparam name="arguments.rc.lastupdate" default=""/>
 	<cfparam name="arguments.rc.siteid" default=""/>
 	<cfparam name="arguments.rc.title" default=""/>
-	<cfparam name="arguments.rc.topid" default="00000000000000000000000000000000001"/>
 	<cfparam name="arguments.rc.startrow" default="1"/>
 	<cfparam name="arguments.rc.lastupdate" default="#now()#"/>
-	<cfparam name="session.viewDepth" default="#variables.settingsManager.getSite(arguments.rc.siteid).getviewdepth()#"/>
-	<cfparam name="session.nextN" default="#variables.settingsManager.getSite(arguments.rc.siteid).getnextN()#"/>
+	<cfparam name="session.mura.viewDepth" default="#variables.settingsManager.getSite(arguments.rc.siteid).getviewdepth()#"/>
+	<cfparam name="session.mura.nextN" default="#variables.settingsManager.getSite(arguments.rc.siteid).getnextN()#"/>
 	<cfparam name="session.keywords" default=""/>
 	<cfparam name="arguments.rc.startrow" default="1"/>
 	<cfparam name="arguments.rc.date1" default=""/>
@@ -86,8 +87,13 @@
 	<cfparam name="arguments.rc.closeCompactDisplay" default=""/>
 	<cfparam name="arguments.rc.returnURL" default=""/>
 	<cfparam name="arguments.rc.locking" default="false"/>
-	
 
+	<cfif not isDefined("arguments.rc.topid")>
+		<cfparam name="session.topID" default="00000000000000000000000000000000001">
+		<cfset arguments.rc.topid=session.topID>
+	<cfelseif left(arguments.rc.topID,10) neq "0000000000" or arguments.rc.topID eq "00000000000000000000000000000000001">
+		<cfset session.topID=arguments.rc.topid>
+	</cfif>
 	
 </cffunction>
 
@@ -117,6 +123,49 @@
 	<cfargument name="rc">
 	
 	<cfset arguments.rc.rsList=variables.contentManager.getDraftList(arguments.rc.siteid) />
+	
+</cffunction>
+
+<cffunction name="saveQuickEdit" output="false">
+	<cfargument name="rc">
+	
+	<cfset var local=structNew()>
+	
+	<cfset local.contentBean=getBean("content").loadBy(contentID=arguments.rc.contentID, siteID= arguments.rc.siteid)> 
+	<cfset local.crumbdata=variables.contentManager.getCrumbList(arguments.rc.contentID,arguments.rc.siteid)/>
+	<cfset local.perm=variables.permUtility.getNodePerm(local.crumbData) />  
+	<cfset local.args={}>
+	<cfset local.args.approved=1>
+	
+	<cfif arguments.rc.attribute eq "isnav">
+		<cfset local.args.isnav=arguments.rc.isnav>
+	<cfelseif arguments.rc.attribute eq "display">
+		<cfset local.args.display=arguments.rc.display>
+		
+		<cfset local.args.displayStop=arguments.rc.displayStop>
+		<cfset local.args.stopHour=arguments.rc.stopHour>
+		<cfset local.args.stopMinute=arguments.rc.stopMinute>
+		<cfset local.args.stopDayPart=arguments.rc.stopDayPart>
+		
+		<cfset local.args.displayStart=arguments.rc.displayStart>
+		<cfset local.args.startHour=arguments.rc.startHour>
+		<cfset local.args.startMinute=arguments.rc.startMinute>
+		<cfset local.args.startDayPart=arguments.rc.startDayPart>
+	
+	<cfelseif arguments.rc.attribute eq "template">
+		<cfset local.args.template=arguments.rc.template>
+		<cfset local.args.childTemplate=arguments.rc.childTemplate>
+	<cfelseif arguments.rc.attribute eq "inheritObjects">
+		<cfset local.args.inheritObjects=arguments.rc.inheritObjects>
+	<cfelse>
+		<cfabort>
+	</cfif>
+	
+	<cfif local.perm eq "Editor" and not local.contentBean.hasDrafts()>
+		<cfset local.contentBean.set(local.args)>
+		<cfset local.contentBean.save()>
+	</cfif>
+	<cfabort>
 	
 </cffunction>
 
@@ -200,7 +249,12 @@
 	 </cfif>
 	 
 	  <cfif arguments.rc.allowAction and arguments.rc.action eq 'add' and arguments.rc.contentID neq '00000000000000000000000000000000001'>
-	      <cfset arguments.rc.topid=rc.contentBean.getParentID() />	
+	      <cfif not (
+		  		listFindNoCase(session.openSectionList,rc.contentBean.getParentID())
+		  		and listFindNoCase(rc.contentBean.getPath(),session.topID)
+		  )>
+	     	 <cfset arguments.rc.topid=rc.contentBean.getParentID() />	
+		  </cfif>
 	  </cfif>
 	 
 	<cfif arguments.rc.closeCompactDisplay neq 'true' and arguments.rc.action neq 'multiFileUpload'>

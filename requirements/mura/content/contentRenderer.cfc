@@ -6,39 +6,43 @@ the Free Software Foundation, Version 2 of the License.
 
 Mura CMS is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. �See the
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-along with Mura CMS. �If not, see <http://www.gnu.org/licenses/>.
+along with Mura CMS. If not, see <http://www.gnu.org/licenses/>.
 
-Linking Mura CMS statically or dynamically with other modules constitutes
-the preparation of a derivative work based on Mura CMS. Thus, the terms and 	
-conditions of the GNU General Public License version 2 (�GPL�) cover the entire combined work.
+Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on 
+Mura CMS. Thus, the terms and conditions of the GNU General Public License version 2 ("GPL") cover the entire combined work.
 
-However, as a special exception, the copyright holders of Mura CMS grant you permission
-to combine Mura CMS with programs or libraries that are released under the GNU Lesser General Public License version 2.1.
+However, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with programs
+or libraries that are released under the GNU Lesser General Public License version 2.1.
 
-In addition, as a special exception, �the copyright holders of Mura CMS grant you permission
-to combine Mura CMS �with independent software modules that communicate with Mura CMS solely
-through modules packaged as Mura CMS plugins and deployed through the Mura CMS plugin installation API,
-provided that these modules (a) may only modify the �/trunk/www/plugins/ directory through the Mura CMS
-plugin installation API, (b) must not alter any default objects in the Mura CMS database
-and (c) must not alter any files in the following directories except in cases where the code contains
-a separately distributed license.
+In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with 
+independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without 
+Mura CMS under the license of your choice, provided that you follow these specific guidelines: 
 
-/trunk/www/admin/
-/trunk/www/tasks/
-/trunk/www/config/
-/trunk/www/requirements/mura/
+Your custom code 
 
-You may copy and distribute such a combined work under the terms of GPL for Mura CMS, provided that you include
-the source code of that other code when and as the GNU GPL requires distribution of source code.
+• Must not alter any default objects in the Mura CMS database and
+• May not alter the default display of the Mura CMS logo within Mura CMS and
+• Must not alter any files in the following directories.
 
-For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception
-for your modified version; it is your choice whether to do so, or to make such modified version available under
-the GNU General Public License version 2 �without this exception. �You may, if you choose, apply this exception
-to your own modified versions of Mura CMS.
+ /admin/
+ /tasks/
+ /config/
+ /requirements/mura/
+ /Application.cfc
+ /index.cfm
+ /MuraProxy.cfc
+
+You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work 
+under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL 
+requires distribution of source code.
+
+For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your 
+modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
+version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cfcomponent extends="mura.cfobject" output="false">
 
@@ -155,7 +159,7 @@ to your own modified versions of Mura CMS.
 	<cfreturn this.listFormat />
 </cffunction>
 
-<cffunction name="setListFormat" returntype="string" output="false">
+<cffunction name="setListFormat" output="false">
 	<cfargument name="listFormat">
 	<cfset this.listFormat=arguments.listFormat>
 	<cfreturn this/>
@@ -458,8 +462,8 @@ to your own modified versions of Mura CMS.
 				<cfloop from="#theOffset#" to="1" index="I" step="-1">
 					<cfif I neq 1>
 						<li class="#iif(I eq theOffset,de('first'),de(''))#">
-						<cfif i neq theOffset>#arguments.separator#</cfif>
-						#addlink(this.crumbdata[I].type,this.crumbdata[I].filename,this.crumbdata[I].menutitle,'_self','',this.crumbdata[I].contentid,this.crumbdata[I].siteid,'',application.configBean.getContext(),application.configBean.getStub(),application.configBean.getIndexFile(),event.getValue('showMeta'),0)#</li>
+						<cfif i neq theOffset>#arguments.separator#</cfif>#addlink(this.crumbdata[I].type,this.crumbdata[I].filename,this.crumbdata[I].menutitle,'_self','',this.crumbdata[I].contentid,this.crumbdata[I].siteid,'',application.configBean.getContext(),application.configBean.getStub(),application.configBean.getIndexFile(),event.getValue('showMeta'),0)#
+						</li>
 					<cfelse>
 						<li class="#iif(arraylen(this.crumbdata),de('last'),de('first'))#">
 							#arguments.separator##addlink(this.crumbdata[1].type,this.crumbdata[1].filename,this.crumbdata[1].menutitle,'_self','',this.crumbdata[1].contentid,this.crumbdata[1].siteid,'',application.configBean.getContext(),application.configBean.getStub(),application.configBean.getIndexFile(),event.getValue('showMeta'),0)#
@@ -835,7 +839,7 @@ to your own modified versions of Mura CMS.
 	<cfset var imgSuffix=arguments.size>
 	<cfset var returnURL="">
 	<cfset var begin="">
-	
+
 	<cfif not structKeyExists(arguments,"fileEXT")>
 		<cfset arguments.fileEXT=getBean("fileManager").readMeta(arguments.fileID).fileEXT>
 	</cfif>
@@ -851,11 +855,11 @@ to your own modified versions of Mura CMS.
 	</cfif>
 	
 	<cfif arguments.direct and application.configBean.getFileStore() eq "fileDir">
-		<cfif not len(arguments.width) and not len(arguments.height)>
+		<cfif arguments.size neq "Custom">
 			<cfif imgSuffix eq "large">
 				<cfset imgSuffix="">
 			<cfelse>
-				<cfset imgSuffix="_" & imgSuffix>
+				<cfset imgSuffix="_" & lcase(imgSuffix)>
 			</cfif>
 			<cfset returnURL=application.configBean.getAssetPath() & "/" & arguments.siteID & "/cache/file/" & arguments.fileID & imgSuffix & "." & arguments.fileEXT>
 		<cfelse>
@@ -919,6 +923,10 @@ to your own modified versions of Mura CMS.
 	<cfargument name="cacheKey" type="string" required="false"  />
 	<cfargument name="hasSummary" type="boolean" required="false" default="true" />
 	<cfargument name="useRss" type="boolean" required="false" default="false" />
+	<cfargument name="params" type="string" required="false" default="" />
+	<cfargument name="assignmentID" type="string" required="true" default="">
+	<cfargument name="regionID" required="true" default="0">
+	<cfargument name="orderno" required="true" default="0">
 
 	<cfset var theContent=""/>
 	<cfset var objectPerm="none">
@@ -930,11 +938,11 @@ to your own modified versions of Mura CMS.
 	<cfif StructKeyExists(arguments,"cacheKey") and objectPerm neq "editor">
 		<cfsavecontent variable="theContent">
 		<cf_CacheOMatic key="#arguments.cacheKey#" nocache="#event.getValue('nocache')#">
-			<cfoutput>#dspObject_Include(arguments.siteid,arguments.object,arguments.objectid,arguments.fileName,arguments.hasSummary,arguments.useRss)#</cfoutput>
+			<cfoutput>#dspObject_Include(arguments.siteid,arguments.object,arguments.objectid,arguments.fileName,arguments.hasSummary,arguments.useRss,"none",arguments.params,arguments.assignmentID,arguments.regionID,arguments.orderno)#</cfoutput>
 		</cf_cacheomatic>
 		</cfsavecontent>
 	<cfelse>
-		<cfset theContent = dspObject_Include(arguments.siteid,arguments.object,arguments.objectid,arguments.fileName,arguments.hasSummary,arguments.useRss,objectPerm) />
+		<cfset theContent = dspObject_Include(arguments.siteid,arguments.object,arguments.objectid,arguments.fileName,arguments.hasSummary,arguments.useRss,objectPerm,arguments.params,arguments.assignmentID,arguments.regionID,arguments.orderno) />
 	</cfif>
 	<cfreturn theContent />
 
@@ -948,7 +956,11 @@ to your own modified versions of Mura CMS.
 	<cfargument name="hasSummary" type="boolean" required="true" default="false"/>
 	<cfargument name="RSS" type="boolean" required="true" default="false" />
 	<cfargument name="objectPerm" type="string" required="true" default="none" />
-
+	<cfargument name="params" type="string" required="true" default="" />
+	<cfargument name="assignmentID" type="string" required="true" default="">
+	<cfargument name="regionID" required="true" default="0">
+	<cfargument name="orderno" required="true" default="0">
+	
 	<cfset var fileDelim = application.configBean.getFileDelim() />
 	<cfset var displayObjectPath = $.siteConfig('IncludePath') & fileDelim & "includes"  & fileDelim & "display_objects"/>
 	<cfset var themeObjectPath = $.siteConfig('ThemeIncludePath') & fileDelim & "display_objects"/>
@@ -959,14 +971,21 @@ to your own modified versions of Mura CMS.
 	<cfset var editableControl = structNew()>
 	<cfset var expandedDisplayObjectPath=expandPath(displayObjectPath)>
 	<cfset var expandedThemeObjectPath=expandPath(themeObjectPath)>
+	<cfset var tracePoint=0>
 	
 	<cfsavecontent variable="theContent">
 	<cfif fileExists(expandedThemeObjectPath & fileDelim & arguments.theFile)>
-		<cfinclude  template="#themeObjectPath#/#arguments.theFile#" />
+		<cfset tracePoint=initTracePoint("#themeObjectPath#/#arguments.theFile#")>
+		<cfinclude template="#themeObjectPath#/#arguments.theFile#" />
+		<cfset commitTracePoint(tracePoint)>
 	<cfelseif fileExists(expandedDisplayObjectPath & fileDelim & "custom" & fileDelim & arguments.theFile)>
-		<cfinclude  template="#displayObjectPath#/custom/#arguments.theFile#" />
+		<cfset tracePoint=initTracePoint("#displayObjectPath#/custom/#arguments.theFile#")>
+		<cfinclude template="#displayObjectPath#/custom/#arguments.theFile#" />
+		<cfset commitTracePoint(tracePoint)>
 	<cfelse>
-		<cfinclude  template="#displayObjectPath#/#arguments.theFile#" />
+		<cfset tracePoint=initTracePoint("#displayObjectPath#/#arguments.theFile#")>
+		<cfinclude template="#displayObjectPath#/#arguments.theFile#" />
+		<cfset commitTracePoint(tracePoint)>
 	</cfif>
 	</cfsavecontent>
 	<cfreturn theContent />
@@ -978,6 +997,10 @@ to your own modified versions of Mura CMS.
 <cfargument name="objectid" type="string" required="true" default="">
 <cfargument name="siteid" type="string" required="true" default="#event.getValue('siteID')#">
 <cfargument name="params" type="string" required="true" default="">
+<cfargument name="assignmentID" type="string" required="true" default="">
+<cfargument name="regionID" required="true" default="0">
+<cfargument name="orderno" required="true" default="0">
+
 	<cfset var theObject = "" />
 	<cfset var cacheKeyContentId = arguments.object & event.getValue('contentBean').getcontentID() />
 	<cfset var cacheKeyObjectId = arguments.object & arguments.objectid />
@@ -997,7 +1020,66 @@ to your own modified versions of Mura CMS.
 				<cfcase value="plugin">#application.pluginManager.displayObject(object=arguments.objectid,event=event,params=arguments.params)#</cfcase>
 				<cfcase value="mailing_list">#dspObject_Render(siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,fileName="dsp_mailing_list.cfm")#</cfcase>
 				<cfcase value="mailing_list_master">#dspObject_Render(siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,fileName="dsp_mailing_list_master.cfm")#</cfcase>
-				<cfcase value="site_map">#dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"dsp_site_map.cfm",cacheKeyObjectId)#</cfcase>
+				<cfcase value="site_map">#dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"dsp_site_map.cfm",cacheKeyObjectId)#</cfcase>							
+				<cfcase value="category_summary">#dspObject_Render(siteID=arguments.siteid,object=arguments.object,objectID=arguments.objectid,filename="dsp_category_summary.cfm",cacheKey=cacheKeyObjectId & event.getValue('categoryID'),params=arguments.params)#</cfcase>
+				<cfcase value="archive_nav">#dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"nav/dsp_archive.cfm",cacheKeyObjectId)#</cfcase>
+				<cfcase value="form">#dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"datacollection/index.cfm",cacheKeyObjectId)#</cfcase>
+				<cfcase value="form_responses">#dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"dataresponses/index.cfm",cacheKeyObjectId)#</cfcase>
+				<cfcase value="component">#dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"dsp_template.cfm",cacheKeyObjectId)#</cfcase>
+				<cfcase value="ad">#dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"dsp_ad.cfm")#</cfcase>
+				<cfcase value="comments">#dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"dsp_comments.cfm")#</cfcase>
+				<cfcase value="event_reminder_form">#dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"dsp_event_reminder_form.cfm",cacheKeyContentId)#</cfcase>
+				<cfcase value="forward_email">#dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"dsp_forward_email.cfm")#</cfcase>
+				<cfcase value="adzone">#dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"dsp_adZone.cfm")#</cfcase>
+				<cfcase value="feed">
+					<cfset addToHTMLHeadQueue("listImageStyles.cfm")>
+					#dspObject_Render(siteID=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="dsp_feed.cfm",cacheKey=cacheKeyObjectId & "startrow#request.startrow#",params=arguments.params,assignmentID=arguments.assignmentID,regionID=arguments.regionID,orderno=arguments.orderno)#
+				</cfcase>	
+				<cfcase value="feed_slideshow">
+					<cfif not cookie.mobileFormat>
+						#dspObject_Render(siteID=arguments.siteid,object=arguments.object,objectID=arguments.objectid,filename="feedslideshow/index.cfm",params=arguments.params,assignmentID=arguments.assignmentID,regionID=arguments.regionID,orderno=arguments.orderno)#
+					<cfelse>
+						<cfset addToHTMLHeadQueue("listImageStyles.cfm")>
+						#dspObject_Render(siteID=arguments.siteid,object=arguments.object,objectID=arguments.objectid,filename="dsp_feed.cfm",params=arguments.params,assignmentID=arguments.assignmentID,regionID=arguments.regionID,orderno=arguments.orderno)#
+					</cfif>
+				</cfcase>
+				<cfcase value="feed_table">#dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"feedtable/index.cfm",arguments.object,false)#</cfcase>
+				<cfcase value="payPalCart">#dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"paypalcart/index.cfm")#</cfcase>
+				<cfcase value="rater">#dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"rater/index.cfm")#</cfcase>
+				<cfcase value="favorites">#dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"favorites/index.cfm")#</cfcase>
+				<cfcase value="dragable_feeds">#dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"dragablefeeds/index.cfm")#</cfcase>
+				<cfcase value="related_content">
+					<cfset addToHTMLHeadQueue("listImageStyles.cfm")>
+					#dspObject_Render(siteID=arguments.siteid,object=arguments.object,objectID=arguments.objectid,filename="dsp_related_content.cfm",cacheKey=cacheKeyContentId,params=arguments.params)#
+				</cfcase>
+				<cfcase value="related_section_content">
+					<cfset addToHTMLHeadQueue("listImageStyles.cfm")>
+					#dspObject_Render(siteID=arguments.siteid,object=arguments.object,objectID=arguments.objectid,filename="dsp_related_section_content.cfm",cachekey=cacheKeyContentId,params=arguments.params)#
+				</cfcase>
+				<cfcase value="user_tools">#dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"dsp_user_tools.cfm")#</cfcase>
+				<cfcase value="tag_cloud"><cf_CacheOMatic key="#arguments.siteid##arguments.object#" nocache="#event.getValue('nocache')#"><cfoutput>#dspTagCloud()#</cfoutput></cf_CacheOMatic></cfcase>
+				<cfcase value="goToFirstChild">#dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"act_goToFirstChild.cfm")#</cfcase>
+				<!--- BEGIN DEPRICATED --->
+				<cfcase value="submit_event">#dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"dsp_submit_event.cfm",cacheKeyContentId)#</cfcase>
+				<cfcase value="promo">#dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"dsp_promo.cfm")#</cfcase>
+				<cfcase value="public_content_form">#dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"dsp_public_content_form.cfm")#</cfcase>
+				<cfcase value="category_summary_rss">#dspObject_Render(siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,fileName="dsp_category_summary.cfm",cacheKey=cacheKeyObjectId & event.getValue('categoryID'),useRss=true)#</cfcase>
+				<cfcase value="feed_no_summary">
+					<cfset addToHTMLHeadQueue("listImageStyles.cfm")>
+					#dspObject_Render(siteID=arguments.siteid,object=arguments.object,objectID=arguments.objectid,fileName="dsp_feed.cfm",cacheKey=cacheKeyObjectId & "startrow#request.startrow#",hasSummary=false,assignmentID=arguments.assignmentID,regionID=arguments.regionID,orderno=arguments.orderno,params=arguments.params)#
+				</cfcase>
+				<cfcase value="feed_slideshow_no_summary">
+					<cfif not cookie.mobileFormat>
+						#dspObject_Render(siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,fileName="feedslideshow/index.cfm",hasSummary=false,assignmentID=arguments.assignmentID,regionID=arguments.regionID,orderno=arguments.orderno,params=arguments.params)#
+					<cfelse>
+						<cfset addToHTMLHeadQueue("listImageStyles.cfm")>
+						#dspObject_Render(siteID=arguments.siteid,object=arguments.object,objectID=arguments.objectid,fileName="dsp_feed.cfm",cacheKey=cacheKeyObjectId & "startrow#request.startrow#",hasSummary=false,assignmentID=arguments.assignmentID,regionID=arguments.regionID,orderno=arguments.orderno,params=arguments.params)#
+					</cfif>
+				</cfcase>
+				<cfcase value="related_section_content_no_summary">
+					<cfset addToHTMLHeadQueue("listImageStyles.cfm")>
+					#dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"dsp_related_section_content.cfm",cacheKeyContentId,false)#
+				</cfcase>	
 				<cfcase value="features">
 					<cfset addToHTMLHeadQueue("listImageStyles.cfm")>
 					#dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"dsp_features.cfm",cacheKeyObjectId)#
@@ -1010,64 +1092,7 @@ to your own modified versions of Mura CMS.
 				<cfcase value="category_features_no_summary">#dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"dsp_category_features.cfm",cacheKeyObjectId,false)#</cfcase>
 				<cfcase value="category_portal_features">#dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"dsp_category_portal_features.cfm",cacheKeyObjectId)#</cfcase>
 				<cfcase value="category_portal_features_no_summary">#dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"dsp_category_portal_features.cfm",cacheKeyObjectId,false)#</cfcase>
-				<cfcase value="category_summary">#dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"dsp_category_summary.cfm",cacheKeyObjectId & event.getValue('categoryID'))#</cfcase>
-				<cfcase value="category_summary_rss">#dspObject_Render(siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,fileName="dsp_category_summary.cfm",cacheKey=cacheKeyObjectId & event.getValue('categoryID'),useRss=true)#</cfcase>
-				<cfcase value="archive_nav">#dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"nav/dsp_archive.cfm",cacheKeyObjectId)#</cfcase>
-				<cfcase value="form">#dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"datacollection/index.cfm",cacheKeyObjectId)#</cfcase>
-				<cfcase value="form_responses">#dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"dataresponses/index.cfm",cacheKeyObjectId)#</cfcase>
-				<cfcase value="component">#dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"dsp_template.cfm",cacheKeyObjectId)#</cfcase>
-				<cfcase value="ad">#dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"dsp_ad.cfm")#</cfcase>
-				<cfcase value="comments">#dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"dsp_comments.cfm")#</cfcase>
-				<cfcase value="submit_event">#dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"dsp_submit_event.cfm",cacheKeyContentId)#</cfcase>
-				<cfcase value="promo">#dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"dsp_promo.cfm")#</cfcase>
-				<cfcase value="public_content_form">#dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"dsp_public_content_form.cfm")#</cfcase>
-				<cfcase value="event_reminder_form">#dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"dsp_event_reminder_form.cfm",cacheKeyContentId)#</cfcase>
-				<cfcase value="forward_email">#dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"dsp_forward_email.cfm")#</cfcase>
-				<cfcase value="adzone">#dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"dsp_adZone.cfm")#</cfcase>
-				<cfcase value="feed">
-					<cfset addToHTMLHeadQueue("listImageStyles.cfm")>
-					#dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"dsp_feed.cfm",cacheKeyObjectId & "startrow#request.startrow#")#
-				</cfcase>
-				<cfcase value="feed_no_summary">
-					<cfset addToHTMLHeadQueue("listImageStyles.cfm")>
-					#dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"dsp_feed.cfm",cacheKeyObjectId & "startrow#request.startrow#",false)#
-				</cfcase>
-				<cfcase value="feed_slideshow_no_summary">
-					<cfif not cookie.mobileFormat>
-						#dspObject_Render(siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,fileName="feedslideshow/index.cfm",hasSummary=false)#
-					<cfelse>
-						<cfset addToHTMLHeadQueue("listImageStyles.cfm")>
-						#dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"dsp_feed.cfm",cacheKeyObjectId & "startrow#request.startrow#",false)#
-					</cfif>
-				</cfcase>
-				<cfcase value="feed_slideshow">
-					<cfif not cookie.mobileFormat>
-						#dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"feedslideshow/index.cfm")#
-					<cfelse>
-						<cfset addToHTMLHeadQueue("listImageStyles.cfm")>
-						#dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"dsp_feed.cfm",cacheKeyObjectId & "startrow#request.startrow#")#
-					</cfif>
-				</cfcase>
-				<cfcase value="feed_table">#dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"feedtable/index.cfm",arguments.object,false)#</cfcase>
-				<cfcase value="payPalCart">#dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"paypalcart/index.cfm")#</cfcase>
-				<cfcase value="rater">#dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"rater/index.cfm")#</cfcase>
-				<cfcase value="favorites">#dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"favorites/index.cfm")#</cfcase>
-				<cfcase value="dragable_feeds">#dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"dragablefeeds/index.cfm")#</cfcase>
-				<cfcase value="related_content">
-					<cfset addToHTMLHeadQueue("listImageStyles.cfm")>
-					#dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"dsp_related_content.cfm",cacheKeyContentId)#
-				</cfcase>
-				<cfcase value="related_section_content">
-					<cfset addToHTMLHeadQueue("listImageStyles.cfm")>
-					#dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"dsp_related_section_content.cfm",cacheKeyContentId)#
-				</cfcase>
-				<cfcase value="related_section_content_no_summary">
-					<cfset addToHTMLHeadQueue("listImageStyles.cfm")>
-					#dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"dsp_related_section_content.cfm",cacheKeyContentId,false)#
-				</cfcase>
-				<cfcase value="user_tools">#dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"dsp_user_tools.cfm")#</cfcase>
-				<cfcase value="tag_cloud"><cf_CacheOMatic key="#arguments.siteid##arguments.object#" nocache="#event.getValue('nocache')#"><cfoutput>#dspTagCloud()#</cfoutput></cf_CacheOMatic></cfcase>
-				<cfcase value="goToFirstChild">#dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"act_goToFirstChild.cfm")#</cfcase>
+				<!--- END DEPRICATED --->
 			</cfswitch>
 		</cfoutput>
 	</cfsavecontent>
@@ -1091,13 +1116,13 @@ to your own modified versions of Mura CMS.
 		and event.getValue('contentBean').getcontenthistid() eq arguments.contentHistID>
 			<cfset rsObjects=application.contentGateway.getObjectInheritance(arguments.columnID,event.getValue('inheritedObjects'),event.getValue('siteID'))>	
 			<cfloop query="rsObjects">
-				<cfset theRegion = theRegion & dspObject(rsObjects.object,rsObjects.objectid,event.getValue('siteID'), rsObjects.params) />
+				<cfset theRegion = theRegion & dspObject(rsObjects.object,rsObjects.objectid,event.getValue('siteID'), rsObjects.params, event.getValue('inheritedObjects'), arguments.columnID, rsObjects.orderno) />
 			</cfloop>	
 	</cfif>
 
 	<cfset rsObjects=application.contentGateway.getObjects(arguments.columnID,arguments.contentHistID,event.getValue('siteID'))>	
 	<cfloop query="rsObjects">
-		<cfset theRegion = theRegion & dspObject(rsObjects.object,rsObjects.objectid,event.getValue('siteID'), rsObjects.params) />
+		<cfset theRegion = theRegion & dspObject(rsObjects.object,rsObjects.objectid,event.getValue('siteID'), rsObjects.params, arguments.contentHistID, arguments.columnID, rsObjects.orderno) />
 	</cfloop>
 </cfif>
 
@@ -1584,17 +1609,17 @@ to your own modified versions of Mura CMS.
 <cffunction name="renderFile" output="true" access="public">
 <cfargument name="fileID" type="string">
 <cfargument name="method" type="string" required="true" default="inline">
-	<cfset application.serviceFactory.getBean('fileManager').renderFile(arguments.fileid,arguments.method) />
+	<cfset getBean('fileManager').renderFile(arguments.fileid,arguments.method) />
 </cffunction>
 
 <cffunction name="renderSmall" output="true" access="public">
 <cfargument name="fileID" type="string">
-	<cfset application.serviceFactory.getBean('fileManager').renderSmall(arguments.fileid) />
+	<cfset getBean('fileManager').renderSmall(arguments.fileid) />
 </cffunction>
 
 <cffunction name="renderMedium" output="true" access="public">
 <cfargument name="fileID" type="string">
-	<cfset application.serviceFactory.getBean('fileManager').renderMedium(arguments.fileid) />
+	<cfset getBean('fileManager').renderMedium(arguments.fileid) />
 </cffunction>
 
 <cffunction name="jsonencode" access="public" output="false" returntype="string">
@@ -1749,11 +1774,28 @@ to your own modified versions of Mura CMS.
 	<cfargument name="template" default="" required="true">
 	<cfargument name="baseDir" default="#event.getSite().getIncludePath()#/includes" required="true">
 	<cfset var str='' />
-	
+	<cfset var tracePoint=0>
 	<cfif arguments.template neq ''>
+		<cfset tracePoint=initTracePoint("#arguments.baseDir#/#arguments.template#")>
 		<cfsavecontent variable="str">
 			<cfinclude template="#arguments.baseDir#/#arguments.template#">
 		</cfsavecontent>
+		<cfset commitTracePoint(tracePoint)>
+	</cfif>
+	
+	<cfreturn trim(str) />
+</cffunction>
+
+<cffunction name="dspThemeInclude" returntype="string" access="public">
+	<cfargument name="template" default="" required="true">
+	<cfset var str='' />
+	<cfset var tracePoint=0>
+	<cfif arguments.template neq ''>
+		<cfset tracePoint=initTracePoint("#$.siteConfig('themeIncludePath')#/#arguments.template#")>
+		<cfsavecontent variable="str">
+			<cfinclude template="#$.siteConfig('themeIncludePath')#/#arguments.template#">
+		</cfsavecontent>
+		<cfset commitTracePoint(tracePoint)>
 	</cfif>
 	
 	<cfreturn trim(str) />
@@ -1795,20 +1837,25 @@ to your own modified versions of Mura CMS.
 	<cfset var pluginConfig="" />
 	<cfset var displayPoolID=application.settingsmanager.getSite(event.getValue('siteID')).getDisplayPoolID()>
 	<cfset var theme=application.settingsmanager.getSite(event.getValue('siteID')).getTheme()>
-
+	<cfset var tracePoint=0>
+	
 	<cfif getRenderHTMLQueues()>
 		
 		<cfif arguments.queueType eq "HEAD">
 			<!--- ensure that the js lb is always there --->
 			<cfset loadJSLib() />
 			<!--- Add global.js --->
+			<cfset tracePoint=initTracePoint("/#application.configBean.getWebRootMap()#/#application.settingsmanager.getSite(event.getValue('siteID')).getDisplayPoolID()#/includes/display_objects/htmlhead/global.cfm")>
 			<cfsavecontent variable="headerStr">
 					<cfinclude  template="/#application.configBean.getWebRootMap()#/#application.settingsmanager.getSite(event.getValue('siteID')).getDisplayPoolID()#/includes/display_objects/htmlhead/global.cfm">
 			</cfsavecontent>
-						
+			<cfset commitTracePoint(tracePoint)>
+					
 			<!--- Add modal edit --->
 			<cfif getShowModal()>
-				<cfset loadShadowboxJS() />
+				<cfif getJSLib() eq "prototype">
+					<cfset loadShadowboxJS() />
+				</cfif>
 				<cfif this.showEditableObjects and not request.muraExportHTML>
 					<cfset addToHTMLHEADQueue('editableObjects.cfm')>
 				</cfif>
@@ -1817,10 +1864,14 @@ to your own modified versions of Mura CMS.
 				<cfif (getShowModal() or event.getValue("muraChangesetPreview")) and not request.muraExportHTML>
 					<cfsavecontent variable="headerStr">
 						<cfif getShowModal()>
+							<cfset tracePoint=initTracePoint("/#application.configBean.getWebRootMap()#/admin/modal/dsp_modal_edit.cfm")>
 							<cfinclude template="/#application.configBean.getWebRootMap()#/admin/modal/dsp_modal_edit.cfm">
+							<cfset commitTracePoint(tracePoint)>
 						</cfif>	
 						<cfif event.getValue("muraChangesetPreview")>
+							<cfset tracePoint=initTracePoint("/#application.configBean.getWebRootMap()#/admin/modal/dsp_modal_changeset.cfm")>
 							<cfinclude template="/#application.configBean.getWebRootMap()#/admin/modal/dsp_modal_changeset.cfm">
+							<cfset commitTracePoint(tracePoint)>
 						</cfif>
 					</cfsavecontent>
 				</cfif>
@@ -1837,7 +1888,9 @@ to your own modified versions of Mura CMS.
 				<cfset pluginBasePath="/#displayPoolID#/includes/themes/#theme#/display_objects/htmlhead/">
 				<cfif fileExists(expandPath("/#application.configBean.getWebRootMap()##pluginbasePath##i#"))>
 					<cfset pluginPath= application.configBean.getContext() & pluginBasePath >
-					<cfinclude  template="/#application.configBean.getWebRootMap()##pluginbasePath##i#">
+					<cfset tracePoint=initTracePoint("/#application.configBean.getWebRootMap()##pluginbasePath##i#")>
+					<cfinclude template="/#application.configBean.getWebRootMap()##pluginbasePath##i#">
+					<cfset commitTracePoint(tracePoint)>
 					<cfset headerFound=true />
 				</cfif>
 				
@@ -1845,7 +1898,9 @@ to your own modified versions of Mura CMS.
 					<cfset pluginBasePath="/#displayPoolID#/includes/display_objects/htmlhead/">
 					<cfif fileExists(expandPath("/#application.configBean.getWebRootMap()##pluginbasePath##i#"))>
 						<cfset pluginPath= application.configBean.getContext() & pluginBasePath >
-						<cfinclude  template="/#application.configBean.getWebRootMap()##pluginbasePath##i#">
+						<cfset tracePoint=initTracePoint("/#application.configBean.getWebRootMap()##pluginbasePath##i#")>
+						<cfinclude template="/#application.configBean.getWebRootMap()##pluginbasePath##i#">
+						<cfset commitTracePoint(tracePoint)>
 						<cfset headerFound=true />
 					</cfif>
 				</cfif>
@@ -1856,7 +1911,9 @@ to your own modified versions of Mura CMS.
 				<cfset pluginBasePath="/#displayPoolID#/includes/themes/#theme#/display_objects/">
 				<cfif fileExists(expandPath("/#application.configBean.getWebRootMap()##pluginbasePath##i#"))>
 					<cfset pluginPath= application.configBean.getContext() & pluginBasePath >	
-					<cfinclude  template="/#application.configBean.getWebRootMap()##pluginBasePath##i#">
+					<cfset tracePoint=initTracePoint("/#application.configBean.getWebRootMap()##pluginbasePath##i#")>
+					<cfinclude template="/#application.configBean.getWebRootMap()##pluginBasePath##i#">
+					<cfset commitTracePoint(tracePoint)>
 					<cfset headerFound=true />
 				</cfif>
 
@@ -1871,7 +1928,9 @@ to your own modified versions of Mura CMS.
 					<cfset pluginBasePath="/#displayPoolID#/includes/display_objects/">
 					<cfif fileExists(expandPath("/#application.configBean.getWebRootMap()##pluginbasePath##i#"))>
 						<cfset pluginPath= application.configBean.getContext() & pluginBasePath >	
-						<cfinclude  template="/#application.configBean.getWebRootMap()##pluginBasePath##i#">
+						<cfset tracePoint=initTracePoint("/#application.configBean.getWebRootMap()##pluginbasePath##i#")>
+						<cfinclude template="/#application.configBean.getWebRootMap()##pluginBasePath##i#">
+						<cfset commitTracePoint(tracePoint)>
 						<cfset headerFound=true />
 					</cfif>
 				</cfif>
@@ -1892,7 +1951,9 @@ to your own modified versions of Mura CMS.
 					<cfset pluginBasePath="/#displayPoolID#/includes/">
 					<cfif fileExists(expandPath("/#application.configBean.getWebRootMap()##pluginbasePath##i#"))>
 						<cfset pluginPath= application.configBean.getContext() & pluginBasePath >	
+						<cfset tracePoint=initTracePoint("/#application.configBean.getWebRootMap()##pluginbasePath##i#")>
 						<cfinclude  template="/#application.configBean.getWebRootMap()##pluginBasePath##i#">
+						<cfset commitTracePoint(tracePoint)>
 						<cfset headerFound=true />
 					</cfif>
 				</cfif>
@@ -1906,7 +1967,9 @@ to your own modified versions of Mura CMS.
 						<cfset pluginConfig=event.getValue('pluginConfig')>
 						<cfset pluginPath= application.configBean.getContext() & pluginBasePath & pluginConfig.getDirectory() & "/" >		
 						<cfset event.setValue('pluginPath',pluginPath)>		
+						<cfset tracePoint=initTracePoint("/#application.configBean.getWebRootMap()##pluginbasePath##i#")>
 						<cfinclude  template="/#application.configBean.getWebRootMap()##pluginBasePath##i#">
+						<cfset commitTracePoint(tracePoint)>
 						<cfset headerFound=true />
 						<cfset event.removeValue("pluginPath")>
 						<cfset event.removeValue("pluginConfig")>
@@ -1922,7 +1985,9 @@ to your own modified versions of Mura CMS.
 						<cfset pluginConfig=event.getValue('pluginConfig')>
 						<cfset pluginPath= application.configBean.getContext() & pluginBasePath & pluginConfig.getDirectory() & "/" >		
 						<cfset event.setValue('pluginPath',pluginPath)>
+						<cfset tracePoint=initTracePoint("#pluginbasePath##i#")>
 						<cfinclude  template="#pluginBasePath##i#">
+						<cfset commitTracePoint(tracePoint)>
 						<cfset headerFound=true />
 						<cfset event.removeValue("pluginPath")>
 						<cfset event.removeValue("pluginConfig")>
@@ -2005,15 +2070,24 @@ to your own modified versions of Mura CMS.
 <cfreturn str>
 </cffunction>
 
+<cffunction name="generateEditableHook" output="false">
+	<cfif getJSLib() eq "prototype">
+		<cfreturn 'rel="shadowbox;width=1050;"'>
+	<cfelse>
+		<cfreturn 'class="frontEndToolsModal"'>
+	</cfif>
+</cffunction>
+
 <cffunction name="generateEditableObjectControl" access="public" output="no" returntype="string">
 		<cfargument name="editLink" required="yes" default="">
+		<cfargument name="isConfigurator" default="false">
 		<cfset var str = "">
 		
 		<cfif this.showEditableObjects>		
 		<cfsavecontent variable="str">
 			<cfoutput>
 			<ul class="editableObjectControl">
-				<li class="edit"><a href="#arguments.editLink#" title="#htmlEditFormat('Edit')#" rel="shadowbox;width=1100;">#htmlEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.edit'))#</a></li>
+				<li class="edit"><a href="#arguments.editLink#"  data-configurator="#arguments.isConfigurator#" title="#htmlEditFormat('Edit')#" #generateEditableHook()#>#htmlEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.edit'))#</a></li>
 			</ul>
 			</cfoutput>
 		</cfsavecontent>
@@ -2050,5 +2124,60 @@ to your own modified versions of Mura CMS.
 		</cfif>
 		
 		<cfreturn str>
+</cffunction>
+
+
+<cffunction name="generateListImageSyles" output="false">
+	<cfargument name="size" default="small">
+	<cfargument name="height" default="auto">
+	<cfargument name="width" default="auto">
+	<cfargument name="padding" default="20">
+	<cfargument name="setHeight" default="true">
+	<cfargument name="setWidth" default="true">
+	
+	<cfset var imageStyles=structNew()>
+	<cfset imageStyles.markup="">
+	
+	<cfif arguments.size eq "Custom"
+		and arguments.width eq "auto"
+		and arguments.height eq "auto">
+		<cfset arguments.size="small">
+	</cfif>
+		
+	<cfif arguments.size neq "custom">
+		<cfif $.siteConfig('gallery#arguments.size#ScaleBy') eq 'x'>
+			<cfset imageStyles.paddingLeft=$.siteConfig('gallery#arguments.size#Scale') + arguments.padding>
+			<cfset imageStyles.minHeight="auto">
+		<!--- Conditional styles for images constrained by height --->
+		<cfelseif $.siteConfig('gallery#arguments.size#ScaleBy') eq 'y'>
+				<cfset imageStyles.paddingLeft="auto">
+				<cfset imageStyles.minHeight=$.siteConfig('gallery#arguments.size#Scale') + arguments.padding>
+			<cfelse>
+			<!--- Styles for images cropped to square --->
+				<cfset imageStyles.paddingLeft=$.siteConfig('gallery#arguments.size#Scale') + arguments.padding>
+				<cfset imageStyles.minHeight=$.siteConfig('gallery#arguments.size#Scale') + arguments.padding>
+			</cfif>
+		<cfelse>
+			<cfif isNumeric(arguments.width)>
+				<cfset imageStyles.paddingLeft=arguments.width + arguments.padding>
+			<cfelse>
+				<cfset imageStyles.paddingLeft="auto">
+			</cfif>
+			<cfif isNumeric(arguments.height)>
+				<cfset imageStyles.minHeight=arguments.height + arguments.padding>
+			<cfelse>
+				<cfset imageStyles.minHeight="auto">
+			</cfif>
+		</cfif>
+		
+		<cfif imageStyles.minHeight neq "auto" and arguments.setHeight>
+			<cfset imageStyles.markup="#imageStyles.markup#min-height:#imageStyles.minHeight#px;">
+		</cfif>
+		<cfif imageStyles.paddingLeft neq "auto" and arguments.setWidth>
+			<cfset imageStyles.markup="#imageStyles.markup#padding-left:#imageStyles.paddingLeft#px;">
+		</cfif>
+		
+		<cfreturn imageStyles.markup>
+
 </cffunction>
 </cfcomponent>

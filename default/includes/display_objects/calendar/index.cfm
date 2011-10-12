@@ -33,37 +33,35 @@ Lazarus contentServer Sitemap
 	<cfset menuType="CalendarMonth">
 </cfif>
 
-<cfif not isNumeric(request.month)>
-	<cfset request.month=month(now())>
+<cfif not isNumeric($.event('month'))>
+	<cfset $.event('year',month(now()))>
 </cfif>
 
-<cfif not isNumeric(request.year)>
-	<cfset request.year=year(now())>
+<cfif not isNumeric($.event('year'))>
+	<cfset $.event('year',year(now()))>
 </cfif>
 
-<cfif isNumeric(request.day) and request.day
+<cfif isNumeric($.event('day')) and $.event('day')
 	and menuType eq "CalendarDate">
-	<cfset menuDate=createDate(request.year,request.month,request.day)>
+	<cfset menuDate=createDate($.event('year'),$.event('month'),$.event('day'))>
 <cfelseif menuType eq "CalendarMonth">
-	<cfset menuDate=createDate(request.year,request.month,1)>
+	<cfset menuDate=createDate($.event('year'),$.event('month'),1)>
 </cfif>
 
-<cfset rsPreSection=application.contentGateway.getKids('00000000000000000000000000000000000',request.siteid,request.contentBean.getcontentid(),menuType,menuDate,100,request.keywords,0,"displayStart","asc",request.categoryID,request.relatedID,request.tag)>
-<cfif getSite().getExtranet() eq 1 and request.r.restrict eq 1>
-	<cfset rssection=queryPermFilter(rsPreSection)/>
+<cfset rsPreSection=$.getBean('contentGateway').getKids('00000000000000000000000000000000000',$.event('siteID'),$.content('contentID'),menuType,menuDate,100,$.event('keywords'),0,"displayStart","asc",$.event('categoryID'),$.event('relatedID'),$.event('tag'))>
+<cfif $.siteConfig('extranet') eq 1 and $.event('r').restrict eq 1>
+	<cfset rssection=$.queryPermFilter(rsPreSection)/>
 <cfelse>
 	<cfset rssection=rsPreSection/>
 </cfif>
-<cfset rbFactory=getSite().getRBFactory() />	
 </cfsilent>				
-
 <cfoutput>
 <cfinclude template="myglobals.cfm">
-<cfif request.filterBy eq "">
-<!---<a href="index.cfm?month=#htmlEditFormat(request.month)#&year=#htmlEditFormat(request.year)#&categoryID=#htmlEditFormat(request.categoryID)#&relatedID=#htmlEditFormat(request.relatedID)#&filterBy=releaseMonth">View in List Format</a>--->
+<cfif $.event("filterBy") eq "">
+<!---<a href="index.cfm?month=#htmlEditFormat($.event('month'))#&year=#htmlEditFormat($.event('year'))#&categoryID=#htmlEditFormat($.event('categoryID'))#&relatedID=#htmlEditFormat($.event('relatedID'))#&filterBy=releaseMonth">View in List Format</a>--->
 <cfinclude template="dsp_dp_showmonth.cfm">
 <cfelse>
-<!---<a href="index.cfm?month=#htmlEditFormat(request.month)#&year=#htmlEditFormat(request.year)#&categoryID=#htmlEditFormat(request.categoryID)#&relatedID=#htmlEditFormat(request.relatedID)#">View in Calendar Format</a>--->
+<!---<a href="index.cfm?month=#htmlEditFormat($.event('month'))#&year=#htmlEditFormat($.event('year'))#&categoryID=#htmlEditFormat($.event('categoryID'))#&relatedID=#htmlEditFormat($.event('relatedID'))#">View in Calendar Format</a>--->
 <cfinclude template="dsp_list.cfm">
 </cfif>
 </cfoutput>

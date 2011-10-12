@@ -1,7 +1,34 @@
-CKFinder ChangeLog
+CKFinder Changelog
 ==================
 http://ckfinder.com
 Copyright (C) 2007-2011, CKSource - Frederico Knabben. All rights reserved.
+
+### Version 2.1
+- Added support for multiple uploads using the Flash component.
+- Improved rendering of thumbnails. Thumbnails are now loaded dynamically, only when the file is visible.
+  A configurable delay between requesting each thumbnail is available: config.thumbnailDelay.
+- Added support for file upload using HTML5 FormData.
+- Added an option to set the base user interface color: config.uiColor.
+- File upload requires less clicks.
+- Improved keyboard navigation and actions.
+- Compatibility with mobile devices (Android and iOS).
+- Added an option to show an arrow icon that will launch the context menu: config.showContextMenuArrow.
+- Updated translations: Brazilian Portuguese, Chinese Simplified, Dutch, Finnish, Hebrew, Italian, Polish, Spanish.
+- Added new translations: Estonian, Lithuanian, Persian, Turkish.
+- CKFinder User's Guide ("Help") rewritten and fully updated for English and Polish.
+- Improved error handling when receiving an invalid XML response from the server connector.
+- Added an option to show the OS icons in Firefox: config.useNativeIcons.
+- Added an option to specify the path to the custom server connector: config.connectorPath.
+- Fixed: The "Download" option returns an improperly encoded filename.
+- Fixed: The dialog window used during the copying/pasting operations was broken in IE7.
+- Fixed: The Folders Pane was too small in Internet Explorer 9 in compatibility mode.
+- Fixed: English text in dialog window titles was flipped when using an RTL language.
+- Fixed: View image command opens the file in the same window in Internet Explorer.
+- Fixed: Opening context menu triggers folder reload.
+- Fixed: Invalid paths in popup(s) samples.
+- Fixed: CKFinder was sometimes throwing an "Object doesn't support this property or method" error in Internet Explorer.
+- Fixed: Thumbnails were not created if a folder or file name contains a single quote character.
+- Fixed: Disable upload button for iOS.
 
 ### Version 2.0.2
 - Added a way to programmatically close a popup window: closePopup().

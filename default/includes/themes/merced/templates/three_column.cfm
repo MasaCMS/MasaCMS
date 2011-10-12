@@ -4,17 +4,17 @@
 <div id="container" class="#$.createCSSid($.content('menuTitle'))#">
 	<cfinclude template="inc/header.cfm" />
 	<div id="content" class="clearfix">
-		<div id="left" class="aside">
+		<aside id="left">
 			#$.dspObjects(1)#
-		</div>
-		<div id="primary" class="article">
-			#$.dspCrumbListLinks("crumbList","&nbsp;&raquo;&nbsp;")#
+		</aside>
+		<article>
+			<nav>#$.dspCrumbListLinks("crumbList","&nbsp;&raquo;&nbsp;")#</nav>
 			#$.dspBody(body=$.content('body'),pageTitle=$.content('title'),crumbList=0,showMetaImage=1)#
 			#$.dspObjects(2)#
-		</div>
-		<div id="right" class="aside">
+		</article>
+		<aside id="right">
 			#$.dspObjects(3)#
-		</div>
+		</aside>
 	</div>
 	<cfinclude template="inc/footer.cfm" />
 </div>

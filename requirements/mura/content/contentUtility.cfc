@@ -6,39 +6,43 @@ the Free Software Foundation, Version 2 of the License.
 
 Mura CMS is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-along with Mura CMS.  If not, see <http://www.gnu.org/licenses/>.
+along with Mura CMS. If not, see <http://www.gnu.org/licenses/>.
 
-Linking Mura CMS statically or dynamically with other modules constitutes
-the preparation of a derivative work based on Mura CMS. Thus, the terms and 	
-conditions of the GNU General Public License version 2 (“GPL”) cover the entire combined work.
+Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on 
+Mura CMS. Thus, the terms and conditions of the GNU General Public License version 2 ("GPL") cover the entire combined work.
 
-However, as a special exception, the copyright holders of Mura CMS grant you permission
-to combine Mura CMS with programs or libraries that are released under the GNU Lesser General Public License version 2.1.
+However, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with programs
+or libraries that are released under the GNU Lesser General Public License version 2.1.
 
-In addition, as a special exception,  the copyright holders of Mura CMS grant you permission
-to combine Mura CMS  with independent software modules that communicate with Mura CMS solely
-through modules packaged as Mura CMS plugins and deployed through the Mura CMS plugin installation API,
-provided that these modules (a) may only modify the  /trunk/www/plugins/ directory through the Mura CMS
-plugin installation API, (b) must not alter any default objects in the Mura CMS database
-and (c) must not alter any files in the following directories except in cases where the code contains
-a separately distributed license.
+In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with 
+independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without 
+Mura CMS under the license of your choice, provided that you follow these specific guidelines: 
 
-/trunk/www/admin/
-/trunk/www/tasks/
-/trunk/www/config/
-/trunk/www/requirements/mura/
+Your custom code 
 
-You may copy and distribute such a combined work under the terms of GPL for Mura CMS, provided that you include
-the source code of that other code when and as the GNU GPL requires distribution of source code.
+• Must not alter any default objects in the Mura CMS database and
+• May not alter the default display of the Mura CMS logo within Mura CMS and
+• Must not alter any files in the following directories.
 
-For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception
-for your modified version; it is your choice whether to do so, or to make such modified version available under
-the GNU General Public License version 2  without this exception.  You may, if you choose, apply this exception
-to your own modified versions of Mura CMS.
+ /admin/
+ /tasks/
+ /config/
+ /requirements/mura/
+ /Application.cfc
+ /index.cfm
+ /MuraProxy.cfc
+
+You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work 
+under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL 
+requires distribution of source code.
+
+For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your 
+modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
+version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cfcomponent extends="mura.cfobject" output="false">
 
@@ -168,28 +172,57 @@ to your own modified versions of Mura CMS.
 		<cfargument name="siteid" type="string" required="true">
 		<cfargument name="filename" type="string" required="true">
 		<cfset var rs = "">
-		<!--- <cfif variables.configBean.getStub() eq ''>
-			<cfif directoryExists("#variables.configBean.getWebRoot()##variables.filedelim##arguments.siteid##variables.filedelim##arguments.filename#")>
-				<cfreturn true />
-			<cfelse>
-				<cfreturn false />
-			</cfif>
 		
-		<cfelse> --->
-		
-			<cfquery name="rs" datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+		<cfquery name="rs" datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 			Select contentid from tcontent  where 
 			siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/> and filename = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.filename#"/> and active=1 and type in ('Portal','Page','Calendar','Gallery')
-			</cfquery>
+		</cfquery>
+		
+		<cfif rs.recordcount>
+			<cfreturn true />
+		<cfelse>
+			<cfreturn false />
+		</cfif>	
+</cffunction>
+
+<cffunction name="doesLoadKeyExist" returntype="boolean" access="public" output="false">
+		<cfargument name="contentBean">
+		<cfargument name="field">
+		<cfargument name="fieldValue">
+		<cfset var rs = "">
+		
+		<cfquery name="rs" datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+			Select contentid from tcontent  where 
+			siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentBean.getSiteID()#"/> 
+
+			<cfswitch expression="#arguments.field#">
+			<cfcase value="filename">
+				and filename = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.fieldValue#"/> 
+				and type in ('Portal','Page','Calendar','Gallery')
+			</cfcase>
+			<cfcase value="title">
+				and title = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.fieldValue#"/> 
+				and type in ('Portal','Page','Calendar','Gallery','File','Link','Component','Form')
+			</cfcase>
+			<cfcase value="urltitle">
+				and urltitle = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.fieldValue#"/> 
+				and type in ('Portal','Page','Calendar','Gallery','File','Link')
+			</cfcase>
+			<cfcase value="remoteID">
+				and remoteID = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.fieldValue#"/> 
+				and type in ('Portal','Page','Calendar','Gallery','File','Link','Component','Form')
+			</cfcase>
+			</cfswitch>
 			
-			<cfif rs.recordcount>
-				<cfreturn true />
-			<cfelse>
-				<cfreturn false />
-			</cfif>
-		
-	<!--- 	</cfif> --->
-		
+			and active=1 
+			and contentID != <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentBean.getContentID()#"/> 
+		</cfquery>
+	
+		<cfif rs.recordcount>
+			<cfreturn true />
+		<cfelse>
+			<cfreturn false />
+		</cfif>	
 </cffunction>
 
 <cffunction name="deleteFile" returntype="void" access="public" output="false">
@@ -208,7 +241,7 @@ to your own modified versions of Mura CMS.
 
 <cfif arguments.contentBean.gettype() eq 'File'>
 <cftry>
-		<cflock name="#arguments.contentBean.getfilename()#" type="exclusive" timeout="500">
+		<cflock name="#arguments.contentBean.getfilename()##application.instanceID#" type="exclusive" timeout="500">
 		<cfset variables.fileManager.deleteAll(arguments.contentBean.getcontentID(),arguments.contentBean.getFileID()) />
 		</cflock>
 	<cfcatch></cfcatch>
@@ -260,12 +293,10 @@ to your own modified versions of Mura CMS.
 					
 					</cfif>
 				</cfloop>
-				
-			
-			
-			
+					
 		<cfcatch></cfcatch>
-		</cftry>
+	</cftry>
+	
 	<cfif listlen(arguments.contentBean.getfilename(),"/") gt 1>
 	<cfset oldlen=len(arguments.contentBean.getfilename())>
 	<cfset trimer=len(listlast(arguments.contentBean.getfilename(),"/"))+1>
@@ -372,7 +403,7 @@ to your own modified versions of Mura CMS.
 	<cfset var historyLink="">
 	
 	<cfif listFind("Portal,Page,Calendar,Gallery,Link,File",arguments.contentBean.getType()) and arguments.contentBean.getContentID() neq '00000000000000000000000000000000001'>
-		<cfset crumbData=getServiceFactory().getBean('contentGateway').getCrumblist(arguments.contentBean.getParentID(),arguments.contentBean.getSiteID())>
+		<cfset crumbData=getBean('contentGateway').getCrumblist(arguments.contentBean.getParentID(),arguments.contentBean.getSiteID())>
 		<cfset crumbStr=crumbData[arrayLen(crumbData)].menutitle />
 		<cfif arrayLen(crumbData) gt 1>
 			<cfloop from="#evaluate(arrayLen(crumbData)-1)#" to="1" index="c" step="-1">
@@ -567,7 +598,41 @@ http://#listFirst(cgi.http_host,":")##variables.configBean.getServerPort()##vari
 		<cfset arguments.contentBean.setFilename(tempfile) />
 		<cfset arguments.contentBean.setURLTitle(listLast(tempfile,"/"))>
 	</cfif>
-</cffunction>	
+</cffunction>
+
+<cffunction name="setUniqueURLTitle" returntype="void" output="false" access="public">
+	<cfargument name="contentBean" type="any" />
+	<cfset var pass =0 />
+	<cfset var tempValue = "">
+	
+	<cfset tempValue=arguments.contentBean.getURLTitle() />
+	
+	<cfloop condition="#doesLoadKeyExist(arguments.contentBean,'urlTitle',tempValue)#" >
+		<cfset pass=pass+1>
+		<cfset tempValue="#arguments.contentBean.getURLTitle()##pass#" />
+	</cfloop>
+								
+	<cfif pass>
+		<cfset arguments.contentBean.setURLTitle(tempValue)>
+	</cfif>
+</cffunction>
+
+<cffunction name="setUniqueTitle" returntype="void" output="false" access="public">
+	<cfargument name="contentBean" type="any" />
+	<cfset var pass =0 />
+	<cfset var tempValue = "">
+	
+	<cfset tempValue=arguments.contentBean.getTitle() />
+	
+	<cfloop condition="#doesLoadKeyExist(arguments.contentBean,'title',tempValue)#" >
+		<cfset pass=pass+1>
+		<cfset tempValue="#arguments.contentBean.getTitle()##pass#" />
+	</cfloop>
+								
+	<cfif pass>
+		<cfset arguments.contentBean.setTitle(tempValue)>
+	</cfif>
+</cffunction>
 
 <cffunction name="isOnDisplay" returntype="numeric" output="false" access="public">
 			<cfargument name="display"  type="numeric">
@@ -831,7 +896,7 @@ Sincerely,
 			<cfset sortDirection="asc">
 		</cfif>
 		
-		<cfset rsKids=getServiceFactory().getBean("contentGateway").getNest(parentID=arguments.contentID, siteID=arguments.siteID, sortBy=contentBean.getSortBy(), sortDirection=sortDirection)>
+		<cfset rsKids=getBean("contentGateway").getNest(parentID=arguments.contentID, siteID=arguments.siteID, sortBy=contentBean.getSortBy(), sortDirection=sortDirection)>
 			
 		<cfloop query="rsKids">
 			<cfset copy(arguments.siteID, rsKids.contentID, newContentID, rsKids.hasKids, true, contentBean.getPath(), arguments.setNotOnDisplay)>
@@ -970,12 +1035,12 @@ and parentID is null
 			'#167':'§','#169':'©','#171':'«','#174':'®','#177':'±','#180':'´',
 			'#181':'µ','#182':'¶','#183':'·','#187':'»','#191':'¿','#192':'À',
 			'#193':'Á','#194':'Â','#195':'Ã','#196':'Ä','#197':'Å','#198':'Æ',
-			'#199':'Ç','#200':'È','#201':'É','#202':'Ê','#203':'Ë','#204':'Ì',
-			'#205':'Í','#206':'Î','#207':'Ï','#209':'Ñ','#210':'Ò','#211':'Ó',
+			'#199':'Ç','#200':'È','#201':'É','#202':'Ê','#203':'Ë','#204':'',
+			'#205':'Í','#206':'','#207':'Ï','#209':'Ñ','#210':'Ò','#211':'Ó',
 			'#212':'Ô','#213':'Õ','#214':'Ö','#216':'Ø','#217':'Ù','#218':'Ú',
 			'#219':'Û','#220':'Ü','#223':'ß','#224':'à','#225':'á','#226':'â',
 			'#227':'ã','#228':'ä','#229':'å','#230':'æ','#231':'ç','#232':'è',
-			'#233':'é','#234':'ê','#235':'ë','#236':'ì','#237':'í','#238':'î',
+			'#233':'é','#234':'ê','#235':'ë','#236':'','#237':'í','#238':'',
 			'#239':'ï','#241':'ñ','#242':'ò','#243':'ó','#244':'ô','#245':'õ',
 			'#246':'ö','#247':'÷','#248':'ø','#249':'ù','#250':'ú','#251':'û',
 			'#252':'ü','#255':'ÿ','#34':'','#38':'&','#60':'<','#62':'>',
@@ -1024,7 +1089,7 @@ and parentID is null
 		<cfset unicodeArray[10][3]="E" />
 
 		<cfset unicodeArray[11][1]=204 />
-		<cfset unicodeArray[11][2]="Ì" />
+		<cfset unicodeArray[11][2]="" />
 		<cfset unicodeArray[11][3]="I" />
 
 		<cfset unicodeArray[12][1]=205 />
@@ -1032,7 +1097,7 @@ and parentID is null
 		<cfset unicodeArray[12][3]="I" />
 
 		<cfset unicodeArray[13][1]=206 />
-		<cfset unicodeArray[13][2]="Î" />
+		<cfset unicodeArray[13][2]="" />
 		<cfset unicodeArray[13][3]="I" />
 
 		<cfset unicodeArray[14][1]=207 />
@@ -1128,7 +1193,7 @@ and parentID is null
 		<cfset unicodeArray[36][3]="e" />
 
 		<cfset unicodeArray[37][1]=236 />
-		<cfset unicodeArray[37][2]="ì" />
+		<cfset unicodeArray[37][2]="" />
 		<cfset unicodeArray[37][3]="i" />
 
 		<cfset unicodeArray[38][1]=237 />
@@ -1136,7 +1201,7 @@ and parentID is null
 		<cfset unicodeArray[38][3]="i" />
 
 		<cfset unicodeArray[39][1]=238 />
-		<cfset unicodeArray[39][2]="î" />
+		<cfset unicodeArray[39][2]="" />
 		<cfset unicodeArray[39][3]="i" />
 
 		<cfset unicodeArray[40][1]=239 />

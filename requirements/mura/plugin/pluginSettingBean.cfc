@@ -6,89 +6,96 @@ the Free Software Foundation, Version 2 of the License.
 
 Mura CMS is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-along with Mura CMS.  If not, see <http://www.gnu.org/licenses/>.
+along with Mura CMS. If not, see <http://www.gnu.org/licenses/>.
 
-Linking Mura CMS statically or dynamically with other modules constitutes
-the preparation of a derivative work based on Mura CMS. Thus, the terms and 	
-conditions of the GNU General Public License version 2 (“GPL”) cover the entire combined work.
+Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on 
+Mura CMS. Thus, the terms and conditions of the GNU General Public License version 2 ("GPL") cover the entire combined work.
 
-However, as a special exception, the copyright holders of Mura CMS grant you permission
-to combine Mura CMS with programs or libraries that are released under the GNU Lesser General Public License version 2.1.
+However, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with programs
+or libraries that are released under the GNU Lesser General Public License version 2.1.
 
-In addition, as a special exception,  the copyright holders of Mura CMS grant you permission
-to combine Mura CMS  with independent software modules that communicate with Mura CMS solely
-through modules packaged as Mura CMS plugins and deployed through the Mura CMS plugin installation API,
-provided that these modules (a) may only modify the  /trunk/www/plugins/ directory through the Mura CMS
-plugin installation API, (b) must not alter any default objects in the Mura CMS database
-and (c) must not alter any files in the following directories except in cases where the code contains
-a separately distributed license.
+In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with 
+independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without 
+Mura CMS under the license of your choice, provided that you follow these specific guidelines: 
 
-/trunk/www/admin/
-/trunk/www/tasks/
-/trunk/www/config/
-/trunk/www/requirements/mura/
+Your custom code 
 
-You may copy and distribute such a combined work under the terms of GPL for Mura CMS, provided that you include
-the source code of that other code when and as the GNU GPL requires distribution of source code.
+â€¢ Must not alter any default objects in the Mura CMS database and
+â€¢ May not alter the default display of the Mura CMS logo within Mura CMS and
+â€¢ Must not alter any files in the following directories.
 
-For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception
-for your modified version; it is your choice whether to do so, or to make such modified version available under
-the GNU General Public License version 2  without this exception.  You may, if you choose, apply this exception
-to your own modified versions of Mura CMS.
+ /admin/
+ /tasks/
+ /config/
+ /requirements/mura/
+ /Application.cfc
+ /index.cfm
+ /MuraProxy.cfc
+
+You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work 
+under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL 
+requires distribution of source code.
+
+For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your 
+modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
+version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
-<cfcomponent extends="mura.cfobject" output="false">
-	
-<cfset variables.instance.name=""/>
-<cfset variables.instance.hint=""/>
-<cfset variables.instance.type="TextBox"/>
-<cfset variables.instance.required="false"/>
-<cfset variables.instance.validation=""/>
-<cfset variables.instance.regex=""/>
-<cfset variables.instance.message=""/>
-<cfset variables.instance.label=""/>
-<cfset variables.instance.settingValue=""/>
-<cfset variables.instance.optionList=""/>
-<cfset variables.instance.optionLabelList=""/>
-<cfset variables.instance.errors=structnew() />
+<cfcomponent extends="mura.bean.bean" output="false">
+
+<cfproperty name="name" type="string" default="" required="true" />
+<cfproperty name="hint" type="string" default="" required="true" />
+<cfproperty name="type" type="string" default="TextBox" required="true" />
+<cfproperty name="required" type="string" default="false" required="true" />
+<cfproperty name="validation" type="string" default="" required="true" />
+<cfproperty name="regex" type="string" default="" required="true" />
+<cfproperty name="message" type="string" default="" required="true" />
+<cfproperty name="label" type="string" default="" required="true" />
+<cfproperty name="settingValue" type="string" default="" required="true" />
+<cfproperty name="optionList" type="string" default="" required="true" />
+<cfproperty name="optionListLabel" type="string" default="" required="true" />
 
 <cffunction name="init" returntype="any" output="false" access="public">
-	<cfargument name="configBean">
+	<cfset super.init(argumentCollection=arguments)>
 	
-	<cfset variables.configBean=arguments.configBean />
-	<cfset variables.dsn=variables.configBean.getDatasource()/>
+	<cfset variables.instance.name=""/>
+	<cfset variables.instance.hint=""/>
+	<cfset variables.instance.type="TextBox"/>
+	<cfset variables.instance.required="false"/>
+	<cfset variables.instance.validation=""/>
+	<cfset variables.instance.regex=""/>
+	<cfset variables.instance.message=""/>
+	<cfset variables.instance.label=""/>
+	<cfset variables.instance.settingValue=""/>
+	<cfset variables.instance.optionList=""/>
+	<cfset variables.instance.optionLabelList=""/>
+	
 	<cfreturn this />
 </cffunction>
 
-<cffunction name="set"  access="public" output="false" returntype="void">
-<cfargument name="theXML">
-<cfargument name="moduleID">
+<cffunction name="set"  access="public" output="false" returntype="any">
+	<cfargument name="theXML">
+	<cfargument name="moduleID">
+	
+	<cfset setName(arguments.theXML.name.xmlText)/>
+	<cfset setType(arguments.theXML.type.xmlText)/>
+	<cfset setHint(arguments.theXML.hint.xmlText)/>
+	<cfset setRequired(arguments.theXML.required.xmlText)/>
+	<cfset setValidation(arguments.theXML.validation.xmlText)/>
+	<cfset setRegex(arguments.theXML.regex.xmlText)/>
+	<cfset setMessage(arguments.theXML.message.xmlText)/>
+	<cfset setLabel(arguments.theXML.label.xmlText)/>
+	<cfset setSettingValue(arguments.theXML.defaultvalue.xmlText)/>
+	<cfset setOptionList(arguments.theXML.optionlist.xmlText)/>
+	<cfset setOptionLabelList(arguments.theXML.optionlabellist.xmlText)/>
+	<cfset setModuleID(arguments.moduleID)/>
+	<cfset loadSettingValue()/>
+	
+	<cfreturn this>
 
-<cfset setName(arguments.theXML.name.xmlText)/>
-<cfset setType(arguments.theXML.type.xmlText)/>
-<cfset setHint(arguments.theXML.hint.xmlText)/>
-<cfset setRequired(arguments.theXML.required.xmlText)/>
-<cfset setValidation(arguments.theXML.validation.xmlText)/>
-<cfset setRegex(arguments.theXML.regex.xmlText)/>
-<cfset setMessage(arguments.theXML.message.xmlText)/>
-<cfset setLabel(arguments.theXML.label.xmlText)/>
-<cfset setSettingValue(arguments.theXML.defaultvalue.xmlText)/>
-<cfset setOptionList(arguments.theXML.optionlist.xmlText)/>
-<cfset setOptionLabelList(arguments.theXML.optionlabellist.xmlText)/>
-<cfset setModuleID(arguments.moduleID)/>
-<cfset loadSettingValue()/>
-
-</cffunction>
-  
-<cffunction name="validate" access="public" output="false" returntype="void">
-	<cfset variables.instance.errors=structnew() />
-</cffunction>
-
-<cffunction name="getErrors" returnType="struct" output="false" access="public">
-    <cfreturn variables.instance.errors />
 </cffunction>
 
 <cffunction name="getName" returntype="String" access="public" output="false">
@@ -233,7 +240,7 @@ to your own modified versions of Mura CMS.
 
 <cffunction name="loadSettingValue"  access="public" output="false" returntype="void">
 <cfset var rs=""/>
-	<cfquery name="rs" datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+	<cfquery name="rs" datasource="#getBean('configBean').getDatasource()#" username="#getBean('configBean').getDBUsername()#" password="#getBean('configBean').getDBPassword()#">
 	select * from tpluginsettings 
 	where name=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getName()#">
 	and moduleID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getModuleID()#">
@@ -241,80 +248,5 @@ to your own modified versions of Mura CMS.
 	
 	<cfset setSettingValue(rs.settingValue) />
 </cffunction>
-<!--- 
-<cffunction name="getOptions" access="public" returntype="query">
-	<cfset var rs = "" />
-
-	<cfif not isQuery(variables.instance.options)>
-		<cfquery name="rs" datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-		select * from TClassExtendAttributeOptions
-		where attributeID=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#getAttributeID()#">
-		order by orderno 
-		</cfquery>
-		
-		<cfset variables.instance.options=rs />
-	</cfif>
-
-	<cfreturn variables.instance.options />
-
-</cffunction>
-
-<cffunction name="setOptions" access="public" returntype="void">
-<cfargument name="options">
-<cfset var o=1/>
-
-<cfif isQuery(arguments.options)>
-	<cfset variables.instance.options=arguments.options />
-<cfelse>
-	<cfset variables.instance.options=queryNew("optionID,attributeID,siteID,optionValue,label,orderno","cf_sql_varchar,cf_sql_varchar,cf_sql_varchar,cf_sql_varchar,cf_sql_varchar,cf_sql_varchar") />
-
-	<cfloop condition="structkeyExist(arguments.options,'options#o#')">
-	
-		<cfif len(arguments.options["label#o#"])
-			or len(arguments.options["optionValue#o#"])>
-			
-			<cfset querySetCell(variables.instance.options,"optionID",createUUID(),o) />
-			<cfset querySetCell(variables.instance.options,"attributeID",getAttributeID(),o) />
-			<cfset querySetCell(variables.instance.options,"siteID",getSiteID(),o) />
-			<cfset querySetCell(variables.instance.options,"orderno",o,o) />
-			<cfset querySetCell(variables.instance.options,"label",arguments.options["label#o#"],o) />
-			<cfset querySetCell(variables.instance.options,"optionValue",arguments.options["optionValue#o#"],o) />
-
-		</cfif>
-	<cfset o=o+1/>
-	</cfloop>
-</cfif>
-
-</cffunction>
-
-<cffunction name="deleteOptions" returntype="void">
-	<cfquery datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-		delete from TExtendAttributeOptions
-		where attributeID=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#getAttributeID()#">
-	</cfquery>
-</cffunction>
-
-<cffunction name="saveOptions" access="public" returntype="void">
-	<cfif isQuery(variables.instance.options)>
-		<cfset deleteOptions() />
-		
-		<cfloop query="variables.instance.options">
-			<cfquery datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-			insert into TClassExtendAttributeOptions
-			(optionID,attributeID,siteID,optionValue,label,orderno)
-			values(
-				<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.options.optionID#">,
-				<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.options.attributeID#">,
-				<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.options.siteID#">,
-				<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(variables.instance.options.optionValue neq '',de('no'),de('yes'))#" value="#variables.instance.options.optionValue#">,
-				<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(variables.instance.options.label neq '',de('no'),de('yes'))#" value="#variables.instance.options.label#">,
-				variables.instance.options.orderno
-			)
-			</cfquery>
-		</cfloop>
-
-	</cfif>
-	
-</cffunction> --->
 
 </cfcomponent>

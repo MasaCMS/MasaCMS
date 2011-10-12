@@ -23,7 +23,7 @@
 
 	<cfswitch expression="#command#" >
 		<!--- execute command that returns XML --->
-		<cfcase value="CopyFiles;MoveFiles;Init;GetFiles;GetFolders;RenameFile;DeleteFile;CreateFolder;RenameFolder;DeleteFolder;Thumbnail" delimiters=";">
+		<cfcase value="CopyFiles;MoveFiles;Init;LoadCookies;GetFiles;GetFolders;RenameFile;DeleteFile;CreateFolder;RenameFolder;DeleteFolder;Thumbnail" delimiters=";">
 			<!--- check if connector is enabled --->
 			<cfif not REQUEST.CheckAuthentication()>
 				<cfthrow type="ckfinder" errorCode="#REQUEST.constants.CKFINDER_CONNECTOR_ERROR_CONNECTOR_DISABLED#" />
@@ -54,14 +54,16 @@
 		<!--- execute command that doesn't return XML --->
 		<cfcase value="DownloadFile;FileUpload;QuickUpload" delimiters=";">
 
-			<!--- check if connector is enabled --->
-			<cfif not REQUEST.CheckAuthentication()>
-				<cfreturn false />
-			</cfif>
-
-			<!--- execute command ---->
 			<cftry>
 				<cfset oObject=APPLICATION.CreateCFC("CommandHandler." & #command#)>
+
+				<!--- check if connector is enabled --->
+				<cfif not REQUEST.CheckAuthentication()>
+					<cfset oObject.throwError(REQUEST.constants.CKFINDER_CONNECTOR_ERROR_CONNECTOR_DISABLED)>
+					<cfreturn false />
+				</cfif>
+
+				<!--- execute command ---->
 				<cfset result=oObject.sendResponse()>
 
 				<!--- actually, errors should be catched inside command handlers and this never should happen --->

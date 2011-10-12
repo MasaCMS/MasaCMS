@@ -1,5 +1,3 @@
-/* @override http://localhost:8500/muracms/admin/css/admin.css?coreversion=1 */
-
 /* This file is part of Mura CMS. 
 
 	Mura CMS is free software: you can redistribute it and/or modify 
@@ -14,29 +12,37 @@
 	You should have received a copy of the GNU General Public License 
 	along with Mura CMS.  If not, see <http://www.gnu.org/licenses/>. 
 
-	However, as a special exception, the copyright holders of Mura CMS grant you permission 
-	to combine Mura CMS with programs or libraries that are released under the GNU Lesser General Public License version 2.1. 
-
-	In addition, as a special exception,  the copyright holders of Mura CMS grant you permission 
-	to combine Mura CMS  with independent software modules that communicate with Mura CMS solely 
-	through modules packaged as Mura CMS plugins and deployed through the Mura CMS plugin installation API, 
-	provided that these modules (a) may only modify the  /trunk/www/plugins/ directory through the Mura CMS 
-	plugin installation API, (b) must not alter any default objects in the Mura CMS database 
-	and (c) must not alter any files in the following directories except in cases where the code contains 
-	a separately distributed license.
-
-	/trunk/www/admin/ 
-	/trunk/www/tasks/ 
-	/trunk/www/config/ 
-	/trunk/www/requirements/mura/ 
-
-	You may copy and distribute such a combined work under the terms of GPL for Mura CMS, provided that you include  
-	the source code of that other code when and as the GNU GPL requires distribution of source code. 
-
-	For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception 
-	for your modified version; it is your choice whether to do so, or to make such modified version available under 
-	the GNU General Public License version 2  without this exception.  You may, if you choose, apply this exception 
-	to your own modified versions of Mura CMS. */
+	Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on 
+	Mura CMS. Thus, the terms and conditions of the GNU General Public License version 2 ("GPL") cover the entire combined work.
+	
+	However, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with programs
+	or libraries that are released under the GNU Lesser General Public License version 2.1.
+	
+	In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with 
+	independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without 
+	Mura CMS under the license of your choice, provided that you follow these specific guidelines: 
+	
+	Your custom code 
+	
+	• Must not alter any default objects in the Mura CMS database and
+	• May not alter the default display of the Mura CMS logo within Mura CMS and
+	• Must not alter any files in the following directories.
+	
+	 /admin/
+	 /tasks/
+	 /config/
+	 /requirements/mura/
+	 /Application.cfc
+	 /index.cfm
+	 /MuraProxy.cfc
+	
+	You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work 
+	under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL 
+	requires distribution of source code.
+	
+	For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your 
+	modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
+	version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS. */
  
 body,ul,ol,li,h1,h2,h3,h4,h5,h6,form,dl,dt,dd,p,div,address,blockquote,pre,fieldset {
 	margin: 0;
@@ -50,7 +56,8 @@ body,ul,ol,li,h1,h2,h3,h4,h5,h6,form,dl,dt,dd,p,div,address,blockquote,pre,field
 }
 
 body {
-	font: 11px "Lucida Grande", Arial, Helvetica, sans-serif;
+	font-size: 11px; 
+	font-family:"Lucida Grande", Helvetica, Arial, sans-serif !important;
 	background: url(../images/bg_sidebar_nav_grey.png) repeat-y left top;
 }
 
@@ -59,7 +66,8 @@ body#clogin, body#cSetUp {
 }
 
 body.compact {
-	font: 11px "Lucida Grande", Arial, Helvetica, sans-serif;
+	font-size: 11px; 
+	font-family:"Lucida Grande", Helvetica, Arial, sans-serif;
 	background: #fff;
 }
 
@@ -76,11 +84,17 @@ body#popUp {
 	width: 100%;
 	max-width: 100%;
 	float: none;
+	overflow: hidden;
 }
 #clogin #content {
 	width: 100%;
 	max-width: 100%;
 	padding: 0;
+}
+
+#clogin.compact #content {
+	padding: 2em 0;
+	background: #fff; /* In case the login form gets displayed in a modal dialog */
 }
 
 #login, #login form {
@@ -110,7 +124,7 @@ body#popUp {
 }
 
 #sendLogin input.text {
-	width: 290px;
+	width: 80%;
 }
 
 #cSetUp input.submit {
@@ -227,41 +241,25 @@ input.textMed, input.med {
 	width: 200px;
 }
 
-/*Comment this out after button conversion*/
-
+/* Deferring to OS/Browser default styles for buttons
 input.submit {
 	background-color: #69c;
 	vertical-align: middle;
-	/*padding: 0;*/
+	padding: 0;
 	width: auto;
 	border: 0 solid #fff;
 	color: #fff;
-	padding: .4em .6em;
+	padding: 4px .6em;
 	border-radius: 3px;
 	-webkit-border-radius: 3px;
 	-moz-border-radius: 3px;
-}
-
-/* Uncomment this after button conversion
-
-input[type=submit] { 
-	cursor: pointer;
-	border: 0;
-	background: #69c;
-	color: #fff;
-	padding: .4em .6em;
-	-webkit-border-radius: 2px;
-	-moz-border-radius: 2px;
-	border-radius: 2px;
-	}
-
-*/
-
+}*/
 
 #loginForm p {
 	margin: 0 0 10px 0;
 }
 
+/* Deprecated Button Styles */
 a.submit {
 	background: url(../images/btn.gif) no-repeat top left;
 	margin: 0;
@@ -278,6 +276,8 @@ a.submit span {
 	padding: 5px 8px 5px 0;
 	color: #fff;
 }
+
+/* End Deprecated Button Styles */
 
 input.checkbox {
 	margin: 0 3px 0 0;
@@ -385,6 +385,14 @@ img.tabPreloader {
 	background: url(../images/rule_dotted_big.gif) repeat-x;
 }
 
+#actionIndicator {
+	clear: both;
+	margin: 2em auto;
+	padding: 26px 0 0 0;
+	background: url(../images/rule_dotted_big.gif) repeat-x;
+}
+
+
 .separateAlt {
 	clear: both;
 	margin: 0 0 16px 0;
@@ -477,6 +485,97 @@ body.compact #content {
 }
 
 /* @end */
+
+/* @group Configurators */
+
+#configurator,
+#configuratorTab {
+	font-size: 11px;
+}
+
+#configurator p.no-options {
+	margin: 2em 0;
+}
+
+#configurator .sortableFields,
+#configuratorTab .sortableFields {
+	overflow: hidden;
+	width: 100%;
+	/*max-width: 420px;*/
+}
+
+#configurator dt,
+#configuratorTab dt {
+	overflow: hidden;
+}
+
+dt#availableFields {
+	margin-bottom: 0;
+}
+
+#availableFields span, .dragMsg span {
+	display: block;
+	float: left;
+	width: 193px;
+}
+
+.sortableFields .dragMsg {
+	font-style: italic;
+	font-size: 11px !important;
+	color: #ccc;
+	overflow: hidden;
+	margin: 0;
+}
+
+#availableListSort,
+#displayListSort,
+#contentAvailableListSort,
+#contentDisplayListSort  {
+	width: 183px;
+	margin: .5em 10px .5em 0!important;
+	padding: 1em !important;
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+	float: left;
+}
+
+#availableListSort,
+#contentAvailableListSort {
+	padding: 0 !important;
+}
+
+#displayListSort,
+#contentDisplayListSort
+ {
+	border: 1px dotted red;
+	min-height: 36px;
+	margin-right: 0 !important;
+}
+
+#availableListSort li,
+#displayListSort li,
+#contentAvailableListSort li,
+#contentDisplayListSort li  {
+	font-size: 11px;
+	width: 94%;
+	margin: 0 0 3px 0;
+	padding: 5px;
+	cursor: move;
+}
+
+#configuratorContainer dt,
+#configuratorContainer dd,
+#tabDisplay dt,
+#tabDisplay dd,
+#tabAdvanced dt,
+#tabAdvanced dd { 
+	clear:both;
+}
+
+#feedCustomImageOptions dt {
+	margin: .5em 0;
+}
 
 /* @group Forms */
 
@@ -852,6 +951,180 @@ label {
 	margin-right: .5em;
 }
 
+
+/* @group Quick Edit */
+
+.mura-quickEditItem {
+	color: #333232;
+	display: inline-block;
+	width: 100%;
+	cursor: pointer;
+}
+
+#selected .mura-quickEditItem {
+	font-weight: bold;
+	color: #ff3a00;
+}
+
+#selected.template .mura-quickEditItem {
+	
+}
+
+.mura-quickEdit {
+	background-color: #272727;
+	opacity: .95;
+	position: absolute;
+	bottom: 34px;
+	left: 50%;
+	margin-left: -92px;
+	width: 160px;
+	min-height: 70px;
+	z-index: 10;
+	display: block;
+	border-radius: 5px;
+	padding: 8px 10px;
+	box-shadow: 0 2px 4px #333232;
+	white-space: normal;
+	font-size: 11px;
+	text-align: left;
+}
+
+.template .mura-quickEdit {
+	bottom: 36px;
+}
+
+.mura-quickEdit:after {
+	content: ' ';
+	position: absolute;
+	z-index: 11;
+	width: 24px;
+	height: 14px;
+	left: 80px;
+	bottom: -14px;
+	background: url('../images/quickedit-bottom.png') no-repeat center bottom;
+	opacity: .95;
+}
+
+.mura-quickEdit:hover {
+	cursor: default;
+}
+
+.mura-quickEdit h1 {
+	color: #fff;
+	font-size: 11px;
+	text-align: left;
+	margin-bottom: .25em;
+	font-weight: normal;
+	padding-right: 20px;
+}
+
+.mura-quickEdit .cancel {
+	position: absolute;
+	top: 4px;
+	right: 4px;
+	width: 14px;
+	height: 14px;
+	display: block;
+	text-indent: -9999px;
+	background: url('../images/btn_close_quick-edit.png') no-repeat right top;
+	cursor: pointer;
+}
+
+.mura-quickEdit img.loader {
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	margin-left: -16px;
+	margin-top: -16px;
+	width: 24px !important;
+	height: 24px !important;
+}
+
+.mura-quickEdit input.datepicker {
+	width: 151px;
+}
+
+.mura-quickEdit select {
+	margin-bottom: .75em;
+	width: 158px;
+}
+
+.mura-quickEdit .buttons {
+	text-align: center;
+}
+
+.mura-quickEdit input.submit {
+	cursor: pointer;
+	margin: 0 auto;
+}
+.mura-quickEdit li {
+	text-align: left;
+	margin: 0;
+	padding: 0;
+}
+
+.mura-quickEdit li label {
+	width: 160px;
+	display: block;
+	color: #fff;
+	font-size: 11px;
+	clear: right;
+	text-align: left;
+}
+
+.mura-quickEdit li select {
+	width: 50px;
+	float: none;
+}
+
+.mura-quickEdit li input.datepicker {
+	width: 151px;
+	font-size: 11px;
+	color: #333232;
+	margin: 0 2px 3px 0;
+	padding: 2px;
+}
+
+.mura-quickEdit li img {
+	padding: 0;
+}
+
+.hasDraft .mura-quickEdit {
+	background: #ccc;
+	text-align: left;
+	box-shadow: 0 2px 4px #666;
+	width: 180px;
+}
+
+.hasDraft .mura-quickEdit:after {
+	bottom: -14px;
+	background: url('../images/quickedit-bottom-hasdraft.png') no-repeat center bottom;
+}
+
+.hasDraft .mura-quickEdit h1 {
+	color: #333232;
+	font-weight: bold;
+	background: url('../images/icons/unsubscribe_24x24.png') no-repeat left top;
+	height: 24px;
+	line-height: 26px;
+	padding-left: 28px;
+}
+
+.hasDraft .mura-quickEdit p {
+	font-size: 11px !important;
+}
+
+.hasDraft .mura-quickEdit a.mura-quickEditItem {
+	border-bottom: 0;
+}
+
+/* @end */
+
+
+
+/* @end */
+
+
 /* @end */
 
 /* @group View Options */
@@ -975,7 +1248,7 @@ form .displayObjects .dropdown {
 	text-shadow: rgba(0,0,0,.30) 0px -1px 0px;
 }
 
-h1 {
+#header h1 {
 	text-indent: -999em;
 	background: url(../images/mura_logo.png) no-repeat;
 	height: 53px;
@@ -1172,10 +1445,11 @@ h1 {
 	-webkit-border-bottom-left-radius: 5px;
 	-moz-border-radius-bottomright: 5px;
 	-webkit-border-bottom-right-radius: 5px;
-	-webkit-box-shadow: 2px 2px 5px #666;
-	-moz-box-shadow: 3px 3px 5px #555;
-	box-shadow: 3px 3px 3px #555 !important;
+	-webkit-box-shadow: 1px 2px 5px rgba(0,0,0,.7);
+	-moz-box-shadow: 1px 2px 5px rgba(0,0,0,.7);
+	box-shadow: 1px 2px 5px rgba(0,0,0,.7) !important;
 	color:#fff !important;
+	
 }
 
 #navUtility li#navHelp ul {
@@ -1232,6 +1506,7 @@ h1 {
 #navUtility li:hover ul, #navUtility li.sfhover ul {
 	left: auto !important;
 	z-index: 2 !important;
+	margin-left: -8px !important;
 }
 
 #navUtility li li:last-child {
@@ -1544,8 +1819,8 @@ div.menu {
 	border-bottom: 1px dotted #D4D4D4;
 }
 
-.addNew li.last, .addNew li:last-child {
-	border-bottom: 0;
+.addNew ul li:last-child, .addNew #newGallery {
+	border-bottom: 0 !important;
 }
 
 .addNew a {
@@ -1934,6 +2209,11 @@ h5 {
 	display: inline;
 }
 
+#contentSecondary dd input.submit {
+	margin: 0 4px 3px 0;
+	width: auto;
+}
+
 #contentSecondary dd a.submit {
 	margin-top: 3px;
 }
@@ -2229,7 +2509,7 @@ a.removeCriteria {
 
 /* @group Tables */
 
-table {
+table.mura-table-grid {
 	margin: 0 0 16px 0;
 	border-collapse: collapse;
 	border: 1px solid #DBDBDB;
@@ -2291,7 +2571,7 @@ table + .divide {
 	margin-top: 0;
 }
 
-th {
+.mura-table-grid th {
 	margin: 0 !important;
 	background: #FFFEFE url(../images/bg_th.jpg) repeat-x left bottom;
 	font-style: normal;
@@ -2302,7 +2582,7 @@ th {
 	text-align: center;
 }
 
-th.alt {
+.mura-table-grid th.alt {
 	text-align: left;
 	background-image: none;
 	background-color: #EAF4FE;
@@ -2314,7 +2594,7 @@ th.alt {
 	text-align: left;
 }
 
-th span {
+.mura-table-grid th span {
 	font-weight: normal;
 }
 
@@ -2322,7 +2602,7 @@ th span {
 	color: #666;
 }
 
-table th a {
+.mura-table-grid table th a {
 	color: #000;
 }
 
@@ -2340,7 +2620,7 @@ table th a {
 }
 
 
-table td {
+.mura-table-grid td {
 	color: #333232;
 	padding: 4px 5px 4px 5px;
 	border-left: 1px solid #DBDBDB;
@@ -2369,44 +2649,44 @@ table td table td {
 	width: auto;
 }*/
 
-.alt td {
+.mura-table-grid .alt td {
 	/*border: 1px solid #DBDBDB;*/
 	background-color: #fcfeff;
 }
 
-table td.email {
+.mura-table-grid  td.email {
 	text-transform: lowercase;
 }
 
-table th.url, table td.url {
+.mura-table-grid  th.url, table td.url {
 	text-align: left;
 }
 
-table tr.alt th, table tr.alt td, .alt dl {
+.mura-table-grid  tr.alt th, .mura-table-grid  tr.alt td, .alt dl {
 	background-color: #FCFEFF;
 }
 
-table .varWidth {
+.mura-table-grid .varWidth {
 	width: 95%;
 	text-align: left;
 	white-space: normal;
 }
 
-table td a {
+.mura-table-grid th a, .mura-table-grid td a {
 	color: #000;
 	text-decoration: none;
 }
 
-table td a:hover {
+.mura-table-grid td a:hover {
 	color: #000;
 	text-decoration: underline;
 }
 
-table td.add {
+.mura-table-grid td.add {
 	padding: 5px 4px 0;
 }
 
-table td.add a, .mura-grid a.add {
+.mura-table-grid td.add a, .mura-grid a.add {
 	display: block;
 	background: url(../images/icons/add_32.png) no-repeat center center;
 	width: 12px;
@@ -2594,6 +2874,14 @@ table.cfdebug td a {
 	margin: 0 !important;
 }
 
+.mura-grid dd  {
+	color: #666;
+}
+
+.mura-grid dd.updated  {
+	color: #333232;
+}
+
 .mura-grid dt {
 	width: 380px;
 	text-align: left;
@@ -2607,6 +2895,7 @@ table.cfdebug td a {
 .mura-grid dd {
 	padding: 4px 5px;
 	height: 20px;
+	position: relative;
 }
 
 .mura-grid dt a {
@@ -2638,7 +2927,18 @@ table.cfdebug td a {
 	margin-left: -15px;
 }
 
-.mura-grid dt span.hasChildren {
+.mura-grid dt span.hasChildren-closed {
+	float: left;
+	display: block;
+	width: 12px;
+	height: 28px;
+	padding: 0;
+	margin-left: -11px;
+	background: url(../images/icons/right_on.gif) no-repeat 3px 50%;
+	cursor:pointer;
+}
+
+.mura-grid dt span.hasChildren, .mura-grid dt span.hasChildren-open {
 	float: left;
 	display: block;
 	width: 12px;
@@ -2670,23 +2970,35 @@ table.cfdebug td a {
 
 .mura-grid .order {
 	width: 40px;
-	/*display: none;*/
 }
 
 .mura-grid .objects {
 	width: 50px;
 }
 
-.mura-grid .display, .mura-grid .feature {
+.mura-grid .display, .mura-grid .feature, .mura-grid .template {
 	width: 60px;
+}
+
+.mura-grid .template img.icon {
+	height: 30px;
+	width: auto;
+	position: relative;
+	top: -5px;
 }
 
 .mura-grid #mura-nodes .scheduled a,
 td.scheduled a {
+	position: relative;
+	top: -2px;
 	display: inline-block;
-	height: 20px;
-	width: 20px;
+	height: 24px;
+	width: 24px;
 	background: url(../images/icons/cal.png) no-repeat 50% 50%;
+}
+
+.mura-grid #mura-nodes #selected.scheduled a {
+	background: url(../images/icons/cal-on.png) no-repeat 50% 50%;
 }
 
 .mura-grid #mura-nodes .scheduled a span,
@@ -2721,8 +3033,8 @@ td.scheduled a span {
 	float: left;
 }
 
-.mura-grid a:link {
-	color: #000;
+.mura-grid a:link, .mura-grid a, .mura-grid-hdr a:link {
+	color: #000 !important;
 	text-decoration: none;
 }
 
@@ -3125,6 +3437,7 @@ ul.seven { /* 7 Icons */
 	float: left;
 	clear: none;
 	text-indent: -999em;
+
 }
 
 .mura-grid .admin .add, .mura-grid .admin .select, table td.administration li.add, table td.administration .select {
@@ -4050,6 +4363,10 @@ a.expand span {
 	margin-bottom: .5em;
 }
 
+#ctrash .mura-table-grid td.administration ul {
+	width: 14px; /* IE7 collapses the UL */
+}
+
 /* @end */
 
 /* @group Miscellaneous */
@@ -4346,3 +4663,27 @@ margin: .5em 0; }
 .success a { color: #264409; }
 
 /* @end */
+
+/* @Collapsible Checkbox Tree */
+
+.checkboxTree ul {
+	margin:0!important;
+	padding:0 0 0 20px!important;
+}
+
+ul .checkboxTree li {
+	list-style:none;
+}
+
+.checkboxTree span {
+	color:#999;
+	font-family:"Courier New", Courier, monospace;
+	cursor:default;
+}
+
+.checkboxTree span.expanded, .checkboxTree span.collapsed {
+	cursor:pointer;
+}
+
+/* @end */
+

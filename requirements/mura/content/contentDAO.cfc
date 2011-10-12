@@ -6,39 +6,43 @@ the Free Software Foundation, Version 2 of the License.
 
 Mura CMS is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. �See the
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-along with Mura CMS. �If not, see <http://www.gnu.org/licenses/>.
+along with Mura CMS. If not, see <http://www.gnu.org/licenses/>.
 
-Linking Mura CMS statically or dynamically with other modules constitutes
-the preparation of a derivative work based on Mura CMS. Thus, the terms and 	
-conditions of the GNU General Public License version 2 (�GPL�) cover the entire combined work.
+Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on 
+Mura CMS. Thus, the terms and conditions of the GNU General Public License version 2 ("GPL") cover the entire combined work.
 
-However, as a special exception, the copyright holders of Mura CMS grant you permission
-to combine Mura CMS with programs or libraries that are released under the GNU Lesser General Public License version 2.1.
+However, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with programs
+or libraries that are released under the GNU Lesser General Public License version 2.1.
 
-In addition, as a special exception, �the copyright holders of Mura CMS grant you permission
-to combine Mura CMS �with independent software modules that communicate with Mura CMS solely
-through modules packaged as Mura CMS plugins and deployed through the Mura CMS plugin installation API,
-provided that these modules (a) may only modify the �/trunk/www/plugins/ directory through the Mura CMS
-plugin installation API, (b) must not alter any default objects in the Mura CMS database
-and (c) must not alter any files in the following directories except in cases where the code contains
-a separately distributed license.
+In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with 
+independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without 
+Mura CMS under the license of your choice, provided that you follow these specific guidelines: 
 
-/trunk/www/admin/
-/trunk/www/tasks/
-/trunk/www/config/
-/trunk/www/requirements/mura/
+Your custom code 
 
-You may copy and distribute such a combined work under the terms of GPL for Mura CMS, provided that you include
-the source code of that other code when and as the GNU GPL requires distribution of source code.
+• Must not alter any default objects in the Mura CMS database and
+• May not alter the default display of the Mura CMS logo within Mura CMS and
+• Must not alter any files in the following directories.
 
-For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception
-for your modified version; it is your choice whether to do so, or to make such modified version available under
-the GNU General Public License version 2 �without this exception. �You may, if you choose, apply this exception
-to your own modified versions of Mura CMS.
+ /admin/
+ /tasks/
+ /config/
+ /requirements/mura/
+ /Application.cfc
+ /index.cfm
+ /MuraProxy.cfc
+
+You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work 
+under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL 
+requires distribution of source code.
+
+For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your 
+modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
+version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cfcomponent extends="mura.cfobject" output="false">
 
@@ -52,7 +56,8 @@ tcontent.RemotePubDate,tcontent.RemoteSource,tcontent.RemoteSourceURL,tcontent.R
 tcontent.responseDisplayFields,tcontent.responseMessage,tcontent.responseSendTo,tcontent.Restricted,tcontent.RestrictGroups,
 tcontent.searchExclude,tcontent.SiteID,tcontent.sortBy,tcontent.sortDirection,tcontent.Summary,tcontent.Target,
 tcontent.TargetParams,tcontent.Template,tcontent.Title,tcontent.Type,tcontent.subType,tcontent.Path,tcontent.tags,
-tcontent.doCache,tcontent.created,tcontent.urltitle,tcontent.htmltitle,tcontent.mobileExclude,tcontent.changesetID</cfoutput></cfsavecontent>
+tcontent.doCache,tcontent.created,tcontent.urltitle,tcontent.htmltitle,tcontent.mobileExclude,tcontent.changesetID,
+imageSize,imageHeight,imageWidth,childTemplate</cfoutput></cfsavecontent>
 
 <cffunction name="init" access="public" returntype="any" output="false">
 <cfargument name="configBean" type="any" required="yes"/>
@@ -68,22 +73,16 @@ tcontent.doCache,tcontent.created,tcontent.urltitle,tcontent.htmltitle,tcontent.
 	<cfset variables.contentManager=arguments.contentManager>
 </cffunction>
 
-<cffunction name="getBean" access="public" returntype="any">
-	<cfreturn application.serviceFactory.getBean("contentBean")>
-</cffunction>
-
 <cffunction name="readVersion" access="public" returntype="any" output="false">
 		<cfargument name="contentHistID" type="string" required="yes" />
 		<cfargument name="siteID" type="string" required="yes" />
 		<cfargument name="use404" type="boolean" required="yes" default="false"/>
-		<cfargument name="contentBean" type="any" default=""/>
+		<cfargument name="contentBean" required="true" default="">
 		<cfset var rsContent = queryNew('empty') />
-		<cfset var bean="" />
+		<cfset var bean=arguments.contentBean />
 		
-		<cfif isObject(arguments.contentBean)>
-			<cfset bean=arguments.contentBean>
-		<cfelse>
-			<cfset bean=getBean()>
+		<cfif not isObject(bean)>
+			<cfset bean=getBean("content")>
 		</cfif>
 		
 		<cfif len(arguments.contentHistID)>	
@@ -126,14 +125,12 @@ tcontent.doCache,tcontent.created,tcontent.urltitle,tcontent.htmltitle,tcontent.
 		<cfargument name="contentID" type="string" required="yes" />
 		<cfargument name="siteID" type="string" required="yes" />
 		<cfargument name="use404" type="boolean" required="yes" default="false"/>
-		<cfargument name="contentBean" type="any" default=""/>
+		<cfargument name="contentBean" required="true" default="">
 		<cfset var rsContent = queryNew('empty') />
-		<cfset var bean=""  />
+		<cfset var bean=arguments.contentBean />
 		
-		<cfif isObject(arguments.contentBean)>
-			<cfset bean=arguments.contentBean>
-		<cfelse>
-			<cfset bean=getBean()>
+		<cfif not isObject(bean)>
+			<cfset bean=getBean("content")>
 		</cfif>
 		
 		<cfif len(arguments.contentID)>
@@ -179,16 +176,14 @@ tcontent.doCache,tcontent.created,tcontent.urltitle,tcontent.htmltitle,tcontent.
 		<cfargument name="remoteID" type="string" required="yes" />
 		<cfargument name="siteID" type="string" required="yes" />
 		<cfargument name="use404" type="boolean" required="yes" default="false"/>
-		<cfargument name="contentBean" type="any" default=""/>
+		<cfargument name="contentBean" required="true" default="">
 		<cfset var rsContent = queryNew('empty') />
-		<cfset var bean=""  />
 		<cfset var beanArray=arrayNew(1)>
 		<cfset var utility="">
+		<cfset var bean=arguments.contentBean />
 		
-		<cfif isObject(arguments.contentBean)>
-			<cfset bean=arguments.contentBean>
-		<cfelse>
-			<cfset bean=getBean()>
+		<cfif not isObject(bean)>
+			<cfset bean=getBean("content")>
 		</cfif>
 		
 		<cfif len(arguments.remoteID)>		
@@ -203,9 +198,9 @@ tcontent.doCache,tcontent.created,tcontent.urltitle,tcontent.htmltitle,tcontent.
 		</cfif>
 		
 		<cfif rsContent.recordcount gt 1>
-				<cfset utility=getServiceFactory().getBean("utility")>
+				<cfset utility=getBean("utility")>
 				<cfloop query="rscontent">
-				<cfset bean=getbean().set(utility.queryRowToStruct(rsContent,rsContent.currentrow))>
+				<cfset bean=getBean("content").set(utility.queryRowToStruct(rsContent,rsContent.currentrow))>
 				<cfset bean.setIsNew(0)>
 				<cfset bean.setPreserveID(rsContent.contentHistID)>
 				<cfset arrayAppend(beanArray,bean)>				
@@ -228,16 +223,14 @@ tcontent.doCache,tcontent.created,tcontent.urltitle,tcontent.htmltitle,tcontent.
 		<cfargument name="title" type="string" required="yes" />
 		<cfargument name="siteID" type="string" required="yes" />
 		<cfargument name="use404" type="boolean" required="yes" default="false"/>
-		<cfargument name="contentBean" type="any" default=""/>
+		<cfargument name="contentBean" required="true" default="">
 		<cfset var rsContent = queryNew('empty') />
-		<cfset var bean=""  />
 		<cfset var beanArray=arrayNew(1)>
 		<cfset var utility="">
+		<cfset var bean=arguments.contentBean />
 		
-		<cfif isObject(arguments.contentBean)>
-			<cfset bean=arguments.contentBean>
-		<cfelse>
-			<cfset bean=getBean()>
+		<cfif not isObject(bean)>
+			<cfset bean=getBean("content")>
 		</cfif>
 		
 		<cfif len(arguments.title)>		
@@ -252,9 +245,9 @@ tcontent.doCache,tcontent.created,tcontent.urltitle,tcontent.htmltitle,tcontent.
 		</cfif>
 		
 		<cfif rsContent.recordcount gt 1>
-				<cfset utility=getServiceFactory().getBean("utility")>
+				<cfset utility=getBean("utility")>
 				<cfloop query="rscontent">
-				<cfset bean=getbean().set(utility.queryRowToStruct(rsContent,rsContent.currentrow))>
+				<cfset bean=getBean("content").set(utility.queryRowToStruct(rsContent,rsContent.currentrow))>
 				<cfset bean.setIsNew(0)>
 				<cfset bean.setPreserveID(rsContent.contentHistID)>
 				<cfset arrayAppend(beanArray,bean)>				
@@ -277,16 +270,14 @@ tcontent.doCache,tcontent.created,tcontent.urltitle,tcontent.htmltitle,tcontent.
 		<cfargument name="urltitle" type="string" required="yes" />
 		<cfargument name="siteID" type="string" required="yes" />
 		<cfargument name="use404" type="boolean" required="yes" default="false"/>
-		<cfargument name="contentBean" type="any" default=""/>
+		<cfargument name="contentBean" required="true" default="">
 		<cfset var rsContent = queryNew('empty') />
-		<cfset var bean=""  />
 		<cfset var beanArray=arrayNew(1)>
 		<cfset var utility="">
+		<cfset var bean=arguments.contentBean />
 		
-		<cfif isObject(arguments.contentBean)>
-			<cfset bean=arguments.contentBean>
-		<cfelse>
-			<cfset bean=getBean()>
+		<cfif not isObject(bean)>
+			<cfset bean=getBean("content")>
 		</cfif>
 		
 		<cfif len(arguments.urltitle)>		
@@ -301,9 +292,9 @@ tcontent.doCache,tcontent.created,tcontent.urltitle,tcontent.htmltitle,tcontent.
 		</cfif>
 		
 		<cfif rsContent.recordcount gt 1>
-				<cfset utility=getServiceFactory().getBean("utility")>
+				<cfset utility=getBean("utility")>
 				<cfloop query="rscontent">
-				<cfset bean=getbean().set(utility.queryRowToStruct(rsContent,rsContent.currentrow))>
+				<cfset bean=getBean("content").set(utility.queryRowToStruct(rsContent,rsContent.currentrow))>
 				<cfset bean.setIsNew(0)>
 				<cfset bean.setPreserveID(rsContent.contentHistID)>
 				<cfset arrayAppend(beanArray,bean)>				
@@ -326,18 +317,16 @@ tcontent.doCache,tcontent.created,tcontent.urltitle,tcontent.htmltitle,tcontent.
 		<cfargument name="filename" type="string" required="yes" default="" />
 		<cfargument name="siteID" type="string" required="yes" default="" />
 		<cfargument name="use404" type="boolean" required="yes" default="false"/>
-		<cfargument name="contentBean" type="any" default=""/>
+		<cfargument name="contentBean" required="true" default="">
 		<cfset var rsContent = queryNew('empty') />
-		<cfset var bean=""  />
 		<cfset var beanArray=arrayNew(1)>
 		<cfset var utility="">
+		<cfset var bean=arguments.contentBean />
 		
-		<cfif isObject(arguments.contentBean)>
-			<cfset bean=arguments.contentBean>
-		<cfelse>
-			<cfset bean=getBean()>
+		<cfif not isObject(bean)>
+			<cfset bean=getBean("content")>
 		</cfif>
-			
+		
 		<cfquery datasource="#variables.dsn#" name="rsContent"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 			select #variables.fieldlist#, tfiles.fileSize, tfiles.contentType, tfiles.contentSubType, tfiles.fileExt from tcontent 
 			left join tfiles on (tcontent.fileid=tfiles.fileid)
@@ -355,9 +344,9 @@ tcontent.doCache,tcontent.created,tcontent.urltitle,tcontent.htmltitle,tcontent.
 		</cfquery>
 
 		<cfif rsContent.recordcount gt 1>
-			<cfset utility=getServiceFactory().getBean("utility")>
+			<cfset utility=getBean("utility")>
 				<cfloop query="rscontent">
-				<cfset bean=getbean().set(utility.queryRowToStruct(rsContent,rsContent.currentrow))>
+				<cfset bean=getBean("content").set(utility.queryRowToStruct(rsContent,rsContent.currentrow))>
 				<cfset bean.setIsNew(0)>
 				<cfset bean.setPreserveID(rsContent.contentHistID)>
 				<cfset arrayAppend(beanArray,bean)>				
@@ -414,7 +403,11 @@ tcontent.doCache,tcontent.created,tcontent.urltitle,tcontent.htmltitle,tcontent.
 	   urltitle,
 	   htmltitle,
 	   mobileExclude,
-	  changesetID)
+	  changesetID,
+	  imageSize,
+	  imageHeight,
+	  imageWidth,
+	  childTemplate)
       VALUES (
 	  	 <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentBean.getContentHistID()#">, 
          <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentBean.getContentID()#">,
@@ -529,7 +522,11 @@ tcontent.doCache,tcontent.created,tcontent.urltitle,tcontent.htmltitle,tcontent.
 		<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.contentBean.getURLTitle() neq '',de('no'),de('yes'))#" value="#arguments.contentBean.getURLTitle()#">,
 		<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.contentBean.getHTMLTitle() neq '',de('no'),de('yes'))#" value="#arguments.contentBean.getHTMLTitle()#">,
 		#arguments.contentBean.getMobileExclude()#,
-		<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.contentBean.getChangesetID() neq '',de('no'),de('yes'))#" value="#arguments.contentBean.getChangesetID()#">
+		<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.contentBean.getChangesetID() neq '',de('no'),de('yes'))#" value="#arguments.contentBean.getChangesetID()#">,
+		<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.contentBean.getImageSize() neq '',de('no'),de('yes'))#" value="#arguments.contentBean.getImageSize()#">,
+		<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.contentBean.getImageHeight() neq '',de('no'),de('yes'))#" value="#arguments.contentBean.getImageHeight()#">,
+		<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.contentBean.getImageWidth() neq '',de('no'),de('yes'))#" value="#arguments.contentBean.getImageWidth()#">,
+		<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.contentBean.getChildTemplate() neq '',de('no'),de('yes'))#" value="#arguments.contentBean.getchildTemplate()#">
 		)
  </CFQUERY>
 
@@ -717,6 +714,38 @@ tcontent.doCache,tcontent.created,tcontent.urltitle,tcontent.htmltitle,tcontent.
 		</cfif>
 	</cfloop>
 	
+</cffunction>
+
+<cffunction name="updateContentObjectParams" output="false">
+	<cfargument name="contenthistID">
+	<cfargument name="regionID">
+	<cfargument name="orderno">
+	<cfargument name="params">
+	
+	<cfquery datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+		update tcontentobjects set
+		params= <cfqueryparam cfsqltype="cf_sql_longvarchar" value="#arguments.params#" />
+		where
+		contentHistID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentHistID#" />
+		and columnid=<cfqueryparam cfsqltype="cf_sql_numeric" value="#arguments.regionID#" />
+		and orderno=<cfqueryparam cfsqltype="cf_sql_numeric" value="#arguments.orderno#" />		
+	</cfquery>
+</cffunction>
+
+<cffunction name="readContentObject" output="false">
+	<cfargument name="contenthistID">
+	<cfargument name="regionID">
+	<cfargument name="orderno">
+	<cfset var rs="">
+	
+	<cfquery name="rs" datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+		select * from tcontentobjects
+		where contentHistID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentHistID#" />
+		and columnid=<cfqueryparam cfsqltype="cf_sql_numeric" value="#arguments.regionID#" />
+		and orderno=<cfqueryparam cfsqltype="cf_sql_numeric" value="#arguments.orderno#" />		
+	</cfquery>
+	
+	<cfreturn rs>
 </cffunction>
 
 <cffunction name="createTags" access="public" returntype="void" output="false">

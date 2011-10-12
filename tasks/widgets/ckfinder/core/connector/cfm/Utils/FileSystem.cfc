@@ -379,9 +379,14 @@ Returns false if file is invalid.
 
 	<cftry>
 		<cfif APPLICATION.CFVersion gte 8>
-			<cfset objImage = ImageRead(ARGUMENTS.filePath) >
-			<cfset imageInfo = ImageInfo(objImage)>
-			<!--- <cfimage action="info" source="#ARGUMENTS.filePath#" structName="imageInfo" /> --->
+			<cftry>
+				<!--- sometimes ColdFusion is unable to read image files properly with ImageRead --->
+				<cfset objImage = ImageRead(ARGUMENTS.filePath) >
+				<cfset imageInfo = ImageInfo(objImage)>
+				<cfcatch type="any">
+					<cfset imageInfo = APPLICATION.CreateCFC("ImageCFC.image").getImageInfo("", ARGUMENTS.filePath)>
+				</cfcatch>
+			</cftry>
 		<cfelse>
 			<cfset imageInfo = APPLICATION.CreateCFC("ImageCFC.image").getImageInfo("", ARGUMENTS.filePath)>
 		</cfif>

@@ -6,46 +6,50 @@ the Free Software Foundation, Version 2 of the License.
 
 Mura CMS is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. �See the
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-along with Mura CMS. �If not, see <http://www.gnu.org/licenses/>.
+along with Mura CMS. If not, see <http://www.gnu.org/licenses/>.
 
-Linking Mura CMS statically or dynamically with other modules constitutes
-the preparation of a derivative work based on Mura CMS. Thus, the terms and 	
-conditions of the GNU General Public License version 2 (�GPL�) cover the entire combined work.
+Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on 
+Mura CMS. Thus, the terms and conditions of the GNU General Public License version 2 ("GPL") cover the entire combined work.
 
-However, as a special exception, the copyright holders of Mura CMS grant you permission
-to combine Mura CMS with programs or libraries that are released under the GNU Lesser General Public License version 2.1.
+However, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with programs
+or libraries that are released under the GNU Lesser General Public License version 2.1.
 
-In addition, as a special exception, �the copyright holders of Mura CMS grant you permission
-to combine Mura CMS �with independent software modules that communicate with Mura CMS solely
-through modules packaged as Mura CMS plugins and deployed through the Mura CMS plugin installation API,
-provided that these modules (a) may only modify the �/trunk/www/plugins/ directory through the Mura CMS
-plugin installation API, (b) must not alter any default objects in the Mura CMS database
-and (c) must not alter any files in the following directories except in cases where the code contains
-a separately distributed license.
+In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with 
+independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without 
+Mura CMS under the license of your choice, provided that you follow these specific guidelines: 
 
-/trunk/www/admin/
-/trunk/www/tasks/
-/trunk/www/config/
-/trunk/www/requirements/mura/
+Your custom code 
 
-You may copy and distribute such a combined work under the terms of GPL for Mura CMS, provided that you include
-the source code of that other code when and as the GNU GPL requires distribution of source code.
+• Must not alter any default objects in the Mura CMS database and
+• May not alter the default display of the Mura CMS logo within Mura CMS and
+• Must not alter any files in the following directories.
 
-For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception
-for your modified version; it is your choice whether to do so, or to make such modified version available under
-the GNU General Public License version 2 �without this exception. �You may, if you choose, apply this exception
-to your own modified versions of Mura CMS.
+ /admin/
+ /tasks/
+ /config/
+ /requirements/mura/
+ /Application.cfc
+ /index.cfm
+ /MuraProxy.cfc
+
+You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work 
+under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL 
+requires distribution of source code.
+
+For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your 
+modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
+version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cfparam name="local" default="#structNew()#">
 <cfparam name="application.appInitializedTime" default="" />
 <cfparam name="application.appInitialized" default="false" />
+<cfparam name="application.appAutoUpdated" default="false" />
 <cfparam name="application.appReloadKey" default="appreload" />
 <cfparam name="application.broadcastInit" default="false" />
-<cfparam name="application.appAutoUpdated" default="false" />
 <cfparam name="application.sessionTrackingThrottle" default="true"/>
 <cfparam name="application.instanceID" default="#createUUID()#" />
 <cfparam name="application.CFVersion" default="#Left(SERVER.COLDFUSION.PRODUCTVERSION,Find(",",SERVER.COLDFUSION.PRODUCTVERSION)-1)#" />
@@ -130,7 +134,7 @@ to your own modified versions of Mura CMS.
 		<cfinclude template="/muraWRM/config/coldspring.xml.cfm" />
 		
 		<!--- load the core services.xml --->
-		<cfset variables.serviceFactory=createObject("component","coldspring.beans.DefaultXmlBeanFactory").init(defaultProperties=variables.iniProperties) />
+		<cfset variables.serviceFactory=createObject("component","coldspring.beans.DefaultXMLBeanFactory").init(defaultProperties=variables.iniProperties) />
 		<cfset variables.serviceFactory.loadBeansFromXMLRaw(servicesXML,true) />
 		
 		<!--- If coldspring.custom.xml.cfm exists read it in an check it it is valid xml--->
@@ -145,7 +149,7 @@ to your own modified versions of Mura CMS.
 			</cfif>
 		</cfif>
 		
-		<cfset application.serviceFactory=variables.serviceFactory>
+		<cfset application.serviceFactory=createObject("component","mura.bean.beanFactory").init(variables.serviceFactory)>
 		
 		<cfobjectcache action="clear" />
 		 
@@ -285,7 +289,10 @@ to your own modified versions of Mura CMS.
 				<cfif structKeyExists(localHandler,"onApplicationLoad")>		
 						<cfset pluginEvent.setValue("siteID",rsSites.siteID)>
 						<cfset pluginEvent.loadSiteRelatedObjects()>
+						<cfset localHandler._objectName="#application.configBean.getWebRootMap()#.#rsSites.siteID#.includes.eventHandler">
+						<cfset tracePoint=application.pluginManager.initTracePoint("#localHandler._objectName#.onApplicationLoad")>
 						<cfset localHandler.onApplicationLoad(event=pluginEvent,$=pluginEvent.getValue("muraScope"),mura=pluginEvent.getValue("muraScope"))>
+						<cfset application.pluginManager.commitTracePoint(tracePoint)>
 				</cfif>
 			</cfif>
 			<cfset siteBean=application.settingsManager.getSite(rsSites.siteid)>
@@ -295,7 +302,10 @@ to your own modified versions of Mura CMS.
 				<cfif structKeyExists(themeHandler,"onApplicationLoad")>		
 						<cfset pluginEvent.setValue("siteID",rsSites.siteID)>
 						<cfset pluginEvent.loadSiteRelatedObjects()>
+						<cfset themeHandler._objectName="#siteBean.getThemeAssetMap()#.eventHandler">
+						<cfset tracePoint=application.pluginManager.initTracePoint("#themeHandler._objectName#.onApplicationLoad")>
 						<cfset themeHandler.onApplicationLoad(event=pluginEvent,$=pluginEvent.getValue("muraScope"),mura=pluginEvent.getValue("muraScope"))>
+						<cfset application.pluginManager.commitTracePoint(tracePoint)>
 				</cfif>
 				<cfset application.pluginManager.addEventHandler(themeHandler,rsSites.siteID)>
 			</cfif>	

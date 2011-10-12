@@ -26,37 +26,81 @@ StructAppend(attributes, form, "no");
 		<link href="#application.configBean.getContext()#/admin/css/admin.css" rel="stylesheet" type="text/css" />
 		<script src="#application.configBean.getContext()#/admin/js/admin.js" type="text/javascript" language="Javascript"></script>
 		<script src="#application.configBean.getContext()#/admin/js/prototype.js" type="text/javascript" language="Javascript"></script>
-        <style>
-			body {
-				background: none;
-			}
-		</style>
 </cfoutput>
+
+	<style>
+	.cke_dialog_ui_iframe {
+		background-image: none;
+		overflow: hidden !important;
+	}
+	
+	body#mura-select-link {
+		background: none;
+		overflow: hidden;
+	}
+	
+	#mura-select-link form {
+		width: 100%;
+	}
+	
+	#mura-select-link form.mura-link-search-result {
+		margin-bottom: 0;
+		padding-bottom: 0;
+	}
+	
+	#mura-select-link #mura-table-grid-container {
+		overflow: auto !important;
+		height: 287px;
+		background: red;
+	}
+	
+	#mura-select-link .mura-table-grid {
+	    margin: 0;
+	}
+	
+	#mura-select-link .cke_skin_mura .cke_resizer {
+	    margin-right: 6px;
+	    margin-top: 30px;
+	}
+	
+	#cke_84_uiElement {
+		height: 375px !important;
+		overflow: visible !important;
+		zoom: 1;
+	}
+	
+	#cke_dialog_footer_80.cke_dialog_footer {
+	    padding: 0 !important;
+	}
+		
+	</style>
 </head>
 
-<body scroll="no" style="OVERFLOW: hidden">
+<body id="mura-select-link">
 <cfoutput>
 <h3>Keyword Search</h3>
-<form id="siteSearch" name="siteSearch" method="post" onSubmit="return validateForm(this);"><input name="keywords" value="#attributes.keywords#" type="text" class="text" maxlength="50" required="true" message="The 'Keyword' field is required."/><!---<a class="submit" href="javascript:;" onclick="return submitForm(document.forms.siteSearch);"><span>Search</span></a>--->
+<form id="siteSearch" name="siteSearch" method="post" onSubmit="return validateForm(this);"><input name="keywords" value="#attributes.keywords#" type="text" class="text" maxlength="50" required="true" message="The 'Keyword' field is required."/>
 	<input type="hidden" name="fuseaction" value="cArch.search">
 	<input type="hidden" name="siteid" value="#session.siteid#">
-	<input type="hidden" name="moduleid" value="00000000000000000000000000000000000"><input  class="Button" type="submit" onClick="return submitForm(document.forms.siteSearch);" value="Search">
+	<input type="hidden" name="moduleid" value="00000000000000000000000000000000000">
+	<input  class="Button" type="submit" onClick="return submitForm(document.forms.siteSearch);" value="Search">
 </form>
 </cfoutput>
-<form name="frmLinks" method="post" onSubmit="return false;">
+<form class="mura-link-search-result" name="frmLinks" method="post" onSubmit="return false;">
 <cfif attributes.keywords neq ''>
-<div style="overflow:auto;width:549px;height:300px; ">
- <table id="metadata" class="stripe" style="margin-bottom: 2px;">
-    <tr> 
+<div id="mura-table-grid-container">
+ <table class="mura-table-grid stripe">
+    <tr>
+	  <th class="administration">&nbsp;</th> 
       <th class="varWidth">Title</th>
-	  <th class="administration">&nbsp;</th>
     </tr>
     <cfif request.rslist.recordcount>
      <cfoutput query="request.rslist" maxrows="#request.nextn.recordsperPage#" startrow="#attributes.startrow#">
 		<cfset crumbdata=application.contentManager.getCrumbList(request.rslist.contentid, attributes.siteid)/>
-        <tr>  
+        <tr>
+        <td class="administration" id="test"><input type="radio" name="theLinks" id="theLinks#request.rslist.currentrow#" value="#htmlEditFormat(request.contentRenderer.createHREF(request.rslist.type,request.rslist.filename,session.siteid,request.rslist.contentid,request.rslist.target,request.rslist.targetParams,'',application.configBean.getContext(),application.configBean.getStub(),application.configBean.getIndexFile()))#^#htmleditformat(request.rslist.menutitle)#"<cfif request.rslist.currentrow eq 1> checked</cfif>></td>  
           <td class="varWidth"><label for="theLinks#request.rslist.currentrow#">#application.contentRenderer.dspZoomNoLinks(crumbdata,request.rsList.fileExt)#</label></td>
-		  <td class="administration" id="test"><input type="radio" name="theLinks" id="theLinks#request.rslist.currentrow#" value="#htmlEditFormat(request.contentRenderer.createHREF(request.rslist.type,request.rslist.filename,session.siteid,request.rslist.contentid,request.rslist.target,request.rslist.targetParams,'',application.configBean.getContext(),application.configBean.getStub(),application.configBean.getIndexFile()))#^#htmleditformat(request.rslist.menutitle)#"<cfif request.rslist.currentrow eq 1> checked</cfif>></td>
+		  
 		</tr>
        </cfoutput>
       <cfelse>
@@ -69,6 +113,7 @@ StructAppend(attributes, form, "no");
       <td colspan="7" class="results">More Results: <cfloop from="1"  to="#request.nextn.numberofpages#" index="i"><cfoutput><cfif request.nextn.currentpagenumber eq i> #i# <cfelse> <a href="?keywords=#attributes.keywords#&startrow=#evaluate('(#i#*#request.nextn.recordsperpage#)-#request.nextn.recordsperpage#+1')#">#i#</a> </cfif></cfoutput></cfloop></td></tr></cfif>
   </table>
 </td></tr></table></div></cfif></form>
+
 <script type="text/javascript" language="javascript">
 stripe('stripe');
 <cfif not ( len(attributes.keywords) and request.rslist.recordcount )>
