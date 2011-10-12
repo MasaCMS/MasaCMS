@@ -45,10 +45,10 @@ modified version; it is your choice whether to do so, or to make such modified v
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cfoutput><span>
-		<div class="meld-tb-form" id="formblock-${fieldid}">
-			<div class="meld-tb-header">
-				<h3><!---#mmRBF.getKeyValue(session.rb,'formbuilder.field.section')#:---> <span id="meld-tb-form-label"></span></h3>
-				<ul class="meld-tb-nav-utility">
+		<div class="mura-tb-form" id="formblock-${fieldid}">
+			<div class="mura-tb-header">
+				<h3><!---#mmRBF.getKeyValue(session.rb,'formbuilder.field.section')#:---> <span id="mura-tb-form-label"></span></h3>
+				<ul class="mura-tb-nav-utility">
 					<li><div class="ui-button" id="button-trash" title="#mmRBF.getKeyValue(session.rb,'formbuilder.delete')#"></div></li>
 				</ul>
 			</div>

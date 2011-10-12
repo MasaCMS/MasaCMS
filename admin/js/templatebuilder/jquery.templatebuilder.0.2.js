@@ -62,27 +62,27 @@
 			_submitdata.form = _formData;
 			_submitdata.datasets = _dataSets;
 			
-			jQuery('#meld-formdata').val(  JSON.stringify( _submitdata ) );
+			jQuery('#mura-formdata').val(  JSON.stringify( _submitdata ) );
 			return false;
 		}
 		
 		var settings		= jQuery.extend({},jQuery.fn.templatebuilder.defaults,settings);
 
-		var _formInitData = jQuery.parseJSON( jQuery("#meld-formdata").val() ); 
+		var _formInitData = jQuery.parseJSON( jQuery("#mura-formdata").val() ); 
 
 		var _templates	= {};
 
 		var _currentFieldBtn= '';
 		var _currentFieldID	= '';
-		var $_field		= jQuery('#meld-tb-field');
-		var $_grid		= jQuery('#meld-tb-grid');
+		var $_field		= jQuery('#mura-tb-field');
+		var $_grid		= jQuery('#mura-tb-grid');
 		var $_gridtable	= '';
 		var $_gridhead	= '';
 
 		var _rowCounter	= 0;
 
 		if(!settings.url)
-			settings.url = jQuery("#meld-templatebuilder").attr('data-url');
+			settings.url = jQuery("#mura-templatebuilder").attr('data-url');
 
 		doInitFormBuilder( _formInitData );		
 		
@@ -90,14 +90,14 @@
 			$_field.hide();
 			$_grid.hide();
 
-			jQuery('#meld-tb-fields').sortable({
+			jQuery('#mura-tb-fields').sortable({
 				axis: 'y',
 				opacity: 0.6,
 				delay: 200,
 				update: function(event, ui) {
 					jQuery(this).children().each( function() {
 					})
-					_formData.fieldorder = jQuery('#meld-tb-fields').sortable('toArray');
+					_formData.fieldorder = jQuery('#mura-tb-fields').sortable('toArray');
 					_formData.issortchanged = 1;
 				}
 			});
@@ -139,11 +139,11 @@
 		function doAddField( obj ) {
 			var $fieldBlock = jQuery('<li><div class="'+obj.fieldtype.displaytype+'" data-field=\'{"fieldType":"field-'+obj.fieldtype.fieldtype+'","fieldID":"'+obj.fieldid+'"}\'><span>'+obj.label+'</span></div></li>');
 			$fieldBlock.attr('id',obj.fieldid);
-			jQuery('#meld-tb-fields').append( $fieldBlock );
+			jQuery('#mura-tb-fields').append( $fieldBlock );
 		}
 	
 		function doActivateMenu() {
-			jQuery("#meld-templatebuilder .meld-tb-menu div").each( function(){
+			jQuery("#mura-templatebuilder .mura-tb-menu div").each( function(){
 				var $btn = jQuery(this);
 				$btn.click( function() {
 					switch ( jQuery(this).attr('id') ) {
@@ -169,7 +169,7 @@
 					}
 				});
 			});
-			jQuery("#meld-tb-fields li div").live( 'click', function() {
+			jQuery("#mura-tb-fields li div").live( 'click', function() {
 				doField( this );
 			});			
 		}
@@ -217,20 +217,20 @@
 			});
 			
 
-			jQuery('#meld-tb-field-form').unbind();
+			jQuery('#mura-tb-field-form').unbind();
 			$_field.html(_templates[templateName]);
 			$_field.show();
 
-			jQuery('#meld-tb-form').jsonForm({source: fieldData,createOnNull: true,createOnDataNull: true,bindBy: 'name',baseObject: 'field'});
+			jQuery('#mura-tb-form').jsonForm({source: fieldData,createOnNull: true,createOnDataNull: true,bindBy: 'name',baseObject: 'field'});
 
-			jQuery('#meld-tb-form').bind('jsonformField', function( event,values ) {
+			jQuery('#mura-tb-form').bind('jsonformField', function( event,values ) {
 				if (values.kind == 'update') {
 					fieldData.isdirty = 1;
 					_formData.isdirty = 1;
 				}
 			});
 
-			jQuery("#meld-tb-form #meld-tb-form-label").html( jQuery(".tb-label").val() );
+			jQuery("#mura-tb-form #mura-tb-form-label").html( jQuery(".tb-label").val() );
 
 			jQuery(".tb-label").keyup(function() {
 				var val = jQuery(this).val();
@@ -240,7 +240,7 @@
 				jQuery("#tb-name").trigger('change');
 				
 				jQuery("span",_currentFieldBtn).html( val );				
-				jQuery("#meld-tb-form-label").html( val );
+				jQuery("#mura-tb-form-label").html( val );
 			});
 
 			jQuery('.ui-button',$_field).each(function() {
@@ -266,7 +266,7 @@
 			$fieldButton.remove();
 			$_field.hide();
 			$_grid.hide();
-			_formData.fieldorder = jQuery('#meld-tb-fields').sortable('toArray');
+			_formData.fieldorder = jQuery('#mura-tb-fields').sortable('toArray');
 			if( fieldData.datasetid.length ) {
 				delete _dataSets[fieldData.datasetid];
 			}
@@ -295,8 +295,8 @@
 
 			jQuery('.ui-button',$_grid).unbind();
 			$_grid.html( _templates['dataset-grid'] );
-			$_gridtable	= jQuery('#meld-tb-grid-table');
-			$_gridhead	= jQuery('#meld-tb-grid-table-header');
+			$_gridtable	= jQuery('#mura-tb-grid-table');
+			$_gridhead	= jQuery('#mura-tb-grid-table-header');
 
 			jQuery('.ui-button',$_grid).click(function() {
 				switch ( jQuery(this).attr('id') ) {
@@ -386,10 +386,10 @@
 			doRenderGridHeader();
 
 			if(data.config.mode == 'create') {
-				jQuery('#meld-tb-grid-message').show();
+				jQuery('#mura-tb-grid-message').show();
 			}
 			else
-				jQuery('#meld-tb-grid-message').hide();
+				jQuery('#mura-tb-grid-message').hide();
 
 			
 			for(var i = 0;i < data.datarecordorder.length;i++) {
@@ -436,10 +436,10 @@
 			
 			//isInSet
 			$cell = jQuery(cell);
-			$cell.addClass('meld-tb-cell-small');
+			$cell.addClass('mura-tb-cell-small');
 			$row.append($cell);
 			$cell = jQuery(cell);
-			$cell.addClass('meld-tb-cell-input');
+			$cell.addClass('mura-tb-cell-input');
 			$cell.html( jQuery('#element-labels #label',$rowHTML).html() );
 			$row.append($cell);
 
@@ -447,7 +447,7 @@
 				colName		= settings.dataColumns[i];
 				isColUsed	= data["is"+colName];
 				$cell = jQuery(cell);
-				$cell.addClass('meld-tb-cell-input');
+				$cell.addClass('mura-tb-cell-input');
 				if (isColUsed) {
 					$cell.html( jQuery('#element-labels #'+colName,$rowHTML).html() );
 					$row.append($cell);
@@ -456,7 +456,7 @@
 
 			$_gridhead.append($row);
 
-			jQuery(".meld-tb-cell-input",$row).each( function() {
+			jQuery(".mura-tb-cell-input",$row).each( function() {
 				jQuery(this).width( (550/(settings.dataColumns.length+2)) );
 			});
 		}
@@ -525,7 +525,7 @@
 			{
 				// isInSet
 				$cell = jQuery(cell);
-				$cell.addClass('meld-tb-cell-small');
+				$cell.addClass('mura-tb-cell-small');
 				$checkbox = jQuery(checkbox);
 				$checkbox.attr('data-id', record.datarecordid);
 				$checkbox.attr('name', 'isinset');
@@ -536,7 +536,7 @@
 			
 			// label
 			$cell = jQuery(cell);
-			$cell.addClass('meld-tb-cell-input');
+			$cell.addClass('mura-tb-cell-input');
 			if (editMode) {
 				$input = jQuery(input);
 				$input.attr('data-id', record.datarecordid);
@@ -554,7 +554,7 @@
 			}
 /*
 			$cell = jQuery(cell);
-			$cell.addClass('meld-tb-cell-input');
+			$cell.addClass('mura-tb-cell-input');
 			$input = jQuery(input);
 			$input.attr('data-id',record.datarecordid);
 			$input.attr('name','rblabel');
@@ -568,7 +568,7 @@
 				isColUsed	= data["is"+colName];
 				$cell = jQuery(cell);
 
-				$cell.addClass('meld-tb-cell-input');
+				$cell.addClass('mura-tb-cell-input');
 				if (isColUsed && editMode) {
 					$input = jQuery(input);
 					$input.attr('data-id', record.datarecordid);
@@ -595,14 +595,14 @@
 			if (editMode || record.config.isphantom == 1) {
 				// delete
 				$cell = jQuery(cell);
-				$cell.addClass('meld-tb-cell-small button');
+				$cell.addClass('mura-tb-cell-small button');
 				$bt_delete = jQuery(bt_delete);
 				$bt_delete.attr('data-id', record.datarecordid);
 				$cell.append($bt_delete);
 				$row.append($cell);
 			}
 
-			jQuery(".meld-tb-cell-input",$row).each( function() {
+			jQuery(".mura-tb-cell-input",$row).each( function() {
 				jQuery(this).width( (550/(settings.dataColumns.length+2)) );
 			});
 
@@ -611,7 +611,7 @@
 			if($_gridtable.children().length % 2)
 				$row.addClass('alt');
 
-			jQuery(".meld-tb-grid-input",$row).each( function() {
+			jQuery(".mura-tb-grid-input",$row).each( function() {
 				jQuery(this).keyup( function() {
 					var name = jQuery(this).attr('name');
 					var id = jQuery(this).attr('data-id');
@@ -626,7 +626,7 @@
 				doDisplayDialog( 'message-delete-row',doDeleteRow,{'id':id} );
 			})
 
-			jQuery(".meld-tb-grid-checkbox",$row).change( function() {
+			jQuery(".mura-tb-grid-checkbox",$row).change( function() {
 				var name = jQuery(this).attr('name');
 				var id = jQuery(this).attr('data-id');
 				data.datarecords[id][name] = jQuery(this).is(":checked") ? 1 : 0;
@@ -679,7 +679,7 @@
 		
 
 		function doClearForm() {
-			jQuery('#meld-tb-fields').children().remove();
+			jQuery('#mura-tb-fields').children().remove();
 			$_field.html('');
 		}
 		
