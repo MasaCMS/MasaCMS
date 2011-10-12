@@ -1122,8 +1122,8 @@ function getDisplayObjectConfig(regionid){
 		data.name=a[1];
 		data.objectid=a[2];
 		
-		if(a.length > 3){
-			data.params=a[3];
+		if (a.length > 3) {
+			data.params =  a[3] ;
 		}
 		
 		data.regionid=regionid;
@@ -1237,10 +1237,11 @@ function addDisplayObject(objectToAdd,regionid,configure){
 		
 		if (tmpObject.object == 'plugin'){
 			var configurator=getPluginConfigurator(tmpObject.objectid);
+			
 			if (configurator != '') {
 				if (configure) {
 					tmpObject.regionid = regionid;
-					tempObject.context = context;
+					tmpObject.context = context;
 					window[configurator](tmpObject);
 					return false;
 				}
@@ -1583,9 +1584,7 @@ function addDisplayObject(objectToAdd,regionid,configure){
 		if(typeof(data.object) =='undefined'){	
 			return false;
 		}
-		
-		//location.href=url + "?" + pars;
-		
+	
 		jQuery("#configuratorContainer").dialog({
 			resizable: true,
 			modal: true,
@@ -1609,18 +1608,20 @@ function addDisplayObject(objectToAdd,regionid,configure){
 		jQuery.post(config.url + "?" + config.pars, 
 			data,
 			function(_resp) {
-				
 				try {
 					resp = eval('(' + _resp + ')');
 				} catch(err){
 					resp=_resp;
 				}
 				
-				if(typeof(resp)=='object'){
-					jQuery("#configurator").html(resp.html);	
+				if (typeof(resp) == 'object') {
+					jQuery("#configurator").html(resp.html);
+				} else if(typeof(resp) == 'xml'){
+					jQuery("#configurator").html(resp.toString());
 				} else {
 					jQuery("#configurator").html(resp);
 				}
+				
 				
 				jQuery("#ui-dialog-title-configuratorContainer").html(config.title);	
 				jQuery("#configuratorContainer").dialog("option","position",getDialogPosition());

@@ -147,8 +147,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				        style="width:310px;">
 			</cfoutput>
 			<cfoutput query="rs">
-				<option value="plugin~#rs.title# - #rs.name#~#rs.objectID#">
-					#rs.name#
+				<option value="{'object':'plugin','name':'#JSStringFormat('#rs.title# - #rs.name#')#','objectid':'#rs.objectID#'}">
+					#rs.name#					
 				</option>
 			</cfoutput>
 			<cfoutput>

@@ -154,7 +154,7 @@ pluginConfigurators.push({'objectid':'#rsPluginDisplayObjects.objectid#','init':
 </script>
 <cfloop query="rsPluginDisplayObjects">
 <cfif len(rsPluginDisplayObjects.configuratorJS)>
-<script type="text/javascript" src="#application.configBean.getContext()#/plugins/#rsPluginDisplayObjects.configuratorJS#"></script>
+<script type="text/javascript" src="#application.configBean.getContext()#/plugins/#rsPluginDisplayObjects.directory#/#rsPluginDisplayObjects.configuratorJS#"></script>
 </cfif>
 </cfloop>
 </cfoutput>
