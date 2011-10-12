@@ -1594,6 +1594,10 @@ function addDisplayObject(objectToAdd,regionid,configure){
 				Save: function() {
 					addDisplayObject(availableObject,data.regionid,false);
 					jQuery( this ).dialog( "close" );
+					
+					if(typeof(config.destroy) !='undefined'){
+						config.destroy(data,config);
+					}
 							
 				},
 				Cancel: function() {
