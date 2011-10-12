@@ -591,7 +591,13 @@ inner join tclassextendsets on (tclassextendattributes.extendsetID=tclassextends
 inner join tclassextend on (tclassextendsets.subtypeID=tclassextend.subtypeID)
  where 
 tclassextend.type=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.type#">
-and tclassextend.subtype=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.subtype#">
+and 
+	(
+		tclassextend.subtype=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.subtype#">
+		<cfif arguments.subType neq "Default">
+		or tclassextend.subtype=<cfqueryparam cfsqltype="cf_sql_varchar"  value="Default">
+		</cfif>
+	)
 and baseID=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.preserveID#">
 <cfif hasExtendSets>
 <cfset setLen=listLen(arguments.data.extendSetID)/>
