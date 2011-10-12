@@ -140,8 +140,8 @@ select * from rsScripts order by loadPriority
 
 <cfquery name="variables.rsDisplayObjects" datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 select tplugindisplayobjects.objectID, tplugindisplayobjects.moduleID, tplugindisplayobjects.name, 
-tplugindisplayobjects.displayObjectfile, tplugins.pluginID, tplugins.package, tplugins.directory, tcontent.siteID, tplugins.name title,
-tplugindisplayobjects.location, tplugindisplayobjects.displaymethod, tplugindisplayobjects.docache,tplugindisplayobjects.configurator
+tplugindisplayobjects.displayObjectfile, tplugins.pluginID, tplugins.package, tplugins.directory, tcontent.siteID, tplugins.name title, tplugins.package, tplugins.directory,
+tplugindisplayobjects.location, tplugindisplayobjects.displaymethod, tplugindisplayobjects.docache,tplugindisplayobjects.configurator, configuratorJS
 from tplugindisplayobjects inner join tplugins on (tplugindisplayobjects.moduleID=tplugins.moduleID)
 inner join tcontent on (tplugins.moduleID=tcontent.moduleID)
 </cfquery>
@@ -486,6 +486,11 @@ select * from tplugins order by #arguments.orderby#
 					<cfset displayObject.setConfigurator(pluginXML.plugin.displayobjects.displayobject[i].xmlAttributes.configurator) />
 				<cfelse>
 					<cfset displayObject.setConfigurator("") />
+				</cfif>
+				<cfif structKeyExists(pluginXML.plugin.displayobjects.displayobject[i].xmlAttributes,"configuratorJS")>
+					<cfset displayObject.setconfiguratorJS(pluginXML.plugin.displayobjects.displayobject[i].xmlAttributes.configuratorJS) />
+				<cfelse>
+					<cfset displayObject.setconfiguratorJS("") />
 				</cfif>
 				<cfset displayObject.save() />
 			</cfloop>
@@ -1546,7 +1551,7 @@ select * from tplugins order by #arguments.orderby#
 		group by moduleID, title, siteID
 		order by moduleID, title
 		<cfelse>
-		select pluginID, objectID, moduleID, siteID, name, title, displayObjectfile, docache, directory, displayMethod, configurator from variables.rsDisplayObjects 
+		select pluginID, objectID, moduleID, siteID, name, title, displayObjectfile, docache, directory, displayMethod, configurator, configuratorJS from variables.rsDisplayObjects 
 		where siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#">
 		<cfif len(arguments.moduleID)>
 		and moduleID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.moduleID#">
@@ -1590,7 +1595,7 @@ select * from tplugins order by #arguments.orderby#
 	<cfset event.setValue("params",arguments.params)>
 	
 	<cfquery name="rs" dbtype="query">
-	select pluginID, displayObjectFile,location,displaymethod, docache, objectID, directory, moduleID, configurator from variables.rsDisplayObjects 
+	select pluginID, displayObjectFile,location,displaymethod, docache, objectID, directory, moduleID, configurator, configuratorJS from variables.rsDisplayObjects 
 	where 
 	siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#event.getValue('siteID')#">
 	<cfif isvalid("UUID",event.getValue('objectID'))>
@@ -1601,7 +1606,7 @@ select * from tplugins order by #arguments.orderby#
 	<cfif len(arguments.moduleID)>
 	and moduleID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.moduleID#">
 	</cfif>
-	group by pluginID, displayObjectFile, location, displaymethod, docache, objectID, directory, moduleID, configurator
+	group by pluginID, displayObjectFile, location, displaymethod, docache, objectID, directory, moduleID, configurator, configuratorJS
 	</cfquery>
 	
 		<cfif rs.recordcount>

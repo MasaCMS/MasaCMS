@@ -3006,7 +3006,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						</cfquery>
 						<cfloop query="rstplugindisplayobjects">
 							<cfquery datasource="#arguments.toDSN#">
-								insert into tplugindisplayobjects (objectID,moduleID,name,location,displayObjectFile,displayMethod,docache,configurator)
+								insert into tplugindisplayobjects (objectID,moduleID,name,location,displayObjectFile,displayMethod,docache,configurator,configuratorJS)
 								values
 								(
 								<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(rstplugindisplayobjects.objectID)#">,
@@ -3016,8 +3016,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 								<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstplugindisplayobjects.displayObjectFile neq '',de('no'),de('yes'))#" value="#rstplugindisplayobjects.displayObjectFile#">,
 								<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstplugindisplayobjects.displayMethod neq '',de('no'),de('yes'))#" value="#rstplugindisplayobjects.displayMethod#">,
 								<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(rstplugindisplayobjects.docache),de(rstplugindisplayobjects.docache),de(0))#">
-								<cfif isdefined("rstplugindisplayobjects.configurator") and len(rstplugindisplayobjects.configurator>
+								<cfif isdefined("rstplugindisplayobjects.configurator") and len(rstplugindisplayobjects.configurator)>
 									<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="no" value="#rstplugindisplayobjects.configurator#">
+								<cfelse>
+									null
+								</cfif>,
+								<cfif isdefined("rstplugindisplayobjects.configuratorJS") and len(rstplugindisplayobjects.configuratorJS)>
+									<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="no" value="#rstplugindisplayobjects.configuratorJS#">
 								<cfelse>
 									null
 								</cfif>

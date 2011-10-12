@@ -401,6 +401,38 @@ ALTER TABLE tcontentfeeds ADD displayList clob
 </cfswitch>
 </cfif>
 
+<cfdbinfo 
+	name="rsCheck"
+	datasource="#application.configBean.getDatasource()#"
+	username="#application.configBean.getDbUsername()#"
+	password="#application.configBean.getDbPassword()#"
+	table="tplugindisplayobjects"
+	type="columns">
+
+<cfquery name="rsCheck" dbtype="query">
+	select * from rsCheck where lower(rsCheck.column_name) = 'configuratorjs'
+</cfquery>
+
+<cfif not rsCheck.recordcount>
+<cfswitch expression="#getDbType()#">
+<cfcase value="mssql">
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	ALTER TABLE tplugindisplayobjects ADD configuratorJS [nvarchar](255) default NULL
+	</cfquery>
+</cfcase>
+<cfcase value="mysql">
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	ALTER TABLE tplugindisplayobjects ADD COLUMN configuratorJS varchar(255) default NULL
+	</cfquery>
+</cfcase>
+<cfcase value="oracle">
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	ALTER TABLE tplugindisplayobjects ADD configuratorJS varchar2(255)
+	</cfquery>
+</cfcase>
+</cfswitch>
+</cfif>
+
 <cfset dbCreateIndex(table="tcontent",column="urltitle")>
 <cfset dbCreateIndex(table="tcontent",column="displaystart")>
 <cfset dbCreateIndex(table="tcontent",column="displaystop")>

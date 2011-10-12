@@ -54,6 +54,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfproperty name="displayMethodFile" type="string" default="" required="true" />
 <cfproperty name="doCache" type="string" default="false" required="true" />
 <cfproperty name="configurator" type="string" default="false" required="true" />
+<cfproperty name="configuratorJS" type="string" default="false" required="true" />
 
 <cffunction name="init" returntype="any" output="false" access="public">
 	<cfset super.init(argumentCollection=arguments)>
@@ -66,6 +67,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.instance.displayObjectFile=""/>
 	<cfset variables.instance.docache="false"/>
 	<cfset variables.instance.configurator=""/>
+	<cfset variables.instance.configuratorJS=""/>
 	
 	<cfreturn this />
 </cffunction>
@@ -149,6 +151,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.instance.configurator = trim(arguments.configurator) />
 </cffunction>
 
+<cffunction name="getconfiguratorJS" returntype="String" access="public" output="false">
+	<cfreturn variables.instance.configurator />
+</cffunction>
+
+<cffunction name="setconfiguratorJS" access="public" output="false">
+	<cfargument name="configurator" type="String" />
+	<cfset variables.instance.configurator = trim(arguments.configurator) />
+</cffunction>
+
 <cffunction name="load"  access="public" output="false" returntype="void">
 	<cfset set(getQuery()) />
 </cffunction>
@@ -216,14 +227,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			displayObjectFile=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getDisplayObjectFile()#">,
 			displayMethod=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getDisplayMethod()#">,
 			docache=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getDoCache()#">,
-			configurator=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getConfigurator()#">
+			configurator=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getConfigurator()#">,
+			configuratorJS=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getconfiguratorJS()#">
 		where objectID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getObjectID()#">
 		</cfquery>
 		
 	<cfelse>
 	
 		<cfquery datasource="#getBean('configBean').getDatasource()#" username="#getBean('configBean').getDBUsername()#" password="#getBean('configBean').getDBPassword()#">
-			insert into tplugindisplayobjects (objectID,moduleID,name,location,displayobjectfile,displaymethod,docache,configurator) values (
+			insert into tplugindisplayobjects (objectID,moduleID,name,location,displayobjectfile,displaymethod,docache,configurator,configuratorJS) values (
 			<cfqueryparam cfsqltype="cf_sql_varchar" value="#getObjectID()#">,
 			<cfqueryparam cfsqltype="cf_sql_varchar" value="#getModuleID()#">,
 			<cfqueryparam cfsqltype="cf_sql_varchar" value="#left(getName(),50)#">,
@@ -231,7 +243,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfqueryparam cfsqltype="cf_sql_varchar" value="#getDisplayObjectFile()#">,
 			<cfqueryparam cfsqltype="cf_sql_varchar" value="#getDisplayMethod()#">,
 			<cfqueryparam cfsqltype="cf_sql_varchar" value="#getDoCache()#">,
-			<cfqueryparam cfsqltype="cf_sql_varchar" value="#getConfigurator()#">
+			<cfqueryparam cfsqltype="cf_sql_varchar" value="#getConfigurator()#">,
+			<cfqueryparam cfsqltype="cf_sql_varchar" value="#getconfiguratorJS()#">
 			)
 		</cfquery>
 		

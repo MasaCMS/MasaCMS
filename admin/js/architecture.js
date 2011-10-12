@@ -1127,6 +1127,8 @@ function getDisplayObjectConfig(regionid){
 		}
 		
 		data.regionid=regionid;
+		data.context=context;
+		
 		return data;
 }
 		
@@ -1238,6 +1240,7 @@ function addDisplayObject(objectToAdd,regionid,configure){
 			if (configurator != '') {
 				if (configure) {
 					tmpObject.regionid = regionid;
+					tempObject.context = context;
 					window[configurator](tmpObject);
 					return false;
 				}
