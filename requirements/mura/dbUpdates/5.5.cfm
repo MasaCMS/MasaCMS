@@ -378,24 +378,24 @@ ALTER TABLE tcontentfeeds ADD displayList clob
 	type="columns">
 
 <cfquery name="rsCheck" dbtype="query">
-	select * from rsCheck where lower(rsCheck.column_name) = 'configurator'
+	select * from rsCheck where lower(rsCheck.column_name) = 'configuratorinit'
 </cfquery>
 
 <cfif not rsCheck.recordcount>
 <cfswitch expression="#getDbType()#">
 <cfcase value="mssql">
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
-	ALTER TABLE tplugindisplayobjects ADD configurator [nvarchar](50) default NULL
+	ALTER TABLE tplugindisplayobjects ADD configuratorInit [nvarchar](50) default NULL
 	</cfquery>
 </cfcase>
 <cfcase value="mysql">
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
-	ALTER TABLE tplugindisplayobjects ADD COLUMN configurator varchar(50) default NULL
+	ALTER TABLE tplugindisplayobjects ADD COLUMN configuratorInit varchar(50) default NULL
 	</cfquery>
 </cfcase>
 <cfcase value="oracle">
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
-	ALTER TABLE tplugindisplayobjects ADD configurator varchar2(50)
+	ALTER TABLE tplugindisplayobjects ADD configuratorInit varchar2(50)
 	</cfquery>
 </cfcase>
 </cfswitch>

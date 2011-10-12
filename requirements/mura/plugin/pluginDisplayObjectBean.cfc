@@ -53,7 +53,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfproperty name="displayMethod" type="string" default="" required="true" />
 <cfproperty name="displayMethodFile" type="string" default="" required="true" />
 <cfproperty name="doCache" type="string" default="false" required="true" />
-<cfproperty name="configurator" type="string" default="false" required="true" />
+<cfproperty name="configuratorInit" type="string" default="false" required="true" />
 <cfproperty name="configuratorJS" type="string" default="false" required="true" />
 
 <cffunction name="init" returntype="any" output="false" access="public">
@@ -66,7 +66,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.instance.displayMethod=""/>
 	<cfset variables.instance.displayObjectFile=""/>
 	<cfset variables.instance.docache="false"/>
-	<cfset variables.instance.configurator=""/>
+	<cfset variables.instance.configuratorInit=""/>
 	<cfset variables.instance.configuratorJS=""/>
 	
 	<cfreturn this />
@@ -142,13 +142,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 </cffunction>
 
-<cffunction name="getConfigurator" returntype="String" access="public" output="false">
-	<cfreturn variables.instance.configurator />
+<cffunction name="getConfiguratorInit" returntype="String" access="public" output="false">
+	<cfreturn variables.instance.configuratorInit />
 </cffunction>
 
-<cffunction name="setConfigurator" access="public" output="false">
-	<cfargument name="configurator" type="String" />
-	<cfset variables.instance.configurator = trim(arguments.configurator) />
+<cffunction name="setConfiguratorInit" access="public" output="false">
+	<cfargument name="configuratorInit" type="String" />
+	<cfset variables.instance.configuratorInit = trim(arguments.configuratorInit) />
 </cffunction>
 
 <cffunction name="getconfiguratorJS" returntype="String" access="public" output="false">
@@ -227,7 +227,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			displayObjectFile=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getDisplayObjectFile()#">,
 			displayMethod=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getDisplayMethod()#">,
 			docache=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getDoCache()#">,
-			configurator=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getConfigurator()#">,
+			configuratorInit=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getConfiguratorInit()#">,
 			configuratorJS=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getconfiguratorJS()#">
 		where objectID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getObjectID()#">
 		</cfquery>
@@ -235,7 +235,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfelse>
 	
 		<cfquery datasource="#getBean('configBean').getDatasource()#" username="#getBean('configBean').getDBUsername()#" password="#getBean('configBean').getDBPassword()#">
-			insert into tplugindisplayobjects (objectID,moduleID,name,location,displayobjectfile,displaymethod,docache,configurator,configuratorJS) values (
+			insert into tplugindisplayobjects (objectID,moduleID,name,location,displayobjectfile,displaymethod,docache,configuratorInit,configuratorJS) values (
 			<cfqueryparam cfsqltype="cf_sql_varchar" value="#getObjectID()#">,
 			<cfqueryparam cfsqltype="cf_sql_varchar" value="#getModuleID()#">,
 			<cfqueryparam cfsqltype="cf_sql_varchar" value="#left(getName(),50)#">,
@@ -243,7 +243,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfqueryparam cfsqltype="cf_sql_varchar" value="#getDisplayObjectFile()#">,
 			<cfqueryparam cfsqltype="cf_sql_varchar" value="#getDisplayMethod()#">,
 			<cfqueryparam cfsqltype="cf_sql_varchar" value="#getDoCache()#">,
-			<cfqueryparam cfsqltype="cf_sql_varchar" value="#getConfigurator()#">,
+			<cfqueryparam cfsqltype="cf_sql_varchar" value="#getConfiguratorInit()#">,
 			<cfqueryparam cfsqltype="cf_sql_varchar" value="#getconfiguratorJS()#">
 			)
 		</cfquery>

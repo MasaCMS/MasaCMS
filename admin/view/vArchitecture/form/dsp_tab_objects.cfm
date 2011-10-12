@@ -149,7 +149,7 @@ var contenthistid='#request.contentBean.getContentHistID()#';
 <cfset rsPluginDisplayObjects=application.pluginManager.getDisplayObjectsBySiteID(siteID=session.siteID,configuratorsOnly=true)>
 var pluginConfigurators=new Array();
 <cfloop query="rsPluginDisplayObjects">
-pluginConfigurators.push({'objectid':'#rsPluginDisplayObjects.objectid#','configurator':'#rsPluginDisplayObjects.configurator#'});
+pluginConfigurators.push({'objectid':'#rsPluginDisplayObjects.objectid#','init':'#rsPluginDisplayObjects.configuratorInit#'});
 </cfloop>
 </script>
 <cfloop query="rsPluginDisplayObjects">

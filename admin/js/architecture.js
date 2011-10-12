@@ -1654,7 +1654,7 @@ function addDisplayObject(objectToAdd,regionid,configure){
 	function getPluginConfigurator(objectid){
 		for(var i=0;i< pluginConfigurators.length;i++){
 			if(pluginConfigurators[i].objectid==objectid){
-				return pluginConfigurators[i].configurator;
+				return pluginConfigurators[i].init;
 			}
 		}
 		
