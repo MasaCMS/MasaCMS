@@ -1598,10 +1598,18 @@ function addDisplayObject(objectToAdd,regionid,configure){
 				},
 				Cancel: function() {
 					jQuery( this ).dialog( "close" );
+					
+					if(typeof(config.destroy) !='undefined'){
+						config.destroy(data,config);
+					}
 				}
 			},
 			close: function(){
 				jQuery(this).dialog("destroy");
+				
+				if(typeof(config.destroy) !='undefined'){
+					config.destroy(data,config);
+				}
 			}	
 		});
 				
@@ -1624,8 +1632,7 @@ function addDisplayObject(objectToAdd,regionid,configure){
 				
 				
 				jQuery("#ui-dialog-title-configuratorContainer").html(config.title);	
-				jQuery("#configuratorContainer").dialog("option","position",getDialogPosition());
-				
+					
 				if(availableObjectTemplate==""){
 					var availableObjectContainer=jQuery("#availableObjectParams");
 					availableObjectTemplate={
@@ -1643,6 +1650,8 @@ function addDisplayObject(objectToAdd,regionid,configure){
 					}	
 					config.init(data,config);
 				}
+				
+				jQuery("#configuratorContainer").dialog("option","position",getDialogPosition());
 				
 				initConfiguratorParams();
 		
