@@ -4,32 +4,32 @@
  * http://ckfinder.com
  * Copyright (C) 2007-2011, CKSource - Frederico Knabben. All rights reserved.
  *
- * The software, this file and its contents are subject to the CKFinder
+ * The software, this file, and its contents are subject to the CKFinder
  * License. Please read the license.txt file before using, installing, copying,
- * modifying or distribute this file or part of its contents. The contents of
+ * modifying, or distributing this file or part of its contents. The contents of
  * this file is part of the Source Code of CKFinder.
  *
  */
 
 /**
- * @fileOverview Defines the {@link CKFinder.lang} object, for the French
- *		language. This is the base file for all translations.
+ * @fileOverview Defines the {@link CKFinder.lang} object for the French
+ *		language.
 */
 
 /**
- * Constains the dictionary of language entries.
+ * Contains the dictionary of language entries.
  * @namespace
  */
 CKFinder.lang['fr'] =
 {
-	appTitle : 'CKFinder', // MISSING
+	appTitle : 'CKFinder',
 
 	// Common messages and labels.
 	common :
 	{
 		// Put the voice-only part of the label in the span.
 		unavailable		: '%1<span class="cke_accessibility">, Inaccessible</span>',
-		confirmCancel	: 'Certaines options ont été modifiées. Êtes vous sûr de vouloir fermer cette fenêtre ?',
+		confirmCancel	: 'Certaines options ont été modifiées. Êtes vous sûr de vouloir fermer cette fenêtre?',
 		ok				: 'OK',
 		cancel			: 'Annuler',
 		confirmationTitle	: 'Confirmation',
@@ -38,8 +38,8 @@ CKFinder.lang['fr'] =
 		undo			: 'Annuler',
 		redo			: 'Rétablir',
 		skip			: 'Passer',
-		skipAll			: 'passer tout',
-		makeDecision	: 'Quelle action choisir ?',
+		skipAll			: 'Passer tout',
+		makeDecision	: 'Quelle action choisir?',
 		rememberDecision: 'Se rappeller de la décision'
 	},
 
@@ -71,32 +71,32 @@ CKFinder.lang['fr'] =
 	FolderLoading	: 'Chargement...',
 	FolderNew		: 'Entrez le nouveau nom du dossier: ',
 	FolderRename	: 'Entrez le nouveau nom du dossier: ',
-	FolderDelete	: 'Êtes-vous sûr de vouloir effacer le dossier "%1" ?',
+	FolderDelete	: 'Êtes-vous sûr de vouloir effacer le dossier "%1"?',
 	FolderRenaming	: ' (Renommage en cours...)',
 	FolderDeleting	: ' (Suppression en cours...)',
 
 	// Files
 	FileRename		: 'Entrez le nouveau nom du fichier: ',
-	FileRenameExt	: 'Êtes-vous sûr de vouloir ¨changer l\'extension de ce fichier? Le fichier pourrait devenir inutilisable',
+	FileRenameExt	: 'Êtes-vous sûr de vouloir ¨changer l\'extension de ce fichier? Le fichier pourrait devenir inutilisable.',
 	FileRenaming	: 'Renommage en cours...',
-	FileDelete		: 'Êtes-vous sûr de vouloir effacer le fichier "%1" ?',
+	FileDelete		: 'Êtes-vous sûr de vouloir effacer le fichier "%1"?',
 	FilesLoading	: 'Chargement...',
 	FilesEmpty		: 'Répertoire vide',
-	FilesMoved		: 'Fichier %1 déplacé vers %2:%3',
-	FilesCopied		: 'Fichier %1 copié vers %2:%3',
+	FilesMoved		: 'Fichier %1 déplacé vers %2:%3.',
+	FilesCopied		: 'Fichier %1 copié vers %2:%3.',
 
 	// Basket
 	BasketFolder		: 'Corbeille',
 	BasketClear			: 'Vider la corbeille',
 	BasketRemove		: 'Retirer de la corbeille',
 	BasketOpenFolder	: 'Ouvrir le répertiore parent',
-	BasketTruncateConfirm : 'Êtes vous sûr de vouloir supprimer tous les fichiers de la corbeille ?',
-	BasketRemoveConfirm	: 'Êtes vous sûr de vouloir supprimer le fichier "%1" de la corbeille ?',
+	BasketTruncateConfirm : 'Êtes vous sûr de vouloir supprimer tous les fichiers de la corbeille?',
+	BasketRemoveConfirm	: 'Êtes vous sûr de vouloir supprimer le fichier "%1" de la corbeille?',
 	BasketEmpty			: 'Aucun fichier dans la corbeille, déposez en queques uns.',
 	BasketCopyFilesHere	: 'Copier des fichiers depuis la corbeille',
 	BasketMoveFilesHere	: 'Déplacer des fichiers depuis la corbeille',
 
-	BasketPasteErrorOther	: 'Fichier %s erreur: %e',
+	BasketPasteErrorOther	: 'Fichier %s erreur: %e.',
 	BasketPasteMoveSuccess	: 'Les fichiers suivant ont été déplacés: %s',
 	BasketPasteCopySuccess	: 'Les fichiers suivant ont été copiés: %s',
 
@@ -142,11 +142,23 @@ CKFinder.lang['fr'] =
 	UploadBtn			: 'Envoyer le fichier sélectionné',
 	UploadBtnCancel		: 'Annuler',
 
-	UploadNoFileMsg		: 'Sélectionner un fichier sur votre ordinateur',
+	UploadNoFileMsg		: 'Sélectionner un fichier sur votre ordinateur.',
 	UploadNoFolder		: 'Merci de sélectionner un répertoire avant l\'envoi.',
-	UploadNoPerms		: 'L\'envoi de fichier n\'est pas autorisé',
+	UploadNoPerms		: 'L\'envoi de fichier n\'est pas autorisé.',
 	UploadUnknError		: 'Erreur pendant l\'envoi du fichier.',
 	UploadExtIncorrect	: 'L\'extension du fichier n\'est pas autorisée dans ce dossier.',
+
+	// Flash Uploads
+	UploadLabel			: 'Files to Upload', // MISSING
+	UploadTotalFiles	: 'Total Files:', // MISSING
+	UploadTotalSize		: 'Total Size:', // MISSING
+	UploadAddFiles		: 'Add Files', // MISSING
+	UploadClearFiles	: 'Clear Files', // MISSING
+	UploadCancel		: 'Cancel Upload', // MISSING
+	UploadRemove		: 'Remove', // MISSING
+	UploadRemoveTip		: 'Remove !f', // MISSING
+	UploadUploaded		: 'Uploaded !n%', // MISSING
+	UploadProcessing	: 'Processing...', // MISSING
 
 	// Settings Panel
 	SetTitle		: 'Configuration',
@@ -188,13 +200,13 @@ CKFinder.lang['fr'] =
 	116 : 'Ce dossier n\'existe pas. Veuillez rafraîchir la page et réessayer.',
 	117 : 'Ce fichier n\'existe pas. Veuillez rafraîchir la page et réessayer.',
 	118 : 'Les chemins vers la source et la cible sont les mêmes.',
-	201 : 'Un fichier avec ce nom existe déjà. Le fichier téléversé a été renommé en "%1"',
-	202 : 'Fichier invalide',
+	201 : 'Un fichier avec ce nom existe déjà. Le fichier téléversé a été renommé en "%1".',
+	202 : 'Fichier invalide.',
 	203 : 'Fichier invalide. La taille est trop grande.',
 	204 : 'Le fichier téléversé est corrompu.',
 	205 : 'Aucun dossier temporaire n\'est disponible sur le serveur.',
 	206 : 'Envoi interrompu pour raisons de sécurité. Le fichier contient des données de type HTML.',
-	207 : 'El fichero subido ha sido renombrado como "%1"',
+	207 : 'The uploaded file was renamed to "%1".', // MISSING
 	300 : 'Le déplacement des fichiers a échoué.',
 	301 : 'La copie des fichiers a échoué.',
 	500 : 'L\'interface de gestion des fichiers est désactivé. Contactez votre administrateur et vérifier le fichier de configuration de CKFinder.',
@@ -204,14 +216,17 @@ CKFinder.lang['fr'] =
 	// Other Error Messages.
 	ErrorMsg :
 	{
-		FileEmpty		: 'Le nom du fichier ne peut être vide',
-		FileExists		: 'Le fichier %s existes déjà',
-		FolderEmpty		: 'Le nom du dossier ne peut être vide',
+		FileEmpty		: 'Le nom du fichier ne peut être vide.',
+		FileExists		: 'Le fichier %s existes déjà.',
+		FolderEmpty		: 'Le nom du dossier ne peut être vide.',
 
 		FileInvChar		: 'Le nom du fichier ne peut pas contenir les charactères suivants : \n\\ / : * ? " < > |',
 		FolderInvChar	: 'Le nom du dossier ne peut pas contenir les charactères suivants : \n\\ / : * ? " < > |',
 
-		PopupBlockView	: 'Il n\'a pas été possible d\'ouvrir la nouvelle fenêtre. Désactiver votre bloqueur de fenêtres pour ce site.'
+		PopupBlockView	: 'Il n\'a pas été possible d\'ouvrir la nouvelle fenêtre. Désactiver votre bloqueur de fenêtres pour ce site.',
+		XmlError		: 'It was not possible to properly load the XML response from the web server.', // MISSING
+		XmlEmpty		: 'It was not possible to load the XML response from the web server. The server returned an empty response.', // MISSING
+		XmlRawResponse	: 'Raw response from the server: %s' // MISSING
 	},
 
 	// Imageresize plugin
@@ -233,7 +248,9 @@ CKFinder.lang['fr'] =
 		newImage		: 'Créer une nouvelle image',
 		noExtensionChange : 'L\'extension du fichier ne peut pas être changé.',
 		imageSmall		: 'L\'image est trop petit',
-		contextMenuName	: 'Redimensionner'
+		contextMenuName	: 'Redimensionner',
+		lockRatio		: 'Conserver les proportions',
+		resetSize		: 'Taille d\'origine'
 	},
 
 	// Fileeditor plugin
@@ -244,5 +261,11 @@ CKFinder.lang['fr'] =
 		fileSaveSuccess	: 'Fichier sauvegardé avec succès.',
 		contextMenuName	: 'Edition',
 		loadingFile		: 'Chargement du fichier, veuillez patientez...'
+	},
+
+	Maximize :
+	{
+		maximize : 'Agrandir',
+		minimize : 'Minimiser'
 	}
 };

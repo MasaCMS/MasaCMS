@@ -6,39 +6,43 @@ the Free Software Foundation, Version 2 of the License.
 
 Mura CMS is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. �See the
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-along with Mura CMS. �If not, see <http://www.gnu.org/licenses/>.
+along with Mura CMS. If not, see <http://www.gnu.org/licenses/>.
 
-Linking Mura CMS statically or dynamically with other modules constitutes
-the preparation of a derivative work based on Mura CMS. Thus, the terms and 	
-conditions of the GNU General Public License version 2 (�GPL�) cover the entire combined work.
+Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on 
+Mura CMS. Thus, the terms and conditions of the GNU General Public License version 2 ("GPL") cover the entire combined work.
 
-However, as a special exception, the copyright holders of Mura CMS grant you permission
-to combine Mura CMS with programs or libraries that are released under the GNU Lesser General Public License version 2.1.
+However, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with programs
+or libraries that are released under the GNU Lesser General Public License version 2.1.
 
-In addition, as a special exception, �the copyright holders of Mura CMS grant you permission
-to combine Mura CMS �with independent software modules that communicate with Mura CMS solely
-through modules packaged as Mura CMS plugins and deployed through the Mura CMS plugin installation API,
-provided that these modules (a) may only modify the �/trunk/www/plugins/ directory through the Mura CMS
-plugin installation API, (b) must not alter any default objects in the Mura CMS database
-and (c) must not alter any files in the following directories except in cases where the code contains
-a separately distributed license.
+In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with 
+independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without 
+Mura CMS under the license of your choice, provided that you follow these specific guidelines: 
 
-/trunk/www/admin/
-/trunk/www/tasks/
-/trunk/www/config/
-/trunk/www/requirements/mura/
+Your custom code 
 
-You may copy and distribute such a combined work under the terms of GPL for Mura CMS, provided that you include
-the source code of that other code when and as the GNU GPL requires distribution of source code.
+• Must not alter any default objects in the Mura CMS database and
+• May not alter the default display of the Mura CMS logo within Mura CMS and
+• Must not alter any files in the following directories.
 
-For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception
-for your modified version; it is your choice whether to do so, or to make such modified version available under
-the GNU General Public License version 2 �without this exception. �You may, if you choose, apply this exception
-to your own modified versions of Mura CMS.
+ /admin/
+ /tasks/
+ /config/
+ /requirements/mura/
+ /Application.cfc
+ /index.cfm
+ /MuraProxy.cfc
+
+You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work 
+under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL 
+requires distribution of source code.
+
+For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your 
+modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
+version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cfcomponent extends="mura.cfobject" output="false">
 
@@ -136,8 +140,8 @@ select * from rsScripts order by loadPriority
 
 <cfquery name="variables.rsDisplayObjects" datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 select tplugindisplayobjects.objectID, tplugindisplayobjects.moduleID, tplugindisplayobjects.name, 
-tplugindisplayobjects.displayObjectfile, tplugins.pluginID, tplugins.package, tplugins.directory, tcontent.siteID, tplugins.name title,
-tplugindisplayobjects.location, tplugindisplayobjects.displaymethod, tplugindisplayobjects.docache
+tplugindisplayobjects.displayObjectfile, tplugins.pluginID, tplugins.package, tplugins.directory, tcontent.siteID, tplugins.name title, tplugins.package, tplugins.directory,
+tplugindisplayobjects.location, tplugindisplayobjects.displaymethod, tplugindisplayobjects.docache,tplugindisplayobjects.configuratorInit, configuratorJS
 from tplugindisplayobjects inner join tplugins on (tplugindisplayobjects.moduleID=tplugins.moduleID)
 inner join tcontent on (tplugins.moduleID=tcontent.moduleID)
 </cfquery>
@@ -194,7 +198,7 @@ select * from tplugins order by #arguments.orderby#
 <cfset var cffileData=structNew()>
 <cfset var isPostedFile=false>
 <cfset var settingBean="">
-<cflock name="addPlugin" timeout="200">
+<cflock name="addPlugin#application.instanceID#" timeout="200">
 	<!--- <cftry> --->
 	
 	<cfif not len(modID) and len(arguments.id)>
@@ -320,12 +324,6 @@ select * from tplugins order by #arguments.orderby#
 				<cfset settingsLen=arraylen(pluginXML.plugin.settings.setting)/>
 			<cfelse>
 				<cfset settingsLen=0>
-			</cfif>
-			
-			<cfif structKeyExists(pluginXML.plugin,"scripts") and structKeyExists(pluginXML.plugin.scripts,"script")>
-				<cfset scriptsLen=arraylen(pluginXML.plugin.scripts.script)/>
-			<cfelse>
-				<cfset scriptsLen=0>
 			</cfif>
 			
 			<cfset deployArgs.pluginAlias=rsPlugin.name>
@@ -484,6 +482,16 @@ select * from tplugins order by #arguments.orderby#
 				<cfelse>
 					<cfset displayObject.setDoCache("false") />
 				</cfif>
+				<cfif structKeyExists(pluginXML.plugin.displayobjects.displayobject[i].xmlAttributes,"configuratorInit")>
+					<cfset displayObject.setConfiguratorInit(pluginXML.plugin.displayobjects.displayobject[i].xmlAttributes.configuratorInit) />
+				<cfelse>
+					<cfset displayObject.setConfiguratorInit("") />
+				</cfif>
+				<cfif structKeyExists(pluginXML.plugin.displayobjects.displayobject[i].xmlAttributes,"configuratorJS")>
+					<cfset displayObject.setconfiguratorJS(pluginXML.plugin.displayobjects.displayobject[i].xmlAttributes.configuratorJS) />
+				<cfelse>
+					<cfset displayObject.setconfiguratorJS("") />
+				</cfif>
 				<cfset displayObject.save() />
 			</cfloop>
 			
@@ -505,7 +513,7 @@ select * from tplugins order by #arguments.orderby#
 	<cfset var p="">
 	<cfset var currentPath="">
 	
-	<cflock name="createAppCFCIncludes" type="exclusive" timeout="200">
+	<cflock name="createAppCFCIncludes#application.instanceID#" type="exclusive" timeout="200">
 	<cfif StructKeyExists(SERVER,"bluedragon") and not findNoCase("Windows",server.os.name)>
 		<cfset mapPrefix="$" />
 	</cfif>
@@ -686,7 +694,7 @@ select * from tplugins order by #arguments.orderby#
 <cffunction name="getAttributeBean" returntype="any" output="false">
 <cfargument name="theXML">
 <cfargument name="moduleID">
-	<cfset var bean=createObject("component","mura.plugin.pluginSettingBean").init(variables.configBean)>
+	<cfset var bean=createObject("component","mura.plugin.pluginSettingBean").init()>
 	<cfset bean.set(arguments.theXML,arguments.moduleID)/>
 	
 	<cfreturn bean/>
@@ -1135,10 +1143,15 @@ select * from tplugins order by #arguments.orderby#
 	<cfset var eventHandler="">
 	<cfset var listenerArray="">
 	<cfset var isGlobalEvent=left(arguments.runat,8) eq "onGlobal">
-	<cfset var isValidEvent=variables.utility.isValidCFVariableName(arguments.runat)>
+	<cfset var isValidEvent=false>
 	<cfset var siteIDadjusted=adjustSiteID(arguments.siteID)>
 	<cfset var muraScope="">
 	<cfset var currentModuleID="">
+	<cfset var tracePoint=0>
+	
+	<cfset arguments.runat=replace(arguments.runat," ", "","ALL")>
+	
+	<cfset isValidEvent=variables.utility.isValidCFVariableName(arguments.runat)>
 	
 	<cfif not left(arguments.runat,2) eq "on" or left(arguments.runat,7) eq "standard">
 		<cfset arguments.runat="on" & arguments.runat>
@@ -1171,11 +1184,13 @@ select * from tplugins order by #arguments.orderby#
 			<cfif isObject(event.getValue("localHandler"))>
 				<cfset localHandler=event.getValue("localHandler")>
 				<cfif structKeyExists(localHandler,runat)>
+					<cfset tracePoint=initTracePoint("#localHandler._objectName#.#arguments.runat#")>
 					<cfinvoke component="#localHandler#" method="#arguments.runat#">
 						<cfinvokeargument name="event" value="#arguments.event#">
 						<cfinvokeargument name="$" value="#muraScope#">
 						<cfinvokeargument name="mura" value="#muraScope#">
 					</cfinvoke>
+					<cfset commitTracePoint(tracePoint)>
 					<cfset request.muraHandledEvents["#arguments.runat#"]=true>	
 				</cfif>
 			</cfif>
@@ -1190,11 +1205,13 @@ select * from tplugins order by #arguments.orderby#
 							<cfif not isObject(eventHandler)>
 								<cfset eventHandler=getEventHandlerFromPath(eventHandler)>
 							</cfif>
+							<cfset tracePoint=initTracePoint("#eventHandler._objectName#.#arguments.runat#")>
 							<cfinvoke component="#eventHandler#" method="#arguments.runat#">
 								<cfinvokeargument name="event" value="#arguments.event#">
 								<cfinvokeargument name="$" value="#muraScope#">
 								<cfinvokeargument name="mura" value="#muraScope#">
 							</cfinvoke>
+							<cfset commitTracePoint(tracePoint)>
 							<cfset request.muraHandledEvents["#arguments.runat#"]=true>	
 						</cfloop>
 					</cfif>
@@ -1209,11 +1226,13 @@ select * from tplugins order by #arguments.orderby#
 							<cfif not isObject(eventHandler)>
 								<cfset eventHandler=getEventHandlerFromPath(eventHandler)>
 							</cfif>
+							<cfset tracePoint=initTracePoint("#eventHandler._objectName#.#arguments.runat#")>
 							<cfinvoke component="#eventHandler#" method="#arguments.runat#">
 								<cfinvokeargument name="event" value="#arguments.event#">
 								<cfinvokeargument name="$" value="#muraScope#">
 								<cfinvokeargument name="mura" value="#muraScope#">
 							</cfinvoke>	
+							<cfset commitTracePoint(tracePoint)>
 							<cfset request.muraHandledEvents["#arguments.runat#"]=true>
 						</cfloop>
 					</cfif>
@@ -1233,11 +1252,13 @@ select * from tplugins order by #arguments.orderby#
 			<cfif listLast(rs.scriptfile,".") neq "cfm">
 				<cfset componentPath="plugins.#rs.directory#.#rs.scriptfile#">
 				<cfset eventHandler=getComponent(componentPath, rs.pluginID, arguments.siteID, rs.docache)>
+				<cfset tracePoint=initTracePoint("#componentPath#.#arguments.runat#")>
 				<cfinvoke component="#eventHandler#" method="#arguments.runat#">
 					<cfinvokeargument name="event" value="#arguments.event#">
 					<cfinvokeargument name="$" value="#muraScope#">
 					<cfinvokeargument name="mura" value="#muraScope#">
-				</cfinvoke>	
+				</cfinvoke>
+				<cfset commitTracePoint(tracePoint)>	
 			<cfelse>
 				<cfset getExecutor().executeScript(event=event,scriptfile="/plugins/#rs.directory#/#rs.scriptfile#",pluginConfig=getConfig(rs.pluginID), $=muraScope, mura=muraScope)>
 			</cfif>
@@ -1287,10 +1308,15 @@ select * from tplugins order by #arguments.orderby#
 	<cfset var eventHandler="">
 	<cfset var listenerArray="">
 	<cfset var isGlobalEvent=left(arguments.runat,8) eq "onGlobal">
-	<cfset var isValidEvent=variables.utility.isValidCFVariableName(arguments.runat)>
+	<cfset var isValidEvent=false>
 	<cfset var siteIDadjusted=adjustSiteID(arguments.siteID)>
 	<cfset var muraScope="">
 	<cfset var currentModuleID="">
+	<cfset var tracePoint=0>
+	
+	<cfset arguments.runat=replace(arguments.runat," ", "","ALL")>
+	
+	<cfset isValidEvent=variables.utility.isValidCFVariableName(arguments.runat)>
 	
 	<cfif not left(arguments.runat,2) eq "on" or left(arguments.runat,7) eq "standard">
 		<cfset arguments.runat="on" & arguments.runat>
@@ -1322,6 +1348,7 @@ select * from tplugins order by #arguments.orderby#
 			<cfif isObject(event.getValue("localHandler"))>
 				<cfset localHandler=event.getValue("localHandler")>
 				<cfif structKeyExists(localHandler,runat)>
+					<cfset tracePoint=initTracePoint("#localHandler._objectName#.#arguments.runat#")>
 					<cfsavecontent variable="local.theDisplay1">
 					<cfinvoke component="#localHandler#" method="#arguments.runat#" returnVariable="local.theDisplay2">
 						<cfinvokeargument name="event" value="#arguments.event#">
@@ -1334,6 +1361,7 @@ select * from tplugins order by #arguments.orderby#
 					<cfelse>
 						<cfset str=str & local.theDisplay1>
 					</cfif>
+					<cfset commitTracePoint(tracePoint)>
 					<cfset request.muraHandledEvents["#arguments.runat#"]=true>
 				</cfif>
 			</cfif>
@@ -1348,6 +1376,7 @@ select * from tplugins order by #arguments.orderby#
 							<cfif not isObject(eventHandler)>
 								<cfset eventHandler=getEventHandlerFromPath(eventHandler)>
 							</cfif>
+							<cfset tracePoint=initTracePoint("#eventHandler._objectName#.#arguments.runat#")>
 							<cfsavecontent variable="local.theDisplay1">
 							<cfinvoke component="#eventHandler#"method="#arguments.runat#" returnVariable="local.theDisplay2">
 								<cfinvokeargument name="event" value="#arguments.event#">
@@ -1360,6 +1389,7 @@ select * from tplugins order by #arguments.orderby#
 							<cfelse>
 								<cfset str=str & local.theDisplay1>
 							</cfif>
+							<cfset commitTracePoint(tracePoint)>
 							<cfset request.muraHandledEvents["#arguments.runat#"]=true>
 						</cfloop>
 					</cfif>
@@ -1373,6 +1403,7 @@ select * from tplugins order by #arguments.orderby#
 							<cfif not isObject(eventHandler)>
 								<cfset eventHandler=getEventHandlerFromPath(eventHandler)>
 							</cfif>
+							<cfset tracePoint=initTracePoint("#eventHandler._objectName#.#arguments.runat#")>
 							<cfsavecontent variable="local.theDisplay1">
 							<cfinvoke component="#eventHandler#"method="#arguments.runat#" returnVariable="local.theDisplay2">
 								<cfinvokeargument name="event" value="#arguments.event#">
@@ -1385,6 +1416,7 @@ select * from tplugins order by #arguments.orderby#
 							<cfelse>
 								<cfset str=str & local.theDisplay1>
 							</cfif>
+							<cfset commitTracePoint(tracePoint)>
 							<cfset request.muraHandledEvents["#arguments.runat#"]=true>
 						</cfloop>
 					</cfif>
@@ -1405,12 +1437,13 @@ select * from tplugins order by #arguments.orderby#
 				<cfif listLast(rs.scriptfile,".") neq "cfm">			
 					<cfset componentPath="plugins.#rs.directory#.#rs.scriptfile#">
 					<cfset eventHandler=getComponent(componentPath, rs.pluginID, arguments.siteID, rs.docache)>
+					<cfset tracePoint=initTracePoint("#componentPath#.#arguments.runat#")>	
 					<cfsavecontent variable="local.theDisplay1">
 					<cfinvoke component="#eventHandler#" method="#arguments.runat#" returnVariable="local.theDisplay2">
 						<cfinvokeargument name="event" value="#arguments.event#">
 						<cfinvokeargument name="$" value="#muraScope#">
 						<cfinvokeargument name="mura" value="#muraScope#">
-					</cfinvoke>	
+					</cfinvoke>
 					</cfsavecontent>
 				
 					<cfif isDefined("local.theDisplay2")>
@@ -1420,11 +1453,13 @@ select * from tplugins order by #arguments.orderby#
 					</cfif>
 					
 				<cfelse>
+					<cfset tracePoint=initTracePoint("/plugins/#rs.directory#/#rs.scriptfile#")>
 					<cfsavecontent variable="local.theDisplay1">
 					<cfoutput>#getExecutor().renderScript(event=event,scriptfile="/plugins/#rs.directory#/#rs.scriptfile#",pluginConfig=getConfig(rs.pluginID), $=muraScope, mura=muraScope)#</cfoutput>
 					</cfsavecontent>
 					<cfset str=str & local.theDisplay1>
 				</cfif>
+				<cfset commitTracePoint(tracePoint)>
 				<cfset request.muraHandledEvents["#arguments.runat#"]=true>	
 			</cfloop>
 		</cfif>
@@ -1474,7 +1509,7 @@ select * from tplugins order by #arguments.orderby#
 <cfargument name="eventToHandle">
 <cfargument name="siteID" required="true" default="">
 <cfargument name="moduleID" required="true" default="">
-	<cfreturn getScripts(arguments.eventToHandle,argument.siteID,arguments.moduleID)>
+	<cfreturn getScripts(arguments.eventToHandle,arguments.siteID,arguments.moduleID)>
 </cffunction>
 
 <cffunction name="getScripts" output="false" returntype="query">
@@ -1498,10 +1533,12 @@ select * from tplugins order by #arguments.orderby#
 
 </cffunction>
 
-<cffunction name="getDisplayObjectBySiteID" output="false" returntype="query">
+<cffunction name="getDisplayObjectsBySiteID" output="false" returntype="query">
 <cfargument name="siteID" required="true" default="">
 <cfargument name="modulesOnly" required="true" default="false">
 <cfargument name="moduleID" required="true" default="">
+<cfargument name="configuratorsOnly" required="true" default="false">
+
 	<cfset var rs="">
 
 	<cfquery name="rs" dbtype="query">
@@ -1514,10 +1551,13 @@ select * from tplugins order by #arguments.orderby#
 		group by moduleID, title, siteID
 		order by moduleID, title
 		<cfelse>
-		select pluginID, objectID, moduleID, siteID, name, title, displayObjectfile, docache, directory, displayMethod from variables.rsDisplayObjects 
+		select pluginID, objectID, moduleID, siteID, name, title, displayObjectfile, docache, directory, displayMethod, configuratorInit, configuratorJS from variables.rsDisplayObjects 
 		where siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#">
 		<cfif len(arguments.moduleID)>
 		and moduleID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.moduleID#">
+		</cfif>
+		<cfif arguments.configuratorsOnly>
+			and configuratorInit > ''
 		</cfif>
 		order by moduleID, title
 		</cfif>
@@ -1542,6 +1582,7 @@ select * from tplugins order by #arguments.orderby#
 	<cfset var theDisplay2="">
 	<cfset var rsOnError="">
 	<cfset var muraScope="">
+	<cfset var tracePoint=0>
 	
 	<cfif variables.utility.checkForInstanceOf(arguments.event,"mura.MuraScope")>
 		<cfset muraScope=arguments.event>
@@ -1554,7 +1595,7 @@ select * from tplugins order by #arguments.orderby#
 	<cfset event.setValue("params",arguments.params)>
 	
 	<cfquery name="rs" dbtype="query">
-	select pluginID, displayObjectFile,location,displaymethod, docache, objectID, directory, moduleID from variables.rsDisplayObjects 
+	select pluginID, displayObjectFile,location,displaymethod, docache, objectID, directory, moduleID, configuratorInit, configuratorJS from variables.rsDisplayObjects 
 	where 
 	siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#event.getValue('siteID')#">
 	<cfif isvalid("UUID",event.getValue('objectID'))>
@@ -1565,7 +1606,7 @@ select * from tplugins order by #arguments.orderby#
 	<cfif len(arguments.moduleID)>
 	and moduleID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.moduleID#">
 	</cfif>
-	group by pluginID, displayObjectFile, location, displaymethod, docache, objectID, directory, moduleID
+	group by pluginID, displayObjectFile, location, displaymethod, docache, objectID, directory, moduleID, configuratorInit, configuratorJS
 	</cfquery>
 	
 		<cfif rs.recordcount>
@@ -1577,6 +1618,7 @@ select * from tplugins order by #arguments.orderby#
 				<cfset componentPath="#variables.configBean.getWebRootMap()#.#event.getSite().getDisplayPoolID()#.includes.plugins.#rs.directory#.#rs.displayobjectfile#">
 			</cfif>
 			<cfset eventHandler=getComponent(componentPath, rs.pluginID, event.getValue('siteID'),rs.docache)>
+			<cfset tracePoint=initTracePoint("#getMetaData(eventHandler).name#.#rs.displaymethod#")>
 			<cfsavecontent variable="theDisplay1">
 			<cfinvoke component="#eventHandler#" method="#rs.displaymethod#" returnvariable="theDisplay2">
 				<cfinvokeargument name="event" value="#arguments.event#">
@@ -1584,6 +1626,7 @@ select * from tplugins order by #arguments.orderby#
 				<cfinvokeargument name="mura" value="#muraScope#">
 			</cfinvoke>
 			</cfsavecontent>
+			<cfset commitTracePoint(tracePoint)>
 			<cfif isdefined("theDisplay2")>
 				<cfreturn trim(theDisplay2)>
 			<cfelse>
@@ -1651,11 +1694,11 @@ select * from tplugins order by #arguments.orderby#
 </cffunction>
 
 <cffunction name="getDisplayObjectBean" returntype="any" output="false">
-<cfreturn createObject("component","pluginDisplayObjectBean").init(variables.configBean,this) />
+<cfreturn createObject("component","pluginDisplayObjectBean").init() />
 </cffunction>
 
 <cffunction name="getScriptBean" returntype="any" output="false">
-<cfreturn createObject("component","pluginScriptBean").init(variables.configBean) />
+<cfreturn createObject("component","pluginScriptBean").init() />
 </cffunction>
 
 <cffunction name="purgeEventManagers" returntype="any" output="false">
@@ -1787,6 +1830,8 @@ select * from rs order by name
 			<cfset arrayAppend(variables.eventHandlers,arguments.component)>
 		</cfif>
 	</cfif>
+	
+	<cfset eventhandler._objectName=getMetaData(eventhandler).name>
 		
 	<cfloop collection="#eventhandler#" item="i">
 		<cfif left(i,2) eq "on" or left(i,8) eq "standard">
@@ -1848,7 +1893,7 @@ select * from rs order by name
 		<cfreturn deployBundle(siteID=arguments.siteID, pluginFile=arguments.bundleFile)>	
 	</cfif>
 	
-	<cfset errors=application.serviceFactory.getBean("settingsManager").restoreBundle(
+	<cfset errors=getBean("settingsManager").restoreBundle(
 			BundleFile=arguments.bundleFile,
 			siteID=arguments.siteID,
 			keyMode="publish",
@@ -1912,7 +1957,6 @@ select * from rs order by name
 	<cfset var result="">
 	<cfset var pluginXml="">
 	<cfset var rsSites="">
-	<cfset var id="">
 	
 	<cfset variables.fileWriter.createDir(directory=getLocation(tempDir))>
 	<cfset variables.fileWriter.copyDir(arguments.directory,getLocation(tempDir))>

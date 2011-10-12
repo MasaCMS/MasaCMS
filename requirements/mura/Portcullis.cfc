@@ -343,7 +343,7 @@
 		<cfargument name="text" required="true" type="String">
 		<cfset var result = StructNew()/>
 		<cfset result.detected = true/>
-		<cfset result.originalText = trim(REReplace(arguments.text,"(�|�)", "'", "ALL"))/>	<!---trim white space and deal with "smart quotes" from MS Word, etc.--->
+		<cfset result.originalText = trim(REReplace(arguments.text,"(�|�)", "'", "ALL"))/>	<!---trim white space and deal with "smart quotes" from MS Word, etc.--->	<!---trim white space and deal with "smart quotes" from MS Word, etc.--->
 		
 		<cfif len(variables.instance.wordFilter)>
 			<cfif REFindNoCase((ListChangeDelims(variables.instance.wordFilter,"|")),arguments.text) eq 0>

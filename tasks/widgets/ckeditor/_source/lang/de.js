@@ -14,7 +14,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 */
 
 /**
- * Constains the dictionary of language entries.
+ * Contains the dictionary of language entries.
  * @namespace
  */
 CKEDITOR.lang['de'] =
@@ -34,7 +34,7 @@ CKEDITOR.lang['de'] =
 	editorTitle : 'WYSIWYG-Editor, %1, drücken Sie ALT 0 für Hilfe.',
 
 	// ARIA descriptions.
-	toolbars	: 'Editor toolbars', // MISSING
+	toolbars	: 'Editor Symbolleisten',
 	editor		: 'WYSIWYG-Editor',
 
 	// Toolbar buttons without dialogs.
@@ -121,6 +121,10 @@ CKEDITOR.lang['de'] =
 		alignBottom		: 'Unten',
 		invalidHeight	: 'Höhe muss eine Zahl sein.',
 		invalidWidth	: 'Breite muss eine Zahl sein.',
+		invalidCssLength	: 'Wert spezifiziert für "%1" Feld muss ein positiver numerischer Wert sein mit oder ohne korrekte CSS Messeinheit (px, %, in, cm, mm, em, ex, pt oder pc).',
+		invalidHtmlLength	: 'Wert spezifiziert für "%1" Feld muss ein positiver numerischer Wert sein mit oder ohne korrekte HTML Messeinheit (px oder %).',
+		invalidInlineStyle	: 'Wert spezifiziert für inline Stilart muss enthalten ein oder mehr Tupels mit dem Format "Name : Wert" getrennt mit Semikolons.',
+		cssLengthTooltip	: 'Gebe eine Zahl ein für ein Wert in pixels oder eine Zahl mit einer korrekten CSS Messeinheit (px, %, in, cm, mm, em, ex, pt oder pc).',
 
 		// Put the voice-only part of the label in the span.
 		unavailable		: '%1<span class="cke_accessibility">, nicht verfügbar</span>'
@@ -162,7 +166,7 @@ CKEDITOR.lang['de'] =
 		popupResizable	: 'Größe änderbar',
 		popupStatusBar	: 'Statusleiste',
 		popupLocationBar: 'Adress-Leiste',
-		popupToolbar	: 'Werkzeugleiste',
+		popupToolbar	: 'Symbolleiste',
 		popupMenuBar	: 'Menü-Leiste',
 		popupFullScreen	: 'Vollbild (IE)',
 		popupScrollBars	: 'Rollbalken',
@@ -201,7 +205,8 @@ CKEDITOR.lang['de'] =
 		menu		: 'Anker-Eigenschaften',
 		title		: 'Anker-Eigenschaften',
 		name		: 'Anker Name',
-		errorName	: 'Bitte geben Sie den Namen des Ankers ein'
+		errorName	: 'Bitte geben Sie den Namen des Ankers ein',
+		remove		: 'Anker entfernen'
 	},
 
 	// List style dialog
@@ -237,6 +242,7 @@ CKEDITOR.lang['de'] =
 		findWhat			: 'Suche nach:',
 		replaceWith			: 'Ersetze mit:',
 		notFoundMsg			: 'Der gesuchte Text wurde nicht gefunden.',
+		findOptions			: 'Suchoptionen',
 		matchCase			: 'Groß-Kleinschreibung beachten',
 		matchWord			: 'Nur ganze Worte suchen',
 		matchCyclic			: 'Zyklische Suche',
@@ -271,8 +277,8 @@ CKEDITOR.lang['de'] =
 		invalidBorder	: 'Die Rahmenbreite muß eine Zahl sein.',
 		invalidWidth	: 'Die Tabellenbreite muss eine Zahl sein.',
 		invalidHeight	: 'Die Tabellenbreite muß eine Zahl sein.',
-		invalidCellSpacing	: 'Der Zellenabstand außen muß eine Zahl sein.',
-		invalidCellPadding	: 'Der Zellenabstand innen muß eine Zahl sein.',
+		invalidCellSpacing	: 'Der Zellenabstand außen muß eine positive Zahl sein.',
+		invalidCellPadding	: 'Der Zellenabstand innen muß eine positive Zahl sein.',
 
 		cell :
 		{
@@ -285,7 +291,7 @@ CKEDITOR.lang['de'] =
 			mergeDown		: 'Nach unten verbinden',
 			splitHorizontal	: 'Zelle horizontal teilen',
 			splitVertical	: 'Zelle vertikal teilen',
-			title			: 'Zellen Eigenschaften',
+			title			: 'Zellen-Eigenschaften',
 			cellType		: 'Zellart',
 			rowSpan			: 'Anzahl Zeilen verbinden',
 			colSpan			: 'Anzahl Spalten verbinden',
@@ -413,7 +419,6 @@ CKEDITOR.lang['de'] =
 		upload		: 'Hochladen',
 		alt			: 'Alternativer Text',
 		lockRatio	: 'Größenverhältnis beibehalten',
-		unlockRatio	: 'Ratio freischalten',
 		resetSize	: 'Größe zurücksetzen',
 		border		: 'Rahmen',
 		hSpace		: 'Horizontal-Abstand',
@@ -715,8 +720,8 @@ CKEDITOR.lang['de'] =
 	{
 		title		: 'Über CKEditor',
 		dlgTitle	: 'Über CKEditor',
-		help	: 'Check $1 for help.', // MISSING
-		userGuide : 'CKEditor User\'s Guide', // MISSING
+		help	: 'Prüfe $1 für Hilfe.',
+		userGuide : 'CKEditor Benutzerhandbuch',
 		moreInfo	: 'Für Informationen über unsere Lizenzbestimmungen besuchen sie bitte unsere Webseite:',
 		copy		: 'Copyright &copy; $1. Alle Rechte vorbehalten.'
 	},
@@ -749,17 +754,17 @@ CKEDITOR.lang['de'] =
 
 	toolbarGroups :
 	{
-		document : 'Document', // MISSING
-		clipboard : 'Clipboard/Undo', // MISSING
-		editing : 'Editing', // MISSING
-		forms : 'Forms', // MISSING
-		basicstyles : 'Basic Styles', // MISSING
-		paragraph : 'Paragraph', // MISSING
-		links : 'Links', // MISSING
-		insert : 'Insert', // MISSING
-		styles : 'Styles', // MISSING
-		colors : 'Colors', // MISSING
-		tools : 'Tools' // MISSING
+		document : 'Dokument',
+		clipboard : 'Zwischenablage/Rückgängig',
+		editing : 'Editieren',
+		forms : 'Formularen',
+		basicstyles : 'Grundstile',
+		paragraph : 'Absatz',
+		links : 'Links',
+		insert : 'Einfügen',
+		styles : 'Stile',
+		colors : 'Farben',
+		tools : 'Werkzeuge'
 	},
 
 	bidi :
@@ -770,41 +775,41 @@ CKEDITOR.lang['de'] =
 
 	docprops :
 	{
-		label : 'Document Properties', // MISSING
-		title : 'Document Properties', // MISSING
-		design : 'Design', // MISSING
-		meta : 'Meta Tags', // MISSING
-		chooseColor : 'Choose', // MISSING
-		other : 'Other...', // MISSING
-		docTitle :	'Page Title', // MISSING
-		charset : 	'Character Set Encoding', // MISSING
-		charsetOther : 'Other Character Set Encoding', // MISSING
-		charsetASCII : 'ASCII', // MISSING
-		charsetCE : 'Central European', // MISSING
-		charsetCT : 'Chinese Traditional (Big5)', // MISSING
-		charsetCR : 'Cyrillic', // MISSING
-		charsetGR : 'Greek', // MISSING
-		charsetJP : 'Japanese', // MISSING
-		charsetKR : 'Korean', // MISSING
-		charsetTR : 'Turkish', // MISSING
-		charsetUN : 'Unicode (UTF-8)', // MISSING
-		charsetWE : 'Western European', // MISSING
-		docType : 'Document Type Heading', // MISSING
-		docTypeOther : 'Other Document Type Heading', // MISSING
-		xhtmlDec : 'Include XHTML Declarations', // MISSING
-		bgColor : 'Background Color', // MISSING
-		bgImage : 'Background Image URL', // MISSING
-		bgFixed : 'Non-scrolling (Fixed) Background', // MISSING
-		txtColor : 'Text Color', // MISSING
-		margin : 'Page Margins', // MISSING
-		marginTop : 'Top', // MISSING
-		marginLeft : 'Left', // MISSING
-		marginRight : 'Right', // MISSING
-		marginBottom : 'Bottom', // MISSING
-		metaKeywords : 'Document Indexing Keywords (comma separated)', // MISSING
-		metaDescription : 'Document Description', // MISSING
-		metaAuthor : 'Author', // MISSING
-		metaCopyright : 'Copyright', // MISSING
-		previewHtml : '<p>This is some <strong>sample text</strong>. You are using <a href="javascript:void(0)">CKEditor</a>.</p>' // MISSING
+		label : 'Dokument-Eigenschaften',
+		title : 'Dokument-Eigenschaften',
+		design : 'Design',
+		meta : 'Metadaten',
+		chooseColor : 'Wählen',
+		other : '<andere>',
+		docTitle :	'Seitentitel',
+		charset : 	'Zeichenkodierung',
+		charsetOther : 'Andere Zeichenkodierung',
+		charsetASCII : 'ASCII',
+		charsetCE : 'Zentraleuropäisch',
+		charsetCT : 'traditionell Chinesisch (Big5)',
+		charsetCR : 'Kyrillisch',
+		charsetGR : 'Griechisch',
+		charsetJP : 'Japanisch',
+		charsetKR : 'Koreanisch',
+		charsetTR : 'Türkisch',
+		charsetUN : 'Unicode (UTF-8)',
+		charsetWE : 'Westeuropäisch',
+		docType : 'Dokumententyp',
+		docTypeOther : 'Anderer Dokumententyp',
+		xhtmlDec : 'Beziehe XHTML Deklarationen ein',
+		bgColor : 'Hintergrundfarbe',
+		bgImage : 'Hintergrundbild URL',
+		bgFixed : 'feststehender Hintergrund',
+		txtColor : 'Textfarbe',
+		margin : 'Seitenränder',
+		marginTop : 'Oben',
+		marginLeft : 'Links',
+		marginRight : 'Rechts',
+		marginBottom : 'Unten',
+		metaKeywords : 'Schlüsselwörter (durch Komma getrennt)',
+		metaDescription : 'Dokument-Beschreibung',
+		metaAuthor : 'Autor',
+		metaCopyright : 'Copyright',
+		previewHtml : '<p>Das ist ein <strong>Beispieltext</strong>. Du schreibst in <a href="javascript:void(0)">CKEditor</a>.</p>'
 	}
 };

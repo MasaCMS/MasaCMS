@@ -6,39 +6,43 @@ the Free Software Foundation, Version 2 of the License.
 
 Mura CMS is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. �See the
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-along with Mura CMS. �If not, see <http://www.gnu.org/licenses/>.
+along with Mura CMS. If not, see <http://www.gnu.org/licenses/>.
 
-Linking Mura CMS statically or dynamically with other modules constitutes
-the preparation of a derivative work based on Mura CMS. Thus, the terms and 	
-conditions of the GNU General Public License version 2 (�GPL�) cover the entire combined work.
+Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on 
+Mura CMS. Thus, the terms and conditions of the GNU General Public License version 2 ("GPL") cover the entire combined work.
 
-However, as a special exception, the copyright holders of Mura CMS grant you permission
-to combine Mura CMS with programs or libraries that are released under the GNU Lesser General Public License version 2.1.
+However, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with programs
+or libraries that are released under the GNU Lesser General Public License version 2.1.
 
-In addition, as a special exception, �the copyright holders of Mura CMS grant you permission
-to combine Mura CMS �with independent software modules that communicate with Mura CMS solely
-through modules packaged as Mura CMS plugins and deployed through the Mura CMS plugin installation API,
-provided that these modules (a) may only modify the �/trunk/www/plugins/ directory through the Mura CMS
-plugin installation API, (b) must not alter any default objects in the Mura CMS database
-and (c) must not alter any files in the following directories except in cases where the code contains
-a separately distributed license.
+In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with 
+independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without 
+Mura CMS under the license of your choice, provided that you follow these specific guidelines: 
 
-/trunk/www/admin/
-/trunk/www/tasks/
-/trunk/www/config/
-/trunk/www/requirements/mura/
+Your custom code 
 
-You may copy and distribute such a combined work under the terms of GPL for Mura CMS, provided that you include
-the source code of that other code when and as the GNU GPL requires distribution of source code.
+• Must not alter any default objects in the Mura CMS database and
+• May not alter the default display of the Mura CMS logo within Mura CMS and
+• Must not alter any files in the following directories.
 
-For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception
-for your modified version; it is your choice whether to do so, or to make such modified version available under
-the GNU General Public License version 2 �without this exception. �You may, if you choose, apply this exception
-to your own modified versions of Mura CMS.
+ /admin/
+ /tasks/
+ /config/
+ /requirements/mura/
+ /Application.cfc
+ /index.cfm
+ /MuraProxy.cfc
+
+You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work 
+under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL 
+requires distribution of source code.
+
+For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your 
+modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
+version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cfcomponent extends="mura.cfobject" output="false">
 	<cfset this.TreeLevelList="Page,Portal,Calendar,Link,File,Gallery">
@@ -77,6 +81,11 @@ to your own modified versions of Mura CMS.
 		<cfset variables.contentDAO.setContentManager(this)/>
 		
 		<cfreturn this />
+	</cffunction>
+	
+	<cffunction name="getBean" output="false">
+		<cfargument name="beanName" default="content">
+		<cfreturn super.getBean(arguments.beanName)>
 	</cffunction>
 	
 	<cffunction name="getList" access="public" returntype="query" output="false">
@@ -191,24 +200,24 @@ to your own modified versions of Mura CMS.
 	<cfargument name="urltitle" required="true" default="">
 	<cfargument name="siteID" required="true" default=""> 
 	<cfargument name="use404" required="true" default="false">
-	<cfargument name="contentBean" default="">
+	<cfargument name="contentBean" required="true" default="">
 
 	<cfif not len(arguments.siteID)>
 		<cfthrow message="A 'SITEID' is required in order to read content. ">
 	</cfif>
 	
 	<cfif len(arguments.contenthistid)>
-		<cfreturn getcontentVersion(arguments.contenthistid, arguments.siteid, arguments.use404,arguments.contentBean)>
+		<cfreturn getcontentVersion(arguments.contenthistid, arguments.siteid, arguments.use404, arguments.contentBean)>
 	<cfelseif structKeyExists(arguments,"filename")>
-		<cfreturn getActiveContentByFilename(arguments.filename, arguments.siteid, arguments.use404,arguments.contentBean)>
+		<cfreturn getActiveContentByFilename(arguments.filename, arguments.siteid, arguments.use404, arguments.contentBean)>
 	<cfelseif len(arguments.remoteid)>
-		<cfreturn getActiveByRemoteID(arguments.remoteid, arguments.siteid,arguments.use404,arguments.contentBean)>
+		<cfreturn getActiveByRemoteID(arguments.remoteid, arguments.siteid, arguments.use404, arguments.contentBean)>
 	<cfelseif len(arguments.title)>
-		<cfreturn getActiveByTitle(arguments.title, arguments.siteid,arguments.use404,arguments.contentBean)>
+		<cfreturn getActiveByTitle(arguments.title, arguments.siteid, arguments.use404, arguments.contentBean)>
 	<cfelseif len(arguments.urltitle)>
-		<cfreturn getActiveByURLTitle(arguments.urltitle, arguments.siteid,arguments.use404,arguments.contentBean)>
+		<cfreturn getActiveByURLTitle(arguments.urltitle, arguments.siteid, arguments.use404, arguments.contentBean)>
 	<cfelse>	
-		<cfreturn getActiveContent(arguments.contentid, arguments.siteid, arguments.use404,arguments.contentBean)>
+		<cfreturn getActiveContent(arguments.contentid, arguments.siteid, arguments.use404, arguments.contentBean)>
 	</cfif>
 	
 	</cffunction>
@@ -217,33 +226,31 @@ to your own modified versions of Mura CMS.
 		<cfargument name="contentHistID" type="string" required="yes" />
 		<cfargument name="siteID" type="string" required="yes" />
 		<cfargument name="use404" type="boolean" required="yes" default="false"/>
-		<cfargument name="contentBean" type="any" default=""/>
+		<cfargument name="contentbean" required="true" default="">
 		<cfset var key= "version" & arguments.siteid & arguments.contentHistID />
 		<cfset var site=variables.settingsManager.getSite(arguments.siteid)/>
 		<cfset var cacheFactory=site.getCacheFactory(name="data")>
-		<cfset var bean="">
+		<cfset var bean=arguments.contentBean/>
 		
 		<cfif site.getCache()>
 			<!--- check to see if it is cached. if not then pass in the context --->
 			<!--- otherwise grab it from the cache --->
 			<cfif NOT cacheFactory.has( key )>
-				<cfset bean=variables.contentDAO.readVersion(arguments.contentHistID,arguments.siteid,arguments.use404,arguments.contentBean) />
+				<cfset bean=variables.contentDAO.readVersion(arguments.contentHistID,arguments.siteid,arguments.use404,bean) />
 				<cfif not bean.getIsNew()>
 					<cfset cacheFactory.get( key, structCopy(bean.getAllValues()) ) />
 				</cfif>
 				<cfreturn bean/>
 			<cfelse>
-				<cfif isObject(arguments.contentBean)>
-					<cfset bean=arguments.contentBean/>
-				<cfelse>
-					<cfset bean=variables.contentDAO.getBean()/>
+				<cfif not isObject(bean)>
+					<cfset bean=getBean("content")/>
 				</cfif>
 				<cfset bean.setAllValues( structCopy(cacheFactory.get( key )) )>
 				<cfset bean.setValue("extendAutoComplete",false)>
 				<cfreturn bean />
 			</cfif>
 		<cfelse>
-			<cfreturn variables.contentDAO.readVersion(arguments.contentHistID,arguments.siteid,arguments.use404, arguments.contentBean) />
+			<cfreturn variables.contentDAO.readVersion(arguments.contentHistID,arguments.siteid,arguments.use404,bean) />
 		</cfif>
 	</cffunction>
 	
@@ -251,12 +258,11 @@ to your own modified versions of Mura CMS.
 		<cfargument name="filename" type="string" required="yes" />
 		<cfargument name="siteID" type="string" required="yes" />
 		<cfargument name="use404" type="boolean" required="yes" default="false"/>
-		<cfargument name="contentBean" type="any" default=""/>
-		
+		<cfargument name="contentBean" required="true" default="">
 		<cfset var key="" />
 		<cfset var site=variables.settingsManager.getSite(arguments.siteid)/>
 		<cfset var cacheFactory=site.getCacheFactory(name="data")>
-		<cfset var bean="">
+		<cfset var bean=arguments.contentBean/>
 		
 		<cfif arguments.filename eq "/">
 			<cfset arguments.filename="">
@@ -284,23 +290,21 @@ to your own modified versions of Mura CMS.
 			<!--- check to see if it is cached. if not then pass in the context --->
 			<!--- otherwise grab it from the cache --->
 			<cfif NOT cacheFactory.has( key )>
-				<cfset bean=variables.contentDAO.readActiveByFilename(arguments.filename,arguments.siteid,arguments.use404,arguments.contentBean) />
+				<cfset bean=variables.contentDAO.readActiveByFilename(arguments.filename,arguments.siteid,arguments.use404,bean) />
 				<cfif not isArray(bean) and not bean.getIsNew()>
 					<cfset cacheFactory.get( key, structCopy(bean.getAllValues()) ) />
 				</cfif>
 				<cfreturn bean/>
 			<cfelse>
-				<cfif isObject(arguments.contentBean)>
-					<cfset bean=arguments.contentBean/>
-				<cfelse>
-					<cfset bean=variables.contentDAO.getBean()/>
+				<cfif not isObject(bean)>
+					<cfset bean=getBean("content")/>
 				</cfif>
 				<cfset bean.setAllValues( structCopy(cacheFactory.get( key )) )>
 				<cfset bean.setValue("extendAutoComplete",false)>
 				<cfreturn bean />
 			</cfif>
 		<cfelse>
-			<cfreturn variables.contentDAO.readActiveByFilename(arguments.filename,arguments.siteid,arguments.use404,arguments.contentBean)/>
+			<cfreturn variables.contentDAO.readActiveByFilename(arguments.filename,arguments.siteid,arguments.use404,bean)/>
 		</cfif>
 	
 	</cffunction>
@@ -309,34 +313,31 @@ to your own modified versions of Mura CMS.
 		<cfargument name="remoteID" type="string" required="yes" />
 		<cfargument name="siteID" type="string" required="yes" />
 		<cfargument name="use404" type="boolean" required="yes" default="false"/>
-		<cfargument name="contentBean" type="any" default=""/>
-		
+		<cfargument name="contentBean" required="true" default="">
 		<cfset var key="remoteID" & arguments.siteid & arguments.remoteID />
 		<cfset var site=variables.settingsManager.getSite(arguments.siteid)/>
 		<cfset var cacheFactory=site.getCacheFactory(name="data")/>
-		<cfset var bean=""/>
+		<cfset var bean=arguments.contentBean/>
 		
 		<cfif site.getCache()>
 			<!--- check to see if it is cached. if not then pass in the context --->
 			<!--- otherwise grab it from the cache --->
 			<cfif NOT cacheFactory.has( key )>
-				<cfset bean=variables.contentDAO.readActiveByRemoteID(arguments.remoteID,arguments.siteid,arguments.use404,arguments.contentBean)  />
+				<cfset bean=variables.contentDAO.readActiveByRemoteID(arguments.remoteID,arguments.siteid,arguments.use404,bean)  />
 				<cfif not isArray(bean) and not bean.getIsNew()>
 					<cfset cacheFactory.get( key, structCopy(bean.getAllValues()) ) />
 				</cfif>
 				<cfreturn bean/>
 			<cfelse>
-				<cfif isObject(arguments.contentBean)>
-					<cfset bean=arguments.contentBean/>
-				<cfelse>
-					<cfset bean=variables.contentDAO.getBean()/>
+				<cfif not isObject(bean)>
+					<cfset bean=getBean("content")/>
 				</cfif>
 				<cfset bean.setAllValues( structCopy(cacheFactory.get( key )) )>
 				<cfset bean.setValue("extendAutoComplete",false)>
 				<cfreturn bean />
 			</cfif>
 		<cfelse>
-			<cfreturn variables.contentDAO.readActiveByRemoteID(arguments.remoteID,arguments.siteid,arguments.use404,arguments.contentBean)/>
+			<cfreturn variables.contentDAO.readActiveByRemoteID(arguments.remoteID,arguments.siteid,arguments.use404,bean)/>
 		</cfif>
 		
 	</cffunction>
@@ -344,34 +345,31 @@ to your own modified versions of Mura CMS.
 	<cffunction name="getActiveByTitle" access="public" returntype="any" output="false">
 		<cfargument name="title" type="string" required="yes" />
 		<cfargument name="siteID" type="string" required="yes" />
-		<cfargument name="contentBean" type="any" default=""/>
-		
+		<cfargument name="contentBean" required="true" default="">
 		<cfset var key="title" & arguments.siteid & arguments.title />
 		<cfset var site=variables.settingsManager.getSite(arguments.siteid)/>
 		<cfset var cacheFactory=site.getCacheFactory(name="data")/>
-		<cfset var bean=""/>
+		<cfset var bean=arguments.contentBean/>
 		
 		<cfif site.getCache()>
 			<!--- check to see if it is cached. if not then pass in the context --->
 			<!--- otherwise grab it from the cache --->
 			<cfif NOT cacheFactory.has( key )>
-				<cfset bean=variables.contentDAO.readActiveByTitle(arguments.title,arguments.siteid,arguments.contentBean)  />
+				<cfset bean=variables.contentDAO.readActiveByTitle(arguments.title,arguments.siteid,bean)  />
 				<cfif not isArray(bean) and not bean.getIsNew()>
 					<cfset cacheFactory.get( key, structCopy(bean.getAllValues()) ) />
 				</cfif>
 				<cfreturn bean/>
 			<cfelse>
-				<cfif isObject(arguments.contentBean)>
-					<cfset bean=arguments.contentBean/>
-				<cfelse>
-					<cfset bean=variables.contentDAO.getBean()/>
+				<cfif not isObject(bean)>
+					<cfset bean=getBean("content")/>
 				</cfif>
 				<cfset bean.setAllValues( structCopy(cacheFactory.get( key )) )>
 				<cfset bean.setValue("extendAutoComplete",false)>
 				<cfreturn bean />
 			</cfif>
 		<cfelse>
-			<cfreturn variables.contentDAO.readActiveByTitle(arguments.title,arguments.siteid,arguments.contentBean)/>
+			<cfreturn variables.contentDAO.readActiveByTitle(arguments.title,arguments.siteid,bean)/>
 		</cfif>
 		
 	</cffunction>
@@ -379,34 +377,31 @@ to your own modified versions of Mura CMS.
 	<cffunction name="getActiveByURLTitle" access="public" returntype="any" output="false">
 		<cfargument name="URLTitle" type="string" required="yes" />
 		<cfargument name="siteID" type="string" required="yes" />
-		<cfargument name="contentBean" type="any" default=""/>
-		
+		<cfargument name="contentBean" required="true" default="">
 		<cfset var key="urltitle" & arguments.siteid & arguments.urltitle />
 		<cfset var site=variables.settingsManager.getSite(arguments.siteid)/>
 		<cfset var cacheFactory=site.getCacheFactory(name="data")/>
-		<cfset var bean=""/>
+		<cfset var bean=arguments.contentBean/>
 		
 		<cfif site.getCache()>
 			<!--- check to see if it is cached. if not then pass in the context --->
 			<!--- otherwise grab it from the cache --->
 			<cfif NOT cacheFactory.has( key )>
-				<cfset bean=variables.contentDAO.readActiveByURLTitle(arguments.URLTitle,arguments.siteid,arguments.contentBean)  />
+				<cfset bean=variables.contentDAO.readActiveByURLTitle(arguments.URLTitle,arguments.siteid,bean)  />
 				<cfif not isArray(bean) and not bean.getIsNew()>
 					<cfset cacheFactory.get( key, structCopy(bean.getAllValues()) ) />
 				</cfif>
 				<cfreturn bean/>
 			<cfelse>
-				<cfif isObject(arguments.contentBean)>
-					<cfset bean=arguments.contentBean/>
-				<cfelse>
-					<cfset bean=variables.contentDAO.getBean()/>
+				<cfif not isObject(bean)>
+					<cfset bean=getBean("content")/>
 				</cfif>
 				<cfset bean.setAllValues( structCopy(cacheFactory.get( key )) )>
 				<cfset bean.setValue("extendAutoComplete",false)>
 				<cfreturn bean />
 			</cfif>
 		<cfelse>
-			<cfreturn variables.contentDAO.readActiveByURLTitle(arguments.URLTitle,arguments.siteid,arguments.contentBean)/>
+			<cfreturn variables.contentDAO.readActiveByURLTitle(arguments.URLTitle,arguments.siteid,bean)/>
 		</cfif>
 		
 	</cffunction>
@@ -415,34 +410,31 @@ to your own modified versions of Mura CMS.
 		<cfargument name="contentID" type="string" required="yes" />
 		<cfargument name="siteID" type="string" required="yes" />
 		<cfargument name="use404" type="boolean" required="yes" default="false"/>
-		<cfargument name="contentBean" type="any" default=""/>
-		
+		<cfargument name="contentBean" required="true" default="">
 		<cfset var key="contentID" & arguments.siteid & arguments.contentID />
 		<cfset var site=variables.settingsManager.getSite(arguments.siteid)/>
 		<cfset var cacheFactory=site.getCacheFactory(name="data")/>
-		<cfset var bean=""/>
+		<cfset var bean=arguments.contentBean/>
 		
 		<cfif site.getCache()>
 			<!--- check to see if it is cached. if not then pass in the context --->
 			<!--- otherwise grab it from the cache --->
 			<cfif NOT cacheFactory.has( key )>
-				<cfset bean=variables.contentDAO.readActive(arguments.contentID,arguments.siteid,arguments.use404,arguments.contentBean)  />
+				<cfset bean=variables.contentDAO.readActive(arguments.contentID,arguments.siteid,arguments.use404,bean)  />
 				<cfif not bean.getIsNew()>
 					<cfset cacheFactory.get( key, structCopy(bean.getAllValues()) ) />
 				</cfif>
 				<cfreturn bean/>
 			<cfelse>
-				<cfif isObject(arguments.contentBean)>
-					<cfset bean=arguments.contentBean>
-				<cfelse>
-					<cfset bean=variables.contentDAO.getBean()/>
+				<cfif not isObject(bean)>
+					<cfset bean=getBean("content")/>
 				</cfif>
 				<cfset bean.setAllValues( structCopy(cacheFactory.get( key )) )>
 				<cfset bean.setValue("extendAutoComplete",false)>
 				<cfreturn bean />
 			</cfif>
 		<cfelse>
-			<cfreturn variables.contentDAO.readActive(arguments.contentID,arguments.siteid,arguments.use404,arguments.contentBean) />
+			<cfreturn variables.contentDAO.readActive(arguments.contentID,arguments.siteid,arguments.use404,bean) />
 		</cfif>
 	
 	</cffunction>
@@ -675,7 +667,9 @@ to your own modified versions of Mura CMS.
 	
 	<cfif not refused>
 		<cfset previousChangesetID=newBean.getChangesetID()>
+		
 		<cfset newBean.set(arguments.data) />
+	
 		<cfset pluginEvent.setValue("newBean",newBean)>	
 		<cfset pluginEvent.setValue("contentBean",newBean)>
 		
@@ -723,8 +717,8 @@ to your own modified versions of Mura CMS.
 		
 		<!--- Reset extended data internal ids --->
 		<cfset arguments.data=newBean.getAllValues()>
-		
-		<cflock type="exclusive" name="editingContent#arguments.data.siteid#" timeout="600">
+
+		<cflock type="exclusive" name="editingContent#arguments.data.siteid##application.instanceID#" timeout="600">
 		<cftransaction>
 		
 		<!--- BEGIN CONTENT TYPE: ALL EXTENDABLE CONTENT TYPES --->
@@ -860,7 +854,6 @@ to your own modified versions of Mura CMS.
 				and not (not newBean.getIsNew() and newBean.getIsLocked())>
 							
 				<cfset variables.contentUtility.setUniqueFilename(newBean) />
-				<!---<cfset variables.contentUtility.createFile(newBean) />--->
 									
 				<cfif not newBean.getIsNew() and newBean.getoldfilename() neq newBean.getfilename() and len(newBean.getoldfilename())>
 					<cfset variables.contentUtility.movelink(newBean.getSiteID(),newBean.getFilename(),currentBean.getFilename()) />	
@@ -884,7 +877,23 @@ to your own modified versions of Mura CMS.
 		</cfif>
 		<!--- END CONTENT TYPE: PAGE, PORTAL, CALENDAR, GALLERY --->
 		
-	
+		<cfif newBean.getapproved() or newBean.getIsNew()>
+		<!--- BEGIN CONTENT TYPE: FILE, LINK --->	
+		<cfif listFindNoCase("Link,File",newBean.getType())>
+			<cfset variables.contentUtility.setUniqueURLTitle(newBean) />
+		</cfif>
+		<!--- END CONTENT TYPE: FILE, LINK --->
+			
+		<!--- BEGIN CONTENT TYPE: COMPONENT, FORM --->	
+		<cfif listFindNoCase("Component,Form",newBean.getType())>
+			<cfset variables.contentUtility.setUniqueTitle(newBean) />
+			<cfset newBean.setMenuTitle(newBean.getTitle())>
+			<cfset newBean.setHTMLTitle(newBean.getTitle())>
+			<cfset newBean.setURLTitle(newBean.getTitle())>
+		</cfif>
+		<!--- END CONTENT TYPE: COMPONENT, FORM --->
+		</cfif>
+		
 		<!--- BEGIN CONTENT TYPE: FILE --->	
 		<!---<cfif newBean.gettype() eq 'File'>--->
 				
@@ -950,6 +959,7 @@ to your own modified versions of Mura CMS.
 	
 						
 					</cfloop>
+				
 			</cfif>
 		
 		<!---</cfif>--->
@@ -965,6 +975,9 @@ to your own modified versions of Mura CMS.
 			<cfset variables.contentDAO.archiveActive(newbean.getcontentID(),arguments.data.siteid)/>
 			<cfif variables.configBean.getPurgeDrafts()>
 				<cfset variables.contentDAO.deleteDraftHistAll(newbean.getcontentID(),arguments.data.siteid)/>
+			</cfif>
+			<cfif variables.configBean.getMaxArchivedVersions()>	
+				<cfset trimArchiveHistory(newBean.getContentID(),newBean.getSiteID())>
 			</cfif>
 			<cfset variables.contentDAO.deleteContentAssignments(newbean.getcontentID(),arguments.data.siteid)/>
 		</cfif>
@@ -1104,7 +1117,7 @@ to your own modified versions of Mura CMS.
 		<cfset arguments.data.muraDeleteDateTime=now()>
 	</cfif>
 	
-	<cflock type="exclusive" name="editingContent#arguments.data.siteid#" timeout="60">
+	<cflock type="exclusive" name="editingContent#arguments.data.siteid##application.instanceID#" timeout="60">
 		<cfif arguments.data.contentID eq '00000000000000000000000000000000001'>
 			<cfabort>
 		</cfif>
@@ -1183,7 +1196,7 @@ to your own modified versions of Mura CMS.
 		<cfset var fileList=""/>
 		<cfset var currentBean=getActiveContent(arguments.data.contentid,arguments.data.siteid)/>
 		<cfset var pluginEvent = createObject("component","mura.event").init(arguments.data) />
-		<cfset var historyIterator=application.serviceFactory.getBean("contentIterator")>
+		<cfset var historyIterator=getBean("contentIterator")>
 		<cfset var rsPendingChangesets=""/>
 		
 		<cfset pluginEvent.setValue("contentBean",currentBean)/>
@@ -1344,7 +1357,7 @@ to your own modified versions of Mura CMS.
 		<cfargument name="searchType" type="string" required="true" default="default" hint="Can be default or image">
 		
 		<cfset var rs=getPrivateSearch(arguments.siteid,arguments.keywords,arguments.tag,arguments.sectionID, arguments.searchType) />
-		<cfset var it = getServiceFactory().getBean("contentIterator")>
+		<cfset var it = getBean("contentIterator")>
 		<cfset it.setQuery(rs)>
 		<cfreturn it/>	
 		
@@ -1373,7 +1386,7 @@ to your own modified versions of Mura CMS.
 		<cfargument name="categoryID" required="true" default=""/>
 		
 		<cfset var rs=getPublicSearch(arguments.siteid,arguments.keywords,arguments.tag,arguments.sectionID,arguments.categoryID) />
-		<cfset var it = getServiceFactory().getBean("contentIterator")>
+		<cfset var it = getBean("contentIterator")>
 		<cfset it.setQuery(rs)>
 		<cfreturn it/>	
 	</cffunction>
@@ -1427,7 +1440,7 @@ to your own modified versions of Mura CMS.
 			
 			<cfif rs.type eq "file">
 				<cfset contentBean=application.contentManager.getActiveContent(rs.contentID,arguments.siteid) />
-				<cfset rsFile=application.serviceFactory.getBean('fileManager').read(contentBean.getfileid()) />
+				<cfset rsFile=getBean('fileManager').read(contentBean.getfileid()) />
 				<cfset fileOutput = rsFile.image>
 				<cfset filePath = "#basepath#\#replace(contentBean.getcontentID(), '-', '', 'ALL')#.#rsfile.fileExt#">
 			<cfelse>
@@ -1470,7 +1483,7 @@ to your own modified versions of Mura CMS.
 		<cfargument name="today" type="date" required="yes" default="#now()#" />
 	
 		<cfset var rs=getRelatedContent(arguments.siteID,arguments.contentHistID,arguments.liveOnly,arguments.today) />
-		<cfset var it = getServiceFactory().getBean("contentIterator")>
+		<cfset var it = getBean("contentIterator")>
 		<cfset it.setQuery(rs)>
 		<cfreturn it/>
 	</cffunction>
@@ -1526,11 +1539,11 @@ to your own modified versions of Mura CMS.
 	</cffunction>
 	
 	<cffunction name="getStatsBean" access="public" returntype="any">
-	<cfreturn createObject("component","contentStatsBean").init(variables.configBean)>
+		<cfreturn getBean("stats")>
 	</cffunction>
 	
 	<cffunction name="getCommentBean" access="public" returntype="any">
-	<cfreturn createObject("component","contentCommentBean").init(variables.configBean,variables.settingsManager,variables.utility,variables.contentDAO, this)>
+		<cfreturn getBean("comment")>
 	</cffunction>
 	
 	<cffunction name="readComments" access="public" output="false" returntype="query">
@@ -1559,7 +1572,7 @@ to your own modified versions of Mura CMS.
 	<cfargument name="approvedOnly" type="boolean" required="true" default="true">
 	
 		<cfset var rs=getRecentCommentsQuery(argumentCollection=arguments)>
-		<cfset var it=getServiceFactory().getBean("contentCommentIterator").init()>
+		<cfset var it=getBean("contentCommentIterator")>
 		<cfset it.setQuery(rs)>	
 	
 		<cfreturn it>
@@ -1750,11 +1763,7 @@ to your own modified versions of Mura CMS.
 	</cffunction>
 	
 	<cffunction name="getIterator" returntype="any" output="false">
-		<cfreturn getServiceFactory().getBean("contentIterator").init()>
-	</cffunction>
-	
-	<cffunction name="getBean" returntype="any" output="false">
-		<cfreturn variables.contentDAO.getBean()>
+		<cfreturn getBean("contentIterator").init()>
 	</cffunction>
 	
 	<cffunction name="getURL" output="false">
@@ -1780,7 +1789,7 @@ to your own modified versions of Mura CMS.
 		<cfargument name="siteid" type="string" required="true" />
 		
 		<cfset var data = structNew() />
-		<cfset var cb = getBean().loadby(contentid=arguments.contentid,siteid=arguments.siteid) />   
+		<cfset var cb = getBean("content").loadby(contentid=arguments.contentid,siteid=arguments.siteid) />   
 		<cfset var showdialog = false />
 		<cfset var historyID = cb.getContentHistID() />
 		<cfset var newDraft = "" />
@@ -1843,7 +1852,7 @@ to your own modified versions of Mura CMS.
 			<cfset variables.clusterManager.purgeContentCache(contentID=arguments.contentBean.getContentID(),siteID=arguments.contentBean.getSiteID())>
 		</cfif>
 	</cfif>
-</cffunction>
+	</cffunction>
 	
 	<cffunction name="purgeContentDescendentsCache" output="false">
 	<cfargument name="contentID">
@@ -1865,7 +1874,7 @@ to your own modified versions of Mura CMS.
 	and path like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.contentBean.getContentID()#%">
 	</cfquery>
 	
-	<cfset it=getServiceFactory().getBean("contentIterator").setQuery(rs)>
+	<cfset it=getBean("contentIterator").setQuery(rs)>
 
 	<cfloop condition="it.hasNext()">
 		<cfset purgeContentCache(contentBean=it.next(),broadcast=false)>
@@ -1874,6 +1883,45 @@ to your own modified versions of Mura CMS.
 	<cfif arguments.broadcast>
 		<cfset variables.clusterManager.purgeContentDescendentsCache(contentID=arguments.contentBean.getContentID(),siteID=arguments.contentBean.getSiteID())>
 	</cfif>
-</cffunction>
+	</cffunction>
 
+	<cffunction name="trimArchiveHistory" output="false">
+	<cfargument name="contentID">
+	<cfargument name="siteID">
+	<cfargument name="limit" default="#variables.configBean.getMaxArchivedVersions()#">
+	<cfset var rsHist=getHist(arguments.contentID, arguments.siteID) >
+	<cfset var i=0>
+	<cfset var trim=arguments.limit+1>
+	<cfset var args=structNew()>
+
+	<cfquery name="rsHist" dbtype="query">
+		select * from rsHist where approved=1 and active!=1
+	</cfquery>
+		
+	<cfif rsHist.recordcount gt arguments.limit>
+		<cfloop index="i" from="#trimThreshhold#" to="#rsHist.recordcount#">
+			<cfset args.siteID=arguments.siteID>
+			<cfset args.contenthistID=rsHist.contenthistid[i]>
+			<cfset delete(args)>
+		</cfloop>
+	</cfif>
+	
+	</cffunction>
+
+	<cffunction name="updateContentObjectParams" output="false">
+		<cfargument name="contenthistID">
+		<cfargument name="regionID">
+		<cfargument name="orderno">
+		<cfargument name="params">
+		
+		<cfset variables.contentDAO.updateContentObjectParams(argumentCollection=arguments)>
+	</cffunction>
+	
+	<cffunction name="readContentObject" output="false">
+		<cfargument name="contenthistID">
+		<cfargument name="regionID">
+		<cfargument name="orderno">
+		
+		<cfreturn variables.contentDAO.readContentObject(argumentCollection=arguments)>
+	</cffunction>
 </cfcomponent>

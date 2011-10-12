@@ -6,39 +6,43 @@ the Free Software Foundation, Version 2 of the License.
 
 Mura CMS is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. �See the
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-along with Mura CMS. �If not, see <http://www.gnu.org/licenses/>.
+along with Mura CMS. If not, see <http://www.gnu.org/licenses/>.
 
-Linking Mura CMS statically or dynamically with other modules constitutes
-the preparation of a derivative work based on Mura CMS. Thus, the terms and 	
-conditions of the GNU General Public License version 2 (�GPL�) cover the entire combined work.
+Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on 
+Mura CMS. Thus, the terms and conditions of the GNU General Public License version 2 ("GPL") cover the entire combined work.
 
-However, as a special exception, the copyright holders of Mura CMS grant you permission
-to combine Mura CMS with programs or libraries that are released under the GNU Lesser General Public License version 2.1.
+However, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with programs
+or libraries that are released under the GNU Lesser General Public License version 2.1.
 
-In addition, as a special exception, �the copyright holders of Mura CMS grant you permission
-to combine Mura CMS �with independent software modules that communicate with Mura CMS solely
-through modules packaged as Mura CMS plugins and deployed through the Mura CMS plugin installation API,
-provided that these modules (a) may only modify the �/trunk/www/plugins/ directory through the Mura CMS
-plugin installation API, (b) must not alter any default objects in the Mura CMS database
-and (c) must not alter any files in the following directories except in cases where the code contains
-a separately distributed license.
+In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with 
+independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without 
+Mura CMS under the license of your choice, provided that you follow these specific guidelines: 
 
-/trunk/www/admin/
-/trunk/www/tasks/
-/trunk/www/config/
-/trunk/www/requirements/mura/
+Your custom code 
 
-You may copy and distribute such a combined work under the terms of GPL for Mura CMS, provided that you include
-the source code of that other code when and as the GNU GPL requires distribution of source code.
+• Must not alter any default objects in the Mura CMS database and
+• May not alter the default display of the Mura CMS logo within Mura CMS and
+• Must not alter any files in the following directories.
 
-For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception
-for your modified version; it is your choice whether to do so, or to make such modified version available under
-the GNU General Public License version 2 �without this exception. �You may, if you choose, apply this exception
-to your own modified versions of Mura CMS.
+ /admin/
+ /tasks/
+ /config/
+ /requirements/mura/
+ /Application.cfc
+ /index.cfm
+ /MuraProxy.cfc
+
+You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work 
+under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL 
+requires distribution of source code.
+
+For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your 
+modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
+version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 
 <cfcomponent extends="mura.cfobject" output="false">
@@ -113,7 +117,7 @@ to your own modified versions of Mura CMS.
 	<cfargument name="activeOnly" type="boolean" required="true" default="true">
 	<cfargument name="InterestsOnly" type="boolean" required="true" default="false">
 	
-	<cfset var it=getServiceFactory().getBean("categoryIterator").init()>
+	<cfset var it=getBean("categoryIterator").init()>
 	<cfset it.setQuery(getCategories(arguments.siteid,arguments.parentID,arguments.keywords,arguments.activeOnly,arguments.InterestsOnly))>
 	<cfreturn it />
 </cffunction>
@@ -225,8 +229,8 @@ to your own modified versions of Mura CMS.
 <cffunction name="create" access="public" returntype="any" output="false">
 	<cfargument name="data" type="struct" default="#structnew()#"/>		
 	
-	<cfset var categoryBean=application.serviceFactory.getBean("categoryBean") />
-	<cfset var pluginEvent = createObject("component","mura.event").init(arguments.data) />
+	<cfset var categoryBean=getBean("categoryBean") />
+	<cfset var pluginEvent = getBean("category").set(arguments.data) />
 	<cfset var parentBean="">
 	<cfset categoryBean.set(arguments.data) />
 	
@@ -307,20 +311,20 @@ to your own modified versions of Mura CMS.
 	<cfargument name="name" required="true" default=""/>
 	<cfargument name="remoteID" required="true" default=""/>
 	<cfargument name="filename" required="true" default=""/>
-	<cfargument name="siteID" required="true" default=""/>		
-	<cfargument name="categoryBean" default=""/>
+	<cfargument name="siteID" required="true" default=""/>
+	<cfargument name="categoryBean" required="true" default=""/>		
 	<cfset var key= "" />
 	<cfset var site=""/>
 	<cfset var cacheFactory="">
-	<cfset var bean="">	
+	<cfset var bean=arguments.categoryBean>	
 	
 	<cfif not len(arguments.categoryID) and len(arguments.siteID)>
 		<cfif len(arguments.name)>
-			<cfreturn readByName(arguments.name, arguments.siteID, arguments.categoryBean) />
+			<cfreturn readByName(arguments.name, arguments.siteID, bean) />
 		<cfelseif len(arguments.remoteID)>
-			<cfreturn readByRemoteID(arguments.remoteID, arguments.siteID, arguments.categoryBean) />
+			<cfreturn readByRemoteID(arguments.remoteID, arguments.siteID, bean) />
 		<cfelseif len(arguments.filename)>
-			<cfreturn readByFilename(arguments.filename, arguments.siteID, arguments.categoryBean) />
+			<cfreturn readByFilename(arguments.filename, arguments.siteID, bean) />
 		</cfif>
 	</cfif>
 	
@@ -332,22 +336,20 @@ to your own modified versions of Mura CMS.
 		<!--- check to see if it is cached. if not then pass in the context --->
 		<!--- otherwise grab it from the cache --->
 		<cfif NOT cacheFactory.has( key )>
-			<cfset bean=variables.DAO.read(arguments.categoryID,arguments.categoryBean)>
+			<cfset bean=variables.DAO.read(arguments.categoryID,bean)>
 			<cfif not bean.getIsNew()>
 				<cfset cacheFactory.get( key, structCopy(bean.getAllValues()) ) />
 			</cfif>
 			<cfreturn bean/>
 		<cfelse>
-			<cfif isObject(arguments.categoryBean)>
-				<cfset bean=arguments.categoryBean/>
-			<cfelse>
-				<cfset bean=variables.DAO.getBean()/>
+			<cfif not isObject(bean)>
+				<cfset bean=variables.DAO.getBean("category")/>
 			</cfif>
 			<cfset bean.setAllValues( structCopy(cacheFactory.get( key )) )>
 			<cfreturn bean />
 		</cfif>
 	<cfelse>
-		<cfreturn variables.DAO.read(arguments.categoryID,arguments.categoryBean) />
+		<cfreturn variables.DAO.read(arguments.categoryID,bean) />
 	</cfif>		
 	
 </cffunction>
@@ -355,32 +357,30 @@ to your own modified versions of Mura CMS.
 <cffunction name="readByName" access="public" returntype="any" output="false">
 	<cfargument name="name" type="String" />		
 	<cfargument name="siteid" type="string" />
-	<cfargument name="categoryBean" default=""/>
+	<cfargument name="categoryBean" required="true" default=""/>
 	<cfset var key= "category" & arguments.siteid & arguments.name />
 	<cfset var site=variables.settingsManager.getSite(arguments.siteid)/>
 	<cfset var cacheFactory=site.getCacheFactory(name="data")>
-	<cfset var bean="">	
+	<cfset var bean=arguments.categoryBean>	
 	
 	<cfif site.getCache()>
 		<!--- check to see if it is cached. if not then pass in the context --->
 		<!--- otherwise grab it from the cache --->
 		<cfif NOT cacheFactory.has( key )>
-			<cfset bean=variables.DAO.readByName(arguments.name,arguments.siteID,arguments.categoryBean) >
+			<cfset bean=variables.DAO.readByName(arguments.name,arguments.siteID,bean) >
 			<cfif not bean.getIsNew()>
 				<cfset cacheFactory.get( key, structCopy(bean.getAllValues()) ) />
 			</cfif>
 			<cfreturn bean/>
 		<cfelse>
-			<cfif isObject(arguments.categoryBean)>
-				<cfset bean=arguments.categoryBean/>
-			<cfelse>
-				<cfset bean=variables.DAO.getBean()/>
+			<cfif not isObject(bean)>
+				<cfset bean=variables.DAO.getBean("category")/>
 			</cfif>
 			<cfset bean.setAllValues( structCopy(cacheFactory.get( key )) )>
 			<cfreturn bean />
 		</cfif>
 	<cfelse>
-		<cfreturn variables.DAO.readByName(arguments.name,arguments.siteID,arguments.categoryBean) />
+		<cfreturn variables.DAO.readByName(arguments.name,arguments.siteID,bean) />
 	</cfif>	
 
 </cffunction>
@@ -388,11 +388,11 @@ to your own modified versions of Mura CMS.
 <cffunction name="readByFilename" access="public" returntype="any" output="false">
 	<cfargument name="filename" type="String" />		
 	<cfargument name="siteid" type="string" />
-	<cfargument name="categoryBean" default=""/>
+	<cfargument name="categoryBean" required="true" default=""/>
 	<cfset var key= "" />
 	<cfset var site=variables.settingsManager.getSite(arguments.siteid)/>
 	<cfset var cacheFactory=site.getCacheFactory(name="data")>
-	<cfset var bean="">	
+	<cfset var bean=arguments.categoryBean>
 	
 	<cfif arguments.filename eq "/">
 		<cfset arguments.filename="">
@@ -420,55 +420,51 @@ to your own modified versions of Mura CMS.
 		<!--- check to see if it is cached. if not then pass in the context --->
 		<!--- otherwise grab it from the cache --->
 		<cfif NOT cacheFactory.has( key )>
-			<cfset bean=variables.DAO.readByFilename(arguments.filename,arguments.siteID,arguments.categoryBean) >
+			<cfset bean=variables.DAO.readByFilename(arguments.filename,arguments.siteID,bean) >
 			<cfif not bean.getIsNew()>
 				<cfset cacheFactory.get( key, structCopy(bean.getAllValues()) ) />
 			</cfif>
 			<cfreturn bean/>
 		<cfelse>
-			<cfif isObject(arguments.categoryBean)>
-				<cfset bean=arguments.categoryBean/>
-			<cfelse>
-				<cfset bean=variables.DAO.getBean()/>
+			<cfif not isObject(bean)>
+				<cfset bean=variables.DAO.getBean("category")/>
 			</cfif>
 			<cfset bean.setAllValues( structCopy(cacheFactory.get( key )) )>
 			<cfreturn bean />
 		</cfif>
 	<cfelse>
-		<cfreturn variables.DAO.readByFilename(arguments.filename,arguments.siteID,arguments.categoryBean) />
+		<cfreturn variables.DAO.readByFilename(arguments.filename,arguments.siteID,bean) />
 	</cfif>	
 
 </cffunction>
 
 <cffunction name="readByRemoteID" access="public" returntype="any" output="false">
 	<cfargument name="remoteID" type="String" />
-	<cfargument name="siteID" type="String" />		
-	<cfargument name="categoryBean" default=""/>
+	<cfargument name="siteID" type="String" />
+	<cfargument name="categoryBean" required="true" default=""/>		
 	<cfset var key= "category" & arguments.siteid & arguments.remoteID />
 	<cfset var site=variables.settingsManager.getSite(arguments.siteid)/>
 	<cfset var cacheFactory=site.getCacheFactory(name="data")>
-	<cfset var bean="">	
+	<cfset var bean=arguments.categoryBean>	
 	
 	<cfif site.getCache()>
 		<!--- check to see if it is cached. if not then pass in the context --->
 		<!--- otherwise grab it from the cache --->
 		<cfif NOT cacheFactory.has( key )>
-			<cfset bean=variables.DAO.readByRemoteID(arguments.remoteID,arguments.siteID,arguments.categoryBean) >
+			<cfset bean=variables.DAO.readByRemoteID(arguments.remoteID,arguments.siteID,bean) >
 			<cfif not bean.getIsNew()>
 				<cfset cacheFactory.get( key, structCopy(bean.getAllValues()) ) />
 			</cfif>
 			<cfreturn bean/>
 		<cfelse>
-			<cfif isObject(arguments.categoryBean)>
-				<cfset bean=arguments.categoryBean/>
-			<cfelse>
-				<cfset bean=variables.DAO.getBean()/>
+			<cfif not isObject(bean)>
+				<cfset bean=variables.DAO.getBean("category")/>
 			</cfif>
 			<cfset bean.setAllValues( structCopy(cacheFactory.get( key )) )>
 			<cfreturn bean />
 		</cfif>
 	<cfelse>
-		<cfreturn variables.DAO.readByRemoteID(arguments.remoteID,arguments.siteID,arguments.categoryBean) />
+		<cfreturn variables.DAO.readByRemoteID(arguments.remoteID,arguments.siteID,bean) />
 	</cfif>	
 
 </cffunction>
@@ -523,7 +519,7 @@ to your own modified versions of Mura CMS.
 	path like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.categoryBean.getCategoryID()#%">
 	</cfquery>
 	
-	<cfset it=getServiceFactory().getBean("categoryIterator").setQuery(rs)>
+	<cfset it=getBean("categoryIterator").setQuery(rs)>
 
 	<cfloop condition="it.hasNext()">
 		<cfset purgeCategoryCache(categoryBean=it.next(),broadcast=false)>
@@ -724,10 +720,6 @@ to your own modified versions of Mura CMS.
 		
 		<cfset variables.DAO.keepCategories(arguments.contentHistID,arguments.rsKeepers) />
 
-</cffunction>
-
-<cffunction name="getBean" returntype="any" output="false">
-	<cfreturn variables.DAO.getBean()>
 </cffunction>
 
 <cffunction name="getCrumbQuery" output="false" returntype="any">

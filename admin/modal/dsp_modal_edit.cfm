@@ -6,39 +6,43 @@ the Free Software Foundation, Version 2 of the License.
 
 Mura CMS is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. �See the
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-along with Mura CMS. �If not, see <http://www.gnu.org/licenses/>.
+along with Mura CMS. If not, see <http://www.gnu.org/licenses/>.
 
-Linking Mura CMS statically or dynamically with other modules constitutes
-the preparation of a derivative work based on Mura CMS. Thus, the terms and 	
-conditions of the GNU General Public License version 2 (�GPL�) cover the entire combined work.
+Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on 
+Mura CMS. Thus, the terms and conditions of the GNU General Public License version 2 ("GPL") cover the entire combined work.
 
-However, as a special exception, the copyright holders of Mura CMS grant you permission
-to combine Mura CMS with programs or libraries that are released under the GNU Lesser General Public License version 2.1.
+However, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with programs
+or libraries that are released under the GNU Lesser General Public License version 2.1.
 
-In addition, as a special exception, �the copyright holders of Mura CMS grant you permission
-to combine Mura CMS �with independent software modules that communicate with Mura CMS solely
-through modules packaged as Mura CMS plugins and deployed through the Mura CMS plugin installation API,
-provided that these modules (a) may only modify the �/trunk/www/plugins/ directory through the Mura CMS
-plugin installation API, (b) must not alter any default objects in the Mura CMS database
-and (c) must not alter any files in the following directories except in cases where the code contains
-a separately distributed license.
+In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with 
+independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without 
+Mura CMS under the license of your choice, provided that you follow these specific guidelines: 
 
-/trunk/www/admin/
-/trunk/www/tasks/
-/trunk/www/config/
-/trunk/www/requirements/mura/
+Your custom code 
 
-You may copy and distribute such a combined work under the terms of GPL for Mura CMS, provided that you include
-the source code of that other code when and as the GNU GPL requires distribution of source code.
+• Must not alter any default objects in the Mura CMS database and
+• May not alter the default display of the Mura CMS logo within Mura CMS and
+• Must not alter any files in the following directories.
 
-For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception
-for your modified version; it is your choice whether to do so, or to make such modified version available under
-the GNU General Public License version 2 �without this exception. �You may, if you choose, apply this exception
-to your own modified versions of Mura CMS.
+ /admin/
+ /tasks/
+ /config/
+ /requirements/mura/
+ /Application.cfc
+ /index.cfm
+ /MuraProxy.cfc
+
+You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work 
+under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL 
+requires distribution of source code.
+
+For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your 
+modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
+version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <!---------------------------------------------->
 <!--- LET'S FIGURE OUT IF THE BROWSER IS IE6 --->
@@ -49,6 +53,22 @@ to your own modified versions of Mura CMS.
 <cfparam name="Cookie.fetDisplay" default="">
 <cfoutput>
 <link href="#application.configBean.getContext()#/admin/css/dialog.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="#application.configBean.getContext()#/admin/js/porthole/porthole.min.js"></script>
+
+<!---[if LT IE9]>
+
+   <style type="text/css">
+
+   ##frontEndToolsModalContainer {
+         background: transparent;
+          filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=##00000085,endColorstr=##00000085);
+          zoom: 1;
+       } 
+
+    </style>
+
+<![endif]--->
+
 <cfsilent>
 	<cfif len(application.configBean.getAdminDomain())>
 		<cfif application.configBean.getAdminSSL()>
@@ -59,6 +79,8 @@ to your own modified versions of Mura CMS.
 	<cfelse>
 		<cfset adminBase=""/>
 	</cfif>
+	
+	<cfset targetHook=generateEditableHook()>
 	
 	<cfset editLink = adminBase & "#application.configBean.getContext()#/admin/index.cfm?fuseaction=cArch.edit">
 	<cfif structKeyExists(request,"previewID") and len(request.previewID)>
@@ -126,6 +148,127 @@ to your own modified versions of Mura CMS.
 <script type="text/javascript">
 	addLoadEvent(checkToolbarDisplay);
 	
+	var adminProxy;
+	var adminDomain=<cfif len($.globalConfig('admindomain'))>"#$.globalConfig('admindomain')#"<cfelse>location.hostname</cfif>;
+	var adminProtocal=<cfif application.configBean.getAdminSSL()>"https://";<cfelse>"http://"</cfif>;
+	var adminProxyLoc=adminProtocal + adminDomain + "#$.globalConfig('port')##$.globalConfig('context')#/admin/js/porthole/proxy.html";
+	var fronEndProxyLoc= location.protocol + "//" + location.hostname + "#$.globalConfig('port')#";
+	
+	function onAdminMessage(messageEvent){
+		if (messageEvent.origin == adminProtocal + adminDomain) {
+			var parameters = Porthole.WindowProxy.splitMessageParameters(messageEvent.data);
+			if (parameters["cmd"] == "setWindowMode") {
+				if (parameters["mode"] == "configurator") {
+					frontEndModalIsConfigurator = true;
+				}
+				else {
+					frontEndModalIsConfigurator = false;
+				}
+				resizeFrontEndToolsModal();	
+			} else if(parameters["cmd"] == "setLocation"){
+				window.location=parameters["location"];
+			}
+		}			
+	}
+
+	var adminProxy;
+	
+	function initAdminProxy(){
+			adminProxy = new Porthole.WindowProxy(adminProxyLoc, 'frontEndToolsModaliframe');
+			adminProxy.addEventListener(onAdminMessage);
+	}
+	
+	addLoadEvent(initAdminProxy);
+	
+	
+	<cfif getJsLib() eq "jquery">
+	var frontEndModalHeight=0;
+	var frontEndModalIsConfigurator=false;
+	
+	function openFrontEndToolsModal(a){
+		var src=a.href + "&frontEndProxyLoc=" + fronEndProxyLoc;
+		var isModal=jQuery(a).attr("data-configurator");
+		var modalClass="";
+		
+		if (isModal == undefined) {
+			frontEndModalIsConfigurator = false;
+		} else if (isModal == "true") {
+			frontEndModalIsConfigurator = true;
+			modalClass="modal-configurator";
+		} else {
+			frontEndModalIsConfigurator = false;
+		}
+		
+		closeFrontEndToolsModal();
+		
+		jQuery("##fronEndToolsModalTarget").html('<div id="frontEndToolsModalContainer" class="' + modalClass + '">' +
+		'<div id="frontEndToolsModalBody">' +
+		'<a id="frontEndToolsModalClose" style="display:none;" href="javascript:closeFrontEndToolsModal();">Close</a>' +
+		'<iframe src="' + src + '" id="frontEndToolsModaliframe" scrolling="false" frameborder="0" style="overflow:hidden"></iframe>' +
+		'</div>' +
+		'</div>');
+		
+		frontEndModalHeight=0;
+		resizeFrontEndToolsModal();
+		
+	}
+	
+	function resizeFrontEndToolsModal(){
+		if (document.getElementById("frontEndToolsModaliframe")) {
+			var frame = document.getElementById("frontEndToolsModaliframe");
+			var frameDoc = frame.contentWindow.document;
+			var frameContainer = document.getElementById("frontEndToolsModalContainer");
+		
+			if (frameDoc.body != null) {
+				var frameHeight = Math.max(frameDoc.body.scrollHeight, frameDoc.body.offsetHeight, frameDoc.documentElement.scrollHeight, frameDoc.documentElement.offsetHeight);
+				var windowHeight = Math.max(frameHeight, jQuery(window).height());
+		
+				if (frameHeight < jQuery(window).height()) {
+					frameHeight= Math.max(jQuery(window).height() * .80,frameHeight);
+				}
+				
+				frame.style.height = frameHeight + "px";
+				frameContainer.style.position = "absolute";
+				document.overflow = "auto"
+				
+				if(frontEndModalIsConfigurator){
+					jQuery("##frontEndToolsModalContainer").addClass("modal-configurator");
+				} else {
+					jQuery("##frontEndToolsModalContainer").removeClass("modal-configurator");
+				}
+				
+				if(windowHeight > frontEndModalHeight){	
+					frontEndModalHeight=windowHeight;
+					frameContainer.style.height=windowHeight + 100 + "px"
+					setTimeout(function(){
+						jQuery("##frontEndToolsModalClose").fadeIn("fast")
+					},1000);
+					
+				}
+				
+			}
+			setTimeout(resizeFrontEndToolsModal, 250);
+		}
+		
+	}
+	
+	function closeFrontEndToolsModal(){
+		jQuery('##frontEndToolsModalContainer').remove();
+	}	
+	
+
+	
+	jQuery(document).ready(function(){
+		jQuery(".frontEndToolsModal").each(
+			function(){
+				jQuery(this).click(function(event){
+					event.preventDefault();
+					openFrontEndToolsModal(this);
+				});
+		});
+	});	
+	</cfif>
+	
 	function checkToolbarDisplay () {
 		<cfif Cookie.fetDisplay eq "none">
 			<cfif getJsLib() eq "jquery">
@@ -171,16 +314,20 @@ to your own modified versions of Mura CMS.
 		function($) {
 			$(".editableObjectContents").each(	
 				function(el){
+					
 					var maxWidth=0;
+								
 					$(this).children().each(
 						function(el){
 							var elWidth=$(this).outerWidth();			
 							if(elWidth > maxWidth){
 								maxWidth=elWidth;
-							}									
+							}
+																	
 						}	
 					);
 					$(this).width(maxWidth).parent().width(maxWidth);
+					
 				}
 			);
 		}
@@ -254,7 +401,7 @@ to your own modified versions of Mura CMS.
 		<ul>
 		<cfif not request.contentBean.getIsNew()>
 			<cfif ListFindNoCase('editor,author',request.r.perm) or listFind(session.mura.memberships,'S2')>
-			<li id="adminEditPage"><a href="#editLink#" rel="shadowbox;width=1100;">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.edit')#</a></li>
+			<li id="adminEditPage"><a href="#editLink#" #targetHook#>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.edit')#</a></li>
 				<cfif listFind("Page,Portal,Calendar,Gallery",request.contentBean.getType())>
 						<cfif variables.isIeSix>
 						<!--- USES JAVASCRIPT TO SHOW AND HIDE THE ADD MENU AS IT PLAYS NICE WITH IE6 --->
@@ -264,15 +411,15 @@ to your own modified versions of Mura CMS.
 							
 						</cfif><ul id="addMenuDropDown">
 						<cfif request.contentBean.getType() neq 'Gallery'>
-						<li id="adminNewPage"><a href="#newLink#&amp;type=Page" rel="shadowbox;width=1050;">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.type.page')#</a></li>
-						<li id="adminNewLink"><a href="#newLink#&amp;type=Link" rel="shadowbox;width=1050;" >#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.type.link')#</a></li>
-						<li id="adminNewFile"><a href="#newLink#&amp;type=File" rel="shadowbox;width=1050;">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.type.file')#</a></li>
-						<li id="adminNewPortal"><a href="#newLink#&amp;type=Portal" rel="shadowbox;width=1050;">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.type.portal')#</a></li>
-						<li id="adminNewCalendar"><a href="#newLink#&amp;type=Calendar" rel="shadowbox;width=1050;" >#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.type.calendar')#</a></li>
-						<li id="adminNewGallery"><a href="#newLink#&amp;type=Gallery" rel="shadowbox;width=1050;">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.type.gallery')#</a></li>
+						<li id="adminNewPage"><a href="#newLink#&amp;type=Page" #targetHook#>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.type.page')#</a></li>
+						<li id="adminNewLink"><a href="#newLink#&amp;type=Link" #targetHook# >#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.type.link')#</a></li>
+						<li id="adminNewFile"><a href="#newLink#&amp;type=File" #targetHook#>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.type.file')#</a></li>
+						<li id="adminNewPortal"><a href="#newLink#&amp;type=Portal" #targetHook#>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.type.portal')#</a></li>
+						<li id="adminNewCalendar"><a href="#newLink#&amp;type=Calendar" #targetHook# >#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.type.calendar')#</a></li>
+						<li id="adminNewGallery"><a href="#newLink#&amp;type=Gallery" #targetHook#>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.type.gallery')#</a></li>
 						<cfelse>
-							<li id="adminNewGalleryItem"><a href="#newLink#&amp;type=File" rel="shadowbox;width=1050;">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.type.galleryitem')#</a></li>
-							<li id="adminNewGalleryItemMulti"><a href="#newMultiLink#&amp;type=File" rel="shadowbox;width=1050;">#application.rbFactory.getKeyValue(session.rb,'sitemanager.addmultiitems')#</a></li>
+							<li id="adminNewGalleryItem"><a href="#newLink#&amp;type=File" #targetHook#>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.type.galleryitem')#</a></li>
+							<li id="adminNewGalleryItemMulti"><a href="#newMultiLink#&amp;type=File" #targetHook#>#application.rbFactory.getKeyValue(session.rb,'sitemanager.addmultiitems')#</a></li>
 						</cfif>			
 						#application.pluginManager.renderScripts("onFEToolbarAddRender",request.contentBean.getSiteID())#
 						#application.pluginManager.renderScripts("onFEToolbar#request.contentBean.getType()#AddRender",request.contentBean.getSiteID())#
@@ -280,7 +427,7 @@ to your own modified versions of Mura CMS.
 						</ul>
 					</li>
 				</cfif>
-				<li id="adminVersionHistory"><a href="#historyLink#" rel="shadowbox;width=1050;">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.versionhistory')#</a></li>
+				<li id="adminVersionHistory"><a href="#historyLink#" #targetHook#>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.versionhistory')#</a></li>
 			</cfif>
 			<cfif (request.r.perm eq 'editor' or listFind(session.mura.memberships,'S2')) and request.contentBean.getFilename() neq "" and not request.contentBean.getIslocked()>
 				<li id="adminDelete"><a href="#deleteLink#" onclick="return confirm('#jsStringFormat(application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.deletecontentrecursiveconfirm'),request.contentBean.getMenutitle()))#');">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.delete')#</a></li>
@@ -294,6 +441,10 @@ to your own modified versions of Mura CMS.
 		</ul>
 		
 	</div>
+	
+	<cfif getJSLib() eq "jquery">
+		<div id="fronEndToolsModalTarget"></div>
+	</cfif>
 </cfoutput>
 </cfif>
 

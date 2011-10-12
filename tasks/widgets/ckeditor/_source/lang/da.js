@@ -14,7 +14,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 */
 
 /**
- * Constains the dictionary of language entries.
+ * Contains the dictionary of language entries.
  * @namespace
  */
 CKEDITOR.lang['da'] =
@@ -121,6 +121,10 @@ CKEDITOR.lang['da'] =
 		alignBottom		: 'Nederst',
 		invalidHeight	: 'Højde skal være et tal.',
 		invalidWidth	: 'Bredde skal være et tal.',
+		invalidCssLength	: 'Value specified for the "%1" field must be a positive number with or without a valid CSS measurement unit (px, %, in, cm, mm, em, ex, pt, or pc).', // MISSING
+		invalidHtmlLength	: 'Value specified for the "%1" field must be a positive number with or without a valid HTML measurement unit (px or %).', // MISSING
+		invalidInlineStyle	: 'Value specified for the inline style must consist of one or more tuples with the format of "name : value", separated by semi-colons.', // MISSING
+		cssLengthTooltip	: 'Enter a number for a value in pixels or a number with a valid CSS unit (px, %, in, cm, mm, em, ex, pt, or pc).', // MISSING
 
 		// Put the voice-only part of the label in the span.
 		unavailable		: '%1<span class="cke_accessibility">, ikke tilgængelig</span>'
@@ -201,7 +205,8 @@ CKEDITOR.lang['da'] =
 		menu		: 'Egenskaber for bogmærke',
 		title		: 'Egenskaber for bogmærke',
 		name		: 'Bogmærke navn',
-		errorName	: 'Indtast bogmærke navn'
+		errorName	: 'Indtast bogmærke navn',
+		remove		: 'Remove Anchor' // MISSING
 	},
 
 	// List style dialog
@@ -237,6 +242,7 @@ CKEDITOR.lang['da'] =
 		findWhat			: 'Søg efter:',
 		replaceWith			: 'Erstat med:',
 		notFoundMsg			: 'Søgeteksten blev ikke fundet',
+		findOptions			: 'Find Options', // MISSING
 		matchCase			: 'Forskel på store og små bogstaver',
 		matchWord			: 'Kun hele ord',
 		matchCyclic			: 'Match cyklisk',
@@ -413,7 +419,6 @@ CKEDITOR.lang['da'] =
 		upload		: 'Upload',
 		alt			: 'Alternativ tekst',
 		lockRatio	: 'Lås størrelsesforhold',
-		unlockRatio	: 'Unlock Ratio', // MISSING
 		resetSize	: 'Nulstil størrelse',
 		border		: 'Ramme',
 		hSpace		: 'Vandret margen',
@@ -770,40 +775,40 @@ CKEDITOR.lang['da'] =
 
 	docprops :
 	{
-		label : 'Document Properties', // MISSING
-		title : 'Document Properties', // MISSING
+		label : 'Egenskaber for dokument',
+		title : 'Egenskaber for dokument',
 		design : 'Design', // MISSING
 		meta : 'Meta Tags', // MISSING
 		chooseColor : 'Choose', // MISSING
-		other : 'Other...', // MISSING
-		docTitle :	'Page Title', // MISSING
-		charset : 	'Character Set Encoding', // MISSING
-		charsetOther : 'Other Character Set Encoding', // MISSING
+		other : '<anden>',
+		docTitle :	'Sidetitel',
+		charset : 	'Tegnsæt kode',
+		charsetOther : 'Anden tegnsæt kode',
 		charsetASCII : 'ASCII', // MISSING
-		charsetCE : 'Central European', // MISSING
-		charsetCT : 'Chinese Traditional (Big5)', // MISSING
-		charsetCR : 'Cyrillic', // MISSING
-		charsetGR : 'Greek', // MISSING
-		charsetJP : 'Japanese', // MISSING
-		charsetKR : 'Korean', // MISSING
-		charsetTR : 'Turkish', // MISSING
+		charsetCE : 'Centraleuropæisk',
+		charsetCT : 'Traditionel kinesisk (Big5)',
+		charsetCR : 'Kyrillisk',
+		charsetGR : 'Græsk',
+		charsetJP : 'Japansk',
+		charsetKR : 'Koreansk',
+		charsetTR : 'Tyrkisk',
 		charsetUN : 'Unicode (UTF-8)', // MISSING
-		charsetWE : 'Western European', // MISSING
-		docType : 'Document Type Heading', // MISSING
-		docTypeOther : 'Other Document Type Heading', // MISSING
-		xhtmlDec : 'Include XHTML Declarations', // MISSING
-		bgColor : 'Background Color', // MISSING
-		bgImage : 'Background Image URL', // MISSING
-		bgFixed : 'Non-scrolling (Fixed) Background', // MISSING
-		txtColor : 'Text Color', // MISSING
-		margin : 'Page Margins', // MISSING
-		marginTop : 'Top', // MISSING
-		marginLeft : 'Left', // MISSING
-		marginRight : 'Right', // MISSING
-		marginBottom : 'Bottom', // MISSING
-		metaKeywords : 'Document Indexing Keywords (comma separated)', // MISSING
-		metaDescription : 'Document Description', // MISSING
-		metaAuthor : 'Author', // MISSING
+		charsetWE : 'Vesteuropæisk',
+		docType : 'Dokumenttype kategori',
+		docTypeOther : 'Anden dokumenttype kategori',
+		xhtmlDec : 'Inkludere XHTML deklartion',
+		bgColor : 'Baggrundsfarve',
+		bgImage : 'Baggrundsbillede URL',
+		bgFixed : 'Fastlåst baggrund',
+		txtColor : 'Tekstfarve',
+		margin : 'Sidemargen',
+		marginTop : 'Øverst',
+		marginLeft : 'Venstre',
+		marginRight : 'Højre',
+		marginBottom : 'Nederst',
+		metaKeywords : 'Dokument index nøgleord (kommasepareret)',
+		metaDescription : 'Dokument beskrivelse',
+		metaAuthor : 'Forfatter',
 		metaCopyright : 'Copyright', // MISSING
 		previewHtml : '<p>This is some <strong>sample text</strong>. You are using <a href="javascript:void(0)">CKEditor</a>.</p>' // MISSING
 	}

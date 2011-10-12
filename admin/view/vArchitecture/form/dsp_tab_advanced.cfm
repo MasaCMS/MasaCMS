@@ -6,46 +6,50 @@ the Free Software Foundation, Version 2 of the License.
 
 Mura CMS is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. �See the
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-along with Mura CMS. �If not, see <http://www.gnu.org/licenses/>.
+along with Mura CMS. If not, see <http://www.gnu.org/licenses/>.
 
-Linking Mura CMS statically or dynamically with other modules constitutes
-the preparation of a derivative work based on Mura CMS. Thus, the terms and 	
-conditions of the GNU General Public License version 2 (�GPL�) cover the entire combined work.
+Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on 
+Mura CMS. Thus, the terms and conditions of the GNU General Public License version 2 ("GPL") cover the entire combined work.
 
-However, as a special exception, the copyright holders of Mura CMS grant you permission
-to combine Mura CMS with programs or libraries that are released under the GNU Lesser General Public License version 2.1.
+However, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with programs
+or libraries that are released under the GNU Lesser General Public License version 2.1.
 
-In addition, as a special exception, �the copyright holders of Mura CMS grant you permission
-to combine Mura CMS �with independent software modules that communicate with Mura CMS solely
-through modules packaged as Mura CMS plugins and deployed through the Mura CMS plugin installation API,
-provided that these modules (a) may only modify the �/trunk/www/plugins/ directory through the Mura CMS
-plugin installation API, (b) must not alter any default objects in the Mura CMS database
-and (c) must not alter any files in the following directories except in cases where the code contains
-a separately distributed license.
+In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with 
+independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without 
+Mura CMS under the license of your choice, provided that you follow these specific guidelines: 
 
-/trunk/www/admin/
-/trunk/www/tasks/
-/trunk/www/config/
-/trunk/www/requirements/mura/
+Your custom code 
 
-You may copy and distribute such a combined work under the terms of GPL for Mura CMS, provided that you include
-the source code of that other code when and as the GNU GPL requires distribution of source code.
+• Must not alter any default objects in the Mura CMS database and
+• May not alter the default display of the Mura CMS logo within Mura CMS and
+• Must not alter any files in the following directories.
 
-For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception
-for your modified version; it is your choice whether to do so, or to make such modified version available under
-the GNU General Public License version 2 �without this exception. �You may, if you choose, apply this exception
-to your own modified versions of Mura CMS.
+ /admin/
+ /tasks/
+ /config/
+ /requirements/mura/
+ /Application.cfc
+ /index.cfm
+ /MuraProxy.cfc
+
+You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work 
+under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL 
+requires distribution of source code.
+
+For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your 
+modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
+version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 
 <cfset tabLabelList=listAppend(tabLabelList,application.rbFactory.getKeyValue(session.rb,"sitemanager.content.tabs.advanced"))/>
 <cfset tabList=listAppend(tabList,"tabAdvanced")>
 <cfoutput>
 <div id="tabAdvanced">
-<dl class="oneColumn">
+<dl class="oneColumn" id="configuratorTab">
 <dt class="first">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.contentid')#</dt>
 <dd><cfif len(attributes.contentID) and len(request.contentBean.getcontentID())>#request.contentBean.getcontentID()#<cfelse>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.notavailable')#</cfif></dd>
 
@@ -65,6 +69,18 @@ to your own modified versions of Mura CMS.
 	<cfif right(request.rsTemplates.name,4) eq ".cfm">
 		<cfoutput>
 		<option value="#request.rsTemplates.name#" <cfif request.contentBean.gettemplate() eq request.rsTemplates.name>selected</cfif>>#request.rsTemplates.name#</option>
+		</cfoutput>
+	</cfif>
+	</cfloop>
+	</select>
+	</dd>
+	<dt><cfoutput><a href="##" class="tooltip">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.childtemplate')#<span>#application.rbFactory.getKeyValue(session.rb,"tooltip.childTemplate")#</span></a></cfoutput></dt>
+	<dd><select name="childTemplate" class="dropdown">
+	<option value="">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.none')#</option>
+	<cfloop query="request.rsTemplates">
+	<cfif right(request.rsTemplates.name,4) eq ".cfm">
+		<cfoutput>
+		<option value="#request.rsTemplates.name#" <cfif request.contentBean.getchildTemplate() eq request.rsTemplates.name>selected</cfif>>#request.rsTemplates.name#</option>
 		</cfoutput>
 	</cfif>
 	</cfloop>
@@ -134,13 +150,65 @@ to your own modified versions of Mura CMS.
 </cfif>
 
 <cfif attributes.type eq 'Portal' or attributes.type eq 'Calendar' or attributes.type eq 'Gallery'>
-	<dt>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.recordsperpage')#</dt>
-	<dd><select name="nextN" class="dropdown">
-		<cfloop list="1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,25,50,100" index="r">
-			<option value="#r#" <cfif r eq request.contentBean.getNextN()>selected</cfif>>#r#</option>
+	<dt>#application.rbFactory.getKeyValue(session.rb,'collections.imagesize')#</dt>
+	<dd><select name="imageSize" class="dropdown" onchange="if(this.value=='custom'){jQuery('##CustomImageOptions').fadeIn('fast')}else{jQuery('##CustomImageOptions').hide()}">
+		<cfloop list="Small,Medium,Large,Custom" index="i">
+		<option value="#lcase(i)#"<cfif i eq request.contentBean.getImageSize()> selected</cfif>>#I#</option>
 		</cfloop>
-		</select>
+	</select>
 	</dd>
+	<dd id="CustomImageOptions"<cfif request.contentBean.getImageSize() neq "custom"> style="display:none"</cfif>>
+	<dl>
+	<dt>#application.rbFactory.getKeyValue(session.rb,'collections.imageheight')#</dt>
+	<dd><input name="imageHeight" class="text" value="#request.contentBean.getImageHeight()#" /></dd>
+	<dt>#application.rbFactory.getKeyValue(session.rb,'collections.imagewidth')#</dt>
+	<dd><input name="imageWidth" class="text" value="#request.contentBean.getImageWidth()#" /></dd>
+	</dl>
+</dd>
+
+<dt id="availableFields"><span>Available Fields</span> <span>Selected Fields</span></dt>
+<dd>
+	<div class="sortableFields">
+	<p class="dragMsg"><span class="dragFrom">Drag Fields from Here&hellip;</span><span>&hellip;and Drop Them Here.</span></p>
+	
+		<cfset displayList=request.contentBean.getDisplayList()>
+		<cfset availableList=request.contentBean.getAvailableDisplayList()>
+		<cfif attributes.type eq "Gallery">
+			<cfset finder=listFindNoCase(availableList,"Image")>
+			<cfif finder>
+				<cfset availableList=listDeleteAt(availableList,finder)>
+			</cfif>
+		</cfif>			
+		<ul id="contentAvailableListSort" class="contentDisplayListSortOptions">
+			<cfloop list="#availableList#" index="i">
+				<li class="ui-state-default">#i#</li>
+			</cfloop>
+		</ul>
+					
+		<ul id="contentDisplayListSort" class="contentDisplayListSortOptions">
+			<cfloop list="#displayList#" index="i">
+				<li class="ui-state-highlight">#i#</li>
+			</cfloop>
+		</ul>
+					
+		<input type="hidden" id="contentDisplayList" value="#displayList#" name="displayList"/>
+		
+		<script>
+			jQuery(document).ready(
+				function(){
+					setContentDisplayListSort();
+				}
+			);	
+		</script>
+	</div>	
+</dd>
+<dt>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.recordsperpage')#</dt>
+<dd><select name="nextN" class="dropdown">
+	<cfloop list="1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,25,50,100" index="r">
+		<option value="#r#" <cfif r eq request.contentBean.getNextN()>selected</cfif>>#r#</option>
+	</cfloop>
+	</select>
+</dd>
 </cfif>
 
 <cfif (attributes.type neq 'Component' and attributes.type neq 'Form') and request.contentBean.getcontentID() neq '00000000000000000000000000000000001'>

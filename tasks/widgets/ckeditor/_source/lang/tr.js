@@ -13,7 +13,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 */
 
 /**
- * Constains the dictionary of language entries.
+ * Contains the dictionary of language entries.
  * @namespace
  */
 CKEDITOR.lang['tr'] =
@@ -120,6 +120,10 @@ CKEDITOR.lang['tr'] =
 		alignBottom		: 'Alt',
 		invalidHeight	: 'Yükseklik sayı olmalıdır.',
 		invalidWidth	: 'Genişlik bir sayı olmalıdır.',
+		invalidCssLength	: 'Value specified for the "%1" field must be a positive number with or without a valid CSS measurement unit (px, %, in, cm, mm, em, ex, pt, or pc).', // MISSING
+		invalidHtmlLength	: 'Value specified for the "%1" field must be a positive number with or without a valid HTML measurement unit (px or %).', // MISSING
+		invalidInlineStyle	: 'Value specified for the inline style must consist of one or more tuples with the format of "name : value", separated by semi-colons.', // MISSING
+		cssLengthTooltip	: 'Enter a number for a value in pixels or a number with a valid CSS unit (px, %, in, cm, mm, em, ex, pt, or pc).', // MISSING
 
 		// Put the voice-only part of the label in the span.
 		unavailable		: '%1<span class="cke_accessibility">, hazır değildir</span>'
@@ -200,7 +204,8 @@ CKEDITOR.lang['tr'] =
 		menu		: 'Bağlantı Özellikleri',
 		title		: 'Bağlantı Özellikleri',
 		name		: 'Bağlantı Adı',
-		errorName	: 'Lütfen bağlantı için ad giriniz'
+		errorName	: 'Lütfen bağlantı için ad giriniz',
+		remove		: 'Remove Anchor' // MISSING
 	},
 
 	// List style dialog
@@ -236,6 +241,7 @@ CKEDITOR.lang['tr'] =
 		findWhat			: 'Aranan:',
 		replaceWith			: 'Bununla değiştir:',
 		notFoundMsg			: 'Belirtilen yazı bulunamadı.',
+		findOptions			: 'Find Options', // MISSING
 		matchCase			: 'Büyük/küçük harf duyarlı',
 		matchWord			: 'Kelimenin tamamı uysun',
 		matchCyclic			: 'Eşleşen döngü',
@@ -412,7 +418,6 @@ CKEDITOR.lang['tr'] =
 		upload		: 'Karşıya Yükle',
 		alt			: 'Alternatif Yazı',
 		lockRatio	: 'Oranı Kilitle',
-		unlockRatio	: 'Kilitli Oran',
 		resetSize	: 'Boyutu Başa Döndür',
 		border		: 'Kenar',
 		hSpace		: 'Yatay Boşluk',
@@ -769,41 +774,41 @@ CKEDITOR.lang['tr'] =
 
 	docprops :
 	{
-		label : 'Document Properties', // MISSING
-		title : 'Document Properties', // MISSING
+		label : 'Belge Özellikleri',
+		title : 'Belge Özellikleri',
 		design : 'Design', // MISSING
-		meta : 'Meta Tags', // MISSING
-		chooseColor : 'Choose', // MISSING
-		other : 'Other...', // MISSING
-		docTitle :	'Page Title', // MISSING
-		charset : 	'Character Set Encoding', // MISSING
-		charsetOther : 'Other Character Set Encoding', // MISSING
+		meta : 'Tanım Bilgisi (Meta)',
+		chooseColor : 'Seçiniz',
+		other : '<diğer>',
+		docTitle :	'Sayfa Başlığı',
+		charset : 	'Karakter Kümesi Kodlaması',
+		charsetOther : 'Diğer Karakter Kümesi Kodlaması',
 		charsetASCII : 'ASCII', // MISSING
-		charsetCE : 'Central European', // MISSING
-		charsetCT : 'Chinese Traditional (Big5)', // MISSING
-		charsetCR : 'Cyrillic', // MISSING
-		charsetGR : 'Greek', // MISSING
-		charsetJP : 'Japanese', // MISSING
-		charsetKR : 'Korean', // MISSING
-		charsetTR : 'Turkish', // MISSING
+		charsetCE : 'Orta Avrupa',
+		charsetCT : 'Geleneksel Çince (Big5)',
+		charsetCR : 'Kiril',
+		charsetGR : 'Yunanca',
+		charsetJP : 'Japonca',
+		charsetKR : 'Korece',
+		charsetTR : 'Türkçe',
 		charsetUN : 'Unicode (UTF-8)', // MISSING
-		charsetWE : 'Western European', // MISSING
-		docType : 'Document Type Heading', // MISSING
-		docTypeOther : 'Other Document Type Heading', // MISSING
-		xhtmlDec : 'Include XHTML Declarations', // MISSING
-		bgColor : 'Background Color', // MISSING
-		bgImage : 'Background Image URL', // MISSING
-		bgFixed : 'Non-scrolling (Fixed) Background', // MISSING
-		txtColor : 'Text Color', // MISSING
-		margin : 'Page Margins', // MISSING
-		marginTop : 'Top', // MISSING
-		marginLeft : 'Left', // MISSING
-		marginRight : 'Right', // MISSING
-		marginBottom : 'Bottom', // MISSING
-		metaKeywords : 'Document Indexing Keywords (comma separated)', // MISSING
-		metaDescription : 'Document Description', // MISSING
-		metaAuthor : 'Author', // MISSING
-		metaCopyright : 'Copyright', // MISSING
+		charsetWE : 'Batı Avrupa',
+		docType : 'Belge Türü Başlığı',
+		docTypeOther : 'Diğer Belge Türü Başlığı',
+		xhtmlDec : 'XHTML Bildirimlerini Dahil Et',
+		bgColor : 'Arka Plan Rengi',
+		bgImage : 'Arka Plan Resim URLsi',
+		bgFixed : 'Sabit Arka Plan',
+		txtColor : 'Yazı Rengi',
+		margin : 'Kenar Boşlukları',
+		marginTop : 'Tepe',
+		marginLeft : 'Sol',
+		marginRight : 'Sağ',
+		marginBottom : 'Alt',
+		metaKeywords : 'Belge Dizinleme Anahtar Kelimeleri (virgülle ayrılmış)',
+		metaDescription : 'Belge Tanımı',
+		metaAuthor : 'Yazar',
+		metaCopyright : 'Telif',
 		previewHtml : '<p>This is some <strong>sample text</strong>. You are using <a href="javascript:void(0)">CKEditor</a>.</p>' // MISSING
 	}
 };

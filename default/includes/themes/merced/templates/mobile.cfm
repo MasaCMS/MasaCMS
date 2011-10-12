@@ -7,7 +7,7 @@
 	<meta name="keywords" content="#HTMLEditFormat($.getMetaKeywords())#" />
 	<cfif len($.content('credits'))><meta name="author" content="#HTMLEditFormat($.content('credits'))#" /></cfif>
 	<meta name="generator" content="Mura CMS #$.globalConfig('version')#" />
-	
+	<meta name="robots" content="noindex, follow" />
 	<title>#HTMLEditFormat($.content('HTMLTitle'))# - #HTMLEditFormat($.siteConfig('site'))#</title>
 
 	<link rel="icon" href="#$.siteConfig('assetPath')#/images/favicon.ico" type="image/x-icon" />
@@ -15,7 +15,7 @@
 	
 	<link rel="stylesheet" href="#$.siteConfig('assetPath')#/css/mura.css" />
 	<link rel="stylesheet" href="#$.siteConfig('assetPath')#/mobile/jquery.mobile.min.css" />
-	<link rel="stylesheet" href="#$.siteConfig('themeAssetPath')#/css/merced-mobile.css" />
+	<link rel="stylesheet" href="#$.siteConfig('themeAssetPath')#/css/mobile.css" />
 	
 	<script src="#$.siteConfig('assetPath')#/js/jquery/jquery.js"></script>
 	
@@ -53,14 +53,17 @@
 		<cfelse>
 			#$.dspBody(body=$.content('body'),pageTitle='',crumbList=0,showMetaImage=0)#
 		</cfif>
+		
 		#$.dspObjects($.siteConfig('primaryColumn'))#
+		
 		<cfif $.content('contentID') eq "00000000000000000000000000000000001">
 		<!---
-<div id="navHeader" class="header-fullscreen" data-role="header" data-nobackbtn="true" data-theme="a">
+		<div id="navHeader" class="header-fullscreen" data-role="header" data-nobackbtn="true" data-theme="a">
 		<h1>More</h1>
 		</div>
---->
-		<cf_CacheOMatic key="dspMobilePrimaryNav#request.contentBean.getcontentID()#">
+		--->
+		
+		<cf_CacheOMatic key="dspMobilePrimaryNav#$.content('contentID')#">
 			#$.dspPrimaryNav(
 				viewDepth="0",
 				id="navPrimary",
@@ -71,12 +74,14 @@
 		</cf_cacheomatic>
 		<cfelseif not listFindNoCase('Gallery,Portal',$.content('type'))>
 		<!---
-<div id="navHeader" class="header-fullscreen" data-role="header" data-nobackbtn="true" data-theme="a">
+		<div id="navHeader" class="header-fullscreen" data-role="header" data-nobackbtn="true" data-theme="a">
 		<h1>More</h1>
 		</div>
---->
+		--->
 		<div id="navSub">#$.dspSubNav()#</div>
 		</cfif>
+		
+		
 	</div><!-- /content -->
 
 		<div data-role="footer"  data-theme="a" class="ui-bar">
@@ -119,6 +124,15 @@
   		'data-inset': 'true',
   		'data-theme': 'c',
   		'data-dividertheme': 'b'
+	});
+	
+	<!--- Forms --->
+	$('form ul, form ol').attr({
+			'data-role': 'fieldcontain'
+	});
+	
+	$('form li').attr({
+			'data-role': 'controlgroup'
 	});
 
 	<!--- This is for when ajaxLinksEnabled enabled to make sure certain link types render as external. 

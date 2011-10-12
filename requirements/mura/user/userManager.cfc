@@ -6,39 +6,43 @@ the Free Software Foundation, Version 2 of the License.
 
 Mura CMS is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. �See the
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-along with Mura CMS. �If not, see <http://www.gnu.org/licenses/>.
+along with Mura CMS. If not, see <http://www.gnu.org/licenses/>.
 
-Linking Mura CMS statically or dynamically with other modules constitutes
-the preparation of a derivative work based on Mura CMS. Thus, the terms and 	
-conditions of the GNU General Public License version 2 (�GPL�) cover the entire combined work.
+Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on 
+Mura CMS. Thus, the terms and conditions of the GNU General Public License version 2 ("GPL") cover the entire combined work.
 
-However, as a special exception, the copyright holders of Mura CMS grant you permission
-to combine Mura CMS with programs or libraries that are released under the GNU Lesser General Public License version 2.1.
+However, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with programs
+or libraries that are released under the GNU Lesser General Public License version 2.1.
 
-In addition, as a special exception, �the copyright holders of Mura CMS grant you permission
-to combine Mura CMS �with independent software modules that communicate with Mura CMS solely
-through modules packaged as Mura CMS plugins and deployed through the Mura CMS plugin installation API,
-provided that these modules (a) may only modify the �/trunk/www/plugins/ directory through the Mura CMS
-plugin installation API, (b) must not alter any default objects in the Mura CMS database
-and (c) must not alter any files in the following directories except in cases where the code contains
-a separately distributed license.
+In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with 
+independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without 
+Mura CMS under the license of your choice, provided that you follow these specific guidelines: 
 
-/trunk/www/admin/
-/trunk/www/tasks/
-/trunk/www/config/
-/trunk/www/requirements/mura/
+Your custom code 
 
-You may copy and distribute such a combined work under the terms of GPL for Mura CMS, provided that you include
-the source code of that other code when and as the GNU GPL requires distribution of source code.
+• Must not alter any default objects in the Mura CMS database and
+• May not alter the default display of the Mura CMS logo within Mura CMS and
+• Must not alter any files in the following directories.
 
-For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception
-for your modified version; it is your choice whether to do so, or to make such modified version available under
-the GNU General Public License version 2 �without this exception. �You may, if you choose, apply this exception
-to your own modified versions of Mura CMS.
+ /admin/
+ /tasks/
+ /config/
+ /requirements/mura/
+ /Application.cfc
+ /index.cfm
+ /MuraProxy.cfc
+
+You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work 
+under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL 
+requires distribution of source code.
+
+For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your 
+modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
+version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cfcomponent extends="mura.cfobject" output="false">
 
@@ -71,15 +75,20 @@ to your own modified versions of Mura CMS.
 	<cfreturn this />
 </cffunction>
 
+<cffunction name="getBean" output="false">
+	<cfargument name="beanName" default="user">
+	<cfreturn super.getBean(arguments.beanName)>
+</cffunction>
+
 <cffunction name="getUserGroups" access="public" returntype="query" output="false">
-		<cfargument name="siteid" type="string" default=""/>
-		<cfargument name="isPublic" type="numeric" default="0"/>
-		<cfset var rs ="" />
+	<cfargument name="siteid" type="string" default=""/>
+	<cfargument name="isPublic" type="numeric" default="0"/>
+	<cfset var rs ="" />
 		
-		<cfset rs=variables.userGateway.getUserGroups(arguments.siteid,arguments.isPublic) />
+	<cfset rs=variables.userGateway.getUserGroups(arguments.siteid,arguments.isPublic) />
 		
-		<cfreturn rs />
-	</cffunction>
+	<cfreturn rs />
+</cffunction>
 	
 <cffunction name="read" access="public" returntype="any" output="false">
 	<cfargument name="userid" type="string" default=""/>
@@ -88,19 +97,19 @@ to your own modified versions of Mura CMS.
 	<cfargument name="siteID" type="string" default=""/>
 	<cfargument name="groupname" type="string" default=""/>
 	<cfargument name="isPublic" type="string" default="1"/>
-	<cfargument name="userBean" default=""/>
+	<cfargument name="userBean" type="any" default=""/>
 	<cfset var key= "" />
 	<cfset var site=""/>
 	<cfset var cacheFactory="">
-	<cfset var bean="">	
+	<cfset var bean=arguments.userBean>
 	
 	<cfif len(arguments.siteID)>
 		<cfif len(arguments.username)>
-			<cfreturn readByUsername(arguments.username,arguments.siteid,arguments.userBean) />
+			<cfreturn readByUsername(arguments.username,arguments.siteid,bean) />
 		<cfelseif len(arguments.groupname)>
-			<cfreturn readByGroupName(arguments.groupname,arguments.siteid,arguments.isPublic,arguments.userBean) />
+			<cfreturn readByGroupName(arguments.groupname,arguments.siteid,arguments.isPublic,bean) />
 		<cfelseif len(arguments.remoteID)>
-			<cfreturn readByRemoteID(arguments.remoteID,arguments.siteid,arguments.userBean) />
+			<cfreturn readByRemoteID(arguments.remoteID,arguments.siteid,bean) />
 		</cfif>
 	</cfif>
 	
@@ -112,23 +121,21 @@ to your own modified versions of Mura CMS.
 		<!--- check to see if it is cached. if not then pass in the context --->
 		<!--- otherwise grab it from the cache --->
 		<cfif NOT cacheFactory.has( key )>
-			<cfset bean=variables.userDAO.read(arguments.userid,arguments.userBean)>
+			<cfset bean=variables.userDAO.read(arguments.userid,bean)>
 			<cfif not bean.getIsNew()>
 				<cfset cacheFactory.get( key, structCopy(bean.getAllValues()) ) />
 			</cfif>
 			<cfreturn bean/>
 		<cfelse>
-			<cfif isObject(arguments.userBean)>
-				<cfset bean=arguments.userBean/>
-			<cfelse>
-				<cfset bean=variables.userDAO.getBean()/>
+			<cfif not isObject(bean)>
+				<cfset bean=getBean("user")/>
 			</cfif>
 			<cfset bean.setAllValues( structCopy(cacheFactory.get( key )) )>
 			<cfset bean.setValue("extendAutoComplete",false)>
 			<cfreturn bean />
 		</cfif>
 	<cfelse>
-		<cfreturn variables.userDAO.read(arguments.userid,arguments.userBean) />
+		<cfreturn variables.userDAO.read(arguments.userid,bean) />
 	</cfif>		
 </cffunction>
 
@@ -140,33 +147,31 @@ to your own modified versions of Mura CMS.
 <cffunction name="readByUsername" access="public" returntype="any" output="false">
 	<cfargument name="username" type="string" default=""/>
 	<cfargument name="siteid" type="string" default=""/>
-	<cfargument name="userBean" default=""/>
+	<cfargument name="userBean" type="any" default=""/>
 	<cfset var key= "user" & arguments.siteid & arguments.username />
 	<cfset var site=variables.settingsManager.getSite(arguments.siteid)/>
 	<cfset var cacheFactory=site.getCacheFactory(name="data")>
-	<cfset var bean="">	
+	<cfset var bean=arguments.userBean>
 	
 	<cfif site.getCache()>
 		<!--- check to see if it is cached. if not then pass in the context --->
 		<!--- otherwise grab it from the cache --->
 		<cfif NOT cacheFactory.has( key )>
-			<cfset bean=variables.userDAO.readByUsername(arguments.username,arguments.siteid,arguments.userBean) />
+			<cfset bean=variables.userDAO.readByUsername(arguments.username,arguments.siteid,bean) />
 			<cfif not bean.getIsNew()>
 				<cfset cacheFactory.get( key, structCopy(bean.getAllValues()) ) />
 			</cfif>
 			<cfreturn bean/>
 		<cfelse>
-			<cfif isObject(arguments.userBean)>
-				<cfset bean=arguments.userBean/>
-			<cfelse>
-				<cfset bean=variables.userDAO.getBean()/>
+			<cfif not isObject(bean)>
+				<cfset bean=getBean("user")/>
 			</cfif>
 			<cfset bean.setAllValues( structCopy(cacheFactory.get( key )) )>
 			<cfset bean.setValue("extendAutoComplete",false)>
 			<cfreturn bean />
 		</cfif>
 	<cfelse>
-		<cfreturn variables.userDAO.readByUsername(arguments.username,arguments.siteid,arguments.userBean) />
+		<cfreturn variables.userDAO.readByUsername(arguments.username,arguments.siteid,bean) />
 	</cfif>	
 
 </cffunction>
@@ -175,33 +180,31 @@ to your own modified versions of Mura CMS.
 	<cfargument name="groupname" type="string" default=""/>
 	<cfargument name="siteid" type="string" default=""/>
 	<cfargument name="isPublic" type="string" required="yes" default="both"/>
-	<cfargument name="userBean" default=""/>
+	<cfargument name="userBean" type="any" default=""/>
 	<cfset var key= "user" & arguments.siteid & arguments.groupname />
 	<cfset var site=variables.settingsManager.getSite(arguments.siteid)/>
 	<cfset var cacheFactory=site.getCacheFactory(name="data")>
-	<cfset var bean="">	
+	<cfset var bean=arguments.userBean>
 	
 	<cfif site.getCache()>
 		<!--- check to see if it is cached. if not then pass in the context --->
 		<!--- otherwise grab it from the cache --->
 		<cfif NOT cacheFactory.has( key )>
-			<cfset bean=variables.userDAO.readByGroupName(arguments.groupname,arguments.siteid,arguments.isPublic,arguments.userbean)  />
+			<cfset bean=variables.userDAO.readByGroupName(arguments.groupname,arguments.siteid,arguments.isPublic,bean)  />
 			<cfif not bean.getIsNew()>
 				<cfset cacheFactory.get( key, structCopy(bean.getAllValues()) ) />
 			</cfif>
 			<cfreturn bean/>
 		<cfelse>
-			<cfif isObject(arguments.userBean)>
-				<cfset bean=arguments.userBean/>
-			<cfelse>
-				<cfset bean=variables.userDAO.getBean()/>
+			<cfif not isObject(bean)>
+				<cfset bean=getBean("user")/>
 			</cfif>
 			<cfset bean.setAllValues( structCopy(cacheFactory.get( key )) )>
 			<cfset bean.setValue("extendAutoComplete",false)>
 			<cfreturn bean />
 		</cfif>
 	<cfelse>
-		<cfreturn variables.userDAO.readByGroupName(arguments.groupname,arguments.siteid,arguments.isPublic,arguments.userbean) />
+		<cfreturn variables.userDAO.readByGroupName(arguments.groupname,arguments.siteid,arguments.isPublic,bean) />
 	</cfif>			
 	
 </cffunction>
@@ -209,33 +212,31 @@ to your own modified versions of Mura CMS.
 <cffunction name="readByRemoteID" access="public" returntype="any" output="false">
 	<cfargument name="remoteID" type="string" default=""/>
 	<cfargument name="siteid" type="string" default=""/>
-	<cfargument name="userBean" default=""/>
+	<cfargument name="userBean" type="any" default=""/>
 	<cfset var key= "user" & arguments.siteid & arguments.remoteID />
 	<cfset var site=variables.settingsManager.getSite(arguments.siteid)/>
 	<cfset var cacheFactory=site.getCacheFactory(name="data")>
-	<cfset var bean="">	
+	<cfset var bean=arguments.userBean>	
 	
 	<cfif site.getCache()>
 		<!--- check to see if it is cached. if not then pass in the context --->
 		<!--- otherwise grab it from the cache --->
 		<cfif NOT cacheFactory.has( key )>
-			<cfset bean=variables.userDAO.readByRemoteID(arguments.remoteID,arguments.siteid,arguments.userBean) />
+			<cfset bean=variables.userDAO.readByRemoteID(arguments.remoteID,arguments.siteid,bean) />
 			<cfif not bean.getIsNew()>
 				<cfset cacheFactory.get( key, structCopy(bean.getAllValues()) ) />
 			</cfif>
 			<cfreturn bean/>
 		<cfelse>
-			<cfif isObject(arguments.userBean)>
-				<cfset bean=arguments.userBean/>
-			<cfelse>
-				<cfset bean=variables.userDAO.getBean()/>
+			<cfif not isObject(bean)>
+				<cfset bean=getBean("user")/>
 			</cfif>
 			<cfset bean.setAllValues( structCopy(cacheFactory.get( key )) )>
 			<cfset bean.setValue("extendAutoComplete",false)>
 			<cfreturn bean />
 		</cfif>
 	<cfelse>
-		<cfreturn variables.userDAO.readByRemoteID(arguments.remoteID,arguments.siteid,arguments.userBean) />
+		<cfreturn variables.userDAO.readByRemoteID(arguments.remoteID,arguments.siteid,bean) />
 	</cfif>			
 	
 </cffunction>
@@ -424,7 +425,7 @@ to your own modified versions of Mura CMS.
 	<cfargument name="data" type="any" default="#structnew()#"/>		
 	
 	<cfset var addressBean = "" />
-	<cfset var userBean=application.serviceFactory.getBean("userBean") />
+	<cfset var userBean= getBean("user") />
 	<cfset var pluginEvent = createObject("component","mura.event") />
 	
 	<cfif isObject(arguments.data)>
@@ -447,7 +448,7 @@ to your own modified versions of Mura CMS.
 	</cfif>
 	
 	<cfif not structKeyExists(arguments.data,"fromMuraTrash")>
-		<cfset addressBean=application.serviceFactory.getBean("addressBean") />
+		<cfset addressBean=getBean("addressBean") />
 		<cfset addressBean.set(arguments.data) />
 		<cfset addressBean.setAddressID(createuuid()) />
 		<cfset addressBean.setUserID(userBean.getUserID()) />
@@ -601,7 +602,7 @@ to your own modified versions of Mura CMS.
 <cffunction name="getPublicGroupsIterator" access="public" returntype="any" output="false">
 	<cfargument name="siteid" type="string" default="" required="yes"/>		
 	<cfset var rs=variables.userGateway.getPublicGroups(arguments.siteid) />
-	<cfset var it=getServiceFactory().getBean("userIterator")>
+	<cfset var it=getBean("userIterator")>
 	<cfset it.setQuery(rs)>
 	<cfreturn it>
 </cffunction>
@@ -614,7 +615,7 @@ to your own modified versions of Mura CMS.
 <cffunction name="getPrivateGroupsIterator" access="public" returntype="any" output="false">
 	<cfargument name="siteid" type="string" default="" required="yes"/>	
 	<cfset var rs=variables.userGateway.getPrivateGroups(arguments.siteid) />
-	<cfset var it=getServiceFactory().getBean("userIterator")>
+	<cfset var it=getBean("userIterator")>
 	<cfset it.setQuery(rs)>
 	<cfreturn it>
 </cffunction>
@@ -658,7 +659,7 @@ to your own modified versions of Mura CMS.
 <cffunction name="getAdvancedSearchIterator" access="public" returntype="query" output="false">
 	<cfargument name="userFeedBean" type="any" required="yes"/>		
 	<cfset var rs= getAdvancedSearch(arguments.userFeedBean) />
-	<cfset var it = getServiceFactory().getBean("userIterator")>
+	<cfset var it = getBean("userIterator")>
 	<cfset it.setQuery(rs)>
 	<cfreturn it>
 </cffunction>
@@ -696,7 +697,7 @@ to your own modified versions of Mura CMS.
 <cffunction name="createAddress" access="public" returntype="struct" output="false">
 	<cfargument name="data" type="any" default="#structnew()#"/>		
 	
-	<cfset var addressBean=application.serviceFactory.getBean("addressBean") />
+	<cfset var addressBean=getBean("addressBean") />
 	<cfset var userBean="" />
 	
 	<cfif isObject(arguments.data)>
@@ -875,11 +876,7 @@ to your own modified versions of Mura CMS.
 </cffunction>
 
 <cffunction name="getIterator" returntype="any" output="false">
-	<cfreturn getServiceFactory().getBean("userIterator").init()>
-</cffunction>
-
-<cffunction name="getBean" returntype="any" output="false">
-	<cfreturn variables.userDAO.getBean()>
+	<cfreturn getBean("userIterator").init()>
 </cffunction>
 
 <cffunction name="getUserFeedBean" returntype="any" output="false">

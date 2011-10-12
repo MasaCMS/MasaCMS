@@ -4,20 +4,21 @@
  * http://ckfinder.com
  * Copyright (C) 2007-2011, CKSource - Frederico Knabben. All rights reserved.
  *
- * The software, this file and its contents are subject to the CKFinder
+ * The software, this file, and its contents are subject to the CKFinder
  * License. Please read the license.txt file before using, installing, copying,
- * modifying or distribute this file or part of its contents. The contents of
+ * modifying, or distributing this file or part of its contents. The contents of
  * this file is part of the Source Code of CKFinder.
  *
  */
 
 /**
- * @fileOverview Defines the {@link CKFinder.lang} object, for the Finnish
- *		language. Translated in Finnish 2010-12-15 by Petteri Salmela.
+ * @fileOverview Defines the {@link CKFinder.lang} object for the Finnish
+ *		language. Translated into Finnish 2010-12-15 by Petteri Salmela,
+ *		updated.
  */
 
 /**
- * Constains the dictionary of language entries.
+ * Contains the dictionary of language entries.
  * @namespace
  */
 CKFinder.lang['fi'] =
@@ -82,8 +83,8 @@ CKFinder.lang['fi'] =
 	FileDelete		: 'Haluatko varmasti poistaa tiedoston "%1"?',
 	FilesLoading	: 'Lataa...',
 	FilesEmpty		: 'Tyhjä kansio.',
-	FilesMoved		: 'Tiedosto %1 siirretty nimelle %2:%3',
-	FilesCopied		: 'Tiedosto %1 kopioitu nimelle %2:%3',
+	FilesMoved		: 'Tiedosto %1 siirretty nimelle %2:%3.',
+	FilesCopied		: 'Tiedosto %1 kopioitu nimelle %2:%3.',
 
 	// Basket
 	BasketFolder		: 'Kori',
@@ -96,7 +97,7 @@ CKFinder.lang['fi'] =
 	BasketCopyFilesHere	: 'Kopioi tiedostot korista.',
 	BasketMoveFilesHere	: 'Siirrä tiedostot korista.',
 
-	BasketPasteErrorOther	: 'Tiedoston %s virhe: %e',
+	BasketPasteErrorOther	: 'Tiedoston %s virhe: %e.',
 	BasketPasteMoveSuccess	: 'Seuraavat tiedostot siirrettiin: %s',
 	BasketPasteCopySuccess	: 'Seuraavat tiedostot kopioitiin: %s',
 
@@ -148,6 +149,18 @@ CKFinder.lang['fi'] =
 	UploadUnknError		: 'Tiedoston siirrossa tapahtui virhe.',
 	UploadExtIncorrect	: 'Tiedostotarkenne ei ole sallittu valitussa kansiossa.',
 
+	// Flash Uploads
+	UploadLabel			: 'Ladattavat tiedostot',
+	UploadTotalFiles	: 'Tiedostoja yhteensä:',
+	UploadTotalSize		: 'Yhteenlaskettu tiedostokoko:',
+	UploadAddFiles		: 'Lisää tiedostoja',
+	UploadClearFiles	: 'Poista tiedostot',
+	UploadCancel		: 'Peru lataus',
+	UploadRemove		: 'Poista',
+	UploadRemoveTip		: 'Poista !f',
+	UploadUploaded		: 'Ladattu !n%',
+	UploadProcessing	: 'Käsittelee...',
+
 	// Settings Panel
 	SetTitle		: 'Asetukset',
 	SetView			: 'Näkymä:',
@@ -188,13 +201,13 @@ CKFinder.lang['fi'] =
 	116 : 'Kansiota ei löydy. Yritä uudelleen kansiopäivityksen jälkeen.',
 	117 : 'Tiedostoa ei löydy. Yritä uudelleen kansiopäivityksen jälkeen.',
 	118 : 'Lähde- ja kohdekansio on sama!',
-	201 : 'Samanniminen tiedosto on jo olemassa. Palvelimelle ladattu tiedosto on nimetty: "%1"',
-	202 : 'Virheellinen tiedosto',
+	201 : 'Samanniminen tiedosto on jo olemassa. Palvelimelle ladattu tiedosto on nimetty: "%1".',
+	202 : 'Virheellinen tiedosto.',
 	203 : 'Virheellinen tiedosto. Tiedostokoko on liian suuri.',
 	204 : 'Palvelimelle ladattu tiedosto on vioittunut.',
 	205 : 'Väliaikaishakemistoa ei ole määritetty palvelimelle lataamista varten.',
 	206 : 'Palvelimelle lataaminen on peruttu turvallisuussyistä. Tiedosto sisältää HTML-tyylistä dataa.',
-	207 : 'Palvelimelle ladattu tiedosto on  nimetty: "%1"',
+	207 : 'Palvelimelle ladattu tiedosto on  nimetty: "%1".',
 	300 : 'Tiedostosiirto epäonnistui.',
 	301 : 'Tiedostokopiointi epäonnistui.',
 	500 : 'Tiedostoselain on kytketty käytöstä turvallisuussyistä. Pyydä pääkäyttäjää tarkastamaan CKFinderin asetustiedosto.',
@@ -205,13 +218,16 @@ CKFinder.lang['fi'] =
 	ErrorMsg :
 	{
 		FileEmpty		: 'Tiedosto on nimettävä!',
-		FileExists		: 'Tiedosto %s on jo olemassa',
+		FileExists		: 'Tiedosto %s on jo olemassa.',
 		FolderEmpty		: 'Kansio on nimettävä!',
 
 		FileInvChar		: 'Tiedostonimi ei voi sisältää seuraavia merkkejä: \n\\ / : * ? " < > |',
 		FolderInvChar	: 'Kansionimi ei voi sisältää seuraavia merkkejä: \n\\ / : * ? " < > |',
 
-		PopupBlockView	: 'Tiedostoa ei voitu avata uuteen ikkunaan. Salli selaimesi asetuksissa ponnahdusikkunat tälle sivulle.'
+		PopupBlockView	: 'Tiedostoa ei voitu avata uuteen ikkunaan. Salli selaimesi asetuksissa ponnahdusikkunat tälle sivulle.',
+		XmlError		: 'It was not possible to properly load the XML response from the web server.', // MISSING
+		XmlEmpty		: 'It was not possible to load the XML response from the web server. The server returned an empty response.', // MISSING
+		XmlRawResponse	: 'Raw response from the server: %s' // MISSING
 	},
 
 	// Imageresize plugin
@@ -232,8 +248,10 @@ CKFinder.lang['fi'] =
 		invalidName		: 'Viallinen tiedostonimi.',
 		newImage		: 'Luo uusi kuva',
 		noExtensionChange : 'Tiedostomäärettä ei voi vaihtaa.',
-		imageSmall		: 'Lähdekuva on liian pieni',
-		contextMenuName	: 'Muuta kokoa'
+		imageSmall		: 'Lähdekuva on liian pieni.',
+		contextMenuName	: 'Muuta kokoa',
+		lockRatio		: 'Lukitse suhteet',
+		resetSize		: 'Alkuperäinen koko'
 	},
 
 	// Fileeditor plugin
@@ -244,5 +262,11 @@ CKFinder.lang['fi'] =
 		fileSaveSuccess	: 'Tiedoston tallennus onnistui.',
 		contextMenuName	: 'Muokkaa',
 		loadingFile		: 'Tiedostoa ladataan ...'
+	},
+
+	Maximize :
+	{
+		maximize : 'Suurenna',
+		minimize : 'Pienennä'
 	}
 };

@@ -4,39 +4,39 @@
  * http://ckfinder.com
  * Copyright (C) 2007-2011, CKSource - Frederico Knabben. All rights reserved.
  *
- * The software, this file and its contents are subject to the CKFinder
+ * The software, this file, and its contents are subject to the CKFinder
  * License. Please read the license.txt file before using, installing, copying,
- * modifying or distribute this file or part of its contents. The contents of
+ * modifying, or distributing this file or part of its contents. The contents of
  * this file is part of the Source Code of CKFinder.
  *
  */
 
 /**
- * @fileOverview Defines the {@link CKFinder.lang} object, for the German
- *		language. This is the base file for all translations.
-*/
+ * @fileOverview Defines the {@link CKFinder.lang} object for the German
+ *		language.
+ */
 
 /**
- * Constains the dictionary of language entries.
+ * Contains the dictionary of language entries.
  * @namespace
  */
 CKFinder.lang['de'] =
 {
-	appTitle : 'CKFinder', // MISSING
+	appTitle : 'CKFinder',
 
 	// Common messages and labels.
 	common :
 	{
 		// Put the voice-only part of the label in the span.
-		unavailable		: '%1<span class="cke_accessibility">, unavailable</span>', // MISSING
-		confirmCancel	: 'Some of the options have been changed. Are you sure to close the dialog?', // MISSING
-		ok				: 'OK', // MISSING
-		cancel			: 'Cancel', // MISSING
+		unavailable		: '%1<span class="cke_accessibility">, nicht verfügbar</span>',
+		confirmCancel	: 'Einige Optionen wurden geändert. Wollen Sie den Dialog dennoch schließen?',
+		ok				: 'OK',
+		cancel			: 'Abbrechen',
 		confirmationTitle	: 'Confirmation', // MISSING
 		messageTitle	: 'Information', // MISSING
-		inputTitle		: 'Question', // MISSING
-		undo			: 'Undo', // MISSING
-		redo			: 'Redo', // MISSING
+		inputTitle		: 'Frage',
+		undo			: 'Rückgängig',
+		redo			: 'Wiederherstellen',
 		skip			: 'Skip', // MISSING
 		skipAll			: 'Skip all', // MISSING
 		makeDecision	: 'What action should be taken?', // MISSING
@@ -44,7 +44,7 @@ CKFinder.lang['de'] =
 	},
 
 
-	dir : 'ltr', // MISSING
+	dir : 'ltr',
 	HelpLang : 'en',
 	LangCode : 'de',
 
@@ -80,19 +80,19 @@ CKFinder.lang['de'] =
 	FileRenameExt	: 'Wollen Sie wirklich die Dateierweiterung ändern? Die Datei könnte unbrauchbar werden!',
 	FileRenaming	: 'Umbennenen...',
 	FileDelete		: 'Wollen Sie wirklich die Datei "%1" löschen?',
-	FilesLoading	: 'Loading...', // MISSING
-	FilesEmpty		: 'Empty folder', // MISSING
-	FilesMoved		: 'File %1 moved into %2:%3', // MISSING
-	FilesCopied		: 'File %1 copied into %2:%3', // MISSING
+	FilesLoading	: 'Laden...',
+	FilesEmpty		: 'The folder is empty.', // MISSING
+	FilesMoved		: 'File %1 moved to %2:%3.', // MISSING
+	FilesCopied		: 'File %1 copied to %2:%3.', // MISSING
 
 	// Basket
 	BasketFolder		: 'Basket', // MISSING
 	BasketClear			: 'Clear Basket', // MISSING
-	BasketRemove		: 'Remove from basket', // MISSING
-	BasketOpenFolder	: 'Open parent folder', // MISSING
+	BasketRemove		: 'Remove from Basket', // MISSING
+	BasketOpenFolder	: 'Open Parent Folder', // MISSING
 	BasketTruncateConfirm : 'Do you really want to remove all files from the basket?', // MISSING
 	BasketRemoveConfirm	: 'Do you really want to remove the file "%1" from the basket?', // MISSING
-	BasketEmpty			: 'No files in the basket, drag\'n\'drop some.', // MISSING
+	BasketEmpty			: 'No files in the basket, drag and drop some.', // MISSING
 	BasketCopyFilesHere	: 'Copy Files from Basket', // MISSING
 	BasketMoveFilesHere	: 'Move Files from Basket', // MISSING
 
@@ -118,14 +118,14 @@ CKFinder.lang['de'] =
 	Rename			: 'Umbenennen',
 	Delete			: 'Löschen',
 
-	CopyDragDrop	: 'Copy file here', // MISSING
-	MoveDragDrop	: 'Move file here', // MISSING
+	CopyDragDrop	: 'Copy File Here', // MISSING
+	MoveDragDrop	: 'Move File Here', // MISSING
 
 	// Dialogs
 	RenameDlgTitle		: 'Rename', // MISSING
-	NewNameDlgTitle		: 'New name', // MISSING
-	FileExistsDlgTitle	: 'File already exists', // MISSING
-	SysErrorDlgTitle : 'System error', // MISSING
+	NewNameDlgTitle		: 'New Name', // MISSING
+	FileExistsDlgTitle	: 'File Already Exists', // MISSING
+	SysErrorDlgTitle : 'Systemfehler',
 
 	FileOverwrite	: 'Overwrite', // MISSING
 	FileAutorename	: 'Auto-rename', // MISSING
@@ -140,13 +140,25 @@ CKFinder.lang['de'] =
 	UploadSelectLbl		: 'Bitte wählen Sie die Datei aus',
 	UploadProgressLbl	: '(Die Daten werden übertragen, bitte warten...)',
 	UploadBtn			: 'Ausgewählte Datei hochladen',
-	UploadBtnCancel		: 'Cancel', // MISSING
+	UploadBtnCancel		: 'Abbrechen',
 
-	UploadNoFileMsg		: 'Bitte wählen Sie eine Datei auf Ihrem Computer aus',
-	UploadNoFolder		: 'Please select folder before uploading.', // MISSING
+	UploadNoFileMsg		: 'Bitte wählen Sie eine Datei auf Ihrem Computer aus.',
+	UploadNoFolder		: 'Please select a folder before uploading.', // MISSING
 	UploadNoPerms		: 'File upload not allowed.', // MISSING
 	UploadUnknError		: 'Error sending the file.', // MISSING
 	UploadExtIncorrect	: 'File extension not allowed in this folder.', // MISSING
+
+	// Flash Uploads
+	UploadLabel			: 'Files to Upload', // MISSING
+	UploadTotalFiles	: 'Total Files:', // MISSING
+	UploadTotalSize		: 'Total Size:', // MISSING
+	UploadAddFiles		: 'Add Files', // MISSING
+	UploadClearFiles	: 'Clear Files', // MISSING
+	UploadCancel		: 'Cancel Upload', // MISSING
+	UploadRemove		: 'Entfernen',
+	UploadRemoveTip		: 'Remove !f', // MISSING
+	UploadUploaded		: 'Uploaded !n%', // MISSING
+	UploadProcessing	: 'Processing...', // MISSING
 
 	// Settings Panel
 	SetTitle		: 'Einstellungen',
@@ -189,7 +201,7 @@ CKFinder.lang['de'] =
 	117 : 'Datei nicht gefunden. Bitte aktualisieren Sie die Dateiliste und versuchen es noch einmal.',
 	118 : 'Source and target paths are equal.', // MISSING
 	201 : 'Es existiert bereits eine Datei unter gleichem Namen. Die hochgeladene Datei wurde unter "%1" gespeichert.',
-	202 : 'Ungültige Datei',
+	202 : 'Ungültige Datei.',
 	203 : 'ungültige Datei. Die Dateigröße ist zu groß.',
 	204 : 'Die hochgeladene Datei ist korrupt.',
 	205 : 'Es existiert kein temp. Ordner für das Hochladen auf den Server.',
@@ -204,14 +216,17 @@ CKFinder.lang['de'] =
 	// Other Error Messages.
 	ErrorMsg :
 	{
-		FileEmpty		: 'Der Dateinamen darf nicht leer sein',
-		FileExists		: 'File %s already exists', // MISSING
-		FolderEmpty		: 'Der Verzeichnisname darf nicht leer sein',
+		FileEmpty		: 'Der Dateinamen darf nicht leer sein.',
+		FileExists		: 'File %s already exists.', // MISSING
+		FolderEmpty		: 'Der Verzeichnisname darf nicht leer sein.',
 
 		FileInvChar		: 'Der Dateinamen darf nicht eines der folgenden Zeichen enthalten: \n\\ / : * ? " < > |',
 		FolderInvChar	: 'Der Verzeichnisname darf nicht eines der folgenden Zeichen enthalten: \n\\ / : * ? " < > |',
 
-		PopupBlockView	: 'Die Datei konnte nicht in einem neuen Fenster geöffnet werden. Bitte deaktivieren Sie in Ihrem Browser alle Popup-Blocker für diese Seite.'
+		PopupBlockView	: 'Die Datei konnte nicht in einem neuen Fenster geöffnet werden. Bitte deaktivieren Sie in Ihrem Browser alle Popup-Blocker für diese Seite.',
+		XmlError		: 'It was not possible to properly load the XML response from the web server.', // MISSING
+		XmlEmpty		: 'It was not possible to load the XML response from the web server. The server returned an empty response.', // MISSING
+		XmlRawResponse	: 'Raw response from the server: %s' // MISSING
 	},
 
 	// Imageresize plugin
@@ -220,29 +235,37 @@ CKFinder.lang['de'] =
 		dialogTitle		: 'Resize %s', // MISSING
 		sizeTooBig		: 'Cannot set image height or width to a value bigger than the original size (%size).', // MISSING
 		resizeSuccess	: 'Image resized successfully.', // MISSING
-		thumbnailNew	: 'Create new thumbnail', // MISSING
-		thumbnailSmall	: 'Small (%s)', // MISSING
-		thumbnailMedium	: 'Medium (%s)', // MISSING
-		thumbnailLarge	: 'Large (%s)', // MISSING
-		newSize			: 'Set new size', // MISSING
-		width			: 'Width', // MISSING
-		height			: 'Height', // MISSING
+		thumbnailNew	: 'Create a new thumbnail', // MISSING
+		thumbnailSmall	: 'Klein (%s)',
+		thumbnailMedium	: 'Mittel (%s)',
+		thumbnailLarge	: 'Groß (%s)',
+		newSize			: 'Set a new size', // MISSING
+		width			: 'Breite',
+		height			: 'Höhe',
 		invalidHeight	: 'Invalid height.', // MISSING
 		invalidWidth	: 'Invalid width.', // MISSING
 		invalidName		: 'Invalid file name.', // MISSING
-		newImage		: 'Create new image', // MISSING
-		noExtensionChange : 'The file extension cannot be changed.', // MISSING
-		imageSmall		: 'Source image is too small', // MISSING
-		contextMenuName	: 'Resize' // MISSING
+		newImage		: 'Create a new image', // MISSING
+		noExtensionChange : 'File extension cannot be changed.', // MISSING
+		imageSmall		: 'Source image is too small.', // MISSING
+		contextMenuName	: 'Resize', // MISSING
+		lockRatio		: 'Größenverhältnis beibehalten',
+		resetSize		: 'Größe zurücksetzen'
 	},
 
 	// Fileeditor plugin
 	Fileeditor :
 	{
-		save			: 'Save', // MISSING
+		save			: 'Speichern',
 		fileOpenError	: 'Unable to open file.', // MISSING
 		fileSaveSuccess	: 'File saved successfully.', // MISSING
 		contextMenuName	: 'Edit', // MISSING
 		loadingFile		: 'Loading file, please wait...' // MISSING
+	},
+
+	Maximize :
+	{
+		maximize : 'Maximieren',
+		minimize : 'Minimieren'
 	}
 };

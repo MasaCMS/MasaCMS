@@ -4,20 +4,20 @@
  * http://ckfinder.com
  * Copyright (C) 2007-2011, CKSource - Frederico Knabben. All rights reserved.
  *
- * The software, this file and its contents are subject to the CKFinder
+ * The software, this file, and its contents are subject to the CKFinder
  * License. Please read the license.txt file before using, installing, copying,
- * modifying or distribute this file or part of its contents. The contents of
+ * modifying, or distributing this file or part of its contents. The contents of
  * this file is part of the Source Code of CKFinder.
  *
  */
 
 /**
- * @fileOverview Defines the {@link CKFinder.lang} object, for the Spanish
- *		language. This is the base file for all translations.
+ * @fileOverview Defines the {@link CKFinder.lang} object for the Spanish
+ *		language.
 */
 
 /**
- * Constains the dictionary of language entries.
+ * Contains the dictionary of language entries.
  * @namespace
  */
 CKFinder.lang['es'] =
@@ -77,13 +77,13 @@ CKFinder.lang['es'] =
 
 	// Files
 	FileRename		: 'Por favor, escriba el nuevo nombre del fichero: ',
-	FileRenameExt	: '¿Está seguro de querer cambiar la extensión del fichero? El fichero puede dejar de ser usable',
+	FileRenameExt	: '¿Está seguro de querer cambiar la extensión del fichero? El fichero puede dejar de ser usable.',
 	FileRenaming	: 'Renombrando...',
 	FileDelete		: '¿Está seguro de que quiere borrar el fichero "%1"?',
 	FilesLoading	: 'Cargando...',
 	FilesEmpty		: 'Carpeta vacía',
-	FilesMoved		: 'Fichero %1 movido a %2:%3',
-	FilesCopied		: 'Fichero %1 copiado a %2:%3',
+	FilesMoved		: 'Fichero %1 movido a %2:%3.',
+	FilesCopied		: 'Fichero %1 copiado a %2:%3.',
 
 	// Basket
 	BasketFolder		: 'Cesta',
@@ -142,11 +142,23 @@ CKFinder.lang['es'] =
 	UploadBtn			: 'Subir el fichero elegido',
 	UploadBtnCancel		: 'Cancelar',
 
-	UploadNoFileMsg		: 'Por favor, elija un fichero de su ordenador',
+	UploadNoFileMsg		: 'Por favor, elija un fichero de su ordenador.',
 	UploadNoFolder		: 'Por favor, escoja la carpeta antes de iniciar la subida.',
 	UploadNoPerms		: 'No puede subir ficheros.',
 	UploadUnknError		: 'Error enviando el fichero.',
 	UploadExtIncorrect	: 'La extensión del fichero no está permitida en esta carpeta.',
+
+	// Flash Uploads
+	UploadLabel			: 'Ficheros a subir',
+	UploadTotalFiles	: 'Total de ficheros:',
+	UploadTotalSize		: 'Tamaño total:',
+	UploadAddFiles		: 'Añadir ficheros',
+	UploadClearFiles	: 'Borrar ficheros',
+	UploadCancel		: 'Cancelar subida',
+	UploadRemove		: 'Quitar',
+	UploadRemoveTip		: 'Quitar !f',
+	UploadUploaded		: 'Enviado !n%',
+	UploadProcessing	: 'Procesando...',
 
 	// Settings Panel
 	SetTitle		: 'Configuración',
@@ -188,13 +200,13 @@ CKFinder.lang['es'] =
 	116 : 'No se ha encontrado la carpeta. Por favor, actualice y pruebe de nuevo.',
 	117 : 'No se ha encontrado el fichero. Por favor, actualice la lista de ficheros y pruebe de nuevo.',
 	118 : 'Las rutas origen y destino son iguales.',
-	201 : 'Ya existía un fichero con ese nombre. El fichero subido ha sido renombrado como "%1"',
-	202 : 'Fichero inválido',
+	201 : 'Ya existía un fichero con ese nombre. El fichero subido ha sido renombrado como "%1".',
+	202 : 'Fichero inválido.',
 	203 : 'Fichero inválido. El peso es demasiado grande.',
 	204 : 'El fichero subido está corrupto.',
 	205 : 'La carpeta temporal no está disponible en el servidor para las subidas.',
 	206 : 'La subida se ha cancelado por razones de seguridad. El fichero contenía código HTML.',
-	207 : 'El fichero subido ha sido renombrado como "%1"',
+	207 : 'El fichero subido ha sido renombrado como "%1".',
 	300 : 'Ha fallado el mover el(los) fichero(s).',
 	301 : 'Ha fallado el copiar el(los) fichero(s).',
 	500 : 'El navegador de archivos está deshabilitado por razones de seguridad. Por favor, contacte con el administrador de su sistema y compruebe el fichero de configuración de CKFinder.',
@@ -204,14 +216,17 @@ CKFinder.lang['es'] =
 	// Other Error Messages.
 	ErrorMsg :
 	{
-		FileEmpty		: 'El nombre del fichero no puede estar vacío',
-		FileExists		: 'El fichero %s ya existe',
-		FolderEmpty		: 'El nombre de la carpeta no puede estar vacío',
+		FileEmpty		: 'El nombre del fichero no puede estar vacío.',
+		FileExists		: 'El fichero %s ya existe.',
+		FolderEmpty		: 'El nombre de la carpeta no puede estar vacío.',
 
 		FileInvChar		: 'El nombre del fichero no puede contener ninguno de los caracteres siguientes: \n\\ / : * ? " < > |',
 		FolderInvChar	: 'El nombre de la carpeta no puede contener ninguno de los caracteres siguientes: \n\\ / : * ? " < > |',
 
-		PopupBlockView	: 'No ha sido posible abrir el fichero en una nueva ventana. Por favor, configure su navegador y desactive todos los bloqueadores de ventanas para esta página.'
+		PopupBlockView	: 'No ha sido posible abrir el fichero en una nueva ventana. Por favor, configure su navegador y desactive todos los bloqueadores de ventanas para esta página.',
+		XmlError		: 'No ha sido posible cargar correctamente la respuesta XML del servidor.',
+		XmlEmpty		: 'No ha sido posible cargar correctamente la respuesta XML del servidor. El servidor envió una cadena vacía.',
+		XmlRawResponse	: 'Respuesta del servidor: %s'
 	},
 
 	// Imageresize plugin
@@ -232,8 +247,10 @@ CKFinder.lang['es'] =
 		invalidName		: 'Nombre no válido.',
 		newImage		: 'Crear nueva imagen',
 		noExtensionChange : 'La extensión no se puede cambiar.',
-		imageSmall		: 'La imagen original es demasiado pequeña',
-		contextMenuName	: 'Redimensionar'
+		imageSmall		: 'La imagen original es demasiado pequeña.',
+		contextMenuName	: 'Redimensionar',
+		lockRatio		: 'Proporcional',
+		resetSize		: 'Tamaño Original'
 	},
 
 	// Fileeditor plugin
@@ -244,5 +261,11 @@ CKFinder.lang['es'] =
 		fileSaveSuccess	: 'Fichero guardado correctamente.',
 		contextMenuName	: 'Editar',
 		loadingFile		: 'Cargando fichero, por favor espere...'
+	},
+
+	Maximize :
+	{
+		maximize : 'Maximizar',
+		minimize : 'Minimizar'
 	}
 };
