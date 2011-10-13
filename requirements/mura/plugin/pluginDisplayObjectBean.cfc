@@ -167,7 +167,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="loadByName"  access="public" output="false" returntype="void">
 	<cfset var rs=""/>
 	<cfquery name="rs" datasource="#getBean('configBean').getDatasource()#" username="#getBean('configBean').getDBUsername()#" password="#getBean('configBean').getDBPassword()#">
-	select objectID,moduleID,name,location,displayobjectfile,displaymethod, docache, configurator
+	select objectID,moduleID,name,location,displayobjectfile,displaymethod, docache, configuratorInit, configuratorJS
 	from tplugindisplayobjects 
 	where moduleID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getModuleID()#">
 	and name=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getName()#">
@@ -179,7 +179,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="getQuery"  access="public" output="false" returntype="query">
 	<cfset var rs=""/>
 	<cfquery name="rs" datasource="#getBean('configBean').getDatasource()#" username="#getBean('configBean').getDBUsername()#" password="#getBean('configBean').getDBPassword()#">
-	select objectID,moduleID,name,location,displayobjectfile,displaymethod, docache, configurator
+	select objectID,moduleID,name,location,displayobjectfile,displaymethod, docache, configuratorInit, configuratorJS
 	from tplugindisplayobjects 
 	where objectID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getObjectID()#">
 	</cfquery>
