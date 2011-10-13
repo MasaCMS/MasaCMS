@@ -81,7 +81,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset baseDir=baseDir & "#variables.fileDelim##arguments.siteid#">
 			<cfset versionDir=versionDir & "/#arguments.siteid#">
 			<cfset zipFileName="#arguments.siteid#">
-			<cfset svnUpdateDir="/default">
+			<cfset svnUpdateDir= svnUpdateDir & "/default">
 			<cfset trimLen=len(svnUpdateDir)-1>
 		<cfelse>
 			<cfset versionDir=versionDir & "/config">
