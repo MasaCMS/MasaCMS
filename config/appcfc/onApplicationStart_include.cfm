@@ -134,7 +134,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfinclude template="/muraWRM/config/coldspring.xml.cfm" />
 		
 		<!--- load the core services.xml --->
-		<cfset variables.serviceFactory=createObject("component","coldspring.beans.DefaultXMLBeanFactory").init(defaultProperties=variables.iniProperties) />
+		<cfset variables.serviceFactory=createObject("component","mura.bean.beanFactory").init(defaultProperties=variables.iniProperties) />
 		<cfset variables.serviceFactory.loadBeansFromXMLRaw(servicesXML,true) />
 		
 		<!--- If coldspring.custom.xml.cfm exists read it in an check it it is valid xml--->
@@ -149,11 +149,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfif>
 		</cfif>
 		
-		<cfset application.serviceFactory=createObject("component","mura.bean.beanFactory").init(variables.serviceFactory)>
+		<cfset application.serviceFactory=variables.serviceFactory>
 		
 		<cfobjectcache action="clear" />
 		 
-		<cfset application.configBean=variables.serviceFactory.getBean("configBean") />
+		<cfset application.configBean=application.serviceFactory.getBean("configBean") />
 		<cfset application.configBean.set(variables.iniProperties)>
 		
 		<!---You can create an onGlobalConfig.cfm file that runs after the initial configBean loads, but before anything else is loaded --->
