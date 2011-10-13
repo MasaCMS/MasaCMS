@@ -68,28 +68,28 @@
 			_submitdata.form = _formData;
 			_submitdata.datasets = _dataSets;
 			
-			jQuery('#meld-formdata').val(  JSON.stringify( _submitdata ) );
+			jQuery('#mura-formdata').val(  JSON.stringify( _submitdata ) );
 			return false;
 		}
 		
 		var settings		= jQuery.extend({},jQuery.fn.templatebuilder.defaults,settings);
-		var _formInitData = jQuery.parseJSON( jQuery("#meld-formdata").val() ); 
+		var _formInitData = jQuery.parseJSON( jQuery("#mura-formdata").val() ); 
 		var _templates	= {};
 
 		var _currentFieldBtn= '';
 		var _currentFieldLIBtn = '';
 		var _currentFieldID	= '';
 		var _currentDataset	= '';
-		var $_field		= jQuery('#meld-tb-field');
-		var $_dataset	= jQuery('#meld-tb-dataset-form');
-		var $_grid		= jQuery('#meld-tb-grid');
+		var $_field		= jQuery('#mura-tb-field');
+		var $_dataset	= jQuery('#mura-tb-dataset-form');
+		var $_grid		= jQuery('#mura-tb-grid');
 		var $_gridtable	= '';
 		var $_gridhead	= '';
 
 		var _rowCounter	= 0;
 
 		if(!settings.url)
-			settings.url = jQuery("#meld-templatebuilder").attr('data-url');
+			settings.url = jQuery("#mura-templatebuilder").attr('data-url');
 
 		doInitFormBuilder( _formInitData );		
 		
@@ -97,14 +97,14 @@
 			$_field.hide();
 			$_grid.hide();
 
-			jQuery('#meld-tb-fields').sortable({
+			jQuery('#mura-tb-fields').sortable({
 				axis: 'y',
 				opacity: 0.6,
 				delay: 200,
 				update: function(event, ui) {
 					jQuery(this).children().each( function() {
 					})
-					_formData.fieldorder = jQuery('#meld-tb-fields').sortable('toArray');
+					_formData.fieldorder = jQuery('#mura-tb-fields').sortable('toArray');
 					_formData.issortchanged = 1;
 				}
 			});
@@ -149,7 +149,7 @@
 		}
 
 		function doRenderFieldBlock( template,obj ) {
-			jQuery("#meld-tb-fields-empty").hide();
+			jQuery("#mura-tb-fields-empty").hide();
 
 			var $fieldBlock = jQuery(_templates['field-block']); 
 			var mdata = {};
@@ -159,22 +159,22 @@
 			jQuery("ul",$fieldBlock).hide();
 
 			$fieldBlock.attr('id',obj.fieldid);
-			jQuery(".meld-tb-block",$fieldBlock).attr('data-field',JSON.stringify(mdata));
-			jQuery(".meld-tb-block",$fieldBlock).addClass(obj.fieldtype.displaytype);
+			jQuery(".mura-tb-block",$fieldBlock).attr('data-field',JSON.stringify(mdata));
+			jQuery(".mura-tb-block",$fieldBlock).addClass(obj.fieldtype.displaytype);
 			$fieldBlock.addClass("field-" +obj.fieldtype.fieldtype);
 			jQuery("span",$fieldBlock).html(obj.label);
 
-			jQuery('#meld-tb-fields').append( $fieldBlock );
+			jQuery('#mura-tb-fields').append( $fieldBlock );
 		}
 	
 		function doActivateMenu() {
-			jQuery("#meld-templatebuilder .meld-tb-menu div").each( function(){
+			jQuery("#mura-templatebuilder .mura-tb-menu div").each( function(){
 				var $btn = jQuery(this);
 				$btn.click( function() {
 					goLoadField( jQuery(this).attr('data-object'),_formData.formid );
 				});
 			});
-			jQuery("#meld-tb-fields li div").live( 'click', function() {
+			jQuery("#mura-tb-fields li div").live( 'click', function() {
 				doField( this );
 			});			
 		}
@@ -190,7 +190,7 @@
 			var $pointer		= jQuery('<div class="pointer"></div>');
 
 
-			jQuery("#meld-tb-field-empty").hide();
+			jQuery("#mura-tb-field-empty").hide();
 			$_field.hide();
 			$_dataset.hide();
 			$_grid.hide();
@@ -246,13 +246,13 @@
 
 			jQuery(".tb-label").unbind();
 
-			jQuery('#meld-tb-field-form').unbind();
+			jQuery('#mura-tb-field-form').unbind();
 			$_field.html(_templates[templateName]);
 			$_field.show();
 
-			jQuery('#meld-tb-form').jsonForm({source: fieldData,createOnNull: true,createOnDataNull: true,bindBy: 'name',baseObject: 'field'});
+			jQuery('#mura-tb-form').jsonForm({source: fieldData,createOnNull: true,createOnDataNull: true,bindBy: 'name',baseObject: 'field'});
 
-			jQuery('#meld-tb-form').bind('jsonformField', function( event,values ) {
+			jQuery('#mura-tb-form').bind('jsonformField', function( event,values ) {
 				if (values.kind == 'selected') {
 					if(_selected != undefined)
 						jQuery(_selected).removeClass('selected');
@@ -267,7 +267,7 @@
 				}
 			});
 
-			jQuery("#meld-tb-form #meld-tb-form-label").html( jQuery(".tb-label").val() );
+			jQuery("#mura-tb-form #mura-tb-form-label").html( jQuery(".tb-label").val() );
 
 			jQuery(".tb-label").keyup(function() {
 				var val = jQuery(this).val();
@@ -277,7 +277,7 @@
 				jQuery("#tb-name").trigger('change');
 				
 				jQuery("span",_currentFieldBtn).html( val );				
-				jQuery("#meld-tb-form-label").html( val );
+				jQuery("#mura-tb-form-label").html( val );
 			});
 			
 			jQuery("#ui-tabs").tabs();
@@ -290,19 +290,19 @@
 			var $fieldButton	= jQuery("#" + _currentFieldID);
 
 			delete _formData.fields[_currentFieldID]; 			
-			jQuery("#meld-tb-field-empty").show();
+			jQuery("#mura-tb-field-empty").show();
 
 			$fieldButton.remove();
 			$_field.hide();
 			$_dataset.hide();
 			$_grid.hide();
-			_formData.fieldorder = jQuery('#meld-tb-fields').sortable('toArray');
+			_formData.fieldorder = jQuery('#mura-tb-fields').sortable('toArray');
 			if( fieldData.datasetid.length ) {
 				delete _dataSets[fieldData.datasetid];
 			}
 
 			if(!_formData.fieldorder.length) {
-				jQuery("#meld-tb-fields-empty").show();
+				jQuery("#mura-tb-fields-empty").show();
 			}
 		}
 
@@ -380,29 +380,29 @@
 			var dataset		= _dataSets[datasetID];
 			_currentDataset = dataset;
 
-			jQuery('.meld-tb-dsi').hide();
+			jQuery('.mura-tb-dsi').hide();
 			switch( _currentDataset.sourcetype ) {
 				case "entered": {
-					jQuery('.meld-tb-grp-entered').show();						
+					jQuery('.mura-tb-grp-entered').show();						
 				}
 				break;
 				case "dsp":
 				case "object":
 				case "remote": {
-					jQuery('.meld-tb-grp-source').show();						
+					jQuery('.mura-tb-grp-source').show();						
 				}
 				break;
 				default: {
-					jQuery('.meld-tb-grp-entered').show();						
+					jQuery('.mura-tb-grp-entered').show();						
 				}
 				break;
 			}
 
-			if(jQuery('#meld-tb-dataset-issorted').val() == 1) {
-				jQuery('.meld-tb-grp-sorted').show();			
+			if(jQuery('#mura-tb-dataset-issorted').val() == 1) {
+				jQuery('.mura-tb-grp-sorted').show();			
 			}
 			else {
-				jQuery('.meld-tb-grp-sorted').hide();
+				jQuery('.mura-tb-grp-sorted').hide();
 			}
 
 			if(_currentDataset.sourcetype.length == 0) {
@@ -416,12 +416,12 @@
 				});
 			}
 
-			jQuery('#meld-tb-dataset-sourcetype').val( _currentDataset.sourcetype );
-			jQuery('#meld-tb-dataset-issorted').val( _currentDataset.issorted );
-			jQuery('#meld-tb-dataset-sorttype').val( _currentDataset.sorttype );
-			jQuery('#meld-tb-dataset-sortcolumn').val( _currentDataset.sortcolumn );
-			jQuery('#meld-tb-dataset-sortdirection').val( _currentDataset.sortcolumn );
-			jQuery('#meld-tb-dataset-source').val( _currentDataset.source );
+			jQuery('#mura-tb-dataset-sourcetype').val( _currentDataset.sourcetype );
+			jQuery('#mura-tb-dataset-issorted').val( _currentDataset.issorted );
+			jQuery('#mura-tb-dataset-sorttype').val( _currentDataset.sorttype );
+			jQuery('#mura-tb-dataset-sortcolumn').val( _currentDataset.sortcolumn );
+			jQuery('#mura-tb-dataset-sortdirection').val( _currentDataset.sortcolumn );
+			jQuery('#mura-tb-dataset-source').val( _currentDataset.source );
 			
 			$_dataset.show();
 		}
@@ -435,49 +435,49 @@
 			$_dataset.hide();
 			$_dataset.html(_templates['dataset-form']);
 
-			jQuery('#meld-tb-dataset-sourcetype').change( function() {
-				jQuery('.meld-tb-dsi').hide();
+			jQuery('#mura-tb-dataset-sourcetype').change( function() {
+				jQuery('.mura-tb-dsi').hide();
 				
 				_currentDataset.sourcetype = jQuery(this).val();
 				jQuery('#button-grid-grid',$_dataset).unbind();
 				jQuery('#button-grid-grid',$_dataset).hide();	
 				
 				if( _currentDataset.sourcetype == "entered") {
-					jQuery('.meld-tb-grp-entered').show();						
+					jQuery('.mura-tb-grp-entered').show();						
 
-					if(jQuery('#meld-tb-dataset-issorted').val() == 1) {
-						jQuery('.meld-tb-grp-sorted').show();			
+					if(jQuery('#mura-tb-dataset-issorted').val() == 1) {
+						jQuery('.mura-tb-grp-sorted').show();			
 					}
 					else {
-						jQuery('.meld-tb-grp-sorted').hide();
+						jQuery('.mura-tb-grp-sorted').hide();
 					}
 				}
 				else {
-					jQuery('.meld-tb-grp-source').show();						
+					jQuery('.mura-tb-grp-source').show();						
 				}
 			});
 
-			jQuery('#meld-tb-dataset-issorted').change( function() {
-				jQuery('.meld-tb-grp-sorted').hide();
+			jQuery('#mura-tb-dataset-issorted').change( function() {
+				jQuery('.mura-tb-grp-sorted').hide();
 				
 				_currentDataset.issorted = jQuery(this).val();
 				
 				if(_currentDataset.issorted == 1) {
-					jQuery('.meld-tb-grp-sorted').show();			
+					jQuery('.mura-tb-grp-sorted').show();			
 				}
 				else {
-					jQuery('.meld-tb-grp-sorted').hide();
+					jQuery('.mura-tb-grp-sorted').hide();
 				}
 			});
 
-			jQuery('#meld-tb-save-dataset').click( function() {
+			jQuery('#mura-tb-save-dataset').click( function() {
 				
-				_currentDataset.sourcetype = jQuery('#meld-tb-dataset-sourcetype').val();
-				_currentDataset.issorted = jQuery('#meld-tb-dataset-issorted').val();
-				_currentDataset.sorttype = jQuery('#meld-tb-dataset-sorttype').val();
-				_currentDataset.sortcolumn = jQuery('#meld-tb-dataset-sortcolumn').val();
-				_currentDataset.sortdirection = jQuery('#meld-tb-dataset-sortdirection').val();
-				_currentDataset.source = jQuery('#meld-tb-dataset-source').val();
+				_currentDataset.sourcetype = jQuery('#mura-tb-dataset-sourcetype').val();
+				_currentDataset.issorted = jQuery('#mura-tb-dataset-issorted').val();
+				_currentDataset.sorttype = jQuery('#mura-tb-dataset-sorttype').val();
+				_currentDataset.sortcolumn = jQuery('#mura-tb-dataset-sortcolumn').val();
+				_currentDataset.sortdirection = jQuery('#mura-tb-dataset-sortdirection').val();
+				_currentDataset.source = jQuery('#mura-tb-dataset-source').val();
 				
 				if(_currentDataset.sourcetype != 'entered' && !_currentDataset.source.length ) {
 					doDisplayDialog( 'message-dataset-sourcerequired' );
@@ -501,8 +501,8 @@
 
 			$_grid.html( _templates['dataset-grid'] );
 
-			$_gridtable	= jQuery('#meld-tb-grid-table');
-			$_gridhead	= jQuery('#meld-tb-grid-table-header');
+			$_gridtable	= jQuery('#mura-tb-grid-table');
+			$_gridhead	= jQuery('#mura-tb-grid-table-header');
 
 			setDataMode('edit');
 
@@ -526,7 +526,7 @@
 				}
 			});
 			
-			jQuery(".meld-tb-grid-radio",$_grid).live('click',function() {
+			jQuery(".mura-tb-grid-radio",$_grid).live('click',function() {
 				id = jQuery(this).attr('data-id');
 				_currentDataset.defaultid = id;
 			});
@@ -628,22 +628,22 @@
 
 			
 			$cell = jQuery(cell);
-			$cell.addClass('meld-tb-cell-input');
-			$cell.addClass('meld-tb-cell-label');
+			$cell.addClass('mura-tb-cell-input');
+			$cell.addClass('mura-tb-cell-label');
 			$cell.html( jQuery('#element-labels #label',$rowHTML).html() );
 			$row.append($cell);
 
 			for( var i = 0;i < settings.dataColumns.length;i++) {
 				colName		= settings.dataColumns[i];
 				$cell = jQuery(cell);
-				$cell.addClass('meld-tb-cell-input');
+				$cell.addClass('mura-tb-cell-input');
 				$cell.html( jQuery('#element-labels #'+colName,$rowHTML).html() );
 				$row.append($cell);
 			}
 
 			$_gridhead.append($row);
 
-			jQuery(".meld-tb-cell-input",$row).each( function() {
+			jQuery(".mura-tb-cell-input",$row).each( function() {
 				jQuery(this).width( (480/(settings.dataColumns.length+2)) );
 			});
 		}
@@ -709,17 +709,17 @@
 			$row.attr('id',record.datarecordid);
 			
 			if(data.issorted != 1) {
-				jQuery("#meld-tb-grid-table-header li").removeClass('nohandle');
+				jQuery("#mura-tb-grid-table-header li").removeClass('nohandle');
 				$row.append(handle);
 			}
 			else {
-				jQuery("#meld-tb-grid-table-header li").addClass('nohandle');
+				jQuery("#mura-tb-grid-table-header li").addClass('nohandle');
 			}
 			
 			if(fieldData.fieldtype.fieldtype != 'checkbox')
 			{
 				$cell = jQuery(cell);
-				$cell.addClass('meld-tb-cell-small');
+				$cell.addClass('mura-tb-cell-small');
 				$radio = jQuery(radio);
 				$radio.attr('data-id', record.datarecordid);
 				$radio.attr('name', 'isdefault');
@@ -730,7 +730,7 @@
 			}
 			else {
 				$cell = jQuery(cell);
-				$cell.addClass('meld-tb-cell-small');
+				$cell.addClass('mura-tb-cell-small');
 				$checkbox = jQuery(checkbox);
 				$checkbox.attr('data-id', record.datarecordid);
 				$checkbox.attr('name', 'isselected');
@@ -743,7 +743,7 @@
 			// label
 			$cell = jQuery(cell);
 
-			$cell.addClass('meld-tb-cell-input');
+			$cell.addClass('mura-tb-cell-input');
 			$input = jQuery(input);
 			$input.attr('data-id', record.datarecordid);
 			$input.attr('name', 'label');
@@ -757,7 +757,7 @@
 				colName		= settings.dataColumns[i];
 				$cell = jQuery(cell);
 
-				$cell.addClass('meld-tb-cell-input');
+				$cell.addClass('mura-tb-cell-input');
 
 				$input = jQuery(input);
 				$input.attr('data-id', record.datarecordid);
@@ -767,13 +767,13 @@
 				$row.append($cell);
 			}
 			
-			/*jQuery(".meld-tb-cell-input",$row).each( function() {
+			/*jQuery(".mura-tb-cell-input",$row).each( function() {
 				jQuery(this).width( (480/(settings.dataColumns.length+2)) );
 			});*/
 
 			// delete
 			$cell = jQuery(cell);
-			$cell.addClass('meld-tb-cell-delete');
+			$cell.addClass('mura-tb-cell-delete');
 			$bt_delete = jQuery(bt_delete);
 			$bt_delete.attr('data-id', record.datarecordid);
 			$cell.append($bt_delete);
@@ -784,7 +784,7 @@
 			if($_gridtable.children().length % 2)
 				$row.addClass('alt');
 
-			jQuery(".meld-tb-grid-input",$row).each( function() {
+			jQuery(".mura-tb-grid-input",$row).each( function() {
 				jQuery(this).keyup( function() {
 					var name = jQuery(this).attr('name');
 					var id = jQuery(this).attr('data-id');
@@ -799,7 +799,7 @@
 				doDisplayDialog( 'message-delete-row',false,doDeleteRow,{'id':id} );
 			})
 
-			jQuery(".meld-tb-grid-checkbox",$row).change( function() {
+			jQuery(".mura-tb-grid-checkbox",$row).change( function() {
 				var name = jQuery(this).attr('name');
 				var id = jQuery(this).attr('data-id');
 				data.datarecords[id][name] = jQuery(this).is(":checked") ? 1 : 0;
@@ -856,7 +856,7 @@
 		
 
 		function doClearForm() {
-			jQuery('#meld-tb-fields').children().remove();
+			jQuery('#mura-tb-fields').children().remove();
 			$_field.html('');
 		}
 		

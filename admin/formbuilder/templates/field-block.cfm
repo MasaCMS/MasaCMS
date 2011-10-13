@@ -46,10 +46,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 <cfoutput>
 		<li>
-			<ul class="meld-tb-nav-utility">
+			<ul class="mura-tb-nav-utility">
 				<li><div class="ui-button" id="button-trash" title="#mmRBF.getKeyValue(session.rb,'formbuilder.delete')#"></div></li>
 			</ul>
-			<div class="meld-tb-block">
+			<div class="mura-tb-block">
 				<span></span>
 			</div>
 		</li>

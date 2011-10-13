@@ -50,20 +50,20 @@
 ||PACKAGENAMELICENSE||
 --->
 */
-/* @start meld-tb-form
+/* @start mura-tb-form
 ============================================================================================= */
-.meld-tb-form {
+.mura-tb-form {
 /*float: right;
 width: 100%;*/
 }
-.meld-tb-form .meld-tb-header {
+.mura-tb-form .mura-tb-header {
 	padding: 0;
 	margin: 0 0 10px;
 	overflow: hidden;
 	position: relative;
 }
 
-.meld-tb-form .meld-tb-header h3 {
+.mura-tb-form .mura-tb-header h3 {
 	font-size: 15px;
 	min-height: 26px;
 	color: #666;
@@ -76,26 +76,26 @@ width: 100%;*/
 	line-height: 1.1;
 }
 
-.meld-tb-header.textfield h3 {
+.mura-tb-header.textfield h3 {
 	background-image: url('../../../images/formbuilder/frm_textfield_big.png');
 }
-.meld-tb-header.textarea h3 {
+.mura-tb-header.textarea h3 {
 	background-image: url('../../../images/formbuilder/frm_textarea_big.png');
 	/*background-position: left center;*/
 }
-.meld-tb-header.dropdown h3 {
+.mura-tb-header.dropdown h3 {
 	background-image: url('../../../images/formbuilder/frm_dropdown_big.png');
 }
-.meld-tb-header.radio h3 {
+.mura-tb-header.radio h3 {
 	background-image: url('../../../images/formbuilder/frm_radio_big.png');
 	padding-top: 4px;
 }
-.meld-tb-header.checkbox h3 {
+.mura-tb-header.checkbox h3 {
 	background-image: url('../../../images/formbuilder/frm_checkbox_big.png');
 	padding-top: 4px;
 }
 
-.meld-tb-form .meld-tb-header h3 span {
+.mura-tb-form .mura-tb-header h3 span {
 	font-size: 15px;
 	font-weight: bold;
 }
@@ -106,11 +106,11 @@ width: 100%;*/
 	right: 0;
 }
 
-.meld-tb-form .btn-wrap {
+.mura-tb-form .btn-wrap {
 	text-align: center;
 }
 
-.meld-tb-form input.button,.meld-tb-form input.submit {
+.mura-tb-form input.button,.mura-tb-form input.submit {
 	/*margin: 1px 3px;
 	border-radius: 4px;
 	-moz-border-radius: 4px;
@@ -118,15 +118,15 @@ width: 100%;*/
 	-moz-box-shadow: 1px 1px 1px #aaa;
 	-webkit-box-shadow: 1px 1px 1px #aaa;*/
 }
-.meld-tb-form input:active.button,.meld-tb-form input:active.submit {
+.mura-tb-form input:active.button,.mura-tb-form input:active.submit {
 	-moz-box-shadow: none;
 	-webkit-box-shadow: none;
 }
-.meld-tb-form input.ui-icon {
+.mura-tb-form input.ui-icon {
 	width: 18px;
 	height: 18px;
 }
-.meld-tb-form select {
+.mura-tb-form select {
 	/*border: 1px solid #aaa;*/
 	margin: 0;
 	padding: 1px;
@@ -139,17 +139,17 @@ ul.template-form {
 	margin-bottom: 0;
 }
 
-#meld-tb-dataset ul.template-form {
+#mura-tb-dataset ul.template-form {
 	padding-bottom: 0;
 }
 
-#meld-tb-form .ui-tabs .ui-tabs-nav {
+#mura-tb-form .ui-tabs .ui-tabs-nav {
 	background: none;
 	border: 0;
 	overflow: hidden;
 }
 
-#meld-tb-fields-settings {
+#mura-tb-fields-settings {
 	float: right;
 	width: 66%;
 	padding: 2%;
@@ -173,7 +173,7 @@ ul.template-form {
 	margin-bottom: 0 !important;
 }
 
-.meld-tb-form label {
+.mura-tb-form label {
 	display: block;
 	margin: 0 1em 0 0;
 	padding: 5px 0;
@@ -185,25 +185,25 @@ ul.template-form {
 	font-size: 12px;
 }
 
-.meld-tb-form input[type=text], .meld-tb-form input.text {
+.mura-tb-form input[type=text], .mura-tb-form input.text {
 	font-size: 12px;
 	padding: 4px;
 }
 
-.meld-tb-form input.long {
+.mura-tb-form input.long {
 	width: 69%;
 }
-.meld-tb-form textarea {
+.mura-tb-form textarea {
 	width: 69%;
 	/*font-size: 9pt;*/
 }
-#meld-plugin .columns div.col2.wide input.long {
+#mura-plugin .columns div.col2.wide input.long {
 	width: 300px;
 }
-.meld-tb-form .col2 input.long {
+.mura-tb-form .col2 input.long {
 	width: 200px;
 }
-.meld-tb-form .col3 input.long {
+.mura-tb-form .col3 input.long {
 	width: 100px;
 }
 
@@ -215,7 +215,7 @@ ul.template-form {
 	border-top: 1px solid #aaa;
 }
 
-#meld-tb-grid .meld-tb-grid-checkbox {
+#mura-tb-grid .mura-tb-grid-checkbox {
 	margin: 0 4px 0 0;
 	width: auto !important;
 	padding: 0 !important;
@@ -223,7 +223,7 @@ ul.template-form {
 	background: transparent !important;
 }
 
-#meld-tb-grid .meld-tb-grid-radio {
+#mura-tb-grid .mura-tb-grid-radio {
 	margin: 0 4px 0 0;
 	width: auto !important;
 	padding: 0 !important;
@@ -236,7 +236,7 @@ input.disabled {
 	background-color: #eee;
 }
 
-#meld-tb-fields .ui-button {
+#mura-tb-fields .ui-button {
 	border: 1px solid #c2c2c2;
 	background: -moz-linear-gradient(
 		top,
@@ -266,7 +266,7 @@ input.disabled {
 	-moz-border-radius: 4px;
 	-webkit-border-radius: 4px;
 }
-#meld-templatebuilder .ui-button-text {
+#mura-templatebuilder .ui-button-text {
 	height: 32px;
 	line-height: 32px;
 	padding: 0 10px;
@@ -286,5 +286,5 @@ input.disabled {
 /*.ui-icon-formfield-form { background-position: -96px 0; }*/
 
 
-/* @end meld-tb-form
+/* @end mura-tb-form
 =================== */

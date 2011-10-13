@@ -57,22 +57,22 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<label id="value">#mmRBF.getKeyValue(session.rb,'formbuilder.dataset.value')#</label>
 	</div>
 	<div id="element-cell">
-		<span class='meld-tb-cell'></span>
+		<span class='mura-tb-cell'></span>
 	</div>
 	<div id="element-display">
-		<div class="meld-tb-grid-display"></div>
+		<div class="mura-tb-grid-display"></div>
 	</div>
 	<div id="element-input">
-		<input type="text" class="meld-tb-grid-input" />
+		<input type="text" class="mura-tb-grid-input" />
 	</div>
 	<div id="element-checkbox">
-		<input type="checkbox" title="#mmRBF.getKeyValue(session.rb,'formbuilder.isselected')#" class="checkbox meld-tb-grid-checkbox" data-id="" value="1" />
+		<input type="checkbox" title="#mmRBF.getKeyValue(session.rb,'formbuilder.isselected')#" class="checkbox mura-tb-grid-checkbox" data-id="" value="1" />
 	</div>
 	<div id="element-radio">
-		<input type="radio" name="isdefault" title="#mmRBF.getKeyValue(session.rb,'formbuilder.isdefault')#" class="radio meld-tb-grid-radio" data-id="" />
+		<input type="radio" name="isdefault" title="#mmRBF.getKeyValue(session.rb,'formbuilder.isdefault')#" class="radio mura-tb-grid-radio" data-id="" />
 	</div>
 	<div id="element-handle">
-		<span class="meld-tb-grid-handle"></span> 
+		<span class="mura-tb-grid-handle"></span> 
 	</div>
 </div>
 </cfoutput>
