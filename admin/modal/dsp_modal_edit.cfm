@@ -314,19 +314,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		function($) {
 			$(".editableObjectContents").each(	
 				function(el){
-					
-					var maxWidth=0;
-								
+					var display="inline";	
+						
 					$(this).children().each(
-						function(el){
-							var elWidth=$(this).outerWidth();			
-							if(elWidth > maxWidth){
-								maxWidth=elWidth;
-							}
-																	
+						function(el){			
+							if ($(this).css("display") == "block") {
+								display = "block";
+							}											
 						}	
 					);
-					$(this).width(maxWidth).parent().width(maxWidth);
+					$(this).css("display",display).parent().css("display",display);
 					
 				}
 			);
