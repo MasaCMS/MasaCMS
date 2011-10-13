@@ -29,7 +29,7 @@
 				hint="Constuctor. Creates a beanFactory">
 		<cfargument name="defaultAttributes" type="struct" required="false" default="#structnew()#" hint="default behaviors for undefined bean attributes"/>
 		<cfargument name="defaultProperties" type="struct" required="false" default="#structnew()#" hint="any default properties, which can be refernced via ${key} in your bean definitions"/>
-
+		
 		<!--- set defaults passed into constructor --->
 		<cfset setDefaultAttributes(arguments.defaultAttributes)/>
 		<cfset setDefaultProperties(arguments.defaultProperties)/>
