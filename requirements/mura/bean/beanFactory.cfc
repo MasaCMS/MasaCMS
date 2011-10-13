@@ -44,96 +44,92 @@ For clarity, if you create a modified version of Mura CMS, you are not obligated
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
-<cfcomponent output="false" extend="mura.cfobject">
+<cfcomponent output="false" extends="coldspring.beans.DefaultXmlBeanFactory">
 
 	
-	<cfset variables.beans=structNew()>
-	<cfset variables.beans["contentBean"]="mura.content.contentBean"/>
-	<cfset variables.beans["contentNavBean"]="mura.content.contentNavBean"/>
-	<cfset variables.beans["contentStatsBean"]="mura.content.contentStatsBean"/>
-	<cfset variables.beans["contentIterator"]="mura.content.contentIterator"/>
-	<cfset variables.beans["contentCommentIterator"]="mura.content.contentCommentIterator"/>
-	<cfset variables.beans["contentCommentBean"]="mura.content.contentCommentBean"/>	
-	<cfset variables.beans["httpSession"]="mura.client.httpSession"/>
-	<cfset variables.beans["MuraScope"]="mura.MuraScope">
-	<cfset variables.beans["changesetBean"]="mura.content.changeset.changesetBean"/>
-	<cfset variables.beans["changesetIterator"]="mura.content.changeset.changesetIterator"/>
-	<cfset variables.beans["extendObjectIterator"]="mura.extend.extendObjectIterator"/>
-	<cfset variables.beans["extendObject"]="mura.extend.extendObject"/>
-	<cfset variables.beans["extendObjectFeedBean"]="mura.extend.extendObjectFeedBean"/>
-	<cfset variables.beans["pluginScriptBean"]="mura.plugin.pluginScriptBean"/>
-	<cfset variables.beans["pluginDisplayObjectBean"]="mura.plugin.pluginDisplayObjectBean"/>		
-	<cfset variables.beans["pluginSettingBean"]="mura.plugin.pluginSettingBean"/>
-	<cfset variables.beans["changesetBean"]="mura.content.changeset.changesetBean"/>
-	<cfset variables.beans["changesetIterator"]="mura.content.changeset.changesetIterator"/>
-	<cfset variables.beans["rateBean"]="mura.content.rater.rateBean"/>
-	<cfset variables.beans["servlet"]="mura.servlet" />
-	<cfset variables.beans["favoriteBean"]="mura.content.favorite.favoriteBean"/>
-	<cfset variables.beans["creativeBean"]="mura.advertising.creative.creativeBean" />
-	<cfset variables.beans["image"]="mura.content.file.imagecfc.image" />
-	<cfset variables.beans["adZoneBean"]="mura.advertising.adZone.adZoneBean" />
-	<cfset variables.beans["reminderBean"]="mura.content.reminder.reminderBean" />
-	<cfset variables.beans["contentRenderer"]="mura.content.contentRenderer"  />
-	<cfset variables.beans["categoryIterator"]="mura.category.categoryIterator"/>
-	<cfset variables.beans["categoryBean"]="mura.category.categoryBean" />
-	<cfset variables.beans["settingsBean"]="mura.settings.settingsBean"/>
-	<cfset variables.beans["settingsBundle"]="mura.settings.settingsBundle"/>
-	<cfset variables.beans["userIterator"]="mura.user.userIterator"/>
-	<cfset variables.beans["userFeedBean"]="mura.user.userFeedBean"/>
-	<cfset variables.beans["addressIterator"]="mura.user.addressIterator"/>
-	<cfset variables.beans["userBean"]="mura.user.userBean" />
-	<cfset variables.beans["addressBean"]="mura.user.addressBean" />
-	<cfset variables.beans["mailinglistBean"]="mura.mailinglist.mailinglistBean" />
-	<cfset variables.beans["memberBean"]="mura.mailinglist.memberBean" />
-	<cfset variables.beans["emailBean"]="mura.email.emailBean" />
-	<cfset variables.beans["campaignBean"]="mura.advertising.campaign.campaignBean" />
-	<cfset variables.beans["placementBean"]="mura.advertising.campaign.placement.placementBean" />
-	<cfset variables.beans["feedBean"]="mura.content.feed.feedBean"/>
-	<cfset variables.alias["content"]="contentBean"/>
-	<cfset variables.alias["feed"]="feedBean"/>
-	<cfset variables.alias["site"]="settingsBean"/>
-	<cfset variables.alias["user"]="userBean"/>
-	<cfset variables.alias["group"]="userBean"/>
-	<cfset variables.alias["address"]="addressBean"/>
-	<cfset variables.alias["category"]="categoryBean"/>
-	<cfset variables.alias["userFeed"]="userFeedBean"/>
-	<cfset variables.alias["comment"]="contentCommentBean"/>
-	<cfset variables.alias["stats"]="contentStatsBean"/>
-	<cfset variables.alias["changeset"]="changesetBean"/>
-	<cfset variables.alias["bundle"]="settingsBundle"/>
-	<cfset variables.alias["mailingList"]="mailingListBean"/>
-	<cfset variables.alias["mailingListMember"]="memberBean"/>
-	<cfset variables.alias["groupDAO"]="userDAO"/>
-	<cfset variables.alias["placement"]="placementBean"/>
-	<cfset variables.alias["creative"]="creativeBean"/>
-	<cfset variables.alias["rate"]="rateBean"/>
-	<cfset variables.alias["favorite"]="favoriteBean"/>
-	<cfset variables.alias["campaign"]="campaignBean"/>
-	<cfset variables.alias["email"]="emailBean"/>
+	<cfset variables.transient=structNew()>
+	<cfset variables.transient["contentBean"]="mura.content.contentBean"/>
+	<cfset variables.transient["contentNavBean"]="mura.content.contentNavBean"/>
+	<cfset variables.transient["contentStatsBean"]="mura.content.contentStatsBean"/>
+	<cfset variables.transient["contentIterator"]="mura.content.contentIterator"/>
+	<cfset variables.transient["contentCommentIterator"]="mura.content.contentCommentIterator"/>
+	<cfset variables.transient["contentCommentBean"]="mura.content.contentCommentBean"/>	
+	<cfset variables.transient["httpSession"]="mura.client.httpSession"/>
+	<cfset variables.transient["MuraScope"]="mura.MuraScope">
+	<cfset variables.transient["changesetBean"]="mura.content.changeset.changesetBean"/>
+	<cfset variables.transient["changesetIterator"]="mura.content.changeset.changesetIterator"/>
+	<cfset variables.transient["extendObjectIterator"]="mura.extend.extendObjectIterator"/>
+	<cfset variables.transient["extendObject"]="mura.extend.extendObject"/>
+	<cfset variables.transient["extendObjectFeedBean"]="mura.extend.extendObjectFeedBean"/>
+	<cfset variables.transient["pluginScriptBean"]="mura.plugin.pluginScriptBean"/>
+	<cfset variables.transient["pluginDisplayObjectBean"]="mura.plugin.pluginDisplayObjectBean"/>		
+	<cfset variables.transient["pluginSettingBean"]="mura.plugin.pluginSettingBean"/>
+	<cfset variables.transient["changesetBean"]="mura.content.changeset.changesetBean"/>
+	<cfset variables.transient["changesetIterator"]="mura.content.changeset.changesetIterator"/>
+	<cfset variables.transient["rateBean"]="mura.content.rater.rateBean"/>
+	<cfset variables.transient["servlet"]="mura.servlet" />
+	<cfset variables.transient["favoriteBean"]="mura.content.favorite.favoriteBean"/>
+	<cfset variables.transient["creativeBean"]="mura.advertising.creative.creativeBean" />
+	<cfset variables.transient["image"]="mura.content.file.imagecfc.image" />
+	<cfset variables.transient["adZoneBean"]="mura.advertising.adZone.adZoneBean" />
+	<cfset variables.transient["reminderBean"]="mura.content.reminder.reminderBean" />
+	<cfset variables.transient["contentRenderer"]="mura.content.contentRenderer"  />
+	<cfset variables.transient["categoryIterator"]="mura.category.categoryIterator"/>
+	<cfset variables.transient["categoryBean"]="mura.category.categoryBean" />
+	<cfset variables.transient["settingsBean"]="mura.settings.settingsBean"/>
+	<cfset variables.transient["settingsBundle"]="mura.settings.settingsBundle"/>
+	<cfset variables.transient["userIterator"]="mura.user.userIterator"/>
+	<cfset variables.transient["userFeedBean"]="mura.user.userFeedBean"/>
+	<cfset variables.transient["addressIterator"]="mura.user.addressIterator"/>
+	<cfset variables.transient["userBean"]="mura.user.userBean" />
+	<cfset variables.transient["addressBean"]="mura.user.addressBean" />
+	<cfset variables.transient["mailinglistBean"]="mura.mailinglist.mailinglistBean" />
+	<cfset variables.transient["memberBean"]="mura.mailinglist.memberBean" />
+	<cfset variables.transient["emailBean"]="mura.email.emailBean" />
+	<cfset variables.transient["campaignBean"]="mura.advertising.campaign.campaignBean" />
+	<cfset variables.transient["placementBean"]="mura.advertising.campaign.placement.placementBean" />
+	<cfset variables.transient["feedBean"]="mura.content.feed.feedBean"/>
+	<cfset variables.transientAlias["content"]="contentBean"/>
+	<cfset variables.transientAlias["feed"]="feedBean"/>
+	<cfset variables.transientAlias["site"]="settingsBean"/>
+	<cfset variables.transientAlias["user"]="userBean"/>
+	<cfset variables.transientAlias["group"]="userBean"/>
+	<cfset variables.transientAlias["address"]="addressBean"/>
+	<cfset variables.transientAlias["category"]="categoryBean"/>
+	<cfset variables.transientAlias["userFeed"]="userFeedBean"/>
+	<cfset variables.transientAlias["comment"]="contentCommentBean"/>
+	<cfset variables.transientAlias["stats"]="contentStatsBean"/>
+	<cfset variables.transientAlias["changeset"]="changesetBean"/>
+	<cfset variables.transientAlias["bundle"]="settingsBundle"/>
+	<cfset variables.transientAlias["mailingList"]="mailingListBean"/>
+	<cfset variables.transientAlias["mailingListMember"]="memberBean"/>
+	<cfset variables.transientAlias["groupDAO"]="userDAO"/>
+	<cfset variables.transientAlias["placement"]="placementBean"/>
+	<cfset variables.transientAlias["creative"]="creativeBean"/>
+	<cfset variables.transientAlias["rate"]="rateBean"/>
+	<cfset variables.transientAlias["favorite"]="favoriteBean"/>
+	<cfset variables.transientAlias["campaign"]="campaignBean"/>
+	<cfset variables.transientAlias["email"]="emailBean"/>
 	
-	<cffunction name="init" output="false">
-		<cfargument name="parentFactory">
-		
-		<cfset variables.parentFactory=arguments.parentFactory>
-		<cfset variables.beanInjector=variables.parentFactory.getBean("beanInjector")>	
-		<cfreturn this>
-		
+	<cffunction name="loadBeansFromXMLRaw" output="false">
+		<cfset super.loadBeansFromXMLRaw(argumentCollection=arguments)>
+		<cfset variables.beanInjector=super.getBean("beanInjector")>	
 	</cffunction>
 	
 	<cffunction name="getBean" outout="false">
 		<cfargument name="beanName">
 		<cfset var bean="">
 		
-		<cfif variables.parentFactory.containsBean(arguments.beanName)>
-			<cfset bean=variables.parentFactory.getBean(arguments.beanName)>
-		<cfelseif structKeyExists(variables.alias,arguments.beanName)>
-			<cfset arguments.beanName=variables.alias["#arguments.beanName#"]>
-			<cfset bean=createObject("component",variables.beans["#arguments.beanName#"]).init()>
-			<cfset variables.beanInjector.autowire(bean,variables.beans["#arguments.beanName#"])>
-		<cfelseif structKeyExists(variables.beans,arguments.beanName)>
-			<cfset bean=createObject("component",variables.beans[arguments.beanName]).init()>
+		<cfif super.containsBean(arguments.beanName)>
+			<cfset bean=super.getBean(arguments.beanName)>
+		<cfelseif structKeyExists(variables.transientAlias,arguments.beanName)>
+			<cfset arguments.beanName=variables.transientAlias["#arguments.beanName#"]>
+			<cfset bean=createObject("component",variables.transient["#arguments.beanName#"]).init()>
+			<cfset variables.beanInjector.autowire(bean,variables.transient["#arguments.beanName#"])>
+		<cfelseif structKeyExists(variables.transient,arguments.beanName)>
+			<cfset bean=createObject("component",variables.transient[arguments.beanName]).init()>
 			<cfif arguments.beanName neq "MuraScope">
-				<cfset variables.beanInjector.autowire(bean,variables.beans[arguments.beanName])>
+				<cfset variables.beanInjector.autowire(bean,variables.transient[arguments.beanName])>
 			</cfif>
 		<cfelse>
 			<cfthrow message="The bean '#arguments.beanName#' does not exist">
@@ -145,31 +141,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cffunction name="containsBean" output="false">
 		<cfargument name="beanName">
 		
-		<cfreturn (structKeyExists(variables.beans,arguments.beanName) or structKeyExists(variables.alias,arguments.beanName) or variables.parentFactory.containsBean(arguments.beanName))>
-	</cffunction>
-	
-	<cffunction name="OnMissingMethod" access="public" returntype="any" output="false" hint="Handles missing method exceptions.">
-		<cfargument name="MissingMethodName" type="string" required="true" hint="The name of the missing method." />
-		<cfargument name="MissingMethodArguments" type="struct" required="true" />
-		<cfset var local=structNew()>
-		
-		<cfif len(arguments.MissingMethodName)>
-			<cfif structKeyExists(variables.parentFactory,MissingMethodName)>
-				<cfif not structIsEmpty(MissingMethodArguments)>
-					<cfinvoke component="#variables.parentFactory#" method="#MissingMethodName#" argumentcollection="#MissingMethodArguments#" returnvariable="local.returnVal">
-				<cfelse>
-					<cfinvoke component="#variables.parentFactory#" method="#MissingMethodName#" returnvariable="local.returnVal">
-				</cfif>
-				
-				<cfif isDefined("local.returnVal")>
-					<cfreturn local.returnVal>
-				</cfif>
-			<cfelse>
-				<cfthrow message="The method '#arguments.MissingMethodName#' is not defined">
-			</cfif>
-		<cfelse>
-			<cfreturn "">
-		</cfif>
+		<cfreturn (structKeyExists(variables.transient,arguments.beanName) or structKeyExists(variables.transientAlias,arguments.beanName) or super.containsBean(arguments.beanName))>
 	</cffunction>
 	
 </cfcomponent>
