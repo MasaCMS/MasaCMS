@@ -47,10 +47,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfoutput>
 
 <span>
-		<div class="meld-tb-form" id="formblock-${fieldid}">
-			<div class="meld-tb-header radio">
-				<h3><!---#mmRBF.getKeyValue(session.rb,'formbuilder.field.radio')#:---> <span id="meld-tb-form-label"></span></h3>
-				<ul class="meld-tb-nav-utility">
+		<div class="mura-tb-form" id="formblock-${fieldid}">
+			<div class="mura-tb-header radio">
+				<h3><!---#mmRBF.getKeyValue(session.rb,'formbuilder.field.radio')#:---> <span id="mura-tb-form-label"></span></h3>
+				<ul class="mura-tb-nav-utility">
 					<li><div class="ui-button" id="button-trash" title="#mmRBF.getKeyValue(session.rb,'formbuilder.delete')#"></div></li>
 				</ul>
 			</div>
@@ -58,12 +58,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<div class="ui-tabs" id="ui-tabs">
 		
 			<ul class="ui-tabs-nav">
-				<li class="ui-state-default ui-corner-top"><a href="##meld-tb-form-tab-basic"><span>Basic</span></a></li>
-				<li class="ui-state-default ui-corner-top"><a href="##meld-tb-form-tab-advanced"><span>Advanced</span></a></li>
-				<li class="ui-state-default ui-corner-top"><a href="##meld-tb-form-tab-validation"><span>Validation</span></a></li>
+				<li class="ui-state-default ui-corner-top"><a href="##mura-tb-form-tab-basic"><span>Basic</span></a></li>
+				<li class="ui-state-default ui-corner-top"><a href="##mura-tb-form-tab-advanced"><span>Advanced</span></a></li>
+				<li class="ui-state-default ui-corner-top"><a href="##mura-tb-form-tab-validation"><span>Validation</span></a></li>
 			</ul>
 			
-			<div class="ui-tabs-panel" id="meld-tb-form-tab-basic">
+			<div class="ui-tabs-panel" id="mura-tb-form-tab-basic">
 					<ul class="template-form">
 						<li>
 							<label for="label">#mmRBF.getKeyValue(session.rb,'formbuilder.field.label')#</label>
@@ -76,7 +76,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					</ul>
 				</div>
 				
-				<div class="ui-tabs-panel" id="meld-tb-form-tab-advanced">
+				<div class="ui-tabs-panel" id="mura-tb-form-tab-advanced">
 					<ul class="template-form">
 						<li>
 							<label for="size">#mmRBF.getKeyValue(session.rb,'formbuilder.field.size')#</label>
@@ -97,7 +97,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					</ul>
 				</div> <!--- End Tab Panel --->
 				
-				<div class="ui-tabs-panel" id="meld-tb-form-tab-validation">
+				<div class="ui-tabs-panel" id="mura-tb-form-tab-validation">
 					<ul class="template-form">
 						<li>
 							<label for="validatetype">#mmRBF.getKeyValue(session.rb,'formbuilder.field.validatetype')#</label>
@@ -126,6 +126,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</div> <!--- End Tab Panel --->
 				
 			</div> <!--- End ui-tabs --->
-		</div> <!--- End meld-tb-form --->
+		</div> <!--- End mura-tb-form --->
 	</span>
 </cfoutput>

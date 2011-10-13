@@ -52,13 +52,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<li class="ui-state-default ui-state-active ui-corner-top ui-tabs-selected"><a href="javascript:void(null);"><span>List</span></a></li>
 			</ul>
 			
-			<div class="ui-tabs-panel" id="meld-tb-form-tab-list">
-				<div id="dataset-grid" class="meld-tb-form template-form">
-				<div id="meld-tb-grid-message" style="display: none">#mmRBF.getKeyValue(session.rb,'formbuilder.dataset.mastermode')#</div>
-				<div id="meld-tb-grid">
-					<ul id="meld-tb-grid-table-header">
+			<div class="ui-tabs-panel" id="mura-tb-form-tab-list">
+				<div id="dataset-grid" class="mura-tb-form template-form">
+				<div id="mura-tb-grid-message" style="display: none">#mmRBF.getKeyValue(session.rb,'formbuilder.dataset.mastermode')#</div>
+				<div id="mura-tb-grid">
+					<ul id="mura-tb-grid-table-header">
 					</ul>
-					<ul id="meld-tb-grid-table">
+					<ul id="mura-tb-grid-table">
 					</ul>
 				</div>
 			<div class="ui-button" id="button-grid-add" title="#mmRBF.getKeyValue(session.rb,'formbuilder.dataset.add')#">#mmRBF.getKeyValue(session.rb,'formbuilder.dataset.add')#</div>

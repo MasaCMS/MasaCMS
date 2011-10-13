@@ -43,14 +43,14 @@
 	For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your 
 	modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
 	version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS. */
-#meld-formbuilder {
+#mura-formbuilder {
 	border: 1px solid #e6efe2;
 	padding: 5px;
 	border-radius: 8px;
 	-moz-border-radius: 8px;
 	-webkit-border-radius: 8px;
 }
-#meld-formbuilder-masthead {
+#mura-formbuilder-masthead {
 	border: 1px solid #e6efe2;
 	background-color: #eef4ec;
 	padding: 5px;
@@ -59,10 +59,10 @@
 	-moz-border-radius: 4px;
 	-webkit-border-radius: 4px;
 }
-#meld-formbuilder-form {
+#mura-formbuilder-form {
 	margin: 5px 0;
 }
-#meld-formbuilder-fields {
+#mura-formbuilder-fields {
 	float: left;
 	width: 150px;
 	min-height: 300px;
@@ -75,10 +75,10 @@
 	-webkit-border-radius: 4px;
 	overflow-y: scroll;
 }
-#meld-formbuilder-field-list {
+#mura-formbuilder-field-list {
 	list-style: none;
 }
-#meld-formbuilder-field-list li div.field {
+#mura-formbuilder-field-list li div.field {
 	border: 1px solid #aaa;
 	background-color: #d6bcad;
 	margin: 5px 0;
@@ -88,7 +88,7 @@
 	-moz-border-radius: 3px;
 	-webkit-border-radius: 3px;
 }
-#meld-formbuilder-field {
+#mura-formbuilder-field {
 	float: right;
 	width: 635px;
 	min-height: 200px;

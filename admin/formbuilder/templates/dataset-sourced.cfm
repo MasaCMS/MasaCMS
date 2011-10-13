@@ -45,8 +45,8 @@ modified version; it is your choice whether to do so, or to make such modified v
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cfoutput>
-	<div id="meld-tb-grid" class="meld-tb-form">
-		<div id="dataset-sourced" class="meld-tb-header">
+	<div id="mura-tb-grid" class="mura-tb-form">
+		<div id="dataset-sourced" class="mura-tb-header">
 			<h3>#mmRBF.getKeyValue(session.rb,'formbuilder.source')#</h3>
 			<ul class="right">
 				<li><div class="ui-button" id="button-grid-edit" title="#mmRBF.getKeyValue(session.rb,'formbuilder.dataset.edit')#"><span class="ui-icon ui-icon-pencil"></span></div></li>

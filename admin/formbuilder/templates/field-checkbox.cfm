@@ -45,10 +45,10 @@ modified version; it is your choice whether to do so, or to make such modified v
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cfoutput><span>
-		<div class="meld-tb-form" id="formblock-${fieldid}">
-			<div class="meld-tb-header checkbox">
-				<h3><!---#mmRBF.getKeyValue(session.rb,'formbuilder.field.checkbox')#:---> <span id="meld-tb-form-label"></span></h3>
-				<ul class="meld-tb-nav-utility">
+		<div class="mura-tb-form" id="formblock-${fieldid}">
+			<div class="mura-tb-header checkbox">
+				<h3><!---#mmRBF.getKeyValue(session.rb,'formbuilder.field.checkbox')#:---> <span id="mura-tb-form-label"></span></h3>
+				<ul class="mura-tb-nav-utility">
 					<li><div class="ui-button" id="button-trash" title="#mmRBF.getKeyValue(session.rb,'formbuilder.delete')#"></div></li>
 				</ul>
 			</div>
@@ -56,12 +56,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<div class="ui-tabs" id="ui-tabs">
 			
 				<ul class="ui-tabs-nav">
-					<li class="ui-state-default ui-corner-top"><a href="##meld-tb-form-tab-basic"><span>Basic</span></a></li>
-					<li class="ui-state-default ui-corner-top"><a href="##meld-tb-form-tab-advanced"><span>Advanced</span></a></li>
-					<li class="ui-state-default ui-corner-top"><a href="##meld-tb-form-tab-validation"><span>Validation</span></a></li>
+					<li class="ui-state-default ui-corner-top"><a href="##mura-tb-form-tab-basic"><span>Basic</span></a></li>
+					<li class="ui-state-default ui-corner-top"><a href="##mura-tb-form-tab-advanced"><span>Advanced</span></a></li>
+					<li class="ui-state-default ui-corner-top"><a href="##mura-tb-form-tab-validation"><span>Validation</span></a></li>
 				</ul>
 				
-				<div class="ui-tabs-panel" id="meld-tb-form-tab-basic">
+				<div class="ui-tabs-panel" id="mura-tb-form-tab-basic">
 					<ul class="template-form">
 						<li>
 							<label for="label">#mmRBF.getKeyValue(session.rb,'formbuilder.field.label')#</label>
@@ -73,14 +73,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						</li>
 					</ul>
 				</div>
-				<div class="ui-tabs-panel" id="meld-tb-form-tab-validation">
+				<div class="ui-tabs-panel" id="mura-tb-form-tab-validation">
 					
 					<ul class="template-form">
 						<li>Does this need validation fields?</li>
 					</ul>
 					</div>
 				
-					<div class="ui-tabs-panel" id="meld-tb-form-tab-advanced">
+					<div class="ui-tabs-panel" id="mura-tb-form-tab-advanced">
 					<ul class="template-form">
 						<li>
 							<label for="size">#mmRBF.getKeyValue(session.rb,'formbuilder.field.size')#</label>

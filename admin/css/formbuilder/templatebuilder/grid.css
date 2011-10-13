@@ -46,12 +46,12 @@
 /* @override
 	http://localhost:8500/muracms/admin/css/formbuilder/templatebuilder/grid.css */
 
-/*#meld-tb-grid-padding {
+/*#mura-tb-grid-padding {
 	margin: 0 7px;
 	background-color: #ddd;
 }*/
 
-#meld-tb-grid-table-header {
+#mura-tb-grid-table-header {
 	/*border-bottom: 1px solid #a6a6a6;*/
 	background: url('../../../images/formbuilder/ui-toolbar-bg.jpg') repeat-x left bottom;
 	padding: 0;
@@ -62,15 +62,15 @@
 	overflow: hidden;
 	
 }
-#meld-tb-grid-table-header .nohandle {
+#mura-tb-grid-table-header .nohandle {
 	margin-left: -30px;
 }
-#meld-tb-grid-table {
+#mura-tb-grid-table {
 	width: 100%;
 	max-height: 600px;
 	overflow-y: auto;
 }
-#meld-tb-grid-table-header li {
+#mura-tb-grid-table-header li {
 	list-style: none;
 	padding: 4px 0 4px 44px !important;
 	margin: 0;
@@ -78,7 +78,7 @@
 	overflow: hidden;
 	background: transparent;
 }
-#meld-tb-grid-table li {
+#mura-tb-grid-table li {
 	list-style: none;
 	overflow: hidden;
 	background-color: #f9f9f9;
@@ -91,7 +91,7 @@
 	border-radius: 0;
 	line-height: 18px !important;
 }
-#meld-tb-grid-table li span, #meld-tb-grid-table-header li span {
+#mura-tb-grid-table li span, #mura-tb-grid-table-header li span {
 	display: block;
 	float: left;
 	margin: 0;
@@ -100,12 +100,12 @@
 	width: 45% !important;
 }
 
-#meld-tb-grid-table-header li span {
+#mura-tb-grid-table-header li span {
 	width: 48% !important;
 	margin-right: 2px;
 }
 
-#meld-tb-grid li .meld-tb-cell-small {
+#mura-tb-grid li .mura-tb-cell-small {
 	width: 15px !important;
 	display: block;
 	padding-top: 8px;
@@ -113,7 +113,7 @@
 	margin-right: 3px
 }
 
-#meld-tb-grid li .meld-tb-cell-delete {
+#mura-tb-grid li .mura-tb-cell-delete {
 	width: 16px !important;
 	display: block;
 	padding-top: 4px;
@@ -122,11 +122,11 @@
 	margin: 0;
 }
 
-#meld-tb-grid li .meld-tb-cell-small input.radio {
+#mura-tb-grid li .mura-tb-cell-small input.radio {
 	margin-top: 0;
 }
 
-#meld-tb-grid-table .meld-tb-cell .button-grid-row-delete {
+#mura-tb-grid-table .mura-tb-cell .button-grid-row-delete {
 	display: block;
 	text-indent: -9999px;
 	width: 16px !important;
@@ -151,7 +151,7 @@
 	border-radius: 12px;
 }
 
-/*#meld-tb-grid li span.handle {
+/*#mura-tb-grid li span.handle {
 	width: 10px !important;
 	height: 28px;
 	margin-right: 0;
@@ -159,29 +159,29 @@
 	background: transparent url('../../../images/formbuilder/data-handle.png') no-repeat center center;
 }*/
 
-#meld-tb-grid .meld-tb-grid-display {
+#mura-tb-grid .mura-tb-grid-display {
 	padding: 2px 0px 0 4px;
 	overflow: hidden;
 	height: 18px;
 	background-color: #c7d7e2;
 }
-#meld-tb-grid-message {
+#mura-tb-grid-message {
 	margin: 0 10px;
 	padding: 3px 10px;
 	border: 1px solid #ffc488;
 	background-color: #fff9f2;
 }
-#meld-tb-grid-table li span input {
+#mura-tb-grid-table li span input {
 	width: 94%;
 	padding: 4px;
 	background-color: #fcfcfc;
 	border: 1px solid #ddd;
 }
-#meld-tb-grid-table .button {
+#mura-tb-grid-table .button {
 	float: right;
 	margin-right: 5px;
 }
-#meld-tb-grid-table .meld-tb-grid-handle {
+#mura-tb-grid-table .mura-tb-grid-handle {
 	background: transparent url('../../../images/formbuilder/data-handle.png') no-repeat center right;
 	float: left;	
 	width: 14px !important;
@@ -189,13 +189,13 @@
 	margin-right: 6px;
 	cursor: move;
 }
-#meld-tb-grid-table li.alt {
+#mura-tb-grid-table li.alt {
 /*	background-color: #ffffff; */
 }
-#meld-tb-grid-table li.alt span input {
+#mura-tb-grid-table li.alt span input {
 	background-color: #fff;
 }
-#meld-tb-grid-table li.alt {
+#mura-tb-grid-table li.alt {
 	background-color: #e8e8e8;
 }
 

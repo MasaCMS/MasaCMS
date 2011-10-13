@@ -2,14 +2,14 @@
 <script>
 
 	function saveFormBuilder(){
-		jQuery("##meld-templatebuilder").templatebuilder('save');
+		jQuery("##mura-templatebuilder").templatebuilder('save');
 	}
 
 	jQuery(document).ready(function() {
-		jQuery("##meld-templatebuilder").templatebuilder();
+		jQuery("##mura-templatebuilder").templatebuilder();
 
 		jQuery("##bink").click( function() {
-			jQuery("##meld-templatebuilder").templatebuilder('bink');
+			jQuery("##mura-templatebuilder").templatebuilder('bink');
 		});
 
 		myDump = function(obj, name, indent, depth, maxdepth) {
@@ -47,8 +47,8 @@
 
 	});
 </script>
-	<div id="meld-templatebuilder" data-url="#$.globalConfig('context')#/admin/index.cfm">
-		<div class="meld-tb-menu">
+	<div id="mura-templatebuilder" data-url="#$.globalConfig('context')#/admin/index.cfm">
+		<div class="mura-tb-menu">
 			<ul>
 			<li><div class="ui-button button-field" id="button-section" data-object="section-section" title="#application.rbFactory.getKeyValue(session.rb,'formbuilder.field.section.tooltip')#"><span class="ui-button-text ui-icon-formfield-section">#application.rbFactory.getKeyValue(session.rb,'formbuilder.field.section')#</span></div></li>
 			<li class="spacer"></li>
@@ -59,26 +59,26 @@
 			<li><div class="ui-button button-field" id="button-dropdown" data-object="field-dropdown" title="#application.rbFactory.getKeyValue(session.rb,'formbuilder.field.dropdown.tooltip')#"><span class="ui-icon ui-icon-formfield ui-icon-formfield-select"></span></div></li>
 			</ul>
 		</div>
-		<div id="meld-tb-form" class="clearfix">
-			<div id="meld-tb-form-fields">
-				<div id="meld-tb-fields-empty" class="notice">#application.rbFactory.getKeyValue(session.rb,'formbuilder.fields.empty')#</div>
-				<ul id="meld-tb-fields">
+		<div id="mura-tb-form" class="clearfix">
+			<div id="mura-tb-form-fields">
+				<div id="mura-tb-fields-empty" class="notice">#application.rbFactory.getKeyValue(session.rb,'formbuilder.fields.empty')#</div>
+				<ul id="mura-tb-fields">
 				</ul>
 			</div>
-			<div id="meld-tb-fields-settings">	
-				<div id="meld-tb-field-form" class="meld-tb-data-form">
-					<div id="meld-tb-field-empty" class="notice">#application.rbFactory.getKeyValue(session.rb,'formbuilder.field.empty')#</div>
-					<div id="meld-tb-field">
+			<div id="mura-tb-fields-settings">	
+				<div id="mura-tb-field-form" class="mura-tb-data-form">
+					<div id="mura-tb-field-empty" class="notice">#application.rbFactory.getKeyValue(session.rb,'formbuilder.field.empty')#</div>
+					<div id="mura-tb-field">
 					</div>
 				</div>
-				<div id="meld-tb-dataset-form" class="meld-tb-data-form">
+				<div id="mura-tb-dataset-form" class="mura-tb-data-form">
 				</div>
-				<div id="meld-tb-grid">
+				<div id="mura-tb-grid">
 				</div>
 			</div>
 		</div>
 
 	</div>	
-	<textarea id="meld-formdata" name="body">#request.contentBean.getBody()#</textarea>
+	<textarea id="mura-formdata" name="body">#request.contentBean.getBody()#</textarea>
 	
 </cfoutput>
