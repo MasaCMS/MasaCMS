@@ -148,4 +148,28 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfreturn (structKeyExists(variables.beans,arguments.beanName) or structKeyExists(variables.alias,arguments.beanName) or variables.parentFactory.containsBean(arguments.beanName))>
 	</cffunction>
 	
+	<cffunction name="OnMissingMethod" access="public" returntype="any" output="false" hint="Handles missing method exceptions.">
+		<cfargument name="MissingMethodName" type="string" required="true" hint="The name of the missing method." />
+		<cfargument name="MissingMethodArguments" type="struct" required="true" />
+		<cfset var local=structNew()>
+		
+		<cfif len(arguments.MissingMethodName)>
+			<cfif structKeyExists(variables.parentFactory,MissingMethodName)>
+				<cfif not structIsEmpty(MissingMethodArguments)>
+					<cfinvoke component="#variables.parentFactory#" method="#MissingMethodName#" argumentcollection="#MissingMethodArguments#" returnvariable="local.returnVal">
+				<cfelse>
+					<cfinvoke component="#variables.parentFactory#" method="#MissingMethodName#" returnvariable="local.returnVal">
+				</cfif>
+				
+				<cfif isDefined("local.returnVal")>
+					<cfreturn local.returnVal>
+				</cfif>
+			<cfelse>
+				<cfthrow message="The method '#arguments.MissingMethodName#' is not defined">
+			</cfif>
+		<cfelse>
+			<cfreturn "">
+		</cfif>
+	</cffunction>
+	
 </cfcomponent>
