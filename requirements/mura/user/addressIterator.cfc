@@ -53,7 +53,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset variables.addressBean=getBean("address") />
 		<cfset variables.addressStructTemplate=structCopy(variables.addressBean.getAllValues())>
 	<cfelse>
-		<cfset variables.addressBean.setAllValues( variables.addressStructTemplate)>
+		<cfset variables.addressBean.setAllValues( structCopy(variables.addressStructTemplate) )>
 	</cfif>
 	
 	<cfset  variables.addressBean.set(queryRowToStruct(variables.records,currentIndex()))>
