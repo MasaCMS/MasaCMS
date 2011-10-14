@@ -155,7 +155,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	var fronEndProxyLoc= location.protocol + "//" + location.hostname + "#$.globalConfig('serverPort')#";
 	
 	function onAdminMessage(messageEvent){
-		if (messageEvent.origin == adminProtocal + adminDomain) {
+		if (messageEvent.origin == adminProtocal + adminDomain + "#$.globalConfig('serverPort')#") {
 			
 			var parameters = Porthole.WindowProxy.splitMessageParameters(messageEvent.data);
 			
