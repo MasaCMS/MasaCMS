@@ -241,7 +241,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				
 				if(windowHeight > frontEndModalHeight){	
 					frontEndModalHeight=windowHeight;
-					frameContainer.style.height=jQuery(document).height() + 100 + "px"
+					frameContainer.style.height=jQuery(document).height() + "px"
 					setTimeout(function(){
 						jQuery("##frontEndToolsModalClose").fadeIn("fast")
 					},1000);
