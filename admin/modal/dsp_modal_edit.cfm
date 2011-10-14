@@ -151,8 +151,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	var adminProxy;
 	var adminDomain=<cfif len($.globalConfig('admindomain'))>"#$.globalConfig('admindomain')#"<cfelse>location.hostname</cfif>;
 	var adminProtocal=<cfif application.configBean.getAdminSSL()>"https://";<cfelse>"http://"</cfif>;
-	var adminProxyLoc=adminProtocal + adminDomain + "#$.globalConfig('port')##$.globalConfig('context')#/admin/js/porthole/proxy.html";
-	var fronEndProxyLoc= location.protocol + "//" + location.hostname + "#$.globalConfig('port')#";
+	var adminProxyLoc=adminProtocal + adminDomain + "#$.globalConfig('serverPort')##$.globalConfig('context')#/admin/js/porthole/proxy.html";
+	var fronEndProxyLoc= location.protocol + "//" + location.hostname + "#$.globalConfig('serverPort')#";
 	
 	function onAdminMessage(messageEvent){
 		if (messageEvent.origin == adminProtocal + adminDomain) {
