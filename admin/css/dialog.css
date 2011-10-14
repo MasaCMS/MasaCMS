@@ -64,9 +64,9 @@
 /* @group Modal Dialog */
 
 #frontEndToolsModalContainer {
-  position:absolute;
+ /* position: [Set in dialog.js]; */
   display: block;
-  height: 100%;
+  /*height: [Set in dialog.js];*/
   width: 100%;
   top: 0;
   left: 0;
