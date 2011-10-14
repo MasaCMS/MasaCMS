@@ -86,6 +86,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset var fn=""/>
 <cfset var useDefaultSMTPServer=0/>
 <cfset var fromEmail="" />
+<cfset var filteredSendto=filterEmails(arguments.sendto)>
 
 	<cfif arguments.siteid neq ''>
 		<cfset useDefaultSMTPServer=variables.settingsManager.getSite(arguments.siteid).getUseDefaultSMTPServer()>
@@ -119,7 +120,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset fromEmail=MailServerUsernameEmail />
 	</cfif>
 
-<cfif isStruct(arguments.args) and isValidEmailFormat(arguments.sendto)>
+<cfif isStruct(arguments.args) and len(filteredSendto)>
 	
 	<cfset fields=arguments.args>
 	
@@ -172,7 +173,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfloop>
 <cftry>
 <cfif useDefaultSMTPServer>
-<cfmail to="#arguments.sendto#" 
+<cfmail to="#filteredSendTo#" 
 		from='"#arguments.from#" <#fromEmail#>'
 		subject="#arguments.subject#" 
 		replyto="#arguments.replyto#"
@@ -180,7 +181,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 #trim(tmt_mail_body)#
 </cfmail>
 <cfelse>
-<cfmail to="#arguments.sendto#" 
+<cfmail to="#filteredSendTo#" 
 		from='"#arguments.from#" <#fromEmail#>'
 		subject="#arguments.subject#" 
 		server="#MailServerIp#" 
@@ -229,8 +230,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset var mailServerSSL=false />
 <cfset var mailServerFailto="" />
 <cfset var fromEmail="" />
+<cfset var filteredSendto=filterEmails(arguments.sendto)>
 
-<cfif isValidEmailFormat(arguments.sendto)>
+<cfif len(filteredSendto)>
 	<cfif arguments.siteid neq ''>
 		<cfset useDefaultSMTPServer=variables.settingsManager.getSite(arguments.siteid).getUseDefaultSMTPServer()>
 		<cfset mailServerUsername=variables.settingsManager.getSite(arguments.siteid).getMailserverUsername(true)/>
@@ -268,7 +270,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<cftry>
 	<cfif useDefaultSMTPServer>
-		<cfmail to="#arguments.sendto#" 
+		<cfmail to="#filteredSendTo#" 
 				from='"#arguments.from#" <#fromEmail#>'
 				subject="#arguments.subject#" 
 				replyto="#arguments.replyto#"
@@ -277,7 +279,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				mailerid="#arguments.mailerID#"
 				bcc="#arguments.bcc#">#trim(arguments.text)#</cfmail>
 	<cfelse>
-		<cfmail to="#arguments.sendto#" 
+		<cfmail to="#filteredSendTo#" 
 				from='"#arguments.from#" <#fromEmail#>'
 				subject="#arguments.subject#" 
 				server="#MailServerIp#" 
@@ -327,8 +329,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset var mailServerSSL=false />
 <cfset var mailServerFailto="" />
 <cfset var fromEmail="" />
+<cfset var filteredSendto=filterEmails(arguments.sendto)>
 
-<cfif isValidEmailFormat(arguments.sendto)>
+<cfif len(filteredSendto)>
 	<cfif arguments.siteid neq ''>
 		<cfset useDefaultSMTPServer=variables.settingsManager.getSite(arguments.siteid).getUseDefaultSMTPServer()>
 		<cfset mailServerUsername=variables.settingsManager.getSite(arguments.siteid).getMailserverUsername(true)/>
@@ -366,7 +369,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cftry>
 	<cfif useDefaultSMTPServer>
-		<cfmail to="#arguments.sendto#" 
+		<cfmail to="#filteredSendTo#" 
 				from='"#arguments.from#" <#fromEmail#>'
 				subject="#arguments.subject#" 
 				replyto="#arguments.replyto#"
@@ -375,7 +378,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				mailerid="#arguments.mailerID#"
 				bcc="#arguments.bcc#">#trim(arguments.html)#</cfmail>
 	<cfelse>
-		<cfmail to="#arguments.sendto#" 
+		<cfmail to="#filteredSendTo#" 
 				from='"#arguments.from#" <#fromEmail#>'
 				subject="#arguments.subject#" 
 				server="#MailServerIp#" 
@@ -426,8 +429,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset var mailServerSSL=false />
 <cfset var mailServerFailto="" />
 <cfset var fromEmail="" />
+<cfset var filteredSendto=filterEmails(arguments.sendto)>
 
-<cfif isValidEmailFormat(arguments.sendto)>
+<cfif len(filteredSendto)>
 	<cfif arguments.siteid neq ''>
 		<cfset useDefaultSMTPServer=variables.settingsManager.getSite(arguments.siteid).getUseDefaultSMTPServer()>
 		<cfset mailServerUsername=variables.settingsManager.getSite(arguments.siteid).getMailserverUsername(true)/>
@@ -465,7 +469,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cftry>
 	<cfif useDefaultSMTPServer>
-		<cfmail to="#arguments.sendto#" 
+		<cfmail to="#filteredSendTo#" 
 				from='"#arguments.from#" <#fromEmail#>'
 				subject="#arguments.subject#" 
 				replyto="#arguments.replyto#"
@@ -477,7 +481,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfmailpart type="text">#trim(arguments.text)#</cfmailpart>
 				</cfmail>
 	<cfelse>
-		<cfmail to="#arguments.sendto#" 
+		<cfmail to="#filteredSendTo#" 
 				from='"#arguments.from#" <#fromEmail#>'
 				subject="#arguments.subject#" 
 				server="#MailServerIp#" 
@@ -514,4 +518,22 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfargument name="email">
 <cfreturn REFindNoCase("^[^@%*<>' ]+@[^@%*<>' ]{1,255}\.[^@%*<>' ]{2,5}", trim(arguments.email)) neq 0>
 </cffunction>
+
+<cffunction name="filterEmails" output="false">
+	<cfargument name="emails">
+	
+	<cfset var returnList="">
+	<cfset var i="">
+	
+	<cfif len(arguments.emails)>
+		<cfloop list="#arguments.emails#" index="i">
+			<cfif isValidEmailFormat(i)>
+				<cfset returnList=listAppend(returnList,i)>
+			</cfif>
+		</cfloop>
+	</cfif>
+	
+	<cfreturn returnList>
+</cffunction>
+
 </cfcomponent>

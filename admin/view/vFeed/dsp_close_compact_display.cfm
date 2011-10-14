@@ -54,12 +54,22 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset homeBean = application.contentManager.getActiveContent(event.getValue('homeID'), event.getValue('siteID'))>
 <cfset href = contentRenderer.createHREF(homeBean.getType(), homeBean.getFilename(), homeBean.getSiteId(), homeBean.getcontentId())>
 <cfoutput>
+<script src="#application.configBean.getContext()#/admin/js/jquery/jquery.js?coreversion=#application.coreversion#" type="text/javascript"></script>
 <script src="#application.configBean.getContext()#/admin/js/porthole/porthole.min.js?coreversion=#application.coreversion#" type="text/javascript"></script>
 <script>
-	function reloadParent(){
+	function reloadParent(){		
 		frontEndProxy = new Porthole.WindowProxy("#session.frontEndProxyLoc##application.configBean.getContext()#/admin/js/porthole/proxy.html");
-		frontEndProxy.postMessage("cmd=setLocation&location=#jsStringFormat(href)#")
+		if(jQuery("##ProxyIFrame").length){
+			jQuery("##ProxyIFrame").load(
+				function(){
+					frontEndProxy.postMessage("cmd=setLocation&location=#jsStringFormat(href)#");
+				}
+			);
+		} else {
+			frontEndProxy.postMessage("cmd=setLocation&location=#jsStringFormat(href)#");
+		}
 	}
+	
 </script>
 </cfoutput>
 </head>
