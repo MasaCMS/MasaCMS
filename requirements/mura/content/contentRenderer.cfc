@@ -2137,10 +2137,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<cfset var imageStyles=structNew()>
 	<cfset imageStyles.markup="">
-	
-	<cfif arguments.size eq "Custom"
+
+	<cfif arguments.size eq "" or 
+		(arguments.size eq "Custom"
 		and arguments.width eq "auto"
-		and arguments.height eq "auto">
+		and arguments.height eq "auto")>
 		<cfset arguments.size="small">
 	</cfif>
 		
