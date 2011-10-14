@@ -101,7 +101,7 @@ var siteid='#session.siteid#';
 			setCheckboxTrees();
 			if (top.location != self.location) {
 				frontEndProxy = new Porthole.WindowProxy("#session.frontEndProxyLoc##application.configBean.getContext()#/admin/js/porthole/proxy.html");
-			}
+			}	
 		}
 	);
 </script>

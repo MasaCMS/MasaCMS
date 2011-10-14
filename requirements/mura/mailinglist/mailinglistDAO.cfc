@@ -58,9 +58,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
  
 <cfquery datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 insert into tmailinglist (mlid,name,lastupdate,siteid,isPublic,description,ispurge)
-values (<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.listBean.getMLID()#">,<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.listBean.getName() neq '',de('no'),de('yes'))#" value="#arguments.listBean.getName()#">,
-<cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#">,<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.listBean.getSiteID() neq '',de('no'),de('yes'))#" value="#arguments.listBean.getsiteID()#">,#arguments.listBean.getisPublic()#,
-<cfqueryparam cfsqltype="cf_sql_longvarchar" null="#iif(arguments.listBean.getDescription() neq '',de('no'),de('yes'))#" value="#arguments.listBean.getDescription()#">,0)
+values (
+<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.listBean.getMLID()#">,
+<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.listBean.getName() neq '',de('no'),de('yes'))#" value="#arguments.listBean.getName()#">,
+<cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#">,<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.listBean.getSiteID() neq '',de('no'),de('yes'))#" value="#arguments.listBean.getsiteID()#">,
+#arguments.listBean.getisPublic()#,
+<cfqueryparam cfsqltype="cf_sql_longvarchar" null="#iif(arguments.listBean.getDescription() neq '',de('no'),de('yes'))#" value="#arguments.listBean.getDescription()#">,
+0)
 </cfquery>
 
 </cffunction> 

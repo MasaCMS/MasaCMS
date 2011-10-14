@@ -156,7 +156,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	function onAdminMessage(messageEvent){
 		if (messageEvent.origin == adminProtocal + adminDomain) {
+			
 			var parameters = Porthole.WindowProxy.splitMessageParameters(messageEvent.data);
+			
 			if (parameters["cmd"] == "setWindowMode") {
 				if (parameters["mode"] == "configurator") {
 					frontEndModalIsConfigurator = true;
@@ -204,7 +206,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		jQuery("##fronEndToolsModalTarget").html('<div id="frontEndToolsModalContainer" class="' + modalClass + '">' +
 		'<div id="frontEndToolsModalBody">' +
 		'<a id="frontEndToolsModalClose" style="display:none;" href="javascript:closeFrontEndToolsModal();">Close</a>' +
-		'<iframe src="' + src + '" id="frontEndToolsModaliframe" scrolling="false" frameborder="0" style="overflow:hidden"></iframe>' +
+		'<iframe src="' + src + '" id="frontEndToolsModaliframe" scrolling="false" frameborder="0" style="overflow:hidden" name="frontEndToolsModaliframe"></iframe>' +
 		'</div>' +
 		'</div>');
 		

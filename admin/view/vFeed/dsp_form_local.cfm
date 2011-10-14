@@ -517,7 +517,15 @@ setSearchButtons();
 <script type="text/javascript">
 jQuery(document).ready(function(){
 	if (top.location != self.location) {
-		<cfif len(attributes.assignmentID)>frontEndProxy.postMessage("cmd=setWindowMode&mode=configurator");<cfelse>frontEndProxy.postMessage("cmd=setWindowMode&mode=standard");</cfif>
+		if(jQuery("##ProxyIFrame").length){
+			jQuery("##ProxyIFrame").load(
+				function(){
+					<cfif len(attributes.assignmentID)>frontEndProxy.postMessage("cmd=setWindowMode&mode=configurator");<cfelse>frontEndProxy.postMessage("cmd=setWindowMode&mode=standard");</cfif>
+				}
+			);	
+		} else {
+			<cfif len(attributes.assignmentID)>frontEndProxy.postMessage("cmd=setWindowMode&mode=configurator");<cfelse>frontEndProxy.postMessage("cmd=setWindowMode&mode=standard");</cfif>
+		}
 	}
 });
 </script>
