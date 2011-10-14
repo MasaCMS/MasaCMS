@@ -82,7 +82,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <script src="#application.configBean.getContext()#/admin/js/porthole/porthole.min.js?coreversion=#application.coreversion#" type="text/javascript"></script>
 <script>
 	function reloadParent(){
-		frontEndProxy = new Porthole.WindowProxy("#session.frontEndProxyLoc##application.configBean.getServerPort()##application.configBean.getContext()#/admin/js/porthole/proxy.html");
+		frontEndProxy = new Porthole.WindowProxy("#session.frontEndProxyLoc##application.configBean.getContext()#/admin/js/porthole/proxy.html");
 		if(jQuery("##ProxyIFrame").length){
 			jQuery("##ProxyIFrame").load(
 				function(){
