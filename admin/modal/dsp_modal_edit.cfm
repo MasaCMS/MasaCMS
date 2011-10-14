@@ -317,15 +317,25 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			$(".editableObjectContents").each(	
 				function(el){
 					var display="inline";	
+					var width=0;
+					var float;
 						
 					$(this).children().each(
 						function(el){			
 							if ($(this).css("display") == "block") {
 								display = "block";
+								float=$(this).css("float");
+								width=$(this).outerWidth();
 							}											
 						}	
 					);
+					
 					$(this).css("display",display).parent().css("display",display);
+					
+					if(width){
+						$(this).width(width).parent().width(width);
+						$(this).css("float",float).parent().css("float",float);
+					}
 					
 				}
 			);
