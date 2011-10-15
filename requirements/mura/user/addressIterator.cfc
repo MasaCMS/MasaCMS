@@ -51,7 +51,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="packageRecord" access="public" output="false" returntype="any">	
 	<cfif NOT isObject(variables.addressBean)>
 		<cfset variables.addressBean=getBean("address") />
-		<cfset variables.addressStructTemplate=structCopy(variables.addressBean.getAllValues())>
+		<cfset variables.addressStructTemplate=structCopy(variables.addressBean.getAllValues(autocomplete=false))>
 	<cfelse>
 		<cfset variables.addressBean.setAllValues( structCopy(variables.addressStructTemplate) )>
 	</cfif>

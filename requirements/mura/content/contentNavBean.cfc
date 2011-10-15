@@ -105,6 +105,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.instance.struct=arguments.contentStruct>
 	<cfset variables.packageBy=arguments.packageBy>
 	
+	<cfif isObject(variables.instance.content)>
+		<cfset variables.instance.content.setIsNew(1)>
+	</cfif>
+	
 	<cfreturn this>
 </cffunction>
 
@@ -134,7 +138,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif NOT isObject(variables.instance.content)>
 		<cfset variables.instance.content=getBean("content")>
 		<cfset variables.instance.content.setIsNew(1)>
-		<cfset variables.instance.contentStructTemplate=structCopy(variables.instance.content.getAllValues())>
+		<cfset variables.instance.contentStructTemplate=structCopy(variables.instance.content.getAllValues(autocomplete=false))>
 	</cfif>
 	
 	<cfif NOT variables.instance.content.getIsNew() >

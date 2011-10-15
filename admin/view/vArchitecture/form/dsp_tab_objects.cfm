@@ -136,13 +136,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </dd>	  
 </dl></div>				
 <script>
-var remoteFeedConfiguratorTitle='#application.rbFactory.getKeyValue(session.rb,"sitemanager.configurator.remotefeedtitle")#';
-var localIndexConfiguratorTitle='#application.rbFactory.getKeyValue(session.rb,"sitemanager.configurator.localindextitle")#';		
-var categorySummaryConfiguratorTitle='#application.rbFactory.getKeyValue(session.rb,"sitemanager.configurator.categorysummarytitle")#';	
-var slideShowConfiguratorTitle='#application.rbFactory.getKeyValue(session.rb,"sitemanager.configurator.slideshowtitle")#';	
-var relatedContentConfiguratorTitle='#application.rbFactory.getKeyValue(session.rb,"sitemanager.configurator.relatedcontenttitle")#';		
-var genericConfiguratorTitle='#application.rbFactory.getKeyValue(session.rb,"sitemanager.configurator.generictitle")#';	
-var genericConfiguratorMessage='#application.rbFactory.getKeyValue(session.rb,"sitemanager.configurator.genericmessage")#';
+var remoteFeedConfiguratorTitle='#JSStringFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.configurator.remotefeedtitle"))#';
+var localIndexConfiguratorTitle='#JSStringFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.configurator.localindextitle"))#';		
+var categorySummaryConfiguratorTitle='#JSStringFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.configurator.categorysummarytitle"))#';	
+var slideShowConfiguratorTitle='#JSStringFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.configurator.slideshowtitle"))#';	
+var relatedContentConfiguratorTitle='#JSStringFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.configurator.relatedcontenttitle"))#';		
+var genericConfiguratorTitle='#JSStringFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.configurator.generictitle"))#';	
+var genericConfiguratorMessage='#JSStringFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.configurator.genericmessage"))#';
 var contentid='#attributes.contentid#';
 var parentid='#attributes.parentid#';
 var contenthistid='#request.contentBean.getContentHistID()#';
