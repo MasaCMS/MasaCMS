@@ -902,12 +902,13 @@ a.boxItemHeader { /* Link of items inside dragable boxes */
 	margin: 0 0 .5em;
 	}
 
-/*.home aside .credits,
+.home aside .credits,
 .home aside .tags,
 .home aside .ratings,
 .home aside .credits {
+	font-size: 10px;
 	color: #999 !important;
-	}*/
+	}
 
 .home aside .svIndex dl.hasImage .image {
 	margin: 0 .5em 0em 0;
