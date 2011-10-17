@@ -1138,6 +1138,7 @@ function addDisplayObject(objectToAdd,regionid,configure){
 	var tmpValue="";
 	var tmpText="";
 	var isUpdate=false;
+	
 	//If it's not a js object then it must be an id of a form input or select
 	if(typeof(objectToAdd)=="string"){
 	
@@ -1235,8 +1236,8 @@ function addDisplayObject(objectToAdd,regionid,configure){
 			checkSelection=true;
 		}
 		
-		if (tmpObject.object == 'plugin'){
-			var configurator=getPluginConfigurator(tmpObject.objectid);
+		if (tmpObject.object == 'plugin') {
+			var configurator = getPluginConfigurator(tmpObject.objectid);
 			
 			if (configurator != '') {
 				if (configure) {
@@ -1496,7 +1497,7 @@ function addDisplayObject(objectToAdd,regionid,configure){
 	
 	function updateAvailableObject(){
 		availableObjectParams={};
-							
+						
 		jQuery("#availableObjectParams").find(":input").each(
 			function(){
 				var item=jQuery(this);
@@ -1548,6 +1549,8 @@ function addDisplayObject(objectToAdd,regionid,configure){
 	}
 	
 	function initConfiguratorParams(){
+		updateAvailableObject();
+		
 		jQuery("#availableObjectParams").find(":input").bind(
 			"change",
 			function(){
@@ -1596,29 +1599,34 @@ function addDisplayObject(objectToAdd,regionid,configure){
 				position: getDialogPosition(),
 				buttons: {
 					Save: function(){
+						updateAvailableObject();
+						
 						addDisplayObject(availableObject, data.regionid, false);
-						jQuery(this).dialog("close");
 						
 						if (typeof(config.destroy) != 'undefined') {
 							config.destroy(data, config);
 						}
+						
+						jQuery(this).dialog("destroy");
 						
 					},
 					Cancel: function(){
-						jQuery(this).dialog("close");
-						
 						if (typeof(config.destroy) != 'undefined') {
 							config.destroy(data, config);
 						}
+						
+						jQuery(this).dialog("destroy");
+						
 					}
 				},
 				close: function(){
-					jQuery(this).dialog("destroy");
-					
 					if (typeof(config.destroy) != 'undefined') {
 						config.destroy(data, config);
 					}
+						
+					jQuery(this).dialog("destroy");
 				}
+			
 			});
 		}
 			

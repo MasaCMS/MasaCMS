@@ -1035,7 +1035,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						</cfif>
 						<cfset editableControl.editLink = adminBase & "#$.globalConfig('context')#/admin/index.cfm?fuseaction=cArch.pluginConfigurator">
 						<cfset editableControl.editLink = editableControl.editLink & "&amp;compactDisplay=true">
-						<cfset editableControl.editLink = editableControl.editLink & "&amp;assignmentID=" & $.content('contenthistid')>
+						<cfset editableControl.editLink = editableControl.editLink & "&amp;contenthistID=" & $.content('contenthistid')>
 						<cfset editableControl.editLink = editableControl.editLink & "&amp;regionID=" & arguments.regionID>
 						<cfset editableControl.editLink = editableControl.editLink & "&amp;orderno=" & arguments.orderno>
 					</cfif>
