@@ -1004,7 +1004,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var theObject = "" />
 	<cfset var cacheKeyContentId = arguments.object & event.getValue('contentBean').getcontentID() />
 	<cfset var cacheKeyObjectId = arguments.object & arguments.objectid />
-	
+	<cfset var showEditable=false/>
 	<cfsavecontent variable="theObject">
 		<cfoutput>
 			<cfswitch expression="#arguments.object#">
@@ -1017,7 +1017,37 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfcase value="top_nav">#dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"nav/dsp_top.cfm",cacheKeyContentId)#</cfcase>
 				<cfcase value="contact">#dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"dsp_contact.cfm")#</cfcase>
 				<cfcase value="calendar_nav">#dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"nav/calendarNav/index.cfm")#</cfcase>
-				<cfcase value="plugin">#application.pluginManager.displayObject(object=arguments.objectid,event=event,params=arguments.params)#</cfcase>
+				<cfcase value="plugin">
+					<cfsilent>
+					<cfset showEditable=this.showEditableObjects and ($.event('r').perm eq 'editor' or (not $.content('active') and $.event('r').perm eq 'author') )>
+						
+					<cfif showEditable>
+						<cfset $.loadShadowBoxJS()>
+						<cfset $.addToHTMLHeadQueue('editableObjects.cfm')>
+						<cfif len(application.configBean.getAdminDomain())>
+							<cfif application.configBean.getAdminSSL()>
+								<cfset variables.adminBase = "https://#application.configBean.getAdminDomain()#"/>
+							<cfelse>
+								<cfset variables.adminBase = "http://#application.configBean.getAdminDomain()#"/>
+							</cfif>
+						<cfelse>
+							<cfset variables.adminBase = ""/>
+						</cfif>
+						<cfset editableControl.editLink = adminBase & "#$.globalConfig('context')#/admin/index.cfm?fuseaction=cArch.pluginConfigurator">
+						<cfset editableControl.editLink = editableControl.editLink & "&amp;compactDisplay=true">
+						<cfset editableControl.editLink = editableControl.editLink & "&amp;assignmentID=" & $.content('contenthistid')>
+						<cfset editableControl.editLink = editableControl.editLink & "&amp;regionID=" & arguments.regionID>
+						<cfset editableControl.editLink = editableControl.editLink & "&amp;orderno=" & arguments.orderno>
+					</cfif>
+					</cfsilent>
+					<cfif showEditable>
+						#$.renderEditableObjectHeader("editablePlugin")#
+					</cfif>
+					#application.pluginManager.displayObject(object=arguments.objectid,event=event,params=arguments.params)#
+					<cfif showEditable>
+						#renderEditableObjectFooter($.generateEditableObjectControl(editableControl.editLink,true))#
+					</cfif>
+				</cfcase>
 				<cfcase value="mailing_list">#dspObject_Render(siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,fileName="dsp_mailing_list.cfm")#</cfcase>
 				<cfcase value="mailing_list_master">#dspObject_Render(siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,fileName="dsp_mailing_list_master.cfm")#</cfcase>
 				<cfcase value="site_map">#dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"dsp_site_map.cfm",cacheKeyObjectId)#</cfcase>							

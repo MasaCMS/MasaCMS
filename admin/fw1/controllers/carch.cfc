@@ -343,4 +343,30 @@
 	
 </cffunction>
 
+<cffunction name="updateObjectParams" ouput="true">
+	<cfargument name="rc">
+	<cfset var local=structNew()>
+	
+	<cfset local.versionBean=getBean("content").loadBy(contentHistID=arguments.rc.contentHistID, siteID= arguments.rc.siteid)> 
+	
+	<cfif not local.versionBean.getIsNew()>
+		<cfset arguments.rc.crumbData=variables.contentGateway.getCrumblist(local.versionBean.getContentID(), arguments.rc.siteid) />
+		<cfset arguments.rc.perm=variables.permUtility.getNodePerm(arguments.rc.crumbData) />  
+	<cfelse>
+		<cfabort>
+	</cfif>
+
+	<cfif local.versionBean.getActive()>
+		<cfset arguments.rc.allowAction=listFindNoCase('editor',arguments.rc.perm) />
+	<cfelse>
+		<cfset arguments.rc.allowAction=listFindNoCase('author,editor',arguments.rc.perm) />
+	</cfif>
+
+	<cfif arguments.rc.allowAction and len(arguments.rc.contentHistID) and isJSON(arguments.rc.params)>
+		<cfset variables.contentManager.updateContentObjectParams(arguments.rc.contentHistID,arguments.rc.regionID,arguments.rc.orderno,arguments.rc.params)>
+	</cfif>
+	<cfabort>
+	
+</cffunction>
+
 </cfcomponent>
