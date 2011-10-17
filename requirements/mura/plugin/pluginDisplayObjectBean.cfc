@@ -152,12 +152,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="getconfiguratorJS" returntype="String" access="public" output="false">
-	<cfreturn variables.instance.configurator />
+	<cfreturn variables.instance.configuratorJS />
 </cffunction>
 
 <cffunction name="setconfiguratorJS" access="public" output="false">
-	<cfargument name="configurator" type="String" />
-	<cfset variables.instance.configurator = trim(arguments.configurator) />
+	<cfargument name="configuratorJS" type="String" />
+	<cfset variables.instance.configuratorJS = trim(arguments.configuratorJS) />
 </cffunction>
 
 <cffunction name="load"  access="public" output="false" returntype="void">
