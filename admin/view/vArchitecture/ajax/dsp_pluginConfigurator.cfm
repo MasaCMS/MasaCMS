@@ -17,7 +17,7 @@
 	</div>
 	<cfif hasConfigurator>
 	<div>
-		<input id="saveConfig" type="button" value="save"/>
+		<input id="saveConfig" type="button" value="save" style="display:none"/>
 	</div>
 	</cfif>
 </div>
