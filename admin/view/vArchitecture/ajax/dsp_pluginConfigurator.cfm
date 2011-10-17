@@ -6,8 +6,8 @@
 	<cfset request.contentBean=application.contentManager.getContentVersion(contentHistID=rsDisplayObject.contenthistid,siteID=rsDisplayObject.siteid)>
 </cfsilent>
 <cfoutput>
-<div style="width: 400px;">
-	<h2 id=-"##ui-dialog-title-configuratorContainer"""><cfif hasConfigurator>#HTMLEditFormat(rsDisplayObject.name)#<cfelse>#HTMLEditFormat(dislpayObjectBean.getName())#</cfif></h2>
+<div id="configuratorContainer" style="width: 400px;">
+	<h2 style="width: 400px;"><cfif hasConfigurator>#HTMLEditFormat(rsDisplayObject.name)#<cfelse>#HTMLEditFormat(dislpayObjectBean.getName())#</cfif></h2>
 	<div id="configurator">
 		<cfif hasConfigurator>
 		<img src="images/progress_bar.gif">
@@ -15,9 +15,11 @@
 		<p>#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.configurator.genericmessage"))#</p>
 		</cfif>
 	</div>
+	<cfif hasConfigurator>
 	<div>
 		<input id="saveConfig" type="button" value="save"/>
 	</div>
+	</cfif>
 </div>
 <cfif hasConfigurator>
 <script>
