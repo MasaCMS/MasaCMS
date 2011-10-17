@@ -43,7 +43,7 @@ jQuery(document).ready(function(){
 				'name':'#JSStringFormat(rsDisplayObject.name)#',
 				'regionid':'#JSStringFormat(rsDisplayObject.columnid)#',
 				'context':'#application.configBean.getContext()#',
-				'params':'#rsDisplayObject.params#'		
+				'params':'#JSStringFormat(rsDisplayObject.params)#'		
 			}
 		);
 	}
