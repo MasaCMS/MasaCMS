@@ -104,7 +104,7 @@
 <cffunction name="validate" access="public" output="false">
 		<cfset var extErrors=structNew() />
 	
-		<cfif len(getSiteID())>
+		<cfif len(variables.instance.siteID)>
 			<cfset extErrors=variables.configBean.getClassExtensionManager().validateExtendedData(getAllValues())>
 		</cfif>
 		
@@ -124,7 +124,7 @@
 	<cfif isObject(getManager())>
 		<cfset getManager().save(this)>
 	<cfelse>
-		<cfset getConfigBean().getClassExtensionManager().saveExtendedData(getID(),getAllValues(), getDataTable())/>
+		<cfset getConfigBean().getClassExtensionManager().saveExtendedData(getID(),getAllValues(), variables.instance.extendDataTable)/>
 	</cfif>
 	<cfset getBean("trashManager").takeOut(this)>
 	<cfreturn this>
@@ -135,7 +135,7 @@
 	<cfif isObject(getManager())>
 		<cfset getManager().delete(this)>
 	<cfelse>
-		<cfset getConfigBean().getClassExtensionManager().deleteExtendedData(getID(), getDataTable())/>
+		<cfset getConfigBean().getClassExtensionManager().deleteExtendedData(getID(), variables.instance.extendDataTable)/>
 	</cfif>
 	<cfreturn this>
 </cffunction>
@@ -158,12 +158,12 @@
 		<cfreturn this>
 	</cfif>
 	<cfif structKeyExists(arguments,"remoteID")>
-		<cfset setRemoteID(arguments.remoteID)>
+		<cfset variables.instance.remoteID=arguments.remoteID>
 		<cfset feed=getBean("extendObjectFeedBean")>
-		<cfset feed.setSiteID(getSiteID())>
-		<cfset feed.setType(getType())>
-		<cfset feed.setSubType(getSubType())>
-		<cfset feed.addAdvancedParam(field="#getDataTable()#.remoteID",criteria=arguments.remoteID)>
+		<cfset feed.setSiteID(variables.instance.siteID)>
+		<cfset feed.setType(variables.instance.type)>
+		<cfset feed.setSubType(variables.instance.subtype)>
+		<cfset feed.addAdvancedParam(field="#variables.instance.extendDataTable#.remoteID",criteria=arguments.remoteID)>
 		<cfset it=feed.getIterator()>
 		<cfif it.hasNext()>
 			<cfset setAllValues(it.next().getAllVAlues())>
