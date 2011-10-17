@@ -225,7 +225,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				var frameHeight = Math.max(frameDoc.body.scrollHeight, frameDoc.body.offsetHeight, frameDoc.documentElement.scrollHeight, frameDoc.documentElement.offsetHeight);
 				var windowHeight = Math.max(frameHeight, jQuery(window).height());
 		
-				if (frameHeight < jQuery(window).height()) {
+				if (!frontEndModalIsConfigurator && frameHeight < jQuery(window).height()) {
 					frameHeight= Math.max(jQuery(window).height() * .80,frameHeight);
 				}
 				

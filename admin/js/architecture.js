@@ -1577,90 +1577,99 @@ function addDisplayObject(objectToAdd,regionid,configure){
 	}
 
 	//CONFIG: URL,PARS,TITLE,INIT
+	var configuratorMode='backEnd';
+	
 	function initConfigurator(data,config){
 		resetAvailableObject();
-		resetConfiguratorContainer();
 		
-		if(typeof(data.object) =='undefined'){	
+		if (typeof(data.object) == 'undefined') {
 			return false;
 		}
-	
-		jQuery("#configuratorContainer").dialog({
-			resizable: true,
-			modal: true,
-			width: 400,
-			position: getDialogPosition(),
-			buttons: {
-				Save: function() {
-					addDisplayObject(availableObject,data.regionid,false);
-					jQuery( this ).dialog( "close" );
-					
-					if(typeof(config.destroy) !='undefined'){
-						config.destroy(data,config);
+			
+		if (configuratorMode == 'backEnd') {
+			resetConfiguratorContainer();
+			
+			jQuery("#configuratorContainer").dialog({
+				resizable: true,
+				modal: true,
+				width: 400,
+				position: getDialogPosition(),
+				buttons: {
+					Save: function(){
+						addDisplayObject(availableObject, data.regionid, false);
+						jQuery(this).dialog("close");
+						
+						if (typeof(config.destroy) != 'undefined') {
+							config.destroy(data, config);
+						}
+						
+					},
+					Cancel: function(){
+						jQuery(this).dialog("close");
+						
+						if (typeof(config.destroy) != 'undefined') {
+							config.destroy(data, config);
+						}
 					}
-							
 				},
-				Cancel: function() {
-					jQuery( this ).dialog( "close" );
+				close: function(){
+					jQuery(this).dialog("destroy");
 					
-					if(typeof(config.destroy) !='undefined'){
-						config.destroy(data,config);
+					if (typeof(config.destroy) != 'undefined') {
+						config.destroy(data, config);
 					}
 				}
-			},
-			close: function(){
-				jQuery(this).dialog("destroy");
-				
-				if(typeof(config.destroy) !='undefined'){
-					config.destroy(data,config);
+			});
+		}
+			
+		jQuery.post(config.url + "?" + config.pars, data, function(_resp){
+			try {
+				resp = eval('(' + _resp + ')');
+			} 
+			catch (err) {
+				resp = _resp;
+			}
+			
+			if (typeof(resp) == 'object') {
+				jQuery("#configurator").html(resp.html);
+			}
+			else 
+				if (typeof(resp) == 'xml') {
+					jQuery("#configurator").html(resp.toString());
 				}
-			}	
-		});
+				else {
+					jQuery("#configurator").html(resp);
+					}
+			
 				
-		jQuery.post(config.url + "?" + config.pars, 
-			data,
-			function(_resp) {
-				try {
-					resp = eval('(' + _resp + ')');
-				} catch(err){
-					resp=_resp;
-				}
+			jQuery("#ui-dialog-title-configuratorContainer").html(config.title);
+				
+			if (availableObjectTemplate == "") {
+				var availableObjectContainer = jQuery("#availableObjectParams");
+				availableObjectTemplate = {
+					object: availableObjectContainer.attr("data-object"),
+					objectid: availableObjectContainer.attr("data-objectid"),
+					name: availableObjectContainer.attr("data-name")
+				};
+				availableObject = jQuery.extend({}, availableObjectTemplate);
+			}
+				
+			if (typeof(config.init) != 'undefined') {
 				
 				if (typeof(resp) == 'object') {
-					jQuery("#configurator").html(resp.html);
-				} else if(typeof(resp) == 'xml'){
-					jQuery("#configurator").html(resp.toString());
-				} else {
-					jQuery("#configurator").html(resp);
+					data = jQuery.extend(data, resp);
 				}
-				
-				
-				jQuery("#ui-dialog-title-configuratorContainer").html(config.title);	
-					
-				if(availableObjectTemplate==""){
-					var availableObjectContainer=jQuery("#availableObjectParams");
-					availableObjectTemplate={
-												object:availableObjectContainer.attr("data-object"),
-												objectid:availableObjectContainer.attr("data-objectid"),
-												name:availableObjectContainer.attr("data-name")
-											};
-					availableObject=jQuery.extend({},availableObjectTemplate);
-				}
-	
-				if(typeof(config.init) !='undefined'){
-					
-					if(typeof(resp)=='object'){
-						data=jQuery.extend(data,resp);
-					}	
-					config.init(data,config);
-				}
-				
-				jQuery("#configuratorContainer").dialog("option","position",getDialogPosition());
-				
-				initConfiguratorParams();
-		
+				config.init(data, config);
 			}
-		);
+			
+			if (configuratorMode == 'backEnd') {
+				jQuery("#configuratorContainer").dialog("option", "position", getDialogPosition());
+			}	
+			initConfiguratorParams();
+				
+		});
+			
+		
 		
 		return true;
 	}
