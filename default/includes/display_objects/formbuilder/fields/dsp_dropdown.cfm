@@ -49,7 +49,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfparam name="dataset.defaultid" default="" />
 <cfsavecontent variable="strField">
 	<cfoutput>
-	#$.dspObject_Include(thefile='/formbuilder/fields/dsp_label.cfm',field=arguments.field,dataset=arguments.dataset)#
+	#$.dspObject_Include(thefile='/formbuilder/fields/dsp_label.cfm',field=arguments.field,dataset=arguments.dataset)#</label>
 	<select name="#field.name#"
 	</cfoutput>
 </cfsavecontent>
