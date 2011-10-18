@@ -355,6 +355,14 @@
 	<cfelse>
 		<cfabort>
 	</cfif>
+	
+	<cfif structKeyExists(arguments.rc,"changesetid")>
+		<cfset local.versionBean.setChangesetID(arguments.rc.changesetID)>
+	</cfif>
+	
+	<cfif structKeyExists(arguments.rc,"removePreviousChangeset")>
+		<cfset local.versionBean.setRemovePreviousChangeset(arguments.rc.removePreviousChangeset)>
+	</cfif>
 
 	<cfif arguments.rc.perm eq "author">
 		<cfset versionBean.setApproved(0)>

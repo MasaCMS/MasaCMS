@@ -59,7 +59,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	data-name="#HTMLEditFormat('#feed.getName()# - #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.localindexslideshow')#')#" 
 	data-objectid="#feed.getFeedID()#">
 				<h4>#HTMLEditFormat(feed.getName())#</h4>
-				<cfif attributes.configuratorMode eq "frontEnd">
+				<cfif attributes.configuratorMode eq "frontEnd"
+					and application.permUtility.getDisplayObjectPerm(feed.getSiteID(),"feed",feed.getFeedD()) eq "editor">
 					<cfsilent>
 						<cfset editlink = "?fuseaction=cFeed.edit">
 						<cfset editlink = editlink & "&amp;siteid=" & feed.getSiteID()>

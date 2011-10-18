@@ -1681,6 +1681,7 @@ function addDisplayObject(objectToAdd,regionid,configure){
 				jQuery("#configuratorContainer").dialog("option", "position", getDialogPosition());
 			} else if (configuratorMode == 'frontEnd'){
 				jQuery("#configuratorActions").show();
+				jQuery("#configuratorNotices").show();
 			}	
 			initConfiguratorParams();
 				

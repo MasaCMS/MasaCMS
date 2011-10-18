@@ -69,7 +69,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 	
 			<h4>#HTMLEditFormat(feed.getName())#</h4>
-			<cfif attributes.configuratorMode eq "frontEnd">
+			<cfif attributes.configuratorMode eq "frontEnd"
+				and application.permUtility.getDisplayObjectPerm(feed.getSiteID(),"feed",feed.getFeedD()) eq "editor">
 			<cfsilent>
 				<cfset editlink = "?fuseaction=cFeed.edit">
 				<cfset editlink = editlink & "&amp;siteid=" & feed.getSiteID()>
