@@ -927,15 +927,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="assignmentID" type="string" required="true" default="">
 	<cfargument name="regionID" required="true" default="0">
 	<cfargument name="orderno" required="true" default="0">
+	<cfargument name="showEditable" required="true" default="false">
 
 	<cfset var theContent=""/>
 	<cfset var objectPerm="none">
 
-	<cfif session.mura.isLoggedIn and this.showEditableObjects>
-		<cfset objectPerm=application.permUtility.getDisplayObjectPerm(arguments.siteID,arguments.object,arguments.objectID)>
-	</cfif>	
-
-	<cfif StructKeyExists(arguments,"cacheKey") and objectPerm neq "editor">
+	<cfif StructKeyExists(arguments,"cacheKey") and not arguments.showEditable>
 		<cfsavecontent variable="theContent">
 		<cf_CacheOMatic key="#arguments.cacheKey#" nocache="#event.getValue('nocache')#">
 			<cfoutput>#dspObject_Include(arguments.siteid,arguments.object,arguments.objectid,arguments.fileName,arguments.hasSummary,arguments.useRss,"none",arguments.params,arguments.assignmentID,arguments.regionID,arguments.orderno)#</cfoutput>
@@ -1002,15 +999,122 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfargument name="regionID" required="true" default="0">
 <cfargument name="orderno" required="true" default="0">
 <cfargument name="hasConfigurator" required="true" default="false">
-<cfargument name="contentHistID" required="true" default="">
-<cfargument name="perm" required="true" default="none">
+<cfargument name="assignmentPerm" required="true" default="none">
 
 	<cfset var theObject = "" />
 	<cfset var cacheKeyContentId = arguments.object & event.getValue('contentBean').getcontentID() />
 	<cfset var cacheKeyObjectId = arguments.object & arguments.objectid />
 	<cfset var showEditable=false/>
+	<cfset var editableControl=structNew()>
+	<cfset var bean="">
+	
+	
+	<cfswitch expression="#arguments.object#">
+		<cfcase value="plugin">
+			<cfif session.mura.isLoggedIn and this.showEditableObjects >
+				<cfset showEditable=arguments.hasConfigurator and listFindNoCase("editor,author",arguments.assignmentPerm)>		
+				<cfif showEditable>
+					<cfset editableControl.class="editablePlugin">
+					<cfset editableControl.editLink = "#$.globalConfig('context')#/admin/index.cfm?fuseaction=cArch.frontEndConfigurator">
+					<cfset editableControl.isConfigurator=true>
+				</cfif>
+			</cfif>
+		</cfcase>
+		<cfcase value="feed,feed_slideshow,feed_no_summary,feed_slideshow_no_summary">
+			<cfset addToHTMLHeadQueue("listImageStyles.cfm")>
+			<cfif session.mura.isLoggedIn and this.showEditableObjects >
+				<cfset showEditable=this.showEditableObjects and listFindNoCase("editor,author",arguments.assignmentPerm)>		
+				<cfif showEditable>
+					<cfset editableControl.class="editableFeed">
+					<cfset editableControl.editLink =  "#$.globalConfig('context')#/admin/index.cfm?fuseaction=cArch.frontEndConfigurator">
+					<cfset editableControl.isConfigurator=true>
+				</cfif>
+			</cfif>
+		</cfcase>
+		<cfcase value="category_summary,category_summary_rss">
+			<cfif session.mura.isLoggedIn and this.showEditableObjects >	
+				<cfset showEditable=this.showEditableObjects and listFindNoCase("editor,author",arguments.assignmentPerm)>		
+				<cfif showEditable>
+					<cfset editableControl.class="editableCategorySummary">
+					<cfset editableControl.editLink =  "#$.globalConfig('context')#/admin/index.cfm?fuseaction=cArch.frontEndConfigurator">
+					<cfset editableControl.isConfigurator=true>
+				</cfif>
+			</cfif>
+		</cfcase>
+		<cfcase value="related_content,related_section_content">
+			<cfset addToHTMLHeadQueue("listImageStyles.cfm")>
+			<cfif session.mura.isLoggedIn and this.showEditableObjects >	
+				<cfset showEditable=this.showEditableObjects and listFindNoCase("editor,author",arguments.assignmentPerm)>		
+				<cfif showEditable>
+					<cfset editableControl.class="editableRelatedContent">
+					<cfset editableControl.editLink =  "#$.globalConfig('context')#/admin/index.cfm?fuseaction=cArch.frontEndConfigurator">
+					<cfset editableControl.isConfigurator=true>
+				</cfif>
+			</cfif>
+		</cfcase>
+		<cfcase value="component,form">
+			<cfif session.mura.isLoggedIn and this.showEditableObjects >	
+				<cfset showEditable=application.permUtility.getDisplayObjectPerm(arguments.siteID,arguments.object,arguments.objectID) eq "editor">		
+				<cfif showEditable>
+					<cfif isValid("UUID",arguments.objectID)>
+						<cfset bean = $.getBean("content").loadBy(contentID=arguments.objectID,siteID=arguments.siteID)>
+					<cfelse>
+						<cfset bean = $.getBean("content").loadBy(title=arguments.objectID,siteID=arguments.siteID)>
+					</cfif>
+					<cfif arguments.object eq "component">
+						<cfset editableControl.class="editComponnent">
+					<cfelse>
+						<cfset editableControl.class="editForm">
+					</cfif>
+					<cfset editableControl.editLink = "#$.globalConfig('context')#/admin/index.cfm?fuseaction=cArch.edit">
+					<cfif len($.event('previewID'))>
+						<cfset editableControl.editLink = editableControl.editLink & "&amp;contenthistid=" & $.event('previewID')>
+					<cfelse>
+						<cfset editableControl.editLink = editableControl.editLink & "&amp;contenthistid=" & bean.getContentHistID()>
+					</cfif>	
+					<cfset editableControl.editLink = editableControl.editLink & "&amp;siteid=" & arguments.siteID>
+					<cfset editableControl.editLink = editableControl.editLink & "&amp;contentid=" & arguments.objectID>
+					<cfset editableControl.editLink = editableControl.editLink & "&amp;topid=00000000000000000000000000000000001">
+					<cfif arguments.object eq "component">
+						<cfset editableControl.editLink = editableControl.editLink & "&amp;type=Component">
+						<cfset editableControl.editLink = editableControl.editLink & "&amp;moduleid=00000000000000000000000000000000001">
+					<cfelse>
+						<cfset editableControl.editLink = editableControl.editLink & "&amp;type=Form">
+						<cfset editableControl.editLink = editableControl.editLink & "&amp;moduleid=00000000000000000000000000000000004">
+					</cfif>		
+					<cfset editableControl.isConfigurator=false>
+				</cfif>
+			</cfif>
+		</cfcase>
+	</cfswitch>	
+				
+	<cfif showEditable>
+		<cfif len(application.configBean.getAdminDomain())>
+			<cfif application.configBean.getAdminSSL()>
+				<cfset editableControl.editLink="https://#application.configBean.getAdminDomain()#" & editableControl.editLink/>
+			<cfelse>
+				<cfset editableControl.editLink="http://#application.configBean.getAdminDomain()#" & editableControl.editLink/>
+			</cfif>
+		</cfif>
+			
+		<cfset $.loadShadowBoxJS()>
+		<cfset $.addToHTMLHeadQueue('editableObjects.cfm')>
+			
+		<cfset editableControl.editLink = editableControl.editLink & "&amp;compactDisplay=true">
+		<cfset editableControl.editLink = editableControl.editLink & "&amp;homeID=" & $.content("contentID")>
+		
+		<cfif not listFindNoCase("Form,Component",arguments.object)>
+			<cfset editableControl.editLink = editableControl.editLink & "&amp;contenthistID=" & arguments.assignmentID>
+			<cfset editableControl.editLink = editableControl.editLink & "&amp;regionID=" & arguments.regionID>
+			<cfset editableControl.editLink = editableControl.editLink & "&amp;orderno=" & arguments.orderno>
+		</cfif>
+	</cfif>
+
 	<cfsavecontent variable="theObject">
 		<cfoutput>
+			<cfif showEditable>
+				#$.renderEditableObjectHeader(editableControl.class)#
+			</cfif>
 			<cfswitch expression="#arguments.object#">
 				<cfcase value="sub_nav">#dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"nav/dsp_sub.cfm",cacheKeyContentId)#</cfcase>
 				<cfcase value="peer_nav">#dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"nav/dsp_peer.cfm",cacheKeyContentId)#</cfcase>
@@ -1022,36 +1126,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfcase value="contact">#dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"dsp_contact.cfm")#</cfcase>
 				<cfcase value="calendar_nav">#dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"nav/calendarNav/index.cfm")#</cfcase>
 				<cfcase value="plugin">
-					<cfsilent>
-					<cfset showEditable=arguments.hasConfigurator and this.showEditableObjects and listFindNoCase("editor,author",arguments.perm)>
-						
-					<cfif showEditable>
-						<cfset $.loadShadowBoxJS()>
-						<cfset $.addToHTMLHeadQueue('editableObjects.cfm')>
-						<cfif len(application.configBean.getAdminDomain())>
-							<cfif application.configBean.getAdminSSL()>
-								<cfset variables.adminBase = "https://#application.configBean.getAdminDomain()#"/>
-							<cfelse>
-								<cfset variables.adminBase = "http://#application.configBean.getAdminDomain()#"/>
-							</cfif>
-						<cfelse>
-							<cfset variables.adminBase = ""/>
-						</cfif>
-						<cfset editableControl.editLink = adminBase & "#$.globalConfig('context')#/admin/index.cfm?fuseaction=cArch.pluginConfigurator">
-						<cfset editableControl.editLink = editableControl.editLink & "&amp;compactDisplay=true">
-						<cfset editableControl.editLink = editableControl.editLink & "&amp;contenthistID=" & arguments.contentHistID>
-						<cfset editableControl.editLink = editableControl.editLink & "&amp;regionID=" & arguments.regionID>
-						<cfset editableControl.editLink = editableControl.editLink & "&amp;orderno=" & arguments.orderno>
-						<cfset editableControl.editLink = editableControl.editLink & "&amp;homeID=" & $.content("contentID")>
-					</cfif>
-					</cfsilent>
-					<cfif showEditable>
-						#$.renderEditableObjectHeader("editablePlugin")#
-					</cfif>
 					#application.pluginManager.displayObject(object=arguments.objectid,event=event,params=arguments.params)#
-					<cfif showEditable>
-						#renderEditableObjectFooter($.generateEditableObjectControl(editableControl.editLink,true))#
-					</cfif>
 				</cfcase>
 				<cfcase value="mailing_list">#dspObject_Render(siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,fileName="dsp_mailing_list.cfm")#</cfcase>
 				<cfcase value="mailing_list_master">#dspObject_Render(siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,fileName="dsp_mailing_list_master.cfm")#</cfcase>
@@ -1060,22 +1135,20 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfcase value="archive_nav">#dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"nav/dsp_archive.cfm",cacheKeyObjectId)#</cfcase>
 				<cfcase value="form">#dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"datacollection/index.cfm",cacheKeyObjectId)#</cfcase>
 				<cfcase value="form_responses">#dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"dataresponses/index.cfm",cacheKeyObjectId)#</cfcase>
-				<cfcase value="component">#dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"dsp_template.cfm",cacheKeyObjectId)#</cfcase>
+				<cfcase value="component">#dspObject_Render(siteid=arguments.siteid,object=arguments.object,objectID=arguments.objectid,filename="dsp_template.cfm",cacheKey=cacheKeyObjectId,showEditable=showEditable)#</cfcase>
 				<cfcase value="ad">#dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"dsp_ad.cfm")#</cfcase>
 				<cfcase value="comments">#dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"dsp_comments.cfm")#</cfcase>
 				<cfcase value="event_reminder_form">#dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"dsp_event_reminder_form.cfm",cacheKeyContentId)#</cfcase>
 				<cfcase value="forward_email">#dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"dsp_forward_email.cfm")#</cfcase>
 				<cfcase value="adzone">#dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"dsp_adZone.cfm")#</cfcase>
 				<cfcase value="feed">
-					<cfset addToHTMLHeadQueue("listImageStyles.cfm")>
-					#dspObject_Render(siteID=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="dsp_feed.cfm",cacheKey=cacheKeyObjectId & "startrow#request.startrow#",params=arguments.params,assignmentID=arguments.assignmentID,regionID=arguments.regionID,orderno=arguments.orderno)#
+					#dspObject_Render(siteID=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="dsp_feed.cfm",cacheKey=cacheKeyObjectId & "startrow#request.startrow#",params=arguments.params,showEditable=showEditable)#
 				</cfcase>	
 				<cfcase value="feed_slideshow">
-					<cfif not cookie.mobileFormat>
-						#dspObject_Render(siteID=arguments.siteid,object=arguments.object,objectID=arguments.objectid,filename="feedslideshow/index.cfm",params=arguments.params,assignmentID=arguments.assignmentID,regionID=arguments.regionID,orderno=arguments.orderno)#
+					<cfif not cookie.mobileFormat>	
+						#dspObject_Render(siteID=arguments.siteid,object=arguments.object,objectID=arguments.objectid,filename="feedslideshow/index.cfm",params=arguments.params,showEditable=showEditable)#
 					<cfelse>
-						<cfset addToHTMLHeadQueue("listImageStyles.cfm")>
-						#dspObject_Render(siteID=arguments.siteid,object=arguments.object,objectID=arguments.objectid,filename="dsp_feed.cfm",params=arguments.params,assignmentID=arguments.assignmentID,regionID=arguments.regionID,orderno=arguments.orderno)#
+						#dspObject_Render(siteID=arguments.siteid,object=arguments.object,objectID=arguments.objectid,filename="dsp_feed.cfm",params=arguments.params,showEditable=showEditable)#
 					</cfif>
 				</cfcase>
 				<cfcase value="feed_table">#dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"feedtable/index.cfm",arguments.object,false)#</cfcase>
@@ -1084,12 +1157,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfcase value="favorites">#dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"favorites/index.cfm")#</cfcase>
 				<cfcase value="dragable_feeds">#dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"dragablefeeds/index.cfm")#</cfcase>
 				<cfcase value="related_content">
-					<cfset addToHTMLHeadQueue("listImageStyles.cfm")>
-					#dspObject_Render(siteID=arguments.siteid,object=arguments.object,objectID=arguments.objectid,filename="dsp_related_content.cfm",cacheKey=cacheKeyContentId,params=arguments.params)#
+					#dspObject_Render(siteID=arguments.siteid,object=arguments.object,objectID=arguments.objectid,filename="dsp_related_content.cfm",cacheKey=cacheKeyContentId,params=arguments.params,showEditable=showEditable)#
 				</cfcase>
 				<cfcase value="related_section_content">
-					<cfset addToHTMLHeadQueue("listImageStyles.cfm")>
-					#dspObject_Render(siteID=arguments.siteid,object=arguments.object,objectID=arguments.objectid,filename="dsp_related_section_content.cfm",cachekey=cacheKeyContentId,params=arguments.params)#
+					#dspObject_Render(siteID=arguments.siteid,object=arguments.object,objectID=arguments.objectid,filename="dsp_related_section_content.cfm",cachekey=cacheKeyContentId,params=arguments.params,showEditable=showEditable)#
 				</cfcase>
 				<cfcase value="user_tools">#dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"dsp_user_tools.cfm")#</cfcase>
 				<cfcase value="tag_cloud"><cf_CacheOMatic key="#arguments.siteid##arguments.object#" nocache="#event.getValue('nocache')#"><cfoutput>#dspTagCloud()#</cfoutput></cf_CacheOMatic></cfcase>
@@ -1100,27 +1171,22 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfcase value="public_content_form">#dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"dsp_public_content_form.cfm")#</cfcase>
 				<cfcase value="category_summary_rss">#dspObject_Render(siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,fileName="dsp_category_summary.cfm",cacheKey=cacheKeyObjectId & event.getValue('categoryID'),useRss=true)#</cfcase>
 				<cfcase value="feed_no_summary">
-					<cfset addToHTMLHeadQueue("listImageStyles.cfm")>
-					#dspObject_Render(siteID=arguments.siteid,object=arguments.object,objectID=arguments.objectid,fileName="dsp_feed.cfm",cacheKey=cacheKeyObjectId & "startrow#request.startrow#",hasSummary=false,assignmentID=arguments.assignmentID,regionID=arguments.regionID,orderno=arguments.orderno,params=arguments.params)#
+					#dspObject_Render(siteID=arguments.siteid,object=arguments.object,objectID=arguments.objectid,fileName="dsp_feed.cfm",cacheKey=cacheKeyObjectId & "startrow#request.startrow#",hasSummary=false,params=arguments.params,showEditable=showEditable)#
 				</cfcase>
 				<cfcase value="feed_slideshow_no_summary">
 					<cfif not cookie.mobileFormat>
-						#dspObject_Render(siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,fileName="feedslideshow/index.cfm",hasSummary=false,assignmentID=arguments.assignmentID,regionID=arguments.regionID,orderno=arguments.orderno,params=arguments.params)#
+						#dspObject_Render(siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,fileName="feedslideshow/index.cfm",hasSummary=false,params=arguments.params,showEditable=showEditable)#
 					<cfelse>
-						<cfset addToHTMLHeadQueue("listImageStyles.cfm")>
-						#dspObject_Render(siteID=arguments.siteid,object=arguments.object,objectID=arguments.objectid,fileName="dsp_feed.cfm",cacheKey=cacheKeyObjectId & "startrow#request.startrow#",hasSummary=false,assignmentID=arguments.assignmentID,regionID=arguments.regionID,orderno=arguments.orderno,params=arguments.params)#
+						#dspObject_Render(siteID=arguments.siteid,object=arguments.object,objectID=arguments.objectid,fileName="dsp_feed.cfm",cacheKey=cacheKeyObjectId & "startrow#request.startrow#",hasSummary=false,params=arguments.params,showEditable=showEditable)#
 					</cfif>
 				</cfcase>
 				<cfcase value="related_section_content_no_summary">
-					<cfset addToHTMLHeadQueue("listImageStyles.cfm")>
 					#dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"dsp_related_section_content.cfm",cacheKeyContentId,false)#
 				</cfcase>	
 				<cfcase value="features">
-					<cfset addToHTMLHeadQueue("listImageStyles.cfm")>
 					#dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"dsp_features.cfm",cacheKeyObjectId)#
 				</cfcase>
 				<cfcase value="features_no_summary">
-					<cfset addToHTMLHeadQueue("listImageStyles.cfm")>
 					#dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"dsp_features.cfm",cacheKeyObjectId,false)#
 				</cfcase>
 				<cfcase value="category_features">#dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"dsp_category_features.cfm",cacheKeyObjectId)#</cfcase>
@@ -1129,6 +1195,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfcase value="category_portal_features_no_summary">#dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"dsp_category_portal_features.cfm",cacheKeyObjectId,false)#</cfcase>
 				<!--- END DEPRICATED --->
 			</cfswitch>
+			<cfif showEditable>
+				#renderEditableObjectFooter($.generateEditableObjectControl(editableControl.editLink,editableControl.isConfigurator))#
+			</cfif>
 		</cfoutput>
 	</cfsavecontent>
 		
@@ -1155,13 +1224,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset nodeID=$.getBean("contentGateway").getContentIDFromContentHistID(contentHistID=event.getValue('inheritedObjects') )>
 			<cfset nodePerm=$.getBean('permUtility').getNodePerm($.getBean('contentGateway').getCrumblist(nodeID,event.getValue('siteID')))>
 			<cfloop query="rsObjects">
-				<cfset theRegion = theRegion & dspObject(rsObjects.object,rsObjects.objectid,event.getValue('siteID'), rsObjects.params, event.getValue('inheritedObjects'), arguments.columnID, rsObjects.orderno, len(rsObjects.configuratorInit),event.getValue('inheritedObjects'),nodePerm) />
+				<cfset theRegion = theRegion & dspObject(rsObjects.object,rsObjects.objectid,event.getValue('siteID'), rsObjects.params, event.getValue('inheritedObjects'), arguments.columnID, rsObjects.orderno, len(rsObjects.configuratorInit),assignmentPerm) />
 			</cfloop>	
 	</cfif>
 
 	<cfset rsObjects=application.contentGateway.getObjects(arguments.columnID,arguments.contentHistID,event.getValue('siteID'))>	
 	<cfloop query="rsObjects">
-		<cfset theRegion = theRegion & dspObject(rsObjects.object,rsObjects.objectid,event.getValue('siteID'), rsObjects.params, arguments.contentHistID, arguments.columnID, rsObjects.orderno, len(rsObjects.configuratorInit),arguments.contentHistID,$.event('r').perm) />
+		<cfset theRegion = theRegion & dspObject(rsObjects.object,rsObjects.objectid,event.getValue('siteID'), rsObjects.params, arguments.contentHistID, arguments.columnID, rsObjects.orderno, len(rsObjects.configuratorInit),$.event('r').perm) />
 	</cfloop>
 </cfif>
 

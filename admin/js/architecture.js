@@ -1339,17 +1339,19 @@ function addDisplayObject(objectToAdd,regionid,configure){
 	
 	function initFeedConfigurator(data){
 		
+		/*
 		if(typeof(data.object) !='undefined'){	
 			if(data.object !='feed'){
 				return false;
 			}
 		}
+		*/
 		
 		initConfigurator(data,
 		{
 			url: 'index.cfm',
 			pars: 'fuseaction=cArch.loadclassconfigurator&compactDisplay=true&siteid=' + siteid + '&classid=feed&contentid=' + contentid + '&parentid=' + parentid + '&contenthistid=' + contenthistid + '&regionid=' + data.regionid  + '&feedid=' +  data.objectid + '&cacheid=' + Math.random(),
-			title: 'Loading...',
+			title: localIndexConfiguratorTitle,
 			init: function(data,config){
 					//alert(JSON.stringify(data));
 					if(data.type.toLowerCase()=='remote'){
@@ -1390,11 +1392,13 @@ function addDisplayObject(objectToAdd,regionid,configure){
 	
 	function initSlideShowConfigurator(data){
 		
+		/*
 		if(typeof(data.object) !='undefined'){	
 			if(data.object !='feed_slideshow'){
 				return false;
 			}
 		}
+		*/
 
 		initConfigurator(data,
 		{
@@ -1585,6 +1589,8 @@ function addDisplayObject(objectToAdd,regionid,configure){
 	function initConfigurator(data,config){
 		resetAvailableObject();
 		
+		data.configuratorMode=configuratorMode;
+		
 		if (typeof(data.object) == 'undefined') {
 			return false;
 		}
@@ -1629,7 +1635,7 @@ function addDisplayObject(objectToAdd,regionid,configure){
 			
 			});
 		}
-			
+		
 		jQuery.post(config.url + "?" + config.pars, data, function(_resp){
 			try {
 				resp = eval('(' + _resp + ')');
@@ -1651,6 +1657,7 @@ function addDisplayObject(objectToAdd,regionid,configure){
 			
 				
 			jQuery("#ui-dialog-title-configuratorContainer").html(config.title);
+			jQuery("#configuratorHeader").html(config.title);
 				
 			if (availableObjectTemplate == "") {
 				var availableObjectContainer = jQuery("#availableObjectParams");
@@ -1673,7 +1680,7 @@ function addDisplayObject(objectToAdd,regionid,configure){
 			if (configuratorMode == 'backEnd') {
 				jQuery("#configuratorContainer").dialog("option", "position", getDialogPosition());
 			} else if (configuratorMode == 'frontEnd'){
-				jQuery("#updatePluginConfigActions").show();
+				jQuery("#configuratorActions").show();
 			}	
 			initConfiguratorParams();
 				

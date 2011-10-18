@@ -67,42 +67,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset variables.feedBean.setDisplayList(variables.contentListFields)>
 		</cfif>
 	</cfif>
-  	
-	<cfset editableControl.editLink = "">
-	<cfset editableControl.innerHTML = "">
-		
-	<cfif this.showEditableObjects and objectPerm eq 'editor'>
-		<cfset bean = feedBean>
-		<cfset $.loadShadowBoxJS()>
-		<cfset $.addToHTMLHeadQueue('editableObjects.cfm')>
-		<cfset request.cacheItem=false>
-			
-		<cfif len(application.configBean.getAdminDomain())>
-			<cfif application.configBean.getAdminSSL()>
-				<cfset adminBase="https://#application.configBean.getAdminDomain()#"/>
-			<cfelse>
-				<cfset adminBase="http://#application.configBean.getAdminDomain()#"/>
-			</cfif>
-		<cfelse>
-			<cfset adminBase=""/>
-		</cfif>
-			
-		<cfset editableControl.editLink = adminBase & "#$.globalConfig('context')#/admin/index.cfm?fuseaction=cFeed.edit">
-		<cfset editableControl.editLink = editableControl.editLink & "&amp;siteid=" & bean.getSiteID()>
-		<cfset editableControl.editLink = editableControl.editLink & "&amp;feedid=" & bean.getFeedID()>
-		<cfset editableControl.editLink = editableControl.editLink & "&amp;type=" & bean.getType()>
-		<cfset editableControl.editLink = editableControl.editLink & "&amp;homeID=" & $.content('contentID')>
-		<cfset editableControl.editLink = editableControl.editLink & "&amp;compactDisplay=true">
-		<cfset editableControl.editLink = editableControl.editLink & "&amp;assignmentID=" & arguments.assignmentID>
-			<cfset editableControl.editLink = editableControl.editLink & "&amp;regionID=" & arguments.regionID>
-			<cfset editableControl.editLink = editableControl.editLink & "&amp;orderno=" & arguments.orderno>
-			
-		<cfset editableControl.innerHTML = generateEditableObjectControl(editableControl.editLink,true)>
-	</cfif>
 </cfsilent>
-<cfif editableControl.innerHTML neq "">
-	<cfoutput>#$.renderEditableObjectHeader("editableFeed editableSlideShow")#</cfoutput>
-</cfif>	
 
 	<cfif feedBean.getIsActive()>
 		<cfset cssID=$.createCSSid(feedBean.renderName())>
@@ -149,9 +114,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		
 	<cfelse>
 		<!-- Inactive Feed '<cfoutput>#feedBean.getName()#</cfoutput>' -->
-	 </cfif>
-	  <cfif editableControl.innerHTML neq "">
-	  	<cfoutput>#renderEditableObjectFooter(editableControl.innerHTML)#</cfoutput>
 	 </cfif>
 	</cf_CacheOMatic>
  </cfcase>

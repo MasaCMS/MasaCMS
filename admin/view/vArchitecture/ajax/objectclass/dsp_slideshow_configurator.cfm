@@ -59,6 +59,19 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	data-name="#HTMLEditFormat('#feed.getName()# - #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.localindexslideshow')#')#" 
 	data-objectid="#feed.getFeedID()#">
 				<h4>#HTMLEditFormat(feed.getName())#</h4>
+				<cfif attributes.configuratorMode eq "frontEnd">
+					<cfsilent>
+						<cfset editlink = "?fuseaction=cFeed.edit">
+						<cfset editlink = editlink & "&amp;siteid=" & feed.getSiteID()>
+						<cfset editlink = editlink & "&amp;feedid=" & feed.getFeedID()>
+						<cfset editlink = editlink & "&amp;type=" & feed.getType()>
+						<cfset editlink = editlink & "&amp;homeID=" & attributes.homeID>
+						<cfset editlink = editlink & "&amp;compactDisplay=true">
+					</cfsilent>
+					<ul id="navTask">
+						<li><a href="#editlink#">#application.rbFactory.getKeyValue(session.rb,'collections.editdefaultsettings')#</a></li>
+					</ul>
+				</cfif>
 				<dl class="oneColumn" id="configurator">
 					<dt class="first">#application.rbFactory.getKeyValue(session.rb,'collections.imagesize')#</dt>
 					<dd><select data-displayobjectparam="imageSize" class="dropdown" onchange="if(this.value=='custom'){jQuery('##feedCustomImageOptions').fadeIn('fast')}else{jQuery('##feedCustomImageOptions').hide()}">

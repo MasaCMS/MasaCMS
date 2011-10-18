@@ -59,64 +59,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				rsForm.display eq 2 and rsForm.DisplayStart lte now()
 				AND (rsForm.DisplayStop gte now() or rsForm.DisplayStop eq "")
 			)>
-
-	<cfset editableControl.editLink = "">
-	<!---
-	<cfset editableControl.historyLink = "">
-	--->
-	<cfset editableControl.innerHTML = "">
-	
-	<cfif this.showEditableObjects and objectPerm eq 'editor'>
-		<cfset $.loadShadowBoxJS()>
-		<cfset $.addToHTMLHeadQueue('editableObjects.cfm')>
-		<cfif isValid("UUID",arguments.objectID)>
-			<cfset bean = $.getBean("content").loadBy(contentID=arguments.objectID)>
-		<cfelse>
-			<cfset bean = $.getBean("content").loadBy(title=arguments.objectID)>
-		</cfif>
-		<cfif len(application.configBean.getAdminDomain())>
-			<cfif application.configBean.getAdminSSL()>
-				<cfset adminBase="https://#application.configBean.getAdminDomain()#"/>
-			<cfelse>
-				<cfset adminBase="http://#application.configBean.getAdminDomain()#"/>
-			</cfif>
-		<cfelse>
-			<cfset adminBase=""/>
-		</cfif>
-		
-		<cfset editableControl.editLink = adminBase & "#$.globalConfig('context')#/admin/index.cfm?fuseaction=cArch.edit">
-		<cfif structKeyExists(request,"previewID") and len(request.previewID)>
-			<cfset editableControl.editLink = editableControl.editLink & "&amp;contenthistid=" & request.previewID>
-		<cfelse>
-			<cfset editableControl.editLink = editableControl.editLink & "&amp;contenthistid=" & bean.getContentHistID()>
-		</cfif>
-		
-		<cfset editableControl.editLink = editableControl.editLink & "&amp;siteid=" & bean.getSiteID()>
-		<cfset editableControl.editLink = editableControl.editLink & "&amp;contentid=" & bean.getContentID()>
-		<cfset editableControl.editLink = editableControl.editLink & "&amp;topid=00000000000000000000000000000000001">
-		<cfset editableControl.editLink = editableControl.editLink & "&amp;type=" & bean.getType()>
-		<cfset editableControl.editLink = editableControl.editLink & "&amp;parentid=" & bean.getParentID()>
-		<cfset editableControl.editLink = editableControl.editLink & "&amp;moduleid=" & bean.getModuleID()>
-		<cfset editableControl.editLink = editableControl.editLink & "&amp;compactDisplay=true">
-		<cfset editableControl.editLink = editableControl.editLink & "&amp;homeid=" & $.content('contentID')>
-		<!---
-		<cfset editableControl.historyLink = adminBase & "#$.globalConfig('context')#/admin/index.cfm?fuseaction=cArch.hist">
-		<cfset editableControl.historyLink = editableControl.historyLink & "&amp;siteid=" & bean.getSiteID()>
-		<cfset editableControl.historyLink = editableControl.historyLink & "&amp;contentid=" & bean.getContentID()>
-		<cfset editableControl.historyLink = editableControl.historyLink & "&amp;topid=00000000000000000000000000000000001">
-		<cfset editableControl.historyLink = editableControl.historyLink & "&amp;type=" & bean.getType()>
-		<cfset editableControl.historyLink = editableControl.historyLink & "&amp;parentid=" & bean.getParentID()>
-		<cfset editableControl.historyLink = editableControl.historyLink & "&amp;moduleid=" & bean.getModuleID()>
-		<cfset editableControl.historyLink = editableControl.historyLink & "&amp;startrow=1">
-		<cfset editableControl.historyLink = editableControl.historyLink & "&amp;compactDisplay=true">
-		--->
-		<cfset editableControl.innerHTML = generateEditableObjectControl(editableControl.editLink)>
-	</cfif>
 </cfsilent>
 <cfoutput>
-<cfif editableControl.innerHTML neq "">
-	#$.renderEditableObjectHeader("editableForm")#
-</cfif>	
 <cfif rsForm.isOnDisplay>
 	<cfif rsForm.displayTitle neq 0><#$.getHeaderTag('subHead1')#>#rsForm.title#</#$.getHeaderTag('subHead1')#></cfif>
 	<cfif isdefined('request.formid') and request.formid eq rsform.contentid>
@@ -150,9 +94,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		setHTMLEditors(200,500);
 		</script>
 	</cfif>
-</cfif>
-<cfif editableControl.innerHTML neq "">
-#renderEditableObjectFooter(editableControl.innerHTML)#
 </cfif>
 </cfoutput>
 <cfif rsForm.isOnDisplay and rsForm.forceSSL eq 1>
