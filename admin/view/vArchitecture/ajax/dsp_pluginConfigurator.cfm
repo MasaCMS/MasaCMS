@@ -4,6 +4,7 @@
 	<cfset dislpayObjectBean.load()>
 	<cfset hasConfigurator=len(dislpayObjectBean.getConfiguratorJS())>
 	<cfset request.contentBean=application.contentManager.getContentVersion(contentHistID=rsDisplayObject.contenthistid,siteID=rsDisplayObject.siteid)>
+	<cfset perm=application.permUtility.getNodePerm(application.contentGateway.getCrumblist(request.contentBean.getContentID(),request.contentBean.getSiteID()))>
 	<cfset request.homeBean=application.contentManager.getActiveContent(contentID=attributes.homeID,siteID=rsDisplayObject.siteid)>
 </cfsilent>
 <cfoutput>
@@ -17,8 +18,9 @@
 		</cfif>
 	</div>
 	<cfif hasConfigurator>
-	<div>
-		<input id="saveConfig" type="button" value="save" style="display:none"/>
+	<div id="updatePluginConfigActions"  style="display:none">
+		<input type="button" id="saveConfigDraft" value="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.savedraft"))#"/>
+		<cfif perm eq "Editor"><input type="button" id="publishConfig" value="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.publish"))#"/></cfif>
 	</div>
 	</cfif>
 </div>
@@ -51,13 +53,13 @@ jQuery(document).ready(function(){
 		);
 	}
 	
-	jQuery("##saveConfig").bind("click",
+	jQuery("##publishConfig").bind("click",
 		function(){
 			
 			updateAvailableObject();
 				
 			jQuery("##configurator").html('<img src="images/progress_bar.gif">');
-			jQuery(this).hide();
+			jQuery("##updatePluginConfigActions").hide();
 			
 			jQuery.post("./index.cfm?fuseaction=cArch.updateObjectParams",
 			{
@@ -66,7 +68,38 @@ jQuery(document).ready(function(){
 				'regionid':'#JSStringFormat(rsDisplayObject.columnid)#',
 				'orderno':'#JSStringFormat(rsDisplayObject.orderno)#',
 				'siteid':'#JSStringFormat(rsDisplayObject.siteid)#',
-				'params': JSON.stringify(availableObject.params)	
+				'params': JSON.stringify(availableObject.params),
+				'approved':1,
+				'object':'plugin',
+				'name': '#JSStringFormat(dislpayObjectBean.getName())#'		
+			},
+
+			function(data){
+				frontEndProxy.postMessage("cmd=setLocation&location=#jsStringFormat(request.homeBean.getURL())#");
+			}
+		
+			);
+		});
+	
+	jQuery("##saveConfigDraft").bind("click",
+		function(){
+			
+			updateAvailableObject();
+				
+			jQuery("##configurator").html('<img src="images/progress_bar.gif">');
+			jQuery("##updatePluginConfigActions").hide();
+			
+			jQuery.post("./index.cfm?fuseaction=cArch.updateObjectParams",
+			{
+				'contenthistid':'#JSStringFormat(rsDisplayObject.contentHistID)#',
+				'objectid':'#JSStringFormat(rsDisplayObject.objectid)#',
+				'regionid':'#JSStringFormat(rsDisplayObject.columnid)#',
+				'orderno':'#JSStringFormat(rsDisplayObject.orderno)#',
+				'siteid':'#JSStringFormat(rsDisplayObject.siteid)#',
+				'params': JSON.stringify(availableObject.params),
+				'approved':0,
+				'object':'plugin',
+				'name': '#JSStringFormat(dislpayObjectBean.getName())#'	
 			},
 
 			function(){
@@ -75,7 +108,6 @@ jQuery(document).ready(function(){
 		
 			);
 		});
-	
 });
 </script>
 <cfinclude template="dsp_configuratorJS.cfm">

@@ -1003,6 +1003,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfargument name="orderno" required="true" default="0">
 <cfargument name="hasConfigurator" required="true" default="false">
 <cfargument name="contentHistID" required="true" default="">
+<cfargument name="perm" required="true" default="none">
 
 	<cfset var theObject = "" />
 	<cfset var cacheKeyContentId = arguments.object & event.getValue('contentBean').getcontentID() />
@@ -1022,7 +1023,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfcase value="calendar_nav">#dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"nav/calendarNav/index.cfm")#</cfcase>
 				<cfcase value="plugin">
 					<cfsilent>
-					<cfset showEditable=arguments.hasConfigurator and this.showEditableObjects and ($.event('r').perm eq 'editor' or (not $.content('active') and $.event('r').perm eq 'author') )>
+					<cfset showEditable=arguments.hasConfigurator and this.showEditableObjects and listFindNoCase("editor,author",arguments.perm)>
 						
 					<cfif showEditable>
 						<cfset $.loadShadowBoxJS()>
@@ -1041,7 +1042,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						<cfset editableControl.editLink = editableControl.editLink & "&amp;contenthistID=" & arguments.contentHistID>
 						<cfset editableControl.editLink = editableControl.editLink & "&amp;regionID=" & arguments.regionID>
 						<cfset editableControl.editLink = editableControl.editLink & "&amp;orderno=" & arguments.orderno>
-							<cfset editableControl.editLink = editableControl.editLink & "&amp;homeID=" & $.content("contentID")>
+						<cfset editableControl.editLink = editableControl.editLink & "&amp;homeID=" & $.content("contentID")>
 					</cfif>
 					</cfsilent>
 					<cfif showEditable>
@@ -1139,6 +1140,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfargument name="ContentHistID" required="yes" type="string" default="#event.getValue('contentBean').getcontenthistid()#">
 <cfset var rsObjects="">	
 <cfset var theRegion= ""/>
+<cfset var nodePerm="none"/>
+<cfset var nodeID=""/>
 
 <cfif (event.getValue('isOnDisplay') 
 		and ((not event.getValue('r').restrict) 
@@ -1149,14 +1152,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		and event.getValue('inheritedObjects') neq ''
 		and event.getValue('contentBean').getcontenthistid() eq arguments.contentHistID>
 			<cfset rsObjects=application.contentGateway.getObjectInheritance(arguments.columnID,event.getValue('inheritedObjects'),event.getValue('siteID'))>	
+			<cfset nodeID=$.getBean("contentGateway").getContentIDFromContentHistID(contentHistID=event.getValue('inheritedObjects') )>
+			<cfset nodePerm=$.getBean('permUtility').getNodePerm($.getBean('contentGateway').getCrumblist(nodeID,event.getValue('siteID')))>
 			<cfloop query="rsObjects">
-				<cfset theRegion = theRegion & dspObject(rsObjects.object,rsObjects.objectid,event.getValue('siteID'), rsObjects.params, event.getValue('inheritedObjects'), arguments.columnID, rsObjects.orderno, len(rsObjects.configuratorInit),event.getValue('inheritedObjects')) />
+				<cfset theRegion = theRegion & dspObject(rsObjects.object,rsObjects.objectid,event.getValue('siteID'), rsObjects.params, event.getValue('inheritedObjects'), arguments.columnID, rsObjects.orderno, len(rsObjects.configuratorInit),event.getValue('inheritedObjects'),nodePerm) />
 			</cfloop>	
 	</cfif>
 
 	<cfset rsObjects=application.contentGateway.getObjects(arguments.columnID,arguments.contentHistID,event.getValue('siteID'))>	
 	<cfloop query="rsObjects">
-		<cfset theRegion = theRegion & dspObject(rsObjects.object,rsObjects.objectid,event.getValue('siteID'), rsObjects.params, arguments.contentHistID, arguments.columnID, rsObjects.orderno, len(rsObjects.configuratorInit),arguments.contentHistID) />
+		<cfset theRegion = theRegion & dspObject(rsObjects.object,rsObjects.objectid,event.getValue('siteID'), rsObjects.params, arguments.contentHistID, arguments.columnID, rsObjects.orderno, len(rsObjects.configuratorInit),arguments.contentHistID,$.event('r').perm) />
 	</cfloop>
 </cfif>
 

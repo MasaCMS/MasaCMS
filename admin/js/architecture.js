@@ -1673,7 +1673,7 @@ function addDisplayObject(objectToAdd,regionid,configure){
 			if (configuratorMode == 'backEnd') {
 				jQuery("#configuratorContainer").dialog("option", "position", getDialogPosition());
 			} else if (configuratorMode == 'frontEnd'){
-				jQuery("#saveConfig").show();
+				jQuery("#updatePluginConfigActions").show();
 			}	
 			initConfiguratorParams();
 				

@@ -227,6 +227,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			
 </cffunction>
 
+<cffunction name="getContentIDFromContentHistID" returntype="string" access="public" output="false">
+	<cfargument name="contenthistid" required="true" default="">
+	<cfset var rs="">
+	<cfquery name="rs" datasource="#variables.dsn#" blockfactor="20"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+		select contentID from tcontent where contenthistid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contenthistid#">
+	</cfquery>
+	<cfreturn rs.contentID>
+</cffunction>
+
 <cffunction name="getKidsIterator" returntype="any" output="false">
 			<cfargument name="moduleid" type="string" required="true" default="00000000000000000000000000000000000">
 			<cfargument name="siteid" type="string">
