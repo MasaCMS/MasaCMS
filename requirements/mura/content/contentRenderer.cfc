@@ -1224,7 +1224,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset nodeID=$.getBean("contentGateway").getContentIDFromContentHistID(contentHistID=event.getValue('inheritedObjects') )>
 			<cfset nodePerm=$.getBean('permUtility').getNodePerm($.getBean('contentGateway').getCrumblist(nodeID,event.getValue('siteID')))>
 			<cfloop query="rsObjects">
-				<cfset theRegion = theRegion & dspObject(rsObjects.object,rsObjects.objectid,event.getValue('siteID'), rsObjects.params, event.getValue('inheritedObjects'), arguments.columnID, rsObjects.orderno, len(rsObjects.configuratorInit),assignmentPerm) />
+				<cfset theRegion = theRegion & dspObject(rsObjects.object,rsObjects.objectid,event.getValue('siteID'), rsObjects.params, event.getValue('inheritedObjects'), arguments.columnID, rsObjects.orderno, len(rsObjects.configuratorInit),nodePerm) />
 			</cfloop>	
 	</cfif>
 
