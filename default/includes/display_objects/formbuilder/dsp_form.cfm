@@ -66,7 +66,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfif field.fieldtype.isdata eq 1 and len(field.datasetid)>
 			<cfset dataset = fbManager.processDataset( $,frmData[field.datasetid] ) />  
 		</cfif>
-		<cfif field.fieldtype.fieldtype neq "section">
+		<cfif field.fieldtype.fieldtype eq "hidden">
+		#$.dspObject_Include(thefile='/formbuilder/fields/dsp_#field.fieldtype.fieldtype#.cfm',
+			field=field,
+			dataset=dataset
+			)#			
+		<cfelseif field.fieldtype.fieldtype neq "section">
 		<li<cfif field.fieldtype.fieldtype eq "radio"> class="mura-form-radio"
 		<cfelseif field.fieldtype.fieldtype eq "checkbox"> class="mura-form-checkbox"
 		</cfif>>
@@ -76,12 +81,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			)#			
 		</li>
 		<cfelse>
-		<li>
 		#$.dspObject_Include(thefile='/formbuilder/fields/dsp_#field.fieldtype.fieldtype#.cfm',
 			field=field,
 			dataset=dataset
 			)#
-		</li>
 		</cfif>		
 		<!---#$.dspObject_Include('formbuilder/fields/dsp_#field.fieldtype.fieldtype#.cfm')#--->
 	<cfelse>

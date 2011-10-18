@@ -82,6 +82,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="setObjectID" access="public" output="false">
 	<cfargument name="objectID" type="String" />
 	<cfset variables.instance.objectID = trim(arguments.objectID) />
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="getModuleID" returntype="String" access="public" output="false">
@@ -91,6 +92,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="setModuleID" access="public" output="false">
 	<cfargument name="moduleID" type="String" />
 	<cfset variables.instance.moduleID = trim(arguments.moduleID) />
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="getName" returntype="String" access="public" output="false">
@@ -100,6 +102,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="setName" access="public" output="false">
 	<cfargument name="name" type="String" />
 	<cfset variables.instance.name = trim(arguments.name) />
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="getDisplayObjectFile" returntype="String" access="public" output="false">
@@ -109,6 +112,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="setDisplayObjectFile" access="public" output="false">
 	<cfargument name="displayObjectFile" type="String" />
 	<cfset variables.instance.displayObjectFile = trim(arguments.displayObjectFile) />
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="getDisplayMethod" returntype="String" access="public" output="false">
@@ -118,6 +122,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="setDisplayMethod" access="public" output="false">
 	<cfargument name="displayMethod" type="String" />
 	<cfset variables.instance.displayMethod = trim(arguments.displayMethod) />
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="getLocation" returntype="String" access="public" output="false">
@@ -129,6 +134,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif len(arguments.location)>
 	<cfset variables.instance.location = trim(arguments.location) />
 	</cfif>
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="getDoCache" returntype="String" access="public" output="false">
@@ -140,6 +146,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif isBoolean(arguments.docache)>
 		<cfset variables.instance.docache = arguments.docache />
 	</cfif>
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="getConfiguratorInit" returntype="String" access="public" output="false">
@@ -149,6 +156,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="setConfiguratorInit" access="public" output="false">
 	<cfargument name="configuratorInit" type="String" />
 	<cfset variables.instance.configuratorInit = trim(arguments.configuratorInit) />
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="getconfiguratorJS" returntype="String" access="public" output="false">
@@ -158,13 +166,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="setconfiguratorJS" access="public" output="false">
 	<cfargument name="configuratorJS" type="String" />
 	<cfset variables.instance.configuratorJS = trim(arguments.configuratorJS) />
+	<cfreturn this>
 </cffunction>
 
-<cffunction name="load"  access="public" output="false" returntype="void">
+<cffunction name="load"  access="public" output="false" returntype="any">
 	<cfset set(getQuery()) />
+	<cfreturn this>
 </cffunction>
 
-<cffunction name="loadByName"  access="public" output="false" returntype="void">
+<cffunction name="loadByName"  access="public" output="false" returntype="any">
 	<cfset var rs=""/>
 	<cfquery name="rs" datasource="#getBean('configBean').getDatasource()#" username="#getBean('configBean').getDBUsername()#" password="#getBean('configBean').getDBPassword()#">
 	select objectID,moduleID,name,location,displayobjectfile,displaymethod, docache, configuratorInit, configuratorJS
@@ -174,6 +184,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfquery>
 	
 	<cfset set(rs) />
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="getQuery"  access="public" output="false" returntype="query">
@@ -187,14 +198,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn rs/>
 </cffunction>
 
-<cffunction name="delete" access="public" returntype="void">
+<cffunction name="delete" access="public" returntype="any">
 	<cfquery datasource="#getBean('configBean').getDatasource()#" username="#getBean('configBean').getDBUsername()#" password="#getBean('configBean').getDBPassword()#">
 	delete from tplugindisplayobjects
 	where objectID=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#getObjectID()#">
 	</cfquery>
 </cffunction>
 
-<cffunction name="save"  access="public" output="false" returntype="void">
+<cffunction name="save"  access="public" output="false" returntype="any">
 <cfset var rs=""/>
 <cfset var rsLocation=""/>
 <cfset var pluginXML=""/>
@@ -249,7 +260,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfquery>
 		
 	</cfif>
-	
+	<cfreturn this>
 </cffunction>
 
 </cfcomponent>

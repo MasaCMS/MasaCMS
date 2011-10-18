@@ -254,7 +254,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfreturn arguments.dataset />
 			</cfcase>
 			<cfdefaultcase>
-				<cfdump var="#dataset#"><cfabort>
+				<!---<cfdump var="#dataset#" label="no list source chosen"><cfabort>--->
 				<cfreturn arguments.dataset />
 			</cfdefaultcase>
 

@@ -343,4 +343,41 @@
 	
 </cffunction>
 
+<cffunction name="updateObjectParams" ouput="true">
+	<cfargument name="rc">
+	<cfset var local=structNew()>
+	
+	<cfset local.versionBean=getBean("content").loadBy(contentHistID=arguments.rc.contentHistID, siteID= arguments.rc.siteid)> 
+	
+	<cfif not local.versionBean.getIsNew()>
+		<cfset arguments.rc.crumbData=variables.contentGateway.getCrumblist(local.versionBean.getContentID(), arguments.rc.siteid) />
+		<cfset arguments.rc.perm=variables.permUtility.getNodePerm(arguments.rc.crumbData) />  
+	<cfelse>
+		<cfabort>
+	</cfif>
+	
+	<cfif structKeyExists(arguments.rc,"changesetid")>
+		<cfset local.versionBean.setChangesetID(arguments.rc.changesetID)>
+	</cfif>
+	
+	<cfif structKeyExists(arguments.rc,"removePreviousChangeset")>
+		<cfset local.versionBean.setRemovePreviousChangeset(arguments.rc.removePreviousChangeset)>
+	</cfif>
+
+	<cfif arguments.rc.perm eq "author">
+		<cfset versionBean.setApproved(0)>
+	<cfelseif arguments.rc.perm eq "editor" >
+		<cfset versionBean.setApproved(arguments.rc.approved)>
+	<cfelse>
+		<cfabort>
+	</cfif>
+
+	<cfif isJSON(arguments.rc.params)>
+		<cfset versionBean.addDisplayObject(argumentCollection=arguments.rc)>
+		<cfset versionBean.save()>
+	</cfif>
+	<cfabort>
+	
+</cffunction>
+
 </cfcomponent>

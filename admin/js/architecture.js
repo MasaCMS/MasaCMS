@@ -1138,6 +1138,7 @@ function addDisplayObject(objectToAdd,regionid,configure){
 	var tmpValue="";
 	var tmpText="";
 	var isUpdate=false;
+	
 	//If it's not a js object then it must be an id of a form input or select
 	if(typeof(objectToAdd)=="string"){
 	
@@ -1235,8 +1236,8 @@ function addDisplayObject(objectToAdd,regionid,configure){
 			checkSelection=true;
 		}
 		
-		if (tmpObject.object == 'plugin'){
-			var configurator=getPluginConfigurator(tmpObject.objectid);
+		if (tmpObject.object == 'plugin') {
+			var configurator = getPluginConfigurator(tmpObject.objectid);
 			
 			if (configurator != '') {
 				if (configure) {
@@ -1338,17 +1339,19 @@ function addDisplayObject(objectToAdd,regionid,configure){
 	
 	function initFeedConfigurator(data){
 		
+		/*
 		if(typeof(data.object) !='undefined'){	
 			if(data.object !='feed'){
 				return false;
 			}
 		}
+		*/
 		
 		initConfigurator(data,
 		{
 			url: 'index.cfm',
 			pars: 'fuseaction=cArch.loadclassconfigurator&compactDisplay=true&siteid=' + siteid + '&classid=feed&contentid=' + contentid + '&parentid=' + parentid + '&contenthistid=' + contenthistid + '&regionid=' + data.regionid  + '&feedid=' +  data.objectid + '&cacheid=' + Math.random(),
-			title: 'Loading...',
+			title: localIndexConfiguratorTitle,
 			init: function(data,config){
 					//alert(JSON.stringify(data));
 					if(data.type.toLowerCase()=='remote'){
@@ -1389,11 +1392,13 @@ function addDisplayObject(objectToAdd,regionid,configure){
 	
 	function initSlideShowConfigurator(data){
 		
+		/*
 		if(typeof(data.object) !='undefined'){	
 			if(data.object !='feed_slideshow'){
 				return false;
 			}
 		}
+		*/
 
 		initConfigurator(data,
 		{
@@ -1496,7 +1501,7 @@ function addDisplayObject(objectToAdd,regionid,configure){
 	
 	function updateAvailableObject(){
 		availableObjectParams={};
-							
+						
 		jQuery("#availableObjectParams").find(":input").each(
 			function(){
 				var item=jQuery(this);
@@ -1548,6 +1553,8 @@ function addDisplayObject(objectToAdd,regionid,configure){
 	}
 	
 	function initConfiguratorParams(){
+		updateAvailableObject();
+		
 		jQuery("#availableObjectParams").find(":input").bind(
 			"change",
 			function(){
@@ -1577,90 +1584,110 @@ function addDisplayObject(objectToAdd,regionid,configure){
 	}
 
 	//CONFIG: URL,PARS,TITLE,INIT
+	var configuratorMode='backEnd';
+	
 	function initConfigurator(data,config){
 		resetAvailableObject();
-		resetConfiguratorContainer();
 		
-		if(typeof(data.object) =='undefined'){	
+		data.configuratorMode=configuratorMode;
+		
+		if (typeof(data.object) == 'undefined') {
 			return false;
 		}
-	
-		jQuery("#configuratorContainer").dialog({
-			resizable: true,
-			modal: true,
-			width: 400,
-			position: getDialogPosition(),
-			buttons: {
-				Save: function() {
-					addDisplayObject(availableObject,data.regionid,false);
-					jQuery( this ).dialog( "close" );
-					
-					if(typeof(config.destroy) !='undefined'){
-						config.destroy(data,config);
+			
+		if (configuratorMode == 'backEnd') {
+			resetConfiguratorContainer();
+			
+			jQuery("#configuratorContainer").dialog({
+				resizable: true,
+				modal: true,
+				width: 400,
+				position: getDialogPosition(),
+				buttons: {
+					Save: function(){
+						updateAvailableObject();
+						
+						addDisplayObject(availableObject, data.regionid, false);
+						
+						if (typeof(config.destroy) != 'undefined') {
+							config.destroy(data, config);
+						}
+						
+						jQuery(this).dialog("destroy");
+						
+					},
+					Cancel: function(){
+						if (typeof(config.destroy) != 'undefined') {
+							config.destroy(data, config);
+						}
+						
+						jQuery(this).dialog("destroy");
+						
 					}
-							
 				},
-				Cancel: function() {
-					jQuery( this ).dialog( "close" );
-					
-					if(typeof(config.destroy) !='undefined'){
-						config.destroy(data,config);
+				close: function(){
+					if (typeof(config.destroy) != 'undefined') {
+						config.destroy(data, config);
 					}
+						
+					jQuery(this).dialog("destroy");
 				}
-			},
-			close: function(){
-				jQuery(this).dialog("destroy");
+			
+			});
+		}
+		
+		jQuery.post(config.url + "?" + config.pars, data, function(_resp){
+			try {
+				resp = eval('(' + _resp + ')');
+			} 
+			catch (err) {
+				resp = _resp;
+			}
+			
+			if (typeof(resp) == 'object') {
+				jQuery("#configurator").html(resp.html);
+			}
+			else 
+				if (typeof(resp) == 'xml') {
+					jQuery("#configurator").html(resp.toString());
+				}
+				else {
+					jQuery("#configurator").html(resp);
+					}
+			
 				
-				if(typeof(config.destroy) !='undefined'){
-					config.destroy(data,config);
-				}
-			}	
-		});
+			jQuery("#ui-dialog-title-configuratorContainer").html(config.title);
+			jQuery("#configuratorHeader").html(config.title);
 				
-		jQuery.post(config.url + "?" + config.pars, 
-			data,
-			function(_resp) {
-				try {
-					resp = eval('(' + _resp + ')');
-				} catch(err){
-					resp=_resp;
-				}
+			if (availableObjectTemplate == "") {
+				var availableObjectContainer = jQuery("#availableObjectParams");
+				availableObjectTemplate = {
+					object: availableObjectContainer.attr("data-object"),
+					objectid: availableObjectContainer.attr("data-objectid"),
+					name: availableObjectContainer.attr("data-name")
+				};
+				availableObject = jQuery.extend({}, availableObjectTemplate);
+			}
+				
+			if (typeof(config.init) != 'undefined') {
 				
 				if (typeof(resp) == 'object') {
-					jQuery("#configurator").html(resp.html);
-				} else if(typeof(resp) == 'xml'){
-					jQuery("#configurator").html(resp.toString());
-				} else {
-					jQuery("#configurator").html(resp);
+					data = jQuery.extend(data, resp);
 				}
-				
-				
-				jQuery("#ui-dialog-title-configuratorContainer").html(config.title);	
-					
-				if(availableObjectTemplate==""){
-					var availableObjectContainer=jQuery("#availableObjectParams");
-					availableObjectTemplate={
-												object:availableObjectContainer.attr("data-object"),
-												objectid:availableObjectContainer.attr("data-objectid"),
-												name:availableObjectContainer.attr("data-name")
-											};
-					availableObject=jQuery.extend({},availableObjectTemplate);
-				}
-	
-				if(typeof(config.init) !='undefined'){
-					
-					if(typeof(resp)=='object'){
-						data=jQuery.extend(data,resp);
-					}	
-					config.init(data,config);
-				}
-				
-				jQuery("#configuratorContainer").dialog("option","position",getDialogPosition());
-				
-				initConfiguratorParams();
-		
+				config.init(data, config);
 			}
-		);
+			
+			if (configuratorMode == 'backEnd') {
+				jQuery("#configuratorContainer").dialog("option", "position", getDialogPosition());
+			} else if (configuratorMode == 'frontEnd'){
+				jQuery("#configuratorActions").show();
+				jQuery("#configuratorNotices").show();
+			}	
+			initConfiguratorParams();
+				
+		});
+			
+		
 		
 		return true;
 	}
