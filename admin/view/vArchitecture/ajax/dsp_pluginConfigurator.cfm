@@ -4,6 +4,7 @@
 	<cfset dislpayObjectBean.load()>
 	<cfset hasConfigurator=len(dislpayObjectBean.getConfiguratorJS())>
 	<cfset request.contentBean=application.contentManager.getContentVersion(contentHistID=rsDisplayObject.contenthistid,siteID=rsDisplayObject.siteid)>
+	<cfset request.homeBean=application.contentManager.getActiveContent(contentID=attributes.homeID,siteID=rsDisplayObject.siteid)>
 </cfsilent>
 <cfoutput>
 <div id="configuratorContainer" style="width: 400px;">
@@ -69,7 +70,7 @@ jQuery(document).ready(function(){
 			},
 
 			function(){
-				frontEndProxy.postMessage("cmd=setLocation&location=#jsStringFormat(request.contentBean.getURL())#");
+				frontEndProxy.postMessage("cmd=setLocation&location=#jsStringFormat(request.homeBean.getURL())#");
 			}
 		
 			);

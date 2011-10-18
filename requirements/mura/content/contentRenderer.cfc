@@ -960,6 +960,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="assignmentID" type="string" required="true" default="">
 	<cfargument name="regionID" required="true" default="0">
 	<cfargument name="orderno" required="true" default="0">
+	<cfargument name="contentHistID" required="true" default="0">
 	
 	<cfset var fileDelim = application.configBean.getFileDelim() />
 	<cfset var displayObjectPath = $.siteConfig('IncludePath') & fileDelim & "includes"  & fileDelim & "display_objects"/>
@@ -1000,6 +1001,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfargument name="assignmentID" type="string" required="true" default="">
 <cfargument name="regionID" required="true" default="0">
 <cfargument name="orderno" required="true" default="0">
+<cfargument name="hasConfigurator" required="true" default="false">
+<cfargument name="contentHistID" required="true" default="">
 
 	<cfset var theObject = "" />
 	<cfset var cacheKeyContentId = arguments.object & event.getValue('contentBean').getcontentID() />
@@ -1019,7 +1022,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfcase value="calendar_nav">#dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"nav/calendarNav/index.cfm")#</cfcase>
 				<cfcase value="plugin">
 					<cfsilent>
-					<cfset showEditable=this.showEditableObjects and ($.event('r').perm eq 'editor' or (not $.content('active') and $.event('r').perm eq 'author') )>
+					<cfset showEditable=arguments.hasConfigurator and this.showEditableObjects and ($.event('r').perm eq 'editor' or (not $.content('active') and $.event('r').perm eq 'author') )>
 						
 					<cfif showEditable>
 						<cfset $.loadShadowBoxJS()>
@@ -1035,9 +1038,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						</cfif>
 						<cfset editableControl.editLink = adminBase & "#$.globalConfig('context')#/admin/index.cfm?fuseaction=cArch.pluginConfigurator">
 						<cfset editableControl.editLink = editableControl.editLink & "&amp;compactDisplay=true">
-						<cfset editableControl.editLink = editableControl.editLink & "&amp;contenthistID=" & $.content('contenthistid')>
+						<cfset editableControl.editLink = editableControl.editLink & "&amp;contenthistID=" & arguments.contentHistID>
 						<cfset editableControl.editLink = editableControl.editLink & "&amp;regionID=" & arguments.regionID>
 						<cfset editableControl.editLink = editableControl.editLink & "&amp;orderno=" & arguments.orderno>
+							<cfset editableControl.editLink = editableControl.editLink & "&amp;homeID=" & $.content("contentID")>
 					</cfif>
 					</cfsilent>
 					<cfif showEditable>
@@ -1146,13 +1150,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		and event.getValue('contentBean').getcontenthistid() eq arguments.contentHistID>
 			<cfset rsObjects=application.contentGateway.getObjectInheritance(arguments.columnID,event.getValue('inheritedObjects'),event.getValue('siteID'))>	
 			<cfloop query="rsObjects">
-				<cfset theRegion = theRegion & dspObject(rsObjects.object,rsObjects.objectid,event.getValue('siteID'), rsObjects.params, event.getValue('inheritedObjects'), arguments.columnID, rsObjects.orderno) />
+				<cfset theRegion = theRegion & dspObject(rsObjects.object,rsObjects.objectid,event.getValue('siteID'), rsObjects.params, event.getValue('inheritedObjects'), arguments.columnID, rsObjects.orderno, len(rsObjects.configuratorInit),event.getValue('inheritedObjects')) />
 			</cfloop>	
 	</cfif>
 
 	<cfset rsObjects=application.contentGateway.getObjects(arguments.columnID,arguments.contentHistID,event.getValue('siteID'))>	
 	<cfloop query="rsObjects">
-		<cfset theRegion = theRegion & dspObject(rsObjects.object,rsObjects.objectid,event.getValue('siteID'), rsObjects.params, arguments.contentHistID, arguments.columnID, rsObjects.orderno) />
+		<cfset theRegion = theRegion & dspObject(rsObjects.object,rsObjects.objectid,event.getValue('siteID'), rsObjects.params, arguments.contentHistID, arguments.columnID, rsObjects.orderno, len(rsObjects.configuratorInit),arguments.contentHistID) />
 	</cfloop>
 </cfif>
 
