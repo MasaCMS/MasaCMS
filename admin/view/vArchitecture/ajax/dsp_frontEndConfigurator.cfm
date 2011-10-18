@@ -26,7 +26,7 @@
 	
 	<cfif yesNoFormat(draftcheck.showdialog) and draftcheck.historyid neq request.contentBean.getContentHistID()>
 	<p class="notice">
-	#application.rbFactory.getKeyValue(session.rb,'sitemanager.draftprompt.inline')#: <strong><a href="./?#replace(cgi.query_string,'#request.contentBean.getContentHistID()#','#draftcheck.historyid#')#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.draftprompt.gotolatest')#</a></strong>
+	#application.rbFactory.getKeyValue(session.rb,'sitemanager.draftprompt.inline')#: <strong><a href="?fuseaction=cArch.edit&moduleID=#URLEncodedFormat(request.contentBean.getModuleID())#&siteID=#URLEncodedFormat(request.contentBean.getSiteID())#&topID=#URLEncodedFormat(request.contentBean.getContentID())#&contentID=#URLEncodedFormat(request.contentBean.getContentID())#&return=#URLEncodedFormat(attributes.return)#&contentHistID=#draftcheck.historyID#&parentID=#URLEncodedFormat(request.contentBean.getParentID())#&startrow=#URLEncodedFormat(attributes.startrow)#&compactDisplay=true&homeID=#HTMLEditFormat(request.homeBean.getContentID())#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.draftprompt.gotolatest')#</a></strong>
 	<p>
 	</cfif>
 	</cfif>
@@ -34,7 +34,7 @@
 	<cfif hasChangesets and (not currentChangeset.getIsNew() or pendingChangesets.recordcount)>
 	<p class="notice">
 	<cfif pendingChangesets.recordcount>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.changesetnodenotify")#: 
-	<cfloop query="pendingChangesets"><a href="?fuseaction=cArch.edit&moduleID=#URLEncodedFormat(attributes.moduleID)#&siteID=#URLEncodedFormat(attributes.siteID)#&topID=#URLEncodedFormat(attributes.topID)#&contentID=#URLEncodedFormat(attributes.contentID)#&return=#URLEncodedFormat(attributes.return)#&contentHistID=#pendingChangesets.contentHistID#&parentID=#URLEncodedFormat(attributes.parentID)#&startrow=#URLEncodedFormat(attributes.startrow)#">"#HTMLEditFormat(pendingChangesets.changesetName)#"</a><cfif pendingChangesets.currentrow lt pendingChangesets.recordcount>, </cfif></cfloop><br/></cfif>
+	<cfloop query="pendingChangesets"><a href="?fuseaction=cArch.edit&moduleID=#URLEncodedFormat(request.contentBean.getModuleID())#&siteID=#URLEncodedFormat(request.contentBean.getSiteID())#&topID=#URLEncodedFormat(request.contentBean.getContentID())#&contentID=#URLEncodedFormat(request.contentBean.getContentID())#&return=#URLEncodedFormat(attributes.return)#&contentHistID=#pendingChangesets.contentHistID#&parentID=#URLEncodedFormat(request.contentBean.getParentID())#&startrow=#URLEncodedFormat(attributes.startrow)#&compactDisplay=true&homeID=#HTMLEditFormat(request.homeBean.getContentID())#">"#HTMLEditFormat(pendingChangesets.changesetName)#"</a><cfif pendingChangesets.currentrow lt pendingChangesets.recordcount>, </cfif></cfloop><br/></cfif>
 	<cfif not currentChangeset.getIsNew()>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.changesetversionnotify")#: "#HTMLEditFormat(currentChangeset.getName())#"</cfif>
 	</p>
 	</cfif>

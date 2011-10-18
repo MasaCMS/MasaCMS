@@ -124,6 +124,22 @@ function setRequestedURL(){
 	return conditionalExit("#JSStringFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.saveasdraft"))#");
 }</cfoutput>
 </script>
+<cfelseif attributes.compactDisplay eq "true">
+<script type="text/javascript">
+jQuery(document).ready(function(){
+	if (top.location != self.location) {
+		if(jQuery("##ProxyIFrame").length){
+			jQuery("##ProxyIFrame").load(
+				function(){
+					frontEndProxy.postMessage("cmd=setWindowMode&mode=standard");
+				}
+			);	
+		} else {
+			frontEndProxy.postMessage("cmd=setWindowMode&mode=standard");
+		}
+	}
+});
+</script>
 </cfif> 
 <cfsilent>
 <cfif request.contentBean.getType() eq 'File'>
