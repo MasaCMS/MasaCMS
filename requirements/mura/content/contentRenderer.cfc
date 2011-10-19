@@ -1006,7 +1006,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var cacheKeyObjectId = arguments.object & arguments.objectid />
 	<cfset var showEditable=false/>
 	<cfset var editableControl=structNew()>
-	<cfset var bean="">
+	<cfset var historyID="">
 	
 	
 	<cfswitch expression="#arguments.object#">
@@ -1056,11 +1056,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfif session.mura.isLoggedIn and this.showEditableObjects >	
 				<cfset showEditable=application.permUtility.getDisplayObjectPerm(arguments.siteID,arguments.object,arguments.objectID) eq "editor">		
 				<cfif showEditable>
-					<cfif isValid("UUID",arguments.objectID)>
-						<cfset bean = $.getBean("content").loadBy(contentID=arguments.objectID,siteID=arguments.siteID)>
-					<cfelse>
-						<cfset bean = $.getBean("content").loadBy(title=arguments.objectID,siteID=arguments.siteID)>
-					</cfif>
+					<cfset historyID = $.getBean("contentGateway").getContentHistIDFromContentID(contentID=arguments.objectID,siteID=arguments.siteID)>
 					<cfif arguments.object eq "component">
 						<cfset editableControl.class="editableComponent">
 					<cfelse>
@@ -1070,7 +1066,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfif len($.event('previewID'))>
 						<cfset editableControl.editLink = editableControl.editLink & "&amp;contenthistid=" & $.event('previewID')>
 					<cfelse>
-						<cfset editableControl.editLink = editableControl.editLink & "&amp;contenthistid=" & bean.getContentHistID()>
+						<cfset editableControl.editLink = editableControl.editLink & "&amp;contenthistid=" & historyID>
 					</cfif>	
 					<cfset editableControl.editLink = editableControl.editLink & "&amp;siteid=" & arguments.siteID>
 					<cfset editableControl.editLink = editableControl.editLink & "&amp;contentid=" & arguments.objectID>

@@ -235,6 +235,26 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn rs.contentID>
 </cffunction>
 
+<cffunction name="getContentHistIDFromContentID" returntype="string" access="public" output="false">
+	<cfargument name="contentID" required="true" default="">
+	<cfargument name="siteID" required="true" default="">
+	<cfset var rs="">
+	<cfquery name="rs" datasource="#variables.configBean.getDatasource(mode='readOnly')#" blockfactor="20"  username="#variables.configBean.getDBUsername(mode='readOnly')#" password="#variables.configBean.getDBPassword(mode='readOnly')#">
+		select contentHistID from tcontent where 
+		
+		<cfif isValid("UUID",arguments.contentID)>
+			contentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentID#">
+			and active=1
+			and siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#">
+		<cfelse>
+			active=1
+			and siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#">
+			and title=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentID#">
+		</cfif>
+	</cfquery>
+	<cfreturn rs.contentHistID>
+</cffunction>
+
 <cffunction name="getKidsIterator" returntype="any" output="false">
 			<cfargument name="moduleid" type="string" required="true" default="00000000000000000000000000000000000">
 			<cfargument name="siteid" type="string">
