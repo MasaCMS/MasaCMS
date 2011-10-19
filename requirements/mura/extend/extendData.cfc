@@ -64,7 +64,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="siteID"/>
 	
 	<cfset variables.configBean=arguments.configBean />
-	<cfset variables.dsn=variables.configBean.getDatasource()/>
 	<cfset setBaseID(arguments.baseID)/>
 	<cfset setDataTable(arguments.dataTable)/>
 	<cfset setDefinitions(arguments.configBean.getClassExtensionManager().getDefinitionsQuery())>
@@ -179,7 +178,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset var dataTable=getDataTable() />
 <cfset var rsDefinitions=getDefinitionsQuery()>
 
-		<cfquery name="rs" datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+		<cfquery name="rs" datasource="#variables.configBean.getDatasource(mode='readOnly')#" username="#variables.configBean.getDBUsername(mode='readOnly')#" password="#variables.configBean.getDBPassword(mode='readOnly')#">
 		select #dataTable#.baseid, tclassextendattributes.name, tclassextendattributes.validation, 
 		<cfif variables.configBean.getDBType() eq "oracle">
 			to_char(tclassextendattributes.label) as label

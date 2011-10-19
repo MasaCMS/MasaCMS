@@ -246,7 +246,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="save" output="false" access="public" returntype="any">
 	<cfset var rs="">
-	<cfquery name="rs" datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDbUsername()#" password="#variables.configBean.getDbPassword()#">
+	<cfquery name="rs" datasource="#variables.configBean.getDatasource(mode='readOnly')#" username="#variables.configBean.getDbUsername(mode='readOnly')#" password="#variables.configBean.getDbPassword(mode='readOnly')#">
 	select addressID from tuseraddresses where addressID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getAddressID()#">
 	</cfquery>
 	

@@ -50,8 +50,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="init" returntype="any" output="false" access="public">
 <cfargument name="configBean" type="any" required="yes"/>
-		<cfset variables.configBean=arguments.configBean />
-		<cfset variables.dsn=variables.configBean.getDatasource()/>
+	<cfset variables.configBean=arguments.configBean />
 	<cfreturn this />
 </cffunction>
 
@@ -64,7 +63,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="feedBean" type="any" />
 	 
 	<cftransaction>
-	<cfquery datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+	<cfquery datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	insert into tcontentfeeds (feedID,siteid,dateCreated,lastupdate,lastupdateBy,name, altName, description,
 	isActive,isPublic,isDefault,lang,maxItems,allowHTML,isFeaturesOnly,restricted,restrictGroups,version,
 	ChannelLink,type,ParentID,sortBy,sortDirection,nextN,displayName,displayRatings,displayComments,remoteID,remoteSourceURL, remotePubDate,
@@ -125,7 +124,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset bean=getBean("feed") />
 	</cfif>
 	
-	<cfquery name="rs" datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+	<cfquery name="rs" datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	Select
 	#variables.fieldList#
 	from tcontentfeeds where 
@@ -156,7 +155,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset bean=getBean("feed") />
 	</cfif>
 	
-	<cfquery name="rs" datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+	<cfquery name="rs" datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	Select 
 	#variables.fieldList#
 	from tcontentfeeds where 
@@ -201,7 +200,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset bean=getBean("feed") />
 	</cfif>
 		
-	<cfquery name="rs" datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+	<cfquery name="rs" datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	Select 
 	#variables.fieldList#
 	from tcontentfeeds where 
@@ -237,7 +236,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="feedBean" type="any" />
 	
 	<cftransaction>
-	<cfquery datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+	<cfquery datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	update tcontentfeeds set
 	lastUpdate = <cfif isDate(arguments.feedBean.getLastUpdate()) ><cfqueryparam cfsqltype="cf_sql_timestamp" value="#arguments.feedBean.getLastUpdate()#"><cfelse>null</cfif>,
 	lastupdateBy = <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.feedBean.getLastUpdateBy() neq '',de('no'),de('yes'))#" value="#arguments.feedBean.getLastUpdateBy()#">,
@@ -285,7 +284,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="delete" access="public" output="false" returntype="void" >
 	<cfargument name="feedID" type="String" />
 	
-	<cfquery datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+	<cfquery datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	delete from tcontentfeeds
 	where feedID = <cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.feedID#">
 	</cfquery>
@@ -300,7 +299,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var I = ""/>
 
 	 <cfloop list="#arguments.itemList#" index="I">
-		<cfquery datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+		<cfquery datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 		insert into tcontentfeeditems (feedID,itemID,type)
 		values (
 		<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.feedID#">,
@@ -315,7 +314,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="deleteItems" access="public" output="false" returntype="void" >
 	<cfargument name="feedID" type="String" />
 	
-	<cfquery datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+	<cfquery datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	delete from tcontentfeeditems 
 	where feedID =<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.feedID#">
 	</cfquery>
@@ -326,7 +325,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="feedID" type="String" />
 	<cfargument name="itemID" type="String" />
 	
-	<cfquery datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+	<cfquery datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	delete from tcontentfeeditems 
 	where feedID = <cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.feedID#"> and itemID = <cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.itemID#">
 	</cfquery>
@@ -340,7 +339,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	 <cfset var rs =""/>
 	 <cfset var ItemList =""/>
 	
-	<cfquery name="rs" datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+	<cfquery name="rs" datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 		select itemID from tcontentfeeditems
 		where feedID=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.feedID#"> and type = <cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.type#">
 	</cfquery>
@@ -356,7 +355,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	 <cfset var rs =""/>
 	
-	<cfquery name="rs" datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+	<cfquery name="rs" datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 		select * from tcontentfeedadvancedparams
 		where feedID=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.feedID#"> order by param
 	</cfquery>
@@ -373,7 +372,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<cfif arguments.params.recordcount>	
 		<cfloop query="arguments.params">
-			<cfquery datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+			<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 			insert into tcontentfeedadvancedparams (feedID,paramID,param,relationship,field,dataType,<cfif variables.configBean.getDbType() eq "mysql">`condition`<cfelse>condition</cfif>,criteria) 
 			values (
 			<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.feedID#">,
@@ -394,7 +393,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="deleteAdvancedParams" access="public" output="false" returntype="void" >
 	<cfargument name="feedID" type="String" />
 	
-	<cfquery datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+	<cfquery datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	delete from tcontentfeedadvancedparams
 	where feedID = <cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.feedID#">
 	</cfquery>

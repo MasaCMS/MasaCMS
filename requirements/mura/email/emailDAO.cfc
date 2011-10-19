@@ -49,14 +49,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="init" access="public" returntype="any" output="false">
 <cfargument name="configBean" type="any" required="yes"/>
 		<cfset variables.configBean=arguments.configBean />
-		<cfset variables.dsn=variables.configBean.getdatasource()/>
 <cfreturn this />
 </cffunction>
 
 <cffunction name="create" returntype="void" access="public" output="false">
 <cfargument name="emailBean" type="any" />
  
- <cfquery  datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+ <cfquery  datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
         INSERT INTO temails  (EmailID, Subject,BodyText, BodyHtml,
 		  CreatedDate, LastUpdateBy, LastUpdateByID, GroupList, Status, DeliveryDate, siteid, replyto,format,fromLabel)
      VALUES(
@@ -88,7 +87,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var emailBean=getBean("email") />
 	<cfset var rs ="" />
 	
-	<cfquery name="rs" datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+	<cfquery name="rs" datasource="#variables.configBean.getDatasource(mode='readOnly')#" username="#variables.configBean.getDBUsername(mode='readOnly')#" password="#variables.configBean.getDBPassword(mode='readOnly')#">
 	Select * from temails where 
 	emailid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.emailID#" />
 	</cfquery>
@@ -103,7 +102,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="update" access="public" output="false" returntype="void" >
 	<cfargument name="emailBean" type="any" />
 	
- <cfquery  datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+ <cfquery  datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
         UPDATE temails set 
 		 subject =  <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.emailBean.getSubject() neq '',de('no'),de('yes'))#" value="#arguments.emailBean.getSubject()#">, 
 		
@@ -129,7 +128,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="delete" access="public" output="false" returntype="void" >
 	<cfargument name="emailid" type="string" />
 	
-	<cfquery datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#" >
+	<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#" >
 	<!---DELETE FROM temails where emailid='#arguments.emailID#'  --->
 	UPDATE temails
 	SET isDeleted = 1
@@ -137,7 +136,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfquery>
 	
 	<!--- need to track emails, so don't delete from this log
-	<cfquery datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#" >
+	<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#" >
 	DELETE FROM temailstats where emailid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.emailID#" />
 	</cfquery>
 	--->

@@ -64,7 +64,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<cfset variables.configBean=arguments.configBean />
 	<cfset variables.contentRenderer=arguments.contentRenderer />
-	<cfset variables.dsn=variables.configBean.getDatasource()/>
 	<cfset variables.classExtensionManager=variables.configBean.getClassExtensionManager()>
 	
 	<cfreturn this />
@@ -207,7 +206,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="getAttributesQuery" access="public" returntype="query">
 <cfset var rs=""/>
 
-		<cfquery name="rs" datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+		<cfquery name="rs" datasource="#variables.configBean.getDatasource(mode='readOnly')#" username="#variables.configBean.getDBUsername(mode='readOnly')#" password="#variables.configBean.getDBPassword(mode='readOnly')#">
 		select *
 		from tclassextendattributes 
 		where tclassextendattributes.ExtendSetID=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#getExtendSetID()#">
@@ -220,7 +219,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="load" access="public" returntype="any">
 	<cfset var rs=""/>
                
-	<cfquery name="rs" datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+	<cfquery name="rs" datasource="#variables.configBean.getDatasource(mode='readOnly')#" username="#variables.configBean.getDBUsername(mode='readOnly')#" password="#variables.configBean.getDBPassword(mode='readOnly')#">
         select extendSetID,subTypeID,categoryID,siteID,name,orderno,isActive,container from tclassextendsets
         where
         <cfif len(getName()) and len(getSubTypeID())>
@@ -272,13 +271,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="save"  access="public" output="false">
 <cfset var rs=""/>
 
-	<cfquery name="rs" datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+	<cfquery name="rs" datasource="#variables.configBean.getDatasource(mode='readOnly')#" username="#variables.configBean.getDBUsername(mode='readOnly')#" password="#variables.configBean.getDBPassword(mode='readOnly')#">
 	select ExtendSetID from tclassextendsets where ExtendSetID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getExtendSetID()#">
 	</cfquery>
 	
 	<cfif rs.recordcount>
 		
-		<cfquery datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+		<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 		update tclassextendsets set
 		siteID=<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(getSiteID() neq '',de('no'),de('yes'))#" value="#getSiteID()#">,
 		name=<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(getName() neq '',de('no'),de('yes'))#" value="#getName()#">,
@@ -292,7 +291,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		
 	<cfelse>
 	
-		<cfquery datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+		<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 		Insert into tclassextendsets (ExtendSetID,siteID,name,subtypeid,isActive,orderno,categoryID,container) 
 		values(
 		<cfqueryparam cfsqltype="cf_sql_varchar"  value="#getExtendSetID()#">,
@@ -321,7 +320,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset attribute.delete() />
 	</cfloop>
 
-	<cfquery name="rs" datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+	<cfquery name="rs" datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	delete from tclassextendsets where extendSetID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getExtendSetID()#">
 	</cfquery>
 	
