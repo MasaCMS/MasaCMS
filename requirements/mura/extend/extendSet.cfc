@@ -206,7 +206,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="getAttributesQuery" access="public" returntype="query">
 <cfset var rs=""/>
 
-		<cfquery name="rs" datasource="#variables.configBean.getDatasource(mode='readOnly')#" username="#variables.configBean.getDBUsername(mode='readOnly')#" password="#variables.configBean.getDBPassword(mode='readOnly')#">
+		<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
 		select *
 		from tclassextendattributes 
 		where tclassextendattributes.ExtendSetID=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#getExtendSetID()#">
@@ -219,7 +219,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="load" access="public" returntype="any">
 	<cfset var rs=""/>
                
-	<cfquery name="rs" datasource="#variables.configBean.getDatasource(mode='readOnly')#" username="#variables.configBean.getDBUsername(mode='readOnly')#" password="#variables.configBean.getDBPassword(mode='readOnly')#">
+	<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
         select extendSetID,subTypeID,categoryID,siteID,name,orderno,isActive,container from tclassextendsets
         where
         <cfif len(getName()) and len(getSubTypeID())>
@@ -271,7 +271,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="save"  access="public" output="false">
 <cfset var rs=""/>
 
-	<cfquery name="rs" datasource="#variables.configBean.getDatasource(mode='readOnly')#" username="#variables.configBean.getDBUsername(mode='readOnly')#" password="#variables.configBean.getDBPassword(mode='readOnly')#">
+	<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
 	select ExtendSetID from tclassextendsets where ExtendSetID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getExtendSetID()#">
 	</cfquery>
 	

@@ -160,7 +160,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset arguments.data=arguments.data.getAllValues()>
 	</cfif>
 	
-	<cfquery name="rs" datasource="#variables.instance.configBean.getDatasource(mode='readOnly')#"  username="#variables.instance.configBean.getDBUsername(mode='readOnly')#" password="#variables.instance.configBean.getDBPassword(mode='readOnly')#">
+	<cfquery name="rs" datasource="#variables.instance.configBean.getReadOnlyDatasource()#"  username="#variables.instance.configBean.getReadOnlyDbUsername()#" password="#variables.instance.configBean.getReadOnlyDbPassword()#">
 		select adzoneID from tadzones where adzoneID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.data.adzoneID#">
 	</cfquery>
 	
@@ -197,7 +197,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset arguments.data=arguments.data.getAllValues()>
 	</cfif>
 	
-	<cfquery name="rs" datasource="#variables.instance.configBean.getDatasource(mode='readOnly')#"  username="#variables.instance.configBean.getDBUsername(mode='readOnly')#" password="#variables.instance.configBean.getDBPassword(mode='readOnly')#">
+	<cfquery name="rs" datasource="#variables.instance.configBean.getReadOnlyDatasource()#"  username="#variables.instance.configBean.getReadOnlyDbUsername()#" password="#variables.instance.configBean.getReadOnlyDbPassword()#">
 		select creativeID from tadcreatives where creativeID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.data.creativeID#">
 	</cfquery>
 	
@@ -240,7 +240,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset arguments.data=arguments.data.getAllValues()>
 	</cfif>
 	
-	<cfquery name="rs" datasource="#variables.instance.configBean.getDatasource(mode='readOnly')#"  username="#variables.instance.configBean.getDBUsername(mode='readOnly')#" password="#variables.instance.configBean.getDBPassword(mode='readOnly')#">
+	<cfquery name="rs" datasource="#variables.instance.configBean.getReadOnlyDatasource()#"  username="#variables.instance.configBean.getReadOnlyDbUsername()#" password="#variables.instance.configBean.getReadOnlyDbPassword()#">
 		select campaignID from tadcampaigns where campaignID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.data.campaignID#">
 	</cfquery>
 	
@@ -283,7 +283,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset arguments.data=arguments.data.getAllValues()>
 	</cfif>
 	
-	<cfquery name="rs" datasource="#variables.instance.configBean.getDatasource(mode='readOnly')#"  username="#variables.instance.configBean.getDBUsername(mode='readOnly')#" password="#variables.instance.configBean.getDBPassword(mode='readOnly')#">
+	<cfquery name="rs" datasource="#variables.instance.configBean.getReadOnlyDatasource()#"  username="#variables.instance.configBean.getReadOnlyDbUsername()#" password="#variables.instance.configBean.getReadOnlyDbPassword()#">
 		select placementID from tadplacements where placementID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.data.placementID#">
 	</cfquery>
 	
@@ -361,7 +361,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var rsExclusive="" />
 	<cfset var response=structNew() />
 	
-	<cfquery name="rs" datasource="#variables.instance.configBean.getDatasource(mode='readOnly')#"  username="#variables.instance.configBean.getDBUsername(mode='readOnly')#" password="#variables.instance.configBean.getDBPassword(mode='readOnly')#">
+	<cfquery name="rs" datasource="#variables.instance.configBean.getReadOnlyDatasource()#"  username="#variables.instance.configBean.getReadOnlyDbUsername()#" password="#variables.instance.configBean.getReadOnlyDbPassword()#">
 	select tadplacements.creativeid,tadplacements.placementid,isExclusive,costPerImp from 
 	((((tadplacements inner join tadplacementdetails AS tdays on tadplacements.placementid=tdays.placementid)
 	inner join tadplacementdetails AS thours on tadplacements.placementid=thours.placementid)

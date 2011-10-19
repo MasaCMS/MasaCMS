@@ -70,7 +70,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="getUserData" returntype="query" access="public">
 	<cfargument name="userid" type="string" default="#session.mura.userID#">
 	<cfset var rsuser=""/>
-	<cfquery name="rsuser" datasource="#variables.configBean.getDatasource(mode='readOnly')#" username="#variables.configBean.getDBUsername(mode='readOnly')#" password="#variables.configBean.getDBPassword(mode='readOnly')#">
+	<cfquery name="rsuser" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
 	select * from tusers where userid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.userID#">
 	</cfquery>
 	<cfreturn rsuser>
@@ -100,7 +100,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset variables.pluginManager.announceEvent('onGlobalLogin',pluginEvent)/>
 		</cfif>
 		
-		<cfquery datasource="#application.configBean.getDatasource(mode='readOnly')#" name="rsUser" username="#variables.configBean.getDBUsername(mode='readOnly')#" password="#variables.configBean.getDBPassword(mode='readOnly')#">
+		<cfquery datasource="#application.configBean.getReadOnlyDatasource()#" name="rsUser" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
 		SELECT * FROM tusers WHERE
 		username=<cfqueryparam cfsqltype="cf_sql_varchar" value="#trim(arguments.username)#"> 
 		AND 
@@ -171,7 +171,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset var pluginEvent = createObject("component","mura.event").init(arguments) />
 		
 		<cflogout>
-		<cfquery datasource="#variables.configBean.getDatasource(mode='readOnly')#" username="#variables.configBean.getDBUsername(mode='readOnly')#" password="#variables.configBean.getDBPassword(mode='readOnly')#" name="rsUser">
+		<cfquery datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#" name="rsUser">
 		SELECT * FROM tusers WHERE userid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.userID#"> AND Type = 2
 		and inactive=0
 		</cfquery>
@@ -212,7 +212,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset var rsGetRoles = "" />
 		<cfset var user=""/>
 
-				<cfquery name="RsGetRoles" datasource="#variables.configBean.getDatasource(mode='readOnly')#" username="#variables.configBean.getDBUsername(mode='readOnly')#" password="#variables.configBean.getDBPassword(mode='readOnly')#">
+				<cfquery name="RsGetRoles" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
 				Select groupname, isPublic, siteid from tusers where userid in
 				(Select GroupID from tusersmemb where userid='#rsuser.userid#')
 				</cfquery>
@@ -274,7 +274,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="siteid" type="string" required="yes" default="">
 	<cfset var rsCheck=""/>
 	
-		<cfquery name="rsCheck" datasource="#variables.configBean.getDatasource(mode='readOnly')#" username="#variables.configBean.getDBUsername(mode='readOnly')#" password="#variables.configBean.getDBPassword(mode='readOnly')#">
+		<cfquery name="rsCheck" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
 		select * from tusers where type=2 and inactive=0 and email=<cfqueryparam cfsqltype="cf_sql_varchar" value="#trim(arguments.email)#">
 		<cfif arguments.siteid neq ''>
 		and (
@@ -651,7 +651,7 @@ Thanks for using #contactName#</cfoutput>
 <cfargument name="$">
 	<cfset var rs="">
 	<cfif not $.currentUser().isLoggedIn() and len($.event('returnID')) and len($.event('returnUserID'))>
-		<cfquery name="rs" datasource="#variables.configBean.getDatasource(mode='readOnly')#"  username="#variables.configBean.getDBUsername(mode='readOnly')#" password="#variables.configBean.getDBPassword(mode='readOnly')#">
+		<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
 			select created from tredirects
 			where redirectID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#$.event('returnID')#" >
 		</cfquery>
