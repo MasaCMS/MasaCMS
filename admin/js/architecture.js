@@ -1502,11 +1502,11 @@ function addDisplayObject(objectToAdd,regionid,configure){
 	function updateAvailableObject(){
 		availableObjectParams={};
 						
-		jQuery("#availableObjectParams").find(":input").each(
+		jQuery("#availableObjectParams").find(".param").each(
 			function(){
 				var item=jQuery(this);
 				if (item.attr("type") != "radio" || (item.attr("type") =="radio" && item.is(':checked'))) {
-					availableObjectParams[item.attr("data-displayobjectparam")] = item.val();
+					availableObjectParams[item.attr("name")] = item.val();
 				}
 			}
 		)
@@ -1554,8 +1554,7 @@ function addDisplayObject(objectToAdd,regionid,configure){
 	
 	function initConfiguratorParams(){
 		updateAvailableObject();
-		
-		jQuery("#availableObjectParams").find(":input").bind(
+		jQuery("#availableObjectParams").find(".param").bind(
 			"change",
 			function(){
 				updateAvailableObject();
