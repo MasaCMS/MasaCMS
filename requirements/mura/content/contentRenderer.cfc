@@ -1062,9 +1062,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						<cfset bean = $.getBean("content").loadBy(title=arguments.objectID,siteID=arguments.siteID)>
 					</cfif>
 					<cfif arguments.object eq "component">
-						<cfset editableControl.class="editComponnent">
+						<cfset editableControl.class="editableComponent">
 					<cfelse>
-						<cfset editableControl.class="editForm">
+						<cfset editableControl.class="editableForm">
 					</cfif>
 					<cfset editableControl.editLink = "#$.globalConfig('context')#/admin/index.cfm?fuseaction=cArch.edit">
 					<cfif len($.event('previewID'))>
