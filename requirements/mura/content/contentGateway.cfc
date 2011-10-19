@@ -227,6 +227,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			
 </cffunction>
 
+<cffunction name="getContentIDFromContentHistID" returntype="string" access="public" output="false">
+	<cfargument name="contenthistid" required="true" default="">
+	<cfset var rs="">
+	<cfquery name="rs" datasource="#variables.dsn#" blockfactor="20"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+		select contentID from tcontent where contenthistid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contenthistid#">
+	</cfquery>
+	<cfreturn rs.contentID>
+</cffunction>
+
 <cffunction name="getKidsIterator" returntype="any" output="false">
 			<cfargument name="moduleid" type="string" required="true" default="00000000000000000000000000000000000">
 			<cfargument name="siteid" type="string">
@@ -1690,12 +1699,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var rsObjects=""/>
 	
 	<cfquery datasource="#variables.configBean.getDatasource()#" name="rsObjects"  username="#application.configBean.getDBUsername()#" password="#application.configBean.getDBPassword()#">
-	select object,objectid, tcontentobjects.orderno, params from tcontentobjects 
+	select tcontentobjects.object,tcontentobjects.objectid, tcontentobjects.orderno, tcontentobjects.params, tplugindisplayobjects.configuratorInit from tcontentobjects 
 	inner join tcontent On(
 	tcontentobjects.contenthistid=tcontent.contenthistid
 	and tcontentobjects.siteid=tcontent.siteid) 
-	where tcontent.siteid='#arguments.siteid#' and tcontent.contenthistid ='#arguments.contentHistID#'
-	and columnid=#arguments.columnID# order by tcontentobjects.orderno
+	left join tplugindisplayobjects on (tcontentobjects.object='plugin' 
+										and tcontentobjects.objectID=tplugindisplayobjects.objectID)
+	where tcontent.siteid='#arguments.siteid#' 
+	and tcontent.contenthistid ='#arguments.contentHistID#'
+	and tcontentobjects.columnid=#arguments.columnID# 
+	order by tcontentobjects.orderno
 	</cfquery>
 		
 	<cfreturn rsObjects>
@@ -1709,11 +1722,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<cfset var rsObjects=""/>
 	<cfquery datasource="#application.configBean.getDatasource()#" name="rsObjects"  username="#application.configBean.getDBUsername()#" password="#application.configBean.getDBPassword()#">
-	select object,objectid,orderno,params from tcontentobjects  
-	where contenthistid 
-	='#arguments.inheritedObjects#' and siteid='#arguments.siteid#'
-	and columnid=#arguments.columnID#
-	and object !='goToFirstChild'
+	select tcontentobjects.object, tcontentobjects.objectid, tcontentobjects.orderno, tcontentobjects.params, tplugindisplayobjects.configuratorInit from tcontentobjects
+	left join tplugindisplayobjects on (tcontentobjects.object='plugin' 
+										and tcontentobjects.objectID=tplugindisplayobjects.objectID)  
+	where 
+	tcontentobjects.contenthistid ='#arguments.inheritedObjects#' 
+	and tcontentobjects.siteid='#arguments.siteid#'
+	and tcontentobjects.columnid=#arguments.columnID#
+	and tcontentobjects.object !='goToFirstChild'
 	order by orderno
 	</cfquery>
 	

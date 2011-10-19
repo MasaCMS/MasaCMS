@@ -63,45 +63,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfsilent>
 
 <cfif variables.feedBean.getIsActive()>
-	<cfsilent>
-	
-		<cfset variables.cssID = $.createCSSid(feedBean.renderName())>
-	
-		<cfset editableControl.editLink = "">
-		<cfset editableControl.innerHTML = "">
-	
-		<cfif not variables.feedBean.getIsNew() and this.showEditableObjects and arguments.objectPerm eq 'editor'>
-			<cfset bean = feedBean>
-			<cfset $.loadShadowBoxJS()>
-			<cfset $.addToHTMLHeadQueue('editableObjects.cfm')>
-			<cfif len(application.configBean.getAdminDomain())>
-				<cfif application.configBean.getAdminSSL()>
-					<cfset variables.adminBase = "https://#application.configBean.getAdminDomain()#"/>
-				<cfelse>
-					<cfset variables.adminBase = "http://#application.configBean.getAdminDomain()#"/>
-				</cfif>
-			<cfelse>
-				<cfset variables.adminBase = ""/>
-			</cfif>
-			<cfset editableControl.editLink = adminBase & "#$.globalConfig('context')#/admin/index.cfm?fuseaction=cFeed.edit">
-			<cfset editableControl.editLink = editableControl.editLink & "&amp;siteid=" & bean.getSiteID()>
-			<cfset editableControl.editLink = editableControl.editLink & "&amp;feedid=" & bean.getFeedID()>
-			<cfset editableControl.editLink = editableControl.editLink & "&amp;type=" & bean.getType()>
-			<cfset editableControl.editLink = editableControl.editLink & "&amp;homeID=" & $.content('contentID')>
-			<cfset editableControl.editLink = editableControl.editLink & "&amp;compactDisplay=true">
-			<cfset editableControl.editLink = editableControl.editLink & "&amp;assignmentID=" & arguments.assignmentID>
-			<cfset editableControl.editLink = editableControl.editLink & "&amp;regionID=" & arguments.regionID>
-			<cfset editableControl.editLink = editableControl.editLink & "&amp;orderno=" & arguments.orderno>
-			<cfif variables.feedBean.getType() eq "Local">
-				<cfset editableControl.innerHTML = $.generateEditableObjectControl(editableControl.editLink,true)>
-			<cfelse>
-				<cfset editableControl.innerHTML = $.generateEditableObjectControl(editableControl.editLink)>
-			</cfif>
-		</cfif>
-	</cfsilent>
-	<cfif editableControl.innerHTML neq "">
-		<cfoutput>#$.renderEditableObjectHeader("editableFeed")#</cfoutput>
-	</cfif>
+
+	<cfset variables.cssID = $.createCSSid(feedBean.renderName())>
+
 	<cfif variables.feedBean.getType() eq 'local'>
 		<cfsilent>
 			<cfset variables.rsPreFeed = application.feedManager.getFeed(feedBean)/>
@@ -132,7 +96,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset variables.nextN = $.getBean('utility').getNextN(variables.rs, 
 			                                                      variables.feedBean.getNextN(),
 			                                                      variables.currentNextNIndex)>
-			  
 		</cfsilent>
 	
 		<cfif variables.iterator.getRecordCount()>
@@ -229,9 +192,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<!-- Inactive Feed '
 	<cfoutput>#feedBean.getName()#</cfoutput>
 	' -->
-</cfif>
-<cfif editableControl.innerHTML neq "">
-	<cfoutput>#renderEditableObjectFooter(editableControl.innerHTML)#</cfoutput>
 </cfif>
 <!---   <cfcatch>
   </cfcatch>

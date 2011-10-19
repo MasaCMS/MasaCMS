@@ -44,7 +44,12 @@ For clarity, if you create a modified version of Mura CMS, you are not obligated
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
-
+<cfif isJSON(arguments.params)>
+	<cfset arguments.params=deserializeJSON(arguments.params)>
+	<cfif structKeyExists(arguments.params,"displayRSS")>
+		<cfset useRSS=arguments.params.displayRSS>
+	</cfif>
+</cfif>
 <cfparam name="useRss" default="false">
 <cfquery datasource="#application.configBean.getDatasource()#" username="#application.configBean.getDBUsername()#" password="#application.configBean.getDBPassword()#" name="rsSection">select contentid,filename,menutitle,target,restricted,restrictgroups,type,sortBy,sortDirection from tcontent where siteid='#$.event('siteID')#' and contentid='#arguments.objectid#' and approved=1 and active=1 and display=1</cfquery>
 <cfif rsSection.recordcount>

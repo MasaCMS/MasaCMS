@@ -355,15 +355,26 @@
 	<cfelse>
 		<cfabort>
 	</cfif>
-
-	<cfif local.versionBean.getActive()>
-		<cfset arguments.rc.allowAction=listFindNoCase('editor',arguments.rc.perm) />
-	<cfelse>
-		<cfset arguments.rc.allowAction=listFindNoCase('author,editor',arguments.rc.perm) />
+	
+	<cfif structKeyExists(arguments.rc,"changesetid")>
+		<cfset local.versionBean.setChangesetID(arguments.rc.changesetID)>
+	</cfif>
+	
+	<cfif structKeyExists(arguments.rc,"removePreviousChangeset")>
+		<cfset local.versionBean.setRemovePreviousChangeset(arguments.rc.removePreviousChangeset)>
 	</cfif>
 
-	<cfif arguments.rc.allowAction and len(arguments.rc.contentHistID) and isJSON(arguments.rc.params)>
-		<cfset variables.contentManager.updateContentObjectParams(arguments.rc.contentHistID,arguments.rc.regionID,arguments.rc.orderno,arguments.rc.params)>
+	<cfif arguments.rc.perm eq "author">
+		<cfset versionBean.setApproved(0)>
+	<cfelseif arguments.rc.perm eq "editor" >
+		<cfset versionBean.setApproved(arguments.rc.approved)>
+	<cfelse>
+		<cfabort>
+	</cfif>
+
+	<cfif isJSON(arguments.rc.params)>
+		<cfset versionBean.addDisplayObject(argumentCollection=arguments.rc)>
+		<cfset versionBean.save()>
 	</cfif>
 	<cfabort>
 	

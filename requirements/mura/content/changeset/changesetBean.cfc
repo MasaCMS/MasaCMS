@@ -44,7 +44,7 @@
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="setChangsetManager">
+<cffunction name="setChangesetManager" output="false">
 	<cfargument name="changesetManager">
 	<cfset variables.changesetManager=arguments.changesetManager>
 	<cfreturn this>

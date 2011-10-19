@@ -492,7 +492,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif attributes.compactDisplay neq "true">
 		<input type="button" class="submit" onclick="submitForm(document.forms.form1,'delete','#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'collections.deletelocalconfirm'))#');" value="#application.rbFactory.getKeyValue(session.rb,'collections.delete')#" /> 
 	</cfif>
-	<input type="button" class="submit" onclick="<cfif isObjectInstance>updateInstanceObject();</cfif>submitForm(document.forms.form1,'update');" value="#application.rbFactory.getKeyValue(session.rb,'collections.update')#" />
+	<cfif isObjectInstance>
+		<input type="button" class="submit" onclick="updateInstanceObject();submitForm(document.forms.form1,'update');" value="#application.rbFactory.getKeyValue(session.rb,'collections.update')#" />
+	<cfelse>
+		<input type="button" class="submit" onclick="submitForm(document.forms.form1,'update');" value="#application.rbFactory.getKeyValue(session.rb,'collections.update')#" />
+	</cfif>
 	<cfif attributes.compactDisplay eq "true">
 		<input type="hidden" name="closeCompactDisplay" value="true" />
 		<input type="hidden" name="homeID" value="#attributes.homeID#" />

@@ -1138,6 +1138,7 @@ function addDisplayObject(objectToAdd,regionid,configure){
 	var tmpValue="";
 	var tmpText="";
 	var isUpdate=false;
+	
 	//If it's not a js object then it must be an id of a form input or select
 	if(typeof(objectToAdd)=="string"){
 	
@@ -1235,8 +1236,8 @@ function addDisplayObject(objectToAdd,regionid,configure){
 			checkSelection=true;
 		}
 		
-		if (tmpObject.object == 'plugin'){
-			var configurator=getPluginConfigurator(tmpObject.objectid);
+		if (tmpObject.object == 'plugin') {
+			var configurator = getPluginConfigurator(tmpObject.objectid);
 			
 			if (configurator != '') {
 				if (configure) {
@@ -1338,17 +1339,19 @@ function addDisplayObject(objectToAdd,regionid,configure){
 	
 	function initFeedConfigurator(data){
 		
+		/*
 		if(typeof(data.object) !='undefined'){	
 			if(data.object !='feed'){
 				return false;
 			}
 		}
+		*/
 		
 		initConfigurator(data,
 		{
 			url: 'index.cfm',
 			pars: 'fuseaction=cArch.loadclassconfigurator&compactDisplay=true&siteid=' + siteid + '&classid=feed&contentid=' + contentid + '&parentid=' + parentid + '&contenthistid=' + contenthistid + '&regionid=' + data.regionid  + '&feedid=' +  data.objectid + '&cacheid=' + Math.random(),
-			title: 'Loading...',
+			title: localIndexConfiguratorTitle,
 			init: function(data,config){
 					//alert(JSON.stringify(data));
 					if(data.type.toLowerCase()=='remote'){
@@ -1389,11 +1392,13 @@ function addDisplayObject(objectToAdd,regionid,configure){
 	
 	function initSlideShowConfigurator(data){
 		
+		/*
 		if(typeof(data.object) !='undefined'){	
 			if(data.object !='feed_slideshow'){
 				return false;
 			}
 		}
+		*/
 
 		initConfigurator(data,
 		{
@@ -1496,12 +1501,12 @@ function addDisplayObject(objectToAdd,regionid,configure){
 	
 	function updateAvailableObject(){
 		availableObjectParams={};
-							
-		jQuery("#availableObjectParams").find(":input").each(
+						
+		jQuery("#availableObjectParams").find(".param").each(
 			function(){
 				var item=jQuery(this);
 				if (item.attr("type") != "radio" || (item.attr("type") =="radio" && item.is(':checked'))) {
-					availableObjectParams[item.attr("data-displayobjectparam")] = item.val();
+					availableObjectParams[item.attr("name")] = item.val();
 				}
 			}
 		)
@@ -1548,7 +1553,8 @@ function addDisplayObject(objectToAdd,regionid,configure){
 	}
 	
 	function initConfiguratorParams(){
-		jQuery("#availableObjectParams").find(":input").bind(
+		updateAvailableObject();
+		jQuery("#availableObjectParams").find(".param").bind(
 			"change",
 			function(){
 				updateAvailableObject();
@@ -1582,6 +1588,8 @@ function addDisplayObject(objectToAdd,regionid,configure){
 	function initConfigurator(data,config){
 		resetAvailableObject();
 		
+		data.configuratorMode=configuratorMode;
+		
 		if (typeof(data.object) == 'undefined') {
 			return false;
 		}
@@ -1596,32 +1604,37 @@ function addDisplayObject(objectToAdd,regionid,configure){
 				position: getDialogPosition(),
 				buttons: {
 					Save: function(){
+						updateAvailableObject();
+						
 						addDisplayObject(availableObject, data.regionid, false);
-						jQuery(this).dialog("close");
 						
 						if (typeof(config.destroy) != 'undefined') {
 							config.destroy(data, config);
 						}
+						
+						jQuery(this).dialog("destroy");
 						
 					},
 					Cancel: function(){
-						jQuery(this).dialog("close");
-						
 						if (typeof(config.destroy) != 'undefined') {
 							config.destroy(data, config);
 						}
+						
+						jQuery(this).dialog("destroy");
+						
 					}
 				},
 				close: function(){
-					jQuery(this).dialog("destroy");
-					
 					if (typeof(config.destroy) != 'undefined') {
 						config.destroy(data, config);
 					}
+						
+					jQuery(this).dialog("destroy");
 				}
+			
 			});
 		}
-			
+		
 		jQuery.post(config.url + "?" + config.pars, data, function(_resp){
 			try {
 				resp = eval('(' + _resp + ')');
@@ -1643,6 +1656,7 @@ function addDisplayObject(objectToAdd,regionid,configure){
 			
 				
 			jQuery("#ui-dialog-title-configuratorContainer").html(config.title);
+			jQuery("#configuratorHeader").html(config.title);
 				
 			if (availableObjectTemplate == "") {
 				var availableObjectContainer = jQuery("#availableObjectParams");
@@ -1664,6 +1678,9 @@ function addDisplayObject(objectToAdd,regionid,configure){
 			
 			if (configuratorMode == 'backEnd') {
 				jQuery("#configuratorContainer").dialog("option", "position", getDialogPosition());
+			} else if (configuratorMode == 'frontEnd'){
+				jQuery("#configuratorActions").show();
+				jQuery("#configuratorNotices").show();
 			}	
 			initConfiguratorParams();
 				

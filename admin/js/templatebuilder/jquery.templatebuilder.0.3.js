@@ -46,6 +46,7 @@
 (function( jQuery ){
 
 	var _formData		= {};
+	var _buildList		= [];
 	var _dataSets		= {};
 	var _formStatus		= {};
 	var _selected		= "";
@@ -129,9 +130,11 @@
 		}
 
 		function doAddFields() {
-			for( var i = 0;i < _formData.fieldorder.length;i++ ) {
-				doAddField( _formData.fields[_formData.fieldorder[i]] );
-			}
+			_buildList = _formData.fieldorder.slice(0);
+			if (_buildList.length) {
+				var fieldid = _buildList.shift();
+				doAddField(_formData.fields[fieldid]);
+			}	
 		}
 	
 		function doCreateField( obj ) {
@@ -165,6 +168,11 @@
 			jQuery("span",$fieldBlock).html(obj.label);
 
 			jQuery('#mura-tb-fields').append( $fieldBlock );
+
+			if (_buildList.length) {
+				var fieldid = _buildList.shift();
+				doAddField(_formData.fields[fieldid]);
+			}	
 		}
 	
 		function doActivateMenu() {
@@ -997,38 +1005,5 @@
     		var r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);
 	    	return v.toString(16);
 		});
-	}
-
-	myDump = function(obj, name, indent, depth, maxdepth) {
-			var self = this;
-	
-		if(!maxdepth)
-			maxdepth = 1;
-	
-		if (depth > maxdepth) {
-		     return indent + name + ": <Maximum Depth Reached>\n";
-		}
-		
-		if (typeof obj == "object") {
-		     var child = null;
-		     var output = indent + name + "\n";
-		     indent += "\t";
-		     for (var item in obj)
-		     {
-		           try {
-		                  child = obj[item];
-		           } catch (e) {
-		                  child = "<Unable to Evaluate>";
-		           }
-		           if (typeof child == "object") {
-						  output += myDump(child, item, indent,depth++,maxdepth);
-		           } else {
-		                  output += indent + item + ": " + child + "\n";
-		           }
-		     }
-		     return output;
-		} else {
-		     return obj;
-		}
 	}
 })(jQuery);

@@ -124,6 +124,22 @@ function setRequestedURL(){
 	return conditionalExit("#JSStringFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.saveasdraft"))#");
 }</cfoutput>
 </script>
+<cfelseif attributes.compactDisplay eq "true">
+<script type="text/javascript">
+jQuery(document).ready(function(){
+	if (top.location != self.location) {
+		if(jQuery("##ProxyIFrame").length){
+			jQuery("##ProxyIFrame").load(
+				function(){
+					frontEndProxy.postMessage("cmd=setWindowMode&mode=standard");
+				}
+			);	
+		} else {
+			frontEndProxy.postMessage("cmd=setWindowMode&mode=standard");
+		}
+	}
+});
+</script>
 </cfif> 
 <cfsilent>
 <cfif request.contentBean.getType() eq 'File'>
@@ -502,8 +518,8 @@ select * from rsPluginScripts3 order by pluginID
 	<img src="#application.configBean.getContext()#/admin/images/progress_bar.gif">
 </div>
 	<input name="approved" type="hidden" value="0">
-	<input name="removePreviousChangeset" type="hidden" value="false">
-	<input name="changesetID" type="hidden" value="">
+	<input id="removePreviousChangeset" name="removePreviousChangeset" type="hidden" value="false">
+	<input id="changesetID" name="changesetID" type="hidden" value="">
 	<input name="preview" type="hidden" value="0">	
 	<cfif attributes.type neq 'Link'>
 		<input name="filename" type="hidden" value="#request.contentBean.getfilename()#">

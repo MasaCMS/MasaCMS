@@ -69,10 +69,24 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 	
 			<h4>#HTMLEditFormat(feed.getName())#</h4>
+			<cfif attributes.configuratorMode eq "frontEnd"
+				and application.permUtility.getDisplayObjectPerm(feed.getSiteID(),"feed",feed.getFeedD()) eq "editor">
+			<cfsilent>
+				<cfset editlink = "?fuseaction=cFeed.edit">
+				<cfset editlink = editlink & "&amp;siteid=" & feed.getSiteID()>
+				<cfset editlink = editlink & "&amp;feedid=" & feed.getFeedID()>
+				<cfset editlink = editlink & "&amp;type=" & feed.getType()>
+				<cfset editlink = editlink & "&amp;homeID=" & attributes.homeID>
+				<cfset editlink = editlink & "&amp;compactDisplay=true">
+			</cfsilent>
+			<ul id="navTask">
+				<li><a href="#editlink#">#application.rbFactory.getKeyValue(session.rb,'collections.editdefaultsettings')#</a></li>
+			</ul>
+			</cfif>
 			<cfif feed.getType() eq "local">		
 				<dl class="oneColumn" id="configurator">
 					<dt class="first">#application.rbFactory.getKeyValue(session.rb,'collections.imagesize')#</dt>
-					<dd><select data-displayobjectparam="imageSize" class="dropdown" onchange="if(this.value=='custom'){jQuery('##feedCustomImageOptions').fadeIn('fast')}else{jQuery('##feedCustomImageOptions').hide()}">
+					<dd><select name="imageSize" class="param dropdown" onchange="if(this.value=='custom'){jQuery('##feedCustomImageOptions').fadeIn('fast')}else{jQuery('##feedCustomImageOptions').hide()}">
 						<cfloop list="Small,Medium,Large,Custom" index="i">
 							<option value="#lcase(i)#"<cfif i eq feed.getImageSize()> selected</cfif>>#I#</option>
 						</cfloop>
@@ -81,25 +95,25 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<dd id="feedCustomImageOptions"<cfif feed.getImageSize() neq "custom"> style="display:none"</cfif>>
 						<dl>
 							<dt>#application.rbFactory.getKeyValue(session.rb,'collections.imageheight')#</dt>
-							<dd><input data-displayobjectparam="imageHeight" class="text" value="#feed.getImageHeight()#" /></dd>
+							<dd><input name="imageHeight" class="param text" value="#feed.getImageHeight()#" /></dd>
 							<dt>#application.rbFactory.getKeyValue(session.rb,'collections.imagewidth')#</dt>
-							<dd><input data-displayobjectparam="imageWidth" class="text" value="#feed.getImageWidth()#" /></dd>
+							<dd><input name="imageWidth" class="param text" value="#feed.getImageWidth()#" /></dd>
 						</dl>
 					</dd>
 				
 				<dt>#application.rbFactory.getKeyValue(session.rb,'collections.displayname')#</dt>
 				<dd>
-				<input name="feedDisplayName" data-displayobjectparam="displayName" type="radio" value="1" class="radio" onchange="jQuery('##altNameContainer').toggle();"<cfif feed.getDisplayName()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.yes')# 
-				<input name="feedDisplayName" data-displayobjectparam="displayName" type="radio" value="0" class="radio" onchange="jQuery('##altNameContainer').toggle();" <cfif not feed.getDisplayName()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.no')# 
+				<input name="displayName" type="radio" value="1" class="param radio" onchange="jQuery('##altNameContainer').toggle();"<cfif feed.getDisplayName()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.yes')# 
+				<input name="displayName" type="radio" value="0" class="param radio" onchange="jQuery('##altNameContainer').toggle();" <cfif not feed.getDisplayName()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.no')# 
 				</dd>
 				<span id="altNameContainer"<cfif NOT feed.getDisplayName()> style="display:none;"</cfif>>
 				<dt>#application.rbFactory.getKeyValue(session.rb,'collections.altname')#</dt>
-				<dd><input data-displayobjectparam="altName" class="text" value="#HTMLEditFormat(feed.getAltName())#" maxlength="50"></dd>
+				<dd><input name="altName" class="param text" value="#HTMLEditFormat(feed.getAltName())#" maxlength="50"></dd>
 				</span>
 				
 				
 				<dt>#application.rbFactory.getKeyValue(session.rb,'collections.maxitems')#</dt>
-				<dd><select data-displayobjectparam="maxItems" class="dropdown">
+				<dd><select name="maxItems" class="param dropdown">
 				<cfloop list="1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,25,50,100" index="m">
 				<option value="#m#" <cfif feed.getMaxItems() eq m>selected</cfif>>#m#</option>
 				</cfloop>
@@ -108,7 +122,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</dd>
 
 				<dt>#application.rbFactory.getKeyValue(session.rb,'collections.itemsperpage')#</dt>
-				<dd><select data-displayobjectparam="nextN" class="dropdown">
+				<dd><select name="nextN" class="param dropdown">
 					<cfloop list="1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,25,50,100" index="r">
 					<option value="#r#" <cfif r eq feed.getNextN()>selected</cfif>>#r#</option>
 					</cfloop>
@@ -133,7 +147,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						<li class="ui-state-highlight">#i#</li>
 						</cfloop>
 					</ul>
-					<input type="hidden" id="displayList" value="#displayList#" data-displayobjectparam="displayList"/>
+					<input type="hidden" id="displayList" class="param" value="#displayList#" name="displayList"/>
 					</div>	
 				</dd>
 				</dl>
@@ -145,8 +159,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		
 				<dt class="first">#application.rbFactory.getKeyValue(session.rb,'collections.displaysummaries')#</dt>
 				<dd>
-				<input name="feedDisplaySummaries" data-displayobjectparam="displaySummaries" type="radio" value="1" class="radio" onchange="jQuery('##altNameContainer').toggle();"<cfif displaySummaries>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.yes')# 
-				<input name="feedDisplaySummaries" data-displayobjectparam="displaySummaries" type="radio" value="0" class="radio" onchange="jQuery('##altNameContainer').toggle();" <cfif not displaySummaries>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.no')# 
+				<input name="displaySummaries" type="radio" value="1" class="param radio" onchange="jQuery('##altNameContainer').toggle();"<cfif displaySummaries>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.yes')# 
+				<input name="displaySummaries" type="radio" value="0" class="param radio" onchange="jQuery('##altNameContainer').toggle();" <cfif not displaySummaries>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.no')# 
 				</dd>
 				</dl>
 			</div>
