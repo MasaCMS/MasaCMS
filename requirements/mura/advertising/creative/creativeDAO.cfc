@@ -93,14 +93,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var rs ="" />
 	
 	
-	<cfquery name="rs" datasource="#variables.instance.configBean.getDatasource(mode='readOnly')#"  username="#variables.instance.configBean.getDBUsername(mode='readOnly')#" password="#variables.instance.configBean.getDBPassword(mode='readOnly')#">
+	<cfquery name="rs" datasource="#variables.instance.configBean.getReadOnlyDatasource()#"  username="#variables.instance.configBean.getReadOnlyDbUsername()#" password="#variables.instance.configBean.getReadOnlyDbPassword()#">
 	Select tadcreatives.*, tfiles.fileExt, tfiles.siteID from tadcreatives 
 	left join tfiles on (tadcreatives.fileID=tfiles.fileID) 
 	where creativeID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.creativeID#" />
 	</cfquery>
 	
 	
-	<!--- <cfquery name="rs" datasource="#variables.instance.configBean.getDatasource(mode='readOnly')#"  username="#variables.instance.configBean.getDBUsername(mode='readOnly')#" password="#variables.instance.configBean.getDBPassword(mode='readOnly')#">
+	<!--- <cfquery name="rs" datasource="#variables.instance.configBean.getReadOnlyDatasource()#"  username="#variables.instance.configBean.getReadOnlyDbUsername()#" password="#variables.instance.configBean.getReadOnlyDbPassword()#">
 	Select * from tadcreatives where 
 	creativeID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.creativeID#" />
 	</cfquery> --->

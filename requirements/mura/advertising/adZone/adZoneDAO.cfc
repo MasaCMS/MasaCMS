@@ -81,7 +81,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var adZoneBean=getBean("adzone") />
 	<cfset var rs ="" />
 	
-	<cfquery name="rs" datasource="#variables.instance.configBean.getDatasource(mode='readOnly')#"  username="#variables.instance.configBean.getDBUsername(mode='readOnly')#" password="#variables.instance.configBean.getDBPassword(mode='readOnly')#">
+	<cfquery name="rs" datasource="#variables.instance.configBean.getReadOnlyDatasource()#"  username="#variables.instance.configBean.getReadOnlyDbUsername()#" password="#variables.instance.configBean.getReadOnlyDbPassword()#">
 	Select * from tadzones where 
 	adZoneID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.adZoneID#" />
 	</cfquery>

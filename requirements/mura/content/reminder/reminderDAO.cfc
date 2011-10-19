@@ -79,7 +79,7 @@ values (
  <cfset var rs=""/>
  <cfset var reminderBean=getBean("reminderBean") />
  
-	<cfquery datasource="#variables.instance.configBean.getDatasource(mode='readOnly')#" name="rs"  username="#variables.instance.configBean.getDBUsername(mode='readOnly')#" password="#variables.instance.configBean.getDBPassword(mode='readOnly')#">
+	<cfquery datasource="#variables.instance.configBean.getReadOnlyDatasource()#" name="rs"  username="#variables.instance.configBean.getReadOnlyDbUsername()#" password="#variables.instance.configBean.getReadOnlyDbPassword()#">
 	select * from tcontenteventreminders 
 	where contentid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentID#"/>
 	and siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>

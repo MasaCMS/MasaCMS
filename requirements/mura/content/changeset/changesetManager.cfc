@@ -65,7 +65,7 @@
 		<cfset bean=getBean("changeset")>
 	</cfif>
 	
-	<cfquery name="rs" datasource="#variables.configBean.getDatasource(mode='readOnly')#" username="#variables.configBean.getDbUsername(mode='readOnly')#" password="#variables.configBean.getDbPassword(mode='readOnly')#">
+	<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
 	select changesetID, siteID, name, description, created, publishDate, published, lastupdate, lastUpdateBy, lastUpdateByID, remoteID, remotePubDate, remoteSourceURL
 	from tchangesets where
 	<cfif len(arguments.siteID)>
@@ -98,7 +98,7 @@
 	
 	<cfset var rs="">
 	
-	<cfquery name="rs" datasource="#variables.configBean.getDatasource(mode='readOnly')#" username="#variables.configBean.getDbUsername(mode='readOnly')#" password="#variables.configBean.getDbPassword(mode='readOnly')#">
+	<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
 		select changesetID from tchangesets
 		where changesetID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.bean.getChangesetID()#"> 
 	</cfquery>
@@ -203,7 +203,7 @@
 <cfargument name="sortBy">
 
 	<cfset var rs="">
-	<cfquery name="rs" datasource="#variables.configBean.getDatasource(mode='readOnly')#" username="#variables.configBean.getDbUsername(mode='readOnly')#" password="#variables.configBean.getDbPassword(mode='readOnly')#">
+	<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
 	select changesetID, siteID, name, description, created, publishDate, published, lastupdate, lastUpdateBy, remoteID, remotePubDate, remoteSourceURL
 	from tchangesets
 	where siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#">
@@ -242,7 +242,7 @@
 <cfargument name="contentID">
 <cfargument name="siteID">
 	<cfset var rs="">
-	<cfquery name="rs" datasource="#variables.configBean.getDatasource(mode='readOnly')#" username="#variables.configBean.getDbUsername(mode='readOnly')#" password="#variables.configBean.getDbPassword(mode='readOnly')#">
+	<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
 	select tchangesets.changesetID, tcontent.contentID, tcontent.contenthistid, tcontent.siteID, tchangesets.name changesetName
 	from tcontent
 	inner join tchangesets on tcontent.changesetID=tchangesets.changesetID
@@ -256,7 +256,7 @@
 <cffunction name="publishBySchedule" access="public" returntype="any" output="false">
 	<cfset var rs="">
 	
-	<cfquery name="rs" cachedwithin="#CreateTimeSpan(0, 0, 5, 0)#" datasource="#variables.configBean.getDatasource(mode='readOnly')#" username="#variables.configBean.getDbUsername(mode='readOnly')#" password="#variables.configBean.getDbPassword(mode='readOnly')#">
+	<cfquery name="rs" cachedwithin="#CreateTimeSpan(0, 0, 5, 0)#" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
 	select changesetID
 	from tchangesets
 	where tchangesets.published=0
@@ -282,7 +282,7 @@
 
 <cfif not local.changeset.getIsNew() and not local.changeset.getPublished()>
 	<cfif isDate(local.changeset.getPublishDate())>
-		<cfquery name="local.prereqs" datasource="#variables.configBean.getDatasource(mode='readOnly')#" username="#variables.configBean.getDbUsername(mode='readOnly')#" password="#variables.configBean.getDbPassword(mode='readOnly')#">
+		<cfquery name="local.prereqs" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
 		select changesetID,name,publishDate
 		from tchangesets
 		where tchangesets.published=0
@@ -393,7 +393,7 @@
 <cfargument name="changesetID">
 <cfargument name="keywords" default="">
 	<cfset var rs="">
-	<cfquery name="rs" datasource="#variables.configBean.getDatasource(mode='readOnly')#" username="#variables.configBean.getDbUsername(mode='readOnly')#" password="#variables.configBean.getDbPassword(mode='readOnly')#">
+	<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
 	select menutitle, tcontent.siteid, tcontent.parentID, tcontent.path, tcontent.contentid, contenthistid, tcontent.fileID, type, tcontent.lastupdateby, active, approved, tcontent.lastupdate, 
 	display, displaystart, displaystop, tcontent.moduleid, isnav, notes,isfeature,inheritObjects,tcontent.filename,targetParams,releaseDate,
 	tcontent.changesetID, tfiles.fileExt

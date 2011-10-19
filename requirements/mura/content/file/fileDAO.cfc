@@ -204,7 +204,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="read" returntype="query" access="public" output="false">
 		<cfargument name="fileID" type="any" required="yes"/>
 		<cfset var rs=""/>
-		<cfquery name="rs" datasource="#variables.configBean.getDatasource(mode='readOnly')#"  username="#variables.configBean.getDBUsername(mode='readOnly')#" password="#variables.configBean.getDBPassword(mode='readOnly')#">
+		<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
 		SELECT fileID, contentID, siteID, moduleID, filename, fileSize, contentType, contentSubType, fileExt,image, created FROM tfiles where fileid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.fileID#">
 		</cfquery>
 		
@@ -215,7 +215,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="readAll" returntype="query" access="public" output="false">
 		<cfargument name="fileID" type="any" required="yes"/>
 		<cfset var rs=""/>
-		<cfquery name="rs" datasource="#variables.configBean.getDatasource(mode='readOnly')#"  username="#variables.configBean.getDBUsername(mode='readOnly')#" password="#variables.configBean.getDBPassword(mode='readOnly')#">
+		<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
 		SELECT * FROM tfiles where fileid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.fileID#">
 		</cfquery>
 		
@@ -226,7 +226,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="readMeta" returntype="query" access="public" output="false">
 		<cfargument name="fileID" type="any" required="yes"/>
 		<cfset var rs=""/>
-		<cfquery name="rs" datasource="#variables.configBean.getDatasource(mode='readOnly')#"  username="#variables.configBean.getDBUsername(mode='readOnly')#" password="#variables.configBean.getDBPassword(mode='readOnly')#">
+		<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
 		SELECT fileID, contentID, siteID, moduleID, filename, fileSize, contentType, contentSubType, fileExt, created  FROM tfiles where fileid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.fileID#">
 		</cfquery>
 		
@@ -237,7 +237,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="readSmall" returntype="query" access="public" output="false">
 		<cfargument name="fileID" type="any" required="yes"/>
 		<cfset var rs=""/>
-		<cfquery name="rs" datasource="#variables.configBean.getDatasource(mode='readOnly')#"  username="#variables.configBean.getDBUsername(mode='readOnly')#" password="#variables.configBean.getDBPassword(mode='readOnly')#">
+		<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
 		SELECT fileID, contentID, siteID, moduleID, filename, fileSize, contentType, contentSubType, fileExt, imageSmall, created  FROM tfiles where fileid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.fileID#"> and imageSmall is not null
 		</cfquery>
 		
@@ -248,7 +248,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="readMedium" returntype="query" access="public" output="false">
 		<cfargument name="fileID" type="any" required="yes"/>
 		<cfset var rs=""/>
-		<cfquery name="rs" datasource="#variables.configBean.getDatasource(mode='readOnly')#"  username="#variables.configBean.getDBUsername(mode='readOnly')#" password="#variables.configBean.getDBPassword(mode='readOnly')#">
+		<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
 		SELECT fileID, contentID, siteID, moduleID, filename, fileSize, contentType, contentSubType, fileExt, imageMedium, created  FROM tfiles where fileid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.fileID#"> and imageMedium is not null
 		</cfquery>
 		
@@ -264,15 +264,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset var rs3 = "" />
 		<cfset var rs4 = "" />
 		
-		<cfquery name="rs1" datasource="#variables.configBean.getDatasource(mode='readOnly')#"  username="#variables.configBean.getDBUsername(mode='readOnly')#" password="#variables.configBean.getDBPassword(mode='readOnly')#">
+		<cfquery name="rs1" datasource="#variables.configBean.getReadOnlyDatasource()#"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
 		SELECT fileId FROM tcontent where fileid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.fileID#"> and contenthistId <> <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.baseID#">
 		</cfquery>
 		
-		<cfquery name="rs2" datasource="#variables.configBean.getDatasource(mode='readOnly')#"  username="#variables.configBean.getDBUsername(mode='readOnly')#" password="#variables.configBean.getDBPassword(mode='readOnly')#">
+		<cfquery name="rs2" datasource="#variables.configBean.getReadOnlyDatasource()#"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
 		SELECT attributeValue FROM tclassextenddata where attributeValue like <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.fileID#"> and baseId <> <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.baseID#">
 		</cfquery>
 		
-		<cfquery name="rs3" datasource="#variables.configBean.getDatasource(mode='readOnly')#"  username="#variables.configBean.getDBUsername(mode='readOnly')#" password="#variables.configBean.getDBPassword(mode='readOnly')#">
+		<cfquery name="rs3" datasource="#variables.configBean.getReadOnlyDatasource()#"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
 		SELECT attributeValue FROM tclassextenddatauseractivity where attributeValue like <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.fileID#"> and baseId <> <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.baseID#">
 		</cfquery>
 		
@@ -291,7 +291,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset var rs="">
 	
 <cflock type="exclusive" name="purgingDeletedFile#application.instanceID#" timeout="1000">
-	<cfquery name="rs" datasource="#variables.configBean.getDatasource(mode='readOnly')#"  username="#variables.configBean.getDBUsername(mode='readOnly')#" password="#variables.configBean.getDBPassword(mode='readOnly')#">
+	<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
 	select fileID from tfiles where deleted=1 
 	<cfif len(arguments.siteID)>
 	and siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#">

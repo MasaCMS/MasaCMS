@@ -124,7 +124,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset bean=getBean("feed") />
 	</cfif>
 	
-	<cfquery name="rs" datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+	<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
 	Select
 	#variables.fieldList#
 	from tcontentfeeds where 
@@ -155,7 +155,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset bean=getBean("feed") />
 	</cfif>
 	
-	<cfquery name="rs" datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+	<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
 	Select 
 	#variables.fieldList#
 	from tcontentfeeds where 
@@ -200,7 +200,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset bean=getBean("feed") />
 	</cfif>
 		
-	<cfquery name="rs" datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+	<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
 	Select 
 	#variables.fieldList#
 	from tcontentfeeds where 
@@ -339,7 +339,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	 <cfset var rs =""/>
 	 <cfset var ItemList =""/>
 	
-	<cfquery name="rs" datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+	<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
 		select itemID from tcontentfeeditems
 		where feedID=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.feedID#"> and type = <cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.type#">
 	</cfquery>
@@ -355,7 +355,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	 <cfset var rs =""/>
 	
-	<cfquery name="rs" datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+	<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
 		select * from tcontentfeedadvancedparams
 		where feedID=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.feedID#"> order by param
 	</cfquery>

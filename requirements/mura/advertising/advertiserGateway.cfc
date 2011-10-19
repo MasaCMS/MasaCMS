@@ -60,7 +60,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="keywords"  type="string" required="true" default=""/>
 	<cfset var rs = "">
 	
-	<cfquery datasource="#variables.instance.configBean.getDatasource(mode='readOnly')#" name="rs"  username="#variables.instance.configBean.getDBUsername(mode='readOnly')#" password="#variables.instance.configBean.getDBPassword(mode='readOnly')#">
+	<cfquery datasource="#variables.instance.configBean.getReadOnlyDatasource()#" name="rs"  username="#variables.instance.configBean.getReadOnlyDbUsername()#" password="#variables.instance.configBean.getReadOnlyDbPassword()#">
 	SELECT tusers.UserID, tusers.Company, tusers.fname,tusers.lname,tusers.email, tusers.SiteID,tusers.isPublic
 	FROM tusers INNER JOIN tusersmemb ON tusers.UserID = tusersmemb.UserID INNER JOIN tusers TUsers_1 ON tusersmemb.GroupID = TUsers_1.UserID
 	WHERE (TUsers_1.GroupName='Advertisers') AND (TUsers_1.isPublic=1) AND (TUsers_1.SiteID='#variables.instance.settingsManager.getSite(arguments.siteid).getAdvertiserUserPoolID()#')
@@ -87,7 +87,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<cfset var rs = "">
 	
-	<cfquery datasource="#variables.instance.configBean.getDatasource(mode='readOnly')#" name="rs"  username="#variables.instance.configBean.getDBUsername(mode='readOnly')#" password="#variables.instance.configBean.getDBPassword(mode='readOnly')#">
+	<cfquery datasource="#variables.instance.configBean.getReadOnlyDatasource()#" name="rs"  username="#variables.instance.configBean.getReadOnlyDbUsername()#" password="#variables.instance.configBean.getReadOnlyDbPassword()#">
 	SELECT tusers.UserID from tusers where type=1 and ispublic =1 and siteid='#variables.instance.settingsManager.getSite(arguments.siteid).getAdvertiserUserPoolID()#'
 	and groupname='Advertisers'
 	</cfquery>

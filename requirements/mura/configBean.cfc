@@ -318,16 +318,43 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="getDatasource" returntype="any" access="public" output="false">
 	<cfargument name="mode" default="" />
-	<cfif arguments.mode eq "readOnly">
-		<cfreturn variables.instance.readOnlyDatasource />
-	<cfelse>
-		<cfreturn variables.instance.datasource />
-	</cfif>
+	<cfreturn variables.instance.datasource />
 </cffunction>
 
 <cffunction name="setDatasource" access="public" output="false">
 	<cfargument name="Datasource" type="String" />
 	<cfset variables.instance.Datasource = arguments.Datasource />
+	<cfreturn this>
+</cffunction>
+
+<cffunction name="getReadOnlyDatasource" returntype="any" access="public" output="false">
+	<cfargument name="mode" default="" />
+	<cfreturn variables.instance.readOnlyDatasource />
+</cffunction>
+
+<cffunction name="setReadOnlyDatasource" access="public" output="false">
+	<cfargument name="readOnlyDatasource" type="String" />
+	<cfset variables.instance.Datasource = arguments.Datasource />
+	<cfreturn this>
+</cffunction>
+
+<cffunction name="getReadOnlyDbPassword" returntype="any" access="public" output="false">
+	<cfreturn variables.instance.readOnlyDbPassword />
+</cffunction>
+
+<cffunction name="setReadOnlyDbPassword" access="public" output="false">
+	<cfargument name="readOnlyDbPassword" type="String" />
+	<cfset variables.instance.readOnlyDbPassword = arguments.readOnlyDbPassword />
+	<cfreturn this>
+</cffunction>
+
+<cffunction name="getReadOnlyDbUsername" returntype="any" access="public" output="false">
+	<cfreturn variables.instance.readOnlyDbUsername />
+</cffunction>
+
+<cffunction name="setReadOnlyDbUsername" access="public" output="false">
+	<cfargument name="readOnlyDbUsername" type="String" />
+	<cfset variables.instance.readOnlyDbUsername = arguments.readOnlyDbUsername />
 	<cfreturn this>
 </cffunction>
 
@@ -497,11 +524,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="getDbPassword" returntype="any" access="public" output="false">
 	<cfargument name="mode" default="" />
-	<cfif arguments.mode eq "readOnly">
-		<cfreturn variables.instance.readOnlydbPassword />
-	<cfelse>
-		<cfreturn variables.instance.dbPassword />
-	</cfif>
+	<cfreturn variables.instance.dbPassword />
 </cffunction>
 
 <cffunction name="setDbPassword" access="public" output="false">
@@ -512,11 +535,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="getDbUsername" returntype="any" access="public" output="false">
 	<cfargument name="mode" default="" />
-	<cfif arguments.mode eq "readOnly">
-		<cfreturn variables.instance.readOnlyDbUsername />
-	<cfelse>
-		<cfreturn variables.instance.dbUsername />
-	</cfif>
+	<cfreturn variables.instance.dbUsername />
 </cffunction>
 
 <cffunction name="setDbUsername" access="public" output="false">
